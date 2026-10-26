@@ -1,14 +1,14 @@
 {
  "schema": "plotnua.disc031-provenance-declaration.v1",
- "status": "UNSIGNED DRAFT, prepared 26 Oct 2026 by the DISC-031 build session. Not applied to image-provenance-records.json. Apply with atlas-tools/declare-disc031-provenance.py once signed.",
+ "status": "UNSIGNED: completed from the C2PA content credentials on 26 Oct 2026 (late evening). Awaiting the founder's reference-input statement, acceptance of the resemblance review (C2), and signature (answers.signed_by, answers.date, each record's human_review.reviewer and .date). Apply with atlas-tools/declare-disc031-provenance.py once signed.",
  "why_this_form": "Every new AI illustration records its prompt verbatim at creation. The build instruction supplied the four masters but not the tool, the prompts or the reference history, so the only truthful records are either (a) the normal form, if the founder supplies the tool and the prompts, or (b) the founder-attested form below. Nothing here is invented: every FOUNDER TO CONFIRM must be replaced with the founder's own wording.",
  "answers": {
-  "C1": "",
+  "C1": "not-recorded",
   "C2": "",
   "signed_by": "",
   "date": "",
-  "tool": "",
-  "prompts_available": ""
+  "tool": "ChatGPT image generation (OpenAI, gpt-image), established from the C2PA content credentials signed by OpenAI OpCo, LLC embedded in each of the four masters",
+  "prompts_available": "no"
  },
  "answers_help": {
   "C1": "'no' (no real photograph or supplier image was supplied to the generator) or 'not-recorded'",
@@ -28,7 +28,7 @@
    "class": "AI_ILLUSTRATION",
    "what": "The garden before: an ordinary Irish back garden with a stone patio, a long open lawn, mature trees and a hedge (Rule 6 plate and the BEFORE side of the comparison)",
    "generated": {
-    "tool": "FOUNDER TO CONFIRM: the generative image tool used to make the master (not recorded in the build instruction of 26 Oct 2026); then Pillow web encoding by the PlotNua build session",
+    "tool": "ChatGPT image generation (OpenAI, gpt-image), per the master's C2PA content credentials; then Pillow web encoding by the PlotNua build session",
     "date": "2026-10-26",
     "source_master": {
      "file": "DISC-031-BEFORE.png (founder's Mac, folder 03 Website/Live Website/DISC-031-Natural-Swimming-Garden-Editorial-Structure-2026-10-26)",
@@ -37,21 +37,34 @@
     },
     "processing_chain": [
      {
-      "step": "Master: the founder's AI-generated illustration, supplied for publication in the founder build instruction of 26 Oct 2026",
+      "step": "Master: generated in ChatGPT (gpt-image) by the founder, per its C2PA content credentials, and supplied for publication in the founder build instruction of 26 Oct 2026",
       "prompt": "UNAVAILABLE (see prompt_status) unless the founder supplies it at signature"
      },
      {
       "step": "Web encoding",
       "tool": "Pillow; resize to 1536 px wide (Lanczos), JPEG; no other change"
      }
-    ]
+    ],
+    "c2pa_evidence": {
+     "manifest": "C2PA content credentials embedded in the master PNG (caBX chunk), read with c2pa-python 0.38.0 on 26 Oct 2026",
+     "claim_generator": "OpenAI Media Service API",
+     "signed_by": "OpenAI OpCo, LLC",
+     "signed_at": "2026-10-26T09:51:55.394193+00:00",
+     "actions": [
+      "c2pa.created (softwareAgent ChatGPT, version gpt-image; digitalSourceType trainedAlgorithmicMedia)",
+      "c2pa.converted",
+      "c2pa.watermarked.unbound"
+     ],
+     "ingredients_recorded": [],
+     "validation": "content hash matches (assertion.dataHash.match) and claim signature validated; signing certificate not on the local trust list (no trust anchors loaded)"
+    }
    },
    "depicts_named_product": false,
    "depicts_named_organisation": false,
    "human_review": {
     "reviewer": "",
     "date": "",
-    "attests": "FOUNDER TO CONFIRM. Proposed wording: Founder supplied this AI-generated illustration for DISC-031 The Natural Swimming Garden and approved its publication, labelled as an AI-generated illustration. It is not presented as a photograph of a real property, of any Irish project described on the page, or of any supplier's product."
+    "attests": "Founder supplied this AI-generated illustration for DISC-031 The Natural Swimming Garden and approved its publication, labelled as an AI-generated illustration. It is not presented as a photograph of a real property, of any Irish project described on the page, or of any supplier's product."
    },
    "permitted_surfaces": [
     "discovery",
@@ -60,8 +73,9 @@
    "prompt_status": "UNAVAILABLE",
    "reference_disclosure": {
     "status": "UNCERTAIN",
-    "statement": "FOUNDER TO CONFIRM. The master's generation prompt and any reference images present in the generation conversation are not recorded in the build instruction. reference_inputs is therefore not recorded: neither a list nor an empty list can be stated truthfully.",
-    "evidence": "Founder build instruction DISC-031, 26 Oct 2026; master hashes verified on the founder's Mac, 26 Oct 2026"
+    "statement": "ChatGPT's content credentials record no ingredients for this master. That is not evidence that no reference image was used: the Reveal master shares the Before master's framing, house and sky (pixel correlation 0.96 in the unchanged areas) yet also records no ingredient, so these credentials do not capture images supplied in the conversation. Whether any real photograph or third-party image was supplied is therefore not recorded, and reference_inputs is not stated.",
+    "evidence": "C2PA content credentials of DISC-031-BEFORE.png (sha256 ae2c81e35334...), read 26 Oct 2026; Before/Reveal pixel comparison by the build session, 26 Oct 2026",
+    "founder_statement": "FOUNDER TO CONFIRM: whether any real photograph (of a garden, a property, an Irish project or a supplier product) or any third-party image was uploaded in the ChatGPT conversation that produced this master"
    },
    "resemblance_review": {
     "date": "2026-10-26",
@@ -77,7 +91,11 @@
    },
    "decision_ref": "PN-FDR-2026-10-26-DISC031 (PENDING founder signature: founder-attested form for the DISC-031 illustrations, extending the form of PN-FDR-2026-10-23-GRP-HERO and PN-FDR-2026-10-26-H6-HOME to these files on the discovery and library-card surfaces only)",
    "service_terms": {
-    "note": "FOUNDER TO CONFIRM the tool; its commercial-use terms are then recorded here (founder standard of 19 Oct 2026)."
+    "openai": "OpenAI Terms of Use: as between the user and OpenAI, the user owns the output; the user is responsible for the inputs they provide. (Same wording as the H6 record, PN-FDR-2026-10-26-H6-HOME.)"
+   },
+   "content_credentials": {
+    "embeds_c2pa": false,
+    "note": "The four PNG masters carry OpenAI's C2PA content credentials (see generated.c2pa_evidence); web re-encoding removes them."
    }
   },
   {
@@ -91,7 +109,7 @@
    "class": "AI_ILLUSTRATION",
    "what": "The garden before: an ordinary Irish back garden with a stone patio, a long open lawn, mature trees and a hedge (Rule 6 plate and the BEFORE side of the comparison)",
    "generated": {
-    "tool": "FOUNDER TO CONFIRM: the generative image tool used to make the master (not recorded in the build instruction of 26 Oct 2026); then Pillow web encoding by the PlotNua build session",
+    "tool": "ChatGPT image generation (OpenAI, gpt-image), per the master's C2PA content credentials; then Pillow web encoding by the PlotNua build session",
     "date": "2026-10-26",
     "source_master": {
      "file": "DISC-031-BEFORE.png (founder's Mac, folder 03 Website/Live Website/DISC-031-Natural-Swimming-Garden-Editorial-Structure-2026-10-26)",
@@ -100,21 +118,34 @@
     },
     "processing_chain": [
      {
-      "step": "Master: the founder's AI-generated illustration, supplied for publication in the founder build instruction of 26 Oct 2026",
+      "step": "Master: generated in ChatGPT (gpt-image) by the founder, per its C2PA content credentials, and supplied for publication in the founder build instruction of 26 Oct 2026",
       "prompt": "UNAVAILABLE (see prompt_status) unless the founder supplies it at signature"
      },
      {
       "step": "Web encoding",
       "tool": "Pillow; resize to 1536 px wide (Lanczos), WebP; no other change"
      }
-    ]
+    ],
+    "c2pa_evidence": {
+     "manifest": "C2PA content credentials embedded in the master PNG (caBX chunk), read with c2pa-python 0.38.0 on 26 Oct 2026",
+     "claim_generator": "OpenAI Media Service API",
+     "signed_by": "OpenAI OpCo, LLC",
+     "signed_at": "2026-10-26T09:51:55.394193+00:00",
+     "actions": [
+      "c2pa.created (softwareAgent ChatGPT, version gpt-image; digitalSourceType trainedAlgorithmicMedia)",
+      "c2pa.converted",
+      "c2pa.watermarked.unbound"
+     ],
+     "ingredients_recorded": [],
+     "validation": "content hash matches (assertion.dataHash.match) and claim signature validated; signing certificate not on the local trust list (no trust anchors loaded)"
+    }
    },
    "depicts_named_product": false,
    "depicts_named_organisation": false,
    "human_review": {
     "reviewer": "",
     "date": "",
-    "attests": "FOUNDER TO CONFIRM. Proposed wording: Founder supplied this AI-generated illustration for DISC-031 The Natural Swimming Garden and approved its publication, labelled as an AI-generated illustration. It is not presented as a photograph of a real property, of any Irish project described on the page, or of any supplier's product."
+    "attests": "Founder supplied this AI-generated illustration for DISC-031 The Natural Swimming Garden and approved its publication, labelled as an AI-generated illustration. It is not presented as a photograph of a real property, of any Irish project described on the page, or of any supplier's product."
    },
    "permitted_surfaces": [
     "discovery",
@@ -123,8 +154,9 @@
    "prompt_status": "UNAVAILABLE",
    "reference_disclosure": {
     "status": "UNCERTAIN",
-    "statement": "FOUNDER TO CONFIRM. The master's generation prompt and any reference images present in the generation conversation are not recorded in the build instruction. reference_inputs is therefore not recorded: neither a list nor an empty list can be stated truthfully.",
-    "evidence": "Founder build instruction DISC-031, 26 Oct 2026; master hashes verified on the founder's Mac, 26 Oct 2026"
+    "statement": "ChatGPT's content credentials record no ingredients for this master. That is not evidence that no reference image was used: the Reveal master shares the Before master's framing, house and sky (pixel correlation 0.96 in the unchanged areas) yet also records no ingredient, so these credentials do not capture images supplied in the conversation. Whether any real photograph or third-party image was supplied is therefore not recorded, and reference_inputs is not stated.",
+    "evidence": "C2PA content credentials of DISC-031-BEFORE.png (sha256 ae2c81e35334...), read 26 Oct 2026; Before/Reveal pixel comparison by the build session, 26 Oct 2026",
+    "founder_statement": "FOUNDER TO CONFIRM: whether any real photograph (of a garden, a property, an Irish project or a supplier product) or any third-party image was uploaded in the ChatGPT conversation that produced this master"
    },
    "resemblance_review": {
     "date": "2026-10-26",
@@ -140,7 +172,11 @@
    },
    "decision_ref": "PN-FDR-2026-10-26-DISC031 (PENDING founder signature: founder-attested form for the DISC-031 illustrations, extending the form of PN-FDR-2026-10-23-GRP-HERO and PN-FDR-2026-10-26-H6-HOME to these files on the discovery and library-card surfaces only)",
    "service_terms": {
-    "note": "FOUNDER TO CONFIRM the tool; its commercial-use terms are then recorded here (founder standard of 19 Oct 2026)."
+    "openai": "OpenAI Terms of Use: as between the user and OpenAI, the user owns the output; the user is responsible for the inputs they provide. (Same wording as the H6 record, PN-FDR-2026-10-26-H6-HOME.)"
+   },
+   "content_credentials": {
+    "embeds_c2pa": false,
+    "note": "The four PNG masters carry OpenAI's C2PA content credentials (see generated.c2pa_evidence); web re-encoding removes them."
    }
   },
   {
@@ -154,7 +190,7 @@
    "class": "AI_ILLUSTRATION",
    "what": "The garden before: an ordinary Irish back garden with a stone patio, a long open lawn, mature trees and a hedge (Rule 6 plate and the BEFORE side of the comparison)",
    "generated": {
-    "tool": "FOUNDER TO CONFIRM: the generative image tool used to make the master (not recorded in the build instruction of 26 Oct 2026); then Pillow web encoding by the PlotNua build session",
+    "tool": "ChatGPT image generation (OpenAI, gpt-image), per the master's C2PA content credentials; then Pillow web encoding by the PlotNua build session",
     "date": "2026-10-26",
     "source_master": {
      "file": "DISC-031-BEFORE.png (founder's Mac, folder 03 Website/Live Website/DISC-031-Natural-Swimming-Garden-Editorial-Structure-2026-10-26)",
@@ -163,21 +199,34 @@
     },
     "processing_chain": [
      {
-      "step": "Master: the founder's AI-generated illustration, supplied for publication in the founder build instruction of 26 Oct 2026",
+      "step": "Master: generated in ChatGPT (gpt-image) by the founder, per its C2PA content credentials, and supplied for publication in the founder build instruction of 26 Oct 2026",
       "prompt": "UNAVAILABLE (see prompt_status) unless the founder supplies it at signature"
      },
      {
       "step": "Web encoding",
       "tool": "Pillow; resize to 960 px wide (Lanczos), WebP; no other change"
      }
-    ]
+    ],
+    "c2pa_evidence": {
+     "manifest": "C2PA content credentials embedded in the master PNG (caBX chunk), read with c2pa-python 0.38.0 on 26 Oct 2026",
+     "claim_generator": "OpenAI Media Service API",
+     "signed_by": "OpenAI OpCo, LLC",
+     "signed_at": "2026-10-26T09:51:55.394193+00:00",
+     "actions": [
+      "c2pa.created (softwareAgent ChatGPT, version gpt-image; digitalSourceType trainedAlgorithmicMedia)",
+      "c2pa.converted",
+      "c2pa.watermarked.unbound"
+     ],
+     "ingredients_recorded": [],
+     "validation": "content hash matches (assertion.dataHash.match) and claim signature validated; signing certificate not on the local trust list (no trust anchors loaded)"
+    }
    },
    "depicts_named_product": false,
    "depicts_named_organisation": false,
    "human_review": {
     "reviewer": "",
     "date": "",
-    "attests": "FOUNDER TO CONFIRM. Proposed wording: Founder supplied this AI-generated illustration for DISC-031 The Natural Swimming Garden and approved its publication, labelled as an AI-generated illustration. It is not presented as a photograph of a real property, of any Irish project described on the page, or of any supplier's product."
+    "attests": "Founder supplied this AI-generated illustration for DISC-031 The Natural Swimming Garden and approved its publication, labelled as an AI-generated illustration. It is not presented as a photograph of a real property, of any Irish project described on the page, or of any supplier's product."
    },
    "permitted_surfaces": [
     "discovery",
@@ -186,8 +235,9 @@
    "prompt_status": "UNAVAILABLE",
    "reference_disclosure": {
     "status": "UNCERTAIN",
-    "statement": "FOUNDER TO CONFIRM. The master's generation prompt and any reference images present in the generation conversation are not recorded in the build instruction. reference_inputs is therefore not recorded: neither a list nor an empty list can be stated truthfully.",
-    "evidence": "Founder build instruction DISC-031, 26 Oct 2026; master hashes verified on the founder's Mac, 26 Oct 2026"
+    "statement": "ChatGPT's content credentials record no ingredients for this master. That is not evidence that no reference image was used: the Reveal master shares the Before master's framing, house and sky (pixel correlation 0.96 in the unchanged areas) yet also records no ingredient, so these credentials do not capture images supplied in the conversation. Whether any real photograph or third-party image was supplied is therefore not recorded, and reference_inputs is not stated.",
+    "evidence": "C2PA content credentials of DISC-031-BEFORE.png (sha256 ae2c81e35334...), read 26 Oct 2026; Before/Reveal pixel comparison by the build session, 26 Oct 2026",
+    "founder_statement": "FOUNDER TO CONFIRM: whether any real photograph (of a garden, a property, an Irish project or a supplier product) or any third-party image was uploaded in the ChatGPT conversation that produced this master"
    },
    "resemblance_review": {
     "date": "2026-10-26",
@@ -203,7 +253,11 @@
    },
    "decision_ref": "PN-FDR-2026-10-26-DISC031 (PENDING founder signature: founder-attested form for the DISC-031 illustrations, extending the form of PN-FDR-2026-10-23-GRP-HERO and PN-FDR-2026-10-26-H6-HOME to these files on the discovery and library-card surfaces only)",
    "service_terms": {
-    "note": "FOUNDER TO CONFIRM the tool; its commercial-use terms are then recorded here (founder standard of 19 Oct 2026)."
+    "openai": "OpenAI Terms of Use: as between the user and OpenAI, the user owns the output; the user is responsible for the inputs they provide. (Same wording as the H6 record, PN-FDR-2026-10-26-H6-HOME.)"
+   },
+   "content_credentials": {
+    "embeds_c2pa": false,
+    "note": "The four PNG masters carry OpenAI's C2PA content credentials (see generated.c2pa_evidence); web re-encoding removes them."
    }
   },
   {
@@ -217,7 +271,7 @@
    "class": "AI_ILLUSTRATION",
    "what": "A natural swimming pond seen from the water's edge towards a white house (the experience image and the Discovery Library card)",
    "generated": {
-    "tool": "FOUNDER TO CONFIRM: the generative image tool used to make the master (not recorded in the build instruction of 26 Oct 2026); then Pillow web encoding by the PlotNua build session",
+    "tool": "ChatGPT image generation (OpenAI, gpt-image), per the master's C2PA content credentials; then Pillow web encoding by the PlotNua build session",
     "date": "2026-10-26",
     "source_master": {
      "file": "DISC-031-THE-EXPERIENCE.png (founder's Mac, folder 03 Website/Live Website/DISC-031-Natural-Swimming-Garden-Editorial-Structure-2026-10-26)",
@@ -226,21 +280,34 @@
     },
     "processing_chain": [
      {
-      "step": "Master: the founder's AI-generated illustration, supplied for publication in the founder build instruction of 26 Oct 2026",
+      "step": "Master: generated in ChatGPT (gpt-image) by the founder, per its C2PA content credentials, and supplied for publication in the founder build instruction of 26 Oct 2026",
       "prompt": "UNAVAILABLE (see prompt_status) unless the founder supplies it at signature"
      },
      {
       "step": "Web encoding",
       "tool": "Pillow; resize to 1536 px wide (Lanczos), JPEG; no other change"
      }
-    ]
+    ],
+    "c2pa_evidence": {
+     "manifest": "C2PA content credentials embedded in the master PNG (caBX chunk), read with c2pa-python 0.38.0 on 26 Oct 2026",
+     "claim_generator": "OpenAI Media Service API",
+     "signed_by": "OpenAI OpCo, LLC",
+     "signed_at": "2026-10-26T10:16:31.955322+00:00",
+     "actions": [
+      "c2pa.created (softwareAgent ChatGPT, version gpt-image; digitalSourceType trainedAlgorithmicMedia)",
+      "c2pa.converted",
+      "c2pa.watermarked.unbound"
+     ],
+     "ingredients_recorded": [],
+     "validation": "content hash matches (assertion.dataHash.match) and claim signature validated; signing certificate not on the local trust list (no trust anchors loaded)"
+    }
    },
    "depicts_named_product": false,
    "depicts_named_organisation": false,
    "human_review": {
     "reviewer": "",
     "date": "",
-    "attests": "FOUNDER TO CONFIRM. Proposed wording: Founder supplied this AI-generated illustration for DISC-031 The Natural Swimming Garden and approved its publication, labelled as an AI-generated illustration. It is not presented as a photograph of a real property, of any Irish project described on the page, or of any supplier's product."
+    "attests": "Founder supplied this AI-generated illustration for DISC-031 The Natural Swimming Garden and approved its publication, labelled as an AI-generated illustration. It is not presented as a photograph of a real property, of any Irish project described on the page, or of any supplier's product."
    },
    "permitted_surfaces": [
     "discovery",
@@ -249,8 +316,9 @@
    "prompt_status": "UNAVAILABLE",
    "reference_disclosure": {
     "status": "UNCERTAIN",
-    "statement": "FOUNDER TO CONFIRM. The master's generation prompt and any reference images present in the generation conversation are not recorded in the build instruction. reference_inputs is therefore not recorded: neither a list nor an empty list can be stated truthfully.",
-    "evidence": "Founder build instruction DISC-031, 26 Oct 2026; master hashes verified on the founder's Mac, 26 Oct 2026"
+    "statement": "ChatGPT's content credentials record no ingredients for this master. That is not evidence that no reference image was used: the Reveal master shares the Before master's framing, house and sky (pixel correlation 0.96 in the unchanged areas) yet also records no ingredient, so these credentials do not capture images supplied in the conversation. Whether any real photograph or third-party image was supplied is therefore not recorded, and reference_inputs is not stated.",
+    "evidence": "C2PA content credentials of DISC-031-THE-EXPERIENCE.png (sha256 6d7f4e120ab1...), read 26 Oct 2026; Before/Reveal pixel comparison by the build session, 26 Oct 2026",
+    "founder_statement": "FOUNDER TO CONFIRM: whether any real photograph (of a garden, a property, an Irish project or a supplier product) or any third-party image was uploaded in the ChatGPT conversation that produced this master"
    },
    "resemblance_review": {
     "date": "2026-10-26",
@@ -266,7 +334,11 @@
    },
    "decision_ref": "PN-FDR-2026-10-26-DISC031 (PENDING founder signature: founder-attested form for the DISC-031 illustrations, extending the form of PN-FDR-2026-10-23-GRP-HERO and PN-FDR-2026-10-26-H6-HOME to these files on the discovery and library-card surfaces only)",
    "service_terms": {
-    "note": "FOUNDER TO CONFIRM the tool; its commercial-use terms are then recorded here (founder standard of 19 Oct 2026)."
+    "openai": "OpenAI Terms of Use: as between the user and OpenAI, the user owns the output; the user is responsible for the inputs they provide. (Same wording as the H6 record, PN-FDR-2026-10-26-H6-HOME.)"
+   },
+   "content_credentials": {
+    "embeds_c2pa": false,
+    "note": "The four PNG masters carry OpenAI's C2PA content credentials (see generated.c2pa_evidence); web re-encoding removes them."
    }
   },
   {
@@ -280,7 +352,7 @@
    "class": "AI_ILLUSTRATION",
    "what": "A natural swimming pond seen from the water's edge towards a white house (the experience image and the Discovery Library card)",
    "generated": {
-    "tool": "FOUNDER TO CONFIRM: the generative image tool used to make the master (not recorded in the build instruction of 26 Oct 2026); then Pillow web encoding by the PlotNua build session",
+    "tool": "ChatGPT image generation (OpenAI, gpt-image), per the master's C2PA content credentials; then Pillow web encoding by the PlotNua build session",
     "date": "2026-10-26",
     "source_master": {
      "file": "DISC-031-THE-EXPERIENCE.png (founder's Mac, folder 03 Website/Live Website/DISC-031-Natural-Swimming-Garden-Editorial-Structure-2026-10-26)",
@@ -289,21 +361,34 @@
     },
     "processing_chain": [
      {
-      "step": "Master: the founder's AI-generated illustration, supplied for publication in the founder build instruction of 26 Oct 2026",
+      "step": "Master: generated in ChatGPT (gpt-image) by the founder, per its C2PA content credentials, and supplied for publication in the founder build instruction of 26 Oct 2026",
       "prompt": "UNAVAILABLE (see prompt_status) unless the founder supplies it at signature"
      },
      {
       "step": "Web encoding",
       "tool": "Pillow; resize to 1536 px wide (Lanczos), WebP; no other change"
      }
-    ]
+    ],
+    "c2pa_evidence": {
+     "manifest": "C2PA content credentials embedded in the master PNG (caBX chunk), read with c2pa-python 0.38.0 on 26 Oct 2026",
+     "claim_generator": "OpenAI Media Service API",
+     "signed_by": "OpenAI OpCo, LLC",
+     "signed_at": "2026-10-26T10:16:31.955322+00:00",
+     "actions": [
+      "c2pa.created (softwareAgent ChatGPT, version gpt-image; digitalSourceType trainedAlgorithmicMedia)",
+      "c2pa.converted",
+      "c2pa.watermarked.unbound"
+     ],
+     "ingredients_recorded": [],
+     "validation": "content hash matches (assertion.dataHash.match) and claim signature validated; signing certificate not on the local trust list (no trust anchors loaded)"
+    }
    },
    "depicts_named_product": false,
    "depicts_named_organisation": false,
    "human_review": {
     "reviewer": "",
     "date": "",
-    "attests": "FOUNDER TO CONFIRM. Proposed wording: Founder supplied this AI-generated illustration for DISC-031 The Natural Swimming Garden and approved its publication, labelled as an AI-generated illustration. It is not presented as a photograph of a real property, of any Irish project described on the page, or of any supplier's product."
+    "attests": "Founder supplied this AI-generated illustration for DISC-031 The Natural Swimming Garden and approved its publication, labelled as an AI-generated illustration. It is not presented as a photograph of a real property, of any Irish project described on the page, or of any supplier's product."
    },
    "permitted_surfaces": [
     "discovery",
@@ -312,8 +397,9 @@
    "prompt_status": "UNAVAILABLE",
    "reference_disclosure": {
     "status": "UNCERTAIN",
-    "statement": "FOUNDER TO CONFIRM. The master's generation prompt and any reference images present in the generation conversation are not recorded in the build instruction. reference_inputs is therefore not recorded: neither a list nor an empty list can be stated truthfully.",
-    "evidence": "Founder build instruction DISC-031, 26 Oct 2026; master hashes verified on the founder's Mac, 26 Oct 2026"
+    "statement": "ChatGPT's content credentials record no ingredients for this master. That is not evidence that no reference image was used: the Reveal master shares the Before master's framing, house and sky (pixel correlation 0.96 in the unchanged areas) yet also records no ingredient, so these credentials do not capture images supplied in the conversation. Whether any real photograph or third-party image was supplied is therefore not recorded, and reference_inputs is not stated.",
+    "evidence": "C2PA content credentials of DISC-031-THE-EXPERIENCE.png (sha256 6d7f4e120ab1...), read 26 Oct 2026; Before/Reveal pixel comparison by the build session, 26 Oct 2026",
+    "founder_statement": "FOUNDER TO CONFIRM: whether any real photograph (of a garden, a property, an Irish project or a supplier product) or any third-party image was uploaded in the ChatGPT conversation that produced this master"
    },
    "resemblance_review": {
     "date": "2026-10-26",
@@ -329,7 +415,11 @@
    },
    "decision_ref": "PN-FDR-2026-10-26-DISC031 (PENDING founder signature: founder-attested form for the DISC-031 illustrations, extending the form of PN-FDR-2026-10-23-GRP-HERO and PN-FDR-2026-10-26-H6-HOME to these files on the discovery and library-card surfaces only)",
    "service_terms": {
-    "note": "FOUNDER TO CONFIRM the tool; its commercial-use terms are then recorded here (founder standard of 19 Oct 2026)."
+    "openai": "OpenAI Terms of Use: as between the user and OpenAI, the user owns the output; the user is responsible for the inputs they provide. (Same wording as the H6 record, PN-FDR-2026-10-26-H6-HOME.)"
+   },
+   "content_credentials": {
+    "embeds_c2pa": false,
+    "note": "The four PNG masters carry OpenAI's C2PA content credentials (see generated.c2pa_evidence); web re-encoding removes them."
    }
   },
   {
@@ -343,7 +433,7 @@
    "class": "AI_ILLUSTRATION",
    "what": "A natural swimming pond seen from the water's edge towards a white house (the experience image and the Discovery Library card)",
    "generated": {
-    "tool": "FOUNDER TO CONFIRM: the generative image tool used to make the master (not recorded in the build instruction of 26 Oct 2026); then Pillow web encoding by the PlotNua build session",
+    "tool": "ChatGPT image generation (OpenAI, gpt-image), per the master's C2PA content credentials; then Pillow web encoding by the PlotNua build session",
     "date": "2026-10-26",
     "source_master": {
      "file": "DISC-031-THE-EXPERIENCE.png (founder's Mac, folder 03 Website/Live Website/DISC-031-Natural-Swimming-Garden-Editorial-Structure-2026-10-26)",
@@ -352,21 +442,34 @@
     },
     "processing_chain": [
      {
-      "step": "Master: the founder's AI-generated illustration, supplied for publication in the founder build instruction of 26 Oct 2026",
+      "step": "Master: generated in ChatGPT (gpt-image) by the founder, per its C2PA content credentials, and supplied for publication in the founder build instruction of 26 Oct 2026",
       "prompt": "UNAVAILABLE (see prompt_status) unless the founder supplies it at signature"
      },
      {
       "step": "Web encoding",
       "tool": "Pillow; resize to 960 px wide (Lanczos), JPEG; no other change"
      }
-    ]
+    ],
+    "c2pa_evidence": {
+     "manifest": "C2PA content credentials embedded in the master PNG (caBX chunk), read with c2pa-python 0.38.0 on 26 Oct 2026",
+     "claim_generator": "OpenAI Media Service API",
+     "signed_by": "OpenAI OpCo, LLC",
+     "signed_at": "2026-10-26T10:16:31.955322+00:00",
+     "actions": [
+      "c2pa.created (softwareAgent ChatGPT, version gpt-image; digitalSourceType trainedAlgorithmicMedia)",
+      "c2pa.converted",
+      "c2pa.watermarked.unbound"
+     ],
+     "ingredients_recorded": [],
+     "validation": "content hash matches (assertion.dataHash.match) and claim signature validated; signing certificate not on the local trust list (no trust anchors loaded)"
+    }
    },
    "depicts_named_product": false,
    "depicts_named_organisation": false,
    "human_review": {
     "reviewer": "",
     "date": "",
-    "attests": "FOUNDER TO CONFIRM. Proposed wording: Founder supplied this AI-generated illustration for DISC-031 The Natural Swimming Garden and approved its publication, labelled as an AI-generated illustration. It is not presented as a photograph of a real property, of any Irish project described on the page, or of any supplier's product."
+    "attests": "Founder supplied this AI-generated illustration for DISC-031 The Natural Swimming Garden and approved its publication, labelled as an AI-generated illustration. It is not presented as a photograph of a real property, of any Irish project described on the page, or of any supplier's product."
    },
    "permitted_surfaces": [
     "discovery",
@@ -375,8 +478,9 @@
    "prompt_status": "UNAVAILABLE",
    "reference_disclosure": {
     "status": "UNCERTAIN",
-    "statement": "FOUNDER TO CONFIRM. The master's generation prompt and any reference images present in the generation conversation are not recorded in the build instruction. reference_inputs is therefore not recorded: neither a list nor an empty list can be stated truthfully.",
-    "evidence": "Founder build instruction DISC-031, 26 Oct 2026; master hashes verified on the founder's Mac, 26 Oct 2026"
+    "statement": "ChatGPT's content credentials record no ingredients for this master. That is not evidence that no reference image was used: the Reveal master shares the Before master's framing, house and sky (pixel correlation 0.96 in the unchanged areas) yet also records no ingredient, so these credentials do not capture images supplied in the conversation. Whether any real photograph or third-party image was supplied is therefore not recorded, and reference_inputs is not stated.",
+    "evidence": "C2PA content credentials of DISC-031-THE-EXPERIENCE.png (sha256 6d7f4e120ab1...), read 26 Oct 2026; Before/Reveal pixel comparison by the build session, 26 Oct 2026",
+    "founder_statement": "FOUNDER TO CONFIRM: whether any real photograph (of a garden, a property, an Irish project or a supplier product) or any third-party image was uploaded in the ChatGPT conversation that produced this master"
    },
    "resemblance_review": {
     "date": "2026-10-26",
@@ -392,7 +496,11 @@
    },
    "decision_ref": "PN-FDR-2026-10-26-DISC031 (PENDING founder signature: founder-attested form for the DISC-031 illustrations, extending the form of PN-FDR-2026-10-23-GRP-HERO and PN-FDR-2026-10-26-H6-HOME to these files on the discovery and library-card surfaces only)",
    "service_terms": {
-    "note": "FOUNDER TO CONFIRM the tool; its commercial-use terms are then recorded here (founder standard of 19 Oct 2026)."
+    "openai": "OpenAI Terms of Use: as between the user and OpenAI, the user owns the output; the user is responsible for the inputs they provide. (Same wording as the H6 record, PN-FDR-2026-10-26-H6-HOME.)"
+   },
+   "content_credentials": {
+    "embeds_c2pa": false,
+    "note": "The four PNG masters carry OpenAI's C2PA content credentials (see generated.c2pa_evidence); web re-encoding removes them."
    }
   },
   {
@@ -406,7 +514,7 @@
    "class": "AI_ILLUSTRATION",
    "what": "A natural swimming pond seen from the water's edge towards a white house (the experience image and the Discovery Library card)",
    "generated": {
-    "tool": "FOUNDER TO CONFIRM: the generative image tool used to make the master (not recorded in the build instruction of 26 Oct 2026); then Pillow web encoding by the PlotNua build session",
+    "tool": "ChatGPT image generation (OpenAI, gpt-image), per the master's C2PA content credentials; then Pillow web encoding by the PlotNua build session",
     "date": "2026-10-26",
     "source_master": {
      "file": "DISC-031-THE-EXPERIENCE.png (founder's Mac, folder 03 Website/Live Website/DISC-031-Natural-Swimming-Garden-Editorial-Structure-2026-10-26)",
@@ -415,21 +523,34 @@
     },
     "processing_chain": [
      {
-      "step": "Master: the founder's AI-generated illustration, supplied for publication in the founder build instruction of 26 Oct 2026",
+      "step": "Master: generated in ChatGPT (gpt-image) by the founder, per its C2PA content credentials, and supplied for publication in the founder build instruction of 26 Oct 2026",
       "prompt": "UNAVAILABLE (see prompt_status) unless the founder supplies it at signature"
      },
      {
       "step": "Web encoding",
       "tool": "Pillow; resize to 960 px wide (Lanczos), WebP; no other change"
      }
-    ]
+    ],
+    "c2pa_evidence": {
+     "manifest": "C2PA content credentials embedded in the master PNG (caBX chunk), read with c2pa-python 0.38.0 on 26 Oct 2026",
+     "claim_generator": "OpenAI Media Service API",
+     "signed_by": "OpenAI OpCo, LLC",
+     "signed_at": "2026-10-26T10:16:31.955322+00:00",
+     "actions": [
+      "c2pa.created (softwareAgent ChatGPT, version gpt-image; digitalSourceType trainedAlgorithmicMedia)",
+      "c2pa.converted",
+      "c2pa.watermarked.unbound"
+     ],
+     "ingredients_recorded": [],
+     "validation": "content hash matches (assertion.dataHash.match) and claim signature validated; signing certificate not on the local trust list (no trust anchors loaded)"
+    }
    },
    "depicts_named_product": false,
    "depicts_named_organisation": false,
    "human_review": {
     "reviewer": "",
     "date": "",
-    "attests": "FOUNDER TO CONFIRM. Proposed wording: Founder supplied this AI-generated illustration for DISC-031 The Natural Swimming Garden and approved its publication, labelled as an AI-generated illustration. It is not presented as a photograph of a real property, of any Irish project described on the page, or of any supplier's product."
+    "attests": "Founder supplied this AI-generated illustration for DISC-031 The Natural Swimming Garden and approved its publication, labelled as an AI-generated illustration. It is not presented as a photograph of a real property, of any Irish project described on the page, or of any supplier's product."
    },
    "permitted_surfaces": [
     "discovery",
@@ -438,8 +559,9 @@
    "prompt_status": "UNAVAILABLE",
    "reference_disclosure": {
     "status": "UNCERTAIN",
-    "statement": "FOUNDER TO CONFIRM. The master's generation prompt and any reference images present in the generation conversation are not recorded in the build instruction. reference_inputs is therefore not recorded: neither a list nor an empty list can be stated truthfully.",
-    "evidence": "Founder build instruction DISC-031, 26 Oct 2026; master hashes verified on the founder's Mac, 26 Oct 2026"
+    "statement": "ChatGPT's content credentials record no ingredients for this master. That is not evidence that no reference image was used: the Reveal master shares the Before master's framing, house and sky (pixel correlation 0.96 in the unchanged areas) yet also records no ingredient, so these credentials do not capture images supplied in the conversation. Whether any real photograph or third-party image was supplied is therefore not recorded, and reference_inputs is not stated.",
+    "evidence": "C2PA content credentials of DISC-031-THE-EXPERIENCE.png (sha256 6d7f4e120ab1...), read 26 Oct 2026; Before/Reveal pixel comparison by the build session, 26 Oct 2026",
+    "founder_statement": "FOUNDER TO CONFIRM: whether any real photograph (of a garden, a property, an Irish project or a supplier product) or any third-party image was uploaded in the ChatGPT conversation that produced this master"
    },
    "resemblance_review": {
     "date": "2026-10-26",
@@ -455,7 +577,11 @@
    },
    "decision_ref": "PN-FDR-2026-10-26-DISC031 (PENDING founder signature: founder-attested form for the DISC-031 illustrations, extending the form of PN-FDR-2026-10-23-GRP-HERO and PN-FDR-2026-10-26-H6-HOME to these files on the discovery and library-card surfaces only)",
    "service_terms": {
-    "note": "FOUNDER TO CONFIRM the tool; its commercial-use terms are then recorded here (founder standard of 19 Oct 2026)."
+    "openai": "OpenAI Terms of Use: as between the user and OpenAI, the user owns the output; the user is responsible for the inputs they provide. (Same wording as the H6 record, PN-FDR-2026-10-26-H6-HOME.)"
+   },
+   "content_credentials": {
+    "embeds_c2pa": false,
+    "note": "The four PNG masters carry OpenAI's C2PA content credentials (see generated.c2pa_evidence); web re-encoding removes them."
    }
   },
   {
@@ -469,7 +595,7 @@
    "class": "AI_ILLUSTRATION",
    "what": "Infographic, version 2: how a natural swimming garden works, and three approaches (the earlier version is superseded and not used)",
    "generated": {
-    "tool": "FOUNDER TO CONFIRM: the generative image tool used to make the master (not recorded in the build instruction of 26 Oct 2026); then Pillow web encoding by the PlotNua build session",
+    "tool": "ChatGPT image generation (OpenAI, gpt-image), per the master's C2PA content credentials; then Pillow web encoding by the PlotNua build session",
     "date": "2026-10-26",
     "source_master": {
      "file": "DISC-031-HOW-IT-WORKS-V2.png (founder's Mac, folder 03 Website/Live Website/DISC-031-Natural-Swimming-Garden-Editorial-Structure-2026-10-26)",
@@ -478,21 +604,34 @@
     },
     "processing_chain": [
      {
-      "step": "Master: the founder's AI-generated illustration, supplied for publication in the founder build instruction of 26 Oct 2026",
+      "step": "Master: generated in ChatGPT (gpt-image) by the founder, per its C2PA content credentials, and supplied for publication in the founder build instruction of 26 Oct 2026",
       "prompt": "UNAVAILABLE (see prompt_status) unless the founder supplies it at signature"
      },
      {
       "step": "Web encoding",
       "tool": "Pillow; resize to 1536 px wide (Lanczos), JPEG; no other change"
      }
-    ]
+    ],
+    "c2pa_evidence": {
+     "manifest": "C2PA content credentials embedded in the master PNG (caBX chunk), read with c2pa-python 0.38.0 on 26 Oct 2026",
+     "claim_generator": "OpenAI Media Service API",
+     "signed_by": "OpenAI OpCo, LLC",
+     "signed_at": "2026-10-26T10:23:12.859799+00:00",
+     "actions": [
+      "c2pa.created (softwareAgent ChatGPT, version gpt-image; digitalSourceType trainedAlgorithmicMedia)",
+      "c2pa.converted",
+      "c2pa.watermarked.unbound"
+     ],
+     "ingredients_recorded": [],
+     "validation": "content hash matches (assertion.dataHash.match) and claim signature validated; signing certificate not on the local trust list (no trust anchors loaded) and flagged by the local validator as missing a required extended key usage"
+    }
    },
    "depicts_named_product": false,
    "depicts_named_organisation": false,
    "human_review": {
     "reviewer": "",
     "date": "",
-    "attests": "FOUNDER TO CONFIRM. Proposed wording: Founder supplied this AI-generated illustration for DISC-031 The Natural Swimming Garden and approved its publication, labelled as an AI-generated illustration. It is not presented as a photograph of a real property, of any Irish project described on the page, or of any supplier's product."
+    "attests": "Founder supplied this AI-generated illustration for DISC-031 The Natural Swimming Garden and approved its publication, labelled as an AI-generated illustration. It is not presented as a photograph of a real property, of any Irish project described on the page, or of any supplier's product."
    },
    "permitted_surfaces": [
     "discovery",
@@ -501,8 +640,9 @@
    "prompt_status": "UNAVAILABLE",
    "reference_disclosure": {
     "status": "UNCERTAIN",
-    "statement": "FOUNDER TO CONFIRM. The master's generation prompt and any reference images present in the generation conversation are not recorded in the build instruction. reference_inputs is therefore not recorded: neither a list nor an empty list can be stated truthfully.",
-    "evidence": "Founder build instruction DISC-031, 26 Oct 2026; master hashes verified on the founder's Mac, 26 Oct 2026"
+    "statement": "ChatGPT's content credentials record no ingredients for this master. That is not evidence that no reference image was used: the Reveal master shares the Before master's framing, house and sky (pixel correlation 0.96 in the unchanged areas) yet also records no ingredient, so these credentials do not capture images supplied in the conversation. Whether any real photograph or third-party image was supplied is therefore not recorded, and reference_inputs is not stated.",
+    "evidence": "C2PA content credentials of DISC-031-HOW-IT-WORKS-V2.png (sha256 44e9246c5083...), read 26 Oct 2026; Before/Reveal pixel comparison by the build session, 26 Oct 2026",
+    "founder_statement": "FOUNDER TO CONFIRM: whether any real photograph (of a garden, a property, an Irish project or a supplier product) or any third-party image was uploaded in the ChatGPT conversation that produced this master"
    },
    "resemblance_review": {
     "date": "2026-10-26",
@@ -518,7 +658,11 @@
    },
    "decision_ref": "PN-FDR-2026-10-26-DISC031 (PENDING founder signature: founder-attested form for the DISC-031 illustrations, extending the form of PN-FDR-2026-10-23-GRP-HERO and PN-FDR-2026-10-26-H6-HOME to these files on the discovery and library-card surfaces only)",
    "service_terms": {
-    "note": "FOUNDER TO CONFIRM the tool; its commercial-use terms are then recorded here (founder standard of 19 Oct 2026)."
+    "openai": "OpenAI Terms of Use: as between the user and OpenAI, the user owns the output; the user is responsible for the inputs they provide. (Same wording as the H6 record, PN-FDR-2026-10-26-H6-HOME.)"
+   },
+   "content_credentials": {
+    "embeds_c2pa": false,
+    "note": "The four PNG masters carry OpenAI's C2PA content credentials (see generated.c2pa_evidence); web re-encoding removes them."
    }
   },
   {
@@ -532,7 +676,7 @@
    "class": "AI_ILLUSTRATION",
    "what": "Infographic, version 2: how a natural swimming garden works, and three approaches (the earlier version is superseded and not used)",
    "generated": {
-    "tool": "FOUNDER TO CONFIRM: the generative image tool used to make the master (not recorded in the build instruction of 26 Oct 2026); then Pillow web encoding by the PlotNua build session",
+    "tool": "ChatGPT image generation (OpenAI, gpt-image), per the master's C2PA content credentials; then Pillow web encoding by the PlotNua build session",
     "date": "2026-10-26",
     "source_master": {
      "file": "DISC-031-HOW-IT-WORKS-V2.png (founder's Mac, folder 03 Website/Live Website/DISC-031-Natural-Swimming-Garden-Editorial-Structure-2026-10-26)",
@@ -541,21 +685,34 @@
     },
     "processing_chain": [
      {
-      "step": "Master: the founder's AI-generated illustration, supplied for publication in the founder build instruction of 26 Oct 2026",
+      "step": "Master: generated in ChatGPT (gpt-image) by the founder, per its C2PA content credentials, and supplied for publication in the founder build instruction of 26 Oct 2026",
       "prompt": "UNAVAILABLE (see prompt_status) unless the founder supplies it at signature"
      },
      {
       "step": "Web encoding",
       "tool": "Pillow; resize to 1536 px wide (Lanczos), WebP; no other change"
      }
-    ]
+    ],
+    "c2pa_evidence": {
+     "manifest": "C2PA content credentials embedded in the master PNG (caBX chunk), read with c2pa-python 0.38.0 on 26 Oct 2026",
+     "claim_generator": "OpenAI Media Service API",
+     "signed_by": "OpenAI OpCo, LLC",
+     "signed_at": "2026-10-26T10:23:12.859799+00:00",
+     "actions": [
+      "c2pa.created (softwareAgent ChatGPT, version gpt-image; digitalSourceType trainedAlgorithmicMedia)",
+      "c2pa.converted",
+      "c2pa.watermarked.unbound"
+     ],
+     "ingredients_recorded": [],
+     "validation": "content hash matches (assertion.dataHash.match) and claim signature validated; signing certificate not on the local trust list (no trust anchors loaded) and flagged by the local validator as missing a required extended key usage"
+    }
    },
    "depicts_named_product": false,
    "depicts_named_organisation": false,
    "human_review": {
     "reviewer": "",
     "date": "",
-    "attests": "FOUNDER TO CONFIRM. Proposed wording: Founder supplied this AI-generated illustration for DISC-031 The Natural Swimming Garden and approved its publication, labelled as an AI-generated illustration. It is not presented as a photograph of a real property, of any Irish project described on the page, or of any supplier's product."
+    "attests": "Founder supplied this AI-generated illustration for DISC-031 The Natural Swimming Garden and approved its publication, labelled as an AI-generated illustration. It is not presented as a photograph of a real property, of any Irish project described on the page, or of any supplier's product."
    },
    "permitted_surfaces": [
     "discovery",
@@ -564,8 +721,9 @@
    "prompt_status": "UNAVAILABLE",
    "reference_disclosure": {
     "status": "UNCERTAIN",
-    "statement": "FOUNDER TO CONFIRM. The master's generation prompt and any reference images present in the generation conversation are not recorded in the build instruction. reference_inputs is therefore not recorded: neither a list nor an empty list can be stated truthfully.",
-    "evidence": "Founder build instruction DISC-031, 26 Oct 2026; master hashes verified on the founder's Mac, 26 Oct 2026"
+    "statement": "ChatGPT's content credentials record no ingredients for this master. That is not evidence that no reference image was used: the Reveal master shares the Before master's framing, house and sky (pixel correlation 0.96 in the unchanged areas) yet also records no ingredient, so these credentials do not capture images supplied in the conversation. Whether any real photograph or third-party image was supplied is therefore not recorded, and reference_inputs is not stated.",
+    "evidence": "C2PA content credentials of DISC-031-HOW-IT-WORKS-V2.png (sha256 44e9246c5083...), read 26 Oct 2026; Before/Reveal pixel comparison by the build session, 26 Oct 2026",
+    "founder_statement": "FOUNDER TO CONFIRM: whether any real photograph (of a garden, a property, an Irish project or a supplier product) or any third-party image was uploaded in the ChatGPT conversation that produced this master"
    },
    "resemblance_review": {
     "date": "2026-10-26",
@@ -581,7 +739,11 @@
    },
    "decision_ref": "PN-FDR-2026-10-26-DISC031 (PENDING founder signature: founder-attested form for the DISC-031 illustrations, extending the form of PN-FDR-2026-10-23-GRP-HERO and PN-FDR-2026-10-26-H6-HOME to these files on the discovery and library-card surfaces only)",
    "service_terms": {
-    "note": "FOUNDER TO CONFIRM the tool; its commercial-use terms are then recorded here (founder standard of 19 Oct 2026)."
+    "openai": "OpenAI Terms of Use: as between the user and OpenAI, the user owns the output; the user is responsible for the inputs they provide. (Same wording as the H6 record, PN-FDR-2026-10-26-H6-HOME.)"
+   },
+   "content_credentials": {
+    "embeds_c2pa": false,
+    "note": "The four PNG masters carry OpenAI's C2PA content credentials (see generated.c2pa_evidence); web re-encoding removes them."
    }
   },
   {
@@ -595,7 +757,7 @@
    "class": "AI_ILLUSTRATION",
    "what": "Social preview: a 1200 x 630 crop of the REVEAL illustration",
    "generated": {
-    "tool": "FOUNDER TO CONFIRM: the generative image tool used to make the master (not recorded in the build instruction of 26 Oct 2026); then Pillow web encoding by the PlotNua build session",
+    "tool": "ChatGPT image generation (OpenAI, gpt-image), per the master's C2PA content credentials; then Pillow web encoding by the PlotNua build session",
     "date": "2026-10-26",
     "source_master": {
      "file": "DISC-031-REVEAL.png (founder's Mac, folder 03 Website/Live Website/DISC-031-Natural-Swimming-Garden-Editorial-Structure-2026-10-26)",
@@ -604,21 +766,34 @@
     },
     "processing_chain": [
      {
-      "step": "Master: the founder's AI-generated illustration, supplied for publication in the founder build instruction of 26 Oct 2026",
+      "step": "Master: generated in ChatGPT (gpt-image) by the founder, per its C2PA content credentials, and supplied for publication in the founder build instruction of 26 Oct 2026",
       "prompt": "UNAVAILABLE (see prompt_status) unless the founder supplies it at signature"
      },
      {
       "step": "Web encoding",
       "tool": "Pillow; crop to 1200 x 630 (scaled to 1200 wide, rows 110-740), JPEG quality 85; no other change"
      }
-    ]
+    ],
+    "c2pa_evidence": {
+     "manifest": "C2PA content credentials embedded in the master PNG (caBX chunk), read with c2pa-python 0.38.0 on 26 Oct 2026",
+     "claim_generator": "OpenAI Media Service API",
+     "signed_by": "OpenAI OpCo, LLC",
+     "signed_at": "2026-10-26T09:55:52.360168+00:00",
+     "actions": [
+      "c2pa.created (softwareAgent ChatGPT, version gpt-image; digitalSourceType trainedAlgorithmicMedia)",
+      "c2pa.converted",
+      "c2pa.watermarked.unbound"
+     ],
+     "ingredients_recorded": [],
+     "validation": "content hash matches (assertion.dataHash.match) and claim signature validated; signing certificate not on the local trust list (no trust anchors loaded)"
+    }
    },
    "depicts_named_product": false,
    "depicts_named_organisation": false,
    "human_review": {
     "reviewer": "",
     "date": "",
-    "attests": "FOUNDER TO CONFIRM. Proposed wording: Founder supplied this AI-generated illustration for DISC-031 The Natural Swimming Garden and approved its publication, labelled as an AI-generated illustration. It is not presented as a photograph of a real property, of any Irish project described on the page, or of any supplier's product."
+    "attests": "Founder supplied this AI-generated illustration for DISC-031 The Natural Swimming Garden and approved its publication, labelled as an AI-generated illustration. It is not presented as a photograph of a real property, of any Irish project described on the page, or of any supplier's product."
    },
    "permitted_surfaces": [
     "discovery",
@@ -627,8 +802,9 @@
    "prompt_status": "UNAVAILABLE",
    "reference_disclosure": {
     "status": "UNCERTAIN",
-    "statement": "FOUNDER TO CONFIRM. The master's generation prompt and any reference images present in the generation conversation are not recorded in the build instruction. reference_inputs is therefore not recorded: neither a list nor an empty list can be stated truthfully.",
-    "evidence": "Founder build instruction DISC-031, 26 Oct 2026; master hashes verified on the founder's Mac, 26 Oct 2026"
+    "statement": "ChatGPT's content credentials record no ingredients for this master. That is not evidence that no reference image was used: the Reveal master shares the Before master's framing, house and sky (pixel correlation 0.96 in the unchanged areas) yet also records no ingredient, so these credentials do not capture images supplied in the conversation. Whether any real photograph or third-party image was supplied is therefore not recorded, and reference_inputs is not stated. Known input (inferred from the identical framing, not recorded in the credentials): the Before illustration, DISC-031-BEFORE.png, itself AI-generated in ChatGPT.",
+    "evidence": "C2PA content credentials of DISC-031-REVEAL.png (sha256 f9be42f736c5...), read 26 Oct 2026; Before/Reveal pixel comparison by the build session, 26 Oct 2026",
+    "founder_statement": "FOUNDER TO CONFIRM: whether any real photograph (of a garden, a property, an Irish project or a supplier product) or any third-party image was uploaded in the ChatGPT conversation that produced this master"
    },
    "resemblance_review": {
     "date": "2026-10-26",
@@ -644,7 +820,11 @@
    },
    "decision_ref": "PN-FDR-2026-10-26-DISC031 (PENDING founder signature: founder-attested form for the DISC-031 illustrations, extending the form of PN-FDR-2026-10-23-GRP-HERO and PN-FDR-2026-10-26-H6-HOME to these files on the discovery and library-card surfaces only)",
    "service_terms": {
-    "note": "FOUNDER TO CONFIRM the tool; its commercial-use terms are then recorded here (founder standard of 19 Oct 2026)."
+    "openai": "OpenAI Terms of Use: as between the user and OpenAI, the user owns the output; the user is responsible for the inputs they provide. (Same wording as the H6 record, PN-FDR-2026-10-26-H6-HOME.)"
+   },
+   "content_credentials": {
+    "embeds_c2pa": false,
+    "note": "The four PNG masters carry OpenAI's C2PA content credentials (see generated.c2pa_evidence); web re-encoding removes them."
    }
   },
   {
@@ -658,7 +838,7 @@
    "class": "AI_ILLUSTRATION",
    "what": "The same garden with a natural swimming pond where the lawn was (hero, the POSSIBLE side of the comparison, social preview)",
    "generated": {
-    "tool": "FOUNDER TO CONFIRM: the generative image tool used to make the master (not recorded in the build instruction of 26 Oct 2026); then Pillow web encoding by the PlotNua build session",
+    "tool": "ChatGPT image generation (OpenAI, gpt-image), per the master's C2PA content credentials; then Pillow web encoding by the PlotNua build session",
     "date": "2026-10-26",
     "source_master": {
      "file": "DISC-031-REVEAL.png (founder's Mac, folder 03 Website/Live Website/DISC-031-Natural-Swimming-Garden-Editorial-Structure-2026-10-26)",
@@ -667,21 +847,34 @@
     },
     "processing_chain": [
      {
-      "step": "Master: the founder's AI-generated illustration, supplied for publication in the founder build instruction of 26 Oct 2026",
+      "step": "Master: generated in ChatGPT (gpt-image) by the founder, per its C2PA content credentials, and supplied for publication in the founder build instruction of 26 Oct 2026",
       "prompt": "UNAVAILABLE (see prompt_status) unless the founder supplies it at signature"
      },
      {
       "step": "Web encoding",
       "tool": "Pillow; resize to 1536 px wide (Lanczos), JPEG; no other change"
      }
-    ]
+    ],
+    "c2pa_evidence": {
+     "manifest": "C2PA content credentials embedded in the master PNG (caBX chunk), read with c2pa-python 0.38.0 on 26 Oct 2026",
+     "claim_generator": "OpenAI Media Service API",
+     "signed_by": "OpenAI OpCo, LLC",
+     "signed_at": "2026-10-26T09:55:52.360168+00:00",
+     "actions": [
+      "c2pa.created (softwareAgent ChatGPT, version gpt-image; digitalSourceType trainedAlgorithmicMedia)",
+      "c2pa.converted",
+      "c2pa.watermarked.unbound"
+     ],
+     "ingredients_recorded": [],
+     "validation": "content hash matches (assertion.dataHash.match) and claim signature validated; signing certificate not on the local trust list (no trust anchors loaded)"
+    }
    },
    "depicts_named_product": false,
    "depicts_named_organisation": false,
    "human_review": {
     "reviewer": "",
     "date": "",
-    "attests": "FOUNDER TO CONFIRM. Proposed wording: Founder supplied this AI-generated illustration for DISC-031 The Natural Swimming Garden and approved its publication, labelled as an AI-generated illustration. It is not presented as a photograph of a real property, of any Irish project described on the page, or of any supplier's product."
+    "attests": "Founder supplied this AI-generated illustration for DISC-031 The Natural Swimming Garden and approved its publication, labelled as an AI-generated illustration. It is not presented as a photograph of a real property, of any Irish project described on the page, or of any supplier's product."
    },
    "permitted_surfaces": [
     "discovery",
@@ -690,8 +883,9 @@
    "prompt_status": "UNAVAILABLE",
    "reference_disclosure": {
     "status": "UNCERTAIN",
-    "statement": "FOUNDER TO CONFIRM. The master's generation prompt and any reference images present in the generation conversation are not recorded in the build instruction. reference_inputs is therefore not recorded: neither a list nor an empty list can be stated truthfully.",
-    "evidence": "Founder build instruction DISC-031, 26 Oct 2026; master hashes verified on the founder's Mac, 26 Oct 2026"
+    "statement": "ChatGPT's content credentials record no ingredients for this master. That is not evidence that no reference image was used: the Reveal master shares the Before master's framing, house and sky (pixel correlation 0.96 in the unchanged areas) yet also records no ingredient, so these credentials do not capture images supplied in the conversation. Whether any real photograph or third-party image was supplied is therefore not recorded, and reference_inputs is not stated. Known input (inferred from the identical framing, not recorded in the credentials): the Before illustration, DISC-031-BEFORE.png, itself AI-generated in ChatGPT.",
+    "evidence": "C2PA content credentials of DISC-031-REVEAL.png (sha256 f9be42f736c5...), read 26 Oct 2026; Before/Reveal pixel comparison by the build session, 26 Oct 2026",
+    "founder_statement": "FOUNDER TO CONFIRM: whether any real photograph (of a garden, a property, an Irish project or a supplier product) or any third-party image was uploaded in the ChatGPT conversation that produced this master"
    },
    "resemblance_review": {
     "date": "2026-10-26",
@@ -707,7 +901,11 @@
    },
    "decision_ref": "PN-FDR-2026-10-26-DISC031 (PENDING founder signature: founder-attested form for the DISC-031 illustrations, extending the form of PN-FDR-2026-10-23-GRP-HERO and PN-FDR-2026-10-26-H6-HOME to these files on the discovery and library-card surfaces only)",
    "service_terms": {
-    "note": "FOUNDER TO CONFIRM the tool; its commercial-use terms are then recorded here (founder standard of 19 Oct 2026)."
+    "openai": "OpenAI Terms of Use: as between the user and OpenAI, the user owns the output; the user is responsible for the inputs they provide. (Same wording as the H6 record, PN-FDR-2026-10-26-H6-HOME.)"
+   },
+   "content_credentials": {
+    "embeds_c2pa": false,
+    "note": "The four PNG masters carry OpenAI's C2PA content credentials (see generated.c2pa_evidence); web re-encoding removes them."
    }
   },
   {
@@ -721,7 +919,7 @@
    "class": "AI_ILLUSTRATION",
    "what": "The same garden with a natural swimming pond where the lawn was (hero, the POSSIBLE side of the comparison, social preview)",
    "generated": {
-    "tool": "FOUNDER TO CONFIRM: the generative image tool used to make the master (not recorded in the build instruction of 26 Oct 2026); then Pillow web encoding by the PlotNua build session",
+    "tool": "ChatGPT image generation (OpenAI, gpt-image), per the master's C2PA content credentials; then Pillow web encoding by the PlotNua build session",
     "date": "2026-10-26",
     "source_master": {
      "file": "DISC-031-REVEAL.png (founder's Mac, folder 03 Website/Live Website/DISC-031-Natural-Swimming-Garden-Editorial-Structure-2026-10-26)",
@@ -730,21 +928,34 @@
     },
     "processing_chain": [
      {
-      "step": "Master: the founder's AI-generated illustration, supplied for publication in the founder build instruction of 26 Oct 2026",
+      "step": "Master: generated in ChatGPT (gpt-image) by the founder, per its C2PA content credentials, and supplied for publication in the founder build instruction of 26 Oct 2026",
       "prompt": "UNAVAILABLE (see prompt_status) unless the founder supplies it at signature"
      },
      {
       "step": "Web encoding",
       "tool": "Pillow; resize to 1536 px wide (Lanczos), WebP; no other change"
      }
-    ]
+    ],
+    "c2pa_evidence": {
+     "manifest": "C2PA content credentials embedded in the master PNG (caBX chunk), read with c2pa-python 0.38.0 on 26 Oct 2026",
+     "claim_generator": "OpenAI Media Service API",
+     "signed_by": "OpenAI OpCo, LLC",
+     "signed_at": "2026-10-26T09:55:52.360168+00:00",
+     "actions": [
+      "c2pa.created (softwareAgent ChatGPT, version gpt-image; digitalSourceType trainedAlgorithmicMedia)",
+      "c2pa.converted",
+      "c2pa.watermarked.unbound"
+     ],
+     "ingredients_recorded": [],
+     "validation": "content hash matches (assertion.dataHash.match) and claim signature validated; signing certificate not on the local trust list (no trust anchors loaded)"
+    }
    },
    "depicts_named_product": false,
    "depicts_named_organisation": false,
    "human_review": {
     "reviewer": "",
     "date": "",
-    "attests": "FOUNDER TO CONFIRM. Proposed wording: Founder supplied this AI-generated illustration for DISC-031 The Natural Swimming Garden and approved its publication, labelled as an AI-generated illustration. It is not presented as a photograph of a real property, of any Irish project described on the page, or of any supplier's product."
+    "attests": "Founder supplied this AI-generated illustration for DISC-031 The Natural Swimming Garden and approved its publication, labelled as an AI-generated illustration. It is not presented as a photograph of a real property, of any Irish project described on the page, or of any supplier's product."
    },
    "permitted_surfaces": [
     "discovery",
@@ -753,8 +964,9 @@
    "prompt_status": "UNAVAILABLE",
    "reference_disclosure": {
     "status": "UNCERTAIN",
-    "statement": "FOUNDER TO CONFIRM. The master's generation prompt and any reference images present in the generation conversation are not recorded in the build instruction. reference_inputs is therefore not recorded: neither a list nor an empty list can be stated truthfully.",
-    "evidence": "Founder build instruction DISC-031, 26 Oct 2026; master hashes verified on the founder's Mac, 26 Oct 2026"
+    "statement": "ChatGPT's content credentials record no ingredients for this master. That is not evidence that no reference image was used: the Reveal master shares the Before master's framing, house and sky (pixel correlation 0.96 in the unchanged areas) yet also records no ingredient, so these credentials do not capture images supplied in the conversation. Whether any real photograph or third-party image was supplied is therefore not recorded, and reference_inputs is not stated. Known input (inferred from the identical framing, not recorded in the credentials): the Before illustration, DISC-031-BEFORE.png, itself AI-generated in ChatGPT.",
+    "evidence": "C2PA content credentials of DISC-031-REVEAL.png (sha256 f9be42f736c5...), read 26 Oct 2026; Before/Reveal pixel comparison by the build session, 26 Oct 2026",
+    "founder_statement": "FOUNDER TO CONFIRM: whether any real photograph (of a garden, a property, an Irish project or a supplier product) or any third-party image was uploaded in the ChatGPT conversation that produced this master"
    },
    "resemblance_review": {
     "date": "2026-10-26",
@@ -770,7 +982,11 @@
    },
    "decision_ref": "PN-FDR-2026-10-26-DISC031 (PENDING founder signature: founder-attested form for the DISC-031 illustrations, extending the form of PN-FDR-2026-10-23-GRP-HERO and PN-FDR-2026-10-26-H6-HOME to these files on the discovery and library-card surfaces only)",
    "service_terms": {
-    "note": "FOUNDER TO CONFIRM the tool; its commercial-use terms are then recorded here (founder standard of 19 Oct 2026)."
+    "openai": "OpenAI Terms of Use: as between the user and OpenAI, the user owns the output; the user is responsible for the inputs they provide. (Same wording as the H6 record, PN-FDR-2026-10-26-H6-HOME.)"
+   },
+   "content_credentials": {
+    "embeds_c2pa": false,
+    "note": "The four PNG masters carry OpenAI's C2PA content credentials (see generated.c2pa_evidence); web re-encoding removes them."
    }
   },
   {
@@ -784,7 +1000,7 @@
    "class": "AI_ILLUSTRATION",
    "what": "The same garden with a natural swimming pond where the lawn was (hero, the POSSIBLE side of the comparison, social preview)",
    "generated": {
-    "tool": "FOUNDER TO CONFIRM: the generative image tool used to make the master (not recorded in the build instruction of 26 Oct 2026); then Pillow web encoding by the PlotNua build session",
+    "tool": "ChatGPT image generation (OpenAI, gpt-image), per the master's C2PA content credentials; then Pillow web encoding by the PlotNua build session",
     "date": "2026-10-26",
     "source_master": {
      "file": "DISC-031-REVEAL.png (founder's Mac, folder 03 Website/Live Website/DISC-031-Natural-Swimming-Garden-Editorial-Structure-2026-10-26)",
@@ -793,21 +1009,34 @@
     },
     "processing_chain": [
      {
-      "step": "Master: the founder's AI-generated illustration, supplied for publication in the founder build instruction of 26 Oct 2026",
+      "step": "Master: generated in ChatGPT (gpt-image) by the founder, per its C2PA content credentials, and supplied for publication in the founder build instruction of 26 Oct 2026",
       "prompt": "UNAVAILABLE (see prompt_status) unless the founder supplies it at signature"
      },
      {
       "step": "Web encoding",
       "tool": "Pillow; resize to 960 px wide (Lanczos), WebP; no other change"
      }
-    ]
+    ],
+    "c2pa_evidence": {
+     "manifest": "C2PA content credentials embedded in the master PNG (caBX chunk), read with c2pa-python 0.38.0 on 26 Oct 2026",
+     "claim_generator": "OpenAI Media Service API",
+     "signed_by": "OpenAI OpCo, LLC",
+     "signed_at": "2026-10-26T09:55:52.360168+00:00",
+     "actions": [
+      "c2pa.created (softwareAgent ChatGPT, version gpt-image; digitalSourceType trainedAlgorithmicMedia)",
+      "c2pa.converted",
+      "c2pa.watermarked.unbound"
+     ],
+     "ingredients_recorded": [],
+     "validation": "content hash matches (assertion.dataHash.match) and claim signature validated; signing certificate not on the local trust list (no trust anchors loaded)"
+    }
    },
    "depicts_named_product": false,
    "depicts_named_organisation": false,
    "human_review": {
     "reviewer": "",
     "date": "",
-    "attests": "FOUNDER TO CONFIRM. Proposed wording: Founder supplied this AI-generated illustration for DISC-031 The Natural Swimming Garden and approved its publication, labelled as an AI-generated illustration. It is not presented as a photograph of a real property, of any Irish project described on the page, or of any supplier's product."
+    "attests": "Founder supplied this AI-generated illustration for DISC-031 The Natural Swimming Garden and approved its publication, labelled as an AI-generated illustration. It is not presented as a photograph of a real property, of any Irish project described on the page, or of any supplier's product."
    },
    "permitted_surfaces": [
     "discovery",
@@ -816,8 +1045,9 @@
    "prompt_status": "UNAVAILABLE",
    "reference_disclosure": {
     "status": "UNCERTAIN",
-    "statement": "FOUNDER TO CONFIRM. The master's generation prompt and any reference images present in the generation conversation are not recorded in the build instruction. reference_inputs is therefore not recorded: neither a list nor an empty list can be stated truthfully.",
-    "evidence": "Founder build instruction DISC-031, 26 Oct 2026; master hashes verified on the founder's Mac, 26 Oct 2026"
+    "statement": "ChatGPT's content credentials record no ingredients for this master. That is not evidence that no reference image was used: the Reveal master shares the Before master's framing, house and sky (pixel correlation 0.96 in the unchanged areas) yet also records no ingredient, so these credentials do not capture images supplied in the conversation. Whether any real photograph or third-party image was supplied is therefore not recorded, and reference_inputs is not stated. Known input (inferred from the identical framing, not recorded in the credentials): the Before illustration, DISC-031-BEFORE.png, itself AI-generated in ChatGPT.",
+    "evidence": "C2PA content credentials of DISC-031-REVEAL.png (sha256 f9be42f736c5...), read 26 Oct 2026; Before/Reveal pixel comparison by the build session, 26 Oct 2026",
+    "founder_statement": "FOUNDER TO CONFIRM: whether any real photograph (of a garden, a property, an Irish project or a supplier product) or any third-party image was uploaded in the ChatGPT conversation that produced this master"
    },
    "resemblance_review": {
     "date": "2026-10-26",
@@ -833,7 +1063,11 @@
    },
    "decision_ref": "PN-FDR-2026-10-26-DISC031 (PENDING founder signature: founder-attested form for the DISC-031 illustrations, extending the form of PN-FDR-2026-10-23-GRP-HERO and PN-FDR-2026-10-26-H6-HOME to these files on the discovery and library-card surfaces only)",
    "service_terms": {
-    "note": "FOUNDER TO CONFIRM the tool; its commercial-use terms are then recorded here (founder standard of 19 Oct 2026)."
+    "openai": "OpenAI Terms of Use: as between the user and OpenAI, the user owns the output; the user is responsible for the inputs they provide. (Same wording as the H6 record, PN-FDR-2026-10-26-H6-HOME.)"
+   },
+   "content_credentials": {
+    "embeds_c2pa": false,
+    "note": "The four PNG masters carry OpenAI's C2PA content credentials (see generated.c2pa_evidence); web re-encoding removes them."
    }
   }
  ]
