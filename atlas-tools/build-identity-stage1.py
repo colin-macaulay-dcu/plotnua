@@ -83,6 +83,7 @@ CHECK = "--check" in sys.argv
 # page -> reading surface. Founder decision 3 (20 Oct 2026): dark-first, not
 # dark-only. The three legal pages read on a Warm Ivory sheet; the rest are dark.
 PAGES = {
+    "concept-modular-garden-offices.html": "dark", "all-in-one-cabins-garden-rooms.html": "dark",
     "about.html": "dark", "contact.html": "dark", "privacy.html": "paper",
     "terms.html": "paper", "cookie-policy.html": "paper",
     "artist-register.html": "dark", "404.html": "dark", "thanks.html": "dark",
@@ -111,7 +112,7 @@ DISC = {"discoveries.html", "discovery-hidden-bins.html", "discovery-living-in-t
 # Pages that also load the Premium component layer (I13, I14): the registry.
 PREMIUM = set(premium_pages.PREMIUM_PAGES)
 # Premium pages that are a Discovery's guide rather than a Discovery (no Discovery layer).
-GUIDES = {"garden-room-prices-ireland.html"}
+GUIDES = {"garden-room-prices-ireland.html", "concept-modular-garden-offices.html", "all-in-one-cabins-garden-rooms.html"}
 # Premium product pages (Batch 1 · Garden Living): a maker's product page, no Discovery layer.
 PRODUCTS = {"triq-cube.html"}
 # Premium brand and conversion pages (Batch 3): About, Contact, Artist Register. No Discovery layer.
