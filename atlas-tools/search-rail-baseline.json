@@ -143,6 +143,12 @@
       "before": "c8691b0e59c5dd7c7cf9d74b7ed00e99994a4a106968faf471883a4c2fa8a058",
       "nofade": true,
       "region": "0a1819209eec4ab906ef25f91fd0f2975bae59aecdee8e3a933f427b125c0d0f"
+    },
+    "discovery-natural-swimming-garden.html": {
+      "after": "1d2188cea77861314b94d0fa7c57221f9bfa1a86ea434a07ad10acebf826375a",
+      "before": "6eee3b488ee7af5b41f4bd5c0b8b492d8c01f1a446fd457f218970d53e49aabc",
+      "nofade": false,
+      "region": "e40bb915c142bf421baf4bb68961dff206c25fe7544421ceeaf8fb7526acb901"
     }
   }
 }

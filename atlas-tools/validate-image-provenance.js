@@ -132,7 +132,34 @@ const FOUNDER_ATTESTED_H6 = {
   ]),
   surfaces: ['homepage'],
 };
-const FOUNDER_ATTESTED_ALL = [FOUNDER_ATTESTED_GRP, FOUNDER_ATTESTED_H6];
+/* FOUNDER-ATTESTED CONTEXT · DISC-031 THE NATURAL SWIMMING GARDEN (PN-FDR-2026-10-26-DISC031,
+   PENDING founder signature). The four masters were supplied in the founder build instruction of
+   26 Oct 2026 without their tool, prompts or reference history, so until the founder supplies those
+   the founder-attested form is the only truthful record. ONLY these thirteen web encodings, and
+   ONLY on the discovery and library-card surfaces. The records are added by
+   atlas-tools/declare-disc031-provenance.py from the signed declaration
+   governance/DISC-031-PROVENANCE-DECLARATION-DRAFT-2026-10-26.json; until then this pin admits
+   nothing, because no record carries the decision. Not a way to declare future images. */
+const FOUNDER_ATTESTED_DISC031 = {
+  decision: 'PN-FDR-2026-10-26-DISC031',
+  sha256: new Set([
+    'dadf65fbd5032ab99b8eaaa7958a3dfc70fcf2ad22470e4edac4805b0219dc01',
+    'bd4c5d5f9cb9793d8fd17e5d6018f07167a2cfee1612bad044cadd1ca46aea03',
+    '9435a1ddcdde1b7b85e9153d1f0cd079959a040a067875c994a46b5c030cee50',
+    '529cc02add7b357e909ca8159165d962996e72fa1855cba8e5850929ff809311',
+    '6ea8a0cbee36991b4e495ec84cb83af8ef7d4406c6415d9eb837410c8a79a0eb',
+    '15bb786bc4f073984929f4f6df0dcdf257ae89af7cbff7de5cbb09829d10b182',
+    '28f4a0a4a338fe373d7b2baff83f530109c10e46f19e78811d5f4c75fa21ad91',
+    '4188e1e7120e57041801d010c99308cea318bffcd42ebd3a331728c3200851e3',
+    'aae0c19c92fd6748be881b497f5f363f40c3fb1292fd01845992383bf0e72c85',
+    'e7ccd4f36d4d4718f459ede823a65fbff02f77446e350fbee90130674db8b3fa',
+    '89599340a81d344d6cb894df9905ac26d653934bcd565eb99fba7e12e31e851e',
+    '521a6d3d372047b700b88b3fc9956b55da751e14a280bf76005fd8c87f691e6d',
+    '85b9df7bf4bfca819a39523b5beb869637c12e94b515f6cf8a52f05062911102',
+  ]),
+  surfaces: ['discovery', 'library-card'],
+};
+const FOUNDER_ATTESTED_ALL = [FOUNDER_ATTESTED_GRP, FOUNDER_ATTESTED_H6, FOUNDER_ATTESTED_DISC031];
 const attestedFor = h => FOUNDER_ATTESTED_ALL.find(x => x.sha256.has(String(h)));
 const PERMITTED_SURFACES = ['discovery', 'library-card', 'homepage',
                             'about', 'journey', 'preview'];

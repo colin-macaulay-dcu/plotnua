@@ -188,7 +188,9 @@ pages = sorted(set(pages + ["index.html"]))
 # Prices in Ireland guide (SEO Phase 2, founder approval to build), entered the
 # sitemap. It carries the standard stub like every other public page.
 # 24 since 26 October 2026: the two founder-approved text-only maker guides.
-EXPECTED_PAGES = 25
+# 26 since 26 October 2026: discovery-natural-swimming-garden.html, DISC-031 The
+# Natural Swimming Garden (founder build instruction, 26 Oct 2026), entered the sitemap.
+EXPECTED_PAGES = 26
 if len(pages) != EXPECTED_PAGES:
     die("expected %d public pages, found %d — refusing to guess the rail scope. "
         "If a public page was added or removed, update EXPECTED_PAGES "
