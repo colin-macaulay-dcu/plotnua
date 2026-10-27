@@ -1,0 +1,67 @@
+/* =====================================================================
+   pn-discovery-editorial · shared Discovery body blocks (v1, 27 Oct 2026)
+   ---------------------------------------------------------------------
+   The editorial blocks first written for DISC-031 The Natural Swimming
+   Garden (its inline ns-* page layer), extracted for reuse by later
+   Discoveries under a neutral de-* prefix. The values are DISC-031's own,
+   rule for rule; only the prefix and the accent variable name changed.
+
+     de-open / de-turn        opening, with the italic "turn" line
+     de-place / de-what        named examples (title + italic line)
+     de-examples / de-credit   example cards and their credit line
+     de-ways / de-n / de-badge / de-points / de-avail / de-all
+                               the "three ways" block, one primary card
+     de-consider / de-more     practical considerations as calm cards
+     de-factors                numbered factor tiles
+     de-dirs                   next-step choices
+     de-sources                the sources list
+
+   SCOPE. Every rule is under body.pn-id.pn-pd (the Premium layer), so the
+   file is inert on any page that is not a Premium Discovery. It is loaded
+   only by pages that link it: today, DISC-032 The Supper Club at Home.
+   DISC-031 keeps its own inline ns-* layer, byte-identical, until its
+   migration is approved (founder decision, 27 Oct 2026: no changes to live
+   Discoveries in the DISC-032 release).
+
+   ONE ACCENT. --de-accent colours the numerals, the primary card's rule and
+   the badge. Default: PlotNua terracotta. A page may set its own.
+   ===================================================================== */
+body.pn-id.pn-pd{ --de-accent:#CF8566; --de-accent-soft:rgba(207,133,102,.16); }
+body.pn-id.pn-pd .de-open .de-turn{ margin-top:22px; padding-top:22px; border-top:1px solid var(--p4-line); font-family:var(--p4-serif); font-style:italic; font-size:clamp(22px,1.9vw,28px); line-height:1.25; color:var(--p4-ivory); }
+body.pn-id.pn-pd .de-place{ display:block; font-family:var(--p4-serif); font-size:clamp(34px,3.4vw,52px); line-height:1; color:var(--p4-ivory); margin:0 0 6px; }
+body.pn-id.pn-pd .de-what{ display:block; font-family:var(--p4-serif); font-style:italic; font-size:clamp(20px,1.6vw,24px); line-height:1.25; color:var(--p4-terra-text); margin:0 0 20px; }
+body.pn-id.pn-pd .de-credit{ margin-top:22px !important; padding-top:16px; border-top:1px solid var(--p4-line); font-size:14px !important; line-height:1.5 !important; color:var(--p4-stone) !important; }
+body.pn-id.pn-pd .de-examples .pd-card{ height:100%; }
+body.pn-id.pn-pd .de-ways .de-n{ display:block; font-family:var(--p4-serif); font-size:clamp(56px,6vw,96px); line-height:.82; color:var(--de-accent); margin:0 0 18px; font-variant-numeric:lining-nums; }
+body.pn-id.pn-pd .de-ways .is-primary .de-n{ font-size:clamp(72px,8vw,128px); }
+body.pn-id.pn-pd .de-ways .is-primary{ position:relative; overflow:hidden; }
+body.pn-id.pn-pd .de-ways .is-primary::before{ content:""; position:absolute; left:var(--pd-pad); top:0; width:72px; height:3px; border-radius:0 0 3px 3px; background:var(--de-accent); }
+body.pn-id.pn-pd .de-ways .de-badge{ display:inline-block; margin:0 0 16px; font-family:var(--p4-sans); font-weight:700; font-size:12px; letter-spacing:.16em; text-transform:uppercase; color:var(--de-accent); background:var(--de-accent-soft); border-radius:999px; padding:7px 12px; }
+body.pn-id.pn-pd .de-ways ul.de-points{ list-style:none; margin:22px 0 0; padding:0; }
+body.pn-id.pn-pd .de-ways ul.de-points li{ position:relative; padding:12px 0 12px 22px; border-top:1px solid var(--p4-line); font-family:var(--p4-sans); font-size:16px; line-height:1.55; color:var(--p4-lime); }
+body.pn-id.pn-pd .de-ways ul.de-points li::before{ content:""; position:absolute; left:0; top:21px; width:8px; height:8px; border-radius:50%; border:1.5px solid var(--de-accent); }
+body.pn-id.pn-pd .de-ways .de-avail{ margin-top:18px !important; padding:14px 16px; border-radius:var(--pd-r-sm); border:1px dashed var(--p4-line2); font-size:15px !important; color:var(--p4-stone) !important; }
+body.pn-id.pn-pd .de-all{ margin-top:var(--pd-gap); }
+body.pn-id.pn-pd .de-consider{ display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:var(--pd-gap); }
+body.pn-id.pn-pd .de-consider > .pd-card{ display:flex; flex-direction:column; }
+body.pn-id.pn-pd .de-consider .pd-h4{ font-family:var(--p4-serif); font-weight:400; font-size:clamp(26px,2.2vw,32px); line-height:1.05; margin:0 0 14px; }
+body.pn-id.pn-pd .de-consider .pd-kicker{ margin-bottom:14px; }
+body.pn-id.pn-pd .de-consider p{ font-size:16px !important; }
+body.pn-id.pn-pd .de-more{ margin-top:var(--pd-gap); }
+body.pn-id.pn-pd ul.de-factors{ list-style:none; margin:0; padding:0; display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:var(--pd-gap); }
+body.pn-id.pn-pd ul.de-factors li{ background:#2E3033; border:var(--pd-edge); border-radius:var(--pd-r-sm); padding:22px 24px; box-shadow:var(--pd-shadow); font-family:var(--p4-serif); font-size:clamp(22px,1.9vw,27px); line-height:1.12; color:var(--p4-ivory); }
+body.pn-id.pn-pd ul.de-factors li span{ display:block; font-family:var(--p4-sans); font-size:12px; font-weight:700; letter-spacing:.14em; color:var(--p4-terra-text); margin:0 0 12px; }
+body.pn-id.pn-pd .de-dirs{ display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:var(--pd-gap); margin-top:var(--pd-gap); }
+body.pn-id.pn-pd .de-dirs .pd-choice .pd-h3{ font-size:clamp(23px,1.9vw,28px); }
+body.pn-id.pn-pd .de-dirs .pd-choice a.pd-btn{ margin-top:auto; }
+body.pn-id.pn-pd ol.de-sources{ margin:0; padding:0 0 0 22px; columns:2; column-gap:48px; }
+body.pn-id.pn-pd ol.de-sources li{ break-inside:avoid; padding:0 0 12px; font-family:var(--p4-sans); font-size:14.5px; line-height:1.5; color:var(--p4-stone); }
+body.pn-id.pn-pd ol.de-sources li::marker{ color:var(--p4-terra-text); font-size:12px; }
+body.pn-id.pn-pd ol.de-sources a{ word-break:break-word; }
+@media (max-width:1080px){
+  body.pn-id.pn-pd .de-consider, body.pn-id.pn-pd ul.de-factors, body.pn-id.pn-pd .de-dirs{ grid-template-columns:repeat(2,minmax(0,1fr)); }
+}
+@media (max-width:720px){
+  body.pn-id.pn-pd .de-consider, body.pn-id.pn-pd ul.de-factors, body.pn-id.pn-pd .de-dirs{ grid-template-columns:1fr; }
+  body.pn-id.pn-pd ol.de-sources{ columns:1; }
+}
