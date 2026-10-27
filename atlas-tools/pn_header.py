@@ -51,6 +51,7 @@ IDENTITY_PAGES = [   # built by build-identity-stage1.py
     "discovery-house-as-power-station.html", "discovery-above-and-beyond.html",
     "discovery-natural-swimming-garden.html",
     "discovery-hidden-flood-barrier.html",
+    "discovery-supper-club-at-home.html",
 ]
 GLOBAL_PAGES = [     # built by build-global-header.py
     "index.html", "search.html",

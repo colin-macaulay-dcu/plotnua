@@ -42,6 +42,7 @@ PREMIUM_PAGES = {
     "discovery-above-and-beyond.html",       # Batch 4 · signature Discoveries (Pass 1, 24 Oct 2026)
     "discovery-natural-swimming-garden.html",# DISC-031, built Premium from the start (founder build instruction, 26 Oct 2026)
     "discovery-hidden-flood-barrier.html",   # DISC-033, built Premium from the start (release candidate, 27 Oct 2026)
+    "discovery-supper-club-at-home.html",    # DISC-032, built Premium from the start (founder Phase 2 authorisation, 27 Oct 2026)
 }
 
 

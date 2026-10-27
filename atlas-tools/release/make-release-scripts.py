@@ -25,7 +25,8 @@ STANDARD = [
     ("python3 atlas-tools/build-global-header.py --check", "CHECK OK — 2 pages", "global header builder"),
     # 27 since DISC-031 The Natural Swimming Garden (26 Oct 2026); production had 26 after the maker guides.
     # 28 since the DISC-033 The Hidden Flood Barrier release candidate (27 Oct 2026).
-    ("python3 atlas-tools/build-identity-stage1.py --check", "CHECK OK — 28 pages", "identity layer"),
+    # 29 since DISC-032 The Supper Club at Home (founder Phase 2 authorisation, 27 Oct 2026).
+    ("python3 atlas-tools/build-identity-stage1.py --check", "CHECK OK — 29 pages", "identity layer"),
     ("python3 atlas-tools/prove-disc033-page.py", "DISC-033 PAGE · OK", "DISC-033 page proof F1-F10"),
     ("python3 atlas-tools/prove-global-header.py", "GLOBAL HEADER · OK", "global header guard G1-G9"),
     ("python3 atlas-tools/prove-global-header-capability.py", "CAPABILITY · OK — 25 planted faults, 0 not caught", "global header capability 25/25"),
@@ -70,7 +71,8 @@ STANDARD = [
     ("python3 atlas-tools/prove-plotart-launch.py . --switches atlas-tools/release/plotart-launch-switches.json --manifest atlas-tools/release/plotart-launch-manifest.json",
      "PLOTART LAUNCH · OK — L1-L10 on 3 pages · applications not_open", "PlotArt limited launch L1-L10 (applications not open)"),
     # PlotArt in the PlotNua navigation and the A Home for Art links (proposed 27 Oct 2026)
-    ("python3 atlas-tools/prove-plotart-integration.py", "PLOTART INTEGRATION · OK — N1-N4 · 30 header pages", "PlotArt navigation and A Home for Art links N1-N4"),
+    # 31 header pages since DISC-032 The Supper Club at Home joined the header registry (27 Oct 2026; 30 after DISC-033).
+    ("python3 atlas-tools/prove-plotart-integration.py", "PLOTART INTEGRATION · OK — N1-N4 · 31 header pages", "PlotArt navigation and A Home for Art links N1-N4"),
     ("python3 atlas-tools/prove-privacy-whatsapp.py", "PRIVACY WHATSAPP · OK", "privacy WhatsApp block exact (status printed)"),
     ("python3 atlas-tools/build-art-space-register.py --check", "CHECK OK — R1-R14 pass", "Art Space Register R1-R14"),
     ("python3 atlas-tools/build-artist-register.py --check", "CHECK OK — A1-A13 pass", "Artist Register A1-A13"),
