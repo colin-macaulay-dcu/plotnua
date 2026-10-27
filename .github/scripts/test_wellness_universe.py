@@ -7,7 +7,7 @@
       missing availability does NOT hold (it is never emitted as a claim)
   W4  the firewall: Description, Notes and Standards prose never reach the file
   W5  the committed artefact: 35 public products from exactly OGNYX (29),
-      Tanktribe (4) and Irish Sauna Company (2); the 12 recorded OGNYX
+      Tanktribe (4) and Irish Sauna Company (4, the Island Collection since 27 Oct 2026); the 12 recorded OGNYX
       contradictions held; gate declared; header counts reconcile
   W7  the legacy baseline is NOT honoured: an organisation it names (MyCabin.ie)
       with no rights record holds
@@ -21,7 +21,7 @@
       holds; a rights record always wins over the register; a product whose
       page is not VERIFIED holds; a register row claiming permission,
       imagery or an objection refuses the build
-  W11 the committed artefact: 120 public from 7 makers (35 on supplier
+  W11 the committed artefact: 122 public from 7 makers (37 on supplier
       permission, 85 on the public-information basis); MyCabin, Cosy Cabins,
       Sommarnöjen and Auroom held; the five 14 Oct contradictions held;
       every public-information product has a VERIFIED page; TimberIN's
@@ -161,10 +161,22 @@ HELD = {"recursLY4Q1bFn4rh", "recX7IRnkD0PNDUhp", "recPEyrQcz5iHzaSM", "recB4sNo
 check("W5 the artefact declares the publication gate", bool(A.get("publicationGate")))
 import collections
 per = collections.Counter(r["organisation"] for r in pub)
-check("W11 120 public products: OGNYX 29, Tanktribe 4, Irish Sauna Company 2, Pineca 34, "
+# 27 Oct 2026 (founder approval, Irish Sauna Company Island Collection): the two
+# withdrawn Harvia products leave and the four Irish-made saunas join, 120 -> 122.
+check("W11 122 public products: OGNYX 29, Tanktribe 4, Irish Sauna Company 4, Pineca 34, "
       "Hansa24 25, Polaris 20, TimberIN 6",
-      per == {"OGNYX": 29, "Tanktribe": 4, "Irish Sauna Company": 2, "Pineca Ireland": 34,
+      per == {"OGNYX": 29, "Tanktribe": 4, "Irish Sauna Company": 4, "Pineca Ireland": 34,
               "Hansa24 Group": 25, "Polaris Sauna": 20, "TimberIN": 6}, dict(per))
+ISLAND = {"recTBQcdOO0yoULqN", "rect8UKFyZodW593p", "recQszPvHe5Cu7wY5", "reccdnuccLgq8dlqh"}
+WITHDRAWN = {"recSYzKR0BjBrdYMQ", "recRgVJcPwTtY1ikY", "recJlhoNav6YNU1zj"}
+check("W12 Irish Sauna Company: exactly the four Island Collection saunas are public, "
+      "each at its own irishsaunacompany.com page with a verified incl.-VAT EUR price",
+      {r["id"] for r in pub if r["organisation"] == "Irish Sauna Company"} == ISLAND
+      and all(r["productUrl"].startswith("https://irishsaunacompany.com/products/the-")
+              and r["price"]["currency"] == "EUR" and r["price"]["basis"].endswith("including VAT.")
+              for r in pub if r["id"] in ISLAND))
+check("W12 the withdrawn Harvia products are kept as records but never public",
+      WITHDRAWN <= {r["id"] for r in A["products"]} and not (WITHDRAWN & {r["id"] for r in pub}))
 REG = json.loads((ROOT / "atlas-tools" / "public-information-listings.json").read_text(encoding="utf-8"))
 listed = {o["name"] for o in REG["organisations"]}
 rights = {r["organisation_name"] for r in json.loads((ROOT / "image-rights-records.json")
@@ -174,7 +186,7 @@ check("W7/W11 every public maker is either on its own rights record or on the re
       and not (listed & rights), sorted(listed & rights))
 check("W11 basis matches: supplier permission for rights-record makers, public information otherwise",
       all(r["listingBasis"] == ("SUPPLIER_PERMISSION" if r["organisation"] in rights else "PUBLIC_INFORMATION")
-          for r in pub) and A["listingBasisCounts"] == {"SUPPLIER_PERMISSION": 35, "PUBLIC_INFORMATION": 85})
+          for r in pub) and A["listingBasisCounts"] == {"SUPPLIER_PERMISSION": 37, "PUBLIC_INFORMATION": 85})
 check("W11 MyCabin, Cosy Cabins, Sommarnöjen and Auroom Wellness are not public",
       not ({r["organisation"] for r in pub} & {"MyCabin.ie", "Cosy Cabins", "Sommarnöjen", "Auroom Wellness"}))
 BLOCKERS = {"rectXEcIBSgq92QFn", "recQT6LbDFnfrssoi", "recu1Y1kHvG90k7GL", "recZcGYcwzf2Fa1re",
