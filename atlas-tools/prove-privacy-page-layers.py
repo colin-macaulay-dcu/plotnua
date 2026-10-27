@@ -66,6 +66,8 @@ check("W3 the WhatsApp block moved out of Section 5 is refused",
 check("W4 extra WhatsApp wording elsewhere is refused",
       raises(lambda: L.without_whatsapp(live.replace("<h2>9. Cookies</h2>", "<h2>9. Cookies</h2><p>WhatsApp enquiries are also logged.</p>", 1))))
 check("W5 status is not silently approved (WHATSAPP_CONFIRMATION is None unless the founder confirms)", L.WHATSAPP_CONFIRMATION is None)
+check("W6 the founder's provisional confirmation is recorded as provisional, not legal approval",
+      "provisional" in L.WHATSAPP_PROVISIONAL.lower() and "not legal approval" in L.WHATSAPP_PROVISIONAL)
 
 # shell changes are set aside, but never at the notice's expense
 hdr_i = live.find(">Discovery Library<")

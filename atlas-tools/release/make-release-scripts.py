@@ -62,7 +62,7 @@ STANDARD = [
     ("python3 atlas-tools/prove-privacy-v4.py", "20/20 breaks caught · rehearsal 9/9 — PROVEN", "privacy V4 proof 20/20, rehearsal 9/9"),
     ("python3 atlas-tools/prove-privacy-v5.py", "24/24 breaks caught · rehearsal 16/16 — PROVEN", "privacy V5 proof 24/24, rehearsal 16/16"),
     ("python3 atlas-tools/prove-privacy-v6.py", "10 passed, 0 failed", "privacy V6 proof 10/10"),
-    ("python3 atlas-tools/prove-privacy-page-layers.py", "15 passed, 0 failed", "privacy page layers 15/15"),
+    ("python3 atlas-tools/prove-privacy-page-layers.py", "16 passed, 0 failed", "privacy page layers 16/16"),
     ("python3 atlas-tools/prove-privacy-whatsapp.py", "PRIVACY WHATSAPP · OK", "privacy WhatsApp block exact (status printed)"),
     ("python3 atlas-tools/build-art-space-register.py --check", "CHECK OK — R1-R14 pass", "Art Space Register R1-R14"),
     ("python3 atlas-tools/build-artist-register.py --check", "CHECK OK — A1-A13 pass", "Artist Register A1-A13"),

@@ -21,8 +21,10 @@ WHY THIS EXISTS
      (656528b, 21 Oct 2026). It is NOT treated as approved here. The verifiers
      read the page without it, so they keep verifying every governed V3-V6
      sentence byte for byte, and WHATSAPP_CONFIRMATION records its status
-     separately. While it is None:
-       - prove-privacy-whatsapp.py reports it as UNCONFIRMED (and fails if the
+     separately (WHATSAPP_PROVISIONAL holds the founder's provisional
+     confirmation of 27 Oct 2026, which is not legal approval). While
+     WHATSAPP_CONFIRMATION is None:
+       - prove-privacy-whatsapp.py reports it as UNCONFIRMED or PROVISIONAL (and fails if the
          text has drifted from the exact block below);
        - build-privacy-v7.py (PlotArt) refuses to publish any further privacy
          change.
@@ -50,9 +52,18 @@ WHATSAPP_BLOCK = (
 WHATSAPP_ANCHOR = '    <h2>5. Contact Forms</h2>\n'
 WHATSAPP_COMMIT = "656528b (21 Oct 2026), integrated from bb4cad0"
 
-# None = NOT confirmed by the founder. Never fill this in without his explicit,
-# dated confirmation of the exact block above.
+# None = NOT fully confirmed. Fill in only with the founder's explicit, dated
+# confirmation of the exact block above AFTER legal and privacy review.
 WHATSAPP_CONFIRMATION = None
+
+# The founder's PROVISIONAL confirmation (27 Oct 2026, "PlotArt limited launch ·
+# founder approval: privacy verification repair"). It is NOT legal approval and
+# does NOT set WHATSAPP_CONFIRMATION, so build-privacy-v7.py still refuses (P5).
+WHATSAPP_PROVISIONAL = (
+    "founder, 27 Oct 2026: retain the existing subsection; its wording is provisionally "
+    "accepted as an accurate description of the intended contact process, subject to "
+    "legal and privacy review. Provisional founder confirmation, not legal approval."
+)
 
 NOTICE_START = '<p class="lede">This Privacy Policy explains'
 NOTICE_END = '</main>'
