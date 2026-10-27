@@ -6,7 +6,7 @@
 
 | | |
 |---|---|
-| **Release candidate** | Branch `feature/disc032-supper-club-at-home`, on `origin/main` `7f8f964`. The page is `noindex, follow`, is not in the sitemap, the Discovery Library or the search index, and no other page links to it |
+| **Release candidate** | Branch `feature/disc032-supper-club-at-home`, on `origin/main` `5cbcc4e` (reconciled with DISC-033; first prepared on `7f8f964`). The page is `noindex, follow`, is not in the sitemap, the Discovery Library or the search index, and no other page links to it |
 | **Launch** | Branch `launch/disc032-supper-club-at-home`, one commit on top of the release candidate: Library card, sitemap, search index, `index, follow`. **Held: needs its own founder approval** |
 | **Pushed / merged / deployed** | Nothing |
 
@@ -44,7 +44,7 @@
 | **Page** | `discovery-supper-club-at-home.html`: the approved preview with a production head (consent banner and analytics as on every Discovery, SEO metadata, JSON-LD WebPage + BreadcrumbList). The preview flag and the placeholders are removed. Real supper clubs are not named (see below) |
 | **Images** | The eight approved preview encodings, unchanged (hash-verified), plus `DISC-032-og-1200x630.jpg` from the C2 master |
 | **Provenance** | `governance/DISC-032-PROVENANCE-DECLARATION-2026-10-27.json` → `atlas-tools/declare-disc032-provenance.py` → 9 records in `image-provenance-records.json`. Pinned as `FOUNDER_ATTESTED_DISC032` in `validate-image-provenance.js` |
-| **Registries** | Identity, header and Premium (28 identity pages, 30 header pages). The two standard release checks were updated to those counts |
+| **Registries** | Identity, header and Premium (29 identity pages, 31 header pages, after DISC-033's 28 / 30). The two standard release checks were updated to those counts |
 | **Proof** | `atlas-tools/prove-disc032-page.py` (S1–S11; `--prove`: 19 planted faults in release-candidate mode, 18 in launch mode) |
 
 ## Editorial decisions taken in this pass (routine; recorded)
@@ -87,3 +87,12 @@
 
 - Running `build-search-rail.py` in write mode moves the rail stub above the header bar on every page, and the identity and header builders then move it back. Its baseline also predates two guides now in the sitemap. The launch adds only its own baseline entry, as DISC-031 did.
 - The search index envelope's `sourceAdditionalHomeSha256` refreshes whenever the index is rebuilt (the additional-home universe changed upstream on 27 Oct).
+
+## Reconciliation with DISC-033 (27 Oct 2026, evening)
+
+DISC-033 The Hidden Flood Barrier was deployed first (`5cbcc4e`). The release candidate was rebased onto it, and nothing of DISC-033 changed:
+
+- **Registries:** both pages are listed in the identity, header and Premium registries. The counts are now 29 identity pages and 31 header pages, and the release-check strings were updated to match. DISC-033's own page proof stays in the standard checks.
+- **Provenance:** the DISC-033 records and pin are untouched. The nine DISC-032 records were re-applied, after validation, on top of the 57 production records, and both pins are listed.
+- **Launch (held):** 28 public pages in the search rail; the Library card sits beside DISC-033's; the sitemap entry, search-index record and baseline entry are rebuilt on the new base.
+- **DISC-032 itself:** the page, images, component, editorial layer, declaration and proofs are byte-identical to the approved candidate.
