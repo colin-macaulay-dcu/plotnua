@@ -3,7 +3,7 @@
 
     python3 atlas-tools/prove-disc032-page.py            # release candidate: noindex, unlinked
     python3 atlas-tools/prove-disc032-page.py --launch   # after the separately approved launch
-    python3 atlas-tools/prove-disc032-page.py --prove    # capability: planted faults must all be caught
+    python3 atlas-tools/prove-disc032-page.py --prove [--launch]   # capability: planted faults must all be caught
 
 Checks the page and the founder's limits (Stage 2 refinements A-E; Phase 1 and Phase 2 decisions,
 27 Oct 2026):
@@ -159,12 +159,22 @@ def inputs():
 
 def prove():
     s, sm, lib, idx, others = inputs()
-    faults = [
-        ("robots flipped to index", lambda a: (a[0].replace('content="noindex, follow"', 'content="index, follow"'),) + a[1:]),
-        ("sitemap entry", lambda a: (a[0], a[1] + "<loc>%s</loc>" % URL) + a[2:]),
-        ("Library card", lambda a: (a[0], a[1], a[2] + '<a href="%s">' % PAGE) + a[3:]),
-        ("search index", lambda a: a[:3] + (a[3] + '"%s"' % PAGE, a[4])),
-        ("linked from a live page", lambda a: a[:4] + ({"discovery-a-home-for-art.html"},)),
+    if LAUNCH:
+        faults = [
+            ("robots back to noindex", lambda a: (a[0].replace('content="index, follow"', 'content="noindex, follow"'),) + a[1:]),
+            ("sitemap entry missing", lambda a: (a[0], a[1].replace("<loc>%s</loc>" % URL, "")) + a[2:]),
+            ("Library card missing", lambda a: (a[0], a[1], a[2].replace('href="%s"' % PAGE, 'href="x.html"')) + a[3:]),
+            ("search-index entry missing", lambda a: a[:3] + (a[3].replace('"%s"' % PAGE, '"x.html"'), a[4])),
+        ]
+    else:
+        faults = [
+            ("robots flipped to index", lambda a: (a[0].replace('content="noindex, follow"', 'content="index, follow"'),) + a[1:]),
+            ("sitemap entry", lambda a: (a[0], a[1] + "<loc>%s</loc>" % URL) + a[2:]),
+            ("Library card", lambda a: (a[0], a[1], a[2] + '<a href="%s">' % PAGE) + a[3:]),
+            ("search index", lambda a: a[:3] + (a[3] + '"%s"' % PAGE, a[4])),
+            ("linked from a live page", lambda a: a[:4] + ({"discovery-a-home-for-art.html"},)),
+        ]
+    faults += [
         ("a mailto booking link", lambda a: (a[0].replace("</main>", '<a href="mailto:x@y.ie">Book</a></main>'),) + a[1:]),
         ("a form", lambda a: (a[0].replace("</main>", "<form></form></main>"),) + a[1:]),
         ("an earnings figure", lambda a: (a[0].replace("</main>", "<p>Hosts make €400 a night.</p></main>"),) + a[1:]),
