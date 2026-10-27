@@ -194,10 +194,9 @@ const FOUNDER_ATTESTED_DISC033 = {
    on 27 Oct 2026, and instructed that the declaration be applied after validation (Phase 2). The
    prompts were not supplied and the credentials do not record conversation inputs, so the
    founder-attested form is the only truthful record. C1 v3 is a deterministic geometric correction of
-   C1 v2 and carries no OpenAI credentials of its own. ONLY these ten web encodings, and ONLY on the
+   C1 v2 and carries no OpenAI credentials of its own. ONLY these nine web encodings, and ONLY on the
    discovery and library-card surfaces. The records are added by atlas-tools/declare-disc032-provenance.py
-   from governance/DISC-032-PROVENANCE-DECLARATION-2026-10-27.json (the Library-card encoding only with
-   the launch release). Not a way to declare future images. */
+   from governance/DISC-032-PROVENANCE-DECLARATION-2026-10-27.json. Not a way to declare future images. */
 const FOUNDER_ATTESTED_DISC032 = {
   decision: 'PN-FDR-2026-10-27-DISC032',
   sha256: new Set([
@@ -210,7 +209,6 @@ const FOUNDER_ATTESTED_DISC032 = {
     '5a2dcaedea5913e6fb63de61ad2d252a72be9cf795327235b3e0e0813455d75f',   // DISC-032-possible-1536.webp
     '32159a386d6adfc4bcb0110281446a8239cfed757505d08a51f7f8cd0c54e6f2',   // DISC-032-possible-1536.jpg
     '1b86269f66388e9295633935ce8f2af7d489fb4206ed9b965dd137ad20a7a733',   // DISC-032-og-1200x630.jpg
-    '8ca120d69e228b0c563982c09e945fbad8cedfdb746e0c72bb8dd4c0fce2379c',   // DISC-032-possible-960.jpg
   ]),
   surfaces: ['discovery', 'library-card'],
 };

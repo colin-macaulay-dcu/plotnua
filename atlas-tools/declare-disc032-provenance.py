@@ -3,7 +3,6 @@
 
     python3 atlas-tools/declare-disc032-provenance.py                 # dry run (records)
     python3 atlas-tools/declare-disc032-provenance.py --write         # writes the register
-    python3 atlas-tools/declare-disc032-provenance.py --launch --write   # the Library-card record (launch only)
 
 Reads governance/DISC-032-PROVENANCE-DECLARATION-2026-10-27.json. The founder approved the image
 pair, the provenance chain, the tolerance exception and the corrected record on 27 Oct 2026, and
@@ -19,8 +18,8 @@ This script is that validation; it never writes a classification of its own:
   * the v3 records must say v3 carries no OpenAI credentials; no record may claim it does;
   * a record already in the register is refused.
 
-validate-image-provenance.js then decides whether the result publishes (P1-P14), with the ten
-encodings pinned by SHA-256 in FOUNDER_ATTESTED_DISC032.
+validate-image-provenance.js then decides whether the result publishes (P1-P14), with the
+nine encodings pinned by SHA-256 in FOUNDER_ATTESTED_DISC032.
 """
 import hashlib, json, os, sys
 
@@ -48,7 +47,7 @@ def main():
             die("answers.%s is empty" % k)
     if len(dec.get("founder_approvals") or []) < 3:
         die("the three founder approvals of 27 Oct 2026 are not all recorded")
-    rows = dec["launch_records"] if launch else dec["records"]
+    rows = dec.get("launch_records", []) if launch else dec["records"]
     reg = json.load(open(REG, encoding="utf-8"))
     have = {r["asset"] for r in reg["records"]}
     new = []
