@@ -149,6 +149,12 @@
       "before": "6eee3b488ee7af5b41f4bd5c0b8b492d8c01f1a446fd457f218970d53e49aabc",
       "nofade": false,
       "region": "e40bb915c142bf421baf4bb68961dff206c25fe7544421ceeaf8fb7526acb901"
+    },
+    "discovery-supper-club-at-home.html": {
+      "after": "5f5db79cdd3cb50c5754d50db3d744f6bf3d577b43e66c3b229b12911b16fc83",
+      "before": "9a7da79fedcbbd3b80f22de1f3c80869515642b5f98d8868e355e9e98ab5c169",
+      "nofade": false,
+      "region": "e40bb915c142bf421baf4bb68961dff206c25fe7544421ceeaf8fb7526acb901"
     }
   }
 }

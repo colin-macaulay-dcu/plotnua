@@ -192,7 +192,9 @@ pages = sorted(set(pages + ["index.html"]))
 # Natural Swimming Garden (founder build instruction, 26 Oct 2026), entered the sitemap.
 # 27 since the DISC-033 release candidate (27 Oct 2026): discovery-hidden-flood-barrier.html,
 # The Hidden Flood Barrier, enters the sitemap (subject to founder release approval).
-EXPECTED_PAGES = 27
+# 28 since the DISC-032 launch: discovery-supper-club-at-home.html, The Supper Club at Home
+# (founder launch approval required; the release candidate is not in the sitemap), entered the sitemap.
+EXPECTED_PAGES = 28
 if len(pages) != EXPECTED_PAGES:
     die("expected %d public pages, found %d — refusing to guess the rail scope. "
         "If a public page was added or removed, update EXPECTED_PAGES "
