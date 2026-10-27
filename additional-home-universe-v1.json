@@ -7,7 +7,8 @@
     "version": "supplier-publication-gate-v1",
     "rule": "public visibility is derived from permission state, listing-review state and asset approval. It never reads a measurement, and it never alters the Class 3A technical assessment.",
     "heldOrganisations": [
-      "BIOBUILDS"
+      "BIOBUILDS",
+      "Nua Modular"
     ]
   },
   "sourceCategory": "Additional Home",
@@ -4451,8 +4452,8 @@
         "reason": "habitation-not-confirmed",
         "caveats": []
       },
-      "publicVisibility": "PUBLISHABLE",
-      "holdReason": null,
+      "publicVisibility": "HOLD",
+      "holdReason": "permission-scope-excludes-listing",
       "imagery": null,
       "imagerySet": null
     },
