@@ -163,7 +163,33 @@ const FOUNDER_ATTESTED_DISC031 = {
   ]),
   surfaces: ['discovery', 'library-card'],
 };
-const FOUNDER_ATTESTED_ALL = [FOUNDER_ATTESTED_GRP, FOUNDER_ATTESTED_H6, FOUNDER_ATTESTED_DISC031];
+/* FOUNDER-ATTESTED CONTEXT · DISC-033 THE HIDDEN FLOOD BARRIER (PN-FDR-2026-10-27-DISC033;
+   release candidate, 27 Oct 2026). Founder statements of 27 Oct 2026: both masters made with
+   ChatGPT; IMG-02 after IMG-01; no third-party supplier or listing photographs supplied; the
+   exact derivation is not verified and the prompts were not supplied. ONLY these thirteen web
+   derivatives (badge-retouched, documented in each record), and ONLY on the discovery and
+   library-card surfaces. Declaration: governance/DISC-033-PROVENANCE-DECLARATION-2026-10-27.json.
+   Not a way to declare future images. */
+const FOUNDER_ATTESTED_DISC033 = {
+  decision: 'PN-FDR-2026-10-27-DISC033',
+  sha256: new Set([
+    'd613eecbd2058c61075436459694604055b9f13b1ac1bb221badde5828fb2e02',
+    '40133dea4f0a7ecd0bcce0a60050b2a18eaaec39c20e05a7e6bf0e717829aeef',
+    'c40babf806476e07a7fd1ae3e30bf81a41337893fcac85eabb7c64c54f54ad30',
+    '3d9d3bfbd38de7ca85f082b2a243464bef21f8553695a97597e87f96c09bc0ac',
+    'ef847f0fde4cac77277f45414f271b282b5d2ed519429dfd8d54153cf53c03a0',
+    '9275eedd9585fb0e001bfaf3084a4eb50e813743c6389280daa9b3134416b678',
+    'c1c80efd7c3f39309a92fca1466cc317086f7dec3180b4981231a764a098c532',
+    'cb826c5b34159f74514124c4dc59d042f8ebef074f8c8b2615367378fa27e003',
+    'd1d2abf2b3f2737600ed4934056e029ebc0e88d54d529f2901a8ccbd7cde8877',
+    '99c2cf1ecc026ef88f3ccf4522e12ad8540503de0a3997b49171b1d816286df2',
+    '0e508779cbab580cdac03300ef9516b5549b7a49888945ce0b6aea10d04ad5ba',
+    '4dcb36804a6e7f29175835a82c4428d86536b6d1214c5a67d8fd3b55e674ccf1',
+    '1b9e7e6b0e66eacf2e62ad0c05c75e4e860647010b794b0c8fcfe7a39b58aa6a',
+  ]),
+  surfaces: ['discovery', 'library-card'],
+};
+const FOUNDER_ATTESTED_ALL = [FOUNDER_ATTESTED_GRP, FOUNDER_ATTESTED_H6, FOUNDER_ATTESTED_DISC031, FOUNDER_ATTESTED_DISC033];
 const attestedFor = h => FOUNDER_ATTESTED_ALL.find(x => x.sha256.has(String(h)));
 const PERMITTED_SURFACES = ['discovery', 'library-card', 'homepage',
                             'about', 'journey', 'preview'];

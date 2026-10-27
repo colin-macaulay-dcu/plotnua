@@ -3517,6 +3517,1150 @@
         "embeds_c2pa": false,
         "note": "The four PNG masters carry OpenAI's C2PA content credentials (see generated.c2pa_evidence); web re-encoding removes them."
       }
+    },
+    {
+      "asset": "assets/disc033/img/DISC-033-IMG-01-DRIVEWAY-BEFORE-1024.jpg",
+      "sha256": "d613eecbd2058c61075436459694604055b9f13b1ac1bb221badde5828fb2e02",
+      "bytes": 230394,
+      "pixels": [
+        1024,
+        683
+      ],
+      "class": "AI_ILLUSTRATION",
+      "what": "The driveway before: an attractive Irish suburban house, a block-paved driveway behind a wide open entrance, a slim strip and grate in the paving (BEFORE side of the hero comparison)",
+      "generated": {
+        "tool": "ChatGPT image generation (OpenAI, gpt-image), per the master's C2PA content credentials; then a documented badge retouch and Pillow web encoding by the PlotNua build session",
+        "date": "2026-10-27",
+        "source_master": {
+          "file": "DISC-033-IMG-01-DRIVEWAY-BEFORE-MASTER.png (founder's Mac, folder 03 Website/Live Website/DISC-033-Image-Production-2026-10-27/masters; unchanged)",
+          "sha256": "e0b715ad0f0daefd736d16e2b3623c9542895c8ac5652279a43c6ddfa86275c5",
+          "bytes": 3708078
+        },
+        "processing_chain": [
+          {
+            "step": "Master: generated in ChatGPT (gpt-image) by the founder on 27 Oct 2026, per its C2PA content credentials",
+            "prompt": "UNAVAILABLE (see prompt_status): not supplied; not reconstructed"
+          },
+          {
+            "step": "Badge retouch (founder instruction, Stage 3 review, 27 Oct 2026): the car-maker's roundel on the parked car's tailgate removed from the web derivatives only; the master is unchanged",
+            "tool": "OpenCV 5.0 cv2.inpaint (INPAINT_TELEA, radius 3) on a copy of the master",
+            "region": "ellipse centre (1257,475), radii 7x6 px; 144 pixels changed, bounding box x 1250-1264, y 469-481 of 1536 x 1024",
+            "intermediate_sha256": "06a0fd990a0b1d9bc4995637fc3efd858ef9a30389527bebfc5cd7b52e5c2ff3",
+            "note": "Only the badge area changed; the pair's alignment is unaffected (the same small area in both images)"
+          },
+          {
+            "step": "Web encoding",
+            "tool": "Pillow; resize to 1024 px wide (Lanczos), JPEG; no other change"
+          }
+        ],
+        "c2pa_evidence": {
+          "manifest": "C2PA content credentials embedded in the master PNG, read with c2pa-python 0.38.1 on 27 Oct 2026",
+          "claim_generator": "OpenAI Media Service API",
+          "signed_by": "OpenAI OpCo, LLC",
+          "signed_at": "2026-10-27T15:31:41.643232+00:00",
+          "actions": [
+            "c2pa.created (softwareAgent ChatGPT, version gpt-image; digitalSourceType trainedAlgorithmicMedia)",
+            "c2pa.converted",
+            "c2pa.watermarked.unbound"
+          ],
+          "ingredients_recorded": [],
+          "validation": "content hash matches (assertion.dataHash.match) and claim signature validated; the local reader reports signingCredential.untrusted and signingCredential.invalid (missing required EKU) because no trust anchors are loaded, as for DISC-032"
+        }
+      },
+      "depicts_named_product": false,
+      "depicts_named_organisation": false,
+      "human_review": {
+        "reviewer": "Colin MacAulay",
+        "date": "2026-10-27",
+        "attests": "Founder confirmed on 27 Oct 2026 that both masters were generated with ChatGPT, that IMG-02 was generated after IMG-01 and that no third-party supplier or listing photographs were supplied; approved the images and the visual direction (Stage 3 review, 27 Oct 2026) and instructed the badge removal from the web derivatives. Labelled as an AI-generated illustration; not presented as a photograph of a real property, of any installation described on the page, or of any manufacturer's or supplier's product. Publication remains subject to the founder's release approval."
+      },
+      "permitted_surfaces": [
+        "discovery",
+        "library-card"
+      ],
+      "prompt_status": "UNAVAILABLE",
+      "reference_disclosure": {
+        "status": "UNCERTAIN",
+        "statement": "ChatGPT's content credentials record no ingredients for either master, which is not evidence that no image was supplied in the conversation. The two masters align to about 1 px (architecture) and 3 px (the car), which is typical of one image having been made from the other rather than of two free generations; the founder confirms IMG-02 was generated after IMG-01 but the exact image-to-image derivation relationship is not verified. The founder states that no third-party supplier or listing photographs were supplied; that statement is recorded alongside and is not independently verifiable from the credentials, so the status remains UNCERTAIN.",
+        "evidence": "C2PA content credentials of both masters, read 27 Oct 2026; pair alignment by the build session, 27 Oct 2026 (502 of 535 feature matches consistent; median 1.03 px; car median 3.1 px)",
+        "founder_statement": "Founder statement (Colin MacAulay, 27 Oct 2026): both images were generated using ChatGPT; multiple attempts were made to establish the Before image; IMG-02 was generated after IMG-01; no third-party supplier or listing photographs were supplied; the exact image-to-image derivation relationship is not verified."
+      },
+      "resemblance_review": {
+        "date": "2026-10-27",
+        "reviewed_by": "PlotNua build session; accepted by the founder, Colin MacAulay, 27 Oct 2026 (Stage 3 review)",
+        "compared_against": "Identifiable third-party content in general (manufacturer products and barrier designs, brand marks, signage, text, recognisable real addresses) and the manufacturers named in the research (FloodBreak, Flood Control International, Aggeres, Watersmart, DEFE)",
+        "findings": [
+          "A car-maker's roundel on the parked car was legible in both masters; it is removed from every web derivative by the documented retouch (processing_chain step 2)",
+          "No other logo, brand name, signage, number plate or legible text appears",
+          "The house is a generic Irish suburban house with no address, number or distinctive landmark",
+          "The barrier is a plain generic panel with end posts; it is not drawn to any manufacturer's design and is not presented as any product"
+        ],
+        "verdict": "after the badge retouch, no identifiable third-party product, brand or property is reproduced, on visual inspection. Whether any reference image was used in generation is not established (see reference_disclosure)."
+      },
+      "decision_ref": "PN-FDR-2026-10-27-DISC033 (founder-attested form for the DISC-033 illustrations, extending the form of PN-FDR-2026-10-26-DISC031 to these files on the discovery and library-card surfaces only)",
+      "service_terms": {
+        "openai": "OpenAI Terms of Use: as between the user and OpenAI, the user owns the output; the user is responsible for the inputs they provide. (Same wording as the DISC-031 record, PN-FDR-2026-10-26-DISC031.)"
+      },
+      "content_credentials": {
+        "embeds_c2pa": false,
+        "note": "The two PNG masters carry OpenAI's C2PA content credentials (see generated.c2pa_evidence); the retouch and web re-encoding remove them from the derivatives."
+      }
+    },
+    {
+      "asset": "assets/disc033/img/DISC-033-IMG-01-DRIVEWAY-BEFORE-1024.webp",
+      "sha256": "40133dea4f0a7ecd0bcce0a60050b2a18eaaec39c20e05a7e6bf0e717829aeef",
+      "bytes": 191466,
+      "pixels": [
+        1024,
+        683
+      ],
+      "class": "AI_ILLUSTRATION",
+      "what": "The driveway before: an attractive Irish suburban house, a block-paved driveway behind a wide open entrance, a slim strip and grate in the paving (BEFORE side of the hero comparison)",
+      "generated": {
+        "tool": "ChatGPT image generation (OpenAI, gpt-image), per the master's C2PA content credentials; then a documented badge retouch and Pillow web encoding by the PlotNua build session",
+        "date": "2026-10-27",
+        "source_master": {
+          "file": "DISC-033-IMG-01-DRIVEWAY-BEFORE-MASTER.png (founder's Mac, folder 03 Website/Live Website/DISC-033-Image-Production-2026-10-27/masters; unchanged)",
+          "sha256": "e0b715ad0f0daefd736d16e2b3623c9542895c8ac5652279a43c6ddfa86275c5",
+          "bytes": 3708078
+        },
+        "processing_chain": [
+          {
+            "step": "Master: generated in ChatGPT (gpt-image) by the founder on 27 Oct 2026, per its C2PA content credentials",
+            "prompt": "UNAVAILABLE (see prompt_status): not supplied; not reconstructed"
+          },
+          {
+            "step": "Badge retouch (founder instruction, Stage 3 review, 27 Oct 2026): the car-maker's roundel on the parked car's tailgate removed from the web derivatives only; the master is unchanged",
+            "tool": "OpenCV 5.0 cv2.inpaint (INPAINT_TELEA, radius 3) on a copy of the master",
+            "region": "ellipse centre (1257,475), radii 7x6 px; 144 pixels changed, bounding box x 1250-1264, y 469-481 of 1536 x 1024",
+            "intermediate_sha256": "06a0fd990a0b1d9bc4995637fc3efd858ef9a30389527bebfc5cd7b52e5c2ff3",
+            "note": "Only the badge area changed; the pair's alignment is unaffected (the same small area in both images)"
+          },
+          {
+            "step": "Web encoding",
+            "tool": "Pillow; resize to 1024 px wide (Lanczos), WebP; no other change"
+          }
+        ],
+        "c2pa_evidence": {
+          "manifest": "C2PA content credentials embedded in the master PNG, read with c2pa-python 0.38.1 on 27 Oct 2026",
+          "claim_generator": "OpenAI Media Service API",
+          "signed_by": "OpenAI OpCo, LLC",
+          "signed_at": "2026-10-27T15:31:41.643232+00:00",
+          "actions": [
+            "c2pa.created (softwareAgent ChatGPT, version gpt-image; digitalSourceType trainedAlgorithmicMedia)",
+            "c2pa.converted",
+            "c2pa.watermarked.unbound"
+          ],
+          "ingredients_recorded": [],
+          "validation": "content hash matches (assertion.dataHash.match) and claim signature validated; the local reader reports signingCredential.untrusted and signingCredential.invalid (missing required EKU) because no trust anchors are loaded, as for DISC-032"
+        }
+      },
+      "depicts_named_product": false,
+      "depicts_named_organisation": false,
+      "human_review": {
+        "reviewer": "Colin MacAulay",
+        "date": "2026-10-27",
+        "attests": "Founder confirmed on 27 Oct 2026 that both masters were generated with ChatGPT, that IMG-02 was generated after IMG-01 and that no third-party supplier or listing photographs were supplied; approved the images and the visual direction (Stage 3 review, 27 Oct 2026) and instructed the badge removal from the web derivatives. Labelled as an AI-generated illustration; not presented as a photograph of a real property, of any installation described on the page, or of any manufacturer's or supplier's product. Publication remains subject to the founder's release approval."
+      },
+      "permitted_surfaces": [
+        "discovery",
+        "library-card"
+      ],
+      "prompt_status": "UNAVAILABLE",
+      "reference_disclosure": {
+        "status": "UNCERTAIN",
+        "statement": "ChatGPT's content credentials record no ingredients for either master, which is not evidence that no image was supplied in the conversation. The two masters align to about 1 px (architecture) and 3 px (the car), which is typical of one image having been made from the other rather than of two free generations; the founder confirms IMG-02 was generated after IMG-01 but the exact image-to-image derivation relationship is not verified. The founder states that no third-party supplier or listing photographs were supplied; that statement is recorded alongside and is not independently verifiable from the credentials, so the status remains UNCERTAIN.",
+        "evidence": "C2PA content credentials of both masters, read 27 Oct 2026; pair alignment by the build session, 27 Oct 2026 (502 of 535 feature matches consistent; median 1.03 px; car median 3.1 px)",
+        "founder_statement": "Founder statement (Colin MacAulay, 27 Oct 2026): both images were generated using ChatGPT; multiple attempts were made to establish the Before image; IMG-02 was generated after IMG-01; no third-party supplier or listing photographs were supplied; the exact image-to-image derivation relationship is not verified."
+      },
+      "resemblance_review": {
+        "date": "2026-10-27",
+        "reviewed_by": "PlotNua build session; accepted by the founder, Colin MacAulay, 27 Oct 2026 (Stage 3 review)",
+        "compared_against": "Identifiable third-party content in general (manufacturer products and barrier designs, brand marks, signage, text, recognisable real addresses) and the manufacturers named in the research (FloodBreak, Flood Control International, Aggeres, Watersmart, DEFE)",
+        "findings": [
+          "A car-maker's roundel on the parked car was legible in both masters; it is removed from every web derivative by the documented retouch (processing_chain step 2)",
+          "No other logo, brand name, signage, number plate or legible text appears",
+          "The house is a generic Irish suburban house with no address, number or distinctive landmark",
+          "The barrier is a plain generic panel with end posts; it is not drawn to any manufacturer's design and is not presented as any product"
+        ],
+        "verdict": "after the badge retouch, no identifiable third-party product, brand or property is reproduced, on visual inspection. Whether any reference image was used in generation is not established (see reference_disclosure)."
+      },
+      "decision_ref": "PN-FDR-2026-10-27-DISC033 (founder-attested form for the DISC-033 illustrations, extending the form of PN-FDR-2026-10-26-DISC031 to these files on the discovery and library-card surfaces only)",
+      "service_terms": {
+        "openai": "OpenAI Terms of Use: as between the user and OpenAI, the user owns the output; the user is responsible for the inputs they provide. (Same wording as the DISC-031 record, PN-FDR-2026-10-26-DISC031.)"
+      },
+      "content_credentials": {
+        "embeds_c2pa": false,
+        "note": "The two PNG masters carry OpenAI's C2PA content credentials (see generated.c2pa_evidence); the retouch and web re-encoding remove them from the derivatives."
+      }
+    },
+    {
+      "asset": "assets/disc033/img/DISC-033-IMG-01-DRIVEWAY-BEFORE-1536.webp",
+      "sha256": "c40babf806476e07a7fd1ae3e30bf81a41337893fcac85eabb7c64c54f54ad30",
+      "bytes": 329486,
+      "pixels": [
+        1536,
+        1024
+      ],
+      "class": "AI_ILLUSTRATION",
+      "what": "The driveway before: an attractive Irish suburban house, a block-paved driveway behind a wide open entrance, a slim strip and grate in the paving (BEFORE side of the hero comparison)",
+      "generated": {
+        "tool": "ChatGPT image generation (OpenAI, gpt-image), per the master's C2PA content credentials; then a documented badge retouch and Pillow web encoding by the PlotNua build session",
+        "date": "2026-10-27",
+        "source_master": {
+          "file": "DISC-033-IMG-01-DRIVEWAY-BEFORE-MASTER.png (founder's Mac, folder 03 Website/Live Website/DISC-033-Image-Production-2026-10-27/masters; unchanged)",
+          "sha256": "e0b715ad0f0daefd736d16e2b3623c9542895c8ac5652279a43c6ddfa86275c5",
+          "bytes": 3708078
+        },
+        "processing_chain": [
+          {
+            "step": "Master: generated in ChatGPT (gpt-image) by the founder on 27 Oct 2026, per its C2PA content credentials",
+            "prompt": "UNAVAILABLE (see prompt_status): not supplied; not reconstructed"
+          },
+          {
+            "step": "Badge retouch (founder instruction, Stage 3 review, 27 Oct 2026): the car-maker's roundel on the parked car's tailgate removed from the web derivatives only; the master is unchanged",
+            "tool": "OpenCV 5.0 cv2.inpaint (INPAINT_TELEA, radius 3) on a copy of the master",
+            "region": "ellipse centre (1257,475), radii 7x6 px; 144 pixels changed, bounding box x 1250-1264, y 469-481 of 1536 x 1024",
+            "intermediate_sha256": "06a0fd990a0b1d9bc4995637fc3efd858ef9a30389527bebfc5cd7b52e5c2ff3",
+            "note": "Only the badge area changed; the pair's alignment is unaffected (the same small area in both images)"
+          },
+          {
+            "step": "Web encoding",
+            "tool": "Pillow; resize to 1536 px wide (Lanczos), WebP; no other change"
+          }
+        ],
+        "c2pa_evidence": {
+          "manifest": "C2PA content credentials embedded in the master PNG, read with c2pa-python 0.38.1 on 27 Oct 2026",
+          "claim_generator": "OpenAI Media Service API",
+          "signed_by": "OpenAI OpCo, LLC",
+          "signed_at": "2026-10-27T15:31:41.643232+00:00",
+          "actions": [
+            "c2pa.created (softwareAgent ChatGPT, version gpt-image; digitalSourceType trainedAlgorithmicMedia)",
+            "c2pa.converted",
+            "c2pa.watermarked.unbound"
+          ],
+          "ingredients_recorded": [],
+          "validation": "content hash matches (assertion.dataHash.match) and claim signature validated; the local reader reports signingCredential.untrusted and signingCredential.invalid (missing required EKU) because no trust anchors are loaded, as for DISC-032"
+        }
+      },
+      "depicts_named_product": false,
+      "depicts_named_organisation": false,
+      "human_review": {
+        "reviewer": "Colin MacAulay",
+        "date": "2026-10-27",
+        "attests": "Founder confirmed on 27 Oct 2026 that both masters were generated with ChatGPT, that IMG-02 was generated after IMG-01 and that no third-party supplier or listing photographs were supplied; approved the images and the visual direction (Stage 3 review, 27 Oct 2026) and instructed the badge removal from the web derivatives. Labelled as an AI-generated illustration; not presented as a photograph of a real property, of any installation described on the page, or of any manufacturer's or supplier's product. Publication remains subject to the founder's release approval."
+      },
+      "permitted_surfaces": [
+        "discovery",
+        "library-card"
+      ],
+      "prompt_status": "UNAVAILABLE",
+      "reference_disclosure": {
+        "status": "UNCERTAIN",
+        "statement": "ChatGPT's content credentials record no ingredients for either master, which is not evidence that no image was supplied in the conversation. The two masters align to about 1 px (architecture) and 3 px (the car), which is typical of one image having been made from the other rather than of two free generations; the founder confirms IMG-02 was generated after IMG-01 but the exact image-to-image derivation relationship is not verified. The founder states that no third-party supplier or listing photographs were supplied; that statement is recorded alongside and is not independently verifiable from the credentials, so the status remains UNCERTAIN.",
+        "evidence": "C2PA content credentials of both masters, read 27 Oct 2026; pair alignment by the build session, 27 Oct 2026 (502 of 535 feature matches consistent; median 1.03 px; car median 3.1 px)",
+        "founder_statement": "Founder statement (Colin MacAulay, 27 Oct 2026): both images were generated using ChatGPT; multiple attempts were made to establish the Before image; IMG-02 was generated after IMG-01; no third-party supplier or listing photographs were supplied; the exact image-to-image derivation relationship is not verified."
+      },
+      "resemblance_review": {
+        "date": "2026-10-27",
+        "reviewed_by": "PlotNua build session; accepted by the founder, Colin MacAulay, 27 Oct 2026 (Stage 3 review)",
+        "compared_against": "Identifiable third-party content in general (manufacturer products and barrier designs, brand marks, signage, text, recognisable real addresses) and the manufacturers named in the research (FloodBreak, Flood Control International, Aggeres, Watersmart, DEFE)",
+        "findings": [
+          "A car-maker's roundel on the parked car was legible in both masters; it is removed from every web derivative by the documented retouch (processing_chain step 2)",
+          "No other logo, brand name, signage, number plate or legible text appears",
+          "The house is a generic Irish suburban house with no address, number or distinctive landmark",
+          "The barrier is a plain generic panel with end posts; it is not drawn to any manufacturer's design and is not presented as any product"
+        ],
+        "verdict": "after the badge retouch, no identifiable third-party product, brand or property is reproduced, on visual inspection. Whether any reference image was used in generation is not established (see reference_disclosure)."
+      },
+      "decision_ref": "PN-FDR-2026-10-27-DISC033 (founder-attested form for the DISC-033 illustrations, extending the form of PN-FDR-2026-10-26-DISC031 to these files on the discovery and library-card surfaces only)",
+      "service_terms": {
+        "openai": "OpenAI Terms of Use: as between the user and OpenAI, the user owns the output; the user is responsible for the inputs they provide. (Same wording as the DISC-031 record, PN-FDR-2026-10-26-DISC031.)"
+      },
+      "content_credentials": {
+        "embeds_c2pa": false,
+        "note": "The two PNG masters carry OpenAI's C2PA content credentials (see generated.c2pa_evidence); the retouch and web re-encoding remove them from the derivatives."
+      }
+    },
+    {
+      "asset": "assets/disc033/img/DISC-033-IMG-01-DRIVEWAY-BEFORE-768.webp",
+      "sha256": "3d9d3bfbd38de7ca85f082b2a243464bef21f8553695a97597e87f96c09bc0ac",
+      "bytes": 124456,
+      "pixels": [
+        768,
+        512
+      ],
+      "class": "AI_ILLUSTRATION",
+      "what": "The driveway before: an attractive Irish suburban house, a block-paved driveway behind a wide open entrance, a slim strip and grate in the paving (BEFORE side of the hero comparison)",
+      "generated": {
+        "tool": "ChatGPT image generation (OpenAI, gpt-image), per the master's C2PA content credentials; then a documented badge retouch and Pillow web encoding by the PlotNua build session",
+        "date": "2026-10-27",
+        "source_master": {
+          "file": "DISC-033-IMG-01-DRIVEWAY-BEFORE-MASTER.png (founder's Mac, folder 03 Website/Live Website/DISC-033-Image-Production-2026-10-27/masters; unchanged)",
+          "sha256": "e0b715ad0f0daefd736d16e2b3623c9542895c8ac5652279a43c6ddfa86275c5",
+          "bytes": 3708078
+        },
+        "processing_chain": [
+          {
+            "step": "Master: generated in ChatGPT (gpt-image) by the founder on 27 Oct 2026, per its C2PA content credentials",
+            "prompt": "UNAVAILABLE (see prompt_status): not supplied; not reconstructed"
+          },
+          {
+            "step": "Badge retouch (founder instruction, Stage 3 review, 27 Oct 2026): the car-maker's roundel on the parked car's tailgate removed from the web derivatives only; the master is unchanged",
+            "tool": "OpenCV 5.0 cv2.inpaint (INPAINT_TELEA, radius 3) on a copy of the master",
+            "region": "ellipse centre (1257,475), radii 7x6 px; 144 pixels changed, bounding box x 1250-1264, y 469-481 of 1536 x 1024",
+            "intermediate_sha256": "06a0fd990a0b1d9bc4995637fc3efd858ef9a30389527bebfc5cd7b52e5c2ff3",
+            "note": "Only the badge area changed; the pair's alignment is unaffected (the same small area in both images)"
+          },
+          {
+            "step": "Web encoding",
+            "tool": "Pillow; resize to 768 px wide (Lanczos), WebP; no other change"
+          }
+        ],
+        "c2pa_evidence": {
+          "manifest": "C2PA content credentials embedded in the master PNG, read with c2pa-python 0.38.1 on 27 Oct 2026",
+          "claim_generator": "OpenAI Media Service API",
+          "signed_by": "OpenAI OpCo, LLC",
+          "signed_at": "2026-10-27T15:31:41.643232+00:00",
+          "actions": [
+            "c2pa.created (softwareAgent ChatGPT, version gpt-image; digitalSourceType trainedAlgorithmicMedia)",
+            "c2pa.converted",
+            "c2pa.watermarked.unbound"
+          ],
+          "ingredients_recorded": [],
+          "validation": "content hash matches (assertion.dataHash.match) and claim signature validated; the local reader reports signingCredential.untrusted and signingCredential.invalid (missing required EKU) because no trust anchors are loaded, as for DISC-032"
+        }
+      },
+      "depicts_named_product": false,
+      "depicts_named_organisation": false,
+      "human_review": {
+        "reviewer": "Colin MacAulay",
+        "date": "2026-10-27",
+        "attests": "Founder confirmed on 27 Oct 2026 that both masters were generated with ChatGPT, that IMG-02 was generated after IMG-01 and that no third-party supplier or listing photographs were supplied; approved the images and the visual direction (Stage 3 review, 27 Oct 2026) and instructed the badge removal from the web derivatives. Labelled as an AI-generated illustration; not presented as a photograph of a real property, of any installation described on the page, or of any manufacturer's or supplier's product. Publication remains subject to the founder's release approval."
+      },
+      "permitted_surfaces": [
+        "discovery",
+        "library-card"
+      ],
+      "prompt_status": "UNAVAILABLE",
+      "reference_disclosure": {
+        "status": "UNCERTAIN",
+        "statement": "ChatGPT's content credentials record no ingredients for either master, which is not evidence that no image was supplied in the conversation. The two masters align to about 1 px (architecture) and 3 px (the car), which is typical of one image having been made from the other rather than of two free generations; the founder confirms IMG-02 was generated after IMG-01 but the exact image-to-image derivation relationship is not verified. The founder states that no third-party supplier or listing photographs were supplied; that statement is recorded alongside and is not independently verifiable from the credentials, so the status remains UNCERTAIN.",
+        "evidence": "C2PA content credentials of both masters, read 27 Oct 2026; pair alignment by the build session, 27 Oct 2026 (502 of 535 feature matches consistent; median 1.03 px; car median 3.1 px)",
+        "founder_statement": "Founder statement (Colin MacAulay, 27 Oct 2026): both images were generated using ChatGPT; multiple attempts were made to establish the Before image; IMG-02 was generated after IMG-01; no third-party supplier or listing photographs were supplied; the exact image-to-image derivation relationship is not verified."
+      },
+      "resemblance_review": {
+        "date": "2026-10-27",
+        "reviewed_by": "PlotNua build session; accepted by the founder, Colin MacAulay, 27 Oct 2026 (Stage 3 review)",
+        "compared_against": "Identifiable third-party content in general (manufacturer products and barrier designs, brand marks, signage, text, recognisable real addresses) and the manufacturers named in the research (FloodBreak, Flood Control International, Aggeres, Watersmart, DEFE)",
+        "findings": [
+          "A car-maker's roundel on the parked car was legible in both masters; it is removed from every web derivative by the documented retouch (processing_chain step 2)",
+          "No other logo, brand name, signage, number plate or legible text appears",
+          "The house is a generic Irish suburban house with no address, number or distinctive landmark",
+          "The barrier is a plain generic panel with end posts; it is not drawn to any manufacturer's design and is not presented as any product"
+        ],
+        "verdict": "after the badge retouch, no identifiable third-party product, brand or property is reproduced, on visual inspection. Whether any reference image was used in generation is not established (see reference_disclosure)."
+      },
+      "decision_ref": "PN-FDR-2026-10-27-DISC033 (founder-attested form for the DISC-033 illustrations, extending the form of PN-FDR-2026-10-26-DISC031 to these files on the discovery and library-card surfaces only)",
+      "service_terms": {
+        "openai": "OpenAI Terms of Use: as between the user and OpenAI, the user owns the output; the user is responsible for the inputs they provide. (Same wording as the DISC-031 record, PN-FDR-2026-10-26-DISC031.)"
+      },
+      "content_credentials": {
+        "embeds_c2pa": false,
+        "note": "The two PNG masters carry OpenAI's C2PA content credentials (see generated.c2pa_evidence); the retouch and web re-encoding remove them from the derivatives."
+      }
+    },
+    {
+      "asset": "assets/disc033/img/DISC-033-IMG-01-DRIVEWAY-BEFORE-M-640.webp",
+      "sha256": "ef847f0fde4cac77277f45414f271b282b5d2ed519429dfd8d54153cf53c03a0",
+      "bytes": 112948,
+      "pixels": [
+        640,
+        800
+      ],
+      "class": "AI_ILLUSTRATION",
+      "what": "The driveway before: an attractive Irish suburban house, a block-paved driveway behind a wide open entrance, a slim strip and grate in the paving (BEFORE side of the hero comparison)",
+      "generated": {
+        "tool": "ChatGPT image generation (OpenAI, gpt-image), per the master's C2PA content credentials; then a documented badge retouch and Pillow web encoding by the PlotNua build session",
+        "date": "2026-10-27",
+        "source_master": {
+          "file": "DISC-033-IMG-01-DRIVEWAY-BEFORE-MASTER.png (founder's Mac, folder 03 Website/Live Website/DISC-033-Image-Production-2026-10-27/masters; unchanged)",
+          "sha256": "e0b715ad0f0daefd736d16e2b3623c9542895c8ac5652279a43c6ddfa86275c5",
+          "bytes": 3708078
+        },
+        "processing_chain": [
+          {
+            "step": "Master: generated in ChatGPT (gpt-image) by the founder on 27 Oct 2026, per its C2PA content credentials",
+            "prompt": "UNAVAILABLE (see prompt_status): not supplied; not reconstructed"
+          },
+          {
+            "step": "Badge retouch (founder instruction, Stage 3 review, 27 Oct 2026): the car-maker's roundel on the parked car's tailgate removed from the web derivatives only; the master is unchanged",
+            "tool": "OpenCV 5.0 cv2.inpaint (INPAINT_TELEA, radius 3) on a copy of the master",
+            "region": "ellipse centre (1257,475), radii 7x6 px; 144 pixels changed, bounding box x 1250-1264, y 469-481 of 1536 x 1024",
+            "intermediate_sha256": "06a0fd990a0b1d9bc4995637fc3efd858ef9a30389527bebfc5cd7b52e5c2ff3",
+            "note": "Only the badge area changed; the pair's alignment is unaffected (the same small area in both images)"
+          },
+          {
+            "step": "Web encoding",
+            "tool": "Pillow; 4:5 art-directed crop, columns 600-1419 of the retouched source, resized to 640 x 800 (Lanczos), WebP"
+          }
+        ],
+        "c2pa_evidence": {
+          "manifest": "C2PA content credentials embedded in the master PNG, read with c2pa-python 0.38.1 on 27 Oct 2026",
+          "claim_generator": "OpenAI Media Service API",
+          "signed_by": "OpenAI OpCo, LLC",
+          "signed_at": "2026-10-27T15:31:41.643232+00:00",
+          "actions": [
+            "c2pa.created (softwareAgent ChatGPT, version gpt-image; digitalSourceType trainedAlgorithmicMedia)",
+            "c2pa.converted",
+            "c2pa.watermarked.unbound"
+          ],
+          "ingredients_recorded": [],
+          "validation": "content hash matches (assertion.dataHash.match) and claim signature validated; the local reader reports signingCredential.untrusted and signingCredential.invalid (missing required EKU) because no trust anchors are loaded, as for DISC-032"
+        }
+      },
+      "depicts_named_product": false,
+      "depicts_named_organisation": false,
+      "human_review": {
+        "reviewer": "Colin MacAulay",
+        "date": "2026-10-27",
+        "attests": "Founder confirmed on 27 Oct 2026 that both masters were generated with ChatGPT, that IMG-02 was generated after IMG-01 and that no third-party supplier or listing photographs were supplied; approved the images and the visual direction (Stage 3 review, 27 Oct 2026) and instructed the badge removal from the web derivatives. Labelled as an AI-generated illustration; not presented as a photograph of a real property, of any installation described on the page, or of any manufacturer's or supplier's product. Publication remains subject to the founder's release approval."
+      },
+      "permitted_surfaces": [
+        "discovery",
+        "library-card"
+      ],
+      "prompt_status": "UNAVAILABLE",
+      "reference_disclosure": {
+        "status": "UNCERTAIN",
+        "statement": "ChatGPT's content credentials record no ingredients for either master, which is not evidence that no image was supplied in the conversation. The two masters align to about 1 px (architecture) and 3 px (the car), which is typical of one image having been made from the other rather than of two free generations; the founder confirms IMG-02 was generated after IMG-01 but the exact image-to-image derivation relationship is not verified. The founder states that no third-party supplier or listing photographs were supplied; that statement is recorded alongside and is not independently verifiable from the credentials, so the status remains UNCERTAIN.",
+        "evidence": "C2PA content credentials of both masters, read 27 Oct 2026; pair alignment by the build session, 27 Oct 2026 (502 of 535 feature matches consistent; median 1.03 px; car median 3.1 px)",
+        "founder_statement": "Founder statement (Colin MacAulay, 27 Oct 2026): both images were generated using ChatGPT; multiple attempts were made to establish the Before image; IMG-02 was generated after IMG-01; no third-party supplier or listing photographs were supplied; the exact image-to-image derivation relationship is not verified."
+      },
+      "resemblance_review": {
+        "date": "2026-10-27",
+        "reviewed_by": "PlotNua build session; accepted by the founder, Colin MacAulay, 27 Oct 2026 (Stage 3 review)",
+        "compared_against": "Identifiable third-party content in general (manufacturer products and barrier designs, brand marks, signage, text, recognisable real addresses) and the manufacturers named in the research (FloodBreak, Flood Control International, Aggeres, Watersmart, DEFE)",
+        "findings": [
+          "A car-maker's roundel on the parked car was legible in both masters; it is removed from every web derivative by the documented retouch (processing_chain step 2)",
+          "No other logo, brand name, signage, number plate or legible text appears",
+          "The house is a generic Irish suburban house with no address, number or distinctive landmark",
+          "The barrier is a plain generic panel with end posts; it is not drawn to any manufacturer's design and is not presented as any product"
+        ],
+        "verdict": "after the badge retouch, no identifiable third-party product, brand or property is reproduced, on visual inspection. Whether any reference image was used in generation is not established (see reference_disclosure)."
+      },
+      "decision_ref": "PN-FDR-2026-10-27-DISC033 (founder-attested form for the DISC-033 illustrations, extending the form of PN-FDR-2026-10-26-DISC031 to these files on the discovery and library-card surfaces only)",
+      "service_terms": {
+        "openai": "OpenAI Terms of Use: as between the user and OpenAI, the user owns the output; the user is responsible for the inputs they provide. (Same wording as the DISC-031 record, PN-FDR-2026-10-26-DISC031.)"
+      },
+      "content_credentials": {
+        "embeds_c2pa": false,
+        "note": "The two PNG masters carry OpenAI's C2PA content credentials (see generated.c2pa_evidence); the retouch and web re-encoding remove them from the derivatives."
+      }
+    },
+    {
+      "asset": "assets/disc033/img/DISC-033-IMG-01-DRIVEWAY-BEFORE-M-819.webp",
+      "sha256": "9275eedd9585fb0e001bfaf3084a4eb50e813743c6389280daa9b3134416b678",
+      "bytes": 154600,
+      "pixels": [
+        819,
+        1024
+      ],
+      "class": "AI_ILLUSTRATION",
+      "what": "The driveway before: an attractive Irish suburban house, a block-paved driveway behind a wide open entrance, a slim strip and grate in the paving (BEFORE side of the hero comparison)",
+      "generated": {
+        "tool": "ChatGPT image generation (OpenAI, gpt-image), per the master's C2PA content credentials; then a documented badge retouch and Pillow web encoding by the PlotNua build session",
+        "date": "2026-10-27",
+        "source_master": {
+          "file": "DISC-033-IMG-01-DRIVEWAY-BEFORE-MASTER.png (founder's Mac, folder 03 Website/Live Website/DISC-033-Image-Production-2026-10-27/masters; unchanged)",
+          "sha256": "e0b715ad0f0daefd736d16e2b3623c9542895c8ac5652279a43c6ddfa86275c5",
+          "bytes": 3708078
+        },
+        "processing_chain": [
+          {
+            "step": "Master: generated in ChatGPT (gpt-image) by the founder on 27 Oct 2026, per its C2PA content credentials",
+            "prompt": "UNAVAILABLE (see prompt_status): not supplied; not reconstructed"
+          },
+          {
+            "step": "Badge retouch (founder instruction, Stage 3 review, 27 Oct 2026): the car-maker's roundel on the parked car's tailgate removed from the web derivatives only; the master is unchanged",
+            "tool": "OpenCV 5.0 cv2.inpaint (INPAINT_TELEA, radius 3) on a copy of the master",
+            "region": "ellipse centre (1257,475), radii 7x6 px; 144 pixels changed, bounding box x 1250-1264, y 469-481 of 1536 x 1024",
+            "intermediate_sha256": "06a0fd990a0b1d9bc4995637fc3efd858ef9a30389527bebfc5cd7b52e5c2ff3",
+            "note": "Only the badge area changed; the pair's alignment is unaffected (the same small area in both images)"
+          },
+          {
+            "step": "Web encoding",
+            "tool": "Pillow; 4:5 art-directed crop, columns 600-1419 of the retouched source, WebP"
+          }
+        ],
+        "c2pa_evidence": {
+          "manifest": "C2PA content credentials embedded in the master PNG, read with c2pa-python 0.38.1 on 27 Oct 2026",
+          "claim_generator": "OpenAI Media Service API",
+          "signed_by": "OpenAI OpCo, LLC",
+          "signed_at": "2026-10-27T15:31:41.643232+00:00",
+          "actions": [
+            "c2pa.created (softwareAgent ChatGPT, version gpt-image; digitalSourceType trainedAlgorithmicMedia)",
+            "c2pa.converted",
+            "c2pa.watermarked.unbound"
+          ],
+          "ingredients_recorded": [],
+          "validation": "content hash matches (assertion.dataHash.match) and claim signature validated; the local reader reports signingCredential.untrusted and signingCredential.invalid (missing required EKU) because no trust anchors are loaded, as for DISC-032"
+        }
+      },
+      "depicts_named_product": false,
+      "depicts_named_organisation": false,
+      "human_review": {
+        "reviewer": "Colin MacAulay",
+        "date": "2026-10-27",
+        "attests": "Founder confirmed on 27 Oct 2026 that both masters were generated with ChatGPT, that IMG-02 was generated after IMG-01 and that no third-party supplier or listing photographs were supplied; approved the images and the visual direction (Stage 3 review, 27 Oct 2026) and instructed the badge removal from the web derivatives. Labelled as an AI-generated illustration; not presented as a photograph of a real property, of any installation described on the page, or of any manufacturer's or supplier's product. Publication remains subject to the founder's release approval."
+      },
+      "permitted_surfaces": [
+        "discovery",
+        "library-card"
+      ],
+      "prompt_status": "UNAVAILABLE",
+      "reference_disclosure": {
+        "status": "UNCERTAIN",
+        "statement": "ChatGPT's content credentials record no ingredients for either master, which is not evidence that no image was supplied in the conversation. The two masters align to about 1 px (architecture) and 3 px (the car), which is typical of one image having been made from the other rather than of two free generations; the founder confirms IMG-02 was generated after IMG-01 but the exact image-to-image derivation relationship is not verified. The founder states that no third-party supplier or listing photographs were supplied; that statement is recorded alongside and is not independently verifiable from the credentials, so the status remains UNCERTAIN.",
+        "evidence": "C2PA content credentials of both masters, read 27 Oct 2026; pair alignment by the build session, 27 Oct 2026 (502 of 535 feature matches consistent; median 1.03 px; car median 3.1 px)",
+        "founder_statement": "Founder statement (Colin MacAulay, 27 Oct 2026): both images were generated using ChatGPT; multiple attempts were made to establish the Before image; IMG-02 was generated after IMG-01; no third-party supplier or listing photographs were supplied; the exact image-to-image derivation relationship is not verified."
+      },
+      "resemblance_review": {
+        "date": "2026-10-27",
+        "reviewed_by": "PlotNua build session; accepted by the founder, Colin MacAulay, 27 Oct 2026 (Stage 3 review)",
+        "compared_against": "Identifiable third-party content in general (manufacturer products and barrier designs, brand marks, signage, text, recognisable real addresses) and the manufacturers named in the research (FloodBreak, Flood Control International, Aggeres, Watersmart, DEFE)",
+        "findings": [
+          "A car-maker's roundel on the parked car was legible in both masters; it is removed from every web derivative by the documented retouch (processing_chain step 2)",
+          "No other logo, brand name, signage, number plate or legible text appears",
+          "The house is a generic Irish suburban house with no address, number or distinctive landmark",
+          "The barrier is a plain generic panel with end posts; it is not drawn to any manufacturer's design and is not presented as any product"
+        ],
+        "verdict": "after the badge retouch, no identifiable third-party product, brand or property is reproduced, on visual inspection. Whether any reference image was used in generation is not established (see reference_disclosure)."
+      },
+      "decision_ref": "PN-FDR-2026-10-27-DISC033 (founder-attested form for the DISC-033 illustrations, extending the form of PN-FDR-2026-10-26-DISC031 to these files on the discovery and library-card surfaces only)",
+      "service_terms": {
+        "openai": "OpenAI Terms of Use: as between the user and OpenAI, the user owns the output; the user is responsible for the inputs they provide. (Same wording as the DISC-031 record, PN-FDR-2026-10-26-DISC031.)"
+      },
+      "content_credentials": {
+        "embeds_c2pa": false,
+        "note": "The two PNG masters carry OpenAI's C2PA content credentials (see generated.c2pa_evidence); the retouch and web re-encoding remove them from the derivatives."
+      }
+    },
+    {
+      "asset": "assets/disc033/img/DISC-033-IMG-02-DRIVEWAY-POSSIBLE-1024.jpg",
+      "sha256": "c1c80efd7c3f39309a92fca1466cc317086f7dec3180b4981231a764a098c532",
+      "bytes": 203572,
+      "pixels": [
+        1024,
+        683
+      ],
+      "class": "AI_ILLUSTRATION",
+      "what": "The same driveway as floodwater arrives: a generic barrier risen across the entrance, shallow water held on the street side, the driveway behind dry (POSSIBLE side of the hero comparison)",
+      "generated": {
+        "tool": "ChatGPT image generation (OpenAI, gpt-image), per the master's C2PA content credentials; then a documented badge retouch and Pillow web encoding by the PlotNua build session",
+        "date": "2026-10-27",
+        "source_master": {
+          "file": "DISC-033-IMG-02-DRIVEWAY-POSSIBLE-MASTER.png (founder's Mac, folder 03 Website/Live Website/DISC-033-Image-Production-2026-10-27/masters; unchanged)",
+          "sha256": "46677d826416ae4101fadbaa1d72d4f3c161447aefadfc29538a2ec5695c6fcd",
+          "bytes": 3267547
+        },
+        "processing_chain": [
+          {
+            "step": "Master: generated in ChatGPT (gpt-image) by the founder on 27 Oct 2026, per its C2PA content credentials",
+            "prompt": "UNAVAILABLE (see prompt_status): not supplied; not reconstructed"
+          },
+          {
+            "step": "Badge retouch (founder instruction, Stage 3 review, 27 Oct 2026): the car-maker's roundel on the parked car's tailgate removed from the web derivatives only; the master is unchanged",
+            "tool": "OpenCV 5.0 cv2.inpaint (INPAINT_TELEA, radius 3) on a copy of the master",
+            "region": "ellipse centre (1260,474), radii 7x6 px; 145 pixels changed, bounding box x 1253-1267, y 468-480 of 1536 x 1024",
+            "intermediate_sha256": "1e2b8fece1f36adecc8e2ec57b9d21f7fb0cbec94b64997ee7f48a22998b351c",
+            "note": "Only the badge area changed; the pair's alignment is unaffected (the same small area in both images)"
+          },
+          {
+            "step": "Web encoding",
+            "tool": "Pillow; resize to 1024 px wide (Lanczos), JPEG; no other change"
+          }
+        ],
+        "c2pa_evidence": {
+          "manifest": "C2PA content credentials embedded in the master PNG, read with c2pa-python 0.38.1 on 27 Oct 2026",
+          "claim_generator": "OpenAI Media Service API",
+          "signed_by": "OpenAI OpCo, LLC",
+          "signed_at": "2026-10-27T15:56:27.504984+00:00",
+          "actions": [
+            "c2pa.created (softwareAgent ChatGPT, version gpt-image; digitalSourceType trainedAlgorithmicMedia)",
+            "c2pa.converted",
+            "c2pa.watermarked.unbound"
+          ],
+          "ingredients_recorded": [],
+          "validation": "content hash matches (assertion.dataHash.match) and claim signature validated; the local reader reports signingCredential.untrusted and signingCredential.invalid (missing required EKU) because no trust anchors are loaded, as for DISC-032"
+        }
+      },
+      "depicts_named_product": false,
+      "depicts_named_organisation": false,
+      "human_review": {
+        "reviewer": "Colin MacAulay",
+        "date": "2026-10-27",
+        "attests": "Founder confirmed on 27 Oct 2026 that both masters were generated with ChatGPT, that IMG-02 was generated after IMG-01 and that no third-party supplier or listing photographs were supplied; approved the images and the visual direction (Stage 3 review, 27 Oct 2026) and instructed the badge removal from the web derivatives. Labelled as an AI-generated illustration; not presented as a photograph of a real property, of any installation described on the page, or of any manufacturer's or supplier's product. Publication remains subject to the founder's release approval."
+      },
+      "permitted_surfaces": [
+        "discovery",
+        "library-card"
+      ],
+      "prompt_status": "UNAVAILABLE",
+      "reference_disclosure": {
+        "status": "UNCERTAIN",
+        "statement": "ChatGPT's content credentials record no ingredients for either master, which is not evidence that no image was supplied in the conversation. The two masters align to about 1 px (architecture) and 3 px (the car), which is typical of one image having been made from the other rather than of two free generations; the founder confirms IMG-02 was generated after IMG-01 but the exact image-to-image derivation relationship is not verified. The founder states that no third-party supplier or listing photographs were supplied; that statement is recorded alongside and is not independently verifiable from the credentials, so the status remains UNCERTAIN.",
+        "evidence": "C2PA content credentials of both masters, read 27 Oct 2026; pair alignment by the build session, 27 Oct 2026 (502 of 535 feature matches consistent; median 1.03 px; car median 3.1 px)",
+        "founder_statement": "Founder statement (Colin MacAulay, 27 Oct 2026): both images were generated using ChatGPT; multiple attempts were made to establish the Before image; IMG-02 was generated after IMG-01; no third-party supplier or listing photographs were supplied; the exact image-to-image derivation relationship is not verified."
+      },
+      "resemblance_review": {
+        "date": "2026-10-27",
+        "reviewed_by": "PlotNua build session; accepted by the founder, Colin MacAulay, 27 Oct 2026 (Stage 3 review)",
+        "compared_against": "Identifiable third-party content in general (manufacturer products and barrier designs, brand marks, signage, text, recognisable real addresses) and the manufacturers named in the research (FloodBreak, Flood Control International, Aggeres, Watersmart, DEFE)",
+        "findings": [
+          "A car-maker's roundel on the parked car was legible in both masters; it is removed from every web derivative by the documented retouch (processing_chain step 2)",
+          "No other logo, brand name, signage, number plate or legible text appears",
+          "The house is a generic Irish suburban house with no address, number or distinctive landmark",
+          "The barrier is a plain generic panel with end posts; it is not drawn to any manufacturer's design and is not presented as any product"
+        ],
+        "verdict": "after the badge retouch, no identifiable third-party product, brand or property is reproduced, on visual inspection. Whether any reference image was used in generation is not established (see reference_disclosure)."
+      },
+      "decision_ref": "PN-FDR-2026-10-27-DISC033 (founder-attested form for the DISC-033 illustrations, extending the form of PN-FDR-2026-10-26-DISC031 to these files on the discovery and library-card surfaces only)",
+      "service_terms": {
+        "openai": "OpenAI Terms of Use: as between the user and OpenAI, the user owns the output; the user is responsible for the inputs they provide. (Same wording as the DISC-031 record, PN-FDR-2026-10-26-DISC031.)"
+      },
+      "content_credentials": {
+        "embeds_c2pa": false,
+        "note": "The two PNG masters carry OpenAI's C2PA content credentials (see generated.c2pa_evidence); the retouch and web re-encoding remove them from the derivatives."
+      }
+    },
+    {
+      "asset": "assets/disc033/img/DISC-033-IMG-02-DRIVEWAY-POSSIBLE-1024.webp",
+      "sha256": "cb826c5b34159f74514124c4dc59d042f8ebef074f8c8b2615367378fa27e003",
+      "bytes": 158652,
+      "pixels": [
+        1024,
+        683
+      ],
+      "class": "AI_ILLUSTRATION",
+      "what": "The same driveway as floodwater arrives: a generic barrier risen across the entrance, shallow water held on the street side, the driveway behind dry (POSSIBLE side of the hero comparison)",
+      "generated": {
+        "tool": "ChatGPT image generation (OpenAI, gpt-image), per the master's C2PA content credentials; then a documented badge retouch and Pillow web encoding by the PlotNua build session",
+        "date": "2026-10-27",
+        "source_master": {
+          "file": "DISC-033-IMG-02-DRIVEWAY-POSSIBLE-MASTER.png (founder's Mac, folder 03 Website/Live Website/DISC-033-Image-Production-2026-10-27/masters; unchanged)",
+          "sha256": "46677d826416ae4101fadbaa1d72d4f3c161447aefadfc29538a2ec5695c6fcd",
+          "bytes": 3267547
+        },
+        "processing_chain": [
+          {
+            "step": "Master: generated in ChatGPT (gpt-image) by the founder on 27 Oct 2026, per its C2PA content credentials",
+            "prompt": "UNAVAILABLE (see prompt_status): not supplied; not reconstructed"
+          },
+          {
+            "step": "Badge retouch (founder instruction, Stage 3 review, 27 Oct 2026): the car-maker's roundel on the parked car's tailgate removed from the web derivatives only; the master is unchanged",
+            "tool": "OpenCV 5.0 cv2.inpaint (INPAINT_TELEA, radius 3) on a copy of the master",
+            "region": "ellipse centre (1260,474), radii 7x6 px; 145 pixels changed, bounding box x 1253-1267, y 468-480 of 1536 x 1024",
+            "intermediate_sha256": "1e2b8fece1f36adecc8e2ec57b9d21f7fb0cbec94b64997ee7f48a22998b351c",
+            "note": "Only the badge area changed; the pair's alignment is unaffected (the same small area in both images)"
+          },
+          {
+            "step": "Web encoding",
+            "tool": "Pillow; resize to 1024 px wide (Lanczos), WebP; no other change"
+          }
+        ],
+        "c2pa_evidence": {
+          "manifest": "C2PA content credentials embedded in the master PNG, read with c2pa-python 0.38.1 on 27 Oct 2026",
+          "claim_generator": "OpenAI Media Service API",
+          "signed_by": "OpenAI OpCo, LLC",
+          "signed_at": "2026-10-27T15:56:27.504984+00:00",
+          "actions": [
+            "c2pa.created (softwareAgent ChatGPT, version gpt-image; digitalSourceType trainedAlgorithmicMedia)",
+            "c2pa.converted",
+            "c2pa.watermarked.unbound"
+          ],
+          "ingredients_recorded": [],
+          "validation": "content hash matches (assertion.dataHash.match) and claim signature validated; the local reader reports signingCredential.untrusted and signingCredential.invalid (missing required EKU) because no trust anchors are loaded, as for DISC-032"
+        }
+      },
+      "depicts_named_product": false,
+      "depicts_named_organisation": false,
+      "human_review": {
+        "reviewer": "Colin MacAulay",
+        "date": "2026-10-27",
+        "attests": "Founder confirmed on 27 Oct 2026 that both masters were generated with ChatGPT, that IMG-02 was generated after IMG-01 and that no third-party supplier or listing photographs were supplied; approved the images and the visual direction (Stage 3 review, 27 Oct 2026) and instructed the badge removal from the web derivatives. Labelled as an AI-generated illustration; not presented as a photograph of a real property, of any installation described on the page, or of any manufacturer's or supplier's product. Publication remains subject to the founder's release approval."
+      },
+      "permitted_surfaces": [
+        "discovery",
+        "library-card"
+      ],
+      "prompt_status": "UNAVAILABLE",
+      "reference_disclosure": {
+        "status": "UNCERTAIN",
+        "statement": "ChatGPT's content credentials record no ingredients for either master, which is not evidence that no image was supplied in the conversation. The two masters align to about 1 px (architecture) and 3 px (the car), which is typical of one image having been made from the other rather than of two free generations; the founder confirms IMG-02 was generated after IMG-01 but the exact image-to-image derivation relationship is not verified. The founder states that no third-party supplier or listing photographs were supplied; that statement is recorded alongside and is not independently verifiable from the credentials, so the status remains UNCERTAIN.",
+        "evidence": "C2PA content credentials of both masters, read 27 Oct 2026; pair alignment by the build session, 27 Oct 2026 (502 of 535 feature matches consistent; median 1.03 px; car median 3.1 px)",
+        "founder_statement": "Founder statement (Colin MacAulay, 27 Oct 2026): both images were generated using ChatGPT; multiple attempts were made to establish the Before image; IMG-02 was generated after IMG-01; no third-party supplier or listing photographs were supplied; the exact image-to-image derivation relationship is not verified."
+      },
+      "resemblance_review": {
+        "date": "2026-10-27",
+        "reviewed_by": "PlotNua build session; accepted by the founder, Colin MacAulay, 27 Oct 2026 (Stage 3 review)",
+        "compared_against": "Identifiable third-party content in general (manufacturer products and barrier designs, brand marks, signage, text, recognisable real addresses) and the manufacturers named in the research (FloodBreak, Flood Control International, Aggeres, Watersmart, DEFE)",
+        "findings": [
+          "A car-maker's roundel on the parked car was legible in both masters; it is removed from every web derivative by the documented retouch (processing_chain step 2)",
+          "No other logo, brand name, signage, number plate or legible text appears",
+          "The house is a generic Irish suburban house with no address, number or distinctive landmark",
+          "The barrier is a plain generic panel with end posts; it is not drawn to any manufacturer's design and is not presented as any product"
+        ],
+        "verdict": "after the badge retouch, no identifiable third-party product, brand or property is reproduced, on visual inspection. Whether any reference image was used in generation is not established (see reference_disclosure)."
+      },
+      "decision_ref": "PN-FDR-2026-10-27-DISC033 (founder-attested form for the DISC-033 illustrations, extending the form of PN-FDR-2026-10-26-DISC031 to these files on the discovery and library-card surfaces only)",
+      "service_terms": {
+        "openai": "OpenAI Terms of Use: as between the user and OpenAI, the user owns the output; the user is responsible for the inputs they provide. (Same wording as the DISC-031 record, PN-FDR-2026-10-26-DISC031.)"
+      },
+      "content_credentials": {
+        "embeds_c2pa": false,
+        "note": "The two PNG masters carry OpenAI's C2PA content credentials (see generated.c2pa_evidence); the retouch and web re-encoding remove them from the derivatives."
+      }
+    },
+    {
+      "asset": "assets/disc033/img/DISC-033-IMG-02-DRIVEWAY-POSSIBLE-1536.webp",
+      "sha256": "d1d2abf2b3f2737600ed4934056e029ebc0e88d54d529f2901a8ccbd7cde8877",
+      "bytes": 257234,
+      "pixels": [
+        1536,
+        1024
+      ],
+      "class": "AI_ILLUSTRATION",
+      "what": "The same driveway as floodwater arrives: a generic barrier risen across the entrance, shallow water held on the street side, the driveway behind dry (POSSIBLE side of the hero comparison)",
+      "generated": {
+        "tool": "ChatGPT image generation (OpenAI, gpt-image), per the master's C2PA content credentials; then a documented badge retouch and Pillow web encoding by the PlotNua build session",
+        "date": "2026-10-27",
+        "source_master": {
+          "file": "DISC-033-IMG-02-DRIVEWAY-POSSIBLE-MASTER.png (founder's Mac, folder 03 Website/Live Website/DISC-033-Image-Production-2026-10-27/masters; unchanged)",
+          "sha256": "46677d826416ae4101fadbaa1d72d4f3c161447aefadfc29538a2ec5695c6fcd",
+          "bytes": 3267547
+        },
+        "processing_chain": [
+          {
+            "step": "Master: generated in ChatGPT (gpt-image) by the founder on 27 Oct 2026, per its C2PA content credentials",
+            "prompt": "UNAVAILABLE (see prompt_status): not supplied; not reconstructed"
+          },
+          {
+            "step": "Badge retouch (founder instruction, Stage 3 review, 27 Oct 2026): the car-maker's roundel on the parked car's tailgate removed from the web derivatives only; the master is unchanged",
+            "tool": "OpenCV 5.0 cv2.inpaint (INPAINT_TELEA, radius 3) on a copy of the master",
+            "region": "ellipse centre (1260,474), radii 7x6 px; 145 pixels changed, bounding box x 1253-1267, y 468-480 of 1536 x 1024",
+            "intermediate_sha256": "1e2b8fece1f36adecc8e2ec57b9d21f7fb0cbec94b64997ee7f48a22998b351c",
+            "note": "Only the badge area changed; the pair's alignment is unaffected (the same small area in both images)"
+          },
+          {
+            "step": "Web encoding",
+            "tool": "Pillow; resize to 1536 px wide (Lanczos), WebP; no other change"
+          }
+        ],
+        "c2pa_evidence": {
+          "manifest": "C2PA content credentials embedded in the master PNG, read with c2pa-python 0.38.1 on 27 Oct 2026",
+          "claim_generator": "OpenAI Media Service API",
+          "signed_by": "OpenAI OpCo, LLC",
+          "signed_at": "2026-10-27T15:56:27.504984+00:00",
+          "actions": [
+            "c2pa.created (softwareAgent ChatGPT, version gpt-image; digitalSourceType trainedAlgorithmicMedia)",
+            "c2pa.converted",
+            "c2pa.watermarked.unbound"
+          ],
+          "ingredients_recorded": [],
+          "validation": "content hash matches (assertion.dataHash.match) and claim signature validated; the local reader reports signingCredential.untrusted and signingCredential.invalid (missing required EKU) because no trust anchors are loaded, as for DISC-032"
+        }
+      },
+      "depicts_named_product": false,
+      "depicts_named_organisation": false,
+      "human_review": {
+        "reviewer": "Colin MacAulay",
+        "date": "2026-10-27",
+        "attests": "Founder confirmed on 27 Oct 2026 that both masters were generated with ChatGPT, that IMG-02 was generated after IMG-01 and that no third-party supplier or listing photographs were supplied; approved the images and the visual direction (Stage 3 review, 27 Oct 2026) and instructed the badge removal from the web derivatives. Labelled as an AI-generated illustration; not presented as a photograph of a real property, of any installation described on the page, or of any manufacturer's or supplier's product. Publication remains subject to the founder's release approval."
+      },
+      "permitted_surfaces": [
+        "discovery",
+        "library-card"
+      ],
+      "prompt_status": "UNAVAILABLE",
+      "reference_disclosure": {
+        "status": "UNCERTAIN",
+        "statement": "ChatGPT's content credentials record no ingredients for either master, which is not evidence that no image was supplied in the conversation. The two masters align to about 1 px (architecture) and 3 px (the car), which is typical of one image having been made from the other rather than of two free generations; the founder confirms IMG-02 was generated after IMG-01 but the exact image-to-image derivation relationship is not verified. The founder states that no third-party supplier or listing photographs were supplied; that statement is recorded alongside and is not independently verifiable from the credentials, so the status remains UNCERTAIN.",
+        "evidence": "C2PA content credentials of both masters, read 27 Oct 2026; pair alignment by the build session, 27 Oct 2026 (502 of 535 feature matches consistent; median 1.03 px; car median 3.1 px)",
+        "founder_statement": "Founder statement (Colin MacAulay, 27 Oct 2026): both images were generated using ChatGPT; multiple attempts were made to establish the Before image; IMG-02 was generated after IMG-01; no third-party supplier or listing photographs were supplied; the exact image-to-image derivation relationship is not verified."
+      },
+      "resemblance_review": {
+        "date": "2026-10-27",
+        "reviewed_by": "PlotNua build session; accepted by the founder, Colin MacAulay, 27 Oct 2026 (Stage 3 review)",
+        "compared_against": "Identifiable third-party content in general (manufacturer products and barrier designs, brand marks, signage, text, recognisable real addresses) and the manufacturers named in the research (FloodBreak, Flood Control International, Aggeres, Watersmart, DEFE)",
+        "findings": [
+          "A car-maker's roundel on the parked car was legible in both masters; it is removed from every web derivative by the documented retouch (processing_chain step 2)",
+          "No other logo, brand name, signage, number plate or legible text appears",
+          "The house is a generic Irish suburban house with no address, number or distinctive landmark",
+          "The barrier is a plain generic panel with end posts; it is not drawn to any manufacturer's design and is not presented as any product"
+        ],
+        "verdict": "after the badge retouch, no identifiable third-party product, brand or property is reproduced, on visual inspection. Whether any reference image was used in generation is not established (see reference_disclosure)."
+      },
+      "decision_ref": "PN-FDR-2026-10-27-DISC033 (founder-attested form for the DISC-033 illustrations, extending the form of PN-FDR-2026-10-26-DISC031 to these files on the discovery and library-card surfaces only)",
+      "service_terms": {
+        "openai": "OpenAI Terms of Use: as between the user and OpenAI, the user owns the output; the user is responsible for the inputs they provide. (Same wording as the DISC-031 record, PN-FDR-2026-10-26-DISC031.)"
+      },
+      "content_credentials": {
+        "embeds_c2pa": false,
+        "note": "The two PNG masters carry OpenAI's C2PA content credentials (see generated.c2pa_evidence); the retouch and web re-encoding remove them from the derivatives."
+      }
+    },
+    {
+      "asset": "assets/disc033/img/DISC-033-IMG-02-DRIVEWAY-POSSIBLE-768.webp",
+      "sha256": "99c2cf1ecc026ef88f3ccf4522e12ad8540503de0a3997b49171b1d816286df2",
+      "bytes": 107372,
+      "pixels": [
+        768,
+        512
+      ],
+      "class": "AI_ILLUSTRATION",
+      "what": "The same driveway as floodwater arrives: a generic barrier risen across the entrance, shallow water held on the street side, the driveway behind dry (POSSIBLE side of the hero comparison)",
+      "generated": {
+        "tool": "ChatGPT image generation (OpenAI, gpt-image), per the master's C2PA content credentials; then a documented badge retouch and Pillow web encoding by the PlotNua build session",
+        "date": "2026-10-27",
+        "source_master": {
+          "file": "DISC-033-IMG-02-DRIVEWAY-POSSIBLE-MASTER.png (founder's Mac, folder 03 Website/Live Website/DISC-033-Image-Production-2026-10-27/masters; unchanged)",
+          "sha256": "46677d826416ae4101fadbaa1d72d4f3c161447aefadfc29538a2ec5695c6fcd",
+          "bytes": 3267547
+        },
+        "processing_chain": [
+          {
+            "step": "Master: generated in ChatGPT (gpt-image) by the founder on 27 Oct 2026, per its C2PA content credentials",
+            "prompt": "UNAVAILABLE (see prompt_status): not supplied; not reconstructed"
+          },
+          {
+            "step": "Badge retouch (founder instruction, Stage 3 review, 27 Oct 2026): the car-maker's roundel on the parked car's tailgate removed from the web derivatives only; the master is unchanged",
+            "tool": "OpenCV 5.0 cv2.inpaint (INPAINT_TELEA, radius 3) on a copy of the master",
+            "region": "ellipse centre (1260,474), radii 7x6 px; 145 pixels changed, bounding box x 1253-1267, y 468-480 of 1536 x 1024",
+            "intermediate_sha256": "1e2b8fece1f36adecc8e2ec57b9d21f7fb0cbec94b64997ee7f48a22998b351c",
+            "note": "Only the badge area changed; the pair's alignment is unaffected (the same small area in both images)"
+          },
+          {
+            "step": "Web encoding",
+            "tool": "Pillow; resize to 768 px wide (Lanczos), WebP; no other change"
+          }
+        ],
+        "c2pa_evidence": {
+          "manifest": "C2PA content credentials embedded in the master PNG, read with c2pa-python 0.38.1 on 27 Oct 2026",
+          "claim_generator": "OpenAI Media Service API",
+          "signed_by": "OpenAI OpCo, LLC",
+          "signed_at": "2026-10-27T15:56:27.504984+00:00",
+          "actions": [
+            "c2pa.created (softwareAgent ChatGPT, version gpt-image; digitalSourceType trainedAlgorithmicMedia)",
+            "c2pa.converted",
+            "c2pa.watermarked.unbound"
+          ],
+          "ingredients_recorded": [],
+          "validation": "content hash matches (assertion.dataHash.match) and claim signature validated; the local reader reports signingCredential.untrusted and signingCredential.invalid (missing required EKU) because no trust anchors are loaded, as for DISC-032"
+        }
+      },
+      "depicts_named_product": false,
+      "depicts_named_organisation": false,
+      "human_review": {
+        "reviewer": "Colin MacAulay",
+        "date": "2026-10-27",
+        "attests": "Founder confirmed on 27 Oct 2026 that both masters were generated with ChatGPT, that IMG-02 was generated after IMG-01 and that no third-party supplier or listing photographs were supplied; approved the images and the visual direction (Stage 3 review, 27 Oct 2026) and instructed the badge removal from the web derivatives. Labelled as an AI-generated illustration; not presented as a photograph of a real property, of any installation described on the page, or of any manufacturer's or supplier's product. Publication remains subject to the founder's release approval."
+      },
+      "permitted_surfaces": [
+        "discovery",
+        "library-card"
+      ],
+      "prompt_status": "UNAVAILABLE",
+      "reference_disclosure": {
+        "status": "UNCERTAIN",
+        "statement": "ChatGPT's content credentials record no ingredients for either master, which is not evidence that no image was supplied in the conversation. The two masters align to about 1 px (architecture) and 3 px (the car), which is typical of one image having been made from the other rather than of two free generations; the founder confirms IMG-02 was generated after IMG-01 but the exact image-to-image derivation relationship is not verified. The founder states that no third-party supplier or listing photographs were supplied; that statement is recorded alongside and is not independently verifiable from the credentials, so the status remains UNCERTAIN.",
+        "evidence": "C2PA content credentials of both masters, read 27 Oct 2026; pair alignment by the build session, 27 Oct 2026 (502 of 535 feature matches consistent; median 1.03 px; car median 3.1 px)",
+        "founder_statement": "Founder statement (Colin MacAulay, 27 Oct 2026): both images were generated using ChatGPT; multiple attempts were made to establish the Before image; IMG-02 was generated after IMG-01; no third-party supplier or listing photographs were supplied; the exact image-to-image derivation relationship is not verified."
+      },
+      "resemblance_review": {
+        "date": "2026-10-27",
+        "reviewed_by": "PlotNua build session; accepted by the founder, Colin MacAulay, 27 Oct 2026 (Stage 3 review)",
+        "compared_against": "Identifiable third-party content in general (manufacturer products and barrier designs, brand marks, signage, text, recognisable real addresses) and the manufacturers named in the research (FloodBreak, Flood Control International, Aggeres, Watersmart, DEFE)",
+        "findings": [
+          "A car-maker's roundel on the parked car was legible in both masters; it is removed from every web derivative by the documented retouch (processing_chain step 2)",
+          "No other logo, brand name, signage, number plate or legible text appears",
+          "The house is a generic Irish suburban house with no address, number or distinctive landmark",
+          "The barrier is a plain generic panel with end posts; it is not drawn to any manufacturer's design and is not presented as any product"
+        ],
+        "verdict": "after the badge retouch, no identifiable third-party product, brand or property is reproduced, on visual inspection. Whether any reference image was used in generation is not established (see reference_disclosure)."
+      },
+      "decision_ref": "PN-FDR-2026-10-27-DISC033 (founder-attested form for the DISC-033 illustrations, extending the form of PN-FDR-2026-10-26-DISC031 to these files on the discovery and library-card surfaces only)",
+      "service_terms": {
+        "openai": "OpenAI Terms of Use: as between the user and OpenAI, the user owns the output; the user is responsible for the inputs they provide. (Same wording as the DISC-031 record, PN-FDR-2026-10-26-DISC031.)"
+      },
+      "content_credentials": {
+        "embeds_c2pa": false,
+        "note": "The two PNG masters carry OpenAI's C2PA content credentials (see generated.c2pa_evidence); the retouch and web re-encoding remove them from the derivatives."
+      }
+    },
+    {
+      "asset": "assets/disc033/img/DISC-033-IMG-02-DRIVEWAY-POSSIBLE-M-640.webp",
+      "sha256": "0e508779cbab580cdac03300ef9516b5549b7a49888945ce0b6aea10d04ad5ba",
+      "bytes": 89694,
+      "pixels": [
+        640,
+        800
+      ],
+      "class": "AI_ILLUSTRATION",
+      "what": "The same driveway as floodwater arrives: a generic barrier risen across the entrance, shallow water held on the street side, the driveway behind dry (POSSIBLE side of the hero comparison)",
+      "generated": {
+        "tool": "ChatGPT image generation (OpenAI, gpt-image), per the master's C2PA content credentials; then a documented badge retouch and Pillow web encoding by the PlotNua build session",
+        "date": "2026-10-27",
+        "source_master": {
+          "file": "DISC-033-IMG-02-DRIVEWAY-POSSIBLE-MASTER.png (founder's Mac, folder 03 Website/Live Website/DISC-033-Image-Production-2026-10-27/masters; unchanged)",
+          "sha256": "46677d826416ae4101fadbaa1d72d4f3c161447aefadfc29538a2ec5695c6fcd",
+          "bytes": 3267547
+        },
+        "processing_chain": [
+          {
+            "step": "Master: generated in ChatGPT (gpt-image) by the founder on 27 Oct 2026, per its C2PA content credentials",
+            "prompt": "UNAVAILABLE (see prompt_status): not supplied; not reconstructed"
+          },
+          {
+            "step": "Badge retouch (founder instruction, Stage 3 review, 27 Oct 2026): the car-maker's roundel on the parked car's tailgate removed from the web derivatives only; the master is unchanged",
+            "tool": "OpenCV 5.0 cv2.inpaint (INPAINT_TELEA, radius 3) on a copy of the master",
+            "region": "ellipse centre (1260,474), radii 7x6 px; 145 pixels changed, bounding box x 1253-1267, y 468-480 of 1536 x 1024",
+            "intermediate_sha256": "1e2b8fece1f36adecc8e2ec57b9d21f7fb0cbec94b64997ee7f48a22998b351c",
+            "note": "Only the badge area changed; the pair's alignment is unaffected (the same small area in both images)"
+          },
+          {
+            "step": "Web encoding",
+            "tool": "Pillow; 4:5 art-directed crop, columns 600-1419 of the retouched source, resized to 640 x 800 (Lanczos), WebP"
+          }
+        ],
+        "c2pa_evidence": {
+          "manifest": "C2PA content credentials embedded in the master PNG, read with c2pa-python 0.38.1 on 27 Oct 2026",
+          "claim_generator": "OpenAI Media Service API",
+          "signed_by": "OpenAI OpCo, LLC",
+          "signed_at": "2026-10-27T15:56:27.504984+00:00",
+          "actions": [
+            "c2pa.created (softwareAgent ChatGPT, version gpt-image; digitalSourceType trainedAlgorithmicMedia)",
+            "c2pa.converted",
+            "c2pa.watermarked.unbound"
+          ],
+          "ingredients_recorded": [],
+          "validation": "content hash matches (assertion.dataHash.match) and claim signature validated; the local reader reports signingCredential.untrusted and signingCredential.invalid (missing required EKU) because no trust anchors are loaded, as for DISC-032"
+        }
+      },
+      "depicts_named_product": false,
+      "depicts_named_organisation": false,
+      "human_review": {
+        "reviewer": "Colin MacAulay",
+        "date": "2026-10-27",
+        "attests": "Founder confirmed on 27 Oct 2026 that both masters were generated with ChatGPT, that IMG-02 was generated after IMG-01 and that no third-party supplier or listing photographs were supplied; approved the images and the visual direction (Stage 3 review, 27 Oct 2026) and instructed the badge removal from the web derivatives. Labelled as an AI-generated illustration; not presented as a photograph of a real property, of any installation described on the page, or of any manufacturer's or supplier's product. Publication remains subject to the founder's release approval."
+      },
+      "permitted_surfaces": [
+        "discovery",
+        "library-card"
+      ],
+      "prompt_status": "UNAVAILABLE",
+      "reference_disclosure": {
+        "status": "UNCERTAIN",
+        "statement": "ChatGPT's content credentials record no ingredients for either master, which is not evidence that no image was supplied in the conversation. The two masters align to about 1 px (architecture) and 3 px (the car), which is typical of one image having been made from the other rather than of two free generations; the founder confirms IMG-02 was generated after IMG-01 but the exact image-to-image derivation relationship is not verified. The founder states that no third-party supplier or listing photographs were supplied; that statement is recorded alongside and is not independently verifiable from the credentials, so the status remains UNCERTAIN.",
+        "evidence": "C2PA content credentials of both masters, read 27 Oct 2026; pair alignment by the build session, 27 Oct 2026 (502 of 535 feature matches consistent; median 1.03 px; car median 3.1 px)",
+        "founder_statement": "Founder statement (Colin MacAulay, 27 Oct 2026): both images were generated using ChatGPT; multiple attempts were made to establish the Before image; IMG-02 was generated after IMG-01; no third-party supplier or listing photographs were supplied; the exact image-to-image derivation relationship is not verified."
+      },
+      "resemblance_review": {
+        "date": "2026-10-27",
+        "reviewed_by": "PlotNua build session; accepted by the founder, Colin MacAulay, 27 Oct 2026 (Stage 3 review)",
+        "compared_against": "Identifiable third-party content in general (manufacturer products and barrier designs, brand marks, signage, text, recognisable real addresses) and the manufacturers named in the research (FloodBreak, Flood Control International, Aggeres, Watersmart, DEFE)",
+        "findings": [
+          "A car-maker's roundel on the parked car was legible in both masters; it is removed from every web derivative by the documented retouch (processing_chain step 2)",
+          "No other logo, brand name, signage, number plate or legible text appears",
+          "The house is a generic Irish suburban house with no address, number or distinctive landmark",
+          "The barrier is a plain generic panel with end posts; it is not drawn to any manufacturer's design and is not presented as any product"
+        ],
+        "verdict": "after the badge retouch, no identifiable third-party product, brand or property is reproduced, on visual inspection. Whether any reference image was used in generation is not established (see reference_disclosure)."
+      },
+      "decision_ref": "PN-FDR-2026-10-27-DISC033 (founder-attested form for the DISC-033 illustrations, extending the form of PN-FDR-2026-10-26-DISC031 to these files on the discovery and library-card surfaces only)",
+      "service_terms": {
+        "openai": "OpenAI Terms of Use: as between the user and OpenAI, the user owns the output; the user is responsible for the inputs they provide. (Same wording as the DISC-031 record, PN-FDR-2026-10-26-DISC031.)"
+      },
+      "content_credentials": {
+        "embeds_c2pa": false,
+        "note": "The two PNG masters carry OpenAI's C2PA content credentials (see generated.c2pa_evidence); the retouch and web re-encoding remove them from the derivatives."
+      }
+    },
+    {
+      "asset": "assets/disc033/img/DISC-033-IMG-02-DRIVEWAY-POSSIBLE-M-819.webp",
+      "sha256": "4dcb36804a6e7f29175835a82c4428d86536b6d1214c5a67d8fd3b55e674ccf1",
+      "bytes": 118700,
+      "pixels": [
+        819,
+        1024
+      ],
+      "class": "AI_ILLUSTRATION",
+      "what": "The same driveway as floodwater arrives: a generic barrier risen across the entrance, shallow water held on the street side, the driveway behind dry (POSSIBLE side of the hero comparison)",
+      "generated": {
+        "tool": "ChatGPT image generation (OpenAI, gpt-image), per the master's C2PA content credentials; then a documented badge retouch and Pillow web encoding by the PlotNua build session",
+        "date": "2026-10-27",
+        "source_master": {
+          "file": "DISC-033-IMG-02-DRIVEWAY-POSSIBLE-MASTER.png (founder's Mac, folder 03 Website/Live Website/DISC-033-Image-Production-2026-10-27/masters; unchanged)",
+          "sha256": "46677d826416ae4101fadbaa1d72d4f3c161447aefadfc29538a2ec5695c6fcd",
+          "bytes": 3267547
+        },
+        "processing_chain": [
+          {
+            "step": "Master: generated in ChatGPT (gpt-image) by the founder on 27 Oct 2026, per its C2PA content credentials",
+            "prompt": "UNAVAILABLE (see prompt_status): not supplied; not reconstructed"
+          },
+          {
+            "step": "Badge retouch (founder instruction, Stage 3 review, 27 Oct 2026): the car-maker's roundel on the parked car's tailgate removed from the web derivatives only; the master is unchanged",
+            "tool": "OpenCV 5.0 cv2.inpaint (INPAINT_TELEA, radius 3) on a copy of the master",
+            "region": "ellipse centre (1260,474), radii 7x6 px; 145 pixels changed, bounding box x 1253-1267, y 468-480 of 1536 x 1024",
+            "intermediate_sha256": "1e2b8fece1f36adecc8e2ec57b9d21f7fb0cbec94b64997ee7f48a22998b351c",
+            "note": "Only the badge area changed; the pair's alignment is unaffected (the same small area in both images)"
+          },
+          {
+            "step": "Web encoding",
+            "tool": "Pillow; 4:5 art-directed crop, columns 600-1419 of the retouched source, WebP"
+          }
+        ],
+        "c2pa_evidence": {
+          "manifest": "C2PA content credentials embedded in the master PNG, read with c2pa-python 0.38.1 on 27 Oct 2026",
+          "claim_generator": "OpenAI Media Service API",
+          "signed_by": "OpenAI OpCo, LLC",
+          "signed_at": "2026-10-27T15:56:27.504984+00:00",
+          "actions": [
+            "c2pa.created (softwareAgent ChatGPT, version gpt-image; digitalSourceType trainedAlgorithmicMedia)",
+            "c2pa.converted",
+            "c2pa.watermarked.unbound"
+          ],
+          "ingredients_recorded": [],
+          "validation": "content hash matches (assertion.dataHash.match) and claim signature validated; the local reader reports signingCredential.untrusted and signingCredential.invalid (missing required EKU) because no trust anchors are loaded, as for DISC-032"
+        }
+      },
+      "depicts_named_product": false,
+      "depicts_named_organisation": false,
+      "human_review": {
+        "reviewer": "Colin MacAulay",
+        "date": "2026-10-27",
+        "attests": "Founder confirmed on 27 Oct 2026 that both masters were generated with ChatGPT, that IMG-02 was generated after IMG-01 and that no third-party supplier or listing photographs were supplied; approved the images and the visual direction (Stage 3 review, 27 Oct 2026) and instructed the badge removal from the web derivatives. Labelled as an AI-generated illustration; not presented as a photograph of a real property, of any installation described on the page, or of any manufacturer's or supplier's product. Publication remains subject to the founder's release approval."
+      },
+      "permitted_surfaces": [
+        "discovery",
+        "library-card"
+      ],
+      "prompt_status": "UNAVAILABLE",
+      "reference_disclosure": {
+        "status": "UNCERTAIN",
+        "statement": "ChatGPT's content credentials record no ingredients for either master, which is not evidence that no image was supplied in the conversation. The two masters align to about 1 px (architecture) and 3 px (the car), which is typical of one image having been made from the other rather than of two free generations; the founder confirms IMG-02 was generated after IMG-01 but the exact image-to-image derivation relationship is not verified. The founder states that no third-party supplier or listing photographs were supplied; that statement is recorded alongside and is not independently verifiable from the credentials, so the status remains UNCERTAIN.",
+        "evidence": "C2PA content credentials of both masters, read 27 Oct 2026; pair alignment by the build session, 27 Oct 2026 (502 of 535 feature matches consistent; median 1.03 px; car median 3.1 px)",
+        "founder_statement": "Founder statement (Colin MacAulay, 27 Oct 2026): both images were generated using ChatGPT; multiple attempts were made to establish the Before image; IMG-02 was generated after IMG-01; no third-party supplier or listing photographs were supplied; the exact image-to-image derivation relationship is not verified."
+      },
+      "resemblance_review": {
+        "date": "2026-10-27",
+        "reviewed_by": "PlotNua build session; accepted by the founder, Colin MacAulay, 27 Oct 2026 (Stage 3 review)",
+        "compared_against": "Identifiable third-party content in general (manufacturer products and barrier designs, brand marks, signage, text, recognisable real addresses) and the manufacturers named in the research (FloodBreak, Flood Control International, Aggeres, Watersmart, DEFE)",
+        "findings": [
+          "A car-maker's roundel on the parked car was legible in both masters; it is removed from every web derivative by the documented retouch (processing_chain step 2)",
+          "No other logo, brand name, signage, number plate or legible text appears",
+          "The house is a generic Irish suburban house with no address, number or distinctive landmark",
+          "The barrier is a plain generic panel with end posts; it is not drawn to any manufacturer's design and is not presented as any product"
+        ],
+        "verdict": "after the badge retouch, no identifiable third-party product, brand or property is reproduced, on visual inspection. Whether any reference image was used in generation is not established (see reference_disclosure)."
+      },
+      "decision_ref": "PN-FDR-2026-10-27-DISC033 (founder-attested form for the DISC-033 illustrations, extending the form of PN-FDR-2026-10-26-DISC031 to these files on the discovery and library-card surfaces only)",
+      "service_terms": {
+        "openai": "OpenAI Terms of Use: as between the user and OpenAI, the user owns the output; the user is responsible for the inputs they provide. (Same wording as the DISC-031 record, PN-FDR-2026-10-26-DISC031.)"
+      },
+      "content_credentials": {
+        "embeds_c2pa": false,
+        "note": "The two PNG masters carry OpenAI's C2PA content credentials (see generated.c2pa_evidence); the retouch and web re-encoding remove them from the derivatives."
+      }
+    },
+    {
+      "asset": "assets/disc033/img/DISC-033-og-1200x630.jpg",
+      "sha256": "1b9e7e6b0e66eacf2e62ad0c05c75e4e860647010b794b0c8fcfe7a39b58aa6a",
+      "bytes": 234010,
+      "pixels": [
+        1200,
+        630
+      ],
+      "class": "AI_ILLUSTRATION",
+      "what": "Social preview: a 1200 x 630 crop of the POSSIBLE illustration (the barrier risen, shallow water held, the driveway dry)",
+      "generated": {
+        "tool": "ChatGPT image generation (OpenAI, gpt-image), per the master's C2PA content credentials; then a documented badge retouch and Pillow web encoding by the PlotNua build session",
+        "date": "2026-10-27",
+        "source_master": {
+          "file": "DISC-033-IMG-02-DRIVEWAY-POSSIBLE-MASTER.png (founder's Mac, folder 03 Website/Live Website/DISC-033-Image-Production-2026-10-27/masters; unchanged)",
+          "sha256": "46677d826416ae4101fadbaa1d72d4f3c161447aefadfc29538a2ec5695c6fcd",
+          "bytes": 3267547
+        },
+        "processing_chain": [
+          {
+            "step": "Master: generated in ChatGPT (gpt-image) by the founder on 27 Oct 2026, per its C2PA content credentials",
+            "prompt": "UNAVAILABLE (see prompt_status): not supplied; not reconstructed"
+          },
+          {
+            "step": "Badge retouch (founder instruction, Stage 3 review, 27 Oct 2026): the car-maker's roundel on the parked car's tailgate removed from the web derivatives only; the master is unchanged",
+            "tool": "OpenCV 5.0 cv2.inpaint (INPAINT_TELEA, radius 3) on a copy of the master",
+            "region": "ellipse centre (1260,474), radii 7x6 px; 145 pixels changed, bounding box x 1253-1267, y 468-480 of 1536 x 1024",
+            "intermediate_sha256": "1e2b8fece1f36adecc8e2ec57b9d21f7fb0cbec94b64997ee7f48a22998b351c",
+            "note": "Only the badge area changed; the pair's alignment is unaffected (the same small area in both images)"
+          },
+          {
+            "step": "Web encoding",
+            "tool": "Pillow; crop rows 110-916 of the retouched source, resize to 1200 x 630 (Lanczos), JPEG quality 82"
+          }
+        ],
+        "c2pa_evidence": {
+          "manifest": "C2PA content credentials embedded in the master PNG, read with c2pa-python 0.38.1 on 27 Oct 2026",
+          "claim_generator": "OpenAI Media Service API",
+          "signed_by": "OpenAI OpCo, LLC",
+          "signed_at": "2026-10-27T15:56:27.504984+00:00",
+          "actions": [
+            "c2pa.created (softwareAgent ChatGPT, version gpt-image; digitalSourceType trainedAlgorithmicMedia)",
+            "c2pa.converted",
+            "c2pa.watermarked.unbound"
+          ],
+          "ingredients_recorded": [],
+          "validation": "content hash matches (assertion.dataHash.match) and claim signature validated; the local reader reports signingCredential.untrusted and signingCredential.invalid (missing required EKU) because no trust anchors are loaded, as for DISC-032"
+        }
+      },
+      "depicts_named_product": false,
+      "depicts_named_organisation": false,
+      "human_review": {
+        "reviewer": "Colin MacAulay",
+        "date": "2026-10-27",
+        "attests": "Founder confirmed on 27 Oct 2026 that both masters were generated with ChatGPT, that IMG-02 was generated after IMG-01 and that no third-party supplier or listing photographs were supplied; approved the images and the visual direction (Stage 3 review, 27 Oct 2026) and instructed the badge removal from the web derivatives. Labelled as an AI-generated illustration; not presented as a photograph of a real property, of any installation described on the page, or of any manufacturer's or supplier's product. Publication remains subject to the founder's release approval."
+      },
+      "permitted_surfaces": [
+        "discovery",
+        "library-card"
+      ],
+      "prompt_status": "UNAVAILABLE",
+      "reference_disclosure": {
+        "status": "UNCERTAIN",
+        "statement": "ChatGPT's content credentials record no ingredients for either master, which is not evidence that no image was supplied in the conversation. The two masters align to about 1 px (architecture) and 3 px (the car), which is typical of one image having been made from the other rather than of two free generations; the founder confirms IMG-02 was generated after IMG-01 but the exact image-to-image derivation relationship is not verified. The founder states that no third-party supplier or listing photographs were supplied; that statement is recorded alongside and is not independently verifiable from the credentials, so the status remains UNCERTAIN.",
+        "evidence": "C2PA content credentials of both masters, read 27 Oct 2026; pair alignment by the build session, 27 Oct 2026 (502 of 535 feature matches consistent; median 1.03 px; car median 3.1 px)",
+        "founder_statement": "Founder statement (Colin MacAulay, 27 Oct 2026): both images were generated using ChatGPT; multiple attempts were made to establish the Before image; IMG-02 was generated after IMG-01; no third-party supplier or listing photographs were supplied; the exact image-to-image derivation relationship is not verified."
+      },
+      "resemblance_review": {
+        "date": "2026-10-27",
+        "reviewed_by": "PlotNua build session; accepted by the founder, Colin MacAulay, 27 Oct 2026 (Stage 3 review)",
+        "compared_against": "Identifiable third-party content in general (manufacturer products and barrier designs, brand marks, signage, text, recognisable real addresses) and the manufacturers named in the research (FloodBreak, Flood Control International, Aggeres, Watersmart, DEFE)",
+        "findings": [
+          "A car-maker's roundel on the parked car was legible in both masters; it is removed from every web derivative by the documented retouch (processing_chain step 2)",
+          "No other logo, brand name, signage, number plate or legible text appears",
+          "The house is a generic Irish suburban house with no address, number or distinctive landmark",
+          "The barrier is a plain generic panel with end posts; it is not drawn to any manufacturer's design and is not presented as any product"
+        ],
+        "verdict": "after the badge retouch, no identifiable third-party product, brand or property is reproduced, on visual inspection. Whether any reference image was used in generation is not established (see reference_disclosure)."
+      },
+      "decision_ref": "PN-FDR-2026-10-27-DISC033 (founder-attested form for the DISC-033 illustrations, extending the form of PN-FDR-2026-10-26-DISC031 to these files on the discovery and library-card surfaces only)",
+      "service_terms": {
+        "openai": "OpenAI Terms of Use: as between the user and OpenAI, the user owns the output; the user is responsible for the inputs they provide. (Same wording as the DISC-031 record, PN-FDR-2026-10-26-DISC031.)"
+      },
+      "content_credentials": {
+        "embeds_c2pa": false,
+        "note": "The two PNG masters carry OpenAI's C2PA content credentials (see generated.c2pa_evidence); the retouch and web re-encoding remove them from the derivatives."
+      }
     }
   ],
   "legacy_undeclared": [
