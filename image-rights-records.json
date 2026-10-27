@@ -1020,6 +1020,90 @@
       },
       "public_visibility": "PUBLISHABLE",
       "hold_reason": null
+    },
+    {
+      "organisation_record": "recuvqPv7XW0b0PFJ",
+      "organisation_code": "ORG-000194",
+      "organisation_name": "Nua Modular",
+      "permission_outcome": "Granted — Founder Confirmed",
+      "permitted_domain": "nuamodular.com",
+      "required_credit": "© Nua Modular",
+      "evidence": "PlotNua asked on 27 October 2026 at 13:40 UTC (Gmail 1a17d976ddf345a4, thread 1a1648439ab5db83, from hello@plotnua.ie to contact@nuamodular.com): “Would you mind if I used some of the product images currently available on your website and social media pages for the preview? Naturally, everything would be credited to Nua Modular and linked back to your website.” Sean Lannen, Founder of Nua Modular, replied the same day at 15:29 UTC (Gmail 1a17dfb25a1be992, from contact@nuamodular.com): “Ya no problem at all - use whatever you need. If you need anything particular from me, just ask and I'll fire it across.” Founder confirmation, 27 October 2026 15:45: explicit permission to use Nua Modular's existing website imagery and product information for the PlotNua presentation of Nua Modular. Recorded in Atlas as Image Permission Outreach PREVIEW-NUA-MODULAR-20261027 (recHiUyd9FkxqeW5e), Permission Outcome “Granted — Founder Confirmed”, against Organisations recuvqPv7XW0b0PFJ; correspondence row recMFJuHeDdDm5ORM. THIS IS NOT AGREEMENT TO ANY COMMISSION OR REFERRAL TERMS.",
+      "conditions": [
+        "IMAGES: the two photographs enumerated in approved_assets and NO OTHER Nua Modular image, on any page. Anything unlisted is not authorised.",
+        "Credit '© Nua Modular' and a link back to https://www.nuamodular.com/ wherever an image appears (offered by PlotNua in the 13:40 request).",
+        "Images are used unmodified and served from Nua Modular's own domain. Nothing is downloaded, re-hosted, cropped or altered.",
+        "Only genuine photographs of the actual Nua Ultra unit are enumerated; composited scenes and renders are not used as if they were photographs.",
+        "No wording implies endorsement, recommendation or a partnership; no commercial or referral terms are implied by this grant.",
+        "Nua Modular may ask for any image to be changed or removed, and PlotNua complies."
+      ],
+      "note": "SCOPE: nuamodular.com only; Nua Modular serve their images from their own domain (www.nuamodular.com/brand_assets/), so no delivery host is declared.\n\n27 OCTOBER 2026. First use: the private supplier preview nua-modular-preview.html (noindex, unlinked, not in the sitemap). The grant answers a request made 'for the preview'; whether Nua Modular is FEATURED in public discovery is not decided by it. This record therefore deliberately derives HOLD (permission-scope-excludes-listing), so no public listing follows from it. Nua Ultra is separately HELD in Atlas (habitation-unconfirmed). Widening scope to 'feature' is a founder decision.",
+      "atlas_permission_record": "recHiUyd9FkxqeW5e",
+      "atlas_permission_ref": "PREVIEW-NUA-MODULAR-20261027",
+      "permission_date": "2026-10-27",
+      "permitted_delivery_hosts": [],
+      "permission": {
+        "state": "GRANTED",
+        "ref": "PREVIEW-NUA-MODULAR-20261027",
+        "record": "recHiUyd9FkxqeW5e",
+        "date": "2026-10-27",
+        "scope": [
+          "imagery",
+          "product-information"
+        ],
+        "conditions": [
+          "two-named-images-only",
+          "credit",
+          "link-back",
+          "unmodified-hotlink",
+          "withdrawable-on-request"
+        ],
+        "asked": "Would you mind if I used some of the product images currently available on your website and social media pages for the preview? Naturally, everything would be credited to Nua Modular and linked back to your website. (PlotNua, 27 Oct 2026 13:40 UTC, Gmail 1a17d976ddf345a4)",
+        "answered": "Ya no problem at all - use whatever you need. If you need anything particular from me, just ask and I'll fire it across. (Sean Lannen, Nua Modular, 27 Oct 2026 15:29 UTC, Gmail 1a17dfb25a1be992)",
+        "note": "Founder confirmed 27 Oct 2026 15:45. Not agreement to commission or referral terms; Partners record unchanged (Negotiating, no terms)."
+      },
+      "listing_review": {
+        "state": "AWAITING_CONFIRMATION",
+        "requested_by": "supplier",
+        "requested_in": "Gmail 1a17d44ae4db9a0c, 27 Oct 2026: Sean asked to see the preview and to have a chat this week",
+        "confirmed_at": null,
+        "note": "The preview has not yet been sent. Sean asked to see it; the founder sends it after approval (send gate)."
+      },
+      "public_visibility": "HOLD",
+      "hold_reason": "permission-scope-excludes-listing",
+      "asset_approval_state": "APPROVED",
+      "asset_approval": {
+        "state": "SELECTED_ASSETS_APPROVED",
+        "default_for_unlisted": "NOT_AUTHORISED",
+        "approved_count": 2,
+        "authorised_by": "Nua Modular, 27 Oct 2026 (Gmail 1a17dfb25a1be992); founder confirmation 27 Oct 2026",
+        "note": "Approval is by ENUMERATION, per asset. A Nua Modular image is usable because it appears in approved_assets, never because it is served from nuamodular.com. nua-ultra-real-field.jpg is deliberately NOT listed: it appears to be the yard photograph with a replaced background. Renders of other designs (nua-pod-*) are not listed.",
+        "conditions_on_every_use": [
+          "Credit: © Nua Modular",
+          "A working link to https://www.nuamodular.com/",
+          "Hot-linked unmodified; never downloaded, rehosted, cropped or altered"
+        ]
+      },
+      "approved_assets": [
+        {
+          "url": "https://www.nuamodular.com/brand_assets/nua-ultra-real-yard-cloudy.jpg",
+          "product_code": "PROD-000932",
+          "product_name": "Nua Ultra",
+          "atlas_asset": null,
+          "kind": "photograph",
+          "primary": true,
+          "alt": "Photograph of a Nua Ultra unit standing on gravel in a fenced yard under a cloudy sky: a long, rounded dark-grey module with a wide panoramic window along its side and a glazed end wall"
+        },
+        {
+          "url": "https://www.nuamodular.com/brand_assets/nua-ultra-real-yard.jpg",
+          "product_code": "PROD-000932",
+          "product_name": "Nua Ultra",
+          "atlas_asset": null,
+          "kind": "photograph",
+          "primary": false,
+          "alt": "Photograph of the same Nua Ultra unit in the yard in low sunshine, seen from the glazed end, its panoramic side window reflecting the yard"
+        }
+      ]
     }
   ]
 }

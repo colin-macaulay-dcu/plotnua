@@ -16,9 +16,16 @@ FOUNDER DECISIONS, 27 OCTOBER 2026
   14:23  direction approved; re-verify the supplier's site; regenerate from the
          updated shared template; prepare private hosting; nothing deployed
 
-IMAGERY STATE C: permission requested 27 Oct 13:40 UTC (Gmail
-1a17d976ddf345a4; IPO recHiUyd9FkxqeW5e), NOT granted. The template's neutral
-"Your image here" position is kept; G0/G9 refuse any image.
+IMAGERY STATE A (27 Oct 2026, 15:45 founder instruction): permission
+requested 13:40 UTC (Gmail 1a17d976ddf345a4) and GRANTED by Sean Lannen at
+15:29 UTC (Gmail 1a17dfb25a1be992): "Ya no problem at all - use whatever you
+need." IPO recHiUyd9FkxqeW5e, Granted — Founder Confirmed; rights record
+"Nua Modular" in image-rights-records.json. Only the two photographs
+enumerated there are used, hot-linked unmodified from nuamodular.com and
+credited "© Nua Modular". G0 refuses any other image, a manifest without the
+live grant, or a different credit. Not used: nua-ultra-real-field.jpg (the
+yard photograph with a replaced background) and the nua-pod-* renders of
+other designs. No genuine interior photograph is published, so none is used.
 
 EVIDENCE: re-read live in a browser on 27 October 2026 —
   https://www.nuamodular.com/nua-ultra.html  (specification table)
@@ -44,6 +51,7 @@ Run: python3 build-nua-modular-preview.py [--out PATH]
 """
 
 import hashlib
+import json
 import pathlib
 import re
 import sys
@@ -63,7 +71,27 @@ SUPPLIER_SITE = "https://www.nuamodular.com/"
 ULTRA_URL = SUPPLIER_SITE + "nua-ultra.html"
 CREDIT = "© Nua Modular"
 
-NUA_IMAGES = []   # IMAGERY STATE C. G0 enforces it.
+RIGHTS_RECORD = "PREVIEW-NUA-MODULAR-20261027"
+GRANT_DATE = "27 October 2026"
+PERMITTED_PREFIX = "https://www.nuamodular.com/brand_assets/nua-ultra-real-"
+# Must equal approved_assets in image-rights-records.json, in order (G0).
+NUA_IMAGES = [
+    {"url": "https://www.nuamodular.com/brand_assets/nua-ultra-real-yard-cloudy.jpg",
+     "alt": "Photograph of a Nua Ultra unit standing on gravel in a fenced yard "
+            "under a cloudy sky: a long, rounded dark-grey module with a wide "
+            "panoramic window along its side and a glazed end wall"},
+    {"url": "https://www.nuamodular.com/brand_assets/nua-ultra-real-yard.jpg",
+     "alt": "Photograph of the same Nua Ultra unit in the yard in low sunshine, "
+            "seen from the glazed end, its panoramic side window reflecting "
+            "the yard"},
+]
+# The photographs are portrait; the frame is 4:3 (3:2 on phones). Framing
+# only -- the file is never cropped or altered -- so the whole unit stays in
+# view rather than the sky above it.
+FRAMING = "object-position:50% 70%"
+SLOT = ('        <div class="results-hero-media">\n'
+        '          <div class="pn-photo-slot"><b>Your image here</b></div>\n'
+        '        </div>\n')
 
 FROZEN_JOURNEY = [
     ("Discover", "See what a property like theirs could do."),
@@ -246,6 +274,28 @@ def die(msg):
     sys.exit(1)
 
 
+def imagery_block():
+    """The hero media: the BIOBUILDS state-A pattern, with the credit in
+    every frame of the gallery."""
+    hero = NUA_IMAGES[0]
+    out = ['        <div class="results-hero-media has-pn-gallery">',
+           '          <img src="%s" alt="%s" loading="lazy" style="%s">'
+           % (hero["url"], hero["alt"], FRAMING),
+           '          <span class="pn-image-credit">%s</span>' % CREDIT,
+           '        </div>',
+           '        <div class="pn-gal-strip">']
+    for n, i in enumerate(NUA_IMAGES):
+        out.append('          <button type="button" class="pn-gal-thumb%s" '
+                   'aria-pressed="%s" aria-label="View photograph %d of %d" '
+                   'data-full="%s" data-alt="%s" data-credit="%s">'
+                   '<img src="%s" alt="" style="%s"></button>'
+                   % (" is-on" if n == 0 else "", "true" if n == 0 else "false",
+                      n + 1, len(NUA_IMAGES), i["url"],
+                      i["alt"].replace('"', "&quot;"), CREDIT, i["url"], FRAMING))
+    out.append('        </div>')
+    return "\n".join(out) + "\n"
+
+
 def main():
     raw = TEMPLATE.read_bytes()
     if hashlib.sha256(raw).hexdigest() != TEMPLATE_SHA:
@@ -254,9 +304,33 @@ def main():
             % hashlib.sha256(raw).hexdigest()[:12])
     src = raw.decode("utf-8")
 
-    if NUA_IMAGES:
-        die("Nua Modular imagery was added, but permission is only REQUESTED "
-            "(27 Oct), not granted. UNKNOWN is not GRANTED.")
+    # G0 · IMAGERY: exactly the enumerated grant, served by Nua Modular.
+    rights = json.loads((HERE.parent / "image-rights-records.json")
+                        .read_text(encoding="utf-8"))
+    row = [r for r in rights["records"] if r.get("organisation_name") == SUPPLIER]
+    if len(row) != 1:
+        die("there must be exactly one Nua Modular rights record.")
+    row = row[0]
+    if row.get("atlas_permission_ref") != RIGHTS_RECORD \
+            or (row.get("permission") or {}).get("state") != "GRANTED":
+        die("the Nua Modular rights record is not the granted permission %s."
+            % RIGHTS_RECORD)
+    enumerated = [(a["url"], a["alt"]) for a in row.get("approved_assets") or []]
+    if enumerated != [(i["url"], i["alt"]) for i in NUA_IMAGES]:
+        die("the images differ from the enumerated approved_assets.")
+    for i in NUA_IMAGES:
+        if not i["url"].startswith(PERMITTED_PREFIX):
+            die("image outside the permitted Nua Modular prefix: " + i["url"])
+        if "real-field" in i["url"]:
+            die("nua-ultra-real-field.jpg is a composited scene, not a "
+                "photograph of the unit where it stands.")
+    if row.get("required_credit") != CREDIT:
+        die("the rights record requires the credit %r." % row.get("required_credit"))
+    sys.path.insert(0, str(HERE))
+    from preview_image_treatment import live_grant
+    if not live_grant(HERE.parent, "nuamodular.com", CREDIT):
+        die("image-rights-manifest.json carries no live Nua Modular grant; "
+            "regenerate it from the records first.")
 
     # G1 · strip the template's filling instructions.
     block = re.search(r"\n<!--\s*[═=]{10,}.*?PROVIDER-LED.*?[═=]{10,}\s*-->\n",
@@ -296,12 +370,20 @@ def main():
         die("the closing heading was not found exactly once.")
     src = src.replace(old_head, "<h2>Before anything goes live</h2>")
 
+    # G0b · the image position, from the one list.
+    if src.count(SLOT) != 1:
+        die("the template's image position was not found exactly once.")
+    src = src.replace(SLOT, imagery_block())
+
     attribution = (
         '<p class="credit-line">Everything on this page is published by %s '
         'and was read from <a href="%s" rel="noopener">your Nua Ultra '
         'page</a> and <a href="%s" rel="noopener">nuamodular.com</a> on %s. '
-        'No %s photography is used anywhere on this page. %s</p>\n\n'
-        % (SUPPLIER, ULTRA_URL, SUPPLIER_SITE, EVIDENCE_DATE, SUPPLIER, CREDIT))
+        'The two photographs of the Nua Ultra are %s&rsquo;s own, shown '
+        'unaltered from <a href="%s" rel="noopener">nuamodular.com</a> with '
+        'your permission of %s. %s</p>\n\n'
+        % (SUPPLIER, ULTRA_URL, SUPPLIER_SITE, EVIDENCE_DATE, SUPPLIER,
+           SUPPLIER_SITE, GRANT_DATE, CREDIT))
     if src.count("<footer>\n") != 1:
         die("the footer anchor is not unique.")
     src = src.replace("<footer>\n", attribution + "<footer>\n")
@@ -324,8 +406,18 @@ def main():
     if src.count('<div class="pn-yp"><section id="screen-match-results">') != 1 \
             or src.count('<div class="results-hero" id="matchPrimary">') != 1:
         die("the demonstration is not inside production's Results chain.")
-    if src.count('<div class="pn-photo-slot"><b>Your image here</b></div>') != 1:
-        die("the image position does not hold exactly the neutral label.")
+    if 'class="pn-photo-slot"' in src or "<b>your image here</b>" in src.lower():
+        die("the empty image position survived alongside the photographs.")
+    imgs = re.findall(r'<img\b[^>]*\bsrc="([^"]*)"', src)
+    allowed = {i["url"] for i in NUA_IMAGES}
+    if not imgs or set(imgs) - allowed:
+        die("an image outside the enumerated grant: %s"
+            % sorted(set(imgs) - allowed))
+    if src.count('<span class="pn-image-credit">%s</span>' % CREDIT) != 1:
+        die("the photograph does not carry the credit %r." % CREDIT)
+    if any(re.search(r'\balt=""', m) for m in
+           re.findall(r'<img\b[^>]*>', src.split('<div class="pn-gal-strip">')[0])):
+        die("the main photograph has no alt text.")
     for s, t in FROZEN_JOURNEY:
         if "<b>%s</b><span>%s</span>" % (s, t) not in src:
             die("the frozen journey step %r was altered." % s)
@@ -367,13 +459,12 @@ def main():
         die("the displayed price must be 'Price on request'.")
 
     for pattern, what in (
-            (r'<img\b', "an <img>"),
             (r'<source[^>]+srcset=', "a <source>"),
             (r'url\(\s*["\']?https?://', "an external CSS url()"),
             (r'property="og:image"', "an og:image")):
         if re.search(pattern, src, re.I):
-            die("the built page carries %s. Nua Modular has granted nothing."
-                % what)
+            die("the built page carries %s; only enumerated <img> "
+                "photographs are permitted." % what)
     if 'href="%s"' % SUPPLIER_SITE not in src:
         die("the page does not link back to %s itself." % SUPPLIER_SITE)
     if CREDIT not in src:
@@ -411,7 +502,8 @@ def main():
     print("=" * 74)
     print("  ok    built from template-provider-led.html %s" % TEMPLATE_SHA[:12])
     print("  ok    premium dark design; production Results chain, CSS and skin")
-    print("  ok    0 images — permission requested, not granted")
+    print("  ok    %d enumerated Nua Modular photographs, credited %s "
+          "(granted %s)" % (len(NUA_IMAGES), CREDIT, GRANT_DATE))
     print("  ok    facts re-verified on nuamodular.com, %s" % EVIDENCE_DATE)
     print("  ok    price contradiction and area labelling asked, not resolved")
     print("  ok    'Nua' never stands alone; no partner, referral or "
