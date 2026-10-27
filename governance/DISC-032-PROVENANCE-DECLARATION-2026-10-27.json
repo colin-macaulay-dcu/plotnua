@@ -1,0 +1,1132 @@
+{
+  "schema": "plotnua.disc032-provenance-declaration.v1 (form of plotnua.disc031-provenance-declaration.v1)",
+  "status": "FOUNDER-APPROVED for application to the local feature branch (Phase 2 instruction 6, 27 Oct 2026). Applied with atlas-tools/declare-disc032-provenance.py after validation. Public launch remains subject to the founder's approval.",
+  "decision": "PN-FDR-2026-10-27-DISC032",
+  "founder_approvals": [
+    {
+      "date": "2026-10-27",
+      "source": "Founder message 'PHASE 1 DEVELOPMENT AUTHORISATION'",
+      "approved": [
+        "C1 v3 as the final BEFORE master",
+        "Existing C2 as the POSSIBLE master",
+        "The corrected image pair for DISC-032",
+        "The documented 0.2 px architectural-median tolerance exception",
+        "Visible guests and chef in C2",
+        "Existing glassware in C2, without implying that alcohol sales are authorised",
+        "The documented provenance chain"
+      ]
+    },
+    {
+      "date": "2026-10-27",
+      "source": "Founder message 'PHASE 1 PRIVATE PREVIEW FOUNDER DESIGN REFINEMENTS'",
+      "approved": [
+        "The C1 v3 / C2 image pair",
+        "The corrected image provenance record",
+        "The corrected delivered C1 v3 hash is accepted"
+      ]
+    },
+    {
+      "date": "2026-10-27",
+      "source": "Founder message 'PHASE 2 CONSOLIDATED PRODUCTION PREPARATION'",
+      "instruction": "Prepare the final DISC-032 provenance declaration and validate all hashes. Do not fabricate missing image-generation prompts or credentials. Apply the declaration to the local feature branch only after validating its contents."
+    }
+  ],
+  "answers": {
+    "signed_by": "Colin MacAulay",
+    "date": "2026-10-27",
+    "tool": "ChatGPT image generation (OpenAI, gpt-image), established from the C2PA content credentials signed by OpenAI OpCo, LLC in the C2 and C1 v2 masters",
+    "prompts_available": "no (requested at intake on 27 Oct 2026; not supplied, so recorded as UNAVAILABLE and never reconstructed)",
+    "C1": "not-recorded",
+    "C2": "recorded-for-confirmation",
+    "founder_statement": null
+  },
+  "masters": {
+    "BEFORE": {
+      "file": "DISC-032-IMG-01-DINING-BEFORE-MASTER-v3.png",
+      "sha256": "5b480b06cb181c7b06ea4f36fbd2a73d84207dba3aa8727cc87067090c746d7f",
+      "bytes": 2255134,
+      "role": "master of record (C1 v3)",
+      "source": {
+        "file": "DISC-032-IMG-01-DINING-BEFORE-MASTER-v2.png",
+        "sha256": "993a7393d62bea36b34ded358688d768c939d0c5024d198e7f34e76aabdbbed3",
+        "bytes": 2356575
+      },
+      "content_credentials": {
+        "openai_c2pa": "NONE. The v3 master does not carry OpenAI's content credentials: the geometric correction re-encoded the file, so v2's OpenAI manifest was not carried over. Its OpenAI origin is established through v2, by hash.",
+        "anthropic_delivery_manifest": "The v3 file of record (sha256 5b480b06...) carries one C2PA manifest added when the file was delivered from the Claude session to the founder's Mac: claim generator 'Anthropic Files', signed by Anthropic, PBC ('Anthropic Claude Content Signing'), actions c2pa.opened and com.anthropic.claude.provided. It records only that Claude provided the file; it says nothing about how the image was made.",
+        "pre_delivery_file": "Correction output before delivery: sha256 72f9ce2a440263237ddaafdc7a348812bd67daa7e499409da37e983ba1920a4d, no C2PA. Its decoded pixels equal the delivered file's (all 1536 x 1024 RGB values compared, 27 Oct 2026).",
+        "chain": "v3 (5b480b06...) <- deterministic geometric correction of v2 (993a7393...) <- v2's OpenAI C2PA credentials"
+      }
+    },
+    "POSSIBLE": {
+      "file": "DISC-032-IMG-02-DINING-POSSIBLE-MASTER.png",
+      "sha256": "c1ec36632d451536aaf41c001f09301914b05898767bbcff13784f3d71f8ab78",
+      "bytes": 2241019,
+      "role": "master (C2)",
+      "content_credentials": {
+        "manifest": "C2PA content credentials embedded in the master PNG (caBX chunk), read with c2pa-python 0.38.1 on 27 Oct 2026",
+        "claim_generator": "OpenAI Media Service API",
+        "signed_by": "OpenAI OpCo, LLC",
+        "signed_at": "2026-10-27T14:39:46.745376+00:00",
+        "actions": [
+          "c2pa.created (softwareAgent ChatGPT, version gpt-image; digitalSourceType trainedAlgorithmicMedia)",
+          "c2pa.converted",
+          "c2pa.watermarked.unbound"
+        ],
+        "ingredients_recorded": [],
+        "validation": "content hash matches (assertion.dataHash.match), claim signature and timestamp validated; signing certificate not on the local trust list (no trust anchors loaded) and reported 'missing required EKU' under the reader's default certificate profile. Neither concerns the image content."
+      }
+    },
+    "preserved_unchanged": [
+      {
+        "file": "DISC-032-IMG-01-DINING-BEFORE-MASTER.png",
+        "sha256": "9b5e113549bdc69c083118f31ae38ac91b2e0f13cfb30b3ce24b25680057773f",
+        "bytes": 2411108,
+        "note": "C1 v1, superseded (work clutter, furniture misalignment)"
+      },
+      {
+        "file": "DISC-032-IMG-01-DINING-BEFORE-MASTER-v2.png",
+        "sha256": "993a7393d62bea36b34ded358688d768c939d0c5024d198e7f34e76aabdbbed3",
+        "bytes": 2356575,
+        "note": "C1 v2, source of v3"
+      }
+    ],
+    "location": "founder's Mac, folder 03 Website/Live Website/DISC-032-Image-Production-C1-C2-2026-10-27/masters"
+  },
+  "tolerance_exception": {
+    "metric": "Architecture alignment, BEFORE v3 against POSSIBLE C2, 18 landmarks",
+    "threshold": "median <= 2.0 px; 90th percentile <= 4.0 px; persistent furniture <= 6 px",
+    "measured": "architecture median 2.2 px, p90 3.3 px, max 3.6 px (unchanged from v2: the correction did not touch architecture); furniture <= 2 px",
+    "exception": "0.2 px over the median threshold, approved by the founder on 27 Oct 2026 (Phase 1 authorisation, item 4)"
+  },
+  "not_claimed": [
+    "v3 does not retain OpenAI C2PA credentials",
+    "No prompt is recorded: the prompts were not supplied and are not reconstructed",
+    "No pixel-perfect masked edit is claimed for v2 or C2",
+    "reference_inputs is not stated (UNCERTAIN)"
+  ],
+  "still_open_for_the_founder": [
+    "Optional: a one-line founder statement on third-party reference images (e.g. 'no real photographs, supplier images or third-party web images were used'), which would be recorded beside reference_disclosure; the status stays UNCERTAIN either way because the credentials cannot confirm it",
+    "Optional: the actual prompts, if recovered; the records would then take the normal form"
+  ],
+  "records": [
+    {
+      "asset": "assets/disc032/img/DISC-032-before-768.webp",
+      "sha256": "3ffd2642ddd0d46873149d37e643d6546bb83ac5a8cd386aaac441bc2e438faa",
+      "bytes": 84740,
+      "pixels": [
+        768,
+        512
+      ],
+      "class": "AI_ILLUSTRATION",
+      "what": "The room before: a contemporary Irish open-plan kitchen and dining room on an ordinary evening, with an oak table, a kitchen island and large glass doors onto a lit back garden (BEFORE side of the hero comparison)",
+      "generated": {
+        "tool": "ChatGPT image generation (OpenAI, gpt-image), per the masters' C2PA content credentials (through v2), with a PlotNua deterministic geometric correction (v3); then Pillow web encoding by the PlotNua build session",
+        "date": "2026-10-27",
+        "source_master": {
+          "file": "DISC-032-IMG-01-DINING-BEFORE-MASTER-v3.png (founder's Mac, folder 03 Website/Live Website/DISC-032-Image-Production-C1-C2-2026-10-27/masters)",
+          "sha256": "5b480b06cb181c7b06ea4f36fbd2a73d84207dba3aa8727cc87067090c746d7f",
+          "bytes": 2255134
+        },
+        "processing_chain": [
+          {
+            "step": "Source: C1 v2, generated in ChatGPT (gpt-image) by the founder, per its C2PA content credentials",
+            "source": {
+              "file": "DISC-032-IMG-01-DINING-BEFORE-MASTER-v2.png",
+              "sha256": "993a7393d62bea36b34ded358688d768c939d0c5024d198e7f34e76aabdbbed3",
+              "bytes": 2356575
+            },
+            "prompt": "UNAVAILABLE (see prompt_status)"
+          },
+          {
+            "step": "Deterministic local geometric correction (C1 v3), authorised by the founder 27 Oct 2026 (Option 1): one smooth displacement field with smoothstep feathering, applied by inverse remapping with Lanczos resampling. Pixels moved; none generated, painted or cloned. Changed region x 452-1313, y 563-1023 (24.68% of pixels); maximum displacement 19.9 px; maximum local shear 0.23; every other pixel bit-identical to v2. Purpose: align the table's near end and the front chair with C2 for the Before/Possible comparison (furniture now within 2 px).",
+            "tool": "correction-script.py with correction-parameters.json (founder's Mac, DISC-032-C1-v3-correction folder); reproducible byte for byte",
+            "parameters": {
+              "face_dy": 12,
+              "leg_dy_bottom": 14,
+              "corner_dx": 13,
+              "chair_dy": 13,
+              "chair_dy_bottom": 19,
+              "chair_dx": 6,
+              "c0": 740,
+              "c1": 935,
+              "cx0": 650,
+              "cx1": 1127,
+              "cf": 70,
+              "mxf": 90
+            }
+          },
+          {
+            "step": "Delivery to the founder's Mac: an Anthropic 'Claude provided this file' C2PA manifest was added; pixels unchanged (pre-delivery sha256 72f9ce2a...)"
+          },
+          {
+            "step": "Web encoding",
+            "tool": "Pillow 12.3.0; resize to 768 px wide (Lanczos), WebP quality 86, method 6; no other change"
+          }
+        ],
+        "c2pa_evidence": {
+          "v3_master": {
+            "openai_c2pa": "NONE. The v3 master does not carry OpenAI's content credentials: the geometric correction re-encoded the file, so v2's OpenAI manifest was not carried over. Its OpenAI origin is established through v2, by hash.",
+            "anthropic_delivery_manifest": "The v3 file of record (sha256 5b480b06...) carries one C2PA manifest added when the file was delivered from the Claude session to the founder's Mac: claim generator 'Anthropic Files', signed by Anthropic, PBC ('Anthropic Claude Content Signing'), actions c2pa.opened and com.anthropic.claude.provided. It records only that Claude provided the file; it says nothing about how the image was made.",
+            "pre_delivery_file": "Correction output before delivery: sha256 72f9ce2a440263237ddaafdc7a348812bd67daa7e499409da37e983ba1920a4d, no C2PA. Its decoded pixels equal the delivered file's (all 1536 x 1024 RGB values compared, 27 Oct 2026).",
+            "chain": "v3 (5b480b06...) <- deterministic geometric correction of v2 (993a7393...) <- v2's OpenAI C2PA credentials"
+          },
+          "v2_source": {
+            "manifest": "C2PA content credentials embedded in the v2 master PNG (the source of v3), read with c2pa-python 0.38.1 on 27 Oct 2026",
+            "claim_generator": "OpenAI Media Service API",
+            "signed_by": "OpenAI OpCo, LLC",
+            "signed_at": "2026-10-27T18:18:09.100722+00:00",
+            "actions": [
+              "c2pa.created (softwareAgent ChatGPT, version gpt-image; digitalSourceType trainedAlgorithmicMedia)",
+              "c2pa.converted",
+              "c2pa.watermarked.unbound"
+            ],
+            "ingredients_recorded": [],
+            "validation": "content hash matches (assertion.dataHash.match), claim signature and timestamp validated; signing certificate not on the local trust list (no trust anchors loaded)"
+          }
+        }
+      },
+      "depicts_named_product": false,
+      "depicts_named_organisation": false,
+      "human_review": {
+        "reviewer": "Colin MacAulay",
+        "date": "2026-10-27",
+        "attests": "Founder approved C1 v3 (BEFORE) and C2 (POSSIBLE) as the DISC-032 image pair on 27 Oct 2026, including the visible guests and chef and the existing glassware without implying that alcohol sales are authorised, approved the documented provenance chain and the 0.2 px architectural-median tolerance exception, and authorised production preparation (Phase 2). Labelled 'AI-generated illustration'. Not presented as a photograph of a real home, event, person or business. Public launch remains subject to his approval."
+      },
+      "permitted_surfaces": [
+        "discovery",
+        "library-card"
+      ],
+      "prompt_status": "UNAVAILABLE",
+      "reference_disclosure": {
+        "status": "UNCERTAIN",
+        "statement": "ChatGPT's content credentials do not record images supplied in the conversation, so the inputs to these masters are not established from the files. C1 v2 was generated in ChatGPT after review of C2 (founder's note at intake, 27 Oct 2026); the file evidence shows a full re-render guided by C2, not a masked edit, and the credentials record no ingredient. Whether C2 itself was uploaded as an input is not recorded. No founder statement on third-party reference images has yet been recorded for DISC-032, so reference_inputs is not stated and the status remains UNCERTAIN.",
+        "evidence": "C2PA readouts of DISC-032-IMG-02 (c1ec3663...) and DISC-032-IMG-01 v2 (993a7393...), read 27 Oct 2026; C1/C2 intake and v2 intake alignment measurements, 27 Oct 2026"
+      },
+      "resemblance_review": {
+        "date": "2026-10-27",
+        "reviewed_by": "PlotNua build session (visual inspection of both masters at full resolution and in 3x zooms), 27 Oct 2026; recorded for the founder's confirmation at release",
+        "compared_against": "Identifiable third-party content in general: logos, brand names, signage, legible text, recognisable real addresses or buildings, named supplier products, recognisable real people; and the real Irish supper clubs the project researched (described in words only; no photograph of them was used or available to the build session)",
+        "findings": [
+          "No logo, brand name, signage or legible text appears in either image",
+          "The house, extension and garden are generic; no address, number or landmark is visible",
+          "Furniture and lighting are generic contemporary styles (oak table, curved-back cord-seat chairs, dome pendants, mid-century sideboard); no specific named product is identified or claimed",
+          "The guests and chef are AI-generated people; none is intended to depict, or is presented as, a real individual, and no face looks at the camera",
+          "Not presented as, or used to depict, any real supper club, home or event described in the project's research",
+          "Glassware is shown on the table; nothing in the image shows a bar, prices or a sale of alcohol, and the page does not suggest alcohol sales are authorised (founder approval, 27 Oct 2026, item 6)"
+        ],
+        "verdict": "no identifiable third-party product, brand, property or person is reproduced, on visual inspection. Whether any third-party image was supplied in the generation conversation is not established (see reference_disclosure)."
+      },
+      "decision_ref": "PN-FDR-2026-10-27-DISC032 (founder approvals of 27 Oct 2026: Phase 1 authorisation items 1-7 and the Phase 1 review item 7 'The corrected image provenance record'; Phase 2 instruction 6 to apply the declaration; founder-attested form, extending PN-FDR-2026-10-23-GRP-HERO / PN-FDR-2026-10-26-H6-HOME / PN-FDR-2026-10-26-DISC031 to these files on the discovery and library-card surfaces only)",
+      "service_terms": {
+        "openai": "OpenAI Terms of Use: as between the user and OpenAI, the user owns the output; the user is responsible for the inputs they provide. (Same wording as the DISC-031 and H6 records.)"
+      },
+      "content_credentials": {
+        "embeds_c2pa": false,
+        "note": "Web re-encoding carries no content credentials. The v3 master carries no OpenAI credentials (see generated.c2pa_evidence); its OpenAI origin runs through v2 by hash."
+      },
+      "tolerance_exception": {
+        "metric": "Architecture alignment, BEFORE v3 against POSSIBLE C2, 18 landmarks",
+        "threshold": "median <= 2.0 px; 90th percentile <= 4.0 px; persistent furniture <= 6 px",
+        "measured": "architecture median 2.2 px, p90 3.3 px, max 3.6 px (unchanged from v2: the correction did not touch architecture); furniture <= 2 px",
+        "exception": "0.2 px over the median threshold, approved by the founder on 27 Oct 2026 (Phase 1 authorisation, item 4)"
+      }
+    },
+    {
+      "asset": "assets/disc032/img/DISC-032-before-1024.webp",
+      "sha256": "48f892c1c66e6f64c20f8fbd1bfec629d8a53f48bea7ee91dd547b4fa38c396e",
+      "bytes": 132488,
+      "pixels": [
+        1024,
+        683
+      ],
+      "class": "AI_ILLUSTRATION",
+      "what": "The room before: a contemporary Irish open-plan kitchen and dining room on an ordinary evening, with an oak table, a kitchen island and large glass doors onto a lit back garden (BEFORE side of the hero comparison)",
+      "generated": {
+        "tool": "ChatGPT image generation (OpenAI, gpt-image), per the masters' C2PA content credentials (through v2), with a PlotNua deterministic geometric correction (v3); then Pillow web encoding by the PlotNua build session",
+        "date": "2026-10-27",
+        "source_master": {
+          "file": "DISC-032-IMG-01-DINING-BEFORE-MASTER-v3.png (founder's Mac, folder 03 Website/Live Website/DISC-032-Image-Production-C1-C2-2026-10-27/masters)",
+          "sha256": "5b480b06cb181c7b06ea4f36fbd2a73d84207dba3aa8727cc87067090c746d7f",
+          "bytes": 2255134
+        },
+        "processing_chain": [
+          {
+            "step": "Source: C1 v2, generated in ChatGPT (gpt-image) by the founder, per its C2PA content credentials",
+            "source": {
+              "file": "DISC-032-IMG-01-DINING-BEFORE-MASTER-v2.png",
+              "sha256": "993a7393d62bea36b34ded358688d768c939d0c5024d198e7f34e76aabdbbed3",
+              "bytes": 2356575
+            },
+            "prompt": "UNAVAILABLE (see prompt_status)"
+          },
+          {
+            "step": "Deterministic local geometric correction (C1 v3), authorised by the founder 27 Oct 2026 (Option 1): one smooth displacement field with smoothstep feathering, applied by inverse remapping with Lanczos resampling. Pixels moved; none generated, painted or cloned. Changed region x 452-1313, y 563-1023 (24.68% of pixels); maximum displacement 19.9 px; maximum local shear 0.23; every other pixel bit-identical to v2. Purpose: align the table's near end and the front chair with C2 for the Before/Possible comparison (furniture now within 2 px).",
+            "tool": "correction-script.py with correction-parameters.json (founder's Mac, DISC-032-C1-v3-correction folder); reproducible byte for byte",
+            "parameters": {
+              "face_dy": 12,
+              "leg_dy_bottom": 14,
+              "corner_dx": 13,
+              "chair_dy": 13,
+              "chair_dy_bottom": 19,
+              "chair_dx": 6,
+              "c0": 740,
+              "c1": 935,
+              "cx0": 650,
+              "cx1": 1127,
+              "cf": 70,
+              "mxf": 90
+            }
+          },
+          {
+            "step": "Delivery to the founder's Mac: an Anthropic 'Claude provided this file' C2PA manifest was added; pixels unchanged (pre-delivery sha256 72f9ce2a...)"
+          },
+          {
+            "step": "Web encoding",
+            "tool": "Pillow 12.3.0; resize to 1024 px wide (Lanczos), WebP quality 86, method 6; no other change"
+          }
+        ],
+        "c2pa_evidence": {
+          "v3_master": {
+            "openai_c2pa": "NONE. The v3 master does not carry OpenAI's content credentials: the geometric correction re-encoded the file, so v2's OpenAI manifest was not carried over. Its OpenAI origin is established through v2, by hash.",
+            "anthropic_delivery_manifest": "The v3 file of record (sha256 5b480b06...) carries one C2PA manifest added when the file was delivered from the Claude session to the founder's Mac: claim generator 'Anthropic Files', signed by Anthropic, PBC ('Anthropic Claude Content Signing'), actions c2pa.opened and com.anthropic.claude.provided. It records only that Claude provided the file; it says nothing about how the image was made.",
+            "pre_delivery_file": "Correction output before delivery: sha256 72f9ce2a440263237ddaafdc7a348812bd67daa7e499409da37e983ba1920a4d, no C2PA. Its decoded pixels equal the delivered file's (all 1536 x 1024 RGB values compared, 27 Oct 2026).",
+            "chain": "v3 (5b480b06...) <- deterministic geometric correction of v2 (993a7393...) <- v2's OpenAI C2PA credentials"
+          },
+          "v2_source": {
+            "manifest": "C2PA content credentials embedded in the v2 master PNG (the source of v3), read with c2pa-python 0.38.1 on 27 Oct 2026",
+            "claim_generator": "OpenAI Media Service API",
+            "signed_by": "OpenAI OpCo, LLC",
+            "signed_at": "2026-10-27T18:18:09.100722+00:00",
+            "actions": [
+              "c2pa.created (softwareAgent ChatGPT, version gpt-image; digitalSourceType trainedAlgorithmicMedia)",
+              "c2pa.converted",
+              "c2pa.watermarked.unbound"
+            ],
+            "ingredients_recorded": [],
+            "validation": "content hash matches (assertion.dataHash.match), claim signature and timestamp validated; signing certificate not on the local trust list (no trust anchors loaded)"
+          }
+        }
+      },
+      "depicts_named_product": false,
+      "depicts_named_organisation": false,
+      "human_review": {
+        "reviewer": "Colin MacAulay",
+        "date": "2026-10-27",
+        "attests": "Founder approved C1 v3 (BEFORE) and C2 (POSSIBLE) as the DISC-032 image pair on 27 Oct 2026, including the visible guests and chef and the existing glassware without implying that alcohol sales are authorised, approved the documented provenance chain and the 0.2 px architectural-median tolerance exception, and authorised production preparation (Phase 2). Labelled 'AI-generated illustration'. Not presented as a photograph of a real home, event, person or business. Public launch remains subject to his approval."
+      },
+      "permitted_surfaces": [
+        "discovery",
+        "library-card"
+      ],
+      "prompt_status": "UNAVAILABLE",
+      "reference_disclosure": {
+        "status": "UNCERTAIN",
+        "statement": "ChatGPT's content credentials do not record images supplied in the conversation, so the inputs to these masters are not established from the files. C1 v2 was generated in ChatGPT after review of C2 (founder's note at intake, 27 Oct 2026); the file evidence shows a full re-render guided by C2, not a masked edit, and the credentials record no ingredient. Whether C2 itself was uploaded as an input is not recorded. No founder statement on third-party reference images has yet been recorded for DISC-032, so reference_inputs is not stated and the status remains UNCERTAIN.",
+        "evidence": "C2PA readouts of DISC-032-IMG-02 (c1ec3663...) and DISC-032-IMG-01 v2 (993a7393...), read 27 Oct 2026; C1/C2 intake and v2 intake alignment measurements, 27 Oct 2026"
+      },
+      "resemblance_review": {
+        "date": "2026-10-27",
+        "reviewed_by": "PlotNua build session (visual inspection of both masters at full resolution and in 3x zooms), 27 Oct 2026; recorded for the founder's confirmation at release",
+        "compared_against": "Identifiable third-party content in general: logos, brand names, signage, legible text, recognisable real addresses or buildings, named supplier products, recognisable real people; and the real Irish supper clubs the project researched (described in words only; no photograph of them was used or available to the build session)",
+        "findings": [
+          "No logo, brand name, signage or legible text appears in either image",
+          "The house, extension and garden are generic; no address, number or landmark is visible",
+          "Furniture and lighting are generic contemporary styles (oak table, curved-back cord-seat chairs, dome pendants, mid-century sideboard); no specific named product is identified or claimed",
+          "The guests and chef are AI-generated people; none is intended to depict, or is presented as, a real individual, and no face looks at the camera",
+          "Not presented as, or used to depict, any real supper club, home or event described in the project's research",
+          "Glassware is shown on the table; nothing in the image shows a bar, prices or a sale of alcohol, and the page does not suggest alcohol sales are authorised (founder approval, 27 Oct 2026, item 6)"
+        ],
+        "verdict": "no identifiable third-party product, brand, property or person is reproduced, on visual inspection. Whether any third-party image was supplied in the generation conversation is not established (see reference_disclosure)."
+      },
+      "decision_ref": "PN-FDR-2026-10-27-DISC032 (founder approvals of 27 Oct 2026: Phase 1 authorisation items 1-7 and the Phase 1 review item 7 'The corrected image provenance record'; Phase 2 instruction 6 to apply the declaration; founder-attested form, extending PN-FDR-2026-10-23-GRP-HERO / PN-FDR-2026-10-26-H6-HOME / PN-FDR-2026-10-26-DISC031 to these files on the discovery and library-card surfaces only)",
+      "service_terms": {
+        "openai": "OpenAI Terms of Use: as between the user and OpenAI, the user owns the output; the user is responsible for the inputs they provide. (Same wording as the DISC-031 and H6 records.)"
+      },
+      "content_credentials": {
+        "embeds_c2pa": false,
+        "note": "Web re-encoding carries no content credentials. The v3 master carries no OpenAI credentials (see generated.c2pa_evidence); its OpenAI origin runs through v2 by hash."
+      },
+      "tolerance_exception": {
+        "metric": "Architecture alignment, BEFORE v3 against POSSIBLE C2, 18 landmarks",
+        "threshold": "median <= 2.0 px; 90th percentile <= 4.0 px; persistent furniture <= 6 px",
+        "measured": "architecture median 2.2 px, p90 3.3 px, max 3.6 px (unchanged from v2: the correction did not touch architecture); furniture <= 2 px",
+        "exception": "0.2 px over the median threshold, approved by the founder on 27 Oct 2026 (Phase 1 authorisation, item 4)"
+      }
+    },
+    {
+      "asset": "assets/disc032/img/DISC-032-before-1536.webp",
+      "sha256": "eb2e1efe5f14ceab51fd551f78c15b46f22e4230f1546a60b326390a50121007",
+      "bytes": 236402,
+      "pixels": [
+        1536,
+        1024
+      ],
+      "class": "AI_ILLUSTRATION",
+      "what": "The room before: a contemporary Irish open-plan kitchen and dining room on an ordinary evening, with an oak table, a kitchen island and large glass doors onto a lit back garden (BEFORE side of the hero comparison)",
+      "generated": {
+        "tool": "ChatGPT image generation (OpenAI, gpt-image), per the masters' C2PA content credentials (through v2), with a PlotNua deterministic geometric correction (v3); then Pillow web encoding by the PlotNua build session",
+        "date": "2026-10-27",
+        "source_master": {
+          "file": "DISC-032-IMG-01-DINING-BEFORE-MASTER-v3.png (founder's Mac, folder 03 Website/Live Website/DISC-032-Image-Production-C1-C2-2026-10-27/masters)",
+          "sha256": "5b480b06cb181c7b06ea4f36fbd2a73d84207dba3aa8727cc87067090c746d7f",
+          "bytes": 2255134
+        },
+        "processing_chain": [
+          {
+            "step": "Source: C1 v2, generated in ChatGPT (gpt-image) by the founder, per its C2PA content credentials",
+            "source": {
+              "file": "DISC-032-IMG-01-DINING-BEFORE-MASTER-v2.png",
+              "sha256": "993a7393d62bea36b34ded358688d768c939d0c5024d198e7f34e76aabdbbed3",
+              "bytes": 2356575
+            },
+            "prompt": "UNAVAILABLE (see prompt_status)"
+          },
+          {
+            "step": "Deterministic local geometric correction (C1 v3), authorised by the founder 27 Oct 2026 (Option 1): one smooth displacement field with smoothstep feathering, applied by inverse remapping with Lanczos resampling. Pixels moved; none generated, painted or cloned. Changed region x 452-1313, y 563-1023 (24.68% of pixels); maximum displacement 19.9 px; maximum local shear 0.23; every other pixel bit-identical to v2. Purpose: align the table's near end and the front chair with C2 for the Before/Possible comparison (furniture now within 2 px).",
+            "tool": "correction-script.py with correction-parameters.json (founder's Mac, DISC-032-C1-v3-correction folder); reproducible byte for byte",
+            "parameters": {
+              "face_dy": 12,
+              "leg_dy_bottom": 14,
+              "corner_dx": 13,
+              "chair_dy": 13,
+              "chair_dy_bottom": 19,
+              "chair_dx": 6,
+              "c0": 740,
+              "c1": 935,
+              "cx0": 650,
+              "cx1": 1127,
+              "cf": 70,
+              "mxf": 90
+            }
+          },
+          {
+            "step": "Delivery to the founder's Mac: an Anthropic 'Claude provided this file' C2PA manifest was added; pixels unchanged (pre-delivery sha256 72f9ce2a...)"
+          },
+          {
+            "step": "Web encoding",
+            "tool": "Pillow 12.3.0; resize to 1536 px wide (Lanczos), WebP quality 86, method 6; no other change"
+          }
+        ],
+        "c2pa_evidence": {
+          "v3_master": {
+            "openai_c2pa": "NONE. The v3 master does not carry OpenAI's content credentials: the geometric correction re-encoded the file, so v2's OpenAI manifest was not carried over. Its OpenAI origin is established through v2, by hash.",
+            "anthropic_delivery_manifest": "The v3 file of record (sha256 5b480b06...) carries one C2PA manifest added when the file was delivered from the Claude session to the founder's Mac: claim generator 'Anthropic Files', signed by Anthropic, PBC ('Anthropic Claude Content Signing'), actions c2pa.opened and com.anthropic.claude.provided. It records only that Claude provided the file; it says nothing about how the image was made.",
+            "pre_delivery_file": "Correction output before delivery: sha256 72f9ce2a440263237ddaafdc7a348812bd67daa7e499409da37e983ba1920a4d, no C2PA. Its decoded pixels equal the delivered file's (all 1536 x 1024 RGB values compared, 27 Oct 2026).",
+            "chain": "v3 (5b480b06...) <- deterministic geometric correction of v2 (993a7393...) <- v2's OpenAI C2PA credentials"
+          },
+          "v2_source": {
+            "manifest": "C2PA content credentials embedded in the v2 master PNG (the source of v3), read with c2pa-python 0.38.1 on 27 Oct 2026",
+            "claim_generator": "OpenAI Media Service API",
+            "signed_by": "OpenAI OpCo, LLC",
+            "signed_at": "2026-10-27T18:18:09.100722+00:00",
+            "actions": [
+              "c2pa.created (softwareAgent ChatGPT, version gpt-image; digitalSourceType trainedAlgorithmicMedia)",
+              "c2pa.converted",
+              "c2pa.watermarked.unbound"
+            ],
+            "ingredients_recorded": [],
+            "validation": "content hash matches (assertion.dataHash.match), claim signature and timestamp validated; signing certificate not on the local trust list (no trust anchors loaded)"
+          }
+        }
+      },
+      "depicts_named_product": false,
+      "depicts_named_organisation": false,
+      "human_review": {
+        "reviewer": "Colin MacAulay",
+        "date": "2026-10-27",
+        "attests": "Founder approved C1 v3 (BEFORE) and C2 (POSSIBLE) as the DISC-032 image pair on 27 Oct 2026, including the visible guests and chef and the existing glassware without implying that alcohol sales are authorised, approved the documented provenance chain and the 0.2 px architectural-median tolerance exception, and authorised production preparation (Phase 2). Labelled 'AI-generated illustration'. Not presented as a photograph of a real home, event, person or business. Public launch remains subject to his approval."
+      },
+      "permitted_surfaces": [
+        "discovery",
+        "library-card"
+      ],
+      "prompt_status": "UNAVAILABLE",
+      "reference_disclosure": {
+        "status": "UNCERTAIN",
+        "statement": "ChatGPT's content credentials do not record images supplied in the conversation, so the inputs to these masters are not established from the files. C1 v2 was generated in ChatGPT after review of C2 (founder's note at intake, 27 Oct 2026); the file evidence shows a full re-render guided by C2, not a masked edit, and the credentials record no ingredient. Whether C2 itself was uploaded as an input is not recorded. No founder statement on third-party reference images has yet been recorded for DISC-032, so reference_inputs is not stated and the status remains UNCERTAIN.",
+        "evidence": "C2PA readouts of DISC-032-IMG-02 (c1ec3663...) and DISC-032-IMG-01 v2 (993a7393...), read 27 Oct 2026; C1/C2 intake and v2 intake alignment measurements, 27 Oct 2026"
+      },
+      "resemblance_review": {
+        "date": "2026-10-27",
+        "reviewed_by": "PlotNua build session (visual inspection of both masters at full resolution and in 3x zooms), 27 Oct 2026; recorded for the founder's confirmation at release",
+        "compared_against": "Identifiable third-party content in general: logos, brand names, signage, legible text, recognisable real addresses or buildings, named supplier products, recognisable real people; and the real Irish supper clubs the project researched (described in words only; no photograph of them was used or available to the build session)",
+        "findings": [
+          "No logo, brand name, signage or legible text appears in either image",
+          "The house, extension and garden are generic; no address, number or landmark is visible",
+          "Furniture and lighting are generic contemporary styles (oak table, curved-back cord-seat chairs, dome pendants, mid-century sideboard); no specific named product is identified or claimed",
+          "The guests and chef are AI-generated people; none is intended to depict, or is presented as, a real individual, and no face looks at the camera",
+          "Not presented as, or used to depict, any real supper club, home or event described in the project's research",
+          "Glassware is shown on the table; nothing in the image shows a bar, prices or a sale of alcohol, and the page does not suggest alcohol sales are authorised (founder approval, 27 Oct 2026, item 6)"
+        ],
+        "verdict": "no identifiable third-party product, brand, property or person is reproduced, on visual inspection. Whether any third-party image was supplied in the generation conversation is not established (see reference_disclosure)."
+      },
+      "decision_ref": "PN-FDR-2026-10-27-DISC032 (founder approvals of 27 Oct 2026: Phase 1 authorisation items 1-7 and the Phase 1 review item 7 'The corrected image provenance record'; Phase 2 instruction 6 to apply the declaration; founder-attested form, extending PN-FDR-2026-10-23-GRP-HERO / PN-FDR-2026-10-26-H6-HOME / PN-FDR-2026-10-26-DISC031 to these files on the discovery and library-card surfaces only)",
+      "service_terms": {
+        "openai": "OpenAI Terms of Use: as between the user and OpenAI, the user owns the output; the user is responsible for the inputs they provide. (Same wording as the DISC-031 and H6 records.)"
+      },
+      "content_credentials": {
+        "embeds_c2pa": false,
+        "note": "Web re-encoding carries no content credentials. The v3 master carries no OpenAI credentials (see generated.c2pa_evidence); its OpenAI origin runs through v2 by hash."
+      },
+      "tolerance_exception": {
+        "metric": "Architecture alignment, BEFORE v3 against POSSIBLE C2, 18 landmarks",
+        "threshold": "median <= 2.0 px; 90th percentile <= 4.0 px; persistent furniture <= 6 px",
+        "measured": "architecture median 2.2 px, p90 3.3 px, max 3.6 px (unchanged from v2: the correction did not touch architecture); furniture <= 2 px",
+        "exception": "0.2 px over the median threshold, approved by the founder on 27 Oct 2026 (Phase 1 authorisation, item 4)"
+      }
+    },
+    {
+      "asset": "assets/disc032/img/DISC-032-before-1536.jpg",
+      "sha256": "c0457073b141357e3669763a0b264c6cfb47dfce3fd30595c414be06eb75e45e",
+      "bytes": 325775,
+      "pixels": [
+        1536,
+        1024
+      ],
+      "class": "AI_ILLUSTRATION",
+      "what": "The room before: a contemporary Irish open-plan kitchen and dining room on an ordinary evening, with an oak table, a kitchen island and large glass doors onto a lit back garden (BEFORE side of the hero comparison)",
+      "generated": {
+        "tool": "ChatGPT image generation (OpenAI, gpt-image), per the masters' C2PA content credentials (through v2), with a PlotNua deterministic geometric correction (v3); then Pillow web encoding by the PlotNua build session",
+        "date": "2026-10-27",
+        "source_master": {
+          "file": "DISC-032-IMG-01-DINING-BEFORE-MASTER-v3.png (founder's Mac, folder 03 Website/Live Website/DISC-032-Image-Production-C1-C2-2026-10-27/masters)",
+          "sha256": "5b480b06cb181c7b06ea4f36fbd2a73d84207dba3aa8727cc87067090c746d7f",
+          "bytes": 2255134
+        },
+        "processing_chain": [
+          {
+            "step": "Source: C1 v2, generated in ChatGPT (gpt-image) by the founder, per its C2PA content credentials",
+            "source": {
+              "file": "DISC-032-IMG-01-DINING-BEFORE-MASTER-v2.png",
+              "sha256": "993a7393d62bea36b34ded358688d768c939d0c5024d198e7f34e76aabdbbed3",
+              "bytes": 2356575
+            },
+            "prompt": "UNAVAILABLE (see prompt_status)"
+          },
+          {
+            "step": "Deterministic local geometric correction (C1 v3), authorised by the founder 27 Oct 2026 (Option 1): one smooth displacement field with smoothstep feathering, applied by inverse remapping with Lanczos resampling. Pixels moved; none generated, painted or cloned. Changed region x 452-1313, y 563-1023 (24.68% of pixels); maximum displacement 19.9 px; maximum local shear 0.23; every other pixel bit-identical to v2. Purpose: align the table's near end and the front chair with C2 for the Before/Possible comparison (furniture now within 2 px).",
+            "tool": "correction-script.py with correction-parameters.json (founder's Mac, DISC-032-C1-v3-correction folder); reproducible byte for byte",
+            "parameters": {
+              "face_dy": 12,
+              "leg_dy_bottom": 14,
+              "corner_dx": 13,
+              "chair_dy": 13,
+              "chair_dy_bottom": 19,
+              "chair_dx": 6,
+              "c0": 740,
+              "c1": 935,
+              "cx0": 650,
+              "cx1": 1127,
+              "cf": 70,
+              "mxf": 90
+            }
+          },
+          {
+            "step": "Delivery to the founder's Mac: an Anthropic 'Claude provided this file' C2PA manifest was added; pixels unchanged (pre-delivery sha256 72f9ce2a...)"
+          },
+          {
+            "step": "Web encoding",
+            "tool": "Pillow 12.3.0; resize to 1536 px wide (Lanczos), JPEG quality 88; no other change"
+          }
+        ],
+        "c2pa_evidence": {
+          "v3_master": {
+            "openai_c2pa": "NONE. The v3 master does not carry OpenAI's content credentials: the geometric correction re-encoded the file, so v2's OpenAI manifest was not carried over. Its OpenAI origin is established through v2, by hash.",
+            "anthropic_delivery_manifest": "The v3 file of record (sha256 5b480b06...) carries one C2PA manifest added when the file was delivered from the Claude session to the founder's Mac: claim generator 'Anthropic Files', signed by Anthropic, PBC ('Anthropic Claude Content Signing'), actions c2pa.opened and com.anthropic.claude.provided. It records only that Claude provided the file; it says nothing about how the image was made.",
+            "pre_delivery_file": "Correction output before delivery: sha256 72f9ce2a440263237ddaafdc7a348812bd67daa7e499409da37e983ba1920a4d, no C2PA. Its decoded pixels equal the delivered file's (all 1536 x 1024 RGB values compared, 27 Oct 2026).",
+            "chain": "v3 (5b480b06...) <- deterministic geometric correction of v2 (993a7393...) <- v2's OpenAI C2PA credentials"
+          },
+          "v2_source": {
+            "manifest": "C2PA content credentials embedded in the v2 master PNG (the source of v3), read with c2pa-python 0.38.1 on 27 Oct 2026",
+            "claim_generator": "OpenAI Media Service API",
+            "signed_by": "OpenAI OpCo, LLC",
+            "signed_at": "2026-10-27T18:18:09.100722+00:00",
+            "actions": [
+              "c2pa.created (softwareAgent ChatGPT, version gpt-image; digitalSourceType trainedAlgorithmicMedia)",
+              "c2pa.converted",
+              "c2pa.watermarked.unbound"
+            ],
+            "ingredients_recorded": [],
+            "validation": "content hash matches (assertion.dataHash.match), claim signature and timestamp validated; signing certificate not on the local trust list (no trust anchors loaded)"
+          }
+        }
+      },
+      "depicts_named_product": false,
+      "depicts_named_organisation": false,
+      "human_review": {
+        "reviewer": "Colin MacAulay",
+        "date": "2026-10-27",
+        "attests": "Founder approved C1 v3 (BEFORE) and C2 (POSSIBLE) as the DISC-032 image pair on 27 Oct 2026, including the visible guests and chef and the existing glassware without implying that alcohol sales are authorised, approved the documented provenance chain and the 0.2 px architectural-median tolerance exception, and authorised production preparation (Phase 2). Labelled 'AI-generated illustration'. Not presented as a photograph of a real home, event, person or business. Public launch remains subject to his approval."
+      },
+      "permitted_surfaces": [
+        "discovery",
+        "library-card"
+      ],
+      "prompt_status": "UNAVAILABLE",
+      "reference_disclosure": {
+        "status": "UNCERTAIN",
+        "statement": "ChatGPT's content credentials do not record images supplied in the conversation, so the inputs to these masters are not established from the files. C1 v2 was generated in ChatGPT after review of C2 (founder's note at intake, 27 Oct 2026); the file evidence shows a full re-render guided by C2, not a masked edit, and the credentials record no ingredient. Whether C2 itself was uploaded as an input is not recorded. No founder statement on third-party reference images has yet been recorded for DISC-032, so reference_inputs is not stated and the status remains UNCERTAIN.",
+        "evidence": "C2PA readouts of DISC-032-IMG-02 (c1ec3663...) and DISC-032-IMG-01 v2 (993a7393...), read 27 Oct 2026; C1/C2 intake and v2 intake alignment measurements, 27 Oct 2026"
+      },
+      "resemblance_review": {
+        "date": "2026-10-27",
+        "reviewed_by": "PlotNua build session (visual inspection of both masters at full resolution and in 3x zooms), 27 Oct 2026; recorded for the founder's confirmation at release",
+        "compared_against": "Identifiable third-party content in general: logos, brand names, signage, legible text, recognisable real addresses or buildings, named supplier products, recognisable real people; and the real Irish supper clubs the project researched (described in words only; no photograph of them was used or available to the build session)",
+        "findings": [
+          "No logo, brand name, signage or legible text appears in either image",
+          "The house, extension and garden are generic; no address, number or landmark is visible",
+          "Furniture and lighting are generic contemporary styles (oak table, curved-back cord-seat chairs, dome pendants, mid-century sideboard); no specific named product is identified or claimed",
+          "The guests and chef are AI-generated people; none is intended to depict, or is presented as, a real individual, and no face looks at the camera",
+          "Not presented as, or used to depict, any real supper club, home or event described in the project's research",
+          "Glassware is shown on the table; nothing in the image shows a bar, prices or a sale of alcohol, and the page does not suggest alcohol sales are authorised (founder approval, 27 Oct 2026, item 6)"
+        ],
+        "verdict": "no identifiable third-party product, brand, property or person is reproduced, on visual inspection. Whether any third-party image was supplied in the generation conversation is not established (see reference_disclosure)."
+      },
+      "decision_ref": "PN-FDR-2026-10-27-DISC032 (founder approvals of 27 Oct 2026: Phase 1 authorisation items 1-7 and the Phase 1 review item 7 'The corrected image provenance record'; Phase 2 instruction 6 to apply the declaration; founder-attested form, extending PN-FDR-2026-10-23-GRP-HERO / PN-FDR-2026-10-26-H6-HOME / PN-FDR-2026-10-26-DISC031 to these files on the discovery and library-card surfaces only)",
+      "service_terms": {
+        "openai": "OpenAI Terms of Use: as between the user and OpenAI, the user owns the output; the user is responsible for the inputs they provide. (Same wording as the DISC-031 and H6 records.)"
+      },
+      "content_credentials": {
+        "embeds_c2pa": false,
+        "note": "Web re-encoding carries no content credentials. The v3 master carries no OpenAI credentials (see generated.c2pa_evidence); its OpenAI origin runs through v2 by hash."
+      },
+      "tolerance_exception": {
+        "metric": "Architecture alignment, BEFORE v3 against POSSIBLE C2, 18 landmarks",
+        "threshold": "median <= 2.0 px; 90th percentile <= 4.0 px; persistent furniture <= 6 px",
+        "measured": "architecture median 2.2 px, p90 3.3 px, max 3.6 px (unchanged from v2: the correction did not touch architecture); furniture <= 2 px",
+        "exception": "0.2 px over the median threshold, approved by the founder on 27 Oct 2026 (Phase 1 authorisation, item 4)"
+      }
+    },
+    {
+      "asset": "assets/disc032/img/DISC-032-possible-768.webp",
+      "sha256": "ef0bfb0964b12dfe8e59eb870717c81b351d9ee23883c18fe1d69f74f470d142",
+      "bytes": 81314,
+      "pixels": [
+        768,
+        512
+      ],
+      "class": "AI_ILLUSTRATION",
+      "what": "The room as it could be: the same room at dusk set up as a supper club, guests around a candlelit table and a chef serving (POSSIBLE side of the hero comparison)",
+      "generated": {
+        "tool": "ChatGPT image generation (OpenAI, gpt-image), per the masters' C2PA content credentials; then Pillow web encoding by the PlotNua build session",
+        "date": "2026-10-27",
+        "source_master": {
+          "file": "DISC-032-IMG-02-DINING-POSSIBLE-MASTER.png (founder's Mac, folder 03 Website/Live Website/DISC-032-Image-Production-C1-C2-2026-10-27/masters)",
+          "sha256": "c1ec36632d451536aaf41c001f09301914b05898767bbcff13784f3d71f8ab78",
+          "bytes": 2241019
+        },
+        "processing_chain": [
+          {
+            "step": "Master: generated in ChatGPT (gpt-image) by the founder, per its C2PA content credentials",
+            "prompt": "UNAVAILABLE (see prompt_status)"
+          },
+          {
+            "step": "Web encoding",
+            "tool": "Pillow 12.3.0; resize to 768 px wide (Lanczos), WebP quality 86, method 6; no other change"
+          }
+        ],
+        "c2pa_evidence": {
+          "manifest": "C2PA content credentials embedded in the master PNG (caBX chunk), read with c2pa-python 0.38.1 on 27 Oct 2026",
+          "claim_generator": "OpenAI Media Service API",
+          "signed_by": "OpenAI OpCo, LLC",
+          "signed_at": "2026-10-27T14:39:46.745376+00:00",
+          "actions": [
+            "c2pa.created (softwareAgent ChatGPT, version gpt-image; digitalSourceType trainedAlgorithmicMedia)",
+            "c2pa.converted",
+            "c2pa.watermarked.unbound"
+          ],
+          "ingredients_recorded": [],
+          "validation": "content hash matches (assertion.dataHash.match), claim signature and timestamp validated; signing certificate not on the local trust list (no trust anchors loaded) and reported 'missing required EKU' under the reader's default certificate profile. Neither concerns the image content."
+        }
+      },
+      "depicts_named_product": false,
+      "depicts_named_organisation": false,
+      "human_review": {
+        "reviewer": "Colin MacAulay",
+        "date": "2026-10-27",
+        "attests": "Founder approved C1 v3 (BEFORE) and C2 (POSSIBLE) as the DISC-032 image pair on 27 Oct 2026, including the visible guests and chef and the existing glassware without implying that alcohol sales are authorised, approved the documented provenance chain and the 0.2 px architectural-median tolerance exception, and authorised production preparation (Phase 2). Labelled 'AI-generated illustration'. Not presented as a photograph of a real home, event, person or business. Public launch remains subject to his approval."
+      },
+      "permitted_surfaces": [
+        "discovery",
+        "library-card"
+      ],
+      "prompt_status": "UNAVAILABLE",
+      "reference_disclosure": {
+        "status": "UNCERTAIN",
+        "statement": "ChatGPT's content credentials do not record images supplied in the conversation, so the inputs to these masters are not established from the files. C2 was produced in ChatGPT as an edit of the first BEFORE master (v1), per the production instruction and the measured architecture alignment (about 1 px); the credentials record no ingredient for it. No founder statement on third-party reference images has yet been recorded for DISC-032, so reference_inputs is not stated and the status remains UNCERTAIN.",
+        "evidence": "C2PA readouts of DISC-032-IMG-02 (c1ec3663...) and DISC-032-IMG-01 v2 (993a7393...), read 27 Oct 2026; C1/C2 intake and v2 intake alignment measurements, 27 Oct 2026"
+      },
+      "resemblance_review": {
+        "date": "2026-10-27",
+        "reviewed_by": "PlotNua build session (visual inspection of both masters at full resolution and in 3x zooms), 27 Oct 2026; recorded for the founder's confirmation at release",
+        "compared_against": "Identifiable third-party content in general: logos, brand names, signage, legible text, recognisable real addresses or buildings, named supplier products, recognisable real people; and the real Irish supper clubs the project researched (described in words only; no photograph of them was used or available to the build session)",
+        "findings": [
+          "No logo, brand name, signage or legible text appears in either image",
+          "The house, extension and garden are generic; no address, number or landmark is visible",
+          "Furniture and lighting are generic contemporary styles (oak table, curved-back cord-seat chairs, dome pendants, mid-century sideboard); no specific named product is identified or claimed",
+          "The guests and chef are AI-generated people; none is intended to depict, or is presented as, a real individual, and no face looks at the camera",
+          "Not presented as, or used to depict, any real supper club, home or event described in the project's research",
+          "Glassware is shown on the table; nothing in the image shows a bar, prices or a sale of alcohol, and the page does not suggest alcohol sales are authorised (founder approval, 27 Oct 2026, item 6)"
+        ],
+        "verdict": "no identifiable third-party product, brand, property or person is reproduced, on visual inspection. Whether any third-party image was supplied in the generation conversation is not established (see reference_disclosure)."
+      },
+      "decision_ref": "PN-FDR-2026-10-27-DISC032 (founder approvals of 27 Oct 2026: Phase 1 authorisation items 1-7 and the Phase 1 review item 7 'The corrected image provenance record'; Phase 2 instruction 6 to apply the declaration; founder-attested form, extending PN-FDR-2026-10-23-GRP-HERO / PN-FDR-2026-10-26-H6-HOME / PN-FDR-2026-10-26-DISC031 to these files on the discovery and library-card surfaces only)",
+      "service_terms": {
+        "openai": "OpenAI Terms of Use: as between the user and OpenAI, the user owns the output; the user is responsible for the inputs they provide. (Same wording as the DISC-031 and H6 records.)"
+      },
+      "content_credentials": {
+        "embeds_c2pa": false,
+        "note": "Web re-encoding carries no content credentials. The C2 PNG master carries OpenAI's C2PA content credentials (see generated.c2pa_evidence)."
+      },
+      "tolerance_exception": {
+        "metric": "Architecture alignment, BEFORE v3 against POSSIBLE C2, 18 landmarks",
+        "threshold": "median <= 2.0 px; 90th percentile <= 4.0 px; persistent furniture <= 6 px",
+        "measured": "architecture median 2.2 px, p90 3.3 px, max 3.6 px (unchanged from v2: the correction did not touch architecture); furniture <= 2 px",
+        "exception": "0.2 px over the median threshold, approved by the founder on 27 Oct 2026 (Phase 1 authorisation, item 4)"
+      }
+    },
+    {
+      "asset": "assets/disc032/img/DISC-032-possible-1024.webp",
+      "sha256": "13ae00e506e334068aa0d2fcf3f6d5b0c3c79043d95ac2b432bee76dfa0649d5",
+      "bytes": 127962,
+      "pixels": [
+        1024,
+        683
+      ],
+      "class": "AI_ILLUSTRATION",
+      "what": "The room as it could be: the same room at dusk set up as a supper club, guests around a candlelit table and a chef serving (POSSIBLE side of the hero comparison)",
+      "generated": {
+        "tool": "ChatGPT image generation (OpenAI, gpt-image), per the masters' C2PA content credentials; then Pillow web encoding by the PlotNua build session",
+        "date": "2026-10-27",
+        "source_master": {
+          "file": "DISC-032-IMG-02-DINING-POSSIBLE-MASTER.png (founder's Mac, folder 03 Website/Live Website/DISC-032-Image-Production-C1-C2-2026-10-27/masters)",
+          "sha256": "c1ec36632d451536aaf41c001f09301914b05898767bbcff13784f3d71f8ab78",
+          "bytes": 2241019
+        },
+        "processing_chain": [
+          {
+            "step": "Master: generated in ChatGPT (gpt-image) by the founder, per its C2PA content credentials",
+            "prompt": "UNAVAILABLE (see prompt_status)"
+          },
+          {
+            "step": "Web encoding",
+            "tool": "Pillow 12.3.0; resize to 1024 px wide (Lanczos), WebP quality 86, method 6; no other change"
+          }
+        ],
+        "c2pa_evidence": {
+          "manifest": "C2PA content credentials embedded in the master PNG (caBX chunk), read with c2pa-python 0.38.1 on 27 Oct 2026",
+          "claim_generator": "OpenAI Media Service API",
+          "signed_by": "OpenAI OpCo, LLC",
+          "signed_at": "2026-10-27T14:39:46.745376+00:00",
+          "actions": [
+            "c2pa.created (softwareAgent ChatGPT, version gpt-image; digitalSourceType trainedAlgorithmicMedia)",
+            "c2pa.converted",
+            "c2pa.watermarked.unbound"
+          ],
+          "ingredients_recorded": [],
+          "validation": "content hash matches (assertion.dataHash.match), claim signature and timestamp validated; signing certificate not on the local trust list (no trust anchors loaded) and reported 'missing required EKU' under the reader's default certificate profile. Neither concerns the image content."
+        }
+      },
+      "depicts_named_product": false,
+      "depicts_named_organisation": false,
+      "human_review": {
+        "reviewer": "Colin MacAulay",
+        "date": "2026-10-27",
+        "attests": "Founder approved C1 v3 (BEFORE) and C2 (POSSIBLE) as the DISC-032 image pair on 27 Oct 2026, including the visible guests and chef and the existing glassware without implying that alcohol sales are authorised, approved the documented provenance chain and the 0.2 px architectural-median tolerance exception, and authorised production preparation (Phase 2). Labelled 'AI-generated illustration'. Not presented as a photograph of a real home, event, person or business. Public launch remains subject to his approval."
+      },
+      "permitted_surfaces": [
+        "discovery",
+        "library-card"
+      ],
+      "prompt_status": "UNAVAILABLE",
+      "reference_disclosure": {
+        "status": "UNCERTAIN",
+        "statement": "ChatGPT's content credentials do not record images supplied in the conversation, so the inputs to these masters are not established from the files. C2 was produced in ChatGPT as an edit of the first BEFORE master (v1), per the production instruction and the measured architecture alignment (about 1 px); the credentials record no ingredient for it. No founder statement on third-party reference images has yet been recorded for DISC-032, so reference_inputs is not stated and the status remains UNCERTAIN.",
+        "evidence": "C2PA readouts of DISC-032-IMG-02 (c1ec3663...) and DISC-032-IMG-01 v2 (993a7393...), read 27 Oct 2026; C1/C2 intake and v2 intake alignment measurements, 27 Oct 2026"
+      },
+      "resemblance_review": {
+        "date": "2026-10-27",
+        "reviewed_by": "PlotNua build session (visual inspection of both masters at full resolution and in 3x zooms), 27 Oct 2026; recorded for the founder's confirmation at release",
+        "compared_against": "Identifiable third-party content in general: logos, brand names, signage, legible text, recognisable real addresses or buildings, named supplier products, recognisable real people; and the real Irish supper clubs the project researched (described in words only; no photograph of them was used or available to the build session)",
+        "findings": [
+          "No logo, brand name, signage or legible text appears in either image",
+          "The house, extension and garden are generic; no address, number or landmark is visible",
+          "Furniture and lighting are generic contemporary styles (oak table, curved-back cord-seat chairs, dome pendants, mid-century sideboard); no specific named product is identified or claimed",
+          "The guests and chef are AI-generated people; none is intended to depict, or is presented as, a real individual, and no face looks at the camera",
+          "Not presented as, or used to depict, any real supper club, home or event described in the project's research",
+          "Glassware is shown on the table; nothing in the image shows a bar, prices or a sale of alcohol, and the page does not suggest alcohol sales are authorised (founder approval, 27 Oct 2026, item 6)"
+        ],
+        "verdict": "no identifiable third-party product, brand, property or person is reproduced, on visual inspection. Whether any third-party image was supplied in the generation conversation is not established (see reference_disclosure)."
+      },
+      "decision_ref": "PN-FDR-2026-10-27-DISC032 (founder approvals of 27 Oct 2026: Phase 1 authorisation items 1-7 and the Phase 1 review item 7 'The corrected image provenance record'; Phase 2 instruction 6 to apply the declaration; founder-attested form, extending PN-FDR-2026-10-23-GRP-HERO / PN-FDR-2026-10-26-H6-HOME / PN-FDR-2026-10-26-DISC031 to these files on the discovery and library-card surfaces only)",
+      "service_terms": {
+        "openai": "OpenAI Terms of Use: as between the user and OpenAI, the user owns the output; the user is responsible for the inputs they provide. (Same wording as the DISC-031 and H6 records.)"
+      },
+      "content_credentials": {
+        "embeds_c2pa": false,
+        "note": "Web re-encoding carries no content credentials. The C2 PNG master carries OpenAI's C2PA content credentials (see generated.c2pa_evidence)."
+      },
+      "tolerance_exception": {
+        "metric": "Architecture alignment, BEFORE v3 against POSSIBLE C2, 18 landmarks",
+        "threshold": "median <= 2.0 px; 90th percentile <= 4.0 px; persistent furniture <= 6 px",
+        "measured": "architecture median 2.2 px, p90 3.3 px, max 3.6 px (unchanged from v2: the correction did not touch architecture); furniture <= 2 px",
+        "exception": "0.2 px over the median threshold, approved by the founder on 27 Oct 2026 (Phase 1 authorisation, item 4)"
+      }
+    },
+    {
+      "asset": "assets/disc032/img/DISC-032-possible-1536.webp",
+      "sha256": "5a2dcaedea5913e6fb63de61ad2d252a72be9cf795327235b3e0e0813455d75f",
+      "bytes": 222064,
+      "pixels": [
+        1536,
+        1024
+      ],
+      "class": "AI_ILLUSTRATION",
+      "what": "The room as it could be: the same room at dusk set up as a supper club, guests around a candlelit table and a chef serving (POSSIBLE side of the hero comparison)",
+      "generated": {
+        "tool": "ChatGPT image generation (OpenAI, gpt-image), per the masters' C2PA content credentials; then Pillow web encoding by the PlotNua build session",
+        "date": "2026-10-27",
+        "source_master": {
+          "file": "DISC-032-IMG-02-DINING-POSSIBLE-MASTER.png (founder's Mac, folder 03 Website/Live Website/DISC-032-Image-Production-C1-C2-2026-10-27/masters)",
+          "sha256": "c1ec36632d451536aaf41c001f09301914b05898767bbcff13784f3d71f8ab78",
+          "bytes": 2241019
+        },
+        "processing_chain": [
+          {
+            "step": "Master: generated in ChatGPT (gpt-image) by the founder, per its C2PA content credentials",
+            "prompt": "UNAVAILABLE (see prompt_status)"
+          },
+          {
+            "step": "Web encoding",
+            "tool": "Pillow 12.3.0; resize to 1536 px wide (Lanczos), WebP quality 86, method 6; no other change"
+          }
+        ],
+        "c2pa_evidence": {
+          "manifest": "C2PA content credentials embedded in the master PNG (caBX chunk), read with c2pa-python 0.38.1 on 27 Oct 2026",
+          "claim_generator": "OpenAI Media Service API",
+          "signed_by": "OpenAI OpCo, LLC",
+          "signed_at": "2026-10-27T14:39:46.745376+00:00",
+          "actions": [
+            "c2pa.created (softwareAgent ChatGPT, version gpt-image; digitalSourceType trainedAlgorithmicMedia)",
+            "c2pa.converted",
+            "c2pa.watermarked.unbound"
+          ],
+          "ingredients_recorded": [],
+          "validation": "content hash matches (assertion.dataHash.match), claim signature and timestamp validated; signing certificate not on the local trust list (no trust anchors loaded) and reported 'missing required EKU' under the reader's default certificate profile. Neither concerns the image content."
+        }
+      },
+      "depicts_named_product": false,
+      "depicts_named_organisation": false,
+      "human_review": {
+        "reviewer": "Colin MacAulay",
+        "date": "2026-10-27",
+        "attests": "Founder approved C1 v3 (BEFORE) and C2 (POSSIBLE) as the DISC-032 image pair on 27 Oct 2026, including the visible guests and chef and the existing glassware without implying that alcohol sales are authorised, approved the documented provenance chain and the 0.2 px architectural-median tolerance exception, and authorised production preparation (Phase 2). Labelled 'AI-generated illustration'. Not presented as a photograph of a real home, event, person or business. Public launch remains subject to his approval."
+      },
+      "permitted_surfaces": [
+        "discovery",
+        "library-card"
+      ],
+      "prompt_status": "UNAVAILABLE",
+      "reference_disclosure": {
+        "status": "UNCERTAIN",
+        "statement": "ChatGPT's content credentials do not record images supplied in the conversation, so the inputs to these masters are not established from the files. C2 was produced in ChatGPT as an edit of the first BEFORE master (v1), per the production instruction and the measured architecture alignment (about 1 px); the credentials record no ingredient for it. No founder statement on third-party reference images has yet been recorded for DISC-032, so reference_inputs is not stated and the status remains UNCERTAIN.",
+        "evidence": "C2PA readouts of DISC-032-IMG-02 (c1ec3663...) and DISC-032-IMG-01 v2 (993a7393...), read 27 Oct 2026; C1/C2 intake and v2 intake alignment measurements, 27 Oct 2026"
+      },
+      "resemblance_review": {
+        "date": "2026-10-27",
+        "reviewed_by": "PlotNua build session (visual inspection of both masters at full resolution and in 3x zooms), 27 Oct 2026; recorded for the founder's confirmation at release",
+        "compared_against": "Identifiable third-party content in general: logos, brand names, signage, legible text, recognisable real addresses or buildings, named supplier products, recognisable real people; and the real Irish supper clubs the project researched (described in words only; no photograph of them was used or available to the build session)",
+        "findings": [
+          "No logo, brand name, signage or legible text appears in either image",
+          "The house, extension and garden are generic; no address, number or landmark is visible",
+          "Furniture and lighting are generic contemporary styles (oak table, curved-back cord-seat chairs, dome pendants, mid-century sideboard); no specific named product is identified or claimed",
+          "The guests and chef are AI-generated people; none is intended to depict, or is presented as, a real individual, and no face looks at the camera",
+          "Not presented as, or used to depict, any real supper club, home or event described in the project's research",
+          "Glassware is shown on the table; nothing in the image shows a bar, prices or a sale of alcohol, and the page does not suggest alcohol sales are authorised (founder approval, 27 Oct 2026, item 6)"
+        ],
+        "verdict": "no identifiable third-party product, brand, property or person is reproduced, on visual inspection. Whether any third-party image was supplied in the generation conversation is not established (see reference_disclosure)."
+      },
+      "decision_ref": "PN-FDR-2026-10-27-DISC032 (founder approvals of 27 Oct 2026: Phase 1 authorisation items 1-7 and the Phase 1 review item 7 'The corrected image provenance record'; Phase 2 instruction 6 to apply the declaration; founder-attested form, extending PN-FDR-2026-10-23-GRP-HERO / PN-FDR-2026-10-26-H6-HOME / PN-FDR-2026-10-26-DISC031 to these files on the discovery and library-card surfaces only)",
+      "service_terms": {
+        "openai": "OpenAI Terms of Use: as between the user and OpenAI, the user owns the output; the user is responsible for the inputs they provide. (Same wording as the DISC-031 and H6 records.)"
+      },
+      "content_credentials": {
+        "embeds_c2pa": false,
+        "note": "Web re-encoding carries no content credentials. The C2 PNG master carries OpenAI's C2PA content credentials (see generated.c2pa_evidence)."
+      },
+      "tolerance_exception": {
+        "metric": "Architecture alignment, BEFORE v3 against POSSIBLE C2, 18 landmarks",
+        "threshold": "median <= 2.0 px; 90th percentile <= 4.0 px; persistent furniture <= 6 px",
+        "measured": "architecture median 2.2 px, p90 3.3 px, max 3.6 px (unchanged from v2: the correction did not touch architecture); furniture <= 2 px",
+        "exception": "0.2 px over the median threshold, approved by the founder on 27 Oct 2026 (Phase 1 authorisation, item 4)"
+      }
+    },
+    {
+      "asset": "assets/disc032/img/DISC-032-possible-1536.jpg",
+      "sha256": "32159a386d6adfc4bcb0110281446a8239cfed757505d08a51f7f8cd0c54e6f2",
+      "bytes": 315250,
+      "pixels": [
+        1536,
+        1024
+      ],
+      "class": "AI_ILLUSTRATION",
+      "what": "The room as it could be: the same room at dusk set up as a supper club, guests around a candlelit table and a chef serving (POSSIBLE side of the hero comparison)",
+      "generated": {
+        "tool": "ChatGPT image generation (OpenAI, gpt-image), per the masters' C2PA content credentials; then Pillow web encoding by the PlotNua build session",
+        "date": "2026-10-27",
+        "source_master": {
+          "file": "DISC-032-IMG-02-DINING-POSSIBLE-MASTER.png (founder's Mac, folder 03 Website/Live Website/DISC-032-Image-Production-C1-C2-2026-10-27/masters)",
+          "sha256": "c1ec36632d451536aaf41c001f09301914b05898767bbcff13784f3d71f8ab78",
+          "bytes": 2241019
+        },
+        "processing_chain": [
+          {
+            "step": "Master: generated in ChatGPT (gpt-image) by the founder, per its C2PA content credentials",
+            "prompt": "UNAVAILABLE (see prompt_status)"
+          },
+          {
+            "step": "Web encoding",
+            "tool": "Pillow 12.3.0; resize to 1536 px wide (Lanczos), JPEG quality 88; no other change"
+          }
+        ],
+        "c2pa_evidence": {
+          "manifest": "C2PA content credentials embedded in the master PNG (caBX chunk), read with c2pa-python 0.38.1 on 27 Oct 2026",
+          "claim_generator": "OpenAI Media Service API",
+          "signed_by": "OpenAI OpCo, LLC",
+          "signed_at": "2026-10-27T14:39:46.745376+00:00",
+          "actions": [
+            "c2pa.created (softwareAgent ChatGPT, version gpt-image; digitalSourceType trainedAlgorithmicMedia)",
+            "c2pa.converted",
+            "c2pa.watermarked.unbound"
+          ],
+          "ingredients_recorded": [],
+          "validation": "content hash matches (assertion.dataHash.match), claim signature and timestamp validated; signing certificate not on the local trust list (no trust anchors loaded) and reported 'missing required EKU' under the reader's default certificate profile. Neither concerns the image content."
+        }
+      },
+      "depicts_named_product": false,
+      "depicts_named_organisation": false,
+      "human_review": {
+        "reviewer": "Colin MacAulay",
+        "date": "2026-10-27",
+        "attests": "Founder approved C1 v3 (BEFORE) and C2 (POSSIBLE) as the DISC-032 image pair on 27 Oct 2026, including the visible guests and chef and the existing glassware without implying that alcohol sales are authorised, approved the documented provenance chain and the 0.2 px architectural-median tolerance exception, and authorised production preparation (Phase 2). Labelled 'AI-generated illustration'. Not presented as a photograph of a real home, event, person or business. Public launch remains subject to his approval."
+      },
+      "permitted_surfaces": [
+        "discovery",
+        "library-card"
+      ],
+      "prompt_status": "UNAVAILABLE",
+      "reference_disclosure": {
+        "status": "UNCERTAIN",
+        "statement": "ChatGPT's content credentials do not record images supplied in the conversation, so the inputs to these masters are not established from the files. C2 was produced in ChatGPT as an edit of the first BEFORE master (v1), per the production instruction and the measured architecture alignment (about 1 px); the credentials record no ingredient for it. No founder statement on third-party reference images has yet been recorded for DISC-032, so reference_inputs is not stated and the status remains UNCERTAIN.",
+        "evidence": "C2PA readouts of DISC-032-IMG-02 (c1ec3663...) and DISC-032-IMG-01 v2 (993a7393...), read 27 Oct 2026; C1/C2 intake and v2 intake alignment measurements, 27 Oct 2026"
+      },
+      "resemblance_review": {
+        "date": "2026-10-27",
+        "reviewed_by": "PlotNua build session (visual inspection of both masters at full resolution and in 3x zooms), 27 Oct 2026; recorded for the founder's confirmation at release",
+        "compared_against": "Identifiable third-party content in general: logos, brand names, signage, legible text, recognisable real addresses or buildings, named supplier products, recognisable real people; and the real Irish supper clubs the project researched (described in words only; no photograph of them was used or available to the build session)",
+        "findings": [
+          "No logo, brand name, signage or legible text appears in either image",
+          "The house, extension and garden are generic; no address, number or landmark is visible",
+          "Furniture and lighting are generic contemporary styles (oak table, curved-back cord-seat chairs, dome pendants, mid-century sideboard); no specific named product is identified or claimed",
+          "The guests and chef are AI-generated people; none is intended to depict, or is presented as, a real individual, and no face looks at the camera",
+          "Not presented as, or used to depict, any real supper club, home or event described in the project's research",
+          "Glassware is shown on the table; nothing in the image shows a bar, prices or a sale of alcohol, and the page does not suggest alcohol sales are authorised (founder approval, 27 Oct 2026, item 6)"
+        ],
+        "verdict": "no identifiable third-party product, brand, property or person is reproduced, on visual inspection. Whether any third-party image was supplied in the generation conversation is not established (see reference_disclosure)."
+      },
+      "decision_ref": "PN-FDR-2026-10-27-DISC032 (founder approvals of 27 Oct 2026: Phase 1 authorisation items 1-7 and the Phase 1 review item 7 'The corrected image provenance record'; Phase 2 instruction 6 to apply the declaration; founder-attested form, extending PN-FDR-2026-10-23-GRP-HERO / PN-FDR-2026-10-26-H6-HOME / PN-FDR-2026-10-26-DISC031 to these files on the discovery and library-card surfaces only)",
+      "service_terms": {
+        "openai": "OpenAI Terms of Use: as between the user and OpenAI, the user owns the output; the user is responsible for the inputs they provide. (Same wording as the DISC-031 and H6 records.)"
+      },
+      "content_credentials": {
+        "embeds_c2pa": false,
+        "note": "Web re-encoding carries no content credentials. The C2 PNG master carries OpenAI's C2PA content credentials (see generated.c2pa_evidence)."
+      },
+      "tolerance_exception": {
+        "metric": "Architecture alignment, BEFORE v3 against POSSIBLE C2, 18 landmarks",
+        "threshold": "median <= 2.0 px; 90th percentile <= 4.0 px; persistent furniture <= 6 px",
+        "measured": "architecture median 2.2 px, p90 3.3 px, max 3.6 px (unchanged from v2: the correction did not touch architecture); furniture <= 2 px",
+        "exception": "0.2 px over the median threshold, approved by the founder on 27 Oct 2026 (Phase 1 authorisation, item 4)"
+      }
+    },
+    {
+      "asset": "assets/disc032/img/DISC-032-og-1200x630.jpg",
+      "sha256": "1b86269f66388e9295633935ce8f2af7d489fb4206ed9b965dd137ad20a7a733",
+      "bytes": 175501,
+      "pixels": [
+        1200,
+        630
+      ],
+      "class": "AI_ILLUSTRATION",
+      "what": "The room as it could be: the same room at dusk set up as a supper club, guests around a candlelit table and a chef serving (Open Graph and Twitter share image)",
+      "generated": {
+        "tool": "ChatGPT image generation (OpenAI, gpt-image), per the masters' C2PA content credentials; then Pillow web encoding by the PlotNua build session",
+        "date": "2026-10-27",
+        "source_master": {
+          "file": "DISC-032-IMG-02-DINING-POSSIBLE-MASTER.png (founder's Mac, folder 03 Website/Live Website/DISC-032-Image-Production-C1-C2-2026-10-27/masters)",
+          "sha256": "c1ec36632d451536aaf41c001f09301914b05898767bbcff13784f3d71f8ab78",
+          "bytes": 2241019
+        },
+        "processing_chain": [
+          {
+            "step": "Master: generated in ChatGPT (gpt-image) by the founder, per its C2PA content credentials",
+            "prompt": "UNAVAILABLE (see prompt_status)"
+          },
+          {
+            "step": "Web encoding",
+            "tool": "Pillow 12.3.0; resize to 1200 px wide (Lanczos), crop to 1200 x 630 from row 93, JPEG quality 86; no other change"
+          }
+        ],
+        "c2pa_evidence": {
+          "manifest": "C2PA content credentials embedded in the master PNG (caBX chunk), read with c2pa-python 0.38.1 on 27 Oct 2026",
+          "claim_generator": "OpenAI Media Service API",
+          "signed_by": "OpenAI OpCo, LLC",
+          "signed_at": "2026-10-27T14:39:46.745376+00:00",
+          "actions": [
+            "c2pa.created (softwareAgent ChatGPT, version gpt-image; digitalSourceType trainedAlgorithmicMedia)",
+            "c2pa.converted",
+            "c2pa.watermarked.unbound"
+          ],
+          "ingredients_recorded": [],
+          "validation": "content hash matches (assertion.dataHash.match), claim signature and timestamp validated; signing certificate not on the local trust list (no trust anchors loaded) and reported 'missing required EKU' under the reader's default certificate profile. Neither concerns the image content."
+        }
+      },
+      "depicts_named_product": false,
+      "depicts_named_organisation": false,
+      "human_review": {
+        "reviewer": "Colin MacAulay",
+        "date": "2026-10-27",
+        "attests": "Founder approved C1 v3 (BEFORE) and C2 (POSSIBLE) as the DISC-032 image pair on 27 Oct 2026, including the visible guests and chef and the existing glassware without implying that alcohol sales are authorised, approved the documented provenance chain and the 0.2 px architectural-median tolerance exception, and authorised production preparation (Phase 2). Labelled 'AI-generated illustration'. Not presented as a photograph of a real home, event, person or business. Public launch remains subject to his approval."
+      },
+      "permitted_surfaces": [
+        "discovery",
+        "library-card"
+      ],
+      "prompt_status": "UNAVAILABLE",
+      "reference_disclosure": {
+        "status": "UNCERTAIN",
+        "statement": "ChatGPT's content credentials do not record images supplied in the conversation, so the inputs to these masters are not established from the files. C2 was produced in ChatGPT as an edit of the first BEFORE master (v1), per the production instruction and the measured architecture alignment (about 1 px); the credentials record no ingredient for it. No founder statement on third-party reference images has yet been recorded for DISC-032, so reference_inputs is not stated and the status remains UNCERTAIN.",
+        "evidence": "C2PA readouts of DISC-032-IMG-02 (c1ec3663...) and DISC-032-IMG-01 v2 (993a7393...), read 27 Oct 2026; C1/C2 intake and v2 intake alignment measurements, 27 Oct 2026"
+      },
+      "resemblance_review": {
+        "date": "2026-10-27",
+        "reviewed_by": "PlotNua build session (visual inspection of both masters at full resolution and in 3x zooms), 27 Oct 2026; recorded for the founder's confirmation at release",
+        "compared_against": "Identifiable third-party content in general: logos, brand names, signage, legible text, recognisable real addresses or buildings, named supplier products, recognisable real people; and the real Irish supper clubs the project researched (described in words only; no photograph of them was used or available to the build session)",
+        "findings": [
+          "No logo, brand name, signage or legible text appears in either image",
+          "The house, extension and garden are generic; no address, number or landmark is visible",
+          "Furniture and lighting are generic contemporary styles (oak table, curved-back cord-seat chairs, dome pendants, mid-century sideboard); no specific named product is identified or claimed",
+          "The guests and chef are AI-generated people; none is intended to depict, or is presented as, a real individual, and no face looks at the camera",
+          "Not presented as, or used to depict, any real supper club, home or event described in the project's research",
+          "Glassware is shown on the table; nothing in the image shows a bar, prices or a sale of alcohol, and the page does not suggest alcohol sales are authorised (founder approval, 27 Oct 2026, item 6)"
+        ],
+        "verdict": "no identifiable third-party product, brand, property or person is reproduced, on visual inspection. Whether any third-party image was supplied in the generation conversation is not established (see reference_disclosure)."
+      },
+      "decision_ref": "PN-FDR-2026-10-27-DISC032 (founder approvals of 27 Oct 2026: Phase 1 authorisation items 1-7 and the Phase 1 review item 7 'The corrected image provenance record'; Phase 2 instruction 6 to apply the declaration; founder-attested form, extending PN-FDR-2026-10-23-GRP-HERO / PN-FDR-2026-10-26-H6-HOME / PN-FDR-2026-10-26-DISC031 to these files on the discovery and library-card surfaces only)",
+      "service_terms": {
+        "openai": "OpenAI Terms of Use: as between the user and OpenAI, the user owns the output; the user is responsible for the inputs they provide. (Same wording as the DISC-031 and H6 records.)"
+      },
+      "content_credentials": {
+        "embeds_c2pa": false,
+        "note": "Web re-encoding carries no content credentials. The C2 PNG master carries OpenAI's C2PA content credentials (see generated.c2pa_evidence)."
+      },
+      "tolerance_exception": {
+        "metric": "Architecture alignment, BEFORE v3 against POSSIBLE C2, 18 landmarks",
+        "threshold": "median <= 2.0 px; 90th percentile <= 4.0 px; persistent furniture <= 6 px",
+        "measured": "architecture median 2.2 px, p90 3.3 px, max 3.6 px (unchanged from v2: the correction did not touch architecture); furniture <= 2 px",
+        "exception": "0.2 px over the median threshold, approved by the founder on 27 Oct 2026 (Phase 1 authorisation, item 4)"
+      }
+    }
+  ],
+  "launch_records": [
+    {
+      "asset": "assets/disc032/img/DISC-032-possible-960.jpg",
+      "sha256": "8ca120d69e228b0c563982c09e945fbad8cedfdb746e0c72bb8dd4c0fce2379c",
+      "bytes": 144125,
+      "pixels": [
+        960,
+        640
+      ],
+      "class": "AI_ILLUSTRATION",
+      "what": "The room as it could be: the same room at dusk set up as a supper club, guests around a candlelit table and a chef serving (Discovery Library card: the Discovery realised)",
+      "generated": {
+        "tool": "ChatGPT image generation (OpenAI, gpt-image), per the masters' C2PA content credentials; then Pillow web encoding by the PlotNua build session",
+        "date": "2026-10-27",
+        "source_master": {
+          "file": "DISC-032-IMG-02-DINING-POSSIBLE-MASTER.png (founder's Mac, folder 03 Website/Live Website/DISC-032-Image-Production-C1-C2-2026-10-27/masters)",
+          "sha256": "c1ec36632d451536aaf41c001f09301914b05898767bbcff13784f3d71f8ab78",
+          "bytes": 2241019
+        },
+        "processing_chain": [
+          {
+            "step": "Master: generated in ChatGPT (gpt-image) by the founder, per its C2PA content credentials",
+            "prompt": "UNAVAILABLE (see prompt_status)"
+          },
+          {
+            "step": "Web encoding",
+            "tool": "Pillow 12.3.0; resize to 960 px wide (Lanczos), JPEG quality 86; no other change"
+          }
+        ],
+        "c2pa_evidence": {
+          "manifest": "C2PA content credentials embedded in the master PNG (caBX chunk), read with c2pa-python 0.38.1 on 27 Oct 2026",
+          "claim_generator": "OpenAI Media Service API",
+          "signed_by": "OpenAI OpCo, LLC",
+          "signed_at": "2026-10-27T14:39:46.745376+00:00",
+          "actions": [
+            "c2pa.created (softwareAgent ChatGPT, version gpt-image; digitalSourceType trainedAlgorithmicMedia)",
+            "c2pa.converted",
+            "c2pa.watermarked.unbound"
+          ],
+          "ingredients_recorded": [],
+          "validation": "content hash matches (assertion.dataHash.match), claim signature and timestamp validated; signing certificate not on the local trust list (no trust anchors loaded) and reported 'missing required EKU' under the reader's default certificate profile. Neither concerns the image content."
+        }
+      },
+      "depicts_named_product": false,
+      "depicts_named_organisation": false,
+      "human_review": {
+        "reviewer": "Colin MacAulay",
+        "date": "2026-10-27",
+        "attests": "Founder approved C1 v3 (BEFORE) and C2 (POSSIBLE) as the DISC-032 image pair on 27 Oct 2026, including the visible guests and chef and the existing glassware without implying that alcohol sales are authorised, approved the documented provenance chain and the 0.2 px architectural-median tolerance exception, and authorised production preparation (Phase 2). Labelled 'AI-generated illustration'. Not presented as a photograph of a real home, event, person or business. Public launch remains subject to his approval."
+      },
+      "permitted_surfaces": [
+        "discovery",
+        "library-card"
+      ],
+      "prompt_status": "UNAVAILABLE",
+      "reference_disclosure": {
+        "status": "UNCERTAIN",
+        "statement": "ChatGPT's content credentials do not record images supplied in the conversation, so the inputs to these masters are not established from the files. C2 was produced in ChatGPT as an edit of the first BEFORE master (v1), per the production instruction and the measured architecture alignment (about 1 px); the credentials record no ingredient for it. No founder statement on third-party reference images has yet been recorded for DISC-032, so reference_inputs is not stated and the status remains UNCERTAIN.",
+        "evidence": "C2PA readouts of DISC-032-IMG-02 (c1ec3663...) and DISC-032-IMG-01 v2 (993a7393...), read 27 Oct 2026; C1/C2 intake and v2 intake alignment measurements, 27 Oct 2026"
+      },
+      "resemblance_review": {
+        "date": "2026-10-27",
+        "reviewed_by": "PlotNua build session (visual inspection of both masters at full resolution and in 3x zooms), 27 Oct 2026; recorded for the founder's confirmation at release",
+        "compared_against": "Identifiable third-party content in general: logos, brand names, signage, legible text, recognisable real addresses or buildings, named supplier products, recognisable real people; and the real Irish supper clubs the project researched (described in words only; no photograph of them was used or available to the build session)",
+        "findings": [
+          "No logo, brand name, signage or legible text appears in either image",
+          "The house, extension and garden are generic; no address, number or landmark is visible",
+          "Furniture and lighting are generic contemporary styles (oak table, curved-back cord-seat chairs, dome pendants, mid-century sideboard); no specific named product is identified or claimed",
+          "The guests and chef are AI-generated people; none is intended to depict, or is presented as, a real individual, and no face looks at the camera",
+          "Not presented as, or used to depict, any real supper club, home or event described in the project's research",
+          "Glassware is shown on the table; nothing in the image shows a bar, prices or a sale of alcohol, and the page does not suggest alcohol sales are authorised (founder approval, 27 Oct 2026, item 6)"
+        ],
+        "verdict": "no identifiable third-party product, brand, property or person is reproduced, on visual inspection. Whether any third-party image was supplied in the generation conversation is not established (see reference_disclosure)."
+      },
+      "decision_ref": "PN-FDR-2026-10-27-DISC032 (founder approvals of 27 Oct 2026: Phase 1 authorisation items 1-7 and the Phase 1 review item 7 'The corrected image provenance record'; Phase 2 instruction 6 to apply the declaration; founder-attested form, extending PN-FDR-2026-10-23-GRP-HERO / PN-FDR-2026-10-26-H6-HOME / PN-FDR-2026-10-26-DISC031 to these files on the discovery and library-card surfaces only)",
+      "service_terms": {
+        "openai": "OpenAI Terms of Use: as between the user and OpenAI, the user owns the output; the user is responsible for the inputs they provide. (Same wording as the DISC-031 and H6 records.)"
+      },
+      "content_credentials": {
+        "embeds_c2pa": false,
+        "note": "Web re-encoding carries no content credentials. The C2 PNG master carries OpenAI's C2PA content credentials (see generated.c2pa_evidence)."
+      },
+      "tolerance_exception": {
+        "metric": "Architecture alignment, BEFORE v3 against POSSIBLE C2, 18 landmarks",
+        "threshold": "median <= 2.0 px; 90th percentile <= 4.0 px; persistent furniture <= 6 px",
+        "measured": "architecture median 2.2 px, p90 3.3 px, max 3.6 px (unchanged from v2: the correction did not touch architecture); furniture <= 2 px",
+        "exception": "0.2 px over the median threshold, approved by the founder on 27 Oct 2026 (Phase 1 authorisation, item 4)"
+      }
+    }
+  ]
+}

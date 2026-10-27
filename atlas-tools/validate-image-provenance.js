@@ -189,7 +189,32 @@ const FOUNDER_ATTESTED_DISC033 = {
   ]),
   surfaces: ['discovery', 'library-card'],
 };
-const FOUNDER_ATTESTED_ALL = [FOUNDER_ATTESTED_GRP, FOUNDER_ATTESTED_H6, FOUNDER_ATTESTED_DISC031, FOUNDER_ATTESTED_DISC033];
+/* FOUNDER-ATTESTED CONTEXT · DISC-032 THE SUPPER CLUB AT HOME (PN-FDR-2026-10-27-DISC032).
+   The founder approved the C1 v3 / C2 pair, its provenance chain and the 0.2 px tolerance exception
+   on 27 Oct 2026, and instructed that the declaration be applied after validation (Phase 2). The
+   prompts were not supplied and the credentials do not record conversation inputs, so the
+   founder-attested form is the only truthful record. C1 v3 is a deterministic geometric correction of
+   C1 v2 and carries no OpenAI credentials of its own. ONLY these ten web encodings, and ONLY on the
+   discovery and library-card surfaces. The records are added by atlas-tools/declare-disc032-provenance.py
+   from governance/DISC-032-PROVENANCE-DECLARATION-2026-10-27.json (the Library-card encoding only with
+   the launch release). Not a way to declare future images. */
+const FOUNDER_ATTESTED_DISC032 = {
+  decision: 'PN-FDR-2026-10-27-DISC032',
+  sha256: new Set([
+    '3ffd2642ddd0d46873149d37e643d6546bb83ac5a8cd386aaac441bc2e438faa',   // DISC-032-before-768.webp
+    '48f892c1c66e6f64c20f8fbd1bfec629d8a53f48bea7ee91dd547b4fa38c396e',   // DISC-032-before-1024.webp
+    'eb2e1efe5f14ceab51fd551f78c15b46f22e4230f1546a60b326390a50121007',   // DISC-032-before-1536.webp
+    'c0457073b141357e3669763a0b264c6cfb47dfce3fd30595c414be06eb75e45e',   // DISC-032-before-1536.jpg
+    'ef0bfb0964b12dfe8e59eb870717c81b351d9ee23883c18fe1d69f74f470d142',   // DISC-032-possible-768.webp
+    '13ae00e506e334068aa0d2fcf3f6d5b0c3c79043d95ac2b432bee76dfa0649d5',   // DISC-032-possible-1024.webp
+    '5a2dcaedea5913e6fb63de61ad2d252a72be9cf795327235b3e0e0813455d75f',   // DISC-032-possible-1536.webp
+    '32159a386d6adfc4bcb0110281446a8239cfed757505d08a51f7f8cd0c54e6f2',   // DISC-032-possible-1536.jpg
+    '1b86269f66388e9295633935ce8f2af7d489fb4206ed9b965dd137ad20a7a733',   // DISC-032-og-1200x630.jpg
+    '8ca120d69e228b0c563982c09e945fbad8cedfdb746e0c72bb8dd4c0fce2379c',   // DISC-032-possible-960.jpg
+  ]),
+  surfaces: ['discovery', 'library-card'],
+};
+const FOUNDER_ATTESTED_ALL = [FOUNDER_ATTESTED_GRP, FOUNDER_ATTESTED_H6, FOUNDER_ATTESTED_DISC031, FOUNDER_ATTESTED_DISC033, FOUNDER_ATTESTED_DISC032];
 const attestedFor = h => FOUNDER_ATTESTED_ALL.find(x => x.sha256.has(String(h)));
 const PERMITTED_SURFACES = ['discovery', 'library-card', 'homepage',
                             'about', 'journey', 'preview'];
