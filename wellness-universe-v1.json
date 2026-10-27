@@ -21,13 +21,13 @@
     ]
   },
   "snapshotSha256": "31397887e2de5dc534d100a32c8a6791c3e9c9339b08df718f94dd0b45a66613",
-  "snapshotScope": "Atlas Core appoLZFWesvoPhZGR via the Airtable connector, 14 Oct 2026, with the five 14 Oct recorded contradictions written to Standards (all 153 Wellness / Sauna products, 11 organisations); internal governance data, never committed; targeted update 2026-10-16 for Irish Sauna Company (1 record(s), snapshot sha256 35695f8a4916c3fc)",
+  "snapshotScope": "Atlas Core appoLZFWesvoPhZGR via the Airtable connector, 14 Oct 2026, with the five 14 Oct recorded contradictions written to Standards (all 153 Wellness / Sauna products, 11 organisations); internal governance data, never committed; targeted update 2026-10-16 for Irish Sauna Company (1 record(s), snapshot sha256 35695f8a4916c3fc); targeted update 2026-10-27 for Irish Sauna Company (7 record(s), snapshot sha256 7442073f692e12db)",
   "sourceCategory": "Wellness / Sauna",
-  "sourceCategoryCount": 154,
-  "eligibleCount": 120,
+  "sourceCategoryCount": 158,
+  "eligibleCount": 122,
   "organisationCount": 7,
   "kindCounts": {
-    "sauna": 91,
+    "sauna": 93,
     "hot-tub": 22,
     "cold-plunge": 12,
     "combination": 4
@@ -38,11 +38,11 @@
     "cold-plunge": 4,
     "combination": 1
   },
-  "heldCount": 22,
+  "heldCount": 24,
   "excludedCount": 0,
   "gateHeldCount": 12,
   "listingBasisCounts": {
-    "SUPPLIER_PERMISSION": 35,
+    "SUPPLIER_PERMISSION": 37,
     "PUBLIC_INFORMATION": 85
   },
   "products": [
@@ -984,26 +984,24 @@
       "kinds": [
         "sauna"
       ],
-      "productUrl": "https://irishsaunacompany.com/products/harvia-alpina-view-large-outdoor-sauna-ireland",
+      "productUrl": null,
       "price": {
-        "state": "VERIFIED_NUMERIC_PRICE",
-        "amount": 27978,
-        "currency": "EUR",
-        "type": "Standard Price",
-        "basis": "Published price, including VAT."
+        "state": "PRICE_NOT_ESTABLISHED"
       },
       "irish": {
         "state": "UNCONFIRMED"
       },
       "qualification": {
         "rule": "wellness-qualification-v3",
-        "state": "ELIGIBLE",
-        "heldReasons": [],
+        "state": "HELD",
+        "heldReasons": [
+          "evidence-incomplete"
+        ],
         "excludedReasons": []
       },
       "publicVisibility": "PUBLISHABLE",
       "holdReason": null,
-      "listingBasis": "SUPPLIER_PERMISSION"
+      "listingBasis": null
     },
     {
       "id": "recSYzKR0BjBrdYMQ",
@@ -1015,26 +1013,24 @@
       "kinds": [
         "sauna"
       ],
-      "productUrl": "https://irishsaunacompany.com/products/harvia-legend-electric-outdoor-sauna",
+      "productUrl": null,
       "price": {
-        "state": "VERIFIED_NUMERIC_PRICE",
-        "amount": 17880,
-        "currency": "EUR",
-        "type": "Standard Price",
-        "basis": "Published price, including VAT."
+        "state": "PRICE_NOT_ESTABLISHED"
       },
       "irish": {
         "state": "UNCONFIRMED"
       },
       "qualification": {
         "rule": "wellness-qualification-v3",
-        "state": "ELIGIBLE",
-        "heldReasons": [],
+        "state": "HELD",
+        "heldReasons": [
+          "evidence-incomplete"
+        ],
         "excludedReasons": []
       },
       "publicVisibility": "PUBLISHABLE",
       "holdReason": null,
-      "listingBasis": "SUPPLIER_PERMISSION"
+      "listingBasis": null
     },
     {
       "id": "recJlhoNav6YNU1zj",
@@ -1064,6 +1060,130 @@
       "publicVisibility": "PUBLISHABLE",
       "holdReason": null,
       "listingBasis": null
+    },
+    {
+      "id": "recQszPvHe5Cu7wY5",
+      "productCode": "PROD-001333",
+      "productName": "The Aran | 4–6 Person Luxury Garden Sauna",
+      "organisation": "Irish Sauna Company",
+      "productCategory": "Wellness / Sauna",
+      "productType": null,
+      "kinds": [
+        "sauna"
+      ],
+      "productUrl": "https://irishsaunacompany.com/products/the-aran-4-6-person-luxury-garden-sauna",
+      "price": {
+        "state": "VERIFIED_NUMERIC_PRICE",
+        "amount": 11500,
+        "currency": "EUR",
+        "type": "Sale Price",
+        "basis": "Published sale price, including VAT."
+      },
+      "irish": {
+        "state": "UNCONFIRMED"
+      },
+      "qualification": {
+        "rule": "wellness-qualification-v3",
+        "state": "ELIGIBLE",
+        "heldReasons": [],
+        "excludedReasons": []
+      },
+      "publicVisibility": "PUBLISHABLE",
+      "holdReason": null,
+      "listingBasis": "SUPPLIER_PERMISSION"
+    },
+    {
+      "id": "recTBQcdOO0yoULqN",
+      "productCode": "PROD-001331",
+      "productName": "The Clare | 1–2 Person Garden Sauna",
+      "organisation": "Irish Sauna Company",
+      "productCategory": "Wellness / Sauna",
+      "productType": null,
+      "kinds": [
+        "sauna"
+      ],
+      "productUrl": "https://irishsaunacompany.com/products/the-clare-1-2-person-garden-sauna",
+      "price": {
+        "state": "VERIFIED_NUMERIC_PRICE",
+        "amount": 6500,
+        "currency": "EUR",
+        "type": "Sale Price",
+        "basis": "Published sale price, including VAT."
+      },
+      "irish": {
+        "state": "UNCONFIRMED"
+      },
+      "qualification": {
+        "rule": "wellness-qualification-v3",
+        "state": "ELIGIBLE",
+        "heldReasons": [],
+        "excludedReasons": []
+      },
+      "publicVisibility": "PUBLISHABLE",
+      "holdReason": null,
+      "listingBasis": "SUPPLIER_PERMISSION"
+    },
+    {
+      "id": "rect8UKFyZodW593p",
+      "productCode": "PROD-001332",
+      "productName": "The Inis | 2–4 Person Garden Sauna",
+      "organisation": "Irish Sauna Company",
+      "productCategory": "Wellness / Sauna",
+      "productType": null,
+      "kinds": [
+        "sauna"
+      ],
+      "productUrl": "https://irishsaunacompany.com/products/the-inis-2-4-person-garden-sauna",
+      "price": {
+        "state": "VERIFIED_NUMERIC_PRICE",
+        "amount": 8400,
+        "currency": "EUR",
+        "type": "Sale Price",
+        "basis": "Published sale price, including VAT."
+      },
+      "irish": {
+        "state": "UNCONFIRMED"
+      },
+      "qualification": {
+        "rule": "wellness-qualification-v3",
+        "state": "ELIGIBLE",
+        "heldReasons": [],
+        "excludedReasons": []
+      },
+      "publicVisibility": "PUBLISHABLE",
+      "holdReason": null,
+      "listingBasis": "SUPPLIER_PERMISSION"
+    },
+    {
+      "id": "reccdnuccLgq8dlqh",
+      "productCode": "PROD-001334",
+      "productName": "The Skellig | Luxury 6–8 Person Garden Sauna",
+      "organisation": "Irish Sauna Company",
+      "productCategory": "Wellness / Sauna",
+      "productType": null,
+      "kinds": [
+        "sauna"
+      ],
+      "productUrl": "https://irishsaunacompany.com/products/the-skellig-luxury-8-person-garden-sauna",
+      "price": {
+        "state": "VERIFIED_NUMERIC_PRICE",
+        "amount": 19600,
+        "currency": "EUR",
+        "type": "Sale Price",
+        "basis": "Published sale price, including VAT."
+      },
+      "irish": {
+        "state": "UNCONFIRMED"
+      },
+      "qualification": {
+        "rule": "wellness-qualification-v3",
+        "state": "ELIGIBLE",
+        "heldReasons": [],
+        "excludedReasons": []
+      },
+      "publicVisibility": "PUBLISHABLE",
+      "holdReason": null,
+      "listingBasis": "SUPPLIER_PERMISSION"
     },
     {
       "id": "recWYh1cQPtKDBsvL",
