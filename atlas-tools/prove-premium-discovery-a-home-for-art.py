@@ -78,8 +78,26 @@ EDITORIAL = {
     "Under the Artists’ Exemption, an Irish artist’s income from original painting and sculpture is exempt from income tax up to €50,000 a year.":
         ("Under Revenue’s Artists’ Exemption, an artist’s income from original and creative work, including paintings and sculpture, can be exempt from income tax up to €50,000 a year, but only where Revenue has made a determination for that artist’s work. / It does not cover USC or PRSI.",
          "unqualified tax claim corrected: the determination requirement and the USC/PRSI limit added; 'Irish' dropped (residence, not nationality, is the test)"),
+    # PlotArt integration (founder approval, 27 Oct 2026): factual correction
+    "PlotArt is in development as a sister site to PlotNua — a place designed to help people discover original work by Irish artists and find something that feels right for their home.":
+        ("PlotArt is a new initiative within PlotNua, being developed to connect original Irish art with the people and places where it can be enjoyed.",
+         "factual correction: PlotArt is an initiative within PlotNua, not a sister site (founder's wording, 27 Oct 2026)"),
 }
 # Wording that is new on the page and carries no factual content (or is declared above).
+# DECLARED ADDITIONS (PlotArt internal links, prepared 27 Oct 2026; NOT approved
+# until the founder approves this change). Each is a sentence and a link target
+# added on purpose, with its reason; P3 and P6 accept exactly these and nothing else.
+ADDED_SENTENCES = {
+    # written as visible() reads them: a link's closing tag becomes a space before the full stop
+    "PlotArt’s introductory pages are now online: what PlotArt is, the Founding 25 programme for artists, and the proposed Living Gallery.": "PlotArt introduction in 'PlotArt is in development' (integration, proposed 27 Oct 2026)",
+    "Artist galleries are not open, and applications are not yet open.": "status beside the PlotArt link (integration, proposed 27 Oct 2026)",
+    "Explore PlotArt": "button to the PlotArt homepage (integration, proposed 27 Oct 2026)",
+    "Artists can also find out about the PlotArt Founding 25 , a forthcoming programme for artists based or working in Ireland.": "Founding 25 pointer in the Take part section (limited launch, decision 27 Oct 2026)",
+}
+ADDED_HREFS = {
+    "plotart/": "PlotArt homepage (limited launch)",
+    "plotart/founding-25.html": "Founding 25 recruitment page (limited launch)",
+}
 INTERFACE = [
     "How it works", "Store", "Display", "Open", "Help sell", "Less of your home and time", "More involvement",
     "If you go further", "Take part", "In detail", "A note on tax", "Route 1", "Route 2", "Route 3", "Route 4", "Cost",
@@ -91,6 +109,8 @@ INTERFACE = [
     "Four routes to original art.", "None of them require an introduction.",
     "Renting by the month is covered under Live with art, above.", "It does not cover USC or PRSI.",
     "Under Revenue’s Artists’ Exemption, an artist’s income from original and creative work, including paintings and sculpture, can be exempt from income tax up to €50,000 a year, but only where Revenue has made a determination for that artist’s work.",
+    # PlotArt integration (founder approval, 27 Oct 2026): the corrected description (declared in EDITORIAL)
+    "PlotArt is a new initiative within PlotNua, being developed to connect original Irish art with the people and places where it can be enjoyed.",
 ]
 STAY_ON_VIEW = [
     "PlotNua does not currently arrange artwork loans, rentals or placements.",
@@ -189,7 +209,7 @@ def check(new, base):
         if nh[k] != base["head"][k]: die("P1 head changed: %s" % k)
     if imgs(new) != base["img"]: die("P2 the set of <img> tags differs from BASE")   # P2
     if hero(new) != base["hero"]: die("P2 the hero changed")
-    a, b = Counter(base["href"]), Counter(hrefs(new))                  # P3
+    a, b = Counter(base["href"]) + Counter(ADDED_HREFS.keys()), Counter(hrefs(new))   # P3 (+ declared additions, each exactly once)
     if a != b: die("P3 links differ: removed %s added %s" % (dict(a - b), dict(b - a)))
     for i in ANCHORS:                                                  # P4
         if new.count('id="%s"' % i) != 1: die("P4 #%s not present exactly once" % i)
@@ -225,7 +245,9 @@ def check(new, base):
         if norm(s) in edits: recorded.append((s, edits[norm(s)])); continue
         missing.append(s)
     if missing: die("P6 BASE text missing and not declared:\n  " + "\n  ".join(missing[:25]))
-    allowed = set(map(norm, os_)) | set(map(norm, INTERFACE))
+    allowed = set(map(norm, os_)) | set(map(norm, INTERFACE)) | set(map(norm, ADDED_SENTENCES))
+    for s in ADDED_SENTENCES:                                           # each declared addition present
+        if norm(s) not in set(map(norm, ns_)): die("P6 declared addition missing: %r" % s)
     otext = norm(" ".join(os_))
     untraced = [s for s in ns_ if norm(s) not in allowed and norm(s) not in otext]
     if untraced: die("P6 new text not traceable to BASE or declared:\n  " + "\n  ".join(untraced[:25]))

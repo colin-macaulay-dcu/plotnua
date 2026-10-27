@@ -31,6 +31,7 @@ FONTS = ("https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1"
 # The approved destinations. Changing one here changes it everywhere.
 LIBRARY = ("discoveries.html", "Discovery Library")
 PLOT = ("your-plot.html", "Your Plot")
+PLOTART = ("plotart/", "PlotArt")       # founder decision 27 Oct 2026: immediately after Discovery Library
 WHATSAPP = "https://wa.me/353834036695"
 WHATSAPP_LABEL = "Chat with PlotNua on WhatsApp (opens in a new tab)"
 
@@ -69,6 +70,9 @@ ICON_LIBRARY = ('<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stro
 ICON_PLOT = ('<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" '
              'stroke-linecap="round" aria-hidden="true" focusable="false"><path d="M3.5 9 10 3.5 16.5 9v7.5a1 1 0 0 1-1 1h-11a1 1 0 0 1-1-1Z"/>'
              '<path d="M8 17.5v-5h4v5"/></svg>')
+ICON_ART = ('<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" '
+            'stroke-linecap="round" aria-hidden="true" focusable="false"><rect x="3" y="3.5" width="14" height="13" rx="1.5"/>'
+            '<path d="m5.5 14 3.5-4 2.5 2.5 1.5-1.5 2 3"/></svg>')
 WA_BUBBLE = ('<svg viewBox="0 0 80 80" focusable="false"><path d="M29 5h23a22 22 0 0 1 22 22v16a22 22 0 0 1-22 22H33L14 75l3-18A22 22 0 0 1 7 39V27A22 22 0 0 1 29 5Z" '
              'fill="#1F3B2E" stroke="#B39272" stroke-width="2.5" stroke-linejoin="round"/></svg>')
 
@@ -84,7 +88,7 @@ def href(page, h):
 
 def _dest(page, cls_extra=""):
     out = []
-    for (h, label), cls, icon in ((LIBRARY, "is-primary", ICON_LIBRARY), (PLOT, "is-secondary", ICON_PLOT)):
+    for (h, label), cls, icon in ((LIBRARY, "is-primary", ICON_LIBRARY), (PLOTART, "is-secondary", ICON_ART), (PLOT, "is-secondary", ICON_PLOT)):
         cur = ' aria-current="page"' if page == h else ""
         out.append('<a class="pn-hdr-btn %s" href="%s"%s>%s<span>%s</span></a>' % (cls, href(page, h), cur, icon, label))
     return "".join(out)

@@ -134,9 +134,9 @@ html body.pn-hdr-on .lag-canvas{ top:var(--pn-hdr-h); height:calc(100vh - var(--
   /* a keyboard focus inside the bar keeps it in view (search.js only knows the old controls) */
   html.pns-nav-tuck body.pn-hdr-on .pn-hdr:focus-within{ transform:none; }
   /* row 2: the two destinations, 44px targets, as compact as that allows */
-  body.pn-hdr-on .pn-hdr-dest{ display:grid; grid-template-columns:1fr 1fr; gap:8px; padding:6px 14px 8px;
+  body.pn-hdr-on .pn-hdr-dest{ display:grid; grid-template-columns:auto auto auto; gap:6px; padding:6px 10px 8px;
     background:#1B1C1E; border-bottom:1px solid var(--h-line); }
-  body.pn-hdr-on .pn-hdr-dest .pn-hdr-btn{ justify-content:center; padding:0 12px; font-size:14px; }
+  body.pn-hdr-on .pn-hdr-dest .pn-hdr-btn{ justify-content:center; padding:0 10px; font-size:14px; }
   body.pn-hdr-on .pn-hdr-dest .pn-hdr-btn[aria-current]::after{ left:22%; right:22%; }
   /* phones: a jump up brings the bar back with the in-page nav beneath it, so the
      section lands below both (production's 66px plus the bar) */
@@ -144,6 +144,9 @@ html body.pn-hdr-on .lag-canvas{ top:var(--pn-hdr-h); height:calc(100vh - var(--
   body.pn-hdr-on.pn-pd .hfa-nav-wrap{ top:10px; }
   html:not(.pns-nav-tuck) body.pn-hdr-on.pn-pd .hfa-nav-wrap{ top:calc(var(--pn-hdr-h) + 8px); }
   html.pns-nav-tuck body.pn-hdr-on .lag-canvas{ top:0; }
+}
+@media (max-width:480px){
+  body.pn-hdr-on .pn-hdr-dest .pn-hdr-btn svg{ display:none; }
 }
 @media (max-width:374px){
   body.pn-hdr-on .pn-hdr-word{ position:absolute; width:1px; height:1px; overflow:hidden; clip-path:inset(50%); }

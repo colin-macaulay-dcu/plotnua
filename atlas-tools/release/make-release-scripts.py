@@ -67,6 +67,8 @@ STANDARD = [
     # build (manifest), noindex, follow, and applications are not open. Changing the state is a new release.
     ("python3 atlas-tools/prove-plotart-launch.py . --switches atlas-tools/release/plotart-launch-switches.json --manifest atlas-tools/release/plotart-launch-manifest.json",
      "PLOTART LAUNCH · OK — L1-L10 on 3 pages · applications not_open", "PlotArt limited launch L1-L10 (applications not open)"),
+    # PlotArt in the PlotNua navigation and the A Home for Art links (proposed 27 Oct 2026)
+    ("python3 atlas-tools/prove-plotart-integration.py", "PLOTART INTEGRATION · OK — N1-N4 · 29 header pages", "PlotArt navigation and A Home for Art links N1-N4"),
     ("python3 atlas-tools/prove-privacy-whatsapp.py", "PRIVACY WHATSAPP · OK", "privacy WhatsApp block exact (status printed)"),
     ("python3 atlas-tools/build-art-space-register.py --check", "CHECK OK — R1-R14 pass", "Art Space Register R1-R14"),
     ("python3 atlas-tools/build-artist-register.py --check", "CHECK OK — A1-A13 pass", "Artist Register A1-A13"),
