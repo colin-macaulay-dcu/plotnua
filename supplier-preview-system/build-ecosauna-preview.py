@@ -841,13 +841,15 @@ def main():
 
     # G1 · HEAD AND STYLESHEET from the template, verbatim (robots, fonts, UI
     # kit). Everything after <body> is rebuilt.
-    head_end = src.find("<body>")
-    if head_end < 0 or src.count("<body>") != 1:
+    # Template v2 (27 Oct 2026): the template's body carries the premium
+    # design classes; this page replaces the body wholesale, as before.
+    head_end = src.find("<body")
+    if head_end < 0 or len(re.findall(r"<body[ >]", src)) != 1:
         die("the template's <body> anchor was not found exactly once.")
     head = src[:head_end]
 
     # G1b · THE DEMONSTRATION, lifted verbatim from the template.
-    sm = re.search(r'\n  <div class="screen">\n.*?\n    </div>\n  </div>\n(?=</section>)',
+    sm = re.search(r'\n  <div class="screen">\n.*?\n    </div><!-- /pn-stage -->\n  </div>\n(?=</section>)',
                    src, re.S)
     if not sm:
         die("the demonstration screen block was not found. Not guessing.")

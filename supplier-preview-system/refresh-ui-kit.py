@@ -1,222 +1,342 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""refresh-ui-kit.py — PlotNua Supplier Preview System v1.0
-Regenerates supplier-preview-system/template-*.html from the LIVE production
-Results / My Plot code in your-plot.html, so a preview can never drift from
-the real interface.
+"""refresh-ui-kit.py — PlotNua Supplier Preview System v2.0 (27 Oct 2026)
 
-    python3 supplier-preview-system/refresh-ui-kit.py
+Regenerates supplier-preview-system/template-*.html from LIVE production code,
+so a preview can never drift from the real interface or the real identity.
 
-Run it from the repository root after any change to the Results surface, then
-re-QA both templates. It rewrites the templates wholesale: the templates are
-generated artefacts, so edit THIS file, never the HTML it emits.
+    python3 supplier-preview-system/refresh-ui-kit.py           write both templates
+    python3 supplier-preview-system/refresh-ui-kit.py --check   compare, write nothing
+
+WHAT CHANGED IN v2 (founder instruction, 27 Oct 2026)
+  v1 lifted fixed LINE RANGES of your-plot.html into a light preview shell.
+  Those ranges went stale (production's later Results typography was never in
+  the kit) and the shell predated the dark identity. v2 builds both templates
+  from four live sources, with no line numbers anywhere:
+
+  1. THE PAGE AROUND THE DEMONSTRATION — PlotNua's approved premium dark design:
+       assets/identity/pn-identity.css           tokens --p4-*, type, focus
+       assets/identity/pn-premium-discovery.css  the Premium Discovery system
+     inlined verbatim, activated as on the live Discoveries:
+       <body class="pn-id pn-id--dark pn-sp">
+     The shell's own CSS below uses only those tokens.
+
+  2. THE DEMONSTRATION — production Your Plot Results, as it ships:
+       your-plot.html, its one <style> block in <head>
+       assets/identity/pn-your-plot.css, the live Batch 5C dark skin
+     in production's cascade order (skin first, page second), re-scoped from
+     the page to a .pn-yp wrapper inside the demo with ONE constant
+     specificity offset, so the cascade between them is unchanged, and wrapped
+     in production's own chain: #screen-match-results > .match-results-panel
+     > #matchPrimary.results-hero > .results-hero-inner. The demo therefore
+     matches production computed style; prove-results-fidelity.mjs proves it
+     against the real your-plot.html.
+
+  3. THE MARKUP — supplier-preview-system/kit/*.html: the Results hero (the
+     PREVIEW-IDENTITY-001 band, both variants), the My Plot pill, the gallery
+     script and the product-led credit line, exactly as in the v1.x templates.
+     The brand-mark paths are re-checked against production on every run.
+
+COMPATIBILITY WITH EXISTING BUILDERS
+  Every {{TOKEN}}, and every anchor builders use, is unchanged: the instruction
+  comment, the hero header, the FROZEN journey band, '  <div class="screen">',
+  '<div class="pn-stage">', '      <div class="results-hero-inner">', the
+  '<!-- WHY THIS COULD BE USEFUL' anchor, the closing heading, '<footer>\\n',
+  .pn-open, .credit-line and the state-C slot. ONE anchor changes by
+  necessity: the production chain closes between the hero and the end of the
+  stage, so the old demo ending '\\n    </div>\\n  </div>\\n</section>' is now
+  preceded by '      </div></div></section></div>'. Builders that slice up to
+  the old ending REFUSE (loudly) and are migrated one at a time when that
+  supplier is next worked on (§10.2 point 5). No built supplier page is
+  touched by this script: it writes only the two templates.
 
 Every guard aborts the run; nothing partial is written.
 """
 
-import re, sys, os, json, hashlib
+import hashlib
+import os
+import re
+import sys
 
 REPO = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-SRC  = os.path.join(REPO, 'your-plot.html')
-OUT  = os.path.join(REPO, 'supplier-preview-system')
+HERE = os.path.join(REPO, 'supplier-preview-system')
+KIT = os.path.join(HERE, 'kit')
+CHECK = '--check' in sys.argv
+
 
 def die(m):
     sys.exit('GUARD FAILED: ' + m)
 
-L = open(SRC, encoding='utf-8').read().split('\n')
 
-def grab(a, b, label):
-    i, j = a - 1, b
-    seg = '\n'.join(L[i:j]); n = 0
-    while seg.count('{') != seg.count('}'):
-        j += 1; n += 1
-        if n > 40: die('unbalanced braces in ' + label)
-        seg = '\n'.join(L[i:j])
-    if seg.count('/*') != seg.count('*/'): die('unterminated comment in ' + label)
-    return seg
+def read(*p):
+    return open(os.path.join(*p), encoding='utf-8').read()
 
-BLOCKS = [('root',473,477),('heart',2470,2476),('heartsizes',2522,2533),
-          ('myplot',2334,2404),('cardactions',1967,1967),('save',2003,2052),
-          ('hero1',3555,3599),('media',3604,3606),('herobody',3607,3607),
-          ('hero2',3621,3636),('hero3',3642,3652),('prop',5503,5560),
-          ('secondary',4219,4227),('mq720',4229,4267),('mq719',4268,4290),
-          ('late',5183,5239),
-          # THE GALLERY. Production already has a multi-image component --
-          # Scene 5, "Other directions" -- and the kit simply never lifted it,
-          # so a supplier preview could show exactly one photograph. A
-          # supplier who grants imagery can now be shown properly, using the
-          # same rules the homeowner sees on Results. Lifted, not written.
-          ('gallery',5106,5129),('gallery2',5242,5253)]
-C = {n: grab(a, b, n) for n, a, b in BLOCKS}
 
-src = '\n'.join(L)
-P = {}
-for n in ('PN_P_PATH','PN_HOUSE_PATH','PN_HEART_PATH'):
-    m = re.search(r'const ' + n + r"\s*=\s*'([^']*)'", src)
-    if not m: die('missing ' + n)
-    P[n] = m.group(1)
+def sha(s):
+    return hashlib.sha256(s.encode('utf-8')).hexdigest()[:12]
 
-def mark(clip):
-    return ('<span class="pn-mark-heart is-plot-active" aria-hidden="true">'
-      '<svg viewBox="0 0 3000 3000" xmlns="http://www.w3.org/2000/svg" class="pmh-svg" aria-hidden="true">'
-      '<defs><clipPath id="' + clip + '"><rect width="3000" height="3000" rx="666.5"/></clipPath></defs>'
-      '<rect width="3000" height="3000" rx="666.5" fill="#1F3B2E"/>'
-      '<g clip-path="url(#' + clip + ')"><g transform="translate(0,3000) scale(0.1,-0.1)">'
-      '<path d="' + P['PN_P_PATH'] + '" fill="#F2EFE6"/>'
-      '<path d="' + P['PN_HOUSE_PATH'] + '" fill="#8FAF8A"/>'
-      '</g></g>'
-      '<path class="pmh-heart-path" fill="#C57A5A" d="' + P['PN_HEART_PATH'] + '"/>'
-      '</svg></span>')
 
-UI_KIT = "\n".join([
- "/* ══ BEGIN PLOTNUA UI KIT — GENERATED, DO NOT HAND-EDIT ══════════════",
- "   Lifted verbatim from your-plot.html by refresh-ui-kit.py. These are the",
- "   production Results / My Plot rules, not a copy of them. Re-run the script",
- "   after any change to the real Results surface. */",
- C['root'], C['heart'], C['heartsizes'], C['myplot'], C['cardactions'], C['save'],
- C['hero1'], C['media'], C['herobody'], C['hero2'], C['hero3'], C['prop'],
- C['secondary'], C['mq720'], C['mq719'], C['late'],
- C['gallery'], C['gallery2'],
- "/* ══ END PLOTNUA UI KIT ════════════════════════════════════════════ */",
-])
+# ── sources ──────────────────────────────────────────────────────────────
+YP_HTML = read(REPO, 'your-plot.html')
+_head = YP_HTML.split('</head>')[0]
+_blocks = re.findall(r'<style>\n(.*?)\n</style>', _head, re.S)
+if len(_blocks) != 1:
+    die('your-plot.html no longer has exactly one <style> block in <head>')
+PROD_RAW = _blocks[0]
+SKIN_RAW = read(REPO, 'assets/identity/pn-your-plot.css')
+ID_CSS = read(REPO, 'assets/identity/pn-identity.css')
+PD_CSS = read(REPO, 'assets/identity/pn-premium-discovery.css')
+# Rules verbatim; comments stripped. The design files' comments name the
+# pages they were built with (e.g. supplier pages), and builders rightly
+# refuse any other supplier's name anywhere in a preview's source.
+ID_CSS_SRC, PD_CSS_SRC = ID_CSS, PD_CSS
+ID_CSS = re.sub(r'/\*.*?\*/', '', ID_CSS, flags=re.S)
+PD_CSS = re.sub(r'/\*.*?\*/', '', PD_CSS, flags=re.S)
+# Previews carry the Premium Discovery RULES under their own scope class,
+# body.pn-sp, so they never register as Premium pages: the Premium page
+# registry (atlas-tools/premium_pages.py, identity guard I13) stays exact and
+# supplier previews stay outside the public page system.
+if PD_CSS.count('body.pn-id.pn-pd') < 100 or re.search(r'(?<!body\.pn-id)\.pn-pd\b', PD_CSS):
+    die('pn-premium-discovery.css is no longer scoped only by body.pn-id.pn-pd')
+PD_CSS = PD_CSS.replace('body.pn-id.pn-pd', 'body.pn-id.pn-sp')
+if 'body.pn-id.pn-sp' not in PD_CSS or '--p4-anth' not in ID_CSS:
+    die('the premium dark design files no longer carry their scope/tokens')
+if 'data-pn-skin="your-plot"' not in _head and 'data-pn-skin="your-plot"' not in YP_HTML[:4000]:
+    die('your-plot.html no longer applies the Your Plot skin; the demo would '
+        'not match production')
 
-# ─────────────────────────────────────────────────────────────────────
-PAGE_CSS = r'''
-/* ── PREVIEW SHELL — the page around the demonstration ───────────── */
-:root{
-  --pn-ground:#F5F2E8; --pn-voice:#24351F; --pn-fact:#16190F; --pn-body:#474B3B;
-  --pn-stone:#8B8971; --pn-meta:#9E9C86; --pn-hair:#DBD7C5;
-  --pn-on-dark:#F5F2E8; --pn-edge:rgba(139,137,113,.42);
-  --pn-panel:rgba(139,137,113,.09); --pn-paper:#FBFAF5;
-  --pn-s-hero:66px; --pn-s-section:40px; --pn-s-statement:26px; --pn-s-quote:19px;
-  --pn-w-body-lg:17.5px; --pn-w-body:15px; --pn-w-body-sm:13px;
-  --pn-w-caption:11.5px; --pn-w-meta:10px;
-  --pn-sm:16px; --pn-md:24px; --pn-lg:36px; --pn-xl:56px; --pn-sec:88px;
+HERO = {'provider': read(KIT, 'hero-provider.html'),
+        'product': read(KIT, 'hero-product.html')}
+PILL = read(KIT, 'pill.html')
+GALLERY_JS = read(KIT, 'gallery-script.html')
+CREDIT_A = read(KIT, 'credit-product.html')
+
+for n in ('PN_P_PATH', 'PN_HOUSE_PATH', 'PN_HEART_PATH'):
+    m = re.search(r'const ' + n + r"\s*=\s*'([^']*)'", YP_HTML)
+    if not m:
+        die('missing ' + n + ' in production')
+    for k, frag in (('pill', PILL), ('provider hero', HERO['provider']),
+                    ('product hero', HERO['product'])):
+        if m.group(1) not in frag:
+            die('the brand mark in the kit %s no longer matches production %s'
+                % (k, n))
+
+
+# ── scoping (production cascade preserved) ───────────────────────────────
+W_BASE = '.pn-yp'            # production page rules gain (0,1,0)
+W_SKIN = 'div.pn-yp.pn-yp'   # skin: html[attr] (0,1,1) plus the same (0,1,0)
+
+
+def _split(prelude):
+    out, depth, cur, q = [], 0, '', None
+    for ch in prelude:
+        if q:
+            cur += ch
+            if ch == q:
+                q = None
+            continue
+        if ch in '"\'':
+            q = ch
+        elif ch in '([':
+            depth += 1
+        elif ch in ')]':
+            depth -= 1
+        elif ch == ',' and depth == 0:
+            out.append(cur.strip())
+            cur = ''
+            continue
+        cur += ch
+    if cur.strip():
+        out.append(cur.strip())
+    return out
+
+
+def map_base(sel):
+    if sel in (':root', 'html', 'body', 'html body'):
+        return W_BASE
+    if sel == '*':
+        return W_BASE + ' *'
+    m = re.match(r'(?:html\s+)?body(?=[\s>+~]|$)', sel) or \
+        re.match(r'html(?=[\s>+~]|$)', sel)
+    if m:
+        return W_BASE + sel[m.end():]
+    m = re.match(r'(html|body|:root)(?=[.#\[:])', sel)
+    if m:
+        return W_BASE + sel[m.end():]
+    return W_BASE + ' ' + sel
+
+
+def map_skin(sel):
+    head = 'html[data-pn-skin="your-plot"]'
+    if not sel.startswith(head):
+        die('a skin selector does not start with the html scope: %r' % sel)
+    rest = sel[len(head):]
+    m = re.match(r'((?::not\(#[^)]+\))*)\s+body(?=[\s>+~.:#\[]|$)', rest)
+    if m:
+        return W_SKIN + m.group(1) + rest[m.end():]
+    return W_SKIN + rest
+
+
+def scope_css(css, mapper):
+    try:
+        import tinycss2
+    except ImportError:
+        die('tinycss2 is required: pip install tinycss2')
+    n = [0]
+
+    def walk(rules):
+        parts = []
+        for r in rules:
+            if r.type == 'qualified-rule':
+                sels = _split(tinycss2.serialize(r.prelude))
+                parts.append(', '.join(mapper(s) for s in sels) + '{'
+                             + tinycss2.serialize(r.content) + '}')
+                n[0] += 1
+            elif r.type == 'at-rule':
+                kw = r.lower_at_keyword
+                if kw in ('media', 'supports') and r.content is not None:
+                    inner = tinycss2.parse_rule_list(
+                        r.content, skip_comments=True, skip_whitespace=True)
+                    parts.append('@%s %s{%s}' % (
+                        kw, tinycss2.serialize(r.prelude).strip(),
+                        '\n'.join(walk(inner))))
+                elif kw in ('keyframes', '-webkit-keyframes', 'font-face'):
+                    parts.append(tinycss2.serialize([r]))
+                elif kw == 'import':
+                    continue          # the template loads the same fonts
+                else:
+                    die('unhandled at-rule @%s' % kw)
+            elif r.type == 'error':
+                die('CSS did not parse: %s' % r.message)
+        return parts
+
+    out = walk(tinycss2.parse_stylesheet(css, skip_comments=True,
+                                         skip_whitespace=True))
+    return '\n'.join(out), n[0]
+
+
+SKIN_CSS, N_SKIN = scope_css(SKIN_RAW, map_skin)
+PROD_CSS, N_PROD = scope_css(PROD_RAW, map_base)
+if 'data-pn-skin' in SKIN_CSS:
+    die('an html-scoped skin selector survived the re-scope')
+if N_PROD < 1500 or N_SKIN < 200:
+    die('the production stylesheets look truncated (%d / %d rules)'
+        % (N_PROD, N_SKIN))
+
+
+# ── the preview shell: premium dark design, approved tokens only ─────────
+SHELL_CSS = r'''
+/* ══ PREVIEW SHELL — the page AROUND the demonstration ═══════════════════
+   Premium Discovery tokens (--p4-*, --pd-*) only; no new palette. Every
+   selector is anchored to a shell container, so none of it can reach the
+   production interface inside .pn-yp. */
+body.pn-id.pn-sp{ margin:0; color:var(--p4-lime); font-family:var(--p4-sans);
+  font-size:17px; line-height:1.65; -webkit-font-smoothing:antialiased; }
+body.pn-sp .wrap{ max-width:var(--pd-max); margin:0 auto; padding:0 clamp(16px,3vw,40px); box-sizing:border-box; }
+
+body.pn-sp .pv-bar{ background:var(--p4-anth); border-bottom:1px solid var(--p4-line); }
+body.pn-sp .pv-bar > .wrap{ display:flex; align-items:center; gap:10px 22px; flex-wrap:wrap; padding-top:16px; padding-bottom:16px; }
+body.pn-sp .pv-bar .pv-word{ font-family:var(--p4-serif); font-size:30px; line-height:1; color:var(--p4-ivory); letter-spacing:-.005em; }
+body.pn-sp .pv-bar strong{ font-family:var(--p4-sans); font-weight:700; font-size:12px; letter-spacing:.18em; text-transform:uppercase; color:var(--p4-bronze-text); }
+body.pn-sp .pv-bar span:not(.pv-word){ font-size:15px; color:var(--p4-stone); }
+
+body.pn-sp .wrap > .hero{ padding:clamp(56px,8vw,112px) 0 0; }
+body.pn-sp .wrap > .hero .brand{ font-family:var(--p4-sans); font-weight:700; font-size:12px; letter-spacing:.18em; text-transform:uppercase; color:var(--p4-bronze-text); margin:0 0 18px; }
+body.pn-sp .wrap > .hero h1{ font-size:clamp(40px,5.4vw,80px); line-height:.98; margin:0 0 22px; max-width:16ch; text-wrap:balance; }
+body.pn-sp .wrap > .hero .lede{ font-size:clamp(19px,1.45vw,22px); line-height:1.55; color:var(--p4-ivory); max-width:52ch; margin:0; }
+
+body.pn-sp .journey{ background:var(--p4-earth); margin-top:clamp(56px,8vw,112px); padding:clamp(40px,5vw,72px) 0; }
+body.pn-sp .journey .eyebrow{ font-family:var(--p4-sans); font-weight:700; font-size:12px; letter-spacing:.18em; text-transform:uppercase; color:var(--p4-bronze-text); margin:0 0 22px; }
+body.pn-sp .journey .jrow{ display:grid; grid-template-columns:repeat(6,minmax(0,1fr)); gap:0; background:var(--pd-card); border:var(--pd-edge); border-radius:var(--pd-r); box-shadow:var(--pd-shadow); padding:clamp(20px,2.4vw,32px); }
+body.pn-sp .journey .jstep{ padding:4px clamp(12px,1.4vw,20px); border-left:1px solid var(--p4-line); min-width:0; }
+body.pn-sp .journey .jstep:first-child{ border-left:0; padding-left:0; }
+body.pn-sp .journey .jstep b{ display:block; font-family:var(--p4-serif); font-weight:400; font-size:clamp(22px,1.9vw,28px); line-height:1.1; color:var(--p4-ivory); margin:0 0 8px; }
+body.pn-sp .journey .jstep span{ display:block; font-size:15px; line-height:1.5; color:var(--p4-stone); }
+body.pn-sp .journey .jstep.last b{ color:var(--p4-terra-text); }
+
+body.pn-sp .wrap > section{ padding:clamp(56px,8vw,112px) 0 0; }
+body.pn-sp .wrap > section > h2{ font-size:clamp(34px,4vw,58px); line-height:1.04; margin:0 0 22px; max-width:22ch; text-wrap:balance; }
+body.pn-sp .wrap > section > p{ max-width:62ch; margin:0 0 16px; color:var(--p4-lime); }
+body.pn-sp .wrap > section > h3{ font-size:clamp(25px,2.2vw,32px); line-height:1.12; margin:28px 0 12px; }
+
+body.pn-sp .demo-intro{ display:flex; justify-content:space-between; align-items:flex-end; gap:16px 24px; flex-wrap:wrap; margin:0 0 18px; }
+body.pn-sp .demo-intro > h2{ font-size:clamp(34px,4vw,58px); line-height:1.04; margin:0; max-width:20ch; text-wrap:balance; }
+body.pn-sp .illus-tag{ font-family:var(--p4-sans); font-weight:700; font-size:12px; letter-spacing:.16em; text-transform:uppercase; color:var(--p4-terra-text); border:1px solid var(--p4-line2); border-radius:999px; padding:8px 16px; white-space:nowrap; }
+
+body.pn-sp .screen{ margin-top:clamp(20px,3vw,36px); border-radius:var(--pd-r); overflow:hidden; border:var(--pd-edge); box-shadow:var(--pd-shadow-hi); background:var(--p4-anth); }
+body.pn-sp .screen > .screen-chrome{ display:flex; align-items:center; gap:9px; padding:13px 18px; background:var(--pd-card); border-bottom:1px solid var(--p4-line); }
+body.pn-sp .screen-chrome .dot{ width:9px; height:9px; border-radius:50%; background:var(--p4-line2); }
+body.pn-sp .screen-chrome .screen-url{ margin-left:8px; font-size:13px; color:var(--p4-stone); letter-spacing:.02em; }
+body.pn-sp .screen > .credit-line{ margin:0; padding:14px 20px; font-size:13px; line-height:1.55; color:var(--p4-stone); background:var(--pd-card); border-top:1px solid var(--p4-line); }
+body.pn-sp .wrap > p.credit-line, body.pn-sp .wrap > section > p.credit-line, body.pn-sp .wrap > .credit-line{ font-size:14px; line-height:1.6; color:var(--p4-stone); margin:clamp(32px,4vw,48px) 0 0; padding-top:20px; border-top:1px solid var(--p4-line); max-width:80ch; }
+body.pn-sp .credit-line a{ color:var(--p4-terra-text); text-decoration:none; border-bottom:1px solid rgba(207,133,102,.55); }
+body.pn-sp .credit-line a:hover{ color:var(--p4-ivory); border-bottom-color:var(--p4-ivory); }
+
+/* the framed production surface. .pn-stage sits outside .pn-yp; the real
+   Results padding and ground come from #screen-match-results inside it. */
+body.pn-sp .screen > .pn-stage{ background:var(--p4-anth); padding:0; }
+
+/* .pn-open — preview-only "Still to establish" / question panel */
+body.pn-sp .pn-open{ margin-top:22px; padding:clamp(20px,2.4vw,30px); background:var(--pd-card); border:var(--pd-edge); border-radius:var(--pd-r-sm); box-shadow:var(--pd-shadow); }
+body.pn-sp .pn-open > b{ display:block; font-family:var(--p4-sans); font-size:12px; font-weight:700; letter-spacing:.16em; text-transform:uppercase; color:var(--p4-bronze-text); margin:0 0 12px; }
+body.pn-sp .pn-open ul{ margin:0; padding:0; list-style:none; display:grid; gap:0; }
+body.pn-sp .pn-open li{ font-size:16px; line-height:1.6; color:var(--p4-lime); padding:12px 0 12px 20px; position:relative; border-top:1px solid var(--p4-line); }
+body.pn-sp .pn-open li:first-child{ border-top:0; padding-top:0; }
+body.pn-sp .pn-open li::before{ content:'\2013'; position:absolute; left:0; color:var(--p4-terra-text); }
+body.pn-sp .pn-open li b{ color:var(--p4-ivory); font-weight:600; }
+
+body.pn-sp .why{ display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:clamp(20px,2.4vw,40px); background:var(--pd-card); border:var(--pd-edge); border-radius:var(--pd-r); box-shadow:var(--pd-shadow); padding:var(--pd-pad); }
+body.pn-sp .why-c{ border-top:1px solid var(--p4-line2); padding-top:20px; min-width:0; }
+body.pn-sp .why-c b{ display:block; font-family:var(--p4-sans); font-size:12px; font-weight:700; letter-spacing:.16em; text-transform:uppercase; color:var(--p4-terra-text); margin:0 0 10px; }
+body.pn-sp .why-c span{ display:block; font-size:16px; line-height:1.6; color:var(--p4-stone); }
+
+body.pn-sp .wrap > section > .close-statement{ font-family:var(--p4-serif); font-size:clamp(26px,2.6vw,38px); line-height:1.15; color:var(--p4-ivory); max-width:30ch; margin:0 0 18px; }
+
+body.pn-id.pn-sp .wrap > footer{ background:transparent; margin-top:clamp(56px,8vw,112px); padding:28px 0 56px; border-top:1px solid var(--p4-line); color:var(--p4-stone); }
+body.pn-id.pn-sp .wrap > footer p{ margin:0; font-size:15px; color:var(--p4-stone); }
+
+@media (max-width:1080px){
+  body.pn-sp .journey .jrow{ grid-template-columns:repeat(3,minmax(0,1fr)); row-gap:24px; }
+  body.pn-sp .journey .jstep:nth-child(4){ border-left:0; padding-left:0; }
 }
-@media (max-width:1100px){ :root{
-  --pn-s-hero:clamp(36px,6vw,66px); --pn-s-section:clamp(27px,3.6vw,40px);
-  --pn-s-statement:clamp(20px,2.7vw,26px); --pn-sec:60px; --pn-xl:40px; } }
-*{box-sizing:border-box;}
-body{ margin:0; background:var(--pn-ground); color:var(--pn-body);
-  font-family:'Work Sans',system-ui,sans-serif; font-size:var(--pn-w-body);
-  line-height:1.6; -webkit-font-smoothing:antialiased; }
-.wrap{ max-width:1060px; margin:0 auto; padding:0 28px; }
-h1,h2,h3,.serif{ font-family:'Fraunces',Georgia,serif; font-weight:400;
-  color:var(--pn-voice); letter-spacing:-.015em; }
-p{ margin:0 0 15px; max-width:60ch; }
-.eyebrow{ font-size:var(--pn-w-meta); font-weight:600; letter-spacing:.2em;
-  text-transform:uppercase; color:var(--pn-stone); margin:0 0 14px; }
-
-.pv-bar{ background:var(--pn-voice); color:var(--pn-on-dark); padding:13px 0;
-  font-size:var(--pn-w-body-sm); }
-.pv-bar .wrap{ display:flex; gap:16px; align-items:baseline; flex-wrap:wrap; }
-.pv-bar strong{ font-size:var(--pn-w-meta); font-weight:600; letter-spacing:.2em;
-  text-transform:uppercase; }
-.pv-bar span{ opacity:.82; }
-
-.hero{ padding:var(--pn-xl) 0 var(--pn-lg); }
-.brand{ font-family:'Fraunces',serif; font-size:var(--pn-w-caption); letter-spacing:.34em;
-  text-transform:uppercase; color:var(--pn-stone); margin-bottom:var(--pn-md); }
-h1{ font-size:var(--pn-s-hero); line-height:1.02; margin:0 0 var(--pn-md); max-width:15ch; }
-.lede{ font-size:var(--pn-w-body-lg); line-height:1.5; max-width:48ch;
-  color:var(--pn-fact); margin:0; }
-
-.journey{ background:var(--pn-voice); color:var(--pn-on-dark); padding:var(--pn-lg) 0; }
-.journey .eyebrow{ color:rgba(245,242,232,.55); margin-bottom:10px; }
-.jrow{ display:flex; flex-wrap:wrap; gap:0; }
-.jstep{ flex:1 1 132px; padding:10px 14px 10px 0; min-width:118px; }
-.jstep + .jstep{ border-left:1px solid rgba(245,242,232,.2); padding-left:14px; }
-.jstep b{ display:block; font-family:'Fraunces',serif; font-weight:400;
-  font-size:var(--pn-s-quote); color:var(--pn-on-dark); margin-bottom:3px; }
-.jstep span{ font-size:var(--pn-w-body-sm); color:rgba(245,242,232,.7); line-height:1.4; }
-.jstep.last b{ color:#CBD8BE; }
-
-section{ padding:var(--pn-sec) 0 0; }
-h2{ font-size:var(--pn-s-section); line-height:1.12; margin:0 0 var(--pn-md); max-width:22ch; }
-
-.demo-intro{ display:flex; justify-content:space-between; align-items:flex-end;
-  gap:var(--pn-md); flex-wrap:wrap; margin-bottom:var(--pn-md); }
-.illus-tag{ font-size:var(--pn-w-meta); font-weight:600; letter-spacing:.16em;
-  text-transform:uppercase; color:var(--pn-stone);
-  border:1px solid var(--pn-edge); border-radius:2px; padding:5px 10px; white-space:nowrap; }
-.screen{ background:var(--pn-paper); border:1px solid var(--pn-hair); border-radius:5px;
-  overflow:hidden; box-shadow:0 1px 0 rgba(22,25,15,.03), 0 18px 44px -28px rgba(22,25,15,.34); }
-.screen-chrome{ display:flex; align-items:center; gap:10px; padding:11px 16px;
-  border-bottom:1px solid var(--pn-hair); background:var(--pn-ground); }
-.dot{ width:8px; height:8px; border-radius:50%; background:var(--pn-hair); }
-.screen-url{ font-size:var(--pn-w-caption); color:var(--pn-meta); letter-spacing:.02em; }
-.credit-line{ font-size:var(--pn-w-caption); color:var(--pn-stone);
-  border-top:1px solid var(--pn-hair); padding:12px 16px; background:var(--pn-ground); }
-
-/* the live PlotNua surface, hosted inside the frame */
-.pn-stage{ background:var(--paper); color:var(--ink);
-  font-family:'Work Sans',system-ui,sans-serif; font-size:15px; line-height:1.6;
-  padding:22px 26px 34px; }
-@media (max-width:820px){ .pn-stage{ padding:16px 16px 26px; } }
-.pn-stage-top{ display:flex; justify-content:flex-end; margin-bottom:26px; }
-.pn-stage p{ max-width:none; margin:0; }
-.pn-stage .results-hero-inner{ margin-bottom:0; }
-/* The production field goes full-bleed on a phone; contained inside a framed
-   screenshot. Preview scope only — the production rule is untouched. */
-.pn-stage .results-hero-inner.is-fieldonly{ margin-left:0; margin-right:0; border-radius:6px; }
-@media (min-width:720px){
-  .pn-stage .results-hero-inner{ align-items:stretch; }
-  .pn-stage .results-hero-media{ aspect-ratio:auto; min-height:320px; }
-  .pn-stage .results-hero-inner.is-fieldonly .match-card-open-myplot-link{
-    grid-column:2; justify-self:start; }
+@media (max-width:720px){
+  body.pn-sp .pv-bar .pv-word{ font-size:26px; }
+  body.pn-sp .journey .jrow{ grid-template-columns:1fr; row-gap:0; padding:20px 22px; }
+  body.pn-sp .journey .jstep{ border-left:0; padding:14px 0; border-top:1px solid var(--p4-line); }
+  body.pn-sp .journey .jstep:first-child{ border-top:0; padding-top:0; }
+  body.pn-sp .why{ grid-template-columns:1fr; gap:22px; padding:24px; }
+  body.pn-sp .screen > .screen-chrome{ padding:11px 14px; }
 }
-.pn-stage .results-hero-media{ display:flex; }
-.pn-stage .results-hero-media img{ width:100%; height:100%; object-fit:cover; display:block; }
-.pn-stage .results-hero-budget-note{ margin-top:14px; }
-.pn-stage .match-card-open-myplot-link{ align-self:flex-start; }
-.pn-stage .hero-secondary{ flex-wrap:wrap; }
-.pn-stage .hero-secondary .hero-secondary-dot{ display:none; }
-.pn-stage .hero-secondary .hero-secondary-link + .hero-secondary-link{ flex-basis:100%; }
 
-/* Imagery state C — a purposeful held space, never an apology. */
-.pn-photo-slot{ flex:1 1 auto; display:flex; flex-direction:column;
-  align-items:center; justify-content:center; gap:10px; text-align:center; padding:24px;
-  background:
-    radial-gradient(120% 90% at 18% 8%, rgba(255,253,246,.85) 0%, rgba(255,253,246,0) 60%),
-    linear-gradient(158deg, #E9E3D3 0%, #DED7C3 56%, #D2CBB4 100%);
-  box-shadow:inset 0 0 0 1px rgba(31,59,46,.09); }
-.pn-photo-slot b{ font-family:'Work Sans',sans-serif; font-size:11px; font-weight:600;
+/* ══ PREVIEW-ONLY ELEMENTS INSIDE THE DEMONSTRATION ═════════════════════
+   Production Results has no equivalent of these, so production has no dark
+   styling for them. Colours are the live skin's; the empty image position
+   uses production's own empty image-well colour and keeps the certified
+   label rule (SUPPLIER-PREVIEW-SYSTEM-V1.md §10.2). */
+/* production Results inherits the browser's own font-size and line-height
+   (your-plot.html sets neither on body); the shell's reading size must not
+   leak into the demonstration */
+.pn-yp{ font-size:medium; line-height:normal; }
+.pn-yp .pn-stage-top{ display:flex; justify-content:flex-end; margin:0 0 26px; }
+.pn-yp .pn-stage-top .my-plot-access{ position:static; }
+.pn-yp .pn-media-col{ display:flex; flex-direction:column; min-width:0; }
+.pn-yp .pn-photo-slot{ flex:1 1 auto; min-height:240px; aspect-ratio:4/3;
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  gap:10px; text-align:center; padding:24px;
+  background:rgba(46,48,51,1.0); box-shadow:inset 0 0 0 1px rgba(0,0,0,0.154); }
+.pn-yp .pn-photo-slot b{ font-family:'Work Sans',sans-serif; font-size:11px; font-weight:600;
   letter-spacing:.2em; text-transform:uppercase; color:var(--accent); }
-.pn-photo-slot span{ font-size:13px; line-height:1.5; color:var(--soft); max-width:30ch; }
-
-/* Verified supplier facts, read as rows rather than one dense run. */
-.pn-facts{ list-style:none; margin:20px 0 0; padding:16px 0 0;
-  border-top:1px solid rgba(31,59,46,.10); display:grid; gap:9px; }
-.pn-facts li{ display:flex; flex-wrap:wrap; align-items:baseline; gap:4px 10px;
+.pn-yp .pn-facts{ list-style:none; margin:20px 0 14px; padding:16px 0 0;
+  border-top:1px solid rgba(194,189,181,.16); display:grid; gap:9px; text-align:left; }
+.pn-yp .pn-facts li{ display:flex; flex-wrap:wrap; align-items:baseline; gap:4px 10px;
   font-size:13.5px; line-height:1.45; }
-.pn-facts b{ color:var(--ink); font-weight:600; letter-spacing:.005em; }
-.pn-facts span{ color:var(--soft); }
+.pn-yp .pn-facts b{ color:var(--ink); font-weight:600; letter-spacing:.005em; }
+.pn-yp .pn-facts span{ color:var(--soft); }
+.pn-yp .pn-open{ text-align:left; }
 @media (max-width:719px){
-  .pn-facts{ gap:11px; }
-  .pn-facts li{ flex-direction:column; gap:1px; }
+  .pn-yp .pn-facts{ gap:11px; }
+  .pn-yp .pn-facts li{ flex-direction:column; gap:1px; }
 }
-
-/* PRODUCT-LED ONLY — what has not been established, stated plainly. */
-.pn-open{ margin-top:22px; padding:16px 18px; border:1px solid rgba(31,59,46,.14);
-  border-radius:4px; background:rgba(139,137,113,.07); }
-.pn-open b{ display:block; font-size:11px; font-weight:600; letter-spacing:.16em;
-  text-transform:uppercase; color:var(--soft); margin-bottom:8px; }
-.pn-open ul{ margin:0; padding:0; list-style:none; display:grid; gap:6px; }
-.pn-open li{ font-size:13px; line-height:1.45; color:var(--ink); padding-left:16px; position:relative; }
-.pn-open li::before{ content:'\2013'; position:absolute; left:0; color:var(--soft); }
-
-.why{ display:grid; grid-template-columns:repeat(3,1fr); gap:var(--pn-md); margin-top:var(--pn-md); }
-@media (max-width:820px){ .why{ grid-template-columns:1fr; } }
-.why-c{ border-top:2px solid var(--pn-voice); padding-top:14px; }
-.why-c b{ display:block; font-size:var(--pn-w-meta); font-weight:600; letter-spacing:.16em;
-  text-transform:uppercase; color:var(--pn-voice); margin-bottom:8px; }
-.why-c span{ font-size:var(--pn-w-body-sm); color:var(--pn-body); }
-
-.close-statement{ font-family:'Fraunces',serif; font-size:var(--pn-s-statement);
-  line-height:1.32; color:var(--pn-voice); max-width:32ch; margin:0 0 var(--pn-md); }
-
-footer{ margin-top:var(--pn-sec); padding:var(--pn-lg) 0 var(--pn-sec);
-  border-top:1px solid var(--pn-hair); font-size:var(--pn-w-body-sm); color:var(--pn-stone); }
 '''
 
 CONFIG_A = '''<!--
@@ -249,13 +369,13 @@ CONFIG_A = '''<!--
 
 CONFIG_B = CONFIG_A.replace('VARIANT A · PRODUCT-LED',
                             'VARIANT B · PROVIDER-LED').replace(
-  'Use when a specific, verified product carries the preview.',
-  'Use when the relationship is with a provider or category, not one product.').replace(
-  '    {{PRODUCT_NAME}}         the maker\'s own product name',
-  '    {{OFFER_NAME}}           the category/offering, in their words').replace(
-  '''    {{STILL_TO_ESTABLISH_N}} what PlotNua has NOT established
+    'Use when a specific, verified product carries the preview.',
+    'Use when the relationship is with a provider or category, not one product.').replace(
+    "    {{PRODUCT_NAME}}         the maker's own product name",
+    '    {{OFFER_NAME}}           the category/offering, in their words').replace(
+    '''    {{STILL_TO_ESTABLISH_N}} what PlotNua has NOT established
     {{IMAGE_*}}              imagery state A only — see the block below''',
-  '''    (no imagery token: the image position carries no copy — see
+    '''    (no imagery token: the image position carries no copy — see
     SUPPLIER-PREVIEW-SYSTEM-V1.md §10.2)''')
 
 HEAD = '''<!DOCTYPE html>
@@ -264,18 +384,38 @@ HEAD = '''<!DOCTYPE html>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex">
+<meta name="theme-color" content="#1B1C1E">
 <title>PlotNua &mdash; a short introduction for {{SUPPLIER_NAME}}</title>
 <meta name="description" content="Private, unlisted introduction prepared for {{SUPPLIER_NAME}}. Not a public PlotNua page.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300..700&family=Work+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
-<style>'''
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Hanken+Grotesk:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300..700&family=Work+Sans:wght@300;400;500;600&display=swap">
+'''
 
-SHELL_TOP = '''</style>
-</head>
-<body>
+
+def styles():
+    return ('<!-- PREMIUM DARK DESIGN, rules verbatim (comments stripped): assets/identity/pn-identity.css '
+            '(sha %s) -->\n<style>\n%s\n</style>\n'
+            '<!-- PREMIUM DARK DESIGN: the Premium Discovery system, rules verbatim, comments stripped, '
+            'scope body.pn-id.pn-pd renamed body.pn-id.pn-sp (sha %s) -->\n<style>\n%s\n</style>\n'
+            '<!-- PRODUCTION YOUR PLOT RESULTS, demonstration only. Same order as\n'
+            '     your-plot.html: the skin assets/identity/pn-your-plot.css (sha %s,\n'
+            '     %d rules) first, then the page stylesheet (sha %s, %d rules).\n'
+            '     Both re-scoped to .pn-yp by refresh-ui-kit.py; cascade unchanged. -->\n'
+            '<style>\n%s\n</style>\n<style>\n%s\n</style>\n'
+            '<style>%s</style>\n'
+            % (sha(ID_CSS_SRC), ID_CSS, sha(PD_CSS_SRC), PD_CSS,
+               sha(SKIN_RAW), N_SKIN, sha(PROD_RAW), N_PROD,
+               SKIN_CSS, PROD_CSS, SHELL_CSS))
+
+
+SHELL_TOP = '''</head>
+<body class="pn-id pn-id--dark pn-sp">
+__CONFIG__
 
 <div class="pv-bar"><div class="wrap">
+  <span class="pv-word">PlotNua</span>
   <strong>Private preview</strong>
   <span>Prepared for {{SUPPLIER_NAME}}</span>
 </div></div>
@@ -308,14 +448,15 @@ SHELL_TOP = '''</style>
 
 <!-- ═══ THE DEMONSTRATION — MANDATORY ══════════════════════════════
      Never ship a supplier preview that is mainly explanatory prose.
-     Everything inside .pn-stage is genuine production PlotNua markup
-     and CSS. Do not invent a mock interface. ═══════════════════════ -->
+     Everything inside .pn-yp is genuine production PlotNua markup and
+     CSS (production's own chain, stylesheet and dark skin). Do not
+     invent a mock interface, and do not restyle it to match the page. ═ -->
 <section>
   <div class="demo-intro">
-    <h2 style="margin:0">{{DEMO_HEADING}}</h2>
+    <h2>{{DEMO_HEADING}}</h2>
     <span class="illus-tag">Illustrative preview</span>
   </div>
-  <p style="margin-bottom:var(--pn-lg)">{{DEMO_LEDE}}</p>
+  <p>{{DEMO_LEDE}}</p>
 
   <div class="screen">
     <div class="screen-chrome">
@@ -324,89 +465,15 @@ SHELL_TOP = '''</style>
     </div>
 
     <div class="pn-stage">
-      <div class="pn-stage-top">
-        <button type="button" class="my-plot-access">__MARK_PILL__<span class="my-plot-access-label"><span class="my-plot-access-title">My Plot</span><span class="my-plot-access-count">1 option saved</span></span><span class="my-plot-access-chevron" aria-hidden="true">&rarr;</span></button>
-      </div>
+      <div class="pn-yp"><section id="screen-match-results"><div class="match-results-panel interactive results-v2">
+__PILL__
 
-      <div class="results-hero-inner">
+      <div class="results-hero" id="matchPrimary">
+__HERO__
+      </div></div></section></div>
+    </div><!-- /pn-stage -->
 '''
 
-MEDIA_A = '''        <!-- IMAGERY STATE A — AUTHORISED. Credit is mandatory and the
-             image must be served from the supplier's own domain, unmodified.
-             If permission has NOT been given in writing, delete this block and
-             use the state-C panel from the provider-led template instead. -->
-        <div class="results-hero-media">
-          <img src="{{IMAGE_URL}}" alt="{{IMAGE_ALT}}" loading="lazy">
-        </div>
-'''
-
-MEDIA_B = '''        <div class="pn-media-col">
-        <div class="results-hero-media">
-          <div class="pn-photo-slot"><b>Your image here</b></div>
-        </div>
-        </div>
-'''
-
-def body_mid(name_token, open_block):
-    return '''        <div class="results-hero-body">
-          <h2 class="results-hero-name">''' + name_token + '''</h2>
-          <div class="results-hero-org">{{SUPPLIER_NAME}}</div>
-
-          <div class="results-hero-price-row">
-            <span class="results-hero-price">{{VERIFIED_PRICE}}</span>
-            <span class="results-hero-area">{{VERIFIED_PRICE_BASIS}}</span>
-          </div>
-
-          <!-- PERSONALISATION GUARDRAIL. Anything shown here must trace to a
-               real PlotNua capability. PlotNua does NOT capture or infer
-               garden aspect, orientation or surface, so lines such as
-               "south-facing patio" are forbidden however well they read. -->
-          <section class="prop-confirm is-in-hero" aria-label="Your property">
-            <p class="prop-confirm-place">Your property &middot; {{HOMEOWNER_LOCALITY}}</p>
-          </section>
-
-          <p class="results-hero-editorial">{{PERSONALISATION}}</p>
-
-          <ul class="pn-facts">
-            <li><b>{{VERIFIED_FACT_1_LABEL}}</b><span>{{VERIFIED_FACT_1_VALUE}}</span></li>
-            <li><b>{{VERIFIED_FACT_2_LABEL}}</b><span>{{VERIFIED_FACT_2_VALUE}}</span></li>
-            <li><b>{{VERIFIED_FACT_3}}</b></li>
-            <li><b>{{VERIFIED_FACT_4}}</b></li>
-            <li><b>{{VERIFIED_FACT_5}}</b></li>
-          </ul>
-
-          <div class="results-hero-budget-note">Things to check: {{THINGS_TO_CHECK}}</div>
-''' + open_block + '''
-          <div class="match-card-actions">
-            <button type="button" class="match-card-save-primary is-saved" aria-pressed="true">__MARK_SAVE__ Saved to My Plot &#10003;</button>
-          </div>
-          <button type="button" class="match-card-open-myplot-link">Open My Plot &rarr;</button>
-
-          <div class="hero-secondary">
-            <a class="hero-secondary-link" href="#">Ask PlotNua</a>
-            <span class="hero-secondary-dot">&middot;</span>
-            <a class="hero-secondary-link" href="#">Explore with {{SUPPLIER_SHORT}} &rarr;</a>
-          </div>
-        </div>
-      </div>
-    </div>
-'''
-
-OPEN_BLOCK = '''
-          <!-- PRODUCT-LED ONLY. State gaps as plainly as facts. Delete any
-               line that has since been established; never soften one. -->
-          <div class="pn-open">
-            <b>Still to establish</b>
-            <ul>
-              <li>{{STILL_TO_ESTABLISH_1}}</li>
-              <li>{{STILL_TO_ESTABLISH_2}}</li>
-              <li>{{STILL_TO_ESTABLISH_3}}</li>
-            </ul>
-          </div>
-'''
-
-CREDIT_A = '''    <div class="credit-line">{{IMAGE_CREDIT}} &mdash; used with written permission from {{IMAGE_PERMISSION_SOURCE}}, unmodified. Product information taken from {{SUPPLIER_SHORT}}&rsquo;s own published material.</div>
-'''
 
 def shell_end(credit):
     return credit + '''  </div>
@@ -439,70 +506,95 @@ def shell_end(credit):
 </footer>
 
 </div>
+
+''' + GALLERY_JS + '''
 </body>
 </html>
 '''
 
+
 def build(variant):
-    cfg    = CONFIG_A if variant == 'product' else CONFIG_B
-    media  = MEDIA_A if variant == 'product' else MEDIA_B
-    nametok = '{{PRODUCT_NAME}}' if variant == 'product' else '{{OFFER_NAME}}'
-    openb  = OPEN_BLOCK if variant == 'product' else ''
-    credit = CREDIT_A if variant == 'product' else ''
-    html = (HEAD + PAGE_CSS + "\n" + UI_KIT + "\n" + SHELL_TOP
-            + media + body_mid(nametok, openb) + shell_end(credit))
-    html = html.replace('<body>', '<body>\n' + cfg, 1)
-    html = html.replace('__MARK_PILL__', mark('pnMarkClipPill'))
-    html = html.replace('__MARK_SAVE__', mark('pnMarkClipSave'))
-    return html
+    cfg = CONFIG_A if variant == 'product' else CONFIG_B
+    credit = (CREDIT_A + '\n') if variant == 'product' else ''
+    return (HEAD + styles() + SHELL_TOP.replace('__CONFIG__', cfg)
+            .replace('__PILL__', PILL).replace('__HERO__', HERO[variant])
+            + shell_end(credit))
+
 
 files = {'template-product-led.html': build('product'),
          'template-provider-led.html': build('provider')}
 
-# ── guards ───────────────────────────────────────────────────────────
-SUPPLIER_REMNANTS = ['triq','briq','superior','pergola','klerner','neringa',
-                     'shomera','2,500','22,700','aluminium','dublin 6','christian']
+# ── guards ───────────────────────────────────────────────────────────────
+SUPPLIER_REMNANTS = ['triq', 'briq', 'superior', 'pergola', 'klerner', 'neringa',
+                     'shomera', '2,500', '22,700', 'aluminium', 'dublin 6',
+                     'christian', 'nua modular', 'modulux', 'ecosauna']
 for fn, h in files.items():
-    css = h.split('<style>', 1)[1].split('</style>', 1)[0]
-    markup = h.split('</style>', 1)[1]
-    if css.count('{') != css.count('}'): die(fn + ': brace imbalance')
-    if css.count('/*') != css.count('*/'): die(fn + ': unterminated comment')
-    for s in ['.my-plot-access{', '.match-card-save-primary{', '.pn-mark-heart{',
-              '.results-hero-inner{', '.match-card-open-myplot-link{',
-              '.hero-secondary{', '.prop-confirm.is-in-hero{', '.results-hero-media{']:
-        if s not in css: die(fn + ': missing production rule ' + s)
-    if markup.count('pn-mark-heart is-plot-active') != 2: die(fn + ': mark count')
+    markup = h.split('</head>', 1)[1]
+    visible = re.sub(r'<!--.*?-->', ' ', markup, flags=re.S)
+    visible = re.sub(r'<script\b.*?</script>', ' ', visible, flags=re.S)
+    vis_text = re.sub(r'<[^>]+>', ' ', visible).lower()
+    for m in ['noindex', 'nofollow', 'noarchive', 'nosnippet', 'noimageindex']:
+        if m not in h:
+            die(fn + ': missing robots directive ' + m)
+    if 'class="pn-id pn-id--dark pn-sp"' not in h:
+        die(fn + ': the premium dark design is not active')
+    if '--pn-paper:#FBFAF5' in h or 'class="pv-bar"><div class="wrap">\n  <strong>' in h:
+        die(fn + ': the old light preview shell survived')
+    for chain in ('<div class="pn-yp"><section id="screen-match-results"><div class="match-results-panel interactive results-v2">',
+                  '<div class="results-hero" id="matchPrimary">'):
+        if markup.count(chain) != 1:
+            die(fn + ': production chain element missing or repeated: ' + chain[:40])
+    # compatibility anchors existing builders rely on
+    for anchor in ('  <div class="screen">', '<div class="pn-stage">',
+                   '      <div class="results-hero-inner">',
+                   '<!-- WHY THIS COULD BE USEFUL', '<footer>\n',
+                   "<h2>What we&rsquo;d like to explore</h2>",
+                   '<!-- FROZEN', '<div class="journey">'):
+        if markup.count(anchor) != 1:
+            die(fn + ': builder anchor changed: %r' % anchor)
+    # The v1 demo ending must NOT survive: a builder that slices up to it
+    # would cut the production chain's closing line and break the demo
+    # silently (found on ognyx and ood-house, 27 Oct 2026). Without it those
+    # builders fail loudly and are migrated deliberately.
+    if '\n    </div>\n  </div>\n</section>' in markup:
+        die(fn + ': the v1 demo ending survived; slicing builders would break silently')
+    if not re.search(r'\n<div class="wrap">\n  <header class="hero">.*?\n  </header>\n</div>\n', markup, re.S):
+        die(fn + ': the hero header block changed shape')
+    if not re.search(r'\n<!--\s*[═=]{10,}.*?LED.*?[═=]{10,}\s*-->\n', markup, re.S):
+        die(fn + ': the instruction comment changed shape')
+    if markup.count('pn-mark-heart is-plot-active') != 2:
+        die(fn + ': mark count')
     for r in SUPPLIER_REMNANTS:
-        if r in markup.lower(): die(fn + ': supplier remnant "' + r + '"')
-    for m in ['noindex','nofollow','noarchive','nosnippet','noimageindex']:
-        if m not in h: die(fn + ': missing robots directive ' + m)
-    for t in ['{{SUPPLIER_NAME}}','{{PROPOSITION}}','{{DEMO_HEADING}}','{{PERSONALISATION}}',
-              '{{CLOSING_PROPOSITION}}','{{VERIFIED_PRICE}}','{{WHY_1_LABEL}}']:
-        if t not in markup: die(fn + ': missing token ' + t)
-    if 'Discover' not in markup or 'Connect' not in markup: die(fn + ': journey band missing')
-    if 'Illustrative preview' not in markup: die(fn + ': illustrative label missing')
-    if markup.lower().count('illustrative') != 1: die(fn + ': illustrative status repeated')
-    for banned in ['stays with the provider','everything that follows','nothing here is real',
-                   'we have not agreed','does not exist yet','no partnership exists']:
-        if banned in markup.lower(): die(fn + ': banned defensive phrasing "' + banned + '"')
-    if '__MARK' in h: die(fn + ': unsubstituted mark token')
+        if r in h.lower():
+            die(fn + ': supplier remnant "' + r + '"')
+    for t in ['{{SUPPLIER_NAME}}', '{{PROPOSITION}}', '{{DEMO_HEADING}}', '{{PERSONALISATION}}',
+              '{{CLOSING_PROPOSITION}}', '{{VERIFIED_PRICE}}', '{{WHY_1_LABEL}}',
+              '{{THINGS_TO_CHECK}}', '{{HOMEOWNER_LOCALITY}}', '{{DATE}}']:
+        if t not in markup:
+            die(fn + ': missing token ' + t)
+    if 'Discover' not in markup or 'Connect' not in markup:
+        die(fn + ': journey band missing')
+    if vis_text.count('illustrative') != 1:
+        die(fn + ': illustrative status missing or repeated')
+    for banned in ['stays with the provider', 'everything that follows', 'nothing here is real',
+                   'we have not agreed', 'does not exist yet', 'no partnership exists',
+                   'partner', 'commission', 'referral', 'recommended', 'endorsed']:
+        if banned in vis_text:
+            die(fn + ': banned phrasing "' + banned + '"')
+    if re.search(r'__[A-Z]+__', h):
+        die(fn + ': unsubstituted kit token')
+    if re.search(r'url\(\s*["\']?https?://', h):
+        die(fn + ': an external CSS image reached the template')
 
-if '<img' in files['template-provider-led.html'].split('</style>',1)[1]:
+_p = files['template-provider-led.html']
+if '<img' in _p.split('</head>', 1)[1]:
     die('provider-led template must carry no <img>')
 if '<img' not in files['template-product-led.html']:
     die('product-led template lost its authorised-imagery slot')
 
-# ── CERTIFIED RULE, 5 Oct 2026 — SUPPLIER-PREVIEW-SYSTEM-V1.md §10.2 ──────
-# This kit regenerates the templates from live production code, so without
-# these assertions a future refresh could quietly reinstate the obsolete
-# image-position architecture and every preview built afterwards would
-# inherit it. The tool now REFUSES rather than writing a non-conforming
-# provider template. Nothing here can touch an already-built supplier page:
-# the only files this script writes are the two templates in OUT.
-_p = files['template-provider-led.html']
+# CERTIFIED RULE, 5 Oct 2026 — SUPPLIER-PREVIEW-SYSTEM-V1.md §10.2 (unchanged)
 if 'PHOTO_SLOT_LINE' in _p:
-    die('provider-led template reinstated the PHOTO_SLOT_LINE token; the '
-        'image position carries no copy (§10.2)')
+    die('provider-led template reinstated the PHOTO_SLOT_LINE token (§10.2)')
 if 'Your project photography here' in _p:
     die('provider-led template reinstated the photo-slot heading (§10.2)')
 if 'Where your imagery would go' in _p:
@@ -516,14 +608,18 @@ for _phrase in ('where they would sit', 'stay yours until',
         die('provider-led template narrates the image-rights process: '
             '"' + _phrase + '" (§10.2)')
 
-# KNOWN DRIFT, RECORDED NOT FIXED: this kit has not been updated for the
-# PREVIEW-IDENTITY-001 band (.rh-split / .rh-identity), which was applied to
-# the templates by a separate one-shot migration. A refresh would therefore
-# still lose that band. That helper is superseded legacy and is scheduled for
-# retirement rather than blind editing, so DO NOT run this kit expecting a
-# drop-in replacement until the identity band is folded in here.
-
-os.makedirs(OUT, exist_ok=True)
+changed = []
 for fn, h in files.items():
-    open(os.path.join(OUT, fn), 'w', encoding='utf-8').write(h)
-    print('WROTE', fn, len(h), hashlib.sha256(h.encode()).hexdigest()[:16])
+    path = os.path.join(HERE, fn)
+    old = open(path, encoding='utf-8').read() if os.path.exists(path) else ''
+    if old != h:
+        changed.append(fn)
+    if not CHECK:
+        open(path, 'w', encoding='utf-8').write(h)
+    print(('CHECK ' if CHECK else 'WROTE ') + fn, len(h),
+          hashlib.sha256(h.encode()).hexdigest()[:16],
+          '(differs from the file on disk)' if old != h else '(identical)')
+print('production rules: page %d, skin %d · design: pn-identity %s, pn-premium-discovery %s'
+      % (N_PROD, N_SKIN, sha(ID_CSS_SRC), sha(PD_CSS_SRC)))
+if CHECK and changed:
+    sys.exit(3)

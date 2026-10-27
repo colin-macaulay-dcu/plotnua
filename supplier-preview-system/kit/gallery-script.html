@@ -1,0 +1,34 @@
+<script>
+(function(){
+  var strip = document.querySelector('.pn-gal-strip');
+  if (!strip) return;
+  var media  = document.querySelector('.results-hero-media');
+  var main   = media && media.querySelector('img');
+  var credit = media && media.querySelector('.pn-image-credit');
+  if (!main) return;
+  var thumbs = strip.querySelectorAll('.pn-gal-thumb');
+
+  function show(btn, i){
+    var full = btn.getAttribute('data-full');
+    if (!full) return;                       /* nothing to show, do nothing */
+    main.src = full;
+    main.alt = btn.getAttribute('data-alt') || '';
+    /* THE CREDIT TRAVELS WITH THE PICTURE. Same statement, no gap. */
+    if (credit) credit.textContent = btn.getAttribute('data-credit') || '';
+    for (var k = 0; k < thumbs.length; k++){
+      var on = (k === i);
+      thumbs[k].classList.toggle('is-on', on);
+      thumbs[k].setAttribute('aria-pressed', on ? 'true' : 'false');
+    }
+  }
+
+  for (var i = 0; i < thumbs.length; i++){
+    (function(btn, idx){
+      btn.addEventListener('click', function(e){
+        e.preventDefault();                  /* never reload the page */
+        show(btn, idx);
+      });
+    })(thumbs[i], i);
+  }
+})();
+</script>
