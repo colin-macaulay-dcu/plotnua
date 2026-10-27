@@ -51,6 +51,22 @@ STANDARD = [
     # is proved by each release's own --check (for DISC-031: atlas-tools/prove-disc031-page.py).
     ("python3 .github/scripts/check_atlas_figures.py", "index.html agrees with atlas-stats.json", "Atlas figures"),
     ("node atlas-tools/validate-journey-contract.js", "HELD", "journey contract"),
+    # PRIVACY NOTICE VERIFICATION (repair approved 27 Oct 2026). Until then none of the
+    # privacy checks ran at release time, so they drifted unnoticed from 20 Oct 2026.
+    # privacy_page_layers.py sets aside only site-shell changes (each made and guarded by
+    # its own builder) and the separately tracked WhatsApp block; every governed V3-V6
+    # sentence is still verified byte for byte.
+    ("python3 atlas-tools/build-privacy-v4.py --check", "V4 PUBLISHED", "privacy V4 governed text"),
+    ("python3 atlas-tools/build-privacy-v5.py --check", "V5 PUBLISHED", "privacy V5 governed text"),
+    ("python3 atlas-tools/build-privacy-v6.py --check", "privacy V6 present", "privacy V6 present"),
+    ("python3 atlas-tools/prove-privacy-v4.py", "20/20 breaks caught · rehearsal 9/9 — PROVEN", "privacy V4 proof 20/20, rehearsal 9/9"),
+    ("python3 atlas-tools/prove-privacy-v5.py", "24/24 breaks caught · rehearsal 16/16 — PROVEN", "privacy V5 proof 24/24, rehearsal 16/16"),
+    ("python3 atlas-tools/prove-privacy-v6.py", "10 passed, 0 failed", "privacy V6 proof 10/10"),
+    ("python3 atlas-tools/prove-privacy-page-layers.py", "15 passed, 0 failed", "privacy page layers 15/15"),
+    ("python3 atlas-tools/prove-privacy-whatsapp.py", "PRIVACY WHATSAPP · OK", "privacy WhatsApp block exact (status printed)"),
+    ("python3 atlas-tools/build-art-space-register.py --check", "CHECK OK — R1-R14 pass", "Art Space Register R1-R14"),
+    ("python3 atlas-tools/build-artist-register.py --check", "CHECK OK — A1-A13 pass", "Artist Register A1-A13"),
+    ("python3 atlas-tools/prove-g6-owner-register.py", "43 passed, 0 failed", "Garden Owner Register privacy proof 43/43"),
 ]
 
 

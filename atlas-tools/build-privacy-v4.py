@@ -79,10 +79,15 @@ from privacy_v6_layer import without_v6 as _v6_layer  # V6 layer: verify V3-V5 t
 from search_rail_layer import without_ask_label as _without_rail_label  # 19 Oct 2026 rail label layer
 
 
+from privacy_page_layers import read_governed as _read_governed  # 27 Oct 2026 page layers since V6
+
+
 def _without_v6(text):
-    """privacy.html beneath the V6 layer and the search rail label layer
-    (search_rail_layer.py), so the governed V3-V5 text is verified byte for byte."""
-    return _v6_layer(_without_rail_label(text))
+    """privacy.html beneath the V6 layer, the search rail label layer
+    (search_rail_layer.py) and the post-V6 page layers (privacy_page_layers.py:
+    site shell by its own builders' strip(), and the separately tracked WhatsApp
+    block), so the governed V3-V5 text is verified byte for byte."""
+    return _v6_layer(_without_rail_label(_read_governed(text)))
 import hashlib
 import html as htmlmod
 import pathlib

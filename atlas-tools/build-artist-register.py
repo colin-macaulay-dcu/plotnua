@@ -132,7 +132,11 @@ DISCLAIMER = ("Registering doesn&rsquo;t mean you&rsquo;ll be offered a space, a
 # checks the result: open -> the section exactly once, after the anchor, and
 # the page's only link to this register; closed -> absent. Since 17 Oct 2026 it
 # is the ONE PlotArt section (the top-of-page invitation is retired).
-FUTURE_ANCHOR = '    <p class="dq-note">This matching service is not live yet.</p>\n'
+# The same sentence, re-rendered by the Premium Discovery redesign of A Home for
+# Art (d7d0325 / 6088708, 23 Oct 2026; its words are governed by
+# prove-premium-discovery-a-home-for-art.py). Only the markup around the
+# sentence changed; A11's rules are unchanged (verification repair, 27 Oct 2026).
+FUTURE_ANCHOR = '      <p class="pd-small" style="margin-top:16px">This matching service is not live yet.</p>\n'
 TAKE_PART_MARK = "<!-- PLOTNUA-TAKE-PART"
 BE_PART_MARK = "<!-- PLOTNUA-BE-PART"
 SITEMAP_ANCHOR = ('  <url><loc>https://plotnua.ie/discovery-a-home-for-art.html</loc><lastmod>2026-10-13</lastmod>'
@@ -627,8 +631,28 @@ def script():
        "opts": json.dumps(opts, ensure_ascii=False)}
 
 
+def _governed_shell():
+    """privacy.html as the V5-era shell this page was built from: without the
+    post-V6 page layers (privacy_page_layers.py) and the search rail label layer."""
+    import sys as _s
+    _s.path.insert(0, str(ROOT / "atlas-tools"))
+    from privacy_page_layers import read_governed
+    from search_rail_layer import without_ask_label
+    return without_ask_label(read_governed(SHELL.read_text(encoding="utf-8")))
+
+
+def _governed_page(text):
+    """artist-register.html beneath the same site-shell and rail layers (made by
+    their own builders after this page was built), for the byte-exact --check."""
+    import sys as _s
+    _s.path.insert(0, str(ROOT / "atlas-tools"))
+    from privacy_page_layers import without_site_shell
+    from search_rail_layer import without_ask_label
+    return without_ask_label(without_site_shell(text, notice=False))
+
+
 def build():
-    shell = SHELL.read_text(encoding="utf-8")
+    shell = _governed_shell()
     try:
         pre = shell[:shell.index('<title>')]
         fav = shell[shell.index("<!-- Favicons"):shell.index("<!-- Open Graph -->")]
@@ -852,7 +876,7 @@ def main(argv):
     guards(page)
     state = "OPEN" if ARTIST_PUBLIC else "CLOSED"
     if "--check" in argv:
-        if not PAGE.exists() or PAGE.read_text(encoding="utf-8") != page:
+        if not PAGE.exists() or _governed_page(PAGE.read_text(encoding="utf-8")) != page:
             print("CHECK FAILED: %s is out of date; run --apply" % PAGE_NAME)
             sys.exit(1)
         print("%s: Artist Register %s · CHECK OK — A1-A13 pass" % (PAGE_NAME, state))

@@ -40,8 +40,16 @@ for label, mut in [("a word changed inside the grower subsection", lambda t: t.r
 # 'outside' edits are caught by the earlier verifiers, which then see the edit in the stripped text:
 check("V5b an edit outside the V6 blocks remains visible to the V3-V5 verifiers",
       L.without_v6(v6.replace("<h2>9. Cookies</h2>", "<h2>9. Cookies!</h2>")) != base)
+before = (ROOT / "privacy.html").read_bytes()
 r = subprocess.run([sys.executable, str(HERE / "build-privacy-v6.py")], capture_output=True, text=True)
-check("V6 the builder refuses to write without the founder's approval", r.returncode == 2 and "P0" in r.stderr)
+unchanged = (ROOT / "privacy.html").read_bytes() == before
+if B.APPROVAL:
+    # Since the founder's approval (16 Oct 2026) and publication, the builder must
+    # refuse to apply V6 a second time (P1) and write nothing (repair, 27 Oct 2026).
+    check("V6 the builder refuses to re-apply the approved, published V6 and writes nothing",
+          r.returncode == 2 and "P1" in r.stderr and unchanged and L.MARKER in live)
+else:
+    check("V6 the builder refuses to write without the founder's approval", r.returncode == 2 and "P0" in r.stderr and unchanged)
 check("V7 the published notice states 24 months and the Grower Register in Sections 2, 7, 10 and 12",
       all(x in v6 for x in ["If you choose to join the Grower Register", "7. The Garden Owner Register and the Grower Register",
                             "The Garden Owner Register and the Grower Register described in Section 7 also run",

@@ -17,7 +17,7 @@ Verdicts: CAPABLE / BLIND / VACUOUS (mutation did not apply) / MISATTRIBUTED.
 import sys as _sys_v6
 _sys_v6.path.insert(0, str(__import__('pathlib').Path(__file__).resolve().parent))
 from privacy_v6_layer import without_v6 as _without_v6  # V6 layer: verify V3-V5 text unchanged beneath it
-import html as htmlmod, importlib.util, io, pathlib, re, shutil, subprocess, sys, tempfile
+import hashlib, html as htmlmod, importlib.util, io, pathlib, re, shutil, subprocess, sys, tempfile
 from contextlib import redirect_stdout
 
 HERE = pathlib.Path(__file__).resolve().parent
@@ -27,6 +27,9 @@ ROOT = HERE.parent
 # three input files are byte-identical at both (same git blob ids:
 # disc025 1665871d, privacy.html 80b04149, wrangler.toml 9de56898), so the
 # proof is unchanged in meaning and now runs in any clean clone.
+# 27 Oct 2026: c64e63a is no longer in main's history, so its three files are now
+# stored under atlas-tools/fixtures/g6-pre-c64e63a/ (same blob ids 1665871d,
+# 80b04149, 9de56898; SHA-256 pinned below).
 PRE_REF = "c64e63a"
 
 PASS = FAIL = 0
@@ -147,9 +150,20 @@ for gid, name, old, new in MUTS:
 print("\n  G6 PREP · BUILDER CAPABILITY (against the pre-build files from git)\n")
 
 
+# The pre-build files of PRE_REF, stored in the repository (verification repair,
+# 27 Oct 2026): PRE_REF is not in main's history, so `git show` only worked where
+# that old object happened to survive locally. The copies are SHA-256 pinned, so
+# they cannot drift from what PRE_REF held.
+PRE_FIXTURES = HERE / "fixtures" / "g6-pre-c64e63a"
+PRE_SHA256 = {'disc025-borrowed-garden-check.html': '12e442393b135ab9598890e4ea1936454cb46312e0a47466790b6afb96d6a3c7', 'privacy.html': 'bf78639ba1c3ea090324315b4f26bb991a090d9a5a796af923a39549454f9f30', 'worker/garden-register/wrangler.toml': 'ad6778b1d20b81261409342db095f786d6a4cf5878fc41e3f7976de72cc92a39'}
+
+
 def git_show(rel):
-    return subprocess.run(["git", "show", f"{PRE_REF}:{rel}"], cwd=ROOT, check=True,
-                          capture_output=True).stdout.decode("utf-8")
+    path = PRE_FIXTURES / rel
+    data = path.read_bytes()
+    if hashlib.sha256(data).hexdigest() != PRE_SHA256[rel]:
+        raise SystemExit("G6 proof: fixture %s does not match its pinned SHA-256" % rel)
+    return data.decode("utf-8")
 
 
 PRE = {"page": git_show("disc025-borrowed-garden-check.html"),
