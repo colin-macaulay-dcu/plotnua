@@ -1,0 +1,12 @@
+{
+  "schema": "plotnua.plotart.launch-manifest.v1",
+  "note": "SHA-256 of every published PlotArt file, from the launch build that passed prove-plotart-launch.py L1-L10 with the demonstration names (development branch founder/plotart-prototype). Any change to a published PlotArt file must come from a new verified build.",
+  "built_from": "founder/plotart-prototype 8818df3",
+  "files": {
+    "assets/plotart.css": "1a4813c71cfd61230bd5658eaa965ab8633774364a08bb4225d4100c13dcdf08",
+    "assets/plotart.js": "1aeda046a43a9877413943aa4573f8266280b94a5df21fb68421c5486189dca8",
+    "founding-25.html": "b53a5d1271224d5fdfd82e361aa336a5bed5069bfab1c3b86130b3a83e42520d",
+    "index.html": "38f7a4e2ae7213a8ca1ea332cef3e69138c89ac2ed8a98a5cd023c43024fdb94",
+    "living-gallery.html": "0a45715f162072bad83346a4d5cddc5cdfae01df32e2df1adc2d5d449dba6a28"
+  }
+}
