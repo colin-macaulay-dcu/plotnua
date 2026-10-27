@@ -17,6 +17,7 @@ Verdicts: CAPABLE / BLIND / VACUOUS (mutation did not apply) / MISATTRIBUTED.
 import sys as _sys_v6
 _sys_v6.path.insert(0, str(__import__('pathlib').Path(__file__).resolve().parent))
 from privacy_v6_layer import without_v6 as _without_v6  # V6 layer: verify V3-V5 text unchanged beneath it
+import gzip
 import hashlib, html as htmlmod, importlib.util, io, pathlib, re, shutil, subprocess, sys, tempfile
 from contextlib import redirect_stdout
 
@@ -28,7 +29,7 @@ ROOT = HERE.parent
 # disc025 1665871d, privacy.html 80b04149, wrangler.toml 9de56898), so the
 # proof is unchanged in meaning and now runs in any clean clone.
 # 27 Oct 2026: c64e63a is no longer in main's history, so its three files are now
-# stored under atlas-tools/fixtures/g6-pre-c64e63a/ (same blob ids 1665871d,
+# stored gzip-compressed under atlas-tools/fixtures/g6-pre-c64e63a/ (same blob ids 1665871d,
 # 80b04149, 9de56898; SHA-256 pinned below).
 PRE_REF = "c64e63a"
 
@@ -159,8 +160,10 @@ PRE_SHA256 = {'disc025-borrowed-garden-check.html': '12e442393b135ab9598890e4ea1
 
 
 def git_show(rel):
-    path = PRE_FIXTURES / rel
-    data = path.read_bytes()
+    # stored gzip-compressed so GitHub Pages never serves the superseded pages as
+    # web pages (an old privacy notice must not be readable or indexable on the site)
+    path = PRE_FIXTURES / (rel + ".gz")
+    data = gzip.decompress(path.read_bytes())
     if hashlib.sha256(data).hexdigest() != PRE_SHA256[rel]:
         raise SystemExit("G6 proof: fixture %s does not match its pinned SHA-256" % rel)
     return data.decode("utf-8")
