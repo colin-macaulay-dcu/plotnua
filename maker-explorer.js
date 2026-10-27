@@ -101,6 +101,7 @@
             : '<span class="mx-pn-text">' + esc(p[1]) + '</span>') +
           (p[2] ? '<span class="mx-pt">' + esc(p[2]) + '</span>' : '') +
           (p[4] ? '<span class="mx-pp">' + esc(p[4]) + '</span>' : '') +
+          (X.notes ? X.notes.map(function (n) { return '<span class="mx-pt mx-pnote">' + esc(n) + '</span>'; }).join('') : '') +
           (X.img ? images(X.img) : '') +
           (X.href ? '<a class="mx-ext" href="' + esc(X.href) + '" target="_blank" rel="noopener noreferrer">See it on ' +
             esc(X.site) + '<span class="mx-sr"> (the maker&rsquo;s own page, opens in a new tab)</span>&nbsp;&rarr;</a>' : '') +
@@ -156,7 +157,7 @@
       list.forEach(function (im) {
         h += '<figure class="mx-img"><img src="' + esc(im.src) + '" alt="' + esc(im.alt) + '" width="' + im.w +
           '" height="' + im.h + '" loading="lazy" decoding="async"><figcaption><span class="mx-img-kind">' +
-          esc(im.kind) + '</span> ' + credit(im) + '</figcaption></figure>';
+          esc(im.label || im.kind) + '</span> ' + credit(im) + '</figcaption></figure>';
       });
       return h + '</span>';
     }
@@ -167,7 +168,7 @@
     function lead(m) {
       if (!m.l) { return ''; }
       return '<span class="mx-lead"><img src="' + esc(m.l.src) + '" alt="" width="' + m.l.w + '" height="' + m.l.h +
-        '" loading="lazy" decoding="async"></span><span class="mx-lead-cap">' + esc(m.l.kind) + ' · ' + esc(m.l.credit) + '</span>';
+        '" loading="lazy" decoding="async"></span><span class="mx-lead-cap">' + esc(m.l.label || m.l.kind) + ' · ' + esc(m.l.credit) + '</span>';
     }
     /* THE ONE URL READ. A fragment naming a product this page lists opens
        that product's maker in the first tab that lists it. */

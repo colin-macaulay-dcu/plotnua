@@ -1,0 +1,30 @@
+{
+  "schema": "plotnua.maker-product-notes.v1",
+  "decision": "Founder approval 27 Oct 2026, 'Irish Sauna Company collection — implementation approved'. The wording of every note below is the founder's. Read by atlas-tools/build-maker-explorer.py (guard G15). A note shows only where it is listed; a note with validUntil refuses the build after that date.",
+  "makerNotes": {
+    "Irish Sauna Company": {
+      "text": "Designed and handcrafted to order by Irish Sauna Company in Connemara, Co. Galway. Heaters by Harvia.",
+      "evidence": "Each Island Collection product page: 'Handcrafted to order in Connemara, Galway' / 'Handcrafted to order in Galway' and 'Irish Sauna Company — Handcrafted in Connemara, Galway.'; collection page: 'designed and built by Irish Sauna Company in Connemara' (read 27 Oct 2026, Atlas Sources SRC-ISC-IC-000 to 004); Brona, 27 Oct 2026, Gmail 1a17c9a56ea0fdca: 'designed and handcrafted by our team here in Galway'. Every heater is a Harvia heater, so the line names Harvia and implies nothing about any other component."
+    }
+  },
+  "productNotes": {
+    "recTBQcdOO0yoULqN": [
+      {"text": "Introductory price until 30 November 2026", "validUntil": "2026-11-30",
+       "evidence": "Product page, 27 Oct 2026: 'Introductory price: €6,500 including VAT until 30 November 2026' (Atlas Product Pricing recWVOoCFSetBnk8X)."}
+    ],
+    "rect8UKFyZodW593p": [
+      {"text": "Introductory price until 30 November 2026", "validUntil": "2026-11-30",
+       "evidence": "Product page, 27 Oct 2026: 'Introductory price: €8,400 including VAT until 30 November 2026' (Atlas Product Pricing recwBrnjeLTTGhYp7)."}
+    ],
+    "recQszPvHe5Cu7wY5": [
+      {"text": "Introductory price until 30 November 2026", "validUntil": "2026-11-30",
+       "evidence": "Product page, 27 Oct 2026: 'Introductory price: €11,500 including VAT until 30 November 2026' (Atlas Product Pricing recBSFDzqVB3usnIJ)."}
+    ],
+    "reccdnuccLgq8dlqh": [
+      {"text": "Introductory price until 30 November 2026", "validUntil": "2026-11-30",
+       "evidence": "Product page, 27 Oct 2026: 'Introductory price: €19,600 including VAT' and 'Offer ends 30 November 2026.' (Atlas Product Pricing recZiDlNEHs8hU3Tj)."},
+      {"text": "Electrical requirement: This model requires a three-phase electrical supply. Confirm suitability and installation requirements with Irish Sauna Company before ordering.",
+       "evidence": "Product page, 27 Oct 2026: 'The heater requires a suitable 400V three-phase electrical supply, with installation and final electrical requirements to be assessed by a qualified electrician.' Wording: founder, 27 Oct 2026."}
+    ]
+  }
+}

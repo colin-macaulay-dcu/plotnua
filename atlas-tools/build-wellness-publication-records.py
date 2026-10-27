@@ -29,8 +29,18 @@ IRISH SAUNA COMPANY (Gmail thread 1a0fd83ddde922b1)
   12 Oct PlotNua asked whether Harvia manufacturer photographs may be used
          (1a13036feca9cc4b). UNANSWERED. So no image is enumerated for
          publication: the listing is text only until that is settled.
+  27 Oct Brona asked PlotNua to feature ISC's own Irish-made Island
+         Collection "instead of the previously listed range" and wrote
+         "Please feel free to use the product imagery and information from the
+         collection" (1a17c9a56ea0fdca). Founder approved the replacement the
+         same day. The Harvia question is moot: that range is withdrawn. The
+         eight collection images are enumerated by
+         atlas-tools/build-irish-sauna-company-collection-record.py, pinned
+         by digest below; this builder still never adds imagery itself.
 
 Neither row gains approved_assets. Imagery is not extended by this builder.
+(27 Oct 2026: the Irish Sauna Company Island Collection set is written by
+atlas-tools/build-irish-sauna-company-collection-record.py and pinned below.)
 (16 Oct 2026: Tanktribe's four photographs were enumerated separately in the
 authorised imagery commit 15b145e. This builder preserves that exact set,
 pinned by digest below, and refuses any other imagery on any row.)
@@ -137,14 +147,36 @@ ROWS = {
             "state": "GRANTED", "ref": "WELLNESS-FIRST-IRISH-SAUNA-COMPANY-20261002",
             "record": "recH6lssOAemyP9rz", "date": "2026-10-09",
             "scope": ["feature", "imagery"],
-            "conditions": ["credit", "link-back", "no-third-party-manufacturer-imagery-until-confirmed"],
+            "conditions": ["credit", "link-back", "collection-images-only",
+                           "visualisations-labelled", "no-harvia-manufacturer-imagery"],
             "asked": "PlotNua asked to feature Irish Sauna Company and use selected imagery "
                      "from its website (Gmail 1a0fd83ddde922b1, 2 and 9 Oct 2026).",
             "answered": "\"we would be delighted for you to use our imagery and product on your "
                         "site\" (Irish Sauna Company, 9 Oct 2026, Gmail 1a1208b5549f0e23)",
             "note": "Recorded 14 Oct 2026. PlotNua's 12 Oct question about Harvia manufacturer "
-                    "photographs (Gmail 1a13036feca9cc4b) is unanswered, so no image is "
-                    "enumerated: the listing is text only.",
+                    "photographs (Gmail 1a13036feca9cc4b) was never answered, so no Harvia "
+                    "image was ever enumerated. 27 Oct 2026: Irish Sauna Company withdrew the "
+                    "Harvia range and asked PlotNua to feature its own Irish-made Island "
+                    "Collection instead, writing \"Please feel free to use the product imagery "
+                    "and information from the collection\" (Gmail 1a17c9a56ea0fdca). Imagery "
+                    "is permitted for that collection only: eight enumerated product "
+                    "visualisations, credited and linked.",
+            "collection_grant": {
+                "date": "2026-10-27", "gmail": "1a17c9a56ea0fdca", "thread": "1a0fd83ddde922b1",
+                "from": "info@irishsaunacompany.com (Brona)",
+                "asked_by_supplier": "would it be possible to update our listing on PlotNua to "
+                                     "feature our new Irish-made collection instead of the "
+                                     "previously listed range?",
+                "verbatim": "Please feel free to use the product imagery and information from "
+                            "the collection",
+                "collection": "https://irishsaunacompany.com/collections/residential-outdoor-saunas-ireland",
+                "scope": "The four products of that collection (The Clare, The Inis, The Aran, "
+                         "The Skellig) and their product images as of 27 Oct 2026. NOT the "
+                         "supplier's pods or mobile saunas, NOT any Harvia manufacturer "
+                         "imagery, NOT any other company.",
+                "founder_approval": "2026-10-27, 'Irish Sauna Company collection — "
+                                    "implementation approved'",
+            },
         },
         "listing_review": {
             "state": "CONFIRMED", "requested_by": "supplier",

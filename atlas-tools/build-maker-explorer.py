@@ -90,7 +90,12 @@ PINS = {
     # Re-pinned 22 Oct 2026 (G14 supplier-currency note: one optional line, existing .mx-meta
     # style, rendered after the offer panel only when the maker carries m.cn; the offer panel
     # and every other output are unchanged). Previous pin: dd0bae9e…
-    SHARED_JS:  "3de07e182d0bf40bf5e7e6800f92315af06278244f452de631c4d1815a0fd5c2",
+    # Re-pinned 27 Oct 2026 (G15, Irish Sauna Company Island Collection, founder approval):
+    # an image may show its record's display label (im.label, e.g. "Product visualisation")
+    # in place of the bare kind, and a product may carry register-worded note lines
+    # (X.notes) under its price. Both are optional: a product or image without them
+    # renders exactly as before. Previous pin: 3de07e18…
+    SHARED_JS:  "12553309b07bba404e4a8bb387bb38106e8608066c506e85bc9ccea30d75b38a",
     # Re-pinned 13 Oct 2026: the stylesheet is now shared with the Provider
     # Explorer (The Borrowed Garden). Every rule is scoped to
     # :is(#explore-makers, #explore-providers), which keeps each rule's
@@ -284,6 +289,15 @@ IMG_DIMS.update({
     "recvHKzv3ojOozJCG": (1600, 1200),
     "recyz2arjsX1KE6dq": (1600, 2000)
 })
+# IRISH SAUNA COMPANY ISLAND COLLECTION (founder approval 27 Oct 2026): natural
+# sizes of the eight enumerated product visualisations at ?width=1024, fetched
+# 27 Oct 2026 from irishsaunacompany.com/cdn/shop/files/.
+IMG_DIMS.update({
+    "recpt4Qq6NPz95fWM": (1024, 1024), "recXNhcB54gi9SmXq": (1024, 1024),
+    "recnoZpQDkfooFP2v": (1024, 1024), "recTCNM71LSYMSW4u": (1024, 1024),
+    "recd2xqlMd6qyKxhI": (1024, 1024), "reckdF69PkRdLNUHs": (1024, 936),
+    "recFRo2HR5jSQ9qnG": (1024, 683),  "recKjOUkGP623IS8K": (1024, 683),
+})
 
 
 def rights_row(org):
@@ -400,8 +414,15 @@ def product_nav(q):
             if not a.get("alt", "").startswith(kind):
                 die("asset %s alt text does not open with its kind (%s)" % (a["atlas_asset"], kind))
             w, h = IMG_DIMS[a["atlas_asset"]]
-            imgs.append({"src": a["url"], "alt": a["alt"], "kind": kind, "w": w, "h": h,
-                         "credit": r["required_credit"], "creditHref": "https://www.%s/" % dom})
+            im = {"src": a["url"], "alt": a["alt"], "kind": kind, "w": w, "h": h,
+                  "credit": r["required_credit"], "creditHref": "https://www.%s/" % dom}
+            # G15 (27 Oct 2026): a record may name how its kind is shown, e.g.
+            # "Product visualisation"; the label must still say what the kind is.
+            if a.get("display_label"):
+                if kind.lower() not in a["display_label"].lower():
+                    die("G15 asset %s display label does not name its kind (%s)" % (a["atlas_asset"], kind))
+                im["label"] = a["display_label"]
+            imgs.append(im)
         if imgs:
             nav["img"] = imgs
     return nav
@@ -478,6 +499,44 @@ def currency_register():
     R = json.loads(CURRENCY_REG.read_text(encoding="utf-8"))
     if R.get("schema") != "plotnua.price-currency-corrections": die("G14 currency register: unknown schema")
     return {c["id"]: c for c in R.get("corrections", [])}, dict(R.get("makerNotes") or {})
+
+
+# ── MAKER AND PRODUCT NOTES (G15, founder approval 27 Oct 2026) ─────────────
+# Irish Sauna Company Island Collection: one provenance line in the maker's
+# drawer and short factual lines under named products, worded by the founder
+# and held in atlas-tools/maker-product-notes.json with their evidence. A note
+# with an expiry date (an introductory price) refuses the build once that
+# date has passed, so an expired offer can never stay on the page.
+NOTES_REG = ROOT / "atlas-tools" / "maker-product-notes.json"
+_NOTES = None
+
+
+def notes_register():
+    global _NOTES
+    if _NOTES is not None:
+        return _NOTES
+    if not NOTES_REG.exists():
+        _NOTES = ({}, {})
+        return _NOTES
+    R = json.loads(NOTES_REG.read_text(encoding="utf-8"))
+    if R.get("schema") != "plotnua.maker-product-notes.v1": die("G15 notes register: unknown schema")
+    today = os.environ.get("PN_NOTES_TODAY") or __import__("datetime").date.today().isoformat()
+    maker = {}
+    for k, v in (R.get("makerNotes") or {}).items():
+        if not v.get("text") or not v.get("evidence"): die("G15 maker note without text or evidence: " + k)
+        maker[k] = v["text"]
+    prod = {}
+    for pid, lst in (R.get("productNotes") or {}).items():
+        out = []
+        for n in lst:
+            if not n.get("text") or not n.get("evidence"): die("G15 product note without text or evidence: " + pid)
+            if n.get("validUntil") and today > n["validUntil"]:
+                die("G15 the note %r for %s expired on %s: review the price in Atlas and the register"
+                    % (n["text"], pid, n["validUntil"]))
+            out.append(n["text"])
+        prod[pid] = out
+    _NOTES = (maker, prod)
+    return _NOTES
 
 
 def price_line(pr):
@@ -635,15 +694,19 @@ def load(P):
             eligible = [e for e in eligible if len(e) > 5 and k in e[5]["kinds"]]
             header = {"products": header["kindCounts"][k], "makers": header["kindOrganisationCounts"][k]}
         by = {}
+        MNOTES, PNOTES = notes_register()
         for e in eligible:
             org, pid, pname, ptype, st = e[:5]
             row = [pid, name(pid, pname), ptype, st]
             if len(e) > 5 and e[5].get("price"):
                 row.append(e[5]["price"])
-            if len(e) > 5 and e[5].get("nav"):
+            nav = dict(e[5]["nav"]) if len(e) > 5 and e[5].get("nav") else {}
+            if pid in PNOTES:
+                nav["notes"] = list(PNOTES[pid])
+            if nav:
                 if len(row) == 4:
                     row.append("")
-                row.append(e[5]["nav"])
+                row.append(nav)
             by.setdefault(org, []).append(row)
         makers = []
         for k, v in sorted(by.items(), key=lambda kv: kv[0].lower()):
@@ -659,6 +722,11 @@ def load(P):
             if any(r[0] in CORR and len(r) > 4 and r[4] for r in mk["p"]):
                 if mk["m"] not in NOTES: die("G14 %s shows a register-listed price but has no currency note" % mk["m"])
                 mk["cn"] = NOTES[mk["m"]]
+            # G15: the maker's provenance line uses the same one-line slot; a
+            # maker can never carry both a currency note and a provenance line.
+            if mk["m"] in MNOTES:
+                if mk.get("cn"): die("G15 %s would carry two maker notes" % mk["m"])
+                mk["cn"] = MNOTES[mk["m"]]
             makers.append(mk)
         figures = {"products": len(eligible), "makers": len(by),
                    "confirmed": sum(1 for e in eligible if e[4] == "c"),
@@ -943,7 +1011,14 @@ def build(fname, P, src):
                 if len(p) <= 5:
                     continue
                 X = p[5]
-                if set(X) - {"href", "site", "img"}: die("G3 unexpected navigation field on " + p[0])
+                if set(X) - {"href", "site", "img", "notes"}: die("G3 unexpected navigation field on " + p[0])
+                if X.get("notes") is not None and X["notes"] != notes_register()[1].get(p[0]):
+                    die("G15 product notes that are not the register's: " + p[0])
+                for im in X.get("img") or []:
+                    if set(im) - {"src", "alt", "kind", "w", "h", "credit", "creditHref", "label"}:
+                        die("G15 unexpected image field on " + p[0])
+                    if im.get("label") is not None and im["kind"].lower() not in im["label"].lower():
+                        die("G15 an image label that does not name its kind: " + p[0])
                 if tsrc == "garden-room-universe-v1":
                     # Re-derived from the universe's governed blocks and the
                     # manifest, independently of universe_nav().
@@ -1031,6 +1106,18 @@ def build(fname, P, src):
                          " ".join(p[4] for m in c["makers"] for p in m["p"] if len(p) > 4) for c in cfgs])
     cfg_text += " " + " ".join(" ".join(str(v) for v in m["o"].values()) for c in cfgs for m in c["makers"] if m.get("o"))
     cfg_text += " " + " ".join(m["cn"] for c in cfgs for m in c["makers"] if m.get("cn"))
+    cfg_text += " " + " ".join(n for c in cfgs for m in c["makers"] for p in m["p"]
+                               if len(p) > 5 for n in (p[5].get("notes") or []))
+    # G15: every register note is shown exactly where it belongs, and nowhere else.
+    MN, PN = notes_register()
+    shown_p = {p[0]: (p[5].get("notes") if len(p) > 5 else None) for c in cfgs for m in c["makers"] for p in m["p"]}
+    for pid, lst in PN.items():
+        if pid in shown_p and shown_p[pid] != lst: die("G15 %s does not show its register notes" % pid)
+    for c in cfgs:
+        for m in c["makers"]:
+            if m["m"] in MN and m.get("cn") != MN[m["m"]]: die("G15 %s does not show its provenance line" % m["m"])
+    if (MN or PN) and ("X.notes" not in js or "im.label" not in js):
+        die("G15 the script does not render notes or image labels")
     # G14 supplier-published currency: a non-euro figure only for a record the
     # founder's currency register lists, in exactly its published currency,
     # never converted; the maker that shows one carries the register's note,
@@ -1048,7 +1135,8 @@ def build(fname, P, src):
                     die("G14 %s does not show the evidenced amount" % p[0])
             has = any(p[0] in CORR for p in shown)
             if has and m.get("cn") != NOTES.get(m["m"]): die("G14 %s lacks the register's currency note" % m["m"])
-            if not has and m.get("cn"): die("G14 %s carries a currency note but shows no register-listed price" % m["m"])
+            if not has and m.get("cn") and m.get("cn") != notes_register()[0].get(m["m"]):
+                die("G14 %s carries a currency note but shows no register-listed price" % m["m"])
     if CORR and "m.cn" not in js: die("G14 the script does not render the currency note")
     texts = (vtext + " " + cfg_text + " " + " ".join(re.findall(r"'([^']*)'", js))).lower()
     for w in BANNED:
