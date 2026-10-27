@@ -615,15 +615,17 @@
       "permission_outcome": "Granted — Founder Confirmed",
       "permitted_domain": "irishsaunacompany.com",
       "required_credit": "© Irish Sauna Company",
-      "evidence": "Brona, info@irishsaunacompany.com, emailed PlotNua 9 October 2026 at 13:02, subject 'Re: Irish Sauna Company × PlotNua — Irish home wellness': 'we would be delighted for you to use our imagery and product on your site.' Colin confirmed this permission on 10 October 2026. Atlas Image Permission Outreach WELLNESS-FIRST-IRISH-SAUNA-COMPANY-20261002 (recH6lssOAemyP9rz), Permission Outcome 'Granted — Founder Confirmed'.",
+      "evidence": "Brona, info@irishsaunacompany.com, emailed PlotNua 9 October 2026 at 13:02, subject 'Re: Irish Sauna Company × PlotNua — Irish home wellness': 'we would be delighted for you to use our imagery and product on your site.' Colin confirmed this permission on 10 October 2026. Atlas Image Permission Outreach WELLNESS-FIRST-IRISH-SAUNA-COMPANY-20261002 (recH6lssOAemyP9rz), Permission Outcome 'Granted — Founder Confirmed'. COLLECTION PERMISSION, 27 October 2026: Brona asked PlotNua to feature the new Irish-made collection \"instead of the previously listed range\" and wrote \"Please feel free to use the product imagery and information from the collection\" (Gmail 1a17c9a56ea0fdca). Founder approved the replacement on 27 October 2026. Atlas Image Permission Outreach recH6lssOAemyP9rz records the 27 October scope.",
       "conditions": [
-        "Use selected first-party Irish Sauna Company product imagery only; do not assume rights to images owned by Harvia or another third party beyond supplier's permission.",
-        "Credit © Irish Sauna Company and link back to https://irishsaunacompany.com/.",
-        "Do not represent supplied Harvia residential garden saunas as manufactured in Galway.",
-        "Exclude images with unverified provenance or AI-generated visualisations presented as product photographs.",
-        "No third-party Shopify CDN host authorised until the supplier-specific delivery path prefix is verified."
+        "FEATURE: PlotNua may feature Irish Sauna Company and its products (9 Oct 2026, Gmail 1a1208b5549f0e23; listing approved 12 Oct, 1a12f28526374227).",
+        "IMAGES: the eight Island Collection product visualisations enumerated in approved_assets (two per sauna) and NO OTHER Irish Sauna Company image, under the supplier's 27 Oct 2026 permission for 'the product imagery and information from the collection' (Gmail 1a17c9a56ea0fdca). Pods, mobile saunas and any Harvia manufacturer image are excluded.",
+        "Credit '© Irish Sauna Company' and a link back to https://irishsaunacompany.com/ wherever an image appears.",
+        "Every image is a product visualisation (computer-generated render) and is labelled so; it is never described as a photograph of a completed installation.",
+        "PROVENANCE: the Island Collection saunas may be described as designed and handcrafted to order by Irish Sauna Company in Connemara, Co. Galway, with heaters by Harvia. No PlotNua surface may imply every component is made in Ireland. The withdrawn Harvia range was never Irish-built and is not published.",
+        "Images are used unmodified and served from the supplier's own domain; nothing is downloaded, re-hosted, cropped or altered. No Shopify CDN host is authorised.",
+        "Irish Sauna Company may request change or removal at any time, and PlotNua complies."
       ],
-      "note": "Permission recorded 10 October 2026. Image integration remains held pending selection of verifiable first-party image URLs and a narrowly scoped Shopify delivery-host path; the grant is not a claim that any asset is currently published. Existing private preview is image-free until that work passes guards.",
+      "note": "27 OCTOBER 2026 — ISLAND COLLECTION. Irish Sauna Company withdrew the Harvia range (all three product pages now return 404) and asked PlotNua to feature its own Irish-made collection instead. Founder approved the replacement the same day. This row now enumerates eight collection images as product visualisations; the earlier Harvia photograph question (12 and 16 Oct) is moot and no Harvia image is used. Images are served from irishsaunacompany.com/cdn/shop/files/, inside permitted_domain, so no delivery host is declared. Written by atlas-tools/build-irish-sauna-company-collection-record.py.",
       "atlas_permission_record": "recH6lssOAemyP9rz",
       "atlas_permission_ref": "WELLNESS-FIRST-IRISH-SAUNA-COMPANY-20261002",
       "permission_date": "2026-10-09",
@@ -666,7 +668,103 @@
         "confirmed_in": "Gmail 1a12f28526374227",
         "note": "\"That looks great, I am happy for it to go.\" — Irish Sauna Company on the private preview, 12 Oct 2026."
       },
-      "public_visibility": "PUBLISHABLE"
+      "public_visibility": "PUBLISHABLE",
+      "asset_approval_state": "APPROVED",
+      "asset_approval": {
+        "state": "SELECTED_ASSETS_APPROVED",
+        "default_for_unlisted": "NOT_AUTHORISED",
+        "approved_count": 8,
+        "authorised_by": "Irish Sauna Company (Brona), 27 Oct 2026, Gmail 1a17c9a56ea0fdca; founder approval 27 Oct 2026",
+        "note": "Approval is by ENUMERATION, per asset: two product visualisations for each Island Collection sauna. An Irish Sauna Company image is usable because it appears in approved_assets, never because it is served from irishsaunacompany.com. Floor plans, the footprint infographic, pods, mobile saunas and any Harvia manufacturer image are not authorised.",
+        "conditions_on_every_use": [
+          "Credit: © Irish Sauna Company",
+          "A working link to https://irishsaunacompany.com/",
+          "Labelled 'Product visualisation'; never described as a photograph of a completed installation",
+          "Hot-linked unmodified from irishsaunacompany.com; never downloaded, rehosted, cropped or altered"
+        ]
+      },
+      "approved_assets": [
+        {
+          "url": "https://irishsaunacompany.com/cdn/shop/files/1-2-PersonSauna-Front-View.png?width=1024",
+          "product_code": "PROD-001331",
+          "product_name": "The Clare | 1–2 Person Garden Sauna",
+          "atlas_asset": "recpt4Qq6NPz95fWM",
+          "kind": "visualisation",
+          "primary": true,
+          "alt": "Visualisation of The Clare from the front: a compact black-clad garden sauna with a full-height glass door and a warm-lit Thermowood interior",
+          "display_label": "Product visualisation"
+        },
+        {
+          "url": "https://irishsaunacompany.com/cdn/shop/files/1-2_Person_Sauna_-_White_Back_Ground.png?width=1024",
+          "product_code": "PROD-001331",
+          "product_name": "The Clare | 1–2 Person Garden Sauna",
+          "atlas_asset": "recXNhcB54gi9SmXq",
+          "kind": "visualisation",
+          "primary": false,
+          "alt": "Visualisation of The Clare at an angle with its glass door open, showing the Alder bench and Thermowood interior",
+          "display_label": "Product visualisation"
+        },
+        {
+          "url": "https://irishsaunacompany.com/cdn/shop/files/2-4_Person_Garden_Sauna.png?width=1024",
+          "product_code": "PROD-001332",
+          "product_name": "The Inis | 2–4 Person Garden Sauna",
+          "atlas_asset": "recnoZpQDkfooFP2v",
+          "kind": "visualisation",
+          "primary": true,
+          "alt": "Visualisation of The Inis from the front: a black-clad garden sauna with a full-height glazed door and two tiers of lit Alder benches",
+          "display_label": "Product visualisation"
+        },
+        {
+          "url": "https://irishsaunacompany.com/cdn/shop/files/2-4_Person_Insulated_Sauna.png?width=1024",
+          "product_code": "PROD-001332",
+          "product_name": "The Inis | 2–4 Person Garden Sauna",
+          "atlas_asset": "recTCNM71LSYMSW4u",
+          "kind": "visualisation",
+          "primary": false,
+          "alt": "Visualisation of The Inis at an angle with its glazed door open, showing the tiered Alder benches and Harvia wall heater",
+          "display_label": "Product visualisation"
+        },
+        {
+          "url": "https://irishsaunacompany.com/cdn/shop/files/4-6_Person_Sauna_-_Front_View.png?width=1024",
+          "product_code": "PROD-001333",
+          "product_name": "The Aran | 4–6 Person Luxury Garden Sauna",
+          "atlas_asset": "recd2xqlMd6qyKxhI",
+          "kind": "visualisation",
+          "primary": true,
+          "alt": "Visualisation of The Aran from the front: a black-clad garden sauna with a large panoramic window, two-tier benches and a cylindrical heater",
+          "display_label": "Product visualisation"
+        },
+        {
+          "url": "https://irishsaunacompany.com/cdn/shop/files/4-6_Person_Garaden_Sauna_-_Side_View.png?width=1024",
+          "product_code": "PROD-001333",
+          "product_name": "The Aran | 4–6 Person Luxury Garden Sauna",
+          "atlas_asset": "reckdF69PkRdLNUHs",
+          "kind": "visualisation",
+          "primary": false,
+          "alt": "Visualisation of The Aran at an angle, showing the panoramic front window and the glass entrance door on the right-hand side",
+          "display_label": "Product visualisation"
+        },
+        {
+          "url": "https://irishsaunacompany.com/cdn/shop/files/TheSkellig-FrontView.png?width=1024",
+          "product_code": "PROD-001334",
+          "product_name": "The Skellig | Luxury 6–8 Person Garden Sauna",
+          "atlas_asset": "recFRo2HR5jSQ9qnG",
+          "kind": "visualisation",
+          "primary": true,
+          "alt": "Visualisation of The Skellig from the front: a wide black-clad garden sauna with a large panoramic window and L-shaped two-tier benches",
+          "display_label": "Product visualisation"
+        },
+        {
+          "url": "https://irishsaunacompany.com/cdn/shop/files/The_Skellig_Side_View.png?width=1024",
+          "product_code": "PROD-001334",
+          "product_name": "The Skellig | Luxury 6–8 Person Garden Sauna",
+          "atlas_asset": "recKjOUkGP623IS8K",
+          "kind": "visualisation",
+          "primary": false,
+          "alt": "Visualisation of The Skellig at an angle, showing the panoramic window and the full-height glazed entrance door at the side",
+          "display_label": "Product visualisation"
+        }
+      ]
     },
     {
       "organisation_record": "rec2URqKyVwlhHSBw",

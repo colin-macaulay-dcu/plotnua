@@ -79,6 +79,17 @@ import pathlib
 import re
 import sys
 
+# RETIRED 27 OCT 2026. Irish Sauna Company withdrew the Harvia range this preview
+# describes and asked PlotNua to feature its own Island Collection instead (Gmail
+# 1a17c9a56ea0fdca); the founder approved the replacement and retired this
+# preview the same day. irish-sauna-company-preview.html is now a static
+# retirement notice with no product, price or image. This builder refuses to
+# regenerate the old page; the history above is kept as the record of it.
+if __name__ == "__main__":
+    print("REFUSED: the Irish Sauna Company preview was retired on 27 Oct 2026 "
+          "(see irish-sauna-company-preview.html); nothing written.")
+    sys.exit(2)
+
 HERE = pathlib.Path(__file__).resolve().parent
 SITE = HERE.parent
 TEMPLATE = HERE / "template-provider-led.html"

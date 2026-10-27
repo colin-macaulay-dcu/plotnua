@@ -23,6 +23,18 @@ import io
 import pathlib
 import sys
 
+# RETIRED 27 OCT 2026: the preview is now a retirement notice. Prove that it
+# cannot present a withdrawn product, then stop (the original guards below
+# tested a page that no longer exists).
+if __name__ == "__main__":
+    _p = pathlib.Path(__file__).resolve().parent.parent / "irish-sauna-company-preview.html"
+    _h = _p.read_text(encoding="utf-8")
+    _bad = [w for w in ("Harvia", "<img", "€", "EUR", "Alpina", "Legend", "srcset") if w in _h]
+    _ok = ("noindex" in _h and "This preview has been retired" in _h
+           and 'href="discovery-garden-retreat.html#explore-makers"' in _h and not _bad)
+    print(("RETIRED PREVIEW · OK" if _ok else "RETIRED PREVIEW · FAILED %r" % _bad))
+    sys.exit(0 if _ok else 1)
+
 HERE = pathlib.Path(__file__).resolve().parent
 BUILDER = HERE / "build-irish-sauna-company-preview.py"
 STAGED = pathlib.Path("/tmp/plotnua-stage/irish-sauna-company-preview.html")

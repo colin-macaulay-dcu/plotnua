@@ -83,6 +83,9 @@ CHECK = "--check" in sys.argv
 # Preserved untouched. Any other approved_assets value, on any row, refuses.
 AUTHORISED_ASSETS = {
     "Tanktribe": "86034976a18addd30b801f4c048801e4b8c462d1f79b45838af7436a0bffe251",
+    # 27 Oct 2026: the eight Island Collection product visualisations, written by
+    # atlas-tools/build-irish-sauna-company-collection-record.py.
+    "Irish Sauna Company": "9f4334b66b554adc5c67669b75ee66746a099ec18e50948a78899000a8c433e2",
 }
 
 
