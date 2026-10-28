@@ -15,8 +15,9 @@ REFUSES to touch privacy.html until:
   python3 atlas-tools/build-privacy-v7.py                      apply (needs P0 and P5)
   python3 atlas-tools/build-privacy-v7.py --check              verify the applied state
 
-After applying, run:  python3 atlas-tools/build-artist-register.py --apply
-(the Artist Register page carries the same footer).
+Applying also gives artist-register.html (built from the privacy shell) the same PlotNua
+footer, in place, so its site header and identity layers are untouched; afterwards
+build-artist-register.py --check verifies it byte for byte.
 """
 from __future__ import annotations
 
@@ -27,7 +28,9 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 PRIVACY = ROOT / "privacy.html"
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from privacy_v7_layer import MARKER, F25_SUB, PAIRS, apply_v7, without_v7  # noqa: E402
+from privacy_v7_layer import MARKER, F25_SUB, PAIRS, FOOT_NEW, apply_v7, without_v7, footer_v7  # noqa: E402
+
+ARTIST = ROOT / "artist-register.html"   # built from the privacy shell: carries the same footer
 
 APPROVAL = ""   # founder approval of the exact V7 wording goes here (date and words); empty = refuse
 
@@ -64,6 +67,8 @@ def main():
             without_v7(text)
         except ValueError as e:
             die("V7 drifted: " + str(e))
+        if FOOT_NEW not in ARTIST.read_text(encoding="utf-8"):
+            die("artist-register.html does not carry the V7 footer")
         print("privacy V7 present"); return
     if "--preview" in sys.argv:
         Path(sys.argv[sys.argv.index("--preview") + 1]).write_text(apply(text), encoding="utf-8")
@@ -77,8 +82,15 @@ def main():
     if _ppl.WHATSAPP_CONFIRMATION is None and _ppl.WHATSAPP_BLOCK in text:
         die("P5 the WhatsApp subsection in Section 5 has only provisional founder confirmation (27 Oct 2026); "
             "record the founder's confirmation in privacy_page_layers.WHATSAPP_CONFIRMATION first")
-    PRIVACY.write_text(apply(text), encoding="utf-8")
-    print("privacy.html now carries V7 · next: python3 atlas-tools/build-artist-register.py --apply")
+    out = apply(text)
+    artist = ARTIST.read_text(encoding="utf-8")
+    try:
+        artist_out = footer_v7(artist)
+    except ValueError as e:
+        die("P6 artist-register.html: " + str(e))
+    PRIVACY.write_text(out, encoding="utf-8")
+    ARTIST.write_text(artist_out, encoding="utf-8")
+    print("privacy.html now carries V7; artist-register.html carries the V7 footer")
 
 
 if __name__ == "__main__":
