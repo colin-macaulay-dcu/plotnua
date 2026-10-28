@@ -126,4 +126,12 @@ def read_governed(text: str) -> str:
     exact, reversible replacements; it is taken off first, and without_v7() raises if the
     page carries the V7 marker but not exactly the governed V7 text."""
     from privacy_v7_layer import without_v7
-    return without_whatsapp(without_site_shell(without_v7(text)))
+    try:
+        beneath = without_v7(text)
+    except ValueError as e:
+        # A drifted V7 page is refused with the builders' usual REFUSED line (stdout, exit 2),
+        # so every verifier and capability proof reports it as caught, not as a crash.
+        import sys as _sys
+        print("REFUSED: V7 " + str(e) + " -- nothing written")
+        raise SystemExit(2)
+    return without_whatsapp(without_site_shell(beneath))

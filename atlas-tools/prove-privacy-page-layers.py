@@ -65,7 +65,9 @@ check("W3 the WhatsApp block moved out of Section 5 is refused",
       raises(lambda: L.without_whatsapp(live.replace(L.WHATSAPP_ANCHOR + wa, L.WHATSAPP_ANCHOR, 1).replace("<h2>9. Cookies</h2>\n", "<h2>9. Cookies</h2>\n" + wa, 1))))
 check("W4 extra WhatsApp wording elsewhere is refused",
       raises(lambda: L.without_whatsapp(live.replace("<h2>9. Cookies</h2>", "<h2>9. Cookies</h2><p>WhatsApp enquiries are also logged.</p>", 1))))
-check("W5 status is not silently approved (WHATSAPP_CONFIRMATION is None unless the founder confirms)", L.WHATSAPP_CONFIRMATION is None)
+import re as _re_w5
+check("W5 status is not silently approved: WHATSAPP_CONFIRMATION is None, or a dated founder confirmation (\"founder, YYYY-MM-DD: ...\")",
+      L.WHATSAPP_CONFIRMATION is None or bool(_re_w5.match(r"founder, 20\d\d-\d\d-\d\d: .{20,}", str(L.WHATSAPP_CONFIRMATION))))
 check("W6 the founder's provisional confirmation is recorded as provisional, not legal approval",
       "provisional" in L.WHATSAPP_PROVISIONAL.lower() and "not legal approval" in L.WHATSAPP_PROVISIONAL)
 
