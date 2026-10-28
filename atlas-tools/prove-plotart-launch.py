@@ -286,9 +286,31 @@ need(art is not None and 'href="../discovery-a-home-for-art.html"' in art.group(
 need(not re.search(r"priority|guarantee|apply now|applications are open|book|sign up", artv, re.I), "L12 the Living Gallery artist section implies priority, a guarantee or an operational service")
 need("25 artists. A new home for Irish art." in f25mv, "L12 the Founding 25 programme headline is not the approved wording")
 
+# L13 · the application form contract (founder authorisation 28 Oct 2026). Only in "open":
+# the three confirmations are exactly the Worker's; the form asks for nothing the route
+# refuses (no Living Gallery interest, publication permission, upload, address, phone or
+# date of birth); it links the applications section of the privacy notice; it promises no
+# reply date; and its confirmation says nothing is published without the artist's approval.
+if STATE == "open":
+    wsrc13 = open(os.path.join(ROOT, "worker", "art-space-register", "src", "index.js"), encoding="utf-8").read()
+    for const, key in (("F25_ELIGIBILITY_TEXT", "eligibility"), ("F25_OWNERSHIP_TEXT", "ownership"), ("F25_PRIVACY_TEXT", "privacy")):
+        m13 = re.search(r'const %s =\s*"([^"]+)";' % const, wsrc13)
+        p13 = re.search(r'data-f25-sentence="%s">([^<]*)<' % key, f25)
+        need(m13 is not None and p13 is not None and html.unescape(p13.group(1)) == m13.group(1), "L13 the %s confirmation differs from the Worker's %s" % (key, const))
+    need(not re.search(r'type="file"|name="(?:living_gallery|location_public|address|eircode|phone|dob|date_of_birth|terms)"', f25),
+         "L13 the application asks for something outside the approved form")
+    need('href="../privacy.html#founding-25-applications"' in f25, "L13 the form must link the privacy notice's applications section")
+    need(not re.search(r"\b(?:within|in) (?:two|three|four|\d+) (?:days|weeks)\b", f25v), "L13 the page promises a reply date")
+    need("nothing is published without your approval" in f25v, "L13 the confirmation must say nothing is published without the artist's approval")
+    jsp = os.path.join(PA, "assets", "f25-apply.js")
+    js13 = open(jsp, encoding="utf-8").read() if os.path.exists(jsp) else ""
+    need("localStorage" not in js13 and "sessionStorage" not in js13 and "document.cookie" not in js13 and "console." not in js13,
+         "L13 the application script must store and log nothing")
+    need(re.search(r"credentials: 'omit'", js13) is not None, "L13 the application script must send no credentials")
+
 if problems:
     print("PLOTART LAUNCH · FAILED (%d)" % len(problems))
     for x in problems:
         print("  " + x)
     sys.exit(1)
-print("PLOTART LAUNCH · OK — L1-L12 on %d pages · applications %s (%d demonstration names checked absent)" % (len(PAGES), STATE, len(demo_names)))
+print("PLOTART LAUNCH · OK — L1-L13 on %d pages · applications %s (%d demonstration names checked absent)" % (len(PAGES), STATE, len(demo_names)))

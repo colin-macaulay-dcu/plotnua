@@ -74,7 +74,7 @@ STANDARD = [
     # build (manifest), noindex, follow, and applications are not open. Changing the state is a new release.
     # Virtual Gallery (28 Oct 2026): a fourth page, plotart/gallery/, published empty (guard L11).
     ("python3 atlas-tools/prove-plotart-launch.py . --switches atlas-tools/release/plotart-launch-switches.json --manifest atlas-tools/release/plotart-launch-manifest.json",
-     "PLOTART LAUNCH · OK — L1-L12 on 4 pages · applications not_open", "PlotArt launch L1-L12: Virtual Gallery empty; Founding 25 and Living Gallery separate (applications not open)"),
+     "PLOTART LAUNCH · OK — L1-L13 on 4 pages · applications not_open", "PlotArt launch L1-L13: Virtual Gallery empty; Founding 25 and Living Gallery separate (applications not open)"),
     # PlotArt in the PlotNua navigation and the A Home for Art links (proposed 27 Oct 2026)
     # 31 header pages since DISC-032 The Supper Club at Home joined the header registry (27 Oct 2026; 30 after DISC-033).
     ("python3 atlas-tools/prove-plotart-integration.py", "PLOTART INTEGRATION · OK — N1-N4 · 31 header pages", "PlotArt navigation and A Home for Art links N1-N4"),

@@ -40,6 +40,23 @@ PRIVACY_VERSION = "2026-10-PHASE2-V5"
 ARTIST_WRITES_ENABLED = "true"
 ARTIST_PRIVACY_VERSION = "2026-10-PHASE2-V5"
 
+# ---------------------------------------------------------------------------
+# PLOTART FOUNDING 25 APPLICATIONS · CLOSED. v2 prepared 28 Oct 2026 (founder
+# implementation authorisation: build and test; production deployment and
+# public activation NOT approved). A separate route
+# (/v1/art-space-register/founding-25), switch and privacy version. It writes
+# nothing until BOTH are set, AND the 'Founding 25 applications' table and the
+# 'founding_25' register options exist in the base
+# (airtable-schema-founding-25.proposed.json), AND the founder approves opening.
+# Optional, set only on approval:
+#   F25_DAILY_CAP          new applications per rolling 24 h (default 50, 1-500)
+#   F25_TURNSTILE_SECRET   wrangler secret put F25_TURNSTILE_SECRET (bot challenge)
+# Emergency close without a commit:
+#   npx wrangler deploy --var F25_WRITES_ENABLED:false
+# ---------------------------------------------------------------------------
+F25_WRITES_ENABLED = "false"
+F25_PRIVACY_VERSION = ""
+
 # AIRTABLE_BASE and AIRTABLE_TOKEN are NOT set here and are NOT the garden ones.
 # BOTH ARE PERSISTENT SECRETS (corrected 13 Oct 2026, activation preparation):
 #   AIRTABLE_BASE  -> wrangler secret put AIRTABLE_BASE
@@ -66,4 +83,31 @@ ARTIST_PRIVACY_VERSION = "2026-10-PHASE2-V5"
 # user agent). Takes effect on the next `npx wrangler deploy` (writes stay off).
 # ---------------------------------------------------------------------------
 [observability]
+enabled = false
+
+# ---------------------------------------------------------------------------
+# ISOLATED TEST ENVIRONMENT (28 Oct 2026). A SEPARATE Worker name, used only
+# with `--env test` and a SEPARATE test base holding synthetic data. It never
+# accepts plotnua.ie: its origin is a local test page. The Host and Artist
+# routes are off here. Plain `npx wrangler deploy` NEVER deploys this block,
+# and the release scripts never pass --env test. Deploying it at all needs
+# separate founder approval (test step T1).
+# ---------------------------------------------------------------------------
+[env.test]
+name = "plotnua-art-space-register-f25-test"
+workers_dev = true
+preview_urls = false
+
+[env.test.vars]
+WRITES_ENABLED = "false"
+EMAIL_ENABLED = "false"
+ARTIST_WRITES_ENABLED = "false"
+ARTIST_PRIVACY_VERSION = ""
+PRIVACY_VERSION = ""
+ORIGIN = "http://localhost:8790"
+F25_WRITES_ENABLED = "true"
+F25_PRIVACY_VERSION = "TEST-ONLY-NOT-A-PUBLISHED-NOTICE"
+F25_DAILY_CAP = "3"
+
+[env.test.observability]
 enabled = false

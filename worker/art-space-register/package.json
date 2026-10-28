@@ -2,8 +2,10 @@
   "name": "plotnua-art-space-register",
   "private": true,
   "type": "module",
-  "description": "DISC-024 Open Your Home to Art · Art Space Register Worker. Expressions of interest only. Both switches ship off. Not deployed.",
+  "description": "DISC-024 Open Your Home to Art \u00b7 Art Space Register Worker. Expressions of interest only. Both switches ship off. Not deployed.",
   "scripts": {
-    "prove": "node test/prove-art-worker.mjs"
+    "prove": "node test/prove-art-worker.mjs",
+    "prove:artist": "node test/prove-artist-worker.mjs",
+    "prove:f25": "node test/prove-founding25-worker.mjs"
   }
 }

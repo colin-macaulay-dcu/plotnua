@@ -500,6 +500,267 @@ async function handleArtist(env, body, now, cors) {
   return RECEIVED(cors);
 }
 
+/* =========================================================================
+ * PLOTART FOUNDING 25 APPLICATIONS · v2, 28 October 2026 (founder
+ * implementation authorisation of the same day). BUILT CLOSED; NOT DEPLOYED.
+ *
+ * A THIRD, SEPARATE POST route, /v1/art-space-register/founding-25, records an
+ * artist's application to be CONSIDERED for the Founding 25 (the first 25
+ * artists admitted to the PlotArt Virtual Gallery) into its own 'Founding 25
+ * applications' table in the same PlotArt base. It does not read, write or
+ * count the Artists or Hosts tables, and the Host and Artist routes above are
+ * unchanged.
+ *
+ * WHAT AN APPLICATION IS, AND IS NOT (founder brief s.8): applying (A) is
+ * separate from accepting a Founding Artist place (B, the Founding Artist
+ * terms, by email) and from authorising publication of a gallery and artworks
+ * (C, a separate approval of a gallery preview). This route records A only.
+ * It asks for no publication permission, no Living Gallery interest, no image
+ * upload, no address, no phone number and no date of birth.
+ *
+ * HARD STOPS (any one -> nothing written)
+ *   F25_WRITES_ENABLED !== 'true'    (committed "false")
+ *   F25_PRIVACY_VERSION empty        (the published notice covering applications)
+ *   no AIRTABLE_TOKEN / no AIRTABLE_BASE
+ *   the three confirmations must match the approved sentences exactly
+ *   F25_TURNSTILE_SECRET set (optional) -> a valid challenge token is required
+ *
+ * The status ceiling for this route is 'received'. Review, shortlisting,
+ * selection, terms, onboarding and publication are human acts in Airtable.
+ * Nothing here creates anything public, and there is still NO GET handler.
+ * ========================================================================= */
+const T_F25 = 'Founding 25 applications';
+const F25_ROUTE = '/v1/art-space-register/founding-25';
+const F25_STATUS = 'received';
+const F25_REGISTER = 'founding_25';
+const F25_SOURCE = 'plotart_founding_25_form';
+/* The version of the three confirmation sentences below. Recorded on every
+   application, with the privacy notice version and the time. Change the
+   sentences and this together. */
+const F25_CONSENT_VERSION = 'F25-APPLICATION-2026-10-28';
+const F25_MAX_BODY = 8 * 1024;
+const F25_DEFAULT_DAILY_CAP = 50;
+const F25_BURST_PER_MINUTE = 10;
+const MAX_F25_NAME = 80;
+const MAX_F25_BIO = 1000;
+const MIN_F25_BIO = 40;
+const MAX_F25_INFO = 800;
+const MAX_F25_SOCIAL = 120;
+const F25_PROBE_DOMAIN = '@probe.plotnua.invalid';
+
+/* Closed vocabularies, identical to the Founding 25 page and to the proposed
+   table's select options (airtable-schema-founding-25.proposed.json). The
+   region is one of the 32 counties: the programme is for artists based or
+   working in Ireland. */
+const VF = {
+  medium: ['painting', 'drawing', 'works_on_paper', 'printmaking', 'photography', 'sculpture',
+           'ceramics_craft', 'textiles', 'mixed_media', 'digital', 'other'],
+  region: VA.based_in.filter(c => c !== 'outside_ireland')
+};
+
+/* The ONLY keys an application may carry. */
+const F25_KEYS = new Set([
+  'artist_name', 'email', 'region', 'medium', 'bio', 'portfolio',
+  'website', 'social_link', 'additional_info',
+  'eligibility_text', 'ownership_text', 'privacy_text',
+  'submission_id', 'challenge_token'
+]);
+const F25_REQUIRED = ['artist_name', 'email', 'region', 'medium', 'bio', 'portfolio',
+  'eligibility_text', 'ownership_text', 'privacy_text', 'submission_id'];
+
+/* WORDING FOR FOUNDER APPROVAL (28 Oct 2026). The page renders these; the
+   route hashes what it receives and compares. Change them here, in the
+   Founding 25 page builder and in the privacy notice draft together; guard
+   T14 (atlas-tools/prove-plotart.py) refuses any drift between page and route. */
+const F25_ELIGIBILITY_TEXT =
+  "I'm 18 or over, and I'm based or working in Ireland.";
+const F25_OWNERSHIP_TEXT =
+  "The work in my portfolio is my own original work, or I'm authorised to represent the artist who made it.";
+const F25_PRIVACY_TEXT =
+  "I've read the privacy notice for Founding 25 applications, which explains how my application is used, who can see it and how long it's kept.";
+
+function f25WritesEnabled(env) {
+  return env.F25_WRITES_ENABLED === 'true' && !!env.F25_PRIVACY_VERSION &&
+    !!env.AIRTABLE_TOKEN && !!env.AIRTABLE_BASE;
+}
+
+/* A durable cap on NEW applications in any rolling 24 hours. Configurable
+   (founder decision), bounded 1-500, default 50. */
+function f25DailyCap(env) {
+  const n = Number.parseInt(env.F25_DAILY_CAP, 10);
+  return Number.isInteger(n) && n >= 1 && n <= 500 ? n : F25_DEFAULT_DAILY_CAP;
+}
+
+/* A private reference for the artist's emails: F25-YYMMDD-XXXXXX. */
+function f25Ref(now) {
+  const b = new Uint8Array(3);
+  crypto.getRandomValues(b);
+  return 'F25-' + now.toISOString().slice(2, 10).replace(/-/g, '') + '-' +
+    [...b].map(x => x.toString(16).padStart(2, '0')).join('').toUpperCase();
+}
+
+/* Longer free text: control characters removed, runs of spaces collapsed,
+   at most one blank line kept. Over-length is REFUSED, never truncated. */
+function cleanLong(v, min, max) {
+  if (typeof v !== 'string') return null;
+  const t = v.replace(/\r\n?/g, '\n').replace(/[\u0000-\u0008\u000B-\u001F\u007F]/g, '')
+    .split('\n').map(l => l.replace(/[ \t]+/g, ' ').trim()).join('\n')
+    .replace(/\n{3,}/g, '\n\n').trim();
+  if (t.length < min || t.length > max) return null;
+  return t;
+}
+function cleanShort(v, max) {
+  if (typeof v !== 'string') return null;
+  const t = v.replace(/[\u0000-\u001F\u007F]/g, '').replace(/\s+/g, ' ').trim();
+  return t && t.length <= max ? t : null;
+}
+/* An Instagram-style handle, or an https link to a professional page. */
+function cleanSocial(v) {
+  if (typeof v !== 'string') return null;
+  const t = v.trim();
+  if (/^@?[A-Za-z0-9._]{1,60}$/.test(t)) return t.startsWith('@') ? t : '@' + t;
+  return t.length <= MAX_F25_SOCIAL ? cleanPortfolio(t) : null;
+}
+const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/;
+
+async function f25Exists(env, emailKey, submissionId) {
+  const q = (s) => "'" + s.replace(/\\/g, '\\\\').replace(/'/g, "\\'") + "'";
+  const f = encodeURIComponent('OR({email_key}=' + q(emailKey) + ',{submission_id}=' + q(submissionId) + ')');
+  const out = await atRequest(env, 'GET',
+    '/' + encodeURIComponent(T_F25) + '?filterByFormula=' + f + '&maxRecords=1&fields%5B%5D=email_key');
+  return Array.isArray(out.records) && out.records.length > 0;
+}
+
+async function f25CapReached(env) {
+  const cap = f25DailyCap(env);
+  const f = encodeURIComponent("IS_AFTER({submitted_at}, DATEADD(NOW(), -1, 'days'))");
+  const out = await atRequest(env, 'GET',
+    '/' + encodeURIComponent(T_F25) + '?filterByFormula=' + f + '&maxRecords=' + cap +
+    '&fields%5B%5D=submitted_at');
+  return !Array.isArray(out.records) || out.records.length >= cap;
+}
+
+/* OPTIONAL bot challenge (Cloudflare Turnstile). Off unless the founder sets
+   the secret (wrangler secret put F25_TURNSTILE_SECRET) and the site key on
+   the page. Fail closed: no token, a bad token or an unreachable verifier is
+   refused. Only the token is sent; never the application. */
+async function f25ChallengeOk(env, token) {
+  if (!env.F25_TURNSTILE_SECRET) return true;
+  if (typeof token !== 'string' || !token || token.length > 2048) return false;
+  try {
+    const r = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ secret: env.F25_TURNSTILE_SECRET, response: token })
+    });
+    if (!r.ok) return false;
+    const j = await r.json();
+    return j && j.success === true;
+  } catch { return false; }
+}
+
+async function sentenceMatches(expected, sent) {
+  return sameString(await sha256Hex(expected), await sha256Hex(cleanText(sent, 1000) || ''));
+}
+
+async function handleFounding25(env, body, now, cors) {
+  /* Per-route burst limit first, so even malformed floods are slowed. */
+  if (tooMany('f25', Date.now(), F25_BURST_PER_MINUTE, 60_000)) return SLOW_DOWN(cors);
+  for (const k of Object.keys(body)) {
+    if (!F25_KEYS.has(k)) return REFUSED(cors, 'unexpected_field');
+  }
+  for (const k of F25_REQUIRED) {
+    if (!Object.prototype.hasOwnProperty.call(body, k)) return REFUSED(cors, k);
+  }
+  const given = (k) => Object.prototype.hasOwnProperty.call(body, k) && body[k] !== '' && body[k] !== null;
+
+  const artist_name = cleanShort(body.artist_name, MAX_F25_NAME);
+  const email = cleanShort(body.email, MAX_EMAIL_CHARS);
+  const region = pickEnum(VF.region, body.region);
+  const medium = pickEnum(VF.medium, body.medium);
+  const bio = cleanLong(body.bio, MIN_F25_BIO, MAX_F25_BIO);
+  const portfolio = cleanPortfolio(body.portfolio);
+  const website = given('website') ? cleanPortfolio(body.website) : undefined;
+  const social_link = given('social_link') ? cleanSocial(body.social_link) : undefined;
+  const additional_info = given('additional_info') ? cleanLong(body.additional_info, 1, MAX_F25_INFO) : undefined;
+  const submission_id = typeof body.submission_id === 'string' && UUID_RE.test(body.submission_id) ? body.submission_id : null;
+
+  if (!artist_name) return REFUSED(cors, 'artist_name');
+  if (!email || !EMAIL_RE.test(email)) return REFUSED(cors, 'email');
+  if (!region) return REFUSED(cors, 'region');
+  if (!medium) return REFUSED(cors, 'medium');
+  if (!bio) return REFUSED(cors, 'bio');
+  if (!portfolio) return REFUSED(cors, 'portfolio');
+  if (website === null) return REFUSED(cors, 'website');
+  if (social_link === null) return REFUSED(cors, 'social_link');
+  if (additional_info === null) return REFUSED(cors, 'additional_info');
+  if (!submission_id) return REFUSED(cors, 'submission_id');
+
+  if (!(await sentenceMatches(F25_ELIGIBILITY_TEXT, body.eligibility_text))) return REFUSED(cors, 'eligibility_text');
+  if (!(await sentenceMatches(F25_OWNERSHIP_TEXT, body.ownership_text))) return REFUSED(cors, 'ownership_text');
+  if (!(await sentenceMatches(F25_PRIVACY_TEXT, body.privacy_text))) return REFUSED(cors, 'privacy_text');
+
+  /* Configuration probe (founder decision H-5): an address at
+     probe.plotnua.invalid is NEVER written. It reports only whether the
+     route WOULD accept; it is never evidence that an application was stored. */
+  const probe = email.toLowerCase().endsWith(F25_PROBE_DOMAIN);
+
+  if (!f25WritesEnabled(env)) return NOT_OPEN(cors);
+  if (probe) return json(200, { ok: true, state: 'probe_open' }, cors);
+  if (!(await f25ChallengeOk(env, body.challenge_token))) return REFUSED(cors, 'challenge');
+
+  const emailKey = email.toLowerCase();
+  const stamp = utcStamp(now);
+  const confirmations = [F25_ELIGIBILITY_TEXT, F25_OWNERSHIP_TEXT, F25_PRIVACY_TEXT].join('\n');
+  const consentHash = await sha256Hex(confirmations);
+  const application = {
+    application_ref: f25Ref(now),
+    artist_name, email, email_key: emailKey, region, medium, bio, portfolio,
+    eligibility_confirmed: true,
+    ownership_confirmed: true,
+    privacy_notice_read: true,
+    status: F25_STATUS,
+    submitted_at: stamp,
+    submission_id,
+    source: F25_SOURCE,
+    privacy_version: env.F25_PRIVACY_VERSION,
+    consent_version: F25_CONSENT_VERSION,
+    consent_at: stamp,
+    consent_text_hash: consentHash
+  };
+  if (website) application.website = website;
+  if (social_link) application.social_link = social_link;
+  if (additional_info) application.additional_info = additional_info;
+
+  let recId;
+  try {
+    if (await f25Exists(env, emailKey, submission_id)) return RECEIVED(cors);
+    if (await f25CapReached(env)) return SLOW_DOWN(cors);
+    const created = await atCreate(env, T_F25, application);
+    recId = created && created.records && created.records[0] && created.records[0].id;
+    if (!recId) throw new Error('airtable_502');
+  } catch (e) {
+    return UNAVAILABLE(cors, atReason(e));
+  }
+  /* The application is stored, and carries its own consent record (version,
+     time and hash). The two audit rows below are best-effort: if Airtable
+     refuses them, the applicant is still told the truth (received). */
+  try {
+    await atCreate(env, T_STATUS_LOG, {
+      record_ref: recId, from_status: '', to_status: F25_STATUS,
+      at: stamp, actor: 'system', reason: 'f25_application_received', register: F25_REGISTER
+    });
+    await atCreate(env, T_CONSENT, {
+      email_hash: await sha256Hex(emailKey),
+      privacy_version: env.F25_PRIVACY_VERSION,
+      consent_text_hash: consentHash,
+      given_at: stamp,
+      register: F25_REGISTER
+    });
+  } catch { /* the application row is the authoritative record */ }
+  return RECEIVED(cors);
+}
+
 /* ========================================================================= */
 export default {
   async fetch(request, env) {
@@ -525,13 +786,14 @@ export default {
     if (tooMany('post', Date.now(), 30, 60_000)) return SLOW_DOWN(cors);
 
     const raw = await request.text();
-    if (raw.length > MAX_BODY_BYTES) return REFUSED(cors, 'body');
+    if (raw.length > (url.pathname === F25_ROUTE ? F25_MAX_BODY : MAX_BODY_BYTES)) return REFUSED(cors, 'body');
     let body;
     try { body = JSON.parse(raw); } catch { return REFUSED(cors, 'body'); }
     if (!body || typeof body !== 'object' || Array.isArray(body)) return REFUSED(cors, 'body');
 
     if (url.pathname === ROUTE) return handleHost(env, body, now, cors);
     if (url.pathname === ARTIST_ROUTE) return handleArtist(env, body, now, cors);
+    if (url.pathname === F25_ROUTE) return handleFounding25(env, body, now, cors);
     return NOT_FOUND(cors);
   }
 };
@@ -543,5 +805,7 @@ export const __test = {
   MAX_BODY_BYTES, MAX_NOTE_CHARS, DAILY_CAP,
   VA, ARTIST_ALLOWED_KEYS, ARTIST_CONSENT_TEXT, ARTIST_ROUTE, ARTIST_DAILY_CAP, artistWritesEnabled,
   cleanPortfolio, pickMany,
+  VF, F25_KEYS, F25_REQUIRED, F25_ROUTE, F25_STATUS, F25_CONSENT_VERSION, F25_MAX_BODY, F25_DEFAULT_DAILY_CAP, F25_BURST_PER_MINUTE,
+  F25_ELIGIBILITY_TEXT, F25_OWNERSHIP_TEXT, F25_PRIVACY_TEXT, F25_PROBE_DOMAIN, f25WritesEnabled, f25DailyCap,
   resetRateLimit: () => hits.clear()
 };
