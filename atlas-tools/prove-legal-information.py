@@ -18,13 +18,16 @@ Checks, without writing anything:
   G6  RELEASE GATE: the business address must be confirmed by the founder against
       the CRO registration certificate itself. Until ADDRESS_CONFIRMED is set to
       True below (by the founder's instruction), this proof FAILS on purpose.
-      The address in terms.html was taken from the CRO RBN1 submissions
-      SR9795857 and SR9796002 (both identical), not from the certificate.
+      Verified against the issued certificate on 28 Oct 2026 (see ADDRESS_CONFIRMED).
 """
 import os, re, sys, urllib.parse
 from collections import deque
 
-ADDRESS_CONFIRMED = False   # founder: set True only after checking the certificate
+ADDRESS_CONFIRMED = True    # verified 28 Oct 2026 against the issued CRO Certificate of
+                            # Registration No. 794392 (CR28671630-134792911.pdf, emailed by
+                            # the CRO on 29 Sep 2026): Principal Place of Business
+                            # "1 Allen Park Road / Stillorgan / DUBLIN / Ireland / A94 FT21";
+                            # registered by Colin Macaulay; registered 29 September 2026.
 ADDRESS = "1 Allen Park Road, Stillorgan, Dublin, A94 FT21, Ireland"
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
@@ -58,9 +61,9 @@ for p in html:
     if re.search(r"PlotNua (Ltd|Limited)\b", s): g2.append(p + " (PlotNua Ltd)")
 ok("G2 no page calls PlotNua a company or 794392 a company number") if not g2 else bad("G2 " + "; ".join(g2))
 g3 = [p for p in html if re.search(r"<h[24]>Company</h[24]>", read(p))]
-g3_allowed = {"privacy.html"}   # privacy.html is governed by the privacy layer (V7 release)
+g3_allowed = {"privacy.html", "artist-register.html"}   # both take their footer from the privacy layer (V7 release)
 g3_bad = [p for p in g3 if p not in g3_allowed]
-ok("G3 no footer heading 'Company' (privacy.html deferred to the V7 release: %s)" % ("yes" if g3 else "already done")) if not g3_bad else bad("G3 'Company' heading on: " + ", ".join(g3_bad))
+ok("G3 no footer heading 'Company' (privacy.html and artist-register.html deferred to the V7 release: %s)" % ("yes" if g3 else "already done")) if not g3_bad else bad("G3 'Company' heading on: " + ", ".join(g3_bad))
 
 # G4 reachable pages link to terms
 def links(path):

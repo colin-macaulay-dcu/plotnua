@@ -49,6 +49,8 @@ REGIONS = ["JSONLD", "ASOF", "UPDATED", "LEAD", "SPECIALISED", "TABLE", "HELD", 
 # Declared additions. The 26 Oct SEO draft adds only the two scope sentences;
 # the original presentation baseline and its fingerprint remain unchanged.
 ADDED_TEXT = {
+    "PlotNua": "footer heading replacing Company (legal information, founder decision A1-a, 28 Oct 2026)",
+    "Legal information": "footer link to the Terms page legal information (legal information, founder decision A1-a, 28 Oct 2026)",
     "This guide covers detached garden rooms and garden offices.": "26 Oct SEO draft: clarify the guide's existing subject",
     "It does not price extensions or attached sunrooms.": "26 Oct SEO draft: distinguish the guide from attached-building queries",
     "AI-generated illustration": "the required visible label of the hero illustration (PN-FDR-2026-10-19-01)",
@@ -59,8 +61,9 @@ ADDED_TEXT = {
     "Before You Commit": "in-page navigation label: the section's own kicker",
     "Questions": "in-page navigation label: the section's own kicker",
 }
-ADDED_LINKS = Counter({"#price-ranges": 1, "#why-it-is-hard": 1, "#outside-the-price": 1, "#quote-checklist": 1,
+ADDED_LINKS = Counter({"terms.html#legal-information": 1, "#price-ranges": 1, "#why-it-is-hard": 1, "#outside-the-price": 1, "#quote-checklist": 1,
                        "#questions": 1, "https://wa.me/353834036695": 1})
+REMOVED_TEXT = {"Company": "footer heading renamed PlotNua (legal information, founder decision A1-a, 28 Oct 2026)"}
 ADDED_IDS = {"short-answer", "why-it-is-hard", "garden-homes"}
 ADDED_IMGS = Counter({"assets/brand/plotnua-icon-transparent.svg": 1,
                       "assets/garden-room-prices/garden-room-prices-hero-2026-10-23-1672.jpg": 1})   # hero illustration (founder, 23 Oct 2026)
@@ -196,6 +199,7 @@ def main():
     now_s = sentences(t)
     have_s, base_s = Counter(now_s), Counter(base["sentences"])
     missing = [s for s in base_s if have_s[s] < base_s[s]]
+    missing = [s for s in missing if s not in REMOVED_TEXT]
     if missing: bad("G6 BASE wording missing: %s" % [m[:70] for m in missing[:4]])
     new = [s for s in have_s if have_s[s] > base_s.get(s, 0) and s not in ADDED_TEXT]
     if new: bad("G6 undeclared wording: %s" % [n[:70] for n in new[:4]])

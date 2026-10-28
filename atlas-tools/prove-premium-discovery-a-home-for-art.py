@@ -50,6 +50,7 @@ BASE_SNAPSHOT_SHA256 = "6855b4d804b830fea5c4fad5db15f469e9c642768ae2147de16497cb
 
 # BASE wording -> (new wording or None when removed, reason). Founder-reviewable.
 EDITORIAL = {
+    "Company": ("PlotNua", "footer heading: PlotNua is a registered business name, not a company (legal information, founder decision A1-a, 28 Oct 2026)"),
     # round 1 (prototype, 23 Oct 2026)
     "Why This Discovery?": ("Why it matters", "kicker under Possibility three read as a page-level label"),
     "Where To Look": ("Where to look", "sentence case (shown in capitals either way)"),
@@ -88,6 +89,7 @@ EDITORIAL = {
 # until the founder approves this change). Each is a sentence and a link target
 # added on purpose, with its reason; P3 and P6 accept exactly these and nothing else.
 ADDED_SENTENCES = {
+    "Legal information": "footer link to the Terms page legal information (legal information, founder decision A1-a, 28 Oct 2026)",
     # written as visible() reads them: a link's closing tag becomes a space before the full stop
     "PlotArt’s introductory pages are now online: what PlotArt is, the Founding 25 programme for artists, and the proposed Living Gallery.": "PlotArt introduction in 'PlotArt is in development' (integration, proposed 27 Oct 2026)",
     "Artist galleries are not open, and applications are not yet open.": "status beside the PlotArt link (integration, proposed 27 Oct 2026)",
@@ -98,6 +100,7 @@ ADDED_SENTENCES = {
 }
 ADDED_HREFS = {
     "plotart/": "PlotArt homepage (limited launch)",
+    "terms.html#legal-information": "footer Legal information link (legal information, founder decision A1-a, 28 Oct 2026)",
     "plotart/founding-25.html": "Founding 25 recruitment page (limited launch)",
     "plotart/living-gallery.html": "Living Gallery, linked both ways with A Home for Art (PlotArt clarity, founder decision 28 Oct 2026)",
 }
