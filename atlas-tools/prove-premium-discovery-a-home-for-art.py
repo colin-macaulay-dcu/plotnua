@@ -93,10 +93,13 @@ ADDED_SENTENCES = {
     "Artist galleries are not open, and applications are not yet open.": "status beside the PlotArt link (integration, proposed 27 Oct 2026)",
     "Explore PlotArt": "button to the PlotArt homepage (integration, proposed 27 Oct 2026)",
     "Artists can also find out about the PlotArt Founding 25 , a forthcoming programme for artists based or working in Ireland.": "Founding 25 pointer in the Take part section (limited launch, decision 27 Oct 2026)",
+    "The PlotArt Living Gallery is a separate, proposed programme exploring how original work could be shown in homes like yours.": "Living Gallery pointer: A Home for Art and the Living Gallery linked both ways (PlotArt clarity, founder decision 28 Oct 2026)",
+    "It isn’t running yet.": "status beside the Living Gallery pointer (PlotArt clarity, 28 Oct 2026)",
 }
 ADDED_HREFS = {
     "plotart/": "PlotArt homepage (limited launch)",
     "plotart/founding-25.html": "Founding 25 recruitment page (limited launch)",
+    "plotart/living-gallery.html": "Living Gallery, linked both ways with A Home for Art (PlotArt clarity, founder decision 28 Oct 2026)",
 }
 INTERFACE = [
     "How it works", "Store", "Display", "Open", "Help sell", "Less of your home and time", "More involvement",

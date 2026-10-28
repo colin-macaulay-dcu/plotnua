@@ -44,6 +44,14 @@ once the launch pages are released). Prints "PLOTART LAUNCH · OK" only when:
       the exact sentence "No artists have been selected, and no galleries are published
       yet."; a link to the Founding 25 page; noindex, follow; never in the sitemap. Every
       launch page's navigation is Virtual Gallery, Living Gallery, About, Founding 25.
+      It says the Virtual Gallery grows beyond its first 25 galleries and that every
+      accepted artist receives their own gallery (founder decision 28 Oct 2026).
+  L12 the Founding 25 and the Living Gallery are separate programmes (founder decision
+      28 Oct 2026): in the main content, the Founding 25 page names the Living Gallery
+      only in the approved separation sentence; neither page offers Founding Artists any
+      Living Gallery priority or place; the Living Gallery page never links to the
+      Founding 25 application page and links to A Home for Art; the Founding 25 page says
+      the founding year begins when the gallery is first published.
 """
 import html, json, os, posixpath, re, sys
 
@@ -237,6 +245,8 @@ if vg:
     need('href="../founding-25.html"' in vg, "L11 the Virtual Gallery must link to the Founding 25 page")
     need(not re.search(r"testimonial|“|”|\bsaid\b", visible_text(vg.split("<main", 1)[-1].split("</main>")[0]), re.I), "L11 the Virtual Gallery carries a quotation or testimonial")
     need("<title>Virtual Gallery | PlotArt</title>" in vg, "L11 the Virtual Gallery title is not the approved one")
+    need("The Virtual Gallery will grow to welcome many more artists after them." in vgv, "L11 the Virtual Gallery must say it grows beyond the first 25")
+    need("Every artist accepted into PlotArt will have a gallery of their own" in vgv, "L11 the Virtual Gallery must say every accepted artist has their own gallery")
 smp = os.path.join(SITE, "sitemap.xml")
 if os.path.exists(smp):
     need("plotart" not in open(smp, encoding="utf-8").read(), "L11 sitemap.xml lists a PlotArt URL")
@@ -248,9 +258,37 @@ for name in PAGES:
         labels = [html.unescape(x) for x in re.findall(r'<a [^>]*>([^<]+)</a>', nav.group(1))] if nav else []
         need(labels[:4] == NAV_WANT, "L11 %s navigation is %s, not %s" % (name, labels[:4], NAV_WANT))
 
+# L12 · the Founding 25 and the Living Gallery are separate programmes (founder decision 28 Oct 2026)
+SEP = "The Founding 25 is the PlotArt Virtual Gallery. The Living Gallery is a separate, proposed programme. Taking part in it is optional, and it is never a condition of being a Founding Artist."
+def main_of(name):
+    p = os.path.join(PA, name)
+    if not os.path.exists(p):
+        return ""
+    s = open(p, encoding="utf-8").read()
+    return s[s.index("<main"):s.index("</main>")] if "<main" in s else ""
+f25m, lgm = main_of("founding-25.html"), main_of("living-gallery.html")
+f25mv = re.sub(r"\s+", " ", visible_text(f25m))
+need(SEP in f25mv, "L12 the Founding 25 page must carry the approved separation sentence")
+need("Living Gallery" not in f25mv.replace(SEP, " "), "L12 the Founding 25 page mentions the Living Gallery outside the separation sentence")
+need("Your founding year begins on the day your gallery is first published." in f25mv, "L12 the Founding 25 page must say when the founding year begins")
+for name, m in (("founding-25.html", f25mv), ("living-gallery.html", re.sub(r"\s+", " ", visible_text(lgm))), ("index.html", re.sub(r"\s+", " ", visible_text(main_of("index.html")))),
+                ("gallery/index.html", re.sub(r"\s+", " ", visible_text(main_of("gallery/index.html"))))):
+    need(not re.search(r"priority (?:consideration )?for the (?:Living Gallery|programme)|Founding (?:25 )?Artists? (?:would |will )?(?:receive|get|have) (?:priority|first consideration)|Priority for the Living Gallery", m, re.I),
+         "L12 %s offers Founding Artists Living Gallery priority" % name)
+need('href="founding-25.html"' not in lgm and 'href="founding-25.html#apply"' not in lgm, "L12 the Living Gallery page links its artists to the Founding 25")
+need('href="../discovery-a-home-for-art.html" data-pa-track="cross_home_for_art_living"' in lgm, "L12 the Living Gallery page must link to A Home for Art")
+# the artist-facing Living Gallery section in the founder's wording (28 Oct 2026): warm, never a priority or a service
+art = re.search(r'<section class="pa-sec pa-sec--deep" id="artists">.*?</section>', lgm, re.S)
+artv = re.sub(r"\s+", " ", visible_text(art.group(0))) if art else ""
+need("Your art. In someone's home." in artv and "We're not inviting artists to take part just yet" in artv,
+     "L12 the Living Gallery artist section is not the approved wording")
+need(art is not None and 'href="../discovery-a-home-for-art.html"' in art.group(0), "L12 the Living Gallery artist section must link to A Home for Art")
+need(not re.search(r"priority|guarantee|apply now|applications are open|book|sign up", artv, re.I), "L12 the Living Gallery artist section implies priority, a guarantee or an operational service")
+need("25 artists. A new home for Irish art." in f25mv, "L12 the Founding 25 programme headline is not the approved wording")
+
 if problems:
     print("PLOTART LAUNCH · FAILED (%d)" % len(problems))
     for x in problems:
         print("  " + x)
     sys.exit(1)
-print("PLOTART LAUNCH · OK — L1-L11 on %d pages · applications %s (%d demonstration names checked absent)" % (len(PAGES), STATE, len(demo_names)))
+print("PLOTART LAUNCH · OK — L1-L12 on %d pages · applications %s (%d demonstration names checked absent)" % (len(PAGES), STATE, len(demo_names)))

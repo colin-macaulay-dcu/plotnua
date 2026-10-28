@@ -13,7 +13,9 @@ Prints "PLOTART INTEGRATION · OK" only when:
       your-plot.html?myplot=1.
   N2  outside the PlotNua header, the ONLY PlotNua page that links into PlotArt is
       discovery-a-home-for-art.html, with exactly one link to plotart/ (the
-      "Explore PlotArt" button) and one to plotart/founding-25.html. No PlotNua page
+      "Explore PlotArt" button), one to plotart/founding-25.html and one to
+      plotart/living-gallery.html (A Home for Art and the Living Gallery are linked both
+      ways, founder decision 28 Oct 2026). No PlotNua page
       links to any other PlotArt path.
   N3  the A Home for Art wording beside those links says PlotArt is in development
       and that applications are not yet open, and never invites anyone to apply.
@@ -66,7 +68,7 @@ for p in glob.glob(os.path.join(ROOT, "*.html")):
         outside[os.path.basename(p)] = refs
 need(set(outside) <= {"discovery-a-home-for-art.html"}, "N2 pages outside the header linking into PlotArt: %s" % sorted(set(outside) - {"discovery-a-home-for-art.html"}))
 hfa = outside.get("discovery-a-home-for-art.html", [])
-need(sorted(hfa) == ["plotart/", "plotart/founding-25.html"], "N2 A Home for Art PlotArt links are %s" % hfa)
+need(sorted(hfa) == ["plotart/", "plotart/founding-25.html", "plotart/living-gallery.html"], "N2 A Home for Art PlotArt links are %s" % hfa)
 
 # N3
 t = open(os.path.join(ROOT, "discovery-a-home-for-art.html"), encoding="utf-8").read()
@@ -89,4 +91,4 @@ if problems:
     for x in problems[:40]:
         print("  " + x)
     sys.exit(1)
-print("PLOTART INTEGRATION · OK — N1-N4 · %d header pages carry Discovery Library > PlotArt > My Plot; A Home for Art links exactly plotart/ and plotart/founding-25.html" % len(pn_header.HEADER_PAGES))
+print("PLOTART INTEGRATION · OK — N1-N4 · %d header pages carry Discovery Library > PlotArt > My Plot; A Home for Art links exactly plotart/, plotart/founding-25.html and plotart/living-gallery.html" % len(pn_header.HEADER_PAGES))
