@@ -30,7 +30,7 @@ WHY THIS EXISTS
          change.
      The founder's confirmation, if given, is recorded in WHATSAPP_CONFIRMATION.
 
-read_governed(text): privacy.html as the V3-V6 verifiers govern it. Exact and
+read_governed(text): privacy.html as the V3-V6 verifiers govern it (beneath Privacy V7, when applied). Exact and
 narrow: the WhatsApp block must be present exactly once, in Section 5, or be
 absent; anything else raises ValueError, so nothing can hide behind the layer.
 """
@@ -122,4 +122,8 @@ def without_site_shell(text: str, notice: bool = True) -> str:
 
 
 def read_governed(text: str) -> str:
-    return without_whatsapp(without_site_shell(text))
+    """V3-V6 governed reading. Privacy V7 (privacy_v7_layer.py, 28 Oct 2026) is a set of
+    exact, reversible replacements; it is taken off first, and without_v7() raises if the
+    page carries the V7 marker but not exactly the governed V7 text."""
+    from privacy_v7_layer import without_v7
+    return without_whatsapp(without_site_shell(without_v7(text)))

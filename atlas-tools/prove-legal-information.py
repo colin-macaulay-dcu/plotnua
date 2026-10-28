@@ -61,9 +61,12 @@ for p in html:
     if re.search(r"PlotNua (Ltd|Limited)\b", s): g2.append(p + " (PlotNua Ltd)")
 ok("G2 no page calls PlotNua a company or 794392 a company number") if not g2 else bad("G2 " + "; ".join(g2))
 g3 = [p for p in html if re.search(r"<h[24]>Company</h[24]>", read(p))]
-g3_allowed = {"privacy.html", "artist-register.html"}   # both take their footer from the privacy layer (V7 release)
+# privacy.html and artist-register.html take their footer from the privacy layer: they may keep
+# "Company" only until Privacy V7 is applied; after that, no exception (28 Oct 2026).
+_v7 = "PLOTNUA-F25-PRIVACY-V7" in read("privacy.html")
+g3_allowed = set() if _v7 else {"privacy.html", "artist-register.html"}
 g3_bad = [p for p in g3 if p not in g3_allowed]
-ok("G3 no footer heading 'Company' (privacy.html and artist-register.html deferred to the V7 release: %s)" % ("yes" if g3 else "already done")) if not g3_bad else bad("G3 'Company' heading on: " + ", ".join(g3_bad))
+ok("G3 no footer heading 'Company'" + (" (privacy.html and artist-register.html await the V7 release)" if g3 else " anywhere")) if not g3_bad else bad("G3 'Company' heading on: " + ", ".join(g3_bad))
 
 # G4 reachable pages link to terms
 def links(path):

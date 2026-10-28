@@ -683,7 +683,14 @@ def build():
             '<meta property="og:url" content="%s">\n' % url +
             '<meta property="og:locale" content="en_IE">\n\n' +
             style + CSS + "</style>\n</head>\n")
-    return head + top + body_main() + foot + script() + "</body>\n</html>\n"
+    page = head + top + body_main() + foot + script() + "</body>\n</html>\n"
+    # Privacy V7 (28 Oct 2026): once privacy.html carries V7, this page carries the same
+    # PlotNua footer (heading "PlotNua" plus the Legal information link). The governed
+    # shell above is V6 by design, so the V7 footer is applied here from the one layer.
+    from privacy_v7_layer import MARKER as _V7, footer_v7
+    if _V7 in SHELL.read_text(encoding="utf-8"):
+        page = footer_v7(page)
+    return page
 
 
 # ------------------------------------------------------------------ guards
