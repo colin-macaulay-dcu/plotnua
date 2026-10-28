@@ -260,11 +260,11 @@ def t_footer(t, f):
             die("%s: no </div> closing footer-cols" % f)
         t = t[:back] + "</nav>" + t[back + 6:]
         changed.append("nav landmark")
-    n_h4 = len(re.findall(r'<h4>(Navigation|Company|Social|Contact)</h4>', t))
+    n_h4 = len(re.findall(r'<h4>(Navigation|PlotNua|Company|Social|Contact)</h4>', t))
     if n_h4:
         if n_h4 != 4:
             die("%s: expected 4 footer h4 headings, found %d" % (f, n_h4))
-        t = re.sub(r'<h4>(Navigation|Company|Social|Contact)</h4>',
+        t = re.sub(r'<h4>(Navigation|PlotNua|Company|Social|Contact)</h4>',
                    r'<h2>\1</h2>', t)
         if ".footer-col h4{" not in t:
             die("%s: the .footer-col h4 rule is missing" % f)

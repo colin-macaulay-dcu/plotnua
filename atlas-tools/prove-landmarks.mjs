@@ -202,8 +202,8 @@ for (const f of CAROUSEL) {
 // ---- L5 · footer heading hierarchy ----------------------------------------
 for (const f of FOOTER) {
   const t = code(read(f));
-  const h4 = (t.match(/<h4>(Navigation|Company|Social|Contact)<\/h4>/g) || []).length;
-  const h2 = (t.match(/<h2>(Navigation|Company|Social|Contact)<\/h2>/g) || []).length;
+  const h4 = (t.match(/<h4>(Navigation|PlotNua|Company|Social|Contact)<\/h4>/g) || []).length;
+  const h2 = (t.match(/<h2>(Navigation|PlotNua|Company|Social|Contact)<\/h2>/g) || []).length;
   if (h4 === 0 && h2 === 4) ok("L5 " + f + " footer headings are h2");
   else bad("L5 " + f, `h4 x${h4}, h2 x${h2}`);
 }

@@ -97,7 +97,7 @@ MUTATIONS = [
                          '<div class="d-dots" role="tablist"', 1)),
 
     ("pre-fix footer: column headings drop back to h4", "L5", "about.html",
-     lambda t: re.sub(r"<h2>(Navigation|Company|Social|Contact)</h2>",
+     lambda t: re.sub(r"<h2>(Navigation|PlotNua|Company|Social|Contact)</h2>",
                       r"<h4>\1</h4>", t)),
 
     ("pre-fix footer: the nav landmark reverts to a div", "L6", "contact.html",
