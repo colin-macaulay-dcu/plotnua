@@ -7,8 +7,8 @@ SITE_DIR is the directory that holds plotart/ as it would be published (a launch
 build from `build-plotart.py --launch --out SITE_DIR`, or the repository root
 once the launch pages are released). Prints "PLOTART LAUNCH · OK" only when:
 
-  L1  plotart/ holds exactly the launch files: index, founding-25 and
-      living-gallery pages, plotart.css, plotart.js (and f25-apply.js only when
+  L1  plotart/ holds exactly the launch files: index, founding-25,
+      living-gallery and gallery/index (the Virtual Gallery) pages, plotart.css, plotart.js (and f25-apply.js only when
       the form switch is on). No artist, artwork, story, listing, collection or
       data file is published.
   L2  every link and image on those pages resolves: PlotArt links to a launch
@@ -38,8 +38,14 @@ once the launch pages are released). Prints "PLOTART LAUNCH · OK" only when:
       sale" (unqualified); no page says "Prototype"; the Founding 25 title is the
       approved one; the Living Gallery is presented as a proposed programme; no
       Founding Artist is presented as already selected.
+  L11 the Virtual Gallery (founder decision 28 Oct 2026) is published EMPTY: exactly 25
+      placeholders, "Gallery 01" to "Gallery 25", each carrying only the approved
+      placeholder wording; no image, portrait, name, price, biography or testimonial;
+      the exact sentence "No artists have been selected, and no galleries are published
+      yet."; a link to the Founding 25 page; noindex, follow; never in the sitemap. Every
+      launch page's navigation is Virtual Gallery, Living Gallery, About, Founding 25.
 """
-import html, json, os, re, sys
+import html, json, os, posixpath, re, sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 if len(sys.argv) < 2:
@@ -56,7 +62,7 @@ def need(ok, msg):
 SWITCHES = sys.argv[sys.argv.index("--switches") + 1] if "--switches" in sys.argv else os.path.join(ROOT, "plotart", "data", "launch.json")
 launch = json.load(open(SWITCHES, encoding="utf-8"))
 ENDPOINT = launch.get("f25_form_endpoint")
-PAGES = ["index.html", "founding-25.html", "living-gallery.html"]
+PAGES = ["index.html", "founding-25.html", "living-gallery.html", "gallery/index.html"]
 # The application script ships only in the "open" state (never inferred from the endpoint).
 ALLOWED = set(PAGES) | {"assets/plotart.css", "assets/plotart.js"} | ({"assets/f25-apply.js"} if launch.get("f25_application_state") == "open" else set())
 
@@ -95,13 +101,16 @@ for name in PAGES:
         path = ref.split("#")[0].split("?")[0]
         if not path:
             continue
-        if path.startswith("/"):
-            target = os.path.join(ROOT, path.lstrip("/"))
-        elif path.startswith("../"):
-            target = os.path.join(ROOT, path[3:])
+        # resolve against the page's own folder (pages may sit in plotart/gallery/)
+        site_rel = path.lstrip("/") if path.startswith("/") else posixpath.normpath(posixpath.join("plotart", posixpath.dirname(name), path))
+        if path.endswith("/") or site_rel in ("plotart", "plotart/gallery"):
+            site_rel = posixpath.join(site_rel, "index.html")
+        if site_rel.startswith("plotart/"):
+            target = os.path.join(PA, site_rel[len("plotart/"):])
+            need(site_rel[len("plotart/"):] in ALLOWED, "L2 %s links to an unpublished PlotArt file: %s" % (name, ref))
         else:
-            target = os.path.join(PA, path)
-            need(path in ALLOWED, "L2 %s links to an unpublished PlotArt file: %s" % (name, ref))
+            need(not site_rel.startswith(".."), "L2 %s links outside the site: %s" % (name, ref))
+            target = os.path.join(ROOT, site_rel)
         need(os.path.exists(target), "L2 %s has a broken link: %s" % (name, ref))
     # L3
     for n in demo_names:
@@ -180,6 +189,7 @@ else:
             need(not re.search(r"\b(?:open(?:ing)? soon|coming soon|opens? (?:on|in) |from (?:January|February|March|April|May|June|July|August|September|October|November|December))", vt, re.I),
                  "L9 %s: %s implies an opening date" % (STATE, name))
             need(not re.search(r"\b(?:are|is) (?:still )?being reviewed\b|already received", vt, re.I), "L9 %s: %s says applications are being reviewed" % (STATE, name))
+            need("Applications are open" not in vt, "L9 %s: %s says applications are open" % (STATE, name))
 for name in PAGES:
     p = os.path.join(PA, name)
     if not os.path.exists(p):
@@ -203,9 +213,44 @@ need(GALLERIES_LINE in re.sub(r"\s+", " ", visible_text(home)), "L10 the homepag
 lg = open(os.path.join(PA, "living-gallery.html"), encoding="utf-8").read() if os.path.exists(os.path.join(PA, "living-gallery.html")) else ""
 need("proposed programme" in visible_text(lg) and "isn't running yet" in visible_text(lg), "L10 the Living Gallery must be presented as a proposed programme that isn't running yet")
 
+# L11 · the Virtual Gallery, published empty (founder decision 28 Oct 2026)
+VG_EMPTY = "No artists have been selected, and no galleries are published yet."
+VG_SLOT = "Founding Artist gallery Gallery %02d Awaiting its artist"
+vgp = os.path.join(PA, "gallery", "index.html")
+vg = open(vgp, encoding="utf-8").read() if os.path.exists(vgp) else ""
+need(bool(vg), "L11 the Virtual Gallery page plotart/gallery/index.html is missing")
+if vg:
+    vgv = re.sub(r"\s+", " ", visible_text(vg))
+    need(VG_EMPTY in vgv, "L11 the Virtual Gallery must say exactly: %s" % VG_EMPTY)
+    need(LINE in vgv, "L11 the Virtual Gallery's Founding 25 note is not the %s wording (%s)" % (STATE, LINE))
+    grid = re.search(r'<ol class="pa-vg-grid"[^>]*>(.*?)</ol>', vg, re.S)
+    need(grid is not None, "L11 the Virtual Gallery grid is missing")
+    if grid:
+        cards = re.findall(r'<li class="pa-vg-card">(.*?)</li>', grid.group(1), re.S)
+        need(len(cards) == 25, "L11 the Virtual Gallery must show exactly 25 placeholders (found %d)" % len(cards))
+        for i, c in enumerate(cards, 1):
+            got = re.sub(r"\s+", " ", visible_text(c)).strip()
+            need(got == ("%02d " % i) + VG_SLOT % i, "L11 placeholder %d carries other content: %r" % (i, got[:80]))
+        rest = re.sub(r'<li class="pa-vg-card">.*?</li>', "", grid.group(1), flags=re.S)
+        need(len(re.findall(r"<li\b", rest)) == 1 and 'href="../founding-25.html"' in rest, "L11 the grid may hold only the 25 placeholders and the Founding 25 link")
+    need(not re.search(r"<img\b|<picture\b|<svg\b|background-image|url\(", vg.split("<main", 1)[-1].split("</main>")[0]), "L11 the Virtual Gallery shows an image (no portrait or artwork may appear)")
+    need('href="../founding-25.html"' in vg, "L11 the Virtual Gallery must link to the Founding 25 page")
+    need(not re.search(r"testimonial|“|”|\bsaid\b", visible_text(vg.split("<main", 1)[-1].split("</main>")[0]), re.I), "L11 the Virtual Gallery carries a quotation or testimonial")
+    need("<title>Virtual Gallery | PlotArt</title>" in vg, "L11 the Virtual Gallery title is not the approved one")
+smp = os.path.join(SITE, "sitemap.xml")
+if os.path.exists(smp):
+    need("plotart" not in open(smp, encoding="utf-8").read(), "L11 sitemap.xml lists a PlotArt URL")
+NAV_WANT = ["Virtual Gallery", "Living Gallery", "About", "Founding 25"]
+for name in PAGES:
+    p = os.path.join(PA, name)
+    if os.path.exists(p):
+        nav = re.search(r'<nav class="pa-nav" aria-label="PlotArt">(.*?)</nav>', open(p, encoding="utf-8").read(), re.S)
+        labels = [html.unescape(x) for x in re.findall(r'<a [^>]*>([^<]+)</a>', nav.group(1))] if nav else []
+        need(labels[:4] == NAV_WANT, "L11 %s navigation is %s, not %s" % (name, labels[:4], NAV_WANT))
+
 if problems:
     print("PLOTART LAUNCH · FAILED (%d)" % len(problems))
     for x in problems:
         print("  " + x)
     sys.exit(1)
-print("PLOTART LAUNCH · OK — L1-L10 on %d pages · applications %s (%d demonstration names checked absent)" % (len(PAGES), STATE, len(demo_names)))
+print("PLOTART LAUNCH · OK — L1-L11 on %d pages · applications %s (%d demonstration names checked absent)" % (len(PAGES), STATE, len(demo_names)))

@@ -66,10 +66,11 @@ STANDARD = [
     ("python3 atlas-tools/prove-privacy-v5.py", "24/24 breaks caught · rehearsal 16/16 — PROVEN", "privacy V5 proof 24/24, rehearsal 16/16"),
     ("python3 atlas-tools/prove-privacy-v6.py", "10 passed, 0 failed", "privacy V6 proof 10/10"),
     ("python3 atlas-tools/prove-privacy-page-layers.py", "16 passed, 0 failed", "privacy page layers 16/16"),
-    # PlotArt limited launch (27 Oct 2026): the three published pages are exactly the verified
+    # PlotArt limited launch (27 Oct 2026): the published pages are exactly the verified
     # build (manifest), noindex, follow, and applications are not open. Changing the state is a new release.
+    # Virtual Gallery (28 Oct 2026): a fourth page, plotart/gallery/, published empty (guard L11).
     ("python3 atlas-tools/prove-plotart-launch.py . --switches atlas-tools/release/plotart-launch-switches.json --manifest atlas-tools/release/plotart-launch-manifest.json",
-     "PLOTART LAUNCH · OK — L1-L10 on 3 pages · applications not_open", "PlotArt limited launch L1-L10 (applications not open)"),
+     "PLOTART LAUNCH · OK — L1-L11 on 4 pages · applications not_open", "PlotArt launch L1-L11, Virtual Gallery empty (applications not open)"),
     # PlotArt in the PlotNua navigation and the A Home for Art links (proposed 27 Oct 2026)
     # 31 header pages since DISC-032 The Supper Club at Home joined the header registry (27 Oct 2026; 30 after DISC-033).
     ("python3 atlas-tools/prove-plotart-integration.py", "PLOTART INTEGRATION · OK — N1-N4 · 31 header pages", "PlotArt navigation and A Home for Art links N1-N4"),

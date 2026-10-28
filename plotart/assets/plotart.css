@@ -406,3 +406,69 @@ body.pa .pa-acard-name{ font-size:clamp(44px, 4.6vw, 74px); line-height:.95; mar
 .pa-proto-note[data-state="error"]{ color:var(--terra-text); }
 @media (max-width:900px){ .pa-free{ gap:22px; } }
 body.pa .pa-free-lines{ margin:0; }
+
+/* ---- Launch navigation on phones (founder decision 28 Oct 2026) ----------
+   Three destinations in the row (Virtual Gallery, Living Gallery, About), each a
+   44px target; the Founding 25 pill stays in the top bar. "PlotNua home" leaves
+   the phone row (it remains in the footer) so nothing scrolls out of sight. */
+@media (max-width:520px){
+  :where(body.pa) .pa-nav a.pa-home-m{ display:none; }
+  .pa-nav{ justify-content:space-between; }
+  .pa-nav a{ display:inline-flex; align-items:center; min-height:44px; }
+  /* the Founding 25 pill keeps its look; its tap area grows to 46px */
+  .pa-f25-m{ position:relative; }
+  .pa-f25-m::after{ content:""; position:absolute; left:0; right:0; top:-4px; bottom:-4px; }
+}
+@media (max-width:374px){ .pa-nav a{ font-size:13.5px; padding:9px 5px; } }
+
+/* ---- Virtual Gallery (founder decision 28 Oct 2026) ----------------------
+   Published empty: 25 numbered placeholders. The card is built for a real
+   portrait later (.pa-vg-frame img fills the same 4:5 frame). */
+.pa-vg-hero{ padding:clamp(56px, 8vw, 120px) 0 clamp(40px, 5vw, 72px); }
+.pa-vg-hero h1{ font-size:clamp(56px, 8.4vw, 132px); line-height:.94; margin-bottom:clamp(28px, 3.4vw, 48px); }
+.pa-vg-intro{ display:grid; grid-template-columns:minmax(0, 1.25fr) minmax(0, 1fr); gap:clamp(28px, 5vw, 88px); align-items:end; }
+.pa-vg-intro .pa-lede{ margin:0; }
+.pa-vg-status{ border-top:1px solid var(--line-2); padding-top:20px; }
+.pa-vg-status p{ margin:0; color:var(--stone); font-size:15.5px; line-height:1.55; }
+.pa-vg-count{ display:flex; gap:28px; margin:0 0 12px !important; }
+.pa-vg-count span{ font-size:13px; letter-spacing:.14em; text-transform:uppercase; color:var(--bronze-text); }
+.pa-vg-count strong{ display:block; font-family:var(--serif); font-weight:400; font-size:44px; line-height:1; letter-spacing:0; color:var(--ivory); margin-bottom:4px; }
+@media (max-width:860px){ .pa-vg-intro{ grid-template-columns:1fr; } }
+
+.pa-vg-wall{ background:#161719; padding:clamp(48px, 6vw, 96px) 0 clamp(64px, 8vw, 120px); }
+.pa-vg-head{ display:grid; grid-template-columns:minmax(0, 1fr) minmax(0, 1fr); gap:clamp(20px, 4vw, 64px); align-items:end; margin-bottom:clamp(32px, 4vw, 56px); }
+.pa-vg-head h2{ font-size:clamp(34px, 3.6vw, 56px); }
+.pa-vg-head p{ margin:0; color:var(--stone); max-width:52ch; }
+@media (max-width:860px){ .pa-vg-head{ grid-template-columns:1fr; } }
+
+.pa-vg-grid{ list-style:none; margin:0; padding:0; display:grid; grid-template-columns:repeat(5, minmax(0, 1fr)); gap:clamp(14px, 1.6vw, 24px); }
+.pa-vg-card{ position:relative; display:flex; flex-direction:column; background:#1F2022; border-radius:6px; padding:16px 12px 0; }
+.pa-vg-card::before{ content:""; position:absolute; top:6px; left:50%; width:16px; height:3px; margin-left:-8px;
+  background:radial-gradient(circle, rgba(242,235,224,.28) 1px, transparent 1.4px) 0 0 / 6px 3px repeat-x; }
+.pa-vg-frame{ position:relative; aspect-ratio:4 / 5; border-radius:2px; overflow:hidden;
+  background:linear-gradient(160deg, #2A2B2E 0%, #232427 100%); display:grid; place-items:center; }
+.pa-vg-frame img{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; }
+.pa-vg-mat{ position:absolute; inset:11%; border:1px solid rgba(207,133,102,.30); box-shadow:inset 0 0 0 7px rgba(242,235,224,.025); }
+.pa-vg-mat::before{ content:""; position:absolute; left:50%; top:-11%; width:1px; height:11%; background:rgba(207,133,102,.22); }
+.pa-vg-n{ position:relative; font-family:var(--serif); font-size:clamp(40px, 4vw, 64px); line-height:1; color:rgba(207,133,102,.62); }
+.pa-vg-cap{ text-align:center; padding:16px 6px 20px; }
+.pa-vg-cap p{ margin:0; }
+.pa-vg-k{ font-size:11px; letter-spacing:.16em; text-transform:uppercase; color:var(--mute); }
+.pa-vg-t{ font-family:var(--serif); font-size:24px; line-height:1.15; color:var(--ivory); margin-top:4px !important; }
+.pa-vg-s{ font-size:13px; color:var(--mute); margin-top:2px !important; }
+.pa-vg-cta{ grid-column:1 / -1; display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:20px 32px;
+  border:1px solid rgba(174,98,69,.55); border-radius:6px; padding:clamp(22px, 2.6vw, 36px); background:rgba(174,98,69,.06); }
+.pa-vg-cta .pa-eyebrow{ margin-bottom:10px; color:var(--terra-text); }
+.pa-vg-cta-t{ margin:0; max-width:56ch; font-family:var(--serif); font-size:clamp(22px, 2vw, 28px); line-height:1.25; color:var(--ivory); }
+.pa-vg-cta-s{ margin:10px 0 0; font-size:15px; color:var(--stone); }
+@media (max-width:1279px){ .pa-vg-grid{ grid-template-columns:repeat(4, minmax(0, 1fr)); } .pa-vg-cta{ grid-column:span 3; } }
+@media (max-width:959px){ .pa-vg-grid{ grid-template-columns:repeat(3, minmax(0, 1fr)); } .pa-vg-cta{ grid-column:span 2; } }
+@media (max-width:639px){ .pa-vg-grid{ grid-template-columns:repeat(2, minmax(0, 1fr)); } .pa-vg-cta{ grid-column:span 1; } .pa-vg-t{ font-size:20px; } .pa-vg-k{ font-size:10px; letter-spacing:.12em; } }
+@media (max-width:639px){
+  /* two columns: the Founding 25 card takes the 26th cell, beside Gallery 25 */
+  .pa-vg-cta{ flex-direction:column; align-items:stretch; justify-content:center; gap:14px; padding:18px 14px; }
+  .pa-vg-cta-t{ display:none; }
+  .pa-vg-cta-s{ font-size:13.5px; margin-top:6px; }
+  .pa-vg-cta .pa-btn{ justify-content:center; font-size:14px; padding:12px 12px; text-align:center; }
+}
+@media (max-width:420px){ .pa-vg-card{ padding:14px 8px 0; } }
