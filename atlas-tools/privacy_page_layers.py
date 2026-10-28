@@ -54,7 +54,7 @@ WHATSAPP_COMMIT = "656528b (21 Oct 2026), integrated from bb4cad0"
 
 # None = NOT fully confirmed. Fill in only with the founder's explicit, dated
 # confirmation of the exact block above AFTER legal and privacy review.
-WHATSAPP_CONFIRMATION = None
+WHATSAPP_CONFIRMATION = ("founder, 2026-10-28: the existing WhatsApp Business subsection accurately describes how PlotNua uses WhatsApp (founder confirmation 28 Oct 2026 22:36; Cloudflare two-factor confirmed enabled the same evening)")
 
 # The founder's PROVISIONAL confirmation (27 Oct 2026, "PlotArt limited launch ·
 # founder approval: privacy verification repair"). It is NOT legal approval and
