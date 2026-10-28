@@ -32,7 +32,9 @@ from privacy_v7_layer import MARKER, F25_SUB, PAIRS, FOOT_NEW, apply_v7, without
 
 ARTIST = ROOT / "artist-register.html"   # built from the privacy shell: carries the same footer
 
-APPROVAL = ""   # founder approval of the exact V7 wording goes here (date and words); empty = refuse
+APPROVAL = ("founder, 2026-10-28 22:34: Privacy Notice V7 (2026-10-PHASE2-V7) wording, exactly as defined in "
+            "privacy_v7_layer.py and shown in PlotNua-Privacy-Notice-V7-final-wording.md, APPROVED for publication; "
+            "the WhatsApp Business subsection is retained unchanged")
 
 
 def die(m):
