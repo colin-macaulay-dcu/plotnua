@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Founding 25: Free First-Year Artist Galleries | PlotArt</title>
-<meta name="description" content="PlotArt will select up to 25 artists based or working in Ireland for a free first-year gallery. Applications are not yet open.">
+<meta name="description" content="PlotArt will select up to 25 artists based or working in Ireland for a free first-year gallery. Applications are open.">
 <!-- LIMITED LAUNCH: not for indexing until the founder approves indexing. Planned canonical:
      https://plotnua.ie/plotart/founding-25.html -->
 <meta name="robots" content="noindex, follow">
@@ -14,6 +14,29 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Hanken+Grotesk:wght@400;500;600;700&display=swap">
 <link rel="stylesheet" href="assets/plotart.css">
+<style>
+.pa-apply-h{margin:28px 0 10px}
+@media (min-width:900px){.pa-apply-intro{position:sticky;top:110px}}
+.pa-apply-next{margin:0 0 18px;padding-left:1.2em;color:var(--lime);line-height:1.6}
+.pa-apply-next li{margin:0 0 6px}
+.pa-fs{border:0;padding:0;margin:0 0 6px;min-width:0;display:grid;gap:18px}
+.pa-fs-l{font-family:inherit;font-size:13px;letter-spacing:.1em;text-transform:uppercase;color:var(--terra-text);font-weight:600;padding:0;margin:14px 0 2px}
+.pa-req{color:var(--terra-text);font-weight:700}
+.pa-err{margin:6px 0 0;font-size:14px;color:#F2B8A0}
+.pa-err::before{content:"! ";font-weight:700}
+.pa-field [aria-invalid="true"]{border-color:#E08F6E;box-shadow:0 0 0 1px #E08F6E}
+.pa-count{margin:6px 0 0;font-size:13px;color:var(--stone)}
+.pa-form button[aria-busy="true"]{opacity:.75;cursor:progress}
+.pa-form button[aria-busy="true"]::after{content:"";display:inline-block;width:14px;height:14px;margin-left:10px;border:2px solid currentColor;border-right-color:transparent;border-radius:50%;vertical-align:-2px;animation:pa-spin .8s linear infinite}
+@keyframes pa-spin{to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion:reduce){.pa-form button[aria-busy="true"]::after{animation:none}}
+.pa-f25-done h3{font-size:clamp(26px,2.6vw,34px);margin:6px 0 14px}
+.pa-f25-done p{color:var(--lime);line-height:1.6}
+.pa-f25-done:focus{outline:none}
+.pa-form[hidden],.pa-f25-done[hidden],.pa-err[hidden],.pa-proto-note[hidden]{display:none!important}
+.pa-proto-note[data-state="error"],.pa-proto-note[data-state="retry"]{color:#F5CDBD}
+.pa-proto-note[data-state="ok"]{border-color:rgba(160,190,150,.5);background:rgba(120,150,110,.12);color:#DDE8D6}
+</style>
 <script>document.documentElement.classList.remove('no-js');</script>
 </head>
 <body class="pa">
@@ -34,7 +57,7 @@
     <p class="pa-eyebrow">The PlotArt Founding 25</p>
     <h1>Be one of the Founding 25.</h1>
     <p class="pa-lede" style="margin-top:26px">We're inviting artists based or working anywhere on the island of Ireland to help shape a new way of discovering original art. The first 25 selected open the PlotArt Virtual Gallery, each with their own dedicated artist gallery and biography page, and a curated collection of at least 10 original works at a time.</p>
-    <div class="pa-actions" style="margin-top:30px"><a class="pa-btn pa-btn--solid" href="#apply" data-pa-track="f25_apply_click">How applications will work</a><a class="pa-btn pa-btn--ghost" href="#how">How PlotArt works</a></div>
+    <div class="pa-actions" style="margin-top:30px"><a class="pa-btn pa-btn--solid" href="#apply" data-pa-track="f25_apply_click">Apply to become a Founding Artist</a><a class="pa-btn pa-btn--ghost" href="#how">How PlotArt works</a></div>
     
   </div>
   <p class="big" aria-hidden="true">25<small>artists · 25 galleries · free for the first year</small></p>
@@ -48,7 +71,7 @@
     <div>
       <p class="pa-free-support">Your art. Your sales. Your earnings.</p>
       <ul class="pa-free-nos"><li>No membership fees.</li><li>No listing fees.</li><li>Keep 100% of your artwork sales — no PlotArt commission on enquiries from your founding year, even if the sale completes later.</li><li>No automatic paid subscription.</li></ul>
-      <p style="margin:26px 0 0"><a class="pa-btn pa-btn--solid" href="#apply" data-pa-track="f25_apply_click_offer">How applications will work</a></p>
+      <p style="margin:26px 0 0"><a class="pa-btn pa-btn--solid" href="#apply" data-pa-track="f25_apply_click_offer">Apply to become a Founding Artist</a></p>
       <p class="pa-select-note">Applications are reviewed individually. Places are awarded through a curated selection process, not on a first-come, first-served basis.</p>
     </div>
   </div>
@@ -99,13 +122,53 @@
   </ol>
 </div></section>
 <section class="pa-sec pa-sec--deep" id="apply"><div class="pa-wrap pa-cols-2" style="align-items:start">
-  <div><p class="pa-eyebrow">Applications</p><h2 style="font-size:clamp(40px,4.4vw,64px);margin-bottom:16px">Applications are not yet open.</h2>
-  <p class="pa-muted">When applications open, the application form will appear here. Each application will be reviewed individually, and places will be awarded through a curated selection process.</p>
-  <p class="pa-note">Already on PlotNua's <a href="../artist-register.html">Artist Register</a>? That stays a private expression of interest. The Founding 25 is a separate programme.</p></div>
+  <div class="pa-apply-intro"><p class="pa-eyebrow">Apply</p><h2 style="font-size:clamp(40px,4.4vw,64px);margin-bottom:16px">Apply to become a Founding Artist.</h2>
+  <p class="pa-lede" style="margin-top:0">Tell us about you and your work. It takes about ten minutes, and all you need is a link to where we can see your work.</p>
+  <p class="pa-eyebrow pa-apply-h">What happens next</p>
+  <ol class="pa-apply-next">
+    <li>We read every application ourselves.</li>
+    <li>We email you within two working days to confirm we've received it, with your application reference.</li>
+    <li>If you're selected, we send you the Founding Artist terms. Your place is confirmed only when you've accepted them.</li>
+    <li>Nothing about you is published until you've seen and approved your gallery.</li>
+  </ol>
+  <p class="pa-muted">There are up to 25 founding places, and applying doesn't guarantee one. You don't need to send images of your work now.</p>
+  <p class="pa-note">Already on PlotNua's <a href="../artist-register.html">Artist Register</a>? That stays a private expression of interest. Applying here is a separate step.</p></div>
   <div class="pa-formbox">
-    <p class="pa-eyebrow">Application status</p>
-    <p class="pa-lede" style="margin:0 0 14px">Applications are not yet open.</p>
-    <p class="pa-muted" style="margin:0">In the meantime, you can read the <a href="#terms">programme terms</a> and the <a href="../privacy.html">privacy notice</a>.</p>
+  <form class="pa-form" data-f25-form data-endpoint="https://plotnua-art-space-register.colin-a41.workers.dev/v1/art-space-register/founding-25" novalidate aria-describedby="f25-required">
+    <p class="pa-note" id="f25-required" style="margin:0">Fields marked <span class="pa-req" aria-hidden="true">*</span> are required.</p>
+    <fieldset class="pa-fs"><legend class="pa-fs-l">About you</legend>
+    <div class="pa-field"><label for="f25-name">Artist's name <span class="pa-req" aria-hidden="true">*</span><span class="hint">The name you work under</span></label><input id="f25-name" name="artist_name" type="text" maxlength="80" autocomplete="name" required aria-describedby="f25-name-e"><p class="pa-err" id="f25-name-e" hidden></p></div>
+    <div class="pa-field"><label for="f25-email">Email address <span class="pa-req" aria-hidden="true">*</span><span class="hint">We'll only use it about your application</span></label><input id="f25-email" name="email" type="email" maxlength="120" autocomplete="email" inputmode="email" required aria-describedby="f25-email-e"><p class="pa-err" id="f25-email-e" hidden></p></div>
+    <div class="pa-field"><label for="f25-region">County <span class="pa-req" aria-hidden="true">*</span><span class="hint">Where you live or work on the island of Ireland</span></label><select id="f25-region" name="region" required aria-describedby="f25-region-e"><option value="">Choose a county</option><option value="antrim">Antrim</option><option value="armagh">Armagh</option><option value="carlow">Carlow</option><option value="cavan">Cavan</option><option value="clare">Clare</option><option value="cork">Cork</option><option value="derry">Derry</option><option value="donegal">Donegal</option><option value="down">Down</option><option value="dublin">Dublin</option><option value="fermanagh">Fermanagh</option><option value="galway">Galway</option><option value="kerry">Kerry</option><option value="kildare">Kildare</option><option value="kilkenny">Kilkenny</option><option value="laois">Laois</option><option value="leitrim">Leitrim</option><option value="limerick">Limerick</option><option value="longford">Longford</option><option value="louth">Louth</option><option value="mayo">Mayo</option><option value="meath">Meath</option><option value="monaghan">Monaghan</option><option value="offaly">Offaly</option><option value="roscommon">Roscommon</option><option value="sligo">Sligo</option><option value="tipperary">Tipperary</option><option value="tyrone">Tyrone</option><option value="waterford">Waterford</option><option value="westmeath">Westmeath</option><option value="wexford">Wexford</option><option value="wicklow">Wicklow</option></select><p class="pa-err" id="f25-region-e" hidden></p></div>
+    </fieldset>
+    <fieldset class="pa-fs"><legend class="pa-fs-l">Your work</legend>
+    <div class="pa-field"><label for="f25-medium">Primary medium <span class="pa-req" aria-hidden="true">*</span></label><select id="f25-medium" name="medium" required aria-describedby="f25-medium-e"><option value="">Choose your main medium</option><option value="painting">Painting</option><option value="drawing">Drawing</option><option value="works_on_paper">Works on paper</option><option value="printmaking">Printmaking</option><option value="photography">Photography</option><option value="sculpture">Sculpture</option><option value="ceramics_craft">Ceramics and craft</option><option value="textiles">Textiles</option><option value="mixed_media">Mixed media</option><option value="digital">Digital and new media</option><option value="other">Something else</option></select><p class="pa-err" id="f25-medium-e" hidden></p></div>
+    <div class="pa-field"><label for="f25-bio">Short artist biography <span class="pa-req" aria-hidden="true">*</span><span class="hint">A few sentences about you and your practice, in your own words. Please don't include health or other sensitive personal details</span></label><textarea id="f25-bio" name="bio" rows="6" minlength="40" maxlength="1000" required aria-describedby="f25-bio-c f25-bio-e"></textarea><p class="pa-count" id="f25-bio-c" aria-live="off">0 of 1,000 characters</p><p class="pa-err" id="f25-bio-e" hidden></p></div>
+    <div class="pa-field"><label for="f25-portfolio">Link to your portfolio or work <span class="pa-req" aria-hidden="true">*</span><span class="hint">A website, online portfolio or gallery page where we can see original work, beginning https://</span></label><input id="f25-portfolio" name="portfolio" type="url" maxlength="200" inputmode="url" placeholder="https://" required aria-describedby="f25-portfolio-e"><p class="pa-err" id="f25-portfolio-e" hidden></p></div>
+    </fieldset>
+    <fieldset class="pa-fs"><legend class="pa-fs-l">If you'd like to add more <span class="hint" style="display:inline">(optional)</span></legend>
+    <div class="pa-field"><label for="f25-website">Your website</label><input id="f25-website" name="website" type="url" maxlength="200" inputmode="url" placeholder="https://" aria-describedby="f25-website-e"><p class="pa-err" id="f25-website-e" hidden></p></div>
+    <div class="pa-field"><label for="f25-social">Instagram or professional profile<span class="hint">An @handle or a link</span></label><input id="f25-social" name="social_link" type="text" maxlength="120" autocapitalize="off" spellcheck="false" aria-describedby="f25-social-e"><p class="pa-err" id="f25-social-e" hidden></p></div>
+    <div class="pa-field"><label for="f25-info">Anything else you'd like us to know<span class="hint">For example, if a gallery represents you</span></label><textarea id="f25-info" name="additional_info" rows="3" maxlength="800" aria-describedby="f25-info-e"></textarea><p class="pa-err" id="f25-info-e" hidden></p></div>
+    </fieldset>
+    <fieldset class="pa-fs"><legend class="pa-fs-l">Before you apply <span class="pa-req" aria-hidden="true">*</span></legend>
+    <label class="pa-check"><input type="checkbox" name="eligibility" required aria-describedby="f25-eligibility-e"> <span data-f25-sentence="eligibility">I&#x27;m 18 or over, and I&#x27;m based or working on the island of Ireland.</span></label><p class="pa-err" id="f25-eligibility-e" hidden></p>
+    <label class="pa-check"><input type="checkbox" name="ownership" required aria-describedby="f25-ownership-e"> <span data-f25-sentence="ownership">The work in my portfolio is my own original work, or I&#x27;m authorised to represent the artist who made it.</span></label><p class="pa-err" id="f25-ownership-e" hidden></p>
+    <label class="pa-check"><input type="checkbox" name="privacy" required aria-describedby="f25-privacy-e"> <span data-f25-sentence="privacy">I&#x27;ve read the privacy notice for Founding 25 applications, which explains how my application is used, who can see it and how long it&#x27;s kept.</span></label><p class="pa-err" id="f25-privacy-e" hidden></p>
+    <p class="pa-note" style="margin:6px 0 0">Read the <a href="../privacy.html#founding-25-applications">privacy notice for applications</a> and the <a href="#terms">programme terms</a>. Accepting a place, and agreeing what's published, come later and separately.</p>
+    </fieldset>
+    <div class="pa-hp" aria-hidden="true"><label>Leave this blank <input type="text" name="nickname" tabindex="-1" autocomplete="off"></label></div>
+    <div><button class="pa-btn pa-btn--solid" type="submit" data-pa-track="f25_application_submit"><span data-f25-label>Send my application</span></button></div>
+    <p class="pa-select-note" style="margin-top:0">Applications are reviewed individually. Places are awarded through a curated selection process, not on a first-come, first-served basis.</p>
+    <p class="pa-proto-note" role="status" aria-live="polite" data-f25-status hidden></p>
+  </form>
+  <div class="pa-f25-done" data-f25-done hidden tabindex="-1">
+    <p class="pa-eyebrow">Application received</p>
+    <h3>Thank you. Your application is in.</h3>
+    <p>We'll email you at <strong data-f25-done-email></strong> within two working days to confirm, with your application reference. If it hasn't arrived within two working days, please check your spam folder.</p>
+    <p>We read every application ourselves and will be in touch once we've reviewed yours. Applying doesn't guarantee a place, and nothing is published without your approval.</p>
+    <p class="pa-note">To update or withdraw your application, email <a href="mailto:hello@plotnua.ie">hello@plotnua.ie</a>.</p>
+  </div>
   </div>
 </div></section>
 </main>
@@ -127,6 +190,6 @@
     <p class="fine">PlotArt is in development. The artworks and rooms shown on these pages are original illustrations, not photographs of real works or homes.</p>
   </div>
 </footer>
-<script src="assets/plotart.js" defer></script>
+<script src="assets/plotart.js" defer></script><script src="assets/f25-apply.js" defer></script>
 </body>
 </html>

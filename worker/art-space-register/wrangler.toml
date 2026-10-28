@@ -41,9 +41,9 @@ ARTIST_WRITES_ENABLED = "true"
 ARTIST_PRIVACY_VERSION = "2026-10-PHASE2-V5"
 
 # ---------------------------------------------------------------------------
-# PLOTART FOUNDING 25 APPLICATIONS · CLOSED. v2 prepared 28 Oct 2026 (founder
-# implementation authorisation: build and test; production deployment and
-# public activation NOT approved). A separate route
+# PLOTART FOUNDING 25 APPLICATIONS · OPEN. Founder activation approval:
+# 28 Oct 2026, 23:07, after Privacy Notice V7 went live (a60dde7) and Cloudflare
+# two-factor was confirmed. A separate route
 # (/v1/art-space-register/founding-25), switch and privacy version. It writes
 # nothing until BOTH are set, AND the 'Founding 25 applications' table and the
 # 'founding_25' register options exist in the base
@@ -54,8 +54,8 @@ ARTIST_PRIVACY_VERSION = "2026-10-PHASE2-V5"
 # Emergency close without a commit:
 #   npx wrangler deploy --var F25_WRITES_ENABLED:false
 # ---------------------------------------------------------------------------
-F25_WRITES_ENABLED = "false"
-F25_PRIVACY_VERSION = ""
+F25_WRITES_ENABLED = "true"
+F25_PRIVACY_VERSION = "2026-10-PHASE2-V7"
 
 # AIRTABLE_BASE and AIRTABLE_TOKEN are NOT set here and are NOT the garden ones.
 # BOTH ARE PERSISTENT SECRETS (corrected 13 Oct 2026, activation preparation):

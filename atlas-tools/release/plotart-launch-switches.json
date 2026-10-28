@@ -1,9 +1,9 @@
 {
   "schema": "plotnua.plotart.launch.v1",
-  "status": "LIMITED LAUNCH (release copy of plotart/data/launch.json, 27 Oct 2026). Applications NOT open; all pages noindex, follow; both indexable switches off; no sitemap entry. Each value changes only with Colin's explicit approval, through a new release verified by prove-plotart-launch.py L1-L10.",
-  "f25_form_endpoint": null,
+  "status": "FOUNDING 25 APPLICATIONS OPEN (activation release prepared 28 Oct 2026; applies only with the founder's activation approval). Pages noindex, follow; no sitemap entry. Applications NOT open; all pages noindex, follow; both indexable switches off; no sitemap entry. Each value changes only with Colin's explicit approval, through a new release verified by prove-plotart-launch.py L1-L10.",
+  "f25_form_endpoint": "https://plotnua-art-space-register.colin-a41.workers.dev/v1/art-space-register/founding-25",
   "f25_form_endpoint_allowed": "https://plotnua-art-space-register.colin-a41.workers.dev/v1/art-space-register/founding-25",
-  "f25_application_state": "not_open",
+  "f25_application_state": "open",
   "f25_page_indexable": false,
   "f25_launch_notice": null,
   "home_indexable": false,
