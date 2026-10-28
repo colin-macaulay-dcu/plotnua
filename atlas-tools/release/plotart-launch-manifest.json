@@ -1,13 +1,13 @@
 {
-  "schema": "plotnua.plotart.launch-manifest.v1",
-  "note": "SHA-256 of every published PlotArt file, from the launch build that passed prove-plotart-launch.py L1-L12 with the demonstration names (development branch founder/plotart-prototype). Any change to a published PlotArt file must come from a new verified build.",
-  "built_from": "founder/plotart-virtual-gallery a8ad30b",
-  "files": {
-    "assets/plotart.css": "2e541c07cc50c553c84ca684cae12438b6c00716f703d1c7efdcd35635434203",
-    "assets/plotart.js": "1aeda046a43a9877413943aa4573f8266280b94a5df21fb68421c5486189dca8",
-    "founding-25.html": "0e9eb8f08eba485a71518828ec05ebcfed57b4764bc7eeb482155b676cbaec6a",
-    "gallery/index.html": "035867b38f3be9820c6be3d1855055c898df2e8293118397dc6e98d33b645281",
-    "index.html": "ea240b91999fdc70b702d6efeedb3f4fbf71fabf3457b28b75ceccb7ba8413a0",
-    "living-gallery.html": "74a2bbd5b2d71f6dbd920bf341ddbabbf7e1120b5ea0c348921aef7b4259df7d"
-  }
+ "schema": "plotnua.plotart.launch-manifest.v1",
+ "note": "SHA-256 of every published PlotArt file, from the launch build that passed prove-plotart-launch.py L1-L12 with the demonstration names (development branch founder/plotart-prototype). Any change to a published PlotArt file must come from a new verified build. Rebuilt 28 Oct 2026 (the legal-information release 2c89865 had changed the footers without updating this manifest).",
+ "built_from": "founder/f25-launch-prep ae030a5 (launch wording, legal-information footer link), closed state",
+ "files": {
+  "assets/plotart.css": "2e541c07cc50c553c84ca684cae12438b6c00716f703d1c7efdcd35635434203",
+  "assets/plotart.js": "1aeda046a43a9877413943aa4573f8266280b94a5df21fb68421c5486189dca8",
+  "founding-25.html": "c830db28d5b8f4368ad68dafc946b5661427a2414a177aa45b2e57403cca3d72",
+  "gallery/index.html": "7205454570b467459e6e523cefe8fc9c3a696d0ede61a6b4a9e2b8cde1abd6e5",
+  "index.html": "b1f3eb8104517fcf983076041230d7866847e48324d853901ecf4bdc1b471a20",
+  "living-gallery.html": "ccdb094fd35f49c5bbb202326c8769760d78c8933e7254d41c7fa0bc48aab111"
+ }
 }

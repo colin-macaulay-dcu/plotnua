@@ -537,7 +537,7 @@ const F25_SOURCE = 'plotart_founding_25_form';
 /* The version of the three confirmation sentences below. Recorded on every
    application, with the privacy notice version and the time. Change the
    sentences and this together. */
-const F25_CONSENT_VERSION = 'F25-APPLICATION-2026-10-28';
+const F25_CONSENT_VERSION = 'F25-APPLICATION-2026-10-28-R2';   // R2: island of Ireland (founder decision D2/D18, 28 Oct 2026)
 const F25_MAX_BODY = 8 * 1024;
 const F25_DEFAULT_DAILY_CAP = 50;
 const F25_BURST_PER_MINUTE = 10;
@@ -573,7 +573,7 @@ const F25_REQUIRED = ['artist_name', 'email', 'region', 'medium', 'bio', 'portfo
    Founding 25 page builder and in the privacy notice draft together; guard
    T14 (atlas-tools/prove-plotart.py) refuses any drift between page and route. */
 const F25_ELIGIBILITY_TEXT =
-  "I'm 18 or over, and I'm based or working in Ireland.";
+  "I'm 18 or over, and I'm based or working on the island of Ireland.";
 const F25_OWNERSHIP_TEXT =
   "The work in my portfolio is my own original work, or I'm authorised to represent the artist who made it.";
 const F25_PRIVACY_TEXT =
