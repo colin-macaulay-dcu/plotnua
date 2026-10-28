@@ -7,8 +7,10 @@ Prints "PLOTART INTEGRATION · OK" only when:
 
   N1  every page that carries the PlotNua header (pn_header.HEADER_PAGES) has, in
       BOTH the desktop navigation and the phone row, exactly three destinations in
-      this order: Discovery Library, PlotArt, Your Plot. PlotArt points to plotart/
-      (/plotart/ on the root-absolute 404 page) and never carries aria-current.
+      this order: Discovery Library, PlotArt, My Plot (renamed from Your Plot, founder
+      approval 28 Oct 2026). PlotArt points to plotart/ (/plotart/ on the
+      root-absolute 404 page) and never carries aria-current; My Plot points to
+      your-plot.html?myplot=1.
   N2  outside the PlotNua header, the ONLY PlotNua page that links into PlotArt is
       discovery-a-home-for-art.html, with exactly one link to plotart/ (the
       "Explore PlotArt" button) and one to plotart/founding-25.html. No PlotNua page
@@ -29,12 +31,12 @@ def need(ok, msg):
     if not ok:
         problems.append(msg)
 
-ORDER = ["Discovery Library", "PlotArt", "Your Plot"]
+ORDER = ["Discovery Library", "PlotArt", "My Plot"]
 BAR = re.compile(r"<!-- PLOTNUA HEADER v2 · BAR · BEGIN.*?BAR · END -->", re.S)
 ROW = re.compile(r"<!-- PLOTNUA HEADER v2 · ROW · BEGIN.*?ROW · END -->", re.S)
 
 def dests(block):
-    return re.findall(r'<a class="pn-hdr-btn [^"]*" href="([^"]+)"([^>]*)>.*?<span>([^<]+)</span></a>', block, re.S)
+    return re.findall(r'<a class="pn-hdr-btn [^"]*" href="([^"]+)"([^>]*)>(?:(?!</a>).)*?<span>([^<]+)</span>', block, re.S)
 
 # N1
 for page in pn_header.HEADER_PAGES:
@@ -51,6 +53,9 @@ for page in pn_header.HEADER_PAGES:
         art = [x for x in d if x[2] == "PlotArt"]
         need(len(art) == 1 and art[0][0] == want_art and "aria-current" not in art[0][1],
              "N1 %s: %s PlotArt link is not %s" % (page, name, want_art))
+        want_mp = ("/" if page in pn_header.ROOTABS else "") + "your-plot.html?myplot=1"
+        mp = [x for x in d if x[2] == "My Plot"]
+        need(len(mp) == 1 and mp[0][0] == want_mp, "N1 %s: %s My Plot link is not %s" % (page, name, want_mp))
 
 # N2
 outside = {}
@@ -84,4 +89,4 @@ if problems:
     for x in problems[:40]:
         print("  " + x)
     sys.exit(1)
-print("PLOTART INTEGRATION · OK — N1-N4 · %d header pages carry Discovery Library > PlotArt > Your Plot; A Home for Art links exactly plotart/ and plotart/founding-25.html" % len(pn_header.HEADER_PAGES))
+print("PLOTART INTEGRATION · OK — N1-N4 · %d header pages carry Discovery Library > PlotArt > My Plot; A Home for Art links exactly plotart/ and plotart/founding-25.html" % len(pn_header.HEADER_PAGES))

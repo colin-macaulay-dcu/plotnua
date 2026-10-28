@@ -161,3 +161,54 @@ html body.pn-hdr-on .lag-canvas{ top:var(--pn-hdr-h); height:calc(100vh - var(--
   html.pns-nav-tuck body.pn-hdr-on.pn-pd .hfa-nav-wrap{ top:calc(var(--pn-hdr-h) + 8px); }
   html.pns-nav-tuck body.pn-hdr-on .lag-canvas{ top:var(--pn-hdr-h); }
 }
+
+/* ===== Three destinations, three identities · Direction C, hybrid (founder approval 28 Oct 2026) =====
+   Discovery Library: the primary PlotNua destination, solid PlotNua green with a compass.
+   PlotArt: its own creative sub-brand, a softly rectangular terracotta frame in Instrument Serif.
+   My Plot: a compact charcoal personal utility; a filled red heart and a count when saved. */
+body.pn-hdr-on .pn-hdr-btn.is-primary{ background:#1F3B2E; border-color:#2F5442; color:#F2EBE0; font-weight:700;
+  box-shadow:0 1px 2px rgba(0,0,0,.3), 0 10px 22px -16px rgba(0,0,0,.8); }
+body.pn-hdr-on .pn-hdr-btn.is-primary svg{ color:#B9D3C2; }
+body.pn-hdr-on .pn-hdr-btn.is-primary:hover{ background:#264738; border-color:#3B6651; }
+body.pn-hdr-on .pn-hdr-btn.is-primary[aria-current]{ border-color:#5C8C74; }
+body.pn-hdr-on .pn-hdr-btn.is-primary[aria-current]::after{ background:#B9D3C2; }
+body.pn-hdr-on .pn-hdr-btn.is-art{ border-radius:8px; font-family:var(--h-serif); font-weight:400; font-size:19px; letter-spacing:.01em; color:#F6DFD1;
+  background:rgba(174,98,69,.20); border:1px solid #B4684A; }
+body.pn-hdr-on .pn-hdr-btn.is-art svg{ color:#E9A383; }
+body.pn-hdr-on .pn-hdr-btn.is-art:hover{ background:rgba(174,98,69,.32); border-color:#CF8566; }
+/* My Plot, nothing saved: compact, subdued, an outline heart. It always opens My Plot. */
+body.pn-hdr-on .pn-hdr-btn.is-myplot{ background:#1B1C1E; border-color:rgba(242,235,224,.10); color:rgba(242,235,224,.74);
+  font-size:13px; font-weight:600; gap:6px; }
+body.pn-hdr-on .pn-hdr-btn.is-myplot svg{ width:16px; height:16px; color:rgba(242,235,224,.55); }
+body.pn-hdr-on .pn-hdr-btn.is-myplot:hover{ background:#232427; color:var(--h-ivory); }
+/* My Plot, items saved: a filled red heart and the count */
+body.pn-hdr-on .pn-hdr-btn.is-myplot.is-saved{ background:#211D1E; color:var(--h-ivory); border-color:rgba(227,93,82,.5); }
+body.pn-hdr-on .pn-hdr-btn.is-myplot.is-saved svg{ color:#E35D52; }
+body.pn-hdr-on .pn-hdr-btn.is-myplot.is-saved .pn-heart{ fill:#E35D52; }
+body.pn-hdr-on .pn-hdr-count{ display:inline-flex; align-items:center; justify-content:center; min-width:20px; height:20px; padding:0 6px;
+  margin-left:-2px; border-radius:999px; background:#C23B33; color:#fff; font-size:12px; font-weight:700; line-height:1;
+  font-variant-numeric:tabular-nums; box-sizing:border-box; }
+body.pn-hdr-on .pn-hdr-count[hidden]{ display:none; }
+/* desktop and tablet: Discovery Library a little wider, My Plot a little tighter */
+@media (min-width:721px){
+  body.pn-hdr-on .pn-hdr-nav .pn-hdr-btn.is-primary{ padding:0 19px 0 14px; }
+  body.pn-hdr-on .pn-hdr-nav .pn-hdr-btn.is-art{ padding:0 16px 0 12px; }
+  body.pn-hdr-on .pn-hdr-nav .pn-hdr-btn.is-myplot{ padding:0 12px 0 11px; }
+}
+@media (max-width:720px){
+  body.pn-hdr-on .pn-hdr-dest .pn-hdr-btn.is-art{ font-size:18px; }
+  body.pn-hdr-on .pn-hdr-dest .pn-hdr-btn.is-myplot{ font-size:13px; }
+}
+@media (max-width:480px){
+  /* phones keep the red heart when something is saved: it is the signal */
+  body.pn-hdr-on .pn-hdr-dest .pn-hdr-btn.is-myplot.is-saved svg{ display:block; width:16px; height:16px; }
+  body.pn-hdr-on .pn-hdr-dest .pn-hdr-btn{ gap:6px; }
+  body.pn-hdr-on .pn-hdr-count{ min-width:18px; height:18px; font-size:11px; padding:0 5px; }
+}
+@media (max-width:374px){
+  /* the smallest phones: the three pills and a count (up to "99+") fit on one line */
+  body.pn-hdr-on .pn-hdr-dest{ gap:4px; padding:6px 8px 8px; }
+  body.pn-hdr-on .pn-hdr-dest .pn-hdr-btn{ padding:0 7px; gap:5px; }
+  body.pn-hdr-on .pn-hdr-dest .pn-hdr-btn.is-myplot.is-saved svg{ display:none; }
+  body.pn-hdr-on .pn-hdr-dest .pn-hdr-count{ min-width:16px; height:16px; font-size:10.5px; padding:0 4px; margin-left:0; }
+}

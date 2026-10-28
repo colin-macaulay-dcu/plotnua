@@ -33,10 +33,10 @@ FAULTS = [
      rx1(r"<!-- PLOTNUA HEADER v2 · BAR · BEGIN.*?BAR · END -->\n?", "")),
     ("header row removed from the homepage", "index.html",
      rx1(r"<!-- PLOTNUA HEADER v2 · ROW · BEGIN.*?ROW · END -->\n?", "")),
-    ("header copied onto Your Plot", "your-plot.html", rx1(r"<body([^>]*)>", r"<body\1><!-- PLOTNUA HEADER v2 · BAR · BEGIN -->x<!-- PLOTNUA HEADER v2 · BAR · END -->")),
+    ("header copied onto My Plot (your-plot.html)", "your-plot.html", rx1(r"<body([^>]*)>", r"<body\1><!-- PLOTNUA HEADER v2 · BAR · BEGIN -->x<!-- PLOTNUA HEADER v2 · BAR · END -->")),
     ("header copied onto a property check", None, None),   # filled below
     ("label hand-edited", "about.html", sub1("<span>Discovery Library</span>", "<span>Discoveries</span>")),
-    ("active state on the wrong page", "contact.html", sub1('href="your-plot.html">', 'href="your-plot.html" aria-current="page">')),
+    ("active state on the wrong page", "contact.html", sub1('href="plotart/">', 'href="plotart/" aria-current="page">')),
     ("active state lost on the Library", "discoveries.html", sub1(' aria-current="page"', "")),
     ("About back in the primary navigation", "privacy.html",
      sub1('<nav class="pn-hdr-dest" aria-label="Main">', '<nav class="pn-hdr-dest" aria-label="Main"><a href="about.html">About</a>')),
@@ -61,6 +61,16 @@ FAULTS = [
     ("global builder stops using the renderer", "atlas-tools/build-global-header.py", sub1("import pn_header  # noqa: E402", "pn_header = None")),
     ("sitemap page without the header", "sitemap.xml",
      sub1("</urlset>", "<url><loc>https://plotnua.ie/unlisted.html</loc></url></urlset>")),
+    # My Plot (founder approval 28 Oct 2026): the link and the read-only script (G6, G10)
+    ("My Plot link restarts the journey again", "atlas-tools/pn_header.py", sub1('PLOT = ("your-plot.html?myplot=1", "My Plot")', 'PLOT = ("your-plot.html", "My Plot")')),
+    ("My Plot script writes storage", "assets/identity/pn-header.js", sub1("if (n > 0) {", "try { window.localStorage.setItem(KEY, '{}'); } catch (e) {}\n      if (n > 0) {")),
+    ("My Plot script makes a network request", "assets/identity/pn-header.js", sub1("if (n > 0) {", "if (window.fetch) fetch('/count?n=' + n);\n      if (n > 0) {")),
+    ("My Plot script counts Discovery journeys", "assets/identity/pn-header.js", sub1("return n;\n  }", "n += (Array.isArray(d.journeys) ? d.journeys.length : 0);\n    return n;\n  }")),
+    ("My Plot script reads another key", "assets/identity/pn-header.js", sub1("var KEY = 'plotnua.myplot.v1'", "var KEY = 'plotnua.myplot.v2'")),
+    ("My Plot script rewrites the link", "assets/identity/pn-header.js", sub1("a.classList.add('is-saved');", "a.classList.add('is-saved'); a.setAttribute('href', 'your-plot.html');")),
+    ("My Plot script emptied", "assets/identity/pn-header.js", lambda t: ""),
+    # Direction C (founder approval 28 Oct 2026): the Discovery Library compass
+    ("Discovery Library icon swapped", "atlas-tools/pn_header.py", sub1('<circle cx="10" cy="10" r="7.25"/>', '<rect x="3" y="3" width="14" height="14" rx="2"/>')),
 ]
 
 
@@ -84,6 +94,7 @@ def main():
         shutil.copytree(ROOT / "atlas-tools", base / "atlas-tools", ignore=shutil.ignore_patterns("__pycache__"))
         (base / "assets/identity").mkdir(parents=True)
         shutil.copy2(ROOT / "assets/identity/pn-header.css", base / "assets/identity/pn-header.css")
+        shutil.copy2(ROOT / "assets/identity/pn-header.js", base / "assets/identity/pn-header.js")
 
         def run(dirp):
             r = subprocess.run([sys.executable, str(dirp / "atlas-tools/prove-global-header.py"), "--dir", str(dirp)],

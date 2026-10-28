@@ -5,7 +5,7 @@ One header for the whole site: every approved page must carry exactly the markup
 atlas-tools/pn_header.py renders for it, and nothing else.
 
   G1  COVERAGE: every page in pn_header.HEADER_PAGES carries the header; every page
-      in the sitemap is one of them; the excluded families (Your Plot, the
+      in the sitemap is one of them; the excluded families (My Plot / your-plot.html, the
       property checks and journeys disc0NN-*) and every other page do not
   G2  IDENTITY: each BAR and ROW block is byte-identical to pn_header's rendering
       for that page (only the active page, the (i) on the homepage, the Search seat
@@ -17,14 +17,19 @@ atlas-tools/pn_header.py renders for it, and nothing else.
   G5  WHATSAPP: one link per header, exactly the approved destination, new tab,
       noopener noreferrer, labelled, no prefilled text; the homepage footer
       contact is unchanged (the homepage has exactly two wa.me links)
-  G6  DESTINATIONS: Discovery Library and Your Plot exist; About and Contact are
-      not in the primary navigation (they stay in every footer)
+  G6  DESTINATIONS: Discovery Library and My Plot exist; My Plot always links to
+      your-plot.html?myplot=1; About and Contact are not in the primary navigation
+      (they stay in every footer)
   G7  HOMEPAGE: the (i) button exists once, inside the header, controlling the
       existing "What is PlotNua?" panel
   G8  SCOPE: every rule in assets/identity/pn-header.css is under body.pn-hdr-on;
       it hides the old floating tile; it never sets a --p4 token
   G9  ONE RENDERER: the identity builder and the global builder both import
       pn_header and neither carries header markup of its own
+  G10 MY PLOT SCRIPT (founder approval 28 Oct 2026): assets/identity/pn-header.js
+      exists and is READ-ONLY: it reads only plotnua.myplot.v1, never writes or
+      removes storage, sets no cookie, makes no network request, loads nothing,
+      and does not count Discovery journeys; it never rewrites the link
 
 Usage: python3 atlas-tools/prove-global-header.py [--dir D]
 Mutation proof: atlas-tools/prove-global-header-capability.py
@@ -89,7 +94,12 @@ def main():
         if re.search(r"wa\.me/[^\"]*\?text=", t): bad("G5 %s: a prefilled WhatsApp message appeared" % name)
         # G6 destinations
         for h in (H.LIBRARY[0], H.PLOT[0]):
-            if not (ROOT / h).exists(): bad("G6 destination %s missing" % h)
+            if not (ROOT / h.split("?")[0]).exists(): bad("G6 destination %s missing" % h)
+        if H.PLOT[0] != "your-plot.html?myplot=1": bad("G6 My Plot must link to your-plot.html?myplot=1")
+        if '<circle cx="10" cy="10" r="7.25"/>' not in H.ICON_LIBRARY: bad("G6 the Discovery Library icon is not the approved compass")
+        for blk in bars + rows:
+            mp = re.findall(r'<a class="pn-hdr-btn [^"]*is-myplot[^"]*" href="([^"]+)" data-myplot', blk)
+            if mp != [H.href(name, "your-plot.html?myplot=1")]: bad("G6 %s: the My Plot link is %s" % (name, mp))
         nav = "".join(bars + rows)
         for h in ("about.html", "contact.html"):
             if 'href="%s"' % H.href(name, h) in nav: bad("G6 %s: %s is back in the primary navigation" % (name, h))
@@ -115,12 +125,27 @@ def main():
         src = (TOOLS / b).read_text(encoding="utf-8")
         if "import pn_header" not in src: bad("G9 %s does not use pn_header.py" % b)
         if re.search(r'class=\\?"pn-hdr', src): bad("G9 %s writes header markup of its own" % b)
+    # G10 the My Plot script is read-only
+    js = ROOT / "assets/identity/pn-header.js"
+    if not js.exists():
+        bad("G10 assets/identity/pn-header.js is missing")
+    else:
+        code = re.sub(r"/\*.*?\*/|//[^\n]*", "", js.read_text(encoding="utf-8"), flags=re.S)
+        for rx, what in ((r"\.setItem\b|\.removeItem\b|\.clear\s*\(|\bsessionStorage\b|\bindexedDB\b", "writes or clears storage"),
+                         (r"\bdocument\.cookie\b", "touches cookies"),
+                         (r"\bfetch\b|XMLHttpRequest|sendBeacon|WebSocket|EventSource|\bimport\b|\beval\b|new\s+Function|createElement\s*\(\s*['\"](?:script|img|iframe|link)", "makes a network request or loads code"),
+                         (r"journey", "counts Discovery journeys"),
+                         (r"setAttribute\s*\(\s*['\"]href|\.href\s*=", "rewrites the link")):
+            if re.search(rx, code, re.I): bad("G10 pn-header.js %s" % what)
+        keys = set(re.findall(r"['\"](plotnua\.[^'\"]+)['\"]", code))
+        if keys != {"plotnua.myplot.v1"}: bad("G10 pn-header.js must read only plotnua.myplot.v1 (found %s)" % sorted(keys))
+        if code.count("localStorage") != 1 or ".getItem(KEY)" not in code: bad("G10 pn-header.js must read storage once, with getItem")
     if fails:
         for f in fails: print("FAIL " + f)
         print("GLOBAL HEADER · REFUSED — %d problem(s)" % len(fails)); return 2
     print("GLOBAL HEADER · OK — %d pages carry the one header (%d identity, %d global), byte-identical to pn_header.py; "
-          "rail order, retired headers, WhatsApp, destinations, homepage (i), stylesheet scope and one renderer verified; "
-          "%d sitemap pages covered; Your Plot and the property checks excluded"
+          "rail order, retired headers, WhatsApp, destinations, homepage (i), stylesheet scope, one renderer and the read-only My Plot script verified; "
+          "%d sitemap pages covered; My Plot (your-plot.html) and the property checks excluded; My Plot script read-only"
           % (len(H.HEADER_PAGES), len(H.IDENTITY_PAGES), len(H.GLOBAL_PAGES), len(locs)))
     return 0
 

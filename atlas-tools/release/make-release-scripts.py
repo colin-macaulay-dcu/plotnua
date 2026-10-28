@@ -29,7 +29,11 @@ STANDARD = [
     ("python3 atlas-tools/build-identity-stage1.py --check", "CHECK OK — 29 pages", "identity layer"),
     ("python3 atlas-tools/prove-disc033-page.py", "DISC-033 PAGE · OK", "DISC-033 page proof F1-F10"),
     ("python3 atlas-tools/prove-global-header.py", "GLOBAL HEADER · OK", "global header guard G1-G9"),
-    ("python3 atlas-tools/prove-global-header-capability.py", "CAPABILITY · OK — 25 planted faults, 0 not caught", "global header capability 25/25"),
+    # 33 since the My Plot pill and Direction C (28 Oct 2026): the link to your-plot.html?myplot=1, the read-only
+    # script (G6, G10) and the Discovery Library compass.
+    ("python3 atlas-tools/prove-global-header-capability.py", "CAPABILITY · OK — 33 planted faults, 0 not caught", "global header capability 33/33"),
+    # My Plot and the Eircode journey are separate experiences (founder decision 28 Oct 2026).
+    ("python3 atlas-tools/prove-my-plot-view.py --prove", "MY PLOT VIEW · CAPABILITY OK — 13 planted faults, 0 not caught", "My Plot view M1-M8, capability 13/13"),
     ("python3 atlas-tools/prove-identity-stage1.py", "PROOF OK · 27 planted faults, 0 not caught", "identity proof 27/27"),
     ("python3 atlas-tools/prove-premium-discovery-a-home-for-art.py", "PREMIUM-HFA · OK", "Premium content guard"),
     ("python3 atlas-tools/prove-premium-discovery-capability.py", "PROOF OK · 20 planted faults, 0 not caught", "Premium capability 20/20"),

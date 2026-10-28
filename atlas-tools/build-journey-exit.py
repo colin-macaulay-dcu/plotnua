@@ -57,6 +57,11 @@ brand typefaces are already loaded on all ten.
     python3 build-journey-exit.py            inject
     python3 build-journey-exit.py --check     guards only, write nothing
     python3 build-journey-exit.py --revert    restore from the recorded baseline
+
+28 OCT 2026 · the region's "My Plot" link now opens your-plot.html?myplot=1, the My Plot
+view (founder decision: My Plot and the Eircode journey are separate experiences). Applied
+to the eleven pages directly, as one-link edits, because this builder's E0e baseline lock
+already refused on production main before this change (historical builder).
 """
 
 import hashlib
@@ -185,7 +190,7 @@ REGION_HTML = """
         <span class="pnx-say">Look for an idea, a product or a supplier by name.</span>
       </li>
       <li>
-        <a class="pnx-go" href="your-plot.html">My Plot</a>
+        <a class="pnx-go" href="your-plot.html?myplot=1">My Plot</a>
         <span class="pnx-say">What you have saved, kept on your own device.</span>
       </li>
     </ul>
@@ -378,7 +383,7 @@ print("      all ten now reach all four  OK\n")
 # E12 — accessibility and semantics essentials of the region itself
 for need in ('<footer class="pnx">', '<nav class="pnx-nav" aria-label="PlotNua">',
              '<h2 class="pnx-h">', 'href="discoveries.html"',
-             'href="search.html"', 'href="your-plot.html"',
+             'href="search.html"', 'href="your-plot.html?myplot=1"',
              'href="index.html"', 'focus-visible'):
     if need not in REGION:
         die("E12 the region is missing %r" % need)

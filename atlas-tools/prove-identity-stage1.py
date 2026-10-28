@@ -80,7 +80,7 @@ d = scratch(); rc, line = run(d); shutil.rmtree(d)
 (ok if rc == 0 else bad)("control: the unmodified copy passes (%s)" % line[:60])
 
 MUT = [
- ("I2 nav link text edited by hand", lambda d: sub(d, "contact.html", ">Your Plot</span></a>", ">Your plot</span></a>")),
+ ("I2 nav link text edited by hand", lambda d: sub(d, "contact.html", ">PlotArt</span></a>", ">Plotart</span></a>")),
  ("I2 stylesheet link removed from a page", lambda d: sub(d, "privacy.html", '<link rel="stylesheet" href="assets/identity/pn-identity.css">\n', "")),
  ("I2 reading surface switched by hand", lambda d: sub(d, "terms.html", "pn-id--paper", "pn-id--dark")),
  ("I4 token drifts from the homepage", lambda d: sub(d, "assets/identity/pn-identity.css", "--p4-earth:#27282A", "--p4-earth:#28282A")),

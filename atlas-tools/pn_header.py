@@ -8,13 +8,21 @@ and atlas-tools/prove-global-header.py re-renders every page's header from this
 module and requires byte equality, so no page can carry a different header.
 
 The header is two fenced blocks:
-  BAR  before the generated search rail: brand · Discovery Library · Your Plot ·
-       WhatsApp · (the Search pill's seat). On phones the two destinations hide.
-  ROW  after the search rail: the phone row (Discovery Library · Your Plot), hidden
-       above 720px. Exactly one of the two navigations is rendered at any width,
+  BAR  before the generated search rail: brand · Discovery Library · PlotArt · My Plot ·
+       WhatsApp · (the Search pill's seat). On phones the destinations hide.
+  ROW  after the search rail: the phone row (Discovery Library · PlotArt · My Plot),
+       hidden above 720px. Exactly one of the two navigations is rendered at any width,
        and the DOM order gives the visual focus order at every width:
-       desktop  brand > Discovery Library > Your Plot > WhatsApp > Search
-       phone    brand > WhatsApp > Search > Discovery Library > Your Plot
+       desktop  brand > Discovery Library > PlotArt > My Plot > WhatsApp > Search
+       phone    brand > WhatsApp > Search > Discovery Library > PlotArt > My Plot
+
+MY PLOT (founder approval 28 Oct 2026): the link always opens your-plot.html?myplot=1, the
+My Plot view of that page, which ALWAYS shows the homeowner's saved collection (an empty
+dashboard when nothing is saved) and never the Eircode / property journey. The link is
+correct with or without JavaScript. assets/identity/pn-header.js
+only changes how the pill looks: read-only, it counts saved products + added links in this
+browser's plotnua.myplot.v1 (Discovery journeys are not counted) and shows a red heart and
+the count. It never writes storage and makes no network request (guard G10).
 Search itself is the generated rail (build-search-rail.py, search.css, search.js),
 untouched; assets/identity/pn-header.css seats and styles its pill.
 
@@ -30,7 +38,7 @@ FONTS = ("https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1"
 
 # The approved destinations. Changing one here changes it everywhere.
 LIBRARY = ("discoveries.html", "Discovery Library")
-PLOT = ("your-plot.html", "Your Plot")
+PLOT = ("your-plot.html?myplot=1", "My Plot")    # founder approval 28 Oct 2026 (was "Your Plot")
 PLOTART = ("plotart/", "PlotArt")       # founder decision 27 Oct 2026: immediately after Discovery Library
 WHATSAPP = "https://wa.me/353834036695"
 WHATSAPP_LABEL = "Chat with PlotNua on WhatsApp (opens in a new tab)"
@@ -66,12 +74,14 @@ HOME_INFO = ('<button type="button" class="brand-info" id="brandInfoBtn"\n'
              '        aria-expanded="false" aria-controls="brandInfo"\n'
              '        aria-label="What is PlotNua?"><span aria-hidden="true">i</span></button>')
 
+# Discovery Library: a small compass, the discovery icon (Direction C, founder approval 28 Oct 2026)
 ICON_LIBRARY = ('<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" '
-                'aria-hidden="true" focusable="false"><rect x="2.5" y="4.5" width="10" height="12" rx="2"/>'
-                '<path d="M6 2.5h9a2.5 2.5 0 0 1 2.5 2.5v9"/></svg>')
+                'stroke-linecap="round" aria-hidden="true" focusable="false"><circle cx="10" cy="10" r="7.25"/>'
+                '<path d="m12.9 7.1-1.75 4.05L7.1 12.9l1.75-4.05Z"/></svg>')
 ICON_PLOT = ('<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" '
-             'stroke-linecap="round" aria-hidden="true" focusable="false"><path d="M3.5 9 10 3.5 16.5 9v7.5a1 1 0 0 1-1 1h-11a1 1 0 0 1-1-1Z"/>'
-             '<path d="M8 17.5v-5h4v5"/></svg>')
+             'stroke-linecap="round" aria-hidden="true" focusable="false"><path class="pn-heart" '
+             'd="M10 16.6s-6.2-3.7-6.2-8.2A3.4 3.4 0 0 1 10 6.3a3.4 3.4 0 0 1 6.2 2.1c0 4.5-6.2 8.2-6.2 8.2Z"/></svg>')
+JS = "assets/identity/pn-header.js?v=1"   # versioned so a cached copy never outlives a change
 ICON_ART = ('<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" '
             'stroke-linecap="round" aria-hidden="true" focusable="false"><rect x="3" y="3.5" width="14" height="13" rx="1.5"/>'
             '<path d="m5.5 14 3.5-4 2.5 2.5 1.5-1.5 2 3"/></svg>')
@@ -90,9 +100,14 @@ def href(page, h):
 
 def _dest(page, cls_extra=""):
     out = []
-    for (h, label), cls, icon in ((LIBRARY, "is-primary", ICON_LIBRARY), (PLOTART, "is-secondary", ICON_ART), (PLOT, "is-secondary", ICON_PLOT)):
+    for (h, label), cls, icon in ((LIBRARY, "is-primary", ICON_LIBRARY), (PLOTART, "is-secondary is-art", ICON_ART),
+                                  (PLOT, "is-secondary is-myplot", ICON_PLOT)):
         cur = ' aria-current="page"' if page == h else ""
-        out.append('<a class="pn-hdr-btn %s" href="%s"%s>%s<span>%s</span></a>' % (cls, href(page, h), cur, icon, label))
+        if h == PLOT[0]:   # the saved state is drawn by pn-header.js (read-only)
+            out.append('<a class="pn-hdr-btn %s" href="%s" data-myplot aria-label="My Plot">%s<span>%s</span>'
+                       '<span class="pn-hdr-count" aria-hidden="true" hidden></span></a>' % (cls, href(page, h), icon, label))
+        else:
+            out.append('<a class="pn-hdr-btn %s" href="%s"%s>%s<span>%s</span></a>' % (cls, href(page, h), cur, icon, label))
     return "".join(out)
 
 
@@ -124,12 +139,12 @@ def bar(page, has_search, banner):
             "    <nav class=\"pn-hdr-nav\" aria-label=\"Main\">%s</nav>\n"
             "    <span class=\"pn-hdr-sep\" aria-hidden=\"true\"></span>\n"
             "    %s\n%s"
-            "  </div>\n%s\n%s\n") % (
+            "  </div>\n%s\n<script src=\"%s\" defer></script>\n%s\n") % (
                 MARK["BAR"][0], open_tag, home, href(page, "assets/brand/plotnua-mark-master.svg"),
                 ("    " + HOME_INFO.replace("\n", "\n    ") + "\n") if page == "index.html" else "",
                 _dest(page), wa,
                 '    <span class="pn-hdr-search-slot" aria-hidden="true"></span>\n' if has_search else "",
-                close_tag, MARK["BAR"][1])
+                close_tag, href(page, JS), MARK["BAR"][1])
 
 
 def row(page):

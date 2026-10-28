@@ -66,6 +66,20 @@
 </script>
 
 <meta charset="utf-8">
+<!-- MY PLOT VIEW (proposal, 28 Oct 2026). your-plot.html?myplot=1 is the homeowner's saved
+     collection and ALWAYS opens My Plot, empty or not; it never shows the Eircode journey.
+     Decided here, before first paint, so the Eircode screen is never seen in this view. -->
+<script data-cookieconsent="ignore">(function(){try{if(new URLSearchParams(location.search).get('myplot')==='1'){var h=document.documentElement;h.classList.add('pn-myplot-view');document.title='My Plot | PlotNua';
+setTimeout(function(){h.classList.add('pn-myplot-open');},8000);}}catch(e){}})();</script>
+<style>html.pn-myplot-view:not(.pn-myplot-open) #screen-entry{opacity:0 !important;pointer-events:none !important}
+html.pn-myplot-view:not(.pn-myplot-journey) #pnReturn{display:none !important}
+html.pn-myplot-view:not(.pn-myplot-open) body::after{content:"Opening My Plot\2026";position:fixed;inset:0;display:grid;place-items:center;z-index:9999;color:#C2BDB5;font:500 15px/1 'Hanken Grotesk',system-ui,sans-serif;letter-spacing:.08em;pointer-events:none}
+.myplot-panel.is-empty-view .myplot-purpose,.myplot-panel.is-empty-view .myplot-section-label,.myplot-panel.is-empty-view .myplot-identity-sub{display:none}
+.myplot-empty--home{text-align:center;padding:28px 18px 8px}
+.myplot-panel .myplot-empty--home .myplot-empty-title{display:block;text-transform:none;letter-spacing:-.01em;font-weight:400;color:#F2EBE0;font-family:'Instrument Serif',Georgia,serif;font-size:clamp(30px,4vw,40px);line-height:1.1;margin:0 0 12px}
+.myplot-empty--home p{max-width:44ch;margin:0 auto 22px;line-height:1.55}
+.myplot-empty--home .btn-primary{display:inline-flex;text-decoration:none}
+@media (max-width:720px){.myplot-panel.is-empty-view .myplot-actions{margin-top:0}.myplot-panel.is-empty-view .myplot-byo{margin-top:36px}}</style>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Your Plot | PlotNua</title>
 <!-- LAUNCH COMPLETION — this page carried a title and nothing else. It is the
@@ -13292,6 +13306,8 @@
   // SPRINT 1C — CONTROLLED OPENING: the 'plot' key (#screen-plot) is
   // removed — that screen no longer exists to navigate to or restore via
   // Back/Forward.
+  const MYPLOT_VIEW = document.documentElement.classList.contains('pn-myplot-view');
+  if (MYPLOT_VIEW) { const h1 = document.querySelector('h1.pn-page-title'); if (h1) h1.textContent = 'My Plot'; }
   const HISTORY_SCREEN_MAP = {
     'landing': els.entry,
     'reveal': els.reveal,
@@ -13382,6 +13398,9 @@
   // still genuinely there.
   if (history.state && history.state.pnScreen) {
     currentHistoryKey = history.state.pnScreen;
+  } else if (MYPLOT_VIEW) {
+    history.replaceState({ pnScreen: 'myplot' }, '');
+    currentHistoryKey = 'myplot';
   } else {
     history.replaceState({ pnScreen: 'landing' }, '');
     currentHistoryKey = 'landing';
@@ -15300,7 +15319,7 @@
     // Nothing is recalculated on this path: the Property Brain does not run,
     // no Decision Profile is built and no recommendation is produced.
     try {
-      if (restored > 0 && new URLSearchParams(location.search).get('myplot') === '1') {
+      if (MYPLOT_VIEW) {
         openMyPlot();
       }
     } catch (e) { console.warn('[My Plot] direct open failed', e); }
@@ -31239,6 +31258,16 @@
   // els.plotScreen to els.matchResultsScreen, same reasoning as
   // productDetailReturn above.
   const myPlotReturn = createReturnableOverlay({ fallback: els.matchResultsScreen });
+  /* MY PLOT VIEW — opened on its own (?myplot=1), My Plot has no journey screen to return
+     to; Close goes back to the PlotNua page the homeowner came from, or the Discovery
+     Library, never into the Eircode journey or an empty Results screen. */
+  let myPlotHasReturn = false;
+  { const rememberOwn = myPlotReturn.remember; myPlotReturn.remember = function (s) { myPlotHasReturn = true; document.documentElement.classList.add('pn-myplot-journey'); return rememberOwn(s); }; }
+  function leaveMyPlotView(){
+    let back = '';
+    try { const r = new URL(document.referrer); if (r.origin === location.origin && !/your-plot\.html$/.test(r.pathname)) back = r.href; } catch (e) { back = ''; }
+    location.assign(back || 'discoveries.html');
+  }
 
   // =========================================================================
   // CP-2 — THE COMPARE SCREEN: OPENING AND THE WAY BACK.
@@ -31640,7 +31669,13 @@
   }
 
   function updateMyPlotAccess(){
-    const count = savedProductIds.size;
+    // HEADER PARITY (founder approval 28 Oct 2026): the same total the PlotNua header's
+    // My Plot pill shows (assets/identity/pn-header.js) and My Plot itself uses —
+    // saved products + links the homeowner added. Discovery journeys are not counted.
+    // addedItems is declared further down this script; guarded so an early call can never throw.
+    let addedCount = 0;
+    try { addedCount = addedItems.length; } catch (e) { addedCount = 0; }
+    const count = savedProductIds.size + addedCount;
     // RESULTS v4.0 — MY PLOT POPUP: hidden toggle moved from the button to
     // the wrapper so the new info trigger appears/disappears with it; the
     // button's own content/behaviour below is unchanged.
@@ -31827,6 +31862,21 @@
   function renderMyPlotSavedList(){
     els.myPlotSavedList.innerHTML = '';
     const ids = [...savedProductIds];
+    let viewEmpty = false;
+    try { viewEmpty = MYPLOT_VIEW && !ids.length && !addedItems.length && !(myPlotJourneys && myPlotJourneys.length); } catch (e) { viewEmpty = false; }
+    const panel = document.getElementById('myPlotPanel');
+    if (panel) panel.classList.toggle('is-empty-view', viewEmpty);
+    if (viewEmpty) {
+      const home = document.createElement('div');
+      home.className = 'myplot-empty myplot-empty--home';
+      home.innerHTML = '<span class="myplot-empty-title" style="font-family:\'Instrument Serif\',Georgia,serif;font-size:clamp(32px,4.4vw,44px);text-transform:none;letter-spacing:-.01em;font-weight:400">Your ideas, all in one place.</span>'
+        + '<p>You haven\u2019t saved anything yet. Explore the Discovery Library and save the possibilities, products and ideas that interest you.</p>'
+        + '<a class="btn-primary small" href="discoveries.html">Explore Discoveries</a>';
+      els.myPlotSavedList.appendChild(home);
+      if (els.myPlotSavedSummary) { els.myPlotSavedSummary.textContent = ''; els.myPlotSavedSummary.hidden = true; }
+      updateCompareVisibility();
+      return;
+    }
     if (!ids.length) {
       const empty = document.createElement('div');
       empty.className = 'myplot-empty';
@@ -34935,6 +34985,7 @@
        by the build. */
     els.myPlotCompareView.hidden = true;   // the pick-two step starts closed
     showScreen(els.myPlotScreen);
+    document.documentElement.classList.add('pn-myplot-open');
   }
 
   // LAUNCH v1.7 — PRIORITY 3: always opens My Plot, no exceptions — and
@@ -34946,6 +34997,7 @@
     openMyPlot();
   });
   els.myPlotCloseBtn.addEventListener('click', () => {
+    if (MYPLOT_VIEW && !myPlotHasReturn) { leaveMyPlotView(); return; }
     myPlotReturn.close();
   });
   if (els.matchOpenMyPlotForAddOwn) {
