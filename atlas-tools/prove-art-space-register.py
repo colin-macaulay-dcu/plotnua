@@ -34,7 +34,8 @@ FILES = [RB, PAGE, WORKER, GARDEN, PRIVACY, ART_WRANGLER, SCHEMA, PAGE23, DISCOV
 import importlib.util
 _spec = importlib.util.spec_from_file_location("pv4", ROOT / "atlas-tools" / "build-privacy-v4.py")
 PV4 = importlib.util.module_from_spec(_spec); _spec.loader.exec_module(PV4)
-_LIVE = _without_v6(PRIVACY.read_text(encoding="utf-8"))  # V6 layer: this proof governs V3-V5
+from privacy_v7_layer import without_v7 as _without_v7  # Privacy V7 (28 Oct 2026): this proof governs V3-V5 beneath it
+_LIVE = _without_v6(_without_v7(PRIVACY.read_text(encoding="utf-8")))  # V6 layer: this proof governs V3-V5
 # Privacy V4 was published on 13 Oct 2026 (founder approval, notice only). The
 # proof works on either state: V3_PAGE and V4_PAGE are built in memory and
 # written only inside a case.
