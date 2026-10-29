@@ -3,18 +3,18 @@
   "note": "SHA-256 of every published PlotArt file, from the launch build that passed prove-plotart-launch.py L1-L12 with the demonstration names (development branch founder/plotart-prototype). Any change to a published PlotArt file must come from a new verified build. Rebuilt 28 Oct 2026 (the legal-information release 2c89865 had changed the footers without updating this manifest). Rebuilt 29 Oct 2026 for the navigation and homepage refinement. Rebuilt 29 Oct 2026 for artist galleries Phase 1: artist gallery files are verified by L14 (provenance fingerprints), not pinned here.",
   "built_from": "founder/plotart-artist-galleries (Phase 3 preview: enquiry styles and pa-enquiry.js), OPEN state; no gallery published",
   "files": {
+    "founding-25.html": "e5ca813bc371cad65f3613cde6fd88e882202400460849349d451872427be7c9",
+    "living-gallery.html": "ed5fe2bbf2d657e4b76896ebbe519abd35c6924dbca4e4c4b113fdbdfea15003",
+    "index.html": "81c7d64ceb40368ca79e362323d1130a23b1f21ddf597206d34324b90720f339",
     "assets/f25-apply.js": "02d6e29b6a80435269cc4f01b8f67388c6e18a3abe7b81f1dd7a1449de9f861e",
-    "assets/hero/founder-01-abstract.webp": "7812df17f3651108820ed79dfe69aa1fdaa27640d5aa1d5464c3b08007b802b1",
-    "assets/living/plotart-living-gallery-colin-macaulay-artwork.webp": "f4861333a80fda7f704fd3c57d0a2b8f18db589b8505eb11192ac05c08d8d0f9",
     "assets/plotart.css": "8b48a291cfb084952ba052bbadff41a2c08b654b44415c19ce2ea16d45a4c7bd",
     "assets/plotart.js": "1aeda046a43a9877413943aa4573f8266280b94a5df21fb68421c5486189dca8",
-    "founding-25.html": "7b76126b5c89285b1dba6d2ac97696b67dd0c6cd8da2d18f7d1c4081fb1d2b1b",
-    "gallery/index.html": "c11f862711965078bd8eedffe27d39fa10d4627aade44d24bc232adbc07dd3d9",
-    "index.html": "41283215c9d924755e8c3f504cef7b00de593360626777c1c91abf60592a285f",
-    "living-gallery.html": "9385c8c305927cdc86e60cd34f699e0a1fcaf3992faf4cd0b0c8aa879bf127cc",
-    "assets/pa-enquiry.js": "e57ef00d58f3f2783d0ec3a9225869aa2cd3be215737d39d08c9f6dd22c78781"
+    "assets/pa-enquiry.js": "e57ef00d58f3f2783d0ec3a9225869aa2cd3be215737d39d08c9f6dd22c78781",
+    "assets/hero/founder-01-abstract.webp": "7812df17f3651108820ed79dfe69aa1fdaa27640d5aa1d5464c3b08007b802b1",
+    "assets/living/plotart-living-gallery-colin-macaulay-artwork.webp": "f4861333a80fda7f704fd3c57d0a2b8f18db589b8505eb11192ac05c08d8d0f9",
+    "gallery/index.html": "a651ac20ada8906b9634da75c8d33b7f3eb289a17d2ace485d49c00aa16c7593"
   },
   "outside_grid": {
-    "gallery/index.html": "64d218a2489f1a544985e6ba33766bf92fc8a27eb23beafb1f21df2610de0dc7"
+    "gallery/index.html": "58593d8441c56f2508041f43fedf04d9c942cc1e8f04fd1a0ccc5a6d8b9a17fa"
   }
 }
