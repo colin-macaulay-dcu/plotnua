@@ -268,6 +268,51 @@ check('F4 founder system check: database and image storage written, read back an
   const m = await db.prepare("SELECT * FROM mail_capture WHERE to_addr='ciara-invite@example.test'").first();
   check('F5 creating a Studio account emails the invitation (Reply-To hello@plotnua.ie, sign-in link, no password, nothing published before review)',
     inv.j.invitation_sent === true && m && m.reply_to === 'hello@plotnua.ie' && /Your PlotArt Studio is ready/.test(m.subject) && m.body.includes(url) && /one-time code/.test(m.body) && /at least 10 works/.test(m.body) && !/%|commission/i.test(m.body), JSON.stringify([inv.j, m && m.subject, before])); }
+/* ---- access sweep (founder condition C, 29 Oct 2026): with Access letting ANY email sign in, the Studio itself must
+   authenticate every request and authorise by its own records. Every route, every persona, real ids from the database. */
+{
+  const db = await mf.getD1Database('DB', 'studio');
+  await call('POST', '/api/admin/artists', FOUNDER, { display_name: 'Sweep Artist', email: 'sweep@example.test', founding: false });
+  const mine = (await call('GET', '/api/me', 'sweep@example.test')).j;
+  const myId = (await db.prepare("SELECT id FROM artists WHERE email='sweep@example.test'").first()).id;
+  const others = await db.prepare("SELECT id, email, display_name FROM artists WHERE id != ?").bind(myId).all();
+  const aw = (await db.prepare('SELECT id FROM artworks WHERE artist_id != ?').bind(myId).all()).results.map(r => r.id);
+  const im = (await db.prepare('SELECT id FROM images WHERE artist_id != ?').bind(myId).all()).results.map(r => r.id);
+  const sb = (await db.prepare('SELECT id FROM submissions').all()).results.map(r => r.id);
+  const qu = (await db.prepare('SELECT id, artist_id, version FROM publish_queue').all()).results;
+  const ar = others.results.map(r => r.id);
+  const secrets = others.results.flatMap(r => [r.email, r.display_name]);
+  const leaks = t => secrets.filter(x => x && t.includes(x));
+  const founderRoutes = [['GET', '/admin'], ['GET', '/api/admin/overview'], ['GET', '/api/admin/audit'], ['GET', '/api/admin/enquiries'],
+    ['POST', '/api/admin/selftest'], ['POST', '/api/admin/artists'],
+    ...ar.flatMap(id => [['POST', `/api/admin/artists/${id}/suspend`], ['POST', `/api/admin/artists/${id}/unpublish`]]),
+    ...sb.flatMap(id => [['POST', `/api/admin/submissions/${id}/approve`], ['POST', `/api/admin/submissions/${id}/changes`], ['GET', `/admin/preview/${id}/index.html`]]),
+    ...qu.flatMap(q => [['POST', `/api/admin/queue/${q.id}/publish`], ['GET', `/admin/preview/v-${q.artist_id}-${q.version}/index.html`]])];
+  const artistRoutes = [['GET', '/'], ['GET', '/api/me'], ['PUT', '/api/me/profile'], ['PUT', '/api/me/portrait'], ['GET', '/api/artworks'], ['POST', '/api/artworks'],
+    ['POST', '/api/artworks/order'], ['GET', '/api/enquiries'], ['POST', '/api/submit'], ['POST', '/api/submit/withdraw'], ['GET', '/preview/index.html']];
+  const crossRoutes = [...aw.flatMap(id => [['GET', `/api/artworks/${id}`], ['PUT', `/api/artworks/${id}`], ['DELETE', `/api/artworks/${id}`],
+      ['POST', `/api/artworks/${id}/availability`], ['PUT', `/api/artworks/${id}/images?role=main`]]),
+    ...im.flatMap(id => [['GET', `/api/images/${id}`], ['GET', `/api/images/${id}/preview`], ['PATCH', `/api/images/${id}`], ['DELETE', `/api/images/${id}`], ['PUT', `/api/images/${id}/preview`]])];
+  const pipeRoutes = [['GET', '/api/pipeline/queue'], ...qu.flatMap(q => [['POST', `/api/pipeline/export/${q.id}`], ['POST', `/api/pipeline/result/${q.id}`]]),
+    ...qu.flatMap(q => im.slice(0, 2).map(i => ['GET', `/api/pipeline/image/${q.id}/${i}`]))];
+  const go = (m, path, email) => call(m, path, email, ['POST', 'PUT', 'PATCH'].includes(m) ? {} : undefined);
+  const bad = [];
+  const expect = async (label, routes, email, ok) => { for (const [m, path] of routes) { const r = await go(m, path, email); const t = JSON.stringify(r.j);
+    if (!ok(r.s) || leaks(t).length) bad.push(`${label} ${m} ${path} → ${r.s} ${leaks(t).join(',')}`); } };
+  const refused = s => s === 401 || s === 403;
+  await expect('no token', [...founderRoutes, ...artistRoutes, ...crossRoutes], null, refused);
+  await expect('forged token', [...founderRoutes, ...artistRoutes], null, refused);
+  await expect('unknown email', [...founderRoutes, ...artistRoutes, ...crossRoutes], 'stranger@example.test', s => s === 403);
+  await expect('artist→founder', founderRoutes, 'sweep@example.test', s => s === 403);
+  await expect('artist→other artist', crossRoutes, 'sweep@example.test', s => s === 404 || s === 403 || s === 400);
+  await expect('no bearer (founder)', pipeRoutes, FOUNDER, s => s === 401);
+  await expect('no bearer (artist)', pipeRoutes, 'sweep@example.test', s => s === 401);
+  await expect('no bearer (stranger)', pipeRoutes, 'stranger@example.test', s => s === 401);
+  const forged = await call('GET', '/api/me', null, undefined, { 'Cf-Access-Jwt-Assertion': (t => { const i = t.lastIndexOf('.') + 10; return t.slice(0, i) + (t[i] === 'A' ? 'B' : 'A') + t.slice(i + 1); })(token('sweep@example.test')) });
+  const n = founderRoutes.length * 4 + artistRoutes.length * 3 + crossRoutes.length * 3 + pipeRoutes.length * 3;
+  check(`Z1 access sweep: ${n} requests across every route: unauthenticated, forged and unknown-email requests refused; artists refused the founder desk and every other artist's records; pipeline refuses all without its token; no other artist's name or email in any refusal`,
+    bad.length === 0 && forged.s === 401 && mine.ok !== false, bad.slice(0, 8).join(' | ') + ' forged:' + forged.s);
+}
 check('F3 every action is in the audit log', ['invite', 'image_upload', 'submit', 'licence_accepted', 'submission_changes', 'submission_approve', 'publish', 'published', 'instant_change', 'suspend', 'unpublish'].every(a => audit.includes(a)));
 
 async function prodSnap(artist, v) {
