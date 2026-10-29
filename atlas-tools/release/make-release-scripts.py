@@ -44,7 +44,7 @@ STANDARD = [
     ("python3 atlas-tools/build-search-rail.py --check", "nothing written", "search rail unchanged"),
     ("node atlas-tools/prove-landmarks.mjs", "133 passed, 0 failed", "landmarks 133/133"),
     ("python3 atlas-tools/prove-landmarks-capability.py", "24 caught / 0 vacuous / 0 BLIND / 0 MISATTRIBUTED", "landmark capability 24/24"),
-    ("node atlas-tools/validate-image-provenance.js", "16 checks, 16 passed, 0 failed", "provenance guard 16/16 (P5c founder original artwork, 29 Oct 2026)"),
+    ("node atlas-tools/validate-image-provenance.js", "17 checks, 17 passed, 0 failed", "provenance guard 17/17 (P5d artist-supplied artwork, 29 Oct 2026)"),
     ("node atlas-tools/prove-timberin-containment.mjs", "real tree: contained · 25 mutations, 25 proved, 0 not proved", "TimberIN containment 25/25"),
     ("node atlas-tools/prove-cluster2-garden-retreat.mjs", "16 checks, 16 passed, 0 failed", "Garden Retreat claim guards 16/16"),
     ("env -u PN_PREVIEW_OFFERS python3 atlas-tools/build-maker-explorer.py --check", "CHECK OK — G1-G14", "maker directory G1-G14"),
@@ -77,7 +77,7 @@ STANDARD = [
     # build (manifest), noindex, follow, and applications are not open. Changing the state is a new release.
     # Virtual Gallery (28 Oct 2026): a fourth page, plotart/gallery/, published empty (guard L11).
     ("python3 atlas-tools/prove-plotart-launch.py . --switches atlas-tools/release/plotart-launch-switches.json --manifest atlas-tools/release/plotart-launch-manifest.json",
-     "PLOTART LAUNCH · OK — L1-L13 on 4 pages · applications open", "PlotArt launch L1-L13: Virtual Gallery empty; three-pill navigation, no banner; Founding 25 and Living Gallery separate (applications open, founder activation 28 Oct 2026)"),
+     "PLOTART LAUNCH · OK — L1-L14 on 4 pages · applications open", "PlotArt launch L1-L14 (L14 published artist galleries): Virtual Gallery empty; three-pill navigation, no banner; Founding 25 and Living Gallery separate (applications open, founder activation 28 Oct 2026)"),
     # PlotArt in the PlotNua navigation and the A Home for Art links (proposed 27 Oct 2026)
     # 31 header pages since DISC-032 The Supper Club at Home joined the header registry (27 Oct 2026; 30 after DISC-033).
     ("python3 atlas-tools/prove-plotart-integration.py", "PLOTART INTEGRATION · OK — N1-N4 · 31 header pages", "PlotArt navigation and A Home for Art links N1-N4"),

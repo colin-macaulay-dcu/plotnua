@@ -82,7 +82,12 @@ if (!records || !legacy) {
    created and owned by PlotNua's founder. Not AI, not a supplier image. Checked by P5c: the
    creator, the owner's attestation, the photograph and its processing, the visible credit and the
    photographer (recorded as NOT YET CONFIRMED until the founder confirms who took it). */
-const ASSET_CLASSES = ['SUPPLIER_IMAGE', 'AI_ILLUSTRATION', 'ILLUSTRATION_VERIFIED_NOT_AI', 'FOUNDER_ORIGINAL_ARTWORK'];
+/* ARTIST_SUPPLIED_ARTWORK (founder decision, 29 Oct 2026; PlotArt artist galleries): a published derivative of
+   a photograph supplied by a PlotArt artist through PlotArt Studio, under the Gallery Publication and Image
+   Licence. Written by atlas-tools/plotart-gallery-ingest.py; checked by P5d. Public fields only: the record
+   names the artist's public slug and an opaque permission reference, never personal data. */
+const ASSET_CLASSES = ['SUPPLIER_IMAGE', 'AI_ILLUSTRATION', 'ILLUSTRATION_VERIFIED_NOT_AI', 'FOUNDER_ORIGINAL_ARTWORK', 'ARTIST_SUPPLIED_ARTWORK'];
+const ARTIST_LICENCE_VERSIONS = ['PA-GPIL-2026-10-29'];
 /* product-card is DELIBERATELY ABSENT. The founder's rule becomes a
    vocabulary restriction rather than a convention somebody has to remember:
    enabling it is a schema change with its own approval, not an oversight
@@ -230,7 +235,8 @@ const FOUNDER_ATTESTED_ALL = [FOUNDER_ATTESTED_GRP, FOUNDER_ATTESTED_H6, FOUNDER
 const attestedFor = h => FOUNDER_ATTESTED_ALL.find(x => x.sha256.has(String(h)));
 /* 'gridnua' (founder approval of the GridNua limited launch, 29 Oct 2026): the GridNua initiative pages. */
 const PERMITTED_SURFACES = ['discovery', 'library-card', 'homepage',
-                            'about', 'journey', 'preview', 'plotart', 'gridnua'];
+                            'about', 'journey', 'preview', 'plotart', 'gridnua',
+                            'plotart-artist-gallery', 'plotart-virtual-gallery'];
 const IMG_EXT = /\.(jpe?g|png|webp|avif|gif|svg|ico)$/i;
 /* PlotNua's own origins. An absolute self-reference is still one of our
    images and still needs declaring: twitter:image points at
@@ -640,6 +646,31 @@ console.log('-'.repeat(74));
   }
   problems.length ? bad('P5c every FOUNDER_ORIGINAL_ARTWORK is fully declared', `${problems.length}: ${problems.slice(0, 3).join('; ')}`)
     : ok('P5c every FOUNDER_ORIGINAL_ARTWORK is fully declared', fo.length ? `${fo.length} checked` : 'none recorded; the check is live');
+}
+
+/* ── P5d · an ARTIST_SUPPLIED_ARTWORK is fully declared (29 Oct 2026) ── */
+{
+  const ar = records.filter(r => r.class === 'ARTIST_SUPPLIED_ARTWORK');
+  const problems = [];
+  for (const r of ar) {
+    const slug = String(r.artist_slug || '');
+    if (!/^[a-z0-9]+(?:-[a-z0-9]+){0,6}$/.test(slug)) problems.push(`${r.asset}: no valid artist slug`);
+    else if (!String(r.asset).startsWith(`plotart/artists/${slug}/img/`)) problems.push(`${r.asset}: not inside its artist's gallery folder`);
+    if (!['artwork', 'portrait'].includes(r.subject)) problems.push(`${r.asset}: subject must be artwork or portrait`);
+    if (r.subject === 'artwork' && !r.work_slug) problems.push(`${r.asset}: an artwork image names no artwork`);
+    if (!ARTIST_LICENCE_VERSIONS.includes(r.licence_version)) problems.push(`${r.asset}: no accepted Gallery Publication and Image Licence version`);
+    if (!r.permission_ref) problems.push(`${r.asset}: no permission reference`);
+    if (!['self', 'other_with_permission'].includes(r.photographer)) problems.push(`${r.asset}: who took the photograph is not declared`);
+    if (r.photographer === 'other_with_permission' && !r.photo_credit) problems.push(`${r.asset}: a photographer's permission without a credit`);
+    if (!['none', 'assisted', 'generated'].includes(r.ai_involvement)) problems.push(`${r.asset}: no AI declaration`);
+    if (!/^[0-9a-f]{64}$/.test(String(r.source_sha256 || ''))) problems.push(`${r.asset}: no source fingerprint`);
+    if (!Array.isArray(r.processing) || !r.processing.some(x => /metadata removed/.test(x))) problems.push(`${r.asset}: no record that metadata was removed`);
+    if ('prompt' in r || 'reference_inputs' in r) problems.push(`${r.asset}: an artist image record carries a prompt`);
+    if (/@|\+?\d[\d ]{8,}\d/.test(JSON.stringify({c: r.photo_credit, p: r.permission_ref, s: slug}))) problems.push(`${r.asset}: personal contact details in a public record`);
+    if (!Array.isArray(r.permitted_surfaces) || !r.permitted_surfaces.length || r.permitted_surfaces.some(x => !/^plotart-/.test(x))) problems.push(`${r.asset}: artist images are permitted on PlotArt gallery surfaces only`);
+  }
+  problems.length ? bad('P5d every ARTIST_SUPPLIED_ARTWORK is fully declared', `${problems.length}: ${problems.slice(0, 3).join('; ')}`)
+    : ok('P5d every ARTIST_SUPPLIED_ARTWORK is fully declared', ar.length ? `${ar.length} checked` : 'none recorded; the check is live');
 }
 
 /* ── P6 · anti-laundering ─────────────────────────────────────────────── */

@@ -84,6 +84,17 @@ HERO_IMAGES = {"assets/hero/founder-01-abstract.webp"}
 # The Living Gallery image (consolidated brief, 29 Oct 2026): the founder's painting in an AI-generated interior visualisation.
 LG_IMAGE = "assets/living/plotart-living-gallery-colin-macaulay-artwork.webp"
 ALLOWED = set(PAGES) | {"assets/plotart.css", "assets/plotart.js", LG_IMAGE} | HERO_IMAGES | ({"assets/f25-apply.js"} if launch.get("f25_application_state") == "open" else set())
+# Published artist galleries (Phase 1, 29 Oct 2026; checked in full by L14). Only these shapes are allowed:
+#   artists/<slug>/index.html · artists/<slug>/<artwork-slug>.html · artists/<slug>/img/<name>.webp
+ART_FILE = re.compile(r"^artists/([a-z0-9]+(?:-[a-z0-9]+){0,6})/(?:[a-z0-9]+(?:-[a-z0-9]+){0,6}\.html|img/[a-z0-9-]+-\d{2,5}\.webp)$")
+ARTIST_FILES = set()
+for _d, _, _fs in os.walk(os.path.join(PA, "artists")):
+    for _f in _fs:
+        _r = os.path.relpath(os.path.join(_d, _f), PA).replace(os.sep, "/")
+        if ART_FILE.match(_r):
+            ARTIST_FILES.add(_r)
+GALLERY_SLUGS = sorted({ART_FILE.match(f).group(1) for f in ARTIST_FILES if f.endswith("/index.html")})
+ALLOWED |= ARTIST_FILES
 
 # L1
 found = set()
@@ -91,6 +102,11 @@ for d, _, fs in os.walk(PA):
     for f in fs:
         found.add(os.path.relpath(os.path.join(d, f), PA).replace(os.sep, "/"))
 need(found == ALLOWED, "L1 plotart/ must hold exactly the launch files; extra %s, missing %s" % (sorted(found - ALLOWED), sorted(ALLOWED - found)))
+
+def outside_grid(raw):
+    """The Virtual Gallery page with its collection grid (artist cards and spaces) blanked out."""
+    return re.sub(rb'<ol class="pa-vg2-grid"[^>]*>.*?</ol>', b'<ol class="pa-vg2-grid"><!-- collection --></ol>', raw, flags=re.S)
+
 
 def visible_text(s):
     s = re.sub(r"<script.*?</script>|<style.*?</style>|<!--.*?-->|<svg.*?</svg>", " ", s, flags=re.S)
@@ -184,11 +200,18 @@ need(len(demo_names) > 0 or not os.path.exists(cat_path), "L3 demonstration name
 if "--manifest" in sys.argv:
     import hashlib
     man = json.load(open(sys.argv[sys.argv.index("--manifest") + 1], encoding="utf-8"))
-    need(set(man["files"]) == found, "L3 manifest lists %s, plotart/ holds %s" % (sorted(man["files"]), sorted(found)))
+    # Artist gallery files are published by the content-only pipeline and verified by L14 (provenance fingerprints),
+    # so the manifest pins every OTHER PlotArt file: code, styles and the launch pages.
+    need(set(man["files"]) == found - ARTIST_FILES, "L3 manifest lists %s, plotart/ holds %s" % (sorted(man["files"]), sorted(found - ARTIST_FILES)))
+    # The Virtual Gallery's collection grid changes as galleries are published (content-only releases); everything
+    # OUTSIDE the grid stays pinned by "outside_grid" (the grid itself is checked by L11 and L14).
     for rel, sha in man["files"].items():
         fp = os.path.join(PA, rel)
-        got = hashlib.sha256(open(fp, "rb").read()).hexdigest() if os.path.exists(fp) else None
-        need(got == sha, "L3 %s differs from the verified build (manifest)" % rel)
+        raw = open(fp, "rb").read() if os.path.exists(fp) else None
+        got = hashlib.sha256(raw).hexdigest() if raw is not None else None
+        og = man.get("outside_grid", {}).get(rel)
+        need(got == sha or (og is not None and raw is not None and hashlib.sha256(outside_grid(raw)).hexdigest() == og),
+             "L3 %s differs from the verified build (manifest)" % rel)
 elif not os.path.exists(cat_path):
     need(False, "L3 no demonstration data and no --manifest: content cannot be verified")
 
@@ -264,14 +287,19 @@ if vg:
     # Consolidated brief (29 Oct 2026): 25 initial gallery spaces, the collection's centrepiece. A space is
     # never a link and carries no name, image, place or availability; no Founding 25 promotion on this page.
     spaces = re.findall(r'<li class="pa-gspace pa-gspace--t[1-5]" aria-label="Gallery space (\d\d)">(.*?)</li>', vg, re.S)
-    need([int(n) for n, _ in spaces] == list(range(1, 26)), "L11 the Virtual Gallery must show gallery spaces 01-25 in order (found %d)" % len(spaces))
+    _cards = re.findall(r'<li class="pa-gcard(?: is-founding)?"><a class="pa-gcard-tile" href="\.\./artists/([a-z0-9-]+)/"', vg)
+    need(sorted(_cards) == GALLERY_SLUGS and len(set(_cards)) == len(_cards),
+         "L11 Virtual Gallery cards must match the published artist galleries exactly (cards %s, galleries %s)" % (_cards, GALLERY_SLUGS))
+    need([int(n) for n, _ in spaces] == list(range(len(_cards) + 1, 26)), "L11 the Virtual Gallery must show the remaining gallery spaces in order up to 25 (found %d)" % len(spaces))
     need(all("<a " not in body and "<img" not in body and re.sub(r"\s+", " ", visible_text(body)).strip() == n for n, body in spaces),
          "L11 a gallery space links somewhere or carries content beyond its number")
-    need("pa-gcard" not in vg.split("<main", 1)[-1], "L11 an artist card is published (needs approved artists and their gallery pages)")
     _vgm = vg.split("<main", 1)[-1].split("</main>")[0]; _vgmv = re.sub(r"\s+", " ", visible_text(_vgm))
     need("founding-25.html" not in _vgm and "Founding 25" not in _vgmv and "Artist first" not in _vgmv, "L11 the Virtual Gallery carries Founding 25 promotion or an 'Artist first' section")
     need("The first twenty-five galleries." in vgv, "L11 the Virtual Gallery collection heading is not the approved wording")
-    need(not re.search(r"<img\b|<picture\b|<svg\b|background-image|url\(", vg.split("<main", 1)[-1].split("</main>")[0]), "L11 the Virtual Gallery shows an image (no portrait or artwork may appear)")
+    _vgimgs = re.findall(r"<img\b[^>]*>", _vgm)
+    need(not re.search(r"<picture\b|<svg\b|background-image|url\(", _vgm) and len(_vgimgs) == len(_cards) and
+         all(re.search(r'src="\.\./artists/(%s)/img/[a-z0-9-]+\.webp"' % "|".join(map(re.escape, GALLERY_SLUGS or ["-"])), t) for t in _vgimgs),
+         "L11 the Virtual Gallery shows an image other than a published artist's card image")
     need(not re.search(r"testimonial|“|”|\bsaid\b", visible_text(vg.split("<main", 1)[-1].split("</main>")[0]), re.I), "L11 the Virtual Gallery carries a quotation or testimonial")
     need("<title>Virtual Gallery | PlotArt</title>" in vg, "L11 the Virtual Gallery title is not the approved one")
 smp = os.path.join(SITE, "sitemap.xml")
@@ -346,9 +374,42 @@ if STATE == "open":
          "L13 the application script must store and log nothing")
     need(re.search(r"credentials: 'omit'", js13) is not None, "L13 the application script must send no credentials")
 
+# L14 · published artist galleries (Phase 1, founder decision 29 Oct 2026). Every published image has an
+# ARTIST_SUPPLIED_ARTWORK provenance record whose fingerprint matches; pages are noindex, carry no private-preview
+# material, expose no address but hello@plotnua.ie, quote no percentage, and a Founding Artist gallery shows at
+# least 10 works. Only gallery images under the artist's own img/ folder are used.
+_recp = os.path.join(SITE, "image-provenance-records.json")
+_arts = {}
+if os.path.exists(_recp):
+    _arts = {r["asset"]: r for r in json.load(open(_recp, encoding="utf-8")).get("records", []) if r.get("class") == "ARTIST_SUPPLIED_ARTWORK"}
+import hashlib as _hl
+for slug in GALLERY_SLUGS:
+    base = "artists/%s/" % slug
+    for f in sorted(x for x in ARTIST_FILES if x.startswith(base)):
+        full = os.path.join(PA, f)
+        if f.endswith(".webp"):
+            rec = _arts.get("plotart/" + f)
+            need(rec is not None and rec.get("artist_slug") == slug and rec.get("sha256") == _hl.sha256(open(full, "rb").read()).hexdigest(),
+                 "L14 %s has no matching ARTIST_SUPPLIED_ARTWORK provenance record" % f)
+            continue
+        doc = open(full, encoding="utf-8").read()
+        main = doc.split("<main", 1)[-1].split("</main>")[0]
+        vis = re.sub(r"\s+", " ", visible_text(doc))
+        need('<meta name="robots" content="noindex, follow">' in doc, "L14 %s must be noindex, follow until indexing is approved" % f)
+        need("pa-ag-check" not in doc and "Private preview" not in doc and "pa-proto" not in doc, "L14 %s carries private-preview material" % f)
+        need(all(m == "hello@plotnua.ie" for m in re.findall(r"mailto:([^?\"]+)", doc)) and
+             not re.search(r"[A-Za-z0-9._%+-]+@(?!plotnua\.ie)[A-Za-z0-9-]+\.[A-Za-z]", vis), "L14 %s exposes an address other than hello@plotnua.ie" % f)
+        need("%" not in vis, "L14 %s quotes a percentage" % f)
+        for src in re.findall(r'<img\b[^>]*\bsrc="([^"]+)"', main):
+            need(src.startswith("img/") and (base + src) in ARTIST_FILES, "L14 %s shows an image outside its own gallery folder: %s" % (f, src))
+        if f.endswith("/index.html") and "pa-gcard-badge" in main:
+            need(len(re.findall(r'<li class="pa-ag-work', main)) >= 10, "L14 %s: a Founding Artist gallery shows at least 10 artworks" % f)
+for asset in _arts:
+    need(asset[len("plotart/"):] in ARTIST_FILES, "L14 provenance record for %s describes no published file" % asset)
+
 if problems:
     print("PLOTART LAUNCH · FAILED (%d)" % len(problems))
     for x in problems:
         print("  " + x)
     sys.exit(1)
-print("PLOTART LAUNCH · OK — L1-L13 on %d pages · applications %s (%d demonstration names checked absent)" % (len(PAGES), STATE, len(demo_names)))
+print("PLOTART LAUNCH · OK — L1-L14 on %d pages · applications %s (%d demonstration names checked absent)" % (len(PAGES), STATE, len(demo_names)))
