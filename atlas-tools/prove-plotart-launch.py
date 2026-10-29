@@ -45,11 +45,11 @@ once the launch pages are released). Prints "PLOTART LAUNCH · OK" only when:
       placeholder wording; no image, portrait, name, price, biography or testimonial;
       the exact sentence "No artists have been selected, and no galleries are published
       yet."; a link to the Founding 25 page; noindex, follow; never in the sitemap. Every
-      launch page's navigation (founder approval 29 Oct 2026) is exactly three pills:
-      Virtual Gallery (the PlotArt homepage), Living Gallery, PlotNua Home. Virtual
-      Gallery is current on the homepage and the Virtual Gallery, Living Gallery on its
-      page; the Founding 25 page has no current pill; PlotNua Home is never current;
-      Founding 25 and About are not in the navigation.
+      launch page's navigation (founder decision 29 Oct 2026) is exactly four pills:
+      PlotArt Home, Virtual Gallery (gallery/), Living Gallery, PlotNua Home, each current
+      on its own page; the Founding 25 page has no current pill; PlotNua Home is never
+      current; Founding 25 and About are not in the navigation. The Virtual Gallery shows
+      an honest empty state, not placeholder slots or counters.
       It says the Virtual Gallery grows beyond its first 25 galleries and that every
       accepted artist receives their own gallery (founder decision 28 Oct 2026).
   L12 the Founding 25 and the Living Gallery are separate programmes (founder decision
@@ -159,6 +159,8 @@ need(all(('src="%s"' % x) in home for x in HERO_IMAGES) and "Original artwork by
      and len(re.findall(r'<img [^>]*alt="Painting by Colin Macaulay', home)) == 1 and len(re.findall(r"<img\b", home)) == 1 + home.count("plotnua-mark-master.svg"),
      "L6 the homepage image must be exactly the founder's one credited painting")
 need(not re.search(r"(?i)AI-generated|conceptual image", visible_text(home)), "L6 the homepage still carries the AI-image hero label")
+need(not re.search(r'pa-vg-card|pa-vg-grid|pa-vg-count|galleries reserved|waiting for their artists', home), "L6 the homepage shows empty gallery slots or counters (removed, 29 Oct 2026)")
+need('href="gallery/"' in home and 'href="founding-25.html#apply"' in home or STATE != "open", "L6 the homepage must link to the Virtual Gallery and the Founding 25 application")
 need("isn't open yet" in visible_text(home) and "No artwork is currently available through PlotArt." in visible_text(home)
      and "no artists or artworks have been published yet" in visible_text(home), "L6 the homepage must say the gallery isn't open, no artists or artworks have been published yet, and no artwork is currently available through PlotArt")
 need("This is the experience PlotArt is building" in visible_text(home), "L6 the buyer experience must be framed as what PlotArt is building")
@@ -244,16 +246,11 @@ if vg:
     vgv = re.sub(r"\s+", " ", visible_text(vg))
     need(VG_EMPTY in vgv, "L11 the Virtual Gallery must say exactly: %s" % VG_EMPTY)
     need(LINE in vgv, "L11 the Virtual Gallery's Founding 25 note is not the %s wording (%s)" % (STATE, LINE))
-    grid = re.search(r'<ol class="pa-vg-grid"[^>]*>(.*?)</ol>', vg, re.S)
-    need(grid is not None, "L11 the Virtual Gallery grid is missing")
-    if grid:
-        cards = re.findall(r'<li class="pa-vg-card">(.*?)</li>', grid.group(1), re.S)
-        need(len(cards) == 25, "L11 the Virtual Gallery must show exactly 25 placeholders (found %d)" % len(cards))
-        for i, c in enumerate(cards, 1):
-            got = re.sub(r"\s+", " ", visible_text(c)).strip()
-            need(got == ("%02d " % i) + VG_SLOT % i, "L11 placeholder %d carries other content: %r" % (i, got[:80]))
-        rest = re.sub(r'<li class="pa-vg-card">.*?</li>', "", grid.group(1), flags=re.S)
-        need(len(re.findall(r"<li\b", rest)) == 1 and 'href="../founding-25.html"' in rest, "L11 the grid may hold only the 25 placeholders and the Founding 25 link")
+    # Founder decision 29 Oct 2026: an honest empty state; no placeholder slots or counters; the gallery
+    # is built to grow beyond the Founding 25, which is a founding designation within it.
+    need('class="pa-vg-empty" role="status"' in vg, "L11 the Virtual Gallery must show its empty state")
+    need(not re.search(r'pa-vg-card|pa-vg-grid|pa-vg-count|Awaiting its artist|galleries reserved', vg), "L11 the Virtual Gallery shows placeholder slots or counters (removed, 29 Oct 2026)")
+    need("Founding Artist recognition" in vgv and "The gallery is designed to welcome artists beyond the first 25" in vgv, "L11 the Virtual Gallery must present the Founding 25 as a designation within a gallery built to grow")
     need(not re.search(r"<img\b|<picture\b|<svg\b|background-image|url\(", vg.split("<main", 1)[-1].split("</main>")[0]), "L11 the Virtual Gallery shows an image (no portrait or artwork may appear)")
     need('href="../founding-25.html"' in vg, "L11 the Virtual Gallery must link to the Founding 25 page")
     need(not re.search(r"testimonial|“|”|\bsaid\b", visible_text(vg.split("<main", 1)[-1].split("</main>")[0]), re.I), "L11 the Virtual Gallery carries a quotation or testimonial")
@@ -263,8 +260,8 @@ if vg:
 smp = os.path.join(SITE, "sitemap.xml")
 if os.path.exists(smp):
     need("plotart" not in open(smp, encoding="utf-8").read(), "L11 sitemap.xml lists a PlotArt URL")
-NAV_WANT = ["Virtual Gallery", "Living Gallery", "PlotNua Home"]
-NAV_CURRENT = {"index.html": "Virtual Gallery", "gallery/index.html": "Virtual Gallery", "living-gallery.html": "Living Gallery", "founding-25.html": None}
+NAV_WANT = ["PlotArt Home", "Virtual Gallery", "Living Gallery", "PlotNua Home"]
+NAV_CURRENT = {"index.html": "PlotArt Home", "gallery/index.html": "Virtual Gallery", "living-gallery.html": "Living Gallery", "founding-25.html": None}
 for name in PAGES:
     p = os.path.join(PA, name)
     if os.path.exists(p):
@@ -277,8 +274,8 @@ for name in PAGES:
         cur = [html.unescape(x[2]) for x in links if x[1]]
         need(cur == ([NAV_CURRENT[name]] if NAV_CURRENT[name] else []), "L11 %s current pill is %s, not %s" % (name, cur, NAV_CURRENT[name]))
         depth = "../" * name.count("/")
-        need(len(links) == 3 and links[0][0] == depth + "index.html" and links[1][0] == depth + "living-gallery.html" and links[2][0] == depth + "../index.html",
-             "L11 %s pills must link to the PlotArt homepage, the Living Gallery and the PlotNua homepage" % name)
+        need(len(links) == 4 and links[0][0] == depth + "index.html" and links[1][0] == depth + "gallery/" and links[2][0] == depth + "living-gallery.html" and links[3][0] == depth + "../index.html",
+             "L11 %s pills must link to the PlotArt homepage, the Virtual Gallery, the Living Gallery and the PlotNua homepage" % name)
         hv = visible_text(head.group(1)) if head else ""
         need("Founding 25" not in hv and "About" not in hv, "L11 %s header still offers Founding 25 or About" % name)
 
