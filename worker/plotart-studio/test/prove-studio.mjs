@@ -263,6 +263,11 @@ const sysNoHdr = await call('POST', '/api/admin/selftest', FOUNDER, undefined, {
 const leftover = await (async () => { const l = await (await mf.getR2Bucket('IMAGES', 'studio')).list({ prefix: 'system-check/' }); return l.objects.length; })();
 check('F4 founder system check: database and image storage written, read back and removed; refused to artists and without the Studio header',
   sys.j.passed === true && /working/.test(sys.j.database) && /working/.test(sys.j.image_storage) && leftover === 0 && sysA.s === 403 && sysNoHdr.s === 403, JSON.stringify([sys.j, sysA.s, sysNoHdr.s, leftover]));
+{ const db = await mf.getD1Database('DB', 'studio'); const before = (await db.prepare('SELECT COUNT(*) n FROM mail_capture').first()).n;
+  const inv = await call('POST', '/api/admin/artists', FOUNDER, { display_name: 'Ciara Invite', email: 'ciara-invite@example.test', founding: true });
+  const m = await db.prepare("SELECT * FROM mail_capture WHERE to_addr='ciara-invite@example.test'").first();
+  check('F5 creating a Studio account emails the invitation (Reply-To hello@plotnua.ie, sign-in link, no password, nothing published before review)',
+    inv.j.invitation_sent === true && m && m.reply_to === 'hello@plotnua.ie' && /Your PlotArt Studio is ready/.test(m.subject) && m.body.includes(url) && /one-time code/.test(m.body) && /at least 10 works/.test(m.body) && !/%|commission/i.test(m.body), JSON.stringify([inv.j, m && m.subject, before])); }
 check('F3 every action is in the audit log', ['invite', 'image_upload', 'submit', 'licence_accepted', 'submission_changes', 'submission_approve', 'publish', 'published', 'instant_change', 'suspend', 'unpublish'].every(a => audit.includes(a)));
 
 async function prodSnap(artist, v) {

@@ -430,7 +430,12 @@ async function route(req, env) {
       await env.DB.prepare('INSERT INTO artists (id, slug, email, display_name, founding, application_ref, created_at, updated_at) VALUES (?,?,?,?,?,?,?,?)')
         .bind(id, slug, email, name, b.founding === false ? 0 : 1, b.application_ref || null, now(), now()).run();
       await audit(env, me.email, 'founder', 'invite', id, { slug, founding: b.founding !== false });
-      return json({ ok: true, id, slug });
+      // Invitation email (sent only when email is switched on; otherwise the desk says to send it by hand).
+      const studio = url.origin, first = name.split(' ')[0];
+      const r = await send(env, { to: email, replyTo: 'hello@plotnua.ie', subject: 'Your PlotArt Studio is ready',
+        text: `Hello ${first},\n\nWelcome to PlotArt. Your PlotArt Studio is ready: it's where you build your artist gallery, add your works and keep them up to date.\n\nSign in here: ${studio}\n\nUse this email address (${email}). Each time you sign in, you'll be emailed a one-time code; there's no password.\n\nNothing is published until you submit your gallery and I've reviewed it with you.${b.founding === false ? '' : ' As a Founding Artist, your gallery opens with at least 10 works.'}\n\nIf you have any questions, just reply to this email.\n\nColin\nPlotArt · part of PlotNua` }).catch(() => ({ sent: false }));
+      await audit(env, me.email, 'founder', r.sent ? 'invitation_sent' : 'invitation_not_sent', id, {});
+      return json({ ok: true, id, slug, invitation_sent: !!r.sent });
     }
     if ((mm = p.match(/^\/api\/admin\/artists\/(a[0-9a-z]+)\/(suspend|reactivate)$/)) && m === 'POST') {
       await env.DB.prepare('UPDATE artists SET account_status=?, updated_at=? WHERE id=?').bind(mm[2] === 'suspend' ? 'suspended' : 'active', now(), mm[1]).run();

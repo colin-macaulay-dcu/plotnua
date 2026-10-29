@@ -49,7 +49,7 @@
           <td class="st-row">${a.account_status === 'suspended' ? `<button class="st-btn st-btn--small" data-act="reactivate" data-id="${a.id}">Reactivate</button>` : `<button class="st-btn st-btn--small" data-act="suspend" data-id="${a.id}">Suspend</button>`}
           ${a.live_version ? `<button class="st-btn st-btn--small st-btn--danger" data-act="unpublish" data-id="${a.id}">Unpublish</button>` : ''}</td></tr>`).join('') || '<tr><td colspan="5" class="st-muted">No artists yet.</td></tr>'}
       </tbody></table></div></section>
-      <section class="st-card"><h2>Invite a selected artist</h2><p class="st-muted">After they accept the Founding Artist Agreement (terms_accepted_at in Airtable). Then add their email to the Studio sign-in list in Cloudflare Access and send the invitation email.</p>
+      <section class="st-card"><h2>Invite a selected artist</h2><p class="st-muted">After they accept the Founding Artist Agreement (terms_accepted_at in Airtable), copy their name, email and reference from the application. The invitation email goes automatically when email is switched on.</p>
         <div class="st-two"><div>
         <div class="st-f"><label for="i-name">Artist name</label><input id="i-name" type="text"></div>
         <div class="st-f"><label for="i-email">Email they applied with</label><input id="i-email" type="email"></div></div><div>
@@ -72,7 +72,7 @@
     $('#inv').addEventListener('click', async () => {
       try {
         const r = await api('POST', '/api/admin/artists', { display_name: $('#i-name').value, email: $('#i-email').value, application_ref: $('#i-ref').value || null, founding: $('#i-f').checked });
-        say(`Account created: plotnua.ie/plotart/artists/${r.slug}/ when published`); home();
+        say(r.invitation_sent ? 'Account created · invitation emailed' : 'Account created · email is off, so send the invitation by hand'); home();
       } catch (e) { $('#ierr').textContent = e.message; }
     });
   }

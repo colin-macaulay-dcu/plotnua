@@ -119,7 +119,7 @@ const wid = works[0];
 r = await enquire({ ref: `PA-niamh-synthetic-${wid}`, notice: 'PA-ENQ-2026-10-29', name: 'Test Buyer', email: 'buyer@example.test', message: 'Is Burren 1 still available, and could it be shipped to Cork?', website: '' });
 check('E1 an enquiry from the artwork page is accepted with a reference', r.s === 200 && /^PA-E-\d{6}-[0-9A-F]{6}$/.test(r.j.reference), JSON.stringify(r));
 const ref = r.j.reference;
-const mails = (await db.prepare('SELECT * FROM mail_capture ORDER BY id').all()).results;
+const mails = (await db.prepare("SELECT * FROM mail_capture WHERE subject LIKE '%enquiry%' ORDER BY id").all()).results;
 check('E2 the artist is emailed the enquiry with Reply-To the buyer (the founder is not an intermediary)', mails.length === 2 && mails[0].to_addr === A && mails[0].reply_to === 'buyer@example.test' && mails[0].body.includes('could it be shipped'));
 check('E3 the buyer gets a receipt that never shows the artist’s email address', mails[1].to_addr === 'buyer@example.test' && !mails[1].body.includes(A) && mails[1].body.includes(ref));
 r = await call('GET', '/api/enquiries', A);
