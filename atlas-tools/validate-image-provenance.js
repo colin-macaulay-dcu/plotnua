@@ -228,8 +228,9 @@ const FOUNDER_ATTESTED_PLOTART_LG = {
 };
 const FOUNDER_ATTESTED_ALL = [FOUNDER_ATTESTED_GRP, FOUNDER_ATTESTED_H6, FOUNDER_ATTESTED_DISC031, FOUNDER_ATTESTED_DISC033, FOUNDER_ATTESTED_DISC032, FOUNDER_ATTESTED_PLOTART_LG];
 const attestedFor = h => FOUNDER_ATTESTED_ALL.find(x => x.sha256.has(String(h)));
+/* 'gridnua' (founder approval of the GridNua limited launch, 29 Oct 2026): the GridNua initiative pages. */
 const PERMITTED_SURFACES = ['discovery', 'library-card', 'homepage',
-                            'about', 'journey', 'preview', 'plotart'];
+                            'about', 'journey', 'preview', 'plotart', 'gridnua'];
 const IMG_EXT = /\.(jpe?g|png|webp|avif|gif|svg|ico)$/i;
 /* PlotNua's own origins. An absolute self-reference is still one of our
    images and still needs declaring: twitter:image points at

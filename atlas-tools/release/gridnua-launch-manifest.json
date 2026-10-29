@@ -1,0 +1,12 @@
+{
+  "release": "gridnua-limited-launch-2026-10-29",
+  "founder_design_approval": "29 Oct 2026",
+  "status": "limited launch, noindex, follow; Interest Register closed",
+  "files": {
+    "gridnua/assets/gridnua-utility-room-concept.svg": "9c547942728e96d73fa0ac8731713e0e809959e07712c4c6494ff3ee4e1a6473",
+    "gridnua/assets/gridnua.css": "bfbe34a801d1bebfa190c7bf413f24c148968b070de170fa377dc69eded92068",
+    "gridnua/index.html": "be8a30802a27bbbf3c006bbe17fb79893db6dc30c967ba0f4b27a3b5596afef8",
+    "gridnua/technology/index.html": "f524e0e04fd93e8ea1cdaad3e161eb8a18721375329710f8e0f1d5dc18f253ed"
+  },
+  "readiness_check_sha256": "ca60bf7b0881797bb732e363a596bea29bdfd63585e8dcd0a7a69f5263073827"
+}

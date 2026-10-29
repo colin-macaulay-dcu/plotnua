@@ -1,0 +1,146 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 760" role="img" aria-labelledby="t d">
+<title id="t">Conceptual illustration: a compact computing unit beside a hot-water cylinder in a utility room</title>
+<desc id="d">A modern utility room. On the wall, a compact dark computing unit is connected by two insulated pipes to a white hot-water cylinder, so the unit's heat could warm the stored water. A power cable runs to a wall socket and a network cable to a router on a shelf. The cylinder's existing immersion heater remains. Conceptual only: not a real installation or a real product.</desc>
+<!-- GridNua · conceptual illustration · vector, authored as code with AI assistance (Claude), 29 Oct 2026.
+     No reference photographs, no third-party product designs, no real property. -->
+<defs>
+  <linearGradient id="wall" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4B4743"/><stop offset="1" stop-color="#413E3A"/></linearGradient>
+  <linearGradient id="floor" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#36332F"/><stop offset="1" stop-color="#2A2826"/></linearGradient>
+  <radialGradient id="daylight" cx=".18" cy=".22" r=".75"><stop offset="0" stop-color="#F7E7CF" stop-opacity=".20"/><stop offset="1" stop-color="#F7E7CF" stop-opacity="0"/></radialGradient>
+  <linearGradient id="glass" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#C9D3D6"/><stop offset=".6" stop-color="#8F9DA2"/><stop offset="1" stop-color="#6E7B80"/></linearGradient>
+  <linearGradient id="cyl" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#BDB5A8"/><stop offset=".22" stop-color="#ECE6DB"/><stop offset=".55" stop-color="#F4EFE6"/><stop offset=".85" stop-color="#D6CEC1"/><stop offset="1" stop-color="#ADA598"/></linearGradient>
+  <linearGradient id="cyltop" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#F7F3EC"/><stop offset="1" stop-color="#DCD4C8"/></linearGradient>
+  <linearGradient id="unit" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#232427"/><stop offset=".5" stop-color="#2E3034"/><stop offset="1" stop-color="#202124"/></linearGradient>
+  <linearGradient id="copper" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#D19A6C"/><stop offset=".5" stop-color="#B07648"/><stop offset="1" stop-color="#8A5A36"/></linearGradient>
+  <linearGradient id="lag" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3D3F43"/><stop offset="1" stop-color="#2A2B2E"/></linearGradient>
+  <radialGradient id="warm" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#E8A06F" stop-opacity=".30"/><stop offset="1" stop-color="#E8A06F" stop-opacity="0"/></radialGradient>
+  <linearGradient id="wm" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#D9D3C9"/><stop offset=".5" stop-color="#EDE8DF"/><stop offset="1" stop-color="#CFC8BD"/></linearGradient>
+  <filter id="soft" x="-20%" y="-20%" width="140%" height="160%"><feGaussianBlur stdDeviation="9"/></filter>
+</defs>
+
+<!-- room -->
+<rect width="960" height="560" fill="url(#wall)"/>
+<rect width="960" height="560" fill="url(#daylight)"/>
+<polygon points="0,560 960,560 960,760 0,760" fill="url(#floor)"/>
+<g stroke="#4A4642" stroke-width="1" opacity=".55">
+  <path d="M0 610H960M0 672H960"/>
+  <path d="M120 560 40 760M300 560 260 760M480 560 480 760M660 560 700 760M840 560 920 760"/>
+</g>
+<rect y="552" width="960" height="10" fill="#36332F"/>
+
+<!-- window with daylight -->
+<g>
+  <rect x="64" y="84" width="200" height="232" rx="6" fill="#2F2D2A"/>
+  <rect x="76" y="96" width="176" height="208" rx="3" fill="url(#glass)"/>
+  <path d="M164 96v208M76 200h176" stroke="#2F2D2A" stroke-width="7"/>
+  <path d="M90 110 150 110 100 190Z" fill="#fff" opacity=".10"/>
+  <rect x="58" y="314" width="212" height="12" rx="3" fill="#5A554F"/>
+  <polygon points="76,326 252,326 300,560 20,560" fill="#F7E7CF" opacity=".035"/>
+</g>
+
+<!-- washing machine -->
+<g>
+  <rect x="58" y="392" width="176" height="174" rx="10" fill="url(#wm)"/>
+  <rect x="58" y="392" width="176" height="30" rx="10" fill="#E3DDD3"/>
+  <rect x="72" y="401" width="58" height="11" rx="5" fill="#BFB8AD"/>
+  <circle cx="206" cy="407" r="7" fill="#BFB8AD"/>
+  <circle cx="146" cy="494" r="54" fill="#B9B2A7"/>
+  <circle cx="146" cy="494" r="44" fill="#5D6266"/>
+  <circle cx="146" cy="494" r="44" fill="url(#glass)" opacity=".35"/>
+  <path d="M120 476a34 34 0 0 1 34-14" stroke="#fff" stroke-width="4" opacity=".25" fill="none" stroke-linecap="round"/>
+</g>
+
+<!-- shelf, router, plant, towels -->
+<g>
+  <rect x="300" y="168" width="196" height="9" rx="2" fill="#6E5B49"/>
+  <rect x="316" y="148" width="62" height="20" rx="4" fill="#E6E0D6"/>
+  <circle cx="330" cy="158" r="2.2" fill="#7FA88A"/>
+  <circle cx="340" cy="158" r="2.2" fill="#7FA88A"/>
+  <path d="M322 148v-16M370 148v-16" stroke="#E6E0D6" stroke-width="3" stroke-linecap="round"/>
+  <rect x="402" y="140" width="46" height="28" rx="3" fill="#C9BBA7"/>
+  <rect x="402" y="128" width="46" height="13" rx="3" fill="#9E8C76"/>
+  <path d="M468 168c-2-18 2-30 10-38M474 168c4-16 12-24 22-28M462 168c-8-12-14-18-24-20" stroke="#6F8B6F" stroke-width="5" stroke-linecap="round" fill="none"/>
+  <path d="M456 168h30l-4 0" stroke="#6E5B49"/>
+  <rect x="458" y="150" width="24" height="18" rx="3" fill="#A6754F"/>
+</g>
+
+<!-- network cable router -> unit -->
+<path d="M366 177c0 30 4 60 20 90" stroke="#8C8F94" stroke-width="3" fill="none" stroke-linecap="round"/>
+
+<!-- warm glow behind unit (heat being captured) -->
+<ellipse cx="380" cy="380" rx="120" ry="110" fill="url(#warm)"/>
+
+<!-- computing unit (generic, wall-mounted) -->
+<g>
+  <rect x="308" y="266" width="148" height="214" rx="14" fill="#1C1D1F" filter="url(#soft)" opacity=".55" transform="translate(8 14)"/>
+  <rect x="308" y="266" width="148" height="214" rx="14" fill="url(#unit)"/>
+  <rect x="308" y="266" width="148" height="214" rx="14" fill="none" stroke="#97785A" stroke-opacity=".55" stroke-width="1.5"/>
+  <g stroke="#3E4045" stroke-width="3" stroke-linecap="round">
+    <path d="M330 300h104M330 314h104M330 328h104M330 342h104M330 356h104M330 370h104"/>
+  </g>
+  <rect x="330" y="396" width="104" height="44" rx="6" fill="#26272A" stroke="#3A3B3E"/>
+  <circle cx="346" cy="418" r="4" fill="#B39272"/>
+  <rect x="358" y="414" width="62" height="8" rx="4" fill="#3A3B3E"/>
+  <rect x="358" y="414" width="30" height="8" rx="4" fill="#97785A"/>
+  <rect x="372" y="458" width="20" height="6" rx="3" fill="#3A3B3E"/>
+</g>
+
+<!-- power cable unit -> socket -->
+<path d="M332 480c0 28-8 44-14 58" stroke="#202124" stroke-width="5" fill="none" stroke-linecap="round"/>
+<rect x="298" y="528" width="40" height="22" rx="4" fill="#E6E0D6"/>
+<rect x="308" y="535" width="6" height="9" rx="1" fill="#9C978F"/><rect x="322" y="535" width="6" height="9" rx="1" fill="#9C978F"/>
+
+<!-- insulated flow / return pipes unit -> cylinder coil -->
+<g fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M456 330H520" stroke="#323438" stroke-width="18"/>
+  <path d="M456 330H520" stroke="#C47E4E" stroke-width="2" stroke-dasharray="2 12" opacity=".8"/>
+  <path d="M456 420H520" stroke="#323438" stroke-width="18"/>
+  <path d="M456 420H520" stroke="#7E8A93" stroke-width="2" stroke-dasharray="2 12" opacity=".8"/>
+</g>
+<g fill="#26272A"><rect x="482" y="318" width="8" height="24" rx="2"/><rect x="482" y="408" width="8" height="24" rx="2"/></g>
+<!-- faint heat shimmer -->
+<g stroke="#E8A06F" stroke-width="2" fill="none" opacity=".35" stroke-linecap="round">
+  <path d="M478 312c-5-8 5-12 0-20M496 312c-5-8 5-12 0-20"/>
+</g>
+
+<!-- hot-water cylinder -->
+<g>
+  <ellipse cx="610" cy="566" rx="104" ry="14" fill="#1E1D1B" opacity=".45"/>
+  <rect x="520" y="150" width="180" height="404" rx="12" fill="url(#cyl)"/>
+  <ellipse cx="610" cy="152" rx="90" ry="20" fill="url(#cyltop)"/>
+  <ellipse cx="610" cy="552" rx="90" ry="12" fill="#B3AB9E"/>
+  <rect x="520" y="300" width="180" height="2" fill="#000" opacity=".06"/>
+  <!-- coil connections -->
+  <rect x="512" y="320" width="14" height="20" rx="3" fill="url(#copper)"/>
+  <rect x="512" y="410" width="14" height="20" rx="3" fill="url(#copper)"/>
+  <!-- data plate -->
+  <rect x="588" y="236" width="44" height="28" rx="3" fill="#D8D0C3"/>
+  <path d="M594 246h32M594 254h22" stroke="#B6AEA1" stroke-width="2"/>
+  <!-- existing immersion heater -->
+  <rect x="690" y="470" width="30" height="34" rx="6" fill="#D9D2C6" stroke="#B3AB9E"/>
+  <circle cx="705" cy="487" r="6" fill="#B3AB9E"/>
+  <path d="M720 487c30 0 48 6 58 22" stroke="#202124" stroke-width="4" fill="none" stroke-linecap="round"/><rect x="768" y="506" width="36" height="34" rx="4" fill="#E6E0D6"/><rect x="778" y="515" width="16" height="12" rx="2" fill="#C9C2B7"/>
+  <!-- thermostat / temperature dial -->
+  <circle cx="610" cy="402" r="15" fill="#E7E0D5" stroke="#B9B1A4"/>
+  <path d="M610 402l7-8" stroke="#8A5A36" stroke-width="2.5" stroke-linecap="round"/>
+</g>
+<!-- domestic pipework out of the top -->
+<g fill="none" stroke="#B07648" stroke-width="9" stroke-linecap="round">
+  <path d="M584 140V0"/><path d="M636 140V60c0-20 10-30 30-30h294"/>
+</g>
+<path d="M556 520c-40 0-40 20-40 40" stroke="#B07648" stroke-width="9" fill="none" stroke-linecap="round"/>
+
+<!-- callout markers -->
+<g font-family="Hanken Grotesk, Arial, sans-serif" font-weight="600" font-size="15" text-anchor="middle">
+  <g><circle cx="300" cy="250" r="15" fill="#1B1C1E" stroke="#B39272" stroke-width="1.5"/><text x="300" y="255.5" fill="#F2EBE0">1</text></g>
+  <g><circle cx="488" cy="372" r="15" fill="#1B1C1E" stroke="#B39272" stroke-width="1.5"/><text x="488" y="377.5" fill="#F2EBE0">2</text></g>
+  <g><circle cx="730" cy="200" r="15" fill="#1B1C1E" stroke="#B39272" stroke-width="1.5"/><text x="730" y="205.5" fill="#F2EBE0">3</text></g>
+  <g><circle cx="750" cy="470" r="15" fill="#1B1C1E" stroke="#B39272" stroke-width="1.5"/><text x="750" y="475.5" fill="#F2EBE0">4</text></g>
+</g>
+
+<!-- conceptual label (part of the image itself) -->
+<g font-family="Hanken Grotesk, Arial, sans-serif">
+  <rect x="704" y="704" width="236" height="36" rx="18" fill="#1B1C1E" fill-opacity=".86" stroke="#B39272" stroke-opacity=".6"/>
+  <text x="822" y="727" text-anchor="middle" fill="#F2EBE0" font-size="13" font-weight="600" letter-spacing="1.6">CONCEPTUAL ILLUSTRATION</text>
+</g>
+</svg>

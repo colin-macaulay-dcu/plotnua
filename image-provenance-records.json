@@ -5772,6 +5772,34 @@
       ],
       "depicts_named_product": false,
       "depicts_named_organisation": false
+    },
+    {
+      "asset": "gridnua/assets/gridnua-utility-room-concept.svg",
+      "sha256": "9c547942728e96d73fa0ac8731713e0e809959e07712c4c6494ff3ee4e1a6473",
+      "bytes": 10288,
+      "pixels": [
+        960,
+        760
+      ],
+      "class": "AI_ILLUSTRATION",
+      "what": "GridNua homepage hero: conceptual utility room with a generic compact computing unit piped to a hot-water cylinder. Vector (SVG) illustration.",
+      "generated": {
+        "tool": "Claude (Anthropic), in a PlotNua Claude session: the SVG was written as code by the model; rendered by the browser. No image-generation service, no raster model.",
+        "date": "2026-10-29"
+      },
+      "prompt": "Founder brief, 29 Oct 2026 (verbatim): \"Introduce one high-quality conceptual illustration showing how residential computing equipment might integrate into a modern Irish home. A utility room with a compact computing unit and domestic hot-water system would be suitable. The illustration must be technically plausible and clearly labelled as conceptual. Do not depict a fictional installation as real. Follow PlotNua's existing AI-image standards.\"",
+      "reference_inputs": [],
+      "depicts_named_product": false,
+      "depicts_named_organisation": false,
+      "human_review": {
+        "reviewer": "Colin MacAulay (founder)",
+        "date": "2026-10-29",
+        "attests": "Founder final review, 29 Oct 2026 (GridNua · Final Founder Review and Launch Preparation): visual design approved, keeping the current vector utility-room illustration and its conceptual labels."
+      },
+      "label_on_page": "Conceptual illustration (badge in image and caption); caption: How computing heat might fit a utility room. Not a real installation, product or home. AI-generated illustration (vector, made with Claude).",
+      "permitted_surfaces": [
+        "gridnua"
+      ]
     }
   ],
   "legacy_undeclared": [
