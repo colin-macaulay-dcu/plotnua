@@ -40,16 +40,25 @@ log "---- $step"
 case "$step" in
 1-database)
   say "Cloudflare account"; $W whoami
-  if $W d1 info plotart-studio --json >/tmp/plotart-d1.json 2>/dev/null; then
-    say "D1 plotart-studio already exists"
-  else
-    say "Creating D1 plotart-studio in Western Europe (answer No if Wrangler offers to edit the config: this script does it)"
-    $W d1 create plotart-studio --location weur
-    $W d1 info plotart-studio --json >/tmp/plotart-d1.json
+  # Wrangler resolves "plotart-studio" through wrangler.toml, so the id must be in the config before d1 info/execute.
+  ID=$(sed -n 's/^database_id = "\([0-9a-f-]\{36\}\)".*/\1/p' wrangler.toml)
+  if [ -z "$ID" ]; then
+    $W d1 list --json > /tmp/plotart-d1list.json
+    ID=$(node -e 'const l=require("/tmp/plotart-d1list.json");const d=l.find(x=>x.name==="plotart-studio");process.stdout.write(d?d.uuid:"")')
+    if [ -z "$ID" ]; then
+      say "Creating D1 plotart-studio in Western Europe (answer No if Wrangler offers to edit the config: this script does it)"
+      $W d1 create plotart-studio --location weur
+      $W d1 list --json > /tmp/plotart-d1list.json
+      ID=$(node -e 'const l=require("/tmp/plotart-d1list.json");const d=l.find(x=>x.name==="plotart-studio");process.stdout.write(d?d.uuid:"")')
+    else
+      say "D1 plotart-studio already exists: using it (not creating another)"
+    fi
   fi
-  ID=$(node -e 'const j=require("/tmp/plotart-d1.json");process.stdout.write(j.uuid||j.database_id||"")')
   [[ "$ID" =~ ^[0-9a-f-]{36}$ ]] || die "could not read the database id"
   toml_set wrangler.toml database_id "$ID"; toml_set wrangler.enquiry.toml database_id "$ID"
+  $W d1 info plotart-studio --json > /tmp/plotart-d1.json
+  node -e 'const j=require("/tmp/plotart-d1.json");if((j.uuid||j.database_id)!==process.argv[1]){console.error("id mismatch");process.exit(1)}' "$ID" || die "database id mismatch"
+  pass "existing database plotart-studio recognised ($ID)"
   log "d1 id $ID written to wrangler.toml and wrangler.enquiry.toml"
   say "Applying schema.sql (answer y to proceed)"
   $W d1 execute plotart-studio --remote --file=schema.sql
