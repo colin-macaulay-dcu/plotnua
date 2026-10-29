@@ -148,6 +148,15 @@ for (const bad of ['javascript:alert(1)', 'https://user:pw@example.com', 'not a 
 r = await apply({ ...ENV(), F25_IMAGES: undefined }, good({ images: ['a'.repeat(16), 'b'.repeat(16), 'c'.repeat(16)] }));
 check('A19 images with no image bucket configured -> not_open (never a record without its images)', r.s === 503 && appPosts().length === 0);
 
+/* ---- O · the ownership confirmation R3 (29 Oct 2026), with the R2 wording accepted during the switch-over */
+B = new Bucket();
+r = await apply(ENV(), good({ portfolio: 'example.com', submission_id: 'aa1c2d3e-4b5a-4c7d-8e9f-0a1b2c3d4e5f' }));
+check('O1 the new wording ("The artwork I\'ve submitted or linked to…") is accepted and recorded as R3', r.s === 200 && appPosts()[0].consent_version === 'F25-APPLICATION-2026-10-29-R3');
+r = await apply(ENV(), good({ portfolio: 'example.com', ownership_text: T.F25_OWNERSHIP_TEXT_R2, submission_id: 'ab1c2d3e-4b5a-4c7d-8e9f-0a1b2c3d4e5f' }));
+check('O2 the previous wording, from a page loaded before the release, is still accepted and recorded as R2', r.s === 200 && appPosts()[0].consent_version === 'F25-APPLICATION-2026-10-28-R2');
+r = await apply(ENV(), good({ portfolio: 'example.com', ownership_text: 'The work is mine.', submission_id: 'ac1c2d3e-4b5a-4c7d-8e9f-0a1b2c3d4e5f' }));
+check('O3 any other wording is refused', refused(r, 'ownership_text'));
+
 /* ---- S · schema ---- */
 const schema = JSON.parse(readFileSync(new URL('../airtable-schema-founding-25.proposed.json', import.meta.url), 'utf8'));
 const w = schema.new_table.fields.filter(x => x.writer === 'worker').map(x => x.name);

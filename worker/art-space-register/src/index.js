@@ -537,7 +537,8 @@ const F25_SOURCE = 'plotart_founding_25_form';
 /* The version of the three confirmation sentences below. Recorded on every
    application, with the privacy notice version and the time. Change the
    sentences and this together. */
-const F25_CONSENT_VERSION = 'F25-APPLICATION-2026-10-28-R2';   // R2: island of Ireland (founder decision D2/D18, 28 Oct 2026)
+const F25_CONSENT_VERSION = 'F25-APPLICATION-2026-10-29-R3';   // R3: ownership covers submitted images or a link (founder decision, 29 Oct 2026)
+const F25_CONSENT_VERSION_R2 = 'F25-APPLICATION-2026-10-28-R2';  // R2: island of Ireland (founder decision D2/D18, 28 Oct 2026)
 const F25_MAX_BODY = 8 * 1024;
 const F25_DEFAULT_DAILY_CAP = 50;
 const F25_BURST_PER_MINUTE = 10;
@@ -656,6 +657,9 @@ const F25_REQUIRED = ['artist_name', 'email', 'region', 'medium', 'bio',
 const F25_ELIGIBILITY_TEXT =
   "I'm 18 or over, and I'm based or working on the island of Ireland.";
 const F25_OWNERSHIP_TEXT =
+  "The artwork I've submitted or linked to is my own original work, or I'm authorised to represent the artist who made it.";
+/* The R2 wording, still accepted from a page loaded before the R3 release (recorded as R2). Remove after the switch-over. */
+const F25_OWNERSHIP_TEXT_R2 =
   "The work in my portfolio is my own original work, or I'm authorised to represent the artist who made it.";
 const F25_PRIVACY_TEXT =
   "I've read the privacy notice for Founding 25 applications, which explains how my application is used, who can see it and how long it's kept.";
@@ -782,7 +786,8 @@ async function handleFounding25(env, body, now, cors) {
   if (!submission_id) return REFUSED(cors, 'submission_id');
 
   if (!(await sentenceMatches(F25_ELIGIBILITY_TEXT, body.eligibility_text))) return REFUSED(cors, 'eligibility_text');
-  if (!(await sentenceMatches(F25_OWNERSHIP_TEXT, body.ownership_text))) return REFUSED(cors, 'ownership_text');
+  const ownR3 = await sentenceMatches(F25_OWNERSHIP_TEXT, body.ownership_text);
+  if (!ownR3 && !(await sentenceMatches(F25_OWNERSHIP_TEXT_R2, body.ownership_text))) return REFUSED(cors, 'ownership_text');
   if (!(await sentenceMatches(F25_PRIVACY_TEXT, body.privacy_text))) return REFUSED(cors, 'privacy_text');
 
   /* Configuration probe (founder decision H-5): an address at
@@ -796,7 +801,7 @@ async function handleFounding25(env, body, now, cors) {
 
   const emailKey = email.toLowerCase();
   const stamp = utcStamp(now);
-  const confirmations = [F25_ELIGIBILITY_TEXT, F25_OWNERSHIP_TEXT, F25_PRIVACY_TEXT].join('\n');
+  const confirmations = [F25_ELIGIBILITY_TEXT, ownR3 ? F25_OWNERSHIP_TEXT : F25_OWNERSHIP_TEXT_R2, F25_PRIVACY_TEXT].join('\n');
   const consentHash = await sha256Hex(confirmations);
   const application = {
     application_ref: f25Ref(now),
@@ -809,7 +814,7 @@ async function handleFounding25(env, body, now, cors) {
     submission_id,
     source: F25_SOURCE,
     privacy_version: env.F25_PRIVACY_VERSION,
-    consent_version: F25_CONSENT_VERSION,
+    consent_version: ownR3 ? F25_CONSENT_VERSION : F25_CONSENT_VERSION_R2,
     consent_at: stamp,
     consent_text_hash: consentHash
   };
@@ -923,7 +928,7 @@ export const __test = {
   VA, ARTIST_ALLOWED_KEYS, ARTIST_CONSENT_TEXT, ARTIST_ROUTE, ARTIST_DAILY_CAP, artistWritesEnabled,
   cleanPortfolio, pickMany,
   VF, F25_KEYS, F25_REQUIRED, F25_ROUTE, F25_STATUS, F25_CONSENT_VERSION, F25_MAX_BODY, F25_DEFAULT_DAILY_CAP, F25_BURST_PER_MINUTE,
-  F25_ELIGIBILITY_TEXT, F25_OWNERSHIP_TEXT, F25_PRIVACY_TEXT, F25_PROBE_DOMAIN, f25WritesEnabled, f25DailyCap,
+  F25_ELIGIBILITY_TEXT, F25_OWNERSHIP_TEXT, F25_OWNERSHIP_TEXT_R2, F25_CONSENT_VERSION_R2, F25_PRIVACY_TEXT, F25_PROBE_DOMAIN, f25WritesEnabled, f25DailyCap,
   F25_IMAGE_ROUTE, F25_MAX_IMAGES, F25_MIN_IMAGES, F25_MAX_IMAGE_BYTES, sniffImage, f25Url,
   resetRateLimit: () => hits.clear()
 };
