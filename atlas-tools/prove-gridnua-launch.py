@@ -10,7 +10,11 @@ Proves, on the tree as it would be published:
   GL4  no form, script, endpoint, analytics or Interest Register on GridNua pages
   GL5  no money, earnings or savings claims (only the two disclaimers may use the words)
   GL6  no endorsement or partnership wording in PlotNua's own copy
-  GL7  GridNua Sites material stays out (no Tandem, Zai Node, host sites, GridNua Sites)
+  GL7  GridNua Sites material stays out (no Tandem, Zai Node, host sites, GridNua Sites, site origination).
+       One narrow exception (founder approval, 29 Oct 2026): the single "Tandem Compute pods" card in the
+       gallery's "Context: not for homes" group, typed "Not for homes", labelled Concept / Being worked on
+       in Ireland and stating it offers nothing for individual homes. Everywhere else, Tandem stays blocked;
+       the other GridNua Sites terms stay blocked everywhere, inside that card included.
   GL8  images: the PlotNua mark and the labelled conceptual illustration only
   GL9  every internal link resolves
   GL10 no "Here today" label (nothing qualifies, 29 Oct 2026)
@@ -28,6 +32,11 @@ MAN = ROOT / "atlas-tools/release/gridnua-launch-manifest.json"
 PAGES = ["gridnua/index.html", "gridnua/technology/index.html"]
 STANDING = "No residential computing installation or programme is currently available through PlotNua in Ireland."
 ARTICLE = "discovery-house-as-power-station.html"
+SITES_TERMS = r"tandem|zai ?node|gridnua sites|host sites?|site origination"
+# the one approved Tandem context card (founder approval, 29 Oct 2026)
+TANDEM_CARD = re.compile(r'<li class="gn-card gn-card--ctx">\s*<div class="gn-card-top"><span class="gn-type">Not for homes</span></div>\s*'
+                         r'<h3>Tandem Compute pods</h3>[\s\S]*?<div class="gn-card-foot">[\s\S]*?</div>\n</li>')
+CONTEXT_H = '<h2 class="gn-group-h">Context: not for homes</h2>'
 CHECK = "disc026-compute-readiness-check.html"
 
 
@@ -67,7 +76,18 @@ def run(root):
         own = re.sub(r'<details class="gn-ev">[\s\S]*?</details>', " ", h)
         hits = re.findall(r"\b(partner(?:s|ship)?|recommended|best|approved|certified|trusted|endorsed)\b", text(own), re.I)
         if hits: f("GL6", f"{p}: {hits}")
-        if re.search(r"tandem|zai ?node|gridnua sites|host sites?|site origination", text(h), re.I): f("GL7", f"{p} names GridNua Sites material")
+        rest = h
+        if p == PAGES[1]:
+            cards = list(TANDEM_CARD.finditer(h))
+            if len(cards) > 1: f("GL7", f"{p} carries {len(cards)} Tandem cards (one approved)")
+            for c in cards:
+                body = c.group(0); ctx_at = h.find(CONTEXT_H)
+                if ctx_at < 0 or c.start() < ctx_at: f("GL7", f"{p} Tandem card is outside 'Context: not for homes'")
+                for need in ("It does not offer pods for individual homes.", '<span class="v">Concept</span>', '<span class="v">Being worked on in Ireland</span>'):
+                    if need not in body: f("GL7", f"{p} Tandem card lost {need!r}")
+                if re.search(r"zai ?node|gridnua sites|host sites?|site origination", text(body), re.I): f("GL7", f"{p} Tandem card names GridNua Sites material")
+            rest = TANDEM_CARD.sub(" ", h)
+        if re.search(SITES_TERMS, text(rest), re.I): f("GL7", f"{p} names GridNua Sites material")
         for src in re.findall(r'<img[^>]+src="([^"]+)"', h):
             if not (src.endswith("plotnua-mark-master.svg") or src.endswith("gridnua-utility-room-concept.svg")): f("GL8", f"{p} image {src}")
         if "gridnua-utility-room-concept.svg" in h and not ('<span class="gn-fig-tag">Conceptual illustration</span>' in h and "Not a real installation" in h): f("GL8", f"{p} illustration not labelled")
@@ -116,6 +136,9 @@ def prove():
         "GL5": lambda r: sub(r, PAGES[0], "Computers make heat.", "Hosts earn €300 a year. Computers make heat."),
         "GL6": lambda r: sub(r, PAGES[1], "Two separate labels", "Our recommended partners. Two separate labels"),
         "GL7": lambda r: sub(r, PAGES[0], "Large sites, not homes.", "Large sites, not homes. Tandem Compute."),
+        "GL7b": lambda r: sub(r, PAGES[1], "Two separate labels", "Tandem Compute is coming to homes. Two separate labels"),
+        "GL7c": lambda r: sub(r, PAGES[1], '<span class="gn-type">Not for homes</span></div>\n  <h3>Tandem', '<span class="gn-type">Heat from computing</span></div>\n  <h3>Tandem'),
+        "GL7d": lambda r: sub(r, PAGES[1], "It does not offer pods for individual homes.", "GridNua Sites finds host sites for its pods."),
         "GL8": lambda r: sub(r, PAGES[0], "Conceptual illustration</span>", "Illustration</span>"),
         "GL9": lambda r: sub(r, PAGES[0], 'href="technology/"', 'href="techno/"'),
         "GL10": lambda r: sub(r, PAGES[1], 'class="gn-label gn-label--ie"', 'class="gn-label gn-label--ie gn-label--here"'),
@@ -137,7 +160,7 @@ def prove():
             for p in re.findall(r'href="\.\./(?:\.\./)?([^"#?]+\.html)"', (ROOT / PAGES[0]).read_text() + (ROOT / PAGES[1]).read_text()):
                 (r / p).parent.mkdir(parents=True, exist_ok=True); (r / p).exists() or (r / p).write_text("stub")
             plant(r)
-            hit = any(x.startswith(code.rstrip("bc") + " ") for x in run(r))
+            hit = any(x.startswith(code.rstrip("bcd") + " ") for x in run(r))
             caught += hit
             print(("  caught " if hit else "  MISSED ") + code)
     print(f"GRIDNUA LAUNCH CAPABILITY · {caught}/{len(faults)} planted faults caught")
