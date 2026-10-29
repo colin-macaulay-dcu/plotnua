@@ -63,7 +63,8 @@ def apply(text: str) -> str:
 def main():
     text = PRIVACY.read_text(encoding="utf-8")
     if "--check" in sys.argv:
-        if MARKER not in text or F25_SUB not in text:
+        from privacy_v8_layer import without_v8          # V8 (29 Oct 2026) sits on top of V7 and may reword it
+        if MARKER not in text or F25_SUB not in without_v8(text):
             die("V7 is not applied")
         try:
             without_v7(text)

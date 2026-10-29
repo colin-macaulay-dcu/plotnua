@@ -30,6 +30,14 @@ binding = "IMAGES"
 bucket_name = "plotart-studio-images"
 jurisdiction = "eu"
 
+# Founding 25 application images (29 Oct 2026; read and erase only, founder desk). The bucket the application route
+# writes to; private, EU. Secret F25_AIRTABLE_TABLE_URL (the applications table's Airtable address) adds an
+# "Open in Airtable" button; it is a secret because the base id is never written in the public repository.
+[[r2_buckets]]
+binding = "APPLICATIONS"
+bucket_name = "plotart-applications"
+jurisdiction = "eu"
+
 [triggers]
 crons = ["23 3 * * *"]           # daily clean-up: enquiries past 24 months; removed photographs after 30 days
 

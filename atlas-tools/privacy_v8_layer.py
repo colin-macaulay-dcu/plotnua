@@ -9,6 +9,7 @@ V8 is a set of EXACT, REVERSIBLE additions on top of the published V7 page, like
        "PlotArt artist galleries and PlotArt Studio (artists)" and "Enquiries to PlotArt artists (buyers)".
   S10  Section 10: one line on the PlotArt Studio service and one on enquiry emails.
   S12  Section 12: one added line.
+  F1/F2 Section 8, Founding 25 applications: artwork images (29 Oct 2026): two sentences changed, one paragraph added.
 without_v8() returns the exact V7 page, so every earlier verifier keeps reading the text it governs
 (privacy_v7_layer.without_v7 takes V8 off first).
 """
@@ -47,7 +48,20 @@ S10_NEW = S10_OLD + ("    <p>PlotArt Studio and PlotArt enquiries, described in 
                      "    <p>Enquiry emails to artists and confirmations to buyers are sent by an email delivery service acting for PlotNua under its data processing terms.</p>\n")
 S12_OLD = "    <p>PlotArt Founding 25 applications are kept for the periods described in Section 8.</p>\n"
 S12_NEW = S12_OLD + "    <p>PlotArt gallery records are kept while an artist takes part and for 12 months afterwards, and enquiries to artists for 24 months, as described in Section 8.</p>\n"
-PAIRS = [(S8_OLD, S8_NEW), (S10_OLD, S10_NEW), (S12_OLD, S12_NEW)]
+# F25 (29 Oct 2026, development approved): artwork images with a Founding 25 application. Two existing V7 sentences
+# change and one paragraph is added; still exact and reversible.
+F1_OLD = "      <li>your primary medium, a short biography you write, and a link to your portfolio or work;</li>\n"
+F1_NEW = "      <li>your primary medium and a short biography you write, and images of your work that you upload (up to five), a link to your portfolio, or both;</li>\n"
+F2_OLD = ("    <p>We do not ask for your home address, your phone number, your date of birth or images of your work when you apply. "
+          "Please don't include health or other sensitive personal details in your biography.</p>\n")
+F2_NEW = ("    <p>We do not ask for your home address, your phone number or your date of birth when you apply. "
+          "Please don't include health or other sensitive personal details in your biography.</p>\n"
+          "    <p>If you upload images of your work, your browser first makes a smaller copy of each one, which also removes hidden file information such as "
+          "camera and location data. The images are stored privately in the European Union by Cloudflare, separately from anything published in PlotArt "
+          "galleries. We use them only to consider your application: they are never published, and you can ask us to delete them at any time. Images you "
+          "remove before you apply, or that are not sent with an application, are deleted automatically within a day. We keep the images sent with an "
+          "application for as long as we keep the application, as described below, and delete them with it.</p>\n")
+PAIRS = [(S8_OLD, S8_NEW), (S10_OLD, S10_NEW), (S12_OLD, S12_NEW), (F1_OLD, F1_NEW), (F2_OLD, F2_NEW)]
 
 
 def apply_v8(text: str) -> str:

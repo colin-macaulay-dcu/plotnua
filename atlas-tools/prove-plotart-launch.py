@@ -168,8 +168,12 @@ for name in PAGES:
     need('class="pa-proto"' not in s, "L6 %s carries a development banner (removed by founder approval, 29 Oct 2026)" % name)
     # L7
     need(not re.search(r"<form[^>]*\saction=", s), "L7 %s has a form action" % name)
-    need(not re.search(r'type="file"|name="(?:address|eircode|phone|dob|date_of_birth)"', s), "L7 %s asks for an upload, address, phone or date of birth" % name)
-    ep_ok = s.replace('data-endpoint="%s"' % ENDPOINT, "") if ENDPOINT else s
+    # The ONE permitted upload (founder approval of development, 29 Oct 2026): artwork images on the Founding 25 form,
+    # JPG/PNG/WebP only, sent only to the approved route's /image address.
+    F25_FILE = '<input id="f25-images" type="file" accept="image/jpeg,image/png,image/webp" multiple hidden data-f25-file>'
+    s7 = s.replace(F25_FILE, "", 1) if name == "founding-25.html" else s
+    need(not re.search(r'type="file"|name="(?:address|eircode|phone|dob|date_of_birth)"', s7), "L7 %s asks for an upload (other than artwork images), address, phone or date of birth" % name)
+    ep_ok = s.replace('data-endpoint="%s"' % ENDPOINT, "").replace('data-image-endpoint="%s/image"' % ENDPOINT, "") if ENDPOINT else s
     need(not re.search(r"workers\.dev|airtable", ep_ok), "L7 %s references a live endpoint outside the approved form" % name)
 
 home = open(os.path.join(PA, "index.html"), encoding="utf-8").read() if os.path.exists(os.path.join(PA, "index.html")) else ""
@@ -360,7 +364,7 @@ need("25 artists. A new home for Irish art." in f25mv, "L12 the Founding 25 prog
 
 # L13 · the application form contract (founder authorisation 28 Oct 2026). Only in "open":
 # the three confirmations are exactly the Worker's; the form asks for nothing the route
-# refuses (no Living Gallery interest, publication permission, upload, address, phone or
+# refuses (no Living Gallery interest, publication permission, upload other than artwork images, address, phone or
 # date of birth); it links the applications section of the privacy notice; it promises no
 # reply date; and its confirmation says nothing is published without the artist's approval.
 if STATE == "open":
@@ -369,7 +373,9 @@ if STATE == "open":
         m13 = re.search(r'const %s =\s*"([^"]+)";' % const, wsrc13)
         p13 = re.search(r'data-f25-sentence="%s">([^<]*)<' % key, f25)
         need(m13 is not None and p13 is not None and html.unescape(p13.group(1)) == m13.group(1), "L13 the %s confirmation differs from the Worker's %s" % (key, const))
-    need(not re.search(r'type="file"|name="(?:living_gallery|location_public|address|eircode|phone|dob|date_of_birth|terms)"', f25),
+    f25u = f25.replace('<input id="f25-images" type="file" accept="image/jpeg,image/png,image/webp" multiple hidden data-f25-file>', "", 1)
+    need('data-image-endpoint="%s/image"' % ENDPOINT in f25 or 'type="file"' not in f25, "L13 artwork images must go only to the approved route's /image address")
+    need(not re.search(r'type="file"|name="(?:living_gallery|location_public|address|eircode|phone|dob|date_of_birth|terms)"', f25u),
          "L13 the application asks for something outside the approved form")
     need('href="../privacy.html#founding-25-applications"' in f25, "L13 the form must link the privacy notice's applications section")
     need(not re.search(r"\b(?:within|in) (?:two|three|four|\d+) (?:days|weeks)\b", f25v), "L13 the page promises a reply date")

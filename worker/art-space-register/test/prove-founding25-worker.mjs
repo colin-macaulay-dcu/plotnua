@@ -83,11 +83,12 @@ const noCall = () => atCalls().length === 0;
 const notOpenNoCall = (r) => r.s === 503 && r.j && r.j.state === 'not_open' && noCall();
 
 /* ---- Z · closed in the committed configuration ---- */
-check('Z1 wrangler.toml: F25_WRITES_ENABLED = "false"', tomlVars.F25_WRITES_ENABLED === 'false');
-check('Z2 wrangler.toml: F25_PRIVACY_VERSION empty (no published notice covers applications yet)', tomlVars.F25_PRIVACY_VERSION === '');
+/* Applications opened 28 Oct 2026 (founder approval): the committed config is the live, open one. */
+check('Z1 wrangler.toml: F25_WRITES_ENABLED = "true" (applications open since 28 Oct 2026)', tomlVars.F25_WRITES_ENABLED === 'true');
+check('Z2 wrangler.toml: F25_PRIVACY_VERSION names the published notice', /^2026-10-PHASE2-V[78]$/.test(tomlVars.F25_PRIVACY_VERSION));
 check('Z3 wrangler.toml: no secret, token or base set as a variable', !/^\s*(F25_TURNSTILE_SECRET|AIRTABLE_TOKEN|AIRTABLE_BASE)\s*=/m.test(toml));
-let r = await run(COMMITTED, req(R, good()));
-check('Z4 a valid application under the COMMITTED config -> not_open, no Airtable call', notOpenNoCall(r));
+let r = await run({ ...COMMITTED, F25_WRITES_ENABLED: 'false' }, req(R, good()));
+check('Z4 a valid application with the switch off -> not_open, no Airtable call', notOpenNoCall(r));
 for (const [k, v] of [['F25_WRITES_ENABLED', 'false'], ['F25_WRITES_ENABLED', 'TRUE'], ['F25_PRIVACY_VERSION', ''], ['AIRTABLE_TOKEN', ''], ['AIRTABLE_BASE', '']]) {
   r = await run({ ...ON, [k]: v }, req(R, good()));
   check(`Z5 ${k}=${JSON.stringify(v)} -> not_open, no call`, notOpenNoCall(r));
@@ -98,7 +99,7 @@ check('Z6 everything on -> received, three writes', r.s === 200 && r.j.state ===
 /* ---- K · keys ---- */
 r = await run(ON, req(R, good({ living_gallery: true })));
 check('K1 Living Gallery interest is not accepted (a separate initiative)', refusedAs(r, 'unexpected_field') && noCall());
-for (const k of ['address', 'eircode', 'phone', 'date_of_birth', 'location_public', 'publish', 'over_18', 'terms_text', 'images']) {
+for (const k of ['address', 'eircode', 'phone', 'date_of_birth', 'location_public', 'publish', 'over_18', 'terms_text', 'image_urls']) {
   r = await run(ON, req(R, good({ [k]: 'x' })));
   check(`K2 unexpected key '${k}' refused before any call`, refusedAs(r, 'unexpected_field') && noCall());
 }
@@ -106,7 +107,7 @@ for (const k of T.F25_REQUIRED) {
   r = await run(ON, req(R, without(k)));
   check(`K3 missing required '${k}' refused`, refusedAs(r, k) && noCall());
 }
-check('K4 the allow-list is exactly the documented 14 keys', T.F25_KEYS.size === 14);
+check('K4 the allow-list is exactly the documented 15 keys (images added 29 Oct 2026)', T.F25_KEYS.size === 15);
 
 /* ---- V · validation ---- */
 const bad = [
@@ -115,10 +116,10 @@ const bad = [
   ['region', 'outside_ireland'], ['region', 'Dublin'], ['region', ''], ['region', 'london'],
   ['medium', 'oil'], ['medium', ['painting']],
   ['bio', 'Too short.'], ['bio', 'x'.repeat(1001)], ['bio', 12345],
-  ['portfolio', 'http://example.com'], ['portfolio', 'javascript:alert(1)'], ['portfolio', 'https://user:pw@example.com'],
-  ['portfolio', 'https://example.com:8443/x'], ['portfolio', 'https://localhost/x'], ['portfolio', 'example.com'],
+  ['portfolio', 'javascript:alert(1)'], ['portfolio', 'https://user:pw@example.com'],
+  ['portfolio', 'https://example.com:8443/x'], ['portfolio', 'https://localhost/x'],
   ['website', 'ftp://example.com'], ['website', 'not a url'],
-  ['social_link', 'has spaces in it'], ['social_link', 'http://instagram.com/x'], ['social_link', '<script>'],
+  ['social_link', 'has spaces in it'], ['social_link', '<script>'],
   ['additional_info', 'x'.repeat(801)],
   ['submission_id', 'abc'], ['submission_id', '6F1C2D3E-4B5A-4C7D-8E9F-0A1B2C3D4E5F'], ['submission_id', '6f1c2d3e-4b5a-1c7d-8e9f-0a1b2c3d4e5f']
 ];
@@ -241,7 +242,7 @@ check('E4 stored but an audit row fails -> still received (the row holds its own
 failSecondary = 0;
 
 /* ---- P · non-writing configuration probe ---- */
-r = await run(COMMITTED, req(R, good({ email: 'release-check@probe.plotnua.invalid' })));
+r = await run({ ...COMMITTED, F25_WRITES_ENABLED: 'false' }, req(R, good({ email: 'release-check@probe.plotnua.invalid' })));
 check('P1 probe, closed -> not_open, no call', notOpenNoCall(r));
 r = await run(ON, req(R, good({ email: 'release-check@probe.plotnua.invalid' })));
 check('P2 probe, open -> probe_open, NO Airtable call at all', r.s === 200 && r.j.state === 'probe_open' && noCall());

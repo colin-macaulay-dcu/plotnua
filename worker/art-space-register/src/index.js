@@ -548,6 +548,86 @@ const MAX_F25_INFO = 800;
 const MAX_F25_SOCIAL = 120;
 const F25_PROBE_DOMAIN = '@probe.plotnua.invalid';
 
+/* ---- Artwork images with an application (founder approval of development, 29 Oct 2026) -------------------------
+   An applicant may upload up to five images of their work instead of (or as well as) a portfolio link. Images go to a
+   PRIVATE, EU-jurisdiction R2 bucket (binding F25_IMAGES), separate from published gallery artwork, and are used only
+   for selection. They are uploaded one by one to a holding area (pending/<submission_id>/), and only an application
+   that is actually received moves them to applications/<reference>/. Abandoned uploads are removed by the bucket's
+   lifecycle rule on pending/ (1 day). There is still no GET handler: nothing here can be read back from the public
+   route; the founder reviews images in PlotArt Studio (Cloudflare Access, founder only). */
+const F25_IMAGE_ROUTE = '/v1/art-space-register/founding-25/image';
+const F25_MAX_IMAGES = 5;
+const F25_MIN_IMAGES = 3;               // ...or a portfolio link
+const F25_MAX_IMAGE_BYTES = 8 * 1024 * 1024;
+const F25_IMAGE_BURST_PER_MINUTE = 30;
+const F25_IMAGE_ID = /^[0-9a-f]{16}$/;
+const F25_IMAGE_TYPES = { 'image/jpeg': 'jpg', 'image/png': 'png', 'image/webp': 'webp' };
+
+/* The real format from the bytes (never the declared type alone), with pixel dimensions. */
+function sniffImage(b) {
+  const u16 = (i) => (b[i] << 8) | b[i + 1], le16 = (i) => b[i] | (b[i + 1] << 8), le24 = (i) => b[i] | (b[i + 1] << 8) | (b[i + 2] << 16);
+  if (b.length > 24 && b[0] === 0x89 && b[1] === 0x50 && b[2] === 0x4E && b[3] === 0x47)
+    return { type: 'image/png', w: ((b[16] << 24) | (b[17] << 16) | (b[18] << 8) | b[19]) >>> 0, h: ((b[20] << 24) | (b[21] << 16) | (b[22] << 8) | b[23]) >>> 0 };
+  if (b.length > 30 && b[0] === 0x52 && b[1] === 0x49 && b[2] === 0x46 && b[3] === 0x46 && b[8] === 0x57 && b[9] === 0x45 && b[10] === 0x42 && b[11] === 0x50) {
+    const c = String.fromCharCode(b[12], b[13], b[14], b[15]);
+    if (c === 'VP8X') return { type: 'image/webp', w: le24(24) + 1, h: le24(27) + 1 };
+    if (c === 'VP8 ') return { type: 'image/webp', w: le16(26) & 0x3fff, h: le16(28) & 0x3fff };
+    if (c === 'VP8L') { const v = b[21] | (b[22] << 8) | (b[23] << 16) | (b[24] << 24); return { type: 'image/webp', w: (v & 0x3fff) + 1, h: ((v >> 14) & 0x3fff) + 1 }; }
+    return null;
+  }
+  if (b.length > 4 && b[0] === 0xFF && b[1] === 0xD8) {
+    let i = 2;
+    while (i + 9 < b.length) {
+      if (b[i] !== 0xFF) { i++; continue; }
+      const m = b[i + 1];
+      if (m >= 0xC0 && m <= 0xCF && m !== 0xC4 && m !== 0xC8 && m !== 0xCC) return { type: 'image/jpeg', w: u16(i + 7), h: u16(i + 5) };
+      if (m === 0xD8 || m === 0x01 || (m >= 0xD0 && m <= 0xD7)) { i += 2; continue; }
+      i += 2 + u16(i + 2);
+    }
+  }
+  return null;
+}
+function hexId() { const b = new Uint8Array(8); crypto.getRandomValues(b); return [...b].map(x => x.toString(16).padStart(2, '0')).join(''); }
+
+async function handleF25Image(env, request, url, cors) {
+  if (tooMany('f25img', Date.now(), F25_IMAGE_BURST_PER_MINUTE, 60_000)) return SLOW_DOWN(cors);
+  if (!f25WritesEnabled(env) || !env.F25_IMAGES) return NOT_OPEN(cors);
+  const sid = url.searchParams.get('s') || '';
+  if (!UUID_RE.test(sid)) return REFUSED(cors, 'submission_id');
+  const declared = (request.headers.get('content-type') || '').split(';')[0].trim().toLowerCase();
+  if (!F25_IMAGE_TYPES[declared]) return REFUSED(cors, 'image_type');
+  const len = Number(request.headers.get('content-length') || 0);
+  if (len > F25_MAX_IMAGE_BYTES) return REFUSED(cors, 'image_size');
+  const buf = new Uint8Array(await request.arrayBuffer());
+  if (!buf.length) return REFUSED(cors, 'image_type');
+  if (buf.length > F25_MAX_IMAGE_BYTES) return REFUSED(cors, 'image_size');
+  const img = sniffImage(buf);
+  if (!img || img.type !== declared) return REFUSED(cors, 'image_type');
+  if (!(img.w >= 200 && img.h >= 200 && img.w <= 12000 && img.h <= 12000)) return REFUSED(cors, 'image_dimensions');
+  try {
+    const held = await env.F25_IMAGES.list({ prefix: 'pending/' + sid + '/', limit: 20 });
+    /* five on the application, plus a little room for replaced images (the page sends only the ones kept) */
+    if (held.objects.length >= F25_MAX_IMAGES * 2) return REFUSED(cors, 'image_count');
+    const id = hexId();
+    await env.F25_IMAGES.put('pending/' + sid + '/' + id, buf, {
+      httpMetadata: { contentType: img.type },
+      customMetadata: { w: String(img.w), h: String(img.h), at: utcStamp(new Date()) }
+    });
+    return json(200, { ok: true, state: 'stored', id }, cors);
+  } catch {
+    return UNAVAILABLE(cors);
+  }
+}
+
+/* A website address typed without https:// is accepted: "example.ie/work" -> "https://example.ie/work". */
+function f25Url(v) {
+  if (typeof v !== 'string') return null;
+  let t = v.trim();
+  if (/^http:\/\//i.test(t)) t = 'https://' + t.slice(7);
+  else if (!/^[a-z][a-z0-9+.-]*:/i.test(t)) t = 'https://' + t.replace(/^\/+/, '');
+  return cleanPortfolio(t);
+}
+
 /* Closed vocabularies, identical to the Founding 25 page and to the proposed
    table's select options (airtable-schema-founding-25.proposed.json). The
    region is one of the 32 counties: the programme is for artists based or
@@ -563,9 +643,10 @@ const F25_KEYS = new Set([
   'artist_name', 'email', 'region', 'medium', 'bio', 'portfolio',
   'website', 'social_link', 'additional_info',
   'eligibility_text', 'ownership_text', 'privacy_text',
-  'submission_id', 'challenge_token'
+  'submission_id', 'challenge_token', 'images'
 ]);
-const F25_REQUIRED = ['artist_name', 'email', 'region', 'medium', 'bio', 'portfolio',
+/* portfolio is no longer required on its own: an application needs a portfolio link OR at least three images. */
+const F25_REQUIRED = ['artist_name', 'email', 'region', 'medium', 'bio',
   'eligibility_text', 'ownership_text', 'privacy_text', 'submission_id'];
 
 /* WORDING FOR FOUNDER APPROVAL (28 Oct 2026). The page renders these; the
@@ -619,7 +700,7 @@ function cleanSocial(v) {
   if (typeof v !== 'string') return null;
   const t = v.trim();
   if (/^@?[A-Za-z0-9._]{1,60}$/.test(t)) return t.startsWith('@') ? t : '@' + t;
-  return t.length <= MAX_F25_SOCIAL ? cleanPortfolio(t) : null;
+  return t.length <= MAX_F25_SOCIAL ? f25Url(t) : null;
 }
 const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/;
 
@@ -679,8 +760,9 @@ async function handleFounding25(env, body, now, cors) {
   const region = pickEnum(VF.region, body.region);
   const medium = pickEnum(VF.medium, body.medium);
   const bio = cleanLong(body.bio, MIN_F25_BIO, MAX_F25_BIO);
-  const portfolio = cleanPortfolio(body.portfolio);
-  const website = given('website') ? cleanPortfolio(body.website) : undefined;
+  const portfolio = given('portfolio') ? f25Url(body.portfolio) : undefined;
+  const website = given('website') ? f25Url(body.website) : undefined;
+  const images = body.images === undefined ? [] : body.images;
   const social_link = given('social_link') ? cleanSocial(body.social_link) : undefined;
   const additional_info = given('additional_info') ? cleanLong(body.additional_info, 1, MAX_F25_INFO) : undefined;
   const submission_id = typeof body.submission_id === 'string' && UUID_RE.test(body.submission_id) ? body.submission_id : null;
@@ -690,7 +772,10 @@ async function handleFounding25(env, body, now, cors) {
   if (!region) return REFUSED(cors, 'region');
   if (!medium) return REFUSED(cors, 'medium');
   if (!bio) return REFUSED(cors, 'bio');
-  if (!portfolio) return REFUSED(cors, 'portfolio');
+  if (portfolio === null) return REFUSED(cors, 'portfolio');
+  if (!Array.isArray(images) || images.length > F25_MAX_IMAGES || !images.every(i => typeof i === 'string' && F25_IMAGE_ID.test(i)) ||
+      new Set(images).size !== images.length) return REFUSED(cors, 'images');
+  if (!portfolio && images.length < F25_MIN_IMAGES) return REFUSED(cors, 'portfolio');
   if (website === null) return REFUSED(cors, 'website');
   if (social_link === null) return REFUSED(cors, 'social_link');
   if (additional_info === null) return REFUSED(cors, 'additional_info');
@@ -715,7 +800,7 @@ async function handleFounding25(env, body, now, cors) {
   const consentHash = await sha256Hex(confirmations);
   const application = {
     application_ref: f25Ref(now),
-    artist_name, email, email_key: emailKey, region, medium, bio, portfolio,
+    artist_name, email, email_key: emailKey, region, medium, bio,
     eligibility_confirmed: true,
     ownership_confirmed: true,
     privacy_notice_read: true,
@@ -728,18 +813,48 @@ async function handleFounding25(env, body, now, cors) {
     consent_at: stamp,
     consent_text_hash: consentHash
   };
+  if (portfolio) application.portfolio = portfolio;
   if (website) application.website = website;
   if (social_link) application.social_link = social_link;
   if (additional_info) application.additional_info = additional_info;
+  if (images.length) {
+    if (!env.F25_IMAGES || !env.F25_REVIEW_BASE) return NOT_OPEN(cors);
+    application.artwork_images = images.length;
+    application.artwork_review = env.F25_REVIEW_BASE.replace(/\/$/, '') + '/admin/applications/' + application.application_ref;
+  }
 
-  let recId;
+  let recId, moved = [];
   try {
     if (await f25Exists(env, emailKey, submission_id)) return RECEIVED(cors);
     if (await f25CapReached(env)) return SLOW_DOWN(cors);
+    /* The images first: each must be one this application uploaded. They are copied to the application's private
+       folder BEFORE the record exists, so a received application always has its images; if anything fails the copies
+       are removed and the applicant can simply send again (the holding copies are untouched until success). */
+    const prefix = 'applications/' + application.application_ref + '/';
+    const kept = [];
+    for (let n = 0; n < images.length; n++) {
+      const src = await env.F25_IMAGES.get('pending/' + submission_id + '/' + images[n]);
+      if (!src) { await Promise.all(moved.map(k => env.F25_IMAGES.delete(k))); return REFUSED(cors, 'images'); }
+      const type = (src.httpMetadata && src.httpMetadata.contentType) || 'image/jpeg';
+      const key = prefix + (n + 1) + '.' + (F25_IMAGE_TYPES[type] || 'jpg');
+      await env.F25_IMAGES.put(key, await src.arrayBuffer(), { httpMetadata: { contentType: type }, customMetadata: src.customMetadata || {} });
+      moved.push(key);
+      kept.push({ file: key.slice(prefix.length), type, w: Number((src.customMetadata || {}).w) || null, h: Number((src.customMetadata || {}).h) || null, bytes: src.size });
+    }
     const created = await atCreate(env, T_F25, application);
     recId = created && created.records && created.records[0] && created.records[0].id;
     if (!recId) throw new Error('airtable_502');
+    if (images.length) {
+      /* The review copy for PlotArt Studio (founder only): what the founder needs beside the images. Private, EU. */
+      const { email: _e, email_key: _k, ...review } = application;
+      await env.F25_IMAGES.put(prefix + 'application.json', JSON.stringify({ ...review, airtable_record: recId, images: kept }), { httpMetadata: { contentType: 'application/json' } });
+      /* every holding copy for this application goes, including images the applicant removed or replaced */
+      const held = await env.F25_IMAGES.list({ prefix: 'pending/' + submission_id + '/', limit: 50 });
+      await Promise.all(held.objects.map(o => env.F25_IMAGES.delete(o.key))).catch(() => {});
+    }
   } catch (e) {
+    if (!recId) await Promise.all(moved.map(k => env.F25_IMAGES.delete(k))).catch(() => {});
+    if (recId) return RECEIVED(cors);            /* stored; only the review copy or tidy-up failed */
     return UNAVAILABLE(cors, atReason(e));
   }
   /* The application is stored, and carries its own consent record (version,
@@ -783,6 +898,8 @@ export default {
     /* THERE IS NO GET HANDLER. */
     if (request.method !== 'POST') return json(405, { ok: false, state: 'refused' }, cors);
 
+    if (url.pathname === F25_IMAGE_ROUTE) return handleF25Image(env, request, url, cors);
+
     if (tooMany('post', Date.now(), 30, 60_000)) return SLOW_DOWN(cors);
 
     const raw = await request.text();
@@ -807,5 +924,6 @@ export const __test = {
   cleanPortfolio, pickMany,
   VF, F25_KEYS, F25_REQUIRED, F25_ROUTE, F25_STATUS, F25_CONSENT_VERSION, F25_MAX_BODY, F25_DEFAULT_DAILY_CAP, F25_BURST_PER_MINUTE,
   F25_ELIGIBILITY_TEXT, F25_OWNERSHIP_TEXT, F25_PRIVACY_TEXT, F25_PROBE_DOMAIN, f25WritesEnabled, f25DailyCap,
+  F25_IMAGE_ROUTE, F25_MAX_IMAGES, F25_MIN_IMAGES, F25_MAX_IMAGE_BYTES, sniffImage, f25Url,
   resetRateLimit: () => hits.clear()
 };

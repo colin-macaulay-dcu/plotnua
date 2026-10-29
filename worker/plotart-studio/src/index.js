@@ -322,6 +322,38 @@ export default {
   },
 };
 
+/* Founding 25 applications that came with artwork images (the review copy the application route writes). */
+const airtableLink = (env, rec) => env.F25_AIRTABLE_TABLE_URL && /^rec[A-Za-z0-9]{14}$/.test(rec || '') ? `${env.F25_AIRTABLE_TABLE_URL.replace(/\/$/, '')}/${rec}` : null;
+async function application(env, ref) {
+  if (!env.APPLICATIONS) return null;
+  const o = await env.APPLICATIONS.get(`applications/${ref}/application.json`);
+  if (!o) return null;
+  const a = JSON.parse(await o.text());
+  const pick = k => (typeof a[k] === 'string' ? a[k] : null);
+  const link = u => (typeof u === 'string' && /^https:\/\//.test(u) ? u : null);
+  return { ref, artist_name: pick('artist_name'), medium: pick('medium'), region: pick('region'), bio: pick('bio'), additional_info: pick('additional_info'),
+    portfolio: link(a.portfolio), website: link(a.website), social_link: pick('social_link'), submitted_at: pick('submitted_at'),
+    images: (a.images || []).filter(i => /^[1-5]\.(jpg|png|webp)$/.test(i.file)).map(i => ({ src: `/admin/applications/${ref}/img/${i.file}`, w: i.w, h: i.h })),
+    airtable: airtableLink(env, a.airtable_record) };
+}
+async function applications(env) {
+  if (!env.APPLICATIONS) return { connected: false, items: [] };
+  const items = [];
+  let cursor;
+  do {
+    const l = await env.APPLICATIONS.list({ prefix: 'applications/', delimiter: '/', cursor });
+    for (const pre of l.delimitedPrefixes || []) {
+      const ref = pre.split('/')[1];
+      if (!/^F25-\d{6}-[0-9A-F]{6}$/.test(ref)) continue;
+      const a = await application(env, ref);
+      if (a) items.push({ ref, artist_name: a.artist_name, medium: a.medium, region: a.region, submitted_at: a.submitted_at, images: a.images.slice(0, 5) });
+    }
+    cursor = l.truncated ? l.cursor : null;
+  } while (cursor);
+  items.sort((x, y) => String(y.submitted_at).localeCompare(String(x.submitted_at)));
+  return { connected: true, items };
+}
+
 /* Founder system check: the Worker's own D1 and R2 bindings, written, read back and removed. No personal data. */
 async function selftest(env, me) {
   const out = {}, id = 'selftest-' + crypto.randomUUID();
@@ -406,6 +438,27 @@ async function route(req, env) {
     if (me.role !== 'founder') return p.startsWith('/api/') ? json({ ok: false, error: 'Not available' }, 403) : html('Not available', 403);
     if (p === '/admin' || p === '/admin/') return html(A.ADMIN_HTML);
     let mm;
+    /* ---- Founding 25 applications with artwork images (private bucket plotart-applications; founder only) */
+    if (p === '/admin/applications' || /^\/admin\/applications\/F25-\d{6}-[0-9A-F]{6}$/.test(p)) return html(A.ADMIN_HTML);
+    if ((mm = p.match(/^\/admin\/applications\/(F25-\d{6}-[0-9A-F]{6})\/img\/([1-5]\.(?:jpg|png|webp))$/)) && m === 'GET') {
+      if (!env.APPLICATIONS) return html('Not found', 404);
+      const o = await env.APPLICATIONS.get(`applications/${mm[1]}/${mm[2]}`);
+      if (!o) return html('Not found', 404);
+      return new Response(o.body, { headers: { 'Content-Type': (o.httpMetadata && o.httpMetadata.contentType) || 'image/jpeg', 'Cache-Control': 'private, no-store',
+        'Content-Disposition': 'inline', 'X-Content-Type-Options': 'nosniff', 'Cross-Origin-Resource-Policy': 'same-origin' } });
+    }
+    if (p === '/api/admin/applications' && m === 'GET') return json({ ok: true, ...(await applications(env)) });
+    if ((mm = p.match(/^\/api\/admin\/applications\/(F25-\d{6}-[0-9A-F]{6})$/)) && m === 'GET') {
+      const a = await application(env, mm[1]);
+      return a ? json({ ok: true, application: a }) : json({ ok: false, error: 'Not found' }, 404);
+    }
+    if ((mm = p.match(/^\/api\/admin\/applications\/(F25-\d{6}-[0-9A-F]{6})\/erase$/)) && m === 'POST') {
+      if (!env.APPLICATIONS) throw new Bad('Image storage is not connected', 500);
+      const l = await env.APPLICATIONS.list({ prefix: `applications/${mm[1]}/` });
+      await Promise.all(l.objects.map(o => env.APPLICATIONS.delete(o.key)));
+      await audit(env, me.email, 'founder', 'application_images_erased', null, { ref: mm[1], objects: l.objects.length });
+      return json({ ok: true, erased: l.objects.length });
+    }
     if ((mm = p.match(/^\/admin\/preview\/(s[0-9a-z]+|v-([0-9a-z]+)-(\d+))\/(.*)$/))) {
       let snap, artistId;
       if (mm[1].startsWith('s')) { const s = await one(env, 'SELECT * FROM submissions WHERE id=?', mm[1]); if (!s) return html('Not found', 404); snap = JSON.parse(s.snapshot); artistId = s.artist_id; }

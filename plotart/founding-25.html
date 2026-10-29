@@ -36,6 +36,28 @@
 .pa-form[hidden],.pa-f25-done[hidden],.pa-err[hidden],.pa-proto-note[hidden]{display:none!important}
 .pa-proto-note[data-state="error"],.pa-proto-note[data-state="retry"]{color:#F5CDBD}
 .pa-proto-note[data-state="ok"]{border-color:rgba(160,190,150,.5);background:rgba(120,150,110,.12);color:#DDE8D6}
+.pa-up-h{margin:0;font-weight:600;color:var(--ivory)}
+.pa-upload .hint{display:block;margin:4px 0 10px;color:var(--stone);font-size:14px;line-height:1.5}
+.pa-drop{border:1.5px dashed rgba(242,235,224,.32);border-radius:14px;padding:22px 16px;text-align:center;cursor:pointer;transition:border-color .15s,background .15s}
+.pa-drop:hover,.pa-drop.is-over{border-color:var(--terra-text);background:rgba(174,98,69,.08)}
+.pa-drop.is-full{display:none}
+.pa-drop-t{margin:0;color:var(--ivory)}
+.pa-drop-btn{color:var(--terra-text);text-decoration:underline;text-underline-offset:3px}
+.pa-drop-touch{display:none}
+@media (hover:none) and (pointer:coarse){.pa-drop-desk{display:none}.pa-drop-touch{display:inline}}
+.pa-drop-s{margin:6px 0 0;font-size:13px;color:var(--stone)}
+.pa-thumbs{list-style:none;margin:12px 0 0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(104px,1fr));gap:10px}
+.pa-thumbs:empty{display:none}
+.pa-thumbs li{position:relative;border-radius:10px;overflow:hidden;background:rgba(0,0,0,.3);aspect-ratio:1}
+.pa-thumbs img{width:100%;height:100%;object-fit:cover;display:block}
+.pa-thumbs li[data-state="uploading"] img{opacity:.45}
+.pa-thumb-s{position:absolute;left:6px;top:6px;font-size:11.5px;font-weight:600;background:rgba(20,20,20,.75);color:var(--ivory);border-radius:999px;padding:2px 8px}
+.pa-thumbs li[data-state="error"] .pa-thumb-s{background:#8a3b25}
+.pa-thumb-a{position:absolute;left:0;right:0;bottom:0;display:flex;background:linear-gradient(transparent,rgba(0,0,0,.75))}
+.pa-thumb-a button{flex:1;background:none;border:0;color:var(--ivory);font:inherit;font-size:12.5px;font-weight:600;padding:16px 0 7px;cursor:pointer}
+.pa-thumb-a button:hover,.pa-thumb-a button:focus-visible{text-decoration:underline}
+.pa-up-live{margin:6px 0 0;font-size:13px;color:var(--stone)}
+.pa-up-live:empty{display:none}
 </style>
 <script>document.documentElement.classList.remove('no-js');</script>
 </head>
@@ -120,7 +142,7 @@
 </div></section>
 <section class="pa-sec pa-sec--deep" id="apply"><div class="pa-wrap pa-cols-2" style="align-items:start">
   <div class="pa-apply-intro"><p class="pa-eyebrow">Apply</p><h2 style="font-size:clamp(40px,4.4vw,64px);margin-bottom:16px">Apply to become a Founding Artist.</h2>
-  <p class="pa-lede" style="margin-top:0">Tell us about you and your work. It takes about ten minutes, and all you need is a link to where we can see your work.</p>
+  <p class="pa-lede" style="margin-top:0">Tell us about you and your work. It takes about ten minutes. All you need is a few images of your work, or a link to where we can see it.</p>
   <p class="pa-eyebrow pa-apply-h">What happens next</p>
   <ol class="pa-apply-next">
     <li>We read every application ourselves.</li>
@@ -128,10 +150,10 @@
     <li>If you're selected, we send you the Founding Artist terms. Your place is confirmed only when you've accepted them.</li>
     <li>Nothing about you is published until you've seen and approved your gallery.</li>
   </ol>
-  <p class="pa-muted">There are up to 25 founding places, and applying doesn't guarantee one. You don't need to send images of your work now.</p>
+  <p class="pa-muted">There are up to 25 founding places, and applying doesn't guarantee one.</p>
   <p class="pa-note">Already on PlotNua's <a href="../artist-register.html">Artist Register</a>? That stays a private expression of interest. Applying here is a separate step.</p></div>
   <div class="pa-formbox">
-  <form class="pa-form" data-f25-form data-endpoint="https://plotnua-art-space-register.colin-a41.workers.dev/v1/art-space-register/founding-25" novalidate aria-describedby="f25-required">
+  <form class="pa-form" data-f25-form data-endpoint="https://plotnua-art-space-register.colin-a41.workers.dev/v1/art-space-register/founding-25" data-image-endpoint="https://plotnua-art-space-register.colin-a41.workers.dev/v1/art-space-register/founding-25/image" novalidate aria-describedby="f25-required">
     <p class="pa-note" id="f25-required" style="margin:0">Fields marked <span class="pa-req" aria-hidden="true">*</span> are required.</p>
     <fieldset class="pa-fs"><legend class="pa-fs-l">About you</legend>
     <div class="pa-field"><label for="f25-name">Artist's name <span class="pa-req" aria-hidden="true">*</span><span class="hint">The name you work under</span></label><input id="f25-name" name="artist_name" type="text" maxlength="80" autocomplete="name" required aria-describedby="f25-name-e"><p class="pa-err" id="f25-name-e" hidden></p></div>
@@ -141,10 +163,15 @@
     <fieldset class="pa-fs"><legend class="pa-fs-l">Your work</legend>
     <div class="pa-field"><label for="f25-medium">Primary medium <span class="pa-req" aria-hidden="true">*</span></label><select id="f25-medium" name="medium" required aria-describedby="f25-medium-e"><option value="">Choose your main medium</option><option value="painting">Painting</option><option value="drawing">Drawing</option><option value="works_on_paper">Works on paper</option><option value="printmaking">Printmaking</option><option value="photography">Photography</option><option value="sculpture">Sculpture</option><option value="ceramics_craft">Ceramics and craft</option><option value="textiles">Textiles</option><option value="mixed_media">Mixed media</option><option value="digital">Digital and new media</option><option value="other">Something else</option></select><p class="pa-err" id="f25-medium-e" hidden></p></div>
     <div class="pa-field"><label for="f25-bio">Short artist biography <span class="pa-req" aria-hidden="true">*</span><span class="hint">A few sentences about you and your practice, in your own words. Please don't include health or other sensitive personal details</span></label><textarea id="f25-bio" name="bio" rows="6" minlength="40" maxlength="1000" required aria-describedby="f25-bio-c f25-bio-e"></textarea><p class="pa-count" id="f25-bio-c" aria-live="off">0 of 1,000 characters</p><p class="pa-err" id="f25-bio-e" hidden></p></div>
-    <div class="pa-field"><label for="f25-portfolio">Link to your portfolio or work <span class="pa-req" aria-hidden="true">*</span><span class="hint">A website, online portfolio or gallery page where we can see original work, beginning https://</span></label><input id="f25-portfolio" name="portfolio" type="url" maxlength="200" inputmode="url" placeholder="https://" required aria-describedby="f25-portfolio-e"><p class="pa-err" id="f25-portfolio-e" hidden></p></div>
+    <div class="pa-field pa-upload" data-f25-upload><p class="pa-up-h" id="f25-images-l">Show us your work</p><p class="hint" id="f25-images-h">We'd love to see some examples of your artwork. Upload up to five images that give us a sense of your artistic practice.</p>
+      <div class="pa-drop" data-f25-drop tabindex="0" role="button" aria-labelledby="f25-images-l" aria-describedby="f25-images-h f25-images-s f25-images-e"><p class="pa-drop-t"><span class="pa-drop-desk"><strong>Drag images here</strong> or <span class="pa-drop-btn">choose images</span></span><span class="pa-drop-touch"><strong>Choose images</strong> from your photos or files</span></p><p class="pa-drop-s" id="f25-images-s">JPG, PNG or WebP · up to five<span class="pa-drop-desk"> · you can also paste an image</span></p></div>
+      <input id="f25-images" type="file" accept="image/jpeg,image/png,image/webp" multiple hidden data-f25-file>
+      <ul class="pa-thumbs" data-f25-thumbs aria-label="Your images"></ul><p class="pa-up-live" data-f25-up-live aria-live="polite"></p>
+      <p class="pa-err" id="f25-images-e" hidden></p></div>
+    <div class="pa-field"><label for="f25-portfolio">Or a link to an online portfolio<span class="hint">A website or gallery page where we can see your original work. Please add at least three images above, or a link here</span></label><input id="f25-portfolio" name="portfolio" type="text" maxlength="200" inputmode="url" autocapitalize="off" spellcheck="false" placeholder="yourwebsite.ie/portfolio" aria-describedby="f25-portfolio-e"><p class="pa-err" id="f25-portfolio-e" hidden></p></div>
     </fieldset>
     <fieldset class="pa-fs"><legend class="pa-fs-l">If you'd like to add more <span class="hint" style="display:inline">(optional)</span></legend>
-    <div class="pa-field"><label for="f25-website">Your website</label><input id="f25-website" name="website" type="url" maxlength="200" inputmode="url" placeholder="https://" aria-describedby="f25-website-e"><p class="pa-err" id="f25-website-e" hidden></p></div>
+    <div class="pa-field"><label for="f25-website">Your website</label><input id="f25-website" name="website" type="text" maxlength="200" inputmode="url" autocapitalize="off" spellcheck="false" placeholder="yourwebsite.ie" aria-describedby="f25-website-e"><p class="pa-err" id="f25-website-e" hidden></p></div>
     <div class="pa-field"><label for="f25-social">Instagram or professional profile<span class="hint">An @handle or a link</span></label><input id="f25-social" name="social_link" type="text" maxlength="120" autocapitalize="off" spellcheck="false" aria-describedby="f25-social-e"><p class="pa-err" id="f25-social-e" hidden></p></div>
     <div class="pa-field"><label for="f25-info">Anything else you'd like us to know<span class="hint">For example, if a gallery represents you</span></label><textarea id="f25-info" name="additional_info" rows="3" maxlength="800" aria-describedby="f25-info-e"></textarea><p class="pa-err" id="f25-info-e" hidden></p></div>
     </fieldset>

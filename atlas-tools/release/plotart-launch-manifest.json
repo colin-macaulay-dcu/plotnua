@@ -3,10 +3,10 @@
   "note": "SHA-256 of every published PlotArt file, from the launch build that passed prove-plotart-launch.py L1-L12 with the demonstration names (development branch founder/plotart-prototype). Any change to a published PlotArt file must come from a new verified build. Rebuilt 28 Oct 2026 (the legal-information release 2c89865 had changed the footers without updating this manifest). Rebuilt 29 Oct 2026 for the navigation and homepage refinement. Rebuilt 29 Oct 2026 for artist galleries Phase 1: artist gallery files are verified by L14 (provenance fingerprints), not pinned here.",
   "built_from": "founder/plotart-artist-galleries (Phase 3 preview: enquiry styles and pa-enquiry.js), OPEN state; no gallery published",
   "files": {
-    "founding-25.html": "e5ca813bc371cad65f3613cde6fd88e882202400460849349d451872427be7c9",
+    "founding-25.html": "6ffd2f1992fe60745a92fcc0d49a3f40976c98325ad40c4fd387610fdff04498",
     "living-gallery.html": "ed5fe2bbf2d657e4b76896ebbe519abd35c6924dbca4e4c4b113fdbdfea15003",
     "index.html": "81c7d64ceb40368ca79e362323d1130a23b1f21ddf597206d34324b90720f339",
-    "assets/f25-apply.js": "02d6e29b6a80435269cc4f01b8f67388c6e18a3abe7b81f1dd7a1449de9f861e",
+    "assets/f25-apply.js": "42a81d4a902bbdab7e16207cb98192940e15f0f5f1a0e7aa1622d03d181a77c0",
     "assets/plotart.css": "8b48a291cfb084952ba052bbadff41a2c08b654b44415c19ce2ea16d45a4c7bd",
     "assets/plotart.js": "1aeda046a43a9877413943aa4573f8266280b94a5df21fb68421c5486189dca8",
     "assets/pa-enquiry.js": "e57ef00d58f3f2783d0ec3a9225869aa2cd3be215737d39d08c9f6dd22c78781",

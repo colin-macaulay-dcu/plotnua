@@ -6,7 +6,7 @@ const shell = r('ui/shell.html');
 const fill = (o) => Object.entries(o).reduce((s, [k, v]) => s.replaceAll(`{${k}}`, v), shell);
 const STUDIO_HTML = fill({ title: 'PlotArt Studio', home: '#/', label: 'Studio', script: '/assets/studio.js',
   tabs: '<a href="#/">Gallery</a><a href="#/works">Works</a><a href="#/profile">Profile</a><a href="#/enquiries">Enquiries</a><a href="/preview/" target="_blank" rel="noopener">Preview ↗</a>' });
-const ADMIN_HTML = fill({ title: 'PlotArt Studio · Review desk', home: '#/', label: 'Review desk', script: '/assets/admin.js', tabs: '<a href="#/" aria-current="page">Review desk</a>' })
+const ADMIN_HTML = fill({ title: 'PlotArt Studio · Review desk', home: '#/', label: 'Review desk', script: '/assets/admin.js', tabs: '<a href="/admin" data-t="desk">Review desk</a><a href="/admin/applications" data-t="apps">Applications</a>' })
   .replace('<div class="st-who" id="who"></div>', '<div class="st-who" id="who">Founder<br><a href="/cdn-cgi/access/logout">Sign out</a></div>');
 const SIGNED_OUT_HTML = `<!DOCTYPE html><html lang="en-IE"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>PlotArt Studio</title><meta name="robots" content="noindex, nofollow"><link rel="stylesheet" href="/assets/plotart.css"><link rel="stylesheet" href="/assets/studio.css"></head><body class="pa st"><div class="st-signedout"><h1>PLOTART</h1><p>{msg}</p></div></body></html>`;
 const out = { STUDIO_HTML, ADMIN_HTML, SIGNED_OUT_HTML, STUDIO_JS: r('ui/studio.js'), ADMIN_JS: r('ui/admin.js'), STUDIO_CSS: r('ui/studio.css'),

@@ -30,7 +30,8 @@ B = importlib.util.module_from_spec(spec); spec.loader.exec_module(B)
 live = (ROOT / "privacy.html").read_text(encoding="utf-8")
 applied = L.MARKER in live
 base = L.without_v7(live)
-v7 = live if applied else B.apply(base)
+from privacy_v8_layer import without_v8          # V8 sits on top of V7 (29 Oct 2026): the V7 checks read the page beneath it
+v7 = without_v8(live) if applied else B.apply(base)
 F = L.F25_SUB
 def sec(t, n):
     return t[t.index("<h2>%d." % n):t.index("<h2>%d." % (n + 1))]

@@ -55,7 +55,12 @@ ARTIST_PRIVACY_VERSION = "2026-10-PHASE2-V5"
 #   npx wrangler deploy --var F25_WRITES_ENABLED:false
 # ---------------------------------------------------------------------------
 F25_WRITES_ENABLED = "true"
-F25_PRIVACY_VERSION = "2026-10-PHASE2-V7"
+F25_PRIVACY_VERSION = "2026-10-PHASE2-V8"   # V8 adds application images (deployed only after privacy V8 is live)
+# Artwork images with an application (development approved 29 Oct 2026; NOT DEPLOYED). Private, EU-jurisdiction
+# R2 bucket "plotart-applications", separate from published gallery artwork; lifecycle rule deletes pending/ after
+# 1 day. The founder reviews images in PlotArt Studio (Cloudflare Access) at F25_REVIEW_BASE/admin/applications/<ref>.
+# F25_PRIVACY_VERSION moves to the notice that describes the images (V8) in the same release.
+F25_REVIEW_BASE = "https://plotart-studio.colin-a41.workers.dev"
 
 # AIRTABLE_BASE and AIRTABLE_TOKEN are NOT set here and are NOT the garden ones.
 # BOTH ARE PERSISTENT SECRETS (corrected 13 Oct 2026, activation preparation):
@@ -84,6 +89,11 @@ F25_PRIVACY_VERSION = "2026-10-PHASE2-V7"
 # ---------------------------------------------------------------------------
 [observability]
 enabled = false
+
+[[r2_buckets]]
+binding = "F25_IMAGES"
+bucket_name = "plotart-applications"
+jurisdiction = "eu"
 
 # ---------------------------------------------------------------------------
 # ISOLATED TEST ENVIRONMENT (28 Oct 2026). A SEPARATE Worker name, used only

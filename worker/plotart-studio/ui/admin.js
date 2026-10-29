@@ -105,9 +105,45 @@
     }));
   }
 
+  /* ---- Founding 25 applications with artwork images (private; founder only). Decisions stay in Airtable. */
+  const MED = { painting: 'Painting', drawing: 'Drawing', works_on_paper: 'Works on paper', printmaking: 'Printmaking', photography: 'Photography', sculpture: 'Sculpture',
+    ceramics_craft: 'Ceramics and craft', textiles: 'Textiles', mixed_media: 'Mixed media', digital: 'Digital', other: 'Other' };
+  const county = c => c ? c.split('_').map(w => w[0].toUpperCase() + w.slice(1)).join(' ') : '';
+  const ext = (u, label) => u ? `<a class="st-btn st-btn--small" href="${E(u)}" target="_blank" rel="noopener noreferrer nofollow">${E(label)} ↗</a>` : '';
+  async function apps() {
+    const r = await api('GET', '/api/admin/applications');
+    app.innerHTML = `<h1 class="st-h1">Applications</h1><p class="st-sub">Founding 25 applications that came with images of the artist's work. Private: only you can see them. Shortlist and select in Airtable.</p>
+      ${!r.connected ? '<section class="st-card"><p class="st-muted">Application image storage isn’t connected yet.</p></section>' : r.items.length ? `<ul class="st-works">${r.items.map(a => `<li class="st-work" style="grid-template-columns:minmax(0,1fr) auto">
+        <div><p class="st-work-t"><a href="/admin/applications/${E(a.ref)}" style="color:inherit">${E(a.artist_name)}</a></p>
+        <p class="st-work-s">${E(a.ref)} · ${E(MED[a.medium] || a.medium)}${a.region ? ' · ' + E(county(a.region)) : ''} · ${when(a.submitted_at)}</p>
+        <div class="st-appthumbs">${a.images.map(i => `<img src="${E(i.src)}" alt="" loading="lazy">`).join('')}</div></div>
+        <div class="st-row"><a class="st-btn st-btn--solid st-btn--small" href="/admin/applications/${E(a.ref)}">Open</a></div></li>`).join('')}</ul>` : '<section class="st-card"><p class="st-muted">No applications with images yet.</p></section>'}`;
+  }
+  async function appView(ref) {
+    const a = (await api('GET', '/api/admin/applications/' + ref)).application;
+    app.innerHTML = `<p><a href="/admin/applications" style="color:var(--stone);text-decoration:none">← Applications</a></p>
+      <h1 class="st-h1">${E(a.artist_name)}</h1><p class="st-sub">${E(a.ref)} · ${E(MED[a.medium] || a.medium)}${a.region ? ' · ' + E(county(a.region)) : ''} · applied ${when(a.submitted_at)}</p>
+      <div class="st-appgrid">${a.images.map((i, n) => `<a href="${E(i.src)}" target="_blank" rel="noopener"><img src="${E(i.src)}" alt="Artwork ${n + 1} of ${a.images.length} from ${E(a.artist_name)}"${i.w ? ` width="${i.w}" height="${i.h}"` : ''}></a>`).join('')}</div>
+      <div class="st-two" style="margin-top:18px"><section class="st-card"><h2>Artist statement</h2><p style="white-space:pre-line">${E(a.bio)}</p>
+        ${a.additional_info ? `<h2 style="margin-top:18px">Anything else</h2><p style="white-space:pre-line">${E(a.additional_info)}</p>` : ''}</section>
+      <section class="st-card"><h2>Links</h2><div class="st-row" style="flex-wrap:wrap;gap:8px">${ext(a.portfolio, 'Portfolio')}${ext(a.website, 'Website')}${a.social_link ? (a.social_link.startsWith('@') ? ext('https://www.instagram.com/' + a.social_link.slice(1) + '/', a.social_link) : ext(a.social_link, 'Profile')) : ''}${!a.portfolio && !a.website && !a.social_link ? '<p class="st-muted" style="margin:0">No links: the images are the portfolio.</p>' : ''}</div>
+        <h2 style="margin-top:18px">Decision</h2><p class="st-muted">Shortlist, select or decline in Airtable, where the application's status and emails are recorded.</p>
+        ${a.airtable ? `<a class="st-btn st-btn--solid" href="${E(a.airtable)}" target="_blank" rel="noopener noreferrer">Open in Airtable ↗</a>` : '<p class="st-muted">Find it in Airtable by its reference.</p>'}
+        <h2 style="margin-top:22px">When the application is closed</h2><p class="st-muted">Erase these images when the application is deleted under the retention rules.</p>
+        <button class="st-btn st-btn--small st-btn--danger" id="erase">Erase these images</button><p class="st-err" id="eerr"></p></section></div>`;
+    $('#erase').addEventListener('click', async e => {
+      const b = e.currentTarget;
+      if (!b.dataset.sure) { b.dataset.sure = 1; b.textContent = 'Erase permanently?'; return; }
+      try { await api('POST', `/api/admin/applications/${ref}/erase`); say('Images erased'); location.href = '/admin/applications'; } catch (x) { $('#eerr').textContent = x.message; }
+    });
+  }
+
   async function render() {
-    const h = location.hash || '#/';
-    try { if (h.startsWith('#/review/')) await review(h.slice(9)); else await home(); window.scrollTo(0, 0); }
+    const h = location.hash || '#/', path = location.pathname.replace(/\/$/, '');
+    const am = path.match(/^\/admin\/applications\/(F25-\d{6}-[0-9A-F]{6})$/);
+    document.querySelectorAll('.st-tabs a').forEach(a => a.toggleAttribute('aria-current', a.dataset.t === (path.startsWith('/admin/applications') ? 'apps' : 'desk')));
+    document.querySelectorAll('.st-tabs a[aria-current]').forEach(a => a.setAttribute('aria-current', 'page'));
+    try { if (am) await appView(am[1]); else if (path === '/admin/applications') await apps(); else if (h.startsWith('#/review/')) await review(h.slice(9)); else await home(); window.scrollTo(0, 0); }
     catch (e) { app.innerHTML = `<div class="st-card"><h2>Something went wrong</h2><p class="st-muted">${E(e.message)}</p></div>`; }
   }
   addEventListener('hashchange', render);

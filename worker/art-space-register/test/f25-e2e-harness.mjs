@@ -36,6 +36,27 @@ if (ENV.ORIGIN !== 'http://localhost:8790' || ENV.WRITES_ENABLED !== 'false' || 
   console.error('REFUSED: [env.test] must be local-only with the Host and Artist routes off'); process.exit(2);
 }
 
+/* ---- artwork images (29 Oct 2026): a disk-backed stand-in for the private R2 bucket (F25_IMAGES). The directory
+   (env F25_HARNESS_R2_DIR, default /tmp/f25-harness-r2) can seed a local PlotArt Studio for the founder's review page. */
+import { mkdirSync, writeFileSync, rmSync, readdirSync, unlinkSync } from 'node:fs';
+import { dirname } from 'node:path';
+const R2DIR = process.env.F25_HARNESS_R2_DIR || '/tmp/f25-harness-r2';
+mkdirSync(R2DIR, { recursive: true });
+const r2meta = new Map();
+const R2 = {
+  async put(k, v, o = {}) { const f = join(R2DIR, k); mkdirSync(dirname(f), { recursive: true });
+    writeFileSync(f, v instanceof Uint8Array ? v : typeof v === 'string' ? v : Buffer.from(v)); r2meta.set(k, { httpMetadata: o.httpMetadata || {}, customMetadata: o.customMetadata || {} });
+    writeFileSync(f + '.meta', JSON.stringify(r2meta.get(k))); },
+  async get(k) { const f = join(R2DIR, k); if (!existsSync(f)) return null; const b = readFileSync(f); const m = JSON.parse(readFileSync(f + '.meta', 'utf8'));
+    return { size: b.length, ...m, arrayBuffer: async () => b.buffer.slice(b.byteOffset, b.byteOffset + b.length), text: async () => b.toString('utf8') }; },
+  async head(k) { return existsSync(join(R2DIR, k)) ? { size: statSync(join(R2DIR, k)).size } : null; },
+  async delete(k) { for (const f of [join(R2DIR, k), join(R2DIR, k) + '.meta']) if (existsSync(f)) unlinkSync(f); },
+  async list({ prefix = '', limit = 1000 } = {}) { return { objects: r2keys().filter(k => k.startsWith(prefix)).slice(0, limit).map(key => ({ key })) }; }
+};
+function r2keys(d = R2DIR, base = '') { if (!existsSync(d)) return []; return readdirSync(d, { withFileTypes: true }).flatMap(e => e.isDirectory() ? r2keys(join(d, e.name), base + e.name + '/') : e.name.endsWith('.meta') ? [] : [base + e.name]); }
+ENV.F25_IMAGES = R2;
+ENV.F25_REVIEW_BASE = process.env.F25_HARNESS_REVIEW_BASE || 'http://127.0.0.1:8795';
+
 /* ---- strict in-memory Airtable ---- */
 const f25 = JSON.parse(readFileSync(new URL('../airtable-schema-founding-25.proposed.json', import.meta.url), 'utf8'));
 const live = JSON.parse(readFileSync(new URL('../airtable-schema.json', import.meta.url), 'utf8'));
@@ -151,7 +172,8 @@ http.createServer(async (req, res) => {
   const u = new URL(req.url, 'http://x');
   const send = (o) => { res.writeHead(200, { 'content-type': 'application/json' }); res.end(JSON.stringify(o, null, 1)); };
   if (u.pathname === '/reset') { reset(); T.resetRateLimit(); return send({ ok: true }); }
-  if (u.pathname === '/records') return send({ tables: DB, calls: ctl.calls });
+  if (u.pathname === '/records') return send({ tables: DB, calls: ctl.calls, images: r2keys() });
+  if (u.pathname === '/images-reset') { rmSync(R2DIR, { recursive: true, force: true }); mkdirSync(R2DIR, { recursive: true }); return send({ ok: true }); }
   if (u.pathname === '/fail') { ctl.fail = Number(u.searchParams.get('status') || 500); return send({ ok: true }); }
   if (u.pathname === '/hang') { ctl.hang = Number(u.searchParams.get('ms') || 0); return send({ ok: true }); }
   if (u.pathname === '/drop') { ctl.drop = true; return send({ ok: true }); }

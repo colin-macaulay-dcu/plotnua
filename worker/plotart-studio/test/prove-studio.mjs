@@ -268,6 +268,55 @@ check('F4 founder system check: database and image storage written, read back an
   const m = await db.prepare("SELECT * FROM mail_capture WHERE to_addr='ciara-invite@example.test'").first();
   check('F5 creating a Studio account emails the invitation (Reply-To hello@plotnua.ie, sign-in link, no password, nothing published before review)',
     inv.j.invitation_sent === true && m && m.reply_to === 'hello@plotnua.ie' && /Your PlotArt Studio is ready/.test(m.subject) && m.body.includes(url) && /one-time code/.test(m.body) && /at least 10 works/.test(m.body) && !/%|commission/i.test(m.body), JSON.stringify([inv.j, m && m.subject, before])); }
+/* ---- Founding 25 applications with artwork images (29 Oct 2026) */
+{
+  const AB = await mf.getR2Bucket('APPLICATIONS', 'studio');
+  const REF = 'F25-261029-ABC123', REF2 = 'F25-261029-DEF456';
+  const png = readFileSync(new URL('../../art-space-register/test/fixtures/a.jpg', import.meta.url));
+  await AB.put(`applications/${REF}/1.jpg`, png, { httpMetadata: { contentType: 'image/jpeg' } });
+  await AB.put(`applications/${REF}/2.jpg`, png, { httpMetadata: { contentType: 'image/jpeg' } });
+  await AB.put(`applications/${REF}/application.json`, JSON.stringify({ application_ref: REF, artist_name: 'Róisín Applicant', medium: 'printmaking', region: 'donegal',
+    bio: 'Relief prints of the Donegal coast.', portfolio: 'javascript:alert(1)', website: 'https://roisin.example/', submitted_at: '2026-10-29T19:00:00.000Z',
+    airtable_record: 'recABCDEFGHIJKLMN', images: [{ file: '1.jpg', w: 640, h: 480 }, { file: '2.jpg', w: 640, h: 480 }, { file: '../x.jpg' }] }));
+  await AB.put(`applications/${REF2}/1.jpg`, png, { httpMetadata: { contentType: 'image/jpeg' } });
+  await AB.put(`applications/${REF2}/application.json`, JSON.stringify({ application_ref: REF2, artist_name: 'Second Applicant', medium: 'painting', submitted_at: '2026-10-29T20:00:00.000Z', images: [{ file: '1.jpg' }] }));
+  await AB.put(`pending/6f1c2d3e-4b5a-4c7d-8e9f-0a1b2c3d4e5f/0123456789abcdef`, png);
+  const list = await call('GET', '/api/admin/applications', FOUNDER);
+  check('Q1 the founder lists applications with images, newest first, with thumbnails (holding area never listed)',
+    list.s === 200 && list.j.items.length === 2 && list.j.items[0].ref === REF2 && list.j.items[1].images.length === 2 && !JSON.stringify(list.j).includes('pending'));
+  const one_ = await call('GET', '/api/admin/applications/' + REF, FOUNDER);
+  const a = one_.j.application || {};
+  check('Q2 the application view: statement, medium, county, images served by the Studio (never a storage address), only https links, no email',
+    a.bio === 'Relief prints of the Donegal coast.' && a.images.length === 2 && a.images.every(i => i.src.startsWith('/admin/applications/' + REF + '/img/')) &&
+    a.portfolio === null && a.website === 'https://roisin.example/' && !JSON.stringify(a).includes('r2') && !JSON.stringify(a).includes('@'), JSON.stringify(a));
+  const page = await call('GET', '/admin/applications/' + REF, FOUNDER);
+  const img = await mf.dispatchFetch(url + `/admin/applications/${REF}/img/1.jpg`, { headers: H(FOUNDER) });
+  check('Q3 the founder opens /admin/applications/<ref> (the link written to Airtable) and its images, private and uncached',
+    page.s === 200 && img.status === 200 && img.headers.get('cache-control') === 'private, no-store' && (await img.arrayBuffer()).byteLength === png.length);
+  const bad = [];
+  for (const who of ['sweep-none', A, B, 'stranger@example.test']) {
+    for (const path of ['/admin/applications', '/admin/applications/' + REF, `/admin/applications/${REF}/img/1.jpg`, '/api/admin/applications', '/api/admin/applications/' + REF]) {
+      const r = await call('GET', path, who === 'sweep-none' ? null : who);
+      if (![401, 403].includes(r.s)) bad.push(`${who} ${path} ${r.s}`);
+    }
+    const r = await call('POST', `/api/admin/applications/${REF}/erase`, who === 'sweep-none' ? null : who, {});
+    if (![401, 403].includes(r.s)) bad.push(`${who} erase ${r.s}`);
+  }
+  check('Q4 no one but the founder (no token, artists, signed-in strangers) can list, open, see an image or erase', bad.length === 0, bad.join(' | '));
+  const trav = [];
+  for (const path of [`/admin/applications/${REF}/img/../application.json`, `/admin/applications/${REF}/img/application.json`, `/admin/applications/${REF}/img/9.jpg`,
+    `/admin/applications/F25-261029-ZZZZZZ/img/1.jpg`, '/admin/applications/' + REF + '/img/1.gif']) {
+    const r = await mf.dispatchFetch(url + path, { headers: H(FOUNDER) });
+    if (r.status === 200 && (r.headers.get('content-type') || '').includes('json')) trav.push(path);
+    if (r.status === 200 && path.includes('application.json')) trav.push(path);
+  }
+  check('Q5 only the numbered images can be fetched (no review copy, no other file, no path tricks)', trav.length === 0, trav.join());
+  const er = await call('POST', `/api/admin/applications/${REF}/erase`, FOUNDER, {});
+  const left = (await AB.list({ prefix: `applications/${REF}/` })).objects.length;
+  check('Q6 "Erase these images" removes the application\'s images and review copy, and is audit-logged', er.s === 200 && er.j.erased === 3 && left === 0 &&
+    (await call('GET', '/api/admin/audit', FOUNDER)).j.items.some(x => x.action === 'application_images_erased'));
+}
+
 /* ---- access sweep (founder condition C, 29 Oct 2026): with Access letting ANY email sign in, the Studio itself must
    authenticate every request and authorise by its own records. Every route, every persona, real ids from the database. */
 {
