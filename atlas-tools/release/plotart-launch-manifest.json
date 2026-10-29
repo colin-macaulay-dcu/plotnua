@@ -1,15 +1,16 @@
 {
   "schema": "plotnua.plotart.launch-manifest.v1",
   "note": "SHA-256 of every published PlotArt file, from the launch build that passed prove-plotart-launch.py L1-L12 with the demonstration names (development branch founder/plotart-prototype). Any change to a published PlotArt file must come from a new verified build. Rebuilt 28 Oct 2026 (the legal-information release 2c89865 had changed the footers without updating this manifest). Rebuilt 29 Oct 2026 for the navigation and homepage refinement.",
-  "built_from": "founder/plotart-nav-home 5d9158f, OPEN state (PREVIEW: homepage refinement, 29 Oct 2026)",
+  "built_from": "founder/plotart-nav-home 2c94970, OPEN state (PREVIEW: consolidated brief, 29 Oct 2026)",
   "files": {
     "assets/f25-apply.js": "02d6e29b6a80435269cc4f01b8f67388c6e18a3abe7b81f1dd7a1449de9f861e",
     "assets/hero/founder-01-abstract.webp": "7812df17f3651108820ed79dfe69aa1fdaa27640d5aa1d5464c3b08007b802b1",
-    "assets/plotart.css": "79a726206050e3f45293c16590a6524e8b2ff4c15a3e245c03962b872d23e741",
+    "assets/living/plotart-living-gallery-colin-macaulay-artwork.webp": "df4be1332114ae313b37927bf5b44f58220017ccee9fe80e86eb0099a72e1f2f",
+    "assets/plotart.css": "e136efed2fe0d6736da2a961ee1939f40c668008c15593979f74bd0133d72f2c",
     "assets/plotart.js": "1aeda046a43a9877413943aa4573f8266280b94a5df21fb68421c5486189dca8",
-    "founding-25.html": "6373ab3145dafc3b999a3d6eb7e2a112266ee6f09a9ededceb55e4614f6976b2",
-    "gallery/index.html": "fa2504057e0d82d9e299fa4bdc5ec389cc2e8cf0bfb02d5f5384f10d52603961",
-    "index.html": "3d3a14dc7b606d653499bbace0a2fc3785ce1e2f82fb58f55812b3a21e058ff7",
-    "living-gallery.html": "70be74a771954fe6e562cb9c326fda72ea4227a577c5f2326877fe246a64330f"
+    "founding-25.html": "7b76126b5c89285b1dba6d2ac97696b67dd0c6cd8da2d18f7d1c4081fb1d2b1b",
+    "gallery/index.html": "1357e27aaaf5b0a17fc6b3aecda8568da53d8cc10f2fcdc4d12c78f70b9476df",
+    "index.html": "a784b7da8388046078dbf5e026d81ab5f5ce201f4e8766fe106eeba02177c7e8",
+    "living-gallery.html": "6d9e324534a94cfe628d6efe7c7286cb8c225645ac47d4098f004bffa0787f39"
   }
 }
