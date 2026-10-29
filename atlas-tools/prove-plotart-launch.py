@@ -78,9 +78,9 @@ launch = json.load(open(SWITCHES, encoding="utf-8"))
 ENDPOINT = launch.get("f25_form_endpoint")
 PAGES = ["index.html", "founding-25.html", "living-gallery.html", "gallery/index.html"]
 # The application script ships only in the "open" state (never inferred from the endpoint).
-# The homepage images: three original paintings by the founder, credited (founder, 29 Oct 2026).
-# They are not Founding 25 submissions, not for sale and not part of the collection.
-HERO_IMAGES = {"assets/hero/founder-01-abstract.webp", "assets/hero/founder-02-polsmak.webp", "assets/hero/founder-03-run.webp"}
+# The homepage hero image: ONE original painting by the founder, credited (founder decision, 29 Oct 2026).
+# It is not a Founding 25 submission, not for sale and not part of the collection.
+HERO_IMAGES = {"assets/hero/founder-01-abstract.webp"}
 ALLOWED = set(PAGES) | {"assets/plotart.css", "assets/plotart.js"} | HERO_IMAGES | ({"assets/f25-apply.js"} if launch.get("f25_application_state") == "open" else set())
 
 # L1
@@ -156,8 +156,8 @@ for name in PAGES:
 
 home = open(os.path.join(PA, "index.html"), encoding="utf-8").read() if os.path.exists(os.path.join(PA, "index.html")) else ""
 need(all(('src="%s"' % x) in home for x in HERO_IMAGES) and "Original artwork by Colin Macaulay, founder of PlotArt." in visible_text(home)
-     and len(re.findall(r'<img [^>]*alt="Painting by Colin Macaulay', home)) == 3 and len(re.findall(r"<img\b", home)) == 3 + home.count("plotnua-mark-master.svg"),
-     "L6 the homepage images must be exactly the founder's three credited paintings")
+     and len(re.findall(r'<img [^>]*alt="Painting by Colin Macaulay', home)) == 1 and len(re.findall(r"<img\b", home)) == 1 + home.count("plotnua-mark-master.svg"),
+     "L6 the homepage image must be exactly the founder's one credited painting")
 need(not re.search(r"(?i)AI-generated|conceptual image", visible_text(home)), "L6 the homepage still carries the AI-image hero label")
 need("isn't open yet" in visible_text(home) and "No artwork is currently available through PlotArt." in visible_text(home)
      and "no artists or artworks have been published yet" in visible_text(home), "L6 the homepage must say the gallery isn't open, no artists or artworks have been published yet, and no artwork is currently available through PlotArt")

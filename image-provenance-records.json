@@ -5,7 +5,8 @@
   "guarded_by": "atlas-tools/validate-image-provenance.js",
   "asset_classes": {
     "SUPPLIER_IMAGE": "Actual supplier imagery, published under a documented permission or a valid licence. Carries rights_ref pointing at the authorising organisation row in image-rights-records.json.",
-    "AI_ILLUSTRATION": "Independently generated generic imagery that reproduces no supplier photograph and no distinctive product design. Carries the tool, the date, the prompt, an explicit reference_inputs list and a named human review."
+    "AI_ILLUSTRATION": "Independently generated generic imagery that reproduces no supplier photograph and no distinctive product design. Carries the tool, the date, the prompt, an explicit reference_inputs list and a named human review.",
+    "FOUNDER_ORIGINAL_ARTWORK": "A photograph of an original artwork created and owned by PlotNua's founder. Not AI-generated, not supplier imagery. Carries the artwork's creator and owner, the photograph and its processing, the photographer (or NOT YET CONFIRMED), the visible credit and the founder's attestation."
   },
   "the_third_state": {
     "name": "NO_IMAGE",
@@ -119,7 +120,7 @@
       "permitted_surfaces": [
         "discovery"
       ],
-      "decision_ref": "PN-FDR-2026-10-23-GRP-HERO (one-image provenance exception, founder approval 23 Oct 2026); founder instruction, 23 Oct 2026 (Garden Room Prices: new architectural hero image); founder hero decision, 23 Oct 2026 (Variant B layout; no \u00d6\u00d6D photograph; original generic pavilion preferred); PN-FDR-2026-10-19-01"
+      "decision_ref": "PN-FDR-2026-10-23-GRP-HERO (one-image provenance exception, founder approval 23 Oct 2026); founder instruction, 23 Oct 2026 (Garden Room Prices: new architectural hero image); founder hero decision, 23 Oct 2026 (Variant B layout; no ÖÖD photograph; original generic pavilion preferred); PN-FDR-2026-10-19-01"
     },
     {
       "asset": "assets/garden-room-prices/garden-room-prices-hero-2026-10-23-960.jpg",
@@ -182,7 +183,7 @@
       "permitted_surfaces": [
         "discovery"
       ],
-      "decision_ref": "PN-FDR-2026-10-23-GRP-HERO (one-image provenance exception, founder approval 23 Oct 2026); founder instruction, 23 Oct 2026 (Garden Room Prices: new architectural hero image); founder hero decision, 23 Oct 2026 (Variant B layout; no \u00d6\u00d6D photograph; original generic pavilion preferred); PN-FDR-2026-10-19-01"
+      "decision_ref": "PN-FDR-2026-10-23-GRP-HERO (one-image provenance exception, founder approval 23 Oct 2026); founder instruction, 23 Oct 2026 (Garden Room Prices: new architectural hero image); founder hero decision, 23 Oct 2026 (Variant B layout; no ÖÖD photograph; original generic pavilion preferred); PN-FDR-2026-10-19-01"
     },
     {
       "asset": "assets/garden-room-prices/garden-room-prices-hero-2026-10-23-960.webp",
@@ -245,7 +246,7 @@
       "permitted_surfaces": [
         "discovery"
       ],
-      "decision_ref": "PN-FDR-2026-10-23-GRP-HERO (one-image provenance exception, founder approval 23 Oct 2026); founder instruction, 23 Oct 2026 (Garden Room Prices: new architectural hero image); founder hero decision, 23 Oct 2026 (Variant B layout; no \u00d6\u00d6D photograph; original generic pavilion preferred); PN-FDR-2026-10-19-01"
+      "decision_ref": "PN-FDR-2026-10-23-GRP-HERO (one-image provenance exception, founder approval 23 Oct 2026); founder instruction, 23 Oct 2026 (Garden Room Prices: new architectural hero image); founder hero decision, 23 Oct 2026 (Variant B layout; no ÖÖD photograph; original generic pavilion preferred); PN-FDR-2026-10-19-01"
     },
     {
       "asset": "assets/garden-room-prices/garden-room-prices-hero-2026-10-23-1672.avif",
@@ -308,7 +309,7 @@
       "permitted_surfaces": [
         "discovery"
       ],
-      "decision_ref": "PN-FDR-2026-10-23-GRP-HERO (one-image provenance exception, founder approval 23 Oct 2026); founder instruction, 23 Oct 2026 (Garden Room Prices: new architectural hero image); founder hero decision, 23 Oct 2026 (Variant B layout; no \u00d6\u00d6D photograph; original generic pavilion preferred); PN-FDR-2026-10-19-01"
+      "decision_ref": "PN-FDR-2026-10-23-GRP-HERO (one-image provenance exception, founder approval 23 Oct 2026); founder instruction, 23 Oct 2026 (Garden Room Prices: new architectural hero image); founder hero decision, 23 Oct 2026 (Variant B layout; no ÖÖD photograph; original generic pavilion preferred); PN-FDR-2026-10-19-01"
     },
     {
       "asset": "assets/garden-room-prices/garden-room-prices-hero-2026-10-23-1672.jpg",
@@ -371,7 +372,7 @@
       "permitted_surfaces": [
         "discovery"
       ],
-      "decision_ref": "PN-FDR-2026-10-23-GRP-HERO (one-image provenance exception, founder approval 23 Oct 2026); founder instruction, 23 Oct 2026 (Garden Room Prices: new architectural hero image); founder hero decision, 23 Oct 2026 (Variant B layout; no \u00d6\u00d6D photograph; original generic pavilion preferred); PN-FDR-2026-10-19-01"
+      "decision_ref": "PN-FDR-2026-10-23-GRP-HERO (one-image provenance exception, founder approval 23 Oct 2026); founder instruction, 23 Oct 2026 (Garden Room Prices: new architectural hero image); founder hero decision, 23 Oct 2026 (Variant B layout; no ÖÖD photograph; original generic pavilion preferred); PN-FDR-2026-10-19-01"
     },
     {
       "asset": "assets/garden-room-prices/garden-room-prices-hero-2026-10-23-1672.webp",
@@ -434,7 +435,7 @@
       "permitted_surfaces": [
         "discovery"
       ],
-      "decision_ref": "PN-FDR-2026-10-23-GRP-HERO (one-image provenance exception, founder approval 23 Oct 2026); founder instruction, 23 Oct 2026 (Garden Room Prices: new architectural hero image); founder hero decision, 23 Oct 2026 (Variant B layout; no \u00d6\u00d6D photograph; original generic pavilion preferred); PN-FDR-2026-10-19-01"
+      "decision_ref": "PN-FDR-2026-10-23-GRP-HERO (one-image provenance exception, founder approval 23 Oct 2026); founder instruction, 23 Oct 2026 (Garden Room Prices: new architectural hero image); founder hero decision, 23 Oct 2026 (Variant B layout; no ÖÖD photograph; original generic pavilion preferred); PN-FDR-2026-10-19-01"
     },
     {
       "asset": "assets/h6/img/H6-garden-base-v6-960.avif",
@@ -2143,7 +2144,7 @@
       "sha256": "1db25248b3655a4cc1a0415d2634321b863d42a17e76adb9c3e3c003d75dadb6",
       "bytes": 22218,
       "class": "ILLUSTRATION_VERIFIED_NOT_AI",
-      "what": "Floating 3D lettering 'Discover What\u2019s Possible\u2026' (Playfair Display ExtraBold, rendered in Blender 5.2; no AI)",
+      "what": "Floating 3D lettering 'Discover What’s Possible…' (Playfair Display ExtraBold, rendered in Blender 5.2; no AI)",
       "generated": {
         "tool": "Blender 5.2 (Cycles), scripted 3D render of typeset lettering (Playfair Display ExtraBold, SIL Open Font Licence); no generative model",
         "date": "2026-10-25",
@@ -2164,7 +2165,7 @@
       "sha256": "ca7efcd670c86afab14694fa2680b13eb5dcc9984755b20a32e71eacb09b287c",
       "bytes": 32696,
       "class": "ILLUSTRATION_VERIFIED_NOT_AI",
-      "what": "Floating 3D lettering 'Discover What\u2019s Possible\u2026' (Playfair Display ExtraBold, rendered in Blender 5.2; no AI)",
+      "what": "Floating 3D lettering 'Discover What’s Possible…' (Playfair Display ExtraBold, rendered in Blender 5.2; no AI)",
       "generated": {
         "tool": "Blender 5.2 (Cycles), scripted 3D render of typeset lettering (Playfair Display ExtraBold, SIL Open Font Licence); no generative model",
         "date": "2026-10-25",
@@ -2185,7 +2186,7 @@
       "sha256": "3bf6c48bc80dd60c4101a7cc95ec8dc28386436cf039cc11261f7c3bea37cf0d",
       "bytes": 14424,
       "class": "ILLUSTRATION_VERIFIED_NOT_AI",
-      "what": "Floating 3D lettering 'Discover What\u2019s Possible\u2026' (Playfair Display ExtraBold, rendered in Blender 5.2; no AI)",
+      "what": "Floating 3D lettering 'Discover What’s Possible…' (Playfair Display ExtraBold, rendered in Blender 5.2; no AI)",
       "generated": {
         "tool": "Blender 5.2 (Cycles), scripted 3D render of typeset lettering (Playfair Display ExtraBold, SIL Open Font Licence); no generative model",
         "date": "2026-10-25",
@@ -2206,7 +2207,7 @@
       "sha256": "c188b69dcecbd5b412f98da059b753f213009c04804afceba57cf9f83bc16e4c",
       "bytes": 33064,
       "class": "ILLUSTRATION_VERIFIED_NOT_AI",
-      "what": "Floating 3D lettering 'Discover What\u2019s Possible\u2026' (Playfair Display ExtraBold, rendered in Blender 5.2; no AI)",
+      "what": "Floating 3D lettering 'Discover What’s Possible…' (Playfair Display ExtraBold, rendered in Blender 5.2; no AI)",
       "generated": {
         "tool": "Blender 5.2 (Cycles), scripted 3D render of typeset lettering (Playfair Display ExtraBold, SIL Open Font Licence); no generative model",
         "date": "2026-10-25",
@@ -5589,6 +5590,45 @@
         "measured": "architecture median 2.2 px, p90 3.3 px, max 3.6 px (unchanged from v2: the correction did not touch architecture); furniture <= 2 px",
         "exception": "0.2 px over the median threshold, approved by the founder on 27 Oct 2026 (Phase 1 authorisation, item 4)"
       }
+    },
+    {
+      "asset": "plotart/assets/hero/founder-01-abstract.webp",
+      "sha256": "7812df17f3651108820ed79dfe69aa1fdaa27640d5aa1d5464c3b08007b802b1",
+      "bytes": 139100,
+      "pixels": [
+        1332,
+        940
+      ],
+      "class": "FOUNDER_ORIGINAL_ARTWORK",
+      "what": "Untitled colourful abstract painting with yellow outlines, by Colin Macaulay (PlotArt homepage hero)",
+      "artwork": {
+        "creator": "Colin Macaulay",
+        "owner": "Colin Macaulay",
+        "medium_note": "Original painting on canvas (acrylic/mixed media as photographed); no title recorded",
+        "not": "Not a Founding 25 submission, not for sale through PlotArt, not part of the curated collection"
+      },
+      "photograph": {
+        "source_file": "01_Abstract.jpeg — Colourful abstract with yellow outlines.jpeg (founder's Mac, 04 Deploy/PlotArt-Founder-Artwork; unchanged)",
+        "source_sha256": "267ccf5e8cb7dcbf4444b321c2098d0d8d4a17c8d3d4f64bd413617527b8bfa5",
+        "source_pixels": [
+          1600,
+          1200
+        ],
+        "photographer": "NOT YET CONFIRMED (to be recorded only once the founder confirms)",
+        "processing": [
+          "Cropped to the canvas (box 192,64,1524,1004 of the 1600x1200 photograph) to remove the studio wall; no other alteration",
+          "Encoded as WebP (quality 82) with Pillow by the PlotNua build session, 29 Oct 2026"
+        ]
+      },
+      "credit": "Original artwork by Colin Macaulay, founder of PlotArt.",
+      "human_review": {
+        "reviewer": "Colin MacAulay (founder)",
+        "date": "2026-10-29",
+        "attests": "Colin Macaulay confirms he created and owns the original painting (founder decision, 29 Oct 2026: Option B simplified)."
+      },
+      "permitted_surfaces": [
+        "plotart-homepage"
+      ]
     }
   ],
   "legacy_undeclared": [
@@ -5921,7 +5961,7 @@
       "introduced": {
         "commit": "07762e8",
         "date": "2026-08-27",
-        "subject": "Launch build v1 \u2014 the six-stage journey"
+        "subject": "Launch build v1 — the six-stage journey"
       },
       "recovered_evidence": {
         "master_file": "Images/Discoveries/DISC-024 Open Your Home to Art/DISC-024-02-Potential-Asset.jpeg",
@@ -5946,7 +5986,7 @@
       "introduced": {
         "commit": "07762e8",
         "date": "2026-08-27",
-        "subject": "Launch build v1 \u2014 the six-stage journey"
+        "subject": "Launch build v1 — the six-stage journey"
       },
       "recovered_evidence": {
         "master_file": "Images/Discoveries/DISC-024 Open Your Home to Art/DISC-024-05-Art-Finds-a-New-Home.jpeg",
@@ -5969,7 +6009,7 @@
       "introduced": {
         "commit": "07762e8",
         "date": "2026-08-27",
-        "subject": "Launch build v1 \u2014 the six-stage journey"
+        "subject": "Launch build v1 — the six-stage journey"
       },
       "recovered_evidence": {
         "master_file": "Images/Discoveries/DISC-023 A Home for Art /DISC-023-01-Hero.jpeg",
@@ -5992,7 +6032,7 @@
       "introduced": {
         "commit": "07762e8",
         "date": "2026-08-27",
-        "subject": "Launch build v1 \u2014 the six-stage journey"
+        "subject": "Launch build v1 — the six-stage journey"
       },
       "recovered_evidence": {
         "master_file": "Images/Discoveries/DISC-004 An Extra Room in the Garden/DISC-004-Image-04-Home-Gym-Wellness-v1.jpeg",
@@ -6040,7 +6080,7 @@
       "introduced": {
         "commit": "07762e8",
         "date": "2026-08-27",
-        "subject": "Launch build v1 \u2014 the six-stage journey"
+        "subject": "Launch build v1 — the six-stage journey"
       },
       "recovered_evidence": {
         "master_file": "Images/Discoveries/DISC-008 Build a Home in Your Garden/DISC-008-02-Opportunity.png",
@@ -6071,7 +6111,7 @@
         "subject": "Launch premium Discovery rebuilds and naming consistency"
       },
       "recovered_evidence": {
-        "master_file": "Images/Discoveries/DISC-005 Home Exchange/DISC-005 \u2014 Image 04 \u2014 Spanish Destination Home.jpeg",
+        "master_file": "Images/Discoveries/DISC-005 Home Exchange/DISC-005 — Image 04 — Spanish Destination Home.jpeg",
         "discovery_folder": "DISC-005 Home Exchange",
         "match": "perceptual, 16x16 average hash, Hamming 0 of 256",
         "establishes": "which picture this is and which Discovery it served",
@@ -6091,7 +6131,7 @@
       "introduced": {
         "commit": "07762e8",
         "date": "2026-08-27",
-        "subject": "Launch build v1 \u2014 the six-stage journey"
+        "subject": "Launch build v1 — the six-stage journey"
       },
       "recovered_evidence": {
         "master_file": "Images/Discoveries/DISC-025 The Borrowed Garden/DISC-025-01-Hero.jpeg",
@@ -6114,7 +6154,7 @@
       "introduced": {
         "commit": "794aeab",
         "date": "2026-09-01",
-        "subject": "DISC-026 \u2014 The House as a Power Station"
+        "subject": "DISC-026 — The House as a Power Station"
       },
       "recovered_evidence": {
         "master_file": "Images/Discoveries/DISC-026 The House as a Power Station/DISC-026 - Image 03 - The House as a Power Station - Future Ready.jpeg",
@@ -6137,7 +6177,7 @@
       "introduced": {
         "commit": "07762e8",
         "date": "2026-08-27",
-        "subject": "Launch build v1 \u2014 the six-stage journey"
+        "subject": "Launch build v1 — the six-stage journey"
       },
       "recovered_evidence": {
         "master_file": "Images/Discoveries/DISC-014 Driveway Income/previous/DISC-014-01-Opportunity.png",
@@ -6160,7 +6200,7 @@
       "introduced": {
         "commit": "c46c76d",
         "date": "2026-09-02",
-        "subject": "DISC-005 \u2014 Home Exchange"
+        "subject": "DISC-005 — Home Exchange"
       },
       "recovered_evidence": {
         "master_file": "Images/Discoveries/DISC-005 Home Exchange/DISC-005 - Image 02 - Home Exchange - Potential Asset.jpeg",
@@ -6185,7 +6225,7 @@
       "introduced": {
         "commit": "07762e8",
         "date": "2026-08-27",
-        "subject": "Launch build v1 \u2014 the six-stage journey"
+        "subject": "Launch build v1 — the six-stage journey"
       }
     },
     {
@@ -6226,7 +6266,7 @@
       "introduced": {
         "commit": "2d3affb",
         "date": "2026-09-02",
-        "subject": "Consolidate Space Discoveries \u2014 DISC-004 into DISC-006"
+        "subject": "Consolidate Space Discoveries — DISC-004 into DISC-006"
       },
       "recovered_evidence": {
         "master_file": "Images/Discoveries/DISC-006 Room to Grow/DISC-006 - Image 02 - Four Ways to Add a Room - Potential Asset.jpeg",
@@ -6299,7 +6339,7 @@
       "introduced": {
         "commit": "07762e8",
         "date": "2026-08-27",
-        "subject": "Launch build v1 \u2014 the six-stage journey"
+        "subject": "Launch build v1 — the six-stage journey"
       },
       "recovered_evidence": {
         "master_file": "Images/Discoveries/DISC-004 An Extra Room in the Garden/DISC-004-Image-07-Teen-Den-v1.jpeg",
@@ -6325,7 +6365,7 @@
       "introduced": {
         "commit": "3cb49ea",
         "date": "2026-09-01",
-        "subject": "DISC-022 \u2014 Hidden Cars"
+        "subject": "DISC-022 — Hidden Cars"
       },
       "recovered_evidence": {
         "master_file": "Images/Discoveries/DISC-022 Hidden Cars/DISC-022-03-Outcome.png",
@@ -6352,7 +6392,7 @@
       "introduced": {
         "commit": "3cb49ea",
         "date": "2026-09-01",
-        "subject": "DISC-022 \u2014 Hidden Cars"
+        "subject": "DISC-022 — Hidden Cars"
       },
       "recovered_evidence": {
         "master_file": "Images/Discoveries/DISC-022 Hidden Cars/DISC-022-02-Problem.png",
@@ -6406,7 +6446,7 @@
         "subject": "Launch premium Discovery rebuilds and naming consistency"
       },
       "recovered_evidence": {
-        "master_file": "Images/Discoveries/DISC-014 Driveway Income/DISC-014 \u2014 Image 02 \u2014 Outcome.jpeg",
+        "master_file": "Images/Discoveries/DISC-014 Driveway Income/DISC-014 — Image 02 — Outcome.jpeg",
         "discovery_folder": "DISC-014 Driveway Income",
         "match": "perceptual, 16x16 average hash, Hamming 0 of 256",
         "establishes": "which picture this is and which Discovery it served",
@@ -6456,7 +6496,7 @@
       "introduced": {
         "commit": "07762e8",
         "date": "2026-08-27",
-        "subject": "Launch build v1 \u2014 the six-stage journey"
+        "subject": "Launch build v1 — the six-stage journey"
       },
       "recovered_evidence": {
         "master_file": "Images/Discoveries/DISC-023 A Home for Art /DISC-023-05-Living-with-Art.jpeg",
@@ -6481,7 +6521,7 @@
       "introduced": {
         "commit": "07762e8",
         "date": "2026-08-27",
-        "subject": "Launch build v1 \u2014 the six-stage journey"
+        "subject": "Launch build v1 — the six-stage journey"
       },
       "recovered_evidence": {
         "master_file": "Images/Discoveries/DISC-025 The Borrowed Garden/DISC-025-02-Potential-Asset.jpeg",
@@ -6506,7 +6546,7 @@
       "introduced": {
         "commit": "07762e8",
         "date": "2026-08-27",
-        "subject": "Launch build v1 \u2014 the six-stage journey"
+        "subject": "Launch build v1 — the six-stage journey"
       },
       "recovered_evidence": {
         "master_file": "Images/Discoveries/DISC-023 A Home for Art /DISC-023-04-Meet-the-Artist.jpeg",
@@ -6557,7 +6597,7 @@
       "introduced": {
         "commit": "07762e8",
         "date": "2026-08-27",
-        "subject": "Launch build v1 \u2014 the six-stage journey"
+        "subject": "Launch build v1 — the six-stage journey"
       },
       "recovered_evidence": {
         "master_file": "Images/Discoveries/DISC-023 A Home for Art /DISC-023-02-Potential-Asset.jpeg",
@@ -6582,7 +6622,7 @@
       "introduced": {
         "commit": "07762e8",
         "date": "2026-08-27",
-        "subject": "Launch build v1 \u2014 the six-stage journey"
+        "subject": "Launch build v1 — the six-stage journey"
       },
       "recovered_evidence": {
         "master_file": "Images/Discoveries/DISC-008 Build a Home in Your Garden/DISC-008-01-Recognition.png",
@@ -6605,7 +6645,7 @@
       "introduced": {
         "commit": "07762e8",
         "date": "2026-08-27",
-        "subject": "Launch build v1 \u2014 the six-stage journey"
+        "subject": "Launch build v1 — the six-stage journey"
       },
       "recovered_evidence": {
         "master_file": "Images/Discoveries/DISC-004 An Extra Room in the Garden/DISC-004-Image-01-Hero-Frozen-v1-web.jpeg",
@@ -6628,7 +6668,7 @@
       "introduced": {
         "commit": "07762e8",
         "date": "2026-08-27",
-        "subject": "Launch build v1 \u2014 the six-stage journey"
+        "subject": "Launch build v1 — the six-stage journey"
       },
       "recovered_evidence": {
         "master_file": "Images/Discoveries/DISC-004 An Extra Room in the Garden/DISC-004-Image-06-Reading-Room-v2.jpeg",
@@ -6678,7 +6718,7 @@
       "introduced": {
         "commit": "07762e8",
         "date": "2026-08-27",
-        "subject": "Launch build v1 \u2014 the six-stage journey"
+        "subject": "Launch build v1 — the six-stage journey"
       },
       "recovered_evidence": {
         "master_file": "Images/Discoveries/DISC-024 Open Your Home to Art/DISC-024-04-Meet-the-Artist.jpeg",
@@ -6701,7 +6741,7 @@
       "introduced": {
         "commit": "07762e8",
         "date": "2026-08-27",
-        "subject": "Launch build v1 \u2014 the six-stage journey"
+        "subject": "Launch build v1 — the six-stage journey"
       },
       "recovered_evidence": {
         "master_file": "Images/Discoveries/DISC-007 Restore Something/DISC-007-01-Scene.png",
@@ -6724,7 +6764,7 @@
       "introduced": {
         "commit": "07762e8",
         "date": "2026-08-27",
-        "subject": "Launch build v1 \u2014 the six-stage journey"
+        "subject": "Launch build v1 — the six-stage journey"
       },
       "recovered_evidence": {
         "master_file": "Images/Discoveries/DISC-020 Stay in the House You Love/Stay-in-the-House-You-Love-02-Reveal.png",
@@ -6747,7 +6787,7 @@
       "introduced": {
         "commit": "07762e8",
         "date": "2026-08-27",
-        "subject": "Launch build v1 \u2014 the six-stage journey"
+        "subject": "Launch build v1 — the six-stage journey"
       },
       "recovered_evidence": {
         "master_file": "Images/Discoveries/DISC-008 Build a Home in Your Garden/DISC-008-02-Opportunity.png",
@@ -6774,7 +6814,7 @@
       "introduced": {
         "commit": "07762e8",
         "date": "2026-08-27",
-        "subject": "Launch build v1 \u2014 the six-stage journey"
+        "subject": "Launch build v1 — the six-stage journey"
       },
       "recovered_evidence": {
         "master_file": "Images/Discoveries/DISC-025 The Borrowed Garden/DISC-025-04-Local-Grower.jpeg",
@@ -6866,7 +6906,7 @@
       "introduced": {
         "commit": "07762e8",
         "date": "2026-08-27",
-        "subject": "Launch build v1 \u2014 the six-stage journey"
+        "subject": "Launch build v1 — the six-stage journey"
       },
       "recovered_evidence": {
         "master_file": "Images/Discoveries/DISC-005 Home Exchange/DISC-005 - Hero.png",
@@ -6915,7 +6955,7 @@
       "introduced": {
         "commit": "07762e8",
         "date": "2026-08-27",
-        "subject": "Launch build v1 \u2014 the six-stage journey"
+        "subject": "Launch build v1 — the six-stage journey"
       },
       "recovered_evidence": {
         "master_file": "Images/Discoveries/DISC-004 An Extra Room in the Garden/DISC-004-Image-08-Music-Room-v1.jpeg",
@@ -6963,7 +7003,7 @@
       "introduced": {
         "commit": "07762e8",
         "date": "2026-08-27",
-        "subject": "Launch build v1 \u2014 the six-stage journey"
+        "subject": "Launch build v1 — the six-stage journey"
       },
       "recovered_evidence": {
         "master_file": "Images/Discoveries/DISC-004 An Extra Room in the Garden/DISC-004-Image-05-Teen-Study-v1..jpeg",
@@ -7017,7 +7057,7 @@
       "introduced": {
         "commit": "3483278",
         "date": "2026-09-01",
-        "subject": "DISC-027 \u2014 The Neighbourhood Parcel House"
+        "subject": "DISC-027 — The Neighbourhood Parcel House"
       },
       "recovered_evidence": {
         "master_file": "Images/Discoveries/DISC-027 The Neighbourhood Parcel House/DISC-027 - Image 01 - The Neighbourhood Parcel House.jpeg",
@@ -7053,7 +7093,7 @@
       "introduced": {
         "commit": "07762e8",
         "date": "2026-08-27",
-        "subject": "Launch build v1 \u2014 the six-stage journey"
+        "subject": "Launch build v1 — the six-stage journey"
       },
       "recovered_evidence": {
         "master_file": "Images/Discoveries/DISC-008 Build a Home in Your Garden/DISC-008-02-Opportunity.png",
@@ -7076,7 +7116,7 @@
       "introduced": {
         "commit": "07762e8",
         "date": "2026-08-27",
-        "subject": "Launch build v1 \u2014 the six-stage journey"
+        "subject": "Launch build v1 — the six-stage journey"
       },
       "recovered_evidence": {
         "master_file": "Images/Discoveries/DISC-006 Room to Grow/DISC-006-02-Problem.png",
@@ -7099,7 +7139,7 @@
       "introduced": {
         "commit": "07762e8",
         "date": "2026-08-27",
-        "subject": "Launch build v1 \u2014 the six-stage journey"
+        "subject": "Launch build v1 — the six-stage journey"
       },
       "recovered_evidence": {
         "master_file": "Images/Discoveries/DISC-024 Open Your Home to Art/DISC-024-01-Hero.jpeg",
@@ -7124,7 +7164,7 @@
       "introduced": {
         "commit": "07762e8",
         "date": "2026-08-27",
-        "subject": "Launch build v1 \u2014 the six-stage journey"
+        "subject": "Launch build v1 — the six-stage journey"
       }
     },
     {
@@ -7167,7 +7207,7 @@
       "introduced": {
         "commit": "c46c76d",
         "date": "2026-09-02",
-        "subject": "DISC-005 \u2014 Home Exchange"
+        "subject": "DISC-005 — Home Exchange"
       },
       "recovered_evidence": {
         "master_file": "Images/Discoveries/DISC-005 Home Exchange/DISC-005 - Image 03 - Home Exchange - Outcome.jpeg",
@@ -7197,7 +7237,7 @@
       "introduced": {
         "commit": "3cb49ea",
         "date": "2026-09-01",
-        "subject": "DISC-022 \u2014 Hidden Cars"
+        "subject": "DISC-022 — Hidden Cars"
       },
       "recovered_evidence": {
         "master_file": "Images/Discoveries/DISC-022 Hidden Cars/DISC-022-01-Hero.png",
@@ -7272,7 +7312,7 @@
       "introduced": {
         "commit": "3483278",
         "date": "2026-09-01",
-        "subject": "DISC-027 \u2014 The Neighbourhood Parcel House"
+        "subject": "DISC-027 — The Neighbourhood Parcel House"
       },
       "recovered_evidence": {
         "master_file": "Images/Discoveries/DISC-027 The Neighbourhood Parcel House/DISC-027 - Image 02 - The Neighbourhood Parcel House - Potential Asset.jpeg",
@@ -7328,7 +7368,7 @@
         "subject": "Launch premium Discovery rebuilds and naming consistency"
       },
       "recovered_evidence": {
-        "master_file": "Images/Discoveries/DISC-014 Driveway Income/Image 01 \u2014 Potential Asset.jpeg",
+        "master_file": "Images/Discoveries/DISC-014 Driveway Income/Image 01 — Potential Asset.jpeg",
         "discovery_folder": "DISC-014 Driveway Income",
         "match": "perceptual, 16x16 average hash, Hamming 0 of 256",
         "establishes": "which picture this is and which Discovery it served",
@@ -7348,7 +7388,7 @@
       "introduced": {
         "commit": "07762e8",
         "date": "2026-08-27",
-        "subject": "Launch build v1 \u2014 the six-stage journey"
+        "subject": "Launch build v1 — the six-stage journey"
       },
       "recovered_evidence": {
         "master_file": "Images/Discoveries/DISC-004 An Extra Room in the Garden/DISC-004-Image-02-Home-Office-Frozen-v1-web.jpeg",
@@ -7373,7 +7413,7 @@
       "introduced": {
         "commit": "07762e8",
         "date": "2026-08-27",
-        "subject": "Launch build v1 \u2014 the six-stage journey"
+        "subject": "Launch build v1 — the six-stage journey"
       },
       "recovered_evidence": {
         "master_file": "Images/Discoveries/DISC-025 The Borrowed Garden/DISC-025-05-The-Result.jpeg",
@@ -7396,7 +7436,7 @@
       "introduced": {
         "commit": "794aeab",
         "date": "2026-09-01",
-        "subject": "DISC-026 \u2014 The House as a Power Station"
+        "subject": "DISC-026 — The House as a Power Station"
       },
       "recovered_evidence": {
         "master_file": "Images/Discoveries/DISC-026 The House as a Power Station/DISC-026 - Image 04 - The House as a Power Station - Everyday Benefit.jpeg",
@@ -7419,7 +7459,7 @@
       "introduced": {
         "commit": "07762e8",
         "date": "2026-08-27",
-        "subject": "Launch build v1 \u2014 the six-stage journey"
+        "subject": "Launch build v1 — the six-stage journey"
       },
       "recovered_evidence": {
         "master_file": "Images/Discoveries/DISC-004 An Extra Room in the Garden/DISC-004-Image-03-Artist-Studio.jpg.jpeg",
@@ -7442,7 +7482,7 @@
       "introduced": {
         "commit": "7b6e32d",
         "date": "2026-09-02",
-        "subject": "DISC-014 \u2014 Driveway Income"
+        "subject": "DISC-014 — Driveway Income"
       },
       "recovered_evidence": {
         "master_file": "Images/Discoveries/DISC-014 Driveway Income/previous/DISC-014-02-Opportunity.jpeg",
@@ -7472,7 +7512,7 @@
       "introduced": {
         "commit": "07762e8",
         "date": "2026-08-27",
-        "subject": "Launch build v1 \u2014 the six-stage journey"
+        "subject": "Launch build v1 — the six-stage journey"
       },
       "recovered_evidence": {
         "master_file": "Images/Discoveries/DISC-023 A Home for Art /DISC-023-01-Hero.jpeg",
@@ -7498,7 +7538,7 @@
       "introduced": {
         "commit": "07762e8",
         "date": "2026-08-27",
-        "subject": "Launch build v1 \u2014 the six-stage journey"
+        "subject": "Launch build v1 — the six-stage journey"
       },
       "recovered_evidence": {
         "master_file": "Images/Discoveries/DISC-023 A Home for Art /DISC-023-03-Transformation.jpeg",
@@ -7521,7 +7561,7 @@
       "introduced": {
         "commit": "7b6e32d",
         "date": "2026-09-02",
-        "subject": "DISC-014 \u2014 Driveway Income"
+        "subject": "DISC-014 — Driveway Income"
       },
       "recovered_evidence": {
         "master_file": "Images/Discoveries/DISC-014 Driveway Income/previous/DISC-014-03-Opportunity.jpeg",
@@ -7570,7 +7610,7 @@
       "introduced": {
         "commit": "794aeab",
         "date": "2026-09-01",
-        "subject": "DISC-026 \u2014 The House as a Power Station"
+        "subject": "DISC-026 — The House as a Power Station"
       },
       "recovered_evidence": {
         "master_file": "Images/Discoveries/DISC-026 The House as a Power Station/DISC-026 - Image 01 - Powering the Future from Home.jpeg",
@@ -7593,7 +7633,7 @@
       "introduced": {
         "commit": "7b6e32d",
         "date": "2026-09-02",
-        "subject": "DISC-014 \u2014 Driveway Income"
+        "subject": "DISC-014 — Driveway Income"
       },
       "recovered_evidence": {
         "master_file": "Images/Discoveries/DISC-014 Driveway Income/previous/DISC-014-01-Opportunity.png",
@@ -7616,7 +7656,7 @@
       "introduced": {
         "commit": "07762e8",
         "date": "2026-08-27",
-        "subject": "Launch build v1 \u2014 the six-stage journey"
+        "subject": "Launch build v1 — the six-stage journey"
       },
       "recovered_evidence": {
         "master_file": "Images/Discoveries/DISC-024 Open Your Home to Art/DISC-024-03-Gallery-at-Home.jpeg",
@@ -7639,7 +7679,7 @@
       "introduced": {
         "commit": "07762e8",
         "date": "2026-08-27",
-        "subject": "Launch build v1 \u2014 the six-stage journey"
+        "subject": "Launch build v1 — the six-stage journey"
       },
       "recovered_evidence": {
         "master_file": "Images/Discoveries/DISC-024 Open Your Home to Art/DISC-024-03-Gallery-at-Home.jpeg",
@@ -7662,7 +7702,7 @@
       "introduced": {
         "commit": "07762e8",
         "date": "2026-08-27",
-        "subject": "Launch build v1 \u2014 the six-stage journey"
+        "subject": "Launch build v1 — the six-stage journey"
       },
       "recovered_evidence": {
         "master_file": "Images/Discoveries/DISC-008 Build a Home in Your Garden/DISC-008-03-Living-at-Home-v2.jpeg",
@@ -7730,7 +7770,7 @@
       "introduced": {
         "commit": "07762e8",
         "date": "2026-08-27",
-        "subject": "Launch build v1 \u2014 the six-stage journey"
+        "subject": "Launch build v1 — the six-stage journey"
       },
       "recovered_evidence": {
         "master_file": "Images/Discoveries/DISC-024 Open Your Home to Art/DISC-024-03-Gallery-at-Home.jpeg",
@@ -7756,7 +7796,7 @@
       "introduced": {
         "commit": "3483278",
         "date": "2026-09-01",
-        "subject": "DISC-027 \u2014 The Neighbourhood Parcel House"
+        "subject": "DISC-027 — The Neighbourhood Parcel House"
       },
       "recovered_evidence": {
         "master_file": "Images/Discoveries/DISC-027 The Neighbourhood Parcel House/DISC-027 - Image 03 - The Neighbourhood Parcel House - The Parcel House.jpeg",
@@ -7788,7 +7828,7 @@
       "introduced": {
         "commit": "07762e8",
         "date": "2026-08-27",
-        "subject": "Launch build v1 \u2014 the six-stage journey"
+        "subject": "Launch build v1 — the six-stage journey"
       },
       "recovered_evidence": {
         "master_file": "Images/Discoveries/DISC-025 The Borrowed Garden/DISC-025-01-Hero.jpeg",
@@ -7865,7 +7905,7 @@
       "introduced": {
         "commit": "794aeab",
         "date": "2026-09-01",
-        "subject": "DISC-026 \u2014 The House as a Power Station"
+        "subject": "DISC-026 — The House as a Power Station"
       },
       "recovered_evidence": {
         "master_file": "Images/Discoveries/DISC-026 The House as a Power Station/DISC-026 - Image 05 - The House as a Power Station - The Future.jpeg",
@@ -7890,7 +7930,7 @@
       "introduced": {
         "commit": "c46c76d",
         "date": "2026-09-02",
-        "subject": "DISC-005 \u2014 Home Exchange"
+        "subject": "DISC-005 — Home Exchange"
       },
       "recovered_evidence": {
         "master_file": "Images/Discoveries/DISC-005 Home Exchange/DISC-005 - Hero.png",
@@ -7931,7 +7971,7 @@
       "introduced": {
         "commit": "07762e8",
         "date": "2026-08-27",
-        "subject": "Launch build v1 \u2014 the six-stage journey"
+        "subject": "Launch build v1 — the six-stage journey"
       },
       "recovered_evidence": {
         "master_file": "Images/artist studio.png",
@@ -7956,7 +7996,7 @@
       "introduced": {
         "commit": "07762e8",
         "date": "2026-08-27",
-        "subject": "Launch build v1 \u2014 the six-stage journey"
+        "subject": "Launch build v1 — the six-stage journey"
       },
       "recovered_evidence": {
         "master_file": "Images/Discoveries/DISC-025 The Borrowed Garden/DISC-025-03-Transformation.jpeg",
@@ -7981,7 +8021,7 @@
       "introduced": {
         "commit": "794aeab",
         "date": "2026-09-01",
-        "subject": "DISC-026 \u2014 The House as a Power Station"
+        "subject": "DISC-026 — The House as a Power Station"
       },
       "recovered_evidence": {
         "master_file": "Images/Discoveries/DISC-026 The House as a Power Station/DISC-026 - Image 02 -The House as a Power Station - Potential Asset.jpeg",
@@ -8528,7 +8568,7 @@
         "measured_against": "source at the same pixel size"
       },
       "made": "2026-10-16",
-      "lineage_basis": "Signed Google C2PA credential in master 'DISC-014 Image 01 \u2014 Potential Asset.jpeg' (perceptual match 0/256): created by Google Generative AI, no input ingredients.",
+      "lineage_basis": "Signed Google C2PA credential in master 'DISC-014 Image 01 — Potential Asset.jpeg' (perceptual match 0/256): created by Google Generative AI, no input ingredients.",
       "content_credentials": {
         "source_file_embeds_c2pa": false,
         "derivative_embeds_c2pa": false,
@@ -8555,7 +8595,7 @@
         "measured_against": "source at the same pixel size"
       },
       "made": "2026-10-16",
-      "lineage_basis": "Signed Google C2PA credential in master 'DISC-014 Image 01 \u2014 Potential Asset.jpeg' (perceptual match 0/256): created by Google Generative AI, no input ingredients.",
+      "lineage_basis": "Signed Google C2PA credential in master 'DISC-014 Image 01 — Potential Asset.jpeg' (perceptual match 0/256): created by Google Generative AI, no input ingredients.",
       "content_credentials": {
         "source_file_embeds_c2pa": false,
         "derivative_embeds_c2pa": false,
@@ -8929,7 +8969,7 @@
         "tile_record": "assets/possibility-reveal/layers/layers.json",
         "sprite": "two states, stacked: top = the locked L6 H5C4-S layer exactly (with L3 on); bottom = the same deterministic render with the pavilion switched off (with L3 off), identical outside the pavilion"
       },
-      "visible_caption": "AI-generated illustration \u00b7 Hot tub: TimberIN \u00b7 Sauna: TimberIN",
+      "visible_caption": "AI-generated illustration · Hot tub: TimberIN · Sauna: TimberIN",
       "accessible_disclosure": "This garden scene combines AI-generated illustration with adapted photography of a TimberIN hot tub and sauna.",
       "retired_from_homepage": {
         "date": "2026-10-26",

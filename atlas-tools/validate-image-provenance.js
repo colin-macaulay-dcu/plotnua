@@ -28,6 +28,7 @@
  * The legacy backlog count is printed on every run and in the CI summary.
  */
 import { readFileSync, existsSync, readdirSync, statSync } from 'node:fs';
+import { posix } from 'node:path';
 import { createHash } from 'node:crypto';
 import { dirname, join, basename } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -77,7 +78,11 @@ if (!records || !legacy) {
    made without any generative model (e.g. a 3D render of typeset lettering).
    The register has reserved its label, 'Illustration', since 11 Oct 2026.
    Checked by P5b: tool, date, method and a named human review. */
-const ASSET_CLASSES = ['SUPPLIER_IMAGE', 'AI_ILLUSTRATION', 'ILLUSTRATION_VERIFIED_NOT_AI'];
+/* FOUNDER_ORIGINAL_ARTWORK (founder decision, 29 Oct 2026): a photograph of an original artwork
+   created and owned by PlotNua's founder. Not AI, not a supplier image. Checked by P5c: the
+   creator, the owner's attestation, the photograph and its processing, the visible credit and the
+   photographer (recorded as NOT YET CONFIRMED until the founder confirms who took it). */
+const ASSET_CLASSES = ['SUPPLIER_IMAGE', 'AI_ILLUSTRATION', 'ILLUSTRATION_VERIFIED_NOT_AI', 'FOUNDER_ORIGINAL_ARTWORK'];
 /* product-card is DELIBERATELY ABSENT. The founder's rule becomes a
    vocabulary restriction rather than a convention somebody has to remember:
    enabling it is a schema change with its own approval, not an oversight
@@ -299,7 +304,11 @@ function publishedLocalImages() {
       const self = SELF_ORIGINS.find(re => re.test(u));
       if (self) u = u.replace(self, '');               // our own origin, our own image
       else if (/^(https?:)?\/\//i.test(u)) continue;    // somebody else's: the rights gate's job
-      u = u.split('?')[0].split('#')[0].replace(/^\.?\//, '');
+      u = u.split('?')[0].split('#')[0];
+      /* A relative path resolves against the page's own folder (29 Oct 2026: the first image on a
+         page below the site root, plotart/index.html). Root-relative and root-level paths are unchanged. */
+      const pageDir = rel.includes('/') ? rel.slice(0, rel.lastIndexOf('/') + 1) : '';
+      u = u.startsWith('/') ? u.replace(/^\/+/, '') : posix.normalize(pageDir + u.replace(/^\.\//, ''));
       if (!u || !IMG_EXT.test(u)) continue;
       if (!found.has(u)) found.set(u, new Set());
       found.get(u).add(rel);
@@ -601,6 +610,26 @@ console.log('-'.repeat(74));
   }
   problems.length ? bad('P5b every ILLUSTRATION_VERIFIED_NOT_AI is fully declared', `${problems.length}: ${problems.slice(0, 3).join('; ')}`)
     : ok('P5b every ILLUSTRATION_VERIFIED_NOT_AI is fully declared', na.length ? `${na.length} checked` : 'none recorded; the check is live');
+}
+
+/* ── P5c · a FOUNDER_ORIGINAL_ARTWORK is fully declared (29 Oct 2026) ── */
+{
+  const fo = records.filter(r => r.class === 'FOUNDER_ORIGINAL_ARTWORK');
+  const problems = [];
+  for (const r of fo) {
+    const a = r.artwork || {};
+    if (!a.creator || !a.owner || !a.medium_note) problems.push(`${r.asset}: no creator, owner or description of the artwork`);
+    const ph = r.photograph || {};
+    if (!ph.photographer) problems.push(`${r.asset}: photographer not recorded (use "NOT YET CONFIRMED" until confirmed)`);
+    if (!Array.isArray(ph.processing) || !ph.processing.length) problems.push(`${r.asset}: no processing record`);
+    if ('prompt' in r || 'reference_inputs' in r || /chatgpt|dall|midjourney|gemini|imagen|flux|stable diffusion|firefly|sora/i.test(JSON.stringify(ph))) problems.push(`${r.asset}: a founder artwork record names a generative tool or prompt`);
+    if (!r.credit) problems.push(`${r.asset}: no visible credit`);
+    const hr = r.human_review || {};
+    if (!hr.reviewer || !hr.date || !hr.attests) problems.push(`${r.asset}: no owner attestation`);
+    if (!Array.isArray(r.permitted_surfaces) || !r.permitted_surfaces.length) problems.push(`${r.asset}: no permitted_surfaces`);
+  }
+  problems.length ? bad('P5c every FOUNDER_ORIGINAL_ARTWORK is fully declared', `${problems.length}: ${problems.slice(0, 3).join('; ')}`)
+    : ok('P5c every FOUNDER_ORIGINAL_ARTWORK is fully declared', fo.length ? `${fo.length} checked` : 'none recorded; the check is live');
 }
 
 /* ── P6 · anti-laundering ─────────────────────────────────────────────── */
