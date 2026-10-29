@@ -510,9 +510,24 @@ body.pa .pa-free-lines{ margin:0; }
 @media (max-width:639px){ .pa-vg-grid--peek li:nth-child(4){ display:block; } }
 @media (max-width:900px){ .pa-hero h1.pa-h1-home{ font-size:clamp(50px, 9vw, 96px); } }
 
-/* ---- launch hero: AI-generated conceptual images (29 Oct 2026) ---- */
+/* ---- launch hero: the founder's paintings (29 Oct 2026) ---- */
 .pa-hang > img{ display:block; width:100%; height:auto; }
 .pa-hero-hang--ci{ grid-template-columns:minmax(0, 1.25fr) minmax(0, .85fr); }
-.pa-hero-hang--ci .pa-hero-note{ position:static; grid-column:1 / -1; display:flex; flex-wrap:wrap; align-items:center; justify-content:flex-end; gap:8px 14px; margin:4px 0 0; }
-.pa-hero-note-t{ font-size:12.5px; color:var(--stone); letter-spacing:.02em; }
-@media (max-width:900px){ .pa-hero-hang--ci .pa-hero-note{ justify-content:flex-start; } }
+.pa-hero-hang--ci .h3{ width:100%; }
+.pa-credit{ font-size:12.5px; line-height:1.5; color:var(--stone); letter-spacing:.02em; margin:0; }
+.pa-hero-hang--ci .pa-hero-note{ position:static; grid-column:1 / -1; text-align:right; margin:2px 0 0; }
+.pa-hero-statement{ margin:0; align-self:center; }
+.pa-hero-statement .pa-hang{ box-shadow:0 40px 80px -30px rgba(0,0,0,.75), 0 12px 28px -12px rgba(0,0,0,.6); }
+.pa-hero-statement figcaption{ margin-top:16px; text-align:right; }
+.pa-studio-note{ color:var(--stone); max-width:52ch; }
+.pa-studio-grid{ display:grid; grid-template-columns:minmax(0, 1.08fr) minmax(0, 1fr); gap:clamp(22px, 3.4vw, 56px); align-items:end; }
+.pa-studio-grid figure{ margin:0; }
+.pa-studio-grid figcaption{ margin-top:14px; font-family:var(--serif); font-size:clamp(20px, 1.8vw, 26px); color:var(--ivory); }
+.pa-studio-credit{ margin-top:clamp(20px, 2.6vw, 30px); }
+@media (max-width:900px){
+  .pa-hero-hang--ci .pa-hero-note, .pa-hero-statement figcaption{ text-align:left; }
+  .pa-hero-statement{ margin-top:8px; }
+}
+@media (max-width:640px){ .pa-studio-grid{ grid-template-columns:1fr; } }
+.pa-hero .pa-wrap:has(.pa-hero-statement){ grid-template-columns:minmax(0, .92fr) minmax(0, 1.18fr); }
+@media (max-width:900px){ .pa-hero .pa-wrap:has(.pa-hero-statement){ grid-template-columns:1fr; } }
