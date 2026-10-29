@@ -322,6 +322,29 @@ export default {
   },
 };
 
+/* Founder system check: the Worker's own D1 and R2 bindings, written, read back and removed. No personal data. */
+async function selftest(env, me) {
+  const out = {}, id = 'selftest-' + crypto.randomUUID();
+  try {
+    const n = await env.DB.prepare('SELECT COUNT(*) AS n FROM artists').first();
+    await audit(env, me.email, 'founder', 'system_check', null, { id });
+    const back = await env.DB.prepare("SELECT id FROM audit WHERE action='system_check' AND detail LIKE ? LIMIT 1").bind('%' + id + '%').first();
+    out.database = back ? `working (${n.n} artist account${n.n === 1 ? '' : 's'})` : 'FAILED: write not read back';
+  } catch (e) { out.database = 'FAILED: ' + String(e.message || e).slice(0, 120); }
+  try {
+    const key = 'system-check/' + id + '.txt', body = 'PlotArt Studio system check ' + id;
+    await env.IMAGES.put(key, body);
+    const got = await env.IMAGES.get(key), text = got ? await got.text() : null;
+    await env.IMAGES.delete(key);
+    const gone = !(await env.IMAGES.head(key));
+    out.image_storage = text === body && gone ? 'working (written, read back and deleted)' : 'FAILED: ' + (text !== body ? 'read-back mismatch' : 'not deleted');
+  } catch (e) { out.image_storage = 'FAILED: ' + String(e.message || e).slice(0, 120); }
+  out.publishing = env.INSTANT_AUTOPUBLISH === 'true' ? 'automatic updates ON' : 'automatic updates off';
+  out.email = env.MAILER === 'resend' ? 'Resend' : 'not sending';
+  out.passed = !/FAILED/.test(out.database + out.image_storage);
+  return out;
+}
+
 async function route(req, env) {
   const url = new URL(req.url), p = url.pathname, m = req.method;
   // static assets (public, no data)
@@ -393,6 +416,7 @@ async function route(req, env) {
       return previewRoute(rest, previewPkg(snap, images), 'Founder review preview · <a href="/admin">Back to the review desk</a>');
     }
     if (p === '/api/admin/overview' && m === 'GET') return json({ ok: true, ...(await overview(env)) });
+    if (p === '/api/admin/selftest' && m === 'POST') return json({ ok: true, ...(await selftest(env, me)) });
     if (p === '/api/admin/artists' && m === 'POST') {
       const b = await req.json();
       const email = String(b.email || '').trim().toLowerCase();

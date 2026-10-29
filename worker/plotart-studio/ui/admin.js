@@ -55,7 +55,11 @@
         <div class="st-f"><label for="i-email">Email they applied with</label><input id="i-email" type="email"></div></div><div>
         <div class="st-f"><label for="i-ref">Application reference</label><input id="i-ref" type="text" placeholder="F25-YYMMDD-XXXXXX"></div>
         <label class="st-check" style="margin:4px 0 14px"><input id="i-f" type="checkbox" checked style="accent-color:var(--terra);width:20px;height:20px"> Founding Artist</label>
-        <button class="st-btn st-btn--solid" id="inv">Create Studio account</button><p class="st-err" id="ierr"></p></div></div></section>`;
+        <button class="st-btn st-btn--solid" id="inv">Create Studio account</button><p class="st-err" id="ierr"></p></div></div></section>
+      <section class="st-card"><h2>System check</h2><p class="st-muted">Writes, reads back and removes a test record in the database and a test file in image storage.</p>
+        <button class="st-btn" id="sys">Run system check</button><ul class="st-list" id="sysout"></ul></section>`;
+    $('#sys').addEventListener('click', async () => { const r = await api('POST', '/api/admin/selftest');
+      $('#sysout').innerHTML = [['Database', r.database], ['Image storage', r.image_storage], ['Automatic updates', r.publishing], ['Email', r.email]].map(([k, v]) => `<li><b style="color:var(--ivory)">${k}:</b> ${E(v)}</li>`).join('') + `<li><b style="color:var(--ivory)">${r.passed ? '✓ Passed' : '✗ Failed'}</b></li>`; });
     api('GET', '/api/admin/enquiries').then(r => { $('#enq').innerHTML = r.items.length ? `<div class="st-scroll"><table class="st-table"><thead><tr><th>Reference</th><th>Date</th><th>Artist</th><th>Artwork</th><th>Delivered</th></tr></thead><tbody>${r.items.slice(0, 30).map(e => `<tr><td>${E(e.reference)}</td><td>${when(e.created_at)}</td><td>${E(e.display_name)}</td><td>${E(e.artwork_title || 'General')}</td><td>${e.status === 'sent' ? '✓ emailed' : 'in Studio'}</td></tr>`).join('')}</tbody></table></div>` : '<p class="st-muted">None yet.</p>'; });
     app.querySelectorAll('[data-pub]').forEach(b => b.addEventListener('click', async () => {
       if (!b.dataset.sure) { b.dataset.sure = 1; b.textContent = 'Publish to plotnua.ie?'; return; }

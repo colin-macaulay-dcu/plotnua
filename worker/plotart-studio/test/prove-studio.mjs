@@ -257,6 +257,12 @@ q = (await call('GET', '/api/pipeline/queue', null, undefined, { Authorization: 
 out = spawnSync('python3', [join(TOOLS, 'plotart-studio-publish.py'), '--studio', url, '--token', PIPELINE_TOKEN, '--packages', PK], { encoding: 'utf8' });
 check('F2 “Unpublish” removes the gallery package at once (no review step)', q.some(x => x.kind === 'remove') && !existsSync(join(PK, 'aoife-test')), out.stdout);
 const audit = (await call('GET', '/api/admin/audit', FOUNDER)).j.items.map(a => a.action);
+const sys = await call('POST', '/api/admin/selftest', FOUNDER);
+const sysA = await call('POST', '/api/admin/selftest', A);
+const sysNoHdr = await call('POST', '/api/admin/selftest', FOUNDER, undefined, { 'X-Studio': '' });
+const leftover = await (async () => { const l = await (await mf.getR2Bucket('IMAGES', 'studio')).list({ prefix: 'system-check/' }); return l.objects.length; })();
+check('F4 founder system check: database and image storage written, read back and removed; refused to artists and without the Studio header',
+  sys.j.passed === true && /working/.test(sys.j.database) && /working/.test(sys.j.image_storage) && leftover === 0 && sysA.s === 403 && sysNoHdr.s === 403, JSON.stringify([sys.j, sysA.s, sysNoHdr.s, leftover]));
 check('F3 every action is in the audit log', ['invite', 'image_upload', 'submit', 'licence_accepted', 'submission_changes', 'submission_approve', 'publish', 'published', 'instant_change', 'suspend', 'unpublish'].every(a => audit.includes(a)));
 
 async function prodSnap(artist, v) {
