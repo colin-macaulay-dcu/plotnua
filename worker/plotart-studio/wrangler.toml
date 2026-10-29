@@ -1,0 +1,32 @@
+# PlotArt Studio · Worker configuration (Phase 2, 29 Oct 2026). NOT DEPLOYED.
+# Creating these resources needs the founder's separate approval (Cloudflare changes are approved one by one):
+#   1. D1 database "plotart-studio"           (wrangler d1 create plotart-studio --location weur), then schema.sql
+#   2. R2 bucket "plotart-studio-images"      (wrangler r2 bucket create plotart-studio-images --jurisdiction eu)
+#   3. Cloudflare Access on this Worker's workers.dev address (one-click Access), email one-time PIN, policy:
+#      the founder + each invited artist's email. Copy the Access AUD tag and team domain into [vars].
+#   4. Secret PIPELINE_TOKEN                  (wrangler secret put PIPELINE_TOKEN); the same value as a GitHub secret.
+name = "plotart-studio"
+main = "src/index.js"
+compatibility_date = "2026-08-01"
+workers_dev = true
+preview_urls = false
+
+[vars]
+ENVIRONMENT = "production"
+ACCESS_TEAM_DOMAIN = ""          # e.g. https://plotnua.cloudflareaccess.com  (empty = every request refused)
+ACCESS_AUD = ""                  # the Access application's AUD tag            (empty = every request refused)
+# FOUNDER_EMAILS is set as a secret (wrangler secret put FOUNDER_EMAILS): the repository is public.
+INSTANT_AUTOPUBLISH = "false"    # availability / removal / order publish automatically only when the founder turns this on
+
+[[d1_databases]]
+binding = "DB"
+database_name = "plotart-studio"
+database_id = "NOT-CREATED"
+
+[[r2_buckets]]
+binding = "IMAGES"
+bucket_name = "plotart-studio-images"
+jurisdiction = "eu"
+
+[observability]
+enabled = false

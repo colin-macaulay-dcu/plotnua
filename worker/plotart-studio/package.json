@@ -1,0 +1,11 @@
+{
+  "name": "plotart-studio",
+  "private": true,
+  "type": "module",
+  "description": "PlotArt Studio: artist self-service galleries and the founder's review desk (Phase 2). Not deployed.",
+  "scripts": {
+    "assets": "node build-assets.mjs",
+    "local": "node build-assets.mjs && node test/local.mjs --serve 8787",
+    "prove": "node build-assets.mjs && node test/prove-studio.mjs --gallery-tools ../../../founder-branch/atlas-tools"
+  }
+}

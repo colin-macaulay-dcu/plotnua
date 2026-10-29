@@ -376,8 +376,7 @@ if STATE == "open":
 
 # L14 · published artist galleries (Phase 1, founder decision 29 Oct 2026). Every published image has an
 # ARTIST_SUPPLIED_ARTWORK provenance record whose fingerprint matches; pages are noindex, carry no private-preview
-# material, expose no address but hello@plotnua.ie, quote no percentage, and a Founding Artist gallery shows at
-# least 10 works. Only gallery images under the artist's own img/ folder are used.
+# material, expose no address but hello@plotnua.ie and quote no percentage. Only gallery images under the artist's own img/ folder are used.
 _recp = os.path.join(SITE, "image-provenance-records.json")
 _arts = {}
 if os.path.exists(_recp):
@@ -402,8 +401,8 @@ for slug in GALLERY_SLUGS:
         need("%" not in vis, "L14 %s quotes a percentage" % f)
         for src in re.findall(r'<img\b[^>]*\bsrc="([^"]+)"', main):
             need(src.startswith("img/") and (base + src) in ARTIST_FILES, "L14 %s shows an image outside its own gallery folder: %s" % (f, src))
-        if f.endswith("/index.html") and "pa-gcard-badge" in main:
-            need(len(re.findall(r'<li class="pa-ag-work', main)) >= 10, "L14 %s: a Founding Artist gallery shows at least 10 artworks" % f)
+        # (The Founding minimum of 10 is enforced when a gallery FIRST opens, by the publication safeguards; a later sale
+        # or removal is never blocked: Founding Artist Agreement 3.3(c).)
 for asset in _arts:
     need(asset[len("plotart/"):] in ARTIST_FILES, "L14 provenance record for %s describes no published file" % asset)
 
