@@ -472,3 +472,40 @@ body.pa .pa-free-lines{ margin:0; }
   .pa-vg-cta .pa-btn{ justify-content:center; font-size:14px; padding:12px 12px; text-align:center; }
 }
 @media (max-width:420px){ .pa-vg-card{ padding:14px 8px 0; } }
+
+/* ---- launch header: three equal pills, no banner (founder approval 29 Oct 2026) ---- */
+.pa-head--pills .pa-wrap{ flex-wrap:nowrap; }
+.pa-pills{ display:flex; align-items:center; gap:10px; margin-left:auto; }
+:where(body.pa) .pa-pills a.pa-pill{ display:inline-flex; align-items:center; justify-content:center; min-height:42px; padding:0 20px; border-radius:999px; border:1px solid rgba(242,235,224,.24); background:transparent; color:var(--lime); font-family:var(--sans); font-size:14.5px; font-weight:500; letter-spacing:.01em; line-height:1; text-decoration:none; white-space:nowrap; transition:background .2s, border-color .2s, color .2s; }
+:where(body.pa) .pa-pills a.pa-pill:hover{ border-color:rgba(242,235,224,.5); color:var(--ivory); background:rgba(242,235,224,.04); }
+:where(body.pa) .pa-pills a.pa-pill[aria-current="page"]{ background:rgba(242,235,224,.11); border-color:rgba(242,235,224,.34); color:var(--ivory); }
+:where(body.pa) .pa-pills a.pa-pill:focus-visible{ outline:2px solid var(--terra-text); outline-offset:3px; border-radius:999px; }
+@media (max-width:780px){
+  .pa-head--pills .pa-wrap{ flex-wrap:wrap; gap:10px 0; min-height:0; padding-top:12px; padding-bottom:12px; }
+  .pa-pills{ width:100%; margin:0; display:grid; grid-template-columns:repeat(3, minmax(0, 1fr)); gap:8px; }
+  :where(body.pa) .pa-pills a.pa-pill{ min-height:44px; padding:0 8px; font-size:14px; }
+}
+@media (max-width:400px){
+  .pa-head--pills .pa-wrap{ padding-left:14px; padding-right:14px; }
+  .pa-pills{ gap:6px; }
+  :where(body.pa) .pa-pills a.pa-pill{ padding:0 4px; font-size:12.5px; letter-spacing:0; }
+}
+
+/* ---- PlotArt homepage: the Virtual Gallery landing (29 Oct 2026) ---- */
+.pa-hero h1.pa-h1-home{ font-size:clamp(50px, 6.6vw, 112px); line-height:.95; letter-spacing:-.015em; }
+.pa-invite-sec{ padding-top:0; }
+.pa-f25--invite{ border:1px solid rgba(207,133,102,.32); }
+.pa-invite-k{ display:flex; flex-wrap:wrap; align-items:center; gap:10px 14px; margin-bottom:16px; }
+.pa-invite-k .pa-eyebrow{ margin:0; }
+.pa-open-badge{ display:inline-flex; align-items:center; gap:8px; font-size:12px; font-weight:600; letter-spacing:.14em; text-transform:uppercase; color:#F6DCCB; background:rgba(174,98,69,.22); border:1px solid rgba(207,133,102,.55); border-radius:999px; padding:6px 12px; }
+.pa-open-badge::before{ content:""; width:7px; height:7px; border-radius:50%; background:#7FC79A; }
+.pa-open-badge--off::before{ background:var(--stone); }
+.pa-invite-cta{ display:flex; flex-direction:column; gap:12px; align-items:stretch; }
+.pa-invite-cta .pa-btn{ justify-content:center; white-space:nowrap; }
+@media (max-width:900px){ .pa-invite-cta{ flex-direction:row; flex-wrap:wrap; } }
+.pa-home-vg .pa-sec-head{ align-items:end; }
+.pa-home-vg-more{ margin:clamp(22px, 3vw, 34px) 0 0; }
+@media (max-width:1279px){ .pa-vg-grid--peek li:nth-child(n+5){ display:none; } }
+@media (max-width:959px){ .pa-vg-grid--peek li:nth-child(n+4){ display:none; } }
+@media (max-width:639px){ .pa-vg-grid--peek li:nth-child(4){ display:block; } }
+@media (max-width:900px){ .pa-hero h1.pa-h1-home{ font-size:clamp(50px, 9vw, 96px); } }

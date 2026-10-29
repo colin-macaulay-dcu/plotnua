@@ -21,8 +21,10 @@ once the launch pages are released). Prints "PLOTART LAUNCH · OK" only when:
       "100% of your artwork sales".
   L5  every page is noindex unless its own launch switch is on, and then carries
       index + canonical; demonstration content can never be indexable.
-  L6  every page carries the in-development ribbon (or the approved launch notice)
-      and says plainly that PlotArt isn't open and nothing is for sale.
+  L6  no development banner on any page (founder approval 29 Oct 2026); the status is
+      stated in the content instead: the homepage says the gallery isn't open yet, that
+      no artists or artworks have been published yet, and that no artwork is currently
+      available through PlotArt.
   L7  forms never have an action; the application form posts only through the one
       approved script and route; no upload, address, phone or date-of-birth field.
   L8  application state (founder decision 27 Oct 2026): f25_application_state is one
@@ -43,7 +45,11 @@ once the launch pages are released). Prints "PLOTART LAUNCH · OK" only when:
       placeholder wording; no image, portrait, name, price, biography or testimonial;
       the exact sentence "No artists have been selected, and no galleries are published
       yet."; a link to the Founding 25 page; noindex, follow; never in the sitemap. Every
-      launch page's navigation is Virtual Gallery, Living Gallery, About, Founding 25.
+      launch page's navigation (founder approval 29 Oct 2026) is exactly three pills:
+      Virtual Gallery (the PlotArt homepage), Living Gallery, PlotNua Home. Virtual
+      Gallery is current on the homepage and the Virtual Gallery, Living Gallery on its
+      page; the Founding 25 page has no current pill; PlotNua Home is never current;
+      Founding 25 and About are not in the navigation.
       It says the Virtual Gallery grows beyond its first 25 galleries and that every
       accepted artist receives their own gallery (founder decision 28 Oct 2026).
   L12 the Founding 25 and the Living Gallery are separate programmes (founder decision
@@ -138,8 +144,7 @@ for name in PAGES:
     else:
         need('<meta name="robots" content="noindex, follow">' in s and 'rel="canonical"' not in s, "L5 %s must be exactly 'noindex, follow' with no canonical until its switch is approved" % name)
     # L6
-    need('class="pa-proto"' in s, "L6 %s has no ribbon" % name)
-    need("Prototype" not in re.search(r'<div class="pa-proto"[^>]*>(.*?)</div>', s, re.S).group(1), "L6 %s still carries the prototype ribbon" % name)
+    need('class="pa-proto"' not in s, "L6 %s carries a development banner (removed by founder approval, 29 Oct 2026)" % name)
     # L7
     need(not re.search(r"<form[^>]*\saction=", s), "L7 %s has a form action" % name)
     need(not re.search(r'type="file"|name="(?:address|eircode|phone|dob|date_of_birth)"', s), "L7 %s asks for an upload, address, phone or date of birth" % name)
@@ -147,7 +152,8 @@ for name in PAGES:
     need(not re.search(r"workers\.dev|airtable", ep_ok), "L7 %s references a live endpoint outside the approved form" % name)
 
 home = open(os.path.join(PA, "index.html"), encoding="utf-8").read() if os.path.exists(os.path.join(PA, "index.html")) else ""
-need("isn't open yet" in visible_text(home) and "No artwork is currently available through PlotArt." in visible_text(home), "L6 the homepage must say PlotArt isn't open and no artwork is currently available through PlotArt")
+need("isn't open yet" in visible_text(home) and "No artwork is currently available through PlotArt." in visible_text(home)
+     and "no artists or artworks have been published yet" in visible_text(home), "L6 the homepage must say the gallery isn't open, no artists or artworks have been published yet, and no artwork is currently available through PlotArt")
 need("This is the experience PlotArt is building" in visible_text(home), "L6 the buyer experience must be framed as what PlotArt is building")
 need(len(demo_names) > 0 or not os.path.exists(cat_path), "L3 demonstration names could not be read")
 
@@ -250,13 +256,24 @@ if vg:
 smp = os.path.join(SITE, "sitemap.xml")
 if os.path.exists(smp):
     need("plotart" not in open(smp, encoding="utf-8").read(), "L11 sitemap.xml lists a PlotArt URL")
-NAV_WANT = ["Virtual Gallery", "Living Gallery", "About", "Founding 25"]
+NAV_WANT = ["Virtual Gallery", "Living Gallery", "PlotNua Home"]
+NAV_CURRENT = {"index.html": "Virtual Gallery", "gallery/index.html": "Virtual Gallery", "living-gallery.html": "Living Gallery", "founding-25.html": None}
 for name in PAGES:
     p = os.path.join(PA, name)
     if os.path.exists(p):
-        nav = re.search(r'<nav class="pa-nav" aria-label="PlotArt">(.*?)</nav>', open(p, encoding="utf-8").read(), re.S)
-        labels = [html.unescape(x) for x in re.findall(r'<a [^>]*>([^<]+)</a>', nav.group(1))] if nav else []
-        need(labels[:4] == NAV_WANT, "L11 %s navigation is %s, not %s" % (name, labels[:4], NAV_WANT))
+        s = open(p, encoding="utf-8").read()
+        head = re.search(r'<header class="pa-head[^"]*">(.*?)</header>', s, re.S)
+        nav = re.search(r'<nav class="pa-pills" aria-label="PlotArt">(.*?)</nav>', head.group(1) if head else "", re.S)
+        links = re.findall(r'<a class="pa-pill" href="([^"]+)"( aria-current="page")?[^>]*>([^<]+)</a>', nav.group(1)) if nav else []
+        labels = [html.unescape(x[2]) for x in links]
+        need(labels == NAV_WANT, "L11 %s navigation is %s, not %s" % (name, labels, NAV_WANT))
+        cur = [html.unescape(x[2]) for x in links if x[1]]
+        need(cur == ([NAV_CURRENT[name]] if NAV_CURRENT[name] else []), "L11 %s current pill is %s, not %s" % (name, cur, NAV_CURRENT[name]))
+        depth = "../" * name.count("/")
+        need(len(links) == 3 and links[0][0] == depth + "index.html" and links[1][0] == depth + "living-gallery.html" and links[2][0] == depth + "../index.html",
+             "L11 %s pills must link to the PlotArt homepage, the Living Gallery and the PlotNua homepage" % name)
+        hv = visible_text(head.group(1)) if head else ""
+        need("Founding 25" not in hv and "About" not in hv, "L11 %s header still offers Founding 25 or About" % name)
 
 # L12 · the Founding 25 and the Living Gallery are separate programmes (founder decision 28 Oct 2026)
 SEP = "The Founding 25 is the PlotArt Virtual Gallery. The Living Gallery is a separate, proposed programme. Taking part in it is optional, and it is never a condition of being a Founding Artist."
