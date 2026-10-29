@@ -5629,6 +5629,147 @@
       "permitted_surfaces": [
         "plotart-homepage"
       ]
+    },
+    {
+      "asset": "plotart/assets/living/plotart-living-gallery-colin-macaulay-artwork.webp",
+      "sha256": "f4861333a80fda7f704fd3c57d0a2b8f18db589b8505eb11192ac05c08d8d0f9",
+      "bytes": 228454,
+      "pixels": [
+        1564,
+        1006
+      ],
+      "class": "AI_ILLUSTRATION",
+      "what": "PlotArt Living Gallery visualisation: an AI-generated contemporary living room, with the actual photograph of Colin Macaulay's original abstract painting placed on the wall (composite). The room is not a real home.",
+      "layers": {
+        "original_painting": "Untitled colourful abstract painting with yellow outlines, created and owned by Colin Macaulay (founder). Recorded as FOUNDER_ORIGINAL_ARTWORK for plotart/assets/hero/founder-01-abstract.webp.",
+        "photograph_of_painting": {
+          "file": "01_Abstract.jpeg — Colourful abstract with yellow outlines.jpeg (founder's Mac, 04 Deploy/PlotArt-Founder-Artwork; unchanged)",
+          "sha256": "267ccf5e8cb7dcbf4444b321c2098d0d8d4a17c8d3d4f64bd413617527b8bfa5",
+          "pixels": [
+            1600,
+            1200
+          ],
+          "photographer": "NOT YET CONFIRMED (to be recorded only once the founder confirms)",
+          "crop": "box 192,64,1524,1004 (the canvas only), identical to the homepage hero crop"
+        },
+        "ai_room": {
+          "file": "plotart-living-gallery-colin-macaulay-artwork.png (founder's Mac, 04 Deploy/PlotArt-Founder-Artwork; unchanged)",
+          "sha256": "50357643ac74fb20410fe54e7f9484a21634d6d4332e64a564cc1beb0cecb23b",
+          "pixels": [
+            1564,
+            1006
+          ],
+          "contains": "an AI rendition of the painting, which the composite REPLACES; the rendition is not published"
+        },
+        "composite": "The AI rendition of the painting is fully covered by the actual photograph, perspective-placed on the wall at the painting's correct proportions (1.417:1); a soft wall shadow, a contact shadow and a narrow canvas edge were added outside the artwork. The artwork pixels are not retouched, recoloured or relit: only resampled by the perspective transform."
+      },
+      "generated": {
+        "tool": "ChatGPT image generation (OpenAI, gpt-image) for the room, per the master's C2PA content credentials; composite and web encoding by the PlotNua build session (Pillow)",
+        "date": "2026-10-29",
+        "source_master": {
+          "file": "plotart-living-gallery-colin-macaulay-artwork.png",
+          "sha256": "50357643ac74fb20410fe54e7f9484a21634d6d4332e64a564cc1beb0cecb23b"
+        },
+        "processing_chain": [
+          {
+            "step": "Room: generated in ChatGPT (gpt-image) by the founder on 29 Oct 2026, per its C2PA content credentials; request: a contemporary living-room interior displaying his painting on the wall",
+            "prompt": "UNAVAILABLE (see prompt_status): not supplied; not reconstructed"
+          },
+          {
+            "step": "Composite (founder instruction, 29 Oct 2026): the actual photograph of the painting replaces the AI rendition",
+            "tool": "Pillow perspective transform (bicubic) with 4x-supersampled polygon masks",
+            "geometry": {
+              "painting_quad_px": [
+                [
+                  558.5,
+                  123.0
+                ],
+                [
+                  1066.5,
+                  101.0
+                ],
+                [
+                  1065.0,
+                  471.0
+                ],
+                [
+                  558.5,
+                  470.0
+                ]
+              ],
+              "measured_ai_painting_front_face_px": [
+                [
+                  571,
+                  122.5
+                ],
+                [
+                  1054,
+                  101.5
+                ],
+                [
+                  1052,
+                  471
+                ],
+                [
+                  571,
+                  470
+                ]
+              ],
+              "wall_shadow_offset_px": [
+                12,
+                9
+              ]
+            },
+            "fidelity_check": "Rectified back to a flat rectangle and compared with the photograph at the same size: mean absolute difference 3.3/255, correlation 0.997 (resampling only). The replaced AI rendition differed from the photograph by 50.1/255 (correlation 0.46)."
+          },
+          {
+            "step": "Web encoding",
+            "tool": "Pillow; WebP quality 84 at 1564 x 1006; no other change"
+          }
+        ],
+        "c2pa_evidence": {
+          "manifest": "C2PA content credentials embedded in the room master PNG, read with c2pa-python 0.38 on 29 Oct 2026",
+          "claim_generator": "OpenAI Media Service API",
+          "signed_by": "OpenAI OpCo, LLC",
+          "signed_at": "2026-10-29T13:42:28.799217+00:00",
+          "actions": [
+            "c2pa.created (softwareAgent ChatGPT, version gpt-image; digitalSourceType trainedAlgorithmicMedia)",
+            "c2pa.converted",
+            "c2pa.watermarked.unbound"
+          ],
+          "ingredients_recorded": []
+        }
+      },
+      "prompt_status": "UNAVAILABLE",
+      "reference_disclosure": {
+        "status": "UNCERTAIN",
+        "statement": "The founder states that he supplied a photograph of his own original painting as the visual reference. ChatGPT's content credentials record no ingredients, so the reference cannot be verified from the credentials; the founder's statement is recorded and the status remains UNCERTAIN. No third-party image is stated to have been supplied.",
+        "evidence": "C2PA content credentials of the room master, read 29 Oct 2026",
+        "founder_statement": "Founder statement (Colin MacAulay, 29 Oct 2026): the interior image was generated with ChatGPT's image tool on 29 October 2026; he supplied a photograph of his original painting as the visual reference; the request was to create a contemporary living-room interior displaying his painting on the wall; the exact prompt is unavailable."
+      },
+      "resemblance_review": {
+        "date": "2026-10-29",
+        "reviewed_by": "PlotNua build session, for the founder's review",
+        "compared_against": "Identifiable third-party content in general: furniture and lighting products, brand marks, artworks by other artists, text, recognisable real interiors or addresses",
+        "findings": [
+          "The only artwork shown prominently is the founder's own painting, now the actual photograph",
+          "A small framed picture on a far wall (right background) is generic and illegible; no recognisable artwork",
+          "No brand marks, legible text, recognisable products or identifiable real interior were found"
+        ],
+        "verdict": "No identifiable third-party content; suitable for the PlotArt Living Gallery and homepage with the AI-generated illustration label"
+      },
+      "decision_ref": "PN-FDR-2026-10-29-PLOTART-LG",
+      "label_on_page": "AI-generated illustration; caption: Original artwork by Colin Macaulay. The room is an AI-generated interior visualisation for PlotArt, not a real home.",
+      "human_review": {
+        "reviewer": "Colin MacAulay (founder)",
+        "date": "2026-10-29",
+        "attests": "Founder states the room was generated with ChatGPT on 29 Oct 2026 from a photograph of his painting, prompt unavailable, and instructed that the actual photograph of the painting replace the AI rendition. Final visual approval of the composite is pending his review."
+      },
+      "permitted_surfaces": [
+        "plotart"
+      ],
+      "depicts_named_product": false,
+      "depicts_named_organisation": false
     }
   ],
   "legacy_undeclared": [

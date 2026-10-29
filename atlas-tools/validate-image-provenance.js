@@ -217,10 +217,19 @@ const FOUNDER_ATTESTED_DISC032 = {
   ]),
   surfaces: ['discovery', 'library-card'],
 };
-const FOUNDER_ATTESTED_ALL = [FOUNDER_ATTESTED_GRP, FOUNDER_ATTESTED_H6, FOUNDER_ATTESTED_DISC031, FOUNDER_ATTESTED_DISC033, FOUNDER_ATTESTED_DISC032];
+/* PN-FDR-2026-10-29-PLOTART-LG (founder, 29 Oct 2026): the PlotArt Living Gallery composite. The room was
+   generated with ChatGPT (prompt unavailable; the founder supplied a photograph of his own painting as the
+   reference); the AI rendition of the painting was then replaced by the actual photograph of the painting.
+   Pinned to this one file and the PlotArt surface only. */
+const FOUNDER_ATTESTED_PLOTART_LG = {
+  decision: 'PN-FDR-2026-10-29-PLOTART-LG',
+  sha256: new Set(['f4861333a80fda7f704fd3c57d0a2b8f18db589b8505eb11192ac05c08d8d0f9']),
+  surfaces: ['plotart'],
+};
+const FOUNDER_ATTESTED_ALL = [FOUNDER_ATTESTED_GRP, FOUNDER_ATTESTED_H6, FOUNDER_ATTESTED_DISC031, FOUNDER_ATTESTED_DISC033, FOUNDER_ATTESTED_DISC032, FOUNDER_ATTESTED_PLOTART_LG];
 const attestedFor = h => FOUNDER_ATTESTED_ALL.find(x => x.sha256.has(String(h)));
 const PERMITTED_SURFACES = ['discovery', 'library-card', 'homepage',
-                            'about', 'journey', 'preview'];
+                            'about', 'journey', 'preview', 'plotart'];
 const IMG_EXT = /\.(jpe?g|png|webp|avif|gif|svg|ico)$/i;
 /* PlotNua's own origins. An absolute self-reference is still one of our
    images and still needs declaring: twitter:image points at

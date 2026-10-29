@@ -160,7 +160,7 @@ home = open(os.path.join(PA, "index.html"), encoding="utf-8").read() if os.path.
 need(all(('src="%s"' % x) in home for x in HERO_IMAGES) and "Original artwork by Colin Macaulay, founder of PlotArt." in visible_text(home)
      and len(re.findall(r'<img [^>]*alt="Painting by Colin Macaulay', home)) == 1 and len(re.findall(r"<img\b", home)) == 3 + home.count("plotnua-mark-master.svg"),
      "L6 the homepage images must be exactly the founder's credited painting, the Living Gallery visualisation and the A Home for Art image")
-LG_CAP = "Original artwork by Colin Macaulay. Interior visualisation for PlotArt, not a real home."
+LG_CAP = "Original artwork by Colin Macaulay. The room is an AI-generated interior visualisation for PlotArt, not a real home."
 for _n, _s in (("index.html", home), ("living-gallery.html", open(os.path.join(PA, "living-gallery.html"), encoding="utf-8").read() if os.path.exists(os.path.join(PA, "living-gallery.html")) else "")):
     need(_s.count(LG_IMAGE) == 1 and LG_CAP in visible_text(_s) and "AI-generated illustration" in visible_text(_s),
          "L6 %s must show the Living Gallery visualisation once, credited and labelled as an AI-generated illustration" % _n)
@@ -270,7 +270,7 @@ if vg:
     need("pa-gcard" not in vg.split("<main", 1)[-1], "L11 an artist card is published (needs approved artists and their gallery pages)")
     _vgm = vg.split("<main", 1)[-1].split("</main>")[0]; _vgmv = re.sub(r"\s+", " ", visible_text(_vgm))
     need("founding-25.html" not in _vgm and "Founding 25" not in _vgmv and "Artist first" not in _vgmv, "L11 the Virtual Gallery carries Founding 25 promotion or an 'Artist first' section")
-    need("Each space becomes an artist's own gallery once the artist is selected and approves it." in vgv, "L11 the Virtual Gallery must say how a space becomes a gallery")
+    need("The first twenty-five galleries." in vgv, "L11 the Virtual Gallery collection heading is not the approved wording")
     need(not re.search(r"<img\b|<picture\b|<svg\b|background-image|url\(", vg.split("<main", 1)[-1].split("</main>")[0]), "L11 the Virtual Gallery shows an image (no portrait or artwork may appear)")
     need(not re.search(r"testimonial|“|”|\bsaid\b", visible_text(vg.split("<main", 1)[-1].split("</main>")[0]), re.I), "L11 the Virtual Gallery carries a quotation or testimonial")
     need("<title>Virtual Gallery | PlotArt</title>" in vg, "L11 the Virtual Gallery title is not the approved one")
