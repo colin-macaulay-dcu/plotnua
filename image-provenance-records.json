@@ -5614,7 +5614,7 @@
           1600,
           1200
         ],
-        "photographer": "NOT YET CONFIRMED (to be recorded only once the founder confirms)",
+        "photographer": "Colin Macaulay (founder); confirmed by the founder in writing, 29 Oct 2026",
         "processing": [
           "Cropped to the canvas (box 192,64,1524,1004 of the 1600x1200 photograph) to remove the studio wall; no other alteration",
           "Encoded as WebP (quality 82) with Pillow by the PlotNua build session, 29 Oct 2026"
@@ -5624,7 +5624,8 @@
       "human_review": {
         "reviewer": "Colin MacAulay (founder)",
         "date": "2026-10-29",
-        "attests": "Colin Macaulay confirms he created and owns the original painting (founder decision, 29 Oct 2026: Option B simplified)."
+        "attests": "Colin Macaulay confirms he created and owns the original painting (founder decision, 29 Oct 2026: Option B simplified).",
+        "founder_confirmation": "Founder confirmation (Colin Macaulay, 29 Oct 2026, 15:04): I created the original painting; I personally took the photograph of that painting; I authorise both to be used within PlotArt."
       },
       "permitted_surfaces": [
         "plotart-homepage"
@@ -5649,7 +5650,7 @@
             1600,
             1200
           ],
-          "photographer": "NOT YET CONFIRMED (to be recorded only once the founder confirms)",
+          "photographer": "Colin Macaulay (founder); confirmed by the founder in writing, 29 Oct 2026",
           "crop": "box 192,64,1524,1004 (the canvas only), identical to the homepage hero crop"
         },
         "ai_room": {
@@ -5763,7 +5764,8 @@
       "human_review": {
         "reviewer": "Colin MacAulay (founder)",
         "date": "2026-10-29",
-        "attests": "Founder states the room was generated with ChatGPT on 29 Oct 2026 from a photograph of his painting, prompt unavailable, and instructed that the actual photograph of the painting replace the AI rendition. Final visual approval of the composite is pending his review."
+        "attests": "Founder states the room was generated with ChatGPT on 29 Oct 2026 from a photograph of his painting, prompt unavailable, and instructed that the actual photograph of the painting replace the AI rendition. Final visual approval of the composite given by the founder on 29 Oct 2026 (production approval of the PlotArt release).",
+        "founder_confirmation": "Founder confirmation (Colin Macaulay, 29 Oct 2026, 15:04): I created the original painting; I personally took the photograph of that painting; I authorise both to be used within PlotArt."
       },
       "permitted_surfaces": [
         "plotart"
