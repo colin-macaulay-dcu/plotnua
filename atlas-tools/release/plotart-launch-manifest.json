@@ -1,14 +1,14 @@
 {
   "schema": "plotnua.plotart.launch-manifest.v1",
   "note": "SHA-256 of every published PlotArt file, from the launch build that passed prove-plotart-launch.py L1-L12 with the demonstration names (development branch founder/plotart-prototype). Any change to a published PlotArt file must come from a new verified build. Rebuilt 28 Oct 2026 (the legal-information release 2c89865 had changed the footers without updating this manifest). Rebuilt 29 Oct 2026 for the navigation and homepage refinement.",
-  "built_from": "founder/plotart-nav-home 71612be, OPEN state (navigation and homepage refinement, 29 Oct 2026)",
+  "built_from": "founder/plotart-nav-home 41f192b, OPEN state (navigation and homepage refinement, 29 Oct 2026)",
   "files": {
     "assets/f25-apply.js": "02d6e29b6a80435269cc4f01b8f67388c6e18a3abe7b81f1dd7a1449de9f861e",
     "assets/plotart.css": "cae77685fe774d7b7d2b3ab6e440b0c08d2adbc32f0fb030eef515b82ee60a76",
     "assets/plotart.js": "1aeda046a43a9877413943aa4573f8266280b94a5df21fb68421c5486189dca8",
     "founding-25.html": "4dc6b0c75fa90948b4c64c476993fb9d718172e799084463d6e19d402c208310",
     "gallery/index.html": "8e664356a04d816b9a4d071b239eaf8d913d81cdba09dd94e554eb905577fee9",
-    "index.html": "bee92038017c586e6e766b5c9a9e0c71a65302f3ab8572a6156c1254abfbdb98",
+    "index.html": "e72d49c4000cf4fb174b3e085b3ccdd4aac570f01994375983151915c4abd5c5",
     "living-gallery.html": "d25c9ef39a38dd5a6167b53ece49daadf4455030e1520cc5a0fda601b53b78ff"
   }
 }
