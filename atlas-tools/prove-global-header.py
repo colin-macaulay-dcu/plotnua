@@ -54,6 +54,11 @@ def main():
     sitemap = (ROOT / "sitemap.xml").read_text(encoding="utf-8")
     locs = [l or "index.html" for l in re.findall(r"<loc>https://plotnua\.ie/([^<]*)</loc>", sitemap)]
     for l in locs:
+        if l in H.OWN_NAV_SECTIONS:   # their own navigation; they must not carry the global header
+            f = ROOT / l / "index.html"
+            if not f.exists(): bad("G1 sitemap page %s is missing" % l)
+            elif "PLOTNUA HEADER v2" in f.read_text(encoding="utf-8"): bad("G1 %s keeps its own navigation and must not carry the global header" % l)
+            continue
         if l not in H.HEADER_PAGES: bad("G1 sitemap page %s has no place in the global header's page list" % l)
     for name in pages:
         t = (ROOT / name).read_text(encoding="utf-8", errors="replace")

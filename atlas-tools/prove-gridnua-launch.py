@@ -5,7 +5,7 @@
 
 Proves, on the tree as it would be published:
   GL1  exactly the approved files under gridnua/, byte-identical to the manifest
-  GL2  noindex, follow on both pages; no preview ribbon
+  GL2  index, follow and a self-canonical on both pages (indexing approved 29 Oct 2026); no preview ribbon
   GL3  the standing statement on both pages
   GL4  no form, script, endpoint, analytics or Interest Register on GridNua pages
   GL5  no money, earnings or savings claims (only the two disclaimers may use the words)
@@ -14,7 +14,7 @@ Proves, on the tree as it would be published:
   GL8  images: the PlotNua mark and the labelled conceptual illustration only
   GL9  every internal link resolves
   GL10 no "Here today" label (nothing qualifies, 29 Oct 2026)
-  GL11 GridNua is not in the sitemap or the search index while noindex
+  GL11 the sitemap lists exactly the two GridNua pages
   GL12 DISC-026: exactly one GridNua link, inside its markers; the article matches its latest freeze record
   GL13 the Readiness Check is byte-identical to its pin, its scripts (questions, engine, results) are unchanged,
        both return buttons are present, and the register stays closed
@@ -51,7 +51,10 @@ def run(root):
         if (root / p).exists() and sha(root / p) != h: f("GL1", f"{p} differs from its pin")
     pages = {p: (root / p).read_text(encoding="utf-8") for p in PAGES if (root / p).exists()}
     for p, h in pages.items():
-        if '<meta name="robots" content="noindex, follow">' not in h: f("GL2", f"{p} not noindex, follow")
+        # indexing approved by the founder, 29 Oct 2026: index, follow and a self-canonical
+        want = "https://plotnua.ie/" + p.replace("index.html", "")
+        if '<meta name="robots" content="index, follow">' not in h: f("GL2", f"{p} not index, follow")
+        if h.count('rel="canonical"') != 1 or f'<link rel="canonical" href="{want}">' not in h: f("GL2", f"{p} canonical is not {want}")
         if re.search(r"gn-preview|Local preview", h): f("GL2", f"{p} carries the preview ribbon")
         if not re.search(r'<p class="gn-standing"[^>]*>[\s\S]*?<strong>' + re.escape(STANDING) + '</strong>', h): f("GL3", f"{p} lacks the standing statement")
         if re.search(r"<form|<script|<input|workers\.dev|fetch\(|gtag|googletagmanager|cookiebot", h, re.I): f("GL4", f"{p} has a form, script or endpoint")
@@ -77,8 +80,9 @@ def run(root):
             if not tgt.exists(): f("GL9", f"{p} → {href}")
     svg = root / "gridnua/assets/gridnua-utility-room-concept.svg"
     if svg.exists() and "CONCEPTUAL ILLUSTRATION" not in svg.read_text(): f("GL8", "illustration lost its in-image label")
-    for idx in ("sitemap.xml", "search-index-v1.json"):
-        if (root / idx).exists() and "gridnua" in (root / idx).read_text(encoding="utf-8"): f("GL11", f"{idx} lists GridNua while noindex")
+    sm = (root / "sitemap.xml").read_text(encoding="utf-8") if (root / "sitemap.xml").exists() else ""
+    locs = sorted(re.findall(r"<loc>(https://plotnua\.ie/gridnua/[^<]*)</loc>", sm))
+    if locs != ["https://plotnua.ie/gridnua/", "https://plotnua.ie/gridnua/technology/"]: f("GL11", f"sitemap GridNua entries are {locs}")
     art = (root / ARTICLE).read_text(encoding="utf-8")
     # the PlotNua header carries its own GridNua destination (29 Oct 2026); count the article's links outside it
     art_body = re.sub(r"<!-- PLOTNUA HEADER v2 · (BAR|ROW) · BEGIN[\s\S]*?PLOTNUA HEADER v2 · \1 · END -->", " ", art)
@@ -106,7 +110,7 @@ def run(root):
 def prove():
     faults = {
         "GL1": lambda r: (r / "gridnua/notes.md").write_text("research"),
-        "GL2": lambda r: sub(r, PAGES[0], 'content="noindex, follow"', 'content="index, follow"'),
+        "GL2": lambda r: sub(r, PAGES[0], 'content="index, follow"', 'content="noindex, follow"'),
         "GL3": lambda r: sub(r, PAGES[1], STANDING, "Available soon."),
         "GL4": lambda r: sub(r, PAGES[0], "</main>", "<form action=x></form></main>"),
         "GL5": lambda r: sub(r, PAGES[0], "Computers make heat.", "Hosts earn €300 a year. Computers make heat."),
@@ -115,7 +119,7 @@ def prove():
         "GL8": lambda r: sub(r, PAGES[0], "Conceptual illustration</span>", "Illustration</span>"),
         "GL9": lambda r: sub(r, PAGES[0], 'href="technology/"', 'href="techno/"'),
         "GL10": lambda r: sub(r, PAGES[1], 'class="gn-label gn-label--ie"', 'class="gn-label gn-label--ie gn-label--here"'),
-        "GL11": lambda r: sub(r, "sitemap.xml", "</urlset>", "<url><loc>https://plotnua.ie/gridnua/</loc></url></urlset>"),
+        "GL11": lambda r: sub(r, "sitemap.xml", "<loc>https://plotnua.ie/gridnua/technology/</loc>", "<loc>https://plotnua.ie/gridnua/tech/</loc>"),
         "GL12": lambda r: sub(r, ARTICLE, "</main>", '<a href="gridnua/technology/">x</a></main>'),
         "GL13": lambda r: sub(r, CHECK, '"writes_enabled": false', '"writes_enabled": true'),
         "GL13c": lambda r: sub(r, CHECK, "Some emerging residential\n      computing models offer households useful heat or other benefits.", "The companies doing it are paying the households that host it."),

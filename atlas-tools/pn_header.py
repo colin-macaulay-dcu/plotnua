@@ -70,6 +70,9 @@ GLOBAL_PAGES = [     # built by build-global-header.py
 ]
 HEADER_PAGES = IDENTITY_PAGES + GLOBAL_PAGES
 EXCLUDED = ["your-plot.html"]          # plus every disc0NN-* property check / journey
+# Initiative sections with their own pill navigation (PlotArt / GridNua pattern). They are reached
+# FROM the header but do not carry it. GridNua's two pages are indexable (founder approval 29 Oct 2026).
+OWN_NAV_SECTIONS = ["gridnua/", "gridnua/technology/"]
 ROOTABS = {"404.html"}                 # served for any missing address, so root-absolute links
 
 # The homepage keeps its approved (i) "What is PlotNua?" control, seated beside the brand
