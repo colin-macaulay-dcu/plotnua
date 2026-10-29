@@ -16,7 +16,8 @@ Proves, on the tree as it would be published:
   GL10 no "Here today" label (nothing qualifies, 29 Oct 2026)
   GL11 GridNua is not in the sitemap or the search index while noindex
   GL12 DISC-026: exactly one GridNua link, inside its markers; the article matches its latest freeze record
-  GL13 the Readiness Check is byte-identical to its pin and the register stays closed
+  GL13 the Readiness Check is byte-identical to its pin, its scripts (questions, engine, results) are unchanged,
+       both return buttons are present, and the register stays closed
 --prove plants one fault per guard in a scratch copy and requires every one to be caught.
 """
 import hashlib, json, re, shutil, sys, tempfile
@@ -79,7 +80,9 @@ def run(root):
     for idx in ("sitemap.xml", "search-index-v1.json"):
         if (root / idx).exists() and "gridnua" in (root / idx).read_text(encoding="utf-8"): f("GL11", f"{idx} lists GridNua while noindex")
     art = (root / ARTICLE).read_text(encoding="utf-8")
-    links = re.findall(r'href="gridnua/[^"]*"', art)
+    # the PlotNua header carries its own GridNua destination (29 Oct 2026); count the article's links outside it
+    art_body = re.sub(r"<!-- PLOTNUA HEADER v2 · (BAR|ROW) · BEGIN[\s\S]*?PLOTNUA HEADER v2 · \1 · END -->", " ", art)
+    links = re.findall(r'href="gridnua/[^"]*"', art_body)
     block = re.search(r"<!-- GRIDNUA-HANDOFF:BEGIN[\s\S]*?<!-- GRIDNUA-HANDOFF:END -->", art)
     if len(links) != 1 or not block or 'href="gridnua/"' not in block.group(0): f("GL12", "DISC-026 must hold exactly one GridNua link, inside its markers")
     recs = sorted((root / "governance").glob("disc-026-house-as-power-station-FREEZE-RECORD-V*.md"),
@@ -87,6 +90,15 @@ def run(root):
     if not recs or sha(root / ARTICLE) not in recs[-1].read_text(encoding="utf-8"):
         f("GL12", "the DISC-026 article differs from the hash in its latest freeze record (same-commit rule)")
     if sha(root / CHECK) != man["readiness_check_sha256"]: f("GL13", "Readiness Check differs from its pin")
+    chk = (root / CHECK).read_text(encoding="utf-8")
+    if hashlib.sha256("\n".join(re.findall(r"<script[\s\S]*?</script>", chk)).encode()).hexdigest() != man["readiness_check_scripts_sha256"]:
+        f("GL13", "Readiness Check logic (scripts) changed")
+    intro = re.sub(r"\s+", " ", text(chk))
+    if "paying the households" in intro or "Some emerging residential computing models offer households useful heat or other benefits. How these arrangements work varies by provider, and no residential computing installation programme is currently offered through PlotNua in Ireland." not in intro:
+        f("GL13", "Readiness Check introduction is not the approved wording (29 Oct 2026)")
+    nav = re.search(r"<!-- GRIDNUA-NAV:BEGIN[\s\S]*?<!-- GRIDNUA-NAV:END -->", chk)
+    if not nav or 'href="discovery-house-as-power-station.html"' not in nav.group(0) or 'href="gridnua/"' not in nav.group(0):
+        f("GL13", "Readiness Check return buttons missing")
     if '"writes_enabled": false' not in (root / CHECK).read_text(encoding="utf-8"): f("GL13", "register no longer closed")
     return fails
 
@@ -106,6 +118,8 @@ def prove():
         "GL11": lambda r: sub(r, "sitemap.xml", "</urlset>", "<url><loc>https://plotnua.ie/gridnua/</loc></url></urlset>"),
         "GL12": lambda r: sub(r, ARTICLE, "</main>", '<a href="gridnua/technology/">x</a></main>'),
         "GL13": lambda r: sub(r, CHECK, '"writes_enabled": false', '"writes_enabled": true'),
+        "GL13c": lambda r: sub(r, CHECK, "Some emerging residential\n      computing models offer households useful heat or other benefits.", "The companies doing it are paying the households that host it."),
+        "GL13b": lambda r: sub(r, CHECK, 'href="gridnua/"><span aria-hidden="true">&larr;</span> Back to GridNua', 'href="index.html">Home'),
     }
     caught = 0
     for code, plant in faults.items():
@@ -119,7 +133,7 @@ def prove():
             for p in re.findall(r'href="\.\./(?:\.\./)?([^"#?]+\.html)"', (ROOT / PAGES[0]).read_text() + (ROOT / PAGES[1]).read_text()):
                 (r / p).parent.mkdir(parents=True, exist_ok=True); (r / p).exists() or (r / p).write_text("stub")
             plant(r)
-            hit = any(x.startswith(code + " ") for x in run(r))
+            hit = any(x.startswith(code.rstrip("bc") + " ") for x in run(r))
             caught += hit
             print(("  caught " if hit else "  MISSED ") + code)
     print(f"GRIDNUA LAUNCH CAPABILITY · {caught}/{len(faults)} planted faults caught")

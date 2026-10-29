@@ -8,5 +8,7 @@
     "gridnua/index.html": "be8a30802a27bbbf3c006bbe17fb79893db6dc30c967ba0f4b27a3b5596afef8",
     "gridnua/technology/index.html": "f524e0e04fd93e8ea1cdaad3e161eb8a18721375329710f8e0f1d5dc18f253ed"
   },
-  "readiness_check_sha256": "ca60bf7b0881797bb732e363a596bea29bdfd63585e8dcd0a7a69f5263073827"
+  "readiness_check_sha256": "868dddd2bce6734989b9c56a6e6f782cc2991097e6328d94b4dcb1121d8980ca",
+  "readiness_check_scripts_sha256": "95bf466afce02b24c39a008fd49ccde9d8d4b83aa256e43e668f76f2a8cc1206",
+  "navigation_update": "29 Oct 2026: GridNua header pill, DISC-026 banner (freeze V6), Readiness Check return buttons; Readiness Check introduction reworded (founder, 29 Oct 2026)"
 }
