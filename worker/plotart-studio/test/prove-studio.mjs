@@ -36,7 +36,7 @@ open(f"{D}/fake.jpg", "wb").write(b"not an image at all" * 100)
 `, TMP]);
 const F = n => readFileSync(join(TMP, n));
 
-const { mf, url } = await start({ port: 8794 });
+const { mf, url } = await start({ port: 8794, env: { F25_AIRTABLE_TABLE_URL: 'https://airtable.com/appTESTBASE000000/tblTESTTABLE00000' } });
 const H = (email, extra = {}) => ({ 'Cf-Access-Jwt-Assertion': token(email), 'X-Studio': '1', 'Content-Type': 'application/json', ...extra });
 const call = async (method, path, email, body, headers = {}) => {
   const r = await mf.dispatchFetch(url + path, { method, headers: { ...(email ? H(email) : {}), ...headers }, body: body === undefined ? undefined : (body instanceof Uint8Array || Buffer.isBuffer(body) ? body : JSON.stringify(body)) });
@@ -286,6 +286,10 @@ check('F4 founder system check: database and image storage written, read back an
     list.s === 200 && list.j.items.length === 2 && list.j.items[0].ref === REF2 && list.j.items[1].images.length === 2 && !JSON.stringify(list.j).includes('pending'));
   const one_ = await call('GET', '/api/admin/applications/' + REF, FOUNDER);
   const a = one_.j.application || {};
+  check('Q7 "Open in Airtable" links the application\'s own record (needs the record id the application route writes, plus the table address secret)',
+    a.airtable === 'https://airtable.com/appTESTBASE000000/tblTESTTABLE00000/recABCDEFGHIJKLMN', String(a.airtable));
+  const noRec = (await call('GET', '/api/admin/applications/' + REF2, FOUNDER)).j.application;
+  check('Q8 a review copy without an Airtable record id shows no button (the page says to find it by reference)', noRec.airtable === null);
   check('Q2 the application view: statement, medium, county, images served by the Studio (never a storage address), only https links, no email',
     a.bio === 'Relief prints of the Donegal coast.' && a.images.length === 2 && a.images.every(i => i.src.startsWith('/admin/applications/' + REF + '/img/')) &&
     a.portfolio === null && a.website === 'https://roisin.example/' && !JSON.stringify(a).includes('r2') && !JSON.stringify(a).includes('@'), JSON.stringify(a));
