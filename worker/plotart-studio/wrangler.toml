@@ -1,4 +1,4 @@
-# PlotArt Studio · Worker configuration (Phase 2, 29 Oct 2026). NOT DEPLOYED.
+# PlotArt Studio · Worker configuration (Phase 3, 29 Oct 2026). Activation: bash activate.sh (founder-run).
 # Creating these resources needs the founder's separate approval (Cloudflare changes are approved one by one):
 #   1. D1 database "plotart-studio"           (wrangler d1 create plotart-studio --location weur), then schema.sql
 #   2. R2 bucket "plotart-studio-images"      (wrangler r2 bucket create plotart-studio-images --jurisdiction eu)
@@ -18,6 +18,7 @@ ACCESS_AUD = ""                  # the Access application's AUD tag            (
 # FOUNDER_EMAILS is set as a secret (wrangler secret put FOUNDER_EMAILS): the repository is public.
 INSTANT_AUTOPUBLISH = "false"    # availability / removal / order publish automatically only when the founder turns this on
 MAILER = "none"                  # "resend" once approved (top-up reminders); secret RESEND_API_KEY
+MAIL_FROM = "PlotArt Studio <studio@plotnua.ie>"   # replies go to hello@plotnua.ie (Reply-To)
 
 [[d1_databases]]
 binding = "DB"
