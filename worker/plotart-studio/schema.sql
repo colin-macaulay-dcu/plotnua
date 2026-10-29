@@ -16,6 +16,7 @@ CREATE TABLE IF NOT EXISTS artists (
   account_status TEXT NOT NULL DEFAULT 'invited' CHECK (account_status IN ('invited','active','suspended','ended')),
   licence_version TEXT, licence_accepted_at TEXT,
   first_published_at TEXT,
+  below_min_since TEXT,             -- a Founding gallery fell below 10 works: 30-day top-up from this date
   application_ref TEXT,
   created_at TEXT NOT NULL, updated_at TEXT NOT NULL
 );
@@ -87,3 +88,20 @@ CREATE TABLE IF NOT EXISTS audit (
   at TEXT NOT NULL, actor TEXT NOT NULL, role TEXT NOT NULL,
   action TEXT NOT NULL, artist_id TEXT, detail TEXT
 );
+
+-- Buyer-to-artist enquiries (Phase 3). Written by the public enquiry Worker (src/enquiry.js); read by the artist it is
+-- for and by the founder. Kept 24 months (privacy notice V8), then deleted by the Studio's daily clean-up.
+CREATE TABLE IF NOT EXISTS enquiries (
+  id TEXT PRIMARY KEY,
+  reference TEXT NOT NULL UNIQUE,
+  artist_id TEXT NOT NULL REFERENCES artists(id),
+  artwork_id TEXT, artwork_title TEXT,
+  buyer_name TEXT NOT NULL, buyer_email TEXT NOT NULL, message TEXT NOT NULL,
+  notice_version TEXT NOT NULL,
+  created_at TEXT NOT NULL,
+  status TEXT NOT NULL CHECK (status IN ('received','sent','send_failed')),
+  sent_at TEXT, detail TEXT,
+  delete_after TEXT NOT NULL
+);
+CREATE INDEX IF NOT EXISTS enquiries_artist ON enquiries (artist_id, created_at);
+

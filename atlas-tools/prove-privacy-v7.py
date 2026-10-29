@@ -100,6 +100,7 @@ if not applied:
 else:
     r = subprocess.run([sys.executable, str(HERE / "build-privacy-v7.py"), "--check"], capture_output=True, text=True)
     check("V23 applied: build-privacy-v7 --check", r.returncode == 0 and "privacy V7 present" in r.stdout)
-    check("V24 applied: the live page is exactly V7 over V6", B.apply(base) == live)
+    import privacy_v8_layer as V8   # V8 (29 Oct 2026) may sit on top: V7 is checked beneath it
+    check("V24 applied: the live page is exactly V7 over V6 (beneath V8 when present)", B.apply(base) == V8.without_v8(live))
 print(f"\n  {ok} passed, {bad} failed · V7 {'APPLIED' if applied else 'NOT APPLIED (prepared)'}")
 sys.exit(1 if bad else 0)

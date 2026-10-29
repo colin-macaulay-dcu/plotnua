@@ -83,10 +83,10 @@ PAGES = ["index.html", "founding-25.html", "living-gallery.html", "gallery/index
 HERO_IMAGES = {"assets/hero/founder-01-abstract.webp"}
 # The Living Gallery image (consolidated brief, 29 Oct 2026): the founder's painting in an AI-generated interior visualisation.
 LG_IMAGE = "assets/living/plotart-living-gallery-colin-macaulay-artwork.webp"
-ALLOWED = set(PAGES) | {"assets/plotart.css", "assets/plotart.js", LG_IMAGE} | HERO_IMAGES | ({"assets/f25-apply.js"} if launch.get("f25_application_state") == "open" else set())
+ALLOWED = set(PAGES) | {"assets/plotart.css", "assets/plotart.js", "assets/pa-enquiry.js", LG_IMAGE} | HERO_IMAGES | ({"assets/f25-apply.js"} if launch.get("f25_application_state") == "open" else set())
 # Published artist galleries (Phase 1, 29 Oct 2026; checked in full by L14). Only these shapes are allowed:
 #   artists/<slug>/index.html · artists/<slug>/<artwork-slug>.html · artists/<slug>/img/<name>.webp
-ART_FILE = re.compile(r"^artists/([a-z0-9]+(?:-[a-z0-9]+){0,6})/(?:[a-z0-9]+(?:-[a-z0-9]+){0,6}\.html|img/[a-z0-9-]+-\d{2,5}\.webp)$")
+ART_FILE = re.compile(r"^artists/([a-z0-9]+(?:-[a-z0-9]+){0,6})/(?:[a-z0-9]+(?:-[a-z0-9]+){0,6}\.html|gallery\.json|img/[a-z0-9-]+-\d{2,5}\.webp)$")
 ARTIST_FILES = set()
 for _d, _, _fs in os.walk(os.path.join(PA, "artists")):
     for _f in _fs:
@@ -188,7 +188,10 @@ _hero = re.search(r'<section class="pa-hero">.*?</section>', home, re.S)
 need(_hero is not None and not re.search(r"(?i)AI-generated|conceptual image", visible_text(_hero.group(0))), "L6 the homepage hero still carries an AI-image label (the hero is the founder's painting)")
 need(not re.search(r'pa-vg-card|pa-vg-grid|pa-vg-count|galleries reserved|waiting for their artists', home), "L6 the homepage shows empty gallery slots or counters (removed, 29 Oct 2026)")
 need('href="gallery/"' in home and 'href="founding-25.html#apply"' in home or STATE != "open", "L6 the homepage must link to the Virtual Gallery and the Founding 25 application")
-need("No artwork is currently available through PlotArt." in visible_text(home), "L6 the homepage must say no artwork is currently available through PlotArt")
+OPEN = launch.get("galleries_open") is True     # the gallery opening switch (Phase 3, founder-controlled; L15)
+OPEN_FINE = "Artworks in PlotArt galleries are offered by their artists: PlotArt introduces buyers and doesn't take payment."
+need(("No artwork is currently available through PlotArt." in visible_text(home)) if not OPEN else (OPEN_FINE in visible_text(home)),
+     "L6 the homepage must state availability for the current state (galleries %s)" % ("open" if OPEN else "not open"))
 # Founder decision 29 Oct 2026: the introduction is the approved lede, and availability is stated by the
 # Virtual Gallery line and the footer (the "Where PlotArt is now" panel was removed).
 need("PlotArt brings artists and art lovers together." in visible_text(home), "L6 the homepage introduction is not the approved wording")
@@ -254,7 +257,9 @@ for name in PAGES:
     if not os.path.exists(p):
         continue
     s = open(p, encoding="utf-8").read(); vt = visible_text(s)
-    need("No artwork is currently available through PlotArt." in vt, "L10 %s must say 'No artwork is currently available through PlotArt.'" % name)
+    need(("No artwork is currently available through PlotArt." in vt) if not OPEN else (OPEN_FINE in vt and "No artwork is currently available" not in vt),
+         "L10 %s must state availability for the current state (galleries %s)" % (name, "open" if OPEN else "not open"))
+    need(not OPEN or "room view" not in vt, "L15 %s still promises a room view (the gallery opening removes that promise)" % name)
     need(not re.search(r"no artwork is for sale|nothing is for sale", vt, re.I), "L10 %s uses the unqualified 'not for sale' wording" % name)
     need("Prototype" not in vt and "prototype" not in vt, "L10 %s says Prototype" % name)
 need("<title>Founding 25: Free First-Year Artist Galleries | PlotArt</title>" in f25, "L10 the Founding 25 title is not the approved one")
@@ -288,6 +293,7 @@ if vg:
     # never a link and carries no name, image, place or availability; no Founding 25 promotion on this page.
     spaces = re.findall(r'<li class="pa-gspace pa-gspace--t[1-5]" aria-label="Gallery space (\d\d)">(.*?)</li>', vg, re.S)
     _cards = re.findall(r'<li class="pa-gcard(?: is-founding)?"><a class="pa-gcard-tile" href="\.\./artists/([a-z0-9-]+)/"', vg)
+    need(OPEN or not _cards, "L15 an artist gallery is published but the gallery opening switch is off")
     need(sorted(_cards) == GALLERY_SLUGS and len(set(_cards)) == len(_cards),
          "L11 Virtual Gallery cards must match the published artist galleries exactly (cards %s, galleries %s)" % (_cards, GALLERY_SLUGS))
     need([int(n) for n, _ in spaces] == list(range(len(_cards) + 1, 26)), "L11 the Virtual Gallery must show the remaining gallery spaces in order up to 25 (found %d)" % len(spaces))
@@ -386,6 +392,11 @@ for slug in GALLERY_SLUGS:
     base = "artists/%s/" % slug
     for f in sorted(x for x in ARTIST_FILES if x.startswith(base)):
         full = os.path.join(PA, f)
+        if f.endswith("gallery.json"):
+            gj = open(full, encoding="utf-8").read()
+            need(not re.search(r"[A-Za-z0-9._%+-]+@(?!plotnua\.ie)[A-Za-z0-9-]+\.[A-Za-z]", gj) and "application_ref" not in gj and '"checks"' not in gj,
+                 "L14 %s carries private data" % f)
+            continue
         if f.endswith(".webp"):
             rec = _arts.get("plotart/" + f)
             need(rec is not None and rec.get("artist_slug") == slug and rec.get("sha256") == _hl.sha256(open(full, "rb").read()).hexdigest(),
@@ -411,4 +422,4 @@ if problems:
     for x in problems:
         print("  " + x)
     sys.exit(1)
-print("PLOTART LAUNCH · OK — L1-L14 on %d pages · applications %s (%d demonstration names checked absent)" % (len(PAGES), STATE, len(demo_names)))
+print("PLOTART LAUNCH · OK — L1-L15 on %d pages · applications %s (%d demonstration names checked absent)" % (len(PAGES), STATE, len(demo_names)))

@@ -110,6 +110,8 @@ def apply_v7(text: str) -> str:
 def without_v7(text: str) -> str:
     """The exact V6 page beneath V7. A page without V7 passes through untouched;
     a page that carries the V7 marker but not exactly the governed V7 text raises."""
+    from privacy_v8_layer import without_v8          # V8 (29 Oct 2026) sits on top of V7: take it off first
+    text = without_v8(text)
     if MARKER not in text:
         return text
     for _, new in PAIRS:

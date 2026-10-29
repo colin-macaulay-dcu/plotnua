@@ -59,7 +59,7 @@
       ${min ? `<section class="st-card"><h3>Your works</h3>
         <div class="st-prog" role="progressbar" aria-valuemin="0" aria-valuemax="${min}" aria-valuenow="${Math.min(n, min)}" aria-label="Works in your gallery"><span style="width:${pct}%"></span></div>
         <p class="st-muted" style="margin:0">${n} of at least ${min} works${n >= min ? ' · you can add more at any time' : ''}</p>
-        ${s.below_minimum ? `<p class="st-msg">Your gallery now shows ${n} works. Founding galleries keep at least ${min}: please add a new work within 30 days. Your gallery stays live meanwhile.</p>` : ''}
+        ${s.below_minimum ? `<p class="st-msg">Your gallery now shows ${n} works. Founding galleries keep at least ${min}: please add a new work by ${new Date(s.top_up_by).toLocaleDateString('en-IE', { day: 'numeric', month: 'long' })}. Your gallery stays live meanwhile.</p>` : ''}
         <div class="st-actions"><a class="st-btn" href="#/works">Your works</a><button class="st-btn" data-act="add">Add an artwork</button></div></section>` : ''}
 
       <section class="st-card"><h3>${s.problems.length ? 'Before you submit' : 'Ready'}</h3>
@@ -297,6 +297,17 @@
     });
   }
 
+  async function enquiries() {
+    const items = (await api('GET', '/api/enquiries')).items;
+    const when = t => new Date(t).toLocaleString('en-IE', { dateStyle: 'medium', timeStyle: 'short' });
+    app.innerHTML = `<h1 class="st-h1">Enquiries</h1><p class="st-sub">Buyers who contact you through your gallery. Each one is also emailed to you; reply to the buyer directly. Any sale is agreed between you and the buyer.</p>
+      ${items.length ? `<ul class="st-works">${items.map(e => `<li class="st-work" style="grid-template-columns:minmax(0,1fr)"><div>
+        <p class="st-work-t">${E(e.buyer_name)}</p><p class="st-work-s">${when(e.created_at)} · ${E(e.artwork_title || 'Your work in general')} · ${E(e.reference)}</p>
+        <p class="st-muted" style="white-space:pre-wrap;color:var(--lime);margin:0 0 10px">${E(e.message)}</p>
+        <a class="st-btn st-btn--small st-btn--solid" href="mailto:${encodeURIComponent(e.buyer_email)}?subject=${encodeURIComponent('Re: your PlotArt enquiry ' + e.reference)}">Reply to ${E(e.buyer_email)}</a></div></li>`).join('')}</ul>`
+        : '<div class="st-card st-empty">No enquiries yet. They’ll appear here when buyers contact you through your gallery.</div>'}`;
+  }
+
   /* ------------------------------------------------------------- router */
   async function render() {
     const h = location.hash || '#/';
@@ -310,6 +321,7 @@
       else if (h === '#/works') works();
       else if (h.startsWith('#/work/')) work(h.slice(7));
       else if (h === '#/submit') submitView();
+      else if (h === '#/enquiries') await enquiries();
       else dashboard();
       window.scrollTo(0, 0);
     } catch (e) { app.innerHTML = `<div class="st-card"><h2>Something went wrong</h2><p class="st-muted">${E(e.message)}</p></div>`; }

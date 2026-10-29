@@ -260,7 +260,7 @@ const audit = (await call('GET', '/api/admin/audit', FOUNDER)).j.items.map(a => 
 check('F3 every action is in the audit log', ['invite', 'image_upload', 'submit', 'licence_accepted', 'submission_changes', 'submission_approve', 'publish', 'published', 'instant_change', 'suspend', 'unpublish'].every(a => audit.includes(a)));
 
 async function prodSnap(artist, v) {
-  const db = await mf.getD1Database('DB');
+  const db = await mf.getD1Database('DB', 'studio');
   const row = await db.prepare('SELECT snapshot FROM versions WHERE artist_id=? AND version=?').bind(artist, v).first();
   return row && row.snapshot;
 }

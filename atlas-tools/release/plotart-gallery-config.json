@@ -1,0 +1,5 @@
+{
+  "schema": "plotnua.plotart.gallery-config.v1",
+  "status": "Founder-controlled switches for the PlotArt content pipeline. enquiry_endpoint null = artwork pages offer the pilot email link only; set to the approved relay route only with the founder's activation approval.",
+  "enquiry_endpoint": null
+}

@@ -1,0 +1,60 @@
+name: PlotArt content publishing
+
+# THE CONTENT-ONLY ROUTE FROM PLOTART STUDIO TO PLOTNUA.IE (Phase 3, 29 Oct 2026).
+#
+# NOT ACTIVE. It runs only when the repository variable PLOTART_PUBLISH_ENABLED is "true", which the founder sets
+# only after separately authorising activation. Until then every scheduled run is skipped.
+#
+# What it does (atlas-tools/plotart-gallery-publish.py): for each gallery version the founder has published in the
+# Studio review desk (and, once authorised, automatic availability / removal / order updates), it fetches the approved
+# export, re-checks and processes every photograph (Phase 1 rules), writes ONLY plotart/artists/<slug>/, the Virtual
+# Gallery grid and that artist's image records, and runs the content-only boundary, the PlotArt launch guard L1-L15,
+# the image provenance guard and the image-rights scan. Only if all pass does it push an audit branch and
+# fast-forward main (never forced). Anything else (code, styles, wording, other pages) is refused: those still go
+# through the founder's full release process.
+#
+# Secrets: STUDIO_URL (the Studio Worker's address), STUDIO_PIPELINE_TOKEN (the same value as the Worker's
+# PIPELINE_TOKEN secret). The default GITHUB_TOKEN pushes; its permission is limited to this repository's contents.
+# A push made by this workflow does not start other workflows, so it runs the image-rights and provenance checks
+# itself before pushing.
+on:
+  schedule:
+    - cron: '7,17,27,37,47,57 * * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: plotart-content-publish
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    if: ${{ vars.PLOTART_PUBLISH_ENABLED == 'true' && github.ref == 'refs/heads/main' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Image tools (pinned, so processing is identical every run)
+        run: python3 -m pip install --quiet 'pillow==12.3.0'
+      - name: The image-rights manifest is current (as the image rights gate requires)
+        run: python3 .github/scripts/generate_image_rights_manifest.py --check
+      - name: Publish approved gallery content (content-only, guarded, fast-forward)
+        env:
+          STUDIO_URL: ${{ secrets.STUDIO_URL }}
+          STUDIO_PIPELINE_TOKEN: ${{ secrets.STUDIO_PIPELINE_TOKEN }}
+        run: |
+          set -euo pipefail
+          git config user.name "PlotArt content pipeline"
+          git config user.email "hello@plotnua.ie"
+          python3 atlas-tools/plotart-gallery-publish.py --studio "$STUDIO_URL" --token "$STUDIO_PIPELINE_TOKEN" --push

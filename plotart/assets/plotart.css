@@ -707,3 +707,15 @@ body.pa .pa-free-lines{ margin:0; }
 .pa-ag-check ul{ margin:0; padding-left:18px; font-size:13.5px; line-height:1.55; color:#E9C9B5; }
 .pa-ag-check li.b{ color:#F5B7A3; } .pa-ag-check li.ok{ color:#C9DDBF; }
 .pa-ag-id .pa-gcard-badge{ display:inline-block; }
+/* buyer-to-artist enquiry form (Phase 3; shown only when the relay is on) */
+.pa-enq{ margin-top:16px; padding:18px; border-radius:14px; border:1px solid var(--line-2); background:#26272A; text-align:left; display:grid; gap:12px; }
+.pa-enq[hidden]{ display:none; }
+.pa-enq-h{ margin:0; font-family:var(--serif); font-size:24px; color:var(--ivory); }
+.pa-enq-f{ display:grid; gap:6px; font-size:13.5px; font-weight:600; color:var(--stone); }
+.pa-enq-f input, .pa-enq-f textarea{ width:100%; box-sizing:border-box; min-height:46px; padding:11px 13px; font:16px var(--sans); color:var(--ivory); background:#1F2022; border:1px solid var(--line-2); border-radius:10px; }
+.pa-enq-f textarea{ resize:vertical; line-height:1.5; }
+.pa-enq-notice{ margin:0; font-size:13px; color:var(--mute); line-height:1.55; }
+.pa-enq-status{ margin:0; font-size:14px; color:var(--lime); }
+.pa-enq-status[data-state="error"]{ color:#F5CDBD; }
+.pa-hp{ position:absolute !important; left:-9999px !important; width:1px; height:1px; overflow:hidden; }
+[data-pa-enquire][hidden]{ display:none !important; }

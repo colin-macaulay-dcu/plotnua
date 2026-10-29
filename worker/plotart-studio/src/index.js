@@ -12,6 +12,7 @@ import { verifyAccess, who } from './auth.js';
 import * as L from './lib.js';
 import { artistBody, artworkBody, previewPage, shown } from './render.js';
 import * as A from './assets.js';
+import { send } from './mailer.js';
 
 const { Bad, now, rid } = L;
 const SEC = {
@@ -65,6 +66,12 @@ async function status(env, artist) {
   const licenceOk = d.artist.licence_version === L.LICENCE_VERSION;
   const problems = L.readiness(snap, { founding: !!d.artist.founding, firstPublication: !lv, licenceOk: true, imageBlocks: blocked(d.images) });
   const belowMinimum = !!(lv && d.artist.founding && snap.works.length < L.FOUNDING_MIN_WORKS);
+  // The 30-day top-up (founder decision 29 Oct 2026): the clock starts the first time the gallery is seen below 10.
+  if (belowMinimum !== !!d.artist.below_min_since) {
+    await env.DB.prepare('UPDATE artists SET below_min_since=? WHERE id=?').bind(belowMinimum ? now() : null, artist.id).run();
+    d.artist.below_min_since = belowMinimum ? now() : null;
+  }
+  const topUpBy = d.artist.below_min_since ? new Date(Date.parse(d.artist.below_min_since) + 30 * 86400_000).toISOString() : null;
   let state;
   if (pending) state = 'in_review';
   else if (queue.length) state = 'publishing';
@@ -75,7 +82,7 @@ async function status(env, artist) {
   return {
     state, live_version: live, latest_version: lv ? lv.version : 0, pending, last_decision: last, queue,
     changes: cs, unsubmitted: cs.filter(c => c.tier !== 'instant'), tier: L.tierOf(cs.filter(c => c.tier !== 'instant')),
-    problems, licence_ok: licenceOk, licence_version: L.LICENCE_VERSION, below_minimum: belowMinimum,
+    problems, licence_ok: licenceOk, licence_version: L.LICENCE_VERSION, below_minimum: belowMinimum, top_up_by: topUpBy,
     counts: { works: snap.works.length, archived: d.works.filter(w => w.archived).length, min: d.artist.founding ? L.FOUNDING_MIN_WORKS : 0 },
   };
 }
@@ -142,6 +149,7 @@ async function instant(env, artist, actor, what) {
       .bind(rid('q'), artist.id, v, 'instant', env.INSTANT_AUTOPUBLISH === 'true' ? 'ready' : 'awaiting_founder', now(), now()),
   ]);
   await audit(env, actor, 'artist', 'instant_change', artist.id, { what, version: v });
+  await status(env, d.artist);                     // starts (or clears) the 30-day top-up clock
   return v;
 }
 
@@ -282,6 +290,28 @@ async function exportFor(env, q) {
 
 /* ---------------------------------------------------------------- router */
 export default {
+  /* Daily clean-up (cron trigger): enquiries past their 24-month limit are deleted, and photographs removed more than
+     30 days ago are erased from storage (Gallery Publication and Image Licence 6.3). */
+  async scheduled(_event, env) {
+    await env.DB.prepare('DELETE FROM enquiries WHERE delete_after < ?').bind(now()).run();
+    const cut = new Date(Date.now() - 30 * 86400_000).toISOString();
+    const gone = await all(env, "SELECT id, r2_key, preview_key FROM images WHERE deleted_at IS NOT NULL AND deleted_at < ? AND r2_key <> 'erased'", cut);
+    for (const i of gone) {
+      await env.IMAGES.delete(i.r2_key); if (i.preview_key) await env.IMAGES.delete(i.preview_key);
+      await env.DB.prepare("UPDATE images SET r2_key='erased', preview_key=NULL WHERE id=?").bind(i.id).run();
+    }
+    // 30-day top-up reminders: on the first day below 10 works, and again 7 days before the date.
+    const low = await all(env, "SELECT * FROM artists WHERE below_min_since IS NOT NULL AND account_status = 'active'");
+    for (const a of low) {
+      const day = Math.floor((Date.now() - Date.parse(a.below_min_since)) / 86400_000);
+      if (day !== 0 && day !== 23) continue;
+      const by = new Date(Date.parse(a.below_min_since) + 30 * 86400_000).toLocaleDateString('en-IE', { day: 'numeric', month: 'long', year: 'numeric' });
+      await send(env, { to: a.email, replyTo: 'hello@plotnua.ie', subject: 'Your PlotArt gallery: time to add a work',
+        text: `Hello ${a.display_name.split(' ')[0]},\n\nYour PlotArt gallery now shows fewer than 10 works. Founding galleries keep at least 10, so please add a new work in PlotArt Studio by ${by}. Your gallery stays live in the meantime.\n\nThank you,\nPlotArt · part of PlotNua` });
+      await audit(env, 'scheduler', 'system', 'top_up_reminder', a.id, { day });
+    }
+    await audit(env, 'scheduler', 'system', 'cleanup', null, { images_erased: gone.length });
+  },
   async fetch(req, env) {
     try { return await route(req, env); }
     catch (e) {
@@ -412,6 +442,8 @@ async function route(req, env) {
       await audit(env, me.email, 'founder', 'publish', q.artist_id, { queue: q.id, version: q.version });
       return json({ ok: true });
     }
+    if (p === '/api/admin/enquiries' && m === 'GET') return json({ ok: true, items: await all(env, `SELECT e.reference, e.created_at, e.status, e.artwork_title, a.display_name
+      FROM enquiries e JOIN artists a ON a.id = e.artist_id ORDER BY e.created_at DESC LIMIT 200`) });
     if (p === '/api/admin/audit' && m === 'GET') return json({ ok: true, items: await all(env, 'SELECT * FROM audit ORDER BY id DESC LIMIT 200') });
     return json({ ok: false }, 404);
   }
@@ -538,6 +570,8 @@ async function route(req, env) {
     return json({ ok: true });
   }
   if ((mm = p.match(/^\/api\/images\/(i[0-9a-z]+)\/view$/)) && m === 'GET') return previewImage(env, await ownImage(env, artist, mm[1]));
+  if (p === '/api/enquiries' && m === 'GET') return json({ ok: true, items: await all(env,
+    'SELECT reference, created_at, artwork_title, buyer_name, buyer_email, message, status FROM enquiries WHERE artist_id = ? ORDER BY created_at DESC LIMIT 200', artist.id) });
   if (p === '/api/submit' && m === 'POST') return submit(env, artist, await req.json());
   if (p === '/api/submit/withdraw' && m === 'POST') {
     await env.DB.prepare("UPDATE submissions SET status='withdrawn', decided_at=? WHERE artist_id=? AND status='pending'").bind(now(), artist.id).run();

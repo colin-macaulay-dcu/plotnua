@@ -1,0 +1,24 @@
+# PlotArt · buyer-to-artist enquiry relay (Phase 3, 29 Oct 2026). NOT DEPLOYED.
+# A separate public Worker sharing the Studio's D1 database. Deploy:  npx wrangler deploy -c wrangler.enquiry.toml
+# Ships CLOSED (ENQUIRIES_ENABLED = "false") and sending nothing (MAILER = "none") until the founder authorises each.
+name = "plotart-enquiry"
+main = "src/enquiry.js"
+compatibility_date = "2026-08-01"
+workers_dev = true
+preview_urls = false
+
+[vars]
+ENVIRONMENT = "production"
+ORIGIN = "https://plotnua.ie"
+ENQUIRIES_ENABLED = "false"
+MAILER = "none"                  # "resend" once approved: secret RESEND_API_KEY, sending domain verified for plotnua.ie
+MAIL_FROM = "PlotArt <enquiries@plotnua.ie>"
+REPLY_TO = "hello@plotnua.ie"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "plotart-studio"
+database_id = "NOT-CREATED"
+
+[observability]
+enabled = false

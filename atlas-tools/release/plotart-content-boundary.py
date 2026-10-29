@@ -21,7 +21,7 @@ Exit codes: 0 content-only; 1 refused; 2 usage or git error.
 """
 import json, re, subprocess, sys
 
-ART = re.compile(r"^plotart/artists/([a-z0-9]+(?:-[a-z0-9]+){0,6})/(?:[a-z0-9]+(?:-[a-z0-9]+){0,6}\.html|img/[a-z0-9-]+-\d{2,5}\.webp)$")
+ART = re.compile(r"^plotart/artists/([a-z0-9]+(?:-[a-z0-9]+){0,6})/(?:[a-z0-9]+(?:-[a-z0-9]+){0,6}\.html|gallery\.json|img/[a-z0-9-]+-\d{2,5}\.webp)$")
 GRID = re.compile(rb'<ol class="pa-vg2-grid"[^>]*>.*?</ol>', re.S)
 DETAILS = re.compile(r'class="pa-ag-title">([^<]*)<|class="pa-ag-sub">([^<]*)<|<h1>([^<]*)</h1>|class="pa-aw-dl">(.*?)</dl>|class="pa-aw-desc">([^<]*)<|<img [^>]*src="(img/[^"]+)"', re.S)
 PRICES = re.compile(r'class="pa-(?:ag-status|aw-price[^"]*)">(€[^<]*)<')

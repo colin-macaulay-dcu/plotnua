@@ -4,7 +4,7 @@
 #   2. R2 bucket "plotart-studio-images"      (wrangler r2 bucket create plotart-studio-images --jurisdiction eu)
 #   3. Cloudflare Access on this Worker's workers.dev address (one-click Access), email one-time PIN, policy:
 #      the founder + each invited artist's email. Copy the Access AUD tag and team domain into [vars].
-#   4. Secret PIPELINE_TOKEN                  (wrangler secret put PIPELINE_TOKEN); the same value as a GitHub secret.
+#   4. Secrets PIPELINE_TOKEN (the same value as the GitHub secret STUDIO_PIPELINE_TOKEN) and FOUNDER_EMAILS.
 name = "plotart-studio"
 main = "src/index.js"
 compatibility_date = "2026-08-01"
@@ -17,6 +17,7 @@ ACCESS_TEAM_DOMAIN = ""          # e.g. https://plotnua.cloudflareaccess.com  (e
 ACCESS_AUD = ""                  # the Access application's AUD tag            (empty = every request refused)
 # FOUNDER_EMAILS is set as a secret (wrangler secret put FOUNDER_EMAILS): the repository is public.
 INSTANT_AUTOPUBLISH = "false"    # availability / removal / order publish automatically only when the founder turns this on
+MAILER = "none"                  # "resend" once approved (top-up reminders); secret RESEND_API_KEY
 
 [[d1_databases]]
 binding = "DB"
@@ -27,6 +28,9 @@ database_id = "NOT-CREATED"
 binding = "IMAGES"
 bucket_name = "plotart-studio-images"
 jurisdiction = "eu"
+
+[triggers]
+crons = ["23 3 * * *"]           # daily clean-up: enquiries past 24 months; removed photographs after 30 days
 
 [observability]
 enabled = false
