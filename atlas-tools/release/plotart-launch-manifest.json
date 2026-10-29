@@ -1,12 +1,12 @@
 {
   "schema": "plotnua.plotart.launch-manifest.v1",
   "note": "SHA-256 of every published PlotArt file, from the launch build that passed prove-plotart-launch.py L1-L12 with the demonstration names (development branch founder/plotart-prototype). Any change to a published PlotArt file must come from a new verified build. Rebuilt 28 Oct 2026 (the legal-information release 2c89865 had changed the footers without updating this manifest). Rebuilt 29 Oct 2026 for the navigation and homepage refinement.",
-  "built_from": "founder/plotart-nav-home 13a03aa, OPEN state (PREVIEW: consolidated brief with tile redesign and corrected Living Gallery image, 29 Oct 2026)",
+  "built_from": "founder/plotart-nav-home f1ee90d, OPEN state (PREVIEW: consolidated brief with tile redesign and corrected Living Gallery image, 29 Oct 2026)",
   "files": {
     "assets/f25-apply.js": "02d6e29b6a80435269cc4f01b8f67388c6e18a3abe7b81f1dd7a1449de9f861e",
     "assets/hero/founder-01-abstract.webp": "7812df17f3651108820ed79dfe69aa1fdaa27640d5aa1d5464c3b08007b802b1",
     "assets/living/plotart-living-gallery-colin-macaulay-artwork.webp": "f4861333a80fda7f704fd3c57d0a2b8f18db589b8505eb11192ac05c08d8d0f9",
-    "assets/plotart.css": "db165513ba8f23f03355cc6b87b708c9da161d72cbdaa5adab9d9e4f4e6860f1",
+    "assets/plotart.css": "ae52ce2e177bfa10cc1bef789460d138a279acc71684e2428ca18894b5436bac",
     "assets/plotart.js": "1aeda046a43a9877413943aa4573f8266280b94a5df21fb68421c5486189dca8",
     "founding-25.html": "7b76126b5c89285b1dba6d2ac97696b67dd0c6cd8da2d18f7d1c4081fb1d2b1b",
     "gallery/index.html": "c11f862711965078bd8eedffe27d39fa10d4627aade44d24bc232adbc07dd3d9",

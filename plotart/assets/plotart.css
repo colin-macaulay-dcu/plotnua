@@ -617,3 +617,8 @@ body.pa .pa-free-lines{ margin:0; }
 @media (max-width:860px){ .pa-lg-promises{ grid-template-columns:1fr; } }
 .pa-lg-aah h2{ font-size:clamp(34px, 3.6vw, 52px); }
 .pa-home-lg .pa-lg-feature{ margin-top:clamp(24px, 3vw, 40px); }
+/* empty tiles match the height of an artist card in the same row */
+.pa-vg2-grid{ align-items:stretch; }
+.pa-gspace, .pa-gcard{ display:flex; }
+.pa-gspace-tile, .pa-gcard-tile{ width:100%; }
+.pa-gspace-tile{ height:100%; }
