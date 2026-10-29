@@ -212,3 +212,37 @@ body.pn-hdr-on .pn-hdr-count[hidden]{ display:none; }
   body.pn-hdr-on .pn-hdr-dest .pn-hdr-btn.is-myplot.is-saved svg{ display:none; }
   body.pn-hdr-on .pn-hdr-dest .pn-hdr-count{ min-width:16px; height:16px; font-size:10.5px; padding:0 4px; margin-left:0; }
 }
+/* ===== GridNua · the fourth destination (founder authorisation 29 Oct 2026) =====
+   GridNua's own identity: weathered bronze, a fine grid glyph with a warm centre.
+   Distinct from PlotArt's terracotta frame and the Library's green. */
+body.pn-hdr-on .pn-hdr-btn.is-grid{ background:rgba(151,120,90,.16); border-color:#97785A; color:#EADBC6; font-weight:600; letter-spacing:.01em; }
+body.pn-hdr-on .pn-hdr-btn.is-grid svg{ color:#C9AC8C; }
+body.pn-hdr-on .pn-hdr-btn.is-grid .pn-grid-core{ color:#C47E4E; }
+body.pn-hdr-on .pn-hdr-btn.is-grid:hover{ background:rgba(151,120,90,.28); border-color:#B39272; color:#F2EBE0; }
+body.pn-hdr-on .pn-hdr-btn.is-grid[aria-current]::after{ background:#C9AC8C; }
+@media (min-width:721px){
+  body.pn-hdr-on .pn-hdr-nav .pn-hdr-btn.is-grid{ padding:0 15px 0 12px; }
+}
+/* four destinations: keep the bar on one line down to the phone breakpoint */
+@media (max-width:1180px) and (min-width:721px){
+  body.pn-hdr-on .pn-hdr-nav{ gap:6px; }
+  body.pn-hdr-on .pn-hdr-nav .pn-hdr-btn.is-primary{ padding:0 14px 0 11px; }
+  body.pn-hdr-on .pn-hdr-nav .pn-hdr-btn.is-art{ padding:0 12px 0 10px; font-size:17.5px; }
+  body.pn-hdr-on .pn-hdr-nav .pn-hdr-btn.is-grid{ padding:0 12px 0 10px; }
+}
+@media (max-width:960px) and (min-width:721px){
+  body.pn-hdr-on .pn-hdr-nav .pn-hdr-btn:not(.is-myplot) svg{ display:none; }
+  body.pn-hdr-on .pn-hdr-nav .pn-hdr-btn{ padding:0 11px !important; font-size:13.5px; }
+  body.pn-hdr-on .pn-hdr-nav .pn-hdr-btn.is-art{ font-size:16.5px; }
+  body.pn-hdr-on .pn-hdr-nav .pn-hdr-btn[aria-current]::after{ left:11px; right:11px; }
+}
+/* phones: the four destinations in two rows of two, 44px targets */
+@media (max-width:720px){
+  body.pn-hdr-on .pn-hdr-dest{ grid-template-columns:1fr 1fr; }
+  body.pn-hdr-on .pn-hdr-dest .pn-hdr-btn{ min-width:0; }
+}
+@media (max-width:800px) and (min-width:721px){
+  body.pn-hdr-on .pn-hdr-word{ font-size:22px; }
+  body.pn-hdr-on .pn-hdr-nav{ gap:4px; }
+  body.pn-hdr-on .pn-hdr-nav .pn-hdr-btn{ padding:0 9px !important; }
+}

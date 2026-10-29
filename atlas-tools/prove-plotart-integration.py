@@ -33,7 +33,7 @@ def need(ok, msg):
     if not ok:
         problems.append(msg)
 
-ORDER = ["Discovery Library", "PlotArt", "My Plot"]
+ORDER = ["Discovery Library", "PlotArt", "GridNua", "My Plot"]   # GridNua added 29 Oct 2026 (founder authorisation)
 BAR = re.compile(r"<!-- PLOTNUA HEADER v2 · BAR · BEGIN.*?BAR · END -->", re.S)
 ROW = re.compile(r"<!-- PLOTNUA HEADER v2 · ROW · BEGIN.*?ROW · END -->", re.S)
 
@@ -55,6 +55,10 @@ for page in pn_header.HEADER_PAGES:
         art = [x for x in d if x[2] == "PlotArt"]
         need(len(art) == 1 and art[0][0] == want_art and "aria-current" not in art[0][1],
              "N1 %s: %s PlotArt link is not %s" % (page, name, want_art))
+        want_gn = "/gridnua/" if page in pn_header.ROOTABS else "gridnua/"
+        gn = [x for x in d if x[2] == "GridNua"]
+        need(len(gn) == 1 and gn[0][0] == want_gn and "aria-current" not in gn[0][1],
+             "N1 %s: %s GridNua link is not %s" % (page, name, want_gn))
         want_mp = ("/" if page in pn_header.ROOTABS else "") + "your-plot.html?myplot=1"
         mp = [x for x in d if x[2] == "My Plot"]
         need(len(mp) == 1 and mp[0][0] == want_mp, "N1 %s: %s My Plot link is not %s" % (page, name, want_mp))
@@ -91,4 +95,4 @@ if problems:
     for x in problems[:40]:
         print("  " + x)
     sys.exit(1)
-print("PLOTART INTEGRATION · OK — N1-N4 · %d header pages carry Discovery Library > PlotArt > My Plot; A Home for Art links exactly plotart/, plotart/founding-25.html and plotart/living-gallery.html" % len(pn_header.HEADER_PAGES))
+print("PLOTART INTEGRATION · OK — N1-N4 · %d header pages carry Discovery Library > PlotArt > GridNua > My Plot; A Home for Art links exactly plotart/, plotart/founding-25.html and plotart/living-gallery.html" % len(pn_header.HEADER_PAGES))

@@ -84,8 +84,8 @@ STANDARD = [
     ("python3 atlas-tools/prove-privacy-whatsapp.py", "PRIVACY WHATSAPP · OK", "privacy WhatsApp block exact (status printed)"),
     # GridNua limited launch (founder design approval 29 Oct 2026): two pages, noindex, follow; the
     # Interest Register stays closed; DISC-026 holds exactly one GridNua link and matches its latest freeze record.
-    ("python3 atlas-tools/prove-gridnua-launch.py", "GRIDNUA LAUNCH · OK — GL1-GL13 on 2 pages · register closed", "GridNua launch GL1-GL13 (register closed, DISC-026 freeze V5)"),
-    ("python3 atlas-tools/prove-gridnua-launch.py --prove", "GRIDNUA LAUNCH CAPABILITY · 13/13 planted faults caught", "GridNua launch capability 13/13"),
+    ("python3 atlas-tools/prove-gridnua-launch.py", "GRIDNUA LAUNCH · OK — GL1-GL13 on 2 pages · register closed", "GridNua launch GL1-GL13 (register closed, DISC-026 freeze V6, Readiness Check scripts pinned)"),
+    ("python3 atlas-tools/prove-gridnua-launch.py --prove", "GRIDNUA LAUNCH CAPABILITY · 14/14 planted faults caught", "GridNua launch capability 14/14"),
     ("python3 atlas-tools/build-art-space-register.py --check", "CHECK OK — R1-R14 pass", "Art Space Register R1-R14"),
     ("python3 atlas-tools/build-artist-register.py --check", "CHECK OK — A1-A13 pass", "Artist Register A1-A13"),
     ("python3 atlas-tools/prove-g6-owner-register.py", "43 passed, 0 failed", "Garden Owner Register privacy proof 43/43"),

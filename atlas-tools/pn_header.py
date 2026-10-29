@@ -8,13 +8,16 @@ and atlas-tools/prove-global-header.py re-renders every page's header from this
 module and requires byte equality, so no page can carry a different header.
 
 The header is two fenced blocks:
-  BAR  before the generated search rail: brand · Discovery Library · PlotArt · My Plot ·
+  BAR  before the generated search rail: brand · Discovery Library · PlotArt · GridNua · My Plot ·
        WhatsApp · (the Search pill's seat). On phones the destinations hide.
-  ROW  after the search rail: the phone row (Discovery Library · PlotArt · My Plot),
+  ROW  after the search rail: the phone row (Discovery Library · PlotArt · GridNua · My Plot),
        hidden above 720px. Exactly one of the two navigations is rendered at any width,
        and the DOM order gives the visual focus order at every width:
-       desktop  brand > Discovery Library > PlotArt > My Plot > WhatsApp > Search
-       phone    brand > WhatsApp > Search > Discovery Library > PlotArt > My Plot
+       desktop  brand > Discovery Library > PlotArt > GridNua > My Plot > WhatsApp > Search
+       phone    brand > WhatsApp > Search > Discovery Library > PlotArt > GridNua > My Plot
+
+GRIDNUA (founder authorisation 29 Oct 2026): a fourth destination, after PlotArt, in GridNua's
+weathered bronze, linking to gridnua/ (/gridnua/ on root-absolute pages).
 
 MY PLOT (founder approval 28 Oct 2026): the link always opens your-plot.html?myplot=1, the
 My Plot view of that page, which ALWAYS shows the homeowner's saved collection (an empty
@@ -40,6 +43,7 @@ FONTS = ("https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1"
 LIBRARY = ("discoveries.html", "Discovery Library")
 PLOT = ("your-plot.html?myplot=1", "My Plot")    # founder approval 28 Oct 2026 (was "Your Plot")
 PLOTART = ("plotart/", "PlotArt")       # founder decision 27 Oct 2026: immediately after Discovery Library
+GRIDNUA = ("gridnua/", "GridNua")       # founder authorisation 29 Oct 2026: after PlotArt, bronze
 WHATSAPP = "https://wa.me/353834036695"
 WHATSAPP_LABEL = "Chat with PlotNua on WhatsApp (opens in a new tab)"
 
@@ -85,6 +89,11 @@ JS = "assets/identity/pn-header.js?v=1"   # versioned so a cached copy never out
 ICON_ART = ('<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" '
             'stroke-linecap="round" aria-hidden="true" focusable="false"><rect x="3" y="3.5" width="14" height="13" rx="1.5"/>'
             '<path d="m5.5 14 3.5-4 2.5 2.5 1.5-1.5 2 3"/></svg>')
+# GridNua: the GridNua glyph, a small grid with a warm centre (29 Oct 2026)
+ICON_GRID = ('<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" '
+             'aria-hidden="true" focusable="false"><rect x="2.75" y="2.75" width="14.5" height="14.5" rx="3"/>'
+             '<path d="M7.6 2.75v14.5M12.4 2.75v14.5M2.75 7.6h14.5M2.75 12.4h14.5"/>'
+             '<rect class="pn-grid-core" x="8.2" y="8.2" width="3.6" height="3.6" rx=".8" fill="currentColor" stroke="none"/></svg>')
 WA_BUBBLE = ('<svg viewBox="0 0 80 80" focusable="false"><path d="M29 5h23a22 22 0 0 1 22 22v16a22 22 0 0 1-22 22H33L14 75l3-18A22 22 0 0 1 7 39V27A22 22 0 0 1 29 5Z" '
              'fill="#1F3B2E" stroke="#B39272" stroke-width="2.5" stroke-linejoin="round"/></svg>')
 
@@ -101,6 +110,7 @@ def href(page, h):
 def _dest(page, cls_extra=""):
     out = []
     for (h, label), cls, icon in ((LIBRARY, "is-primary", ICON_LIBRARY), (PLOTART, "is-secondary is-art", ICON_ART),
+                                  (GRIDNUA, "is-secondary is-grid", ICON_GRID),
                                   (PLOT, "is-secondary is-myplot", ICON_PLOT)):
         cur = ' aria-current="page"' if page == h else ""
         if h == PLOT[0]:   # the saved state is drawn by pn-header.js (read-only)
