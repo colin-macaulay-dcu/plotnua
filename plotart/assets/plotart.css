@@ -480,9 +480,9 @@ body.pa .pa-free-lines{ margin:0; }
 :where(body.pa) .pa-pills a.pa-pill:hover{ border-color:rgba(242,235,224,.5); color:var(--ivory); background:rgba(242,235,224,.04); }
 :where(body.pa) .pa-pills a.pa-pill[aria-current="page"]{ background:rgba(242,235,224,.11); border-color:rgba(242,235,224,.34); color:var(--ivory); }
 :where(body.pa) .pa-pills a.pa-pill:focus-visible{ outline:2px solid var(--terra-text); outline-offset:3px; border-radius:999px; }
-@media (max-width:940px){
+@media (max-width:1180px){
   .pa-head--pills .pa-wrap{ flex-wrap:wrap; gap:10px 0; min-height:0; padding-top:12px; padding-bottom:12px; }
-  .pa-pills{ width:100%; margin:0; display:grid; grid-template-columns:repeat(4, minmax(0, 1fr)); gap:8px; }
+  .pa-pills{ width:100%; margin:0; display:grid; grid-template-columns:repeat(5, minmax(0, 1fr)); gap:8px; }
   :where(body.pa) .pa-pills a.pa-pill{ min-height:44px; padding:0 8px; font-size:14px; }
 }
 @media (max-width:400px){
@@ -524,7 +524,7 @@ body.pa .pa-free-lines{ margin:0; }
 }
 
 /* ---- four pills and the separated homepage / Virtual Gallery (29 Oct 2026) ---- */
-@media (max-width:560px){ .pa-pills{ grid-template-columns:repeat(2, minmax(0, 1fr)); } }
+@media (max-width:640px){ .pa-pills{ grid-template-columns:repeat(6, minmax(0, 1fr)); } .pa-pills .pa-pill{ grid-column:span 2; } .pa-pills .pa-pill:nth-child(n+4){ grid-column:span 3; } }
 .pa-home-vg .pa-btn{ margin-top:6px; }
 .pa-vg-empty{ display:grid; grid-template-columns:auto 1fr; gap:clamp(24px, 4vw, 56px); align-items:center; padding:clamp(28px, 4vw, 56px); border:1px solid var(--line-2); border-radius:var(--r); background:linear-gradient(135deg, rgba(242,235,224,.035), rgba(242,235,224,0)); }
 .pa-vg-empty h2{ font-size:clamp(32px, 3.4vw, 48px); margin-bottom:14px; }
@@ -533,3 +533,20 @@ body.pa .pa-free-lines{ margin:0; }
 .pa-vg-empty-frame{ display:block; width:clamp(120px, 14vw, 190px); aspect-ratio:4 / 5; border:1px solid rgba(242,235,224,.28); box-shadow:inset 0 0 0 10px rgba(242,235,224,.03), inset 0 0 0 11px rgba(242,235,224,.12); border-radius:2px; }
 @media (max-width:640px){ .pa-vg-empty{ grid-template-columns:1fr; } .pa-vg-empty-frame{ width:96px; } }
 .pa-home-vg h2{ font-size:clamp(40px, 5vw, 72px); }
+
+/* ---- five pills; Art at Home section (29 Oct 2026) ---- */
+.pa-pills{ gap:8px; }
+:where(body.pa) .pa-pills a.pa-pill{ padding:0 18px; }
+@media (max-width:1180px){ :where(body.pa) .pa-pills a.pa-pill{ padding:0 8px; } }
+.pa-aah-grid{ display:grid; grid-template-columns:minmax(0, 1.1fr) minmax(0, .9fr); gap:clamp(28px, 5vw, 80px); align-items:center; }
+.pa-aah-fig{ margin:0; }
+.pa-aah-fig a{ display:block; border-radius:var(--r); overflow:hidden; box-shadow:var(--shadow-card); }
+.pa-aah-fig img{ display:block; width:100%; height:auto; transition:transform .6s ease; }
+.pa-aah-fig a:hover img{ transform:scale(1.02); }
+.pa-aah-fig figcaption{ margin-top:12px; }
+.pa-aah h2{ font-size:clamp(44px, 5.4vw, 80px); margin-bottom:10px; }
+.pa-aah-sub{ font-family:var(--serif); font-size:clamp(22px, 2.2vw, 30px); color:var(--ivory); line-height:1.25; margin:0 0 18px; }
+@media (max-width:860px){ .pa-aah-grid{ grid-template-columns:1fr; } }
+@media (prefers-reduced-motion:reduce){ .pa-aah-fig img{ transition:none; } .pa-aah-fig a:hover img{ transform:none; } }
+@media (max-width:379px){ .pa-pills{ grid-template-columns:repeat(2, minmax(0, 1fr)); } .pa-pills .pa-pill, .pa-pills .pa-pill:nth-child(n+4){ grid-column:auto; } .pa-pills .pa-pill:nth-child(5){ grid-column:1 / -1; } }
+.pa-pill--out span{ margin-left:5px; }

@@ -156,14 +156,20 @@ for name in PAGES:
 
 home = open(os.path.join(PA, "index.html"), encoding="utf-8").read() if os.path.exists(os.path.join(PA, "index.html")) else ""
 need(all(('src="%s"' % x) in home for x in HERO_IMAGES) and "Original artwork by Colin Macaulay, founder of PlotArt." in visible_text(home)
-     and len(re.findall(r'<img [^>]*alt="Painting by Colin Macaulay', home)) == 1 and len(re.findall(r"<img\b", home)) == 1 + home.count("plotnua-mark-master.svg"),
-     "L6 the homepage image must be exactly the founder's one credited painting")
+     and len(re.findall(r'<img [^>]*alt="Painting by Colin Macaulay', home)) == 1 and len(re.findall(r"<img\b", home)) == 2 + home.count("plotnua-mark-master.svg"),
+     "L6 the homepage images must be exactly the founder's credited painting and the A Home for Art image")
+# Art at Home (founder, 29 Oct 2026): the existing A Home for Art Discovery image, reused (not a new image),
+# linked to the Discovery and captioned as an illustration.
+need(re.search(r'<a href="\.\./discovery-a-home-for-art\.html"[^>]*><img src="\.\./assets/img/dfb125ba9dd7cd87\.jpg"', home) is not None
+     and "Illustration · not a real home" in visible_text(home), "L6 the Art at Home image must be the Discovery's image, linked to it and captioned as an illustration")
 need(not re.search(r"(?i)AI-generated|conceptual image", visible_text(home)), "L6 the homepage still carries the AI-image hero label")
 need(not re.search(r'pa-vg-card|pa-vg-grid|pa-vg-count|galleries reserved|waiting for their artists', home), "L6 the homepage shows empty gallery slots or counters (removed, 29 Oct 2026)")
 need('href="gallery/"' in home and 'href="founding-25.html#apply"' in home or STATE != "open", "L6 the homepage must link to the Virtual Gallery and the Founding 25 application")
-need("isn't open yet" in visible_text(home) and "No artwork is currently available through PlotArt." in visible_text(home)
-     and "no artists or artworks have been published yet" in visible_text(home), "L6 the homepage must say the gallery isn't open, no artists or artworks have been published yet, and no artwork is currently available through PlotArt")
-need("This is the experience PlotArt is building" in visible_text(home), "L6 the buyer experience must be framed as what PlotArt is building")
+need("No artwork is currently available through PlotArt." in visible_text(home)
+     and "no artists or artworks have been published yet" in visible_text(home), "L6 the homepage must say no artists or artworks have been published yet and no artwork is currently available through PlotArt")
+# Founder decision 29 Oct 2026: the introduction is the approved lede, and availability is stated by the
+# Virtual Gallery line and the footer (the "Where PlotArt is now" panel was removed).
+need("PlotArt brings artists and art lovers together." in visible_text(home), "L6 the homepage introduction is not the approved wording")
 need(len(demo_names) > 0 or not os.path.exists(cat_path), "L3 demonstration names could not be read")
 
 # L3 on a release branch: the prototype data is never published, so demonstration names
@@ -192,9 +198,10 @@ f25 = open(f25p, encoding="utf-8").read() if os.path.exists(f25p) else ""
 f25v = visible_text(f25)
 m = re.search(r'<meta name="description" content="([^"]*)">', f25)
 need(m is not None and html.unescape(m.group(1)) == DESC, "L8 the Founding 25 description is not the %s wording" % STATE)
-need(("<strong>The Founding 25.</strong> %s" % LINE) in home, "L8 the homepage Founding 25 status line is not the %s wording" % STATE)
+_badge = re.search(r'<span class="pa-open-badge[^"]*">([^<]*)</span>', home)
+need(_badge is not None and html.unescape(_badge.group(1)) == ("Applications open" if STATE == "open" else LINE), "L8 the homepage Founding 25 badge is not the %s wording" % STATE)
 for other in {"Applications are open.", "Applications are paused at the moment.", "Applications have closed.", "Applications are not yet open."} - {LINE}:
-    need(("<strong>The Founding 25.</strong> %s" % other) not in home, "L8 the homepage shows another state's line: %s" % other)
+    need(other not in visible_text(home), "L8 the homepage shows another state's line: %s" % other)
 if STATE == "open":
     need(ENDPOINT is not None and f25.count("<form") == 1 and ('data-f25-form data-endpoint="%s"' % ENDPOINT) in f25, "L9 open: exactly one live form posting to the approved route")
 else:
@@ -232,7 +239,7 @@ for name in PAGES:
         vt = re.sub(r"\s+", " ", visible_text(open(p, encoding="utf-8").read())).replace(GALLERIES_LINE, " ")
         need(not re.search(r"\bour Founding Artists?\b|\b(?:selected|chosen|confirmed|current|existing) Founding Artists?\b|Founding Artists? (?:include|are now|have joined|already)", vt, re.I),
              "L10 %s presents Founding Artists as already selected" % name)
-need(GALLERIES_LINE in re.sub(r"\s+", " ", visible_text(home)), "L10 the homepage 'Artist galleries' line is not the approved wording")
+need("Where PlotArt is now" not in visible_text(home), "L10 the homepage status panel was removed (founder decision 29 Oct 2026)")
 lg = open(os.path.join(PA, "living-gallery.html"), encoding="utf-8").read() if os.path.exists(os.path.join(PA, "living-gallery.html")) else ""
 need("proposed programme" in visible_text(lg) and "isn't running yet" in visible_text(lg), "L10 the Living Gallery must be presented as a proposed programme that isn't running yet")
 
@@ -260,22 +267,22 @@ if vg:
 smp = os.path.join(SITE, "sitemap.xml")
 if os.path.exists(smp):
     need("plotart" not in open(smp, encoding="utf-8").read(), "L11 sitemap.xml lists a PlotArt URL")
-NAV_WANT = ["PlotArt Home", "Virtual Gallery", "Living Gallery", "PlotNua Home"]
-NAV_CURRENT = {"index.html": "PlotArt Home", "gallery/index.html": "Virtual Gallery", "living-gallery.html": "Living Gallery", "founding-25.html": None}
+NAV_WANT = ["Discover PlotArt", "Explore Art", "Living Gallery", "Art at Home", "PlotNua ↗"]
+NAV_CURRENT = {"index.html": "Discover PlotArt", "gallery/index.html": "Explore Art", "living-gallery.html": "Living Gallery", "founding-25.html": None}
 for name in PAGES:
     p = os.path.join(PA, name)
     if os.path.exists(p):
         s = open(p, encoding="utf-8").read()
         head = re.search(r'<header class="pa-head[^"]*">(.*?)</header>', s, re.S)
         nav = re.search(r'<nav class="pa-pills" aria-label="PlotArt">(.*?)</nav>', head.group(1) if head else "", re.S)
-        links = re.findall(r'<a class="pa-pill" href="([^"]+)"( aria-current="page")?[^>]*>([^<]+)</a>', nav.group(1)) if nav else []
+        links = [(h, c, re.sub(r"<[^>]+>", "", t)) for h, c, t in re.findall(r'<a class="pa-pill[^"]*" href="([^"]+)"( aria-current="page")?[^>]*>(.*?)</a>', nav.group(1))] if nav else []
         labels = [html.unescape(x[2]) for x in links]
         need(labels == NAV_WANT, "L11 %s navigation is %s, not %s" % (name, labels, NAV_WANT))
         cur = [html.unescape(x[2]) for x in links if x[1]]
         need(cur == ([NAV_CURRENT[name]] if NAV_CURRENT[name] else []), "L11 %s current pill is %s, not %s" % (name, cur, NAV_CURRENT[name]))
         depth = "../" * name.count("/")
-        need(len(links) == 4 and links[0][0] == depth + "index.html" and links[1][0] == depth + "gallery/" and links[2][0] == depth + "living-gallery.html" and links[3][0] == depth + "../index.html",
-             "L11 %s pills must link to the PlotArt homepage, the Virtual Gallery, the Living Gallery and the PlotNua homepage" % name)
+        need(len(links) == 5 and [x[0] for x in links] == [depth + "index.html", depth + "gallery/", depth + "living-gallery.html", depth + "../discovery-a-home-for-art.html", depth + "../index.html"],
+             "L11 %s pills must link to the PlotArt homepage, the Virtual Gallery, the Living Gallery, A Home for Art and the PlotNua homepage" % name)
         hv = visible_text(head.group(1)) if head else ""
         need("Founding 25" not in hv and "About" not in hv, "L11 %s header still offers Founding 25 or About" % name)
 
