@@ -78,7 +78,9 @@ launch = json.load(open(SWITCHES, encoding="utf-8"))
 ENDPOINT = launch.get("f25_form_endpoint")
 PAGES = ["index.html", "founding-25.html", "living-gallery.html", "gallery/index.html"]
 # The application script ships only in the "open" state (never inferred from the endpoint).
-ALLOWED = set(PAGES) | {"assets/plotart.css", "assets/plotart.js"} | ({"assets/f25-apply.js"} if launch.get("f25_application_state") == "open" else set())
+# The homepage hero images: three AI-generated conceptual images, labelled as such (founder, 29 Oct 2026).
+HERO_IMAGES = {"assets/hero/conceptual-01-bold-abstract.webp", "assets/hero/conceptual-02-minimal.webp", "assets/hero/conceptual-03-atmospheric.webp"}
+ALLOWED = set(PAGES) | {"assets/plotart.css", "assets/plotart.js"} | HERO_IMAGES | ({"assets/f25-apply.js"} if launch.get("f25_application_state") == "open" else set())
 
 # L1
 found = set()
@@ -152,6 +154,10 @@ for name in PAGES:
     need(not re.search(r"workers\.dev|airtable", ep_ok), "L7 %s references a live endpoint outside the approved form" % name)
 
 home = open(os.path.join(PA, "index.html"), encoding="utf-8").read() if os.path.exists(os.path.join(PA, "index.html")) else ""
+need(all(('src="%s"' % x) in home for x in HERO_IMAGES) and "Conceptual images · AI-generated" in visible_text(home) and "Not artworks represented by PlotArt" in visible_text(home)
+     and len(re.findall(r'<img [^>]*alt="AI-generated conceptual image', home)) == 3 and len(re.findall(r"<img\b", home)) == 3 + home.count("plotnua-mark-master.svg"),
+     "L6 the homepage hero images must be the three labelled AI-generated conceptual images, and no other image")
+need("AI-generated conceptual images" in visible_text(home), "L6 the footer must disclose AI-generated conceptual images")
 need("isn't open yet" in visible_text(home) and "No artwork is currently available through PlotArt." in visible_text(home)
      and "no artists or artworks have been published yet" in visible_text(home), "L6 the homepage must say the gallery isn't open, no artists or artworks have been published yet, and no artwork is currently available through PlotArt")
 need("This is the experience PlotArt is building" in visible_text(home), "L6 the buyer experience must be framed as what PlotArt is building")
