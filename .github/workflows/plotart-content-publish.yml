@@ -13,7 +13,8 @@ name: PlotArt content publishing
 # fast-forward main (never forced). Anything else (code, styles, wording, other pages) is refused: those still go
 # through the founder's full release process.
 #
-# Secrets: STUDIO_URL (the Studio Worker's address), STUDIO_PIPELINE_TOKEN (the same value as the Worker's
+# Secrets: STUDIO_ACCESS_CLIENT_ID / STUDIO_ACCESS_CLIENT_SECRET (a Cloudflare Access service token for the Studio),
+# STUDIO_URL (the Studio Worker's address), STUDIO_PIPELINE_TOKEN (the same value as the Worker's
 # PIPELINE_TOKEN secret). The default GITHUB_TOKEN pushes; its permission is limited to this repository's contents.
 # A push made by this workflow does not start other workflows, so it runs the image-rights and provenance checks
 # itself before pushing.
@@ -53,6 +54,8 @@ jobs:
         env:
           STUDIO_URL: ${{ secrets.STUDIO_URL }}
           STUDIO_PIPELINE_TOKEN: ${{ secrets.STUDIO_PIPELINE_TOKEN }}
+          STUDIO_ACCESS_CLIENT_ID: ${{ secrets.STUDIO_ACCESS_CLIENT_ID }}
+          STUDIO_ACCESS_CLIENT_SECRET: ${{ secrets.STUDIO_ACCESS_CLIENT_SECRET }}
         run: |
           set -euo pipefail
           git config user.name "PlotArt content pipeline"

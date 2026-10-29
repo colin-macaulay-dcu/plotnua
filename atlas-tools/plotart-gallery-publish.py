@@ -41,9 +41,17 @@ VG = os.path.join(ROOT, "plotart", "gallery", "index.html")
 GRID = re.compile(r'(<ol class="pa-vg2-grid"[^>]*>)(.*?)(\n  </ol>)', re.S)
 
 
+# Cloudflare Access sits in front of the Studio's address: the pipeline passes it with an Access service token
+# (secrets STUDIO_ACCESS_CLIENT_ID / STUDIO_ACCESS_CLIENT_SECRET), then authenticates to the Studio with its bearer token.
+HEADERS = {"Authorization": "Bearer " + TOKEN, "Content-Type": "application/json"}
+if os.environ.get("STUDIO_ACCESS_CLIENT_ID") and os.environ.get("STUDIO_ACCESS_CLIENT_SECRET"):
+    HEADERS["CF-Access-Client-Id"] = os.environ["STUDIO_ACCESS_CLIENT_ID"]
+    HEADERS["CF-Access-Client-Secret"] = os.environ["STUDIO_ACCESS_CLIENT_SECRET"]
+
+
 def call(method, path, body=None, raw=False):
     req = urllib.request.Request(STUDIO.rstrip("/") + path, method=method, data=json.dumps(body).encode() if body is not None else None,
-                                 headers={"Authorization": "Bearer " + TOKEN, "Content-Type": "application/json"})
+                                 headers=HEADERS)
     with urllib.request.urlopen(req, timeout=120) as r:
         return (r.read(), dict(r.headers)) if raw else json.loads(r.read())
 
