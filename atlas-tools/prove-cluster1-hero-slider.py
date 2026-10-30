@@ -108,9 +108,13 @@ def main():
               (s["tagA"] or "").strip().lower() == "before"
               and (s["tagB"] or "").strip().lower() == "possible",
               f"{s['tagA']!r} / {s['tagB']!r}")
-        check("H5", "the handle (at least 44px) sits on the divider",
+        # v1.3 (30 Oct 2026): the slider opens with the divider at the frame's edge (100% BEFORE); the
+        # handle is then held just inside the frame, so it sits on the divider or, at an edge, as close
+        # to it as the frame allows (its centre within half its width of the divider).
+        check("H5", "the handle (at least 44px) sits on the divider, held inside the frame at an edge",
               s["handleW"] >= 44 and s["handleH"] >= 44
-              and abs(s["handleCx"] - s["dividerCx"]) <= 1,
+              and abs(s["handleCx"] - s["dividerCx"]) <= max(1, s["handleW"] / 2 + 2)
+              and s["handleCx"] + s["handleW"] / 2 <= s["box"]["x"] + s["box"]["w"] + 1,
               f"{s['handleW']}x{s['handleH']} at {s['handleCx']} vs divider {s['dividerCx']}")
 
         box = s["box"]
