@@ -1,0 +1,88 @@
+/* =====================================================================
+   pn-hero-static · PlotNua static Discovery hero standard (v1, 30 Oct 2026)
+   Pass 2 Release 3 (founder instruction, 30 Oct 2026): an interim standard
+   for Discoveries that do not yet have a Before / Possible pair. It matches
+   the approved slider heroes (pn-compare, hero standard) so that a static
+   page can later become a slider page without a visual change of frame.
+
+   Opt-in only: every rule needs .pn-hero-static on the .d-hero header.
+
+   DESKTOP AND LANDSCAPE TABLET
+   - full-frame photograph, 92svh, ending above the touch Back dock;
+   - NO overlay plates in the hero (Discovery annotations live in the page,
+     in an annotated plate figure, as on the Natural Swimming Garden);
+   - one eyebrow style, one H1 scale (the Premium Discovery scale);
+   - the copy column ends at least 104px above the bottom edge, so the
+     floating Back control never sits on text.
+   PHONES AND PORTRAIT TABLETS (the pn-compare stacking breakpoint)
+   - a compact title band above the image (aria-hidden; the one H1 stays in
+     the copy for assistive technology and search, visually hidden there,
+     so the title shows once);
+   - the image as a 4:5 (phone; 1:1 on short phones) or 4:3 (portrait tablet) frame, positioned by
+     --phs-focus on the subject, never a short strip;
+   - the copy below the image on a solid background, leading with the
+     subtitle question, with bottom space for the Back dock.
+   ===================================================================== */
+.pn-hs-mtitle{ display:none; }
+
+body.pn-id.pn-pd:has(.article-section) .d-hero.pn-hero-static{
+  position:relative; height:92vh; height:92svh; min-height:560px; overflow:hidden; background:var(--p4-anth,#27282A); }
+body.pn-id.pn-pd:has(.article-section):has(> .pn-return) .d-hero.pn-hero-static{
+  height:min(92svh, calc(100svh - var(--pnc-hdr,69px) - var(--pn-dock,0px))); }
+body.pn-id.pn-pd:has(.article-section) .d-hero.pn-hero-static .pn-hs-media{ position:absolute; inset:0; margin:0; line-height:0; }
+body.pn-id.pn-pd:has(.article-section) .d-hero.pn-hero-static .pn-hs-media picture{ display:block; width:100%; height:100%; }
+body.pn-id.pn-pd:has(.article-section) .d-hero.pn-hero-static .pn-hs-media img{
+  display:block; width:100%; height:100%; object-fit:cover; object-position:var(--phs-focus,50% 50%);
+  opacity:1; transform:none; transition:none; }
+body.pn-id.pn-pd:has(.article-section) .d-hero.pn-hero-static .d-hero-scrim{ position:absolute; inset:0; z-index:1; pointer-events:none;
+  background:
+    linear-gradient(90deg, rgba(15,14,10,.58) 0%, rgba(15,14,10,.30) 34%, rgba(15,14,10,0) 58%),
+    linear-gradient(0deg, rgba(15,14,10,.62) 0%, rgba(15,14,10,0) 46%),
+    linear-gradient(180deg, rgba(15,14,10,.30) 0%, rgba(15,14,10,0) 20%); }
+body.pn-id.pn-pd:has(.article-section) .d-hero.pn-hero-static .d-hero-copy{
+  position:absolute; z-index:2; inset:auto auto 0 0; width:min(46vw, 660px); max-width:none; margin:0;
+  padding:0 0 max(104px, 12vh) clamp(24px, 5vw, 72px); text-align:left; box-sizing:content-box; }
+body.pn-id.pn-pd:has(.article-section) .d-hero.pn-hero-static .d-hero-copy .eyebrow{
+  font-size:12px; letter-spacing:.18em; color:var(--p4-ivory,#F2EBE0); margin:0 0 18px; text-shadow:0 1px 12px rgba(0,0,0,.55); }
+body.pn-id.pn-pd:has(.article-section) .d-hero.pn-hero-static .d-hero-copy h1{
+  font-size:clamp(52px, 6.4vw, 100px); line-height:.95; max-width:12ch; margin:0; text-shadow:0 2px 28px rgba(15,14,10,.5); }
+body.pn-id.pn-pd:has(.article-section) .d-hero.pn-hero-static .d-hero-copy .subtitle{ max-width:26ch; margin:22px 0 0; text-shadow:0 1px 16px rgba(0,0,0,.45); }
+body.pn-id.pn-pd:has(.article-section) .d-hero.pn-hero-static .d-hero-copy .intro{ max-width:46ch; margin:14px 0 0; }
+
+/* Short landscape screens (laptops ≤ 860px tall, landscape tablets) */
+@media (min-width:720px) and (orientation:landscape) and (max-height:860px){
+  body.pn-id.pn-pd:has(.article-section) .d-hero.pn-hero-static .d-hero-copy{ padding-bottom:max(96px, 11vh); }
+  body.pn-id.pn-pd:has(.article-section) .d-hero.pn-hero-static .d-hero-copy h1{ font-size:clamp(46px, 9vh, 84px); }
+}
+
+/* ---- Phones and portrait tablets ---- */
+@media (max-width:1024px) and (orientation:portrait), (max-width:719px){
+  body.pn-id.pn-pd:has(.article-section) .d-hero.pn-hero-static,
+  body.pn-id.pn-pd:has(.article-section):has(> .pn-return) .d-hero.pn-hero-static{
+    height:auto; min-height:0; overflow:visible; display:flex; flex-direction:column; }
+  body.pn-id.pn-pd:has(.article-section) .d-hero.pn-hero-static .pn-hs-mtitle{
+    display:block; order:-1; padding:18px 22px 16px; background:var(--p4-anth,#27282A);
+    border-bottom:1px solid var(--p4-line2,rgba(242,235,224,.14)); }
+  .pn-hs-mkicker{ display:block; font-family:var(--p4-sans,'Hanken Grotesk',system-ui,sans-serif); font-weight:700; font-size:11px;
+    letter-spacing:.2em; text-transform:uppercase; color:var(--p4-stone,#C2BDB5); margin-bottom:6px; }
+  .pn-hs-mname{ display:block; font-family:var(--p4-serif,'Instrument Serif',Georgia,serif); font-size:clamp(28px,7.6vw,36px);
+    line-height:1.04; color:var(--p4-ivory,#F2EBE0); }
+  body.pn-id.pn-pd:has(.article-section) .d-hero.pn-hero-static .pn-hs-media{ position:relative; inset:auto; aspect-ratio:4/3; }  /* portrait tablets */
+  body.pn-id.pn-pd:has(.article-section) .d-hero.pn-hero-static .d-hero-scrim{ display:none; }
+  body.pn-id.pn-pd:has(.article-section) .d-hero.pn-hero-static .d-hero-copy{
+    position:relative; inset:auto; width:auto; box-sizing:border-box; padding:24px 22px 32px; }
+  /* the title shows once, in the band above the image */
+  body.pn-id.pn-pd:has(.article-section) .d-hero.pn-hero-static .d-hero-copy :is(.eyebrow, h1){
+    position:absolute !important; width:1px !important; height:1px !important; margin:-1px !important; padding:0 !important;
+    overflow:hidden !important; clip:rect(0 0 0 0) !important; clip-path:inset(50%) !important; white-space:nowrap !important; border:0 !important; }
+  body.pn-id.pn-pd:has(.article-section) .d-hero.pn-hero-static .d-hero-copy .subtitle{
+    margin:0; max-width:none; font-size:clamp(24px, 6.2vw, 32px); line-height:1.18; text-shadow:none; }
+  body.pn-id.pn-pd:has(.article-section) .d-hero.pn-hero-static .d-hero-copy .intro{ margin-top:12px; text-shadow:none; }
+}
+@media (max-width:719px){
+  body.pn-id.pn-pd:has(.article-section) .d-hero.pn-hero-static .pn-hs-media{ aspect-ratio:4/5; }
+}
+/* Short phones (≤ 700px tall): a square frame, so the subtitle sits above the Back dock on first view */
+@media (max-width:719px) and (max-height:700px){
+  body.pn-id.pn-pd:has(.article-section) .d-hero.pn-hero-static .pn-hs-media{ aspect-ratio:1/1; }
+}

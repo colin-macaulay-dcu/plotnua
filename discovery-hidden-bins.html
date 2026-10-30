@@ -35,6 +35,7 @@
 <link rel="stylesheet" href="assets/identity/pn-identity.css">
 <link rel="stylesheet" href="assets/identity/pn-identity-discovery.css">
 <link rel="stylesheet" href="assets/identity/pn-premium-discovery.css">
+<link rel="stylesheet" href="assets/identity/pn-hero-static.css?v=1">
 <link rel="stylesheet" href="assets/identity/pn-header.css">
 <!-- PLOTNUA IDENTITY v1 · HEAD · END -->
 
@@ -271,10 +272,8 @@
 
   /* keyboard control: focusable, never captures pointer or touch */
 
-  @media (max-width:720px){
-  }
-  @media (prefers-reduced-motion: reduce){
-  }
+  
+  
 
   /* ---- Could This Work For You — reflective questions, same
      fragment-line treatment used across the site for short phrases,
@@ -940,21 +939,17 @@
      The hero copy overlays the plate where there is room for it, and stacks
      beneath on the ink ground below 1024 - ivory reads correctly on both.
      ============================================================ */
-  .d-hero.is-plate{ height:auto; min-height:0; background:var(--ink); position:relative; }
+  
   /* .plate wraps the IMAGE AND ITS ANNOTATION ONLY. The hero copy must stay
      outside it: when the copy stacks below the plate on narrow screens, any
      annotation positioned against a box that also contains the copy drifts off
      the photograph. Measured at 768/430/390/360 before this was corrected. */
-  .d-hero.is-plate .plate{ position:relative; width:100%; line-height:0; }
-  .d-hero.is-plate img{ width:100%; height:auto; object-fit:fill;
-    aspect-ratio:1408/768; transform:none; opacity:1; }
-  .d-hero.is-plate .pa-annot{ position:absolute; inset:0; z-index:2; pointer-events:none; }
-  .d-hero.is-plate .pa-annot svg{ width:100%; height:100%; display:block; }
-  .d-hero.is-plate .d-hero-copy{ position:static; padding:7vh 8vw 8vh; max-width:none; }
-  @media (min-width:1024px){
-    .d-hero.is-plate .d-hero-copy{ position:absolute; left:0; right:0; bottom:0;
-      padding:0 8vw 7vh; z-index:3; }
-  }
+  
+  
+  
+  
+  
+  
 
   /* ---- ONE MOBILE ANNOTATION TREATMENT (IMAGE 01 only) ----
      The plate is never cropped, so below ~768 the whole 1408-wide frame is
@@ -967,11 +962,8 @@
      centre bin. Only the label block's size and position and the leader that
      joins it to that anchor change. Nothing is cropped and no third variant
      exists. Breakpoint 767px: at 768 the frozen label still renders 16px. */
-  .d-hero.is-plate .pa-annot-m{ display:none; }
-  @media (max-width:767px){
-    .d-hero.is-plate .pa-annot-d{ display:none; }
-    .d-hero.is-plate .pa-annot-m{ display:block; }
-  }
+  
+  
   .pa-kicker-m{ font-family:'Work Sans',system-ui,sans-serif; font-size:30px; font-weight:500;
     letter-spacing:.18em; fill:rgba(15,14,10,.72); }
   .pa-label-m{ font-family:'Fraunces',Georgia,serif; font-style:italic; font-size:52px;
@@ -1105,6 +1097,15 @@
   html{ scroll-behavior:auto !important; }
 }
 /* PLOTNUA A11Y VISUAL v1 · END */
+
+/* Pass 2 Release 3 (30 Oct 2026): the frozen annotation now sits in the annotated plate (.pn-hs-plate).
+   Same desktop/phone switch as it had in the hero; geometry unchanged. */
+.pn-hs-plate .pa-annot{ position:absolute; inset:0; z-index:3; pointer-events:none; }
+.pn-hs-plate .pa-annot-m{ display:none; }
+@media (max-width:767px){   /* the frozen breakpoint: at 768 the desktop label still renders 16px */
+  .pn-hs-plate .pa-annot-d{ display:none; }
+  .pn-hs-plate .pa-annot-m{ display:block; }
+}
 </style>
 <script type="application/ld+json">
 {
@@ -1206,9 +1207,48 @@
 <nav class="pn-hdr-dest" aria-label="Main"><details class="pn-hdr-menu" data-pn-menu><summary class="pn-hdr-menu-btn"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true" focusable="false"><path class="pn-menu-l1" d="M3.5 6h13"/><path class="pn-menu-l2" d="M3.5 10h13"/><path class="pn-menu-l3" d="M3.5 14h13"/></svg><span>Menu</span></summary><div class="pn-hdr-panel"><a class="pn-hdr-btn is-primary" href="discoveries.html"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true" focusable="false"><circle cx="10" cy="10" r="7.25"/><path d="m12.9 7.1-1.75 4.05L7.1 12.9l1.75-4.05Z"/></svg><span>Discovery Library</span></a><a class="pn-hdr-btn is-secondary is-art" href="plotart/"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true" focusable="false"><rect x="3" y="3.5" width="14" height="13" rx="1.5"/><path d="m5.5 14 3.5-4 2.5 2.5 1.5-1.5 2 3"/></svg><span>PlotArt</span></a><a class="pn-hdr-btn is-secondary is-grid" href="gridnua/"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="2.75" y="2.75" width="14.5" height="14.5" rx="3"/><path d="M7.6 2.75v14.5M12.4 2.75v14.5M2.75 7.6h14.5M2.75 12.4h14.5"/><rect class="pn-grid-core" x="8.2" y="8.2" width="3.6" height="3.6" rx=".8" fill="currentColor" stroke="none"/></svg><span>GridNua</span></a><a class="pn-hdr-btn is-secondary is-myplot" href="your-plot.html?myplot=1" data-myplot aria-label="My Plot"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true" focusable="false"><path class="pn-heart" d="M10 16.6s-6.2-3.7-6.2-8.2A3.4 3.4 0 0 1 10 6.3a3.4 3.4 0 0 1 6.2 2.1c0 4.5-6.2 8.2-6.2 8.2Z"/></svg><span>My Plot</span><span class="pn-hdr-count" aria-hidden="true" hidden></span></a><p class="pn-hdr-panel-k">Talk to PlotNua</p><div class="pn-hdr-panel-contact"><a class="pn-hdr-pl pn-hdr-pl--wa" href="https://wa.me/353834036695" target="_blank" rel="noopener noreferrer" aria-label="Chat with PlotNua on WhatsApp (opens in a new tab)"><span class="pn-hdr-wa-ico" aria-hidden="true"><svg viewBox="0 0 80 80" focusable="false"><path d="M29 5h23a22 22 0 0 1 22 22v16a22 22 0 0 1-22 22H33L14 75l3-18A22 22 0 0 1 7 39V27A22 22 0 0 1 29 5Z" fill="#1F3B2E" stroke="#B39272" stroke-width="2.5" stroke-linejoin="round"/></svg><img src="assets/brand/plotnua-icon-transparent.svg" alt="" width="22" height="22"></span><span>WhatsApp</span></a><a class="pn-hdr-pl" href="contact.html"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true" focusable="false"><rect x="2.75" y="4.5" width="14.5" height="11" rx="2"/><path d="m3.5 5.5 6.5 5 6.5-5"/></svg><span>Contact</span></a></div></div></details></nav>
 <!-- PLOTNUA HEADER v2 · ROW · END -->
 
-<header class="d-hero is-plate">
-  <div class="plate">
+<header class="d-hero pn-hero-static" style="--phs-focus:62% 62%">
+  <!-- Pass 2 Release 3 (founder instruction, 30 Oct 2026) · static Discovery hero standard
+       (assets/identity/pn-hero-static.css). The hero is the photograph alone: the frozen
+       DISC-029 annotation moved, unchanged, into the annotated plate after "The Problem". -->
+  <div class="pn-hs-mtitle" aria-hidden="true"><span class="pn-hs-mkicker">A PlotNua Discovery</span><span class="pn-hs-mname">The Hidden Bins</span></div>
+  <div class="pn-hs-media">
     <picture style="display:contents"><source type="image/webp" srcset="assets/img/9805382f8164228a-960w.webp 960w, assets/img/9805382f8164228a.webp 1408w" sizes="100vw"><img id="dHeroImg" class="on" src="assets/img/9805382f8164228a.jpg" width="1408" height="768" fetchpriority="high" decoding="async" alt="Three ordinary wheelie bins standing exposed on the paved frontage of a new Irish home, annotated by PlotNua with the question &quot;What if the bins disappeared&hellip;&quot;"></picture>
+  </div>
+  <div class="d-hero-scrim"></div>
+  <div class="d-hero-copy in" id="dHeroCopy">
+    <div class="eyebrow">PlotNua Discovery</div>
+    <h1>The Hidden Bins</h1>
+    <p class="subtitle">Imagine if your bins simply disappeared.</p>
+  </div>
+</header>
+
+<main id="pn-main">
+<div class="article">
+
+  <!-- SEO PHASE 1 (16 Oct 2026) · IN BRIEF. Every fact here is stated
+       further down this page; this only puts the answer first. -->
+  <section class="article-section pn-brief" aria-label="In brief" style="padding-bottom:28px">
+    <div class="kicker">In Brief</div>
+    <p style="max-width:68ch">There are three ways to stop wheelie bins being the first thing anyone sees at an Irish home. <strong>Hide</strong> them in a bin store, the most widely available option, from the low hundreds of euro. <strong>Integrate</strong> the storage into the frontage, made to order by several Irish makers. Or make them <strong>disappear</strong> below ground on a lift &mdash; real, installed equipment abroad, but with no Irish supplier verified for a single house. Since July 2026, Class&nbsp;62 provides an exempted route for above-ground bin storage, subject to conditions; it does not cover an underground system.</p>
+  </section>
+
+  <!-- SECTION 2 - PROBLEM. Frozen copy, verbatim. -->
+  <section class="article-section reveal">
+    <div class="kicker">The Problem</div>
+    <h2>Where three bins actually live</h2>
+    <p>Most Irish homes have three of them. Black, green, brown.</p>
+    <p>They have to live somewhere, and on a lot of properties the only somewhere available is visible: the frontage, the driveway, along the boundary, or the side passage you also need to walk down. Whichever one you give them, you give up.</p>
+    <p>On a small frontage that is a meaningful amount of space &mdash; and it is space you are giving over permanently, for something you use twice a week.</p>
+  </section>
+</div>
+
+  <!-- THE ANNOTATED PLATE (DISC-029 Image 01 + its frozen annotation). Moved here from the hero
+       on 30 Oct 2026 (Pass 2 Release 3, founder instruction to keep heroes free of overlay plates).
+       The SVG below is byte-for-byte the frozen annotation: same viewBox, label, leader and anchor.
+       The frame takes its height from the plate, so neither the photograph nor the annotation is cropped. -->
+  <section class="imagine-photo pa-frame reveal pn-hs-plate">
+    <picture style="display:contents"><source type="image/webp" srcset="assets/img/9805382f8164228a-960w.webp 960w, assets/img/9805382f8164228a.webp 1408w" sizes="100vw"><img loading="lazy" src="assets/img/9805382f8164228a.jpg" width="1408" height="768" decoding="async" alt="Three ordinary wheelie bins standing exposed on the paved frontage of a new Irish home, annotated by PlotNua with the question &quot;What if the bins disappeared&hellip;&quot;"></picture>
     <!-- FROZEN ANNOTATION - DISC-029-IMAGE-01-TREATMENT.md. Geometry is
          founder-approved and must not be altered: label x108-492 y44-122,
          leader M400 126 L861 500, anchor cx870 cy508 r7 inside the centre bin.
@@ -1237,32 +1277,10 @@
         <circle class="pa-dot-m" cx="870" cy="508" r="14"/>
       </svg>
     </div>
-  </div>
-  <div class="d-hero-copy in" id="dHeroCopy">
-    <div class="eyebrow">PlotNua Discovery</div>
-    <h1>The Hidden Bins</h1>
-    <p class="subtitle">Imagine if your bins simply disappeared.</p>
-  </div>
-</header>
+  </section>
 
-<main id="pn-main">
 <div class="article">
 
-  <!-- SEO PHASE 1 (16 Oct 2026) · IN BRIEF. Every fact here is stated
-       further down this page; this only puts the answer first. -->
-  <section class="article-section pn-brief" aria-label="In brief" style="padding-bottom:28px">
-    <div class="kicker">In Brief</div>
-    <p style="max-width:68ch">There are three ways to stop wheelie bins being the first thing anyone sees at an Irish home. <strong>Hide</strong> them in a bin store, the most widely available option, from the low hundreds of euro. <strong>Integrate</strong> the storage into the frontage, made to order by several Irish makers. Or make them <strong>disappear</strong> below ground on a lift &mdash; real, installed equipment abroad, but with no Irish supplier verified for a single house. Since July 2026, Class&nbsp;62 provides an exempted route for above-ground bin storage, subject to conditions; it does not cover an underground system.</p>
-  </section>
-
-  <!-- SECTION 2 - PROBLEM. Frozen copy, verbatim. -->
-  <section class="article-section reveal">
-    <div class="kicker">The Problem</div>
-    <h2>Where three bins actually live</h2>
-    <p>Most Irish homes have three of them. Black, green, brown.</p>
-    <p>They have to live somewhere, and on a lot of properties the only somewhere available is visible: the frontage, the driveway, along the boundary, or the side passage you also need to walk down. Whichever one you give them, you give up.</p>
-    <p>On a small frontage that is a meaningful amount of space &mdash; and it is space you are giving over permanently, for something you use twice a week.</p>
-  </section>
 
   <!-- SECTION 3 - TRANSFORMATION. The shortest prose section on the page.
        Mechanism deliberately withheld. -->
