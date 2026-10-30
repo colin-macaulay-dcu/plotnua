@@ -35,9 +35,20 @@
 <link rel="stylesheet" href="assets/identity/pn-identity.css">
 <link rel="stylesheet" href="assets/identity/pn-identity-discovery.css">
 <link rel="stylesheet" href="assets/identity/pn-premium-discovery.css">
-<link rel="stylesheet" href="assets/identity/pn-hero-static.css?v=1">
 <link rel="stylesheet" href="assets/identity/pn-header.css">
 <!-- PLOTNUA IDENTITY v1 · HEAD · END -->
+<link rel="stylesheet" href="assets/identity/pn-hero-static.css?v=1">
+<style>
+/* Pass 2 Release 3 (30 Oct 2026): the frozen annotation now sits in the annotated plate (.pn-hs-plate).
+   Same desktop/phone switch as it had in the hero; geometry unchanged. */
+.pn-hs-plate .pa-annot{ position:absolute; inset:0; z-index:3; pointer-events:none; }
+.pn-hs-plate .pa-annot-m{ display:none; }
+@media (max-width:767px){   /* the frozen breakpoint: at 768 the desktop label still renders 16px */
+  .pn-hs-plate .pa-annot-d{ display:none; }
+  .pn-hs-plate .pa-annot-m{ display:block; }
+}
+
+</style>
 
 <!-- Open Graph -->
 <meta property="og:type" content="article">
@@ -1098,14 +1109,6 @@
 }
 /* PLOTNUA A11Y VISUAL v1 · END */
 
-/* Pass 2 Release 3 (30 Oct 2026): the frozen annotation now sits in the annotated plate (.pn-hs-plate).
-   Same desktop/phone switch as it had in the hero; geometry unchanged. */
-.pn-hs-plate .pa-annot{ position:absolute; inset:0; z-index:3; pointer-events:none; }
-.pn-hs-plate .pa-annot-m{ display:none; }
-@media (max-width:767px){   /* the frozen breakpoint: at 768 the desktop label still renders 16px */
-  .pn-hs-plate .pa-annot-d{ display:none; }
-  .pn-hs-plate .pa-annot-m{ display:block; }
-}
 </style>
 <script type="application/ld+json">
 {
