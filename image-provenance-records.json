@@ -11788,6 +11788,99 @@
         "derivative_embeds_c2pa": false,
         "note": "The source carries no embedded credential. This file inherits the source's LEGACY_UNDECLARED state and declares nothing."
       }
+    },
+    {
+      "asset": "assets/disc001/img/DISC-001-HERO-BEFORE-WARM.jpg",
+      "sha256": "b9c932332db41aa56a10e522eca756bf2d07bc1d1cec64a1eb864081219ef37a",
+      "bytes": 481480,
+      "pixels": [
+        1408,
+        768
+      ],
+      "derived_from": {
+        "asset": "assets/img/45a270b7716e4a94.jpg",
+        "sha256": "45a270b7716e4a94c5af8ed1a7856772848b76b890c4d4a958a27b7bc2f7e3c9"
+      },
+      "method": "colour-correction",
+      "edit": {
+        "description": "Colour correction for the Garden Retreat hero slider (founder instruction, 30 Oct 2026): the BEFORE warmed slightly towards the golden-hour POSSIBLE. One global white-balance shift, identical for every pixel; nothing masked, moved, added or removed.",
+        "operation": "Linear-light channel gains R x1.05, G x1.00, B x0.86 (sRGB decode, gain, clip, sRGB encode). No local edit, no generative step; geometry identical to the source.",
+        "gains_linear_rgb": [
+          1.05,
+          1.0,
+          0.86
+        ],
+        "verified_by": "atlas-tools/build-disc001-hero-before-warm.py --check"
+      },
+      "encoder": "Pillow 12.3.0, JPEG quality 92, progressive",
+      "made": "2026-10-30",
+      "content_credentials": {
+        "source_file_embeds_c2pa": false,
+        "derivative_embeds_c2pa": false,
+        "note": "The source carries no embedded credential. This file inherits the source's LEGACY_UNDECLARED state and declares nothing."
+      }
+    },
+    {
+      "asset": "assets/disc001/img/DISC-001-HERO-BEFORE-WARM-1408.webp",
+      "sha256": "f09480faa60e3f641912a560c3a85d8b9c7124df62e9e69fbd5de510ca67ded8",
+      "bytes": 308828,
+      "pixels": [
+        1408,
+        768
+      ],
+      "derived_from": {
+        "asset": "assets/img/45a270b7716e4a94.jpg",
+        "sha256": "45a270b7716e4a94c5af8ed1a7856772848b76b890c4d4a958a27b7bc2f7e3c9"
+      },
+      "method": "colour-correction",
+      "edit": {
+        "description": "Colour correction for the Garden Retreat hero slider (founder instruction, 30 Oct 2026): the BEFORE warmed slightly towards the golden-hour POSSIBLE. One global white-balance shift, identical for every pixel; nothing masked, moved, added or removed.",
+        "operation": "Linear-light channel gains R x1.05, G x1.00, B x0.86 (sRGB decode, gain, clip, sRGB encode). No local edit, no generative step; geometry identical to the source.",
+        "gains_linear_rgb": [
+          1.05,
+          1.0,
+          0.86
+        ],
+        "verified_by": "atlas-tools/build-disc001-hero-before-warm.py --check"
+      },
+      "encoder": "Pillow 12.3.0, WebP quality 80, method 6",
+      "made": "2026-10-30",
+      "content_credentials": {
+        "source_file_embeds_c2pa": false,
+        "derivative_embeds_c2pa": false,
+        "note": "The source carries no embedded credential. This file inherits the source's LEGACY_UNDECLARED state and declares nothing."
+      }
+    },
+    {
+      "asset": "assets/disc001/img/DISC-001-HERO-BEFORE-WARM-960.webp",
+      "sha256": "1a67a98d704c39364ed9973e4c881dc26dc370907d900b107332ad34e90888dd",
+      "bytes": 153786,
+      "pixels": [
+        960,
+        524
+      ],
+      "derived_from": {
+        "asset": "assets/img/45a270b7716e4a94.jpg",
+        "sha256": "45a270b7716e4a94c5af8ed1a7856772848b76b890c4d4a958a27b7bc2f7e3c9"
+      },
+      "method": "colour-correction",
+      "edit": {
+        "description": "Colour correction for the Garden Retreat hero slider (founder instruction, 30 Oct 2026): the BEFORE warmed slightly towards the golden-hour POSSIBLE. One global white-balance shift, identical for every pixel; nothing masked, moved, added or removed.",
+        "operation": "Linear-light channel gains R x1.05, G x1.00, B x0.86 (sRGB decode, gain, clip, sRGB encode). No local edit, no generative step; geometry identical to the source.",
+        "gains_linear_rgb": [
+          1.05,
+          1.0,
+          0.86
+        ],
+        "verified_by": "atlas-tools/build-disc001-hero-before-warm.py --check"
+      },
+      "encoder": "Pillow 12.3.0, WebP quality 80, method 6, Lanczos resize to 960px wide",
+      "made": "2026-10-30",
+      "content_credentials": {
+        "source_file_embeds_c2pa": false,
+        "derivative_embeds_c2pa": false,
+        "note": "The source carries no embedded credential. This file inherits the source's LEGACY_UNDECLARED state and declares nothing."
+      }
     }
   ],
   "derivative_holds": [

@@ -6,7 +6,7 @@ standard, opening at 100% BEFORE via build-hero-start-before.py):
 
   DISC-025 The Borrowed Garden        DISC-025-HERO-BEFORE (59d566ff, own annotation removed;
                                       build-disc025-hero-before.py)  ->  faeb58a1 (raised beds)
-  Garden Retreat (DISC-001)           45a270b7 (lawn, one small sauna cabin)  ->  7d5f5718 (full retreat)
+  Garden Retreat (DISC-001)           45a270b7 warmed slightly (build-disc001-hero-before-warm.py)  ->  7d5f5718 (full retreat)
   The Neighbourhood Parcel House      8b20a096 (the house and porch)  ->  e0d57804 (a neighbour collecting)
 
 All three pairs are the pages' own approved pictures, measured as one framing (SIFT median 0.25-0.63 px).
@@ -46,15 +46,15 @@ PAGES = {
     "discovery-garden-retreat.html": dict(
         cls="gr-hero", name="Garden Retreat", fid="grHeroCompare", subject="the garden", focus="62% 50%",
         aria="Compare the garden with a single sauna cabin and with the full retreat. Higher values show more of the garden before.",
-        bef_jpg="assets/img/45a270b7716e4a94.jpg",
-        bef_webp=[("assets/img/45a270b7716e4a94-960w.webp", 960), ("assets/img/45a270b7716e4a94.webp", 1408)],
+        bef_jpg="assets/disc001/img/DISC-001-HERO-BEFORE-WARM.jpg",
+        bef_webp=[("assets/disc001/img/DISC-001-HERO-BEFORE-WARM-960.webp", 960), ("assets/disc001/img/DISC-001-HERO-BEFORE-WARM-1408.webp", 1408)],
         bef_alt="Before: an established Irish suburban garden with the lawn left clear and a single small timber sauna cabin in the far corner.",
         pos_jpg="assets/img/7d5f5718cf9cd3da.jpg",
         pos_webp=[("assets/img/7d5f5718cf9cd3da-960w.webp", 960), ("assets/img/7d5f5718cf9cd3da.webp", 1408)],
         pos_alt="The same garden as it could be: a timber garden room, a barrel sauna, a hot tub and a plunge pool set among decking and planting.",
         preload_old='<link rel="preload" as="image" type="image/webp" imagesrcset="assets/img/7d5f5718cf9cd3da-960w.webp 960w, assets/img/7d5f5718cf9cd3da.webp 1408w" imagesizes="max(100vw, 161vh)" fetchpriority="high">\n',
         preload_new='<link rel="preload" as="image" type="image/webp" imagesrcset="assets/img/7d5f5718cf9cd3da-960w.webp 960w, assets/img/7d5f5718cf9cd3da.webp 1408w" imagesizes="%s" fetchpriority="high">\n' % SIZES,
-        comment=COMMENT % "Same garden, one framing: one modest step, then\n       the full retreat (the page's two existing pictures)."),
+        comment=COMMENT % "Same garden, one framing: one modest step, then\n       the full retreat. The BEFORE is 45a270b7 warmed slightly towards the golden-hour POSSIBLE\n       (atlas-tools/build-disc001-hero-before-warm.py); the source and its later use on this page are unchanged."),
     "discovery-neighbourhood-parcel-house.html": dict(
         cls="ph-hero", name="The Neighbourhood Parcel House", fid="phHeroCompare", subject="the house", focus="40% 50%",
         aria="Compare the house as it is and with its porch used as a neighbourhood parcel point. Higher values show more of the house before.",
