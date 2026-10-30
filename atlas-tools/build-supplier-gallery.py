@@ -58,6 +58,9 @@ DISCOVERIES = {
         "authority": "universe",
         "directory": "explorer",
         "asset_v": "3", "mobile_fit": "tight",
+        # founder decision 30 Oct 2026 (Option B): a hairline rule and a tighter top
+        # where the gallery hands over to "Explore makers and products". This page only.
+        "transition": "rule",
         "tabs": {"gardenRooms": ("garden room", "garden rooms"), "gardenHomes": ("garden home", "garden homes")},
         "nouns": {"gardenRooms": "garden rooms", "gardenHomes": "garden homes"},
     },
@@ -350,6 +353,7 @@ def gallery(ed, head, sup):
     # founder correction 30 Oct 2026 (Living in the Garden): on phones, no letterbox band between
     # image and attribution, and every card the same height. Opt-in, so Garden Retreat is unchanged.
     fit = f' data-sg-fit="{E(D["mobile_fit"])}"' if D.get("mobile_fit") else ""
+    fit += ' data-sg-transition="rule"' if D.get("transition") == "rule" else ""
     return f'''<section class="pn-sg" id="suppliers" data-pn-supplier-gallery data-discovery="{E(ed["discovery"])}"{fit} aria-labelledby="sg-h" style="--sg-mount-ratio:{mw} / {mh}">
   <div class="pn-sg-wrap">
     <div class="pn-sg-head">
@@ -370,12 +374,24 @@ def gallery(ed, head, sup):
 </section>'''
 
 
+# SECTION TRANSITION (founder decision 30 Oct 2026, DISC-008 Option B). Where a
+# Discovery's registry entry asks for it, the Maker Explorer that follows the gallery
+# opens with the site's hairline rule and a tighter top, so the gallery and "Explore
+# makers and products" read as two distinct sections without extra space. Emitted in
+# that page's gallery region only; no shared stylesheet changes, so no other page moves.
+TRANSITION_CSS = ("<style>/* gallery -> Maker Explorer transition (build-supplier-gallery.py) */\n"
+                  ".pn-sg[data-sg-transition=\"rule\"] ~ #explore-makers{ border-top:1px solid var(--rule, #4A4B4F); padding-top:72px; }\n"
+                  "@media (max-width:720px){ .pn-sg[data-sg-transition=\"rule\"] ~ #explore-makers{ padding-top:44px; } }\n"
+                  "</style>\n")
+
+
 def body_block(ed, head, sup):
     # The stylesheet sits HERE, not in <head>: in the body it does not block the
     # Discovery's first render (hero and LCP), and the gallery is below the fold.
     v = D["asset_v"]
     return (f"{B_START}\n<link rel=\"stylesheet\" href=\"assets/components/pn-supplier-gallery.css?v={v}\">\n"
-            f"{gallery(ed, head, sup)}\n"
+            + (TRANSITION_CSS if D.get("transition") == "rule" else "")
+            + f"{gallery(ed, head, sup)}\n"
             f'<script src="assets/components/pn-supplier-gallery.js?v={v}" defer></script>\n{B_END}\n')
 
 

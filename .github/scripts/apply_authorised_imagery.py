@@ -219,7 +219,11 @@ HAND_ASSETS = [
         "organisation": "Powersheds",
         "url": "https://cdn.shopify.com/s/files/1/0601/8967/1489/files/"
                "1610PALCTIMWDDW_d5c78ede-b4ff-441b-926e-8198c72f4ce4.png",
-        "alt": "A Powersheds Apex Classic Log Cabin in a garden",
+        # MEDIUM CORRECTED 30 Oct 2026 (founder decision, DISC-008 Option B):
+        # a computer-generated scene, so its alt says so and every surface
+        # (Results, Maker Explorer, supplier gallery) labels it "Visualisation".
+        # Image, credit, grant and product link unchanged.
+        "alt": "Visualisation: A Powersheds Apex Classic Log Cabin in a garden",
         "products": ["recLcmGihJ0mrfdwV", "recYM6hUVXceIrmmv"],
     },
     {
@@ -228,7 +232,8 @@ HAND_ASSETS = [
         "url": "https://cdn.shopify.com/s/files/1/0601/8967/1489/files/"
                "POW01001_CGI_LIFESTYLE_IMAGES_MAY24_SC03_LOGCABIN_S02_"
                "ADOBE_98.jpg",
-        "alt": "A Powersheds Apex Log Cabin in a garden",
+        # MEDIUM CORRECTED 30 Oct 2026: the supplier's own filename names it CGI.
+        "alt": "Visualisation: A Powersheds Apex Log Cabin in a garden",
         "products": ["recrmlUXvX9TbgTj7"],
     },
     {
