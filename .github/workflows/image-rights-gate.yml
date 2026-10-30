@@ -317,6 +317,12 @@ jobs:
           # links only under a link-back grant, images only by enumeration.
           python3 atlas-tools/build-maker-explorer.py --check
           python3 atlas-tools/prove-maker-explorer-navigation.py
+          # Premium Supplier Gallery (founder design approval 30 Oct 2026): the
+          # Garden Retreat region must be current with the Maker Explorer config
+          # (a maker update must rebuild it), and every image in it must be an
+          # approved asset or its recorded delivery variant, credited and labelled.
+          python3 atlas-tools/build-supplier-gallery.py --check
+          python3 atlas-tools/prove-supplier-gallery.py
           # Wellness publication states (Tanktribe, Irish Sauna Company) are
           # recorded only from their own replies, and the universe is gated.
           python3 atlas-tools/build-wellness-publication-records.py --check

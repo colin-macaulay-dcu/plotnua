@@ -1,6 +1,6 @@
 {
   "schema": "plotnua.image-rights.manifest.v1",
-  "generated": "2026-10-27",
+  "generated": "2026-10-30",
   "source_of_record": "Atlas Core · Image Permission Outreach (tblDnEVrH26beMy1B)",
   "governance": "GENERATED, NOT HAND-EDITED. Produced by .github/scripts/generate_image_rights_manifest.py from image-rights-records.json, which carries the canonical rights records and the Atlas id behind each one. It is the input to atlas-tools/validate-image-rights.js, which runs in the publish path and refuses to publish any supplier image without a live grant here. Regenerate and commit it in the same act as recording a grant or a withdrawal: the gate refuses a manifest older than 30 days precisely so a stale one cannot quietly authorise anything.",
   "reality_note": "PlotNua publishes supplier imagery for 14 supplier(s) under a live grant: TRIQBRIQ AG, Powersheds, Yard Box, Superior Pergola Ireland, Hutsmith, Garden Room Ireland, Elm Landscaping, Don Modular Homes, BIOBUILDS, Tanktribe, OGNYX, Irish Sauna Company, ÖÖD House, Nua Modular. Every other supplier row in Image Permission Outreach reads Unknown — Awaiting Reply, and no other supplier image is published anywhere on the site.",
@@ -504,7 +504,20 @@
           "A working link to https://www.tanktribe.ie/",
           "Hot-linked unmodified from Tanktribe's own Squarespace namespace; never downloaded, rehosted, cropped or altered"
         ]
-      }
+      },
+      "approved_delivery_variants": [
+        {
+          "of": "https://images.squarespace-cdn.com/content/v1/67ac8d737a7c665f57f5babe/2d930a20-ec94-4b5f-8af4-159501335d62/IMG_8495.jpg",
+          "url": "https://images.squarespace-cdn.com/content/v1/67ac8d737a7c665f57f5babe/2d930a20-ec94-4b5f-8af4-159501335d62/IMG_8495.jpg?format=1000w",
+          "width": 1000,
+          "height": 1500,
+          "atlas_asset": "recGx6gUsWYyOG8ps",
+          "approved": "Founder decision 30 Oct 2026 (Pass 2 supplier gallery, Garden Retreat integration): approve the ?format=1000w delivery variant of IMG_8495, provided the existing licence permits it.",
+          "why": "Performance. The approved original is 1,676 KB; this rendition is 360 KB. It is NOT a new image and does not add to approved_count.",
+          "licence_check": "Tanktribe's grant (WELLNESS-FIRST-TANKTRIBE-20261002) conditions are credit, link-back and selected first-party imagery only; it does not restrict size. The per-use condition 'hot-linked unmodified from Tanktribe's own Squarespace namespace; never downloaded, rehosted, cropped or altered' is met: the file is served by Tanktribe's own Squarespace CDN from the same namespace and asset path, hot-linked, not downloaded or rehosted by PlotNua; it is the same full frame (1000x1500 vs 2500x3750, aspect 0.6667 both, uncropped), resampled by Squarespace only (mean pixel difference about 1% against the original scaled to the same size, checked 30 Oct 2026). Credit and link-back unchanged.",
+          "scope": "This exact URL only, and only as a delivery of IMG_8495 wherever IMG_8495 may appear. No other size, no other Tanktribe asset, no other supplier. OGNYX and Irish Sauna Company delivery is unchanged."
+        }
+      ]
     },
     {
       "organisation_record": "recGxi1agXCBR1FLt",

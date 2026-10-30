@@ -1,6 +1,7 @@
 /* =====================================================================
-   PLOTNUA · PREMIUM SUPPLIER GALLERY · v0.2 PROTOTYPE
-   Branch pass2/supplier-galleries. NOT IN PRODUCTION.
+   PLOTNUA · PREMIUM SUPPLIER GALLERY · v1
+   Design approved by founder 30 Oct 2026 (prototype v0.2). First page:
+   discovery-garden-retreat.html, built by atlas-tools/build-supplier-gallery.py.
    v0.1 30 Oct 2026, design approved by founder 30 Oct 2026.
    v0.2 30 Oct 2026: focused featured card, larger imagery, typographic
         directory entries, per-Discovery headings (wording only).
@@ -50,6 +51,18 @@
   overflow:hidden;               /* the track bleeds right; nothing else may */
 }
 .pn-sg *, .pn-sg *::before, .pn-sg *::after{ box-sizing:border-box; }
+/* Inside a Discovery's .article column the gallery stays in the column, so its
+   content lines up with the page's own text by construction. The JS measures
+   the distance from the column to the right edge of the window (--sg-bleed-r)
+   and lets the track run out to that edge, as approved. Without JS the track
+   simply stays inside the column. */
+.article > .pn-sg{ overflow:visible; }
+.article > .pn-sg .pn-sg-wrap{ max-width:none; padding:0; }
+.article > .pn-sg .pn-sg-track{ padding-inline-start:0; scroll-padding-inline-start:0;
+  margin-right:calc(-1 * var(--sg-bleed-r, 0px)); }
+body:has(.article > .pn-sg){ overflow-x:clip; }   /* belt and braces: never a horizontal page scroll */
+/* the next section brings its own top spacing */
+.pn-sg:has(+ .article-section), .pn-sg:has(+ script + .article-section){ padding-bottom:0; }
 .pn-sg-vh{ position:absolute; inline-size:1px; block-size:1px; overflow:hidden; clip-path:inset(50%); white-space:nowrap; }
 .pn-sg-wrap{ max-width:var(--sg-max); margin:0 auto; padding:0 var(--sg-pad-x); }
 
@@ -137,10 +150,15 @@
 .pn-sg-end-n{ font:400 clamp(72px,8vw,120px)/.8 var(--sg-serif); color:var(--sg-terra); margin:0 0 18px; }
 .pn-sg-end-t{ font:400 clamp(26px,2.2vw,32px)/1.1 var(--sg-serif); color:var(--sg-ivory); margin:0 0 20px; }
 .pn-sg-card--end button{ align-self:flex-start; }
+.pn-sg .pn-sg-card--end p.pn-sg-end-n, .pn-sg .pn-sg-card--end p.pn-sg-end-t{ font-family:var(--sg-serif); font-weight:400; }   /* outranks the Discovery identity layer's paragraph font */
 
 /* ---- full directory (View all): an editorial index ----------------------- */
-.pn-sg-grid-wrap{ margin-top:clamp(8px,1vw,16px); }
-.pn-sg-grid-wrap[hidden]{ display:none; }
+.pn-sg-grid-wrap{ margin-top:clamp(8px,1vw,16px); scroll-margin-top:96px; }   /* clear the sticky header after View all */
+.pn-sg-grid-wrap > summary{ list-style:none; display:inline-block; cursor:pointer; font:600 16px/1 var(--sg-sans); color:var(--sg-ivory);
+  border-bottom:1px solid var(--sg-terra); padding:14px 0 6px; }
+.pn-sg-grid-wrap > summary::-webkit-details-marker{ display:none; }
+.pn-sg-grid-wrap[open] > summary{ margin-bottom:8px; }
+.pn-sg.is-enhanced .pn-sg-grid-wrap > summary{ display:none; }   /* with JS the header and end-card buttons drive it */
 .pn-sg-grid-head{ display:flex; flex-wrap:wrap; justify-content:space-between; align-items:end; gap:12px 32px; padding:clamp(28px,3vw,40px) 0 clamp(8px,1vw,12px); border-top:1px solid var(--sg-line); }
 .pn-sg-h3{ font:400 clamp(26px,2.4vw,36px)/1.1 var(--sg-serif); color:var(--sg-ivory); margin:0; outline:none; }
 .pn-sg-grid{ list-style:none; margin:0; padding:0; display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); column-gap:clamp(28px,4vw,64px); }

@@ -1,10 +1,12 @@
 #!/usr/bin/env python3
 """
-PLOTNUA - PREMIUM SUPPLIER GALLERY - prototype builder (v0.2)
-Branch pass2/supplier-galleries. NOT IN PRODUCTION.
-v0.1 30 Oct 2026 (design approved by founder 30 Oct 2026); v0.2 30 Oct 2026 refinements.
+PLOTNUA - PREMIUM SUPPLIER GALLERY - bounded page builder (v1)
+Design approved by founder 30 Oct 2026 (prototype v0.2); Garden Retreat
+integration approved to prepare 30 Oct 2026. Production needs separate approval.
 
-Builds prototypes/supplier-gallery/garden-retreat.html from:
+Writes ONE marker-delimited region into discovery-garden-retreat.html, directly
+before the Maker Explorer (which it never touches); its stylesheet sits inside
+that region so it never blocks the Discovery's first render. Built from:
 
   1. the LIVE Garden Retreat maker-explorer config
      (discovery-garden-retreat.html, <script id="mx-data">) -> which makers, their
@@ -17,22 +19,32 @@ Builds prototypes/supplier-gallery/garden-retreat.html from:
   4. discovery-headings.json -> the per-Discovery heading and introduction (the
      component itself is identical on every Discovery).
 
+  5. approved_delivery_variants on a rights record -> an approved smaller delivery
+     of an approved asset (same frame, supplier's own CDN). Used only when the
+     record lists that exact URL for that exact asset.
+
 Nothing about a supplier is typed into this file.
 
-Usage:  python3 prototypes/supplier-gallery/build_supplier_gallery.py [--check]
+Usage:  python3 atlas-tools/build-supplier-gallery.py            apply (idempotent)
+        python3 atlas-tools/build-supplier-gallery.py --check    verify, write nothing
+        python3 atlas-tools/build-supplier-gallery.py --remove   take the gallery out again
 """
 import html, json, re, sys
 from pathlib import Path
 from urllib.parse import urlparse
 
-ROOT = Path(__file__).resolve().parents[2]
-HERE = Path(__file__).resolve().parent
+ROOT = Path(__file__).resolve().parents[1]
+DATA = ROOT / "atlas-tools" / "supplier-gallery"
 DISCOVERY = ROOT / "discovery-garden-retreat.html"
 RIGHTS = ROOT / "image-rights-records.json"
-EDITORIAL = HERE / "garden-retreat.editorial.json"
-HEADINGS = HERE / "discovery-headings.json"
-OUT = HERE / "garden-retreat.html"
-DATA_OUT = HERE / "garden-retreat.gallery.json"
+EDITORIAL = DATA / "garden-retreat.editorial.json"
+HEADINGS = DATA / "discovery-headings.json"
+ASSET_V = "1"   # bump with any change to assets/components/pn-supplier-gallery.{css,js}
+
+H_START, H_END = "<!-- PN-SUPPLIER-GALLERY:HEAD v1 · atlas-tools/build-supplier-gallery.py · do not hand-edit -->", "<!-- /PN-SUPPLIER-GALLERY:HEAD -->"
+B_START, B_END = "<!-- PN-SUPPLIER-GALLERY v1 · Premium Supplier Gallery (founder design approval 30 Oct 2026) · built by atlas-tools/build-supplier-gallery.py from the Maker Explorer config below and image-rights-records.json · do not hand-edit -->", "<!-- /PN-SUPPLIER-GALLERY -->"
+ANCHOR = "  <!-- 6c · PLOTNUA-MAKER-EXPLORER-V1"
+HEAD_ANCHOR = '<link rel="stylesheet" href="maker-explorer.css">'
 
 E = lambda s: html.escape(str(s), quote=True)
 
@@ -57,8 +69,10 @@ def load_explorer():
 
 
 def approved_index():
-    """URL -> (org name, record, asset) for every APPROVED asset of a PUBLISHABLE grant."""
+    """URL -> (org name, record, asset) for every APPROVED asset of a PUBLISHABLE grant.
+    Also VARIANTS[url-of-asset] -> the approved delivery variant for it, if any."""
     idx = {}
+    VARIANTS.clear()
     for r in json.loads(RIGHTS.read_text(encoding="utf-8"))["records"]:
         if not r.get("permission_outcome", "").startswith("Granted"):
             continue
@@ -66,7 +80,15 @@ def approved_index():
             continue
         for a in r.get("approved_assets") or []:
             idx[a["url"]] = (r["organisation_name"], r, a)
+        for v in r.get("approved_delivery_variants") or []:
+            if v.get("of") in idx and idx[v["of"]][1] is r and v.get("url", "").startswith(v["of"]):
+                VARIANTS[v["of"]] = v
+            else:
+                sys.exit(f"FAIL: {r['organisation_name']}: delivery variant not tied to one of its own approved assets")
     return idx
+
+
+VARIANTS = {}
 
 
 def collect():
@@ -109,7 +131,12 @@ def collect():
             live = live_imgs.get(src)
             if hit and hit[0] == name and live and live.get("credit") == hit[1].get("required_credit"):
                 image = {"src": src, "alt": live["alt"], "kind": live["kind"], "w": live["w"], "h": live["h"],
-                         "credit": live["credit"], "creditHref": live["creditHref"]}
+                         "credit": live["credit"], "creditHref": live["creditHref"], "asset": src}
+                v = VARIANTS.get(src)
+                if v:   # approved smaller delivery of the same frame
+                    if abs(v["width"] / v["height"] - live["w"] / live["h"]) > 0.005:
+                        sys.exit(f"FAIL: {name}: delivery variant is not the same frame")
+                    image.update(src=v["url"], w=v["width"], h=v["height"])
             elif e.get("image"):
                 sys.exit(f"FAIL: {name}: chosen image has no live alt/dimensions/credit to reuse")
 
@@ -211,7 +238,9 @@ def gallery(ed, head, sup):
     mw, mh = best_mount([s["image"] for s in featured]) if featured else (1, 1)
     total = len(sup)
     more = total > len(featured)
-    items = "".join(f'<li data-sg-placement="{s["placement"]}">{featured_card(s, i == 0)}</li>' for i, s in enumerate(featured))
+    # all lazy in the page: the gallery sits below the fold, and must never compete with the
+    # Discovery's hero image; the JS promotes the first card only if it starts near the screen
+    items = "".join(f'<li data-sg-placement="{s["placement"]}">{featured_card(s, False)}</li>' for s in featured)
     if more:
         items += (f'<li data-sg-end><div class="pn-sg-card pn-sg-card--end"><p class="pn-sg-end-n">{total}</p>'
                   f'<p class="pn-sg-end-t">{E(head["endLine"])}</p>'
@@ -225,7 +254,7 @@ def gallery(ed, head, sup):
     grid_note = ed["gridNote"] if n_img < total else ed.get("gridNoteAllImaged", "")
     return f'''<section class="pn-sg" id="suppliers" data-pn-supplier-gallery data-discovery="{E(ed["discovery"])}" aria-labelledby="sg-h" style="--sg-mount-ratio:{mw} / {mh}">
   <div class="pn-sg-wrap">
-    <header class="pn-sg-head">
+    <div class="pn-sg-head">
       <div>
         <span class="pn-sg-kicker">{E(head["kicker"])}</span>
         <h2 class="pn-sg-h2" id="sg-h">{E(head["heading"])}</h2>
@@ -237,73 +266,74 @@ def gallery(ed, head, sup):
         <button type="button" class="pn-sg-arrow" data-sg-next aria-label="Next supplier" aria-controls="sg-track">{ARROW_R}</button>
         {view_all}
       </div>
-    </header>
+    </div>
   </div>
   <ul class="pn-sg-track" id="sg-track" tabindex="0" role="list" aria-label="Featured suppliers, scroll horizontally">{items}</ul>
   <div class="pn-sg-wrap">
-    <div class="pn-sg-grid-wrap" id="sg-all-gr">
+    <details class="pn-sg-grid-wrap" id="sg-all-gr">
+      <summary>View all {total} suppliers</summary>
       <div class="pn-sg-grid-head">
         <h3 class="pn-sg-h3" tabindex="-1">All {total} suppliers</h3>
         <p class="pn-sg-note">{E(grid_note)}</p>
       </div>
       <ul class="pn-sg-grid" role="list">{grid}</ul>
-    </div>
+    </details>
   </div>
 </section>'''
 
 
-PAGE = '''<!DOCTYPE html>
-<html lang="en-IE">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="robots" content="noindex, nofollow">
-<meta name="theme-color" content="#2A2622">
-<title>PROTOTYPE · Supplier gallery · Garden Retreat · PlotNua</title>
-<!-- PROTOTYPE ONLY. pass2/supplier-galleries. Not linked from any page, not for publication.
-     Generated by prototypes/supplier-gallery/build_supplier_gallery.py; do not hand-edit. -->
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-{preconnect}
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Hanken+Grotesk:wght@400;500;600;700&display=swap">
-<link rel="stylesheet" href="../../assets/identity/pn-identity.css">
-<link rel="stylesheet" href="../../assets/components/pn-supplier-gallery.css">
-<style>
-  body{{ margin:0; background:#1B1C1E; }}
-  .proto-bar{{ font:600 13px/1.4 'Hanken Grotesk',system-ui,sans-serif; letter-spacing:.06em; color:#1B1C1E; background:#CF8566; padding:10px 20px; text-align:center; }}
-  .proto-ctx{{ max-width:1240px; margin:0 auto; padding:56px clamp(16px,3vw,40px) 0; font-family:'Hanken Grotesk',system-ui,sans-serif; color:#C2BDB5; font-size:15px; }}
-  .proto-ctx a{{ color:#CF8566; }}
-</style>
-</head>
-<body class="pn-id">
-<div class="proto-bar" role="note">PROTOTYPE — Premium Supplier Gallery · Garden Retreat · not published</div>
-<main id="pn-main">
-<p class="proto-ctx">Shown here as it would sit inside <a href="../../discovery-garden-retreat.html">Garden Retreat</a>, directly before “Explore makers and products”.</p>
-{gallery}
-</main>
-<script src="../../assets/components/pn-supplier-gallery.js" defer></script>
-</body>
-</html>
-'''
+def head_block(sup):
+    hosts = sorted({urlparse(x["image"]["src"]).netloc for x in sup if x["image"]})
+    lines = [H_START] + [f'<link rel="preconnect" href="https://{h}">' for h in hosts] + \
+            [f'<link rel="stylesheet" href="assets/components/pn-supplier-gallery.css?v={ASSET_V}">', H_END]
+    return "\n".join(lines) + "\n"
+
+
+def body_block(ed, head, sup):
+    # The stylesheet sits HERE, not in <head>: in the body it does not block the
+    # Discovery's first render (hero and LCP), and the gallery is below the fold.
+    return (f"{B_START}\n<link rel=\"stylesheet\" href=\"assets/components/pn-supplier-gallery.css?v={ASSET_V}\">\n"
+            f"{gallery(ed, head, sup)}\n"
+            f'<script src="assets/components/pn-supplier-gallery.js?v={ASSET_V}" defer></script>\n{B_END}\n')
+
+
+def strip(page):
+    page = re.sub(re.escape(H_START) + r".*?" + re.escape(H_END) + r"\n", "", page, flags=re.S)
+    page = re.sub(re.escape(B_START) + r".*?" + re.escape(B_END) + r"\n", "", page, flags=re.S)
+    return page
+
+
+def compose(page, ed, head, sup):
+    base = strip(page)
+    if base.count(ANCHOR) != 1 or base.count(HEAD_ANCHOR) != 1:
+        sys.exit("FAIL: Garden Retreat anchors not found exactly once (Maker Explorer comment / maker-explorer.css)")
+    # Nothing is written into <head> any more (v1 final): strip() still removes an
+    # older head block if one is present.
+    return base.replace(ANCHOR, body_block(ed, head, sup) + ANCHOR, 1)
 
 
 def main():
+    page = DISCOVERY.read_text(encoding="utf-8")
+    if "--remove" in sys.argv:
+        out = strip(page)
+        DISCOVERY.write_text(out, encoding="utf-8")
+        print("removed" if out != page else "nothing to remove")
+        return
     ed, sup = collect()
     heads = json.loads(HEADINGS.read_text(encoding="utf-8"))["discoveries"]
     head = heads.get(ed["discovery"])
     if not head:
         sys.exit(f"FAIL: no heading set for {ed['discovery']} in discovery-headings.json")
-    hosts = sorted({urlparse(s["image"]["src"]).netloc for s in sup if s["image"]})
-    pre = "\n".join(f'<link rel="preconnect" href="https://{h}">' for h in hosts)
-    page = PAGE.format(gallery=gallery(ed, head, sup), preconnect=pre)
-    data = json.dumps({"discovery": ed["discovery"], "heading": head, "suppliers": sup}, ensure_ascii=False, indent=1) + "\n"
+    out = compose(page, ed, head, sup)
+    if strip(out) != strip(page):
+        sys.exit("FAIL: integration would change page content outside the gallery regions")
     if "--check" in sys.argv:
-        ok = OUT.exists() and OUT.read_text(encoding="utf-8") == page and DATA_OUT.read_text(encoding="utf-8") == data
-        print("build is current" if ok else "FAIL: prototype is stale; rebuild")
+        ok = out == page
+        print("SUPPLIER GALLERY · CHECK OK — Garden Retreat region is current" if ok else "FAIL: Garden Retreat supplier gallery is missing or stale; rebuild")
         sys.exit(0 if ok else 1)
-    OUT.write_text(page, encoding="utf-8")
-    DATA_OUT.write_text(data, encoding="utf-8")
-    print(f"wrote {OUT.relative_to(ROOT)}: {len(sup)} suppliers, {sum(1 for s in sup if s['image'])} with licensed imagery")
+    DISCOVERY.write_text(out, encoding="utf-8")
+    print(f"wrote {DISCOVERY.name}: {len(sup)} suppliers, {sum(1 for x in sup if x['image'])} with licensed imagery"
+          + ("" if out != page else " (unchanged)"))
 
 
 if __name__ == "__main__":

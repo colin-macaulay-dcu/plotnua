@@ -1,6 +1,6 @@
 /* ==========================================================================
-   PLOTNUA · PREMIUM SUPPLIER GALLERY · v0.1 PROTOTYPE
-   Branch pass2/supplier-galleries, 30 Oct 2026. NOT IN PRODUCTION.
+   PLOTNUA · PREMIUM SUPPLIER GALLERY · v1
+   Design approved by founder 30 Oct 2026. Built into pages by atlas-tools/build-supplier-gallery.py.
    --------------------------------------------------------------------------
    Progressive enhancement only. The builder emits complete, working HTML
    (carousel + full A-Z directory, both visible). Without this file a
@@ -12,7 +12,7 @@
      * the arrows scroll one card and disable at either end;
      * "View all" reveals the A-Z directory and moves focus to its heading.
    WHAT IT NEVER DOES: no fetch, no storage, no analytics, no URL state,
-   no third-party code, no autoplay.
+   no third-party code, no autoplay. Safe to execute more than once.
    ========================================================================== */
 (function () {
   'use strict';
@@ -26,6 +26,9 @@
   }
 
   function init(root) {
+    /* once per gallery: consent managers (Cookiebot) may run this file a second time */
+    if (root.getAttribute('data-sg-ready')) return;
+    root.setAttribute('data-sg-ready', '1');
     var track = root.querySelector('.pn-sg-track');
     var prev = root.querySelector('[data-sg-prev]');
     var next = root.querySelector('[data-sg-next]');
@@ -33,6 +36,15 @@
     var toggles = root.querySelectorAll('[data-sg-all]');
     var gridHead = root.querySelector('.pn-sg-h3');
     if (!track) return;
+
+    /* 0 · in a page column: let the track run to the window's right edge */
+    function bleed() {
+      if (!root.parentElement || !root.parentElement.classList.contains('article')) return;
+      var gap = document.documentElement.clientWidth - root.getBoundingClientRect().right;
+      root.style.setProperty('--sg-bleed-r', Math.max(0, Math.round(gap)) + 'px');
+    }
+    bleed();
+    window.addEventListener('resize', bleed, { passive: true });
 
     /* 1 · fair order: shuffle editorial slots only; sponsored slots stay put */
     var items = Array.prototype.slice.call(track.children);
@@ -45,11 +57,14 @@
     if (end) track.appendChild(end);
     /* re-appending can let scroll-snap settle on a later card; always open on the first */
     track.scrollLeft = 0;
-    window.addEventListener('load', function () { if (track.scrollLeft < step()) track.scrollLeft = 0; update(); });
-    /* only the card now in first place loads eagerly */
+    /* nothing here may move the track: consent managers (Cookiebot) replay 'load'
+       listeners later, possibly while a visitor is scrolling */
+    window.addEventListener('load', function () { update(); });
+    /* images stay lazy; only if the gallery starts on or just below the screen
+       does the card now in first place load eagerly (never above a page's hero) */
+    var near = root.getBoundingClientRect().top < window.innerHeight * 1.25;
     Array.prototype.forEach.call(track.querySelectorAll('img'), function (img, i) {
-      img.loading = i === 0 ? 'eager' : 'lazy';
-      if (i === 0) img.setAttribute('fetchpriority', 'high');
+      img.loading = (near && i === 0) ? 'eager' : 'lazy';
     });
 
     /* 2 · arrows */
@@ -60,8 +75,10 @@
       return card.getBoundingClientRect().width + gap;
     }
     function update() {
+      /* trailing padding alone is not something to scroll to: arrows appear only
+         when at least 48px of a card is out of view */
       var max = track.scrollWidth - track.clientWidth - 2;
-      var overflow = max > 2;
+      var overflow = max > 48;
       [prev, next].forEach(function (b) { if (b) b.hidden = !overflow; });
       if (!overflow) return;
       if (prev) prev.disabled = track.scrollLeft <= 2;
@@ -80,20 +97,26 @@
     if (next) next.addEventListener('click', function () { go(1); });
     update();
 
-    /* 3 · View all: the directory is visible without JS; collapse it now */
+    /* 3 · View all: the directory is a native <details> (closed by default, and
+       openable by keyboard even without JS). With JS the header and end-card
+       buttons drive it and its own summary is hidden. */
     if (grid && toggles.length) {
-      grid.hidden = true;
-      Array.prototype.forEach.call(toggles, function (t) { t.setAttribute('aria-expanded', 'false'); });
+      root.classList.add('is-enhanced');
+      function sync() {
+        var open = grid.open;
+        Array.prototype.forEach.call(toggles, function (b) {
+          b.setAttribute('aria-expanded', String(open));
+          var lbl = b.querySelector('[data-sg-label]') || b;
+          lbl.textContent = open ? b.getAttribute('data-sg-close') : b.getAttribute('data-sg-open');
+        });
+      }
+      sync();
+      grid.addEventListener('toggle', sync);
       Array.prototype.forEach.call(toggles, function (t) {
         t.addEventListener('click', function () {
-          var open = grid.hidden;
-          grid.hidden = !open;
-          Array.prototype.forEach.call(toggles, function (b) {
-            b.setAttribute('aria-expanded', String(open));
-            var lbl = b.querySelector('[data-sg-label]') || b;
-            lbl.textContent = open ? b.getAttribute('data-sg-close') : b.getAttribute('data-sg-open');
-          });
-          if (open && gridHead) {
+          grid.open = !grid.open;
+          sync();
+          if (grid.open && gridHead) {
             gridHead.focus({ preventScroll: true });
             grid.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
           }
