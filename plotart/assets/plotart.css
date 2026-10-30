@@ -722,3 +722,12 @@ body.pa .pa-free-lines{ margin:0; }
 
 /* Pass 2 · Founding 25 application heading (founder approval 30 Oct 2026): sized to sit with the form, not over it */
 .pa-apply-intro h2.pa-apply-title{ font-size:clamp(32px, 3vw, 46px); line-height:1.02; max-width:18ch; margin-bottom:16px; }
+
+/* Phone Menu (founder approval 30 Oct 2026): one-row header, wordmark · Menu; the pills open
+   from the shared Menu (assets/identity/pn-section-menu.css). Desktop and tablet unchanged. */
+.pa-head{ --pn-sm-accent:#CF8566; --pn-sm-top:61px; }
+@media (max-width:720px){
+  .pa-head--pills .pa-wrap{ flex-wrap:nowrap; min-height:60px; gap:12px; padding-top:8px; padding-bottom:8px; }
+  .pa-head--pills .pa-pills{ display:none; }
+  .pa-head--pills .pa-word{ font-size:26px; }
+}

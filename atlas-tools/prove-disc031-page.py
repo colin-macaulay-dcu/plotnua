@@ -68,13 +68,15 @@ for ref in set(re.findall(r'(?:href|src)="([^"#?]+)', s)) | {
 
 # S5
 imgs = sorted(os.listdir(os.path.join(ROOT, "assets/disc031/img")))
-need(len(imgs) == 16, "S5 expected 16 encodings, found %d" % len(imgs))
+# 30 Oct 2026 (founder Pass 2 performance): +14 hero-slider derivatives (AVIF 960/1200/1536, WebP 1200, 4:5 phone crops)
+need(len(imgs) == 30, "S5 expected 30 encodings, found %d" % len(imgs))
 need("DISC-031-how-it-works-1536.jpg" in imgs, "S5 full diagram (full-size view) missing")
 for half in ("top", "bottom"):
     need(("DISC-031-how-it-works-%s-1536.webp" % half) in s, "S5 diagram %s panel not on the page" % half)
 
 # S6
-need(s.count("AI-generated illustration") >= 7, "S6 fewer than 7 illustration labels")
+# 30 Oct 2026 (founder Pass 2): the inline comparison became the hero slider, so one placement fewer
+need(s.count("AI-generated illustration") >= 6, "S6 fewer than 6 illustration labels")
 
 # S7
 need(("<loc>%s</loc>" % URL) in read("sitemap.xml"), "S7 sitemap entry")

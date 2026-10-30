@@ -4,13 +4,14 @@
   "status": "public, index, follow (founder indexing approval 29 Oct 2026); Interest Register closed",
   "files": {
     "gridnua/assets/gridnua-utility-room-concept.svg": "9c547942728e96d73fa0ac8731713e0e809959e07712c4c6494ff3ee4e1a6473",
-    "gridnua/assets/gridnua.css": "1ba0c8a2b065f03253aaa0ebe0029f2167ffe6e613f94322a36decbf893c229c",
-    "gridnua/index.html": "504bc25dfb8805178c1e5870367156ccbf6fb214b65956e405c6530851f438b0",
-    "gridnua/technology/index.html": "51e4bbed06b8aa97bce1905afe164593481b05dc573a25832900583dbc160d22"
+    "gridnua/assets/gridnua.css": "36643486bfc3b835b63d6ae2fda1a12bb70ba745e06e3307c3df1ad910cf533b",
+    "gridnua/index.html": "d7ab8697c73a3a2ee3d8f6e00342cd510a5abf7a7eae025c2396ef34cf740de4",
+    "gridnua/technology/index.html": "c3b167b8f01e7f31d92edca793c5f19319e6a8fd82c713f775ceb5bd589cea3c"
   },
   "readiness_check_sha256": "868dddd2bce6734989b9c56a6e6f782cc2991097e6328d94b4dcb1121d8980ca",
   "readiness_check_scripts_sha256": "95bf466afce02b24c39a008fd49ccde9d8d4b83aa256e43e668f76f2a8cc1206",
   "navigation_update": "29 Oct 2026: GridNua header pill, DISC-026 banner (freeze V6), Readiness Check return buttons; Readiness Check introduction reworded (founder, 29 Oct 2026)",
   "tandem_context_card": "29 Oct 2026: founder approved the Tandem Compute pods card in the Technology Gallery, 'Context: not for homes' only (GL7 narrow exception). Pages built by the private builder v2, which preserves index, follow and the canonicals.",
-  "branding_correction": "30 Oct 2026: visible wordmark and footer brand line GRIDNUA -> GridNua, wordmark tracking .14em -> .01em/.02em (founder Pass 2 instruction). Re-pinned; no content, link, metadata or register change."
+  "branding_correction": "30 Oct 2026: visible wordmark and footer brand line GRIDNUA -> GridNua, wordmark tracking .14em -> .01em/.02em (founder Pass 2 instruction). Re-pinned; no content, link, metadata or register change.",
+  "phone_menu": "30 Oct 2026: one-row phone header (wordmark · Menu), the pills in the shared phone Menu (assets/identity/pn-section-menu.css; native disclosure, no script on GridNua pages — GL4) — founder approval. Re-pinned; no content, link target, metadata or register change."
 }

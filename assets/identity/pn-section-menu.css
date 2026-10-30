@@ -1,0 +1,42 @@
+/* =====================================================================
+   PlotNua · section phone Menu (founder approval 30 Oct 2026)
+   For the initiatives with their own navigation (PlotArt, GridNua). Same
+   behaviour and look as the PlotNua header's phone Menu: below 721px the
+   section header is one row (wordmark · Menu) and the section's own links
+   open in a panel below it. A native <details data-pn-menu>; the shared
+   assets/identity/pn-menu.js adds Escape / outside-tap / scroll closing.
+   Above 720px the Menu is not shown and the pills stay exactly as they are.
+   Accent per section: --pn-sm-accent (PlotArt terracotta, GridNua bronze).
+   ===================================================================== */
+.pn-sm{ display:none; }
+.pn-sm > summary{ list-style:none; }
+.pn-sm > summary::-webkit-details-marker{ display:none; }
+@media (max-width:720px){
+  .pn-sm{ display:block; margin-left:auto; }
+  .pn-sm-btn{ display:inline-flex; align-items:center; justify-content:center; gap:8px; height:44px; box-sizing:border-box;
+    padding:0 14px 0 12px; border-radius:999px; cursor:pointer; -webkit-tap-highlight-color:transparent;
+    font-family:'Hanken Grotesk',system-ui,sans-serif; font-weight:600; font-size:14.5px; color:#F2EBE0;
+    background:#2E3033; border:1px solid rgba(194,189,181,.16); transition:background .2s ease, border-color .2s ease; }
+  .pn-sm-btn:hover{ background:#35373B; border-color:rgba(242,235,224,.32); }
+  .pn-sm-btn:focus-visible{ outline:2px solid #CF8566; outline-offset:3px; }
+  .pn-sm-btn svg{ width:18px; height:18px; flex:none; overflow:visible; }
+  .pn-sm-btn svg path{ transform-origin:10px 10px; transition:transform .22s ease, opacity .18s ease; }
+  .pn-sm[open] .pn-sm-btn{ background:#F2EBE0; color:#1B1C1E; border-color:#F2EBE0; }
+  .pn-sm[open] .pn-menu-l1{ transform:rotate(45deg) translateY(4px); }
+  .pn-sm[open] .pn-menu-l2{ opacity:0; }
+  .pn-sm[open] .pn-menu-l3{ transform:rotate(-45deg) translateY(-4px); }
+  .pn-sm-panel{ position:fixed; z-index:39; left:0; right:0; top:var(--pn-sm-top,60px); box-sizing:border-box;
+    max-height:calc(100svh - var(--pn-sm-top,60px)); overflow:auto; overscroll-behavior:contain;
+    display:grid; gap:8px; padding:14px 14px 18px; background:rgba(27,28,30,.985);
+    border-bottom:1px solid rgba(194,189,181,.10); box-shadow:0 24px 48px -12px rgba(0,0,0,.6); }
+  .pn-sm-link{ display:flex; align-items:center; gap:12px; min-height:52px; padding:0 18px; box-sizing:border-box; border-radius:14px;
+    text-decoration:none; font-family:'Hanken Grotesk',system-ui,sans-serif; font-weight:600; font-size:16px; color:#F2EBE0;
+    border:1px solid rgba(242,235,224,.18); background:rgba(242,235,224,.03); }
+  .pn-sm-link:hover{ background:#35373B; border-color:rgba(242,235,224,.32); }
+  .pn-sm-link:focus-visible{ outline:2px solid #CF8566; outline-offset:3px; }
+  .pn-sm-link[aria-current="page"]{ border-color:var(--pn-sm-accent,#CF8566); background:rgba(242,235,224,.08); }
+  .pn-sm-link[aria-current="page"]::before{ content:""; width:6px; height:6px; border-radius:50%; background:var(--pn-sm-accent,#CF8566); flex:none; }
+  .pn-sm-link.is-out{ color:#C2BDB5; border-color:rgba(242,235,224,.12); background:transparent; }
+  .pn-sm-link.is-out span[aria-hidden]{ margin-left:auto; }
+}
+@media (prefers-reduced-motion:reduce){ .pn-sm-btn, .pn-sm-btn svg path{ transition:none !important; } }

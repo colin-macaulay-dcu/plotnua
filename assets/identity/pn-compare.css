@@ -216,3 +216,18 @@ body:has(> .pn-return) .d-hero.pn-hero-compare{ height:min(92svh, calc(100svh - 
   .d-hero.pn-hero-compare--std .d-hero-copy .eyebrow{ position:absolute !important; width:1px; height:1px; margin:-1px; overflow:hidden; clip:rect(0 0 0 0); clip-path:inset(50%); white-space:nowrap; }
   .d-hero.pn-hero-compare--std .d-hero-copy{ padding:24px 22px 28px; }
 }
+
+/* v1.1 · layout-shift fix (30 Oct 2026). On phones and portrait tablets the jump bar sits
+   below the image; it used to appear only when the script went live, pushing the hero copy
+   down (~106 px, CLS 0.03). Where scripting is enabled its space is now reserved from the
+   first paint (invisible until live); without scripting nothing is reserved, as before.
+   The final layout is unchanged. */
+@media (scripting:enabled){
+  @media (max-width:1024px) and (orientation:portrait), (max-width:719px){
+    .d-hero.pn-hero-compare .pn-compare--hero:not(.is-live) .pn-compare__bar{ display:flex; visibility:hidden; flex-wrap:wrap; align-items:center;
+      justify-content:space-between; gap:10px 24px; padding:16px 22px 18px; background:var(--pnc-card); line-height:1.5; }
+  }
+  @media (max-width:719px){
+    .d-hero.pn-hero-compare .pn-compare--hero:not(.is-live) .pn-compare__bar{ padding:14px 16px 16px; }
+  }
+}

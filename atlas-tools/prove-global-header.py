@@ -105,12 +105,24 @@ def main():
         for blk in bars + rows:
             mp = re.findall(r'<a class="pn-hdr-btn [^"]*is-myplot[^"]*" href="([^"]+)" data-myplot', blk)
             if mp != [H.href(name, "your-plot.html?myplot=1")]: bad("G6 %s: the My Plot link is %s" % (name, mp))
+        # About and Contact stay out of the desktop bar (23 Oct 2026). Founder approval 30 Oct 2026:
+        # Contact appears once, in the phone Menu panel only, under "Talk to PlotNua".
         nav = "".join(bars + rows)
-        for h in ("about.html", "contact.html"):
-            if 'href="%s"' % H.href(name, h) in nav: bad("G6 %s: %s is back in the primary navigation" % (name, h))
+        if 'href="%s"' % H.href(name, "about.html") in nav: bad("G6 %s: about.html is back in the primary navigation" % name)
+        if 'href="%s"' % H.href(name, "contact.html") in "".join(bars): bad("G6 %s: contact.html is in the desktop bar" % name)
+        panel = re.findall(r'<div class="pn-hdr-panel-contact">(.*?)</div>', "".join(rows), re.S)
+        if len(panel) != 1 or panel[0].count('href="%s"' % H.href(name, "contact.html")) != 1 or \
+                "".join(rows).count('href="%s"' % H.href(name, "contact.html")) != 1:
+            bad("G6 %s: Contact must appear exactly once, in the phone Menu panel" % name)
+        # G11 phone Menu: a native disclosure holding the four destinations, WhatsApp and Contact
+        if len(re.findall(r'<details class="pn-hdr-menu" data-pn-menu><summary class="pn-hdr-menu-btn">', "".join(rows))) != 1:
+            bad("G11 %s: the phone Menu disclosure is missing" % name)
+        wap = re.findall(r'<a class="pn-hdr-pl pn-hdr-pl--wa" href="([^"]+)" target="([^"]+)" rel="([^"]+)" aria-label="([^"]+)">', "".join(rows))
+        if wap != [(H.WHATSAPP, "_blank", "noopener noreferrer", H.WHATSAPP_LABEL)]:
+            bad("G11 %s: the Menu WhatsApp link is not exactly the approved one" % name)
     # G5 / G7 homepage
     home = (ROOT / "index.html").read_text(encoding="utf-8")
-    if home.count("https://wa.me/353834036695") != 2: bad("G5 index.html: expected exactly the header and footer WhatsApp links")
+    if home.count("https://wa.me/353834036695") != 3: bad("G5 index.html: expected exactly the header, phone Menu and footer WhatsApp links")
     if 'class="pn-whatsapp" href="https://wa.me/353834036695"' not in home: bad("G5 index.html: the footer WhatsApp contact changed")
     hb = block(home, "BAR")
     if home.count('id="brandInfoBtn"') != 1 or not hb or 'id="brandInfoBtn"' not in hb[0] or 'aria-controls="brandInfo"' not in hb[0] \
