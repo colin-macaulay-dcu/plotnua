@@ -39,6 +39,8 @@ GUARDS (run by --check, and on the output of --apply before it is written)
   GR1 sections in the brief's order, each exactly once
   GR2 the hero offers exactly two actions, both to sections on this page
   GR3 no OGNYX (or any supplier) image on the page; no maker image section
+      (30 Oct 2026: except inside the Premium Supplier Gallery region, which is
+      rights-guarded per asset by atlas-tools/prove-supplier-gallery.py)
   GR4 the planning short answer and the electrical warning are VISIBLE
       (outside every <details>)
   GR5 every <details> has a <summary> (keyboard-operable natively)
@@ -545,7 +547,12 @@ def guards(page, before=None):
     held = HELD_NAME_RE.search(page)
     if held:
         errs.append("GR10 a maker held from the directory is named on the page: " + held.group(0))
-    if re.search(r'<img[^>]+src="https?://', main) or "gr-mi-" in page or "what-these-look-like" in page:
+    # 30 Oct 2026, founder approval: the Premium Supplier Gallery may show supplier
+    # images on this page, ONLY inside its own marker-delimited region, which is
+    # held to per-asset rights rules by atlas-tools/prove-supplier-gallery.py.
+    # Everywhere else on the page GR3 is unchanged.
+    main_wo_gallery = re.sub(r"<!-- PN-SUPPLIER-GALLERY v1 .*?<!-- /PN-SUPPLIER-GALLERY -->", " ", main, flags=re.S)
+    if re.search(r'<img[^>]+src="https?://', main_wo_gallery) or "gr-mi-" in page or "what-these-look-like" in page:
         errs.append("GR3 a supplier image or the maker-image section is on the page")
     closed = re.sub(r"<details.*?</details>", " ", main, flags=re.S)
     for need in ("A sauna cabin is a building", "Registered Electrical Contractor",
