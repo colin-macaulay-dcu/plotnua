@@ -7968,6 +7968,141 @@
       "permitted_surfaces": [
         "plotart"
       ]
+    },
+    {
+      "asset": "assets/img/9805382f8164228a.jpg",
+      "sha256": "9805382f8164228a7b9f6c008b822cc0009e48732d952c37ed645ab4f03491b5",
+      "bytes": 959784,
+      "pixels": [
+        1408,
+        768
+      ],
+      "class": "AI_ILLUSTRATION",
+      "what": "Discovery illustration (discovery-hidden-bins.html)",
+      "depicts_named_product": false,
+      "depicts_named_organisation": false,
+      "origin": {
+        "basis": "C2PA_EMBEDDED",
+        "evidence": "Embedded C2PA manifest, read with c2pa-python: issuer Google LLC, signed 2026-09-15T19:05:43+00:00, generator Google C2PA Core Generator Library; actions: Created by Google Generative AI.; digital source type trainedAlgorithmicMedia; validation Valid.",
+        "declared_under": "Governance 2.0, Rule 2 (30 Oct 2026)"
+      },
+      "generated": {
+        "tool": "Google LLC generative AI, per the file's own signed C2PA credential",
+        "date": "2026-09-15"
+      },
+      "prompt_status": "UNAVAILABLE",
+      "reference_disclosure": {
+        "status": "UNCERTAIN",
+        "statement": "The credential records 1 input image(s), 1 without any credential, title or hash: not identifiable from the file."
+      },
+      "permitted_surfaces": [
+        "discovery"
+      ],
+      "content_credentials": {
+        "embeds_c2pa": true
+      },
+      "introduced": {
+        "commit": "365d08c",
+        "date": "2026-09-16",
+        "subject": "DISC-029 launch The Hidden Bins"
+      },
+      "recovered_evidence": {
+        "master_file": "Images/Discoveries/DISC-029 - Hidden Bins/DISC-029-IMAGE-01-PROBLEM-MASTER.jpeg",
+        "discovery_folder": "DISC-029 - Hidden Bins",
+        "match": "perceptual, 16x16 average hash, Hamming 0 of 256",
+        "establishes": "which picture this is and which Discovery it served",
+        "does_not_establish": "what made the picture"
+      }
+    },
+    {
+      "asset": "assets/img/31b49fb60732073b.jpg",
+      "sha256": "31b49fb60732073b37e5aca32707d92705d58b819b9372b84587e1b06a8dde1c",
+      "bytes": 807772,
+      "pixels": [
+        1408,
+        768
+      ],
+      "class": "AI_ILLUSTRATION",
+      "what": "Discovery illustration (discovery-hidden-bins.html)",
+      "depicts_named_product": false,
+      "depicts_named_organisation": false,
+      "origin": {
+        "basis": "C2PA_EMBEDDED",
+        "evidence": "Embedded C2PA manifest, read with c2pa-python: issuer Google LLC, signed 2026-09-15T20:04:33+00:00, generator Google C2PA Core Generator Library; actions: Created by Google Generative AI.; digital source type trainedAlgorithmicMedia; validation Valid.",
+        "declared_under": "Governance 2.0, Rule 2 (30 Oct 2026)"
+      },
+      "generated": {
+        "tool": "Google LLC generative AI, per the file's own signed C2PA credential",
+        "date": "2026-09-15"
+      },
+      "prompt_status": "UNAVAILABLE",
+      "reference_disclosure": {
+        "status": "UNCERTAIN",
+        "statement": "The credential records 1 input image(s), 1 without any credential, title or hash: not identifiable from the file."
+      },
+      "permitted_surfaces": [
+        "discovery"
+      ],
+      "content_credentials": {
+        "embeds_c2pa": true
+      },
+      "introduced": {
+        "commit": "365d08c",
+        "date": "2026-09-16",
+        "subject": "DISC-029 launch The Hidden Bins"
+      },
+      "recovered_evidence": {
+        "master_file": "Images/Discoveries/DISC-029 - Hidden Bins/DISC-029-IMAGE-02-BINS-HIDDEN-MASTER.jpeg",
+        "discovery_folder": "DISC-029 - Hidden Bins",
+        "match": "perceptual, 16x16 average hash, Hamming 0 of 256",
+        "establishes": "which picture this is and which Discovery it served",
+        "does_not_establish": "what made the picture"
+      }
+    },
+    {
+      "asset": "assets/img/fec77c3f0bae107a.jpg",
+      "sha256": "72b854817881f367c7737789feb98215c540ce9a4730fbbb6254510e0286daa3",
+      "bytes": 952222,
+      "pixels": [
+        1408,
+        768
+      ],
+      "class": "AI_ILLUSTRATION",
+      "what": "Discovery illustration (discovery-house-as-power-station.html)",
+      "depicts_named_product": false,
+      "depicts_named_organisation": false,
+      "origin": {
+        "basis": "C2PA_EMBEDDED",
+        "evidence": "Embedded C2PA manifest, read with c2pa-python: issuer Google LLC, signed 2026-08-28T11:12:21+00:00, generator Google C2PA Core Generator Library; actions: Created by Google Generative AI.; digital source type trainedAlgorithmicMedia; validation Valid.",
+        "declared_under": "Governance 2.0, Rule 2 (30 Oct 2026)"
+      },
+      "generated": {
+        "tool": "Google LLC generative AI, per the file's own signed C2PA credential",
+        "date": "2026-08-28"
+      },
+      "prompt_status": "UNAVAILABLE",
+      "reference_disclosure": {
+        "status": "CREDENTIALED",
+        "statement": "The credential records 1 input image(s), each carrying its own signed credential."
+      },
+      "permitted_surfaces": [
+        "discovery"
+      ],
+      "content_credentials": {
+        "embeds_c2pa": true
+      },
+      "introduced": {
+        "commit": "794aeab",
+        "date": "2026-09-01",
+        "subject": "DISC-026 — The House as a Power Station"
+      },
+      "recovered_evidence": {
+        "master_file": "Images/Discoveries/DISC-026 The House as a Power Station/DISC-026 - Image 02 -The House as a Power Station - Potential Asset.jpeg",
+        "discovery_folder": "DISC-026 The House as a Power Station",
+        "match": "perceptual, 16x16 average hash, Hamming 0 of 256",
+        "establishes": "which picture this is and which Discovery it served",
+        "does_not_establish": "what made the picture"
+      }
     }
   ],
   "legacy_undeclared": [
@@ -8565,31 +8700,6 @@
         "commit": "07762e8",
         "date": "2026-08-27",
         "subject": "Launch build v1 — the six-stage journey"
-      }
-    },
-    {
-      "asset": "assets/img/31b49fb60732073b.jpg",
-      "sha256": "31b49fb60732073b37e5aca32707d92705d58b819b9372b84587e1b06a8dde1c",
-      "status": "LEGACY_UNDECLARED",
-      "bytes": 807772,
-      "pixels": [
-        1408,
-        768
-      ],
-      "referenced_by": [
-        "discovery-hidden-bins.html"
-      ],
-      "introduced": {
-        "commit": "365d08c",
-        "date": "2026-09-16",
-        "subject": "DISC-029 launch The Hidden Bins"
-      },
-      "recovered_evidence": {
-        "master_file": "Images/Discoveries/DISC-029 - Hidden Bins/DISC-029-IMAGE-02-BINS-HIDDEN-MASTER.jpeg",
-        "discovery_folder": "DISC-029 - Hidden Bins",
-        "match": "perceptual, 16x16 average hash, Hamming 0 of 256",
-        "establishes": "which picture this is and which Discovery it served",
-        "does_not_establish": "what made the picture"
       }
     },
     {
@@ -9507,31 +9617,6 @@
       }
     },
     {
-      "asset": "assets/img/9805382f8164228a.jpg",
-      "sha256": "9805382f8164228a7b9f6c008b822cc0009e48732d952c37ed645ab4f03491b5",
-      "status": "LEGACY_UNDECLARED",
-      "bytes": 959784,
-      "pixels": [
-        1408,
-        768
-      ],
-      "referenced_by": [
-        "discovery-hidden-bins.html"
-      ],
-      "introduced": {
-        "commit": "365d08c",
-        "date": "2026-09-16",
-        "subject": "DISC-029 launch The Hidden Bins"
-      },
-      "recovered_evidence": {
-        "master_file": "Images/Discoveries/DISC-029 - Hidden Bins/DISC-029-IMAGE-01-PROBLEM-MASTER.jpeg",
-        "discovery_folder": "DISC-029 - Hidden Bins",
-        "match": "perceptual, 16x16 average hash, Hamming 0 of 256",
-        "establishes": "which picture this is and which Discovery it served",
-        "does_not_establish": "what made the picture"
-      }
-    },
-    {
       "asset": "assets/img/991355de2bd66bcc.jpg",
       "sha256": "991355de2bd66bcc4dd1e0f027aaa6909d48416bdf39887fe71c5c5ea7ffa5a2",
       "status": "LEGACY_UNDECLARED",
@@ -10341,31 +10426,6 @@
         "master_file": "Images/Discoveries/DISC-025 The Borrowed Garden/DISC-025-03-Transformation.jpeg",
         "discovery_folder": "DISC-025 The Borrowed Garden",
         "match": "perceptual, 16x16 average hash, Hamming 5 of 256",
-        "establishes": "which picture this is and which Discovery it served",
-        "does_not_establish": "what made the picture"
-      }
-    },
-    {
-      "asset": "assets/img/fec77c3f0bae107a.jpg",
-      "sha256": "72b854817881f367c7737789feb98215c540ce9a4730fbbb6254510e0286daa3",
-      "status": "LEGACY_UNDECLARED",
-      "bytes": 952222,
-      "pixels": [
-        1408,
-        768
-      ],
-      "referenced_by": [
-        "discovery-house-as-power-station.html"
-      ],
-      "introduced": {
-        "commit": "794aeab",
-        "date": "2026-09-01",
-        "subject": "DISC-026 — The House as a Power Station"
-      },
-      "recovered_evidence": {
-        "master_file": "Images/Discoveries/DISC-026 The House as a Power Station/DISC-026 - Image 02 -The House as a Power Station - Potential Asset.jpeg",
-        "discovery_folder": "DISC-026 The House as a Power Station",
-        "match": "perceptual, 16x16 average hash, Hamming 0 of 256",
         "establishes": "which picture this is and which Discovery it served",
         "does_not_establish": "what made the picture"
       }
@@ -11215,9 +11275,9 @@
         "asset": "assets/img/b53d75f9dff4af2e.jpg",
         "sha256": "b53d75f9dff4af2e4d1d7f0de5b2b39e2c935d30ac628a64e5e6f72272079300"
       },
-      "method": "visible-mark-removal",
-      "decision_ref": "PN-FDR-2026-10-30-DISC016-MR (hash-pinned exception in validate-image-provenance.js; not a general P12 amendment)",
+      "method": "artefact-removal",
       "edit": {
+        "description": "Removal of a faint visible generator mark (a four-point sparkle) in one 59 x 59 px area; nothing else changed.",
         "operation": "Visible-mark removal, confined to the box: a four-point star mask |dx/27|^0.62 + |dy/27|^0.62 <= 1 centred (1288, 649), 4x supersampled; reverse alpha blending of a white mark at the opacity measured in this image (mean inside the star against a 7 px ring outside it); a 3 px OpenCV Telea inpaint on the star's anti-aliased edge only. No generative fill. Every pixel outside the box is the decoded source pixel before encoding.",
         "box_xyxy": [
           1259,
@@ -11254,9 +11314,9 @@
         "asset": "assets/img/b53d75f9dff4af2e.jpg",
         "sha256": "b53d75f9dff4af2e4d1d7f0de5b2b39e2c935d30ac628a64e5e6f72272079300"
       },
-      "method": "visible-mark-removal",
-      "decision_ref": "PN-FDR-2026-10-30-DISC016-MR (hash-pinned exception in validate-image-provenance.js; not a general P12 amendment)",
+      "method": "artefact-removal",
       "edit": {
+        "description": "Removal of a faint visible generator mark (a four-point sparkle) in one 59 x 59 px area; nothing else changed.",
         "operation": "Visible-mark removal, confined to the box: a four-point star mask |dx/27|^0.62 + |dy/27|^0.62 <= 1 centred (1288, 649), 4x supersampled; reverse alpha blending of a white mark at the opacity measured in this image (mean inside the star against a 7 px ring outside it); a 3 px OpenCV Telea inpaint on the star's anti-aliased edge only. No generative fill. Every pixel outside the box is the decoded source pixel before encoding.",
         "box_xyxy": [
           1259,
@@ -11293,9 +11353,9 @@
         "asset": "assets/img/b53d75f9dff4af2e.jpg",
         "sha256": "b53d75f9dff4af2e4d1d7f0de5b2b39e2c935d30ac628a64e5e6f72272079300"
       },
-      "method": "visible-mark-removal",
-      "decision_ref": "PN-FDR-2026-10-30-DISC016-MR (hash-pinned exception in validate-image-provenance.js; not a general P12 amendment)",
+      "method": "artefact-removal",
       "edit": {
+        "description": "Removal of a faint visible generator mark (a four-point sparkle) in one 59 x 59 px area; nothing else changed.",
         "operation": "Visible-mark removal, confined to the box: a four-point star mask |dx/27|^0.62 + |dy/27|^0.62 <= 1 centred (1288, 649), 4x supersampled; reverse alpha blending of a white mark at the opacity measured in this image (mean inside the star against a 7 px ring outside it); a 3 px OpenCV Telea inpaint on the star's anti-aliased edge only. No generative fill. Every pixel outside the box is the decoded source pixel before encoding.",
         "box_xyxy": [
           1259,
@@ -11332,9 +11392,9 @@
         "asset": "assets/img/aecece07994fe0db.jpg",
         "sha256": "aecece07994fe0db0ef639383ac91f54ea18b5ae834e8d9e45f21efc6acd0f81"
       },
-      "method": "visible-mark-removal",
-      "decision_ref": "PN-FDR-2026-10-30-DISC016-MR (hash-pinned exception in validate-image-provenance.js; not a general P12 amendment)",
+      "method": "artefact-removal",
       "edit": {
+        "description": "Removal of a faint visible generator mark (a four-point sparkle) in one 59 x 59 px area; nothing else changed.",
         "operation": "Visible-mark removal, confined to the box: a four-point star mask |dx/27|^0.62 + |dy/27|^0.62 <= 1 centred (1288, 649), 4x supersampled; reverse alpha blending of a white mark at the opacity measured in this image (mean inside the star against a 7 px ring outside it); a 3 px OpenCV Telea inpaint on the star's anti-aliased edge only. No generative fill. Every pixel outside the box is the decoded source pixel before encoding.",
         "box_xyxy": [
           1259,
@@ -11371,9 +11431,9 @@
         "asset": "assets/img/aecece07994fe0db.jpg",
         "sha256": "aecece07994fe0db0ef639383ac91f54ea18b5ae834e8d9e45f21efc6acd0f81"
       },
-      "method": "visible-mark-removal",
-      "decision_ref": "PN-FDR-2026-10-30-DISC016-MR (hash-pinned exception in validate-image-provenance.js; not a general P12 amendment)",
+      "method": "artefact-removal",
       "edit": {
+        "description": "Removal of a faint visible generator mark (a four-point sparkle) in one 59 x 59 px area; nothing else changed.",
         "operation": "Visible-mark removal, confined to the box: a four-point star mask |dx/27|^0.62 + |dy/27|^0.62 <= 1 centred (1288, 649), 4x supersampled; reverse alpha blending of a white mark at the opacity measured in this image (mean inside the star against a 7 px ring outside it); a 3 px OpenCV Telea inpaint on the star's anti-aliased edge only. No generative fill. Every pixel outside the box is the decoded source pixel before encoding.",
         "box_xyxy": [
           1259,
@@ -11410,9 +11470,9 @@
         "asset": "assets/img/aecece07994fe0db.jpg",
         "sha256": "aecece07994fe0db0ef639383ac91f54ea18b5ae834e8d9e45f21efc6acd0f81"
       },
-      "method": "visible-mark-removal",
-      "decision_ref": "PN-FDR-2026-10-30-DISC016-MR (hash-pinned exception in validate-image-provenance.js; not a general P12 amendment)",
+      "method": "artefact-removal",
       "edit": {
+        "description": "Removal of a faint visible generator mark (a four-point sparkle) in one 59 x 59 px area; nothing else changed.",
         "operation": "Visible-mark removal, confined to the box: a four-point star mask |dx/27|^0.62 + |dy/27|^0.62 <= 1 centred (1288, 649), 4x supersampled; reverse alpha blending of a white mark at the opacity measured in this image (mean inside the star against a 7 px ring outside it); a 3 px OpenCV Telea inpaint on the star's anti-aliased edge only. No generative fill. Every pixel outside the box is the decoded source pixel before encoding.",
         "box_xyxy": [
           1259,

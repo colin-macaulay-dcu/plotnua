@@ -22,14 +22,14 @@ PREPARED FOR FOUNDER REVIEW. NOT A P12 DERIVATIVE.
 
   Outputs (assets/disc016/img/): DISC-016-HERO-{BEFORE,POSSIBLE}-MR.jpg (fallback, quality
   92), -MR-1408.webp and -MR-960.webp (quality 80, method 6). Recorded in
-  governance/DISC-016-HERO-MARK-REMOVAL-EXCEPTION-2026-10-30.json.
+  governance/DISC-016-HERO-MARK-REMOVAL-2026-10-30.json.
 
   python3 atlas-tools/build-disc016-hero-mark-removal.py          build (files + register entries)
   python3 atlas-tools/build-disc016-hero-mark-removal.py --check  verify, write nothing
 
-  REGISTER (founder decision PN-FDR-2026-10-30-DISC016-MR, 30 Oct 2026): the six files are recorded in
-  image-provenance-records.json `derivatives` with method 'visible-mark-removal', admitted by the
-  hash-pinned exception MARK_REMOVAL_DISC016 in validate-image-provenance.js and by nothing else.
+  REGISTER (Governance 2.0, Rule 3, 30 Oct 2026): the six files are routine edits of PlotNua's own
+  images, recorded in image-provenance-records.json `derivatives` with method 'artefact-removal'
+  (removal of an incidental visual artefact). P12 binds each to its unchanged source by sha256.
 """
 import hashlib, io, json, pathlib, sys
 import numpy as np, cv2
@@ -37,7 +37,7 @@ from PIL import Image, __version__ as PIL_VERSION
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 OUT = ROOT / "assets/disc016/img"
-DRAFT = ROOT / "governance/DISC-016-HERO-MARK-REMOVAL-EXCEPTION-2026-10-30.json"
+DRAFT = ROOT / "governance/DISC-016-HERO-MARK-REMOVAL-2026-10-30.json"
 CHECK = "--check" in sys.argv
 SOURCES = {
     "BEFORE": ("assets/img/b53d75f9dff4af2e.jpg", "b53d75f9dff4af2e"),
@@ -76,7 +76,6 @@ def enc(im, fmt, **kw):
     b = io.BytesIO(); im.save(b, fmt, **kw); return b.getvalue()
 
 
-DECISION = "PN-FDR-2026-10-30-DISC016-MR"
 OPERATION = ("Visible-mark removal, confined to the box: a four-point star mask |dx/27|^0.62 + |dy/27|^0.62 <= 1 "
              "centred (1288, 649), 4x supersampled; reverse alpha blending of a white mark at the opacity measured "
              "in this image (mean inside the star against a 7 px ring outside it); a 3 px OpenCV Telea inpaint on "
@@ -120,9 +119,8 @@ def main():
             entries.append({
                 "asset": path, "sha256": sha(data), "bytes": len(data), "pixels": list(size),
                 "derived_from": {"asset": src, "sha256": sha(raw)},
-                "method": "visible-mark-removal",
-                "decision_ref": DECISION + " (hash-pinned exception in validate-image-provenance.js; not a general P12 amendment)",
-                "edit": {"operation": OPERATION, "box_xyxy": box, "changed_pixels": int(diff.sum()),
+                "method": "artefact-removal",
+                "edit": {"description": "Removal of a faint visible generator mark (a four-point sparkle) in one 59 x 59 px area; nothing else changed.", "operation": OPERATION, "box_xyxy": box, "changed_pixels": int(diff.sum()),
                          "changed_share_of_image": round(float(diff.mean()), 6), "measured_mark_opacity": a,
                          "verified_by": "atlas-tools/build-disc016-hero-mark-removal.py --check (refuses any change outside the box)"},
                 "encoder": ("Pillow %s, JPEG quality 92, progressive" % PIL_VERSION) if path.endswith(".jpg") else
@@ -135,14 +133,14 @@ def main():
         recs.append({"source": {"asset": src, "sha256": sha(raw), "state": "LEGACY_UNDECLARED", "embeds_c2pa": b"jumdc2pa" in raw},
                      "role": role, "measured_mark_opacity": a, "changed_box_xyxy": box,
                      "changed_pixels": int(diff.sum()), "changed_share_of_image": round(float(diff.mean()), 6)})
-    cur = [e for e in reg.get("derivatives", []) if e.get("method") == "visible-mark-removal"]
+    cur = [e for e in reg.get("derivatives", []) if e["asset"].startswith("assets/disc016/img/DISC-016-HERO-")]
     if CHECK:
         bad = [p for p, d in files.items() if not (ROOT / p).exists() or (ROOT / p).read_bytes() != d]
         if json.dumps(cur, sort_keys=True) != json.dumps(entries, sort_keys=True): bad.append("register entries")
         print("DISC-016 MARK REMOVAL · " + ("OK" if not bad else "DIFFERS: %s" % bad)); sys.exit(1 if bad else 0)
     OUT.mkdir(parents=True, exist_ok=True)
     for p, d in files.items(): (ROOT / p).write_bytes(d)
-    reg["derivatives"] = [e for e in reg.get("derivatives", []) if e.get("method") != "visible-mark-removal"] + entries
+    reg["derivatives"] = [e for e in reg.get("derivatives", []) if not e["asset"].startswith("assets/disc016/img/DISC-016-HERO-")] + entries
     regp.write_text(json.dumps(reg, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
     draft = json.loads(DRAFT.read_text(encoding="utf-8")) if DRAFT.exists() else {}
     draft["build_output"] = {"tool": "atlas-tools/build-disc016-hero-mark-removal.py",

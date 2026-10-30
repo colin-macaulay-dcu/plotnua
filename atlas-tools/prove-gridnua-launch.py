@@ -19,7 +19,7 @@ Proves, on the tree as it would be published:
   GL9  every internal link resolves
   GL10 no "Here today" label (nothing qualifies, 29 Oct 2026)
   GL11 the sitemap lists exactly the two GridNua pages
-  GL12 DISC-026: exactly one GridNua link, inside its markers; the article matches its latest freeze record
+  GL12 DISC-026: exactly one GridNua link, inside its markers (freeze-hash rule retired, Governance 2.0)
   GL13 the Readiness Check is byte-identical to its pin, its scripts (questions, engine, results) are unchanged,
        both return buttons are present, and the register stays closed
 --prove plants one fault per guard in a scratch copy and requires every one to be caught.
@@ -109,10 +109,9 @@ def run(root):
     links = re.findall(r'href="gridnua/[^"]*"', art_body)
     block = re.search(r"<!-- GRIDNUA-HANDOFF:BEGIN[\s\S]*?<!-- GRIDNUA-HANDOFF:END -->", art)
     if len(links) != 1 or not block or 'href="gridnua/"' not in block.group(0): f("GL12", "DISC-026 must hold exactly one GridNua link, inside its markers")
-    recs = sorted((root / "governance").glob("disc-026-house-as-power-station-FREEZE-RECORD-V*.md"),
-                  key=lambda q: int(re.search(r"-V(\d+)\.md$", q.name).group(1)))
-    if not recs or sha(root / ARTICLE) not in recs[-1].read_text(encoding="utf-8"):
-        f("GL12", "the DISC-026 article differs from the hash in its latest freeze record (same-commit rule)")
+    # Governance 2.0 (founder directive, 30 Oct 2026, Rule 4): the DISC-026 freeze records V1-V7 are
+    # history; routine improvements no longer need a freeze amendment. The article's commercial and
+    # legal content stays guarded by atlas-tools/prove-disc026-discovery.mjs and by GL12's link check.
     if sha(root / CHECK) != man["readiness_check_sha256"]: f("GL13", "Readiness Check differs from its pin")
     chk = (root / CHECK).read_text(encoding="utf-8")
     if hashlib.sha256("\n".join(re.findall(r"<script[\s\S]*?</script>", chk)).encode()).hexdigest() != man["readiness_check_scripts_sha256"]:

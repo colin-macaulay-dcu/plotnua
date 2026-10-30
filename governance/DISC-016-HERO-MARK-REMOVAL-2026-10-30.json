@@ -1,6 +1,5 @@
 {
- "status": "REGISTERED under the hash-pinned exception PN-FDR-2026-10-30-DISC016-MR (founder instruction, 30 Oct 2026). Six files only; not a general P12 amendment.",
- "founder_decision": "30 Oct 2026, 'Hero Slider Release 3 — final governance and release readiness', item 1: 'Prepare a narrowly scoped, hash-pinned exception for the six existing watermark-removal derivatives. Do not introduce a general amendment to P12. Preserve the original source files. Document the exact pixel modifications and ensure the exception cannot authorise unrelated image edits.'",
+ "status": "Recorded as a routine edit under Governance 2.0, Rule 3 (30 Oct 2026): method 'artefact-removal', hash-bound to its unchanged sources by P12. No pin, no signature. The earlier pinned exception PN-FDR-2026-10-30-DISC016-MR was never released and is withdrawn.",
  "instruction": "Founder, 30 Oct 2026, Pass 2 Release 3: 'Do not introduce the faint Gemini watermark into the new Above and Beyond slider assets. If removal requires a new image derivative, prepare it for review with provenance records. Do not silently alter the source images.'",
  "what_was_found": "Both legacy sources of the DISC-016 hero pair (assets/img/b53d75f9dff4af2e.jpg, the BEFORE garden, and assets/img/aecece07994fe0db.jpg, the two-pod POSSIBLE) carry the same faint semi-transparent four-point sparkle, about 55 x 59 px, centred near (1288, 649) of 1408 x 768. It is visible on the live hero today, lower right.",
  "what_this_is": "Six new files, made only for the Release 3 hero slider: for each source, a JPEG fallback and two WebP encodings of one cleaned picture. Only the pixels inside the mark's 59 x 59 px box change (about 0.1% of the image); every other pixel is the source pixel before encoding. Neither source file is modified, and the rest of the page keeps using the sources exactly as before.",
@@ -28,15 +27,6 @@
   "outside_the_box": "every pixel is the decoded source pixel before encoding; the build script's --check refuses otherwise",
   "then_encoded": "JPEG quality 92 (fallback) and WebP quality 80 at 1408 and 960 px; encoding affects every pixel slightly, as with any web encoding"
  },
- "why_it_is_not_a_P12_derivative": "Rule P12 admits only WebP re-encodings and resizes. Removing a visible mark is an edit, so these six files are admitted ONLY by the pinned exception MARK_REMOVAL_DISC016 in validate-image-provenance.js, which binds each file's exact sha256, its exact source and source sha256, the method 'visible-mark-removal', the exact edit box and this decision reference. P12 itself is unchanged for every other file.",
- "how_the_exception_cannot_widen": [
-  "A seventh file with method 'visible-mark-removal' is refused.",
-  "A pinned file with different bytes (re-edit, re-encode) is refused.",
-  "A pinned file bound to another source, or a changed source, is refused.",
-  "A different or larger edit box is refused.",
-  "A pinned file without the decision reference is refused.",
-  "Verified by planted-fault tests on 30 Oct 2026: all six caught."
- ],
  "inherited_state": "Both sources are LEGACY_UNDECLARED and carry no embedded content credential. The cleaned files inherit that state and declare nothing: no class, no label, no claim about what made the source pictures.",
  "not_changed": "The two source files and every other use of them on the page (the annotated plate and the later two-pod image still show the mark as they do today).",
  "build_output": {

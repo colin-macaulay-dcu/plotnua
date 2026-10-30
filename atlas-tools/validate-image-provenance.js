@@ -259,47 +259,7 @@ const FOUNDER_ATTESTED_PLOTART_LG = {
   sha256: new Set(['f4861333a80fda7f704fd3c57d0a2b8f18db589b8505eb11192ac05c08d8d0f9']),
   surfaces: ['plotart'],
 };
-/* FOUNDER-ATTESTED CONTEXT · RELEASE 3 HERO SLIDERS (PN-FDR-2026-10-30-R3HERO; prepared 30 Oct 2026,
-   PENDING founder signature). Three pictures whose own signed Google C2PA credentials state "Created by
-   Google Generative AI": The Hidden Bins BEFORE / POSSIBLE and The House as a Power Station BEFORE. Prompts
-   are unavailable and each credential records an input image (two unidentified, one credentialed), so the
-   founder-attested form is the only truthful record. ONLY these three files, ONLY on the discovery surface.
-   The records are added by atlas-tools/declare-r3-hero-provenance.py from the signed declaration
-   governance/R3-HERO-AI-DECLARATION-2026-10-30.json; until then this pin admits nothing, because no record
-   carries the decision. Not a way to declare future images. */
-const FOUNDER_ATTESTED_R3HERO = {
-  decision: 'PN-FDR-2026-10-30-R3HERO',
-  sha256: new Set([
-    '9805382f8164228a7b9f6c008b822cc0009e48732d952c37ed645ab4f03491b5',
-    '31b49fb60732073b37e5aca32707d92705d58b819b9372b84587e1b06a8dde1c',
-    '72b854817881f367c7737789feb98215c540ce9a4730fbbb6254510e0286daa3',
-  ]),
-  surfaces: ['discovery'],
-};
-/* P12 PINNED EXCEPTION · DISC-016 ABOVE AND BEYOND HERO, VISIBLE-MARK REMOVAL
-   (PN-FDR-2026-10-30-DISC016-MR; founder instruction, Pass 2 Release 3, 30 Oct 2026: "Prepare a
-   narrowly scoped, hash-pinned exception for the six existing watermark-removal derivatives. Do not
-   introduce a general amendment to P12.") These SIX files, and nothing else, may be recorded as
-   derivatives with method 'visible-mark-removal'. Each is bound to its exact bytes, its exact source
-   bytes and the exact edit box (59 x 59 px, x 1259-1317, y 620-678 of 1408 x 768); the edit is
-   reproducible with atlas-tools/build-disc016-hero-mark-removal.py --check, which refuses if any pixel
-   outside that box changes. A different file, a re-encode, another source or another box is refused.
-   The sources stay LEGACY_UNDECLARED and are not modified; the six inherit that state and declare
-   nothing. Not a way to edit, retouch or derive any other image. */
-const MARK_REMOVAL_DISC016 = {
-  decision: 'PN-FDR-2026-10-30-DISC016-MR',
-  method: 'visible-mark-removal',
-  box: [1259, 620, 1318, 679],
-  files: new Map([
-    ['assets/disc016/img/DISC-016-HERO-BEFORE-MR.jpg', ['e91e0c1fc90a05d9396ad570932381a87a00d26f9c2836c076b530a35d300c49', 'assets/img/b53d75f9dff4af2e.jpg', 'b53d75f9dff4af2e4d1d7f0de5b2b39e2c935d30ac628a64e5e6f72272079300']],
-    ['assets/disc016/img/DISC-016-HERO-BEFORE-MR-1408.webp', ['a84b18d3c010528acb8caf4213bc4205f6c12cd1c5b0a7701d22e897b32229d6', 'assets/img/b53d75f9dff4af2e.jpg', 'b53d75f9dff4af2e4d1d7f0de5b2b39e2c935d30ac628a64e5e6f72272079300']],
-    ['assets/disc016/img/DISC-016-HERO-BEFORE-MR-960.webp', ['3eb38ff34173045e8d78c72ffc64360c00127063d8c22ffbb01e5be9d33c9cce', 'assets/img/b53d75f9dff4af2e.jpg', 'b53d75f9dff4af2e4d1d7f0de5b2b39e2c935d30ac628a64e5e6f72272079300']],
-    ['assets/disc016/img/DISC-016-HERO-POSSIBLE-MR.jpg', ['ae981639000f5218ae62db3fe2c2039516e0549c85800d0bc254c8b7b991bee7', 'assets/img/aecece07994fe0db.jpg', 'aecece07994fe0db0ef639383ac91f54ea18b5ae834e8d9e45f21efc6acd0f81']],
-    ['assets/disc016/img/DISC-016-HERO-POSSIBLE-MR-1408.webp', ['d7f0aa2148b748dc2f85b80f1babc34b30866cd1a252202885044757cc2844ae', 'assets/img/aecece07994fe0db.jpg', 'aecece07994fe0db0ef639383ac91f54ea18b5ae834e8d9e45f21efc6acd0f81']],
-    ['assets/disc016/img/DISC-016-HERO-POSSIBLE-MR-960.webp', ['41381606922bd2bad2aca8a6c4254a6c25c82de958040ca7da03b239250ad722', 'assets/img/aecece07994fe0db.jpg', 'aecece07994fe0db0ef639383ac91f54ea18b5ae834e8d9e45f21efc6acd0f81']],
-  ]),
-};
-const FOUNDER_ATTESTED_ALL = [FOUNDER_ATTESTED_GRP, FOUNDER_ATTESTED_H6, FOUNDER_ATTESTED_DISC031, FOUNDER_ATTESTED_DISC033, FOUNDER_ATTESTED_DISC032, FOUNDER_ATTESTED_PLOTART_LG, FOUNDER_ATTESTED_R3HERO];
+const FOUNDER_ATTESTED_ALL = [FOUNDER_ATTESTED_GRP, FOUNDER_ATTESTED_H6, FOUNDER_ATTESTED_DISC031, FOUNDER_ATTESTED_DISC033, FOUNDER_ATTESTED_DISC032, FOUNDER_ATTESTED_PLOTART_LG];
 const attestedFor = h => FOUNDER_ATTESTED_ALL.find(x => x.sha256.has(String(h)));
 /* 'gridnua' (founder approval of the GridNua limited launch, 29 Oct 2026): the GridNua initiative pages. */
 const PERMITTED_SURFACES = ['discovery', 'library-card', 'homepage',
@@ -652,6 +612,25 @@ console.log('-'.repeat(74));
     if (!/^\d{4}-\d{2}-\d{2}$/.test(String(g.date || ''))) problems.push(`${r.asset}: no date`);
     const FA = attestedFor(r.sha256);
     const pinned = !!FA;
+    /* GOVERNANCE 2.0 (founder directive, 30 Oct 2026, Rule 2): an AI illustration may be declared from
+       VERIFIABLE METADATA without a founder signature or a pin. The origin must be proved by the file
+       itself: its own bytes carry a C2PA manifest whose digital source type is trainedAlgorithmicMedia
+       (checked here, not trusted from JSON). Unknowns stay unknown: prompt_status UNAVAILABLE and a
+       reference_disclosure; never an invented prompt or an empty reference list. */
+    const origin = r.origin || null;
+    if (origin && origin.basis === 'C2PA_EMBEDDED') {
+      let bytes = null;
+      try { bytes = readFileSync(join(ROOT, r.asset)); } catch { /* missing: P2 reports it */ }
+      if (!bytes || !bytes.includes(Buffer.from('jumdc2pa')) || !bytes.includes(Buffer.from('trainedAlgorithmicMedia')))
+        problems.push(`${r.asset}: origin C2PA_EMBEDDED, but the file carries no AI-generation credential`);
+      if (!String(origin.evidence || '').trim()) problems.push(`${r.asset}: origin has no evidence summary`);
+      if ('prompt' in r || 'reference_inputs' in r) problems.push(`${r.asset}: metadata record also claims a prompt or reference_inputs`);
+      if (r.prompt_status !== 'UNAVAILABLE') problems.push(`${r.asset}: prompt_status is not UNAVAILABLE`);
+      const rd = r.reference_disclosure || {};
+      if (!['UNCERTAIN', 'CREDENTIALED'].includes(rd.status) || !rd.statement) problems.push(`${r.asset}: references not disclosed`);
+      continue;
+    }
+    if (origin) { problems.push(`${r.asset}: unknown origin basis ${origin.basis}`); continue; }
     const attestedForm = 'prompt_status' in r || 'reference_disclosure' in r || 'resemblance_review' in r;
     if (pinned || attestedForm) {
       /* The one-image exception: all of it, or none of it. */
@@ -1032,9 +1011,12 @@ const pageText = html => html.replace(/<!--[\s\S]*?-->/g, ' ').replace(/<[^>]+>/
        i. its source is not on provenance hold (derivative_holds), and it never
           claims an embedded signed credential (re-encoding removes C2PA). */
   const METHODS = ['webp-reencode', 'webp-resize'];
+  /* GOVERNANCE 2.0 (founder directive, 30 Oct 2026, Rule 3): routine edits of authorised images are
+     recorded derivatives, with no pin or signature: a closed vocabulary, hash-bound to an unchanged
+     source, a written description, never an upscale, never a chain. NOT for supplier imagery, whose
+     use stays within its grant (re-encode / resize only, as before). */
+  const EDITS = ['crop', 'optimise', 'colour-correction', 'background-adjustment', 'artefact-removal', 'pair-preparation'];
   const problems = [];
-  /* The one pinned exception (MARK_REMOVAL_DISC016): exact files, exact bytes, exact source, exact box. */
-  const MR = MARK_REMOVAL_DISC016;
   const jpegSize = (buf) => {
     if (buf.length < 4 || buf[0] !== 0xFF || buf[1] !== 0xD8) return null;
     let i = 2;
@@ -1047,18 +1029,6 @@ const pageText = html => html.replace(/<!--[\s\S]*?-->/g, ' ').replace(/<[^>]+>/
     }
     return null;
   };
-  const mrSeen = new Set();
-  for (const d of derivatives) {
-    if (!d || d.method !== MR.method) continue;
-    const pinned = MR.files.get(d.asset);
-    if (!pinned) { problems.push(`${d.asset}: '${MR.method}' is admitted only for the six pinned ${MR.decision} files`); continue; }
-    mrSeen.add(d.asset);
-    const [sha, src, srcSha] = pinned;
-    if (d.sha256 !== sha) problems.push(`${d.asset}: not the pinned bytes (${MR.decision})`);
-    if (!d.derived_from || d.derived_from.asset !== src || d.derived_from.sha256 !== srcSha) problems.push(`${d.asset}: not bound to its pinned source`);
-    if (!d.edit || JSON.stringify(d.edit.box_xyxy) !== JSON.stringify(MR.box)) problems.push(`${d.asset}: edit box is not the pinned box`);
-    if (!String(d.decision_ref || '').includes(MR.decision)) problems.push(`${d.asset}: no ${MR.decision}`);
-  }
   /* Provenance holds (17 Oct 2026): a held source may not have a derivative. */
   if (reg.derivative_holds !== undefined && !Array.isArray(reg.derivative_holds)) {
     problems.push('derivative_holds is not an array');
@@ -1095,8 +1065,12 @@ const pageText = html => html.replace(/<!--[\s\S]*?-->/g, ' ').replace(/<[^>]+>/
     if (!srcEntry) problems.push(`${a}: source ${from.asset} is not in the register`);
     else if (srcEntry.sha256 !== from.sha256) problems.push(`${a}: source ${from.asset} has changed since derivation`);
     if (derivSet.has(from.asset)) problems.push(`${a}: derived from another derivative`);
-    const isMR = d.method === MR.method && MR.files.has(a);
-    if (!isMR && (!/\.webp$/i.test(a) || !METHODS.includes(d.method))) problems.push(`${a}: not a WebP re-encoding (${d.method})`);
+    const isEdit = EDITS.includes(d.method);
+    if (isEdit) {
+      if (!/\.(webp|jpe?g|png|avif)$/i.test(a)) problems.push(`${a}: not an image file`);
+      if (!d.edit || !String(d.edit.description || '').trim()) problems.push(`${a}: an edit with no description`);
+      if (srcEntry && srcEntry.class === 'SUPPLIER_IMAGE') problems.push(`${a}: supplier imagery may only be re-encoded or resized (its grant governs)`);
+    } else if (!/\.webp$/i.test(a) || !METHODS.includes(d.method)) problems.push(`${a}: not a WebP re-encoding (${d.method})`);
     for (const k of ['class', 'status', 'label', 'permitted_surfaces'])
       if (k in d) problems.push(`${a}: declares "${k}"`);
     const full = join(ROOT, a);
@@ -1105,14 +1079,18 @@ const pageText = html => html.replace(/<!--[\s\S]*?-->/g, ' ').replace(/<[^>]+>/
     } else {
       const buf = readFileSync(full);
       if (createHash('sha256').update(buf).digest('hex') !== d.sha256) problems.push(`${a}: bytes do not match its hash`);
-      const wh = webpSize(buf) || (isMR && /\.jpe?g$/i.test(a) ? jpegSize(buf) : null);
+      const wh = webpSize(buf) || (isEdit && /\.jpe?g$/i.test(a) ? jpegSize(buf) : null);
       const sp = srcEntry && srcEntry.pixels;
-      if (!wh) problems.push(`${a}: not a readable ${isMR ? 'WebP or JPEG' : 'WebP'} file`);
+      if (!wh && !(isEdit && /\.(png|avif)$/i.test(a))) problems.push(`${a}: not a readable ${isEdit ? 'image' : 'WebP'} file`);
       else if (Array.isArray(sp) && sp[0] && sp[1]) {
         if (wh[0] > sp[0]) problems.push(`${a}: wider than its source (upscaled)`);
-        if (Math.abs(wh[0] / wh[1] - sp[0] / sp[1]) > 0.005) problems.push(`${a}: aspect ratio differs from its source (cropped)`);
-      } else problems.push(`${a}: source pixels unknown, crop/upscale cannot be ruled out`);
+        if (d.method !== 'crop' && Math.abs(wh[0] / wh[1] - sp[0] / sp[1]) > 0.005) problems.push(`${a}: aspect ratio differs from its source (cropped)`);
+        if (d.method === 'crop' && wh[1] > sp[1]) problems.push(`${a}: taller than its source (upscaled)`);
+      } else if (wh) problems.push(`${a}: source pixels unknown, crop/upscale cannot be ruled out`);
     }
+    /* the fallback rule (g) protects re-encodings and supplier imagery; a routine edit of PlotNua's own
+       image may stand on a page without its source (Governance 2.0, Rule 3) */
+    if (isEdit && !(srcEntry && srcEntry.class === 'SUPPLIER_IMAGE')) continue;
     for (const page of (found.get(a) || [])) {
       if (!(found.get(from.asset) || new Set()).has(page))
         problems.push(`${a} is on ${page} without its source ${from.asset}`);

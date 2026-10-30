@@ -137,7 +137,7 @@ if ((html.match(new RegExp(HERO, 'g')) || []).length !== 1) {
   }
 }
 
-/* Freeze record V8 (Pass 2 Release 3, 30 Oct 2026): the hero is a Before / Possible slider whose
+/* Pass 2 Release 3 (30 Oct 2026, Governance 2.0): the hero is a Before / Possible slider whose
    POSSIBLE layer is this same picture. So: exactly once in the article body (S8, unchanged), and at
    most once inside the hero, as the pn-compare POSSIBLE layer and nowhere else in the hero. Every
    occurrence must carry a realised description (no potential-asset marker). */

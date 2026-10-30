@@ -18,7 +18,7 @@ the hero copy below. Hero copy (eyebrow, H1, subtitle, intro) is carried over by
   * Power Station: the Potential Asset annotation stays, unchanged in geometry and wording,
     now inside the BEFORE layer, so it labels the bare roof and is wiped away with it.
     It is drawn with xMidYMid slice and the layer's focus is 50% 50%, so it stays on the
-    roof at every crop. Freeze record V8 records this as the only article change.
+    roof at every crop. 
   * Above and Beyond: the slider uses the mark-removed copies; the sources are untouched.
 
 Nothing else on the pages changes. Page CSS goes in its own <style> just before </head>
@@ -60,7 +60,7 @@ def figure(p):
       <span class="pn-compare__knob" aria-hidden="true"></span>
       <p class="pn-compare__tag is-before" aria-hidden="true">Before</p>
       <p class="pn-compare__tag is-possible" aria-hidden="true">Possible</p>
-      <input class="pn-compare__range" type="range" min="0" max="100" step="1" value="35" aria-describedby="{p['fid']}Keys"
+{p.get('ai_label', '')}      <input class="pn-compare__range" type="range" min="0" max="100" step="1" value="35" aria-describedby="{p['fid']}Keys"
              aria-label="{p['aria']}"
              aria-valuetext="Mostly {p['subject']} as it could be, divider at 35 per cent">
     </div>
@@ -102,7 +102,7 @@ body.pn-id.pn-pd .{cls}.pn-hero-compare .pn-compare__before .pa-annot svg{{ disp
 
 PAGES = {
     "discovery-hidden-bins.html": dict(
-        cls="hb-hero", name="The Hidden Bins", fid="hbHeroCompare", subject="the frontage", focus="60% 50%",
+        cls="hb-hero", ai_label='      <p class="pn-compare__ai">AI-generated illustration</p>\n', name="The Hidden Bins", fid="hbHeroCompare", subject="the frontage", focus="60% 50%",
         aria="Compare the frontage with its bins out and with the bins hidden away. Higher values show more of the frontage before.",
         bef_jpg="assets/img/9805382f8164228a.jpg",
         bef_webp=[("assets/img/9805382f8164228a-960w.webp", 960), ("assets/img/9805382f8164228a.webp", 1408)],
@@ -118,7 +118,7 @@ PAGES = {
        no derivative here and is served as its original JPEG (no lineage claim is made). -->
 """),
     "discovery-house-as-power-station.html": dict(
-        cls="ps-hero", name="The House as a Power Station", fid="psHeroCompare", subject="the house", focus="50% 50%",
+        cls="ps-hero", ai_label='      <p class="pn-compare__ai">AI-generated illustration</p>\n', name="The House as a Power Station", fid="psHeroCompare", subject="the house", focus="50% 50%",
         aria="Compare the house with a bare roof and with solar panels, a battery and a charger. Higher values show more of the house before.",
         bef_jpg="assets/img/fec77c3f0bae107a.jpg",
         bef_webp=[("assets/img/fec77c3f0bae107a-960w.webp", 960), ("assets/img/fec77c3f0bae107a.webp", 1408)],
@@ -128,7 +128,7 @@ PAGES = {
         pos_alt="The house as it could be: solar panels across the roof, a battery unit in the open garage, a charger on the wall and an electric car in the driveway.",
         preload_old=None,
         preload_new='<link rel="preload" as="image" type="image/webp" imagesrcset="assets/img/ce9da2e51c945693-960w.webp 960w, assets/img/ce9da2e51c945693.webp 1408w" imagesizes="%s" fetchpriority="high">\n' % SIZES,
-        comment="""  <!-- Pass 2 Release 3 (founder approval, 30 Oct 2026; freeze record V8): the shared Before ->
+        comment="""  <!-- Pass 2 Release 3 (founder approval, 30 Oct 2026; Governance 2.0): the shared Before ->
        Possible component pn-compare v1.2, hero standard. Same house, one framing (0 px): the bare
        roof, then the S8 picture (solar, battery, charger). The Potential Asset annotation is
        unchanged in geometry and wording and now sits inside the BEFORE layer, so it labels the
@@ -148,8 +148,8 @@ PAGES = {
         comment="""  <!-- Pass 2 Release 3 (founder approval, 30 Oct 2026): the shared Before -> Possible component
        pn-compare v1.2, hero standard. Same garden, one framing (0 px): as it is, then two pods.
        The slider uses copies of the two legacy pictures with the faint visible mark removed
-       (atlas-tools/build-disc016-hero-mark-removal.py; hash-pinned exception PN-FDR-2026-10-30-DISC016-MR,
-       governance/DISC-016-HERO-MARK-REMOVAL-EXCEPTION-2026-10-30.json). The sources and
+       (atlas-tools/build-disc016-hero-mark-removal.py; routine edit, Governance 2.0 Rule 3,
+       governance/DISC-016-HERO-MARK-REMOVAL-2026-10-30.json). The sources and
        their other uses on this page are unchanged. -->
 """),
 }
