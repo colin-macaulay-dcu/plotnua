@@ -260,7 +260,7 @@
 .pn-founder .fc-sig b{font-family:'Instrument Serif',Georgia,serif;font-style:italic;font-weight:400;font-size:26px;color:#F2EBE0}
 .pn-founder .fc-sig span{font-family:'Hanken Grotesk',system-ui,sans-serif;font-size:13px;letter-spacing:.06em;color:#C2BDB5}
 @media (max-width:760px){
- .pn-founder{padding:56px 16px}
+ .pn-founder{padding:56px 16px;width:100vw;margin-left:calc(50% - 50vw);box-sizing:border-box} /* full width on phones: the article column's side padding made the card 246px wide */
  .pn-founder .fc{grid-template-columns:96px minmax(0,1fr);column-gap:18px;padding:22px 20px 24px;border-radius:16px}
  .pn-founder .fc::before{left:20px;right:20px}
  .pn-founder .fc-ph{grid-row:auto;padding:4px;border-radius:10px;align-self:center}
