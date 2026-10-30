@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 """
-Guards for the Premium Supplier Gallery (v1), first page discovery-garden-retreat.html.
+Guards for the Premium Supplier Gallery (v1): discovery-garden-retreat.html (first page)
+and discovery-living-in-the-garden.html (DISC-008, founder approval to develop 30 Oct 2026).
+A page may carry the gallery only if it has an editorial file in atlas-tools/supplier-gallery/.
 
 Reads the BUILT page, not the builder's intentions, and checks it against
 independent sources (image-rights-records.json and the live Garden Retreat
@@ -20,12 +22,22 @@ explorer config). Then mutates the page in memory to prove each guard can fail.
   G11 every location line is backed by evidence in the editorial file; none for OGNYX
       (founder rule 30 Oct 2026: its confirmation does not clearly authorise public display)
   G12 Tanktribe shows the CORE photograph (IMG_8495), never IMG_2531 (founder decision 30 Oct 2026)
+  G13 DISC-008: only ÖÖD House, Powersheds and Yardbox carry an image (founder instruction 30 Oct
+      2026); Garden Room Ireland and Don Modular Homes stay text-only until their previews are addressed
+  G14 Garden Retreat's gallery region is byte-identical to the founder-approved release (sha256 pin)
 """
+import hashlib
 import json, re, sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 PAGE = ROOT / "discovery-garden-retreat.html"
+EDITORIALS = {json.loads(f.read_text(encoding="utf-8"))["discovery"]: f
+              for f in sorted((ROOT / "atlas-tools/supplier-gallery").glob("*.editorial.json"))}
+GR_REGION_SHA = "bc70d9aad57cc5b190fa1742c2c6591cfa7909687a188dede38f6ae0c832a6ea"   # production aca0556
+LITG = "discovery-living-in-the-garden.html"
+LITG_IMAGED = {"ÖÖD House", "Powersheds", "Yardbox"}
+LITG_HELD = {"Garden Room Ireland", "Don Modular Homes"}
 B_START, B_END = "<!-- PN-SUPPLIER-GALLERY v1", "<!-- /PN-SUPPLIER-GALLERY -->"
 EXPLORER = "<!-- 6c · PLOTNUA-MAKER-EXPLORER-V1"
 CSS = ROOT / "assets/components/pn-supplier-gallery.css"
@@ -45,8 +57,12 @@ def rights():
     return out
 
 
-def live():
-    s = (ROOT / "discovery-garden-retreat.html").read_text()
+def names_of(r):
+    return {r["organisation_name"], *(r.get("maker_name_aliases") or [])}
+
+
+def live(page_name="discovery-garden-retreat.html"):
+    s = (ROOT / page_name).read_text()
     cfg = json.loads(re.search(r'id="mx-data">(.*?)</script>', s, re.S).group(1))
     names, offers = set(), set()
     for t in cfg["tabs"]:
@@ -66,16 +82,17 @@ def region(page):
     return page[i:j] if i >= 0 and j > i else ""
 
 
-def checks(full, css):
-    R = rights(); names, offers = live(); fails = []
+def checks(full, css, page_name="discovery-garden-retreat.html", others=None):
+    R = rights(); names, offers = live(page_name); fails = []
     # G9 placement, then every other check reads the gallery region only
     if full.count(B_START) != 1 or full.count(B_END) != 1:
-        fails.append("G9 gallery region missing or duplicated on Garden Retreat")
+        fails.append(f"G9 gallery region missing or duplicated on {page_name}")
     elif not re.match(r"\s*" + re.escape(EXPLORER), full[full.index(B_END) + len(B_END):]):
         fails.append("G9 gallery is not directly before the Maker Explorer")
     for f in ROOT.glob("*.html"):
-        if f.name != PAGE.name and "data-pn-supplier-gallery" in f.read_text(errors="ignore"):
-            fails.append(f"G9 gallery found on {f.name}: not authorised beyond Garden Retreat")
+        text = (others or {}).get(f.name) or f.read_text(errors="ignore")
+        if f.name not in EDITORIALS and "data-pn-supplier-gallery" in text:
+            fails.append(f"G9 gallery found on {f.name}: no editorial file authorises it")
     page = region(full)
     cards = re.findall(r'<article class="pn-sg-(?:card|entry)[^"]*" aria-label="([^"]+)">(.*?)</article>', page, re.S)
     for name, body in cards:
@@ -85,7 +102,7 @@ def checks(full, css):
             if src not in R:
                 fails.append(f"G1 {name}: image not an approved asset of a publishable grant: {src[:80]}"); continue
             rec, asset = R[src]
-            if rec["organisation_name"] != name:
+            if name not in names_of(rec):
                 fails.append(f"G1 {name}: image belongs to {rec['organisation_name']}")
             cred = re.search(r'<a href="([^"]+)"[^>]*>([^<]+)<', body.split('class="pn-sg-cap"', 1)[-1])
             if not cred or unesc(cred.group(2)) != rec["required_credit"] or rec["permitted_domain"] not in cred.group(1):
@@ -105,15 +122,26 @@ def checks(full, css):
     for a in re.findall(r'<a [^>]*href="https?://[^"]+"[^>]*>', page):
         if 'target="_blank"' not in a or 'rel="noopener noreferrer"' not in a:
             fails.append(f"G10 external link without new-tab security attributes: {a[:80]}")
-    ed = json.loads((ROOT / "atlas-tools/supplier-gallery/garden-retreat.editorial.json").read_text())
+    ed = json.loads(EDITORIALS[page_name].read_text())
     for name, body in cards:
         nm = unesc(name)
         if "pn-sg-loc" in body or "<dt>Made in" in body or "<dt>Registered" in body or "<dt>Based" in body:
             b = (ed["makers"].get(nm) or {}).get("base")
             if not b or not b.get("evidence") or nm == "OGNYX":
                 fails.append(f"G11 {nm}: location shown without authorised evidence")
-    if "IMG_2531" in page or "IMG_8495" not in page:
-        fails.append("G12 Tanktribe image is not the CORE photograph IMG_8495")
+    if page_name == PAGE.name:
+        if "IMG_2531" in page or "IMG_8495" not in page:
+            fails.append("G12 Tanktribe image is not the CORE photograph IMG_8495")
+        i, j = full.find(B_START), full.find(B_END)
+        if i < 0 or j < 0 or hashlib.sha256(full[i:j + len(B_END)].encode()).hexdigest() != GR_REGION_SHA:
+            fails.append("G14 Garden Retreat gallery region differs from the approved release")
+    if page_name == LITG:
+        imaged = {unesc(n) for n, b in cards if "<img " in b}
+        if imaged - LITG_IMAGED:
+            fails.append(f"G13 DISC-008 images shown for {sorted(imaged - LITG_IMAGED)}: founder approved ÖÖD House, Powersheds and Yardbox only")
+        for n, b in cards:
+            if unesc(n) in LITG_HELD and ("<img " in b or 'class="pn-sg-card"' in b):
+                fails.append(f"G13 {unesc(n)} featured or imaged before its preview is addressed")
     shown = {unesc(n) for n, _ in cards}
     if shown != names:
         fails.append(f"G5 gallery makers {sorted(shown ^ names)} differ from the live Discovery")
@@ -127,8 +155,13 @@ def checks(full, css):
 def main():
     page, css = PAGE.read_text(), CSS.read_text()
     fails, n = checks(page, css)
-    print(f"real build: {n} cards, {len(fails)} failures")
+    print(f"real build: {PAGE.name}: {n} cards, {len(fails)} failures")
     for f in fails: print("  FAIL", f)
+    litg = (ROOT / LITG).read_text()
+    lf, ln = checks(litg, css, LITG)
+    print(f"real build: {LITG}: {ln} cards, {len(lf)} failures")
+    for f in lf: print("  FAIL", f)
+    fails += lf
 
     tank = "https://images.squarespace-cdn.com/content/v1/67ac8d737a7c665f57f5babe/2d930a20-ec94-4b5f-8af4-159501335d62/IMG_8495.jpg"
     mutations = {
@@ -148,14 +181,43 @@ def main():
         "G9 gallery moved after explorer": (page.replace(EXPLORER, "<p>moved</p>\n  " + EXPLORER, 1), css),
         "G9 gallery duplicated": (page.replace(B_END, B_END + "\n" + B_START + " dup -->", 1), css),
     }
+    pw = "https://cdn.shopify.com/s/files/1/0601/8967/1489/files/1610PALCTIMWDDW_d5c78ede-b4ff-441b-926e-8198c72f4ce4.png"
+    gri = "https://static.wixstatic.com/media/fef4b6_b797b39e52a24c2782c27a0f7d4ea2e5~mv2.jpg"
+    held_card = re.search(r'<article class="pn-sg-entry is-text" aria-label="Garden Room Ireland">', litg)
+    litg_mut = {
+        "G1 DISC-008 unapproved image": litg.replace(pw, pw.replace("1610PALC", "1611PALC"), 1),
+        "G2 DISC-008 credit removed": litg.replace(">Image: Powersheds<", ">Powersheds<", 1),
+        "G2 DISC-008 credit link dropped": litg.replace('href="https://www.yardbox.co.uk/" rel="noopener noreferrer" target="_blank">Image: Yard Box', 'href="https://example.com/" rel="noopener noreferrer" target="_blank">Image: Yard Box', 1),
+        "G3 DISC-008 visualisation relabelled": litg.replace('pn-sg-kind">Visualisation', 'pn-sg-kind">Photograph', 1),
+        "G5 DISC-008 invented supplier": litg.replace('aria-label="Hansa24 Group"', 'aria-label="Invented Garden Rooms Ltd"', 1),
+        "G8 DISC-008 endorsement": litg.replace("Apex log cabins, in", "The best Apex log cabins, in", 1),
+        "G13 DISC-008 held supplier imaged": (litg.replace(held_card.group(0), held_card.group(0).replace("is-text", "has-img") +
+                                              f'<figure class="pn-sg-thumb"><div class="pn-sg-mount"><img src="{gri}" alt="x"></div></figure>', 1)
+                                              if held_card else litg + "<!-- no GRI entry -->"),
+        "G9 DISC-008 gallery moved after explorer": litg.replace(EXPLORER, "<p>moved</p>\n  " + EXPLORER, 1),
+    }
     proved = 0
+    for label, p in litg_mut.items():
+        f, _ = checks(p, css, LITG)
+        ok = any(x.split(" ")[0] == label.split(" ")[0] for x in f)
+        proved += ok
+        print(f"  {'PROVED ' if ok else 'NOT PROVED'} {label}")
+    # an unauthorised page carrying the gallery
+    f, _ = checks(page, css, others={"discovery-hidden-bins.html": "<section data-pn-supplier-gallery></section>"})
+    ok = any("G9" in x and "hidden-bins" in x for x in f); proved += ok
+    print(f"  {'PROVED ' if ok else 'NOT PROVED'} G9 gallery on an unauthorised page")
+    # Garden Retreat region pin
+    f, _ = checks(page.replace("Meet the makers.", "Meet the makers!", 1), css)
+    ok = any(x.startswith("G14") for x in f); proved += ok
+    print(f"  {'PROVED ' if ok else 'NOT PROVED'} G14 Garden Retreat region changed")
+    total = len(mutations) + len(litg_mut) + 2
     for label, (p, c) in mutations.items():
         f, _ = checks(p, c)
         ok = any(x.split(" ")[0] == label.split(" ")[0] for x in f)
         proved += ok
         print(f"  {'PROVED ' if ok else 'NOT PROVED'} {label}")
-    print(f"mutations: {proved}/{len(mutations)} caught")
-    sys.exit(0 if not fails and proved == len(mutations) else 1)
+    print(f"mutations: {proved}/{total} caught")
+    sys.exit(0 if not fails and proved == total else 1)
 
 
 if __name__ == "__main__":

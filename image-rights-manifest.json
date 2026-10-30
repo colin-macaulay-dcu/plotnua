@@ -51,7 +51,73 @@
       "note": "ORGANISATION ID CORRECTED BEFORE PUSH. This record was first written with ORG-000194, which is Nua Modular (recuvqPv7XW0b0PFJ), not Power Sheds. The Airtable record id recZyvRt8pDg5spUU was always correct and is what the gate keys on, so nothing was ever mis-authorised -- but a publication-rights record carrying another organisation's code is not something to leave standing. Verified against the live Organisations table: recZyvRt8pDg5spUU is Powersheds, ORG-000065.\n\nNOT A ONE-CLICK GRANT, and must never be represented as one. No PERM-W-2.0 wording was shown to Powersheds and no decision token was ever issued to them; this row belongs to the reply-by-email arm. Scope is exactly as evidenced and no wider: selected imagery from the Powersheds website, used when featuring Powersheds on PlotNua, carrying the credit 'Image: Powersheds'. Exercised on one page only, powersheds-preview.html, which is noindex and unlisted. The gate refuses the image if that credit ever disappears from the page. REMOVAL: delete image_url in supplier-outreach/powersheds/powersheds-manifest.json and rebuild -- the builder renders no image without one -- then regenerate this manifest.\n\nSUPPLIER NAME CORRECTED 2026-10-08. Jack Sutcliffe of Powersheds wrote: \"Seems ok to me - can you just change Power Sheds to Powersheds?\". That email is two things: his approval of the feature as shown to him, and an explicit correction of his own company name. It is NOT a new or wider grant — the grant is still exactly IPO-POWERSHEDS-0001 of 28 September 2026 and its scope is unchanged. Under founder decision of 2026-10-08 the required credit moved from 'Image: Power Sheds' to 'Image: Powersheds', and the credit, this record, the generated manifest, powersheds-preview.html and the recommendation universe were changed in ONE atomic pass, because the gate refuses any image whose required credit is absent from the page and they cannot be allowed to drift apart. The evidence sentence above and the ORGANISATION ID note below are preserved verbatim: they record the state and the wording in force at the time, and are not rewritten. Corroboration already held: the registered entity is 'Powersheds Limited, UK company number 11790351'.",
       "atlas_permission_record": "reczCyWXPWvoA27GX",
       "atlas_permission_ref": "IPO-POWERSHEDS-0001",
-      "permission_date": "2026-09-28"
+      "permission_date": "2026-09-28",
+      "permission": {
+        "state": "GRANTED",
+        "ref": "IPO-POWERSHEDS-0001",
+        "record": "reczCyWXPWvoA27GX",
+        "date": "2026-09-28",
+        "scope": [
+          "feature",
+          "imagery"
+        ],
+        "conditions": [
+          "credit",
+          "removal-or-change-on-request",
+          "selected-first-party-imagery-only",
+          "unmodified-hotlink"
+        ],
+        "asked": "PlotNua, 22 Sep 2026 (Gmail 1a0c9134d7ec505d), listing what an initial pilot would need: \"permission to use an agreed selection of Power Sheds product imagery\".",
+        "answered": "\"I'm would be happy for you to use selected imagery from our website, provided it is clearly attributed to Powersheds. We'd just want to retain the right to ask for imagery to be removed or changed at any point if we felt it was no longer appropriate or the partnership wasn't working for us.\" (Jack Sutcliffe, 28 Sep 2026, Gmail 1a0e6e3dd5e73483)",
+        "note": "Structured restatement, 30 Oct 2026, of the grant recorded above; nothing new is granted. 'feature' is the scope already recorded in Atlas IPO-POWERSHEDS-0001 (\"used when featuring Power Sheds on PlotNua\") and is confirmed by Jack's approval of the feature preview on 7 Oct. Jack's other points in the same email (pricing source, customer handover, attribution, no PlotNua discount) are commercial and are not image-rights scope."
+      },
+      "listing_review": {
+        "state": "CONFIRMED",
+        "requested_by": "plotnua",
+        "requested_in": "Gmail 1a0e7d28cab8793f, 28 Sep 2026 (private preview sent: powersheds-preview.html)",
+        "confirmed_at": "2026-10-07",
+        "confirmed_in": "Gmail 1a116d6ba3130623",
+        "note": "\"Seems ok to me - can you just change Power Sheds to Powersheds?\" - Jack Sutcliffe on the private preview, 7 Oct 2026. The name correction was applied on 8 Oct (see note above)."
+      },
+      "public_visibility": "PUBLISHABLE",
+      "credit_href": "https://ie.powersheds.com/",
+      "asset_approval_state": "APPROVED",
+      "asset_approval": {
+        "state": "SELECTED_ASSETS_APPROVED",
+        "default_for_unlisted": "NOT_AUTHORISED",
+        "approved_count": 2,
+        "authorised_by": "Powersheds, 28 Sep 2026 (Jack Sutcliffe, Gmail 1a0e6e3dd5e73483; preview approved 7 Oct 2026, Gmail 1a116d6ba3130623); founder approval 30 Oct 2026 (DISC-008 supplier gallery; permissions verification of 30 Oct 2026 approved: use only images already authorised and published on PlotNua)",
+        "note": "Approval is by ENUMERATION, per asset. Listed: exactly the 2 image(s) this supplier already has on discovery-living-in-the-garden.html (Maker Explorer, live since 16 Oct 2026, 15b145e), each already proven by apply_authorised_imagery.py against this grant. This restates, and does not widen, the scope recorded above; no other image is authorised by this list.",
+        "conditions_on_every_use": [
+          "Credit: Image: Powersheds",
+          "A working link to https://ie.powersheds.com/ (Powersheds' stated source of truth for Ireland)",
+          "Removed or changed whenever Powersheds asks",
+          "Hot-linked unmodified from Powersheds' own Shopify namespace; never downloaded, rehosted, cropped or altered",
+          "Rendered images are labelled Visualisation"
+        ]
+      },
+      "approved_assets": [
+        {
+          "url": "https://cdn.shopify.com/s/files/1/0601/8967/1489/files/1610PALCTIMWDDW_d5c78ede-b4ff-441b-926e-8198c72f4ce4.png",
+          "product_code": "PROD-000383",
+          "product_name": "12x12 Apex Classic Log Cabin",
+          "atlas_asset": "rec4Kr7TpqB6j15J1",
+          "kind": "visualisation",
+          "primary": true,
+          "alt": "A Powersheds Apex Classic Log Cabin in a garden",
+          "medium_note": "Judged a rendered scene from the image itself (uniform synthetic lighting and planting, 3200 x 3200 product render); the filename does not say. Recorded as a visualisation, the safer label; founder to confirm. The live explorer label ('Photograph') is unchanged and reported to the founder."
+        },
+        {
+          "url": "https://cdn.shopify.com/s/files/1/0601/8967/1489/files/POW01001_CGI_LIFESTYLE_IMAGES_MAY24_SC03_LOGCABIN_S02_ADOBE_98.jpg",
+          "product_code": "PROD-000382",
+          "product_name": "16x12 Apex Log Cabin",
+          "atlas_asset": "recp5bQqCAp5GszpJ",
+          "kind": "visualisation",
+          "primary": false,
+          "alt": "A Powersheds Apex Log Cabin in a garden",
+          "medium_note": "Supplier's own filename names it CGI (\"..._CGI_LIFESTYLE_IMAGES_...\"). The live explorer label ('Photograph') is unchanged and reported to the founder."
+        }
+      ]
     },
     {
       "organisation_record": "recyfWvDVODL06P8l",
@@ -86,7 +152,78 @@
         "do_not_import": "Only the published attribution sentence and the partnership statement are evidenced. Broader characterisations — 'technical architecture and procurement brain', 'master manufacturer', or any split of individual design responsibilities — are NOT evidenced and must not be stated.",
         "footprint": "Cormac's correction stands and is unaffected: the Bothán 45 m² figure is the INTERNAL footprint. INTUMODULAR's page publishes 45 sqm without stating a measurement basis, so it neither confirms nor contradicts this.",
         "contact": "Cormac is NOT to be contacted about this. Founder direction, 29 September 2026: resolved from first-party published evidence."
-      }
+      },
+      "permission": {
+        "state": "GRANTED",
+        "ref": "IPO-032",
+        "record": "recAWWIwLpJX8mAiW",
+        "date": "2026-09-29",
+        "scope": [
+          "feature",
+          "imagery"
+        ],
+        "conditions": [
+          "credit",
+          "referenced-from-own-site-never-copied",
+          "selected-first-party-imagery-only"
+        ],
+        "asked": "\"Would you be happy for PlotNua to feature your company and use selected imagery from your website alongside the information about your products?\" (PlotNua, 24 Sep 2026, thread 1a0d05e09446b7fe; the imagery ask repeated 28 Sep)",
+        "answered": "\"Imagery is ok to use.\" (Cormac Carville, Yard Box, 29 Sep 2026, Gmail 1a0ed8a508425026)",
+        "note": "Structured restatement, 30 Oct 2026, of the grant recorded above; nothing new is granted. The two factual corrections in the same reply (Bothán footprint basis, design and manufacture credit) concern the Bothán and are recorded in bothan_attribution; the Bothán is not listed on DISC-008."
+      },
+      "listing_review": {
+        "state": "NOT_REQUIRED",
+        "requested_by": null,
+        "requested_in": null,
+        "note": "Yard Box did not ask to review a listing. PlotNua sent a private preview (yardbox-preview.html, 23 and 24 Sep 2026); Cormac's reply of 29 Sep granted imagery and corrected two Bothán facts. Founder decision 30 Oct 2026 (approval of the DISC-008 permissions verification): Yardbox may be featured without further contact."
+      },
+      "public_visibility": "PUBLISHABLE",
+      "credit_href": "https://www.yardbox.co.uk/",
+      "maker_name_aliases": [
+        "Yardbox"
+      ],
+      "asset_approval_state": "APPROVED",
+      "asset_approval": {
+        "state": "SELECTED_ASSETS_APPROVED",
+        "default_for_unlisted": "NOT_AUTHORISED",
+        "approved_count": 3,
+        "authorised_by": "Yard Box, 29 Sep 2026 (Cormac Carville, Gmail 1a0ed8a508425026); founder approval 30 Oct 2026 (DISC-008 supplier gallery; permissions verification of 30 Oct 2026 approved: use only images already authorised and published on PlotNua)",
+        "note": "Approval is by ENUMERATION, per asset. Listed: exactly the 3 image(s) this supplier already has on discovery-living-in-the-garden.html (Maker Explorer, live since 16 Oct 2026, 15b145e), each already proven by apply_authorised_imagery.py against this grant. This restates, and does not widen, the scope recorded above; no other image is authorised by this list.",
+        "conditions_on_every_use": [
+          "Credit: Image: Yard Box",
+          "A working link to https://www.yardbox.co.uk/",
+          "Referenced from Yard Box's own Squarespace namespace; never copied, rehosted, cropped or altered"
+        ]
+      },
+      "approved_assets": [
+        {
+          "url": "https://images.squarespace-cdn.com/content/v1/619124cac9d9895faff3d303/dca56524-1fb1-424b-8fac-ac5ad731b557/Yard-Box-Patrick-26+%281%29.JPG",
+          "product_code": "PROD-000531",
+          "product_name": "Yardbox The Toronto",
+          "atlas_asset": "rec3FDMBST0pgNyyy",
+          "kind": "photograph",
+          "primary": true,
+          "alt": "The Yard Box Toronto, a garden room installed in a garden"
+        },
+        {
+          "url": "https://images.squarespace-cdn.com/content/v1/619124cac9d9895faff3d303/8d487648-027f-4435-89d9-ae906fe9a790/854A5433+copy-2.jpg",
+          "product_code": "PROD-000530",
+          "product_name": "Yardbox The Vancouver",
+          "atlas_asset": "recOwRs3TWWSUyiOr",
+          "kind": "photograph",
+          "primary": false,
+          "alt": "The Yard Box Vancouver, a mid-range garden room"
+        },
+        {
+          "url": "https://images.squarespace-cdn.com/content/v1/619124cac9d9895faff3d303/b8f49726-43f3-4a54-895b-149a5349bc82/whistler+5.PNG",
+          "product_code": "PROD-000529",
+          "product_name": "Yardbox The Whistler",
+          "atlas_asset": "reca1N71LmZi78HvZ",
+          "kind": "photograph",
+          "primary": false,
+          "alt": "The Yard Box Whistler, a compact garden room"
+        }
+      ]
     },
     {
       "organisation_record": "recEitQxMaz9SyDzX",
@@ -1028,7 +1165,276 @@
         "requested_in": null,
         "note": "ÖÖD did not ask to review a listing (Gertrud 1a139105565814d0; Keir 1a13a4b45780ba3b). PlotNua offered a private preview on 14 Oct (1a13993898984e9b); it was not requested or sent. Founder ruling, 14 Oct 2026: a private preview existing creates no supplier-review requirement."
       },
-      "public_visibility": "PUBLISHABLE"
+      "public_visibility": "PUBLISHABLE",
+      "asset_approval_state": "APPROVED",
+      "asset_approval": {
+        "state": "SELECTED_ASSETS_APPROVED",
+        "default_for_unlisted": "NOT_AUTHORISED",
+        "approved_count": 28,
+        "authorised_by": "ÖÖD House, 14 Oct 2026 (Gertrud Ots, Head of Marketing, Gmail 1a139105565814d0: Drive photo library by product); founder approval 30 Oct 2026 (DISC-008 supplier gallery; permissions verification of 30 Oct 2026 approved: use only images already authorised and published on PlotNua)",
+        "note": "Approval is by ENUMERATION, per asset. Listed: exactly the 28 image(s) this supplier already has on discovery-living-in-the-garden.html (Maker Explorer, live since 16 Oct 2026, 15b145e), each already proven by apply_authorised_imagery.py against this grant. This restates, and does not widen, the scope recorded above; no other image is authorised by this list.",
+        "conditions_on_every_use": [
+          "Credit: ÖÖD House (and the named photographer where the file names one)",
+          "A working link to https://www.oodhouse.com/",
+          "Each image used only for the model named by ÖÖD's own folder",
+          "Hot-linked unmodified from ÖÖD's own Drive files; never downloaded, rehosted, cropped or altered",
+          "No implied endorsement, recommendation or residential suitability"
+        ]
+      },
+      "approved_assets": [
+        {
+          "url": "https://lh3.googleusercontent.com/d/1LNGkuROBSI4edwkw0FM9S6EJieOrsZg5=w1600",
+          "product_code": "PROD-000512",
+          "product_name": "ÖÖD Extended House",
+          "atlas_asset": "recyz2arjsX1KE6dq",
+          "kind": "photograph",
+          "primary": true,
+          "alt": "Extended House with its long mirrored side reflecting dark hills and cloud"
+        },
+        {
+          "url": "https://lh3.googleusercontent.com/d/1uCwtWOKNIG_xXoEy7yMPgbRKNPXCfNGa=w1600",
+          "product_code": "PROD-000512",
+          "product_name": "ÖÖD Extended House",
+          "atlas_asset": "recreVS6GWDvjQuEi",
+          "kind": "photograph",
+          "primary": false,
+          "alt": "A timber-clad Extended House on a boardwalk in an open volcanic landscape"
+        },
+        {
+          "url": "https://lh3.googleusercontent.com/d/1ZF7sYK4WvnXQD_7gUzruD6eT6O1vEzZI=w1600",
+          "product_code": "PROD-000512",
+          "product_name": "ÖÖD Extended House",
+          "atlas_asset": "recOkzwdhI2ByNfhY",
+          "kind": "photograph",
+          "primary": false,
+          "alt": "Extended House on a boardwalk among lava fields, with a mountain behind"
+        },
+        {
+          "url": "https://lh3.googleusercontent.com/d/10XNiu4r28DOUPflIOknPDNmM3wJOPx7Y=w1600",
+          "product_code": "PROD-000512",
+          "product_name": "ÖÖD Extended House",
+          "atlas_asset": "recSHXVbzqzkbGF00",
+          "kind": "photograph",
+          "primary": false,
+          "alt": "Inside an Extended House: a long room with a table, kitchen and glass along one side"
+        },
+        {
+          "url": "https://lh3.googleusercontent.com/d/1yfaBudGFv1m7K98RfozvxlZzV-g1Ksio=w1600",
+          "product_code": "PROD-000509",
+          "product_name": "ÖÖD Glämping House",
+          "atlas_asset": "recaxWkZap8xgHDQQ",
+          "kind": "photograph",
+          "primary": false,
+          "alt": "Glämping House on a timber deck in high desert at sunrise, with a telescope outside"
+        },
+        {
+          "url": "https://lh3.googleusercontent.com/d/1ob8p3n_CpDwJXh4SNSgImKA_h-kWF0xJ=w1600",
+          "product_code": "PROD-000509",
+          "product_name": "ÖÖD Glämping House",
+          "atlas_asset": "rec8gJrdjRE9ZTpTD",
+          "kind": "photograph",
+          "primary": false,
+          "alt": "Glämping House under a starry sky on a timber deck with two chairs"
+        },
+        {
+          "url": "https://lh3.googleusercontent.com/d/1o0i2YfvE8Kc9tLH_mZwGADXbiXzJuHB_=w1600",
+          "product_code": "PROD-000509",
+          "product_name": "ÖÖD Glämping House",
+          "atlas_asset": "recH8zAktYe1fwOZo",
+          "kind": "photograph",
+          "primary": false,
+          "alt": "Glämping House lit from within at night, the bedroom visible through the glass"
+        },
+        {
+          "url": "https://lh3.googleusercontent.com/d/1GvCJ4OCDAn9NgQ6W4jwjlyfIpyV9ZwKv=w1600",
+          "product_code": "PROD-000509",
+          "product_name": "ÖÖD Glämping House",
+          "atlas_asset": "recI6MPe9X3d166TN",
+          "kind": "photograph",
+          "primary": false,
+          "alt": "Glämping House seen from a distance across open scrubland, showing its scale"
+        },
+        {
+          "url": "https://lh3.googleusercontent.com/d/1XIBfJ7rSHrjjFLlvpmTyWLo99A33bnlq=w1600",
+          "product_code": "PROD-000514",
+          "product_name": "ÖÖD Glääzy House",
+          "atlas_asset": "recdTUXyublD5FGhq",
+          "kind": "photograph",
+          "primary": false,
+          "alt": "Glääzy House with its pitched glass end among low trees and heather"
+        },
+        {
+          "url": "https://lh3.googleusercontent.com/d/1ejJG2ntzGHxim7ht-NtypqpBJ06ydomW=w1600",
+          "product_code": "PROD-000514",
+          "product_name": "ÖÖD Glääzy House",
+          "atlas_asset": "recUjhEFw0d4006R1",
+          "kind": "photograph",
+          "primary": false,
+          "alt": "Glääzy House from a lower angle, dark cladding and mirrored glass in scrubland"
+        },
+        {
+          "url": "https://lh3.googleusercontent.com/d/1mOp5MeibJ5j6fCUivqfj_3wlCZsjpG1F=w1600",
+          "product_code": "PROD-000514",
+          "product_name": "ÖÖD Glääzy House",
+          "atlas_asset": "recYsiePLBpxHsPSz",
+          "kind": "photograph",
+          "primary": false,
+          "alt": "Glääzy House lit from within at dusk in a snowy landscape"
+        },
+        {
+          "url": "https://lh3.googleusercontent.com/d/1WZrrO7P28dYuSZhGfM_MDotq_-0q6J20=w1600",
+          "product_code": "PROD-000514",
+          "product_name": "ÖÖD Glääzy House",
+          "atlas_asset": "recdVvdyz2dF94OLP",
+          "kind": "photograph",
+          "primary": false,
+          "alt": "Looking up from the bed in a Glääzy House through its glass roof and gable"
+        },
+        {
+          "url": "https://lh3.googleusercontent.com/d/1RekoPNxkpfEus5BoFLXNHGhDvAkwz0ar=w1600",
+          "product_code": "PROD-000511",
+          "product_name": "ÖÖD Mobile House",
+          "atlas_asset": "rec7V4hnbaDLGRCl3",
+          "kind": "photograph",
+          "primary": false,
+          "alt": "Mobile House among pine trees beside a timber deck with red chairs"
+        },
+        {
+          "url": "https://lh3.googleusercontent.com/d/1-s3JU-5MhvXYPrKEWYlW2Qhhhwe3RXIM=w1600",
+          "product_code": "PROD-000511",
+          "product_name": "ÖÖD Mobile House",
+          "atlas_asset": "recfgvR5hYlgNcZib",
+          "kind": "photograph",
+          "primary": false,
+          "alt": "The mirrored end of a Mobile House beyond its deck, reflecting the woodland"
+        },
+        {
+          "url": "https://lh3.googleusercontent.com/d/1NxvKE77I0ENDH75o3kki2Bs7J0z-Yfmh=w1600",
+          "product_code": "PROD-000511",
+          "product_name": "ÖÖD Mobile House",
+          "atlas_asset": "recaMgZPzSbQ5IIx8",
+          "kind": "photograph",
+          "primary": false,
+          "alt": "Inside a Mobile House: a bed and table beside full-height glass onto the trees"
+        },
+        {
+          "url": "https://lh3.googleusercontent.com/d/1V0G-aX7veOinUIDuqn4poqjmMTO2GgzF=w1600",
+          "product_code": "PROD-000515",
+          "product_name": "ÖÖD Möön House",
+          "atlas_asset": "recltDvzNQhm2F3SP",
+          "kind": "photograph",
+          "primary": false,
+          "alt": "Möön House with a full-height glass corner, curtains drawn back, on open moorland"
+        },
+        {
+          "url": "https://lh3.googleusercontent.com/d/1PmSreci2uYbdaBxpwUnzz9EdynTUWJGk=w1600",
+          "product_code": "PROD-000515",
+          "product_name": "ÖÖD Möön House",
+          "atlas_asset": "recde6iunyLgEYvzT",
+          "kind": "photograph",
+          "primary": false,
+          "alt": "Möön House from above on a dark deck in green moorland"
+        },
+        {
+          "url": "https://lh3.googleusercontent.com/d/1OrRzUbCQ02bhxDk5--mPR6KDFUIrIzy2=w1600",
+          "product_code": "PROD-000515",
+          "product_name": "ÖÖD Möön House",
+          "atlas_asset": "recvHKzv3ojOozJCG",
+          "kind": "photograph",
+          "primary": false,
+          "alt": "Möön House and a small sauna seen from above beside a gravel track"
+        },
+        {
+          "url": "https://lh3.googleusercontent.com/d/14OqokuAczh_R0finpF-szBWogsOrVd48=w1600",
+          "product_code": "PROD-000515",
+          "product_name": "ÖÖD Möön House",
+          "atlas_asset": "recQhN9ar0gKhQVci",
+          "kind": "photograph",
+          "primary": false,
+          "alt": "Möön House under a cloudy sky, glass on two sides and dark cladding"
+        },
+        {
+          "url": "https://lh3.googleusercontent.com/d/1Du2PTFM9Ggb_QU9iWZcxOb0uxy-AEBPx=w1600",
+          "product_code": "PROD-000515",
+          "product_name": "ÖÖD Möön House",
+          "atlas_asset": "recjIJcgO4dHq7H65",
+          "kind": "photograph",
+          "primary": false,
+          "alt": "Inside a Möön House: a glass corner looking out across open landscape"
+        },
+        {
+          "url": "https://lh3.googleusercontent.com/d/1zfB24bun-dr7Smh0ZeFSX_OaNVDh6DMX=w1600",
+          "product_code": "PROD-000510",
+          "product_name": "ÖÖD Signature House",
+          "atlas_asset": "recQNpx3vprHXsh0p",
+          "kind": "photograph",
+          "primary": false,
+          "alt": "Signature House among lupins and trees, its mirrored walls reflecting the sky"
+        },
+        {
+          "url": "https://lh3.googleusercontent.com/d/1Bz95Xl1AzKeEI84zBbMBpGW_xDOwT9y0=w1600",
+          "product_code": "PROD-000510",
+          "product_name": "ÖÖD Signature House",
+          "atlas_asset": "rec8KhBjYMtCRdl49",
+          "kind": "photograph",
+          "primary": false,
+          "alt": "Signature House on a timber deck with loungers, mirrored glass reflecting pine trees"
+        },
+        {
+          "url": "https://lh3.googleusercontent.com/d/1vmuC_8SoSGh569AfqkKwdffpoSoFQ6-i=w1600",
+          "product_code": "PROD-000510",
+          "product_name": "ÖÖD Signature House",
+          "atlas_asset": "recrXC0oZzKJCOgXI",
+          "kind": "photograph",
+          "primary": false,
+          "alt": "Signature House at sunset on open grassland beside a small timber sauna"
+        },
+        {
+          "url": "https://lh3.googleusercontent.com/d/1DgirwuCSVsqIVR-Gjh2vsLshp_KiIZkG=w1600",
+          "product_code": "PROD-000510",
+          "product_name": "ÖÖD Signature House",
+          "atlas_asset": "recnv5jMRfZR32Sgv",
+          "kind": "photograph",
+          "primary": false,
+          "alt": "Inside a Signature House: bed, kitchenette and floor-to-ceiling glass onto trees"
+        },
+        {
+          "url": "https://lh3.googleusercontent.com/d/1FZqxVCAG_jNbx5bpOzAcG58o1hV2NAW0=w1600",
+          "product_code": "PROD-000513",
+          "product_name": "ÖÖD The Big Monolith",
+          "atlas_asset": "recV5xOE7fjYvOUMD",
+          "kind": "photograph",
+          "primary": false,
+          "alt": "The Big Monolith on mossy ground, its long mirrored side reflecting cloud and hills"
+        },
+        {
+          "url": "https://lh3.googleusercontent.com/d/17Odd2cNOaEQoEjI584ut6cqI8qFqNVJS=w1600",
+          "product_code": "PROD-000513",
+          "product_name": "ÖÖD The Big Monolith",
+          "atlas_asset": "recE2XDcjJHVtaL21",
+          "kind": "photograph",
+          "primary": false,
+          "alt": "The Big Monolith in snow, its glass reflecting a mountain"
+        },
+        {
+          "url": "https://lh3.googleusercontent.com/d/1V7_11MkyiQ-8doHTyyIi2ywM2wu00FkK=w1600",
+          "product_code": "PROD-000513",
+          "product_name": "ÖÖD The Big Monolith",
+          "atlas_asset": "reclLDeJPPySyGSZU",
+          "kind": "photograph",
+          "primary": false,
+          "alt": "The Big Monolith and a smaller unit in a wide snowy landscape, showing its length"
+        },
+        {
+          "url": "https://lh3.googleusercontent.com/d/1CKxn4Aw9mWNQUoq_QHsuixi7tiiewQ7s=w1600",
+          "product_code": "PROD-000513",
+          "product_name": "ÖÖD The Big Monolith",
+          "atlas_asset": "recIijCYifQXab6Z6",
+          "kind": "photograph",
+          "primary": false,
+          "alt": "Inside The Big Monolith: a bedroom with glass walls onto the landscape"
+        }
+      ]
     },
     {
       "organisation_record": "recuvqPv7XW0b0PFJ",

@@ -35,9 +35,12 @@ from urllib.parse import urlparse
 
 ROOT = Path(__file__).resolve().parents[1]
 DATA = ROOT / "atlas-tools" / "supplier-gallery"
-DISCOVERY = ROOT / "discovery-garden-retreat.html"
 RIGHTS = ROOT / "image-rights-records.json"
-EDITORIAL = DATA / "garden-retreat.editorial.json"
+# MULTI-DISCOVERY (founder approval 30 Oct 2026, DISC-008). One editorial file per
+# Discovery that carries a gallery; the file names its page. The component, the
+# rights rules and the guards are identical on every page. Garden Retreat's output
+# is unchanged byte for byte (prove-supplier-gallery.py pins it).
+EDITORIALS = sorted(DATA.glob("*.editorial.json"))
 HEADINGS = DATA / "discovery-headings.json"
 ASSET_V = "1"   # bump with any change to assets/components/pn-supplier-gallery.{css,js}
 
@@ -50,6 +53,8 @@ E = lambda s: html.escape(str(s), quote=True)
 
 TAB_LABEL = {"saunas": ("sauna", "saunas"), "hotTubs": ("hot tub", "hot tubs"), "coldPlunges": ("cold plunge", "cold plunges")}
 DESC_NOUN = {"saunas": "outdoor saunas", "hotTubs": "hot tubs", "coldPlunges": "cold plunges"}  # the live explorer's own product types
+# Other Discoveries: the singular/plural come from the live explorer tab's own
+# "nouns", and the description noun from the editorial file's "descNouns".
 # Candidate mount shapes. The builder picks the one that shows the featured
 # images LARGEST on average (whole image always visible, never cropped).
 MOUNTS = [(1, 1), (5, 6), (4, 5), (3, 4), (2, 3)]
@@ -60,12 +65,19 @@ EXT = '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="
 NEWTAB = '<span class="pn-sg-vh"> (opens in a new tab)</span>'
 
 
-def load_explorer():
-    s = DISCOVERY.read_text(encoding="utf-8")
+def load_explorer(discovery):
+    s = discovery.read_text(encoding="utf-8")
     m = re.search(r'<script type="application/json" class="pn-mx-config" id="mx-data">(.*?)</script>', s, re.S)
     if not m:
-        sys.exit("FAIL: Garden Retreat explorer config not found")
+        sys.exit(f"FAIL: {discovery.name}: explorer config not found")
     return json.loads(m.group(1))
+
+
+def names_of(r):
+    """The names a rights record answers to in a Maker Explorer: its organisation
+    name, plus any maker_name_aliases it records (e.g. Yard Box is listed as
+    "Yardbox"). The supplier is never renamed; credits stay as recorded."""
+    return {r["organisation_name"], *(r.get("maker_name_aliases") or [])}
 
 
 def approved_index():
@@ -79,7 +91,7 @@ def approved_index():
         if r.get("public_visibility") != "PUBLISHABLE" or r.get("asset_approval_state") != "APPROVED":
             continue
         for a in r.get("approved_assets") or []:
-            idx[a["url"]] = (r["organisation_name"], r, a)
+            idx[a["url"]] = (names_of(r), r, a)
         for v in r.get("approved_delivery_variants") or []:
             if v.get("of") in idx and idx[v["of"]][1] is r and v.get("url", "").startswith(v["of"]):
                 VARIANTS[v["of"]] = v
@@ -91,9 +103,13 @@ def approved_index():
 VARIANTS = {}
 
 
-def collect():
-    cfg = load_explorer()
-    ed = json.loads(EDITORIAL.read_text(encoding="utf-8"))
+def collect(ed):
+    cfg = load_explorer(ROOT / ed["discovery"])
+    labels, nouns = dict(TAB_LABEL), dict(DESC_NOUN)
+    for tab in cfg["tabs"]:
+        if tab["key"] not in labels:
+            labels[tab["key"]] = tuple(tab["nouns"])
+            nouns[tab["key"]] = (ed.get("descNouns") or {}).get(tab["key"], tab["nouns"][1])
     approved = approved_index()
     makers, live_imgs = {}, {}
     for tab in cfg["tabs"]:
@@ -118,7 +134,7 @@ def collect():
     for name in sorted(makers, key=lambda n: n.casefold()):
         rec = makers[name]
         e = ed["makers"].get(name, {})
-        cats = [(TAB_LABEL[k][1] if n != 1 else TAB_LABEL[k][0], n) for k, n in rec["cats"].items()]
+        cats = [(labels[k][1] if n != 1 else labels[k][0], n) for k, n in rec["cats"].items()]
         site = sorted(rec["sites"])[0] if rec["sites"] else None
 
         # image: an editorial choice among this maker's approved assets, else the live lead image
@@ -126,12 +142,16 @@ def collect():
         image = None
         if src:
             hit = approved.get(src)
-            if e.get("image") and (not hit or hit[0] != name):
+            if e.get("image") and (not hit or name not in hit[0]):
                 sys.exit(f"FAIL: editorial image for {name} is not an approved asset of its own publishable grant")
             live = live_imgs.get(src)
-            if hit and hit[0] == name and live and live.get("credit") == hit[1].get("required_credit"):
-                image = {"src": src, "alt": live["alt"], "kind": live["kind"], "w": live["w"], "h": live["h"],
-                         "credit": live["credit"], "creditHref": live["creditHref"], "asset": src}
+            if hit and name in hit[0] and live and live.get("credit") == hit[1].get("required_credit"):
+                # The credit links where the live page links it; failing that, where the
+                # rights record says the credit links (credit_href). The medium label is the
+                # live one unless the approved asset records it as a visualisation.
+                kind = "Visualisation" if (hit[2].get("kind") or "").lower() == "visualisation" else live["kind"]
+                image = {"src": src, "alt": live["alt"], "kind": kind, "w": live["w"], "h": live["h"],
+                         "credit": live["credit"], "creditHref": live.get("creditHref") or hit[1].get("credit_href"), "asset": src}
                 v = VARIANTS.get(src)
                 if v:   # approved smaller delivery of the same frame
                     if abs(v["width"] / v["height"] - live["w"] / live["h"]) > 0.005:
@@ -141,7 +161,7 @@ def collect():
                 sys.exit(f"FAIL: {name}: chosen image has no live alt/dimensions/credit to reuse")
 
         explore = image["creditHref"] if image else (f"https://{site}/" if site else None)
-        desc = e.get("description") or (join([DESC_NOUN[k] for k in rec["cats"]]) + ".")
+        desc = e.get("description") or (join([nouns[k] for k in rec["cats"]]) + ".")
         rel = ed.get("relationships", {}).get(name)
         if rec["offer"] and not rel:
             sys.exit(f"FAIL: {name} has a commercial offer in the live config but no disclosure in the editorial file")
@@ -244,11 +264,11 @@ def gallery(ed, head, sup):
     if more:
         items += (f'<li data-sg-end><div class="pn-sg-card pn-sg-card--end"><p class="pn-sg-end-n">{total}</p>'
                   f'<p class="pn-sg-end-t">{E(head["endLine"])}</p>'
-                  f'<button type="button" class="pn-sg-all" data-sg-all aria-controls="sg-all-gr" '
+                  f'<button type="button" class="pn-sg-all" data-sg-all aria-controls="{E(ed.get("gridId", "sg-all-gr"))}" '
                   f'data-sg-open="View all suppliers" data-sg-close="Hide the full list"><span data-sg-label>View all suppliers</span></button></div></li>')
     grid = "".join(f"<li>{index_entry(s)}</li>" for s in sup)
     n_img = sum(1 for s in sup if s["image"])
-    view_all = (f'<button type="button" class="pn-sg-all" data-sg-all aria-controls="sg-all-gr" '
+    view_all = (f'<button type="button" class="pn-sg-all" data-sg-all aria-controls="{E(ed.get("gridId", "sg-all-gr"))}" '
                 f'data-sg-open="View all {total} suppliers" data-sg-close="Hide the full list">'
                 f'<span data-sg-label>View all {total} suppliers</span></button>') if more else ""
     grid_note = ed["gridNote"] if n_img < total else ed.get("gridNoteAllImaged", "")
@@ -270,7 +290,7 @@ def gallery(ed, head, sup):
   </div>
   <ul class="pn-sg-track" id="sg-track" tabindex="0" role="list" aria-label="Featured suppliers, scroll horizontally">{items}</ul>
   <div class="pn-sg-wrap">
-    <details class="pn-sg-grid-wrap" id="sg-all-gr">
+    <details class="pn-sg-grid-wrap" id="{E(ed.get("gridId", "sg-all-gr"))}">
       <summary>View all {total} suppliers</summary>
       <div class="pn-sg-grid-head">
         <h3 class="pn-sg-h3" tabindex="-1">All {total} suppliers</h3>
@@ -306,34 +326,48 @@ def strip(page):
 def compose(page, ed, head, sup):
     base = strip(page)
     if base.count(ANCHOR) != 1 or base.count(HEAD_ANCHOR) != 1:
-        sys.exit("FAIL: Garden Retreat anchors not found exactly once (Maker Explorer comment / maker-explorer.css)")
+        sys.exit("FAIL: page anchors not found exactly once (Maker Explorer comment / maker-explorer.css)")
     # Nothing is written into <head> any more (v1 final): strip() still removes an
     # older head block if one is present.
     return base.replace(ANCHOR, body_block(ed, head, sup) + ANCHOR, 1)
 
 
-def main():
-    page = DISCOVERY.read_text(encoding="utf-8")
+def build_one(edfile):
+    ed = json.loads(edfile.read_text(encoding="utf-8"))
+    discovery = ROOT / ed["discovery"]
+    page = discovery.read_text(encoding="utf-8")
     if "--remove" in sys.argv:
-        out = strip(page)
-        DISCOVERY.write_text(out, encoding="utf-8")
-        print("removed" if out != page else "nothing to remove")
-        return
-    ed, sup = collect()
+        return discovery, page, strip(page), None
+    ed, sup = collect(ed)
     heads = json.loads(HEADINGS.read_text(encoding="utf-8"))["discoveries"]
     head = heads.get(ed["discovery"])
     if not head:
         sys.exit(f"FAIL: no heading set for {ed['discovery']} in discovery-headings.json")
     out = compose(page, ed, head, sup)
     if strip(out) != strip(page):
-        sys.exit("FAIL: integration would change page content outside the gallery regions")
+        sys.exit(f"FAIL: {discovery.name}: integration would change page content outside the gallery regions")
+    return discovery, page, out, sup
+
+
+def main():
+    ok_all = True
+    for edfile in EDITORIALS:
+        discovery, page, out, sup = build_one(edfile)
+        title = discovery.name
+        if "--remove" in sys.argv:
+            discovery.write_text(out, encoding="utf-8")
+            print(f"{title}: " + ("removed" if out != page else "nothing to remove"))
+            continue
+        if "--check" in sys.argv:
+            ok = out == page
+            ok_all &= ok
+            print(f"SUPPLIER GALLERY · CHECK OK — {title} region is current" if ok else f"FAIL: {title} supplier gallery is missing or stale; rebuild")
+            continue
+        discovery.write_text(out, encoding="utf-8")
+        print(f"wrote {title}: {len(sup)} suppliers, {sum(1 for x in sup if x['image'])} with licensed imagery"
+              + ("" if out != page else " (unchanged)"))
     if "--check" in sys.argv:
-        ok = out == page
-        print("SUPPLIER GALLERY · CHECK OK — Garden Retreat region is current" if ok else "FAIL: Garden Retreat supplier gallery is missing or stale; rebuild")
-        sys.exit(0 if ok else 1)
-    DISCOVERY.write_text(out, encoding="utf-8")
-    print(f"wrote {DISCOVERY.name}: {len(sup)} suppliers, {sum(1 for x in sup if x['image'])} with licensed imagery"
-          + ("" if out != page else " (unchanged)"))
+        sys.exit(0 if ok_all else 1)
 
 
 if __name__ == "__main__":

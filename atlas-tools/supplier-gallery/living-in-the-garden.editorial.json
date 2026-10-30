@@ -1,0 +1,27 @@
+{
+ "_about": "Hand-authored editorial layer for the Living in the Garden (DISC-008) supplier gallery (founder approval to develop, 30 Oct 2026; NOT deployed). Holds ONLY wording PlotNua writes about a maker and, where needed, a choice among a maker's ALREADY APPROVED assets (the builder refuses anything else). Makers, product counts, alt text, dimensions and credits come from the live Living in the Garden explorer config and image-rights-records.json. Headings live in discovery-headings.json. No location line is shown for any maker: none is evidenced and authorised for public display.",
+ "discovery": "discovery-living-in-the-garden.html",
+ "gridId": "sg-all-litg",
+ "selectionNote": "Makers appear in this gallery when they have licensed their imagery to PlotNua. The order changes on every visit, and inclusion is not a recommendation.",
+ "gridNote": "Every maker in this Discovery, A to Z. Pictures appear here only where a maker's imagery is cleared for this gallery; every other maker is listed in words.",
+ "gridNoteAllImaged": "Every maker in this Discovery, A to Z.",
+ "featuredMax": 4,
+ "_featured_scope": "Founder instruction 30 Oct 2026: feature ÖÖD House, Powersheds and Yardbox only, using images already authorised and published on PlotNua. Garden Room Ireland and Don Modular Homes are NOT featured until their promised private previews are addressed; their rights records carry no approved_assets, so the builder lists them in words only. Hutsmith is not a DISC-008 maker.",
+ "makers": {
+  "ÖÖD House": {
+   "description": "Mirror-glass prefabricated buildings, from the Signature House to The Big Monolith.",
+   "base": null,
+   "_wording_basis": "The seven ÖÖD products listed in this Discovery's explorer and their published type ('Mirror Glass Prefab Cabin'). No residential-suitability claim (ÖÖD permission condition)."
+  },
+  "Powersheds": {
+   "description": "Apex log cabins, in 12x12, 14x14 and 16x12 sizes.",
+   "base": null,
+   "_wording_basis": "The three Powersheds products listed in this Discovery's explorer. No price: Powersheds asks that ie.powersheds.com be the source of truth for pricing."
+  },
+  "Yardbox": {
+   "description": "The Toronto, Vancouver and Whistler garden rooms.",
+   "base": null,
+   "_wording_basis": "The three Yardbox products listed in this Discovery's explorer. The Bothán is not listed here, so its attribution question does not arise."
+  }
+ }
+}

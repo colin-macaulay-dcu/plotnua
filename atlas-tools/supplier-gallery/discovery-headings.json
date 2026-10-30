@@ -1,5 +1,5 @@
 {
-  "_about": "Per-Discovery wording for the Premium Supplier Gallery. The component is identical everywhere; only these lines vary. Founder examples of 30 Oct 2026. An entry here does NOT make a Discovery gallery-ready: that needs verified suppliers and licensed imagery (see the Pass 2 supplier inventory). Wording for Discoveries other than Garden Retreat is a draft for founder review.",
+  "_about": "Per-Discovery wording for the Premium Supplier Gallery. The component is identical everywhere; only these lines vary. Founder examples of 30 Oct 2026. An entry here does NOT make a Discovery gallery-ready: that needs verified suppliers and licensed imagery (see the Pass 2 supplier inventory). Wording for Discoveries other than Garden Retreat and Living in the Garden is a draft for founder review. Living in the Garden: heading \"Meet the makers.\" by founder instruction, 30 Oct 2026 (DISC-008 gallery development).",
   "discoveries": {
     "discovery-garden-retreat.html": {
       "kicker": "Makers",
@@ -9,8 +9,8 @@
     },
     "discovery-living-in-the-garden.html": {
       "kicker": "Makers",
-      "heading": "Explore the makers.",
-      "intro": "Garden rooms, garden offices and garden homes from makers whose published products PlotNua has checked.",
+      "heading": "Meet the makers.",
+      "intro": "Garden rooms and garden homes from makers whose published products PlotNua has checked.",
       "endLine": "makers in this Discovery, A to Z."
     },
     "discovery-above-and-beyond.html": {
