@@ -3,19 +3,20 @@
   "note": "SHA-256 of every published PlotArt file, from the launch build that passed prove-plotart-launch.py L1-L12 with the demonstration names (development branch founder/plotart-prototype). Any change to a published PlotArt file must come from a new verified build. Rebuilt 28 Oct 2026 (the legal-information release 2c89865 had changed the footers without updating this manifest). Rebuilt 29 Oct 2026 for the navigation and homepage refinement. Rebuilt 29 Oct 2026 for artist galleries Phase 1: artist gallery files are verified by L14 (provenance fingerprints), not pinned here.",
   "built_from": "founder/plotart-artist-galleries (Phase 3 preview: enquiry styles and pa-enquiry.js), OPEN state; no gallery published",
   "files": {
-    "founding-25.html": "9ce906132b6f7cb270ac86f047355192dc303849eb068ed72860d3fdd7e4c792",
-    "living-gallery.html": "c922c6ce5a44da6a52eb37372cea325d01db11725492f5b4bc5bafb8390d803c",
-    "index.html": "ffbf1a20d0c6f95bd43dca3b16068fd5b72fa884042c97bbff744ba8571e0629",
+    "founding-25.html": "7ce03bc6a9789fcf0679de652063716bba5183a309ed8fdf03e8f241712db38b",
+    "living-gallery.html": "cb3735d3b6f0f9608acee47e51f0784ae5c14fa944ae17112180381857854205",
+    "index.html": "e485deb8ccfb8d3d24da23761955444371e028c639d540d01cb2769c32b945a0",
     "assets/f25-apply.js": "42a81d4a902bbdab7e16207cb98192940e15f0f5f1a0e7aa1622d03d181a77c0",
     "assets/plotart.css": "baa054076f218eda77bc94078f20ce3766daf52234361f87d585c796b0a20f48",
     "assets/plotart.js": "1aeda046a43a9877413943aa4573f8266280b94a5df21fb68421c5486189dca8",
     "assets/pa-enquiry.js": "e57ef00d58f3f2783d0ec3a9225869aa2cd3be215737d39d08c9f6dd22c78781",
     "assets/hero/founder-01-abstract.webp": "7812df17f3651108820ed79dfe69aa1fdaa27640d5aa1d5464c3b08007b802b1",
     "assets/living/plotart-living-gallery-colin-macaulay-artwork.webp": "f4861333a80fda7f704fd3c57d0a2b8f18db589b8505eb11192ac05c08d8d0f9",
-    "gallery/index.html": "f997da2cc1d21c482d94a4abefe075c7bfba31e9f445d01f493448fdfc3e8db8",
-    "invitation.html": "2aa5979062c82410646db0d78203d55ef877199bd9e6634c22a20c73d92d587f"
+    "gallery/index.html": "76ff9a8c81add452e95d0a9d6027a875936528e86d7cb6a988b7576bda71e780",
+    "invitation.html": "8d053265089c25e14af7c425ce337181d718b4b40eb8584215404d1e404cd406",
+    "about.html": "9da7aaa15d2145ec8b938198cefa2c42ef9e096feca29cb7ddaa5e3fa082c24c"
   },
   "outside_grid": {
-    "gallery/index.html": "a7e2248329f5e26636b28558ff758d7f403555050680a4d9c028b279ed5feb49"
+    "gallery/index.html": "fbf198642e054b4f89ef0534de0b24290c0b6101ba7d68b62b71c045314c89f2"
   }
 }

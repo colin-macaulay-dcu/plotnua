@@ -8,7 +8,7 @@ build from `build-plotart.py --launch --out SITE_DIR`, or the repository root
 once the launch pages are released). Prints "PLOTART LAUNCH · OK" only when:
 
   L1  plotart/ holds exactly the launch files: index, founding-25,
-      living-gallery, gallery/index (the Virtual Gallery) and invitation pages, plotart.css, plotart.js (and f25-apply.js only when
+      living-gallery, gallery/index (the Virtual Gallery), invitation and about pages, plotart.css, plotart.js (and f25-apply.js only when
       the form switch is on). No artist, artwork, story, listing, collection or
       data file is published.
   L2  every link and image on those pages resolves: PlotArt links to a launch
@@ -76,7 +76,7 @@ def need(ok, msg):
 SWITCHES = sys.argv[sys.argv.index("--switches") + 1] if "--switches" in sys.argv else os.path.join(ROOT, "plotart", "data", "launch.json")
 launch = json.load(open(SWITCHES, encoding="utf-8"))
 ENDPOINT = launch.get("f25_form_endpoint")
-PAGES = ["index.html", "founding-25.html", "living-gallery.html", "gallery/index.html", "invitation.html"]  # invitation.html: private Founding Artist invitation (noindex, mailto only, no form)
+PAGES = ["index.html", "founding-25.html", "living-gallery.html", "gallery/index.html", "invitation.html", "about.html"]  # invitation.html: private Founding Artist invitation (noindex, mailto only, no form)
 # The application script ships only in the "open" state (never inferred from the endpoint).
 # The homepage hero image: ONE original painting by the founder, credited (founder decision, 29 Oct 2026).
 # It is not a Founding 25 submission, not for sale and not part of the collection.
@@ -316,7 +316,7 @@ smp = os.path.join(SITE, "sitemap.xml")
 if os.path.exists(smp):
     need("plotart" not in open(smp, encoding="utf-8").read(), "L11 sitemap.xml lists a PlotArt URL")
 NAV_WANT = ["Discover PlotArt", "Virtual Gallery", "Living Gallery", "PlotNua ↗"]
-NAV_CURRENT = {"index.html": "Discover PlotArt", "gallery/index.html": "Virtual Gallery", "living-gallery.html": "Living Gallery", "founding-25.html": None, "invitation.html": None}
+NAV_CURRENT = {"index.html": "Discover PlotArt", "gallery/index.html": "Virtual Gallery", "living-gallery.html": "Living Gallery", "founding-25.html": None, "invitation.html": None, "about.html": None}
 for name in PAGES:
     p = os.path.join(PA, name)
     if os.path.exists(p):

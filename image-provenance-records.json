@@ -20,7 +20,8 @@
     "An absent term is never an inclusion: an asset with no record is undeclared, not cleared.",
     "AI illustrations do not appear on individual supplier product cards. product-card is not an available permitted surface.",
     "Provenance is never inferred from appearance.",
-    "One founder-attested exception (PN-FDR-2026-10-23-GRP-HERO): the six Garden Room Prices hero files, whose exact prompt is unavailable, carry prompt_status UNAVAILABLE, a reference_disclosure (UNCERTAIN) and a resemblance_review instead of a prompt and reference_inputs. It is pinned to those files by SHA-256 in validate-image-provenance.js and is not a way to declare images: every new AI illustration records its prompt verbatim at creation."
+    "One founder-attested exception (PN-FDR-2026-10-23-GRP-HERO): the six Garden Room Prices hero files, whose exact prompt is unavailable, carry prompt_status UNAVAILABLE, a reference_disclosure (UNCERTAIN) and a resemblance_review instead of a prompt and reference_inputs. It is pinned to those files by SHA-256 in validate-image-provenance.js and is not a way to declare images: every new AI illustration records its prompt verbatim at creation.",
+    "One founder caption exception (PN-FDR-2026-10-30-FOUNDER-PORTRAIT-CAPTION, Colin MacAulay, 30 Oct 2026): the founder portrait assets/founder/colin-macaulay-founder-portrait-440x550.jpg, an AI edit of a real photograph of him, shows only the caption 'Colin MacAulay'; its AI edit is disclosed in the image's alt text and in its record, which stays AI_ILLUSTRATION. It is pinned to that file by SHA-256 in validate-image-provenance.js; every other AI image keeps its visible label, and the exception is not a way to declare or caption any other image."
   ],
   "recovery": {
     "performed": "2026-10-11",
@@ -7968,6 +7969,95 @@
       "permitted_surfaces": [
         "plotart"
       ]
+    },
+    {
+      "asset": "assets/founder/colin-macaulay-founder-portrait-440x550.jpg",
+      "sha256": "63f976772704cd21001cb5cf2afb943d69d112a35b518ac4208e5f88a4be6d45",
+      "bytes": 63010,
+      "pixels": [
+        440,
+        550
+      ],
+      "class": "AI_ILLUSTRATION",
+      "what": "Founder portrait of Colin MacAulay (head and shoulders, plain ivory background). AI-edited: a real photograph of the founder was edited with ChatGPT's image tool, which regenerated the image (removing two other people and the original background). Labelled 'AI-edited portrait'; never presented as an untouched camera photograph.",
+      "decision_ref": "PN-FDR-2026-10-30-FOUNDER-PORTRAIT (founder approval of the founder cards and of recording the portrait as AI-edited, 30 Oct 2026)",
+      "generated": {
+        "tool": "ChatGPT image generation (OpenAI, gpt-image), per the master's C2PA content credentials; crop and web encoding by the PlotNua build session (Pillow)",
+        "date": "2026-10-30",
+        "source_master": {
+          "file": "PlotArt_Colin_Founder_Portrait.png (founder's Mac, PlotNua/16 colin portrait; unchanged)",
+          "sha256": "40a6291c2cbde04731df9ba22e80e4d50ccf97b99dcefc152ca81a69d398934e",
+          "pixels": [
+            1145,
+            1374
+          ]
+        },
+        "processing_chain": [
+          {
+            "step": "Portrait: a real photograph of the founder (in a blue shirt, standing with two other people) was edited in ChatGPT (gpt-image) on 30 Oct 2026, per the founder's statement and the C2PA content credentials; the output shows the founder alone on a plain background",
+            "prompt": "UNAVAILABLE (see prompt_status): not supplied; not reconstructed"
+          },
+          {
+            "step": "Crop and resize only (founder instruction, 30 Oct 2026): 4:5 head-and-shoulders box 229,0,916,858 of the 1145x1374 master, Lanczos downscale to 440x550",
+            "tool": "Pillow"
+          },
+          {
+            "step": "Web encoding",
+            "tool": "Pillow; JPEG quality 92, 4:4:4 (no chroma subsampling); no sharpening, no colour or saturation change, no regeneration"
+          }
+        ],
+        "c2pa_evidence": {
+          "manifest": "C2PA content credentials embedded in the master PNG, read with c2pa-python on 30 Oct 2026 (the web JPEG does not carry them; this record does)",
+          "claim_generator": "OpenAI Media Service API",
+          "signed_by": "OpenAI OpCo, LLC",
+          "signed_at": "2026-10-30T17:26:18.914738+00:00",
+          "actions": [
+            "c2pa.created (softwareAgent ChatGPT, version gpt-image; digitalSourceType trainedAlgorithmicMedia)",
+            "c2pa.converted",
+            "c2pa.watermarked.unbound"
+          ],
+          "ingredients_recorded": []
+        }
+      },
+      "prompt_status": "UNAVAILABLE",
+      "reference_disclosure": {
+        "status": "UNCERTAIN",
+        "statement": "The founder states that the input was a real photograph of himself, wearing a blue shirt and standing with two other people. ChatGPT's content credentials record no ingredients, so the input cannot be verified from the credentials; the founder's statement is recorded and the status remains UNCERTAIN, as for the Living Gallery image. The two other people in the input photograph do not appear in the published image.",
+        "evidence": "C2PA content credentials of the master PNG, read 30 Oct 2026; founder statement of 30 Oct 2026",
+        "founder_statement": "Founder statement (Colin MacAulay, 30 Oct 2026): the portrait was created by editing an actual photograph of Colin MacAulay, wearing a blue shirt, standing with two other people."
+      },
+      "resemblance_review": {
+        "date": "2026-10-30",
+        "compared_against": "The image itself: people, logos, text, products and backgrounds that could identify a third party",
+        "verdict": "Depicts the founder only; no third party, brand, logo, text or protected design is identifiable",
+        "findings": [
+          "One person (the founder), plain shirt with no visible branding, plain ivory background",
+          "The two other people in the input photograph are not present in the output; no third party is identifiable",
+          "Quality check (30 Oct 2026): at 100% the master shows AI texture in skin and beard; not visible at the 204 x 255 px display size; not to be shown larger than about 280 px wide"
+        ]
+      },
+      "depicts_named_product": false,
+      "depicts_named_organisation": false,
+      "human_review": {
+        "reviewer": "Colin MacAulay (founder)",
+        "date": "2026-10-30",
+        "attests": "Colin MacAulay approved this image as his founder portrait for the PlotNua and PlotArt About pages, stated that it is an AI edit of a real photograph of himself, and instructed that it be labelled 'AI-edited portrait' and never presented as an untouched camera photograph (30 Oct 2026)."
+      },
+      "label": "No visible AI label: founder caption exception PN-FDR-2026-10-30-FOUNDER-PORTRAIT-CAPTION (30 Oct 2026). Visible caption 'Colin MacAulay'; the AI edit is disclosed in the alt text. Superseded label: 'AI-edited portrait' (30 Oct 2026).",
+      "permitted_surfaces": [
+        "about",
+        "plotart"
+      ],
+      "caption_exception": {
+        "decision": "PN-FDR-2026-10-30-FOUNDER-PORTRAIT-CAPTION",
+        "approved_by": "Colin MacAulay (founder and owner of PlotNua and PlotArt)",
+        "date": "2026-10-30",
+        "statement": "Founder decision (Colin MacAulay, 30 Oct 2026, 18:54): 'I explicitly authorise the following exception: PN-FDR-2026-10-30-FOUNDER-PORTRAIT-CAPTION. Remove the visible \"AI-edited portrait\" caption from both founder sections. The only visible photograph caption should be: Colin MacAulay.' Conditions he set: keep the accurate AI-edited provenance record and the source and editing history; disclose the AI editing in the alt text; record his approval; limit the exception to this exact portrait by file hash; do not weaken the rules for other images, artist photographs or third-party material; never classify it as an original, unedited camera photograph.",
+        "scope_sha256": "63f976772704cd21001cb5cf2afb943d69d112a35b518ac4208e5f88a4be6d45",
+        "visible_caption": "Colin MacAulay",
+        "alt_disclosure": "AI-edited portrait of Colin MacAulay, founder of PlotNua and PlotArt, edited from a real photograph of him",
+        "risk_named": "A realistic AI-edited image of a real, named person may be taken as an unedited photograph; possible transparency obligations for AI-manipulated images of real people (EU AI Act, Article 50) were raised with the founder on 30 Oct 2026 as a point for his legal adviser."
+      }
     },
     {
       "asset": "assets/img/9805382f8164228a.jpg",

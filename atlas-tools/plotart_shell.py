@@ -38,7 +38,7 @@ def artist_page(path, title, desc, body, scripts=("plotart.js",)):
     header = header.replace('</nav>\n  </div>\n</header>', '</nav>\n    ' + _menu + '\n  </div>\n</header>', 1)
     sc = "".join('<script src="%sassets/%s" defer></script>' % (R, s) for s in scripts)
     footlinks = ('<li><a href="{R}gallery/">Virtual Gallery</a></li><li><a href="{R}living-gallery.html">Living Gallery</a></li>'
-                 '<li><a href="{R}index.html#about">About PlotArt</a></li><li><a href="{R}founding-25.html">The Founding 25</a></li>').format(R=R)
+                 '<li><a href="{R}about.html">About PlotArt</a></li><li><a href="{R}founding-25.html">The Founding 25</a></li>').format(R=R)
     robots = ('<!-- LIMITED LAUNCH: not for indexing until the founder approves indexing. Planned canonical:\n     https://plotnua.ie/plotart/%s -->\n'
               '<meta name="robots" content="noindex, follow">') % E(path)
     return path, """<!DOCTYPE html>
