@@ -4,7 +4,9 @@ PROVE CLUSTER 1 · HERO BEFORE/AFTER SLIDER
 ==========================================
 A real-browser regression test for the #gardenCompare hero control, written
 after the founder reported on 11 October 2026 that the handle did not appear
-draggable.
+draggable. Retargeted 30 Oct 2026 (Pass 2 Release 2) from the page's own .cmp
+slider to the shared pn-compare component that replaced it; the twelve
+assertions keep their meaning. Labels are now Before / Possible (founder).
 
 The audit found the control already fully implemented: pointer drag, touch
 drag, keyboard, ARIA and clamping all worked. Nothing was rebuilt. This file
@@ -35,11 +37,12 @@ DEFAULT_PAGE = HERE.parent / "discovery-living-in-the-garden.html"
 READ = """() => {
   const el = document.getElementById('gardenCompare');
   if (!el) return null;
-  const r = el.querySelector('.cmp-range');
-  const d = el.querySelector('.cmp-divider');
-  const h = el.querySelector('.cmp-handle');
-  const over = el.querySelector('.cmp-over');
-  const box = el.getBoundingClientRect();
+  const r = el.querySelector('.pn-compare__range');
+  const d = el.querySelector('.pn-compare__line');
+  const h = el.querySelector('.pn-compare__knob');
+  const over = el.querySelector('.pn-compare__before');
+  const stage = el.querySelector('.pn-compare__stage');
+  const box = stage.getBoundingClientRect();
   const hb = h ? h.getBoundingClientRect() : null;
   const db = d ? d.getBoundingClientRect() : null;
   return {
@@ -53,8 +56,8 @@ READ = """() => {
     disabled: r ? r.disabled : null,
     rendered: r ? !!r.offsetParent : null,
     clip: over ? getComputedStyle(over).clipPath : null,
-    tagA: (el.querySelector('.cmp-tag-a') || {}).textContent,
-    tagB: (el.querySelector('.cmp-tag-b') || {}).textContent,
+    tagA: (el.querySelector('.pn-compare__tag.is-before') || {}).textContent,
+    tagB: (el.querySelector('.pn-compare__tag.is-possible') || {}).textContent,
     handle: hb and null,
     handleW: hb ? Math.round(hb.width) : null,
     handleH: hb ? Math.round(hb.height) : null,
@@ -101,12 +104,12 @@ def main():
               f"min={s['min']} max={s['max']} tabIndex={s['tabIndex']}")
         check("H3", "an aria-label describes the comparison",
               bool(s["label"]) and "today" in (s["label"] or "").lower())
-        check("H4", "TODAY / POSSIBLE labels are present",
-              (s["tagA"] or "").strip().lower() == "today"
+        check("H4", "BEFORE / POSSIBLE labels are present",
+              (s["tagA"] or "").strip().lower() == "before"
               and (s["tagB"] or "").strip().lower() == "possible",
               f"{s['tagA']!r} / {s['tagB']!r}")
-        check("H5", "the 44px handle sits on the divider",
-              s["handleW"] == 44 and s["handleH"] == 44
+        check("H5", "the handle (at least 44px) sits on the divider",
+              s["handleW"] >= 44 and s["handleH"] >= 44
               and abs(s["handleCx"] - s["dividerCx"]) <= 1,
               f"{s['handleW']}x{s['handleH']} at {s['handleCx']} vs divider {s['dividerCx']}")
 
@@ -132,7 +135,7 @@ def main():
         check("H8", "the drag is clamped to the image bounds",
               lo["pos"] == 0 and hi["pos"] == 100, f"low={lo['pos']} high={hi['pos']}")
 
-        p.evaluate("() => document.querySelector('.cmp-range').focus()")
+        p.evaluate("() => document.querySelector('#gardenCompare .pn-compare__range').focus()")
         focused = p.evaluate("() => (document.activeElement.className || '')")
         before_k = p.evaluate(READ)["value"]
         for _ in range(5):
@@ -140,7 +143,7 @@ def main():
         p.wait_for_timeout(60)
         k = p.evaluate(READ)
         check("H9", "the control is keyboard operable",
-              "cmp-range" in focused and k["value"] == before_k - 5,
+              "pn-compare__range" in focused and k["value"] == before_k - 5,
               f"focus={focused!r} {before_k} -> {k['value']}")
 
         p.keyboard.press("Home")
@@ -170,7 +173,7 @@ def main():
         tb = t0["box"]
         p.evaluate(
             """([x0, x1, y]) => {
-                 const el = document.getElementById('gardenCompare');
+                 const el = document.querySelector('#gardenCompare .pn-compare__stage');
                  const fire = (type, x) => el.dispatchEvent(new PointerEvent(type, {
                    pointerId: 1, pointerType: 'touch', isPrimary: true,
                    clientX: x, clientY: y, bubbles: true, cancelable: true, button: 0 }));

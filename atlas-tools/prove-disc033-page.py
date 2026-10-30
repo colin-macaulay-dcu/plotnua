@@ -6,11 +6,14 @@
 Modelled on prove-disc031-page.py. Checks the page, its integration and the founder's wording limits:
   F1  one <title> (the approved SEO title), meta description, canonical, OG/Twitter image, index/follow
   F2  JSON-LD parses; no Product, Offer, price, HowTo, FAQ or supplier structured data
-  F3  exactly one H1; the stacked-layout title band is <p>, aria-hidden, never a heading;
+  F3  exactly one H1; the stacked-layout title band is aria-hidden, never a heading (since 30 Oct 2026 the
+      shared pn-compare title band, .pn-hero-compare__mtitle);
       on stacked layouts the H1 is visually hidden (not removed) so the title shows once
   F4  every local href/src/srcset on the page resolves to a file
-  F5  the 13 web derivatives are on disk and each has a provenance record; no master PNG is published
-  F6  the hero is the reused .cmp comparison, starting at 35% Before (data-start, value, inline script)
+  F5  the 23 web derivatives are on disk and each has a provenance record; no master PNG is published
+      (13 original + 10 AVIF hero-slider derivatives, founder Pass 2 Release 2, 30 Oct 2026)
+  F6  the hero is the shared pn-compare comparison, starting at 35% Before (data-start, range value,
+      shared script) — replaced the page's own .cmp slider on 30 Oct 2026 (founder Pass 2 Release 2)
   F7  every image placement carries "AI-generated illustration"; the mechanism is a coded SVG
   F8  sitemap entry, Discovery Library card (Frontage), search-index entry
   F9  approved claims H1-H11, H13-H17 verbatim (H12 by its founder-approved G6 fallback)
@@ -59,9 +62,8 @@ for b in blocks:
 
 # F3
 need(len(re.findall(r"<h1[\s>]", s)) == 1, "F3 exactly one H1")
-need(re.search(r'<p class="fb-mtitle" aria-hidden="true">The Hidden Flood Barrier</p>', s), "F3 the stacked-layout title (p, aria-hidden)")
-need(re.search(r'<p class="fb-meyebrow" aria-hidden="true">A PlotNua Discovery</p>', s), "F3 the stacked-layout eyebrow (p, aria-hidden)")
-need(not re.search(r'<h[1-6][^>]*class="fb-m', s), "F3 the stacked-layout title band is never a heading")
+need(re.search(r'<div class="pn-hero-compare__mtitle" aria-hidden="true"><span class="pn-hero-compare__mkicker">A PlotNua Discovery</span><span class="pn-hero-compare__mname">The Hidden Flood Barrier</span></div>', s), "F3 the stacked-layout title band (aria-hidden)")
+need(not re.search(r'<h[1-6][^>]*class="pn-hero-compare__m', s), "F3 the stacked-layout title band is never a heading")
 need(re.search(r"\.fb-hero \.d-hero-copy h1\{ position:absolute !important;.*?clip-path:inset\(50%\)", s, re.S)
      and "display:none" not in s.split(".d-hero-copy h1{ position:absolute")[0][-200:],
      "F3 the H1 is visually hidden on stacked layouts (not display:none), so the title shows once")
@@ -75,16 +77,16 @@ for ref in set(re.findall(r'(?:href|src)="([^"#?]+)', s)) | {
 
 # F5
 imgs = sorted(os.listdir(os.path.join(ROOT, "assets/disc033/img")))
-need(len(imgs) == 13, "F5 expected 13 derivatives, found %d" % len(imgs))
+need(len(imgs) == 23, "F5 expected 23 derivatives, found %d" % len(imgs))
 need(not any(i.endswith(".png") for i in imgs), "F5 a PNG master is in the published tree")
 reg = {r["asset"] for r in json.loads(read("image-provenance-records.json"))["records"]}
 for i in imgs:
     need("assets/disc033/img/" + i in reg, "F5 no provenance record: " + i)
 
 # F6
-need('<section class="imagine-photo cmp" id="fbHeroCompare" data-start="35">' in s, "F6 the .cmp hero with data-start=35")
-need(re.search(r'<input class="cmp-range" type="range" min="0" max="100" value="35"', s), "F6 range starts at 35")
-need("getElementById('fbHeroCompare')" in s and "data-start" in s, "F6 hero script reads data-start")
+need(re.search(r'<figure class="pn-compare pn-compare--hero" id="fbHeroCompare" data-start="35"', s), "F6 the pn-compare hero with data-start=35")
+need(re.search(r'<input class="pn-compare__range" type="range" min="0" max="100" step="1" value="35"', s), "F6 range starts at 35")
+need(re.search(r'<script src="assets/identity/pn-compare\.js[^"]*" defer></script>', s), "F6 the shared pn-compare script is loaded")
 
 # F7
 need(s.count("AI-generated illustration") >= 3, "F7 illustration labels")

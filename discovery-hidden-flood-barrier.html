@@ -18,7 +18,8 @@
 <meta name="description" content="Could your driveway hold back floodwater on its own? How self-rising flood barriers work, where they’re used, what they can’t do, and what’s available in Ireland today.">
 <meta name="robots" content="index, follow">
 <link rel="canonical" href="https://plotnua.ie/discovery-hidden-flood-barrier.html">
-<link rel="preload" as="image" type="image/webp" imagesrcset="assets/disc033/img/DISC-033-IMG-02-DRIVEWAY-POSSIBLE-768.webp 768w, assets/disc033/img/DISC-033-IMG-02-DRIVEWAY-POSSIBLE-1024.webp 1024w, assets/disc033/img/DISC-033-IMG-02-DRIVEWAY-POSSIBLE-1536.webp 1536w" imagesizes="100vw" media="(min-width:720px)" fetchpriority="high">
+<link rel="preload" as="image" type="image/avif" media="(max-width:719px)" imagesrcset="assets/disc033/img/DISC-033-IMG-02-DRIVEWAY-POSSIBLE-M-640.avif 640w, assets/disc033/img/DISC-033-IMG-02-DRIVEWAY-POSSIBLE-M-819.avif 819w" imagesizes="100vw" fetchpriority="high">
+<link rel="preload" as="image" type="image/avif" media="(min-width:720px)" imagesrcset="assets/disc033/img/DISC-033-IMG-02-DRIVEWAY-POSSIBLE-768.avif 768w, assets/disc033/img/DISC-033-IMG-02-DRIVEWAY-POSSIBLE-1024.avif 1024w, assets/disc033/img/DISC-033-IMG-02-DRIVEWAY-POSSIBLE-1536.avif 1536w" imagesizes="(max-width:1024px) and (orientation:portrait) 150vw, max(100vw, 132svh)" fetchpriority="high">
 
 <!-- Favicons — PlotNua Brand Package v1.0 -->
 <link rel="icon" href="/favicon.ico" sizes="any">
@@ -34,6 +35,7 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Hanken+Grotesk:wght@400;500;600;700&display=swap">
 <link rel="stylesheet" href="assets/identity/pn-identity.css">
 <link rel="stylesheet" href="assets/identity/pn-identity-discovery.css">
+<link rel="stylesheet" href="assets/identity/pn-compare.css?v=1.2">
 <link rel="stylesheet" href="assets/identity/pn-premium-discovery.css">
 <link rel="stylesheet" href="assets/identity/pn-header.css">
 <!-- PLOTNUA IDENTITY v1 · HEAD · END -->
@@ -498,86 +500,38 @@ body.pn-id.pn-pd ol.ns-sources a{ word-break:break-word; }
      Quieter control, direct pointer relationship, no easing on the divider.
      Inherits .imagine-photo for full-bleed, height and section rhythm.
      Controls appear only once .is-live is set by script. ---- */
-  .cmp{ --pos:65%; touch-action:pan-y; -webkit-user-select:none; user-select:none; }
-  .cmp img{ position:absolute; inset:0; -webkit-user-drag:none; user-drag:none; }
-  .cmp img.cmp-over{ display:none; }   /* must outrank .imagine-photo img{display:block} */
-  .cmp-divider,.cmp-tag,.cmp-range{ display:none; }
+  
+  
+     /* must outrank .imagine-photo img{display:block} */
+  
 
-  .cmp.is-live{ cursor:ew-resize; }
-  .cmp.is-live .cmp-over{
-    display:block;
-    clip-path:inset(0 calc(100% - var(--pos)) 0 0);
-  }
+  
+  
 
   /* hairline: ivory, with the faintest dark edge so it survives both images */
-  .cmp.is-live .cmp-divider{
-    display:block; position:absolute; top:0; bottom:0; z-index:4;
-    left:var(--pos); width:1px; margin-left:-0.5px;
-    background:rgba(248,245,236,.72);
-    box-shadow:0 0 0 0.5px rgba(15,14,10,.16);
-    pointer-events:none;
-  }
+  
 
   /* handle: 44px hit box, 26px visible ring, no disc, no shadow */
-  .cmp.is-live .cmp-handle{
-    position:absolute; top:50%; left:50%;
-    width:44px; height:44px; margin:-22px 0 0 -22px;
-    display:flex; align-items:center; justify-content:center;
-  }
-  .cmp.is-live .cmp-handle::before{
-    content:''; width:30px; height:30px; border-radius:50%;
-    border:1px solid rgba(248,245,236,.78);
-    background:rgba(15,14,10,.06);
-  }
-  .cmp.is-live .cmp-chev{
-    position:absolute; top:50%; width:4px; height:4px;
-    border-top:1px solid rgba(248,245,236,.85);
-    border-right:1px solid rgba(248,245,236,.85);
-  }
-  .cmp.is-live .cmp-chev-l{ left:12px; transform:translateY(-50%) rotate(-135deg); }
-  .cmp.is-live .cmp-chev-r{ right:12px; transform:translateY(-50%) rotate(45deg); }
+  
+  
+  
+  
+  
 
   /* labels: lower corners, out of the caption's way */
-  .cmp.is-live .cmp-tag{
-    display:block; position:absolute; bottom:3.2vh; z-index:4;
-    font-family:'Work Sans',sans-serif; font-size:10px; font-weight:600;
-    letter-spacing:.2em; text-transform:uppercase;
-    color:rgba(248,245,236,.82); text-shadow:0 1px 8px rgba(0,0,0,.5);
-    pointer-events:none;
-  }
-  .cmp.is-live .cmp-tag-a{ left:5vw; }
-  .cmp.is-live .cmp-tag-b{ right:5vw; }
+  
+  
+  
 
   /* caption sits clear of both labels */
-  .cmp.is-live .caption{ padding-left:14vw; padding-right:14vw; z-index:6; }  /* above the hairline: no strikethrough at mid positions */
+    /* above the hairline: no strikethrough at mid positions */
 
   /* keyboard control: focusable, never captures pointer or touch */
-  .cmp.is-live .cmp-range{
-    display:block; position:absolute; left:0; right:0; bottom:0;
-    width:100%; height:44px; margin:0; opacity:0;
-    pointer-events:none; z-index:5;
-  }
-  .cmp.is-live .cmp-range:focus ~ .cmp-divider .cmp-handle::before{
-    border-color:var(--brand-ivory);
-    box-shadow:0 0 0 3px rgba(248,245,236,.42);
-  }
+  
+  
 
-  @media (max-width:720px){
-    /* LAUNCH COMPLETION — 9px was the smallest text anywhere on the site, and
-       it is not decoration: these two labels are the only thing telling a
-       homeowner which side of the slider is today and which is possible. On a
-       390px phone, over a photograph, at 0.18em tracking, it was not reliably
-       readable. 11px with slightly tighter tracking keeps the labels in the
-       same place and the same weight. */
-    .cmp.is-live .cmp-tag{ bottom:2.4vh; font-size:11px; letter-spacing:.16em; }
-    .cmp.is-live .cmp-tag-a{ left:5vw; }
-    .cmp.is-live .cmp-tag-b{ right:5vw; }
-    .cmp.is-live .caption{ padding-left:8vw; padding-right:8vw; }
-    .cmp.is-live .caption p{ max-width:26ch; }
-  }
-  @media (prefers-reduced-motion: reduce){
-    .cmp,.cmp *{ transition:none !important; }
-  }
+  
+  
 
 /* ---- THE OPENING IS THE COMPARISON.
      #gardenCompare now lives inside .d-hero. The component itself is
@@ -591,9 +545,9 @@ body.pn-id.pn-pd ol.ns-sources a{ word-break:break-word; }
      The scrim and the copy are made pointer-transparent because they cover
      the frame: without that, a drag started anywhere in the hero would land
      on them and the slider would only respond in the strip between. ---- */
-  .d-hero .cmp{ position:absolute; inset:0; height:100%; min-height:0; }
-  .d-hero .cmp::before, .d-hero .cmp::after{ content:none; }
-  .d-hero .cmp img{ opacity:1; transform:none; transition:none; }
+  
+  
+  
   .d-hero .d-hero-scrim{ z-index:3; pointer-events:none; }
   .d-hero .d-hero-copy{ z-index:7; pointer-events:none; }
 </style>
@@ -604,25 +558,23 @@ body.pn-id.pn-pd ol.ns-sources a{ word-break:break-word; }
 
 /* ---- HERO: the .cmp comparison inside .d-hero ---- */
 /* Refinement A: compact title above the slider on stacked layouts only (desktop unchanged) */
-.fb-mtitle, .fb-meyebrow{ display:none; }
-@media (max-width:1023px){
-  body.pn-id.pn-pd .fb-hero .fb-mtitle{ display:block; margin:0; padding:clamp(14px,3vw,22px) clamp(16px,4vw,40px) clamp(12px,2.4vw,18px); font-family:var(--p4-serif); font-weight:400; font-size:clamp(28px,7vw,40px); line-height:1.02; letter-spacing:-.01em; color:var(--p4-ivory); background:var(--p4-anth); }
-}
-body.pn-id.pn-pd .d-hero.fb-hero{ height:92vh; height:92svh; min-height:600px; }
-body.pn-id.pn-pd .fb-hero .cmp img{ object-position:50% 55%; }
+
+
+
+
 /* Clear Before / Possible labels: solid pills, top corners (the ns-compare tag treatment) */
-body.pn-id.pn-pd .fb-hero .cmp.is-live .cmp-tag{ top:clamp(84px,11vh,112px); bottom:auto; font-family:var(--p4-sans); font-size:12px; font-weight:700; letter-spacing:.18em; color:var(--p4-ivory); background:rgba(27,28,30,.66); -webkit-backdrop-filter:blur(6px); backdrop-filter:blur(6px); border-radius:999px; padding:8px 14px; line-height:1; text-shadow:none; }
-body.pn-id.pn-pd .fb-hero .cmp.is-live .cmp-tag-a{ left:clamp(16px,3vw,40px); }
-body.pn-id.pn-pd .fb-hero .cmp.is-live .cmp-tag-b{ right:clamp(16px,3vw,40px); color:var(--p4-anth); background:rgba(242,235,224,.92); }
+
+
+
 /* a firmer handle for a hero that must be found at first glance */
-body.pn-id.pn-pd .fb-hero .cmp.is-live .cmp-divider{ width:2px; margin-left:-1px; background:rgba(242,235,224,.92); }
-body.pn-id.pn-pd .fb-hero .cmp.is-live .cmp-handle{ width:56px; height:56px; margin:-28px 0 0 -28px; }
-body.pn-id.pn-pd .fb-hero .cmp.is-live .cmp-handle::before{ width:48px; height:48px; border:2px solid rgba(242,235,224,.95); background:rgba(27,28,30,.62); -webkit-backdrop-filter:blur(6px); backdrop-filter:blur(6px); }
-body.pn-id.pn-pd .fb-hero .cmp.is-live .cmp-chev{ width:6px; height:6px; border-top-width:2px; border-right-width:2px; }
-body.pn-id.pn-pd .fb-hero .cmp.is-live .cmp-chev-l{ left:17px; }
-body.pn-id.pn-pd .fb-hero .cmp.is-live .cmp-chev-r{ right:17px; }
-body.pn-id.pn-pd .fb-hero .cmp.is-live .cmp-range:focus-visible ~ .cmp-divider .cmp-handle::before{ border-color:var(--p4-ivory); box-shadow:0 0 0 4px rgba(242,235,224,.5); }
-body.pn-id.pn-pd .fb-hero .fb-ai{ position:absolute; z-index:5; right:18px; bottom:18px; top:auto; left:auto; margin:0; }
+
+
+
+
+
+
+
+
 /* Desktop: copy bottom-left, over the BEFORE side, so it never covers the risen barrier */
 body.pn-id.pn-pd .fb-hero .d-hero-scrim{ background:linear-gradient(90deg, rgba(15,14,10,.62) 0%, rgba(15,14,10,.34) 30%, rgba(15,14,10,0) 52%), linear-gradient(0deg, rgba(15,14,10,.5) 0%, rgba(15,14,10,0) 38%); }
 body.pn-id.pn-pd .fb-hero .d-hero-copy{ text-align:left; left:0; right:auto; width:calc(34% - 4vw); max-width:520px; padding:0 0 clamp(56px,9vh,96px) 4vw; }
@@ -630,38 +582,26 @@ body.pn-id.pn-pd .fb-hero .d-hero-copy .subtitle, body.pn-id.pn-pd .fb-hero .d-h
 body.pn-id.pn-pd .fb-hero .d-hero-copy h1{ font-size:clamp(44px,4.4vw,80px); text-shadow:0 2px 28px rgba(15,14,10,.45); }
 body.pn-id.pn-pd .fb-hero .d-hero-copy .subtitle{ max-width:22ch; margin-top:18px; }
 body.pn-id.pn-pd .fb-hero .d-hero-copy .intro{ max-width:44ch; margin-top:16px; font-size:16px; }
-.fb-hero-bar{ display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:10px 24px; max-width:var(--pd-max,1200px); margin:0 auto; padding:16px clamp(16px,4vw,40px) 0; }
-.fb-hero-bar .fb-hero-hint{ margin:0; font-family:var(--p4-sans); font-size:14.5px; color:var(--p4-stone); }
 
-/* Tablet (< 1024): the whole 3:2 image, copy below it */
-@media (max-width:1023px){
-  body.pn-id.pn-pd .d-hero.fb-hero{ height:auto; min-height:0; overflow:visible; }
-  body.pn-id.pn-pd .fb-hero .cmp{ position:relative; inset:auto; height:auto; min-height:0; aspect-ratio:3/2; }
+
+
+/* Stacked layouts (shared pn-compare breakpoint since 30 Oct 2026): copy below the image */
+@media (max-width:1024px) and (orientation:portrait), (max-width:719px){
   body.pn-id.pn-pd .fb-hero .d-hero-scrim{ display:none; }
   body.pn-id.pn-pd .fb-hero .d-hero-copy{ position:relative; inset:auto; width:auto; max-width:none; padding:28px clamp(16px,4vw,40px) 4px; }
   body.pn-id.pn-pd .fb-hero .d-hero-copy h1{ font-size:clamp(42px,8vw,64px); text-shadow:none; }
   body.pn-id.pn-pd .fb-hero .d-hero-copy .subtitle{ max-width:28ch; }
-  body.pn-id.pn-pd .fb-hero .cmp.is-live .cmp-tag{ top:72px; }
+  
 }
 /* Stacked layouts: no visible repeat of the title below the slider. The H1 is visually hidden (still the page's one H1
    for assistive technology and search); the eyebrow moves up into the title band; the copy leads with the question. */
-@media (max-width:1023px){
-  body.pn-id.pn-pd .fb-hero .fb-meyebrow{ display:block; margin:0; padding:clamp(16px,3.4vw,24px) clamp(16px,4vw,40px) 0; font-family:var(--p4-sans); font-size:11px; font-weight:700; letter-spacing:.2em; text-transform:uppercase; color:var(--p4-stone); background:var(--p4-anth); }
-  body.pn-id.pn-pd .fb-hero .fb-mtitle{ padding-top:8px; }
+@media (max-width:1024px) and (orientation:portrait), (max-width:719px){
   body.pn-id.pn-pd .fb-hero .d-hero-copy .eyebrow,
   body.pn-id.pn-pd .fb-hero .d-hero-copy h1{ position:absolute !important; width:1px !important; height:1px !important; margin:-1px !important; padding:0 !important; overflow:hidden !important; clip:rect(0 0 0 0) !important; clip-path:inset(50%) !important; white-space:nowrap !important; border:0 !important; }
   body.pn-id.pn-pd .fb-hero .d-hero-copy .subtitle{ margin-top:0; font-size:clamp(24px,5.4vw,34px); line-height:1.18; text-shadow:none; }
 }
-/* Phone (< 720): art-directed 4:5 crop (x = 600-1419 of the masters) */
+/* Phone (< 720): the image is the art-directed 4:5 crop (M-640 / M-819, x = 600-1419 of the masters) */
 @media (max-width:719px){
-  body.pn-id.pn-pd .fb-hero .cmp{ aspect-ratio:4/5; }
-  body.pn-id.pn-pd .fb-hero .cmp img{ object-position:50% 50%; }
-  body.pn-id.pn-pd .fb-hero .cmp.is-live .cmp-tag{ top:68px; font-size:11px; padding:7px 11px; }
-  body.pn-id.pn-pd .fb-hero .fb-ai{ right:10px; bottom:10px; font-size:11px; padding:5px 10px; }
-  body.pn-id.pn-pd .fb-hero .cmp.is-live .cmp-handle{ width:48px; height:48px; margin:-24px 0 0 -24px; }
-  body.pn-id.pn-pd .fb-hero .cmp.is-live .cmp-handle::before{ width:42px; height:42px; }
-  body.pn-id.pn-pd .fb-hero .cmp.is-live .cmp-chev-l{ left:14px; }
-  body.pn-id.pn-pd .fb-hero .cmp.is-live .cmp-chev-r{ right:14px; }
   body.pn-id.pn-pd .fb-hero .d-hero-copy h1{ font-size:clamp(38px,11vw,52px); }
 }
 
@@ -731,6 +671,19 @@ body.pn-id.pn-pd .fb-hero .d-hero-copy .intro{ max-width:44ch; margin-top:16px; 
 /* ---- Next step: three steps ---- */
 .fb-path{ grid-template-columns:repeat(3,1fr); }
 @media (max-width:899px){ .fb-path{ grid-template-columns:1fr; } }
+
+/* ---- Pass 2 Release 2 (30 Oct 2026): the hero is the shared pn-compare component. These rules keep the
+   approved DISC-033 hero typography (left copy column on desktop; on stacked layouts the title shows once,
+   above the slider, and the copy below leads with the question). ---- */
+body.pn-id.pn-pd .d-hero.fb-hero.pn-hero-compare{ height:92vh; height:92svh; min-height:600px; }
+body:has(> .pn-return) .d-hero.fb-hero.pn-hero-compare{ height:min(92svh, calc(100svh - var(--pnc-hdr,69px) - var(--pn-dock,0px))); min-height:560px; }
+body.pn-id.pn-pd .fb-hero.pn-hero-compare .d-hero-scrim{ pointer-events:none; z-index:1; }
+body.pn-id.pn-pd .fb-hero.pn-hero-compare :is(.pn-compare__possible,.pn-compare__before) picture{ height:100%; }
+@media (max-width:1024px) and (orientation:portrait), (max-width:719px){
+  body.pn-id.pn-pd .d-hero.fb-hero.pn-hero-compare,
+  body:has(> .pn-return) .d-hero.fb-hero.pn-hero-compare{ height:auto; min-height:0; overflow:visible; }
+  body.pn-id.pn-pd .fb-hero.pn-hero-compare .d-hero-copy{ position:relative; inset:auto; width:auto; max-width:none; padding:24px 22px 28px; }
+}
 </style>
 
 </head>
@@ -789,36 +742,47 @@ body.pn-id.pn-pd .fb-hero .d-hero-copy .intro{ max-width:44ch; margin-top:16px; 
      Copy: Stage 2 editorial package + Stage 2 refinements A-E + revised visual production plan.
      Claims: H1-H17 (Stage 1 evidence register); G-fallback wording used where verification is outstanding
      (G1, G2, G6 planning line, G8, G10). Images: DISC-033-IMG-01/02 masters (ChatGPT, C2PA intact); web derivatives carry the documented badge retouch (PN-FDR-2026-10-27-DISC033). -->
-<header class="d-hero fb-hero">
-  <!-- Refinement A (27 Oct 2026): a compact title above the slider on stacked (phone and tablet) layouts.
-       Not a heading and hidden from assistive technology: the one H1 stays in the introduction below. -->
-  <!-- Refinement (founder review, 27 Oct 2026, evening): on stacked layouts the title shows once, above the slider;
-       below the slider the copy leads with the hero question. The H1 stays in the DOM (visually hidden there only). -->
-  <p class="fb-meyebrow" aria-hidden="true">A PlotNua Discovery</p>
-  <p class="fb-mtitle" aria-hidden="true">The Hidden Flood Barrier</p>
-  <!-- THE OPENING IS THE COMPARISON. The existing live hero comparison (.cmp, from Living in the Garden),
-       reused unchanged in behaviour: same pointer model, same range, same value meaning
-       (--pos = share of the frame, from the left, showing BEFORE). Starts at 35% Before / 65% Possible.
-       BASE = POSSIBLE (barrier risen); OVER = BEFORE (dry driveway), clipped from the left. -->
-  <section class="imagine-photo cmp" id="fbHeroCompare" data-start="35">
-    <picture class="fb-pic" style="display:contents">
-      <source media="(max-width:719px)" type="image/webp" srcset="assets/disc033/img/DISC-033-IMG-02-DRIVEWAY-POSSIBLE-M-640.webp 640w, assets/disc033/img/DISC-033-IMG-02-DRIVEWAY-POSSIBLE-M-819.webp 819w" sizes="100vw">
-      <source type="image/webp" srcset="assets/disc033/img/DISC-033-IMG-02-DRIVEWAY-POSSIBLE-768.webp 768w, assets/disc033/img/DISC-033-IMG-02-DRIVEWAY-POSSIBLE-1024.webp 1024w, assets/disc033/img/DISC-033-IMG-02-DRIVEWAY-POSSIBLE-1536.webp 1536w" sizes="100vw">
-      <img class="cmp-base" draggable="false" fetchpriority="high" width="1536" height="1024" src="assets/disc033/img/DISC-033-IMG-02-DRIVEWAY-POSSIBLE-1024.jpg" alt="Illustration: the same house as floodwater arrives. A barrier has risen upright across the driveway entrance, holding shallow water on the street side while the driveway behind it stays dry.">
-    </picture>
-    <picture class="fb-pic" style="display:contents">
-      <source media="(max-width:719px)" type="image/webp" srcset="assets/disc033/img/DISC-033-IMG-01-DRIVEWAY-BEFORE-M-640.webp 640w, assets/disc033/img/DISC-033-IMG-01-DRIVEWAY-BEFORE-M-819.webp 819w" sizes="100vw">
-      <source type="image/webp" srcset="assets/disc033/img/DISC-033-IMG-01-DRIVEWAY-BEFORE-768.webp 768w, assets/disc033/img/DISC-033-IMG-01-DRIVEWAY-BEFORE-1024.webp 1024w, assets/disc033/img/DISC-033-IMG-01-DRIVEWAY-BEFORE-1536.webp 1536w" sizes="100vw">
-      <img class="cmp-over" draggable="false" width="1536" height="1024" src="assets/disc033/img/DISC-033-IMG-01-DRIVEWAY-BEFORE-1024.jpg" alt="Illustration: an attractive Irish suburban house on an ordinary day, with a block-paved driveway behind a wide, open entrance and a slim strip and drainage grate set into the paving just inside it." aria-hidden="true">
-    </picture>
-    <span class="cmp-tag cmp-tag-a" aria-hidden="true">Before</span>
-    <span class="cmp-tag cmp-tag-b" aria-hidden="true">Possible</span>
-    <input class="cmp-range" type="range" min="0" max="100" value="35" step="1"
-           aria-label="Compare the driveway on an ordinary day with the same driveway as floodwater arrives and the barrier rises"
-           aria-valuetext="Mostly showing the barrier risen against floodwater">
-    <div class="cmp-divider" aria-hidden="true"><span class="cmp-handle"><i class="cmp-chev cmp-chev-l"></i><i class="cmp-chev cmp-chev-r"></i></span></div>
-    <p class="ns-tag fb-ai">AI-generated illustration</p>
-  </section>
+<header class="d-hero fb-hero pn-hero-compare pn-hero-compare--std">
+  <div class="pn-hero-compare__mtitle" aria-hidden="true"><span class="pn-hero-compare__mkicker">A PlotNua Discovery</span><span class="pn-hero-compare__mname">The Hidden Flood Barrier</span></div>
+  <!-- Pass 2 Release 2 (founder instruction, 30 Oct 2026): the shared Before -> Possible component
+       pn-compare (hero standard), replacing this page's own .cmp slider. Same approved image pair,
+       same framing; the right-hand image is the base layer and the no-JavaScript picture. -->
+  <figure class="pn-compare pn-compare--hero" id="fbHeroCompare" data-start="35" data-subject="the driveway" data-line-fade-under="#dHeroCopy" style="--pnc-focus:50% 55%">
+    <div class="pn-compare__stage">
+      <div class="pn-compare__possible">
+        <picture>
+          <source type="image/avif" media="(max-width:719px)" srcset="assets/disc033/img/DISC-033-IMG-02-DRIVEWAY-POSSIBLE-M-640.avif 640w, assets/disc033/img/DISC-033-IMG-02-DRIVEWAY-POSSIBLE-M-819.avif 819w" sizes="100vw">
+          <source type="image/webp" media="(max-width:719px)" srcset="assets/disc033/img/DISC-033-IMG-02-DRIVEWAY-POSSIBLE-M-640.webp 640w, assets/disc033/img/DISC-033-IMG-02-DRIVEWAY-POSSIBLE-M-819.webp 819w" sizes="100vw">
+          <source type="image/avif" srcset="assets/disc033/img/DISC-033-IMG-02-DRIVEWAY-POSSIBLE-768.avif 768w, assets/disc033/img/DISC-033-IMG-02-DRIVEWAY-POSSIBLE-1024.avif 1024w, assets/disc033/img/DISC-033-IMG-02-DRIVEWAY-POSSIBLE-1536.avif 1536w" sizes="(max-width:1024px) and (orientation:portrait) 150vw, max(100vw, 132svh)">
+          <source type="image/webp" srcset="assets/disc033/img/DISC-033-IMG-02-DRIVEWAY-POSSIBLE-768.webp 768w, assets/disc033/img/DISC-033-IMG-02-DRIVEWAY-POSSIBLE-1024.webp 1024w, assets/disc033/img/DISC-033-IMG-02-DRIVEWAY-POSSIBLE-1536.webp 1536w" sizes="(max-width:1024px) and (orientation:portrait) 150vw, max(100vw, 132svh)">
+          <img src="assets/disc033/img/DISC-033-IMG-02-DRIVEWAY-POSSIBLE-1024.jpg" width="1536" height="1024" fetchpriority="high" decoding="async" alt="Possible: the same house as floodwater arrives. A barrier has risen upright across the driveway entrance, holding shallow water on the street side while the driveway behind it stays dry.">
+        </picture>
+      </div>
+      <div class="pn-compare__before">
+        <picture>
+          <source type="image/avif" media="(max-width:719px)" srcset="assets/disc033/img/DISC-033-IMG-01-DRIVEWAY-BEFORE-M-640.avif 640w, assets/disc033/img/DISC-033-IMG-01-DRIVEWAY-BEFORE-M-819.avif 819w" sizes="100vw">
+          <source type="image/webp" media="(max-width:719px)" srcset="assets/disc033/img/DISC-033-IMG-01-DRIVEWAY-BEFORE-M-640.webp 640w, assets/disc033/img/DISC-033-IMG-01-DRIVEWAY-BEFORE-M-819.webp 819w" sizes="100vw">
+          <source type="image/avif" srcset="assets/disc033/img/DISC-033-IMG-01-DRIVEWAY-BEFORE-768.avif 768w, assets/disc033/img/DISC-033-IMG-01-DRIVEWAY-BEFORE-1024.avif 1024w, assets/disc033/img/DISC-033-IMG-01-DRIVEWAY-BEFORE-1536.avif 1536w" sizes="(max-width:1024px) and (orientation:portrait) 150vw, max(100vw, 132svh)">
+          <source type="image/webp" srcset="assets/disc033/img/DISC-033-IMG-01-DRIVEWAY-BEFORE-768.webp 768w, assets/disc033/img/DISC-033-IMG-01-DRIVEWAY-BEFORE-1024.webp 1024w, assets/disc033/img/DISC-033-IMG-01-DRIVEWAY-BEFORE-1536.webp 1536w" sizes="(max-width:1024px) and (orientation:portrait) 150vw, max(100vw, 132svh)">
+          <img src="assets/disc033/img/DISC-033-IMG-01-DRIVEWAY-BEFORE-1024.jpg" width="1536" height="1024" decoding="async" alt="Before: an attractive Irish suburban house on an ordinary day, with a block-paved driveway behind a wide, open entrance and a slim strip and drainage grate set into the paving just inside it.">
+        </picture>
+      </div>
+      <span class="pn-compare__line" aria-hidden="true"></span>
+      <span class="pn-compare__knob" aria-hidden="true"></span>
+      <p class="pn-compare__tag is-before" aria-hidden="true">Before</p>
+      <p class="pn-compare__tag is-possible" aria-hidden="true">Possible</p>
+      <p class="pn-compare__ai">AI-generated illustration</p>
+      <input class="pn-compare__range" type="range" min="0" max="100" step="1" value="35" aria-describedby="fbHeroCompareKeys"
+             aria-label="Compare the driveway on an ordinary day with the same driveway as floodwater arrives and the barrier rises. Higher values show more of the driveway before.">
+    </div>
+    <div class="pn-compare__bar">
+      <p class="pn-compare__help"><span class="pn-compare__help-touch" aria-hidden="true">Slide to compare.</span><span class="pn-compare__help-pointer" aria-hidden="true">Drag the handle, or use the arrow keys, to compare.</span><span class="pn-compare__sr" id="fbHeroCompareKeys">Use the left and right arrow keys to move the divider. Home shows the barrier risen against floodwater; End shows the driveway on an ordinary day.</span></p>
+      <div class="pn-compare__jump" role="group" aria-label="Show">
+        <button type="button" data-to="100" aria-pressed="false">Before</button>
+        <button type="button" data-to="0" aria-pressed="false">Possible</button>
+      </div>
+    </div>
+  </figure>
   <div class="d-hero-scrim"></div>
   <div class="d-hero-copy in" id="dHeroCopy">
     <div class="eyebrow">A PlotNua Discovery</div>
@@ -827,13 +791,6 @@ body.pn-id.pn-pd .fb-hero .d-hero-copy .intro{ max-width:44ch; margin-top:16px; 
     <p class="intro">Some flood barriers lie flat in the ground until water arrives, then the water itself lifts them into place. They&rsquo;re real, and they&rsquo;re already used at homes abroad. Here&rsquo;s how they work, what they can&rsquo;t do, and what&rsquo;s available in Ireland today.</p>
   </div>
 </header>
-<div class="fb-hero-bar">
-  <p class="fb-hero-hint">Drag the handle, or use the arrow keys, to compare.</p>
-  <div class="ns-jump" role="group" aria-label="Show">
-    <button type="button" data-to="100" aria-pressed="false">Before</button>
-    <button type="button" data-to="0" aria-pressed="false">Possible</button>
-  </div>
-</div>
 
 <main id="pn-main">
 
@@ -1428,70 +1385,6 @@ body.pn-id.pn-pd .fb-hero .d-hero-copy .intro{ max-width:44ch; margin-top:16px; 
 })();
 </script>
 <script>
-/* DISC-033 · THE OPENING IS THE COMPARISON. The live .cmp hero comparison (DISC-008 experiment v2,
-   Living in the Garden), reused: one pointer model with pointer capture, one DOM write per frame,
-   no easing, the native range carries keyboard and assistive technology. Only three things differ:
-   the element id, the words, and the start position, read from data-start (35 = 35% Before / 65% Possible).
-   Nothing autoplays. Nothing is stored or sent. */
-(function(){
-  var el = document.getElementById('fbHeroCompare');
-  if(!el || !window.PointerEvent) return;              /* graceful: stays static (Possible) */
-  var range = el.querySelector('.cmp-range');
-  if(!range) return;
-  el.classList.add('is-live');
-  var start = parseFloat(el.getAttribute('data-start')); if(isNaN(start)) start = 35;
-  var jumps = [].slice.call(document.querySelectorAll('.fb-hero-bar .ns-jump button'));
-  var pos = start, rect = null, activeId = null, queued = false;
-
-  function describe(v){
-    if(v <= 2)  return 'Showing the barrier risen against floodwater';
-    if(v >= 98) return 'Showing the driveway on an ordinary day';
-    if(v > 40 && v < 60) return 'Half and half';
-    return v > 50 ? 'Mostly showing the driveway on an ordinary day' : 'Mostly showing the barrier risen against floodwater';
-  }
-  function paint(){ queued = false; el.style.setProperty('--pos', pos + '%'); }
-  function commit(v, syncRange){
-    v = v < 0 ? 0 : (v > 100 ? 100 : v);
-    if(v === pos && syncRange !== true) return;
-    pos = v;
-    if(!queued){ queued = true; requestAnimationFrame(paint); }
-    if(syncRange) range.value = Math.round(v);
-    range.setAttribute('aria-valuetext', describe(Math.round(v)));
-    jumps.forEach(function(b){ b.setAttribute('aria-pressed', String(+b.getAttribute('data-to') === Math.round(v))); });
-  }
-  function fromX(clientX){
-    var r = rect || el.getBoundingClientRect();
-    commit(((clientX - r.left) / r.width) * 100, true);
-  }
-  el.addEventListener('pointerdown', function(e){
-    if(e.pointerType === 'mouse' && e.button !== 0) return;
-    activeId = e.pointerId;
-    rect = el.getBoundingClientRect();
-    try{ el.setPointerCapture(e.pointerId); }catch(_){}
-    fromX(e.clientX);
-  });
-  el.addEventListener('pointermove', function(e){
-    if(activeId === null || e.pointerId !== activeId) return;
-    if(e.cancelable) e.preventDefault();
-    fromX(e.clientX);
-  });
-  function release(e){
-    if(activeId === null) return;
-    if(e && e.pointerId != null && e.pointerId !== activeId) return;
-    try{ if(e && e.pointerId != null) el.releasePointerCapture(e.pointerId); }catch(_){}
-    activeId = null; rect = null;
-  }
-  el.addEventListener('pointerup', release);
-  el.addEventListener('pointercancel', release);
-  el.addEventListener('lostpointercapture', release);
-  range.addEventListener('input', function(){ commit(parseFloat(range.value), false); });
-  window.addEventListener('resize', function(){ if(activeId !== null) rect = el.getBoundingClientRect(); });
-  jumps.forEach(function(b){ b.addEventListener('click', function(){ commit(+b.getAttribute('data-to'), true); }); });
-  commit(start, true);
-  paint();
-})();
-</script>
-<script>
 /* DISC-033 · Mechanism: one coded SVG driven through three stages by a native range.
    Continuous while dragging; settles to the nearest stage on release (not under reduced motion).
    Stage text is announced once per stage change. No autoplay. */
@@ -1567,6 +1460,7 @@ body.pn-id.pn-pd .fb-hero .d-hero-copy .intro{ max-width:44ch; margin-top:16px; 
 })();
 </script>
 
+<script src="assets/identity/pn-compare.js?v=1.2" defer></script>
 <script src="assets/identity/pn-premium.js" defer></script>
 </body>
 </html>
