@@ -1,5 +1,11 @@
 {
  "discovery": "discovery-garden-retreat.html",
+ "heading": {
+  "kicker": "Makers",
+  "heading": "Meet the makers.",
+  "intro": "Saunas, hot tubs and cold plunges from makers whose published products PlotNua has checked.",
+  "endLine": "makers in this Discovery, A to Z."
+ },
  "suppliers": [
   {
    "name": "Hansa24 Group",
@@ -21,7 +27,7 @@
   },
   {
    "name": "Irish Sauna Company",
-   "description": "The Island Collection: The Clare, The Inis, The Aran and The Skellig garden saunas, designed and handcrafted to order. Heaters by Harvia.",
+   "description": "The Island Collection of garden saunas, designed and handcrafted to order. Heaters by Harvia.",
    "base": {
     "label": "Made in",
     "text": "Connemara, Co. Galway",
@@ -52,11 +58,7 @@
   {
    "name": "OGNYX",
    "description": "Outdoor barrel and cube saunas, wood-fired hot tubs and cold plunge tubs.",
-   "base": {
-    "label": "Registered in",
-    "text": "Bray, Co. Wicklow",
-    "evidence": "Stated in ognyx-preview.html, which OGNYX reviewed and confirmed on 13 Oct 2026. FOUNDER TO CONFIRM before this line is used publicly: it is not yet on a live page."
-   },
+   "base": null,
    "categories": [
     {
      "label": "saunas",
@@ -149,11 +151,11 @@
    "site": "tanktribe.ie",
    "explore": "https://www.tanktribe.ie/",
    "image": {
-    "src": "https://images.squarespace-cdn.com/content/v1/67ac8d737a7c665f57f5babe/ab9c9630-7b25-441f-9559-b711ff7f6d5b/IMG_2531.JPG",
-    "alt": "Photograph: close view from beside the Tanktribe WILD TUB showing the water surface, timber ledge, tub rim and garden background",
+    "src": "https://images.squarespace-cdn.com/content/v1/67ac8d737a7c665f57f5babe/2d930a20-ec94-4b5f-8af4-159501335d62/IMG_8495.jpg",
+    "alt": "Photograph: overhead view of a Tanktribe CORE galvanised stock tank on a timber deck, filled with iced water, with a person lying submerged in it",
     "kind": "Photograph",
     "w": 2500,
-    "h": 3333,
+    "h": 3750,
     "credit": "© Tanktribe",
     "creditHref": "https://www.tanktribe.ie/"
    },

@@ -1,17 +1,20 @@
 /* =====================================================================
-   PLOTNUA · PREMIUM SUPPLIER GALLERY · v0.1 PROTOTYPE
-   Branch pass2/supplier-galleries, 30 Oct 2026. NOT IN PRODUCTION.
+   PLOTNUA · PREMIUM SUPPLIER GALLERY · v0.2 PROTOTYPE
+   Branch pass2/supplier-galleries. NOT IN PRODUCTION.
+   v0.1 30 Oct 2026, design approved by founder 30 Oct 2026.
+   v0.2 30 Oct 2026: focused featured card, larger imagery, typographic
+        directory entries, per-Discovery headings (wording only).
    ---------------------------------------------------------------------
-   One component, per-Discovery data. Everything is scoped to
-   .pn-sg so the file is inert on any page that does not carry the
-   component. Uses the site's --p4-* identity tokens (pn-identity.css)
-   with literal fallbacks, and never redefines them.
+   One component, per-Discovery data. Everything is scoped to .pn-sg, so
+   the file is inert on any page that does not carry the component. Uses
+   the site's --p4-* identity tokens with literal fallbacks.
 
-   IMAGE RULE: supplier images are shown UNCROPPED and UNALTERED, as the
-   OGNYX and Irish Sauna Company grants require. Each sits on a "mount"
-   (object-fit: contain inside a fixed 4:5 well), so a portrait
-   photograph and a square render share one rhythm without losing a pixel.
-   The image itself is never rounded, filtered or scaled on hover.
+   IMAGE RULE: supplier images are shown WHOLE and UNALTERED (OGNYX and
+   Irish Sauna Company grants). Each sits in a fixed-shape "mount" with a
+   narrow mat: object-fit:contain, never cover; the image is never rounded,
+   filtered, scaled on hover or overlaid. The mount's shape comes from the
+   builder (--sg-mount-ratio), chosen so the featured images are as large
+   as possible without losing a pixel.
 
    Motion: one 3px card lift on fine pointers only; nothing under
    prefers-reduced-motion. Carousel is native scroll-snap (no library).
@@ -20,7 +23,6 @@
 .pn-sg{
   --sg-canvas:var(--p4-anth,#1B1C1E);
   --sg-card:var(--p4-deep,#2C2E30);
-  --sg-raised:#2E3033;
   --sg-mount:var(--p4-well,#2D2E31);
   --sg-ivory:var(--p4-ivory,#F2EBE0);
   --sg-lime:var(--p4-lime,#E7DED0);
@@ -38,6 +40,8 @@
   --sg-shadow-hi:0 1px 2px rgba(0,0,0,.2),0 40px 80px -36px rgba(0,0,0,.8);
   --sg-max:1240px;
   --sg-pad-x:clamp(16px,3vw,40px);
+  --sg-mat:10px;                       /* narrow mat: keeps the card's rounded corner off the photograph */
+  --sg-inner:clamp(20px,1.8vw,28px);   /* card text inset */
   background:var(--sg-canvas);
   color:var(--sg-lime);
   font-family:var(--sg-sans);
@@ -57,7 +61,6 @@
 .pn-sg-note{ font-size:15px; line-height:1.6; color:var(--sg-stone); margin:12px 0 0; max-width:640px; }
 .pn-sg-controls{ display:flex; align-items:center; gap:12px; }
 
-/* arrows: quiet line circles, the only chrome on the carousel */
 .pn-sg-arrow{ inline-size:48px; block-size:48px; border-radius:50%; border:1px solid var(--sg-line2); background:transparent; color:var(--sg-ivory);
   display:inline-grid; place-items:center; cursor:pointer; padding:0; transition:border-color .2s, color .2s, opacity .2s; }
 .pn-sg-arrow svg{ inline-size:18px; block-size:18px; }
@@ -72,53 +75,55 @@
 .pn-sg :is(a,button):focus-visible, .pn-sg-track:focus-visible{ outline:2px solid var(--sg-terra); outline-offset:3px; border-radius:6px; }
 
 /* ---- carousel track ---------------------------------------------------- */
-/* The track starts at the content edge and bleeds to the viewport's right
-   edge, so the next card is always visibly "there" — an editorial spread,
-   not a boxed widget. */
 .pn-sg-track{ list-style:none; margin:0; padding:4px var(--sg-pad-x) 48px;
   display:grid; grid-auto-flow:column; grid-auto-columns:var(--sg-card-w);
   gap:var(--sg-gap);
   --sg-card-w:calc((min(100vw, var(--sg-max)) - 2 * var(--sg-pad-x) - 2.35 * var(--sg-gap)) / 3.35);
   overflow-x:auto; overscroll-behavior-x:contain; scroll-snap-type:x mandatory; scroll-behavior:smooth;
-  scroll-padding-inline:var(--sg-pad-x);
   padding-inline-start:max(var(--sg-pad-x), calc((100vw - var(--sg-max)) / 2 + var(--sg-pad-x)));
   scroll-padding-inline-start:max(var(--sg-pad-x), calc((100vw - var(--sg-max)) / 2 + var(--sg-pad-x)));
   scrollbar-width:none; }
 .pn-sg-track::-webkit-scrollbar{ display:none; }
 .pn-sg-track > li{ scroll-snap-align:start; min-width:0; display:flex; }
 
-/* ---- card -------------------------------------------------------------- */
+/* ---- the mount (shared by featured cards and directory thumbnails) ---- */
+/* Fixed geometry, so nothing shifts while an image loads; the whole image
+   is always visible. */
+.pn-sg-mount{ position:relative; aspect-ratio:var(--sg-mount-ratio, 1 / 1); min-block-size:0; overflow:hidden;
+  background:var(--sg-mount); border-radius:calc(var(--sg-r) - var(--sg-mat)); }
+.pn-sg-mount img{ position:absolute; inset:var(--sg-mat); inline-size:calc(100% - 2 * var(--sg-mat)); block-size:calc(100% - 2 * var(--sg-mat));
+  object-fit:contain; object-position:center; display:block; }
+
+/* ---- featured card: photograph, name, description, location, Explore -- */
 .pn-sg-card{ position:relative; display:flex; flex-direction:column; inline-size:100%;
   background:var(--sg-card); border:var(--sg-edge); border-radius:var(--sg-r); box-shadow:var(--sg-shadow); overflow:hidden;
   transition:transform .3s ease, box-shadow .3s ease; }
 @media (hover:hover) and (pointer:fine){
   .pn-sg-card:hover{ transform:translateY(-3px); box-shadow:var(--sg-shadow-hi); }
 }
+.pn-sg-fig{ margin:0; padding:var(--sg-mat) var(--sg-mat) 0; }   /* the mount sits a mat-width inside the card */
+.pn-sg-card .pn-sg-mount{ --sg-mat:0px; background:transparent; border-radius:0; }   /* image fills the mount; the card is the mat. Square corners: the card's 24px curve passes outside the 10px-inset image, so no pixel is clipped */
+.pn-sg-fig figcaption{ padding:0 calc(var(--sg-inner) - var(--sg-mat)); }
 
-/* the mount: a 4:5 well; the photograph is contained, never cropped */
-.pn-sg-fig{ margin:0; }
-.pn-sg-mount{ position:relative; aspect-ratio:4 / 5; min-block-size:0; overflow:hidden; background:var(--sg-mount); --sg-mat:clamp(14px,1.6vw,22px); }
-.pn-sg-mount img{ position:absolute; inset:var(--sg-mat); inline-size:calc(100% - 2 * var(--sg-mat)); block-size:calc(100% - 2 * var(--sg-mat));
-  object-fit:contain; object-position:center; display:block; }   /* fixed geometry, whole image visible */
-.pn-sg-cap{ display:flex; justify-content:space-between; align-items:center; gap:12px; padding:8px clamp(20px,1.8vw,28px) 0;
+/* image credit + medium label: always present wherever an image appears */
+.pn-sg-cap{ display:flex; justify-content:space-between; align-items:center; gap:12px; margin:6px 0 0;
   font-size:12.5px; line-height:1.4; letter-spacing:.04em; color:var(--sg-stone); }
 .pn-sg-kind{ text-transform:uppercase; letter-spacing:.14em; font-weight:700; font-size:11px; color:var(--sg-bronze); }
-.pn-sg-cap a{ display:inline-flex; align-items:center; min-block-size:24px; color:var(--sg-stone); text-decoration:none; text-decoration-line:underline; text-decoration-color:var(--sg-line2); text-underline-offset:4px; }
+.pn-sg-cap a{ display:inline-flex; align-items:center; min-block-size:24px; color:var(--sg-stone); text-decoration:underline;
+  text-decoration-color:var(--sg-line2); text-underline-offset:4px; }
 .pn-sg-cap a:hover{ color:var(--sg-ivory); text-decoration-color:var(--sg-ivory); }
 
-.pn-sg-body{ display:flex; flex-direction:column; flex:1; padding:clamp(18px,1.8vw,26px) clamp(20px,1.8vw,28px) clamp(22px,2vw,30px); }
-.pn-sg-tags{ display:flex; flex-wrap:wrap; gap:8px; margin:0 0 12px; }
+.pn-sg-body{ display:flex; flex-direction:column; flex:1; padding:clamp(10px,1vw,14px) var(--sg-inner) clamp(18px,1.8vw,24px); }
+.pn-sg-tags{ display:flex; flex-wrap:wrap; gap:8px; margin:0 0 10px; }
 .pn-sg-tag{ font:700 11px/1 var(--sg-sans); letter-spacing:.14em; text-transform:uppercase; padding:7px 10px; border-radius:999px;
   border:1px solid var(--sg-line2); color:var(--sg-stone); }
 .pn-sg-tag--sponsored{ border-color:var(--sg-bronze); color:var(--sg-bronze); }   /* RESERVED: no sponsored data exists */
-.pn-sg-tag--rel{ border-color:var(--sg-line2); color:var(--sg-stone); }
 .pn-sg-name{ font:400 clamp(28px,2.4vw,36px)/1.05 var(--sg-serif); letter-spacing:-.01em; color:var(--sg-ivory); margin:0; }
-.pn-sg-desc{ font-size:16px; line-height:1.6; color:var(--sg-lime); margin:12px 0 0; }
-.pn-sg-meta{ list-style:none; margin:18px 0 0; padding:16px 0 0; border-top:1px solid var(--sg-line); display:grid; gap:8px; }
-.pn-sg-meta li{ display:grid; grid-template-columns:7.5em minmax(0,1fr); gap:12px; font-size:14.5px; line-height:1.45; color:var(--sg-lime); }
-.pn-sg-meta b{ font-weight:700; font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:var(--sg-bronze); padding-top:3px; }
-.pn-sg-rel{ font-size:13.5px; line-height:1.5; color:var(--sg-stone); margin:14px 0 0; }
-.pn-sg-cta{ margin-top:auto; padding-top:22px; }
+.pn-sg-desc{ font-size:16px; line-height:1.55; color:var(--sg-lime); margin:8px 0 0; }
+.pn-sg-loc{ font-size:14.5px; line-height:1.45; color:var(--sg-lime); margin:12px 0 0; }
+.pn-sg-loc b{ font-weight:700; font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:var(--sg-bronze); margin-right:8px; }
+.pn-sg-rel{ font-size:13.5px; line-height:1.5; color:var(--sg-stone); margin:12px 0 0; }
+.pn-sg-cta{ margin:auto 0 0; padding-top:14px; }
 .pn-sg-cta a{ display:inline-flex; align-items:center; gap:10px; min-block-size:44px; font:600 16px/1.2 var(--sg-sans);
   color:var(--sg-terra); text-decoration:none; }
 .pn-sg-cta a span{ border-bottom:1px solid rgba(207,133,102,.55); padding-bottom:2px; }
@@ -133,39 +138,61 @@
 .pn-sg-end-t{ font:400 clamp(26px,2.2vw,32px)/1.1 var(--sg-serif); color:var(--sg-ivory); margin:0 0 20px; }
 .pn-sg-card--end button{ align-self:flex-start; }
 
-/* ---- full directory (View all) ----------------------------------------- */
+/* ---- full directory (View all): an editorial index ----------------------- */
 .pn-sg-grid-wrap{ margin-top:clamp(8px,1vw,16px); }
 .pn-sg-grid-wrap[hidden]{ display:none; }
-.pn-sg-grid-head{ display:flex; flex-wrap:wrap; justify-content:space-between; align-items:end; gap:12px 32px; padding:clamp(28px,3vw,40px) 0 clamp(20px,2.4vw,32px); border-top:1px solid var(--sg-line); }
+.pn-sg-grid-head{ display:flex; flex-wrap:wrap; justify-content:space-between; align-items:end; gap:12px 32px; padding:clamp(28px,3vw,40px) 0 clamp(8px,1vw,12px); border-top:1px solid var(--sg-line); }
 .pn-sg-h3{ font:400 clamp(26px,2.4vw,36px)/1.1 var(--sg-serif); color:var(--sg-ivory); margin:0; outline:none; }
-.pn-sg-grid{ list-style:none; margin:0; padding:0; display:grid; gap:var(--sg-gap);
-  grid-template-columns:repeat(auto-fill,minmax(min(100%,272px),1fr)); }
-.pn-sg-grid > li{ display:flex; min-width:0; }
-.pn-sg-grid .pn-sg-mount{ aspect-ratio:1 / 1; }
-.pn-sg-grid .pn-sg-name{ font-size:clamp(24px,2vw,30px); }
-.pn-sg-grid .pn-sg-desc{ font-size:15px; }
+.pn-sg-grid{ list-style:none; margin:0; padding:0; display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); column-gap:clamp(28px,4vw,64px); }
+.pn-sg-grid > li{ display:flex; min-width:0; border-top:1px solid var(--sg-line); }
+.pn-sg-grid > li:nth-child(-n+2){ border-top:0; }
 
-/* a maker with no licensed imagery: typographic plate, never a stock image */
-.pn-sg-plate{ aspect-ratio:1 / 1; background:var(--sg-mount); display:flex; flex-direction:column; justify-content:flex-end; padding:clamp(18px,1.8vw,26px);
-  background-image:linear-gradient(135deg, rgba(255,255,255,.025) 0 50%, transparent 50%); }
-.pn-sg-plate-initial{ font:400 clamp(88px,9vw,132px)/.8 var(--sg-serif); color:var(--sg-line2); margin:0 0 auto; }
-.pn-sg-plate-note{ font-size:12.5px; letter-spacing:.04em; color:var(--sg-stone); margin:0; }
+.pn-sg-entry{ display:grid; grid-template-columns:clamp(112px,11vw,148px) minmax(0,1fr); gap:clamp(18px,2vw,28px); inline-size:100%; padding:clamp(22px,2.4vw,32px) 0; align-items:start; }
+.pn-sg-entry.is-text{ grid-template-columns:minmax(0,1fr); }
+.pn-sg-thumb{ margin:0; }
+.pn-sg-thumb .pn-sg-mount{ --sg-mount-ratio:1 / 1; --sg-mat:6px; border-radius:12px; }
+.pn-sg-entry .pn-sg-name{ font-size:clamp(26px,2.1vw,32px); }
+.pn-sg-entry .pn-sg-desc{ font-size:15.5px; max-width:52ch; }
+/* a maker without licensed imagery: the name carries the entry. A thin
+   terracotta rule marks the start, the way an index entry would. No frame,
+   no placeholder, no invented visual. */
+.pn-sg-entry.is-text .pn-sg-entry-body{ border-left:2px solid var(--sg-terra); padding-left:clamp(18px,2vw,24px); }
+.pn-sg-facts{ display:grid; gap:6px; margin:14px 0 0; }
+.pn-sg-facts > div{ display:grid; grid-template-columns:7.5em minmax(0,1fr); gap:12px; font-size:14px; line-height:1.45; }
+.pn-sg-facts dt{ font-weight:700; font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:var(--sg-bronze); padding-top:2px; }
+.pn-sg-facts dd{ margin:0; color:var(--sg-lime); }
+.pn-sg-entry .pn-sg-cap{ justify-content:flex-start; gap:14px; margin-top:12px; }
+.pn-sg-entry .pn-sg-cta{ padding-top:8px; }
+.pn-sg-entry .pn-sg-cta a{ font-size:15px; }
 
 /* ---- responsive --------------------------------------------------------- */
 @media (max-width:1024px){
   .pn-sg-track{ --sg-card-w:calc((100vw - var(--sg-pad-x) - 1.4 * var(--sg-gap)) / 2.3); }
+  .pn-sg-grid{ grid-template-columns:minmax(0,1fr); }
+  .pn-sg-grid > li:nth-child(2){ border-top:1px solid var(--sg-line); }
 }
 @media (max-width:720px){
-  .pn-sg-head{ grid-template-columns:1fr; }
+  .pn-sg{ --sg-inner:20px; padding-top:56px; }
+  .pn-sg-head{ grid-template-columns:1fr; margin-bottom:24px; }
+  .pn-sg-intro{ margin-top:14px; }
   .pn-sg-controls{ justify-content:space-between; }
   .pn-sg-all{ margin-left:auto; }
   /* one prominent card, the next one visible at the edge */
-  .pn-sg-track{ --sg-card-w:calc(100vw - 2 * var(--sg-pad-x) - 44px); padding-bottom:36px; }
-  .pn-sg-mount{ aspect-ratio:1 / 1; }
-  .pn-sg-meta li{ grid-template-columns:6.5em minmax(0,1fr); }
+  .pn-sg-track{ --sg-card-w:calc(100vw - 2 * var(--sg-pad-x) - 36px); padding-bottom:32px; }
+  .pn-sg-name{ font-size:28px; }
+  .pn-sg-desc{ font-size:15.5px; }
+  .pn-sg-cta{ padding-top:10px; }
+  /* mobile: each card fits its own content; no stretched empty band above the link */
+  .pn-sg-track{ align-items:start; }
+  .pn-sg-track > li{ display:block; }
+  .pn-sg-cta{ margin-top:6px; }
+  .pn-sg-entry{ grid-template-columns:88px minmax(0,1fr); gap:16px; padding:22px 0; }
+  .pn-sg-facts > div{ grid-template-columns:6.5em minmax(0,1fr); }
 }
 @media (max-width:380px){
   .pn-sg-arrow{ inline-size:44px; block-size:44px; }
+  .pn-sg-entry.has-img{ grid-template-columns:minmax(0,1fr); }
+  .pn-sg-entry.has-img .pn-sg-thumb{ max-inline-size:160px; }
 }
 @media (prefers-reduced-motion:reduce){
   .pn-sg-track{ scroll-behavior:auto; }

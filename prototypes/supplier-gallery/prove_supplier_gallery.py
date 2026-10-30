@@ -15,6 +15,10 @@ explorer config). Then mutates the page in memory to prove each guard can fail.
   G7  a maker with a commercial offer in the live config shows a disclosure
   G8  no link to a private supplier preview, no endorsement words
   G9  page is noindex and not linked from any public page
+  G10 every external link opens in a new tab with rel="noopener noreferrer"
+  G11 every location line is backed by evidence in the editorial file; none for OGNYX
+      (founder rule 30 Oct 2026: its confirmation does not clearly authorise public display)
+  G12 Tanktribe shows the CORE photograph (IMG_8495), never IMG_2531 (founder decision 30 Oct 2026)
 """
 import json, re, sys
 from pathlib import Path
@@ -52,7 +56,7 @@ def unesc(s):
 
 def checks(page, css):
     R = rights(); names, offers = live(); fails = []
-    cards = re.findall(r'<article class="pn-sg-card" aria-label="([^"]+)">(.*?)</article>', page, re.S)
+    cards = re.findall(r'<article class="pn-sg-(?:card|entry)[^"]*" aria-label="([^"]+)">(.*?)</article>', page, re.S)
     for name, body in cards:
         name = unesc(name)
         for src in re.findall(r'<img src="([^"]+)"', body):
@@ -62,7 +66,7 @@ def checks(page, css):
             rec, asset = R[src]
             if rec["organisation_name"] != name:
                 fails.append(f"G1 {name}: image belongs to {rec['organisation_name']}")
-            cred = re.search(r'<a href="([^"]+)"[^>]*>([^<]+)<', body.split("pn-sg-cap", 1)[-1])
+            cred = re.search(r'<a href="([^"]+)"[^>]*>([^<]+)<', body.split('class="pn-sg-cap"', 1)[-1])
             if not cred or unesc(cred.group(2)) != rec["required_credit"] or rec["permitted_domain"] not in cred.group(1):
                 fails.append(f"G2 {name}: required credit '{rec['required_credit']}' with link to {rec['permitted_domain']} missing")
             kind = re.search(r'class="pn-sg-kind">([^<]+)<', body)
@@ -77,6 +81,18 @@ def checks(page, css):
     for li in re.findall(r'<li data-sg-placement="sponsored">(.*?)</li>', page, re.S):
         if "Sponsored</span>" not in li:
             fails.append("G6 sponsored slot without visible label")
+    for a in re.findall(r'<a [^>]*href="https?://[^"]+"[^>]*>', page):
+        if 'target="_blank"' not in a or 'rel="noopener noreferrer"' not in a:
+            fails.append(f"G10 external link without new-tab security attributes: {a[:80]}")
+    ed = json.loads((ROOT / "prototypes/supplier-gallery/garden-retreat.editorial.json").read_text())
+    for name, body in cards:
+        nm = unesc(name)
+        if "pn-sg-loc" in body or "<dt>Made in" in body or "<dt>Registered" in body or "<dt>Based" in body:
+            b = (ed["makers"].get(nm) or {}).get("base")
+            if not b or not b.get("evidence") or nm == "OGNYX":
+                fails.append(f"G11 {nm}: location shown without authorised evidence")
+    if "IMG_2531" in page or "IMG_8495" not in page:
+        fails.append("G12 Tanktribe image is not the CORE photograph IMG_8495")
     shown = {unesc(n) for n, _ in cards}
     if shown != names:
         fails.append(f"G5 gallery makers {sorted(shown ^ names)} differ from the live Discovery")
@@ -98,9 +114,9 @@ def main():
     print(f"real build: {n} cards, {len(fails)} failures")
     for f in fails: print("  FAIL", f)
 
-    tank = "https://images.squarespace-cdn.com/content/v1/67ac8d737a7c665f57f5babe/ab9c9630-7b25-441f-9559-b711ff7f6d5b/IMG_2531.JPG"
+    tank = "https://images.squarespace-cdn.com/content/v1/67ac8d737a7c665f57f5babe/2d930a20-ec94-4b5f-8af4-159501335d62/IMG_8495.jpg"
     mutations = {
-        "G1 unapproved image": (page.replace(tank, tank.replace("IMG_2531", "IMG_9999"), 1), css),
+        "G1 unapproved image": (page.replace(tank, tank.replace("IMG_8495", "IMG_9999"), 1), css),
         "G2 credit removed": (page.replace(">© OGNYX<", ">OGNYX<", 1), css),
         "G3 medium relabelled": (page.replace('pn-sg-kind">Visualisation', 'pn-sg-kind">Photograph', 1), css),
         "G4 crop in CSS": (page, css + "\n.pn-sg-mount img{ object-fit:cover; }"),
@@ -109,12 +125,15 @@ def main():
         "G7 disclosure removed": (re.sub(r'<span class="pn-sg-tag pn-sg-tag--rel">[^<]*</span>', "", page), css),
         "G8 preview link": (page.replace('href="https://www.tanktribe.ie/"', 'href="tanktribe-preview.html"', 1), css),
         "G8 endorsement": (page.replace("Outdoor saunas.</p>", "The best outdoor saunas.</p>", 1), css),
+        "G10 link security dropped": (page.replace('rel="noopener noreferrer" target="_blank"', 'target="_blank"', 1), css),
+        "G11 OGNYX location shown": (page.replace('aria-label="OGNYX"><figure class="pn-sg-fig">', 'aria-label="OGNYX"><p class="pn-sg-loc"><b>Registered in</b> Bray</p><figure class="pn-sg-fig">', 1), css),
+        "G12 Carlsberg image back": (page.replace("2d930a20-ec94-4b5f-8af4-159501335d62/IMG_8495.jpg", "ab9c9630-7b25-441f-9559-b711ff7f6d5b/IMG_2531.JPG"), css),
         "G9 indexable": (page.replace('content="noindex, nofollow"', 'content="index"'), css),
     }
     proved = 0
     for label, (p, c) in mutations.items():
         f, _ = checks(p, c)
-        ok = any(x.startswith(label[:2]) for x in f)
+        ok = any(x.split(" ")[0] == label.split(" ")[0] for x in f)
         proved += ok
         print(f"  {'PROVED ' if ok else 'NOT PROVED'} {label}")
     print(f"mutations: {proved}/{len(mutations)} caught")
