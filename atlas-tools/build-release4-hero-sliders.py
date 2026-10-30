@@ -72,7 +72,8 @@ PAGES = {
 EXTRA_CSS = """<style>
 /* Release 4: the pages' own hero image rules (an id-level object-position, a fade-in scale) must not
    reach the comparison layers, so both layers keep one framing. */
-body.pn-id.pn-pd .d-hero.pn-hero-compare .pn-compare__stage img{ object-position:var(--pnc-focus,50% 50%); }
+body.pn-id.pn-pd .d-hero.pn-hero-compare .pn-compare__stage img,
+body.pn-id.pn-pd .d-hero.pn-hero-compare .pn-compare__stage #dHeroImg{ object-position:var(--pnc-focus,50% 50%); }
 </style>
 """
 
