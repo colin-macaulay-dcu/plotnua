@@ -23,7 +23,9 @@ PAGES = ["discovery-supper-club-at-home.html", "discovery-natural-swimming-garde
          # Pass 2 Release 2 (30 Oct 2026)
          "discovery-hidden-flood-barrier.html", "discovery-living-in-the-garden.html", "discovery-home-exchange.html",
          # Pass 2 Release 3 (30 Oct 2026, private preview)
-         "discovery-hidden-bins.html", "discovery-house-as-power-station.html", "discovery-above-and-beyond.html"]
+         "discovery-hidden-bins.html", "discovery-house-as-power-station.html", "discovery-above-and-beyond.html",
+         # Pass 2 Release 4 (30 Oct 2026)
+         "discovery-the-borrowed-garden.html", "discovery-garden-retreat.html", "discovery-neighbourhood-parcel-house.html"]
 
 
 def read(p):

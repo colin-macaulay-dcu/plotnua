@@ -520,7 +520,7 @@ GOVERNANCE = re.compile(r"\b(publication gate|governance|image permission|with i
 
 def visible_default(page):
     """Words a reader sees with every accordion closed (summaries count)."""
-    m = page[page.index("<header class=\"d-hero\">"):page.index("</main>")]
+    m = page[page.index('<header class="d-hero'):page.index("</main>")]
     m = re.sub(r"<script.*?</script>", " ", m, flags=re.S)
     m = re.sub(r"<!--.*?-->", " ", m, flags=re.S)
     m = re.sub(r"<noscript>.*?</noscript>", " ", m, flags=re.S)
@@ -535,7 +535,7 @@ def guards(page, before=None):
     ids = re.findall(r'<section class="article-section reveal" id="([^"]+)"', main)
     if ids != ORDER:
         errs.append("GR1 sections are %s, expected %s" % (ids, ORDER))
-    hero = page[page.index('<header class="d-hero">'):page.index("</header>")]
+    hero = page[page.index('<header class="d-hero'):page.index("</header>")]
     acts = re.findall(r'<a class="is-(primary|secondary)" href="([^"]+)"', hero)
     if len(acts) != 2 or [a[0] for a in acts] != ["primary", "secondary"]:
         errs.append("GR2 the hero must offer exactly one primary and one secondary action")

@@ -11626,6 +11626,168 @@
         "derivative_embeds_c2pa": false,
         "note": "The edit removes embedded credentials; the source and the image-model result carry theirs (see the description)."
       }
+    },
+    {
+      "asset": "assets/disc025/img/DISC-025-HERO-BEFORE.jpg",
+      "sha256": "c6644d8945c4d872e433f643bc53fdd0d008075a17111cbbb462f9d8f5c805be",
+      "bytes": 394063,
+      "pixels": [
+        1408,
+        768
+      ],
+      "derived_from": {
+        "asset": "assets/img/59d566ff7c3a50e8.jpg",
+        "sha256": "59d566ff7c3a50e8c1ced865f2c3129a3bb75c6606f06cd1b96265eb2d3a77c4"
+      },
+      "method": "artefact-removal",
+      "edit": {
+        "description": "Before/Possible pair preparation for the Borrowed Garden hero (Governance 2.0, Rule 3): removal of PlotNua's own burned-in 'PLOTNUA DISCOVERY / Potential Asset' annotation (leader line, dot, two lines of text and its white glow) from the lawn, so the BEFORE can sit under a slider. Nothing else changed.",
+        "operation": "Confined to x 650-1100, y 425-565 (feather reaches at most x 630-1120, y 405-585). The glow is reversed as white at a measured, spatially varying opacity (low-pass excess over the surrounding lawn); the text, line and dot are replaced by the same lawn 90 px lower, colour-matched to their surroundings, 3 px feather. No generative fill. Every pixel outside the limit is the decoded source pixel before encoding.",
+        "box_xyxy": [
+          650,
+          425,
+          1100,
+          565
+        ],
+        "limit_xyxy": [
+          630,
+          405,
+          1120,
+          585
+        ],
+        "changed_pixels": 81135,
+        "changed_share_of_image": 0.075032,
+        "verified_by": "atlas-tools/build-disc025-hero-before.py --check"
+      },
+      "encoder": "Pillow 12.3.0, JPEG quality 92, progressive",
+      "made": "2026-10-30",
+      "content_credentials": {
+        "source_file_embeds_c2pa": false,
+        "derivative_embeds_c2pa": false,
+        "note": "The source carries no embedded credential. This file inherits the source's LEGACY_UNDECLARED state and declares nothing."
+      }
+    },
+    {
+      "asset": "assets/disc025/img/DISC-025-HERO-BEFORE-1408.webp",
+      "sha256": "99cbf25cc9c619b9985f7331bd5b0c68848f73749aa97f66f957334e3544e62a",
+      "bytes": 294956,
+      "pixels": [
+        1408,
+        768
+      ],
+      "derived_from": {
+        "asset": "assets/img/59d566ff7c3a50e8.jpg",
+        "sha256": "59d566ff7c3a50e8c1ced865f2c3129a3bb75c6606f06cd1b96265eb2d3a77c4"
+      },
+      "method": "artefact-removal",
+      "edit": {
+        "description": "Before/Possible pair preparation for the Borrowed Garden hero (Governance 2.0, Rule 3): removal of PlotNua's own burned-in 'PLOTNUA DISCOVERY / Potential Asset' annotation (leader line, dot, two lines of text and its white glow) from the lawn, so the BEFORE can sit under a slider. Nothing else changed.",
+        "operation": "Confined to x 650-1100, y 425-565 (feather reaches at most x 630-1120, y 405-585). The glow is reversed as white at a measured, spatially varying opacity (low-pass excess over the surrounding lawn); the text, line and dot are replaced by the same lawn 90 px lower, colour-matched to their surroundings, 3 px feather. No generative fill. Every pixel outside the limit is the decoded source pixel before encoding.",
+        "box_xyxy": [
+          650,
+          425,
+          1100,
+          565
+        ],
+        "limit_xyxy": [
+          630,
+          405,
+          1120,
+          585
+        ],
+        "changed_pixels": 81135,
+        "changed_share_of_image": 0.075032,
+        "verified_by": "atlas-tools/build-disc025-hero-before.py --check"
+      },
+      "encoder": "Pillow 12.3.0, WebP quality 80, method 6",
+      "made": "2026-10-30",
+      "content_credentials": {
+        "source_file_embeds_c2pa": false,
+        "derivative_embeds_c2pa": false,
+        "note": "The source carries no embedded credential. This file inherits the source's LEGACY_UNDECLARED state and declares nothing."
+      }
+    },
+    {
+      "asset": "assets/disc025/img/DISC-025-HERO-BEFORE-960.webp",
+      "sha256": "566c8d8459ada4b7d06eeba82259f6dfcf9d5dd85ca4eacbc3c060cb3759e35d",
+      "bytes": 161514,
+      "pixels": [
+        960,
+        524
+      ],
+      "derived_from": {
+        "asset": "assets/img/59d566ff7c3a50e8.jpg",
+        "sha256": "59d566ff7c3a50e8c1ced865f2c3129a3bb75c6606f06cd1b96265eb2d3a77c4"
+      },
+      "method": "artefact-removal",
+      "edit": {
+        "description": "Before/Possible pair preparation for the Borrowed Garden hero (Governance 2.0, Rule 3): removal of PlotNua's own burned-in 'PLOTNUA DISCOVERY / Potential Asset' annotation (leader line, dot, two lines of text and its white glow) from the lawn, so the BEFORE can sit under a slider. Nothing else changed.",
+        "operation": "Confined to x 650-1100, y 425-565 (feather reaches at most x 630-1120, y 405-585). The glow is reversed as white at a measured, spatially varying opacity (low-pass excess over the surrounding lawn); the text, line and dot are replaced by the same lawn 90 px lower, colour-matched to their surroundings, 3 px feather. No generative fill. Every pixel outside the limit is the decoded source pixel before encoding.",
+        "box_xyxy": [
+          650,
+          425,
+          1100,
+          565
+        ],
+        "limit_xyxy": [
+          630,
+          405,
+          1120,
+          585
+        ],
+        "changed_pixels": 81135,
+        "changed_share_of_image": 0.075032,
+        "verified_by": "atlas-tools/build-disc025-hero-before.py --check"
+      },
+      "encoder": "Pillow 12.3.0, WebP quality 80, method 6, Lanczos resize to 960px wide",
+      "made": "2026-10-30",
+      "content_credentials": {
+        "source_file_embeds_c2pa": false,
+        "derivative_embeds_c2pa": false,
+        "note": "The source carries no embedded credential. This file inherits the source's LEGACY_UNDECLARED state and declares nothing."
+      }
+    },
+    {
+      "asset": "assets/img/faeb58a1d6a8ed1a.webp",
+      "sha256": "053a8499540178a1f9319e54a588889026530af061009c99148c61b3a98c41cd",
+      "bytes": 351774,
+      "pixels": [
+        1408,
+        768
+      ],
+      "derived_from": {
+        "asset": "assets/img/faeb58a1d6a8ed1a.jpg",
+        "sha256": "faeb58a1d6a8ed1a2b4e11f710d04e4f5c5cd0c788e6c3abff9f70fd858bd258"
+      },
+      "method": "webp-reencode",
+      "encoder": "Pillow 12.3.0, WebP quality 80, method 6",
+      "made": "2026-10-30",
+      "content_credentials": {
+        "source_file_embeds_c2pa": false,
+        "derivative_embeds_c2pa": false,
+        "note": "The source carries no embedded credential. This file inherits the source's LEGACY_UNDECLARED state and declares nothing."
+      }
+    },
+    {
+      "asset": "assets/img/faeb58a1d6a8ed1a-960w.webp",
+      "sha256": "fe0c2cb0733f9c9ef49876acf640ed0c6c8ae989f9ebd8f333a782ff06441496",
+      "bytes": 187606,
+      "pixels": [
+        960,
+        524
+      ],
+      "derived_from": {
+        "asset": "assets/img/faeb58a1d6a8ed1a.jpg",
+        "sha256": "faeb58a1d6a8ed1a2b4e11f710d04e4f5c5cd0c788e6c3abff9f70fd858bd258"
+      },
+      "method": "webp-resize",
+      "encoder": "Pillow 12.3.0, WebP quality 80, method 6, Lanczos resize to 960px wide",
+      "made": "2026-10-30",
+      "content_credentials": {
+        "source_file_embeds_c2pa": false,
+        "derivative_embeds_c2pa": false,
+        "note": "The source carries no embedded credential. This file inherits the source's LEGACY_UNDECLARED state and declares nothing."
+      }
     }
   ],
   "derivative_holds": [
