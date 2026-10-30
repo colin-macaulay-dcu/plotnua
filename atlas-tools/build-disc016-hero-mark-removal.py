@@ -22,10 +22,14 @@ PREPARED FOR FOUNDER REVIEW. NOT A P12 DERIVATIVE.
 
   Outputs (assets/disc016/img/): DISC-016-HERO-{BEFORE,POSSIBLE}-MR.jpg (fallback, quality
   92), -MR-1408.webp and -MR-960.webp (quality 80, method 6). Recorded in
-  governance/DISC-016-HERO-MARK-REMOVAL-REVIEW-DRAFT-2026-10-30.json.
+  governance/DISC-016-HERO-MARK-REMOVAL-EXCEPTION-2026-10-30.json.
 
-  python3 atlas-tools/build-disc016-hero-mark-removal.py          build
+  python3 atlas-tools/build-disc016-hero-mark-removal.py          build (files + register entries)
   python3 atlas-tools/build-disc016-hero-mark-removal.py --check  verify, write nothing
+
+  REGISTER (founder decision PN-FDR-2026-10-30-DISC016-MR, 30 Oct 2026): the six files are recorded in
+  image-provenance-records.json `derivatives` with method 'visible-mark-removal', admitted by the
+  hash-pinned exception MARK_REMOVAL_DISC016 in validate-image-provenance.js and by nothing else.
 """
 import hashlib, io, json, pathlib, sys
 import numpy as np, cv2
@@ -33,7 +37,7 @@ from PIL import Image, __version__ as PIL_VERSION
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 OUT = ROOT / "assets/disc016/img"
-DRAFT = ROOT / "governance/DISC-016-HERO-MARK-REMOVAL-REVIEW-DRAFT-2026-10-30.json"
+DRAFT = ROOT / "governance/DISC-016-HERO-MARK-REMOVAL-EXCEPTION-2026-10-30.json"
 CHECK = "--check" in sys.argv
 SOURCES = {
     "BEFORE": ("assets/img/b53d75f9dff4af2e.jpg", "b53d75f9dff4af2e"),
@@ -72,10 +76,27 @@ def enc(im, fmt, **kw):
     b = io.BytesIO(); im.save(b, fmt, **kw); return b.getvalue()
 
 
+DECISION = "PN-FDR-2026-10-30-DISC016-MR"
+OPERATION = ("Visible-mark removal, confined to the box: a four-point star mask |dx/27|^0.62 + |dy/27|^0.62 <= 1 "
+             "centred (1288, 649), 4x supersampled; reverse alpha blending of a white mark at the opacity measured "
+             "in this image (mean inside the star against a 7 px ring outside it); a 3 px OpenCV Telea inpaint on "
+             "the star's anti-aliased edge only. No generative fill. Every pixel outside the box is the decoded "
+             "source pixel before encoding.")
+
+
+def ssim_to(src_bgr, data):
+    from skimage.metrics import structural_similarity
+    im = Image.open(io.BytesIO(data)).convert("RGB")
+    ref = Image.fromarray(cv2.cvtColor(src_bgr, cv2.COLOR_BGR2RGB))
+    if ref.size != im.size: ref = ref.resize(im.size, Image.LANCZOS)
+    return round(float(structural_similarity(np.asarray(ref), np.asarray(im), channel_axis=2)), 4)
+
+
 def main():
-    reg = json.loads((ROOT / "image-provenance-records.json").read_text(encoding="utf-8"))
+    regp = ROOT / "image-provenance-records.json"
+    reg = json.loads(regp.read_text(encoding="utf-8"))
     legacy = {e["asset"]: e for e in reg["legacy_undeclared"]}
-    files, recs = {}, []
+    files, recs, entries = {}, [], []
     for role, (src, stem) in SOURCES.items():
         raw = (ROOT / src).read_bytes()
         if src not in legacy or legacy[src]["sha256"] != sha(raw):
@@ -96,14 +117,33 @@ def main():
         for path, data, size in variants:
             files[path] = data
             recs.append({"asset": path, "sha256": sha(data), "bytes": len(data), "pixels": list(size), "role": role})
+            entries.append({
+                "asset": path, "sha256": sha(data), "bytes": len(data), "pixels": list(size),
+                "derived_from": {"asset": src, "sha256": sha(raw)},
+                "method": "visible-mark-removal",
+                "decision_ref": DECISION + " (hash-pinned exception in validate-image-provenance.js; not a general P12 amendment)",
+                "edit": {"operation": OPERATION, "box_xyxy": box, "changed_pixels": int(diff.sum()),
+                         "changed_share_of_image": round(float(diff.mean()), 6), "measured_mark_opacity": a,
+                         "verified_by": "atlas-tools/build-disc016-hero-mark-removal.py --check (refuses any change outside the box)"},
+                "encoder": ("Pillow %s, JPEG quality 92, progressive" % PIL_VERSION) if path.endswith(".jpg") else
+                           ("Pillow %s, WebP quality 80, method 6%s" % (PIL_VERSION, ", Lanczos resize to 960px wide" if size[0] == 960 else "")),
+                "fidelity": {"ssim": ssim_to(bgr, data), "measured_against": "source at the same pixel size (includes the removed mark)"},
+                "made": "2026-10-30",
+                "content_credentials": {"source_file_embeds_c2pa": b"jumdc2pa" in raw, "derivative_embeds_c2pa": b"jumdc2pa" in data,
+                                        "note": "The source carries no embedded credential. This file inherits the source's LEGACY_UNDECLARED state and declares nothing."},
+            })
         recs.append({"source": {"asset": src, "sha256": sha(raw), "state": "LEGACY_UNDECLARED", "embeds_c2pa": b"jumdc2pa" in raw},
                      "role": role, "measured_mark_opacity": a, "changed_box_xyxy": box,
                      "changed_pixels": int(diff.sum()), "changed_share_of_image": round(float(diff.mean()), 6)})
+    cur = [e for e in reg.get("derivatives", []) if e.get("method") == "visible-mark-removal"]
     if CHECK:
         bad = [p for p, d in files.items() if not (ROOT / p).exists() or (ROOT / p).read_bytes() != d]
+        if json.dumps(cur, sort_keys=True) != json.dumps(entries, sort_keys=True): bad.append("register entries")
         print("DISC-016 MARK REMOVAL · " + ("OK" if not bad else "DIFFERS: %s" % bad)); sys.exit(1 if bad else 0)
     OUT.mkdir(parents=True, exist_ok=True)
     for p, d in files.items(): (ROOT / p).write_bytes(d)
+    reg["derivatives"] = [e for e in reg.get("derivatives", []) if e.get("method") != "visible-mark-removal"] + entries
+    regp.write_text(json.dumps(reg, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
     draft = json.loads(DRAFT.read_text(encoding="utf-8")) if DRAFT.exists() else {}
     draft["build_output"] = {"tool": "atlas-tools/build-disc016-hero-mark-removal.py",
                              "libraries": "OpenCV %s, Pillow %s, NumPy %s" % (cv2.__version__, PIL_VERSION, np.__version__),

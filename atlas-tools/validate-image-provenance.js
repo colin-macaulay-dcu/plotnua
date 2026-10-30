@@ -259,7 +259,47 @@ const FOUNDER_ATTESTED_PLOTART_LG = {
   sha256: new Set(['f4861333a80fda7f704fd3c57d0a2b8f18db589b8505eb11192ac05c08d8d0f9']),
   surfaces: ['plotart'],
 };
-const FOUNDER_ATTESTED_ALL = [FOUNDER_ATTESTED_GRP, FOUNDER_ATTESTED_H6, FOUNDER_ATTESTED_DISC031, FOUNDER_ATTESTED_DISC033, FOUNDER_ATTESTED_DISC032, FOUNDER_ATTESTED_PLOTART_LG];
+/* FOUNDER-ATTESTED CONTEXT · RELEASE 3 HERO SLIDERS (PN-FDR-2026-10-30-R3HERO; prepared 30 Oct 2026,
+   PENDING founder signature). Three pictures whose own signed Google C2PA credentials state "Created by
+   Google Generative AI": The Hidden Bins BEFORE / POSSIBLE and The House as a Power Station BEFORE. Prompts
+   are unavailable and each credential records an input image (two unidentified, one credentialed), so the
+   founder-attested form is the only truthful record. ONLY these three files, ONLY on the discovery surface.
+   The records are added by atlas-tools/declare-r3-hero-provenance.py from the signed declaration
+   governance/R3-HERO-AI-DECLARATION-2026-10-30.json; until then this pin admits nothing, because no record
+   carries the decision. Not a way to declare future images. */
+const FOUNDER_ATTESTED_R3HERO = {
+  decision: 'PN-FDR-2026-10-30-R3HERO',
+  sha256: new Set([
+    '9805382f8164228a7b9f6c008b822cc0009e48732d952c37ed645ab4f03491b5',
+    '31b49fb60732073b37e5aca32707d92705d58b819b9372b84587e1b06a8dde1c',
+    '72b854817881f367c7737789feb98215c540ce9a4730fbbb6254510e0286daa3',
+  ]),
+  surfaces: ['discovery'],
+};
+/* P12 PINNED EXCEPTION · DISC-016 ABOVE AND BEYOND HERO, VISIBLE-MARK REMOVAL
+   (PN-FDR-2026-10-30-DISC016-MR; founder instruction, Pass 2 Release 3, 30 Oct 2026: "Prepare a
+   narrowly scoped, hash-pinned exception for the six existing watermark-removal derivatives. Do not
+   introduce a general amendment to P12.") These SIX files, and nothing else, may be recorded as
+   derivatives with method 'visible-mark-removal'. Each is bound to its exact bytes, its exact source
+   bytes and the exact edit box (59 x 59 px, x 1259-1317, y 620-678 of 1408 x 768); the edit is
+   reproducible with atlas-tools/build-disc016-hero-mark-removal.py --check, which refuses if any pixel
+   outside that box changes. A different file, a re-encode, another source or another box is refused.
+   The sources stay LEGACY_UNDECLARED and are not modified; the six inherit that state and declare
+   nothing. Not a way to edit, retouch or derive any other image. */
+const MARK_REMOVAL_DISC016 = {
+  decision: 'PN-FDR-2026-10-30-DISC016-MR',
+  method: 'visible-mark-removal',
+  box: [1259, 620, 1318, 679],
+  files: new Map([
+    ['assets/disc016/img/DISC-016-HERO-BEFORE-MR.jpg', ['e91e0c1fc90a05d9396ad570932381a87a00d26f9c2836c076b530a35d300c49', 'assets/img/b53d75f9dff4af2e.jpg', 'b53d75f9dff4af2e4d1d7f0de5b2b39e2c935d30ac628a64e5e6f72272079300']],
+    ['assets/disc016/img/DISC-016-HERO-BEFORE-MR-1408.webp', ['a84b18d3c010528acb8caf4213bc4205f6c12cd1c5b0a7701d22e897b32229d6', 'assets/img/b53d75f9dff4af2e.jpg', 'b53d75f9dff4af2e4d1d7f0de5b2b39e2c935d30ac628a64e5e6f72272079300']],
+    ['assets/disc016/img/DISC-016-HERO-BEFORE-MR-960.webp', ['3eb38ff34173045e8d78c72ffc64360c00127063d8c22ffbb01e5be9d33c9cce', 'assets/img/b53d75f9dff4af2e.jpg', 'b53d75f9dff4af2e4d1d7f0de5b2b39e2c935d30ac628a64e5e6f72272079300']],
+    ['assets/disc016/img/DISC-016-HERO-POSSIBLE-MR.jpg', ['ae981639000f5218ae62db3fe2c2039516e0549c85800d0bc254c8b7b991bee7', 'assets/img/aecece07994fe0db.jpg', 'aecece07994fe0db0ef639383ac91f54ea18b5ae834e8d9e45f21efc6acd0f81']],
+    ['assets/disc016/img/DISC-016-HERO-POSSIBLE-MR-1408.webp', ['d7f0aa2148b748dc2f85b80f1babc34b30866cd1a252202885044757cc2844ae', 'assets/img/aecece07994fe0db.jpg', 'aecece07994fe0db0ef639383ac91f54ea18b5ae834e8d9e45f21efc6acd0f81']],
+    ['assets/disc016/img/DISC-016-HERO-POSSIBLE-MR-960.webp', ['41381606922bd2bad2aca8a6c4254a6c25c82de958040ca7da03b239250ad722', 'assets/img/aecece07994fe0db.jpg', 'aecece07994fe0db0ef639383ac91f54ea18b5ae834e8d9e45f21efc6acd0f81']],
+  ]),
+};
+const FOUNDER_ATTESTED_ALL = [FOUNDER_ATTESTED_GRP, FOUNDER_ATTESTED_H6, FOUNDER_ATTESTED_DISC031, FOUNDER_ATTESTED_DISC033, FOUNDER_ATTESTED_DISC032, FOUNDER_ATTESTED_PLOTART_LG, FOUNDER_ATTESTED_R3HERO];
 const attestedFor = h => FOUNDER_ATTESTED_ALL.find(x => x.sha256.has(String(h)));
 /* 'gridnua' (founder approval of the GridNua limited launch, 29 Oct 2026): the GridNua initiative pages. */
 const PERMITTED_SURFACES = ['discovery', 'library-card', 'homepage',
@@ -993,6 +1033,32 @@ const pageText = html => html.replace(/<!--[\s\S]*?-->/g, ' ').replace(/<[^>]+>/
           claims an embedded signed credential (re-encoding removes C2PA). */
   const METHODS = ['webp-reencode', 'webp-resize'];
   const problems = [];
+  /* The one pinned exception (MARK_REMOVAL_DISC016): exact files, exact bytes, exact source, exact box. */
+  const MR = MARK_REMOVAL_DISC016;
+  const jpegSize = (buf) => {
+    if (buf.length < 4 || buf[0] !== 0xFF || buf[1] !== 0xD8) return null;
+    let i = 2;
+    while (i + 9 < buf.length) {
+      if (buf[i] !== 0xFF) { i++; continue; }
+      const m = buf[i + 1], len = buf.readUInt16BE(i + 2);
+      if ([0xC0, 0xC1, 0xC2, 0xC3, 0xC5, 0xC6, 0xC7, 0xC9, 0xCA, 0xCB, 0xCD, 0xCE, 0xCF].includes(m))
+        return [buf.readUInt16BE(i + 7), buf.readUInt16BE(i + 5)];
+      i += 2 + len;
+    }
+    return null;
+  };
+  const mrSeen = new Set();
+  for (const d of derivatives) {
+    if (!d || d.method !== MR.method) continue;
+    const pinned = MR.files.get(d.asset);
+    if (!pinned) { problems.push(`${d.asset}: '${MR.method}' is admitted only for the six pinned ${MR.decision} files`); continue; }
+    mrSeen.add(d.asset);
+    const [sha, src, srcSha] = pinned;
+    if (d.sha256 !== sha) problems.push(`${d.asset}: not the pinned bytes (${MR.decision})`);
+    if (!d.derived_from || d.derived_from.asset !== src || d.derived_from.sha256 !== srcSha) problems.push(`${d.asset}: not bound to its pinned source`);
+    if (!d.edit || JSON.stringify(d.edit.box_xyxy) !== JSON.stringify(MR.box)) problems.push(`${d.asset}: edit box is not the pinned box`);
+    if (!String(d.decision_ref || '').includes(MR.decision)) problems.push(`${d.asset}: no ${MR.decision}`);
+  }
   /* Provenance holds (17 Oct 2026): a held source may not have a derivative. */
   if (reg.derivative_holds !== undefined && !Array.isArray(reg.derivative_holds)) {
     problems.push('derivative_holds is not an array');
@@ -1029,7 +1095,8 @@ const pageText = html => html.replace(/<!--[\s\S]*?-->/g, ' ').replace(/<[^>]+>/
     if (!srcEntry) problems.push(`${a}: source ${from.asset} is not in the register`);
     else if (srcEntry.sha256 !== from.sha256) problems.push(`${a}: source ${from.asset} has changed since derivation`);
     if (derivSet.has(from.asset)) problems.push(`${a}: derived from another derivative`);
-    if (!/\.webp$/i.test(a) || !METHODS.includes(d.method)) problems.push(`${a}: not a WebP re-encoding (${d.method})`);
+    const isMR = d.method === MR.method && MR.files.has(a);
+    if (!isMR && (!/\.webp$/i.test(a) || !METHODS.includes(d.method))) problems.push(`${a}: not a WebP re-encoding (${d.method})`);
     for (const k of ['class', 'status', 'label', 'permitted_surfaces'])
       if (k in d) problems.push(`${a}: declares "${k}"`);
     const full = join(ROOT, a);
@@ -1038,9 +1105,9 @@ const pageText = html => html.replace(/<!--[\s\S]*?-->/g, ' ').replace(/<[^>]+>/
     } else {
       const buf = readFileSync(full);
       if (createHash('sha256').update(buf).digest('hex') !== d.sha256) problems.push(`${a}: bytes do not match its hash`);
-      const wh = webpSize(buf);
+      const wh = webpSize(buf) || (isMR && /\.jpe?g$/i.test(a) ? jpegSize(buf) : null);
       const sp = srcEntry && srcEntry.pixels;
-      if (!wh) problems.push(`${a}: not a readable WebP file`);
+      if (!wh) problems.push(`${a}: not a readable ${isMR ? 'WebP or JPEG' : 'WebP'} file`);
       else if (Array.isArray(sp) && sp[0] && sp[1]) {
         if (wh[0] > sp[0]) problems.push(`${a}: wider than its source (upscaled)`);
         if (Math.abs(wh[0] / wh[1] - sp[0] / sp[1]) > 0.005) problems.push(`${a}: aspect ratio differs from its source (cropped)`);

@@ -148,8 +148,8 @@ PAGES = {
         comment="""  <!-- Pass 2 Release 3 (founder approval, 30 Oct 2026): the shared Before -> Possible component
        pn-compare v1.2, hero standard. Same garden, one framing (0 px): as it is, then two pods.
        The slider uses copies of the two legacy pictures with the faint visible mark removed
-       (atlas-tools/build-disc016-hero-mark-removal.py; draft provenance for founder review in
-       governance/DISC-016-HERO-MARK-REMOVAL-REVIEW-DRAFT-2026-10-30.json). The sources and
+       (atlas-tools/build-disc016-hero-mark-removal.py; hash-pinned exception PN-FDR-2026-10-30-DISC016-MR,
+       governance/DISC-016-HERO-MARK-REMOVAL-EXCEPTION-2026-10-30.json). The sources and
        their other uses on this page are unchanged. -->
 """),
 }

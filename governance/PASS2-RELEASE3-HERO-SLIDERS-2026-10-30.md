@@ -43,7 +43,7 @@ Each slider uses the audit's measured 0 px pair (one framing). The hero copy is 
 - **What changed:** only pixels inside a 59 × 59 px box (about 0.1% of each image). The script refuses if any pixel outside it differs.
 - **Sources untouched:** the two source files, and their other uses on the page, are not modified.
 - **Why they can't be registered yet:** these are not P12 derivatives (removal is an edit), so they cannot be registered as the rules stand.
-  - **Draft for review:** `governance/DISC-016-HERO-MARK-REMOVAL-REVIEW-DRAFT-2026-10-30.json`.
+  - **Draft for review:** `governance/DISC-016-HERO-MARK-REMOVAL-EXCEPTION-2026-10-30.json`.
   - **Guards correctly refuse them:**
     - `validate-image-provenance.js` P1 ("6 unaccounted");
     - `prove-compare-hero.py` C7.
@@ -57,3 +57,28 @@ Each slider uses the audit's measured 0 px pair (one framing). The hero copy is 
 - `prove-disc026-discovery.mjs`: the Library-image check is narrowed in scope (freeze record V8 §3). Three planted faults were caught. Its one remaining failure ("exactly five SVGs") is pre-existing on production.
 - `prove-gridnua-launch.py` GL12: passes with V8.
 - New: `atlas-tools/build-release3-hero-sliders.py` (with `--check`) and `atlas-tools/build-disc016-hero-mark-removal.py` (with `--check`).
+
+## Final governance round (founder instruction, 30 Oct 2026, "Final governance and release readiness")
+
+1. **Above and Beyond:** the six visible-mark-removal files are registered as derivatives under a **hash-pinned exception**, `MARK_REMOVAL_DISC016` (PN-FDR-2026-10-30-DISC016-MR), in `validate-image-provenance.js`.
+   - **What the pin binds:**
+     - exact bytes;
+     - the exact source and source sha256;
+     - method `visible-mark-removal`;
+     - the exact 59 × 59 px edit box;
+     - the decision reference.
+   - **P12 is otherwise unchanged.**
+   - **Planted faults:** six were planted (a seventh file, another source, a larger box, another method name, no decision reference, re-edited bytes) and all six were caught.
+   - **Record:** `governance/DISC-016-HERO-MARK-REMOVAL-EXCEPTION-2026-10-30.json`.
+2. **Hidden Bins:** the POSSIBLE JPEG is retained. No derivative is made and no source relationship is asserted.
+3. **AI declarations:**
+   - **Credentials reviewed:** all four credentialed slider pictures. Each states "Created by Google Generative AI".
+   - **Prepared for declaration:** `governance/R3-HERO-AI-DECLARATION-2026-10-30.json` and `atlas-tools/declare-r3-hero-provenance.py` cover the three pictures shown only on Release 3 pages: Hidden Bins BEFORE and POSSIBLE, and Power Station BEFORE.
+   - **What the declaration does when applied:**
+     - moves those three pictures to `records` in the founder-attested form;
+     - adds the approved label to the two heroes;
+     - refreshes freeze record V8.
+   - **Status: AWAITING THE FOUNDER'S SIGNATURE.** The pin `FOUNDER_ATTESTED_R3HERO` admits nothing until the signed records exist.
+   - **Trial run:** the signed path was run in a scratch copy and passes the validator (17/17), compare-hero (8 pages) and GL12.
+   - **Not declared here:** `ce9da2e5`, because it would need the label on six pages outside this release. The two Above and Beyond sources are not declared because they have no credential.
+   - **Finding:** the Hidden Bins BEFORE (`9805382f`) credential also records an **unidentified** input. The 16 Oct derivative-lineage note for it in `build-hero-webp-derivatives.py` ("no input ingredients") is therefore inaccurate. Its two existing, live WebP derivatives are unchanged; correcting that note is a founder decision.

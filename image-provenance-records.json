@@ -11202,6 +11202,240 @@
         "derivative_embeds_c2pa": false,
         "note": "WebP re-encoding removes the embedded C2PA credential. The derivative carries NO signed credential and must never be described as having one. The original JPEG (unchanged, still served as the <picture> fallback) and the source credential evidence are retained."
       }
+    },
+    {
+      "asset": "assets/disc016/img/DISC-016-HERO-BEFORE-MR.jpg",
+      "sha256": "e91e0c1fc90a05d9396ad570932381a87a00d26f9c2836c076b530a35d300c49",
+      "bytes": 472459,
+      "pixels": [
+        1408,
+        768
+      ],
+      "derived_from": {
+        "asset": "assets/img/b53d75f9dff4af2e.jpg",
+        "sha256": "b53d75f9dff4af2e4d1d7f0de5b2b39e2c935d30ac628a64e5e6f72272079300"
+      },
+      "method": "visible-mark-removal",
+      "decision_ref": "PN-FDR-2026-10-30-DISC016-MR (hash-pinned exception in validate-image-provenance.js; not a general P12 amendment)",
+      "edit": {
+        "operation": "Visible-mark removal, confined to the box: a four-point star mask |dx/27|^0.62 + |dy/27|^0.62 <= 1 centred (1288, 649), 4x supersampled; reverse alpha blending of a white mark at the opacity measured in this image (mean inside the star against a 7 px ring outside it); a 3 px OpenCV Telea inpaint on the star's anti-aliased edge only. No generative fill. Every pixel outside the box is the decoded source pixel before encoding.",
+        "box_xyxy": [
+          1259,
+          620,
+          1318,
+          679
+        ],
+        "changed_pixels": 1066,
+        "changed_share_of_image": 0.000986,
+        "measured_mark_opacity": 0.4199,
+        "verified_by": "atlas-tools/build-disc016-hero-mark-removal.py --check (refuses any change outside the box)"
+      },
+      "encoder": "Pillow 12.3.0, JPEG quality 92, progressive",
+      "fidelity": {
+        "ssim": 0.9955,
+        "measured_against": "source at the same pixel size (includes the removed mark)"
+      },
+      "made": "2026-10-30",
+      "content_credentials": {
+        "source_file_embeds_c2pa": false,
+        "derivative_embeds_c2pa": false,
+        "note": "The source carries no embedded credential. This file inherits the source's LEGACY_UNDECLARED state and declares nothing."
+      }
+    },
+    {
+      "asset": "assets/disc016/img/DISC-016-HERO-BEFORE-MR-1408.webp",
+      "sha256": "a84b18d3c010528acb8caf4213bc4205f6c12cd1c5b0a7701d22e897b32229d6",
+      "bytes": 301654,
+      "pixels": [
+        1408,
+        768
+      ],
+      "derived_from": {
+        "asset": "assets/img/b53d75f9dff4af2e.jpg",
+        "sha256": "b53d75f9dff4af2e4d1d7f0de5b2b39e2c935d30ac628a64e5e6f72272079300"
+      },
+      "method": "visible-mark-removal",
+      "decision_ref": "PN-FDR-2026-10-30-DISC016-MR (hash-pinned exception in validate-image-provenance.js; not a general P12 amendment)",
+      "edit": {
+        "operation": "Visible-mark removal, confined to the box: a four-point star mask |dx/27|^0.62 + |dy/27|^0.62 <= 1 centred (1288, 649), 4x supersampled; reverse alpha blending of a white mark at the opacity measured in this image (mean inside the star against a 7 px ring outside it); a 3 px OpenCV Telea inpaint on the star's anti-aliased edge only. No generative fill. Every pixel outside the box is the decoded source pixel before encoding.",
+        "box_xyxy": [
+          1259,
+          620,
+          1318,
+          679
+        ],
+        "changed_pixels": 1066,
+        "changed_share_of_image": 0.000986,
+        "measured_mark_opacity": 0.4199,
+        "verified_by": "atlas-tools/build-disc016-hero-mark-removal.py --check (refuses any change outside the box)"
+      },
+      "encoder": "Pillow 12.3.0, WebP quality 80, method 6",
+      "fidelity": {
+        "ssim": 0.9741,
+        "measured_against": "source at the same pixel size (includes the removed mark)"
+      },
+      "made": "2026-10-30",
+      "content_credentials": {
+        "source_file_embeds_c2pa": false,
+        "derivative_embeds_c2pa": false,
+        "note": "The source carries no embedded credential. This file inherits the source's LEGACY_UNDECLARED state and declares nothing."
+      }
+    },
+    {
+      "asset": "assets/disc016/img/DISC-016-HERO-BEFORE-MR-960.webp",
+      "sha256": "3eb38ff34173045e8d78c72ffc64360c00127063d8c22ffbb01e5be9d33c9cce",
+      "bytes": 150576,
+      "pixels": [
+        960,
+        524
+      ],
+      "derived_from": {
+        "asset": "assets/img/b53d75f9dff4af2e.jpg",
+        "sha256": "b53d75f9dff4af2e4d1d7f0de5b2b39e2c935d30ac628a64e5e6f72272079300"
+      },
+      "method": "visible-mark-removal",
+      "decision_ref": "PN-FDR-2026-10-30-DISC016-MR (hash-pinned exception in validate-image-provenance.js; not a general P12 amendment)",
+      "edit": {
+        "operation": "Visible-mark removal, confined to the box: a four-point star mask |dx/27|^0.62 + |dy/27|^0.62 <= 1 centred (1288, 649), 4x supersampled; reverse alpha blending of a white mark at the opacity measured in this image (mean inside the star against a 7 px ring outside it); a 3 px OpenCV Telea inpaint on the star's anti-aliased edge only. No generative fill. Every pixel outside the box is the decoded source pixel before encoding.",
+        "box_xyxy": [
+          1259,
+          620,
+          1318,
+          679
+        ],
+        "changed_pixels": 1066,
+        "changed_share_of_image": 0.000986,
+        "measured_mark_opacity": 0.4199,
+        "verified_by": "atlas-tools/build-disc016-hero-mark-removal.py --check (refuses any change outside the box)"
+      },
+      "encoder": "Pillow 12.3.0, WebP quality 80, method 6, Lanczos resize to 960px wide",
+      "fidelity": {
+        "ssim": 0.973,
+        "measured_against": "source at the same pixel size (includes the removed mark)"
+      },
+      "made": "2026-10-30",
+      "content_credentials": {
+        "source_file_embeds_c2pa": false,
+        "derivative_embeds_c2pa": false,
+        "note": "The source carries no embedded credential. This file inherits the source's LEGACY_UNDECLARED state and declares nothing."
+      }
+    },
+    {
+      "asset": "assets/disc016/img/DISC-016-HERO-POSSIBLE-MR.jpg",
+      "sha256": "ae981639000f5218ae62db3fe2c2039516e0549c85800d0bc254c8b7b991bee7",
+      "bytes": 468709,
+      "pixels": [
+        1408,
+        768
+      ],
+      "derived_from": {
+        "asset": "assets/img/aecece07994fe0db.jpg",
+        "sha256": "aecece07994fe0db0ef639383ac91f54ea18b5ae834e8d9e45f21efc6acd0f81"
+      },
+      "method": "visible-mark-removal",
+      "decision_ref": "PN-FDR-2026-10-30-DISC016-MR (hash-pinned exception in validate-image-provenance.js; not a general P12 amendment)",
+      "edit": {
+        "operation": "Visible-mark removal, confined to the box: a four-point star mask |dx/27|^0.62 + |dy/27|^0.62 <= 1 centred (1288, 649), 4x supersampled; reverse alpha blending of a white mark at the opacity measured in this image (mean inside the star against a 7 px ring outside it); a 3 px OpenCV Telea inpaint on the star's anti-aliased edge only. No generative fill. Every pixel outside the box is the decoded source pixel before encoding.",
+        "box_xyxy": [
+          1259,
+          620,
+          1318,
+          679
+        ],
+        "changed_pixels": 1065,
+        "changed_share_of_image": 0.000985,
+        "measured_mark_opacity": 0.3079,
+        "verified_by": "atlas-tools/build-disc016-hero-mark-removal.py --check (refuses any change outside the box)"
+      },
+      "encoder": "Pillow 12.3.0, JPEG quality 92, progressive",
+      "fidelity": {
+        "ssim": 0.9954,
+        "measured_against": "source at the same pixel size (includes the removed mark)"
+      },
+      "made": "2026-10-30",
+      "content_credentials": {
+        "source_file_embeds_c2pa": false,
+        "derivative_embeds_c2pa": false,
+        "note": "The source carries no embedded credential. This file inherits the source's LEGACY_UNDECLARED state and declares nothing."
+      }
+    },
+    {
+      "asset": "assets/disc016/img/DISC-016-HERO-POSSIBLE-MR-1408.webp",
+      "sha256": "d7f0aa2148b748dc2f85b80f1babc34b30866cd1a252202885044757cc2844ae",
+      "bytes": 297496,
+      "pixels": [
+        1408,
+        768
+      ],
+      "derived_from": {
+        "asset": "assets/img/aecece07994fe0db.jpg",
+        "sha256": "aecece07994fe0db0ef639383ac91f54ea18b5ae834e8d9e45f21efc6acd0f81"
+      },
+      "method": "visible-mark-removal",
+      "decision_ref": "PN-FDR-2026-10-30-DISC016-MR (hash-pinned exception in validate-image-provenance.js; not a general P12 amendment)",
+      "edit": {
+        "operation": "Visible-mark removal, confined to the box: a four-point star mask |dx/27|^0.62 + |dy/27|^0.62 <= 1 centred (1288, 649), 4x supersampled; reverse alpha blending of a white mark at the opacity measured in this image (mean inside the star against a 7 px ring outside it); a 3 px OpenCV Telea inpaint on the star's anti-aliased edge only. No generative fill. Every pixel outside the box is the decoded source pixel before encoding.",
+        "box_xyxy": [
+          1259,
+          620,
+          1318,
+          679
+        ],
+        "changed_pixels": 1065,
+        "changed_share_of_image": 0.000985,
+        "measured_mark_opacity": 0.3079,
+        "verified_by": "atlas-tools/build-disc016-hero-mark-removal.py --check (refuses any change outside the box)"
+      },
+      "encoder": "Pillow 12.3.0, WebP quality 80, method 6",
+      "fidelity": {
+        "ssim": 0.9737,
+        "measured_against": "source at the same pixel size (includes the removed mark)"
+      },
+      "made": "2026-10-30",
+      "content_credentials": {
+        "source_file_embeds_c2pa": false,
+        "derivative_embeds_c2pa": false,
+        "note": "The source carries no embedded credential. This file inherits the source's LEGACY_UNDECLARED state and declares nothing."
+      }
+    },
+    {
+      "asset": "assets/disc016/img/DISC-016-HERO-POSSIBLE-MR-960.webp",
+      "sha256": "41381606922bd2bad2aca8a6c4254a6c25c82de958040ca7da03b239250ad722",
+      "bytes": 145670,
+      "pixels": [
+        960,
+        524
+      ],
+      "derived_from": {
+        "asset": "assets/img/aecece07994fe0db.jpg",
+        "sha256": "aecece07994fe0db0ef639383ac91f54ea18b5ae834e8d9e45f21efc6acd0f81"
+      },
+      "method": "visible-mark-removal",
+      "decision_ref": "PN-FDR-2026-10-30-DISC016-MR (hash-pinned exception in validate-image-provenance.js; not a general P12 amendment)",
+      "edit": {
+        "operation": "Visible-mark removal, confined to the box: a four-point star mask |dx/27|^0.62 + |dy/27|^0.62 <= 1 centred (1288, 649), 4x supersampled; reverse alpha blending of a white mark at the opacity measured in this image (mean inside the star against a 7 px ring outside it); a 3 px OpenCV Telea inpaint on the star's anti-aliased edge only. No generative fill. Every pixel outside the box is the decoded source pixel before encoding.",
+        "box_xyxy": [
+          1259,
+          620,
+          1318,
+          679
+        ],
+        "changed_pixels": 1065,
+        "changed_share_of_image": 0.000985,
+        "measured_mark_opacity": 0.3079,
+        "verified_by": "atlas-tools/build-disc016-hero-mark-removal.py --check (refuses any change outside the box)"
+      },
+      "encoder": "Pillow 12.3.0, WebP quality 80, method 6, Lanczos resize to 960px wide",
+      "fidelity": {
+        "ssim": 0.9719,
+        "measured_against": "source at the same pixel size (includes the removed mark)"
+      },
+      "made": "2026-10-30",
+      "content_credentials": {
+        "source_file_embeds_c2pa": false,
+        "derivative_embeds_c2pa": false,
+        "note": "The source carries no embedded credential. This file inherits the source's LEGACY_UNDECLARED state and declares nothing."
+      }
     }
   ],
   "derivative_holds": [
