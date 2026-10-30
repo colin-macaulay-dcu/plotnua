@@ -55,7 +55,8 @@ HEROES = {
     "assets/img/9785fd991d2488e9.jpg": {},
     "assets/img/5e17a24f46cdab9e.jpg": {"discovery-living-in-the-garden.html": "max(100vw, 161vh)"},
     "assets/img/7d5f5718cf9cd3da.jpg": {"discovery-garden-retreat.html": "max(100vw, 161vh)"},
-    "assets/img/9805382f8164228a.jpg": {"discovery-hidden-bins.html": "100vw"},
+    # 9805382f (the Hidden Bins hero, bins out) was withdrawn 30 Oct 2026 with its record and
+    # derivatives: the hero is now the DISC-029 pair preparation (founder decision, Option A).
     "assets/img/b5cbac3fff9072d4.jpg": {"discovery-driveway-income.html": "max(100vw, 161vh)"},
     # POST-CRAWL MAINTENANCE (20 Oct 2026, SiteOne triage D1): the House as a
     # Power Station hero, a 931 KB JPEG and the page's LCP. Same .d-hero CSS as
@@ -130,7 +131,6 @@ BASIS = {
     "assets/img/9785fd991d2488e9.jpg": "Signed Google C2PA credential in the deployed file itself (byte-identical to master The-Future.jpeg): created by Google Generative AI, no input ingredients.",
     "assets/img/5e17a24f46cdab9e.jpg": "Signed Google C2PA credential in master DISC-008-01-Recognition.png (perceptual match 0/256): created by Google Generative AI, no input ingredients; then a visible watermark added.",
     "assets/img/7d5f5718cf9cd3da.jpg": "Master DISC-001-Hero-MASTER.png (perceptual match 0/256) is the credentialed DISC-001-Hero.png (signed Google C2PA: created by Google Generative AI, no input ingredients) mirror-extended 16 px each side: centre 1376 px pixel-identical, edges reflected, no generative fill. Documented in commit 08237ff (26 Sep 2026) and re-verified 17 Oct 2026.",
-    "assets/img/9805382f8164228a.jpg": "Signed Google C2PA credential in the deployed file itself (byte-identical to master DISC-029-IMAGE-01-PROBLEM-MASTER.jpeg): created by Google Generative AI, no input ingredients.",
     "assets/img/b5cbac3fff9072d4.jpg": "Signed Google C2PA credential in master 'DISC-014 Image 01 \u2014 Potential Asset.jpeg' (perceptual match 0/256): created by Google Generative AI, no input ingredients.",
     "assets/img/ce9da2e51c945693.jpg": "Signed Google C2PA credential in the deployed file itself (validation state Valid, issuer Google LLC, 28 Aug 2026): created by Google Generative AI, no input ingredients. Evidence: governance/c2pa-source-credentials/deployed-ce9da2e51c945693.jpg.c2pa.json (read 19 Oct 2026).",
     "assets/img/e0d578046cd29bda.jpg": "Signed Google C2PA credential in the deployed file itself (validation state Valid, issuer Google LLC, 1 Sep 2026): created by Google Generative AI from input ingredients that each carry a signed Google credential; every ingredient in the chain is credentialed. Evidence: governance/c2pa-source-credentials/deployed-e0d578046cd29bda.jpg.c2pa.json (read 19 Oct 2026).",

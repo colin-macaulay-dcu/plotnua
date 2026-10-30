@@ -8060,51 +8060,6 @@
       }
     },
     {
-      "asset": "assets/img/9805382f8164228a.jpg",
-      "sha256": "9805382f8164228a7b9f6c008b822cc0009e48732d952c37ed645ab4f03491b5",
-      "bytes": 959784,
-      "pixels": [
-        1408,
-        768
-      ],
-      "class": "AI_ILLUSTRATION",
-      "what": "Discovery illustration (discovery-hidden-bins.html)",
-      "depicts_named_product": false,
-      "depicts_named_organisation": false,
-      "origin": {
-        "basis": "C2PA_EMBEDDED",
-        "evidence": "Embedded C2PA manifest, read with c2pa-python: issuer Google LLC, signed 2026-09-15T19:05:43+00:00, generator Google C2PA Core Generator Library; actions: Created by Google Generative AI.; digital source type trainedAlgorithmicMedia; validation Valid.",
-        "declared_under": "Governance 2.0, Rule 2 (30 Oct 2026)"
-      },
-      "generated": {
-        "tool": "Google LLC generative AI, per the file's own signed C2PA credential",
-        "date": "2026-09-15"
-      },
-      "prompt_status": "UNAVAILABLE",
-      "reference_disclosure": {
-        "status": "UNCERTAIN",
-        "statement": "The credential records 1 input image(s), 1 without any credential, title or hash: not identifiable from the file."
-      },
-      "permitted_surfaces": [
-        "discovery"
-      ],
-      "content_credentials": {
-        "embeds_c2pa": true
-      },
-      "introduced": {
-        "commit": "365d08c",
-        "date": "2026-09-16",
-        "subject": "DISC-029 launch The Hidden Bins"
-      },
-      "recovered_evidence": {
-        "master_file": "Images/Discoveries/DISC-029 - Hidden Bins/DISC-029-IMAGE-01-PROBLEM-MASTER.jpeg",
-        "discovery_folder": "DISC-029 - Hidden Bins",
-        "match": "perceptual, 16x16 average hash, Hamming 0 of 256",
-        "establishes": "which picture this is and which Discovery it served",
-        "does_not_establish": "what made the picture"
-      }
-    },
-    {
       "asset": "assets/img/31b49fb60732073b.jpg",
       "sha256": "31b49fb60732073b37e5aca32707d92705d58b819b9372b84587e1b06a8dde1c",
       "bytes": 807772,
@@ -8189,6 +8144,51 @@
       "recovered_evidence": {
         "master_file": "Images/Discoveries/DISC-026 The House as a Power Station/DISC-026 - Image 02 -The House as a Power Station - Potential Asset.jpeg",
         "discovery_folder": "DISC-026 The House as a Power Station",
+        "match": "perceptual, 16x16 average hash, Hamming 0 of 256",
+        "establishes": "which picture this is and which Discovery it served",
+        "does_not_establish": "what made the picture"
+      }
+    },
+    {
+      "asset": "assets/img/b221d2c683fe2f41.jpg",
+      "sha256": "b221d2c683fe2f41ecb4f574ce8bd2770c2e85d14685085e59d4524df7d5ce2c",
+      "bytes": 799397,
+      "pixels": [
+        1408,
+        768
+      ],
+      "class": "AI_ILLUSTRATION",
+      "what": "Discovery illustration (discovery-hidden-bins.html)",
+      "depicts_named_product": false,
+      "depicts_named_organisation": false,
+      "origin": {
+        "basis": "C2PA_EMBEDDED",
+        "evidence": "Embedded C2PA manifest, read with c2pa-python: issuer Google LLC, signed 2026-09-15T20:44:53+00:00, generator Google C2PA Core Generator Library; actions: Created by Google Generative AI.; digital source type trainedAlgorithmicMedia; validation Valid.",
+        "declared_under": "Governance 2.0, Rule 2 (30 Oct 2026)"
+      },
+      "generated": {
+        "tool": "Google LLC generative AI, per the file's own signed C2PA credential",
+        "date": "2026-09-15"
+      },
+      "prompt_status": "UNAVAILABLE",
+      "reference_disclosure": {
+        "status": "UNCERTAIN",
+        "statement": "The credential records 1 input image(s), 1 without any credential, title or hash: not identifiable from the file."
+      },
+      "permitted_surfaces": [
+        "discovery"
+      ],
+      "content_credentials": {
+        "embeds_c2pa": true
+      },
+      "introduced": {
+        "commit": "365d08c",
+        "date": "2026-09-16",
+        "subject": "DISC-029 launch The Hidden Bins"
+      },
+      "recovered_evidence": {
+        "master_file": "Images/Discoveries/DISC-029 - Hidden Bins/DISC-029-IMAGE-04-CLOSED-STATE-MASTER.jpeg",
+        "discovery_folder": "DISC-029 - Hidden Bins",
         "match": "perceptual, 16x16 average hash, Hamming 0 of 256",
         "establishes": "which picture this is and which Discovery it served",
         "does_not_establish": "what made the picture"
@@ -9787,31 +9787,6 @@
       }
     },
     {
-      "asset": "assets/img/b221d2c683fe2f41.jpg",
-      "sha256": "b221d2c683fe2f41ecb4f574ce8bd2770c2e85d14685085e59d4524df7d5ce2c",
-      "status": "LEGACY_UNDECLARED",
-      "bytes": 799397,
-      "pixels": [
-        1408,
-        768
-      ],
-      "referenced_by": [
-        "discovery-hidden-bins.html"
-      ],
-      "introduced": {
-        "commit": "365d08c",
-        "date": "2026-09-16",
-        "subject": "DISC-029 launch The Hidden Bins"
-      },
-      "recovered_evidence": {
-        "master_file": "Images/Discoveries/DISC-029 - Hidden Bins/DISC-029-IMAGE-04-CLOSED-STATE-MASTER.jpeg",
-        "discovery_folder": "DISC-029 - Hidden Bins",
-        "match": "perceptual, 16x16 average hash, Hamming 0 of 256",
-        "establishes": "which picture this is and which Discovery it served",
-        "does_not_establish": "what made the picture"
-      }
-    },
-    {
       "asset": "assets/img/b52ce590d9e0e41a.jpg",
       "sha256": "e1dd9976fd1fb83ec21cf5bfd8ad538de6298dcef5d4315d2edd2a0b8a7ae747",
       "status": "LEGACY_UNDECLARED",
@@ -11084,60 +11059,6 @@
       }
     },
     {
-      "asset": "assets/img/9805382f8164228a-960w.webp",
-      "sha256": "80f07bbbc58fd3e47210182ebf55b53ca432d6f64c0536b70b0b2efeeda0c006",
-      "bytes": 93244,
-      "pixels": [
-        960,
-        524
-      ],
-      "derived_from": {
-        "asset": "assets/img/9805382f8164228a.jpg",
-        "sha256": "9805382f8164228a7b9f6c008b822cc0009e48732d952c37ed645ab4f03491b5"
-      },
-      "method": "webp-resize",
-      "encoder": "Pillow 12.3.0, WebP quality 80, method 6, Lanczos resize to 960px wide",
-      "fidelity": {
-        "ssim": 0.9633,
-        "psnr_db": 35.98,
-        "measured_against": "source at the same pixel size"
-      },
-      "made": "2026-10-16",
-      "lineage_basis": "Signed Google C2PA credential in the deployed file itself (byte-identical to master DISC-029-IMAGE-01-PROBLEM-MASTER.jpeg): created by Google Generative AI, no input ingredients.",
-      "content_credentials": {
-        "source_file_embeds_c2pa": true,
-        "derivative_embeds_c2pa": false,
-        "note": "WebP re-encoding removes the embedded C2PA credential. The derivative carries NO signed credential and must never be described as having one. The original JPEG (unchanged, still served as the <picture> fallback) and the source credential evidence are retained."
-      }
-    },
-    {
-      "asset": "assets/img/9805382f8164228a.webp",
-      "sha256": "3efb2d41583b84f68f22a89cf3fb303276c3da502f66073ad44687c0f1d48161",
-      "bytes": 184732,
-      "pixels": [
-        1408,
-        768
-      ],
-      "derived_from": {
-        "asset": "assets/img/9805382f8164228a.jpg",
-        "sha256": "9805382f8164228a7b9f6c008b822cc0009e48732d952c37ed645ab4f03491b5"
-      },
-      "method": "webp-reencode",
-      "encoder": "Pillow 12.3.0, WebP quality 80, method 6",
-      "fidelity": {
-        "ssim": 0.9635,
-        "psnr_db": 36.48,
-        "measured_against": "source at the same pixel size"
-      },
-      "made": "2026-10-16",
-      "lineage_basis": "Signed Google C2PA credential in the deployed file itself (byte-identical to master DISC-029-IMAGE-01-PROBLEM-MASTER.jpeg): created by Google Generative AI, no input ingredients.",
-      "content_credentials": {
-        "source_file_embeds_c2pa": true,
-        "derivative_embeds_c2pa": false,
-        "note": "WebP re-encoding removes the embedded C2PA credential. The derivative carries NO signed credential and must never be described as having one. The original JPEG (unchanged, still served as the <picture> fallback) and the source credential evidence are retained."
-      }
-    },
-    {
       "asset": "assets/img/b5cbac3fff9072d4-960w.webp",
       "sha256": "b717aafa9a56a9e5c687a8a7a44269415ba909c2095eccf9b4c713807b2d20be",
       "bytes": 94876,
@@ -11585,6 +11506,125 @@
         "source_file_embeds_c2pa": false,
         "derivative_embeds_c2pa": false,
         "note": "The source carries no embedded credential. This file inherits the source's LEGACY_UNDECLARED state and declares nothing."
+      }
+    },
+    {
+      "asset": "assets/img/b221d2c683fe2f41.webp",
+      "sha256": "f58d109cc477df48cd7cfc16604ae63133a1357671387e6606bc49500783ac29",
+      "bytes": 162740,
+      "pixels": [
+        1408,
+        768
+      ],
+      "derived_from": {
+        "asset": "assets/img/b221d2c683fe2f41.jpg",
+        "sha256": "b221d2c683fe2f41ecb4f574ce8bd2770c2e85d14685085e59d4524df7d5ce2c"
+      },
+      "method": "webp-reencode",
+      "encoder": "Pillow, WebP quality 80, method 6",
+      "fidelity": {
+        "ssim": 0.9623,
+        "measured_against": "source at the same pixel size"
+      },
+      "made": "2026-10-30",
+      "content_credentials": {
+        "source_file_embeds_c2pa": true,
+        "derivative_embeds_c2pa": false,
+        "note": "WebP re-encoding removes the embedded C2PA credential; the source JPEG (still served as the fallback) keeps it."
+      }
+    },
+    {
+      "asset": "assets/img/b221d2c683fe2f41-960w.webp",
+      "sha256": "2a59d38d8a3d1be57c49a84414920b4f3fb7c52956fc62e972fd4e4bac241c69",
+      "bytes": 84434,
+      "pixels": [
+        960,
+        524
+      ],
+      "derived_from": {
+        "asset": "assets/img/b221d2c683fe2f41.jpg",
+        "sha256": "b221d2c683fe2f41ecb4f574ce8bd2770c2e85d14685085e59d4524df7d5ce2c"
+      },
+      "method": "webp-resize",
+      "encoder": "Pillow, WebP quality 80, method 6, Lanczos resize to 960px wide",
+      "fidelity": {
+        "ssim": 0.9602,
+        "measured_against": "source at the same pixel size"
+      },
+      "made": "2026-10-30",
+      "content_credentials": {
+        "source_file_embeds_c2pa": true,
+        "derivative_embeds_c2pa": false,
+        "note": "WebP re-encoding removes the embedded C2PA credential; the source JPEG (still served as the fallback) keeps it."
+      }
+    },
+    {
+      "asset": "assets/disc029/img/DISC-029-HERO-BEFORE.jpg",
+      "sha256": "b5503d1ae357568ebea5d6d40fde3c10348091fdac1ab6ee8760950b0dc8eb5a",
+      "bytes": 287789,
+      "pixels": [
+        1408,
+        768
+      ],
+      "derived_from": {
+        "asset": "assets/img/b221d2c683fe2f41.jpg",
+        "sha256": "b221d2c683fe2f41ecb4f574ce8bd2770c2e85d14685085e59d4524df7d5ce2c"
+      },
+      "method": "pair-preparation",
+      "edit": {
+        "description": "Before/Possible pair preparation (Governance 2.0, Rule 3; founder decision 30 Oct 2026, Option A): the BEFORE of the Hidden Bins hero, made from this picture. The founder edited b221d2c6 once with an image model (result DISC-029-IMAGE-01-NEW-BEFORE.png, sha256 17a4f07152a521268271f009d83a274242d6cbd478ea78454b9709dcec423e84, 1698 x 926; its embedded C2PA credential: OpenAI OpCo, LLC, 30 Oct 2026, c2pa.created, no ingredients recorded) to remove the underground access covers and stand three wheelie bins on the drive. Only two areas of that result are used, over this picture's own pixels: the driveway area x 670-1190, y 405-767 (covers removed, paving continued; 5 px feather) and the three bins, cut out by colour inside x 640-985, y 255-430 (1 px feather). The result was first registered to this picture by a homography (median 0.99 px). Every other pixel (78.5%) is this picture's own; the pair aligns at 0.0 px (3,580 matches)."
+      },
+      "encoder": "Pillow, JPEG quality 90, progressive",
+      "made": "2026-10-30",
+      "content_credentials": {
+        "derivative_embeds_c2pa": false,
+        "note": "The edit removes embedded credentials; the source and the image-model result carry theirs (see the description)."
+      }
+    },
+    {
+      "asset": "assets/disc029/img/DISC-029-HERO-BEFORE-1408.webp",
+      "sha256": "5d670f01e9a1c13f1d51bc4248c8aca4e1ee9fc20fae1bda217f36b98a7ac8d5",
+      "bytes": 153644,
+      "pixels": [
+        1408,
+        768
+      ],
+      "derived_from": {
+        "asset": "assets/img/b221d2c683fe2f41.jpg",
+        "sha256": "b221d2c683fe2f41ecb4f574ce8bd2770c2e85d14685085e59d4524df7d5ce2c"
+      },
+      "method": "pair-preparation",
+      "edit": {
+        "description": "Before/Possible pair preparation (Governance 2.0, Rule 3; founder decision 30 Oct 2026, Option A): the BEFORE of the Hidden Bins hero, made from this picture. The founder edited b221d2c6 once with an image model (result DISC-029-IMAGE-01-NEW-BEFORE.png, sha256 17a4f07152a521268271f009d83a274242d6cbd478ea78454b9709dcec423e84, 1698 x 926; its embedded C2PA credential: OpenAI OpCo, LLC, 30 Oct 2026, c2pa.created, no ingredients recorded) to remove the underground access covers and stand three wheelie bins on the drive. Only two areas of that result are used, over this picture's own pixels: the driveway area x 670-1190, y 405-767 (covers removed, paving continued; 5 px feather) and the three bins, cut out by colour inside x 640-985, y 255-430 (1 px feather). The result was first registered to this picture by a homography (median 0.99 px). Every other pixel (78.5%) is this picture's own; the pair aligns at 0.0 px (3,580 matches)."
+      },
+      "encoder": "Pillow, WebP quality 80, method 6",
+      "made": "2026-10-30",
+      "content_credentials": {
+        "derivative_embeds_c2pa": false,
+        "note": "The edit removes embedded credentials; the source and the image-model result carry theirs (see the description)."
+      }
+    },
+    {
+      "asset": "assets/disc029/img/DISC-029-HERO-BEFORE-960.webp",
+      "sha256": "0ccbbb2d9aed0abfb222edf98c2b4d78b7ede203bb2cdafd6eeebbe3a8ccb4fa",
+      "bytes": 82162,
+      "pixels": [
+        960,
+        524
+      ],
+      "derived_from": {
+        "asset": "assets/img/b221d2c683fe2f41.jpg",
+        "sha256": "b221d2c683fe2f41ecb4f574ce8bd2770c2e85d14685085e59d4524df7d5ce2c"
+      },
+      "method": "pair-preparation",
+      "edit": {
+        "description": "Before/Possible pair preparation (Governance 2.0, Rule 3; founder decision 30 Oct 2026, Option A): the BEFORE of the Hidden Bins hero, made from this picture. The founder edited b221d2c6 once with an image model (result DISC-029-IMAGE-01-NEW-BEFORE.png, sha256 17a4f07152a521268271f009d83a274242d6cbd478ea78454b9709dcec423e84, 1698 x 926; its embedded C2PA credential: OpenAI OpCo, LLC, 30 Oct 2026, c2pa.created, no ingredients recorded) to remove the underground access covers and stand three wheelie bins on the drive. Only two areas of that result are used, over this picture's own pixels: the driveway area x 670-1190, y 405-767 (covers removed, paving continued; 5 px feather) and the three bins, cut out by colour inside x 640-985, y 255-430 (1 px feather). The result was first registered to this picture by a homography (median 0.99 px). Every other pixel (78.5%) is this picture's own; the pair aligns at 0.0 px (3,580 matches)."
+      },
+      "encoder": "Pillow, WebP quality 80, method 6, Lanczos resize to 960px wide",
+      "made": "2026-10-30",
+      "content_credentials": {
+        "derivative_embeds_c2pa": false,
+        "note": "The edit removes embedded credentials; the source and the image-model result carry theirs (see the description)."
       }
     }
   ],
