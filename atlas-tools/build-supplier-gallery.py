@@ -272,7 +272,8 @@ def gallery(ed, head, sup):
                 f'data-sg-open="View all {total} suppliers" data-sg-close="Hide the full list">'
                 f'<span data-sg-label>View all {total} suppliers</span></button>') if more else ""
     grid_note = ed["gridNote"] if n_img < total else ed.get("gridNoteAllImaged", "")
-    return f'''<section class="pn-sg" id="suppliers" data-pn-supplier-gallery data-discovery="{E(ed["discovery"])}" aria-labelledby="sg-h" style="--sg-mount-ratio:{mw} / {mh}">
+    trans = ' data-sg-transition="rule"' if ed.get("transition") == "rule" else ""
+    return f'''<section class="pn-sg" id="suppliers" data-pn-supplier-gallery data-discovery="{E(ed["discovery"])}"{trans} aria-labelledby="sg-h" style="--sg-mount-ratio:{mw} / {mh}">
   <div class="pn-sg-wrap">
     <div class="pn-sg-head">
       <div>
@@ -309,11 +310,23 @@ def head_block(sup):
     return "\n".join(lines) + "\n"
 
 
+# SECTION TRANSITION (founder, 30 Oct 2026, DISC-008): where a Discovery's editorial
+# file asks for it ("transition": "rule"), the Maker Explorer that follows the gallery
+# opens with the site's hairline rule and a tighter top, so "Meet the makers." and
+# "Explore makers and products" read as two distinct sections without extra space.
+# Emitted only on that page; Garden Retreat's output is unchanged.
+TRANSITION_CSS = ("<style>/* gallery -> Maker Explorer transition (build-supplier-gallery.py) */\n"
+                  ".pn-sg[data-sg-transition=\"rule\"] ~ #explore-makers{ border-top:1px solid var(--rule, #4A4B4F); padding-top:72px; }\n"
+                  "@media (max-width:720px){ .pn-sg[data-sg-transition=\"rule\"] ~ #explore-makers{ padding-top:44px; } }\n"
+                  "</style>\n")
+
+
 def body_block(ed, head, sup):
     # The stylesheet sits HERE, not in <head>: in the body it does not block the
     # Discovery's first render (hero and LCP), and the gallery is below the fold.
     return (f"{B_START}\n<link rel=\"stylesheet\" href=\"assets/components/pn-supplier-gallery.css?v={ASSET_V}\">\n"
-            f"{gallery(ed, head, sup)}\n"
+            + (TRANSITION_CSS if ed.get("transition") == "rule" else "")
+            + f"{gallery(ed, head, sup)}\n"
             f'<script src="assets/components/pn-supplier-gallery.js?v={ASSET_V}" defer></script>\n{B_END}\n')
 
 

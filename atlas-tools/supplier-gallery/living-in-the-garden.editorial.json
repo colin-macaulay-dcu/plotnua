@@ -2,6 +2,8 @@
  "_about": "Hand-authored editorial layer for the Living in the Garden (DISC-008) supplier gallery (founder approval to develop, 30 Oct 2026; NOT deployed). Holds ONLY wording PlotNua writes about a maker and, where needed, a choice among a maker's ALREADY APPROVED assets (the builder refuses anything else). Makers, product counts, alt text, dimensions and credits come from the live Living in the Garden explorer config and image-rights-records.json. Headings live in discovery-headings.json. No location line is shown for any maker: none is evidenced and authorised for public display.",
  "discovery": "discovery-living-in-the-garden.html",
  "gridId": "sg-all-litg",
+ "transition": "rule",
+ "_transition": "Founder, 30 Oct 2026: keep both sections and make the transition to 'Explore makers and products' clear, without unnecessary extra spacing. A hairline rule opens the explorer section and its top spacing is tightened (72px desktop, 44px phones).",
  "selectionNote": "Makers appear in this gallery when they have licensed their imagery to PlotNua. The order changes on every visit, and inclusion is not a recommendation.",
  "gridNote": "Every maker in this Discovery, A to Z. Pictures appear here only where a maker's imagery is cleared for this gallery; every other maker is listed in words.",
  "gridNoteAllImaged": "Every maker in this Discovery, A to Z.",

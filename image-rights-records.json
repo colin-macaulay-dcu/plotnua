@@ -103,8 +103,8 @@
           "atlas_asset": "rec4Kr7TpqB6j15J1",
           "kind": "visualisation",
           "primary": true,
-          "alt": "A Powersheds Apex Classic Log Cabin in a garden",
-          "medium_note": "Judged a rendered scene from the image itself (uniform synthetic lighting and planting, 3200 x 3200 product render); the filename does not say. Recorded as a visualisation, the safer label; founder to confirm. The live explorer label ('Photograph') is unchanged and reported to the founder."
+          "alt": "Visualisation: A Powersheds Apex Classic Log Cabin in a garden",
+          "medium_note": "A rendered scene (uniform synthetic lighting and planting, 3200 x 3200 product render); the filename does not say. Classified as a visualisation by founder decision, 30 Oct 2026. Founder confirmed the classification on 30 Oct 2026 (DISC-008 final release preparation); Results and the Maker Explorer carry the same label via the asset's alt text (.github/scripts/apply_authorised_imagery.py)."
         },
         {
           "url": "https://cdn.shopify.com/s/files/1/0601/8967/1489/files/POW01001_CGI_LIFESTYLE_IMAGES_MAY24_SC03_LOGCABIN_S02_ADOBE_98.jpg",
@@ -113,8 +113,8 @@
           "atlas_asset": "recp5bQqCAp5GszpJ",
           "kind": "visualisation",
           "primary": false,
-          "alt": "A Powersheds Apex Log Cabin in a garden",
-          "medium_note": "Supplier's own filename names it CGI (\"..._CGI_LIFESTYLE_IMAGES_...\"). The live explorer label ('Photograph') is unchanged and reported to the founder."
+          "alt": "Visualisation: A Powersheds Apex Log Cabin in a garden",
+          "medium_note": "Supplier's own filename names it CGI (\"..._CGI_LIFESTYLE_IMAGES_...\"). Founder confirmed the classification on 30 Oct 2026 (DISC-008 final release preparation); Results and the Maker Explorer carry the same label via the asset's alt text (.github/scripts/apply_authorised_imagery.py)."
         }
       ]
     },

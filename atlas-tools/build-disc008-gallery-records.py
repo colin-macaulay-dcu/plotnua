@@ -40,9 +40,9 @@ What is added, and why it does not widen anything
 The medium is recorded per asset. The two Powersheds images are labelled
 "Photograph" on the live explorer; one file is named by Powersheds itself
 "..._CGI_LIFESTYLE_IMAGES_..." and both have the look of rendered scenes, so both
-are recorded here as visualisations and the gallery labels them so. The live
-explorer label is NOT changed here (founder instruction: do not modify the
-existing Maker Explorer); it is reported for a founder decision.
+are recorded here as visualisations and the gallery labels them so. Founder
+decision, 30 Oct 2026: the same classification applies on Results and in the
+Maker Explorer (their alt text now begins "Visualisation:").
 
 Usage:
   python3 atlas-tools/build-disc008-gallery-records.py           apply (idempotent)
@@ -65,8 +65,8 @@ VISUALISATION = {
     "https://cdn.shopify.com/s/files/1/0601/8967/1489/files/POW01001_CGI_LIFESTYLE_IMAGES_MAY24_SC03_LOGCABIN_S02_ADOBE_98.jpg":
         "Supplier's own filename names it CGI (\"..._CGI_LIFESTYLE_IMAGES_...\").",
     "https://cdn.shopify.com/s/files/1/0601/8967/1489/files/1610PALCTIMWDDW_d5c78ede-b4ff-441b-926e-8198c72f4ce4.png":
-        "Judged a rendered scene from the image itself (uniform synthetic lighting and planting, 3200 x 3200 product render); "
-        "the filename does not say. Recorded as a visualisation, the safer label; founder to confirm.",
+        "A rendered scene (uniform synthetic lighting and planting, 3200 x 3200 product render); the filename does not say. "
+        "Classified as a visualisation by founder decision, 30 Oct 2026.",
 }
 
 ADD = {
@@ -185,7 +185,9 @@ def assets_for(maker):
         a = {"url": u, "product_code": code, "product_name": pname, "atlas_asset": asset, "kind": kind,
              "primary": u == lead, "alt": im["alt"]}
         if u in VISUALISATION:
-            a["medium_note"] = VISUALISATION[u] + " The live explorer label ('Photograph') is unchanged and reported to the founder."
+            a["medium_note"] = (VISUALISATION[u] + " Founder confirmed the classification on 30 Oct 2026 (DISC-008 final release "
+                                "preparation); Results and the Maker Explorer carry the same label via the asset's alt text "
+                                "(.github/scripts/apply_authorised_imagery.py).")
         out.append(a)
     return out
 
