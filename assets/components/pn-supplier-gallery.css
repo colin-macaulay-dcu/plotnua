@@ -210,6 +210,13 @@ body:has(.article > .pn-sg){ overflow-x:clip; }   /* belt and braces: never a ho
   .pn-sg-cta{ margin-top:6px; }
   .pn-sg-entry{ grid-template-columns:88px minmax(0,1fr); gap:16px; padding:22px 0; }
   .pn-sg-facts > div{ grid-template-columns:6.5em minmax(0,1fr); }
+  /* data-sg-fit="tight" (opt-in per Discovery; founder correction 30 Oct 2026):
+     the whole image stays visible, but any spare band in the mount sits above the
+     image, never between the image and its credit; and every card in the row,
+     including the end card, takes the same height, with the Explore link aligned. */
+  .pn-sg[data-sg-fit="tight"] .pn-sg-card .pn-sg-mount img{ object-position:center bottom; }
+  .pn-sg[data-sg-fit="tight"] .pn-sg-track{ align-items:stretch; }
+  .pn-sg[data-sg-fit="tight"] .pn-sg-track > li{ display:flex; }
 }
 @media (max-width:380px){
   .pn-sg-arrow{ inline-size:44px; block-size:44px; }

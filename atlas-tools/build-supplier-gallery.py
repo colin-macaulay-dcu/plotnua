@@ -57,7 +57,7 @@ DISCOVERIES = {
         "editorial": "living-in-the-garden.editorial.json",
         "authority": "universe",
         "directory": "explorer",
-        "asset_v": "2",
+        "asset_v": "3", "mobile_fit": "tight",
         "tabs": {"gardenRooms": ("garden room", "garden rooms"), "gardenHomes": ("garden home", "garden homes")},
         "nouns": {"gardenRooms": "garden rooms", "gardenHomes": "garden homes"},
     },
@@ -222,6 +222,9 @@ def collect(page_path, ed):
             "logo": None,                 # no logo permission is recorded for any supplier
             "placement": "editorial",     # 'sponsored' is reserved; none exist
             "relationship": rel,
+            # founder hold (30 Oct 2026): configured and licensed, but not featured until the
+            # supplier's private preview is complete. Removing "featureHold" re-activates it.
+            "held": bool(e.get("featureHold")),
         })
     return out
 
@@ -299,7 +302,10 @@ def index_entry(s):
 
 
 def gallery(ed, head, sup):
-    featured = [s for s in sup if s["image"]][: ed["featuredMax"]]
+    for s in sup:
+        if s["held"] and not s["image"]:
+            sys.exit(f"FAIL: {s['name']}: a feature hold is set on a maker with no authorised image")
+    featured = [s for s in sup if s["image"] and not s["held"]][: ed["featuredMax"]]
     mw, mh = best_mount([s["image"] for s in featured]) if featured else (1, 1)
     total = len(sup)
     more = total > len(featured)
@@ -341,7 +347,10 @@ def gallery(ed, head, sup):
       <ul class="pn-sg-grid" role="list">{grid}</ul>
     </details>
   </div>'''
-    return f'''<section class="pn-sg" id="suppliers" data-pn-supplier-gallery data-discovery="{E(ed["discovery"])}" aria-labelledby="sg-h" style="--sg-mount-ratio:{mw} / {mh}">
+    # founder correction 30 Oct 2026 (Living in the Garden): on phones, no letterbox band between
+    # image and attribution, and every card the same height. Opt-in, so Garden Retreat is unchanged.
+    fit = f' data-sg-fit="{E(D["mobile_fit"])}"' if D.get("mobile_fit") else ""
+    return f'''<section class="pn-sg" id="suppliers" data-pn-supplier-gallery data-discovery="{E(ed["discovery"])}"{fit} aria-labelledby="sg-h" style="--sg-mount-ratio:{mw} / {mh}">
   <div class="pn-sg-wrap">
     <div class="pn-sg-head">
       <div>

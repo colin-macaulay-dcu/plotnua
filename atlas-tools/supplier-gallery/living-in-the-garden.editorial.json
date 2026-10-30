@@ -1,16 +1,18 @@
 {
-  "_about": "Editorial layer for the Living in the Garden supplier gallery (founder decisions D1-D5, 30 Oct 2026). Holds ONLY PlotNua's own wording. Every description below restates product names and product types already published in this page's Maker Explorer config; nothing else is claimed. No location lines: none is evidenced for these makers (UNKNOWN stays UNKNOWN). Makers, counts, images, alt text, credits and dimensions come from the live explorer config and the governed garden-room imagery; no image choice is permitted here (D4).",
+  "_about": "Editorial layer for the Living in the Garden supplier gallery (founder decisions D1-D5, 30 Oct 2026). Holds ONLY PlotNua's own wording. Every description below restates product names and product types already published in this page's Maker Explorer config; nothing else is claimed. No location lines: none is evidenced for these makers (UNKNOWN stays UNKNOWN). Makers, counts, images, alt text, credits and dimensions come from the live explorer config and the governed garden-room imagery; no image choice is permitted here (D4). A maker with \"featureHold\" is configured but not featured (founder, 30 Oct 2026).",
   "discovery": "discovery-living-in-the-garden.html",
   "selectionNote": "Makers appear in this gallery when they have licensed their imagery to PlotNua. The order changes on every visit, and inclusion is not a recommendation.",
   "featuredMax": 5,
   "makers": {
     "Don Modular Homes": {
       "description": "The Don Modular Garden Room, a factory-built modular garden studio.",
-      "base": null
+      "base": null,
+      "featureHold": "Founder decision 30 Oct 2026: the supplier was promised a private preview before further featured publication. Configuration retained; remove this key to activate after the preview process. Maker Explorer listing and image unchanged."
     },
     "Garden Room Ireland": {
       "description": "The QC6, an insulated steel garden room.",
-      "base": null
+      "base": null,
+      "featureHold": "Founder decision 30 Oct 2026: the supplier was promised a private preview before further featured publication. Configuration retained; remove this key to activate after the preview process. Maker Explorer listing and image unchanged."
     },
     "Powersheds": {
       "description": "Apex Classic log cabins, from 12x12 to 16x12.",

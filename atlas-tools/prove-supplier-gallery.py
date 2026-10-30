@@ -32,6 +32,8 @@ mutates each page in memory to prove each guard can fail.
   G13 Living in the Garden: no editorial image override (founder D4)
   G14 Living in the Garden: every external link on a card stays on that maker's
       granted domain (founder D2 narrow exception)
+  G15 a maker on a founder "featureHold" (private preview promised) is never shown
+      in the gallery, and its configuration is retained (founder, 30 Oct 2026)
 """
 import importlib.util, json, re, sys
 from pathlib import Path
@@ -155,9 +157,14 @@ def checks(name, full, css):
     else:
         if not shown <= names:
             fails.append(f"G5 {name}: gallery shows makers not on the live Discovery: {sorted(shown - names)}")
+        held = {m for m, v in ed["makers"].items() if (v or {}).get("featureHold")}
         licensed = {m for m, src in leads.items() if src in AUTH and norm(AUTH[src][0]) == norm(m)}
-        if shown != licensed:
-            fails.append(f"G5 {name}: featured {sorted(shown)} != every licensed maker {sorted(licensed)} (founder D1)")
+        if shown != licensed - held:
+            fails.append(f"G5 {name}: featured {sorted(shown)} != every licensed, unheld maker {sorted(licensed - held)} (founder D1)")
+        if shown & held:
+            fails.append(f"G15 {name}: maker on a feature hold is shown: {sorted(shown & held)}")
+        if held - licensed:
+            fails.append(f"G15 {name}: feature hold on a maker with no authorised lead image: {sorted(held - licensed)}")
         if "pn-sg-entry" in page or "<details" in page:
             fails.append(f"G5 {name}: a duplicate supplier directory is present (founder D3)")
         jumps = re.findall(r'<a class="pn-sg-all" href="([^"]+)" data-sg-jump>', page)
@@ -206,21 +213,22 @@ MUTATIONS = {
         "G9 gallery duplicated": (p.replace(B_END, B_END + "\n" + B_START + " dup -->", 1), c),
     },
     "discovery-living-in-the-garden.html": lambda p, c: {
-        "G1 unlicensed image on a licensed maker": (p.replace("don-modular-home-forest-setting.webp", "some-other-don-image.webp", 1), c),
-        "G1 image outside the governed prefix": (p.replace("https://static.wixstatic.com/media/fef4b6_", "https://static.wixstatic.com/media/aaaaaa_", 1), c),
+        "G1 unlicensed image on a licensed maker": (p.replace('<img src="https://lh3.googleusercontent.com/d/1LNGku', '<img src="https://lh3.googleusercontent.com/d/9ZZZku', 1), c),
+        "G1 image outside the governed prefix": (p.replace('<img src="https://images.squarespace-cdn.com/content/v1/619124cac9d9895faff3d303/', '<img src="https://images.squarespace-cdn.com/content/v1/000000000000000000000000/', 1), c),
         "G2 credit removed": (p.replace(">Image: Powersheds<", ">Powersheds<", 1), c),
         "G2 credit link to another domain": (p.replace('href="https://yardbox.co.uk/" rel="noopener noreferrer" target="_blank">Image: Yard Box', 'href="https://example.com/" rel="noopener noreferrer" target="_blank">Image: Yard Box', 1), c),
-        "G3 Visualisation relabelled as Photograph": (p.replace('pn-sg-kind">Visualisation', 'pn-sg-kind">Photograph', 1), c),
+        "G3 medium relabelled": (p.replace('pn-sg-kind">Photograph', 'pn-sg-kind">Visualisation', 1), c),
         "G5 a licensed maker dropped": (re.sub(r'<li data-sg-placement="editorial"><article class="pn-sg-card" aria-label="Powersheds">.*?</article></li>', "", p, count=1, flags=re.S), c),
         "G5 invented supplier": (p.replace('aria-label="Yardbox"', 'aria-label="Invented Garden Rooms Ltd"', 1), c),
         "G5 duplicate directory added": (p.replace('</ul>\n</section>', '</ul><details class="pn-sg-grid-wrap"><summary>x</summary></details>\n</section>', 1), c),
         "G5 View all no longer goes to the explorer": (p.replace('href="#explore-makers" data-sg-jump', 'href="#suppliers" data-sg-jump', 1), c),
         "G6 unlabelled sponsor": (p.replace('data-sg-placement="editorial"', 'data-sg-placement="sponsored"', 1), c),
-        "G8 endorsement": (p.replace("an insulated steel garden room.</p>", "the best insulated steel garden room.</p>", 1), c),
+        "G8 endorsement": (p.replace("Apex Classic log cabins, from", "The best Apex Classic log cabins, from", 1), c),
         "G10 link security dropped": (p.replace('rel="noopener noreferrer" target="_blank"', 'target="_blank"', 1), c),
         "G11 location without evidence": (p.replace('aria-label="Powersheds"><figure class="pn-sg-fig">', 'aria-label="Powersheds"><p class="pn-sg-loc"><b>Made in</b> Somewhere</p><figure class="pn-sg-fig">', 1), c),
         "G9 gallery moved after explorer": (p.replace(EXPLORER, "<p>moved</p>\n  " + EXPLORER, 1), c),
         "G9 gallery duplicated": (p.replace(B_END, B_END + "\n" + B_START + " dup -->", 1), c),
+        "G15 held maker shown": (p.replace('aria-label="Yardbox"><figure', 'aria-label="Garden Room Ireland"><figure', 1), c),
         "G14 Explore link off the granted domain": (p.replace('<a href="https://oodhouse.com/" rel="noopener noreferrer" target="_blank" aria-label=', '<a href="https://oodhouse.example.net/" rel="noopener noreferrer" target="_blank" aria-label=', 1), c),
     },
 }
