@@ -21,7 +21,9 @@ import json, os, re, sys
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 PAGES = ["discovery-supper-club-at-home.html", "discovery-natural-swimming-garden.html",
          # Pass 2 Release 2 (30 Oct 2026)
-         "discovery-hidden-flood-barrier.html", "discovery-living-in-the-garden.html", "discovery-home-exchange.html"]
+         "discovery-hidden-flood-barrier.html", "discovery-living-in-the-garden.html", "discovery-home-exchange.html",
+         # Pass 2 Release 3 (30 Oct 2026, private preview)
+         "discovery-hidden-bins.html", "discovery-house-as-power-station.html", "discovery-above-and-beyond.html"]
 
 
 def read(p):

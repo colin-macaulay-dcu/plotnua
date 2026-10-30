@@ -1,0 +1,129 @@
+{
+ "status": "DRAFT FOR FOUNDER REVIEW. NOT IN image-provenance-records.json. NOT RELEASABLE until the founder decides (see 'decision_needed').",
+ "instruction": "Founder, 30 Oct 2026, Pass 2 Release 3: 'Do not introduce the faint Gemini watermark into the new Above and Beyond slider assets. If removal requires a new image derivative, prepare it for review with provenance records. Do not silently alter the source images.'",
+ "what_was_found": "Both legacy sources of the DISC-016 hero pair (assets/img/b53d75f9dff4af2e.jpg, the BEFORE garden, and assets/img/aecece07994fe0db.jpg, the two-pod POSSIBLE) carry the same faint semi-transparent four-point sparkle, about 55 x 59 px, centred near (1288, 649) of 1408 x 768. It is visible on the live hero today, lower right.",
+ "what_this_is": "Six new files, made only for the Release 3 hero slider: for each source, a JPEG fallback and two WebP encodings of one cleaned picture. Only the pixels inside the mark's 59 x 59 px box change (about 0.1% of the image); every other pixel is the source pixel before encoding. Neither source file is modified, and the rest of the page keeps using the sources exactly as before.",
+ "why_it_is_not_a_P12_derivative": "Rule P12 admits only WebP re-encodings and resizes ('webp-reencode', 'webp-resize') of a registered source, with no other edit. Removing a visible mark is an edit, so these files cannot be registered under P12 as the rules stand, and the provenance validator correctly refuses them as unregistered new files. They are therefore NOT added to the register in this branch.",
+ "inherited_state": "Both sources are LEGACY_UNDECLARED and carry no embedded content credential. The cleaned files inherit that state and declare nothing: no class, no label, no claim about what made the source pictures.",
+ "proposed_record_if_approved": {
+  "method": "visible-mark-removal (a new, closed-vocabulary derivative method)",
+  "scope": "These six files only, bound by sha256 to their two sources; an edit confined to the recorded box; no generative fill; reproducible by the build script with --check.",
+  "rule_change_needed": "Either (a) a founder-approved, narrowly pinned exception for these six files (the precedent is the pinned hero-slider derivatives of 30 Oct), or (b) a P12 amendment admitting 'visible-mark-removal' with the box constraint enforced by the validator. No other provenance rule changes."
+ },
+ "decision_needed": [
+  "Approve the cleaned pair visually (the preview shows it) and choose (a) a pinned exception for these six files or (b) a P12 amendment, or",
+  "Reject it: the Above and Beyond slider then waits for new, mark-free source images (Release 4/5 image production)."
+ ],
+ "not_changed": "The two source files and every other use of them on the page (the annotated plate and the later two-pod image still show the mark as they do today).",
+ "build_output": {
+  "tool": "atlas-tools/build-disc016-hero-mark-removal.py",
+  "libraries": "OpenCV 5.0.0, Pillow 12.3.0, NumPy 2.5.3",
+  "mask": {
+   "centre": [
+    1288.0,
+    649.0
+   ],
+   "radius_px": 27.0,
+   "exponent": 0.62,
+   "supersample": 4
+  },
+  "files": [
+   {
+    "asset": "assets/disc016/img/DISC-016-HERO-BEFORE-MR.jpg",
+    "sha256": "e91e0c1fc90a05d9396ad570932381a87a00d26f9c2836c076b530a35d300c49",
+    "bytes": 472459,
+    "pixels": [
+     1408,
+     768
+    ],
+    "role": "BEFORE"
+   },
+   {
+    "asset": "assets/disc016/img/DISC-016-HERO-BEFORE-MR-1408.webp",
+    "sha256": "a84b18d3c010528acb8caf4213bc4205f6c12cd1c5b0a7701d22e897b32229d6",
+    "bytes": 301654,
+    "pixels": [
+     1408,
+     768
+    ],
+    "role": "BEFORE"
+   },
+   {
+    "asset": "assets/disc016/img/DISC-016-HERO-BEFORE-MR-960.webp",
+    "sha256": "3eb38ff34173045e8d78c72ffc64360c00127063d8c22ffbb01e5be9d33c9cce",
+    "bytes": 150576,
+    "pixels": [
+     960,
+     524
+    ],
+    "role": "BEFORE"
+   },
+   {
+    "source": {
+     "asset": "assets/img/b53d75f9dff4af2e.jpg",
+     "sha256": "b53d75f9dff4af2e4d1d7f0de5b2b39e2c935d30ac628a64e5e6f72272079300",
+     "state": "LEGACY_UNDECLARED",
+     "embeds_c2pa": false
+    },
+    "role": "BEFORE",
+    "measured_mark_opacity": 0.4199,
+    "changed_box_xyxy": [
+     1259,
+     620,
+     1318,
+     679
+    ],
+    "changed_pixels": 1066,
+    "changed_share_of_image": 0.000986
+   },
+   {
+    "asset": "assets/disc016/img/DISC-016-HERO-POSSIBLE-MR.jpg",
+    "sha256": "ae981639000f5218ae62db3fe2c2039516e0549c85800d0bc254c8b7b991bee7",
+    "bytes": 468709,
+    "pixels": [
+     1408,
+     768
+    ],
+    "role": "POSSIBLE"
+   },
+   {
+    "asset": "assets/disc016/img/DISC-016-HERO-POSSIBLE-MR-1408.webp",
+    "sha256": "d7f0aa2148b748dc2f85b80f1babc34b30866cd1a252202885044757cc2844ae",
+    "bytes": 297496,
+    "pixels": [
+     1408,
+     768
+    ],
+    "role": "POSSIBLE"
+   },
+   {
+    "asset": "assets/disc016/img/DISC-016-HERO-POSSIBLE-MR-960.webp",
+    "sha256": "41381606922bd2bad2aca8a6c4254a6c25c82de958040ca7da03b239250ad722",
+    "bytes": 145670,
+    "pixels": [
+     960,
+     524
+    ],
+    "role": "POSSIBLE"
+   },
+   {
+    "source": {
+     "asset": "assets/img/aecece07994fe0db.jpg",
+     "sha256": "aecece07994fe0db0ef639383ac91f54ea18b5ae834e8d9e45f21efc6acd0f81",
+     "state": "LEGACY_UNDECLARED",
+     "embeds_c2pa": false
+    },
+    "role": "POSSIBLE",
+    "measured_mark_opacity": 0.3079,
+    "changed_box_xyxy": [
+     1259,
+     620,
+     1318,
+     679
+    ],
+    "changed_pixels": 1065,
+    "changed_share_of_image": 0.000985
+   }
+  ]
+ }
+}

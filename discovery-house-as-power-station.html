@@ -36,6 +36,8 @@
 <link rel="stylesheet" href="assets/identity/pn-premium-discovery.css">
 <link rel="stylesheet" href="assets/identity/pn-header.css">
 <!-- PLOTNUA IDENTITY v1 · HEAD · END -->
+<link rel="stylesheet" href="assets/identity/pn-compare.css?v=1.2">
+<link rel="preload" as="image" type="image/webp" imagesrcset="assets/img/ce9da2e51c945693-960w.webp 960w, assets/img/ce9da2e51c945693.webp 1408w" imagesizes="(max-width:1024px) and (orientation:portrait) 150vw, max(100vw, 132svh)" fetchpriority="high">
 
 <!-- Open Graph -->
 <meta property="og:type" content="article">
@@ -1279,6 +1281,27 @@
     .lag-flow{ stroke-dasharray:none; }
   }
 </style>
+<style>
+/* ---- Pass 2 Release 3 (30 Oct 2026): the hero is the shared pn-compare component (hero standard),
+   as on the Release 2 pages. These rules only give the frame back to the component where this
+   page's own .d-hero rules would otherwise win; the hero copy and its typography are unchanged. ---- */
+body.pn-id.pn-pd .d-hero.ps-hero.pn-hero-compare{ height:92vh; height:92svh; min-height:560px; }
+body:has(> .pn-return) .d-hero.ps-hero.pn-hero-compare{ height:min(92svh, calc(100svh - var(--pnc-hdr,69px) - var(--pn-dock,0px))); }
+body.pn-id.pn-pd .ps-hero.pn-hero-compare .d-hero-scrim{ pointer-events:none; z-index:1; }
+body.pn-id.pn-pd .ps-hero.pn-hero-compare .d-hero-copy{ z-index:2; }
+body.pn-id.pn-pd .ps-hero.pn-hero-compare :is(.pn-compare__possible,.pn-compare__before) picture{ height:100%; }
+body.pn-id.pn-pd .ps-hero.pn-hero-compare .pn-compare__before .pa-annot{ position:absolute; inset:0; z-index:1; pointer-events:none; }
+body.pn-id.pn-pd .ps-hero.pn-hero-compare .pn-compare__before .pa-annot svg{ display:block; width:100%; height:100%; }
+@media (max-width:1024px) and (orientation:portrait), (max-width:719px){
+  body.pn-id.pn-pd .d-hero.ps-hero.pn-hero-compare,
+  body:has(> .pn-return) .d-hero.ps-hero.pn-hero-compare{ height:auto; min-height:0; }
+  body.pn-id.pn-pd .ps-hero.pn-hero-compare .d-hero-copy{ padding:24px 22px 28px; }
+  body.pn-id.pn-pd .ps-hero.pn-hero-compare .d-hero-copy :is(h1,.subtitle,.intro){ text-align:left; margin-left:0; margin-right:0; }
+  /* stacked layouts crop the frame to 1:1 / 4:5, where the divider's opening position would cut
+     the annotation's label in two: it is shown only where it can sit clear of the opening divider */
+  body.pn-id.pn-pd .ps-hero.pn-hero-compare .pn-compare__before .pa-annot{ display:none; }
+}
+</style>
 </head>
 <body class="pn-id pn-id--dark pn-id--disc pn-pd pn-hdr-on">
 <a class="pn-skip" href="#pn-main">Skip to main content</a>
@@ -1336,37 +1359,65 @@
 <nav class="pn-hdr-dest" aria-label="Main"><details class="pn-hdr-menu" data-pn-menu><summary class="pn-hdr-menu-btn"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true" focusable="false"><path class="pn-menu-l1" d="M3.5 6h13"/><path class="pn-menu-l2" d="M3.5 10h13"/><path class="pn-menu-l3" d="M3.5 14h13"/></svg><span>Menu</span></summary><div class="pn-hdr-panel"><a class="pn-hdr-btn is-primary" href="discoveries.html"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true" focusable="false"><circle cx="10" cy="10" r="7.25"/><path d="m12.9 7.1-1.75 4.05L7.1 12.9l1.75-4.05Z"/></svg><span>Discovery Library</span></a><a class="pn-hdr-btn is-secondary is-art" href="plotart/"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true" focusable="false"><rect x="3" y="3.5" width="14" height="13" rx="1.5"/><path d="m5.5 14 3.5-4 2.5 2.5 1.5-1.5 2 3"/></svg><span>PlotArt</span></a><a class="pn-hdr-btn is-secondary is-grid" href="gridnua/"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="2.75" y="2.75" width="14.5" height="14.5" rx="3"/><path d="M7.6 2.75v14.5M12.4 2.75v14.5M2.75 7.6h14.5M2.75 12.4h14.5"/><rect class="pn-grid-core" x="8.2" y="8.2" width="3.6" height="3.6" rx=".8" fill="currentColor" stroke="none"/></svg><span>GridNua</span></a><a class="pn-hdr-btn is-secondary is-myplot" href="your-plot.html?myplot=1" data-myplot aria-label="My Plot"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true" focusable="false"><path class="pn-heart" d="M10 16.6s-6.2-3.7-6.2-8.2A3.4 3.4 0 0 1 10 6.3a3.4 3.4 0 0 1 6.2 2.1c0 4.5-6.2 8.2-6.2 8.2Z"/></svg><span>My Plot</span><span class="pn-hdr-count" aria-hidden="true" hidden></span></a><p class="pn-hdr-panel-k">Talk to PlotNua</p><div class="pn-hdr-panel-contact"><a class="pn-hdr-pl pn-hdr-pl--wa" href="https://wa.me/353834036695" target="_blank" rel="noopener noreferrer" aria-label="Chat with PlotNua on WhatsApp (opens in a new tab)"><span class="pn-hdr-wa-ico" aria-hidden="true"><svg viewBox="0 0 80 80" focusable="false"><path d="M29 5h23a22 22 0 0 1 22 22v16a22 22 0 0 1-22 22H33L14 75l3-18A22 22 0 0 1 7 39V27A22 22 0 0 1 29 5Z" fill="#1F3B2E" stroke="#B39272" stroke-width="2.5" stroke-linejoin="round"/></svg><img src="assets/brand/plotnua-icon-transparent.svg" alt="" width="22" height="22"></span><span>WhatsApp</span></a><a class="pn-hdr-pl" href="contact.html"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true" focusable="false"><rect x="2.75" y="4.5" width="14.5" height="11" rx="2"/><path d="m3.5 5.5 6.5 5 6.5-5"/></svg><span>Contact</span></a></div></div></details></nav>
 <!-- PLOTNUA HEADER v2 · ROW · END -->
 
-<header class="d-hero">
-  <!-- IMAGE 01 (was IMAGE 02) - Potential Asset. The founder's image-rhythm
-       correction: the hero and the annotated plate were the same house in the
-       same composition, one directly under the other. The bare roof now opens
-       the Discovery and the equipped house pays it off at IMAGE 03, so the
-       homeowner sees the potential before the outcome instead of twice over.
-       Asset unchanged and unedited; only its position moved. -->
-  <picture style="display:contents"><source type="image/webp" srcset="assets/img/fec77c3f0bae107a-960w.webp 960w, assets/img/fec77c3f0bae107a.webp 1408w" sizes="max(100vw, 161vh)"><img id="dHeroImg" class="on" src="assets/img/fec77c3f0bae107a.jpg" width="1408" height="768" fetchpriority="high" decoding="async" alt="The same house and garden at dusk with a bare tiled roof, no panels and no battery, the roof annotated by PlotNua as a potential asset."></picture>
+<header class="d-hero ps-hero pn-hero-compare pn-hero-compare--std">
+  <div class="pn-hero-compare__mtitle" aria-hidden="true"><span class="pn-hero-compare__mkicker">A PlotNua Discovery</span><span class="pn-hero-compare__mname">The House as a Power Station</span></div>
+  <!-- Pass 2 Release 3 (founder approval, 30 Oct 2026; freeze record V8): the shared Before ->
+       Possible component pn-compare v1.2, hero standard. Same house, one framing (0 px): the bare
+       roof, then the S8 picture (solar, battery, charger). The Potential Asset annotation is
+       unchanged in geometry and wording and now sits inside the BEFORE layer, so it labels the
+       bare roof and is wiped away with it (xMidYMid slice, layer focus 50% 50%). -->
+  <figure class="pn-compare pn-compare--hero" id="psHeroCompare" data-start="35" data-subject="the house" data-line-fade-under="#dHeroCopy" style="--pnc-focus:50% 50%">
+    <div class="pn-compare__stage">
+      <div class="pn-compare__possible">
+        <picture>
+          <source type="image/webp" srcset="assets/img/ce9da2e51c945693-960w.webp 960w, assets/img/ce9da2e51c945693.webp 1408w" sizes="(max-width:1024px) and (orientation:portrait) 150vw, max(100vw, 132svh)">
+          <img id="dHeroImg" class="on" src="assets/img/ce9da2e51c945693.jpg" width="1408" height="768" fetchpriority="high" decoding="async" alt="The house as it could be: solar panels across the roof, a battery unit in the open garage, a charger on the wall and an electric car in the driveway.">
+        </picture>
+      </div>
+      <div class="pn-compare__before">
+        <picture>
+          <source type="image/webp" srcset="assets/img/fec77c3f0bae107a-960w.webp 960w, assets/img/fec77c3f0bae107a.webp 1408w" sizes="(max-width:1024px) and (orientation:portrait) 150vw, max(100vw, 132svh)">
+          <img src="assets/img/fec77c3f0bae107a.jpg" width="1408" height="768" decoding="async" alt="Before: the same house and garden at dusk with a bare tiled roof, no panels and no battery, the roof annotated by PlotNua as a potential asset.">
+        </picture>
+        <!-- POTENTIAL ASSET ANNOTATION, ON THE HERO. The separate plate is retired,
+             so this is the page's single Potential Asset moment -- the same
+             .pa-annot component as DISC-014 and DISC-022, unchanged classes,
+             strokes, wash and type.
 
-  <!-- POTENTIAL ASSET ANNOTATION, ON THE HERO. The separate plate is retired,
-       so this is the page's single Potential Asset moment -- the same
-       .pa-annot component as DISC-014 and DISC-022, unchanged classes,
-       strokes, wash and type.
-
-       GEOMETRY. The plate never cropped sideways; the hero does. At 360x900
-       only image x 529.5..878.5 survives, and the authored label ran to
-       x=902, so it would have been cut. The whole group is translated 74px
-       left -- rigidly, nothing rescaled -- landing at x 576..828, centred on
-       the image centre within 2px. The anchor moves with it to (626,196),
-       which is bare tile: the roof at that column runs from the ridge at
-       y~114 to the eaves at y~228. Checked by simulating the cover crop at
-       1440x845, 1920x1080, 390x844 and 360x900. -->
-<div class="pa-annot" aria-hidden="true">
-    <svg viewBox="0 0 1408 768" preserveAspectRatio="xMidYMid slice" focusable="false">
-      <circle class="pa-dot" cx="626" cy="196" r="7"/>
-      <path class="pa-line" d="M626 189 L626 150"/>
-      <rect class="pa-wash" x="576" y="78" width="252" height="70" rx="2"/>
-      <text class="pa-kicker" x="594" y="105">PLOTNUA DISCOVERY</text>
-      <text class="pa-label"  x="594" y="136">Potential Asset</text>
-    </svg>
-  </div>
+             GEOMETRY. The plate never cropped sideways; the hero does. At 360x900
+             only image x 529.5..878.5 survives, and the authored label ran to
+             x=902, so it would have been cut. The whole group is translated 74px
+             left -- rigidly, nothing rescaled -- landing at x 576..828, centred on
+             the image centre within 2px. The anchor moves with it to (626,196),
+             which is bare tile: the roof at that column runs from the ridge at
+             y~114 to the eaves at y~228. Checked by simulating the cover crop at
+             1440x845, 1920x1080, 390x844 and 360x900. -->
+      <div class="pa-annot" aria-hidden="true">
+          <svg viewBox="0 0 1408 768" preserveAspectRatio="xMidYMid slice" focusable="false">
+            <circle class="pa-dot" cx="626" cy="196" r="7"/>
+            <path class="pa-line" d="M626 189 L626 150"/>
+            <rect class="pa-wash" x="576" y="78" width="252" height="70" rx="2"/>
+            <text class="pa-kicker" x="594" y="105">PLOTNUA DISCOVERY</text>
+            <text class="pa-label"  x="594" y="136">Potential Asset</text>
+          </svg>
+        </div>
+      </div>
+      <span class="pn-compare__line" aria-hidden="true"></span>
+      <span class="pn-compare__knob" aria-hidden="true"></span>
+      <p class="pn-compare__tag is-before" aria-hidden="true">Before</p>
+      <p class="pn-compare__tag is-possible" aria-hidden="true">Possible</p>
+      <input class="pn-compare__range" type="range" min="0" max="100" step="1" value="35" aria-describedby="psHeroCompareKeys"
+             aria-label="Compare the house with a bare roof and with solar panels, a battery and a charger. Higher values show more of the house before."
+             aria-valuetext="Mostly the house as it could be, divider at 35 per cent">
+    </div>
+    <div class="pn-compare__bar">
+      <p class="pn-compare__help"><span class="pn-compare__help-touch" aria-hidden="true">Slide to discover what&rsquo;s possible.</span><span class="pn-compare__help-pointer" aria-hidden="true">Drag the handle, or use the arrow keys, to compare.</span><span class="pn-compare__sr" id="psHeroCompareKeys">Use the left and right arrow keys to move the divider. Home shows the house as it could be; End shows the house before.</span></p>
+      <div class="pn-compare__jump" role="group" aria-label="Show">
+        <button type="button" data-to="100" aria-pressed="false">Before</button>
+        <button type="button" data-to="0" aria-pressed="false">Possible</button>
+      </div>
+    </div>
+  </figure>
   <div class="d-hero-scrim"></div>
   <div class="d-hero-copy in" id="dHeroCopy">
     <div class="eyebrow">A PlotNua Discovery</div>
@@ -3310,5 +3361,6 @@
   top.observe(document.querySelector('.lag-open'));
 })();
 </script>
+<script src="assets/identity/pn-compare.js?v=1.2" defer></script>
 </body>
 </html>

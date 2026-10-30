@@ -137,10 +137,21 @@ if ((html.match(new RegExp(HERO, 'g')) || []).length !== 1) {
   }
 }
 
-if ((html.match(new RegExp(LIBRARY_IMG, 'g')) || []).length !== 1) {
-  bad('the governed Library image appears exactly once', LIBRARY_IMG);
+/* Freeze record V8 (Pass 2 Release 3, 30 Oct 2026): the hero is a Before / Possible slider whose
+   POSSIBLE layer is this same picture. So: exactly once in the article body (S8, unchanged), and at
+   most once inside the hero, as the pn-compare POSSIBLE layer and nowhere else in the hero. Every
+   occurrence must carry a realised description (no potential-asset marker). */
+const heroEnd = html.indexOf('</header>', html.indexOf('<header class="d-hero'));
+const heroHtml = html.slice(html.indexOf('<header class="d-hero'), heroEnd);
+const bodyHtml = html.slice(heroEnd);
+const inHero = (heroHtml.match(new RegExp(LIBRARY_IMG, 'g')) || []).length;
+const heroLayerOk = inHero === 0 || (inHero === 1
+  && /<div class="pn-compare__possible">\s*<picture>[\s\S]*?ce9da2e51c945693\.jpg[\s\S]*?<\/picture>\s*<\/div>/.test(heroHtml));
+const altsOf = (asset, h) => [...h.matchAll(new RegExp('<img[^>]*src="' + asset.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '"[^>]*alt="([^"]*)"', 'g'))].map(m => m[1]);
+if ((bodyHtml.match(new RegExp(LIBRARY_IMG, 'g')) || []).length !== 1 || !heroLayerOk) {
+  bad('the governed Library image appears exactly once in the article (and, in the hero, only as the slider POSSIBLE layer)', LIBRARY_IMG);
 } else {
-  const a = (altOf(LIBRARY_IMG) || '').toLowerCase();
+  const a = altsOf(LIBRARY_IMG, html).join(' ').toLowerCase();
   const hit = PA_MARKERS.filter(k => a.includes(k));
   if (hit.length) {
     bad('the Library image carries no potential-asset marker',
