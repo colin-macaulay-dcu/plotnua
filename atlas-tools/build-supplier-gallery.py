@@ -380,7 +380,7 @@ def gallery(ed, head, sup):
 # makers and products" read as two distinct sections without extra space. Emitted in
 # that page's gallery region only; no shared stylesheet changes, so no other page moves.
 TRANSITION_CSS = ("<style>/* gallery -> Maker Explorer transition (build-supplier-gallery.py) */\n"
-                  ".pn-sg[data-sg-transition=\"rule\"] ~ #explore-makers{ border-top:1px solid var(--rule, #4A4B4F); padding-top:72px; }\n"
+                  ".pn-sg[data-sg-transition=\"rule\"] ~ #explore-makers{ border-top:1px solid var(--rule, #4A4B4F); padding-top:min(72px, 8vw); }\n"
                   "@media (max-width:720px){ .pn-sg[data-sg-transition=\"rule\"] ~ #explore-makers{ padding-top:44px; } }\n"
                   "</style>\n")
 

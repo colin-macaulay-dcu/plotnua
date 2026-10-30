@@ -1434,7 +1434,7 @@ body.pn-id.pn-pd .litg-hero.pn-hero-compare :is(.pn-compare__possible,.pn-compar
 <!-- PN-SUPPLIER-GALLERY v1 · Premium Supplier Gallery (founder design approval 30 Oct 2026) · built by atlas-tools/build-supplier-gallery.py from the Maker Explorer config below and image-rights-records.json · do not hand-edit -->
 <link rel="stylesheet" href="assets/components/pn-supplier-gallery.css?v=3">
 <style>/* gallery -> Maker Explorer transition (build-supplier-gallery.py) */
-.pn-sg[data-sg-transition="rule"] ~ #explore-makers{ border-top:1px solid var(--rule, #4A4B4F); padding-top:72px; }
+.pn-sg[data-sg-transition="rule"] ~ #explore-makers{ border-top:1px solid var(--rule, #4A4B4F); padding-top:min(72px, 8vw); }
 @media (max-width:720px){ .pn-sg[data-sg-transition="rule"] ~ #explore-makers{ padding-top:44px; } }
 </style>
 <section class="pn-sg" id="suppliers" data-pn-supplier-gallery data-discovery="discovery-living-in-the-garden.html" data-sg-fit="tight" data-sg-transition="rule" aria-labelledby="sg-h" style="--sg-mount-ratio:1 / 1">
