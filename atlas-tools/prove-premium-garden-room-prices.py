@@ -24,7 +24,8 @@ freshness), which this guard runs in --check mode (G5).
   G6  WORDING: every BASE sentence is on the page; every sentence on the page is BASE
       text or declared below (presentation-only release: navigation labels and the
       approved WhatsApp label)
-  G7  ON VIEW: nothing is folded away (no <details>); the cautions in STAY_ON_VIEW are
+  G7  ON VIEW: nothing in the page's own content is folded away (no <details>; the shared
+      generated header/search/identity regions are outside this page's content); the cautions in STAY_ON_VIEW are
       on the page
   G8  NO NEW CLAIM: no commercial, ranking, endorsement or guarantee wording that
       BASE did not have, unless declared
@@ -204,7 +205,12 @@ def main():
     new = [s for s in have_s if have_s[s] > base_s.get(s, 0) and s not in ADDED_TEXT]
     if new: bad("G6 undeclared wording: %s" % [n[:70] for n in new[:4]])
     # G7
-    if "<details" in t: bad("G7 content is folded away inside <details>")
+    # The page's OWN content (shared generated regions removed, exactly as the other
+    # content checks see it): the site header's phone Menu is a <details> since Pass 2
+    # Release 1 (founder-approved one-row phone Menu, 30 Oct 2026) and is governed by
+    # pn_header.py / prove-global-header.py, not by this page. Page content folded into
+    # <details> still fails here (see the capability proof's G7 case).
+    if "<details" in strip_generated(t): bad("G7 content is folded away inside <details>")
     vis = H.unescape(re.sub(r"<[^>]+>", " ", re.sub(r"<(script|style)\b.*?</\1>", " ", body(t), flags=re.S)))
     vis = re.sub(r"\s+", " ", vis)
     for s in STAY_ON_VIEW:
