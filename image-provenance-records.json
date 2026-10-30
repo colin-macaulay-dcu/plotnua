@@ -5600,7 +5600,7 @@
         940
       ],
       "class": "FOUNDER_ORIGINAL_ARTWORK",
-      "what": "Untitled colourful abstract painting with yellow outlines, by Colin Macaulay (PlotArt homepage hero)",
+      "what": "Untitled colourful abstract painting with yellow outlines, by Colin MacAulay (PlotArt homepage hero)",
       "artwork": {
         "creator": "Colin Macaulay",
         "owner": "Colin Macaulay",
@@ -5620,7 +5620,7 @@
           "Encoded as WebP (quality 82) with Pillow by the PlotNua build session, 29 Oct 2026"
         ]
       },
-      "credit": "Original artwork by Colin Macaulay, founder of PlotArt.",
+      "credit": "Original artwork by Colin MacAulay, founder of PlotArt.",
       "human_review": {
         "reviewer": "Colin MacAulay (founder)",
         "date": "2026-10-29",
@@ -5640,7 +5640,7 @@
         1006
       ],
       "class": "AI_ILLUSTRATION",
-      "what": "PlotArt Living Gallery visualisation: an AI-generated contemporary living room, with the actual photograph of Colin Macaulay's original abstract painting placed on the wall (composite). The room is not a real home.",
+      "what": "PlotArt Living Gallery visualisation: an AI-generated contemporary living room, with the actual photograph of Colin MacAulay's original abstract painting placed on the wall (composite). The room is not a real home.",
       "layers": {
         "original_painting": "Untitled colourful abstract painting with yellow outlines, created and owned by Colin Macaulay (founder). Recorded as FOUNDER_ORIGINAL_ARTWORK for plotart/assets/hero/founder-01-abstract.webp.",
         "photograph_of_painting": {
@@ -5760,7 +5760,7 @@
         "verdict": "No identifiable third-party content; suitable for the PlotArt Living Gallery and homepage with the AI-generated illustration label"
       },
       "decision_ref": "PN-FDR-2026-10-29-PLOTART-LG",
-      "label_on_page": "AI-generated illustration; caption: Original artwork by Colin Macaulay. The room is an AI-generated interior visualisation for PlotArt, not a real home.",
+      "label_on_page": "AI-generated illustration; caption: Original artwork by Colin MacAulay. The room is an AI-generated interior visualisation for PlotArt, not a real home.",
       "human_review": {
         "reviewer": "Colin MacAulay (founder)",
         "date": "2026-10-29",

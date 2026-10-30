@@ -48,7 +48,7 @@ body.pa p{ margin:0 0 1em; }
 .pa-head .pa-wrap{ display:flex; align-items:center; gap:28px; min-height:74px; }
 .pa-brand{ display:flex; align-items:baseline; gap:14px; text-decoration:none; color:var(--ivory); flex:0 0 auto; }
 .pa-brand:hover{ color:var(--ivory); }
-.pa-word{ font-family:var(--serif); font-size:31px; letter-spacing:.14em; line-height:1; }
+.pa-word{ font-family:var(--serif); font-size:31px; letter-spacing:.01em; line-height:1; }
 .pa-part{ display:flex; align-items:center; gap:7px; font-size:12px; letter-spacing:.06em; color:var(--stone); white-space:nowrap; }
 .pa-part img{ width:18px; height:18px; border-radius:5px; }
 .pa-nav{ display:flex; align-items:center; gap:4px; margin-left:auto; }

@@ -18,7 +18,7 @@ def artist_page(path, title, desc, body, scripts=("plotart.js",)):
     T = "../" * (depth + 1)
     pill = lambda key, href, lbl, track: '<a class="pa-pill" href="%s"%s data-pa-track="%s">%s</a>' % (href, ' aria-current="page"' if key == "vg" else "", track, lbl)
     header = ('<header class="pa-head pa-head--pills">\n  <div class="pa-wrap">\n'
-              '    <a class="pa-brand" href="%sindex.html" aria-label="PlotArt home"><span class="pa-word">PLOTART</span><span class="pa-part"><img src="/assets/brand/plotnua-mark-master.svg" alt="" width="18" height="18"><span>Part of PlotNua</span></span></a>\n'
+              '    <a class="pa-brand" href="%sindex.html" aria-label="PlotArt home"><span class="pa-word">PlotArt</span><span class="pa-part"><img src="/assets/brand/plotnua-mark-master.svg" alt="" width="18" height="18"><span>Part of PlotNua</span></span></a>\n'
               '    <nav class="pa-pills" aria-label="PlotArt">%s%s%s%s</nav>\n  </div>\n</header>') % (
         R, pill("home", R + "index.html", "Discover PlotArt", "nav_discover_plotart"),
         pill("vg", R + "gallery/", "Virtual Gallery", "nav_virtual_gallery"),
@@ -54,7 +54,7 @@ def artist_page(path, title, desc, body, scripts=("plotart.js",)):
 <footer class="pa-foot">
   <div class="pa-wrap">
     <div>
-      <p style="font-family:var(--serif);font-size:30px;letter-spacing:.14em;color:var(--ivory);margin:0 0 6px">PLOTART</p>
+      <p style="font-family:var(--serif);font-size:30px;letter-spacing:.02em;color:var(--ivory);margin:0 0 6px">PlotArt</p>
       <p style="margin:0 0 14px">Original Art. Real Homes. New Possibilities.</p>
       <p style="margin:0">Part of <a href="{T}index.html">PlotNua</a>, the Irish home-discovery platform.</p>
     </div>
