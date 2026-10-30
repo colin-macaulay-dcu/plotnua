@@ -346,7 +346,7 @@ function publishedLocalImages() {
       if (!u) continue;
       if (u.startsWith('data:')) continue;             // inline, nothing to declare
       const self = SELF_ORIGINS.find(re => re.test(u));
-      if (self) u = u.replace(self, '');               // our own origin, our own image
+      if (self) u = '/' + u.replace(self, '');         // our own origin, our own image: site-root path (30 Oct 2026: from a page below the root it was resolved against the page's folder)
       else if (/^(https?:)?\/\//i.test(u)) continue;    // somebody else's: the rights gate's job
       u = u.split('?')[0].split('#')[0];
       /* A relative path resolves against the page's own folder (29 Oct 2026: the first image on a
