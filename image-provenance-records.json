@@ -7968,6 +7968,83 @@
       "permitted_surfaces": [
         "plotart"
       ]
+    },
+    {
+      "asset": "assets/founder/colin-macaulay-founder-portrait-440x550.jpg",
+      "sha256": "63f976772704cd21001cb5cf2afb943d69d112a35b518ac4208e5f88a4be6d45",
+      "bytes": 63010,
+      "pixels": [
+        440,
+        550
+      ],
+      "class": "AI_ILLUSTRATION",
+      "what": "Founder portrait of Colin MacAulay (head and shoulders, plain ivory background). AI-edited: the file was produced with ChatGPT's image tool. It is not presented as an untouched camera photograph.",
+      "decision_ref": "PN-FDR-2026-10-30-FOUNDER-PORTRAIT (founder approval of the founder cards and of recording the portrait as AI-edited, 30 Oct 2026)",
+      "generated": {
+        "tool": "ChatGPT image generation (OpenAI, gpt-image), per the master's C2PA content credentials; crop and web encoding by the PlotNua build session (Pillow)",
+        "date": "2026-10-30",
+        "source_master": {
+          "file": "PlotArt_Colin_Founder_Portrait.png (founder's Mac, PlotNua/16 colin portrait; unchanged)",
+          "sha256": "40a6291c2cbde04731df9ba22e80e4d50ccf97b99dcefc152ca81a69d398934e",
+          "pixels": [
+            1145,
+            1374
+          ]
+        },
+        "processing_chain": [
+          {
+            "step": "Portrait: produced in ChatGPT (gpt-image) on 30 Oct 2026, per its C2PA content credentials",
+            "prompt": "UNAVAILABLE (see prompt_status): not supplied; not reconstructed"
+          },
+          {
+            "step": "Crop and resize only (founder instruction, 30 Oct 2026): 4:5 head-and-shoulders box 229,0,916,858 of the 1145x1374 master, Lanczos downscale to 440x550",
+            "tool": "Pillow"
+          },
+          {
+            "step": "Web encoding",
+            "tool": "Pillow; JPEG quality 92, 4:4:4 (no chroma subsampling); no sharpening, no colour or saturation change, no regeneration"
+          }
+        ],
+        "c2pa_evidence": {
+          "manifest": "C2PA content credentials embedded in the master PNG, read with c2pa-python on 30 Oct 2026 (the web JPEG does not carry them; this record does)",
+          "claim_generator": "OpenAI Media Service API",
+          "signed_by": "OpenAI OpCo, LLC",
+          "signed_at": "2026-10-30T17:26:18.914738+00:00",
+          "actions": [
+            "c2pa.created (softwareAgent ChatGPT, version gpt-image; digitalSourceType trainedAlgorithmicMedia)",
+            "c2pa.converted",
+            "c2pa.watermarked.unbound"
+          ],
+          "ingredients_recorded": []
+        }
+      },
+      "prompt_status": "UNAVAILABLE",
+      "reference_disclosure": {
+        "status": "UNCERTAIN",
+        "statement": "The portrait depicts the founder. What was supplied to ChatGPT has not been stated, and the content credentials record no ingredients, so the inputs cannot be verified; the status remains UNCERTAIN. No third-party image is known to have been supplied.",
+        "evidence": "C2PA content credentials of the master PNG, read 30 Oct 2026"
+      },
+      "resemblance_review": {
+        "date": "2026-10-30",
+        "compared_against": "The image itself: people, logos, text, products and backgrounds that could identify a third party",
+        "verdict": "Depicts the founder only; no third party, brand, logo, text or protected design is identifiable",
+        "findings": [
+          "One person (the founder), plain shirt with no visible branding, plain ivory background",
+          "Quality check (30 Oct 2026): at 100% the master shows AI texture in skin and beard; not visible at the 204 x 255 px display size; not to be shown larger than about 280 px wide"
+        ]
+      },
+      "depicts_named_product": false,
+      "depicts_named_organisation": false,
+      "human_review": {
+        "reviewer": "Colin MacAulay (founder)",
+        "date": "2026-10-30",
+        "attests": "Colin MacAulay approved this image as his founder portrait for the PlotNua and PlotArt About pages, and instructed that it be recorded as AI-edited and never presented as an untouched camera photograph (30 Oct 2026)."
+      },
+      "label": "Portrait: AI-generated illustration (visible caption beside the portrait)",
+      "permitted_surfaces": [
+        "about",
+        "plotart"
+      ]
     }
   ],
   "legacy_undeclared": [

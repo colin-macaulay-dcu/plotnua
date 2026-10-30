@@ -259,7 +259,14 @@ const FOUNDER_ATTESTED_PLOTART_LG = {
   sha256: new Set(['f4861333a80fda7f704fd3c57d0a2b8f18db589b8505eb11192ac05c08d8d0f9']),
   surfaces: ['plotart'],
 };
-const FOUNDER_ATTESTED_ALL = [FOUNDER_ATTESTED_GRP, FOUNDER_ATTESTED_H6, FOUNDER_ATTESTED_DISC031, FOUNDER_ATTESTED_DISC033, FOUNDER_ATTESTED_DISC032, FOUNDER_ATTESTED_PLOTART_LG];
+const FOUNDER_ATTESTED_FOUNDER_PORTRAIT = {
+  /* Founder portrait (founder approval, 30 Oct 2026): an AI-edited portrait of the founder made with ChatGPT
+     (gpt-image), shown once on each About page. Crop and resize only; never described as a photograph. */
+  decision: 'PN-FDR-2026-10-30-FOUNDER-PORTRAIT',
+  sha256: new Set(['63f976772704cd21001cb5cf2afb943d69d112a35b518ac4208e5f88a4be6d45']),
+  surfaces: ['about', 'plotart'],
+};
+const FOUNDER_ATTESTED_ALL = [FOUNDER_ATTESTED_GRP, FOUNDER_ATTESTED_H6, FOUNDER_ATTESTED_DISC031, FOUNDER_ATTESTED_DISC033, FOUNDER_ATTESTED_DISC032, FOUNDER_ATTESTED_PLOTART_LG, FOUNDER_ATTESTED_FOUNDER_PORTRAIT];
 const attestedFor = h => FOUNDER_ATTESTED_ALL.find(x => x.sha256.has(String(h)));
 /* 'gridnua' (founder approval of the GridNua limited launch, 29 Oct 2026): the GridNua initiative pages. */
 const PERMITTED_SURFACES = ['discovery', 'library-card', 'homepage',
