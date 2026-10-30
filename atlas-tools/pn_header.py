@@ -89,6 +89,8 @@ ICON_PLOT = ('<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-
              'stroke-linecap="round" aria-hidden="true" focusable="false"><path class="pn-heart" '
              'd="M10 16.6s-6.2-3.7-6.2-8.2A3.4 3.4 0 0 1 10 6.3a3.4 3.4 0 0 1 6.2 2.1c0 4.5-6.2 8.2-6.2 8.2Z"/></svg>')
 JS = "assets/identity/pn-header.js?v=1"   # versioned so a cached copy never outlives a change
+MENU_JS = "assets/identity/pn-menu.js?v=1"   # phone Menu (founder approval 30 Oct 2026): Escape / outside tap / scroll close
+CONTACT = ("contact.html", "Contact")   # phone Menu panel only (founder approval 30 Oct 2026); not in the desktop bar
 ICON_ART = ('<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" '
             'stroke-linecap="round" aria-hidden="true" focusable="false"><rect x="3" y="3.5" width="14" height="13" rx="1.5"/>'
             '<path d="m5.5 14 3.5-4 2.5 2.5 1.5-1.5 2 3"/></svg>')
@@ -152,16 +154,37 @@ def bar(page, has_search, banner):
             "    <nav class=\"pn-hdr-nav\" aria-label=\"Main\">%s</nav>\n"
             "    <span class=\"pn-hdr-sep\" aria-hidden=\"true\"></span>\n"
             "    %s\n%s"
-            "  </div>\n%s\n<script src=\"%s\" defer></script>\n%s\n") % (
+            "  </div>\n%s\n<script src=\"%s\" defer></script>\n<script src=\"%s\" defer></script>\n%s\n") % (
                 MARK["BAR"][0], open_tag, home, href(page, "assets/brand/plotnua-mark-master.svg"),
                 ("    " + HOME_INFO.replace("\n", "\n    ") + "\n") if page == "index.html" else "",
                 _dest(page), wa,
                 '    <span class="pn-hdr-search-slot" aria-hidden="true"></span>\n' if has_search else "",
-                close_tag, href(page, JS), MARK["BAR"][1])
+                close_tag, href(page, JS), href(page, MENU_JS), MARK["BAR"][1])
+
+
+ICON_MENU = ('<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" '
+             'aria-hidden="true" focusable="false"><path class="pn-menu-l1" d="M3.5 6h13"/><path class="pn-menu-l2" d="M3.5 10h13"/>'
+             '<path class="pn-menu-l3" d="M3.5 14h13"/></svg>')
+ICON_CONTACT = ('<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" '
+                'stroke-linecap="round" aria-hidden="true" focusable="false"><rect x="2.75" y="4.5" width="14.5" height="11" rx="2"/>'
+                '<path d="m3.5 5.5 6.5 5 6.5-5"/></svg>')
 
 
 def row(page):
-    return '%s\n<nav class="pn-hdr-dest" aria-label="Main">%s</nav>\n%s\n' % (MARK["ROW"][0], _dest(page), MARK["ROW"][1])
+    """PHONE MENU (founder approval 30 Oct 2026). Below 721px the bar is one row:
+    PlotNua · Search · Menu. Menu is a native <details> disclosure, so it opens with or
+    without JavaScript; assets/identity/pn-menu.js adds Escape, outside-tap and scroll
+    closing. The panel holds the four destinations, then WhatsApp and Contact.
+    Above 720px the whole row is hidden and the bar carries the destinations."""
+    wa = ('<a class="pn-hdr-pl pn-hdr-pl--wa" href="%s" target="_blank" rel="noopener noreferrer" aria-label="%s">'
+          '<span class="pn-hdr-wa-ico" aria-hidden="true">%s<img src="%s" alt="" width="22" height="22"></span>'
+          '<span>WhatsApp</span></a>') % (WHATSAPP, WHATSAPP_LABEL, WA_BUBBLE, href(page, "assets/brand/plotnua-icon-transparent.svg"))
+    cur = ' aria-current="page"' if page == CONTACT[0] else ""
+    contact = '<a class="pn-hdr-pl" href="%s"%s>%s<span>%s</span></a>' % (href(page, CONTACT[0]), cur, ICON_CONTACT, CONTACT[1])
+    return ('%s\n<nav class="pn-hdr-dest" aria-label="Main"><details class="pn-hdr-menu" data-pn-menu>'
+            '<summary class="pn-hdr-menu-btn">%s<span>Menu</span></summary>'
+            '<div class="pn-hdr-panel">%s<p class="pn-hdr-panel-k">Talk to PlotNua</p><div class="pn-hdr-panel-contact">%s%s</div></div>'
+            '</details></nav>\n%s\n') % (MARK["ROW"][0], ICON_MENU, _dest(page), wa, contact, MARK["ROW"][1])
 
 
 RAIL_BEGIN = "<!-- PLOTNUA SEARCH RAIL v1 · BEGIN"

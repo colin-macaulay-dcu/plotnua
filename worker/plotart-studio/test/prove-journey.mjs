@@ -31,7 +31,8 @@ execSync(`mkdir -p ${SITE} && git -C ${REL} archive HEAD | tar -x -C ${SITE}`);
 // the gallery opening release: opening wording on every PlotArt page, switch on, manifest rebuilt
 const TOOLS = process.argv.includes('--gallery-tools') ? process.argv[process.argv.indexOf('--gallery-tools') + 1] : null;
 if (!TOOLS) { console.log('usage: node test/prove-journey.mjs --release DIR --gallery-tools DIR'); process.exit(2); }
-{
+// Galleries opened on main on 29 Oct 2026 (4d5edf3): when the release tree is already open, test it exactly as it is.
+if (JSON.parse(readFileSync(join(SITE, 'atlas-tools/release/plotart-launch-switches.json'), 'utf8')).galleries_open !== true) {
   const swp = join(SITE, 'atlas-tools/release/plotart-launch-switches.json'), sw = JSON.parse(readFileSync(swp, 'utf8')); sw.galleries_open = true;
   writeFileSync(swp, JSON.stringify(sw, null, 2));
   const lj = join(TOOLS, '../plotart/data/launch.json'), keep = readFileSync(lj);

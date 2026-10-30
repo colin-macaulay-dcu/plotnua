@@ -43,7 +43,10 @@ GRID = re.compile(r'(<ol class="pa-vg2-grid"[^>]*>)(.*?)(\n  </ol>)', re.S)
 
 # Cloudflare Access sits in front of the Studio's address: the pipeline passes it with an Access service token
 # (secrets STUDIO_ACCESS_CLIENT_ID / STUDIO_ACCESS_CLIENT_SECRET), then authenticates to the Studio with its bearer token.
-HEADERS = {"Authorization": "Bearer " + TOKEN, "Content-Type": "application/json"}
+# Cloudflare refuses Python's default User-Agent ("Python-urllib/…", error 1010) before Access or the Studio see the
+# request, so the pipeline names itself (found on the first live run, 30 Oct 2026).
+HEADERS = {"Authorization": "Bearer " + TOKEN, "Content-Type": "application/json",
+           "User-Agent": "PlotArt-content-pipeline/1.0 (+https://plotnua.ie)"}
 if os.environ.get("STUDIO_ACCESS_CLIENT_ID") and os.environ.get("STUDIO_ACCESS_CLIENT_SECRET"):
     HEADERS["CF-Access-Client-Id"] = os.environ["STUDIO_ACCESS_CLIENT_ID"]
     HEADERS["CF-Access-Client-Secret"] = os.environ["STUDIO_ACCESS_CLIENT_SECRET"]

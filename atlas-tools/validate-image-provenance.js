@@ -145,7 +145,7 @@ const FOUNDER_ATTESTED_H6 = {
 /* FOUNDER-ATTESTED CONTEXT · DISC-031 THE NATURAL SWIMMING GARDEN (PN-FDR-2026-10-26-DISC031,
    PENDING founder signature). The four masters were supplied in the founder build instruction of
    26 Oct 2026 without their tool, prompts or reference history, so until the founder supplies those
-   the founder-attested form is the only truthful record. ONLY these thirteen web encodings, and
+   the founder-attested form is the only truthful record. ONLY these web encodings (thirteen, plus fourteen hero-slider derivatives of the same two masters, 30 Oct 2026), and
    ONLY on the discovery and library-card surfaces. The records are added by
    atlas-tools/declare-disc031-provenance.py from the signed declaration
    governance/DISC-031-PROVENANCE-DECLARATION-DRAFT-2026-10-26.json; until then this pin admits
@@ -170,6 +170,22 @@ const FOUNDER_ATTESTED_DISC031 = {
     '2efb18a0ab94104ff1908d8e60ffdd58f2c854866908984bb6371c91ff605300',
     '5daf8859e62ff93b7613b84e940e3b87d66361a88402691cd0183fbbfe2bad6f',
     '42d48d0de2446df8b57524d84441196cf56417d66738daa6fbcfbbbd959a2081',
+    // hero-slider web derivatives of the pinned BEFORE / POSSIBLE 1536 encodings (AVIF 960/1200/1536,
+    // WebP 1200, 4:5 phone crops): founder Pass 2 performance instruction, 30 Oct 2026
+    '6993006506aff51ea475517e6815afdeb707ed3fc164cb9a6f720378603e3528',
+    'bc71842ef94e94cd37188388c7e963070c0e4ad5959c0a9a9516dad1a710dc33',
+    '63962cd9709879b22e382a313cef893b11f7e7b59ce9e10dfc6e11e0c5e62339',
+    '7eb7fe49e92731748de91697314194d9a46b14111318a831d10a681d73180a33',
+    '729bff54d70076787245f5aa40362dd3e50f1b2c920a5349931cb8ebe67e765f',
+    'd4711b2ad86847dbb02e26f575d4ed32255c5ba4443ff80fe3854698e735e722',
+    'e0d11f16743876d700a6070036622eb2c287d5029d8e924eb138a057e9699108',
+    '30f0c6cb9f6a536cdc42685fbcf7558b839bd707ba517807c97739f7ae00c880',
+    '3e719a1e73f312be7a14a2e25be689101bab33f7e2dc95fe89a63ba12d59179c',
+    '4e188983f3b42c7cd178a46f7a60614b285a5aa06f5555a0770c01bc27fc7361',
+    '97f5048fdd73cf12d06e9a77132772d78dee4bbd04c99cd7ecdbca506f5232c0',
+    'cea11bc9e4691a4cf7a35a7808a8911c3c4ae08954a497d45fc76d0b80ec221b',
+    '79a57e6ea958b8076fe6da635558225cf648408f481a4489592a26872c3c542c',
+    '4bb302188a8168b51344bf81bf1471641b7ac9263e441d58fb7625215aefe1dc',
   ]),
   surfaces: ['discovery', 'library-card'],
 };

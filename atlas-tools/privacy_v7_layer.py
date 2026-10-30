@@ -33,10 +33,10 @@ VERSION = "2026-10-PHASE2-V7"
 
 S1_OLD = ('    <p>PlotNua is an independent website operated by Colin MacAulay, who is the data controller for the personal information processed through this website. '
           'PlotNua explores new possibilities for residential property in Ireland and helps homeowners discover ideas, information and, where appropriate, independent suppliers.</p>\n')
-S1_NEW = ('    <p>PlotNua is an independent website operated by Colin Macaulay, who is the data controller for the personal information processed through this website. '
+S1_NEW = ('    <p>PlotNua is an independent website operated by Colin MacAulay (registered as Colin Macaulay), who is the data controller for the personal information processed through this website. '
           'PlotNua explores new possibilities for residential property in Ireland and helps homeowners discover ideas, information and, where appropriate, independent suppliers.</p>\n'
           f'    <!-- {MARKER} · business name, privacy notice {VERSION} -->\n'
-          '    <p>PlotNua is a business name registered with the Companies Registration Office (Business Name Registration No. 794392) by Colin Macaulay, who runs it as an individual; it is not a company. '
+          '    <p>PlotNua is a business name registered with the Companies Registration Office (Business Name Registration No. 794392) by Colin MacAulay, who runs it as an individual; it is not a company. '
           'PlotArt is an initiative of PlotNua. Our full business details are on our <a href="terms.html#legal-information">Legal information</a> page.</p>\n')
 
 S2_OLD = "    <p>If you choose to join the Artist Register, we also collect the information described in Section 8.</p>\n"

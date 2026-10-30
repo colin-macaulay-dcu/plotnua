@@ -48,7 +48,7 @@ body.pa p{ margin:0 0 1em; }
 .pa-head .pa-wrap{ display:flex; align-items:center; gap:28px; min-height:74px; }
 .pa-brand{ display:flex; align-items:baseline; gap:14px; text-decoration:none; color:var(--ivory); flex:0 0 auto; }
 .pa-brand:hover{ color:var(--ivory); }
-.pa-word{ font-family:var(--serif); font-size:31px; letter-spacing:.14em; line-height:1; }
+.pa-word{ font-family:var(--serif); font-size:31px; letter-spacing:.01em; line-height:1; }
 .pa-part{ display:flex; align-items:center; gap:7px; font-size:12px; letter-spacing:.06em; color:var(--stone); white-space:nowrap; }
 .pa-part img{ width:18px; height:18px; border-radius:5px; }
 .pa-nav{ display:flex; align-items:center; gap:4px; margin-left:auto; }
@@ -260,10 +260,10 @@ body.pa p{ margin:0 0 1em; }
 /* ---- Founding 25 hero ---------------------------------------------------------- */
 .pa-fhero{ position:relative; overflow:hidden; background:radial-gradient(ellipse 60% 60% at 80% 30%, rgba(207,133,102,.13), rgba(207,133,102,0) 70%), linear-gradient(180deg, #232426, var(--wall)); }
 .pa-fhero .pa-wrap{ display:grid; grid-template-columns:minmax(0, 1.2fr) minmax(0, .8fr); gap:40px; align-items:center; padding-top:clamp(56px, 8vw, 116px); padding-bottom:clamp(56px, 8vw, 116px); }
-.pa-fhero h1{ font-size:clamp(56px, 8vw, 132px); line-height:.92; }
-.pa-fhero .big{ font-family:var(--serif); font-size:clamp(200px, 26vw, 400px); line-height:.75; color:var(--terra-text); text-align:right; letter-spacing:-.05em; }
+.pa-fhero h1{ font-size:clamp(48px, 6.6vw, 96px); line-height:.94; } /* Pass 2 refinement, founder approval 30 Oct 2026 (was clamp(56px, 8vw, 132px)) */
+.pa-fhero .big{ font-family:var(--serif); font-size:clamp(170px, 22vw, 340px); line-height:.75; color:var(--terra-text); text-align:right; letter-spacing:-.05em; }
 .pa-fhero .big small{ display:block; font-family:var(--sans); font-size:13px; letter-spacing:.24em; text-transform:uppercase; color:var(--bronze-text); margin-top:22px; }
-@media (max-width:900px){ .pa-fhero .pa-wrap{ grid-template-columns:1fr; } .pa-fhero .big{ text-align:left; font-size:180px; } }
+@media (max-width:900px){ .pa-fhero .pa-wrap{ grid-template-columns:1fr; } .pa-fhero .big{ text-align:left; font-size:150px; } }
 .pa-counter{ display:flex; align-items:center; gap:18px; margin-top:30px; }
 .pa-counter .bar{ flex:1; max-width:320px; height:6px; border-radius:6px; background:var(--line-2); overflow:hidden; }
 .pa-counter .bar i{ display:block; height:100%; background:var(--terra); }
@@ -719,3 +719,15 @@ body.pa .pa-free-lines{ margin:0; }
 .pa-enq-status[data-state="error"]{ color:#F5CDBD; }
 .pa-hp{ position:absolute !important; left:-9999px !important; width:1px; height:1px; overflow:hidden; }
 [data-pa-enquire][hidden]{ display:none !important; }
+
+/* Pass 2 · Founding 25 application heading (founder approval 30 Oct 2026): sized to sit with the form, not over it */
+.pa-apply-intro h2.pa-apply-title{ font-size:clamp(32px, 3vw, 46px); line-height:1.02; max-width:18ch; margin-bottom:16px; }
+
+/* Phone Menu (founder approval 30 Oct 2026): one-row header, wordmark · Menu; the pills open
+   from the shared Menu (assets/identity/pn-section-menu.css). Desktop and tablet unchanged. */
+.pa-head{ --pn-sm-accent:#CF8566; --pn-sm-top:61px; }
+@media (max-width:720px){
+  .pa-head--pills .pa-wrap{ flex-wrap:nowrap; min-height:60px; gap:12px; padding-top:8px; padding-bottom:8px; }
+  .pa-head--pills .pa-pills{ display:none; }
+  .pa-head--pills .pa-word{ font-size:26px; }
+}

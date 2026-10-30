@@ -1,5 +1,5 @@
 /* =====================================================================
-   pn-compare · PlotNua Before → Possible comparison (v1, 27 Oct 2026)
+   pn-compare · PlotNua Before → Possible comparison (v1.1, 30 Oct 2026)
    ---------------------------------------------------------------------
    One shared component for the Discovery hero standard. It consolidates
    the two earlier implementations rather than adding a third:
@@ -189,3 +189,45 @@ body:has(> .pn-return) .d-hero.pn-hero-compare{ height:min(92svh, calc(100svh - 
 /* Page-level hero image rules (fade-in / scale on .d-hero img) must not touch
    the comparison: both layers stay static so their pixels always align. */
 .d-hero .pn-compare img,.pn-compare img{ opacity:1 !important; transform:none !important; transition:none !important; }
+
+/* =====================================================================
+   v1.1 · HERO STANDARD (30 Oct 2026, founder Pass 2 approval D1)
+   Opt-in only: every rule below needs .pn-hero-compare--std on the .d-hero
+   header, so pages built on v1 (DISC-032) render exactly as before.
+   What the standard adds, so a Discovery needs no page-specific hero layer:
+   - desktop: the page keeps its own hero copy and typography; the handle
+     sits in the upper part of the frame (--pnc-knob-y), the divider fades
+     under the copy (data-line-fade-under), and the tags and AI label clear
+     the sticky header (--pnc-top-offset);
+   - phones and portrait tablets: a compact Discovery title above the image
+     (.pn-hero-compare__mtitle, aria-hidden; the single H1 stays below for
+     assistive technology), a 4:5 image, the jump bar, then the hero copy on
+     a solid background with the page's own typography.
+   ===================================================================== */
+.d-hero.pn-hero-compare--std .pn-compare--hero{ --pnc-knob-y:34%; }
+.pn-hero-compare__mtitle{ display:none; }
+@media (max-width:1024px) and (orientation:portrait), (max-width:719px){
+  .d-hero.pn-hero-compare--std .pn-hero-compare__mtitle{
+    display:block; order:-1; padding:18px 22px 16px; background:var(--p4-anth,#27282A);
+    border-bottom:1px solid var(--p4-line2,rgba(242,235,224,.14)); }
+  .pn-hero-compare__mkicker{ display:block; font-family:var(--p4-sans,'Hanken Grotesk',system-ui,sans-serif); font-weight:700; font-size:11px; letter-spacing:.2em; text-transform:uppercase; color:var(--p4-stone,#C2BDB5); margin-bottom:6px; }
+  .pn-hero-compare__mname{ display:block; font-family:var(--p4-serif,'Instrument Serif',Georgia,serif); font-size:clamp(28px,7.6vw,36px); line-height:1.04; color:var(--p4-ivory,#F2EBE0); }
+  /* the eyebrow repeats the compact title: hidden visually, kept for AT */
+  .d-hero.pn-hero-compare--std .d-hero-copy .eyebrow{ position:absolute !important; width:1px; height:1px; margin:-1px; overflow:hidden; clip:rect(0 0 0 0); clip-path:inset(50%); white-space:nowrap; }
+  .d-hero.pn-hero-compare--std .d-hero-copy{ padding:24px 22px 28px; }
+}
+
+/* v1.1 · layout-shift fix (30 Oct 2026). On phones and portrait tablets the jump bar sits
+   below the image; it used to appear only when the script went live, pushing the hero copy
+   down (~106 px, CLS 0.03). Where scripting is enabled its space is now reserved from the
+   first paint (invisible until live); without scripting nothing is reserved, as before.
+   The final layout is unchanged. */
+@media (scripting:enabled){
+  @media (max-width:1024px) and (orientation:portrait), (max-width:719px){
+    .d-hero.pn-hero-compare .pn-compare--hero:not(.is-live) .pn-compare__bar{ display:flex; visibility:hidden; flex-wrap:wrap; align-items:center;
+      justify-content:space-between; gap:10px 24px; padding:16px 22px 18px; background:var(--pnc-card); line-height:1.5; }
+  }
+  @media (max-width:719px){
+    .d-hero.pn-hero-compare .pn-compare--hero:not(.is-live) .pn-compare__bar{ padding:14px 16px 16px; }
+  }
+}

@@ -48,7 +48,7 @@ body.gn p{ margin:0 0 1em; }
 .gn-brand{ display:flex; align-items:center; gap:14px; text-decoration:none; color:var(--ivory); flex:0 0 auto; }
 :where(body.gn) .gn-brand:hover{ color:var(--ivory); }
 .gn-glyph{ width:22px; height:22px; flex:0 0 auto; }
-.gn-word{ font-family:var(--serif); font-size:30px; letter-spacing:.14em; line-height:1; }
+.gn-word{ font-family:var(--serif); font-size:30px; letter-spacing:.01em; line-height:1; }
 .gn-part{ display:flex; align-items:center; gap:7px; font-size:12px; letter-spacing:.06em; color:var(--stone); white-space:nowrap; }
 .gn-part img{ width:18px; height:18px; border-radius:5px; }
 .gn-pills{ display:flex; align-items:center; gap:8px; margin-left:auto; }
@@ -262,3 +262,12 @@ body.gn .gn-foot h2{ font-family:var(--sans); font-size:12px; letter-spacing:.2e
 .gn-opp-list li{ padding:14px 0; border-bottom:1px solid var(--line); color:var(--stone); font-size:15.5px; line-height:1.5; }
 .gn-opp-list b{ display:block; font-family:var(--serif); font-weight:400; font-size:22px; color:var(--ivory); margin-bottom:2px; }
 @media (max-width:860px){ .gn-opp{ grid-template-columns:1fr; } }
+
+/* Phone Menu (founder approval 30 Oct 2026): one-row header, wordmark · Menu; the pills open
+   from the shared Menu (assets/identity/pn-section-menu.css). Desktop and tablet unchanged. */
+.gn-head{ --pn-sm-accent:#B39272; --pn-sm-top:61px; }
+@media (max-width:720px){
+  .gn-head .gn-wrap{ flex-wrap:nowrap; min-height:60px; gap:12px; padding-top:8px; padding-bottom:8px; }
+  .gn-head .gn-pills{ display:none; }
+  .gn-head .gn-word{ font-size:26px; }
+}

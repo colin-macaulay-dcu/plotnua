@@ -246,3 +246,70 @@ body.pn-hdr-on .pn-hdr-btn.is-grid[aria-current]::after{ background:#C9AC8C; }
   body.pn-hdr-on .pn-hdr-nav{ gap:4px; }
   body.pn-hdr-on .pn-hdr-nav .pn-hdr-btn{ padding:0 9px !important; }
 }
+
+/* ===== PHONE MENU · one-row bar (founder approval 30 Oct 2026) =====================
+   Below 721px the bar is a single row: PlotNua · Search · Menu. The Menu is a native
+   <details> in the ROW block; its summary is seated in the bar (fixed, like Search) and
+   its panel drops below the bar. The four destinations keep their identities; WhatsApp
+   and Contact sit under "Talk to PlotNua". Without JavaScript the disclosure still opens
+   and closes; assets/identity/pn-menu.js only adds Escape / outside-tap / scroll closing. */
+body.pn-hdr-on .pn-hdr-menu > summary{ list-style:none; }
+body.pn-hdr-on .pn-hdr-menu > summary::-webkit-details-marker{ display:none; }
+@media (max-width:720px){
+  body.pn-hdr-on{ --h-menu-w:92px; }
+  body.pn-hdr-on .pn-hdr-in .pn-hdr-wa{ display:none; }
+  html body.pn-hdr-on .pns-pill{ right:calc(var(--h-pad) + var(--h-menu-w) + 8px); width:104px; }
+  body.pn-hdr-on .pn-hdr-search-slot{ width:calc(104px + var(--h-menu-w) + 8px); }
+  body.pn-hdr-on .pn-hdr-dest{ display:block; padding:0; margin:0; background:none; border:0; height:0; }
+  body.pn-hdr-on .pn-hdr-menu-btn{ position:fixed; z-index:62; top:calc((var(--pn-hdr-h) - var(--h-btn)) / 2); right:var(--h-pad);
+    display:inline-flex; align-items:center; justify-content:center; gap:8px; width:var(--h-menu-w); height:var(--h-btn); box-sizing:border-box;
+    padding:0 14px 0 12px; border-radius:999px; cursor:pointer; -webkit-tap-highlight-color:transparent;
+    font-family:var(--h-sans); font-weight:600; font-size:14.5px; letter-spacing:.005em; color:var(--h-ivory);
+    background:var(--h-raised); border:1px solid var(--h-edge);
+    transition:background .2s ease, border-color .2s ease, opacity .2s ease, transform .28s cubic-bezier(.4,0,.2,1); }
+  body.pn-hdr-on .pn-hdr-menu-btn:hover{ background:var(--h-raised-hi); border-color:rgba(242,235,224,.32); }
+  body.pn-hdr-on .pn-hdr-menu-btn:focus-visible{ outline:2px solid var(--h-terra-text); outline-offset:3px; }
+  body.pn-hdr-on .pn-hdr-menu-btn svg{ width:18px; height:18px; flex:none; overflow:visible; }
+  body.pn-hdr-on .pn-hdr-menu-btn svg path{ transform-origin:10px 10px; transition:transform .22s ease, opacity .18s ease; }
+  body.pn-hdr-on .pn-hdr-menu[open] .pn-hdr-menu-btn{ background:var(--h-ivory); color:#1B1C1E; border-color:var(--h-ivory); }
+  body.pn-hdr-on .pn-hdr-menu[open] .pn-menu-l1{ transform:rotate(45deg) translateY(4px); }
+  body.pn-hdr-on .pn-hdr-menu[open] .pn-menu-l2{ opacity:0; }
+  body.pn-hdr-on .pn-hdr-menu[open] .pn-menu-l3{ transform:rotate(-45deg) translateY(-4px); }
+  /* the scroll tuck takes Menu with the bar; an open Menu keeps the bar in view */
+  html.pns-nav-tuck body.pn-hdr-on .pn-hdr-menu-btn{ opacity:0; transform:translateY(-72px); pointer-events:none; }
+  html.pn-menu-open.pns-nav-tuck body.pn-hdr-on .pn-hdr{ transform:none; }
+  html.pn-menu-open.pns-nav-tuck body.pn-hdr-on :is(.pn-hdr-menu-btn,.pns-pill){ opacity:1 !important; transform:none; pointer-events:auto; }
+  /* the panel */
+  body.pn-hdr-on .pn-hdr-panel{ position:fixed; z-index:59; top:var(--pn-hdr-h); left:0; right:0; box-sizing:border-box;
+    max-height:calc(100svh - var(--pn-hdr-h)); overflow:auto; overscroll-behavior:contain;
+    display:grid; grid-template-columns:1fr; gap:8px; padding:14px var(--h-pad) 18px;
+    background:rgba(27,28,30,.985); border-bottom:1px solid var(--h-line);
+    box-shadow:0 24px 48px -12px rgba(0,0,0,.6); }
+  body.pn-hdr-on .pn-hdr-dest .pn-hdr-panel .pn-hdr-btn{ width:100%; height:52px; justify-content:flex-start; gap:12px;
+    padding:0 18px !important; font-size:16px; border-radius:14px; }
+  body.pn-hdr-on .pn-hdr-dest .pn-hdr-panel .pn-hdr-btn svg{ display:block; width:20px; height:20px; }
+  body.pn-hdr-on .pn-hdr-dest .pn-hdr-panel .pn-hdr-btn.is-art{ font-size:21px; border-radius:10px; }
+  body.pn-hdr-on .pn-hdr-dest .pn-hdr-panel .pn-hdr-btn.is-myplot{ font-size:15px; }
+  body.pn-hdr-on .pn-hdr-dest .pn-hdr-panel .pn-hdr-btn.is-myplot.is-saved svg{ display:block; width:20px; height:20px; }
+  body.pn-hdr-on .pn-hdr-dest .pn-hdr-panel .pn-hdr-btn[aria-current]::after{ left:50px; right:auto; width:28px; bottom:9px; }
+  body.pn-hdr-on .pn-hdr-dest .pn-hdr-panel .pn-hdr-count{ margin-left:auto; min-width:22px; height:22px; font-size:12px; }
+  body.pn-hdr-on .pn-hdr-panel-k{ margin:10px 4px 0; font-family:var(--h-sans); font-weight:700; font-size:11px; letter-spacing:.18em;
+    text-transform:uppercase; color:var(--h-stone); }
+  body.pn-hdr-on .pn-hdr-panel-contact{ display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+  body.pn-hdr-on .pn-hdr-pl{ display:flex; align-items:center; justify-content:center; gap:9px; height:48px; border-radius:999px;
+    text-decoration:none; font-family:var(--h-sans); font-weight:600; font-size:15px; color:var(--h-ivory);
+    border:1px solid var(--h-edge); background:transparent; }
+  body.pn-hdr-on .pn-hdr-pl svg{ width:18px; height:18px; color:var(--h-stone); }
+  body.pn-hdr-on .pn-hdr-pl--wa{ border-color:var(--h-bronze); padding-left:6px; }
+  body.pn-hdr-on .pn-hdr-pl--wa .pn-hdr-wa-ico{ width:30px; height:30px; }
+  body.pn-hdr-on .pn-hdr-pl[aria-current]{ border-color:rgba(207,133,102,.7); }
+  body.pn-hdr-on .pn-hdr-pl:hover{ background:var(--h-raised-hi); }
+  body.pn-hdr-on .pn-hdr-pl:focus-visible{ outline:2px solid var(--h-terra-text); outline-offset:3px; }
+}
+@media (max-width:374px){
+  body.pn-hdr-on{ --h-menu-w:84px; }
+  html body.pn-hdr-on .pns-pill{ width:96px; }
+}
+@media (prefers-reduced-motion:reduce){
+  body.pn-hdr-on :is(.pn-hdr-menu-btn,.pn-hdr-menu-btn svg path){ transition:none !important; }
+}

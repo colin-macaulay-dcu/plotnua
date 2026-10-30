@@ -177,10 +177,10 @@ for name in PAGES:
     need(not re.search(r"workers\.dev|airtable", ep_ok), "L7 %s references a live endpoint outside the approved form" % name)
 
 home = open(os.path.join(PA, "index.html"), encoding="utf-8").read() if os.path.exists(os.path.join(PA, "index.html")) else ""
-need(all(('src="%s"' % x) in home for x in HERO_IMAGES) and "Original artwork by Colin Macaulay, founder of PlotArt." in visible_text(home)
-     and len(re.findall(r'<img [^>]*alt="Painting by Colin Macaulay', home)) == 1 and len(re.findall(r"<img\b", home)) == 3 + home.count("plotnua-mark-master.svg"),
+need(all(('src="%s"' % x) in home for x in HERO_IMAGES) and "Original artwork by Colin MacAulay, founder of PlotArt." in visible_text(home)
+     and len(re.findall(r'<img [^>]*alt="Painting by Colin MacAulay', home)) == 1 and len(re.findall(r"<img\b", home)) == 3 + home.count("plotnua-mark-master.svg"),
      "L6 the homepage images must be exactly the founder's credited painting, the Living Gallery visualisation and the A Home for Art image")
-LG_CAP = "Original artwork by Colin Macaulay. The room is an AI-generated interior visualisation for PlotArt, not a real home."
+LG_CAP = "Original artwork by Colin MacAulay. The room is an AI-generated interior visualisation for PlotArt, not a real home."
 for _n, _s in (("index.html", home), ("living-gallery.html", open(os.path.join(PA, "living-gallery.html"), encoding="utf-8").read() if os.path.exists(os.path.join(PA, "living-gallery.html")) else "")):
     need(_s.count(LG_IMAGE) == 1 and LG_CAP in visible_text(_s) and "AI-generated illustration" in visible_text(_s),
          "L6 %s must show the Living Gallery visualisation once, credited and labelled as an AI-generated illustration" % _n)
