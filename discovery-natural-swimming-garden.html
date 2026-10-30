@@ -35,6 +35,7 @@
 <link rel="stylesheet" href="assets/identity/pn-identity.css">
 <link rel="stylesheet" href="assets/identity/pn-identity-discovery.css">
 <link rel="stylesheet" href="assets/identity/pn-premium-discovery.css">
+<link rel="stylesheet" href="assets/identity/pn-compare.css?v=1.1">
 <link rel="stylesheet" href="assets/identity/pn-header.css">
 <!-- PLOTNUA IDENTITY v1 · HEAD · END -->
 
@@ -443,6 +444,23 @@ body.pn-id.pn-pd ol.ns-sources a{ word-break:break-word; }
 @media (prefers-reduced-motion:reduce){
   body.pn-id.pn-pd :is(.ns-compare-knob,.ns-compare-tag){ transition:none !important; }
 }
+
+/* ---- Pass 2 hero slider pilot (30 Oct 2026): page hero rules hand the frame
+   to the shared component (pn-compare v1.1). Typography above is unchanged;
+   these rules only restore the component's frame where the older ns-hero
+   heights and the hero ns-tag would otherwise win on specificity. ---- */
+body.pn-id.pn-pd .d-hero.ns-hero.pn-hero-compare{ height:92vh; height:92svh; min-height:560px; }
+body:has(> .pn-return) .d-hero.ns-hero.pn-hero-compare{ height:min(92svh, calc(100svh - var(--pnc-hdr,69px) - var(--pn-dock,0px))); }
+body.pn-id.pn-pd .ns-hero.pn-hero-compare .d-hero-scrim{ pointer-events:none; z-index:1; }
+body.pn-id.pn-pd .ns-hero.pn-hero-compare .pn-compare__possible picture,
+body.pn-id.pn-pd .ns-hero.pn-hero-compare .pn-compare__before picture{ height:100%; }
+@media (max-width:1024px) and (orientation:portrait), (max-width:719px){
+  body.pn-id.pn-pd .d-hero.ns-hero.pn-hero-compare,
+  body:has(> .pn-return) .d-hero.ns-hero.pn-hero-compare{ height:auto; min-height:0; }
+  body.pn-id.pn-pd .ns-hero.pn-hero-compare .d-hero-copy{ padding:24px 22px 28px; }
+  body.pn-id.pn-pd .ns-hero.pn-hero-compare .d-hero-copy :is(h1,.subtitle,.intro){ text-align:left; margin-left:0; margin-right:0; }
+  body.pn-id.pn-pd .ns-hero.pn-hero-compare .d-hero-copy .intro{ margin-top:14px; }
+}
 </style>
 <script type="application/ld+json">
 {
@@ -544,13 +562,45 @@ body.pn-id.pn-pd ol.ns-sources a{ word-break:break-word; }
      revised A7/A8/A9/A12, edits 1 and 2) and the founder's later decision on the
      three natural swimming approaches. Governance record:
      governance/DISC-031-NATURAL-SWIMMING-GARDEN-BUILD-2026-10-26.md -->
-<header class="d-hero ns-hero">
-  <picture>
-    <source type="image/webp" srcset="assets/disc031/img/DISC-031-reveal-960.webp 960w, assets/disc031/img/DISC-031-reveal-1536.webp 1536w" sizes="max(100vw, 132svh)">
-    <img id="dHeroImg" class="on" src="assets/disc031/img/DISC-031-reveal-1536.jpg" width="1536" height="1024" fetchpriority="high" decoding="async" alt="A natural swimming pond in a sunny Irish back garden: clear water edged with reeds, irises and grasses, a timber jetty, stone steps, mature trees and a white house with a stone patio.">
-  </picture>
+<header class="d-hero ns-hero pn-hero-compare pn-hero-compare--std">
+  <div class="pn-hero-compare__mtitle" aria-hidden="true"><span class="pn-hero-compare__mkicker">A PlotNua Discovery</span><span class="pn-hero-compare__mname">The Natural Swimming Garden</span></div>
+  <!-- Pass 2 hero slider pilot (founder approval D1, 30 Oct 2026): the shared Before -> Possible
+       component pn-compare v1.1, hero standard. Same approved pair as the flagship further down
+       (DISC-031-before / DISC-031-reveal, 1536 x 1024, one framing). POSSIBLE is the base layer and
+       the no-JavaScript picture, so search engines, social cards and old browsers see the same
+       hero image as before. Governance: governance/DISC-031-HERO-SLIDER-PILOT-2026-10-30.md -->
+  <figure class="pn-compare pn-compare--hero" id="nsHeroCompare" data-start="35" data-subject="the garden" data-line-fade-under="#dHeroCopy" style="--pnc-focus:58% 60%">
+    <div class="pn-compare__stage">
+      <div class="pn-compare__possible">
+        <picture>
+          <source type="image/webp" srcset="assets/disc031/img/DISC-031-reveal-960.webp 960w, assets/disc031/img/DISC-031-reveal-1536.webp 1536w" sizes="(max-width:719px) 190vw, (max-width:1024px) and (orientation:portrait) 150vw, max(100vw, 132svh)">
+          <img id="dHeroImg" class="on" src="assets/disc031/img/DISC-031-reveal-1536.jpg" width="1536" height="1024" fetchpriority="high" decoding="async" alt="A natural swimming pond in a sunny Irish back garden: clear water edged with reeds, irises and grasses, a timber jetty, stone steps, mature trees and a white house with a stone patio.">
+        </picture>
+      </div>
+      <div class="pn-compare__before">
+        <picture>
+          <source type="image/webp" srcset="assets/disc031/img/DISC-031-before-960.webp 960w, assets/disc031/img/DISC-031-before-1536.webp 1536w" sizes="(max-width:719px) 190vw, (max-width:1024px) and (orientation:portrait) 150vw, max(100vw, 132svh)">
+          <img src="assets/disc031/img/DISC-031-before-1536.jpg" width="1536" height="1024" decoding="async" alt="Before: the same garden as it is, with a stone patio and a long open lawn.">
+        </picture>
+      </div>
+      <span class="pn-compare__line" aria-hidden="true"></span>
+      <span class="pn-compare__knob" aria-hidden="true"></span>
+      <p class="pn-compare__tag is-before" aria-hidden="true">Before</p>
+      <p class="pn-compare__tag is-possible" aria-hidden="true">Possible</p>
+      <p class="pn-compare__ai">AI-generated illustration</p>
+      <input class="pn-compare__range" type="range" min="0" max="100" step="1" value="35" aria-describedby="nsHeroCompareKeys"
+             aria-label="Compare the garden before and with a natural swimming pond. Higher values show more of the garden before."
+             aria-valuetext="Mostly the garden as it could be, divider at 35 per cent">
+    </div>
+    <div class="pn-compare__bar">
+      <p class="pn-compare__help"><span class="pn-compare__help-touch" aria-hidden="true">Slide to discover what&rsquo;s possible.</span><span class="pn-compare__help-pointer" aria-hidden="true">Drag the handle, or use the arrow keys, to compare.</span><span class="pn-compare__sr" id="nsHeroCompareKeys">Use the left and right arrow keys to move the divider. Home shows the garden as it could be; End shows the garden before.</span></p>
+      <div class="pn-compare__jump" role="group" aria-label="Show">
+        <button type="button" data-to="100" aria-pressed="false">Before</button>
+        <button type="button" data-to="0" aria-pressed="false">Possible</button>
+      </div>
+    </div>
+  </figure>
   <div class="d-hero-scrim"></div>
-  <p class="ns-tag">AI-generated illustration</p>
   <div class="d-hero-copy in" id="dHeroCopy">
     <div class="eyebrow">A PlotNua Discovery</div>
     <h1>The Natural Swimming Garden</h1>
@@ -1247,6 +1297,7 @@ body.pn-id.pn-pd ol.ns-sources a{ word-break:break-word; }
   dlg.addEventListener('close', function(){ open.focus(); });
 })();
 </script>
+<script src="assets/identity/pn-compare.js?v=1.1" defer></script>
 <script src="assets/identity/pn-premium.js" defer></script>
 </body>
 </html>

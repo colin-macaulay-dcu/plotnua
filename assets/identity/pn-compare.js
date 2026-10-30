@@ -1,4 +1,4 @@
-/* pn-compare · PlotNua Before → Possible comparison (v1, 27 Oct 2026)
+/* pn-compare · PlotNua Before → Possible comparison (v1.1, 30 Oct 2026; v1 27 Oct 2026)
    Shared behaviour for every .pn-compare figure on a page (hero or inline).
    - Value model: --pos = share of the width, from the left, showing BEFORE.
    - Pointer events (mouse, touch, pen) with pointer capture, so a drag
@@ -11,6 +11,10 @@
    Configuration (data attributes on the figure):
      data-start        initial BEFORE share, default 35
      data-subject      words used in aria-valuetext, e.g. "the room"
+     data-label-before visible label for the left image (v1.1), default "Before"
+     data-label-after  visible label for the right image (v1.1), default "Possible"
+                       Labels set the tags and the jump buttons only; markup
+                       without them renders exactly as v1.
 */
 (function(){
   'use strict';
@@ -28,6 +32,12 @@
     if (isNaN(start)) start = 35;
 
     var pos = start, queued = false, anim = null;
+
+    /* v1.1: configurable labels (e.g. "Home" / "Away"). Absent = v1 markup unchanged. */
+    var lb = box.getAttribute('data-label-before'), la = box.getAttribute('data-label-after');
+    function relabel(sel, txt){ if (!txt) return; [].forEach.call(box.querySelectorAll(sel), function(el){ el.textContent = txt; }); }
+    relabel('.pn-compare__tag.is-before', lb); relabel('.pn-compare__jump [data-to="100"]', lb);
+    relabel('.pn-compare__tag.is-possible', la); relabel('.pn-compare__jump [data-to="0"]', la);
 
     function say(v){
       if (v >= 97) return 'Showing ' + subject + ' before';
