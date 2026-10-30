@@ -6,7 +6,9 @@ Checks every page that carries a pn-compare HERO (class pn-compare--hero):
   C3  exactly two layers (POSSIBLE base, BEFORE overlay), each a <picture> with an <img> carrying alt text
   C4  both layers declare the same width and height (one framing, pixel alignment)
   C5  POSSIBLE is the priority image (fetchpriority="high"); BEFORE is not lazy-loaded
-  C6  the AI-generated illustration label is inside the figure
+  C6  the AI-generated illustration label is inside the figure whenever a layer is a declared
+      AI_ILLUSTRATION record (legacy-undeclared images are not labelled by this guard: no claim
+      is made about what made them until they are declared)
   C7  both layers' image files exist and every encoding has a provenance record
   C8  BEFORE and POSSIBLE tags, keyboard help (aria-describedby) and the jump group are present
   C9  exactly one H1 on the page
@@ -17,11 +19,21 @@ Prints "COMPARE HERO · OK" only when all checks pass.
 import json, os, re, sys
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
-PAGES = ["discovery-supper-club-at-home.html", "discovery-natural-swimming-garden.html"]
+PAGES = ["discovery-supper-club-at-home.html", "discovery-natural-swimming-garden.html",
+         # Pass 2 Release 2 (30 Oct 2026)
+         "discovery-hidden-flood-barrier.html", "discovery-living-in-the-garden.html", "discovery-home-exchange.html"]
 
 
 def read(p):
     return open(os.path.join(ROOT, p), encoding="utf-8").read()
+
+
+def declared_ai():
+    try:
+        d = json.loads(read("image-provenance-records.json"))
+        return {r["asset"] for r in d.get("records", []) if r.get("class") == "AI_ILLUSTRATION"}
+    except Exception:
+        return set()
 
 
 def provenance_assets():
@@ -35,6 +47,7 @@ def provenance_assets():
 
 
 PROV = provenance_assets()
+AI = declared_ai()
 
 
 def check(page, s, exists=lambda p: os.path.exists(os.path.join(ROOT, p))):
@@ -58,7 +71,8 @@ def check(page, s, exists=lambda p: os.path.exists(os.path.join(ROOT, p))):
         f.append("C4 layers declare different sizes: %s" % dims)
     if len(imgs) == 2 and ('fetchpriority="high"' not in imgs[0] or 'loading="lazy"' in imgs[1]):
         f.append("C5 POSSIBLE not priority, or BEFORE lazy-loaded")
-    if "AI-generated illustration" not in fig:
+    layer_imgs = set(re.findall(r'<img\b[^>]*src="([^"]+)"', fig))
+    if (layer_imgs & AI) and "AI-generated illustration" not in fig:
         f.append("C6 AI-generated illustration label missing")
     refs = set(re.findall(r'(assets/[^"\s,]+\.(?:jpg|webp|avif))', fig))
     for r in sorted(refs):

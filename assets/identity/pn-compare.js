@@ -1,4 +1,4 @@
-/* pn-compare · PlotNua Before → Possible comparison (v1.1, 30 Oct 2026; v1 27 Oct 2026)
+/* pn-compare · PlotNua Before → Possible comparison (v1.2, 30 Oct 2026; v1.1 and v1 earlier)
    Shared behaviour for every .pn-compare figure on a page (hero or inline).
    - Value model: --pos = share of the width, from the left, showing BEFORE.
    - Pointer events (mouse, touch, pen) with pointer capture, so a drag
@@ -15,6 +15,10 @@
      data-label-after  visible label for the right image (v1.1), default "Possible"
                        Labels set the tags and the jump buttons only; markup
                        without them renders exactly as v1.
+     data-say-before   v1.2: words for the left image in aria-valuetext, e.g.
+     data-say-after    "the Irish home" / "the home abroad", for comparisons that
+                       are not a transformation (Home Exchange). Absent = the v1
+                       wording ("before" / "as it could be").
 */
 (function(){
   'use strict';
@@ -39,7 +43,14 @@
     relabel('.pn-compare__tag.is-before', lb); relabel('.pn-compare__jump [data-to="100"]', lb);
     relabel('.pn-compare__tag.is-possible', la); relabel('.pn-compare__jump [data-to="0"]', la);
 
+    var sb = box.getAttribute('data-say-before'), sa = box.getAttribute('data-say-after');
     function say(v){
+      if (sb && sa){
+        if (v >= 97) return 'Showing ' + sb;
+        if (v <= 3)  return 'Showing ' + sa;
+        if (v > 45 && v < 55) return 'Half ' + sb + ', half ' + sa;
+        return (v > 50 ? 'Mostly ' + sb : 'Mostly ' + sa) + ', divider at ' + Math.round(v) + ' per cent';
+      }
       if (v >= 97) return 'Showing ' + subject + ' before';
       if (v <= 3)  return 'Showing ' + subject + ' as it could be';
       if (v > 45 && v < 55) return 'Half before, half as it could be';

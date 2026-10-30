@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en-IE" class="no-js">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>An Invitation to PlotArt | Founding Artists</title>
+<meta name="description" content="A personal invitation to become one of PlotArt's first Founding Artists: your own gallery, 12 months free and no commission in your founding year.">
+<!-- LIMITED LAUNCH: not for indexing until the founder approves indexing. Planned canonical:
+     https://plotnua.ie/plotart/invitation.html (a private invitation page: never indexed or linked from navigation) -->
+<meta name="robots" content="noindex, follow">
+<meta name="theme-color" content="#27282A">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Hanken+Grotesk:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="assets/plotart.css">
+<script>document.documentElement.classList.remove('no-js');</script>
+<link rel="stylesheet" href="/assets/identity/pn-section-menu.css?v=1">
+<style>
+.pa-inv-hero{padding:clamp(56px,9vw,128px) 0 clamp(48px,7vw,96px)}
+.pa-inv-hero .pa-wrap{display:grid;gap:clamp(36px,6vw,88px);grid-template-columns:1fr;align-items:center}
+@media (min-width:980px){.pa-inv-hero .pa-wrap{grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr)}}
+.pa-inv-card{border:1px solid var(--line-2);border-radius:var(--r);padding:clamp(28px,4vw,52px);background:linear-gradient(160deg,rgba(242,235,224,.035),rgba(242,235,224,0) 55%);position:relative}
+.pa-inv-card::before{content:"";position:absolute;inset:10px;border:1px solid rgba(207,133,102,.22);border-radius:calc(var(--r) - 6px);pointer-events:none}
+.pa-inv-kicker{display:inline-flex;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--terra-text);font-weight:600;margin:0 0 22px}
+.pa-inv-kicker::before{content:"";width:28px;height:1px;background:var(--terra-text)}
+.pa-inv-h1{font-family:var(--serif);font-weight:400;font-size:clamp(46px,6.4vw,92px);line-height:.98;letter-spacing:-.01em;margin:0 0 22px;color:var(--ivory)}
+.pa-inv-h1 em{font-style:italic;color:var(--lime)}
+.pa-inv-sub{font-size:clamp(19px,1.7vw,23px);line-height:1.5;color:var(--lime);margin:0 0 30px;max-width:34em}
+.pa-inv-cta{display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+.pa-inv-note{font-size:14px;color:var(--stone);margin:16px 0 0}
+.pa-inv-fig{margin:0}
+.pa-inv-fig img{width:100%;height:auto;display:block}
+.pa-inv-letter{max-width:46em}
+.pa-inv-letter p{font-size:clamp(18px,1.45vw,20.5px);line-height:1.65;color:var(--lime);margin:0 0 1.1em}
+.pa-inv-letter p:first-child::first-letter{font-family:var(--serif);font-size:3.4em;float:left;line-height:.82;padding:6px 10px 0 0;color:var(--terra-text)}
+.pa-inv-sign{font-family:var(--serif);font-size:28px;color:var(--ivory);margin:28px 0 2px}
+.pa-inv-sign + p{color:var(--stone);font-size:14.5px;margin:0}
+.pa-inv-benefits{list-style:none;margin:0;padding:0;display:grid;gap:1px;background:var(--line);border:1px solid var(--line);border-radius:var(--r);overflow:hidden;grid-template-columns:1fr}
+@media (min-width:720px){.pa-inv-benefits{grid-template-columns:repeat(2,1fr)}}
+@media (min-width:1100px){.pa-inv-benefits{grid-template-columns:repeat(3,1fr)}}
+.pa-inv-benefits li{background:var(--wall);padding:clamp(24px,2.6vw,34px)}
+.pa-inv-benefits b{display:block;font-family:var(--serif);font-weight:400;font-size:clamp(25px,2.2vw,31px);line-height:1.1;color:var(--ivory);margin:0 0 10px}
+.pa-inv-benefits span{color:var(--stone);line-height:1.6;font-size:16px}
+.pa-inv-steps{list-style:none;margin:0;padding:0;counter-reset:s;display:grid;gap:0}
+.pa-inv-steps li{counter-increment:s;display:grid;grid-template-columns:64px 1fr;gap:18px;padding:22px 0;border-top:1px solid var(--line)}
+.pa-inv-steps li:last-child{border-bottom:1px solid var(--line)}
+.pa-inv-steps li::before{content:counter(s,decimal-leading-zero);font-family:var(--serif);font-size:38px;line-height:1;color:var(--terra-text)}
+.pa-inv-steps h3{margin:2px 0 6px;font-size:19px;color:var(--ivory)}
+.pa-inv-steps p{margin:0;color:var(--stone);line-height:1.6}
+.pa-inv-close{text-align:center}
+.pa-inv-close .pa-wrap{display:block;max-width:760px;margin:0 auto}
+.pa-inv-close .pa-eyebrow{font-size:12px;letter-spacing:.18em;color:var(--terra-text);margin:0 0 18px;justify-content:center;text-align:center;max-width:none}
+.pa-inv-close h2{margin-bottom:22px!important}
+.pa-inv-close h2{font-family:var(--serif);font-weight:400;font-size:clamp(38px,4.6vw,64px);line-height:1.04;margin:0 0 16px;color:var(--ivory)}
+.pa-inv-close p{color:var(--lime);max-width:36em;margin:0 auto 28px;font-size:18px;line-height:1.6}
+.pa-inv-close .pa-inv-cta{justify-content:center}
+</style>
+</head>
+<body class="pa">
+<a class="pa-skip" href="#main">Skip to content</a>
+<header class="pa-head pa-head--pills">
+  <div class="pa-wrap">
+    <a class="pa-brand" href="index.html" aria-label="PlotArt home"><span class="pa-word">PlotArt</span><span class="pa-part"><img src="/assets/brand/plotnua-mark-master.svg" alt="" width="18" height="18"><span>Part of PlotNua</span></span></a>
+    <nav class="pa-pills" aria-label="PlotArt"><a class="pa-pill" href="index.html" data-pa-track="nav_discover_plotart">Discover PlotArt</a><a class="pa-pill" href="gallery/" data-pa-track="nav_virtual_gallery">Virtual Gallery</a><a class="pa-pill" href="living-gallery.html" data-pa-track="nav_living_gallery">Living Gallery</a><a class="pa-pill pa-pill--out" href="../index.html" aria-label="PlotNua homepage" data-pa-track="cross_plotnua_home">PlotNua <span aria-hidden="true">↗</span></a></nav>
+    <details class="pn-sm" data-pn-menu><summary class="pn-sm-btn"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true" focusable="false"><path class="pn-menu-l1" d="M3.5 6h13"/><path class="pn-menu-l2" d="M3.5 10h13"/><path class="pn-menu-l3" d="M3.5 14h13"/></svg><span>Menu</span></summary><div class="pn-sm-panel"><a class="pn-sm-link" href="index.html" data-pa-track="nav_discover_plotart_menu">Discover PlotArt</a><a class="pn-sm-link" href="gallery/" data-pa-track="nav_virtual_gallery_menu">Virtual Gallery</a><a class="pn-sm-link" href="living-gallery.html" data-pa-track="nav_living_gallery_menu">Living Gallery</a><a class="pn-sm-link is-out" href="../index.html" aria-label="PlotNua homepage" data-pa-track="cross_plotnua_home_menu">PlotNua <span aria-hidden="true">↗</span></a></div></details>
+  </div>
+</header>
+<main id="main">
+
+<section class="pa-inv-hero"><div class="pa-wrap">
+  <div class="pa-inv-card">
+    <p class="pa-inv-kicker">A personal invitation</p>
+    <h1 class="pa-inv-h1">An Invitation<br>to <em>PlotArt</em></h1>
+    <p class="pa-inv-sub">You've been personally invited to help shape PlotArt from the beginning — joining a small group of artists whose work will define the character of our opening collection.</p>
+    <div class="pa-inv-cta"><a class="pa-btn pa-btn--solid" href="mailto:hello@plotnua.ie?subject=My%20PlotArt%20invitation&body=Hi%20Colin%2C%0D%0A%0D%0AThanks%20for%20the%20invitation.%20I%27d%20be%20interested%20in%20joining%20PlotArt%20as%20a%20Founding%20Artist.%0D%0A%0D%0APlease%20send%20me%20the%20details%20and%20next%20steps.%0D%0A" data-pa-track="invite_accept_top">Accept your invitation <span aria-hidden="true">→</span></a><a class="pa-btn pa-btn--ghost" href="#joining">How joining works</a></div>
+    <p class="pa-inv-note">No application needed. Simply reply, and I'll take it from there.</p>
+  </div>
+  <figure class="pa-inv-fig pa-lit"><span class="pa-hang pa-hang--float"><img src="assets/hero/founder-01-abstract.webp" width="1332" height="940" alt="Painting by Colin MacAulay: an abstract of bold yellow outlined shapes over deep violet loops and pink and blue lines on grey" decoding="async" fetchpriority="high"></span>
+    <figcaption class="pa-credit">Original artwork by Colin MacAulay, founder of PlotArt.</figcaption></figure>
+</div></section>
+
+<section class="pa-sec pa-sec--deep" aria-labelledby="letterH"><div class="pa-wrap pa-cols-2" style="align-items:start">
+  <div><p class="pa-eyebrow">Why you</p><h2 id="letterH">The first ten are<br>invited personally.</h2></div>
+  <div class="pa-inv-letter">
+    <p>PlotArt is a new initiative within PlotNua, the Irish home-discovery platform. It's a place to discover original art, meet the artists behind it and buy directly from them: a gallery where every artist has a home of their own.</p>
+    <p>It begins with the Founding 25, a curated group of artists based or working on the island of Ireland who will open the PlotArt Virtual Gallery. Most places are filled through open applications, but the first ten I'm inviting personally, because I admire their work and would love it to be among the first people see.</p>
+    <p>You're one of them. There's no application to fill in. If you'd like to join, just accept below and I'll send you everything you need.</p>
+    <p class="pa-inv-sign">Colin MacAulay</p>
+    <p>Founder, PlotArt · part of PlotNua</p>
+  </div>
+</div></section>
+
+<section class="pa-sec" aria-labelledby="offerH"><div class="pa-wrap">
+  <div class="pa-sec-head"><div><p class="pa-eyebrow">As a Founding Artist</p><h2 id="offerH">What your place includes.</h2></div>
+  <div><p class="pa-lede" style="margin:0">Your art. Your sales. Your earnings.</p></div></div>
+  <ul class="pa-inv-benefits">
+    <li><b>Your own gallery</b><span>A dedicated artist gallery with your biography and a page for each work, presented properly, with honest dimensions and your own words. You keep at least 10 works on show.</span></li>
+    <li><b>12 months free</b><span>No membership or listing fees for 12 months, starting from the day your gallery is first published.</span></li>
+    <li><b>Zero commission</b><span>No PlotArt commission on enquiries from your founding year, even if the sale completes later. You keep 100% of your artwork sales.</span></li>
+    <li><b>Buyers come to you</b><span>Enquiries go directly to you by email. You agree the sale, payment and delivery with the buyer yourself.</span></li>
+    <li><b>No automatic charges</b><span>Nothing converts to a paid plan. Any future terms would be offered with notice and need your explicit agreement.</span></li>
+    <li><b>Founding Artist recognition</b><span>You'll always be one of the artists who opened the PlotArt Virtual Gallery, and your gallery carries the Founding Artist badge while it's active.</span></li>
+  </ul>
+</div></section>
+
+<section class="pa-sec pa-sec--deep" id="joining" aria-labelledby="joinH"><div class="pa-wrap pa-cols-2" style="align-items:start">
+  <div><p class="pa-eyebrow">Joining</p><h2 id="joinH">Five simple steps.</h2><p class="pa-muted" style="margin-top:14px">Nothing about you or your work is published until you've seen and approved your gallery.</p></div>
+  <ol class="pa-inv-steps">
+    <li><div><h3>Accept your invitation</h3><p>Reply to hello@plotnua.ie using the button on this page.</p></div></li>
+    <li><div><h3>Read and accept the terms</h3><p>I'll send you the Founding Artist terms. Your place is confirmed when you accept them in writing.</p></div></li>
+    <li><div><h3>Sign in to PlotArt Studio</h3><p>You'll receive an email with secure access to your own Studio: you sign in with a one-time code, with no password to remember.</p></div></li>
+    <li><div><h3>Build your gallery</h3><p>Add your biography and at least 10 works, with good photographs, details and prices. Take your time.</p></div></li>
+    <li><div><h3>Review and publish</h3><p>I review your gallery with you, and it opens in the PlotArt Virtual Gallery. Afterwards, you can mark works sold or change what's on show yourself, at any time.</p></div></li>
+  </ol>
+</div></section>
+
+<section class="pa-sec pa-inv-close" aria-labelledby="closeH"><div class="pa-wrap">
+  <p class="pa-eyebrow">The PlotArt Founding 25</p>
+  <h2 id="closeH">I'd love you to be<br>one of the first.</h2>
+  <p>Accepting simply starts the conversation. If you have questions first, reply to the same address and I'll answer them personally.</p>
+  <div class="pa-inv-cta"><a class="pa-btn pa-btn--solid" href="mailto:hello@plotnua.ie?subject=My%20PlotArt%20invitation&body=Hi%20Colin%2C%0D%0A%0D%0AThanks%20for%20the%20invitation.%20I%27d%20be%20interested%20in%20joining%20PlotArt%20as%20a%20Founding%20Artist.%0D%0A%0D%0APlease%20send%20me%20the%20details%20and%20next%20steps.%0D%0A" data-pa-track="invite_accept_bottom">Accept your invitation <span aria-hidden="true">→</span></a><a class="pa-btn pa-btn--ghost" href="founding-25.html#terms">Read the programme terms</a></div>
+</div></section>
+
+</main>
+<footer class="pa-foot">
+  <div class="pa-wrap">
+    <div>
+      <p style="font-family:var(--serif);font-size:30px;letter-spacing:.02em;color:var(--ivory);margin:0 0 6px">PlotArt</p>
+      <p style="margin:0 0 14px">Original Art. Real Homes. New Possibilities.</p>
+      <p style="margin:0">Part of <a href="../index.html">PlotNua</a>, the Irish home-discovery platform.</p>
+    </div>
+    <div>
+      <h2>PlotArt</h2>
+      <ul><li><a href="gallery/">Virtual Gallery</a></li><li><a href="living-gallery.html">Living Gallery</a></li><li><a href="index.html#about">About PlotArt</a></li><li><a href="founding-25.html">The Founding 25</a></li></ul>
+    </div>
+    <div>
+      <h2>PlotNua</h2>
+      <ul><li><a href="../discovery-a-home-for-art.html" data-pa-track="cross_home_for_art">A Home for Art</a></li><li><a href="../discoveries.html" data-pa-track="cross_discoveries">Discovery Library</a></li><li><a href="../privacy.html">Privacy</a></li><li><a href="../terms.html#legal-information">Terms &amp; legal information</a></li><li><a href="../contact.html">Contact</a></li></ul>
+    </div>
+    <p class="fine">Artworks in PlotArt galleries are offered by their artists: PlotArt introduces buyers and doesn't take payment. Paintings are credited where shown. The rooms and interiors on these pages are illustrations or AI-generated visualisations, not photographs of real homes.</p>
+  </div>
+</footer>
+<script src="assets/plotart.js" defer></script>
+<script src="/assets/identity/pn-menu.js?v=1" defer></script>
+</body>
+</html>
