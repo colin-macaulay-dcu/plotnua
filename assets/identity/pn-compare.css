@@ -1,5 +1,5 @@
 /* =====================================================================
-   pn-compare · PlotNua Before → Possible comparison (v1.1, 30 Oct 2026)
+   pn-compare · PlotNua Before → Possible comparison (v1.3, 30 Oct 2026; v1.1 earlier)
    ---------------------------------------------------------------------
    One shared component for the Discovery hero standard. It consolidates
    the two earlier implementations rather than adding a third:
@@ -231,3 +231,20 @@ body:has(> .pn-return) .d-hero.pn-hero-compare{ height:min(92svh, calc(100svh - 
     .d-hero.pn-hero-compare .pn-compare--hero:not(.is-live) .pn-compare__bar{ padding:14px 16px 16px; }
   }
 }
+
+/* =====================================================================
+   v1.3 · OPENING ON BEFORE (founder directive, 30 Oct 2026)
+   Every hero opens on the complete BEFORE image (data-start="100"); the POSSIBLE image is revealed
+   only when the visitor moves the divider. Three additions, all additive:
+   - no flash of POSSIBLE: where scripting is enabled, a figure that opens at 100 shows its BEFORE
+     layer, whole, from the first paint (before the script runs); without scripting nothing changes,
+     and the POSSIBLE picture with its alt text remains the static image;
+   - while the BEFORE picture is still loading, its layer is the anthracite ground, never POSSIBLE;
+   - the handle stays inside the frame at either end (it would otherwise sit half outside it at 100).
+   ===================================================================== */
+.pn-compare__before{ background:var(--pnc-anth); }
+@media (scripting:enabled){
+  .pn-compare[data-start="100"]:not(.is-live){ --pos:100%; }
+  .pn-compare[data-start="100"]:not(.is-live) .pn-compare__before{ display:block; }
+}
+.pn-compare.is-live .pn-compare__knob{ left:clamp(30px, var(--pos), calc(100% - 30px)); }

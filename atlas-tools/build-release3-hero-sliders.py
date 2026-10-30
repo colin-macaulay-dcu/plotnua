@@ -50,7 +50,7 @@ def picture(webps, jpg, w, h, alt, possible):
 
 def figure(p):
     extra = p.get("before_extra", "")
-    return f'''  <figure class="pn-compare pn-compare--hero" id="{p['fid']}" data-start="35" data-subject="{p['subject']}" data-line-fade-under="#dHeroCopy" style="--pnc-focus:{p['focus']}">
+    return f'''  <figure class="pn-compare pn-compare--hero" id="{p['fid']}" data-start="100" data-subject="{p['subject']}" data-line-fade-under="#dHeroCopy" style="--pnc-focus:{p['focus']}">
     <div class="pn-compare__stage">
       <div class="pn-compare__possible">
 {picture(p['pos_webp'], p['pos_jpg'], 1408, 768, p['pos_alt'], True)}      </div>
@@ -60,7 +60,7 @@ def figure(p):
       <span class="pn-compare__knob" aria-hidden="true"></span>
       <p class="pn-compare__tag is-before" aria-hidden="true">Before</p>
       <p class="pn-compare__tag is-possible" aria-hidden="true">Possible</p>
-{p.get('ai_label', '')}      <input class="pn-compare__range" type="range" min="0" max="100" step="1" value="35" aria-describedby="{p['fid']}Keys"
+{p.get('ai_label', '')}      <input class="pn-compare__range" type="range" min="0" max="100" step="1" value="100" aria-describedby="{p['fid']}Keys"
              aria-label="{p['aria']}"
              aria-valuetext="Mostly {p['subject']} as it could be, divider at 35 per cent">
     </div>

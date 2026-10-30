@@ -12,7 +12,7 @@ Checks the page and the founder's limits (Stage 2 refinements A-E; Phase 1 and P
   S2  JSON-LD parses; no Product, Offer, price, Event, LocalBusiness, FAQPage, Review or rating data
   S3  exactly one H1, and it carries the hero question
   S4  every local href/src/srcset on the page resolves to a file
-  S5  the hero is the shared pn-compare component: 35% start, both approved images, keyboard range
+  S5  the hero is the shared pn-compare component: 100% (BEFORE) start, both approved images, keyboard range
       with label and description, compact mobile title (aria-hidden), the mobile instruction
   S6  the AI-generated illustration label, and the fictional-home statement
   S7  ISOLATION. Release candidate: NOT in sitemap.xml, the Discovery Library or the search index,
@@ -97,7 +97,7 @@ def check(s, sitemap, library, index, others):
     need(fig, "S5 no pn-compare hero")
     if fig:
         f = fig.group(0)
-        need('data-start="35"' in f, "S5 not a 35% start")
+        need('data-start="100"' in f, "S5 not a 100% (BEFORE) start")
         need("DISC-032-before-1536.jpg" in f and "DISC-032-possible-1536.jpg" in f, "S5 the approved pair is not both in the hero")
         need(f.index("pn-compare__possible") < f.index("pn-compare__before"), "S5 layer order")
         need(re.search(r'<input class="pn-compare__range" type="range"[^>]*aria-describedby="(\w+)"[^>]*aria-label="[^"]{20,}"', f), "S5 keyboard range label/description")
@@ -185,7 +185,7 @@ def prove():
         ("Model 2 caution removed", lambda a: (a[0].replace("We haven&rsquo;t yet found a verified example", "We found an example"),) + a[1:]),
         ("second H1", lambda a: (a[0].replace("</main>", "<h1>x</h1></main>"),) + a[1:]),
         ("Event structured data", lambda a: (a[0].replace('"@type": "WebPage"', '"@type": "Event"'),) + a[1:]),
-        ("40% start", lambda a: (a[0].replace('data-start="35"', 'data-start="40"'),) + a[1:]),
+        ("40% start", lambda a: (a[0].replace('data-start="100"', 'data-start="40"'),) + a[1:]),
         ("mobile title read aloud", lambda a: (a[0].replace('<div class="sc-mob-title" aria-hidden="true">', '<div class="sc-mob-title">'),) + a[1:]),
         ("AI label removed", lambda a: (a[0].replace("AI-generated illustration", "Illustration"),) + a[1:]),
         ("registration opened", lambda a: (a[0].replace("Registration isn&rsquo;t open yet.", "Register below.", 1),) + a[1:]),

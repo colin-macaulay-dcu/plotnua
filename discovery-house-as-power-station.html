@@ -36,8 +36,8 @@
 <link rel="stylesheet" href="assets/identity/pn-premium-discovery.css">
 <link rel="stylesheet" href="assets/identity/pn-header.css">
 <!-- PLOTNUA IDENTITY v1 · HEAD · END -->
-<link rel="stylesheet" href="assets/identity/pn-compare.css?v=1.2">
-<link rel="preload" as="image" type="image/webp" imagesrcset="assets/img/ce9da2e51c945693-960w.webp 960w, assets/img/ce9da2e51c945693.webp 1408w" imagesizes="(max-width:1024px) and (orientation:portrait) 150vw, max(100vw, 132svh)" fetchpriority="high">
+<link rel="stylesheet" href="assets/identity/pn-compare.css?v=1.3">
+<link rel="preload" as="image" type="image/webp" imagesrcset="assets/img/fec77c3f0bae107a-960w.webp 960w, assets/img/fec77c3f0bae107a.webp 1408w" imagesizes="(max-width:1024px) and (orientation:portrait) 150vw, max(100vw, 132svh)" fetchpriority="high">
 
 <!-- Open Graph -->
 <meta property="og:type" content="article">
@@ -1366,18 +1366,18 @@ body.pn-id.pn-pd .ps-hero.pn-hero-compare .pn-compare__before .pa-annot svg{ dis
        roof, then the S8 picture (solar, battery, charger). The Potential Asset annotation is
        unchanged in geometry and wording and now sits inside the BEFORE layer, so it labels the
        bare roof and is wiped away with it (xMidYMid slice, layer focus 50% 50%). -->
-  <figure class="pn-compare pn-compare--hero" id="psHeroCompare" data-start="35" data-subject="the house" data-line-fade-under="#dHeroCopy" style="--pnc-focus:50% 50%">
+  <figure class="pn-compare pn-compare--hero" id="psHeroCompare" data-start="100" data-subject="the house" data-line-fade-under="#dHeroCopy" style="--pnc-focus:50% 50%">
     <div class="pn-compare__stage">
       <div class="pn-compare__possible">
         <picture>
           <source type="image/webp" srcset="assets/img/ce9da2e51c945693-960w.webp 960w, assets/img/ce9da2e51c945693.webp 1408w" sizes="(max-width:1024px) and (orientation:portrait) 150vw, max(100vw, 132svh)">
-          <img id="dHeroImg" class="on" src="assets/img/ce9da2e51c945693.jpg" width="1408" height="768" fetchpriority="high" decoding="async" alt="The house as it could be: solar panels across the roof, a battery unit in the open garage, a charger on the wall and an electric car in the driveway.">
+          <img id="dHeroImg" class="on" src="assets/img/ce9da2e51c945693.jpg" width="1408" height="768" decoding="async" alt="The house as it could be: solar panels across the roof, a battery unit in the open garage, a charger on the wall and an electric car in the driveway.">
         </picture>
       </div>
       <div class="pn-compare__before">
         <picture>
           <source type="image/webp" srcset="assets/img/fec77c3f0bae107a-960w.webp 960w, assets/img/fec77c3f0bae107a.webp 1408w" sizes="(max-width:1024px) and (orientation:portrait) 150vw, max(100vw, 132svh)">
-          <img src="assets/img/fec77c3f0bae107a.jpg" width="1408" height="768" decoding="async" alt="Before: the same house and garden at dusk with a bare tiled roof, no panels and no battery, the roof annotated by PlotNua as a potential asset.">
+          <img fetchpriority="high" src="assets/img/fec77c3f0bae107a.jpg" width="1408" height="768" decoding="async" alt="Before: the same house and garden at dusk with a bare tiled roof, no panels and no battery, the roof annotated by PlotNua as a potential asset.">
         </picture>
         <!-- POTENTIAL ASSET ANNOTATION, ON THE HERO. The separate plate is retired,
              so this is the page's single Potential Asset moment -- the same
@@ -1407,9 +1407,9 @@ body.pn-id.pn-pd .ps-hero.pn-hero-compare .pn-compare__before .pa-annot svg{ dis
       <p class="pn-compare__tag is-before" aria-hidden="true">Before</p>
       <p class="pn-compare__tag is-possible" aria-hidden="true">Possible</p>
       <p class="pn-compare__ai">AI-generated illustration</p>
-      <input class="pn-compare__range" type="range" min="0" max="100" step="1" value="35" aria-describedby="psHeroCompareKeys"
+      <input class="pn-compare__range" type="range" min="0" max="100" step="1" value="100" aria-describedby="psHeroCompareKeys"
              aria-label="Compare the house with a bare roof and with solar panels, a battery and a charger. Higher values show more of the house before."
-             aria-valuetext="Mostly the house as it could be, divider at 35 per cent">
+             aria-valuetext="Showing the house before">
     </div>
     <div class="pn-compare__bar">
       <p class="pn-compare__help"><span class="pn-compare__help-touch" aria-hidden="true">Slide to discover what&rsquo;s possible.</span><span class="pn-compare__help-pointer" aria-hidden="true">Drag the handle, or use the arrow keys, to compare.</span><span class="pn-compare__sr" id="psHeroCompareKeys">Use the left and right arrow keys to move the divider. Home shows the house as it could be; End shows the house before.</span></p>
@@ -3362,6 +3362,6 @@ body.pn-id.pn-pd .ps-hero.pn-hero-compare .pn-compare__before .pa-annot svg{ dis
   top.observe(document.querySelector('.lag-open'));
 })();
 </script>
-<script src="assets/identity/pn-compare.js?v=1.2" defer></script>
+<script src="assets/identity/pn-compare.js?v=1.3" defer></script>
 </body>
 </html>

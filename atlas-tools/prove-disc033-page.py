@@ -12,7 +12,7 @@ Modelled on prove-disc031-page.py. Checks the page, its integration and the foun
   F4  every local href/src/srcset on the page resolves to a file
   F5  the 23 web derivatives are on disk and each has a provenance record; no master PNG is published
       (13 original + 10 AVIF hero-slider derivatives, founder Pass 2 Release 2, 30 Oct 2026)
-  F6  the hero is the shared pn-compare comparison, starting at 35% Before (data-start, range value,
+  F6  the hero is the shared pn-compare comparison, starting at 100% Before (founder directive 30 Oct 2026) (data-start, range value,
       shared script) — replaced the page's own .cmp slider on 30 Oct 2026 (founder Pass 2 Release 2)
   F7  every image placement carries "AI-generated illustration"; the mechanism is a coded SVG
   F8  sitemap entry, Discovery Library card (Frontage), search-index entry
@@ -84,8 +84,8 @@ for i in imgs:
     need("assets/disc033/img/" + i in reg, "F5 no provenance record: " + i)
 
 # F6
-need(re.search(r'<figure class="pn-compare pn-compare--hero" id="fbHeroCompare" data-start="35"', s), "F6 the pn-compare hero with data-start=35")
-need(re.search(r'<input class="pn-compare__range" type="range" min="0" max="100" step="1" value="35"', s), "F6 range starts at 35")
+need(re.search(r'<figure class="pn-compare pn-compare--hero" id="fbHeroCompare" data-start="100"', s), "F6 the pn-compare hero with data-start=100 (opens on BEFORE)")
+need(re.search(r'<input class="pn-compare__range" type="range" min="0" max="100" step="1" value="100"', s), "F6 range starts at 100")
 need(re.search(r'<script src="assets/identity/pn-compare\.js[^"]*" defer></script>', s), "F6 the shared pn-compare script is loaded")
 
 # F7

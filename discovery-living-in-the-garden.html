@@ -18,7 +18,7 @@
 <meta name="description" content="Compare garden rooms and garden offices in Ireland. Explore researched makers, understand advertised prices, and check installation, specifications and planning.">
 <meta name="robots" content="index, follow">
 <link rel="canonical" href="https://plotnua.ie/discovery-living-in-the-garden.html">
-<link rel="preload" as="image" href="assets/img/8c60a8f27eb9c697.jpg" fetchpriority="high">
+<link rel="preload" as="image" type="image/webp" imagesrcset="assets/img/5e17a24f46cdab9e-960w.webp 960w, assets/img/5e17a24f46cdab9e.webp 1376w" imagesizes="(max-width:1024px) and (orientation:portrait) 150vw, max(100vw, 132svh)" fetchpriority="high">
 
 <!-- Favicons — PlotNua Brand Package v1.0 -->
 <link rel="icon" href="/favicon.ico" sizes="any">
@@ -37,7 +37,7 @@
 <link rel="stylesheet" href="assets/identity/pn-premium-discovery.css">
 <link rel="stylesheet" href="assets/identity/pn-header.css">
 <!-- PLOTNUA IDENTITY v1 · HEAD · END -->
-<link rel="stylesheet" href="assets/identity/pn-compare.css?v=1.2">
+<link rel="stylesheet" href="assets/identity/pn-compare.css?v=1.3">
 
 <!-- Open Graph -->
 <meta property="og:type" content="article">
@@ -1010,24 +1010,24 @@ body.pn-id.pn-pd .litg-hero.pn-hero-compare :is(.pn-compare__possible,.pn-compar
   <!-- Pass 2 Release 2 (founder instruction, 30 Oct 2026): the shared Before -> Possible component
        pn-compare (hero standard), replacing this page's own .cmp slider. Same approved image pair,
        same framing; the right-hand image is the base layer and the no-JavaScript picture. -->
-  <figure class="pn-compare pn-compare--hero" id="gardenCompare" data-start="35" data-subject="the garden" data-say-before="the garden as it is today" data-say-after="the same garden with a detached home" data-line-fade-under="#dHeroCopy" style="--pnc-focus:50% 50%">
+  <figure class="pn-compare pn-compare--hero" id="gardenCompare" data-start="100" data-subject="the garden" data-say-before="the garden as it is today" data-say-after="the same garden with a detached home" data-line-fade-under="#dHeroCopy" style="--pnc-focus:50% 50%">
     <div class="pn-compare__stage">
       <div class="pn-compare__possible">
         <picture>
-          <img src="assets/img/8c60a8f27eb9c697.jpg" width="1376" height="768" fetchpriority="high" decoding="async" alt="Possible: The same Irish back garden with a small single-storey home standing at the far end, the main house in the foreground and the boundary walls unchanged.">
+          <img src="assets/img/8c60a8f27eb9c697.jpg" width="1376" height="768" decoding="async" alt="Possible: The same Irish back garden with a small single-storey home standing at the far end, the main house in the foreground and the boundary walls unchanged.">
         </picture>
       </div>
       <div class="pn-compare__before">
         <picture>
           <source type="image/webp" srcset="assets/img/5e17a24f46cdab9e-960w.webp 960w, assets/img/5e17a24f46cdab9e.webp 1376w" sizes="(max-width:1024px) and (orientation:portrait) 150vw, max(100vw, 132svh)">
-          <img src="assets/img/5e17a24f46cdab9e.jpg" width="1376" height="768" decoding="async" alt="Before: the same back garden as it is today, with nothing built at the far end.">
+          <img fetchpriority="high" src="assets/img/5e17a24f46cdab9e.jpg" width="1376" height="768" decoding="async" alt="Before: the same back garden as it is today, with nothing built at the far end.">
         </picture>
       </div>
       <span class="pn-compare__line" aria-hidden="true"></span>
       <span class="pn-compare__knob" aria-hidden="true"></span>
       <p class="pn-compare__tag is-before" aria-hidden="true">Before</p>
       <p class="pn-compare__tag is-possible" aria-hidden="true">Possible</p>
-      <input class="pn-compare__range" type="range" min="0" max="100" step="1" value="35" aria-describedby="gardenCompareKeys"
+      <input class="pn-compare__range" aria-valuetext="Showing the garden as it is today" type="range" min="0" max="100" step="1" value="100" aria-describedby="gardenCompareKeys"
              aria-label="Compare the garden as it is today with the same garden containing a detached home. Higher values show more of the garden as it is today.">
     </div>
     <div class="pn-compare__bar">
@@ -1951,6 +1951,6 @@ body.pn-id.pn-pd .litg-hero.pn-hero-compare :is(.pn-compare__possible,.pn-compar
     }
   });
 </script>
-<script src="assets/identity/pn-compare.js?v=1.2" defer></script>
+<script src="assets/identity/pn-compare.js?v=1.3" defer></script>
 </body>
 </html>
