@@ -7926,6 +7926,48 @@
         "embeds_c2pa": false,
         "note": "The four PNG masters carry OpenAI's C2PA content credentials (see generated.c2pa_evidence); web re-encoding removes them."
       }
+    },
+    {
+      "asset": "assets/og/plotart-invitation-1200x630.jpg",
+      "sha256": "3aaa9f4bcb1c40c581f0b765824c9985a320f7e833718212c309fc8c0d230ec8",
+      "bytes": 107017,
+      "pixels": [
+        1200,
+        630
+      ],
+      "class": "FOUNDER_ORIGINAL_ARTWORK",
+      "what": "PlotArt invitation social link preview card (1200x630): the founder's untitled abstract painting beside the typeset title 'An Invitation to PlotArt' and 'Founding Artists'",
+      "artwork": {
+        "creator": "Colin Macaulay",
+        "owner": "Colin Macaulay",
+        "medium_note": "Original painting on canvas (acrylic/mixed media as photographed); no title recorded",
+        "not": "Not a Founding 25 submission, not for sale through PlotArt, not part of the curated collection"
+      },
+      "photograph": {
+        "source_file": "01_Abstract.jpeg — Colourful abstract with yellow outlines.jpeg (founder's Mac, 04 Deploy/PlotArt-Founder-Artwork; unchanged)",
+        "source_sha256": "267ccf5e8cb7dcbf4444b321c2098d0d8d4a17c8d3d4f64bd413617527b8bfa5",
+        "source_pixels": [
+          1600,
+          1200
+        ],
+        "photographer": "Colin Macaulay (founder); confirmed by the founder in writing, 29 Oct 2026",
+        "processing": [
+          "Cropped to the canvas (box 192,64,1524,1004 of the 1600x1200 photograph) to remove the studio wall; no other alteration",
+          "Encoded as WebP (quality 82) with Pillow by the PlotNua build session, 29 Oct 2026",
+          "Social preview card (30 Oct 2026): the published WebP above (sha256 7812df17...) shown whole and uncropped at 560 px wide on the PlotArt anthracite background, beside typeset text in Instrument Serif and Hanken Grotesk (both SIL OFL); the painting itself is not altered",
+          "Rendered with Playwright/Chromium and encoded as JPEG (quality 88) with Pillow by the PlotNua build session, 30 Oct 2026; no generative model used"
+        ]
+      },
+      "credit": "Original artwork by Colin MacAulay, founder of PlotArt.",
+      "human_review": {
+        "reviewer": "Colin MacAulay (founder)",
+        "date": "2026-10-29",
+        "attests": "Colin Macaulay confirms he created and owns the original painting (founder decision, 29 Oct 2026: Option B simplified).",
+        "founder_confirmation": "Founder confirmation (Colin Macaulay, 29 Oct 2026, 15:04): I created the original painting; I personally took the photograph of that painting; I authorise both to be used within PlotArt."
+      },
+      "permitted_surfaces": [
+        "plotart"
+      ]
     }
   ],
   "legacy_undeclared": [
