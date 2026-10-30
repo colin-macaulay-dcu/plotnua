@@ -5,7 +5,8 @@ PROVE LEGAL INFORMATION · website operator details (founder decision A1-a, 28 O
 Checks, without writing anything:
   G1  terms.html has the legal-information block (id="legal-information") with the
       registered business name, Business Name Registration No. 794392, the
-      registered proprietor "Colin Macaulay" (certificate spelling), the business
+      registered proprietor "Colin MacAulay (registered as Colin Macaulay)" (founder D2,
+      30 Oct 2026: preferred spelling plus the certificate spelling), the business
       address, email and telephone.
   G2  the site never calls 794392 a company number, and never calls PlotNua a
       limited company ("Ltd", "Limited", "company registration number"),
@@ -41,7 +42,7 @@ t = read("terms.html")
 blk = re.search(r'<section[^>]*id="legal-information".*?</section>', t, re.S)
 need = ["Registered business name:</strong> PlotNua",
         "Business Name Registration No.:</strong> 794392",
-        "Registered proprietor:</strong> Colin Macaulay",
+        "Registered proprietor:</strong> Colin MacAulay (registered as Colin Macaulay)",  # founder D2, 30 Oct 2026
         "Business address:</strong> " + ADDRESS,
         'href="mailto:hello@plotnua.ie"',
         'href="tel:+353834036695">+353 83 403 6695']

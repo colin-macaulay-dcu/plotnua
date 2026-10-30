@@ -71,7 +71,7 @@ check("V14 island of Ireland, not 'in Ireland'", "island of Ireland" in F and "b
 check("V15 spam wording is accurate: no claim of Turnstile or cookies", "Turnstile" not in F and "do not use cookies" in F)
 s1 = sec(v7, 1)
 check("V16 Section 1: certificate spelling, Business Name Registration No. 794392, not a company, PlotArt an initiative, Legal information link; no home address",
-      "Colin Macaulay, who is the data controller" in s1 and "Business Name Registration No. 794392" in s1 and "it is not a company" in s1
+      "Colin MacAulay (registered as Colin Macaulay), who is the data controller" in s1 and "Business Name Registration No. 794392" in s1 and "it is not a company" in s1
       and "PlotArt is an initiative of PlotNua" in s1 and "terms.html#legal-information" in s1 and "Allen Park" not in v7)
 check("V17 Sections 14 and 15 are firm (no 'may have'), with the DPC's address",
       "may have rights" not in sec(v7, 14) and "Visitors have the following rights" in sec(v7, 14)
