@@ -1,0 +1,27 @@
+{
+  "_about": "Hand-authored editorial layer for the Garden Retreat supplier gallery PROTOTYPE (pass2/supplier-galleries, 30 Oct 2026). Holds ONLY wording PlotNua writes about a maker and each statement's evidence. Makers, product counts, websites and every image come from the live Garden Retreat explorer config and image-rights-records.json, never from here. A maker missing from this file still appears, with a description generated from its published categories. Location is shown only when evidenced; UNKNOWN stays UNKNOWN.",
+  "discovery": "discovery-garden-retreat.html",
+  "kicker": "Makers",
+  "heading": "Meet the makers.",
+  "intro": "Saunas, hot tubs and cold plunges from makers whose published products PlotNua has checked.",
+  "selectionNote": "Makers appear in this gallery when they have licensed their imagery to PlotNua. The order changes on every visit, and inclusion is not a recommendation.",
+  "gridNote": "Every maker in this Discovery, A to Z. Makers that have not licensed imagery to PlotNua are shown by name only.",
+  "featuredMax": 4,
+  "makers": {
+    "Irish Sauna Company": {
+      "description": "The Island Collection: The Clare, The Inis, The Aran and The Skellig garden saunas, designed and handcrafted to order. Heaters by Harvia.",
+      "base": { "label": "Made in", "text": "Connemara, Co. Galway", "evidence": "Wording permitted by the PROVENANCE condition of the Irish Sauna Company grant (image-rights-records.json) and already live on discovery-garden-retreat.html." }
+    },
+    "OGNYX": {
+      "description": "Outdoor barrel and cube saunas, wood-fired hot tubs and cold plunge tubs.",
+      "base": { "label": "Registered in", "text": "Bray, Co. Wicklow", "evidence": "Stated in ognyx-preview.html, which OGNYX reviewed and confirmed on 13 Oct 2026. FOUNDER TO CONFIRM before this line is used publicly: it is not yet on a live page." }
+    },
+    "Tanktribe": {
+      "description": "The wood-fired WILD TUB, and the ACTIVE, CORE and FLOW cold plunges.",
+      "base": null
+    }
+  },
+  "relationships": {
+    "TimberIN": { "type": "referral", "label": "Referral arrangement", "detail": "Current commercial relationship: PlotNua receives a referral commission on qualifying purchases made with a PlotNua code. It does not affect how makers are shown.", "evidence": "Same disclosure as the live discovery-garden-retreat.html." }
+  }
+}

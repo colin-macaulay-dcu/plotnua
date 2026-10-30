@@ -1,0 +1,196 @@
+{
+ "discovery": "discovery-garden-retreat.html",
+ "suppliers": [
+  {
+   "name": "Hansa24 Group",
+   "description": "Outdoor saunas.",
+   "base": null,
+   "categories": [
+    {
+     "label": "saunas",
+     "count": 25
+    }
+   ],
+   "productCount": 25,
+   "site": "summerhouse24.ie",
+   "explore": "https://summerhouse24.ie/",
+   "image": null,
+   "logo": null,
+   "placement": "editorial",
+   "relationship": null
+  },
+  {
+   "name": "Irish Sauna Company",
+   "description": "The Island Collection: The Clare, The Inis, The Aran and The Skellig garden saunas, designed and handcrafted to order. Heaters by Harvia.",
+   "base": {
+    "label": "Made in",
+    "text": "Connemara, Co. Galway",
+    "evidence": "Wording permitted by the PROVENANCE condition of the Irish Sauna Company grant (image-rights-records.json) and already live on discovery-garden-retreat.html."
+   },
+   "categories": [
+    {
+     "label": "saunas",
+     "count": 4
+    }
+   ],
+   "productCount": 4,
+   "site": "irishsaunacompany.com",
+   "explore": "https://www.irishsaunacompany.com/",
+   "image": {
+    "src": "https://irishsaunacompany.com/cdn/shop/files/4-6_Person_Sauna_-_Front_View.png?width=1024",
+    "alt": "Visualisation of The Aran from the front: a black-clad garden sauna with a large panoramic window, two-tier benches and a cylindrical heater",
+    "kind": "Visualisation",
+    "w": 1024,
+    "h": 1024,
+    "credit": "© Irish Sauna Company",
+    "creditHref": "https://www.irishsaunacompany.com/"
+   },
+   "logo": null,
+   "placement": "editorial",
+   "relationship": null
+  },
+  {
+   "name": "OGNYX",
+   "description": "Outdoor barrel and cube saunas, wood-fired hot tubs and cold plunge tubs.",
+   "base": {
+    "label": "Registered in",
+    "text": "Bray, Co. Wicklow",
+    "evidence": "Stated in ognyx-preview.html, which OGNYX reviewed and confirmed on 13 Oct 2026. FOUNDER TO CONFIRM before this line is used publicly: it is not yet on a live page."
+   },
+   "categories": [
+    {
+     "label": "saunas",
+     "count": 13
+    },
+    {
+     "label": "hot tubs",
+     "count": 13
+    },
+    {
+     "label": "cold plunges",
+     "count": 3
+    }
+   ],
+   "productCount": 29,
+   "site": "ognyx.com",
+   "explore": "https://www.ognyx.com/",
+   "image": {
+    "src": "https://www.ognyx.com/cdn/shop/files/Screenshot2025-08-11at18.27.16_33889bd3-cb18-4369-83b3-b0be9a8d8586.png?v=1754936822&width=1024",
+    "alt": "Visualisation of the OGNYX 1.6m outdoor barrel sauna on a timber deck in a garden, with a glass door, a dark shingled roof and garden furniture beside it",
+    "kind": "Visualisation",
+    "w": 1024,
+    "h": 1022,
+    "credit": "© OGNYX",
+    "creditHref": "https://www.ognyx.com/"
+   },
+   "logo": null,
+   "placement": "editorial",
+   "relationship": null
+  },
+  {
+   "name": "Pineca Ireland",
+   "description": "Outdoor saunas.",
+   "base": null,
+   "categories": [
+    {
+     "label": "saunas",
+     "count": 34
+    }
+   ],
+   "productCount": 34,
+   "site": "pineca.ie",
+   "explore": "https://pineca.ie/",
+   "image": null,
+   "logo": null,
+   "placement": "editorial",
+   "relationship": null
+  },
+  {
+   "name": "Polaris Sauna",
+   "description": "Outdoor saunas, hot tubs and cold plunges.",
+   "base": null,
+   "categories": [
+    {
+     "label": "saunas",
+     "count": 13
+    },
+    {
+     "label": "hot tubs",
+     "count": 4
+    },
+    {
+     "label": "cold plunges",
+     "count": 3
+    }
+   ],
+   "productCount": 20,
+   "site": "polaris-sauna.ie",
+   "explore": "https://polaris-sauna.ie/",
+   "image": null,
+   "logo": null,
+   "placement": "editorial",
+   "relationship": null
+  },
+  {
+   "name": "Tanktribe",
+   "description": "The wood-fired WILD TUB, and the ACTIVE, CORE and FLOW cold plunges.",
+   "base": null,
+   "categories": [
+    {
+     "label": "hot tub",
+     "count": 1
+    },
+    {
+     "label": "cold plunges",
+     "count": 4
+    }
+   ],
+   "productCount": 4,
+   "site": "tanktribe.ie",
+   "explore": "https://www.tanktribe.ie/",
+   "image": {
+    "src": "https://images.squarespace-cdn.com/content/v1/67ac8d737a7c665f57f5babe/ab9c9630-7b25-441f-9559-b711ff7f6d5b/IMG_2531.JPG",
+    "alt": "Photograph: close view from beside the Tanktribe WILD TUB showing the water surface, timber ledge, tub rim and garden background",
+    "kind": "Photograph",
+    "w": 2500,
+    "h": 3333,
+    "credit": "© Tanktribe",
+    "creditHref": "https://www.tanktribe.ie/"
+   },
+   "logo": null,
+   "placement": "editorial",
+   "relationship": null
+  },
+  {
+   "name": "TimberIN",
+   "description": "Outdoor saunas, hot tubs and cold plunges.",
+   "base": null,
+   "categories": [
+    {
+     "label": "saunas",
+     "count": 4
+    },
+    {
+     "label": "hot tubs",
+     "count": 4
+    },
+    {
+     "label": "cold plunges",
+     "count": 2
+    }
+   ],
+   "productCount": 6,
+   "site": "woodenhottubsale.co.uk",
+   "explore": "https://woodenhottubsale.co.uk/",
+   "image": null,
+   "logo": null,
+   "placement": "editorial",
+   "relationship": {
+    "type": "referral",
+    "label": "Referral arrangement",
+    "detail": "Current commercial relationship: PlotNua receives a referral commission on qualifying purchases made with a PlotNua code. It does not affect how makers are shown.",
+    "evidence": "Same disclosure as the live discovery-garden-retreat.html."
+   }
+  }
+ ]
+}
