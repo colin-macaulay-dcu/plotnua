@@ -196,6 +196,12 @@ def collect(page_path, ed):
             if hit and norm(hit[0]) == norm(name) and live and live.get("credit") == hit[1]["credit"]:
                 b, g = hit[1], hit[2]
                 href = b.get("linkBack") or live.get("creditHref") or f"https://{g['permitted_domain']}/"
+                if e.get("link"):   # editorial correction of an unreachable host; must stay on the granted domain
+                    u, dom = urlparse(e["link"]), (g.get("permitted_domain") or "").lower()
+                    host = (u.hostname or "").lower()
+                    if u.scheme != "https" or not dom or not (host == dom or host.endswith("." + dom)):
+                        sys.exit(f"FAIL: {name}: editorial link {e['link']} is not https on the granted domain {dom}")
+                    href = e["link"]
                 image = {"src": src, "alt": live["alt"], "kind": live["kind"], "w": live["w"], "h": live["h"],
                          "credit": live["credit"], "creditHref": href, "asset": src}
                 site = site or urlparse(href).netloc

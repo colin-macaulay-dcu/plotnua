@@ -30,6 +30,8 @@ mutates each page in memory to prove each guard can fail.
   G11 every location line is backed by evidence in the editorial file; none for OGNYX
   G12 Garden Retreat: Tanktribe shows IMG_8495 (founder decision 30 Oct 2026)
   G13 Living in the Garden: no editorial image override (founder D4)
+  G14 Living in the Garden: every external link on a card stays on that maker's
+      granted domain (founder D2 narrow exception)
 """
 import importlib.util, json, re, sys
 from pathlib import Path
@@ -161,6 +163,13 @@ def checks(name, full, css):
         jumps = re.findall(r'<a class="pn-sg-all" href="([^"]+)" data-sg-jump>', page)
         if not jumps or any(h != "#explore-makers" for h in jumps) or 'id="explore-makers"' not in full:
             fails.append(f"G5 {name}: 'View all' does not go to the page's Maker Explorer")
+        for nm, body in cards:
+            srcs = [unesc(x) for x in re.findall(r'<img src="([^"]+)"', body)]
+            doms = {d.lower() for x in srcs if x in AUTH for d in AUTH[x][2]}
+            for h in re.findall(r'<a [^>]*href="(https?://[^"]+)"', body):
+                host = (urlparse(unesc(h)).hostname or "").lower()
+                if not any(host == d or host.endswith("." + d) for d in doms):
+                    fails.append(f"G14 {name} {unesc(nm)}: external link {h} is off the granted domain")
         if any("image" in (v or {}) for v in ed["makers"].values()):
             fails.append(f"G13 {name}: editorial image override present (founder D4)")
     if name == "discovery-garden-retreat.html" and ("IMG_2531" in page or "IMG_8495" not in page):
@@ -212,6 +221,7 @@ MUTATIONS = {
         "G11 location without evidence": (p.replace('aria-label="Powersheds"><figure class="pn-sg-fig">', 'aria-label="Powersheds"><p class="pn-sg-loc"><b>Made in</b> Somewhere</p><figure class="pn-sg-fig">', 1), c),
         "G9 gallery moved after explorer": (p.replace(EXPLORER, "<p>moved</p>\n  " + EXPLORER, 1), c),
         "G9 gallery duplicated": (p.replace(B_END, B_END + "\n" + B_START + " dup -->", 1), c),
+        "G14 Explore link off the granted domain": (p.replace('<a href="https://oodhouse.com/" rel="noopener noreferrer" target="_blank" aria-label=', '<a href="https://oodhouse.example.net/" rel="noopener noreferrer" target="_blank" aria-label=', 1), c),
     },
 }
 

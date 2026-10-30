@@ -22,7 +22,9 @@
     },
     "ÖÖD House": {
       "description": "Mirror-glass prefab cabins, from the Glämping House to The Big Monolith.",
-      "base": null
+      "base": null,
+      "link": "https://oodhouse.com/",
+      "linkNote": "The governed linkBack host www.oodhouse.com resets HTTPS connections (checked 30 Oct 2026); oodhouse.com is the granted domain and loads."
     }
   },
   "relationships": {}
