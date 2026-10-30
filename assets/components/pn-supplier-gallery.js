@@ -1,5 +1,5 @@
 /* ==========================================================================
-   PLOTNUA · PREMIUM SUPPLIER GALLERY · v1
+   PLOTNUA · PREMIUM SUPPLIER GALLERY · v1.1 (v1.1: "View all" can go to the page's own Maker Explorer)
    Design approved by founder 30 Oct 2026. Built into pages by atlas-tools/build-supplier-gallery.py.
    --------------------------------------------------------------------------
    Progressive enhancement only. The builder emits complete, working HTML
@@ -125,8 +125,31 @@
     }
   }
 
+  /* 4 · "View all" that goes to the page's own Maker Explorer (directory mode
+     "explorer", Living in the Garden, founder D3). Without JS it is a plain
+     in-page link. With JS: scroll there (instant under reduced motion) and move
+     keyboard focus to the explorer's heading, so the next Tab continues inside
+     the explorer. The explorer's own behaviour is not touched. */
+  function initJumps(root) {
+    Array.prototype.forEach.call(root.querySelectorAll('a[data-sg-jump]'), function (a) {
+      a.addEventListener('click', function (ev) {
+        var id = (a.getAttribute('href') || '').slice(1);
+        var target = id && document.getElementById(id);
+        if (!target) return;                       /* native anchor behaviour */
+        ev.preventDefault();
+        target.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
+        var h = target.querySelector('h2') || target;
+        if (!h.hasAttribute('tabindex')) h.setAttribute('tabindex', '-1');
+        h.focus({ preventScroll: true });
+      });
+    });
+  }
+
   function boot() {
-    Array.prototype.forEach.call(document.querySelectorAll('[data-pn-supplier-gallery]'), init);
+    Array.prototype.forEach.call(document.querySelectorAll('[data-pn-supplier-gallery]'), function (root) {
+      if (!root.getAttribute('data-sg-ready')) initJumps(root);
+      init(root);
+    });
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot); else boot();
 })();

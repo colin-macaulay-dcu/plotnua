@@ -84,6 +84,10 @@ body:has(.article > .pn-sg){ overflow-x:clip; }   /* belt and braces: never a ho
 .pn-sg-all{ font:600 16px/1 var(--sg-sans); color:var(--sg-ivory); background:transparent; border:0; border-bottom:1px solid var(--sg-terra);
   padding:14px 0 6px; margin-left:12px; cursor:pointer; white-space:nowrap; }
 .pn-sg-all:hover{ color:var(--sg-terra); }
+/* v1.1: "View all" as an in-page link (directory mode "explorer"): same look as the button,
+   without the page's own link underline */
+.pn-sg .pn-sg-controls a.pn-sg-all, .pn-sg .pn-sg-card--end a.pn-sg-all{ display:inline-block; text-decoration:none; color:var(--sg-ivory); }
+.pn-sg .pn-sg-controls a.pn-sg-all:hover, .pn-sg .pn-sg-card--end a.pn-sg-all:hover{ color:var(--sg-terra); }
 
 .pn-sg :is(a,button):focus-visible, .pn-sg-track:focus-visible{ outline:2px solid var(--sg-terra); outline-offset:3px; border-radius:6px; }
 

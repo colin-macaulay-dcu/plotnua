@@ -1,33 +1,37 @@
 #!/usr/bin/env python3
 """
-PLOTNUA - PREMIUM SUPPLIER GALLERY - bounded page builder (v1)
-Design approved by founder 30 Oct 2026 (prototype v0.2); Garden Retreat
-integration approved to prepare 30 Oct 2026. Production needs separate approval.
+PLOTNUA - PREMIUM SUPPLIER GALLERY - bounded page builder (v1.1)
+Design approved by founder 30 Oct 2026 (prototype v0.2). Garden Retreat live
+since 30 Oct 2026 (aca0556). Living in the Garden added 30 Oct 2026 (founder
+decisions D1-D5, implementation approved; production needs separate approval).
 
-Writes ONE marker-delimited region into discovery-garden-retreat.html, directly
-before the Maker Explorer (which it never touches); its stylesheet sits inside
-that region so it never blocks the Discovery's first render. Built from:
+ONE COMPONENT, PER-DISCOVERY CONFIGURATION (DISCOVERIES below). For each page the
+builder writes ONE marker-delimited region directly before the Maker Explorer
+(which it never touches); the stylesheet sits inside that region so it never
+blocks the Discovery's first render. Everything is read, nothing typed:
 
-  1. the LIVE Garden Retreat maker-explorer config
-     (discovery-garden-retreat.html, <script id="mx-data">) -> which makers, their
-     published product counts by category, their websites, their lead image and
-     any existing commercial relationship;
-  2. image-rights-records.json -> whether an image may be shown at all (PUBLISHABLE
-     record, APPROVED asset, exact URL enumerated, required credit);
-  3. garden-retreat.editorial.json -> PlotNua's own wording, the evidence behind any
-     location line, and an optional choice among a maker's ALREADY APPROVED assets;
-  4. discovery-headings.json -> the per-Discovery heading and introduction (the
-     component itself is identical on every Discovery).
+  1. the page's LIVE maker-explorer config (<script id="mx-data">) -> which makers,
+     their published products by category, websites, lead image, commercial offers;
+  2. the IMAGE AUTHORITY configured for that page:
+       "approved_assets" (Garden Retreat): image-rights-records.json, PUBLISHABLE
+           record, APPROVED asset, exact URL enumerated, required credit; plus any
+           approved_delivery_variants recorded against that exact asset;
+       "universe" (Living in the Garden): the SAME governed image the page's Maker
+           Explorer already publishes - an `imagery`/`imagerySet` block in
+           garden-room-recommendation-universe-v1.json (written only by
+           apply_authorised_imagery.py), inside the block's permitted prefix, under
+           a live grant in image-rights-manifest.json whose required credit matches.
+           This is the rule build-maker-explorer.py guard G3 already enforces;
+  3. <page>.editorial.json -> PlotNua's own wording and evidence for any location;
+  4. discovery-headings.json -> the per-Discovery heading and introduction.
 
-  5. approved_delivery_variants on a rights record -> an approved smaller delivery
-     of an approved asset (same frame, supplier's own CDN). Used only when the
-     record lists that exact URL for that exact asset.
+Directory modes: "full" (Garden Retreat: A-Z <details> directory of every maker);
+"explorer" (Living in the Garden, founder D3: no duplicate directory; "View all"
+goes to the page's existing Maker Explorer).
 
-Nothing about a supplier is typed into this file.
-
-Usage:  python3 atlas-tools/build-supplier-gallery.py            apply (idempotent)
-        python3 atlas-tools/build-supplier-gallery.py --check    verify, write nothing
-        python3 atlas-tools/build-supplier-gallery.py --remove   take the gallery out again
+Usage:  python3 atlas-tools/build-supplier-gallery.py                    apply all (idempotent)
+        python3 atlas-tools/build-supplier-gallery.py --check            verify all, write nothing
+        python3 atlas-tools/build-supplier-gallery.py --remove PAGE      take one gallery out again
 """
 import html, json, re, sys
 from pathlib import Path
@@ -35,21 +39,41 @@ from urllib.parse import urlparse
 
 ROOT = Path(__file__).resolve().parents[1]
 DATA = ROOT / "atlas-tools" / "supplier-gallery"
-DISCOVERY = ROOT / "discovery-garden-retreat.html"
 RIGHTS = ROOT / "image-rights-records.json"
-EDITORIAL = DATA / "garden-retreat.editorial.json"
+MANIFEST = ROOT / "image-rights-manifest.json"
+UNIVERSE = ROOT / "garden-room-recommendation-universe-v1.json"
 HEADINGS = DATA / "discovery-headings.json"
-ASSET_V = "1"   # bump with any change to assets/components/pn-supplier-gallery.{css,js}
+
+DISCOVERIES = {
+    "discovery-garden-retreat.html": {
+        "editorial": "garden-retreat.editorial.json",
+        "authority": "approved_assets",
+        "directory": "full",
+        "asset_v": "1",
+        "tabs": {"saunas": ("sauna", "saunas"), "hotTubs": ("hot tub", "hot tubs"), "coldPlunges": ("cold plunge", "cold plunges")},
+        "nouns": {"saunas": "outdoor saunas", "hotTubs": "hot tubs", "coldPlunges": "cold plunges"},
+    },
+    "discovery-living-in-the-garden.html": {
+        "editorial": "living-in-the-garden.editorial.json",
+        "authority": "universe",
+        "directory": "explorer",
+        "asset_v": "2",
+        "tabs": {"gardenRooms": ("garden room", "garden rooms"), "gardenHomes": ("garden home", "garden homes")},
+        "nouns": {"gardenRooms": "garden rooms", "gardenHomes": "garden homes"},
+    },
+}
 
 H_START, H_END = "<!-- PN-SUPPLIER-GALLERY:HEAD v1 · atlas-tools/build-supplier-gallery.py · do not hand-edit -->", "<!-- /PN-SUPPLIER-GALLERY:HEAD -->"
 B_START, B_END = "<!-- PN-SUPPLIER-GALLERY v1 · Premium Supplier Gallery (founder design approval 30 Oct 2026) · built by atlas-tools/build-supplier-gallery.py from the Maker Explorer config below and image-rights-records.json · do not hand-edit -->", "<!-- /PN-SUPPLIER-GALLERY -->"
 ANCHOR = "  <!-- 6c · PLOTNUA-MAKER-EXPLORER-V1"
 HEAD_ANCHOR = '<link rel="stylesheet" href="maker-explorer.css">'
+EXPLORER_ID = "explore-makers"
+LIVE_GRANTS = {"Granted — Founder Confirmed", "Granted with Conditions — Founder Confirmed",
+               "Granted — Supplier Confirmed (one-click)"}
 
 E = lambda s: html.escape(str(s), quote=True)
+norm = lambda s: re.sub(r"[^0-9a-z]", "", s.casefold())
 
-TAB_LABEL = {"saunas": ("sauna", "saunas"), "hotTubs": ("hot tub", "hot tubs"), "coldPlunges": ("cold plunge", "cold plunges")}
-DESC_NOUN = {"saunas": "outdoor saunas", "hotTubs": "hot tubs", "coldPlunges": "cold plunges"}  # the live explorer's own product types
 # Candidate mount shapes. The builder picks the one that shows the featured
 # images LARGEST on average (whole image always visible, never cropped).
 MOUNTS = [(1, 1), (5, 6), (4, 5), (3, 4), (2, 3)]
@@ -59,12 +83,15 @@ ARROW_R = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-wid
 EXT = '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M6 3h7v7M13 3L4 12"/></svg>'
 NEWTAB = '<span class="pn-sg-vh"> (opens in a new tab)</span>'
 
+D = None          # the Discovery being built (an entry of DISCOVERIES)
+VARIANTS = {}
 
-def load_explorer():
-    s = DISCOVERY.read_text(encoding="utf-8")
+
+def load_explorer(page_path):
+    s = page_path.read_text(encoding="utf-8")
     m = re.search(r'<script type="application/json" class="pn-mx-config" id="mx-data">(.*?)</script>', s, re.S)
     if not m:
-        sys.exit("FAIL: Garden Retreat explorer config not found")
+        sys.exit(f"FAIL: {page_path.name}: explorer config not found")
     return json.loads(m.group(1))
 
 
@@ -88,13 +115,36 @@ def approved_index():
     return idx
 
 
-VARIANTS = {}
+def grant_covers(g, url):
+    """The publish-time gate's own rule: permitted domain, or a declared host + path prefix."""
+    u = urlparse(url)
+    host = u.netloc.lower()
+    dom = (g.get("permitted_domain") or "").lower()
+    if dom and (host == dom or host.endswith("." + dom)):
+        return True
+    return any(host == d["host"] and u.path.startswith(d["path_prefix"]) for d in g.get("permitted_delivery_hosts") or [])
 
 
-def collect():
-    cfg = load_explorer()
-    ed = json.loads(EDITORIAL.read_text(encoding="utf-8"))
-    approved = approved_index()
+def universe_index():
+    """URL -> (supplier, block, grant) for every governed garden-room image under a live grant."""
+    grants = {r["organisation_name"].casefold(): r for r in json.loads(MANIFEST.read_text(encoding="utf-8"))["rows"]
+              if r.get("permission_outcome") in LIVE_GRANTS and not r.get("withdrawal_effective_at")}
+    u = json.loads(UNIVERSE.read_text(encoding="utf-8"))
+    idx = {}
+    for p in (u["products"] if isinstance(u, dict) else u):
+        for b in (p.get("imagerySet") or ([p["imagery"]] if p.get("imagery") else [])):
+            g = grants.get((b.get("supplier") or "").casefold())
+            if not g or not b.get("url", "").startswith(b.get("permittedPrefix") or "\0"):
+                continue
+            if not grant_covers(g, b["url"]) or b.get("credit") != g.get("required_credit"):
+                continue
+            idx[b["url"]] = (b["supplier"], b, g)
+    return idx
+
+
+def collect(page_path, ed):
+    cfg = load_explorer(page_path)
+    auth = approved_index() if D["authority"] == "approved_assets" else universe_index()
     makers, live_imgs = {}, {}
     for tab in cfg["tabs"]:
         key = tab["key"]
@@ -118,14 +168,13 @@ def collect():
     for name in sorted(makers, key=lambda n: n.casefold()):
         rec = makers[name]
         e = ed["makers"].get(name, {})
-        cats = [(TAB_LABEL[k][1] if n != 1 else TAB_LABEL[k][0], n) for k, n in rec["cats"].items()]
+        cats = [(D["tabs"][k][1] if n != 1 else D["tabs"][k][0], n) for k, n in rec["cats"].items()]
         site = sorted(rec["sites"])[0] if rec["sites"] else None
 
-        # image: an editorial choice among this maker's approved assets, else the live lead image
         src = e.get("image") or (rec["lead"] or {}).get("src")
         image = None
-        if src:
-            hit = approved.get(src)
+        if src and D["authority"] == "approved_assets":
+            hit = auth.get(src)
             if e.get("image") and (not hit or hit[0] != name):
                 sys.exit(f"FAIL: editorial image for {name} is not an approved asset of its own publishable grant")
             live = live_imgs.get(src)
@@ -139,9 +188,19 @@ def collect():
                     image.update(src=v["url"], w=v["width"], h=v["height"])
             elif e.get("image"):
                 sys.exit(f"FAIL: {name}: chosen image has no live alt/dimensions/credit to reuse")
-
+        elif src and D["authority"] == "universe":
+            if e.get("image"):
+                sys.exit(f"FAIL: {name}: no image choice is permitted on this Discovery (founder D4)")
+            hit = auth.get(src)
+            live = live_imgs.get(src)
+            if hit and norm(hit[0]) == norm(name) and live and live.get("credit") == hit[1]["credit"]:
+                b, g = hit[1], hit[2]
+                href = b.get("linkBack") or live.get("creditHref") or f"https://{g['permitted_domain']}/"
+                image = {"src": src, "alt": live["alt"], "kind": live["kind"], "w": live["w"], "h": live["h"],
+                         "credit": live["credit"], "creditHref": href, "asset": src}
+                site = site or urlparse(href).netloc
         explore = image["creditHref"] if image else (f"https://{site}/" if site else None)
-        desc = e.get("description") or (join([DESC_NOUN[k] for k in rec["cats"]]) + ".")
+        desc = e.get("description") or (join([D["nouns"][k] for k in rec["cats"]]) + ".")
         rel = ed.get("relationships", {}).get(name)
         if rec["offer"] and not rel:
             sys.exit(f"FAIL: {name} has a commercial offer in the live config but no disclosure in the editorial file")
@@ -158,7 +217,7 @@ def collect():
             "placement": "editorial",     # 'sponsored' is reserved; none exist
             "relationship": rel,
         })
-    return ed, out
+    return out
 
 
 def join(words):
@@ -238,20 +297,44 @@ def gallery(ed, head, sup):
     mw, mh = best_mount([s["image"] for s in featured]) if featured else (1, 1)
     total = len(sup)
     more = total > len(featured)
+    explorer_mode = D["directory"] == "explorer"
     # all lazy in the page: the gallery sits below the fold, and must never compete with the
     # Discovery's hero image; the JS promotes the first card only if it starts near the screen
     items = "".join(f'<li data-sg-placement="{s["placement"]}">{featured_card(s, False)}</li>' for s in featured)
-    if more:
-        items += (f'<li data-sg-end><div class="pn-sg-card pn-sg-card--end"><p class="pn-sg-end-n">{total}</p>'
-                  f'<p class="pn-sg-end-t">{E(head["endLine"])}</p>'
-                  f'<button type="button" class="pn-sg-all" data-sg-all aria-controls="sg-all-gr" '
-                  f'data-sg-open="View all suppliers" data-sg-close="Hide the full list"><span data-sg-label>View all suppliers</span></button></div></li>')
-    grid = "".join(f"<li>{index_entry(s)}</li>" for s in sup)
-    n_img = sum(1 for s in sup if s["image"])
-    view_all = (f'<button type="button" class="pn-sg-all" data-sg-all aria-controls="sg-all-gr" '
-                f'data-sg-open="View all {total} suppliers" data-sg-close="Hide the full list">'
-                f'<span data-sg-label>View all {total} suppliers</span></button>') if more else ""
-    grid_note = ed["gridNote"] if n_img < total else ed.get("gridNoteAllImaged", "")
+    if explorer_mode:
+        # founder D3: no duplicate directory; "View all" goes to the page's own Maker Explorer
+        jump = lambda label: (f'<a class="pn-sg-all" href="#{EXPLORER_ID}" data-sg-jump>'
+                              f'<span data-sg-label>{label}</span></a>')
+        # No maker count here: the explorer below states its own figures, and a second,
+        # differently-scoped number beside them would confuse (verified 30 Oct 2026).
+        if more:
+            items += (f'<li data-sg-end><div class="pn-sg-card pn-sg-card--end">'
+                      f'<p class="pn-sg-end-t">{E(head["endLine"])}</p>{jump("View all suppliers")}</div></li>')
+        view_all = jump("View all suppliers") if more else ""
+        directory = ""
+    else:
+        if more:
+            items += (f'<li data-sg-end><div class="pn-sg-card pn-sg-card--end"><p class="pn-sg-end-n">{total}</p>'
+                      f'<p class="pn-sg-end-t">{E(head["endLine"])}</p>'
+                      f'<button type="button" class="pn-sg-all" data-sg-all aria-controls="sg-all-gr" '
+                      f'data-sg-open="View all suppliers" data-sg-close="Hide the full list"><span data-sg-label>View all suppliers</span></button></div></li>')
+        grid = "".join(f"<li>{index_entry(s)}</li>" for s in sup)
+        n_img = sum(1 for s in sup if s["image"])
+        view_all = (f'<button type="button" class="pn-sg-all" data-sg-all aria-controls="sg-all-gr" '
+                    f'data-sg-open="View all {total} suppliers" data-sg-close="Hide the full list">'
+                    f'<span data-sg-label>View all {total} suppliers</span></button>') if more else ""
+        grid_note = ed["gridNote"] if n_img < total else ed.get("gridNoteAllImaged", "")
+        directory = f'''
+  <div class="pn-sg-wrap">
+    <details class="pn-sg-grid-wrap" id="sg-all-gr">
+      <summary>View all {total} suppliers</summary>
+      <div class="pn-sg-grid-head">
+        <h3 class="pn-sg-h3" tabindex="-1">All {total} suppliers</h3>
+        <p class="pn-sg-note">{E(grid_note)}</p>
+      </div>
+      <ul class="pn-sg-grid" role="list">{grid}</ul>
+    </details>
+  </div>'''
     return f'''<section class="pn-sg" id="suppliers" data-pn-supplier-gallery data-discovery="{E(ed["discovery"])}" aria-labelledby="sg-h" style="--sg-mount-ratio:{mw} / {mh}">
   <div class="pn-sg-wrap">
     <div class="pn-sg-head">
@@ -268,33 +351,17 @@ def gallery(ed, head, sup):
       </div>
     </div>
   </div>
-  <ul class="pn-sg-track" id="sg-track" tabindex="0" role="list" aria-label="Featured suppliers, scroll horizontally">{items}</ul>
-  <div class="pn-sg-wrap">
-    <details class="pn-sg-grid-wrap" id="sg-all-gr">
-      <summary>View all {total} suppliers</summary>
-      <div class="pn-sg-grid-head">
-        <h3 class="pn-sg-h3" tabindex="-1">All {total} suppliers</h3>
-        <p class="pn-sg-note">{E(grid_note)}</p>
-      </div>
-      <ul class="pn-sg-grid" role="list">{grid}</ul>
-    </details>
-  </div>
+  <ul class="pn-sg-track" id="sg-track" tabindex="0" role="list" aria-label="Featured suppliers, scroll horizontally">{items}</ul>{directory}
 </section>'''
-
-
-def head_block(sup):
-    hosts = sorted({urlparse(x["image"]["src"]).netloc for x in sup if x["image"]})
-    lines = [H_START] + [f'<link rel="preconnect" href="https://{h}">' for h in hosts] + \
-            [f'<link rel="stylesheet" href="assets/components/pn-supplier-gallery.css?v={ASSET_V}">', H_END]
-    return "\n".join(lines) + "\n"
 
 
 def body_block(ed, head, sup):
     # The stylesheet sits HERE, not in <head>: in the body it does not block the
     # Discovery's first render (hero and LCP), and the gallery is below the fold.
-    return (f"{B_START}\n<link rel=\"stylesheet\" href=\"assets/components/pn-supplier-gallery.css?v={ASSET_V}\">\n"
+    v = D["asset_v"]
+    return (f"{B_START}\n<link rel=\"stylesheet\" href=\"assets/components/pn-supplier-gallery.css?v={v}\">\n"
             f"{gallery(ed, head, sup)}\n"
-            f'<script src="assets/components/pn-supplier-gallery.js?v={ASSET_V}" defer></script>\n{B_END}\n')
+            f'<script src="assets/components/pn-supplier-gallery.js?v={v}" defer></script>\n{B_END}\n')
 
 
 def strip(page):
@@ -303,37 +370,55 @@ def strip(page):
     return page
 
 
-def compose(page, ed, head, sup):
+def compose(page, ed, head, sup, name):
     base = strip(page)
     if base.count(ANCHOR) != 1 or base.count(HEAD_ANCHOR) != 1:
-        sys.exit("FAIL: Garden Retreat anchors not found exactly once (Maker Explorer comment / maker-explorer.css)")
-    # Nothing is written into <head> any more (v1 final): strip() still removes an
-    # older head block if one is present.
+        sys.exit(f"FAIL: {name}: anchors not found exactly once (Maker Explorer comment / maker-explorer.css)")
+    if D["directory"] == "explorer" and f'id="{EXPLORER_ID}"' not in base:
+        sys.exit(f"FAIL: {name}: the Maker Explorer target #{EXPLORER_ID} is missing")
     return base.replace(ANCHOR, body_block(ed, head, sup) + ANCHOR, 1)
 
 
+def build(name, check):
+    global D
+    D = DISCOVERIES[name]
+    path = ROOT / name
+    page = path.read_text(encoding="utf-8")
+    ed = json.loads((DATA / D["editorial"]).read_text(encoding="utf-8"))
+    if ed["discovery"] != name:
+        sys.exit(f"FAIL: {D['editorial']} is for {ed['discovery']}, not {name}")
+    sup = collect(path, ed)
+    heads = json.loads(HEADINGS.read_text(encoding="utf-8"))["discoveries"]
+    head = heads.get(name)
+    if not head:
+        sys.exit(f"FAIL: no heading set for {name} in discovery-headings.json")
+    out = compose(page, ed, head, sup, name)
+    if strip(out) != strip(page):
+        sys.exit(f"FAIL: {name}: integration would change page content outside the gallery regions")
+    if check:
+        ok = out == page
+        print(f"SUPPLIER GALLERY · CHECK OK — {name} region is current" if ok else f"FAIL: {name}: supplier gallery is missing or stale; rebuild")
+        return ok
+    path.write_text(out, encoding="utf-8")
+    print(f"wrote {name}: {len(sup)} suppliers, {sum(1 for x in sup if x['image'])} with licensed imagery"
+          + ("" if out != page else " (unchanged)"))
+    return True
+
+
 def main():
-    page = DISCOVERY.read_text(encoding="utf-8")
     if "--remove" in sys.argv:
+        name = sys.argv[sys.argv.index("--remove") + 1]
+        if name not in DISCOVERIES:
+            sys.exit(f"FAIL: {name} is not a configured supplier-gallery page")
+        path = ROOT / name
+        page = path.read_text(encoding="utf-8")
         out = strip(page)
-        DISCOVERY.write_text(out, encoding="utf-8")
+        path.write_text(out, encoding="utf-8")
         print("removed" if out != page else "nothing to remove")
         return
-    ed, sup = collect()
-    heads = json.loads(HEADINGS.read_text(encoding="utf-8"))["discoveries"]
-    head = heads.get(ed["discovery"])
-    if not head:
-        sys.exit(f"FAIL: no heading set for {ed['discovery']} in discovery-headings.json")
-    out = compose(page, ed, head, sup)
-    if strip(out) != strip(page):
-        sys.exit("FAIL: integration would change page content outside the gallery regions")
-    if "--check" in sys.argv:
-        ok = out == page
-        print("SUPPLIER GALLERY · CHECK OK — Garden Retreat region is current" if ok else "FAIL: Garden Retreat supplier gallery is missing or stale; rebuild")
-        sys.exit(0 if ok else 1)
-    DISCOVERY.write_text(out, encoding="utf-8")
-    print(f"wrote {DISCOVERY.name}: {len(sup)} suppliers, {sum(1 for x in sup if x['image'])} with licensed imagery"
-          + ("" if out != page else " (unchanged)"))
+    check = "--check" in sys.argv
+    ok = all([build(name, check) for name in DISCOVERIES])
+    sys.exit(0 if ok else 1)
 
 
 if __name__ == "__main__":
