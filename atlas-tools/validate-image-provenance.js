@@ -265,6 +265,9 @@ const FOUNDER_ATTESTED_FOUNDER_PORTRAIT = {
   decision: 'PN-FDR-2026-10-30-FOUNDER-PORTRAIT',
   sha256: new Set(['63f976772704cd21001cb5cf2afb943d69d112a35b518ac4208e5f88a4be6d45']),
   surfaces: ['about', 'plotart'],
+  /* Its approved visible label (founder decision, 30 Oct 2026): it is an edit of a real photograph of the founder,
+     so the generic 'AI-generated illustration' would misdescribe it. P8 requires exactly this label instead. */
+  label: 'AI-edited portrait',
 };
 const FOUNDER_ATTESTED_ALL = [FOUNDER_ATTESTED_GRP, FOUNDER_ATTESTED_H6, FOUNDER_ATTESTED_DISC031, FOUNDER_ATTESTED_DISC033, FOUNDER_ATTESTED_DISC032, FOUNDER_ATTESTED_PLOTART_LG, FOUNDER_ATTESTED_FOUNDER_PORTRAIT];
 const attestedFor = h => FOUNDER_ATTESTED_ALL.find(x => x.sha256.has(String(h)));
@@ -857,9 +860,11 @@ const pageText = html => html.replace(/<!--[\s\S]*?-->/g, ' ').replace(/<[^>]+>/
         }
         continue;
       }
+      /* A founder decision may fix its own label for its pinned images (30 Oct 2026: the founder portrait). */
+      const want = (attestedFor(r.sha256) || {}).label || expected;
       for (const page of onPages) {
         const html = readFileSync(join(ROOT, page), 'utf8');
-        if (!html.includes(expected)) missing.push(`${r.asset} on ${page}`);
+        if (!html.includes(want)) missing.push(`${r.asset} on ${page}: label "${want}" missing`);
       }
     }
     missing.length
