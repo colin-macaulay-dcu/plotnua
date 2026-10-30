@@ -265,9 +265,15 @@ const FOUNDER_ATTESTED_FOUNDER_PORTRAIT = {
   decision: 'PN-FDR-2026-10-30-FOUNDER-PORTRAIT',
   sha256: new Set(['63f976772704cd21001cb5cf2afb943d69d112a35b518ac4208e5f88a4be6d45']),
   surfaces: ['about', 'plotart'],
-  /* Its approved visible label (founder decision, 30 Oct 2026): it is an edit of a real photograph of the founder,
-     so the generic 'AI-generated illustration' would misdescribe it. P8 requires exactly this label instead. */
-  label: 'AI-edited portrait',
+  /* CAPTION EXCEPTION (founder decision PN-FDR-2026-10-30-FOUNDER-PORTRAIT-CAPTION, Colin MacAulay, 30 Oct 2026):
+     this one portrait carries no visible AI label; its only visible caption is the founder's name. In place of the
+     visible label, P8 requires (a) the record to carry the same caption_exception, and (b) the image's alt text on
+     every page to contain alt_disclosure. Pinned by SHA-256 above: no other image, artist photograph or third-party
+     image can use it, and every other AI image still needs its visible label. The provenance stays AI_ILLUSTRATION. */
+  caption_exception: {
+    decision: 'PN-FDR-2026-10-30-FOUNDER-PORTRAIT-CAPTION',
+    alt_disclosure: 'AI-edited portrait of Colin MacAulay',
+  },
 };
 const FOUNDER_ATTESTED_ALL = [FOUNDER_ATTESTED_GRP, FOUNDER_ATTESTED_H6, FOUNDER_ATTESTED_DISC031, FOUNDER_ATTESTED_DISC033, FOUNDER_ATTESTED_DISC032, FOUNDER_ATTESTED_PLOTART_LG, FOUNDER_ATTESTED_FOUNDER_PORTRAIT];
 const attestedFor = h => FOUNDER_ATTESTED_ALL.find(x => x.sha256.has(String(h)));
@@ -860,11 +866,30 @@ const pageText = html => html.replace(/<!--[\s\S]*?-->/g, ' ').replace(/<[^>]+>/
         }
         continue;
       }
-      /* A founder decision may fix its own label for its pinned images (30 Oct 2026: the founder portrait). */
-      const want = (attestedFor(r.sha256) || {}).label || expected;
+      /* The one caption exception (PN-FDR-2026-10-30-FOUNDER-PORTRAIT-CAPTION): only an image whose SHA-256 is
+         pinned to a decision that grants it, whose record names that same decision, and whose alt text discloses
+         the AI edit on every page. Anything else falls through to the visible label below. */
+      const fa = attestedFor(r.sha256) || {}, ce = fa.caption_exception, rce = r.caption_exception;
+      if (rce && !ce) { missing.push(`${r.asset}: record claims a caption exception that no pinned decision grants`); continue; }
+      if (ce) {
+        if (!rce || rce.decision !== ce.decision || !rce.approved_by || !rce.date || !rce.statement) {
+          missing.push(`${r.asset}: caption exception ${ce.decision} not recorded with the founder's approval`); continue;
+        }
+        const file = r.asset.split('/').pop();
+        for (const page of onPages) {
+          const html = readFileSync(join(ROOT, page), 'utf8');
+          const tags = [...html.matchAll(/<img\b[^>]*>/gi)].map(m => m[0]).filter(t => t.includes(file));
+          if (!tags.length) missing.push(`${r.asset} on ${page}: image tag not found`);
+          for (const t of tags) {
+            const alt = (t.match(/\balt\s*=\s*"([^"]*)"/i) || [])[1] || '';
+            if (!alt.includes(ce.alt_disclosure)) missing.push(`${r.asset} on ${page}: alt text does not disclose "${ce.alt_disclosure}"`);
+          }
+        }
+        continue;
+      }
       for (const page of onPages) {
         const html = readFileSync(join(ROOT, page), 'utf8');
-        if (!html.includes(want)) missing.push(`${r.asset} on ${page}: label "${want}" missing`);
+        if (!html.includes(expected)) missing.push(`${r.asset} on ${page}`);
       }
     }
     missing.length

@@ -20,7 +20,8 @@
     "An absent term is never an inclusion: an asset with no record is undeclared, not cleared.",
     "AI illustrations do not appear on individual supplier product cards. product-card is not an available permitted surface.",
     "Provenance is never inferred from appearance.",
-    "One founder-attested exception (PN-FDR-2026-10-23-GRP-HERO): the six Garden Room Prices hero files, whose exact prompt is unavailable, carry prompt_status UNAVAILABLE, a reference_disclosure (UNCERTAIN) and a resemblance_review instead of a prompt and reference_inputs. It is pinned to those files by SHA-256 in validate-image-provenance.js and is not a way to declare images: every new AI illustration records its prompt verbatim at creation."
+    "One founder-attested exception (PN-FDR-2026-10-23-GRP-HERO): the six Garden Room Prices hero files, whose exact prompt is unavailable, carry prompt_status UNAVAILABLE, a reference_disclosure (UNCERTAIN) and a resemblance_review instead of a prompt and reference_inputs. It is pinned to those files by SHA-256 in validate-image-provenance.js and is not a way to declare images: every new AI illustration records its prompt verbatim at creation.",
+    "One founder caption exception (PN-FDR-2026-10-30-FOUNDER-PORTRAIT-CAPTION, Colin MacAulay, 30 Oct 2026): the founder portrait assets/founder/colin-macaulay-founder-portrait-440x550.jpg, an AI edit of a real photograph of him, shows only the caption 'Colin MacAulay'; its AI edit is disclosed in the image's alt text and in its record, which stays AI_ILLUSTRATION. It is pinned to that file by SHA-256 in validate-image-provenance.js; every other AI image keeps its visible label, and the exception is not a way to declare or caption any other image."
   ],
   "recovery": {
     "performed": "2026-10-11",
@@ -8042,11 +8043,21 @@
         "date": "2026-10-30",
         "attests": "Colin MacAulay approved this image as his founder portrait for the PlotNua and PlotArt About pages, stated that it is an AI edit of a real photograph of himself, and instructed that it be labelled 'AI-edited portrait' and never presented as an untouched camera photograph (30 Oct 2026)."
       },
-      "label": "AI-edited portrait (visible caption beside the portrait on desktop, under the signature on mobile; founder decision 30 Oct 2026, pinned in the validator)",
+      "label": "No visible AI label: founder caption exception PN-FDR-2026-10-30-FOUNDER-PORTRAIT-CAPTION (30 Oct 2026). Visible caption 'Colin MacAulay'; the AI edit is disclosed in the alt text. Superseded label: 'AI-edited portrait' (30 Oct 2026).",
       "permitted_surfaces": [
         "about",
         "plotart"
-      ]
+      ],
+      "caption_exception": {
+        "decision": "PN-FDR-2026-10-30-FOUNDER-PORTRAIT-CAPTION",
+        "approved_by": "Colin MacAulay (founder and owner of PlotNua and PlotArt)",
+        "date": "2026-10-30",
+        "statement": "Founder decision (Colin MacAulay, 30 Oct 2026, 18:54): 'I explicitly authorise the following exception: PN-FDR-2026-10-30-FOUNDER-PORTRAIT-CAPTION. Remove the visible \"AI-edited portrait\" caption from both founder sections. The only visible photograph caption should be: Colin MacAulay.' Conditions he set: keep the accurate AI-edited provenance record and the source and editing history; disclose the AI editing in the alt text; record his approval; limit the exception to this exact portrait by file hash; do not weaken the rules for other images, artist photographs or third-party material; never classify it as an original, unedited camera photograph.",
+        "scope_sha256": "63f976772704cd21001cb5cf2afb943d69d112a35b518ac4208e5f88a4be6d45",
+        "visible_caption": "Colin MacAulay",
+        "alt_disclosure": "AI-edited portrait of Colin MacAulay, founder of PlotNua and PlotArt, edited from a real photograph of him",
+        "risk_named": "A realistic AI-edited image of a real, named person may be taken as an unedited photograph; possible transparency obligations for AI-manipulated images of real people (EU AI Act, Article 50) were raised with the founder on 30 Oct 2026 as a point for his legal adviser."
+      }
     }
   ],
   "legacy_undeclared": [
