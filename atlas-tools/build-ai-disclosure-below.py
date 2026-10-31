@@ -25,6 +25,8 @@ ROOT = pathlib.Path(__file__).resolve().parent.parent
 CHECK = "--check" in sys.argv
 INSTALL = "Illustrative AI-generated visualisation. Not an actual installation."
 EVENT = "Illustrative AI-generated visualisation. Not an actual home or event."
+PROPERTY = "Illustrative AI-generated visualisation. Not an actual property."
+FILM = "Illustrative AI-generated visualisation. Not an actual film production."
 PAGES = {
     "discovery-above-and-beyond.html": INSTALL,
     "discovery-garden-retreat.html": INSTALL,
@@ -33,9 +35,9 @@ PAGES = {
     "discovery-hidden-flood-barrier.html": INSTALL,
     "discovery-natural-swimming-garden.html": INSTALL,
     "discovery-supper-club-at-home.html": EVENT,
-    # Release 5 (31 Oct 2026, pending founder approval of the wording): not installations, so the home/event wording
-    "discovery-driveway-income.html": EVENT,
-    "discovery-your-home-on-screen.html": EVENT,
+    # Release 5 (founder approval, 31 Oct 2026): page-specific approved wordings
+    "discovery-driveway-income.html": PROPERTY,
+    "discovery-your-home-on-screen.html": FILM,
 }
 # the desktop line aligns with each hero's own copy: the 1240 px content column (default), the copy's viewport
 # inset (Hidden Flood Barrier 4vw, Supper Club 5vw), or centred under centred copy (Natural Swimming Garden)
