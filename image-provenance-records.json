@@ -8458,6 +8458,261 @@
         "date": "2026-10-31",
         "subject": "Founder's credentialed master, added for the Release 5 hero copies"
       }
+    },
+    {
+      "asset": "assets/brand/plotart-p-48.webp",
+      "sha256": "c18f2b46c720946ec84e7388536809920647ea5be4435f76a8e29d8d83c77bb3",
+      "bytes": 1394,
+      "pixels": [
+        48,
+        48
+      ],
+      "class": "BRAND_MARK",
+      "what": "The PlotArt logo (an ivory serif P over painted brushstrokes on an anthracite rounded square); used for: PlotNua header PlotArt button (20 px) and PlotArt page headers (30 px)",
+      "brand": {
+        "name": "PlotArt logo",
+        "master_file": "PlotArt_Logo_Final.png (founder's Mac, PlotNua/04 Brand)",
+        "master_sha256": "7aae4c8cbf4e1aaf2c356729583fe3c2ae16c6da23de18d216ee3186a6545117",
+        "master_pixels": [
+          1254,
+          1254
+        ]
+      },
+      "origin": {
+        "method": "AI-generated with ChatGPT (OpenAI, gpt-image), per the master's C2PA content credentials; chosen and approved by the founder as the PlotArt logo",
+        "date": "2026-10-31",
+        "c2pa_evidence": {
+          "read_with": "c2pa-python, 31 Oct 2026",
+          "claim_generator": "OpenAI Media Service API",
+          "signed_by": "OpenAI OpCo, LLC",
+          "signed_at": "2026-10-31T14:42:48.977436+00:00",
+          "actions": [
+            "c2pa.created (softwareAgent ChatGPT, version gpt-image; digitalSourceType trainedAlgorithmicMedia)",
+            "c2pa.converted",
+            "c2pa.watermarked.unbound"
+          ],
+          "ingredients_recorded": 0
+        },
+        "prompt_status": "UNAVAILABLE (not supplied; not reconstructed)"
+      },
+      "processing": [
+        "Master PlotArt_Logo_Final.png (founder's Mac, PlotNua/04 Brand; unchanged), 1254 x 1254 RGB",
+        "Corners outside the logo's rounded square (pure black in the master) made transparent with an anti-aliased rounded-rectangle mask (radius 249 px, measured from the master); no other change to the artwork (PlotNua build session, Pillow, 31 Oct 2026)",
+        "Lanczos resize to 48 x 48; WebP quality 90"
+      ],
+      "visible_label": "none: a brand logo depicts no real place, product or person (class BRAND_MARK); its AI origin is recorded here",
+      "human_review": {
+        "reviewer": "Colin MacAulay (founder)",
+        "date": "2026-10-31",
+        "attests": "Approved the new PlotArt logo for implementation across PlotArt, the PlotNua header's PlotArt button, favicons and social sharing (31 Oct 2026)."
+      },
+      "permitted_surfaces": [
+        "brand"
+      ]
+    },
+    {
+      "asset": "assets/brand/plotart-p-96.webp",
+      "sha256": "4657e29a33f10a35d2312552b1cf0059c11cbffe8b48ff7d27731fe3661ce609",
+      "bytes": 3482,
+      "pixels": [
+        96,
+        96
+      ],
+      "class": "BRAND_MARK",
+      "what": "The PlotArt logo (an ivory serif P over painted brushstrokes on an anthracite rounded square); used for: the same at 2x (retina)",
+      "brand": {
+        "name": "PlotArt logo",
+        "master_file": "PlotArt_Logo_Final.png (founder's Mac, PlotNua/04 Brand)",
+        "master_sha256": "7aae4c8cbf4e1aaf2c356729583fe3c2ae16c6da23de18d216ee3186a6545117",
+        "master_pixels": [
+          1254,
+          1254
+        ]
+      },
+      "origin": {
+        "method": "AI-generated with ChatGPT (OpenAI, gpt-image), per the master's C2PA content credentials; chosen and approved by the founder as the PlotArt logo",
+        "date": "2026-10-31",
+        "c2pa_evidence": {
+          "read_with": "c2pa-python, 31 Oct 2026",
+          "claim_generator": "OpenAI Media Service API",
+          "signed_by": "OpenAI OpCo, LLC",
+          "signed_at": "2026-10-31T14:42:48.977436+00:00",
+          "actions": [
+            "c2pa.created (softwareAgent ChatGPT, version gpt-image; digitalSourceType trainedAlgorithmicMedia)",
+            "c2pa.converted",
+            "c2pa.watermarked.unbound"
+          ],
+          "ingredients_recorded": 0
+        },
+        "prompt_status": "UNAVAILABLE (not supplied; not reconstructed)"
+      },
+      "processing": [
+        "Master PlotArt_Logo_Final.png (founder's Mac, PlotNua/04 Brand; unchanged), 1254 x 1254 RGB",
+        "Corners outside the logo's rounded square (pure black in the master) made transparent with an anti-aliased rounded-rectangle mask (radius 249 px, measured from the master); no other change to the artwork (PlotNua build session, Pillow, 31 Oct 2026)",
+        "Lanczos resize to 96 x 96; WebP quality 90"
+      ],
+      "visible_label": "none: a brand logo depicts no real place, product or person (class BRAND_MARK); its AI origin is recorded here",
+      "human_review": {
+        "reviewer": "Colin MacAulay (founder)",
+        "date": "2026-10-31",
+        "attests": "Approved the new PlotArt logo for implementation across PlotArt, the PlotNua header's PlotArt button, favicons and social sharing (31 Oct 2026)."
+      },
+      "permitted_surfaces": [
+        "brand"
+      ]
+    },
+    {
+      "asset": "assets/brand/plotart-favicon-32.png",
+      "sha256": "c15e12677ea67fa464f619654d80e56e028eec89ff67ef14c2b507bf6b525be9",
+      "bytes": 2638,
+      "pixels": [
+        32,
+        32
+      ],
+      "class": "BRAND_MARK",
+      "what": "The PlotArt logo (an ivory serif P over painted brushstrokes on an anthracite rounded square); used for: PlotArt pages' browser-tab icon",
+      "brand": {
+        "name": "PlotArt logo",
+        "master_file": "PlotArt_Logo_Final.png (founder's Mac, PlotNua/04 Brand)",
+        "master_sha256": "7aae4c8cbf4e1aaf2c356729583fe3c2ae16c6da23de18d216ee3186a6545117",
+        "master_pixels": [
+          1254,
+          1254
+        ]
+      },
+      "origin": {
+        "method": "AI-generated with ChatGPT (OpenAI, gpt-image), per the master's C2PA content credentials; chosen and approved by the founder as the PlotArt logo",
+        "date": "2026-10-31",
+        "c2pa_evidence": {
+          "read_with": "c2pa-python, 31 Oct 2026",
+          "claim_generator": "OpenAI Media Service API",
+          "signed_by": "OpenAI OpCo, LLC",
+          "signed_at": "2026-10-31T14:42:48.977436+00:00",
+          "actions": [
+            "c2pa.created (softwareAgent ChatGPT, version gpt-image; digitalSourceType trainedAlgorithmicMedia)",
+            "c2pa.converted",
+            "c2pa.watermarked.unbound"
+          ],
+          "ingredients_recorded": 0
+        },
+        "prompt_status": "UNAVAILABLE (not supplied; not reconstructed)"
+      },
+      "processing": [
+        "Master PlotArt_Logo_Final.png (founder's Mac, PlotNua/04 Brand; unchanged), 1254 x 1254 RGB",
+        "Corners outside the logo's rounded square (pure black in the master) made transparent with an anti-aliased rounded-rectangle mask (radius 249 px, measured from the master); no other change to the artwork (PlotNua build session, Pillow, 31 Oct 2026)",
+        "Lanczos resize to 32 x 32; PNG"
+      ],
+      "visible_label": "none: a brand logo depicts no real place, product or person (class BRAND_MARK); its AI origin is recorded here",
+      "human_review": {
+        "reviewer": "Colin MacAulay (founder)",
+        "date": "2026-10-31",
+        "attests": "Approved the new PlotArt logo for implementation across PlotArt, the PlotNua header's PlotArt button, favicons and social sharing (31 Oct 2026)."
+      },
+      "permitted_surfaces": [
+        "brand"
+      ]
+    },
+    {
+      "asset": "assets/brand/plotart-apple-touch-180.png",
+      "sha256": "db4c202aba9dd143beb183f36f5a1d48e911edcf19f6e8f5389099e49da1d2d3",
+      "bytes": 47241,
+      "pixels": [
+        180,
+        180
+      ],
+      "class": "BRAND_MARK",
+      "what": "The PlotArt logo (an ivory serif P over painted brushstrokes on an anthracite rounded square); used for: PlotArt pages' home-screen icon",
+      "brand": {
+        "name": "PlotArt logo",
+        "master_file": "PlotArt_Logo_Final.png (founder's Mac, PlotNua/04 Brand)",
+        "master_sha256": "7aae4c8cbf4e1aaf2c356729583fe3c2ae16c6da23de18d216ee3186a6545117",
+        "master_pixels": [
+          1254,
+          1254
+        ]
+      },
+      "origin": {
+        "method": "AI-generated with ChatGPT (OpenAI, gpt-image), per the master's C2PA content credentials; chosen and approved by the founder as the PlotArt logo",
+        "date": "2026-10-31",
+        "c2pa_evidence": {
+          "read_with": "c2pa-python, 31 Oct 2026",
+          "claim_generator": "OpenAI Media Service API",
+          "signed_by": "OpenAI OpCo, LLC",
+          "signed_at": "2026-10-31T14:42:48.977436+00:00",
+          "actions": [
+            "c2pa.created (softwareAgent ChatGPT, version gpt-image; digitalSourceType trainedAlgorithmicMedia)",
+            "c2pa.converted",
+            "c2pa.watermarked.unbound"
+          ],
+          "ingredients_recorded": 0
+        },
+        "prompt_status": "UNAVAILABLE (not supplied; not reconstructed)"
+      },
+      "processing": [
+        "Master PlotArt_Logo_Final.png (founder's Mac, PlotNua/04 Brand; unchanged), 1254 x 1254 RGB",
+        "Corners outside the logo's rounded square (pure black in the master) made transparent with an anti-aliased rounded-rectangle mask (radius 249 px, measured from the master); no other change to the artwork (PlotNua build session, Pillow, 31 Oct 2026)",
+        "Corners filled with the logo's own anthracite (#2B2C2C) instead of transparency, because iOS applies its own rounded mask; Lanczos resize to 180 x 180; PNG"
+      ],
+      "visible_label": "none: a brand logo depicts no real place, product or person (class BRAND_MARK); its AI origin is recorded here",
+      "human_review": {
+        "reviewer": "Colin MacAulay (founder)",
+        "date": "2026-10-31",
+        "attests": "Approved the new PlotArt logo for implementation across PlotArt, the PlotNua header's PlotArt button, favicons and social sharing (31 Oct 2026)."
+      },
+      "permitted_surfaces": [
+        "brand"
+      ]
+    },
+    {
+      "asset": "assets/og/plotart-og-1200x630.jpg",
+      "sha256": "08dd3b7c4be1a1e0d62289451ab23b57e04acfbf5eea2c144d425a36aadf1115",
+      "bytes": 52435,
+      "pixels": [
+        1200,
+        630
+      ],
+      "class": "BRAND_MARK",
+      "what": "The PlotArt logo (an ivory serif P over painted brushstrokes on an anthracite rounded square) on the PlotArt brand card; used for: social link previews of the PlotArt home, Virtual Gallery, Living Gallery, Founding 25 and About pages",
+      "brand": {
+        "name": "PlotArt logo",
+        "master_file": "PlotArt_Logo_Final.png (founder's Mac, PlotNua/04 Brand)",
+        "master_sha256": "7aae4c8cbf4e1aaf2c356729583fe3c2ae16c6da23de18d216ee3186a6545117",
+        "master_pixels": [
+          1254,
+          1254
+        ]
+      },
+      "origin": {
+        "method": "AI-generated with ChatGPT (OpenAI, gpt-image), per the master's C2PA content credentials; chosen and approved by the founder as the PlotArt logo",
+        "date": "2026-10-31",
+        "c2pa_evidence": {
+          "read_with": "c2pa-python, 31 Oct 2026",
+          "claim_generator": "OpenAI Media Service API",
+          "signed_by": "OpenAI OpCo, LLC",
+          "signed_at": "2026-10-31T14:42:48.977436+00:00",
+          "actions": [
+            "c2pa.created (softwareAgent ChatGPT, version gpt-image; digitalSourceType trainedAlgorithmicMedia)",
+            "c2pa.converted",
+            "c2pa.watermarked.unbound"
+          ],
+          "ingredients_recorded": 0
+        },
+        "prompt_status": "UNAVAILABLE (not supplied; not reconstructed)"
+      },
+      "processing": [
+        "Master PlotArt_Logo_Final.png (founder's Mac, PlotNua/04 Brand; unchanged), 1254 x 1254 RGB",
+        "Corners outside the logo's rounded square (pure black in the master) made transparent with an anti-aliased rounded-rectangle mask (radius 249 px, measured from the master); no other change to the artwork (PlotNua build session, Pillow, 31 Oct 2026)",
+        "Brand card 1200 x 630: the masked logo at 330 px on the PlotArt anthracite background, beside typeset 'PlotArt', 'A new home for Irish art.' (the approved PlotArt headline) and 'Part of PlotNua · plotnua.ie' in Instrument Serif and Hanken Grotesk (SIL OFL); rendered with Playwright/Chromium; JPEG quality 88"
+      ],
+      "visible_label": "none: a brand logo depicts no real place, product or person (class BRAND_MARK); its AI origin is recorded here",
+      "human_review": {
+        "reviewer": "Colin MacAulay (founder)",
+        "date": "2026-10-31",
+        "attests": "Approved the new PlotArt logo for implementation across PlotArt, the PlotNua header's PlotArt button, favicons and social sharing (31 Oct 2026)."
+      },
+      "permitted_surfaces": [
+        "brand"
+      ]
     }
   ],
   "legacy_undeclared": [

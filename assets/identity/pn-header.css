@@ -175,6 +175,7 @@ body.pn-hdr-on .pn-hdr-btn.is-primary[aria-current]::after{ background:#B9D3C2; 
 body.pn-hdr-on .pn-hdr-btn.is-art{ border-radius:8px; font-family:var(--h-serif); font-weight:400; font-size:19px; letter-spacing:.01em; color:#F6DFD1;
   background:rgba(174,98,69,.20); border:1px solid #B4684A; }
 body.pn-hdr-on .pn-hdr-btn.is-art svg{ color:#E9A383; }
+body.pn-hdr-on .pn-hdr-btn .pn-hdr-art{ width:20px; height:20px; flex:none; display:block; border-radius:5px; box-shadow:0 0 0 1px rgba(242,235,224,.10); }   /* PlotArt logo (31 Oct 2026) */
 body.pn-hdr-on .pn-hdr-btn.is-art:hover{ background:rgba(174,98,69,.32); border-color:#CF8566; }
 /* My Plot, nothing saved: compact, subdued, an outline heart. It always opens My Plot. */
 body.pn-hdr-on .pn-hdr-btn.is-myplot{ background:#1B1C1E; border-color:rgba(242,235,224,.10); color:rgba(242,235,224,.74);

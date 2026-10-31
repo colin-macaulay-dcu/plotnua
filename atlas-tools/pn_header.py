@@ -91,9 +91,10 @@ ICON_PLOT = ('<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-
 JS = "assets/identity/pn-header.js?v=1"   # versioned so a cached copy never outlives a change
 MENU_JS = "assets/identity/pn-menu.js?v=1"   # phone Menu (founder approval 30 Oct 2026): Escape / outside tap / scroll close
 CONTACT = ("contact.html", "Contact")   # phone Menu panel only (founder approval 30 Oct 2026); not in the desktop bar
-ICON_ART = ('<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" '
-            'stroke-linecap="round" aria-hidden="true" focusable="false"><rect x="3" y="3.5" width="14" height="13" rx="1.5"/>'
-            '<path d="m5.5 14 3.5-4 2.5 2.5 1.5-1.5 2 3"/></svg>')
+# PlotArt: the approved PlotArt logo (founder approval 31 Oct 2026), replacing the framed-picture glyph. A small raster,
+# root-absolute so it resolves from every page depth; 20 x 20 reserved (no layout shift); decorative (the label follows).
+ICON_ART = ('<img class="pn-hdr-art" src="/assets/brand/plotart-p-48.webp" srcset="/assets/brand/plotart-p-96.webp 2x" '
+            'width="20" height="20" alt="" decoding="async">')
 # GridNua: the GridNua glyph, a small grid with a warm centre (29 Oct 2026)
 ICON_GRID = ('<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" '
              'aria-hidden="true" focusable="false"><rect x="2.75" y="2.75" width="14.5" height="14.5" rx="3"/>'
