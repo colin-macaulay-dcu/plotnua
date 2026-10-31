@@ -15,7 +15,7 @@ For each queue item the founder has published (or, once authorised, an automatic
   6. --push: pushes an audit branch content/plotart-<slug>-v<n> and fast-forwards main (never forced; refused if main
      moved). --simulate (tests): stops before pushing. Any failure: the commit is dropped and the Studio is told why.
 """
-import glob, hashlib, json, os, re, shutil, subprocess, sys, tempfile, urllib.request
+import glob, hashlib, json, os, re, shutil, subprocess, sys, tempfile, urllib.error, urllib.request
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(HERE)
@@ -92,13 +92,30 @@ def write_gallery(pkg, img_src):
     json.dump(public, open(os.path.join(d, "gallery.json"), "w", encoding="utf-8"), indent=1, ensure_ascii=False, sort_keys=True)
 
 
-def regrid():
+def layout():
+    """The founder's gallery order from PlotArt Studio (Gallery order, 31 Oct 2026): positions 01-25 with the published
+    or in-flight artist's gallery address, or reserved. Never a reservation note. A Studio without the Gallery order
+    route (404) means the founder's order isn't available yet: the grid keeps its previous automatic order."""
+    try:
+        r = call("GET", "/api/pipeline/gallery-order")
+    except urllib.error.HTTPError as e:
+        if e.code == 404:
+            return None
+        raise
+    for e in r.get("positions", []):
+        if set(e) - {"position", "slug", "reserved"}:
+            raise RuntimeError("the gallery order carries a field it must not: %s" % sorted(set(e) - {"position", "slug", "reserved"}))
+    return {"positions": r.get("positions", []), "extra": r.get("extra", [])}
+
+
+def regrid(lay=None):
     pkgs = P.gallery_order(published())
     html = open(VG, encoding="utf-8").read()
     m = GRID.search(html)
     if not m:
         raise RuntimeError("the Virtual Gallery collection grid was not found")
-    open(VG, "w", encoding="utf-8").write(html[:m.start()] + m.group(1) + P.vg_grid(pkgs) + m.group(3) + html[m.end():])
+    lay = layout() if lay is None else lay
+    open(VG, "w", encoding="utf-8").write(html[:m.start()] + m.group(1) + P.vg_grid(pkgs, layout=lay) + m.group(3) + html[m.end():])
 
 
 def records(slug, new):
@@ -170,9 +187,6 @@ def main():
     if git("status", "--porcelain"):
         sys.exit("REFUSED: the checkout is not clean")
     items = call("GET", "/api/pipeline/queue")["items"]
-    if not items:
-        print("PLOTART CONTENT · nothing to publish")
-        return 0
     failed = 0
     for q in items:
         base = git("rev-parse", "HEAD")
@@ -201,7 +215,49 @@ def main():
             sha = git("rev-parse", "HEAD")
             call("POST", "/api/pipeline/result/" + q["id"], {"status": "published", "detail": "commit %s%s" % (sha[:12], " (simulated)" if SIMULATE else "")})
             print("PLOTART CONTENT · %s v%d · %s · %s" % (q["artist_id"], q["version"], q["kind"], "published " + sha[:12] if PUSH else "verified (simulated) " + sha[:12]))
+    failed += order_sync()
+    if not items:
+        print("PLOTART CONTENT · nothing to publish")
     return 1 if failed else 0
+
+
+def order_sync():
+    """Gallery order (31 Oct 2026): after the queue, rebuild the Virtual Gallery grid from the founder's order. If only
+    the grid changed (a move, reservation or release), commit it as a content-only update, run every guard and push
+    exactly as for a gallery. Nothing changes when the order is unchanged."""
+    if git("status", "--porcelain"):
+        return 0
+    base = git("rev-parse", "HEAD")
+    try:
+        lay = layout()
+        if lay is None:
+            return 0
+        regrid(lay)
+    except Exception as e:                           # noqa: BLE001
+        subprocess.run(["git", "checkout", "-q", "--", "plotart/gallery/index.html"], cwd=ROOT)
+        print("PLOTART CONTENT · gallery order · FAILED · %s" % e)
+        return 1
+    if not git("status", "--porcelain"):
+        return 0
+    git("add", "plotart/gallery/index.html")
+    git("-c", "user.name=PlotArt content pipeline", "-c", "user.email=hello@plotnua.ie", "commit", "-q", "-m",
+        "PlotArt content: Virtual Gallery order (founder's Gallery order in PlotArt Studio)")
+    why = guards(base, False)
+    if why is None and PUSH:
+        ok1, o1 = run("git push origin HEAD:refs/heads/content/plotart-gallery-order-%s" % git("rev-parse", "--short", "HEAD"))
+        ok2, o2 = run("git push origin HEAD:refs/heads/main")
+        if not (ok1 and ok2):
+            why = "push refused (main moved or no permission): " + (o1 + " " + o2)[-300:]
+    sha = git("rev-parse", "HEAD")
+    if why:
+        subprocess.run(["git", "reset", "-q", "--hard", base], cwd=ROOT)
+    try:
+        call("POST", "/api/pipeline/gallery-order/result", {"status": "failed" if why else "published",
+             "detail": (why or "commit %s%s" % (sha[:12], " (simulated)" if SIMULATE else ""))[:1900]})
+    except Exception:                                # noqa: BLE001 - the record is best-effort; the commit stands or was dropped
+        pass
+    print("PLOTART CONTENT · gallery order · %s" % ("FAILED · " + why[:300] if why else ("published " if PUSH else "verified (simulated) ") + sha[:12]))
+    return 1 if why else 0
 
 
 if __name__ == "__main__":

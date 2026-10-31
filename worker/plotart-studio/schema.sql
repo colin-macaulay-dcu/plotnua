@@ -18,7 +18,8 @@ CREATE TABLE IF NOT EXISTS artists (
   first_published_at TEXT,
   below_min_since TEXT,             -- a Founding gallery fell below 10 works: 30-day top-up from this date
   application_ref TEXT,
-  created_at TEXT NOT NULL, updated_at TEXT NOT NULL
+  created_at TEXT NOT NULL, updated_at TEXT NOT NULL,
+  founding_number INTEGER CHECK (founding_number IS NULL OR founding_number BETWEEN 1 AND 25)   -- permanent Founding 25 number (founder only)
 );
 
 CREATE TABLE IF NOT EXISTS artworks (
@@ -105,3 +106,16 @@ CREATE TABLE IF NOT EXISTS enquiries (
 );
 CREATE INDEX IF NOT EXISTS enquiries_artist ON enquiries (artist_id, created_at);
 
+
+-- Gallery order (founder decision 31 Oct 2026). The founder's positions 01-25 in the public Virtual Gallery: a row holds
+-- either an artist or a reservation. A reservation's note is private (founder only) and is never exported.
+-- Display order only: an artist's permanent Founding 25 number is artists.founding_number and never changes with it.
+CREATE TABLE IF NOT EXISTS gallery_positions (
+  position INTEGER PRIMARY KEY CHECK (position BETWEEN 1 AND 25),
+  artist_id TEXT UNIQUE REFERENCES artists(id),
+  reserved INTEGER NOT NULL DEFAULT 0 CHECK (reserved IN (0, 1)),
+  note TEXT,
+  updated_at TEXT NOT NULL,
+  CHECK ((reserved = 1 AND artist_id IS NULL) OR (reserved = 0 AND artist_id IS NOT NULL AND note IS NULL))
+);
+CREATE UNIQUE INDEX IF NOT EXISTS artists_founding_number ON artists(founding_number) WHERE founding_number IS NOT NULL;

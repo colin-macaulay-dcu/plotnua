@@ -295,14 +295,30 @@ if vg:
     vgv = re.sub(r"\s+", " ", visible_text(vg))
     # Consolidated brief (29 Oct 2026): 25 initial gallery spaces, the collection's centrepiece. A space is
     # never a link and carries no name, image, place or availability; no Founding 25 promotion on this page.
-    spaces = re.findall(r'<li class="pa-gspace pa-gspace--t[1-5]" aria-label="Gallery space (\d\d)">(.*?)</li>', vg, re.S)
+    # Gallery order (founder decision 31 Oct 2026): the founder places artists in positions 01-25 and may reserve a
+    # position. Item N of the grid (N <= 25) is position N: a published artist's card, or space N (its number, or its
+    # number and RESERVED). Cards beyond the 25 positions follow. A space never links, shows an image or names anyone.
+    _grid = (re.search(r'<ol class="pa-vg2-grid"[^>]*>(.*?)</ol>', vg, re.S) or [None, ""])[1]
+    _items = re.findall(r'<li class="(pa-gcard[^"]*|pa-gspace[^"]*)"([^>]*)>(.*?)</li>', _grid, re.S)
     _cards = re.findall(r'<li class="pa-gcard(?: is-founding)?"><a class="pa-gcard-tile" href="\.\./artists/([a-z0-9-]+)/"', vg)
+    spaces, _bad_space = [], []
+    for _i, (_cls, _attrs, _body) in enumerate(_items, 1):
+        if _cls.startswith("pa-gcard"):
+            continue
+        _m = re.fullmatch(r'pa-gspace pa-gspace--t[1-5]( is-reserved)?', _cls)
+        _r = bool(_m and _m.group(1))
+        _want = ' aria-label="Gallery space %02d%s"' % (_i, ", reserved" if _r else "")
+        _vis = re.sub(r"\s+", " ", visible_text(_body)).strip()
+        if not _m or _i > 25 or _attrs != _want or "<a " in _body or "<img" in _body or _vis != ("%02d Reserved" % _i if _r else "%02d" % _i):
+            _bad_space.append(_i)
+        spaces.append(_i)
     need(OPEN or not _cards, "L15 an artist gallery is published but the gallery opening switch is off")
     need(sorted(_cards) == GALLERY_SLUGS and len(set(_cards)) == len(_cards),
          "L11 Virtual Gallery cards must match the published artist galleries exactly (cards %s, galleries %s)" % (_cards, GALLERY_SLUGS))
-    need([int(n) for n, _ in spaces] == list(range(len(_cards) + 1, 26)), "L11 the Virtual Gallery must show the remaining gallery spaces in order up to 25 (found %d)" % len(spaces))
-    need(all("<a " not in body and "<img" not in body and re.sub(r"\s+", " ", visible_text(body)).strip() == n for n, body in spaces),
-         "L11 a gallery space links somewhere or carries content beyond its number")
+    need(len(_items) >= 25 and all(c.startswith("pa-gcard") for c, _, _ in _items[25:]),
+         "L11 the Virtual Gallery must show its 25 positions in order, then any further artists (found %d items)" % len(_items))
+    need(not _bad_space,
+         "L11 a gallery space is out of place, links somewhere, or carries content beyond its number and RESERVED (positions %s)" % _bad_space)
     _vgm = vg.split("<main", 1)[-1].split("</main>")[0]; _vgmv = re.sub(r"\s+", " ", visible_text(_vgm))
     need("founding-25.html" not in _vgm and "Founding 25" not in _vgmv and "Artist first" not in _vgmv, "L11 the Virtual Gallery carries Founding 25 promotion or an 'Artist first' section")
     need("The first twenty-five galleries." in vgv, "L11 the Virtual Gallery collection heading is not the approved wording")

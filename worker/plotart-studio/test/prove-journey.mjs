@@ -96,6 +96,8 @@ await call('POST', `/api/admin/submissions/${sid}/decision`, FOUNDER, { decision
 const q1 = (await call('GET', '/api/admin/overview', FOUNDER)).j.queue[0];
 r = publish();
 check('J4 before the founder presses Publish, the pipeline publishes nothing', /nothing to publish/.test(r.stdout) && git('rev-parse', 'HEAD') === BASE, r.stdout + r.stderr);
+// Gallery order (31 Oct 2026): the founder reserves position 01 (private note) before the first publication.
+await call('PUT', '/api/admin/gallery-order', FOUNDER, { positions: [{ position: 1, state: 'reserved', note: 'Held for a named artist (private)' }] });
 await call('POST', `/api/admin/queue/${q1.id}/publish`, FOUNDER, {});
 r = publish();
 const head1 = git('rev-parse', 'HEAD');
@@ -155,6 +157,28 @@ const q2 = (await call('GET', '/api/admin/overview', FOUNDER)).j.queue.find(q =>
 await call('POST', `/api/admin/queue/${q2.id}/publish`, FOUNDER, {});
 r = publish();
 check('I5 ... and publishes after the founder approves and presses Publish', r.status === 0 && page('artists/niamh-synthetic/burren-2.html').includes('€1,450'), r.stdout + r.stderr);
+// ---- Gallery order (founder decision 31 Oct 2026)
+const gridItems = () => [...((page('gallery/index.html').match(/<ol class="pa-vg2-grid"[^>]*>([\s\S]*?)<\/ol>/) || [, ''])[1])
+  .matchAll(/<li class="(pa-gcard[^"]*|pa-gspace[^"]*)"[^>]*>([\s\S]*?)<\/li>/g)].map(m => m[1].startsWith('pa-gcard') ? 'card:' + ((m[2].match(/artists\/([a-z0-9-]+)\//) || [])[1])
+  : m[1].includes('is-reserved') ? 'reserved' : 'space');
+let gi = gridItems();
+check('O1 position 01 shows RESERVED with no name; the first published Founding Artist took the lowest open position (02)',
+  gi.length === 25 && gi[0] === 'reserved' && gi[1] === 'card:niamh-synthetic' && gi.slice(2).every(x => x === 'space') && !page('gallery/index.html').includes('Held for'), gi.join(','));
+check('O2 the order the pipeline receives carries positions and gallery addresses only, never the private note',
+  await (async () => { const t = await (await mf.dispatchFetch(url + '/api/pipeline/gallery-order', { headers: { Authorization: 'Bearer ' + PIPELINE_TOKEN } })).text();
+    return !t.includes('Held for') && !/"note"/.test(t) && JSON.parse(t).positions.some(e => e.position === 2 && e.slug === 'niamh-synthetic'); })());
+check('O3 after a reviewed update is published, the artist keeps position 02 (no automatic reordering)', gridItems()[1] === 'card:niamh-synthetic');
+const aid = (await call('GET', '/api/admin/gallery-order', FOUNDER)).j.positions[1].artist_id;
+r = await call('PUT', '/api/admin/gallery-order', A, { positions: [{ position: 9, state: 'artist', artist_id: aid }] });
+check('O4 the artist cannot change gallery positions (403)', r.s === 403);
+const headO = git('rev-parse', 'HEAD');
+await call('PUT', '/api/admin/gallery-order', FOUNDER, { positions: [{ position: 1, state: 'reserved', note: 'Held for a named artist (private)' }, { position: 7, state: 'artist', artist_id: aid }] });
+r = publish(); gi = gridItems();
+check('O5 the founder moves the artist to 07: the next pipeline run commits ONLY the grid and every guard passes',
+  r.status === 0 && /gallery order · verified \(simulated\)/.test(r.stdout) && gi[0] === 'reserved' && gi[6] === 'card:niamh-synthetic' && gi.filter(x => x.startsWith('card')).length === 1 &&
+  git('diff', '--name-only', headO, 'HEAD') === 'plotart/gallery/index.html', r.stdout + r.stderr + gi.join(','));
+r = publish();
+check('O6 an unchanged order publishes nothing', /nothing to publish/.test(r.stdout) && !/gallery order/.test(r.stdout), r.stdout + r.stderr);
 await call('POST', `/api/artworks/${works[9]}/archive`, A, { archived: true });
 r = publish();
 check('I6 removing a work drops the gallery to 9 and is NOT blocked (30-day top-up instead)', r.status === 0 && !existsSync(join(SITE, 'plotart/artists/niamh-synthetic/burren-10.html')), r.stdout + r.stderr);

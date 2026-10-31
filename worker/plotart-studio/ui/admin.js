@@ -138,12 +138,82 @@
     });
   }
 
+
+  /* ---- Gallery order (founder only, 31 Oct 2026). The 25 positions of the public Virtual Gallery. Display order only:
+     a Founding 25 number is set separately below and never changes when cards move. */
+  async function order() {
+    let d = await api('GET', '/api/admin/gallery-order');
+    let pos = d.positions.map(p => ({ ...p })), dirty = false;
+    const two = n => String(n).padStart(2, '0');
+    const name = id => (d.artists.find(a => a.id === id) || {}).display_name || 'Artist';
+    const swap = (i, j) => { if (j < 0 || j >= pos.length) return; const a = pos[i], b = pos[j];
+      pos[i] = { ...b, position: a.position }; pos[j] = { ...a, position: b.position }; dirty = true; draw(j); };
+    function row(p, i) {
+      const body = p.state === 'artist'
+        ? `<p class="st-work-t">${E(p.display_name || name(p.artist_id))}</p><p class="st-work-s" style="margin:0">${p.live ? 'Live on plotnua.ie' : 'Not published yet · shows as ' + two(p.position) + ' until published'}${p.founding_number ? ' · Founding No. ' + p.founding_number : ''}</p>`
+        : p.state === 'reserved'
+        ? `<p class="st-work-t">Reserved</p><label class="st-go-note"><span class="st-muted">Private note (never shown publicly)</span><input type="text" maxlength="140" data-note="${i}" value="${E(p.note || '')}" placeholder="Who it is held for"></label>`
+        : `<p class="st-work-t st-muted" style="color:var(--stone)">Open</p><label class="st-go-note"><span class="st-muted">Place an artist</span><select data-assign="${i}"><option value="">Choose…</option>${d.artists.filter(a => !pos.some(q => q.artist_id === a.id)).map(a => `<option value="${a.id}">${E(a.display_name)}${a.live ? ' · live' : ''}${a.founding ? '' : ' · not Founding'}</option>`).join('')}</select></label>`;
+      const acts = p.state === 'artist' ? `<button class="st-btn st-btn--small" data-clear="${i}">Remove from position</button>`
+        : p.state === 'reserved' ? `<button class="st-btn st-btn--small" data-clear="${i}">Release</button>`
+        : `<button class="st-btn st-btn--small" data-reserve="${i}">Reserve</button>`;
+      return `<li class="st-go-row is-${p.state}" draggable="true" data-i="${i}" aria-label="Position ${two(p.position)}">
+        <span class="st-go-grip" aria-hidden="true">⠿</span><span class="st-go-n">${two(p.position)}</span>
+        <div class="st-go-body">${body}</div>
+        <div class="st-go-acts"><button class="st-btn st-btn--small st-go-mv" data-up="${i}" aria-label="Move position ${two(p.position)} up"${i === 0 ? ' disabled' : ''}>↑</button><button class="st-btn st-btn--small st-go-mv" data-down="${i}" aria-label="Move position ${two(p.position)} down"${i === pos.length - 1 ? ' disabled' : ''}>↓</button>${acts}</div></li>`;
+    }
+    function draw(focus) {
+      app.innerHTML = `<h1 class="st-h1">Gallery order</h1>
+        <p class="st-sub">The 25 positions of the public Virtual Gallery, in order. Drag a card onto another to swap them, or use ↑ ↓. Only you can change this. Saved changes reach plotnua.ie on the next publishing run (within about 10 minutes).</p>
+        <div class="st-go-bar"><span id="go-state" class="st-muted">${dirty ? 'Unsaved changes' : 'Saved'}</span><button class="st-btn st-btn--solid" id="go-save"${dirty ? '' : ' disabled'}>Save order</button></div>
+        <ol class="st-go" id="go">${pos.map(row).join('')}</ol>
+        <section class="st-card" style="margin-top:22px"><h2>Founding 25 numbers</h2>
+          <p class="st-muted">Each Founding Artist's permanent number. It is separate from the gallery order above: moving a card never changes it. Numbers are set only here, by you, and are never assigned automatically.</p>
+          <div class="st-scroll"><table class="st-table"><thead><tr><th>Artist</th><th>Founding No.</th></tr></thead><tbody>
+          ${d.artists.filter(a => a.founding).map(a => `<tr><td><b style="color:var(--ivory)">${E(a.display_name)}</b>${a.live ? ' <span class="st-muted">· live</span>' : ''}</td><td><select data-fn="${a.id}" aria-label="Founding 25 number for ${E(a.display_name)}"><option value="">—</option>${Array.from({ length: 25 }, (_, k) => k + 1).map(n => { const h = d.artists.find(x => x.founding_number === n && x.id !== a.id); return `<option value="${n}"${a.founding_number === n ? ' selected' : ''}${h ? ' disabled' : ''}>${n}${h ? ' · ' + E(h.display_name) : ''}</option>`; }).join('')}</select></td></tr>`).join('') || '<tr><td colspan="2" class="st-muted">No Founding Artists yet.</td></tr>'}
+          </tbody></table></div><p class="st-err" id="fnerr"></p></section>`;
+      wire();
+      if (focus != null) { const b = app.querySelector(`[data-i="${focus}"] .st-go-mv:not([disabled])`); if (b) b.focus(); }
+    }
+    function wire() {
+      const L = $('#go');
+      L.querySelectorAll('[data-up]').forEach(b => b.addEventListener('click', () => swap(+b.dataset.up, +b.dataset.up - 1)));
+      L.querySelectorAll('[data-down]').forEach(b => b.addEventListener('click', () => swap(+b.dataset.down, +b.dataset.down + 1)));
+      L.querySelectorAll('[data-reserve]').forEach(b => b.addEventListener('click', () => { pos[+b.dataset.reserve] = { position: pos[+b.dataset.reserve].position, state: 'reserved', note: '' }; dirty = true; draw(); }));
+      L.querySelectorAll('[data-clear]').forEach(b => b.addEventListener('click', () => { pos[+b.dataset.clear] = { position: pos[+b.dataset.clear].position, state: 'open' }; dirty = true; draw(); }));
+      L.querySelectorAll('[data-note]').forEach(f => f.addEventListener('input', () => { pos[+f.dataset.note].note = f.value; if (!dirty) { dirty = true; $('#go-state').textContent = 'Unsaved changes'; $('#go-save').disabled = false; } }));
+      L.querySelectorAll('[data-assign]').forEach(f => f.addEventListener('change', () => { if (!f.value) return; const a = d.artists.find(x => x.id === f.value);
+        pos[+f.dataset.assign] = { position: pos[+f.dataset.assign].position, state: 'artist', artist_id: a.id, display_name: a.display_name, live: a.live, founding_number: a.founding_number }; dirty = true; draw(); }));
+      let from = null;
+      L.querySelectorAll('.st-go-row').forEach(r => {
+        r.addEventListener('dragstart', e => { from = +r.dataset.i; r.classList.add('is-drag'); e.dataTransfer.effectAllowed = 'move'; e.dataTransfer.setData('text/plain', String(from)); });
+        r.addEventListener('dragend', () => r.classList.remove('is-drag'));
+        r.addEventListener('dragover', e => { e.preventDefault(); r.classList.add('is-over'); });
+        r.addEventListener('dragleave', () => r.classList.remove('is-over'));
+        r.addEventListener('drop', e => { e.preventDefault(); r.classList.remove('is-over'); const to = +r.dataset.i; if (from !== null && from !== to) swap(from, to); from = null; });
+      });
+      $('#go-save').addEventListener('click', async () => {
+        const b = $('#go-save'); b.disabled = true;
+        try { d = await api('PUT', '/api/admin/gallery-order', { positions: pos.filter(p => p.state !== 'open').map(p => ({ position: p.position, state: p.state, artist_id: p.artist_id, note: p.note })) });
+          pos = d.positions.map(p => ({ ...p })); dirty = false; draw(); say('Saved · plotnua.ie updates on the next publishing run'); }
+        catch (e) { b.disabled = false; say(e.message, true); }
+      });
+      app.querySelectorAll('[data-fn]').forEach(f => f.addEventListener('change', async () => {
+        try { await api('PUT', `/api/admin/artists/${f.dataset.fn}/founding-number`, { founding_number: f.value ? Number(f.value) : null }); say('Founding number saved');
+          d = await api('GET', '/api/admin/gallery-order'); if (!dirty) pos = d.positions.map(p => ({ ...p })); draw(); }
+        catch (e) { $('#fnerr').textContent = e.message; }
+      }));
+    }
+    addEventListener('beforeunload', e => { if (dirty && location.pathname.startsWith('/admin/gallery')) { e.preventDefault(); e.returnValue = ''; } });
+    draw();
+  }
+
   async function render() {
     const h = location.hash || '#/', path = location.pathname.replace(/\/$/, '');
     const am = path.match(/^\/admin\/applications\/(F25-\d{6}-[0-9A-F]{6})$/);
-    document.querySelectorAll('.st-tabs a').forEach(a => a.toggleAttribute('aria-current', a.dataset.t === (path.startsWith('/admin/applications') ? 'apps' : 'desk')));
+    document.querySelectorAll('.st-tabs a').forEach(a => a.toggleAttribute('aria-current', a.dataset.t === (path.startsWith('/admin/applications') ? 'apps' : path === '/admin/gallery' ? 'order' : 'desk')));
     document.querySelectorAll('.st-tabs a[aria-current]').forEach(a => a.setAttribute('aria-current', 'page'));
-    try { if (am) await appView(am[1]); else if (path === '/admin/applications') await apps(); else if (h.startsWith('#/review/')) await review(h.slice(9)); else await home(); window.scrollTo(0, 0); }
+    try { if (am) await appView(am[1]); else if (path === '/admin/gallery') await order(); else if (path === '/admin/applications') await apps(); else if (h.startsWith('#/review/')) await review(h.slice(9)); else await home(); window.scrollTo(0, 0); }
     catch (e) { app.innerHTML = `<div class="st-card"><h2>Something went wrong</h2><p class="st-muted">${E(e.message)}</p></div>`; }
   }
   addEventListener('hashchange', render);

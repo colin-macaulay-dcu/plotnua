@@ -231,24 +231,53 @@ def artwork_body(pkg, w, prev_w, next_w, preview=False, enquiry_endpoint=None):
        cta, ai, nav)
 
 
-def vg_grid(pkgs, spaces=25):
-    """The Virtual Gallery collection grid: one card per published artist (in the given order), then the remaining
-    numbered spaces up to 25. Shared by build-plotart.py and the production content pipeline."""
-    out = []
-    for pkg in pkgs:
-        a = pkg["artist"]
-        w, im = card_image(pkg)
-        d = pick(im, 600)
-        out.append(("""
+def _vg_card(pkg):
+    a = pkg["artist"]
+    w, im = card_image(pkg)
+    d = pick(im, 600)
+    return ("""
     <li class="pa-gcard%s"><a class="pa-gcard-tile" href="../artists/%s/" data-pa-track="vg_artist">
       <span class="pa-gcard-art"><img src="../artists/%s/img/%s" width="%d" height="%d" alt="%s" loading="lazy" decoding="async"></span>
       <span class="pa-gcard-cap">%s<span class="pa-gcard-name">%s</span><span class="pa-gcard-meta">%s</span></span></a></li>""") % (
-            " is-founding" if a.get("founding") else "", E(a["slug"]), E(a["slug"]), E(d["file"]), d["pixels"][0], d["pixels"][1], E(im["alt"]),
-            '<span class="pa-gcard-badge">Founding Artist</span>' if a.get("founding") else "",
-            E(a["display_name"]), E(meta_line(a))))
-    for n in range(len(out) + 1, max(spaces, len(out)) + 1):
-        out.append("""
-    <li class="pa-gspace pa-gspace--t%d" aria-label="Gallery space %02d"><span class="pa-gspace-tile" aria-hidden="true"><span class="pa-gspace-light"></span><span class="pa-gspace-n">%02d</span></span></li>""" % ((n - 1) % 5 + 1, n, n))
+        " is-founding" if a.get("founding") else "", E(a["slug"]), E(a["slug"]), E(d["file"]), d["pixels"][0], d["pixels"][1], E(im["alt"]),
+        '<span class="pa-gcard-badge">Founding Artist</span>' if a.get("founding") else "",
+        E(a["display_name"]), E(meta_line(a)))
+
+
+def _vg_space(n, reserved=False):
+    if reserved:   # founder-reserved (Gallery order, 31 Oct 2026): the number and RESERVED only; never a name
+        return """
+    <li class="pa-gspace pa-gspace--t%d is-reserved" aria-label="Gallery space %02d, reserved"><span class="pa-gspace-tile" aria-hidden="true"><span class="pa-gspace-light"></span><span class="pa-gspace-n">%02d</span><span class="pa-gspace-r">Reserved</span></span></li>""" % ((n - 1) % 5 + 1, n, n)
+    return """
+    <li class="pa-gspace pa-gspace--t%d" aria-label="Gallery space %02d"><span class="pa-gspace-tile" aria-hidden="true"><span class="pa-gspace-light"></span><span class="pa-gspace-n">%02d</span></span></li>""" % ((n - 1) % 5 + 1, n, n)
+
+
+def vg_grid(pkgs, spaces=25, layout=None):
+    """The Virtual Gallery collection grid. Shared by build-plotart.py and the production content pipeline.
+
+    Without a layout: one card per published artist (in the given order), then the remaining numbered spaces up to 25.
+    With the founder's layout from PlotArt Studio (Gallery order, 31 Oct 2026) -- {"positions": [{"position", "slug",
+    "reserved"}], "extra": [slug, ...]} -- position N shows the artist placed there if their gallery is published here,
+    RESERVED if the founder reserved it, and otherwise its plain number (an artist placed but not yet published keeps the
+    plain number). Published artists without a position follow the 25 spaces in the layout's "extra" order, then by
+    gallery address. The layout never carries a reservation note."""
+    if layout is None:
+        out = [_vg_card(p) for p in pkgs]
+        for n in range(len(out) + 1, max(spaces, len(out)) + 1):
+            out.append(_vg_space(n))
+        return "".join(out)
+    by = {p["artist"]["slug"]: p for p in pkgs}
+    pos = {int(e["position"]): e for e in layout.get("positions", []) if 1 <= int(e["position"]) <= spaces}
+    out, placed = [], set()
+    for n in range(1, spaces + 1):
+        e = pos.get(n) or {}
+        if e.get("slug") in by and e["slug"] not in placed:
+            out.append(_vg_card(by[e["slug"]])); placed.add(e["slug"])
+        else:
+            out.append(_vg_space(n, reserved=bool(e.get("reserved"))))
+    rest = [s for s in layout.get("extra", []) if s in by and s not in placed]
+    rest += sorted(s for s in by if s not in placed and s not in rest)
+    out += [_vg_card(by[s]) for s in rest]
     return "".join(out)
 
 

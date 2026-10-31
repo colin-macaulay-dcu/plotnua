@@ -130,3 +130,27 @@ body.st{ background:var(--anth); min-height:100vh; }
 .st-appthumbs img{ width:64px; height:64px; object-fit:cover; border-radius:6px; background:#111; }
 .st-appgrid{ display:grid; grid-template-columns:repeat(auto-fill, minmax(min(100%, 260px), 1fr)); gap:12px; align-items:start; }
 .st-appgrid img{ width:100%; height:auto; display:block; border-radius:8px; background:#111; }
+
+/* Gallery order (founder, 31 Oct 2026) */
+.st-go{ list-style:none; margin:0; padding:0; display:grid; gap:8px; }
+.st-go-row{ display:grid; grid-template-columns:18px 44px minmax(0,1fr) auto; gap:12px; align-items:center; padding:12px 14px; border-radius:14px; background:#2C2D30; border:1px solid rgba(242,235,224,.08); }
+.st-go-row.is-reserved{ border-color:rgba(207,133,102,.32); }
+.st-go-row.is-open{ background:#28292C; }
+.st-go-row.is-drag{ opacity:.45; }
+.st-go-row.is-over{ border-color:rgba(207,133,102,.7); box-shadow:0 0 0 1px rgba(207,133,102,.5) inset; }
+.st-go-grip{ color:var(--mute); cursor:grab; font-size:18px; line-height:1; }
+.st-go-n{ font-family:var(--serif); font-size:28px; color:var(--terra-text); line-height:1; }
+.st-go-body .st-work-t{ font-size:19px; margin:0 0 2px; }
+.st-go-note{ display:grid; gap:4px; margin-top:4px; font-size:12.5px; }
+.st-go-note input, .st-go-note select{ min-height:38px; border-radius:10px; border:1px solid rgba(242,235,224,.16); background:#232427; color:var(--ivory); padding:0 10px; font:inherit; font-size:14px; max-width:340px; }
+.st-go-acts{ display:flex; gap:6px; flex-wrap:wrap; justify-content:flex-end; }
+.st-go-mv{ min-width:38px; padding:0 10px; }
+.st-go-mv[disabled]{ opacity:.35; }
+.st-go-bar{ position:sticky; top:0; z-index:5; display:flex; justify-content:space-between; align-items:center; gap:12px; padding:10px 0 12px; background:var(--wall, #27282A); }
+.st-table select{ min-height:36px; border-radius:10px; border:1px solid rgba(242,235,224,.16); background:#232427; color:var(--ivory); padding:0 8px; font:inherit; }
+@media (max-width:640px){
+  .st-go-row{ grid-template-columns:40px minmax(0,1fr); gap:8px 10px; }
+  .st-go-grip{ display:none; }
+  .st-go-acts{ grid-column:1 / -1; justify-content:flex-start; }
+  .st-go-note input, .st-go-note select{ max-width:none; width:100%; }
+}

@@ -230,6 +230,88 @@ async function previewImage(env, img) {
 }
 
 /* ---------------------------------------------------------------- founder */
+/* ---- Gallery order (founder decision 31 Oct 2026). Display positions 01-25 in the public Virtual Gallery, set only by
+   the founder. A position holds an artist or a reservation (with a private note that is never exported). An artist's
+   permanent Founding 25 number (artists.founding_number) is separate and never changes when the order changes. */
+const POSITIONS = 25;
+// An artist is visible to the pipeline only while a gallery is published or being published (not removed).
+const VISIBLE_SQL = `SELECT q.artist_id FROM publish_queue q WHERE q.status IN ('exporting','published')
+  AND q.version = (SELECT MAX(q2.version) FROM publish_queue q2 WHERE q2.artist_id = q.artist_id AND q2.status IN ('exporting','published'))
+  AND q.kind <> 'remove'`;
+async function galleryOrder(env) {
+  const rows = await all(env, `SELECT g.position, g.artist_id, g.reserved, g.note, g.updated_at, a.display_name, a.slug, a.founding, a.founding_number, a.account_status
+    FROM gallery_positions g LEFT JOIN artists a ON a.id = g.artist_id ORDER BY g.position`);
+  const visible = new Set((await all(env, VISIBLE_SQL)).map(r => r.artist_id));
+  const by = new Map(rows.map(r => [r.position, r]));
+  const positions = [];
+  for (let n = 1; n <= POSITIONS; n++) {
+    const r = by.get(n);
+    positions.push(!r ? { position: n, state: 'open' } : r.reserved ? { position: n, state: 'reserved', note: r.note || '' }
+      : { position: n, state: 'artist', artist_id: r.artist_id, display_name: r.display_name, slug: r.slug, founding: !!r.founding,
+          founding_number: r.founding_number, live: visible.has(r.artist_id) });
+  }
+  const placed = new Set(rows.filter(r => r.artist_id).map(r => r.artist_id));
+  const artists = (await all(env, `SELECT id, display_name, slug, founding, founding_number, account_status, first_published_at FROM artists
+    WHERE account_status IN ('invited','active') ORDER BY founding DESC, display_name`))
+    .map(a => ({ ...a, founding: !!a.founding, live: visible.has(a.id), placed: placed.has(a.id) }));
+  return { positions, artists };
+}
+// What the publishing pipeline sees: position, the gallery address of a published (or publishing) artist, or reserved.
+async function pipelineOrder(env) {
+  const rows = await all(env, 'SELECT g.position, g.artist_id, g.reserved, a.slug FROM gallery_positions g LEFT JOIN artists a ON a.id = g.artist_id ORDER BY g.position');
+  const visible = new Set((await all(env, VISIBLE_SQL)).map(r => r.artist_id));
+  const positions = rows.map(r => ({ position: r.position, slug: r.artist_id && visible.has(r.artist_id) ? r.slug : null, reserved: !!r.reserved }));
+  const placed = new Set(rows.map(r => r.artist_id).filter(Boolean));
+  const extra = (await all(env, `SELECT id, slug FROM artists WHERE id IN (${VISIBLE_SQL}) ORDER BY COALESCE(first_published_at, '9999'), created_at, id`))
+    .filter(a => !placed.has(a.id)).map(a => a.slug);
+  return { positions, extra };
+}
+// First publication of a Founding Artist with no position: the lowest position that is neither taken nor reserved.
+// Never moves anyone; never takes a reserved position; does nothing when all 25 are taken.
+async function placeOnFirstPublication(env, artistId) {
+  const a = await one(env, 'SELECT id, founding FROM artists WHERE id = ?', artistId);
+  if (!a || !a.founding || await one(env, 'SELECT position FROM gallery_positions WHERE artist_id = ?', artistId)) return null;
+  const used = new Set((await all(env, 'SELECT position FROM gallery_positions')).map(r => r.position));
+  for (let n = 1; n <= POSITIONS; n++) {
+    if (used.has(n)) continue;
+    await env.DB.prepare('INSERT INTO gallery_positions (position, artist_id, reserved, note, updated_at) VALUES (?,?,0,NULL,?)').bind(n, artistId, now()).run();
+    await audit(env, 'pipeline', 'pipeline', 'position_assigned', artistId, { position: n, rule: 'lowest open position on first publication' });
+    return n;
+  }
+  return null;
+}
+async function saveGalleryOrder(env, founder, body) {
+  const list = Array.isArray(body && body.positions) ? body.positions : null;
+  if (!list || list.length > POSITIONS) throw new Bad('Send the positions to save');
+  const seenPos = new Set(), seenArt = new Set(), rows = [];
+  for (const e of list) {
+    const n = Number(e && e.position);
+    if (!Number.isInteger(n) || n < 1 || n > POSITIONS || seenPos.has(n)) throw new Bad('Each position is a number from 1 to 25, used once');
+    seenPos.add(n);
+    if (e.state === 'reserved') {
+      const note = e.note == null || String(e.note).trim() === '' ? null : L.text(e.note, 1, 140, 'Reservation note');
+      rows.push({ position: n, artist_id: null, reserved: 1, note });
+    } else if (e.state === 'artist') {
+      const id = String(e.artist_id || '');
+      if (!/^a[0-9a-z]+$/.test(id) || seenArt.has(id)) throw new Bad('Each artist can hold one position');
+      if (!(await one(env, "SELECT id FROM artists WHERE id = ? AND account_status IN ('invited','active')", id))) throw new Bad('That artist can’t be placed', 409);
+      seenArt.add(id);
+      rows.push({ position: n, artist_id: id, reserved: 0, note: null });
+    } else if (e.state !== 'open') throw new Bad('Each position is open, reserved or an artist');
+  }
+  // Artists who keep a position but are no longer active (suspended or ended) keep it unless the founder releases it.
+  const kept = await all(env, "SELECT g.position, g.artist_id FROM gallery_positions g JOIN artists a ON a.id = g.artist_id WHERE a.account_status NOT IN ('invited','active')");
+  for (const k of kept) if (!seenPos.has(k.position) && !seenArt.has(k.artist_id)) rows.push({ position: k.position, artist_id: k.artist_id, reserved: 0, note: null });
+  const before = await all(env, 'SELECT position, artist_id, reserved, note FROM gallery_positions ORDER BY position');
+  const t = now();
+  await env.DB.batch([env.DB.prepare('DELETE FROM gallery_positions'),
+    ...rows.map(r => env.DB.prepare('INSERT INTO gallery_positions (position, artist_id, reserved, note, updated_at) VALUES (?,?,?,?,?)').bind(r.position, r.artist_id, r.reserved, r.note, t))]);
+  const brief = rs => rs.slice().sort((a, b) => a.position - b.position).map(r => r.reserved ? `${r.position}:reserved` : `${r.position}:${r.artist_id}`);
+  await audit(env, founder, 'founder', 'gallery_order', null, { before: brief(before), after: brief(rows),
+    notes_changed: JSON.stringify(before.filter(r => r.reserved).map(r => [r.position, r.note])) !== JSON.stringify(rows.filter(r => r.reserved).sort((a, b) => a.position - b.position).map(r => [r.position, r.note])) });
+  return galleryOrder(env);
+}
+
 async function overview(env) {
   const artists = await all(env, 'SELECT id, slug, email, display_name, founding, account_status, licence_version, first_published_at, application_ref, created_at FROM artists ORDER BY created_at');
   const out = [];
@@ -389,11 +471,18 @@ async function route(req, env) {
   if (p.startsWith('/api/pipeline/')) {
     if (!env.PIPELINE_TOKEN || req.headers.get('Authorization') !== `Bearer ${env.PIPELINE_TOKEN}`) return json({ ok: false }, 401);
     if (p === '/api/pipeline/queue' && m === 'GET') return json({ ok: true, items: await all(env, "SELECT * FROM publish_queue WHERE status='ready' ORDER BY created_at") });
+    if (p === '/api/pipeline/gallery-order' && m === 'GET') return json({ ok: true, ...(await pipelineOrder(env)) });
+    if (p === '/api/pipeline/gallery-order/result' && m === 'POST') {
+      const b = await req.json();
+      await audit(env, 'pipeline', 'pipeline', b.status === 'published' ? 'gallery_order_published' : 'gallery_order_failed', null, { detail: String(b.detail || '').slice(0, 2000) });
+      return json({ ok: true });
+    }
     let mm;
     if ((mm = p.match(/^\/api\/pipeline\/export\/(q[0-9a-z]+)$/)) && m === 'POST') {
       const q = await one(env, "SELECT * FROM publish_queue WHERE id = ? AND status IN ('ready','exporting')", mm[1]);
       if (!q) throw new Bad('Not ready', 409);
       await env.DB.prepare("UPDATE publish_queue SET status='exporting', updated_at=? WHERE id=?").bind(now(), q.id).run();
+      if (q.kind !== 'remove') await placeOnFirstPublication(env, q.artist_id);
       return json({ ok: true, ...(await exportFor(env, q)) });
     }
     if ((mm = p.match(/^\/api\/pipeline\/image\/(q[0-9a-z]+)\/(i[0-9a-z]+)$/)) && m === 'GET') {
@@ -438,6 +527,20 @@ async function route(req, env) {
     if (me.role !== 'founder') return p.startsWith('/api/') ? json({ ok: false, error: 'Not available' }, 403) : html('Not available', 403);
     if (p === '/admin' || p === '/admin/') return html(A.ADMIN_HTML);
     let mm;
+    if (p === '/admin/gallery') return html(A.ADMIN_HTML);
+    if (p === '/api/admin/gallery-order' && m === 'GET') return json({ ok: true, ...(await galleryOrder(env)) });
+    if (p === '/api/admin/gallery-order' && m === 'PUT') return json({ ok: true, ...(await saveGalleryOrder(env, me.email, await req.json())) });
+    if ((mm = p.match(/^\/api\/admin\/artists\/(a[0-9a-z]+)\/founding-number$/)) && m === 'PUT') {
+      const b = await req.json(), a = await one(env, 'SELECT id, founding, founding_number FROM artists WHERE id = ?', mm[1]);
+      if (!a) throw new Bad('Not found', 404);
+      const n = b.founding_number == null || b.founding_number === '' ? null : Number(b.founding_number);
+      if (n !== null && (!Number.isInteger(n) || n < 1 || n > 25)) throw new Bad('A Founding 25 number is from 1 to 25');
+      if (n !== null && !a.founding) throw new Bad('Only a Founding Artist has a Founding 25 number');
+      if (n !== null && await one(env, 'SELECT id FROM artists WHERE founding_number = ? AND id <> ?', n, a.id)) throw new Bad(`No. ${n} is already held by another artist`, 409);
+      await env.DB.prepare('UPDATE artists SET founding_number=?, updated_at=? WHERE id=?').bind(n, now(), a.id).run();
+      await audit(env, me.email, 'founder', 'founding_number', a.id, { from: a.founding_number, to: n });
+      return json({ ok: true, founding_number: n });
+    }
     /* ---- Founding 25 applications with artwork images (private bucket plotart-applications; founder only) */
     if (p === '/admin/applications' || /^\/admin\/applications\/F25-\d{6}-[0-9A-F]{6}$/.test(p)) return html(A.ADMIN_HTML);
     if ((mm = p.match(/^\/admin\/applications\/(F25-\d{6}-[0-9A-F]{6})\/img\/([1-5]\.(?:jpg|png|webp))$/)) && m === 'GET') {
