@@ -8345,6 +8345,117 @@
         "date": "2026-10-31",
         "subject": "Founder's credentialed DISC-016 master, added for the hero copies"
       }
+    },
+    {
+      "asset": "assets/disc014/img/Driveway-Income-01-Before-MASTER.jpeg",
+      "sha256": "8cdc36598291f2949e370a84d3b4d4134a68fdffc82bf2100c5fabfa72253604",
+      "bytes": 950797,
+      "pixels": [
+        1408,
+        768
+      ],
+      "class": "AI_ILLUSTRATION",
+      "what": "Discovery illustration (hero master); the page shows its pair-prepared copy",
+      "depicts_named_product": false,
+      "depicts_named_organisation": false,
+      "origin": {
+        "basis": "C2PA_EMBEDDED",
+        "evidence": "Embedded C2PA manifest, read with c2pa-python: issuer Google LLC, signed 2026-09-10T13:52:54+00:00; the credential chain records c2pa.created by Google Generative AI with digital source type trainedAlgorithmicMedia; 0 ingredient link(s), 0 credentialed; validation Valid. Founder's master file, the same picture as assets/img/b5cbac3fff9072d4.jpg (whose bytes carry no credential).",
+        "declared_under": "Governance 2.0, Rule 2 (30 Oct 2026)"
+      },
+      "generated": {
+        "tool": "Google LLC generative AI, per the file's own signed C2PA credential",
+        "date": "2026-09-10"
+      },
+      "prompt_status": "UNAVAILABLE",
+      "reference_disclosure": {
+        "status": "UNCERTAIN",
+        "statement": "The credential records no input image. Credentials do not record conversation context, so inputs cannot be ruled out."
+      },
+      "permitted_surfaces": [
+        "discovery"
+      ],
+      "content_credentials": {
+        "embeds_c2pa": true
+      },
+      "introduced": {
+        "date": "2026-10-31",
+        "subject": "Founder's credentialed master, added for the Release 5 hero copies"
+      }
+    },
+    {
+      "asset": "assets/disc014/img/Driveway-Income-02-Possible-MASTER.jpeg",
+      "sha256": "76941f793c2c6b6b22080891c31dc49aaf9247024fd43cad711f0e09fb7c04ef",
+      "bytes": 937043,
+      "pixels": [
+        1408,
+        768
+      ],
+      "class": "AI_ILLUSTRATION",
+      "what": "Discovery illustration (hero master); the page shows its pair-prepared copy",
+      "depicts_named_product": false,
+      "depicts_named_organisation": false,
+      "origin": {
+        "basis": "C2PA_EMBEDDED",
+        "evidence": "Embedded C2PA manifest, read with c2pa-python: issuer Google LLC, signed 2026-09-10T13:49:34+00:00; the credential chain records c2pa.created by Google Generative AI with digital source type trainedAlgorithmicMedia; 0 ingredient link(s), 0 credentialed; validation Valid. Founder's master file, the same picture as assets/img/4a4a1e4b08edaada.jpg (whose bytes carry no credential).",
+        "declared_under": "Governance 2.0, Rule 2 (30 Oct 2026)"
+      },
+      "generated": {
+        "tool": "Google LLC generative AI, per the file's own signed C2PA credential",
+        "date": "2026-09-10"
+      },
+      "prompt_status": "UNAVAILABLE",
+      "reference_disclosure": {
+        "status": "UNCERTAIN",
+        "statement": "The credential records no input image. Credentials do not record conversation context, so inputs cannot be ruled out."
+      },
+      "permitted_surfaces": [
+        "discovery"
+      ],
+      "content_credentials": {
+        "embeds_c2pa": true
+      },
+      "introduced": {
+        "date": "2026-10-31",
+        "subject": "Founder's credentialed master, added for the Release 5 hero copies"
+      }
+    },
+    {
+      "asset": "assets/disc021/img/Your-Home-On-Screen-01-Before-MASTER.png",
+      "sha256": "87db40a77518a650eeefa058bc3f8c0b236e58d055147bc6830c78631a305a7c",
+      "bytes": 2580862,
+      "pixels": [
+        1408,
+        768
+      ],
+      "class": "AI_ILLUSTRATION",
+      "what": "Discovery illustration (hero master); the page shows its pair-prepared copy",
+      "depicts_named_product": false,
+      "depicts_named_organisation": false,
+      "origin": {
+        "basis": "C2PA_EMBEDDED",
+        "evidence": "Embedded C2PA manifest, read with c2pa-python: issuer Google LLC, signed 2026-08-11T07:51:42+00:00; the credential chain records c2pa.created by Google Generative AI with digital source type trainedAlgorithmicMedia; 1 ingredient link(s), 1 credentialed; validation Valid. Founder's master file, the same picture as assets/img/ea3f24eedab76294.jpg (whose bytes carry no credential).",
+        "declared_under": "Governance 2.0, Rule 2 (30 Oct 2026)"
+      },
+      "generated": {
+        "tool": "Google LLC generative AI, per the file's own signed C2PA credential",
+        "date": "2026-08-11"
+      },
+      "prompt_status": "UNAVAILABLE",
+      "reference_disclosure": {
+        "status": "CREDENTIALED",
+        "statement": "The credential records 1 input image(s), each carrying its own signed credential."
+      },
+      "permitted_surfaces": [
+        "discovery"
+      ],
+      "content_credentials": {
+        "embeds_c2pa": true
+      },
+      "introduced": {
+        "date": "2026-10-31",
+        "subject": "Founder's credentialed master, added for the Release 5 hero copies"
+      }
     }
   ],
   "legacy_undeclared": [
@@ -11991,242 +12102,242 @@
     },
     {
       "asset": "assets/disc014/img/DISC-014-HERO-BEFORE.jpg",
-      "sha256": "ff54673e684c343481fa24ac61738b8741261ad9046658fd35ba557ad448e651",
-      "bytes": 304413,
+      "sha256": "8895876a84c83e055445e9652c25470c84986a34f75871ffa45ad1a98e68319a",
+      "bytes": 320219,
       "pixels": [
         1343,
         732
       ],
       "derived_from": {
-        "asset": "assets/img/b5cbac3fff9072d4.jpg",
-        "sha256": "4a4944ffadfb04b8eac147ebd96fd5b8b6aeb1497c7dbf1ed2f55e6efae2aceb"
+        "asset": "assets/disc014/img/Driveway-Income-01-Before-MASTER.jpeg",
+        "sha256": "8cdc36598291f2949e370a84d3b4d4134a68fdffc82bf2100c5fabfa72253604"
       },
       "method": "crop",
       "edit": {
-        "description": "Before/Possible pair preparation for the Driveway Income hero slider (Governance 2.0, Rule 3): the BEFORE cropped to the frame it shares with the aligned POSSIBLE. Pixels unchanged.",
+        "description": "Before/Possible pair preparation for the Driveway Income hero slider (Governance 2.0, Rule 3): the BEFORE cropped to the frame it shares with the aligned POSSIBLE.",
         "operation": "Crop x 32-1375, y 0-732 of the source (no resampling).",
         "verified_by": "atlas-tools/build-release5-hero-pairs.py --check"
       },
       "encoder": "Pillow 12.3.0, JPEG quality 92, progressive",
       "made": "2026-10-31",
       "content_credentials": {
-        "source_file_embeds_c2pa": false,
+        "source_file_embeds_c2pa": true,
         "derivative_embeds_c2pa": false,
-        "note": "The source carries no embedded credential. This file inherits the source's LEGACY_UNDECLARED state and declares nothing."
+        "note": "Editing and re-encoding remove the embedded C2PA credential. This copy carries NO signed credential; the master keeps it, and its record carries the AI classification."
       }
     },
     {
       "asset": "assets/disc014/img/DISC-014-HERO-BEFORE-full.webp",
-      "sha256": "57872d7b7cf88ed39abd9b97f608ddfc992e0880563bb88b59f0f05233443db7",
-      "bytes": 182204,
+      "sha256": "dd0b04d0d955d557bede56197d19f853855f018bea79634d5fca9d2cc1e0144b",
+      "bytes": 178910,
       "pixels": [
         1343,
         732
       ],
       "derived_from": {
-        "asset": "assets/img/b5cbac3fff9072d4.jpg",
-        "sha256": "4a4944ffadfb04b8eac147ebd96fd5b8b6aeb1497c7dbf1ed2f55e6efae2aceb"
+        "asset": "assets/disc014/img/Driveway-Income-01-Before-MASTER.jpeg",
+        "sha256": "8cdc36598291f2949e370a84d3b4d4134a68fdffc82bf2100c5fabfa72253604"
       },
       "method": "crop",
       "edit": {
-        "description": "Before/Possible pair preparation for the Driveway Income hero slider (Governance 2.0, Rule 3): the BEFORE cropped to the frame it shares with the aligned POSSIBLE. Pixels unchanged.",
+        "description": "Before/Possible pair preparation for the Driveway Income hero slider (Governance 2.0, Rule 3): the BEFORE cropped to the frame it shares with the aligned POSSIBLE.",
         "operation": "Crop x 32-1375, y 0-732 of the source (no resampling).",
         "verified_by": "atlas-tools/build-release5-hero-pairs.py --check"
       },
       "encoder": "Pillow 12.3.0, WebP quality 80, method 6",
       "made": "2026-10-31",
       "content_credentials": {
-        "source_file_embeds_c2pa": false,
+        "source_file_embeds_c2pa": true,
         "derivative_embeds_c2pa": false,
-        "note": "The source carries no embedded credential. This file inherits the source's LEGACY_UNDECLARED state and declares nothing."
+        "note": "Editing and re-encoding remove the embedded C2PA credential. This copy carries NO signed credential; the master keeps it, and its record carries the AI classification."
       }
     },
     {
       "asset": "assets/disc014/img/DISC-014-HERO-BEFORE-960.webp",
-      "sha256": "f88737f6a0a4eeee4c4f9be1047657c71fc2061223b00a281791fab5117622fc",
-      "bytes": 93240,
+      "sha256": "92ca938156dbbadd13cb133d00611dd80c9c394eb20f6527f91b1d0bebcd3c68",
+      "bytes": 92296,
       "pixels": [
         960,
         523
       ],
       "derived_from": {
-        "asset": "assets/img/b5cbac3fff9072d4.jpg",
-        "sha256": "4a4944ffadfb04b8eac147ebd96fd5b8b6aeb1497c7dbf1ed2f55e6efae2aceb"
+        "asset": "assets/disc014/img/Driveway-Income-01-Before-MASTER.jpeg",
+        "sha256": "8cdc36598291f2949e370a84d3b4d4134a68fdffc82bf2100c5fabfa72253604"
       },
       "method": "crop",
       "edit": {
-        "description": "Before/Possible pair preparation for the Driveway Income hero slider (Governance 2.0, Rule 3): the BEFORE cropped to the frame it shares with the aligned POSSIBLE. Pixels unchanged.",
+        "description": "Before/Possible pair preparation for the Driveway Income hero slider (Governance 2.0, Rule 3): the BEFORE cropped to the frame it shares with the aligned POSSIBLE.",
         "operation": "Crop x 32-1375, y 0-732 of the source (no resampling).",
         "verified_by": "atlas-tools/build-release5-hero-pairs.py --check"
       },
       "encoder": "Pillow 12.3.0, WebP quality 80, method 6, Lanczos resize to 960px wide",
       "made": "2026-10-31",
       "content_credentials": {
-        "source_file_embeds_c2pa": false,
+        "source_file_embeds_c2pa": true,
         "derivative_embeds_c2pa": false,
-        "note": "The source carries no embedded credential. This file inherits the source's LEGACY_UNDECLARED state and declares nothing."
+        "note": "Editing and re-encoding remove the embedded C2PA credential. This copy carries NO signed credential; the master keeps it, and its record carries the AI classification."
       }
     },
     {
       "asset": "assets/disc014/img/DISC-014-HERO-POSSIBLE.jpg",
-      "sha256": "555a285d7bf79f3a16ffe759bda35668413d8597c8629142c8f523e9f74c5a67",
-      "bytes": 326875,
+      "sha256": "f3130564d4e2741f8cf00f709b6c1759a08a851c691b13cee6a66fdc150122c3",
+      "bytes": 325121,
       "pixels": [
         1343,
         732
       ],
       "derived_from": {
-        "asset": "assets/img/4a4a1e4b08edaada.jpg",
-        "sha256": "5b6f0de932d06521f2a94ade347f35e5ff05a7af395609b57d3547734caea63d"
+        "asset": "assets/disc014/img/Driveway-Income-02-Possible-MASTER.jpeg",
+        "sha256": "76941f793c2c6b6b22080891c31dc49aaf9247024fd43cad711f0e09fb7c04ef"
       },
       "method": "pair-preparation",
       "edit": {
-        "description": "Before/Possible pair preparation for the Driveway Income hero slider (Governance 2.0, Rule 3): the POSSIBLE mapped onto the BEFORE's framing and cropped to the shared frame, so the two pictures align. Nothing painted, masked or generated.",
-        "operation": "Homography [[1.001139, 0.000441, -0.336122], [-0.000259, 1.018013, -48.002527], [0.0, 1e-06, 1.0]] (measured with SIFT + RANSAC on the static scene), Lanczos resampling, then crop x 32-1375, y 0-732.",
+        "description": "Before/Possible pair preparation for the Driveway Income hero slider (Governance 2.0, Rule 3): the POSSIBLE mapped onto the BEFORE's framing and cropped to the shared frame, so the two pictures align. Nothing painted or generated.",
+        "operation": "Homography [[1.001139, 0.000441, -0.336122], [-0.000259, 1.018013, -48.002527], [0.0, 1e-06, 1.0]] (SIFT + RANSAC on the static scene), Lanczos resampling, then crop x 32-1375, y 0-732.",
         "verified_by": "atlas-tools/build-release5-hero-pairs.py --check"
       },
       "encoder": "Pillow 12.3.0, JPEG quality 92, progressive",
       "made": "2026-10-31",
       "content_credentials": {
-        "source_file_embeds_c2pa": false,
+        "source_file_embeds_c2pa": true,
         "derivative_embeds_c2pa": false,
-        "note": "The source carries no embedded credential. This file inherits the source's LEGACY_UNDECLARED state and declares nothing."
+        "note": "Editing and re-encoding remove the embedded C2PA credential. This copy carries NO signed credential; the master keeps it, and its record carries the AI classification."
       }
     },
     {
       "asset": "assets/disc014/img/DISC-014-HERO-POSSIBLE-full.webp",
-      "sha256": "ce8ba71850117217df9e9d2f079f244072156cc8546b0fe223860654d15e1181",
-      "bytes": 185712,
+      "sha256": "1655b8f53efe558838cf6e7bbcfd5634fe9a90050968fff5828f0b92c518edcc",
+      "bytes": 182114,
       "pixels": [
         1343,
         732
       ],
       "derived_from": {
-        "asset": "assets/img/4a4a1e4b08edaada.jpg",
-        "sha256": "5b6f0de932d06521f2a94ade347f35e5ff05a7af395609b57d3547734caea63d"
+        "asset": "assets/disc014/img/Driveway-Income-02-Possible-MASTER.jpeg",
+        "sha256": "76941f793c2c6b6b22080891c31dc49aaf9247024fd43cad711f0e09fb7c04ef"
       },
       "method": "pair-preparation",
       "edit": {
-        "description": "Before/Possible pair preparation for the Driveway Income hero slider (Governance 2.0, Rule 3): the POSSIBLE mapped onto the BEFORE's framing and cropped to the shared frame, so the two pictures align. Nothing painted, masked or generated.",
-        "operation": "Homography [[1.001139, 0.000441, -0.336122], [-0.000259, 1.018013, -48.002527], [0.0, 1e-06, 1.0]] (measured with SIFT + RANSAC on the static scene), Lanczos resampling, then crop x 32-1375, y 0-732.",
+        "description": "Before/Possible pair preparation for the Driveway Income hero slider (Governance 2.0, Rule 3): the POSSIBLE mapped onto the BEFORE's framing and cropped to the shared frame, so the two pictures align. Nothing painted or generated.",
+        "operation": "Homography [[1.001139, 0.000441, -0.336122], [-0.000259, 1.018013, -48.002527], [0.0, 1e-06, 1.0]] (SIFT + RANSAC on the static scene), Lanczos resampling, then crop x 32-1375, y 0-732.",
         "verified_by": "atlas-tools/build-release5-hero-pairs.py --check"
       },
       "encoder": "Pillow 12.3.0, WebP quality 80, method 6",
       "made": "2026-10-31",
       "content_credentials": {
-        "source_file_embeds_c2pa": false,
+        "source_file_embeds_c2pa": true,
         "derivative_embeds_c2pa": false,
-        "note": "The source carries no embedded credential. This file inherits the source's LEGACY_UNDECLARED state and declares nothing."
+        "note": "Editing and re-encoding remove the embedded C2PA credential. This copy carries NO signed credential; the master keeps it, and its record carries the AI classification."
       }
     },
     {
       "asset": "assets/disc014/img/DISC-014-HERO-POSSIBLE-960.webp",
-      "sha256": "6a0c204d8d44aded5d93ec1b53fce2aebf3d43d384a1381170000359e1c6660e",
-      "bytes": 100712,
+      "sha256": "9020cbe48d76ce30e06cc04158db29cc21cfabb1e087e4c812ab5ff2298a1567",
+      "bytes": 100178,
       "pixels": [
         960,
         523
       ],
       "derived_from": {
-        "asset": "assets/img/4a4a1e4b08edaada.jpg",
-        "sha256": "5b6f0de932d06521f2a94ade347f35e5ff05a7af395609b57d3547734caea63d"
+        "asset": "assets/disc014/img/Driveway-Income-02-Possible-MASTER.jpeg",
+        "sha256": "76941f793c2c6b6b22080891c31dc49aaf9247024fd43cad711f0e09fb7c04ef"
       },
       "method": "pair-preparation",
       "edit": {
-        "description": "Before/Possible pair preparation for the Driveway Income hero slider (Governance 2.0, Rule 3): the POSSIBLE mapped onto the BEFORE's framing and cropped to the shared frame, so the two pictures align. Nothing painted, masked or generated.",
-        "operation": "Homography [[1.001139, 0.000441, -0.336122], [-0.000259, 1.018013, -48.002527], [0.0, 1e-06, 1.0]] (measured with SIFT + RANSAC on the static scene), Lanczos resampling, then crop x 32-1375, y 0-732.",
+        "description": "Before/Possible pair preparation for the Driveway Income hero slider (Governance 2.0, Rule 3): the POSSIBLE mapped onto the BEFORE's framing and cropped to the shared frame, so the two pictures align. Nothing painted or generated.",
+        "operation": "Homography [[1.001139, 0.000441, -0.336122], [-0.000259, 1.018013, -48.002527], [0.0, 1e-06, 1.0]] (SIFT + RANSAC on the static scene), Lanczos resampling, then crop x 32-1375, y 0-732.",
         "verified_by": "atlas-tools/build-release5-hero-pairs.py --check"
       },
       "encoder": "Pillow 12.3.0, WebP quality 80, method 6, Lanczos resize to 960px wide",
       "made": "2026-10-31",
       "content_credentials": {
-        "source_file_embeds_c2pa": false,
+        "source_file_embeds_c2pa": true,
         "derivative_embeds_c2pa": false,
-        "note": "The source carries no embedded credential. This file inherits the source's LEGACY_UNDECLARED state and declares nothing."
+        "note": "Editing and re-encoding remove the embedded C2PA credential. This copy carries NO signed credential; the master keeps it, and its record carries the AI classification."
       }
     },
     {
       "asset": "assets/disc021/img/DISC-021-HERO-BEFORE.jpg",
-      "sha256": "a7c4987fb6d53e5f03295992d15adc2ed5f11663e3b8f249080ac6d31e1460e6",
-      "bytes": 384816,
+      "sha256": "fc5eeceda502a454e2aa1eeee5b103ff64fdac47441fede705ba8536c578d0c4",
+      "bytes": 378836,
       "pixels": [
         1385,
         755
       ],
       "derived_from": {
-        "asset": "assets/img/ea3f24eedab76294.jpg",
-        "sha256": "ea3f24eedab762948c561fbc67f63268879678d289d64b335e7f23fa70b5d3a1"
+        "asset": "assets/disc021/img/Your-Home-On-Screen-01-Before-MASTER.png",
+        "sha256": "87db40a77518a650eeefa058bc3f8c0b236e58d055147bc6830c78631a305a7c"
       },
-      "method": "crop",
+      "method": "pair-preparation",
       "edit": {
-        "description": "Before/Possible pair preparation for the Your Home on Screen hero slider (Governance 2.0, Rule 3): the BEFORE cropped to the frame it shares with the aligned POSSIBLE. Pixels unchanged.",
-        "operation": "Crop x 11-1396, y 12-767 of the source (no resampling).",
+        "description": "Before/Possible pair preparation for the Your Home on Screen hero slider (Governance 2.0, Rule 3): the faint visible generator mark removed (star mask at (1288, 649), as on Above and Beyond), the BEFORE cropped to the frame it shares with the aligned POSSIBLE.",
+        "operation": "Mark removal, then Crop x 11-1396, y 12-767 of the source (no resampling).",
         "verified_by": "atlas-tools/build-release5-hero-pairs.py --check"
       },
       "encoder": "Pillow 12.3.0, JPEG quality 92, progressive",
       "made": "2026-10-31",
       "content_credentials": {
-        "source_file_embeds_c2pa": false,
+        "source_file_embeds_c2pa": true,
         "derivative_embeds_c2pa": false,
-        "note": "The source carries no embedded credential. This file inherits the source's LEGACY_UNDECLARED state and declares nothing."
+        "note": "Editing and re-encoding remove the embedded C2PA credential. This copy carries NO signed credential; the master keeps it, and its record carries the AI classification."
       }
     },
     {
       "asset": "assets/disc021/img/DISC-021-HERO-BEFORE-full.webp",
-      "sha256": "f7a8b79737e67f1865763fd2f12d5d1e434c61d3b9063aa67e33bb45d430f285",
-      "bytes": 215146,
+      "sha256": "45610153188baf1e7ab50e5870ca10ed2d2646344712dac7b55bd08c351f158c",
+      "bytes": 210938,
       "pixels": [
         1385,
         755
       ],
       "derived_from": {
-        "asset": "assets/img/ea3f24eedab76294.jpg",
-        "sha256": "ea3f24eedab762948c561fbc67f63268879678d289d64b335e7f23fa70b5d3a1"
+        "asset": "assets/disc021/img/Your-Home-On-Screen-01-Before-MASTER.png",
+        "sha256": "87db40a77518a650eeefa058bc3f8c0b236e58d055147bc6830c78631a305a7c"
       },
-      "method": "crop",
+      "method": "pair-preparation",
       "edit": {
-        "description": "Before/Possible pair preparation for the Your Home on Screen hero slider (Governance 2.0, Rule 3): the BEFORE cropped to the frame it shares with the aligned POSSIBLE. Pixels unchanged.",
-        "operation": "Crop x 11-1396, y 12-767 of the source (no resampling).",
+        "description": "Before/Possible pair preparation for the Your Home on Screen hero slider (Governance 2.0, Rule 3): the faint visible generator mark removed (star mask at (1288, 649), as on Above and Beyond), the BEFORE cropped to the frame it shares with the aligned POSSIBLE.",
+        "operation": "Mark removal, then Crop x 11-1396, y 12-767 of the source (no resampling).",
         "verified_by": "atlas-tools/build-release5-hero-pairs.py --check"
       },
       "encoder": "Pillow 12.3.0, WebP quality 80, method 6",
       "made": "2026-10-31",
       "content_credentials": {
-        "source_file_embeds_c2pa": false,
+        "source_file_embeds_c2pa": true,
         "derivative_embeds_c2pa": false,
-        "note": "The source carries no embedded credential. This file inherits the source's LEGACY_UNDECLARED state and declares nothing."
+        "note": "Editing and re-encoding remove the embedded C2PA credential. This copy carries NO signed credential; the master keeps it, and its record carries the AI classification."
       }
     },
     {
       "asset": "assets/disc021/img/DISC-021-HERO-BEFORE-960.webp",
-      "sha256": "60acf301c71a81652f9ad130fd06e946397f84a4aa7bb2f559fe2642b9e2d425",
-      "bytes": 107728,
+      "sha256": "4e6046229067b765990e44657321a94650bb4cca996925d424539584dd740e96",
+      "bytes": 107022,
       "pixels": [
         960,
         523
       ],
       "derived_from": {
-        "asset": "assets/img/ea3f24eedab76294.jpg",
-        "sha256": "ea3f24eedab762948c561fbc67f63268879678d289d64b335e7f23fa70b5d3a1"
+        "asset": "assets/disc021/img/Your-Home-On-Screen-01-Before-MASTER.png",
+        "sha256": "87db40a77518a650eeefa058bc3f8c0b236e58d055147bc6830c78631a305a7c"
       },
-      "method": "crop",
+      "method": "pair-preparation",
       "edit": {
-        "description": "Before/Possible pair preparation for the Your Home on Screen hero slider (Governance 2.0, Rule 3): the BEFORE cropped to the frame it shares with the aligned POSSIBLE. Pixels unchanged.",
-        "operation": "Crop x 11-1396, y 12-767 of the source (no resampling).",
+        "description": "Before/Possible pair preparation for the Your Home on Screen hero slider (Governance 2.0, Rule 3): the faint visible generator mark removed (star mask at (1288, 649), as on Above and Beyond), the BEFORE cropped to the frame it shares with the aligned POSSIBLE.",
+        "operation": "Mark removal, then Crop x 11-1396, y 12-767 of the source (no resampling).",
         "verified_by": "atlas-tools/build-release5-hero-pairs.py --check"
       },
       "encoder": "Pillow 12.3.0, WebP quality 80, method 6, Lanczos resize to 960px wide",
       "made": "2026-10-31",
       "content_credentials": {
-        "source_file_embeds_c2pa": false,
+        "source_file_embeds_c2pa": true,
         "derivative_embeds_c2pa": false,
-        "note": "The source carries no embedded credential. This file inherits the source's LEGACY_UNDECLARED state and declares nothing."
+        "note": "Editing and re-encoding remove the embedded C2PA credential. This copy carries NO signed credential; the master keeps it, and its record carries the AI classification."
       }
     },
     {
       "asset": "assets/disc021/img/DISC-021-HERO-POSSIBLE.jpg",
-      "sha256": "ff3dde3fae6d2af9ab2e5241e9c21b94c12315d7fcec2dd2c86f92f44d2a0f46",
-      "bytes": 360319,
+      "sha256": "f54aaf43a8d120cb03b21db57fb83d2c4d911c69ab783536298a06d3d24719e1",
+      "bytes": 360289,
       "pixels": [
         1385,
         755
@@ -12237,8 +12348,8 @@
       },
       "method": "pair-preparation",
       "edit": {
-        "description": "Before/Possible pair preparation for the Your Home on Screen hero slider (Governance 2.0, Rule 3): the POSSIBLE mapped onto the BEFORE's framing and cropped to the shared frame, so the two pictures align. Nothing painted, masked or generated.",
-        "operation": "Homography [[0.997415, -0.003423, 0.095865], [0.000492, 0.989823, 10.732516], [2e-06, -6e-06, 1.0]] (measured with SIFT + RANSAC on the static scene), Lanczos resampling, then crop x 11-1396, y 12-767.",
+        "description": "Before/Possible pair preparation for the Your Home on Screen hero slider (Governance 2.0, Rule 3): the faint visible generator mark removed (star mask at (1288, 649), as on Above and Beyond), the POSSIBLE mapped onto the BEFORE's framing and cropped to the shared frame, so the two pictures align. Nothing painted or generated.",
+        "operation": "Mark removal, then Homography [[0.997415, -0.003423, 0.095865], [0.000492, 0.989823, 10.732516], [2e-06, -6e-06, 1.0]] (SIFT + RANSAC on the static scene), Lanczos resampling, then crop x 11-1396, y 12-767.",
         "verified_by": "atlas-tools/build-release5-hero-pairs.py --check"
       },
       "encoder": "Pillow 12.3.0, JPEG quality 92, progressive",
@@ -12251,8 +12362,8 @@
     },
     {
       "asset": "assets/disc021/img/DISC-021-HERO-POSSIBLE-full.webp",
-      "sha256": "bd9ac2a6bfb4f8ca239a15b48eaba8d5b3682e1368df887bd56a81e6537eb540",
-      "bytes": 188844,
+      "sha256": "18385b873d2674c780659ce205bd4b6f180bfadf59fe58a9b1810881fdff8487",
+      "bytes": 188870,
       "pixels": [
         1385,
         755
@@ -12263,8 +12374,8 @@
       },
       "method": "pair-preparation",
       "edit": {
-        "description": "Before/Possible pair preparation for the Your Home on Screen hero slider (Governance 2.0, Rule 3): the POSSIBLE mapped onto the BEFORE's framing and cropped to the shared frame, so the two pictures align. Nothing painted, masked or generated.",
-        "operation": "Homography [[0.997415, -0.003423, 0.095865], [0.000492, 0.989823, 10.732516], [2e-06, -6e-06, 1.0]] (measured with SIFT + RANSAC on the static scene), Lanczos resampling, then crop x 11-1396, y 12-767.",
+        "description": "Before/Possible pair preparation for the Your Home on Screen hero slider (Governance 2.0, Rule 3): the faint visible generator mark removed (star mask at (1288, 649), as on Above and Beyond), the POSSIBLE mapped onto the BEFORE's framing and cropped to the shared frame, so the two pictures align. Nothing painted or generated.",
+        "operation": "Mark removal, then Homography [[0.997415, -0.003423, 0.095865], [0.000492, 0.989823, 10.732516], [2e-06, -6e-06, 1.0]] (SIFT + RANSAC on the static scene), Lanczos resampling, then crop x 11-1396, y 12-767.",
         "verified_by": "atlas-tools/build-release5-hero-pairs.py --check"
       },
       "encoder": "Pillow 12.3.0, WebP quality 80, method 6",
@@ -12277,8 +12388,8 @@
     },
     {
       "asset": "assets/disc021/img/DISC-021-HERO-POSSIBLE-960.webp",
-      "sha256": "6f8c83966103f5120736ed8a6c9921efbe88dace44e544d2d413a3521907911d",
-      "bytes": 96368,
+      "sha256": "88e3794fb47f18b0bc6908a54b1990462703d8b593e4864f1a27f507dea77de8",
+      "bytes": 96366,
       "pixels": [
         960,
         523
@@ -12289,8 +12400,8 @@
       },
       "method": "pair-preparation",
       "edit": {
-        "description": "Before/Possible pair preparation for the Your Home on Screen hero slider (Governance 2.0, Rule 3): the POSSIBLE mapped onto the BEFORE's framing and cropped to the shared frame, so the two pictures align. Nothing painted, masked or generated.",
-        "operation": "Homography [[0.997415, -0.003423, 0.095865], [0.000492, 0.989823, 10.732516], [2e-06, -6e-06, 1.0]] (measured with SIFT + RANSAC on the static scene), Lanczos resampling, then crop x 11-1396, y 12-767.",
+        "description": "Before/Possible pair preparation for the Your Home on Screen hero slider (Governance 2.0, Rule 3): the faint visible generator mark removed (star mask at (1288, 649), as on Above and Beyond), the POSSIBLE mapped onto the BEFORE's framing and cropped to the shared frame, so the two pictures align. Nothing painted or generated.",
+        "operation": "Mark removal, then Homography [[0.997415, -0.003423, 0.095865], [0.000492, 0.989823, 10.732516], [2e-06, -6e-06, 1.0]] (SIFT + RANSAC on the static scene), Lanczos resampling, then crop x 11-1396, y 12-767.",
         "verified_by": "atlas-tools/build-release5-hero-pairs.py --check"
       },
       "encoder": "Pillow 12.3.0, WebP quality 80, method 6, Lanczos resize to 960px wide",
