@@ -19,6 +19,10 @@ const SEC = {
   'Content-Security-Policy': "default-src 'self'; img-src 'self' data: blob:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; script-src 'self'; connect-src 'self'; frame-ancestors 'none'; base-uri 'none'; form-action 'self'",
   'X-Frame-Options': 'DENY', 'X-Content-Type-Options': 'nosniff', 'Referrer-Policy': 'same-origin', 'Cache-Control': 'no-store',
 };
+// the approved PlotArt logo files (decoded once; public, no data)
+const bin = b => Uint8Array.from(atob(b), c => c.charCodeAt(0));
+const LOGO = { '/assets/plotart-p-48.webp': [bin(A.LOGO_48_B64), 'image/webp'], '/assets/plotart-p-96.webp': [bin(A.LOGO_96_B64), 'image/webp'],
+  '/assets/plotart-favicon-32.png': [bin(A.FAVICON_32_B64), 'image/png'], '/assets/plotart-apple-touch-180.png': [bin(A.TOUCH_180_B64), 'image/png'] };
 const res = (body, type, status = 200, extra = {}) => new Response(body, { status, headers: { 'Content-Type': type, ...SEC, ...extra } });
 const json = (o, status = 200) => res(JSON.stringify(o), 'application/json; charset=utf-8', status);
 const html = (h, status = 200) => res(h, 'text/html; charset=utf-8', status);
@@ -466,6 +470,7 @@ async function route(req, env) {
     '/assets/studio.js': [A.STUDIO_JS, 'text/javascript'], '/assets/admin.js': [A.ADMIN_JS, 'text/javascript'],
     '/assets/plotnua-mark.svg': [A.MARK_SVG, 'image/svg+xml'] }[p];
   if (asset && m === 'GET') return res(asset[0], asset[1] + '; charset=utf-8', 200, { 'Cache-Control': 'public, max-age=300' });
+  if (LOGO[p] && m === 'GET') return res(LOGO[p][0], LOGO[p][1], 200, { 'Cache-Control': 'public, max-age=86400' });
 
   // the publishing pipeline: bearer token, never a browser
   if (p.startsWith('/api/pipeline/')) {
