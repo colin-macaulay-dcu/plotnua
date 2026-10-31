@@ -28,6 +28,7 @@ START_EXCEPTIONS = {"discovery-hidden-cars.html": 50}
 def say(v, subject):   # what assets/identity/pn-compare.js announces at value v
     if v >= 97: return "Showing %s before" % subject
     if v <= 3: return "Showing %s as it could be" % subject
+    if 45 < v < 55: return "Half before, half as it could be"
     return "%s, divider at %d per cent" % ("Mostly %s before" % subject if v > 50 else "Mostly %s as it could be" % subject, v)
 
 

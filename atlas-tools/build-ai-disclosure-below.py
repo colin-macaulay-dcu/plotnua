@@ -50,7 +50,6 @@ ALIGN = {
     "discovery-supper-club-at-home.html": ' class="pn-hero-note pn-hero-note--inset" style="--pnn-inset:5vw"',
     "discovery-natural-swimming-garden.html": ' class="pn-hero-note pn-hero-note--centre"',
     "discovery-a-home-for-art.html": ' class="pn-hero-note pn-hero-note--centre"',
-    "discovery-hidden-cars.html": ' class="pn-hero-note pn-hero-note--centre"',
 }
 FIG = re.compile(r'<figure class="pn-compare pn-compare--hero"[\s\S]*?</figure>')
 
