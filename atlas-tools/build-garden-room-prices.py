@@ -674,7 +674,8 @@ def page_guards(text, ex_rows):
     # AI illustration of no named product or organisation that may appear on a Discovery
     # surface. Anything else is still refused.
     imgs = re.findall(r"<img\b[^>]*\bsrc=\"([^\"]+)\"", text)
-    allowed = {"assets/brand/plotnua-mark-master.svg", "assets/brand/plotnua-icon-transparent.svg"}
+    allowed = {"assets/brand/plotnua-mark-master.svg", "assets/brand/plotnua-icon-transparent.svg",
+               "/assets/brand/plotart-p-48.webp"}   # the PlotArt logo in the shared header (31 Oct 2026)
     hero = re.search(r'<header class="pr-hero">(.*?)</header>', text, re.S).group(1)
     srcs = set(re.findall(r"<img\b[^>]*\bsrc=\"([^\"]+)\"", hero))
     srcs |= {u.split()[0] for ss in re.findall(r'\bsrcset="([^"]+)"', hero) for u in ss.split(",")}

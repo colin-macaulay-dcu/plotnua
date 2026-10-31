@@ -89,7 +89,7 @@ def run(root):
             rest = TANDEM_CARD.sub(" ", h)
         if re.search(SITES_TERMS, text(rest), re.I): f("GL7", f"{p} names GridNua Sites material")
         for src in re.findall(r'<img[^>]+src="([^"]+)"', h):
-            if not (src.endswith("plotnua-mark-master.svg") or src.endswith("gridnua-utility-room-concept.svg")): f("GL8", f"{p} image {src}")
+            if not (src.endswith("plotnua-mark-master.svg") or src.endswith("gridnua-utility-room-concept.svg") or src == "/assets/brand/plotart-p-48.webp"): f("GL8", f"{p} image {src}")
         if "gridnua-utility-room-concept.svg" in h and not ('<span class="gn-fig-tag">Conceptual illustration</span>' in h and "Not a real installation" in h): f("GL8", f"{p} illustration not labelled")
         if "gn-label--here" in h: f("GL10", f"{p} shows a Here today label")
         base = (root / p).parent
