@@ -1,0 +1,118 @@
+# PlotArt Studio · database migration (founder approval to prepare, 31 Oct 2026). Separate from Worker deployments.
+#
+# Started by Claude only after the founder approves a specific migration file at a specific commit. It waits in the
+# environment studio-database until the founder presses Approve in GitHub; only then can it read its Cloudflare
+# token (D1: Edit, nothing else). It fingerprints the database before and after and fails unless record counts,
+# every artist record and the gallery order are unchanged (or allow_record_changes was set and approved), and
+# position 01 stays reserved. Logs are public: it prints only table names, PASS/FAIL and short fingerprints.
+name: PlotArt Studio database migration
+run-name: "Studio migration ${{ inputs.migration }} at ${{ inputs.commit }}${{ inputs.dry_run && ' (dry run)' || '' }}"
+
+on:
+  workflow_dispatch:
+    inputs:
+      commit:
+        description: "Full 40-character commit ID approved by the founder (must be on main)"
+        required: true
+        type: string
+      migration:
+        description: "Migration file in worker/plotart-studio/migrations, e.g. 0003_example.sql"
+        required: true
+        type: string
+      allow_record_changes:
+        description: "The founder approved a migration that changes records (default: no records may change)"
+        required: true
+        type: boolean
+        default: false
+      dry_run:
+        description: "Dry run: approval and checks only, nothing sent to Cloudflare"
+        required: true
+        type: boolean
+        default: true
+
+permissions:
+  contents: read
+
+concurrency:
+  group: plotart-studio-cloudflare
+  cancel-in-progress: false
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: The commit is on main and the migration file exists in it
+        env:
+          COMMIT: ${{ inputs.commit }}
+          MIGRATION: ${{ inputs.migration }}
+          ALLOW: ${{ inputs.allow_record_changes }}
+        run: |
+          [[ "$COMMIT" =~ ^[0-9a-f]{40}$ ]] || { echo "REFUSED: give the full 40-character commit ID"; exit 1; }
+          [[ "$MIGRATION" =~ ^[0-9]{4}_[a-z0-9_]+\.sql$ ]] || { echo "REFUSED: not a migration file name"; exit 1; }
+          git merge-base --is-ancestor "$COMMIT" origin/main || { echo "REFUSED: $COMMIT is not on main"; exit 1; }
+          git cat-file -e "$COMMIT:worker/plotart-studio/migrations/$MIGRATION" || { echo "REFUSED: $MIGRATION is not in $COMMIT"; exit 1; }
+          echo "### Migration \`$MIGRATION\` at \`$COMMIT\` · allow record changes: $ALLOW" >> "$GITHUB_STEP_SUMMARY"
+          echo "CHECK OK"
+
+  migrate:
+    needs: check
+    runs-on: ubuntu-latest
+    environment: studio-database
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.commit }}
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Production configuration (identifiers from the environment, never printed)
+        env:
+          STUDIO_D1_DATABASE_ID: ${{ vars.STUDIO_D1_DATABASE_ID }}
+          STUDIO_ACCESS_AUD: ${{ vars.STUDIO_ACCESS_AUD }}
+          STUDIO_ACCESS_TEAM: ${{ vars.STUDIO_ACCESS_TEAM }}
+        run: python3 atlas-tools/release/studio/render-config.py worker/plotart-studio
+      - name: Dry run
+        if: ${{ inputs.dry_run }}
+        env:
+          COMMIT: ${{ inputs.commit }}
+          MIGRATION: ${{ inputs.migration }}
+        run: |
+          [[ "$MIGRATION" =~ ^[0-9]{4}_[a-z0-9_]+\.sql$ ]] && test -f "worker/plotart-studio/migrations/$MIGRATION"
+          echo "DRY RUN OK: approved; the migration $MIGRATION at $COMMIT would run next. Nothing was sent to Cloudflare."
+      - name: Database fingerprint before
+        if: ${{ !inputs.dry_run }}
+        working-directory: worker/plotart-studio
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          set -o pipefail
+          npx --yes wrangler@4.150.0 d1 execute plotart-studio --remote --json --config wrangler.production.toml --command "$(grep -v '^--' ../../atlas-tools/release/studio/d1-check.sql)" 2>/dev/null \
+            | node ../../atlas-tools/release/studio/d1-fingerprint.mjs save "$RUNNER_TEMP/db-before"
+      - name: Apply the migration
+        if: ${{ !inputs.dry_run }}
+        working-directory: worker/plotart-studio
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
+          MIGRATION: ${{ inputs.migration }}
+        run: |
+          [[ "$MIGRATION" =~ ^[0-9]{4}_[a-z0-9_]+\.sql$ ]] || exit 1
+          npx --yes wrangler@4.150.0 d1 execute plotart-studio --remote --config wrangler.production.toml --file "migrations/$MIGRATION" > "$RUNNER_TEMP/m.log" 2>&1 \
+            && echo "migration applied" || { echo "FAIL  the migration was refused (D1 runs a file as one batch: if the first statement failed, nothing was applied)"; exit 1; }
+      - name: Database fingerprint after
+        if: ${{ !inputs.dry_run }}
+        working-directory: worker/plotart-studio
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          set -o pipefail
+          npx --yes wrangler@4.150.0 d1 execute plotart-studio --remote --json --config wrangler.production.toml --command "$(grep -v '^--' ../../atlas-tools/release/studio/d1-check.sql)" 2>/dev/null \
+            | node ../../atlas-tools/release/studio/d1-fingerprint.mjs compare "$RUNNER_TEMP/db-before" ${{ inputs.allow_record_changes && '--allow-record-changes' || '' }}

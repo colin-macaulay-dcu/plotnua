@@ -20,3 +20,7 @@ node_modules/
 
 # macOS Finder metadata.
 .DS_Store
+
+# Studio production configuration, rendered by the deploy workflow only (31 Oct 2026)
+worker/plotart-studio/wrangler.production.toml
+worker/plotart-studio/node_modules
