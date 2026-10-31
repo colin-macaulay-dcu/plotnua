@@ -84,6 +84,15 @@ r = await call('PUT', '/api/me/profile', 'aoife@example.test', { founding_number
 const fnStill = await db.prepare('SELECT founding_number FROM artists WHERE id = ?').bind(A).first();
 check('G14 an artist cannot set their own Founding 25 number', fnStill.founding_number === 3, r.s);
 
+// founder brief 31 Oct 2026: Founding Artist No. 2 at display position 02 moves to 05; the number stays 2
+await call('PUT', `/api/admin/artists/${A}/founding-number`, FOUNDER, { founding_number: 2 });
+await call('PUT', '/api/admin/gallery-order', FOUNDER, { positions: [{ position: 1, state: 'reserved', note: NOTE }, { position: 2, state: 'artist', artist_id: A }, { position: 3, state: 'artist', artist_id: B }] });
+const at2 = (await call('GET', '/api/admin/gallery-order', FOUNDER)).j.positions[1];
+r = await call('PUT', '/api/admin/gallery-order', FOUNDER, { positions: [{ position: 1, state: 'reserved', note: NOTE }, { position: 5, state: 'artist', artist_id: A }, { position: 3, state: 'artist', artist_id: B }] });
+const fnMoved = await db.prepare('SELECT founding_number FROM artists WHERE id = ?').bind(A).first();
+check('G17 Founding Artist No. 2 moves from display position 02 to 05 and is still No. 2; 01 stays RESERVED',
+  at2.artist_id === A && at2.founding_number === 2 && r.j.positions[4].artist_id === A && r.j.positions[4].founding_number === 2 && r.j.positions[1].state === 'open' &&
+  fnMoved.founding_number === 2 && r.j.positions[0].state === 'reserved');
 // audit
 const au = await db.prepare("SELECT action, detail FROM audit WHERE action IN ('gallery_order','founding_number') ORDER BY id").all();
 check('G15 every save is in the audit log (before and after), without the private note text',
