@@ -97,6 +97,7 @@ ADDED_SENTENCES = {
     "Artists can also find out about the PlotArt Founding 25 , a forthcoming programme for artists based or working in Ireland.": "Founding 25 pointer in the Take part section (limited launch, decision 27 Oct 2026)",
     "The PlotArt Living Gallery is a separate, proposed programme exploring how original work could be shown in homes like yours.": "Living Gallery pointer: A Home for Art and the Living Gallery linked both ways (PlotArt clarity, founder decision 28 Oct 2026)",
     "It isn’t running yet.": "status beside the Living Gallery pointer (PlotArt clarity, 28 Oct 2026)",
+    "When you choose to open: a few people, one evening, the work on your walls.": "caption for the relocated hosting photograph dfb125ba in section 01 (Release 6, founder approval 31 Oct 2026)",
 }
 ADDED_HREFS = {
     "plotart/": "PlotArt homepage (limited launch)",
@@ -117,6 +118,9 @@ INTERFACE = [
     "Under Revenue’s Artists’ Exemption, an artist’s income from original and creative work, including paintings and sculpture, can be exempt from income tax up to €50,000 a year, but only where Revenue has made a determination for that artist’s work.",
     # PlotArt integration (founder approval, 27 Oct 2026): the corrected description (declared in EDITORIAL)
     "PlotArt is a new initiative within PlotNua, being developed to connect original Irish art with the people and places where it can be enjoyed.",
+    # Release 6 Before/Possible slider controls and AI disclosure (founder approval, 31 Oct 2026)
+    "Use the left and right arrow keys to move the divider.", "Home shows the room as it could be; End shows the room before.",
+    "Possible", "Illustrative AI-generated visualisation.", "Not an actual property.",
 ]
 STAY_ON_VIEW = [
     "PlotNua does not currently arrange artwork loans, rentals or placements.",
@@ -188,7 +192,7 @@ def imgs(t):
     b = re.sub(r"<!-- PLOTNUA HEADER v2 · (BAR|ROW) · BEGIN.*?<!-- PLOTNUA HEADER v2 · \1 · END -->", "", t[t.index("<body"):], flags=re.S)
     return sorted(re.sub(r"\s+", " ", x) for x in re.findall(r"<img\b[^>]*>", re.sub(r"<!--.*?-->", "", b, flags=re.S)))
 def hero(t):
-    m = re.search(r'<header class="d-hero">.*?</header>', t, re.S)
+    m = re.search(r'<header class="d-hero(?: [^"]*)?">.*?</header>', t, re.S)
     if not m: die("P2 the hero is missing")
     return m.group(0)
 def hrefs(t): return sorted(re.findall(r'href="([^"]+)"', body(t)))
@@ -208,13 +212,25 @@ def load_base():
     if snapshot(p.stdout) != s: die("P0 the BASE snapshot does not equal %s:%s" % (BASE[:7], PAGE))
     return s, "pinned snapshot = git %s" % BASE[:7]
 
+# Release 6 (founder approval, 31 Oct 2026): the hero became the Before/Possible slider
+# from the credentialed masters, and the former hero photograph (dfb125ba, same file
+# and alt) moved into section 01. These are the ONLY image changes P2 accepts.
+R6_IMG_REMOVED = ['<img id="dHeroImg" class="on" src="assets/img/dfb125ba9dd7cd87.jpg" alt="A living room with exposed timber beams and oak floors, hung with large, bold contemporary canvases, with half a dozen visitors talking and looking at the work.">']
+R6_IMG_ADDED = [
+    '<img id="dHeroImg" class="on" src="assets/disc023/img/A-Home-for-Art-02-Possible-MASTER.jpeg" width="1408" height="768" decoding="async" alt="The same room as it could be: an original landscape painting of the coast hung on the wall above the fireplace.">',
+    '<img src="assets/img/dfb125ba9dd7cd87.jpg" width="1408" height="768" loading="lazy" decoding="async" alt="A living room with exposed timber beams and oak floors, hung with large, bold contemporary canvases, with half a dozen visitors talking and looking at the work.">',
+    '<img fetchpriority="high" src="assets/disc023/img/DISC-023-HERO-BEFORE.jpg" width="1408" height="768" decoding="async" alt="Before: a bright Irish living room with a sea view, a sofa, an armchair and a fireplace beneath a large empty plaster wall.">',
+]
+R6_HERO_SHA256 = "f9f81ed103d6bdd4024d1cd1794e21df2c657f1733d2c710a79ccafcc3f4c573"   # the approved slider hero, byte for byte
+
 # ---------------------------------------------------------------- the checks
 def check(new, base):
     nh = head(new)                                                     # P1
     for k in nh:
         if nh[k] != base["head"][k]: die("P1 head changed: %s" % k)
-    if imgs(new) != base["img"]: die("P2 the set of <img> tags differs from BASE")   # P2
-    if hero(new) != base["hero"]: die("P2 the hero changed")
+    want = sorted((Counter(base["img"]) - Counter(R6_IMG_REMOVED) + Counter(R6_IMG_ADDED)).elements())   # P2
+    if imgs(new) != want: die("P2 the set of <img> tags differs from BASE + the declared Release 6 changes")
+    if hashlib.sha256(hero(new).encode("utf-8")).hexdigest() != R6_HERO_SHA256: die("P2 the hero is not the approved Release 6 slider")
     a, b = Counter(base["href"]) + Counter(ADDED_HREFS.keys()), Counter(hrefs(new))   # P3 (+ declared additions, each exactly once)
     if a != b: die("P3 links differ: removed %s added %s" % (dict(a - b), dict(b - a)))
     for i in ANCHORS:                                                  # P4
