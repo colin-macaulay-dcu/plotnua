@@ -20,16 +20,6 @@ import pathlib, re, sys
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 CHECK = "--check" in sys.argv
-# The one declared exception (founder instruction, Release 7, 31 Oct 2026: The Hidden Cars slider "initially
-# positioned at 50%"). Every other hero opens at 100. Keep in step with prove-compare-hero.py.
-START_EXCEPTIONS = {"discovery-hidden-cars.html": 50}
-
-
-def say(v, subject):   # what assets/identity/pn-compare.js announces at value v
-    if v >= 97: return "Showing %s before" % subject
-    if v <= 3: return "Showing %s as it could be" % subject
-    if 45 < v < 55: return "Half before, half as it could be"
-    return "%s, divider at %d per cent" % ("Mostly %s before" % subject if v > 50 else "Mostly %s as it could be" % subject, v)
 
 
 def picture(fig, layer):
@@ -58,8 +48,6 @@ def transform(t, name):
     subject = (re.search(r'data-subject="([^"]+)"', fig) or [None, "the property"])[1]
     sb = re.search(r'data-say-before="([^"]+)"', fig)
     vt = "Showing " + (sb.group(1) if sb else subject + " before")
-    if name in START_EXCEPTIONS:
-        vt = say(START_EXCEPTIONS[name], subject)
     new = fig.replace('data-start="35"', 'data-start="100"', 1)
     new = re.sub(r'(<input class="pn-compare__range"[^>]*?)value="35"', r'\1value="100"', new, count=1)
     new = re.sub(r'aria-valuetext="[^"]*"', 'aria-valuetext="%s"' % vt, new, count=1)
@@ -103,7 +91,7 @@ def main():
         t = p.read_text(encoding="utf-8")
         n = transform(t, p.name)
         if CHECK:
-            if n != t or 'data-start="%d"' % START_EXCEPTIONS.get(p.name, 100) not in t:
+            if n != t or 'data-start="100"' not in t:
                 bad.append(p.name)
             continue
         if n != t:

@@ -62,10 +62,6 @@ _L = json.load(open(os.path.join(ROOT, "image-provenance-records.json"), encodin
 AI_LABELS = [_L.get("AI_ILLUSTRATION") or "AI-generated illustration"] + list(_L.get("AI_ILLUSTRATION_VARIANTS") or [])
 
 
-# The one declared start exception (founder instruction, Release 7, 31 Oct 2026); every other hero opens at 100.
-START_EXCEPTIONS = {"discovery-hidden-cars.html": 50}
-
-
 def check(page, s, exists=lambda p: os.path.exists(os.path.join(ROOT, p))):
     f = []
     m = re.search(r'<figure class="pn-compare pn-compare--hero"[^>]*>[\s\S]*?</figure>', s)
@@ -74,9 +70,8 @@ def check(page, s, exists=lambda p: os.path.exists(os.path.join(ROOT, p))):
     fig = m.group(0)
     if not re.search(r'href="assets/identity/pn-compare\.css', s) or not re.search(r'src="assets/identity/pn-compare\.js', s):
         f.append("C1 shared stylesheet/script not linked")
-    st = START_EXCEPTIONS.get(page, 100)
-    if 'data-start="%d"' % st not in fig or not re.search(r'class="pn-compare__range"[^>]*value="%d"' % st, fig):
-        f.append("C2 start is not %d%s" % (st, " (BEFORE)" if st == 100 else " (the declared exception)"))
+    if 'data-start="100"' not in fig or not re.search(r'class="pn-compare__range"[^>]*value="100"', fig):
+        f.append("C2 start is not 100 (BEFORE)")
     layers = re.findall(r'<div class="pn-compare__(possible|before)">\s*<picture>([\s\S]*?)</picture>', fig)
     if [l[0] for l in layers] != ["possible", "before"]:
         f.append("C3 layers are not POSSIBLE then BEFORE")

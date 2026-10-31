@@ -10,9 +10,8 @@ Only the hero changes. The hero copy is carried over byte for byte; the static h
 "Potential Asset" annotation are replaced by the comparison (founder instruction: "Remove the existing Potential
 Asset annotation from the hero"). The lift close-up (9aa6c362) stays in the body, unchanged.
 
-START POSITION. The founder's Release 7 instruction asks for the slider "initially positioned at 50%". Every other
-hero opens at 100% BEFORE (founder directive, 30 Oct 2026), so this page is the one declared exception, listed in
-START_EXCEPTIONS in build-hero-start-before.py and prove-compare-hero.py.
+START POSITION. It opens on the complete BEFORE (100), as every other Discovery hero (founder directive,
+30 Oct 2026; confirmed for this page by the founder, 31 Oct 2026, after the 50 per cent preview).
 
   python3 atlas-tools/build-release7-hero-sliders.py          build
   python3 atlas-tools/build-release7-hero-sliders.py --check  verify, write nothing
@@ -26,10 +25,10 @@ CHECK = "--check" in sys.argv
 SIZES = r3.SIZES
 D = "assets/disc022/img/"
 B, P = D + "PlotNua_Hidden_Cars_BEFORE", D + "PlotNua_Underground_Car_Lift_Possible"
-START = 50
+START = 100
 
 COMMENT = """  <!-- Pass 2 Release 7 (founder instruction, 31 Oct 2026): the shared Before -> Possible
-       component, hero standard, opening at 50 per cent (the declared exception). %s -->
+       component, hero standard, opening on the complete BEFORE. %s -->
 """
 
 PAGES = {
@@ -73,10 +72,6 @@ def main():
             old = 'src="%s" width="1408" height="768"' % img
             assert t.count(old) == 1, name + ": " + img
             t = t.replace(old, 'src="%s" width="%d" height="%d"' % (img, w, h), 1)
-        old = 'data-start="100"'
-        assert t.count(old) == 1
-        t = t.replace(old, 'data-start="%d"' % START, 1)
-        t = t.replace('type="range" min="0" max="100" step="1" value="100"', 'type="range" min="0" max="100" step="1" value="%d"' % START, 1)
         t = t.replace("</head>", EXTRA_CSS + "</head>", 1)
         path.write_text(t, encoding="utf-8")
         print("built: " + name)
