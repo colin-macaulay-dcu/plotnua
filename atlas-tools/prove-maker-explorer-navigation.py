@@ -141,9 +141,12 @@ run("an image without the required credit",
     lambda m: nav_patch(m, lambda q, o: [im.__setitem__("credit", "OGNYX") for im in o.get("img", [])] and None))
 run("an unexpected navigation field (a tracking parameter)",
     lambda m: nav_patch(m, lambda q, o: o.__setitem__("utm", "x") if o.get("href") else None))
+# 31 Oct 2026 (supplier-gallery consolidation): Garden Retreat's explorer now continues the
+# gallery and no longer renders its own intro, so the planted link goes into the footer's
+# disclosure, which this page still renders as static HTML. Same guard (G3), same fault.
 run("an external link in the static block that is not an image credit",
-    lambda m: m.PAGES[PAGE].__setitem__("intro", m.PAGES[PAGE]["intro"] +
-                                         ' <a href="https://example.com/">more</a>'))
+    lambda m: setattr(m, "APPROVED_DISCLOSURE", m.APPROVED_DISCLOSURE +
+                      ' <a href="https://example.com/">more</a>'))
 run("the shared script edited (any edit, e.g. a URL write) refuses at the pin",
     lambda m: m.PINS.__setitem__(m.SHARED_JS, "0" * 64))
 

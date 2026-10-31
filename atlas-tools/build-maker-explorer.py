@@ -611,6 +611,12 @@ PAGES = {
         # research and never named.
         "headline": [("tab:gardenRooms", "garden rooms"), ("tab:gardenHomes", "garden homes"),
                      ("researchedMakers", "makers researched")],
+        # SUPPLIER GALLERY CONSOLIDATION (founder approval 31 Oct 2026, preview only):
+        # the explorer continues the Premium Supplier Gallery above it as ONE section.
+        # It drops its own kicker, H2 and introduction (the gallery carries them),
+        # opens with a sub-heading, and hands its headline figures to the gallery
+        # through the configuration ("headline"); see CONTINUATION below.
+        "continuation": {"heading": "Browse every product"},
         "noscript": ("search PlotNua&rsquo;s garden rooms and garden homes"),
         "after": "Garden room prices are hard to compare.",
         "before": "What would you like PlotNua to check?",
@@ -644,7 +650,13 @@ PAGES = {
              "nouns": ["cold plunge", "cold plunges"], "source": "wellness-universe-v1",
              "availabilityNote": AVAIL_NOTE},
         ],
-        "headline": [("tab:saunas", "saunas"), ("tab:hotTubs", "hot tubs"), ("tab:coldPlunges", "cold plunges")],
+        "headline": [("tab:saunas", "saunas"), ("tab:hotTubs", "hot tubs"), ("tab:coldPlunges", "cold plunges"),
+                     ("listedMakers", "makers")],
+        # Consolidation (31 Oct 2026): one section with the gallery; the A-Z index
+        # (G12) replaces the gallery's former A-Z directory as the no-JavaScript
+        # route to every maker.
+        "continuation": {"heading": "Browse every product"},
+        "azIndex": True,
         "noscript": "search PlotNua&rsquo;s saunas, hot tubs and cold plunges",
         # Restructure, 14 Oct 2026: the directory sits after "Could it work for
         # your property?" and before the practical considerations.
@@ -764,8 +776,9 @@ def maker_state(m):
     return "c" if c == len(m["p"]) else ("s" if c else "u")
 
 def az_index(tabs):
-    counts = " and ".join("%d %s makers" % (len(t["cfg"]["makers"]), t["cfg"]["nouns"][0])
-                          for t in tabs)
+    parts = ["%d %s" % (len(t["cfg"]["makers"]), t["cfg"]["nouns"][0]) for t in tabs]
+    counts = (" and ".join(p + " makers" for p in parts) if len(parts) < 3
+              else ", ".join(parts[:-1]) + " and " + parts[-1] + " makers")
     h = ['    <details class="mx-az" id="maker-index">',
          f'      <summary>All {counts}, A to Z</summary>',
          '      <p class="mx-az-note">An index, not a ranking: makers are listed alphabetically so each one '
@@ -811,9 +824,15 @@ def commercial_line(tabs):
     return ("Makers are not ranked, and their order is shuffled on every visit.\n      "
             + APPROVED_DISCLOSURE + "\n      " + current_relationships(names))
 
-def section(P, tabs, researched):
-    figs = {"researchedMakers": researched}
+def headline_figures(tabs, researched):
+    figs = {"researchedMakers": researched,
+            # makers this page lists, counted once across its tabs
+            "listedMakers": len({m["m"] for t in tabs for m in t["cfg"]["makers"]})}
     for t in tabs: figs["tab:" + t["T"]["key"]] = t["cfg"]["figures"]["products"]
+    return figs
+
+def section(P, tabs, researched):
+    figs = headline_figures(tabs, researched)
     head = "\n".join(f'      <div><span class="mx-fig">{figs[k]}</span><span class="mx-fig-l">{html.escape(lab)}</span></div>'
                      for k, lab in P["headline"])
     first = tabs[0]["T"]
@@ -825,6 +844,12 @@ def section(P, tabs, researched):
                    f'{extra}>{html.escape(t["T"]["label"])} <span class="mx-n">{t["cfg"]["figures"]["products"]}</span></button>')
     btns = "\n".join(btn)
     config = {"initial": 6, "tabs": [t["cfg"] for t in tabs]}
+    cont = P.get("continuation")
+    if cont:
+        # CONTINUATION: the headline figures travel in the configuration (read by
+        # build-supplier-gallery.py, never by maker-explorer.js) and are shown once,
+        # in the unified section's header.
+        config["headline"] = [[figs[k], lab] for k, lab in P["headline"]]
     pages = " Product pages open within PlotNua." if any(t["cfg"]["productLink"] for t in tabs) else ""
     if any(len(p) > 5 and p[5].get("href") for t in tabs for m in t["cfg"]["makers"] for p in m["p"]):
         pages += (" Listings come from each maker&rsquo;s own published product pages;"
@@ -837,19 +862,20 @@ def section(P, tabs, researched):
     az = az_index(tabs) if P.get("azIndex") else ""
     payload = json.dumps(config, ensure_ascii=False, separators=(",", ":")).replace("</", "<\\/")
     commercial = commercial_line(tabs)
+    if cont:
+        opening = (f'  <section class="article-section reveal" id="explore-makers" data-pn-maker-explorer data-mx-continuation aria-labelledby="mx-cont-h">\n'
+                   f'    <h3 class="mx-cont-h" id="mx-cont-h">{html.escape(cont["heading"])}</h3>\n')
+    else:
+        opening = (f'  <section class="article-section reveal" id="explore-makers" data-pn-maker-explorer>\n'
+                   f'    <div class="kicker">{html.escape(P["kicker"])}</div>\n'
+                   f'    <h2>{html.escape(P["heading"])}</h2>\n'
+                   f'    <p>{P["intro"]}</p>\n\n'
+                   f'    <div class="mx-figs">\n{head}\n    </div>\n')
     return f'''  <!-- 6c · {MARK} · Founder decisions 13 Oct 2026. Shared component
        (maker-explorer.js / maker-explorer.css) configured for this page by
        atlas-tools/build-maker-explorer.py from published eligibility files;
        do not hand-edit. -->
-  <section class="article-section reveal" id="explore-makers" data-pn-maker-explorer>
-    <div class="kicker">{html.escape(P["kicker"])}</div>
-    <h2>{html.escape(P["heading"])}</h2>
-    <p>{P["intro"]}</p>
-
-    <div class="mx-figs">
-{head}
-    </div>
-
+{opening}
     <div class="mx" id="mx">
       <div class="mx-tabs" role="tablist" aria-label="Product type">
 {btns}
@@ -969,8 +995,25 @@ def build(fname, P, src):
         for k, v in H.items():
             if F[k] != v: die("G1 %s %s=%d disagrees with the universe header %d" % (t["T"]["key"], k, F[k], v))
         if sum(len(m["p"]) for m in t["cfg"]["makers"]) != F["products"]: die("G1 products not all listed")
-        if f'<span class="mx-fig">{F["products"]}</span>' not in blk: die("G1 headline figure missing")
-    if any(k == "researchedMakers" for k, _ in P["headline"]) and \
+        if P.get("continuation"):
+            # the tab carries its own count; the headline travels in the configuration
+            if f'<span class="mx-n">{F["products"]}</span>' not in blk: die("G1 tab count missing")
+        elif f'<span class="mx-fig">{F["products"]}</span>' not in blk: die("G1 headline figure missing")
+    if P.get("continuation"):
+        # CONTINUATION (31 Oct 2026): the headline is re-derived here, independently of
+        # section(), from each tab's own universe header and the listed makers.
+        cfg_head = json.loads(re.search(r'id="mx-data">(.*?)</script>', blk, re.S).group(1).replace("<\\/", "</")).get("headline")
+        want = []
+        for k, lab in P["headline"]:
+            if k.startswith("tab:"):
+                want.append([next(t["header"]["products"] for t in tabs if t["T"]["key"] == k[4:]), lab])
+            elif k == "researchedMakers": want.append([researched, lab])
+            elif k == "listedMakers": want.append([len({m["m"] for c in cfgs for m in c["makers"]}), lab])
+            else: die("G1 unknown headline figure " + k)
+        if cfg_head != want: die("G1 the configuration headline disagrees with the universe headers")
+        if 'class="mx-figs"' in blk or "<h2" in blk or 'class="kicker"' in blk:
+            die("G1 a continuation repeats the section heading or figures")
+    elif any(k == "researchedMakers" for k, _ in P["headline"]) and \
             f'<span class="mx-fig">{researched}</span>' not in blk:
         die("G1 makers researched missing")
     # G2 no held or excluded product; each tab lists exactly its eligible set

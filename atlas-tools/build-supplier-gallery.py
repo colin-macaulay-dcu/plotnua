@@ -48,8 +48,13 @@ DISCOVERIES = {
     "discovery-garden-retreat.html": {
         "editorial": "garden-retreat.editorial.json",
         "authority": "approved_assets",
-        "directory": "full",
-        "asset_v": "1",
+        # CONSOLIDATION (founder approval 31 Oct 2026, preview only): was "full". The
+        # A-Z directory duplicated the Maker Explorer below; "View all" now goes there,
+        # the explorer's A-Z index is the no-JavaScript route, and every maker's own
+        # website stays one click away in the websites row ("websites").
+        "directory": "explorer",
+        "unified": True, "websites": True, "transition": "rule",
+        "asset_v": "2",
         "tabs": {"saunas": ("sauna", "saunas"), "hotTubs": ("hot tub", "hot tubs"), "coldPlunges": ("cold plunge", "cold plunges")},
         "nouns": {"saunas": "outdoor saunas", "hotTubs": "hot tubs", "coldPlunges": "cold plunges"},
     },
@@ -57,7 +62,8 @@ DISCOVERIES = {
         "editorial": "living-in-the-garden.editorial.json",
         "authority": "universe",
         "directory": "explorer",
-        "asset_v": "3", "mobile_fit": "tight",
+        "unified": True,      # consolidation, 31 Oct 2026 (see Garden Retreat)
+        "asset_v": "4", "mobile_fit": "tight",
         # founder decision 30 Oct 2026 (Option B): a hairline rule and a tighter top
         # where the gallery hands over to "Explore makers and products". This page only.
         "transition": "rule",
@@ -304,7 +310,32 @@ def index_entry(s):
             f'{rel}{cap}{cta_html(s, compact=True)}</div></article>')
 
 
-def gallery(ed, head, sup):
+def figures_html(cfg):
+    """UNIFIED SECTION (31 Oct 2026): the headline figures the Maker Explorer below
+    computed and proved (its guard G1), shown once, here. Never computed here."""
+    hl = cfg.get("headline")
+    if not hl:
+        sys.exit("FAIL: unified section, but the Maker Explorer config carries no headline figures")
+    items = "".join(f'<li><span class="pn-sg-fig">{int(n)}</span><span class="pn-sg-fig-l">{E(lab)}</span></li>' for n, lab in hl)
+    return f'\n        <ul class="pn-sg-figs" role="list" aria-label="On PlotNua in this Discovery">{items}</ul>'
+
+
+def websites_html(sup):
+    """Every maker's own website, A to Z: the same link, built by the same rule, as the
+    former directory entry's "Visit website". A relationship is labelled beside the name."""
+    li = []
+    for s in sup:
+        if not s["explore"]:
+            continue
+        rel = (f' <span class="pn-sg-sites-rel">{E(s["relationship"]["label"])}</span>') if s["relationship"] else ""
+        li.append(f'<li><a href="{E(s["explore"])}" rel="noopener noreferrer" target="_blank" '
+                  f'aria-label="{E(s["name"])} on {E(s["site"] or "its website")} (opens in a new tab)">'
+                  f'<span>{E(s["name"])}</span>{EXT}</a>{rel}</li>')
+    return (f'\n  <div class="pn-sg-wrap"><div class="pn-sg-sites"><p class="pn-sg-sites-h" id="sg-sites-h">Makers&rsquo; own websites</p>'
+            f'<ul role="list" aria-labelledby="sg-sites-h">{"".join(li)}</ul></div></div>')
+
+
+def gallery(ed, head, sup, cfg=None):
     for s in sup:
         if s["held"] and not s["image"]:
             sys.exit(f"FAIL: {s['name']}: a feature hold is set on a maker with no authorised image")
@@ -354,6 +385,9 @@ def gallery(ed, head, sup):
     # image and attribution, and every card the same height. Opt-in, so Garden Retreat is unchanged.
     fit = f' data-sg-fit="{E(D["mobile_fit"])}"' if D.get("mobile_fit") else ""
     fit += ' data-sg-transition="rule"' if D.get("transition") == "rule" else ""
+    fit += ' data-sg-unified' if D.get("unified") else ""
+    figs = figures_html(cfg) if D.get("unified") else ""
+    sites = websites_html(sup) if D.get("websites") else ""
     return f'''<section class="pn-sg" id="suppliers" data-pn-supplier-gallery data-discovery="{E(ed["discovery"])}"{fit} aria-labelledby="sg-h" style="--sg-mount-ratio:{mw} / {mh}">
   <div class="pn-sg-wrap">
     <div class="pn-sg-head">
@@ -361,7 +395,7 @@ def gallery(ed, head, sup):
         <span class="pn-sg-kicker">{E(head["kicker"])}</span>
         <h2 class="pn-sg-h2" id="sg-h">{E(head["heading"])}</h2>
         <p class="pn-sg-intro">{E(head["intro"])}</p>
-        <p class="pn-sg-note">{E(ed["selectionNote"])}</p>
+        <p class="pn-sg-note">{E(ed["selectionNote"])}</p>{figs}
       </div>
       <div class="pn-sg-controls">
         <button type="button" class="pn-sg-arrow" data-sg-prev aria-label="Previous supplier" aria-controls="sg-track">{ARROW_L}</button>
@@ -370,7 +404,7 @@ def gallery(ed, head, sup):
       </div>
     </div>
   </div>
-  <ul class="pn-sg-track" id="sg-track" tabindex="0" role="list" aria-label="Featured suppliers, scroll horizontally">{items}</ul>{directory}
+  <ul class="pn-sg-track" id="sg-track" tabindex="0" role="list" aria-label="Featured suppliers, scroll horizontally">{items}</ul>{sites}{directory}
 </section>'''
 
 
@@ -379,6 +413,9 @@ def gallery(ed, head, sup):
 # opens with the site's hairline rule and a tighter top, so the gallery and "Explore
 # makers and products" read as two distinct sections without extra space. Emitted in
 # that page's gallery region only; no shared stylesheet changes, so no other page moves.
+# v1.2 (31 Oct 2026): the same two rules now live in pn-supplier-gallery.css, keyed on
+# data-sg-transition="rule" exactly as before, so no inline <style> reaches the page body
+# (Garden Retreat's GR6 counts every word in <main>). TRANSITION_CSS is kept as the record.
 TRANSITION_CSS = ("<style>/* gallery -> Maker Explorer transition (build-supplier-gallery.py) */\n"
                   ".pn-sg[data-sg-transition=\"rule\"] ~ #explore-makers{ border-top:1px solid var(--rule, #4A4B4F); padding-top:min(72px, 8vw); }\n"
                   "@media (max-width:720px){ .pn-sg[data-sg-transition=\"rule\"] ~ #explore-makers{ padding-top:44px; } }\n"
@@ -390,8 +427,7 @@ def body_block(ed, head, sup):
     # Discovery's first render (hero and LCP), and the gallery is below the fold.
     v = D["asset_v"]
     return (f"{B_START}\n<link rel=\"stylesheet\" href=\"assets/components/pn-supplier-gallery.css?v={v}\">\n"
-            + (TRANSITION_CSS if D.get("transition") == "rule" else "")
-            + f"{gallery(ed, head, sup)}\n"
+            + f"{gallery(ed, head, sup, load_explorer(ROOT / ed['discovery']))}\n"
             f'<script src="assets/components/pn-supplier-gallery.js?v={v}" defer></script>\n{B_END}\n')
 
 

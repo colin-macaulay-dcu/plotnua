@@ -206,7 +206,12 @@ console.log('\nCLUSTER 1 CLAIM GUARDS\n');
    guard G1; before it existed, the next section was 7. Ending the slice at the
    section boundary keeps P1-P4 exactly as strict over the price section and
    does not let the explorer's counts be misread as price-section figures. */
-const PRICE_END = src.indexOf('<!-- 6c · ') > -1 ? '<!-- 6c · ' : '<!-- 7 · THE EVIDENCE LAYER';
+/* 31 Oct 2026 (supplier-gallery consolidation): the Premium Supplier Gallery now opens
+   the unified supplier section directly before the explorer and carries the explorer's
+   headline figures (proved by build-maker-explorer.py G1 and prove-supplier-gallery.py
+   G16), so the price section ends where that gallery region begins. */
+const PRICE_END = src.indexOf('<!-- PN-SUPPLIER-GALLERY v1') > -1 ? '<!-- PN-SUPPLIER-GALLERY v1'
+  : src.indexOf('<!-- 6c · ') > -1 ? '<!-- 6c · ' : '<!-- 7 · THE EVIDENCE LAYER';
 const PRICE = slice('P0', 'Garden room prices are hard to compare.', PRICE_END);
 if (PRICE) {
   // Founder correction, 11 October 2026. The superseded heading must not come

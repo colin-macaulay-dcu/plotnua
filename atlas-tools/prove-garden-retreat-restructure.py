@@ -67,8 +67,10 @@ case("GR5 an accordion loses its summary",
 case("GR6 the long intro sections come back",
      sub('  <section class="article-section reveal" id="three-ways-in">',
          '<p>' + ("A long paragraph of prose. " * 400) + '</p>\n  <section class="article-section reveal" id="three-ways-in">'))
+# 31 Oct 2026 (supplier-gallery consolidation): the explorer's intro, which carried
+# "Makers are never ranked;", is gone; the same planted sentence goes into the footer.
 case("GR7 governance language reaches the reader",
-     sub("Makers are never ranked;", "Only makers that passed the publication gate are shown;"))
+     sub("Makers are not ranked,", "Only makers that passed the publication gate are shown,"))
 case("GR8 a zero-confirmation count is shown",
      sub("Three products PlotNua checked directly.", "Irish availability is confirmed for 0 products."))
 case("GR9 the page is edited outside main",

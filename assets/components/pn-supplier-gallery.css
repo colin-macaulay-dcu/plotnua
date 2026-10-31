@@ -5,6 +5,8 @@
    v0.1 30 Oct 2026, design approved by founder 30 Oct 2026.
    v0.2 30 Oct 2026: focused featured card, larger imagery, typographic
         directory entries, per-Discovery headings (wording only).
+   v1.2 31 Oct 2026: unified supplier section (headline figures, makers'
+        websites row, explorer continuation heading); preview, not deployed.
    ---------------------------------------------------------------------
    One component, per-Discovery data. Everything is scoped to .pn-sg, so
    the file is inert on any page that does not carry the component. Uses
@@ -186,6 +188,54 @@ body:has(.article > .pn-sg){ overflow-x:clip; }   /* belt and braces: never a ho
 .pn-sg-entry .pn-sg-cap{ justify-content:flex-start; gap:14px; margin-top:12px; }
 .pn-sg-entry .pn-sg-cta{ padding-top:8px; }
 .pn-sg-entry .pn-sg-cta a{ font-size:15px; }
+
+/* ---- v1.2 UNIFIED SECTION (founder approval 31 Oct 2026, preview) ----------
+   data-sg-unified: the gallery and the Maker Explorer that follows it read as ONE
+   supplier section. The gallery carries the only heading, introduction and the
+   headline figures; the explorer continues it under "Browse every product".
+   Nothing here touches maker-explorer.css (shared, pinned) or the images. */
+.pn-sg-figs{ list-style:none; margin:clamp(24px,2.6vw,32px) 0 0; padding:0; display:flex; flex-wrap:wrap;
+  border-top:1px solid var(--sg-terra); max-width:760px; }
+.pn-sg-figs > li{ flex:1 1 0; min-width:0; padding:16px 18px 2px 0; }
+.pn-sg-figs > li + li{ padding-left:18px; border-left:1px solid var(--sg-line2); }
+.pn-sg-fig{ display:block; font:400 clamp(30px,2.8vw,40px)/1 var(--sg-serif); color:var(--sg-ivory); }
+.pn-sg .pn-sg-figs span.pn-sg-fig{ font-family:var(--sg-serif); font-weight:400; }   /* outranks the Discovery identity layer's span font */
+.pn-sg-fig-l{ display:block; margin-top:8px; font-size:13px; line-height:1.4; color:var(--sg-stone); }
+
+/* every maker's own website, A to Z (Garden Retreat): a quiet line under the gallery */
+.pn-sg-sites{ display:flex; flex-wrap:wrap; align-items:baseline; gap:10px 28px; padding:clamp(18px,2vw,24px) 0 0;
+}
+.pn-sg-sites-h{ margin:0; font:700 11px/1.2 var(--sg-sans); letter-spacing:.16em; text-transform:uppercase; color:var(--sg-bronze); }
+.pn-sg .pn-sg-sites ul{ list-style:none; margin:0; padding:0; display:flex; flex-wrap:wrap; gap:6px 22px; }
+.pn-sg-sites li{ display:inline-flex; align-items:center; gap:10px; }
+.pn-sg .pn-sg-sites a{ display:inline-flex; align-items:center; gap:7px; min-block-size:32px; font:500 15px/1.2 var(--sg-sans);
+  color:var(--sg-lime); text-decoration:none; }
+.pn-sg-sites a span{ border-bottom:1px solid var(--sg-line2); padding-bottom:2px; }
+.pn-sg .pn-sg-sites a:hover{ color:var(--sg-terra); }
+.pn-sg-sites a:hover span{ border-bottom-color:var(--sg-terra); }
+.pn-sg-sites svg{ inline-size:11px; block-size:11px; flex:none; opacity:.7; }
+.pn-sg-sites-rel{ font:700 10px/1 var(--sg-sans); letter-spacing:.12em; text-transform:uppercase; color:var(--sg-stone);
+  border:1px solid var(--sg-line2); border-radius:999px; padding:5px 8px; }
+.pn-sg[data-sg-unified] .pn-sg-track{ padding-bottom:clamp(28px,3vw,40px); }
+
+/* the hairline between the gallery and the explorer (DISC-008 Option B rule, moved here
+   from an inline <style> in v1.2; values unchanged) */
+.pn-sg[data-sg-transition="rule"] ~ #explore-makers{ border-top:1px solid var(--rule, #4A4B4F); padding-top:min(72px, 8vw); }
+@media (max-width:720px){ .pn-sg[data-sg-transition="rule"] ~ #explore-makers{ padding-top:44px; } }
+
+/* the explorer as the section's continuation: a sub-heading, not a second section */
+.pn-sg[data-sg-unified] ~ #explore-makers[data-mx-continuation] > .mx-cont-h{
+  margin:0 0 clamp(18px,2vw,26px); font:400 clamp(28px,2.6vw,38px)/1.1 var(--p4-serif,'Instrument Serif',Georgia,serif); letter-spacing:-.01em;
+  color:var(--p4-ivory,#F2EBE0); max-width:none; }
+@media (max-width:720px){
+  .pn-sg-figs{ flex-wrap:wrap; }
+  .pn-sg-figs > li{ flex:1 1 40%; padding:14px 12px 4px 0; }
+  .pn-sg-figs > li + li{ padding-left:12px; }
+  .pn-sg-figs > li:nth-child(3){ border-left:0; padding-left:0; }
+  .pn-sg-fig-l{ font-size:12.5px; }
+  .pn-sg-sites{ flex-direction:column; gap:10px; }
+  .pn-sg .pn-sg-sites a{ min-block-size:44px; font-size:16px; }
+}
 
 /* ---- responsive --------------------------------------------------------- */
 @media (max-width:1024px){

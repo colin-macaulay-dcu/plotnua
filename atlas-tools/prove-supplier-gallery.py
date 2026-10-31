@@ -34,6 +34,18 @@ mutates each page in memory to prove each guard can fail.
       granted domain (founder D2 narrow exception)
   G15 a maker on a founder "featureHold" (private preview promised) is never shown
       in the gallery, and its configuration is retained (founder, 30 Oct 2026)
+
+  UNIFIED SUPPLIER SECTION (founder approval 31 Oct 2026, preview; Garden Retreat
+  moved from "full" to "explorer" directory mode):
+  G16 a unified page has ONE heading: the gallery's H2; the explorer continues it with
+      the "Browse every product" sub-heading and no H2, kicker or figures of its own;
+      the gallery's headline figures equal the explorer configuration's, and each
+      product figure equals that tab's listed products (counted here, independently)
+  G17 the makers' websites row (where configured) lists exactly the live makers, A to Z,
+      each link https, to that maker's own verified domain (maker-product-links-v1.json,
+      independent of the gallery builder), new tab, noopener; a maker with a referral
+      offer is labelled beside its link
+  G18 no-JavaScript access: a unified page carries the explorer's A-Z maker index
 """
 import importlib.util, json, re, sys
 from pathlib import Path
@@ -177,8 +189,10 @@ def checks(name, full, css):
                 host = (urlparse(unesc(h)).hostname or "").lower()
                 if not any(host == d or host.endswith("." + d) for d in doms):
                     fails.append(f"G14 {name} {unesc(nm)}: external link {h} is off the granted domain")
-        if any("image" in (v or {}) for v in ed["makers"].values()):
+        if cfgp["authority"] == "universe" and any("image" in (v or {}) for v in ed["makers"].values()):
             fails.append(f"G13 {name}: editorial image override present (founder D4)")
+    if cfgp.get("unified"):
+        fails += unified_checks(name, full, page, names, offers, cfgp)
     if name == "discovery-garden-retreat.html" and ("IMG_2531" in page or "IMG_8495" not in page):
         fails.append("G12 Tanktribe image is not the CORE photograph IMG_8495")
     if re.search(r'href="[^"]*-preview\.html', page):
@@ -186,6 +200,62 @@ def checks(name, full, css):
     if re.search(r"\.pn-sg[^{]*img[^{]*\{[^}]*(object-fit\s*:\s*cover|clip-path|border-radius)", css):
         fails.append("G4 CSS crops or alters supplier images")
     return fails, len(cards)
+
+
+DOMAINS = json.loads((ROOT / "atlas-tools/maker-product-links-v1.json").read_text())["makerDomains"]
+bare = lambda h: (h or "").lower().removeprefix("www.")
+
+
+def unified_checks(name, full, page, names, offers, cfgp):
+    fails = []
+    cfg = json.loads(re.search(r'id="mx-data">(.*?)</script>', full, re.S).group(1))
+    ex = full[full.index('id="explore-makers"'):]
+    ex = ex[:ex.index("</section>")]
+    # G16 one heading, one set of figures
+    if page.count("<h2") != 1 or "<h2" in ex or 'class="kicker"' in ex or 'class="mx-figs"' in ex:
+        fails.append(f"G16 {name}: more than one section heading or set of figures")
+    if not re.search(r'<h3 class="mx-cont-h" id="mx-cont-h">Browse every product</h3>', ex) or "data-mx-continuation" not in ex:
+        fails.append(f"G16 {name}: the explorer does not continue the section under 'Browse every product'")
+    shown = [(int(n), unesc(l)) for n, l in re.findall(r'<span class="pn-sg-fig">(\d+)</span><span class="pn-sg-fig-l">([^<]+)</span>', page)]
+    want = [(int(n), l) for n, l in cfg.get("headline") or []]
+    if not shown or shown != want:
+        fails.append(f"G16 {name}: header figures {shown} differ from the explorer's {want}")
+    for t in cfg["tabs"]:
+        n = sum(len(m["p"]) for m in t["makers"])
+        if (n, t["nouns"][1]) not in shown:
+            fails.append(f"G16 {name}: no header figure of {n} {t['nouns'][1]} (counted from the listing)")
+        if f'<span class="mx-n">{n}</span>' not in ex:
+            fails.append(f"G16 {name}: the {t['key']} tab does not carry its count")
+    if ("makers" in [l for _, l in shown]) and (len(names), "makers") not in shown:
+        fails.append(f"G16 {name}: the makers figure is not the number of makers listed ({len(names)})")
+    # G17 websites row
+    m = re.search(r'<div class="pn-sg-sites">(.*?)</ul></div>', page, re.S)
+    if cfgp.get("websites"):
+        if not m:
+            fails.append(f"G17 {name}: the makers' websites row is missing")
+        else:
+            items = re.findall(r'<li><a href="([^"]+)"([^>]*)><span>([^<]+)</span>.*?</a>(.*?)</li>', m.group(1), re.S)
+            listed = [unesc(n) for _, _, n, _ in items]
+            if listed != sorted(names, key=str.casefold):
+                fails.append(f"G17 {name}: websites row {listed} is not exactly the live makers, A to Z")
+            for href, attrs, nm, tail in items:
+                nm, href = unesc(nm), unesc(href)
+                u = urlparse(href)
+                doms = {bare(d) for d in (DOMAINS.get(nm) or {}).get("domains") or []}
+                if u.scheme != "https" or bare(u.hostname) not in doms or u.query or u.fragment:
+                    fails.append(f"G17 {name} {nm}: {href} is not https on the maker's own verified domain {sorted(doms)}")
+                if 'target="_blank"' not in attrs or 'rel="noopener noreferrer"' not in attrs:
+                    fails.append(f"G17 {name} {nm}: website link without new-tab security attributes")
+                if nm in offers and "pn-sg-sites-rel" not in tail:
+                    fails.append(f"G17 {name} {nm}: referral arrangement not labelled beside its website")
+                if BANNED.search(nm + tail):
+                    fails.append(f"G17 {name} {nm}: endorsement wording")
+    elif m:
+        fails.append(f"G17 {name}: a websites row on a page that has not opted in")
+    # G18 no-JavaScript access to every maker
+    if 'id="maker-index"' not in ex:
+        fails.append(f"G18 {name}: no A-Z maker index for visitors without JavaScript")
+    return fails
 
 
 def stray_galleries():
@@ -201,16 +271,25 @@ MUTATIONS = {
         "G2 credit removed": (p.replace(">© OGNYX<", ">OGNYX<", 1), c),
         "G3 medium relabelled": (p.replace('pn-sg-kind">Visualisation', 'pn-sg-kind">Photograph', 1), c),
         "G4 crop in CSS": (p, c + "\n.pn-sg-mount img{ object-fit:cover; }"),
-        "G5 invented supplier": (p.replace('aria-label="Pineca Ireland"', 'aria-label="Invented Saunas Ltd"', 1), c),
+        "G5 invented supplier": (p.replace('aria-label="Tanktribe"><figure', 'aria-label="Invented Saunas Ltd"><figure', 1), c),
+        "G5 duplicate directory added": (p.replace('</ul></div></div>\n</section>', '</ul></div></div><details class="pn-sg-grid-wrap"><summary>x</summary></details>\n</section>', 1), c),
+        "G5 View all no longer goes to the explorer": (p.replace('href="#explore-makers" data-sg-jump', 'href="#suppliers" data-sg-jump', 1), c),
         "G6 unlabelled sponsor": (p.replace('data-sg-placement="editorial"', 'data-sg-placement="sponsored"', 1), c),
-        "G7 disclosure removed": (re.sub(r'<span class="pn-sg-tag pn-sg-tag--rel">[^<]*</span>', "", p), c),
-        "G8 preview link": (p.replace('href="https://www.tanktribe.ie/"', 'href="tanktribe-preview.html"', 1), c),
-        "G8 endorsement": (p.replace("Outdoor saunas.</p>", "The best outdoor saunas.</p>", 1), c),
+        "G8 preview link": (p.replace('<p class="pn-sg-cta"><a href="https://www.tanktribe.ie/"', '<p class="pn-sg-cta"><a href="tanktribe-preview.html"', 1), c),
+        "G8 endorsement": (p.replace("Outdoor barrel and cube saunas", "The best outdoor barrel and cube saunas", 1), c),
         "G10 link security dropped": (p.replace('rel="noopener noreferrer" target="_blank"', 'target="_blank"', 1), c),
         "G11 OGNYX location shown": (p.replace('aria-label="OGNYX"><figure class="pn-sg-fig">', 'aria-label="OGNYX"><p class="pn-sg-loc"><b>Registered in</b> Bray</p><figure class="pn-sg-fig">', 1), c),
         "G12 Carlsberg image back": (p.replace("2d930a20-ec94-4b5f-8af4-159501335d62/IMG_8495.jpg", "ab9c9630-7b25-441f-9559-b711ff7f6d5b/IMG_2531.JPG"), c),
         "G9 gallery moved after explorer": (p.replace(EXPLORER, "<p>moved</p>\n  " + EXPLORER, 1), c),
         "G9 gallery duplicated": (p.replace(B_END, B_END + "\n" + B_START + " dup -->", 1), c),
+        "G16 second heading restored": (p.replace('<h3 class="mx-cont-h" id="mx-cont-h">', '<h2>Explore makers and products</h2><h3 class="mx-cont-h" id="mx-cont-h">', 1), c),
+        "G16 header figure wrong": (p.replace('<span class="pn-sg-fig">93</span>', '<span class="pn-sg-fig">94</span>', 1), c),
+        "G16 makers figure wrong": (p.replace('<span class="pn-sg-fig">7</span>', '<span class="pn-sg-fig">11</span>', 1), c),
+        "G17 a maker dropped from the websites row": (re.sub(r'<li><a href="https://pineca\.ie/"[^>]*>.*?</li>', "", p, count=1, flags=re.S), c),
+        "G17 website link off the maker's domain": (p.replace('<li><a href="https://pineca.ie/"', '<li><a href="https://pineca.example.com/"', 1), c),
+        "G17 website link carries a query": (p.replace('<li><a href="https://polaris-sauna.ie/"', '<li><a href="https://polaris-sauna.ie/?ref=plotnua"', 1), c),
+        "G17 referral label removed": (re.sub(r' <span class="pn-sg-sites-rel">[^<]*</span>', "", p, count=1), c),
+        "G18 A-Z index removed": (p.replace('id="maker-index"', 'id="maker-list"', 1), c),
     },
     "discovery-living-in-the-garden.html": lambda p, c: {
         "G1 unlicensed image on a licensed maker": (p.replace('<img src="https://lh3.googleusercontent.com/d/1LNGku', '<img src="https://lh3.googleusercontent.com/d/9ZZZku', 1), c),
@@ -229,6 +308,10 @@ MUTATIONS = {
         "G9 gallery moved after explorer": (p.replace(EXPLORER, "<p>moved</p>\n  " + EXPLORER, 1), c),
         "G9 gallery duplicated": (p.replace(B_END, B_END + "\n" + B_START + " dup -->", 1), c),
         "G15 held maker shown": (p.replace('aria-label="Yardbox"><figure', 'aria-label="Garden Room Ireland"><figure', 1), c),
+        "G16 second heading restored": (p.replace('<h3 class="mx-cont-h" id="mx-cont-h">', '<h2>Explore makers and products</h2><h3 class="mx-cont-h" id="mx-cont-h">', 1), c),
+        "G16 header figure wrong": (p.replace('<span class="pn-sg-fig">570</span>', '<span class="pn-sg-fig">571</span>', 1), c),
+        "G17 websites row on a page that has not opted in": (p.replace('</ul>\n</section>\n<script src="assets/components/pn-supplier-gallery.js', '</ul><div class="pn-sg-sites"><ul></ul></div>\n</section>\n<script src="assets/components/pn-supplier-gallery.js', 1), c),
+        "G18 A-Z index removed": (p.replace('id="maker-index"', 'id="maker-list"', 1), c),
         "G14 Explore link off the granted domain": (p.replace('<a href="https://oodhouse.com/" rel="noopener noreferrer" target="_blank" aria-label=', '<a href="https://oodhouse.example.net/" rel="noopener noreferrer" target="_blank" aria-label=', 1), c),
     },
 }
