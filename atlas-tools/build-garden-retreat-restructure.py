@@ -526,6 +526,9 @@ def visible_default(page):
     m = re.sub(r"<script.*?</script>", " ", m, flags=re.S)
     m = re.sub(r"<!--.*?-->", " ", m, flags=re.S)
     m = re.sub(r"<noscript>.*?</noscript>", " ", m, flags=re.S)
+    # the AI disclosure beneath the hero (31 Oct 2026) is a required notice, not reading content; it is also
+    # present twice in the markup (one per viewport), so it is not counted
+    m = re.sub(r'<p class="pn-(?:compare__note|hero-note)">.*?</p>', " ", m, flags=re.S)
     m = re.sub(r"(<details[^>]*>\s*<summary>.*?</summary>).*?</details>", r"\1", m, flags=re.S)
     t = html.unescape(re.sub(r"<[^>]+>", " ", m))
     return len(re.findall(r"[A-Za-z0-9€][\w'’€.,-]*", t))

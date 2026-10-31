@@ -57,7 +57,8 @@
     "ILLUSTRATION_VERIFIED_NOT_AI": "Illustration",
     "LEGACY_UNDECLARED": null,
     "AI_ILLUSTRATION_VARIANTS": [
-      "Illustrative AI-generated visualisation. Not an actual installation."
+      "Illustrative AI-generated visualisation. Not an actual installation.",
+      "Illustrative AI-generated visualisation. Not an actual home or event."
     ]
   },
   "label_note": "An undeclared asset gets NO label. Inventing a classification to fill a caption is the error this register exists to prevent, and no published caption changes until the matching record exists.",

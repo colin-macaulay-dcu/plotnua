@@ -89,7 +89,7 @@ need(re.search(r'<input class="pn-compare__range" type="range" min="0" max="100"
 need(re.search(r'<script src="assets/identity/pn-compare\.js[^"]*" defer></script>', s), "F6 the shared pn-compare script is loaded")
 
 # F7
-need(s.count("AI-generated illustration") >= 3, "F7 illustration labels")
+need(s.count("AI-generated illustration") + s.count("AI-generated visualisation") >= 3, "F7 illustration labels")   # the approved hero wording (31 Oct 2026) counts
 need('id="fbMech"' in s and '<svg class="fb-mech-svg"' in s, "F7 coded SVG mechanism")
 need("not to scale" in s.lower(), "F7 mechanism marked as simplified, not to scale")
 

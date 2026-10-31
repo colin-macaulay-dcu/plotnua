@@ -80,7 +80,7 @@ def page(t):
                 lambda m: m.group(1) + picture("POSSIBLE", False) + m.group(2), fig, count=1)
     nf = re.sub(r'(<div class="pn-compare__before">\n)[\s\S]*?(      </div>\n      <span class="pn-compare__line")',
                 lambda m: m.group(1) + picture("BEFORE", True) + m.group(2), nf, count=1)
-    if "pn-compare__ai" not in nf:
+    if "pn-compare__ai" not in nf and "pn-compare__note" not in nf:   # the badge, or (31 Oct 2026) the note beneath
         nf = nf.replace('      <p class="pn-compare__tag is-possible" aria-hidden="true">Possible</p>\n',
                         '      <p class="pn-compare__tag is-possible" aria-hidden="true">Possible</p>\n      <p class="pn-compare__ai">AI-generated illustration</p>\n', 1)
     nf = re.sub(r'aria-label="Compare the garden[^"]*"',

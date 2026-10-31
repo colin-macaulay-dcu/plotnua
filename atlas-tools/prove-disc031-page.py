@@ -76,7 +76,7 @@ for half in ("top", "bottom"):
 
 # S6
 # 30 Oct 2026 (founder Pass 2): the inline comparison became the hero slider, so one placement fewer
-need(s.count("AI-generated illustration") >= 6, "S6 fewer than 6 illustration labels")
+need(s.count("AI-generated illustration") + s.count("AI-generated visualisation") >= 6, "S6 fewer than 6 illustration labels")   # the approved hero wording (31 Oct 2026) counts
 
 # S7
 need(("<loc>%s</loc>" % URL) in read("sitemap.xml"), "S7 sitemap entry")
