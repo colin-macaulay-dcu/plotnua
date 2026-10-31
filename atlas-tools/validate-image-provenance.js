@@ -86,7 +86,11 @@ if (!records || !legacy) {
    a photograph supplied by a PlotArt artist through PlotArt Studio, under the Gallery Publication and Image
    Licence. Written by atlas-tools/plotart-gallery-ingest.py; checked by P5d. Public fields only: the record
    names the artist's public slug and an opaque permission reference, never personal data. */
-const ASSET_CLASSES = ['SUPPLIER_IMAGE', 'AI_ILLUSTRATION', 'ILLUSTRATION_VERIFIED_NOT_AI', 'FOUNDER_ORIGINAL_ARTWORK', 'ARTIST_SUPPLIED_ARTWORK'];
+/* BRAND_MARK (founder approval of the PlotArt logo, 31 Oct 2026): a brand logo or a brand card made from it. A logo
+   depicts nothing real, so it carries no visible AI label; its true origin (including AI generation, from the master's
+   content credentials) is recorded here. Checked by P5e: the master's fingerprint, its origin, every processing step, the
+   founder's approval, and brand surfaces only. */
+const ASSET_CLASSES = ['SUPPLIER_IMAGE', 'AI_ILLUSTRATION', 'ILLUSTRATION_VERIFIED_NOT_AI', 'FOUNDER_ORIGINAL_ARTWORK', 'ARTIST_SUPPLIED_ARTWORK', 'BRAND_MARK'];
 const ARTIST_LICENCE_VERSIONS = ['PA-GPIL-2026-10-29'];
 /* product-card is DELIBERATELY ABSENT. The founder's rule becomes a
    vocabulary restriction rather than a convention somebody has to remember:
@@ -744,6 +748,25 @@ console.log('-'.repeat(74));
   }
   problems.length ? bad('P5d every ARTIST_SUPPLIED_ARTWORK is fully declared', `${problems.length}: ${problems.slice(0, 3).join('; ')}`)
     : ok('P5d every ARTIST_SUPPLIED_ARTWORK is fully declared', ar.length ? `${ar.length} checked` : 'none recorded; the check is live');
+}
+
+/* ── P5e · a BRAND_MARK is fully declared (31 Oct 2026) ── */
+{
+  const bm = records.filter(r => r.class === 'BRAND_MARK');
+  const problems = [];
+  for (const r of bm) {
+    const b = r.brand || {}, o = r.origin || {};
+    if (!b.name || !/^[0-9a-f]{64}$/.test(String(b.master_sha256 || ''))) problems.push(`${r.asset}: no brand name or master fingerprint`);
+    if (!o.method || !/^\d{4}-\d{2}-\d{2}$/.test(String(o.date || ''))) problems.push(`${r.asset}: origin (how and when the master was made) not recorded`);
+    if (/generated|ai/i.test(String(o.method)) && !o.c2pa_evidence) problems.push(`${r.asset}: an AI-made master without its content-credential evidence`);
+    if (!Array.isArray(r.processing) || !r.processing.length) problems.push(`${r.asset}: no processing record`);
+    const hr = r.human_review || {};
+    if (!hr.reviewer || !hr.date || !hr.attests) problems.push(`${r.asset}: no founder approval`);
+    if (!Array.isArray(r.permitted_surfaces) || !r.permitted_surfaces.length || r.permitted_surfaces.some(x => x !== 'brand')) problems.push(`${r.asset}: brand marks are permitted on brand surfaces only`);
+    if (!String(r.asset).startsWith('assets/brand/') && !String(r.asset).startsWith('assets/og/')) problems.push(`${r.asset}: a brand mark lives in assets/brand/ or assets/og/`);
+  }
+  problems.length ? bad('P5e every BRAND_MARK is fully declared', `${problems.length}: ${problems.slice(0, 3).join('; ')}`)
+    : ok('P5e every BRAND_MARK is fully declared', bm.length ? `${bm.length} checked` : 'none recorded; the check is live');
 }
 
 /* ── P6 · anti-laundering ─────────────────────────────────────────────── */

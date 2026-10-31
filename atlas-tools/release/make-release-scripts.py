@@ -44,7 +44,7 @@ STANDARD = [
     ("python3 atlas-tools/build-search-rail.py --check", "nothing written", "search rail unchanged"),
     ("node atlas-tools/prove-landmarks.mjs", "133 passed, 0 failed", "landmarks 133/133"),
     ("python3 atlas-tools/prove-landmarks-capability.py", "24 caught / 0 vacuous / 0 BLIND / 0 MISATTRIBUTED", "landmark capability 24/24"),
-    ("node atlas-tools/validate-image-provenance.js", "17 checks, 17 passed, 0 failed", "provenance guard 17/17 (P5d artist-supplied artwork, 29 Oct 2026)"),
+    ("node atlas-tools/validate-image-provenance.js", "18 checks, 18 passed, 0 failed", "provenance guard 18/18 (P5e brand marks, 31 Oct 2026)"),
     ("node atlas-tools/prove-timberin-containment.mjs", "real tree: contained · 25 mutations, 25 proved, 0 not proved", "TimberIN containment 25/25"),
     ("node atlas-tools/prove-cluster2-garden-retreat.mjs", "16 checks, 16 passed, 0 failed", "Garden Retreat claim guards 16/16"),
     ("env -u PN_PREVIEW_OFFERS python3 atlas-tools/build-maker-explorer.py --check", "CHECK OK — G1-G14", "maker directory G1-G14"),

@@ -49,6 +49,7 @@ body.pa p{ margin:0 0 1em; }
 .pa-brand{ display:flex; align-items:baseline; gap:14px; text-decoration:none; color:var(--ivory); flex:0 0 auto; }
 .pa-brand:hover{ color:var(--ivory); }
 .pa-word{ font-family:var(--serif); font-size:31px; letter-spacing:.01em; line-height:1; }
+.pa-logo{ width:30px; height:30px; flex:none; align-self:center; display:block; border-radius:7px; box-shadow:0 0 0 1px rgba(242,235,224,.10); margin-right:-4px; }   /* PlotArt logo (31 Oct 2026) */
 .pa-part{ display:flex; align-items:center; gap:7px; font-size:12px; letter-spacing:.06em; color:var(--stone); white-space:nowrap; }
 .pa-part img{ width:18px; height:18px; border-radius:5px; }
 .pa-nav{ display:flex; align-items:center; gap:4px; margin-left:auto; }
@@ -71,6 +72,7 @@ body.pa p{ margin:0 0 1em; }
   .pa-f25-m{ display:inline-flex; margin-left:auto; font-size:13.5px; font-weight:600; color:var(--ivory); text-decoration:none; border:1px solid var(--terra); border-radius:999px; padding:7px 13px; }
   :where(body.pa) .pa-nav a.pa-home-m{ display:inline-block; color:var(--stone); }
   .pa-word{ font-size:25px; }
+  .pa-logo{ width:26px; height:26px; border-radius:6px; }
   .pa-part span{ display:none; }
   .pa-nav{ gap:0; }
   .pa-nav a{ font-size:14px; padding:9px 8px; }
