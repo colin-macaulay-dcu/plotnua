@@ -28,7 +28,7 @@ COMMENT = """  <!-- Pass 2 Release 5 (founder approval, 31 Oct 2026): the shared
 
 PAGES = {
     "discovery-driveway-income.html": dict(
-        cls="di-hero", name="Driveway Income", fid="diHeroCompare", subject="the driveway", focus="70% 50%", wh=(1343, 732),
+        cls="di-hero", name="Driveway Income", fid="diHeroCompare", subject="the driveway", focus="84% 50%", wh=(1343, 732),
         aria="Compare the driveway standing empty and with two cars parked in it. Higher values show more of the driveway before.",
         bef_jpg="assets/disc014/img/DISC-014-HERO-BEFORE.jpg",
         bef_webp=[("assets/disc014/img/DISC-014-HERO-BEFORE-960.webp", 960), ("assets/disc014/img/DISC-014-HERO-BEFORE-full.webp", 1343)],
