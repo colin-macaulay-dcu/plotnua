@@ -60,6 +60,21 @@
 .pa-inv-benefits li{background:var(--wall);padding:clamp(24px,2.6vw,34px)}
 .pa-inv-benefits b{display:block;font-family:var(--serif);font-weight:400;font-size:clamp(25px,2.2vw,31px);line-height:1.1;color:var(--ivory);margin:0 0 10px}
 .pa-inv-benefits span{color:var(--stone);line-height:1.6;font-size:16px}
+.pa-inv-accept{padding-top:0}
+body.pa .pa-inv-acc h2{font-family:var(--serif);font-weight:400;font-size:clamp(32px,3.6vw,48px);line-height:1.06;color:var(--ivory);margin:0 0 clamp(22px,3vw,34px)}
+.pa-inv-acc-grid{display:grid;gap:clamp(28px,4vw,56px);grid-template-columns:1fr}
+@media (min-width:900px){.pa-inv-acc-grid{grid-template-columns:minmax(0,1fr) minmax(0,1.1fr)}}
+body.pa .pa-inv-acc h3{display:flex;align-items:center;gap:12px;font-size:19px;color:var(--ivory);margin:0 0 12px}
+.pa-inv-acc-n{display:inline-grid;place-items:center;width:30px;height:30px;border-radius:50%;border:1px solid rgba(207,133,102,.55);color:var(--terra-text);font-family:var(--serif);font-size:18px;flex:none}
+.pa-inv-acc p{color:var(--lime);line-height:1.6;margin:0 0 18px}
+.pa-inv-acc b{color:var(--ivory);font-weight:600}
+.pa-inv-next{margin:0 0 18px;padding-left:1.2em;color:var(--lime);line-height:1.6}
+.pa-inv-next li{margin:0 0 10px;padding-left:4px}
+.pa-inv-next li::marker{color:var(--terra-text)}
+.pa-inv-signin{font-size:15px;color:var(--stone)!important;border-top:1px solid var(--line);padding-top:16px;margin:0!important}
+.pa-inv-signin a{color:var(--terra-text);font-weight:600;white-space:nowrap}
+.no-js .pa-inv-copy{display:none}
+#accept:focus{outline:none}
 .pa-inv-steps{list-style:none;margin:0;padding:0;counter-reset:s;display:grid;gap:0}
 .pa-inv-steps li{counter-increment:s;display:grid;grid-template-columns:64px 1fr;gap:18px;padding:22px 0;border-top:1px solid var(--line)}
 .pa-inv-steps li:last-child{border-bottom:1px solid var(--line)}
@@ -91,11 +106,36 @@
     <p class="pa-inv-kicker">A personal invitation</p>
     <h1 class="pa-inv-h1">An Invitation<br>to <em>PlotArt</em></h1>
     <p class="pa-inv-sub">You've been personally invited to help shape PlotArt from the beginning — joining a small group of artists whose work will define the character of our opening collection.</p>
-    <div class="pa-inv-cta"><a class="pa-btn pa-btn--solid" href="mailto:hello@plotnua.ie?subject=My%20PlotArt%20invitation&body=Hi%20Colin%2C%0D%0A%0D%0AThanks%20for%20the%20invitation.%20I%27d%20be%20interested%20in%20joining%20PlotArt%20as%20a%20Founding%20Artist.%0D%0A%0D%0APlease%20send%20me%20the%20details%20and%20next%20steps.%0D%0A" data-pa-track="invite_accept_top">Accept your invitation <span aria-hidden="true">→</span></a><a class="pa-btn pa-btn--ghost" href="#joining">How joining works</a></div>
-    <p class="pa-inv-note">No application needed. Simply reply, and I'll take it from there.</p>
+    <div class="pa-inv-cta"><a class="pa-btn pa-btn--solid" href="#accept" data-pa-track="invite_accept_top">Accept your invitation <span aria-hidden="true">→</span></a><a class="pa-btn pa-btn--ghost" href="#joining">How joining works</a></div>
+    <p class="pa-inv-note">No application needed. Accept below, and I'll set up your private PlotArt Studio.</p>
   </div>
   <figure class="pa-inv-fig pa-lit"><span class="pa-hang pa-hang--float"><img src="assets/hero/founder-01-abstract.webp" width="1332" height="940" alt="Painting by Colin MacAulay: an abstract of bold yellow outlined shapes over deep violet loops and pink and blue lines on grey" decoding="async" fetchpriority="high"></span>
     <figcaption class="pa-credit">Original artwork by Colin MacAulay, founder of PlotArt.</figcaption></figure>
+</div></section>
+
+<section class="pa-sec pa-inv-accept" id="accept" aria-labelledby="acceptH" tabindex="-1"><div class="pa-wrap">
+  <div class="pa-inv-card pa-inv-acc">
+    <p class="pa-inv-kicker">Accept your invitation</p>
+    <h2 id="acceptH">Two minutes now. Then I'll set everything up.</h2>
+    <div class="pa-inv-acc-grid">
+      <div>
+        <h3><span class="pa-inv-acc-n">1</span>Send me a short email</h3>
+        <p>Email <b>hello@plotnua.ie</b> from the address you'd like to use for PlotArt. Your name and website or Instagram are all I need.</p>
+        <div class="pa-inv-cta"><a class="pa-btn pa-btn--solid" href="mailto:hello@plotnua.ie?subject=My%20PlotArt%20invitation&body=Hi%20Colin%2C%0D%0A%0D%0AThanks%20for%20the%20invitation.%20I%27d%20be%20interested%20in%20joining%20PlotArt%20as%20a%20Founding%20Artist.%0D%0A%0D%0APlease%20send%20me%20the%20details%20and%20next%20steps.%0D%0A" data-pa-track="invite_accept_email">Open an email to Colin <span aria-hidden="true">→</span></a><button type="button" class="pa-btn pa-btn--ghost pa-inv-copy" data-copy="hello@plotnua.ie" data-pa-track="invite_accept_copy">Copy the address</button></div>
+        <p class="pa-inv-note">If no email opens, write to <b>hello@plotnua.ie</b> from any email app.</p>
+      </div>
+      <div>
+        <h3><span class="pa-inv-acc-n">2</span>What happens next</h3>
+        <ol class="pa-inv-next">
+          <li>I reply personally with the Founding Artist terms. Your place is confirmed when you accept them.</li>
+          <li>I set up your private PlotArt Studio. You'll get an email from PlotArt called <b>&ldquo;Your PlotArt Studio is ready&rdquo;</b> with your sign-in link.</li>
+          <li>Sign in with the same email address. Each time, you're emailed a one-time code: there's no password.</li>
+          <li>Build your gallery in your own time. Nothing is published until you submit it and I approve it.</li>
+        </ol>
+        <p class="pa-inv-signin">Already have the &ldquo;Your PlotArt Studio is ready&rdquo; email? <a href="https://plotart-studio.colin-a41.workers.dev/" data-pa-track="invite_studio_signin">Sign in to PlotArt Studio <span aria-hidden="true">→</span></a></p>
+      </div>
+    </div>
+  </div>
 </div></section>
 
 <section class="pa-sec pa-sec--deep" aria-labelledby="letterH"><div class="pa-wrap pa-cols-2" style="align-items:start">
@@ -125,9 +165,9 @@
 <section class="pa-sec pa-sec--deep" id="joining" aria-labelledby="joinH"><div class="pa-wrap pa-cols-2" style="align-items:start">
   <div><p class="pa-eyebrow">Joining</p><h2 id="joinH">Five simple steps.</h2><p class="pa-muted" style="margin-top:14px">Nothing about you or your work is published until you've seen and approved your gallery.</p></div>
   <ol class="pa-inv-steps">
-    <li><div><h3>Accept your invitation</h3><p>Reply to hello@plotnua.ie using the button on this page.</p></div></li>
+    <li><div><h3>Accept your invitation</h3><p>Email hello@plotnua.ie using the button on this page, or from any email app.</p></div></li>
     <li><div><h3>Read and accept the terms</h3><p>I'll send you the Founding Artist terms. Your place is confirmed when you accept them in writing.</p></div></li>
-    <li><div><h3>Sign in to PlotArt Studio</h3><p>You'll receive an email with secure access to your own Studio: you sign in with a one-time code, with no password to remember.</p></div></li>
+    <li><div><h3>Sign in to PlotArt Studio</h3><p>Once you've accepted the terms, I set up your Studio and you'll receive an email called &ldquo;Your PlotArt Studio is ready&rdquo; with your sign-in link. You sign in with a one-time code, with no password to remember.</p></div></li>
     <li><div><h3>Build your gallery</h3><p>Add your biography and at least 10 works, with good photographs, details and prices. Take your time.</p></div></li>
     <li><div><h3>Review and publish</h3><p>I review your gallery with you, and it opens in the PlotArt Virtual Gallery. Afterwards, you can mark works sold or change what's on show yourself, at any time.</p></div></li>
   </ol>
@@ -137,7 +177,7 @@
   <p class="pa-eyebrow">The PlotArt Founding 25</p>
   <h2 id="closeH">I'd love you to be<br>one of the first.</h2>
   <p>Accepting simply starts the conversation. If you have questions first, reply to the same address and I'll answer them personally.</p>
-  <div class="pa-inv-cta"><a class="pa-btn pa-btn--solid" href="mailto:hello@plotnua.ie?subject=My%20PlotArt%20invitation&body=Hi%20Colin%2C%0D%0A%0D%0AThanks%20for%20the%20invitation.%20I%27d%20be%20interested%20in%20joining%20PlotArt%20as%20a%20Founding%20Artist.%0D%0A%0D%0APlease%20send%20me%20the%20details%20and%20next%20steps.%0D%0A" data-pa-track="invite_accept_bottom">Accept your invitation <span aria-hidden="true">→</span></a><a class="pa-btn pa-btn--ghost" href="founding-25.html#terms">Read the programme terms</a></div>
+  <div class="pa-inv-cta"><a class="pa-btn pa-btn--solid" href="#accept" data-pa-track="invite_accept_bottom">Accept your invitation <span aria-hidden="true">→</span></a><a class="pa-btn pa-btn--ghost" href="founding-25.html#terms">Read the programme terms</a></div>
 </div></section>
 
 </main>
@@ -159,6 +199,7 @@
     <p class="fine">Artworks in PlotArt galleries are offered by their artists: PlotArt introduces buyers and doesn't take payment. Paintings are credited where shown. The rooms and interiors on these pages are illustrations or AI-generated visualisations, not photographs of real homes.</p>
   </div>
 </footer>
+<script>document.querySelectorAll('.pa-inv-copy').forEach(function(b){b.addEventListener('click',function(){var t=b.textContent;function done(m){b.textContent=m;setTimeout(function(){b.textContent=t},2200)}if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(b.dataset.copy).then(function(){done('Copied')},function(){done('hello@plotnua.ie')})}else done('hello@plotnua.ie')})});</script>
 <script src="assets/plotart.js" defer></script>
 <script src="/assets/identity/pn-menu.js?v=1" defer></script>
 </body>

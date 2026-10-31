@@ -174,6 +174,10 @@ for name in PAGES:
     s7 = s.replace(F25_FILE, "", 1) if name == "founding-25.html" else s
     need(not re.search(r'type="file"|name="(?:address|eircode|phone|dob|date_of_birth)"', s7), "L7 %s asks for an upload (other than artwork images), address, phone or date of birth" % name)
     ep_ok = s.replace('data-endpoint="%s"' % ENDPOINT, "").replace('data-image-endpoint="%s/image"' % ENDPOINT, "") if ENDPOINT else s
+    # The ONE permitted Studio link (founder P0, 31 Oct 2026): the invitation page's "Sign in to PlotArt Studio" link
+    # to the Studio's front door, which is behind Cloudflare Access. A plain link, never a form, script or data endpoint.
+    if name == "invitation.html":
+        ep_ok = ep_ok.replace('href="https://plotart-studio.colin-a41.workers.dev/" data-pa-track="invite_studio_signin"', "", 1)
     need(not re.search(r"workers\.dev|airtable", ep_ok), "L7 %s references a live endpoint outside the approved form" % name)
 
 home = open(os.path.join(PA, "index.html"), encoding="utf-8").read() if os.path.exists(os.path.join(PA, "index.html")) else ""
