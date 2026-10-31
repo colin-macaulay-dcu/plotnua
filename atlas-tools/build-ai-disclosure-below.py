@@ -38,6 +38,8 @@ PAGES = {
     # Release 5 (founder approval, 31 Oct 2026): page-specific approved wordings
     "discovery-driveway-income.html": PROPERTY,
     "discovery-your-home-on-screen.html": FILM,
+    # Release 6 (31 Oct 2026, wording pending founder confirmation): an approved variant
+    "discovery-a-home-for-art.html": PROPERTY,
 }
 # the desktop line aligns with each hero's own copy: the 1240 px content column (default), the copy's viewport
 # inset (Hidden Flood Barrier 4vw, Supper Club 5vw), or centred under centred copy (Natural Swimming Garden)

@@ -8458,6 +8458,80 @@
         "date": "2026-10-31",
         "subject": "Founder's credentialed master, added for the Release 5 hero copies"
       }
+    },
+    {
+      "asset": "assets/disc023/img/A-Home-for-Art-01-Before-MASTER.jpeg",
+      "sha256": "f4aa42181044211221b1f89f6c1ec9708d55fe09c70e6a726697514a6182c178",
+      "bytes": 789802,
+      "pixels": [
+        1408,
+        768
+      ],
+      "class": "AI_ILLUSTRATION",
+      "what": "Discovery illustration (discovery-a-home-for-art.html), hero BEFORE master",
+      "depicts_named_product": false,
+      "depicts_named_organisation": false,
+      "origin": {
+        "basis": "C2PA_EMBEDDED",
+        "evidence": "Embedded C2PA manifest, read with c2pa-python: issuer Google LLC, signed 2026-08-19T07:33:43+00:00; the credential chain records c2pa.created by Google Generative AI with digital source type trainedAlgorithmicMedia; 1 ingredient link(s), 1 credentialed; validation Valid. Founder's master file, the same picture as assets/img/5dc201bef1868b84.jpg (whose bytes carry no credential).",
+        "declared_under": "Governance 2.0, Rule 2 (30 Oct 2026)"
+      },
+      "generated": {
+        "tool": "Google LLC generative AI, per the file's own signed C2PA credential",
+        "date": "2026-08-19"
+      },
+      "prompt_status": "UNAVAILABLE",
+      "reference_disclosure": {
+        "status": "CREDENTIALED",
+        "statement": "The credential records 1 input image(s), each carrying its own signed credential."
+      },
+      "permitted_surfaces": [
+        "discovery"
+      ],
+      "content_credentials": {
+        "embeds_c2pa": true
+      },
+      "introduced": {
+        "date": "2026-10-31",
+        "subject": "Founder's credentialed DISC-023 master, added for the Release 6 hero"
+      }
+    },
+    {
+      "asset": "assets/disc023/img/A-Home-for-Art-02-Possible-MASTER.jpeg",
+      "sha256": "b8b0af40d9e6c64e936376b068865c0b105a5daa4112405d972f6856e6a1ed33",
+      "bytes": 820942,
+      "pixels": [
+        1408,
+        768
+      ],
+      "class": "AI_ILLUSTRATION",
+      "what": "Discovery illustration (discovery-a-home-for-art.html), hero POSSIBLE master",
+      "depicts_named_product": false,
+      "depicts_named_organisation": false,
+      "origin": {
+        "basis": "C2PA_EMBEDDED",
+        "evidence": "Embedded C2PA manifest, read with c2pa-python: issuer Google LLC, signed 2026-08-19T07:32:41+00:00; the credential chain records c2pa.created by Google Generative AI with digital source type trainedAlgorithmicMedia; 0 ingredient link(s), 0 credentialed; validation Valid. Founder's master file, the same picture as assets/img/c0f5bfcde033dea3.jpg (whose bytes carry no credential).",
+        "declared_under": "Governance 2.0, Rule 2 (30 Oct 2026)"
+      },
+      "generated": {
+        "tool": "Google LLC generative AI, per the file's own signed C2PA credential",
+        "date": "2026-08-19"
+      },
+      "prompt_status": "UNAVAILABLE",
+      "reference_disclosure": {
+        "status": "UNCERTAIN",
+        "statement": "The credential records no input image. Credentials do not record conversation context, so inputs cannot be ruled out."
+      },
+      "permitted_surfaces": [
+        "discovery"
+      ],
+      "content_credentials": {
+        "embeds_c2pa": true
+      },
+      "introduced": {
+        "date": "2026-10-31",
+        "subject": "Founder's credentialed DISC-023 master, added for the Release 6 hero"
+      }
     }
   ],
   "legacy_undeclared": [
@@ -12412,6 +12486,144 @@
         "source_file_embeds_c2pa": false,
         "derivative_embeds_c2pa": false,
         "note": "The source carries no embedded credential. This file inherits the source's LEGACY_UNDECLARED state and declares nothing."
+      }
+    },
+    {
+      "asset": "assets/disc023/img/DISC-023-HERO-BEFORE.jpg",
+      "sha256": "b4c62c36ac25e3a0a8b3f86bdc6b90275d2e9d482c2a855c2e80497d465f2bb5",
+      "bytes": 242437,
+      "pixels": [
+        1408,
+        768
+      ],
+      "derived_from": {
+        "asset": "assets/disc023/img/A-Home-for-Art-01-Before-MASTER.jpeg",
+        "sha256": "f4aa42181044211221b1f89f6c1ec9708d55fe09c70e6a726697514a6182c178"
+      },
+      "method": "artefact-removal",
+      "edit": {
+        "description": "Hero BEFORE for the A Home for Art slider (Governance 2.0, Rule 3): PlotNua's own burned-in 'PLOTNUA DISCOVERY / Potential Asset' label (text, underline and arrow) removed from the plaster wall. Nothing else changed.",
+        "operation": "Dark strokes inside x 555-875, y 128-290 (against a 31 px median) plus the underline and arrow as fixed shapes, dilated, filled by OpenCV Telea inpainting (radius 6) from the surrounding plaster; 11222 px. No generative fill.",
+        "box_xyxy": [
+          555,
+          128,
+          875,
+          290
+        ],
+        "verified_by": "atlas-tools/build-disc023-hero-pair.py --check"
+      },
+      "encoder": "Pillow 12.3.0, JPEG quality 92, progressive",
+      "made": "2026-10-31",
+      "content_credentials": {
+        "source_file_embeds_c2pa": true,
+        "derivative_embeds_c2pa": false,
+        "note": "Editing and re-encoding remove the embedded C2PA credential. This copy carries NO signed credential; the master keeps it, and its record carries the AI classification."
+      }
+    },
+    {
+      "asset": "assets/disc023/img/DISC-023-HERO-BEFORE-1408.webp",
+      "sha256": "4ee7be66aceb630e5b7fc3db6677dca29e505a545e1439589e0a21f598b5174a",
+      "bytes": 82282,
+      "pixels": [
+        1408,
+        768
+      ],
+      "derived_from": {
+        "asset": "assets/disc023/img/A-Home-for-Art-01-Before-MASTER.jpeg",
+        "sha256": "f4aa42181044211221b1f89f6c1ec9708d55fe09c70e6a726697514a6182c178"
+      },
+      "method": "artefact-removal",
+      "edit": {
+        "description": "Hero BEFORE for the A Home for Art slider (Governance 2.0, Rule 3): PlotNua's own burned-in 'PLOTNUA DISCOVERY / Potential Asset' label (text, underline and arrow) removed from the plaster wall. Nothing else changed.",
+        "operation": "Dark strokes inside x 555-875, y 128-290 (against a 31 px median) plus the underline and arrow as fixed shapes, dilated, filled by OpenCV Telea inpainting (radius 6) from the surrounding plaster; 11222 px. No generative fill.",
+        "box_xyxy": [
+          555,
+          128,
+          875,
+          290
+        ],
+        "verified_by": "atlas-tools/build-disc023-hero-pair.py --check"
+      },
+      "encoder": "Pillow 12.3.0, WebP quality 80, method 6",
+      "made": "2026-10-31",
+      "content_credentials": {
+        "source_file_embeds_c2pa": true,
+        "derivative_embeds_c2pa": false,
+        "note": "Editing and re-encoding remove the embedded C2PA credential. This copy carries NO signed credential; the master keeps it, and its record carries the AI classification."
+      }
+    },
+    {
+      "asset": "assets/disc023/img/DISC-023-HERO-BEFORE-960.webp",
+      "sha256": "40f3cfcb947bda3524d5704485b8a2415c914ef613a4ef99eddfc6f1c922d2b7",
+      "bytes": 41690,
+      "pixels": [
+        960,
+        524
+      ],
+      "derived_from": {
+        "asset": "assets/disc023/img/A-Home-for-Art-01-Before-MASTER.jpeg",
+        "sha256": "f4aa42181044211221b1f89f6c1ec9708d55fe09c70e6a726697514a6182c178"
+      },
+      "method": "artefact-removal",
+      "edit": {
+        "description": "Hero BEFORE for the A Home for Art slider (Governance 2.0, Rule 3): PlotNua's own burned-in 'PLOTNUA DISCOVERY / Potential Asset' label (text, underline and arrow) removed from the plaster wall. Nothing else changed.",
+        "operation": "Dark strokes inside x 555-875, y 128-290 (against a 31 px median) plus the underline and arrow as fixed shapes, dilated, filled by OpenCV Telea inpainting (radius 6) from the surrounding plaster; 11222 px. No generative fill.",
+        "box_xyxy": [
+          555,
+          128,
+          875,
+          290
+        ],
+        "verified_by": "atlas-tools/build-disc023-hero-pair.py --check"
+      },
+      "encoder": "Pillow 12.3.0, WebP quality 80, method 6, Lanczos resize to 960px wide",
+      "made": "2026-10-31",
+      "content_credentials": {
+        "source_file_embeds_c2pa": true,
+        "derivative_embeds_c2pa": false,
+        "note": "Editing and re-encoding remove the embedded C2PA credential. This copy carries NO signed credential; the master keeps it, and its record carries the AI classification."
+      }
+    },
+    {
+      "asset": "assets/disc023/img/DISC-023-HERO-POSSIBLE-1408.webp",
+      "sha256": "e838bac63bcdefe14c790b1c384f4ce9c35eb2232c767f2c81f7e64e22732c7b",
+      "bytes": 101390,
+      "pixels": [
+        1408,
+        768
+      ],
+      "derived_from": {
+        "asset": "assets/disc023/img/A-Home-for-Art-02-Possible-MASTER.jpeg",
+        "sha256": "b8b0af40d9e6c64e936376b068865c0b105a5daa4112405d972f6856e6a1ed33"
+      },
+      "method": "webp-reencode",
+      "encoder": "Pillow 12.3.0, WebP quality 80, method 6",
+      "made": "2026-10-31",
+      "content_credentials": {
+        "source_file_embeds_c2pa": true,
+        "derivative_embeds_c2pa": false,
+        "note": "Editing and re-encoding remove the embedded C2PA credential. This copy carries NO signed credential; the master keeps it, and its record carries the AI classification."
+      }
+    },
+    {
+      "asset": "assets/disc023/img/DISC-023-HERO-POSSIBLE-960.webp",
+      "sha256": "44f40ea90ac41dda692f2e2ad3aac3e182f40bb04df30fb9a33e1053f164696b",
+      "bytes": 51814,
+      "pixels": [
+        960,
+        524
+      ],
+      "derived_from": {
+        "asset": "assets/disc023/img/A-Home-for-Art-02-Possible-MASTER.jpeg",
+        "sha256": "b8b0af40d9e6c64e936376b068865c0b105a5daa4112405d972f6856e6a1ed33"
+      },
+      "method": "webp-resize",
+      "encoder": "Pillow 12.3.0, WebP quality 80, method 6, Lanczos resize to 960px wide",
+      "made": "2026-10-31",
+      "content_credentials": {
+        "source_file_embeds_c2pa": true,
+        "derivative_embeds_c2pa": false,
+        "note": "Editing and re-encoding remove the embedded C2PA credential. This copy carries NO signed credential; the master keeps it, and its record carries the AI classification."
       }
     }
   ],
