@@ -34,26 +34,35 @@ PAGES = {
     "discovery-natural-swimming-garden.html": INSTALL,
     "discovery-supper-club-at-home.html": EVENT,
 }
+# the desktop line aligns with each hero's own copy: the 1240 px content column (default), the copy's viewport
+# inset (Hidden Flood Barrier 4vw, Supper Club 5vw), or centred under centred copy (Natural Swimming Garden)
+ALIGN = {
+    "discovery-hidden-flood-barrier.html": ' class="pn-hero-note pn-hero-note--inset" style="--pnn-inset:4vw"',
+    "discovery-supper-club-at-home.html": ' class="pn-hero-note pn-hero-note--inset" style="--pnn-inset:5vw"',
+    "discovery-natural-swimming-garden.html": ' class="pn-hero-note pn-hero-note--centre"',
+}
 FIG = re.compile(r'<figure class="pn-compare pn-compare--hero"[\s\S]*?</figure>')
 
 
-def apply(t, note):
+def apply(t, note, attrs=' class="pn-hero-note"'):
     fig = FIG.search(t).group(0)
     nf = re.sub(r'\n[ \t]*<p class="pn-compare__ai"[^>]*>[^<]*</p>', '', fig)
     if '<p class="pn-compare__note">' not in nf:
         i = nf.rindex("</figure>")
         nf = nf[:i].rstrip(" ") + '    <p class="pn-compare__note">%s</p>\n  </figure>' % note + nf[i + len("</figure>"):]
     t = t.replace(fig, nf, 1)
-    if '<p class="pn-hero-note">' not in t:
+    if 'class="pn-hero-note' not in t:
         end = t.index("</header>", t.index("pn-compare--hero"))
-        t = t[:end] + '</header>\n<p class="pn-hero-note">%s</p>' % note + t[end + len("</header>"):]
+        t = t[:end] + '</header>\n<p%s>%s</p>' % (attrs, note) + t[end + len("</header>"):]
+    else:
+        t = re.sub(r'<p class="pn-hero-note[^"]*"(?: style="[^"]*")?>', '<p%s>' % attrs, t, count=1)
     return re.sub(r'pn-compare\.css\?v=1\.[0-3]"', 'pn-compare.css?v=1.4"', t)
 
 
 def ok(t, note):
     fig = FIG.search(t).group(0)
     return ("pn-compare__ai" not in fig and fig.count('<p class="pn-compare__note">%s</p>' % note) == 1
-            and t.count('<p class="pn-hero-note">%s</p>' % note) == 1 and "pn-compare.css?v=1.4" in t)
+            and len(re.findall(r'<p class="pn-hero-note[^>]*>%s</p>' % re.escape(note), t)) == 1 and "pn-compare.css?v=1.4" in t)
 
 
 def main():
@@ -62,9 +71,9 @@ def main():
         p = ROOT / name
         t = p.read_text(encoding="utf-8")
         if CHECK:
-            if not ok(t, note) or apply(t, note) != t: bad.append(name)
+            if not ok(t, note) or apply(t, note, ALIGN.get(name, ' class="pn-hero-note"')) != t: bad.append(name)
             continue
-        n = apply(t, note)
+        n = apply(t, note, ALIGN.get(name, ' class="pn-hero-note"'))
         if n != t:
             p.write_text(n, encoding="utf-8"); print("updated: " + name)
     if CHECK:

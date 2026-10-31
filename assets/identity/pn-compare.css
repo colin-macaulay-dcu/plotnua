@@ -261,6 +261,10 @@ body:has(> .pn-return) .d-hero.pn-hero-compare{ height:min(92svh, calc(100svh - 
 .pn-hero-note{ display:block; box-sizing:border-box; max-width:1240px; margin:0 auto; padding:12px 40px 0;
   font-family:var(--p4-sans,'Hanken Grotesk',system-ui,sans-serif); font-size:13px; line-height:1.45; letter-spacing:.01em;
   color:var(--p4-stone,#C2BDB5); }
+/* alignment with heroes whose copy is not on the 1240 px content column: a full-width line with the copy's own
+   left inset (e.g. 4vw), or centred under centred hero copy */
+.pn-hero-note--inset{ max-width:none; padding-left:var(--pnn-inset,40px); padding-right:var(--pnn-inset,40px); }
+.pn-hero-note--centre{ text-align:center; }
 @media (max-width:1024px) and (orientation:portrait), (max-width:719px){
   .pn-compare--hero .pn-compare__note{ display:block; margin:0; padding:0 22px 16px; background:var(--pnc-card);
     font-family:var(--pnc-sans); font-size:12.5px; line-height:1.45; color:var(--pnc-stone); }
