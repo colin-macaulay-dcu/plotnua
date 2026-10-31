@@ -21,8 +21,8 @@ const SEC = {
 };
 // the approved PlotArt logo files (decoded once; public, no data)
 const bin = b => Uint8Array.from(atob(b), c => c.charCodeAt(0));
-const LOGO = { '/assets/plotart-p-48.webp': [bin(A.LOGO_48_B64), 'image/webp'], '/assets/plotart-p-96.webp': [bin(A.LOGO_96_B64), 'image/webp'],
-  '/assets/plotart-favicon-32.png': [bin(A.FAVICON_32_B64), 'image/png'], '/assets/plotart-apple-touch-180.png': [bin(A.TOUCH_180_B64), 'image/png'] };
+const LOGO = { '/assets/brand/plotart-p-48.webp': [bin(A.LOGO_48_B64), 'image/webp'], '/assets/brand/plotart-p-96.webp': [bin(A.LOGO_96_B64), 'image/webp'],
+  '/assets/brand/plotart-favicon-32.png': [bin(A.FAVICON_32_B64), 'image/png'], '/assets/brand/plotart-apple-touch-180.png': [bin(A.TOUCH_180_B64), 'image/png'] };
 const res = (body, type, status = 200, extra = {}) => new Response(body, { status, headers: { 'Content-Type': type, ...SEC, ...extra } });
 const json = (o, status = 200) => res(JSON.stringify(o), 'application/json; charset=utf-8', status);
 const html = (h, status = 200) => res(h, 'text/html; charset=utf-8', status);
