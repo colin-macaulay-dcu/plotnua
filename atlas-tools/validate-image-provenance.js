@@ -392,6 +392,16 @@ if (reg.derivatives !== undefined && !Array.isArray(reg.derivatives)) {
 const derivatives = Array.isArray(reg.derivatives) ? reg.derivatives : [];
 const derivSet = new Map();
 for (const d of derivatives) if (d && d.asset) derivSet.set(d.asset, d);
+/* GOVERNANCE 2.0 (Rule 3, 31 Oct 2026): a declared record is SHOWN wherever one of its derivatives is shown.
+   A routine edit (e.g. artefact removal) may stand on a page instead of its source; the record still describes
+   what the visitor sees, so P8 requires its label there and P9 counts it as published. This only widens what
+   P8 checks; it never lets a page show a derivative of a declared AI image without the label. */
+const shownPages = (asset) => {
+  const out = new Set(found.get(asset) || []);
+  for (const d of derivatives)
+    if (d && d.derived_from && d.derived_from.asset === asset) for (const pg of (found.get(d.asset) || [])) out.add(pg);
+  return out.size ? out : null;
+};
 
 /* STAGED COMPOSITES (H2, 20 Oct 2026). A locked composite whose provenance is
    recorded BEFORE it is published. It names no asset path, so it can never
@@ -869,7 +879,7 @@ const pageText = html => html.replace(/<!--[\s\S]*?-->/g, ' ').replace(/<[^>]+>/
   } else {
     const missing = [];
     for (const r of ai) {
-      const onPages = found.get(r.asset);
+      const onPages = shownPages(r.asset);
       if (!onPages) continue;              // declared but not published: fine
       /* H3: a licensed photographic composite carries its own two labels
          instead; the generic AI label alone is not enough for it. */
@@ -926,7 +936,7 @@ const pageText = html => html.replace(/<!--[\s\S]*?-->/g, ' ').replace(/<[^>]+>/
      the backlog is a census of what is ON DISK, and 28 of the 85 are
      referenced by no page -- which is a real finding, reported below, and
      not a reason to drop them from the ratchet. */
-  const stale = records.filter(r => !found.has(r.asset));
+  const stale = records.filter(r => !shownPages(r.asset));
   stale.length
     ? bad('P9 no declared record describes an unreferenced asset',
           `${stale.length}: ${stale.slice(0, 3).map(r => r.asset).join(', ')}`)

@@ -8267,6 +8267,80 @@
         "date": "2026-10-31",
         "subject": "Founder's final Garden Retreat hero pair, supplied whole"
       }
+    },
+    {
+      "asset": "assets/disc016/img/Above-and-Beyond-01-Before.png",
+      "sha256": "e15eeb6dbf36a3830d8a64d5330cfc5f5cde72b56848f24d31bd2a6c2f868d9a",
+      "bytes": 2920174,
+      "pixels": [
+        1408,
+        768
+      ],
+      "class": "AI_ILLUSTRATION",
+      "what": "Discovery illustration (discovery-above-and-beyond.html), hero BEFORE master; the page shows its edited copy",
+      "depicts_named_product": false,
+      "depicts_named_organisation": false,
+      "origin": {
+        "basis": "C2PA_EMBEDDED",
+        "evidence": "Embedded C2PA manifest, read with c2pa-python: issuer Google LLC, signed 2026-08-10T20:47:25+00:00; active manifest: opened, visible watermark added, converted to PNG; its credential chain (all manifests embedded in the file) records c2pa.created by Google Generative AI with digital source type trainedAlgorithmicMedia; 4 ingredient link(s) in the chain, 4 credentialed; validation Valid. Founder's master file, the same picture as assets/img/b53d75f9dff4af2e.jpg (lossless original of that JPEG).",
+        "declared_under": "Governance 2.0, Rule 2 (30 Oct 2026)"
+      },
+      "generated": {
+        "tool": "Google LLC generative AI, per the file's own signed C2PA credential",
+        "date": "2026-08-10"
+      },
+      "prompt_status": "UNAVAILABLE",
+      "reference_disclosure": {
+        "status": "CREDENTIALED",
+        "statement": "The credential records 4 input image(s), each carrying its own signed credential."
+      },
+      "permitted_surfaces": [
+        "discovery"
+      ],
+      "content_credentials": {
+        "embeds_c2pa": true
+      },
+      "introduced": {
+        "date": "2026-10-31",
+        "subject": "Founder's credentialed DISC-016 master, added for the hero copies"
+      }
+    },
+    {
+      "asset": "assets/disc016/img/Above-and-Beyond-04-Two-Pod-Reveal.png",
+      "sha256": "5555da5ffe50770303549cd8e15bfbfe1ffcf75e786bb091d25b059c95d8ff4b",
+      "bytes": 2949100,
+      "pixels": [
+        1408,
+        768
+      ],
+      "class": "AI_ILLUSTRATION",
+      "what": "Discovery illustration (discovery-above-and-beyond.html), hero POSSIBLE master; the page shows its edited copy",
+      "depicts_named_product": false,
+      "depicts_named_organisation": false,
+      "origin": {
+        "basis": "C2PA_EMBEDDED",
+        "evidence": "Embedded C2PA manifest, read with c2pa-python: issuer Google LLC, signed 2026-08-10T20:51:11+00:00; active manifest: opened, visible watermark added, converted to PNG; its credential chain (all manifests embedded in the file) records c2pa.created by Google Generative AI with digital source type trainedAlgorithmicMedia; 9 ingredient link(s) in the chain, 9 credentialed; validation Valid. Founder's master file, the same picture as assets/img/aecece07994fe0db.jpg (lossless original of that JPEG).",
+        "declared_under": "Governance 2.0, Rule 2 (30 Oct 2026)"
+      },
+      "generated": {
+        "tool": "Google LLC generative AI, per the file's own signed C2PA credential",
+        "date": "2026-08-10"
+      },
+      "prompt_status": "UNAVAILABLE",
+      "reference_disclosure": {
+        "status": "CREDENTIALED",
+        "statement": "The credential records 9 input image(s), each carrying its own signed credential."
+      },
+      "permitted_surfaces": [
+        "discovery"
+      ],
+      "content_credentials": {
+        "embeds_c2pa": true
+      },
+      "introduced": {
+        "date": "2026-10-31",
+        "subject": "Founder's credentialed DISC-016 master, added for the hero copies"
+      }
     }
   ],
   "legacy_undeclared": [
@@ -11349,240 +11423,6 @@
       }
     },
     {
-      "asset": "assets/disc016/img/DISC-016-HERO-BEFORE-MR.jpg",
-      "sha256": "e91e0c1fc90a05d9396ad570932381a87a00d26f9c2836c076b530a35d300c49",
-      "bytes": 472459,
-      "pixels": [
-        1408,
-        768
-      ],
-      "derived_from": {
-        "asset": "assets/img/b53d75f9dff4af2e.jpg",
-        "sha256": "b53d75f9dff4af2e4d1d7f0de5b2b39e2c935d30ac628a64e5e6f72272079300"
-      },
-      "method": "artefact-removal",
-      "edit": {
-        "description": "Removal of a faint visible generator mark (a four-point sparkle) in one 59 x 59 px area; nothing else changed.",
-        "operation": "Visible-mark removal, confined to the box: a four-point star mask |dx/27|^0.62 + |dy/27|^0.62 <= 1 centred (1288, 649), 4x supersampled; reverse alpha blending of a white mark at the opacity measured in this image (mean inside the star against a 7 px ring outside it); a 3 px OpenCV Telea inpaint on the star's anti-aliased edge only. No generative fill. Every pixel outside the box is the decoded source pixel before encoding.",
-        "box_xyxy": [
-          1259,
-          620,
-          1318,
-          679
-        ],
-        "changed_pixels": 1066,
-        "changed_share_of_image": 0.000986,
-        "measured_mark_opacity": 0.4199,
-        "verified_by": "atlas-tools/build-disc016-hero-mark-removal.py --check (refuses any change outside the box)"
-      },
-      "encoder": "Pillow 12.3.0, JPEG quality 92, progressive",
-      "fidelity": {
-        "ssim": 0.9955,
-        "measured_against": "source at the same pixel size (includes the removed mark)"
-      },
-      "made": "2026-10-30",
-      "content_credentials": {
-        "source_file_embeds_c2pa": false,
-        "derivative_embeds_c2pa": false,
-        "note": "The source carries no embedded credential. This file inherits the source's LEGACY_UNDECLARED state and declares nothing."
-      }
-    },
-    {
-      "asset": "assets/disc016/img/DISC-016-HERO-BEFORE-MR-1408.webp",
-      "sha256": "a84b18d3c010528acb8caf4213bc4205f6c12cd1c5b0a7701d22e897b32229d6",
-      "bytes": 301654,
-      "pixels": [
-        1408,
-        768
-      ],
-      "derived_from": {
-        "asset": "assets/img/b53d75f9dff4af2e.jpg",
-        "sha256": "b53d75f9dff4af2e4d1d7f0de5b2b39e2c935d30ac628a64e5e6f72272079300"
-      },
-      "method": "artefact-removal",
-      "edit": {
-        "description": "Removal of a faint visible generator mark (a four-point sparkle) in one 59 x 59 px area; nothing else changed.",
-        "operation": "Visible-mark removal, confined to the box: a four-point star mask |dx/27|^0.62 + |dy/27|^0.62 <= 1 centred (1288, 649), 4x supersampled; reverse alpha blending of a white mark at the opacity measured in this image (mean inside the star against a 7 px ring outside it); a 3 px OpenCV Telea inpaint on the star's anti-aliased edge only. No generative fill. Every pixel outside the box is the decoded source pixel before encoding.",
-        "box_xyxy": [
-          1259,
-          620,
-          1318,
-          679
-        ],
-        "changed_pixels": 1066,
-        "changed_share_of_image": 0.000986,
-        "measured_mark_opacity": 0.4199,
-        "verified_by": "atlas-tools/build-disc016-hero-mark-removal.py --check (refuses any change outside the box)"
-      },
-      "encoder": "Pillow 12.3.0, WebP quality 80, method 6",
-      "fidelity": {
-        "ssim": 0.9741,
-        "measured_against": "source at the same pixel size (includes the removed mark)"
-      },
-      "made": "2026-10-30",
-      "content_credentials": {
-        "source_file_embeds_c2pa": false,
-        "derivative_embeds_c2pa": false,
-        "note": "The source carries no embedded credential. This file inherits the source's LEGACY_UNDECLARED state and declares nothing."
-      }
-    },
-    {
-      "asset": "assets/disc016/img/DISC-016-HERO-BEFORE-MR-960.webp",
-      "sha256": "3eb38ff34173045e8d78c72ffc64360c00127063d8c22ffbb01e5be9d33c9cce",
-      "bytes": 150576,
-      "pixels": [
-        960,
-        524
-      ],
-      "derived_from": {
-        "asset": "assets/img/b53d75f9dff4af2e.jpg",
-        "sha256": "b53d75f9dff4af2e4d1d7f0de5b2b39e2c935d30ac628a64e5e6f72272079300"
-      },
-      "method": "artefact-removal",
-      "edit": {
-        "description": "Removal of a faint visible generator mark (a four-point sparkle) in one 59 x 59 px area; nothing else changed.",
-        "operation": "Visible-mark removal, confined to the box: a four-point star mask |dx/27|^0.62 + |dy/27|^0.62 <= 1 centred (1288, 649), 4x supersampled; reverse alpha blending of a white mark at the opacity measured in this image (mean inside the star against a 7 px ring outside it); a 3 px OpenCV Telea inpaint on the star's anti-aliased edge only. No generative fill. Every pixel outside the box is the decoded source pixel before encoding.",
-        "box_xyxy": [
-          1259,
-          620,
-          1318,
-          679
-        ],
-        "changed_pixels": 1066,
-        "changed_share_of_image": 0.000986,
-        "measured_mark_opacity": 0.4199,
-        "verified_by": "atlas-tools/build-disc016-hero-mark-removal.py --check (refuses any change outside the box)"
-      },
-      "encoder": "Pillow 12.3.0, WebP quality 80, method 6, Lanczos resize to 960px wide",
-      "fidelity": {
-        "ssim": 0.973,
-        "measured_against": "source at the same pixel size (includes the removed mark)"
-      },
-      "made": "2026-10-30",
-      "content_credentials": {
-        "source_file_embeds_c2pa": false,
-        "derivative_embeds_c2pa": false,
-        "note": "The source carries no embedded credential. This file inherits the source's LEGACY_UNDECLARED state and declares nothing."
-      }
-    },
-    {
-      "asset": "assets/disc016/img/DISC-016-HERO-POSSIBLE-MR.jpg",
-      "sha256": "ae981639000f5218ae62db3fe2c2039516e0549c85800d0bc254c8b7b991bee7",
-      "bytes": 468709,
-      "pixels": [
-        1408,
-        768
-      ],
-      "derived_from": {
-        "asset": "assets/img/aecece07994fe0db.jpg",
-        "sha256": "aecece07994fe0db0ef639383ac91f54ea18b5ae834e8d9e45f21efc6acd0f81"
-      },
-      "method": "artefact-removal",
-      "edit": {
-        "description": "Removal of a faint visible generator mark (a four-point sparkle) in one 59 x 59 px area; nothing else changed.",
-        "operation": "Visible-mark removal, confined to the box: a four-point star mask |dx/27|^0.62 + |dy/27|^0.62 <= 1 centred (1288, 649), 4x supersampled; reverse alpha blending of a white mark at the opacity measured in this image (mean inside the star against a 7 px ring outside it); a 3 px OpenCV Telea inpaint on the star's anti-aliased edge only. No generative fill. Every pixel outside the box is the decoded source pixel before encoding.",
-        "box_xyxy": [
-          1259,
-          620,
-          1318,
-          679
-        ],
-        "changed_pixels": 1065,
-        "changed_share_of_image": 0.000985,
-        "measured_mark_opacity": 0.3079,
-        "verified_by": "atlas-tools/build-disc016-hero-mark-removal.py --check (refuses any change outside the box)"
-      },
-      "encoder": "Pillow 12.3.0, JPEG quality 92, progressive",
-      "fidelity": {
-        "ssim": 0.9954,
-        "measured_against": "source at the same pixel size (includes the removed mark)"
-      },
-      "made": "2026-10-30",
-      "content_credentials": {
-        "source_file_embeds_c2pa": false,
-        "derivative_embeds_c2pa": false,
-        "note": "The source carries no embedded credential. This file inherits the source's LEGACY_UNDECLARED state and declares nothing."
-      }
-    },
-    {
-      "asset": "assets/disc016/img/DISC-016-HERO-POSSIBLE-MR-1408.webp",
-      "sha256": "d7f0aa2148b748dc2f85b80f1babc34b30866cd1a252202885044757cc2844ae",
-      "bytes": 297496,
-      "pixels": [
-        1408,
-        768
-      ],
-      "derived_from": {
-        "asset": "assets/img/aecece07994fe0db.jpg",
-        "sha256": "aecece07994fe0db0ef639383ac91f54ea18b5ae834e8d9e45f21efc6acd0f81"
-      },
-      "method": "artefact-removal",
-      "edit": {
-        "description": "Removal of a faint visible generator mark (a four-point sparkle) in one 59 x 59 px area; nothing else changed.",
-        "operation": "Visible-mark removal, confined to the box: a four-point star mask |dx/27|^0.62 + |dy/27|^0.62 <= 1 centred (1288, 649), 4x supersampled; reverse alpha blending of a white mark at the opacity measured in this image (mean inside the star against a 7 px ring outside it); a 3 px OpenCV Telea inpaint on the star's anti-aliased edge only. No generative fill. Every pixel outside the box is the decoded source pixel before encoding.",
-        "box_xyxy": [
-          1259,
-          620,
-          1318,
-          679
-        ],
-        "changed_pixels": 1065,
-        "changed_share_of_image": 0.000985,
-        "measured_mark_opacity": 0.3079,
-        "verified_by": "atlas-tools/build-disc016-hero-mark-removal.py --check (refuses any change outside the box)"
-      },
-      "encoder": "Pillow 12.3.0, WebP quality 80, method 6",
-      "fidelity": {
-        "ssim": 0.9737,
-        "measured_against": "source at the same pixel size (includes the removed mark)"
-      },
-      "made": "2026-10-30",
-      "content_credentials": {
-        "source_file_embeds_c2pa": false,
-        "derivative_embeds_c2pa": false,
-        "note": "The source carries no embedded credential. This file inherits the source's LEGACY_UNDECLARED state and declares nothing."
-      }
-    },
-    {
-      "asset": "assets/disc016/img/DISC-016-HERO-POSSIBLE-MR-960.webp",
-      "sha256": "41381606922bd2bad2aca8a6c4254a6c25c82de958040ca7da03b239250ad722",
-      "bytes": 145670,
-      "pixels": [
-        960,
-        524
-      ],
-      "derived_from": {
-        "asset": "assets/img/aecece07994fe0db.jpg",
-        "sha256": "aecece07994fe0db0ef639383ac91f54ea18b5ae834e8d9e45f21efc6acd0f81"
-      },
-      "method": "artefact-removal",
-      "edit": {
-        "description": "Removal of a faint visible generator mark (a four-point sparkle) in one 59 x 59 px area; nothing else changed.",
-        "operation": "Visible-mark removal, confined to the box: a four-point star mask |dx/27|^0.62 + |dy/27|^0.62 <= 1 centred (1288, 649), 4x supersampled; reverse alpha blending of a white mark at the opacity measured in this image (mean inside the star against a 7 px ring outside it); a 3 px OpenCV Telea inpaint on the star's anti-aliased edge only. No generative fill. Every pixel outside the box is the decoded source pixel before encoding.",
-        "box_xyxy": [
-          1259,
-          620,
-          1318,
-          679
-        ],
-        "changed_pixels": 1065,
-        "changed_share_of_image": 0.000985,
-        "measured_mark_opacity": 0.3079,
-        "verified_by": "atlas-tools/build-disc016-hero-mark-removal.py --check (refuses any change outside the box)"
-      },
-      "encoder": "Pillow 12.3.0, WebP quality 80, method 6, Lanczos resize to 960px wide",
-      "fidelity": {
-        "ssim": 0.9719,
-        "measured_against": "source at the same pixel size (includes the removed mark)"
-      },
-      "made": "2026-10-30",
-      "content_credentials": {
-        "source_file_embeds_c2pa": false,
-        "derivative_embeds_c2pa": false,
-        "note": "The source carries no embedded credential. This file inherits the source's LEGACY_UNDECLARED state and declares nothing."
-      }
-    },
-    {
       "asset": "assets/img/b221d2c683fe2f41.webp",
       "sha256": "f58d109cc477df48cd7cfc16604ae63133a1357671387e6606bc49500783ac29",
       "bytes": 162740,
@@ -11987,6 +11827,162 @@
         "source_file_embeds_c2pa": true,
         "derivative_embeds_c2pa": false,
         "note": "WebP re-encoding removes the embedded C2PA credential. The derivative carries NO signed credential and must never be described as having one. The original PNG (unchanged, the <picture> fallback) keeps it."
+      }
+    },
+    {
+      "asset": "assets/disc016/img/DISC-016-HERO-BEFORE-FINAL.jpg",
+      "sha256": "2996969f346179d52c1670e47332491a901a8fa206da9eb622062596084b2b67",
+      "bytes": 471809,
+      "pixels": [
+        1408,
+        768
+      ],
+      "derived_from": {
+        "asset": "assets/disc016/img/Above-and-Beyond-01-Before.png",
+        "sha256": "e15eeb6dbf36a3830d8a64d5330cfc5f5cde72b56848f24d31bd2a6c2f868d9a"
+      },
+      "method": "artefact-removal",
+      "edit": {
+        "description": "Hero copy for the Above and Beyond slider (Governance 2.0, Rule 3): the faint generator mark removed (as in Release 3) and the football removed (founder instruction, 31 Oct 2026). Nothing else changed.",
+        "operation": "Mark: star mask centred (1288, 649), reverse alpha blend, 3 px Telea inpaint on its edge. Football: ellipse centre (707, 676), axes (15, 13), 2 px feather, filled with the other master's lawn at the same place (the pair aligns to 0.3 px), level-matched to the surround; 1201 px. No generative fill.",
+        "verified_by": "atlas-tools/build-disc016-hero-final.py --check"
+      },
+      "encoder": "Pillow 12.3.0, JPEG quality 92, progressive",
+      "made": "2026-10-31",
+      "content_credentials": {
+        "source_file_embeds_c2pa": true,
+        "derivative_embeds_c2pa": false,
+        "note": "Editing and re-encoding remove the embedded C2PA credential. This copy carries NO signed credential and must never be described as having one; the master keeps it, and its record carries the AI classification."
+      }
+    },
+    {
+      "asset": "assets/disc016/img/DISC-016-HERO-BEFORE-FINAL-1408.webp",
+      "sha256": "29f52744c9ad5682b77461665804cf397599d66b0a740d9fe7a8d0b06cd1db0f",
+      "bytes": 297202,
+      "pixels": [
+        1408,
+        768
+      ],
+      "derived_from": {
+        "asset": "assets/disc016/img/Above-and-Beyond-01-Before.png",
+        "sha256": "e15eeb6dbf36a3830d8a64d5330cfc5f5cde72b56848f24d31bd2a6c2f868d9a"
+      },
+      "method": "artefact-removal",
+      "edit": {
+        "description": "Hero copy for the Above and Beyond slider (Governance 2.0, Rule 3): the faint generator mark removed (as in Release 3) and the football removed (founder instruction, 31 Oct 2026). Nothing else changed.",
+        "operation": "Mark: star mask centred (1288, 649), reverse alpha blend, 3 px Telea inpaint on its edge. Football: ellipse centre (707, 676), axes (15, 13), 2 px feather, filled with the other master's lawn at the same place (the pair aligns to 0.3 px), level-matched to the surround; 1201 px. No generative fill.",
+        "verified_by": "atlas-tools/build-disc016-hero-final.py --check"
+      },
+      "encoder": "Pillow 12.3.0, WebP quality 80, method 6",
+      "made": "2026-10-31",
+      "content_credentials": {
+        "source_file_embeds_c2pa": true,
+        "derivative_embeds_c2pa": false,
+        "note": "Editing and re-encoding remove the embedded C2PA credential. This copy carries NO signed credential and must never be described as having one; the master keeps it, and its record carries the AI classification."
+      }
+    },
+    {
+      "asset": "assets/disc016/img/DISC-016-HERO-BEFORE-FINAL-960.webp",
+      "sha256": "1f9bc0a656341802a259c68c2f7a6c89fa94df69c9e249e6e5d36f921701d195",
+      "bytes": 150186,
+      "pixels": [
+        960,
+        524
+      ],
+      "derived_from": {
+        "asset": "assets/disc016/img/Above-and-Beyond-01-Before.png",
+        "sha256": "e15eeb6dbf36a3830d8a64d5330cfc5f5cde72b56848f24d31bd2a6c2f868d9a"
+      },
+      "method": "artefact-removal",
+      "edit": {
+        "description": "Hero copy for the Above and Beyond slider (Governance 2.0, Rule 3): the faint generator mark removed (as in Release 3) and the football removed (founder instruction, 31 Oct 2026). Nothing else changed.",
+        "operation": "Mark: star mask centred (1288, 649), reverse alpha blend, 3 px Telea inpaint on its edge. Football: ellipse centre (707, 676), axes (15, 13), 2 px feather, filled with the other master's lawn at the same place (the pair aligns to 0.3 px), level-matched to the surround; 1201 px. No generative fill.",
+        "verified_by": "atlas-tools/build-disc016-hero-final.py --check"
+      },
+      "encoder": "Pillow 12.3.0, WebP quality 80, method 6, Lanczos resize to 960px wide",
+      "made": "2026-10-31",
+      "content_credentials": {
+        "source_file_embeds_c2pa": true,
+        "derivative_embeds_c2pa": false,
+        "note": "Editing and re-encoding remove the embedded C2PA credential. This copy carries NO signed credential and must never be described as having one; the master keeps it, and its record carries the AI classification."
+      }
+    },
+    {
+      "asset": "assets/disc016/img/DISC-016-HERO-POSSIBLE-FINAL.jpg",
+      "sha256": "1c31123b5595f0f791b012dcb7600838beabad961a145873f522b9616777cff9",
+      "bytes": 468231,
+      "pixels": [
+        1408,
+        768
+      ],
+      "derived_from": {
+        "asset": "assets/disc016/img/Above-and-Beyond-04-Two-Pod-Reveal.png",
+        "sha256": "5555da5ffe50770303549cd8e15bfbfe1ffcf75e786bb091d25b059c95d8ff4b"
+      },
+      "method": "artefact-removal",
+      "edit": {
+        "description": "Hero copy for the Above and Beyond slider (Governance 2.0, Rule 3): the faint generator mark removed (as in Release 3) and the football removed (founder instruction, 31 Oct 2026). Nothing else changed.",
+        "operation": "Mark: star mask centred (1288, 649), reverse alpha blend, 3 px Telea inpaint on its edge. Football: ellipse centre (799, 589), axes (12, 11), 2 px feather, filled with the other master's lawn at the same place (the pair aligns to 0.3 px), level-matched to the surround; 905 px. No generative fill.",
+        "verified_by": "atlas-tools/build-disc016-hero-final.py --check"
+      },
+      "encoder": "Pillow 12.3.0, JPEG quality 92, progressive",
+      "made": "2026-10-31",
+      "content_credentials": {
+        "source_file_embeds_c2pa": true,
+        "derivative_embeds_c2pa": false,
+        "note": "Editing and re-encoding remove the embedded C2PA credential. This copy carries NO signed credential and must never be described as having one; the master keeps it, and its record carries the AI classification."
+      }
+    },
+    {
+      "asset": "assets/disc016/img/DISC-016-HERO-POSSIBLE-FINAL-1408.webp",
+      "sha256": "d250b12ef06ac822c0606f282778e15737245b6b19eeca885559414a5cc60f1e",
+      "bytes": 288906,
+      "pixels": [
+        1408,
+        768
+      ],
+      "derived_from": {
+        "asset": "assets/disc016/img/Above-and-Beyond-04-Two-Pod-Reveal.png",
+        "sha256": "5555da5ffe50770303549cd8e15bfbfe1ffcf75e786bb091d25b059c95d8ff4b"
+      },
+      "method": "artefact-removal",
+      "edit": {
+        "description": "Hero copy for the Above and Beyond slider (Governance 2.0, Rule 3): the faint generator mark removed (as in Release 3) and the football removed (founder instruction, 31 Oct 2026). Nothing else changed.",
+        "operation": "Mark: star mask centred (1288, 649), reverse alpha blend, 3 px Telea inpaint on its edge. Football: ellipse centre (799, 589), axes (12, 11), 2 px feather, filled with the other master's lawn at the same place (the pair aligns to 0.3 px), level-matched to the surround; 905 px. No generative fill.",
+        "verified_by": "atlas-tools/build-disc016-hero-final.py --check"
+      },
+      "encoder": "Pillow 12.3.0, WebP quality 80, method 6",
+      "made": "2026-10-31",
+      "content_credentials": {
+        "source_file_embeds_c2pa": true,
+        "derivative_embeds_c2pa": false,
+        "note": "Editing and re-encoding remove the embedded C2PA credential. This copy carries NO signed credential and must never be described as having one; the master keeps it, and its record carries the AI classification."
+      }
+    },
+    {
+      "asset": "assets/disc016/img/DISC-016-HERO-POSSIBLE-FINAL-960.webp",
+      "sha256": "8136fc8944069460ac0be14da4f2fb42256398dac199476015e185b6346f7adf",
+      "bytes": 145056,
+      "pixels": [
+        960,
+        524
+      ],
+      "derived_from": {
+        "asset": "assets/disc016/img/Above-and-Beyond-04-Two-Pod-Reveal.png",
+        "sha256": "5555da5ffe50770303549cd8e15bfbfe1ffcf75e786bb091d25b059c95d8ff4b"
+      },
+      "method": "artefact-removal",
+      "edit": {
+        "description": "Hero copy for the Above and Beyond slider (Governance 2.0, Rule 3): the faint generator mark removed (as in Release 3) and the football removed (founder instruction, 31 Oct 2026). Nothing else changed.",
+        "operation": "Mark: star mask centred (1288, 649), reverse alpha blend, 3 px Telea inpaint on its edge. Football: ellipse centre (799, 589), axes (12, 11), 2 px feather, filled with the other master's lawn at the same place (the pair aligns to 0.3 px), level-matched to the surround; 905 px. No generative fill.",
+        "verified_by": "atlas-tools/build-disc016-hero-final.py --check"
+      },
+      "encoder": "Pillow 12.3.0, WebP quality 80, method 6, Lanczos resize to 960px wide",
+      "made": "2026-10-31",
+      "content_credentials": {
+        "source_file_embeds_c2pa": true,
+        "derivative_embeds_c2pa": false,
+        "note": "Editing and re-encoding remove the embedded C2PA credential. This copy carries NO signed credential and must never be described as having one; the master keeps it, and its record carries the AI classification."
       }
     }
   ],
