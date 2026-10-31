@@ -36,6 +36,8 @@
 <link rel="stylesheet" href="assets/identity/pn-premium-discovery.css">
 <link rel="stylesheet" href="assets/identity/pn-header.css">
 <!-- PLOTNUA IDENTITY v1 · HEAD · END -->
+<link rel="stylesheet" href="assets/identity/pn-compare.css?v=1.3">
+<link rel="preload" as="image" type="image/webp" imagesrcset="assets/disc021/img/DISC-021-HERO-BEFORE-960.webp 960w, assets/disc021/img/DISC-021-HERO-BEFORE-full.webp 1385w" imagesizes="(max-width:1024px) and (orientation:portrait) 150vw, max(100vw, 132svh)" fetchpriority="high">
 
 <!-- Open Graph -->
 <meta property="og:type" content="article">
@@ -1150,6 +1152,33 @@
 }
 /* PLOTNUA A11Y VISUAL v1 · END */
 </style>
+<style>
+/* ---- Pass 2 Release 3 (30 Oct 2026): the hero is the shared pn-compare component (hero standard),
+   as on the Release 2 pages. These rules only give the frame back to the component where this
+   page's own .d-hero rules would otherwise win; the hero copy and its typography are unchanged. ---- */
+body.pn-id.pn-pd .d-hero.ys-hero.pn-hero-compare{ height:92vh; height:92svh; min-height:560px; }
+body:has(> .pn-return) .d-hero.ys-hero.pn-hero-compare{ height:min(92svh, calc(100svh - var(--pnc-hdr,69px) - var(--pn-dock,0px))); }
+body.pn-id.pn-pd .ys-hero.pn-hero-compare .d-hero-scrim{ pointer-events:none; z-index:1; }
+body.pn-id.pn-pd .ys-hero.pn-hero-compare .d-hero-copy{ z-index:2; }
+body.pn-id.pn-pd .ys-hero.pn-hero-compare :is(.pn-compare__possible,.pn-compare__before) picture{ height:100%; }
+body.pn-id.pn-pd .ys-hero.pn-hero-compare .pn-compare__before .pa-annot{ position:absolute; inset:0; z-index:1; pointer-events:none; }
+body.pn-id.pn-pd .ys-hero.pn-hero-compare .pn-compare__before .pa-annot svg{ display:block; width:100%; height:100%; }
+@media (max-width:1024px) and (orientation:portrait), (max-width:719px){
+  body.pn-id.pn-pd .d-hero.ys-hero.pn-hero-compare,
+  body:has(> .pn-return) .d-hero.ys-hero.pn-hero-compare{ height:auto; min-height:0; }
+  body.pn-id.pn-pd .ys-hero.pn-hero-compare .d-hero-copy{ padding:24px 22px 28px; }
+  body.pn-id.pn-pd .ys-hero.pn-hero-compare .d-hero-copy :is(h1,.subtitle,.intro){ text-align:left; margin-left:0; margin-right:0; }
+  /* stacked layouts crop the frame to 1:1 / 4:5, where the divider's opening position would cut
+     the annotation's label in two: it is shown only where it can sit clear of the opening divider */
+  body.pn-id.pn-pd .ys-hero.pn-hero-compare .pn-compare__before .pa-annot{ display:none; }
+}
+</style>
+<style>
+/* Release 5 (as Release 4): the pages' own hero image rules (an id-level object-position, a fade-in scale) must not
+   reach the comparison layers, so both layers keep one framing. */
+body.pn-id.pn-pd .d-hero.pn-hero-compare .pn-compare__stage img,
+body.pn-id.pn-pd .d-hero.pn-hero-compare .pn-compare__stage #dHeroImg{ object-position:var(--pnc-focus,50% 50%); }
+</style>
 </head>
 <body class="pn-id pn-id--dark pn-id--disc pn-pd pn-hdr-on">
 <a class="pn-skip" href="#pn-main">Skip to main content</a>
@@ -1207,12 +1236,42 @@
 <nav class="pn-hdr-dest" aria-label="Main"><details class="pn-hdr-menu" data-pn-menu><summary class="pn-hdr-menu-btn"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true" focusable="false"><path class="pn-menu-l1" d="M3.5 6h13"/><path class="pn-menu-l2" d="M3.5 10h13"/><path class="pn-menu-l3" d="M3.5 14h13"/></svg><span>Menu</span></summary><div class="pn-hdr-panel"><a class="pn-hdr-btn is-primary" href="discoveries.html"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true" focusable="false"><circle cx="10" cy="10" r="7.25"/><path d="m12.9 7.1-1.75 4.05L7.1 12.9l1.75-4.05Z"/></svg><span>Discovery Library</span></a><a class="pn-hdr-btn is-secondary is-art" href="plotart/"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true" focusable="false"><rect x="3" y="3.5" width="14" height="13" rx="1.5"/><path d="m5.5 14 3.5-4 2.5 2.5 1.5-1.5 2 3"/></svg><span>PlotArt</span></a><a class="pn-hdr-btn is-secondary is-grid" href="gridnua/"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="2.75" y="2.75" width="14.5" height="14.5" rx="3"/><path d="M7.6 2.75v14.5M12.4 2.75v14.5M2.75 7.6h14.5M2.75 12.4h14.5"/><rect class="pn-grid-core" x="8.2" y="8.2" width="3.6" height="3.6" rx=".8" fill="currentColor" stroke="none"/></svg><span>GridNua</span></a><a class="pn-hdr-btn is-secondary is-myplot" href="your-plot.html?myplot=1" data-myplot aria-label="My Plot"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true" focusable="false"><path class="pn-heart" d="M10 16.6s-6.2-3.7-6.2-8.2A3.4 3.4 0 0 1 10 6.3a3.4 3.4 0 0 1 6.2 2.1c0 4.5-6.2 8.2-6.2 8.2Z"/></svg><span>My Plot</span><span class="pn-hdr-count" aria-hidden="true" hidden></span></a><p class="pn-hdr-panel-k">Talk to PlotNua</p><div class="pn-hdr-panel-contact"><a class="pn-hdr-pl pn-hdr-pl--wa" href="https://wa.me/353834036695" target="_blank" rel="noopener noreferrer" aria-label="Chat with PlotNua on WhatsApp (opens in a new tab)"><span class="pn-hdr-wa-ico" aria-hidden="true"><svg viewBox="0 0 80 80" focusable="false"><path d="M29 5h23a22 22 0 0 1 22 22v16a22 22 0 0 1-22 22H33L14 75l3-18A22 22 0 0 1 7 39V27A22 22 0 0 1 29 5Z" fill="#1F3B2E" stroke="#B39272" stroke-width="2.5" stroke-linejoin="round"/></svg><img src="assets/brand/plotnua-icon-transparent.svg" alt="" width="22" height="22"></span><span>WhatsApp</span></a><a class="pn-hdr-pl" href="contact.html"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true" focusable="false"><rect x="2.75" y="4.5" width="14.5" height="11" rx="2"/><path d="m3.5 5.5 6.5 5 6.5-5"/></svg><span>Contact</span></a></div></div></details></nav>
 <!-- PLOTNUA HEADER v2 · ROW · END -->
 
-<header class="d-hero">
-  <!-- IMAGE 01 - THE BEFORE STATE, CLEAN. No annotation here: on this
-       Discovery the annotated plate is Image 02, further down, and showing
-       the same photograph twice - once as it is, once as a production reads
-       it - IS the argument of the page. -->
-  <img id="dHeroImg" class="on" src="assets/img/ea3f24eedab76294.jpg" width="1408" height="768" fetchpriority="high" decoding="async" alt="An ordinary Irish semi-detached house seen from the road: pebbledash above, red brick below, three wheelie bins at the hedge, a car on a concrete-strip driveway and the street running away to the left.">
+<header class="d-hero ys-hero pn-hero-compare pn-hero-compare--std">
+  <div class="pn-hero-compare__mtitle" aria-hidden="true"><span class="pn-hero-compare__mkicker">A PlotNua Discovery</span><span class="pn-hero-compare__mname">Your Home on Screen</span></div>
+  <!-- Pass 2 Release 5 (founder approval, 31 Oct 2026): the shared Before -> Possible
+       component, hero standard, opening on the complete BEFORE. Same house, one framing: as it is, then a small
+       shoot. Both layers are pair-prepared copies (build-release5-hero-pairs.py); the sources and their other
+       uses are unchanged. -->
+  <figure class="pn-compare pn-compare--hero" id="ysHeroCompare" data-start="100" data-subject="the house" data-line-fade-under="#dHeroCopy" style="--pnc-focus:60% 50%">
+    <div class="pn-compare__stage">
+      <div class="pn-compare__possible">
+        <picture>
+          <source type="image/webp" srcset="assets/disc021/img/DISC-021-HERO-POSSIBLE-960.webp 960w, assets/disc021/img/DISC-021-HERO-POSSIBLE-full.webp 1385w" sizes="(max-width:1024px) and (orientation:portrait) 150vw, max(100vw, 132svh)">
+          <img id="dHeroImg" class="on" src="assets/disc021/img/DISC-021-HERO-POSSIBLE.jpg" width="1385" height="755" decoding="async" alt="The same house as it could be, during a small shoot: a lamp on a stand aimed at the front window, a camera on the driveway, taped cable runs, flight cases and a handful of crew.">
+        </picture>
+      </div>
+      <div class="pn-compare__before">
+        <picture>
+          <source type="image/webp" srcset="assets/disc021/img/DISC-021-HERO-BEFORE-960.webp 960w, assets/disc021/img/DISC-021-HERO-BEFORE-full.webp 1385w" sizes="(max-width:1024px) and (orientation:portrait) 150vw, max(100vw, 132svh)">
+          <img fetchpriority="high" src="assets/disc021/img/DISC-021-HERO-BEFORE.jpg" width="1385" height="755" decoding="async" alt="Before: an ordinary Irish semi-detached house seen from the road, pebbledash above and red brick below, three wheelie bins at the hedge and a car on a concrete-strip driveway.">
+        </picture>
+      </div>
+      <span class="pn-compare__line" aria-hidden="true"></span>
+      <span class="pn-compare__knob" aria-hidden="true"></span>
+      <p class="pn-compare__tag is-before" aria-hidden="true">Before</p>
+      <p class="pn-compare__tag is-possible" aria-hidden="true">Possible</p>
+      <input class="pn-compare__range" type="range" min="0" max="100" step="1" value="100" aria-describedby="ysHeroCompareKeys"
+             aria-label="Compare the house as it is and during a small film shoot. Higher values show more of the house before."
+             aria-valuetext="Showing the house before">
+    </div>
+    <div class="pn-compare__bar">
+      <p class="pn-compare__help"><span class="pn-compare__help-touch" aria-hidden="true">Slide to discover what&rsquo;s possible.</span><span class="pn-compare__help-pointer" aria-hidden="true">Drag the handle, or use the arrow keys, to compare.</span><span class="pn-compare__sr" id="ysHeroCompareKeys">Use the left and right arrow keys to move the divider. Home shows the house as it could be; End shows the house before.</span></p>
+      <div class="pn-compare__jump" role="group" aria-label="Show">
+        <button type="button" data-to="100" aria-pressed="false">Before</button>
+        <button type="button" data-to="0" aria-pressed="false">Possible</button>
+      </div>
+    </div>
+  </figure>
   <div class="d-hero-scrim"></div>
   <div class="d-hero-copy in" id="dHeroCopy">
     <div class="eyebrow">PlotNua Discovery</div>
@@ -1762,5 +1821,6 @@
   });
 })();
 </script>
+<script src="assets/identity/pn-compare.js?v=1.3" defer></script>
 </body>
 </html>
