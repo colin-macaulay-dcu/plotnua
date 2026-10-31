@@ -8193,6 +8193,80 @@
         "establishes": "which picture this is and which Discovery it served",
         "does_not_establish": "what made the picture"
       }
+    },
+    {
+      "asset": "assets/disc001/img/Garden-Retreat-BEFORE-FINAL.png",
+      "sha256": "f638b8ac57f777e0817a7213a5cd5b1374a91f1af564d31eb8bcf8200a0da89b",
+      "bytes": 3706220,
+      "pixels": [
+        1698,
+        926
+      ],
+      "class": "AI_ILLUSTRATION",
+      "what": "Discovery illustration (discovery-garden-retreat.html), hero BEFORE",
+      "depicts_named_product": false,
+      "depicts_named_organisation": false,
+      "origin": {
+        "basis": "C2PA_EMBEDDED",
+        "evidence": "Embedded C2PA manifest, read with c2pa-python: issuer OpenAI OpCo, LLC, signed 2026-10-31T09:48:11.504778+00:00; actions: c2pa.created (digital source type trainedAlgorithmicMedia), c2pa.converted, c2pa.watermarked.unbound; validation Invalid (c2pa-python reports: signingCredential.invalid, signingCredential.untrusted; the claim signature and data hash validate).",
+        "declared_under": "Governance 2.0, Rule 2 (30 Oct 2026)"
+      },
+      "generated": {
+        "tool": "OpenAI OpCo, LLC generative AI, per the file's own C2PA credential",
+        "date": "2026-10-31"
+      },
+      "prompt_status": "UNAVAILABLE",
+      "reference_disclosure": {
+        "status": "UNCERTAIN",
+        "statement": "The credential records no input image. Credentials do not record conversation context, so inputs cannot be ruled out."
+      },
+      "permitted_surfaces": [
+        "discovery"
+      ],
+      "content_credentials": {
+        "embeds_c2pa": true
+      },
+      "introduced": {
+        "date": "2026-10-31",
+        "subject": "Founder's final Garden Retreat hero pair, supplied whole"
+      }
+    },
+    {
+      "asset": "assets/disc001/img/Garden-Retreat-POSSIBLE-FINAL.png",
+      "sha256": "2317209dac7d7f3d120bfed1f4bb08a2381988f25bb67a9e08b70bb0522e626f",
+      "bytes": 3450647,
+      "pixels": [
+        1698,
+        926
+      ],
+      "class": "AI_ILLUSTRATION",
+      "what": "Discovery illustration (discovery-garden-retreat.html), hero POSSIBLE",
+      "depicts_named_product": false,
+      "depicts_named_organisation": false,
+      "origin": {
+        "basis": "C2PA_EMBEDDED",
+        "evidence": "Embedded C2PA manifest, read with c2pa-python: issuer OpenAI OpCo, LLC, signed 2026-10-31T09:51:07.419147+00:00; actions: c2pa.created (digital source type trainedAlgorithmicMedia), c2pa.converted, c2pa.watermarked.unbound; validation Valid (c2pa-python reports: signingCredential.untrusted; the claim signature and data hash validate).",
+        "declared_under": "Governance 2.0, Rule 2 (30 Oct 2026)"
+      },
+      "generated": {
+        "tool": "OpenAI OpCo, LLC generative AI, per the file's own C2PA credential",
+        "date": "2026-10-31"
+      },
+      "prompt_status": "UNAVAILABLE",
+      "reference_disclosure": {
+        "status": "UNCERTAIN",
+        "statement": "The credential records no input image. Credentials do not record conversation context, so inputs cannot be ruled out."
+      },
+      "permitted_surfaces": [
+        "discovery"
+      ],
+      "content_credentials": {
+        "embeds_c2pa": true
+      },
+      "introduced": {
+        "date": "2026-10-31",
+        "subject": "Founder's final Garden Retreat hero pair, supplied whole"
+      }
     }
   ],
   "legacy_undeclared": [
@@ -11790,96 +11864,129 @@
       }
     },
     {
-      "asset": "assets/disc001/img/DISC-001-HERO-BEFORE-WARM.jpg",
-      "sha256": "b9c932332db41aa56a10e522eca756bf2d07bc1d1cec64a1eb864081219ef37a",
-      "bytes": 481480,
+      "asset": "assets/disc001/img/Garden-Retreat-BEFORE-FINAL-1698.webp",
+      "sha256": "a1ecce2017734e541ac147c9db9725142a0c330a1c2f62f6bad1630295130dd0",
+      "bytes": 462072,
       "pixels": [
-        1408,
-        768
+        1698,
+        926
       ],
       "derived_from": {
-        "asset": "assets/img/45a270b7716e4a94.jpg",
-        "sha256": "45a270b7716e4a94c5af8ed1a7856772848b76b890c4d4a958a27b7bc2f7e3c9"
+        "asset": "assets/disc001/img/Garden-Retreat-BEFORE-FINAL.png",
+        "sha256": "f638b8ac57f777e0817a7213a5cd5b1374a91f1af564d31eb8bcf8200a0da89b"
       },
-      "method": "colour-correction",
-      "edit": {
-        "description": "Colour correction for the Garden Retreat hero slider (founder instruction, 30 Oct 2026): the BEFORE warmed slightly towards the golden-hour POSSIBLE. One global white-balance shift, identical for every pixel; nothing masked, moved, added or removed.",
-        "operation": "Linear-light channel gains R x1.05, G x1.00, B x0.86 (sRGB decode, gain, clip, sRGB encode). No local edit, no generative step; geometry identical to the source.",
-        "gains_linear_rgb": [
-          1.05,
-          1.0,
-          0.86
-        ],
-        "verified_by": "atlas-tools/build-disc001-hero-before-warm.py --check"
-      },
-      "encoder": "Pillow 12.3.0, JPEG quality 92, progressive",
-      "made": "2026-10-30",
-      "content_credentials": {
-        "source_file_embeds_c2pa": false,
-        "derivative_embeds_c2pa": false,
-        "note": "The source carries no embedded credential. This file inherits the source's LEGACY_UNDECLARED state and declares nothing."
-      }
-    },
-    {
-      "asset": "assets/disc001/img/DISC-001-HERO-BEFORE-WARM-1408.webp",
-      "sha256": "f09480faa60e3f641912a560c3a85d8b9c7124df62e9e69fbd5de510ca67ded8",
-      "bytes": 308828,
-      "pixels": [
-        1408,
-        768
-      ],
-      "derived_from": {
-        "asset": "assets/img/45a270b7716e4a94.jpg",
-        "sha256": "45a270b7716e4a94c5af8ed1a7856772848b76b890c4d4a958a27b7bc2f7e3c9"
-      },
-      "method": "colour-correction",
-      "edit": {
-        "description": "Colour correction for the Garden Retreat hero slider (founder instruction, 30 Oct 2026): the BEFORE warmed slightly towards the golden-hour POSSIBLE. One global white-balance shift, identical for every pixel; nothing masked, moved, added or removed.",
-        "operation": "Linear-light channel gains R x1.05, G x1.00, B x0.86 (sRGB decode, gain, clip, sRGB encode). No local edit, no generative step; geometry identical to the source.",
-        "gains_linear_rgb": [
-          1.05,
-          1.0,
-          0.86
-        ],
-        "verified_by": "atlas-tools/build-disc001-hero-before-warm.py --check"
-      },
+      "method": "webp-reencode",
       "encoder": "Pillow 12.3.0, WebP quality 80, method 6",
-      "made": "2026-10-30",
+      "made": "2026-10-31",
       "content_credentials": {
-        "source_file_embeds_c2pa": false,
+        "source_file_embeds_c2pa": true,
         "derivative_embeds_c2pa": false,
-        "note": "The source carries no embedded credential. This file inherits the source's LEGACY_UNDECLARED state and declares nothing."
+        "note": "WebP re-encoding removes the embedded C2PA credential. The derivative carries NO signed credential and must never be described as having one. The original PNG (unchanged, the <picture> fallback) keeps it."
       }
     },
     {
-      "asset": "assets/disc001/img/DISC-001-HERO-BEFORE-WARM-960.webp",
-      "sha256": "1a67a98d704c39364ed9973e4c881dc26dc370907d900b107332ad34e90888dd",
-      "bytes": 153786,
+      "asset": "assets/disc001/img/Garden-Retreat-BEFORE-FINAL-1408.webp",
+      "sha256": "945e4230137770baa2d61b319320547edf0a51673b3f42f245713f97aa6341fe",
+      "bytes": 350808,
+      "pixels": [
+        1408,
+        768
+      ],
+      "derived_from": {
+        "asset": "assets/disc001/img/Garden-Retreat-BEFORE-FINAL.png",
+        "sha256": "f638b8ac57f777e0817a7213a5cd5b1374a91f1af564d31eb8bcf8200a0da89b"
+      },
+      "method": "webp-resize",
+      "encoder": "Pillow 12.3.0, WebP quality 80, method 6, Lanczos resize to 1408px wide",
+      "made": "2026-10-31",
+      "content_credentials": {
+        "source_file_embeds_c2pa": true,
+        "derivative_embeds_c2pa": false,
+        "note": "WebP re-encoding removes the embedded C2PA credential. The derivative carries NO signed credential and must never be described as having one. The original PNG (unchanged, the <picture> fallback) keeps it."
+      }
+    },
+    {
+      "asset": "assets/disc001/img/Garden-Retreat-BEFORE-FINAL-960.webp",
+      "sha256": "712732a04f86e40dbdad18f816d1a6e42c92185d91dd2e7d664646439bc850b0",
+      "bytes": 183912,
       "pixels": [
         960,
         524
       ],
       "derived_from": {
-        "asset": "assets/img/45a270b7716e4a94.jpg",
-        "sha256": "45a270b7716e4a94c5af8ed1a7856772848b76b890c4d4a958a27b7bc2f7e3c9"
+        "asset": "assets/disc001/img/Garden-Retreat-BEFORE-FINAL.png",
+        "sha256": "f638b8ac57f777e0817a7213a5cd5b1374a91f1af564d31eb8bcf8200a0da89b"
       },
-      "method": "colour-correction",
-      "edit": {
-        "description": "Colour correction for the Garden Retreat hero slider (founder instruction, 30 Oct 2026): the BEFORE warmed slightly towards the golden-hour POSSIBLE. One global white-balance shift, identical for every pixel; nothing masked, moved, added or removed.",
-        "operation": "Linear-light channel gains R x1.05, G x1.00, B x0.86 (sRGB decode, gain, clip, sRGB encode). No local edit, no generative step; geometry identical to the source.",
-        "gains_linear_rgb": [
-          1.05,
-          1.0,
-          0.86
-        ],
-        "verified_by": "atlas-tools/build-disc001-hero-before-warm.py --check"
-      },
+      "method": "webp-resize",
       "encoder": "Pillow 12.3.0, WebP quality 80, method 6, Lanczos resize to 960px wide",
-      "made": "2026-10-30",
+      "made": "2026-10-31",
       "content_credentials": {
-        "source_file_embeds_c2pa": false,
+        "source_file_embeds_c2pa": true,
         "derivative_embeds_c2pa": false,
-        "note": "The source carries no embedded credential. This file inherits the source's LEGACY_UNDECLARED state and declares nothing."
+        "note": "WebP re-encoding removes the embedded C2PA credential. The derivative carries NO signed credential and must never be described as having one. The original PNG (unchanged, the <picture> fallback) keeps it."
+      }
+    },
+    {
+      "asset": "assets/disc001/img/Garden-Retreat-POSSIBLE-FINAL-1698.webp",
+      "sha256": "2f71724d737acba51e480bcdc87c57d5f52e70e7e1a344822d87f4b1bdee9e41",
+      "bytes": 436604,
+      "pixels": [
+        1698,
+        926
+      ],
+      "derived_from": {
+        "asset": "assets/disc001/img/Garden-Retreat-POSSIBLE-FINAL.png",
+        "sha256": "2317209dac7d7f3d120bfed1f4bb08a2381988f25bb67a9e08b70bb0522e626f"
+      },
+      "method": "webp-reencode",
+      "encoder": "Pillow 12.3.0, WebP quality 80, method 6",
+      "made": "2026-10-31",
+      "content_credentials": {
+        "source_file_embeds_c2pa": true,
+        "derivative_embeds_c2pa": false,
+        "note": "WebP re-encoding removes the embedded C2PA credential. The derivative carries NO signed credential and must never be described as having one. The original PNG (unchanged, the <picture> fallback) keeps it."
+      }
+    },
+    {
+      "asset": "assets/disc001/img/Garden-Retreat-POSSIBLE-FINAL-1408.webp",
+      "sha256": "4fa73804d4cfab1f74d9d8d8ed4a96a949de35b1df74556cf0784802dc5584a9",
+      "bytes": 332802,
+      "pixels": [
+        1408,
+        768
+      ],
+      "derived_from": {
+        "asset": "assets/disc001/img/Garden-Retreat-POSSIBLE-FINAL.png",
+        "sha256": "2317209dac7d7f3d120bfed1f4bb08a2381988f25bb67a9e08b70bb0522e626f"
+      },
+      "method": "webp-resize",
+      "encoder": "Pillow 12.3.0, WebP quality 80, method 6, Lanczos resize to 1408px wide",
+      "made": "2026-10-31",
+      "content_credentials": {
+        "source_file_embeds_c2pa": true,
+        "derivative_embeds_c2pa": false,
+        "note": "WebP re-encoding removes the embedded C2PA credential. The derivative carries NO signed credential and must never be described as having one. The original PNG (unchanged, the <picture> fallback) keeps it."
+      }
+    },
+    {
+      "asset": "assets/disc001/img/Garden-Retreat-POSSIBLE-FINAL-960.webp",
+      "sha256": "06f472ddec519416f9b112edb3fb870623507057fbe5293343414f38974fe3ed",
+      "bytes": 179028,
+      "pixels": [
+        960,
+        524
+      ],
+      "derived_from": {
+        "asset": "assets/disc001/img/Garden-Retreat-POSSIBLE-FINAL.png",
+        "sha256": "2317209dac7d7f3d120bfed1f4bb08a2381988f25bb67a9e08b70bb0522e626f"
+      },
+      "method": "webp-resize",
+      "encoder": "Pillow 12.3.0, WebP quality 80, method 6, Lanczos resize to 960px wide",
+      "made": "2026-10-31",
+      "content_credentials": {
+        "source_file_embeds_c2pa": true,
+        "derivative_embeds_c2pa": false,
+        "note": "WebP re-encoding removes the embedded C2PA credential. The derivative carries NO signed credential and must never be described as having one. The original PNG (unchanged, the <picture> fallback) keeps it."
       }
     }
   ],
