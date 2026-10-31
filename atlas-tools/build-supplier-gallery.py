@@ -356,7 +356,9 @@ def gallery(ed, head, sup, cfg=None):
         if more:
             items += (f'<li data-sg-end><div class="pn-sg-card pn-sg-card--end">'
                       f'<p class="pn-sg-end-t">{E(head["endLine"])}</p>{jump("View all suppliers")}</div></li>')
-        view_all = jump("View all suppliers") if more else ""
+        # founder refinement 31 Oct 2026 (consolidation release): no "View all" beside the
+        # header figures; the closing directory card keeps the only link to the explorer.
+        view_all = ""
         directory = ""
     else:
         if more:

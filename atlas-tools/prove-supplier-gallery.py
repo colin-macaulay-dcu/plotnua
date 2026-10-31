@@ -46,6 +46,10 @@ mutates each page in memory to prove each guard can fail.
       independent of the gallery builder), new tab, noopener; a maker with a referral
       offer is labelled beside its link
   G18 no-JavaScript access: a unified page carries the explorer's A-Z maker index
+  G19 (founder refinement, 31 Oct 2026) no "View all" beside the header figures: the closing
+      directory card holds the only link to the explorer; on Garden Retreat the hero's
+      "Meet the makers" button opens the supplier section (#suppliers), and
+      #explore-makers stays for existing deep links
 """
 import importlib.util, json, re, sys
 from pathlib import Path
@@ -209,6 +213,8 @@ bare = lambda h: (h or "").lower().removeprefix("www.")
 def unified_checks(name, full, page, names, offers, cfgp):
     fails = []
     cfg = json.loads(re.search(r'id="mx-data">(.*?)</script>', full, re.S).group(1))
+    if 'id="explore-makers"' not in full:
+        return [f"G19 {name}: #explore-makers is missing"]
     ex = full[full.index('id="explore-makers"'):]
     ex = ex[:ex.index("</section>")]
     # G16 one heading, one set of figures
@@ -252,6 +258,19 @@ def unified_checks(name, full, page, names, offers, cfgp):
                     fails.append(f"G17 {name} {nm}: endorsement wording")
     elif m:
         fails.append(f"G17 {name}: a websites row on a page that has not opted in")
+    # G19 one link to the explorer, from the closing card; the hero opens the section
+    ctrl = re.search(r'<div class="pn-sg-controls">(.*?)</div>', page, re.S)
+    if ctrl and "pn-sg-all" in ctrl.group(1):
+        fails.append(f"G19 {name}: a 'View all' link sits beside the header figures")
+    if not re.search(r'<li data-sg-end><div class="pn-sg-card pn-sg-card--end">.*?<a class="pn-sg-all" href="#explore-makers" data-sg-jump>', page, re.S):
+        fails.append(f"G19 {name}: the closing directory card does not link to the explorer")
+    if name == "discovery-garden-retreat.html":
+        hero = re.search(r'<div class="gr-hero-actions">(.*?)</div>', full, re.S)
+        if not hero or '<a class="is-secondary" href="#suppliers">Meet the makers</a>' not in hero.group(1) \
+                or "Explore makers and products" in hero.group(1) or full.count('id="suppliers"') != 1:
+            fails.append(f"G19 {name}: the hero button does not open the supplier section as 'Meet the makers'")
+    if full.count('id="explore-makers"') != 1:
+        fails.append(f"G19 {name}: #explore-makers is missing or duplicated")
     # G18 no-JavaScript access to every maker
     if 'id="maker-index"' not in ex:
         fails.append(f"G18 {name}: no A-Z maker index for visitors without JavaScript")
@@ -290,6 +309,9 @@ MUTATIONS = {
         "G17 website link carries a query": (p.replace('<li><a href="https://polaris-sauna.ie/"', '<li><a href="https://polaris-sauna.ie/?ref=plotnua"', 1), c),
         "G17 referral label removed": (re.sub(r' <span class="pn-sg-sites-rel">[^<]*</span>', "", p, count=1), c),
         "G18 A-Z index removed": (p.replace('id="maker-index"', 'id="maker-list"', 1), c),
+        "G19 View all back beside the figures": (p.replace('aria-controls="sg-track">' + _b.ARROW_R + '</button>', 'aria-controls="sg-track">' + _b.ARROW_R + '</button>\n        <a class="pn-sg-all" href="#explore-makers" data-sg-jump><span data-sg-label>View all suppliers</span></a>', 1), c),
+        "G19 hero button reverted": (p.replace('<a class="is-secondary" href="#suppliers">Meet the makers</a>', '<a class="is-secondary" href="#explore-makers">Explore makers and products</a>', 1), c),
+        "G19 explorer anchor renamed": (p.replace('id="explore-makers" data-pn-maker-explorer', 'id="makers-products" data-pn-maker-explorer', 1), c),
     },
     "discovery-living-in-the-garden.html": lambda p, c: {
         "G1 unlicensed image on a licensed maker": (p.replace('<img src="https://lh3.googleusercontent.com/d/1LNGku', '<img src="https://lh3.googleusercontent.com/d/9ZZZku', 1), c),
@@ -312,6 +334,7 @@ MUTATIONS = {
         "G16 header figure wrong": (p.replace('<span class="pn-sg-fig">570</span>', '<span class="pn-sg-fig">571</span>', 1), c),
         "G17 websites row on a page that has not opted in": (p.replace('</ul>\n</section>\n<script src="assets/components/pn-supplier-gallery.js', '</ul><div class="pn-sg-sites"><ul></ul></div>\n</section>\n<script src="assets/components/pn-supplier-gallery.js', 1), c),
         "G18 A-Z index removed": (p.replace('id="maker-index"', 'id="maker-list"', 1), c),
+        "G19 View all back beside the figures": (p.replace('aria-controls="sg-track">' + _b.ARROW_R + '</button>', 'aria-controls="sg-track">' + _b.ARROW_R + '</button>\n        <a class="pn-sg-all" href="#explore-makers" data-sg-jump><span data-sg-label>View all suppliers</span></a>', 1), c),
         "G14 Explore link off the granted domain": (p.replace('<a href="https://oodhouse.com/" rel="noopener noreferrer" target="_blank" aria-label=', '<a href="https://oodhouse.example.net/" rel="noopener noreferrer" target="_blank" aria-label=', 1), c),
     },
 }

@@ -270,7 +270,9 @@ def build(src):
                 'them.</p>\n'
                 '    <div class="gr-hero-actions">\n'
                 '      <a class="is-primary" href="#compare">Compare the options</a>\n'
-                '      <a class="is-secondary" href="#explore-makers">Explore makers and products</a>\n'
+                # 31 Oct 2026 (founder, supplier-gallery consolidation release): the button opens
+                # the unified supplier section; #explore-makers stays for existing deep links.
+                '      <a class="is-secondary" href="#suppliers">Meet the makers</a>\n'
                 '    </div>')
 
     # ── B · three cards ────────────────────────────────────────────────────
