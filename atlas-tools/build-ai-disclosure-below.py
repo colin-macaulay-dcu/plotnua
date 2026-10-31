@@ -40,6 +40,8 @@ PAGES = {
     "discovery-your-home-on-screen.html": FILM,
     # Release 6 (31 Oct 2026, wording pending founder confirmation): an approved variant
     "discovery-a-home-for-art.html": PROPERTY,
+    # Release 7 (founder instruction, 31 Oct 2026)
+    "discovery-hidden-cars.html": PROPERTY,
 }
 # the desktop line aligns with each hero's own copy: the 1240 px content column (default), the copy's viewport
 # inset (Hidden Flood Barrier 4vw, Supper Club 5vw), or centred under centred copy (Natural Swimming Garden)
@@ -48,6 +50,7 @@ ALIGN = {
     "discovery-supper-club-at-home.html": ' class="pn-hero-note pn-hero-note--inset" style="--pnn-inset:5vw"',
     "discovery-natural-swimming-garden.html": ' class="pn-hero-note pn-hero-note--centre"',
     "discovery-a-home-for-art.html": ' class="pn-hero-note pn-hero-note--centre"',
+    "discovery-hidden-cars.html": ' class="pn-hero-note pn-hero-note--centre"',
 }
 FIG = re.compile(r'<figure class="pn-compare pn-compare--hero"[\s\S]*?</figure>')
 
