@@ -76,7 +76,10 @@ def transform(t, name):
             t = t.replace('<link rel="preload" as="image" href="%s" fetchpriority="high">' % jp,
                           '<link rel="preload" as="image" type="image/webp" imagesrcset="%s" imagesizes="%s" fetchpriority="high">'
                           % (b_src.group(1), b_src.group(2)), 1)
-    t = re.sub(r'href="assets/identity/pn-compare\.css(\?v=[0-9.]+)?"', 'href="assets/identity/pn-compare.css?v=1.3"', t)
+    # v1.3 at least (v1.4, 31 Oct 2026, adds the opt-in disclosure beneath the comparison; a later version is kept)
+    t = re.sub(r'href="assets/identity/pn-compare\.css(\?v=([0-9.]+))?"',
+               lambda m: m.group(0) if m.group(2) and tuple(map(int, m.group(2).split("."))) >= (1, 3)
+               else 'href="assets/identity/pn-compare.css?v=1.3"', t)
     t = re.sub(r'src="assets/identity/pn-compare\.js(\?v=[0-9.]+)?"', 'src="assets/identity/pn-compare.js?v=1.3"', t)
     return t
 

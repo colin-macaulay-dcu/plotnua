@@ -918,7 +918,10 @@ const pageText = html => html.replace(/<!--[\s\S]*?-->/g, ' ').replace(/<[^>]+>/
       }
       for (const page of onPages) {
         const html = readFileSync(join(ROOT, page), 'utf8');
-        if (!html.includes(expected)) missing.push(`${r.asset} on ${page}`);
+        /* Approved wordings (31 Oct 2026): the register's label, or one of its listed variants -- each an
+           explicit AI disclosure the founder approved (labels.AI_ILLUSTRATION_VARIANTS); never free text. */
+        const variants = [expected].concat(Array.isArray((reg.labels || {}).AI_ILLUSTRATION_VARIANTS) ? reg.labels.AI_ILLUSTRATION_VARIANTS : []);
+        if (!variants.some(v => v && html.includes(v))) missing.push(`${r.asset} on ${page}`);
       }
     }
     missing.length

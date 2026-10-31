@@ -125,7 +125,7 @@ def page(t):
         old, new = D + "DISC-016-HERO-%s-MR" % role, D + "DISC-016-HERO-%s-FINAL" % role
         t = t.replace(old + ".jpg", new + ".jpg").replace(old + "-1408.webp", new + "-1408.webp").replace(old + "-960.webp", new + "-960.webp")
     fig = re.search(r'<figure class="pn-compare pn-compare--hero"[\s\S]*?</figure>', t).group(0)
-    if "pn-compare__ai" not in fig:
+    if "pn-compare__ai" not in fig and "pn-compare__note" not in fig:   # the label, or (31 Oct 2026) the note beneath
         nf = fig.replace('      <p class="pn-compare__tag is-possible" aria-hidden="true">Possible</p>\n',
                          '      <p class="pn-compare__tag is-possible" aria-hidden="true">Possible</p>\n      <p class="pn-compare__ai">AI-generated illustration</p>\n', 1)
         t = t.replace(fig, nf, 1)

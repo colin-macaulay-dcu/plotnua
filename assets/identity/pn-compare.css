@@ -248,3 +248,23 @@ body:has(> .pn-return) .d-hero.pn-hero-compare{ height:min(92svh, calc(100svh - 
   .pn-compare[data-start="100"]:not(.is-live) .pn-compare__before{ display:block; }
 }
 .pn-compare.is-live .pn-compare__knob{ left:clamp(30px, var(--pos), calc(100% - 30px)); }
+
+/* =====================================================================
+   v1.4 · AI DISCLOSURE BENEATH THE COMPARISON (founder review, 31 Oct 2026; opt-in)
+   A hero may carry its AI disclosure as a quiet line BENEATH the comparison instead of the
+   overlay badge (.pn-compare__ai): .pn-compare__note inside the figure (phones and portrait
+   tablets: directly under the Before/Possible buttons) and .pn-hero-note directly after the
+   hero header (desktop: a line under the hero). Exactly one is displayed at a time; both are
+   visible without JavaScript. Pages that do not use them are unchanged.
+   ===================================================================== */
+.pn-compare__note{ display:none; }
+.pn-hero-note{ display:block; box-sizing:border-box; max-width:1240px; margin:0 auto; padding:12px 40px 0;
+  font-family:var(--p4-sans,'Hanken Grotesk',system-ui,sans-serif); font-size:13px; line-height:1.45; letter-spacing:.01em;
+  color:var(--p4-stone,#C2BDB5); }
+@media (max-width:1024px) and (orientation:portrait), (max-width:719px){
+  .pn-compare--hero .pn-compare__note{ display:block; margin:0; padding:0 22px 16px; background:var(--pnc-card);
+    font-family:var(--pnc-sans); font-size:12.5px; line-height:1.45; color:var(--pnc-stone); }
+  .pn-compare--hero:not(.is-live) .pn-compare__note{ padding-top:14px; }
+  .pn-hero-note{ display:none; }
+}
+@media (max-width:719px){ .pn-compare--hero .pn-compare__note{ padding:0 16px 14px; } }

@@ -52,6 +52,10 @@ def provenance_assets():
 
 PROV = provenance_assets()
 AI = declared_ai()
+# the approved wordings: the register's AI label and its approved variants (31 Oct 2026: the disclosure may sit
+# beneath the comparison, inside the figure, as "Illustrative AI-generated visualisation. Not an actual installation.")
+_L = json.load(open(os.path.join(ROOT, "image-provenance-records.json"), encoding="utf-8")).get("labels", {})
+AI_LABELS = [_L.get("AI_ILLUSTRATION") or "AI-generated illustration"] + list(_L.get("AI_ILLUSTRATION_VARIANTS") or [])
 
 
 def check(page, s, exists=lambda p: os.path.exists(os.path.join(ROOT, p))):
@@ -76,7 +80,7 @@ def check(page, s, exists=lambda p: os.path.exists(os.path.join(ROOT, p))):
     if len(imgs) == 2 and ('fetchpriority="high"' not in imgs[1] or 'loading="lazy"' in imgs[0]):
         f.append("C5 BEFORE not priority, or POSSIBLE lazy-loaded")
     layer_imgs = set(re.findall(r'<img\b[^>]*src="([^"]+)"', fig))
-    if (layer_imgs & AI) and "AI-generated illustration" not in fig:
+    if (layer_imgs & AI) and not any(v in fig for v in AI_LABELS):
         f.append("C6 AI-generated illustration label missing")
     refs = set(re.findall(r'(assets/[^"\s,]+\.(?:jpg|webp|avif))', fig))
     for r in sorted(refs):
@@ -100,7 +104,7 @@ def main():
             "C3": lambda t: t.replace('alt="Before: the same garden as it is, with a stone patio and a long open lawn."', 'alt=""', 1),
             "C4": lambda t: t.replace('before-1536.jpg" width="1536" height="1024"', 'before-1536.jpg" width="1536" height="1000"', 1),
             "C5": lambda t: t.replace('<img fetchpriority="high" src="assets/disc031/img/DISC-031-before-1536.jpg"', '<img src="assets/disc031/img/DISC-031-before-1536.jpg"', 1),
-            "C6": lambda t: t.replace('<p class="pn-compare__ai">AI-generated illustration</p>', '', 1),
+            "C6": lambda t: re.sub(r'<p class="pn-compare__(?:ai|note)">[^<]*</p>', '', t),
             "C7": lambda t: t.replace('DISC-031-before-960.webp', 'DISC-031-before-961.webp', 1),
             "C8": lambda t: t.replace('aria-describedby="nsHeroCompareKeys"', '', 1),
             "C9": lambda t: t.replace('</main>', '<h1>x</h1></main>', 1),

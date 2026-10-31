@@ -55,7 +55,10 @@
   "labels": {
     "AI_ILLUSTRATION": "AI-generated illustration",
     "ILLUSTRATION_VERIFIED_NOT_AI": "Illustration",
-    "LEGACY_UNDECLARED": null
+    "LEGACY_UNDECLARED": null,
+    "AI_ILLUSTRATION_VARIANTS": [
+      "Illustrative AI-generated visualisation. Not an actual installation."
+    ]
   },
   "label_note": "An undeclared asset gets NO label. Inventing a classification to fill a caption is the error this register exists to prevent, and no published caption changes until the matching record exists.",
   "legacy_undeclared_note": "THE RATCHET. Every asset below is enumerated by path and sha256. The guard refuses any local image on a published page that is in neither records nor this list, so no NEW undeclared image can be added. The count is printed on every CI run and only ever goes down. A legacy entry is NOT a declaration, is NOT verified, is NOT authorised supplier imagery, and may not reach a product card or a supplier context.",
