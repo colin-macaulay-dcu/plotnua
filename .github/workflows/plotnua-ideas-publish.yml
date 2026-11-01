@@ -14,7 +14,7 @@ name: Idea Board publishing
 # STUDIO_ACCESS_CLIENT_ID, STUDIO_ACCESS_CLIENT_SECRET). No new secret is needed.
 on:
   schedule:
-    - cron: '3,33 * * * *'
+    - cron: '3,13,23,33,43,53 * * * *'
   workflow_dispatch:
 
 permissions:

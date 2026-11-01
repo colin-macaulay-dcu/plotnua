@@ -162,7 +162,8 @@ PAGE_CSS = """<style>
 .ib-n:nth-child(4n+1){ transform:rotate(-1deg); } .ib-n:nth-child(4n+2){ transform:rotate(.8deg); } .ib-n:nth-child(4n+3){ transform:rotate(.4deg); } .ib-n:nth-child(4n){ transform:rotate(-.6deg); }
 .ib-n::before{ content:""; position:absolute; left:50%; top:-5px; width:11px; height:11px; margin-left:-5px; border-radius:50%; background:#AE6245; box-shadow:0 2px 3px rgba(0,0,0,.35); }
 .ib-n p{ margin:0; font-family:'Instrument Serif',Georgia,serif; font-size:22px; line-height:1.2; }
-.ib-n .ib-m{ display:flex; justify-content:space-between; gap:12px; margin-top:14px; font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:#6B5A48; }
+.ib-n .ib-m{ display:flex; flex-wrap:wrap; justify-content:space-between; gap:4px 12px; margin-top:14px; font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:#6B5A48; }
+.ib-n .ib-m span{ white-space:nowrap; }
 .ib-n .ib-became{ display:inline-block; margin-top:12px; padding-top:8px; border-top:1px solid rgba(174,98,69,.35); font-size:12.5px; font-weight:600; color:#8A4A33; text-decoration:none; }
 .ib-n.is-invite p{ font-style:italic; }
 .ib-n.is-space{ background:transparent; box-shadow:none; border:1px dashed rgba(242,235,224,.28); min-height:110px; }
@@ -190,9 +191,7 @@ PAGE_CSS = """<style>
 .ib-diff{ margin:52px 0 0; padding:24px 28px; border-left:2px solid #AE6245; background:rgba(242,235,224,.04); font-size:15.5px; line-height:1.6; color:#E7DED0; max-width:780px; }
 .ib-diff strong{ color:#F2EBE0; }
 .ib-glimpse{ display:none; }
-.ib-foot{ border-top:1px solid rgba(242,235,224,.12); margin-top:56px; padding:28px 0 70px; font-size:14px; }
-.ib-foot a{ color:#E7DED0; }
-.ib-foot span{ display:block; margin-top:12px; font-size:13px; }
+.ib-page .lib-foot{ margin-top:56px; }
 @media (prefers-reduced-motion: reduce){ .ib-n{ transform:none !important; } }
 @media (max-width:900px){
   .ib-grid{ grid-template-columns:1fr; } .ib-form{ position:static; }
@@ -205,6 +204,7 @@ PAGE_CSS = """<style>
   .ib-glimpse li::before{ content:""; position:absolute; left:50%; top:-4px; width:9px; height:9px; margin-left:-4px; border-radius:50%; background:#AE6245; }
   .ib-glimpse p{ margin:10px 0 0; font-size:12px; letter-spacing:.04em; color:rgba(242,235,224,.74); }
   .ib-glimpse a{ color:#F2EBE0; }
+  .ib-glimpse ul:focus-visible{ outline:2px solid #CF8566; outline-offset:2px; }
   .ib-big{ order:2; } .ib-form{ order:1; }
   .ib-few .ib-big{ display:none; }
   .ib-wall > li:nth-child(-n+3){ display:none; }
@@ -287,11 +287,11 @@ def body(ideas):
         glimpse = '<li class="is-invite">Your idea could be the first on the board.</li>'
         glimpse_cap = '<p>Homeowner ideas &middot; not yet researched.</p>'
     few = " ib-few" if len(ideas) <= 3 else ""
-    return ('<div class="wrap">\n<div class="ib-page">\n'
+    return ('<div class="wrap">\n<main class="ib-page">\n'
             '  <p class="ib-kick">PlotNua Idea Board</p>\n  <h1 class="ib-h1">What Could Your Property Do?</h1>\n'
             '  <p class="ib-lede">Have an idea we haven&rsquo;t explored yet? Add it to the board.</p>\n'
             '  <ol class="ib-steps"><li><b>1</b>Pin an idea: one line.</li><li><b>2</b>PlotNua reads it; approved ideas appear without names.</li><li><b>3</b>Some become researched Discoveries.</li></ol>\n'
-            '  <div class="ib-glimpse" aria-label="Recent ideas"><ul>%s</ul>%s</div>\n'
+            '  <section class="ib-glimpse" aria-label="Recent ideas"><ul tabindex="0" aria-label="The latest ideas, scroll sideways">%s</ul>%s</section>\n'
             '  <div class="ib-grid%s">\n'
             '    <section class="ib-big" id="board" aria-labelledby="ibBoardH"><h2 id="ibBoardH" class="pn-id-sr" style="position:absolute;left:-10000px">Ideas from homeowners</h2>'
             '<ul class="ib-wall">%s</ul>'
@@ -299,9 +299,9 @@ def body(ideas):
             '    %s\n  </div>\n'
             '  <div class="ib-diff"><strong>Ideas and Discoveries are different.</strong> An idea is a suggestion from a homeowner, shared as written. '
             'A Discovery is researched by PlotNua: costs, rules, practicalities and where to start. <a href="discoveries.html" style="color:#CF8566">Explore the Discovery Library</a></div>\n'
-            '  <footer class="ib-foot"><a href="discoveries.html">Back to the Discovery Library</a>'
-            '<span><a href="privacy.html">Privacy</a> &middot; <a href="terms.html#legal-information">Terms &amp; legal information</a></span></footer>\n'
-            '</div>\n</div>\n' % (glimpse, glimpse_cap, few, wall, form()))
+            '  <footer class="lib-foot">\n    <a href="discoveries.html">Back to the Discovery Library</a>\n'
+            '    <span class="lib-foot-legal"><a href="privacy.html">Privacy</a> · <a href="terms.html#legal-information">Terms &amp; legal information</a></span>\n  </footer>\n'
+            '</main>\n</div>\n' % (glimpse, glimpse_cap, few, wall, form()))
 
 
 def page(lib, ideas):

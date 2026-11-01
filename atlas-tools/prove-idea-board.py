@@ -39,7 +39,7 @@ def checks(root, ideas):
     shown = [html.unescape(t) for t in re.findall(r'<li class="ib-n"><p>(.*?)</p>', wall, re.S)]
     if shown != [i["text"] for i in ideas]: bad.append("page notes are not exactly the approved ideas")
     if not ideas and "Your idea could be the first on the board." not in wall: bad.append("empty page lacks the invitation")
-    glimpse = re.search(r'<div class="ib-glimpse"[^>]*><ul>(.*?)</ul>', pg, re.S).group(1)
+    glimpse = re.search(r'<section class="ib-glimpse"[^>]*><ul[^>]*>(.*?)</ul>', pg, re.S).group(1)
     if [html.unescape(t) for t in re.findall(r'<li>(.*?)</li>', glimpse)] != [i["text"] for i in ideas[:3]]: bad.append("mobile glimpse is not the latest three approved ideas")
     m = re.search(r"<!-- PLOTNUA IDEA BOARD CARD · BEGIN.*?<!-- PLOTNUA IDEA BOARD CARD · END -->", lib, re.S)
     if not m: bad.append("Library has no Idea Board card"); return bad
