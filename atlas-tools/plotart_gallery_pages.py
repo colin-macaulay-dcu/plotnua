@@ -70,9 +70,9 @@ def main_image(w):
 
 
 def card_image(pkg):
-    """The Virtual Gallery card shows the artist's first (artist-ordered) shown work."""
-    w = shown(pkg)[0]
-    return w, main_image(w)
+    """The Virtual Gallery card shows the artist's first (artist-ordered) shown work; (None, None) if none are on show."""
+    ws = shown(pkg)
+    return (ws[0], main_image(ws[0])) if ws else (None, None)
 
 
 def enquiry_href(pkg, w=None):
@@ -102,6 +102,13 @@ def checks_panel(pkg, blocks):
         "".join(li("b", "Stops publication: " + b) for b in blocks) or li("ok", "Nothing stops publication."),
         "".join(li("w", "Check: " + w) for w in warns),
         "")
+
+
+def empty_works(a):
+    """A published gallery with no works on show (founder decision 1 Nov 2026)."""
+    first = a["display_name"].split(" ")[0] if " " in a["display_name"] else a["display_name"]
+    return ('<div class="pa-ag-empty"><p class="pa-ag-empty-t">New work coming soon</p>'
+            '<p class="pa-ag-empty-l">%s isn&#x27;t showing any works at the moment. You can still get in touch through PlotArt.</p></div>') % E(first)
 
 
 def artist_body(pkg, blocks=None, preview=False, enquiry_endpoint=None):
@@ -145,9 +152,8 @@ def artist_body(pkg, blocks=None, preview=False, enquiry_endpoint=None):
 </div></section>
 
 <section class="pa-ag-works" aria-labelledby="agWorksH"><div class="pa-wrap">
-  <div class="pa-ag-head"><h2 id="agWorksH">Works</h2><p>%d %s</p></div>
-  <ol class="pa-ag-grid">%s
-  </ol>
+  <div class="pa-ag-head"><h2 id="agWorksH">Works</h2><p>%s</p></div>
+  %s
 </div></section>
 
 <section class="pa-ag-about" aria-labelledby="agAboutH"><div class="pa-wrap pa-ag-about-in">
@@ -165,7 +171,8 @@ def artist_body(pkg, blocks=None, preview=False, enquiry_endpoint=None):
        '<span class="pa-gcard-badge">Founding Artist</span>' if a.get("founding") else "",
        E(name), ('<p class="pa-ag-meta">%s</p>' % E(meta_line(a))) if meta_line(a) else "",
        ('<p class="pa-ag-statement">%s</p>' % E(a["statement"])) if a.get("statement") else "",
-       len(works), "artwork" if len(works) == 1 else "artworks", "".join(tiles),
+       ("%d %s" % (len(works), "artwork" if len(works) == 1 else "artworks")) if works else "None on show right now",
+       ('<ol class="pa-ag-grid">%s\n  </ol>' % "".join(tiles)) if works else empty_works(a),
        E(name.split(" ")[0] if " " in name else name), bio,
        ('<p class="pa-ag-links">%s</p>' % "".join(links)) if links else "",
        E(name), E(enquiry_href(pkg)), " data-pa-enquire" if enquiry_endpoint else "", enquiry_form(pkg, None, enquiry_endpoint))
@@ -236,6 +243,14 @@ def artwork_body(pkg, w, prev_w, next_w, preview=False, enquiry_endpoint=None):
 def _vg_card(pkg):
     a = pkg["artist"]
     w, im = card_image(pkg)
+    if im is None:   # no works on show (founder decision 1 Nov 2026): the card, its position and badge stay
+        return ("""
+    <li class="pa-gcard%s"><a class="pa-gcard-tile" href="../artists/%s/" data-pa-track="vg_artist">
+      <span class="pa-gcard-art is-empty"><span>New work coming soon</span></span>
+      <span class="pa-gcard-cap">%s<span class="pa-gcard-name">%s</span><span class="pa-gcard-meta">%s</span></span></a></li>""") % (
+            " is-founding" if a.get("founding") else "", E(a["slug"]),
+            '<span class="pa-gcard-badge">Founding Artist</span>' if a.get("founding") else "",
+            E(a["display_name"]), E(meta_line(a)))
     d = pick(im, 600)
     return ("""
     <li class="pa-gcard%s"><a class="pa-gcard-tile" href="../artists/%s/" data-pa-track="vg_artist">

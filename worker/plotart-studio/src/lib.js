@@ -187,7 +187,7 @@ export function readiness(snap, { founding, firstPublication = true, licenceOk, 
   if (a.statement) t(a.statement, 10, 400, 'Your statement');
   if (!MEDIA.includes(a.medium)) p.push('Choose your main medium in your profile');
   if (a.portrait && !a.portrait.alt) p.push('Describe your portrait photograph (for people using screen readers)');
-  if (!snap.works.length) p.push('Add at least one artwork');
+  if (!snap.works.length && firstPublication) p.push('Add at least one artwork');
   // One artwork is enough to open a gallery, Founding or not (founder decision 1 Nov 2026). Founding Artists are
   // guaranteed SPACE for at least 10 works at a time (Founding Artist Agreement 3.3(a)): a benefit, never a requirement.
   for (const w of snap.works) {

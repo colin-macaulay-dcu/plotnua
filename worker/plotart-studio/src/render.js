@@ -41,6 +41,12 @@ export function enquiryHref(p, w) {
 }
 export const metaLine = a => [a.practice, a.county].filter(Boolean).join(' · ');
 
+// A published gallery with no works on show (founder decision 1 Nov 2026); identical to plotart_gallery_pages.empty_works.
+export function emptyWorks(a) {
+  const first = a.display_name.includes(' ') ? a.display_name.split(' ')[0] : a.display_name;
+  return `<div class="pa-ag-empty"><p class="pa-ag-empty-t">New work coming soon</p><p class="pa-ag-empty-l">${E(first)} isn&#x27;t showing any works at the moment. You can still get in touch through PlotArt.</p></div>`;
+}
+
 export function artistBody(p) {
   const a = p.artist, works = shown(p), name = a.display_name;
   // one or two works sit larger and centred (founder decision 1 Nov 2026): the size hint follows the layout
@@ -73,9 +79,9 @@ export function artistBody(p) {
 </div></section>
 
 <section class="pa-ag-works" aria-labelledby="agWorksH"><div class="pa-wrap">
-  <div class="pa-ag-head"><h2 id="agWorksH">Works</h2><p>${works.length} ${works.length === 1 ? 'artwork' : 'artworks'}</p></div>
-  <ol class="pa-ag-grid">${tiles.join('')}
-  </ol>
+  <div class="pa-ag-head"><h2 id="agWorksH">Works</h2><p>${works.length ? `${works.length} ${works.length === 1 ? 'artwork' : 'artworks'}` : 'None on show right now'}</p></div>
+  ${works.length ? `<ol class="pa-ag-grid">${tiles.join('')}
+  </ol>` : emptyWorks(a)}
 </div></section>
 
 <section class="pa-ag-about" aria-labelledby="agAboutH"><div class="pa-wrap pa-ag-about-in">

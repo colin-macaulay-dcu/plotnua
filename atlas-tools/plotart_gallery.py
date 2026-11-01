@@ -133,8 +133,11 @@ def validate_export(g):
     if a.get("portrait") is not None:
         _image_entry(a["portrait"], "portrait")
     works = g.get("works")
-    if not isinstance(works, list) or not works:
-        raise Refused("a gallery needs at least one artwork")
+    # A gallery OPENS with at least one artwork; once published (v2 onwards) the artist may withdraw every work and the
+    # gallery stays, with an empty state (founder decision 1 Nov 2026).
+    later = str((g.get("publication") or {}).get("version") or "v1") != "v1"
+    if not isinstance(works, list) or (not works and not later):
+        raise Refused("a gallery needs at least one artwork to open")
     ids, slugs = set(), set()
     for w in works:
         for k in w:
@@ -313,8 +316,8 @@ def publication_blocks(pkg):
     if pub.get("licence_version") not in LICENCE_VERSIONS or not pub.get("licence_accepted_at"):
         out.append("the artist has not accepted the current Gallery Publication and Image Licence")
     shown = [w for w in pkg["works"] if w["availability"] in SHOWN]
-    if not shown:
-        out.append("no artworks to show")
+    if not shown and pub.get("version") in (None, "v1"):
+        out.append("no artworks to show: a gallery opens with at least one artwork")
     # One artwork is enough to open any gallery, Founding or not (founder decision 1 Nov 2026). Founding Artists are
     # guaranteed SPACE for at least 10 works at a time (Founding Artist Agreement 3.3(a)): a benefit, never a requirement.
     for w in pkg["works"]:

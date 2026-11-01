@@ -73,7 +73,6 @@ const page = p => existsSync(join(SITE, 'plotart', p)) ? readFileSync(join(SITE,
 const enquire = (body, origin = 'https://plotnua.ie') => mf.dispatchFetch('http://enquiry.local/v1/enquiry', { method: 'POST', headers: { Origin: origin, 'Content-Type': 'application/json' }, body: JSON.stringify(body) })
   .then(async r => ({ s: r.status, j: await r.json() }));
 const A = 'niamh@example.test';
-let ZERO = null;
 
 console.log('PROVE · the complete artist journey\n— selection to first publication');
 let r = await call('POST', '/api/admin/artists', FOUNDER, { display_name: 'Niamh Synthetic', email: A, application_ref: 'F25-261029-1A2B3C' });
@@ -208,13 +207,39 @@ check('S5 its gallery page says “1 artwork”, has one artwork page, and the l
 check('S6 it takes the lowest open position (02); 01 stays reserved; the other artist keeps 07', gi[0] === 'reserved' && gi[1] === 'card:orla-synthetic' && gi[6] === 'card:niamh-synthetic', gi.join(','));
 r = await call('GET', '/api/me', B);
 check('S7 the artist’s Studio shows “Live”, as a Founding Artist', r.j.status.state === 'live' && r.j.artist.founding);
-console.log('— a live gallery whose only work is removed (observation)');
+console.log('— a live gallery whose only work is withdrawn');
+const oid = (await db.prepare("SELECT id FROM artists WHERE slug='orla-synthetic'").first()).id;
+await call('PUT', `/api/admin/artists/${oid}/founding-number`, FOUNDER, { founding_number: 7 });
+const recsFor = slug => JSON.parse(readFileSync(join(SITE, 'image-provenance-records.json'), 'utf8')).records.filter(x => x.artist_slug === slug).length;
+const oHead = git('rev-parse', 'HEAD');
 await call('POST', `/api/artworks/${ow}/archive`, B, { archived: true });
-r = publish();
-const zq = await db.prepare("SELECT status, detail FROM publish_queue WHERE artist_id = (SELECT id FROM artists WHERE slug='orla-synthetic') ORDER BY updated_at DESC LIMIT 1").first();
-ZERO = { exit: r.status, queue: zq.status, detail: (zq.detail || '').slice(0, 160), page_still_live: existsSync(join(SITE, 'plotart/artists/orla-synthetic/atlantic.html')),
-  studio_state: (await call('GET', '/api/me', B)).j.status.state };
-console.log('  NOTE  ' + JSON.stringify(ZERO));
+r = publish(); gi = gridItems();
+const ofiles = existsSync(join(SITE, 'plotart/artists/orla-synthetic')) ? readdirSync(join(SITE, 'plotart/artists/orla-synthetic'), { recursive: true }).map(String) : [];
+check('Z1 withdrawing the final artwork publishes straight away and every guard passes', r.status === 0 && / v\d+ · instant · verified \(simulated\)/.test(r.stdout) && git('rev-parse', 'HEAD') !== oHead, r.stdout + r.stderr);
+check('Z2 the withdrawn artwork is no longer public: its page, its images and its image records are gone', !existsSync(join(SITE, 'plotart/artists/orla-synthetic/atlantic.html')) &&
+  !ofiles.some(f => /\.(webp|jpe?g|png)$/.test(f)) && recsFor('orla-synthetic') === 0, ofiles.join(','));
+const og = page('artists/orla-synthetic/index.html');
+check('Z3 the gallery stays live with its profile and biography, and shows the empty state', og.includes('Orla Synthetic') && og.includes('paints a single large view of the sea') &&
+  og.includes('class="pa-ag-empty"') && og.includes('New work coming soon') && og.includes('None on show right now') && !og.includes('pa-ag-grid"'));
+check('Z4 the artist keeps the Founding badge and gallery position 02 (01 still reserved); the card shows the empty state', og.includes('pa-gcard-badge">Founding Artist') &&
+  gi[0] === 'reserved' && gi[1] === 'card:orla-synthetic' && page('gallery/index.html').includes('pa-gcard-art is-empty'), gi.join(','));
+r = await call('GET', '/api/me', B);
+const fnum = (await db.prepare("SELECT founding, founding_number FROM artists WHERE id=?").bind(oid).first());
+check('Z5 the Studio still shows Live; Founding status and the permanent Founding number (7) are unchanged', r.j.status.state === 'live' && fnum.founding === 1 && fnum.founding_number === 7);
+const nw = (await call('POST', '/api/artworks', B)).j.id;
+await call('PUT', `/api/artworks/${nw}`, B, { title: 'Spring Tide', year: 2026, medium: 'Oil on linen', h_cm: 60, w_cm: 80, price_eur: 1800, ai_involvement: 'none', description: 'Test painting: a calmer sea in spring.' });
+const nup = await call('PUT', `/api/artworks/${nw}/images?role=main`, B, undefined, readFileSync(join(TMP, 'j12.jpg')));
+await call('PATCH', `/api/images/${nup.j.id}`, B, { alt: 'Test painting: a pale green sea', photographer: 'self' });
+r = await call('POST', '/api/submit', B, { accept_licence: true });
+const r2 = publish();
+check('Z6 a new artwork added later goes to review first: nothing is published before approval', r.s === 200 && r.j.tier === 'full' && !existsSync(join(SITE, 'plotart/artists/orla-synthetic/spring-tide.html')), JSON.stringify(r.j) + r2.stdout);
+const zs = (await call('GET', '/api/admin/overview', FOUNDER)).j.submissions.find(x => x.display_name === 'Orla Synthetic');
+await call('POST', `/api/admin/submissions/${zs.id}/decision`, FOUNDER, { decision: 'approve', message: 'Lovely.' });
+const zq = (await call('GET', '/api/admin/overview', FOUNDER)).j.queue.filter(x => x.display_name === 'Orla Synthetic' && x.status === 'awaiting_founder').pop();
+await call('POST', `/api/admin/queue/${zq.id}/publish`, FOUNDER, {});
+r = publish(); gi = gridItems();
+check('Z7 ... and after approval and Publish it is live again: one work, empty state gone, still at position 02', r.status === 0 && existsSync(join(SITE, 'plotart/artists/orla-synthetic/spring-tide.html')) &&
+  page('artists/orla-synthetic/index.html').includes('<p>1 artwork</p>') && !page('artists/orla-synthetic/index.html').includes('pa-ag-empty') && gi[1] === 'card:orla-synthetic', r.stdout + r.stderr + gi.join(','));
 await call('POST', `/api/artworks/${works[9]}/archive`, A, { archived: true });
 r = publish();
 check('I6 removing a work publishes straight away; no minimum applies (9 works left)', r.status === 0 && !existsSync(join(SITE, 'plotart/artists/niamh-synthetic/burren-10.html')), r.stdout + r.stderr);
