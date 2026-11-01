@@ -21,12 +21,16 @@ on:
 permissions:
   contents: write
   pages: write
+  actions: write      # automation v1: start the gate on its release branch (request-release.sh)
 
 # Own lock (2 Nov 2026): runs started on approval must not be cancelled by a queued PlotArt run sharing a lock. If the
 # PlotArt pipeline moves main at the same moment, the push is refused (never forced) and the run retries once below.
 concurrency:
   group: plotnua-ideas-publish
   cancel-in-progress: false
+
+env:
+  GH_TOKEN: ${{ github.token }}   # automation v1: request-release.sh dispatches the gate
 
 jobs:
   publish:

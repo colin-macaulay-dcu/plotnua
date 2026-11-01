@@ -19,9 +19,10 @@ on:
     types: [completed]
 
 permissions:
-  contents: write
-  pages: write
-  issues: write
+  contents: write     # to fast-forward main: main's ruleset still requires the gate to have passed on that exact commit
+  pages: write        # to request the Pages build
+  issues: write       # ops-alert issues
+  actions: write      # to start the gate on an automatic revert (a workflow may dispatch, not push-trigger)
 
 concurrency:
   group: production-site
@@ -31,7 +32,7 @@ jobs:
   promote:
     if: >-
       github.event.workflow_run.conclusion == 'success' &&
-      github.event.workflow_run.event == 'push' &&
+      (github.event.workflow_run.event == 'push' || github.event.workflow_run.event == 'workflow_dispatch') &&
       startsWith(github.event.workflow_run.head_branch, 'release/auto/')
     runs-on: ubuntu-latest
     timeout-minutes: 40
