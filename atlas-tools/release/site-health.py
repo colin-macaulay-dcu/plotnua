@@ -15,14 +15,19 @@ Exit 0 = healthy. Prints one line per check and a summary; --json writes the res
 """
 import hashlib, json, pathlib, subprocess, sys, time, urllib.error, urllib.request
 
-ROOT = pathlib.Path(__file__).resolve().parents[2]
-FLAGS = json.loads((ROOT / "atlas-tools" / "release" / "flags.json").read_text(encoding="utf-8"))
+# The repository to read from: the current directory (the workflow's checkout), so the script can run from a trusted copy.
+ROOT = pathlib.Path.cwd()
+arg = lambda k: sys.argv[sys.argv.index(k) + 1] if k in sys.argv else None
+_want = arg("--expect-commit")
+if _want:   # the switches of the commit being verified (a release may e.g. publish a page that was absent)
+    FLAGS = json.loads(subprocess.run(["git", "show", "%s:atlas-tools/release/flags.json" % _want], cwd=ROOT, capture_output=True, text=True, check=True).stdout)
+else:
+    FLAGS = json.loads((ROOT / "atlas-tools" / "release" / "flags.json").read_text(encoding="utf-8"))
 SITE = "https://plotnua.ie"
 PAGES = {"": "PlotNua", "discoveries.html": "Discovery Library", "discovery-hidden-cars.html": "PlotNua",
          "plotart/": "PlotArt", "privacy.html": "Privacy", "terms.html": "Terms", "contact.html": "PlotNua"}
 STUDIO = "https://plotart-studio.colin-a41.workers.dev"
 IDEAS = "https://plotnua-ideas.colin-a41.workers.dev/v1/ideas"
-arg = lambda k: sys.argv[sys.argv.index(k) + 1] if k in sys.argv else None
 results = []
 
 

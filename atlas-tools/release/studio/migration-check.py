@@ -41,10 +41,26 @@ print("\n```sql\n%s\n```" % data.decode("utf-8").strip())
 # ADDITIVE: it changes no existing row and is reversed by dropping what it created. Anything else is DESTRUCTIVE and
 # always waits for the founder's approval (environment studio-database).
 stmts = [x.strip() for x in sql.split(";") if x.strip()]
-additive = bool(stmts) and all(re.match(r"CREATE\s+(TABLE|(UNIQUE\s+)?INDEX)\b", x, re.I) for x in stmts)
+# Tables that already exist in production: every table schema.sql creates BEFORE this migration's own marker comment
+# ("-- ... (migration NNNN ...", which mirrors the migration for new installs), and every table created by an earlier
+# migration file. Creating, re-creating or indexing one of these is never additive.
+import glob, os
+_wdir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "..", "worker", "plotart-studio")
+_num = (re.match(r"(\d{4})_", os.path.basename(path)) or [None, "----"])[1]
+_tbl = lambda t: {m.lower() for m in re.findall(r"CREATE\s+TABLE\s+(?:IF\s+NOT\s+EXISTS\s+)?" + W, re.sub(r"--[^\n]*", " ", t), re.I)}
+_schema = open(os.path.join(_wdir, "schema.sql"), encoding="utf-8").read()
+_mark = re.search(r"^--[^\n]*\bmigration\s+%s\b" % _num, _schema, re.I | re.M)
+existing = _tbl(_schema[:_mark.start()] if _mark else _schema)
+for _f in sorted(glob.glob(os.path.join(_wdir, "migrations", "*.sql"))):
+    _n = os.path.basename(_f)[:4]
+    if _n < _num and not _f.endswith("_rollback.sql"):
+        existing |= _tbl(open(_f, encoding="utf-8").read())
 created = {m.group(1).lower() for x in stmts for m in [re.match(r"CREATE\s+TABLE\s+(?:IF\s+NOT\s+EXISTS\s+)?" + W, x, re.I)] if m}
-if additive and (targets - {"(index)"}) - created:
-    additive = False                                 # an index on an EXISTING table changes that table: not additive
+additive = bool(stmts) and all(
+    re.match(r"CREATE\s+TABLE\s+(?!.*\bAS\s+SELECT\b)", x, re.I | re.S) or re.match(r"CREATE\s+(UNIQUE\s+)?INDEX\b", x, re.I)
+    for x in stmts)
+if (targets - {"(index)"}) - created or created & existing:
+    additive = False                                 # touches, re-creates or indexes an EXISTING table: not additive
 print("- Class: %s" % ("ADDITIVE (new tables and indexes only)" if additive else "DESTRUCTIVE or changes existing tables"))
 print("MIGRATION CHECK OK")
 print("MIGRATION CLASS: %s" % ("additive" if additive else "destructive"))

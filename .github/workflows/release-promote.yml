@@ -42,48 +42,18 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
+          ref: main
           fetch-depth: 0
-      - name: The release is a fast-forward of the current main, and still the head of its branch
-        id: pre
+      # The release tooling is copied from MAIN before anything else happens, so a release branch can never change
+      # how it is itself checked, promoted or rolled back.
+      - name: Trusted copy of the release tooling (from main)
+        run: cp -r atlas-tools/release "$RUNNER_TEMP/release-tools"
+      - name: Promote, verify live, roll back automatically if the live check fails
+        id: promote
         run: |
-          set -euo pipefail
-          [[ "$SHA" =~ ^[0-9a-f]{40}$ ]] || { echo "REFUSED: bad commit"; exit 1; }
-          git fetch -q origin main "$BRANCH"
-          BEFORE=$(git rev-parse origin/main)
-          [ "$(git rev-parse "origin/$BRANCH")" = "$SHA" ] || { echo "REFUSED: $BRANCH has moved since its checks ran"; exit 1; }
-          [ "$BEFORE" != "$SHA" ] || { echo "nothing to release: main is already $SHA"; echo "skip=1" >> "$GITHUB_OUTPUT"; exit 0; }
-          git merge-base --is-ancestor "$BEFORE" "$SHA" || { echo "REFUSED: $SHA does not contain the current main ${BEFORE:0:7} (rebase the release)"; exit 1; }
-          echo "before=$BEFORE" >> "$GITHUB_OUTPUT"
-          { echo "### Release ${SHA:0:7} from \`$BRANCH\`"; echo "- main before: \`$BEFORE\`"; echo "- files changed:"; git diff --name-only "$BEFORE" "$SHA" | sed 's/^/  - `/; s/$/`/'; } >> "$GITHUB_STEP_SUMMARY"
-      - name: Fast-forward main (never forced)
-        if: steps.pre.outputs.skip != '1'
-        run: |
-          git push origin "$SHA:refs/heads/main"
-          T="prod/$(date -u +%Y%m%d-%H%M)-${SHA:0:7}"; git tag "$T" "$SHA"; git push origin "refs/tags/$T"
-          echo "- released and tagged \`$T\`" >> "$GITHUB_STEP_SUMMARY"
-      - name: Pages build
-        if: steps.pre.outputs.skip != '1'
-        run: bash atlas-tools/release/pages-build.sh
-      - name: Live check (the site serves exactly this commit)
-        id: live
-        if: steps.pre.outputs.skip != '1'
-        run: python3 atlas-tools/release/site-health.py --expect-commit "$SHA" | tee -a "$GITHUB_STEP_SUMMARY"
-      - name: Automatic rollback if the live check failed
-        if: failure() && steps.live.outcome == 'failure'
-        env:
-          BEFORE: ${{ steps.pre.outputs.before }}
-        run: |
-          set -euo pipefail
           git config user.name "PlotNua release automation"; git config user.email "hello@plotnua.ie"
-          git fetch -q origin main
-          [ "$(git rev-parse origin/main)" = "$SHA" ] || { echo "main moved after the release: not reverting automatically"; exit 1; }
-          git checkout -q -B rollback "$SHA"
-          git revert --no-edit "$BEFORE..$SHA"
-          git push origin "HEAD:refs/heads/main"
-          bash atlas-tools/release/pages-build.sh
-          python3 atlas-tools/release/site-health.py --expect-commit "$(git rev-parse HEAD)" | tee -a "$GITHUB_STEP_SUMMARY"
-          echo "- **rolled back automatically** to the content of \`${BEFORE:0:7}\`" >> "$GITHUB_STEP_SUMMARY"
+          bash "$RUNNER_TEMP/release-tools/promote.sh" "$SHA" "$BRANCH"
       - name: Alert on failure
         if: failure()
         run: |
-          bash atlas-tools/release/ops-alert.sh "Website release failed" "Release of ${SHA} from ${BRANCH} failed, see ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          bash "$RUNNER_TEMP/release-tools/ops-alert.sh" "Website release failed" "Release of ${SHA} from ${BRANCH} did not complete, see ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
