@@ -26,7 +26,7 @@ on:
         type: boolean
         default: false
       rollback_drill:
-        description: "Rollback drill: after deploying, deliberately fail the outside check to prove the automatic rollback (closed board only)"
+        description: "Rollback drill: deploy the same code and settings, deliberately fail the outside check, prove the automatic rollback"
         required: false
         type: boolean
         default: false
@@ -120,10 +120,7 @@ jobs:
           DRILL: ${{ inputs.rollback_drill && 'true' || 'false' }}
         run: |
           set -euo pipefail
-          if [ "$DRILL" = true ]; then
-            [ "$OPEN" = false ] || { echo "REFUSED: a rollback drill runs only on the closed board"; exit 1; }
-            echo "ROLLBACK DRILL: failing the outside check on purpose"; exit 1
-          fi
+          if [ "$DRILL" = true ]; then echo "ROLLBACK DRILL: failing the outside check on purpose"; exit 1; fi
           U="$(cat "$RUNNER_TEMP/url")/v1/ideas"; [[ "$U" =~ ^https://plotnua-ideas\. ]] || { echo "FAIL  no workers.dev address found"; exit 1; }
           sleep 5
           code() { curl -s -o /dev/null -w "%{http_code}" "$@"; }
@@ -133,6 +130,9 @@ jobs:
           if [ "$OPEN" = false ]; then
             C=$(code -X POST -H "Origin: https://plotnua.ie" -H "Content-Type: application/json" -d '{"idea":"closed check"}' "$U")
             echo "closed, plotnua.ie origin: $C (expect 503)"; [ "$C" = 503 ] || { echo "FAIL  the board is not closed"; exit 1; }
+          else
+            C=$(code -X POST -H "Origin: https://plotnua.ie" -H "Content-Type: application/json" -d '{"idea":"x"}' "$U")
+            echo "open, plotnua.ie origin, too-short idea: $C (expect 400: validated, nothing stored)"; [ "$C" = 400 ] || { echo "FAIL  the open board does not validate as expected"; exit 1; }
           fi
           echo "- Intake Worker: \`$U\` · open_submissions=$OPEN · refusal checks passed" >> "$GITHUB_STEP_SUMMARY"
       # Automation v1: if the new version fails its outside checks, return to the previous version at once.
@@ -147,8 +147,8 @@ jobs:
           echo "- **rolled back automatically** after failed outside checks" >> "$GITHUB_STEP_SUMMARY"
           # the previous version must answer exactly as a closed board does
           sleep 10; U="$(cat "$RUNNER_TEMP/url")/v1/ideas"
-          C=$(curl -s -o /dev/null -w "%{http_code}" -X POST -H "Origin: https://plotnua.ie" -H "Content-Type: application/json" -d '{"idea":"closed check"}' "$U")
+          C=$(curl -s -o /dev/null -w "%{http_code}" -X POST -H "Origin: https://plotnua.ie" -H "Content-Type: application/json" -d '{"idea":"x"}' "$U")
           G=$(curl -s -o /dev/null -w "%{http_code}" "$U")
-          echo "after rollback: GET $G (expect 405) · plotnua.ie $C (expect 503 while closed)"
+          echo "after rollback: GET $G (expect 405) · plotnua.ie short idea $C (expect 503 if closed, 400 if open)"
           [ "$G" = 405 ] || { echo "FAIL  the rolled-back Worker does not answer as expected"; exit 1; }
           echo "- after rollback: GET $G, plotnua.ie $C" >> "$GITHUB_STEP_SUMMARY"
