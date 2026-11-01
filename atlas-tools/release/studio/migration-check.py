@@ -37,4 +37,14 @@ print("- Declared tables it may change: %s" % (", ".join(sorted(declared)) or "n
 print("- Tables the SQL writes to: %s" % (", ".join(sorted(targets)) or "none"))
 print("- Expected effects: %s" % desc.strip().replace("\n", " "))
 print("\n```sql\n%s\n```" % data.decode("utf-8").strip())
+# Automation v1 (1 Nov 2026): a migration that only CREATEs new tables or indexes, and touches no existing table, is
+# ADDITIVE: it changes no existing row and is reversed by dropping what it created. Anything else is DESTRUCTIVE and
+# always waits for the founder's approval (environment studio-database).
+stmts = [x.strip() for x in sql.split(";") if x.strip()]
+additive = bool(stmts) and all(re.match(r"CREATE\s+(TABLE|(UNIQUE\s+)?INDEX)\b", x, re.I) for x in stmts)
+created = {m.group(1).lower() for x in stmts for m in [re.match(r"CREATE\s+TABLE\s+(?:IF\s+NOT\s+EXISTS\s+)?" + W, x, re.I)] if m}
+if additive and (targets - {"(index)"}) - created:
+    additive = False                                 # an index on an EXISTING table changes that table: not additive
+print("- Class: %s" % ("ADDITIVE (new tables and indexes only)" if additive else "DESTRUCTIVE or changes existing tables"))
 print("MIGRATION CHECK OK")
+print("MIGRATION CLASS: %s" % ("additive" if additive else "destructive"))

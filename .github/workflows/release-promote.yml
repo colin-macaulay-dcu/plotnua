@@ -1,0 +1,89 @@
+# PlotNua · automatic release of the website (automation v1, prepared 1 Nov 2026; active only once merged to main with
+# the founder's approval of the automation policy).
+#
+# How a website release happens without anyone opening GitHub:
+#   1. Claude finishes and tests a founder-authorised change and pushes it to a branch named release/auto/<topic>.
+#   2. The Image rights gate (every governed check) runs on that exact commit.
+#   3. Only if it succeeds, this workflow fast-forwards main to that commit: never forced, refused if main has moved
+#      (the release branch must contain the current main), and refused for any commit already behind main.
+#   4. It requests the GitHub Pages build, waits for it, and runs the site health check against that commit (the live
+#      files must be byte-identical to the commit).
+#   5. If the live check fails, it restores the previous site automatically: a revert commit on top (fast-forward,
+#      never a reset), a new Pages build and a second check, and it opens an "ops-alert" issue.
+#   6. Every release is tagged prod/<UTC time>-<sha> and summarised in the run summary: the audit trail.
+# Worker and database changes are NOT released here: they keep their own workflows.
+name: Release to production
+on:
+  workflow_run:
+    workflows: ["Image rights gate"]
+    types: [completed]
+
+permissions:
+  contents: write
+  pages: write
+  issues: write
+
+concurrency:
+  group: production-site
+  cancel-in-progress: false
+
+jobs:
+  promote:
+    if: >-
+      github.event.workflow_run.conclusion == 'success' &&
+      github.event.workflow_run.event == 'push' &&
+      startsWith(github.event.workflow_run.head_branch, 'release/auto/')
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    env:
+      SHA: ${{ github.event.workflow_run.head_sha }}
+      BRANCH: ${{ github.event.workflow_run.head_branch }}
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: The release is a fast-forward of the current main, and still the head of its branch
+        id: pre
+        run: |
+          set -euo pipefail
+          [[ "$SHA" =~ ^[0-9a-f]{40}$ ]] || { echo "REFUSED: bad commit"; exit 1; }
+          git fetch -q origin main "$BRANCH"
+          BEFORE=$(git rev-parse origin/main)
+          [ "$(git rev-parse "origin/$BRANCH")" = "$SHA" ] || { echo "REFUSED: $BRANCH has moved since its checks ran"; exit 1; }
+          [ "$BEFORE" != "$SHA" ] || { echo "nothing to release: main is already $SHA"; echo "skip=1" >> "$GITHUB_OUTPUT"; exit 0; }
+          git merge-base --is-ancestor "$BEFORE" "$SHA" || { echo "REFUSED: $SHA does not contain the current main ${BEFORE:0:7} (rebase the release)"; exit 1; }
+          echo "before=$BEFORE" >> "$GITHUB_OUTPUT"
+          { echo "### Release ${SHA:0:7} from \`$BRANCH\`"; echo "- main before: \`$BEFORE\`"; echo "- files changed:"; git diff --name-only "$BEFORE" "$SHA" | sed 's/^/  - `/; s/$/`/'; } >> "$GITHUB_STEP_SUMMARY"
+      - name: Fast-forward main (never forced)
+        if: steps.pre.outputs.skip != '1'
+        run: |
+          git push origin "$SHA:refs/heads/main"
+          T="prod/$(date -u +%Y%m%d-%H%M)-${SHA:0:7}"; git tag "$T" "$SHA"; git push origin "refs/tags/$T"
+          echo "- released and tagged \`$T\`" >> "$GITHUB_STEP_SUMMARY"
+      - name: Pages build
+        if: steps.pre.outputs.skip != '1'
+        run: bash atlas-tools/release/pages-build.sh
+      - name: Live check (the site serves exactly this commit)
+        id: live
+        if: steps.pre.outputs.skip != '1'
+        run: python3 atlas-tools/release/site-health.py --expect-commit "$SHA" | tee -a "$GITHUB_STEP_SUMMARY"
+      - name: Automatic rollback if the live check failed
+        if: failure() && steps.live.outcome == 'failure'
+        env:
+          BEFORE: ${{ steps.pre.outputs.before }}
+        run: |
+          set -euo pipefail
+          git config user.name "PlotNua release automation"; git config user.email "hello@plotnua.ie"
+          git fetch -q origin main
+          [ "$(git rev-parse origin/main)" = "$SHA" ] || { echo "main moved after the release: not reverting automatically"; exit 1; }
+          git checkout -q -B rollback "$SHA"
+          git revert --no-edit "$BEFORE..$SHA"
+          git push origin "HEAD:refs/heads/main"
+          bash atlas-tools/release/pages-build.sh
+          python3 atlas-tools/release/site-health.py --expect-commit "$(git rev-parse HEAD)" | tee -a "$GITHUB_STEP_SUMMARY"
+          echo "- **rolled back automatically** to the content of \`${BEFORE:0:7}\`" >> "$GITHUB_STEP_SUMMARY"
+      - name: Alert on failure
+        if: failure()
+        run: |
+          bash atlas-tools/release/ops-alert.sh "Website release failed" "Release of ${SHA} from ${BRANCH} failed, see ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
