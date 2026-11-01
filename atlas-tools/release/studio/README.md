@@ -1,7 +1,7 @@
 # PlotArt Studio · deployment workflows (prepared; inactive until the founder's setup)
 
 - `.github/workflows/studio-deploy.yml`: deploys the Studio Worker at one exact commit already on main. Environment
-  `studio-production` (required reviewer: the founder; secret `STUDIO_CF_DEPLOY_TOKEN`, Workers Scripts: Edit only).
+  `studio-production.` (exact name, with a final full stop) (required reviewer: the founder; secret `STUDIO_CF_DEPLOY_TOKEN`, Workers Scripts: Edit only).
   Read-only repository access. The live release is read from this workflow's own successful runs.
 - `.github/workflows/studio-d1-migration.yml`: one approved migration file (SHA-256), declared tables and described
   effects. Environment `studio-database` (required reviewer: the founder; secrets `STUDIO_CF_D1_TOKEN`, D1: Edit only,

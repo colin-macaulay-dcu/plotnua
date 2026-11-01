@@ -5,7 +5,7 @@
 #   2. Claude starts this workflow with that full commit ID ("Run workflow").
 #   3. "check" refuses anything that is not a full commit ID already on main, would roll back the live Studio,
 #      or carries a bundle that does not match its sources. It lists the Studio files that will change.
-#   4. "deploy" waits in the environment studio-production until the founder presses Approve in GitHub.
+#   4. "deploy" waits in the environment "studio-production." (exact name, with a final full stop) until the founder presses Approve in GitHub.
 #      Only then can it read the Cloudflare token STUDIO_CF_DEPLOY_TOKEN (Workers Scripts: Edit, nothing else).
 #   5. It deploys exactly that commit and checks the gallery order and reserved position 01 before and after.
 #      The live release is read from this workflow's own history of successful real runs (read-only):
@@ -67,7 +67,7 @@ jobs:
   deploy:
     needs: check
     runs-on: ubuntu-latest
-    environment: studio-production
+    environment: "studio-production."   # the configured environment's exact name, including the final full stop
     steps:
       - uses: actions/checkout@v4
         with:
