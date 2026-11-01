@@ -41,7 +41,7 @@ check('M6 valid ideas are accepted', (await db.prepare('SELECT COUNT(*) n FROM i
 let again = 'ok'; try { await run(file('0003_ideas.sql')); again = 'ran twice'; } catch (e) { again = 'refused: ' + e.message.slice(0, 60); }
 check('M7 running the migration a second time is refused and changes nothing', again.startsWith('refused') && (await db.prepare('SELECT COUNT(*) n FROM ideas').first()).n === 2, again);
 
-await run(file('0003_ideas.rollback.sql'));
+await run(file('0003_ideas_rollback.sql'));
 check('M8 rollback: the database returns exactly to its previous objects and rows', JSON.stringify(await objects()) === JSON.stringify(beforeObjects) &&
   JSON.stringify(await dump(beforeTables)) === JSON.stringify(before));
 await run(file('0003_ideas.sql'));

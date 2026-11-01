@@ -1,7 +1,8 @@
 -- PlotNua Idea Board · migration 0003 · ideas (founder approval of Phase 1 build, 1 Nov 2026). NOT APPLIED.
 -- Apply ONCE to the production D1 database ONLY with the founder's explicit approval of this exact file, AFTER a backup
--- (see IDEA-BOARD-MIGRATION-0003.md), and BEFORE deploying the Worker code that uses it:
---   npx wrangler d1 execute plotart-studio --remote --file=migrations/0003_ideas.sql
+-- (see IDEA-BOARD-MIGRATION-0003.md), through the governed "PlotArt Studio · D1 migration" workflow
+-- (.github/workflows/studio-d1-migration.yml: Time Travel restore point + encrypted full export, then the migration,
+-- then a check that only the declared tables changed). Declared tables: ideas, idea_intake_days.
 -- Additive only: two new tables and one index. No existing table, column or row changes.
 -- Phase 1 stores no name, e-mail, telephone, IP address or cookie: an idea, an optional area and an optional county.
 CREATE TABLE ideas (
