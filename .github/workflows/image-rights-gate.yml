@@ -398,6 +398,15 @@ jobs:
           python3 atlas-tools/prove-premium-garden-room-prices.py
           python3 atlas-tools/prove-premium-garden-room-prices-capability.py
 
+      # Idea Board (founder approval of the Phase 1 build, 1 Nov 2026): the board page and the Library card show exactly
+      # the approved-ideas snapshot the content pipeline wrote, nothing hand-added, no personal data, noindex.
+      - name: The Idea Board shows only founder-approved ideas
+        run: |
+          set -euo pipefail
+          python3 atlas-tools/build-idea-board.py --check
+          python3 atlas-tools/prove-idea-board.py
+          python3 atlas-tools/prove-privacy-v9.py
+
       - name: Summary
         if: always()
         run: |
