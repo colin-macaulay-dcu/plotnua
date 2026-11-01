@@ -323,7 +323,10 @@ if vg:
     need("founding-25.html" not in _vgm and "Founding 25" not in _vgmv and "Artist first" not in _vgmv, "L11 the Virtual Gallery carries Founding 25 promotion or an 'Artist first' section")
     need("The first twenty-five galleries." in vgv, "L11 the Virtual Gallery collection heading is not the approved wording")
     _vgimgs = re.findall(r"<img\b[^>]*>", _vgm)
-    need(not re.search(r"<picture\b|<svg\b|background-image|url\(", _vgm) and len(_vgimgs) == len(_cards) and
+    # A published gallery with no works on show keeps its card with the empty state and no picture (founder decision
+    # 1 Nov 2026): one picture per card, except those cards. Every picture is still a published artist's own card image.
+    _empty_cards = len(re.findall(r'<span class="pa-gcard-art is-empty"><span>New work coming soon</span></span>', _vgm))
+    need(not re.search(r"<picture\b|<svg\b|background-image|url\(", _vgm) and len(_vgimgs) == len(_cards) - _empty_cards and
          all(re.search(r'src="\.\./artists/(%s)/img/[a-z0-9-]+\.webp"' % "|".join(map(re.escape, GALLERY_SLUGS or ["-"])), t) for t in _vgimgs),
          "L11 the Virtual Gallery shows an image other than a published artist's card image")
     need(not re.search(r"testimonial|“|”|\bsaid\b", visible_text(vg.split("<main", 1)[-1].split("</main>")[0]), re.I), "L11 the Virtual Gallery carries a quotation or testimonial")
@@ -434,8 +437,8 @@ for slug in GALLERY_SLUGS:
         need("%" not in vis, "L14 %s quotes a percentage" % f)
         for src in re.findall(r'<img\b[^>]*\bsrc="([^"]+)"', main):
             need(src.startswith("img/") and (base + src) in ARTIST_FILES, "L14 %s shows an image outside its own gallery folder: %s" % (f, src))
-        # (The Founding minimum of 10 is enforced when a gallery FIRST opens, by the publication safeguards; a later sale
-        # or removal is never blocked: Founding Artist Agreement 3.3(c).)
+        # (A gallery opens with at least one artwork, enforced by the publication safeguards; afterwards the artist may
+        # withdraw every work and the gallery shows its empty state: founder decisions 1 Nov 2026.)
 for asset in _arts:
     need(asset[len("plotart/"):] in ARTIST_FILES, "L14 provenance record for %s describes no published file" % asset)
 
