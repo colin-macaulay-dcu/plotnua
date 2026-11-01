@@ -101,6 +101,18 @@ jobs:
           STUDIO_ACCESS_AUD: ${{ vars.STUDIO_ACCESS_AUD }}
           STUDIO_ACCESS_TEAM: ${{ vars.STUDIO_ACCESS_TEAM }}
         run: python3 atlas-tools/release/studio/render-config.py worker/plotart-studio
+      # Safe diagnostic (1 Nov 2026): reports only whether the backup key reached this job and whether it is long enough.
+      # Runs in dry runs too, before anything touches the database. Never prints the key or any part of it.
+      - name: Backup key check (YES/NO only)
+        env:
+          BACKUP_KEY: ${{ secrets.STUDIO_BACKUP_PASSPHRASE }}
+        run: |
+          if [ -n "$BACKUP_KEY" ]; then A=YES; else A=NO; fi
+          if [ "${#BACKUP_KEY}" -ge 24 ]; then L=YES; else L=NO; fi
+          echo "Secret available: $A"
+          echo "Minimum length satisfied (24+ characters): $L"
+          echo "- Backup key: available **$A**, minimum length satisfied **$L**" >> "$GITHUB_STEP_SUMMARY"
+          [ "$A$L" = YESYES ] || { echo "FAIL  backup key not usable: migration not started (nothing has touched the database)"; exit 1; }
       - name: Dry run
         if: ${{ inputs.dry_run }}
         run: |
