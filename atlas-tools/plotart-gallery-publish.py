@@ -203,7 +203,7 @@ def main():
         if why is None and PUSH:
             branch = "content/plotart-%s-v%d" % (q["artist_id"], q["version"])
             ok1, o1 = run("git push origin HEAD:refs/heads/%s" % branch)
-            ok2, o2 = run("git push origin HEAD:refs/heads/main")          # fast-forward only: never forced
+            ok2, o2 = run("bash atlas-tools/release/request-release.sh plotart-%s-v%d" % (q["artist_id"], q["version"]))  # automation v1: main only moves after the gate passes
             if not (ok1 and ok2):
                 why = "push refused (main moved or no permission): " + (o1 + " " + o2)[-300:]
         if why:
@@ -246,7 +246,7 @@ def order_sync():
     why = guards(base, False)
     if why is None and PUSH:
         ok1, o1 = run("git push origin HEAD:refs/heads/content/plotart-gallery-order-%s" % git("rev-parse", "--short", "HEAD"))
-        ok2, o2 = run("git push origin HEAD:refs/heads/main")
+        ok2, o2 = run("bash atlas-tools/release/request-release.sh plotart-gallery-order")
         if not (ok1 and ok2):
             why = "push refused (main moved or no permission): " + (o1 + " " + o2)[-300:]
     sha = git("rev-parse", "HEAD")

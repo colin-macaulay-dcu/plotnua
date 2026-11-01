@@ -73,6 +73,7 @@ on:
 # Least privilege. The job pushes one file; it needs nothing else.
 permissions:
   contents: write
+  actions: write      # automation v1: start the gate on its release branch (request-release.sh)
 
 concurrency:
   group: atlas-match-universe-refresh
@@ -87,6 +88,9 @@ env:
   # ISSUE 005 PIECE E2 — the partition index. The runtime reads this to learn
   # which per-category files exist, so it never guesses a filename.
   DETAIL_INDEX: garden-room-detail-index-v1.json
+
+env:
+  GH_TOKEN: ${{ github.token }}   # automation v1: request-release.sh dispatches the gate
 
 jobs:
   refresh:
@@ -299,7 +303,7 @@ jobs:
           git -c user.name='plotnua-atlas-bot' \
               -c user.email='atlas-bot@users.noreply.github.com' \
               commit -m 'Atlas: refresh Garden Room recommendation universe and detail evidence'
-          git push
+          bash atlas-tools/release/request-release.sh atlas-universe   # automation v1: main only moves after the gate passes
 
       - name: Confirm both artefacts were left untouched when nothing changed
         if: >-
