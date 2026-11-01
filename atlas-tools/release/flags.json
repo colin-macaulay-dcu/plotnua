@@ -1,0 +1,6 @@
+{
+  "what_this_is": "PlotNua production switches (founder decision 1 Nov 2026, Idea Board launch, Option B). Changed only by a reviewed commit, so every switch has an author, a time and a reason in git history. Read by the Idea Board publishing workflow.",
+  "ideas_submissions_open": true,
+  "ideas_publish_enabled": true,
+  "must_not_exist": []
+}
