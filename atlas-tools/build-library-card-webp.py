@@ -97,8 +97,8 @@ def main():
     cur = PAGE.read_text(encoding="utf-8")
     base = unwrap(cur)                                   # the page as it is without this layer
     cards = CARD.findall(base)
-    if len(cards) != 15:
-        die("expected 15 Discovery cards with the governed <img src alt> shape, found %d" % len(cards))
+    if len(cards) != 16:   # 16 since DISC-015 (development build, 1 Nov 2026)
+        die("expected 16 Discovery cards with the governed <img src alt> shape, found %d" % len(cards))
     new_files, new_recs, plan = {}, [], {}
     for _, tag, src, _ in cards:
         if src in held: die("%s is on provenance hold" % src)
@@ -145,7 +145,7 @@ def main():
         bad = []
         if cur != built: bad.append("discoveries.html is not built")
         if new_recs or new_files: bad.append("%d derivative(s) not yet recorded" % len(new_recs))
-        print("LIBRARY CARD WEBP · " + ("OK (15 cards, %d derivatives served)" % sum(len(v.split(", ")) for v in plan.values())
+        print("LIBRARY CARD WEBP · " + ("OK (16 cards, %d derivatives served)" % sum(len(v.split(", ")) for v in plan.values())
                                         if not bad else "FAIL: %s" % "; ".join(bad)))
         sys.exit(1 if bad else 0)
     for f, d in new_files.items():
@@ -153,7 +153,7 @@ def main():
     reg["derivatives"] += new_recs
     REG.write_text(json.dumps(reg, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
     PAGE.write_text(built, encoding="utf-8")
-    print("built: %d new derivatives recorded; 15 cards wrapped" % len(new_recs))
+    print("built: %d new derivatives recorded; 16 cards wrapped" % len(new_recs))
 
 
 if __name__ == "__main__":

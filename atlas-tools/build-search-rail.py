@@ -194,7 +194,9 @@ pages = sorted(set(pages + ["index.html"]))
 # The Hidden Flood Barrier, enters the sitemap (subject to founder release approval).
 # 28 since the DISC-032 launch: discovery-supper-club-at-home.html, The Supper Club at Home
 # (founder launch approval required; the release candidate is not in the sitemap), entered the sitemap.
-EXPECTED_PAGES = 28
+# 29 since DISC-015 The Underground Swimming Pool (founder Phase 2 build authorisation, 1 Nov 2026;
+# development branch, founder release approval required) entered the sitemap.
+EXPECTED_PAGES = 29
 if len(pages) != EXPECTED_PAGES:
     die("expected %d public pages, found %d — refusing to guess the rail scope. "
         "If a public page was added or removed, update EXPECTED_PAGES "

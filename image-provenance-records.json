@@ -8861,6 +8861,118 @@
         "date": "2026-10-31",
         "subject": "Founder's Hidden Cars hero pair, supplied whole (Release 7)"
       }
+    },
+    {
+      "asset": "assets/disc015/img/DISC-015-01-BEFORE-MASTER.png",
+      "sha256": "74cbd0763534ed4f66835ca38e0af15e6b2832bcda37eb03bdf6dc744396c0e2",
+      "bytes": 2740309,
+      "pixels": [
+        1376,
+        768
+      ],
+      "class": "AI_ILLUSTRATION",
+      "what": "DISC-015 hero BEFORE: an ordinary Irish suburban back garden (lawn, patio, planting, neighbouring houses) (founder's master; the page shows its prepared copies)",
+      "depicts_named_product": false,
+      "depicts_named_organisation": false,
+      "origin": {
+        "basis": "C2PA_EMBEDDED",
+        "evidence": "Embedded C2PA manifest, read with c2pa-python: issuer Google LLC, signed 2026-08-10T08:33:06+00:00; the credential chain records c2pa.created with digital source type trainedAlgorithmicMedia; 1 ingredient link(s), 1 credentialed; validation Valid.",
+        "declared_under": "Governance 2.0, Rule 2 (30 Oct 2026)"
+      },
+      "generated": {
+        "tool": "Google LLC generative AI, per the file's own signed C2PA credential",
+        "date": "2026-08-10"
+      },
+      "prompt_status": "UNAVAILABLE",
+      "reference_disclosure": {
+        "status": "CREDENTIALED",
+        "statement": "The credential records 1 input image(s), each carrying its own signed credential."
+      },
+      "permitted_surfaces": [
+        "discovery"
+      ],
+      "content_credentials": {
+        "embeds_c2pa": true
+      },
+      "introduced": {
+        "date": "2026-11-01",
+        "subject": "DISC-015 The Underground Swimming Pool, founder Phase 2 build authorisation"
+      }
+    },
+    {
+      "asset": "assets/disc015/img/DISC-015-03-POOL-MASTER.png",
+      "sha256": "869e4fdb7e6f55a67c87ecf9393c687c28e2197470d9437aba960f5e2e7fe1c5",
+      "bytes": 2053192,
+      "pixels": [
+        1376,
+        768
+      ],
+      "class": "AI_ILLUSTRATION",
+      "what": "DISC-015 underground reveal: an indoor swimming pool in a stone-finished chamber lit by a long rooflight (founder's master; the page shows its prepared copies)",
+      "depicts_named_product": false,
+      "depicts_named_organisation": false,
+      "origin": {
+        "basis": "C2PA_EMBEDDED",
+        "evidence": "Embedded C2PA manifest, read with c2pa-python: issuer Google LLC, signed 2026-08-10T09:04:21+00:00; the credential chain records c2pa.created with digital source type trainedAlgorithmicMedia; 2 ingredient link(s), 2 credentialed; validation Valid.",
+        "declared_under": "Governance 2.0, Rule 2 (30 Oct 2026)"
+      },
+      "generated": {
+        "tool": "Google LLC generative AI, per the file's own signed C2PA credential",
+        "date": "2026-08-10"
+      },
+      "prompt_status": "UNAVAILABLE",
+      "reference_disclosure": {
+        "status": "CREDENTIALED",
+        "statement": "The credential records 2 input image(s), each carrying its own signed credential."
+      },
+      "permitted_surfaces": [
+        "discovery",
+        "library-card"
+      ],
+      "content_credentials": {
+        "embeds_c2pa": true
+      },
+      "introduced": {
+        "date": "2026-11-01",
+        "subject": "DISC-015 The Underground Swimming Pool, founder Phase 2 build authorisation"
+      }
+    },
+    {
+      "asset": "assets/disc015/img/DISC-015-04-POSSIBLE-MASTER.png",
+      "sha256": "cf3552a6d4bbacbf5a2aaae25b37b54d7e919756c57742bf9967f14c04d472f1",
+      "bytes": 2740316,
+      "pixels": [
+        1376,
+        768
+      ],
+      "class": "AI_ILLUSTRATION",
+      "what": "DISC-015 hero POSSIBLE: the same garden restored, with a long, narrow glazed rooflight set into the lawn (founder's master; the page shows its prepared copies)",
+      "depicts_named_product": false,
+      "depicts_named_organisation": false,
+      "origin": {
+        "basis": "C2PA_EMBEDDED",
+        "evidence": "Embedded C2PA manifest, read with c2pa-python: issuer Google LLC, signed 2026-08-10T08:59:16+00:00; the credential chain records c2pa.created with digital source type trainedAlgorithmicMedia; 5 ingredient link(s), 5 credentialed; validation Valid.",
+        "declared_under": "Governance 2.0, Rule 2 (30 Oct 2026)"
+      },
+      "generated": {
+        "tool": "Google LLC generative AI, per the file's own signed C2PA credential",
+        "date": "2026-08-10"
+      },
+      "prompt_status": "UNAVAILABLE",
+      "reference_disclosure": {
+        "status": "CREDENTIALED",
+        "statement": "The credential records 5 input image(s), each carrying its own signed credential."
+      },
+      "permitted_surfaces": [
+        "discovery"
+      ],
+      "content_credentials": {
+        "embeds_c2pa": true
+      },
+      "introduced": {
+        "date": "2026-11-01",
+        "subject": "DISC-015 The Underground Swimming Pool, founder Phase 2 build authorisation"
+      }
     }
   ],
   "legacy_undeclared": [
@@ -13781,6 +13893,448 @@
         "source_file_embeds_c2pa": false,
         "derivative_embeds_c2pa": false,
         "note": "Card-sized delivery for the Discovery Library (1 Nov 2026). A WebP re-encoding of one enumerated source, bound to its sha256; it inherits the source's provenance state and declares nothing. The derivative carries NO signed credential and must never be described as having one; the source stays on the page as the fallback."
+      }
+    },
+    {
+      "asset": "assets/disc015/img/DISC-015-BEFORE-768.webp",
+      "sha256": "f106e18d4fdc578b661058217f0c210f9b0763bca5ad36146c3c57c86296ae1c",
+      "bytes": 97322,
+      "pixels": [
+        768,
+        429
+      ],
+      "derived_from": {
+        "asset": "assets/disc015/img/DISC-015-01-BEFORE-MASTER.png",
+        "sha256": "74cbd0763534ed4f66835ca38e0af15e6b2832bcda37eb03bdf6dc744396c0e2"
+      },
+      "method": "artefact-removal",
+      "edit": {
+        "description": "DISC-015 web copy (Governance 2.0, Rule 3): the visible generator mark removed (star mask at (1256, 648), radius 27), then Lanczos resize to 768 px wide.",
+        "operation": "the visible generator mark removed (star mask at (1256, 648), radius 27), then Lanczos resize to 768 px wide",
+        "verified_by": "atlas-tools/build-disc015-images.py --check"
+      },
+      "encoder": "Pillow 12.3.0, WebP quality 80, method 6",
+      "made": "2026-11-01",
+      "content_credentials": {
+        "source_file_embeds_c2pa": true,
+        "derivative_embeds_c2pa": false,
+        "note": "Editing and re-encoding remove the embedded C2PA credential. This copy carries NO signed credential; the master keeps it, and its record carries the AI classification."
+      }
+    },
+    {
+      "asset": "assets/disc015/img/DISC-015-BEFORE-1024.webp",
+      "sha256": "c14fb490c9b6b06a909db10410226eac4d8d38baaae6c572f60b51c853fb9ac1",
+      "bytes": 163874,
+      "pixels": [
+        1024,
+        572
+      ],
+      "derived_from": {
+        "asset": "assets/disc015/img/DISC-015-01-BEFORE-MASTER.png",
+        "sha256": "74cbd0763534ed4f66835ca38e0af15e6b2832bcda37eb03bdf6dc744396c0e2"
+      },
+      "method": "artefact-removal",
+      "edit": {
+        "description": "DISC-015 web copy (Governance 2.0, Rule 3): the visible generator mark removed (star mask at (1256, 648), radius 27), then Lanczos resize to 1024 px wide.",
+        "operation": "the visible generator mark removed (star mask at (1256, 648), radius 27), then Lanczos resize to 1024 px wide",
+        "verified_by": "atlas-tools/build-disc015-images.py --check"
+      },
+      "encoder": "Pillow 12.3.0, WebP quality 80, method 6",
+      "made": "2026-11-01",
+      "content_credentials": {
+        "source_file_embeds_c2pa": true,
+        "derivative_embeds_c2pa": false,
+        "note": "Editing and re-encoding remove the embedded C2PA credential. This copy carries NO signed credential; the master keeps it, and its record carries the AI classification."
+      }
+    },
+    {
+      "asset": "assets/disc015/img/DISC-015-BEFORE-1376.webp",
+      "sha256": "2d3684b518bd581017c8bef66161f537a4b857ccaff6c8dbf0ece79bb5b318d7",
+      "bytes": 280906,
+      "pixels": [
+        1376,
+        768
+      ],
+      "derived_from": {
+        "asset": "assets/disc015/img/DISC-015-01-BEFORE-MASTER.png",
+        "sha256": "74cbd0763534ed4f66835ca38e0af15e6b2832bcda37eb03bdf6dc744396c0e2"
+      },
+      "method": "artefact-removal",
+      "edit": {
+        "description": "DISC-015 web copy (Governance 2.0, Rule 3): the visible generator mark removed (star mask at (1256, 648), radius 27), then no resize.",
+        "operation": "the visible generator mark removed (star mask at (1256, 648), radius 27), then no resize",
+        "verified_by": "atlas-tools/build-disc015-images.py --check"
+      },
+      "encoder": "Pillow 12.3.0, WebP quality 80, method 6",
+      "made": "2026-11-01",
+      "content_credentials": {
+        "source_file_embeds_c2pa": true,
+        "derivative_embeds_c2pa": false,
+        "note": "Editing and re-encoding remove the embedded C2PA credential. This copy carries NO signed credential; the master keeps it, and its record carries the AI classification."
+      }
+    },
+    {
+      "asset": "assets/disc015/img/DISC-015-BEFORE-1024.jpg",
+      "sha256": "141405e43abcfe49bda22bd8e1a1bd1534b50347b5503777fd566510f77b320a",
+      "bytes": 222198,
+      "pixels": [
+        1024,
+        572
+      ],
+      "derived_from": {
+        "asset": "assets/disc015/img/DISC-015-01-BEFORE-MASTER.png",
+        "sha256": "74cbd0763534ed4f66835ca38e0af15e6b2832bcda37eb03bdf6dc744396c0e2"
+      },
+      "method": "artefact-removal",
+      "edit": {
+        "description": "DISC-015 web copy (Governance 2.0, Rule 3): the visible generator mark removed (star mask at (1256, 648), radius 27), then Lanczos resize to 1024 px wide.",
+        "operation": "the visible generator mark removed (star mask at (1256, 648), radius 27), then Lanczos resize to 1024 px wide",
+        "verified_by": "atlas-tools/build-disc015-images.py --check"
+      },
+      "encoder": "Pillow 12.3.0, JPEG quality 88, progressive",
+      "made": "2026-11-01",
+      "content_credentials": {
+        "source_file_embeds_c2pa": true,
+        "derivative_embeds_c2pa": false,
+        "note": "Editing and re-encoding remove the embedded C2PA credential. This copy carries NO signed credential; the master keeps it, and its record carries the AI classification."
+      }
+    },
+    {
+      "asset": "assets/disc015/img/DISC-015-BEFORE-M-614.webp",
+      "sha256": "1ec3b5328eb53eccbc1577430ebda23ba3b307fec5a1f05eb8d2023711d6077a",
+      "bytes": 121928,
+      "pixels": [
+        614,
+        768
+      ],
+      "derived_from": {
+        "asset": "assets/disc015/img/DISC-015-01-BEFORE-MASTER.png",
+        "sha256": "74cbd0763534ed4f66835ca38e0af15e6b2832bcda37eb03bdf6dc744396c0e2"
+      },
+      "method": "crop",
+      "edit": {
+        "description": "DISC-015 web copy (Governance 2.0, Rule 3): the visible generator mark removed (star mask at (1256, 648), radius 27), then 4:5 crop x 579-1193 (the full height), no resize.",
+        "operation": "the visible generator mark removed (star mask at (1256, 648), radius 27), then 4:5 crop x 579-1193 (the full height), no resize",
+        "verified_by": "atlas-tools/build-disc015-images.py --check"
+      },
+      "encoder": "Pillow 12.3.0, WebP quality 80, method 6",
+      "made": "2026-11-01",
+      "content_credentials": {
+        "source_file_embeds_c2pa": true,
+        "derivative_embeds_c2pa": false,
+        "note": "Editing and re-encoding remove the embedded C2PA credential. This copy carries NO signed credential; the master keeps it, and its record carries the AI classification."
+      }
+    },
+    {
+      "asset": "assets/disc015/img/DISC-015-POOL-768.webp",
+      "sha256": "b18d92b16f8def824d17b394cc2db5a05ec7b16d33df0eff287e0992aa5d4d27",
+      "bytes": 25272,
+      "pixels": [
+        768,
+        429
+      ],
+      "derived_from": {
+        "asset": "assets/disc015/img/DISC-015-03-POOL-MASTER.png",
+        "sha256": "869e4fdb7e6f55a67c87ecf9393c687c28e2197470d9437aba960f5e2e7fe1c5"
+      },
+      "method": "artefact-removal",
+      "edit": {
+        "description": "DISC-015 web copy (Governance 2.0, Rule 3): the visible generator mark removed (star mask at (1256, 648), radius 27), then Lanczos resize to 768 px wide.",
+        "operation": "the visible generator mark removed (star mask at (1256, 648), radius 27), then Lanczos resize to 768 px wide",
+        "verified_by": "atlas-tools/build-disc015-images.py --check"
+      },
+      "encoder": "Pillow 12.3.0, WebP quality 80, method 6",
+      "made": "2026-11-01",
+      "content_credentials": {
+        "source_file_embeds_c2pa": true,
+        "derivative_embeds_c2pa": false,
+        "note": "Editing and re-encoding remove the embedded C2PA credential. This copy carries NO signed credential; the master keeps it, and its record carries the AI classification."
+      }
+    },
+    {
+      "asset": "assets/disc015/img/DISC-015-POOL-1024.webp",
+      "sha256": "de86f8b109734dbe28ac6ee87353265abf81c1e1ea19099413952a7862a19893",
+      "bytes": 42088,
+      "pixels": [
+        1024,
+        572
+      ],
+      "derived_from": {
+        "asset": "assets/disc015/img/DISC-015-03-POOL-MASTER.png",
+        "sha256": "869e4fdb7e6f55a67c87ecf9393c687c28e2197470d9437aba960f5e2e7fe1c5"
+      },
+      "method": "artefact-removal",
+      "edit": {
+        "description": "DISC-015 web copy (Governance 2.0, Rule 3): the visible generator mark removed (star mask at (1256, 648), radius 27), then Lanczos resize to 1024 px wide.",
+        "operation": "the visible generator mark removed (star mask at (1256, 648), radius 27), then Lanczos resize to 1024 px wide",
+        "verified_by": "atlas-tools/build-disc015-images.py --check"
+      },
+      "encoder": "Pillow 12.3.0, WebP quality 80, method 6",
+      "made": "2026-11-01",
+      "content_credentials": {
+        "source_file_embeds_c2pa": true,
+        "derivative_embeds_c2pa": false,
+        "note": "Editing and re-encoding remove the embedded C2PA credential. This copy carries NO signed credential; the master keeps it, and its record carries the AI classification."
+      }
+    },
+    {
+      "asset": "assets/disc015/img/DISC-015-POOL-1376.webp",
+      "sha256": "15f12beda2b0abffea2779342b3ed2639081a95768d17becbb6b34d2bd771d3e",
+      "bytes": 69196,
+      "pixels": [
+        1376,
+        768
+      ],
+      "derived_from": {
+        "asset": "assets/disc015/img/DISC-015-03-POOL-MASTER.png",
+        "sha256": "869e4fdb7e6f55a67c87ecf9393c687c28e2197470d9437aba960f5e2e7fe1c5"
+      },
+      "method": "artefact-removal",
+      "edit": {
+        "description": "DISC-015 web copy (Governance 2.0, Rule 3): the visible generator mark removed (star mask at (1256, 648), radius 27), then no resize.",
+        "operation": "the visible generator mark removed (star mask at (1256, 648), radius 27), then no resize",
+        "verified_by": "atlas-tools/build-disc015-images.py --check"
+      },
+      "encoder": "Pillow 12.3.0, WebP quality 80, method 6",
+      "made": "2026-11-01",
+      "content_credentials": {
+        "source_file_embeds_c2pa": true,
+        "derivative_embeds_c2pa": false,
+        "note": "Editing and re-encoding remove the embedded C2PA credential. This copy carries NO signed credential; the master keeps it, and its record carries the AI classification."
+      }
+    },
+    {
+      "asset": "assets/disc015/img/DISC-015-POOL-1376.jpg",
+      "sha256": "7a0bd981293cd1e40728885b20eb11961bf7c89940ff2490d8027a501e5708b6",
+      "bytes": 185721,
+      "pixels": [
+        1376,
+        768
+      ],
+      "derived_from": {
+        "asset": "assets/disc015/img/DISC-015-03-POOL-MASTER.png",
+        "sha256": "869e4fdb7e6f55a67c87ecf9393c687c28e2197470d9437aba960f5e2e7fe1c5"
+      },
+      "method": "artefact-removal",
+      "edit": {
+        "description": "DISC-015 web copy (Governance 2.0, Rule 3): the visible generator mark removed (star mask at (1256, 648), radius 27), then Lanczos resize to 1376 px wide.",
+        "operation": "the visible generator mark removed (star mask at (1256, 648), radius 27), then Lanczos resize to 1376 px wide",
+        "verified_by": "atlas-tools/build-disc015-images.py --check"
+      },
+      "encoder": "Pillow 12.3.0, JPEG quality 88, progressive",
+      "made": "2026-11-01",
+      "content_credentials": {
+        "source_file_embeds_c2pa": true,
+        "derivative_embeds_c2pa": false,
+        "note": "Editing and re-encoding remove the embedded C2PA credential. This copy carries NO signed credential; the master keeps it, and its record carries the AI classification."
+      }
+    },
+    {
+      "asset": "assets/library/img/DISC-015-03-POOL-MASTER-480w.webp",
+      "sha256": "99300585ca79f37774c86e68c8b27c5055d64ff927d695504172afcecb2c1cc2",
+      "bytes": 11710,
+      "pixels": [
+        480,
+        268
+      ],
+      "derived_from": {
+        "asset": "assets/disc015/img/DISC-015-03-POOL-MASTER.png",
+        "sha256": "869e4fdb7e6f55a67c87ecf9393c687c28e2197470d9437aba960f5e2e7fe1c5"
+      },
+      "method": "artefact-removal",
+      "edit": {
+        "description": "DISC-015 web copy (Governance 2.0, Rule 3): the visible generator mark removed (star mask at (1256, 648), radius 27), then Lanczos resize to 480 px wide (Discovery Library card).",
+        "operation": "the visible generator mark removed (star mask at (1256, 648), radius 27), then Lanczos resize to 480 px wide (Discovery Library card)",
+        "verified_by": "atlas-tools/build-disc015-images.py --check"
+      },
+      "encoder": "Pillow 12.3.0, WebP quality 80, method 6",
+      "made": "2026-11-01",
+      "content_credentials": {
+        "source_file_embeds_c2pa": true,
+        "derivative_embeds_c2pa": false,
+        "note": "Editing and re-encoding remove the embedded C2PA credential. This copy carries NO signed credential; the master keeps it, and its record carries the AI classification."
+      }
+    },
+    {
+      "asset": "assets/library/img/DISC-015-03-POOL-MASTER-960w.webp",
+      "sha256": "2fc50339a162e5cc150b41ab33f81e2267d0e9a5e2b932f38fc1b0d2ff52ac64",
+      "bytes": 37860,
+      "pixels": [
+        960,
+        536
+      ],
+      "derived_from": {
+        "asset": "assets/disc015/img/DISC-015-03-POOL-MASTER.png",
+        "sha256": "869e4fdb7e6f55a67c87ecf9393c687c28e2197470d9437aba960f5e2e7fe1c5"
+      },
+      "method": "artefact-removal",
+      "edit": {
+        "description": "DISC-015 web copy (Governance 2.0, Rule 3): the visible generator mark removed (star mask at (1256, 648), radius 27), then Lanczos resize to 960 px wide (Discovery Library card).",
+        "operation": "the visible generator mark removed (star mask at (1256, 648), radius 27), then Lanczos resize to 960 px wide (Discovery Library card)",
+        "verified_by": "atlas-tools/build-disc015-images.py --check"
+      },
+      "encoder": "Pillow 12.3.0, WebP quality 80, method 6",
+      "made": "2026-11-01",
+      "content_credentials": {
+        "source_file_embeds_c2pa": true,
+        "derivative_embeds_c2pa": false,
+        "note": "Editing and re-encoding remove the embedded C2PA credential. This copy carries NO signed credential; the master keeps it, and its record carries the AI classification."
+      }
+    },
+    {
+      "asset": "assets/disc015/img/DISC-015-og-1200x630.jpg",
+      "sha256": "5fddc460a41fa9d5c3606a82628f99014da4510720f210485dae6eb6c27eb932",
+      "bytes": 121678,
+      "pixels": [
+        1200,
+        630
+      ],
+      "derived_from": {
+        "asset": "assets/disc015/img/DISC-015-03-POOL-MASTER.png",
+        "sha256": "869e4fdb7e6f55a67c87ecf9393c687c28e2197470d9437aba960f5e2e7fe1c5"
+      },
+      "method": "crop",
+      "edit": {
+        "description": "DISC-015 web copy (Governance 2.0, Rule 3): the visible generator mark removed (star mask at (1256, 648), radius 27), then crop y 23-745 to 1200:630, Lanczos resize to 1200 x 630.",
+        "operation": "the visible generator mark removed (star mask at (1256, 648), radius 27), then crop y 23-745 to 1200:630, Lanczos resize to 1200 x 630",
+        "verified_by": "atlas-tools/build-disc015-images.py --check"
+      },
+      "encoder": "Pillow 12.3.0, JPEG quality 86, progressive",
+      "made": "2026-11-01",
+      "content_credentials": {
+        "source_file_embeds_c2pa": true,
+        "derivative_embeds_c2pa": false,
+        "note": "Editing and re-encoding remove the embedded C2PA credential. This copy carries NO signed credential; the master keeps it, and its record carries the AI classification."
+      }
+    },
+    {
+      "asset": "assets/disc015/img/DISC-015-POSSIBLE-768.webp",
+      "sha256": "e2e30c6848dd979c279a267e649bc0eb45a9c15f3a34f400493f616e838aa45e",
+      "bytes": 95168,
+      "pixels": [
+        768,
+        429
+      ],
+      "derived_from": {
+        "asset": "assets/disc015/img/DISC-015-04-POSSIBLE-MASTER.png",
+        "sha256": "cf3552a6d4bbacbf5a2aaae25b37b54d7e919756c57742bf9967f14c04d472f1"
+      },
+      "method": "artefact-removal",
+      "edit": {
+        "description": "DISC-015 web copy (Governance 2.0, Rule 3): the visible generator mark removed (star mask at (1256, 648), radius 27), then Lanczos resize to 768 px wide.",
+        "operation": "the visible generator mark removed (star mask at (1256, 648), radius 27), then Lanczos resize to 768 px wide",
+        "verified_by": "atlas-tools/build-disc015-images.py --check"
+      },
+      "encoder": "Pillow 12.3.0, WebP quality 80, method 6",
+      "made": "2026-11-01",
+      "content_credentials": {
+        "source_file_embeds_c2pa": true,
+        "derivative_embeds_c2pa": false,
+        "note": "Editing and re-encoding remove the embedded C2PA credential. This copy carries NO signed credential; the master keeps it, and its record carries the AI classification."
+      }
+    },
+    {
+      "asset": "assets/disc015/img/DISC-015-POSSIBLE-1024.webp",
+      "sha256": "1f4fafec48464837cfe4c2afdbdc1be6bf34aad66bb2807b3c00021e15bba20c",
+      "bytes": 159068,
+      "pixels": [
+        1024,
+        572
+      ],
+      "derived_from": {
+        "asset": "assets/disc015/img/DISC-015-04-POSSIBLE-MASTER.png",
+        "sha256": "cf3552a6d4bbacbf5a2aaae25b37b54d7e919756c57742bf9967f14c04d472f1"
+      },
+      "method": "artefact-removal",
+      "edit": {
+        "description": "DISC-015 web copy (Governance 2.0, Rule 3): the visible generator mark removed (star mask at (1256, 648), radius 27), then Lanczos resize to 1024 px wide.",
+        "operation": "the visible generator mark removed (star mask at (1256, 648), radius 27), then Lanczos resize to 1024 px wide",
+        "verified_by": "atlas-tools/build-disc015-images.py --check"
+      },
+      "encoder": "Pillow 12.3.0, WebP quality 80, method 6",
+      "made": "2026-11-01",
+      "content_credentials": {
+        "source_file_embeds_c2pa": true,
+        "derivative_embeds_c2pa": false,
+        "note": "Editing and re-encoding remove the embedded C2PA credential. This copy carries NO signed credential; the master keeps it, and its record carries the AI classification."
+      }
+    },
+    {
+      "asset": "assets/disc015/img/DISC-015-POSSIBLE-1376.webp",
+      "sha256": "3091d53b4ff8947b21dd69f2a3ff193033a750bae1da90e7939f3be47543cfd6",
+      "bytes": 264844,
+      "pixels": [
+        1376,
+        768
+      ],
+      "derived_from": {
+        "asset": "assets/disc015/img/DISC-015-04-POSSIBLE-MASTER.png",
+        "sha256": "cf3552a6d4bbacbf5a2aaae25b37b54d7e919756c57742bf9967f14c04d472f1"
+      },
+      "method": "artefact-removal",
+      "edit": {
+        "description": "DISC-015 web copy (Governance 2.0, Rule 3): the visible generator mark removed (star mask at (1256, 648), radius 27), then no resize.",
+        "operation": "the visible generator mark removed (star mask at (1256, 648), radius 27), then no resize",
+        "verified_by": "atlas-tools/build-disc015-images.py --check"
+      },
+      "encoder": "Pillow 12.3.0, WebP quality 80, method 6",
+      "made": "2026-11-01",
+      "content_credentials": {
+        "source_file_embeds_c2pa": true,
+        "derivative_embeds_c2pa": false,
+        "note": "Editing and re-encoding remove the embedded C2PA credential. This copy carries NO signed credential; the master keeps it, and its record carries the AI classification."
+      }
+    },
+    {
+      "asset": "assets/disc015/img/DISC-015-POSSIBLE-1024.jpg",
+      "sha256": "2aad1f4230a3e47ba5a33df8e3b19454cf9c2dfe50cac3a5d087e3a3d20d3619",
+      "bytes": 219421,
+      "pixels": [
+        1024,
+        572
+      ],
+      "derived_from": {
+        "asset": "assets/disc015/img/DISC-015-04-POSSIBLE-MASTER.png",
+        "sha256": "cf3552a6d4bbacbf5a2aaae25b37b54d7e919756c57742bf9967f14c04d472f1"
+      },
+      "method": "artefact-removal",
+      "edit": {
+        "description": "DISC-015 web copy (Governance 2.0, Rule 3): the visible generator mark removed (star mask at (1256, 648), radius 27), then Lanczos resize to 1024 px wide.",
+        "operation": "the visible generator mark removed (star mask at (1256, 648), radius 27), then Lanczos resize to 1024 px wide",
+        "verified_by": "atlas-tools/build-disc015-images.py --check"
+      },
+      "encoder": "Pillow 12.3.0, JPEG quality 88, progressive",
+      "made": "2026-11-01",
+      "content_credentials": {
+        "source_file_embeds_c2pa": true,
+        "derivative_embeds_c2pa": false,
+        "note": "Editing and re-encoding remove the embedded C2PA credential. This copy carries NO signed credential; the master keeps it, and its record carries the AI classification."
+      }
+    },
+    {
+      "asset": "assets/disc015/img/DISC-015-POSSIBLE-M-614.webp",
+      "sha256": "72f82ab0341e6b6c5c60d7f86553477c3d0a9ce6e4d975c787c15c0270d12ede",
+      "bytes": 112636,
+      "pixels": [
+        614,
+        768
+      ],
+      "derived_from": {
+        "asset": "assets/disc015/img/DISC-015-04-POSSIBLE-MASTER.png",
+        "sha256": "cf3552a6d4bbacbf5a2aaae25b37b54d7e919756c57742bf9967f14c04d472f1"
+      },
+      "method": "crop",
+      "edit": {
+        "description": "DISC-015 web copy (Governance 2.0, Rule 3): the visible generator mark removed (star mask at (1256, 648), radius 27), then 4:5 crop x 579-1193 (the full height), no resize.",
+        "operation": "the visible generator mark removed (star mask at (1256, 648), radius 27), then 4:5 crop x 579-1193 (the full height), no resize",
+        "verified_by": "atlas-tools/build-disc015-images.py --check"
+      },
+      "encoder": "Pillow 12.3.0, WebP quality 80, method 6",
+      "made": "2026-11-01",
+      "content_credentials": {
+        "source_file_embeds_c2pa": true,
+        "derivative_embeds_c2pa": false,
+        "note": "Editing and re-encoding remove the embedded C2PA credential. This copy carries NO signed credential; the master keeps it, and its record carries the AI classification."
       }
     }
   ],
