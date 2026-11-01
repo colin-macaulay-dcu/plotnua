@@ -140,7 +140,7 @@ for m in re.findall(r'assets/disc015/img/(DISC-015-[A-Z]+)', s):
          "S12 unexpected DISC-015 image " + m)
 
 if os.path.exists(os.path.join(ROOT, "assets/disc015/img/DISC-015-02-CONSTRUCTION-MASTER.png")):
-    cf = re.search(r'<figure class="ns-experience up-build-fig.*?</figure>', s, re.S)
+    cf = re.search(r'<figure class="ns-experience up-build-fig.*?</figure>\s*<p class="up-build-note">[^<]*</p>', s, re.S)
     need(cf, "S12 the construction master is present but its figure is not on the page")
     if cf:
         need("DISC-015-CONSTRUCTION-" in cf.group(0), "S12 the construction figure must use the DISC-015-CONSTRUCTION copies")

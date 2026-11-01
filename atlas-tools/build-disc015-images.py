@@ -8,8 +8,8 @@ credential (Governance 2.0, Rule 2). Nothing is generated here.
   03 POOL        assets/disc015/img/DISC-015-03-POOL-MASTER.png       (Google generative AI, 10 Aug 2026)
   04 POSSIBLE    assets/disc015/img/DISC-015-04-POSSIBLE-MASTER.png   (Google generative AI, 10 Aug 2026)
   02 CONSTRUCTION assets/disc015/img/DISC-015-02-CONSTRUCTION-MASTER.png  (the founder-approved
-                 DISC-015-Construction-Final.png; built only once the file is present and its sha256 is pinned
-                 below. The superseded Construction-Revised.png and draft.png are never used.)
+                 DISC-015-Construction-Final.png, ChatGPT gpt-image, 1 Nov 2026. The superseded
+                 Construction-Revised.png and draft.png are never used.)
 
 ROUTINE EDITS (Governance 2.0, Rule 3), each recorded as a derivative bound to its unchanged master:
   * the visible generator mark (a four-point sparkle, centre (1256, 648), radius 27, the same place on all
@@ -44,9 +44,10 @@ MASTERS = {   # role -> (path, sha256, what, mark)
              "DISC-015 underground reveal: an indoor swimming pool in a stone-finished chamber lit by a long rooflight", True),
     "POSSIBLE": (D + "DISC-015-04-POSSIBLE-MASTER.png", "cf3552a6d4bbacbf5a2aaae25b37b54d7e919756c57742bf9967f14c04d472f1",
                  "DISC-015 hero POSSIBLE: the same garden restored, with a long, narrow glazed rooflight set into the lawn", True),
-    # The founder-approved construction image. Pin its sha256 here when the file is added (None = not yet supplied).
-    "CONSTRUCTION": (D + "DISC-015-02-CONSTRUCTION-MASTER.png", None,
-                     "DISC-015 construction stage: the same garden excavated, with the concrete pool chamber, part-cast roof slab and rooflight opening", False),
+    # The founder-approved construction image: DISC-015-Construction-Final.png, added unchanged on 1 Nov 2026 (22:06).
+    # ChatGPT (gpt-image) output; it carries no visible generator mark, so nothing is removed.
+    "CONSTRUCTION": (D + "DISC-015-02-CONSTRUCTION-MASTER.png", "150005666143c9adefc30fab0cfbfa84249bc1a5d91ea3dd901439153f7656f1",
+                     "DISC-015 construction stage: the same garden mid-build, with the excavation open, the concrete pool chamber and stair taking shape inside temporary propping, the rooflight frame on the part-cast roof and an excavator beyond", False),
 }
 CX, CY, R, P, SS = 1256.0, 648.0, 27.0, 0.62, 4
 MOBILE_X = 0.76          # 4:5 phone crop position across the frame
@@ -149,6 +150,14 @@ def main():
     for role, (a, h, what, mark) in masters.items():
         if a in recs: continue
         ai, issuer, time, n, linked, state = D16.read_c2pa(ROOT / a)
+        if state != "Valid":
+            import c2pa
+            with c2pa.Reader(str(ROOT / a)) as r: vr = json.loads(r.json()).get("validation_results", {}).get("activeManifest", {})
+            fails = sorted({f["code"] for f in vr.get("failure", [])}); oks = {f["code"] for f in vr.get("success", [])}
+            if not set(fails) <= {"signingCredential.untrusted", "signingCredential.invalid"} or not {"claimSignature.validated", "assertion.dataHash.match"} <= oks:
+                sys.exit("REFUSED: %s: the credential's claim signature or data hash does not verify (%s)" % (a, fails))
+            state += (" (%s: the reader does not trust the signing certificate (not on its trust list; an extended key usage it requires is missing); the claim signature and the data hash "
+                      "verify, so the file is unchanged since the issuer signed it)" % ", ".join(fails))
         if not ai: sys.exit("REFUSED: %s: the credential does not record an AI generation" % a)
         rd = (("UNCERTAIN", "The credential records no input image. Credentials do not record conversation context, so inputs cannot be ruled out.") if n == 0 else
               ("CREDENTIALED", "The credential records %d input image(s), each carrying its own signed credential." % n) if linked == n else

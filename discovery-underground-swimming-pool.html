@@ -575,6 +575,17 @@ body.pn-id.pn-pd:has(> .pn-return)::after{ transition:transform .28s ease; }
 body.pn-id.pn-pd.up-dock-away .pn-return{ transform:translateY(calc(100% + 28px)); opacity:0; pointer-events:none; }
 body.pn-id.pn-pd.up-dock-away:has(> .pn-return)::after{ transform:translateY(calc(100% + 12px)); }
 @media (prefers-reduced-motion:reduce){ body.pn-id.pn-pd .pn-return, body.pn-id.pn-pd:has(> .pn-return)::after{ transition:none; } }
+/* ---- the construction illustration (Image 02): inside the column, at its own proportions ---- */
+body.pn-id.pn-pd .up-build-fig{ margin:clamp(32px,4vw,56px) 0 0; border-radius:var(--pd-r); overflow:hidden; box-shadow:var(--pd-shadow-hi); }
+body.pn-id.pn-pd .up-build-fig img{ height:auto; min-height:0; aspect-ratio:1376/775; object-position:55% 60%; }
+body.pn-id.pn-pd .up-build-fig figcaption{ padding:clamp(64px,8vw,120px) 6vw clamp(24px,3.4vw,44px); }
+body.pn-id.pn-pd .up-build-fig figcaption p{ font-size:clamp(22px,2.4vw,36px); max-width:30ch; }
+body.pn-id.pn-pd .up-build-note{ margin:14px 0 0 !important; font-size:13.5px !important; color:var(--p4-stone) !important; }
+@media (max-width:719px){
+  body.pn-id.pn-pd .up-build-fig img{ aspect-ratio:4/3; object-position:58% 62%; }
+  body.pn-id.pn-pd .up-build-fig figcaption{ padding:72px 18px 22px; }
+  body.pn-id.pn-pd .up-build-fig .ns-tag{ top:12px; bottom:auto; right:12px; }
+}
 </style>
 
 </head>
@@ -812,7 +823,15 @@ body.pn-id.pn-pd.up-dock-away:has(> .pn-return)::after{ transform:translateY(cal
         <p class="pd-lede">An underground pool is a basement project first and a swimming pool second. In outline, a project like this would usually go through five stages.</p>
       </div>
     </div>
-    <!-- IMAGE 02 (construction) SLOT: DISC-015-Construction-Final.png has not been supplied yet. Nothing stands in for it (founder instruction, 1 Nov 2026). -->
+    <figure class="ns-experience up-build-fig reveal">
+      <picture>
+        <source type="image/webp" srcset="assets/disc015/img/DISC-015-CONSTRUCTION-768.webp 768w, assets/disc015/img/DISC-015-CONSTRUCTION-1024.webp 1024w, assets/disc015/img/DISC-015-CONSTRUCTION-1376.webp 1376w" sizes="(max-width:1240px) 92vw, 1140px">
+        <img src="assets/disc015/img/DISC-015-CONSTRUCTION-1376.jpg" width="1376" height="775" loading="lazy" decoding="async" alt="The same garden mid-build: the lawn is opened up, and a concrete pool chamber with a stair down into it is taking shape inside temporary steel props. The rooflight frame sits on the part-built roof, a timber walkway runs along the boundary, and a small excavator works on the spoil beyond.">
+      </picture>
+      <figcaption><p>Midway through: the box goes in, then the garden goes back on top.</p></figcaption>
+      <p class="ns-tag">AI-generated illustration</p>
+    </figure>
+    <p class="up-build-note">An illustration of the idea, not an engineering drawing or a construction method. Every real project is designed by its own architect and engineer for its own site.</p>
     <ol class="up-steps reveal">
       <li><span>01</span><h3 class="pd-h4">Survey and design</h3><p>Ground conditions, groundwater, drainage, access for machinery and the neighbouring buildings are investigated before anything is drawn.</p></li>
       <li><span>02</span><h3 class="pd-h4">Permissions</h3><p>Planning permission and the building control process come before any digging (see below).</p></li>

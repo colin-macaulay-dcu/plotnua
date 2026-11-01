@@ -8973,6 +8973,43 @@
         "date": "2026-11-01",
         "subject": "DISC-015 The Underground Swimming Pool, founder Phase 2 build authorisation"
       }
+    },
+    {
+      "asset": "assets/disc015/img/DISC-015-02-CONSTRUCTION-MASTER.png",
+      "sha256": "150005666143c9adefc30fab0cfbfa84249bc1a5d91ea3dd901439153f7656f1",
+      "bytes": 3408927,
+      "pixels": [
+        1671,
+        941
+      ],
+      "class": "AI_ILLUSTRATION",
+      "what": "DISC-015 construction stage: the same garden mid-build, with the excavation open, the concrete pool chamber and stair taking shape inside temporary propping, the rooflight frame on the part-cast roof and an excavator beyond (founder's master; the page shows its prepared copies)",
+      "depicts_named_product": false,
+      "depicts_named_organisation": false,
+      "origin": {
+        "basis": "C2PA_EMBEDDED",
+        "evidence": "Embedded C2PA manifest, read with c2pa-python: issuer OpenAI OpCo, LLC, signed 2026-11-01T20:16:09.146562+00:00; the credential chain records c2pa.created with digital source type trainedAlgorithmicMedia; 0 ingredient link(s), 0 credentialed; validation Invalid (signingCredential.invalid, signingCredential.untrusted: the reader does not trust the signing certificate (not on its trust list; an extended key usage it requires is missing); the claim signature and the data hash verify, so the file is unchanged since the issuer signed it).",
+        "declared_under": "Governance 2.0, Rule 2 (30 Oct 2026)"
+      },
+      "generated": {
+        "tool": "OpenAI OpCo, LLC generative AI, per the file's own signed C2PA credential",
+        "date": "2026-11-01"
+      },
+      "prompt_status": "UNAVAILABLE",
+      "reference_disclosure": {
+        "status": "UNCERTAIN",
+        "statement": "The credential records no input image. Credentials do not record conversation context, so inputs cannot be ruled out."
+      },
+      "permitted_surfaces": [
+        "discovery"
+      ],
+      "content_credentials": {
+        "embeds_c2pa": true
+      },
+      "introduced": {
+        "date": "2026-11-01",
+        "subject": "DISC-015 The Underground Swimming Pool, founder Phase 2 build authorisation"
+      }
     }
   ],
   "legacy_undeclared": [
@@ -14330,6 +14367,110 @@
         "verified_by": "atlas-tools/build-disc015-images.py --check"
       },
       "encoder": "Pillow 12.3.0, WebP quality 80, method 6",
+      "made": "2026-11-01",
+      "content_credentials": {
+        "source_file_embeds_c2pa": true,
+        "derivative_embeds_c2pa": false,
+        "note": "Editing and re-encoding remove the embedded C2PA credential. This copy carries NO signed credential; the master keeps it, and its record carries the AI classification."
+      }
+    },
+    {
+      "asset": "assets/disc015/img/DISC-015-CONSTRUCTION-768.webp",
+      "sha256": "8f8cc032f5c04f351faa5b7dc30a9ee4026dab8c8f32ffc89e3546b6b8952dca",
+      "bytes": 101258,
+      "pixels": [
+        768,
+        432
+      ],
+      "derived_from": {
+        "asset": "assets/disc015/img/DISC-015-02-CONSTRUCTION-MASTER.png",
+        "sha256": "150005666143c9adefc30fab0cfbfa84249bc1a5d91ea3dd901439153f7656f1"
+      },
+      "method": "optimise",
+      "edit": {
+        "description": "DISC-015 web copy (Governance 2.0, Rule 3): Lanczos resize to 768 px wide.",
+        "operation": "Lanczos resize to 768 px wide",
+        "verified_by": "atlas-tools/build-disc015-images.py --check"
+      },
+      "encoder": "Pillow 12.3.0, WebP quality 80, method 6",
+      "made": "2026-11-01",
+      "content_credentials": {
+        "source_file_embeds_c2pa": true,
+        "derivative_embeds_c2pa": false,
+        "note": "Editing and re-encoding remove the embedded C2PA credential. This copy carries NO signed credential; the master keeps it, and its record carries the AI classification."
+      }
+    },
+    {
+      "asset": "assets/disc015/img/DISC-015-CONSTRUCTION-1024.webp",
+      "sha256": "2bc4f1e5862b2005b9886ae3a9b857a81c58381c707de6115fc049efe068e954",
+      "bytes": 173390,
+      "pixels": [
+        1024,
+        577
+      ],
+      "derived_from": {
+        "asset": "assets/disc015/img/DISC-015-02-CONSTRUCTION-MASTER.png",
+        "sha256": "150005666143c9adefc30fab0cfbfa84249bc1a5d91ea3dd901439153f7656f1"
+      },
+      "method": "optimise",
+      "edit": {
+        "description": "DISC-015 web copy (Governance 2.0, Rule 3): Lanczos resize to 1024 px wide.",
+        "operation": "Lanczos resize to 1024 px wide",
+        "verified_by": "atlas-tools/build-disc015-images.py --check"
+      },
+      "encoder": "Pillow 12.3.0, WebP quality 80, method 6",
+      "made": "2026-11-01",
+      "content_credentials": {
+        "source_file_embeds_c2pa": true,
+        "derivative_embeds_c2pa": false,
+        "note": "Editing and re-encoding remove the embedded C2PA credential. This copy carries NO signed credential; the master keeps it, and its record carries the AI classification."
+      }
+    },
+    {
+      "asset": "assets/disc015/img/DISC-015-CONSTRUCTION-1376.webp",
+      "sha256": "614fe1c8fb995951e6a11da20fdbc78cb8e3f6ce3a88bfe93b2732711135a52e",
+      "bytes": 281974,
+      "pixels": [
+        1376,
+        775
+      ],
+      "derived_from": {
+        "asset": "assets/disc015/img/DISC-015-02-CONSTRUCTION-MASTER.png",
+        "sha256": "150005666143c9adefc30fab0cfbfa84249bc1a5d91ea3dd901439153f7656f1"
+      },
+      "method": "optimise",
+      "edit": {
+        "description": "DISC-015 web copy (Governance 2.0, Rule 3): Lanczos resize to 1376 px wide.",
+        "operation": "Lanczos resize to 1376 px wide",
+        "verified_by": "atlas-tools/build-disc015-images.py --check"
+      },
+      "encoder": "Pillow 12.3.0, WebP quality 80, method 6",
+      "made": "2026-11-01",
+      "content_credentials": {
+        "source_file_embeds_c2pa": true,
+        "derivative_embeds_c2pa": false,
+        "note": "Editing and re-encoding remove the embedded C2PA credential. This copy carries NO signed credential; the master keeps it, and its record carries the AI classification."
+      }
+    },
+    {
+      "asset": "assets/disc015/img/DISC-015-CONSTRUCTION-1376.jpg",
+      "sha256": "688fe79ca2a12d7cf91d0fef7f584fdd58e8b66f35fe936ee59392e423d413fc",
+      "bytes": 397487,
+      "pixels": [
+        1376,
+        775
+      ],
+      "derived_from": {
+        "asset": "assets/disc015/img/DISC-015-02-CONSTRUCTION-MASTER.png",
+        "sha256": "150005666143c9adefc30fab0cfbfa84249bc1a5d91ea3dd901439153f7656f1"
+      },
+      "method": "optimise",
+      "edit": {
+        "description": "DISC-015 web copy (Governance 2.0, Rule 3): Lanczos resize to 1376 px wide.",
+        "operation": "Lanczos resize to 1376 px wide",
+        "verified_by": "atlas-tools/build-disc015-images.py --check"
+      },
+      "encoder": "Pillow 12.3.0, JPEG quality 88, progressive",
       "made": "2026-11-01",
       "content_credentials": {
         "source_file_embeds_c2pa": true,
