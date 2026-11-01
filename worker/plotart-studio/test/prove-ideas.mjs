@@ -57,6 +57,7 @@ check('S12 none of the refused or dropped posts was stored', await count() === n
 const bad = { 'too short': 'tiny', 'too long': 'x'.repeat(161), 'a link': 'See my plans at https://example.ie now', 'a bare domain': 'Look at mysite.com for the drawings',
   'an e-mail address': 'Write to me at me@example.ie please', 'a phone number': 'Call me on 087 123 4567 any evening', 'markup': 'A garden <b>bench</b> in the corner' };
 for (const [k, v] of Object.entries(bad)) { r = await post({ idea: v, t: old() }); check(`S13 refused with a friendly reason: ${k}`, r.s === 400 && r.j.error && !/Refused/.test(r.j.error), JSON.stringify(r.j)); }
+r = await post({ idea: 'Write to me at someone@example.ie about it', t: old() }); check('S13b an e-mail address is named as an e-mail address (not a website)', /e-mail/.test(r.j.error || ''), JSON.stringify(r.j));
 r = await post({ idea: 'A good idea with a strange area', area: 'Crypto', t: old() }); check('S14 an area outside the list is refused', r.s === 400);
 r = await post({ idea: 'A good idea with a strange county', county: 'Atlantis', t: old() }); check('S15 a county outside the list is refused', r.s === 400);
 r = await post({ idea: 'A good idea with an extra field', email: 'me@example.ie', t: old() }); check('S16 an unexpected field (e.g. email) is refused', r.s === 400);

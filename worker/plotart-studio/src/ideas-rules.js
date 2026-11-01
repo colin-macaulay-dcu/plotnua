@@ -16,8 +16,8 @@ export function clean(s) {
 export function problem(text) {
   if (text.length < 8) return 'Please write a little more: at least 8 characters.';
   if (text.length > 160) return 'Please keep your idea to 160 characters.';
-  if (rules.link.test(text)) return 'Please leave out website addresses.';
   if (rules.email.test(text)) return 'Please leave out e-mail addresses: ideas are anonymous.';
+  if (rules.link.test(text)) return 'Please leave out website addresses.';
   if (rules.phone.test(text)) return 'Please leave out telephone numbers: ideas are anonymous.';
   if (rules.markup.test(text)) return 'Please leave out the < and > characters.';
   return null;
