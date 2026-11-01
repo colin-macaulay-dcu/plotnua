@@ -1,0 +1,22 @@
+# PlotNua · Idea Board intake Worker ("plotnua-ideas"). Phase 1, prepared 1 Nov 2026. NOT DEPLOYED.
+# Deploying it, binding it to the production database and switching IDEAS_ENABLED to "true" each need the founder's
+# explicit approval. With IDEAS_ENABLED "false" every submission is refused (503) and nothing is written.
+name = "plotnua-ideas"
+main = "src/ideas.js"
+compatibility_date = "2026-08-01"
+workers_dev = true
+preview_urls = false
+
+[vars]
+ENVIRONMENT = "production"
+ORIGIN = "https://plotnua.ie"
+IDEAS_ENABLED = "false"
+IDEAS_DAILY_CAP = "60"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "plotart-studio"
+database_id = "NOT-CREATED"
+
+[observability]
+enabled = false

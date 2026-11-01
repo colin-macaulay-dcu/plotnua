@@ -13,6 +13,7 @@ import * as L from './lib.js';
 import { artistBody, artworkBody, previewPage, shown } from './render.js';
 import * as A from './assets.js';
 import { send } from './mailer.js';
+import { AREAS as IDEA_AREAS, clean as ideaClean, problem as ideaProblem } from './ideas-rules.js';
 
 const { Bad, now, rid } = L;
 const SEC = {
@@ -366,6 +367,69 @@ async function exportFor(env, q) {
   return { gallery: g, images: ids, kind: q.kind };
 }
 
+/* ---------------------------------------------------------------- PlotNua Idea Board (Phase 1, 1 Nov 2026)
+   The founder's moderation of homeowner ideas. The public intake Worker (ideas.js) only ever inserts 'received' ideas;
+   nothing is public until the founder approves it here, and only the content pipeline publishes approved ideas.
+   Declined and removed ideas are deleted 30 days after the decision. Until migration 0003 is applied these routes
+   say so (503) instead of failing. */
+const IDEA_PURGE_DAYS = 30;
+async function ideasReady(env) {
+  const t = await env.DB.prepare("SELECT name FROM sqlite_master WHERE type='table' AND name='ideas'").first();
+  if (!t) throw new Bad('The Idea Board isn’t installed yet (migration 0003 has not been applied).', 503);
+}
+async function purgeIdeas(env) {
+  const cut = new Date(Date.now() - IDEA_PURGE_DAYS * 86400_000).toISOString();
+  const r = await env.DB.prepare("DELETE FROM ideas WHERE status IN ('not_approved','removed') AND COALESCE(removed_at, decided_at) < ?").bind(cut).run();
+  await env.DB.prepare('DELETE FROM idea_intake_days WHERE day < ?').bind(cut.slice(0, 10)).run();
+  return r.meta ? r.meta.changes || 0 : 0;
+}
+async function ideasAdmin(env) {
+  await ideasReady(env); await purgeIdeas(env);
+  const cols = 'id, ref, text, public_text, area, county, show_county, status, became_discovery, edited, created_at, decided_at, decided_by, published_at, removed_at';
+  return {
+    waiting: await all(env, `SELECT ${cols} FROM ideas WHERE status='received' ORDER BY created_at`),
+    approved: await all(env, `SELECT ${cols} FROM ideas WHERE status='approved' ORDER BY published_at DESC, id DESC`),
+    decided: await all(env, `SELECT ${cols} FROM ideas WHERE status IN ('not_approved','removed') ORDER BY COALESCE(removed_at, decided_at) DESC LIMIT 50`),
+    areas: IDEA_AREAS, purge_days: IDEA_PURGE_DAYS,
+  };
+}
+async function decideIdea(env, actor, id, b) {
+  await ideasReady(env);
+  const i = await one(env, 'SELECT * FROM ideas WHERE id = ?', id);
+  if (!i) throw new Bad('That idea no longer exists.', 404);
+  const action = String(b && b.action || '');
+  const at = now();
+  if (action === 'not_approve') {
+    if (i.status !== 'received') throw new Bad('Only an idea waiting for review can be declined.', 409);
+    await env.DB.prepare("UPDATE ideas SET status='not_approved', decided_at=?, decided_by=? WHERE id=?").bind(at, actor, id).run();
+  } else if (action === 'remove') {
+    if (i.status !== 'approved') throw new Bad('Only an idea on the board can be removed.', 409);
+    await env.DB.prepare("UPDATE ideas SET status='removed', removed_at=?, decided_by=? WHERE id=?").bind(at, actor, id).run();
+  } else if (action === 'approve' || action === 'save') {
+    if (action === 'approve' && i.status !== 'received') throw new Bad('Only an idea waiting for review can be approved.', 409);
+    if (action === 'save' && i.status !== 'approved') throw new Bad('Only an idea on the board can be updated.', 409);
+    const text = ideaClean(b.public_text === undefined || b.public_text === null ? (i.public_text || i.text) : b.public_text);
+    const why = ideaProblem(text);
+    if (why) throw new Bad(why);
+    const area = b.area === undefined ? i.area : (ideaClean(b.area) || null);
+    if (area && !IDEA_AREAS.includes(area)) throw new Bad('Please choose an area from the list.');
+    const disc = b.became_discovery === undefined ? i.became_discovery : (ideaClean(b.became_discovery) || null);
+    if (disc && !/^discovery-[a-z0-9-]+\.html$/.test(disc)) throw new Bad('A Discovery link must be a PlotNua Discovery page, e.g. discovery-hidden-cars.html.');
+    const show = b.hide_county ? 0 : i.show_county;       // the founder may hide a county, never show one the visitor kept private
+    const pub = text === i.text ? null : text;
+    await env.DB.prepare("UPDATE ideas SET status='approved', public_text=?, area=?, became_discovery=?, show_county=?, edited=?, decided_at=COALESCE(decided_at, ?), decided_by=?, published_at=COALESCE(published_at, ?) WHERE id=?")
+      .bind(pub, area, disc, show, pub ? 1 : 0, at, actor, at, id).run();
+  } else throw new Bad('Unknown action');
+  await audit(env, actor, 'founder', 'idea_' + action, null, { ref: i.ref });
+  return ideasAdmin(env);
+}
+async function pipelineIdeas(env) {
+  await ideasReady(env); await purgeIdeas(env);
+  const rows = await all(env, "SELECT id, text, public_text, area, county, show_county, became_discovery, published_at FROM ideas WHERE status='approved' ORDER BY published_at DESC, id DESC");
+  return { ideas: rows.map(r => ({ id: r.id, text: r.public_text || r.text, area: r.area || null, county: r.show_county ? r.county : null,
+    month: String(r.published_at).slice(0, 7), published_at: r.published_at, became_discovery: r.became_discovery || null })) };
+}
+
 /* ---------------------------------------------------------------- router */
 export default {
   /* Daily clean-up (cron trigger): enquiries past their 24-month limit are deleted, and photographs removed more than
@@ -378,7 +442,9 @@ export default {
       await env.IMAGES.delete(i.r2_key); if (i.preview_key) await env.IMAGES.delete(i.preview_key);
       await env.DB.prepare("UPDATE images SET r2_key='erased', preview_key=NULL WHERE id=?").bind(i.id).run();
     }
-    await audit(env, 'scheduler', 'system', 'cleanup', null, { images_erased: gone.length });
+    let ideas_deleted = 0;
+    try { await ideasReady(env); ideas_deleted = await purgeIdeas(env); } catch { /* Idea Board not installed */ }
+    await audit(env, 'scheduler', 'system', 'cleanup', null, { images_erased: gone.length, ideas_deleted });
   },
   async fetch(req, env) {
     try { return await route(req, env); }
@@ -459,6 +525,7 @@ async function route(req, env) {
     if (!env.PIPELINE_TOKEN || req.headers.get('Authorization') !== `Bearer ${env.PIPELINE_TOKEN}`) return json({ ok: false }, 401);
     if (p === '/api/pipeline/queue' && m === 'GET') return json({ ok: true, items: await all(env, "SELECT * FROM publish_queue WHERE status='ready' ORDER BY created_at") });
     if (p === '/api/pipeline/gallery-order' && m === 'GET') return json({ ok: true, ...(await pipelineOrder(env)) });
+    if (p === '/api/pipeline/ideas' && m === 'GET') return json({ ok: true, ...(await pipelineIdeas(env)) });   // Idea Board: approved, public fields only
     if (p === '/api/pipeline/gallery-order/result' && m === 'POST') {
       const b = await req.json();
       await audit(env, 'pipeline', 'pipeline', b.status === 'published' ? 'gallery_order_published' : 'gallery_order_failed', null, { detail: String(b.detail || '').slice(0, 2000) });
@@ -515,6 +582,9 @@ async function route(req, env) {
     if (p === '/admin' || p === '/admin/') return html(A.ADMIN_HTML);
     let mm;
     if (p === '/admin/gallery') return html(A.ADMIN_HTML);
+    if (p === '/admin/ideas') return html(A.ADMIN_HTML);
+    if (p === '/api/admin/ideas' && m === 'GET') return json({ ok: true, ...(await ideasAdmin(env)) });
+    if ((mm = p.match(/^\/api\/admin\/ideas\/(i[0-9a-z]+)$/)) && m === 'POST') return json({ ok: true, ...(await decideIdea(env, me.email, mm[1], await req.json())) });
     if (p === '/api/admin/gallery-order' && m === 'GET') return json({ ok: true, ...(await galleryOrder(env)) });
     if (p === '/api/admin/gallery-order' && m === 'PUT') return json({ ok: true, ...(await saveGalleryOrder(env, me.email, await req.json())) });
     if ((mm = p.match(/^\/api\/admin\/artists\/(a[0-9a-z]+)\/founding-number$/)) && m === 'PUT') {

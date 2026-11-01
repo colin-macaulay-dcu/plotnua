@@ -1,0 +1,4 @@
+{
+  "what_this_is": "Idea Board configuration (Phase 1, 1 Nov 2026). endpoint is the public intake Worker's /v1/ideas address; while it is null the page says the board is not taking ideas and shows no form. Setting it is part of the founder-approved go-live, after the Worker is deployed and enabled.",
+  "endpoint": null
+}

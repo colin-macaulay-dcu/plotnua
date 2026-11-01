@@ -1,0 +1,67 @@
+name: Idea Board publishing
+
+# THE CONTENT-ONLY ROUTE FROM PLOTART STUDIO TO THE PLOTNUA IDEA BOARD (Phase 1, 1 Nov 2026).
+#
+# NOT ACTIVE. It runs only when the repository variable IDEAS_PUBLISH_ENABLED is "true", which the founder sets only
+# after separately authorising the Idea Board launch. Until then every scheduled run is skipped.
+#
+# What it does (atlas-tools/plotnua-ideas-publish.py): takes the ideas the founder has approved in PlotArt Studio
+# (public fields only), writes atlas-tools/idea-board/approved-ideas.json, rebuilds ideas.html and the Discovery
+# Library's Idea Board card, and refuses unless only those changed (the Library byte-identical outside the marked card
+# block) and the Idea Board proof passes. Only then does it push an audit branch and fast-forward main (never forced).
+#
+# Secrets: the same four the PlotArt content pipeline uses (STUDIO_URL, STUDIO_PIPELINE_TOKEN,
+# STUDIO_ACCESS_CLIENT_ID, STUDIO_ACCESS_CLIENT_SECRET). No new secret is needed.
+on:
+  schedule:
+    - cron: '3,33 * * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pages: write
+
+concurrency:
+  group: plotart-content-publish     # shares the PlotArt pipeline's lock, so the two never push at the same time
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    if: ${{ vars.IDEAS_PUBLISH_ENABLED == 'true' && github.ref == 'refs/heads/main' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Note where main is before publishing
+        id: before
+        run: echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+      - name: Publish approved ideas (content-only, guarded, fast-forward)
+        env:
+          STUDIO_URL: ${{ secrets.STUDIO_URL }}
+          STUDIO_PIPELINE_TOKEN: ${{ secrets.STUDIO_PIPELINE_TOKEN }}
+          STUDIO_ACCESS_CLIENT_ID: ${{ secrets.STUDIO_ACCESS_CLIENT_ID }}
+          STUDIO_ACCESS_CLIENT_SECRET: ${{ secrets.STUDIO_ACCESS_CLIENT_SECRET }}
+        run: |
+          set -euo pipefail
+          python3 atlas-tools/plotnua-ideas-publish.py --studio "$STUDIO_URL" --token "$STUDIO_PIPELINE_TOKEN" --push
+      - name: Request the GitHub Pages build when main moved
+        env:
+          GH_TOKEN: ${{ github.token }}
+          BEFORE: ${{ steps.before.outputs.sha }}
+        run: |
+          set -euo pipefail
+          git fetch --quiet origin main
+          AFTER=$(git rev-parse origin/main)
+          if [ "$AFTER" != "$BEFORE" ]; then
+            curl -fsS -X POST -H "Authorization: Bearer $GH_TOKEN" -H "Accept: application/vnd.github+json" \
+              "https://api.github.com/repos/${{ github.repository }}/pages/builds" > /dev/null
+            echo "main moved ${BEFORE:0:7} -> ${AFTER:0:7}: Pages build requested"
+          else
+            echo "nothing published: no Pages build requested"
+          fi
