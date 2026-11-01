@@ -56,7 +56,7 @@
     {
       "title": "The Underground Swimming Pool",
       "card": "discovery-underground-swimming-pool.html",
-      "image": "assets/disc015/img/DISC-015-03-POOL-MASTER.png",
+      "image": "assets/disc015/img/DISC-015-POOL-1376.jpg",
       "alt": "A long indoor swimming pool in a calm, stone-finished room below ground, with daylight falling from a narrow rooflight onto the water.",
       "why": "The pool room beneath the garden: the Discovery realised, and the page's own reveal. The hero's BEFORE (the ordinary garden) is the starting point and the Library must not show it; the POSSIBLE (the rooflight in the lawn) only hints at it. The <img> fallback is the founder's credentialed master; the card's WebP copies carry the routine mark removal (build-disc015-images.py). New card, 1 Nov 2026 (DISC-015 development build).",
       "previous": null

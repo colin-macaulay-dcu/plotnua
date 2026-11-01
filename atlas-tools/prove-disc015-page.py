@@ -16,7 +16,11 @@
   S11 real projects: text and external links only (no image in the section), each with its Explore link;
       the UK examples are labelled as beneath a reinstated garden, the Irish ones as below the house
   S12 the construction image: only the founder-approved DISC-015-Construction-Final (DISC-015-CONSTRUCTION copies)
-      may appear; the superseded Construction-Revised and draft images never do
+      may appear; the superseded Construction-Revised and draft images never do; once its master is in the
+      repository the figure is on the page, labelled as an illustration and not as an engineering drawing
+  S13 no generator mark is served: no master PNG is referenced by the page or the Library card, and every DISC-015
+      copy the page or card uses is a recorded edit of a declared master
+  S14 the hero AI disclosure is never covered by the Back dock or pill (the page-local step-aside is present)
 Prints "DISC-015 PAGE · OK" only when every check passes.
 """
 import html, json, os, re, sys
@@ -135,9 +139,37 @@ for m in re.findall(r'assets/disc015/img/(DISC-015-[A-Z]+)', s):
     need(m in ("DISC-015-BEFORE", "DISC-015-POSSIBLE", "DISC-015-POOL", "DISC-015-CONSTRUCTION", "DISC-015-og", "DISC-015-03"),
          "S12 unexpected DISC-015 image " + m)
 
+if os.path.exists(os.path.join(ROOT, "assets/disc015/img/DISC-015-02-CONSTRUCTION-MASTER.png")):
+    cf = re.search(r'<figure class="ns-experience up-build-fig.*?</figure>', s, re.S)
+    need(cf, "S12 the construction master is present but its figure is not on the page")
+    if cf:
+        need("DISC-015-CONSTRUCTION-" in cf.group(0), "S12 the construction figure must use the DISC-015-CONSTRUCTION copies")
+        need("AI-generated illustration" in cf.group(0) and "not an engineering drawing" in cf.group(0),
+             "S12 the construction figure must be labelled as an AI illustration, not an engineering drawing")
+else:
+    need("IMAGE 02 (construction) SLOT" in s, "S12 the empty construction slot must be marked")
+
+# S13
+lib = read("discoveries.html")
+card = re.search(r'<a [^>]*href="%s".*?</a>' % re.escape(PAGE), lib, re.S)
+need(card, "S13 no Library card")
+reg = json.loads(read("image-provenance-records.json"))
+masters = {r["asset"] for r in reg["records"]}
+der = {d["asset"]: d for d in reg["derivatives"]}
+used = set(re.findall(r'(assets/(?:disc015|library)/img/DISC-015[^"\s,]+)', s + (card.group(0) if card else "")))
+for u in sorted(used):
+    need("MASTER.png" not in u, "S13 a master (with its generator mark) is served: " + u)
+    d = der.get(u)
+    need(d and d["derived_from"]["asset"] in masters, "S13 %s is not a recorded edit of a declared master" % u)
+    if d and "-CONSTRUCTION-" not in u:
+        need(d["method"] in ("artefact-removal", "crop"), "S13 %s does not record the mark removal" % u)
+
+# S14
+need("up-dock-away" in s and "DISC-015 · the hero AI disclosure is never hidden" in s, "S14 the dock step-aside is missing")
+
 if problems:
     print("DISC-015 PAGE · FAILED")
     for p in problems:
         print("  " + p)
     sys.exit(1)
-print("DISC-015 PAGE · OK (S1-S12)")
+print("DISC-015 PAGE · OK (S1-S14)")

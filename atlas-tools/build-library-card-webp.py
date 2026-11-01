@@ -102,8 +102,29 @@ def main():
     new_files, new_recs, plan = {}, [], {}
     for _, tag, src, _ in cards:
         if src in held: die("%s is on provenance hold" % src)
+        if src in der:
+            # An edited copy as the card's own <img> (DISC-015, 1 Nov 2026: so the no-WebP fallback carries no
+            # generator mark). Never a chain: the copy must be a single routine edit of a declared master, and the
+            # served card WebPs must already be recorded edits of THAT master, named after it. Nothing is encoded.
+            d = der[src]; m = d["derived_from"]["asset"]
+            if d.get("method") != "artefact-removal": die("%s is a derivative that is not an artefact-removal edit" % src)
+            if m not in sources or m in der: die("%s: its source %s is not a declared master" % (src, m))
+            if m in held: die("%s is on provenance hold" % m)
+            if not (ROOT / src).exists() or sha((ROOT / src).read_bytes()) != d["sha256"]: die("%s is missing or changed" % src)
+            mw = sources[m]["pixels"][0]
+            outs = []
+            for w in WIDTHS:
+                if w > mw: continue
+                out = name(m, w)
+                if out not in der: die("%s: card WebP %s is not recorded (make it from the master)" % (src, out))
+                if der[out]["derived_from"]["asset"] != m: die("%s is recorded from another source" % out)
+                if not (ROOT / out).exists() or sha((ROOT / out).read_bytes()) != der[out]["sha256"]:
+                    die("%s is recorded but its file is missing or changed" % out)
+                outs.append((out, w))
+            if len(outs) < 2: die("%s: expected two widths" % src)
+            plan[src] = ", ".join("%s %dw" % (o, w) for o, w in outs)
+            continue
         if src not in sources: die("%s is not in the provenance register" % src)
-        if src in der: die("%s is itself a derivative (no chains)" % src)
         raw = (ROOT / src).read_bytes()
         if sha(raw) != sources[src]["sha256"]: die("%s does not match its register hash" % src)
         im = Image.open(io.BytesIO(raw)); im.load()

@@ -532,10 +532,10 @@ body.pn-id.pn-pd .up-section{ margin:0; border-radius:var(--pd-r); overflow:hidd
 body.pn-id.pn-pd .up-section-scroll{ background:#232428; padding:clamp(10px,2vw,24px); }
 body.pn-id.pn-pd .up-section-scroll:focus-visible{ outline:3px solid rgba(242,235,224,.6); outline-offset:-3px; }
 body.pn-id.pn-pd .up-section-svg{ display:block; width:100%; height:auto; }
-body.pn-id.pn-pd .up-section-svg .up-t{ font-family:var(--p4-sans,'Hanken Grotesk',sans-serif); font-size:20px; font-weight:600; fill:#E9E2D6; }
+body.pn-id.pn-pd .up-section-svg .up-t{ font-family:var(--p4-sans,'Hanken Grotesk',sans-serif); font-size:24px; font-weight:600; fill:#E9E2D6; }
 body.pn-id.pn-pd .up-section-svg .up-t-accent{ fill:#E3B88A; }
 body.pn-id.pn-pd .up-section-svg .up-n circle{ fill:#F2EBE0; }
-body.pn-id.pn-pd .up-section-svg .up-n text{ font-family:var(--p4-sans,'Hanken Grotesk',sans-serif); font-size:16px; font-weight:700; fill:#1B1C1E; text-anchor:middle; }
+body.pn-id.pn-pd .up-section-svg .up-n text{ font-family:var(--p4-sans,'Hanken Grotesk',sans-serif); font-size:19px; font-weight:700; fill:#1B1C1E; text-anchor:middle; }
 body.pn-id.pn-pd .up-section-cap{ padding:clamp(20px,2.6vw,34px); }
 body.pn-id.pn-pd .up-section-title{ margin:0 0 18px; font-family:var(--p4-serif); font-style:italic; font-size:clamp(20px,1.8vw,26px) !important; line-height:1.3; color:var(--p4-ivory) !important; }
 body.pn-id.pn-pd .up-key{ list-style:none; margin:0; padding:0; display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:10px 24px; }
@@ -564,9 +564,17 @@ body.pn-id.pn-pd .up-factors{ margin-top:clamp(16px,2.4vw,32px) !important; }
   body.pn-id.pn-pd .up-pool .ns-tag{ top:14px; bottom:auto; right:14px; }
   body.pn-id.pn-pd .up-section-hint{ display:block !important; }
   body.pn-id.pn-pd .up-section-scroll{ overflow-x:auto; -webkit-overflow-scrolling:touch; }
-  body.pn-id.pn-pd .up-section-svg{ min-width:720px; }
+  body.pn-id.pn-pd .up-section-svg{ min-width:880px; }
   body.pn-id.pn-pd .up-steps, body.pn-id.pn-pd .up-key, body.pn-id.pn-pd .up-projects{ grid-template-columns:1fr; }
 }
+/* ---- the AI disclosure is never covered: while the hero's disclosure line sits behind the fixed Back dock
+   (phones) or the Back pill (desktop), the dock and pill step aside; they return as soon as it has scrolled
+   clear. Page-local; the shared dock, pill, href and keyboard order are unchanged. ---- */
+body.pn-id.pn-pd .pn-return{ transition:transform .28s ease, opacity .28s ease; }
+body.pn-id.pn-pd:has(> .pn-return)::after{ transition:transform .28s ease; }
+body.pn-id.pn-pd.up-dock-away .pn-return{ transform:translateY(calc(100% + 28px)); opacity:0; pointer-events:none; }
+body.pn-id.pn-pd.up-dock-away:has(> .pn-return)::after{ transform:translateY(calc(100% + 12px)); }
+@media (prefers-reduced-motion:reduce){ body.pn-id.pn-pd .pn-return, body.pn-id.pn-pd:has(> .pn-return)::after{ transition:none; } }
 </style>
 
 </head>
@@ -680,7 +688,7 @@ body.pn-id.pn-pd .up-factors{ margin-top:clamp(16px,2.4vw,32px) !important; }
   <figure class="ns-experience up-pool reveal">
     <picture>
       <source type="image/webp" srcset="assets/disc015/img/DISC-015-POOL-768.webp 768w, assets/disc015/img/DISC-015-POOL-1024.webp 1024w, assets/disc015/img/DISC-015-POOL-1376.webp 1376w" sizes="100vw">
-      <img src="assets/disc015/img/DISC-015-03-POOL-MASTER.png" width="1376" height="768" loading="lazy" decoding="async" alt="A long indoor swimming pool in a calm, stone-finished room below ground. Daylight falls from a narrow rooflight in the ceiling onto the water, with warm concealed lighting along the walls and a timber bench beside the pool.">
+      <img src="assets/disc015/img/DISC-015-POOL-1376.jpg" width="1376" height="768" loading="lazy" decoding="async" alt="A long indoor swimming pool in a calm, stone-finished room below ground. Daylight falls from a narrow rooflight in the ceiling onto the water, with warm concealed lighting along the walls and a timber bench beside the pool.">
     </picture>
     <figcaption><p>Daylight from the garden above, falling onto the water.</p></figcaption>
     <p class="ns-tag">AI-generated illustration</p>
@@ -757,18 +765,18 @@ body.pn-id.pn-pd .up-factors{ margin-top:clamp(16px,2.4vw,32px) !important; }
           <path d="M286 600 V612 H1124 V600"/>
         </g>
         <text x="710" y="112" text-anchor="middle" class="up-t up-t-accent">What you see: the rooflight</text>
-        <text x="705" y="632" text-anchor="middle" class="up-t up-t-accent">What lies beneath: the whole pool room</text>
+        <text x="705" y="631" text-anchor="middle" class="up-t up-t-accent">What lies beneath: the whole pool room</text>
         <!-- numbered callouts -->
         <g class="up-n">
-          <circle cx="400" cy="140" r="15"/><text x="400" y="145">1</text>
-          <circle cx="400" cy="190" r="15"/><text x="400" y="195">2</text>
-          <circle cx="520" cy="217" r="15"/><text x="520" y="222">3</text>
-          <circle cx="840" cy="160" r="15"/><text x="840" y="165">4</text>
-          <circle cx="1080" cy="470" r="15"/><text x="1080" y="475">5</text>
-          <circle cx="690" cy="470" r="15"/><text x="690" y="475">6</text>
-          <circle cx="420" cy="384" r="15"/><text x="420" y="389">7</text>
-          <circle cx="250" cy="250" r="15"/><text x="250" y="255">8</text>
-          <circle cx="1031" cy="270" r="15"/><text x="1031" y="275">9</text>
+          <circle cx="400" cy="140" r="18"/><text x="400" y="147">1</text>
+          <circle cx="400" cy="190" r="18"/><text x="400" y="197">2</text>
+          <circle cx="520" cy="217" r="18"/><text x="520" y="224">3</text>
+          <circle cx="840" cy="160" r="18"/><text x="840" y="167">4</text>
+          <circle cx="1080" cy="470" r="18"/><text x="1080" y="477">5</text>
+          <circle cx="690" cy="470" r="18"/><text x="690" y="477">6</text>
+          <circle cx="420" cy="384" r="18"/><text x="420" y="391">7</text>
+          <circle cx="250" cy="250" r="18"/><text x="250" y="257">8</text>
+          <circle cx="1031" cy="270" r="18"/><text x="1031" y="277">9</text>
         </g>
       </svg>
       </div>
@@ -1168,5 +1176,36 @@ body.pn-id.pn-pd .up-factors{ margin-top:clamp(16px,2.4vw,32px) !important; }
 </script>
 <script src="assets/identity/pn-compare.js?v=1.3" defer></script>
 <script src="assets/identity/pn-premium.js" defer></script>
+<script>
+/* DISC-015 · the hero AI disclosure is never hidden behind the Back dock or pill (page-local). */
+(function(){
+  var b = document.body, back = document.getElementById('pnReturn');
+  var notes = [].slice.call(document.querySelectorAll('.pn-compare__note, .pn-hero-note'));
+  if (!back || !notes.length) return;
+  var queued = false;
+  function shown(n){ return n.offsetParent !== null && n.getBoundingClientRect().height > 0; }
+  function check(){
+    queued = false;
+    var vh = window.innerHeight, dock = 0;
+    try { var a = getComputedStyle(b, '::after'); if (a.position === 'fixed' && a.content !== 'none') dock = parseFloat(a.height) || 0; } catch (e) {}
+    var away = false;
+    notes.forEach(function(n){
+      if (!shown(n)) return;
+      var r = n.getBoundingClientRect();
+      if (dock) { if (r.bottom > vh - dock && r.top < vh) away = true; return; }
+      /* the pill's resting place, read from its own CSS so a step-aside transform doesn't move the target */
+      var p = back.getBoundingClientRect(), pt = vh - (parseFloat(getComputedStyle(back).bottom) || 16) - p.height;
+      if (r.bottom > pt - 6 && r.top < pt + p.height + 6 && r.left < p.right + 6) away = true;
+    });
+    b.classList.toggle('up-dock-away', away);
+  }
+  function q(){ if (!queued) { queued = true; requestAnimationFrame(check); } }
+  window.addEventListener('scroll', q, { passive: true });
+  window.addEventListener('resize', q);
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(q);
+  window.addEventListener('load', q);
+  check();
+})();
+</script>
 </body>
 </html>
