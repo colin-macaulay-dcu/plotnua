@@ -5,7 +5,7 @@
 // P  the pipeline endpoint (public fields only)
 // E  end to end: submit -> approve -> pipeline (--simulate) -> page and Library card show only approved ideas
 import { start, token, FOUNDER, PIPELINE_TOKEN } from './local.mjs';
-import { execFileSync, spawnSync } from 'node:child_process';
+import { execFileSync, spawnSync, spawn } from 'node:child_process';
 import { mkdtempSync, cpSync, readFileSync, writeFileSync, mkdirSync, readdirSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
@@ -18,22 +18,24 @@ const check = (name, ok, extra = '') => { console.log(`  ${ok ? 'PASS' : 'FAIL'}
 const { mf, url } = await start({ ideas: {} });
 const db = await mf.getD1Database('DB', 'studio');
 let ipn = 0;
+// A long synchronous pipeline run can outlast the harness's idle keep-alive socket; one retry on a dropped socket.
+const df = async (...a) => { try { return await mf.dispatchFetch(...a); } catch (e) { if (!/fetch failed/.test(String(e))) throw e; return mf.dispatchFetch(...a); } };
 const post = async (body, { origin = 'https://plotnua.ie', type = 'application/json', method = 'POST', ip, raw } = {}) => {
   const headers = { 'CF-Connecting-IP': ip || '10.0.0.' + (++ipn) };
   if (origin) headers.Origin = origin;
   if (type) headers['Content-Type'] = type;
-  const r = await mf.dispatchFetch('http://ideas.local/v1/ideas', { method, headers, body: method === 'GET' ? undefined : (raw ?? (type === 'application/json' ? JSON.stringify(body) : new URLSearchParams(body).toString())) });
+  const r = await df('http://ideas.local/v1/ideas', { method, headers, body: method === 'GET' ? undefined : (raw ?? (type === 'application/json' ? JSON.stringify(body) : new URLSearchParams(body).toString())) });
   const t = await r.text(); let j = null; try { j = JSON.parse(t); } catch { /* html */ }
   return { s: r.status, j, t, h: r.headers };
 };
 const count = async () => (await db.prepare('SELECT COUNT(*) n FROM ideas').first()).n;
 const old = () => String(Date.now() - 10_000);
 const call = async (method, path, email, body, extra = {}) => {
-  const r = await mf.dispatchFetch(url + path, { method, headers: { 'Cf-Access-Jwt-Assertion': token(email), 'X-Studio': '1', 'Content-Type': 'application/json', ...extra },
+  const r = await df(url + path, { method, headers: { 'Cf-Access-Jwt-Assertion': token(email), 'X-Studio': '1', 'Content-Type': 'application/json', ...extra },
     body: body === undefined ? undefined : JSON.stringify(body) });
   return { s: r.status, j: await r.json().catch(() => ({})) };
 };
-const pipe = async (auth = 'Bearer ' + PIPELINE_TOKEN) => { const r = await mf.dispatchFetch(url + '/api/pipeline/ideas', { headers: auth ? { Authorization: auth } : {} }); return { s: r.status, j: await r.json().catch(() => ({})) }; };
+const pipe = async (auth = 'Bearer ' + PIPELINE_TOKEN) => { const r = await df(url + '/api/pipeline/ideas', { headers: auth ? { Authorization: auth } : {} }); return { s: r.status, j: await r.json().catch(() => ({})) }; };
 
 console.log('S · intake security and spam protection');
 let r = await post({ idea: 'A seed library box by the front gate', t: old() });
@@ -131,17 +133,14 @@ await pipe(); check('P7 declined ideas are deleted after 30 days', !(await db.pr
 
 console.log('E · end to end (submit -> approve -> pipeline -> page)');
 const SITE = mkdtempSync(join(tmpdir(), 'ib-site-'));
-cpSync(join(REPO, 'discoveries.html'), join(SITE, 'discoveries.html'));
-for (const f of readdirSync(REPO).filter(f => /^discovery-.*\.html$/.test(f))) cpSync(join(REPO, f), join(SITE, f));
-mkdirSync(join(SITE, 'atlas-tools'));
-for (const f of ['build-idea-board.py', 'prove-idea-board.py', 'plotnua-ideas-publish.py']) cpSync(join(REPO, 'atlas-tools', f), join(SITE, 'atlas-tools', f));
-cpSync(join(REPO, 'atlas-tools/idea-board'), join(SITE, 'atlas-tools/idea-board'), { recursive: true });
+cpSync(REPO, SITE, { recursive: true, filter: src => !/[\\/]\.git([\\/]|$)|[\\/]node_modules([\\/]|$)/.test(src) });
 const git = (...a) => execFileSync('git', ['-c', 'user.name=Test', '-c', 'user.email=test@plotnua.invalid', ...a], { cwd: SITE, encoding: 'utf8' }).trim();
-execFileSync('python3', ['atlas-tools/build-idea-board.py'], { cwd: SITE });
-git('init', '-q'); git('add', '-A'); git('commit', '-q', '-m', 'main with the empty Idea Board (test copy)');
-const publish = () => spawnSync('python3', ['atlas-tools/plotnua-ideas-publish.py', '--studio', url, '--token', PIPELINE_TOKEN, '--simulate'], { cwd: SITE, encoding: 'utf8' });
+git('init', '-q'); git('add', '-A'); git('commit', '-q', '-m', 'main with the empty Idea Board (test copy of the branch)');
+// asynchronous, so the local Studio keeps serving while the pipeline runs
+const publish = () => new Promise(res => { const c = spawn('python3', ['atlas-tools/plotnua-ideas-publish.py', '--studio', url, '--token', PIPELINE_TOKEN, '--simulate'], { cwd: SITE });
+  let stdout = '', stderr = ''; c.stdout.on('data', d => stdout += d); c.stderr.on('data', d => stderr += d); c.on('close', status => res({ status, stdout, stderr })); });
 const pageText = () => readFileSync(join(SITE, 'ideas.html'), 'utf8'), libText = () => readFileSync(join(SITE, 'discoveries.html'), 'utf8');
-let p = publish();
+let p = await publish();
 check('E1 the pipeline publishes the three approved ideas (simulated)', p.status === 0 && /3 approved ideas · verified \(simulated\)/.test(p.stdout), p.stdout + p.stderr);
 check('E2 only the snapshot, the page and the Library card changed', git('diff', '--name-only', 'HEAD~1', 'HEAD').split('\n').sort().join() === 'atlas-tools/idea-board/approved-ideas.json,discoveries.html,ideas.html');
 let pg = pageText(), lib = libText();
@@ -150,29 +149,29 @@ check('E4 nothing that was not approved appears (waiting, declined)', !['Show co
 check('E5 private and hidden counties are not shown', !/Co\. (Cork|Kerry)/.test(pg));
 check('E6 the "Now a Discovery" link is shown', pg.includes('href="discovery-hidden-cars.html">Now a PlotNua Discovery'));
 check('E7 the Library card shows the latest three, newest first', (lib.match(/<li class="ib-note">/g) || []).length === 3);
-p = publish(); check('E8 a second run with no change publishes nothing', p.status === 0 && /nothing to publish/.test(p.stdout), p.stdout);
+p = await publish(); check('E8 a second run with no change publishes nothing', p.status === 0 && /nothing to publish/.test(p.stdout), p.stdout);
 for (let k = 1; k <= 2; k++) {
   const rr = await post({ idea: `A later idea, number ${k}, for a shared tool shed`, t: old() });
   const w = (await call('GET', '/api/admin/ideas', FOUNDER)).j.waiting.find(x => x.ref === rr.j.reference);
   await new Promise(res => setTimeout(res, 1100));
   await call('POST', '/api/admin/ideas/' + w.id, FOUNDER, { action: 'approve', area: 'Neighbourhood' });
 }
-p = publish(); lib = libText(); pg = pageText();
+p = await publish(); lib = libText(); pg = pageText();
 const cardNotes = [...lib.matchAll(/<li class="ib-note">(.*?)<\/li>/g)].map(m => m[1]);
 check('E9 with five approved, the card shows the latest three; the page shows all five', cardNotes.length === 3 && cardNotes[0].includes('number 2') && cardNotes[1].includes('number 1') && (pg.match(/<li class="ib-n">/g) || []).length === 5, cardNotes.join(' | '));
 await call('POST', '/api/admin/ideas/' + seed.id, FOUNDER, { action: 'remove' });
-p = publish(); pg = pageText();
+p = await publish(); pg = pageText();
 check('E10 a removed idea leaves the board on the next run', p.status === 0 && !pg.includes('seed-library'));
 writeFileSync(join(SITE, 'discoveries.html'), libText().replace('Discovery Library', 'Discovery Libary'));
 git('commit', '-qam', 'unrelated Library edit (test)');
 await call('POST', '/api/admin/ideas/' + cork.id, FOUNDER, { action: 'save', public_text: 'Keep my county private, please' });
-p = publish();
+p = await publish();
 check('E11 boundary: the pipeline stays within the card block (unrelated edits on main are untouched)', p.status === 0 && libText().includes('Discovery Libary'), p.stdout + p.stderr);
 const before = git('rev-parse', 'HEAD');
 const tampered = readFileSync(join(SITE, 'atlas-tools/build-idea-board.py'), 'utf8').replace('LIB.write_text(new_lib, encoding="utf-8")', 'LIB.write_text(new_lib.replace("</title>", " </title>", 1), encoding="utf-8")');
 writeFileSync(join(SITE, 'atlas-tools/build-idea-board.py'), tampered); git('commit', '-qam', 'a builder that changes the Library (planted fault)');
 await call('POST', '/api/admin/ideas/' + cork.id, FOUNDER, { action: 'save', public_text: 'Keep my county private, thanks' });
-const head = git('rev-parse', 'HEAD'); p = publish();
+const head = git('rev-parse', 'HEAD'); p = await publish();
 check('E12 planted fault: a change outside the card block is REFUSED and the commit dropped', p.status === 1 && /outside the Idea Board card/.test(p.stdout) && git('rev-parse', 'HEAD') === head, p.stdout);
 const sp = spawnSync('python3', ['atlas-tools/plotnua-ideas-publish.py', '--studio', 'https://studio.example', '--token', 'x', '--simulate'], { cwd: SITE, encoding: 'utf8' });
 check('E13 --simulate refuses anything but a local Studio', sp.status !== 0 && /REFUSED/.test(sp.stdout + sp.stderr));

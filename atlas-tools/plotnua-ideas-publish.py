@@ -30,6 +30,10 @@ SNAP = os.path.join(HERE, "idea-board", "approved-ideas.json")
 ALLOWED = {"atlas-tools/idea-board/approved-ideas.json", "ideas.html", "discoveries.html"}
 CARD = re.compile(r"[ \t]*<!-- PLOTNUA IDEA BOARD CARD · BEGIN.*?<!-- PLOTNUA IDEA BOARD CARD · END -->\n", re.S)
 CSS = re.compile(r"/\* PLOTNUA IDEA BOARD CARD v1 · BEGIN.*?/\* PLOTNUA IDEA BOARD CARD v1 · END \*/\n\n", re.S)
+# The Idea Board proof, and every governed layer that reads the Library or the page.
+GUARDS = ["python3 atlas-tools/prove-idea-board.py", "python3 atlas-tools/build-library-card-labels.py --check",
+          "python3 atlas-tools/build-library-card-webp.py --check", "python3 atlas-tools/build-discovery-library-images.py --check",
+          "python3 atlas-tools/build-identity-stage1.py --check", "python3 atlas-tools/prove-global-header.py"]
 FIELDS = {"id", "text", "area", "county", "month", "published_at", "became_discovery"}
 
 # The same Cloudflare Access service token and User-Agent the PlotArt pipeline uses (see plotart-gallery-publish.py).
@@ -90,9 +94,10 @@ def main():
         git("-c", "user.name=PlotNua content pipeline", "-c", "user.email=hello@plotnua.ie", "commit", "-q", "-m",
             "Idea Board content: %d approved ideas (founder's approvals in PlotArt Studio)" % len(ideas))
         why = boundary(base)
-    if why is None:
-        ok, out = run("python3 atlas-tools/prove-idea-board.py")
-        why = None if ok else "Idea Board proof refused: " + out[-400:]
+    for guard in GUARDS:
+        if why is None:
+            ok, out = run(guard)
+            why = None if ok else "%s refused: %s" % (guard, out[-400:])
     if why is None and PUSH:
         sha = git("rev-parse", "--short", "HEAD")
         ok1, o1 = run("git push origin HEAD:refs/heads/content/ideas-%s" % sha)
