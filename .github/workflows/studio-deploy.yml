@@ -119,6 +119,7 @@ jobs:
             || { grep -iE "error" "$RUNNER_TEMP/wrangler.log" | head -5; exit 1; }
           echo "DRY RUN OK: the Worker for $COMMIT builds; nothing was sent to Cloudflare"
       - name: Deploy the Worker
+        id: deploy
         if: ${{ !inputs.dry_run }}
         working-directory: worker/plotart-studio
         env:
@@ -144,6 +145,7 @@ jobs:
           printf '%s' "$DISPATCH" | npx --yes wrangler@4.150.0 secret put GITHUB_DISPATCH_TOKEN --config wrangler.production.toml > "$RUNNER_TEMP/secret.log" 2>&1 \
             && echo "publishing token installed in the Studio" || { echo "FAIL  the publishing token could not be installed"; grep -iE "error" "$RUNNER_TEMP/secret.log" | grep -viE "token" | head -3; exit 1; }
       - name: Gallery order after
+        id: after
         if: ${{ !inputs.dry_run }}
         env:
           STUDIO_URL: ${{ secrets.STUDIO_URL }}
@@ -151,3 +153,13 @@ jobs:
           STUDIO_ACCESS_CLIENT_ID: ${{ secrets.STUDIO_ACCESS_CLIENT_ID }}
           STUDIO_ACCESS_CLIENT_SECRET: ${{ secrets.STUDIO_ACCESS_CLIENT_SECRET }}
         run: node atlas-tools/release/studio/order-check.mjs compare "$RUNNER_TEMP/order-before"
+      # Automation v1: if the gallery order changed or position 01 was released, return to the previous version at once.
+      - name: Automatic rollback to the previous version
+        if: ${{ failure() && steps.deploy.outcome == 'success' && steps.after.outcome == 'failure' }}
+        working-directory: worker/plotart-studio
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.STUDIO_CF_DEPLOY_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          npx --yes wrangler@4.150.0 rollback --config wrangler.production.toml --message "automatic rollback: failed post-deploy check (run ${{ github.run_id }})" -y > "$RUNNER_TEMP/rb.log" 2>&1 && echo "rolled back to the previous version" || { echo "FAIL  automatic rollback did not complete"; exit 1; }
+          echo "- **rolled back automatically** after the post-deploy check failed" >> "$GITHUB_STEP_SUMMARY"

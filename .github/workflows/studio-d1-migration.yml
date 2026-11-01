@@ -5,7 +5,8 @@
 # that is not the approved one, an empty description, or SQL that writes to any table not declared (so artist records
 # can never change unless "artists" is declared and approved). Triggers, ATTACH and PRAGMA writes are refused.
 # "migrate" waits in the environment studio-database until the founder presses Approve in GitHub; only then can it
-# read its secrets. It then takes TWO backups and stops if either fails:
+# read its secrets. Automation v1 (founder policy, 1 Nov 2026): an ADDITIVE migration (it only creates new tables and
+# indexes) runs instead in studio-database-auto (main only, no reviewer); every other migration still waits. It then takes TWO backups and stops if either fails:
 #   1. a Cloudflare Time Travel restore point (its bookmark is recorded in the run summary);
 #   2. a full export of the database, encrypted on the runner (AES-256, key = STUDIO_BACKUP_PASSPHRASE, which only the
 #      founder holds) and kept as a 90-day run artifact. The unencrypted export never leaves the runner.
@@ -55,6 +56,8 @@ jobs:
   check:
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main'
+    outputs:
+      environment: ${{ steps.classify.outputs.environment }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -72,12 +75,22 @@ jobs:
           [[ "$MIGRATION" =~ ^[0-9]{4}_[a-z0-9_]+\.sql$ ]] || { echo "REFUSED: not a migration file name"; exit 1; }
           git merge-base --is-ancestor "$COMMIT" origin/main || { echo "REFUSED: $COMMIT is not on main"; exit 1; }
           git show "$COMMIT:worker/plotart-studio/migrations/$MIGRATION" > "$RUNNER_TEMP/m.sql" 2>/dev/null || { echo "REFUSED: $MIGRATION is not in $COMMIT"; exit 1; }
-          python3 atlas-tools/release/studio/migration-check.py "$RUNNER_TEMP/m.sql" "$SHA" "$TABLES" "$EFFECTS" | tee -a "$GITHUB_STEP_SUMMARY"
+          python3 atlas-tools/release/studio/migration-check.py "$RUNNER_TEMP/m.sql" "$SHA" "$TABLES" "$EFFECTS" | tee "$RUNNER_TEMP/check.txt" >> "$GITHUB_STEP_SUMMARY"
+          grep -q "^MIGRATION CHECK OK" "$RUNNER_TEMP/check.txt" || { cat "$RUNNER_TEMP/check.txt"; exit 1; }
+      # Automation v1 (founder policy, 1 Nov 2026): an ADDITIVE migration (new tables and indexes only) runs in
+      # studio-database-auto, restricted to main, with the same two backups first. Anything that changes or drops an
+      # existing table runs in studio-database, which waits for the founder's approval.
+      - name: Which approval this migration needs
+        id: classify
+        run: |
+          if grep -q "^MIGRATION CLASS: additive" "$RUNNER_TEMP/check.txt"; then E=studio-database-auto; else E=studio-database; fi
+          echo "environment=$E" >> "$GITHUB_OUTPUT"
+          echo "- Runs in environment \`$E\`" >> "$GITHUB_STEP_SUMMARY"
 
   migrate:
     needs: check
     runs-on: ubuntu-latest
-    environment: studio-database
+    environment: ${{ needs.check.outputs.environment }}
     env:
       MIGRATION: ${{ inputs.migration }}
       SHA: ${{ inputs.migration_sha256 }}
@@ -93,8 +106,14 @@ jobs:
         with:
           node-version: 22
       - name: Check again after approval
+        env:
+          ENV_NAME: ${{ needs.check.outputs.environment }}
         run: |
-          python3 atlas-tools/release/studio/migration-check.py "worker/plotart-studio/migrations/$MIGRATION" "$SHA" "$TABLES" "$EFFECTS" | grep -E "^(REFUSED|MIGRATION CHECK OK)"
+          python3 atlas-tools/release/studio/migration-check.py "worker/plotart-studio/migrations/$MIGRATION" "$SHA" "$TABLES" "$EFFECTS" > "$RUNNER_TEMP/c2.txt" || true
+          grep -E "^(REFUSED|MIGRATION CHECK OK|MIGRATION CLASS)" "$RUNNER_TEMP/c2.txt"
+          grep -q "^MIGRATION CHECK OK" "$RUNNER_TEMP/c2.txt" || exit 1
+          # defence in depth: only an additive migration may ever run without the founder's approval
+          if [ "$ENV_NAME" = "studio-database-auto" ]; then grep -q "^MIGRATION CLASS: additive" "$RUNNER_TEMP/c2.txt" || { echo "REFUSED: not additive"; exit 1; }; fi
       - name: Production configuration (identifiers from the environment, never printed)
         env:
           STUDIO_D1_DATABASE_ID: ${{ vars.STUDIO_D1_DATABASE_ID }}
