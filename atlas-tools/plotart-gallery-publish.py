@@ -84,7 +84,8 @@ def write_gallery(pkg, img_src):
     d = os.path.join(ART, slug)
     shutil.rmtree(d, ignore_errors=True)
     os.makedirs(os.path.join(d, "img"))
-    for f in sorted(os.listdir(img_src)):
+    # a published gallery with no works on show and no portrait has no images at all (founder decision 1 Nov 2026)
+    for f in (sorted(os.listdir(img_src)) if os.path.isdir(img_src) else []):
         shutil.copyfile(os.path.join(img_src, f), os.path.join(d, "img", f))
     for path, doc in P.gallery_pages(pkg, S.artist_page, enquiry_endpoint=ENDPOINT):
         open(os.path.join(ROOT, "plotart", path), "w", encoding="utf-8").write(doc)
