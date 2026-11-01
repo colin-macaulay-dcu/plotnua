@@ -25,6 +25,7 @@ else:
     FLAGS = json.loads((ROOT / "atlas-tools" / "release" / "flags.json").read_text(encoding="utf-8"))
 SITE = "https://plotnua.ie"
 PAGES = {"": "PlotNua", "discoveries.html": "Discovery Library", "discovery-hidden-cars.html": "PlotNua",
+         "discovery-underground-swimming-pool.html": "PlotNua", "ideas.html": "What Could Your Property Do?",
          "plotart/": "PlotArt", "privacy.html": "Privacy", "terms.html": "Terms", "contact.html": "PlotNua"}
 STUDIO = "https://plotart-studio.colin-a41.workers.dev"
 IDEAS = "https://plotnua-ideas.colin-a41.workers.dev/v1/ideas"
@@ -69,12 +70,18 @@ s, _, _ = fetch(IDEAS)
 check("H4 Idea Board intake refuses GET", s == 405, "HTTP %s" % s)
 s, _, _ = fetch(IDEAS, "POST", {"Origin": "https://evil.example", "Content-Type": "application/json"}, b"{}")
 check("H4 Idea Board intake refuses another site", s == 403, "HTTP %s" % s)
-if not FLAGS.get("ideas_submissions_open"):
+if FLAGS.get("ideas_submissions_open"):
+    # open: plotnua.ie's origin reaches validation (a too-short idea is refused with a reason; nothing is stored)
+    s, body, _ = fetch(IDEAS, "POST", {"Origin": "https://plotnua.ie", "Content-Type": "application/json"}, b'{"idea":"x"}')
+    check("H4 Idea Board intake is open to plotnua.ie and validates (nothing stored)", s == 400 and b"at least 8 characters" in body, "HTTP %s" % s)
+else:
     s, _, _ = fetch(IDEAS, "POST", {"Origin": "https://plotnua.ie", "Content-Type": "application/json"}, b'{"idea":"health check"}')
     check("H4 Idea Board intake is closed (flags: submissions not open)", s == 503, "HTTP %s" % s)
 want = arg("--expect-commit")
 if want:
-    for path in [p for p in PAGES if p.endswith(".html")]:
+    tree = subprocess.run(["git", "ls-tree", "--name-only", want], cwd=ROOT, capture_output=True, text=True).stdout.split()
+    discoveries = sorted(p for p in tree if p.startswith("discovery-") and p.endswith(".html"))
+    for path in sorted(set([p for p in PAGES if p.endswith(".html")] + discoveries)):
         src = subprocess.run(["git", "show", "%s:%s" % (want, path)], cwd=ROOT, capture_output=True).stdout
         live = b""
         for attempt in range(12):                           # GitHub Pages can take a few minutes to publish
