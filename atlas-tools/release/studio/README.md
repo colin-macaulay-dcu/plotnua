@@ -1,18 +1,21 @@
-# PlotArt Studio · deployment workflows (prepared 31 Oct 2026, not yet active)
+# PlotArt Studio · deployment workflows (prepared; inactive until the founder's setup)
 
-- `.github/workflows/studio-deploy.yml`: deploys the Studio Worker at one exact commit. Environment `studio-production`
-  (required reviewer: the founder; secret `CLOUDFLARE_API_TOKEN` with Workers Scripts: Edit only).
-- `.github/workflows/studio-d1-migration.yml`: runs one migration file at one exact commit. Environment `studio-database`
-  (required reviewer: the founder; secret `CLOUDFLARE_API_TOKEN` with D1: Edit only).
+- `.github/workflows/studio-deploy.yml`: deploys the Studio Worker at one exact commit already on main. Environment
+  `studio-production` (required reviewer: the founder; secret `STUDIO_CF_DEPLOY_TOKEN`, Workers Scripts: Edit only).
+  Read-only repository access. The live release is read from this workflow's own successful runs.
+- `.github/workflows/studio-d1-migration.yml`: one approved migration file (SHA-256), declared tables and described
+  effects. Environment `studio-database` (required reviewer: the founder; secrets `STUDIO_CF_D1_TOKEN`, D1: Edit only,
+  and `STUDIO_BACKUP_PASSPHRASE`). Two backups before it runs: a Time Travel restore point and an encrypted full export.
 
-Both are started by hand with a full commit ID, refuse any commit not already on main, and cannot read their token
-until the founder presses Approve in GitHub. `dry_run: true` (the default) exercises the approval without contacting Cloudflare.
+Both are started by hand, default to a dry run, and cannot read their secrets until the founder presses Approve in GitHub.
 
 | File | What it does |
 |---|---|
-| `guard.sh` | Full commit ID; on main; contains the live Studio release (tag `studio-live`); the bundle matches its sources; lists the Studio files that change |
+| `guard.sh` | Full commit ID; on main; contains the live Studio release; the bundle matches its sources; lists changed Studio files |
 | `render-config.py` | Production `wrangler.production.toml` from `wrangler.toml` + environment variables + `worker/plotart-studio/production.json` |
-| `order-check.mjs` | Gallery order before/after a deployment from the pipeline view: 01 reserved, order unchanged (no names, notes or addresses printed) |
-| `d1-check.sql`, `d1-fingerprint.mjs` | Database fingerprints before/after a migration: PASS/FAIL and short hashes only |
+| `order-check.mjs` | Gallery order before/after a Worker deployment (pipeline view): 01 reserved, order unchanged |
+| `migration-check.py` | Approved file (SHA-256), described effects, every table the SQL writes to declared; no triggers, ATTACH or PRAGMA writes |
+| `d1-snapshot.mjs` | Every table's fingerprint before/after a migration: fails if anything outside the declaration changed or 01 is released |
 
 Logs are public: nothing prints a credential, an environment identifier, a count, a name, an email address or a note.
+A failed check never restores anything by itself: a restore needs the founder's separate approval.

@@ -1,31 +1,45 @@
-# PlotArt Studio · database migration (founder approval to prepare, 31 Oct 2026). Separate from Worker deployments.
+# PlotArt Studio · database migration (founder requirements, 31 Oct and 1 Nov 2026). Separate from Worker deployments.
 #
-# Started by Claude only after the founder approves a specific migration file at a specific commit. It waits in the
-# environment studio-database until the founder presses Approve in GitHub; only then can it read its Cloudflare
-# token (D1: Edit, nothing else). It fingerprints the database before and after and fails unless record counts,
-# every artist record and the gallery order are unchanged (or allow_record_changes was set and approved), and
-# position 01 stays reserved. Logs are public: it prints only table names, PASS/FAIL and short fingerprints.
+# Started by Claude only after the founder approves, in writing: the exact migration file (its SHA-256), the tables it
+# may change, and a description of the expected changes. Before any approval or credential, "check" refuses a file
+# that is not the approved one, an empty description, or SQL that writes to any table not declared (so artist records
+# can never change unless "artists" is declared and approved). Triggers, ATTACH and PRAGMA writes are refused.
+# "migrate" waits in the environment studio-database until the founder presses Approve in GitHub; only then can it
+# read its secrets. It then takes TWO backups and stops if either fails:
+#   1. a Cloudflare Time Travel restore point (its bookmark is recorded in the run summary);
+#   2. a full export of the database, encrypted on the runner (AES-256, key = STUDIO_BACKUP_PASSPHRASE, which only the
+#      founder holds) and kept as a 90-day run artifact. The unencrypted export never leaves the runner.
+# Only then is the migration applied. Afterwards it fails if any table outside the declaration changed or if position 01
+# is not reserved. That is a check, not a rollback: any restore needs the founder's separate approval.
+# Logs are public: they show table names, PASS/FAIL, the restore bookmark and the backup's checksum only.
 name: PlotArt Studio database migration
-run-name: "Studio migration ${{ inputs.migration }} at ${{ inputs.commit }}${{ inputs.dry_run && ' (dry run)' || '' }}"
+run-name: "Studio migration ${{ inputs.migration }} [${{ inputs.tables }}] at ${{ inputs.commit }}${{ inputs.dry_run && ' (dry run)' || '' }}"
 
 on:
   workflow_dispatch:
     inputs:
       commit:
-        description: "Full 40-character commit ID approved by the founder (must be on main)"
+        description: "Full 40-character commit ID on main that contains the migration"
         required: true
         type: string
       migration:
         description: "Migration file in worker/plotart-studio/migrations, e.g. 0003_example.sql"
         required: true
         type: string
-      allow_record_changes:
-        description: "The founder approved a migration that changes records (default: no records may change)"
+      migration_sha256:
+        description: "SHA-256 of the migration file, as approved by the founder"
         required: true
-        type: boolean
-        default: false
+        type: string
+      tables:
+        description: "Tables the founder approved this migration to change, comma-separated (or none)"
+        required: true
+        type: string
+      expected_effects:
+        description: "The expected database changes, as approved by the founder"
+        required: true
+        type: string
       dry_run:
-        description: "Dry run: approval and checks only, nothing sent to Cloudflare"
+        description: "Dry run: checks and approval only, nothing sent to Cloudflare"
         required: true
         type: boolean
         default: true
@@ -46,23 +60,30 @@ jobs:
         with:
           fetch-depth: 0
           persist-credentials: false
-      - name: The commit is on main and the migration file exists in it
+      - name: The commit is on main; the file, its declaration and its description are the approved ones
         env:
           COMMIT: ${{ inputs.commit }}
           MIGRATION: ${{ inputs.migration }}
-          ALLOW: ${{ inputs.allow_record_changes }}
+          SHA: ${{ inputs.migration_sha256 }}
+          TABLES: ${{ inputs.tables }}
+          EFFECTS: ${{ inputs.expected_effects }}
         run: |
           [[ "$COMMIT" =~ ^[0-9a-f]{40}$ ]] || { echo "REFUSED: give the full 40-character commit ID"; exit 1; }
           [[ "$MIGRATION" =~ ^[0-9]{4}_[a-z0-9_]+\.sql$ ]] || { echo "REFUSED: not a migration file name"; exit 1; }
           git merge-base --is-ancestor "$COMMIT" origin/main || { echo "REFUSED: $COMMIT is not on main"; exit 1; }
-          git cat-file -e "$COMMIT:worker/plotart-studio/migrations/$MIGRATION" || { echo "REFUSED: $MIGRATION is not in $COMMIT"; exit 1; }
-          echo "### Migration \`$MIGRATION\` at \`$COMMIT\` · allow record changes: $ALLOW" >> "$GITHUB_STEP_SUMMARY"
-          echo "CHECK OK"
+          git show "$COMMIT:worker/plotart-studio/migrations/$MIGRATION" > "$RUNNER_TEMP/m.sql" 2>/dev/null || { echo "REFUSED: $MIGRATION is not in $COMMIT"; exit 1; }
+          python3 atlas-tools/release/studio/migration-check.py "$RUNNER_TEMP/m.sql" "$SHA" "$TABLES" "$EFFECTS" | tee -a "$GITHUB_STEP_SUMMARY"
 
   migrate:
     needs: check
     runs-on: ubuntu-latest
     environment: studio-database
+    env:
+      MIGRATION: ${{ inputs.migration }}
+      SHA: ${{ inputs.migration_sha256 }}
+      TABLES: ${{ inputs.tables }}
+      EFFECTS: ${{ inputs.expected_effects }}
+      CONFIG: wrangler.production.toml
     steps:
       - uses: actions/checkout@v4
         with:
@@ -71,6 +92,9 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
+      - name: Check again after approval
+        run: |
+          python3 atlas-tools/release/studio/migration-check.py "worker/plotart-studio/migrations/$MIGRATION" "$SHA" "$TABLES" "$EFFECTS" | grep -E "^(REFUSED|MIGRATION CHECK OK)"
       - name: Production configuration (identifiers from the environment, never printed)
         env:
           STUDIO_D1_DATABASE_ID: ${{ vars.STUDIO_D1_DATABASE_ID }}
@@ -79,40 +103,73 @@ jobs:
         run: python3 atlas-tools/release/studio/render-config.py worker/plotart-studio
       - name: Dry run
         if: ${{ inputs.dry_run }}
-        env:
-          COMMIT: ${{ inputs.commit }}
-          MIGRATION: ${{ inputs.migration }}
         run: |
-          [[ "$MIGRATION" =~ ^[0-9]{4}_[a-z0-9_]+\.sql$ ]] && test -f "worker/plotart-studio/migrations/$MIGRATION"
-          echo "DRY RUN OK: approved; the migration $MIGRATION at $COMMIT would run next. Nothing was sent to Cloudflare."
+          echo "DRY RUN OK: approved; backups and the migration $MIGRATION would run next. Nothing was sent to Cloudflare."
+      - name: Backup 1 of 2 · Time Travel restore point
+        id: tt
+        if: ${{ !inputs.dry_run }}
+        working-directory: worker/plotart-studio
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.STUDIO_CF_D1_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          npx --yes wrangler@4.150.0 d1 time-travel info plotart-studio --json --config "$CONFIG" > "$RUNNER_TEMP/tt.json" 2>/dev/null || { echo "FAIL  no restore point: migration not started"; exit 1; }
+          B=$(node -e 'const s=require("fs").readFileSync(process.argv[1],"utf8");const m=s.match(/"bookmark"\s*:\s*"([^"]+)"/);if(!m)process.exit(1);console.log(m[1])' "$RUNNER_TEMP/tt.json") || { echo "FAIL  no restore point: migration not started"; exit 1; }
+          echo "bookmark=$B" >> "$GITHUB_OUTPUT"
+          echo "restore point recorded: $B"
+          echo "- Restore point (Time Travel bookmark): \`$B\`" >> "$GITHUB_STEP_SUMMARY"
+      - name: Backup 2 of 2 · full export, encrypted on the runner
+        if: ${{ !inputs.dry_run }}
+        working-directory: worker/plotart-studio
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.STUDIO_CF_D1_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
+          BACKUP_KEY: ${{ secrets.STUDIO_BACKUP_PASSPHRASE }}
+        run: |
+          [ "${#BACKUP_KEY}" -ge 24 ] || { echo "FAIL  the backup passphrase is missing or too short: migration not started"; exit 1; }
+          npx --yes wrangler@4.150.0 d1 export plotart-studio --remote --config "$CONFIG" --output "$RUNNER_TEMP/backup.sql" > /dev/null 2>&1 || { echo "FAIL  the export failed: migration not started"; exit 1; }
+          grep -qiE 'CREATE TABLE [`"]?artists' "$RUNNER_TEMP/backup.sql" || { echo "FAIL  the export is incomplete: migration not started"; rm -f "$RUNNER_TEMP/backup.sql"; exit 1; }
+          openssl enc -aes-256-cbc -pbkdf2 -iter 600000 -salt -in "$RUNNER_TEMP/backup.sql" -out "$RUNNER_TEMP/studio-d1-backup.sql.enc" -pass env:BACKUP_KEY
+          openssl enc -d -aes-256-cbc -pbkdf2 -iter 600000 -in "$RUNNER_TEMP/studio-d1-backup.sql.enc" -pass env:BACKUP_KEY | cmp -s - "$RUNNER_TEMP/backup.sql" || { echo "FAIL  the encrypted backup does not decrypt to the export: migration not started"; exit 1; }
+          shred -u "$RUNNER_TEMP/backup.sql"
+          C=$(sha256sum "$RUNNER_TEMP/studio-d1-backup.sql.enc" | cut -c1-64)
+          echo "encrypted backup verified · checksum $C"
+          echo "- Encrypted full backup: artifact \`studio-d1-backup-${{ github.run_id }}\` (90 days), SHA-256 \`$C\`" >> "$GITHUB_STEP_SUMMARY"
+      - name: Keep the encrypted backup
+        if: ${{ !inputs.dry_run }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: studio-d1-backup-${{ github.run_id }}
+          path: ${{ runner.temp }}/studio-d1-backup.sql.enc
+          retention-days: 90
+          if-no-files-found: error
       - name: Database fingerprint before
         if: ${{ !inputs.dry_run }}
         working-directory: worker/plotart-studio
         env:
-          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.STUDIO_CF_D1_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
-        run: |
-          set -o pipefail
-          npx --yes wrangler@4.150.0 d1 execute plotart-studio --remote --json --config wrangler.production.toml --command "$(grep -v '^--' ../../atlas-tools/release/studio/d1-check.sql)" 2>/dev/null \
-            | node ../../atlas-tools/release/studio/d1-fingerprint.mjs save "$RUNNER_TEMP/db-before"
+        run: node ../../atlas-tools/release/studio/d1-snapshot.mjs "$CONFIG" save "$RUNNER_TEMP/db-before"
       - name: Apply the migration
         if: ${{ !inputs.dry_run }}
         working-directory: worker/plotart-studio
         env:
-          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.STUDIO_CF_D1_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
-          MIGRATION: ${{ inputs.migration }}
         run: |
-          [[ "$MIGRATION" =~ ^[0-9]{4}_[a-z0-9_]+\.sql$ ]] || exit 1
-          npx --yes wrangler@4.150.0 d1 execute plotart-studio --remote --config wrangler.production.toml --file "migrations/$MIGRATION" > "$RUNNER_TEMP/m.log" 2>&1 \
-            && echo "migration applied" || { echo "FAIL  the migration was refused (D1 runs a file as one batch: if the first statement failed, nothing was applied)"; exit 1; }
-      - name: Database fingerprint after
+          npx --yes wrangler@4.150.0 d1 execute plotart-studio --remote --config "$CONFIG" --file "migrations/$MIGRATION" > "$RUNNER_TEMP/m.log" 2>&1 \
+            && echo "migration applied" || { echo "FAIL  the migration was refused by the database (see the backups above before any further step)"; exit 1; }
+      - name: Only the declared tables changed
         if: ${{ !inputs.dry_run }}
         working-directory: worker/plotart-studio
         env:
-          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.STUDIO_CF_D1_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
+        run: node ../../atlas-tools/release/studio/d1-snapshot.mjs "$CONFIG" compare "$RUNNER_TEMP/db-before" "$TABLES"
+      - name: If anything failed after the backups
+        if: ${{ failure() && !inputs.dry_run && steps.tt.outputs.bookmark != '' }}
+        env:
+          B: ${{ steps.tt.outputs.bookmark }}
         run: |
-          set -o pipefail
-          npx --yes wrangler@4.150.0 d1 execute plotart-studio --remote --json --config wrangler.production.toml --command "$(grep -v '^--' ../../atlas-tools/release/studio/d1-check.sql)" 2>/dev/null \
-            | node ../../atlas-tools/release/studio/d1-fingerprint.mjs compare "$RUNNER_TEMP/db-before" ${{ inputs.allow_record_changes && '--allow-record-changes' || '' }}
+          echo "NOT RESTORED AUTOMATICALLY. Restoring needs the founder's separate approval."
+          echo "- **Not restored automatically.** Restore point: \`$B\` (Time Travel), and the encrypted backup artifact. A restore needs the founder's separate approval." >> "$GITHUB_STEP_SUMMARY"

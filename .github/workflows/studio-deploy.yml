@@ -6,9 +6,10 @@
 #   3. "check" refuses anything that is not a full commit ID already on main, would roll back the live Studio,
 #      or carries a bundle that does not match its sources. It lists the Studio files that will change.
 #   4. "deploy" waits in the environment studio-production until the founder presses Approve in GitHub.
-#      Only then can it read the Cloudflare token (Workers Scripts: Edit, nothing else).
-#   5. It deploys exactly that commit, checks the gallery order and reserved position 01 before and after,
-#      and records the commit as tag studio-live.
+#      Only then can it read the Cloudflare token STUDIO_CF_DEPLOY_TOKEN (Workers Scripts: Edit, nothing else).
+#   5. It deploys exactly that commit and checks the gallery order and reserved position 01 before and after.
+#      The live release is read from this workflow's own history of successful real runs (read-only):
+#      no job in this workflow can change the repository.
 # dry_run: true goes through the same approval and builds the Worker without contacting Cloudflare (for testing).
 # Logs are public: no step prints a credential, an identifier from the environment, or any artist information.
 name: PlotArt Studio deploy
@@ -29,6 +30,7 @@ on:
 
 permissions:
   contents: read
+  actions: read            # to read this workflow's own run history (which commit is live); nothing is written
 
 concurrency:
   group: plotart-studio-cloudflare
@@ -46,8 +48,18 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
+      - name: Which Studio release is live (from this workflow's successful real runs)
+        id: live
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          LIVE=$(gh run list -R "$GITHUB_REPOSITORY" --workflow studio-deploy.yml --status success --limit 100 --json displayTitle \
+                 --jq '[.[].displayTitle | select(test("^Studio deploy [0-9a-f]{40}$"))][0] // "" | sub("^Studio deploy "; "")')
+          echo "commit=$LIVE" >> "$GITHUB_OUTPUT"
+          echo "live release: ${LIVE:-baseline (no deployment through this workflow yet)}"
       - name: The commit is approved, on main, and contains the live Studio
         env:
+          STUDIO_LIVE_COMMIT: ${{ steps.live.outputs.commit }}
           COMMIT: ${{ inputs.commit }}
           MODE: ${{ inputs.dry_run && '--allow-unchanged' || '' }}
         run: bash atlas-tools/release/studio/guard.sh "$COMMIT" $MODE
@@ -56,18 +68,27 @@ jobs:
     needs: check
     runs-on: ubuntu-latest
     environment: studio-production
-    permissions:
-      contents: write          # only to move the tag studio-live after a real deployment
     steps:
       - uses: actions/checkout@v4
         with:
           ref: ${{ inputs.commit }}
           fetch-depth: 0
+          persist-credentials: false
       - uses: actions/setup-node@v4
         with:
           node-version: 22
+      - name: Which Studio release is live (from this workflow's successful real runs)
+        id: live
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          LIVE=$(gh run list -R "$GITHUB_REPOSITORY" --workflow studio-deploy.yml --status success --limit 100 --json displayTitle \
+                 --jq '[.[].displayTitle | select(test("^Studio deploy [0-9a-f]{40}$"))][0] // "" | sub("^Studio deploy "; "")')
+          echo "commit=$LIVE" >> "$GITHUB_OUTPUT"
+          echo "live release: ${LIVE:-baseline (no deployment through this workflow yet)}"
       - name: Check again after approval (main or the live release may have moved while waiting)
         env:
+          STUDIO_LIVE_COMMIT: ${{ steps.live.outputs.commit }}
           COMMIT: ${{ inputs.commit }}
           MODE: ${{ inputs.dry_run && '--allow-unchanged' || '' }}
         run: |
@@ -101,7 +122,7 @@ jobs:
         if: ${{ !inputs.dry_run }}
         working-directory: worker/plotart-studio
         env:
-          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.STUDIO_CF_DEPLOY_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
         run: |
           set -o pipefail
@@ -116,11 +137,3 @@ jobs:
           STUDIO_ACCESS_CLIENT_ID: ${{ secrets.STUDIO_ACCESS_CLIENT_ID }}
           STUDIO_ACCESS_CLIENT_SECRET: ${{ secrets.STUDIO_ACCESS_CLIENT_SECRET }}
         run: node atlas-tools/release/studio/order-check.mjs compare "$RUNNER_TEMP/order-before"
-      - name: Record the live Studio release
-        if: ${{ !inputs.dry_run }}
-        env:
-          COMMIT: ${{ inputs.commit }}
-        run: |
-          git tag -f studio-live "$COMMIT"
-          git push -f origin refs/tags/studio-live
-          echo "- Deployed \`$COMMIT\`; tag studio-live updated" >> "$GITHUB_STEP_SUMMARY"
