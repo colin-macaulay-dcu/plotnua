@@ -202,7 +202,7 @@ r = publish();
 check('S3 the approved gallery is NOT published until the founder presses Publish', !existsSync(join(SITE, 'plotart/artists/orla-synthetic')), r.stdout + r.stderr);
 await call('POST', `/api/admin/queue/${oq.id}/publish`, FOUNDER, {});
 r = publish(); gi = gridItems();
-check('S4 Publish → the one-artwork gallery passes every publication guard and goes live', r.status === 0 && /orla-synthetic v1 · verified \(simulated\)/.test(r.stdout), r.stdout + r.stderr);
+check('S4 Publish → the one-artwork gallery passes every publication guard and goes live', r.status === 0 && / v1 · reviewed · verified \(simulated\)/.test(r.stdout) && existsSync(join(SITE, 'plotart/artists/orla-synthetic/atlantic.html')), r.stdout + r.stderr);
 check('S5 its gallery page says “1 artwork”, has one artwork page, and the larger single-work image size', page('artists/orla-synthetic/index.html').includes('<p>1 artwork</p>') &&
   readdirSync(join(SITE, 'plotart/artists/orla-synthetic')).filter(f => f.endsWith('.html')).length === 2 && page('artists/orla-synthetic/index.html').includes('sizes="(max-width:639px) 92vw, 720px"'));
 check('S6 it takes the lowest open position (02); 01 stays reserved; the other artist keeps 07', gi[0] === 'reserved' && gi[1] === 'card:orla-synthetic' && gi[6] === 'card:niamh-synthetic', gi.join(','));
