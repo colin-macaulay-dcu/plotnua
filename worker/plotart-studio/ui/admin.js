@@ -22,6 +22,7 @@
     const county = i => i.county ? `Co. ${E(i.county)} · ${i.show_county ? 'the visitor chose to show it' : 'kept private by the visitor'}` : 'No county given';
     const item = (i, on) => `<li data-id="${i.id}" style="padding:18px 0;border-top:1px solid var(--line,rgba(242,235,224,.12))">
         <p class="st-work-s" style="margin:0 0 8px">${E(i.ref)} · received ${when(i.created_at)}${on ? ` · on the board since ${when(i.published_at)}${i.edited ? ' · <b>wording edited</b>' : ''}` : ''}</p>
+        ${on ? '' : `<p class="st-work-s" style="margin:0 0 8px;${i.days_left <= d.warn_days ? 'color:#CF8566;font-weight:600' : ''}">${i.days_left <= d.warn_days ? '⚠ ' : ''}Deleted automatically ${i.days_left === 0 ? 'today' : `in ${i.days_left} day${i.days_left === 1 ? '' : 's'}`} (${when(i.expires_at)}) unless you decide on it.</p>`}
         <div class="st-f" style="margin:0"><label>Wording shown on the board · <span data-n></span></label>
         <textarea data-k="public_text" maxlength="160" style="min-height:76px">${E(i.public_text || i.text)}</textarea></div>
         ${i.public_text ? `<p class="st-muted" style="margin:6px 0 0">Original: “${E(i.text)}”</p>` : ''}
@@ -32,17 +33,24 @@
         </div>
         <div class="st-actions" style="margin-top:14px">${on
           ? '<button class="st-btn st-btn--solid st-btn--small" data-a="save">Save changes</button><button class="st-btn st-btn--small" data-a="remove">Remove from the board</button>'
-          : '<button class="st-btn st-btn--solid st-btn--small" data-a="approve">Approve</button><button class="st-btn st-btn--small" data-a="not_approve">Not approved</button>'}</div></li>`;
+          : '<button class="st-btn st-btn--solid st-btn--small" data-a="approve">Approve</button><button class="st-btn st-btn--small" data-a="not_approve">Not approved</button><button class="st-btn st-btn--small" data-a="delete">Delete now</button>'}</div></li>`;
+    const match = i => !q || (i.ref || '').toUpperCase().includes(q.toUpperCase());
+    let q = '';
     function draw() {
+      const W = d.waiting.filter(match), A = d.approved.filter(match), D = d.decided.filter(match);
       app.innerHTML = `<h1 class="st-h1">Idea Board</h1>
         <p class="st-sub">Homeowner ideas for plotnua.ie/ideas.html. Nothing appears until you approve it; approved ideas publish within about 10 minutes and the Discovery Library card shows the latest three. Edit wording only to tidy it or remove identifying details, never to change its meaning.</p>
-        <section class="st-card"><h2>Waiting for you (${d.waiting.length})</h2>${d.waiting.length ? `<ul style="list-style:none;padding:0;margin:0">${d.waiting.map(i => item(i, false)).join('')}</ul>` : '<p class="st-muted">Nothing waiting.</p>'}</section>
-        <section class="st-card"><h2>On the board (${d.approved.length})</h2>${d.approved.length ? `<ul style="list-style:none;padding:0;margin:0">${d.approved.map(i => item(i, true)).join('')}</ul>` : '<p class="st-muted">The board is empty: plotnua.ie shows the empty-board invitation.</p>'}</section>
-        <section class="st-card"><h2>Declined or removed</h2><p class="st-muted">Deleted automatically ${d.purge_days} days after your decision.</p>
-          ${d.decided.length ? `<ul class="st-works">${d.decided.map(i => `<li class="st-work" style="grid-template-columns:1fr"><p class="st-work-s" style="margin:0">${E(i.ref)} · ${i.status === 'removed' ? 'removed ' + when(i.removed_at) : 'not approved ' + when(i.decided_at)} · “${E(i.public_text || i.text)}”</p></li>`).join('')}</ul>` : ''}</section>`;
+        ${d.expiring_soon ? `<div class="st-card" role="alert" style="border-color:#CF8566"><p style="margin:0"><b>⚠ ${d.expiring_soon} waiting idea${d.expiring_soon === 1 ? '' : 's'} will be deleted within ${d.warn_days} days</b> unless you approve or decline ${d.expiring_soon === 1 ? 'it' : 'them'}. Ideas waiting for review are kept for ${d.pending_days} days.</p></div>` : ''}
+        <div class="st-f" style="max-width:360px"><label for="ibRef">Find by reference (for a removal request)</label><input id="ibRef" type="text" placeholder="PN-I-…" value="${E(q)}"></div>
+        <section class="st-card"><h2>Waiting for you (${d.waiting.length})</h2><p class="st-muted" style="margin-top:0">Kept for ${d.pending_days} days, then deleted automatically.</p>${W.length ? `<ul style="list-style:none;padding:0;margin:0">${W.map(i => item(i, false)).join('')}</ul>` : `<p class="st-muted">${q ? 'No waiting idea with that reference.' : 'Nothing waiting.'}</p>`}</section>
+        <section class="st-card"><h2>On the board (${d.approved.length})</h2>${A.length ? `<ul style="list-style:none;padding:0;margin:0">${A.map(i => item(i, true)).join('')}</ul>` : `<p class="st-muted">${q ? 'No idea on the board with that reference.' : 'The board is empty: plotnua.ie shows the empty-board invitation.'}</p>`}</section>
+        <section class="st-card"><h2>Declined or removed</h2><p class="st-muted">Deleted automatically ${d.purge_days} days after your decision, or now with “Delete now”.</p>
+          ${D.length ? `<ul class="st-works">${D.map(i => `<li class="st-work" data-id="${i.id}" style="grid-template-columns:1fr auto;align-items:center"><p class="st-work-s" style="margin:0">${E(i.ref)} · ${i.status === 'removed' ? 'removed ' + when(i.removed_at) : 'not approved ' + when(i.decided_at)} · “${E(i.public_text || i.text)}”</p><button class="st-btn st-btn--small" data-a="delete">Delete now</button></li>`).join('')}</ul>` : ''}</section>`;
+      const ref = app.querySelector('#ibRef');
+      ref.addEventListener('input', () => { q = ref.value.trim(); draw(); const r2 = app.querySelector('#ibRef'); r2.focus(); r2.setSelectionRange(r2.value.length, r2.value.length); });
       app.querySelectorAll('[data-id]').forEach(li => {
         const ta = li.querySelector('textarea'), n = li.querySelector('[data-n]');
-        const count = () => { n.textContent = `${ta.value.length}/160`; }; count(); ta.addEventListener('input', count);
+        if (ta) { const count = () => { n.textContent = `${ta.value.length}/160`; }; count(); ta.addEventListener('input', count); }
         li.querySelectorAll('[data-a]').forEach(btn => btn.addEventListener('click', async () => {
           const body = { action: btn.dataset.a };
           if (['approve', 'save'].includes(btn.dataset.a)) {
@@ -51,7 +59,8 @@
             const hide = li.querySelector('[data-k="hide_county"]'); if (hide && hide.checked) body.hide_county = true;
           }
           if (btn.dataset.a === 'remove' && !confirm('Remove this idea from the public board?')) return;
-          try { d = await api('POST', `/api/admin/ideas/${li.dataset.id}`, body); say({ approve: 'Approved: it will appear on plotnua.ie shortly', save: 'Saved', remove: 'Removed from the board', not_approve: 'Not approved' }[btn.dataset.a]); draw(); }
+          if (btn.dataset.a === 'delete' && !confirm('Delete this idea permanently now? This cannot be undone.')) return;
+          try { d = await api('POST', `/api/admin/ideas/${li.dataset.id}`, body); say({ approve: 'Approved: it will appear on plotnua.ie shortly', save: 'Saved', remove: 'Removed from the board', not_approve: 'Not approved', delete: 'Deleted' }[btn.dataset.a]); draw(); }
           catch (e) { say(e.message, true); }
         }));
       });

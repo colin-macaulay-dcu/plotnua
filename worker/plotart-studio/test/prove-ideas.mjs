@@ -131,13 +131,38 @@ r = await pipe(null); check('P1 no token: refused', r.s === 401 || r.s === 403, 
 r = await pipe('Bearer wrong'); check('P2 wrong token: refused', r.s === 401 || r.s === 403, r.s);
 r = await pipe();
 check('P3 returns approved ideas only (3)', r.s === 200 && r.j.ideas.length === 3);
-const sent = new Set(r.j.ideas.map(i => i.id)), notApproved = (await db.prepare("SELECT id FROM ideas WHERE status <> 'approved'").all()).results.map(x => x.id);
-check('P3b no waiting, declined or removed idea is ever sent (even one with wording already set)', notApproved.length > 5 && notApproved.every(id => !sent.has(id)));
-check('P4 public fields only: no reference, original wording, status, submission time or reviewer (published_at is the approval time, for ordering)', r.j.ideas.every(i => Object.keys(i).every(k => ['id', 'text', 'area', 'county', 'month', 'published_at', 'became_discovery'].includes(k))));
-check('P5 approved wording is used; private and hidden counties are not sent', r.j.ideas.find(i => i.id === seed.id).text === 'A seed-library box by the front gate' && r.j.ideas.every(i => i.county === null));
-check('P6 newest first', r.j.ideas.map(i => i.published_at).join() === [...r.j.ideas.map(i => i.published_at)].sort().reverse().join());
+const sentTexts = new Set(r.j.ideas.map(i => i.text)), notApproved = (await db.prepare("SELECT text, public_text FROM ideas WHERE status <> 'approved'").all()).results;
+check('P3b no waiting, declined or removed idea is ever sent (even one with wording already set)', notApproved.length > 5 && notApproved.every(x => !sentTexts.has(x.text) && !sentTexts.has(x.public_text)));
+check('P4 public fields only: wording, area, county, month and year, Discovery link (no id, reference, exact time, status or reviewer)', r.j.ideas.every(i => Object.keys(i).every(k => ['text', 'area', 'county', 'month', 'became_discovery'].includes(k)) && /^\d{4}-\d{2}$/.test(i.month)));
+check('P5 approved wording is used; private and hidden counties are not sent', r.j.ideas.some(i => i.text === 'A seed-library box by the front gate') && r.j.ideas.every(i => i.county === null));
+const order = (await db.prepare("SELECT COALESCE(public_text, text) t FROM ideas WHERE status='approved' ORDER BY published_at DESC, id DESC").all()).results.map(x => x.t);
+check('P6 newest first', JSON.stringify(r.j.ideas.map(i => i.text)) === JSON.stringify(order));
 await db.prepare("UPDATE ideas SET decided_at = '2026-01-01T00:00:00Z' WHERE id = ?").bind(burst0.id).run();
 await pipe(); check('P7 declined ideas are deleted after 30 days', !(await db.prepare('SELECT 1 FROM ideas WHERE id = ?').bind(burst0.id).first()));
+// Retention (founder decision 1 Nov 2026): waiting ideas 90 days with a warning; approved ideas never deleted automatically.
+{ const ins = (id, status, created, extra = '') => db.prepare(`INSERT INTO ideas (id, ref, text, status, created_at, published_at, decided_at) VALUES (?,?,?,?,?,?,?)`)
+    .bind(id, 'PN-I-RET-' + id.slice(-4), 'Retention test idea ' + id, status, created, status === 'approved' ? created : null, status === 'approved' ? created : null).run();
+  const daysAgo = d => new Date(Date.now() - d * 86400_000).toISOString();
+  await ins('iret0000000000091', 'received', daysAgo(91));
+  await ins('iret0000000000080', 'received', daysAgo(80));
+  await ins('iret0000000000010', 'received', daysAgo(10));
+  await ins('iret0000000000400', 'approved', daysAgo(400));
+  const adm = (await call('GET', '/api/admin/ideas', FOUNDER)).j;
+  const has = id => db.prepare('SELECT 1 FROM ideas WHERE id = ?').bind(id).first();
+  check('R1 a waiting idea older than 90 days is deleted automatically', !(await has('iret0000000000091')));
+  check('R2 waiting ideas younger than 90 days are kept', !!(await has('iret0000000000080')) && !!(await has('iret0000000000010')));
+  check('R3 an approved idea is never deleted automatically, however old (400 days)', !!(await has('iret0000000000400')));
+  const w80 = adm.waiting.find(i => i.id === 'iret0000000000080'), w10 = adm.waiting.find(i => i.id === 'iret0000000000010');
+  check('R4 the dashboard shows the deletion date and warns within 14 days', w80 && w80.days_left === 10 && w10 && w10.days_left === 80 && adm.expiring_soon >= 1 && adm.pending_days === 90 && adm.warn_days === 14, JSON.stringify([w80 && w80.days_left, w10 && w10.days_left, adm.expiring_soon]));
+  r = await call('POST', '/api/admin/ideas/iret0000000000400', FOUNDER, { action: 'delete' });
+  check('R5 "Delete now" refuses an idea that is on the board (remove it first)', r.s === 409 && !!(await has('iret0000000000400')));
+  r = await call('POST', '/api/admin/ideas/iret0000000000010', FOUNDER, { action: 'delete' });
+  check('R6 "Delete now" erases a waiting idea at once (removal request), audited by reference only', r.s === 200 && !(await has('iret0000000000010')) &&
+    !!(await db.prepare("SELECT 1 FROM audit WHERE action = 'idea_delete' AND detail LIKE '%PN-I-RET-0010%' AND detail NOT LIKE '%Retention test%'").first()));
+  r = await call('POST', '/api/admin/ideas/iret0000000000080', FOUNDER, { action: 'delete' }, { 'Cf-Access-Jwt-Assertion': token('artist@example.test') });
+  check('R7 only the founder can delete', (r.s === 401 || r.s === 403) && !!(await has('iret0000000000080')));
+  await db.prepare("DELETE FROM ideas WHERE id LIKE 'iret%'").run();
+}
 
 console.log('E · end to end (submit -> approve -> pipeline -> page)');
 const SITE = mkdtempSync(join(tmpdir(), 'ib-site-'));

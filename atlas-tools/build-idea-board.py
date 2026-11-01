@@ -38,7 +38,7 @@ COUNTIES = ["Antrim", "Armagh", "Carlow", "Cavan", "Clare", "Cork", "Derry", "Do
             "Tipperary", "Tyrone", "Waterford", "Westmeath", "Wexford", "Wicklow"]
 RULES = {"link": re.compile(r"(https?://|www\.|\b[a-z0-9-]{2,}\.(?:com|ie|net|org|co|uk|io|eu|info|biz|app|dev|ly|me)\b)", re.I),
          "email": re.compile(r"[^\s@]+@[^\s@]+\.[^\s@]+"), "phone": re.compile(r"\d(?:[\s().\-]?\d){6,}"), "markup": re.compile(r"[<>]")}
-FIELDS = {"id", "text", "area", "county", "month", "published_at", "became_discovery"}
+FIELDS = {"text", "area", "county", "month", "became_discovery"}   # public fields only: no id, reference or exact time
 ENDPOINT_RE = re.compile(r"^https://[a-z0-9.-]+\.workers\.dev/v1/ideas$|^https://[a-z0-9.-]+\.plotnua\.ie/v1/ideas$|^http://(127\.0\.0\.1|localhost):\d{2,5}/v1/ideas$")
 MONTHS = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
 
@@ -55,23 +55,21 @@ def die(m):
 
 
 def validate(ideas):
-    seen = set()
-    for i in ideas:
-        if not isinstance(i, dict) or set(i) - FIELDS or not {"id", "text", "month", "published_at"} <= set(i):
-            die("an idea carries fields that are not public, or misses required ones: %r" % sorted(i) if isinstance(i, dict) else i)
-        if not re.fullmatch(r"i[0-9a-f]{16}", str(i["id"])) or i["id"] in seen: die("bad or repeated idea id %r" % i.get("id"))
-        seen.add(i["id"])
+    for n, i in enumerate(ideas, 1):
+        if not isinstance(i, dict) or set(i) - FIELDS or not {"text", "month"} <= set(i):
+            die("idea %d carries fields that are not public, or misses required ones: %r" % (n, sorted(i) if isinstance(i, dict) else i))
         t = i["text"]
-        if not isinstance(t, str) or not 8 <= len(t) <= 160 or t != " ".join(t.split()): die("%s: text length or spacing" % i["id"])
+        if not isinstance(t, str) or not 8 <= len(t) <= 160 or t != " ".join(t.split()): die("idea %d: text length or spacing" % n)
         for k, rx in RULES.items():
-            if rx.search(t): die("%s: text contains a %s" % (i["id"], k))
-        if i.get("area") not in AREAS + [None]: die("%s: unknown area" % i["id"])
-        if i.get("county") not in COUNTIES + [None]: die("%s: unknown county" % i["id"])
-        if not re.fullmatch(r"20\d\d-(0[1-9]|1[0-2])", str(i["month"])): die("%s: month must be YYYY-MM" % i["id"])
+            if rx.search(t): die("idea %d: text contains a %s" % (n, k))
+        if i.get("area") not in AREAS + [None]: die("idea %d: unknown area" % n)
+        if i.get("county") not in COUNTIES + [None]: die("idea %d: unknown county" % n)
+        if not re.fullmatch(r"20\d\d-(0[1-9]|1[0-2])", str(i["month"])): die("idea %d: month must be YYYY-MM (month and year only)" % n)
         d = i.get("became_discovery")
         if d is not None and (not re.fullmatch(r"discovery-[a-z0-9-]+\.html", d) or not (ROOT / d).exists()):
-            die("%s: 'Now a Discovery' must link to an existing Discovery page, not %r" % (i["id"], d))
-    if ideas != sorted(ideas, key=lambda x: (x["published_at"], x["id"]), reverse=True):
+            die("idea %d: 'Now a Discovery' must link to an existing Discovery page, not %r" % (n, d))
+    months = [i["month"] for i in ideas]
+    if months != sorted(months, reverse=True):
         die("ideas must be newest first")
 
 

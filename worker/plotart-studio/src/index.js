@@ -372,22 +372,31 @@ async function exportFor(env, q) {
    nothing is public until the founder approves it here, and only the content pipeline publishes approved ideas.
    Declined and removed ideas are deleted 30 days after the decision. Until migration 0003 is applied these routes
    say so (503) instead of failing. */
-const IDEA_PURGE_DAYS = 30;
+const IDEA_PURGE_DAYS = 30;          // declined or removed: deleted 30 days after the decision
+const IDEA_PENDING_DAYS = 90;        // waiting for review: deleted 90 days after it arrived (founder decision 1 Nov 2026)
+const IDEA_WARN_DAYS = 14;           // the Ideas tab warns this many days before a waiting idea is deleted
 async function ideasReady(env) {
   const t = await env.DB.prepare("SELECT name FROM sqlite_master WHERE type='table' AND name='ideas'").first();
   if (!t) throw new Bad('The Idea Board isn’t installed yet (migration 0003 has not been applied).', 503);
 }
 async function purgeIdeas(env) {
-  const cut = new Date(Date.now() - IDEA_PURGE_DAYS * 86400_000).toISOString();
-  const r = await env.DB.prepare("DELETE FROM ideas WHERE status IN ('not_approved','removed') AND COALESCE(removed_at, decided_at) < ?").bind(cut).run();
-  await env.DB.prepare('DELETE FROM idea_intake_days WHERE day < ?').bind(cut.slice(0, 10)).run();
-  return r.meta ? r.meta.changes || 0 : 0;
+  // Retention. Each DELETE names the statuses it may touch; an approved idea is never deleted here (only a founder's
+  // "Remove from the board" can take it down, and it is then deleted 30 days later).
+  const ago = d => new Date(Date.now() - d * 86400_000).toISOString();
+  const a = await env.DB.prepare("DELETE FROM ideas WHERE status IN ('not_approved','removed') AND COALESCE(removed_at, decided_at) < ?").bind(ago(IDEA_PURGE_DAYS)).run();
+  const b = await env.DB.prepare("DELETE FROM ideas WHERE status = 'received' AND created_at < ?").bind(ago(IDEA_PENDING_DAYS)).run();
+  await env.DB.prepare('DELETE FROM idea_intake_days WHERE day < ?').bind(ago(IDEA_PURGE_DAYS).slice(0, 10)).run();
+  return ((a.meta && a.meta.changes) || 0) + ((b.meta && b.meta.changes) || 0);
 }
 async function ideasAdmin(env) {
   await ideasReady(env); await purgeIdeas(env);
   const cols = 'id, ref, text, public_text, area, county, show_county, status, became_discovery, edited, created_at, decided_at, decided_by, published_at, removed_at';
+  const waiting = (await all(env, `SELECT ${cols} FROM ideas WHERE status='received' ORDER BY created_at`)).map(i => {
+    const expires = new Date(Date.parse(i.created_at) + IDEA_PENDING_DAYS * 86400_000);
+    return { ...i, expires_at: expires.toISOString(), days_left: Math.max(0, Math.ceil((expires - Date.now()) / 86400_000)) };
+  });
   return {
-    waiting: await all(env, `SELECT ${cols} FROM ideas WHERE status='received' ORDER BY created_at`),
+    waiting, expiring_soon: waiting.filter(i => i.days_left <= IDEA_WARN_DAYS).length, pending_days: IDEA_PENDING_DAYS, warn_days: IDEA_WARN_DAYS,
     approved: await all(env, `SELECT ${cols} FROM ideas WHERE status='approved' ORDER BY published_at DESC, id DESC`),
     decided: await all(env, `SELECT ${cols} FROM ideas WHERE status IN ('not_approved','removed') ORDER BY COALESCE(removed_at, decided_at) DESC LIMIT 50`),
     areas: IDEA_AREAS, purge_days: IDEA_PURGE_DAYS,
@@ -419,15 +428,21 @@ async function decideIdea(env, actor, id, b) {
     const pub = text === i.text ? null : text;
     await env.DB.prepare("UPDATE ideas SET status='approved', public_text=?, area=?, became_discovery=?, show_county=?, edited=?, decided_at=COALESCE(decided_at, ?), decided_by=?, published_at=COALESCE(published_at, ?) WHERE id=?")
       .bind(pub, area, disc, show, pub ? 1 : 0, at, actor, at, id).run();
+  } else if (action === 'delete') {
+    // Erasure now (e.g. a visitor's removal request quoting their reference). An idea on the board must be removed first.
+    if (i.status === 'approved') throw new Bad('Remove it from the board first; it is then deleted on the next publish.', 409);
+    await env.DB.prepare("DELETE FROM ideas WHERE id = ? AND status <> 'approved'").bind(id).run();
   } else throw new Bad('Unknown action');
   await audit(env, actor, 'founder', 'idea_' + action, null, { ref: i.ref });
   return ideasAdmin(env);
 }
 async function pipelineIdeas(env) {
+  // Public fields only (founder decision 1 Nov 2026): wording, area, county where the visitor allowed it, month and
+  // year, and a "Now a PlotNua Discovery" link. No reference, id, exact time, status or moderation detail.
   await ideasReady(env); await purgeIdeas(env);
-  const rows = await all(env, "SELECT id, text, public_text, area, county, show_county, became_discovery, published_at FROM ideas WHERE status='approved' ORDER BY published_at DESC, id DESC");
-  return { ideas: rows.map(r => ({ id: r.id, text: r.public_text || r.text, area: r.area || null, county: r.show_county ? r.county : null,
-    month: String(r.published_at).slice(0, 7), published_at: r.published_at, became_discovery: r.became_discovery || null })) };
+  const rows = await all(env, "SELECT text, public_text, area, county, show_county, became_discovery, published_at FROM ideas WHERE status='approved' ORDER BY published_at DESC, id DESC");
+  return { ideas: rows.map(r => ({ text: r.public_text || r.text, area: r.area || null, county: r.show_county ? r.county : null,
+    month: String(r.published_at).slice(0, 7), became_discovery: r.became_discovery || null })) };
 }
 
 /* ---------------------------------------------------------------- router */

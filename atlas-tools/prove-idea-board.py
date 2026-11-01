@@ -7,7 +7,8 @@ PROVE THE IDEA BOARD (Phase 1, 1 Nov 2026).
           (or the invitation), carries the "not yet researched" caption, links to ideas.html and has no photograph.
   Part 2  planted faults, each built in a throw-away copy, each of which the builder must REFUSE:
           a non-public field, a name/e-mail/phone/link in the text, markup, an unknown area or county, a day-level
-          date, a Discovery link to a page that does not exist, a repeated id, the wrong order, an over-long text.
+          date, an internal id, an exact timestamp, a submission reference, a Discovery link to a page that does not exist,
+          the wrong order, an over-long text.
   Part 3  planted faults in the BUILT output, each of which Part 1's checks must catch: noindex removed, a fourth
           note on the card, the caption removed, an idea on the page that is not approved (a fictional idea), an
           unescaped tag, an e-mail address shown. (A change to the Library outside the card block is refused by the
@@ -73,8 +74,7 @@ def tree():
 
 
 def idea(n, **kw):
-    d = {"id": "i%016x" % n, "text": "PROOF TEST %d: a quiet corner of the garden for a reading bench" % n, "area": "Garden",
-         "month": "2026-11", "published_at": "2026-11-01T10:%02d:00Z" % (59 - n)}
+    d = {"text": "PROOF TEST %d: a quiet corner of the garden for a reading bench" % n, "area": "Garden", "month": "2026-%02d" % (12 - n)}
     d.update(kw); return d
 
 
@@ -95,7 +95,7 @@ probs = checks(t, good)
 ok(not probs, "page shows all four; card shows the latest three %s" % (probs or ""))
 pg = (t / "ideas.html").read_text(encoding="utf-8")
 ok("Now a PlotNua Discovery" in pg and 'href="%s"' % disc in pg, "the 'Now a Discovery' link is shown")
-ok("Co. Cork" in pg and "November 2026" in pg, "county (when chosen) and month only are shown")
+ok("Co. Cork" in pg and "October 2026" in pg and not re.search(r"\b\d{1,2} (January|February|March|April|May|June|July|August|September|October|November|December)", pg), "county (when chosen) and month and year only are shown")
 rc, _ = build(t, {"ideas": []})
 ok(rc == 0 and not checks(t, []), "the empty board builds with the invitation")
 rc, _ = build(t, {"ideas": good}, "http://127.0.0.1:8799/v1/ideas")
@@ -113,7 +113,9 @@ faults = {
     "an unknown county": [idea(1, county="Atlantis")],
     "a day-level date": [idea(1, month="2026-11-01")],
     "a Discovery link to a page that does not exist": [idea(1, became_discovery="discovery-imaginary.html")],
-    "a repeated id": [idea(1), idea(1)],
+    "an internal id": [idea(1, id="i0000000000000001")],
+    "an exact timestamp": [idea(1, published_at="2026-11-01T10:00:00Z")],
+    "a submission reference": [idea(1, ref="PN-I-261101-AB12")],
     "the wrong order": [idea(2), idea(1)],
     "an over-long text": [idea(1, text="x" * 161)],
     "a too-short text": [idea(1, text="tiny")],

@@ -6,7 +6,7 @@ founder sets only after separately authorising the Idea Board launch.
     python3 atlas-tools/plotnua-ideas-publish.py --studio URL --token PIPELINE_TOKEN [--push | --simulate]
 
   1. takes the ideas the founder has approved from the Studio (/api/pipeline/ideas: public fields only: the approved
-     wording, area, county only where the person chose to show it, month, and any "Now a Discovery" link);
+     wording, area, county only where the person chose to show it, month and year, and any "Now a Discovery" link);
   2. writes them to atlas-tools/idea-board/approved-ideas.json and rebuilds ideas.html and the Library's Idea Board
      card (atlas-tools/build-idea-board.py, which checks every idea again);
   3. does nothing when nothing changed;
@@ -34,7 +34,7 @@ CSS = re.compile(r"/\* PLOTNUA IDEA BOARD CARD v1 · BEGIN.*?/\* PLOTNUA IDEA BO
 GUARDS = ["python3 atlas-tools/prove-idea-board.py", "python3 atlas-tools/build-library-card-labels.py --check",
           "python3 atlas-tools/build-library-card-webp.py --check", "python3 atlas-tools/build-discovery-library-images.py --check",
           "python3 atlas-tools/build-identity-stage1.py --check", "python3 atlas-tools/prove-global-header.py"]
-FIELDS = {"id", "text", "area", "county", "month", "published_at", "became_discovery"}
+FIELDS = {"text", "area", "county", "month", "became_discovery"}
 
 # The same Cloudflare Access service token and User-Agent the PlotArt pipeline uses (see plotart-gallery-publish.py).
 HEADERS = {"Authorization": "Bearer " + TOKEN, "User-Agent": "PlotArt-content-pipeline/1.0 (+https://plotnua.ie)"}
