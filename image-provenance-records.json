@@ -13080,6 +13080,708 @@
         "derivative_embeds_c2pa": false,
         "note": "WebP re-encoding removes the embedded C2PA credential. The derivative carries NO signed credential and must never be described as having one. The original PNG (unchanged, the <picture> fallback) keeps it."
       }
+    },
+    {
+      "asset": "assets/img/3cac96685bcd03a5-480w.webp",
+      "sha256": "8cee1a77ed3c186509486dfd561880526013400149918beec36dbd4cb38ce9bb",
+      "bytes": 30322,
+      "pixels": [
+        480,
+        268
+      ],
+      "derived_from": {
+        "asset": "assets/img/3cac96685bcd03a5.jpg",
+        "sha256": "3cac96685bcd03a50b3f62cdd14c4b18f46260d4756ea60ea412de7f6f64a5c7"
+      },
+      "method": "webp-resize",
+      "encoder": "Pillow 12.3.0, WebP quality 80, method 6, Lanczos resize to 480px wide",
+      "fidelity": {
+        "ssim": 0.9665,
+        "psnr_db": 33.89,
+        "measured_against": "source at the same pixel size"
+      },
+      "made": "2026-11-01",
+      "lineage_basis": "Discovery Library card image (discoveries.html). Inherits the source's provenance state (LEGACY_UNDECLARED); re-encoding only.",
+      "content_credentials": {
+        "source_file_embeds_c2pa": false,
+        "derivative_embeds_c2pa": false,
+        "note": "Card-sized delivery for the Discovery Library (1 Nov 2026). A WebP re-encoding of one enumerated source, bound to its sha256; it inherits the source's provenance state and declares nothing. The derivative carries NO signed credential and must never be described as having one; the source stays on the page as the fallback."
+      }
+    },
+    {
+      "asset": "assets/img/3cac96685bcd03a5-960w.webp",
+      "sha256": "49fff5dd3c8f555082101c677c0b4a07754d4c77aa3d594fc207600aa3f32566",
+      "bytes": 93216,
+      "pixels": [
+        960,
+        536
+      ],
+      "derived_from": {
+        "asset": "assets/img/3cac96685bcd03a5.jpg",
+        "sha256": "3cac96685bcd03a50b3f62cdd14c4b18f46260d4756ea60ea412de7f6f64a5c7"
+      },
+      "method": "webp-resize",
+      "encoder": "Pillow 12.3.0, WebP quality 80, method 6, Lanczos resize to 960px wide",
+      "fidelity": {
+        "ssim": 0.9629,
+        "psnr_db": 35.74,
+        "measured_against": "source at the same pixel size"
+      },
+      "made": "2026-11-01",
+      "lineage_basis": "Discovery Library card image (discoveries.html). Inherits the source's provenance state (LEGACY_UNDECLARED); re-encoding only.",
+      "content_credentials": {
+        "source_file_embeds_c2pa": false,
+        "derivative_embeds_c2pa": false,
+        "note": "Card-sized delivery for the Discovery Library (1 Nov 2026). A WebP re-encoding of one enumerated source, bound to its sha256; it inherits the source's provenance state and declares nothing. The derivative carries NO signed credential and must never be described as having one; the source stays on the page as the fallback."
+      }
+    },
+    {
+      "asset": "assets/img/7d5f5718cf9cd3da-480w.webp",
+      "sha256": "f104d9d26a16f52610dc2aef074332fc26e725427e2cd6efe8e52750c4739919",
+      "bytes": 37046,
+      "pixels": [
+        480,
+        262
+      ],
+      "derived_from": {
+        "asset": "assets/img/7d5f5718cf9cd3da.jpg",
+        "sha256": "7d5f5718cf9cd3dae83519ea285e9be608ad98ea72758d4838e6146896a9cbc3"
+      },
+      "method": "webp-resize",
+      "encoder": "Pillow 12.3.0, WebP quality 80, method 6, Lanczos resize to 480px wide",
+      "fidelity": {
+        "ssim": 0.954,
+        "psnr_db": 33.09,
+        "measured_against": "source at the same pixel size"
+      },
+      "made": "2026-11-01",
+      "lineage_basis": "Discovery Library card image (discoveries.html). Inherits the source's provenance state (LEGACY_UNDECLARED); re-encoding only.",
+      "content_credentials": {
+        "source_file_embeds_c2pa": false,
+        "derivative_embeds_c2pa": false,
+        "note": "Card-sized delivery for the Discovery Library (1 Nov 2026). A WebP re-encoding of one enumerated source, bound to its sha256; it inherits the source's provenance state and declares nothing. The derivative carries NO signed credential and must never be described as having one; the source stays on the page as the fallback."
+      }
+    },
+    {
+      "asset": "assets/img/55f2bd4248ec234f-480w.webp",
+      "sha256": "8e6439b4d3871eb91920efa3e04cb2a666f39b70a6dc31017b7694a73fc6dd3c",
+      "bytes": 36170,
+      "pixels": [
+        480,
+        262
+      ],
+      "derived_from": {
+        "asset": "assets/img/55f2bd4248ec234f.jpg",
+        "sha256": "55f2bd4248ec234f297281bd6f23a0b5672e255cea974679ef28afdb00a542e2"
+      },
+      "method": "webp-resize",
+      "encoder": "Pillow 12.3.0, WebP quality 80, method 6, Lanczos resize to 480px wide",
+      "fidelity": {
+        "ssim": 0.9616,
+        "psnr_db": 33.96,
+        "measured_against": "source at the same pixel size"
+      },
+      "made": "2026-11-01",
+      "lineage_basis": "Discovery Library card image (discoveries.html). Inherits the source's provenance state (LEGACY_UNDECLARED); re-encoding only.",
+      "content_credentials": {
+        "source_file_embeds_c2pa": false,
+        "derivative_embeds_c2pa": false,
+        "note": "Card-sized delivery for the Discovery Library (1 Nov 2026). A WebP re-encoding of one enumerated source, bound to its sha256; it inherits the source's provenance state and declares nothing. The derivative carries NO signed credential and must never be described as having one; the source stays on the page as the fallback."
+      }
+    },
+    {
+      "asset": "assets/img/55f2bd4248ec234f-960w.webp",
+      "sha256": "37556a877425881f8d64d555d588bfab998b4889e2249e4c1f6085b2728f72c1",
+      "bytes": 134750,
+      "pixels": [
+        960,
+        524
+      ],
+      "derived_from": {
+        "asset": "assets/img/55f2bd4248ec234f.jpg",
+        "sha256": "55f2bd4248ec234f297281bd6f23a0b5672e255cea974679ef28afdb00a542e2"
+      },
+      "method": "webp-resize",
+      "encoder": "Pillow 12.3.0, WebP quality 80, method 6, Lanczos resize to 960px wide",
+      "fidelity": {
+        "ssim": 0.9677,
+        "psnr_db": 35.02,
+        "measured_against": "source at the same pixel size"
+      },
+      "made": "2026-11-01",
+      "lineage_basis": "Discovery Library card image (discoveries.html). Inherits the source's provenance state (LEGACY_UNDECLARED); re-encoding only.",
+      "content_credentials": {
+        "source_file_embeds_c2pa": false,
+        "derivative_embeds_c2pa": false,
+        "note": "Card-sized delivery for the Discovery Library (1 Nov 2026). A WebP re-encoding of one enumerated source, bound to its sha256; it inherits the source's provenance state and declares nothing. The derivative carries NO signed credential and must never be described as having one; the source stays on the page as the fallback."
+      }
+    },
+    {
+      "asset": "assets/library/img/DISC-031-experience-960-480w.webp",
+      "sha256": "0a443b7bcb10be99adf6b06b3809fec2ed76a607270d2d5a98417afbae5b3bb3",
+      "bytes": 56414,
+      "pixels": [
+        480,
+        320
+      ],
+      "derived_from": {
+        "asset": "assets/disc031/img/DISC-031-experience-960.jpg",
+        "sha256": "15bb786bc4f073984929f4f6df0dcdf257ae89af7cbff7de5cbb09829d10b182"
+      },
+      "method": "webp-resize",
+      "encoder": "Pillow 12.3.0, WebP quality 80, method 6, Lanczos resize to 480px wide",
+      "fidelity": {
+        "ssim": 0.9612,
+        "psnr_db": 31.13,
+        "measured_against": "source at the same pixel size"
+      },
+      "made": "2026-11-01",
+      "lineage_basis": "Discovery Library card image (discoveries.html). Inherits the source's provenance state (AI_ILLUSTRATION); re-encoding only.",
+      "content_credentials": {
+        "source_file_embeds_c2pa": false,
+        "derivative_embeds_c2pa": false,
+        "note": "Card-sized delivery for the Discovery Library (1 Nov 2026). A WebP re-encoding of one enumerated source, bound to its sha256; it inherits the source's provenance state and declares nothing. The derivative carries NO signed credential and must never be described as having one; the source stays on the page as the fallback."
+      }
+    },
+    {
+      "asset": "assets/library/img/DISC-031-experience-960-960w.webp",
+      "sha256": "edaf29b1005dec93e28b3e3e17b9eecdf627ac8d72ebb1ea0334c08da443236c",
+      "bytes": 195360,
+      "pixels": [
+        960,
+        640
+      ],
+      "derived_from": {
+        "asset": "assets/disc031/img/DISC-031-experience-960.jpg",
+        "sha256": "15bb786bc4f073984929f4f6df0dcdf257ae89af7cbff7de5cbb09829d10b182"
+      },
+      "method": "webp-reencode",
+      "encoder": "Pillow 12.3.0, WebP quality 80, method 6",
+      "fidelity": {
+        "ssim": 0.9769,
+        "psnr_db": 34.3,
+        "measured_against": "source at the same pixel size"
+      },
+      "made": "2026-11-01",
+      "lineage_basis": "Discovery Library card image (discoveries.html). Inherits the source's provenance state (AI_ILLUSTRATION); re-encoding only.",
+      "content_credentials": {
+        "source_file_embeds_c2pa": false,
+        "derivative_embeds_c2pa": false,
+        "note": "Card-sized delivery for the Discovery Library (1 Nov 2026). A WebP re-encoding of one enumerated source, bound to its sha256; it inherits the source's provenance state and declares nothing. The derivative carries NO signed credential and must never be described as having one; the source stays on the page as the fallback."
+      }
+    },
+    {
+      "asset": "assets/img/75f721f0513e4f37-480w.webp",
+      "sha256": "a2cddaf7cad5be5c0ed0ebea1540caec6af4d7048fa03e7834b86968f923976b",
+      "bytes": 51428,
+      "pixels": [
+        480,
+        262
+      ],
+      "derived_from": {
+        "asset": "assets/img/75f721f0513e4f37.jpg",
+        "sha256": "75f721f0513e4f375e29d7d3e337adfccfa162d09be45d2bc7684e9aa4109176"
+      },
+      "method": "webp-resize",
+      "encoder": "Pillow 12.3.0, WebP quality 80, method 6, Lanczos resize to 480px wide",
+      "fidelity": {
+        "ssim": 0.9776,
+        "psnr_db": 32.77,
+        "measured_against": "source at the same pixel size"
+      },
+      "made": "2026-11-01",
+      "lineage_basis": "Discovery Library card image (discoveries.html). Inherits the source's provenance state (LEGACY_UNDECLARED); re-encoding only.",
+      "content_credentials": {
+        "source_file_embeds_c2pa": false,
+        "derivative_embeds_c2pa": false,
+        "note": "Card-sized delivery for the Discovery Library (1 Nov 2026). A WebP re-encoding of one enumerated source, bound to its sha256; it inherits the source's provenance state and declares nothing. The derivative carries NO signed credential and must never be described as having one; the source stays on the page as the fallback."
+      }
+    },
+    {
+      "asset": "assets/img/75f721f0513e4f37-960w.webp",
+      "sha256": "6a4c0d48e67196c331789cb91a50d0db8b3fb59b8440ea769d109e40031b5ba0",
+      "bytes": 184508,
+      "pixels": [
+        960,
+        524
+      ],
+      "derived_from": {
+        "asset": "assets/img/75f721f0513e4f37.jpg",
+        "sha256": "75f721f0513e4f375e29d7d3e337adfccfa162d09be45d2bc7684e9aa4109176"
+      },
+      "method": "webp-resize",
+      "encoder": "Pillow 12.3.0, WebP quality 80, method 6, Lanczos resize to 960px wide",
+      "fidelity": {
+        "ssim": 0.9829,
+        "psnr_db": 34.57,
+        "measured_against": "source at the same pixel size"
+      },
+      "made": "2026-11-01",
+      "lineage_basis": "Discovery Library card image (discoveries.html). Inherits the source's provenance state (LEGACY_UNDECLARED); re-encoding only.",
+      "content_credentials": {
+        "source_file_embeds_c2pa": false,
+        "derivative_embeds_c2pa": false,
+        "note": "Card-sized delivery for the Discovery Library (1 Nov 2026). A WebP re-encoding of one enumerated source, bound to its sha256; it inherits the source's provenance state and declares nothing. The derivative carries NO signed credential and must never be described as having one; the source stays on the page as the fallback."
+      }
+    },
+    {
+      "asset": "assets/img/dfb125ba9dd7cd87-480w.webp",
+      "sha256": "161e52479c2360f5798b019738a834e642fbb0ab9bb0cbeed84c6ad9bc53035c",
+      "bytes": 27084,
+      "pixels": [
+        480,
+        262
+      ],
+      "derived_from": {
+        "asset": "assets/img/dfb125ba9dd7cd87.jpg",
+        "sha256": "dfb125ba9dd7cd877674acf232b884899991cd2af054f297f00c052e1c8f77a8"
+      },
+      "method": "webp-resize",
+      "encoder": "Pillow 12.3.0, WebP quality 80, method 6, Lanczos resize to 480px wide",
+      "fidelity": {
+        "ssim": 0.9658,
+        "psnr_db": 33.74,
+        "measured_against": "source at the same pixel size"
+      },
+      "made": "2026-11-01",
+      "lineage_basis": "Discovery Library card image (discoveries.html). Inherits the source's provenance state (LEGACY_UNDECLARED); re-encoding only.",
+      "content_credentials": {
+        "source_file_embeds_c2pa": false,
+        "derivative_embeds_c2pa": false,
+        "note": "Card-sized delivery for the Discovery Library (1 Nov 2026). A WebP re-encoding of one enumerated source, bound to its sha256; it inherits the source's provenance state and declares nothing. The derivative carries NO signed credential and must never be described as having one; the source stays on the page as the fallback."
+      }
+    },
+    {
+      "asset": "assets/img/dfb125ba9dd7cd87-960w.webp",
+      "sha256": "a0ffd61c3afe5568e7012ae545088381e70ce462923fe9090b761e0f45b8ec3a",
+      "bytes": 84468,
+      "pixels": [
+        960,
+        524
+      ],
+      "derived_from": {
+        "asset": "assets/img/dfb125ba9dd7cd87.jpg",
+        "sha256": "dfb125ba9dd7cd877674acf232b884899991cd2af054f297f00c052e1c8f77a8"
+      },
+      "method": "webp-resize",
+      "encoder": "Pillow 12.3.0, WebP quality 80, method 6, Lanczos resize to 960px wide",
+      "fidelity": {
+        "ssim": 0.9608,
+        "psnr_db": 35.81,
+        "measured_against": "source at the same pixel size"
+      },
+      "made": "2026-11-01",
+      "lineage_basis": "Discovery Library card image (discoveries.html). Inherits the source's provenance state (LEGACY_UNDECLARED); re-encoding only.",
+      "content_credentials": {
+        "source_file_embeds_c2pa": false,
+        "derivative_embeds_c2pa": false,
+        "note": "Card-sized delivery for the Discovery Library (1 Nov 2026). A WebP re-encoding of one enumerated source, bound to its sha256; it inherits the source's provenance state and declares nothing. The derivative carries NO signed credential and must never be described as having one; the source stays on the page as the fallback."
+      }
+    },
+    {
+      "asset": "assets/img/ce9da2e51c945693-480w.webp",
+      "sha256": "54f5ca52908480962edce7716cd45608e985de333e635954555fc22a2dc438fc",
+      "bytes": 30662,
+      "pixels": [
+        480,
+        262
+      ],
+      "derived_from": {
+        "asset": "assets/img/ce9da2e51c945693.jpg",
+        "sha256": "9e2f4b6844c55271427d161c35c29bc8cc708ea44d3164e64aa85546cad9e5dc"
+      },
+      "method": "webp-resize",
+      "encoder": "Pillow 12.3.0, WebP quality 80, method 6, Lanczos resize to 480px wide",
+      "fidelity": {
+        "ssim": 0.9538,
+        "psnr_db": 33.55,
+        "measured_against": "source at the same pixel size"
+      },
+      "made": "2026-11-01",
+      "lineage_basis": "Discovery Library card image (discoveries.html). Inherits the source's provenance state (LEGACY_UNDECLARED); re-encoding only.",
+      "content_credentials": {
+        "source_file_embeds_c2pa": true,
+        "derivative_embeds_c2pa": false,
+        "note": "Card-sized delivery for the Discovery Library (1 Nov 2026). A WebP re-encoding of one enumerated source, bound to its sha256; it inherits the source's provenance state and declares nothing. The derivative carries NO signed credential and must never be described as having one; the source stays on the page as the fallback."
+      }
+    },
+    {
+      "asset": "assets/img/3bbcedb3f00a3852-480w.webp",
+      "sha256": "a40f845d564016d1b5bb91dba6627af37ef51c64661d1c4c8563f8cb8936152c",
+      "bytes": 24828,
+      "pixels": [
+        480,
+        262
+      ],
+      "derived_from": {
+        "asset": "assets/img/3bbcedb3f00a3852.jpg",
+        "sha256": "3bbcedb3f00a3852831d822bc52e4f7accb32ce58de8f1265e1f4d7bc63b0081"
+      },
+      "method": "webp-resize",
+      "encoder": "Pillow 12.3.0, WebP quality 80, method 6, Lanczos resize to 480px wide",
+      "fidelity": {
+        "ssim": 0.9553,
+        "psnr_db": 35.54,
+        "measured_against": "source at the same pixel size"
+      },
+      "made": "2026-11-01",
+      "lineage_basis": "Discovery Library card image (discoveries.html). Inherits the source's provenance state (LEGACY_UNDECLARED); re-encoding only.",
+      "content_credentials": {
+        "source_file_embeds_c2pa": true,
+        "derivative_embeds_c2pa": false,
+        "note": "Card-sized delivery for the Discovery Library (1 Nov 2026). A WebP re-encoding of one enumerated source, bound to its sha256; it inherits the source's provenance state and declares nothing. The derivative carries NO signed credential and must never be described as having one; the source stays on the page as the fallback."
+      }
+    },
+    {
+      "asset": "assets/img/3bbcedb3f00a3852-960w.webp",
+      "sha256": "8f9b0ea258671fde17439fceae050efa3c0ffc2c05268fc0adaca553e02ccc65",
+      "bytes": 91068,
+      "pixels": [
+        960,
+        524
+      ],
+      "derived_from": {
+        "asset": "assets/img/3bbcedb3f00a3852.jpg",
+        "sha256": "3bbcedb3f00a3852831d822bc52e4f7accb32ce58de8f1265e1f4d7bc63b0081"
+      },
+      "method": "webp-resize",
+      "encoder": "Pillow 12.3.0, WebP quality 80, method 6, Lanczos resize to 960px wide",
+      "fidelity": {
+        "ssim": 0.9608,
+        "psnr_db": 36.38,
+        "measured_against": "source at the same pixel size"
+      },
+      "made": "2026-11-01",
+      "lineage_basis": "Discovery Library card image (discoveries.html). Inherits the source's provenance state (LEGACY_UNDECLARED); re-encoding only.",
+      "content_credentials": {
+        "source_file_embeds_c2pa": true,
+        "derivative_embeds_c2pa": false,
+        "note": "Card-sized delivery for the Discovery Library (1 Nov 2026). A WebP re-encoding of one enumerated source, bound to its sha256; it inherits the source's provenance state and declares nothing. The derivative carries NO signed credential and must never be described as having one; the source stays on the page as the fallback."
+      }
+    },
+    {
+      "asset": "assets/library/img/DISC-033-IMG-02-DRIVEWAY-POSSIBLE-1024-480w.webp",
+      "sha256": "27c6488413058ee8d0a5e1a6afcdd5e7591d996c2dc8e77ca2a734d4f6fef278",
+      "bytes": 46064,
+      "pixels": [
+        480,
+        320
+      ],
+      "derived_from": {
+        "asset": "assets/disc033/img/DISC-033-IMG-02-DRIVEWAY-POSSIBLE-1024.jpg",
+        "sha256": "c1c80efd7c3f39309a92fca1466cc317086f7dec3180b4981231a764a098c532"
+      },
+      "method": "webp-resize",
+      "encoder": "Pillow 12.3.0, WebP quality 80, method 6, Lanczos resize to 480px wide",
+      "fidelity": {
+        "ssim": 0.9647,
+        "psnr_db": 33.18,
+        "measured_against": "source at the same pixel size"
+      },
+      "made": "2026-11-01",
+      "lineage_basis": "Discovery Library card image (discoveries.html). Inherits the source's provenance state (AI_ILLUSTRATION); re-encoding only.",
+      "content_credentials": {
+        "source_file_embeds_c2pa": false,
+        "derivative_embeds_c2pa": false,
+        "note": "Card-sized delivery for the Discovery Library (1 Nov 2026). A WebP re-encoding of one enumerated source, bound to its sha256; it inherits the source's provenance state and declares nothing. The derivative carries NO signed credential and must never be described as having one; the source stays on the page as the fallback."
+      }
+    },
+    {
+      "asset": "assets/library/img/DISC-033-IMG-02-DRIVEWAY-POSSIBLE-1024-960w.webp",
+      "sha256": "6c701d76454b9b2fb5bfb05a1bfd5122ae15bcc334925cc9a2c5e659cc2b417d",
+      "bytes": 165142,
+      "pixels": [
+        960,
+        640
+      ],
+      "derived_from": {
+        "asset": "assets/disc033/img/DISC-033-IMG-02-DRIVEWAY-POSSIBLE-1024.jpg",
+        "sha256": "c1c80efd7c3f39309a92fca1466cc317086f7dec3180b4981231a764a098c532"
+      },
+      "method": "webp-resize",
+      "encoder": "Pillow 12.3.0, WebP quality 80, method 6, Lanczos resize to 960px wide",
+      "fidelity": {
+        "ssim": 0.9735,
+        "psnr_db": 34.78,
+        "measured_against": "source at the same pixel size"
+      },
+      "made": "2026-11-01",
+      "lineage_basis": "Discovery Library card image (discoveries.html). Inherits the source's provenance state (AI_ILLUSTRATION); re-encoding only.",
+      "content_credentials": {
+        "source_file_embeds_c2pa": false,
+        "derivative_embeds_c2pa": false,
+        "note": "Card-sized delivery for the Discovery Library (1 Nov 2026). A WebP re-encoding of one enumerated source, bound to its sha256; it inherits the source's provenance state and declares nothing. The derivative carries NO signed credential and must never be described as having one; the source stays on the page as the fallback."
+      }
+    },
+    {
+      "asset": "assets/img/e0d578046cd29bda-480w.webp",
+      "sha256": "7313073139e23b40e8c504eaeb1544b0b4c60da2e1f9b3234b87069ff924a971",
+      "bytes": 35472,
+      "pixels": [
+        480,
+        262
+      ],
+      "derived_from": {
+        "asset": "assets/img/e0d578046cd29bda.jpg",
+        "sha256": "c00d060923bb832097e8e767b40601bf574391c2dd32b0562ae414d2029a7828"
+      },
+      "method": "webp-resize",
+      "encoder": "Pillow 12.3.0, WebP quality 80, method 6, Lanczos resize to 480px wide",
+      "fidelity": {
+        "ssim": 0.9698,
+        "psnr_db": 33.22,
+        "measured_against": "source at the same pixel size"
+      },
+      "made": "2026-11-01",
+      "lineage_basis": "Discovery Library card image (discoveries.html). Inherits the source's provenance state (LEGACY_UNDECLARED); re-encoding only.",
+      "content_credentials": {
+        "source_file_embeds_c2pa": true,
+        "derivative_embeds_c2pa": false,
+        "note": "Card-sized delivery for the Discovery Library (1 Nov 2026). A WebP re-encoding of one enumerated source, bound to its sha256; it inherits the source's provenance state and declares nothing. The derivative carries NO signed credential and must never be described as having one; the source stays on the page as the fallback."
+      }
+    },
+    {
+      "asset": "assets/img/9aa6c362d5486001-480w.webp",
+      "sha256": "e8470cad800cea589492ef6ea709c40b6ac7312b45ebd4655f6ecb570446aa4a",
+      "bytes": 52888,
+      "pixels": [
+        480,
+        360
+      ],
+      "derived_from": {
+        "asset": "assets/img/9aa6c362d5486001.jpg",
+        "sha256": "4471ced2d4a8867d95556e9173bac06fb6527e7555cbd647a9d2755ced4c1449"
+      },
+      "method": "webp-resize",
+      "encoder": "Pillow 12.3.0, WebP quality 80, method 6, Lanczos resize to 480px wide",
+      "fidelity": {
+        "ssim": 0.9614,
+        "psnr_db": 32.59,
+        "measured_against": "source at the same pixel size"
+      },
+      "made": "2026-11-01",
+      "lineage_basis": "Discovery Library card image (discoveries.html). Inherits the source's provenance state (LEGACY_UNDECLARED); re-encoding only.",
+      "content_credentials": {
+        "source_file_embeds_c2pa": false,
+        "derivative_embeds_c2pa": false,
+        "note": "Card-sized delivery for the Discovery Library (1 Nov 2026). A WebP re-encoding of one enumerated source, bound to its sha256; it inherits the source's provenance state and declares nothing. The derivative carries NO signed credential and must never be described as having one; the source stays on the page as the fallback."
+      }
+    },
+    {
+      "asset": "assets/img/9aa6c362d5486001-960w.webp",
+      "sha256": "784be0483cc41d80c797bf853a9e21340301b660f085e0cf3713f8ce25969a73",
+      "bytes": 197426,
+      "pixels": [
+        960,
+        720
+      ],
+      "derived_from": {
+        "asset": "assets/img/9aa6c362d5486001.jpg",
+        "sha256": "4471ced2d4a8867d95556e9173bac06fb6527e7555cbd647a9d2755ced4c1449"
+      },
+      "method": "webp-resize",
+      "encoder": "Pillow 12.3.0, WebP quality 80, method 6, Lanczos resize to 960px wide",
+      "fidelity": {
+        "ssim": 0.9713,
+        "psnr_db": 34.31,
+        "measured_against": "source at the same pixel size"
+      },
+      "made": "2026-11-01",
+      "lineage_basis": "Discovery Library card image (discoveries.html). Inherits the source's provenance state (LEGACY_UNDECLARED); re-encoding only.",
+      "content_credentials": {
+        "source_file_embeds_c2pa": false,
+        "derivative_embeds_c2pa": false,
+        "note": "Card-sized delivery for the Discovery Library (1 Nov 2026). A WebP re-encoding of one enumerated source, bound to its sha256; it inherits the source's provenance state and declares nothing. The derivative carries NO signed credential and must never be described as having one; the source stays on the page as the fallback."
+      }
+    },
+    {
+      "asset": "assets/img/7f49094747879fe4-480w.webp",
+      "sha256": "f0eaa211762e8fd8532023d5f4e6cba14b3f7e144bf1cc5ebf65f93f22b0d298",
+      "bytes": 22744,
+      "pixels": [
+        480,
+        262
+      ],
+      "derived_from": {
+        "asset": "assets/img/7f49094747879fe4.jpg",
+        "sha256": "7f49094747879fe492babf1ff0943c11faf8df2a4626be9aea22666ffe4d9c32"
+      },
+      "method": "webp-resize",
+      "encoder": "Pillow 12.3.0, WebP quality 80, method 6, Lanczos resize to 480px wide",
+      "fidelity": {
+        "ssim": 0.9631,
+        "psnr_db": 35.36,
+        "measured_against": "source at the same pixel size"
+      },
+      "made": "2026-11-01",
+      "lineage_basis": "Discovery Library card image (discoveries.html). Inherits the source's provenance state (LEGACY_UNDECLARED); re-encoding only.",
+      "content_credentials": {
+        "source_file_embeds_c2pa": false,
+        "derivative_embeds_c2pa": false,
+        "note": "Card-sized delivery for the Discovery Library (1 Nov 2026). A WebP re-encoding of one enumerated source, bound to its sha256; it inherits the source's provenance state and declares nothing. The derivative carries NO signed credential and must never be described as having one; the source stays on the page as the fallback."
+      }
+    },
+    {
+      "asset": "assets/img/7f49094747879fe4-960w.webp",
+      "sha256": "4f97ca29aa2308d422504d8c19b2d783d3ccc7edfa246d9d56ed285e35085562",
+      "bytes": 65610,
+      "pixels": [
+        960,
+        524
+      ],
+      "derived_from": {
+        "asset": "assets/img/7f49094747879fe4.jpg",
+        "sha256": "7f49094747879fe492babf1ff0943c11faf8df2a4626be9aea22666ffe4d9c32"
+      },
+      "method": "webp-resize",
+      "encoder": "Pillow 12.3.0, WebP quality 80, method 6, Lanczos resize to 960px wide",
+      "fidelity": {
+        "ssim": 0.9555,
+        "psnr_db": 36.83,
+        "measured_against": "source at the same pixel size"
+      },
+      "made": "2026-11-01",
+      "lineage_basis": "Discovery Library card image (discoveries.html). Inherits the source's provenance state (LEGACY_UNDECLARED); re-encoding only.",
+      "content_credentials": {
+        "source_file_embeds_c2pa": false,
+        "derivative_embeds_c2pa": false,
+        "note": "Card-sized delivery for the Discovery Library (1 Nov 2026). A WebP re-encoding of one enumerated source, bound to its sha256; it inherits the source's provenance state and declares nothing. The derivative carries NO signed credential and must never be described as having one; the source stays on the page as the fallback."
+      }
+    },
+    {
+      "asset": "assets/img/4a4a1e4b08edaada-480w.webp",
+      "sha256": "4cc6a11da3a22e8bff08073af6fa029eed6214fa6b9953f35d9de6ab000ca10f",
+      "bytes": 24230,
+      "pixels": [
+        480,
+        262
+      ],
+      "derived_from": {
+        "asset": "assets/img/4a4a1e4b08edaada.jpg",
+        "sha256": "5b6f0de932d06521f2a94ade347f35e5ff05a7af395609b57d3547734caea63d"
+      },
+      "method": "webp-resize",
+      "encoder": "Pillow 12.3.0, WebP quality 80, method 6, Lanczos resize to 480px wide",
+      "fidelity": {
+        "ssim": 0.961,
+        "psnr_db": 35.07,
+        "measured_against": "source at the same pixel size"
+      },
+      "made": "2026-11-01",
+      "lineage_basis": "Discovery Library card image (discoveries.html). Inherits the source's provenance state (LEGACY_UNDECLARED); re-encoding only.",
+      "content_credentials": {
+        "source_file_embeds_c2pa": false,
+        "derivative_embeds_c2pa": false,
+        "note": "Card-sized delivery for the Discovery Library (1 Nov 2026). A WebP re-encoding of one enumerated source, bound to its sha256; it inherits the source's provenance state and declares nothing. The derivative carries NO signed credential and must never be described as having one; the source stays on the page as the fallback."
+      }
+    },
+    {
+      "asset": "assets/img/4a4a1e4b08edaada-960w.webp",
+      "sha256": "1c8500d824baf9582fe3b78a9b55dac2cee8e4a615fa45f50186c3d4446475b5",
+      "bytes": 95500,
+      "pixels": [
+        960,
+        524
+      ],
+      "derived_from": {
+        "asset": "assets/img/4a4a1e4b08edaada.jpg",
+        "sha256": "5b6f0de932d06521f2a94ade347f35e5ff05a7af395609b57d3547734caea63d"
+      },
+      "method": "webp-resize",
+      "encoder": "Pillow 12.3.0, WebP quality 80, method 6, Lanczos resize to 960px wide",
+      "fidelity": {
+        "ssim": 0.9682,
+        "psnr_db": 36.19,
+        "measured_against": "source at the same pixel size"
+      },
+      "made": "2026-11-01",
+      "lineage_basis": "Discovery Library card image (discoveries.html). Inherits the source's provenance state (LEGACY_UNDECLARED); re-encoding only.",
+      "content_credentials": {
+        "source_file_embeds_c2pa": false,
+        "derivative_embeds_c2pa": false,
+        "note": "Card-sized delivery for the Discovery Library (1 Nov 2026). A WebP re-encoding of one enumerated source, bound to its sha256; it inherits the source's provenance state and declares nothing. The derivative carries NO signed credential and must never be described as having one; the source stays on the page as the fallback."
+      }
+    },
+    {
+      "asset": "assets/library/img/DISC-032-possible-1536-480w.webp",
+      "sha256": "47c92af5415ad7edcc5ce4af6eb691a471862251feb2206e6b0b571063a94b2d",
+      "bytes": 29552,
+      "pixels": [
+        480,
+        320
+      ],
+      "derived_from": {
+        "asset": "assets/disc032/img/DISC-032-possible-1536.jpg",
+        "sha256": "32159a386d6adfc4bcb0110281446a8239cfed757505d08a51f7f8cd0c54e6f2"
+      },
+      "method": "webp-resize",
+      "encoder": "Pillow 12.3.0, WebP quality 80, method 6, Lanczos resize to 480px wide",
+      "fidelity": {
+        "ssim": 0.9443,
+        "psnr_db": 32.84,
+        "measured_against": "source at the same pixel size"
+      },
+      "made": "2026-11-01",
+      "lineage_basis": "Discovery Library card image (discoveries.html). Inherits the source's provenance state (AI_ILLUSTRATION); re-encoding only.",
+      "content_credentials": {
+        "source_file_embeds_c2pa": false,
+        "derivative_embeds_c2pa": false,
+        "note": "Card-sized delivery for the Discovery Library (1 Nov 2026). A WebP re-encoding of one enumerated source, bound to its sha256; it inherits the source's provenance state and declares nothing. The derivative carries NO signed credential and must never be described as having one; the source stays on the page as the fallback."
+      }
+    },
+    {
+      "asset": "assets/library/img/DISC-032-possible-1536-960w.webp",
+      "sha256": "3e890d2981b1e167aac7a101cabc11230b66a85904334bf564f5ca17692be286",
+      "bytes": 88002,
+      "pixels": [
+        960,
+        640
+      ],
+      "derived_from": {
+        "asset": "assets/disc032/img/DISC-032-possible-1536.jpg",
+        "sha256": "32159a386d6adfc4bcb0110281446a8239cfed757505d08a51f7f8cd0c54e6f2"
+      },
+      "method": "webp-resize",
+      "encoder": "Pillow 12.3.0, WebP quality 80, method 6, Lanczos resize to 960px wide",
+      "fidelity": {
+        "ssim": 0.9554,
+        "psnr_db": 35.34,
+        "measured_against": "source at the same pixel size"
+      },
+      "made": "2026-11-01",
+      "lineage_basis": "Discovery Library card image (discoveries.html). Inherits the source's provenance state (AI_ILLUSTRATION); re-encoding only.",
+      "content_credentials": {
+        "source_file_embeds_c2pa": false,
+        "derivative_embeds_c2pa": false,
+        "note": "Card-sized delivery for the Discovery Library (1 Nov 2026). A WebP re-encoding of one enumerated source, bound to its sha256; it inherits the source's provenance state and declares nothing. The derivative carries NO signed credential and must never be described as having one; the source stays on the page as the fallback."
+      }
+    },
+    {
+      "asset": "assets/img/1ce6a296e2cd1b22-480w.webp",
+      "sha256": "dc7236f8904e05325fa132137cd152c1ae2803f77754b6b2c48621494b928358",
+      "bytes": 24812,
+      "pixels": [
+        480,
+        268
+      ],
+      "derived_from": {
+        "asset": "assets/img/1ce6a296e2cd1b22.jpg",
+        "sha256": "6e55db33ec1a0ffa0c10cc364725329e1c1444dce3415596e5794da440ce9f3d"
+      },
+      "method": "webp-resize",
+      "encoder": "Pillow 12.3.0, WebP quality 80, method 6, Lanczos resize to 480px wide",
+      "fidelity": {
+        "ssim": 0.9582,
+        "psnr_db": 33.97,
+        "measured_against": "source at the same pixel size"
+      },
+      "made": "2026-11-01",
+      "lineage_basis": "Discovery Library card image (discoveries.html). Inherits the source's provenance state (LEGACY_UNDECLARED); re-encoding only.",
+      "content_credentials": {
+        "source_file_embeds_c2pa": false,
+        "derivative_embeds_c2pa": false,
+        "note": "Card-sized delivery for the Discovery Library (1 Nov 2026). A WebP re-encoding of one enumerated source, bound to its sha256; it inherits the source's provenance state and declares nothing. The derivative carries NO signed credential and must never be described as having one; the source stays on the page as the fallback."
+      }
     }
   ],
   "derivative_holds": [
