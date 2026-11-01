@@ -1,0 +1,122 @@
+# PlotNua Idea Board · intake Worker deployment ("plotnua-ideas"). Prepared 1 Nov 2026. NOT A DATABASE CHANGE.
+#
+# Same route as the Studio deploy (studio-deploy.yml): the founder approves a specific commit; it is on main; Claude
+# starts this workflow with that full commit ID; the deploy job waits in the environment "studio-production." until
+# the founder presses Approve in GitHub, and only then can it read the existing Cloudflare token STUDIO_CF_DEPLOY_TOKEN.
+# No new secret or token is needed.
+#
+# open_submissions: false (default) deploys the Worker CLOSED: every submission is refused (503) and nothing is
+# written. Opening the board is a separate run with open_submissions: true, after its own founder approval, and only
+# once migration 0003 is applied and the privacy notice section is live.
+# After a real deployment it checks the live Worker from outside: GET refused (405), another origin refused (403),
+# and, when closed, plotnua.ie's own origin refused (503). It never posts an idea.
+name: Idea Board intake deploy
+run-name: "Idea Board intake deploy ${{ inputs.commit }}${{ inputs.open_submissions && ' (OPEN)' || ' (closed)' }}${{ inputs.dry_run && ' (dry run)' || '' }}"
+
+on:
+  workflow_dispatch:
+    inputs:
+      commit:
+        description: "Full 40-character commit ID approved by the founder (must be on main)"
+        required: true
+        type: string
+      open_submissions:
+        description: "Open the board to submissions (IDEAS_ENABLED=true). Needs its own founder approval."
+        required: true
+        type: boolean
+        default: false
+      dry_run:
+        description: "Dry run: approval and build only, nothing sent to Cloudflare"
+        required: true
+        type: boolean
+        default: true
+
+permissions:
+  contents: read
+
+concurrency:
+  group: plotart-studio-cloudflare
+  cancel-in-progress: false
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: The commit is a full ID on main and contains the intake Worker
+        env:
+          COMMIT: ${{ inputs.commit }}
+        run: |
+          set -euo pipefail
+          [[ "$COMMIT" =~ ^[0-9a-f]{40}$ ]] || { echo "REFUSED: give the full 40-character commit ID"; exit 1; }
+          git merge-base --is-ancestor "$COMMIT" origin/main || { echo "REFUSED: $COMMIT is not on main"; exit 1; }
+          git cat-file -e "$COMMIT:worker/plotart-studio/src/ideas.js" || { echo "REFUSED: no intake Worker in $COMMIT"; exit 1; }
+          git cat-file -e "$COMMIT:worker/plotart-studio/migrations/0003_ideas.sql" || { echo "REFUSED: no migration 0003 in $COMMIT"; exit 1; }
+          echo "GUARD OK · $COMMIT · open_submissions=${{ inputs.open_submissions }}" | tee -a "$GITHUB_STEP_SUMMARY"
+
+  deploy:
+    needs: check
+    runs-on: ubuntu-latest
+    environment: "studio-production."   # the configured environment's exact name, including the final full stop
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.commit }}
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Check again after approval
+        env:
+          COMMIT: ${{ inputs.commit }}
+        run: |
+          set -euo pipefail
+          git fetch -q origin main
+          git merge-base --is-ancestor "$COMMIT" origin/main || { echo "REFUSED: $COMMIT is not on main"; exit 1; }
+          test "$(git rev-parse HEAD)" = "$COMMIT" || { echo "REFUSED: the checked-out tree is not $COMMIT"; exit 1; }
+      - name: Production configuration (identifier from the environment, never printed)
+        env:
+          STUDIO_D1_DATABASE_ID: ${{ vars.STUDIO_D1_DATABASE_ID }}
+        run: python3 atlas-tools/release/studio/render-ideas-config.py worker/plotart-studio ${{ inputs.open_submissions && 'true' || 'false' }}
+      - name: Build only (dry run; nothing sent to Cloudflare)
+        if: ${{ inputs.dry_run }}
+        working-directory: worker/plotart-studio
+        run: |
+          set -o pipefail
+          npx --yes wrangler@4.150.0 deploy --config wrangler.ideas.production.toml --dry-run --outdir "$RUNNER_TEMP/build" > "$RUNNER_TEMP/wrangler.log" 2>&1 \
+            || { grep -iE "error" "$RUNNER_TEMP/wrangler.log" | head -5; exit 1; }
+          echo "DRY RUN OK: the intake Worker builds; nothing was sent to Cloudflare"
+      - name: Deploy the intake Worker
+        if: ${{ !inputs.dry_run }}
+        working-directory: worker/plotart-studio
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.STUDIO_CF_DEPLOY_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          set -o pipefail
+          npx --yes wrangler@4.150.0 deploy --config wrangler.ideas.production.toml > "$RUNNER_TEMP/wrangler.log" 2>&1 \
+            || { echo "FAIL  the deployment did not complete"; grep -iE "^\s*(✘|X )?\[?error|permission|authentication" "$RUNNER_TEMP/wrangler.log" | grep -viE "token" | head -5; exit 1; }
+          grep -E "^Uploaded |^Current Version ID" "$RUNNER_TEMP/wrangler.log"
+          grep -oE "https://plotnua-ideas\.[a-z0-9-]+\.workers\.dev" "$RUNNER_TEMP/wrangler.log" | head -1 > "$RUNNER_TEMP/url"
+      - name: Check the live intake Worker from outside (never posts an idea)
+        if: ${{ !inputs.dry_run }}
+        env:
+          OPEN: ${{ inputs.open_submissions && 'true' || 'false' }}
+        run: |
+          set -euo pipefail
+          U="$(cat "$RUNNER_TEMP/url")/v1/ideas"; [[ "$U" =~ ^https://plotnua-ideas\. ]] || { echo "FAIL  no workers.dev address found"; exit 1; }
+          sleep 5
+          code() { curl -s -o /dev/null -w "%{http_code}" "$@"; }
+          G=$(code "$U"); X=$(code -X POST -H "Origin: https://evil.example" -H "Content-Type: application/json" -d '{}' "$U")
+          echo "GET: $G (expect 405) · other origin: $X (expect 403)"
+          [ "$G" = 405 ] && [ "$X" = 403 ] || { echo "FAIL  the intake Worker does not refuse as it should"; exit 1; }
+          if [ "$OPEN" = false ]; then
+            C=$(code -X POST -H "Origin: https://plotnua.ie" -H "Content-Type: application/json" -d '{"idea":"closed check"}' "$U")
+            echo "closed, plotnua.ie origin: $C (expect 503)"; [ "$C" = 503 ] || { echo "FAIL  the board is not closed"; exit 1; }
+          fi
+          echo "- Intake Worker: \`$U\` · open_submissions=$OPEN · refusal checks passed" >> "$GITHUB_STEP_SUMMARY"

@@ -14,6 +14,51 @@
     return j;
   }
 
+
+  /* ---- PlotNua Idea Board (Phase 1, 1 Nov 2026): the founder's moderation of homeowner ideas */
+  async function ideas() {
+    let d = await api('GET', '/api/admin/ideas');
+    const opt = (sel) => '<option value="">No area</option>' + d.areas.map(a => `<option${a === sel ? ' selected' : ''}>${E(a)}</option>`).join('');
+    const county = i => i.county ? `Co. ${E(i.county)} · ${i.show_county ? 'the visitor chose to show it' : 'kept private by the visitor'}` : 'No county given';
+    const item = (i, on) => `<li data-id="${i.id}" style="padding:18px 0;border-top:1px solid var(--line,rgba(242,235,224,.12))">
+        <p class="st-work-s" style="margin:0 0 8px">${E(i.ref)} · received ${when(i.created_at)}${on ? ` · on the board since ${when(i.published_at)}${i.edited ? ' · <b>wording edited</b>' : ''}` : ''}</p>
+        <div class="st-f" style="margin:0"><label>Wording shown on the board · <span data-n></span></label>
+        <textarea data-k="public_text" maxlength="160" style="min-height:76px">${E(i.public_text || i.text)}</textarea></div>
+        ${i.public_text ? `<p class="st-muted" style="margin:6px 0 0">Original: “${E(i.text)}”</p>` : ''}
+        <div class="st-row" style="gap:16px;flex-wrap:wrap;margin-top:10px;align-items:end">
+          <div class="st-f" style="margin:0"><label>Area (correct it if needed)</label><select data-k="area">${opt(i.area)}</select></div>
+          ${on ? `<div class="st-f" style="margin:0;flex:1;min-width:240px"><label>Now a Discovery (optional)</label><input type="text" data-k="became_discovery" placeholder="discovery-….html" value="${E(i.became_discovery || '')}"></div>` : ''}
+          <div><p class="st-muted" style="margin:0 0 6px">${county(i)}</p>${i.show_county ? '<label class="st-muted"><input type="checkbox" data-k="hide_county"> Hide the county</label>' : ''}</div>
+        </div>
+        <div class="st-actions" style="margin-top:14px">${on
+          ? '<button class="st-btn st-btn--solid st-btn--small" data-a="save">Save changes</button><button class="st-btn st-btn--small" data-a="remove">Remove from the board</button>'
+          : '<button class="st-btn st-btn--solid st-btn--small" data-a="approve">Approve</button><button class="st-btn st-btn--small" data-a="not_approve">Not approved</button>'}</div></li>`;
+    function draw() {
+      app.innerHTML = `<h1 class="st-h1">Idea Board</h1>
+        <p class="st-sub">Homeowner ideas for plotnua.ie/ideas.html. Nothing appears until you approve it; approved ideas publish within about 10 minutes and the Discovery Library card shows the latest three. Edit wording only to tidy it or remove identifying details, never to change its meaning.</p>
+        <section class="st-card"><h2>Waiting for you (${d.waiting.length})</h2>${d.waiting.length ? `<ul style="list-style:none;padding:0;margin:0">${d.waiting.map(i => item(i, false)).join('')}</ul>` : '<p class="st-muted">Nothing waiting.</p>'}</section>
+        <section class="st-card"><h2>On the board (${d.approved.length})</h2>${d.approved.length ? `<ul style="list-style:none;padding:0;margin:0">${d.approved.map(i => item(i, true)).join('')}</ul>` : '<p class="st-muted">The board is empty: plotnua.ie shows the empty-board invitation.</p>'}</section>
+        <section class="st-card"><h2>Declined or removed</h2><p class="st-muted">Deleted automatically ${d.purge_days} days after your decision.</p>
+          ${d.decided.length ? `<ul class="st-works">${d.decided.map(i => `<li class="st-work" style="grid-template-columns:1fr"><p class="st-work-s" style="margin:0">${E(i.ref)} · ${i.status === 'removed' ? 'removed ' + when(i.removed_at) : 'not approved ' + when(i.decided_at)} · “${E(i.public_text || i.text)}”</p></li>`).join('')}</ul>` : ''}</section>`;
+      app.querySelectorAll('[data-id]').forEach(li => {
+        const ta = li.querySelector('textarea'), n = li.querySelector('[data-n]');
+        const count = () => { n.textContent = `${ta.value.length}/160`; }; count(); ta.addEventListener('input', count);
+        li.querySelectorAll('[data-a]').forEach(btn => btn.addEventListener('click', async () => {
+          const body = { action: btn.dataset.a };
+          if (['approve', 'save'].includes(btn.dataset.a)) {
+            body.public_text = ta.value; body.area = li.querySelector('[data-k="area"]').value || null;
+            const disc = li.querySelector('[data-k="became_discovery"]'); if (disc) body.became_discovery = disc.value || null;
+            const hide = li.querySelector('[data-k="hide_county"]'); if (hide && hide.checked) body.hide_county = true;
+          }
+          if (btn.dataset.a === 'remove' && !confirm('Remove this idea from the public board?')) return;
+          try { d = await api('POST', `/api/admin/ideas/${li.dataset.id}`, body); say({ approve: 'Approved: it will appear on plotnua.ie shortly', save: 'Saved', remove: 'Removed from the board', not_approve: 'Not approved' }[btn.dataset.a]); draw(); }
+          catch (e) { say(e.message, true); }
+        }));
+      });
+    }
+    draw();
+  }
+
   async function home() {
     const o = await api('GET', '/api/admin/overview');
     const ready = o.queue.filter(q => q.status === 'awaiting_founder');
@@ -211,9 +256,9 @@
   async function render() {
     const h = location.hash || '#/', path = location.pathname.replace(/\/$/, '');
     const am = path.match(/^\/admin\/applications\/(F25-\d{6}-[0-9A-F]{6})$/);
-    document.querySelectorAll('.st-tabs a').forEach(a => a.toggleAttribute('aria-current', a.dataset.t === (path.startsWith('/admin/applications') ? 'apps' : path === '/admin/gallery' ? 'order' : 'desk')));
+    document.querySelectorAll('.st-tabs a').forEach(a => a.toggleAttribute('aria-current', a.dataset.t === (path.startsWith('/admin/applications') ? 'apps' : path === '/admin/gallery' ? 'order' : path === '/admin/ideas' ? 'ideas' : 'desk')));
     document.querySelectorAll('.st-tabs a[aria-current]').forEach(a => a.setAttribute('aria-current', 'page'));
-    try { if (am) await appView(am[1]); else if (path === '/admin/gallery') await order(); else if (path === '/admin/applications') await apps(); else if (h.startsWith('#/review/')) await review(h.slice(9)); else await home(); window.scrollTo(0, 0); }
+    try { if (am) await appView(am[1]); else if (path === '/admin/gallery') await order(); else if (path === '/admin/ideas') await ideas(); else if (path === '/admin/applications') await apps(); else if (h.startsWith('#/review/')) await review(h.slice(9)); else await home(); window.scrollTo(0, 0); }
     catch (e) { app.innerHTML = `<div class="st-card"><h2>Something went wrong</h2><p class="st-muted">${E(e.message)}</p></div>`; }
   }
   addEventListener('hashchange', render);
