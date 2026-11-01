@@ -651,8 +651,8 @@ body.pa .pa-free-lines{ margin:0; }
 @media (max-width:639px){ .pa-ag-grid{ grid-template-columns:1fr; } }
 /* No works on show (founder decision 1 Nov 2026): a quiet panel on the gallery page, a typographic card in the Virtual Gallery. */
 .pa-ag-empty{ max-width:720px; margin:0 auto; text-align:center; padding:clamp(48px, 7vw, 96px) clamp(20px, 4vw, 48px); border:1px solid var(--line); border-radius:14px; background:radial-gradient(120% 90% at 50% 15%, #2F2C29 0%, #242220 72%); }
-.pa-ag-empty-t{ font-family:var(--serif); font-size:clamp(28px, 3vw, 38px); line-height:1.15; color:var(--ivory); margin:0 0 12px; }
-.pa-ag-empty-l{ margin:0 auto; max-width:440px; color:var(--stone); }
+.pa-ag-empty .pa-ag-empty-t{ font-family:var(--serif); font-size:clamp(28px, 3vw, 38px); line-height:1.15; color:var(--ivory); margin:0 0 12px; }
+.pa-ag-empty .pa-ag-empty-l{ margin:0 auto; max-width:440px; color:var(--stone); }
 .pa-gcard-art.is-empty{ display:flex; align-items:center; justify-content:center; padding:12%; text-align:center; }
 .pa-gcard-art.is-empty span{ font-family:var(--serif); font-size:clamp(17px, 1.5vw, 20px); line-height:1.3; color:var(--stone); }
 /* One or two works (founder decision 1 Nov 2026): centred and larger; artwork proportions kept (contain). 3+ unchanged. */
