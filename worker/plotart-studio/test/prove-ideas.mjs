@@ -125,7 +125,7 @@ r = await pipe(null); check('P1 no token: refused', r.s === 401 || r.s === 403, 
 r = await pipe('Bearer wrong'); check('P2 wrong token: refused', r.s === 401 || r.s === 403, r.s);
 r = await pipe();
 check('P3 returns approved ideas only (3)', r.s === 200 && r.j.ideas.length === 3);
-check('P4 public fields only: no reference, original wording, status, dates to the day or reviewer', r.j.ideas.every(i => Object.keys(i).every(k => ['id', 'text', 'area', 'county', 'month', 'published_at', 'became_discovery'].includes(k))));
+check('P4 public fields only: no reference, original wording, status, submission time or reviewer (published_at is the approval time, for ordering)', r.j.ideas.every(i => Object.keys(i).every(k => ['id', 'text', 'area', 'county', 'month', 'published_at', 'became_discovery'].includes(k))));
 check('P5 approved wording is used; private and hidden counties are not sent', r.j.ideas.find(i => i.id === seed.id).text === 'A seed-library box by the front gate' && r.j.ideas.every(i => i.county === null));
 check('P6 newest first', r.j.ideas.map(i => i.published_at).join() === [...r.j.ideas.map(i => i.published_at)].sort().reverse().join());
 await db.prepare("UPDATE ideas SET decided_at = '2026-01-01T00:00:00Z' WHERE id = ?").bind(burst0.id).run();
