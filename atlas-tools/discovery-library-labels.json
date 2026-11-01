@@ -1,0 +1,39 @@
+{
+  "what_this_is": "The governed visitor-action label for each Discovery Library card (founder approval of the card-label proposal, 1 Nov 2026). One closed vocabulary; each label is shown only when atlas-tools/build-library-card-labels.py can prove from the Discovery page itself that the tool is there. AI-image disclosure is NOT set here: it is derived from image-provenance-records.json (declared AI_ILLUSTRATION records only).",
+  "approved": "Founder approval, 1 Nov 2026 14:12: remove 'live'; remove 'Journey coming soon'; labels 'Property check', 'Garden room journey', 'Meet the makers', 'Find what fits'; categories unchanged; declared AI disclosures as image chips with the exact wording.",
+  "vocabulary": {
+    "property-check": {
+      "label": "Property check",
+      "proof": "the Discovery page links to a PlotNua check page (disc0NN-*.html) that exists, is not a redirect, and does not say it is being prepared"
+    },
+    "garden-room-journey": {
+      "label": "Garden room journey",
+      "proof": "the Discovery page links to your-plot.html?discovery=garden-room"
+    },
+    "meet-the-makers": {
+      "label": "Meet the makers",
+      "proof": "the Discovery page carries its live maker gallery (data-pn-supplier-gallery)"
+    },
+    "find-what-fits": {
+      "label": "Find what fits",
+      "proof": "the Discovery page carries its interactive brief (data-gb) with its 'Show me what fits' action"
+    }
+  },
+  "cards": {
+    "discovery-living-in-the-garden.html": "garden-room-journey",
+    "discovery-garden-retreat.html": "meet-the-makers",
+    "discovery-above-and-beyond.html": "find-what-fits",
+    "discovery-natural-swimming-garden.html": null,
+    "discovery-the-borrowed-garden.html": "property-check",
+    "discovery-a-home-for-art.html": "property-check",
+    "discovery-house-as-power-station.html": "property-check",
+    "discovery-hidden-bins.html": "property-check",
+    "discovery-hidden-flood-barrier.html": null,
+    "discovery-neighbourhood-parcel-house.html": "property-check",
+    "discovery-hidden-cars.html": "property-check",
+    "discovery-your-home-on-screen.html": null,
+    "discovery-driveway-income.html": "property-check",
+    "discovery-supper-club-at-home.html": null,
+    "discovery-home-exchange.html": "property-check"
+  }
+}

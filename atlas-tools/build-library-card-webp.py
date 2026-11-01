@@ -38,9 +38,12 @@ WIDTHS = (480, 960)
 # 601-900 two columns ~42vw; >900 three columns, 238-320 px (230 px tall)
 SIZES = "(max-width:600px) 86vw, (max-width:900px) 42vw, 320px"
 WRAP_OPEN = '<picture style="display:contents"><source type="image/webp" srcset="%s" sizes="%s">'
-CARD = re.compile(r'(<a class="lib-card" href="[^"]+"[^>]*>\s*<span class="lib-shot">)(<img src="([^"]+)" alt="[^"]*"[^>]*>)(</span>)')
+# (1 Nov 2026) a declared AI image's card also carries its disclosure chip after the picture
+# (build-library-card-labels.py); it is part of the closing group and is never touched here
+CHIP = r'(?:<span class="lib-aichip">[^<]*</span>)?'
+CARD = re.compile(r'(<a class="lib-card" href="[^"]+"[^>]*>\s*<span class="lib-shot">)(<img src="([^"]+)" alt="[^"]*"[^>]*>)(' + CHIP + r'</span>)')
 WRAPPED = re.compile(r'(<a class="lib-card" href="[^"]+"[^>]*>\s*<span class="lib-shot">)<picture style="display:contents">'
-                     r'<source type="image/webp" srcset="([^"]+)" sizes="([^"]+)">(<img src="([^"]+)" alt="[^"]*"[^>]*>)</picture>(</span>)')
+                     r'<source type="image/webp" srcset="([^"]+)" sizes="([^"]+)">(<img src="([^"]+)" alt="[^"]*"[^>]*>)</picture>(' + CHIP + r'</span>)')
 NOTE = ("Card-sized delivery for the Discovery Library (1 Nov 2026). A WebP re-encoding of one enumerated source, "
         "bound to its sha256; it inherits the source's provenance state and declares nothing. The derivative carries "
         "NO signed credential and must never be described as having one; the source stays on the page as the fallback.")
