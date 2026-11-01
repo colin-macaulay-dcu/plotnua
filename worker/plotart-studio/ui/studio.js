@@ -39,7 +39,7 @@
   };
   function dashboard() {
     const s = ME.status, a = ME.artist, [title, text] = STATE[s.state];
-    const n = s.counts.works, min = s.counts.min, pct = min ? Math.min(100, Math.round(n / min * 100)) : 100;
+    const n = s.counts.works;
     const canSubmit = s.unsubmitted.length && !s.problems.length && s.state !== 'in_review';
     const pendingTier = s.tier === 'light' ? 'a quick check' : 'a review';
     app.innerHTML = `
@@ -56,11 +56,9 @@
         ${s.unsubmitted.length ? `<a class="st-btn st-btn--solid" href="#/submit">Review and submit (${s.unsubmitted.length})</a>` : ''}
       </div></section>
 
-      ${min ? `<section class="st-card"><h3>Your works</h3>
-        <div class="st-prog" role="progressbar" aria-valuemin="0" aria-valuemax="${min}" aria-valuenow="${Math.min(n, min)}" aria-label="Works in your gallery"><span style="width:${pct}%"></span></div>
-        <p class="st-muted" style="margin:0">${n} of at least ${min} works${n >= min ? ' · you can add more at any time' : ''}</p>
-        ${s.below_minimum ? `<p class="st-msg">Your gallery now shows ${n} works. Founding galleries keep at least ${min}: please add a new work by ${new Date(s.top_up_by).toLocaleDateString('en-IE', { day: 'numeric', month: 'long' })}. Your gallery stays live meanwhile.</p>` : ''}
-        <div class="st-actions"><a class="st-btn" href="#/works">Your works</a><button class="st-btn" data-act="add">Add an artwork</button></div></section>` : ''}
+      <section class="st-card"><h3>Your works</h3>
+        <p class="st-muted" style="margin:0">${n ? `${n} ${n === 1 ? 'work' : 'works'} in your gallery` : 'No works yet'}. Start with one artwork and add more whenever you wish${a.founding ? ': as a Founding Artist you have space for at least 10 at a time' : ''}.</p>
+        <div class="st-actions"><a class="st-btn" href="#/works">Your works</a><button class="st-btn" data-act="add">Add an artwork</button></div></section>
 
       <section class="st-card"><h3>${s.problems.length ? 'Before you submit' : 'Ready'}</h3>
         ${s.problems.length ? `<ul class="st-list">${s.problems.slice(0, 8).map(p => `<li>${E(p)}</li>`).join('')}</ul>${s.problems.length > 8 ? `<p class="st-muted">and ${s.problems.length - 8} more</p>` : ''}`
@@ -115,10 +113,10 @@
 
   function works() {
     const shown = WORKS.filter(w => !w.archived), arch = WORKS.filter(w => w.archived);
-    const n = shown.length, min = ME.status.counts.min;
+    const n = shown.length;
     app.innerHTML = `
       <h1 class="st-h1">Your works</h1>
-      <p class="st-sub">${n} in your gallery${min ? ` · at least ${min} for a Founding gallery, and as many more as you like` : ''}. Changing availability, removing a work or changing the order updates your live gallery straight away.</p>
+      <p class="st-sub">${n} in your gallery. Add more whenever you wish. Changing availability, removing a work or changing the order updates your live gallery straight away.</p>
       <div class="st-actions" style="margin:-6px 0 16px"><button class="st-btn st-btn--solid" data-act="add">Add an artwork</button></div>
       ${n ? `<ol class="st-works">${shown.map((w, i) => workRow(w, i, n)).join('')}</ol>` : `<div class="st-card st-empty">No works yet. Add your first artwork to begin.</div>`}
       ${arch.length ? `<h2 class="st-card" style="background:none;border:0;box-shadow:none;padding:24px 0 6px;font-family:var(--serif);font-size:26px;color:var(--ivory);margin:0">Removed from your gallery</h2>

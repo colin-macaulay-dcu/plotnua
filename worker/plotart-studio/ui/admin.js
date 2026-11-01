@@ -45,7 +45,7 @@
       <section class="st-card"><h2>Artists</h2><div class="st-scroll"><table class="st-table"><thead><tr><th>Artist</th><th>Status</th><th>Works</th><th>To do</th><th></th></tr></thead><tbody>
         ${o.artists.map(a => `<tr><td><b style="color:var(--ivory)">${E(a.display_name)}</b>${a.founding ? ' <span class="pa-gcard-badge" style="display:inline-block">Founding</span>' : ''}<br><span class="st-muted">${E(a.email)}${a.application_ref ? ' · ' + E(a.application_ref) : ''}</span></td>
           <td>${a.account_status === 'suspended' ? '<span class="st-flag">Suspended</span>' : E(STATE[a.state])}${a.account_status === 'invited' ? '<br><span class="st-muted">Not signed in yet</span>' : ''}</td>
-          <td>${a.works}${a.min ? ` / ${a.min}` : ''}${a.below_minimum ? '<br><span class="st-flag">Below 10: 30-day top-up</span>' : ''}</td><td>${a.problems ? `${a.problems} item${a.problems > 1 ? 's' : ''}` : '✓'}</td>
+          <td>${a.works}</td><td>${a.problems ? `${a.problems} item${a.problems > 1 ? 's' : ''}` : '✓'}</td>
           <td class="st-row">${a.account_status === 'suspended' ? `<button class="st-btn st-btn--small" data-act="reactivate" data-id="${a.id}">Reactivate</button>` : `<button class="st-btn st-btn--small" data-act="suspend" data-id="${a.id}">Suspend</button>`}
           ${a.live_version ? `<button class="st-btn st-btn--small st-btn--danger" data-act="unpublish" data-id="${a.id}">Unpublish</button>` : ''}</td></tr>`).join('') || '<tr><td colspan="5" class="st-muted">No artists yet.</td></tr>'}
       </tbody></table></div></section>

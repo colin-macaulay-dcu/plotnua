@@ -33,7 +33,6 @@ MAX_BYTES = 30 * 1024 * 1024
 MAX_PIXELS = 60_000_000
 MAX_SIDE = 12000
 MAX_RATIO = 4.0               # WARN beyond 4:1
-FOUNDING_MIN_WORKS = 10       # founder decision 29 Oct 2026: a minimum, never a maximum
 WEBP_QUALITY = 84
 AVAILABILITY = ("available", "reserved", "sold", "not_for_sale", "archived")
 SHOWN = ("available", "reserved", "sold", "not_for_sale")
@@ -316,10 +315,8 @@ def publication_blocks(pkg):
     shown = [w for w in pkg["works"] if w["availability"] in SHOWN]
     if not shown:
         out.append("no artworks to show")
-    # The Founding minimum is enforced when the gallery FIRST opens (v1, or an unversioned preview). Afterwards a sale or
-    # removal must never be blocked: the artist is asked to top up within 30 days (Founding Artist Agreement 3.3(c)).
-    if a.get("founding") and len(shown) < FOUNDING_MIN_WORKS and pub.get("version") in (None, "v1"):
-        out.append("Founding Artist galleries show at least %d artworks; this one has %d" % (FOUNDING_MIN_WORKS, len(shown)))
+    # One artwork is enough to open any gallery, Founding or not (founder decision 1 Nov 2026). Founding Artists are
+    # guaranteed SPACE for at least 10 works at a time (Founding Artist Agreement 3.3(a)): a benefit, never a requirement.
     for w in pkg["works"]:
         if w["ai_involvement"] == "generated" and w.get("ai_founder_decision") != "approved":
             out.append("%s: entirely prompt-generated work needs the founder's eligibility decision" % w["slug"])

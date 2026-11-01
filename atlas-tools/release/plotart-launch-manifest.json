@@ -3,18 +3,18 @@
   "note": "SHA-256 of every published PlotArt file, from the launch build that passed prove-plotart-launch.py L1-L12 with the demonstration names (development branch founder/plotart-prototype). Any change to a published PlotArt file must come from a new verified build. Rebuilt 28 Oct 2026 (the legal-information release 2c89865 had changed the footers without updating this manifest). Rebuilt 29 Oct 2026 for the navigation and homepage refinement. Rebuilt 29 Oct 2026 for artist galleries Phase 1: artist gallery files are verified by L14 (provenance fingerprints), not pinned here.",
   "built_from": "founder/plotart-artist-galleries (Phase 3 preview: enquiry styles and pa-enquiry.js), OPEN state; no gallery published",
   "files": {
-    "founding-25.html": "bd4beb7d44efda31f74aeb60ca7d913da3f5a21ee1524cd6050d207581fc29b6",
+    "invitation.html": "c9af56a632ac0a9d1ca7adf839429af157959198ab168443718154c2cdbbbec6",
+    "about.html": "5e9dab2f41c249b0d4bdb834c89128f4146f199db88c3f29c5d43c7eb1845dd2",
+    "founding-25.html": "4ab433e0ca9f24fab6ff8464fb4e75d9510b32b43cb00229f01b6dbd4417241a",
     "living-gallery.html": "4e278167b1f4fbc17b3286161eafdf2b0a86815daba5591558de8ef790919dbb",
     "index.html": "1ff1fdae6867dcc8e842bc7a7b7a0f35cc03d35b9d3a137d1323b0578035c7b6",
     "assets/f25-apply.js": "42a81d4a902bbdab7e16207cb98192940e15f0f5f1a0e7aa1622d03d181a77c0",
-    "assets/plotart.css": "2188ee8bc48376fa708fefbd13f2562957af4b015c634004e738192dfb1c248c",
+    "assets/plotart.css": "66dd9fda4d8ca6c11969981d5974aa90cf84fc61b7dba06c50947f120c15549b",
     "assets/plotart.js": "1aeda046a43a9877413943aa4573f8266280b94a5df21fb68421c5486189dca8",
     "assets/pa-enquiry.js": "e57ef00d58f3f2783d0ec3a9225869aa2cd3be215737d39d08c9f6dd22c78781",
     "assets/hero/founder-01-abstract.webp": "7812df17f3651108820ed79dfe69aa1fdaa27640d5aa1d5464c3b08007b802b1",
     "assets/living/plotart-living-gallery-colin-macaulay-artwork.webp": "f4861333a80fda7f704fd3c57d0a2b8f18db589b8505eb11192ac05c08d8d0f9",
-    "gallery/index.html": "35d93d1301cd513a16e617551cde55c8f9ddd89daf0d2d25d5471f2afb843f1e",
-    "invitation.html": "d74f9d8f4b18a8ad2b779ebefd65f6f6a4dc85dddf30eeecbc1007cc4e14189c",
-    "about.html": "5e9dab2f41c249b0d4bdb834c89128f4146f199db88c3f29c5d43c7eb1845dd2"
+    "gallery/index.html": "35d93d1301cd513a16e617551cde55c8f9ddd89daf0d2d25d5471f2afb843f1e"
   },
   "outside_grid": {
     "gallery/index.html": "327c5938bca1011fdfcb394cff999f49ef88eab2d537f36a8232eae871e79553"

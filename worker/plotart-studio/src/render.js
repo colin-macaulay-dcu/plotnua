@@ -43,10 +43,12 @@ export const metaLine = a => [a.practice, a.county].filter(Boolean).join(' · ')
 
 export function artistBody(p) {
   const a = p.artist, works = shown(p), name = a.display_name;
+  // one or two works sit larger and centred (founder decision 1 Nov 2026): the size hint follows the layout
+  const sizes = { 1: '(max-width:639px) 92vw, 720px', 2: '(max-width:639px) 92vw, 520px' }[works.length] || '(max-width:639px) 92vw, (max-width:1023px) 46vw, 31vw';
   const tiles = works.map(w => {
     const im = mainImage(w), d = pick(im);
     return `\n    <li class="pa-ag-work is-${w.availability.replace(/_/g, '-')}"><a class="pa-ag-tile" href="${E(w.slug)}.html" data-pa-track="artist_artwork">` +
-      `<span class="pa-ag-art"><img src="img/${E(d.file)}" srcset="${E(srcset(im))}" sizes="(max-width:639px) 92vw, (max-width:1023px) 46vw, 31vw" ` +
+      `<span class="pa-ag-art"><img src="img/${E(d.file)}" srcset="${E(srcset(im))}" sizes="${sizes}" ` +
       `width="${d.pixels[0]}" height="${d.pixels[1]}" alt="${E(im.alt)}" loading="lazy" decoding="async"></span>` +
       `<span class="pa-ag-cap"><span class="pa-ag-title">${E(w.title)}</span><span class="pa-ag-sub">${E([w.year ? String(w.year) : null, w.medium, sizeLine(w)[0]].filter(Boolean).join(' · '))}</span>` +
       `<span class="pa-ag-status">${E(priceLine(w))}</span></span></a></li>`;

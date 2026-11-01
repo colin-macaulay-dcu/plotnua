@@ -69,13 +69,6 @@ async function status(env, artist) {
   const live = await liveVersion(env, artist.id);
   const licenceOk = d.artist.licence_version === L.LICENCE_VERSION;
   const problems = L.readiness(snap, { founding: !!d.artist.founding, firstPublication: !lv, licenceOk: true, imageBlocks: blocked(d.images) });
-  const belowMinimum = !!(lv && d.artist.founding && snap.works.length < L.FOUNDING_MIN_WORKS);
-  // The 30-day top-up (founder decision 29 Oct 2026): the clock starts the first time the gallery is seen below 10.
-  if (belowMinimum !== !!d.artist.below_min_since) {
-    await env.DB.prepare('UPDATE artists SET below_min_since=? WHERE id=?').bind(belowMinimum ? now() : null, artist.id).run();
-    d.artist.below_min_since = belowMinimum ? now() : null;
-  }
-  const topUpBy = d.artist.below_min_since ? new Date(Date.parse(d.artist.below_min_since) + 30 * 86400_000).toISOString() : null;
   let state;
   if (pending) state = 'in_review';
   else if (queue.length) state = 'publishing';
@@ -86,8 +79,8 @@ async function status(env, artist) {
   return {
     state, live_version: live, latest_version: lv ? lv.version : 0, pending, last_decision: last, queue,
     changes: cs, unsubmitted: cs.filter(c => c.tier !== 'instant'), tier: L.tierOf(cs.filter(c => c.tier !== 'instant')),
-    problems, licence_ok: licenceOk, licence_version: L.LICENCE_VERSION, below_minimum: belowMinimum, top_up_by: topUpBy,
-    counts: { works: snap.works.length, archived: d.works.filter(w => w.archived).length, min: d.artist.founding ? L.FOUNDING_MIN_WORKS : 0 },
+    problems, licence_ok: licenceOk, licence_version: L.LICENCE_VERSION,
+    counts: { works: snap.works.length, archived: d.works.filter(w => w.archived).length },
   };
 }
 
@@ -153,7 +146,6 @@ async function instant(env, artist, actor, what) {
       .bind(rid('q'), artist.id, v, 'instant', env.INSTANT_AUTOPUBLISH === 'true' ? 'ready' : 'awaiting_founder', now(), now()),
   ]);
   await audit(env, actor, 'artist', 'instant_change', artist.id, { what, version: v });
-  await status(env, d.artist);                     // starts (or clears) the 30-day top-up clock
   return v;
 }
 
@@ -321,7 +313,7 @@ async function overview(env) {
   const out = [];
   for (const a of artists) {
     const st = await status(env, a);
-    out.push({ ...a, state: st.state, works: st.counts.works, min: st.counts.min, problems: st.problems.length, below_minimum: st.below_minimum, live_version: st.live_version, latest_version: st.latest_version });
+    out.push({ ...a, state: st.state, works: st.counts.works, problems: st.problems.length, live_version: st.live_version, latest_version: st.latest_version });
   }
   const subs = await all(env, `SELECT s.id, s.artist_id, s.created_at, s.tier, s.note, a.display_name FROM submissions s JOIN artists a ON a.id = s.artist_id
     WHERE s.status = 'pending' ORDER BY (s.tier = 'light'), s.created_at`);
@@ -385,16 +377,6 @@ export default {
     for (const i of gone) {
       await env.IMAGES.delete(i.r2_key); if (i.preview_key) await env.IMAGES.delete(i.preview_key);
       await env.DB.prepare("UPDATE images SET r2_key='erased', preview_key=NULL WHERE id=?").bind(i.id).run();
-    }
-    // 30-day top-up reminders: on the first day below 10 works, and again 7 days before the date.
-    const low = await all(env, "SELECT * FROM artists WHERE below_min_since IS NOT NULL AND account_status = 'active'");
-    for (const a of low) {
-      const day = Math.floor((Date.now() - Date.parse(a.below_min_since)) / 86400_000);
-      if (day !== 0 && day !== 23) continue;
-      const by = new Date(Date.parse(a.below_min_since) + 30 * 86400_000).toLocaleDateString('en-IE', { day: 'numeric', month: 'long', year: 'numeric' });
-      await send(env, { to: a.email, replyTo: 'hello@plotnua.ie', subject: 'Your PlotArt gallery: time to add a work',
-        text: `Hello ${a.display_name.split(' ')[0]},\n\nYour PlotArt gallery now shows fewer than 10 works. Founding galleries keep at least 10, so please add a new work in PlotArt Studio by ${by}. Your gallery stays live in the meantime.\n\nThank you,\nPlotArt · part of PlotNua` });
-      await audit(env, 'scheduler', 'system', 'top_up_reminder', a.id, { day });
     }
     await audit(env, 'scheduler', 'system', 'cleanup', null, { images_erased: gone.length });
   },
@@ -594,7 +576,7 @@ async function route(req, env) {
       // Invitation email (sent only when email is switched on; otherwise the desk says to send it by hand).
       const studio = url.origin, first = name.split(' ')[0];
       const r = await send(env, { to: email, replyTo: 'hello@plotnua.ie', subject: 'Your PlotArt Studio is ready',
-        text: `Hello ${first},\n\nWelcome to PlotArt. Your PlotArt Studio is ready: it's where you build your artist gallery, add your works and keep them up to date.\n\nSign in here: ${studio}\n\nUse this email address (${email}). Each time you sign in, you'll be emailed a one-time code; there's no password.\n\nYour gallery will only be published once you've submitted it and PlotArt has approved it.${b.founding === false ? '' : ' As a Founding Artist, your gallery opens with at least 10 works.'}\n\nIf you have any questions, just reply to this email.\n\nColin\nPlotArt · part of PlotNua` }).catch(() => ({ sent: false }));
+        text: `Hello ${first},\n\nWelcome to PlotArt. Your PlotArt Studio is ready: it's where you build your artist gallery, add your works and keep them up to date.\n\nSign in here: ${studio}\n\nUse this email address (${email}). Each time you sign in, you'll be emailed a one-time code; there's no password.\n\nYour gallery will only be published once you've submitted it and PlotArt has approved it.\n\nIf you have any questions, just reply to this email.\n\nColin\nPlotArt · part of PlotNua` }).catch(() => ({ sent: false }));
       await audit(env, me.email, 'founder', r.sent ? 'invitation_sent' : 'invitation_not_sent', id, {});
       return json({ ok: true, id, slug, invitation_sent: !!r.sent });
     }

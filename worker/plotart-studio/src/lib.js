@@ -3,7 +3,6 @@
    publishing pipeline accepts; test/prove-studio.mjs runs every export through the Python ingest to prove it. */
 
 export const LICENCE_VERSION = 'PA-GPIL-2026-10-29';
-export const FOUNDING_MIN_WORKS = 10;
 export const MAX_BYTES = 30 * 1024 * 1024;
 export const MAX_PREVIEW_BYTES = 4 * 1024 * 1024;
 export const MIN_LONG_EDGE = 2000, GOOD_LONG_EDGE = 3000, MAX_SIDE = 12000, MAX_PIXELS = 60_000_000, MAX_VIEWS = 3;
@@ -189,9 +188,8 @@ export function readiness(snap, { founding, firstPublication = true, licenceOk, 
   if (!MEDIA.includes(a.medium)) p.push('Choose your main medium in your profile');
   if (a.portrait && !a.portrait.alt) p.push('Describe your portrait photograph (for people using screen readers)');
   if (!snap.works.length) p.push('Add at least one artwork');
-  // The minimum is enforced when a Founding gallery FIRST opens; afterwards a sale or removal is never blocked
-  // (the artist is asked to top up within 30 days: Founding Artist Agreement 3.3(c)).
-  if (founding && firstPublication && snap.works.length < FOUNDING_MIN_WORKS) p.push(`Founding galleries open with at least ${FOUNDING_MIN_WORKS} artworks: you have ${snap.works.length}`);
+  // One artwork is enough to open a gallery, Founding or not (founder decision 1 Nov 2026). Founding Artists are
+  // guaranteed SPACE for at least 10 works at a time (Founding Artist Agreement 3.3(a)): a benefit, never a requirement.
   for (const w of snap.works) {
     const n = w.title || 'An untitled artwork', q = [];
     if (!w.title) q.push('a title');

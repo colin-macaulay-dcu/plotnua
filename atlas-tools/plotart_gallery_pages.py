@@ -109,17 +109,19 @@ def artist_body(pkg, blocks=None, preview=False, enquiry_endpoint=None):
     works = shown(pkg)
     name = a["display_name"]
     tiles = []
+    # one or two works sit larger and centred (founder decision 1 Nov 2026): the size hint follows the layout
+    sizes = {1: "(max-width:639px) 92vw, 720px", 2: "(max-width:639px) 92vw, 520px"}.get(len(works), "(max-width:639px) 92vw, (max-width:1023px) 46vw, 31vw")
     for w in works:
         im = main_image(w)
         d = pick(im, 1200)
         cls = " is-%s" % w["availability"].replace("_", "-")
         tiles.append(
             '\n    <li class="pa-ag-work%s"><a class="pa-ag-tile" href="%s.html" data-pa-track="artist_artwork">'
-            '<span class="pa-ag-art"><img src="img/%s" srcset="%s" sizes="(max-width:639px) 92vw, (max-width:1023px) 46vw, 31vw" '
+            '<span class="pa-ag-art"><img src="img/%s" srcset="%s" sizes="%s" '
             'width="%d" height="%d" alt="%s" loading="lazy" decoding="async"></span>'
             '<span class="pa-ag-cap"><span class="pa-ag-title">%s</span><span class="pa-ag-sub">%s</span>'
             '<span class="pa-ag-status">%s</span></span></a></li>' % (
-                cls, E(w["slug"]), E(d["file"]), E(srcset(im, "img/")), d["pixels"][0], d["pixels"][1], E(im["alt"]),
+                cls, E(w["slug"]), E(d["file"]), E(srcset(im, "img/")), sizes, d["pixels"][0], d["pixels"][1], E(im["alt"]),
                 E(w["title"]), E(" · ".join(x for x in (str(w["year"]) if w.get("year") else None, w["medium"], size_line(w)[0]) if x)),
                 E(price_line(w))))
     portrait = ""

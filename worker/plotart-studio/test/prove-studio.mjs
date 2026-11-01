@@ -145,7 +145,7 @@ const fill = async (id, i) => {
 };
 for (let i = 0; i < 9; i++) await fill(works[i], i + 1);
 r = await call('POST', '/api/submit', A, { accept_licence: true });
-check('W1 a Founding gallery cannot first open with fewer than 10 works', r.s === 422 && r.j.problems.some(p => /at least 10 artworks: you have 10/.test(p) || /Tide Study|untitled|needs/.test(p)));
+check('W1 an incomplete artwork blocks submission; the NUMBER of works never does (no minimum)', r.s === 422 && r.j.problems.some(p => /Tide Study|untitled|needs/.test(p)) && !r.j.problems.some(p => /at least 10|artworks: you have/.test(p)));
 await fill(works[9], 10);
 r = await call('POST', '/api/submit', A, {});
 check('W2 the licence must be accepted before the first submission', r.s === 422 && r.j.problems.some(p => /Licence/.test(p)));

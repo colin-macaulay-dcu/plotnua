@@ -73,6 +73,7 @@ const page = p => existsSync(join(SITE, 'plotart', p)) ? readFileSync(join(SITE,
 const enquire = (body, origin = 'https://plotnua.ie') => mf.dispatchFetch('http://enquiry.local/v1/enquiry', { method: 'POST', headers: { Origin: origin, 'Content-Type': 'application/json' }, body: JSON.stringify(body) })
   .then(async r => ({ s: r.status, j: await r.json() }));
 const A = 'niamh@example.test';
+let ZERO = null;
 
 console.log('PROVE · the complete artist journey\n— selection to first publication');
 let r = await call('POST', '/api/admin/artists', FOUNDER, { display_name: 'Niamh Synthetic', email: A, application_ref: 'F25-261029-1A2B3C' });
@@ -179,14 +180,49 @@ check('O5 the founder moves the artist to 07: the next pipeline run commits ONLY
   git('diff', '--name-only', headO, 'HEAD') === 'plotart/gallery/index.html', r.stdout + r.stderr + gi.join(','));
 r = publish();
 check('O6 an unchanged order publishes nothing', /nothing to publish/.test(r.stdout) && !/gallery order/.test(r.stdout), r.stdout + r.stderr);
+// One-artwork galleries (founder decision 1 Nov 2026): a Founding Artist may open with a single work.
+console.log('— a one-artwork Founding gallery');
+const B = 'orla@example.test';
+await call('POST', '/api/admin/artists', FOUNDER, { display_name: 'Orla Synthetic', email: B });
+await call('PUT', '/api/me/profile', B, { practice: 'Painter', medium: 'painting', county: 'Kerry', county_public: true,
+  bio: 'Orla Synthetic is an invented test artist. She paints a single large view of the sea at a time, building it up over a whole season.' });
+const ow = (await call('POST', '/api/artworks', B)).j.id;
+await call('PUT', `/api/artworks/${ow}`, B, { title: 'Atlantic', year: 2026, medium: 'Oil on linen', h_cm: 90, w_cm: 120, price_eur: 2400, ai_involvement: 'none',
+  description: 'Test painting: the Atlantic in winter light.' });
+const oup = await call('PUT', `/api/artworks/${ow}/images?role=main`, B, undefined, readFileSync(join(TMP, 'j11.jpg')));
+await call('PATCH', `/api/images/${oup.j.id}`, B, { alt: 'Test painting: a grey-blue sea under a low sky', photographer: 'self' });
+r = await call('GET', '/api/me', B);
+check('S1 a Founding Artist with ONE complete artwork has nothing blocking submission (no minimum)', r.j.artist.founding && r.j.status.problems.length === 0 && r.j.status.counts.works === 1 && r.j.status.counts.min === undefined, JSON.stringify(r.j.status.problems));
+r = await call('POST', '/api/submit', B, { accept_licence: true });
+check('S2 ... submits it, accepting the licence (the licence is still required)', r.s === 200 && r.j.tier === 'full', JSON.stringify(r.j));
+const osid = (await call('GET', '/api/admin/overview', FOUNDER)).j.submissions.find(x => x.display_name === 'Orla Synthetic').id;
+await call('POST', `/api/admin/submissions/${osid}/decision`, FOUNDER, { decision: 'approve', message: 'Welcome.' });
+const oq = (await call('GET', '/api/admin/overview', FOUNDER)).j.queue.find(x => x.display_name === 'Orla Synthetic' || x.slug === 'orla-synthetic') || (await call('GET', '/api/admin/overview', FOUNDER)).j.queue.slice(-1)[0];
+r = publish();
+check('S3 the approved gallery is NOT published until the founder presses Publish', !existsSync(join(SITE, 'plotart/artists/orla-synthetic')), r.stdout + r.stderr);
+await call('POST', `/api/admin/queue/${oq.id}/publish`, FOUNDER, {});
+r = publish(); gi = gridItems();
+check('S4 Publish → the one-artwork gallery passes every publication guard and goes live', r.status === 0 && /orla-synthetic v1 · verified \(simulated\)/.test(r.stdout), r.stdout + r.stderr);
+check('S5 its gallery page says “1 artwork”, has one artwork page, and the larger single-work image size', page('artists/orla-synthetic/index.html').includes('<p>1 artwork</p>') &&
+  readdirSync(join(SITE, 'plotart/artists/orla-synthetic')).filter(f => f.endsWith('.html')).length === 2 && page('artists/orla-synthetic/index.html').includes('sizes="(max-width:639px) 92vw, 720px"'));
+check('S6 it takes the lowest open position (02); 01 stays reserved; the other artist keeps 07', gi[0] === 'reserved' && gi[1] === 'card:orla-synthetic' && gi[6] === 'card:niamh-synthetic', gi.join(','));
+r = await call('GET', '/api/me', B);
+check('S7 the artist’s Studio shows “Live”, as a Founding Artist', r.j.status.state === 'live' && r.j.artist.founding);
+console.log('— a live gallery whose only work is removed (observation)');
+await call('POST', `/api/artworks/${ow}/archive`, B, { archived: true });
+r = publish();
+const zq = await db.prepare("SELECT status, detail FROM publish_queue WHERE artist_id = (SELECT id FROM artists WHERE slug='orla-synthetic') ORDER BY updated_at DESC LIMIT 1").first();
+ZERO = { exit: r.status, queue: zq.status, detail: (zq.detail || '').slice(0, 160), page_still_live: existsSync(join(SITE, 'plotart/artists/orla-synthetic/atlantic.html')),
+  studio_state: (await call('GET', '/api/me', B)).j.status.state };
+console.log('  NOTE  ' + JSON.stringify(ZERO));
 await call('POST', `/api/artworks/${works[9]}/archive`, A, { archived: true });
 r = publish();
-check('I6 removing a work drops the gallery to 9 and is NOT blocked (30-day top-up instead)', r.status === 0 && !existsSync(join(SITE, 'plotart/artists/niamh-synthetic/burren-10.html')), r.stdout + r.stderr);
+check('I6 removing a work publishes straight away; no minimum applies (9 works left)', r.status === 0 && !existsSync(join(SITE, 'plotart/artists/niamh-synthetic/burren-10.html')), r.stdout + r.stderr);
 r = await call('GET', '/api/me', A);
-check('I7 the artist sees the 30-day top-up date', r.j.status.below_minimum === true && Math.round((Date.parse(r.j.status.top_up_by) - Date.now()) / 86400_000) === 30);
+check('I7 the artist sees no minimum, warning or top-up date', r.j.status.below_minimum === undefined && r.j.status.top_up_by === undefined && r.j.status.counts.min === undefined);
 await mf.getWorker('studio').then(w => w.scheduled({ cron: '23 3 * * *' }));
 const remind = (await db.prepare("SELECT * FROM mail_capture WHERE subject LIKE '%time to add a work%'").all()).results;
-check('I8 the daily job emails the 30-day top-up reminder on the first day', remind.length === 1 && remind[0].to_addr === A && /add a new work in PlotArt Studio by/.test(remind[0].body));
+check('I8 the daily job sends no top-up reminder', remind.length === 0);
 
 console.log('— fail-safe');
 const mp = join(SITE, 'atlas-tools/release/plotart-launch-manifest.json');
@@ -204,6 +240,7 @@ execSync(`rm ${join(SITE, 'stray.txt')}`); git('reset', '-q', '--hard', 'HEAD~1'
 
 console.log('— unpublish');
 await call('POST', '/api/admin/artists/' + (await db.prepare("SELECT id FROM artists WHERE slug='niamh-synthetic'").first()).id + '/unpublish', FOUNDER, {});
+await call('POST', '/api/admin/artists/' + (await db.prepare("SELECT id FROM artists WHERE slug='orla-synthetic'").first()).id + '/unpublish', FOUNDER, {});
 r = publish();
 const recsLeft = JSON.parse(readFileSync(join(SITE, 'image-provenance-records.json'), 'utf8')).records.filter(x => x.artist_slug === 'niamh-synthetic').length;
 check('U1 “Unpublish” removes the gallery, its card (25 empty spaces again) and its image records', r.status === 0 && !existsSync(join(SITE, 'plotart/artists/niamh-synthetic')) &&
