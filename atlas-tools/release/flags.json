@@ -1,0 +1,6 @@
+{
+  "what_this_is": "PlotNua production switches (automation v1, 1 Nov 2026). Changed only by a reviewed commit, so every switch has an author, a time and a reason in git history. Read by the scheduled workflows and the health check. Founder decisions decide the values; Claude records them here.",
+  "ideas_submissions_open": false,
+  "ideas_publish_enabled": false,
+  "must_not_exist": ["ideas.html"]
+}

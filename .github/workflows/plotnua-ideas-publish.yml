@@ -27,7 +27,7 @@ concurrency:
 
 jobs:
   publish:
-    if: ${{ vars.IDEAS_PUBLISH_ENABLED == 'true' && github.ref == 'refs/heads/main' }}
+    if: ${{ github.ref == 'refs/heads/main' }}
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
@@ -38,10 +38,21 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
+      # Automation v1 (1 Nov 2026): the switch is the repository variable IDEAS_PUBLISH_ENABLED or, so that switching
+      # needs no dashboard, "ideas_publish_enabled" in atlas-tools/release/flags.json on main (a reviewed commit).
+      - name: Is publishing switched on?
+        id: on
+        env:
+          VAR: ${{ vars.IDEAS_PUBLISH_ENABLED }}
+        run: |
+          F=$(python3 -c 'import json; print(str(json.load(open("atlas-tools/release/flags.json")).get("ideas_publish_enabled", False)).lower())' 2>/dev/null || echo false)
+          if [ "$VAR" = "true" ] || [ "$F" = "true" ]; then echo "on=1" >> "$GITHUB_OUTPUT"; echo "publishing on"; else echo "publishing is switched off: nothing to do"; fi
       - name: Note where main is before publishing
+        if: steps.on.outputs.on == '1'
         id: before
         run: echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
       - name: Publish approved ideas (content-only, guarded, fast-forward)
+        if: steps.on.outputs.on == '1'
         env:
           STUDIO_URL: ${{ secrets.STUDIO_URL }}
           STUDIO_PIPELINE_TOKEN: ${{ secrets.STUDIO_PIPELINE_TOKEN }}
@@ -51,6 +62,7 @@ jobs:
           set -euo pipefail
           python3 atlas-tools/plotnua-ideas-publish.py --studio "$STUDIO_URL" --token "$STUDIO_PIPELINE_TOKEN" --push
       - name: Request the GitHub Pages build when main moved
+        if: steps.on.outputs.on == '1'
         env:
           GH_TOKEN: ${{ github.token }}
           BEFORE: ${{ steps.before.outputs.sha }}

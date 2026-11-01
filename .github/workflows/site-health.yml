@@ -1,0 +1,37 @@
+# PlotNua · site and service health (automation v1, prepared 1 Nov 2026). READ-ONLY: uses no secret, posts nothing.
+# Every six hours and on demand: atlas-tools/release/site-health.py checks the key public pages, that unreleased pages
+# are still absent, that the Studio is behind Cloudflare Access and that the public Workers refuse what they must.
+# On failure it opens (or updates) one GitHub issue labelled "ops-alert"; GitHub e-mails the owner.
+name: Site health
+on:
+  schedule:
+    - cron: '23 */6 * * *'
+  workflow_dispatch:
+  workflow_call:
+    inputs:
+      expect_commit:
+        type: string
+        required: false
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  health:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Health check
+        env:
+          EXPECT: ${{ inputs.expect_commit }}
+        run: python3 atlas-tools/release/site-health.py ${EXPECT:+--expect-commit "$EXPECT"} | tee -a "$GITHUB_STEP_SUMMARY"
+      - name: Alert on failure
+        if: failure()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: bash atlas-tools/release/ops-alert.sh "Site health check failed" "Run ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }} found a problem. Claude investigates at the next session."
