@@ -25,6 +25,11 @@ on:
         required: true
         type: boolean
         default: false
+      rollback_drill:
+        description: "Rollback drill: after deploying, deliberately fail the outside check to prove the automatic rollback (closed board only)"
+        required: false
+        type: boolean
+        default: false
       dry_run:
         description: "Dry run: approval and build only, nothing sent to Cloudflare"
         required: true
@@ -112,8 +117,13 @@ jobs:
         if: ${{ !inputs.dry_run }}
         env:
           OPEN: ${{ inputs.open_submissions && 'true' || 'false' }}
+          DRILL: ${{ inputs.rollback_drill && 'true' || 'false' }}
         run: |
           set -euo pipefail
+          if [ "$DRILL" = true ]; then
+            [ "$OPEN" = false ] || { echo "REFUSED: a rollback drill runs only on the closed board"; exit 1; }
+            echo "ROLLBACK DRILL: failing the outside check on purpose"; exit 1
+          fi
           U="$(cat "$RUNNER_TEMP/url")/v1/ideas"; [[ "$U" =~ ^https://plotnua-ideas\. ]] || { echo "FAIL  no workers.dev address found"; exit 1; }
           sleep 5
           code() { curl -s -o /dev/null -w "%{http_code}" "$@"; }
@@ -133,5 +143,12 @@ jobs:
           CLOUDFLARE_API_TOKEN: ${{ secrets.STUDIO_CF_DEPLOY_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
         run: |
-          npx --yes wrangler@4.150.0 rollback --config wrangler.ideas.production.toml --message "automatic rollback: failed outside checks (run ${{ github.run_id }})" -y > "$RUNNER_TEMP/rb.log" 2>&1 && echo "rolled back to the previous version" || { echo "FAIL  automatic rollback did not complete"; exit 1; }
+          npx --yes wrangler@4.150.0 rollback --config wrangler.ideas.production.toml --message "automatic rollback: failed outside checks (run ${{ github.run_id }})" -y > "$RUNNER_TEMP/rb.log" 2>&1 && echo "rolled back to the previous version" || { echo "FAIL  automatic rollback did not complete"; grep -iE "error" "$RUNNER_TEMP/rb.log" | grep -viE "token" | head -3; exit 1; }
           echo "- **rolled back automatically** after failed outside checks" >> "$GITHUB_STEP_SUMMARY"
+          # the previous version must answer exactly as a closed board does
+          sleep 10; U="$(cat "$RUNNER_TEMP/url")/v1/ideas"
+          C=$(curl -s -o /dev/null -w "%{http_code}" -X POST -H "Origin: https://plotnua.ie" -H "Content-Type: application/json" -d '{"idea":"closed check"}' "$U")
+          G=$(curl -s -o /dev/null -w "%{http_code}" "$U")
+          echo "after rollback: GET $G (expect 405) · plotnua.ie $C (expect 503 while closed)"
+          [ "$G" = 405 ] || { echo "FAIL  the rolled-back Worker does not answer as expected"; exit 1; }
+          echo "- after rollback: GET $G, plotnua.ie $C" >> "$GITHUB_STEP_SUMMARY"
