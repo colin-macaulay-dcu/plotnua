@@ -88,6 +88,11 @@ await db.prepare('UPDATE idea_intake_days SET n = 0 WHERE day = ?').bind(day).ru
   const rr = await m2.mf.dispatchFetch('http://ideas.local/v1/ideas', { method: 'POST', headers: { Origin: 'https://plotnua.ie', 'Content-Type': 'application/json' }, body: JSON.stringify({ idea: 'While the board is switched off' }) });
   check('S28 while not enabled (IDEAS_ENABLED false), every post is refused (503)', rr.status === 503 && (await m2.db.prepare('SELECT COUNT(*) n FROM ideas').first()).n === 0);
   await m2.mf.dispose(); }
+for (const k of ['became_discovery', 'status', 'public_text', 'published_at']) {
+  r = await post({ idea: 'Trying to set ' + k + ' from the public form', [k]: k === 'status' ? 'approved' : 'discovery-hidden-cars.html', t: old() });
+  check(`S30 the public form cannot set ${k} (refused, nothing stored)`, r.s === 400 && !(await db.prepare('SELECT 1 FROM ideas WHERE text LIKE ?').bind('Trying to set ' + k + '%').first()));
+}
+check('S31 every stored idea arrived as "received", none approved, none linked to a Discovery', (await db.prepare("SELECT COUNT(*) n FROM ideas WHERE status <> 'received' OR became_discovery IS NOT NULL OR published_at IS NOT NULL").first()).n === 0);
 const opt = await mf.dispatchFetch('http://ideas.local/v1/ideas', { method: 'OPTIONS', headers: { Origin: 'https://evil.example' } });
 check('S29 a preflight from another origin is not granted', opt.headers.get('Access-Control-Allow-Origin') === 'null');
 
@@ -120,11 +125,14 @@ r = await call('POST', '/api/admin/ideas/' + seed.id, FOUNDER, { action: 'telepo
 const aud = (await db.prepare("SELECT action, actor FROM audit WHERE action LIKE 'idea_%'").all()).results;
 check('M15 every decision is in the audit log', ['idea_approve', 'idea_not_approve', 'idea_save'].every(a => aud.some(x => x.action === a && x.actor === FOUNDER)), JSON.stringify(aud));
 
+await db.prepare("UPDATE ideas SET public_text = 'Waiting idea with wording set' WHERE status = 'received' AND id = (SELECT id FROM ideas WHERE status='received' LIMIT 1)").run();
 console.log('P · the pipeline endpoint');
 r = await pipe(null); check('P1 no token: refused', r.s === 401 || r.s === 403, r.s);
 r = await pipe('Bearer wrong'); check('P2 wrong token: refused', r.s === 401 || r.s === 403, r.s);
 r = await pipe();
 check('P3 returns approved ideas only (3)', r.s === 200 && r.j.ideas.length === 3);
+const sent = new Set(r.j.ideas.map(i => i.id)), notApproved = (await db.prepare("SELECT id FROM ideas WHERE status <> 'approved'").all()).results.map(x => x.id);
+check('P3b no waiting, declined or removed idea is ever sent (even one with wording already set)', notApproved.length > 5 && notApproved.every(id => !sent.has(id)));
 check('P4 public fields only: no reference, original wording, status, submission time or reviewer (published_at is the approval time, for ordering)', r.j.ideas.every(i => Object.keys(i).every(k => ['id', 'text', 'area', 'county', 'month', 'published_at', 'became_discovery'].includes(k))));
 check('P5 approved wording is used; private and hidden counties are not sent', r.j.ideas.find(i => i.id === seed.id).text === 'A seed-library box by the front gate' && r.j.ideas.every(i => i.county === null));
 check('P6 newest first', r.j.ideas.map(i => i.published_at).join() === [...r.j.ideas.map(i => i.published_at)].sort().reverse().join());
