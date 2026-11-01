@@ -9,6 +9,9 @@ SHA="$1"; BRANCH="$2"
 HERE="$(cd "$(dirname "$0")" && pwd)"
 HEALTH_CMD="${HEALTH_CMD:-python3 $HERE/site-health.py --expect-commit}"
 PAGES_CMD="${PAGES_CMD:-bash $HERE/pages-build.sh}"
+# A revert is a new commit: it gets no exemption from main's required checks. It is pushed to its own release branch and
+# the gate is dispatched on it; this workflow then promotes it like any other release.
+DISPATCH_CMD="${DISPATCH_CMD:-gh workflow run image-rights-gate.yml -R ${GITHUB_REPOSITORY:-} --ref}"
 SUM="${GITHUB_STEP_SUMMARY:-/dev/null}"
 refuse() { echo "REFUSED: $*"; echo "- **refused:** $*" >> "$SUM"; exit 1; }
 [[ "$SHA" =~ ^[0-9a-f]{40}$ ]] || refuse "bad commit id"
@@ -24,16 +27,16 @@ T="prod/$(date -u +%Y%m%d-%H%M%S)-${SHA:0:7}"; git tag "$T" "$SHA"; git push -q 
 echo "- released and tagged \`$T\`" >> "$SUM"
 $PAGES_CMD || true
 if $HEALTH_CMD "$SHA"; then echo "- live check passed" >> "$SUM"; echo "RELEASED ${SHA:0:7}"; exit 0; fi
-# --- automatic rollback: a revert commit on top (never a reset), only if nothing else moved main meanwhile ---
-echo "live check FAILED: rolling back"
+# --- automatic rollback: a revert commit on top (never a reset), released through the same checked route ---
+echo "live check FAILED"
+if [[ "$BRANCH" == release/auto/rollback-* ]]; then echo "- **a rollback release failed its live check: no further automatic action**" >> "$SUM"; exit 2; fi
 git fetch -q origin main
 [ "$(git rev-parse origin/main)" = "$SHA" ] || { echo "- **live check failed and main moved after the release: NOT reverted automatically**" >> "$SUM"; exit 2; }
 git -c user.name="PlotNua release automation" -c user.email="hello@plotnua.ie" checkout -q -B plotnua-rollback "$SHA"
 git -c user.name="PlotNua release automation" -c user.email="hello@plotnua.ie" revert --no-edit "$BEFORE..$SHA" > /dev/null
 [ -z "$(git diff "$BEFORE" HEAD --stat)" ] || { echo "- **revert does not restore ${BEFORE:0:7} exactly: NOT pushed**" >> "$SUM"; exit 2; }
-git push origin "HEAD:refs/heads/main"
-R=$(git rev-parse HEAD)
-$PAGES_CMD || true
-if $HEALTH_CMD "$R"; then echo "- **rolled back automatically**: main is \`${R:0:7}\`, identical in content to \`${BEFORE:0:7}\`; live check passed" >> "$SUM"
-else echo "- **rolled back automatically** to the content of \`${BEFORE:0:7}\`, but the live check still fails" >> "$SUM"; fi
+RB="release/auto/rollback-${SHA:0:7}"
+git push -q origin "HEAD:refs/heads/$RB"
+$DISPATCH_CMD "$RB"
+echo "- **automatic rollback requested**: \`$RB\` (content identical to \`${BEFORE:0:7}\`) goes through the gate and is released by the next run" >> "$SUM"
 exit 2

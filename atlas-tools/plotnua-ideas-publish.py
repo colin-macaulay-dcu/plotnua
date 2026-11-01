@@ -101,7 +101,7 @@ def main():
     if why is None and PUSH:
         sha = git("rev-parse", "--short", "HEAD")
         ok1, o1 = run("git push origin HEAD:refs/heads/content/ideas-%s" % sha)
-        ok2, o2 = run("git push origin HEAD:refs/heads/main")              # fast-forward only: never forced
+        ok2, o2 = run("bash atlas-tools/release/request-release.sh ideas")  # automation v1: main only moves after the gate passes
         if not (ok1 and ok2):
             why = "push refused (main moved or no permission): " + (o1 + " " + o2)[-300:]
     if why:

@@ -20,10 +20,14 @@ on:
 permissions:
   contents: write
   pages: write
+  actions: write      # automation v1: start the gate on its release branch (request-release.sh)
 
 concurrency:
   group: plotart-content-publish     # shares the PlotArt pipeline's lock, so the two never push at the same time
   cancel-in-progress: false
+
+env:
+  GH_TOKEN: ${{ github.token }}   # automation v1: request-release.sh dispatches the gate
 
 jobs:
   publish:
