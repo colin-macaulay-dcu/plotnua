@@ -48,6 +48,11 @@ jobs:
         run: |
           F=$(python3 -c 'import json; print(str(json.load(open("atlas-tools/release/flags.json")).get("ideas_publish_enabled", False)).lower())' 2>/dev/null || echo false)
           if [ "$VAR" = "true" ] || [ "$F" = "true" ]; then echo "on=1" >> "$GITHUB_OUTPUT"; echo "publishing on"; else echo "publishing is switched off: nothing to do"; fi
+      # The Library guards the publisher runs include the card-image check, which needs Pillow (the same pinned version
+      # as the image-rights gate and the PlotArt pipeline). Missing on launch night: fixed 2 Nov 2026.
+      - name: Image tools (pinned, as the image rights gate)
+        if: steps.on.outputs.on == '1'
+        run: python3 -m pip install --quiet 'pillow==12.3.0'
       - name: Note where main is before publishing
         if: steps.on.outputs.on == '1'
         id: before
