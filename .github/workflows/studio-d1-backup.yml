@@ -44,8 +44,11 @@ jobs:
           CLOUDFLARE_API_TOKEN: ${{ secrets.STUDIO_CF_D1_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
         run: |
-          npx --yes wrangler@4.150.0 d1 time-travel info plotart-studio --json --config wrangler.production.toml > "$RUNNER_TEMP/tt.json" 2>/dev/null || { echo "FAIL  no restore point"; exit 1; }
-          B=$(node -e 'const s=require("fs").readFileSync(process.argv[1],"utf8");const m=s.match(/"bookmark"\s*:\s*"([^"]+)"/);if(!m)process.exit(1);console.log(m[1])' "$RUNNER_TEMP/tt.json") || { echo "FAIL  no restore point"; exit 1; }
+          # Diagnostic (2 Nov 2026): on failure, show ONLY Cloudflare's error code and message lines, with anything
+          # that looks like a key, token or identifier redacted, so the cause is visible without exposing a credential.
+          diag() { sed -E 's/[A-Za-z0-9_-]{24,}/[redacted]/g' "$1" | grep -iE "code|error|not authorized|authentication|permission|not found|forbidden" | grep -viE "token|bearer|key=" | head -6; }
+          npx --yes wrangler@4.150.0 d1 time-travel info plotart-studio --json --config wrangler.production.toml > "$RUNNER_TEMP/tt.json" 2> "$RUNNER_TEMP/tt.err" || { echo "FAIL  no restore point: Cloudflare refused the request"; diag "$RUNNER_TEMP/tt.err"; diag "$RUNNER_TEMP/tt.json"; exit 1; }
+          B=$(node -e 'const s=require("fs").readFileSync(process.argv[1],"utf8");const m=s.match(/"bookmark"\s*:\s*"([^"]+)"/);if(!m)process.exit(1);console.log(m[1])' "$RUNNER_TEMP/tt.json") || { echo "FAIL  no restore point: the request succeeded but returned no bookmark"; exit 1; }
           echo "- Restore point (Time Travel bookmark): \`$B\`" >> "$GITHUB_STEP_SUMMARY"
       - name: Full export, encrypted and verified
         working-directory: worker/plotart-studio
