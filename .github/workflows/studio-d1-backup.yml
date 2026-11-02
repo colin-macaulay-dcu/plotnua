@@ -57,7 +57,7 @@ jobs:
           set -euo pipefail
           [ "${#BACKUP_KEY}" -ge 24 ] || { echo "FAIL  the backup passphrase is missing or too short"; exit 1; }
           npx --yes wrangler@4.150.0 d1 export plotart-studio --remote --config wrangler.production.toml --output "$RUNNER_TEMP/backup.sql" > /dev/null 2>&1 || { echo "FAIL  the export failed"; exit 1; }
-          for t in artists artworks images submissions versions publish_queue audit; do grep -qiE "CREATE TABLE [\`\"]?$t\b" "$RUNNER_TEMP/backup.sql" || { echo "FAIL  table $t missing from the export"; shred -u "$RUNNER_TEMP/backup.sql"; exit 1; }; done
+          for t in artists artworks images submissions versions publish_queue audit ideas idea_intake_days; do grep -qiE "CREATE TABLE [\`\"]?$t\b" "$RUNNER_TEMP/backup.sql" || { echo "FAIL  table $t missing from the export"; shred -u "$RUNNER_TEMP/backup.sql"; exit 1; }; done
           openssl enc -aes-256-cbc -pbkdf2 -iter 600000 -salt -in "$RUNNER_TEMP/backup.sql" -out "$RUNNER_TEMP/studio-d1-backup.sql.enc" -pass env:BACKUP_KEY
           openssl enc -d -aes-256-cbc -pbkdf2 -iter 600000 -in "$RUNNER_TEMP/studio-d1-backup.sql.enc" -pass env:BACKUP_KEY | cmp -s - "$RUNNER_TEMP/backup.sql" || { echo "FAIL  the encrypted backup does not decrypt to the export"; exit 1; }
           shred -u "$RUNNER_TEMP/backup.sql"
