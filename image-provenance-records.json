@@ -446,8 +446,8 @@
     },
     {
       "asset": "assets/h6/img/H6-garden-base-v6-960.avif",
-      "sha256": "5ddc50bcddafb2c4d6600a19f00ad47249017f10e625d781529b3638e39dd5f0",
-      "bytes": 183220,
+      "sha256": "633b5d9c034f29ff896fe06ab392dc0fc09cbfa505b1691add8a77a270ae94b2",
+      "bytes": 165235,
       "pixels": [
         960,
         537
@@ -492,10 +492,16 @@
             "record": "claude/h6-patio-and-navigation-demo-2026-10-25.md; proposed-image-set-v6/patio-correction-report.json"
           },
           {
+            "step": "Photographic re-grade, Option A \"Natural Irish Evening\" (2 Nov 2026)",
+            "tool": "PlotNua deterministic colour grade (white balance, hue-selective saturation, tone curve, garden-light glow reduction, warmer interiors inside fixed window regions, shared grain field at amplitude 1.0); no AI, no pixel moved",
+            "record": "founder release folder PlotNua-H6-Hero-Regrade-Preview-2026-11-02 (report PlotNua-H6-Hero-Regrade-Preview-2026-11-02.md, method/ and verification/)"
+          },
+          {
             "step": "Web encodings",
             "tool": "Pillow (AVIF quality 80/78 4:4:4; WebP quality 90, exact transparency for layers)"
           }
-        ]
+        ],
+        "date_regraded": "2026-11-02"
       },
       "depicts_named_product": false,
       "depicts_named_organisation": false,
@@ -507,7 +513,7 @@
       "permitted_surfaces": [
         "homepage"
       ],
-      "lineage": "image set v6; pixel-integrity report pixel-integrity-v6.json (28/28)",
+      "lineage": "image set v6; pixel-integrity report pixel-integrity-v6.json (28/28); re-graded 2 Nov 2026 (founder decision PN-FDR-2026-11-02-H6-REGRADE, Option A \"Natural Irish Evening\", refined): one deterministic, pixel-local colour and tone grade applied identically to every H6 layer (no pixel moved, no regeneration, no AI); re-encoded with the recorded recipe, which reproduces the 26 Oct encodings byte for byte from the v6 sources",
       "content_credentials": {
         "embeds_c2pa": false,
         "note": "The v3 PNG masters carry a C2PA chunk; web re-encoding removes it."
@@ -535,13 +541,13 @@
         ],
         "verdict": "No distinctive design element of the compared supplier products is reproduced. The features shared (a timber sauna cabin, a round timber hot tub, a stove flue) are generic to the category."
       },
-      "decision_ref": "PN-FDR-2026-10-26-H6-HOME (founder-attested historical exception for the H6 homepage images, approved 26 Oct 2026, extending the form of PN-FDR-2026-10-23-GRP-HERO to these 18 files on the homepage only); founder release approval, 26 Oct 2026; H6 master v2 and image set v6 approvals, 25 Oct 2026",
+      "decision_ref": "PN-FDR-2026-10-26-H6-HOME (founder-attested historical exception for the H6 homepage images, approved 26 Oct 2026, extending the form of PN-FDR-2026-10-23-GRP-HERO to these 18 files on the homepage only); founder release approval, 26 Oct 2026; H6 master v2 and image set v6 approvals, 25 Oct 2026; founder approval of the Option A re-grade and withdrawal of the 3D lawn lettering, 2 Nov 2026 (PN-FDR-2026-11-02-H6-REGRADE)",
       "what": "The empty garden (the homepage photograph-like illustration, all states)"
     },
     {
       "asset": "assets/h6/img/H6-garden-base-v6-960.webp",
-      "sha256": "731420977c1cf58cd67d3de66d6eb923d7e865d93246f4d869c58f3e7ab63317",
-      "bytes": 221042,
+      "sha256": "1880b5caef90a021440fb3219f0443e5bfad7f66418024681b802cdbbea9afa9",
+      "bytes": 203640,
       "pixels": [
         960,
         537
@@ -586,10 +592,16 @@
             "record": "claude/h6-patio-and-navigation-demo-2026-10-25.md; proposed-image-set-v6/patio-correction-report.json"
           },
           {
+            "step": "Photographic re-grade, Option A \"Natural Irish Evening\" (2 Nov 2026)",
+            "tool": "PlotNua deterministic colour grade (white balance, hue-selective saturation, tone curve, garden-light glow reduction, warmer interiors inside fixed window regions, shared grain field at amplitude 1.0); no AI, no pixel moved",
+            "record": "founder release folder PlotNua-H6-Hero-Regrade-Preview-2026-11-02 (report PlotNua-H6-Hero-Regrade-Preview-2026-11-02.md, method/ and verification/)"
+          },
+          {
             "step": "Web encodings",
             "tool": "Pillow (AVIF quality 80/78 4:4:4; WebP quality 90, exact transparency for layers)"
           }
-        ]
+        ],
+        "date_regraded": "2026-11-02"
       },
       "depicts_named_product": false,
       "depicts_named_organisation": false,
@@ -601,7 +613,7 @@
       "permitted_surfaces": [
         "homepage"
       ],
-      "lineage": "image set v6; pixel-integrity report pixel-integrity-v6.json (28/28)",
+      "lineage": "image set v6; pixel-integrity report pixel-integrity-v6.json (28/28); re-graded 2 Nov 2026 (founder decision PN-FDR-2026-11-02-H6-REGRADE, Option A \"Natural Irish Evening\", refined): one deterministic, pixel-local colour and tone grade applied identically to every H6 layer (no pixel moved, no regeneration, no AI); re-encoded with the recorded recipe, which reproduces the 26 Oct encodings byte for byte from the v6 sources",
       "content_credentials": {
         "embeds_c2pa": false,
         "note": "The v3 PNG masters carry a C2PA chunk; web re-encoding removes it."
@@ -629,13 +641,13 @@
         ],
         "verdict": "No distinctive design element of the compared supplier products is reproduced. The features shared (a timber sauna cabin, a round timber hot tub, a stove flue) are generic to the category."
       },
-      "decision_ref": "PN-FDR-2026-10-26-H6-HOME (founder-attested historical exception for the H6 homepage images, approved 26 Oct 2026, extending the form of PN-FDR-2026-10-23-GRP-HERO to these 18 files on the homepage only); founder release approval, 26 Oct 2026; H6 master v2 and image set v6 approvals, 25 Oct 2026",
+      "decision_ref": "PN-FDR-2026-10-26-H6-HOME (founder-attested historical exception for the H6 homepage images, approved 26 Oct 2026, extending the form of PN-FDR-2026-10-23-GRP-HERO to these 18 files on the homepage only); founder release approval, 26 Oct 2026; H6 master v2 and image set v6 approvals, 25 Oct 2026; founder approval of the Option A re-grade and withdrawal of the 3D lawn lettering, 2 Nov 2026 (PN-FDR-2026-11-02-H6-REGRADE)",
       "what": "The empty garden (the homepage photograph-like illustration, all states)"
     },
     {
       "asset": "assets/h6/img/H6-garden-base-v6-1677.avif",
-      "sha256": "fa3eb93ad06f6f4e4fd348e986ee9c9d9615c4c49a9dcc99da1b441ed88c84e9",
-      "bytes": 469242,
+      "sha256": "d694caf99b96d4bf93f489a844020fde671781a8af53ea30c2d40194c8d6e9e6",
+      "bytes": 434191,
       "pixels": [
         1677,
         938
@@ -680,10 +692,16 @@
             "record": "claude/h6-patio-and-navigation-demo-2026-10-25.md; proposed-image-set-v6/patio-correction-report.json"
           },
           {
+            "step": "Photographic re-grade, Option A \"Natural Irish Evening\" (2 Nov 2026)",
+            "tool": "PlotNua deterministic colour grade (white balance, hue-selective saturation, tone curve, garden-light glow reduction, warmer interiors inside fixed window regions, shared grain field at amplitude 1.0); no AI, no pixel moved",
+            "record": "founder release folder PlotNua-H6-Hero-Regrade-Preview-2026-11-02 (report PlotNua-H6-Hero-Regrade-Preview-2026-11-02.md, method/ and verification/)"
+          },
+          {
             "step": "Web encodings",
             "tool": "Pillow (AVIF quality 80/78 4:4:4; WebP quality 90, exact transparency for layers)"
           }
-        ]
+        ],
+        "date_regraded": "2026-11-02"
       },
       "depicts_named_product": false,
       "depicts_named_organisation": false,
@@ -695,7 +713,7 @@
       "permitted_surfaces": [
         "homepage"
       ],
-      "lineage": "image set v6; pixel-integrity report pixel-integrity-v6.json (28/28)",
+      "lineage": "image set v6; pixel-integrity report pixel-integrity-v6.json (28/28); re-graded 2 Nov 2026 (founder decision PN-FDR-2026-11-02-H6-REGRADE, Option A \"Natural Irish Evening\", refined): one deterministic, pixel-local colour and tone grade applied identically to every H6 layer (no pixel moved, no regeneration, no AI); re-encoded with the recorded recipe, which reproduces the 26 Oct encodings byte for byte from the v6 sources",
       "content_credentials": {
         "embeds_c2pa": false,
         "note": "The v3 PNG masters carry a C2PA chunk; web re-encoding removes it."
@@ -723,13 +741,13 @@
         ],
         "verdict": "No distinctive design element of the compared supplier products is reproduced. The features shared (a timber sauna cabin, a round timber hot tub, a stove flue) are generic to the category."
       },
-      "decision_ref": "PN-FDR-2026-10-26-H6-HOME (founder-attested historical exception for the H6 homepage images, approved 26 Oct 2026, extending the form of PN-FDR-2026-10-23-GRP-HERO to these 18 files on the homepage only); founder release approval, 26 Oct 2026; H6 master v2 and image set v6 approvals, 25 Oct 2026",
+      "decision_ref": "PN-FDR-2026-10-26-H6-HOME (founder-attested historical exception for the H6 homepage images, approved 26 Oct 2026, extending the form of PN-FDR-2026-10-23-GRP-HERO to these 18 files on the homepage only); founder release approval, 26 Oct 2026; H6 master v2 and image set v6 approvals, 25 Oct 2026; founder approval of the Option A re-grade and withdrawal of the 3D lawn lettering, 2 Nov 2026 (PN-FDR-2026-11-02-H6-REGRADE)",
       "what": "The empty garden (the homepage photograph-like illustration, all states)"
     },
     {
       "asset": "assets/h6/img/H6-garden-base-v6-1677.webp",
-      "sha256": "dbda9eb6e02e06ff55ba4e5b244002891694d0ab3a4edb336318b35be78e230e",
-      "bytes": 572298,
+      "sha256": "3218ad9d30407a7a6298630557d71394710eaa759585c78cb35914ae32ed6e19",
+      "bytes": 509846,
       "pixels": [
         1677,
         938
@@ -774,10 +792,16 @@
             "record": "claude/h6-patio-and-navigation-demo-2026-10-25.md; proposed-image-set-v6/patio-correction-report.json"
           },
           {
+            "step": "Photographic re-grade, Option A \"Natural Irish Evening\" (2 Nov 2026)",
+            "tool": "PlotNua deterministic colour grade (white balance, hue-selective saturation, tone curve, garden-light glow reduction, warmer interiors inside fixed window regions, shared grain field at amplitude 1.0); no AI, no pixel moved",
+            "record": "founder release folder PlotNua-H6-Hero-Regrade-Preview-2026-11-02 (report PlotNua-H6-Hero-Regrade-Preview-2026-11-02.md, method/ and verification/)"
+          },
+          {
             "step": "Web encodings",
             "tool": "Pillow (AVIF quality 80/78 4:4:4; WebP quality 90, exact transparency for layers)"
           }
-        ]
+        ],
+        "date_regraded": "2026-11-02"
       },
       "depicts_named_product": false,
       "depicts_named_organisation": false,
@@ -789,7 +813,7 @@
       "permitted_surfaces": [
         "homepage"
       ],
-      "lineage": "image set v6; pixel-integrity report pixel-integrity-v6.json (28/28)",
+      "lineage": "image set v6; pixel-integrity report pixel-integrity-v6.json (28/28); re-graded 2 Nov 2026 (founder decision PN-FDR-2026-11-02-H6-REGRADE, Option A \"Natural Irish Evening\", refined): one deterministic, pixel-local colour and tone grade applied identically to every H6 layer (no pixel moved, no regeneration, no AI); re-encoded with the recorded recipe, which reproduces the 26 Oct encodings byte for byte from the v6 sources",
       "content_credentials": {
         "embeds_c2pa": false,
         "note": "The v3 PNG masters carry a C2PA chunk; web re-encoding removes it."
@@ -817,13 +841,13 @@
         ],
         "verdict": "No distinctive design element of the compared supplier products is reproduced. The features shared (a timber sauna cabin, a round timber hot tub, a stove flue) are generic to the category."
       },
-      "decision_ref": "PN-FDR-2026-10-26-H6-HOME (founder-attested historical exception for the H6 homepage images, approved 26 Oct 2026, extending the form of PN-FDR-2026-10-23-GRP-HERO to these 18 files on the homepage only); founder release approval, 26 Oct 2026; H6 master v2 and image set v6 approvals, 25 Oct 2026",
+      "decision_ref": "PN-FDR-2026-10-26-H6-HOME (founder-attested historical exception for the H6 homepage images, approved 26 Oct 2026, extending the form of PN-FDR-2026-10-23-GRP-HERO to these 18 files on the homepage only); founder release approval, 26 Oct 2026; H6 master v2 and image set v6 approvals, 25 Oct 2026; founder approval of the Option A re-grade and withdrawal of the 3D lawn lettering, 2 Nov 2026 (PN-FDR-2026-11-02-H6-REGRADE)",
       "what": "The empty garden (the homepage photograph-like illustration, all states)"
     },
     {
       "asset": "assets/h6/img/H6-layer-garden-room-960.webp",
-      "sha256": "9e4d8ac4abbab1a505e9965aacda10930e9a4af7a718a50d1282dd2067785463",
-      "bytes": 15228,
+      "sha256": "0098fe2ca32da65eba27338f066f20ca036d94a9d4af6866679fc4edebd021a2",
+      "bytes": 13980,
       "pixels": [
         960,
         537
@@ -868,10 +892,16 @@
             "record": "claude/h6-patio-and-navigation-demo-2026-10-25.md; proposed-image-set-v6/patio-correction-report.json"
           },
           {
+            "step": "Photographic re-grade, Option A \"Natural Irish Evening\" (2 Nov 2026)",
+            "tool": "PlotNua deterministic colour grade (white balance, hue-selective saturation, tone curve, garden-light glow reduction, warmer interiors inside fixed window regions, shared grain field at amplitude 1.0); no AI, no pixel moved",
+            "record": "founder release folder PlotNua-H6-Hero-Regrade-Preview-2026-11-02 (report PlotNua-H6-Hero-Regrade-Preview-2026-11-02.md, method/ and verification/)"
+          },
+          {
             "step": "Web encodings",
             "tool": "Pillow (AVIF quality 80/78 4:4:4; WebP quality 90, exact transparency for layers)"
           }
-        ]
+        ],
+        "date_regraded": "2026-11-02"
       },
       "depicts_named_product": false,
       "depicts_named_organisation": false,
@@ -883,7 +913,7 @@
       "permitted_surfaces": [
         "homepage"
       ],
-      "lineage": "image set v6; pixel-integrity report pixel-integrity-v6.json (28/28)",
+      "lineage": "image set v6; pixel-integrity report pixel-integrity-v6.json (28/28); re-graded 2 Nov 2026 (founder decision PN-FDR-2026-11-02-H6-REGRADE, Option A \"Natural Irish Evening\", refined): one deterministic, pixel-local colour and tone grade applied identically to every H6 layer (no pixel moved, no regeneration, no AI); re-encoded with the recorded recipe, which reproduces the 26 Oct encodings byte for byte from the v6 sources",
       "content_credentials": {
         "embeds_c2pa": false,
         "note": "The v3 PNG masters carry a C2PA chunk; web re-encoding removes it."
@@ -911,13 +941,13 @@
         ],
         "verdict": "No distinctive design element of the compared supplier products is reproduced. The features shared (a timber sauna cabin, a round timber hot tub, a stove flue) are generic to the category."
       },
-      "decision_ref": "PN-FDR-2026-10-26-H6-HOME (founder-attested historical exception for the H6 homepage images, approved 26 Oct 2026, extending the form of PN-FDR-2026-10-23-GRP-HERO to these 18 files on the homepage only); founder release approval, 26 Oct 2026; H6 master v2 and image set v6 approvals, 25 Oct 2026",
+      "decision_ref": "PN-FDR-2026-10-26-H6-HOME (founder-attested historical exception for the H6 homepage images, approved 26 Oct 2026, extending the form of PN-FDR-2026-10-23-GRP-HERO to these 18 files on the homepage only); founder release approval, 26 Oct 2026; H6 master v2 and image set v6 approvals, 25 Oct 2026; founder approval of the Option A re-grade and withdrawal of the 3D lawn lettering, 2 Nov 2026 (PN-FDR-2026-11-02-H6-REGRADE)",
       "what": "Garden Room discovery layer"
     },
     {
       "asset": "assets/h6/img/H6-layer-garden-room-1677.webp",
-      "sha256": "5157222f9debe404a47eb4caddefa8748222bd053d2acc3b189a5056ca3783c5",
-      "bytes": 25924,
+      "sha256": "c1d719bbff72e55be282c0a625c1693dbab969333dac1c308365a5b943b523f0",
+      "bytes": 23296,
       "pixels": [
         1677,
         938
@@ -962,10 +992,16 @@
             "record": "claude/h6-patio-and-navigation-demo-2026-10-25.md; proposed-image-set-v6/patio-correction-report.json"
           },
           {
+            "step": "Photographic re-grade, Option A \"Natural Irish Evening\" (2 Nov 2026)",
+            "tool": "PlotNua deterministic colour grade (white balance, hue-selective saturation, tone curve, garden-light glow reduction, warmer interiors inside fixed window regions, shared grain field at amplitude 1.0); no AI, no pixel moved",
+            "record": "founder release folder PlotNua-H6-Hero-Regrade-Preview-2026-11-02 (report PlotNua-H6-Hero-Regrade-Preview-2026-11-02.md, method/ and verification/)"
+          },
+          {
             "step": "Web encodings",
             "tool": "Pillow (AVIF quality 80/78 4:4:4; WebP quality 90, exact transparency for layers)"
           }
-        ]
+        ],
+        "date_regraded": "2026-11-02"
       },
       "depicts_named_product": false,
       "depicts_named_organisation": false,
@@ -977,7 +1013,7 @@
       "permitted_surfaces": [
         "homepage"
       ],
-      "lineage": "image set v6; pixel-integrity report pixel-integrity-v6.json (28/28)",
+      "lineage": "image set v6; pixel-integrity report pixel-integrity-v6.json (28/28); re-graded 2 Nov 2026 (founder decision PN-FDR-2026-11-02-H6-REGRADE, Option A \"Natural Irish Evening\", refined): one deterministic, pixel-local colour and tone grade applied identically to every H6 layer (no pixel moved, no regeneration, no AI); re-encoded with the recorded recipe, which reproduces the 26 Oct encodings byte for byte from the v6 sources",
       "content_credentials": {
         "embeds_c2pa": false,
         "note": "The v3 PNG masters carry a C2PA chunk; web re-encoding removes it."
@@ -1005,13 +1041,13 @@
         ],
         "verdict": "No distinctive design element of the compared supplier products is reproduced. The features shared (a timber sauna cabin, a round timber hot tub, a stove flue) are generic to the category."
       },
-      "decision_ref": "PN-FDR-2026-10-26-H6-HOME (founder-attested historical exception for the H6 homepage images, approved 26 Oct 2026, extending the form of PN-FDR-2026-10-23-GRP-HERO to these 18 files on the homepage only); founder release approval, 26 Oct 2026; H6 master v2 and image set v6 approvals, 25 Oct 2026",
+      "decision_ref": "PN-FDR-2026-10-26-H6-HOME (founder-attested historical exception for the H6 homepage images, approved 26 Oct 2026, extending the form of PN-FDR-2026-10-23-GRP-HERO to these 18 files on the homepage only); founder release approval, 26 Oct 2026; H6 master v2 and image set v6 approvals, 25 Oct 2026; founder approval of the Option A re-grade and withdrawal of the 3D lawn lettering, 2 Nov 2026 (PN-FDR-2026-11-02-H6-REGRADE)",
       "what": "Garden Room discovery layer"
     },
     {
       "asset": "assets/h6/img/H6-layer-garden-retreat-960.webp",
-      "sha256": "ed6018b5810f2acf685f31ee484fb86d1d57986446c5c3a85d6cacfbaf678789",
-      "bytes": 11862,
+      "sha256": "d047388fd8cf09c553e4112e5caab0f7dd6ababa5f32e5f229c494f0629887d6",
+      "bytes": 10814,
       "pixels": [
         960,
         537
@@ -1056,10 +1092,16 @@
             "record": "claude/h6-patio-and-navigation-demo-2026-10-25.md; proposed-image-set-v6/patio-correction-report.json"
           },
           {
+            "step": "Photographic re-grade, Option A \"Natural Irish Evening\" (2 Nov 2026)",
+            "tool": "PlotNua deterministic colour grade (white balance, hue-selective saturation, tone curve, garden-light glow reduction, warmer interiors inside fixed window regions, shared grain field at amplitude 1.0); no AI, no pixel moved",
+            "record": "founder release folder PlotNua-H6-Hero-Regrade-Preview-2026-11-02 (report PlotNua-H6-Hero-Regrade-Preview-2026-11-02.md, method/ and verification/)"
+          },
+          {
             "step": "Web encodings",
             "tool": "Pillow (AVIF quality 80/78 4:4:4; WebP quality 90, exact transparency for layers)"
           }
-        ]
+        ],
+        "date_regraded": "2026-11-02"
       },
       "depicts_named_product": false,
       "depicts_named_organisation": false,
@@ -1071,7 +1113,7 @@
       "permitted_surfaces": [
         "homepage"
       ],
-      "lineage": "image set v6; pixel-integrity report pixel-integrity-v6.json (28/28)",
+      "lineage": "image set v6; pixel-integrity report pixel-integrity-v6.json (28/28); re-graded 2 Nov 2026 (founder decision PN-FDR-2026-11-02-H6-REGRADE, Option A \"Natural Irish Evening\", refined): one deterministic, pixel-local colour and tone grade applied identically to every H6 layer (no pixel moved, no regeneration, no AI); re-encoded with the recorded recipe, which reproduces the 26 Oct encodings byte for byte from the v6 sources",
       "content_credentials": {
         "embeds_c2pa": false,
         "note": "The v3 PNG masters carry a C2PA chunk; web re-encoding removes it."
@@ -1099,13 +1141,13 @@
         ],
         "verdict": "No distinctive design element of the compared supplier products is reproduced. The features shared (a timber sauna cabin, a round timber hot tub, a stove flue) are generic to the category."
       },
-      "decision_ref": "PN-FDR-2026-10-26-H6-HOME (founder-attested historical exception for the H6 homepage images, approved 26 Oct 2026, extending the form of PN-FDR-2026-10-23-GRP-HERO to these 18 files on the homepage only); founder release approval, 26 Oct 2026; H6 master v2 and image set v6 approvals, 25 Oct 2026",
+      "decision_ref": "PN-FDR-2026-10-26-H6-HOME (founder-attested historical exception for the H6 homepage images, approved 26 Oct 2026, extending the form of PN-FDR-2026-10-23-GRP-HERO to these 18 files on the homepage only); founder release approval, 26 Oct 2026; H6 master v2 and image set v6 approvals, 25 Oct 2026; founder approval of the Option A re-grade and withdrawal of the 3D lawn lettering, 2 Nov 2026 (PN-FDR-2026-11-02-H6-REGRADE)",
       "what": "Garden Retreat discovery layer (generic sauna and hot tub)"
     },
     {
       "asset": "assets/h6/img/H6-layer-garden-retreat-1677.webp",
-      "sha256": "80c09c8b62d1fc1fde341076bdbb0e444fbb00b42aec956c14b325693cd8f1fa",
-      "bytes": 21280,
+      "sha256": "f6526703f13c0ccf1e52e53fa6438f7d9ad782713d900024d21b037547be3cae",
+      "bytes": 18858,
       "pixels": [
         1677,
         938
@@ -1150,10 +1192,16 @@
             "record": "claude/h6-patio-and-navigation-demo-2026-10-25.md; proposed-image-set-v6/patio-correction-report.json"
           },
           {
+            "step": "Photographic re-grade, Option A \"Natural Irish Evening\" (2 Nov 2026)",
+            "tool": "PlotNua deterministic colour grade (white balance, hue-selective saturation, tone curve, garden-light glow reduction, warmer interiors inside fixed window regions, shared grain field at amplitude 1.0); no AI, no pixel moved",
+            "record": "founder release folder PlotNua-H6-Hero-Regrade-Preview-2026-11-02 (report PlotNua-H6-Hero-Regrade-Preview-2026-11-02.md, method/ and verification/)"
+          },
+          {
             "step": "Web encodings",
             "tool": "Pillow (AVIF quality 80/78 4:4:4; WebP quality 90, exact transparency for layers)"
           }
-        ]
+        ],
+        "date_regraded": "2026-11-02"
       },
       "depicts_named_product": false,
       "depicts_named_organisation": false,
@@ -1165,7 +1213,7 @@
       "permitted_surfaces": [
         "homepage"
       ],
-      "lineage": "image set v6; pixel-integrity report pixel-integrity-v6.json (28/28)",
+      "lineage": "image set v6; pixel-integrity report pixel-integrity-v6.json (28/28); re-graded 2 Nov 2026 (founder decision PN-FDR-2026-11-02-H6-REGRADE, Option A \"Natural Irish Evening\", refined): one deterministic, pixel-local colour and tone grade applied identically to every H6 layer (no pixel moved, no regeneration, no AI); re-encoded with the recorded recipe, which reproduces the 26 Oct encodings byte for byte from the v6 sources",
       "content_credentials": {
         "embeds_c2pa": false,
         "note": "The v3 PNG masters carry a C2PA chunk; web re-encoding removes it."
@@ -1193,13 +1241,13 @@
         ],
         "verdict": "No distinctive design element of the compared supplier products is reproduced. The features shared (a timber sauna cabin, a round timber hot tub, a stove flue) are generic to the category."
       },
-      "decision_ref": "PN-FDR-2026-10-26-H6-HOME (founder-attested historical exception for the H6 homepage images, approved 26 Oct 2026, extending the form of PN-FDR-2026-10-23-GRP-HERO to these 18 files on the homepage only); founder release approval, 26 Oct 2026; H6 master v2 and image set v6 approvals, 25 Oct 2026",
+      "decision_ref": "PN-FDR-2026-10-26-H6-HOME (founder-attested historical exception for the H6 homepage images, approved 26 Oct 2026, extending the form of PN-FDR-2026-10-23-GRP-HERO to these 18 files on the homepage only); founder release approval, 26 Oct 2026; H6 master v2 and image set v6 approvals, 25 Oct 2026; founder approval of the Option A re-grade and withdrawal of the 3D lawn lettering, 2 Nov 2026 (PN-FDR-2026-11-02-H6-REGRADE)",
       "what": "Garden Retreat discovery layer (generic sauna and hot tub)"
     },
     {
       "asset": "assets/h6/img/H6-layer-garden-retreat-lawn-patch-960.webp",
-      "sha256": "dce97ce3c290507b1f67511b4aec7c84a6bbd3973ef616b34984e446b39dd0c1",
-      "bytes": 3520,
+      "sha256": "97672871786ddf96970af4e4a07364b0ec9d550329b1698ec416f2cf760fa1fa",
+      "bytes": 3510,
       "pixels": [
         960,
         537
@@ -1244,10 +1292,16 @@
             "record": "claude/h6-patio-and-navigation-demo-2026-10-25.md; proposed-image-set-v6/patio-correction-report.json"
           },
           {
+            "step": "Photographic re-grade, Option A \"Natural Irish Evening\" (2 Nov 2026)",
+            "tool": "PlotNua deterministic colour grade (white balance, hue-selective saturation, tone curve, garden-light glow reduction, warmer interiors inside fixed window regions, shared grain field at amplitude 1.0); no AI, no pixel moved",
+            "record": "founder release folder PlotNua-H6-Hero-Regrade-Preview-2026-11-02 (report PlotNua-H6-Hero-Regrade-Preview-2026-11-02.md, method/ and verification/)"
+          },
+          {
             "step": "Web encodings",
             "tool": "Pillow (AVIF quality 80/78 4:4:4; WebP quality 90, exact transparency for layers)"
           }
-        ]
+        ],
+        "date_regraded": "2026-11-02"
       },
       "depicts_named_product": false,
       "depicts_named_organisation": false,
@@ -1259,7 +1313,7 @@
       "permitted_surfaces": [
         "homepage"
       ],
-      "lineage": "image set v6; pixel-integrity report pixel-integrity-v6.json (28/28)",
+      "lineage": "image set v6; pixel-integrity report pixel-integrity-v6.json (28/28); re-graded 2 Nov 2026 (founder decision PN-FDR-2026-11-02-H6-REGRADE, Option A \"Natural Irish Evening\", refined): one deterministic, pixel-local colour and tone grade applied identically to every H6 layer (no pixel moved, no regeneration, no AI); re-encoded with the recorded recipe, which reproduces the 26 Oct encodings byte for byte from the v6 sources",
       "content_credentials": {
         "embeds_c2pa": false,
         "note": "The v3 PNG masters carry a C2PA chunk; web re-encoding removes it."
@@ -1287,13 +1341,13 @@
         ],
         "verdict": "No distinctive design element of the compared supplier products is reproduced. The features shared (a timber sauna cabin, a round timber hot tub, a stove flue) are generic to the category."
       },
-      "decision_ref": "PN-FDR-2026-10-26-H6-HOME (founder-attested historical exception for the H6 homepage images, approved 26 Oct 2026, extending the form of PN-FDR-2026-10-23-GRP-HERO to these 18 files on the homepage only); founder release approval, 26 Oct 2026; H6 master v2 and image set v6 approvals, 25 Oct 2026",
+      "decision_ref": "PN-FDR-2026-10-26-H6-HOME (founder-attested historical exception for the H6 homepage images, approved 26 Oct 2026, extending the form of PN-FDR-2026-10-23-GRP-HERO to these 18 files on the homepage only); founder release approval, 26 Oct 2026; H6 master v2 and image set v6 approvals, 25 Oct 2026; founder approval of the Option A re-grade and withdrawal of the 3D lawn lettering, 2 Nov 2026 (PN-FDR-2026-11-02-H6-REGRADE)",
       "what": "Garden Retreat discovery layer (generic sauna and hot tub)"
     },
     {
       "asset": "assets/h6/img/H6-layer-garden-retreat-lawn-patch-1677.webp",
-      "sha256": "f8f38fcfe84eac6c132b137236fcf7ca8ba52cbae8931260011f03f003ca4e4b",
-      "bytes": 4740,
+      "sha256": "99696fba6e5f1f9c4241f50ef256be862b7d49d45fe17cdae1e4078b6c1786b9",
+      "bytes": 4620,
       "pixels": [
         1677,
         938
@@ -1338,10 +1392,16 @@
             "record": "claude/h6-patio-and-navigation-demo-2026-10-25.md; proposed-image-set-v6/patio-correction-report.json"
           },
           {
+            "step": "Photographic re-grade, Option A \"Natural Irish Evening\" (2 Nov 2026)",
+            "tool": "PlotNua deterministic colour grade (white balance, hue-selective saturation, tone curve, garden-light glow reduction, warmer interiors inside fixed window regions, shared grain field at amplitude 1.0); no AI, no pixel moved",
+            "record": "founder release folder PlotNua-H6-Hero-Regrade-Preview-2026-11-02 (report PlotNua-H6-Hero-Regrade-Preview-2026-11-02.md, method/ and verification/)"
+          },
+          {
             "step": "Web encodings",
             "tool": "Pillow (AVIF quality 80/78 4:4:4; WebP quality 90, exact transparency for layers)"
           }
-        ]
+        ],
+        "date_regraded": "2026-11-02"
       },
       "depicts_named_product": false,
       "depicts_named_organisation": false,
@@ -1353,7 +1413,7 @@
       "permitted_surfaces": [
         "homepage"
       ],
-      "lineage": "image set v6; pixel-integrity report pixel-integrity-v6.json (28/28)",
+      "lineage": "image set v6; pixel-integrity report pixel-integrity-v6.json (28/28); re-graded 2 Nov 2026 (founder decision PN-FDR-2026-11-02-H6-REGRADE, Option A \"Natural Irish Evening\", refined): one deterministic, pixel-local colour and tone grade applied identically to every H6 layer (no pixel moved, no regeneration, no AI); re-encoded with the recorded recipe, which reproduces the 26 Oct encodings byte for byte from the v6 sources",
       "content_credentials": {
         "embeds_c2pa": false,
         "note": "The v3 PNG masters carry a C2PA chunk; web re-encoding removes it."
@@ -1381,13 +1441,13 @@
         ],
         "verdict": "No distinctive design element of the compared supplier products is reproduced. The features shared (a timber sauna cabin, a round timber hot tub, a stove flue) are generic to the category."
       },
-      "decision_ref": "PN-FDR-2026-10-26-H6-HOME (founder-attested historical exception for the H6 homepage images, approved 26 Oct 2026, extending the form of PN-FDR-2026-10-23-GRP-HERO to these 18 files on the homepage only); founder release approval, 26 Oct 2026; H6 master v2 and image set v6 approvals, 25 Oct 2026",
+      "decision_ref": "PN-FDR-2026-10-26-H6-HOME (founder-attested historical exception for the H6 homepage images, approved 26 Oct 2026, extending the form of PN-FDR-2026-10-23-GRP-HERO to these 18 files on the homepage only); founder release approval, 26 Oct 2026; H6 master v2 and image set v6 approvals, 25 Oct 2026; founder approval of the Option A re-grade and withdrawal of the 3D lawn lettering, 2 Nov 2026 (PN-FDR-2026-11-02-H6-REGRADE)",
       "what": "Garden Retreat discovery layer (generic sauna and hot tub)"
     },
     {
       "asset": "assets/h6/img/H6-layer-borrowed-garden-960.webp",
-      "sha256": "ba69c8276bf45f0203463d8e2a2647d1fbeb7ab58365789ace3aa41008120f47",
-      "bytes": 20632,
+      "sha256": "e231803124019d83890483bbf3e36f01ce5eeb73f181d2ef233f6f46e1e8a431",
+      "bytes": 18802,
       "pixels": [
         960,
         537
@@ -1432,10 +1492,16 @@
             "record": "claude/h6-patio-and-navigation-demo-2026-10-25.md; proposed-image-set-v6/patio-correction-report.json"
           },
           {
+            "step": "Photographic re-grade, Option A \"Natural Irish Evening\" (2 Nov 2026)",
+            "tool": "PlotNua deterministic colour grade (white balance, hue-selective saturation, tone curve, garden-light glow reduction, warmer interiors inside fixed window regions, shared grain field at amplitude 1.0); no AI, no pixel moved",
+            "record": "founder release folder PlotNua-H6-Hero-Regrade-Preview-2026-11-02 (report PlotNua-H6-Hero-Regrade-Preview-2026-11-02.md, method/ and verification/)"
+          },
+          {
             "step": "Web encodings",
             "tool": "Pillow (AVIF quality 80/78 4:4:4; WebP quality 90, exact transparency for layers)"
           }
-        ]
+        ],
+        "date_regraded": "2026-11-02"
       },
       "depicts_named_product": false,
       "depicts_named_organisation": false,
@@ -1447,7 +1513,7 @@
       "permitted_surfaces": [
         "homepage"
       ],
-      "lineage": "image set v6; pixel-integrity report pixel-integrity-v6.json (28/28)",
+      "lineage": "image set v6; pixel-integrity report pixel-integrity-v6.json (28/28); re-graded 2 Nov 2026 (founder decision PN-FDR-2026-11-02-H6-REGRADE, Option A \"Natural Irish Evening\", refined): one deterministic, pixel-local colour and tone grade applied identically to every H6 layer (no pixel moved, no regeneration, no AI); re-encoded with the recorded recipe, which reproduces the 26 Oct encodings byte for byte from the v6 sources",
       "content_credentials": {
         "embeds_c2pa": false,
         "note": "The v3 PNG masters carry a C2PA chunk; web re-encoding removes it."
@@ -1475,13 +1541,13 @@
         ],
         "verdict": "No distinctive design element of the compared supplier products is reproduced. The features shared (a timber sauna cabin, a round timber hot tub, a stove flue) are generic to the category."
       },
-      "decision_ref": "PN-FDR-2026-10-26-H6-HOME (founder-attested historical exception for the H6 homepage images, approved 26 Oct 2026, extending the form of PN-FDR-2026-10-23-GRP-HERO to these 18 files on the homepage only); founder release approval, 26 Oct 2026; H6 master v2 and image set v6 approvals, 25 Oct 2026",
+      "decision_ref": "PN-FDR-2026-10-26-H6-HOME (founder-attested historical exception for the H6 homepage images, approved 26 Oct 2026, extending the form of PN-FDR-2026-10-23-GRP-HERO to these 18 files on the homepage only); founder release approval, 26 Oct 2026; H6 master v2 and image set v6 approvals, 25 Oct 2026; founder approval of the Option A re-grade and withdrawal of the 3D lawn lettering, 2 Nov 2026 (PN-FDR-2026-11-02-H6-REGRADE)",
       "what": "Borrowed Garden discovery layer"
     },
     {
       "asset": "assets/h6/img/H6-layer-borrowed-garden-1677.webp",
-      "sha256": "c779c33d5c7b29ebebf6bda8c94b974dff6d2675d80595814ec433158def4ab7",
-      "bytes": 43080,
+      "sha256": "1c4a18df621b3fd1d69b063cb445d9f9396d5a53de9c07a0895454445be1e3af",
+      "bytes": 37122,
       "pixels": [
         1677,
         938
@@ -1526,10 +1592,16 @@
             "record": "claude/h6-patio-and-navigation-demo-2026-10-25.md; proposed-image-set-v6/patio-correction-report.json"
           },
           {
+            "step": "Photographic re-grade, Option A \"Natural Irish Evening\" (2 Nov 2026)",
+            "tool": "PlotNua deterministic colour grade (white balance, hue-selective saturation, tone curve, garden-light glow reduction, warmer interiors inside fixed window regions, shared grain field at amplitude 1.0); no AI, no pixel moved",
+            "record": "founder release folder PlotNua-H6-Hero-Regrade-Preview-2026-11-02 (report PlotNua-H6-Hero-Regrade-Preview-2026-11-02.md, method/ and verification/)"
+          },
+          {
             "step": "Web encodings",
             "tool": "Pillow (AVIF quality 80/78 4:4:4; WebP quality 90, exact transparency for layers)"
           }
-        ]
+        ],
+        "date_regraded": "2026-11-02"
       },
       "depicts_named_product": false,
       "depicts_named_organisation": false,
@@ -1541,7 +1613,7 @@
       "permitted_surfaces": [
         "homepage"
       ],
-      "lineage": "image set v6; pixel-integrity report pixel-integrity-v6.json (28/28)",
+      "lineage": "image set v6; pixel-integrity report pixel-integrity-v6.json (28/28); re-graded 2 Nov 2026 (founder decision PN-FDR-2026-11-02-H6-REGRADE, Option A \"Natural Irish Evening\", refined): one deterministic, pixel-local colour and tone grade applied identically to every H6 layer (no pixel moved, no regeneration, no AI); re-encoded with the recorded recipe, which reproduces the 26 Oct encodings byte for byte from the v6 sources",
       "content_credentials": {
         "embeds_c2pa": false,
         "note": "The v3 PNG masters carry a C2PA chunk; web re-encoding removes it."
@@ -1569,13 +1641,13 @@
         ],
         "verdict": "No distinctive design element of the compared supplier products is reproduced. The features shared (a timber sauna cabin, a round timber hot tub, a stove flue) are generic to the category."
       },
-      "decision_ref": "PN-FDR-2026-10-26-H6-HOME (founder-attested historical exception for the H6 homepage images, approved 26 Oct 2026, extending the form of PN-FDR-2026-10-23-GRP-HERO to these 18 files on the homepage only); founder release approval, 26 Oct 2026; H6 master v2 and image set v6 approvals, 25 Oct 2026",
+      "decision_ref": "PN-FDR-2026-10-26-H6-HOME (founder-attested historical exception for the H6 homepage images, approved 26 Oct 2026, extending the form of PN-FDR-2026-10-23-GRP-HERO to these 18 files on the homepage only); founder release approval, 26 Oct 2026; H6 master v2 and image set v6 approvals, 25 Oct 2026; founder approval of the Option A re-grade and withdrawal of the 3D lawn lettering, 2 Nov 2026 (PN-FDR-2026-11-02-H6-REGRADE)",
       "what": "Borrowed Garden discovery layer"
     },
     {
       "asset": "assets/h6/img/H6-layer-treehouse-960.webp",
-      "sha256": "d69a16405a572c7de4a569412a2da006191f8c220f54f2a4fee23a0d2ca3f4fa",
-      "bytes": 10608,
+      "sha256": "a195934f1e9ac06e0b45414f04bb6f4fc31a7d038d75284ed598b70efd6c67c3",
+      "bytes": 9984,
       "pixels": [
         960,
         537
@@ -1620,10 +1692,16 @@
             "record": "claude/h6-patio-and-navigation-demo-2026-10-25.md; proposed-image-set-v6/patio-correction-report.json"
           },
           {
+            "step": "Photographic re-grade, Option A \"Natural Irish Evening\" (2 Nov 2026)",
+            "tool": "PlotNua deterministic colour grade (white balance, hue-selective saturation, tone curve, garden-light glow reduction, warmer interiors inside fixed window regions, shared grain field at amplitude 1.0); no AI, no pixel moved",
+            "record": "founder release folder PlotNua-H6-Hero-Regrade-Preview-2026-11-02 (report PlotNua-H6-Hero-Regrade-Preview-2026-11-02.md, method/ and verification/)"
+          },
+          {
             "step": "Web encodings",
             "tool": "Pillow (AVIF quality 80/78 4:4:4; WebP quality 90, exact transparency for layers)"
           }
-        ]
+        ],
+        "date_regraded": "2026-11-02"
       },
       "depicts_named_product": false,
       "depicts_named_organisation": false,
@@ -1635,7 +1713,7 @@
       "permitted_surfaces": [
         "homepage"
       ],
-      "lineage": "image set v6; pixel-integrity report pixel-integrity-v6.json (28/28)",
+      "lineage": "image set v6; pixel-integrity report pixel-integrity-v6.json (28/28); re-graded 2 Nov 2026 (founder decision PN-FDR-2026-11-02-H6-REGRADE, Option A \"Natural Irish Evening\", refined): one deterministic, pixel-local colour and tone grade applied identically to every H6 layer (no pixel moved, no regeneration, no AI); re-encoded with the recorded recipe, which reproduces the 26 Oct encodings byte for byte from the v6 sources",
       "content_credentials": {
         "embeds_c2pa": false,
         "note": "The v3 PNG masters carry a C2PA chunk; web re-encoding removes it."
@@ -1663,13 +1741,13 @@
         ],
         "verdict": "No distinctive design element of the compared supplier products is reproduced. The features shared (a timber sauna cabin, a round timber hot tub, a stove flue) are generic to the category."
       },
-      "decision_ref": "PN-FDR-2026-10-26-H6-HOME (founder-attested historical exception for the H6 homepage images, approved 26 Oct 2026, extending the form of PN-FDR-2026-10-23-GRP-HERO to these 18 files on the homepage only); founder release approval, 26 Oct 2026; H6 master v2 and image set v6 approvals, 25 Oct 2026",
+      "decision_ref": "PN-FDR-2026-10-26-H6-HOME (founder-attested historical exception for the H6 homepage images, approved 26 Oct 2026, extending the form of PN-FDR-2026-10-23-GRP-HERO to these 18 files on the homepage only); founder release approval, 26 Oct 2026; H6 master v2 and image set v6 approvals, 25 Oct 2026; founder approval of the Option A re-grade and withdrawal of the 3D lawn lettering, 2 Nov 2026 (PN-FDR-2026-11-02-H6-REGRADE)",
       "what": "Treehouse discovery layer"
     },
     {
       "asset": "assets/h6/img/H6-layer-treehouse-1677.webp",
-      "sha256": "325c8358507a412108563c7a0b7eba51bd0d2b75e12f0f044dab4e523d4b6eb0",
-      "bytes": 19224,
+      "sha256": "004bd678e4e14f63eff0327998bb37fcc30ca443828f79709ea7235a9bbb5656",
+      "bytes": 17102,
       "pixels": [
         1677,
         938
@@ -1714,10 +1792,16 @@
             "record": "claude/h6-patio-and-navigation-demo-2026-10-25.md; proposed-image-set-v6/patio-correction-report.json"
           },
           {
+            "step": "Photographic re-grade, Option A \"Natural Irish Evening\" (2 Nov 2026)",
+            "tool": "PlotNua deterministic colour grade (white balance, hue-selective saturation, tone curve, garden-light glow reduction, warmer interiors inside fixed window regions, shared grain field at amplitude 1.0); no AI, no pixel moved",
+            "record": "founder release folder PlotNua-H6-Hero-Regrade-Preview-2026-11-02 (report PlotNua-H6-Hero-Regrade-Preview-2026-11-02.md, method/ and verification/)"
+          },
+          {
             "step": "Web encodings",
             "tool": "Pillow (AVIF quality 80/78 4:4:4; WebP quality 90, exact transparency for layers)"
           }
-        ]
+        ],
+        "date_regraded": "2026-11-02"
       },
       "depicts_named_product": false,
       "depicts_named_organisation": false,
@@ -1729,7 +1813,7 @@
       "permitted_surfaces": [
         "homepage"
       ],
-      "lineage": "image set v6; pixel-integrity report pixel-integrity-v6.json (28/28)",
+      "lineage": "image set v6; pixel-integrity report pixel-integrity-v6.json (28/28); re-graded 2 Nov 2026 (founder decision PN-FDR-2026-11-02-H6-REGRADE, Option A \"Natural Irish Evening\", refined): one deterministic, pixel-local colour and tone grade applied identically to every H6 layer (no pixel moved, no regeneration, no AI); re-encoded with the recorded recipe, which reproduces the 26 Oct encodings byte for byte from the v6 sources",
       "content_credentials": {
         "embeds_c2pa": false,
         "note": "The v3 PNG masters carry a C2PA chunk; web re-encoding removes it."
@@ -1757,13 +1841,13 @@
         ],
         "verdict": "No distinctive design element of the compared supplier products is reproduced. The features shared (a timber sauna cabin, a round timber hot tub, a stove flue) are generic to the category."
       },
-      "decision_ref": "PN-FDR-2026-10-26-H6-HOME (founder-attested historical exception for the H6 homepage images, approved 26 Oct 2026, extending the form of PN-FDR-2026-10-23-GRP-HERO to these 18 files on the homepage only); founder release approval, 26 Oct 2026; H6 master v2 and image set v6 approvals, 25 Oct 2026",
+      "decision_ref": "PN-FDR-2026-10-26-H6-HOME (founder-attested historical exception for the H6 homepage images, approved 26 Oct 2026, extending the form of PN-FDR-2026-10-23-GRP-HERO to these 18 files on the homepage only); founder release approval, 26 Oct 2026; H6 master v2 and image set v6 approvals, 25 Oct 2026; founder approval of the Option A re-grade and withdrawal of the 3D lawn lettering, 2 Nov 2026 (PN-FDR-2026-11-02-H6-REGRADE)",
       "what": "Treehouse discovery layer"
     },
     {
       "asset": "assets/h6/img/H6-layer-wildlife-pond-960.webp",
-      "sha256": "b95f0f7c7d97acecdb79aa7fec2b1b7aac1c702d06e4e5d56978443f943b1818",
-      "bytes": 74278,
+      "sha256": "67e911e13f9e68d390ae99a940f9e269932a429b5f543f5ab21756d45d5e3d09",
+      "bytes": 66838,
       "pixels": [
         960,
         537
@@ -1808,10 +1892,16 @@
             "record": "claude/h6-patio-and-navigation-demo-2026-10-25.md; proposed-image-set-v6/patio-correction-report.json"
           },
           {
+            "step": "Photographic re-grade, Option A \"Natural Irish Evening\" (2 Nov 2026)",
+            "tool": "PlotNua deterministic colour grade (white balance, hue-selective saturation, tone curve, garden-light glow reduction, warmer interiors inside fixed window regions, shared grain field at amplitude 1.0); no AI, no pixel moved",
+            "record": "founder release folder PlotNua-H6-Hero-Regrade-Preview-2026-11-02 (report PlotNua-H6-Hero-Regrade-Preview-2026-11-02.md, method/ and verification/)"
+          },
+          {
             "step": "Web encodings",
             "tool": "Pillow (AVIF quality 80/78 4:4:4; WebP quality 90, exact transparency for layers)"
           }
-        ]
+        ],
+        "date_regraded": "2026-11-02"
       },
       "depicts_named_product": false,
       "depicts_named_organisation": false,
@@ -1823,7 +1913,7 @@
       "permitted_surfaces": [
         "homepage"
       ],
-      "lineage": "image set v6; pixel-integrity report pixel-integrity-v6.json (28/28)",
+      "lineage": "image set v6; pixel-integrity report pixel-integrity-v6.json (28/28); re-graded 2 Nov 2026 (founder decision PN-FDR-2026-11-02-H6-REGRADE, Option A \"Natural Irish Evening\", refined): one deterministic, pixel-local colour and tone grade applied identically to every H6 layer (no pixel moved, no regeneration, no AI); re-encoded with the recorded recipe, which reproduces the 26 Oct encodings byte for byte from the v6 sources",
       "content_credentials": {
         "embeds_c2pa": false,
         "note": "The v3 PNG masters carry a C2PA chunk; web re-encoding removes it."
@@ -1851,13 +1941,13 @@
         ],
         "verdict": "No distinctive design element of the compared supplier products is reproduced. The features shared (a timber sauna cabin, a round timber hot tub, a stove flue) are generic to the category."
       },
-      "decision_ref": "PN-FDR-2026-10-26-H6-HOME (founder-attested historical exception for the H6 homepage images, approved 26 Oct 2026, extending the form of PN-FDR-2026-10-23-GRP-HERO to these 18 files on the homepage only); founder release approval, 26 Oct 2026; H6 master v2 and image set v6 approvals, 25 Oct 2026",
+      "decision_ref": "PN-FDR-2026-10-26-H6-HOME (founder-attested historical exception for the H6 homepage images, approved 26 Oct 2026, extending the form of PN-FDR-2026-10-23-GRP-HERO to these 18 files on the homepage only); founder release approval, 26 Oct 2026; H6 master v2 and image set v6 approvals, 25 Oct 2026; founder approval of the Option A re-grade and withdrawal of the 3D lawn lettering, 2 Nov 2026 (PN-FDR-2026-11-02-H6-REGRADE)",
       "what": "Wildlife Pond discovery layer"
     },
     {
       "asset": "assets/h6/img/H6-layer-wildlife-pond-1677.webp",
-      "sha256": "e1ba51f825285d4615266dd6965078512e6991a1ca9d1db8dfac66d2cf82fb68",
-      "bytes": 164608,
+      "sha256": "25cc646287631f5fecd4f5fe7f632f8d9bc6c98df1aa5cf45b5a46ff1ce99370",
+      "bytes": 143728,
       "pixels": [
         1677,
         938
@@ -1902,10 +1992,16 @@
             "record": "claude/h6-patio-and-navigation-demo-2026-10-25.md; proposed-image-set-v6/patio-correction-report.json"
           },
           {
+            "step": "Photographic re-grade, Option A \"Natural Irish Evening\" (2 Nov 2026)",
+            "tool": "PlotNua deterministic colour grade (white balance, hue-selective saturation, tone curve, garden-light glow reduction, warmer interiors inside fixed window regions, shared grain field at amplitude 1.0); no AI, no pixel moved",
+            "record": "founder release folder PlotNua-H6-Hero-Regrade-Preview-2026-11-02 (report PlotNua-H6-Hero-Regrade-Preview-2026-11-02.md, method/ and verification/)"
+          },
+          {
             "step": "Web encodings",
             "tool": "Pillow (AVIF quality 80/78 4:4:4; WebP quality 90, exact transparency for layers)"
           }
-        ]
+        ],
+        "date_regraded": "2026-11-02"
       },
       "depicts_named_product": false,
       "depicts_named_organisation": false,
@@ -1917,7 +2013,7 @@
       "permitted_surfaces": [
         "homepage"
       ],
-      "lineage": "image set v6; pixel-integrity report pixel-integrity-v6.json (28/28)",
+      "lineage": "image set v6; pixel-integrity report pixel-integrity-v6.json (28/28); re-graded 2 Nov 2026 (founder decision PN-FDR-2026-11-02-H6-REGRADE, Option A \"Natural Irish Evening\", refined): one deterministic, pixel-local colour and tone grade applied identically to every H6 layer (no pixel moved, no regeneration, no AI); re-encoded with the recorded recipe, which reproduces the 26 Oct encodings byte for byte from the v6 sources",
       "content_credentials": {
         "embeds_c2pa": false,
         "note": "The v3 PNG masters carry a C2PA chunk; web re-encoding removes it."
@@ -1945,13 +2041,13 @@
         ],
         "verdict": "No distinctive design element of the compared supplier products is reproduced. The features shared (a timber sauna cabin, a round timber hot tub, a stove flue) are generic to the category."
       },
-      "decision_ref": "PN-FDR-2026-10-26-H6-HOME (founder-attested historical exception for the H6 homepage images, approved 26 Oct 2026, extending the form of PN-FDR-2026-10-23-GRP-HERO to these 18 files on the homepage only); founder release approval, 26 Oct 2026; H6 master v2 and image set v6 approvals, 25 Oct 2026",
+      "decision_ref": "PN-FDR-2026-10-26-H6-HOME (founder-attested historical exception for the H6 homepage images, approved 26 Oct 2026, extending the form of PN-FDR-2026-10-23-GRP-HERO to these 18 files on the homepage only); founder release approval, 26 Oct 2026; H6 master v2 and image set v6 approvals, 25 Oct 2026; founder approval of the Option A re-grade and withdrawal of the 3D lawn lettering, 2 Nov 2026 (PN-FDR-2026-11-02-H6-REGRADE)",
       "what": "Wildlife Pond discovery layer"
     },
     {
       "asset": "assets/h6/img/H6-layer-power-station-960.webp",
-      "sha256": "4b5662dabf1b39d70f61fcdffbfdb9ce9448fd1a6a172b473bc7cad6019110ab",
-      "bytes": 4634,
+      "sha256": "679286746968d5746e30f2fea04e93a9b70a4587afbe22e6ea17d33a9863d7b4",
+      "bytes": 4322,
       "pixels": [
         960,
         537
@@ -2001,10 +2097,16 @@
             "record": "claude/h6-solar-v3-reference-led-2026-10-25.md; claude/h6-power-station-proposal-2026-10-25.md"
           },
           {
+            "step": "Photographic re-grade, Option A \"Natural Irish Evening\" (2 Nov 2026)",
+            "tool": "PlotNua deterministic colour grade (white balance, hue-selective saturation, tone curve, garden-light glow reduction, warmer interiors inside fixed window regions, shared grain field at amplitude 1.0); no AI, no pixel moved",
+            "record": "founder release folder PlotNua-H6-Hero-Regrade-Preview-2026-11-02 (report PlotNua-H6-Hero-Regrade-Preview-2026-11-02.md, method/ and verification/)"
+          },
+          {
             "step": "Web encodings",
             "tool": "Pillow (AVIF quality 80/78 4:4:4; WebP quality 90, exact transparency for layers)"
           }
-        ]
+        ],
+        "date_regraded": "2026-11-02"
       },
       "depicts_named_product": false,
       "depicts_named_organisation": false,
@@ -2016,7 +2118,7 @@
       "permitted_surfaces": [
         "homepage"
       ],
-      "lineage": "image set v6; pixel-integrity report pixel-integrity-v6.json (28/28)",
+      "lineage": "image set v6; pixel-integrity report pixel-integrity-v6.json (28/28); re-graded 2 Nov 2026 (founder decision PN-FDR-2026-11-02-H6-REGRADE, Option A \"Natural Irish Evening\", refined): one deterministic, pixel-local colour and tone grade applied identically to every H6 layer (no pixel moved, no regeneration, no AI); re-encoded with the recorded recipe, which reproduces the 26 Oct encodings byte for byte from the v6 sources",
       "content_credentials": {
         "embeds_c2pa": false,
         "note": "The v3 PNG masters carry a C2PA chunk; web re-encoding removes it."
@@ -2044,13 +2146,13 @@
         ],
         "verdict": "No distinctive design element of the compared supplier products is reproduced. The features shared (a timber sauna cabin, a round timber hot tub, a stove flue) are generic to the category."
       },
-      "decision_ref": "PN-FDR-2026-10-26-H6-HOME (founder-attested historical exception for the H6 homepage images, approved 26 Oct 2026, extending the form of PN-FDR-2026-10-23-GRP-HERO to these 18 files on the homepage only); founder release approval, 26 Oct 2026; H6 master v2 and image set v6 approvals, 25 Oct 2026",
+      "decision_ref": "PN-FDR-2026-10-26-H6-HOME (founder-attested historical exception for the H6 homepage images, approved 26 Oct 2026, extending the form of PN-FDR-2026-10-23-GRP-HERO to these 18 files on the homepage only); founder release approval, 26 Oct 2026; H6 master v2 and image set v6 approvals, 25 Oct 2026; founder approval of the Option A re-grade and withdrawal of the 3D lawn lettering, 2 Nov 2026 (PN-FDR-2026-11-02-H6-REGRADE)",
       "what": "House as a Power Station layer (solar panels, battery, EV charger)"
     },
     {
       "asset": "assets/h6/img/H6-layer-power-station-1677.webp",
-      "sha256": "125dfb49ed899409a60154700e227ab9d07b96bc9b62be74ba4263b5428318fa",
-      "bytes": 7228,
+      "sha256": "99fe9fe982ea5d70140395cfc7da18de4dcfad7ed14a53d7691abaf294384c2f",
+      "bytes": 6914,
       "pixels": [
         1677,
         938
@@ -2100,10 +2202,16 @@
             "record": "claude/h6-solar-v3-reference-led-2026-10-25.md; claude/h6-power-station-proposal-2026-10-25.md"
           },
           {
+            "step": "Photographic re-grade, Option A \"Natural Irish Evening\" (2 Nov 2026)",
+            "tool": "PlotNua deterministic colour grade (white balance, hue-selective saturation, tone curve, garden-light glow reduction, warmer interiors inside fixed window regions, shared grain field at amplitude 1.0); no AI, no pixel moved",
+            "record": "founder release folder PlotNua-H6-Hero-Regrade-Preview-2026-11-02 (report PlotNua-H6-Hero-Regrade-Preview-2026-11-02.md, method/ and verification/)"
+          },
+          {
             "step": "Web encodings",
             "tool": "Pillow (AVIF quality 80/78 4:4:4; WebP quality 90, exact transparency for layers)"
           }
-        ]
+        ],
+        "date_regraded": "2026-11-02"
       },
       "depicts_named_product": false,
       "depicts_named_organisation": false,
@@ -2115,7 +2223,7 @@
       "permitted_surfaces": [
         "homepage"
       ],
-      "lineage": "image set v6; pixel-integrity report pixel-integrity-v6.json (28/28)",
+      "lineage": "image set v6; pixel-integrity report pixel-integrity-v6.json (28/28); re-graded 2 Nov 2026 (founder decision PN-FDR-2026-11-02-H6-REGRADE, Option A \"Natural Irish Evening\", refined): one deterministic, pixel-local colour and tone grade applied identically to every H6 layer (no pixel moved, no regeneration, no AI); re-encoded with the recorded recipe, which reproduces the 26 Oct encodings byte for byte from the v6 sources",
       "content_credentials": {
         "embeds_c2pa": false,
         "note": "The v3 PNG masters carry a C2PA chunk; web re-encoding removes it."
@@ -2143,92 +2251,8 @@
         ],
         "verdict": "No distinctive design element of the compared supplier products is reproduced. The features shared (a timber sauna cabin, a round timber hot tub, a stove flue) are generic to the category."
       },
-      "decision_ref": "PN-FDR-2026-10-26-H6-HOME (founder-attested historical exception for the H6 homepage images, approved 26 Oct 2026, extending the form of PN-FDR-2026-10-23-GRP-HERO to these 18 files on the homepage only); founder release approval, 26 Oct 2026; H6 master v2 and image set v6 approvals, 25 Oct 2026",
+      "decision_ref": "PN-FDR-2026-10-26-H6-HOME (founder-attested historical exception for the H6 homepage images, approved 26 Oct 2026, extending the form of PN-FDR-2026-10-23-GRP-HERO to these 18 files on the homepage only); founder release approval, 26 Oct 2026; H6 master v2 and image set v6 approvals, 25 Oct 2026; founder approval of the Option A re-grade and withdrawal of the 3D lawn lettering, 2 Nov 2026 (PN-FDR-2026-11-02-H6-REGRADE)",
       "what": "House as a Power Station layer (solar panels, battery, EV charger)"
-    },
-    {
-      "asset": "assets/h6/img/H6-lettering-letters-960.webp",
-      "sha256": "1db25248b3655a4cc1a0415d2634321b863d42a17e76adb9c3e3c003d75dadb6",
-      "bytes": 22218,
-      "class": "ILLUSTRATION_VERIFIED_NOT_AI",
-      "what": "Floating 3D lettering 'Discover What’s Possible…' (Playfair Display ExtraBold, rendered in Blender 5.2; no AI)",
-      "generated": {
-        "tool": "Blender 5.2 (Cycles), scripted 3D render of typeset lettering (Playfair Display ExtraBold, SIL Open Font Licence); no generative model",
-        "date": "2026-10-25",
-        "method": "PlotNua project documents claude/h6-floating-lettering-proof-2026-10-25.md and claude/h6-status-and-typography-refinement-2026-10-25.md (Version B, approved 25 Oct 2026)",
-        "layout_reference": "Size and placement were fitted by eye to the founder's ChatGPT mock-up PlotNua-H6-Floating-Text-Reference.png; none of its pixels are used"
-      },
-      "human_review": {
-        "reviewer": "Colin MacAulay (founder)",
-        "date": "2026-10-26",
-        "attests": "Founder approved this lettering (Version B, 25 Oct 2026) and its release (26 Oct 2026). It is a 3D render of typeset lettering made in Blender without any generative AI model."
-      },
-      "permitted_surfaces": [
-        "homepage"
-      ]
-    },
-    {
-      "asset": "assets/h6/img/H6-lettering-letters-1677.webp",
-      "sha256": "ca7efcd670c86afab14694fa2680b13eb5dcc9984755b20a32e71eacb09b287c",
-      "bytes": 32696,
-      "class": "ILLUSTRATION_VERIFIED_NOT_AI",
-      "what": "Floating 3D lettering 'Discover What’s Possible…' (Playfair Display ExtraBold, rendered in Blender 5.2; no AI)",
-      "generated": {
-        "tool": "Blender 5.2 (Cycles), scripted 3D render of typeset lettering (Playfair Display ExtraBold, SIL Open Font Licence); no generative model",
-        "date": "2026-10-25",
-        "method": "PlotNua project documents claude/h6-floating-lettering-proof-2026-10-25.md and claude/h6-status-and-typography-refinement-2026-10-25.md (Version B, approved 25 Oct 2026)",
-        "layout_reference": "Size and placement were fitted by eye to the founder's ChatGPT mock-up PlotNua-H6-Floating-Text-Reference.png; none of its pixels are used"
-      },
-      "human_review": {
-        "reviewer": "Colin MacAulay (founder)",
-        "date": "2026-10-26",
-        "attests": "Founder approved this lettering (Version B, 25 Oct 2026) and its release (26 Oct 2026). It is a 3D render of typeset lettering made in Blender without any generative AI model."
-      },
-      "permitted_surfaces": [
-        "homepage"
-      ]
-    },
-    {
-      "asset": "assets/h6/img/H6-lettering-shadows-960.webp",
-      "sha256": "3bf6c48bc80dd60c4101a7cc95ec8dc28386436cf039cc11261f7c3bea37cf0d",
-      "bytes": 14424,
-      "class": "ILLUSTRATION_VERIFIED_NOT_AI",
-      "what": "Floating 3D lettering 'Discover What’s Possible…' (Playfair Display ExtraBold, rendered in Blender 5.2; no AI)",
-      "generated": {
-        "tool": "Blender 5.2 (Cycles), scripted 3D render of typeset lettering (Playfair Display ExtraBold, SIL Open Font Licence); no generative model",
-        "date": "2026-10-25",
-        "method": "PlotNua project documents claude/h6-floating-lettering-proof-2026-10-25.md and claude/h6-status-and-typography-refinement-2026-10-25.md (Version B, approved 25 Oct 2026)",
-        "layout_reference": "Size and placement were fitted by eye to the founder's ChatGPT mock-up PlotNua-H6-Floating-Text-Reference.png; none of its pixels are used"
-      },
-      "human_review": {
-        "reviewer": "Colin MacAulay (founder)",
-        "date": "2026-10-26",
-        "attests": "Founder approved this lettering (Version B, 25 Oct 2026) and its release (26 Oct 2026). It is a 3D render of typeset lettering made in Blender without any generative AI model."
-      },
-      "permitted_surfaces": [
-        "homepage"
-      ]
-    },
-    {
-      "asset": "assets/h6/img/H6-lettering-shadows-1677.webp",
-      "sha256": "c188b69dcecbd5b412f98da059b753f213009c04804afceba57cf9f83bc16e4c",
-      "bytes": 33064,
-      "class": "ILLUSTRATION_VERIFIED_NOT_AI",
-      "what": "Floating 3D lettering 'Discover What’s Possible…' (Playfair Display ExtraBold, rendered in Blender 5.2; no AI)",
-      "generated": {
-        "tool": "Blender 5.2 (Cycles), scripted 3D render of typeset lettering (Playfair Display ExtraBold, SIL Open Font Licence); no generative model",
-        "date": "2026-10-25",
-        "method": "PlotNua project documents claude/h6-floating-lettering-proof-2026-10-25.md and claude/h6-status-and-typography-refinement-2026-10-25.md (Version B, approved 25 Oct 2026)",
-        "layout_reference": "Size and placement were fitted by eye to the founder's ChatGPT mock-up PlotNua-H6-Floating-Text-Reference.png; none of its pixels are used"
-      },
-      "human_review": {
-        "reviewer": "Colin MacAulay (founder)",
-        "date": "2026-10-26",
-        "attests": "Founder approved this lettering (Version B, 25 Oct 2026) and its release (26 Oct 2026). It is a 3D render of typeset lettering made in Blender without any generative AI model."
-      },
-      "permitted_surfaces": [
-        "homepage"
-      ]
     },
     {
       "asset": "assets/disc031/img/DISC-031-before-1536.jpg",
