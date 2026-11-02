@@ -88,9 +88,8 @@ env:
   # ISSUE 005 PIECE E2 — the partition index. The runtime reads this to learn
   # which per-category files exist, so it never guesses a filename.
   DETAIL_INDEX: garden-room-detail-index-v1.json
-
-env:
   GH_TOKEN: ${{ github.token }}   # automation v1: request-release.sh dispatches the gate
+
 
 jobs:
   refresh:
