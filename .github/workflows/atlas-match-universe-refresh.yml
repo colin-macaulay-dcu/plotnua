@@ -95,7 +95,7 @@ env:
 jobs:
   refresh:
     runs-on: ubuntu-latest
-    timeout-minutes: 25
+    timeout-minutes: 40   # automation v1: request-release.sh waits up to 25 min for the gated release
 
     steps:
       - name: Check out the site

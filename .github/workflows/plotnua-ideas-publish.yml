@@ -36,7 +36,7 @@ jobs:
   publish:
     if: ${{ github.ref == 'refs/heads/main' }}
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 35   # automation v1: request-release.sh waits up to 25 min for the gated release
     steps:
       - uses: actions/checkout@v4
         with:

@@ -39,7 +39,7 @@ jobs:
   publish:
     if: ${{ vars.PLOTART_PUBLISH_ENABLED == 'true' && github.ref == 'refs/heads/main' }}
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 60   # automation v1: up to two gated releases (gallery + order), 25 min each
     steps:
       - uses: actions/checkout@v4
         with:
