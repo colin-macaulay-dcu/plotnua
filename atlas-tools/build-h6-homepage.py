@@ -92,8 +92,10 @@ def baseline_parts(index):
     # three data- attributes and the three <dt> values. They are blanked before hashing, so a figures update
     # never trips this guard; everything else in the block must stay byte-identical. The numbers themselves
     # are checked against atlas-stats.json by .github/scripts/check_atlas_figures.py.
-    block = re.sub(r'(data-(?:products|suppliers|prices)=")\d+(")', r'\1#\2', block)
-    block = re.sub(r'(<dt id="atlas(?:Products|Suppliers|Prices)">)\d+(</dt>)', r'\1#\2', block)
+    # 2 Nov 2026 (founder-approved Atlas figure correction): "Suppliers" became "Makers researched"
+    # (data-makers / atlasMakers). Only the digits are blanked; the labels stay inside the hash.
+    block = re.sub(r'(data-(?:products|suppliers|makers|prices)=")\d+(")', r'\1#\2', block)
+    block = re.sub(r'(<dt id="atlas(?:Products|Suppliers|Makers|Prices)">)\d+(</dt>)', r'\1#\2', block)
     return {'atlas_figures_block': sha(block), 'analytics_and_consent': sha('\n'.join(heads)), 'analytics_and_consent_count': len(heads)}
 
 def mount():
