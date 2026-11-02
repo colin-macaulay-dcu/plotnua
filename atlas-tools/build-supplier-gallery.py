@@ -43,6 +43,11 @@ RIGHTS = ROOT / "image-rights-records.json"
 MANIFEST = ROOT / "image-rights-manifest.json"
 UNIVERSE = ROOT / "garden-room-recommendation-universe-v1.json"
 HEADINGS = DATA / "discovery-headings.json"
+# DISCOVERY TWO-OPTION COMPONENT (founder approval, 2 Nov 2026: Living in the Garden pilot).
+# Optional, per Discovery: rendered beneath the heading and figures, above the carousel,
+# only for a Discovery listed in this file. A Discovery not listed renders byte-identically.
+TWO_OPTION = ROOT / "atlas-tools" / "discovery-two-option" / "two-option.json"
+TWO_OPTION_CSS = "assets/components/pn-two-option.css?v=1"
 
 DISCOVERIES = {
     "discovery-garden-retreat.html": {
@@ -397,7 +402,7 @@ def gallery(ed, head, sup, cfg=None):
         <span class="pn-sg-kicker">{E(head["kicker"])}</span>
         <h2 class="pn-sg-h2" id="sg-h">{E(head["heading"])}</h2>
         <p class="pn-sg-intro">{E(head["intro"])}</p>
-        <p class="pn-sg-note">{E(ed["selectionNote"])}</p>{figs}
+        <p class="pn-sg-note">{E(ed["selectionNote"])}</p>{figs}{two_option_html(ed["discovery"])}
       </div>
       <div class="pn-sg-controls">
         <button type="button" class="pn-sg-arrow" data-sg-prev aria-label="Previous supplier" aria-controls="sg-track">{ARROW_L}</button>
@@ -422,6 +427,25 @@ TRANSITION_CSS = ("<style>/* gallery -> Maker Explorer transition (build-supplie
                   ".pn-sg[data-sg-transition=\"rule\"] ~ #explore-makers{ border-top:1px solid var(--rule, #4A4B4F); padding-top:min(72px, 8vw); }\n"
                   "@media (max-width:720px){ .pn-sg[data-sg-transition=\"rule\"] ~ #explore-makers{ padding-top:44px; } }\n"
                   "</style>\n")
+
+
+def two_option_html(name):
+    """The two ways to explore this Discovery, or "" when the Discovery is not configured.
+    Option 2 links ONLY to the Discovery's existing Journey routes; there is no form."""
+    if not TWO_OPTION.exists():
+        return ""
+    cfg = json.loads(TWO_OPTION.read_text(encoding="utf-8"))["discoveries"].get(name)
+    if not cfg:
+        return ""
+    ex, hw = cfg["explore"], cfg["homework"]
+    btns = "".join(f'<li><a class="pn-two-b" href="{E(j["href"])}">{E(j["label"])} <span aria-hidden="true">&rarr;</span></a></li>'
+                   for j in hw["journeys"])
+    return (f'\n        <link rel="stylesheet" href="{TWO_OPTION_CSS}">'
+            f'\n        <div class="pn-two" role="group" aria-label="Two ways to explore">'
+            f'<div class="pn-two-opt"><p class="pn-two-k">{E(ex["label"])}</p><p class="pn-two-t">{E(ex["text"])}</p>'
+            f'<a class="pn-two-a" href="{E(ex["target"])}">{E(ex["cta"])} <span aria-hidden="true">&darr;</span></a></div>'
+            f'<div class="pn-two-opt is-help"><p class="pn-two-k">{E(hw["label"])}</p><p class="pn-two-t">{E(hw["text"])}</p>'
+            f'<ul class="pn-two-btns" role="list">{btns}</ul></div></div>')
 
 
 def body_block(ed, head, sup):

@@ -1927,12 +1927,12 @@ body.pn-p4 #discover .p4s-all-link{ margin-top:40px; }
 
       <div class="ah-body atlas-body">
         <dl class="atlas-figures" id="atlasFigures"
-            data-products="588" data-suppliers="37" data-prices="851">
+            data-products="588" data-makers="94" data-prices="851">
           <div class="atlas-figure">
             <dt id="atlasProducts">588</dt><dd>Garden Rooms</dd>
           </div>
           <div class="atlas-figure">
-            <dt id="atlasSuppliers">37</dt><dd>Suppliers</dd>
+            <dt id="atlasMakers">94</dt><dd>Makers researched</dd>
           </div>
           <div class="atlas-figure">
             <dt id="atlasPrices">851</dt><dd>Verified Prices</dd>
@@ -2286,7 +2286,7 @@ body.pn-p4 #discover .p4s-all-link{ margin-top:40px; }
 (function(){
   var host = document.getElementById('atlasFigures');
   if (!host) return;
-  var map = { atlasProducts: 'products', atlasSuppliers: 'suppliers', atlasPrices: 'prices' };
+  var map = { atlasProducts: 'products', atlasMakers: 'makers', atlasPrices: 'prices' };
   if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
   if (!('IntersectionObserver' in window) || !window.requestAnimationFrame) return;
   var els = Object.keys(map).map(function(id){

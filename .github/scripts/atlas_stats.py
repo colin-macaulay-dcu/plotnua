@@ -9,8 +9,15 @@ served, so they survive with JavaScript disabled and cause no layout shift.
 
 GOVERNED METRICS — do not substitute
   Garden Rooms    Products         where Product Category  = "Garden Rooms"
-  Suppliers       Organisations    where Organisation Type = "Supplier"
+  Makers researched  Distinct organisations linked to at least one Atlas
+                     product (Products.Organisation), fixtures excluded
   Verified Prices Product Pricing  where Status            = "Verified"
+
+  MAKERS RESEARCHED replaced "Suppliers" (Organisation Type = "Supplier") by
+  founder decision, 2 November 2026: that figure counted one organisation type
+  only and understated the research behind the site. It is a research figure,
+  not a claim of any relationship: it says nothing about partnership,
+  permission or commission.
 
   Verified Prices is NOT the total Product Pricing count. The total is
   recorded alongside it for context and is never published.
@@ -53,11 +60,11 @@ METRICS = {
         "value": "Garden Rooms",
         "label": "Garden Rooms",
     },
-    "suppliers": {
-        "table": "tblngwmviAcWxFKsW",   # Organisations
-        "field": "Organisation Type",
-        "value": "Supplier",
-        "label": "Suppliers",
+    "makers": {
+        "table": "tblMiUcO4OT9ia2aE",   # Products
+        "field": "Organisation",        # linked record(s): the product's maker
+        "distinctLinked": True,         # count distinct linked organisations, not rows
+        "label": "Makers researched",
     },
     "verifiedPrices": {
         "table": "tblqsjmkTrwSct7gv",   # Product Pricing
@@ -148,7 +155,20 @@ def collect(token: str) -> dict:
                   f"— {EXCLUDED_RECORD_IDS.get(d.get('id', ''), '')[:70]}")
 
         total = len(records)
-        matched = sum(1 for r in records if cell(r, m["field"]) == m["value"])
+        if m.get("distinctLinked"):
+            # A linked-record field comes back as a list of record ids. Every
+            # distinct organisation linked to a genuine product counts once;
+            # an excluded fixture organisation never counts.
+            linked = set()
+            for r in records:
+                v = r.get("fields", {}).get(m["field"]) or []
+                for rid in (v if isinstance(v, list) else [v]):
+                    rid = rid.get("id") if isinstance(rid, dict) else rid
+                    if isinstance(rid, str) and rid and rid not in EXCLUDED_RECORD_IDS:
+                        linked.add(rid)
+            matched = len(linked)
+        else:
+            matched = sum(1 for r in records if cell(r, m["field"]) == m["value"])
         counts[key] = {"count": matched, "tableTotal": total}
         print(f"  {m['label']:<16} {matched:>5}  of {total} records in the table")
     return counts
@@ -171,8 +191,8 @@ def gate(counts: dict, prev: dict) -> None:
             fail(f"{m['label']}: count is missing or not an integer ({n!r}).")
         if n == 0:
             fail(f"{m['label']}: count is 0. Treated as a failure, never as a result "
-                 f"— most likely the '{m['value']}' choice or the '{m['field']}' "
-                 f"field has been renamed.")
+                 f"— most likely the '{m.get('value', m['field'])}' choice or the "
+                 f"'{m['field']}' field has been renamed.")
         was = prev.get(key, {}).get("count") if isinstance(prev.get(key), dict) else prev.get(key)
         if isinstance(was, int) and was > 0:
             if n < was * (1 - MAX_DECREASE):
@@ -192,10 +212,10 @@ def gate(counts: dict, prev: dict) -> None:
 # asserts the public label, so the workflow can never change wording — only
 # digits. If an anchor has moved, the script refuses to guess.
 ATTRS = {"gardenRooms": "data-products",
-         "suppliers": "data-suppliers",
+         "makers": "data-makers",
          "verifiedPrices": "data-prices"}
 DTS = {"gardenRooms": "atlasProducts",
-       "suppliers": "atlasSuppliers",
+       "makers": "atlasMakers",
        "verifiedPrices": "atlasPrices"}
 
 
@@ -259,8 +279,9 @@ def main() -> None:
         "counts": {
             "gardenRooms": {"count": counts["gardenRooms"]["count"],
                             "definition": "Products where Product Category = Garden Rooms"},
-            "suppliers": {"count": counts["suppliers"]["count"],
-                          "definition": "Organisations where Organisation Type = Supplier"},
+            "makers": {"count": counts["makers"]["count"],
+                       "definition": "Distinct organisations linked to at least one product "
+                                     "(Products.Organisation), excluding non-genuine fixtures"},
             "verifiedPrices": {"count": counts["verifiedPrices"]["count"],
                                "definition": "Product Pricing where Status = Verified",
                                "ofTotalPricingRecords": counts["verifiedPrices"]["tableTotal"]},
