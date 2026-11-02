@@ -314,3 +314,61 @@ body.pn-hdr-on .pn-hdr-menu > summary::-webkit-details-marker{ display:none; }
 @media (prefers-reduced-motion:reduce){
   body.pn-hdr-on :is(.pn-hdr-menu-btn,.pn-hdr-menu-btn svg path){ transition:none !important; }
 }
+
+/* ===== GET HELP CHOOSING (founder approval, 2 Nov 2026 · Customer Journey Evolution) =========
+   Route B, "Let PlotNua do the homework". One member of the control family, in the Atlas sage
+   (the research behind a shortlist), seated between the destinations and WhatsApp. On phones
+   it is the first item under "Talk to PlotNua" in the Menu panel. */
+body.pn-hdr-on{ --h-sage:#8FAF8A; }
+body.pn-hdr-on .pn-hdr-help{ display:inline-flex; align-items:center; gap:9px; height:var(--h-btn); flex:none;
+  padding:0 17px 0 13px; border-radius:999px; text-decoration:none; white-space:nowrap; box-sizing:border-box;
+  font-family:var(--h-sans); font-weight:600; font-size:14.5px; line-height:1; letter-spacing:.005em; color:var(--h-ivory);
+  border:1px solid rgba(143,175,138,.62); background:rgba(143,175,138,.08);
+  transition:background .2s ease, border-color .2s ease; }
+body.pn-hdr-on .pn-hdr-help svg{ width:18px; height:18px; flex:none; color:var(--h-sage); }
+body.pn-hdr-on .pn-hdr-help:hover{ background:rgba(143,175,138,.18); border-color:var(--h-sage); }
+body.pn-hdr-on .pn-hdr-help:focus-visible{ outline:2px solid var(--h-terra-text); outline-offset:3px; }
+body.pn-hdr-on .pn-hdr-help[aria-current]{ border-color:var(--h-sage); background:rgba(143,175,138,.18); }
+body.pn-hdr-on .pn-hdr-in .pn-hdr-wa{ flex:none; }
+/* the bar now carries one more control: WhatsApp folds to its bubble a little earlier */
+@media (max-width:1320px) and (min-width:721px){
+  body.pn-hdr-on .pn-hdr-in .pn-hdr-wa{ width:var(--h-btn); padding:0; justify-content:center; }
+  body.pn-hdr-on .pn-hdr-in .pn-hdr-wa .pn-hdr-lb{ position:absolute; width:1px; height:1px; overflow:hidden; clip-path:inset(50%); white-space:nowrap; }
+}
+@media (max-width:1180px) and (min-width:721px){
+  body.pn-hdr-on .pn-hdr-help{ padding:0 13px 0 11px; }
+  body.pn-hdr-on .pn-hdr-sep{ display:none; }
+}
+@media (max-width:1040px) and (min-width:721px){
+  body.pn-hdr-on .pn-hdr-help svg{ display:none; }
+  body.pn-hdr-on .pn-hdr-help{ padding:0 12px; font-size:13.5px; }
+}
+@media (max-width:720px){
+  body.pn-hdr-on .pn-hdr-in .pn-hdr-help{ display:none; }
+  body.pn-hdr-on .pn-hdr-pl--help{ justify-content:flex-start; height:52px; padding:0 18px; border-radius:14px; font-size:16px;
+    border-color:rgba(143,175,138,.62); background:rgba(143,175,138,.08); }
+  body.pn-hdr-on .pn-hdr-pl--help svg{ width:20px; height:20px; color:var(--h-sage); }
+  body.pn-hdr-on .pn-hdr-pl--help[aria-current]{ border-color:var(--h-sage); }
+}
+/* the narrowest tablets (721-860px): the label sets on two short lines, so every control keeps its full words */
+@media (max-width:860px) and (min-width:721px){
+  body.pn-hdr-on .pn-hdr-help{ padding:0 12px; white-space:normal; font-size:12.5px; line-height:1.08; }
+  body.pn-hdr-on .pn-hdr-help .pn-hdr-lb{ display:block; max-width:62px; }
+}
+@media (max-width:780px) and (min-width:721px){
+  body.pn-hdr-on .pn-hdr-in{ gap:6px; }
+  body.pn-hdr-on .pn-hdr-search-slot{ width:104px; }
+  html body.pn-hdr-on .pns-pill{ width:104px; padding:0 10px 0 5px; }
+}
+@media (max-width:744px) and (min-width:721px){
+  body.pn-hdr-on .pn-hdr-in{ gap:3px; }
+  body.pn-hdr-on .pn-hdr-nav{ gap:3px; }
+  body.pn-hdr-on .pn-hdr-nav .pn-hdr-btn{ padding:0 8px !important; }
+}
+/* the brand never shrinks under the controls; on the narrowest tablets the wordmark yields to the tile */
+@media (min-width:721px){
+  body.pn-hdr-on .pn-hdr-brand{ flex:none; }
+}
+@media (max-width:1010px) and (min-width:721px){
+  body.pn-hdr-on .pn-hdr-word{ position:absolute; width:1px; height:1px; overflow:hidden; clip-path:inset(50%); }
+}

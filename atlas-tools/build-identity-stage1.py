@@ -114,6 +114,8 @@ PAGES = {
     "discovery-underground-swimming-pool.html": "dark",
     # Idea Board, the Discovery Library's companion page (Phase 1 build, 1 Nov 2026; noindex; release pending)
     "ideas.html": "dark",
+    # Customer Journey Evolution, Phase 1 (founder approval, 2 Nov 2026): the two reading pages
+    "help-choosing.html": "dark", "how-plotnua-works-with-makers.html": "dark",
 }
 DISC = {"discoveries.html", "discovery-hidden-bins.html", "discovery-living-in-the-garden.html",
         "discovery-the-borrowed-garden.html", "discovery-driveway-income.html", "discovery-hidden-cars.html",

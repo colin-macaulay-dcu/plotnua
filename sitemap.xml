@@ -64,6 +64,8 @@
   <!-- TRIQ QUBE public page (URL kept as triq-cube.html): TRIQBRIQ product management approval received 12 October 2026; founder authorised public integration. Product name corrected to TRIQ QUBE on 13 October 2026 at the manufacturer's request. -->
   <url><loc>https://plotnua.ie/triq-cube.html</loc><lastmod>2026-10-13</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
 
+  <url><loc>https://plotnua.ie/help-choosing.html</loc><lastmod>2026-11-02</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://plotnua.ie/how-plotnua-works-with-makers.html</loc><lastmod>2026-11-02</lastmod><changefreq>monthly</changefreq><priority>0.5</priority></url>
   <url><loc>https://plotnua.ie/about.html</loc><lastmod>2026-10-09</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://plotnua.ie/contact.html</loc><lastmod>2026-10-09</lastmod><changefreq>monthly</changefreq><priority>0.5</priority></url>
   <url><loc>https://plotnua.ie/privacy.html</loc><lastmod>2026-10-21</lastmod><changefreq>yearly</changefreq><priority>0.3</priority></url>

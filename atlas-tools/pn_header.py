@@ -66,6 +66,8 @@ IDENTITY_PAGES = [   # built by build-identity-stage1.py
     "discovery-supper-club-at-home.html",
     "discovery-underground-swimming-pool.html",
     "ideas.html",                       # Idea Board (Phase 1 build, 1 Nov 2026; noindex; release pending)
+    "help-choosing.html",               # Customer Journey Evolution, Phase 1 (founder approval 2 Nov 2026)
+    "how-plotnua-works-with-makers.html",  # Customer Journey Evolution, Phase 1 (founder approval 2 Nov 2026)
 ]
 GLOBAL_PAGES = [     # built by build-global-header.py
     "index.html", "search.html",
@@ -92,6 +94,15 @@ ICON_PLOT = ('<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-
              'd="M10 16.6s-6.2-3.7-6.2-8.2A3.4 3.4 0 0 1 10 6.3a3.4 3.4 0 0 1 6.2 2.1c0 4.5-6.2 8.2-6.2 8.2Z"/></svg>')
 JS = "assets/identity/pn-header.js?v=1"   # versioned so a cached copy never outlives a change
 MENU_JS = "assets/identity/pn-menu.js?v=1"   # phone Menu (founder approval 30 Oct 2026): Escape / outside tap / scroll close
+# GET HELP CHOOSING (founder approval, 2 Nov 2026, Customer Journey Evolution): Route B,
+# "Let PlotNua do the homework". Desktop: a control between the destinations and WhatsApp.
+# Phone: the first item under "Talk to PlotNua" in the Menu panel. It links to a reading page
+# (help-choosing.html) that only points to journeys already live; it is not a form.
+HELP = ("help-choosing.html", "Get help choosing")
+# a signpost: two ways forward
+ICON_HELP = ('<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" '
+             'stroke-linecap="round" aria-hidden="true" focusable="false"><path d="M10 2.75v14.5"/>'
+             '<path d="M10 4.5h5.4l1.85 1.85-1.85 1.85H10"/><path d="M10 9.75H4.6l-1.85 1.85 1.85 1.85H10"/></svg>')
 CONTACT = ("contact.html", "Contact")   # phone Menu panel only (founder approval 30 Oct 2026); not in the desktop bar
 # PlotArt: the approved PlotArt logo (founder approval 31 Oct 2026), replacing the framed-picture glyph. A small raster,
 # root-absolute so it resolves from every page depth; 20 x 20 reserved (no layout shift); decorative (the label follows).
@@ -129,6 +140,11 @@ def _dest(page, cls_extra=""):
     return "".join(out)
 
 
+def _help(page, cls):
+    cur = ' aria-current="page"' if page == HELP[0] else ""
+    return '<a class="%s" href="%s"%s>%s<span class="pn-hdr-lb">%s</span></a>' % (cls, href(page, HELP[0]), cur, ICON_HELP, HELP[1])
+
+
 def head_block(page):
     """For pages not on the identity layer (which already loads the fonts)."""
     return ("%s\n<link rel=\"preconnect\" href=\"https://fonts.googleapis.com\">\n"
@@ -156,11 +172,12 @@ def bar(page, has_search, banner):
             "%s"
             "    <nav class=\"pn-hdr-nav\" aria-label=\"Main\">%s</nav>\n"
             "    <span class=\"pn-hdr-sep\" aria-hidden=\"true\"></span>\n"
+            "    %s\n"
             "    %s\n%s"
             "  </div>\n%s\n<script src=\"%s\" defer></script>\n<script src=\"%s\" defer></script>\n%s\n") % (
                 MARK["BAR"][0], open_tag, home, href(page, "assets/brand/plotnua-mark-master.svg"),
                 ("    " + HOME_INFO.replace("\n", "\n    ") + "\n") if page == "index.html" else "",
-                _dest(page), wa,
+                _dest(page), _help(page, "pn-hdr-help"), wa,
                 '    <span class="pn-hdr-search-slot" aria-hidden="true"></span>\n' if has_search else "",
                 close_tag, href(page, JS), href(page, MENU_JS), MARK["BAR"][1])
 
@@ -186,8 +203,8 @@ def row(page):
     contact = '<a class="pn-hdr-pl" href="%s"%s>%s<span>%s</span></a>' % (href(page, CONTACT[0]), cur, ICON_CONTACT, CONTACT[1])
     return ('%s\n<nav class="pn-hdr-dest" aria-label="Main"><details class="pn-hdr-menu" data-pn-menu>'
             '<summary class="pn-hdr-menu-btn">%s<span>Menu</span></summary>'
-            '<div class="pn-hdr-panel">%s<p class="pn-hdr-panel-k">Talk to PlotNua</p><div class="pn-hdr-panel-contact">%s%s</div></div>'
-            '</details></nav>\n%s\n') % (MARK["ROW"][0], ICON_MENU, _dest(page), wa, contact, MARK["ROW"][1])
+            '<div class="pn-hdr-panel">%s<p class="pn-hdr-panel-k">Talk to PlotNua</p>%s<div class="pn-hdr-panel-contact">%s%s</div></div>'
+            '</details></nav>\n%s\n') % (MARK["ROW"][0], ICON_MENU, _dest(page), _help(page, "pn-hdr-pl pn-hdr-pl--help"), wa, contact, MARK["ROW"][1])
 
 
 RAIL_BEGIN = "<!-- PLOTNUA SEARCH RAIL v1 · BEGIN"

@@ -196,7 +196,9 @@ pages = sorted(set(pages + ["index.html"]))
 # (founder launch approval required; the release candidate is not in the sitemap), entered the sitemap.
 # 29 since DISC-015 The Underground Swimming Pool (founder Phase 2 build authorisation, 1 Nov 2026;
 # development branch, founder release approval required) entered the sitemap.
-EXPECTED_PAGES = 29
+# 31 since the Customer Journey Evolution Phase 1 (founder approval, 2 Nov 2026): help-choosing.html
+# ("Get help choosing") and how-plotnua-works-with-makers.html entered the sitemap.
+EXPECTED_PAGES = 31
 if len(pages) != EXPECTED_PAGES:
     die("expected %d public pages, found %d — refusing to guess the rail scope. "
         "If a public page was added or removed, update EXPECTED_PAGES "

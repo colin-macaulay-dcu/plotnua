@@ -457,3 +457,63 @@ any readiness decision.
 **C · SUPPLIER CONTACT / DISPATCH.** AT-1 remains open. The Enquiry screen is built and
 test-gated; what is missing is supplier contact evidence, not a composer. PlotNua must not
 describe the enquiry route as live while it is gated at `?enquiry=test`.
+
+---
+
+## 10 · Recorded amendments — Customer Journey Evolution (founder approval, 2 November 2026)
+
+The founder approved a two-route experience: *Explore yourself*, or *Let PlotNua do the homework*.
+Full record: `governance/CUSTOMER-JOURNEY-TWO-ROUTE-ARCHITECTURE-2026-11-02.md`.
+
+Per §8, each new capability is placed under a named canonical owner **before** any code is written.
+Both amendments below are **DESIGNED · NOT BUILT**. Nothing in §3 changes status because of them.
+
+### 10.1 · New stage BRIEF (precedes MATCH)
+
+- **Purpose** — collect what the homeowner tells PlotNua about the property, the interest, the
+  requirements and the budget, and hand a decision profile to the **existing** Match.
+- **Owner** — to be built inside `your-plot.html`, as the front door of the existing
+  Your Plot / Property Explorer journey. **It extends the existing garden questionnaire and Match
+  screens; it does not replace them.**
+- **State owned** — the brief, in the browser only. **Nothing is sent or stored server-side.**
+- **Allowed next** — MATCH (existing). For a category with no published, qualified universe:
+  the relevant Discovery, or the COMPARISON REQUEST below. Never an invented shortlist.
+- **Prohibited**
+  - BRIEF owns **no ranking**. No second matching engine, comparator or scoring model may be
+    introduced; the existing Match engine and `ATLAS_POOL_SOURCES` remain the only ranking path.
+  - BRIEF may not introduce a supplier handoff, and may not read any commercial field
+    (referral offers, Partners, CRM progression or commission data).
+  - Every BRIEF question remains subject to the Discovery v1.0 rule: *every question must prove that
+    changing the answer materially changes the recommendation.* Questions that matter only to
+    the human comparison belong to COMPARISON REQUEST.
+- **Status** — **DESIGNED · NOT BUILT** (Phase 3; separate founder approval required).
+
+### 10.2 · Recorded exception COMPARISON REQUEST
+
+- **Purpose** — let a homeowner ask PlotNua itself for a free, founder-reviewed, detailed comparison.
+- **Entry** — Results, My Plot and Compare (secondary link), the help page and Discovery closing
+  panels, once built and switched on.
+- **What it is** — a request addressed to **PlotNua**. **It is not a supplier handoff and not a
+  dispatch.**
+  - `pnSupplierHandover()`, the single `window.open(` door, `ENQUIRY_ENABLED_ORGS` (frozen empty)
+    and the First Lead Phase A exception are all untouched.
+  - The request must never carry a supplier address.
+  - It must never be forwarded to a supplier without a **separate**, explicit consent given
+    through the existing lead route.
+- **How it is built** — it reuses the Enquiry screen's composer *pattern*: preview everything,
+  edit, optional items, consent hash, honeypot. It reuses the `garden-lead` Worker *pattern*:
+  the Worker mints the id, writes `RECEIVED` only, humans set every later state, typecast is off,
+  and a public switch ships `false`. **It is not a second enquiry composer for suppliers.**
+- **Storage** — a separate Airtable base, not Atlas Core.
+- **Commercial model** — the service is **free to homeowners, permanently**. Commercial
+  relationships never influence what a comparison includes or how options are presented; any
+  commission arrangement is disclosed per maker.
+- **Status** — **DESIGNED · NOT BUILT · INTAKE OFF.** Phase 2 needs separate founder approval
+  before any customer-data processing begins. Until then, no page may link to, describe as open,
+  or collect data for a comparison request.
+
+### 10.3 · Phase 1 navigation entry (no stage change)
+
+`help-choosing.html` ("Get help choosing") is a **reading surface**, like a Discovery. It owns no
+state and no ranking. It links only to stages that are already VISIBLE: the Your Plot
+garden-room and garden-home journeys, the Discovery Library and My Plot. It carries no form.
