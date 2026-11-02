@@ -1,4 +1,10 @@
 {
   "what_this_is": "The approved Idea Board ideas as last published by atlas-tools/plotnua-ideas-publish.py from PlotArt Studio (public fields only). Written only by the content pipeline; never edited by hand. Empty until the founder approves the first real idea.",
-  "ideas": []
+  "ideas": [
+    {
+      "text": "lift system",
+      "area": "Space",
+      "month": "2026-11"
+    }
+  ]
 }
