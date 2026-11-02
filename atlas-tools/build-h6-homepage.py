@@ -50,7 +50,14 @@ LAYERS = {'treehouse': 'H6-layer-treehouse', 'borrowed-garden': 'H6-layer-borrow
 def sha(b): return hashlib.sha256(b if isinstance(b, bytes) else b.encode('utf-8')).hexdigest()
 def rd(p): return open(os.path.join(ROOT, p), encoding='utf-8').read()
 def die(m): print('REFUSED: ' + m); sys.exit(1)
-def srcset(stem, ext): return ', '.join('assets/h6/img/%s-%d.%s %dw' % (stem, w, ext, w) for w in W)
+# Cache version for every H6 image URL (2 Nov 2026, Option A re-grade). The filenames stay the same, so a returning
+# visitor's browser could otherwise reuse a cached ungraded base beneath a newly fetched graded layer. Bump this token
+# whenever any H6 image changes: the whole set then loads together. The guard below refuses an unversioned reference.
+IMG_V = '?v=20261102'
+def srcset(stem, ext): return ', '.join('assets/h6/img/%s-%d.%s%s %dw' % (stem, w, ext, IMG_V, w) for w in W)
+H6_PRELOAD_RE = re.compile(r'<link rel="preload" as="image" type="image/avif" imagesrcset="assets/h6/img/[^"]*"[^>]*>\n')
+def h6_preload(): return ('<link rel="preload" as="image" type="image/avif" imagesrcset="%s" imagesizes="%s" fetchpriority="high">\n'
+                          % (srcset('H6-garden-base-v6', 'avif'), SIZES))
 
 def transform(block):
     def one(t, a, b):
@@ -62,17 +69,17 @@ def transform(block):
     alt = re.search(r'<img class="h6p-base"[^>]*?alt="([^"]+)">', t, flags=re.S).group(1)
     t = re.sub(r'<img class="h6p-base"[^>]*?>', (
         '<picture><source type="image/avif" srcset="%s" sizes="%s"><source type="image/webp" srcset="%s" sizes="%s">'
-        '<img class="h6p-base" src="assets/h6/img/H6-garden-base-v6-1677.webp" width="1677" height="938" fetchpriority="high" decoding="async" alt="%s"></picture>'
+        '<img class="h6p-base" src="assets/h6/img/H6-garden-base-v6-1677.webp' + IMG_V + '" width="1677" height="938" fetchpriority="high" decoding="async" alt="%s"></picture>'
         % (srcset('H6-garden-base-v6', 'avif'), SIZES, srcset('H6-garden-base-v6', 'webp'), SIZES, alt)), t, count=1, flags=re.S)
     for idd, stem in (('h6p-letter-shadow', 'H6-lettering-shadows'), ('h6p-letter', 'H6-lettering-letters')):
         t = re.sub(r'(<img class="h6p-letter is-off" id="%s") src="[^"]+"' % idd,
-                   r'\1 src="assets/h6/img/%s-1677.webp" srcset="%s" sizes="%s"' % (stem, srcset(stem, 'webp'), SIZES), t, count=1)
+                   r'\1 src="assets/h6/img/%s-1677.webp%s" srcset="%s" sizes="%s"' % (stem, IMG_V, srcset(stem, 'webp'), SIZES), t, count=1)
     for k, stem in LAYERS.items():
         t = re.sub(r'(<img class="h6p-ov" data-d="%s")\s+data-src="[^"]+"' % k,
                    r'\1 data-srcset="%s" data-sizes="%s"' % (srcset(stem, 'webp'), SIZES), t, count=1)
     t = re.sub(r'(<img class="h6p-fix" id="h6p-retreat-patch") data-src="[^"]+"',
                r'\1 data-srcset="%s" data-sizes="%s"' % (srcset('H6-layer-garden-retreat-lawn-patch', 'webp'), SIZES), t, count=1)
-    t = t.replace('href="assets/h6-prototype/img/H6-empty-garden-base.png"', 'data-href="assets/h6/img/H6-garden-base-v6-960.webp"')
+    t = t.replace('href="assets/h6-prototype/img/H6-empty-garden-base.png"', 'data-href="assets/h6/img/H6-garden-base-v6-960.webp' + IMG_V + '"')
     if 'assets/h6-prototype/' in t or 'data-src=' in t: die('a prototype path or an unconverted data-src remains')
     return OPEN + '\n' + t + CLOSE
 
@@ -112,8 +119,10 @@ def mount():
     if HEAD[0] not in idx:
         anchor = '<!-- PLOTNUA HEADER v2 · HEAD · END -->\n'
         if idx.count(anchor) != 1: die('head anchor not found')
-        idx = idx.replace(anchor, anchor + '<link rel="preload" as="image" type="image/avif" imagesrcset="%s" imagesizes="%s" fetchpriority="high">\n%s\n%s\n'
-                          % (srcset('H6-garden-base-v6', 'avif'), SIZES, HEAD[0], HEAD[1]))
+        idx = idx.replace(anchor, anchor + h6_preload() + '%s\n%s\n' % (HEAD[0], HEAD[1]))
+    elif len(H6_PRELOAD_RE.findall(idx)) == 1:
+        idx = H6_PRELOAD_RE.sub(lambda m: h6_preload(), idx)   # keep the preload's URLs (and cache version) equal to the photograph's
+    else: die('expected exactly one H6 preload in index.html')
     open(p, 'w', encoding='utf-8').write(idx)
     return idx
 
@@ -172,6 +181,10 @@ def guard():
     if re.search(r'<image[^>]*\shref=', snip): bad.append('an SVG scene image would load with the page')
     for u in set(re.findall(r'assets/h6/img/[A-Za-z0-9._-]+', snip)):
         if u not in rec['images']: bad.append(u + ' is referenced but not recorded')
+    # every H6 image reference carries the current cache version, and the head preload matches the photograph exactly
+    for m in re.finditer(r'assets/h6/img/[A-Za-z0-9._-]+(\?v=[0-9]+)?', snip):
+        if m.group(1) != IMG_V: bad.append('an H6 image reference lacks the cache version %s: %s' % (IMG_V, m.group(0)))
+    if index.count(h6_preload()) != 1: bad.append('the H6 photograph preload in index.html does not match the photograph and its cache version')
     plain = re.sub(r'\s+', ' ', re.sub(r'<[^>]+>', ' ', snip))
     if AI_LABEL not in plain: bad.append('the AI label "%s" is missing' % AI_LABEL)
     if 'TimberIN' in snip: bad.append('a supplier is named beside the AI illustration')
