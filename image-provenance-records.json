@@ -9010,6 +9010,271 @@
         "date": "2026-11-01",
         "subject": "DISC-015 The Underground Swimming Pool, founder Phase 2 build authorisation"
       }
+    },
+    {
+      "asset": "assets/og/plotnua-supplier-invitation-1200x630.jpg",
+      "sha256": "57b890f52042521d1910f875a1231d4f6bec59f28177b5aa930973bc390f71c1",
+      "bytes": 165230,
+      "pixels": [
+        1200,
+        630
+      ],
+      "class": "AI_ILLUSTRATION",
+      "what": "PlotNua supplier invitation social link preview card (1200 x 630): the official PlotNua tile and wordmark, the typeset heading 'Let's Discover What's Possible — Together' and plotnua.ie on anthracite, beside a framed crop of the AI garden illustration (Open Graph and Twitter share image)",
+      "generated": {
+        "tool": "ChatGPT image generation (OpenAI, gpt-image), per the master's C2PA content credentials; then crop and web encoding by the PlotNua build session",
+        "date": "2026-11-02",
+        "source_master": {
+          "file": "PlotNua_Instagram_Supplier_Invitation.png (founder's Mac, PlotNua/04 Brand; unchanged)",
+          "sha256": "5aba7e3de3c69b60f9458a815eb89a4da249de0412f1a82879293b4ef90b102f",
+          "bytes": 2369440,
+          "pixels": [
+            1254,
+            1254
+          ]
+        },
+        "processing_chain": [
+          {
+            "step": "Master: generated in ChatGPT (gpt-image) by the founder on 2 Nov 2026, per its C2PA content credentials",
+            "prompt": "UNAVAILABLE (see prompt_status)"
+          },
+          {
+            "step": "Crop",
+            "tool": "Pillow 12.3.0: the garden scene only, box (0,450,1254,1035) of the 1254 x 1254 master (1254 x 585); the master's AI-drawn logo, heading and lettering are excluded; no other change"
+          },
+          {
+            "step": "Card crop",
+            "tool": "Pillow 12.3.0: 540 x 560 from the scene at (110,12); not scaled"
+          },
+          {
+            "step": "Composition",
+            "tool": "Chromium (Playwright) render of an HTML card at 1200 x 630: the official mark assets/brand/plotnua-mark-master.svg on the header's ivory tile; Instrument Serif and Hanken Grotesk (OFL, @fontsource); the crop placed at (600,35), unscaled; JPEG quality 88, 4:4:4, via Pillow"
+          }
+        ],
+        "c2pa_evidence": {
+          "manifest": "C2PA content credentials embedded in the master PNG, read with c2pa-python 0.38.1 on 2 Nov 2026",
+          "claim_generator": "OpenAI Media Service API",
+          "signed_by": "OpenAI OpCo, LLC",
+          "signed_at": "2026-11-02T14:05:00.439641+00:00",
+          "actions": [
+            "c2pa.created (softwareAgent ChatGPT, version gpt-image; digitalSourceType trainedAlgorithmicMedia)",
+            "c2pa.converted",
+            "c2pa.watermarked.unbound"
+          ],
+          "ingredients_recorded": [],
+          "validation": "Valid (content hash and claim signature); signing certificate reported 'untrusted' because no trust anchors are loaded locally. This does not concern the image content."
+        }
+      },
+      "depicts_named_product": false,
+      "depicts_named_organisation": false,
+      "human_review": {
+        "reviewer": "Colin MacAulay",
+        "date": "2026-11-02",
+        "attests": "Founder supplied the graphic (generated in ChatGPT) as the PlotNua supplier invitation image and, on 2 Nov 2026 (Phase 1 approved build), approved: the official PlotNua logo and wordmark instead of the graphic's AI-drawn logo; the 1200 x 630 preview card with the invitation heading on the left and the garden illustration on the right; the page wording; and the AI illustration disclosure on the page. The garden is a generic AI illustration, not presented as a photograph of a real property or any supplier's product. Public release remains subject to his approval."
+      },
+      "permitted_surfaces": [
+        "supplier-invitation"
+      ],
+      "prompt_status": "UNAVAILABLE",
+      "reference_disclosure": {
+        "status": "UNCERTAIN",
+        "statement": "ChatGPT's content credentials record no ingredient images, but they do not record images supplied in the conversation, so the inputs are not established from the file. No founder statement on reference images is recorded; reference_inputs is therefore not stated.",
+        "evidence": "C2PA readout of PlotNua_Instagram_Supplier_Invitation.png (sha256 5aba7e3d...), 2 Nov 2026"
+      },
+      "resemblance_review": {
+        "date": "2026-11-02",
+        "reviewed_by": "PlotNua build session (visual inspection of the master at full size and of the crops), 2 Nov 2026; recorded for the founder's confirmation at release",
+        "compared_against": "Identifiable third-party content in general: logos, brand names, signage, legible text, recognisable addresses or buildings, named supplier products, recognisable people",
+        "findings": [
+          "No logo, brand name, signage or legible text appears in the garden scene (the master's AI-drawn logo and lettering are outside every crop used)",
+          "The house, garden rooms, tree house, pond and hot tub are generic; no address, number or landmark is visible",
+          "No named supplier product is identified or claimed; not presented as any supplier's product",
+          "No people appear"
+        ],
+        "verdict": "No identifiable third-party product, brand, property or person is reproduced, on visual inspection. Whether any third-party image was supplied in the generation conversation is not established (see reference_disclosure)."
+      },
+      "decision_ref": "PN-FDR-2026-11-02-SUPPLIER-INVITE (founder approval of the Phase 1 build, 2 Nov 2026: official logo, preview card, page wording and AI disclosure; founder-attested form, extending PN-FDR-2026-10-27-DISC032 to these three files on the supplier-invitation surface only)",
+      "service_terms": {
+        "openai": "OpenAI Terms of Use: as between the user and OpenAI, the user owns the output; the user is responsible for the inputs they provide. (Same wording as the DISC-031, DISC-032 and H6 records.)"
+      },
+      "content_credentials": {
+        "embeds_c2pa": false,
+        "note": "Web re-encoding carries no content credentials. The PNG master carries OpenAI's C2PA content credentials (see generated.c2pa_evidence)."
+      }
+    },
+    {
+      "asset": "assets/suppliers/invitation-garden-1254.webp",
+      "sha256": "593a3bc7b64b4ccbcef6349eb7a59fd7933164df7e9e472ebf4f9d5dadd061a8",
+      "bytes": 159604,
+      "pixels": [
+        1254,
+        585
+      ],
+      "class": "AI_ILLUSTRATION",
+      "what": "The AI garden illustration on the supplier invitation page (house, garden rooms, tree house, pond and planting at dusk)",
+      "generated": {
+        "tool": "ChatGPT image generation (OpenAI, gpt-image), per the master's C2PA content credentials; then crop and web encoding by the PlotNua build session",
+        "date": "2026-11-02",
+        "source_master": {
+          "file": "PlotNua_Instagram_Supplier_Invitation.png (founder's Mac, PlotNua/04 Brand; unchanged)",
+          "sha256": "5aba7e3de3c69b60f9458a815eb89a4da249de0412f1a82879293b4ef90b102f",
+          "bytes": 2369440,
+          "pixels": [
+            1254,
+            1254
+          ]
+        },
+        "processing_chain": [
+          {
+            "step": "Master: generated in ChatGPT (gpt-image) by the founder on 2 Nov 2026, per its C2PA content credentials",
+            "prompt": "UNAVAILABLE (see prompt_status)"
+          },
+          {
+            "step": "Crop",
+            "tool": "Pillow 12.3.0: the garden scene only, box (0,450,1254,1035) of the 1254 x 1254 master (1254 x 585); the master's AI-drawn logo, heading and lettering are excluded; no other change"
+          },
+          {
+            "step": "Web encoding",
+            "tool": "Pillow 12.3.0: WebP quality 82, method 6; not scaled"
+          }
+        ],
+        "c2pa_evidence": {
+          "manifest": "C2PA content credentials embedded in the master PNG, read with c2pa-python 0.38.1 on 2 Nov 2026",
+          "claim_generator": "OpenAI Media Service API",
+          "signed_by": "OpenAI OpCo, LLC",
+          "signed_at": "2026-11-02T14:05:00.439641+00:00",
+          "actions": [
+            "c2pa.created (softwareAgent ChatGPT, version gpt-image; digitalSourceType trainedAlgorithmicMedia)",
+            "c2pa.converted",
+            "c2pa.watermarked.unbound"
+          ],
+          "ingredients_recorded": [],
+          "validation": "Valid (content hash and claim signature); signing certificate reported 'untrusted' because no trust anchors are loaded locally. This does not concern the image content."
+        }
+      },
+      "depicts_named_product": false,
+      "depicts_named_organisation": false,
+      "human_review": {
+        "reviewer": "Colin MacAulay",
+        "date": "2026-11-02",
+        "attests": "Founder supplied the graphic (generated in ChatGPT) as the PlotNua supplier invitation image and, on 2 Nov 2026 (Phase 1 approved build), approved: the official PlotNua logo and wordmark instead of the graphic's AI-drawn logo; the 1200 x 630 preview card with the invitation heading on the left and the garden illustration on the right; the page wording; and the AI illustration disclosure on the page. The garden is a generic AI illustration, not presented as a photograph of a real property or any supplier's product. Public release remains subject to his approval."
+      },
+      "permitted_surfaces": [
+        "supplier-invitation"
+      ],
+      "prompt_status": "UNAVAILABLE",
+      "reference_disclosure": {
+        "status": "UNCERTAIN",
+        "statement": "ChatGPT's content credentials record no ingredient images, but they do not record images supplied in the conversation, so the inputs are not established from the file. No founder statement on reference images is recorded; reference_inputs is therefore not stated.",
+        "evidence": "C2PA readout of PlotNua_Instagram_Supplier_Invitation.png (sha256 5aba7e3d...), 2 Nov 2026"
+      },
+      "resemblance_review": {
+        "date": "2026-11-02",
+        "reviewed_by": "PlotNua build session (visual inspection of the master at full size and of the crops), 2 Nov 2026; recorded for the founder's confirmation at release",
+        "compared_against": "Identifiable third-party content in general: logos, brand names, signage, legible text, recognisable addresses or buildings, named supplier products, recognisable people",
+        "findings": [
+          "No logo, brand name, signage or legible text appears in the garden scene (the master's AI-drawn logo and lettering are outside every crop used)",
+          "The house, garden rooms, tree house, pond and hot tub are generic; no address, number or landmark is visible",
+          "No named supplier product is identified or claimed; not presented as any supplier's product",
+          "No people appear"
+        ],
+        "verdict": "No identifiable third-party product, brand, property or person is reproduced, on visual inspection. Whether any third-party image was supplied in the generation conversation is not established (see reference_disclosure)."
+      },
+      "decision_ref": "PN-FDR-2026-11-02-SUPPLIER-INVITE (founder approval of the Phase 1 build, 2 Nov 2026: official logo, preview card, page wording and AI disclosure; founder-attested form, extending PN-FDR-2026-10-27-DISC032 to these three files on the supplier-invitation surface only)",
+      "service_terms": {
+        "openai": "OpenAI Terms of Use: as between the user and OpenAI, the user owns the output; the user is responsible for the inputs they provide. (Same wording as the DISC-031, DISC-032 and H6 records.)"
+      },
+      "content_credentials": {
+        "embeds_c2pa": false,
+        "note": "Web re-encoding carries no content credentials. The PNG master carries OpenAI's C2PA content credentials (see generated.c2pa_evidence)."
+      }
+    },
+    {
+      "asset": "assets/suppliers/invitation-garden-800.webp",
+      "sha256": "7e8dae37743a1e522ed6b4c6b1a05a65e11a0aadee2b8080df4e0892e40c288f",
+      "bytes": 77872,
+      "pixels": [
+        800,
+        373
+      ],
+      "class": "AI_ILLUSTRATION",
+      "what": "The AI garden illustration on the supplier invitation page, 800 px wide",
+      "generated": {
+        "tool": "ChatGPT image generation (OpenAI, gpt-image), per the master's C2PA content credentials; then crop and web encoding by the PlotNua build session",
+        "date": "2026-11-02",
+        "source_master": {
+          "file": "PlotNua_Instagram_Supplier_Invitation.png (founder's Mac, PlotNua/04 Brand; unchanged)",
+          "sha256": "5aba7e3de3c69b60f9458a815eb89a4da249de0412f1a82879293b4ef90b102f",
+          "bytes": 2369440,
+          "pixels": [
+            1254,
+            1254
+          ]
+        },
+        "processing_chain": [
+          {
+            "step": "Master: generated in ChatGPT (gpt-image) by the founder on 2 Nov 2026, per its C2PA content credentials",
+            "prompt": "UNAVAILABLE (see prompt_status)"
+          },
+          {
+            "step": "Crop",
+            "tool": "Pillow 12.3.0: the garden scene only, box (0,450,1254,1035) of the 1254 x 1254 master (1254 x 585); the master's AI-drawn logo, heading and lettering are excluded; no other change"
+          },
+          {
+            "step": "Web encoding",
+            "tool": "Pillow 12.3.0: Lanczos resize to 800 x 373, WebP quality 82, method 6"
+          }
+        ],
+        "c2pa_evidence": {
+          "manifest": "C2PA content credentials embedded in the master PNG, read with c2pa-python 0.38.1 on 2 Nov 2026",
+          "claim_generator": "OpenAI Media Service API",
+          "signed_by": "OpenAI OpCo, LLC",
+          "signed_at": "2026-11-02T14:05:00.439641+00:00",
+          "actions": [
+            "c2pa.created (softwareAgent ChatGPT, version gpt-image; digitalSourceType trainedAlgorithmicMedia)",
+            "c2pa.converted",
+            "c2pa.watermarked.unbound"
+          ],
+          "ingredients_recorded": [],
+          "validation": "Valid (content hash and claim signature); signing certificate reported 'untrusted' because no trust anchors are loaded locally. This does not concern the image content."
+        }
+      },
+      "depicts_named_product": false,
+      "depicts_named_organisation": false,
+      "human_review": {
+        "reviewer": "Colin MacAulay",
+        "date": "2026-11-02",
+        "attests": "Founder supplied the graphic (generated in ChatGPT) as the PlotNua supplier invitation image and, on 2 Nov 2026 (Phase 1 approved build), approved: the official PlotNua logo and wordmark instead of the graphic's AI-drawn logo; the 1200 x 630 preview card with the invitation heading on the left and the garden illustration on the right; the page wording; and the AI illustration disclosure on the page. The garden is a generic AI illustration, not presented as a photograph of a real property or any supplier's product. Public release remains subject to his approval."
+      },
+      "permitted_surfaces": [
+        "supplier-invitation"
+      ],
+      "prompt_status": "UNAVAILABLE",
+      "reference_disclosure": {
+        "status": "UNCERTAIN",
+        "statement": "ChatGPT's content credentials record no ingredient images, but they do not record images supplied in the conversation, so the inputs are not established from the file. No founder statement on reference images is recorded; reference_inputs is therefore not stated.",
+        "evidence": "C2PA readout of PlotNua_Instagram_Supplier_Invitation.png (sha256 5aba7e3d...), 2 Nov 2026"
+      },
+      "resemblance_review": {
+        "date": "2026-11-02",
+        "reviewed_by": "PlotNua build session (visual inspection of the master at full size and of the crops), 2 Nov 2026; recorded for the founder's confirmation at release",
+        "compared_against": "Identifiable third-party content in general: logos, brand names, signage, legible text, recognisable addresses or buildings, named supplier products, recognisable people",
+        "findings": [
+          "No logo, brand name, signage or legible text appears in the garden scene (the master's AI-drawn logo and lettering are outside every crop used)",
+          "The house, garden rooms, tree house, pond and hot tub are generic; no address, number or landmark is visible",
+          "No named supplier product is identified or claimed; not presented as any supplier's product",
+          "No people appear"
+        ],
+        "verdict": "No identifiable third-party product, brand, property or person is reproduced, on visual inspection. Whether any third-party image was supplied in the generation conversation is not established (see reference_disclosure)."
+      },
+      "decision_ref": "PN-FDR-2026-11-02-SUPPLIER-INVITE (founder approval of the Phase 1 build, 2 Nov 2026: official logo, preview card, page wording and AI disclosure; founder-attested form, extending PN-FDR-2026-10-27-DISC032 to these three files on the supplier-invitation surface only)",
+      "service_terms": {
+        "openai": "OpenAI Terms of Use: as between the user and OpenAI, the user owns the output; the user is responsible for the inputs they provide. (Same wording as the DISC-031, DISC-032 and H6 records.)"
+      },
+      "content_credentials": {
+        "embeds_c2pa": false,
+        "note": "Web re-encoding carries no content credentials. The PNG master carries OpenAI's C2PA content credentials (see generated.c2pa_evidence)."
+      }
     }
   ],
   "legacy_undeclared": [

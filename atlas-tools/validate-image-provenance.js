@@ -279,12 +279,28 @@ const FOUNDER_ATTESTED_FOUNDER_PORTRAIT = {
     alt_disclosure: 'AI-edited portrait of Colin MacAulay',
   },
 };
-const FOUNDER_ATTESTED_ALL = [FOUNDER_ATTESTED_GRP, FOUNDER_ATTESTED_H6, FOUNDER_ATTESTED_DISC031, FOUNDER_ATTESTED_DISC033, FOUNDER_ATTESTED_DISC032, FOUNDER_ATTESTED_PLOTART_LG, FOUNDER_ATTESTED_FOUNDER_PORTRAIT];
+/* FOUNDER-ATTESTED CONTEXT · PLOTNUA SUPPLIER INVITATION (PN-FDR-2026-11-02-SUPPLIER-INVITE).
+   The founder supplied the ChatGPT graphic and approved the Phase 1 build on 2 Nov 2026 (official logo,
+   1200x630 preview card, page wording, AI disclosure). The prompt was not supplied and the credentials do
+   not record conversation inputs, so the founder-attested form is the only truthful record. ONLY these
+   three web encodings, and ONLY on the supplier-invitation surface (suppliers/invitation.html and its
+   social preview). Not a way to declare future images. */
+const FOUNDER_ATTESTED_SUPPLIER_INVITE = {
+  decision: 'PN-FDR-2026-11-02-SUPPLIER-INVITE',
+  sha256: new Set([
+    '57b890f52042521d1910f875a1231d4f6bec59f28177b5aa930973bc390f71c1',   // plotnua-supplier-invitation-1200x630.jpg
+    '593a3bc7b64b4ccbcef6349eb7a59fd7933164df7e9e472ebf4f9d5dadd061a8',   // invitation-garden-1254.webp
+    '7e8dae37743a1e522ed6b4c6b1a05a65e11a0aadee2b8080df4e0892e40c288f',   // invitation-garden-800.webp
+  ]),
+  surfaces: ['supplier-invitation'],
+};
+const FOUNDER_ATTESTED_ALL = [FOUNDER_ATTESTED_GRP, FOUNDER_ATTESTED_H6, FOUNDER_ATTESTED_DISC031, FOUNDER_ATTESTED_DISC033, FOUNDER_ATTESTED_DISC032, FOUNDER_ATTESTED_PLOTART_LG, FOUNDER_ATTESTED_FOUNDER_PORTRAIT, FOUNDER_ATTESTED_SUPPLIER_INVITE];
 const attestedFor = h => FOUNDER_ATTESTED_ALL.find(x => x.sha256.has(String(h)));
-/* 'gridnua' (founder approval of the GridNua limited launch, 29 Oct 2026): the GridNua initiative pages. */
+/* 'gridnua' (founder approval of the GridNua limited launch, 29 Oct 2026): the GridNua initiative pages.
+   'supplier-invitation' (founder approval, 2 Nov 2026): the private supplier invitation page and its social preview. */
 const PERMITTED_SURFACES = ['discovery', 'library-card', 'homepage',
                             'about', 'journey', 'preview', 'plotart', 'gridnua',
-                            'plotart-artist-gallery', 'plotart-virtual-gallery'];
+                            'plotart-artist-gallery', 'plotart-virtual-gallery', 'supplier-invitation'];
 const IMG_EXT = /\.(jpe?g|png|webp|avif|gif|svg|ico)$/i;
 /* PlotNua's own origins. An absolute self-reference is still one of our
    images and still needs declaring: twitter:image points at
