@@ -434,7 +434,29 @@ async function decideIdea(env, actor, id, b) {
     await env.DB.prepare("DELETE FROM ideas WHERE id = ? AND status <> 'approved'").bind(id).run();
   } else throw new Bad('Unknown action');
   await audit(env, actor, 'founder', 'idea_' + action, null, { ref: i.ref });
-  return ideasAdmin(env);
+  // Publish on approval (founder decision 2 Nov 2026): an action that changes what the public board shows starts the
+  // Idea Board publishing workflow at once. Declining or deleting a waiting idea changes nothing public. Only this
+  // founder-only route can start it; the public intake Worker holds no GitHub credential.
+  const publicChange = action === 'approve' || action === 'remove' || action === 'save';
+  const publish = publicChange ? await requestIdeasPublish(env) : 'none';
+  return { ...(await ideasAdmin(env)), publish };
+}
+// Starts .github/workflows/plotnua-ideas-publish.yml on main through GitHub's workflow_dispatch API, with a
+// fine-grained token limited to this repository and "Actions: read and write" (Worker secret GITHUB_DISPATCH_TOKEN).
+// Returns 'requested', 'scheduled' (no token configured: the scheduled run publishes later) or 'failed' (the decision
+// is saved either way; the schedule remains the fallback). Never logs or returns the token.
+async function requestIdeasPublish(env) {
+  if (!env.GITHUB_DISPATCH_TOKEN) return 'scheduled';
+  const api = (env.GITHUB_API || 'https://api.github.com').replace(/\/$/, '');
+  try {
+    const r = await fetch(api + '/repos/' + (env.GITHUB_REPO || 'colin-macaulay-dcu/plotnua') + '/actions/workflows/plotnua-ideas-publish.yml/dispatches', {
+      method: 'POST', signal: AbortSignal.timeout(8000),
+      headers: { Authorization: 'Bearer ' + env.GITHUB_DISPATCH_TOKEN, Accept: 'application/vnd.github+json',
+        'X-GitHub-Api-Version': '2022-11-28', 'User-Agent': 'PlotArt-Studio/1.0 (+https://plotnua.ie)', 'Content-Type': 'application/json' },
+      body: JSON.stringify({ ref: 'main' }),
+    });
+    return r.status === 204 ? 'requested' : 'failed';
+  } catch { return 'failed'; }
 }
 async function pipelineIdeas(env) {
   // Public fields only (founder decision 1 Nov 2026): wording, area, county where the visitor allowed it, month and

@@ -129,6 +129,20 @@ jobs:
           npx --yes wrangler@4.150.0 deploy --config wrangler.production.toml > "$RUNNER_TEMP/wrangler.log" 2>&1 \
             || { echo "FAIL  the deployment did not complete"; grep -iE "^\s*(✘|X )?\[?error|permission|authentication" "$RUNNER_TEMP/wrangler.log" | grep -viE "token|https?://" | head -5; exit 1; }
           grep -E "^Uploaded |^Current Version ID" "$RUNNER_TEMP/wrangler.log"
+      # Publish on approval (founder decision 2 Nov 2026): the Studio holds a fine-grained GitHub token, limited to this
+      # repository and "Actions: read and write", to start the Idea Board publishing workflow when the founder approves,
+      # edits or removes an idea. Kept in this environment's secrets; passed to Cloudflare on stdin; never printed.
+      - name: Studio publishing token (only when the environment holds one)
+        if: ${{ !inputs.dry_run }}
+        working-directory: worker/plotart-studio
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.STUDIO_CF_DEPLOY_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
+          DISPATCH: ${{ secrets.STUDIO_GITHUB_DISPATCH_TOKEN }}
+        run: |
+          if [ -z "$DISPATCH" ]; then echo "no publishing token in the environment: the Studio keeps using the scheduled run"; exit 0; fi
+          printf '%s' "$DISPATCH" | npx --yes wrangler@4.150.0 secret put GITHUB_DISPATCH_TOKEN --config wrangler.production.toml > "$RUNNER_TEMP/secret.log" 2>&1 \
+            && echo "publishing token installed in the Studio" || { echo "FAIL  the publishing token could not be installed"; grep -iE "error" "$RUNNER_TEMP/secret.log" | grep -viE "token" | head -3; exit 1; }
       - name: Gallery order after
         if: ${{ !inputs.dry_run }}
         env:

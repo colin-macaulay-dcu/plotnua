@@ -22,8 +22,10 @@ permissions:
   contents: write
   pages: write
 
+# Own lock (2 Nov 2026): runs started on approval must not be cancelled by a queued PlotArt run sharing a lock. If the
+# PlotArt pipeline moves main at the same moment, the push is refused (never forced) and the run retries once below.
 concurrency:
-  group: plotart-content-publish     # shares the PlotArt pipeline's lock, so the two never push at the same time
+  group: plotnua-ideas-publish
   cancel-in-progress: false
 
 jobs:
@@ -65,7 +67,10 @@ jobs:
           STUDIO_ACCESS_CLIENT_ID: ${{ secrets.STUDIO_ACCESS_CLIENT_ID }}
           STUDIO_ACCESS_CLIENT_SECRET: ${{ secrets.STUDIO_ACCESS_CLIENT_SECRET }}
         run: |
-          set -euo pipefail
+          set -uo pipefail
+          python3 atlas-tools/plotnua-ideas-publish.py --studio "$STUDIO_URL" --token "$STUDIO_PIPELINE_TOKEN" --push && exit 0
+          echo "first attempt refused: retrying once on the latest main"
+          sleep 20; git fetch -q origin main && git reset -q --hard origin/main
           python3 atlas-tools/plotnua-ideas-publish.py --studio "$STUDIO_URL" --token "$STUDIO_PIPELINE_TOKEN" --push
       - name: Request the GitHub Pages build when main moved
         if: steps.on.outputs.on == '1'

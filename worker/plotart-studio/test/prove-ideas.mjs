@@ -212,6 +212,49 @@ check('E13 --simulate refuses anything but a local Studio', sp.status !== 0 && /
 rmSync(SITE, { recursive: true, force: true });
 void before;
 
+// D · publish on approval (2 Nov 2026): founder actions that change the public board start the publishing workflow
+console.log('D · publish on approval');
+{ const { createServer } = await import('node:http');
+  const hits = []; let code = 204;
+  const gh = createServer((req, res) => { let b = ''; req.on('data', c => b += c); req.on('end', () => { hits.push({ method: req.method, url: req.url, auth: req.headers.authorization, body: b }); res.statusCode = code; res.end(); }); });
+  await new Promise(r => gh.listen(0, '127.0.0.1', r)); const GH = 'http://127.0.0.1:' + gh.address().port;
+  const m3 = await start({ env: { GITHUB_DISPATCH_TOKEN: 'test-dispatch-token', GITHUB_API: GH }, ideas: {} });
+  const db3 = m3.db;
+  const c3 = async (id, body, email = FOUNDER) => { const r = await m3.mf.dispatchFetch(m3.url + '/api/admin/ideas/' + id, { method: 'POST', headers: { 'Cf-Access-Jwt-Assertion': token(email), 'X-Studio': '1', 'Content-Type': 'application/json' }, body: JSON.stringify(body) }); return { s: r.status, j: await r.json().catch(() => ({})) }; };
+  const sub = async (idea, ip) => (await m3.mf.dispatchFetch('http://ideas.local/v1/ideas', { method: 'POST', headers: { Origin: 'https://plotnua.ie', 'Content-Type': 'application/json', 'CF-Connecting-IP': ip }, body: JSON.stringify({ idea, t: old() }) })).json();
+  const a1 = await sub('A real-looking test idea for dispatch checks', '10.9.0.1'), a2 = await sub('A second test idea for the decline path', '10.9.0.2');
+  check('D1 a public submission never starts publishing', hits.length === 0);
+  const idOf = async ref => (await db3.prepare('SELECT id FROM ideas WHERE ref = ?').bind(ref).first()).id;
+  const i1 = await idOf(a1.reference), i2 = await idOf(a2.reference);
+  let r = await c3(i1, { action: 'approve' });
+  const h = hits[0] || {};
+  check('D2 approve starts the Idea Board publishing workflow on main, with the token, at once', r.s === 200 && r.j.publish === 'requested' && hits.length === 1 && h.method === 'POST' &&
+    h.url === '/repos/colin-macaulay-dcu/plotnua/actions/workflows/plotnua-ideas-publish.yml/dispatches' && h.auth === 'Bearer test-dispatch-token' && JSON.parse(h.body).ref === 'main', JSON.stringify([r.j.publish, h]));
+  r = await c3(i1, { action: 'save', public_text: 'A real-looking test idea for dispatch checks, tidied' });
+  check('D3 an edit of an idea on the board starts publishing', r.s === 200 && r.j.publish === 'requested' && hits.length === 2);
+  r = await c3(i2, { action: 'not_approve' });
+  check('D4 declining a waiting idea changes nothing public: no publishing run', r.s === 200 && r.j.publish === 'none' && hits.length === 2);
+  r = await c3(i2, { action: 'delete' });
+  check('D5 deleting a declined idea: no publishing run', r.s === 200 && r.j.publish === 'none' && hits.length === 2);
+  r = await c3(i1, { action: 'remove' });
+  check('D6 removing an idea from the board starts publishing', r.s === 200 && r.j.publish === 'requested' && hits.length === 3);
+  r = await c3(i1, { action: 'approve' }, 'artist@example.test');
+  check('D7 a non-founder cannot trigger anything', (r.s === 401 || r.s === 403) && hits.length === 3);
+  code = 500; const a3 = await sub('A third test idea when GitHub is unavailable', '10.9.0.3');
+  r = await c3(await idOf(a3.reference), { action: 'approve' });
+  check('D8 if GitHub refuses, the approval is still saved and the founder is told it falls back to the schedule', r.s === 200 && r.j.publish === 'failed' && r.j.approved.length === 1);
+  check('D9 the token never appears in a reply or the audit log', !JSON.stringify(r.j).includes('test-dispatch-token') &&
+    !(await db3.prepare("SELECT 1 FROM audit WHERE detail LIKE '%test-dispatch-token%'").first()));
+  await m3.mf.dispose(); gh.close();
+  const m4 = await start({ ideas: {} });
+  const a4 = (await (await m4.mf.dispatchFetch('http://ideas.local/v1/ideas', { method: 'POST', headers: { Origin: 'https://plotnua.ie', 'Content-Type': 'application/json' }, body: JSON.stringify({ idea: 'Without a token configured at all', t: old() }) })).json());
+  const id4 = (await m4.db.prepare('SELECT id FROM ideas WHERE ref = ?').bind(a4.reference).first()).id;
+  const r4 = await m4.mf.dispatchFetch(m4.url + '/api/admin/ideas/' + id4, { method: 'POST', headers: { 'Cf-Access-Jwt-Assertion': token(FOUNDER), 'X-Studio': '1', 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'approve' }) });
+  check('D10 without a token the Studio works as before (scheduled publishing)', (await r4.json()).publish === 'scheduled');
+  await m4.mf.dispose();
+  const intake = readFileSync(join(REPO, 'worker/plotart-studio/src/ideas.js'), 'utf8') + readFileSync(join(REPO, 'worker/plotart-studio/wrangler.ideas.toml'), 'utf8');
+  check('D11 the public intake Worker has no GitHub credential or call', !/github|DISPATCH/i.test(intake));
+}
 await mf.dispose();
 console.log(`\nIDEA BOARD · ${fails ? 'FAIL (' + fails + ')' : 'PASS'}`);
 process.exit(fails ? 1 : 0);

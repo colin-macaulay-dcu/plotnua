@@ -39,7 +39,7 @@
     function draw() {
       const W = d.waiting.filter(match), A = d.approved.filter(match), D = d.decided.filter(match);
       app.innerHTML = `<h1 class="st-h1">Idea Board</h1>
-        <p class="st-sub">Homeowner ideas for plotnua.ie/ideas.html. Nothing appears until you approve it; approved ideas publish within about 10 minutes and the Discovery Library card shows the latest three. Edit wording only to tidy it or remove identifying details, never to change its meaning.</p>
+        <p class="st-sub">Homeowner ideas for plotnua.ie/ideas.html. Nothing appears until you approve it; approved ideas reach plotnua.ie in about 2–3 minutes, and the Discovery Library card shows the latest three. Edit wording only to tidy it or remove identifying details, never to change its meaning.</p>
         ${d.expiring_soon ? `<div class="st-card" role="alert" style="border-color:#CF8566"><p style="margin:0"><b>⚠ ${d.expiring_soon} waiting idea${d.expiring_soon === 1 ? '' : 's'} will be deleted within ${d.warn_days} days</b> unless you approve or decline ${d.expiring_soon === 1 ? 'it' : 'them'}. Ideas waiting for review are kept for ${d.pending_days} days.</p></div>` : ''}
         <div class="st-f" style="max-width:360px"><label for="ibRef">Find by reference (for a removal request)</label><input id="ibRef" type="text" placeholder="PN-I-…" value="${E(q)}"></div>
         <section class="st-card"><h2>Waiting for you (${d.waiting.length})</h2><p class="st-muted" style="margin-top:0">Kept for ${d.pending_days} days, then deleted automatically.</p>${W.length ? `<ul style="list-style:none;padding:0;margin:0">${W.map(i => item(i, false)).join('')}</ul>` : `<p class="st-muted">${q ? 'No waiting idea with that reference.' : 'Nothing waiting.'}</p>`}</section>
@@ -60,7 +60,11 @@
           }
           if (btn.dataset.a === 'remove' && !confirm('Remove this idea from the public board?')) return;
           if (btn.dataset.a === 'delete' && !confirm('Delete this idea permanently now? This cannot be undone.')) return;
-          try { d = await api('POST', `/api/admin/ideas/${li.dataset.id}`, body); say({ approve: 'Approved: it will appear on plotnua.ie shortly', save: 'Saved', remove: 'Removed from the board', not_approve: 'Not approved', delete: 'Deleted' }[btn.dataset.a]); draw(); }
+          try {
+            d = await api('POST', `/api/admin/ideas/${li.dataset.id}`, body);
+            const when = d.publish === 'requested' ? 'plotnua.ie updates in about 2–3 minutes' : d.publish === 'failed' ? 'publishing could not be started now: it will happen at the next scheduled run' : 'it will appear on plotnua.ie at the next scheduled publishing run';
+            say({ approve: 'Approved: ' + when, save: 'Saved: ' + when, remove: 'Removed from the board: ' + when, not_approve: 'Not approved', delete: 'Deleted' }[btn.dataset.a], d.publish === 'failed');
+            draw(); }
           catch (e) { say(e.message, true); }
         }));
       });
