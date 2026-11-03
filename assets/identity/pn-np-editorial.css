@@ -1,0 +1,126 @@
+/* =====================================================================
+   PLOTNUA · THE NEIGHBOURHOOD PARCEL HOUSE · editorial composition (Pass 2, Task 4)
+   3 Nov 2026 · design approved; development branch, NOT DEPLOYED.
+   Shared parts come from pn-editorial.css; this file holds only what is particular here.
+
+   Identity: THE THRESHOLD. Chapters open inside an arched doorway; a street elevation
+   with one lit door; parcel stacks drawn to the 91m : 140.73m ratio (wordless); a
+   door-and-presence diagram for the page's two conditions; How it would work as a
+   dotted threshold path. Drawings are aria-hidden and carry no words.
+   Content guard: atlas-tools/prove-premium-discovery-parcel-house.py
+   ===================================================================== */
+body.pn-id.pn-pd main#pn-main:has(.np-open){ --np-text:clamp(18px,1.3vw,19.5px); --np-lit:#CF8566; --np-line:rgba(194,189,181,.42); }
+main#pn-main:has(.np-open) .article{ max-width:1180px; }
+body.pn-id.pn-pd main#pn-main:has(.np-open) .article-section{ padding-top:clamp(36px,4.5vw,64px); }
+body.pn-id.pn-pd main#pn-main:has(.np-open) .article-section > p{ font-size:var(--np-text); line-height:1.7; color:var(--p4-lime); max-width:62ch; }
+/* chapter: numeral inside an arched doorway */
+body.pn-id.pn-pd main#pn-main:has(.np-open) .np-chapter{ align-items:center; border-top:0; padding-top:0; gap:20px; margin-top:clamp(80px,10vw,150px); }
+body.pn-id.pn-pd main#pn-main:has(.np-open) .np-chapter .pe-chapter-n{ display:inline-flex; align-items:center; justify-content:center; width:clamp(54px,4.6vw,66px); height:clamp(74px,6.4vw,92px); padding-top:14px; box-sizing:border-box;
+  border:1.5px solid var(--np-line); border-bottom:0; border-radius:999px 999px 0 0; color:var(--p4-ivory); -webkit-text-stroke:0; font-size:clamp(26px,2.4vw,34px); }
+body.pn-id.pn-pd main#pn-main:has(.np-open) .np-chapter .kicker{ align-self:flex-end; padding-bottom:4px; }
+body.pn-id.pn-pd main#pn-main:has(.np-open) .np-chapter::after{ content:""; flex:1; height:1px; background:var(--p4-line); align-self:flex-end; }
+/* drawings */
+main#pn-main:has(.np-open) svg{ display:block; height:auto; }
+main#pn-main:has(.np-open) .d-ground{ stroke:var(--p4-stone); stroke-width:1.2; fill:none; }
+main#pn-main:has(.np-open) .d-house{ stroke:var(--np-line); stroke-width:1.2; fill:none; }
+main#pn-main:has(.np-open) .d-win{ stroke:rgba(194,189,181,.25); fill:none; }
+main#pn-main:has(.np-open) .d-door{ stroke:var(--np-line); stroke-width:1.2; fill:none; }
+main#pn-main:has(.np-open) .d-door-lit{ stroke:var(--np-lit); stroke-width:1.6; fill:rgba(207,133,102,.22); }
+main#pn-main:has(.np-open) .d-parcel, main#pn-main:has(.np-open) .d-box{ stroke:var(--np-lit); stroke-width:1.2; fill:rgba(207,133,102,.12); }
+main#pn-main:has(.np-open) .d-route{ stroke:rgba(207,133,102,.55); stroke-width:1.2; stroke-dasharray:3 5; fill:none; }
+main#pn-main:has(.np-open) .d-arch{ stroke:var(--p4-stone); stroke-width:1.4; fill:none; }
+main#pn-main:has(.np-open) .d-pres{ stroke:var(--p4-stone); stroke-width:1.4; fill:none; }
+main#pn-main:has(.np-open) .d-overlap{ fill:rgba(207,133,102,.35); stroke:none; }
+main#pn-main:has(.np-open) .d-node{ fill:var(--p4-ink, #1E1F21); stroke:var(--np-lit); stroke-width:1.4; }
+/* 01 opening: statement + street */
+body.pn-id.pn-pd main#pn-main:has(.np-open) .np-open h2{ font-size:clamp(40px,5vw,76px); line-height:1.02; max-width:16ch; }
+body.pn-id.pn-pd main#pn-main:has(.np-open) .np-open > p{ font-family:var(--p4-serif); font-size:clamp(22px,2vw,28px); line-height:1.4; color:var(--p4-ivory); max-width:36ch; }
+main#pn-main:has(.np-open) .np-street{ width:100%; max-width:760px; margin:clamp(36px,4vw,60px) 0 0; }
+/* 02 problem: stacks + paragraph */
+body.pn-id.pn-pd main#pn-main:has(.np-open) .np-why{ align-items:end; }
+main#pn-main:has(.np-open) .np-stacks{ width:min(320px,70%); }
+body.pn-id.pn-pd main#pn-main:has(.np-open) .np-why > p{ font-family:var(--p4-serif) !important; font-size:clamp(22px,1.9vw,27px) !important; line-height:1.45 !important; color:var(--p4-ivory) !important; }
+/* 03 possibility: photo + threshold sequence */
+body.pn-id.pn-pd main#pn-main:has(.np-open) .np-possible{ margin-top:clamp(32px,4vw,56px); align-items:start; }
+body.pn-id.pn-pd main#pn-main:has(.np-open) .np-how{ position:relative; padding-left:64px !important; padding-top:0 !important; }
+body.pn-id.pn-pd main#pn-main:has(.np-open) .np-how .dq-adv{ padding:0; background:none; border:0; box-shadow:none; margin:0; }
+body.pn-id.pn-pd main#pn-main:has(.np-open) .np-how .dq-adv-cat{ display:block; font-family:var(--p4-serif) !important; font-weight:400 !important; font-size:clamp(34px,3.4vw,50px) !important; letter-spacing:-.01em !important; text-transform:none !important; color:var(--p4-ivory) !important; margin:0 0 28px !important; }
+body.pn-id.pn-pd main#pn-main:has(.np-open) .np-how .dq-adv-cols{ display:grid; grid-template-columns:1fr; gap:34px; list-style:none; margin:0; padding:0; border:0; background:none; }
+body.pn-id.pn-pd main#pn-main:has(.np-open) .np-how .dq-adv-cols > li{ padding:0 !important; background:none !important; border:0 !important; box-shadow:none !important; transform:none !important; }
+body.pn-id.pn-pd main#pn-main:has(.np-open) .np-how .dq-adv-label{ display:block; font-family:var(--p4-sans); font-weight:700; font-size:12.5px; letter-spacing:.2em; text-transform:uppercase; color:var(--p4-terra-text); margin:0 0 8px; }
+body.pn-id.pn-pd main#pn-main:has(.np-open) .np-how .dq-fact{ display:block; font-family:var(--p4-serif); font-size:clamp(22px,1.8vw,26px); line-height:1.25; color:var(--p4-ivory); }
+body.pn-id.pn-pd main#pn-main:has(.np-open) .np-how .dq-note{ display:block; margin-top:10px; font-size:17.5px; line-height:1.6; color:var(--p4-lime); }
+/* 04 where this stands: the boundary as a statement */
+body.pn-id.pn-pd main#pn-main:has(.np-open) .np-stand h2{ font-size:clamp(52px,7vw,104px); line-height:.95; margin-bottom:22px; }
+body.pn-id.pn-pd main#pn-main:has(.np-open) .np-stand .quarantine-lede{ font-family:var(--p4-serif) !important; font-size:clamp(24px,2.3vw,32px) !important; line-height:1.35 !important; color:var(--p4-ivory) !important; max-width:30ch; padding-left:22px; border-left:2px solid var(--np-lit); }
+@media (min-width:1024px){ body.pn-id.pn-pd main#pn-main:has(.np-open) .np-stand{ display:grid; grid-template-columns:1fr 1fr; column-gap:clamp(40px,5vw,80px); }
+  body.pn-id.pn-pd main#pn-main:has(.np-open) .np-stand > h2, body.pn-id.pn-pd main#pn-main:has(.np-open) .np-stand > .quarantine-lede, body.pn-id.pn-pd main#pn-main:has(.np-open) .np-stand > .pe-drawers{ grid-column:1 / -1; } }
+body.pn-id.pn-pd main#pn-main:has(.np-open) .np-evidence{ margin-top:36px; }
+/* 05 practicalities: three quiet columns, no cards */
+body.pn-id.pn-pd main#pn-main:has(.np-open) .np-practical .dq-qual{ display:grid !important; grid-template-columns:repeat(3,minmax(0,1fr)) !important; gap:clamp(24px,3vw,44px); list-style:none; margin:0 0 40px !important; padding:0 !important; border:0 !important; background:none !important; width:auto; max-width:none; }
+body.pn-id.pn-pd main#pn-main:has(.np-open) .np-practical .dq-qual > li{ display:block; padding:22px 0 0 !important; border:0 !important; border-top:1px solid var(--np-lit) !important; background:none !important; box-shadow:none !important; width:auto; margin:0; }
+body.pn-id.pn-pd main#pn-main:has(.np-open) .np-practical .dq-cat{ display:block; font-family:var(--p4-sans); font-weight:700; font-size:12.5px; letter-spacing:.2em; text-transform:uppercase; color:var(--p4-terra-text); margin-bottom:12px; }
+body.pn-id.pn-pd main#pn-main:has(.np-open) .np-practical .dq-fact{ display:block; font-family:var(--p4-serif); font-size:clamp(22px,1.8vw,26px); line-height:1.22; color:var(--p4-ivory); }
+body.pn-id.pn-pd main#pn-main:has(.np-open) .np-practical .dq-note{ display:block; margin-top:12px; font-size:17.5px; line-height:1.6; color:var(--p4-lime); }
+/* 06 decision: diagram + conditions */
+main#pn-main:has(.np-open) .np-cond{ width:min(300px,80%); }
+body.pn-id.pn-pd main#pn-main:has(.np-open) .np-decision .dq-opp{ display:block; padding:0; background:none; border:0; box-shadow:none; }
+body.pn-id.pn-pd main#pn-main:has(.np-open) .np-decision .dq-earn, body.pn-id.pn-pd main#pn-main:has(.np-open) .np-decision .dq-use{ padding:0 !important; background:none !important; border:0 !important; box-shadow:none !important; }
+body.pn-id.pn-pd main#pn-main:has(.np-open) .np-decision .dq-cat{ display:block; font-family:var(--p4-serif) !important; font-weight:400 !important; font-size:clamp(36px,3.6vw,54px) !important; letter-spacing:-.01em !important; text-transform:none !important; color:var(--p4-ivory) !important; line-height:1.05; margin:0 0 16px; }
+body.pn-id.pn-pd main#pn-main:has(.np-open) .np-decision .dq-use .dq-cat{ font-size:clamp(26px,2.4vw,34px) !important; margin-top:44px; }
+body.pn-id.pn-pd main#pn-main:has(.np-open) .np-decision .dq-earn-lead, body.pn-id.pn-pd main#pn-main:has(.np-open) .np-decision .dq-earn-caveat{ font-size:var(--np-text); line-height:1.65; color:var(--p4-lime); }
+body.pn-id.pn-pd main#pn-main:has(.np-open) .np-decision .dq-figs{ display:grid; grid-template-columns:1fr 1fr; gap:28px; list-style:none; padding:0; margin:28px 0 0; border:0; }
+body.pn-id.pn-pd main#pn-main:has(.np-open) .np-decision .dq-figs > li{ padding:20px 0 0 !important; border:0 !important; border-top:2px solid var(--np-lit) !important; background:none !important; }
+body.pn-id.pn-pd main#pn-main:has(.np-open) .np-decision .dq-fig{ display:block; font-family:var(--p4-serif); font-size:clamp(30px,2.8vw,42px); color:var(--p4-ivory); line-height:1.05; }
+body.pn-id.pn-pd main#pn-main:has(.np-open) .np-decision .dq-src{ display:block; margin-top:10px; font-size:17px; line-height:1.55; color:var(--p4-lime); }
+body.pn-id.pn-pd main#pn-main:has(.np-open) .np-decision .dq-rows{ list-style:none; padding:0; margin:0; border:0; }
+body.pn-id.pn-pd main#pn-main:has(.np-open) .np-decision .dq-rows > li{ display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1.3fr); gap:20px; padding:18px 0 !important; border:0 !important; border-top:1px solid var(--p4-line) !important; background:none !important; }
+body.pn-id.pn-pd main#pn-main:has(.np-open) .np-decision .dq-rows .dq-fact{ font-family:var(--p4-serif); font-size:clamp(20px,1.6vw,23px); color:var(--p4-ivory); }
+body.pn-id.pn-pd main#pn-main:has(.np-open) .np-decision .dq-rows .dq-fact strong{ font-weight:400; }
+body.pn-id.pn-pd main#pn-main:has(.np-open) .np-decision .dq-rows .dq-note{ font-size:17.5px; line-height:1.55; color:var(--p4-lime); }
+/* drawer markers: the approved Hidden Cars ring */
+body.pn-id.pn-pd main#pn-main:has(.np-open) .pe-drawers > .faq-item.is-inline summary .icon{ display:block; flex:0 0 auto; position:relative; width:24px !important; height:24px !important; border:1px solid var(--p4-line2) !important; border-radius:50%; background:none !important; }
+body.pn-id.pn-pd main#pn-main:has(.np-open) .pe-drawers > .faq-item.is-inline summary .icon::before, body.pn-id.pn-pd main#pn-main:has(.np-open) .pe-drawers > .faq-item.is-inline summary .icon::after{ content:"" !important; position:absolute !important; left:50% !important; top:50% !important; width:10px !important; height:1.5px !important; margin:-.75px 0 0 -5px !important; background:var(--p4-terra-text) !important; opacity:1 !important; transform:none !important; }
+body.pn-id.pn-pd main#pn-main:has(.np-open) .pe-drawers > .faq-item.is-inline summary .icon::after{ transform:rotate(90deg) !important; }
+body.pn-id.pn-pd main#pn-main:has(.np-open) .pe-drawers > .faq-item.is-inline[open] summary .icon::after{ display:none !important; }
+/* tablet and phone */
+@media (max-width:1023px){
+  body.pn-id.pn-pd main#pn-main:has(.np-open) .np-possible{ grid-template-columns:1fr; }
+  body.pn-id.pn-pd main#pn-main:has(.np-open) .np-practical .dq-qual{ grid-template-columns:1fr !important; }
+}
+@media (max-width:719px){
+  body.pn-id.pn-pd main#pn-main:has(.np-open) .np-decision .dq-figs{ grid-template-columns:1fr; }
+  body.pn-id.pn-pd main#pn-main:has(.np-open) .np-decision .dq-rows > li{ grid-template-columns:1fr; gap:6px; }
+  body.pn-id.pn-pd main#pn-main:has(.np-open) .np-how{ padding-left:48px !important; }
+}
+/* threshold path for How it would work */
+body.pn-id.pn-pd main#pn-main:has(.np-open) .np-how{ padding-left:0 !important; }
+body.pn-id.pn-pd main#pn-main:has(.np-open) .np-how .dq-adv-cols{ border-left:1px dashed rgba(207,133,102,.55) !important; padding-left:30px !important; }
+body.pn-id.pn-pd main#pn-main:has(.np-open) .np-how .dq-adv-cols > li{ position:relative; }
+body.pn-id.pn-pd main#pn-main:has(.np-open) .np-how .dq-adv-cols > li::before{ content:""; position:absolute; left:-37px; top:2px; width:12px; height:12px; border-radius:50%; background:var(--p4-ink,#1E1F21); border:1.5px solid var(--np-lit); }
+@media (min-width:1024px){
+  body.pn-id.pn-pd main#pn-main:has(.np-open) .np-why, body.pn-id.pn-pd main#pn-main:has(.np-open) .np-decision{ display:grid !important; grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr) !important; column-gap:clamp(40px,6vw,96px); align-items:start; }
+  body.pn-id.pn-pd main#pn-main:has(.np-open) .np-why > svg, body.pn-id.pn-pd main#pn-main:has(.np-open) .np-decision > svg{ grid-column:1; grid-row:1 / span 3; width:min(340px,100%); }
+  body.pn-id.pn-pd main#pn-main:has(.np-open) .np-why > p, body.pn-id.pn-pd main#pn-main:has(.np-open) .np-decision > .dq-opp{ grid-column:2; grid-row:1; }
+}
+
+/* ---- 01 · the opening statement (founder refinement) ------------------------------- */
+body.pn-id.pn-pd main#pn-main:has(.np-open) .np-open > .np-lead{ font-family:var(--p4-serif) !important; font-size:clamp(30px,3.6vw,52px) !important; line-height:1.12 !important; letter-spacing:-.01em; color:var(--p4-ivory) !important; max-width:22ch; margin:0; }
+body.pn-id.pn-pd main#pn-main:has(.np-open) .np-open .np-street{ margin:clamp(28px,3.4vw,48px) 0 clamp(48px,6vw,88px); }
+body.pn-id.pn-pd main#pn-main:has(.np-open) .np-open h2{ font-size:clamp(32px,3.4vw,50px); max-width:20ch; }
+body.pn-id.pn-pd main#pn-main:has(.np-open) .np-open > p:not(.np-lead){ font-family:var(--p4-sans); font-size:var(--np-text); line-height:1.7; color:var(--p4-lime); max-width:52ch; }
+
+/* ---- 04 · favour or paid network: two different things (founder refinement) ---------- */
+body.pn-id.pn-pd main#pn-main:has(.np-open) .np-two{ grid-column:1 / -1; display:grid; grid-template-columns:1fr 1fr; gap:clamp(24px,3vw,48px); list-style:none; margin:clamp(32px,4vw,52px) 0 0; padding:0; }
+body.pn-id.pn-pd main#pn-main:has(.np-open) .np-two > li{ padding:22px 0 0; border-top:1px solid var(--p4-stone); margin:0; }
+body.pn-id.pn-pd main#pn-main:has(.np-open) .np-two > li + li{ border-top:2px solid var(--np-lit); }
+body.pn-id.pn-pd main#pn-main:has(.np-open) .np-two .dq-cat{ display:block; font-family:var(--p4-sans); font-weight:700; font-size:12.5px; letter-spacing:.2em; text-transform:uppercase; color:var(--p4-terra-text); margin-bottom:12px; }
+body.pn-id.pn-pd main#pn-main:has(.np-open) .np-two .dq-fact{ display:block; font-family:var(--p4-serif); font-size:clamp(23px,2vw,29px); line-height:1.2; color:var(--p4-ivory); }
+body.pn-id.pn-pd main#pn-main:has(.np-open) .np-two .dq-note{ display:block; margin-top:12px; font-size:17.5px; line-height:1.6; color:var(--p4-lime); }
+@media (max-width:719px){ body.pn-id.pn-pd main#pn-main:has(.np-open) .np-two{ grid-template-columns:1fr; } }
+
+/* ---- Related Discoveries kicker: WCAG AA contrast on this page (pre-existing 4.18:1) ---- */
+body.pn-id.pn-pd:has(main#pn-main .np-open) .related-card .related-kicker{ color:var(--p4-bronze-text) !important; }
+
+/* ---- keyboard focus stays clear of the fixed header and the floating Back ------------- */
+html:has(main#pn-main .np-open){ scroll-padding-top:88px; scroll-padding-bottom:96px; }

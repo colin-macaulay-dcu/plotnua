@@ -37,6 +37,10 @@
 <link rel="stylesheet" href="assets/identity/pn-header.css">
 <!-- PLOTNUA IDENTITY v1 · HEAD · END -->
 <link rel="stylesheet" href="assets/identity/pn-compare.css?v=1.3">
+<link rel="stylesheet" href="assets/identity/pn-editorial.css?v=2">
+<link rel="stylesheet" href="assets/identity/pn-np-editorial.css?v=1">
+<link rel="stylesheet" href="assets/identity/pn-hero-mobile-heading.css?v=1">
+<script src="assets/identity/pn-editorial.js?v=1" defer></script>
 <link rel="preload" as="image" type="image/webp" imagesrcset="assets/img/8b20a0968b1fc5a1-960w.webp 960w, assets/img/8b20a0968b1fc5a1.webp 1408w" imagesizes="(max-width:1024px) and (orientation:portrait) 150vw, max(100vw, 132svh)" fetchpriority="high">
 
 <!-- Open Graph -->
@@ -988,7 +992,7 @@ body.pn-id.pn-pd .d-hero.pn-hero-compare .pn-compare__stage #dHeroImg{ object-po
 <nav class="pn-hdr-dest" aria-label="Main"><details class="pn-hdr-menu" data-pn-menu><summary class="pn-hdr-menu-btn"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true" focusable="false"><path class="pn-menu-l1" d="M3.5 6h13"/><path class="pn-menu-l2" d="M3.5 10h13"/><path class="pn-menu-l3" d="M3.5 14h13"/></svg><span>Menu</span></summary><div class="pn-hdr-panel"><a class="pn-hdr-btn is-primary" href="discoveries.html"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true" focusable="false"><circle cx="10" cy="10" r="7.25"/><path d="m12.9 7.1-1.75 4.05L7.1 12.9l1.75-4.05Z"/></svg><span>Discovery Library</span></a><a class="pn-hdr-btn is-secondary is-art" href="plotart/"><img class="pn-hdr-art" src="/assets/brand/plotart-p-48.webp" srcset="/assets/brand/plotart-p-96.webp 2x" width="20" height="20" alt="" decoding="async"><span>PlotArt</span></a><a class="pn-hdr-btn is-secondary is-grid" href="gridnua/"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="2.75" y="2.75" width="14.5" height="14.5" rx="3"/><path d="M7.6 2.75v14.5M12.4 2.75v14.5M2.75 7.6h14.5M2.75 12.4h14.5"/><rect class="pn-grid-core" x="8.2" y="8.2" width="3.6" height="3.6" rx=".8" fill="currentColor" stroke="none"/></svg><span>GridNua</span></a><a class="pn-hdr-btn is-secondary is-myplot" href="your-plot.html?myplot=1" data-myplot aria-label="My Plot"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true" focusable="false"><path class="pn-heart" d="M10 16.6s-6.2-3.7-6.2-8.2A3.4 3.4 0 0 1 10 6.3a3.4 3.4 0 0 1 6.2 2.1c0 4.5-6.2 8.2-6.2 8.2Z"/></svg><span>My Plot</span><span class="pn-hdr-count" aria-hidden="true" hidden></span></a><p class="pn-hdr-panel-k">Talk to PlotNua</p><div class="pn-hdr-panel-contact"><a class="pn-hdr-pl pn-hdr-pl--wa" href="https://wa.me/353834036695" target="_blank" rel="noopener noreferrer" aria-label="Chat with PlotNua on WhatsApp (opens in a new tab)"><span class="pn-hdr-wa-ico" aria-hidden="true"><svg viewBox="0 0 80 80" focusable="false"><path d="M29 5h23a22 22 0 0 1 22 22v16a22 22 0 0 1-22 22H33L14 75l3-18A22 22 0 0 1 7 39V27A22 22 0 0 1 29 5Z" fill="#1F3B2E" stroke="#B39272" stroke-width="2.5" stroke-linejoin="round"/></svg><img src="assets/brand/plotnua-icon-transparent.svg" alt="" width="22" height="22"></span><span>WhatsApp</span></a><a class="pn-hdr-pl" href="contact.html"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true" focusable="false"><rect x="2.75" y="4.5" width="14.5" height="11" rx="2"/><path d="m3.5 5.5 6.5 5 6.5-5"/></svg><span>Contact</span></a></div></div></details></nav>
 <!-- PLOTNUA HEADER v2 · ROW · END -->
 
-<header class="d-hero ph-hero pn-hero-compare pn-hero-compare--std">
+<header class="d-hero ph-hero pn-hero-compare pn-hero-compare--std pn-hero-onetitle">
   <div class="pn-hero-compare__mtitle" aria-hidden="true"><span class="pn-hero-compare__mkicker">A PlotNua Discovery</span><span class="pn-hero-compare__mname">The Neighbourhood Parcel House</span></div>
   <!-- Pass 2 Release 4 (founder development approval, 30 Oct 2026): the shared Before -> Possible
        component, hero standard, opening on the complete BEFORE. Same house, one framing: the porch as it is, then
@@ -1043,7 +1047,6 @@ body.pn-id.pn-pd .d-hero.pn-hero-compare .pn-compare__stage #dHeroImg{ object-po
 
 <main id="pn-main">
 <div class="article">
-
   <!-- ============================================================
        ONE DECISION SECTION. The old page ran eight sections and a
        six-question FAQ. These are the same governed facts in the order a
@@ -1054,11 +1057,16 @@ body.pn-id.pn-pd .d-hero.pn-hero-compare .pn-compare__stage #dHeroImg{ object-po
        two-part test -- a place, and a presence -- is the strongest thing it
        says, and it was buried in a paragraph.
        ============================================================ -->
-  <section class="article-section reveal">
-    <div class="kicker">The Opportunity</div>
+<div class="pe-chapter np-chapter reveal"><span class="pe-chapter-n" aria-hidden="true">01</span><div class="kicker">The Opportunity</div></div>
+  <section class="article-section np-open reveal">
+    <p class="np-lead">What if one ordinary house on every street could make parcel deliveries easier for the entire neighbourhood?</p>
+    <svg class="np-street" aria-hidden="true" focusable="false" viewBox="0 0 560 160"><path class="d-ground" d="M0 120H560"/><path class="d-house" d="M10 120V62L58 30L106 62V120"/><path class="d-door" d="M48 120V94a10 10 0 0 1 20 0V120"/><rect class="d-win" x="22" y="70" width="18" height="14"/><rect class="d-win" x="76" y="70" width="18" height="14"/><path class="d-house" d="M120 120V62L168 30L216 62V120"/><path class="d-door" d="M158 120V94a10 10 0 0 1 20 0V120"/><rect class="d-win" x="132" y="70" width="18" height="14"/><rect class="d-win" x="186" y="70" width="18" height="14"/><path class="d-house" d="M230 120V62L278 30L326 62V120"/><path class="d-door-lit" d="M268 120V94a10 10 0 0 1 20 0V120"/><rect class="d-win" x="242" y="70" width="18" height="14"/><rect class="d-win" x="296" y="70" width="18" height="14"/><path class="d-house" d="M340 120V62L388 30L436 62V120"/><path class="d-door" d="M378 120V94a10 10 0 0 1 20 0V120"/><rect class="d-win" x="352" y="70" width="18" height="14"/><rect class="d-win" x="406" y="70" width="18" height="14"/><path class="d-house" d="M450 120V62L498 30L546 62V120"/><path class="d-door" d="M488 120V94a10 10 0 0 1 20 0V120"/><rect class="d-win" x="462" y="70" width="18" height="14"/><rect class="d-win" x="516" y="70" width="18" height="14"/><rect class="d-parcel" x="267" y="110" width="9" height="8"/><rect class="d-parcel" x="279" y="112" width="7" height="6"/><path class="d-route" d="M64 132Q171 150 278 136"/><path class="d-route" d="M174 132Q226 150 278 136"/><path class="d-route" d="M394 132Q336 150 278 136"/><path class="d-route" d="M504 132Q391 150 278 136"/></svg>
     <h2>Could your home become your street&rsquo;s parcel point?</h2>
     <p>Your front door is the only part of your property a stranger is expected to reach. A few houses on every road are better placed than the rest to take what arrives.</p>
-
+  </section>
+<div class="pe-chapter np-chapter reveal"><span class="pe-chapter-n" aria-hidden="true">02</span><span class="kicker">The neighbourhood problem</span></div>
+  <section class="article-section pe-split np-why reveal">
+    <svg class="np-stacks" aria-hidden="true" focusable="false" viewBox="0 0 200 160"><path class="d-ground" d="M0 150H200"/><rect class="d-box" x="40" y="137" width="36" height="12"/><rect class="d-box" x="44" y="124" width="36" height="12"/><rect class="d-box" x="40" y="111" width="36" height="12"/><rect class="d-box" x="44" y="98" width="36" height="12"/><rect class="d-box" x="40" y="85" width="36" height="12"/><rect class="d-box" x="44" y="72" width="36" height="12"/><rect class="d-box" x="120" y="137" width="36" height="12"/><rect class="d-box" x="124" y="124" width="36" height="12"/><rect class="d-box" x="120" y="111" width="36" height="12"/><rect class="d-box" x="124" y="98" width="36" height="12"/><rect class="d-box" x="120" y="85" width="36" height="12"/><rect class="d-box" x="124" y="72" width="36" height="12"/><rect class="d-box" x="120" y="59" width="36" height="12"/><rect class="d-box" x="124" y="46" width="36" height="12"/><rect class="d-box" x="120" y="33" width="36" height="12"/></svg>
     <!-- WHY NOW, in one paragraph and no more. Volumes: ComReg 24/88,
          "Parcel data for Ireland 2018-2023", 30 October 2024 -- the seven
          declared providers, 140.73m parcels in 2023 against 91.0m in 2018,
@@ -1068,7 +1076,104 @@ body.pn-id.pn-pd .d-hero.pn-hero-compare .pn-compare__stage #dHeroImg{ object-po
          the advisory tiles, the quarantine section and the evidence drawer,
          and it is unchanged. -->
     <p>Ireland&rsquo;s seven main delivery companies handled 140.73 million parcels in 2023 &mdash; up from 91 million five years earlier &mdash; and domestic parcels rose 6% in a single year. Households now send as well as receive: An Post says Vinted is driving footfall into post offices with people posting and collecting packages. More parcels are moving through Irish neighbourhoods, and they need somewhere convenient to land.</p>
+  </section>
+<div class="pe-chapter np-chapter reveal"><span class="pe-chapter-n" aria-hidden="true">03</span><span class="kicker">The possibility</span></div>
+  <div class="pe-pair np-possible">
+<section class="imagine-photo reveal pe-plate np-photo">
+  <!-- IMAGE 03 - The Parcel House. The handover at the door. -->
+  <img src="assets/img/e0d578046cd29bda.jpg" width="1408" height="768" loading="lazy" decoding="async"
+       alt="The same front door standing open, a shelved unit of parcels inside the porch, and a neighbour calling to collect one.">
+</section>
+  <section class="article-section np-how reveal">
+    <!-- 2 · HOW IT WOULD WORK. Above the advisory in elevation, because this
+         is the thing itself rather than a condition on it. -->
+    <div class="dq-adv">
+      <span class="dq-cat dq-adv-cat">How it would work</span>
+      <ul class="dq-adv-cols">
+        <li>
+          <span class="dq-adv-label">The spot</span>
+          <span class="dq-fact">Somewhere dry, inside your boundary, that a person can reach without going through the house.</span>
+          <span class="dq-note">A porch. A storm porch. A covered step behind a gate. A shelf inside a hall door that is open when you are in.</span>
+        </li>
+        <li>
+          <span class="dq-adv-label">The message</span>
+          <span class="dq-fact">A parcel arrives, you send a message, and somebody calls in on the way home from work.</span>
+          <span class="dq-note">The door goes a bit more often. There is a shelf that fills up and empties again.</span>
+        </li>
+        <li>
+          <span class="dq-adv-label">What to agree</span>
+          <span class="dq-fact">Which neighbours, how they will know it has come, when they can call, how long you will hold it, and what you will not take.</span>
+          <span class="dq-note">Before anything arrives, not after. Say that last one out loud &mdash; nobody wants to mind a fridge.</span>
+        </li>
+      </ul>
+    </div>
 
+  </section>
+  </div>
+<div class="pe-chapter np-chapter reveal"><span class="pe-chapter-n" aria-hidden="true">04</span><div class="kicker">Where this stands</div></div>
+  <section class="article-section np-stand reveal">
+    <h2>Not here yet.</h2>
+    <p class="quarantine-lede">Everything above can be done in Ireland today, as a favour between neighbours. An organised, paid network of private homes is a different thing, and we could not find one here.</p>
+    <p>The collection networks here are built on shops and lockers: An Post signs up stores, and the locker companies sign up businesses and landlords. We could not find anyone offering it to private houses.</p>
+    <p>Elsewhere they have. In Singapore an online shopping company has been paying householders since 2023 to take in parcels for people living nearby &mdash; and residents there raised the things you would expect. There is a house on every road already, and nothing has to be built. Whether anything comes of that here is not known.</p>
+    <!-- FOUNDER REFINEMENT (3 Nov 2026): two different things, kept apart. A favour between
+         neighbours, and an organised paid network of private homes. Payment is not presented as
+         prohibited; it is presented as a different decision with further questions. No provider,
+         partnership or regulatory conclusion is stated. -->
+    <ul class="np-two">
+      <li>
+        <span class="dq-cat">Between neighbours</span>
+        <span class="dq-fact">A favour, arranged privately.</span>
+        <span class="dq-note">You decide who, when and what you will take. This is the arrangement everything on this page describes.</span>
+      </li>
+      <li>
+        <span class="dq-cat">As a paid network</span>
+        <span class="dq-fact">Payment does not make it wrong. It makes it a different decision.</span>
+        <span class="dq-note">Once a home is paid to receive parcels &mdash; by a retailer, a carrier or a network &mdash; further questions follow: insurance, planning, tax, data protection, the contract with whoever is paying, and who is liable when something goes missing or is damaged. Each would need to be checked properly before any money changed hands.</span>
+      </li>
+    </ul>
+    <div class="pe-drawers np-evidence">
+    <details class="faq-item is-inline">
+      <summary><h3>Where this exists, and where it does not</h3><span class="icon"></span></summary>
+      <div class="faq-a"><strong>Ireland runs on shops and lockers, not houses.</strong> An Post is signing up shops around the country as parcel collection points, and says it is because of the growth in online shopping. The locker companies sign up businesses and landlords &mdash; InPost in the UK recruits hosts openly, describing them as &ldquo;landlords and businesses, whatever your size or sector.&rdquo; We could not find anyone offering it to private houses here.<br><br><strong>And the network got smaller.</strong> Fastway Ireland, which ran the Parcel Connect collection network, ceased trading in October 2025. More is arriving, and there are fewer counters to take it.<br><br><strong>In Singapore</strong>, an online shopping company has been paying householders since 2023 to receive parcels for people living nearby, usually within a couple of hundred metres. Customers collect from a neighbour&rsquo;s house instead of waiting in for a van. It works, and it is not popular with everybody: residents raised the things you would expect &mdash; strangers calling, noise at the door, and worries about things going missing. Both halves of that are worth knowing.<br><br>PlotNua does not arrange this, does not introduce you to couriers, and cannot tell you what your neighbours will ask of you.</div>
+    </details>
+    </div>
+  </section>
+<div class="pe-chapter np-chapter reveal"><span class="pe-chapter-n" aria-hidden="true">05</span><span class="kicker">The practicalities</span></div>
+  <section class="article-section np-practical reveal">
+    <!-- 3 · BEFORE YOU START. The conditions that bear on deciding, at the
+         quiet elevation. No warning colour anywhere. -->
+    <ul class="dq-qual">
+      <li>
+        <span class="dq-cat">Who is responsible</span>
+        <span class="dq-fact">If your neighbour asked the shop to leave it with you, the shop&rsquo;s responsibility ends the moment you take it in.</span>
+        <span class="dq-note">If a courier leaves it and nobody asked, the shop stays responsible until your neighbour has it. Neither is a reason not to do it. It is a reason to know which one you are doing.</span>
+      </li>
+      <li>
+        <span class="dq-cat">Insurance</span>
+        <span class="dq-fact">Ordinary home cover is not written for holding other people&rsquo;s goods.</span>
+        <span class="dq-note">Worth asking your own insurer, because the answer depends on your policy.</span>
+      </li>
+      <li>
+        <span class="dq-cat">If money is involved</span>
+        <span class="dq-fact">Doing it as a favour and doing it for payment are not the same thing.</span>
+        <span class="dq-note">As a favour it is a private arrangement between neighbours. Once you are paid, planning, insurance and data protection can all come into it. That does not make it impossible &mdash; it makes it a different decision.</span>
+      </li>
+    </ul>
+    <div class="pe-drawers">
+    <details class="faq-item is-inline">
+      <summary><h3>Responsibility, insurance and being paid, in detail</h3><span class="icon"></span></summary>
+      <div class="faq-a"><strong>If something goes missing.</strong> If your neighbour asked the shop to leave it with you, the shop&rsquo;s responsibility for it ends the moment you take it in; after that it is between you and them. If a courier leaves it with you and nobody asked, that is different &mdash; the shop stays responsible until your neighbour actually has it.<br><br><strong>Insurance.</strong> Ordinary home cover is not written for holding other people&rsquo;s goods, and whether yours stretches to it depends on the policy. Ask before anything arrives.<br><br><strong>Planning.</strong> Doing it as a favour is ordinary household activity and needs no permission. It only becomes a planning question if part of the house is being used for a business, and that does need permission.<br><br><strong>Data protection.</strong> The rules that leave ordinary household activity alone stop applying once money is involved. A list of neighbours&rsquo; names and addresses becomes something you are answerable for.</div>
+    </details>
+    <details class="faq-item is-inline">
+      <summary><h3>What it changes day to day</h3><span class="icon"></span></summary>
+      <div class="faq-a">Less than you would think. The door goes a bit more often. You send a message. Somebody calls in on the way home from work, and you have a chat you would not have had.<br><br>Nothing about the house changes. Nobody needs to be let in. There is a shelf that fills up and empties again.<br><br><strong>It is your door.</strong> You choose who is on the list, you decide the sizes and the hours you are happy to be called to, and you can change your mind. If nobody is usually in during the day, this is not for your house &mdash; and that is a perfectly good answer to reach early.<br><br>What changes is not really the day. It is where your house sits on the road.</div>
+    </details>
+    </div>
+  </section>
+<div class="pe-chapter np-chapter reveal"><span class="pe-chapter-n" aria-hidden="true">06</span><span class="kicker">The homeowner decision</span></div>
+  <section class="article-section pe-split np-decision reveal">
+    <svg class="np-cond" aria-hidden="true" focusable="false" viewBox="0 0 230 170"><path class="d-arch" d="M30 150V70a50 50 0 0 1 100 0V150Z"/><circle class="d-pres" cx="150" cy="100" r="50"/><path class="d-overlap" d="M100 75a50 50 0 0 1 30 -2V150h-30Z"/></svg>
     <!-- 1 · SUITABILITY. The page's single unbroken surface and its highest
          elevation, because "could this work at my house" is the question. The
          two figures are not amounts -- they are the two conditions, and the
@@ -1096,81 +1201,6 @@ body.pn-id.pn-pd .d-hero.pn-hero-compare .pn-compare__stage #dHeroImg{ object-po
       </div>
     </div>
 
-    <!-- 2 · HOW IT WOULD WORK. Above the advisory in elevation, because this
-         is the thing itself rather than a condition on it. -->
-    <div class="dq-adv">
-      <span class="dq-cat dq-adv-cat">How it would work</span>
-      <ul class="dq-adv-cols">
-        <li>
-          <span class="dq-adv-label">The spot</span>
-          <span class="dq-fact">Somewhere dry, inside your boundary, that a person can reach without going through the house.</span>
-          <span class="dq-note">A porch. A storm porch. A covered step behind a gate. A shelf inside a hall door that is open when you are in.</span>
-        </li>
-        <li>
-          <span class="dq-adv-label">The message</span>
-          <span class="dq-fact">A parcel arrives, you send a message, and somebody calls in on the way home from work.</span>
-          <span class="dq-note">The door goes a bit more often. There is a shelf that fills up and empties again.</span>
-        </li>
-        <li>
-          <span class="dq-adv-label">What to agree</span>
-          <span class="dq-fact">Which neighbours, how they will know it has come, when they can call, how long you will hold it, and what you will not take.</span>
-          <span class="dq-note">Before anything arrives, not after. Say that last one out loud &mdash; nobody wants to mind a fridge.</span>
-        </li>
-      </ul>
-    </div>
-
-    <!-- 3 · BEFORE YOU START. The conditions that bear on deciding, at the
-         quiet elevation. No warning colour anywhere. -->
-    <ul class="dq-qual">
-      <li>
-        <span class="dq-cat">Who is responsible</span>
-        <span class="dq-fact">If your neighbour asked the shop to leave it with you, the shop&rsquo;s responsibility ends the moment you take it in.</span>
-        <span class="dq-note">If a courier leaves it and nobody asked, the shop stays responsible until your neighbour has it. Neither is a reason not to do it. It is a reason to know which one you are doing.</span>
-      </li>
-      <li>
-        <span class="dq-cat">Insurance</span>
-        <span class="dq-fact">Ordinary home cover is not written for holding other people&rsquo;s goods.</span>
-        <span class="dq-note">Worth asking your own insurer, because the answer depends on your policy.</span>
-      </li>
-      <li>
-        <span class="dq-cat">If money is involved</span>
-        <span class="dq-fact">Doing it as a favour and doing it for payment are not the same thing.</span>
-        <span class="dq-note">As a favour it is a private arrangement between neighbours. Once you are paid, planning, insurance and data protection can all come into it. That does not make it impossible &mdash; it makes it a different decision.</span>
-      </li>
-    </ul>
-
-    <details class="faq-item is-inline">
-      <summary><h3>Responsibility, insurance and being paid, in detail</h3><span class="icon"></span></summary>
-      <div class="faq-a"><strong>If something goes missing.</strong> If your neighbour asked the shop to leave it with you, the shop&rsquo;s responsibility for it ends the moment you take it in; after that it is between you and them. If a courier leaves it with you and nobody asked, that is different &mdash; the shop stays responsible until your neighbour actually has it.<br><br><strong>Insurance.</strong> Ordinary home cover is not written for holding other people&rsquo;s goods, and whether yours stretches to it depends on the policy. Ask before anything arrives.<br><br><strong>Planning.</strong> Doing it as a favour is ordinary household activity and needs no permission. It only becomes a planning question if part of the house is being used for a business, and that does need permission.<br><br><strong>Data protection.</strong> The rules that leave ordinary household activity alone stop applying once money is involved. A list of neighbours&rsquo; names and addresses becomes something you are answerable for.</div>
-    </details>
-
-    <details class="faq-item is-inline">
-      <summary><h3>What it changes day to day</h3><span class="icon"></span></summary>
-      <div class="faq-a">Less than you would think. The door goes a bit more often. You send a message. Somebody calls in on the way home from work, and you have a chat you would not have had.<br><br>Nothing about the house changes. Nobody needs to be let in. There is a shelf that fills up and empties again.<br><br><strong>It is your door.</strong> You choose who is on the list, you decide the sizes and the hours you are happy to be called to, and you can change your mind. If nobody is usually in during the day, this is not for your house &mdash; and that is a perfectly good answer to reach early.<br><br>What changes is not really the day. It is where your house sits on the road.</div>
-    </details>
-
-    <details class="faq-item is-inline">
-      <summary><h3>Where this exists, and where it does not</h3><span class="icon"></span></summary>
-      <div class="faq-a"><strong>Ireland runs on shops and lockers, not houses.</strong> An Post is signing up shops around the country as parcel collection points, and says it is because of the growth in online shopping. The locker companies sign up businesses and landlords &mdash; InPost in the UK recruits hosts openly, describing them as &ldquo;landlords and businesses, whatever your size or sector.&rdquo; We could not find anyone offering it to private houses here.<br><br><strong>And the network got smaller.</strong> Fastway Ireland, which ran the Parcel Connect collection network, ceased trading in October 2025. More is arriving, and there are fewer counters to take it.<br><br><strong>In Singapore</strong>, an online shopping company has been paying householders since 2023 to receive parcels for people living nearby, usually within a couple of hundred metres. Customers collect from a neighbour&rsquo;s house instead of waiting in for a van. It works, and it is not popular with everybody: residents raised the things you would expect &mdash; strangers calling, noise at the door, and worries about things going missing. Both halves of that are worth knowing.<br><br>PlotNua does not arrange this, does not introduce you to couriers, and cannot tell you what your neighbours will ask of you.</div>
-    </details>
-
-  </section>
-</div>
-
-<section class="imagine-photo reveal">
-  <!-- IMAGE 03 - The Parcel House. The handover at the door. -->
-  <img src="assets/img/e0d578046cd29bda.jpg" width="1408" height="768" loading="lazy" decoding="async"
-       alt="The same front door standing open, a shelved unit of parcels inside the porch, and a neighbour calling to collect one.">
-</section>
-
-<div class="article">
-
-  <section class="article-section reveal">
-    <div class="kicker">Where this stands</div>
-    <h2>Not here yet.</h2>
-    <p class="quarantine-lede">Everything above can be done in Ireland today, as a favour between neighbours. Being paid to do it cannot.</p>
-    <p>The collection networks here are built on shops and lockers: An Post signs up stores, and the locker companies sign up businesses and landlords. We could not find anyone offering it to private houses.</p>
-    <p>Elsewhere they have. In Singapore an online shopping company has been paying householders since 2023 to take in parcels for people living nearby &mdash; and residents there raised the things you would expect. There is a house on every road already, and nothing has to be built. Whether anything comes of that here is not known.</p>
   </section>
 </div>
 </main>
@@ -1198,7 +1228,7 @@ body.pn-id.pn-pd .d-hero.pn-hero-compare .pn-compare__stage #dHeroImg{ object-po
          already plain that being paid to do this is not available here, and
          the wording below does not quietly soften that. -->
     <p class="pb-subhead">Four short questions about your own door, your week and your road &mdash; then what you would have to settle before the first parcel arrived. No address, no contact details, and nothing sent anywhere.</p>
-    <a class="btn-primary" href="disc027-neighbourhood-parcel-house.html">Start the property check</a>
+    <a class="btn-primary" href="disc027-neighbourhood-parcel-house.html">Could my home work?</a>
     <div class="cs-exits">
       <a class="cs-exit" href="discovery-the-borrowed-garden.html">Explore The Borrowed Garden &rarr;</a>
       <a class="cs-exit" href="discovery-driveway-income.html">Explore Driveway Income &rarr;</a>
