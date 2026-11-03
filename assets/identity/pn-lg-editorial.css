@@ -137,3 +137,5 @@ body.pn-id.pn-pd .lg-route .pb-headline{ max-width:none; width:auto; }
   .lg-plan .lb{ font-size:23px; letter-spacing:.03em; }
   .lg-plan .lb.sm{ font-size:22px; }
 }
+/* bridge links: unobtrusive to look at, full-size to tap */
+body.pn-id.pn-pd .pn-bridge-h a, body.pn-id.pn-pd .pn-bridge-x a{ display:inline-flex; align-items:center; min-height:44px; }
