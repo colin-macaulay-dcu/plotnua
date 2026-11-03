@@ -378,6 +378,9 @@ jobs:
           # The Hidden Cars editorial redesign (founder approval, 3 Nov 2026): every text block, link, image,
           # id and comment preserved against the pinned 45eac1e snapshot; narrative order rules hold.
           python3 atlas-tools/prove-premium-discovery-hidden-cars.py
+          # The Driveway Income editorial redesign (founder approval, 3 Nov 2026): every text block, link, image,
+          # id and comment preserved against the pinned ce0f130 snapshot; the caveat precedes the reported figures.
+          python3 atlas-tools/prove-premium-discovery-driveway-income.py
           # Safety lock (23 Oct 2026): the 17 Oct merge builder must refuse to
           # regenerate the approved Premium page, and must leave every file as it was.
           set +e; out=$(python3 atlas-tools/build-a-home-for-art-merge.py --apply 2>&1); rc=$?; set -e
