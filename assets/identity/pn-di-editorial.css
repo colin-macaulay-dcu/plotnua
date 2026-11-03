@@ -81,7 +81,6 @@ body.pn-id.pn-pd main#pn-main:has(.di-asset) .di-demand, body.pn-id.pn-pd main#p
 body.pn-id.pn-pd main#pn-main:has(.di-asset) .di-demand::before{ display:none !important; }
 body.pn-id.pn-pd main#pn-main:has(.di-asset) .di-demand > summary{ padding:0 0 18px !important; }
 body.pn-id.pn-pd main#pn-main:has(.di-asset) .di-demand > summary h3{ font-family:var(--p4-serif) !important; font-weight:400 !important; font-size:clamp(36px,3.8vw,56px) !important; line-height:1.04 !important; letter-spacing:-.015em !important; text-transform:none !important; color:var(--p4-ivory) !important; }
-body.pn-id.pn-pd main#pn-main:has(.di-asset) .di-demand > summary .icon{ display:none; }
 body.pn-id.pn-pd main#pn-main:has(.di-asset) .di-demand .faq-a{ background:none !important; border:0 !important; padding:0 !important; font-size:var(--di-text) !important; line-height:1.7 !important; color:var(--p4-lime) !important; max-width:60ch; }
 
 /* =====================================================================
@@ -113,9 +112,8 @@ body.pn-id.pn-pd main#pn-main:has(.di-asset) .di-checks .dq-note{ display:block;
   body.pn-id.pn-pd main#pn-main:has(.di-asset) .di-possible{ grid-template-columns:1fr; }
   body.pn-id.pn-pd main#pn-main:has(.di-asset) .di-location{ grid-template-columns:1fr; }
   body.pn-id.pn-pd main#pn-main:has(.di-asset) .di-map-wrap{ max-width:520px; }
-  /* phones: the drawer is collapsible, so its own +/- marker shows */
+  /* phones and tablets: the drawer is collapsible; its marker is the shared .pe-fold-icon */
   body.pn-id.pn-pd main#pn-main:has(.di-asset) .di-demand > summary{ align-items:center; }
-  body.pn-id.pn-pd main#pn-main:has(.di-asset) .di-demand > summary .icon{ display:block; }
   body.pn-id.pn-pd main#pn-main:has(.di-asset) .di-demand > summary h3{ font-size:clamp(32px,6vw,44px) !important; }
   body.pn-id.pn-pd main#pn-main:has(.di-asset) .di-practical .dq-adv-cols{ grid-template-columns:1fr; gap:12px; }
   body.pn-id.pn-pd main#pn-main:has(.di-asset) .di-chapter{ margin-top:64px; }
@@ -129,3 +127,20 @@ body.pn-id.pn-pd main#pn-main:has(.di-asset) .di-checks .dq-note{ display:block;
   body.pn-id.pn-pd main#pn-main:has(.di-asset) .di-practical .dq-adv-cols > li{ padding:26px 20px 22px !important; }
   body.pn-id.pn-pd main#pn-main:has(.di-asset) .di-practical .dq-adv-cols > li::before{ left:20px; right:20px; }
 }
+
+/* =====================================================================
+   EXPANDABLE-SECTION MARKERS (final refinement, 3 Nov 2026)
+   One marker for every expandable section on this page, matching the approved Hidden Cars
+   .pe-fold-icon: a 24 px ring with a terracotta plus that becomes a minus when open.
+   The demand drawer uses .pe-fold-icon itself (shared CSS). The two practicalities drawers keep
+   their existing markup; their legacy .icon is drawn to the same specification here.
+   They stay collapsed at every width (as in production); heading always visible;
+   native <details>/<summary> gives touch, Enter/Space and screen-reader state.
+   ===================================================================== */
+body.pn-id.pn-pd main#pn-main:has(.di-asset) .pe-drawers > .faq-item.is-inline summary .icon{ display:block; flex:0 0 auto; position:relative; width:24px !important; height:24px !important; border:1px solid var(--p4-line2) !important; border-radius:50%; background:none !important; }
+body.pn-id.pn-pd main#pn-main:has(.di-asset) .pe-drawers > .faq-item.is-inline summary .icon::before,
+body.pn-id.pn-pd main#pn-main:has(.di-asset) .pe-drawers > .faq-item.is-inline summary .icon::after{ content:"" !important; position:absolute !important; left:50% !important; top:50% !important; width:10px !important; height:1.5px !important; margin:-.75px 0 0 -5px !important; background:var(--p4-terra-text) !important; border-radius:1px; opacity:1 !important; transition:none !important; transform:none !important; }
+body.pn-id.pn-pd main#pn-main:has(.di-asset) .pe-drawers > .faq-item.is-inline summary .icon::after{ transform:rotate(90deg) !important; }
+body.pn-id.pn-pd main#pn-main:has(.di-asset) .pe-drawers > .faq-item.is-inline[open] summary .icon::after{ display:none !important; }
+body.pn-id.pn-pd main#pn-main:has(.di-asset) .pe-drawers > .faq-item.is-inline summary{ align-items:center; }
+body.pn-id.pn-pd main#pn-main:has(.di-asset) .pe-drawers > .faq-item.is-inline summary:focus-visible{ outline:2px solid var(--p4-terra-text); outline-offset:4px; border-radius:6px; }

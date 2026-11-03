@@ -28,7 +28,7 @@ PAGE = "discovery-driveway-income.html"
 BASE = os.path.join(ROOT, "atlas-tools", "premium-discovery", "driveway-income-base.json")
 CHAPTERS = ["The overlooked asset", "The possibility", "The location question", "The practicalities", "The homeowner decision"]  # chapter 03 uses the page's own "The Opportunity" kicker
 ALLOWED_HEAD = ['<link rel="stylesheet" href="assets/identity/pn-editorial.css?v=2">',
-                '<link rel="stylesheet" href="assets/identity/pn-di-editorial.css?v=1">',
+                '<link rel="stylesheet" href="assets/identity/pn-di-editorial.css?v=2">',
                 '<link rel="stylesheet" href="assets/identity/pn-hero-mobile-heading.css?v=1">',
                 '<script src="assets/identity/pn-editorial.js?v=1" defer></script>']
 OUTCOME = 'assets/img/4a4a1e4b08edaada.jpg'   # the outcome photograph: moved from after </main> to chapter 02
@@ -146,9 +146,13 @@ def main():
     roots = Counter(now["hidden_roots"])
     check("D2 drawings are aria-hidden and carry no words (chapter numerals 01-06 only)",
           hidden_words == ["01", "02", "03", "04", "05", "06"]
-          and all(r in ("svg.di-bays", "svg.di-map", "svg.di-tick", "span.pe-chapter-n") for r in roots),
+          and all(r in ("svg.di-bays", "svg.di-map", "svg.di-tick", "span.pe-chapter-n", "span.pe-fold-icon") for r in roots),
           repr(dict(roots)) + repr(hidden_words))
     check("D3 the demand drawer folds on phones only: native <details>, open in the markup", m.count('<details class="faq-item is-inline pe-fold di-demand" open>') == 1)
+    check("D4 one expandable-section marker: the demand drawer uses the shared .pe-fold-icon; the two practicalities drawers stay collapsed in the markup",
+          m.count('<summary><h3>Where the demand comes from</h3><span class="pe-fold-icon" aria-hidden="true"></span></summary>') == 1
+          and m.count('<span class="icon"></span>') == 2
+          and len(re.findall(r'<div class="pe-drawers">\s*<details class="faq-item is-inline">[\s\S]*?<details class="faq-item is-inline">', m)) == 1)
     print("DRIVEWAY INCOME EDITORIAL GUARD · %s — %d passed, %d failed" % ("OK" if not bad else "FAILED", ok, len(bad)))
     sys.exit(1 if bad else 0)
 
