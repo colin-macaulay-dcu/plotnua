@@ -124,3 +124,13 @@ body.pn-id.pn-pd:has(main#pn-main .np-open) .related-card .related-kicker{ color
 
 /* ---- keyboard focus stays clear of the fixed header and the floating Back ------------- */
 html:has(main#pn-main .np-open){ scroll-padding-top:88px; scroll-padding-bottom:96px; }
+
+/* ---- the closing call to action: the established premium PlotNua CTA (homepage .p4-btn-primary)
+        Solid terracotta, anthracite type, no underline; visible keyboard focus. Same destination. ---- */
+body.pn-id.pn-pd:has(main#pn-main .np-open) .pb-preview a.btn-primary{ display:inline-flex; align-items:center; justify-content:center; gap:12px; min-height:54px; padding:0 30px; margin-top:28px;
+  background:var(--p4-terra-text); color:var(--p4-anth) !important; border:0 !important; border-radius:0; box-shadow:none;
+  font-family:var(--p4-sans); font-size:17px; font-weight:700; letter-spacing:0; text-transform:none; text-decoration:none !important;
+  transition:background-color .18s ease; }
+body.pn-id.pn-pd:has(main#pn-main .np-open) .pb-preview a.btn-primary:hover{ background:var(--p4-terra-hover); text-decoration:none !important; }
+body.pn-id.pn-pd:has(main#pn-main .np-open) .pb-preview a.btn-primary:focus-visible{ outline:2px solid var(--p4-ivory); outline-offset:4px; }
+@media (prefers-reduced-motion:reduce){ body.pn-id.pn-pd:has(main#pn-main .np-open) .pb-preview a.btn-primary{ transition:none; } }

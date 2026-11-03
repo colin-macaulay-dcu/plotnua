@@ -33,6 +33,21 @@ TWO = ["Between neighbours", "A favour, arranged privately.",
        "You decide who, when and what you will take. This is the arrangement everything on this page describes.",
        "As a paid network", "Payment does not make it wrong. It makes it a different decision.",
        "Once a home is paid to receive parcels \u2014 by a retailer, a carrier or a network \u2014 further questions follow: insurance, planning, tax, data protection, the contract with whoever is paying, and who is liable when something goes missing or is damaged. Each would need to be checked properly before any money changed hands."]
+# Founder refinement, LEGAL ACCURACY (3 Nov 2026): categorical liability, planning and data-protection
+# statements restated as general rules with their conditions (Consumer Rights Act 2022 s.35; GDPR Art.2(2)(c)).
+LEGAL = [
+ ("If your neighbour asked the shop to leave it with you, the shop\u2019s responsibility ends the moment you take it in.",
+  "Who carries the risk if a parcel goes missing can depend on who asked for it to be left with you."),
+ ("If a courier leaves it and nobody asked, the shop stays responsible until your neighbour has it. Neither is a reason not to do it. It is a reason to know which one you are doing.",
+  "For an online order from a business, Irish consumer law generally keeps a parcel at the seller\u2019s risk until the buyer, or someone the buyer nominated, has it. Whether that someone is you depends on what was arranged. Neither is a reason not to do it. It is a reason to know which one you are doing."),
+ ("If something goes missing. If your neighbour asked the shop to leave it with you, the shop\u2019s responsibility for it ends the moment you take it in; after that it is between you and them. If a courier leaves it with you and nobody asked, that is different \u2014 the shop stays responsible until your neighbour actually has it.",
+  "If something goes missing. Who is responsible depends on the circumstances, on what was agreed and on the law that applies. As a general rule for an online order from a business, the Consumer Rights Act 2022 (section 35) keeps the goods at the seller\u2019s risk until the buyer, or a person the buyer nominated, takes physical possession of them. So if your neighbour asked for the parcel to be left with you, the seller\u2019s responsibility may end when you take it in, and what happens after that is between you and them. If a courier simply leaves it with you and nobody asked, the seller may stay responsible until your neighbour has it. Private sales, and couriers the buyer chose themselves, can work differently."),
+ ("Planning. Doing it as a favour is ordinary household activity and needs no permission. It only becomes a planning question if part of the house is being used for a business, and that does need permission.",
+  "Planning. Doing it as a favour is ordinary household activity, and we are not aware of it raising a planning question. Using part of a house for a business can, depending on the use and its scale; your local authority\u2019s planning office is the place to ask."),
+ ("Data protection. The rules that leave ordinary household activity alone stop applying once money is involved. A list of neighbours\u2019 names and addresses becomes something you are answerable for.",
+  "Data protection. Data protection law does not apply to purely personal or household activity. Once money is involved, that exemption may no longer apply, and a list of neighbours\u2019 names and addresses could become something you are answerable for."),
+]
+LEGAL_ADD = "Being paid. Payment does not make it wrong. It turns a favour into a service, and the questions above \u2014 with tax, contracts and who is liable for what \u2014 would need answering for that arrangement specifically."
 ALLOWED_HEAD = ['<link rel="stylesheet" href="assets/identity/pn-editorial.css?v=2">',
                 '<link rel="stylesheet" href="assets/identity/pn-np-editorial.css?v=1">',
                 '<link rel="stylesheet" href="assets/identity/pn-hero-mobile-heading.css?v=1">',
@@ -136,6 +151,12 @@ def main():
         check("R1 the one declared rewording is in place (boundary sentence no longer reads as a prohibition)",
               want[old] == 1 and blocks[new] == 1 and blocks[old] == 0)
         blocks[new] -= 1; want[old] -= 1
+    for old, new in LEGAL:
+        check("L1 legal wording restated as a general rule: '%s...'" % new[:44], want[old] == 1 and blocks[new] == 1 and blocks[old] == 0,
+              "old %d new %d" % (blocks[old], blocks[new]))
+        blocks[new] -= 1; want[old] -= 1
+    check("L1 'Being paid' added to the detail drawer: payment presented as a different decision, not prohibited", blocks[LEGAL_ADD] == 1)
+    blocks[LEGAL_ADD] -= 1
     blocks = +blocks; want = +want
     check("C1 every other text block in <main> present verbatim, the same number of times (%d blocks)" % sum(want.values()),
           blocks == want, "missing %s · extra %s" % (list((want - blocks).elements())[:2], list((blocks - want).elements())[:2]))
@@ -143,9 +164,9 @@ def main():
     check("C3 photographs identical (file and alt text)", sorted(map(tuple, now["imgs"])) == sorted(map(tuple, base["imgs"])))
     check("C4 ids and anchors identical", sorted(now["ids"]) == sorted(base["ids"]))
     extra = Counter(now["comments"]) - Counter(base["comments"])
-    check("C5 governance comments carried over verbatim (one declared comment added)",
-          not (Counter(base["comments"]) - Counter(now["comments"])) and sum(extra.values()) == 1
-          and "FOUNDER REFINEMENT (3 Nov 2026)" in next(iter(extra)))
+    check("C5 governance comments carried over verbatim (two declared comments added)",
+          not (Counter(base["comments"]) - Counter(now["comments"])) and sum(extra.values()) == 2
+          and any("FOUNDER REFINEMENT (3 Nov 2026)" in c for c in extra) and any("LEGAL ACCURACY" in c for c in extra))
     m = now["main"]; pos = lambda x: m.index(x)
     check("O1 the opening line leads chapter 01, before its question", pos(LEAD) < pos("Could your home become your street"))
     check("O2 the demand figures (chapter 02) precede the possibility; the handover photograph sits beside How it would work",
@@ -156,6 +177,10 @@ def main():
           pos("Could this work at your house?") > pos("What it changes day to day"))
     check("O5 nothing in <main> says a paid arrangement is available or that PlotNua runs one",
           "PlotNua does not arrange this" in m and not re.search(r"PlotNua (runs|operates|offers) (a|the) (parcel|collection) network", m))
+    check("L2 no categorical liability or permission statement remains; the conditions are stated",
+          "ends the moment you take it in" not in m and "stays responsible until" not in m and "that does need permission" not in m
+          and "stop applying once money is involved" not in m and "depends on the circumstances, on what was agreed and on the law that applies" in m
+          and "Consumer Rights Act 2022 (section 35)" in m)
     roots = Counter(now["hidden_roots"])
     check("D2 drawings are aria-hidden and carry no words (chapter numerals 01-06 only)",
           now["hidden_text"] == ["01", "02", "03", "04", "05", "06"]
