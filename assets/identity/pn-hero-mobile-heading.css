@@ -1,0 +1,27 @@
+/* =====================================================================
+   PLOTNUA · Discovery hero · ONE TITLE ON PHONES (proposal, 3 Nov 2026)
+   PREVIEW ONLY on The Hidden Bins; not applied site-wide (founder brief).
+
+   Problem: on phones and portrait tablets the compact title band above the
+   slider shows the Discovery's name, and the hero copy below the slider
+   shows it again as a large H1 with a glow-like text-shadow.
+
+   Correction (the Hidden Flood Barrier precedent, 27 Oct 2026):
+   - the title band stays the one VISIBLE title (it is aria-hidden);
+   - the H1 stays in the page as its one H1, visually hidden on stacked
+     layouts only, so assistive technology and search read it unchanged;
+   - the tagline then leads the copy beneath the slider, larger;
+   - no text-shadow on any stacked hero copy (it sits on a solid surface).
+   Desktop and landscape tablets are not affected.
+   Opt-in per page with .pn-hero-onetitle on the .d-hero header.
+   ===================================================================== */
+@media (max-width:1024px) and (orientation:portrait), (max-width:719px){
+  .d-hero.pn-hero-compare--std.pn-hero-onetitle .d-hero-copy h1{
+    position:absolute !important; width:1px !important; height:1px !important; margin:-1px !important; padding:0 !important;
+    overflow:hidden !important; clip:rect(0 0 0 0) !important; clip-path:inset(50%) !important; white-space:nowrap !important; border:0 !important; }
+  .d-hero.pn-hero-compare--std.pn-hero-onetitle .d-hero-copy,
+  .d-hero.pn-hero-compare--std.pn-hero-onetitle .d-hero-copy *{ text-shadow:none !important; }
+  .d-hero.pn-hero-compare--std.pn-hero-onetitle .d-hero-copy .subtitle{
+    margin-top:0 !important; font-size:clamp(24px,6vw,32px) !important; line-height:1.2 !important; max-width:24ch; }
+  .d-hero.pn-hero-compare--std.pn-hero-onetitle .d-hero-copy{ padding-top:22px !important; padding-bottom:24px !important; }
+}
