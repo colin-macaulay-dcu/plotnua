@@ -27,8 +27,9 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PAGE = "discovery-hidden-cars.html"
 BASE = os.path.join(ROOT, "atlas-tools", "premium-discovery", "hidden-cars-base.json")
 CHAPTERS = ["The problem", "The possibility", "The revelation", "How it works", "Irish feasibility", "The homeowner decision"]
-ALLOWED_HEAD = ['<link rel="stylesheet" href="assets/identity/pn-editorial.css?v=1">',
-                '<link rel="stylesheet" href="assets/identity/pn-hc-editorial.css?v=1">',
+ALLOWED_HEAD = ['<link rel="stylesheet" href="assets/identity/pn-editorial.css?v=2">',
+                '<link rel="stylesheet" href="assets/identity/pn-hc-editorial.css?v=2">',
+                '<script src="assets/identity/pn-editorial.js?v=1" defer></script>',
                 '<link rel="stylesheet" href="assets/identity/pn-hero-mobile-heading.css?v=1">']
 INLINE = {"strong", "em", "b", "i", "sup", "sub", "abbr", "a"}
 VOID = {"img", "br", "input", "source", "meta", "link", "hr", "wbr", "path", "rect", "circle"}
@@ -136,8 +137,11 @@ def main():
     roots = Counter(now["hidden_roots"]); roots["span."] -= 1; roots = +roots
     check("D2 drawings are aria-hidden and carry no words (chapter numerals 01-06 only)",
           hidden_words == ["01", "02", "03", "04", "05", "06"] and now["hidden_text"].count("\u2193") == 1
-          and all(r in ("svg.hc-draw", "svg.hc-swapdraw", "span.pe-chapter-n") for r in roots),
+          and all(r in ("svg.hc-draw", "svg.hc-swapdraw", "span.pe-chapter-n", "span.pe-fold-icon") for r in roots),
           repr(dict(roots)) + repr(hidden_words))
+    ap = m[m.index('hc-approaches'):]; ap = ap[:ap.index("</section>")]
+    check("D3 the four approach notes fold on phones only: native <details>, open in the markup (all visible without scripting)",
+          ap.count('<details class="pe-fold" open>') == 4 and ap.count("<details") == 4 and ap.count('<span class="dq-note">') == 4)
     print("HIDDEN CARS EDITORIAL GUARD · %s — %d passed, %d failed" % ("OK" if not bad else "FAILED", ok, len(bad)))
     sys.exit(1 if bad else 0)
 

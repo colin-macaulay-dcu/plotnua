@@ -64,3 +64,19 @@ body.pn-id.pn-pd .pe-drawers > .faq-item.is-inline .faq-a{ font-size:18px !impor
 @media (min-width:720px) and (max-width:1023px){
   body.pn-id.pn-pd .pe-drawers{ grid-template-columns:1fr 1fr; }
 }
+
+/* ---- .pe-fold: always-visible summary, detail open on desktop, collapsible on phones (pn-editorial.js) ---- */
+body.pn-id.pn-pd details.pe-fold > summary{ list-style:none; display:flex; align-items:flex-start; justify-content:space-between; gap:14px; cursor:default; }
+body.pn-id.pn-pd details.pe-fold > summary::-webkit-details-marker{ display:none; }
+body.pn-id.pn-pd details.pe-fold > summary > :first-child{ flex:1 1 auto; }
+body.pn-id.pn-pd details.pe-fold .pe-fold-icon{ display:none; }
+body.pn-id.pn-pd details.pe-fold > :not(summary){ margin-top:12px; }
+@media (max-width:1023px){
+  body.pn-id.pn-pd details.pe-fold > summary{ cursor:pointer; min-height:44px; align-items:center; }
+  body.pn-id.pn-pd details.pe-fold > summary:focus-visible{ outline:2px solid var(--p4-terra-text); outline-offset:4px; border-radius:6px; }
+  body.pn-id.pn-pd details.pe-fold .pe-fold-icon{ display:block; flex:0 0 auto; position:relative; width:24px; height:24px; border:1px solid var(--p4-line2); border-radius:50%; }
+  body.pn-id.pn-pd details.pe-fold .pe-fold-icon::before,
+  body.pn-id.pn-pd details.pe-fold .pe-fold-icon::after{ content:""; position:absolute; left:50%; top:50%; width:10px; height:1.5px; margin:-.75px 0 0 -5px; background:var(--p4-terra-text); border-radius:1px; }
+  body.pn-id.pn-pd details.pe-fold .pe-fold-icon::after{ transform:rotate(90deg); }
+  body.pn-id.pn-pd details.pe-fold[open] .pe-fold-icon::after{ display:none; }
+}
