@@ -1,7 +1,7 @@
 /* =====================================================================
    PLOTNUA · THE HIDDEN BINS · editorial composition (Pass 2 pilot)
    Founder approval of the pilot, 3 Nov 2026. Benchmark: A Home for Art's
-   editorial standard, NOT its layout. Scoped to main.hb-ed on one page.
+   editorial standard, NOT its layout. Scoped to main#pn-main:has(.hb-problem) on one page.
 
    Presentation only: every sentence, link, id, image and caption on the
    page is unchanged (prove-premium-discovery-hidden-bins.py). The hero
@@ -13,7 +13,7 @@
    compositions; tablet and phone fall back to one reading column.
    ===================================================================== */
 
-body.pn-id.pn-pd main.hb-ed{
+body.pn-id.pn-pd main#pn-main:has(.hb-problem){
   --hb-text:clamp(17px,1.25vw,19px);
   --hb-lh:1.7;
   --hb-col:minmax(0,5fr) minmax(0,7fr);
@@ -21,149 +21,149 @@ body.pn-id.pn-pd main.hb-ed{
 }
 
 /* ---- one editorial container --------------------------------------------- */
-body.pn-id.pn-pd main.hb-ed > .article{ max-width:var(--pd-max); margin:0 auto; padding:0 clamp(18px,3vw,40px) clamp(24px,4vw,56px); box-sizing:border-box; }
-body.pn-id.pn-pd main.hb-ed .article-section{ padding-top:clamp(64px,9vw,136px); }
-body.pn-id.pn-pd main.hb-ed .article-section > p,
-body.pn-id.pn-pd main.hb-ed .article-section .hb-proofs > p,
-body.pn-id.pn-pd main.hb-ed .article-section .hb-five-list > p{ font-size:var(--hb-text); line-height:var(--hb-lh); color:var(--p4-lime); }
-body.pn-id.pn-pd main.hb-ed .article-section h2{ text-wrap:balance; }
+body.pn-id.pn-pd main#pn-main:has(.hb-problem) > .article{ max-width:var(--pd-max); margin:0 auto; padding:0 clamp(18px,3vw,40px) clamp(24px,4vw,56px); box-sizing:border-box; }
+body.pn-id.pn-pd main#pn-main:has(.hb-problem) .article-section{ padding-top:clamp(64px,9vw,136px); }
+body.pn-id.pn-pd main#pn-main:has(.hb-problem) .article-section > p,
+body.pn-id.pn-pd main#pn-main:has(.hb-problem) .article-section .hb-proofs > p,
+body.pn-id.pn-pd main#pn-main:has(.hb-problem) .article-section .hb-five-list > p{ font-size:var(--hb-text); line-height:var(--hb-lh); color:var(--p4-lime); }
+body.pn-id.pn-pd main#pn-main:has(.hb-problem) .article-section h2{ text-wrap:balance; }
 
 /* ---- photographs: whole, mounted, never cropped (the .pa-frame principle) ---- */
-body.pn-id.pn-pd main.hb-ed .imagine-photo.hb-plate{ height:auto; min-height:0; background:none; overflow:visible; margin:0; }
-body.pn-id.pn-pd main.hb-ed .imagine-photo.hb-plate::before,
-body.pn-id.pn-pd main.hb-ed .imagine-photo.hb-plate::after{ display:none; }
-body.pn-id.pn-pd main.hb-ed .imagine-photo.hb-plate img{ width:100%; height:auto; aspect-ratio:1408/768; object-fit:contain; display:block;
+body.pn-id.pn-pd main#pn-main:has(.hb-problem) .imagine-photo.hb-plate{ height:auto; min-height:0; background:none; overflow:visible; margin:0; }
+body.pn-id.pn-pd main#pn-main:has(.hb-problem) .imagine-photo.hb-plate::before,
+body.pn-id.pn-pd main#pn-main:has(.hb-problem) .imagine-photo.hb-plate::after{ display:none; }
+body.pn-id.pn-pd main#pn-main:has(.hb-problem) .imagine-photo.hb-plate img{ width:100%; height:auto; aspect-ratio:1408/768; object-fit:contain; display:block;
   border-radius:var(--pd-r-img); box-shadow:var(--pd-shadow-hi); background:var(--p4-well); }
 
 /* =====================================================================
    1 · THE PROBLEM — heading column with the three bins drawn; serif lead
    ===================================================================== */
-body.pn-id.pn-pd main.hb-ed .hb-bins{ display:block; width:clamp(120px,12vw,168px); height:auto; margin:6px 0 0; }
-body.pn-id.pn-pd main.hb-ed .hb-bin rect, body.pn-id.pn-pd main.hb-ed .hb-bin circle{ stroke:rgba(242,235,224,.34); stroke-width:1.2; }
-body.pn-id.pn-pd main.hb-ed .hb-bin.is-black{ fill:#151617; }
-body.pn-id.pn-pd main.hb-ed .hb-bin.is-green{ fill:#2F4A3A; }
-body.pn-id.pn-pd main.hb-ed .hb-bin.is-brown{ fill:#5A4030; }
-body.pn-id.pn-pd main.hb-ed .hb-problem .hb-lead{ font-family:var(--p4-serif); font-size:clamp(28px,2.6vw,38px); line-height:1.18; color:var(--p4-ivory); margin:0 0 26px; }
+body.pn-id.pn-pd main#pn-main:has(.hb-problem) .hb-bins{ display:block; width:clamp(120px,12vw,168px); height:auto; margin:6px 0 0; }
+body.pn-id.pn-pd main#pn-main:has(.hb-problem) .hb-bin rect, body.pn-id.pn-pd main#pn-main:has(.hb-problem) .hb-bin circle{ stroke:rgba(242,235,224,.34); stroke-width:1.2; }
+body.pn-id.pn-pd main#pn-main:has(.hb-problem) .hb-bin.is-black{ fill:#151617; }
+body.pn-id.pn-pd main#pn-main:has(.hb-problem) .hb-bin.is-green{ fill:#2F4A3A; }
+body.pn-id.pn-pd main#pn-main:has(.hb-problem) .hb-bin.is-brown{ fill:#5A4030; }
+body.pn-id.pn-pd main#pn-main:has(.hb-problem) .hb-problem .hb-lead{ font-family:var(--p4-serif); font-size:clamp(28px,2.6vw,38px); line-height:1.18; color:var(--p4-ivory); margin:0 0 26px; }
 
 /* =====================================================================
    2 · THE POSSIBILITY — a typographic pause, centred
    ===================================================================== */
-body.pn-id.pn-pd main.hb-ed .hb-possibility{ text-align:center; padding-top:clamp(88px,12vw,180px); }
-body.pn-id.pn-pd main.hb-ed .hb-possibility h2{ margin-left:auto; margin-right:auto; max-width:16ch; }
-body.pn-id.pn-pd main.hb-ed .hb-possibility > p{ margin-left:auto; margin-right:auto; max-width:46ch; color:var(--p4-stone); }
-body.pn-id.pn-pd main.hb-ed .hb-possibility .hb-not{ font-family:var(--p4-serif); font-style:italic; font-size:clamp(24px,2.4vw,34px); line-height:1.25; color:var(--p4-lime); max-width:none; margin-top:clamp(18px,3vw,36px); }
-body.pn-id.pn-pd main.hb-ed .hb-possibility .hb-gone{ font-family:var(--p4-serif); font-size:clamp(84px,12vw,176px); line-height:.9; letter-spacing:-.03em; color:var(--p4-ivory); margin:clamp(12px,2vw,28px) auto clamp(22px,3vw,40px); }
+body.pn-id.pn-pd main#pn-main:has(.hb-problem) .hb-possibility{ text-align:center; padding-top:clamp(88px,12vw,180px); }
+body.pn-id.pn-pd main#pn-main:has(.hb-problem) .hb-possibility h2{ margin-left:auto; margin-right:auto; max-width:16ch; }
+body.pn-id.pn-pd main#pn-main:has(.hb-problem) .hb-possibility > p{ margin-left:auto; margin-right:auto; max-width:46ch; color:var(--p4-stone); }
+body.pn-id.pn-pd main#pn-main:has(.hb-problem) .hb-possibility .hb-not{ font-family:var(--p4-serif); font-style:italic; font-size:clamp(24px,2.4vw,34px); line-height:1.25; color:var(--p4-lime); max-width:none; margin-top:clamp(18px,3vw,36px); }
+body.pn-id.pn-pd main#pn-main:has(.hb-problem) .hb-possibility .hb-gone{ font-family:var(--p4-serif); font-size:clamp(84px,12vw,176px); line-height:.9; letter-spacing:-.03em; color:var(--p4-ivory); margin:clamp(12px,2vw,28px) auto clamp(22px,3vw,40px); }
 
 /* =====================================================================
    3 · THE REVELATION — the claim set large; the two proofs side by side
    ===================================================================== */
-body.pn-id.pn-pd main.hb-ed .hb-reveal .hb-lede{ font-family:var(--p4-sans); font-size:12px; font-weight:700; letter-spacing:.18em; text-transform:uppercase; color:var(--p4-terra-text); margin:0 0 14px; }
-body.pn-id.pn-pd main.hb-ed .hb-reveal .hb-claim{ font-family:var(--p4-serif); font-size:clamp(26px,2.5vw,36px); line-height:1.22; color:var(--p4-ivory); max-width:30ch; }
-body.pn-id.pn-pd main.hb-ed .hb-reveal .hb-claim strong{ font-family:inherit; font-weight:400; color:var(--p4-ivory); }
-body.pn-id.pn-pd main.hb-ed .hb-proofs{ display:grid; grid-template-columns:1fr 1fr; gap:var(--pd-gap); margin:clamp(26px,3vw,40px) 0; }
-body.pn-id.pn-pd main.hb-ed .hb-proofs > p{ margin:0; padding:26px 28px 28px; background:var(--pd-card); border:var(--pd-edge); border-top:1px solid rgba(242,235,224,.22);
+body.pn-id.pn-pd main#pn-main:has(.hb-problem) .hb-reveal .hb-lede{ font-family:var(--p4-sans); font-size:12px; font-weight:700; letter-spacing:.18em; text-transform:uppercase; color:var(--p4-terra-text); margin:0 0 14px; }
+body.pn-id.pn-pd main#pn-main:has(.hb-problem) .hb-reveal .hb-claim{ font-family:var(--p4-serif); font-size:clamp(26px,2.5vw,36px); line-height:1.22; color:var(--p4-ivory); max-width:30ch; }
+body.pn-id.pn-pd main#pn-main:has(.hb-problem) .hb-reveal .hb-claim strong{ font-family:inherit; font-weight:400; color:var(--p4-ivory); }
+body.pn-id.pn-pd main#pn-main:has(.hb-problem) .hb-proofs{ display:grid; grid-template-columns:1fr 1fr; gap:var(--pd-gap); margin:clamp(26px,3vw,40px) 0; }
+body.pn-id.pn-pd main#pn-main:has(.hb-problem) .hb-proofs > p{ margin:0; padding:26px 28px 28px; background:var(--pd-card); border:var(--pd-edge); border-top:1px solid rgba(242,235,224,.22);
   border-radius:var(--pd-r-sm); box-shadow:var(--pd-shadow); font-size:clamp(16px,1.15vw,18px) !important; }
-body.pn-id.pn-pd main.hb-ed .hb-reveal .ev-link a{ font-weight:600; }
+body.pn-id.pn-pd main#pn-main:has(.hb-problem) .hb-reveal .ev-link a{ font-weight:600; }
 
 /* =====================================================================
    4 · payoff photograph + "What the front looks like instead"
    ===================================================================== */
-body.pn-id.pn-pd main.hb-ed .hb-pair{ display:grid; grid-template-columns:minmax(0,7fr) minmax(0,5fr); gap:var(--hb-gapx); align-items:center; margin-top:clamp(64px,9vw,136px); }
-body.pn-id.pn-pd main.hb-ed .hb-pair .hb-outcome{ padding-top:0; }
-body.pn-id.pn-pd main.hb-ed .hb-pair .hb-outcome h2{ font-size:clamp(34px,3.2vw,50px); max-width:14ch; }
+body.pn-id.pn-pd main#pn-main:has(.hb-problem) .hb-pair{ display:grid; grid-template-columns:minmax(0,7fr) minmax(0,5fr); gap:var(--hb-gapx); align-items:center; margin-top:clamp(64px,9vw,136px); }
+body.pn-id.pn-pd main#pn-main:has(.hb-problem) .hb-pair .hb-outcome{ padding-top:0; }
+body.pn-id.pn-pd main#pn-main:has(.hb-problem) .hb-pair .hb-outcome h2{ font-size:clamp(34px,3.2vw,50px); max-width:14ch; }
 
 /* =====================================================================
    5 · HOW IT WORKS — the underground photograph, then three drawn steps
    ===================================================================== */
-body.pn-id.pn-pd main.hb-ed .hb-how{ margin-top:clamp(72px,10vw,150px); }
-body.pn-id.pn-pd main.hb-ed .hb-steps-sec{ padding-top:clamp(40px,5vw,72px); }
-body.pn-id.pn-pd main.hb-ed .hb-steps-sec .steps{ display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:var(--pd-gap); margin:clamp(28px,3vw,44px) 0 0; counter-reset:none; }
-body.pn-id.pn-pd main.hb-ed .hb-steps-sec .step{ position:relative; margin:0; padding:26px 28px 30px; background:var(--pd-card); border:var(--pd-edge); border-radius:var(--pd-r); box-shadow:var(--pd-shadow); }
-body.pn-id.pn-pd main.hb-ed .hb-steps-sec .step + .step{ border-top:var(--pd-edge); }
-body.pn-id.pn-pd main.hb-ed .hb-steps-sec .step::before{ display:none; }
-body.pn-id.pn-pd main.hb-ed .hb-glyph{ display:block; width:100%; max-width:240px; height:auto; margin:0 0 18px; }
-body.pn-id.pn-pd main.hb-ed .hb-glyph .g-ground{ stroke:var(--p4-stone); stroke-width:1.6; fill:none; }
-body.pn-id.pn-pd main.hb-ed .hb-glyph .g-pit{ stroke:rgba(194,189,181,.45); stroke-width:1.2; stroke-dasharray:3 3; fill:rgba(0,0,0,.18); }
-body.pn-id.pn-pd main.hb-ed .hb-glyph .g-bins rect{ fill:#3A3C3F; stroke:var(--p4-lime); stroke-width:1.2; }
-body.pn-id.pn-pd main.hb-ed .hb-glyph .g-plat{ stroke:var(--p4-bronze-text); stroke-width:2.4; }
-body.pn-id.pn-pd main.hb-ed .hb-glyph .g-cover{ stroke:var(--p4-ivory); stroke-width:4; }
-body.pn-id.pn-pd main.hb-ed .hb-glyph .g-arrow{ stroke:var(--p4-terra-text); stroke-width:1.8; fill:none; stroke-linecap:round; stroke-linejoin:round; }
-body.pn-id.pn-pd main.hb-ed .hb-steps-sec .step-head{ display:flex; align-items:baseline; gap:14px; margin:0 0 10px; }
-body.pn-id.pn-pd main.hb-ed .hb-steps-sec .step-num{ font-family:var(--p4-serif); font-style:normal; font-size:clamp(34px,3vw,44px); line-height:1; color:var(--p4-terra-text); }
-body.pn-id.pn-pd main.hb-ed .hb-steps-sec .step h3{ font-size:clamp(28px,2.4vw,36px); line-height:1; margin:0; }
-body.pn-id.pn-pd main.hb-ed .hb-steps-sec .step p{ font-size:clamp(16px,1.15vw,18px); line-height:1.65; color:var(--p4-lime); margin:0; max-width:none; }
+body.pn-id.pn-pd main#pn-main:has(.hb-problem) .hb-how{ margin-top:clamp(72px,10vw,150px); }
+body.pn-id.pn-pd main#pn-main:has(.hb-problem) .hb-steps-sec{ padding-top:clamp(40px,5vw,72px); }
+body.pn-id.pn-pd main#pn-main:has(.hb-problem) .hb-steps-sec .steps{ display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:var(--pd-gap); margin:clamp(28px,3vw,44px) 0 0; counter-reset:none; }
+body.pn-id.pn-pd main#pn-main:has(.hb-problem) .hb-steps-sec .step{ position:relative; margin:0; padding:26px 28px 30px; background:var(--pd-card); border:var(--pd-edge); border-radius:var(--pd-r); box-shadow:var(--pd-shadow); }
+body.pn-id.pn-pd main#pn-main:has(.hb-problem) .hb-steps-sec .step + .step{ border-top:var(--pd-edge); }
+body.pn-id.pn-pd main#pn-main:has(.hb-problem) .hb-steps-sec .step::before{ display:none; }
+body.pn-id.pn-pd main#pn-main:has(.hb-problem) .hb-glyph{ display:block; width:100%; max-width:240px; height:auto; margin:0 0 18px; }
+body.pn-id.pn-pd main#pn-main:has(.hb-problem) .hb-glyph .g-ground{ stroke:var(--p4-stone); stroke-width:1.6; fill:none; }
+body.pn-id.pn-pd main#pn-main:has(.hb-problem) .hb-glyph .g-pit{ stroke:rgba(194,189,181,.45); stroke-width:1.2; stroke-dasharray:3 3; fill:rgba(0,0,0,.18); }
+body.pn-id.pn-pd main#pn-main:has(.hb-problem) .hb-glyph .g-bins rect{ fill:#3A3C3F; stroke:var(--p4-lime); stroke-width:1.2; }
+body.pn-id.pn-pd main#pn-main:has(.hb-problem) .hb-glyph .g-plat{ stroke:var(--p4-bronze-text); stroke-width:2.4; }
+body.pn-id.pn-pd main#pn-main:has(.hb-problem) .hb-glyph .g-cover{ stroke:var(--p4-ivory); stroke-width:4; }
+body.pn-id.pn-pd main#pn-main:has(.hb-problem) .hb-glyph .g-arrow{ stroke:var(--p4-terra-text); stroke-width:1.8; fill:none; stroke-linecap:round; stroke-linejoin:round; }
+body.pn-id.pn-pd main#pn-main:has(.hb-problem) .hb-steps-sec .step-head{ display:flex; align-items:baseline; gap:14px; margin:0 0 10px; }
+body.pn-id.pn-pd main#pn-main:has(.hb-problem) .hb-steps-sec .step-num{ font-family:var(--p4-serif); font-style:normal; font-size:clamp(34px,3vw,44px); line-height:1; color:var(--p4-terra-text); }
+body.pn-id.pn-pd main#pn-main:has(.hb-problem) .hb-steps-sec .step h3{ font-size:clamp(28px,2.4vw,36px); line-height:1; margin:0; }
+body.pn-id.pn-pd main#pn-main:has(.hb-problem) .hb-steps-sec .step p{ font-size:clamp(16px,1.15vw,18px); line-height:1.65; color:var(--p4-lime); margin:0; max-width:none; }
 /* the sequence reads left to right: a quiet arrow between the cards (decorative) */
-body.pn-id.pn-pd main.hb-ed .hb-steps-sec .step:not(:last-child)::after{ content:""; position:absolute; top:50%; right:calc(var(--pd-gap) * -0.5 - 6px); width:12px; height:12px;
+body.pn-id.pn-pd main#pn-main:has(.hb-problem) .hb-steps-sec .step:not(:last-child)::after{ content:""; position:absolute; top:50%; right:calc(var(--pd-gap) * -0.5 - 6px); width:12px; height:12px;
   border-top:1.6px solid var(--p4-terra-text); border-right:1.6px solid var(--p4-terra-text); transform:translateY(-50%) rotate(45deg); z-index:1; }
-body.pn-id.pn-pd main.hb-ed .hb-steps-sec .steps-after{ font-size:15px !important; color:var(--p4-stone) !important; margin-top:22px; }
+body.pn-id.pn-pd main#pn-main:has(.hb-problem) .hb-steps-sec .steps-after{ font-size:15px !important; color:var(--p4-stone) !important; margin-top:22px; }
 
 /* =====================================================================
    6 · WHERE IRELAND STANDS — closed-state photograph beside five statements
    ===================================================================== */
-body.pn-id.pn-pd main.hb-ed .hb-ireland{ display:grid; grid-template-columns:minmax(0,5fr) minmax(0,7fr); gap:var(--hb-gapx); align-items:start; margin-top:clamp(72px,10vw,150px); }
-body.pn-id.pn-pd main.hb-ed .hb-ireland > .hb-plate{ align-self:start; margin-top:clamp(8px,1vw,16px); }
-body.pn-id.pn-pd main.hb-ed .hb-five{ padding-top:0; }
-body.pn-id.pn-pd main.hb-ed .hb-five .hb-five-lede{ font-family:var(--p4-serif); font-size:clamp(24px,2vw,30px); color:var(--p4-ivory); margin:0 0 8px; }
-body.pn-id.pn-pd main.hb-ed .hb-five-list{ counter-reset:hbfive; margin:0 0 28px; }
-body.pn-id.pn-pd main.hb-ed .hb-five-list > p{ counter-increment:hbfive; position:relative; margin:0; padding:22px 0 22px 64px; border-top:1px solid var(--p4-line); max-width:none; }
-body.pn-id.pn-pd main.hb-ed .hb-five-list > p:last-child{ border-bottom:1px solid var(--p4-line); }
-body.pn-id.pn-pd main.hb-ed .hb-five-list > p::before{ content:counter(hbfive, decimal-leading-zero); position:absolute; left:0; top:18px; font-family:var(--p4-serif); font-size:30px; line-height:1; color:var(--p4-terra-text); }
-body.pn-id.pn-pd main.hb-ed .hb-five-list > p strong{ display:block; font-family:var(--p4-serif); font-weight:400; font-size:clamp(22px,1.8vw,27px); line-height:1.2; color:var(--p4-ivory); margin:0 0 6px; }
-body.pn-id.pn-pd main.hb-ed .hb-five .hb-five-close{ font-family:var(--p4-serif); font-style:italic; font-size:clamp(20px,1.6vw,24px) !important; line-height:1.4 !important; color:var(--p4-ivory) !important; }
+body.pn-id.pn-pd main#pn-main:has(.hb-problem) .hb-ireland{ display:grid; grid-template-columns:minmax(0,5fr) minmax(0,7fr); gap:var(--hb-gapx); align-items:start; margin-top:clamp(72px,10vw,150px); }
+body.pn-id.pn-pd main#pn-main:has(.hb-problem) .hb-ireland > .hb-plate{ align-self:start; margin-top:clamp(8px,1vw,16px); }
+body.pn-id.pn-pd main#pn-main:has(.hb-problem) .hb-five{ padding-top:0; }
+body.pn-id.pn-pd main#pn-main:has(.hb-problem) .hb-five .hb-five-lede{ font-family:var(--p4-serif); font-size:clamp(24px,2vw,30px); color:var(--p4-ivory); margin:0 0 8px; }
+body.pn-id.pn-pd main#pn-main:has(.hb-problem) .hb-five-list{ counter-reset:hbfive; margin:0 0 28px; }
+body.pn-id.pn-pd main#pn-main:has(.hb-problem) .hb-five-list > p{ counter-increment:hbfive; position:relative; margin:0; padding:22px 0 22px 64px; border-top:1px solid var(--p4-line); max-width:none; }
+body.pn-id.pn-pd main#pn-main:has(.hb-problem) .hb-five-list > p:last-child{ border-bottom:1px solid var(--p4-line); }
+body.pn-id.pn-pd main#pn-main:has(.hb-problem) .hb-five-list > p::before{ content:counter(hbfive, decimal-leading-zero); position:absolute; left:0; top:18px; font-family:var(--p4-serif); font-size:30px; line-height:1; color:var(--p4-terra-text); }
+body.pn-id.pn-pd main#pn-main:has(.hb-problem) .hb-five-list > p strong{ display:block; font-family:var(--p4-serif); font-weight:400; font-size:clamp(22px,1.8vw,27px); line-height:1.2; color:var(--p4-ivory); margin:0 0 6px; }
+body.pn-id.pn-pd main#pn-main:has(.hb-problem) .hb-five .hb-five-close{ font-family:var(--p4-serif); font-style:italic; font-size:clamp(20px,1.6vw,24px) !important; line-height:1.4 !important; color:var(--p4-ivory) !important; }
 
 /* =====================================================================
    7 · THE PRACTICALITIES — chapter opening and the three options
    ===================================================================== */
-body.pn-id.pn-pd main.hb-ed .hb-practical{ margin-top:clamp(80px,11vw,170px); padding-top:clamp(40px,5vw,72px); border-top:1px solid var(--p4-line); }
-body.pn-id.pn-pd main.hb-ed .hb-chapter{ display:flex; align-items:center; gap:18px; }
-body.pn-id.pn-pd main.hb-ed .hb-chapter .kicker{ text-transform:uppercase; font-family:var(--p4-sans); font-weight:700; margin:0 !important; font-size:13px !important; letter-spacing:.24em !important; color:var(--p4-terra-text) !important; }
-body.pn-id.pn-pd main.hb-ed .hb-chapter::after{ content:""; flex:1; height:1px; background:var(--p4-line); }
-body.pn-id.pn-pd main.hb-ed .hb-practical > .article-section:first-of-type{ padding-top:clamp(36px,4vw,56px); }
+body.pn-id.pn-pd main#pn-main:has(.hb-problem) .hb-practical{ margin-top:clamp(80px,11vw,170px); padding-top:clamp(40px,5vw,72px); border-top:1px solid var(--p4-line); }
+body.pn-id.pn-pd main#pn-main:has(.hb-problem) .hb-chapter{ display:flex; align-items:center; gap:18px; }
+body.pn-id.pn-pd main#pn-main:has(.hb-problem) .hb-chapter .kicker{ text-transform:uppercase; font-family:var(--p4-sans); font-weight:700; margin:0 !important; font-size:13px !important; letter-spacing:.24em !important; color:var(--p4-terra-text) !important; }
+body.pn-id.pn-pd main#pn-main:has(.hb-problem) .hb-chapter::after{ content:""; flex:1; height:1px; background:var(--p4-line); }
+body.pn-id.pn-pd main#pn-main:has(.hb-problem) .hb-practical > .article-section:first-of-type{ padding-top:clamp(36px,4vw,56px); }
 
-body.pn-id.pn-pd main.hb-ed .hb-options .dq-adv-cols{ display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:var(--pd-gap); margin:clamp(28px,3vw,44px) 0 0; border:0; background:none; }
-body.pn-id.pn-pd main.hb-ed .hb-options .dq-adv-cols > li{ display:flex; flex-direction:column; padding:30px 30px 32px !important; background:var(--pd-card); border:var(--pd-edge); border-top:1px solid rgba(242,235,224,.18);
+body.pn-id.pn-pd main#pn-main:has(.hb-problem) .hb-options .dq-adv-cols{ display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:var(--pd-gap); margin:clamp(28px,3vw,44px) 0 0; border:0; background:none; }
+body.pn-id.pn-pd main#pn-main:has(.hb-problem) .hb-options .dq-adv-cols > li{ display:flex; flex-direction:column; padding:30px 30px 32px !important; background:var(--pd-card); border:var(--pd-edge); border-top:1px solid rgba(242,235,224,.18);
   border-radius:var(--pd-r); box-shadow:var(--pd-shadow); transform:none !important; }
 /* DISAPPEAR: restrained emphasis only — a heavier top rule, never a badge, colour or label */
-body.pn-id.pn-pd main.hb-ed .hb-options .dq-adv-cols > li.hb-cmp-rev{ border-top:3px solid var(--p4-lime); }
-body.pn-id.pn-pd main.hb-ed .hb-options .dq-adv-label{ font-family:var(--p4-serif); font-weight:400; font-size:clamp(34px,3vw,46px); line-height:1; letter-spacing:-.01em; text-transform:none; color:var(--p4-ivory); margin:0 0 18px; }
-body.pn-id.pn-pd main.hb-ed .hb-options .hb-cmp-field{ display:block; font-family:var(--p4-sans); font-weight:700; font-size:11.5px; letter-spacing:.16em; text-transform:uppercase; color:var(--p4-bronze-text); margin:18px 0 6px; padding-top:16px; border-top:1px solid var(--p4-line); }
-body.pn-id.pn-pd main.hb-ed .hb-options .dq-fact{ display:block; font-family:var(--p4-sans); font-size:16.5px; line-height:1.6; color:var(--p4-lime); }
-body.pn-id.pn-pd main.hb-ed .hb-options .dq-note{ display:block; font-family:var(--p4-sans); margin-top:14px; font-size:14px; line-height:1.55; color:var(--p4-stone); }
-body.pn-id.pn-pd main.hb-ed .hb-options .hb-cmp-foot{ font-size:14px !important; color:var(--p4-stone) !important; margin-top:18px; }
+body.pn-id.pn-pd main#pn-main:has(.hb-problem) .hb-options .dq-adv-cols > li.hb-cmp-rev{ border-top:3px solid var(--p4-lime); }
+body.pn-id.pn-pd main#pn-main:has(.hb-problem) .hb-options .dq-adv-label{ font-family:var(--p4-serif); font-weight:400; font-size:clamp(34px,3vw,46px); line-height:1; letter-spacing:-.01em; text-transform:none; color:var(--p4-ivory); margin:0 0 18px; }
+body.pn-id.pn-pd main#pn-main:has(.hb-problem) .hb-options .hb-cmp-field{ display:block; font-family:var(--p4-sans); font-weight:700; font-size:11.5px; letter-spacing:.16em; text-transform:uppercase; color:var(--p4-bronze-text); margin:18px 0 6px; padding-top:16px; border-top:1px solid var(--p4-line); }
+body.pn-id.pn-pd main#pn-main:has(.hb-problem) .hb-options .dq-fact{ display:block; font-family:var(--p4-sans); font-size:16.5px; line-height:1.6; color:var(--p4-lime); }
+body.pn-id.pn-pd main#pn-main:has(.hb-problem) .hb-options .dq-note{ display:block; font-family:var(--p4-sans); margin-top:14px; font-size:14px; line-height:1.55; color:var(--p4-stone); }
+body.pn-id.pn-pd main#pn-main:has(.hb-problem) .hb-options .hb-cmp-foot{ font-size:14px !important; color:var(--p4-stone) !important; margin-top:18px; }
 
 /* =====================================================================
    8 · PLANNING — the four conditions as figures, then the rule in words
    ===================================================================== */
-body.pn-id.pn-pd main.hb-ed .hb-figs{ display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:var(--pd-gap); margin:8px 0 clamp(26px,3vw,40px); }
-body.pn-id.pn-pd main.hb-ed .hb-figs > div{ padding:22px 0 0; border-top:1px solid rgba(242,235,224,.22); }
-body.pn-id.pn-pd main.hb-ed .hb-fig-n{ display:block; font-family:var(--p4-serif); font-size:clamp(44px,4.4vw,68px); line-height:1; color:var(--p4-ivory); margin:0 0 10px; }
-body.pn-id.pn-pd main.hb-ed .hb-fig-l{ display:block; font-size:14px; line-height:1.5; color:var(--p4-stone); max-width:24ch; }
+body.pn-id.pn-pd main#pn-main:has(.hb-problem) .hb-figs{ display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:var(--pd-gap); margin:8px 0 clamp(26px,3vw,40px); }
+body.pn-id.pn-pd main#pn-main:has(.hb-problem) .hb-figs > div{ padding:22px 0 0; border-top:1px solid rgba(242,235,224,.22); }
+body.pn-id.pn-pd main#pn-main:has(.hb-problem) .hb-fig-n{ display:block; font-family:var(--p4-serif); font-size:clamp(44px,4.4vw,68px); line-height:1; color:var(--p4-ivory); margin:0 0 10px; }
+body.pn-id.pn-pd main#pn-main:has(.hb-problem) .hb-fig-l{ display:block; font-size:14px; line-height:1.5; color:var(--p4-stone); max-width:24ch; }
 
 /* =====================================================================
    9 · PRACTICAL QUESTIONS — answers on view, as cards (no accordion)
    ===================================================================== */
-body.pn-id.pn-pd main.hb-ed .hb-qa-grid{ columns:3 300px; column-gap:var(--pd-gap); margin:clamp(28px,3vw,44px) 0 0; }
-body.pn-id.pn-pd main.hb-ed .faq-item.hb-qa{ break-inside:avoid; display:block; margin:0 0 var(--pd-gap); padding:24px 26px 26px; background:var(--pd-card); border:var(--pd-edge); border-radius:var(--pd-r-sm); box-shadow:var(--pd-shadow); }
-body.pn-id.pn-pd main.hb-ed .faq-item.hb-qa h3{ font-family:var(--p4-serif); font-weight:400; font-size:clamp(22px,1.7vw,25px); line-height:1.15; color:var(--p4-ivory); margin:0 0 10px; }
-body.pn-id.pn-pd main.hb-ed .faq-item.hb-qa .faq-a{ padding:0; font-size:16px; line-height:1.65; color:var(--p4-lime); max-width:none; }
+body.pn-id.pn-pd main#pn-main:has(.hb-problem) .hb-qa-grid{ columns:3 300px; column-gap:var(--pd-gap); margin:clamp(28px,3vw,44px) 0 0; }
+body.pn-id.pn-pd main#pn-main:has(.hb-problem) .faq-item.hb-qa{ break-inside:avoid; display:block; margin:0 0 var(--pd-gap); padding:24px 26px 26px; background:var(--pd-card); border:var(--pd-edge); border-radius:var(--pd-r-sm); box-shadow:var(--pd-shadow); }
+body.pn-id.pn-pd main#pn-main:has(.hb-problem) .faq-item.hb-qa h3{ font-family:var(--p4-serif); font-weight:400; font-size:clamp(22px,1.7vw,25px); line-height:1.15; color:var(--p4-ivory); margin:0 0 10px; }
+body.pn-id.pn-pd main#pn-main:has(.hb-problem) .faq-item.hb-qa .faq-a{ padding:0; font-size:16px; line-height:1.65; color:var(--p4-lime); max-width:none; }
 
 /* =====================================================================
    10 · LOOKING AHEAD — the quarantine, set apart in its own card
    ===================================================================== */
-body.pn-id.pn-pd main.hb-ed .hb-ahead{ margin-top:clamp(64px,8vw,120px); padding:var(--pd-pad) !important; background:var(--pd-card); border:var(--pd-edge); border-left:3px solid var(--p4-bronze); border-radius:var(--pd-r); box-shadow:var(--pd-shadow); }
-body.pn-id.pn-pd main.hb-ed .hb-ahead .quarantine-lede{ font-family:var(--p4-serif); font-size:clamp(20px,1.6vw,24px) !important; line-height:1.35 !important; color:var(--p4-stone) !important; }
-body.pn-id.pn-pd main.hb-ed .hb-ahead > p:last-child{ font-family:var(--p4-serif); font-size:clamp(22px,1.8vw,27px) !important; color:var(--p4-ivory) !important; margin-bottom:0; }
+body.pn-id.pn-pd main#pn-main:has(.hb-problem) .hb-ahead{ margin-top:clamp(64px,8vw,120px); padding:var(--pd-pad) !important; background:var(--pd-card); border:var(--pd-edge); border-left:3px solid var(--p4-bronze); border-radius:var(--pd-r); box-shadow:var(--pd-shadow); }
+body.pn-id.pn-pd main#pn-main:has(.hb-problem) .hb-ahead .quarantine-lede{ font-family:var(--p4-serif); font-size:clamp(20px,1.6vw,24px) !important; line-height:1.35 !important; color:var(--p4-stone) !important; }
+body.pn-id.pn-pd main#pn-main:has(.hb-problem) .hb-ahead > p:last-child{ font-family:var(--p4-serif); font-size:clamp(22px,1.8vw,27px) !important; color:var(--p4-ivory) !important; margin-bottom:0; }
 
 /* =====================================================================
    11 · EVIDENCE — drawers in two columns; an open drawer reads full width
    ===================================================================== */
-body.pn-id.pn-pd main.hb-ed .hb-ev-grid{ display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px var(--pd-gap); align-items:start; margin-top:clamp(24px,3vw,40px); grid-auto-flow:row dense; }
-body.pn-id.pn-pd main.hb-ed .hb-ev-grid > .faq-item.is-inline{ margin:0 !important; border:var(--pd-edge) !important; background:var(--pd-card) !important; border-radius:var(--pd-r-sm) !important; box-shadow:var(--pd-shadow); padding:0 24px !important; }
-body.pn-id.pn-pd main.hb-ed .hb-ev-grid > .faq-item.is-inline::before{ display:none !important; }
-body.pn-id.pn-pd main.hb-ed .hb-ev-grid > .faq-item.is-inline[open]{ grid-column:1 / -1; }
-body.pn-id.pn-pd main.hb-ed .hb-ev-grid > .faq-item.is-inline summary{ padding:20px 0 !important; min-height:44px; }
-body.pn-id.pn-pd main.hb-ed .hb-ev-grid > .faq-item.is-inline summary h3{ font-family:var(--p4-serif) !important; font-weight:400 !important; font-size:clamp(19px,1.5vw,22px) !important; line-height:1.2 !important; color:var(--p4-ivory) !important; letter-spacing:0 !important; text-transform:none !important; }
-body.pn-id.pn-pd main.hb-ed .hb-ev-grid > .faq-item.is-inline .faq-a{ font-size:16.5px !important; line-height:1.7 !important; color:var(--p4-lime) !important; max-width:80ch; padding:0 0 26px !important; }
+body.pn-id.pn-pd main#pn-main:has(.hb-problem) .hb-ev-grid{ display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px var(--pd-gap); align-items:start; margin-top:clamp(24px,3vw,40px); grid-auto-flow:row dense; }
+body.pn-id.pn-pd main#pn-main:has(.hb-problem) .hb-ev-grid > .faq-item.is-inline{ margin:0 !important; border:var(--pd-edge) !important; background:var(--pd-card) !important; border-radius:var(--pd-r-sm) !important; box-shadow:var(--pd-shadow); padding:0 24px !important; }
+body.pn-id.pn-pd main#pn-main:has(.hb-problem) .hb-ev-grid > .faq-item.is-inline::before{ display:none !important; }
+body.pn-id.pn-pd main#pn-main:has(.hb-problem) .hb-ev-grid > .faq-item.is-inline[open]{ grid-column:1 / -1; }
+body.pn-id.pn-pd main#pn-main:has(.hb-problem) .hb-ev-grid > .faq-item.is-inline summary{ padding:20px 0 !important; min-height:44px; }
+body.pn-id.pn-pd main#pn-main:has(.hb-problem) .hb-ev-grid > .faq-item.is-inline summary h3{ font-family:var(--p4-serif) !important; font-weight:400 !important; font-size:clamp(19px,1.5vw,22px) !important; line-height:1.2 !important; color:var(--p4-ivory) !important; letter-spacing:0 !important; text-transform:none !important; }
+body.pn-id.pn-pd main#pn-main:has(.hb-problem) .hb-ev-grid > .faq-item.is-inline .faq-a{ font-size:16.5px !important; line-height:1.7 !important; color:var(--p4-lime) !important; max-width:80ch; padding:0 0 26px !important; }
 
 /* =====================================================================
    two-column sections (desktop): heading column | reading column
@@ -171,49 +171,49 @@ body.pn-id.pn-pd main.hb-ed .hb-ev-grid > .faq-item.is-inline .faq-a{ font-size:
 @media (min-width:1024px){
   /* kicker and heading hold the left column; everything else reads down the right column in source order;
      components (cards, figures, drawers) take the full width after the heading column ends */
-  body.pn-id.pn-pd main.hb-ed :is(.hb-problem, .hb-reveal, .hb-steps-sec, .hb-options, .hb-planning, .hb-questions, .hb-evidence, .hb-ahead){
+  body.pn-id.pn-pd main#pn-main:has(.hb-problem) :is(.hb-problem, .hb-reveal, .hb-steps-sec, .hb-options, .hb-planning, .hb-questions, .hb-evidence, .hb-ahead){
     display:grid; grid-template-columns:var(--hb-col); column-gap:var(--hb-gapx); row-gap:0; align-items:start; }
-  body.pn-id.pn-pd main.hb-ed :is(.hb-problem, .hb-reveal, .hb-steps-sec, .hb-options, .hb-planning, .hb-questions, .hb-evidence, .hb-ahead) > *{ grid-column:2; }
-  body.pn-id.pn-pd main.hb-ed :is(.hb-problem, .hb-reveal, .hb-steps-sec, .hb-options, .hb-planning, .hb-questions, .hb-evidence, .hb-ahead) > .kicker{ grid-column:1 / -1; grid-row:1; }
-  body.pn-id.pn-pd main.hb-ed :is(.hb-problem, .hb-reveal, .hb-steps-sec, .hb-options, .hb-planning, .hb-questions, .hb-evidence, .hb-ahead) > h2{ grid-column:1; grid-row:2 / span 8; margin-bottom:0; align-self:start; }
-  body.pn-id.pn-pd main.hb-ed .hb-problem > .hb-bins{ grid-column:1; grid-row:10; margin-top:28px; }
-  body.pn-id.pn-pd main.hb-ed .hb-ahead > h2{ grid-row:2; }
-  body.pn-id.pn-pd main.hb-ed .hb-ahead > .quarantine-lede{ grid-column:1; grid-row:3 / span 8; margin-top:18px; }
-  body.pn-id.pn-pd main.hb-ed :is(.hb-proofs, .steps, .dq-adv-cols, .hb-figs, .hb-qa-grid, .hb-ev-grid){ grid-column:1 / -1 !important; }
-  body.pn-id.pn-pd main.hb-ed :is(.hb-proofs, .steps, .dq-adv-cols, .hb-figs, .hb-qa-grid, .hb-ev-grid) ~ *{ grid-column:2; }
-  body.pn-id.pn-pd main.hb-ed .hb-ireland{ grid-template-columns:minmax(0,6fr) minmax(0,6fr); }
+  body.pn-id.pn-pd main#pn-main:has(.hb-problem) :is(.hb-problem, .hb-reveal, .hb-steps-sec, .hb-options, .hb-planning, .hb-questions, .hb-evidence, .hb-ahead) > *{ grid-column:2; }
+  body.pn-id.pn-pd main#pn-main:has(.hb-problem) :is(.hb-problem, .hb-reveal, .hb-steps-sec, .hb-options, .hb-planning, .hb-questions, .hb-evidence, .hb-ahead) > .kicker{ grid-column:1 / -1; grid-row:1; }
+  body.pn-id.pn-pd main#pn-main:has(.hb-problem) :is(.hb-problem, .hb-reveal, .hb-steps-sec, .hb-options, .hb-planning, .hb-questions, .hb-evidence, .hb-ahead) > h2{ grid-column:1; grid-row:2 / span 8; margin-bottom:0; align-self:start; }
+  body.pn-id.pn-pd main#pn-main:has(.hb-problem) .hb-problem > .hb-bins{ grid-column:1; grid-row:10; margin-top:28px; }
+  body.pn-id.pn-pd main#pn-main:has(.hb-problem) .hb-ahead > h2{ grid-row:2; }
+  body.pn-id.pn-pd main#pn-main:has(.hb-problem) .hb-ahead > .quarantine-lede{ grid-column:1; grid-row:3 / span 8; margin-top:18px; }
+  body.pn-id.pn-pd main#pn-main:has(.hb-problem) :is(.hb-proofs, .steps, .dq-adv-cols, .hb-figs, .hb-qa-grid, .hb-ev-grid){ grid-column:1 / -1 !important; }
+  body.pn-id.pn-pd main#pn-main:has(.hb-problem) :is(.hb-proofs, .steps, .dq-adv-cols, .hb-figs, .hb-qa-grid, .hb-ev-grid) ~ *{ grid-column:2; }
+  body.pn-id.pn-pd main#pn-main:has(.hb-problem) .hb-ireland{ grid-template-columns:minmax(0,6fr) minmax(0,6fr); }
 }
 
 /* =====================================================================
    tablet and phone: one reading column, the components stack
    ===================================================================== */
 @media (max-width:1023px){
-  body.pn-id.pn-pd main.hb-ed .hb-pair,
-  body.pn-id.pn-pd main.hb-ed .hb-ireland{ grid-template-columns:1fr; gap:0; }
-  body.pn-id.pn-pd main.hb-ed .hb-pair .hb-outcome{ padding-top:clamp(32px,6vw,48px); }
-  body.pn-id.pn-pd main.hb-ed .hb-ireland > .hb-plate{ position:static; }
-  body.pn-id.pn-pd main.hb-ed .hb-ireland .hb-five{ padding-top:clamp(32px,6vw,48px); }
-  body.pn-id.pn-pd main.hb-ed .hb-steps-sec .steps{ grid-template-columns:1fr; }
-  body.pn-id.pn-pd main.hb-ed .hb-steps-sec .step{ display:grid; grid-template-columns:minmax(120px,38%) 1fr; column-gap:22px; align-items:center; }
-  body.pn-id.pn-pd main.hb-ed .hb-steps-sec .step > .hb-glyph{ grid-row:1 / span 2; margin:0; }
-  body.pn-id.pn-pd main.hb-ed .hb-steps-sec .step:not(:last-child)::after{ top:auto; bottom:calc(var(--pd-gap) * -0.5 - 6px); right:auto; left:50%; transform:translateX(-50%) rotate(135deg); }
-  body.pn-id.pn-pd main.hb-ed .hb-options .dq-adv-cols{ grid-template-columns:1fr; }
-  body.pn-id.pn-pd main.hb-ed .hb-figs{ grid-template-columns:repeat(2,minmax(0,1fr)); row-gap:22px; }
-  body.pn-id.pn-pd main.hb-ed .hb-proofs{ grid-template-columns:1fr; }
-  body.pn-id.pn-pd main.hb-ed .hb-ev-grid{ grid-template-columns:1fr; }
+  body.pn-id.pn-pd main#pn-main:has(.hb-problem) .hb-pair,
+  body.pn-id.pn-pd main#pn-main:has(.hb-problem) .hb-ireland{ grid-template-columns:1fr; gap:0; }
+  body.pn-id.pn-pd main#pn-main:has(.hb-problem) .hb-pair .hb-outcome{ padding-top:clamp(32px,6vw,48px); }
+  body.pn-id.pn-pd main#pn-main:has(.hb-problem) .hb-ireland > .hb-plate{ position:static; }
+  body.pn-id.pn-pd main#pn-main:has(.hb-problem) .hb-ireland .hb-five{ padding-top:clamp(32px,6vw,48px); }
+  body.pn-id.pn-pd main#pn-main:has(.hb-problem) .hb-steps-sec .steps{ grid-template-columns:1fr; }
+  body.pn-id.pn-pd main#pn-main:has(.hb-problem) .hb-steps-sec .step{ display:grid; grid-template-columns:minmax(120px,38%) 1fr; column-gap:22px; align-items:center; }
+  body.pn-id.pn-pd main#pn-main:has(.hb-problem) .hb-steps-sec .step > .hb-glyph{ grid-row:1 / span 2; margin:0; }
+  body.pn-id.pn-pd main#pn-main:has(.hb-problem) .hb-steps-sec .step:not(:last-child)::after{ top:auto; bottom:calc(var(--pd-gap) * -0.5 - 6px); right:auto; left:50%; transform:translateX(-50%) rotate(135deg); }
+  body.pn-id.pn-pd main#pn-main:has(.hb-problem) .hb-options .dq-adv-cols{ grid-template-columns:1fr; }
+  body.pn-id.pn-pd main#pn-main:has(.hb-problem) .hb-figs{ grid-template-columns:repeat(2,minmax(0,1fr)); row-gap:22px; }
+  body.pn-id.pn-pd main#pn-main:has(.hb-problem) .hb-proofs{ grid-template-columns:1fr; }
+  body.pn-id.pn-pd main#pn-main:has(.hb-problem) .hb-ev-grid{ grid-template-columns:1fr; }
 }
 @media (min-width:720px) and (max-width:1023px){
-  body.pn-id.pn-pd main.hb-ed .hb-proofs{ grid-template-columns:1fr 1fr; }
-  body.pn-id.pn-pd main.hb-ed .hb-options .dq-adv-cols{ grid-template-columns:repeat(3,minmax(0,1fr)); }
-  body.pn-id.pn-pd main.hb-ed .hb-options .dq-adv-cols > li{ padding:22px 20px 24px !important; }
-  body.pn-id.pn-pd main.hb-ed .hb-ev-grid{ grid-template-columns:1fr 1fr; }
+  body.pn-id.pn-pd main#pn-main:has(.hb-problem) .hb-proofs{ grid-template-columns:1fr 1fr; }
+  body.pn-id.pn-pd main#pn-main:has(.hb-problem) .hb-options .dq-adv-cols{ grid-template-columns:repeat(3,minmax(0,1fr)); }
+  body.pn-id.pn-pd main#pn-main:has(.hb-problem) .hb-options .dq-adv-cols > li{ padding:22px 20px 24px !important; }
+  body.pn-id.pn-pd main#pn-main:has(.hb-problem) .hb-ev-grid{ grid-template-columns:1fr 1fr; }
 }
 @media (max-width:719px){
-  body.pn-id.pn-pd main.hb-ed .hb-steps-sec .step{ grid-template-columns:110px 1fr; padding:20px 20px 22px; }
-  body.pn-id.pn-pd main.hb-ed .hb-qa-grid{ columns:1; }
-  body.pn-id.pn-pd main.hb-ed .hb-possibility .hb-gone{ font-size:clamp(72px,24vw,112px); }
-  body.pn-id.pn-pd main.hb-ed .hb-ahead{ border-left-width:2px; }
+  body.pn-id.pn-pd main#pn-main:has(.hb-problem) .hb-steps-sec .step{ grid-template-columns:110px 1fr; padding:20px 20px 22px; }
+  body.pn-id.pn-pd main#pn-main:has(.hb-problem) .hb-qa-grid{ columns:1; }
+  body.pn-id.pn-pd main#pn-main:has(.hb-problem) .hb-possibility .hb-gone{ font-size:clamp(72px,24vw,112px); }
+  body.pn-id.pn-pd main#pn-main:has(.hb-problem) .hb-ahead{ border-left-width:2px; }
 }
 @media (prefers-reduced-motion:reduce){
-  body.pn-id.pn-pd main.hb-ed *{ transition:none !important; }
+  body.pn-id.pn-pd main#pn-main:has(.hb-problem) *{ transition:none !important; }
 }
