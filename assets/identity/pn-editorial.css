@@ -1,0 +1,66 @@
+/* =====================================================================
+   PLOTNUA · PREMIUM EDITORIAL COMPONENTS (shared, opt-in)
+   Pass 2 (3 Nov 2026). The reusable parts of the Hidden Bins pilot,
+   generalised as .pe-* classes so each Discovery composes its own page
+   from one set instead of copying a page stylesheet. Opt-in only:
+   nothing here applies unless a page uses the class. Hidden Bins keeps
+   its own released stylesheet until it is migrated separately.
+
+   .pe-chapter  numbered chapter opening (numeral aria-hidden)
+   .pe-split    two-column section: kicker and heading left, reading
+                column right; .pe-full children span both columns
+   .pe-plate    a photograph mounted whole (never cropped)
+   .pe-pair     photograph and text side by side
+   .pe-drawers  <details> drawers in two columns; an open one spans both
+   ===================================================================== */
+
+/* ---- reading scale inside composed sections ------------------------------ */
+body.pn-id.pn-pd .pe-split > p,
+body.pn-id.pn-pd .pe-pair .article-section > p{ font-size:clamp(18px,1.3vw,19.5px); line-height:1.7; color:var(--p4-lime); }
+
+/* ---- .pe-chapter ------------------------------------------------------------ */
+body.pn-id.pn-pd .pe-chapter{ display:flex; align-items:baseline; gap:18px; margin:clamp(72px,10vw,150px) 0 0; padding-top:22px; border-top:1px solid var(--p4-line); }
+body.pn-id.pn-pd .pe-chapter-n{ font-family:var(--p4-serif); font-size:clamp(40px,4vw,60px); line-height:.9; color:transparent; -webkit-text-stroke:1px var(--p4-terra-text); }
+body.pn-id.pn-pd .pe-chapter .kicker{ margin:0 !important; font-family:var(--p4-sans); font-weight:700; font-size:13px !important; letter-spacing:.24em !important; text-transform:uppercase; color:var(--p4-terra-text) !important; }
+body.pn-id.pn-pd .pe-chapter + .article-section,
+body.pn-id.pn-pd .pe-chapter + * > .article-section:first-child{ padding-top:clamp(32px,4vw,56px) !important; }
+@supports not (-webkit-text-stroke:1px #000){ body.pn-id.pn-pd .pe-chapter-n{ color:var(--p4-terra-text); } }
+
+/* ---- .pe-plate ---------------------------------------------------------------- */
+body.pn-id.pn-pd .imagine-photo.pe-plate{ height:auto; min-height:0; background:none; overflow:visible; margin:0; }
+body.pn-id.pn-pd .imagine-photo.pe-plate::before,
+body.pn-id.pn-pd .imagine-photo.pe-plate::after{ display:none; }
+body.pn-id.pn-pd .imagine-photo.pe-plate img{ width:100%; height:auto; object-fit:contain; display:block; border-radius:var(--pd-r-img); box-shadow:var(--pd-shadow-hi); background:var(--p4-well); }
+
+/* ---- .pe-pair ------------------------------------------------------------------ */
+body.pn-id.pn-pd .pe-pair{ display:grid; grid-template-columns:minmax(0,6fr) minmax(0,6fr); gap:clamp(28px,5vw,80px); align-items:center; margin-top:clamp(56px,8vw,120px); }
+body.pn-id.pn-pd .pe-pair > .article-section{ padding-top:0 !important; }
+
+/* ---- .pe-drawers ------------------------------------------------------------------ */
+body.pn-id.pn-pd .pe-drawers{ display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px var(--pd-gap); align-items:start; grid-auto-flow:row dense; }
+body.pn-id.pn-pd .pe-drawers > .faq-item.is-inline{ margin:0 !important; border:var(--pd-edge) !important; background:var(--pd-card) !important; border-radius:var(--pd-r-sm) !important; box-shadow:var(--pd-shadow); padding:0 24px !important; }
+body.pn-id.pn-pd .pe-drawers > .faq-item.is-inline::before{ display:none !important; }
+body.pn-id.pn-pd .pe-drawers > .faq-item.is-inline[open]{ grid-column:1 / -1; }
+body.pn-id.pn-pd .pe-drawers > .faq-item.is-inline summary{ padding:20px 0 !important; min-height:44px; }
+body.pn-id.pn-pd .pe-drawers > .faq-item.is-inline summary h3{ font-family:var(--p4-serif) !important; font-weight:400 !important; font-size:clamp(20px,1.6vw,23px) !important; line-height:1.2 !important; color:var(--p4-ivory) !important; letter-spacing:0 !important; text-transform:none !important; }
+body.pn-id.pn-pd .pe-drawers > .faq-item.is-inline .faq-a{ font-size:18px !important; line-height:1.7 !important; color:var(--p4-lime) !important; max-width:80ch; padding:0 0 26px !important; }
+
+/* ---- .pe-split (desktop) ------------------------------------------------------------ */
+@media (min-width:1024px){
+  body.pn-id.pn-pd .pe-split{ display:grid; grid-template-columns:minmax(0,5fr) minmax(0,7fr); column-gap:clamp(28px,5vw,88px); row-gap:0; align-items:start; }
+  body.pn-id.pn-pd .pe-split > *{ grid-column:2; }
+  body.pn-id.pn-pd .pe-split > .kicker{ grid-column:1 / -1; grid-row:1; }
+  body.pn-id.pn-pd .pe-split > h2{ grid-column:1; grid-row:2 / span 8; margin-bottom:0; }
+  body.pn-id.pn-pd .pe-split > .pe-full{ grid-column:1 / -1 !important; }
+  body.pn-id.pn-pd .pe-split > .pe-full ~ *:not(.pe-full){ grid-column:2; }
+}
+
+/* ---- tablet and phone ------------------------------------------------------------- */
+@media (max-width:1023px){
+  body.pn-id.pn-pd .pe-pair{ grid-template-columns:1fr; gap:clamp(24px,5vw,40px); }
+  body.pn-id.pn-pd .pe-drawers{ grid-template-columns:1fr; }
+  body.pn-id.pn-pd .pe-chapter{ margin-top:64px; }
+}
+@media (min-width:720px) and (max-width:1023px){
+  body.pn-id.pn-pd .pe-drawers{ grid-template-columns:1fr 1fr; }
+}

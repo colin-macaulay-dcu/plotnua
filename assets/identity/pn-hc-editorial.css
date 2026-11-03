@@ -1,0 +1,199 @@
+/* =====================================================================
+   PLOTNUA · THE HIDDEN CARS · editorial composition (Pass 2, Task 2)
+   3 Nov 2026 · private preview. Shared parts come from pn-editorial.css;
+   this file holds only what is particular to this Discovery.
+
+   Identity: the driveway as an ENGINEERING SECTION. Thin ivory linework on
+   a faint drawing grid, terracotta motion arrows, numbered chapters, a
+   full-bleed outcome photograph, the cost as an equation and the order of
+   work as a sequence. Presentation only: every sentence, link, image, id
+   and caution is unchanged (prove-premium-discovery-hidden-cars.py).
+   ===================================================================== */
+
+body.pn-id.pn-pd main#pn-main:has(.hc-problem){ --hc-text:clamp(18px,1.3vw,19.5px); }
+body.pn-id.pn-pd main#pn-main:has(.hc-problem) > .article{ max-width:var(--pd-max); margin:0 auto; padding:0 clamp(18px,3vw,40px) clamp(24px,4vw,56px); box-sizing:border-box; }
+body.pn-id.pn-pd main#pn-main:has(.hc-problem) .article-section{ padding-top:clamp(56px,8vw,120px); }
+body.pn-id.pn-pd main#pn-main:has(.hc-problem) .article-section > p{ font-size:var(--hc-text); line-height:1.7; color:var(--p4-lime); }
+body.pn-id.pn-pd main#pn-main:has(.hc-problem) .article-section h2{ text-wrap:balance; }
+body.pn-id.pn-pd main#pn-main:has(.hc-problem) .hc-chapter:first-of-type{ margin-top:clamp(40px,5vw,64px); }
+/* a chapter that sits between full-bleed blocks keeps the reading width */
+body.pn-id.pn-pd main#pn-main:has(.hc-problem) > .pe-chapter{ max-width:calc(var(--pd-max) - 2 * clamp(18px,3vw,40px)); margin-left:auto; margin-right:auto; box-sizing:border-box; }
+@media (max-width:1279px){ body.pn-id.pn-pd main#pn-main:has(.hc-problem) > .pe-chapter{ margin-left:clamp(18px,3vw,40px); margin-right:clamp(18px,3vw,40px); } }
+/* the bridge, the property check and "Keep exploring" read as one panel */
+body.pn-id.pn-pd main#pn-main:has(.hc-problem) > :is(.pn-bridge, .pb-early, .pn-continue){ max-width:calc(var(--pd-max) - 2 * clamp(18px,3vw,40px)); margin:0 auto; box-sizing:border-box; background:var(--pd-card) !important; border-left:var(--pd-edge); border-right:var(--pd-edge); text-align:center; }
+body.pn-id.pn-pd main#pn-main:has(.hc-problem) > .pn-bridge{ margin-top:clamp(64px,9vw,130px); padding:clamp(36px,5vw,64px) clamp(20px,4vw,56px) 0 !important; border-top:var(--pd-edge); border-radius:var(--pd-r) var(--pd-r) 0 0; }
+body.pn-id.pn-pd main#pn-main:has(.hc-problem) > .pn-bridge .pn-bridge-h{ font-family:var(--p4-serif) !important; font-weight:400 !important; font-size:clamp(32px,3.4vw,52px) !important; line-height:1.05 !important; color:var(--p4-ivory) !important; margin:0 0 12px; }
+body.pn-id.pn-pd main#pn-main:has(.hc-problem) > .pn-bridge .pn-bridge-p{ font-family:var(--p4-sans) !important; font-size:18px !important; line-height:1.6 !important; color:var(--p4-stone) !important; }
+body.pn-id.pn-pd main#pn-main:has(.hc-problem) > .pb-early{ padding:18px 20px 8px !important; border-radius:0; }
+body.pn-id.pn-pd main#pn-main:has(.hc-problem) > .pb-early .pb-early-inner{ background:none !important; border:0 !important; box-shadow:none !important; padding:0 !important; }
+body.pn-id.pn-pd main#pn-main:has(.hc-problem) > .pn-continue{ padding:8px 20px clamp(32px,4vw,48px) !important; border-bottom:var(--pd-edge); border-radius:0 0 var(--pd-r) var(--pd-r); box-shadow:var(--pd-shadow); }
+@media (max-width:1279px){ body.pn-id.pn-pd main#pn-main:has(.hc-problem) > :is(.pn-bridge, .pb-early, .pn-continue){ margin-left:clamp(18px,3vw,40px); margin-right:clamp(18px,3vw,40px); } }
+
+/* ---- drawing language (all drawings are aria-hidden) ------------------------- */
+body.pn-id.pn-pd main#pn-main:has(.hc-problem) :is(.hc-draw, .hc-swapdraw){ display:block; width:100%; height:auto; }
+body.pn-id.pn-pd main#pn-main:has(.hc-problem) .d-grid{ stroke:rgba(194,189,181,.07); stroke-width:1; fill:none; }
+body.pn-id.pn-pd main#pn-main:has(.hc-problem) .d-ground{ stroke:var(--p4-stone); stroke-width:1.6; fill:none; }
+body.pn-id.pn-pd main#pn-main:has(.hc-problem) .d-pit{ stroke:rgba(194,189,181,.5); stroke-width:1.2; stroke-dasharray:4 3; fill:rgba(0,0,0,.22); }
+body.pn-id.pn-pd main#pn-main:has(.hc-problem) .d-deck{ stroke:var(--p4-ivory); stroke-width:3.2; fill:none; }
+body.pn-id.pn-pd main#pn-main:has(.hc-problem) .d-steel{ stroke:var(--p4-bronze-text); stroke-width:2; fill:none; }
+body.pn-id.pn-pd main#pn-main:has(.hc-problem) .d-house{ stroke:rgba(194,189,181,.45); stroke-width:1.2; fill:none; }
+body.pn-id.pn-pd main#pn-main:has(.hc-problem) .d-bay{ stroke:rgba(194,189,181,.28); stroke-width:1; stroke-dasharray:3 4; fill:none; }
+body.pn-id.pn-pd main#pn-main:has(.hc-problem) .d-plan{ stroke:var(--p4-lime); stroke-width:1.4; fill:#3A3C3F; }
+body.pn-id.pn-pd main#pn-main:has(.hc-problem) .d-car path:first-child{ fill:#3A3C3F; stroke:var(--p4-lime); stroke-width:1.2; }
+body.pn-id.pn-pd main#pn-main:has(.hc-problem) .d-car path + path{ fill:none; stroke:var(--p4-lime); stroke-width:1.2; }
+body.pn-id.pn-pd main#pn-main:has(.hc-problem) .d-car circle{ fill:var(--p4-anth); stroke:var(--p4-lime); stroke-width:1.2; }
+body.pn-id.pn-pd main#pn-main:has(.hc-problem) .d-arrow{ stroke:var(--p4-terra-text); stroke-width:1.8; fill:none; stroke-linecap:round; stroke-linejoin:round; }
+
+/* =====================================================================
+   01 · THE PROBLEM — one space, one car / the same space, two cars
+   ===================================================================== */
+body.pn-id.pn-pd main#pn-main:has(.hc-problem) .hc-problem > h2{ font-size:clamp(42px,4.6vw,70px); }
+body.pn-id.pn-pd main#pn-main:has(.hc-problem) .hc-problem .dq-opp{ grid-column:1 / -1; display:block; margin:clamp(32px,4vw,56px) 0 0; padding:0; background:none; border:0; box-shadow:none; }
+body.pn-id.pn-pd main#pn-main:has(.hc-problem) .hc-problem .dq-earn{ padding:0; background:none; border:0; box-shadow:none; }
+body.pn-id.pn-pd main#pn-main:has(.hc-problem) .hc-problem .dq-earn > .dq-cat,
+body.pn-id.pn-pd main#pn-main:has(.hc-problem) .hc-problem .dq-use > .dq-cat{ display:block; font-family:var(--p4-sans); font-weight:700; font-size:12px; letter-spacing:.18em; text-transform:uppercase; color:var(--p4-bronze-text); margin:0 0 16px; }
+body.pn-id.pn-pd main#pn-main:has(.hc-problem) .hc-problem .dq-figs{ display:grid; grid-template-columns:1fr 1fr; gap:var(--pd-gap); list-style:none; margin:0; padding:0; position:relative; }
+body.pn-id.pn-pd main#pn-main:has(.hc-problem) .hc-problem .dq-figs > li{ margin:0; padding:clamp(22px,2.4vw,36px); background:var(--pd-card); border:var(--pd-edge); border-radius:var(--pd-r); box-shadow:var(--pd-shadow); display:flex; flex-direction:column; }
+body.pn-id.pn-pd main#pn-main:has(.hc-problem) .hc-problem .dq-figs > li + li{ background:linear-gradient(180deg, #34363A, var(--pd-card)); }
+body.pn-id.pn-pd main#pn-main:has(.hc-problem) .hc-problem .hc-swapdraw{ max-width:360px; margin:0 0 18px; }
+body.pn-id.pn-pd main#pn-main:has(.hc-problem) .hc-problem .dq-figs .dq-cat{ font-family:var(--p4-sans); font-weight:700; font-size:12px; letter-spacing:.18em; text-transform:uppercase; color:var(--p4-bronze-text); }
+body.pn-id.pn-pd main#pn-main:has(.hc-problem) .hc-problem .dq-figs .dq-fig{ display:block; font-family:var(--p4-serif); font-size:clamp(54px,6vw,92px); line-height:.95; color:var(--p4-ivory); margin:10px 0 14px; }
+body.pn-id.pn-pd main#pn-main:has(.hc-problem) .hc-problem .dq-figs > li + li .dq-fig{ color:var(--p4-terra-text); }
+body.pn-id.pn-pd main#pn-main:has(.hc-problem) .hc-problem .dq-figs .dq-src{ font-size:17px; line-height:1.6; color:var(--p4-stone); }
+body.pn-id.pn-pd main#pn-main:has(.hc-problem) .hc-problem .dq-figs > li:first-child::after{ content:""; position:absolute; left:50%; top:50%; width:14px; height:14px; margin:-7px 0 0 -9px; border-top:1.8px solid var(--p4-terra-text); border-right:1.8px solid var(--p4-terra-text); transform:rotate(45deg); z-index:2; }
+body.pn-id.pn-pd main#pn-main:has(.hc-problem) .hc-problem .dq-use{ margin:var(--pd-gap) 0 0; padding:0; background:none; border:0; box-shadow:none; }
+body.pn-id.pn-pd main#pn-main:has(.hc-problem) .hc-problem .dq-use .dq-rows{ display:grid; grid-template-columns:1fr 1fr; gap:var(--pd-gap); list-style:none; margin:0; padding:0; }
+body.pn-id.pn-pd main#pn-main:has(.hc-problem) .hc-problem .dq-use .dq-rows > li{ margin:0; padding:20px 0 0; border-top:1px solid var(--p4-line); background:none; }
+body.pn-id.pn-pd main#pn-main:has(.hc-problem) .hc-problem .dq-use .dq-fact{ display:block; font-family:var(--p4-sans); font-size:18px; line-height:1.6; color:var(--p4-lime); }
+body.pn-id.pn-pd main#pn-main:has(.hc-problem) .hc-problem .dq-use .dq-note{ display:block; font-family:var(--p4-sans); margin-top:8px; font-size:17px; line-height:1.6; color:var(--p4-stone); }
+
+/* =====================================================================
+   02 · THE POSSIBILITY — the outcome, full-bleed and cinematic
+   ===================================================================== */
+body.pn-id.pn-pd main#pn-main:has(.hc-problem) .imagine-photo.hc-outcome{ margin-top:clamp(28px,3vw,44px); height:min(88svh, 62vw); min-height:420px; }
+body.pn-id.pn-pd main#pn-main:has(.hc-problem) .imagine-photo.hc-outcome .caption{ padding:0 0 clamp(28px,5vw,64px); left:0; right:0; }
+body.pn-id.pn-pd main#pn-main:has(.hc-problem) .imagine-photo.hc-outcome .caption p{ max-width:var(--pd-max); margin:0 auto; padding:0 clamp(18px,3vw,40px); box-sizing:border-box; font-family:var(--p4-serif); font-style:italic; font-size:clamp(28px,3.4vw,52px); line-height:1.12; color:var(--p4-ivory); text-shadow:0 1px 24px rgba(0,0,0,.45); }
+
+/* =====================================================================
+   03 · THE REVELATION — four approaches, then the lift and the proof
+   ===================================================================== */
+body.pn-id.pn-pd main#pn-main:has(.hc-problem) .hc-approaches{ padding-top:clamp(32px,4vw,56px); }
+body.pn-id.pn-pd main#pn-main:has(.hc-problem) .hc-approaches .dq-adv{ padding:0; background:none; border:0; box-shadow:none; margin:0; }
+body.pn-id.pn-pd main#pn-main:has(.hc-problem) .hc-approaches .dq-adv-cat{ display:block; font-family:var(--p4-serif) !important; font-weight:400 !important; font-size:clamp(38px,4.4vw,64px) !important; line-height:1.02; letter-spacing:-.015em !important; text-transform:none !important; color:var(--p4-ivory) !important; margin:0 0 clamp(26px,3vw,40px) !important; max-width:16ch; }
+body.pn-id.pn-pd main#pn-main:has(.hc-problem) .hc-approaches .dq-adv-cols{ display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:var(--pd-gap); list-style:none; margin:0; padding:0; border:0; background:none; counter-reset:hcap; }
+body.pn-id.pn-pd main#pn-main:has(.hc-problem) .hc-approaches .dq-adv-cols > li{ counter-increment:hcap; display:flex; flex-direction:column; gap:12px; padding:26px 24px 28px !important; background:var(--pd-card); border:var(--pd-edge); border-top:1px solid rgba(242,235,224,.2); border-radius:var(--pd-r); box-shadow:var(--pd-shadow); transform:none !important; }
+body.pn-id.pn-pd main#pn-main:has(.hc-problem) .hc-approaches .dq-adv-cols > li::before{ content:counter(hcap, decimal-leading-zero); font-family:var(--p4-serif); font-size:30px; line-height:1; color:var(--p4-terra-text); }
+body.pn-id.pn-pd main#pn-main:has(.hc-problem) .hc-approaches .dq-adv-label{ font-family:var(--p4-serif); font-weight:400; font-size:clamp(25px,2vw,30px); line-height:1.08; letter-spacing:0; text-transform:none; color:var(--p4-ivory); }
+body.pn-id.pn-pd main#pn-main:has(.hc-problem) .hc-approaches .dq-fact{ display:block; font-family:var(--p4-sans); font-size:18px; line-height:1.55; color:var(--p4-ivory); }
+body.pn-id.pn-pd main#pn-main:has(.hc-problem) .hc-approaches .dq-note{ display:block; font-family:var(--p4-sans); font-size:17px; line-height:1.6; color:var(--p4-stone); }
+
+body.pn-id.pn-pd main#pn-main:has(.hc-problem) .hc-proofpair{ align-items:start; }
+body.pn-id.pn-pd main#pn-main:has(.hc-problem) .hc-liftplate img{ aspect-ratio:1448/1086; }
+body.pn-id.pn-pd main#pn-main:has(.hc-problem) .hc-proof .dq-adv{ padding:0; background:none; border:0; box-shadow:none; margin:0; }
+body.pn-id.pn-pd main#pn-main:has(.hc-problem) .hc-proof .dq-adv-cat{ display:block; font-family:var(--p4-serif) !important; font-weight:400 !important; font-size:clamp(32px,3vw,46px) !important; line-height:1.05; letter-spacing:-.01em !important; text-transform:none !important; color:var(--p4-ivory) !important; margin:0 0 22px !important; }
+body.pn-id.pn-pd main#pn-main:has(.hc-problem) .hc-proof .dq-adv-cols{ display:grid; grid-template-columns:1fr; gap:12px; list-style:none; margin:0; padding:0; border:0; background:none; }
+body.pn-id.pn-pd main#pn-main:has(.hc-problem) .hc-proof .dq-adv-cols > li{ padding:20px 24px 22px !important; background:var(--pd-card); border:var(--pd-edge); border-left:2px solid var(--p4-bronze); border-radius:var(--pd-r-sm); box-shadow:var(--pd-shadow); transform:none !important; }
+body.pn-id.pn-pd main#pn-main:has(.hc-problem) .hc-proof .dq-adv-label{ display:block; font-family:var(--p4-sans); font-weight:700; font-size:12px; letter-spacing:.18em; text-transform:uppercase; color:var(--p4-bronze-text); margin:0 0 8px; }
+body.pn-id.pn-pd main#pn-main:has(.hc-problem) .hc-proof .dq-fact{ display:block; font-family:var(--p4-serif); font-size:clamp(21px,1.6vw,24px); line-height:1.3; color:var(--p4-ivory); }
+body.pn-id.pn-pd main#pn-main:has(.hc-problem) .hc-proof .dq-note{ display:block; margin-top:8px; font-size:16.5px; line-height:1.55; color:var(--p4-stone); }
+body.pn-id.pn-pd main#pn-main:has(.hc-problem) .hc-proof .dq-adv > .dq-note{ margin-top:16px; }
+
+/* "And afterwards": three outcomes as quiet cards */
+body.pn-id.pn-pd main#pn-main:has(.hc-problem) .hc-after .dq-adv{ grid-column:1 / -1; padding:0; background:none; border:0; box-shadow:none; margin:clamp(24px,3vw,40px) 0 0; }
+body.pn-id.pn-pd main#pn-main:has(.hc-problem) .hc-after .dq-adv-cat{ display:none; }
+body.pn-id.pn-pd main#pn-main:has(.hc-problem) .hc-after .dq-rows{ display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:var(--pd-gap); list-style:none; margin:0; padding:0; }
+body.pn-id.pn-pd main#pn-main:has(.hc-problem) .hc-after .dq-rows > li{ margin:0; padding:24px 26px 26px; background:var(--pd-card); border:var(--pd-edge); border-radius:var(--pd-r-sm); box-shadow:var(--pd-shadow); }
+body.pn-id.pn-pd main#pn-main:has(.hc-problem) .hc-after .dq-fact{ display:block; font-family:var(--p4-sans); font-size:18px; line-height:1.6; color:var(--p4-lime); }
+body.pn-id.pn-pd main#pn-main:has(.hc-problem) .hc-after .dq-fact strong{ display:block; font-family:var(--p4-serif); font-weight:400; font-size:clamp(24px,2vw,30px); line-height:1.1; color:var(--p4-ivory); margin:0 0 8px; }
+body.pn-id.pn-pd main#pn-main:has(.hc-problem) .hc-after .dq-note{ display:block; font-family:var(--p4-sans); margin-top:10px; font-size:17px; line-height:1.6; color:var(--p4-stone); }
+
+/* =====================================================================
+   04 · HOW IT WORKS — four routes, each as a drawn section
+   ===================================================================== */
+body.pn-id.pn-pd main#pn-main:has(.hc-problem) .hc-routes .quarantine-lede{ font-family:var(--p4-serif) !important; font-style:italic; font-size:clamp(24px,2.2vw,32px) !important; line-height:1.3 !important; color:var(--p4-ivory) !important; max-width:34ch; margin:0 0 clamp(28px,3vw,44px); }
+body.pn-id.pn-pd main#pn-main:has(.hc-problem) .hc-routes-grid{ display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:var(--pd-gap); }
+body.pn-id.pn-pd main#pn-main:has(.hc-problem) .hc-route{ padding:0 0 28px; background:var(--pd-card); border:var(--pd-edge); border-radius:var(--pd-r); box-shadow:var(--pd-shadow); overflow:hidden; }
+body.pn-id.pn-pd main#pn-main:has(.hc-problem) .hc-route .hc-draw{ background:#232527; border-bottom:1px solid var(--p4-line); padding:18px 24px; box-sizing:border-box; max-height:220px; }
+body.pn-id.pn-pd main#pn-main:has(.hc-problem) .hc-route h3{ font-size:clamp(30px,2.6vw,40px) !important; line-height:1; margin:24px 28px 10px !important; }
+body.pn-id.pn-pd main#pn-main:has(.hc-problem) .hc-route p{ margin:0 28px; font-size:18px; line-height:1.65; color:var(--p4-lime); max-width:none; }
+body.pn-id.pn-pd main#pn-main:has(.hc-problem) .hc-route p strong{ display:block; color:var(--p4-ivory); margin:0 0 4px; }
+body.pn-id.pn-pd main#pn-main:has(.hc-problem) .hc-routes > p:last-child{ margin-top:22px; font-size:17px !important; color:var(--p4-stone) !important; }
+
+/* =====================================================================
+   05 · IRISH FEASIBILITY — market, cautions, the cost equation, drawers
+   ===================================================================== */
+body.pn-id.pn-pd main#pn-main:has(.hc-problem) .hc-market > p em,
+body.pn-id.pn-pd main#pn-main:has(.hc-problem) .hc-cost > p em{ color:var(--p4-stone); }
+
+body.pn-id.pn-pd main#pn-main:has(.hc-problem) .hc-cautions .dq-qual{ display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:var(--pd-gap); list-style:none; margin:0; padding:0; }
+body.pn-id.pn-pd main#pn-main:has(.hc-problem) .hc-cautions .dq-qual > li{ margin:0; padding:26px 26px 28px; background:var(--pd-card); border:var(--pd-edge); border-top:3px solid var(--p4-bronze); border-radius:var(--pd-r); box-shadow:var(--pd-shadow); }
+body.pn-id.pn-pd main#pn-main:has(.hc-problem) .hc-cautions .dq-cat{ display:block; font-family:var(--p4-sans); font-weight:700; font-size:12px; letter-spacing:.18em; text-transform:uppercase; color:var(--p4-bronze-text); margin:0 0 10px; }
+body.pn-id.pn-pd main#pn-main:has(.hc-problem) .hc-cautions .dq-fact{ display:block; font-family:var(--p4-serif); font-size:clamp(23px,1.9vw,28px); line-height:1.15; color:var(--p4-ivory); margin:0 0 12px; }
+body.pn-id.pn-pd main#pn-main:has(.hc-problem) .hc-cautions .dq-qual .dq-note{ display:block; font-size:17px; line-height:1.65; color:var(--p4-lime); }
+body.pn-id.pn-pd main#pn-main:has(.hc-problem) .hc-cautions > .dq-note{ margin:22px 0 0; font-family:var(--p4-serif); font-style:italic; font-size:clamp(22px,1.8vw,27px); line-height:1.3; color:var(--p4-ivory); text-align:center; }
+
+/* the cost as an equation: each part a tile, the plus signs between them */
+body.pn-id.pn-pd main#pn-main:has(.hc-problem) .hc-cost > p.hc-eq{ grid-column:1 / -1 !important; max-width:none !important; display:flex; flex-wrap:wrap; align-items:center; gap:12px 14px; margin:clamp(20px,2.4vw,32px) 0; font-family:var(--p4-serif); font-size:28px !important; line-height:1; color:var(--p4-terra-text) !important; }
+body.pn-id.pn-pd main#pn-main:has(.hc-problem) .hc-cost > p.hc-eq strong{ display:inline-flex; align-items:center; min-height:64px; padding:14px 20px; background:var(--pd-card); border:var(--pd-edge); border-radius:14px; box-shadow:var(--pd-shadow); font-family:var(--p4-sans); font-weight:600; font-size:17px; line-height:1.3; color:var(--p4-ivory); }
+body.pn-id.pn-pd main#pn-main:has(.hc-problem) .hc-cost > p.hc-eq strong:last-child{ background:var(--p4-ivory); color:var(--p4-anth); font-family:var(--p4-serif); font-weight:400; font-size:24px; }
+body.pn-id.pn-pd main#pn-main:has(.hc-problem) .hc-cost > p.hc-eq ~ p{ grid-column:2; }
+
+body.pn-id.pn-pd main#pn-main:has(.hc-problem) .hc-drawers{ padding-top:clamp(40px,5vw,64px); }
+
+body.pn-id.pn-pd main#pn-main:has(.hc-problem) .hc-where{ text-align:center; padding-top:clamp(80px,10vw,150px); }
+body.pn-id.pn-pd main#pn-main:has(.hc-problem) .hc-where h2{ margin-left:auto; margin-right:auto; max-width:18ch; }
+body.pn-id.pn-pd main#pn-main:has(.hc-problem) .hc-where .quarantine-lede{ font-family:var(--p4-serif) !important; font-style:italic; font-size:clamp(24px,2.2vw,32px) !important; line-height:1.3 !important; color:var(--p4-ivory) !important; max-width:30ch; margin:0 auto 22px; }
+body.pn-id.pn-pd main#pn-main:has(.hc-problem) .hc-where > p{ margin-left:auto; margin-right:auto; max-width:58ch; }
+
+/* =====================================================================
+   06 · THE HOMEOWNER DECISION — eight questions, then the order of work
+   ===================================================================== */
+body.pn-id.pn-pd main#pn-main:has(.hc-problem) .hc-could > p.hc-factors{ grid-column:1 / -1 !important; max-width:none !important; columns:2 360px; column-gap:var(--pd-gap); margin:clamp(20px,2.4vw,32px) 0; font-size:18px !important; line-height:1.55 !important; }
+body.pn-id.pn-pd main#pn-main:has(.hc-problem) .hc-could > p.hc-factors strong{ display:block; break-after:avoid; margin:18px 0 2px; padding-top:14px; border-top:1px solid var(--p4-line); font-family:var(--p4-serif); font-weight:400; font-size:clamp(24px,2vw,30px); line-height:1.05; color:var(--p4-ivory); }
+body.pn-id.pn-pd main#pn-main:has(.hc-problem) .hc-could > p.hc-factors strong:first-child{ margin-top:0; }
+body.pn-id.pn-pd main#pn-main:has(.hc-problem) .hc-could > p.hc-factors ~ p{ grid-column:2; }
+
+body.pn-id.pn-pd main#pn-main:has(.hc-problem) .hc-steps{ display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:var(--pd-gap); margin:clamp(24px,3vw,40px) 0 0; position:relative; }
+body.pn-id.pn-pd main#pn-main:has(.hc-problem) .hc-steps > p{ margin:0; padding:24px 26px 26px; background:var(--pd-card); border:var(--pd-edge); border-radius:var(--pd-r-sm); box-shadow:var(--pd-shadow); font-size:17.5px; line-height:1.6; color:var(--p4-lime); max-width:none; }
+body.pn-id.pn-pd main#pn-main:has(.hc-problem) .hc-steps > p strong{ display:block; font-family:var(--p4-serif); font-weight:400; font-size:clamp(23px,1.8vw,27px); line-height:1.15; color:var(--p4-ivory); margin:0 0 10px; }
+body.pn-id.pn-pd main#pn-main:has(.hc-problem) .hc-steps > p strong::first-line{ color:var(--p4-ivory); }
+body.pn-id.pn-pd main#pn-main:has(.hc-problem) .hc-path > p:last-child{ margin-top:22px; font-size:17px !important; color:var(--p4-stone) !important; }
+
+/* ---- desktop: section grids ----------------------------------------------------- */
+@media (min-width:1024px){
+  body.pn-id.pn-pd main#pn-main:has(.hc-problem) :is(.hc-routes, .hc-path, .hc-cautions){ display:grid; grid-template-columns:minmax(0,5fr) minmax(0,7fr); column-gap:clamp(28px,5vw,88px); align-items:start; }
+  body.pn-id.pn-pd main#pn-main:has(.hc-problem) :is(.hc-routes, .hc-path, .hc-cautions) > *{ grid-column:2; }
+  body.pn-id.pn-pd main#pn-main:has(.hc-problem) :is(.hc-routes, .hc-path) > .kicker{ grid-column:1 / -1; grid-row:1; }
+  body.pn-id.pn-pd main#pn-main:has(.hc-problem) :is(.hc-routes, .hc-path) > h2{ grid-column:1; grid-row:2 / span 4; margin-bottom:0; }
+  body.pn-id.pn-pd main#pn-main:has(.hc-problem) :is(.hc-routes-grid, .hc-steps, .dq-qual){ grid-column:1 / -1 !important; }
+  body.pn-id.pn-pd main#pn-main:has(.hc-problem) :is(.hc-routes-grid, .hc-steps) ~ p{ grid-column:2; }
+  body.pn-id.pn-pd main#pn-main:has(.hc-problem) .hc-cautions > .dq-note{ grid-column:1 / -1; }
+  body.pn-id.pn-pd main#pn-main:has(.hc-problem) .hc-problem > .dq-opp ~ *{ grid-column:2; }
+}
+
+/* ---- tablet and phone -------------------------------------------------------------- */
+@media (max-width:1023px){
+  body.pn-id.pn-pd main#pn-main:has(.hc-problem) .hc-approaches .dq-adv-cols{ grid-template-columns:1fr 1fr; }
+  body.pn-id.pn-pd main#pn-main:has(.hc-problem) .hc-after .dq-rows{ grid-template-columns:1fr; }
+  body.pn-id.pn-pd main#pn-main:has(.hc-problem) .hc-cautions .dq-qual{ grid-template-columns:1fr; }
+  body.pn-id.pn-pd main#pn-main:has(.hc-problem) .hc-steps{ grid-template-columns:1fr 1fr; }
+  body.pn-id.pn-pd main#pn-main:has(.hc-problem) .imagine-photo.hc-outcome{ height:70svh; min-height:380px; }
+}
+@media (max-width:719px){
+  body.pn-id.pn-pd main#pn-main:has(.hc-problem) .article-section{ padding-top:52px; }
+  body.pn-id.pn-pd main#pn-main:has(.hc-problem) .hc-problem .dq-figs{ grid-template-columns:1fr 1fr; gap:10px; }
+  body.pn-id.pn-pd main#pn-main:has(.hc-problem) .hc-problem .dq-figs > li{ padding:16px 14px 18px; }
+  body.pn-id.pn-pd main#pn-main:has(.hc-problem) .hc-problem .dq-figs .dq-fig{ font-size:40px; }
+  body.pn-id.pn-pd main#pn-main:has(.hc-problem) .hc-problem .dq-figs .dq-src{ font-size:15.5px; }
+  body.pn-id.pn-pd main#pn-main:has(.hc-problem) .hc-problem .dq-figs > li:first-child::after{ display:none; }
+  body.pn-id.pn-pd main#pn-main:has(.hc-problem) .hc-problem .dq-use .dq-rows{ grid-template-columns:1fr; }
+  body.pn-id.pn-pd main#pn-main:has(.hc-problem) .hc-approaches .dq-adv-cols{ grid-template-columns:1fr; }
+  body.pn-id.pn-pd main#pn-main:has(.hc-problem) .hc-routes-grid{ grid-template-columns:1fr; }
+  body.pn-id.pn-pd main#pn-main:has(.hc-problem) .hc-steps{ grid-template-columns:1fr; gap:10px; }
+  body.pn-id.pn-pd main#pn-main:has(.hc-problem) .hc-cost > p.hc-eq{ gap:8px 10px; font-size:22px !important; }
+  body.pn-id.pn-pd main#pn-main:has(.hc-problem) .hc-cost > p.hc-eq strong{ min-height:48px; padding:10px 14px; font-size:16px; }
+  body.pn-id.pn-pd main#pn-main:has(.hc-problem) .imagine-photo.hc-outcome{ height:auto; min-height:0; }
+  body.pn-id.pn-pd main#pn-main:has(.hc-problem) .imagine-photo.hc-outcome img{ height:auto; aspect-ratio:1376/768; }
+  body.pn-id.pn-pd main#pn-main:has(.hc-problem) .imagine-photo.hc-outcome .caption{ position:static; padding:18px 0 0; background:none; }
+  body.pn-id.pn-pd main#pn-main:has(.hc-problem) .imagine-photo.hc-outcome .caption p{ font-size:26px; text-shadow:none; }
+}
