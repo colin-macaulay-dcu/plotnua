@@ -1,32 +1,24 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""BOUNDED BUILDER - PRIVATE STAGING: THE MOBILE PODS SUPPLIER SHOWCASE (founder brief, 3 Nov 2026).
+"""BOUNDED BUILDER - THE MOBILE PODS SUPPLIER SHOWCASE (founder brief and publication decision, 3 Nov 2026).
 
-Builds two PRIVATE pages from supplier-preview-system/showcases/the-mobile-pods/showcase.json:
+Builds suppliers/the-mobile-pods.html from supplier-preview-system/showcases/the-mobile-pods/showcase.json.
+The Living in the Garden gallery card is built by the production gallery builder
+(atlas-tools/build-supplier-gallery.py, "showcaseMakers"), not here.
 
-  1. the-mobile-pods-showcase.html   - the premium supplier showcase (hero, curated photo
-     collection, models with verified specifications, free guided route, recognition);
-  2. the-mobile-pods-disc008-preview.html - the LIVE Living in the Garden supplier gallery,
-     rendered by the PRODUCTION builder (atlas-tools/build-supplier-gallery.py, imported,
-     not copied), with a Mobile Pods card added IN MEMORY ONLY. Nothing live is written.
+RIGHTS. Builds only while image-rights-records.json carries a live, PUBLISHABLE record for
+The Mobile Pods whose required credit is the page credit. Basis: the founder's publication
+decision on the supplier's positive Instagram response (NOT a written licence). Images are
+hotlinked from the supplier's own site, so the Image Rights Gate checks every one of them.
+If the supplier objects to a photograph: delete it from showcase.json, rebuild.
 
-PUBLICATION HOLD. The supplier's explicit permission to publish its photographs on
-plotnua.ie is awaiting confirmation (showcase.json "publication"). These pages are
-noindex/nofollow, linked from nowhere, outside the sitemap, and are built only on a
-development branch; they are never merged to main while the hold stands.
+FACTS. guard() refuses product names or prices the supplier does not publish.
+Swapping in the supplier's originals: replace images[].origin (and w/h) for the same slot.
 
-IMAGES. Two delivery modes, one data file:
-  default            - image src = the supplier's own published URL (images[].origin).
-                       Used for the branch copy, so NO supplier photograph is copied
-                       into the public repository.
-  --bundle DIR       - image src = images[].local (optimised copies, whole frame, no crop),
-                       for the private staging bundle given to the founder.
-Swapping in the supplier's higher-resolution originals = replace images[].local / origin
-for the same slot id. No page code changes.
-
-Run: python3 supplier-preview-system/build-mobile-pods-showcase.py [--bundle DIR] [--check]
+Run: python3 supplier-preview-system/build-mobile-pods-showcase.py [--check]
+     python3 supplier-preview-system/build-mobile-pods-showcase.py --bundle DIR   (local review copy)
 """
-import copy, html, importlib.util, json, sys
+import html, json, sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -66,8 +58,12 @@ def guard():
                     sys.exit(f"FAIL: unverified price text for {p['name']}: {v}")
         if not p["source"].startswith(s["website"]):
             sys.exit(f"FAIL: {p['name']} specs are not sourced to the supplier site")
-    if not DATA["publication"]["status"].startswith("HOLD"):
-        sys.exit("FAIL: this builder only runs while the publication hold is recorded")
+    rec = [r for r in json.loads((ROOT / "image-rights-records.json").read_text(encoding="utf-8"))["records"]
+           if r["organisation_name"] == s["name"]]
+    if len(rec) != 1 or not rec[0]["permission_outcome"].startswith("Granted") or rec[0].get("public_visibility") != "PUBLISHABLE":
+        sys.exit("FAIL: no live, publishable rights record for The Mobile Pods; nothing is built")
+    if rec[0]["required_credit"] != s["credit"]:
+        sys.exit("FAIL: the page credit differs from the rights record's required credit")
 
 
 HEAD = """<!DOCTYPE html>
@@ -96,6 +92,11 @@ CSS = """<style>
   color:var(--soft); font-family:var(--sans); }
 .mp *{ box-sizing:border-box; }
 .mp-w{ max-width:1240px; margin:0 auto; padding:0 clamp(18px,3.4vw,44px); }
+.mp-bar{ border-bottom:1px solid var(--line); }
+.mp-bar .mp-w{ display:flex; justify-content:space-between; align-items:center; gap:16px; padding-top:16px; padding-bottom:16px; }
+.mp-brand{ font-family:var(--serif); font-size:26px; color:var(--ink); text-decoration:none; letter-spacing:-.01em; }
+.mp-back{ font-size:14px; color:var(--soft); text-decoration:none; border-bottom:1px solid var(--line); padding-bottom:2px; }
+.mp-back:hover, .mp-brand:hover{ color:var(--ink); }
 .mp-hold{ border-bottom:1px solid var(--line); font-size:12.5px; letter-spacing:.04em; color:var(--stone); }
 .mp-hold .mp-w{ padding-top:12px; padding-bottom:12px; display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
 .mp-hold b{ font-weight:700; letter-spacing:.16em; text-transform:uppercase; font-size:11px; color:var(--bronze); }
@@ -156,6 +157,48 @@ CSS = """<style>
 """
 
 
+PUBLIC_HEAD = """<!DOCTYPE html>
+<html lang="en-IE">
+<head>
+<meta charset="UTF-8">
+<script id="Cookiebot" src="https://consent.cookiebot.com/uc.js" data-cbid="8a5219c1-0f84-4a7e-9c17-d22fab76adc1" data-blockingmode="auto" type="text/javascript"></script>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-PKKJ0RK6N8"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-PKKJ0RK6N8');
+</script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Mobile Pods: Deluxe21, Deluxe25+ and custom garden pods | PlotNua</title>
+<meta name="description" content="The Mobile Pods build timber-frame garden pods and compact garden homes to order in Ireland. See the Deluxe21 and Deluxe25+ specifications, published prices and photographs.">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://plotnua.ie/suppliers/the-mobile-pods.html">
+<meta name="theme-color" content="#27282A">
+<link rel="icon" href="/assets/brand/plotnua-mark-master.svg" type="image/svg+xml">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="PlotNua">
+<meta property="og:locale" content="en_IE">
+<meta property="og:url" content="https://plotnua.ie/suppliers/the-mobile-pods.html">
+<meta property="og:title" content="The Mobile Pods | PlotNua">
+<meta property="og:description" content="Timber-frame garden pods and compact garden homes, built to order in Ireland.">
+<meta property="og:image" content="{og}">
+<!-- Built by supplier-preview-system/build-mobile-pods-showcase.py from showcase.json. Do not hand-edit.
+     Supplier imagery: founder publication decision of 3 Nov 2026 (image-rights-records.json, The Mobile Pods). -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Hanken+Grotesk:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="../assets/identity/pn-identity.css">
+<link rel="stylesheet" href="../assets/identity/pn-premium-discovery.css">
+"""
+
+BAR = """<nav class="mp-bar" aria-label="PlotNua"><div class="mp-w"><a class="mp-brand" href="../">PlotNua</a>
+<a class="mp-back" href="../discovery-living-in-the-garden.html#suppliers"><span aria-hidden="true">&larr;</span> Living in the Garden</a></div></nav>
+"""
+
+
 def fig(i, bundle, credit_href, first=False, cls=""):
     lazy = 'loading="eager" fetchpriority="high"' if first else 'loading="lazy"'
     return (f'<figure class="mp-fig{cls}"><img src="{E(img_src(i, bundle))}" alt="{E(i["alt"])}" width="{i["w"]}" height="{i["h"]}" '
@@ -169,12 +212,12 @@ def journeys(prefix):
             ("A garden room", f"{prefix}your-plot.html?discovery=garden-room&{VIA}")]
 
 
-def showcase(bundle):
+def showcase(bundle, public=False):
     s, I = DATA["supplier"], imgs()
     hero = next(i for i in DATA["images"] if i["role"] == "hero")
     coll = [i for i in DATA["images"] if i["role"] == "collection"]
     css_prefix = "" if bundle else "../../../"
-    prefix = LIVE  # guided route always targets the live Journey (PlotNua's own, tracked)
+    prefix = "../" if public else LIVE  # PlotNua's own guided Journey (attributed via=the-mobile-pods)
     models = []
     for p in DATA["products"]:
         dl = "".join(f"<dt>{E(k)}</dt><dd>{E(v)}</dd>" for k, v in p["specs"])
@@ -186,16 +229,23 @@ def showcase(bundle):
             f'<p class="mp-src">As published by {E(s["name"])} &middot; checked {E(p["checked"][8:10])} Nov 2026</p></div>{plan}</article>')
     j = "".join(f'<li><a class="pn-two-b" href="{E(h)}">{E(l)} <span aria-hidden="true">&rarr;</span></a></li>' for l, h in journeys(prefix))
     two_css = "assets/components/pn-two-option.css" if bundle else "../../../assets/components/pn-two-option.css"
-    return (HEAD.format(title="The Mobile Pods &mdash; PlotNua supplier showcase (private staging)", css=css_prefix) + CSS +
+    if public:
+        two_css = "../assets/components/pn-two-option.css"
+    head = PUBLIC_HEAD.replace("{og}", E(hero["origin"])) if public else \
+        HEAD.format(title="The Mobile Pods &mdash; PlotNua supplier showcase (private staging)", css=css_prefix)
+    hold = BAR if public else ('<div class="mp-hold"><div class="mp-w"><b>Private staging</b><span>Not published. Supplier '
+                               'photographs are held from plotnua.ie until written publication permission is recorded.</span></div></div>')
+    explore = "../discovery-living-in-the-garden.html#explore-makers" if public else LIVE + "discovery-living-in-the-garden.html#explore-makers"
+    return (head + CSS +
 f"""<link rel="stylesheet" href="{two_css}?v=1">
 </head>
 <body class="pn-id pn-id--dark pn-pd">
 <main id="pn-main" class="mp">
-<div class="mp-hold"><div class="mp-w"><b>Private staging</b><span>Not published. Supplier photographs are held from plotnua.ie until written publication permission is recorded.</span></div></div>
+{hold}
 
 <section class="mp-hero" aria-labelledby="mp-h1"><div class="mp-w">
   <div>
-    <p class="mp-k">Supplier showcase &middot; Living in the Garden</p>
+    <p class="mp-k">Maker &middot; Living in the Garden</p>
     <h1 class="mp-h1" id="mp-h1">{E(s["name"])}</h1>
     <p class="mp-lede">{E(DATA["intro"])}</p>
     <ul class="mp-meta" role="list"><li>{E(s["county"])}</li><li>Timber-frame pods and garden homes</li><li>Built to order</li></ul>
@@ -225,7 +275,7 @@ f"""<link rel="stylesheet" href="{two_css}?v=1">
   <p class="mp-p">Before you contact any maker, PlotNua can help you work out what your garden can take and which options fit how you&rsquo;d use it. It&rsquo;s free.</p></div>
   <div class="pn-two" role="group" aria-label="Two ways to explore">
     <div class="pn-two-opt"><p class="pn-two-k">Explore yourself</p><p class="pn-two-t">Compare The Mobile Pods with other garden-home and garden-room makers on PlotNua, side by side.</p>
-      <a class="pn-two-a" href="{LIVE}discovery-living-in-the-garden.html#explore-makers">Browse makers and products <span aria-hidden="true">&rarr;</span></a></div>
+      <a class="pn-two-a" href="{explore}">Browse makers and products <span aria-hidden="true">&rarr;</span></a></div>
     <div class="pn-two-opt is-help"><p class="pn-two-k">Let PlotNua do the homework</p><p class="pn-two-t">Tell us what you&rsquo;re looking for. We&rsquo;ll use our Atlas research to help you find options that match your preferences and budget.</p>
       <ul class="pn-two-btns" role="list">{j}</ul></div>
   </div>
@@ -242,72 +292,19 @@ f"""<link rel="stylesheet" href="{two_css}?v=1">
 """)
 
 
-def disc008(bundle):
-    """The live DISC-008 gallery, production builder, plus a Mobile Pods card in memory."""
-    spec = importlib.util.spec_from_file_location("sg", ROOT / "atlas-tools" / "build-supplier-gallery.py")
-    sg = importlib.util.module_from_spec(spec); spec.loader.exec_module(sg)
-    d = DATA["disc008"]
-    sg.D = sg.DISCOVERIES[d["page"]]
-    ed = json.loads((sg.DATA / sg.D["editorial"]).read_text(encoding="utf-8"))
-    sup = sg.collect(ROOT / d["page"], ed)
-    if any(x["name"] == DATA["supplier"]["name"] for x in sup):
-        sys.exit("FAIL: The Mobile Pods is already in the live explorer; this preview path is obsolete")
-    i = imgs()[d["image"]]
-    show = "the-mobile-pods-showcase.html"
-    card = {"name": DATA["supplier"]["name"], "description": d["description"], "base": None,
-            "categories": [{"label": "garden homes", "count": 2}], "productCount": 2,
-            "site": "PlotNua", "explore": show,
-            "image": {"src": img_src(i, bundle), "alt": i["alt"], "kind": i["kind"], "w": i["w"], "h": i["h"],
-                      "credit": "Image: The Mobile Pods", "creditHref": DATA["supplier"]["creditHref"], "asset": i["origin"]},
-            "logo": None, "placement": "editorial", "relationship": None, "held": False}
-    ed2 = copy.deepcopy(ed)
-    ed2["featuredMax"] = ed["featuredMax"] + 1     # in memory only: show it beside the live three
-    sup2 = sorted(sup + [card], key=lambda x: x["name"].casefold())
-    head = json.loads(sg.HEADINGS.read_text(encoding="utf-8"))["discoveries"][d["page"]]
-    cfg = sg.load_explorer(ROOT / d["page"])
-    g = sg.gallery(ed2, head, sup2, cfg)
-    # the card's CTA goes to PlotNua's own showcase (same tab), not off-site
-    g = g.replace(f'<a href="{show}" rel="noopener noreferrer" target="_blank" aria-label="Explore The Mobile Pods on PlotNua (opens in a new tab)">',
-                  f'<a href="{show}" aria-label="Explore The Mobile Pods on PlotNua">', 1)
-    k = g.index(f'<a href="{show}"')
-    g = g[:k] + g[k:].replace(f"<span>Explore supplier</span>{sg.EXT}", "<span>Explore supplier</span><span aria-hidden=\"true\"> &rarr;</span>", 1)
-    g = g.replace('href="#explore-makers" data-sg-jump', f'href="{LIVE}discovery-living-in-the-garden.html#explore-makers" target="_blank" rel="noopener noreferrer"')
-    g = g.replace('href="your-plot.html?', f'href="{LIVE}your-plot.html?')
-    pre = "" if bundle else "../../../"
-    v = sg.D["asset_v"]
-    return (HEAD.format(title="PlotNua &mdash; Living in the Garden with The Mobile Pods (private staging)", css=pre) +
-f"""<style>#pn-main > .article{{ max-width:var(--pd-max,1240px); margin:0 auto; padding:0 clamp(16px,3vw,40px); }}
-.pv-head{{ padding:48px 0 8px; }} .pv-head p{{ font-size:15.5px; line-height:1.7; max-width:66ch; color:#C2BDB5; }}
-.pv-head b{{ font-size:11px; letter-spacing:.18em; text-transform:uppercase; color:#B39272; }}</style>
-<link rel="stylesheet" href="{pre}assets/components/pn-supplier-gallery.css?v={v}">
-</head>
-<body class="pn-id pn-id--dark pn-pd">
-<main id="pn-main"><div class="article">
-<div class="pv-head"><p><b>Private staging &middot; DISC-008 integration preview</b></p>
-<p>The live &ldquo;{E(head["heading"])}&rdquo; gallery from <i>Living in the Garden</i>, rendered by the production builder, with The Mobile Pods added beside the makers already featured. Its card links to PlotNua&rsquo;s own showcase page rather than off-site. The headline figures are the live explorer&rsquo;s and do not yet count The Mobile Pods. Nothing here is published.</p></div>
-{g.replace('href="assets/components/', f'href="{pre}assets/components/')}
-<script src="{pre}assets/components/pn-supplier-gallery.js?v={v}" defer></script>
-</div></main>
-</body>
-</html>
-""")
-
-
 def main():
     guard()
-    bundle = None
     if "--bundle" in sys.argv:
-        bundle = Path(sys.argv[sys.argv.index("--bundle") + 1]).resolve()
-    out_dir = bundle or HERE
-    pages = {"the-mobile-pods-showcase.html": showcase(bool(bundle)),
-             "the-mobile-pods-disc008-preview.html": disc008(bool(bundle))}
+        out = Path(sys.argv[sys.argv.index("--bundle") + 1]).resolve()
+        pages = {out / "the-mobile-pods-showcase.html": showcase(True)}
+    else:
+        pages = {ROOT / "suppliers" / "the-mobile-pods.html": showcase(False, public=True)}
     ok = True
-    for name, txt in pages.items():
-        p = out_dir / name
+    for p, txt in pages.items():
         if "--check" in sys.argv:
             same = p.exists() and p.read_text(encoding="utf-8") == txt
             ok &= same
-            print(("CHECK OK " if same else "STALE    ") + str(p))
+            print(("CHECK OK " if same else "STALE    ") + str(p.relative_to(ROOT) if ROOT in p.parents else p))
         else:
             p.write_text(txt, encoding="utf-8")
             print("wrote", p)

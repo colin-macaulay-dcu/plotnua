@@ -240,7 +240,43 @@ def collect(page_path, ed):
             # supplier's private preview is complete. Removing "featureHold" re-activates it.
             "held": bool(e.get("featureHold")),
         })
-    return out
+    out += showcase_makers(ed)
+    return sorted(out, key=lambda x: x["name"].casefold())
+
+
+def showcase_makers(ed):
+    """SHOWCASE MAKERS (founder publication decision, 3 Nov 2026: The Mobile Pods on Living in
+    the Garden). A maker featured in the gallery BEFORE its products are in the page's Maker
+    Explorer. Opt-in per editorial file; a Discovery without "showcaseMakers" renders exactly as
+    before. Each card: one image under a LIVE manifest grant (permitted domain, exact required
+    credit), credit linked on that domain, and an "Explore supplier" link to the maker's own
+    PlotNua showcase page (same tab, must exist), so no untracked off-site button is added."""
+    sm = ed.get("showcaseMakers") or {}
+    if not sm:
+        return []
+    grants = {r["organisation_name"]: r for r in json.loads(MANIFEST.read_text(encoding="utf-8"))["rows"]
+              if r.get("permission_outcome") in LIVE_GRANTS and not r.get("withdrawal_effective_at")}
+    res = []
+    for name, e in sorted(sm.items()):
+        g = grants.get(name)
+        img = e["image"]
+        if not g or not grant_covers(g, img["src"]) or not img["src"].startswith("https://"):
+            sys.exit(f"FAIL: showcase maker {name}: image is not under a live grant on its permitted domain")
+        if img.get("credit") != g.get("required_credit"):
+            sys.exit(f"FAIL: showcase maker {name}: credit differs from the grant's required credit")
+        host = (urlparse(img["creditHref"]).hostname or "").lower()
+        dom = g["permitted_domain"].lower()
+        if not (host == dom or host.endswith("." + dom)):
+            sys.exit(f"FAIL: showcase maker {name}: credit link is off the granted domain")
+        page = e["page"]
+        if page.startswith(("http:", "https:", "/")) or page.endswith("-preview.html") or not (ROOT / page).is_file():
+            sys.exit(f"FAIL: showcase maker {name}: showcase page {page} is not an existing PlotNua page")
+        res.append({"name": name, "description": e["description"], "base": None,
+                    "categories": [], "productCount": 0, "site": "PlotNua", "explore": page, "internal": True,
+                    "image": {"src": img["src"], "alt": img["alt"], "kind": img["kind"], "w": img["w"], "h": img["h"],
+                              "credit": img["credit"], "creditHref": img["creditHref"], "asset": img["src"]},
+                    "logo": None, "placement": "editorial", "relationship": None, "held": False})
+    return res
 
 
 def join(words):
@@ -273,6 +309,9 @@ def credit_html(img):
 def cta_html(s, compact=False):
     if not s["explore"]:
         return ""
+    if s.get("internal"):   # showcase maker: PlotNua's own page, same tab
+        return (f'<p class="pn-sg-cta"><a href="{E(s["explore"])}" aria-label="Explore {E(s["name"])} on PlotNua">'
+                f'<span>Explore supplier</span><span aria-hidden="true"> &rarr;</span></a></p>')
     return (f'<p class="pn-sg-cta"><a href="{E(s["explore"])}" rel="noopener noreferrer" target="_blank" '
             f'aria-label="Explore {E(s["name"])} on {E(s["site"] or "its website")} (opens in a new tab)">'
             f'<span>{"Visit website" if compact else "Explore supplier"}</span>{EXT}</a></p>')

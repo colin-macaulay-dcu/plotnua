@@ -50,6 +50,15 @@ mutates each page in memory to prove each guard can fail.
       directory card holds the only link to the explorer; on Garden Retreat the hero's
       "Meet the makers" button opens the supplier section (#suppliers), and
       #explore-makers stays for existing deep links
+
+  SHOWCASE MAKERS (founder publication decision, 3 Nov 2026: The Mobile Pods on Living in
+  the Garden). A maker listed in the editorial file's "showcaseMakers" may be featured before
+  its products are in the Maker Explorer. Its image counts as authorised (G1) only under a LIVE
+  grant in image-rights-manifest.json covering that URL, with that grant's exact required credit
+  linked on its permitted domain (G2/G14). G5 then treats it as one of the licensed makers.
+  G20 a showcase maker must NOT already be in the live explorer (it would be a normal maker),
+      must be configured, and its "Explore supplier" link must be exactly its configured PlotNua
+      showcase page, existing in the repository, same tab, not a private preview
 """
 import importlib.util, json, re, sys
 from pathlib import Path
@@ -100,6 +109,18 @@ def governed():
     return out
 
 
+def showcase(ed):
+    """Independent of the builder: editorial showcaseMakers checked against the manifest."""
+    grants = {r["organisation_name"]: r for r in json.loads((ROOT / "image-rights-manifest.json").read_text())["rows"]
+              if r.get("permission_outcome") in LIVE and not r.get("withdrawal_effective_at")}
+    out = {}
+    for nm, e in (ed.get("showcaseMakers") or {}).items():
+        g, src = grants.get(nm), (e.get("image") or {}).get("src", "")
+        if g and _b.grant_covers(g, src) and (e["image"].get("credit") == g.get("required_credit")):
+            out[src] = (nm, g["required_credit"], [g["permitted_domain"]], e["image"].get("kind") or "")
+    return out
+
+
 def live(page_text):
     cfg = json.loads(re.search(r'id="mx-data">(.*?)</script>', page_text, re.S).group(1))
     names, offers, leads = set(), set(), {}
@@ -126,6 +147,10 @@ def checks(name, full, css):
     cfgp = PAGES[name]; fails = []
     AUTH = approved() if cfgp["authority"] == "approved_assets" else governed()
     names, offers, leads = live(full)
+    ed = json.loads((ROOT / "atlas-tools/supplier-gallery" / cfgp["editorial"]).read_text())
+    SHOW = showcase(ed)
+    AUTH = {**AUTH, **SHOW}
+    show_names = {v[0] for v in SHOW.values()}
     if full.count(B_START) != 1 or full.count(B_END) != 1:
         fails.append(f"G9 {name}: gallery region missing or duplicated")
     elif not re.match(r"\s*" + re.escape(EXPLORER), full[full.index(B_END) + len(B_END):]):
@@ -159,7 +184,6 @@ def checks(name, full, css):
     for a in re.findall(r'<a [^>]*href="https?://[^"]+"[^>]*>', page):
         if 'target="_blank"' not in a or 'rel="noopener noreferrer"' not in a:
             fails.append(f"G10 {name}: external link without new-tab security attributes: {a[:80]}")
-    ed = json.loads((ROOT / "atlas-tools/supplier-gallery" / cfgp["editorial"]).read_text())
     for nm, body in cards:
         nm = unesc(nm)
         if "pn-sg-loc" in body or "<dt>Made in" in body or "<dt>Registered" in body or "<dt>Based" in body:
@@ -171,10 +195,22 @@ def checks(name, full, css):
         if shown != names:
             fails.append(f"G5 {name}: gallery makers {sorted(shown ^ names)} differ from the live Discovery")
     else:
-        if not shown <= names:
-            fails.append(f"G5 {name}: gallery shows makers not on the live Discovery: {sorted(shown - names)}")
+        if not shown <= names | show_names:
+            fails.append(f"G5 {name}: gallery shows makers not on the live Discovery: {sorted(shown - names - show_names)}")
         held = {m for m, v in ed["makers"].items() if (v or {}).get("featureHold")}
-        licensed = {m for m, src in leads.items() if src in AUTH and norm(AUTH[src][0]) == norm(m)}
+        licensed = {m for m, src in leads.items() if src in AUTH and norm(AUTH[src][0]) == norm(m)} | show_names
+        sm = ed.get("showcaseMakers") or {}
+        for nm in set(sm) & names:
+            fails.append(f"G20 {name} {nm}: a showcase maker is already in the live explorer")
+        for nm, body in cards:
+            nm = unesc(nm)
+            if nm not in sm:
+                continue
+            want = sm[nm]["page"]
+            cta = re.findall(r'<p class="pn-sg-cta"><a ([^>]*)>', body)
+            if len(cta) != 1 or f'href="{want}"' not in cta[0] or "target=" in cta[0] or want.endswith("-preview.html") \
+                    or want.startswith(("http:", "https:", "/")) or not (ROOT / want).is_file():
+                fails.append(f"G20 {name} {nm}: Explore link is not its PlotNua showcase page {want} (same tab)")
         if shown != licensed - held:
             fails.append(f"G5 {name}: featured {sorted(shown)} != every licensed, unheld maker {sorted(licensed - held)} (founder D1)")
         if shown & held:
@@ -336,6 +372,11 @@ MUTATIONS = {
         "G18 A-Z index removed": (p.replace('id="maker-index"', 'id="maker-list"', 1), c),
         "G19 View all back beside the figures": (p.replace('aria-controls="sg-track">' + _b.ARROW_R + '</button>', 'aria-controls="sg-track">' + _b.ARROW_R + '</button>\n        <a class="pn-sg-all" href="#explore-makers" data-sg-jump><span data-sg-label>View all suppliers</span></a>', 1), c),
         "G14 Explore link off the granted domain": (p.replace('<a href="https://oodhouse.com/" rel="noopener noreferrer" target="_blank" aria-label=', '<a href="https://oodhouse.example.net/" rel="noopener noreferrer" target="_blank" aria-label=', 1), c),
+
+        "G1 showcase image outside its grant": (p.replace('<img src="https://themobilepods.ie/wp-content/uploads/2026/10/IMG_5074-scaled.jpeg"', '<img src="https://example.com/IMG_5074-scaled.jpeg"', 1), c),
+        "G2 showcase credit removed": (p.replace(">Image: The Mobile Pods<", ">The Mobile Pods<", 1), c),
+        "G20 showcase Explore link sent off-site": (p.replace('<a href="suppliers/the-mobile-pods.html" aria-label=', '<a href="https://themobilepods.ie/" aria-label=', 1), c),
+        "G20 showcase Explore link to a preview": (p.replace('<a href="suppliers/the-mobile-pods.html" aria-label=', '<a href="suppliers/the-mobile-pods-preview.html" aria-label=', 1), c),
     },
 }
 

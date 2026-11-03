@@ -1117,6 +1117,51 @@
           "alt": "Photograph of the same Nua Ultra unit in the yard in low sunshine, seen from the glazed end, its panoramic side window reflecting the yard"
         }
       ]
+    },
+    {
+      "organisation_record": "rec32DvHTiz5LZLA9",
+      "organisation_code": "ORG-000235",
+      "organisation_name": "The Mobile Pods",
+      "permission_outcome": "Granted with Conditions — Founder Confirmed",
+      "permitted_domain": "themobilepods.ie",
+      "required_credit": "Image: The Mobile Pods",
+      "evidence": "FOUNDER PUBLICATION DECISION, 3 November 2026, on the basis of The Mobile Pods' positive response to PlotNua's Instagram invitation to feature their products and photographs. This is NOT an explicit written image licence and must never be represented as one: no email reply, signed licence or one-click confirmation exists. Recorded in Atlas Image Permission Outreach WELLNESS-FIRST-MOBILE-PODS-20261002 (recLwfIMP9TK1pQpu) as Granted with Conditions — Founder Confirmed, with this basis written into its notes.",
+      "conditions": [
+        "Credit 'Image: The Mobile Pods' on every image use, linked to themobilepods.ie.",
+        "Only selected first-party camera photographs and the two published floor plans from themobilepods.ie; no CGI renders presented as photographs and no images of unknown (possibly AI-generated) origin.",
+        "If The Mobile Pods objects to any photograph, PlotNua removes the affected material promptly."
+      ],
+      "note": "Exercised on suppliers/the-mobile-pods.html (8 photographs, 2 floor plans, hotlinked from themobilepods.ie/wp-content/uploads/) and on the Living in the Garden supplier gallery (one photograph, IMG_5074). Selection, sources and SHA-256 hashes: supplier-preview-system/showcases/the-mobile-pods/showcase.json. REMOVAL: delete the image entry from showcase.json (or the showcaseMakers entry in atlas-tools/supplier-gallery/living-in-the-garden.editorial.json), rebuild both, regenerate this manifest. WITHDRAWAL: set permission_outcome to 'Withdrawn / Superseded' and the gate refuses every themobilepods.ie image site-wide.",
+      "atlas_permission_record": "recLwfIMP9TK1pQpu",
+      "atlas_permission_ref": "WELLNESS-FIRST-MOBILE-PODS-20261002",
+      "permission_date": "2026-11-03",
+      "permission": {
+        "state": "GRANTED",
+        "ref": "WELLNESS-FIRST-MOBILE-PODS-20261002",
+        "record": "recLwfIMP9TK1pQpu",
+        "date": "2026-11-03",
+        "scope": [
+          "feature",
+          "imagery"
+        ],
+        "conditions": [
+          "credit",
+          "link-back",
+          "selected-first-party-imagery-only",
+          "remove-on-objection"
+        ],
+        "asked": "PlotNua invited The Mobile Pods on Instagram to be featured on PlotNua with products and photographs (email outreach of 2 Oct 2026 had no reply).",
+        "answered": "Positive response on Instagram (recorded by the founder, 3 Nov 2026). Not a written licence.",
+        "note": "Founder decision to publish on the basis of that response, 3 Nov 2026."
+      },
+      "listing_review": {
+        "state": "NOT_REQUIRED",
+        "requested_by": null,
+        "requested_in": null,
+        "note": "No listing review was requested in The Mobile Pods' positive Instagram response (as recorded by the founder). Founder decision, 3 Nov 2026: publish the reviewed staging showcase without a supplier pre-live review; remove any photograph promptly if the supplier objects."
+      },
+      "public_visibility": "PUBLISHABLE",
+      "hold_reason": null
     }
   ]
 }
