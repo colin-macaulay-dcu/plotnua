@@ -168,6 +168,7 @@ FAULTS = [  # (what a careless edit would do, mutation)
  ("an unsourced payback figure is added", lambda t: t.replace("Before anything goes on the roof.", "Before anything goes on the roof. Payback of 6 years is typical.", 1)),
  ("the chapter 01 status boundary is removed", lambda t: t.replace('<p class="ps-boundary">', '<p class="ps-short2">', 1)),
  ("the scrappage grant is tied to electric storage heating again", lambda t: t.replace("and a &euro;2,000 boiler scrappage grant where it replaces a fossil-fuel system", "and a &euro;2,000 boiler scrappage grant where it replaces an electric storage system", 1)),
+ ("the phone dimension key loses the 14 m setback", lambda t: t.replace("<strong>14 m</strong>", "<strong>12 m</strong>", 1)),
  ("the estate image's AI label is removed", lambda t: t.replace('<p class="ps-ai">Illustrative AI-generated visualisation. Not an actual property.</p>', "", 1)),
  ("a new image asset is added", lambda t: t.replace("<h2>Four parts, working together.</h2>", '<h2>Four parts, working together.</h2><img src="assets/img/new.jpg" alt="x">', 1)),
  ("a pinned anchor is lost", lambda t: t.replace('id="explore-providers"', 'id="explore-suppliers"', 1)),
@@ -276,6 +277,10 @@ def verify(page, base, loud):
           "details .reveal{opacity:1!important" in css and "prefers-reduced-motion:reduce" in css)
     check("D6 the tall energy-anatomy section is never left unrevealed on a phone; the Back clears the footer",
           ".article-section.reveal:has(.anat){opacity:1!important" in css and "footer{padding-bottom:" in css)
+    check("D7 the legacy drawings are restyled for the dark ground (ivory line work, terracotta labels, ivory markers); phones get the numbered and dimension keys",
+          '[stroke="#1F3B2E"]{stroke:#E9E2D6}' in css and 'g[font-size="9.5"] > g[fill="#8FAF8A"]{fill:#F2EBE0' in css
+          and m.count('<ol class="anat-key" aria-hidden="true">') == 1 and m.count('<ul class="anat-key is-dims" aria-hidden="true">') == 1
+          and all(k in m for k in ("<b>1</b>Roof", "<b>7</b>Grid", "<strong>13 m</strong>", "<strong>14 m</strong>")))
     check("F4 boiler scrappage is tied to fossil-fuel systems only; the renewable heat bonus also to electric storage",
           "boiler scrappage grant where it replaces a fossil-fuel system" in text
           and "boiler scrappage grant only when it replaces a fossil-fuel system" in text

@@ -154,3 +154,90 @@ body.pn-id.pn-pd main#pn-main:has(.ps-open) .article-section.reveal:has(.anat){o
 }
 /* the floating Back must never sit on the last line of the page (footer copyright, also covered on production) */
 body.pn-id.pn-pd:has(main#pn-main .ps-open) footer{padding-bottom:max(96px,calc(40px + env(safe-area-inset-bottom)))}
+
+/* =====================================================================================================
+   Pass 2 refinement (founder approval, 3 Nov 2026): the legacy line drawings — the seven positions, the
+   small-wind planning limits, the heat strip and the development-scale model — were drawn in dark green
+   (#1F3B2E) for the old light page and almost vanish on the charcoal ground. Their geometry, wording and
+   verified dimensions are unchanged; only colour, weight, label size and label placement are restyled here
+   (CSS outranks SVG presentation attributes). Direction: ivory line work, sage equipment, terracotta labels,
+   ivory numbered markers.
+   ===================================================================================================== */
+body.pn-id.pn-pd main#pn-main:has(.ps-open) :is(.anat-fig,.fig-strip){background:#202124;border:1px solid var(--p4-line);border-top:2px solid var(--p4-terra-text);border-radius:3px}
+body.pn-id.pn-pd main#pn-main:has(.ps-open) .fig-strip{padding:20px 18px 14px}
+main#pn-main:has(.ps-open) :is(.anat-fig,.fig-strip) svg [stroke="#1F3B2E"]{stroke:#E9E2D6}
+main#pn-main:has(.ps-open) :is(.anat-fig,.fig-strip) svg [stroke="#4F6B4A"]{stroke:#D9D2C6}
+main#pn-main:has(.ps-open) :is(.anat-fig,.fig-strip) svg pattern path{stroke:#E9E2D6}
+main#pn-main:has(.ps-open) :is(.anat-fig,.fig-strip) svg [fill="#8FAF8A"]{fill:#8FAF8A;fill-opacity:.62}
+main#pn-main:has(.ps-open) :is(.anat-fig,.fig-strip) svg [fill="#8FAF8A"][fill-opacity=".10"]{fill:#3A3D3A;fill-opacity:.9}
+main#pn-main:has(.ps-open) :is(.anat-fig,.fig-strip) svg [fill="#1F3B2E"]{fill:#E9E2D6}
+main#pn-main:has(.ps-open) :is(.anat-fig,.fig-strip) svg [fill="#55605A"]{fill:#C2BDB5}
+main#pn-main:has(.ps-open) :is(.anat-fig,.fig-strip) svg > g[letter-spacing]{fill:var(--p4-terra-text);font-weight:700}
+
+/* A · the seven positions: ivory markers with dark numerals; labels beside their markers */
+main#pn-main:has(.ps-open) .anat-fig svg g[font-size="9.5"] > g[fill="#8FAF8A"]{fill:#F2EBE0;fill-opacity:1;stroke:var(--p4-terra-text);stroke-width:1.2}
+main#pn-main:has(.ps-open) .anat-fig svg g[font-size="9.5"] > g[fill="#8FAF8A"] circle{r:13px}
+main#pn-main:has(.ps-open) .anat-fig svg g[font-size="9.5"]{font-size:14px;font-weight:700}
+main#pn-main:has(.ps-open) .anat-fig svg g[font-size="9.5"] > g[fill="#1F3B2E"]{fill:#1B1C1E}
+main#pn-main:has(.ps-open) .anat-fig svg g[font-size="9.5"] > g[fill="#1F3B2E"] text{transform:translateY(1px)}
+main#pn-main:has(.ps-open) .anat-fig svg > g[letter-spacing="1.5"]{font-size:15px;letter-spacing:1.4px}
+main#pn-main:has(.ps-open) .anat-fig svg > g[letter-spacing="1.5"] text{transform:translateX(5px)}
+main#pn-main:has(.ps-open) .anat-fig svg > g[letter-spacing="1.5"] text[text-anchor="end"]{transform:translateX(-5px)}
+main#pn-main:has(.ps-open) .anat-fig svg > g[letter-spacing="1.5"] text[x="190"]{transform:translateX(89px)}          /* UTILITY WALL beside marker 2 */
+main#pn-main:has(.ps-open) .anat-fig svg circle[cx="40"][cy="208"]{cy:150px}                                          /* 5 above the turbine */
+main#pn-main:has(.ps-open) .anat-fig svg g[font-size="9.5"] > g[fill="#1F3B2E"] text[x="40"][y="212"]{transform:translate(0,-57px)}
+main#pn-main:has(.ps-open) .anat-fig svg > g[letter-spacing="1.5"] text[x="56"]{transform:translate(5px,-58px)}
+main#pn-main:has(.ps-open) .anat-fig svg g[font-size="10"][fill="#55605A"]{font-size:13px}
+
+/* B · the small-wind planning limits (1 m = 24 px; every dimension unchanged) */
+main#pn-main:has(.ps-open) .anat-fig svg g:has(> path[d^="M300 400"]){stroke:#A9C4A4}
+main#pn-main:has(.ps-open) .anat-fig svg g:has(> path[d^="M300 400"]) circle[r="72"]{stroke:#D9D2C6;opacity:.75}
+main#pn-main:has(.ps-open) .anat-fig svg g[stroke-width="1"][opacity=".75"]{stroke:var(--p4-terra-text);opacity:1;stroke-width:1.3}
+main#pn-main:has(.ps-open) .anat-fig svg > g[letter-spacing="1.4"]{font-size:13px;letter-spacing:.7px}
+main#pn-main:has(.ps-open) .anat-fig svg > g[letter-spacing="1.4"] text[x="166"]{transform:translateY(-62px)}       /* 13 m TOTAL HEIGHT clear of the roof */
+main#pn-main:has(.ps-open) .anat-fig svg > g[letter-spacing="1.4"] text[font-size="8.5"]{font-size:9.5px;letter-spacing:.3px;font-weight:500;fill:#C2BDB5}
+main#pn-main:has(.ps-open) .anat-fig svg > g[letter-spacing="1.4"] text[x="712"]{font-size:13px}
+main#pn-main:has(.ps-open) .anat-fig svg rect[stroke-dasharray="6 5"]{opacity:.9}
+main#pn-main:has(.ps-open) .anat-fig svg g[font-size="10"][fill="#55605A"]:has(text[x="30"]){font-size:11.5px}
+
+/* mobile key for the two drawings (markup added beside each drawing; hidden on desktop) */
+.anat-key{display:none}
+@media (max-width:719px){
+  /* line work keeps a legible weight at a third of its size */
+  main#pn-main:has(.ps-open) :is(.anat-fig,.fig-strip) svg :is(path,rect,circle){vector-effect:non-scaling-stroke}
+  main#pn-main:has(.ps-open) .anat-fig svg > g[letter-spacing],
+  main#pn-main:has(.ps-open) .anat-fig svg g[font-size="10"][fill="#55605A"]{display:none}
+  main#pn-main:has(.ps-open) .anat-fig svg g[font-size="9.5"] > g[fill="#8FAF8A"] circle{r:30px}
+  main#pn-main:has(.ps-open) .anat-fig svg g[font-size="9.5"] > g[fill="#8FAF8A"]{stroke-width:1.6}
+  main#pn-main:has(.ps-open) .anat-fig svg g[font-size="9.5"]{font-size:34px}
+  main#pn-main:has(.ps-open) .anat-fig svg g[font-size="9.5"] > g[fill="#1F3B2E"] text{transform:translateY(8px)}
+  main#pn-main:has(.ps-open) .anat-fig svg g[font-size="9.5"] > g[fill="#1F3B2E"] text[x="40"][y="212"]{transform:translate(8px,-50px)}
+  main#pn-main:has(.ps-open) .anat-fig svg circle[cx="40"][cy="208"]{cx:48px;cy:150px}
+  body.pn-id.pn-pd main#pn-main:has(.ps-open) .anat-fig{padding:16px 12px 16px}
+  .anat-key{display:grid;grid-template-columns:1fr 1fr;gap:8px 14px;list-style:none;margin:14px 0 0;padding:14px 0 0;border-top:1px solid var(--p4-line);
+    font:700 12px/1.35 var(--p4-sans);letter-spacing:.08em;text-transform:uppercase;color:var(--p4-terra-text)}
+  .anat-key + .anat-cap{margin-top:16px}
+  .anat-key li{display:flex;align-items:center;gap:9px}
+  .anat-key b{flex:0 0 22px;height:22px;border-radius:50%;background:#F2EBE0;border:1px solid var(--p4-terra-text);color:#1B1C1E;
+    display:inline-flex;align-items:center;justify-content:center;font-size:12px;letter-spacing:0;color:#1B1C1E!important;font-weight:700}
+  .anat-key.is-dims{grid-template-columns:1fr;gap:9px}
+  .anat-key.is-dims li{gap:10px;align-items:flex-start;text-transform:none;letter-spacing:.02em;font-size:14.5px;font-weight:500;color:var(--p4-lime)}
+  .anat-key.is-dims strong{color:var(--p4-terra-text)!important;font-weight:700;white-space:nowrap;min-width:4.2em}
+  .anat-key .k-note{display:block;color:var(--p4-stone);font-size:13px}
+}
+
+/* trim the empty sky above the two drawings (the viewBox keeps its geometry; the frame clips blank space only) */
+body.pn-id.pn-pd main#pn-main:has(.ps-open) .anat-fig:has(> svg[aria-label^="A cross-section"],> svg[aria-label^="The planning limits"]){overflow:hidden}
+main#pn-main:has(.ps-open) .anat-fig > svg[aria-label^="A cross-section"]{margin-top:-11%}
+main#pn-main:has(.ps-open) .anat-fig > svg[aria-label^="The planning limits"]{margin-top:-7.5%}
+
+/* phones: the two full-width illustrations keep their image; the caption and its AI label sit below it on a
+   solid ground instead of over a busy picture */
+@media (max-width:719px){
+  body.pn-id.pn-pd main#pn-main:has(.ps-open) .imagine-photo:not(.pa-frame){height:auto;min-height:0}
+  body.pn-id.pn-pd main#pn-main:has(.ps-open) .imagine-photo:not(.pa-frame) > img{height:58svh;min-height:280px}
+  body.pn-id.pn-pd main#pn-main:has(.ps-open) .imagine-photo:not(.pa-frame)::after{display:none}
+  body.pn-id.pn-pd main#pn-main:has(.ps-open) .imagine-photo:not(.pa-frame) .caption{position:static;background:#1B1C1E;padding:18px 20px 22px;text-align:left;border-bottom:1px solid var(--p4-line)}
+  body.pn-id.pn-pd main#pn-main:has(.ps-open) .imagine-photo:not(.pa-frame) .caption p{max-width:none;text-shadow:none;font-size:16.5px;line-height:1.55;color:var(--p4-lime)}
+  body.pn-id.pn-pd main#pn-main:has(.ps-open) .imagine-photo:not(.pa-frame) .caption p.ps-ai{margin-top:10px;font-size:12.5px!important;color:var(--p4-stone)}
+}
