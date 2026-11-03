@@ -1,0 +1,131 @@
+/* =====================================================================
+   PLOTNUA · DRIVEWAY INCOME · editorial composition (Pass 2, Task 3)
+   3 Nov 2026 · private preview. Shared parts come from pn-editorial.css;
+   this file holds only what is particular to this Discovery.
+
+   Identity: WAYFINDING. Painted parking-bay lines (chapters open inside a
+   bay marking), a quiet street-map with walking rings for the location
+   question, and the reported figures set as large editorial type beside
+   their caveat -- never a dashboard. Presentation only: every sentence,
+   figure, caution, link and image is unchanged
+   (prove-premium-discovery-driveway-income.py).
+   ===================================================================== */
+
+body.pn-id.pn-pd main#pn-main:has(.di-asset){ --di-text:clamp(18px,1.3vw,19.5px); --di-paint:rgba(242,235,224,.78); }
+body.pn-id.pn-pd main#pn-main:has(.di-asset) .article-section{ padding-top:clamp(40px,5vw,72px); }
+body.pn-id.pn-pd main#pn-main:has(.di-asset) .article-section > p{ font-size:var(--di-text); line-height:1.7; color:var(--p4-lime); }
+
+/* ---- chapters open inside a painted parking bay ------------------------------ */
+body.pn-id.pn-pd main#pn-main:has(.di-asset) .di-chapter{ align-items:center; border-top:0; padding-top:0; margin-top:clamp(72px,10vw,140px); gap:20px; }
+body.pn-id.pn-pd main#pn-main:has(.di-asset) .di-chapter .pe-chapter-n{ display:inline-flex; align-items:flex-end; justify-content:center; width:clamp(56px,5vw,72px); height:clamp(64px,6vw,84px); padding-bottom:6px; box-sizing:border-box;
+  border:2px solid var(--di-paint); border-bottom:0; color:var(--p4-ivory); -webkit-text-stroke:0; font-size:clamp(30px,2.8vw,40px); }
+body.pn-id.pn-pd main#pn-main:has(.di-asset) .di-chapter::after{ content:""; flex:1; height:1px; background:var(--p4-line); align-self:flex-end; }
+body.pn-id.pn-pd main#pn-main:has(.di-asset) .di-chapter .kicker{ align-self:flex-end; padding-bottom:4px; }
+
+/* ---- drawing language --------------------------------------------------------- */
+body.pn-id.pn-pd main#pn-main:has(.di-asset) .d-kerb{ stroke:var(--p4-stone); stroke-width:1.4; fill:none; }
+body.pn-id.pn-pd main#pn-main:has(.di-asset) .d-bayline{ stroke:var(--di-paint); stroke-width:3; fill:none; stroke-linecap:square; }
+body.pn-id.pn-pd main#pn-main:has(.di-asset) .d-house{ stroke:rgba(194,189,181,.45); stroke-width:1.2; fill:none; }
+body.pn-id.pn-pd main#pn-main:has(.di-asset) .d-street{ stroke:rgba(194,189,181,.08); stroke-width:14; fill:none; }
+body.pn-id.pn-pd main#pn-main:has(.di-asset) .d-ring{ stroke:rgba(207,133,102,.55); stroke-width:1.2; stroke-dasharray:3 5; fill:none; }
+body.pn-id.pn-pd main#pn-main:has(.di-asset) .d-ring.is-far{ stroke:rgba(207,133,102,.3); }
+body.pn-id.pn-pd main#pn-main:has(.di-asset) .d-links path{ stroke:rgba(194,189,181,.22); stroke-width:1; fill:none; }
+body.pn-id.pn-pd main#pn-main:has(.di-asset) .d-home{ fill:var(--p4-ivory); stroke:none; }
+body.pn-id.pn-pd main#pn-main:has(.di-asset) .d-homebay{ stroke:var(--p4-terra-text); stroke-width:3; }
+body.pn-id.pn-pd main#pn-main:has(.di-asset) .d-pin{ fill:var(--pd-card); stroke:rgba(242,235,224,.35); stroke-width:1.2; }
+body.pn-id.pn-pd main#pn-main:has(.di-asset) .d-dest path{ fill:none; stroke:var(--p4-lime); stroke-width:1.6; stroke-linejoin:round; stroke-linecap:round; }
+body.pn-id.pn-pd main#pn-main:has(.di-asset) .d-tick{ stroke:var(--p4-terra-text); stroke-width:3; fill:none; stroke-linecap:round; stroke-linejoin:round; }
+
+/* =====================================================================
+   01 · THE OVERLOOKED ASSET — one statement, two empty bays
+   ===================================================================== */
+body.pn-id.pn-pd main#pn-main:has(.di-asset) .di-asset{ text-align:center; }
+body.pn-id.pn-pd main#pn-main:has(.di-asset) .di-asset > p{ font-family:var(--p4-serif); font-size:clamp(32px,3.8vw,56px) !important; line-height:1.12 !important; letter-spacing:-.01em; color:var(--p4-ivory) !important; max-width:22ch !important; margin:0 auto; text-wrap:balance; }
+body.pn-id.pn-pd main#pn-main:has(.di-asset) .di-bays{ display:block; width:min(440px,80%); height:auto; margin:clamp(28px,4vw,48px) auto 0; }
+
+/* =====================================================================
+   02 · THE POSSIBILITY — the outcome photograph beside how it could be used
+   ===================================================================== */
+body.pn-id.pn-pd main#pn-main:has(.di-asset) .di-possible{ margin-top:clamp(28px,3vw,44px); grid-template-columns:minmax(0,7fr) minmax(0,5fr); align-items:start; }
+body.pn-id.pn-pd main#pn-main:has(.di-asset) .di-outcome img{ aspect-ratio:1408/768; }
+body.pn-id.pn-pd main#pn-main:has(.di-asset) .di-outcome .caption{ position:static; padding:18px 0 0; background:none; }
+body.pn-id.pn-pd main#pn-main:has(.di-asset) .di-outcome .caption p{ font-family:var(--p4-serif); font-style:italic; font-size:clamp(22px,1.9vw,28px); line-height:1.3; color:var(--p4-ivory); margin:0; text-shadow:none; max-width:none; }
+body.pn-id.pn-pd main#pn-main:has(.di-asset) .di-use{ padding-top:0 !important; }
+body.pn-id.pn-pd main#pn-main:has(.di-asset) .di-use .dq-use{ padding:0; background:none; border:0; box-shadow:none; margin:0; }
+body.pn-id.pn-pd main#pn-main:has(.di-asset) .di-use .dq-cat{ display:block; font-family:var(--p4-serif); font-size:clamp(32px,3vw,46px); line-height:1.05; letter-spacing:-.01em; text-transform:none; font-weight:400; color:var(--p4-ivory); margin:0 0 20px; }
+body.pn-id.pn-pd main#pn-main:has(.di-asset) .di-use .dq-rows{ list-style:none; margin:0; padding:0; }
+body.pn-id.pn-pd main#pn-main:has(.di-asset) .di-use .dq-rows > li{ margin:0; padding:20px 0 22px; border-top:1px solid var(--p4-line); background:none; }
+body.pn-id.pn-pd main#pn-main:has(.di-asset) .di-use .dq-fact{ display:block; font-family:var(--p4-serif); font-size:clamp(22px,1.8vw,26px); line-height:1.25; color:var(--p4-ivory); }
+body.pn-id.pn-pd main#pn-main:has(.di-asset) .di-use .dq-note{ display:block; margin-top:10px; font-family:var(--p4-sans); font-size:18px; line-height:1.6; color:var(--p4-lime); }
+
+/* =====================================================================
+   03 · THE OPPORTUNITY — two reported figures as type, caveat first
+   ===================================================================== */
+body.pn-id.pn-pd main#pn-main:has(.di-asset) .di-earn .dq-earn{ padding:0; background:none; border:0; box-shadow:none; margin:0; }
+body.pn-id.pn-pd main#pn-main:has(.di-asset) .di-earn .dq-earn > .dq-cat{ display:block; font-family:var(--p4-serif); font-size:clamp(40px,4.6vw,68px); line-height:1.02; letter-spacing:-.015em; text-transform:none; font-weight:400; color:var(--p4-ivory); margin:0 0 14px; }
+body.pn-id.pn-pd main#pn-main:has(.di-asset) .di-earn .dq-earn-lead{ font-family:var(--p4-serif); font-style:italic; font-size:clamp(24px,2.2vw,32px) !important; line-height:1.25; color:var(--p4-lime); margin:0 0 22px; }
+body.pn-id.pn-pd main#pn-main:has(.di-asset) .di-earn .dq-earn-caveat{ display:inline-block; margin:0 0 clamp(26px,3vw,40px); padding:10px 16px; border:1px solid var(--p4-bronze); border-radius:999px; font-family:var(--p4-sans); font-size:16.5px !important; font-weight:600; color:var(--p4-bronze-text) !important; }
+body.pn-id.pn-pd main#pn-main:has(.di-asset) .di-earn .dq-figs{ display:grid; grid-template-columns:1fr 1fr; list-style:none; margin:0; padding:0; border-top:2px solid var(--di-paint); }
+body.pn-id.pn-pd main#pn-main:has(.di-asset) .di-earn .dq-figs > li{ margin:0; padding:clamp(22px,2.6vw,36px) clamp(18px,2.4vw,36px) 0 0; background:none; border:0; }
+body.pn-id.pn-pd main#pn-main:has(.di-asset) .di-earn .dq-figs > li + li{ padding-left:clamp(18px,2.4vw,36px); border-left:1px solid var(--p4-line); }
+body.pn-id.pn-pd main#pn-main:has(.di-asset) .di-earn .dq-fig{ display:block; font-family:var(--p4-serif); font-size:clamp(40px,4.8vw,76px); line-height:1; letter-spacing:-.015em; color:var(--p4-ivory); margin:0 0 14px; }
+body.pn-id.pn-pd main#pn-main:has(.di-asset) .di-earn .dq-src{ display:block; font-family:var(--p4-sans); font-size:17px; line-height:1.55; color:var(--p4-stone); }
+
+/* =====================================================================
+   04 · THE LOCATION QUESTION — the map beside where the demand comes from
+   ===================================================================== */
+body.pn-id.pn-pd main#pn-main:has(.di-asset) .di-location{ display:grid; grid-template-columns:minmax(0,6fr) minmax(0,6fr); gap:clamp(28px,5vw,80px); align-items:center; }
+body.pn-id.pn-pd main#pn-main:has(.di-asset) .di-map-wrap{ background:var(--pd-card); border:var(--pd-edge); border-radius:var(--pd-r); box-shadow:var(--pd-shadow); padding:clamp(16px,2vw,28px); }
+body.pn-id.pn-pd main#pn-main:has(.di-asset) .di-map{ display:block; width:100%; height:auto; }
+body.pn-id.pn-pd main#pn-main:has(.di-asset) .di-demand, body.pn-id.pn-pd main#pn-main:has(.di-asset) .di-demand[open]{ margin:0 !important; padding:0 !important; border:0 !important; background:none !important; box-shadow:none !important; }
+body.pn-id.pn-pd main#pn-main:has(.di-asset) .di-demand::before{ display:none !important; }
+body.pn-id.pn-pd main#pn-main:has(.di-asset) .di-demand > summary{ padding:0 0 18px !important; }
+body.pn-id.pn-pd main#pn-main:has(.di-asset) .di-demand > summary h3{ font-family:var(--p4-serif) !important; font-weight:400 !important; font-size:clamp(36px,3.8vw,56px) !important; line-height:1.04 !important; letter-spacing:-.015em !important; text-transform:none !important; color:var(--p4-ivory) !important; }
+body.pn-id.pn-pd main#pn-main:has(.di-asset) .di-demand > summary .icon{ display:none; }
+body.pn-id.pn-pd main#pn-main:has(.di-asset) .di-demand .faq-a{ background:none !important; border:0 !important; padding:0 !important; font-size:var(--di-text) !important; line-height:1.7 !important; color:var(--p4-lime) !important; max-width:60ch; }
+
+/* =====================================================================
+   05 · THE PRACTICALITIES — three signposts, then the detail
+   ===================================================================== */
+body.pn-id.pn-pd main#pn-main:has(.di-asset) .di-practical .dq-adv{ padding:0; background:none; border:0; box-shadow:none; margin:0 0 clamp(28px,3vw,44px); }
+body.pn-id.pn-pd main#pn-main:has(.di-asset) .di-practical .dq-adv-cat{ display:block; font-family:var(--p4-serif) !important; font-weight:400 !important; font-size:clamp(38px,4.4vw,64px) !important; line-height:1.02; letter-spacing:-.015em !important; text-transform:none !important; color:var(--p4-ivory) !important; margin:0 0 clamp(24px,3vw,36px) !important; }
+body.pn-id.pn-pd main#pn-main:has(.di-asset) .di-practical .dq-adv-cols{ display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:var(--pd-gap); list-style:none; margin:0; padding:0; border:0; background:none; }
+body.pn-id.pn-pd main#pn-main:has(.di-asset) .di-practical .dq-adv-cols > li{ position:relative; padding:30px 28px 30px !important; background:var(--pd-card); border:var(--pd-edge); border-radius:4px 4px var(--pd-r) var(--pd-r); box-shadow:var(--pd-shadow); transform:none !important; }
+body.pn-id.pn-pd main#pn-main:has(.di-asset) .di-practical .dq-adv-cols > li::before{ content:""; position:absolute; left:28px; right:28px; top:0; height:4px; border-left:3px solid var(--di-paint); border-right:3px solid var(--di-paint); border-top:3px solid var(--di-paint); }
+body.pn-id.pn-pd main#pn-main:has(.di-asset) .di-practical .dq-adv-label{ display:block; font-family:var(--p4-sans); font-weight:700; font-size:12.5px; letter-spacing:.2em; text-transform:uppercase; color:var(--p4-bronze-text); margin:0 0 12px; }
+body.pn-id.pn-pd main#pn-main:has(.di-asset) .di-practical .dq-fact{ display:block; font-family:var(--p4-serif); font-size:clamp(23px,1.9vw,28px); line-height:1.18; color:var(--p4-ivory); }
+body.pn-id.pn-pd main#pn-main:has(.di-asset) .di-practical .dq-note{ display:block; margin-top:14px; font-family:var(--p4-sans); font-size:17.5px; line-height:1.55; color:var(--p4-lime); }
+
+/* =====================================================================
+   06 · THE HOMEOWNER DECISION — three checks, each in its own bay
+   ===================================================================== */
+body.pn-id.pn-pd main#pn-main:has(.di-asset) .di-decision > h2{ font-size:clamp(40px,4.4vw,66px); }
+body.pn-id.pn-pd main#pn-main:has(.di-asset) .di-checks{ list-style:none; margin:0 !important; padding:0 !important; display:grid !important; grid-template-columns:1fr !important; gap:14px; border:0 !important; background:none !important; width:auto; max-width:none; }
+@media (min-width:1024px){ body.pn-id.pn-pd main#pn-main:has(.di-asset) .di-decision > h2{ grid-row:1 / span 2; } }
+body.pn-id.pn-pd main#pn-main:has(.di-asset) .di-checks > li{ display:grid; border-top:var(--pd-edge) !important; width:auto; grid-template-columns:52px 1fr; column-gap:20px; margin:0; padding:22px 24px 24px; background:var(--pd-card); border:var(--pd-edge); border-radius:var(--pd-r-sm); box-shadow:var(--pd-shadow); }
+body.pn-id.pn-pd main#pn-main:has(.di-asset) .di-checks .di-tick{ grid-row:1 / span 3; width:46px; height:46px; }
+body.pn-id.pn-pd main#pn-main:has(.di-asset) .di-checks .dq-cat{ font-family:var(--p4-sans); font-weight:700; font-size:12px; letter-spacing:.18em; text-transform:uppercase; color:var(--p4-bronze-text); }
+body.pn-id.pn-pd main#pn-main:has(.di-asset) .di-checks .dq-fact{ display:block; font-family:var(--p4-serif); font-size:clamp(24px,2vw,30px); line-height:1.15; color:var(--p4-ivory); margin:6px 0 6px; }
+body.pn-id.pn-pd main#pn-main:has(.di-asset) .di-checks .dq-note{ display:block; font-family:var(--p4-sans); font-size:18px; line-height:1.6; color:var(--p4-lime); }
+
+/* ---- tablet and phone ---------------------------------------------------------------- */
+@media (max-width:1023px){
+  body.pn-id.pn-pd main#pn-main:has(.di-asset) .di-possible{ grid-template-columns:1fr; }
+  body.pn-id.pn-pd main#pn-main:has(.di-asset) .di-location{ grid-template-columns:1fr; }
+  body.pn-id.pn-pd main#pn-main:has(.di-asset) .di-map-wrap{ max-width:520px; }
+  /* phones: the drawer is collapsible, so its own +/- marker shows */
+  body.pn-id.pn-pd main#pn-main:has(.di-asset) .di-demand > summary{ align-items:center; }
+  body.pn-id.pn-pd main#pn-main:has(.di-asset) .di-demand > summary .icon{ display:block; }
+  body.pn-id.pn-pd main#pn-main:has(.di-asset) .di-demand > summary h3{ font-size:clamp(32px,6vw,44px) !important; }
+  body.pn-id.pn-pd main#pn-main:has(.di-asset) .di-practical .dq-adv-cols{ grid-template-columns:1fr; gap:12px; }
+  body.pn-id.pn-pd main#pn-main:has(.di-asset) .di-chapter{ margin-top:64px; }
+}
+@media (max-width:719px){
+  body.pn-id.pn-pd main#pn-main:has(.di-asset) .di-earn .dq-figs{ grid-template-columns:1fr; }
+  body.pn-id.pn-pd main#pn-main:has(.di-asset) .di-earn .dq-figs > li + li{ padding-left:0; border-left:0; border-top:1px solid var(--p4-line); margin-top:22px; }
+  body.pn-id.pn-pd main#pn-main:has(.di-asset) .di-earn .dq-fig{ font-size:44px; }
+  body.pn-id.pn-pd main#pn-main:has(.di-asset) .di-checks > li{ grid-template-columns:40px 1fr; column-gap:14px; padding:18px 18px 20px; }
+  body.pn-id.pn-pd main#pn-main:has(.di-asset) .di-checks .di-tick{ width:36px; height:36px; }
+  body.pn-id.pn-pd main#pn-main:has(.di-asset) .di-practical .dq-adv-cols > li{ padding:26px 20px 22px !important; }
+  body.pn-id.pn-pd main#pn-main:has(.di-asset) .di-practical .dq-adv-cols > li::before{ left:20px; right:20px; }
+}

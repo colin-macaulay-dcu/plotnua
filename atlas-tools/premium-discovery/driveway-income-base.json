@@ -1,0 +1,79 @@
+{
+ "head": "74ba1eb7a99dbfaa43492a15b5ca201a4e1548cde45645eb6cf7b08f338e0d89",
+ "pre_main": "a500e341e8dbbf48495b6e156039318cc0d2d62e35f48739b957c816b4e5970c",
+ "post_main": "b216eab9137c2107ce347f9972043dd6cecf473441e53a95231a47ecd311ba67",
+ "jsonld": [
+  "1551fdfc107a7d2ccc80cb33fa7065070f91709c244aaa7f1272dbb0565bf56f"
+ ],
+ "blocks": [
+  "In Brief",
+  "An empty driveway can earn money from parking when it is near somewhere people need to reach: an airport, a hospital, a station or a town centre. Irish homeowners have reported around €50 to €65 a week. The income is taxable and Rent-a-Room Relief does not apply; check with your insurer before anyone parks; and no published Irish planning decision yet settles whether letting a driveway is still incidental to a home. If bins take up the space, The Hidden Bins looks at getting them out of the way.",
+  "The Opportunity",
+  "Is your driveway suitable for renting out?",
+  "An empty driveway can have value when it is close to somewhere people need to reach.",
+  "Location",
+  "Near somewhere people need to reach.",
+  "An airport, hospital, station, stadium, town centre or employment area.",
+  "Space",
+  "A genuine off-street parking space.",
+  "Available regularly, at times when you do not need it yourself.",
+  "Access",
+  "Simple to enter, park and leave.",
+  "Straightforward for a driver to use without help.",
+  "What could it earn?",
+  "It depends mainly on local demand.",
+  "These are reported examples, not guaranteed values.",
+  "About €50 a week",
+  "Reported near Dublin Airport.",
+  "€13 a day, or €65 a week",
+  "Reported by a Dublin homeowner, Irish Times 2023.",
+  "How it could be used",
+  "By the day, week or month, depending on local demand.",
+  "Someone working nearby regularly, or shorter stays near an airport, hospital or stadium.",
+  "A space with charging could be worth more to the right driver.",
+  "A commuter or worker with an EV may value charging while the car is parked.",
+  "Before you start",
+  "Tax",
+  "This income is taxable and must be declared.",
+  "Rent-a-Room Relief does not apply.",
+  "Insurance",
+  "Check the arrangement with your insurer.",
+  "Planning",
+  "No published Irish decision we found settles this.",
+  "English guidance on this does not apply in Ireland.",
+  "How an arrangement works",
+  "Through a parking marketplace. You list the space, choose when it is available and set a price. The driver books and pays through the platform, and the platform pays you. YourParkingSpace currently offers this service in Ireland.",
+  "Through a classified ad. Daft.ie and Rent.ie both list parking spaces, but do not handle booking or payment.",
+  "Privately. A direct arrangement with someone who works or lives nearby.",
+  "Charging. A home charger is a separate job: fixed to the house, and it needs an electrician. SEAI offers up to three hundred euro towards one, and you need off-street parking — the grant is once per address, not once per person, so if a previous owner claimed it, it is gone.",
+  "Planning, tax and insurance in detail",
+  "Planning. The exemption that covers a driveway is for a hard surface in the garden forward of the front building line of the house, or to the side of the side building line, used for purposes incidental to the enjoyment of the house as such. Since 2011 that exemption no longer carries the old two-car limit; instead, where the hard surface is 25 square metres or more, or covers more than half of that part of the garden — whichever is the smaller — it has to be built in permeable materials or otherwise let rainwater soak into the ground. Other planning conditions attached to your own property can still apply. We found no published Irish decision that settles whether letting a driveway for payment is still incidental to the enjoyment of a home. We did find related decisions on commercial parking, public parking and work vehicles at homes, but none answers this exact question. A Section 5 Declaration from your local authority is how you get certainty for your own address. In England the government issued guidance that letting a single space normally needs no permission where it causes no nuisance, while turning a garden into a car park does. That is English guidance and it does not apply here.",
+  "Tax. If your net non-PAYE income is under five thousand euro it goes on a Form 12; at five thousand or more you register for self-assessment and file a Form 11. The fourteen-thousand-euro allowance people often assume covers this is Rent-a-Room Relief, and it does not apply to a parking space.",
+  "Insurance. Irish consumer insurance law does not impose a general pre-contract duty to volunteer information beyond answering your insurer’s questions honestly and with reasonable care. But letting other drivers use your driveway could affect how your policy applies, depending on its terms. We found no Irish guidance specifically addressing paid driveway parking at a home. Ask your own insurer, before anyone parks, what they will and will not cover.",
+  "Where the demand comes from",
+  "Dublin Airport’s car parks are regularly fully booked, and the Irish Times reported in 2024 that the overflow was putting pressure on the estates nearby. In 2025, Dublin City Council was considering a pilot scheme to discourage what it called increasingly problematic match day parking on the residential streets around Croke Park. Hospitals, stations and stadiums generate the same pressure on a smaller scale, in a lot of ordinary places.",
+  "Someone parks here while they work nearby. The homeowner earns from the space."
+ ],
+ "links": [
+  "discovery-hidden-bins.html"
+ ],
+ "imgs": [
+  [
+   "assets/img/4a4a1e4b08edaada.jpg",
+   "The same Irish semi-detached house and street, with two cars now parked in the two driveway spaces that stood empty."
+  ]
+ ],
+ "ids": [
+  "pn-main"
+ ],
+ "comments": [
+  "<!-- SEO PHASE 1 (16 Oct 2026) · IN BRIEF. Every fact here is stated\n       further down this page; this only puts the answer first. -->",
+  "<!-- ONE DECISION SECTION. Six cards, 3x2 on desktop, collapsing to 2-up\n       below 900px and 1-up below 720px on the existing .is-three modifier.\n       No new CSS, no new component. -->",
+  "<!-- ============================================================\n         THE DECISION BOARD. The 3x2 grid is retired: these are the same\n         governed strings, redistributed into the hierarchy a homeowner\n         actually decides in -- qualify, see the opportunity, understand the\n         conditions, then read the evidence.\n         ============================================================ -->",
+  "<!-- 1 · QUALIFICATION. Three compact markers on a ruled strip. -->",
+  "<!-- 2 · OPPORTUNITY. Deliberately asymmetric: the earnings evidence is\n         the revelation of this Discovery and carries roughly 62% of the\n         width; the mechanism supports it at roughly 38%. They share one\n         hairline ground so they read as a single feature. -->",
+  "<!-- 3 · ADVISORY BAND. Three things to know before acting, as calm\n         columns rather than a fourth card. No warning colour. -->",
+  "<!-- IMAGE 03 - Outcome. Approved production plate. The homeowner indoors while the\n       visiting car uses the driveway outside. No annotation on this slot. -->"
+ ],
+ "ref": "ce0f130"
+}
