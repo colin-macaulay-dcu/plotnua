@@ -67,6 +67,25 @@ def self_test():
     if check(pages, cfg, yp):
         print("SELF-TEST · the real tree must pass first"); return 1
     L = "discovery-living-in-the-garden.html"
+    if L not in cfg["discoveries"]:
+        # DISC-008 Phase 2 (3 Nov 2026) retired the card on its pilot page (consolidated into the page's closing
+        # decision). The mutations still run, on a fixture: the retired configuration rendered by the builder's
+        # own function and placed where the builder places it, so the guard keeps its proven reach.
+        import importlib.util, tempfile
+        retired = cfg.get("_retired", {}).get(L, {}).get("config")
+        if not retired:
+            print("SELF-TEST · no listed Discovery and no retired configuration to build a fixture from"); return 1
+        cfg = json.loads(json.dumps(cfg)); cfg["discoveries"][L] = retired
+        spec = importlib.util.spec_from_file_location("sg", ROOT / "atlas-tools" / "build-supplier-gallery.py")
+        sg = importlib.util.module_from_spec(spec); spec.loader.exec_module(sg)
+        with tempfile.NamedTemporaryFile("w", suffix=".json", delete=False, encoding="utf-8") as t:
+            json.dump(cfg, t, ensure_ascii=False)
+        sg.TWO_OPTION = Path(t.name)
+        rendered = sg.two_option_html(L)
+        pages = dict(pages)
+        pages[L] = pages[L].replace('<ul class="pn-sg-track"', rendered.strip() + '<ul class="pn-sg-track"', 1)
+        if check(pages, cfg, yp):
+            print("SELF-TEST · the fixture must pass first: " + "; ".join(check(pages, cfg, yp))); return 1
     comp = COMP.findall(pages[L])[0]
     def mut(fn):
         p = dict(pages); c = json.loads(json.dumps(cfg)); y = yp; return fn(p, c, y) or (p, c, y)

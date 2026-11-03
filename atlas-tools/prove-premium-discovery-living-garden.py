@@ -50,20 +50,21 @@ VOID = {"img", "br", "input", "source", "meta", "link", "hr", "wbr", "path", "re
 # Removed: the duplicated upper Journey panel ("What are you considering?") and its continue link; the gallery's
 # two-option card moves to chapter 06 (its copy is kept, except the corrected homework sentence below).
 REMOVED = [
+    # the upper Journey panel, a copy of the closing panel offered earlier in the page
     "What are you considering?",
-    "A home", "Somebody will live there. The residential conditions apply.",
-    "A room", "A garden office, studio, kids’ space, extra room, gym or other non-residential garden space.",
+    "A home Somebody will live there. The residential conditions apply.",
+    "A room A garden office, studio, kids’ space, extra room, gym or other non-residential garden space.",
     "Nothing is bought or reserved here. This is an early property check, not planning permission.",
+    # its "continue" link, which pointed past it
     "Not ready yet? Keep exploring ↓",
-    "See what may be possible at your address now.",
+    # the gallery's two-option card: its "explore yourself" copy and both labels move to chapter 06 verbatim;
+    # its homework sentence ("...options that match your preferences and budget") is retired, because the
+    # Phase 2 brief rules out any matching promise, and its two Journey buttons duplicated the closing panel's
+    "Tell us what you’re looking for. We’ll use our Atlas research to help you find options that match your preferences and budget.",
+    "A garden room →", "A garden home →",
 ]
-# (old, new) visible-text corrections. CR1: the approved homework sentence implied matching to a budget, which
-# the Phase 2 brief rules out; it now uses the closing panel's own existing description of what Atlas does.
-CORR = [
-    ("CR1", "Tell us what you’re looking for. We’ll use our Atlas research to help you find options that match your preferences and budget.",
-     "Atlas starts with your Eircode and asks a few ordinary questions about the garden. Free for homeowners."),
-    ("CR2", "Browse makers and products ↓", "Browse makers and products ↓"),
-]
+REMOVED_LINKS = ["#the-same-building", "#sg-track"]   # targets of the removed continue link and card; both ids remain
+CORR = []
 ADDED = []          # new text blocks (chapter labels, approved new copy); populated below from ADDED_FILE
 ADDED_FILE = os.path.join(ROOT, "atlas-tools", "premium-discovery", "living-garden-added.json")
 ADDED_LINKS = ["#explore-makers", "#discover-your-property", "#planning-conditions", "#maker-guides"]
@@ -166,7 +167,7 @@ def check(src, base):
     have, want = Counter(p.out), Counter(base["blocks"])
     for r in REMOVED:
         want[norm(r)] -= 1
-    for _, old, new in CORR:
+    for _c, old, new in CORR:
         want[norm(old)] -= 1; want[norm(new)] += 1
     for a in added:
         want[norm(a)] += 1
@@ -180,7 +181,7 @@ def check(src, base):
     # L
     links, imgs, ids = set(p.links), set(p.imgs), set(p.ids)
     for l in base["links"]:
-        if l not in links: bad.append("L link lost: " + l)
+        if l not in links and l not in REMOVED_LINKS: bad.append("L link lost: " + l)
     for l in links - set(base["links"]) - set(ADDED_LINKS):
         bad.append("L undeclared link: " + l)
     for i in base["imgs"]:
@@ -210,7 +211,8 @@ def check(src, base):
             i = body.find(anchor)
             if not (pos[3] < i < pos[4]): bad.append("O %s must sit in chapter 04" % anchor)
         dec = body.find('id="discover-your-property"')
-        if not (dec > pos[5] > pos[4]): bad.append("O the decision must be chapter 06, in the closing panel")
+        if not (body.find("</main>") < dec < pos[5] and pos[5] - dec < 4000):
+            bad.append("O the decision must be chapter 06, in the closing panel")
     dec = body[body.find('id="discover-your-property"'):] if 'id="discover-your-property"' in body else ""
     for k in ("Explore yourself", "Let PlotNua do the homework"):
         if k not in dec: bad.append("O route missing from the decision: " + k)
@@ -226,7 +228,7 @@ def check(src, base):
     visible = norm(re.sub(r"<!--.*?-->|<script.*?</script>|<style.*?</style>|<[^>]+>", " ", body, flags=re.S))
     if PLACEHOLDER.search(visible):
         bad.append("F placeholder text published: " + PLACEHOLDER.search(visible).group(0))
-    plan = re.search(r'<figure class="lg-plan".*?</figure>', body, re.S)
+    plan = re.search(r"<figure class=\"[^\"]*\blg-plan\b.*?</figure>", body, re.S)
     if not plan:
         bad.append("F the garden plan is missing")
     elif not re.search(r"illustrative", plan.group(0), re.I) or not re.search(r"not to scale", plan.group(0), re.I):
@@ -241,8 +243,10 @@ def check(src, base):
 
 FAULTS = [
     ("hero start moved to POSSIBLE", lambda s: s.replace('data-start="100"', 'data-start="0"', 1), "S"),
-    ("a planning fact edited", lambda s: s.replace("0.6", "0.5", 1), "C"),
-    ("a price block removed", lambda s: re.sub(r"<p>[^<]*€[^<]*</p>", "", s, count=1), "C"),
+    ("a planning fact edited", lambda s: s.replace("The planning minimum is 0.6&nbsp;m", "The planning minimum is 0.5&nbsp;m", 1), "C"),
+    ("a price figure edited", lambda s: s.replace("245 garden-room products", "246 garden-room products", 1), "C"),
+    ("a price block removed", lambda s: re.sub(r"<li><span class=\"dq-fact\">92 do not publish.*?</li>", "", s, count=1, flags=re.S), "C"),
+    ("a notice dropped", lambda s: s.replace("Separately, tell Building Control.", "", 1), "C"),
     ("an Atlas route removed", lambda s: s.replace('href="your-plot.html?discovery=residential"', 'href="your-plot.html"'), "L"),
     ("the explorer anchor renamed", lambda s: s.replace('id="explore-makers"', 'id="makers"', 1), "L"),
     ("a supplier link changed", lambda s: s.replace('href="https://yardbox.co.uk/"', 'href="https://example.com/"', 1), "L"),
