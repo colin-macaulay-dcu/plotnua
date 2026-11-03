@@ -9464,6 +9464,51 @@
         "date": "2026-11-03",
         "subject": "PlotArt Mobile Gallery public work-in-progress release"
       }
+    },
+    {
+      "asset": "assets/img/f0e99db16cefc470.jpg",
+      "sha256": "d0e24c8ac862a239efdeba666d784cc130ae7066889800e07183c2002346dd48",
+      "bytes": 1051168,
+      "pixels": [
+        1408,
+        768
+      ],
+      "class": "AI_ILLUSTRATION",
+      "what": "Discovery illustration (discovery-house-as-power-station.html; disc026-compute-readiness-check.html)",
+      "depicts_named_product": false,
+      "depicts_named_organisation": false,
+      "origin": {
+        "basis": "C2PA_EMBEDDED",
+        "evidence": "Embedded C2PA manifest, read with c2pa-python (3 Nov 2026; governance/c2pa-source-credentials/deployed-f0e99db16cefc470.jpg.c2pa.json): issuer Google LLC (Google Media Processing Services), signed 2026-08-28T11:55:20+00:00, generator Google C2PA Core Generator Library; actions: Created by Google Generative AI., then edited (imperceptible watermark); digital source type trainedAlgorithmicMedia; validation: standard untrusted-certificate notice only.",
+        "declared_under": "Governance 2.0, Rule 2 (30 Oct 2026); DISC-026 Phase 1B (founder instruction, 3 Nov 2026)"
+      },
+      "generated": {
+        "tool": "Google LLC generative AI, per the file's own signed C2PA credential",
+        "date": "2026-08-28"
+      },
+      "prompt_status": "UNAVAILABLE",
+      "reference_disclosure": {
+        "status": "CREDENTIALED",
+        "statement": "The credential records 5 input image(s), each carrying its own signed credential. PlotNua makes no further claim about them."
+      },
+      "permitted_surfaces": [
+        "discovery"
+      ],
+      "content_credentials": {
+        "embeds_c2pa": true
+      },
+      "introduced": {
+        "commit": "794aeab",
+        "date": "2026-09-01",
+        "subject": "DISC-026 — The House as a Power Station"
+      },
+      "recovered_evidence": {
+        "master_file": "Images/Discoveries/DISC-026 The House as a Power Station/DISC-026 - Image 05 - The House as a Power Station - The Future.jpeg",
+        "discovery_folder": "DISC-026 The House as a Power Station",
+        "match": "perceptual, 16x16 average hash, Hamming 0 of 256",
+        "establishes": "which picture this is and which Discovery it served",
+        "does_not_establish": "what made the picture"
+      }
     }
   ],
   "legacy_undeclared": [
@@ -11644,32 +11689,6 @@
       "recovered_evidence": {
         "master_file": "Images/Discoveries/DISC-005 Home Exchange/disc-005-irish-home-slider.jpeg",
         "discovery_folder": "DISC-005 Home Exchange",
-        "match": "perceptual, 16x16 average hash, Hamming 0 of 256",
-        "establishes": "which picture this is and which Discovery it served",
-        "does_not_establish": "what made the picture"
-      }
-    },
-    {
-      "asset": "assets/img/f0e99db16cefc470.jpg",
-      "sha256": "d0e24c8ac862a239efdeba666d784cc130ae7066889800e07183c2002346dd48",
-      "status": "LEGACY_UNDECLARED",
-      "bytes": 1051168,
-      "pixels": [
-        1408,
-        768
-      ],
-      "referenced_by": [
-        "disc026-compute-readiness-check.html",
-        "discovery-house-as-power-station.html"
-      ],
-      "introduced": {
-        "commit": "794aeab",
-        "date": "2026-09-01",
-        "subject": "DISC-026 — The House as a Power Station"
-      },
-      "recovered_evidence": {
-        "master_file": "Images/Discoveries/DISC-026 The House as a Power Station/DISC-026 - Image 05 - The House as a Power Station - The Future.jpeg",
-        "discovery_folder": "DISC-026 The House as a Power Station",
         "match": "perceptual, 16x16 average hash, Hamming 0 of 256",
         "establishes": "which picture this is and which Discovery it served",
         "does_not_establish": "what made the picture"
