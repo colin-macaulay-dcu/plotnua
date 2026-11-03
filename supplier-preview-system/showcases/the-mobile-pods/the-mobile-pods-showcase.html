@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex">
+<title>The Mobile Pods &mdash; PlotNua supplier showcase (private staging)</title>
+<!-- PRIVATE STAGING PAGE. Built by supplier-preview-system/build-mobile-pods-showcase.py. Not linked, not in the
+     sitemap, not published. Supplier photographs are under a publication hold (showcase.json). Do not hand-edit. -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Hanken+Grotesk:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="../../../assets/identity/pn-identity.css">
+<link rel="stylesheet" href="../../../assets/identity/pn-premium-discovery.css">
+<style>
+/* The Mobile Pods showcase - scoped to .mp. Uses the site's --p4-* identity tokens. Supplier
+   images are shown WHOLE: natural aspect ratio, never cropped, filtered, rounded or overlaid. */
+.mp{ --ink:var(--p4-ivory,#F2EBE0); --soft:var(--p4-lime,#E7DED0); --stone:var(--p4-stone,#C2BDB5);
+  --bronze:var(--p4-bronze-text,#B39272); --line:var(--p4-line2,#4A4B4F); --card:var(--p4-deep,#2C2E30);
+  --well:var(--p4-well,#2D2E31); --serif:var(--p4-serif,'Instrument Serif',Georgia,serif);
+  --sans:var(--p4-sans,'Hanken Grotesk',system-ui,sans-serif);
+  color:var(--soft); font-family:var(--sans); }
+.mp *{ box-sizing:border-box; }
+.mp-w{ max-width:1240px; margin:0 auto; padding:0 clamp(18px,3.4vw,44px); }
+.mp-hold{ border-bottom:1px solid var(--line); font-size:12.5px; letter-spacing:.04em; color:var(--stone); }
+.mp-hold .mp-w{ padding-top:12px; padding-bottom:12px; display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
+.mp-hold b{ font-weight:700; letter-spacing:.16em; text-transform:uppercase; font-size:11px; color:var(--bronze); }
+.mp-k{ margin:0 0 18px; font-size:11.5px; font-weight:700; letter-spacing:.2em; text-transform:uppercase; color:var(--bronze); }
+.mp-hero{ padding:clamp(40px,7vw,96px) 0 clamp(36px,5vw,72px); }
+.mp-hero .mp-w{ display:grid; grid-template-columns:minmax(0,5fr) minmax(0,6fr); gap:clamp(28px,5vw,80px); align-items:center; }
+.mp-h1{ font-family:var(--serif); font-weight:400; color:var(--ink); font-size:clamp(44px,6.4vw,92px); line-height:1.02; letter-spacing:-.01em; margin:0 0 22px; }
+.mp-lede{ font-size:clamp(17px,1.5vw,20px); line-height:1.6; max-width:34ch; margin:0 0 28px; color:var(--ink); }
+.mp-meta{ list-style:none; margin:0; padding:18px 0 0; border-top:1px solid var(--line); display:flex; flex-wrap:wrap; gap:8px 26px; font-size:13.5px; color:var(--stone); }
+.mp-fig{ margin:0; }
+.mp-fig img{ display:block; width:100%; height:auto; background:var(--well); }
+.mp-hero .mp-fig img{ max-height:78vh; width:auto; max-width:100%; margin-left:auto; }
+.mp-cap{ margin:10px 0 0; font-size:12.5px; line-height:1.5; color:var(--stone); display:flex; gap:10px; flex-wrap:wrap; }
+.mp-cap .mp-kind{ font-weight:700; letter-spacing:.14em; text-transform:uppercase; font-size:10.5px; color:var(--bronze); padding-top:2px; }
+.mp-cap a{ color:inherit; text-decoration:underline; text-decoration-color:var(--line); text-underline-offset:3px; }
+.mp-hero .mp-cap{ justify-content:flex-end; }
+.mp-sec{ padding:clamp(48px,7vw,104px) 0; border-top:1px solid var(--line); }
+.mp-h2{ font-family:var(--serif); font-weight:400; color:var(--ink); font-size:clamp(32px,4vw,54px); line-height:1.08; margin:0 0 18px; }
+.mp-p{ font-size:17px; line-height:1.75; max-width:62ch; margin:0; }
+.mp-head{ display:grid; grid-template-columns:minmax(0,5fr) minmax(0,6fr); gap:clamp(20px,5vw,80px); align-items:end; margin-bottom:clamp(30px,4vw,56px); }
+/* the collection: masonry by columns, so every photograph keeps its own shape */
+.mp-col{ columns:3 300px; column-gap:clamp(16px,2vw,28px); }
+.mp-col .mp-fig{ break-inside:avoid; margin:0 0 clamp(26px,3vw,40px); }
+/* models */
+.mp-models{ display:grid; gap:clamp(18px,2vw,28px); }
+.mp-model{ display:grid; grid-template-columns:minmax(0,7fr) minmax(0,5fr); gap:clamp(20px,4vw,56px); background:var(--card); border:1px solid var(--line); border-radius:24px; padding:clamp(22px,3.4vw,44px); }
+.mp-model.no-plan{ grid-template-columns:1fr; }
+.mp-model h3{ font-family:var(--serif); font-weight:400; color:var(--ink); font-size:clamp(30px,3.2vw,42px); margin:0 0 6px; line-height:1.1; }
+.mp-model .mp-kind2{ margin:0 0 16px; font-size:11.5px; font-weight:700; letter-spacing:.18em; text-transform:uppercase; color:var(--bronze); }
+.mp-model .mp-sum{ font-size:16.5px; line-height:1.65; margin:0 0 22px; max-width:56ch; color:var(--ink); }
+.mp-spec{ margin:0; display:grid; grid-template-columns:minmax(110px,150px) 1fr; border-top:1px solid var(--line); }
+.mp-spec dt, .mp-spec dd{ padding:11px 0; border-bottom:1px solid var(--line); margin:0; font-size:14.5px; line-height:1.55; }
+.mp-spec dt{ font-size:11px; font-weight:700; letter-spacing:.14em; text-transform:uppercase; color:var(--stone); padding-top:14px; padding-right:14px; }
+.mp-src{ margin:14px 0 0; font-size:12.5px; color:var(--stone); }
+.mp-src a{ color:inherit; }
+.mp-plan{ align-self:start; background:#F4F2EE; border-radius:14px; padding:10px; }
+.mp-plan img{ background:transparent; }
+.mp-plan .mp-cap{ color:#55565A; padding:0 4px 2px; }
+.mp-plan .mp-cap .mp-kind{ color:#7A6248; }
+.mp-notes{ display:grid; grid-template-columns:1fr 1fr; gap:clamp(18px,3vw,44px); margin-top:clamp(28px,3vw,44px); }
+.mp-note{ border-top:1px solid var(--line); padding-top:16px; }
+.pn-pd .mp .mp-note h3{ margin:0 0 8px; font-family:var(--sans); line-height:1.4; font-size:11.5px; font-weight:700; letter-spacing:.18em; text-transform:uppercase; color:var(--bronze); }
+.mp-note p{ margin:0; font-size:15px; line-height:1.7; }
+.mp-also{ margin-top:22px; font-size:15px; color:var(--stone); }
+/* the guided route reuses the Discovery two-option component (pn-two-option.css) as-is */
+.mp-route .pn-two{ max-width:none; }
+.mp-fine{ margin:26px 0 0; font-size:13.5px; line-height:1.7; color:var(--stone); max-width:78ch; }
+.mp-rec{ padding:34px 0 64px; border-top:1px solid var(--line); font-size:13.5px; line-height:1.7; color:var(--stone); }
+.mp-rec p{ margin:0 0 6px; max-width:80ch; }
+.mp-rec a{ color:inherit; }
+@media (max-width:900px){
+  .mp-hero .mp-w, .mp-head, .mp-model, .mp-notes{ grid-template-columns:1fr; }
+  .mp-hero .mp-fig img{ max-height:none; width:100%; }
+  .mp-hero .mp-cap{ justify-content:flex-start; }
+}
+@media (max-width:560px){ .mp-spec{ grid-template-columns:1fr; } .mp-spec dt{ border-bottom:0; padding-bottom:0; } }
+</style>
+<link rel="stylesheet" href="../../../assets/components/pn-two-option.css?v=1">
+</head>
+<body class="pn-id pn-id--dark pn-pd">
+<main id="pn-main" class="mp">
+<div class="mp-hold"><div class="mp-w"><b>Private staging</b><span>Not published. Supplier photographs are held from plotnua.ie until written publication permission is recorded.</span></div></div>
+
+<section class="mp-hero" aria-labelledby="mp-h1"><div class="mp-w">
+  <div>
+    <p class="mp-k">Supplier showcase &middot; Living in the Garden</p>
+    <h1 class="mp-h1" id="mp-h1">The Mobile Pods</h1>
+    <p class="mp-lede">Timber-frame garden pods and compact garden homes, designed and built to order in Ireland — from a 21 m² studio with its own kitchen and shower room to bespoke one-off builds, including pods on wheels.</p>
+    <ul class="mp-meta" role="list"><li>Co. Meath</li><li>Timber-frame pods and garden homes</li><li>Built to order</li></ul>
+  </div>
+  <figure class="mp-fig"><img src="https://themobilepods.ie/wp-content/uploads/2026/10/IMG_5074-scaled.jpeg" alt="A dark standing-seam metal garden pod with a long glazed front, set behind a lawn and a planted border, with houses beyond." width="1200" height="1600" loading="eager" fetchpriority="high" decoding="async" referrerpolicy="no-referrer" data-pn-slot="mp-01-garden-pod-standing-seam" data-pn-origin="https://themobilepods.ie/wp-content/uploads/2026/10/IMG_5074-scaled.jpeg"><figcaption class="mp-cap"><span class="mp-kind">Photograph</span><span>Standing-seam metal cladding and a fully glazed front, set into a planted back garden. <a href="https://themobilepods.ie/?utm_source=plotnua&amp;utm_medium=referral&amp;utm_campaign=supplier-showcase" rel="noopener" target="_blank">Photo: The Mobile Pods</a></span></figcaption></figure>
+</div></section>
+
+<section class="mp-sec" id="collection" aria-labelledby="mp-col-h"><div class="mp-w">
+  <div class="mp-head"><div><p class="mp-k">The collection</p><h2 class="mp-h2" id="mp-col-h">Built, delivered, lived in.</h2></div>
+  <p class="mp-p">The Mobile Pods build fully insulated timber-frame pods that arrive turnkey: kitchen, shower room, flooring and finishes in place, ready to connect. Two standard models set the starting point; most clients then change the windows, cladding, layout and finish.</p></div>
+  <div class="mp-col"><figure class="mp-fig"><img src="https://themobilepods.ie/wp-content/uploads/2026/10/IMG_1512-scaled.jpeg" alt="A charred-timber pod with a glazed gable and full-height glazing, opening onto a timber deck with a bistro table in a leafy garden." width="1200" height="1600" loading="lazy" decoding="async" referrerpolicy="no-referrer" data-pn-slot="mp-02-charred-timber-deck" data-pn-origin="https://themobilepods.ie/wp-content/uploads/2026/10/IMG_1512-scaled.jpeg"><figcaption class="mp-cap"><span class="mp-kind">Photograph</span><span>Burnt-timber cladding, a glazed gable and a deck that steps down to the lawn. <a href="https://themobilepods.ie/?utm_source=plotnua&amp;utm_medium=referral&amp;utm_campaign=supplier-showcase" rel="noopener" target="_blank">Photo: The Mobile Pods</a></span></figcaption></figure><figure class="mp-fig"><img src="https://themobilepods.ie/wp-content/uploads/2026/10/IMG_9981.webp" alt="A dark timber pod at dusk, with festoon lights along its glazed gable and a railed deck with folding chairs." width="1000" height="1333" loading="lazy" decoding="async" referrerpolicy="no-referrer" data-pn-slot="mp-03-dusk-festoon-deck" data-pn-origin="https://themobilepods.ie/wp-content/uploads/2026/10/IMG_9981.webp"><figcaption class="mp-cap"><span class="mp-kind">Photograph</span><span>At dusk: a raised, railed deck and a gable lit from within. <a href="https://themobilepods.ie/?utm_source=plotnua&amp;utm_medium=referral&amp;utm_campaign=supplier-showcase" rel="noopener" target="_blank">Photo: The Mobile Pods</a></span></figcaption></figure><figure class="mp-fig"><img src="https://themobilepods.ie/wp-content/uploads/2026/10/IMG_6041.jpeg" alt="The glazed gable front of a dark timber pod, its French doors opening onto a deck with a table and two glasses, fields beyond." width="1440" height="1440" loading="lazy" decoding="async" referrerpolicy="no-referrer" data-pn-slot="mp-04-glazed-gable-deck" data-pn-origin="https://themobilepods.ie/wp-content/uploads/2026/10/IMG_6041.jpeg"><figcaption class="mp-cap"><span class="mp-kind">Photograph</span><span>French doors and a glazed gable opening onto open countryside. <a href="https://themobilepods.ie/?utm_source=plotnua&amp;utm_medium=referral&amp;utm_campaign=supplier-showcase" rel="noopener" target="_blank">Photo: The Mobile Pods</a></span></figcaption></figure><figure class="mp-fig"><img src="https://themobilepods.ie/wp-content/uploads/2026/10/IMG_9960-scaled.jpeg" alt="Inside a pod: French doors and a glazed gable look out over a deck, beside a sofa and a timber breakfast bar." width="1600" height="1200" loading="lazy" decoding="async" referrerpolicy="no-referrer" data-pn-slot="mp-06-interior-living-gable" data-pn-origin="https://themobilepods.ie/wp-content/uploads/2026/10/IMG_9960-scaled.jpeg"><figcaption class="mp-cap"><span class="mp-kind">Photograph</span><span>Inside, the gable glazing frames the view from the sofa. <a href="https://themobilepods.ie/?utm_source=plotnua&amp;utm_medium=referral&amp;utm_campaign=supplier-showcase" rel="noopener" target="_blank">Photo: The Mobile Pods</a></span></figcaption></figure><figure class="mp-fig"><img src="https://themobilepods.ie/wp-content/uploads/2026/10/IMG_9954-scaled.jpeg" alt="Inside a pod: a freestanding bath beneath a long picture window, with a shower room through the door behind." width="1200" height="1600" loading="lazy" decoding="async" referrerpolicy="no-referrer" data-pn-slot="mp-07-interior-bath" data-pn-origin="https://themobilepods.ie/wp-content/uploads/2026/10/IMG_9954-scaled.jpeg"><figcaption class="mp-cap"><span class="mp-kind">Photograph</span><span>A freestanding bath under a picture window, with the shower room beyond. <a href="https://themobilepods.ie/?utm_source=plotnua&amp;utm_medium=referral&amp;utm_campaign=supplier-showcase" rel="noopener" target="_blank">Photo: The Mobile Pods</a></span></figcaption></figure><figure class="mp-fig"><img src="https://themobilepods.ie/wp-content/uploads/2026/10/IMG_4985-scaled.jpeg" alt="Inside a pod: a vaulted white interior with two roof windows, a dark fitted kitchen and a herringbone floor." width="1200" height="1600" loading="lazy" decoding="async" referrerpolicy="no-referrer" data-pn-slot="mp-08-interior-kitchen-rooflights" data-pn-origin="https://themobilepods.ie/wp-content/uploads/2026/10/IMG_4985-scaled.jpeg"><figcaption class="mp-cap"><span class="mp-kind">Photograph</span><span>A vaulted interior with roof windows and a full-length fitted kitchen. <a href="https://themobilepods.ie/?utm_source=plotnua&amp;utm_medium=referral&amp;utm_campaign=supplier-showcase" rel="noopener" target="_blank">Photo: The Mobile Pods</a></span></figcaption></figure><figure class="mp-fig"><img src="https://themobilepods.ie/wp-content/uploads/2026/10/IMG_9406.jpeg" alt="A charred-timber pod built on a twin-axle trailer chassis, photographed in an open yard." width="1600" height="1200" loading="lazy" decoding="async" referrerpolicy="no-referrer" data-pn-slot="mp-05-pod-on-wheels" data-pn-origin="https://themobilepods.ie/wp-content/uploads/2026/10/IMG_9406.jpeg"><figcaption class="mp-cap"><span class="mp-kind">Photograph</span><span>Pods on wheels: the same timber-frame build on a trailer chassis. <a href="https://themobilepods.ie/?utm_source=plotnua&amp;utm_medium=referral&amp;utm_campaign=supplier-showcase" rel="noopener" target="_blank">Photo: The Mobile Pods</a></span></figcaption></figure></div>
+</div></section>
+
+<section class="mp-sec" id="models" aria-labelledby="mp-mod-h"><div class="mp-w">
+  <div class="mp-head"><div><p class="mp-k">The models</p><h2 class="mp-h2" id="mp-mod-h">Two starting points, then yours.</h2></div>
+  <p class="mp-p">The specifications below are the supplier&rsquo;s own, as published on its website. PlotNua has not changed or added to them.</p></div>
+  <div class="mp-models"><article class="mp-model" aria-label="Deluxe21"><div><h3>Deluxe21</h3><p class="mp-kind2">Turnkey garden home</p><p class="mp-sum">A single-storey 21 m² pod with an open living space, a separate sleeping room and a full shower room.</p><dl class="mp-spec"><dt>Footprint</dt><dd>3.5 m × 6 m</dd><dt>Floor area</dt><dd>21 m²</dd><dt>Insulation</dt><dd>100 mm, described as suitable for year-round use</dd><dt>Cladding</dt><dd>Burnt wood or metal</dd><dt>Glazing</dt><dd>A 2 m × 3 m window with integrated doors, plus a full-glass entrance door</dd><dt>Inside</dt><dd>Plasterboard or wood-clad walls; kitchen up to 2 m with appliances; shower room with toilet, sink and ventilation; 50 L electric water heater; electric towel warmer</dd><dt>Included</dt><dd>Professional architectural drawings and a 3D visualisation</dd><dt>Published price</dt><dd>From €40,406 inc. VAT (turnkey), as published by the supplier</dd></dl><p class="mp-src">As published by The Mobile Pods &middot; checked 03 Nov 2026</p></div><div class="mp-plan"><figure class="mp-fig"><img src="https://themobilepods.ie/wp-content/uploads/2023/07/deluxe21-768x768.png" alt="Floor plan of the Deluxe21: a 3.5 m by 6 m pod with an 11.5 m² living area, a 5 m² bedroom and a 2.5 m² shower room." width="768" height="768" loading="lazy" decoding="async" referrerpolicy="no-referrer" data-pn-slot="mp-p1-deluxe21-plan" data-pn-origin="https://themobilepods.ie/wp-content/uploads/2023/07/deluxe21-768x768.png"><figcaption class="mp-cap"><span class="mp-kind">Floor plan</span><span>Deluxe21 floor plan. <a href="https://themobilepods.ie/?utm_source=plotnua&amp;utm_medium=referral&amp;utm_campaign=supplier-showcase" rel="noopener" target="_blank">Photo: The Mobile Pods</a></span></figcaption></figure></div></article><article class="mp-model" aria-label="Deluxe25+"><div><h3>Deluxe25+</h3><p class="mp-kind2">Turnkey garden home with loft</p><p class="mp-sum">A longer 24.5 m² pod that adds stairs to a loft level above the sleeping and shower rooms.</p><dl class="mp-spec"><dt>Footprint</dt><dd>3.5 m × 7 m</dd><dt>Floor area</dt><dd>24.5 m², plus a loft</dd><dt>Insulation</dt><dd>100 mm, described as comfortable in all seasons</dd><dt>Cladding</dt><dd>Burnt wood or metal</dd><dt>Glazing</dt><dd>A 2 m × 3 m window with integrated doors, plus a full-glass entrance door</dd><dt>Inside</dt><dd>Plasterboard or wood-clad walls; kitchen up to 2 m with appliances; flooring on both levels; stairs to the loft; shower room with toilet, sink and ventilation; 50 L electric water heater; electric towel warmer</dd><dt>Included</dt><dd>Professional architectural drawings and a 3D visualisation</dd><dt>Published price</dt><dd>From €48,152.37 inc. VAT (turnkey), as published by the supplier</dd></dl><p class="mp-src">As published by The Mobile Pods &middot; checked 03 Nov 2026</p></div><div class="mp-plan"><figure class="mp-fig"><img src="https://themobilepods.ie/wp-content/uploads/2023/08/deluxe25-768x768.png" alt="Floor plan of the Deluxe25+: a 3.5 m by 7 m pod with a 17 m² living area, 4 m² and 3 m² rooms below, and a 7 m² loft." width="768" height="768" loading="lazy" decoding="async" referrerpolicy="no-referrer" data-pn-slot="mp-p2-deluxe25plus-plan" data-pn-origin="https://themobilepods.ie/wp-content/uploads/2023/08/deluxe25-768x768.png"><figcaption class="mp-cap"><span class="mp-kind">Floor plan</span><span>Deluxe25+ floor plan, with the loft level. <a href="https://themobilepods.ie/?utm_source=plotnua&amp;utm_medium=referral&amp;utm_campaign=supplier-showcase" rel="noopener" target="_blank">Photo: The Mobile Pods</a></span></figcaption></figure></div></article><article class="mp-model no-plan" aria-label="Custom builds"><div><h3>Custom builds</h3><p class="mp-kind2">Designed to order</p><p class="mp-sum">One-off pods designed around the site and the brief — studios, offices, relaxation rooms, extensions and compact homes.</p><dl class="mp-spec"><dt>Structure</dt><dd>C24 impregnated, calibrated timber, cut on CNC machinery</dd><dt>Design</dt><dd>Fully customisable design, finishes and features</dd><dt>To start</dt><dd>A free consultation and 3D design preview from the supplier</dd><dt>Price</dt><dd>Not published; quoted per design</dd></dl><p class="mp-src">As published by The Mobile Pods &middot; checked 03 Nov 2026</p></div></article></div>
+  <p class="mp-also">The Mobile Pods also build saunas, hot tubs and cold-water tubs to order (no models or prices published).</p>
+  <div class="mp-notes">
+    <div class="mp-note"><h3>What the price covers</h3><p>Published starting prices exclude foundations (ground screws, concrete poles, slab or blocks, depending on the soil), transport to the site and connection to water, sewage and electricity. Changes to windows, finishes or layout can change the price.</p></div>
+    <div class="mp-note"><h3>Planning</h3><p>The supplier&#x27;s pages state that no building permit is required up to 25 m². Whether planning permission is needed depends on how the pod will be used and where it sits: Ireland&#x27;s exemption for garden buildings does not extend to use as a separate home. Check your plans with your local authority before you commit.</p></div>
+  </div>
+</div></section>
+
+<section class="mp-sec mp-route" id="enquire" aria-labelledby="mp-en-h"><div class="mp-w">
+  <div class="mp-head"><div><p class="mp-k">Next step</p><h2 class="mp-h2" id="mp-en-h">Is a pod right for your plot?</h2></div>
+  <p class="mp-p">Before you contact any maker, PlotNua can help you work out what your garden can take and which options fit how you&rsquo;d use it. It&rsquo;s free.</p></div>
+  <div class="pn-two" role="group" aria-label="Two ways to explore">
+    <div class="pn-two-opt"><p class="pn-two-k">Explore yourself</p><p class="pn-two-t">Compare The Mobile Pods with other garden-home and garden-room makers on PlotNua, side by side.</p>
+      <a class="pn-two-a" href="https://plotnua.ie/discovery-living-in-the-garden.html#explore-makers">Browse makers and products <span aria-hidden="true">&rarr;</span></a></div>
+    <div class="pn-two-opt is-help"><p class="pn-two-k">Let PlotNua do the homework</p><p class="pn-two-t">Tell us what you&rsquo;re looking for. We&rsquo;ll use our Atlas research to help you find options that match your preferences and budget.</p>
+      <ul class="pn-two-btns" role="list"><li><a class="pn-two-b" href="https://plotnua.ie/your-plot.html?discovery=residential&amp;via=the-mobile-pods">A garden home <span aria-hidden="true">&rarr;</span></a></li><li><a class="pn-two-b" href="https://plotnua.ie/your-plot.html?discovery=garden-room&amp;via=the-mobile-pods">A garden room <span aria-hidden="true">&rarr;</span></a></li></ul></div>
+  </div>
+  <p class="mp-fine">PlotNua is free for homeowners. Inclusion here is not a recommendation, there is no paid placement, and recommendations cannot be bought.</p>
+</div></section>
+
+<footer class="mp-rec"><div class="mp-w">
+  <p>Photography and floor plans: The Mobile Pods, from <a href="https://themobilepods.ie/?utm_source=plotnua&amp;utm_medium=referral&amp;utm_campaign=supplier-showcase" rel="noopener" target="_blank">themobilepods.ie</a>. The supplier keeps ownership of its imagery.</p>
+  <p>Product details checked against the supplier&rsquo;s website on 3 November 2026. Prices and specifications can change; confirm them with the supplier.</p>
+</div></footer>
+</main>
+</body>
+</html>
