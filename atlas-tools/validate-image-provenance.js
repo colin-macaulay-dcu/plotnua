@@ -121,7 +121,8 @@ const FOUNDER_ATTESTED_GRP = {
    founder approval 26 Oct 2026). Its master is the founder's ChatGPT image, whose
    prompt is unavailable and whose reference inputs are not recorded, so the same
    founder-attested form is the only truthful record. ONLY these eighteen files (hashes updated 2 Nov 2026 for the
-   founder-approved Option A re-grade, PN-FDR-2026-11-02-H6-REGRADE: same files, same masters, colour only),
+   founder-approved Option A re-grade, PN-FDR-2026-11-02-H6-REGRADE: same files, same masters, colour only; the two
+   Garden Retreat encodings again on 3 Nov 2026 for the static plume removal, PN-FDR-2026-11-03-H6-LETTERING-SMOKE),
    and ONLY on the homepage. Not a way to declare future images. */
 const FOUNDER_ATTESTED_H6 = {
   decision: 'PN-FDR-2026-10-26-H6-HOME',
@@ -132,8 +133,8 @@ const FOUNDER_ATTESTED_H6 = {
     '3218ad9d30407a7a6298630557d71394710eaa759585c78cb35914ae32ed6e19',
     '0098fe2ca32da65eba27338f066f20ca036d94a9d4af6866679fc4edebd021a2',
     'c1d719bbff72e55be282c0a625c1693dbab969333dac1c308365a5b943b523f0',
-    'd047388fd8cf09c553e4112e5caab0f7dd6ababa5f32e5f229c494f0629887d6',
-    'f6526703f13c0ccf1e52e53fa6438f7d9ad782713d900024d21b037547be3cae',
+    '7de0586b1ff6873c9700a98ef32116107f9f503b58cdab95fb8a436dbf57d3fa',
+    '98ead368243c56578c775deea999ea3c1b2a48729d170c2674fa29d9f224cd32',
     '97672871786ddf96970af4e4a07364b0ec9d550329b1698ec416f2cf760fa1fa',
     '99696fba6e5f1f9c4241f50ef256be862b7d49d45fe17cdae1e4078b6c1786b9',
     'e231803124019d83890483bbf3e36f01ce5eeb73f181d2ef233f6f46e1e8a431',

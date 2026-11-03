@@ -138,7 +138,7 @@ PHASE4_REVEAL_PRELOAD = ('<link rel="preload" as="image" type="image/avif" '
 # H6 (26 Oct 2026) replaces the Possibility Reveal: the homepage LCP is the H6 empty
 # garden, preloaded as AVIF from the component's own encodings (build-h6-homepage.py).
 H6_PRELOAD = ('<link rel="preload" as="image" type="image/avif" '
-              'imagesrcset="assets/h6/img/H6-garden-base-v6-960.avif?v=20261102 960w, ')   # cache version: build-h6-homepage.py IMG_V
+              'imagesrcset="assets/h6/img/H6-garden-base-v6-960.avif?v=20261103 960w, ')   # cache version: build-h6-homepage.py IMG_V
 
 # SEO-C1.3 (20 Oct 2026): the description serves the page's commercial role as
 # well as planning (founder-approved wording). LITG_DESC_V1 is the 16 Oct text

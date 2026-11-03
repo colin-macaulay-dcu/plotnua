@@ -282,3 +282,39 @@
 /* readability (25 Oct, 22:47): longest captions never cut off; desktop switch labels at 14 px */
 .h6p-caption.is-on{max-height:900px}
 @media (min-width:701px){ .h6p-sw{font-size:14px} }
+
+/* ---------- 3 Nov 2026: the lawn lettering, restored a touch quieter for the Natural Irish Evening grade ----------
+   The approved Version B render is unchanged; only its presentation is softer (no image edit). */
+.h6p-letter#h6p-letter{filter:saturate(.72) brightness(.95)}
+.h6p-letter#h6p-letter:not(.is-off){opacity:.86}
+.h6p-letter#h6p-letter-shadow:not(.is-off){opacity:.72}
+
+/* ---------- 3 Nov 2026: wood-fired hot tub chimney smoke (Garden Retreat) ----------
+   Ten soft puffs rise from the chimney cap opening (picture pixels 1650, 474), drift and fade. Drawn inside the camera,
+   so it zooms and pans with the picture. Shown only while the Garden Retreat layer is on; paused otherwise; none under
+   reduced motion. No image is involved. */
+.h6p-smoke{position:absolute;left:97.77%;top:49.4%;width:1.25%;aspect-ratio:1;pointer-events:none;opacity:0;transition:opacity 1.2s ease}
+.h6p-ov[data-d="garden-retreat"].is-on~.h6p-smoke{opacity:1}
+.h6p-puff{position:absolute;inset:0;display:block;border-radius:50%;
+  background:radial-gradient(circle at 50% 55%,rgba(222,218,212,.85) 0%,rgba(212,208,203,.48) 38%,rgba(205,201,197,0) 70%);
+  filter:blur(1.5px);opacity:0;transform-origin:50% 50%;will-change:transform,opacity;
+  animation:h6p-smoke-rise 7.6s cubic-bezier(.3,.1,.4,1) infinite;animation-play-state:paused}
+.h6p-ov[data-d="garden-retreat"].is-on~.h6p-smoke .h6p-puff{animation-play-state:running}
+.h6p-puff:nth-child(1){animation-delay:-0.00s;animation-duration:7.6s}
+.h6p-puff:nth-child(2){animation-delay:-0.76s;animation-duration:8.2s}
+.h6p-puff:nth-child(3){animation-delay:-1.52s;animation-duration:7.4s}
+.h6p-puff:nth-child(4){animation-delay:-2.28s;animation-duration:7.9s}
+.h6p-puff:nth-child(5){animation-delay:-3.04s;animation-duration:8.4s}
+.h6p-puff:nth-child(6){animation-delay:-3.80s;animation-duration:7.2s}
+.h6p-puff:nth-child(7){animation-delay:-4.56s;animation-duration:8.0s}
+.h6p-puff:nth-child(8){animation-delay:-5.32s;animation-duration:7.7s}
+.h6p-puff:nth-child(9){animation-delay:-6.08s;animation-duration:8.3s}
+.h6p-puff:nth-child(10){animation-delay:-6.84s;animation-duration:7.5s}
+@keyframes h6p-smoke-rise{
+  0%  {transform:translate(0,0) scale(.45);opacity:0}
+  8%  {opacity:.72}
+  30% {transform:translate(-35%,-150%) scale(1.05);opacity:.6}
+  55% {transform:translate(-95%,-290%) scale(1.75);opacity:.4}
+  80% {transform:translate(-175%,-420%) scale(2.5);opacity:.18}
+  100%{transform:translate(-250%,-540%) scale(3.2);opacity:0}}
+@media (prefers-reduced-motion:reduce){ .h6p-smoke{display:none} }

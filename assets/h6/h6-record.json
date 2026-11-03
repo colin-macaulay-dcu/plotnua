@@ -2,9 +2,9 @@
  "schema": "plotnua.h6-component.v1",
  "what_this_is": "H6 \u00b7 HOMEPAGE GARDEN COMPONENT (\"Discover What's Possible\"), staging candidate, 25 Oct 2026.",
  "files": {
-  "assets/h6/h6.css": "e104c06ce4e082365c41b1406b223872251bf5d8e22f404920bba156e8806577",
-  "assets/h6/h6.js": "68b386a36461028cd0f0712f9592573cbd8a876d9fcb17020d995140c0eb3a23",
-  "assets/h6/stage-snippet.part": "56e6e7bc13656eba86fc8db57711c8562d01c9573d41649f6aefd3e0a6e2b8b4"
+  "assets/h6/h6.css": "cec2759676edb043c9ef6753888199007927929eef1b77bdd9f485b9b348ac9a",
+  "assets/h6/h6.js": "2a64adb2dbc6190e6b0deebdb6dfb156a1c74ca93c5b55fcab5ccd970d251012",
+  "assets/h6/stage-snippet.part": "b74664c619baa5b26d156f6542a6e1d1aac07f9aa819716418b5ceba025047b0"
  },
  "images": {
   "assets/h6/img/H6-garden-base-v6-1677.avif": "d694caf99b96d4bf93f489a844020fde671781a8af53ea30c2d40194c8d6e9e6",
@@ -13,8 +13,8 @@
   "assets/h6/img/H6-garden-base-v6-960.webp": "1880b5caef90a021440fb3219f0443e5bfad7f66418024681b802cdbbea9afa9",
   "assets/h6/img/H6-layer-borrowed-garden-1677.webp": "1c4a18df621b3fd1d69b063cb445d9f9396d5a53de9c07a0895454445be1e3af",
   "assets/h6/img/H6-layer-borrowed-garden-960.webp": "e231803124019d83890483bbf3e36f01ce5eeb73f181d2ef233f6f46e1e8a431",
-  "assets/h6/img/H6-layer-garden-retreat-1677.webp": "f6526703f13c0ccf1e52e53fa6438f7d9ad782713d900024d21b037547be3cae",
-  "assets/h6/img/H6-layer-garden-retreat-960.webp": "d047388fd8cf09c553e4112e5caab0f7dd6ababa5f32e5f229c494f0629887d6",
+  "assets/h6/img/H6-layer-garden-retreat-1677.webp": "98ead368243c56578c775deea999ea3c1b2a48729d170c2674fa29d9f224cd32",
+  "assets/h6/img/H6-layer-garden-retreat-960.webp": "7de0586b1ff6873c9700a98ef32116107f9f503b58cdab95fb8a436dbf57d3fa",
   "assets/h6/img/H6-layer-garden-retreat-lawn-patch-1677.webp": "99696fba6e5f1f9c4241f50ef256be862b7d49d45fe17cdae1e4078b6c1786b9",
   "assets/h6/img/H6-layer-garden-retreat-lawn-patch-960.webp": "97672871786ddf96970af4e4a07364b0ec9d550329b1698ec416f2cf760fa1fa",
   "assets/h6/img/H6-layer-garden-room-1677.webp": "c1d719bbff72e55be282c0a625c1693dbab969333dac1c308365a5b943b523f0",
@@ -24,7 +24,11 @@
   "assets/h6/img/H6-layer-treehouse-1677.webp": "004bd678e4e14f63eff0327998bb37fcc30ca443828f79709ea7235a9bbb5656",
   "assets/h6/img/H6-layer-treehouse-960.webp": "a195934f1e9ac06e0b45414f04bb6f4fc31a7d038d75284ed598b70efd6c67c3",
   "assets/h6/img/H6-layer-wildlife-pond-1677.webp": "25cc646287631f5fecd4f5fe7f632f8d9bc6c98df1aa5cf45b5a46ff1ce99370",
-  "assets/h6/img/H6-layer-wildlife-pond-960.webp": "67e911e13f9e68d390ae99a940f9e269932a429b5f543f5ab21756d45d5e3d09"
+  "assets/h6/img/H6-layer-wildlife-pond-960.webp": "67e911e13f9e68d390ae99a940f9e269932a429b5f543f5ab21756d45d5e3d09",
+  "assets/h6/img/H6-lettering-letters-1677.webp": "ca7efcd670c86afab14694fa2680b13eb5dcc9984755b20a32e71eacb09b287c",
+  "assets/h6/img/H6-lettering-letters-960.webp": "1db25248b3655a4cc1a0415d2634321b863d42a17e76adb9c3e3c003d75dadb6",
+  "assets/h6/img/H6-lettering-shadows-1677.webp": "c188b69dcecbd5b412f98da059b753f213009c04804afceba57cf9f83bc16e4c",
+  "assets/h6/img/H6-lettering-shadows-960.webp": "3bf6c48bc80dd60c4101a7cc95ec8dc28386436cf039cc11261f7c3bea37cf0d"
  },
  "homepage_baseline": {
   "atlas_figures_block": "bcd17b3f0692f79399501b2a6e19a2b6d318631129a718580baf95011577fa3e",

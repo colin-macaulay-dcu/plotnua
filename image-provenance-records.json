@@ -1046,8 +1046,8 @@
     },
     {
       "asset": "assets/h6/img/H6-layer-garden-retreat-960.webp",
-      "sha256": "d047388fd8cf09c553e4112e5caab0f7dd6ababa5f32e5f229c494f0629887d6",
-      "bytes": 10814,
+      "sha256": "7de0586b1ff6873c9700a98ef32116107f9f503b58cdab95fb8a436dbf57d3fa",
+      "bytes": 11048,
       "pixels": [
         960,
         537
@@ -1092,6 +1092,11 @@
             "record": "claude/h6-patio-and-navigation-demo-2026-10-25.md; proposed-image-set-v6/patio-correction-report.json"
           },
           {
+            "step": "Static steam plume removed (3 Nov 2026): the diagonal plume from the hot tub, about 20,000 px around the chimney, inside this layer only",
+            "tool": "dark-channel dehaze of the plume (deterministic), LaMa (Apache-2.0, big-lama, run locally) on the veil over the background planting with the chimney pipe and cap held fixed, and the approved empty-garden planting at the same pixels directly around the cap; no paid or generative image model, no new object; layer transparency unchanged",
+            "record": "founder review folder PlotNua-H6-Lettering-Smoke-Preview-2026-11-03 (report and method/)"
+          },
+          {
             "step": "Photographic re-grade, Option A \"Natural Irish Evening\" (2 Nov 2026)",
             "tool": "PlotNua deterministic colour grade (white balance, hue-selective saturation, tone curve, garden-light glow reduction, warmer interiors inside fixed window regions, shared grain field at amplitude 1.0); no AI, no pixel moved",
             "record": "founder release folder PlotNua-H6-Hero-Regrade-Preview-2026-11-02 (report PlotNua-H6-Hero-Regrade-Preview-2026-11-02.md, method/ and verification/)"
@@ -1101,7 +1106,8 @@
             "tool": "Pillow (AVIF quality 80/78 4:4:4; WebP quality 90, exact transparency for layers)"
           }
         ],
-        "date_regraded": "2026-11-02"
+        "date_regraded": "2026-11-02",
+        "date_plume_removed": "2026-11-03"
       },
       "depicts_named_product": false,
       "depicts_named_organisation": false,
@@ -1141,13 +1147,13 @@
         ],
         "verdict": "No distinctive design element of the compared supplier products is reproduced. The features shared (a timber sauna cabin, a round timber hot tub, a stove flue) are generic to the category."
       },
-      "decision_ref": "PN-FDR-2026-10-26-H6-HOME (founder-attested historical exception for the H6 homepage images, approved 26 Oct 2026, extending the form of PN-FDR-2026-10-23-GRP-HERO to these 18 files on the homepage only); founder release approval, 26 Oct 2026; H6 master v2 and image set v6 approvals, 25 Oct 2026; founder approval of the Option A re-grade and withdrawal of the 3D lawn lettering, 2 Nov 2026 (PN-FDR-2026-11-02-H6-REGRADE)",
+      "decision_ref": "PN-FDR-2026-10-26-H6-HOME (founder-attested historical exception for the H6 homepage images, approved 26 Oct 2026, extending the form of PN-FDR-2026-10-23-GRP-HERO to these 18 files on the homepage only); founder release approval, 26 Oct 2026; H6 master v2 and image set v6 approvals, 25 Oct 2026; founder approval of the Option A re-grade and withdrawal of the 3D lawn lettering, 2 Nov 2026 (PN-FDR-2026-11-02-H6-REGRADE); founder request to remove the static plume and add animated chimney smoke, 3 Nov 2026 (PN-FDR-2026-11-03-H6-LETTERING-SMOKE)",
       "what": "Garden Retreat discovery layer (generic sauna and hot tub)"
     },
     {
       "asset": "assets/h6/img/H6-layer-garden-retreat-1677.webp",
-      "sha256": "f6526703f13c0ccf1e52e53fa6438f7d9ad782713d900024d21b037547be3cae",
-      "bytes": 18858,
+      "sha256": "98ead368243c56578c775deea999ea3c1b2a48729d170c2674fa29d9f224cd32",
+      "bytes": 19858,
       "pixels": [
         1677,
         938
@@ -1192,6 +1198,11 @@
             "record": "claude/h6-patio-and-navigation-demo-2026-10-25.md; proposed-image-set-v6/patio-correction-report.json"
           },
           {
+            "step": "Static steam plume removed (3 Nov 2026): the diagonal plume from the hot tub, about 20,000 px around the chimney, inside this layer only",
+            "tool": "dark-channel dehaze of the plume (deterministic), LaMa (Apache-2.0, big-lama, run locally) on the veil over the background planting with the chimney pipe and cap held fixed, and the approved empty-garden planting at the same pixels directly around the cap; no paid or generative image model, no new object; layer transparency unchanged",
+            "record": "founder review folder PlotNua-H6-Lettering-Smoke-Preview-2026-11-03 (report and method/)"
+          },
+          {
             "step": "Photographic re-grade, Option A \"Natural Irish Evening\" (2 Nov 2026)",
             "tool": "PlotNua deterministic colour grade (white balance, hue-selective saturation, tone curve, garden-light glow reduction, warmer interiors inside fixed window regions, shared grain field at amplitude 1.0); no AI, no pixel moved",
             "record": "founder release folder PlotNua-H6-Hero-Regrade-Preview-2026-11-02 (report PlotNua-H6-Hero-Regrade-Preview-2026-11-02.md, method/ and verification/)"
@@ -1201,7 +1212,8 @@
             "tool": "Pillow (AVIF quality 80/78 4:4:4; WebP quality 90, exact transparency for layers)"
           }
         ],
-        "date_regraded": "2026-11-02"
+        "date_regraded": "2026-11-02",
+        "date_plume_removed": "2026-11-03"
       },
       "depicts_named_product": false,
       "depicts_named_organisation": false,
@@ -1241,7 +1253,7 @@
         ],
         "verdict": "No distinctive design element of the compared supplier products is reproduced. The features shared (a timber sauna cabin, a round timber hot tub, a stove flue) are generic to the category."
       },
-      "decision_ref": "PN-FDR-2026-10-26-H6-HOME (founder-attested historical exception for the H6 homepage images, approved 26 Oct 2026, extending the form of PN-FDR-2026-10-23-GRP-HERO to these 18 files on the homepage only); founder release approval, 26 Oct 2026; H6 master v2 and image set v6 approvals, 25 Oct 2026; founder approval of the Option A re-grade and withdrawal of the 3D lawn lettering, 2 Nov 2026 (PN-FDR-2026-11-02-H6-REGRADE)",
+      "decision_ref": "PN-FDR-2026-10-26-H6-HOME (founder-attested historical exception for the H6 homepage images, approved 26 Oct 2026, extending the form of PN-FDR-2026-10-23-GRP-HERO to these 18 files on the homepage only); founder release approval, 26 Oct 2026; H6 master v2 and image set v6 approvals, 25 Oct 2026; founder approval of the Option A re-grade and withdrawal of the 3D lawn lettering, 2 Nov 2026 (PN-FDR-2026-11-02-H6-REGRADE); founder request to remove the static plume and add animated chimney smoke, 3 Nov 2026 (PN-FDR-2026-11-03-H6-LETTERING-SMOKE)",
       "what": "Garden Retreat discovery layer (generic sauna and hot tub)"
     },
     {
@@ -2253,6 +2265,94 @@
       },
       "decision_ref": "PN-FDR-2026-10-26-H6-HOME (founder-attested historical exception for the H6 homepage images, approved 26 Oct 2026, extending the form of PN-FDR-2026-10-23-GRP-HERO to these 18 files on the homepage only); founder release approval, 26 Oct 2026; H6 master v2 and image set v6 approvals, 25 Oct 2026; founder approval of the Option A re-grade and withdrawal of the 3D lawn lettering, 2 Nov 2026 (PN-FDR-2026-11-02-H6-REGRADE)",
       "what": "House as a Power Station layer (solar panels, battery, EV charger)"
+    },
+    {
+      "asset": "assets/h6/img/H6-lettering-letters-960.webp",
+      "sha256": "1db25248b3655a4cc1a0415d2634321b863d42a17e76adb9c3e3c003d75dadb6",
+      "bytes": 22218,
+      "class": "ILLUSTRATION_VERIFIED_NOT_AI",
+      "what": "Floating 3D lettering 'Discover What’s Possible…' (Playfair Display ExtraBold, rendered in Blender 5.2; no AI)",
+      "generated": {
+        "tool": "Blender 5.2 (Cycles), scripted 3D render of typeset lettering (Playfair Display ExtraBold, SIL Open Font Licence); no generative model",
+        "date": "2026-10-25",
+        "method": "PlotNua project documents claude/h6-floating-lettering-proof-2026-10-25.md and claude/h6-status-and-typography-refinement-2026-10-25.md (Version B, approved 25 Oct 2026)",
+        "layout_reference": "Size and placement were fitted by eye to the founder's ChatGPT mock-up PlotNua-H6-Floating-Text-Reference.png; none of its pixels are used"
+      },
+      "human_review": {
+        "reviewer": "Colin MacAulay (founder)",
+        "date": "2026-10-26",
+        "attests": "Founder approved this lettering (Version B, 25 Oct 2026) and its release (26 Oct 2026). It is a 3D render of typeset lettering made in Blender without any generative AI model."
+      },
+      "permitted_surfaces": [
+        "homepage"
+      ],
+      "restored": "2026-11-03: founder request to restore the lawn lettering. The approved Version B pixels are unchanged; it is shown slightly softer by CSS only (opacity and saturation), PN-FDR-2026-11-03-H6-LETTERING-SMOKE."
+    },
+    {
+      "asset": "assets/h6/img/H6-lettering-letters-1677.webp",
+      "sha256": "ca7efcd670c86afab14694fa2680b13eb5dcc9984755b20a32e71eacb09b287c",
+      "bytes": 32696,
+      "class": "ILLUSTRATION_VERIFIED_NOT_AI",
+      "what": "Floating 3D lettering 'Discover What’s Possible…' (Playfair Display ExtraBold, rendered in Blender 5.2; no AI)",
+      "generated": {
+        "tool": "Blender 5.2 (Cycles), scripted 3D render of typeset lettering (Playfair Display ExtraBold, SIL Open Font Licence); no generative model",
+        "date": "2026-10-25",
+        "method": "PlotNua project documents claude/h6-floating-lettering-proof-2026-10-25.md and claude/h6-status-and-typography-refinement-2026-10-25.md (Version B, approved 25 Oct 2026)",
+        "layout_reference": "Size and placement were fitted by eye to the founder's ChatGPT mock-up PlotNua-H6-Floating-Text-Reference.png; none of its pixels are used"
+      },
+      "human_review": {
+        "reviewer": "Colin MacAulay (founder)",
+        "date": "2026-10-26",
+        "attests": "Founder approved this lettering (Version B, 25 Oct 2026) and its release (26 Oct 2026). It is a 3D render of typeset lettering made in Blender without any generative AI model."
+      },
+      "permitted_surfaces": [
+        "homepage"
+      ],
+      "restored": "2026-11-03: founder request to restore the lawn lettering. The approved Version B pixels are unchanged; it is shown slightly softer by CSS only (opacity and saturation), PN-FDR-2026-11-03-H6-LETTERING-SMOKE."
+    },
+    {
+      "asset": "assets/h6/img/H6-lettering-shadows-960.webp",
+      "sha256": "3bf6c48bc80dd60c4101a7cc95ec8dc28386436cf039cc11261f7c3bea37cf0d",
+      "bytes": 14424,
+      "class": "ILLUSTRATION_VERIFIED_NOT_AI",
+      "what": "Floating 3D lettering 'Discover What’s Possible…' (Playfair Display ExtraBold, rendered in Blender 5.2; no AI)",
+      "generated": {
+        "tool": "Blender 5.2 (Cycles), scripted 3D render of typeset lettering (Playfair Display ExtraBold, SIL Open Font Licence); no generative model",
+        "date": "2026-10-25",
+        "method": "PlotNua project documents claude/h6-floating-lettering-proof-2026-10-25.md and claude/h6-status-and-typography-refinement-2026-10-25.md (Version B, approved 25 Oct 2026)",
+        "layout_reference": "Size and placement were fitted by eye to the founder's ChatGPT mock-up PlotNua-H6-Floating-Text-Reference.png; none of its pixels are used"
+      },
+      "human_review": {
+        "reviewer": "Colin MacAulay (founder)",
+        "date": "2026-10-26",
+        "attests": "Founder approved this lettering (Version B, 25 Oct 2026) and its release (26 Oct 2026). It is a 3D render of typeset lettering made in Blender without any generative AI model."
+      },
+      "permitted_surfaces": [
+        "homepage"
+      ],
+      "restored": "2026-11-03: founder request to restore the lawn lettering. The approved Version B pixels are unchanged; it is shown slightly softer by CSS only (opacity and saturation), PN-FDR-2026-11-03-H6-LETTERING-SMOKE."
+    },
+    {
+      "asset": "assets/h6/img/H6-lettering-shadows-1677.webp",
+      "sha256": "c188b69dcecbd5b412f98da059b753f213009c04804afceba57cf9f83bc16e4c",
+      "bytes": 33064,
+      "class": "ILLUSTRATION_VERIFIED_NOT_AI",
+      "what": "Floating 3D lettering 'Discover What’s Possible…' (Playfair Display ExtraBold, rendered in Blender 5.2; no AI)",
+      "generated": {
+        "tool": "Blender 5.2 (Cycles), scripted 3D render of typeset lettering (Playfair Display ExtraBold, SIL Open Font Licence); no generative model",
+        "date": "2026-10-25",
+        "method": "PlotNua project documents claude/h6-floating-lettering-proof-2026-10-25.md and claude/h6-status-and-typography-refinement-2026-10-25.md (Version B, approved 25 Oct 2026)",
+        "layout_reference": "Size and placement were fitted by eye to the founder's ChatGPT mock-up PlotNua-H6-Floating-Text-Reference.png; none of its pixels are used"
+      },
+      "human_review": {
+        "reviewer": "Colin MacAulay (founder)",
+        "date": "2026-10-26",
+        "attests": "Founder approved this lettering (Version B, 25 Oct 2026) and its release (26 Oct 2026). It is a 3D render of typeset lettering made in Blender without any generative AI model."
+      },
+      "permitted_surfaces": [
+        "homepage"
+      ],
+      "restored": "2026-11-03: founder request to restore the lawn lettering. The approved Version B pixels are unchanged; it is shown slightly softer by CSS only (opacity and saturation), PN-FDR-2026-11-03-H6-LETTERING-SMOKE."
     },
     {
       "asset": "assets/disc031/img/DISC-031-before-1536.jpg",

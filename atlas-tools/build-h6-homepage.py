@@ -53,7 +53,7 @@ def die(m): print('REFUSED: ' + m); sys.exit(1)
 # Cache version for every H6 image URL (2 Nov 2026, Option A re-grade). The filenames stay the same, so a returning
 # visitor's browser could otherwise reuse a cached ungraded base beneath a newly fetched graded layer. Bump this token
 # whenever any H6 image changes: the whole set then loads together. The guard below refuses an unversioned reference.
-IMG_V = '?v=20261102'
+IMG_V = '?v=20261103'
 def srcset(stem, ext): return ', '.join('assets/h6/img/%s-%d.%s%s %dw' % (stem, w, ext, IMG_V, w) for w in W)
 H6_PRELOAD_RE = re.compile(r'<link rel="preload" as="image" type="image/avif" imagesrcset="assets/h6/img/[^"]*"[^>]*>\n')
 def h6_preload(): return ('<link rel="preload" as="image" type="image/avif" imagesrcset="%s" imagesizes="%s" fetchpriority="high">\n'

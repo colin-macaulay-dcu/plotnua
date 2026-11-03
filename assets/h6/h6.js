@@ -1,5 +1,5 @@
 /* PlotNua H6 · homepage garden component ("Discover What's Possible"), staging candidate, 25 Oct 2026.
-   One shared camera container holds: the empty garden (image set v6, re-graded 2 Nov 2026: Option A, Natural Irish Evening),
+   One shared camera container holds: the empty garden (image set v6, re-graded 2 Nov 2026: Option A, Natural Irish Evening), the floating-lettering layers (letters + shadows),
    six discovery layers (manifest z-order), the House as a Power Station scene drawings (inline SVG in image coordinates;
    nothing is baked into any image) and the discovery dot. Only that container is ever transformed, so nothing can drift.
    Every action carries a token, so a newer click cancels any older animation.
@@ -48,8 +48,7 @@
 
   var $ = function (id) { return document.getElementById(id); };
   var cam = $('h6p-cam'), stage = $('h6p-stage'), dot = $('h6p-dot'), svg = $('h6p-scenes');
-  /* 2 Nov 2026 (founder decision, Option A re-grade): the 3D lawn lettering is withdrawn from the page. Its markup
-     and images are removed; these lookups stay null-safe so the fade logic below simply has nothing to show. */
+  /* 3 Nov 2026: the 3D lawn lettering is restored (founder request); the lookups stay null-safe. */
   var letters = [$('h6p-letter'), $('h6p-letter-shadow')].filter(Boolean), lawnText = $('h6p-lawn-text');
   var intro = $('h6p-intro'), explore = $('h6p-explore'), status = $('h6p-status');
   var btnAll = $('h6p-all'), btnClear = $('h6p-clear'), strip = $('h6p-strip'), cap = $('h6p-caption'), btnPlay = $('h6p-play');
