@@ -43,13 +43,16 @@ DG_IDS = ["ps%s-%s-%s" % (k, v, t) for k in "ABC" for v in "dm" for t in "td"]
 CHAPTERS = ["The opportunity", "The problem", "The possibility", "What exists today", "The practicalities", "The homeowner decision"]
 
 # Declared corrections, as visible text (old -> new). Phase 0 B3-B7 (founder-approved), B9 (pre-release recheck).
+# Phase 1B recheck (3 Nov 2026): the EUR 2,000 boiler scrappage covers fossil-fuel systems only (SEAI announcement
+# 29 Sep 2026; Citizens Information, edited 22 Oct 2026); the EUR 4,000 renewable heat bonus also covers electric
+# storage heating (SEAI heat pump grant blog, 3 Feb 2026).
 CORR = [
  ("B3a", "Up to €14,500 as a bundle for a detached, semi-detached or mid-terrace house. The ceiling is lower for an apartment, and lower again for air-to-air. SEAI.",
-  "Up to €6,500 towards the heat pump in a detached, semi-detached or mid-terrace house, and up to €2,000 for central heating upgrades such as radiators. Where it replaces an oil, gas, solid-fuel or electric storage system, a €4,000 renewable heat bonus and a €2,000 boiler scrappage grant are added: up to €14,500 in all. The amounts are lower for an apartment, and lower again for air-to-air. SEAI."),
+  "Up to €6,500 towards the heat pump in a detached, semi-detached or mid-terrace house, and up to €2,000 for central heating upgrades such as radiators. A €4,000 renewable heat bonus is added where it replaces an oil, gas, solid-fuel or electric storage system, and a €2,000 boiler scrappage grant where it replaces a fossil-fuel system: up to €14,500 in all. The amounts are lower for an apartment, and lower again for air-to-air. SEAI."),
  ("B3b", "The same €14,500 ceiling as an air-to-water system, and water-to-water likewise.",
-  "The same grant as an air-to-water system (up to €6,500 for a house, and up to €14,500 in all when it replaces an oil, gas, solid-fuel or electric storage system), and water-to-water likewise."),
+  "The same grant as an air-to-water system (up to €6,500 for a house, and up to €14,500 in all when it replaces an oil, gas or solid-fuel system), and water-to-water likewise."),
  ("B3c", "Up to €14,500 as a bundle for a detached, semi-detached or mid-terrace house, lower for an apartment and lower again for air-to-air. Ground-source and water-to-water sit inside the same ceiling.",
-  "Up to €6,500 for a detached, semi-detached or mid-terrace house, plus up to €2,000 for central heating upgrades. A €4,000 renewable heat bonus and a €2,000 boiler scrappage grant apply only when it replaces an oil, gas, solid-fuel or electric storage system, for up to €14,500 in all. Lower for an apartment and lower again for air-to-air. Ground-source and water-to-water sit inside the same grant."),
+  "Up to €6,500 for a detached, semi-detached or mid-terrace house, plus up to €2,000 for central heating upgrades. A €4,000 renewable heat bonus applies only when it replaces an oil, gas, solid-fuel or electric storage system, and a €2,000 boiler scrappage grant only when it replaces a fossil-fuel system, for up to €14,500 in all. Lower for an apartment and lower again for air-to-air. Ground-source and water-to-water sit inside the same grant."),
  ("B4a", "SEAI uses a Heat Loss Indicator of 2.3 or below. If your house is above it, or nobody knows, a technical assessment establishes the position.",
   "A home built before 2007 needs a technical assessment (SEAI pays €200 towards it), unless a valid BER shows a Heat Loss Indicator of 2.3 or below. A home built from 2007 onwards does not need one."),
  ("B4b", "A Heat Loss Indicator of 2.3 or below, or a technical assessment to establish the position.",
@@ -164,6 +167,7 @@ FAULTS = [  # (what a careless edit would do, mutation)
  ("route B stops saying nothing is sent", lambda t: t.replace("nothing is sent to PlotNua or anyone else", "your answers help us", 1)),
  ("an unsourced payback figure is added", lambda t: t.replace("Before anything goes on the roof.", "Before anything goes on the roof. Payback of 6 years is typical.", 1)),
  ("the chapter 01 status boundary is removed", lambda t: t.replace('<p class="ps-boundary">', '<p class="ps-short2">', 1)),
+ ("the scrappage grant is tied to electric storage heating again", lambda t: t.replace("and a &euro;2,000 boiler scrappage grant where it replaces a fossil-fuel system", "and a &euro;2,000 boiler scrappage grant where it replaces an electric storage system", 1)),
  ("the estate image's AI label is removed", lambda t: t.replace('<p class="ps-ai">Illustrative AI-generated visualisation. Not an actual property.</p>', "", 1)),
  ("a new image asset is added", lambda t: t.replace("<h2>Four parts, working together.</h2>", '<h2>Four parts, working together.</h2><img src="assets/img/new.jpg" alt="x">', 1)),
  ("a pinned anchor is lost", lambda t: t.replace('id="explore-providers"', 'id="explore-suppliers"', 1)),
@@ -270,6 +274,12 @@ def verify(page, base, loud):
     css = open(os.path.join(ROOT, "assets/identity/pn-ps-editorial.css"), encoding="utf-8").read()
     check("D5 drawer content is visible on opening; diagrams honour reduced motion",
           "details .reveal{opacity:1!important" in css and "prefers-reduced-motion:reduce" in css)
+    check("D6 the tall energy-anatomy section is never left unrevealed on a phone; the Back clears the footer",
+          ".article-section.reveal:has(.anat){opacity:1!important" in css and "footer{padding-bottom:" in css)
+    check("F4 boiler scrappage is tied to fossil-fuel systems only; the renewable heat bonus also to electric storage",
+          "boiler scrappage grant where it replaces a fossil-fuel system" in text
+          and "boiler scrappage grant only when it replaces a fossil-fuel system" in text
+          and not re.search(r"scrappage grant[^.]{0,80}electric storage", text))
     return bad, ok
 
 
