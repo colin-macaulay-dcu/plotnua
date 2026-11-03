@@ -392,7 +392,7 @@ jobs:
           python3 atlas-tools/prove-premium-discovery-power-station.py
           python3 atlas-tools/prove-premium-discovery-power-station.py --faults
           # DISC-008 Living in the Garden six-chapter redesign (founder approval, 3 Nov 2026): every text block,
-          # link, image and id preserved against the pinned 8398ab7 snapshot except the declared removals (the
+          # link, image and id preserved against the pinned production snapshot (fd5b1b5) except the declared removals (the
           # duplicate Journey panels) and additions; hero slider pinned; one decision with both routes, free, no
           # intake or matching promise; no placeholders. The two-option guard keeps its reach on a fixture.
           python3 atlas-tools/prove-premium-discovery-living-garden.py

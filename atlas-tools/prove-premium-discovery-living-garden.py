@@ -2,7 +2,7 @@
 """PLOTNUA · DISC-008 Living in the Garden: Phase 2 editorial redesign content guard (3 Nov 2026).
 
 Written BEFORE the page was restructured, against a pinned snapshot of the production page
-(atlas-tools/premium-discovery/living-garden-base.json, taken at 8398ab7). The guarded region is
+(atlas-tools/premium-discovery/living-garden-base.json, taken at 8398ab7, re-pinned to fd5b1b5 after The Mobile Pods release). The guarded region is
 <main> plus the closing Journey panel (#discover-your-property).
 
   H  the head may only gain the declared stylesheets; everything from the closing panel's end to the
