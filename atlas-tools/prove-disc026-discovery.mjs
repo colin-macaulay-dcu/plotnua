@@ -251,13 +251,14 @@ const seam = html.indexOf('class="seam reveal"');
 const anat = html.indexOf('The energy anatomy of your property');
 if (seam < 0 || anat < 0) {
   bad('both sections are present', 'seam@' + seam + ' anatomy@' + anat);
-} else if (seam > anat) {
+} else if (seam > anat && !(html.indexOf('class="ps-boundary"') > 0 && html.indexOf('class="ps-boundary"') < anat)) {
   bad('the break comes first',
       'The energy anatomy now sits above the honesty break. A reader reaching '
       + 'the solar grant would reasonably assume the compute part is '
       + 'purchasable too. This inverts the whole argument.');
 } else {
-  ok('S6 sits above S7, so the status boundary is read before the grants');
+  ok(seam < anat ? 'S6 sits above S7, so the status boundary is read before the grants'
+     : 'Pass 2 (3 Nov 2026): the chapter 01 boundary ("The computing mentioned above is not") is read before the grants; S6 moved into chapter 04');
 }
 
 /* ---- G8 ----------------------------------------------------------------- */
@@ -323,7 +324,12 @@ console.log('  ' + '-'.repeat(72));
    First-party source: seai.ie, Solar Electricity Grant page, read 20 Oct 2026:
    "This brings you maximum grant value for solar pv panels and battery to
    EUR 2,400." Every other amount remains as governed. */
-const ALLOWED = new Set(['700', '200', '1,800', '600', '14,500', '400', '80', '2,400']);
+/* 3 Nov 2026, DISC-026 Pass 2 correction B3 (founder-approved, Phase 0): the heat pump grant stated as its
+   parts. First-party sources: seai.ie heat pump system grant page (EUR 6,500 house; technical assessment rule) and
+   seai.ie heat pump grant blog, 3 Feb 2026 (EUR 2,000 central heating upgrades; EUR 4,000 renewable heat bonus);
+   SEAI/Department announcement 29 Sep 2026 (EUR 2,000 boiler scrappage, homes built before 2021); all four
+   values as listed by Citizens Information, page edited 22 Oct 2026. */
+const ALLOWED = new Set(['700', '200', '1,800', '600', '14,500', '400', '80', '2,400', '6,500', '2,000', '4,000']);
 /* Thousands-grouped only, so a trailing sentence comma is not read as part of
    the figure. "about &euro;80, and warns" is 80, not "80,". */
 const amounts = [...html.matchAll(/&euro;(\d{1,3}(?:,\d{3})*)/g)].map(m => m[1]);
@@ -585,7 +591,11 @@ if (proofs !== 1) {
 console.log('');
 console.log('  G20 . THE DIAGRAM INVENTORY');
 console.log('  ' + '-'.repeat(72));
-const svgCount = (html.match(/<svg/g) || []).length;
+/* 3 Nov 2026, DISC-026 Pass 2: diagrams A, B, C (each a desktop and a phone variant, class ps-dg) are counted
+   separately; the legacy inventory is counted without them. */
+const svgCount = (html.match(/<svg(?! class="ps-dg)/g) || []).length;
+const dgCount = (html.match(/<svg class="ps-dg/g) || []).length;
+if (dgCount && dgCount !== 6) bad('six Pass 2 diagram variants (A, B, C x desktop, phone)', 'found ' + dgCount);
 const VIEWBOXES = [
   ['hero Potential Asset annotation', 'viewBox="0 0 1408 768"'],
   ['heat mechanism, compact strip', 'viewBox="0 0 900 132"'],

@@ -30,6 +30,12 @@ GUARDS
   S7  the export explorer configuration (#px-data) is byte-identical
   S8  no supplier name, rate, ranking word or price was introduced by the change
 """
+# PREMIUM LOCK (Pass 2, 3 Nov 2026): discovery-house-as-power-station.html carries the approved editorial
+# redesign. This legacy layout builder refuses before it reads or writes anything (atlas-tools/premium_pages.py).
+import os as _pl_os, sys as _pl_sys
+_pl_sys.path.insert(0, _pl_os.path.dirname(_pl_os.path.abspath(__file__)))
+import premium_pages as _pl
+_pl.refuse_if_premium("build-disc026-seo-a.py", ["discovery-house-as-power-station.html"])
 import hashlib
 import pathlib
 import re

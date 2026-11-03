@@ -19,6 +19,12 @@ Modes:
   --check   verifies the applied article: guards L1-L13
   --prove   breaks each guard in memory and shows it fires (no file written)
 """
+# PREMIUM LOCK (Pass 2, 3 Nov 2026): discovery-house-as-power-station.html carries the approved editorial
+# redesign. This legacy layout builder refuses before it reads or writes anything (atlas-tools/premium_pages.py).
+import os as _pl_os, sys as _pl_sys
+_pl_sys.path.insert(0, _pl_os.path.dirname(_pl_os.path.abspath(__file__)))
+import premium_pages as _pl
+_pl.refuse_if_premium("build-disc026-look-again.py", ["discovery-house-as-power-station.html"])
 import hashlib, html, pathlib, re, sys
 from search_rail_layer import without_ask_label  # 19 Oct 2026 rail label layer
 from derivative_picture_layer import without_derivative_picture  # 20 Oct 2026 WebP hero wrap

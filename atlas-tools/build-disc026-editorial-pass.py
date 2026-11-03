@@ -37,6 +37,15 @@ transcription.
 
 Run: python3 atlas-tools/build-disc026-editorial-pass.py
 """
+# PREMIUM LOCK (Pass 2, 3 Nov 2026): discovery-house-as-power-station.html carries the approved editorial
+# redesign. This legacy layout builder refuses before it reads or writes anything (atlas-tools/premium_pages.py).
+import os as _pl_os, sys as _pl_sys
+_pl_sys.path.insert(0, _pl_os.path.dirname(_pl_os.path.abspath(__file__)))
+import premium_pages as _pl
+if _pl_sys.argv[1:] == ["--check"] and "discovery-house-as-power-station.html" in _pl.premium_pages():
+    print("build-disc026-editorial-pass.py · REFUSED: PREMIUM discovery-house-as-power-station.html; this builder has no read-only --check mode -- nothing written")
+    _pl_sys.exit(2)
+_pl.refuse_if_premium("build-disc026-editorial-pass.py", ["discovery-house-as-power-station.html"])
 
 import pathlib
 import re

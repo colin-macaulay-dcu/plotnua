@@ -23,7 +23,17 @@ LOCKED = {
     "build-triq-cube-public.py": "triq-cube.html",
     "build-garden-retreat-restructure.py": "discovery-garden-retreat.html",
     "build-cluster2-garden-retreat.py": "discovery-garden-retreat.html",
+    # DISC-026 The House as a Power Station · Pass 2 editorial redesign (3 Nov 2026): the nine layout builders.
+    # The fenced Provider Explorer and its JSON data builder are exempt, as maker explorers are; the
+    # DISC-026 content guard pins the explorer's PLOTNUA-PROVIDER-EXPLORER-V1 fence instead.
+    **{b: "discovery-house-as-power-station.html" for b in (
+        "build-disc026-bridge.py", "build-disc026-correction-01.py", "build-disc026-correction-02.py",
+        "build-disc026-discovery-rebuild.py", "build-disc026-editorial-pass.py", "build-disc026-facts-oct2026.py",
+        "build-disc026-look-again.py", "build-disc026-residential-compute.py", "build-disc026-seo-a.py")},
 }
+# Builders with no read-only mode: "--check" is not a mode they know, so it must refuse too.
+NO_CHECK = {"build-disc026-correction-01.py", "build-disc026-correction-02.py", "build-disc026-discovery-rebuild.py",
+            "build-disc026-editorial-pass.py", "build-disc026-residential-compute.py"}
 MODES = ([], ["--apply"])          # writing modes (a builder's default may write): must refuse
 READ_ONLY = (["--check"],)          # reads and reports only: allowed, and must write nothing
 
@@ -53,6 +63,11 @@ def main():
             r = subprocess.run([sys.executable, str(TOOLS / b)] + m, cwd=ROOT, capture_output=True, text=True,
                                env={**os.environ, "PN_PREMIUM_EXTRA": page}, timeout=300)
             out = (r.stdout + r.stderr).strip()
+            if b in NO_CHECK:
+                ok = r.returncode == 2 and "REFUSED: PREMIUM" in out
+                bad += not ok
+                print("%s  %-38s %-10s %s" % ("refused " if ok else "NOT REFUSED", b, " ".join(m), "(no read-only mode)"))
+                continue
             ok = "REFUSED: PREMIUM" not in out
             bad += not ok
             print("%s  %-38s %-10s %s" % ("read-only" if ok else "REFUSED --check", b, " ".join(m), ""))

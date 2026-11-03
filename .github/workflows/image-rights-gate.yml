@@ -385,6 +385,12 @@ jobs:
           # text block, link, image, id and comment preserved against the pinned snapshot, except the declared
           # founder refinements (opening line, favour / paid-network distinction, one reworded boundary sentence).
           python3 atlas-tools/prove-premium-discovery-parcel-house.py
+          # DISC-026 The House as a Power Station editorial redesign (founder approval, 3 Nov 2026): every text
+          # block, link, image, id and comment preserved against the pinned e0af0cd snapshot except the declared
+          # corrections (Phase 0 B3-B9) and additions; Look again, Provider Explorer fence and GridNua banner pinned
+          # byte for byte. The fault test proves the guard catches every listed regression.
+          python3 atlas-tools/prove-premium-discovery-power-station.py
+          python3 atlas-tools/prove-premium-discovery-power-station.py --faults
           # Safety lock (23 Oct 2026): the 17 Oct merge builder must refuse to
           # regenerate the approved Premium page, and must leave every file as it was.
           set +e; out=$(python3 atlas-tools/build-a-home-for-art-merge.py --apply 2>&1); rc=$?; set -e

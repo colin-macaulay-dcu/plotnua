@@ -1,0 +1,124 @@
+/* PLOTNUA · DISC-026 The House as a Power Station · Pass 2 editorial layer (founder approval 3 Nov 2026)
+   Identity "THE SINGLE-LINE": chapters open on a schematic terminal node; the diagrams are drawn as
+   single-line schematics; terracotta is energy flowing. Scoped to this page (main:has(.ps-open)).
+   The "Look again" green section keeps its markup, script and words; only its hierarchy is refined here. */
+body.pn-id.pn-pd main#pn-main:has(.ps-open) .article{max-width:1180px}
+body.pn-id.pn-pd main#pn-main:has(.ps-open) .ps-chapter{align-items:center;border-top:0;padding-top:0;gap:18px;margin-top:clamp(84px,10vw,150px)}
+body.pn-id.pn-pd main#pn-main:has(.ps-open) .ps-chapter .pe-chapter-n{display:inline-flex;align-items:center;justify-content:center;flex:0 0 auto;width:clamp(56px,4.6vw,68px);height:clamp(56px,4.6vw,68px);border:1.5px solid var(--p4-terra-text);border-radius:50%;color:var(--p4-ivory);-webkit-text-stroke:0;font-size:clamp(22px,2vw,28px)}
+body.pn-id.pn-pd main#pn-main:has(.ps-open) .ps-chapter::after{content:"";flex:1;height:1.5px;background:linear-gradient(90deg,var(--p4-terra-text) 0 40px,var(--p4-line) 40px)}
+body.pn-id.pn-pd main#pn-main:has(.ps-open) .ps-open .ps-lead{font-family:var(--p4-serif);font-size:clamp(38px,5.2vw,80px);line-height:1.04;letter-spacing:-.015em;color:var(--p4-ivory);max-width:17ch;margin:28px 0 0}
+body.pn-id.pn-pd main#pn-main:has(.ps-open) .ps-short{font-size:clamp(18px,1.4vw,20px);line-height:1.6;color:var(--p4-lime);max-width:44ch;margin-top:22px}
+body.pn-id.pn-pd main#pn-main:has(.ps-open) .ps-boundary{margin-top:14px;padding-left:14px;border-left:2px solid var(--p4-terra-text);font:500 16px/1.6 var(--p4-sans);color:var(--p4-stone);max-width:58ch}
+body.pn-id.pn-pd main#pn-main:has(.ps-open) :is(.ps-open,.ps-problem,.ps-system,.ps-tiers,.ps-compute,.ps-practical,.ps-decision) h2{font-size:clamp(34px,3.8vw,58px);line-height:1.06;max-width:20ch}
+
+/* ---- diagrams: a desktop and a phone variant; only one is ever displayed (and so exposed) ---- */
+.ps-fig{margin:clamp(30px,4vw,56px) 0 0}
+.ps-fig .ps-dg{display:block;width:100%;height:auto}
+.ps-fig .ps-dg.is-m{display:none}
+@media (max-width:719px){.ps-fig .ps-dg.is-d{display:none}.ps-fig .ps-dg.is-m{display:block;max-width:100%!important}}
+.ps-cap{margin-top:14px;color:var(--p4-stone);font:500 15px/1.55 var(--p4-sans);max-width:70ch}
+.ps-dg .lb{fill:var(--p4-ivory);font:500 14px var(--p4-sans)}
+.ps-dg.is-m .lb{font-size:16px}
+.ps-dg .lb-q{fill:var(--p4-terra-text);font-weight:700;font-size:12px;letter-spacing:.12em;text-transform:uppercase}
+.ps-dg.is-m .lb-q{font-size:12px}
+.ps-dg .lb-s{fill:var(--p4-stone);font-size:12.5px}
+.ps-dg.is-m .lb-s{font-size:14px}
+.ps-dg .l{fill:none;stroke:rgba(194,189,181,.6);stroke-width:1.4}
+.ps-dg .g,.ps-dg .ax,.ps-dg .tick{stroke:var(--p4-stone);stroke-width:1.2;fill:none}
+.ps-dg .sun{fill:none;stroke:var(--p4-terra-text);stroke-width:1.6}.ps-dg .sunr{stroke:var(--p4-terra-text);stroke-width:1.4}
+.ps-dg .pv{stroke:var(--p4-terra-text);stroke-width:5;stroke-linecap:round}
+.ps-dg .n{fill:rgba(255,255,255,.02);stroke:var(--p4-ivory);stroke-width:1.3}
+.ps-dg .n-g{stroke:var(--p4-stone);stroke-dasharray:1 0}
+.ps-dg .n-h{stroke:#D8B475}
+.ps-dg .ctlb{fill:none;stroke:var(--p4-terra-text);stroke-width:1.2;stroke-dasharray:3 4}
+.ps-dg .ctl{fill:none;stroke:rgba(207,133,102,.7);stroke-width:1.2;stroke-dasharray:2 5}
+.ps-dg .flow,.ps-dg .flowout{stroke:var(--p4-terra-text);stroke-width:1.7;fill:none;stroke-dasharray:6 6;animation:psflow 1.4s linear infinite}
+.ps-dg .flowin,.ps-dg .flow2{stroke:var(--p4-ivory);stroke-width:1.5;fill:none;stroke-dasharray:4 6;animation:psflow 2s linear infinite}
+.ps-dg .flowh{stroke:#D8B475;stroke-width:1.7;fill:none;stroke-dasharray:6 6;animation:psflow 1.6s linear infinite}
+.ps-dg .hd{fill:none;stroke-width:1.7;stroke-linejoin:round}
+.ps-dg .flow-hd,.ps-dg .flowout-hd{stroke:var(--p4-terra-text)}.ps-dg .flowin-hd,.ps-dg .flow2-hd{stroke:var(--p4-ivory)}.ps-dg .flowh-hd{stroke:#D8B475}
+.ps-dg .solar{fill:none;stroke:var(--p4-terra-text);stroke-width:2.2}
+.ps-dg .dem{fill:none;stroke:var(--p4-ivory);stroke-width:1.7}
+.ps-dg .surplus{fill:rgba(207,133,102,.24);stroke:none}
+@keyframes psflow{to{stroke-dashoffset:-24}}
+@media (prefers-reduced-motion:reduce){.ps-dg .flow,.ps-dg .flowout,.ps-dg .flowin,.ps-dg .flow2,.ps-dg .flowh{animation:none}}
+.ps-key{list-style:none;margin:14px 0 0;padding:0;display:flex;flex-wrap:wrap;gap:8px 26px;color:var(--p4-lime);font:500 15px/1.4 var(--p4-sans)}
+.ps-key li{display:flex;align-items:center;gap:10px}
+.ps-key i{display:inline-block;width:26px;height:0;border-top:2.2px solid var(--p4-terra-text)}
+.ps-key i.k-dem{border-top:1.7px solid var(--p4-ivory)}
+.ps-key i.k-sur{height:12px;border:0;background:rgba(207,133,102,.38)}
+
+/* ---- chapter components ---- */
+.ps-three,.ps-grid{list-style:none;padding:0;margin:30px 0 0;display:grid;gap:clamp(20px,2.6vw,40px)}
+.ps-three{grid-template-columns:repeat(3,minmax(0,1fr))}.ps-three.ps-two-up{grid-template-columns:repeat(2,minmax(0,1fr));max-width:900px}
+.ps-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+.ps-three>li,.ps-grid>li{border-top:1px solid var(--p4-terra-text);padding-top:18px}
+body.pn-id.pn-pd main#pn-main:has(.ps-open) :is(.ps-three,.ps-grid,.ps-two) .dq-cat{display:block;font:700 12.5px/1.2 var(--p4-sans);letter-spacing:.2em;text-transform:uppercase;color:var(--p4-terra-text);margin-bottom:12px}
+body.pn-id.pn-pd main#pn-main:has(.ps-open) :is(.ps-three,.ps-two) .dq-fact{display:block;font-family:var(--p4-serif);font-size:clamp(21px,1.8vw,26px);line-height:1.24;color:var(--p4-ivory)}
+body.pn-id.pn-pd main#pn-main:has(.ps-open) .ps-grid .dq-fact{display:block;font:400 17px/1.6 var(--p4-sans);color:var(--p4-lime)}
+.ps-ext{display:inline-flex;align-items:center;min-height:44px;margin-top:6px;color:var(--p4-terra-text)!important;font:600 15.5px var(--p4-sans);text-decoration:none!important;border-bottom:1px solid rgba(207,133,102,.5)}
+.ps-ext::after{content:"\2197";margin-left:6px}
+.ps-t{display:block;font:700 13px/1.4 var(--p4-sans);letter-spacing:.14em;text-transform:uppercase;color:var(--p4-ivory);padding-left:26px;position:relative}
+.ps-t::before{content:"";position:absolute;left:0;top:2px;width:14px;height:14px;border-radius:50%}
+.t-a .ps-t::before{background:var(--p4-ivory)}.t-c .ps-t::before{border:1.5px dashed var(--p4-stone)}
+.ps-tier2{display:grid;grid-template-columns:1fr 1fr;gap:clamp(20px,3vw,44px);margin-top:30px}
+.ps-tierbox{padding:28px 0 0;border-top:2px solid var(--p4-ivory)}.ps-tierbox.t-c{border-top:1.5px dashed var(--p4-stone)}
+.ps-techs{list-style:none;margin:18px 0 0;padding:0}
+body.pn-id.pn-pd main#pn-main:has(.ps-open) .ps-techs li{font-family:var(--p4-serif);font-size:clamp(26px,2.4vw,36px);line-height:1.15;color:var(--p4-ivory);padding:6px 0}
+body.pn-id.pn-pd main#pn-main:has(.ps-open) .t-c .ps-techs li{color:var(--p4-stone)}
+.ps-small{margin-top:18px;font:500 16.5px/1.6 var(--p4-sans);color:var(--p4-lime);max-width:52ch}
+body.pn-id.pn-pd main#pn-main:has(.ps-open) .ps-big summary h3{font-family:var(--p4-serif)!important;font-size:clamp(22px,2vw,28px)!important;text-transform:none!important;letter-spacing:0!important;color:var(--p4-ivory)!important;line-height:1.25}
+.ps-two{display:grid;grid-template-columns:1fr 1fr;gap:clamp(20px,3vw,40px);margin-top:30px}
+.ps-route{display:flex;flex-direction:column;gap:6px;padding:28px;border:1px solid var(--p4-line2);background:rgba(255,255,255,.02)}
+.ps-route.is-b{border-color:var(--p4-terra-text)}
+.ps-route-k{font-family:var(--p4-serif);font-size:44px;line-height:1;color:var(--p4-terra-text);margin-bottom:8px}
+.ps-routelinks{list-style:none;margin:16px 0 0;padding:0}.ps-routelinks li{border-top:1px solid var(--p4-line)}
+.ps-routelinks a{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:48px;color:var(--p4-ivory)!important;font:600 16px/1.35 var(--p4-sans);text-decoration:none!important;border:0!important}
+.ps-routelinks a::after{content:"\2192";color:var(--p4-terra-text)}
+.ps-routelinks a[target]::after{content:"\2197"}
+.ps-routelinks a:hover{color:var(--p4-terra-text)!important}
+.ps-btn{display:inline-flex;align-items:center;align-self:flex-start;min-height:54px;padding:0 28px;margin-top:20px;background:var(--p4-terra-text);color:#1B1C1E!important;font:700 17px var(--p4-sans);text-decoration:none!important;border:0!important;border-radius:2px;transition:background .25s ease}
+.ps-btn:hover{background:var(--p4-terra-hover)}
+.ps-btn:focus-visible{outline:2px solid var(--p4-ivory);outline-offset:3px}
+.ps-note{display:block;margin-top:14px;color:var(--p4-stone);font:500 15px/1.6 var(--p4-sans)}
+.ps-sep{margin-top:34px;color:var(--p4-lime);font-size:17.5px}
+.imagine-photo .caption p.ps-ai{margin-top:8px;font-family:var(--p4-sans)!important;font-style:normal!important;font-size:12.5px!important;letter-spacing:.06em}
+
+/* ---- "Look again": the green moment, strengthened (CSS only; markup, script and words unchanged) ---- */
+#look-again .lag-open h2{font-size:clamp(48px,7.2vw,104px)}
+#look-again .lag-turn{font-size:clamp(26px,2.5vw,34px)}
+#look-again .lag-rev p{font-size:15.5px;line-height:1.65;max-width:40ch;opacity:.86}
+#look-again .lag-ch{margin-bottom:12vh}
+#look-again .lag-more{display:inline-flex;align-items:center;min-height:36px;padding:0 14px;margin-top:18px;border:1px solid rgba(242,239,230,.28);border-radius:999px;font-size:13.5px;text-decoration:none}
+#look-again .lag-key{gap:10px 22px}
+
+/* content moved into drawers does not wait for the scroll-reveal: it is visible the moment a drawer opens */
+body.pn-id.pn-pd main#pn-main:has(.ps-open) details .reveal{opacity:1!important;transform:none!important;transition:none!important}
+/* focus and anchor jumps clear the fixed header and the floating Back */
+html:has(main .ps-open){scroll-padding-top:96px;scroll-padding-bottom:96px}
+
+@media (max-width:1023px){.ps-three,.ps-grid{grid-template-columns:1fr 1fr}.ps-two{grid-template-columns:1fr}}
+@media (max-width:719px){
+  .ps-three,.ps-three.ps-two-up,.ps-grid{grid-template-columns:1fr}
+  .ps-tier2{grid-template-columns:1fr}
+  body.pn-id.pn-pd main#pn-main:has(.ps-open) .ps-techs li{font-size:26px}
+  .ps-three>li,.ps-grid>li{padding-top:14px}
+  .ps-route{padding:22px 20px}
+  .ps-key{flex-direction:column;gap:8px;font-size:14.5px}
+  .ps-key li{align-items:flex-start}
+  .ps-key i{flex:0 0 26px;margin-top:8px}
+  .ps-key i.k-sur{margin-top:3px}
+  body.pn-id.pn-pd main#pn-main:has(.ps-open) .article-section{padding-top:28px}
+  body.pn-id.pn-pd main#pn-main:has(.ps-open) .ps-chapter{margin-top:72px}
+  body.pn-id.pn-pd main#pn-main:has(.ps-open) .ps-grid .dq-fact{font-size:16.5px}
+  #look-again .lag-key{display:grid;grid-template-columns:1fr 1fr}
+  #look-again .lag-key .lag-mk{white-space:normal;font-size:12.5px}
+  #look-again .lag-rev{padding-bottom:28px}
+  #look-again .lag-ch{margin-bottom:56px}
+}
+
+/* typography settles on the identity pair inside this page's article (legacy Fraunces / Work Sans declarations
+   in the page's own styles are scoped out here; shared components outside <main> are left as they are) */
+body.pn-id.pn-pd main#pn-main:has(.ps-open) svg text:not(.pa-label),
+body.pn-id.pn-pd main#pn-main:has(.ps-open) .px-kind{font-family:var(--p4-sans)!important}
+body.pn-id.pn-pd main#pn-main:has(.ps-open) svg text.pa-label{font-family:var(--p4-serif)!important}
