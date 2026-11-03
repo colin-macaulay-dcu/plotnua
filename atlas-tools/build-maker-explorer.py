@@ -620,7 +620,8 @@ PAGES = {
         "noscript": ("search PlotNua&rsquo;s garden rooms and garden homes"),
         "after": "Garden room prices are hard to compare.",
         "before": "What would you like PlotNua to check?",
-        "block_end": "  <!-- 7 · THE EVIDENCE LAYER.",
+        # DISC-008 Phase 2 (3 Nov 2026): the explorer now closes chapter 04; chapter 05 follows this marker.
+        "block_end": "  <!-- LG-CH05 · THE PRACTICALITIES",
         "first_build_anchor": "  <!-- 6c · PLOTNUA-DISCOVERY-MAKERS-PHASE1",
         "css_anchor": "/* PLOTNUA A11Y VISUAL v1 · END */\n</style>",
         "keep_links": ('href="your-plot.html?discovery=residential"',

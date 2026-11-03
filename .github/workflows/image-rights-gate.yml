@@ -391,6 +391,14 @@ jobs:
           # byte for byte. The fault test proves the guard catches every listed regression.
           python3 atlas-tools/prove-premium-discovery-power-station.py
           python3 atlas-tools/prove-premium-discovery-power-station.py --faults
+          # DISC-008 Living in the Garden six-chapter redesign (founder approval, 3 Nov 2026): every text block,
+          # link, image and id preserved against the pinned 8398ab7 snapshot except the declared removals (the
+          # duplicate Journey panels) and additions; hero slider pinned; one decision with both routes, free, no
+          # intake or matching promise; no placeholders. The two-option guard keeps its reach on a fixture.
+          python3 atlas-tools/prove-premium-discovery-living-garden.py
+          python3 atlas-tools/prove-premium-discovery-living-garden.py --faults
+          python3 atlas-tools/prove-discovery-two-option.py
+          python3 atlas-tools/prove-discovery-two-option.py --self-test
           # Safety lock (23 Oct 2026): the 17 Oct merge builder must refuse to
           # regenerate the approved Premium page, and must leave every file as it was.
           set +e; out=$(python3 atlas-tools/build-a-home-for-art-merge.py --apply 2>&1); rc=$?; set -e

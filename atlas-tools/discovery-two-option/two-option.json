@@ -1,20 +1,31 @@
 {
   "_about": "Discovery two-option component (founder approval, 2 Nov 2026: Living in the Garden pilot). Two ways to explore ONE Discovery: explore the makers and products yourself, or enter that Discovery's EXISTING guided Journey. Rendered by atlas-tools/build-supplier-gallery.py beneath the gallery heading and figures, above the carousel, only for Discoveries listed here. A Discovery may be listed only when it has BOTH a supplier gallery / Maker Explorer AND an existing guided Journey with Atlas-matched results (see the 2 Nov 2026 Discovery audit). No new Journey, matching, intake or form. Guarded by atlas-tools/prove-discovery-two-option.py.",
-  "discoveries": {
+  "discoveries": {},
+  "_retired": {
     "discovery-living-in-the-garden.html": {
-      "explore": {
-        "label": "Explore yourself",
-        "text": "Explore garden rooms and garden homes from a wide range of makers. Browse products, compare what’s available and visit suppliers directly.",
-        "cta": "Browse makers and products",
-        "target": "#sg-track"
-      },
-      "homework": {
-        "label": "Let PlotNua do the homework",
-        "text": "Tell us what you’re looking for. We’ll use our Atlas research to help you find options that match your preferences and budget.",
-        "journeys": [
-          {"label": "A garden room", "href": "your-plot.html?discovery=garden-room"},
-          {"label": "A garden home", "href": "your-plot.html?discovery=residential"}
-        ]
+      "date": "2026-11-03",
+      "why": "DISC-008 Phase 2 (founder approval of the six-chapter redesign, 3 Nov 2026): the gallery's two-option card and the page's duplicate Journey panels were consolidated into ONE decision, the page's closing panel (chapter 06), which carries both routes: A Explore yourself and B Let PlotNua do the homework. Guarded by atlas-tools/prove-premium-discovery-living-garden.py.",
+      "config": {
+        "explore": {
+          "label": "Explore yourself",
+          "text": "Explore garden rooms and garden homes from a wide range of makers. Browse products, compare what’s available and visit suppliers directly.",
+          "cta": "Browse makers and products",
+          "target": "#sg-track"
+        },
+        "homework": {
+          "label": "Let PlotNua do the homework",
+          "text": "Tell us what you’re looking for. We’ll use our Atlas research to help you find options that match your preferences and budget.",
+          "journeys": [
+            {
+              "label": "A garden room",
+              "href": "your-plot.html?discovery=garden-room"
+            },
+            {
+              "label": "A garden home",
+              "href": "your-plot.html?discovery=residential"
+            }
+          ]
+        }
       }
     }
   }
