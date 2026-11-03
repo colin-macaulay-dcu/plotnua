@@ -188,7 +188,18 @@ body.pn-id.pn-pd main#pn-main:has(.hc-problem) .hc-path > p:last-child{ margin-t
   body.pn-id.pn-pd main#pn-main:has(.hc-problem) .hc-problem .dq-figs > li:first-child::after{ display:none; }
   body.pn-id.pn-pd main#pn-main:has(.hc-problem) .hc-problem .dq-use .dq-rows{ grid-template-columns:1fr; }
   body.pn-id.pn-pd main#pn-main:has(.hc-problem) .hc-approaches .dq-adv-cols{ grid-template-columns:1fr; }
-  body.pn-id.pn-pd main#pn-main:has(.hc-problem) .hc-routes-grid{ grid-template-columns:1fr; }
+  body.pn-id.pn-pd main#pn-main:has(.hc-problem) .hc-routes-grid{ grid-template-columns:1fr; gap:12px; }
+  body.pn-id.pn-pd main#pn-main:has(.hc-problem) .hc-route{ padding-bottom:20px; }
+  body.pn-id.pn-pd main#pn-main:has(.hc-problem) .hc-route .hc-draw{ max-height:150px; padding:10px 16px; }
+  body.pn-id.pn-pd main#pn-main:has(.hc-problem) .hc-route h3{ margin:18px 20px 8px !important; font-size:30px !important; }
+  body.pn-id.pn-pd main#pn-main:has(.hc-problem) .hc-route p{ margin:0 20px; font-size:17.5px; }
+  body.pn-id.pn-pd main#pn-main:has(.hc-problem) .hc-approaches .dq-adv-cols{ gap:12px; }
+  body.pn-id.pn-pd main#pn-main:has(.hc-problem) .hc-approaches .dq-adv-cols > li{ padding:20px 20px 22px !important; gap:8px; }
+  body.pn-id.pn-pd main#pn-main:has(.hc-problem) :is(.hc-after .dq-rows, .hc-cautions .dq-qual){ gap:12px; }
+  body.pn-id.pn-pd main#pn-main:has(.hc-problem) :is(.hc-after .dq-rows > li, .hc-cautions .dq-qual > li){ padding:20px 20px 22px; }
+  body.pn-id.pn-pd main#pn-main:has(.hc-problem) .hc-steps > p{ padding:18px 20px 20px; }
+  body.pn-id.pn-pd main#pn-main:has(.hc-problem) .pe-chapter{ margin-top:56px; }
+  body.pn-id.pn-pd main#pn-main:has(.hc-problem) .hc-where{ padding-top:64px; }
   body.pn-id.pn-pd main#pn-main:has(.hc-problem) .hc-steps{ grid-template-columns:1fr; gap:10px; }
   body.pn-id.pn-pd main#pn-main:has(.hc-problem) .hc-cost > p.hc-eq{ gap:8px 10px; font-size:22px !important; }
   body.pn-id.pn-pd main#pn-main:has(.hc-problem) .hc-cost > p.hc-eq strong{ min-height:48px; padding:10px 14px; font-size:16px; }
