@@ -140,12 +140,34 @@ body.pn-id.pn-pd main#pn-main:has(.hb-problem) .hb-fig-n{ display:block; font-fa
 body.pn-id.pn-pd main#pn-main:has(.hb-problem) .hb-fig-l{ display:block; font-size:15px; line-height:1.5; color:var(--p4-stone); max-width:24ch; }
 
 /* =====================================================================
-   9 · PRACTICAL QUESTIONS — answers on view, as cards (no accordion)
+   9 · PRACTICAL QUESTIONS — native <details> cards (founder refinement, 3 Nov 2026)
+   Desktop: every answer open, as cards (pn-hb-editorial.js keeps them open).
+   Phones and tablets: expandable cards, the first open; no animation.
    ===================================================================== */
 body.pn-id.pn-pd main#pn-main:has(.hb-problem) .hb-qa-grid{ columns:3 300px; column-gap:var(--pd-gap); margin:clamp(28px,3vw,44px) 0 0; }
-body.pn-id.pn-pd main#pn-main:has(.hb-problem) .faq-item.hb-qa{ break-inside:avoid; display:block; margin:0 0 var(--pd-gap); padding:24px 26px 26px; background:var(--pd-card); border:var(--pd-edge); border-radius:var(--pd-r-sm); box-shadow:var(--pd-shadow); }
-body.pn-id.pn-pd main#pn-main:has(.hb-problem) .faq-item.hb-qa h3{ font-family:var(--p4-serif); font-weight:400; font-size:clamp(22px,1.7vw,25px); line-height:1.15; color:var(--p4-ivory); margin:0 0 10px; }
-body.pn-id.pn-pd main#pn-main:has(.hb-problem) .faq-item.hb-qa .faq-a{ padding:0; font-size:18px; line-height:1.65; color:var(--p4-lime); max-width:none; }
+body.pn-id.pn-pd main#pn-main:has(.hb-problem) .faq-item.hb-qa{ break-inside:avoid; display:block; margin:0 0 var(--pd-gap); padding:0 26px; background:var(--pd-card); border:var(--pd-edge); border-radius:var(--pd-r-sm); box-shadow:var(--pd-shadow); }
+body.pn-id.pn-pd main#pn-main:has(.hb-problem) .faq-item.hb-qa summary{ list-style:none; display:flex; align-items:flex-start; justify-content:space-between; gap:16px; padding:24px 0 10px; cursor:default; }
+body.pn-id.pn-pd main#pn-main:has(.hb-problem) .faq-item.hb-qa summary::-webkit-details-marker{ display:none; }
+body.pn-id.pn-pd main#pn-main:has(.hb-problem) .faq-item.hb-qa summary h3{ font-family:var(--p4-serif); font-weight:400; font-size:clamp(22px,1.7vw,25px); line-height:1.15; color:var(--p4-ivory); margin:0; }
+body.pn-id.pn-pd main#pn-main:has(.hb-problem) .faq-item.hb-qa summary:hover h3{ color:var(--p4-ivory); }
+body.pn-id.pn-pd main#pn-main:has(.hb-problem) .faq-item.hb-qa .icon{ display:none; }
+body.pn-id.pn-pd main#pn-main:has(.hb-problem) .faq-item.hb-qa .faq-a{ padding:0 0 26px; font-size:18px; line-height:1.65; color:var(--p4-lime); max-width:none; }
+
+/* phones and tablets: expandable cards */
+@media (max-width:1023px){
+  body.pn-id.pn-pd main#pn-main:has(.hb-problem) .hb-qa-grid{ columns:1; }
+  body.pn-id.pn-pd main#pn-main:has(.hb-problem) .faq-item.hb-qa{ margin:0 0 10px; padding:0 20px; }
+  body.pn-id.pn-pd main#pn-main:has(.hb-problem) .faq-item.hb-qa summary{ cursor:pointer; align-items:center; min-height:44px; padding:18px 0; }
+  body.pn-id.pn-pd main#pn-main:has(.hb-problem) .faq-item.hb-qa[open] summary{ padding-bottom:10px; }
+  body.pn-id.pn-pd main#pn-main:has(.hb-problem) .faq-item.hb-qa summary h3{ font-size:21px; line-height:1.2; }
+  body.pn-id.pn-pd main#pn-main:has(.hb-problem) .faq-item.hb-qa summary:focus-visible{ outline:2px solid var(--p4-terra-text); outline-offset:4px; border-radius:6px; }
+  body.pn-id.pn-pd main#pn-main:has(.hb-problem) .faq-item.hb-qa .icon{ display:block; flex:0 0 auto; position:relative; width:24px; height:24px; border:1px solid var(--p4-line2); border-radius:50%; }
+  body.pn-id.pn-pd main#pn-main:has(.hb-problem) .faq-item.hb-qa .icon::before,
+  body.pn-id.pn-pd main#pn-main:has(.hb-problem) .faq-item.hb-qa .icon::after{ content:""; position:absolute; left:50%; top:50%; width:10px; height:1.5px; margin:-.75px 0 0 -5px; background:var(--p4-terra-text); border-radius:1px; opacity:1; transition:none; }
+  body.pn-id.pn-pd main#pn-main:has(.hb-problem) .faq-item.hb-qa .icon::after{ transform:rotate(90deg); }
+  body.pn-id.pn-pd main#pn-main:has(.hb-problem) .faq-item.hb-qa[open] .icon::after{ display:none; }
+  body.pn-id.pn-pd main#pn-main:has(.hb-problem) .faq-item.hb-qa .faq-a{ padding:0 0 22px; font-size:17.5px; }
+}
 
 /* =====================================================================
    10 · LOOKING AHEAD — the quarantine, set apart in its own card
@@ -210,8 +232,20 @@ body.pn-id.pn-pd main#pn-main:has(.hb-problem) .hb-ev-grid > .faq-item.is-inline
 }
 @media (max-width:719px){
   body.pn-id.pn-pd main#pn-main:has(.hb-problem) .hb-steps-sec .step{ grid-template-columns:110px 1fr; padding:20px 20px 22px; }
-  body.pn-id.pn-pd main#pn-main:has(.hb-problem) .hb-qa-grid{ columns:1; }
-  body.pn-id.pn-pd main#pn-main:has(.hb-problem) .hb-possibility .hb-gone{ font-size:clamp(72px,24vw,112px); }
+  /* "Gone." on phones (founder refinement, 3 Nov 2026): same impact, tighter air around it */
+  body.pn-id.pn-pd main#pn-main:has(.hb-problem) .hb-possibility{ padding-top:56px; }
+  body.pn-id.pn-pd main#pn-main:has(.hb-problem) .hb-possibility h2{ margin-bottom:18px; }
+  body.pn-id.pn-pd main#pn-main:has(.hb-problem) .hb-possibility .hb-not{ margin-top:6px; margin-bottom:0; }
+  body.pn-id.pn-pd main#pn-main:has(.hb-problem) .hb-possibility .hb-gone{ font-size:clamp(84px,25vw,112px); margin:2px auto 16px; }
+  body.pn-id.pn-pd main#pn-main:has(.hb-problem) .hb-possibility > p:last-child{ margin-bottom:0; }
+  body.pn-id.pn-pd main#pn-main:has(.hb-problem) .hb-reveal{ padding-top:64px; }
+  /* phones: a slightly tighter section rhythm overall (presentation only) */
+  body.pn-id.pn-pd main#pn-main:has(.hb-problem) .article-section{ padding-top:52px; }
+  body.pn-id.pn-pd main#pn-main:has(.hb-problem) :is(.hb-pair, .hb-how, .hb-ireland){ margin-top:52px; }
+  body.pn-id.pn-pd main#pn-main:has(.hb-problem) .hb-practical{ margin-top:64px; padding-top:32px; }
+  body.pn-id.pn-pd main#pn-main:has(.hb-problem) .hb-options .dq-adv-cols > li{ padding:24px 22px 24px !important; }
+  body.pn-id.pn-pd main#pn-main:has(.hb-problem) .hb-options .hb-cmp-field{ margin-top:14px; padding-top:12px; }
+  body.pn-id.pn-pd main#pn-main:has(.hb-problem) .hb-ahead{ margin-top:52px; }
   body.pn-id.pn-pd main#pn-main:has(.hb-problem) .hb-ahead{ border-left-width:2px; }
 }
 @media (prefers-reduced-motion:reduce){

@@ -13,8 +13,10 @@ Allowed, and nothing else:
      the three step schematics, the Class 62 figures (each figure is stated in the
      sentence beneath it);
   D3 structural wrappers and classes inside <main>;
-  D4 one page stylesheet in the head (pn-hb-editorial.css), and, for the separate mobile
-     heading proposal, pn-hero-mobile-heading.css plus the class pn-hero-onetitle.
+  D4 one page stylesheet and one small script in the head (pn-hb-editorial.css / .js; the
+     script only opens and closes the nine question cards on phones), and the approved
+     mobile heading: pn-hero-mobile-heading.css plus the class pn-hero-onetitle.
+  D5 the nine practical questions are native <details> cards, open in the markup.
 
   python3 atlas-tools/prove-premium-discovery-hidden-bins.py            # prove
   python3 atlas-tools/prove-premium-discovery-hidden-bins.py --snapshot REF   # write the base (once)
@@ -26,7 +28,8 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PAGE = "discovery-hidden-bins.html"
 BASE = os.path.join(ROOT, "atlas-tools", "premium-discovery", "hidden-bins-base.json")
 LABELS = ["The Possibility", "The Practicalities"]
-ALLOWED_LINKS = ['<link rel="stylesheet" href="assets/identity/pn-hb-editorial.css?v=1">',
+ALLOWED_LINKS = ['<link rel="stylesheet" href="assets/identity/pn-hb-editorial.css?v=2">',
+                 '<script src="assets/identity/pn-hb-editorial.js?v=1" defer></script>',
                  '<link rel="stylesheet" href="assets/identity/pn-hero-mobile-heading.css?v=1">']
 VOID = {"img", "br", "input", "source", "meta", "link", "hr", "wbr", "path", "rect", "circle"}
 
@@ -122,6 +125,10 @@ def main():
     FIGS = ("3.5 m\u00b2 maximum area 1.4 m maximum height 0.6 m setback from the front wall "
             "\u00bd no reduction of the open front garden by more than half")
     check("D2 hidden additions carry no words but the Class 62 figures already stated beneath them", now["hidden_text"] == FIGS, repr(now["hidden_text"][:120]))
+    html = open(os.path.join(ROOT, PAGE), encoding="utf-8").read()
+    qs = html[html.index('id="practical-questions"'):]; qs = qs[:qs.index("</section>")]
+    check("D5 nine question cards, every one open in the markup (all answers on view without scripting)",
+          qs.count('<details class="faq-item hb-qa" open>') == 9 and qs.count("<details") == 9)
     print("HIDDEN BINS EDITORIAL GUARD · %s — %d passed, %d failed" % ("OK" if not bad else "FAILED", ok, len(bad)))
     sys.exit(1 if bad else 0)
 
