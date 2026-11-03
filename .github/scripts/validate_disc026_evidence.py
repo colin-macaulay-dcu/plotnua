@@ -63,10 +63,15 @@ REQUIRED = ["evidence_id", "opportunity", "claim_key", "claim", "jurisdiction",
 # V1 journey binds to. A manifest missing any of these cannot drive the journey.
 SPEC_REQUIRED_CLAIM_KEYS = {
     # MAKE
-    "grant_structure", "grant_max_eur", "grant_requires_pre_2021",
+    "grant_structure", "grant_max_eur",
+    # 6 Oct 2026: the solar build-date rule moved to "before 2025". The journey
+    # now binds to a year-neutral key; the old rule is kept as SUPERSEDED history.
+    "grant_requires_built_before", "grant_requires_pre_2021_historical",
     "grant_once_per_mprn", "grant_requires_mprn", "grant_eligible_applicants",
     "planning_exempt_houses", "planning_no_area_limit_houses",
     "planning_protected_structure_aca", "seai_does_not_warranty_contractor",
+    # CROSS · the heat pump grant keeps "before 2021"; stated beside the solar rule
+    "heat_pump_grant_requires_built_before",
     # TIME
     "meter_enables_time_of_use", "meter_is_not_tariff",
     # STORE

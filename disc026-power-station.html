@@ -468,7 +468,8 @@ details.ps-drawer[open] summary::after{content:"–"}
       <legend>Roughly when was the house built?</legend>
       <div class="ps-opts">
         <button class="ps-opt" type="button" data-v="pre2021" aria-pressed="false">Before 2021</button>
-        <button class="ps-opt" type="button" data-v="post2021" aria-pressed="false">2021 or later</button>
+        <button class="ps-opt" type="button" data-v="y2021_2024" aria-pressed="false">2021&ndash;2024</button>
+        <button class="ps-opt" type="button" data-v="from2025" aria-pressed="false">2025 or later</button>
         <button class="ps-opt" type="button" data-v="unknown" aria-pressed="false">Not sure</button>
       </div>
     </fieldset>
@@ -591,8 +592,9 @@ details.ps-drawer[open] summary::after{content:"–"}
 
        NOT CARRIED, deliberately: the Eircode (a full Eircode identifies one
        building), roof shading, the grant question, the dwelling type, and the
-       build date. "2021 or later" is not "a new build" - a house finished in
-       2022 is an existing home today - so that question is still asked.
+       build date. "2021-2024" and "2025 or later" are not "a new build" - a
+       house finished in 2022 is an existing home today - so that question is
+       still asked.
 
        sessionStorage, not a query string: property answers should not land in
        a URL or in history, and this dies with the tab. */
@@ -1201,7 +1203,7 @@ details.ps-drawer[open] summary::after{content:"–"}
 
   /* Every claim_key this journey binds to. If one is missing or not CURRENT,
      the dependent step degrades — it never falls back to a hard-coded fact. */
-  var NEEDED = ['grant_structure','grant_max_eur','grant_requires_pre_2021',
+  var NEEDED = ['grant_structure','grant_max_eur','grant_requires_built_before',
     'grant_once_per_mprn','grant_requires_mprn','grant_eligible_applicants',
     'planning_exempt_houses','planning_no_area_limit_houses',
     'planning_protected_structure_aca','seai_does_not_warranty_contractor',
@@ -1270,9 +1272,12 @@ details.ps-drawer[open] summary::after{content:"–"}
     if (!current('grant_max_eur')) {
       note='GRANT_AMOUNT_NEEDS_CONFIRMING'; state='WITHHELD';
       text='A grant scheme is in place, but we can’t state this year’s amount until we’ve rechecked SEAI. Nothing for you to do.';
-    } else if (A.built==='post2021') {
+    } else if (A.built==='from2025') {
+      /* 6 Oct 2026 · the solar build-date rule is read from evidence
+         (grant_requires_built_before), never written here. */
       note='GRANT_DOES_NOT_APPLY'; state='FALSE';
-      text='The roof can still generate. The SEAI grant is for homes built and occupied before 2021, so it isn’t open here.';
+      text='The roof can still generate. The SEAI solar grant is for homes built and occupied before '+
+           val('grant_requires_built_before','before_year')+', so it isn’t open here.';
     } else if (A.grant_consumed_at_mprn==='yes') {
       note='GRANT_ALREADY_USED'; state='FALSE';
       text='Solar has already been grant-funded at this address. The grant can only be claimed once for a home’s MPRN, so it has been used.';
@@ -1296,6 +1301,12 @@ details.ps-drawer[open] summary::after{content:"–"}
       text='No planning permission is needed for panels on a house, and a grant of up to €'+
            money(val('grant_max_eur','amount'))+' looks open here.';
     }
+    /* Two SEAI rules, two dates. A 2021-2024 home can have the solar grant but
+       not the heat pump grant; say so from evidence, so the homeowner does not
+       carry one date across to the other. Omitted if that record is not current. */
+    if (A.built==='y2021_2024' && current('heat_pump_grant_requires_built_before'))
+      text += ' The heat pump grant is separate and has an earlier date: it is for homes built and occupied before '+
+              val('heat_pump_grant_requires_built_before','before_year')+'.';
     if (A.shading==='yes') text += ' Shading is the thing most likely to change the answer, and it needs someone on site.';
     /* POSSIBLE WITH A CHANGE must NAME the change. Without this, MAKE told an
        apartment owner or a tenant that something was "possible with a change"
@@ -1530,7 +1541,7 @@ details.ps-drawer[open] summary::after{content:"–"}
     'shades it. Those need someone on site. Anyone quoting you should be looking at the roof, not at a map.</div>';
 
   var DRAWER_KEYS = {
-    MAKE:['grant_structure','grant_max_eur','grant_requires_pre_2021','grant_once_per_mprn',
+    MAKE:['grant_structure','grant_max_eur','grant_requires_built_before','heat_pump_grant_requires_built_before','grant_once_per_mprn',
           'planning_exempt_houses','planning_no_area_limit_houses','planning_protected_structure_aca',
           'seai_does_not_warranty_contractor'],
     TIME:['meter_enables_time_of_use','meter_is_not_tariff'],
@@ -1690,15 +1701,15 @@ details.ps-drawer[open] summary::after{content:"–"}
       fs.querySelectorAll('.ps-opt').forEach(function(o){ o.setAttribute('aria-pressed', o===b?'true':'false'); });
       A[q]=b.getAttribute('data-v');
       /* C3 · THE CONDITIONAL. The grant-history question is asked when the
-         build period is Before 2021 or Not sure. It is NOT asked when the
-         house is 2021 or later, because the build-date rule has already
+         build period is Before 2021, 2021-2024 or Not sure. It is NOT asked when
+         the house is 2025 or later, because the build-date rule has already
          closed the grant there and the answer could not change a V1 decision.
          When it is not asked its variable is cleared to null — it is never
          given an invented value, and the MAKE grant branch never reads it on
          that path. */
       if (q==='built'){
         var q3b=document.getElementById('psQ3b');
-        if (A.built==='post2021'){
+        if (A.built==='from2025'){
           q3b.hidden=true; A.grant_consumed_at_mprn=null;
           q3b.querySelectorAll('.ps-opt').forEach(function(o){o.setAttribute('aria-pressed','false');});
         } else { q3b.hidden=false; }

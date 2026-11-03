@@ -58,6 +58,8 @@ SEAI_SOLAR = "https://www.seai.ie/grants/home-energy-grants/individual-grants/so
 SEAI_HOME = "https://www.seai.ie/grants/home-energy-grants"
 SEAI_BATTERY = ("https://www.seai.ie/grants/home-energy-grants/"
                 "individual-grants/battery")
+SEAI_HEAT_PUMP = ("https://www.seai.ie/grants/home-energy-grants/"
+                  "individual-grants/heat-pump-systems")
 CI_SOLAR = "https://www.citizensinformation.ie/en/housing/housing-grants-and-schemes/grants-for-home-renovations-and-improvements/grants-for-solar-panels/"
 CI_MICRO = "https://www.citizensinformation.ie/en/environment/environmental-grants-and-schemes-for-your-home/micro-generation/"
 GOV_SOLAR = "https://www.gov.ie/en/department-of-housing-local-government-and-heritage/publications/solar-planning-exemptions/"
@@ -151,13 +153,63 @@ RECORDS = [
       homeowner_safe=True, logic_safe=False,
       notes="ANNOUNCED. Not an expiry on any current record."),
 
+    # =======================================================================
+    # THE BUILD-DATE RULE CHANGED ON 6 OCTOBER 2026. Until 5 October the solar
+    # PV grant was for homes built and occupied before 2021; from 6 October
+    # SEAI opened it to homes built and occupied before 2025 (Government
+    # announcement 29 September 2026; SEAI scheme page, application guide
+    # and gov.ie updated). The old rule is SUPERSEDED, not deleted: what
+    # PlotNua told homeowners is part of the record (the battery pattern).
+    # The journey binds to the year-neutral claim_key below, so the year now
+    # lives in evidence only.
+    r(evidence_id="make-eligibility-pre2025", opportunity="MAKE",
+      claim_key="grant_requires_built_before",
+      claim="The home must have been built and occupied before 2025.",
+      value={"before_year": 2025}, authority="SEAI",
+      source_title="Solar electricity grant (solar PV)", source_url=SEAI_SOLAR,
+      source_type="SCHEME_PAGE", maturity="CURRENT_SCHEME",
+      valid_from="2026-10-06", last_verified="2026-11-03",
+      verification_method="REMOTE_QUERY",
+      supersedes="make-eligibility-pre2021",
+      homeowner_safe=True, logic_safe=True,
+      notes="Read 3 November 2026: SEAI scheme page 'The house must have been "
+            "built and occupied before 2025.'; SEAI Solar PV Scheme Application "
+            "Guide (October 2026) 'Your home was built and occupied before "
+            "2025'; gov.ie (DCEE, Energy Upgrades) 'From 6 October 2026, "
+            "eligibility for solar PV and solar thermal grants will be extended "
+            "to houses built and occupied before 2025.' The SEAI Solar PV terms "
+            "PDF still says 'before 1 January 2021'; it predates the change and "
+            "the scheme page governs. Heat pumps are unchanged: see "
+            "cross-heat-pump-eligibility-pre2021."),
+
     r(evidence_id="make-eligibility-pre2021", opportunity="MAKE",
-      claim_key="grant_requires_pre_2021",
+      claim_key="grant_requires_pre_2021_historical",
       claim="The home must have been built and occupied before 2021.",
       value={"before_year": 2021}, authority="SEAI",
       source_title="Solar electricity grant (solar PV)", source_url=SEAI_SOLAR,
       source_type="SCHEME_PAGE", maturity="CURRENT_SCHEME",
-      homeowner_safe=True, logic_safe=True),
+      valid_until="2026-10-05",
+      superseded_by="make-eligibility-pre2025",
+      homeowner_safe=True, logic_safe=True,
+      notes="RETIRED 6 October 2026, superseded by make-eligibility-pre2025. "
+            "Kept so the record shows what the journey said before the change."),
+
+    # A SEPARATE RULE, NOT THE SAME ONE. The heat pump grant did not move: it is
+    # still for homes built and occupied before 2021. Encoded so the journey can
+    # say so from evidence when it tells a 2021-2024 home that the SOLAR grant
+    # is open, instead of letting a homeowner carry one date across to the other.
+    r(evidence_id="cross-heat-pump-eligibility-pre2021", opportunity="CROSS",
+      claim_key="heat_pump_grant_requires_built_before",
+      claim="The SEAI heat pump grant is for homes built and occupied before 2021.",
+      value={"before_year": 2021}, authority="SEAI",
+      source_title="Heat pump system grant", source_url=SEAI_HEAT_PUMP,
+      source_type="SCHEME_PAGE", maturity="CURRENT_SCHEME",
+      last_verified="2026-11-03", verification_method="PRIMARY_FETCH",
+      homeowner_safe=True, logic_safe=True,
+      notes="Read 3 November 2026: SEAI heat pump system grant page 'The home "
+            "needs to have an MPRN. It must have been built and occupied before "
+            "2021.' The 6 October 2026 extension to 'before 2025' applies to "
+            "solar PV and solar water heating, not to heat pumps."),
 
     r(evidence_id="make-one-per-mprn", opportunity="MAKE",
       claim_key="grant_once_per_mprn",
