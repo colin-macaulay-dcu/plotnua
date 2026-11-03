@@ -61,6 +61,8 @@
   <!-- GridNua (founder indexing approval, 29 Oct 2026) -->
   <url><loc>https://plotnua.ie/gridnua/</loc><lastmod>2026-10-29</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
   <url><loc>https://plotnua.ie/gridnua/technology/</loc><lastmod>2026-10-29</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <!-- PlotArt Mobile Gallery: public work-in-progress page, indexable by founder authorisation (3 Nov 2026). Gallery profiles stay noindex. -->
+  <url><loc>https://plotnua.ie/plotart/mobile-gallery/</loc><lastmod>2026-11-03</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <!-- TRIQ QUBE public page (URL kept as triq-cube.html): TRIQBRIQ product management approval received 12 October 2026; founder authorised public integration. Product name corrected to TRIQ QUBE on 13 October 2026 at the manufacturer's request. -->
   <url><loc>https://plotnua.ie/triq-cube.html</loc><lastmod>2026-10-13</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
 

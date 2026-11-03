@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "plotart/mobile-gallery/enquiry-schema.json",
+  "title": "Mobile Gallery enquiry (DESIGN ONLY — not implemented, nothing stored)",
+  "description": "Proposed shape of a future homeowner enquiry to a participating Mobile Gallery provider. PRIVATE CONCEPT, 3 Nov 2026. No form, Worker, database table or Airtable field exists for this. Personal data fields would need a privacy-notice update, a retention period and founder approval before any collection. No commercial model is agreed: referral_outcome records facts only and implies no fee.",
+  "type": "object",
+  "required": ["reference", "provider_id", "created_at", "enquiry_status"],
+  "properties": {
+    "reference": { "type": "string", "pattern": "^MG-E-[0-9]{8}-[0-9A-F]{6}$", "description": "Like the PlotArt enquiry relay's PA-E-… references." },
+    "provider_id": { "type": "string", "description": "An id from MG_PROVIDERS whose status is 'participating'." },
+    "created_at": { "type": "string", "format": "date-time" },
+    "homeowner_location": {
+      "type": "object", "description": "County and optional town only. Never a street address at enquiry stage.",
+      "properties": { "county": { "type": "string" }, "town": { "type": ["string", "null"] } }
+    },
+    "artwork_interests": { "type": "array", "items": { "type": "string" }, "description": "Values from MG_STYLES." },
+    "budget_range": { "enum": ["u500", "500-1500", "1500-5000", "5000+", "not-sure", null] },
+    "service_requested": { "enum": ["home-delivery", "try-before-buy", "consultation", "gallery-appointment", null] },
+    "enquiry_status": { "enum": ["received", "passed-to-provider", "provider-responded", "closed-no-response", "withdrawn"] },
+    "appointment_status": { "enum": ["none", "requested", "arranged", "took-place", "cancelled", "no-show", null] },
+    "referral_outcome": {
+      "type": ["object", "null"],
+      "description": "Reported by the provider, never inferred. Kept separate from any commercial ledger.",
+      "properties": {
+        "outcome": { "enum": ["unknown", "no-purchase", "purchase-reported"] },
+        "reported_at": { "type": ["string", "null"], "format": "date-time" },
+        "reported_by": { "type": ["string", "null"] }
+      }
+    },
+    "contact": {
+      "type": ["object", "null"],
+      "description": "FUTURE ONLY. Name and email/phone would be held by the enquiry relay, passed to the provider with Reply-To, and deleted on a fixed schedule — as the PlotArt enquiry relay does. Not collected in the prototype.",
+      "properties": { "name": { "type": "string" }, "email": { "type": "string" }, "phone": { "type": ["string", "null"] } }
+    },
+    "notice_version": { "type": ["string", "null"], "description": "Privacy notice version shown at the time of the enquiry." },
+    "delete_after": { "type": ["string", "null"], "format": "date-time" }
+  }
+}

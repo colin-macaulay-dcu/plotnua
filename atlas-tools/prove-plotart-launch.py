@@ -58,6 +58,9 @@ once the launch pages are released). Prints "PLOTART LAUNCH · OK" only when:
       Living Gallery priority or place; the Living Gallery page never links to the
       Founding 25 application page and links to A Home for Art; the Founding 25 page says
       the founding year begins when the gallery is first published.
+  L16 Mobile Gallery (3 Nov 2026): no provider marked participating; the published provider data holds no internal
+      notes, contacts, terms or prices; the unconfirmed-participation wording stays; nothing collects or sends
+      homeowner information; no structured data. The page alone may be indexed and listed in the sitemap.
 """
 import html, json, os, posixpath, re, sys
 
@@ -76,14 +79,21 @@ def need(ok, msg):
 SWITCHES = sys.argv[sys.argv.index("--switches") + 1] if "--switches" in sys.argv else os.path.join(ROOT, "plotart", "data", "launch.json")
 launch = json.load(open(SWITCHES, encoding="utf-8"))
 ENDPOINT = launch.get("f25_form_endpoint")
-PAGES = ["index.html", "founding-25.html", "living-gallery.html", "gallery/index.html", "invitation.html", "about.html"]  # invitation.html: private Founding Artist invitation (noindex, mailto only, no form)
+PAGES = ["index.html", "founding-25.html", "living-gallery.html", "gallery/index.html", "invitation.html", "about.html",
+         "mobile-gallery/index.html", "mobile-gallery/gallery.html"]  # invitation.html: private Founding Artist invitation (noindex, mailto only, no form)
+# Mobile Gallery (founder release authorisation, 3 Nov 2026): a public work-in-progress page (indexable only by its own
+# switch) and an illustrative gallery profile that is never indexed while participation is unconfirmed.
+MG_FILES = {"mobile-gallery/mobile-gallery.css", "mobile-gallery/mobile-gallery.js", "mobile-gallery/mobile-gallery-data.js",
+            "mobile-gallery/img/mg-hero-colin-macaulay-880.webp",
+            "mobile-gallery/img/mg-hero-colin-macaulay-600.webp"}
+MG_URL = "https://plotnua.ie/plotart/mobile-gallery/"
 # The application script ships only in the "open" state (never inferred from the endpoint).
 # The homepage hero image: ONE original painting by the founder, credited (founder decision, 29 Oct 2026).
 # It is not a Founding 25 submission, not for sale and not part of the collection.
 HERO_IMAGES = {"assets/hero/founder-01-abstract.webp"}
 # The Living Gallery image (consolidated brief, 29 Oct 2026): the founder's painting in an AI-generated interior visualisation.
 LG_IMAGE = "assets/living/plotart-living-gallery-colin-macaulay-artwork.webp"
-ALLOWED = set(PAGES) | {"assets/plotart.css", "assets/plotart.js", "assets/pa-enquiry.js", LG_IMAGE} | HERO_IMAGES | ({"assets/f25-apply.js"} if launch.get("f25_application_state") == "open" else set())
+ALLOWED = set(PAGES) | MG_FILES | {"assets/plotart.css", "assets/plotart.js", "assets/pa-enquiry.js", LG_IMAGE} | HERO_IMAGES | ({"assets/f25-apply.js"} if launch.get("f25_application_state") == "open" else set())
 # Published artist galleries (Phase 1, 29 Oct 2026; checked in full by L14). Only these shapes are allowed:
 #   artists/<slug>/index.html · artists/<slug>/<artwork-slug>.html · artists/<slug>/img/<name>.webp
 ART_FILE = re.compile(r"^artists/([a-z0-9]+(?:-[a-z0-9]+){0,6})/(?:[a-z0-9]+(?:-[a-z0-9]+){0,6}\.html|gallery\.json|img/[a-z0-9-]+-\d{2,5}\.webp)$")
@@ -158,9 +168,10 @@ for name in PAGES:
     need(not re.search(r"\d+(?:\.\d+)?\s?(?:%|per\s?cent)", vt4, re.I), "L4 %s shows a percentage" % name)
     need(not re.search(r"commission (?:rate )?of|\d+\s?(?:%|per\s?cent)\s+commission", vt, re.I), "L4 %s states a commission rate" % name)
     # L5
-    indexable = (name == "founding-25.html" and launch.get("f25_page_indexable") is True) or (name == "index.html" and launch.get("home_indexable") is True)
+    indexable = (name == "founding-25.html" and launch.get("f25_page_indexable") is True) or (name == "index.html" and launch.get("home_indexable") is True) \
+        or (name == "mobile-gallery/index.html" and launch.get("mobile_gallery_indexable") is True)
     if indexable:
-        canon = "https://plotnua.ie/plotart/" + ("" if name == "index.html" else name)
+        canon = MG_URL if name == "mobile-gallery/index.html" else "https://plotnua.ie/plotart/" + ("" if name == "index.html" else name)
         need('<meta name="robots" content="index, follow">' in s and ('<link rel="canonical" href="%s' % canon) in s, "L5 %s is switched indexable but lacks index/canonical" % name)
     else:
         need('<meta name="robots" content="noindex, follow">' in s and 'rel="canonical"' not in s, "L5 %s must be exactly 'noindex, follow' with no canonical until its switch is approved" % name)
@@ -333,9 +344,12 @@ if vg:
     need("<title>Virtual Gallery | PlotArt</title>" in vg, "L11 the Virtual Gallery title is not the approved one")
 smp = os.path.join(SITE, "sitemap.xml")
 if os.path.exists(smp):
-    need("plotart" not in open(smp, encoding="utf-8").read(), "L11 sitemap.xml lists a PlotArt URL")
-NAV_WANT = ["Discover PlotArt", "Virtual Gallery", "Living Gallery", "PlotNua ↗"]
-NAV_CURRENT = {"index.html": "Discover PlotArt", "gallery/index.html": "Virtual Gallery", "living-gallery.html": "Living Gallery", "founding-25.html": None, "invitation.html": None, "about.html": None}
+    _sm = re.findall(r"<loc>([^<]*plotart[^<]*)</loc>", open(smp, encoding="utf-8").read())
+    need(_sm == ([MG_URL] if launch.get("mobile_gallery_indexable") is True else []),
+         "L11 sitemap.xml may list only the Mobile Gallery page (when its switch is on), not %s" % _sm)
+NAV_WANT = ["Discover PlotArt", "Virtual Gallery", "Mobile Gallery", "Living Gallery", "PlotNua ↗"]  # Mobile Gallery added 3 Nov 2026
+NAV_CURRENT = {"index.html": "Discover PlotArt", "gallery/index.html": "Virtual Gallery", "living-gallery.html": "Living Gallery", "founding-25.html": None, "invitation.html": None, "about.html": None,
+               "mobile-gallery/index.html": "Mobile Gallery", "mobile-gallery/gallery.html": "Mobile Gallery"}
 for name in PAGES:
     p = os.path.join(PA, name)
     if os.path.exists(p):
@@ -348,8 +362,9 @@ for name in PAGES:
         cur = [html.unescape(x[2]) for x in links if x[1]]
         need(cur == ([NAV_CURRENT[name]] if NAV_CURRENT[name] else []), "L11 %s current pill is %s, not %s" % (name, cur, NAV_CURRENT[name]))
         depth = "../" * name.count("/")
-        need(len(links) == 4 and [x[0] for x in links] == [depth + "index.html", depth + "gallery/", depth + "living-gallery.html", depth + "../index.html"],
-             "L11 %s pills must link to the PlotArt homepage, the Virtual Gallery, the Living Gallery and the PlotNua homepage" % name)
+        mg_href = "index.html" if name.startswith("mobile-gallery/") else depth + "mobile-gallery/"
+        need(len(links) == 5 and [x[0] for x in links] == [depth + "index.html", depth + "gallery/", mg_href, depth + "living-gallery.html", depth + "../index.html"],
+             "L11 %s pills must link to the PlotArt homepage, the Virtual Gallery, the Mobile Gallery, the Living Gallery and the PlotNua homepage" % name)
         hv = visible_text(head.group(1)) if head else ""
         need("Founding 25" not in hv and "About" not in hv, "L11 %s header still offers Founding 25 or About" % name)
 
@@ -441,6 +456,22 @@ for slug in GALLERY_SLUGS:
         # withdraw every work and the gallery shows its empty state: founder decisions 1 Nov 2026.)
 for asset in _arts:
     need(asset[len("plotart/"):] in ARTIST_FILES, "L14 provenance record for %s describes no published file" % asset)
+
+# L16 · Mobile Gallery (founder release authorisation, 3 Nov 2026): the concept is public, no gallery has joined.
+_mgd = os.path.join(PA, "mobile-gallery", "mobile-gallery-data.js")
+if os.path.exists(_mgd):
+    _d = open(_mgd, encoding="utf-8").read()
+    _prov = _d.split("window.MG_PROVIDERS", 1)[-1]
+    need("status: 'participating'" not in _d and "evidence: null }" in _d, "L16 a Mobile Gallery provider is marked as participating")
+    need(not re.search(r"\bnote:|contact:|commercial: '|€|per appointment|referral fee", _prov), "L16 the published provider data carries internal notes, contacts, terms or prices")
+    need(not re.search(r"(?i)\b(?:our|official|approved|founding) partner|participating gallery'(?!\s*:)", _prov), "L16 the provider data claims a partnership")
+    _js = open(os.path.join(PA, "mobile-gallery", "mobile-gallery.js"), encoding="utf-8").read()
+    need("'Prospective Gallery — Participation Unconfirmed'" in _js and "Illustrative gallery profile." in _js and "Participation has not been confirmed." in _js,
+         "L16 the Mobile Gallery cards or profile lose the unconfirmed-participation wording")
+    need(not re.search(r"<form|fetch\(|sendBeacon|XMLHttpRequest|workers\.dev|airtable", _js + _d), "L16 Mobile Gallery collects or sends homeowner information")
+    _mgi = open(os.path.join(PA, "mobile-gallery", "index.html"), encoding="utf-8").read()
+    need("Developing Our Gallery Network" in _mgi and "appointments can’t yet be arranged through PlotArt" in _mgi, "L16 the Mobile Gallery page must say the network is developing and appointments can't yet be arranged")
+    need("application/ld+json" not in _mgi + open(os.path.join(PA, "mobile-gallery", "gallery.html"), encoding="utf-8").read(), "L16 Mobile Gallery carries structured data")
 
 if problems:
     print("PLOTART LAUNCH · FAILED (%d)" % len(problems))

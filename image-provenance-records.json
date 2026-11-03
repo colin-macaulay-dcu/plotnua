@@ -9399,6 +9399,71 @@
         "embeds_c2pa": false,
         "note": "Web re-encoding carries no content credentials. The PNG master carries OpenAI's C2PA content credentials (see generated.c2pa_evidence)."
       }
+    },
+    {
+      "asset": "plotart/mobile-gallery/img/mg-hero-colin-macaulay-880.webp",
+      "sha256": "2a14fdba5c714429e48308aaaa8d550ae4b388e43a0edd08c2f3853e05801b38",
+      "bytes": 79216,
+      "pixels": [
+        880,
+        660
+      ],
+      "class": "AI_ILLUSTRATION",
+      "what": "PlotArt Mobile Gallery hero: the actual photograph of Colin MacAulay's original abstract painting placed on the empty wall of PlotNua's own AI-generated living-room illustration (composite). The room is not a real home; the painting is not from any gallery's collection.",
+      "layers": {
+        "original_painting": "Untitled colourful abstract painting with yellow outlines, created and owned by Colin Macaulay (founder). The web copy plotart/assets/hero/founder-01-abstract.webp (FOUNDER_ORIGINAL_ARTWORK, sha256 7812df17f3651108820ed79dfe69aa1fdaa27640d5aa1d5464c3b08007b802b1) was used, unchanged in content.",
+        "ai_room": {
+          "file": "assets/disc023/img/DISC-023-HERO-BEFORE.jpg (declared: derived by artefact removal from the credentialed Google master assets/disc023/img/A-Home-for-Art-01-Before-MASTER.jpeg)",
+          "sha256": "b4c62c36ac25e3a0a8b3f86bdc6b90275d2e9d482c2a855c2e80497d465f2bb5",
+          "pixels": [
+            1408,
+            768
+          ]
+        },
+        "composite": "The painting was resized to 380 x 268 px (its own proportions, 1.417:1) and placed centred above the fireplace at x 670-1050, y 128-396 of the 1408 x 768 room. It was matched to the room's daylight (contrast x0.9, saturation x0.9, brightness x0.96, a warm multiply of (255,236,210) and a gentle left-to-right fall-off to x0.86), and given a blurred wall shadow offset (9,10) px and a 4 px canvas edge. The result was cropped to the box 420,40,1300,700 (880 x 660). No third-party material was added."
+      },
+      "generated": {
+        "tool": "Room: Google LLC generative AI (per the room master's signed C2PA credential); composite and WebP encoding (quality 86, method 6) by the PlotNua build session with Pillow",
+        "date": "2026-11-03",
+        "source_master": {
+          "file": "assets/disc023/img/DISC-023-HERO-BEFORE.jpg",
+          "sha256": "b4c62c36ac25e3a0a8b3f86bdc6b90275d2e9d482c2a855c2e80497d465f2bb5"
+        }
+      },
+      "prompt_status": "UNAVAILABLE",
+      "reference_disclosure": {
+        "status": "UNCERTAIN",
+        "statement": "The room comes from PlotNua's credentialed Google master, whose credential records one credentialed input image. This composite was re-encoded, so it carries no credential of its own and its references are recorded from the room master's declaration, not verifiable from this file. The only other input is the founder's photograph of his own painting.",
+        "evidence": "Provenance records of assets/disc023/img/A-Home-for-Art-01-Before-MASTER.jpeg (C2PA_EMBEDDED, Google LLC, 19 Aug 2026) and plotart/assets/hero/founder-01-abstract.webp"
+      },
+      "resemblance_review": {
+        "date": "2026-11-03",
+        "reviewed_by": "PlotNua build session, for the founder's review",
+        "compared_against": "Identifiable third-party content in general: furniture and lighting products, brand marks, artworks by other artists, legible text, recognisable real interiors or addresses",
+        "findings": [
+          "The only artwork shown is the founder's own painting, from the actual photograph",
+          "The room is the existing A Home for Art illustration, already published with an AI label; no new generated content",
+          "No brand marks, legible text, recognisable products or identifiable real interior"
+        ],
+        "verdict": "No identifiable third-party content; suitable for the PlotArt Mobile Gallery page with the AI-generated illustration label"
+      },
+      "decision_ref": "PN-FDR-2026-11-03-PLOTART-MG",
+      "label_on_page": "AI-generated illustration; caption: Original painting by Colin MacAulay, founder of PlotArt, shown to illustrate the idea. It is not from any gallery's collection and is not for sale. The room is an AI-generated visualisation, not a real home.",
+      "human_review": {
+        "reviewer": "Colin MacAulay (founder)",
+        "date": "2026-11-03",
+        "attests": "Founder release authorisation (Colin MacAulay, 3 Nov 2026, Mobile Gallery Phase 2): 'Publish the existing refined Mobile Gallery landing page. Preserve: Refined hero featuring the founder's painting.' He had reviewed the composite in the Phase 1B preview the same day.",
+        "founder_confirmation": "Founder confirmation (Colin Macaulay, 29 Oct 2026, 15:04): I created the original painting; I personally took the photograph of that painting; I authorise both to be used within PlotArt."
+      },
+      "permitted_surfaces": [
+        "plotart"
+      ],
+      "depicts_named_product": false,
+      "depicts_named_organisation": false,
+      "introduced": {
+        "date": "2026-11-03",
+        "subject": "PlotArt Mobile Gallery public work-in-progress release"
+      }
     }
   ],
   "legacy_undeclared": [
@@ -14866,6 +14931,28 @@
         "derivative_embeds_c2pa": false,
         "note": "Editing and re-encoding remove the embedded C2PA credential. This copy carries NO signed credential; the master keeps it, and its record carries the AI classification."
       }
+    },
+    {
+      "asset": "plotart/mobile-gallery/img/mg-hero-colin-macaulay-600.webp",
+      "sha256": "8092b99a0b4953e570e8f3a54483beae50a58049cae4bc404149c019cf1f5cd2",
+      "bytes": 37930,
+      "pixels": [
+        600,
+        450
+      ],
+      "derived_from": {
+        "asset": "plotart/mobile-gallery/img/mg-hero-colin-macaulay-880.webp",
+        "sha256": "2a14fdba5c714429e48308aaaa8d550ae4b388e43a0edd08c2f3853e05801b38"
+      },
+      "method": "webp-resize",
+      "encoder": "Pillow, WebP quality 84, method 6, Lanczos resize to 600px wide",
+      "fidelity": {
+        "ssim": 0.9991,
+        "psnr_db": 39.76,
+        "measured_against": "source at the same pixel size (global SSIM, luminance)"
+      },
+      "made": "2026-11-03",
+      "lineage_basis": "Smaller copy of the Mobile Gallery hero composite for phones; shown only in the srcset beside its source"
     }
   ],
   "derivative_holds": [

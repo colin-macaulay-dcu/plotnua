@@ -746,3 +746,8 @@ body.pa .pa-free-lines{ margin:0; }
   .pa-head--pills .pa-pills{ display:none; }
   .pa-head--pills .pa-word{ font-size:26px; }
 }
+
+/* ==== Mobile Gallery (3 Nov 2026): five pills (Discover PlotArt · Virtual Gallery · Mobile Gallery · Living Gallery ·
+   PlotNua). Tablets keep one row of five; phones use the shared Menu (unchanged). ==== */
+@media (max-width:1180px){ .pa-pills{ grid-template-columns:repeat(5, minmax(0, 1fr)); } }
+@media (max-width:860px){ :where(body.pa) .pa-pills a.pa-pill{ padding:0 4px; font-size:13px; letter-spacing:0; } }

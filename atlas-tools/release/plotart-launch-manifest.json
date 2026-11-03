@@ -1,22 +1,29 @@
 {
   "schema": "plotnua.plotart.launch-manifest.v1",
-  "note": "SHA-256 of every published PlotArt file, from the launch build that passed prove-plotart-launch.py L1-L12 with the demonstration names (development branch founder/plotart-prototype). Any change to a published PlotArt file must come from a new verified build. Rebuilt 28 Oct 2026 (the legal-information release 2c89865 had changed the footers without updating this manifest). Rebuilt 29 Oct 2026 for the navigation and homepage refinement. Rebuilt 29 Oct 2026 for artist galleries Phase 1: artist gallery files are verified by L14 (provenance fingerprints), not pinned here.",
+  "note": "SHA-256 of every published PlotArt file, from the launch build that passed prove-plotart-launch.py L1-L12 with the demonstration names (development branch founder/plotart-prototype). Any change to a published PlotArt file must come from a new verified build. Rebuilt 28 Oct 2026 (the legal-information release 2c89865 had changed the footers without updating this manifest). Rebuilt 29 Oct 2026 for the navigation and homepage refinement. Rebuilt 29 Oct 2026 for artist galleries Phase 1: artist gallery files are verified by L14 (provenance fingerprints), not pinned here. Rebuilt 3 Nov 2026 for the Mobile Gallery public work-in-progress release (five-pill navigation on every PlotArt page; plotart/mobile-gallery/ added; founder release authorisation).",
   "built_from": "founder/plotart-artist-galleries (Phase 3 preview: enquiry styles and pa-enquiry.js), OPEN state; no gallery published",
   "files": {
-    "invitation.html": "c9af56a632ac0a9d1ca7adf839429af157959198ab168443718154c2cdbbbec6",
-    "about.html": "5e9dab2f41c249b0d4bdb834c89128f4146f199db88c3f29c5d43c7eb1845dd2",
-    "founding-25.html": "4ab433e0ca9f24fab6ff8464fb4e75d9510b32b43cb00229f01b6dbd4417241a",
-    "living-gallery.html": "4e278167b1f4fbc17b3286161eafdf2b0a86815daba5591558de8ef790919dbb",
-    "index.html": "1ff1fdae6867dcc8e842bc7a7b7a0f35cc03d35b9d3a137d1323b0578035c7b6",
+    "invitation.html": "cb75c7efd46ffb8e9df7c935d8a407ad40d280781d04f6a4c53208cb529245c3",
+    "about.html": "911f2a3e7c5275c3cf84e5325f88f0c1fa4a5c2c95382a596a69df1b51fd5d38",
+    "founding-25.html": "71d5206114c4137c66a64ca4d9f0e2ec16486c1e885a49ab5d22bb522028daee",
+    "living-gallery.html": "552bffacbd9bc72168305fe589eaed8968bba876b272f845b30fb6d5b440dba9",
+    "index.html": "7b24588503bce6afd960480a90cecfdc97b2e45543177326e986bc01a5bccda5",
     "assets/f25-apply.js": "42a81d4a902bbdab7e16207cb98192940e15f0f5f1a0e7aa1622d03d181a77c0",
-    "assets/plotart.css": "585fbe564a2da412962bf9cb9fdf28fb622cb7ebc516ca4fd3a2dcdb4e86588a",
+    "assets/plotart.css": "725fe44d25faf8442ff42d9b4affdba38011818d3559b41afc6c60f934ac3efa",
     "assets/plotart.js": "1aeda046a43a9877413943aa4573f8266280b94a5df21fb68421c5486189dca8",
     "assets/pa-enquiry.js": "e57ef00d58f3f2783d0ec3a9225869aa2cd3be215737d39d08c9f6dd22c78781",
     "assets/hero/founder-01-abstract.webp": "7812df17f3651108820ed79dfe69aa1fdaa27640d5aa1d5464c3b08007b802b1",
     "assets/living/plotart-living-gallery-colin-macaulay-artwork.webp": "f4861333a80fda7f704fd3c57d0a2b8f18db589b8505eb11192ac05c08d8d0f9",
-    "gallery/index.html": "35d93d1301cd513a16e617551cde55c8f9ddd89daf0d2d25d5471f2afb843f1e"
+    "mobile-gallery/gallery.html": "4f533a92e386ae17f090a87b73b6e500558a75c971a860181e3fe388a092225a",
+    "mobile-gallery/mobile-gallery.css": "2e4eac8d6b16d6d8512fa6bf470dc85fcd0acd30f8a4dad4b0940f36f0273280",
+    "mobile-gallery/mobile-gallery.js": "7eaa96947308db08a9cca30af7f452c3eb2550b1754dc552a9d6d7945db1abcd",
+    "mobile-gallery/index.html": "dea1ad6099c7327637642a91c4d10ca3dcc163592c38bcb7359d280fd43c77bc",
+    "mobile-gallery/mobile-gallery-data.js": "2752e0065d6d903d7b02f6abe653e684cecd7fe4b6f7e125587aed2cda511833",
+    "mobile-gallery/img/mg-hero-colin-macaulay-600.webp": "8092b99a0b4953e570e8f3a54483beae50a58049cae4bc404149c019cf1f5cd2",
+    "mobile-gallery/img/mg-hero-colin-macaulay-880.webp": "2a14fdba5c714429e48308aaaa8d550ae4b388e43a0edd08c2f3853e05801b38",
+    "gallery/index.html": "9e6a9033b39aad57994812fd79946340b4033b082ed78c664253d0acc7fd297a"
   },
   "outside_grid": {
-    "gallery/index.html": "327c5938bca1011fdfcb394cff999f49ef88eab2d537f36a8232eae871e79553"
+    "gallery/index.html": "72af6a8ddb71cf6837a595eddcff711d1fee96acbcbaf1ef9453c5600c264afd"
   }
 }

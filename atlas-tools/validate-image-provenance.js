@@ -265,6 +265,14 @@ const FOUNDER_ATTESTED_PLOTART_LG = {
   sha256: new Set(['f4861333a80fda7f704fd3c57d0a2b8f18db589b8505eb11192ac05c08d8d0f9']),
   surfaces: ['plotart'],
 };
+/* PN-FDR-2026-11-03-PLOTART-MG (founder release authorisation, 3 Nov 2026): the PlotArt Mobile Gallery hero. The actual
+   photograph of the founder's painting placed on the empty wall of PlotNua's own credentialed A Home for Art room.
+   Pinned to this one file and the PlotArt surface only. */
+const FOUNDER_ATTESTED_PLOTART_MG = {
+  decision: 'PN-FDR-2026-11-03-PLOTART-MG',
+  sha256: new Set(['2a14fdba5c714429e48308aaaa8d550ae4b388e43a0edd08c2f3853e05801b38']),
+  surfaces: ['plotart'],
+};
 const FOUNDER_ATTESTED_FOUNDER_PORTRAIT = {
   /* Founder portrait (founder approval, 30 Oct 2026): an AI-edited portrait of the founder made with ChatGPT
      (gpt-image), shown once on each About page. Crop and resize only; never described as a photograph. */
@@ -296,7 +304,7 @@ const FOUNDER_ATTESTED_SUPPLIER_INVITE = {
   ]),
   surfaces: ['supplier-invitation'],
 };
-const FOUNDER_ATTESTED_ALL = [FOUNDER_ATTESTED_GRP, FOUNDER_ATTESTED_H6, FOUNDER_ATTESTED_DISC031, FOUNDER_ATTESTED_DISC033, FOUNDER_ATTESTED_DISC032, FOUNDER_ATTESTED_PLOTART_LG, FOUNDER_ATTESTED_FOUNDER_PORTRAIT, FOUNDER_ATTESTED_SUPPLIER_INVITE];
+const FOUNDER_ATTESTED_ALL = [FOUNDER_ATTESTED_GRP, FOUNDER_ATTESTED_H6, FOUNDER_ATTESTED_DISC031, FOUNDER_ATTESTED_DISC033, FOUNDER_ATTESTED_DISC032, FOUNDER_ATTESTED_PLOTART_LG, FOUNDER_ATTESTED_PLOTART_MG, FOUNDER_ATTESTED_FOUNDER_PORTRAIT, FOUNDER_ATTESTED_SUPPLIER_INVITE];
 const attestedFor = h => FOUNDER_ATTESTED_ALL.find(x => x.sha256.has(String(h)));
 /* 'gridnua' (founder approval of the GridNua limited launch, 29 Oct 2026): the GridNua initiative pages.
    'supplier-invitation' (founder approval, 2 Nov 2026): the private supplier invitation page and its social preview. */

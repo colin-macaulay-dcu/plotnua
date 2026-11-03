@@ -19,9 +19,10 @@ def artist_page(path, title, desc, body, scripts=("plotart.js",)):
     pill = lambda key, href, lbl, track: '<a class="pa-pill" href="%s"%s data-pa-track="%s">%s</a>' % (href, ' aria-current="page"' if key == "vg" else "", track, lbl)
     header = ('<header class="pa-head pa-head--pills">\n  <div class="pa-wrap">\n'
               '    <a class="pa-brand" href="%sindex.html" aria-label="PlotArt home"><img class="pa-logo" src="/assets/brand/plotart-p-48.webp" srcset="/assets/brand/plotart-p-96.webp 2x" width="30" height="30" alt=""><span class="pa-word">PlotArt</span><span class="pa-part"><img src="/assets/brand/plotnua-mark-master.svg" alt="" width="18" height="18"><span>Part of PlotNua</span></span></a>\n'
-              '    <nav class="pa-pills" aria-label="PlotArt">%s%s%s%s</nav>\n  </div>\n</header>') % (
+              '    <nav class="pa-pills" aria-label="PlotArt">%s%s%s%s%s</nav>\n  </div>\n</header>') % (
         R, pill("home", R + "index.html", "Discover PlotArt", "nav_discover_plotart"),
         pill("vg", R + "gallery/", "Virtual Gallery", "nav_virtual_gallery"),
+        pill("mg", R + "mobile-gallery/", "Mobile Gallery", "nav_mobile_gallery"),
         pill("lg", R + "living-gallery.html", "Living Gallery", "nav_living_gallery"),
         '<a class="pa-pill pa-pill--out" href="%sindex.html" aria-label="PlotNua homepage" data-pa-track="cross_plotnua_home">PlotNua <span aria-hidden="true">↗</span></a>' % T)
     # Phone Menu (founder approval 30 Oct 2026): the same links in the shared one-row Menu
@@ -37,7 +38,7 @@ def artist_page(path, title, desc, body, scripts=("plotart.js",)):
              '<div class="pn-sm-panel">%s</div></details>') % "".join(_items)
     header = header.replace('</nav>\n  </div>\n</header>', '</nav>\n    ' + _menu + '\n  </div>\n</header>', 1)
     sc = "".join('<script src="%sassets/%s" defer></script>' % (R, s) for s in scripts)
-    footlinks = ('<li><a href="{R}gallery/">Virtual Gallery</a></li><li><a href="{R}living-gallery.html">Living Gallery</a></li>'
+    footlinks = ('<li><a href="{R}gallery/">Virtual Gallery</a></li><li><a href="{R}mobile-gallery/">Mobile Gallery</a></li><li><a href="{R}living-gallery.html">Living Gallery</a></li>'
                  '<li><a href="{R}about.html">About PlotArt</a></li><li><a href="{R}founding-25.html">The Founding 25</a></li>').format(R=R)
     robots = ('<!-- LIMITED LAUNCH: not for indexing until the founder approves indexing. Planned canonical:\n     https://plotnua.ie/plotart/%s -->\n'
               '<meta name="robots" content="noindex, follow">') % E(path)

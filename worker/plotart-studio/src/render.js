@@ -157,7 +157,7 @@ export function previewPage(title, body, bar) {
 <header class="pa-head pa-head--pills">
   <div class="pa-wrap">
     <span class="pa-brand"><img class="pa-logo" src="/assets/brand/plotart-p-48.webp" srcset="/assets/brand/plotart-p-96.webp 2x" width="30" height="30" alt=""><span class="pa-word">PlotArt</span><span class="pa-part"><img src="/assets/plotnua-mark.svg" alt="" width="18" height="18"><span>Part of PlotNua</span></span></span>
-    <nav class="pa-pills" aria-label="PlotArt (preview: links off)"><a class="pa-pill">Discover PlotArt</a><a class="pa-pill" aria-current="page">Virtual Gallery</a><a class="pa-pill">Living Gallery</a><a class="pa-pill pa-pill--out">PlotNua <span aria-hidden="true">↗</span></a></nav>
+    <nav class="pa-pills" aria-label="PlotArt (preview: links off)"><a class="pa-pill">Discover PlotArt</a><a class="pa-pill" aria-current="page">Virtual Gallery</a><a class="pa-pill">Mobile Gallery</a><a class="pa-pill">Living Gallery</a><a class="pa-pill pa-pill--out">PlotNua <span aria-hidden="true">↗</span></a></nav>
   </div>
 </header>
 <main id="main">

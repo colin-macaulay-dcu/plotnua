@@ -79,8 +79,9 @@ STANDARD = [
     # Virtual Gallery (28 Oct 2026): a fourth page, plotart/gallery/, published empty (guard L11).
     # 6 pages since the private invitation page and the About page joined the guard's PAGES list (30 Oct 2026);
     # the guard itself was unchanged, only this expected text had not followed it.
+    # 8 pages since the Mobile Gallery page and its illustrative gallery profile joined (3 Nov 2026).
     ("python3 atlas-tools/prove-plotart-launch.py . --switches atlas-tools/release/plotart-launch-switches.json --manifest atlas-tools/release/plotart-launch-manifest.json",
-     "PLOTART LAUNCH · OK — L1-L15 on 6 pages · applications open", "PlotArt launch L1-L14 (L14 published artist galleries): Virtual Gallery empty; three-pill navigation, no banner; Founding 25 and Living Gallery separate (applications open, founder activation 28 Oct 2026)"),
+     "PLOTART LAUNCH · OK — L1-L15 on 8 pages · applications open", "PlotArt launch L1-L14 (L14 published artist galleries): Virtual Gallery empty; five-pill navigation with Mobile Gallery (3 Nov 2026), no banner; Founding 25 and Living Gallery separate (applications open, founder activation 28 Oct 2026)"),
     # PlotArt in the PlotNua navigation and the A Home for Art links (proposed 27 Oct 2026)
     # 32 header pages after DISC-015 The Underground Swimming Pool joined the header registry (1 Nov 2026; 31 after DISC-032, 30 after DISC-033).
     ("python3 atlas-tools/prove-plotart-integration.py", "PLOTART INTEGRATION · OK — N1-N4 · 32 header pages", "PlotArt navigation and A Home for Art links N1-N4"),
