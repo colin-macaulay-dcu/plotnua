@@ -172,6 +172,7 @@ main#pn-main:has(.ps-open) :is(.anat-fig,.fig-strip) svg [fill="#8FAF8A"]{fill:#
 main#pn-main:has(.ps-open) :is(.anat-fig,.fig-strip) svg [fill="#8FAF8A"][fill-opacity=".10"]{fill:#3A3D3A;fill-opacity:.9}
 main#pn-main:has(.ps-open) :is(.anat-fig,.fig-strip) svg [fill="#1F3B2E"]{fill:#E9E2D6}
 main#pn-main:has(.ps-open) :is(.anat-fig,.fig-strip) svg [fill="#55605A"]{fill:#C2BDB5}
+main#pn-main:has(.ps-open) :is(.anat-fig,.fig-strip) svg [fill="#4F6B4A"]{fill:#C2BDB5}
 main#pn-main:has(.ps-open) :is(.anat-fig,.fig-strip) svg > g[letter-spacing]{fill:var(--p4-terra-text);font-weight:700}
 
 /* A · the seven positions: ivory markers with dark numerals; labels beside their markers */
@@ -240,4 +241,36 @@ main#pn-main:has(.ps-open) .anat-fig > svg[aria-label^="The planning limits"]{ma
   body.pn-id.pn-pd main#pn-main:has(.ps-open) .imagine-photo:not(.pa-frame) .caption{position:static;background:#1B1C1E;padding:18px 20px 22px;text-align:left;border-bottom:1px solid var(--p4-line)}
   body.pn-id.pn-pd main#pn-main:has(.ps-open) .imagine-photo:not(.pa-frame) .caption p{max-width:none;text-shadow:none;font-size:16.5px;line-height:1.55;color:var(--p4-lime)}
   body.pn-id.pn-pd main#pn-main:has(.ps-open) .imagine-photo:not(.pa-frame) .caption p.ps-ai{margin-top:10px;font-size:12.5px!important;color:var(--p4-stone)}
+}
+
+/* =====================================================================================================
+   Final mobile refinement (founder, 3 Nov 2026): the two computing drawings (heat strip; development-scale
+   model) inside the computing drawer. Phones only; desktop unchanged.
+   ===================================================================================================== */
+.m-mark{display:none}
+.fig-strip > svg.fs-m{display:none}
+@media (max-width:719px){
+  /* the drawer carried a second page gutter (56 px a side) from its nested article wrapper */
+  body.pn-id.pn-pd main#pn-main:has(.ps-open) .ps-moved > .article{padding-left:0;padding-right:0}
+  /* the two drawings take the drawer's full width */
+  body.pn-id.pn-pd main#pn-main:has(.ps-open) .ps-moved :is(.fig-strip,.anat-fig:has(> svg[viewBox="0 0 900 420"])){margin-left:-18px;margin-right:-18px;padding:16px 12px 16px}
+  /* heat strip: the stacked phone presentation replaces the wide strip */
+  main#pn-main:has(.ps-open) .fig-strip > svg:not(.fs-m){display:none}
+  main#pn-main:has(.ps-open) .fig-strip > svg.fs-m{display:block;width:100%;max-width:360px;height:auto}
+  /* development-scale model: labels to the key; numbered markers on the drawing */
+  main#pn-main:has(.ps-open) .anat-fig svg[viewBox="0 0 900 420"] > g[letter-spacing]{display:none}
+  main#pn-main:has(.ps-open) .anat-fig svg[viewBox="0 0 900 420"] .m-mark{display:inline}
+  main#pn-main:has(.ps-open) .m-mark circle{fill:#F2EBE0;stroke:var(--p4-terra-text);stroke-width:1.6}
+  main#pn-main:has(.ps-open) .m-mark text{fill:#1B1C1E;font-size:34px;font-weight:700;stroke:none}
+  /* the keys: a label with its note, in reading order */
+  .anat-key.is-pairs{grid-template-columns:1fr;gap:10px}
+  .anat-key.is-pairs li{align-items:flex-start;text-transform:none;letter-spacing:.01em;font-size:15px;font-weight:600;color:var(--p4-ivory)}
+  .anat-key.is-pairs .k-note{font-weight:500;font-size:13.5px;line-height:1.45;margin-top:2px}
+  main#pn-main:has(.ps-open) .fig-strip svg.fs-m > g[letter-spacing]{fill:var(--p4-ivory);font-weight:600}
+  main#pn-main:has(.ps-open) .fig-strip svg.fs-m > g[letter-spacing] text[fill="#4F6B4A"]{fill:var(--p4-terra-text);font-weight:700}
+}
+@media (max-width:719px){
+  main#pn-main:has(.ps-open) .fig-strip svg.fs-m > g[letter-spacing]{transform:translateX(-12px);letter-spacing:.8px}
+  main#pn-main:has(.ps-open) .fig-strip svg.fs-m text[font-size="12"]{font-size:15px;letter-spacing:1.4px}
+  main#pn-main:has(.ps-open) .fig-strip svg.fs-m text[font-size="17"]{font-size:18.5px}
 }

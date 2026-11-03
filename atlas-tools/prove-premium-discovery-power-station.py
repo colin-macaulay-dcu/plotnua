@@ -169,6 +169,7 @@ FAULTS = [  # (what a careless edit would do, mutation)
  ("the chapter 01 status boundary is removed", lambda t: t.replace('<p class="ps-boundary">', '<p class="ps-short2">', 1)),
  ("the scrappage grant is tied to electric storage heating again", lambda t: t.replace("and a &euro;2,000 boiler scrappage grant where it replaces a fossil-fuel system", "and a &euro;2,000 boiler scrappage grant where it replaces an electric storage system", 1)),
  ("the phone dimension key loses the 14 m setback", lambda t: t.replace("<strong>14 m</strong>", "<strong>12 m</strong>", 1)),
+ ("the phone heat path drops its condition on the model key", lambda t: t.replace("Compute, with CHP where the gas infrastructure exists</span>", "Compute, with CHP</span>", 1)),
  ("the estate image's AI label is removed", lambda t: t.replace('<p class="ps-ai">Illustrative AI-generated visualisation. Not an actual property.</p>', "", 1)),
  ("a new image asset is added", lambda t: t.replace("<h2>Four parts, working together.</h2>", '<h2>Four parts, working together.</h2><img src="assets/img/new.jpg" alt="x">', 1)),
  ("a pinned anchor is lost", lambda t: t.replace('id="explore-providers"', 'id="explore-suppliers"', 1)),
@@ -230,9 +231,10 @@ def verify(page, base, loud):
     check("C4 ids and anchors identical, plus only the declared decision and diagram ids",
           Counter(now["ids"]) == Counter(base["ids"]) + Counter(ADDED_IDS))
     xc = Counter(now["comments"]) - Counter(base["comments"])
-    check("C5 governance comments carried over verbatim (one declared comment added)",
-          not (Counter(base["comments"]) - Counter(now["comments"])) and sum(xc.values()) == 1
-          and any("DISC-026 PASS 2 EDITORIAL" in c for c in xc))
+    check("C5 governance comments carried over verbatim (three declared comments added: the Pass 2 header, the two phone presentations)",
+          not (Counter(base["comments"]) - Counter(now["comments"])) and sum(xc.values()) == 3
+          and any("DISC-026 PASS 2 EDITORIAL" in c for c in xc) and any("PHONE MARKERS" in c for c in xc)
+          and any("PHONE PRESENTATION" in c for c in xc))
     check("P1 'Look again' (illustration, animation, seven positions, script, words) byte-identical", now["lag"] == base["lag"])
     check("P2 Provider Explorer byte-identical between its PLOTNUA-PROVIDER-EXPLORER-V1 fence markers", now["explorer"] == base["explorer"])
     check("P3 GridNua banner byte-identical (approved wording)", now["banner"] == base["banner"])
@@ -281,6 +283,11 @@ def verify(page, base, loud):
           '[stroke="#1F3B2E"]{stroke:#E9E2D6}' in css and 'g[font-size="9.5"] > g[fill="#8FAF8A"]{fill:#F2EBE0' in css
           and m.count('<ol class="anat-key" aria-hidden="true">') == 1 and m.count('<ul class="anat-key is-dims" aria-hidden="true">') == 1
           and all(k in m for k in ("<b>1</b>Roof", "<b>7</b>Grid", "<strong>13 m</strong>", "<strong>14 m</strong>")))
+    check("D8 the two computing drawings have phone presentations: the stacked heat path (same glyphs and words) and numbered markers with a key on the model",
+          m.count('<svg class="fs-m" viewBox="0 0 340 318" role="img"') == 1 and m.count('<g class="m-mark"') == 1
+          and m.count('<ol class="anat-key is-pairs" aria-hidden="true">') == 1
+          and all(k in m for k in ("HEAT, AND SOMEWHERE", "FOR IT TO GO", "Compute, with CHP where the gas infrastructure exists", "Homes taking heat from a shared network"))
+          and ".fig-strip > svg.fs-m{display:none}" in css and ".m-mark{display:none}" in css)
     check("F4 boiler scrappage is tied to fossil-fuel systems only; the renewable heat bonus also to electric storage",
           "boiler scrappage grant where it replaces a fossil-fuel system" in text
           and "boiler scrappage grant only when it replaces a fossil-fuel system" in text
