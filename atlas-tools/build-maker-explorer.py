@@ -659,13 +659,15 @@ PAGES = {
         "continuation": {"heading": "Browse every product"},
         "azIndex": True,
         "noscript": "search PlotNua&rsquo;s saunas, hot tubs and cold plunges",
-        # Restructure, 14 Oct 2026: the directory sits after "Could it work for
+        # Restructure, 14 Oct 2026: the directory sat after "Could it work for
         # your property?" and before the practical considerations.
-        "after": "<h2>Could it work for your property?</h2>",
-        "before": "<h2>What you need to sort out</h2>",
+        # DISC-001 Phase 2 (founder approval, 4 Nov 2026): the explorer now closes chapter 04, after the
+        # comparison; chapter 05 ("Could it work", then the practical part) follows this marker, as DISC-008.
+        "after": "<h2>What each one asks of your garden</h2>",
+        "before": "<h2>Could it work for your property?</h2>",
         "insert_first_build": True,
         "first_build_anchor": '  <section class="article-section reveal" id="the-practical-part">',
-        "block_end": '  <section class="article-section reveal" id="the-practical-part">',
+        "block_end": "  <!-- GR-CH05 · THE PRACTICALITIES",
         "css_anchor": "/* PLOTNUA A11Y VISUAL v1 · END */\n</style>",
         "keep_links": ('href="discovery-living-in-the-garden.html"',),
     },
