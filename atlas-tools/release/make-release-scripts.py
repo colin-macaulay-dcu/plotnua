@@ -27,8 +27,9 @@ STANDARD = [
     # 28 since the DISC-033 The Hidden Flood Barrier release candidate (27 Oct 2026).
     # 29 since DISC-032 The Supper Club at Home (founder Phase 2 authorisation, 27 Oct 2026).
     # 31 on production main after DISC-015 (1 Nov 2026); 32 since DISC-020 Stay in the House You Love (4 Nov 2026);
-    # 33 since DISC-034 The Water Wall (development build, 4 Nov 2026); 34 since DISC-035 The Outdoor Room (development build, 4 Nov 2026).
-    ("python3 atlas-tools/build-identity-stage1.py --check", "CHECK OK — 34 pages", "identity layer"),
+    # 33 since DISC-034 The Water Wall (development build, 4 Nov 2026); 34 on main once the Borrowed Garden noticeboard
+    # page joined the identity layer (4 Nov 2026; main's expectation still read 33); 35 since DISC-035 The Outdoor Room.
+    ("python3 atlas-tools/build-identity-stage1.py --check", "CHECK OK — 35 pages", "identity layer"),
     ("python3 atlas-tools/prove-disc033-page.py", "DISC-033 PAGE · OK", "DISC-033 page proof F1-F10"),
     ("python3 atlas-tools/prove-disc020-page.py", "DISC-020 PAGE · OK", "DISC-020 page proof S1-S17"),
     ("python3 atlas-tools/prove-disc034-page.py", "DISC-034 PAGE · OK", "DISC-034 page proof W1-W16"),
@@ -90,8 +91,9 @@ STANDARD = [
     # PlotArt in the PlotNua navigation and the A Home for Art links (proposed 27 Oct 2026)
     # 32 header pages after DISC-015 The Underground Swimming Pool joined the header registry (1 Nov 2026; 31 after DISC-032, 30 after DISC-033);
     # 33 on production main (4 Nov 2026); 34 since DISC-020 Stay in the House You Love (4 Nov 2026);
-    # 35 since DISC-034 The Water Wall (development build, 4 Nov 2026); 36 since DISC-035 The Outdoor Room (development build, 4 Nov 2026).
-    ("python3 atlas-tools/prove-plotart-integration.py", "PLOTART INTEGRATION · OK — N1-N4 · 36 header pages", "PlotArt navigation and A Home for Art links N1-N4"),
+    # 35 since DISC-034 The Water Wall (development build, 4 Nov 2026); 36 on main with the Borrowed Garden noticeboard
+    # (4 Nov 2026; main's expectation still read 35); 37 since DISC-035 The Outdoor Room (development build, 4 Nov 2026).
+    ("python3 atlas-tools/prove-plotart-integration.py", "PLOTART INTEGRATION · OK — N1-N4 · 37 header pages", "PlotArt navigation and A Home for Art links N1-N4"),
     ("python3 atlas-tools/prove-privacy-whatsapp.py", "PRIVACY WHATSAPP · OK", "privacy WhatsApp block exact (status printed)"),
     # GridNua limited launch (founder design approval 29 Oct 2026): two pages, noindex, follow; the
     # Interest Register stays closed; DISC-026 holds exactly one GridNua link and matches its latest freeze record.
