@@ -37,6 +37,8 @@ note under C, keeping the supplier set and the no-relationship note).
 
 GUARDS (run by --check, and on the output of --apply before it is written)
   GR1 sections in the brief's order, each exactly once
+      (4 Nov 2026, DISC-001 Phase 2, founder approval: the six-chapter order --
+      "Could it work for your property?" moves to chapter 05, after the makers)
   GR2 the hero offers exactly two actions, both to sections on this page
   GR3 no OGNYX (or any supplier) image on the page; no maker image section
       (30 Oct 2026: except inside the Premium Supplier Gallery region, which is
@@ -46,6 +48,11 @@ GUARDS (run by --check, and on the output of --apply before it is written)
   GR5 every <details> has a <summary> (keyboard-operable natively)
   GR6 the default view is materially shorter: visible words outside closed
       accordions <= 55% of the 2,994 measured before
+      (4 Nov 2026, DISC-001 Phase 2, founder approval: re-based for the six-chapter
+      design to <= 1,960. Measured 1,920: the 1,631 of the 14 Oct page, plus the
+      chapter openings, the chapter navigation, chapter 02, the chapter 05 group
+      labels, the footprint drawing's caption and labels. Chapter 06 sits outside
+      <main> and is not counted, as the closing panel never was.)
   GR7 no internal governance or permission language reaches the reader
   GR8 no "Irish availability is confirmed for 0" style statement
   GR10 no maker held from the directory (MyCabin, Cosy Cabins, Sommarnöjen,
@@ -72,6 +79,9 @@ SITEMAP = ROOT / "sitemap.xml"
 MARK = "PLOTNUA-GR-RESTRUCTURE-V1"
 TODAY = "2026-10-14"
 WORDS_BEFORE = 2994          # measured 14 Oct 2026 at 1280/768/375/320 (identical)
+# DISC-001 Phase 2 (founder approval, 4 Nov 2026): the visible-word budget re-based for the
+# approved six-chapter design (was int(2994 * 0.55) = 1,646; measured 1,920 after the redesign).
+WORDS_LIMIT = 1960
 EXPLORER_START = "  <!-- 6c · PLOTNUA-MAKER-EXPLORER-V1"
 CSS_BEGIN = "/* PLOTNUA-GR-MAKER-IMAGERY-CSS-BEGIN"
 CSS_END = "/* PLOTNUA-GR-MAKER-IMAGERY-CSS-END */\n"
@@ -513,7 +523,10 @@ HELD_NAME_RE = re.compile(r"my\s*cabin|cosy\s*cabins|sommarn|auroom", re.I)
 
 
 # ── guards ───────────────────────────────────────────────────────────────────
-ORDER = ["three-ways-in", "compare", "could-it-work", "explore-makers",
+# DISC-001 Phase 2 (founder approval, 4 Nov 2026): the six-chapter order. Chapter 03 holds the
+# options and the comparison, chapter 04 the makers, chapter 05 "Could it work", the practical
+# part and the evidence. (14 Oct 2026 order: three-ways-in, compare, could-it-work, explore-makers, ...)
+ORDER = ["three-ways-in", "compare", "explore-makers", "could-it-work",
          "the-practical-part", "where-this-comes-from"]
 GOVERNANCE = re.compile(r"\b(publication gate|governance|image permission|with its permission|authoris|held products?|"
                         r"public visibility|eligib|founder|atlas|qualification|rights record|"
@@ -569,8 +582,8 @@ def guards(page, before=None):
         if not d.strip().startswith("<summary"):
             errs.append("GR5 an accordion has no summary")
     words = visible_default(page)
-    if words > WORDS_BEFORE * 0.55:
-        errs.append("GR6 default view has %d words; must be <= %d" % (words, int(WORDS_BEFORE * 0.55)))
+    if words > WORDS_LIMIT:
+        errs.append("GR6 default view has %d words; must be <= %d" % (words, WORDS_LIMIT))
     vis = html.unescape(re.sub(r"<[^>]+>", " ", re.sub(r"<(script|style)\b.*?</\1>|<!--.*?-->", " ",
                                                        main, flags=re.S)))
     g = GOVERNANCE.search(vis)

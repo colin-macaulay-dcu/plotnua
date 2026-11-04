@@ -1,0 +1,122 @@
+/* =====================================================================
+   PLOTNUA · DISC-001 GARDEN RETREAT · Phase 2 editorial layer
+   (founder approval for development of the six-chapter redesign, 4 Nov 2026)
+
+   The Plot Line chapter markers (as DISC-008 and DISC-031), in a warm
+   timber-amber. Instrument Serif and Hanken Grotesk, as site-wide; PlotNua
+   charcoal and ivory; terracotta stays with the actions. Loaded on this page
+   only; every selector is .lg-* / .gr-fp* / .gr-* scoped to body.pn-pd.
+   ===================================================================== */
+body.pn-id.pn-pd{ --gr-amber:#C9A26B; --gr-amber-2:#E2C28F; --gr-field:#22201C; --gr-line:#3E382F; }
+
+/* ---- chapter opening ------------------------------------------------------ */
+body.pn-id.pn-pd .lg-ch-wrap{ padding-top:clamp(72px,9vw,140px); }
+body.pn-id.pn-pd .article > .lg-ch-wrap:first-child{ padding-top:clamp(40px,5vw,72px); }
+body.pn-id.pn-pd .lg-chapter{ display:flex; align-items:center; gap:18px; margin:0; }
+body.pn-id.pn-pd .lg-chapter::after{ content:""; flex:1; border-top:1.5px dashed rgba(201,162,107,.55); }
+body.pn-id.pn-pd .lg-plot{ flex:0 0 auto; width:62px; height:62px; border:1.5px dashed var(--gr-amber); display:flex; align-items:flex-end; position:relative; box-sizing:border-box; }
+body.pn-id.pn-pd .lg-plot > span{ font-family:var(--p4-serif); font-size:30px; line-height:1; color:var(--p4-ivory); padding:0 0 6px 8px; }
+/* the marker's own small object: a cabin roofline, for a garden building */
+body.pn-id.pn-pd .lg-plot::after{ content:""; position:absolute; right:8px; top:8px; width:18px; height:14px; background:rgba(201,162,107,.55); border:1px solid var(--gr-amber-2); clip-path:polygon(50% 0,100% 40%,100% 100%,0 100%,0 40%); }
+body.pn-id.pn-pd .lg-kicker{ margin:0 !important; font:700 13px/1.2 var(--p4-sans) !important; letter-spacing:.24em !important; text-transform:uppercase; color:var(--gr-amber-2) !important; max-width:none !important; }
+body.pn-id.pn-pd .lg-title{ font-family:var(--p4-serif) !important; font-weight:400 !important; font-size:clamp(40px,5.2vw,74px) !important; line-height:1.04 !important; letter-spacing:-.015em !important; color:var(--p4-ivory) !important; max-width:17ch; margin:24px 0 0 !important; text-transform:none !important; }
+body.pn-id.pn-pd .lg-stand{ font-family:var(--p4-sans); font-size:clamp(18px,1.4vw,20.5px) !important; line-height:1.6 !important; color:var(--p4-lime) !important; max-width:50ch; margin:20px 0 0 !important; }
+/* the section that follows a chapter opening starts close to it */
+body.pn-id.pn-pd .lg-ch-wrap + .article-section{ padding-top:clamp(28px,3.5vw,48px) !important; }
+body.pn-id.pn-pd .lg-ch-wrap + .lg-problem{ padding-top:clamp(28px,3vw,40px); }
+body.pn-id.pn-pd .lg-ch-wrap + .pn-sg, body.pn-id.pn-pd .lg-ch-wrap + * + .pn-sg{ margin-top:clamp(16px,2vw,28px); }
+body.pn-id.pn-pd .lg-ch-wrap + .article-section.pn-brief{ margin-top:0 !important; }
+
+/* ---- chapter navigation (shared .pd-nav pill) ------------------------------- */
+body.pn-id.pn-pd .article > .pd-nav{ margin-top:clamp(28px,3vw,44px); }
+
+/* ---- chapter 02: four tiles ------------------------------------------------ */
+.lg-four{ list-style:none; padding:0; margin:0; display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:clamp(18px,2.4vw,36px); }
+.lg-four > li{ border-top:1px solid var(--gr-amber,#C9A26B); padding-top:18px; margin:0; }
+.lg-four svg{ width:44px; height:44px; display:block; margin:0 0 16px; fill:none; stroke:var(--gr-amber-2,#E2C28F); stroke-width:1.6; stroke-linecap:round; stroke-linejoin:round; }
+body.pn-id.pn-pd .lg-four-k{ display:block; font:700 12.5px/1.25 var(--p4-sans); letter-spacing:.2em; text-transform:uppercase; color:var(--gr-amber-2); margin-bottom:10px; }
+body.pn-id.pn-pd .lg-four-t{ display:block; font-family:var(--p4-serif); font-size:clamp(21px,1.75vw,25px); line-height:1.25; color:var(--p4-ivory); }
+
+/* ---- chapter 03: the footprint drawing ---------------------------------------- */
+.gr-fp{ margin:clamp(8px,1vw,16px) 0 clamp(8px,2vw,24px); background:var(--gr-field,#22201C); border:1px solid var(--gr-line,#3E382F); border-top:2px solid var(--gr-amber,#C9A26B); border-radius:4px; padding:clamp(16px,2.4vw,30px); }
+.gr-fp svg{ display:block; width:100%; height:auto; }
+.gr-fp .grid{ stroke:rgba(226,194,143,.11); stroke-width:1; fill:none; vector-effect:non-scaling-stroke; }
+.gr-fp .fp{ fill:rgba(201,162,107,.20); stroke:#E2C28F; stroke-width:1.6; vector-effect:non-scaling-stroke; }
+.gr-fp .fp.water{ fill:rgba(150,182,186,.22); stroke:#B9D2D3; }
+.gr-fp .slat{ stroke:rgba(226,194,143,.32); stroke-width:1; fill:none; vector-effect:non-scaling-stroke; }
+.gr-fp .dim, .gr-fp .bar{ stroke:#C2BDB5; stroke-width:1; fill:none; vector-effect:non-scaling-stroke; }
+.gr-fp .bar{ stroke:#F2EBE0; stroke-width:1.5; }
+.gr-fp text{ font-family:var(--p4-sans); text-anchor:middle; fill:#F2EBE0; }
+.gr-fp .dl{ font-size:14px; font-weight:500; fill:#E9E2D6; paint-order:stroke; stroke:var(--gr-field,#22201C); stroke-width:4px; stroke-linejoin:round; }
+.gr-fp .lb{ font-size:15px; font-weight:700; letter-spacing:.14em; fill:#E2C28F; }
+.gr-fp .lb.a{ font-family:var(--p4-serif); font-size:21px; font-weight:400; letter-spacing:0; fill:#F2EBE0; }
+.gr-fp .lb.s{ font-size:13.5px; font-weight:500; letter-spacing:.02em; fill:#C9C2B6; }
+.gr-fp .lb.l{ text-anchor:start; }
+.gr-fp-m{ display:none !important; }
+body.pn-id.pn-pd .gr-fp .lg-cap{ margin:16px 0 0; color:var(--p4-stone); font:500 14.5px/1.55 var(--p4-sans); max-width:78ch; }
+body.pn-id.pn-pd .gr-fp .lg-cap strong{ color:var(--p4-ivory); font-weight:600; }
+
+/* ---- chapter 05: the two groups inside the practical part ------------------ */
+body.pn-id.pn-pd .lg-group{ margin:clamp(28px,3vw,40px) 0 22px; padding-left:16px; border-left:3px solid var(--gr-amber); }
+body.pn-id.pn-pd .lg-group.is-guide{ border-left-style:dashed; border-left-color:#B9D2D3; margin-top:clamp(40px,4vw,56px); }
+body.pn-id.pn-pd .lg-group-k{ margin:0 !important; font:700 13px/1.2 var(--p4-sans) !important; letter-spacing:.22em; text-transform:uppercase; color:var(--gr-amber-2) !important; }
+body.pn-id.pn-pd .lg-group.is-guide .lg-group-k{ color:#B9D2D3 !important; }
+body.pn-id.pn-pd .lg-group-n{ margin:8px 0 0 !important; font:500 15px/1.55 var(--p4-sans) !important; color:var(--p4-stone) !important; max-width:60ch; }
+
+/* ---- chapter 06: one decision, two routes ------------------------------------ */
+body.pn-id.pn-pd #discover-your-property .pn-wordmark{ margin-bottom:22px; }
+body.pn-id.pn-pd #discover-your-property .lg-title{ margin-top:20px !important; }
+.lg-routes{ display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:clamp(18px,2.4vw,32px); margin:clamp(26px,3vw,40px) 0 clamp(36px,4vw,56px); text-align:left; }
+.lg-route{ border:1px solid var(--p4-line,#4A4B4F); border-radius:4px; padding:clamp(22px,2.6vw,34px); display:flex; flex-direction:column; }
+.lg-route.is-b{ border-color:#CF8566; }
+body.pn-id.pn-pd .lg-route-l{ margin:0 !important; font-family:var(--p4-serif) !important; font-size:clamp(40px,3.6vw,54px) !important; line-height:1 !important; color:#CF8566 !important; }
+body.pn-id.pn-pd .lg-route-k{ margin:14px 0 0 !important; font:700 13px/1.2 var(--p4-sans) !important; letter-spacing:.2em; text-transform:uppercase; color:var(--gr-amber-2) !important; }
+body.pn-id.pn-pd .lg-route-t{ margin:12px 0 0 !important; font-family:var(--p4-serif) !important; font-size:clamp(21px,1.75vw,25px) !important; line-height:1.3 !important; color:var(--p4-ivory) !important; }
+.lg-route-links{ list-style:none; margin:20px 0 0; padding:0; }
+.lg-route-links li{ border-top:1px solid var(--p4-line,#4A4B4F); margin:0; }
+.lg-route-links li:last-child{ border-bottom:1px solid var(--p4-line,#4A4B4F); }
+body.pn-id.pn-pd .lg-route-links a{ display:flex; justify-content:space-between; align-items:center; min-height:50px; padding:10px 0; color:var(--p4-ivory); font:600 16px/1.35 var(--p4-sans); text-decoration:none; border:0; }
+body.pn-id.pn-pd .lg-route-links a::after{ content:"\2192"; color:#CF8566; margin-left:14px; }
+body.pn-id.pn-pd .lg-route-links a:hover, body.pn-id.pn-pd .lg-route-links a:focus-visible{ color:#F2C9B5; }
+body.pn-id.pn-pd .lg-route-links a:focus-visible{ outline:2px solid var(--p4-terra-text); outline-offset:3px; }
+body.pn-id.pn-pd .lg-route .pd-btn-row{ margin-top:22px; }
+body.pn-id.pn-pd .lg-free{ margin:16px 0 0 !important; font:700 13px/1.3 var(--p4-sans) !important; letter-spacing:.18em; text-transform:uppercase; color:var(--gr-amber-2) !important; }
+body.pn-id.pn-pd .lg-route-n{ margin:8px 0 0 !important; font:500 14.5px/1.55 var(--p4-sans) !important; color:var(--p4-stone) !important; }
+body.pn-id.pn-pd .gr-more-k{ margin:0 0 6px !important; font:700 12px/1.2 var(--p4-sans) !important; letter-spacing:.2em; text-transform:uppercase; color:var(--p4-stone) !important; }
+body.pn-id.pn-pd #discover-your-property .cs-exits{ margin-top:0; justify-content:flex-start; }
+body.pn-id.pn-pd #discover-your-property .pb-independence{ margin-top:28px; }
+.gr-sr{ position:absolute !important; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; }
+
+/* ---- tablet --------------------------------------------------------------- */
+@media (max-width:1023px){
+  .lg-four{ grid-template-columns:1fr 1fr; }
+  .lg-routes{ grid-template-columns:1fr; max-width:640px; }
+}
+/* the phone drawing is used until the side-by-side plan has room for readable labels */
+@media (max-width:899px){
+  .gr-fp-d{ display:none !important; }
+  .gr-fp-m{ display:block !important; max-width:460px; margin:0 auto; }
+  .gr-fp .lb{ font-size:13px; letter-spacing:.1em; }
+  .gr-fp .lb.a{ font-size:19px; }
+  .gr-fp .lb.s{ font-size:13px; }
+  .gr-fp .dl{ font-size:13.5px; }
+}
+/* ---- phones: a phone layout, not a compressed desktop ---------------------- */
+@media (max-width:719px){
+  body.pn-id.pn-pd .lg-ch-wrap{ padding-top:64px; }
+  body.pn-id.pn-pd .lg-chapter{ gap:14px; }
+  body.pn-id.pn-pd .lg-plot{ width:50px; height:50px; }
+  body.pn-id.pn-pd .lg-plot > span{ font-size:22px; padding:0 0 5px 7px; }
+  body.pn-id.pn-pd .lg-plot::after{ width:13px; height:10px; right:6px; top:6px; }
+  body.pn-id.pn-pd .lg-kicker{ font-size:12px !important; letter-spacing:.2em !important; }
+  body.pn-id.pn-pd .lg-title{ font-size:clamp(34px,9.4vw,44px) !important; }
+  .lg-four{ grid-template-columns:1fr; gap:0; }
+  .lg-four > li{ display:grid; grid-template-columns:40px 1fr; column-gap:16px; padding:18px 0; }
+  .lg-four svg{ width:36px; height:36px; margin:2px 0 0; grid-row:span 2; }
+  body.pn-id.pn-pd .lg-four-t{ font-size:21px; }
+  .gr-fp{ padding:12px 8px 16px; }
+  body.pn-id.pn-pd .gr-fp .lg-cap{ padding:0 6px; }
+  body.pn-id.pn-pd .lg-group{ padding-left:12px; }
+  body.pn-id.pn-pd .lg-route-links a{ min-height:52px; }
+  body.pn-id.pn-pd .lg-route .pd-btn{ width:100%; justify-content:center; text-align:center; }
+}
