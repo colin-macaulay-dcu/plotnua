@@ -60,7 +60,7 @@ const DISC025 = "disc025-borrowed-garden-check.html";
 // secondary pill (atlas-tools/build-g6-discover-button.py). Previous value
 // was 4aec70baa55c7733eb34f1159e7a669b034211d8417191880de39567f3bc48d5.
 const DISC025_MAIN =
-  "15924561a4daeb23ade8bbc3e046a66c0c8b0af74d633f339a13dd1ff58a9fc2";
+  "3e4fc9f0c2bf123654fffac095d449407f38e38f46d9db81bf8ad769384220f6";  // re-pinned 4 Nov 2026: registrations paused (founder decision); the closing line no longer invites joining the register
 const SEARCH_FROZEN = {
   // Re-stamped by JOB 6 (authorised Search V1 runtime change), then again on
   // 11 October 2026 for the authorised no-results copy correction applied by
@@ -296,11 +296,11 @@ for (const [f, want] of Object.entries(SEARCH_FROZEN)) {
 // ---- L13 · Garden Register switch -----------------------------------------
 {
   const t = read(DISC025);
-  // Inverted by the opening commit (opening/g6-register): the register is
-  // open by founder decision. On release/g6-register this still asserts false.
-  /INTEREST_PUBLIC\s*=\s*true/.test(t) && !/INTEREST_PUBLIC\s*=\s*false/.test(t)
-    ? ok("L13 INTEREST_PUBLIC is true (register opened by founder decision)")
-    : bad("L13 INTEREST_PUBLIC", "not true");
+  // Founder decision, 4 Nov 2026: new registrations are PAUSED. The register
+  // panel must stay closed (INTEREST_PUBLIC false and REGISTER_PAUSED true).
+  /INTEREST_PUBLIC\s*=\s*false/.test(t) && /REGISTER_PAUSED\s*=\s*true/.test(t)
+    ? ok("L13 the Garden Owner Register is paused (founder decision, 4 Nov 2026)")
+    : bad("L13 INTEREST_PUBLIC / REGISTER_PAUSED", "the register is not paused");
 }
 
 console.log("\n  " + pass + " passed, " + fail + " failed\n");

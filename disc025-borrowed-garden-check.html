@@ -1047,7 +1047,10 @@ window.PlotNuaFunnel = (function () {
 
     <div class="bg-res" id="bgFinding"></div>
 
-    <!-- PLOTNUA-G3-HTML-BEGIN
+    <!-- REGISTRATIONS PAUSED (founder decision, 4 Nov 2026). The register panel below is removed from the page on
+     load (REGISTER_PAUSED, *_PUBLIC = false, and the preview route closed). Existing records are untouched. -->
+<section class="bg-int bg-paused" aria-label="Registrations"><p class="bg-int-p">The Borrowed Garden is currently being explored. Registrations are not open at this stage.</p></section>
+<!-- PLOTNUA-G3-HTML-BEGIN
          G3 · HOMEOWNER EXPRESSION OF INTEREST.
          SHIPPED CLOSED: hidden here, and REMOVED FROM THE DOM on load unless
          the journey script's three gates all pass. It sits AFTER the save band
@@ -1269,10 +1272,7 @@ window.PlotNuaFunnel = (function () {
          quietly contradicted it. -->
     <p class="bg-foot">PlotNua does the homework. You make the decision. Your
       Property Check stays private &mdash; answering the questions doesn&rsquo;t
-      send us your details. If you&rsquo;d like to hear from us if someone
-      nearby is looking for growing space, you can choose to join the register.
-      That simply tells us you&rsquo;re interested. It isn&rsquo;t a match or an
-      introduction.</p>
+      send us your details.</p>
   </section>
 
 </main>
@@ -2724,7 +2724,10 @@ window.PlotNuaDisc025Check = module.exports;
    * consent to text nobody approved.
    * ======================================================================== */
 
-  var INTEREST_PUBLIC = true;
+  var INTEREST_PUBLIC = false;
+  /* Founder decision, 4 Nov 2026: new registrations are PAUSED. This closes every route to the form,
+     including ?interest=preview. Existing records are untouched. */
+  var REGISTER_PAUSED = true;
 
   var INTEREST_ENDPOINT =
     'https://plotnua-garden-register.colin-a41.workers.dev/v1/garden-register/garden';
@@ -2781,6 +2784,7 @@ window.PlotNuaDisc025Check = module.exports;
   }
 
   function intGatesPass() {
+    if (REGISTER_PAUSED) return false;
     if (!INTEREST_PUBLIC && !intPreviewRequested()) return false;
     /* Founder decision Q1. */
     if (answers.spare_corner === 'no_garden') return false;

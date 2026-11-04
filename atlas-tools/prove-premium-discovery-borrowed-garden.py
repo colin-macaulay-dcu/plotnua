@@ -60,7 +60,13 @@ VOID = {"img", "br", "input", "source", "meta", "link", "hr", "wbr", "path", "re
 # the panel becomes chapter 06 and keeps its exits and independence line. Additions are declared in ADDED_FILE.
 REMOVED = []
 REMOVED_LINKS = []
-CORR = []
+# Corrections (founder decision, 4 Nov 2026: new registrations PAUSED): the two check cards no longer say the
+# check ends with joining a register, and the note says registrations are not open.
+CORR = [
+    ("register pause, founder decision 4 Nov 2026", "Four short questions about the part you could share, how somebody would reach it, and how you’d use it yourself. At the end, you can choose to join the Garden Owner Register.", "Four short questions about the part you could share, how somebody would reach it, and how you’d use it yourself."),
+    ("register pause, founder decision 4 Nov 2026", "Four short questions about where you are, how far you’d go, how much space and when. At the end, you can choose to join the Grower Register.", "Four short questions about where you are, how far you’d go, how much space and when."),
+    ("register pause, founder decision 4 Nov 2026", "Neither check sends your details anywhere. Both registers are expressions of interest only: free, private and non-binding. Nothing is matched or arranged.", "Neither check sends your details anywhere. The Borrowed Garden is currently being explored. Registrations are not open at this stage, and nothing is matched or arranged.")
+]
 ADDED = []
 ADDED_FILE = os.path.join(ROOT, "atlas-tools", "premium-discovery", "the-borrowed-garden-added.json")
 ADDED_LINKS = ["#bg-sharing", "#bg-settle", "#bg-agree", "#explore-providers", "#bg-future", "#bg-grow",

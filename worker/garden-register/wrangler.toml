@@ -15,12 +15,12 @@ preview_urls = false    # each preview URL would be another live hostname able
 # A register holding real people's details is one switch away from live, so
 # there are two, and neither is flipped by deploying.
 # ---------------------------------------------------------------------------
-# PRODUCTION STATE, committed deliberately (G6 opening, 12 October 2026,
-# founder-authorised): the Garden Owner Register is OPEN, so a routine
-# `wrangler deploy` from this file keeps writes on. To close it, deploy
-# with WRITES_ENABLED = "false" (04 Deploy/g6-launch.sh stop, or the
-# rollback in governance/G6-CONTROLLED-ACTIVATION-RUNBOOK-2026-10-12.md).
-WRITES_ENABLED  = "true"
+# PRODUCTION STATE (founder decision, 4 November 2026): NEW REGISTRATIONS ARE
+# PAUSED. Both registers are closed to new entries; every existing record is
+# kept, and nothing is deleted. A routine `wrangler deploy` from this file now
+# keeps writes OFF. Re-opening needs the founder's explicit approval and the
+# re-open steps in governance/G6-CONTROLLED-ACTIVATION-RUNBOOK-2026-10-12.md.
+WRITES_ENABLED  = "false"
 EMAIL_ENABLED   = "false"   # there is NO mail adapter in this Worker. This var
                             # exists so the refusal is explicit rather than
                             # implied by absence, and so a future adapter
@@ -38,7 +38,7 @@ PILOT_DISTRICTS = "raheny,killester,donnycarney,artane"
 #                           Register. Empty = nothing is written for a grower.
 #                           Set to "2026-10-PHASE2-V6" only once V6 is live.
 # ---------------------------------------------------------------------------
-GROWER_WRITES_ENABLED  = "true"
+GROWER_WRITES_ENABLED  = "false"   # PAUSED, founder decision 4 Nov 2026 (records kept)
 GROWER_PRIVACY_VERSION = "2026-10-PHASE2-V6"
 
 # AIRTABLE_BASE and AIRTABLE_TOKEN are NOT set here.

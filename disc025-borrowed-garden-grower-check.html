@@ -1067,7 +1067,10 @@ window.PlotNuaFunnel = (function () {
       <p class="bg-reveal-sub" id="bgRevealSub"></p>
     </div>
 
-    <section class="bg-int" id="bgInterest" aria-labelledby="bgIntH">
+    <!-- REGISTRATIONS PAUSED (founder decision, 4 Nov 2026). The register panel below is removed from the page on
+     load (REGISTER_PAUSED, *_PUBLIC = false, and the preview route closed). Existing records are untouched. -->
+<section class="bg-int bg-paused" aria-label="Registrations"><p class="bg-int-p">The Borrowed Garden is currently being explored. Registrations are not open at this stage.</p></section>
+<section class="bg-int" id="bgInterest" aria-labelledby="bgIntH">
       <p class="bg-int-prev" id="bgIntPrev" hidden>Private preview &middot; not public</p>
       <h2 class="bg-int-h" id="bgIntH">Interested in growing somewhere nearby?</h2>
       <div id="bgIntOffer">
@@ -1271,10 +1274,13 @@ window.PlotNuaFunnel = (function () {
  * a grower until its own switches name the published privacy notice. */
 (function () {
   'use strict';
-  var GROWER_PUBLIC = true;
+  var GROWER_PUBLIC = false;
+  /* Founder decision, 4 Nov 2026: new registrations are PAUSED. This closes every route to the form,
+     including ?interest=preview. Existing records are untouched. */
+  var REGISTER_PAUSED = true;
   var ENDPOINT = "https://plotnua-garden-register.colin-a41.workers.dev/v1/garden-register/grower";
   var CONSENT_TEXT = "I'm over 18, and I'd like PlotNua to keep this and tell me about possible growing space nearby.";
-  var QUESTIONS = [{"var": "county", "eyebrow": "Where you are", "q": "Which county do you live in?", "note": "We&rsquo;re starting in four areas of north Dublin, but you can join from anywhere in Ireland.", "opts": [{"v": "carlow", "l": "Carlow"}, {"v": "cavan", "l": "Cavan"}, {"v": "clare", "l": "Clare"}, {"v": "cork", "l": "Cork"}, {"v": "donegal", "l": "Donegal"}, {"v": "dublin", "l": "Dublin"}, {"v": "galway", "l": "Galway"}, {"v": "kerry", "l": "Kerry"}, {"v": "kildare", "l": "Kildare"}, {"v": "kilkenny", "l": "Kilkenny"}, {"v": "laois", "l": "Laois"}, {"v": "leitrim", "l": "Leitrim"}, {"v": "limerick", "l": "Limerick"}, {"v": "longford", "l": "Longford"}, {"v": "louth", "l": "Louth"}, {"v": "mayo", "l": "Mayo"}, {"v": "meath", "l": "Meath"}, {"v": "monaghan", "l": "Monaghan"}, {"v": "offaly", "l": "Offaly"}, {"v": "roscommon", "l": "Roscommon"}, {"v": "sligo", "l": "Sligo"}, {"v": "tipperary", "l": "Tipperary"}, {"v": "waterford", "l": "Waterford"}, {"v": "westmeath", "l": "Westmeath"}, {"v": "wexford", "l": "Wexford"}, {"v": "wicklow", "l": "Wicklow"}]}, {"var": "district", "eyebrow": "Where in Dublin", "q": "Which part of Dublin?", "note": "We&rsquo;re starting in Raheny, Killester, Donnycarney and Artane.", "onlyIf": "dublin", "opts": [{"v": "raheny", "l": "Raheny"}, {"v": "killester", "l": "Killester"}, {"v": "donnycarney", "l": "Donnycarney"}, {"v": "artane", "l": "Artane"}, {"v": "elsewhere_in_dublin", "l": "Elsewhere in Dublin"}]}, {"var": "travel_distance", "eyebrow": "How far", "q": "How far would you travel to a garden?", "note": "", "opts": [{"v": "up_to_5km", "l": "Up to 5 km"}, {"v": "up_to_10km", "l": "Up to 10 km"}, {"v": "up_to_20km", "l": "Up to 20 km"}, {"v": "more_than_20km", "l": "More than 20 km"}, {"v": "flexible", "l": "Flexible / unsure"}]}, {"var": "space_band", "eyebrow": "How much space", "q": "How much space would suit you?", "note": "Most people start with a bed or two. Complete beginners are welcome.", "opts": [{"v": "very_small", "l": "Very small — a bed or two"}, {"v": "small", "l": "Small — a corner"}, {"v": "medium", "l": "Medium — a good patch"}, {"v": "large", "l": "Large"}, {"v": "not_sure", "l": "Not sure yet"}]}, {"var": "timing", "eyebrow": "When", "q": "When would you like to start?", "note": "", "opts": [{"v": "this_season", "l": "This season"}, {"v": "within_3_months", "l": "Within three months"}, {"v": "next_season", "l": "Next season"}, {"v": "flexible", "l": "I’m flexible"}]}];
+  var QUESTIONS = [{"var": "county", "eyebrow": "Where you are", "q": "Which county do you live in?", "note": "PlotNua is exploring four areas of north Dublin first, but you can answer from anywhere in Ireland.", "opts": [{"v": "carlow", "l": "Carlow"}, {"v": "cavan", "l": "Cavan"}, {"v": "clare", "l": "Clare"}, {"v": "cork", "l": "Cork"}, {"v": "donegal", "l": "Donegal"}, {"v": "dublin", "l": "Dublin"}, {"v": "galway", "l": "Galway"}, {"v": "kerry", "l": "Kerry"}, {"v": "kildare", "l": "Kildare"}, {"v": "kilkenny", "l": "Kilkenny"}, {"v": "laois", "l": "Laois"}, {"v": "leitrim", "l": "Leitrim"}, {"v": "limerick", "l": "Limerick"}, {"v": "longford", "l": "Longford"}, {"v": "louth", "l": "Louth"}, {"v": "mayo", "l": "Mayo"}, {"v": "meath", "l": "Meath"}, {"v": "monaghan", "l": "Monaghan"}, {"v": "offaly", "l": "Offaly"}, {"v": "roscommon", "l": "Roscommon"}, {"v": "sligo", "l": "Sligo"}, {"v": "tipperary", "l": "Tipperary"}, {"v": "waterford", "l": "Waterford"}, {"v": "westmeath", "l": "Westmeath"}, {"v": "wexford", "l": "Wexford"}, {"v": "wicklow", "l": "Wicklow"}]}, {"var": "district", "eyebrow": "Where in Dublin", "q": "Which part of Dublin?", "note": "We&rsquo;re starting in Raheny, Killester, Donnycarney and Artane.", "onlyIf": "dublin", "opts": [{"v": "raheny", "l": "Raheny"}, {"v": "killester", "l": "Killester"}, {"v": "donnycarney", "l": "Donnycarney"}, {"v": "artane", "l": "Artane"}, {"v": "elsewhere_in_dublin", "l": "Elsewhere in Dublin"}]}, {"var": "travel_distance", "eyebrow": "How far", "q": "How far would you travel to a garden?", "note": "", "opts": [{"v": "up_to_5km", "l": "Up to 5 km"}, {"v": "up_to_10km", "l": "Up to 10 km"}, {"v": "up_to_20km", "l": "Up to 20 km"}, {"v": "more_than_20km", "l": "More than 20 km"}, {"v": "flexible", "l": "Flexible / unsure"}]}, {"var": "space_band", "eyebrow": "How much space", "q": "How much space would suit you?", "note": "Most people start with a bed or two. Complete beginners are welcome.", "opts": [{"v": "very_small", "l": "Very small — a bed or two"}, {"v": "small", "l": "Small — a corner"}, {"v": "medium", "l": "Medium — a good patch"}, {"v": "large", "l": "Large"}, {"v": "not_sure", "l": "Not sure yet"}]}, {"var": "timing", "eyebrow": "When", "q": "When would you like to start?", "note": "", "opts": [{"v": "this_season", "l": "This season"}, {"v": "within_3_months", "l": "Within three months"}, {"v": "next_season", "l": "Next season"}, {"v": "flexible", "l": "I’m flexible"}]}];
   var LABEL = {"district": {"raheny": "Raheny", "killester": "Killester", "donnycarney": "Donnycarney", "artane": "Artane", "elsewhere_in_dublin": "Elsewhere in Dublin", "elsewhere_in_ireland": "Elsewhere in Ireland"}, "county": {"carlow": "Carlow", "cavan": "Cavan", "clare": "Clare", "cork": "Cork", "donegal": "Donegal", "dublin": "Dublin", "galway": "Galway", "kerry": "Kerry", "kildare": "Kildare", "kilkenny": "Kilkenny", "laois": "Laois", "leitrim": "Leitrim", "limerick": "Limerick", "longford": "Longford", "louth": "Louth", "mayo": "Mayo", "meath": "Meath", "monaghan": "Monaghan", "offaly": "Offaly", "roscommon": "Roscommon", "sligo": "Sligo", "tipperary": "Tipperary", "waterford": "Waterford", "westmeath": "Westmeath", "wexford": "Wexford", "wicklow": "Wicklow"}, "travel_distance": {"up_to_5km": "Up to 5 km", "up_to_10km": "Up to 10 km", "up_to_20km": "Up to 20 km", "more_than_20km": "More than 20 km", "flexible": "Flexible / unsure"}, "space_band": {"very_small": "Very small — a bed or two", "small": "Small — a corner", "medium": "Medium — a good patch", "large": "Large", "not_sure": "Not sure yet"}, "timing": {"this_season": "This season", "within_3_months": "Within three months", "next_season": "Next season", "flexible": "I’m flexible"}};
   var PILOT = ['raheny', 'killester', 'donnycarney', 'artane'];
   var answers = {}, trail = [];
@@ -1340,10 +1346,10 @@ window.PlotNuaFunnel = (function () {
   function reveal() {
     try { if (window.PlotNuaFunnel) window.PlotNuaFunnel.complete(); } catch (e) {}
     var inPilot = PILOT.indexOf(answers.district) !== -1;
-    $('bgRevealH').textContent = inPilot ? 'You\u2019re in one of our first areas'
-                                         : 'We\u2019re not in your area yet';
-    $('bgRevealSub').textContent = 'We\u2019re starting in Raheny and neighbouring areas, connecting people who would love to grow with homeowners who have garden space to share.'
-      + (inPilot ? '' : ' You\u2019re welcome to join the register wherever you are.');
+    $('bgRevealH').textContent = inPilot ? 'Your area is one PlotNua is exploring first'
+                                         : 'Your area isn\u2019t one PlotNua is exploring yet';
+    $('bgRevealSub').textContent = 'PlotNua is exploring how people who would love to grow could connect with homeowners who have garden space to share, starting with Raheny and neighbouring areas.'
+      ;
     if ($('bgIntCounty')) {
       $('bgIntCounty').value = answers.county;
       $('bgIntDistrict').value = answers.county === 'dublin' ? answers.district : '';
@@ -1468,7 +1474,7 @@ window.PlotNuaFunnel = (function () {
     $('bgStart').addEventListener('click', function () { advance(); });
     $('bgBack').addEventListener('click', back);
     var panel = $('bgInterest');
-    if (!GROWER_PUBLIC && !preview()) {
+    if (REGISTER_PAUSED || (!GROWER_PUBLIC && !preview())) {
       if (panel && panel.parentNode) panel.parentNode.removeChild(panel);
     } else {
       if (!GROWER_PUBLIC) $('bgIntPrev').hidden = false;
