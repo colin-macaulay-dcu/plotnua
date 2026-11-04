@@ -24,7 +24,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 CFG = json.loads((ROOT / "atlas-tools" / "showcase-cards" / "showcase-cards.json").read_text(encoding="utf-8"))
 SHOWCASES = ROOT / "supplier-preview-system" / "showcases"
-CSS = "assets/components/pn-showcase-cards.css?v=1"
+CSS = "assets/components/pn-showcase-cards.css?v=2"
 START, END = "<!-- PN-SHOWCASE-CARDS v1 · built by atlas-tools/build-showcase-cards.py from atlas-tools/showcase-cards/showcase-cards.json · do not hand-edit -->", "<!-- /PN-SHOWCASE-CARDS -->"
 E_ = lambda s: html.escape(str(s), quote=True)
 
@@ -60,7 +60,7 @@ def block(d, preview=False):
     return (f'{START}\n<link rel="stylesheet" href="{CSS}">\n'
             f'<section class="pn-sc" aria-labelledby="pn-sc-k"><div class="pn-sc-wrap">'
             f'<p class="pn-sc-k" id="pn-sc-k">{E_(d["kicker"])}</p>'
-            f'<ul class="pn-sc-grid" role="list">{cards}</ul></div></section>\n{END}\n')
+            f'<ul class="pn-sc-grid" role="list" data-count="{cards.count("<li>")}">{cards}</ul></div></section>\n{END}\n')
 
 
 def main():

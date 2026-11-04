@@ -70,7 +70,7 @@ def guard():
         sys.exit("FAIL: the page credit differs from the rights record's required credit")
 
 
-PREVIEW = True   # founder: private supplier preview first. Set False (and rebuild) when the founder releases it.
+PREVIEW = False  # founder approval and production release, 4 Nov 2026 (was True for the private supplier preview)
 
 
 HEAD = """<!DOCTYPE html>
@@ -242,7 +242,7 @@ def showcase():
         models.append(
             f'<article class="mp-model no-plan" aria-label="{E(p["name"])}"><div>'
             f'<h3>{E(p["name"])}</h3><p class="mp-kind2">{E(p["kind"])}</p><p class="mp-sum">{E(p["summary"])}</p>'
-            f'<dl class="mp-spec">{dl}<dt>Published price</dt><dd>{E(price)}</dd></dl>'
+            f'<dl class="mp-spec">{dl}<dt>Indicative price</dt><dd>{E(price)}</dd></dl>'
             f'<p class="mp-src">As published by {E(s["name"])} &middot; checked 4 Nov 2026 &middot; VAT not stated</p></div></article>')
     j = "".join(f'<li><a class="pn-two-b" href="{E(h)}">{E(l)} <span aria-hidden="true">&rarr;</span></a></li>' for l, h in journeys("../"))
     head = PUBLIC_HEAD.replace("{og}", E(hero["origin"]))
@@ -296,7 +296,7 @@ f"""<link rel="stylesheet" href="../assets/components/pn-two-option.css?v=1">
 
 <section class="mp-sec" id="models" aria-labelledby="mp-mod-h"><div class="mp-w">
   <div class="mp-head"><div><p class="mp-k">Sizes and prices</p><h2 class="mp-h2" id="mp-mod-h">Priced by the square metre.</h2></div>
-  <p class="mp-p">Don Modular Homes publishes one rate for every size. The figures below are the supplier&rsquo;s own, read from its website and re-checked on 4 November 2026.</p></div>
+  <p class="mp-p">Don Modular Homes publishes one rate for every size. The figures below are the supplier&rsquo;s own, read from its website and re-checked on 4 November 2026. They are indicative prices for the factory-finished home, not quotes: the cost of your project depends on your site and is confirmed only in the supplier&rsquo;s written quote.</p></div>
   <div class="mp-rate"><p class="mp-rate-n">{E(DATA["rate"])}</p><div>
     <h3>Included</h3><p>{E(DATA["included"])}</p>
     <h3>Quoted separately</h3><p>{E(DATA["excludedCosts"])}</p></div></div>

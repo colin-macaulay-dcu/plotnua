@@ -65,8 +65,8 @@
  ],
  "showcaseReferences": [
   {
-   "supplier": "Maker showcase cards (Elm Landscaping, Garden Room Ireland)",
-   "declared": "2026-11-04, founder approval 'Garden Room Ireland final refinement and production release': reusable PN-SHOWCASE-CARDS component (atlas-tools/build-showcase-cards.py) above the supplier gallery. Each card reuses a photograph already published on that supplier's PlotNua showcase. Gallery cards, capacity and Maker Explorer unchanged.",
+   "supplier": "Maker showcase cards (Elm Landscaping, Garden Room Ireland, Don Modular Homes)",
+   "declared": "2026-11-04, founder approval 'Garden Room Ireland final refinement and production release': reusable PN-SHOWCASE-CARDS component (atlas-tools/build-showcase-cards.py) above the supplier gallery. Each card reuses a photograph already published on that supplier's PlotNua showcase. Gallery cards, capacity and Maker Explorer unchanged. Don Modular Homes card added 4 Nov 2026 (founder approval of its production release).",
    "blocks": [
     "Maker showcases",
     "Photograph © Elm Landscaping",
@@ -78,20 +78,28 @@
     "Garden Room Ireland",
     "Insulated steel-clad garden rooms from Dublin: the QC6, the QCB garden office and an L-shaped living annex.",
     "Explore showcase →",
-    "Photograph © Garden Room Ireland Garden Room Ireland Insulated steel-clad garden rooms from Dublin: the QC6, the QCB garden office and an L-shaped living annex. Explore showcase →"
+    "Photograph © Garden Room Ireland Garden Room Ireland Insulated steel-clad garden rooms from Dublin: the QC6, the QCB garden office and an L-shaped living annex. Explore showcase →",
+    "Visualisation © Don Modular Homes",
+    "Don Modular Homes",
+    "One steel-framed, factory-finished design, from a garden room to a four-bedroom home, at one published rate per square metre.",
+    "Explore showcase →",
+    "Visualisation © Don Modular Homes Don Modular Homes One steel-framed, factory-finished design, from a garden room to a four-bedroom home, at one published rate per square metre. Explore showcase →"
    ],
    "imgs": [
     "https://elmlandscaping.ie/wp-content/uploads/2023/02/driveway1.jpg",
-    "https://static.wixstatic.com/media/fef4b6_f1486b2ae80e4ed2bfeecde2d7e5ea71~mv2.jpg"
+    "https://static.wixstatic.com/media/fef4b6_f1486b2ae80e4ed2bfeecde2d7e5ea71~mv2.jpg",
+    "https://donmodularhomes.ie/images/don-modular-home-exterior.webp"
    ],
    "links": [
     "suppliers/elm-landscaping.html",
-    "suppliers/garden-room-ireland.html"
+    "suppliers/garden-room-ireland.html",
+    "suppliers/don-modular-homes.html"
    ],
    "ids": [
     "pn-sc-k",
     "pn-sc-elm-landscaping",
-    "pn-sc-garden-room-ireland"
+    "pn-sc-garden-room-ireland",
+    "pn-sc-don-modular-homes"
    ]
   }
  ]
