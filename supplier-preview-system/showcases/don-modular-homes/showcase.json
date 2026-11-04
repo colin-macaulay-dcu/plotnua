@@ -1,0 +1,265 @@
+{
+ "_about": "Data for the Don Modular Homes supplier showcase (suppliers/don-modular-homes.html), read by supplier-preview-system/build-don-modular-homes-showcase.py. Facts restate Atlas (Products, Pricing, all Partially Verified) and were re-checked against donmodularhomes.ie/modular-home-prices-ireland/ on 4 Nov 2026 (rate, ranges, inclusions and exclusions match). Images: Atlas-Approved supplier visualisations under C2-FIRST-DON-MODULAR-20261002; EVERY image is a computer-generated visualisation and is labelled so.",
+ "supplier": {
+  "name": "Don Modular Homes",
+  "slug": "don-modular-homes",
+  "website": "https://donmodularhomes.ie/",
+  "creditHref": "https://donmodularhomes.ie/?utm_source=plotnua&utm_medium=referral&utm_campaign=supplier-showcase",
+  "credit": "© Don Modular Homes"
+ },
+ "publication": {
+  "status": "PRIVATE PREVIEW — founder instruction 4 Nov 2026. Not deployed; the DISC-008 gallery card stays held (featureHold).",
+  "basis": "Don Modular Homes YES, 2 Oct 2026 (C2-FIRST-DON-MODULAR-20261002, Gmail 1a0fbe3f8fdf7329). Rights record: image-rights-records.json (Don Modular Homes).",
+  "objection": "If Don Modular Homes asks for any image to be changed or removed, delete its entry here and rebuild.",
+  "commercial": "No referral, commission or customer-benefit arrangement is agreed (a proposal of 22 Oct 2026 is unanswered). None is claimed, advertised or implied."
+ },
+ "intro": "One steel-framed, factory-finished design, built in sizes from a 25 m² garden room to a four-bedroom home, at one published rate per square metre.",
+ "visualNote": "Every image on this page is a computer-generated visualisation published by Don Modular Homes. None is a photograph of a completed build.",
+ "standfirst": "Anthracite steel cladding, a glazed gable and a timber deck: the same building, shown in the supplier's own visualisations.",
+ "rate": "€2,400 per m², fully fitted",
+ "included": "G550 galvanised steel frame (C4 coastal-rated); 200 mm insulation, wall U-value about 0.18 W/m²K; anthracite steel cladding; thermally broken aluminium windows and doors; two skylights; full bathroom and fitted kitchen; underfloor heating; 5 kW air conditioning; fire sprinkler system.",
+ "excludedCosts": "Foundations, delivery, crane and installation, and connection to water, electricity and drainage are quoted separately after a site assessment. VAT treatment is not stated.",
+ "products": [
+  {
+   "name": "Garden Room",
+   "atlas": "recjMsY7TFKaadyQV",
+   "kind": "Factory-built garden studio",
+   "summary": "The Don Modular Home at its smallest sizes, sold as a garden room with the same frame, insulation, heating, bathroom and kitchenette as the homes.",
+   "specs": [
+    [
+     "Sizes",
+     "3.6 × 7 m (25.2 m²), 3.3 × 8 m (26.4 m²), 4.6 × 6 m (27.6 m²), 4.6 × 8 m (36.8 m²)"
+    ],
+    [
+     "Price",
+     "From €60,480 (25.2 m²) to €88,320 (36.8 m²)"
+    ]
+   ],
+   "source": "https://donmodularhomes.ie/garden-rooms/"
+  },
+  {
+   "name": "One-Bedroom Home",
+   "atlas": "recEecJoX8RTatjfD",
+   "kind": "Single-module home",
+   "summary": "A studio layout at the smaller sizes and a separate bedroom from about 28.8 m², with a full bathroom and fitted kitchen.",
+   "specs": [
+    [
+     "Sizes",
+     "Eight sizes, 25.2–39.6 m² (3.6 × 7.0 m to 3.6 × 11.0 m)"
+    ],
+    [
+     "Price",
+     "From €60,480 to €95,040"
+    ]
+   ],
+   "source": "https://donmodularhomes.ie/1-bed-modular-homes/"
+  },
+  {
+   "name": "Two-Bedroom Home",
+   "atlas": "recnHio7HGNkYcWar",
+   "kind": "Single-module home",
+   "summary": "Two double bedrooms, a bathroom and open-plan kitchen and living, in the largest single module.",
+   "specs": [
+    [
+     "Sizes",
+     "Eight sizes, 40.0–55.2 m² (4.6 × 8.7 m to 4.6 × 12.0 m)"
+    ],
+    [
+     "Price",
+     "From €96,000 to €132,480"
+    ]
+   ],
+   "source": "https://donmodularhomes.ie/2-bed-modular-homes/"
+  },
+  {
+   "name": "Three-Bedroom Home",
+   "atlas": "recXtikYxEWxd5gfg",
+   "kind": "Multi-module home",
+   "summary": "Built from more than one factory module joined on site, and laid out to your brief.",
+   "specs": [
+    [
+     "Floor area",
+     "70–110 m²"
+    ],
+    [
+     "Price",
+     "From €168,000 to €264,000"
+    ]
+   ],
+   "source": "https://donmodularhomes.ie/modular-home-prices-ireland/"
+  },
+  {
+   "name": "Four-Bedroom Home",
+   "atlas": "recvTduQ2bQnnaqdK",
+   "kind": "Multi-module home",
+   "summary": "A larger multi-module home laid out to your brief.",
+   "specs": [
+    [
+     "Floor area",
+     "100–140 m²"
+    ],
+    [
+     "Price",
+     "From €240,000 to €336,000"
+    ]
+   ],
+   "source": "https://donmodularhomes.ie/modular-home-prices-ireland/"
+  }
+ ],
+ "planningNote": "A garden room that is not lived in can be exempt from planning permission within set limits. A home in the garden is different: depending on its size, it may need permission or a notification under the newer rules for detached units, and every condition applies. Don Modular Homes publishes its own guidance; treat it as the supplier's view and check your plans with your local authority.",
+ "images": [
+  {
+   "id": "don-01-woodland-dusk",
+   "role": "hero",
+   "kind": "Visualisation",
+   "w": 1600,
+   "h": 900,
+   "origin": "https://donmodularhomes.ie/images/don-modular-home-exterior.webp",
+   "sourcePage": "https://donmodularhomes.ie/",
+   "atlasAsset": "recBA5stNcW5nwsRR",
+   "sha256": "c9a9c789813b99377ad00374031dcb29941ec04a6d7cb1d9162e511e3b59790a",
+   "alt": "Visualisation: dark-clad modular home at dusk with a glazed gable end, in a woodland clearing",
+   "caption": "The Don Modular Home in a woodland clearing at dusk."
+  },
+  {
+   "id": "don-02-glazed-gable",
+   "role": "collection",
+   "kind": "Visualisation",
+   "w": 1600,
+   "h": 900,
+   "origin": "https://donmodularhomes.ie/images/don-modular-home-front-elevation.webp",
+   "sourcePage": "https://donmodularhomes.ie/",
+   "atlasAsset": "recVotDlKWqWWFAyR",
+   "sha256": "e5074e035f87f1fd3f9adf0078e3de6361f712bac1ad538bc6df24720abd52ac",
+   "alt": "Visualisation: front elevation with a fully glazed gable, timber reveal and deck",
+   "caption": "The glazed gable end, with a timber reveal and deck."
+  },
+  {
+   "id": "don-03-cladding",
+   "role": "collection",
+   "kind": "Visualisation",
+   "w": 1600,
+   "h": 900,
+   "origin": "https://donmodularhomes.ie/images/don-modular-home-forest-setting.webp",
+   "sourcePage": "https://donmodularhomes.ie/",
+   "atlasAsset": "rechUJ6OW6xNZ0H2R",
+   "sha256": "832e4eb06c45adbfa072a25ddb8cb5321c06735e973c3dee8b1016e7f02d2212",
+   "alt": "Visualisation: modular home in a woodland setting with lit interiors seen through the glazing",
+   "caption": "Anthracite steel cladding and tall glazing along the side."
+  },
+  {
+   "id": "don-04-gable-deck",
+   "role": "collection",
+   "kind": "Visualisation",
+   "w": 1280,
+   "h": 854,
+   "origin": "https://donmodularhomes.ie/images/home-2.webp",
+   "sourcePage": "https://donmodularhomes.ie/",
+   "atlasAsset": "reciw6riazJ4n9v4R",
+   "sha256": "30719a4c022d6a119a35368ddc8b2f91a4d73313d71d18faad0f28aa796c0072",
+   "alt": "Visualisation: glazed gable end with sliding doors onto a timber deck, seen from the garden",
+   "caption": "Sliding doors in the gable open onto a timber deck."
+  },
+  {
+   "id": "don-05-skylights",
+   "role": "collection",
+   "kind": "Visualisation",
+   "w": 1280,
+   "h": 854,
+   "origin": "https://donmodularhomes.ie/images/home-1.webp",
+   "sourcePage": "https://donmodularhomes.ie/",
+   "atlasAsset": "rec6pwviYvSqN4Xx2",
+   "sha256": "286c043bc05bdb72e2cf91a2f50a127bca0359928a8d3e0028749f107ee3b6c9",
+   "alt": "Visualisation: dark-clad modular home with skylights and a timber deck on a gravel approach",
+   "caption": "Skylights and a deck on a gravel approach."
+  },
+  {
+   "id": "don-06-raised-deck",
+   "role": "collection",
+   "kind": "Visualisation",
+   "w": 1280,
+   "h": 1128,
+   "origin": "https://donmodularhomes.ie/images/home-3.webp",
+   "sourcePage": "https://donmodularhomes.ie/",
+   "atlasAsset": "recaXEfH137onxfou",
+   "sha256": "07532179383678377fb4cd438b3a506f7412d5b1f2953436ff2d9cab0546590c",
+   "alt": "Visualisation: modular home on a raised deck in an open natural setting, lit at dusk",
+   "caption": "On a raised deck in an open setting."
+  },
+  {
+   "id": "don-07-living",
+   "role": "interior",
+   "kind": "Visualisation",
+   "w": 1600,
+   "h": 900,
+   "origin": "https://donmodularhomes.ie/images/don-modular-home-interior-living.webp",
+   "sourcePage": "https://donmodularhomes.ie/",
+   "atlasAsset": "recjGgTgrgsnfwoda",
+   "sha256": "b3f695286055329a4f41ad010e179a589afc8cf7d2b98d9b6b5d1ea4255e9cc0",
+   "alt": "Visualisation: living space with full-height sliding doors to the garden and fitted shelving",
+   "caption": "Living space with full-height sliding doors and fitted shelving."
+  },
+  {
+   "id": "don-08-bedroom-fire",
+   "role": "interior",
+   "kind": "Visualisation",
+   "w": 1600,
+   "h": 900,
+   "origin": "https://donmodularhomes.ie/images/don-modular-home-interior-bedroom.webp",
+   "sourcePage": "https://donmodularhomes.ie/",
+   "atlasAsset": "recGaONVqJFaSmCeK",
+   "sha256": "176cd5ff5de2343ca81da45710425926b69b0f428d80f34cd9be2ea605da3b6b",
+   "alt": "Visualisation: bedroom with a fireplace, skylights and a kitchen beyond",
+   "caption": "Bedroom with a fireplace and skylights, the kitchen beyond."
+  },
+  {
+   "id": "don-09-kitchen",
+   "role": "interior",
+   "kind": "Visualisation",
+   "w": 1125,
+   "h": 778,
+   "origin": "https://donmodularhomes.ie/images/interior-2.webp",
+   "sourcePage": "https://donmodularhomes.ie/",
+   "atlasAsset": "rect683wItybxOHhv",
+   "sha256": "54c7f62dd468e4c0289bb2a85246b6693ad759d5f4d7ad108981d0de2c62d8e6",
+   "alt": "Visualisation: fitted kitchen with a breakfast bar, open shelving and under-cabinet lighting",
+   "caption": "The fitted kitchen and breakfast bar."
+  },
+  {
+   "id": "don-10-gable-bedroom",
+   "role": "interior",
+   "kind": "Visualisation",
+   "w": 1125,
+   "h": 728,
+   "origin": "https://donmodularhomes.ie/images/interior-12.webp",
+   "sourcePage": "https://donmodularhomes.ie/",
+   "atlasAsset": "recDjPAfEeiVGmweF",
+   "sha256": "e3b9cf617b389a9ca764560dd2290d65f904a64304f703ac66b520609b73139f",
+   "alt": "Visualisation: bedroom with gable glazing onto a garden and a seating area",
+   "caption": "A bedroom behind the glazed gable."
+  },
+  {
+   "id": "don-11-panorama",
+   "role": "interior",
+   "kind": "Visualisation",
+   "w": 1125,
+   "h": 746,
+   "origin": "https://donmodularhomes.ie/images/interior-3.webp",
+   "sourcePage": "https://donmodularhomes.ie/",
+   "atlasAsset": "recrXsKOOV1KFg6yN",
+   "sha256": "cda8124b424a06d4ebaa1cc647137dbd327941a7adcf736452d42773a35c4535",
+   "alt": "Visualisation: bedroom with a panoramic gable window and a seating area",
+   "caption": "A panoramic gable window over the seating area."
+  }
+ ],
+ "excluded": [
+  {
+   "file": "home-4.webp",
+   "reason": "A composite of several views; less clear than the single frames."
+  },
+  {
+   "file": "The remaining interior visualisations",
+   "reason": "Near-duplicates of the chosen frames."
+  }
+ ]
+}

@@ -4,10 +4,22 @@
   "kicker": "Maker showcases",
   "anchor": "<!-- PN-SUPPLIER-GALLERY v1 ·",
   "cards": [
-   {"showcase": "elm-landscaping", "image": "elm-01-coastal-driveway",
-    "description": "A Co. Clare landscaping company with five garden rooms in the products below, shown alongside the gardens it has built."},
-   {"showcase": "garden-room-ireland", "image": "gri-01-under-the-tree",
-    "description": "Insulated steel-clad garden rooms from Dublin: the QC6, the QCB garden office and an L-shaped living annex."}
+   {
+    "showcase": "elm-landscaping",
+    "image": "elm-01-coastal-driveway",
+    "description": "A Co. Clare landscaping company with five garden rooms in the products below, shown alongside the gardens it has built."
+   },
+   {
+    "showcase": "garden-room-ireland",
+    "image": "gri-01-under-the-tree",
+    "description": "Insulated steel-clad garden rooms from Dublin: the QC6, the QCB garden office and an L-shaped living annex."
+   },
+   {
+    "showcase": "don-modular-homes",
+    "image": "don-01-woodland-dusk",
+    "description": "One steel-framed, factory-finished design, from a 25 m² garden room to a four-bedroom home, at one published rate per square metre.",
+    "preview": true
+   }
   ]
  }
 }

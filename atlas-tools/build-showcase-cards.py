@@ -7,11 +7,16 @@ Renders a small set of image-led cards, each linking to an existing PlotNua supp
 immediately before the configured anchor. Separate from the supplier gallery and the Maker
 Explorer, and never counted in their figures.
 
-Data: atlas-tools/showcase-cards/showcase-cards.json. Each card reuses one photograph already
+Data: atlas-tools/showcase-cards/showcase-cards.json. Each card reuses one image (labelled Photograph
+or Visualisation, as on the showcase) already
 published on that supplier's showcase (same origin, alt, size and credit), so no new image
 enters the site. Styling: assets/components/pn-showcase-cards.css.
 
-Run: python3 atlas-tools/build-showcase-cards.py [--check]
+A card marked "preview": true is for a showcase still in private supplier preview: it is left out of
+the page, and rendered only into a review copy with --preview-out DIR (the page itself is untouched).
+Releasing it: build the showcase with PREVIEW = False, delete "preview" from its card, rebuild.
+
+Run: python3 atlas-tools/build-showcase-cards.py [--check] [--preview-out DIR]
 """
 import html, json, re, sys
 from pathlib import Path
@@ -24,17 +29,17 @@ START, END = "<!-- PN-SHOWCASE-CARDS v1 · built by atlas-tools/build-showcase-c
 E_ = lambda s: html.escape(str(s), quote=True)
 
 
-def card(c):
+def card(c, preview=False):
     data = json.loads((SHOWCASES / c["showcase"] / "showcase.json").read_text(encoding="utf-8"))
     s = data["supplier"]
     page = f"suppliers/{s['slug']}.html"
     if not (ROOT / page).is_file():
         sys.exit(f"FAIL: showcase page {page} does not exist")
-    if 'content="noindex' in (ROOT / page).read_text(encoding="utf-8"):
+    if not preview and 'content="noindex' in (ROOT / page).read_text(encoding="utf-8"):
         sys.exit(f"FAIL: {page} is still a private preview; it cannot be linked from a Discovery")
     img = next((i for i in data["images"] if i["id"] == c["image"]), None)
-    if not img or img.get("kind") != "Photograph":
-        sys.exit(f"FAIL: {c['showcase']}: card image {c['image']} is not a photograph on its showcase")
+    if not img or img.get("kind") not in ("Photograph", "Visualisation"):
+        sys.exit(f"FAIL: {c['showcase']}: card image {c['image']} is not a labelled image on its showcase")
     rec = [r for r in json.loads((ROOT / "image-rights-records.json").read_text(encoding="utf-8"))["records"]
            if r["organisation_name"] == s["name"]]
     if len(rec) != 1 or not rec[0]["permission_outcome"].startswith("Granted") or rec[0]["required_credit"] != s["credit"]:
@@ -43,15 +48,15 @@ def card(c):
     return (f'<li><article class="pn-sc-card" aria-labelledby="{hid}">'
             f'<a class="pn-sc-media" href="{E_(page)}" tabindex="-1" aria-hidden="true">'
             f'<img src="{E_(img["origin"])}" alt="" width="{img["w"]}" height="{img["h"]}" loading="lazy" decoding="async" referrerpolicy="no-referrer"></a>'
-            f'<div class="pn-sc-body"><p class="pn-sc-cap"><span class="pn-sc-kind">Photograph</span> {E_(s["credit"])}</p>'
+            f'<div class="pn-sc-body"><p class="pn-sc-cap"><span class="pn-sc-kind">{E_(img["kind"])}</span> {E_(s["credit"])}</p>'
             f'<h3 class="pn-sc-name" id="{hid}">{E_(s["name"])}</h3>'
             f'<p class="pn-sc-desc">{E_(c["description"])}</p>'
             f'<p class="pn-sc-go"><a href="{E_(page)}" aria-label="Explore the {E_(s["name"])} showcase on PlotNua">'
             f'<span>Explore showcase</span> <span aria-hidden="true">&rarr;</span></a></p></div></article></li>')
 
 
-def block(d):
-    cards = "".join(card(c) for c in d["cards"])
+def block(d, preview=False):
+    cards = "".join(card(c, preview) for c in d["cards"] if preview or not c.get("preview"))
     return (f'{START}\n<link rel="stylesheet" href="{CSS}">\n'
             f'<section class="pn-sc" aria-labelledby="pn-sc-k"><div class="pn-sc-wrap">'
             f'<p class="pn-sc-k" id="pn-sc-k">{E_(d["kicker"])}</p>'
@@ -69,6 +74,12 @@ def main():
         if base.count(d["anchor"]) != 1:
             sys.exit(f"FAIL: {name}: anchor not found exactly once")
         out = base.replace(d["anchor"], block(d) + "\n" + d["anchor"], 1)
+        if "--preview-out" in sys.argv:
+            dest = Path(sys.argv[sys.argv.index("--preview-out") + 1]).resolve() / name
+            dest.parent.mkdir(parents=True, exist_ok=True)
+            dest.write_text(base.replace(d["anchor"], block(d, True) + "\n" + d["anchor"], 1), encoding="utf-8")
+            print("preview copy", dest)
+            continue
         if "--check" in sys.argv:
             same = out == src
             ok &= same
