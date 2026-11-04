@@ -272,6 +272,7 @@ FAULTS = [
     ("details opened", lambda s: s.replace('<details class="faq-item">', '<details class="faq-item" open>', 1), "D"),
     ("footer edited", lambda s: s.replace("Related Discoveries", "Related", 1), "H"),
     ("undeclared stylesheet", lambda s: s.replace("</head>", '<link rel="stylesheet" href="x.css">\n</head>', 1), "H"),
+    ("an undeclared supplier card is added", lambda s: s.replace('<h3 class="pn-sg-name">Gardenhouse24 Ireland</h3>', '<h3 class="pn-sg-name">Invented Garden Co</h3>', 1), "C"),
 ]
 
 

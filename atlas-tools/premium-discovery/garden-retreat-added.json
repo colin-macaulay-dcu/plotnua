@@ -46,5 +46,26 @@
   "Free for homeowners.",
   "PlotNua doesn’t build or install saunas, hot tubs or cold plunges. Nothing on this page assesses your property, and nothing is booked by starting a conversation."
  ],
- "imgs": []
+ "imgs": [],
+ "supplierCards": [
+  {
+   "supplier": "Gardenhouse24 Ireland",
+   "declared": "2026-11-04, founder approval of the Gardenhouse24 release (staging commit f380e58). Built by atlas-tools/build-supplier-gallery.py (showcaseMakers).",
+   "blocks": [
+    "Photograph Image: Gardenhouse24 (opens in a new tab)",
+    "Photograph Image: Gardenhouse24 (opens in a new tab)",
+    "Gardenhouse24 Ireland",
+    "Barrel saunas, sauna houses and wood-fired hot tubs, alongside log cabins.",
+    "Explore supplier →",
+    "Photograph Image: Gardenhouse24 (opens in a new tab) Gardenhouse24 Ireland Barrel saunas, sauna houses and wood-fired hot tubs, alongside log cabins. Explore supplier →"
+   ],
+   "imgs": [
+    "https://d1l23c7hiawhq3.cloudfront.net/media/catalog/product/cache/631d00a18cc6f2d63e06f2111d31fb8f/s/c/screenshot_2024-05-16_094127.png"
+   ],
+   "links": [
+    "suppliers/gardenhouse24.html",
+    "https://gardenhouse24.ie/?utm_source=plotnua&utm_medium=referral&utm_campaign=supplier-showcase"
+   ]
+  }
+ ]
 }

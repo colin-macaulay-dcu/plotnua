@@ -145,10 +145,28 @@ def snapshot(ref):
 
 
 def load_added():
+    """Declared additions. "supplierCards" (4 Nov 2026, Gardenhouse24): a supplier gallery card added
+    after the snapshot is declared here, card by card: its exact text blocks, image and links. Each
+    card's image and links must also pass the supplier gallery guard and the Image Rights Gate."""
     if os.path.exists(ADDED_FILE):
         x = json.load(open(ADDED_FILE, encoding="utf-8"))
-        return x.get("blocks", []), x.get("imgs", [])
+        blocks, imgs = list(x.get("blocks", [])), list(x.get("imgs", []))
+        for c in x.get("supplierCards", []):
+            blocks += c["blocks"]; imgs += c["imgs"]
+        return blocks, imgs
     return [], []
+
+
+def declared_cards():
+    if os.path.exists(ADDED_FILE):
+        return [c["supplier"] for c in json.load(open(ADDED_FILE, encoding="utf-8")).get("supplierCards", [])]
+    return []
+
+
+def added_links():
+    if os.path.exists(ADDED_FILE):
+        return [l for c in json.load(open(ADDED_FILE, encoding="utf-8")).get("supplierCards", []) for l in c["links"]]
+    return []
 
 
 def text(s):
@@ -178,7 +196,16 @@ def check(src, base):
     elif 'data-start="100"' not in hero or len(re.findall(r"<img\b", hero)) < 2:
         bad.append("S the slider must start at BEFORE with two images")
     # G
-    if grab(GALLERY_RE, body) != base["gallery"]:
+    # declared supplier cards (supplierCards in ADDED_FILE) are removed, card by card, before the byte
+    # comparison; each must appear exactly once; everything else in the region stays byte-identical
+    gal = grab(GALLERY_RE, body)
+    for name in declared_cards():
+        li = re.findall(r'<li data-sg-placement="editorial"><article class="pn-sg-card" aria-label="%s">.*?</article></li>' % re.escape(name), gal or "", re.S)
+        if len(li) != 1:
+            bad.append("G declared supplier card %s is missing or duplicated" % name)
+        else:
+            gal = gal.replace(li[0], "", 1)
+    if gal != base["gallery"]:
         bad.append("G the Premium Supplier Gallery region changed")
     if grab(EXPLORER_RE, body) != base["explorer"]:
         bad.append("G the Maker Explorer section changed")
@@ -200,7 +227,7 @@ def check(src, base):
     links, imgs, ids = set(p.links), set(p.imgs), set(p.ids)
     for l in base["links"]:
         if l not in links and l not in REMOVED_LINKS: bad.append("L link lost: " + l)
-    for l in links - set(base["links"]) - set(ADDED_LINKS):
+    for l in links - set(base["links"]) - set(ADDED_LINKS) - set(added_links()):
         bad.append("L undeclared link: " + l)
     for i in base["imgs"]:
         if i not in imgs: bad.append("L image lost: " + i)
@@ -294,6 +321,7 @@ FAULTS = [
     ("details opened", lambda s: s.replace('<details class="faq-item gr-acc">', '<details class="faq-item gr-acc" open>', 1), "D"),
     ("footer edited", lambda s: s.replace("Related Discoveries</h2>", "Related</h2>", 1), "H"),
     ("undeclared stylesheet", lambda s: s.replace("</head>", '<link rel="stylesheet" href="x.css">\n</head>', 1), "H"),
+    ("an undeclared supplier card is added", lambda s: s.replace('aria-label="Gardenhouse24 Ireland">', 'aria-label="Invented Garden Co">', 1), "G"),
 ]
 
 
