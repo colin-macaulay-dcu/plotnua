@@ -26,10 +26,12 @@ STANDARD = [
     # 27 since DISC-031 The Natural Swimming Garden (26 Oct 2026); production had 26 after the maker guides.
     # 28 since the DISC-033 The Hidden Flood Barrier release candidate (27 Oct 2026).
     # 29 since DISC-032 The Supper Club at Home (founder Phase 2 authorisation, 27 Oct 2026).
-    # 31 on production main after DISC-015 (1 Nov 2026); 32 since DISC-020 Stay in the House You Love (4 Nov 2026).
-    ("python3 atlas-tools/build-identity-stage1.py --check", "CHECK OK — 32 pages", "identity layer"),
+    # 31 on production main after DISC-015 (1 Nov 2026); 32 since DISC-020 Stay in the House You Love (4 Nov 2026);
+    # 33 since DISC-034 The Water Wall (development build, 4 Nov 2026).
+    ("python3 atlas-tools/build-identity-stage1.py --check", "CHECK OK — 33 pages", "identity layer"),
     ("python3 atlas-tools/prove-disc033-page.py", "DISC-033 PAGE · OK", "DISC-033 page proof F1-F10"),
     ("python3 atlas-tools/prove-disc020-page.py", "DISC-020 PAGE · OK", "DISC-020 page proof S1-S17"),
+    ("python3 atlas-tools/prove-disc034-page.py", "DISC-034 PAGE · OK", "DISC-034 page proof W1-W16"),
     ("python3 atlas-tools/prove-global-header.py", "GLOBAL HEADER · OK", "global header guard G1-G9"),
     # 33 since the My Plot pill and Direction C (28 Oct 2026): the link to your-plot.html?myplot=1, the read-only
     # script (G6, G10) and the Discovery Library compass.
@@ -86,8 +88,9 @@ STANDARD = [
      "PLOTART LAUNCH · OK — L1-L15 on 8 pages · applications open", "PlotArt launch L1-L14 (L14 published artist galleries): Virtual Gallery empty; five-pill navigation with Mobile Gallery (3 Nov 2026), no banner; Founding 25 and Living Gallery separate (applications open, founder activation 28 Oct 2026)"),
     # PlotArt in the PlotNua navigation and the A Home for Art links (proposed 27 Oct 2026)
     # 32 header pages after DISC-015 The Underground Swimming Pool joined the header registry (1 Nov 2026; 31 after DISC-032, 30 after DISC-033);
-    # 33 on production main (4 Nov 2026); 34 since DISC-020 Stay in the House You Love (4 Nov 2026).
-    ("python3 atlas-tools/prove-plotart-integration.py", "PLOTART INTEGRATION · OK — N1-N4 · 34 header pages", "PlotArt navigation and A Home for Art links N1-N4"),
+    # 33 on production main (4 Nov 2026); 34 since DISC-020 Stay in the House You Love (4 Nov 2026);
+    # 35 since DISC-034 The Water Wall (development build, 4 Nov 2026).
+    ("python3 atlas-tools/prove-plotart-integration.py", "PLOTART INTEGRATION · OK — N1-N4 · 35 header pages", "PlotArt navigation and A Home for Art links N1-N4"),
     ("python3 atlas-tools/prove-privacy-whatsapp.py", "PRIVACY WHATSAPP · OK", "privacy WhatsApp block exact (status printed)"),
     # GridNua limited launch (founder design approval 29 Oct 2026): two pages, noindex, follow; the
     # Interest Register stays closed; DISC-026 holds exactly one GridNua link and matches its latest freeze record.

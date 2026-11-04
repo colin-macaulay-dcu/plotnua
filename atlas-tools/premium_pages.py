@@ -44,6 +44,7 @@ PREMIUM_PAGES = {
     "discovery-hidden-flood-barrier.html",   # DISC-033, built Premium from the start (release candidate, 27 Oct 2026)
     "discovery-underground-swimming-pool.html", # DISC-015, built Premium from the start (founder Phase 2 build authorisation, 1 Nov 2026)
     "discovery-stay-in-the-house-you-love.html", # DISC-020, built Premium from the start (founder Phase 2 build authorisation, 4 Nov 2026)
+    "discovery-the-water-wall.html", # DISC-034, built Premium from the start (founder build authorisation, private preview only, 4 Nov 2026)
     "discovery-supper-club-at-home.html",    # DISC-032, built Premium from the start (founder Phase 2 authorisation, 27 Oct 2026)
 }
 

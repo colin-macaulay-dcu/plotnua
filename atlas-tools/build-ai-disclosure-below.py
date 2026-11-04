@@ -27,6 +27,8 @@ INSTALL = "Illustrative AI-generated visualisation. Not an actual installation."
 EVENT = "Illustrative AI-generated visualisation. Not an actual home or event."
 PROPERTY = "Illustrative AI-generated visualisation. Not an actual property."
 FILM = "Illustrative AI-generated visualisation. Not an actual film production."
+# DISC-034 (founder instruction, 4 Nov 2026: caption "Illustration — not a real installation."), kept an explicit AI disclosure
+ILLUS = "AI-generated illustration — not a real installation."
 PAGES = {
     "discovery-above-and-beyond.html": INSTALL,
     "discovery-garden-retreat.html": INSTALL,
@@ -46,6 +48,8 @@ PAGES = {
     "discovery-underground-swimming-pool.html": INSTALL,
     # DISC-020 (founder Phase 2 build authorisation, 4 Nov 2026)
     "discovery-stay-in-the-house-you-love.html": INSTALL,
+    # DISC-034 (founder build authorisation, private preview only, 4 Nov 2026)
+    "discovery-the-water-wall.html": ILLUS,
 }
 # the desktop line aligns with each hero's own copy: the 1240 px content column (default), the copy's viewport
 # inset (Hidden Flood Barrier 4vw, Supper Club 5vw), or centred under centred copy (Natural Swimming Garden)
@@ -53,6 +57,7 @@ ALIGN = {
     "discovery-hidden-flood-barrier.html": ' class="pn-hero-note pn-hero-note--inset" style="--pnn-inset:4vw"',
     "discovery-underground-swimming-pool.html": ' class="pn-hero-note pn-hero-note--inset" style="--pnn-inset:4vw"',
     "discovery-stay-in-the-house-you-love.html": ' class="pn-hero-note pn-hero-note--inset" style="--pnn-inset:4vw"',
+    "discovery-the-water-wall.html": ' class="pn-hero-note pn-hero-note--inset" style="--pnn-inset:4vw"',
     "discovery-supper-club-at-home.html": ' class="pn-hero-note pn-hero-note--inset" style="--pnn-inset:5vw"',
     "discovery-natural-swimming-garden.html": ' class="pn-hero-note pn-hero-note--centre"',
     "discovery-a-home-for-art.html": ' class="pn-hero-note pn-hero-note--centre"',

@@ -1,0 +1,173 @@
+/* =====================================================================
+   PLOTNUA · DISC-034 THE WATER WALL · editorial layer
+   (founder build authorisation, private preview only, 4 Nov 2026; development branch, NOT deployed)
+
+   The Plot Line chapter markers of the six-chapter Discoveries (DISC-008, DISC-020, DISC-031),
+   in a cool rain grey-blue taken from the wet slate and charcoal of the storage wall. Instrument Serif and
+   Hanken Grotesk, as site-wide. Terracotta stays with the actions. The closing
+   decision is the shared pn-two-route component. Loaded on this page only; every
+   selector is .lg-* or .ww-*.
+   ===================================================================== */
+body.pn-id.pn-pd{ --ww-rain:#8FB0BE; --ww-rain-2:#C6DAE2; --ww-ink:#1C2328; --ww-field:#20262A; --ww-line:#3C474D; }
+
+/* ---- chapter opening (as DISC-031, recoloured) ------------------------------ */
+body.pn-id.pn-pd .lg-ch-wrap{ padding-top:clamp(72px,9vw,140px); }
+body.pn-id.pn-pd .lg-chapter{ display:flex; align-items:center; gap:18px; margin:0; }
+body.pn-id.pn-pd .lg-chapter::after{ content:""; flex:1; border-top:1.5px dashed rgba(143,176,190,.55); }
+body.pn-id.pn-pd .lg-plot{ flex:0 0 auto; width:62px; height:62px; border:1.5px dashed var(--ww-rain); display:flex; align-items:flex-end; position:relative; }
+body.pn-id.pn-pd .lg-plot > span{ font-family:var(--p4-serif); font-size:30px; line-height:1; color:var(--p4-ivory); padding:0 0 6px 8px; }
+body.pn-id.pn-pd .lg-plot::after{ content:""; position:absolute; right:8px; top:8px; width:12px; height:18px; border-radius:2px; background:rgba(143,176,190,.45); border:1px solid var(--ww-rain-2); }
+body.pn-id.pn-pd .lg-kicker{ margin:0; font:700 13px/1.2 var(--p4-sans); letter-spacing:.24em; text-transform:uppercase; color:var(--ww-rain-2); }
+body.pn-id.pn-pd .lg-title{ font-family:var(--p4-serif); font-weight:400; font-size:clamp(40px,5.2vw,78px); line-height:1.03; letter-spacing:-.015em; color:var(--p4-ivory); max-width:17ch; margin:24px 0 0; }
+body.pn-id.pn-pd .lg-stand{ font-size:clamp(18px,1.4vw,20.5px); line-height:1.6; color:var(--p4-lime); max-width:52ch; margin:20px 0 0; }
+body.pn-id.pn-pd .lg-ch-wrap + .pd-section, body.pn-id.pn-pd .lg-ch-wrap + .pd-band > .pd-section:first-child{ padding-top:clamp(24px,3vw,44px); }
+
+/* ---- chapter 02: four tiles -------------------------------------------------- */
+body.pn-id.pn-pd .lg-problem{ padding-top:clamp(18px,2vw,28px); }
+body.pn-id.pn-pd .lg-problem-lead{ margin-top:0; }
+body.pn-id.pn-pd .lg-four{ list-style:none; padding:0; margin:clamp(28px,3vw,40px) 0 0; display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:clamp(18px,2.4vw,36px); }
+body.pn-id.pn-pd .lg-four > li{ border-top:1px solid var(--ww-rain); padding-top:18px; }
+body.pn-id.pn-pd .lg-four svg{ width:44px; height:44px; display:block; margin:0 0 16px; fill:none; stroke:var(--ww-rain-2); stroke-width:1.6; stroke-linecap:round; stroke-linejoin:round; }
+body.pn-id.pn-pd .lg-four-k{ display:block; font:700 12.5px/1.25 var(--p4-sans); letter-spacing:.2em; text-transform:uppercase; color:var(--ww-rain-2); margin-bottom:10px; }
+body.pn-id.pn-pd .lg-four-t{ display:block; font-family:var(--p4-serif); font-size:clamp(21px,1.75vw,26px); line-height:1.25; color:var(--p4-ivory); }
+
+/* ---- chapter 03: four ways up (bespoke comparison) ---------------------------- */
+body.pn-id.pn-pd .ww-ways{ list-style:none; margin:clamp(28px,3vw,44px) 0 0; padding:0; display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:clamp(14px,1.6vw,22px); }
+body.pn-id.pn-pd .ww-way{ display:flex; flex-direction:column; background:var(--ww-field); border:1px solid var(--ww-line); border-top:2px solid var(--ww-rain); border-radius:4px; padding:clamp(16px,1.8vw,24px); }
+body.pn-id.pn-pd .ww-way.is-alt{ border-top-style:dashed; }
+body.pn-id.pn-pd .ww-way-fig{ margin:0 0 16px; background:#171C1F; border-radius:3px; }
+body.pn-id.pn-pd .ww-way-fig svg{ display:block; width:100%; height:auto; }
+body.pn-id.pn-pd .ww-l{ margin:0; font-family:var(--p4-serif); font-size:34px; line-height:1; color:#CF8566; }
+body.pn-id.pn-pd .ww-way h3{ margin:8px 0 0; font-family:var(--p4-serif); font-weight:400; font-size:clamp(24px,1.9vw,29px); line-height:1.1; color:var(--p4-ivory); }
+body.pn-id.pn-pd .ww-way-t{ margin:10px 0 0 !important; font-size:15.5px !important; line-height:1.55 !important; color:var(--p4-lime) !important; }
+body.pn-id.pn-pd .ww-dl{ margin:16px 0 0; padding:0; }
+body.pn-id.pn-pd .ww-dl > div{ padding:10px 0; border-top:1px solid var(--ww-line); }
+body.pn-id.pn-pd .ww-dl dt{ font:700 11.5px/1.3 var(--p4-sans); letter-spacing:.18em; text-transform:uppercase; color:var(--ww-rain-2); }
+body.pn-id.pn-pd .ww-dl dd{ margin:4px 0 0; font:400 15px/1.5 var(--p4-sans); color:#E9E2D6; }
+body.pn-id.pn-pd .ww-maker{ display:inline-block; margin-left:6px; padding:1px 7px; border:1px solid var(--ww-line); border-radius:999px; font:600 10.5px/1.6 var(--p4-sans); letter-spacing:.08em; text-transform:uppercase; color:var(--p4-stone); white-space:nowrap; }
+body.pn-id.pn-pd .ww-fig .fl{ stroke:#7E8A90; stroke-width:1.4; fill:none; vector-effect:non-scaling-stroke; }
+body.pn-id.pn-pd .ww-fig .slab{ fill:#30383D; stroke:#7E8A90; stroke-width:1; vector-effect:non-scaling-stroke; }
+body.pn-id.pn-pd .ww-fig .cut{ fill:#171C1F; stroke:#C6DAE2; stroke-width:1.2; stroke-dasharray:4 3; vector-effect:non-scaling-stroke; }
+body.pn-id.pn-pd .ww-fig .car{ fill:rgba(143,176,190,.22); stroke:#8FB0BE; stroke-width:1.6; vector-effect:non-scaling-stroke; }
+body.pn-id.pn-pd .ww-fig .shaft{ fill:rgba(242,235,224,.06); stroke:#B7AFA3; stroke-width:1.4; vector-effect:non-scaling-stroke; }
+body.pn-id.pn-pd .ww-fig .glass{ fill:rgba(168,207,209,.16); stroke:#8FB0BE; stroke-width:2; vector-effect:non-scaling-stroke; }
+body.pn-id.pn-pd .ww-fig .mull{ stroke:#8FB0BE; stroke-width:1.2; fill:none; vector-effect:non-scaling-stroke; }
+body.pn-id.pn-pd .ww-fig .arr{ stroke:#CF8566; stroke-width:1.8; fill:none; stroke-linecap:round; stroke-linejoin:round; vector-effect:non-scaling-stroke; }
+body.pn-id.pn-pd .ww-fig .stair{ stroke:#B7AFA3; stroke-width:1.6; fill:none; vector-effect:non-scaling-stroke; }
+body.pn-id.pn-pd .ww-fig .seat{ fill:rgba(143,176,190,.32); stroke:#8FB0BE; stroke-width:1.4; vector-effect:non-scaling-stroke; }
+body.pn-id.pn-pd .ww-fig text{ font-family:var(--p4-sans); font-size:11px; font-weight:600; letter-spacing:.08em; fill:#D9D3C8; }
+body.pn-id.pn-pd .ww-fig .lv{ font-size:10px; fill:#9C958A; letter-spacing:.12em; }
+body.pn-id.pn-pd .ww-cap{ margin:18px 0 0; color:var(--p4-stone); font:500 14px/1.5 var(--p4-sans); max-width:80ch; }
+
+/* ---- chapter 04: in Irish homes ---------------------------------------------- */
+body.pn-id.pn-pd .ww-homes{ display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:var(--pd-gap); margin-top:clamp(24px,3vw,40px); }
+body.pn-id.pn-pd .ww-homes .pd-card{ display:flex; flex-direction:column; }
+body.pn-id.pn-pd .ww-homes .ww-src{ margin-top:auto !important; padding-top:14px; font-size:13.5px !important; color:var(--p4-stone) !important; }
+body.pn-id.pn-pd .ww-pull{ margin:clamp(36px,4vw,56px) 0 0; font-family:var(--p4-serif); font-style:italic; font-size:clamp(26px,2.6vw,40px); line-height:1.2; color:var(--p4-ivory); max-width:30ch; border-left:2px solid var(--ww-rain); padding-left:clamp(16px,2vw,28px); }
+
+/* ---- chapter 05: requirement groups, grants, cost ------------------------------- */
+body.pn-id.pn-pd .lg-group{ margin:clamp(28px,3vw,40px) 0 18px; padding-left:16px; border-left:3px solid var(--ww-rain); }
+body.pn-id.pn-pd .lg-group.is-guide{ border-left-style:dashed; border-left-color:#D8B475; }
+body.pn-id.pn-pd .lg-group-k{ margin:0; font:700 13px/1.2 var(--p4-sans); letter-spacing:.22em; text-transform:uppercase; color:var(--ww-rain-2); }
+body.pn-id.pn-pd .lg-group.is-guide .lg-group-k{ color:#D8B475; }
+body.pn-id.pn-pd .lg-group-n{ margin:8px 0 0; font:500 15px/1.55 var(--p4-sans); color:var(--p4-stone); max-width:60ch; }
+body.pn-id.pn-pd .ww-grants{ display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:var(--pd-gap); }
+body.pn-id.pn-pd .ww-big{ display:block; font-family:var(--p4-serif); font-size:clamp(44px,4.4vw,64px); line-height:1; color:var(--p4-ivory); margin:6px 0 4px; }
+body.pn-id.pn-pd .ww-big-of{ display:block; font-family:var(--p4-serif); font-style:italic; font-size:clamp(19px,1.6vw,23px); line-height:1.25; color:var(--p4-terra-text); }
+body.pn-id.pn-pd ul.ww-ticks{ list-style:none; margin:16px 0 0; padding:0; }
+body.pn-id.pn-pd ul.ww-ticks li{ position:relative; padding:9px 0 9px 22px; border-top:1px solid var(--p4-line); font:400 15.5px/1.5 var(--p4-sans); color:var(--p4-lime); }
+body.pn-id.pn-pd ul.ww-ticks li::before{ content:""; position:absolute; left:2px; top:17px; width:8px; height:8px; border-radius:50%; background:var(--ww-rain); }
+body.pn-id.pn-pd .ww-advert{ border:1px solid var(--ww-line); border-left:3px solid #D8B475; border-radius:4px; padding:clamp(18px,2.2vw,28px); margin-top:clamp(20px,2.4vw,32px); }
+body.pn-id.pn-pd .ww-advert-k{ margin:0 !important; font:700 12px/1.3 var(--p4-sans) !important; letter-spacing:.2em; text-transform:uppercase; color:#D8B475 !important; }
+body.pn-id.pn-pd .ww-advert-f{ margin:10px 0 0 !important; font-family:var(--p4-serif) !important; font-size:clamp(30px,3vw,44px) !important; line-height:1.05 !important; color:var(--p4-ivory) !important; }
+body.pn-id.pn-pd .ww-advert-n{ margin:12px 0 0 !important; font-size:15px !important; color:var(--p4-lime) !important; max-width:70ch; }
+
+/* ---- chapter 06: questions to ask (Route A, below the shared component) ---------- */
+body.pn-id.pn-pd ol.ww-qs{ list-style:none; counter-reset:q; margin:18px 0 0; padding:0; columns:2; column-gap:clamp(24px,3vw,48px); }
+body.pn-id.pn-pd ol.ww-qs li{ counter-increment:q; break-inside:avoid; display:grid; grid-template-columns:34px 1fr; gap:10px; padding:12px 0; border-top:1px solid var(--p4-line); font:400 16px/1.5 var(--p4-sans); color:var(--p4-lime); }
+body.pn-id.pn-pd ol.ww-qs li::before{ content:counter(q,decimal-leading-zero); font-size:12px; font-weight:700; letter-spacing:.12em; color:var(--p4-terra-text); padding-top:4px; }
+
+/* ---- tablet ----------------------------------------------------------------- */
+@media (max-width:1099px){
+  body.pn-id.pn-pd .ww-ways{ grid-template-columns:1fr 1fr; }
+}
+@media (max-width:1023px){
+  body.pn-id.pn-pd .lg-four{ grid-template-columns:1fr 1fr; }
+  body.pn-id.pn-pd .ww-homes{ grid-template-columns:1fr; }
+}
+/* ---- phones: a phone layout, not a compressed desktop -------------------------- */
+@media (max-width:719px){
+  body.pn-id.pn-pd .lg-ch-wrap{ padding-top:64px; }
+  body.pn-id.pn-pd .lg-chapter{ gap:14px; }
+  body.pn-id.pn-pd .lg-plot{ width:50px; height:50px; }
+  body.pn-id.pn-pd .lg-plot > span{ font-size:22px; padding:0 0 5px 7px; }
+  body.pn-id.pn-pd .lg-plot::after{ width:9px; height:13px; right:6px; top:6px; }
+  body.pn-id.pn-pd .lg-kicker{ font-size:12px; letter-spacing:.2em; }
+  body.pn-id.pn-pd .lg-title{ font-size:clamp(34px,9.4vw,44px); }
+  body.pn-id.pn-pd .lg-four{ grid-template-columns:1fr; gap:0; }
+  body.pn-id.pn-pd .lg-four > li{ display:grid; grid-template-columns:40px 1fr; column-gap:16px; padding:18px 0; }
+  body.pn-id.pn-pd .lg-four svg{ width:36px; height:36px; margin:2px 0 0; grid-row:span 2; }
+  body.pn-id.pn-pd .lg-four-t{ font-size:21px; }
+  body.pn-id.pn-pd .ww-ways{ grid-template-columns:1fr; }
+  body.pn-id.pn-pd .ww-way-fig{ max-width:300px; }
+  body.pn-id.pn-pd .ww-grants{ grid-template-columns:1fr; }
+  body.pn-id.pn-pd ol.ww-qs{ columns:1; }
+  body.pn-id.pn-pd .lg-group{ padding-left:12px; }
+}
+
+/* ---- DISC-034 components ------------------------------------------------------ */
+/* chapter 02: water butt vs storage wall */
+body.pn-id.pn-pd .ww-ways.is-two{ grid-template-columns:repeat(2,minmax(0,1fr)); }
+body.pn-id.pn-pd .ww-way.is-feature{ border-top-width:3px; background:linear-gradient(180deg,rgba(143,176,190,.10),rgba(143,176,190,0) 42%), var(--ww-field); }
+body.pn-id.pn-pd .ww-fig .wall{ fill:#2E3539; stroke:#9AA6AB; stroke-width:1.2; vector-effect:non-scaling-stroke; }
+body.pn-id.pn-pd .ww-fig .tank{ fill:#262D31; stroke:#8FB0BE; stroke-width:1.6; vector-effect:non-scaling-stroke; }
+body.pn-id.pn-pd .ww-fig .water{ fill:rgba(143,176,190,.34); stroke:none; }
+body.pn-id.pn-pd .ww-fig .rib{ stroke:#4A565C; stroke-width:1; fill:none; vector-effect:non-scaling-stroke; }
+body.pn-id.pn-pd .ww-fig .plant{ stroke:#9DB88A; stroke-width:1.4; fill:none; stroke-linecap:round; vector-effect:non-scaling-stroke; }
+body.pn-id.pn-pd .ww-fig .dim{ stroke:#C6DAE2; stroke-width:1; fill:none; stroke-dasharray:3 3; vector-effect:non-scaling-stroke; }
+body.pn-id.pn-pd .ww-pull{ margin:clamp(36px,4vw,56px) 0 0; font-family:var(--p4-serif); font-style:italic; font-size:clamp(26px,2.6vw,40px); line-height:1.2; color:var(--p4-ivory); max-width:30ch; border-left:2px solid var(--ww-rain); padding-left:clamp(16px,2vw,28px); }
+
+/* chapter 03: how it works, the big drawing and its six steps */
+body.pn-id.pn-pd .ww-diagram{ margin:clamp(28px,3vw,44px) 0 0; background:#171C1F; border:1px solid var(--ww-line); border-radius:4px; padding:clamp(12px,2vw,28px); }
+body.pn-id.pn-pd .ww-diagram svg{ display:block; width:100%; height:auto; }
+body.pn-id.pn-pd .ww-diagram .roof{ fill:#30383D; stroke:#9AA6AB; stroke-width:1.4; vector-effect:non-scaling-stroke; }
+body.pn-id.pn-pd .ww-diagram .house{ fill:#22292D; stroke:#7E8A90; stroke-width:1.2; vector-effect:non-scaling-stroke; }
+body.pn-id.pn-pd .ww-diagram .pipe{ stroke:#C6DAE2; stroke-width:2.4; fill:none; stroke-linecap:round; stroke-linejoin:round; vector-effect:non-scaling-stroke; }
+body.pn-id.pn-pd .ww-diagram .flow{ stroke:#8FB0BE; stroke-width:2; fill:none; stroke-dasharray:6 5; stroke-linecap:round; vector-effect:non-scaling-stroke; }
+body.pn-id.pn-pd .ww-diagram .over{ stroke:#CF8566; stroke-width:2; fill:none; stroke-dasharray:6 5; stroke-linecap:round; vector-effect:non-scaling-stroke; }
+body.pn-id.pn-pd .ww-diagram .filter{ fill:#3A454B; stroke:#C6DAE2; stroke-width:1.4; vector-effect:non-scaling-stroke; }
+body.pn-id.pn-pd .ww-diagram .tank{ fill:#262D31; stroke:#8FB0BE; stroke-width:1.8; vector-effect:non-scaling-stroke; }
+body.pn-id.pn-pd .ww-diagram .water{ fill:rgba(143,176,190,.34); }
+body.pn-id.pn-pd .ww-diagram .rib{ stroke:#4A565C; stroke-width:1; fill:none; vector-effect:non-scaling-stroke; }
+body.pn-id.pn-pd .ww-diagram .ground{ stroke:#7E8A90; stroke-width:1.4; fill:none; vector-effect:non-scaling-stroke; }
+body.pn-id.pn-pd .ww-diagram .footing{ fill:#3A3F42; stroke:#9AA6AB; stroke-width:1; stroke-dasharray:4 3; vector-effect:non-scaling-stroke; }
+body.pn-id.pn-pd .ww-diagram .bed{ fill:#2B2620; stroke:#7E8A90; stroke-width:1; vector-effect:non-scaling-stroke; }
+body.pn-id.pn-pd .ww-diagram .plant{ stroke:#9DB88A; stroke-width:1.6; fill:none; stroke-linecap:round; vector-effect:non-scaling-stroke; }
+body.pn-id.pn-pd .ww-diagram .drip{ fill:#8FB0BE; }
+body.pn-id.pn-pd .ww-diagram .rain{ stroke:#8FB0BE; stroke-width:1.4; stroke-linecap:round; opacity:.7; vector-effect:non-scaling-stroke; }
+body.pn-id.pn-pd .ww-diagram .num{ fill:#8FB0BE; }
+body.pn-id.pn-pd .ww-diagram .num-t{ font:700 13px/1 var(--p4-sans); fill:#171C1F; }
+body.pn-id.pn-pd .ww-diagram text{ font-family:var(--p4-sans); font-size:14px; font-weight:600; letter-spacing:.04em; fill:#E6E1D8; }
+body.pn-id.pn-pd .ww-diagram .lab-s{ font-size:12px; font-weight:500; fill:#A9B3B8; letter-spacing:.02em; }
+body.pn-id.pn-pd .ww-diagram .nts{ font-size:12px; font-weight:700; letter-spacing:.18em; fill:#8FB0BE; }
+body.pn-id.pn-pd ol.ww-steps{ list-style:none; margin:clamp(24px,3vw,36px) 0 0; padding:0; display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:0 clamp(20px,2.4vw,36px); }
+body.pn-id.pn-pd ol.ww-steps li{ display:grid; grid-template-columns:34px 1fr; align-content:start; gap:4px 12px; padding:16px 0; border-top:1px solid var(--ww-line); }
+body.pn-id.pn-pd .ww-step-n{ grid-row:span 2; width:26px; height:26px; border-radius:50%; background:var(--ww-rain); color:#171C1F; font:700 13px/26px var(--p4-sans); text-align:center; }
+body.pn-id.pn-pd .ww-step-k{ font:700 12.5px/1.3 var(--p4-sans); letter-spacing:.18em; text-transform:uppercase; color:var(--ww-rain-2); }
+body.pn-id.pn-pd .ww-step-t{ font:400 15.5px/1.55 var(--p4-sans); color:var(--p4-lime); }
+body.pn-id.pn-pd .ww-rule{ margin-top:clamp(24px,3vw,36px); }
+
+/* chapter 05: what's out there */
+body.pn-id.pn-pd .ww-status{ border:1px solid var(--ww-line); border-left:3px solid var(--ww-rain); border-radius:4px; padding:clamp(18px,2.2vw,28px); margin-top:clamp(20px,2.4vw,32px); }
+body.pn-id.pn-pd .ww-status-k{ margin:0 !important; font:700 12px/1.3 var(--p4-sans) !important; letter-spacing:.2em; text-transform:uppercase; color:var(--ww-rain-2) !important; }
+body.pn-id.pn-pd .ww-status-f{ margin:10px 0 0 !important; font-family:var(--p4-serif) !important; font-size:clamp(30px,3vw,44px) !important; line-height:1.05 !important; color:var(--p4-ivory) !important; }
+body.pn-id.pn-pd .ww-status-n{ margin:12px 0 0 !important; font-size:15.5px !important; color:var(--p4-lime) !important; max-width:72ch; }
+body.pn-id.pn-pd .ww-homes .ww-price{ margin:14px 0 0 !important; font-family:var(--p4-serif) !important; font-size:clamp(24px,2vw,30px) !important; line-height:1.1 !important; color:var(--p4-ivory) !important; }
+body.pn-id.pn-pd .ww-homes .ww-price small{ display:block; margin-top:6px; font:500 13.5px/1.45 var(--p4-sans); color:var(--p4-stone); }
+body.pn-id.pn-pd .ww-homes .ww-link{ margin-top:12px !important; font-size:14.5px !important; }
+@media (max-width:1023px){ body.pn-id.pn-pd ol.ww-steps{ grid-template-columns:1fr 1fr; } }
+@media (max-width:719px){
+  body.pn-id.pn-pd .ww-ways.is-two{ grid-template-columns:1fr; }
+  body.pn-id.pn-pd ol.ww-steps{ grid-template-columns:1fr; }
+  body.pn-id.pn-pd .ww-diagram{ padding:8px; }
+}

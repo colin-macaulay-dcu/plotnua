@@ -33,7 +33,9 @@ PAGES = ["discovery-supper-club-at-home.html", "discovery-natural-swimming-garde
          # DISC-015 (founder Phase 2 build authorisation, 1 Nov 2026)
          "discovery-underground-swimming-pool.html",
          # DISC-020 (founder Phase 2 build authorisation, 4 Nov 2026)
-         "discovery-stay-in-the-house-you-love.html"]
+         "discovery-stay-in-the-house-you-love.html",
+         # DISC-034 (founder build authorisation, private preview only, 4 Nov 2026)
+         "discovery-the-water-wall.html"]
 
 
 def read(p):
