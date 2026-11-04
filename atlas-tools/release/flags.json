@@ -3,5 +3,6 @@
   "ideas_submissions_open": true,
   "ideas_publish_enabled": true,
   "must_not_exist": [],
-  "garden_submissions_open": true
+  "garden_submissions_open": true,
+  "garden_publish_enabled": true
 }

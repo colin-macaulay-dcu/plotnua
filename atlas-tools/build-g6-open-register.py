@@ -67,6 +67,11 @@ def main_region(t):
 
 
 def build(page, privacy, worker, wrangler):
+    # Founder decision, 4 Nov 2026: new registrations are PAUSED and The Borrowed Garden moves to a noticeboard. This
+    # builder must never re-open the Garden Owner Register while the page carries the pause, or ever again without a
+    # new founder decision that removes REGISTER_PAUSED from the page first.
+    if "REGISTER_PAUSED = true" in page:
+        refuse("registrations are PAUSED (founder decision 4 Nov 2026): this builder will not re-open the Garden Owner Register")
     if page.count(ON) and not page.count(OFF):
         refuse("the register is already open (INTEREST_PUBLIC is true)")
     if page.count(OFF) != 1:

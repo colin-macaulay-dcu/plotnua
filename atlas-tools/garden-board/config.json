@@ -1,0 +1,4 @@
+{
+  "what_this_is": "The Borrowed Garden noticeboard configuration (MVP, 4 Nov 2026). endpoint is the public intake Worker's /v1/garden-listings address; while it is null the page says the noticeboard is not taking listings and shows no form. Setting it is part of a founder-approved go-live, after the Worker is deployed and enabled and the privacy notice covers the noticeboard.",
+  "endpoint": "https://plotnua-garden-board.colin-a41.workers.dev/v1/garden-listings"
+}

@@ -1,0 +1,81 @@
+# The Borrowed Garden noticeboard publishing (release candidate, 4 Nov 2026). OFF until the founder's launch: runs only
+# when the repository variable GARDEN_PUBLISH_ENABLED or flags.json garden_publish_enabled is true. Publishes the
+# founder's approved, unexpired listings (public fields only) from PlotArt Studio to borrowed-garden-board.html.
+# Each run: atlas-tools/plotnua-garden-publish.py takes the approved listings from PlotArt Studio, rebuilds the page,
+# refuses unless only the snapshot and the page changed and the guards pass, then releases through the gate.
+
+name: Borrowed Garden noticeboard publishing
+
+on:
+  schedule:
+    - cron: '8,38 * * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pages: write
+  actions: write      # automation v1: start the gate on its release branch (request-release.sh)
+
+# Own lock (2 Nov 2026): runs started on approval must not be cancelled by a queued PlotArt run sharing a lock. If the
+# PlotArt pipeline moves main at the same moment, the push is refused (never forced) and the run retries once below.
+concurrency:
+  group: plotnua-garden-publish
+  cancel-in-progress: false
+
+env:
+  GH_TOKEN: ${{ github.token }}   # automation v1: request-release.sh dispatches the gate
+
+jobs:
+  publish:
+    if: ${{ github.ref == 'refs/heads/main' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 35   # automation v1: request-release.sh waits up to 25 min for the gated release
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      # The switch: atlas-tools/release/flags.json garden_publish_enabled (false until the noticeboard launch).
+      - name: Is publishing switched on?
+        id: on
+        env:
+          VAR: ${{ vars.GARDEN_PUBLISH_ENABLED }}
+        run: |
+          F=$(python3 -c 'import json; print(str(json.load(open("atlas-tools/release/flags.json")).get("garden_publish_enabled", False)).lower())' 2>/dev/null || echo false)
+          if [ "$VAR" = "true" ] || [ "$F" = "true" ]; then echo "on=1" >> "$GITHUB_OUTPUT"; echo "publishing on"; else echo "publishing is switched off: nothing to do"; fi
+      - name: Note where main is before publishing
+        if: steps.on.outputs.on == '1'
+        id: before
+        run: echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+      - name: Publish approved noticeboard listings (content-only, guarded, gated)
+        if: steps.on.outputs.on == '1'
+        env:
+          STUDIO_URL: ${{ secrets.STUDIO_URL }}
+          STUDIO_PIPELINE_TOKEN: ${{ secrets.STUDIO_PIPELINE_TOKEN }}
+          STUDIO_ACCESS_CLIENT_ID: ${{ secrets.STUDIO_ACCESS_CLIENT_ID }}
+          STUDIO_ACCESS_CLIENT_SECRET: ${{ secrets.STUDIO_ACCESS_CLIENT_SECRET }}
+        run: |
+          set -uo pipefail
+          python3 atlas-tools/plotnua-garden-publish.py --studio "$STUDIO_URL" --token "$STUDIO_PIPELINE_TOKEN" --push && exit 0
+          echo "first attempt refused: retrying once on the latest main"
+          sleep 20; git fetch -q origin main && git reset -q --hard origin/main
+          python3 atlas-tools/plotnua-garden-publish.py --studio "$STUDIO_URL" --token "$STUDIO_PIPELINE_TOKEN" --push
+      - name: Request the GitHub Pages build when main moved
+        if: steps.on.outputs.on == '1'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          BEFORE: ${{ steps.before.outputs.sha }}
+        run: |
+          set -euo pipefail
+          git fetch --quiet origin main
+          AFTER=$(git rev-parse origin/main)
+          if [ "$AFTER" != "$BEFORE" ]; then
+            curl -fsS -X POST -H "Authorization: Bearer $GH_TOKEN" -H "Accept: application/vnd.github+json" \
+              "https://api.github.com/repos/${{ github.repository }}/pages/builds" > /dev/null
+            echo "main moved ${BEFORE:0:7} -> ${AFTER:0:7}: Pages build requested"
+          else
+            echo "nothing published: no Pages build requested"
+          fi

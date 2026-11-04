@@ -31,6 +31,15 @@ body.pn-id.pn-pd #pn-main .bg-checks :is(.pn-wordmark, .kicker){ text-align:left
 body.pn-id.pn-pd #pn-main .bg-checks .pb-headline, body.pn-id.pn-pd #pn-main .bg-checks .pb-subhead, body.pn-id.pn-pd #pn-main .bg-checks .pb-note{ text-align:left; margin-left:0; }
 body.pn-id.pn-pd #pn-main .bg-checks .hfa-checks{ margin-left:0; }
 
+/* ---- chapter 05: the noticeboard card (release candidate, 4 Nov 2026) ------------- */
+body.pn-id.pn-pd #pn-main .bg-board{ margin:clamp(24px,3vw,40px) 0 0; padding:clamp(22px,3vw,36px); border:1px solid var(--bg-line); border-top:3px solid #CF8566; border-radius:4px; background:linear-gradient(180deg, rgba(163,190,126,.08), rgba(163,190,126,0) 70%); }
+body.pn-id.pn-pd .bg-board-k{ margin:0; font:700 12.5px/1.2 var(--p4-sans); letter-spacing:.2em; text-transform:uppercase; color:var(--bg-amber-2); }
+body.pn-id.pn-pd .bg-board-h{ margin:12px 0 0; font-family:var(--p4-serif); font-size:clamp(28px,2.6vw,38px); line-height:1.1; color:var(--p4-ivory); }
+body.pn-id.pn-pd .bg-board-t{ margin:12px 0 0; max-width:62ch; }
+body.pn-id.pn-pd .bg-board-a{ margin:20px 0 0; }
+body.pn-id.pn-pd #pn-main .bg-board-btn{ display:inline-flex; align-items:center; min-height:50px; padding:0 24px; border-radius:999px; background:var(--p4-terra); color:var(--p4-anth); font:700 15.5px/1 var(--p4-sans); text-decoration:none; border:0; }
+body.pn-id.pn-pd #pn-main .bg-board-btn:hover{ background:var(--p4-terra-hover); }
+
 /* ---- chapter 03: what could grow here -------------------------------------- */
 .bg-grow{ list-style:none; margin:clamp(32px,3.5vw,48px) 0 0; padding:0; display:grid; }
 .bg-grow{ grid-template-columns:repeat(5,minmax(0,1fr)); gap:clamp(18px,2vw,28px) clamp(18px,2vw,30px); }

@@ -58,7 +58,13 @@ PRIVACY = ROOT / "privacy.html"
 SITEMAP = ROOT / "sitemap.xml"
 SEARCH = ROOT / "search-index-v1.json"
 
-GROWER_PUBLIC = True
+GROWER_PUBLIC = False   # PAUSED, founder decision 4 Nov 2026 (was True from the 16 Oct launch)
+# Founder decision, 4 Nov 2026: new registrations are PAUSED and The Borrowed Garden moves to a two-sided noticeboard
+# (PlotArt Studio, atlas-tools/build-garden-board.py). This builder is RETIRED: the live grower check
+# (disc025-borrowed-garden-grower-check.html, paused by hand on 4 Nov) is the source of truth, and this builder must not
+# regenerate it (it would restore the open register panel and the old wording) or write the Discovery (in its open mode
+# it overwrote discovery-the-borrowed-garden.html, which would erase the six-chapter Discovery).
+REGISTER_PAUSED = True
 ENDPOINT = "https://plotnua-garden-register.colin-a41.workers.dev/v1/garden-register/grower"
 GROWER_PRIVACY_MARKER = "PLOTNUA-GROWER-PRIVACY-V6"
 GROWER_PRIVACY_VERSION = "2026-10-PHASE2-V6"
@@ -737,6 +743,9 @@ def build() -> tuple[str, str]:
 
 
 def main() -> None:
+    if REGISTER_PAUSED:
+        die("registrations are PAUSED (founder decision 4 Nov 2026): this builder is retired and writes nothing; "
+            "the live grower check is the source of truth, and the Discovery is never written from here")
     html, disc = build()
     if "--preview-discovery" in sys.argv:
         Path(sys.argv[sys.argv.index("--preview-discovery") + 1]).write_text(disc)
@@ -750,8 +759,7 @@ def main() -> None:
         print("grower check is current")
         return
     OUT.write_text(html)
-    if GROWER_PUBLIC:
-        DISCOVERY.write_text(disc)
+    # The Discovery is never written from here (4 Nov 2026): it is the six-chapter editorial page now.
     print(f"wrote {OUT.name} ({len(html)} bytes) · GROWER_PUBLIC={GROWER_PUBLIC}")
 
 

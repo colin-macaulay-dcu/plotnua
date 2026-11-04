@@ -482,6 +482,15 @@ jobs:
           python3 atlas-tools/prove-idea-board.py
           python3 atlas-tools/prove-privacy-v9.py
 
+      - name: The Borrowed Garden noticeboard shows only founder-approved listings
+        run: |
+          set -euo pipefail
+          # The page is built from the approved-listings snapshot (public fields only, re-checked: no e-mail, phone,
+          # link, Eircode or house number; closed lists; newest first; no monetisation field), and the privacy notice
+          # (V10) and Terms say what the noticeboard does and does not do. Release candidate, 4 Nov 2026.
+          python3 atlas-tools/build-garden-board.py --check
+          python3 atlas-tools/prove-privacy-v10.py
+
       - name: Summary
         if: always()
         run: |

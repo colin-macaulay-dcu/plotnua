@@ -44,7 +44,7 @@ ROUTES = ["https://wa.me/353834036695", "your-plot.html?myplot=1"]
 INBOUND = ["bgHeroCompare", "explore-providers", "discover-your-property"]
 CHAPTERS = ["The garden you already have", "A different kind of sharing", "What could grow here?",
             "Making it work responsibly", "The possibility of a shared garden", "Two ways to take the next step"]
-IN_CHAPTER = {2: ["bg-sharing"], 4: ["bg-settle", "bg-agree"], 5: ["explore-providers", "bg-future", "bg-checks"]}
+IN_CHAPTER = {2: ["bg-sharing"], 4: ["bg-settle", "bg-agree"], 5: ["explore-providers", "bg-future", "bg-board", "bg-checks"]}
 CHECK_LINKS = ["disc025-borrowed-garden-check.html?start=1", "disc025-borrowed-garden-grower-check.html?start=1"]
 PX = re.compile(r"<!-- PLOTNUA-PROVIDER-EXPLORER-V1 · BEGIN.*?PLOTNUA-PROVIDER-EXPLORER-V1 · END -->", re.S)
 DEC_ID = "discover-your-property"
@@ -70,9 +70,10 @@ CORR = [
 ADDED = []
 ADDED_FILE = os.path.join(ROOT, "atlas-tools", "premium-discovery", "the-borrowed-garden-added.json")
 ADDED_LINKS = ["#bg-sharing", "#bg-settle", "#bg-agree", "#explore-providers", "#bg-future", "#bg-grow",
-               "your-plot.html?myplot=1", "https://wa.me/353834036695"]
+               "your-plot.html?myplot=1", "https://wa.me/353834036695",
+               "borrowed-garden-board.html"]   # the noticeboard (release candidate, 4 Nov 2026)
 ADDED_IDS = ["lg-ch01", "lg-ch02", "lg-ch03", "lg-ch04", "lg-ch05", "lg-ch06", "bg-sharing", "bg-grow", "bg-settle",
-             "bg-agree", "bg-future", "bg-checks", "bg-routes-h"]
+             "bg-agree", "bg-future", "bg-checks", "bg-routes-h", "bg-board"]
 ADDED_IMGS = []
 PLACEHOLDER = re.compile(r"\bto research\b|\bTBC\b|\bTBD\b|lorem|placeholder|coming soon", re.I)
 EXEMPT = re.compile(r"\bmatching (?:is|now) (?:live|open|available)\b|\bwe (?:will|can) (?:match|introduce) you\b|\bintroductions are (?:live|open|available)\b|\bregister (?:now|today)\b|\bguarantee[ds]? (?:a |an )?(?:match|introduction|grower|garden)\b", re.I)
