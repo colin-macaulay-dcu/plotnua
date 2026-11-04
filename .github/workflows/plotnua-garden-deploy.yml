@@ -1,0 +1,153 @@
+# PlotNua · The Borrowed Garden noticeboard intake Worker deployment ("plotnua-garden-board"). 4 Nov 2026.
+# NOT A DATABASE CHANGE (migration 0004 goes through studio-d1-migration.yml first).
+#
+# A copy of the Idea Board intake deploy (plotnua-ideas-deploy.yml) for the noticeboard: the commit must be on main;
+# the deploy job waits in the environment "studio-production." until the founder presses Approve in GitHub, and only
+# then can it read the existing Cloudflare token STUDIO_CF_DEPLOY_TOKEN. No new secret or token is needed.
+#
+# open_submissions must match garden_submissions_open in atlas-tools/release/flags.json on main. After a real
+# deployment it checks the live Worker from outside: GET refused (405), another origin refused (403), and plotnua.ie's
+# own origin refused (503, closed) or an invalid listing rejected (400, open). It never posts a listing and never
+# stores anything. A failed outside check rolls the Worker back automatically.
+name: Borrowed Garden noticeboard intake deploy
+run-name: "Borrowed Garden intake deploy ${{ inputs.commit }}${{ inputs.open_submissions && ' (OPEN)' || ' (closed)' }}${{ inputs.dry_run && ' (dry run)' || '' }}"
+
+on:
+  workflow_dispatch:
+    inputs:
+      commit:
+        description: "Full 40-character commit ID approved by the founder (must be on main)"
+        required: true
+        type: string
+      open_submissions:
+        description: "Open the board to submissions (GARDEN_ENABLED=true). Needs its own founder approval."
+        required: true
+        type: boolean
+        default: false
+      rollback_drill:
+        description: "Rollback drill: deploy the same code and settings, deliberately fail the outside check, prove the automatic rollback"
+        required: false
+        type: boolean
+        default: false
+      dry_run:
+        description: "Dry run: approval and build only, nothing sent to Cloudflare"
+        required: true
+        type: boolean
+        default: true
+
+permissions:
+  contents: read
+
+concurrency:
+  group: plotart-studio-cloudflare
+  cancel-in-progress: false
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: The commit is a full ID on main and contains the intake Worker
+        env:
+          COMMIT: ${{ inputs.commit }}
+        run: |
+          set -euo pipefail
+          [[ "$COMMIT" =~ ^[0-9a-f]{40}$ ]] || { echo "REFUSED: give the full 40-character commit ID"; exit 1; }
+          git merge-base --is-ancestor "$COMMIT" origin/main || { echo "REFUSED: $COMMIT is not on main"; exit 1; }
+          git cat-file -e "$COMMIT:worker/plotart-studio/src/garden.js" || { echo "REFUSED: no intake Worker in $COMMIT"; exit 1; }
+          git cat-file -e "$COMMIT:worker/plotart-studio/migrations/0004_garden_board.sql" || { echo "REFUSED: no migration 0004 in $COMMIT"; exit 1; }
+          # Automation v1: opening or closing the board must match the recorded switch on main (an auditable commit)
+          F=$(git show origin/main:atlas-tools/release/flags.json 2>/dev/null | python3 -c 'import json,sys; print(str(json.load(sys.stdin).get("garden_submissions_open", False)).lower())' 2>/dev/null || echo false)
+          [ "$F" = "${{ inputs.open_submissions }}" ] || { echo "REFUSED: open_submissions=${{ inputs.open_submissions }} but flags.json on main says garden_submissions_open=$F"; exit 1; }
+          echo "GUARD OK · $COMMIT · open_submissions=${{ inputs.open_submissions }}" | tee -a "$GITHUB_STEP_SUMMARY"
+
+  deploy:
+    needs: check
+    runs-on: ubuntu-latest
+    environment: "studio-production."   # the configured environment's exact name, including the final full stop
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.commit }}
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Check again after approval
+        env:
+          COMMIT: ${{ inputs.commit }}
+        run: |
+          set -euo pipefail
+          git fetch -q origin main
+          git merge-base --is-ancestor "$COMMIT" origin/main || { echo "REFUSED: $COMMIT is not on main"; exit 1; }
+          test "$(git rev-parse HEAD)" = "$COMMIT" || { echo "REFUSED: the checked-out tree is not $COMMIT"; exit 1; }
+      - name: Production configuration (identifier from the environment, never printed)
+        env:
+          STUDIO_D1_DATABASE_ID: ${{ vars.STUDIO_D1_DATABASE_ID }}
+        run: python3 atlas-tools/release/studio/render-garden-config.py worker/plotart-studio ${{ inputs.open_submissions && 'true' || 'false' }}
+      - name: Build only (dry run; nothing sent to Cloudflare)
+        if: ${{ inputs.dry_run }}
+        working-directory: worker/plotart-studio
+        run: |
+          set -o pipefail
+          npx --yes wrangler@4.150.0 deploy --config wrangler.garden.production.toml --dry-run --outdir "$RUNNER_TEMP/build" > "$RUNNER_TEMP/wrangler.log" 2>&1 \
+            || { grep -iE "error" "$RUNNER_TEMP/wrangler.log" | head -5; exit 1; }
+          echo "DRY RUN OK: the intake Worker builds; nothing was sent to Cloudflare"
+      - name: Deploy the intake Worker
+        id: deploy
+        if: ${{ !inputs.dry_run }}
+        working-directory: worker/plotart-studio
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.STUDIO_CF_DEPLOY_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          set -o pipefail
+          npx --yes wrangler@4.150.0 deploy --config wrangler.garden.production.toml > "$RUNNER_TEMP/wrangler.log" 2>&1 \
+            || { echo "FAIL  the deployment did not complete"; grep -iE "^\s*(✘|X )?\[?error|permission|authentication" "$RUNNER_TEMP/wrangler.log" | grep -viE "token" | head -5; exit 1; }
+          grep -E "^Uploaded |^Current Version ID" "$RUNNER_TEMP/wrangler.log"
+          grep -oE "https://plotnua-garden-board\.[a-z0-9-]+\.workers\.dev" "$RUNNER_TEMP/wrangler.log" | head -1 > "$RUNNER_TEMP/url"
+      - name: Check the live intake Worker from outside (never posts a listing)
+        id: live
+        if: ${{ !inputs.dry_run }}
+        env:
+          OPEN: ${{ inputs.open_submissions && 'true' || 'false' }}
+          DRILL: ${{ inputs.rollback_drill && 'true' || 'false' }}
+        run: |
+          set -euo pipefail
+          if [ "$DRILL" = true ]; then echo "ROLLBACK DRILL: failing the outside check on purpose"; exit 1; fi
+          U="$(cat "$RUNNER_TEMP/url")/v1/garden-listings"; [[ "$U" =~ ^https://plotnua-garden-board\. ]] || { echo "FAIL  no workers.dev address found"; exit 1; }
+          sleep 5
+          code() { curl -s -o /dev/null -w "%{http_code}" "$@"; }
+          G=$(code "$U"); X=$(code -X POST -H "Origin: https://evil.example" -H "Content-Type: application/json" -d '{}' "$U")
+          echo "GET: $G (expect 405) · other origin: $X (expect 403)"
+          [ "$G" = 405 ] && [ "$X" = 403 ] || { echo "FAIL  the intake Worker does not refuse as it should"; exit 1; }
+          if [ "$OPEN" = false ]; then
+            C=$(code -X POST -H "Origin: https://plotnua.ie" -H "Content-Type: application/json" -d '{"kind":"have"}' "$U")
+            echo "closed, plotnua.ie origin: $C (expect 503)"; [ "$C" = 503 ] || { echo "FAIL  the board is not closed"; exit 1; }
+          else
+            C=$(code -X POST -H "Origin: https://plotnua.ie" -H "Content-Type: application/json" -d '{"kind":"x"}' "$U")
+            echo "open, plotnua.ie origin, invalid listing: $C (expect 400: validated, nothing stored)"; [ "$C" = 400 ] || { echo "FAIL  the open board does not validate as expected"; exit 1; }
+          fi
+          echo "- Intake Worker: \`$U\` · open_submissions=$OPEN · refusal checks passed" >> "$GITHUB_STEP_SUMMARY"
+      # Automation v1: if the new version fails its outside checks, return to the previous version at once.
+      - name: Automatic rollback to the previous version
+        if: ${{ failure() && steps.deploy.outcome == 'success' && steps.live.outcome == 'failure' }}
+        working-directory: worker/plotart-studio
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.STUDIO_CF_DEPLOY_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          npx --yes wrangler@4.150.0 rollback --config wrangler.garden.production.toml --message "automatic rollback: failed outside checks (run ${{ github.run_id }})" -y > "$RUNNER_TEMP/rb.log" 2>&1 && echo "rolled back to the previous version" || { echo "FAIL  automatic rollback did not complete"; grep -iE "error" "$RUNNER_TEMP/rb.log" | grep -viE "token" | head -3; exit 1; }
+          echo "- **rolled back automatically** after failed outside checks" >> "$GITHUB_STEP_SUMMARY"
+          # the previous version must answer exactly as a closed board does
+          sleep 10; U="$(cat "$RUNNER_TEMP/url")/v1/garden-listings"
+          C=$(curl -s -o /dev/null -w "%{http_code}" -X POST -H "Origin: https://plotnua.ie" -H "Content-Type: application/json" -d '{"kind":"x"}' "$U")
+          G=$(curl -s -o /dev/null -w "%{http_code}" "$U")
+          echo "after rollback: GET $G (expect 405) · plotnua.ie invalid listing $C (expect 503 if closed, 400 if open)"
+          [ "$G" = 405 ] || { echo "FAIL  the rolled-back Worker does not answer as expected"; exit 1; }
+          echo "- after rollback: GET $G, plotnua.ie $C" >> "$GITHUB_STEP_SUMMARY"

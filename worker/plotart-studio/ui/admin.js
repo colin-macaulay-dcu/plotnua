@@ -72,6 +72,55 @@
     draw();
   }
 
+  /* ---- The Borrowed Garden noticeboard (MVP, 4 Nov 2026): the founder's moderation of listings */
+  async function garden() {
+    let d = await api('GET', '/api/admin/garden');
+    const kind = l => l.kind === 'have' ? '<span style="color:#CFE0B4;font-weight:700">I HAVE SPACE</span>' : '<span style="color:#E8CF9E;font-weight:700">I WANT SPACE</span>';
+    const meta = l => `${E(d.space_types[l.space_type] || l.space_type)} · ${E(d.availability[l.availability] || l.availability)} · Co. ${E(l.county)}`;
+    const item = (l, on) => `<li data-id="${l.id}" style="padding:18px 0;border-top:1px solid var(--line,rgba(242,235,224,.12))">
+        <p class="st-work-s" style="margin:0 0 8px">${kind(l)} · ${E(l.ref)} · received ${when(l.created_at)}${on ? ` · on the noticeboard since ${when(l.published_at)} · expires ${when(l.expires_at)}${l.edited ? ' · <b>edited</b>' : ''}` : ''}</p>
+        <p class="st-muted" style="margin:0 0 8px">${meta(l)} · private contact: ${E(l.contact_email)} (never published)</p>
+        <div class="st-row" style="gap:16px;flex-wrap:wrap;align-items:end">
+          <div class="st-f" style="margin:0;min-width:220px"><label>General area shown</label><input type="text" data-k="area" maxlength="40" value="${E(l.area)}"></div></div>
+        <div class="st-f" style="margin:10px 0 0"><label>Wording shown on the noticeboard · <span data-n></span></label>
+        <textarea data-k="public_text" maxlength="400" style="min-height:96px">${E(l.public_text || l.description)}</textarea></div>
+        ${l.public_text ? `<p class="st-muted" style="margin:6px 0 0">Original: “${E(l.description)}”</p>` : ''}
+        <div class="st-actions" style="margin-top:14px">${on
+          ? '<button class="st-btn st-btn--solid st-btn--small" data-a="save">Save changes</button><button class="st-btn st-btn--small" data-a="expire">Expire now</button><button class="st-btn st-btn--small" data-a="remove">Remove from the noticeboard</button>'
+          : '<button class="st-btn st-btn--solid st-btn--small" data-a="approve">Approve</button><button class="st-btn st-btn--small" data-a="reject">Reject</button><button class="st-btn st-btn--small" data-a="delete">Delete now</button>'}</div></li>`;
+    let q = '';
+    const match = l => !q || (l.ref || '').toUpperCase().includes(q.toUpperCase()) || (l.contact_email || '').toLowerCase().includes(q.toLowerCase());
+    function draw() {
+      const W = d.waiting.filter(match), A = d.approved.filter(match), C = d.closed.filter(match);
+      app.innerHTML = `<h1 class="st-h1">The Borrowed Garden noticeboard</h1>
+        <p class="st-sub">Listings for plotnua.ie/borrowed-garden-board.html. Nothing appears until you approve it. An approved listing stays up for ${d.listing_days} days, then expires. Edit wording only to tidy it or take out identifying details (names, addresses, contact details), never to change its meaning.</p>
+        <div class="st-f" style="max-width:360px"><label for="gbRef">Find by reference or e-mail (for a removal request)</label><input id="gbRef" type="text" placeholder="PN-G-…" value="${E(q)}"></div>
+        <section class="st-card"><h2>Waiting for you (${d.waiting.length})</h2><p class="st-muted" style="margin-top:0">Kept for ${d.pending_days} days, then deleted automatically.</p>${W.length ? `<ul style="list-style:none;padding:0;margin:0">${W.map(l => item(l, false)).join('')}</ul>` : `<p class="st-muted">Nothing waiting.</p>`}</section>
+        <section class="st-card"><h2>On the noticeboard (${d.approved.length})</h2>${A.length ? `<ul style="list-style:none;padding:0;margin:0">${A.map(l => item(l, true)).join('')}</ul>` : `<p class="st-muted">The noticeboard is empty.</p>`}</section>
+        <section class="st-card"><h2>Rejected, removed or expired</h2><p class="st-muted">Deleted automatically ${d.purge_days} days later, or now with “Delete now”.</p>
+          ${C.length ? `<ul class="st-works">${C.map(l => `<li class="st-work" data-id="${l.id}" style="grid-template-columns:1fr auto;align-items:center"><p class="st-work-s" style="margin:0">${E(l.ref)} · ${E(l.status)} ${when(l.removed_at || l.decided_at)} · ${E(l.area)}, Co. ${E(l.county)}</p><button class="st-btn st-btn--small" data-a="delete">Delete now</button></li>`).join('')}</ul>` : ''}</section>`;
+      const ref = app.querySelector('#gbRef');
+      ref.addEventListener('input', () => { q = ref.value.trim(); draw(); const r2 = app.querySelector('#gbRef'); r2.focus(); r2.setSelectionRange(r2.value.length, r2.value.length); });
+      app.querySelectorAll('[data-id]').forEach(li => {
+        const ta = li.querySelector('textarea'), n = li.querySelector('[data-n]');
+        if (ta) { const count = () => { n.textContent = `${ta.value.length}/400`; }; count(); ta.addEventListener('input', count); }
+        li.querySelectorAll('[data-a]').forEach(btn => btn.addEventListener('click', async () => {
+          const body = { action: btn.dataset.a };
+          if (['approve', 'save'].includes(btn.dataset.a)) { body.public_text = ta.value; body.area = li.querySelector('[data-k="area"]').value; }
+          if (btn.dataset.a === 'remove' && !confirm('Remove this listing from the public noticeboard?')) return;
+          if (btn.dataset.a === 'delete' && !confirm('Delete this listing permanently now? This cannot be undone.')) return;
+          try {
+            d = await api('POST', `/api/admin/garden/${li.dataset.id}`, body);
+            const when = d.publish === 'requested' ? 'plotnua.ie updates in a few minutes' : d.publish === 'failed' ? 'publishing could not be started now: it will happen at the next scheduled run' : 'it updates at the next scheduled publishing run';
+            say({ approve: 'Approved: ' + when, save: 'Saved: ' + when, remove: 'Removed: ' + when, expire: 'Expired: ' + when, reject: 'Rejected', delete: 'Deleted' }[btn.dataset.a], d.publish === 'failed');
+            draw(); }
+          catch (e) { say(e.message, true); }
+        }));
+      });
+    }
+    draw();
+  }
+
   async function home() {
     const o = await api('GET', '/api/admin/overview');
     const ready = o.queue.filter(q => q.status === 'awaiting_founder');
@@ -269,9 +318,9 @@
   async function render() {
     const h = location.hash || '#/', path = location.pathname.replace(/\/$/, '');
     const am = path.match(/^\/admin\/applications\/(F25-\d{6}-[0-9A-F]{6})$/);
-    document.querySelectorAll('.st-tabs a').forEach(a => a.toggleAttribute('aria-current', a.dataset.t === (path.startsWith('/admin/applications') ? 'apps' : path === '/admin/gallery' ? 'order' : path === '/admin/ideas' ? 'ideas' : 'desk')));
+    document.querySelectorAll('.st-tabs a').forEach(a => a.toggleAttribute('aria-current', a.dataset.t === (path.startsWith('/admin/applications') ? 'apps' : path === '/admin/gallery' ? 'order' : path === '/admin/ideas' ? 'ideas' : path === '/admin/garden' ? 'garden' : 'desk')));
     document.querySelectorAll('.st-tabs a[aria-current]').forEach(a => a.setAttribute('aria-current', 'page'));
-    try { if (am) await appView(am[1]); else if (path === '/admin/gallery') await order(); else if (path === '/admin/ideas') await ideas(); else if (path === '/admin/applications') await apps(); else if (h.startsWith('#/review/')) await review(h.slice(9)); else await home(); window.scrollTo(0, 0); }
+    try { if (am) await appView(am[1]); else if (path === '/admin/gallery') await order(); else if (path === '/admin/ideas') await ideas(); else if (path === '/admin/garden') await garden(); else if (path === '/admin/applications') await apps(); else if (h.startsWith('#/review/')) await review(h.slice(9)); else await home(); window.scrollTo(0, 0); }
     catch (e) { app.innerHTML = `<div class="st-card"><h2>Something went wrong</h2><p class="st-muted">${E(e.message)}</p></div>`; }
   }
   addEventListener('hashchange', render);

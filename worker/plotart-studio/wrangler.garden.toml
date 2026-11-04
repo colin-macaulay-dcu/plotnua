@@ -1,0 +1,22 @@
+# PlotNua · The Borrowed Garden noticeboard intake (MVP, founder decision 4 Nov 2026). NOT DEPLOYED, NOT ENABLED.
+# A separate public Worker on the Idea Board pattern, bound to the Studio's D1 database. It only ever inserts a
+# 'received' listing; the founder approves in PlotArt Studio. Ships CLOSED: GARDEN_ENABLED = "false".
+name = "plotnua-garden-board"
+main = "src/garden.js"
+compatibility_date = "2026-08-01"
+workers_dev = true
+preview_urls = false
+
+[vars]
+ENVIRONMENT = "production"
+ORIGIN = "https://plotnua.ie"
+GARDEN_ENABLED = "false"
+GARDEN_DAILY_CAP = "40"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "plotart-studio"
+database_id = "NOT-CREATED"
+
+[observability]
+enabled = false

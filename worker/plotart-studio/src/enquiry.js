@@ -30,9 +30,56 @@ async function live(env, slug) {
   return snap.works.length ? { artist: a, snap } : null;
 }
 
+/* The Borrowed Garden noticeboard · enquiry relay (MVP, founder decision 4 Nov 2026). PREPARED, NOT SWITCHED ON.
+   POST /v1/garden-enquiry answers 503 unless GARDEN_ENQUIRIES_ENABLED is "true", which it is not anywhere: the founder
+   has not activated contact between participants (and introductions stay blocked pending the insurance question).
+   When switched on: it accepts an enquiry only for an approved, unexpired listing, e-mails it to the listing's private
+   contact address with Reply-To set to the sender (so the two people talk directly and neither address is published),
+   sends the sender a receipt, and stores only a reference, the listing and the time. No automatic matching. */
+const G_DAILY_PER_LISTING = 10, G_DAILY_TOTAL = 200;
+async function gardenEnquiry(req, env, origin) {
+  if (req.method === 'OPTIONS') return new Response(null, { status: 204, headers: cors(env, origin) });
+  if (req.method !== 'POST') return reply(env, origin, 405, { ok: false });
+  if (origin !== env.ORIGIN) return reply(env, origin, 403, { ok: false, error: 'Refused' });
+  if (env.GARDEN_ENQUIRIES_ENABLED !== 'true') return reply(env, origin, 503, { ok: false, error: 'Contact through the noticeboard isn’t open yet. Please email hello@plotnua.ie.' });
+  const ip = req.headers.get('CF-Connecting-IP') || 'local', t = Date.now();
+  const h = (hits.get(ip) || []).filter(x => t - x < BURST_MS);
+  if (h.length >= BURST) return reply(env, origin, 429, { ok: false, error: 'Too many messages just now. Please try again later.' });
+  hits.set(ip, [...h, t]);
+  const raw = await req.text();
+  if (raw.length > 4000) return reply(env, origin, 413, { ok: false, error: 'That message is too long.' });
+  let b; try { b = JSON.parse(raw); } catch { return reply(env, origin, 400, { ok: false, error: 'Refused' }); }
+  const keys = ['ref', 'email', 'message', 'website'];
+  if (!b || typeof b !== 'object' || Object.keys(b).some(k => !keys.includes(k))) return reply(env, origin, 400, { ok: false, error: 'Refused' });
+  if (b.website) return reply(env, origin, 200, { ok: true, reference: 'PN-GE-000000-0000' });       // honeypot
+  const email = String(b.email || '').trim(), message = String(b.message || '').trim();
+  if (!/^[^\s@<>]+@[^\s@<>]+\.[^\s@<>]{2,}$/.test(email) || email.length > 254) return reply(env, origin, 400, { ok: false, error: 'Please check your email address.' });
+  if (message.length < 10 || message.length > 1200) return reply(env, origin, 400, { ok: false, error: 'Please write a message of 10 to 1,200 characters.' });
+  if (!/^PN-G-\d{6}-[0-9A-F]{4}$/.test(String(b.ref || ''))) return reply(env, origin, 400, { ok: false, error: 'Refused' });
+  const l = await env.DB.prepare("SELECT id, ref, contact_email, area, county FROM garden_listings WHERE ref = ? AND status = 'approved' AND expires_at > ?").bind(b.ref, now()).first();
+  if (!l) return reply(env, origin, 404, { ok: false, error: 'This listing isn’t on the noticeboard any more.' });
+  const day = now().slice(0, 10);
+  const per = await env.DB.prepare('SELECT n FROM garden_enquiry_days WHERE day = ? AND listing_id = ?').bind(day, l.id).first();
+  const tot = await env.DB.prepare('SELECT COALESCE(SUM(n),0) AS n FROM garden_enquiry_days WHERE day = ?').bind(day).first();
+  if ((per && per.n >= G_DAILY_PER_LISTING) || tot.n >= G_DAILY_TOTAL) return reply(env, origin, 429, { ok: false, error: 'This listing has had a lot of messages today. Please try again tomorrow.' });
+  const ref = `PN-GE-${day.slice(2).replace(/-/g, '')}-${[...crypto.getRandomValues(new Uint8Array(2))].map(x => x.toString(16).padStart(2, '0')).join('').toUpperCase()}`;
+  await env.DB.batch([
+    env.DB.prepare('INSERT INTO garden_enquiries (id, ref, listing_id, created_at) VALUES (?,?,?,?)').bind('q' + crypto.randomUUID().replace(/-/g, '').slice(0, 16), ref, l.id, now()),
+    env.DB.prepare('INSERT INTO garden_enquiry_days (day, listing_id, n) VALUES (?, ?, 1) ON CONFLICT(day, listing_id) DO UPDATE SET n = n + 1').bind(day, l.id),
+  ]);
+  await send(env, { to: l.contact_email, replyTo: email, subject: `The Borrowed Garden · a reply to your listing ${l.ref}`,
+    text: `Hello,\n\nSomeone has replied to your listing on The Borrowed Garden noticeboard (${l.area}, Co. ${l.county}, ${l.ref}).\n\n"${message}"\n\n` +
+      `Reply to this email to answer them directly. Your reply will show your own e-mail address to them; nothing has been shared yet.\n` +
+      `You decide whether to reply. Please read PlotNua's guidance before agreeing anything: https://plotnua.ie/discovery-the-borrowed-garden.html#bg-agree\n\nReference: ${ref}\n\nPlotNua` });
+  await send(env, { to: email, replyTo: env.REPLY_TO || 'hello@plotnua.ie', subject: `Your message about listing ${l.ref}`,
+    text: `Thank you. Your message has been passed on. The person who posted the listing decides whether to reply, and will reply by e-mail if they do.\n\nReference: ${ref}\n\nPlotNua` });
+  return reply(env, origin, 200, { ok: true, reference: ref });
+}
+
 export default {
   async fetch(req, env) {
     const url = new URL(req.url), origin = req.headers.get('Origin');
+    if (url.pathname === '/v1/garden-enquiry') return gardenEnquiry(req, env, origin);   // prepared, OFF (see below)
     if (url.pathname !== '/v1/enquiry') return new Response('Not found', { status: 404 });
     if (req.method === 'OPTIONS') return new Response(null, { status: 204, headers: cors(env, origin) });
     if (req.method !== 'POST') return reply(env, origin, 405, { ok: false });

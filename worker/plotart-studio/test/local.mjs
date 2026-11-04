@@ -25,7 +25,7 @@ export function token(email, { aud = AUD, iss = TEAM, exp = 3600, kid = KID, key
 }
 export const otherKey = generateKeyPairSync('rsa', { modulusLength: 2048 }).privateKey;
 
-export async function start({ port, env = {}, enquiry = null, ideas = null } = {}) {
+export async function start({ port, env = {}, enquiry = null, ideas = null, garden = null } = {}) {
   const common = { modules: true, modulesRoot: HERE, modulesRules: [{ type: 'ESModule', include: ['**/*.js'] }], compatibilityDate: '2026-08-01' };
   const workers = [{ name: 'studio', ...common, scriptPath: HERE + 'src/index.js', d1Databases: { DB: 'plotart-studio-local' }, r2Buckets: ['IMAGES', 'APPLICATIONS'],
     bindings: { ENVIRONMENT: 'local', MAILER: 'capture', ACCESS_TEAM_DOMAIN: TEAM, ACCESS_AUD: AUD, ACCESS_JWKS_JSON: JSON.stringify({ keys: [jwk] }),
@@ -34,11 +34,13 @@ export async function start({ port, env = {}, enquiry = null, ideas = null } = {
     bindings: { ENVIRONMENT: 'local', ORIGIN: 'https://plotnua.ie', ENQUIRIES_ENABLED: 'true', MAILER: 'capture', REPLY_TO: 'hello@plotnua.ie', ...enquiry } });
   if (ideas) workers.push({ name: 'ideas', routes: ['ideas.local/*', '*/v1/ideas'], ...common, scriptPath: HERE + 'src/ideas.js', d1Databases: { DB: 'plotart-studio-local' },
     bindings: { ENVIRONMENT: 'local', ORIGIN: 'https://plotnua.ie', IDEAS_ENABLED: 'true', ...ideas } });   // Idea Board intake (1 Nov 2026)
+  if (garden) workers.push({ name: 'garden', routes: ['garden.local/*', '*/v1/garden-listings'], ...common, scriptPath: HERE + 'src/garden.js', d1Databases: { DB: 'plotart-studio-local' },
+    bindings: { ENVIRONMENT: 'local', ORIGIN: 'https://plotnua.ie', GARDEN_ENABLED: 'true', ...garden } });   // Borrowed Garden noticeboard intake (4 Nov 2026)
   const mf = new Miniflare({ workers, ...(port ? { port, host: '127.0.0.1' } : {}) });
   const db = await mf.getD1Database('DB', 'studio');
   for (const stmt of readFileSync(HERE + 'schema.sql', 'utf8').replace(/--[^\n]*/g, '').split(';').map(s => s.trim()).filter(Boolean)) await db.prepare(stmt).run();
   await db.prepare('CREATE TABLE IF NOT EXISTS mail_capture (id INTEGER PRIMARY KEY AUTOINCREMENT, at TEXT, to_addr TEXT, reply_to TEXT, subject TEXT, body TEXT)').run();   // tests only
-  return { mf, db, url: (await mf.ready).toString().replace(/\/$/, ''), enquiryWorker: enquiry ? await mf.getWorker('enquiry') : null, ideasWorker: ideas ? await mf.getWorker('ideas') : null };
+  return { mf, db, url: (await mf.ready).toString().replace(/\/$/, ''), enquiryWorker: enquiry ? await mf.getWorker('enquiry') : null, ideasWorker: ideas ? await mf.getWorker('ideas') : null, gardenWorker: garden ? await mf.getWorker('garden') : null };
 }
 
 if (process.argv.includes('--serve')) {
