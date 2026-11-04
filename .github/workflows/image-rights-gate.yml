@@ -447,6 +447,10 @@ jobs:
           # pn-compare hero opening on BEFORE, the register-approved AI label, dated and labelled advertised prices only,
           # no partner / sale / order / savings claims, not-to-scale diagram, free unprefilled WhatsApp route (ref WW).
           python3 atlas-tools/prove-disc034-page.py
+          # DISC-035 The Outdoor Room (founder build authorisation, private preview only, 4 Nov 2026): SEO, one H1, the
+          # pn-compare hero opening on BEFORE, the standard AI label, planning limits without exemption guarantees, the
+          # pergola-only saving and no commission figure, no partner claims for researched installers, free route B (ref OR).
+          python3 atlas-tools/prove-disc035-page.py
           # Safety lock (23 Oct 2026): the 17 Oct merge builder must refuse to
           # regenerate the approved Premium page, and must leave every file as it was.
           set +e; out=$(python3 atlas-tools/build-a-home-for-art-merge.py --apply 2>&1); rc=$?; set -e

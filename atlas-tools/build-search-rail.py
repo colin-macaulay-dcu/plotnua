@@ -199,7 +199,8 @@ pages = sorted(set(pages + ["index.html"]))
 # 30 since DISC-020 Stay in the House You Love (founder Phase 2 build authorisation, 4 Nov 2026;
 # development branch, founder release approval required) entered the sitemap.
 # 31 since DISC-034 The Water Wall (founder build authorisation, private preview only, 4 Nov 2026).
-EXPECTED_PAGES = 31
+# 32 since DISC-035 The Outdoor Room (founder build authorisation, private preview only, 4 Nov 2026).
+EXPECTED_PAGES = 32
 if len(pages) != EXPECTED_PAGES:
     die("expected %d public pages, found %d — refusing to guess the rail scope. "
         "If a public page was added or removed, update EXPECTED_PAGES "

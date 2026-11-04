@@ -67,6 +67,7 @@ IDENTITY_PAGES = [   # built by build-identity-stage1.py
     "discovery-underground-swimming-pool.html",
     "discovery-stay-in-the-house-you-love.html",  # DISC-020 (founder Phase 2 build authorisation, 4 Nov 2026)
     "discovery-the-water-wall.html",  # DISC-034 (founder build authorisation, private preview only, 4 Nov 2026)
+    "discovery-the-outdoor-room.html",  # DISC-035 (founder build authorisation, private preview only, 4 Nov 2026)
     "ideas.html",                       # Idea Board (Phase 1 build, 1 Nov 2026; noindex; release pending)
     "borrowed-garden-board.html",       # The Borrowed Garden noticeboard (release candidate, 4 Nov 2026; noindex)
 ]

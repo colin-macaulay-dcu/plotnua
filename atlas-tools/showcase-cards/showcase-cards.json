@@ -22,5 +22,16 @@
   ],
   "embed": "gallery",
   "note": "Three makers with a full page on PlotNua: photographs, models and what to ask."
+ },
+ "discovery-the-outdoor-room.html": {
+  "kicker": "A showcase on PlotNua",
+  "anchor": "<!-- PN-SHOWCASE-ANCHOR · DISC-035 -->",
+  "cards": [
+   {
+    "showcase": "superior-pergola-ireland",
+    "image": "enclosed",
+    "description": "An Irish installer of aluminium pergolas, verandas, porches and glass enclosures, with photographs, published starting prices and what to ask."
+   }
+  ]
  }
 }
