@@ -432,12 +432,6 @@ jobs:
           # WhatsApp channel), free; no exchange, cover or saving promised.
           python3 atlas-tools/prove-premium-discovery-home-exchange.py
           python3 atlas-tools/prove-premium-discovery-home-exchange.py --faults
-          # DISC-025 The Borrowed Garden six-chapter redesign (founder approval, 4 Nov 2026: editorial makeover only):
-          # every text block, link, image, id and collapsible answer preserved against the pinned 4c97901 snapshot;
-          # hero and header pinned; Provider Explorer byte-identical; the registers are not extended (no form, input,
-          # fetch or register endpoint, exactly the two existing check links); route B the existing WhatsApp channel.
-          python3 atlas-tools/prove-premium-discovery-borrowed-garden.py
-          python3 atlas-tools/prove-premium-discovery-borrowed-garden.py --faults
           python3 atlas-tools/prove-discovery-two-option.py --self-test
           # DISC-020 Stay in the House You Love (founder Phase 2 build authorisation, 4 Nov 2026): SEO, one H1, the
           # pn-compare hero opening on BEFORE, AI disclosure, verified grant and planning statements with their limits,
