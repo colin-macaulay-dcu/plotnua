@@ -9509,6 +9509,83 @@
         "establishes": "which picture this is and which Discovery it served",
         "does_not_establish": "what made the picture"
       }
+    },
+    {
+      "asset": "assets/disc020/img/DISC-020-01-BEFORE-MASTER.png",
+      "sha256": "084810b37ee43baabfe483f515f6a1d912621ab85c4f178db4913ea239f6abfb",
+      "bytes": 2186282,
+      "pixels": [
+        1678,
+        937
+      ],
+      "class": "AI_ILLUSTRATION",
+      "what": "DISC-020 hero BEFORE: a warm contemporary Irish living room (armchair, sofa, bookcase, landscape prints) with a doorway to the hall and staircase; no lift. Founder file saved by accident as Stay-in-the-House-You-Love-02-Reveal.png, identified by content and sha256 (founder's master; the page shows its prepared copies)",
+      "depicts_named_product": false,
+      "depicts_named_organisation": false,
+      "origin": {
+        "basis": "C2PA_EMBEDDED",
+        "evidence": "Embedded C2PA manifest, read with c2pa-python: issuer OpenAI OpCo, LLC, signed 2026-11-04T15:17:07.876990+00:00; the credential chain records c2pa.created with digital source type trainedAlgorithmicMedia; 0 ingredient link(s), 0 credentialed; validation Invalid (signingCredential.invalid, signingCredential.untrusted: the reader does not trust the signing certificate (not on its trust list; an extended key usage it requires is missing); the claim signature and the data hash verify, so the file is unchanged since the issuer signed it).",
+        "declared_under": "Governance 2.0, Rule 2 (30 Oct 2026)"
+      },
+      "generated": {
+        "tool": "OpenAI OpCo, LLC generative AI (ChatGPT), per the file's own signed C2PA credential",
+        "date": "2026-11-04"
+      },
+      "prompt_status": "UNAVAILABLE",
+      "reference_disclosure": {
+        "status": "UNCERTAIN",
+        "statement": "The credential records no input image. Credentials do not record conversation context, so inputs cannot be ruled out. The BEFORE was signed after the POSSIBLE (15:17 vs 15:12 UTC, 4 Nov 2026) and its source filename suggests it was made from the same scene; that relationship is not asserted."
+      },
+      "permitted_surfaces": [
+        "discovery"
+      ],
+      "content_credentials": {
+        "embeds_c2pa": true
+      },
+      "founder_approval": "Approved by the founder as the DISC-020 hero pair (Phase 2 instruction, 4 Nov 2026)",
+      "introduced": {
+        "date": "2026-11-04",
+        "subject": "DISC-020 Stay in the House You Love, founder Phase 2 build authorisation"
+      }
+    },
+    {
+      "asset": "assets/disc020/img/DISC-020-02-POSSIBLE-MASTER.png",
+      "sha256": "6057a461ba5dfdea6fadaa2653500a46cbca60b96b4fcd84bb7874daca4d8814",
+      "bytes": 2254677,
+      "pixels": [
+        1678,
+        937
+      ],
+      "class": "AI_ILLUSTRATION",
+      "what": "DISC-020 hero POSSIBLE: the same living room with a glazed residential lift in slim bronze framing standing against the back wall and rising through the ceiling (founder's master; the page shows its prepared copies)",
+      "depicts_named_product": false,
+      "depicts_named_organisation": false,
+      "origin": {
+        "basis": "C2PA_EMBEDDED",
+        "evidence": "Embedded C2PA manifest, read with c2pa-python: issuer OpenAI OpCo, LLC, signed 2026-11-04T15:12:03.270784+00:00; the credential chain records c2pa.created with digital source type trainedAlgorithmicMedia; 0 ingredient link(s), 0 credentialed; validation Invalid (signingCredential.invalid, signingCredential.untrusted: the reader does not trust the signing certificate (not on its trust list; an extended key usage it requires is missing); the claim signature and the data hash verify, so the file is unchanged since the issuer signed it).",
+        "declared_under": "Governance 2.0, Rule 2 (30 Oct 2026)"
+      },
+      "generated": {
+        "tool": "OpenAI OpCo, LLC generative AI (ChatGPT), per the file's own signed C2PA credential",
+        "date": "2026-11-04"
+      },
+      "prompt_status": "UNAVAILABLE",
+      "reference_disclosure": {
+        "status": "UNCERTAIN",
+        "statement": "The credential records no input image. Credentials do not record conversation context, so inputs cannot be ruled out. The BEFORE was signed after the POSSIBLE (15:17 vs 15:12 UTC, 4 Nov 2026) and its source filename suggests it was made from the same scene; that relationship is not asserted."
+      },
+      "permitted_surfaces": [
+        "discovery",
+        "library-card"
+      ],
+      "content_credentials": {
+        "embeds_c2pa": true
+      },
+      "founder_approval": "Approved by the founder as the DISC-020 hero pair (Phase 2 instruction, 4 Nov 2026)",
+      "introduced": {
+        "date": "2026-11-04",
+        "subject": "DISC-020 Stay in the House You Love, founder Phase 2 build authorisation"
+      }
     }
   ],
   "legacy_undeclared": [
@@ -14972,6 +15049,448 @@
       },
       "made": "2026-11-03",
       "lineage_basis": "Smaller copy of the Mobile Gallery hero composite for phones; shown only in the srcset beside its source"
+    },
+    {
+      "asset": "assets/disc020/img/DISC-020-BEFORE-768.webp",
+      "sha256": "e7cf7a18563d8ad29dfd487465a1b38575db27d76c7ae8492c0e46b676d8f318",
+      "bytes": 39892,
+      "pixels": [
+        768,
+        429
+      ],
+      "derived_from": {
+        "asset": "assets/disc020/img/DISC-020-01-BEFORE-MASTER.png",
+        "sha256": "084810b37ee43baabfe483f515f6a1d912621ab85c4f178db4913ea239f6abfb"
+      },
+      "method": "optimise",
+      "edit": {
+        "description": "DISC-020 web copy (Governance 2.0, Rule 3): Lanczos resize to 768 px wide.",
+        "operation": "Lanczos resize to 768 px wide",
+        "verified_by": "atlas-tools/build-disc020-images.py --check"
+      },
+      "encoder": "Pillow 12.3.0, WebP quality 80, method 6",
+      "made": "2026-11-04",
+      "content_credentials": {
+        "source_file_embeds_c2pa": true,
+        "derivative_embeds_c2pa": false,
+        "note": "Resizing and re-encoding remove the embedded C2PA credential. This copy carries NO signed credential; the master keeps it, and its record carries the AI classification."
+      }
+    },
+    {
+      "asset": "assets/disc020/img/DISC-020-BEFORE-1024.webp",
+      "sha256": "74bf922ead8973dce06db2601d23d2f44d539f76be9d555505894a600dcab1b0",
+      "bytes": 63440,
+      "pixels": [
+        1024,
+        572
+      ],
+      "derived_from": {
+        "asset": "assets/disc020/img/DISC-020-01-BEFORE-MASTER.png",
+        "sha256": "084810b37ee43baabfe483f515f6a1d912621ab85c4f178db4913ea239f6abfb"
+      },
+      "method": "optimise",
+      "edit": {
+        "description": "DISC-020 web copy (Governance 2.0, Rule 3): Lanczos resize to 1024 px wide.",
+        "operation": "Lanczos resize to 1024 px wide",
+        "verified_by": "atlas-tools/build-disc020-images.py --check"
+      },
+      "encoder": "Pillow 12.3.0, WebP quality 80, method 6",
+      "made": "2026-11-04",
+      "content_credentials": {
+        "source_file_embeds_c2pa": true,
+        "derivative_embeds_c2pa": false,
+        "note": "Resizing and re-encoding remove the embedded C2PA credential. This copy carries NO signed credential; the master keeps it, and its record carries the AI classification."
+      }
+    },
+    {
+      "asset": "assets/disc020/img/DISC-020-BEFORE-1376.webp",
+      "sha256": "16ef92fd342e1deb43530080c6fd01e64a990afb5a77bb764a241cba700a2553",
+      "bytes": 96960,
+      "pixels": [
+        1376,
+        768
+      ],
+      "derived_from": {
+        "asset": "assets/disc020/img/DISC-020-01-BEFORE-MASTER.png",
+        "sha256": "084810b37ee43baabfe483f515f6a1d912621ab85c4f178db4913ea239f6abfb"
+      },
+      "method": "optimise",
+      "edit": {
+        "description": "DISC-020 web copy (Governance 2.0, Rule 3): Lanczos resize to 1376 px wide.",
+        "operation": "Lanczos resize to 1376 px wide",
+        "verified_by": "atlas-tools/build-disc020-images.py --check"
+      },
+      "encoder": "Pillow 12.3.0, WebP quality 80, method 6",
+      "made": "2026-11-04",
+      "content_credentials": {
+        "source_file_embeds_c2pa": true,
+        "derivative_embeds_c2pa": false,
+        "note": "Resizing and re-encoding remove the embedded C2PA credential. This copy carries NO signed credential; the master keeps it, and its record carries the AI classification."
+      }
+    },
+    {
+      "asset": "assets/disc020/img/DISC-020-BEFORE-1678.webp",
+      "sha256": "1adc995ef6b9ff98b82b1b25dd7094de4460137ab884040612292b0027b91c2d",
+      "bytes": 125542,
+      "pixels": [
+        1678,
+        937
+      ],
+      "derived_from": {
+        "asset": "assets/disc020/img/DISC-020-01-BEFORE-MASTER.png",
+        "sha256": "084810b37ee43baabfe483f515f6a1d912621ab85c4f178db4913ea239f6abfb"
+      },
+      "method": "optimise",
+      "edit": {
+        "description": "DISC-020 web copy (Governance 2.0, Rule 3): no resize.",
+        "operation": "no resize",
+        "verified_by": "atlas-tools/build-disc020-images.py --check"
+      },
+      "encoder": "Pillow 12.3.0, WebP quality 80, method 6",
+      "made": "2026-11-04",
+      "content_credentials": {
+        "source_file_embeds_c2pa": true,
+        "derivative_embeds_c2pa": false,
+        "note": "Resizing and re-encoding remove the embedded C2PA credential. This copy carries NO signed credential; the master keeps it, and its record carries the AI classification."
+      }
+    },
+    {
+      "asset": "assets/disc020/img/DISC-020-BEFORE-1024.jpg",
+      "sha256": "735fd72bdb0823433b72b830ad146a0f2b649837d8f8ef1ab8dfdbc555ebdab6",
+      "bytes": 120721,
+      "pixels": [
+        1024,
+        572
+      ],
+      "derived_from": {
+        "asset": "assets/disc020/img/DISC-020-01-BEFORE-MASTER.png",
+        "sha256": "084810b37ee43baabfe483f515f6a1d912621ab85c4f178db4913ea239f6abfb"
+      },
+      "method": "optimise",
+      "edit": {
+        "description": "DISC-020 web copy (Governance 2.0, Rule 3): Lanczos resize to 1024 px wide.",
+        "operation": "Lanczos resize to 1024 px wide",
+        "verified_by": "atlas-tools/build-disc020-images.py --check"
+      },
+      "encoder": "Pillow 12.3.0, JPEG quality 88, progressive",
+      "made": "2026-11-04",
+      "content_credentials": {
+        "source_file_embeds_c2pa": true,
+        "derivative_embeds_c2pa": false,
+        "note": "Resizing and re-encoding remove the embedded C2PA credential. This copy carries NO signed credential; the master keeps it, and its record carries the AI classification."
+      }
+    },
+    {
+      "asset": "assets/disc020/img/DISC-020-BEFORE-M-750.webp",
+      "sha256": "684b5c1a08c6b1e53096dbe1fabd0af7195e3b2d90f81f7127f3471dd2b26298",
+      "bytes": 39482,
+      "pixels": [
+        750,
+        937
+      ],
+      "derived_from": {
+        "asset": "assets/disc020/img/DISC-020-01-BEFORE-MASTER.png",
+        "sha256": "084810b37ee43baabfe483f515f6a1d912621ab85c4f178db4913ea239f6abfb"
+      },
+      "method": "crop",
+      "edit": {
+        "description": "DISC-020 web copy (Governance 2.0, Rule 3): 4:5 crop x 450-1200 (the full height), no resize.",
+        "operation": "4:5 crop x 450-1200 (the full height), no resize",
+        "verified_by": "atlas-tools/build-disc020-images.py --check"
+      },
+      "encoder": "Pillow 12.3.0, WebP quality 80, method 6",
+      "made": "2026-11-04",
+      "content_credentials": {
+        "source_file_embeds_c2pa": true,
+        "derivative_embeds_c2pa": false,
+        "note": "Resizing and re-encoding remove the embedded C2PA credential. This copy carries NO signed credential; the master keeps it, and its record carries the AI classification."
+      }
+    },
+    {
+      "asset": "assets/disc020/img/DISC-020-BEFORE-M-750.jpg",
+      "sha256": "ba7148c76ed3feb50c353b0e012d105ad5a5f61a8ee9e66448e34fc2699a5ef9",
+      "bytes": 85145,
+      "pixels": [
+        750,
+        937
+      ],
+      "derived_from": {
+        "asset": "assets/disc020/img/DISC-020-01-BEFORE-MASTER.png",
+        "sha256": "084810b37ee43baabfe483f515f6a1d912621ab85c4f178db4913ea239f6abfb"
+      },
+      "method": "crop",
+      "edit": {
+        "description": "DISC-020 web copy (Governance 2.0, Rule 3): 4:5 crop x 450-1200 (the full height), no resize.",
+        "operation": "4:5 crop x 450-1200 (the full height), no resize",
+        "verified_by": "atlas-tools/build-disc020-images.py --check"
+      },
+      "encoder": "Pillow 12.3.0, JPEG quality 86, progressive",
+      "made": "2026-11-04",
+      "content_credentials": {
+        "source_file_embeds_c2pa": true,
+        "derivative_embeds_c2pa": false,
+        "note": "Resizing and re-encoding remove the embedded C2PA credential. This copy carries NO signed credential; the master keeps it, and its record carries the AI classification."
+      }
+    },
+    {
+      "asset": "assets/disc020/img/DISC-020-POSSIBLE-768.webp",
+      "sha256": "0e696d6d2bfe7eb761f59bb057b91346701d0f533db1823e5f93c11c8c68f35a",
+      "bytes": 44146,
+      "pixels": [
+        768,
+        429
+      ],
+      "derived_from": {
+        "asset": "assets/disc020/img/DISC-020-02-POSSIBLE-MASTER.png",
+        "sha256": "6057a461ba5dfdea6fadaa2653500a46cbca60b96b4fcd84bb7874daca4d8814"
+      },
+      "method": "optimise",
+      "edit": {
+        "description": "DISC-020 web copy (Governance 2.0, Rule 3): Lanczos resize to 768 px wide.",
+        "operation": "Lanczos resize to 768 px wide",
+        "verified_by": "atlas-tools/build-disc020-images.py --check"
+      },
+      "encoder": "Pillow 12.3.0, WebP quality 80, method 6",
+      "made": "2026-11-04",
+      "content_credentials": {
+        "source_file_embeds_c2pa": true,
+        "derivative_embeds_c2pa": false,
+        "note": "Resizing and re-encoding remove the embedded C2PA credential. This copy carries NO signed credential; the master keeps it, and its record carries the AI classification."
+      }
+    },
+    {
+      "asset": "assets/disc020/img/DISC-020-POSSIBLE-1024.webp",
+      "sha256": "229d42602135dfad3b8db4f3fb27db506f41702547387da18f4dbc125cc4487d",
+      "bytes": 68670,
+      "pixels": [
+        1024,
+        572
+      ],
+      "derived_from": {
+        "asset": "assets/disc020/img/DISC-020-02-POSSIBLE-MASTER.png",
+        "sha256": "6057a461ba5dfdea6fadaa2653500a46cbca60b96b4fcd84bb7874daca4d8814"
+      },
+      "method": "optimise",
+      "edit": {
+        "description": "DISC-020 web copy (Governance 2.0, Rule 3): Lanczos resize to 1024 px wide.",
+        "operation": "Lanczos resize to 1024 px wide",
+        "verified_by": "atlas-tools/build-disc020-images.py --check"
+      },
+      "encoder": "Pillow 12.3.0, WebP quality 80, method 6",
+      "made": "2026-11-04",
+      "content_credentials": {
+        "source_file_embeds_c2pa": true,
+        "derivative_embeds_c2pa": false,
+        "note": "Resizing and re-encoding remove the embedded C2PA credential. This copy carries NO signed credential; the master keeps it, and its record carries the AI classification."
+      }
+    },
+    {
+      "asset": "assets/disc020/img/DISC-020-POSSIBLE-1376.webp",
+      "sha256": "45f50318d2a9c94a53d90d8f3397d03ccc4de37a9d29e44fa33b3eab6b5f50b3",
+      "bytes": 106344,
+      "pixels": [
+        1376,
+        768
+      ],
+      "derived_from": {
+        "asset": "assets/disc020/img/DISC-020-02-POSSIBLE-MASTER.png",
+        "sha256": "6057a461ba5dfdea6fadaa2653500a46cbca60b96b4fcd84bb7874daca4d8814"
+      },
+      "method": "optimise",
+      "edit": {
+        "description": "DISC-020 web copy (Governance 2.0, Rule 3): Lanczos resize to 1376 px wide.",
+        "operation": "Lanczos resize to 1376 px wide",
+        "verified_by": "atlas-tools/build-disc020-images.py --check"
+      },
+      "encoder": "Pillow 12.3.0, WebP quality 80, method 6",
+      "made": "2026-11-04",
+      "content_credentials": {
+        "source_file_embeds_c2pa": true,
+        "derivative_embeds_c2pa": false,
+        "note": "Resizing and re-encoding remove the embedded C2PA credential. This copy carries NO signed credential; the master keeps it, and its record carries the AI classification."
+      }
+    },
+    {
+      "asset": "assets/disc020/img/DISC-020-POSSIBLE-1678.webp",
+      "sha256": "f801cb9fbbe25bf71952acf4714b56bc1cdc71350542b2b9df8d088fba4061e1",
+      "bytes": 139442,
+      "pixels": [
+        1678,
+        937
+      ],
+      "derived_from": {
+        "asset": "assets/disc020/img/DISC-020-02-POSSIBLE-MASTER.png",
+        "sha256": "6057a461ba5dfdea6fadaa2653500a46cbca60b96b4fcd84bb7874daca4d8814"
+      },
+      "method": "optimise",
+      "edit": {
+        "description": "DISC-020 web copy (Governance 2.0, Rule 3): no resize.",
+        "operation": "no resize",
+        "verified_by": "atlas-tools/build-disc020-images.py --check"
+      },
+      "encoder": "Pillow 12.3.0, WebP quality 80, method 6",
+      "made": "2026-11-04",
+      "content_credentials": {
+        "source_file_embeds_c2pa": true,
+        "derivative_embeds_c2pa": false,
+        "note": "Resizing and re-encoding remove the embedded C2PA credential. This copy carries NO signed credential; the master keeps it, and its record carries the AI classification."
+      }
+    },
+    {
+      "asset": "assets/disc020/img/DISC-020-POSSIBLE-1024.jpg",
+      "sha256": "827789e342589c39119b64c4a20fae8d7917239a7589dcb5c335e8b05cb4c10f",
+      "bytes": 133519,
+      "pixels": [
+        1024,
+        572
+      ],
+      "derived_from": {
+        "asset": "assets/disc020/img/DISC-020-02-POSSIBLE-MASTER.png",
+        "sha256": "6057a461ba5dfdea6fadaa2653500a46cbca60b96b4fcd84bb7874daca4d8814"
+      },
+      "method": "optimise",
+      "edit": {
+        "description": "DISC-020 web copy (Governance 2.0, Rule 3): Lanczos resize to 1024 px wide.",
+        "operation": "Lanczos resize to 1024 px wide",
+        "verified_by": "atlas-tools/build-disc020-images.py --check"
+      },
+      "encoder": "Pillow 12.3.0, JPEG quality 88, progressive",
+      "made": "2026-11-04",
+      "content_credentials": {
+        "source_file_embeds_c2pa": true,
+        "derivative_embeds_c2pa": false,
+        "note": "Resizing and re-encoding remove the embedded C2PA credential. This copy carries NO signed credential; the master keeps it, and its record carries the AI classification."
+      }
+    },
+    {
+      "asset": "assets/disc020/img/DISC-020-POSSIBLE-M-750.webp",
+      "sha256": "460fa741ea53b913a8330abb52b4aa5fac37dc2910efd2ab2b9743b3b72dd095",
+      "bytes": 51774,
+      "pixels": [
+        750,
+        937
+      ],
+      "derived_from": {
+        "asset": "assets/disc020/img/DISC-020-02-POSSIBLE-MASTER.png",
+        "sha256": "6057a461ba5dfdea6fadaa2653500a46cbca60b96b4fcd84bb7874daca4d8814"
+      },
+      "method": "crop",
+      "edit": {
+        "description": "DISC-020 web copy (Governance 2.0, Rule 3): 4:5 crop x 450-1200 (the full height), no resize.",
+        "operation": "4:5 crop x 450-1200 (the full height), no resize",
+        "verified_by": "atlas-tools/build-disc020-images.py --check"
+      },
+      "encoder": "Pillow 12.3.0, WebP quality 80, method 6",
+      "made": "2026-11-04",
+      "content_credentials": {
+        "source_file_embeds_c2pa": true,
+        "derivative_embeds_c2pa": false,
+        "note": "Resizing and re-encoding remove the embedded C2PA credential. This copy carries NO signed credential; the master keeps it, and its record carries the AI classification."
+      }
+    },
+    {
+      "asset": "assets/disc020/img/DISC-020-POSSIBLE-M-750.jpg",
+      "sha256": "822d577a9247ab123dcd24e5f65b1a39f5a4be67483040bd292ee62f142962b6",
+      "bytes": 111173,
+      "pixels": [
+        750,
+        937
+      ],
+      "derived_from": {
+        "asset": "assets/disc020/img/DISC-020-02-POSSIBLE-MASTER.png",
+        "sha256": "6057a461ba5dfdea6fadaa2653500a46cbca60b96b4fcd84bb7874daca4d8814"
+      },
+      "method": "crop",
+      "edit": {
+        "description": "DISC-020 web copy (Governance 2.0, Rule 3): 4:5 crop x 450-1200 (the full height), no resize.",
+        "operation": "4:5 crop x 450-1200 (the full height), no resize",
+        "verified_by": "atlas-tools/build-disc020-images.py --check"
+      },
+      "encoder": "Pillow 12.3.0, JPEG quality 86, progressive",
+      "made": "2026-11-04",
+      "content_credentials": {
+        "source_file_embeds_c2pa": true,
+        "derivative_embeds_c2pa": false,
+        "note": "Resizing and re-encoding remove the embedded C2PA credential. This copy carries NO signed credential; the master keeps it, and its record carries the AI classification."
+      }
+    },
+    {
+      "asset": "assets/library/img/DISC-020-02-POSSIBLE-MASTER-480w.webp",
+      "sha256": "738dcb793e09010c93ab605bc59a87d218a45dc45607fa2e0bf07fe3fdc75f14",
+      "bytes": 20816,
+      "pixels": [
+        480,
+        268
+      ],
+      "derived_from": {
+        "asset": "assets/disc020/img/DISC-020-02-POSSIBLE-MASTER.png",
+        "sha256": "6057a461ba5dfdea6fadaa2653500a46cbca60b96b4fcd84bb7874daca4d8814"
+      },
+      "method": "optimise",
+      "edit": {
+        "description": "DISC-020 web copy (Governance 2.0, Rule 3): Lanczos resize to 480 px wide (Discovery Library card).",
+        "operation": "Lanczos resize to 480 px wide (Discovery Library card)",
+        "verified_by": "atlas-tools/build-disc020-images.py --check"
+      },
+      "encoder": "Pillow 12.3.0, WebP quality 80, method 6",
+      "made": "2026-11-04",
+      "content_credentials": {
+        "source_file_embeds_c2pa": true,
+        "derivative_embeds_c2pa": false,
+        "note": "Resizing and re-encoding remove the embedded C2PA credential. This copy carries NO signed credential; the master keeps it, and its record carries the AI classification."
+      }
+    },
+    {
+      "asset": "assets/library/img/DISC-020-02-POSSIBLE-MASTER-960w.webp",
+      "sha256": "12dc093c79364abe8a11f3bf4eca15a748b025f8d088dd7f24f10e69e7c497d7",
+      "bytes": 63498,
+      "pixels": [
+        960,
+        536
+      ],
+      "derived_from": {
+        "asset": "assets/disc020/img/DISC-020-02-POSSIBLE-MASTER.png",
+        "sha256": "6057a461ba5dfdea6fadaa2653500a46cbca60b96b4fcd84bb7874daca4d8814"
+      },
+      "method": "optimise",
+      "edit": {
+        "description": "DISC-020 web copy (Governance 2.0, Rule 3): Lanczos resize to 960 px wide (Discovery Library card).",
+        "operation": "Lanczos resize to 960 px wide (Discovery Library card)",
+        "verified_by": "atlas-tools/build-disc020-images.py --check"
+      },
+      "encoder": "Pillow 12.3.0, WebP quality 80, method 6",
+      "made": "2026-11-04",
+      "content_credentials": {
+        "source_file_embeds_c2pa": true,
+        "derivative_embeds_c2pa": false,
+        "note": "Resizing and re-encoding remove the embedded C2PA credential. This copy carries NO signed credential; the master keeps it, and its record carries the AI classification."
+      }
+    },
+    {
+      "asset": "assets/disc020/img/DISC-020-og-1200x630.jpg",
+      "sha256": "990ba95e5f54a39c7c818e4c676b6821bcb6aaa1b57593c939c0c2846587aeaa",
+      "bytes": 153221,
+      "pixels": [
+        1200,
+        630
+      ],
+      "derived_from": {
+        "asset": "assets/disc020/img/DISC-020-02-POSSIBLE-MASTER.png",
+        "sha256": "6057a461ba5dfdea6fadaa2653500a46cbca60b96b4fcd84bb7874daca4d8814"
+      },
+      "method": "crop",
+      "edit": {
+        "description": "DISC-020 web copy (Governance 2.0, Rule 3): crop y 28-909 to 1200:630, Lanczos resize to 1200 x 630.",
+        "operation": "crop y 28-909 to 1200:630, Lanczos resize to 1200 x 630",
+        "verified_by": "atlas-tools/build-disc020-images.py --check"
+      },
+      "encoder": "Pillow 12.3.0, JPEG quality 86, progressive",
+      "made": "2026-11-04",
+      "content_credentials": {
+        "source_file_embeds_c2pa": true,
+        "derivative_embeds_c2pa": false,
+        "note": "Resizing and re-encoding remove the embedded C2PA credential. This copy carries NO signed credential; the master keeps it, and its record carries the AI classification."
+      }
     }
   ],
   "derivative_holds": [

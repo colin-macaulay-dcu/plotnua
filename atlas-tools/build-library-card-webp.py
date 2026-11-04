@@ -97,8 +97,8 @@ def main():
     cur = PAGE.read_text(encoding="utf-8")
     base = unwrap(cur)                                   # the page as it is without this layer
     cards = CARD.findall(base)
-    if len(cards) != 16:   # 16 since DISC-015 (development build, 1 Nov 2026)
-        die("expected 16 Discovery cards with the governed <img src alt> shape, found %d" % len(cards))
+    if len(cards) != 17:   # 16 since DISC-015 (development build, 1 Nov 2026); 17 since DISC-020 (development build, 4 Nov 2026)
+        die("expected 17 Discovery cards with the governed <img src alt> shape, found %d" % len(cards))
     new_files, new_recs, plan = {}, [], {}
     for _, tag, src, _ in cards:
         if src in held: die("%s is on provenance hold" % src)
@@ -107,7 +107,8 @@ def main():
             # generator mark). Never a chain: the copy must be a single routine edit of a declared master, and the
             # served card WebPs must already be recorded edits of THAT master, named after it. Nothing is encoded.
             d = der[src]; m = d["derived_from"]["asset"]
-            if d.get("method") != "artefact-removal": die("%s is a derivative that is not an artefact-removal edit" % src)
+            # DISC-020 (4 Nov 2026): a plain resize ("optimise") of a mark-free master is the same single routine edit
+            if d.get("method") not in ("artefact-removal", "optimise"): die("%s is a derivative that is not a single routine edit (artefact removal or resize)" % src)
             if m not in sources or m in der: die("%s: its source %s is not a declared master" % (src, m))
             if m in held: die("%s is on provenance hold" % m)
             if not (ROOT / src).exists() or sha((ROOT / src).read_bytes()) != d["sha256"]: die("%s is missing or changed" % src)
@@ -166,7 +167,7 @@ def main():
         bad = []
         if cur != built: bad.append("discoveries.html is not built")
         if new_recs or new_files: bad.append("%d derivative(s) not yet recorded" % len(new_recs))
-        print("LIBRARY CARD WEBP · " + ("OK (16 cards, %d derivatives served)" % sum(len(v.split(", ")) for v in plan.values())
+        print("LIBRARY CARD WEBP · " + ("OK (17 cards, %d derivatives served)" % sum(len(v.split(", ")) for v in plan.values())
                                         if not bad else "FAIL: %s" % "; ".join(bad)))
         sys.exit(1 if bad else 0)
     for f, d in new_files.items():
@@ -174,7 +175,7 @@ def main():
     reg["derivatives"] += new_recs
     REG.write_text(json.dumps(reg, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
     PAGE.write_text(built, encoding="utf-8")
-    print("built: %d new derivatives recorded; 16 cards wrapped" % len(new_recs))
+    print("built: %d new derivatives recorded; 17 cards wrapped" % len(new_recs))
 
 
 if __name__ == "__main__":

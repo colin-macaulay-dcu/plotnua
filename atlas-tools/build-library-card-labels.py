@@ -101,7 +101,7 @@ def main():
     cur = PAGE.read_text(encoding="utf-8")
     base = OLD_SPANS.sub("", strip_layer(cur))           # labels removed entirely; everything else as live
     found = CARD.findall(base)
-    if len(found) != 16 or set(found) != set(cards):   # 16 since DISC-015 (1 Nov 2026)
+    if len(found) != 17 or set(found) != set(cards):   # 16 since DISC-015 (1 Nov 2026); 17 since DISC-020 (4 Nov 2026)
         die("the Library cards (%d) do not match the label register (%d)" % (len(found), len(cards)))
 
     def card(mo):
@@ -131,7 +131,7 @@ def main():
     n_act, n_chip = built.count('class="lib-act"'), built.count('class="lib-aichip"')
     if CHECK:
         ok = built == cur
-        print("LIBRARY CARD LABELS · " + ("OK (%d action labels proven, %d AI chips from declared records, 16 cards)" % (n_act, n_chip)
+        print("LIBRARY CARD LABELS · " + ("OK (%d action labels proven, %d AI chips from declared records, 17 cards)" % (n_act, n_chip)
                                            if ok else "NOT BUILT or out of date"))
         sys.exit(0 if ok else 1)
     PAGE.write_text(built, encoding="utf-8")

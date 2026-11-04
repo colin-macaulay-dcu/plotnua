@@ -44,12 +44,15 @@ PAGES = {
     "discovery-hidden-cars.html": PROPERTY,
     # DISC-015 (founder Phase 2 build authorisation, 1 Nov 2026)
     "discovery-underground-swimming-pool.html": INSTALL,
+    # DISC-020 (founder Phase 2 build authorisation, 4 Nov 2026)
+    "discovery-stay-in-the-house-you-love.html": INSTALL,
 }
 # the desktop line aligns with each hero's own copy: the 1240 px content column (default), the copy's viewport
 # inset (Hidden Flood Barrier 4vw, Supper Club 5vw), or centred under centred copy (Natural Swimming Garden)
 ALIGN = {
     "discovery-hidden-flood-barrier.html": ' class="pn-hero-note pn-hero-note--inset" style="--pnn-inset:4vw"',
     "discovery-underground-swimming-pool.html": ' class="pn-hero-note pn-hero-note--inset" style="--pnn-inset:4vw"',
+    "discovery-stay-in-the-house-you-love.html": ' class="pn-hero-note pn-hero-note--inset" style="--pnn-inset:4vw"',
     "discovery-supper-club-at-home.html": ' class="pn-hero-note pn-hero-note--inset" style="--pnn-inset:5vw"',
     "discovery-natural-swimming-garden.html": ' class="pn-hero-note pn-hero-note--centre"',
     "discovery-a-home-for-art.html": ' class="pn-hero-note pn-hero-note--centre"',

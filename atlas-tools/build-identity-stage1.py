@@ -112,6 +112,8 @@ PAGES = {
     "discovery-supper-club-at-home.html": "dark",
     # DISC-015 The Underground Swimming Pool (founder Phase 2 build authorisation, 1 Nov 2026)
     "discovery-underground-swimming-pool.html": "dark",
+    # DISC-020 Stay in the House You Love (founder Phase 2 build authorisation, 4 Nov 2026)
+    "discovery-stay-in-the-house-you-love.html": "dark",
     # Idea Board, the Discovery Library's companion page (Phase 1 build, 1 Nov 2026; noindex; release pending)
     "ideas.html": "dark",
 }
@@ -121,7 +123,8 @@ DISC = {"discoveries.html", "discovery-hidden-bins.html", "discovery-living-in-t
         "discovery-a-home-for-art.html", "discovery-garden-retreat.html",
         "discovery-house-as-power-station.html", "discovery-above-and-beyond.html",
         "discovery-natural-swimming-garden.html", "discovery-hidden-flood-barrier.html",
-        "discovery-supper-club-at-home.html", "discovery-underground-swimming-pool.html", "ideas.html"}
+        "discovery-supper-club-at-home.html", "discovery-underground-swimming-pool.html",
+        "discovery-stay-in-the-house-you-love.html", "ideas.html"}
 # Pages that also load the Premium component layer (I13, I14): the registry.
 PREMIUM = set(premium_pages.PREMIUM_PAGES)
 # Premium pages that are a Discovery's guide rather than a Discovery (no Discovery layer).
