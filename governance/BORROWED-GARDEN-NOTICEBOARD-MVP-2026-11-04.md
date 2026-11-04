@@ -41,12 +41,30 @@ file, so it would remove `AIRTABLE_BASE`. Secrets (`AIRTABLE_TOKEN`) are never d
 Recommended pause deploy (founder's machine, Cloudflare login): `cd worker/garden-register && npx wrangler deploy --keep-vars`.
 Both write switches go off; `AIRTABLE_BASE` and the token stay as they are; no record is read, changed or deleted.
 
-## Remaining before launch
+## Release candidate (4 Nov 2026, later the same day)
 
-1. Privacy notice section for the noticeboard (what is shown, the private e-mail, retention), and Terms wording.
-2. Create the D1 tables (apply migration 0004), create and deploy the intake Worker, set the page's `endpoint`.
-3. Publishing: a `plotnua-garden-publish` pipeline script and workflow (copy of the Idea Board's), and register the page
-   in the site's page registries (identity, header, premium, sitemap/noindex decision).
-4. Link the noticeboard from the Discovery's chapter 05 / 06 (editorial change, founder approval).
-5. Optional photographs: a Studio upload for an approved photograph (field and page rendering are in place).
-6. Later, separately approved: switching on the enquiry relay (needs a mail provider and the insurance question settled).
+Added on the same branch: the "Post a listing — Free" button and four status points (free, reviewed, no contact yet,
+no arrangements); the empty-board invitation; Privacy Notice V10 (atlas-tools/privacy_v10_layer.py, applied to
+privacy.html, exact and reversible on V9; Section 7 also notes that new registrations are paused) and a Terms
+sub-section (Section 10); the publisher (atlas-tools/plotnua-garden-publish.py) and its workflow
+(.github/workflows/plotnua-garden-publish.yml), OFF until flags.json garden_publish_enabled is true; Studio starts a
+publish on approve / save / remove / expire; the page registered in the identity, header and Premium registries; the
+Discovery's chapter 05 noticeboard card and chapter 06 route A link (DISC-025 guard declarations updated); a gate step
+(build-garden-board.py --check, prove-privacy-v10.py). Proof: 77 checks.
+
+Demonstration listings exist only in local test databases: the committed snapshot is empty, the publisher refuses to
+push from a local Studio, and --simulate never pushes.
+
+## Launch steps (founder)
+
+1. Approve the Privacy V10 and Terms wording (they publish with the release).
+2. Create the D1 tables (`wrangler d1 execute plotart-studio --remote --file migrations/0004_garden_board.sql`).
+3. Deploy the intake Worker from `wrangler.garden.toml`, then set `GARDEN_ENABLED = "true"`; set
+   `atlas-tools/garden-board/config.json` endpoint to its `/v1/garden-listings` address and rebuild the page.
+4. Deploy the Studio (Garden tab and pipeline endpoint) through the existing studio-deploy workflow.
+5. Release the branch through the governed release; set `garden_publish_enabled` to true in flags.json.
+6. Separately: the register Worker pause (`npx wrangler deploy --keep-vars` in worker/garden-register).
+
+## Still later, separately approved
+
+Optional photographs (Studio upload); the enquiry relay (mail provider, insurance question); any paid feature.

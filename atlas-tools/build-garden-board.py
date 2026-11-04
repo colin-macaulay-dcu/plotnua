@@ -142,7 +142,9 @@ def body(listings):
     have = sum(1 for l in listings if l["kind"] == "have")
     want = len(listings) - have
     cards = "".join(card(l) for l in listings) or ""
-    empty = '<p class="gb-empty" id="gbEmpty"%s>No listings match. Try another county, or post the first one.</p>' % ("" if not listings else " hidden")
+    empty = ('<p class="gb-empty" id="gbEmpty">No listings yet. Be the first: <a href="#post">post a listing, free</a>.</p>' if not listings else
+             '<p class="gb-empty" id="gbEmpty" hidden>No listings match. Try another county, or post one yourself.</p>')
+    sides = ('<ul class="gb-sides" role="list"><li class="is-have"><b>%d</b> I have space</li><li class="is-want"><b>%d</b> I want space</li></ul>' % (have, want)) if listings else ''
     preview = '<p class="gb-preview">Private preview &middot; not public</p>' if PREVIEW else ""
     return ('<main class="gb" id="pn-main">\n'
             '<div class="article lg-ch-wrap gb-top">%s\n'
@@ -151,7 +153,7 @@ def body(listings):
             '  <p class="lg-stand">Two sides of one idea: people with ground they barely use, and people nearby looking for somewhere to grow. '
             'Listings are free and show a general area only. <a href="discovery-the-borrowed-garden.html">Read The Borrowed Garden first</a>.</p>\n'
             '  <div class="gb-act"><a class="gb-cta" href="#post">Post a listing &mdash; Free</a>'
-            '<ul class="gb-sides" role="list"><li class="is-have"><b>%d</b> I have space</li><li class="is-want"><b>%d</b> I want space</li></ul></div>\n'
+            '%s</div>\n'
             '  <ul class="gb-status" role="list" aria-label="How the noticeboard works">'
             '<li><b>Free.</b> Listing costs nothing.</li>'
             '<li><b>Reviewed.</b> PlotNua reads every listing before it appears.</li>'
@@ -172,7 +174,7 @@ def body(listings):
             'Before agreeing anything, read <a href="discovery-the-borrowed-garden.html#bg-agree">what to settle first</a>. '
             '<a href="privacy.html#borrowed-garden-noticeboard">How listings are handled</a> &middot; <a href="terms.html#borrowed-garden-noticeboard">Noticeboard terms</a></p></div>\n'
             '  %s\n'
-            '</div>\n</main>\n' % (preview, have, want, "".join("<option>%s</option>" % E(c) for c in counties), cards, empty, form()))
+            '</div>\n</main>\n' % (preview, sides, "".join("<option>%s</option>" % E(c) for c in counties), cards, empty, form()))
 
 
 PAGE_CSS = """<style>
@@ -222,6 +224,7 @@ body.pn-id.pn-pd .gb-facts li{ font:600 12.5px/1 var(--p4-sans); color:var(--p4-
 body.pn-id.pn-pd .gb-meta{ margin:14px 0 0; padding-top:12px; border-top:1px solid rgba(242,235,224,.1); display:flex; flex-wrap:wrap; gap:4px 14px; font:500 12.5px/1.4 var(--p4-sans); color:var(--p4-stone); }
 body.pn-id.pn-pd .gb-meta span:first-child{ font-family:ui-monospace,monospace; color:var(--p4-ivory); }
 body.pn-id.pn-pd .gb-empty{ margin:18px 0 0; padding:22px; border:1px dashed #4A4B4F; border-radius:4px; color:var(--p4-stone); }
+body.pn-id.pn-pd .gb-empty a{ color:#E8A88A; }
 body.pn-id.pn-pd .gb-limits{ margin:clamp(28px,3vw,40px) 0 0; padding:18px 20px; border-left:3px solid #A3BE7E; background:rgba(163,190,126,.06); }
 body.pn-id.pn-pd .gb-limits p{ margin:0; font:400 15.5px/1.6 var(--p4-sans); color:var(--p4-stone); max-width:78ch; }
 body.pn-id.pn-pd .gb-limits a{ color:#E8A88A; }
