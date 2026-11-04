@@ -164,7 +164,10 @@ const b1 = build(live);
 const pageHtml = readFileSync(join(tmp, 'borrowed-garden-board.html'), 'utf8');
 check('B1 builds from the pipeline snapshot', b1.ok, b1.out);
 check('B2 the page carries no e-mail address, and is noindex', !/[^\s@"]+@[^\s@"]+\.[a-z]{2,}/i.test(pageHtml.replace(/hello@plotnua\.ie/g, '')) && /<meta name="robots" content="noindex, follow">/.test(pageHtml));
-check('B3 with no intake address, the page shows no form', !/<form/.test(pageHtml) && /isn&rsquo;t taking listings yet/.test(pageHtml));
+{ const ep = JSON.parse(readFileSync(new URL('../../../atlas-tools/garden-board/config.json', import.meta.url), 'utf8')).endpoint;
+  check(ep ? 'B3 the form posts only to the configured intake address' : 'B3 with no intake address, the page shows no form',
+    ep ? (pageHtml.match(/<form[^>]*action="([^"]*)"/g) || []).length === 1 && pageHtml.includes('action="' + ep + '"')
+       : !/<form/.test(pageHtml) && /isn&rsquo;t taking listings yet/.test(pageHtml)); }
 const bad = (mut) => { const d = JSON.parse(JSON.stringify(live)); mut(d.listings[0]); return build(d).ok; };
 check('B4 refuses an e-mail in the text', !bad(l => { l.text = 'Lovely garden corner, contact me at me@example.com for a look.'; }));
 check('B5 refuses a phone number in the text', !bad(l => { l.text = 'Lovely garden corner with good soil, ring 087 765 4321 please.'; }));
