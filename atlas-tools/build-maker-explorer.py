@@ -539,6 +539,28 @@ def notes_register():
     return _NOTES
 
 
+def prices_register():
+    """Register-listed price lines for products whose source carries no price line (garden rooms).
+    Powersheds Maker Explorer correction (founder approval, 4 Nov 2026). Each line must state the
+    exact VERIFIED base price the garden-room universe holds for that product; anything else refuses."""
+    if not NOTES_REG.exists():
+        return {}
+    R = json.loads(NOTES_REG.read_text(encoding="utf-8"))
+    out = {}
+    for pid, v in (R.get("productPrices") or {}).items():
+        if not v.get("text") or not v.get("evidence"): die("G15 product price without text or evidence: " + pid)
+        U = garden_index().get(pid)
+        pe = (U or {}).get("priceEvidence") or {}
+        if not U or pe.get("status") != "Verified" or not pe.get("base") or pe.get("currency") != "EUR":
+            die("G15 register price for %s has no verified EUR price in the garden-room universe" % pid)
+        amt = "\u20ac{:,.0f}".format(pe["base"])
+        if not v["text"].startswith(amt + " ") or ("VAT" in v["text"] and pe.get("includesVat") == "Unknown"
+                                                    and "VAT not stated" not in v["text"]):
+            die("G15 register price for %s does not state the universe's verified %s" % (pid, amt))
+        out[pid] = v["text"]
+    return out
+
+
 def price_line(pr):
     """A short, homeowner-readable price line from a VERIFIED_NUMERIC_PRICE
     record. Its VAT position is carried over exactly; nothing is inferred."""
@@ -710,11 +732,14 @@ def load(P):
             header = {"products": header["kindCounts"][k], "makers": header["kindOrganisationCounts"][k]}
         by = {}
         MNOTES, PNOTES = notes_register()
+        PRICES = prices_register()
         for e in eligible:
             org, pid, pname, ptype, st = e[:5]
             row = [pid, name(pid, pname), ptype, st]
             if len(e) > 5 and e[5].get("price"):
                 row.append(e[5]["price"])
+            elif pid in PRICES:
+                row.append(PRICES[pid])
             nav = dict(e[5]["nav"]) if len(e) > 5 and e[5].get("nav") else {}
             if pid in PNOTES:
                 nav["notes"] = list(PNOTES[pid])

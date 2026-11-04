@@ -102,5 +102,12 @@
     "pn-sc-don-modular-homes"
    ]
   }
+ ],
+ "blockCorrections": [
+  {
+   "why": "2026-11-04, founder approval 'Powersheds Maker Explorer data correction': Atlas now records Irish availability for Powersheds' three log cabins (ie.powersheds.com, free delivery throughout Ireland); the explorer's own A-Z line follows (publish-targeted-update.py, commit 4a37dba).",
+   "from": "Powersheds 3 garden rooms · Irish availability not yet confirmed",
+   "to": "Powersheds 3 garden rooms · Irish availability confirmed"
+  }
  ]
 }

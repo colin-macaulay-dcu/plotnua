@@ -182,7 +182,13 @@ def check(src, base):
     have, want = Counter(p.out), Counter(base["blocks"])
     for r in REMOVED:
         want[norm(r)] -= 1
-    for _c, old, new in CORR:
+    corr = list(CORR)
+    if os.path.exists(ADDED_FILE):
+        # Declared text-block corrections (4 Nov 2026, Powersheds Irish availability): an exact
+        # old -> new pair for a block that a targeted Atlas correction rewrote.
+        corr += [(c.get("why", ""), c["from"], c["to"])
+                 for c in json.load(open(ADDED_FILE, encoding="utf-8")).get("blockCorrections", [])]
+    for _c, old, new in corr:
         want[norm(old)] -= 1; want[norm(new)] += 1
     for a in added:
         want[norm(a)] += 1
