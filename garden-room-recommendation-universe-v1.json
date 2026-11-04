@@ -7,8 +7,8 @@
  "dryRun": false,
  "sourceGardenRoomCount": 582,
  "eligibleCount": 570,
- "highConfidenceCount": 151,
- "withCaveatCount": 419,
+ "highConfidenceCount": 154,
+ "withCaveatCount": 416,
  "limitedEvidenceCount": 0,
  "excludedCount": 12,
  "exclusionSummaryByReason": {
@@ -17,8 +17,8 @@
   "G": 5,
   "C": 3
  },
- "confirmedIrishAvailabilityCount": 271,
- "unknownIrishAvailabilityCount": 311,
+ "confirmedIrishAvailabilityCount": 274,
+ "unknownIrishAvailabilityCount": 308,
  "confirmedUnavailableCount": 0,
  "unclassifiedIrishAvailabilityCount": 3,
  "noPublishedIrishRouteCount": 43,
@@ -32,7 +32,7 @@
  "quoteOnlyPriceCount": 20,
  "organisationCount": 64,
  "governedPriceContractVersion": "garden-room-price-contract-v1",
- "governedDigest": "e1ea1dfb4b3957ee2bef4950baab4ebcff68d895680e3a911343ca16f98c8c44",
+ "governedDigest": "1b5ef07c7fea82981de7e36a2865cb224042467277bac7861d5d77ac78a685d9",
  "sourceKind": "airtable-live",
  "missingProductUrlCount": 170,
  "products": [
@@ -54,22 +54,21 @@
    "productUrl": "https://ie.powersheds.com/products/apex-classic-log-cabin-44mm",
    "verificationStatus": "Partially Verified",
    "qualification": {
-    "status": "ELIGIBLE — WITH CAVEAT",
-    "confidenceTier": "WITH_CAVEAT",
+    "status": "ELIGIBLE — HIGH CONFIDENCE",
+    "confidenceTier": "HIGH_CONFIDENCE",
     "priceEvidence": "verified",
     "reasons": [
+     "Irish availability is confirmed by recorded evidence.",
      "A verified price is recorded.",
      "A product-level source is recorded.",
      "Supplier attribution is confirmed: Powersheds."
     ],
-    "caveats": [
-     "Irish availability is not yet confirmed. Nothing establishes it is unavailable."
-    ],
+    "caveats": [],
     "hardBlockers": [],
     "evidenceSignals": {
-     "irishAvailability": "unknown",
-     "irishAvailabilityBasis": "no irish-availability evidence recorded",
-     "irishAvailabilityScope": null,
+     "irishAvailability": "confirmed",
+     "irishAvailabilityBasis": "Confirmation State: Yes",
+     "irishAvailabilityScope": "Organisation-Wide",
      "irishAvailabilityClassified": true,
      "noPublishedIrishRoute": false,
      "price": "verified",
@@ -79,7 +78,7 @@
      "productUrl": "present",
      "contradiction": "none",
      "productEvidenceCompleteness": "Product Evidence Complete — Organisation Gate Required",
-     "featureValueCount": 0,
+     "featureValueCount": 1,
      "pricingRecordCount": 1,
      "availabilityRecordCount": 1
     }
@@ -92,19 +91,12 @@
     "priceType": "    Standard Price",
     "status": "Verified",
     "includesVat": "Unknown",
-    "evidenceScope": null,
+    "evidenceScope": "Product-Specific",
     "adjudication": "adjudicated",
     "quoteOnly": false,
     "candidateCount": 1
    },
    "features": {
-    "construction": {
-     "text": "44mm thick interlocking Scandinavian pine log walls (PEFC-certified timber), precision-cut notching; uPVC doors and 'tilt and turn' double-glazed windows with double toughened glazing throughout; waterproof EPDM rubber roof (50-year life expectancy); 19mm tongue-and-groove floor with joists, Burford-style skirting.",
-     "number": null,
-     "unit": null,
-     "evidenceScope": "Range-Level",
-     "status": "Verified"
-    },
     "externalDimensions": {
      "text": "12ft x 12ft",
      "number": null,
@@ -112,11 +104,26 @@
      "evidenceScope": null,
      "status": "Published"
     },
+    "construction": {
+     "text": "44mm thick interlocking Scandinavian pine log walls (PEFC-certified timber), precision-cut notching; uPVC doors and 'tilt and turn' double-glazed windows with double toughened glazing throughout; waterproof EPDM rubber roof (50-year life expectancy); 19mm tongue-and-groove floor with joists, Burford-style skirting.",
+     "number": null,
+     "unit": null,
+     "evidenceScope": "Range-Level",
+     "status": "Verified"
+    },
     "foundationBaseRequirement": {
      "text": "Must be installed on a firm, level base. Base/foundation NOT included in price — base guide, optional purchasable base kit and installer directory referral provided.",
      "number": null,
      "unit": null,
      "evidenceScope": "Range-Level",
+     "status": "Verified"
+    },
+    "irishAvailability": {
+     "text": "AVAILABLE ACROSS IRELAND. Sold in euro through Powersheds' Irish store (ie.powersheds.com) with free kerbside delivery throughout Ireland and no import or customs charges. Log cabins arrive on a large vehicle with a crane, so suitable site access is required. Base not included; self-assembly; Powersheds does not provide installation.",
+     "number": null,
+     "unit": null,
+     "evidenceScope": "Organisation-Wide",
+     "confirmationState": "Yes",
      "status": "Verified"
     }
    },
@@ -128,22 +135,20 @@
    "insulation": null,
    "manufactureCountry": null,
    "designLanguage": null,
-   "irishAvailabilityConfirmationState": null,
-   "irishAvailability": null,
+   "irishAvailabilityConfirmationState": "Yes",
+   "irishAvailability": true,
    "availabilityStatus": "Available to Order",
    "noPublishedIrishRoute": false,
-   "qualificationTier": "WITH_CAVEAT",
+   "qualificationTier": "HIGH_CONFIDENCE",
    "priceEvidenceState": "verified",
-   "qualificationCaveats": [
-    "Irish availability is not yet confirmed. Nothing establishes it is unavailable."
-   ],
+   "qualificationCaveats": [],
    "priceRecordIds": [
     "recfb1UXi3nW7ekH4"
    ],
    "priceRecordIdsAvailable": 1,
    "priceStatus": "Verified",
    "priceType": "Standard Price",
-   "priceScope": null,
+   "priceScope": "Product-Specific",
    "vatStatus": "Unknown",
    "vatRate": null,
    "priceBasisAxes": {
@@ -163,8 +168,8 @@
     "candidateCount": 1,
     "status": "Verified",
     "priceType": "Standard Price",
-    "evidenceScope": null,
-    "lastPriceCheck": "2026-09-28",
+    "evidenceScope": "Product-Specific",
+    "lastPriceCheck": "2026-10-16",
     "basisSource": null,
     "basisLeadPhrase": null
    },
@@ -198,22 +203,21 @@
    "productUrl": "https://ie.powersheds.com/products/apex-classic-log-cabin-44mm",
    "verificationStatus": "Partially Verified",
    "qualification": {
-    "status": "ELIGIBLE — WITH CAVEAT",
-    "confidenceTier": "WITH_CAVEAT",
+    "status": "ELIGIBLE — HIGH CONFIDENCE",
+    "confidenceTier": "HIGH_CONFIDENCE",
     "priceEvidence": "verified",
     "reasons": [
+     "Irish availability is confirmed by recorded evidence.",
      "A verified price is recorded.",
      "A product-level source is recorded.",
      "Supplier attribution is confirmed: Powersheds."
     ],
-    "caveats": [
-     "Irish availability is not yet confirmed. Nothing establishes it is unavailable."
-    ],
+    "caveats": [],
     "hardBlockers": [],
     "evidenceSignals": {
-     "irishAvailability": "unknown",
-     "irishAvailabilityBasis": "no irish-availability evidence recorded",
-     "irishAvailabilityScope": null,
+     "irishAvailability": "confirmed",
+     "irishAvailabilityBasis": "Confirmation State: Yes",
+     "irishAvailabilityScope": "Organisation-Wide",
      "irishAvailabilityClassified": true,
      "noPublishedIrishRoute": false,
      "price": "verified",
@@ -223,7 +227,7 @@
      "productUrl": "present",
      "contradiction": "none",
      "productEvidenceCompleteness": "Product Evidence Complete — Organisation Gate Required",
-     "featureValueCount": 0,
+     "featureValueCount": 1,
      "pricingRecordCount": 1,
      "availabilityRecordCount": 1
     }
@@ -236,19 +240,12 @@
     "priceType": "    Standard Price",
     "status": "Verified",
     "includesVat": "Unknown",
-    "evidenceScope": null,
+    "evidenceScope": "Product-Specific",
     "adjudication": "adjudicated",
     "quoteOnly": false,
     "candidateCount": 1
    },
    "features": {
-    "foundationBaseRequirement": {
-     "text": "Must be installed on a firm, level base. Base/foundation NOT included in price — base guide, optional purchasable base kit and installer directory referral provided.",
-     "number": null,
-     "unit": null,
-     "evidenceScope": "Range-Level",
-     "status": "Verified"
-    },
     "externalDimensions": {
      "text": "14ft x 14ft",
      "number": null,
@@ -262,6 +259,21 @@
      "unit": null,
      "evidenceScope": "Range-Level",
      "status": "Verified"
+    },
+    "foundationBaseRequirement": {
+     "text": "Must be installed on a firm, level base. Base/foundation NOT included in price — base guide, optional purchasable base kit and installer directory referral provided.",
+     "number": null,
+     "unit": null,
+     "evidenceScope": "Range-Level",
+     "status": "Verified"
+    },
+    "irishAvailability": {
+     "text": "AVAILABLE ACROSS IRELAND. Sold in euro through Powersheds' Irish store (ie.powersheds.com) with free kerbside delivery throughout Ireland and no import or customs charges. Log cabins arrive on a large vehicle with a crane, so suitable site access is required. Base not included; self-assembly; Powersheds does not provide installation.",
+     "number": null,
+     "unit": null,
+     "evidenceScope": "Organisation-Wide",
+     "confirmationState": "Yes",
+     "status": "Verified"
     }
    },
    "price": 6959,
@@ -272,22 +284,20 @@
    "insulation": null,
    "manufactureCountry": null,
    "designLanguage": null,
-   "irishAvailabilityConfirmationState": null,
-   "irishAvailability": null,
+   "irishAvailabilityConfirmationState": "Yes",
+   "irishAvailability": true,
    "availabilityStatus": "Available to Order",
    "noPublishedIrishRoute": false,
-   "qualificationTier": "WITH_CAVEAT",
+   "qualificationTier": "HIGH_CONFIDENCE",
    "priceEvidenceState": "verified",
-   "qualificationCaveats": [
-    "Irish availability is not yet confirmed. Nothing establishes it is unavailable."
-   ],
+   "qualificationCaveats": [],
    "priceRecordIds": [
     "recyHNAgh4s50Ol1S"
    ],
    "priceRecordIdsAvailable": 1,
    "priceStatus": "Verified",
    "priceType": "Standard Price",
-   "priceScope": null,
+   "priceScope": "Product-Specific",
    "vatStatus": "Unknown",
    "vatRate": null,
    "priceBasisAxes": {
@@ -307,8 +317,8 @@
     "candidateCount": 1,
     "status": "Verified",
     "priceType": "Standard Price",
-    "evidenceScope": null,
-    "lastPriceCheck": "2026-09-28",
+    "evidenceScope": "Product-Specific",
+    "lastPriceCheck": "2026-10-16",
     "basisSource": null,
     "basisLeadPhrase": null
    },
@@ -342,22 +352,21 @@
    "productUrl": "https://ie.powersheds.com/products/apex-log-cabin",
    "verificationStatus": "Partially Verified",
    "qualification": {
-    "status": "ELIGIBLE — WITH CAVEAT",
-    "confidenceTier": "WITH_CAVEAT",
+    "status": "ELIGIBLE — HIGH CONFIDENCE",
+    "confidenceTier": "HIGH_CONFIDENCE",
     "priceEvidence": "verified",
     "reasons": [
+     "Irish availability is confirmed by recorded evidence.",
      "A verified price is recorded.",
      "A product-level source is recorded.",
      "Supplier attribution is confirmed: Powersheds."
     ],
-    "caveats": [
-     "Irish availability is not yet confirmed. Nothing establishes it is unavailable."
-    ],
+    "caveats": [],
     "hardBlockers": [],
     "evidenceSignals": {
-     "irishAvailability": "unknown",
-     "irishAvailabilityBasis": "no irish-availability evidence recorded",
-     "irishAvailabilityScope": null,
+     "irishAvailability": "confirmed",
+     "irishAvailabilityBasis": "Confirmation State: Yes",
+     "irishAvailabilityScope": "Organisation-Wide",
      "irishAvailabilityClassified": true,
      "noPublishedIrishRoute": false,
      "price": "verified",
@@ -367,32 +376,25 @@
      "productUrl": "present",
      "contradiction": "none",
      "productEvidenceCompleteness": "Product Evidence Complete — Organisation Gate Required",
-     "featureValueCount": 0,
+     "featureValueCount": 1,
      "pricingRecordCount": 1,
      "availabilityRecordCount": 1
     }
    },
    "priceEvidence": {
     "base": 9199,
-    "from": null,
+    "from": 9199,
     "to": null,
     "currency": "EUR",
     "priceType": "    Standard Price",
     "status": "Verified",
     "includesVat": "Unknown",
-    "evidenceScope": null,
+    "evidenceScope": "Product-Specific",
     "adjudication": "adjudicated",
     "quoteOnly": false,
     "candidateCount": 1
    },
    "features": {
-    "construction": {
-     "text": "44mm thick interlocking Scandinavian pine log walls (PEFC-certified timber), precision-cut notching; uPVC doors and 'tilt and turn' double-glazed windows with double toughened glazing throughout; waterproof EPDM rubber roof (50-year life expectancy); 19mm tongue-and-groove floor with joists, Burford-style skirting.",
-     "number": null,
-     "unit": null,
-     "evidenceScope": "Range-Level",
-     "status": "Verified"
-    },
     "externalDimensions": {
      "text": "16ft x 12ft",
      "number": null,
@@ -400,11 +402,26 @@
      "evidenceScope": null,
      "status": "Published"
     },
+    "construction": {
+     "text": "44mm thick interlocking Scandinavian pine log walls (PEFC-certified timber), precision-cut notching; uPVC doors and 'tilt and turn' double-glazed windows with double toughened glazing throughout; waterproof EPDM rubber roof (50-year life expectancy); 19mm tongue-and-groove floor with joists, Burford-style skirting.",
+     "number": null,
+     "unit": null,
+     "evidenceScope": "Range-Level",
+     "status": "Verified"
+    },
     "foundationBaseRequirement": {
      "text": "Must be installed on a firm, level base. Base/foundation is NOT included in price — manufacturer provides a base guide, an optional purchasable base kit, and an installer directory referral.",
      "number": null,
      "unit": null,
      "evidenceScope": "Range-Level",
+     "status": "Verified"
+    },
+    "irishAvailability": {
+     "text": "AVAILABLE ACROSS IRELAND. Sold in euro through Powersheds' Irish store (ie.powersheds.com) with free kerbside delivery throughout Ireland and no import or customs charges. Log cabins arrive on a large vehicle with a crane, so suitable site access is required. Base not included; self-assembly; Powersheds does not provide installation.",
+     "number": null,
+     "unit": null,
+     "evidenceScope": "Organisation-Wide",
+     "confirmationState": "Yes",
      "status": "Verified"
     }
    },
@@ -416,22 +433,20 @@
    "insulation": null,
    "manufactureCountry": null,
    "designLanguage": null,
-   "irishAvailabilityConfirmationState": null,
-   "irishAvailability": null,
+   "irishAvailabilityConfirmationState": "Yes",
+   "irishAvailability": true,
    "availabilityStatus": "Available to Order",
    "noPublishedIrishRoute": false,
-   "qualificationTier": "WITH_CAVEAT",
+   "qualificationTier": "HIGH_CONFIDENCE",
    "priceEvidenceState": "verified",
-   "qualificationCaveats": [
-    "Irish availability is not yet confirmed. Nothing establishes it is unavailable."
-   ],
+   "qualificationCaveats": [],
    "priceRecordIds": [
     "reckjDb8tqpNh29c9"
    ],
    "priceRecordIdsAvailable": 1,
    "priceStatus": "Verified",
    "priceType": "Standard Price",
-   "priceScope": null,
+   "priceScope": "Product-Specific",
    "vatStatus": "Unknown",
    "vatRate": null,
    "priceBasisAxes": {
@@ -451,8 +466,8 @@
     "candidateCount": 1,
     "status": "Verified",
     "priceType": "Standard Price",
-    "evidenceScope": null,
-    "lastPriceCheck": "2026-09-28",
+    "evidenceScope": "Product-Specific",
+    "lastPriceCheck": "2026-10-16",
     "basisSource": null,
     "basisLeadPhrase": null
    },
