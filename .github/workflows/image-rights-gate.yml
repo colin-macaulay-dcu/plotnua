@@ -420,6 +420,12 @@ jobs:
           # routes (route B the existing WhatsApp channel), free, no intake or matching promise; no exemption asserted.
           python3 atlas-tools/prove-premium-discovery-above-and-beyond.py
           python3 atlas-tools/prove-premium-discovery-above-and-beyond.py --faults
+          # DISC-021 Your Home On Screen six-chapter redesign (founder approval, 4 Nov 2026): every text block, link,
+          # image and id preserved against the pinned b66f086 snapshot except the declared removal (the closing
+          # panel's "property check is being prepared" placeholder) and additions; header and hero slider pinned;
+          # one decision with both routes (route B the existing WhatsApp channel), free; no booking or income promise.
+          python3 atlas-tools/prove-premium-discovery-your-home-on-screen.py
+          python3 atlas-tools/prove-premium-discovery-your-home-on-screen.py --faults
           python3 atlas-tools/prove-discovery-two-option.py --self-test
           # DISC-020 Stay in the House You Love (founder Phase 2 build authorisation, 4 Nov 2026): SEO, one H1, the
           # pn-compare hero opening on BEFORE, AI disclosure, verified grant and planning statements with their limits,
