@@ -74,8 +74,11 @@ jobs:
           [[ "$COMMIT" =~ ^[0-9a-f]{40}$ ]] || { echo "REFUSED: give the full 40-character commit ID"; exit 1; }
           [[ "$MIGRATION" =~ ^[0-9]{4}_[a-z0-9_]+\.sql$ ]] || { echo "REFUSED: not a migration file name"; exit 1; }
           git merge-base --is-ancestor "$COMMIT" origin/main || { echo "REFUSED: $COMMIT is not on main"; exit 1; }
-          git show "$COMMIT:worker/plotart-studio/migrations/$MIGRATION" > "$RUNNER_TEMP/m.sql" 2>/dev/null || { echo "REFUSED: $MIGRATION is not in $COMMIT"; exit 1; }
-          python3 atlas-tools/release/studio/migration-check.py "$RUNNER_TEMP/m.sql" "$SHA" "$TABLES" "$EFFECTS" | tee "$RUNNER_TEMP/check.txt" >> "$GITHUB_STEP_SUMMARY"
+          # the copy keeps the migration's own file name: the classifier reads its number (NNNN_) to find which tables
+          # already exist; a nameless copy made every migration, even a purely additive one, look destructive (fixed 4 Nov 2026)
+          mkdir -p "$RUNNER_TEMP/migration"
+          git show "$COMMIT:worker/plotart-studio/migrations/$MIGRATION" > "$RUNNER_TEMP/migration/$MIGRATION" 2>/dev/null || { echo "REFUSED: $MIGRATION is not in $COMMIT"; exit 1; }
+          python3 atlas-tools/release/studio/migration-check.py "$RUNNER_TEMP/migration/$MIGRATION" "$SHA" "$TABLES" "$EFFECTS" | tee "$RUNNER_TEMP/check.txt" >> "$GITHUB_STEP_SUMMARY"
           grep -q "^MIGRATION CHECK OK" "$RUNNER_TEMP/check.txt" || { cat "$RUNNER_TEMP/check.txt"; exit 1; }
       # Automation v1 (founder policy, 1 Nov 2026): an ADDITIVE migration (new tables and indexes only) runs in
       # studio-database-auto, restricted to main, with the same two backups first. Anything that changes or drops an

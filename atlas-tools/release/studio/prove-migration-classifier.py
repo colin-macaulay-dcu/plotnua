@@ -10,6 +10,7 @@ CHECK = os.path.join(HERE, "migration-check.py")
 cases = [  # (name, sql, declared tables, expected: additive | destructive | refused)
     ("new table", "CREATE TABLE widgets (id TEXT PRIMARY KEY);", "widgets", "additive"),
     ("new table + its index", "CREATE TABLE widgets (id TEXT, n INT); CREATE INDEX widgets_n ON widgets(n);", "widgets", "additive"),
+    ("the real 0004 (Borrowed Garden)", open(os.path.join(HERE, "..", "..", "..", "worker", "plotart-studio", "migrations", "0004_garden_board.sql")).read(), "garden_listings,garden_intake_days,garden_enquiries,garden_enquiry_days", "additive4"),
     ("the real 0003", open(os.path.join(HERE, "..", "..", "..", "worker", "plotart-studio", "migrations", "0003_ideas.sql")).read(), "ideas,idea_intake_days", "additive*"),
     ("DROP an existing table", "DROP TABLE artists;", "artists", "destructive"),
     ("DROP IF EXISTS hidden after a create", "CREATE TABLE widgets (id TEXT); DROP TABLE IF EXISTS artists;", "widgets,artists", "destructive"),
@@ -47,10 +48,29 @@ with tempfile.TemporaryDirectory() as d:
         if want == "additive*":     # the real file keeps its own number so schema.sql's 0003 marker applies
             p = os.path.join(HERE, "..", "..", "..", "worker", "plotart-studio", "migrations", "0003_ideas.sql"); want = "additive"
             sha = hashlib.sha256(open(p, "rb").read()).hexdigest()
+        if want == "additive4":
+            p = os.path.join(HERE, "..", "..", "..", "worker", "plotart-studio", "migrations", "0004_garden_board.sql"); want = "additive"
+            sha = hashlib.sha256(open(p, "rb").read()).hexdigest()
         out = subprocess.run([sys.executable, CHECK, p, sha, tables, "Classifier proof case: " + name], capture_output=True, text=True).stdout
         got = "refused" if out.startswith("REFUSED") else ("additive" if "MIGRATION CLASS: additive" in out else "destructive")
         ok = got == want
         fails += not ok
         print(("  PASS  " if ok else "  FAIL  ") + "%-46s expected %-11s got %s" % (name, want, got))
+# The workflow must hand the classifier a copy that keeps the migration's own file name (NNNN_name.sql): a copy under
+# another name has no number, so every existing table is counted as "existing" and nothing can ever be additive.
+wf = open(os.path.join(HERE, "..", "..", "..", ".github", "workflows", "studio-d1-migration.yml")).read()
+for i, line in enumerate(l for l in wf.splitlines() if "migration-check.py" in l):
+    arg = line.split("migration-check.py", 1)[1].split()[0].strip('"')
+    ok = arg.endswith("/$MIGRATION")
+    fails += not ok
+    print(("  PASS  " if ok else "  FAIL  ") + "workflow check %d passes the file under its own name (%s)" % (i + 1, arg))
+# and a nameless copy of an additive migration is (safely) never additive: the failure mode the fix removes
+with tempfile.TemporaryDirectory() as d:
+    p = os.path.join(d, "m.sql"); open(p, "w").write("CREATE TABLE garden_listings (id TEXT);")
+    sha = hashlib.sha256(open(p, "rb").read()).hexdigest()
+    out = subprocess.run([sys.executable, CHECK, p, sha, "garden_listings", "Classifier proof: a copy without its number"], capture_output=True, text=True).stdout
+    ok = "MIGRATION CLASS: destructive" in out
+    fails += not ok
+    print(("  PASS  " if ok else "  FAIL  ") + "an unnumbered copy falls back to DESTRUCTIVE (needs approval)")
 print("\nMIGRATION CLASSIFIER · %s · %d cases, %d failed" % ("OK" if not fails else "FAIL", len(cases), fails))
 sys.exit(1 if fails else 0)

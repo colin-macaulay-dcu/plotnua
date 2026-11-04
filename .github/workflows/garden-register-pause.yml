@@ -1,0 +1,110 @@
+# PlotNua · DISC-025 Borrowed Garden register Worker ("plotnua-garden-register"): deploy the approved PAUSE.
+# Founder decision 4 Nov 2026: new registrations paused, every Airtable record kept, nothing deleted.
+#
+# Deploys worker/garden-register exactly as it is on main, where BOTH write switches are "false"
+# (WRITES_ENABLED, GROWER_WRITES_ENABLED). It uses the existing Studio Cloudflare token (STUDIO_CF_DEPLOY_TOKEN) in
+# the environment "studio-production.", so the deploy job waits until the founder presses Approve in GitHub.
+#
+# Stored configuration is preserved:
+#   --keep-vars keeps every variable set outside wrangler.toml (AIRTABLE_BASE) on the Worker;
+#   secrets (AIRTABLE_TOKEN) are never touched by a deploy;
+#   Airtable itself is never contacted by this workflow.
+# There is deliberately NO automatic rollback: rolling back could restore a version with writes ON.
+# Logs are public: no step prints a credential or an Airtable identifier.
+name: Borrowed Garden register pause deploy
+run-name: "Borrowed Garden register pause ${{ inputs.commit }}${{ inputs.dry_run && ' (dry run)' || '' }}"
+
+on:
+  workflow_dispatch:
+    inputs:
+      commit:
+        description: "Full 40-character commit ID on main"
+        required: true
+        type: string
+      dry_run:
+        description: "Dry run: checks and build only, nothing sent to Cloudflare"
+        required: true
+        type: boolean
+        default: true
+
+permissions:
+  contents: read
+
+concurrency:
+  group: plotart-studio-cloudflare
+  cancel-in-progress: false
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: The commit is on main and its configuration keeps both registers closed
+        env:
+          COMMIT: ${{ inputs.commit }}
+        run: |
+          set -euo pipefail
+          [[ "$COMMIT" =~ ^[0-9a-f]{40}$ ]] || { echo "REFUSED: give the full 40-character commit ID"; exit 1; }
+          git merge-base --is-ancestor "$COMMIT" origin/main || { echo "REFUSED: $COMMIT is not on main"; exit 1; }
+          git show "$COMMIT:worker/garden-register/wrangler.toml" > "$RUNNER_TEMP/w.toml"
+          python3 atlas-tools/release/garden-register-pause-check.py "$RUNNER_TEMP/w.toml" | tee -a "$GITHUB_STEP_SUMMARY"
+
+  deploy:
+    needs: check
+    runs-on: ubuntu-latest
+    environment: "studio-production."   # the configured environment's exact name, including the final full stop
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.commit }}
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Check again after approval
+        env:
+          COMMIT: ${{ inputs.commit }}
+        run: |
+          set -euo pipefail
+          git fetch -q origin main
+          git merge-base --is-ancestor "$COMMIT" origin/main || { echo "REFUSED: $COMMIT is not on main"; exit 1; }
+          test "$(git rev-parse HEAD)" = "$COMMIT" || { echo "REFUSED: the checked-out tree is not $COMMIT"; exit 1; }
+          python3 atlas-tools/release/garden-register-pause-check.py worker/garden-register/wrangler.toml
+      - name: Build only (dry run; nothing sent to Cloudflare)
+        if: ${{ inputs.dry_run }}
+        working-directory: worker/garden-register
+        run: |
+          set -o pipefail
+          npx --yes wrangler@4.150.0 deploy --dry-run --outdir "$RUNNER_TEMP/build" > "$RUNNER_TEMP/wrangler.log" 2>&1 \
+            || { grep -iE "error" "$RUNNER_TEMP/wrangler.log" | head -5; exit 1; }
+          grep -E "env\.(WRITES_ENABLED|GROWER_WRITES_ENABLED|EMAIL_ENABLED) " "$RUNNER_TEMP/wrangler.log" || true
+          echo "DRY RUN OK: the register Worker builds with both switches off; nothing was sent to Cloudflare"
+      - name: Deploy the pause (keeps stored variables and secrets)
+        if: ${{ !inputs.dry_run }}
+        working-directory: worker/garden-register
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.STUDIO_CF_DEPLOY_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          set -o pipefail
+          npx --yes wrangler@4.150.0 deploy --keep-vars > "$RUNNER_TEMP/wrangler.log" 2>&1 \
+            || { echo "FAIL  the deployment did not complete (nothing changed on the live Worker)"; grep -iE "^\s*(✘|X )?\[?error|permission|authentication" "$RUNNER_TEMP/wrangler.log" | grep -viE "token|https?://" | head -5; exit 1; }
+          grep -E "^Uploaded |^Current Version ID" "$RUNNER_TEMP/wrangler.log"
+          # the live bindings, switches only (never the Airtable identifier)
+          grep -E "env\.(WRITES_ENABLED|GROWER_WRITES_ENABLED|EMAIL_ENABLED) " "$RUNNER_TEMP/wrangler.log" | tee "$RUNNER_TEMP/switches.txt"
+          test "$(grep -c '"false"' "$RUNNER_TEMP/switches.txt")" = 3 || { echo "FAIL  the deployed switches are not all \"false\""; exit 1; }
+          echo "- Register Worker deployed with WRITES_ENABLED, GROWER_WRITES_ENABLED and EMAIL_ENABLED all \"false\" (--keep-vars)" >> "$GITHUB_STEP_SUMMARY"
+          grep -oE "https://plotnua-garden-register\.[a-z0-9-]+\.workers\.dev" "$RUNNER_TEMP/wrangler.log" | head -1 > "$RUNNER_TEMP/url"
+      - name: Check the live register Worker from outside (never submits anything)
+        if: ${{ !inputs.dry_run }}
+        run: |
+          set -euo pipefail
+          B=$(cat "$RUNNER_TEMP/url"); [[ "$B" =~ ^https://plotnua-garden-register\. ]] || { echo "FAIL  no workers.dev address found"; exit 1; }
+          sleep 5
+          G=$(curl -s -o /dev/null -w "%{http_code}" "$B/v1/garden-register/garden")
+          echo "GET: $G (expect 405: no read surface)"; [ "$G" = 405 ] || { echo "FAIL  unexpected answer"; exit 1; }
