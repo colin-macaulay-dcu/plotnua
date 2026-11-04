@@ -1,0 +1,41 @@
+{
+  "schema": "plotnua.supplier-partnership.v1",
+  "_about": "Public-safe partnership record for Superior Pergola Ireland. THIS REPOSITORY IS PUBLIC: no commission rate, no discount figure, no correspondence text and no personal data is kept here. Rates, the written terms and their evidence live in Atlas Partners recq33VZAnSDzKyZq (private). Nothing in this file is read by Atlas matching, Search, scoring, ranking or maker order.",
+  "supplier": {
+    "name": "Superior Pergola Ireland",
+    "atlasOrganisation": "recEitQxMaz9SyDzX",
+    "attribution": "superior-pergola-ireland",
+    "showcase": "suppliers/superior-pergola-ireland.html"
+  },
+  "agreement": {
+    "atlasPartnerRecord": "recq33VZAnSDzKyZq",
+    "type": "Referral partner: commission on completed installations, plus a homeowner saving applied by the supplier",
+    "agreedInWriting": "2026-11-04",
+    "state": "AGREED_BASIS_OPEN",
+    "open": [
+      "Calculation basis: including or excluding VAT, and before or after the homeowner saving (asked 4 Nov 2026, awaiting reply)",
+      "Whether the homeowner saving covers verandas, porches, bin covers and decking as well as pergolas",
+      "Supplier acknowledgement of each referral received (asked 4 Nov 2026)",
+      "Invoice basis and payment days"
+    ],
+    "payable": "After the installation is completed and the supplier has been paid in full",
+    "trackingMethod": "No referral code. PlotNua sends each enquiry directly to the supplier, identified as a PlotNua referral, before the supplier quotes."
+  },
+  "homeownerSaving": {
+    "state": "OFF",
+    "switch": "supplier-preview-system/showcases/superior-pergola-ireland/showcase.json > offer",
+    "goLiveRequires": [
+      "Calculation basis confirmed in writing by the supplier",
+      "Eligible ranges confirmed",
+      "Founder approves the wording and the review copy",
+      "The referral email to the supplier states the homeowner's saving before the quote (the supplier needs to know before quoting)"
+    ]
+  },
+  "homeownerDisclosure": "On the showcase, in words only: PlotNua may receive a referral fee from the supplier if the homeowner goes ahead after a PlotNua introduction. No rate is ever shown to homeowners.",
+  "personalData": {
+    "collectedOnPage": false,
+    "routes": ["PlotNua WhatsApp", "hello@plotnua.ie"],
+    "rule": "Nothing about a homeowner reaches the supplier until the homeowner has said yes to that specific introduction, in words recorded on the referral record (Atlas, private). No automatic transmission; no public store.",
+    "store": "Atlas Referral Ledger (private). Fields proposed in the staging report; not yet added."
+  }
+}

@@ -1,0 +1,163 @@
+{
+  "_about": "Data for the Superior Pergola Ireland supplier showcase (suppliers/superior-pergola-ireland.html), read by supplier-preview-system/build-superior-pergola-showcase.py. Every product fact restates Atlas product records PROD-001314 to PROD-001318 (read first-party from superiorpergola.ie on 16 Oct 2026; published from-prices read from /products/ on 29 Sep 2026). Images are hotlinked, unmodified, from the supplier's own media path on b3819663.assetcdn.net/2.0/3819663/ so the Image Rights Gate checks each one. Each image names the Atlas asset record it comes from. Width and height are recorded only where PlotNua has measured the file (the private preview of Sep 2026); 'null' means not measured, and the page then reserves no fixed shape.",
+  "supplier": {
+    "name": "Superior Pergola Ireland",
+    "atlasName": "Superior Pergola Ireland",
+    "atlasRecord": "recEitQxMaz9SyDzX",
+    "slug": "superior-pergola-ireland",
+    "website": "https://www.superiorpergola.ie/",
+    "credit": "Image: Superior Pergola Ireland",
+    "creditHref": "https://www.superiorpergola.ie/?utm_source=plotnua&utm_medium=referral&utm_campaign=supplier-showcase"
+  },
+  "publication": {
+    "status": "STAGING. Built on dev/superior-pergola-showcase for founder review, 4 Nov 2026. Not deployed.",
+    "basis": "Written permission by email, 29 Sep 2026, Neringa, admin@superiorpergola.ie (Gmail thread 1a0b5b8814a3baa1): \"No worries, feel free to use our photos.\" PlotNua undertook in reply to credit Superior Pergola Ireland with a link back to its website. Recorded in image-rights-records.json and Atlas IPO-SUPERIORPERGOLA-20260929.",
+    "commercial": "A referral arrangement is agreed in writing (Atlas Partners recq33VZAnSDzKyZq). Its rates and calculation basis are kept in Atlas, never in this public repository and never on the page. The page discloses only that PlotNua may receive a referral fee."
+  },
+  "intro": "Made-to-measure aluminium pergolas, verandas and porches, designed and fitted by the supplier's own team across Ireland, with smaller aluminium work such as bin stores and composite decking.",
+  "standfirst": "Superior Pergola Ireland builds to measure rather than selling fixed models, so there is no catalogue of sizes. Roofs come in clear glass, tinted glass or polycarbonate, and a pergola can stay open or be closed in with glass sides and sliding doors. The photographs are the supplier's own installations; the selection is PlotNua's.",
+  "facts": ["Made to measure", "Fitted nationwide", "Fitting included in the published from-prices"],
+  "categories": [
+    {"id": "covered-outdoor-rooms", "title": "Covered outdoor rooms", "line": "Shelter for a patio, a seating area or a room you can close up."},
+    {"id": "around-the-house", "title": "Around the house", "line": "The front door, the bins and the ground underfoot."}
+  ],
+  "products": [
+    {
+      "name": "Aluminium pergolas",
+      "category": "covered-outdoor-rooms",
+      "atlas": "recEmspiTMDe7dTHu",
+      "summary": "A powder-coated aluminium frame over a patio or seating area, made to measure. Left open, or closed in with glass sides and sliding doors.",
+      "specs": [["Roof", "Clear glass, tinted glass or polycarbonate"], ["Frame", "Powder-coated aluminium"], ["Sizes", "Made to measure; no standard sizes are published"], ["Extras listed", "Slatted privacy screens, heaters, LED lighting (no prices published)"]],
+      "price": 2500,
+      "priceUnit": null,
+      "images": ["clear-glass"]
+    },
+    {
+      "name": "Verandas",
+      "category": "covered-outdoor-rooms",
+      "atlas": "reckkOgwV2NMmkvXs",
+      "summary": "A larger glazed structure. The supplier names two systems: framed verandas, with sliding or fixed framed panels that lock, and frameless verandas, with glass panels running in tracks.",
+      "specs": [["Systems", "Framed (sliding or fixed) or frameless"], ["Frame", "Aluminium"], ["Sizes", "Made to measure; no standard sizes are published"]],
+      "price": 8100,
+      "priceUnit": null,
+      "images": ["veranda"]
+    },
+    {
+      "name": "Porches",
+      "category": "around-the-house",
+      "atlas": "recxF6SfPeZsmHjVJ",
+      "summary": "A canopy or enclosed porch for the front door, made to measure in powder-coated aluminium.",
+      "specs": [["Roof", "Clear glass, tinted glass or polycarbonate"], ["Frame colour", "Anthracite grey or a custom RAL colour"], ["Sizes", "Made to measure"]],
+      "price": 5200,
+      "priceUnit": null,
+      "images": ["porch"]
+    },
+    {
+      "name": "Wheely bin covers",
+      "category": "around-the-house",
+      "atlas": "recJKjLWCCqWy0sBW",
+      "summary": "An aluminium bin store with ventilated slatted panels, lift-up lids and front doors, in different sizes and colours.",
+      "specs": [["Material", "Powder-coated aluminium"], ["Access", "Lift-up lids and front doors"], ["Sizes", "Several; dimensions are not published"]],
+      "price": 920,
+      "priceUnit": null,
+      "images": ["bin-cover", "bin-cover-2"]
+    },
+    {
+      "name": "Composite decking",
+      "category": "around-the-house",
+      "atlas": "recvrVlXzL78Ao99o",
+      "summary": "Composite decking supplied and fitted, priced by the square metre. The supplier says the boards will not rot, splinter or fade; the board brand and make-up are not published.",
+      "specs": [["Priced", "Per square metre, fitted"], ["Boards", "Brand and dimensions not published"]],
+      "price": 350,
+      "priceUnit": "per m²",
+      "images": ["decking"]
+    }
+  ],
+  "images": [
+    {"id": "enclosed", "role": "hero", "product": "Aluminium pergolas", "asset": "recCICvh7Ah2ZEocC", "kind": "Photograph",
+     "origin": "https://b3819663.assetcdn.net/2.0/3819663/wp-content/uploads/2026/02/536130753_17908295871230002_9005082543065331138_n.jpg",
+     "w": null, "h": null,
+     "alt": "Fully enclosed aluminium pergola with its sliding glass doors open, making an indoor-outdoor garden room",
+     "caption": "A pergola closed in with glass sides and sliding doors."},
+    {"id": "clear-glass", "role": "product", "product": "Aluminium pergolas", "asset": "reciUx30AuJZaJBd3", "kind": "Photograph",
+     "origin": "https://b3819663.assetcdn.net/2.0/3819663/wp-content/uploads/2026/02/WhatsApp-Image-2025-12-03-at-15.47.36.jpeg",
+     "w": 1536, "h": 2048,
+     "alt": "Aluminium pergola with a clear glass roof over a patio in Ireland",
+     "caption": "Clear glass roof over a patio."},
+    {"id": "polycarbonate", "role": "collection", "product": "Aluminium pergolas", "asset": "recwp0ey7RDlttN0E", "kind": "Photograph",
+     "origin": "https://b3819663.assetcdn.net/2.0/3819663/wp-content/uploads/2026/02/22.jpeg",
+     "w": 1536, "h": 2048,
+     "alt": "Aluminium pergola with a polycarbonate roof covering an outdoor seating area",
+     "caption": "Polycarbonate roof over outdoor seating."},
+    {"id": "tinted-room", "role": "collection", "product": null, "asset": "recxk1JqOBkUr7XhZ", "kind": "Photograph",
+     "origin": "https://b3819663.assetcdn.net/2.0/3819663/wp-content/uploads/2026/02/WhatsApp-Image-2025-10-30-at-12.07.28-2.jpeg",
+     "w": 1536, "h": 2048,
+     "alt": "Fully enclosed tinted-glass structure with sliding doors, used as a garden room in Ireland",
+     "caption": "Tinted glass, closed in and used as a garden room."},
+    {"id": "veranda", "role": "product", "product": "Verandas", "asset": "recZWtwRPJvgtOEdF", "kind": "Photograph",
+     "origin": "https://b3819663.assetcdn.net/2.0/3819663/wp-content/uploads/2024/11/dfdfss.jpeg",
+     "w": null, "h": null,
+     "alt": "Superior Pergola Ireland installation shown with the supplier's verandas",
+     "caption": "From the Verandas section of the supplier's website."},
+    {"id": "porch", "role": "product", "product": "Porches", "asset": "recK1fKzxhPxjzGVl", "kind": "Photograph",
+     "origin": "https://b3819663.assetcdn.net/2.0/3819663/wp-content/uploads/2026/03/dcddd.jpeg",
+     "w": null, "h": null,
+     "alt": "Superior Pergola Ireland installation shown with the supplier's porches",
+     "caption": "From the Porches section of the supplier's website."},
+    {"id": "bin-cover", "role": "product", "product": "Wheely bin covers", "asset": "recnkoXEIf379DlfD", "kind": "Photograph",
+     "origin": "https://b3819663.assetcdn.net/2.0/3819663/wp-content/uploads/2026/02/wheely-bin-cover-superiour-pergola.jpg",
+     "w": 1920, "h": 2560,
+     "alt": "Aluminium wheely bin cover in anthracite grey installed in a garden",
+     "caption": "Bin store in anthracite grey."},
+    {"id": "bin-cover-2", "role": "collection", "product": "Wheely bin covers", "asset": "recEnHNPO2T1lH1Zx", "kind": "Photograph",
+     "origin": "https://b3819663.assetcdn.net/2.0/3819663/wp-content/uploads/2026/02/Superiour-pergola-wheely-bin-cover.jpg",
+     "w": null, "h": null,
+     "alt": "Aluminium wheely bin cover by Superior Pergola Ireland",
+     "caption": "Another bin store installation."},
+    {"id": "decking", "role": "product", "product": "Composite decking", "asset": "recBmPtsv0rFLAjR3", "kind": "Photograph",
+     "origin": "https://b3819663.assetcdn.net/2.0/3819663/wp-content/uploads/2026/02/Untitled-design-2026-02-16T174810.068.jpg",
+     "w": null, "h": null,
+     "alt": "Superior Pergola Ireland image shown with the supplier's composite decking",
+     "caption": "From the Composite decking section of the supplier's website."}
+  ],
+  "excludedImages": [
+    {"asset": "recI3exMMPoivQrq2", "why": "Near-duplicate: same file name as the bin cover already shown, with a trailing -1; likely a re-upload of the same photograph."},
+    {"asset": "recuJwyorrKwTtfEM", "why": "Same file as the clear-glass pergola photograph already shown (two Atlas records, one image)."},
+    {"asset": "rec2BaYxFqtABlVxH", "why": "Same file as the anthracite bin cover already shown."},
+    {"asset": "26 'Installation Project' records (rec0aG8W27zfJC5jb and others)", "why": "Bulk-ingested from the supplier's /gallery/ and not tied to any product. Not shown until the founder has looked at them, because their content (people, house numbers, car registrations, which product they show) has not been checked."}
+  ],
+  "quoting": {
+    "title": "How a quote works.",
+    "lede": "Everything is made to measure, so the published price is where a quote starts, not what you will pay.",
+    "steps": [
+      ["The starting price", "Each range has a published from-price that includes fitting. Your price depends on size, roof, sides and extras."],
+      ["A visit to measure", "The supplier gives the final price once it has seen and measured the space."],
+      ["What to have ready", "Rough width and depth, whether it fixes to the house wall or stands free, and photos of the spot."],
+      ["What to ask", "Which roof suits your light and rain; how water drains off it; whether sides or doors can be added later; what the warranty covers for your build; and how long from order to fitting."]
+    ],
+    "note": "From-prices were read from superiorpergola.ie on 29 September 2026 and can change. The supplier describes its structures as weather-resistant rather than fully waterproof, and its terms make the customer responsible for planning and building-regulation compliance."
+  },
+  "considerations": [
+    ["Planning", "Many open pergolas in a back garden are exempted development, but limits apply. A front porch is exempt only if it is no more than 2 m² in floor area and at least 2 m from a public road, within height limits. A glazed room attached to the house can count as an extension. Check with your local authority before you order."],
+    ["Glass or polycarbonate", "Glass is clearer and quieter in rain; polycarbonate is lighter and usually cheaper. Tinted glass cuts glare and summer heat but also winter light."],
+    ["Open or closed in", "An open pergola is shelter. Adding glass sides and doors makes it a room, which changes how you'll use it, how warm it gets and possibly the planning position."],
+    ["Fixing and drainage", "Ask how the frame fixes to the house or the ground, and where the rainwater goes."]
+  ],
+  "offer": {
+    "_about": "Configurable homeowner-saving panel for the 'Let PlotNua do the homework' route. OFF. The builder renders nothing while enabled is false. It refuses to render a saving unless percent is a whole number, basisConfirmed is true and the wording names the conditions. Keep percent null in this public repository until the founder switches the offer on: the figure is held in Atlas Partners recq33VZAnSDzKyZq.",
+    "enabled": false,
+    "basisConfirmed": false,
+    "percent": null,
+    "headline": "A PlotNua homeowner saving",
+    "wording": null,
+    "conditions": [
+      "Only when Superior Pergola Ireland receives your enquiry as a PlotNua introduction, before it quotes.",
+      "Applied by Superior Pergola Ireland to its quote; PlotNua does not set or collect it."
+    ]
+  },
+  "referral": {
+    "attribution": "superior-pergola-ireland",
+    "whatsappText": "Hi PlotNua, I'm looking at Superior Pergola Ireland on PlotNua and would like some help with a pergola, veranda or porch (ref superior-pergola-ireland).",
+    "emailSubject": "Help with a pergola, veranda or porch (ref superior-pergola-ireland)"
+  }
+}

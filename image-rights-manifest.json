@@ -103,7 +103,7 @@
       ],
       "required_credit": "Image: Superior Pergola Ireland",
       "evidence": "Granted by Neringa of Superior Pergola Ireland BY EMAIL, 29 September 2026 at 14:59:12 UTC, from admin@superiorpergola.ie, Gmail thread 1a0b5b8814a3baa1, message 1a0edad5eca5a3a6: \"No worries, feel free to use our photos.\" Recorded in Atlas as Image Permission Outreach IPO-SUPERIORPERGOLA-20260929 (recXRyXBNu0UMvSZ6), Permission Method 'Reply by Email', Permission Outcome 'Granted — Founder Confirmed'.",
-      "note": "NOT A ONE-CLICK GRANT and must never be represented as one. No PERM-W-2.0 wording was shown and no decision token was issued.\n\nUNCONDITIONAL GRANT, WITH A PLOTNUA UNDERTAKING. The supplier attached no condition. The credit and the link back to superiorpergola.ie are PlotNua's own commitments, made in PlotNua's reply on the same thread, and are honoured regardless. They are recorded as required_credit here so the gate refuses the imagery if the credit ever disappears from the page — PlotNua holding itself to its own word, not a supplier condition being enforced.\n\nDELIVERY HOST. superiorpergola.ie is a WordPress site serving its media through b3819663.assetcdn.net under /2.0/3819663/wp-content/uploads/. The scope above is that host and that prefix only.\n\nExercised on one page, superior-pergola-platform-preview.html, which is noindex and unlisted. Images are referenced from the supplier's own delivery path, unmodified, and are not copied into any PlotNua asset pool. REMOVAL: delete the image entries in supplier_superior_pergola.py and rebuild — the builder renders no image without one — then regenerate this manifest.\n\nNOTHING ELSE IS INFERRED from the photographs: not price, not lead time, not warranty, not installation coverage, not planning status, and not any supplier relationship, exclusivity or endorsement.",
+      "note": "NOT A ONE-CLICK GRANT and must never be represented as one. No PERM-W-2.0 wording was shown and no decision token was issued.\n\nUNCONDITIONAL GRANT, WITH A PLOTNUA UNDERTAKING. The supplier attached no condition. The credit and the link back to superiorpergola.ie are PlotNua's own commitments, made in PlotNua's reply on the same thread, and are honoured regardless. They are recorded as required_credit here so the gate refuses the imagery if the credit ever disappears from the page — PlotNua holding itself to its own word, not a supplier condition being enforced.\n\nDELIVERY HOST. superiorpergola.ie is a WordPress site serving its media through b3819663.assetcdn.net under /2.0/3819663/wp-content/uploads/. The scope above is that host and that prefix only.\n\nExercised on superior-pergola-platform-preview.html (private, noindex, 5 images) and, from 4 Nov 2026 on the development branch only, on suppliers/superior-pergola-ireland.html (public supplier showcase, 9 photographs, each credited and linked to superiorpergola.ie). Images are referenced from the supplier's own delivery path, unmodified, and are not copied into any PlotNua asset pool. REMOVAL: delete the image's entry in supplier-preview-system/showcases/superior-pergola-ireland/showcase.json and rebuild with build-superior-pergola-showcase.py (the private preview is hand-built: remove its <img>), then regenerate this manifest. (An earlier version of this note named supplier_superior_pergola.py; no such file exists in the repository.)\n\nNOTHING ELSE IS INFERRED from the photographs: not price, not lead time, not warranty, not installation coverage, not planning status, and not any supplier relationship, exclusivity or endorsement.",
       "atlas_permission_record": "recXRyXBNu0UMvSZ6",
       "atlas_permission_ref": "IPO-SUPERIORPERGOLA-20260929",
       "permission_date": "2026-09-29",
@@ -112,7 +112,31 @@
         "That same surface must provide a working link to https://www.superiorpergola.ie/",
         "The private, noindex supplier preview is a demonstration surface, not the public homeowner referral surface. It does NOT discharge the public link-back requirement, and the fact that it does not implement a link is NOT a reason to weaken or remove this requirement."
       ],
-      "publication_requirements_note": "PLOTNUA'S OWN UNDERTAKING, NOT A SUPPLIER CONDITION. Neringa granted use of the photographs without conditions. PlotNua's reply on the same thread promised a credit and a link back. This block is where that promise lives, so it survives the preview that cannot yet keep it. Founder direction, 29 September 2026: do not alter the certified private-preview template merely to create an outbound supplier link. The credit half is enforced today by required_credit and by guard SP14; the link half falls due the first time this imagery appears on a live homeowner surface."
+      "publication_requirements_note": "PLOTNUA'S OWN UNDERTAKING, NOT A SUPPLIER CONDITION. Neringa granted use of the photographs without conditions. PlotNua's reply on the same thread promised a credit and a link back. This block is where that promise lives, so it survives the preview that cannot yet keep it. Founder direction, 29 September 2026: do not alter the certified private-preview template merely to create an outbound supplier link. The credit half is enforced today by required_credit and by guard SP14; the link half falls due the first time this imagery appears on a live homeowner surface.",
+      "permission": {
+        "state": "GRANTED",
+        "ref": "IPO-SUPERIORPERGOLA-20260929",
+        "record": "recXRyXBNu0UMvSZ6",
+        "date": "2026-09-29",
+        "scope": [
+          "feature",
+          "imagery"
+        ],
+        "conditions": [
+          "credit",
+          "link-back"
+        ],
+        "asked": "Email, 21 Sep 2026, PlotNua to admin@superiorpergola.ie (thread 1a0b5b8814a3baa1): would Superior Pergola be happy for PlotNua to use a small selection of its approved product/project images 'while I develop and test the Garden Room experience', credited appropriately.",
+        "answered": "Email, 29 Sep 2026 14:59 UTC, Neringa, admin@superiorpergola.ie: \"No worries, feel free to use our photos.\" Unqualified; no condition attached. PlotNua replied the same day undertaking a credit and a link to superiorpergola.ie.",
+        "note": "'feature' rests on the written referral arrangement in the same thread (22 Oct and 4 Nov 2026: Superior Pergola agreed to receive PlotNua homeowner enquiries as PlotNua referrals), which presupposes PlotNua presenting the supplier to homeowners. The image request itself was framed around development and testing; the reply did not limit it. Founder to mention the public showcase to the supplier in the next routine email (suggested line in the staging report); remove any photograph promptly if the supplier objects."
+      },
+      "listing_review": {
+        "state": "NOT_REQUIRED",
+        "requested_by": null,
+        "requested_in": null,
+        "note": "Superior Pergola did not ask to review a listing before publication. It asked to understand the platform first (23 Sep 2026) and was sent the private preview (superior-pergola-platform-preview.html) before it granted permission on 29 Sep 2026; that creates no pre-live review requirement."
+      },
+      "public_visibility": "PUBLISHABLE"
     },
     {
       "organisation_record": "recTq78jSQNOluU8c",
