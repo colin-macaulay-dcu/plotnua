@@ -53,6 +53,21 @@ case("a claim smuggled into the A-Z span", add(PAGE, '        <li><a href="#p-re
 case("an existing line removed", PAGE.replace(ANCHOR, "", 1), False)
 case("an existing line edited", PAGE.replace("Recommendations cannot be bought", "Recommendations can be bought", 1), False)
 case("the referral disclosure removed", PAGE.replace("Current commercial relationship: TimberIN", "", 1), False)
+# In-place state change of a target organisation's own A-Z line (Powersheds, 4 Nov 2026).
+HL = '        <li><a href="#p-recIy8ghdKxo7PTjP">Hansa24 Group</a>'
+hl = next(l for l in PAGE.splitlines() if l.startswith(HL))
+other = "confirmed</span>" if "not yet confirmed" in hl else "not yet confirmed</span>"
+flipped = PAGE.replace(hl, hl.replace("not yet confirmed</span>", "confirmed</span>") if "not yet" in hl
+                       else hl.replace("confirmed</span>", "not yet confirmed</span>"), 1)
+G = T.outside_text_change
+for nm, tg, og, exp in [("target organisation's A-Z state changes in place", {"recIy8ghdKxo7PTjP"}, {"Hansa24 Group"}, True),
+                        ("A-Z state change for a non-target product", TGT, ORG, False),
+                        ("A-Z state change naming a non-target organisation", {"recIy8ghdKxo7PTjP"}, ORG, False)]:
+    got = G(PAGE, flipped, tg, og)
+    ok = (got is None) == exp
+    print("  %s  %s" % ("PASS" if ok else "FAIL", nm))
+    if not ok:
+        fails.append(nm)
 print("-" * 60)
 print("%s — %d failure(s)" % ("ALL PASS" if not fails else "FAILURES", len(fails)))
 sys.exit(1 if fails else 0)

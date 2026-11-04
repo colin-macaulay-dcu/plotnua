@@ -336,8 +336,9 @@ AZ_TARGET_LINE = re.compile(r'^ {8}<li><a href="#p-(rec[A-Za-z0-9]{14})">([^<]+)
 
 def outside_text_change(rest_a, rest_b, targets, org_names):
     """None when page text outside the explorer config is unchanged except for numbers, or only
-    GAINS A-Z index lines that link a target product and name a target organisation; otherwise a
-    short description of the first disallowed change. Lines may never be removed or replaced."""
+    GAINS A-Z index lines that link a target product and name a target organisation, or changes
+    such a line's state in place; otherwise a short description of the first disallowed change.
+    Other lines may never be removed or replaced."""
     na, nb = re.sub(r"\d+", "#", rest_a), re.sub(r"\d+", "#", rest_b)
     if na == nb:
         return None
@@ -348,6 +349,17 @@ def outside_text_change(rest_a, rest_b, targets, org_names):
     for op, i1, i2, j1, j2 in difflib.SequenceMatcher(None, la, lb, autojunk=False).get_opcodes():
         if op == "equal":
             continue
+        if op == "replace":
+            # A target organisation's own A-Z line may change its state wording in place
+            # (Powersheds Irish availability correction, founder approval 4 Nov 2026): the
+            # same product link and organisation on both sides, one line for one line.
+            oa = rest_a.splitlines()
+            if i2 - i1 == j2 - j1 and all(
+                    (ma := AZ_TARGET_LINE.match(a)) and (mb := AZ_TARGET_LINE.match(b))
+                    and ma.group(1) == mb.group(1) and ma.group(1) in targets
+                    and ma.group(2) == mb.group(2) and ma.group(2) in org_names
+                    for a, b in zip(oa[i1:i2], ob[j1:j2])):
+                continue
         if op != "insert":
             return "%s of %d line(s) near line %d" % (op, max(i2 - i1, j2 - j1), i1 + 1)
         for line in ob[j1:j2]:
