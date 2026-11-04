@@ -46,7 +46,7 @@ Four record types. No field outside these lists may be emitted.
 | type | fields |
 |---|---|
 | `possibility` | id type title standfirst topics[] route |
-| `product` | id type name organisation productType price? priceBasis? tier caveats[] route |
+| `product` | id type name organisation productType price? priceBasis? tier caveats[] rt? (route composed from the envelope `routes` template; see amendment A1) |
 | `supplier` | id type name productCount priceRange? tiersPresent[] caveats[] route |
 | `journey` | id type title possibilityId route |
 
@@ -301,6 +301,44 @@ links to all 13 public Discoveries. Search then enhances it.
 | spare garden | The Borrowed Garden; must NOT return open-your-home-to-art or about |
 | parking | Hidden Cars + Driveway Income; must NOT return hidden-bins or your-home-on-screen |
 | sauna | **Garden Retreat first.** Then only saunas from the governed wellness corpus (wellness-universe-v1.json, published through the supplier publication gate), each routed to its own entry in the Garden Retreat maker explorer (`discovery-garden-retreat.html#p-<record id>`, which the explorer opens; amended 14 Oct 2026, pre-launch corrections). Zero suppliers. Auroom and every other private preview stay invisible; the incidental features mentions still cannot answer. *Amended 14 Oct 2026 by founder decision (OGNYX public integration); until then: Garden Retreat only, zero products.* |
+
+---
+
+## AMENDMENT A1 · ROUTE TEMPLATES (4 November 2026)
+
+**Authority:** founder instruction "Search index capacity — prepare for DISC-035" (4 Nov 2026), authorising a narrowly scoped SEARCH-V1 amendment for the lossless route-template optimisation.
+
+**What changes (representation only).**
+- Before, each of the 128 governed wellness products carried a per-record `route` string, `discovery-garden-retreat.html#p-<record id>`.
+- That destination is now stored **once**, as a second envelope template:
+  - `routes.wellness = "discovery-garden-retreat.html#p-{id}"`
+  - Each wellness product names it with `"rt": "wellness"`.
+  - `{id}` is the governed record id with `prod-` removed.
+- `search.js` composes it exactly as the stored string read, with nothing appended.
+- `routes.product` is unchanged.
+
+**Products now carry no per-record `route`.**
+- Garden Room and Additional Home products compose from `routes.product`, as before.
+- Wellness products compose from `routes.wellness`.
+
+**What does not change.**
+- Every record and every field other than the route representation.
+- Record order.
+- Every resolved destination: all 801 records were measured byte-identical against the previous index, including all 128 wellness routes.
+- The 180 KB G10 guard.
+- The topic map, and every allowlist and leak guard.
+
+**Guards (tightened, not relaxed).**
+- G1, G1b and G12 judge the composed route of a templated record exactly as they judged the stored string.
+- R1 refuses:
+  - an envelope whose templates are not exactly `product` and `wellness`;
+  - any product carrying a per-record `route`;
+  - a wellness product without `"rt": "wellness"`, or a non-wellness product with it;
+  - a wellness product whose composed route is not its own explorer entry, or whose entry the Garden Retreat explorer does not list.
+- `prove-search-guards.py` adds C20–C22 to prove those refusals.
+- `sync-discovery-makers.py` S7 and its test compose the same route.
+
+**Effect.** The index is 183,775 → 178,193 bytes (−5,582), leaving 6,127 bytes under the 180 KB guard.
 
 ---
 

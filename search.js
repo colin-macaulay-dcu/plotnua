@@ -64,6 +64,16 @@
        id, so this never invents a destination. Nothing is appended: the
        explorer has no Back-to-Search label to correct. */
     if (typeof rec.route === 'string' && rec.route) { return rec.route; }
+    /* SEARCH-V1 amendment A1 (4 Nov 2026): that destination is now stored once,
+       as the envelope template the record names ("rt": "wellness" ->
+       routes.wellness = "discovery-garden-retreat.html#p-{id}"). Composed
+       exactly as the stored string was: the bare record id, nothing appended. */
+    if (typeof rec.rt === 'string' && rec.rt && rec.rt !== 'product') {
+      var named = index && index.routes && index.routes[rec.rt];
+      var rid = String(rec.id || '');
+      if (!named || rid.indexOf('prod-') !== 0) { return null; }
+      return named.replace('{id}', rid.slice(5));
+    }
     var tpl = index && index.routes && index.routes.product;
     if (!tpl) { return null; }
     var id = String(rec.id || '');

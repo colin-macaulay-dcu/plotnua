@@ -301,6 +301,27 @@ run_case("C19 the sitemap yields no allowlist at all", "INPUT",
          mutate_tree=lambda t: (t / "sitemap.xml").write_text(
              "<urlset></urlset>", encoding="utf-8"))
 
+# ------------------------------------- SEARCH-V1 amendment A1 (4 Nov 2026)
+# Wellness products route through the second envelope template (routes.wellness),
+# named by "rt": "wellness". These cases run with the real wellness universe copied
+# in, so R1 has wellness products to judge.
+def _with_wellness(t):
+    shutil.copy2(ROOT / "wellness-universe-v1.json", t / "wellness-universe-v1.json")
+
+run_case("C20 A1 a wellness product loses its template key", "BUILDER",
+         "must name the wellness template", mutate_tree=_with_wellness,
+         mutate_builder=lambda b: b.replace('        rec["rt"] = WL_TEMPLATE_KEY', '        pass'))
+
+run_case("C21 A1 a product carries a per-record route again", "BUILDER",
+         "carries a per-record route", mutate_tree=_with_wellness,
+         mutate_builder=lambda b: b.replace('        rec["rt"] = WL_TEMPLATE_KEY',
+                                            '        rec["rt"] = WL_TEMPLATE_KEY\n        rec["route"] = wl_route(rec["id"][5:])'))
+
+run_case("C22 A1 the wellness template points somewhere else", "BUILDER",
+         "not its own explorer entry", mutate_tree=_with_wellness,
+         mutate_builder=lambda b: b.replace('WL_TEMPLATE = WL_PAGE + "#p-{id}"',
+                                            'WL_TEMPLATE = "discovery-living-in-the-garden.html#p-{id}"'))
+
 print()
 print("  %d guards proven capable, %d blind" % (passed, failed))
 print()

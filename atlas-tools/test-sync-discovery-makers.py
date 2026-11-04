@@ -150,9 +150,13 @@ def main():
               D["products"] == O["products"] + 1 and D["makers"] == O["makers"] + 1
               and D["tabs"]["saunas"]["products"] == O["tabs"]["saunas"]["products"] + 1
               and D["tabs"]["hotTubs"] == O["tabs"]["hotTubs"] and D["tabs"]["coldPlunges"] == O["tabs"]["coldPlunges"])
-        search = {x["id"]: x for x in c.j("search-index-v1.json")["records"]}
+        SI = c.j("search-index-v1.json")
+        search = {x["id"]: x for x in SI["records"]}
+        # SEARCH-V1 amendment A1 (4 Nov 2026): the route is the envelope template the record names.
+        _rec = search.get("prod-" + NEW_ID, {})
+        _route = _rec.get("route") or SI.get("routes", {}).get(_rec.get("rt", ""), "").replace("{id}", NEW_ID)
         check("T8  Search lists the new product, routed to the explorer that lists it",
-              search.get("prod-" + NEW_ID, {}).get("route") == "discovery-garden-retreat.html#p-" + NEW_ID)
+              _route == "discovery-garden-retreat.html#p-" + NEW_ID)
         check("T9  product links resolve after the rebuild (S7 passes)", c.tool("--check").returncode == 0)
         check("T11 Living in the Garden is byte-identical; its snapshot entry is unchanged",
               c.text("discovery-living-in-the-garden.html") == garden_before
@@ -161,9 +165,9 @@ def main():
         check("T13b repeating the targeted apply writes nothing", "written: nothing" in r.stdout, r.stdout[-300:])
         # S7 negative: Search routing a product to a page that does not list it
         S = c.j("search-index-v1.json")
-        for x in S["records"]:
-            if x["id"] == "prod-" + NEW_ID:
-                x["route"] = "discovery-garden-retreat.html#p-recAAAAAAAAAAAAAA"
+        # Amendment A1: a wellness product's route is the envelope template it names, so the
+        # sabotage points that template at a product the page does not list.
+        S["routes"]["wellness"] = "discovery-garden-retreat.html#p-recAAAAAAAAAAAAAA"
         c.w("search-index-v1.json", S)
         r = c.tool("--check")
         check("T9b a broken product route is caught (S7)", r.returncode == 2 and "S7" in r.stdout)
