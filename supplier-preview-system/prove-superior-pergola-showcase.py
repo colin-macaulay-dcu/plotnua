@@ -8,7 +8,8 @@ Checks the built page, then breaks the data file in memory and proves the builde
   SP2  every photograph is inside the grant's scope (b3819663.assetcdn.net/2.0/3819663/) and shown once
   SP3  every photograph carries the required credit as a working link to superiorpergola.ie
   SP4  the only links to the supplier's site are those credits (no Visit / Shop / Buy button)
-  CM1  no percentage anywhere on the page while the saving is off; no commission rate in the data file or builder
+  CM1  while the saving is off: no percentage on the page; while on: exactly one, the homeowner's, in the panel
+  CM5  a live saving says it covers pergolas only and that the other four ranges are not included
   CM4  switched on with its basis confirmed, the saving renders exactly the approved wording, once
   CM2  with the saving switched off, no saving markup exists at all (not hidden: absent)
   CM3  the referral fee is disclosed in words
@@ -64,12 +65,22 @@ check("SP4", all(t in (CREDIT, "superiorpergola.ie") for t in sup_links)
 
 text = re.sub(r"<style.*?</style>|<script.*?</script>", "", page, flags=re.S)
 src = DATAF.read_text(encoding="utf-8") + BUILDER.read_text(encoding="utf-8")
-check("CM1", "%" not in re.sub(r"<[^>]+>", " ", text)
-      and not re.search(r"(?i)commission[^\n]{0,40}\d|\d\s*%[^\n]{0,30}commission|referral fee[^\n]{0,20}\d", src)
-      and not ORIG["offer"]["enabled"],
-      "no percentage on the page; no commission rate in the data file or the builder")
-check("CM2", "data-pn-offer" not in page and "sp-offer\"" not in page and not ORIG["offer"]["enabled"],
-      "saving switched off and absent from the markup")
+O = ORIG["offer"]
+visible = re.sub(r"<[^>]+>", " ", text)
+pcts = re.findall(r"(\d+)\s*%", visible)
+panel = re.findall(r'<div class="sp-offer" data-pn-offer="[^"]+">.*?</div>', page, re.S)
+no_rate = not re.search(r"(?i)commission[^\n]{0,40}\d|\d\s*%[^\n]{0,30}commission|referral fee[^\n]{0,20}\d", src)
+if O["enabled"]:
+    check("CM1", no_rate and pcts == [str(O["percent"])] and len(panel) == 1 and f'{O["percent"]}%' in panel[0],
+          f"exactly one percentage on the page ({O['percent']}%, the homeowner saving, inside the offer panel); no commission rate in the source")
+    ptxt = re.sub(r"<[^>]+>", " ", panel[0]).lower() if panel else ""
+    check("CM2", len(panel) == 1 and "8%" not in visible and "commission" not in ptxt, "one saving panel; no 8% and no commission in it")
+    check("CM5", "pergolas only" in ptxt and "pergola" in O["headline"].lower() and O["wording"] in page
+          and all(w in ptxt for w in ("verandas", "porches", "decking", "bin covers")) and "not included" in ptxt,
+          "the saving says it applies to pergolas only and that the other ranges are not included")
+else:
+    check("CM1", no_rate and not pcts, "no percentage on the page while the saving is off; no commission rate in the source")
+    check("CM2", not panel and "data-pn-offer" not in page, "saving switched off and absent from the markup")
 check("CM3", "may receive a referral fee from Superior Pergola Ireland" in page, "referral fee disclosed in words")
 check("PD1", "<form" not in page and "<input" not in page and "<textarea" not in page
       and len(re.findall(r"<script", page)) == 3, "no form, no input; only the consent and analytics scripts")
@@ -101,8 +112,10 @@ def refuses(label, mutate, argv=None):
 
 
 def first_img(d): return d["images"][1]
-refuses("saving switched on, basis unconfirmed", lambda d: d["offer"].update(enabled=True))
+refuses("saving switched on, basis unconfirmed", lambda d: d["offer"].update(enabled=True, basisConfirmed=False))
 refuses("saving switched on with no percent", lambda d: d["offer"].update(enabled=True, basisConfirmed=True, percent=None))
+refuses("saving with no range named", lambda d: d["offer"].update(enabled=True, scope=None))
+refuses("saving widened to verandas without saying so", lambda d: d["offer"].update(enabled=True, scope="Verandas"))
 refuses("saving wording naming the combined 8%", lambda d: d["offer"].update(wording="Save 8% on Superior Pergola installations"))
 refuses("saving wording naming PlotNua's commission", lambda d: d["offer"].update(wording="4% off; PlotNua earns a commission"))
 refuses("saving switched on with a different figure in its wording", lambda d: d["offer"].update(enabled=True, basisConfirmed=True, percent=3))

@@ -13,8 +13,7 @@
     "agreedInWriting": "2026-11-04",
     "state": "AGREED",
     "open": [
-      "Which ranges the homeowner discount covers (pergola range confirmed; verandas, porches, wheely bin covers and composite decking not separately confirmed)",
-      "Whether the homeowner's 4% is taken off the final price including or excluding VAT (the supplier's 17:16 reply settles the commission basis only)",
+      "Whether the homeowner discount also covers verandas, porches, wheely bin covers and composite decking",
       "Supplier acknowledgement of each referral received (asked 4 Nov 2026)"
     ],
     "payable": "After the job is completed and the customer's final payment is made",
@@ -22,15 +21,13 @@
     "commissionBasis": "Final sale price excluding VAT (supplier, 4 Nov 2026 17:16 UTC; PlotNua confirmed 20:03 UTC). The rate is held in Atlas only."
   },
   "homeownerSaving": {
-    "state": "PREPARED, OFF",
+    "state": "LIVE for aluminium pergolas only (from 4 Nov 2026, founder decision)",
     "switch": "supplier-preview-system/showcases/superior-pergola-ireland/showcase.json > offer",
     "goLiveRequires": [
-      "Supplier confirms in writing which ranges are eligible",
-      "Supplier confirms whether the 4% is off the VAT-inclusive or VAT-exclusive final price",
-      "Then set offer.basisConfirmed and offer.enabled to true in showcase.json and rebuild (wording already approved 4 Nov 2026)",
+      "Done for pergolas. Verandas, porches, wheely bin covers and composite decking: not advertised until the supplier confirms they are eligible; then widen offer.scope with founder approval.",
       "The referral email to the supplier states the homeowner's discount before the quote"
     ],
-    "approvedWording": "PlotNua customers receive a 4% discount on eligible Superior Pergola installations."
+    "approvedWording": "Save 4% on your Superior Pergola installation when introduced through PlotNua."
   },
   "homeownerDisclosure": "On the showcase, in words only: PlotNua may receive a referral fee from the supplier if the homeowner goes ahead after a PlotNua introduction. No rate is ever shown to homeowners.",
   "personalData": {

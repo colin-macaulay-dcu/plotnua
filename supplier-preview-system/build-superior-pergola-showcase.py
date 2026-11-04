@@ -95,6 +95,11 @@ def guard(offer_preview=False):
             sys.exit("FAIL: a homeowner saving needs a whole-number percent and its conditions")
         if o["enabled"] and (not o["basisConfirmed"] or not o["wording"]):
             sys.exit("FAIL: the saving cannot go live until its basis is confirmed and its wording approved")
+        if o.get("scope") not in names:
+            sys.exit("FAIL: the saving must name the one range it applies to (offer.scope = a product in the data file)")
+        key = o["scope"].split()[-1].rstrip("s").lower()          # 'pergola'
+        if key not in o["headline"].lower() or key not in o["conditions"][0].lower():
+            sys.exit("FAIL: the saving's headline and first condition must say which range it applies to")
     words = " ".join([o["wording"] or "", o["headline"]] + o["conditions"])
     figures = {int(n) for n in re.findall(r"(\d+)\s*%", words)}
     if re.search(r"(?i)commission|referral fee", words) or (figures and figures != {o["percent"]}):
@@ -202,6 +207,7 @@ CSS = """<style>
 .sp-route .pn-two{ max-width:none; }
 .sp-offer{ margin:0 0 16px; border:1px solid var(--bronze); border-radius:14px; padding:14px 16px; }
 .sp-offer b{ display:block; font-family:var(--serif); font-weight:400; font-size:24px; color:var(--ink); line-height:1.15; }
+.sp-offer-note a{ color:var(--bronze); text-decoration:none; border-bottom:1px solid var(--line); }
 .sp-offer ul{ margin:8px 0 0; padding:0 0 0 18px; font-size:13px; line-height:1.55; color:var(--stone); }
 .sp-rec{ padding:34px 0 64px; border-top:1px solid var(--line); font-size:13.5px; line-height:1.7; color:var(--stone); }
 .sp-rec p{ margin:0 0 6px; max-width:84ch; }
@@ -230,7 +236,16 @@ def product(p, I):
             f'<p class="sp-sum">{E(p["summary"])}</p><dl class="sp-spec">{dl}</dl>'
             f'<div class="sp-price"><b>From {eur(p["price"])}{unit}</b><span>Published starting price, including fitting. '
             f'Your price is set after the supplier measures up.</span></div>'
-            f'<p class="sp-src">As published by {E(DATA["supplier"]["name"])}</p></article>')
+            f'{offer_note(p)}<p class="sp-src">As published by {E(DATA["supplier"]["name"])}</p></article>')
+
+
+def offer_note(p):
+    """On the one range the saving covers, a pointer to it (no figure here; the figure lives in the panel)."""
+    o = DATA["offer"]
+    if not o["enabled"] or p["name"] != o.get("scope"):
+        return ""
+    return ('<p class="sp-src sp-offer-note"><a href="#enquire">A PlotNua homeowner saving applies to pergolas '
+            'introduced through PlotNua <span aria-hidden="true">&darr;</span></a></p>')
 
 
 def offer_html(preview=False):
