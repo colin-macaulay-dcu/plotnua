@@ -21,20 +21,20 @@
     ]
   },
   "snapshotSha256": "31397887e2de5dc534d100a32c8a6791c3e9c9339b08df718f94dd0b45a66613",
-  "snapshotScope": "Atlas Core appoLZFWesvoPhZGR via the Airtable connector, 14 Oct 2026, with the five 14 Oct recorded contradictions written to Standards (all 153 Wellness / Sauna products, 11 organisations); internal governance data, never committed; targeted update 2026-10-16 for Irish Sauna Company (1 record(s), snapshot sha256 35695f8a4916c3fc); targeted update 2026-10-27 for Irish Sauna Company (7 record(s), snapshot sha256 7442073f692e12db)",
+  "snapshotScope": "Atlas Core appoLZFWesvoPhZGR via the Airtable connector, 14 Oct 2026, with the five 14 Oct recorded contradictions written to Standards (all 153 Wellness / Sauna products, 11 organisations); internal governance data, never committed; targeted update 2026-10-16 for Irish Sauna Company (1 record(s), snapshot sha256 35695f8a4916c3fc); targeted update 2026-10-27 for Irish Sauna Company (7 record(s), snapshot sha256 7442073f692e12db); targeted update 2026-11-04 for Gardenhouse24 Ireland (6 record(s), snapshot sha256 9199a3bbc373333e)",
   "sourceCategory": "Wellness / Sauna",
-  "sourceCategoryCount": 158,
-  "eligibleCount": 122,
-  "organisationCount": 7,
+  "sourceCategoryCount": 164,
+  "eligibleCount": 128,
+  "organisationCount": 8,
   "kindCounts": {
-    "sauna": 93,
-    "hot-tub": 22,
+    "sauna": 97,
+    "hot-tub": 24,
     "cold-plunge": 12,
     "combination": 4
   },
   "kindOrganisationCounts": {
-    "sauna": 6,
-    "hot-tub": 4,
+    "sauna": 7,
+    "hot-tub": 5,
     "cold-plunge": 4,
     "combination": 1
   },
@@ -42,7 +42,7 @@
   "excludedCount": 0,
   "gateHeldCount": 12,
   "listingBasisCounts": {
-    "SUPPLIER_PERMISSION": 37,
+    "SUPPLIER_PERMISSION": 43,
     "PUBLIC_INFORMATION": 85
   },
   "products": [
@@ -132,6 +132,192 @@
       "publicVisibility": "HOLD",
       "holdReason": "publication-record-missing",
       "listingBasis": null
+    },
+    {
+      "id": "recdDCBpXBKOa7leI",
+      "productCode": "PROD-001338",
+      "productName": "BENE 70 garden sauna room with a lounge room",
+      "organisation": "Gardenhouse24 Ireland",
+      "productCategory": "Wellness / Sauna",
+      "productType": null,
+      "kinds": [
+        "sauna"
+      ],
+      "productUrl": "https://gardenhouse24.ie/garden-sauna-room-with-a-lounge-room.html",
+      "price": {
+        "state": "VERIFIED_NUMERIC_PRICE",
+        "amount": 14412,
+        "currency": "EUR",
+        "type": "Starting From",
+        "basis": "Published 'from' price. The supplier does not state whether it includes VAT."
+      },
+      "irish": {
+        "state": "UNCONFIRMED"
+      },
+      "qualification": {
+        "rule": "wellness-qualification-v3",
+        "state": "ELIGIBLE",
+        "heldReasons": [],
+        "excludedReasons": []
+      },
+      "publicVisibility": "PUBLISHABLE",
+      "holdReason": null,
+      "listingBasis": "SUPPLIER_PERMISSION"
+    },
+    {
+      "id": "recEDHcHJ5dWaWklV",
+      "productCode": "PROD-001339",
+      "productName": "Hot Tub DeLux 200",
+      "organisation": "Gardenhouse24 Ireland",
+      "productCategory": "Wellness / Sauna",
+      "productType": null,
+      "kinds": [
+        "hot-tub"
+      ],
+      "productUrl": "https://gardenhouse24.ie/hot-tub-delux-200-200-x-200-cm-6-5-x-6-5.html",
+      "price": {
+        "state": "VERIFIED_NUMERIC_PRICE",
+        "amount": 3840,
+        "currency": "EUR",
+        "type": "Starting From",
+        "basis": "Published 'from' price. The supplier does not state whether it includes VAT."
+      },
+      "irish": {
+        "state": "UNCONFIRMED"
+      },
+      "qualification": {
+        "rule": "wellness-qualification-v3",
+        "state": "ELIGIBLE",
+        "heldReasons": [],
+        "excludedReasons": []
+      },
+      "publicVisibility": "PUBLISHABLE",
+      "holdReason": null,
+      "listingBasis": "SUPPLIER_PERMISSION"
+    },
+    {
+      "id": "rec0aKJXY0kwObDF4",
+      "productCode": "PROD-001340",
+      "productName": "Hot Tub DeLux 220",
+      "organisation": "Gardenhouse24 Ireland",
+      "productCategory": "Wellness / Sauna",
+      "productType": null,
+      "kinds": [
+        "hot-tub"
+      ],
+      "productUrl": "https://gardenhouse24.ie/hot-tub-delux-220-220-x-220-cm-7-2-x-7-2.html",
+      "price": {
+        "state": "VERIFIED_NUMERIC_PRICE",
+        "amount": 4340,
+        "currency": "EUR",
+        "type": "Starting From",
+        "basis": "Published 'from' price. The supplier does not state whether it includes VAT."
+      },
+      "irish": {
+        "state": "UNCONFIRMED"
+      },
+      "qualification": {
+        "rule": "wellness-qualification-v3",
+        "state": "ELIGIBLE",
+        "heldReasons": [],
+        "excludedReasons": []
+      },
+      "publicVisibility": "PUBLISHABLE",
+      "holdReason": null,
+      "listingBasis": "SUPPLIER_PERMISSION"
+    },
+    {
+      "id": "recry2T2pKMwGZkIU",
+      "productCode": "PROD-001335",
+      "productName": "LEO barrel sauna, front full glass",
+      "organisation": "Gardenhouse24 Ireland",
+      "productCategory": "Wellness / Sauna",
+      "productType": null,
+      "kinds": [
+        "sauna"
+      ],
+      "productUrl": "https://gardenhouse24.ie/thermo-barrel-sauna-leo-with-front-full-glass-200-x-160cm-6-5-x-5-4.html",
+      "price": {
+        "state": "VERIFIED_NUMERIC_PRICE",
+        "amount": 4884,
+        "currency": "EUR",
+        "type": "Starting From",
+        "basis": "Published 'from' price. The supplier does not state whether it includes VAT."
+      },
+      "irish": {
+        "state": "UNCONFIRMED"
+      },
+      "qualification": {
+        "rule": "wellness-qualification-v3",
+        "state": "ELIGIBLE",
+        "heldReasons": [],
+        "excludedReasons": []
+      },
+      "publicVisibility": "PUBLISHABLE",
+      "holdReason": null,
+      "listingBasis": "SUPPLIER_PERMISSION"
+    },
+    {
+      "id": "reckCDHkLz2m4pIln",
+      "productCode": "PROD-001336",
+      "productName": "MOSSO 70 outdoor sauna cabin with terrace",
+      "organisation": "Gardenhouse24 Ireland",
+      "productCategory": "Wellness / Sauna",
+      "productType": null,
+      "kinds": [
+        "sauna"
+      ],
+      "productUrl": "https://gardenhouse24.ie/outdoor-sauna-with-a-terrace-mosso-sale-in-ireland.html",
+      "price": {
+        "state": "VERIFIED_NUMERIC_PRICE",
+        "amount": 8722,
+        "currency": "EUR",
+        "type": "Starting From",
+        "basis": "Published 'from' price. The supplier does not state whether it includes VAT."
+      },
+      "irish": {
+        "state": "UNCONFIRMED"
+      },
+      "qualification": {
+        "rule": "wellness-qualification-v3",
+        "state": "ELIGIBLE",
+        "heldReasons": [],
+        "excludedReasons": []
+      },
+      "publicVisibility": "PUBLISHABLE",
+      "holdReason": null,
+      "listingBasis": "SUPPLIER_PERMISSION"
+    },
+    {
+      "id": "rec3TWaGevhGnoTxq",
+      "productCode": "PROD-001337",
+      "productName": "TALLEBORG 70 sauna cabin with large windows",
+      "organisation": "Gardenhouse24 Ireland",
+      "productCategory": "Wellness / Sauna",
+      "productType": null,
+      "kinds": [
+        "sauna"
+      ],
+      "productUrl": "https://gardenhouse24.ie/sauna-cabin-with-large-windows-talleborg-ireland.html",
+      "price": {
+        "state": "VERIFIED_NUMERIC_PRICE",
+        "amount": 13126,
+        "currency": "EUR",
+        "type": "Starting From",
+        "basis": "Published 'from' price. The supplier does not state whether it includes VAT."
+      },
+      "irish": {
+        "state": "UNCONFIRMED"
+      },
+      "qualification": {
+        "rule": "wellness-qualification-v3",
+        "state": "ELIGIBLE",
+        "heldReasons": [],
+        "excludedReasons": []
+      },
+      "publicVisibility": "PUBLISHABLE",
+      "holdReason": null,
+      "listingBasis": "SUPPLIER_PERMISSION"
     },
     {
       "id": "recIy8ghdKxo7PTjP",
