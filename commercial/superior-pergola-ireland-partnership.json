@@ -34,8 +34,12 @@
   "homeownerDisclosure": "On the showcase, in words only: PlotNua may receive a referral fee from the supplier if the homeowner goes ahead after a PlotNua introduction. No rate is ever shown to homeowners.",
   "personalData": {
     "collectedOnPage": false,
-    "routes": ["PlotNua WhatsApp", "hello@plotnua.ie"],
+    "routes": [
+      "PlotNua WhatsApp",
+      "hello@plotnua.ie",
+      "your-plot.html enquiries carry via=<supplier-slug> (a slug, never personal data)"
+    ],
     "rule": "Nothing about a homeowner reaches the supplier until the homeowner has said yes to that specific introduction, in words recorded on the referral record (Atlas, private). No automatic transmission; no public store.",
-    "store": "Atlas Referral Ledger (private). Fields proposed in the staging report; not yet added."
+    "store": "Atlas Referral Ledger (private). Fields added 4 Nov 2026: Customer Name, Customer Email, Customer Phone, Customer Location, Project Description, Introduction Consent, Consent Record, Referral Status, Quotation Value, Installation Status, Delete Customer Details By. Reused: Referral ID, Supplier, Referral Date (introduction date), Payment Status (commission status), Order Status, Agreement."
   }
 }

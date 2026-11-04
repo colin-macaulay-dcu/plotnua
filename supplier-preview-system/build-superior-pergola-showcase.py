@@ -320,7 +320,7 @@ def build(offer_preview=False):
 
 <footer class="sp-rec"><div class="sp-w">
   <p>Photography: {E(s["name"])}, from <a href="{E(s["creditHref"])}" rel="noopener" target="_blank">superiorpergola.ie</a>, used with the supplier&rsquo;s permission. The supplier keeps ownership of its photographs.</p>
-  <p>Product details and starting prices as published on superiorpergola.ie (prices read 29 September 2026; ranges read 16 October 2026). Prices and specifications can change; confirm them with the supplier.</p>
+  <p>Product details and starting prices as published on superiorpergola.ie (checked 4 November 2026). Prices and specifications can change; confirm them with the supplier.</p>
 </div></footer>
 </main>
 </body>

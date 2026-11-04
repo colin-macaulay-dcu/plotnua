@@ -71,6 +71,15 @@
      Decided here, before first paint, so the Eircode screen is never seen in this view. -->
 <script data-cookieconsent="ignore">(function(){try{if(new URLSearchParams(location.search).get('myplot')==='1'){var h=document.documentElement;h.classList.add('pn-myplot-view');document.title='My Plot | PlotNua';
 setTimeout(function(){h.classList.add('pn-myplot-open');},8000);}}catch(e){}})();</script>
+<!-- SUPPLIER ATTRIBUTION (via=), 4 Nov 2026. A supplier showcase links here as
+     your-plot.html?...&via=<supplier-slug>. The slug is read once from this page's own URL,
+     accepted only if it is a plain lowercase slug, and carried in a hidden 'via' field on every
+     homeowner enquiry this page sends to PlotNua (Ask PlotNua, the enquiry screen). The URL is
+     the only carrier: in-page navigation keeps the query string (history entries are pushed
+     without a URL), so nothing is written to cookies or storage. It names a supplier page, never
+     a person; nothing about the homeowner is added to it or sent to the supplier by it. -->
+<script data-cookieconsent="ignore">(function(){var v='';try{var q=(new URLSearchParams(location.search).get('via')||'').trim().toLowerCase();if(/^[a-z0-9](?:[a-z0-9-]{0,62}[a-z0-9])?$/.test(q))v=q;}catch(e){}window.PLOTNUA_VIA=v;
+document.addEventListener('DOMContentLoaded',function(){var f=document.querySelectorAll('input[type=hidden][name=via]');for(var i=0;i<f.length;i++)f[i].value=v;});})();</script>
 <style>html.pn-myplot-view:not(.pn-myplot-open) #screen-entry{opacity:0 !important;pointer-events:none !important}
 html.pn-myplot-view:not(.pn-myplot-journey) #pnReturn{display:none !important}
 html.pn-myplot-view:not(.pn-myplot-open) body::after{content:"Opening My Plot\2026";position:fixed;inset:0;display:grid;place-items:center;z-index:9999;color:#C2BDB5;font:500 15px/1 'Hanken Grotesk',system-ui,sans-serif;letter-spacing:.08em;pointer-events:none}
@@ -10779,6 +10788,8 @@ html.pn-myplot-view:not(.pn-myplot-open) body::after{content:"Opening My Plot\20
 
           <input type="hidden" name="product"  id="askOwnProduct"  value="">
           <input type="hidden" name="supplier" id="askOwnSupplier" value="">
+          <!-- Supplier attribution: the showcase slug from this page's via= parameter, or empty. -->
+          <input type="hidden" name="via" id="askOwnVia" value="">
           <input type="hidden" name="context"
                  value="Atlas Assessment — Questions worth asking">
           <input type="hidden" name="_subject"
@@ -15572,6 +15583,7 @@ html.pn-myplot-view:not(.pn-myplot-open) body::after{content:"Opening My Plot\20
       productId: ENQUIRY_TEST_PRODUCT_ID,
       consent: 'Yes',
       mode: 'test',
+      via: window.PLOTNUA_VIA || '',
       _gotcha: els.enqGotcha ? els.enqGotcha.value : ''
     };
   }
