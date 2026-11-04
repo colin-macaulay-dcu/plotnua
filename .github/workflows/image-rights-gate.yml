@@ -316,6 +316,9 @@ jobs:
           # Product navigation in the maker explorer (14 Oct 2026): product
           # links only under a link-back grant, images only by enumeration.
           python3 atlas-tools/build-maker-explorer.py --check
+          # DISC-008 pricing correction (4 Nov 2026): every garden-room price in the Maker Explorer
+          # equals the product page's own pnPriceView, run from your-plot.html itself.
+          node atlas-tools/prove-explorer-price-parity.mjs
           python3 atlas-tools/prove-maker-explorer-navigation.py
           # Premium Supplier Gallery (founder design approval 30 Oct 2026): the
           # Garden Retreat region must be current with the Maker Explorer config

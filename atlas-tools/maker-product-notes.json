@@ -1,6 +1,6 @@
 {
   "schema": "plotnua.maker-product-notes.v1",
-  "decision": "Founder approval 27 Oct 2026, 'Irish Sauna Company collection — implementation approved'. The wording of every note below is the founder's. Read by atlas-tools/build-maker-explorer.py (guard G15). A note shows only where it is listed; a note with validUntil refuses the build after that date. Extended 4 Nov 2026 (founder approval 'Powersheds Maker Explorer data correction'): a Powersheds maker line and register prices (productPrices) for its three garden-room log cabins, each checked against the universe's verified price.",
+  "decision": "Founder approval 27 Oct 2026, 'Irish Sauna Company collection — implementation approved'. The wording of every note below is the founder's. Read by atlas-tools/build-maker-explorer.py (guard G15). A note shows only where it is listed; a note with validUntil refuses the build after that date. Extended 4 Nov 2026 (founder approval 'Powersheds Maker Explorer data correction'): a Powersheds maker line (its register prices were retired 4 Nov 2026 by the DISC-008 pricing correction: all garden-room prices now come from the product records, by the product page's rule).",
   "makerNotes": {
     "Irish Sauna Company": {
       "text": "Designed and handcrafted to order by Irish Sauna Company in Connemara, Co. Galway. Heaters by Harvia.",
@@ -44,19 +44,5 @@
         "evidence": "Product page, 27 Oct 2026: 'The heater requires a suitable 400V three-phase electrical supply, with installation and final electrical requirements to be assessed by a qualified electrician.' Wording: founder, 27 Oct 2026."
       }
     ]
-  },
-  "productPrices": {
-    "recLcmGihJ0mrfdwV": {
-      "text": "€6,129 · VAT not stated",
-      "evidence": "Atlas Pricing recfb1UXi3nW7ekH4, Verified, ie.powersheds.com 16 Oct 2026 (12x12, doors central; doors left or right €6,219)."
-    },
-    "recYM6hUVXceIrmmv": {
-      "text": "€6,959 · VAT not stated",
-      "evidence": "Atlas Pricing recyHNAgh4s50Ol1S, Verified, ie.powersheds.com 16 Oct 2026 (14x14, doors central; doors left or right €7,044)."
-    },
-    "recrmlUXvX9TbgTj7": {
-      "text": "€9,199 · VAT not stated",
-      "evidence": "Atlas Pricing reckjDb8tqpNh29c9, Verified, ie.powersheds.com 16 Oct 2026 (16x12, doors central)."
-    }
   }
 }

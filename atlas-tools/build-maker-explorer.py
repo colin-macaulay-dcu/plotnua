@@ -148,7 +148,7 @@ def _gr(U):
         if r.get("noPublishedIrishRoute"): return "r"
         return "u"
     eligible = [(r["organisation"], r["id"], r["productName"], r.get("productType") or "", st(r),
-                 {"kinds": [], "price": "", "nav": universe_nav(r)}) for r in rows]
+                 {"kinds": [], "price": garden_price_label(r), "nav": universe_nav(r)}) for r in rows]
     # "confirmed" is cross-checked against the qualification signal each
     # LISTED record carries, not against the header: the header's
     # confirmedIrishAvailabilityCount counts excluded products too, so an
@@ -539,26 +539,75 @@ def notes_register():
     return _NOTES
 
 
-def prices_register():
-    """Register-listed price lines for products whose source carries no price line (garden rooms).
-    Powersheds Maker Explorer correction (founder approval, 4 Nov 2026). Each line must state the
-    exact VERIFIED base price the garden-room universe holds for that product; anything else refuses."""
-    if not NOTES_REG.exists():
-        return {}
-    R = json.loads(NOTES_REG.read_text(encoding="utf-8"))
-    out = {}
-    for pid, v in (R.get("productPrices") or {}).items():
-        if not v.get("text") or not v.get("evidence"): die("G15 product price without text or evidence: " + pid)
-        U = garden_index().get(pid)
-        pe = (U or {}).get("priceEvidence") or {}
-        if not U or pe.get("status") != "Verified" or not pe.get("base") or pe.get("currency") != "EUR":
-            die("G15 register price for %s has no verified EUR price in the garden-room universe" % pid)
-        amt = "\u20ac{:,.0f}".format(pe["base"])
-        if not v["text"].startswith(amt + " ") or ("VAT" in v["text"] and pe.get("includesVat") == "Unknown"
-                                                    and "VAT not stated" not in v["text"]):
-            die("G15 register price for %s does not state the universe's verified %s" % (pid, amt))
-        out[pid] = v["text"]
-    return out
+# ── GARDEN-ROOM PRICES (founder approval, 4 Nov 2026: DISC-008 pricing correction) ──
+# Every garden-room product carries a price label read from its own priceEvidence, with
+# EXACTLY the interpretation PlotNua's product page applies (your-plot.html pnPriceView:
+# ambiguous first, then quote-only, then a usable figure as range / from / estimated /
+# quoted / exact, in the record's own currency, never converted). Only the wording around
+# the figure is the explorer's. atlas-tools/prove-explorer-price-parity.mjs runs the page's
+# own pnPriceView on every product and proves the two agree.
+#   Verified, EUR        "€X" / "From €X" + the recorded VAT position
+#   Verified, GBP        "£X · UK price"
+#   anything else priced "Indicative price: €X" (GBP / USD keep their region note)
+#   quote only           "Price on enquiry"
+#   missing / conflicting / zero / no currency   "Price unavailable"
+# The Powersheds price register (maker-product-notes.json productPrices) is retired by this
+# change: its three verified prices now come from the same records, by the same rule.
+PAGE_SYMBOL = {"EUR": "\u20ac", "GBP": "\u00a3", "USD": "$"}
+REGION_NOTE = {"GBP": " \u00b7 UK price", "USD": " \u00b7 US price"}
+PRICE_UNAVAILABLE, PRICE_ENQUIRY, PRICE_INDICATIVE = "Price unavailable", "Price on enquiry", "Indicative price: "
+
+
+def _usable(v):
+    return v if isinstance(v, (int, float)) and not isinstance(v, bool) and v > 0 and v == v and v != float("inf") else None
+
+
+def _page_money(v, cur):
+    """toLocaleString('en-IE') for these values: thousands commas, up to three decimals, no trailing zeros."""
+    n = ("{:,.3f}".format(v)).rstrip("0").rstrip(".") if not float(v).is_integer() else "{:,}".format(int(v))
+    sym = PAGE_SYMBOL.get(cur)
+    return (sym + n) if sym else ((cur + "\u00a0" + n) if cur else n)
+
+
+def page_price_view(r):
+    """A port of your-plot.html pnPriceView() for one garden-room universe record (as normalizePoolProduct
+    passes it: price, currency, priceEvidence). Returns (kind, display, currency)."""
+    e = r.get("priceEvidence") or {}
+    cur = (r.get("currency") or "").strip().upper() or None
+    if e.get("adjudication") == "ambiguous":
+        return "ambiguous", None, cur
+    if e.get("quoteOnly") is True:
+        return "quote-only", None, cur
+    amount = _usable(r.get("price"))
+    if amount is None:
+        return "none", None, cur
+    if e.get("configurations"):
+        die("price: %s carries named configurations; port pnPriceConfigurations before showing it" % r["id"])
+    fr, to, base = _usable(e.get("from")), _usable(e.get("to")), _usable(e.get("base"))
+    t = re.sub(r"\s+", " ", e.get("priceType") or "").strip().lower()
+    if fr is not None and to is not None and to > fr: kind = "range"
+    elif t == "starting from" or (base is None and fr is not None): kind = "from"
+    elif t == "estimated price": kind = "estimated"
+    elif t == "custom quote": kind = "quoted"
+    else: kind = "exact"
+    fig = (_page_money(fr, cur) + "\u00a0\u2013\u00a0" + _page_money(to, cur)) if kind == "range" else _page_money(amount, cur)
+    disp = {"from": "From ", "estimated": "Estimated ", "quoted": "Quoted "}.get(kind, "") + fig
+    return kind, disp, cur
+
+
+def garden_price_label(r):
+    kind, disp, cur = page_price_view(r)
+    if kind == "quote-only":
+        return PRICE_ENQUIRY
+    if disp is None or cur not in PAGE_SYMBOL:
+        return PRICE_UNAVAILABLE
+    e = r.get("priceEvidence") or {}
+    if e.get("status") == "Verified" and cur == "EUR":
+        vat = (e.get("includesVat") or "").strip().lower()
+        return disp + (" incl. VAT" if vat == "yes" else " excl. VAT" if vat in ("no", "excluding vat") else " \u00b7 VAT not stated")
+    if e.get("status") == "Verified" and cur == "GBP":
+        return disp + REGION_NOTE["GBP"]
+    return PRICE_INDICATIVE + disp + REGION_NOTE.get(cur, "")
 
 
 def price_line(pr):
@@ -732,14 +781,11 @@ def load(P):
             header = {"products": header["kindCounts"][k], "makers": header["kindOrganisationCounts"][k]}
         by = {}
         MNOTES, PNOTES = notes_register()
-        PRICES = prices_register()
         for e in eligible:
             org, pid, pname, ptype, st = e[:5]
             row = [pid, name(pid, pname), ptype, st]
             if len(e) > 5 and e[5].get("price"):
                 row.append(e[5]["price"])
-            elif pid in PRICES:
-                row.append(PRICES[pid])
             nav = dict(e[5]["nav"]) if len(e) > 5 and e[5].get("nav") else {}
             if pid in PNOTES:
                 nav["notes"] = list(PNOTES[pid])
@@ -1194,13 +1240,19 @@ def build(fname, P, src):
     # never converted; the maker that shows one carries the register's note,
     # and no other maker carries a note.
     CORR, NOTES = currency_register()
+    GOV_CUR = {pid: (r.get("currency") or "").upper() for pid, r in garden_index().items()}
     for c in cfgs:
         for m in c["makers"]:
             shown = [p for p in m["p"] if len(p) > 4 and p[4]]
             for p in shown:
-                cur = "GBP" if "£" in p[4] else "EUR" if "€" in p[4] else None
+                if p[4] in (PRICE_UNAVAILABLE, PRICE_ENQUIRY):
+                    continue   # garden-room labels with no figure (DISC-008 pricing correction)
+                cur = "GBP" if "£" in p[4] else "EUR" if "€" in p[4] else "USD" if "$" in p[4] else None
                 if cur is None: die("G14 a price with no recognised currency: %s" % p[0])
-                want = CORR[p[0]]["publishedCurrency"] if p[0] in CORR else "EUR"
+                # the record's own governed currency (garden rooms), else the register's, else EUR
+                want = CORR[p[0]]["publishedCurrency"] if p[0] in CORR else GOV_CUR.get(p[0], "EUR")
+                if cur != "EUR" and p[0] not in CORR and not p[4].endswith(REGION_NOTE.get(cur, "\0")):
+                    die("G14 %s shows a %s figure without its region note" % (p[0], cur))
                 if cur != want: die("G14 %s is shown in %s, its published currency is %s" % (p[0], cur, want))
                 if p[0] in CORR and "{:,.0f}".format(CORR[p[0]]["amount"]) not in p[4]:
                     die("G14 %s does not show the evidenced amount" % p[0])
