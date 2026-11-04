@@ -81,7 +81,7 @@ TODAY = "2026-10-14"
 WORDS_BEFORE = 2994          # measured 14 Oct 2026 at 1280/768/375/320 (identical)
 # DISC-001 Phase 2 (founder approval, 4 Nov 2026): the visible-word budget re-based for the
 # approved six-chapter design (was int(2994 * 0.55) = 1,646; measured 1,920 after the redesign).
-WORDS_LIMIT = 1960
+WORDS_LIMIT = 2000  # 4 Nov 2026: +40 for the founder-approved bespoke-supplier reference (The Mobile Pods)
 EXPLORER_START = "  <!-- 6c · PLOTNUA-MAKER-EXPLORER-V1"
 CSS_BEGIN = "/* PLOTNUA-GR-MAKER-IMAGERY-CSS-BEGIN"
 CSS_END = "/* PLOTNUA-GR-MAKER-IMAGERY-CSS-END */\n"

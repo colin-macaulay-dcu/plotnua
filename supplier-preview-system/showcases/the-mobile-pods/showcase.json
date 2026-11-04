@@ -11,7 +11,7 @@
   },
   "publication": {
     "status": "PUBLISHED — founder decision 3 Nov 2026",
-    "basis": "The Mobile Pods responded positively to PlotNua's Instagram invitation to feature their products and photographs. On that basis the founder decided to publish (3 Nov 2026). This is NOT an explicit written image licence and is never represented as one. Rights record: image-rights-records.json (The Mobile Pods); Atlas IPO WELLNESS-FIRST-MOBILE-PODS-20261002.",
+    "basis": "The Mobile Pods replied \"Hi, yes\" (Instagram DM, 3 Nov 2026) to PlotNua's invitation to feature their products, including outdoor wellness products, and photographs. Founder publication decision 3 Nov 2026; wellness scope confirmed 4 Nov 2026. Not a signed licence. Rights record: image-rights-records.json (The Mobile Pods); Atlas IPO WELLNESS-FIRST-MOBILE-PODS-20261002.",
     "objection": "If the supplier objects to any photograph, remove the affected image entry here (and the gallery entry in atlas-tools/supplier-gallery/living-in-the-garden.editorial.json if it is IMG_5074), rebuild and release promptly.",
     "commercial": "No referral, commission or customer-benefit arrangement exists. None is claimed, advertised or implied."
   },
@@ -264,6 +264,19 @@
       "sha256": "adfd7af381c5a3b38325f6d9e422dca5600ddf4f042c308f061a689ba1b6c383",
       "alt": "Floor plan of the Deluxe25+: a 3.5 m by 7 m pod with a 17 m² living area, 4 m² and 3 m² rooms below, and a 7 m² loft.",
       "caption": "Deluxe25+ floor plan, with the loft level."
+    },
+    {
+      "id": "mp-w1-in-pod-sauna",
+      "role": "wellness",
+      "kind": "Photograph",
+      "local": "images/mp-w1-in-pod-sauna.webp",
+      "w": 1600,
+      "h": 1200,
+      "origin": "https://themobilepods.ie/wp-content/uploads/2026/10/IMG_3697-scaled.jpeg",
+      "sourcePage": "https://themobilepods.ie/the-mobile-pods-gallery/",
+      "sha256": "1752b329fd4633cd547e153c698d99767bc75a34097f1920c20b32d124635f8f",
+      "alt": "A timber-lined sauna room inside a Mobile Pod, with slatted benches, a lit wall lamp, a wooden bucket and an electric tower heater filled with stones beside a glass door.",
+      "caption": "A sauna room built into one of The Mobile Pods' garden pods."
     }
   ],
   "excluded": [
@@ -289,5 +302,14 @@
     "description": "The Deluxe21 and Deluxe25+ timber-frame garden homes, and custom-built pods.",
     "image": "mp-01-garden-pod-standing-seam",
     "status": "Featured in the Living in the Garden supplier gallery via showcaseMakers (card links to suppliers/the-mobile-pods.html). Products are NOT yet in the garden-home universe or the Maker Explorer: that needs Atlas product records."
+  },
+  "wellness": {
+    "title": "Wellness, Made to Order",
+    "body": "Alongside its pods, The Mobile Pods builds saunas, hot tubs and cold-water tubs to order. Each is configured around the client: electric or wood-burning stoves, lighting, colours and finishes, audio and controls. Saunas can also be designed from scratch.",
+    "price": "Bespoke · Price on enquiry",
+    "priceNote": "No standard models or prices are published; each piece is quoted on its configuration.",
+    "image": "mp-w1-in-pod-sauna",
+    "source": "https://themobilepods.ie/hot-tubs-saunas-cold-water-tubs/",
+    "basis": "Founder approval, 4 Nov 2026. Wellness imagery permission: image-rights-records.json (The Mobile Pods). The photograph shows a sauna inside a pod and is never presented as a standalone outdoor sauna."
   }
 }

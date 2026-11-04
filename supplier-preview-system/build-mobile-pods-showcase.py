@@ -58,6 +58,12 @@ def guard():
                     sys.exit(f"FAIL: unverified price text for {p['name']}: {v}")
         if not p["source"].startswith(s["website"]):
             sys.exit(f"FAIL: {p['name']} specs are not sourced to the supplier site")
+    w = DATA.get("wellness") or {}
+    if w.get("price") != "Bespoke · Price on enquiry" or "€" in json.dumps(w, ensure_ascii=False):
+        sys.exit("FAIL: wellness section must show 'Bespoke · Price on enquiry' and no price figure")
+    wi = next((i for i in DATA["images"] if i["id"] == w.get("image")), None)
+    if not wi or "inside" not in wi["alt"] or "built into" not in wi["caption"]:
+        sys.exit("FAIL: the wellness photograph must be described as a sauna inside a pod")
     rec = [r for r in json.loads((ROOT / "image-rights-records.json").read_text(encoding="utf-8"))["records"]
            if r["organisation_name"] == s["name"]]
     if len(rec) != 1 or not rec[0]["permission_outcome"].startswith("Granted") or rec[0].get("public_visibility") != "PUBLISHABLE":
@@ -140,6 +146,10 @@ CSS = """<style>
 .mp-note{ border-top:1px solid var(--line); padding-top:16px; }
 .pn-pd .mp .mp-note h3{ margin:0 0 8px; font-family:var(--sans); line-height:1.4; font-size:11.5px; font-weight:700; letter-spacing:.18em; text-transform:uppercase; color:var(--bronze); }
 .mp-note p{ margin:0; font-size:15px; line-height:1.7; }
+.mp-well{ display:grid; grid-template-columns:minmax(0,5fr) minmax(0,7fr); gap:clamp(24px,4vw,64px); align-items:center; }
+.mp-well .mp-p{ max-width:52ch; }
+.mp-price{ display:inline-block; margin:22px 0 10px; padding:10px 18px; border:1px solid var(--line); border-radius:999px; font-size:12px; font-weight:700; letter-spacing:.16em; text-transform:uppercase; color:var(--bronze); }
+.mp-pnote{ margin:0; font-size:14px; line-height:1.6; color:var(--stone); max-width:52ch; }
 .mp-also{ margin-top:22px; font-size:15px; color:var(--stone); }
 /* the guided route reuses the Discovery two-option component (pn-two-option.css) as-is */
 .mp-route .pn-two{ max-width:none; }
@@ -148,7 +158,7 @@ CSS = """<style>
 .mp-rec p{ margin:0 0 6px; max-width:80ch; }
 .mp-rec a{ color:inherit; }
 @media (max-width:900px){
-  .mp-hero .mp-w, .mp-head, .mp-model, .mp-notes{ grid-template-columns:1fr; }
+  .mp-hero .mp-w, .mp-head, .mp-model, .mp-notes, .mp-well{ grid-template-columns:1fr; }
   .mp-hero .mp-fig img{ max-height:none; width:100%; }
   .mp-hero .mp-cap{ justify-content:flex-start; }
 }
@@ -207,6 +217,18 @@ def fig(i, bundle, credit_href, first=False, cls=""):
             f'<span>{E(i.get("caption",""))} <a href="{E(credit_href)}" rel="noopener" target="_blank">{E(DATA["supplier"]["credit"])}</a></span></figcaption></figure>')
 
 
+def wellness_section(bundle):
+    w, I, s = DATA["wellness"], imgs(), DATA["supplier"]
+    return (f'''<section class="mp-sec" id="wellness" aria-labelledby="mp-wl-h"><div class="mp-w"><div class="mp-well">
+  <div><p class="mp-k">Wellness</p><h2 class="mp-h2" id="mp-wl-h">{E(w["title"])}</h2>
+  <p class="mp-p">{E(w["body"])}</p>
+  <p class="mp-price">{E(w["price"])}</p>
+  <p class="mp-pnote">{E(w["priceNote"])}</p></div>
+  {fig(I[w["image"]], bundle, s["creditHref"])}
+</div></div></section>
+''')
+
+
 def journeys(prefix):
     return [("A garden home", f"{prefix}your-plot.html?discovery=residential&{VIA}"),
             ("A garden room", f"{prefix}your-plot.html?discovery=garden-room&{VIA}")]
@@ -263,13 +285,13 @@ f"""<link rel="stylesheet" href="{two_css}?v=1">
   <div class="mp-head"><div><p class="mp-k">The models</p><h2 class="mp-h2" id="mp-mod-h">Two starting points, then yours.</h2></div>
   <p class="mp-p">The specifications below are the supplier&rsquo;s own, as published on its website. PlotNua has not changed or added to them.</p></div>
   <div class="mp-models">{"".join(models)}</div>
-  <p class="mp-also">{E(DATA["alsoMakes"])}</p>
   <div class="mp-notes">
     <div class="mp-note"><h3>What the price covers</h3><p>{E(DATA["costNote"])}</p></div>
     <div class="mp-note"><h3>Planning</h3><p>{E(DATA["planningNote"])}</p></div>
   </div>
 </div></section>
 
+{wellness_section(bundle)}
 <section class="mp-sec mp-route" id="enquire" aria-labelledby="mp-en-h"><div class="mp-w">
   <div class="mp-head"><div><p class="mp-k">Next step</p><h2 class="mp-h2" id="mp-en-h">Is a pod right for your plot?</h2></div>
   <p class="mp-p">Before you contact any maker, PlotNua can help you work out what your garden can take and which options fit how you&rsquo;d use it. It&rsquo;s free.</p></div>
