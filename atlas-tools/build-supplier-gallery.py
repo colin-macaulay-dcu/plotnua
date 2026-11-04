@@ -240,14 +240,28 @@ def collect(page_path, ed):
             # supplier's private preview is complete. Removing "featureHold" re-activates it.
             "held": bool(e.get("featureHold")),
         })
-    out += showcase_makers(ed)
+    show = showcase_makers(ed)
+    listed = {x["name"]: x for x in out}
+    for sm in show:
+        cur = listed.get(sm["name"])
+        if cur is None:
+            out.append(sm)
+            continue
+        # EXPLORER MAKER WITH A SHOWCASE (founder brief, 4 Nov 2026: Gardenhouse24 on Living in the
+        # Garden). Allowed ONLY where the explorer gives the maker no governed image, so it never
+        # replaces a licensed image (founder D4). Its products, counts and listing are untouched;
+        # the card gains the showcase image and links to the maker's PlotNua showcase page.
+        if cur["image"] or cur["held"] or cur["relationship"]:
+            sys.exit(f"FAIL: showcase maker {sm['name']} already has a governed image, a hold or a disclosure on this page")
+        cur.update(image=sm["image"], explore=sm["explore"], internal=True, description=sm["description"])
     return sorted(out, key=lambda x: x["name"].casefold())
 
 
 def showcase_makers(ed):
     """SHOWCASE MAKERS (founder publication decision, 3 Nov 2026: The Mobile Pods on Living in
-    the Garden). A maker featured in the gallery BEFORE its products are in the page's Maker
-    Explorer. Opt-in per editorial file; a Discovery without "showcaseMakers" renders exactly as
+    the Garden; extended 4 Nov 2026 for Gardenhouse24 on Garden Retreat and Living in the Garden).
+    A maker featured in the gallery BEFORE its products (or their images) are in the page's Maker
+    Explorer. An explorer maker may carry one only when the explorer gives it no governed image. Opt-in per editorial file; a Discovery without "showcaseMakers" renders exactly as
     before. Each card: one image under a LIVE manifest grant (permitted domain, exact required
     credit), credit linked on that domain, and an "Explore supplier" link to the maker's own
     PlotNua showcase page (same tab, must exist), so no untracked off-site button is added."""
@@ -369,7 +383,7 @@ def websites_html(sup):
     former directory entry's "Visit website". A relationship is labelled beside the name."""
     li = []
     for s in sup:
-        if not s["explore"]:
+        if not s["explore"] or s.get("internal"):   # a showcase maker's link is PlotNua's own page
             continue
         rel = (f' <span class="pn-sg-sites-rel">{E(s["relationship"]["label"])}</span>') if s["relationship"] else ""
         li.append(f'<li><a href="{E(s["explore"])}" rel="noopener noreferrer" target="_blank" '

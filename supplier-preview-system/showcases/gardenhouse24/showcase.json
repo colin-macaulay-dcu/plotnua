@@ -1,0 +1,711 @@
+{
+  "_about": "Data for the Gardenhouse24 supplier showcase (suppliers/gardenhouse24.html) and its gallery cards, read by supplier-preview-system/build-gardenhouse24-showcase.py. Every fact restates gardenhouse24.ie product pages checked 4 Nov 2026 (source per product). Images are hotlinked from the supplier's own CloudFront delivery host (images[].origin), so the Image Rights Gate checks each one; sha256 is of the file as downloaded on 4 Nov 2026. To swap in higher-resolution originals, update origin/w/h for the same slot id and rebuild.",
+  "supplier": {
+    "name": "Gardenhouse24",
+    "atlasName": "Gardenhouse24 Ireland",
+    "slug": "gardenhouse24",
+    "website": "https://gardenhouse24.ie/",
+    "credit": "Image: Gardenhouse24",
+    "creditHref": "https://gardenhouse24.ie/?utm_source=plotnua&utm_medium=referral&utm_campaign=supplier-showcase",
+    "trading": "ABC Gardenhouse IRL Ltd",
+    "showroom": "Limerick",
+    "showroomSource": "Showroom location published in the contact block of https://gardenhouse24.ie/quality-guarantee-warranty (checked 4 Nov 2026): Clondrinagh, Ennis Road, Limerick. City only is shown."
+  },
+  "publication": {
+    "status": "STAGING — founder authorisation 4 Nov 2026; production release awaits his approval",
+    "basis": "Gardenhouse24 wrote on Instagram: \"Hi that's no problem if you could take pictures from the website and social media that would be great.\" Recorded verbatim in image-rights-records.json and Atlas IPO-024.",
+    "commercial": "No commission or referral agreement exists. None is claimed or displayed. Introductions are attributed (via=gardenhouse24) so a future arrangement can be negotiated separately."
+  },
+  "intro": "Nordic-spruce garden rooms, log cabins, saunas and wood-fired hot tubs, sold as flat-pack kits and delivered across mainland Ireland, with optional installation by the supplier's own team.",
+  "standfirst": "Gardenhouse24 is run by ABC Gardenhouse IRL Ltd, with a showroom in Limerick. Its buildings are solid log construction in Nordic spruce. Each one starts as a kit, and the foundation, roof covering, insulation, electrics and installation are chosen and priced separately. The selection below is PlotNua's, from photographs of completed builds wherever the supplier publishes them.",
+  "categories": [
+    {
+      "id": "garden-rooms",
+      "title": "Garden rooms",
+      "line": "Rooms for working, reading or getting away from the house."
+    },
+    {
+      "id": "cabins",
+      "title": "Garden cabins and log cabins",
+      "line": "Larger log buildings, most with a terrace under the roof."
+    },
+    {
+      "id": "saunas",
+      "title": "Outdoor saunas",
+      "line": "From a three-seat barrel to a sauna house with a lounge."
+    },
+    {
+      "id": "hot-tubs",
+      "title": "Hot tubs",
+      "line": "Wood-fired tubs with the stove built in."
+    }
+  ],
+  "products": [
+    {
+      "name": "ALU CONCEPT 44 A",
+      "category": "garden-rooms",
+      "source": "https://gardenhouse24.ie/simple-garden-house-alu-concept-home-office-ireland.html",
+      "summary": "A flat-roofed room with aluminium sliding doors along two sides, so the corner opens to the garden.",
+      "specs": [
+        [
+          "Base",
+          "358 × 478 cm"
+        ],
+        [
+          "Indoor area",
+          "14.8 m²"
+        ],
+        [
+          "Walls",
+          "44 mm Nordic spruce logs"
+        ],
+        [
+          "Glazing",
+          "Aluminium sliding doors and double-glazed windows, tempered glass"
+        ],
+        [
+          "Ridge height",
+          "261.8 cm"
+        ]
+      ],
+      "price": 10117,
+      "installation": 2430,
+      "leadTime": "10–12 weeks",
+      "images": [
+        "gh-01-alu-concept-orchard",
+        "gh-02-alu-concept-grey"
+      ],
+      "checked": "2026-11-04"
+    },
+    {
+      "name": "Q-BIC 44 A",
+      "category": "garden-rooms",
+      "source": "https://gardenhouse24.ie/best-seller-garden-office-q-bic-ireland.html",
+      "summary": "The supplier's best-selling compact office: a square flat-roofed room with a double door.",
+      "specs": [
+        [
+          "Base",
+          "380 × 380 cm"
+        ],
+        [
+          "Indoor area",
+          "13.78 m²"
+        ],
+        [
+          "Walls",
+          "44 mm Nordic spruce logs"
+        ],
+        [
+          "Glazing",
+          "Single glazing as standard"
+        ],
+        [
+          "Ridge height",
+          "243 cm"
+        ]
+      ],
+      "price": 5335,
+      "installation": 1620,
+      "leadTime": "8–10 weeks",
+      "images": [],
+      "checked": "2026-11-04"
+    },
+    {
+      "name": "Clockhouse OXFORD 44",
+      "category": "garden-rooms",
+      "source": "https://gardenhouse24.ie/compact-garden-room-clockhouse-ireland.html",
+      "summary": "A traditional gable-roofed garden room with a small clock-house gable over the double doors.",
+      "specs": [
+        [
+          "Base",
+          "420 × 320 cm"
+        ],
+        [
+          "Indoor area",
+          "11.39 m²"
+        ],
+        [
+          "Walls",
+          "44 mm Nordic spruce logs"
+        ],
+        [
+          "Glazing",
+          "Double glazing"
+        ],
+        [
+          "Ridge height",
+          "290 cm"
+        ]
+      ],
+      "price": 5566,
+      "installation": 1710,
+      "leadTime": "10–12 weeks",
+      "images": [
+        "gh-07-oxford-clockhouse",
+        "gh-08-oxford-interior"
+      ],
+      "checked": "2026-11-04"
+    },
+    {
+      "name": "LISA 44 A",
+      "category": "cabins",
+      "source": "https://gardenhouse24.ie/garden-office-home-offices-lisa-44.html",
+      "summary": "A flat-roofed log cabin with its own covered terrace beside the room.",
+      "specs": [
+        [
+          "Base",
+          "480 × 480 cm"
+        ],
+        [
+          "Indoor area",
+          "13.78 m², plus a 7.07 m² terrace"
+        ],
+        [
+          "Walls",
+          "44 mm logs (70 mm option)"
+        ],
+        [
+          "Glazing",
+          "Double glazing"
+        ],
+        [
+          "Ridge height",
+          "236.25 cm"
+        ]
+      ],
+      "price": 6447,
+      "installation": 1750,
+      "leadTime": "8–10 weeks",
+      "images": [
+        "gh-03-lisa-44a-deck"
+      ],
+      "checked": "2026-11-04"
+    },
+    {
+      "name": "LISA 44 B",
+      "category": "cabins",
+      "source": "https://gardenhouse24.ie/wooden-garden-office-lisa-ireland.html",
+      "summary": "The larger LISA: a 21 m² room with an 8 m² terrace under the same flat roof.",
+      "specs": [
+        [
+          "Base",
+          "462 × 650 cm"
+        ],
+        [
+          "Indoor area",
+          "20.76 m², plus an 8.45 m² terrace"
+        ],
+        [
+          "Walls",
+          "44 mm logs (70 mm option)"
+        ],
+        [
+          "Glazing",
+          "Double-glazed doors; single-glazed windows as standard"
+        ],
+        [
+          "Ridge height",
+          "236.5 cm"
+        ]
+      ],
+      "price": 8435,
+      "installation": 2090,
+      "leadTime": "10–12 weeks",
+      "images": [
+        "gh-04-lisa-44b-pergola",
+        "gh-05-lisa-44b-bar",
+        "gh-06-lisa-44b-cinema"
+      ],
+      "checked": "2026-11-04"
+    },
+    {
+      "name": "KAARLO 44",
+      "category": "cabins",
+      "source": "https://gardenhouse24.ie/modern-log-cabin-with-a-terrace-kaarlo-44.html",
+      "summary": "A large flat-roofed log cabin with a deep 16 m² covered terrace across its front.",
+      "specs": [
+        [
+          "Base",
+          "561 × 660 cm"
+        ],
+        [
+          "Indoor area",
+          "20.81 m², plus a 16 m² terrace"
+        ],
+        [
+          "Walls",
+          "44 mm Nordic spruce logs"
+        ],
+        [
+          "Glazing",
+          "Double-glazed tilt-and-turn windows"
+        ],
+        [
+          "Ridge height",
+          "274.7 cm"
+        ]
+      ],
+      "price": 8632,
+      "installation": 3030,
+      "leadTime": "10–12 weeks",
+      "images": [
+        "gh-09-kaarlo-terrace",
+        "gh-10-kaarlo-interior"
+      ],
+      "checked": "2026-11-04"
+    },
+    {
+      "name": "LEO barrel sauna, front full glass",
+      "category": "saunas",
+      "source": "https://gardenhouse24.ie/thermo-barrel-sauna-leo-with-front-full-glass-200-x-160cm-6-5-x-5-4.html",
+      "summary": "A compact barrel sauna in thermally treated wood, with a full-glass front door.",
+      "specs": [
+        [
+          "Size",
+          "Ø 200 cm, 160 cm long"
+        ],
+        [
+          "Seats",
+          "3 (the description says 2–4)"
+        ],
+        [
+          "Walls",
+          "42 mm outer, 28 mm inner"
+        ],
+        [
+          "Door",
+          "Tempered glass, 59 × 169 cm"
+        ],
+        [
+          "Included",
+          "Alder benches; bitumen roof shingles"
+        ],
+        [
+          "Heater",
+          "Not included: a Harvia 8 kW electric heater is €650, sold only with the electrical service package"
+        ]
+      ],
+      "price": 4884,
+      "installation": 1430,
+      "leadTime": "10–12 weeks",
+      "images": [
+        "gh-11-leo-barrel",
+        "gh-12-leo-glass-front"
+      ],
+      "checked": "2026-11-04"
+    },
+    {
+      "name": "MOSSO 70",
+      "category": "saunas",
+      "source": "https://gardenhouse24.ie/outdoor-sauna-with-a-terrace-mosso-sale-in-ireland.html",
+      "summary": "A flat-roofed sauna cabin with its own small terrace; one of the supplier's best sellers.",
+      "specs": [
+        [
+          "Base",
+          "523 × 255 cm"
+        ],
+        [
+          "Steam room",
+          "5 m², plus a 5.33 m² terrace"
+        ],
+        [
+          "Walls",
+          "70 mm logs"
+        ],
+        [
+          "Seats",
+          "4"
+        ],
+        [
+          "Included",
+          "Aspen benches; double-glazed windows; insulated, alder-clad ceiling"
+        ],
+        [
+          "Heater",
+          "Not included (electric heaters from €650)"
+        ]
+      ],
+      "price": 8722,
+      "installation": 2600,
+      "leadTime": "10–12 weeks",
+      "images": [],
+      "checked": "2026-11-04"
+    },
+    {
+      "name": "TALLEBORG 70",
+      "category": "saunas",
+      "source": "https://gardenhouse24.ie/sauna-cabin-with-large-windows-talleborg-ireland.html",
+      "summary": "A two-room sauna cabin with large windows and a small terrace.",
+      "specs": [
+        [
+          "Base",
+          "557 × 388 cm"
+        ],
+        [
+          "Indoor area",
+          "15.45 m² over two rooms (5 m² steam room), plus a 2.66 m² terrace"
+        ],
+        [
+          "Walls",
+          "70 mm logs"
+        ],
+        [
+          "Seats",
+          "4"
+        ],
+        [
+          "Included",
+          "Alder benches; premium doors; double-glazed windows"
+        ],
+        [
+          "Heater",
+          "Not included (electric heaters from €650)"
+        ]
+      ],
+      "price": 13126,
+      "installation": 2950,
+      "leadTime": "10–12 weeks",
+      "images": [],
+      "checked": "2026-11-04"
+    },
+    {
+      "name": "BENE 70",
+      "category": "saunas",
+      "source": "https://gardenhouse24.ie/garden-sauna-room-with-a-lounge-room.html",
+      "summary": "A sauna house with a 5 m² steam room and a separate lounge.",
+      "specs": [
+        [
+          "Base",
+          "438 × 448 cm"
+        ],
+        [
+          "Indoor area",
+          "15.92 m² over two rooms (5 m² steam room)"
+        ],
+        [
+          "Walls",
+          "70 mm logs"
+        ],
+        [
+          "Seats",
+          "5"
+        ],
+        [
+          "Included",
+          "Alder benches; premium doors; double-glazed windows"
+        ],
+        [
+          "Heater",
+          "Not included (electric heaters from €650)"
+        ]
+      ],
+      "price": 14412,
+      "installation": 2650,
+      "leadTime": "10–12 weeks",
+      "images": [
+        "gh-13-bene-sauna-room"
+      ],
+      "checked": "2026-11-04"
+    },
+    {
+      "name": "Hot Tub DeLux 200",
+      "category": "hot-tubs",
+      "source": "https://gardenhouse24.ie/hot-tub-delux-200-200-x-200-cm-6-5-x-6-5.html",
+      "summary": "A wood-fired hot tub with a fibreglass interior, a thermo-wood casing and an integrated stainless-steel stove.",
+      "specs": [
+        [
+          "Size",
+          "Ø 200 cm outside, Ø 185 cm inside; 97 cm high, 83 cm deep"
+        ],
+        [
+          "Capacity",
+          "1,150 litres; 6 people"
+        ],
+        [
+          "Heating",
+          "Integrated 30 kW wood stove; 1.5–2 hours from 5 °C to 38 °C (supplier figure)"
+        ],
+        [
+          "Included",
+          "2 m chimney with cap, two-part step"
+        ]
+      ],
+      "price": 3840,
+      "installation": null,
+      "leadTime": "10–12 weeks",
+      "images": [
+        "gh-14-delux-hot-tub"
+      ],
+      "checked": "2026-11-04"
+    },
+    {
+      "name": "Hot Tub DeLux 220",
+      "category": "hot-tubs",
+      "source": "https://gardenhouse24.ie/hot-tub-delux-220-220-x-220-cm-7-2-x-7-2.html",
+      "summary": "The larger DeLux, with the same integrated wood stove and fibreglass interior.",
+      "specs": [
+        [
+          "Size",
+          "Ø 226 cm outside, Ø 205 cm inside; 102 cm high, 90 cm deep"
+        ],
+        [
+          "Capacity",
+          "1,650 litres; listed as 6 people (the description says up to 8)"
+        ],
+        [
+          "Heating",
+          "Integrated 30 kW wood stove; 2–3 hours from 5 °C to 38 °C (supplier figure)"
+        ],
+        [
+          "Included",
+          "2 m chimney with cap, two-part step"
+        ]
+      ],
+      "price": 4340,
+      "installation": null,
+      "leadTime": "10–12 weeks",
+      "images": [],
+      "checked": "2026-11-04"
+    }
+  ],
+  "images": [
+    {
+      "id": "gh-01-alu-concept-orchard",
+      "role": "hero",
+      "kind": "Photograph",
+      "product": "ALU CONCEPT 44 A",
+      "origin": "https://d1l23c7hiawhq3.cloudfront.net/media/catalog/product/cache/631d00a18cc6f2d63e06f2111d31fb8f/2/0/20220606161922_img_0390_1.jpg",
+      "w": 1909,
+      "h": 1200,
+      "sourcePage": "https://gardenhouse24.ie/simple-garden-house-alu-concept-home-office-ireland-1.html",
+      "sha256": "9b136cd829bc526049ee5bded2618262e69c22b56fb9ad81f4a99f0c60c4bb50",
+      "alt": "A natural-timber ALU CONCEPT 44 A garden room with full-height aluminium sliding glazing on two sides, set on a lawn beside a fruit tree.",
+      "caption": "Full-height sliding glazing on two sides, set into an orchard lawn."
+    },
+    {
+      "id": "gh-02-alu-concept-grey",
+      "role": "collection",
+      "kind": "Photograph",
+      "product": "ALU CONCEPT 44 A",
+      "origin": "https://d1l23c7hiawhq3.cloudfront.net/media/catalog/product/cache/631d00a18cc6f2d63e06f2111d31fb8f/a/l/alu_concept_44a_10_1_1.jpg",
+      "w": 1599,
+      "h": 1200,
+      "sourcePage": "https://gardenhouse24.ie/simple-garden-house-alu-concept-home-office-ireland-1.html",
+      "sha256": "a1506cd44104cb62c41af53f8eac4ead8657c58c58a8e6a454edf9718fb8fac9",
+      "alt": "A grey-painted ALU CONCEPT 44 A garden room with its corner glazing slid open onto a lounge with sofas.",
+      "caption": "Painted grey, the same model opens fully at the corner."
+    },
+    {
+      "id": "gh-03-lisa-44a-deck",
+      "role": "collection",
+      "kind": "Photograph",
+      "product": "LISA 44 A",
+      "origin": "https://d1l23c7hiawhq3.cloudfront.net/media/catalog/product/cache/631d00a18cc6f2d63e06f2111d31fb8f/p/e/pede_3.jpg",
+      "w": 1024,
+      "h": 768,
+      "sourcePage": "https://gardenhouse24.ie/garden-office-home-offices-lisa-46.html",
+      "sha256": "a14f4a0e1e434e1407c23054db31753544327dccd61b9b719e17a42185b85c40",
+      "alt": "A LISA 44 A garden office stained amber with dark trim, downlights under the eaves and a timber deck with a bistro table.",
+      "caption": "Stained timber, dark trim and a lit terrace."
+    },
+    {
+      "id": "gh-04-lisa-44b-pergola",
+      "role": "collection",
+      "kind": "Photograph",
+      "product": "LISA 44 B",
+      "origin": "https://d1l23c7hiawhq3.cloudfront.net/media/catalog/product/cache/631d00a18cc6f2d63e06f2111d31fb8f/l/i/lisa_44b_2.jpg",
+      "w": 1206,
+      "h": 905,
+      "sourcePage": "https://gardenhouse24.ie/wooden-garden-office-lisa-ireland-recent-build.html",
+      "sha256": "afbda7771a95ada14f5ab454af132a06f1ccaf57aeb0b380bc5f73ef6e9e6cea",
+      "alt": "A grey-painted LISA 44 B garden room with French doors, a pergola-covered deck, steps down to the lawn and a patio heater.",
+      "caption": "A pergola, a wide deck and steps down to the lawn."
+    },
+    {
+      "id": "gh-05-lisa-44b-bar",
+      "role": "collection",
+      "kind": "Photograph",
+      "product": "LISA 44 B",
+      "origin": "https://d1l23c7hiawhq3.cloudfront.net/media/catalog/product/cache/631d00a18cc6f2d63e06f2111d31fb8f/l/i/lisa_44b__3_2.jpg",
+      "w": 1206,
+      "h": 905,
+      "sourcePage": "https://gardenhouse24.ie/wooden-garden-office-lisa-ireland-recent-build.html",
+      "sha256": "6fbdc2918f9e5607e26b7d54661c5558faa89e9084d69312ee4f7759e7835616",
+      "alt": "Under the pergola of a LISA 44 B: a reclaimed-timber bar table with colourful stools, hanging baskets and French doors behind.",
+      "caption": "The terrace as an outdoor bar."
+    },
+    {
+      "id": "gh-06-lisa-44b-cinema",
+      "role": "collection",
+      "kind": "Photograph",
+      "product": "LISA 44 B",
+      "origin": "https://d1l23c7hiawhq3.cloudfront.net/media/catalog/product/cache/631d00a18cc6f2d63e06f2111d31fb8f/l/i/lisa_44b__1_2.jpg",
+      "w": 1206,
+      "h": 905,
+      "sourcePage": "https://gardenhouse24.ie/wooden-garden-office-lisa-ireland-recent-build.html",
+      "sha256": "8eae0d297722ff182178dc852eddb3741b210e790197a49d63e2bfa408345b09",
+      "alt": "Inside a LISA 44 B at dusk: filament pendant lights, armchairs and a pull-down projection screen, with the garden through the windows.",
+      "caption": "Inside, a garden cinema lit by filament pendants."
+    },
+    {
+      "id": "gh-07-oxford-clockhouse",
+      "role": "collection",
+      "kind": "Photograph",
+      "product": "Clockhouse OXFORD 44",
+      "origin": "https://d1l23c7hiawhq3.cloudfront.net/media/catalog/product/cache/631d00a18cc6f2d63e06f2111d31fb8f/i/m/img_6578.jpeg",
+      "w": 1283,
+      "h": 939,
+      "sourcePage": "https://gardenhouse24.ie/compact-garden-room-clockhouse-ireland-1.html",
+      "sha256": "810f0d347269f79e6c051cb48c5bf8bfbb7eb1099fd3a8527198cf4d315818ca",
+      "alt": "A natural-timber Clockhouse OXFORD 44 with a small gable over the double doors, Georgian-style windows and a shingle roof.",
+      "caption": "The Clockhouse OXFORD 44: a gable over the doors and Georgian-style glazing."
+    },
+    {
+      "id": "gh-08-oxford-interior",
+      "role": "collection",
+      "kind": "Photograph",
+      "product": "Clockhouse OXFORD 44",
+      "origin": "https://d1l23c7hiawhq3.cloudfront.net/media/catalog/product/cache/631d00a18cc6f2d63e06f2111d31fb8f/i/m/img_6580.jpeg",
+      "w": 1284,
+      "h": 947,
+      "sourcePage": "https://gardenhouse24.ie/compact-garden-room-clockhouse-ireland-1.html",
+      "sha256": "cf85f3130bc8bd09d5b01d418eb55b6cd909f840c220f1014901559f31aa0dc1",
+      "alt": "Inside a Clockhouse OXFORD 44: wicker armchairs with striped cushions, a folding lounger and shelving against bare spruce walls.",
+      "caption": "Furnished simply against bare spruce walls."
+    },
+    {
+      "id": "gh-09-kaarlo-terrace",
+      "role": "collection",
+      "kind": "Photograph",
+      "product": "KAARLO 44",
+      "origin": "https://d1l23c7hiawhq3.cloudfront.net/media/catalog/product/cache/631d00a18cc6f2d63e06f2111d31fb8f/a/l/allalaaditud-fail-_11__1.png",
+      "w": 1008,
+      "h": 756,
+      "sourcePage": "https://gardenhouse24.ie/modern-log-cabin-with-a-terrace-kaarlo-45.html",
+      "sha256": "89c618a65044fa121b0f0cb5687a27f231c9e5542c3aef4dbe06a9a14197883b",
+      "alt": "A painted KAARLO 44 log cabin with a deep covered terrace and outdoor kitchen, beside a swimming pool behind a glass balustrade.",
+      "caption": "The KAARLO 44's 16 m² covered terrace, used as an outdoor kitchen."
+    },
+    {
+      "id": "gh-10-kaarlo-interior",
+      "role": "collection",
+      "kind": "Photograph",
+      "product": "KAARLO 44",
+      "origin": "https://d1l23c7hiawhq3.cloudfront.net/media/catalog/product/cache/631d00a18cc6f2d63e06f2111d31fb8f/a/l/allalaaditud-fail-_16__1.png",
+      "w": 1008,
+      "h": 756,
+      "sourcePage": "https://gardenhouse24.ie/modern-log-cabin-with-a-terrace-kaarlo-45.html",
+      "sha256": "07995599c602dafeab5c78e375c39d5b681232701b9e5b31ed19d60a76329f02",
+      "alt": "Inside a white-painted KAARLO 44: a pendant light, a daybed and two navy armchairs, with French doors open to the terrace.",
+      "caption": "Painted white inside, opening onto the terrace."
+    },
+    {
+      "id": "gh-11-leo-barrel",
+      "role": "collection",
+      "kind": "Photograph",
+      "product": "LEO barrel sauna, front full glass",
+      "origin": "https://d1l23c7hiawhq3.cloudfront.net/media/catalog/product/cache/631d00a18cc6f2d63e06f2111d31fb8f/s/c/screenshot_2024-05-16_094127.png",
+      "w": 557,
+      "h": 744,
+      "sourcePage": "https://gardenhouse24.ie/thermo-barrel-sauna-leo-with-front-full-glass-200-x-160cm-6-5-x-5-5.html",
+      "sha256": "f92910ca0128474b4356ea74e6304b35a155f6be21de1c4f12ed5ec9d51787ba",
+      "alt": "A LEO barrel sauna in thermally treated wood with black shingles and a full-glass front, on a gravel base.",
+      "caption": "A barrel sauna in thermally treated wood with a full-glass front."
+    },
+    {
+      "id": "gh-12-leo-glass-front",
+      "role": "collection",
+      "kind": "Photograph",
+      "product": "LEO barrel sauna, front full glass",
+      "origin": "https://d1l23c7hiawhq3.cloudfront.net/media/catalog/product/cache/631d00a18cc6f2d63e06f2111d31fb8f/s/c/screenshot_2024-05-16_094048.png",
+      "w": 557,
+      "h": 747,
+      "sourcePage": "https://gardenhouse24.ie/thermo-barrel-sauna-leo-with-front-full-glass-200-x-160cm-6-5-x-5-5.html",
+      "sha256": "3cc97dacbb116e155dc6619b30acbc6637064c9d98dfd10b09fffed8c03bb0da",
+      "alt": "The full-glass front of a LEO barrel sauna, showing the two-tier benches inside.",
+      "caption": "Through the glass front: two tiers of benches."
+    },
+    {
+      "id": "gh-13-bene-sauna-room",
+      "role": "collection",
+      "kind": "Photograph",
+      "product": "BENE 70",
+      "origin": "https://d1l23c7hiawhq3.cloudfront.net/media/catalog/product/cache/631d00a18cc6f2d63e06f2111d31fb8f/i/m/img_6587.jpeg",
+      "w": 907,
+      "h": 1200,
+      "sourcePage": "https://gardenhouse24.ie/garden-sauna-room-with-a-lounge-room-1.html",
+      "sha256": "d0f76afa1c311e43116b7278cd5c46dae67dd6cd65997bb2c62e9b6a2bc832aa",
+      "alt": "Inside the steam room of a BENE 70 sauna house: pale two-tier benches and a wall-mounted electric heater.",
+      "caption": "Inside a finished steam room, heater fitted."
+    },
+    {
+      "id": "gh-14-delux-hot-tub",
+      "role": "product",
+      "kind": "Visualisation",
+      "product": "Hot Tub DeLux 200",
+      "origin": "https://d1l23c7hiawhq3.cloudfront.net/media/catalog/product/cache/631d00a18cc6f2d63e06f2111d31fb8f/d/e/de_lux.png",
+      "w": 1920,
+      "h": 1080,
+      "sourcePage": "https://gardenhouse24.ie/hot-tub-delux-200-200-x-200-cm-6-5-x-6-5.html",
+      "sha256": "9cf6b719b7a60cc845366be0e336050abe9bae31de2f947b47782786c886a136",
+      "alt": "Visualisation: a wood-fired DeLux hot tub with an integrated stove and chimney on a garden terrace at dusk.",
+      "caption": "A computer-generated visualisation of the DeLux hot tub. No photograph is published."
+    }
+  ],
+  "costs": {
+    "title": "What the listed price covers",
+    "items": [
+      [
+        "Included",
+        "The building kit: walls, floor and roof boards, doors and windows, as each product lists. The listed price is for the kit."
+      ],
+      [
+        "Delivery",
+        "Free kerbside delivery to mainland Ireland on orders over €1,000. The lorry needs a space about 10 m long and 4.5 m wide to unload; hard-to-reach sites need specialist delivery at extra cost."
+      ],
+      [
+        "Installation",
+        "Optional, and priced per product: €1,430 to €3,030 for the products shown here."
+      ],
+      [
+        "Foundation",
+        "Not included. The base must be level and able to carry the building. The supplier sells foundation options (on the Q-BIC 44 A page, for example, from €840 for a self-assembly base to €2,835 for a concrete base)."
+      ],
+      [
+        "Roof covering",
+        "Not included as standard on most flat-roofed models (felt or EPDM is extra). The LEO barrel sauna includes bitumen shingles."
+      ],
+      [
+        "Insulation and electrics",
+        "Extras. On the Q-BIC 44 A page, floor and roof insulation starts at €1,400 and the electrical package is €3,000. The saunas' electric heaters are sold only with the electrical service package."
+      ]
+    ],
+    "note": "Prices were checked on 4 November 2026. The supplier is advertising a November promotion, so the price you are quoted may differ. Confirm the current price and what it includes with the supplier."
+  },
+  "considerations": [
+    [
+      "Planning",
+      "Many garden buildings in Ireland can be built without planning permission if they meet the conditions for exempted development, which cover size, height, position and use. A building that is exempt cannot be lived in. Check your plans with your local authority before you buy, especially for the largest cabins: the KAARLO 44's base, terrace included, is about 37 m²."
+    ],
+    [
+      "Year-round use",
+      "These are solid single-skin log walls. If you want to use a room through the winter, budget for the insulation packages and a 70 mm wall option where one is offered."
+    ],
+    [
+      "Lead time",
+      "8 to 12 weeks for the products shown, depending on the model, as listed on each product page."
+    ],
+    [
+      "Warranty",
+      "An anti-rot warranty of up to 5 years, depending on the product (some product pages list 10 years). It depends on the timber being treated and maintained as the supplier instructs."
+    ]
+  ],
+  "disc001": {
+    "description": "Barrel saunas, sauna houses and wood-fired hot tubs, alongside log cabins.",
+    "image": "gh-11-leo-barrel"
+  },
+  "disc008": {
+    "description": "Nordic-spruce garden rooms and log cabins, from the Q-BIC 44 A to the KAARLO 44.",
+    "image": "gh-01-alu-concept-orchard"
+  }
+}

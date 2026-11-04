@@ -44,6 +44,20 @@
         "credit": "Image: The Mobile Pods",
         "creditHref": "https://themobilepods.ie/?utm_source=plotnua&utm_medium=referral&utm_campaign=supplier-showcase"
       }
+    },
+    "Gardenhouse24 Ireland": {
+      "_note": "Founder authorisation 4 Nov 2026 (Gardenhouse24's written Instagram permission). Card links to the PlotNua showcase; no outbound sales link. Remove this entry if the supplier asks for the image to be removed.",
+      "description": "Nordic-spruce garden rooms and log cabins, from the Q-BIC 44 A to the KAARLO 44.",
+      "page": "suppliers/gardenhouse24.html",
+      "image": {
+        "src": "https://d1l23c7hiawhq3.cloudfront.net/media/catalog/product/cache/631d00a18cc6f2d63e06f2111d31fb8f/2/0/20220606161922_img_0390_1.jpg",
+        "alt": "A natural-timber ALU CONCEPT 44 A garden room with full-height aluminium sliding glazing on two sides, set on a lawn beside a fruit tree.",
+        "kind": "Photograph",
+        "w": 1909,
+        "h": 1200,
+        "credit": "Image: Gardenhouse24",
+        "creditHref": "https://gardenhouse24.ie/?utm_source=plotnua&utm_medium=referral&utm_campaign=supplier-showcase"
+      }
     }
   }
 }

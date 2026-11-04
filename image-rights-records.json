@@ -1162,6 +1162,59 @@
       },
       "public_visibility": "PUBLISHABLE",
       "hold_reason": null
+    },
+    {
+      "organisation_record": "reclA5R4kPCCwc8Pc",
+      "organisation_code": "ORG-000010",
+      "organisation_name": "Gardenhouse24 Ireland",
+      "permission_outcome": "Granted with Conditions — Founder Confirmed",
+      "permitted_domain": "gardenhouse24.ie",
+      "required_credit": "Image: Gardenhouse24",
+      "permitted_delivery_hosts": [
+        {
+          "host": "d1l23c7hiawhq3.cloudfront.net",
+          "path_prefix": "/media/catalog/product/",
+          "why": "Gardenhouse24's own CloudFront distribution: every page of gardenhouse24.ie serves its theme, static files and Magento product media from d1l23c7hiawhq3.cloudfront.net (checked 4 Nov 2026). The distribution host is the supplier's alone, and the prefix narrows the scope to its product catalogue images."
+        }
+      ],
+      "evidence": "Gardenhouse24 replied on Instagram (direct message, recorded by the founder on 4 November 2026): \"Hi that's no problem if you could take pictures from the website and social media that would be great.\" This is a written permission to use photographs from gardenhouse24.ie and its social media accounts. The supplier also invited PlotNua to use its published product information and prices. Recorded in Atlas Image Permission Outreach IPO-024 (recMJXwJNNajU7EjY) as Granted with Conditions — Founder Confirmed. Earlier email outreach (Sep-Oct 2026, from colin@plotnua.ie) had no reply.",
+      "conditions": [
+        "Credit 'Image: Gardenhouse24' on every image use, linked to gardenhouse24.ie.",
+        "Only photographs and visualisations published on gardenhouse24.ie or the supplier's own social media; computer-generated images are always labelled 'Visualisation'.",
+        "If Gardenhouse24 asks for any image to be changed or removed, PlotNua does so promptly."
+      ],
+      "note": "Exercised on suppliers/gardenhouse24.html (13 photographs and 1 visualisation, hotlinked from the supplier's CloudFront product media) and on the Garden Retreat and Living in the Garden supplier galleries (one photograph each). Selection, source pages and SHA-256 hashes: supplier-preview-system/showcases/gardenhouse24/showcase.json. No social-media images are used yet (none could be reached from the build environment). REMOVAL: delete the image entry from showcase.json (and the showcaseMakers entry in the Discovery's editorial file if it is a gallery image), rebuild, regenerate this manifest. WITHDRAWAL: set permission_outcome to 'Withdrawn / Superseded' and the gate refuses every gardenhouse24.ie image site-wide. COMMERCIAL: no commission or referral agreement exists; this grant implies none.",
+      "atlas_permission_record": "recMJXwJNNajU7EjY",
+      "atlas_permission_ref": "IPO-024",
+      "permission_date": "2026-11-04",
+      "permission": {
+        "state": "GRANTED",
+        "ref": "IPO-024",
+        "record": "recMJXwJNNajU7EjY",
+        "date": "2026-11-04",
+        "scope": [
+          "feature",
+          "imagery",
+          "product-information"
+        ],
+        "conditions": [
+          "credit",
+          "link-back",
+          "supplier-published-imagery-only",
+          "remove-on-request"
+        ],
+        "asked": "PlotNua asked Gardenhouse24 on Instagram for permission to feature it and use its photographs (email outreach of Sep-Oct 2026 had no reply).",
+        "answered": "\"Hi that's no problem if you could take pictures from the website and social media that would be great.\" (Gardenhouse24, Instagram, recorded 4 Nov 2026)",
+        "note": "Recorded verbatim from the supplier's reply as relayed by the founder."
+      },
+      "listing_review": {
+        "state": "NOT_REQUIRED",
+        "requested_by": null,
+        "requested_in": null,
+        "note": "Gardenhouse24's reply did not ask to review a listing before publication. A private preview (gardenhouse24-ireland-preview.html) was sent by email in September 2026 without reply; it creates no review requirement."
+      },
+      "public_visibility": "PUBLISHABLE",
+      "hold_reason": null
     }
   ]
 }

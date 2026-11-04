@@ -56,9 +56,11 @@ mutates each page in memory to prove each guard can fail.
   its products are in the Maker Explorer. Its image counts as authorised (G1) only under a LIVE
   grant in image-rights-manifest.json covering that URL, with that grant's exact required credit
   linked on its permitted domain (G2/G14). G5 then treats it as one of the licensed makers.
-  G20 a showcase maker must NOT already be in the live explorer (it would be a normal maker),
-      must be configured, and its "Explore supplier" link must be exactly its configured PlotNua
-      showcase page, existing in the repository, same tab, not a private preview
+  G20 a showcase maker that is already in the live explorer is allowed only when the explorer gives
+      it NO governed image (the showcase never replaces a licensed image, founder D4) and it has no
+      commercial offer; every showcase maker must be configured, and its "Explore supplier" link must
+      be exactly its configured PlotNua showcase page, existing in the repository, same tab, not a
+      private preview (Gardenhouse24 extension, 4 Nov 2026)
 """
 import importlib.util, json, re, sys
 from pathlib import Path
@@ -200,8 +202,14 @@ def checks(name, full, css):
         held = {m for m, v in ed["makers"].items() if (v or {}).get("featureHold")}
         licensed = {m for m, src in leads.items() if src in AUTH and norm(AUTH[src][0]) == norm(m)} | show_names
         sm = ed.get("showcaseMakers") or {}
+        governed_auth = {k: v for k, v in AUTH.items() if k not in SHOW}
         for nm in set(sm) & names:
-            fails.append(f"G20 {name} {nm}: a showcase maker is already in the live explorer")
+            # allowed only where the explorer gives the maker NO governed image (never replaces one, D4)
+            lead = leads.get(nm)
+            if lead and lead in governed_auth and norm(governed_auth[lead][0]) == norm(nm):
+                fails.append(f"G20 {name} {nm}: a showcase would replace the maker's governed explorer image")
+            if nm in offers:
+                fails.append(f"G20 {name} {nm}: a showcase maker with a commercial offer needs its disclosure path")
         for nm, body in cards:
             nm = unesc(nm)
             if nm not in sm:
@@ -348,6 +356,8 @@ MUTATIONS = {
         "G19 View all back beside the figures": (p.replace('aria-controls="sg-track">' + _b.ARROW_R + '</button>', 'aria-controls="sg-track">' + _b.ARROW_R + '</button>\n        <a class="pn-sg-all" href="#explore-makers" data-sg-jump><span data-sg-label>View all suppliers</span></a>', 1), c),
         "G19 hero button reverted": (p.replace('<a class="is-secondary" href="#suppliers">Meet the makers</a>', '<a class="is-secondary" href="#explore-makers">Explore makers and products</a>', 1), c),
         "G19 explorer anchor renamed": (p.replace('id="explore-makers" data-pn-maker-explorer', 'id="makers-products" data-pn-maker-explorer', 1), c),
+        "G20 showcase Explore link sent off-site": (p.replace('<a href="suppliers/gardenhouse24.html" aria-label=', '<a href="https://gardenhouse24.ie/" aria-label=', 1), c),
+        "G1 showcase image outside its grant": (p.replace('<img src="https://d1l23c7hiawhq3.cloudfront.net/media/catalog/product/', '<img src="https://d1l23c7hiawhq3.cloudfront.net/elsewhere/', 1), c),
     },
     "discovery-living-in-the-garden.html": lambda p, c: {
         "G1 unlicensed image on a licensed maker": (p.replace('<img src="https://lh3.googleusercontent.com/d/1LNGku', '<img src="https://lh3.googleusercontent.com/d/9ZZZku', 1), c),
@@ -377,6 +387,8 @@ MUTATIONS = {
         "G2 showcase credit removed": (p.replace(">Image: The Mobile Pods<", ">The Mobile Pods<", 1), c),
         "G20 showcase Explore link sent off-site": (p.replace('<a href="suppliers/the-mobile-pods.html" aria-label=', '<a href="https://themobilepods.ie/" aria-label=', 1), c),
         "G20 showcase Explore link to a preview": (p.replace('<a href="suppliers/the-mobile-pods.html" aria-label=', '<a href="suppliers/the-mobile-pods-preview.html" aria-label=', 1), c),
+        "G20 explorer-maker showcase CTA sent off-site": (p.replace('<a href="suppliers/gardenhouse24.html" aria-label=', '<a href="https://gardenhouse24.ie/" aria-label=', 1), c),
+        "G2 explorer-maker showcase credit removed": (p.replace('target="_blank">Image: Gardenhouse24<', 'target="_blank">Gardenhouse24<', 1), c),
     },
 }
 

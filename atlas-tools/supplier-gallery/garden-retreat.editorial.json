@@ -24,5 +24,21 @@
   },
   "relationships": {
     "TimberIN": { "type": "referral", "label": "Referral arrangement", "detail": "Current commercial relationship: PlotNua receives a referral commission on qualifying purchases made with a PlotNua code. It does not affect how makers are shown.", "evidence": "Same disclosure as the live discovery-garden-retreat.html." }
+  },
+  "showcaseMakers": {
+    "Gardenhouse24 Ireland": {
+      "_note": "Founder authorisation 4 Nov 2026 (Gardenhouse24's written Instagram permission). Card links to the PlotNua showcase; no outbound sales link. Remove this entry if the supplier asks for the image to be removed.",
+      "description": "Barrel saunas, sauna houses and wood-fired hot tubs, alongside log cabins.",
+      "page": "suppliers/gardenhouse24.html",
+      "image": {
+        "src": "https://d1l23c7hiawhq3.cloudfront.net/media/catalog/product/cache/631d00a18cc6f2d63e06f2111d31fb8f/s/c/screenshot_2024-05-16_094127.png",
+        "alt": "A LEO barrel sauna in thermally treated wood with black shingles and a full-glass front, on a gravel base.",
+        "kind": "Photograph",
+        "w": 557,
+        "h": 744,
+        "credit": "Image: Gardenhouse24",
+        "creditHref": "https://gardenhouse24.ie/?utm_source=plotnua&utm_medium=referral&utm_campaign=supplier-showcase"
+      }
+    }
   }
 }
