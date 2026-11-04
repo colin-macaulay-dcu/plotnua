@@ -426,6 +426,12 @@ jobs:
           # one decision with both routes (route B the existing WhatsApp channel), free; no booking or income promise.
           python3 atlas-tools/prove-premium-discovery-your-home-on-screen.py
           python3 atlas-tools/prove-premium-discovery-your-home-on-screen.py --faults
+          # DISC-005 Home Exchange six-chapter redesign (founder approval, 4 Nov 2026): every text block, link, image,
+          # id and collapsible answer preserved against the pinned f4b648e snapshot; HOME / AWAY hero slider and header
+          # pinned; the Property Check moved whole into chapter 05; one decision with both routes (route B the existing
+          # WhatsApp channel), free; no exchange, cover or saving promised.
+          python3 atlas-tools/prove-premium-discovery-home-exchange.py
+          python3 atlas-tools/prove-premium-discovery-home-exchange.py --faults
           python3 atlas-tools/prove-discovery-two-option.py --self-test
           # DISC-020 Stay in the House You Love (founder Phase 2 build authorisation, 4 Nov 2026): SEO, one H1, the
           # pn-compare hero opening on BEFORE, AI disclosure, verified grant and planning statements with their limits,
