@@ -57,6 +57,8 @@ const ident = (s) => S.normalise(s)
 const route = (rec) => {
   if (!rec) { return ''; }
   if (rec.route) { return rec.route; }
+  // SEARCH-V1 amendment A1 (4 Nov 2026): a named envelope template, as search.js composes it.
+  if (rec.rt && INDEX.routes && INDEX.routes[rec.rt]) { return INDEX.routes[rec.rt].replace('{id}', String(rec.id).slice(5)); }
   if (rec.type === 'product' && INDEX.routes && INDEX.routes.product) {
     return INDEX.routes.product.replace('{id}', String(rec.id).slice(5));
   }

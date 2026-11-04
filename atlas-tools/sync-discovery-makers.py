@@ -212,7 +212,17 @@ def dump(s):
 # ──────────────────────────────────────────────────────────── verification ──
 def search_products():
     S = json.loads(SEARCH.read_text(encoding="utf-8"))
-    return {r["id"][5:]: r for r in S["records"] if r["type"] == "product"}
+    out = {}
+    for r in S["records"]:
+        if r["type"] != "product":
+            continue
+        if "rt" in r:
+            # SEARCH-V1 amendment A1 (4 Nov 2026): the route is the envelope template the
+            # record names, composed exactly as search.js composes it, so S7 checks the
+            # same destination it checked when the string was stored per record.
+            r = dict(r, route=(S.get("routes") or {}).get(r["rt"], "").replace("{id}", r["id"][5:]))
+        out[r["id"][5:]] = r
+    return out
 
 
 def verify(st, problems, universes, pages=None):

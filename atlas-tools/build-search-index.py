@@ -56,11 +56,15 @@ ALLOWED_FIELDS = {
     # lost — every record, price, tier and caveat is still here.
     "product": {"id", "type", "name", "organisation", "productType", "price",
                 "priceBasis", "tier", "caveats",
-                # 14 Oct 2026: a per-record "route" is allowed ONLY for a product
-                # with NO PlotNua product page (the wellness corpus), and R1
-                # proves it reaches the page that lists that exact product. The
-                # template stays canonical for everything else.
-                "route"},
+                # 14 Oct 2026: a product with NO PlotNua product page (the
+                # wellness corpus) routes to the Garden Retreat maker explorer
+                # that lists it, and R1 proves that page lists that exact id.
+                # 4 Nov 2026 (SEARCH-V1 amendment A1, founder authorisation):
+                # that route is no longer a per-record string. It is the second
+                # envelope template, routes.wellness, named by the short key
+                # "rt": "wellness"; the runtime composes it exactly as it did the
+                # stored string. No product carries a per-record "route" any more.
+                "rt"},
     # NO "route": a supplier expands inside Search (D-7) and cannot navigate.
     # Likewise no "productIds": a supplier's products are exactly the product
     # records whose organisation matches its name, which the runtime already
@@ -317,6 +321,10 @@ WL_ROUTE = WL_PAGE + "#explore-makers"
 # opens. R1 proves the page lists that exact id.
 def wl_route(rid):
     return WL_PAGE + "#p-" + rid
+# SEARCH-V1 amendment A1 (4 Nov 2026): the same destination as a template, stored
+# once in the envelope. {id} is the governed record id with "prod-" stripped.
+WL_TEMPLATE_KEY = "wellness"
+WL_TEMPLATE = WL_PAGE + "#p-{id}"
 wl_rows = []
 WL_SHA = None
 if WL_UNIVERSE.exists():
@@ -628,7 +636,7 @@ for r in rows + ah_rows + wl_rows:
         "caveats": caveats,
     }
     if rec["id"] in WL_REC_IDS:
-        rec["route"] = wl_route(rec["id"][5:] if rec["id"].startswith("prod-") else rec["id"])
+        rec["rt"] = WL_TEMPLATE_KEY
     # G7 at source: a price key exists ONLY where the universe says the price is
     # safe for matching. 279 of 573 are not, and those carry no price at all, so
     # there is nothing for a filter or a card to show wrongly.
@@ -740,11 +748,27 @@ index = {
     # THE ROUTE TEMPLATE, stored once instead of 573 times. {id} is the governed
     # record id with the "prod-" prefix stripped. Suppliers appear nowhere here,
     # because a supplier has no route at all.
-    "routes": {"product": PRODUCT_ROUTE_FMT.replace("%s", "{id}")},
+    # Amendment A1 (4 Nov 2026): the wellness destination is the second template.
+    "routes": {"product": PRODUCT_ROUTE_FMT.replace("%s", "{id}"), WL_TEMPLATE_KEY: WL_TEMPLATE},
     "records": records,
 }
 
 out_text = json.dumps(index, ensure_ascii=False, separators=(",", ":"))
+
+
+def eff_route(r):
+    """The destination a record resolves to, exactly as search.js composes it:
+    its own "route", or (amendment A1) the envelope template its "rt" names.
+    Product deep links through routes.product are asserted separately in R1/R4."""
+    if "route" in r:
+        return r["route"]
+    if "rt" in r:
+        tpl = index["routes"].get(r["rt"])
+        if tpl is None:
+            die("R1 record %r names route template %r, which the envelope does not carry"
+                % (r["id"], r["rt"]))
+        return tpl.replace("{id}", r["id"][5:] if r["id"].startswith("prod-") else r["id"])
+    return None
 
 # ===================================================================== GUARDS
 # ORDERING NOTE. G13 is the catch-all and runs LAST, deliberately, so a precise
@@ -761,19 +785,19 @@ PERMITTED = set(ALLOW) | set(DECLARED_ROUTES) | set(JOURNEYS)
 # or explicitly declared.
 page_of = lambda route: route.split("?", 1)[0].split("#", 1)[0]
 for r in records:
-    if "route" not in r:
+    if eff_route(r) is None:
         continue                      # suppliers carry no route, by design (D-7)
-    if page_of(r["route"]) not in PERMITTED:
+    if page_of(eff_route(r)) not in PERMITTED:
         die("G1 allowlist: record %r routes to %r, whose page is neither in "
-            "sitemap.xml nor a declared route" % (r["id"], r["route"]))
+            "sitemap.xml nor a declared route" % (r["id"], eff_route(r)))
 print("  G1  allowlist: every route's PAGE is sitemap-listed or declared  OK")
 
 # G1b THE EXEMPTION IS SELF-LIMITING. Every non-sitemap route actually used must
 # be linked from at least one sitemap page TODAY. Private previews are linked
 # from nothing, so no preview can ever qualify for the exemption, whatever it is
 # called. This is what stops DECLARED_ROUTES becoming a back door.
-used_exempt = {page_of(r["route"]) for r in records
-               if "route" in r and page_of(r["route"]) not in ALLOW}
+used_exempt = {page_of(eff_route(r)) for r in records
+               if eff_route(r) is not None and page_of(eff_route(r)) not in ALLOW}
 for route in sorted(used_exempt):
     if route not in DECLARED_ROUTES and route not in JOURNEYS:
         die("G1b %r is exempt but undeclared" % route)
@@ -963,10 +987,10 @@ print("  G15 %d supplier information record(s): possibility shape, own page, "
 
 # G12 routes exist
 for r in records:
-    if "route" not in r:
+    if eff_route(r) is None:
         continue
-    if not (ROOT / page_of(r["route"])).exists():
-        die("G12 record %r routes to %r, which does not exist" % (r["id"], r["route"]))
+    if not (ROOT / page_of(eff_route(r))).exists():
+        die("G12 record %r routes to %r, which does not exist" % (r["id"], eff_route(r)))
 print("  G12 every route resolves to a file that exists  OK")
 
 # =========================== R1-R4 · THE ROUTING ASSERTIONS =================
@@ -991,13 +1015,22 @@ if WL_REC_IDS:
         die("R1 %s carries no maker-explorer configuration to route wellness products to" % WL_PAGE)
     _cfg = json.loads(_m.group(1).replace("<\\/", "</"))
     _wl_listed = {"prod-" + p[0] for t in _cfg["tabs"] for mk in t["makers"] for p in mk["p"]}
+if set(index["routes"]) != {"product", WL_TEMPLATE_KEY} or index["routes"][WL_TEMPLATE_KEY] != WL_TEMPLATE:
+    die("R1 the envelope route templates are %r, not exactly the governed product and "
+        "wellness templates (amendment A1)" % index["routes"])
 for r in records:
     if r["type"] != "product":
         continue
     if "route" in r:
-        if r["id"] not in WL_REC_IDS or r["route"] != wl_route(r["id"][5:]):
-            die("R1 product %r carries a per-record route; the template is canonical"
-                % r["id"])
+        die("R1 product %r carries a per-record route; since amendment A1 every product "
+            "composes from an envelope template" % r["id"])
+    if (r["id"] in WL_REC_IDS) != (r.get("rt") == WL_TEMPLATE_KEY):
+        die("R1 product %r: a wellness product must name the wellness template, and "
+            "nothing else may" % r["id"])
+    if "rt" in r:
+        if eff_route(r) != wl_route(r["id"][5:]):
+            die("R1 wellness product %r composes to %r, not its own explorer entry"
+                % (r["id"], eff_route(r)))
         if r["id"] not in _wl_listed:
             die("R1 wellness product %r routes to %s, which does not list it"
                 % (r["id"], WL_ROUTE))
@@ -1048,7 +1081,7 @@ for r in records:
 print("  R3  all %d suppliers expand to exactly their stated product count  OK"
       % sum(1 for r in records if r["type"] == "supplier"))
 
-link_ids = {r["id"][5:] for r in records if r["type"] == "product" and "route" not in r}
+link_ids = {r["id"][5:] for r in records if r["type"] == "product" and "route" not in r and "rt" not in r}
 # TWO DECLARED CORPORA. This read `rows` alone — the same single-corpus
 # assumption G6 and G7 carried — and refused four Additional Home ids that ARE
 # governed, just governed by the second universe. The assertion is unchanged

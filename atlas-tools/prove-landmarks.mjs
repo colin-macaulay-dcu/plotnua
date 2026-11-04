@@ -78,7 +78,13 @@ const SEARCH_FROZEN = {
   // have no PlotNua product page) and the "sauna" possibility-only special
   // case is retired now that a governed corpus answers it. Previous value:
   // 53a462294de862f8563c2698cf14979874d276139c6ebc2fef0c1d135ba40d88.
-  "search.js":  "7ae73e451c516dae274cc53d61ab98b4d86310f41fbdfa78ee96f880cacfd7ab",
+  // Re-stamped 4 November 2026 for SEARCH-V1 amendment A1 (founder authorisation,
+  // "Search index capacity — prepare for DISC-035"): productRoute() composes a
+  // wellness product's route from the envelope template its "rt" names, exactly
+  // as the per-record string read; the old per-record path is kept. Same
+  // assertion, same strictness. Previous value:
+  // 7ae73e451c516dae274cc53d61ab98b4d86310f41fbdfa78ee96f880cacfd7ab.
+  "search.js":  "4af39d1680807d216b440f246cb72818bb210f4076586e08f3291a0cec1eae68",
   // Re-stamped 22 October 2026 for the founder-approved Architectural
   // Anthracite Batch 2: one appended, scoped section gives the pill (identity
   // pages) and the overlay (homepage and identity pages) the anthracite
