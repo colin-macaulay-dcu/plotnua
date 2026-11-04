@@ -49,13 +49,18 @@ VOID = {"img", "br", "input", "source", "meta", "link", "hr", "wbr", "path", "re
 # ---- declared changes (filled in as the approved redesign was implemented) -------------------------------
 # Removed: the duplicated upper Journey panel ("What are you considering?") and its continue link; the gallery's
 # two-option card moves to chapter 06 (its copy is kept, except the corrected homework sentence below).
-REMOVED = []          # declared after implementation
-REMOVED_LINKS = []
+# The sticky in-page navigation (same component, same script) now follows the six chapters: its seven old
+# labels are replaced by six chapter labels, and its links point at the chapter openings. The section ids it
+# used to target all remain, and the old kicker numbers ("01 ·" ... "04 ·") were dropped from four section
+# kickers because they no longer match the chapter numbers (kickers are spans, not counted here).
+REMOVED = ["01 The idea", "02 In Ireland", "03 How it works", "04 Three approaches", "Practical guide", "Cost", "Next step"]
+REMOVED_LINKS = ["#how-it-works", "#the-reveal", "#three-approaches", "#what-does-it-cost", "#your-next-step"]
 CORR = []
 ADDED = []          # new text blocks (chapter labels, approved new copy); populated below from ADDED_FILE
 ADDED_FILE = os.path.join(ROOT, "atlas-tools", "premium-discovery", "natural-swimming-added.json")
-ADDED_LINKS = ["#explore-makers", "#discover-your-property", "#planning-conditions", "#maker-guides"]
-ADDED_IDS = ["lg-ch01", "lg-ch02", "lg-ch03", "lg-ch04", "lg-ch05", "lg-ch06", "ns-plan-t", "ns-plan-d"]
+ADDED_LINKS = ["#lg-ch01", "#lg-ch02", "#lg-ch03", "#lg-ch04", "#lg-ch05", "#lg-ch06", "#sources", "#ns-professionals",
+               "#in-ireland", "#before-you-go-further", "your-plot.html?myplot=1", "https://wa.me/353834036695"]
+ADDED_IDS = ["lg-ch01", "lg-ch02", "lg-ch03", "lg-ch04", "lg-ch05", "lg-ch06", "ns-professionals"]
 ADDED_IMGS = []     # only already-approved assets may be added; declared in ADDED_FILE
 PLACEHOLDER = re.compile(r"\bto research\b|\bTBC\b|\bTBD\b|lorem|placeholder|coming soon", re.I)
 PROMISE = re.compile(r"\bmatch(?:es|ed|ing)?\b|\bbudget\b|\bcommission|\breferr|\bintroduc|\bpartner|\bguarantee|\bbest\b", re.I)
@@ -230,7 +235,7 @@ def check(src, base):
 
 FAULTS = [
     ("hero start moved to POSSIBLE", lambda s: s.replace('data-start="100"', 'data-start="0"', 1), "S"),
-    ("the space figure edited", lambda s: s.replace("for around 20 m", "for around 25 m", 1), "C"),
+    ("the space figure edited", lambda s: s.replace("for around 20&nbsp;m", "for around 25&nbsp;m", 1), "C"),
     ("a source dropped", lambda s: s.replace('href="https://watersafety.ie/?p=2505"', 'href="https://example.com/"', 1), "L"),
     ("WhatsApp route removed", lambda s: s.replace('href="https://wa.me/353834036695" data-ns-route', 'href="contact.html" data-ns-route'), "L"),
     ("an Irish project anchor renamed", lambda s: s.replace('id="in-ireland"', 'id="ireland"', 1), "L"),
@@ -241,7 +246,7 @@ FAULTS = [
     ("a matching promise added", lambda s: s.replace("Free for homeowners.", "Free for homeowners. We match you with the best designer.", 1), "F"),
     ("placeholder published", lambda s: s.replace("</main>", "<p>To research</p></main>", 1), "F"),
     ("drawing scale label removed", lambda s: s.replace("not to scale", "", 99).replace("Not to scale", "", 99), "F"),
-    ("details opened", lambda s: s.replace("<details", "<details open", 1), "D"),
+    ("details opened", lambda s: s.replace('<details class="pd-detail">', '<details class="pd-detail" open>', 1), "D"),
     ("footer edited", lambda s: s.replace("Related Discoveries", "Related", 1), "H"),
     ("undeclared stylesheet", lambda s: s.replace("</head>", '<link rel="stylesheet" href="x.css">\n</head>', 1), "H"),
 ]

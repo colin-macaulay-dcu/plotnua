@@ -398,6 +398,12 @@ jobs:
           python3 atlas-tools/prove-premium-discovery-living-garden.py
           python3 atlas-tools/prove-premium-discovery-living-garden.py --faults
           python3 atlas-tools/prove-discovery-two-option.py
+          # DISC-031 The Natural Swimming Garden six-chapter redesign (founder approval, 4 Nov 2026): every text
+          # block, link, image and id preserved against the pinned 544ecc3 snapshot except the declared navigation
+          # relabel and additions; hero slider pinned; one decision with both routes (route B the existing WhatsApp
+          # channel), free, no intake or matching promise; illustrative drawing labelled not to scale.
+          python3 atlas-tools/prove-premium-discovery-natural-swimming.py
+          python3 atlas-tools/prove-premium-discovery-natural-swimming.py --faults
           python3 atlas-tools/prove-discovery-two-option.py --self-test
           # Safety lock (23 Oct 2026): the 17 Oct merge builder must refuse to
           # regenerate the approved Premium page, and must leave every file as it was.
