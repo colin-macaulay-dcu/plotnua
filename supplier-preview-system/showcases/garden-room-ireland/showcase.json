@@ -1,0 +1,294 @@
+{
+ "_about": "Data for the Garden Room Ireland supplier showcase (suppliers/garden-room-ireland.html), read by supplier-preview-system/build-garden-room-ireland-showcase.py. Facts restate Atlas (Products and Product Feature Values, all Partially Verified, from gardenroomireland.ie). Images: Atlas-Approved first-party photographs under IPO-049, hotlinked unmodified from the supplier's own Wix media account (fef4b6_).",
+ "supplier": {
+  "name": "Garden Room Ireland",
+  "slug": "garden-room-ireland",
+  "website": "https://www.gardenroomireland.ie/",
+  "county": "Dublin",
+  "countySource": "Atlas ORG-000012 and feature records: Sandyford, Dublin 18 (first-party footer).",
+  "creditHref": "https://www.gardenroomireland.ie/?utm_source=plotnua&utm_medium=referral&utm_campaign=supplier-showcase",
+  "credit": "© Garden Room Ireland"
+ },
+ "publication": {
+  "status": "PRIVATE PREVIEW — founder instruction 4 Nov 2026. Not deployed; the DISC-008 gallery card stays held (featureHold).",
+  "basis": "Garden Room Ireland YES, 2 Oct 2026 (IPO-049, Gmail 1a0fb8c10027247e). Rights record: image-rights-records.json (Garden Room Ireland).",
+  "objection": "If Garden Room Ireland asks for any image to be changed or removed, delete its entry here and rebuild.",
+  "commercial": "No referral, commission or customer-benefit arrangement is agreed (a proposal of 22 Oct 2026 is unanswered). None is claimed, advertised or implied."
+ },
+ "intro": "Insulated steel-clad garden rooms from a Dublin company, with no timber in the exterior, built to the size and layout each garden needs.",
+ "standfirst": "Garden Room Ireland's own photographs of finished rooms in clients' gardens: dark, green and oak finishes, on lawns, decks and slopes.",
+ "interiorsTitle": "Inside: studio, lounge, kitchen, bedroom.",
+ "interiorsText": "The same rooms fitted out for different lives. Every photograph is the supplier's own.",
+ "products": [
+  {
+   "name": "QC6",
+   "atlas": "recs7YJnVX29hkueM",
+   "kind": "Insulated steel garden room",
+   "summary": "Garden Room Ireland's fuller-specification steel-clad garden room, built to the size and layout you choose, with options including flyover roofs, half or picture windows and doors in any position.",
+   "specs": [
+    [
+     "Sizes",
+     "From 6 × 6 ft up to 12 × 33 ft; external width just over 4 m"
+    ],
+    [
+     "Exterior",
+     "Leatherette-embossed galvanised steel walls, uPVC and glass windows, EPDM roof; no timber"
+    ],
+    [
+     "Insulation",
+     "Described by the supplier as insulated to live, sleep and eat in; no U-value published"
+    ],
+    [
+     "Guarantee",
+     "25-year exterior guarantee, as stated by the supplier (terms not published)"
+    ],
+    [
+     "Price",
+     "Price on enquiry"
+    ]
+   ],
+   "source": "https://www.gardenroomireland.ie/copy-of-example"
+  },
+  {
+   "name": "QCB (Quarter Century Building)",
+   "atlas": "rec8YgOCbzX0GFx5a",
+   "kind": "Steel-clad garden office",
+   "summary": "A timber-free, steel-clad insulated garden office supplied on its own adjustable base, so a concrete base is not needed on a clear site.",
+   "specs": [
+    [
+     "Standard sizes",
+     "2750 × 2750, 4000 × 2750 and 5200 × 2750 mm (internal); other sizes on request"
+    ],
+    [
+     "Insulation",
+     "100 mm Ecotherm; A-rated double-glazed sealed units"
+    ],
+    [
+     "Installation",
+     "Supplied and installed by Garden Room Ireland, in a day by the supplier's account"
+    ],
+    [
+     "Guarantee",
+     "25-year exterior guarantee, as stated by the supplier (terms not published)"
+    ],
+    [
+     "Price",
+     "Price on enquiry"
+    ]
+   ],
+   "source": "https://www.gardenroomireland.ie/example"
+  },
+  {
+   "name": "L-Shape Living Annex",
+   "atlas": "reciLDHTQbuY7cqHh",
+   "kind": "Fitted garden living annex",
+   "summary": "An L-shaped annex fitted as standard with a bedroom, living space, wardrobes, shower, sinks, toilet and kitchen.",
+   "specs": [
+    [
+     "Width",
+     "3 m or 4 m; length and floor area not published"
+    ],
+    [
+     "Exterior",
+     "Galvanised steel walls, uPVC and glass windows, EPDM roof"
+    ],
+    [
+     "Price",
+     "Price on enquiry"
+    ]
+   ],
+   "source": "https://www.gardenroomireland.ie/copy-of-example"
+  }
+ ],
+ "productsNote": "Specifications as Garden Room Ireland publishes them on its website. PlotNua has not changed or added to them. Every room is quoted to its size and configuration, so each is shown here as price on enquiry until Garden Room Ireland confirms current prices.",
+ "planningNote": "Whether planning permission is needed depends on the room's size, where it sits and how it will be used. Ireland's exemption for garden buildings does not extend to use as a separate home, so an annex with a bedroom, kitchen and shower needs particular care. Check your plans with your local authority before you commit.",
+ "images": [
+  {
+   "id": "gri-01-under-the-tree",
+   "role": "hero",
+   "kind": "Photograph",
+   "w": 2048,
+   "h": 1178,
+   "origin": "https://static.wixstatic.com/media/fef4b6_f1486b2ae80e4ed2bfeecde2d7e5ea71~mv2.jpg",
+   "sourcePage": "https://www.gardenroomireland.ie/",
+   "atlasAsset": "rech9iJFEtdTjno1H",
+   "sha256": "29fc3a7ed382682caaf88fa2135b2707c7ebbd75fff7a68d6beba2441539e3aa",
+   "alt": "Timber-clad garden room under a mature tree, with a stepping-stone path",
+   "caption": "A timber-fronted garden room at the end of a stepping-stone path, under a mature tree."
+  },
+  {
+   "id": "gri-02-curved-lawn",
+   "role": "collection",
+   "kind": "Photograph",
+   "w": 800,
+   "h": 600,
+   "origin": "https://static.wixstatic.com/media/fef4b6_c945204f83444b15b045b80b4532edcc~mv2.jpg",
+   "sourcePage": "https://www.gardenroomireland.ie/",
+   "atlasAsset": "recyTJtxR8TqannFo",
+   "sha256": "de8df4e24fef2f2586101ddf28368e34481399ea2e2e168c82fe21bc242106c1",
+   "alt": "Dark-clad garden room with glazed doors on a lawn with a curved path",
+   "caption": "Dark cladding and full-height glazing behind a new lawn and curved bed."
+  },
+  {
+   "id": "gri-03-pond-footbridge",
+   "role": "collection",
+   "kind": "Photograph",
+   "w": 748,
+   "h": 553,
+   "origin": "https://static.wixstatic.com/media/fef4b6_8ad2a41e0a584caa8099572d40e8310a~mv2.jpeg",
+   "sourcePage": "https://www.gardenroomireland.ie/",
+   "atlasAsset": "recakkmLmfyenulGp",
+   "sha256": "dc8f617491131175251d55dd56cbc0cb1172ef50e4bd2e380b88b561d5a81365",
+   "alt": "Timber-fronted garden room beside a pond with a footbridge, in a rural setting",
+   "caption": "A timber-fronted room beside a pond and footbridge, in a rural garden."
+  },
+  {
+   "id": "gri-04-mature-garden",
+   "role": "collection",
+   "kind": "Photograph",
+   "w": 695,
+   "h": 400,
+   "origin": "https://static.wixstatic.com/media/fef4b6_a98d83d777944a3fbcacd4a47fa491ba~mv2.jpg",
+   "sourcePage": "https://www.gardenroomireland.ie/grey-windows",
+   "atlasAsset": "reczuwzQQtANXBN9v",
+   "sha256": "d59b7f43614a2619a36fda7ffe6006c97b295859758cd19e4cc0fa5a45553960",
+   "alt": "Dark grey garden room set in a mature planted garden beside a pond",
+   "caption": "A dark grey room set into a mature planted garden beside a pond."
+  },
+  {
+   "id": "gri-05-sloped-deck",
+   "role": "collection",
+   "kind": "Photograph",
+   "w": 569,
+   "h": 326,
+   "origin": "https://static.wixstatic.com/media/fef4b6_a75769a65f9740d8b65103879bcf964c~mv2.jpg",
+   "sourcePage": "https://www.gardenroomireland.ie/grey-pillars",
+   "atlasAsset": "recRIglEgThe5ZXyO",
+   "sha256": "a38da68c8d28302ff3b7de1d492761a3642a5382e1392ecb1da3746143f399ec",
+   "alt": "Grey garden room raised on a deck with timber steps and handrail on a sloped lawn",
+   "caption": "On a sloping lawn, the room sits on a raised deck with timber steps."
+  },
+  {
+   "id": "gri-06-green-deck",
+   "role": "collection",
+   "kind": "Photograph",
+   "w": 565,
+   "h": 324,
+   "origin": "https://static.wixstatic.com/media/fef4b6_ebc91d83eb604ffa8eb3ecaf83e7d2a4~mv2.jpg",
+   "sourcePage": "https://www.gardenroomireland.ie/green-wals",
+   "atlasAsset": "recHMACmKS40IMBsY",
+   "sha256": "679403c6e94a294a13d3c79564502bc705a6265e0f7d79e14e7d2d7b7b9d9d50",
+   "alt": "Green-clad garden room with glazed doors and timber decking",
+   "caption": "Green cladding, glazed doors and a timber deck."
+  },
+  {
+   "id": "gri-07-oak-corner",
+   "role": "collection",
+   "kind": "Photograph",
+   "w": 567,
+   "h": 325,
+   "origin": "https://static.wixstatic.com/media/fef4b6_17bdab9e520d4d3fb4b4626a469e3df5~mv2.jpg",
+   "sourcePage": "https://www.gardenroomireland.ie/light-oak",
+   "atlasAsset": "recGvqQYO6fSC931F",
+   "sha256": "c000fffb5070f177a71e5f54e066404faa96807f83bffea104467eaaf80a716f",
+   "alt": "Oak-framed green garden room with corner glazing on a lawn",
+   "caption": "Oak framing and corner glazing on a green-clad room."
+  },
+  {
+   "id": "gri-08-veranda",
+   "role": "collection",
+   "kind": "Photograph",
+   "w": 566,
+   "h": 324,
+   "origin": "https://static.wixstatic.com/media/fef4b6_d866139918e74820a3e6d53f8ecb5e70~mv2.jpg",
+   "sourcePage": "https://www.gardenroomireland.ie/verandas",
+   "atlasAsset": "recB4sfgk6bALojvv",
+   "sha256": "661a40b54faaa6e62b61a48e2b2c58c4b3bcc5af92049ab029adfbf14bf8a00a",
+   "alt": "Dark-clad garden room with glazed doors and seating on decking",
+   "caption": "A dark-clad room with a covered veranda and seating."
+  },
+  {
+   "id": "gri-09-long-glazing",
+   "role": "collection",
+   "kind": "Photograph",
+   "w": 569,
+   "h": 326,
+   "origin": "https://static.wixstatic.com/media/fef4b6_8df8e893436845c397a8efca7da5f6d5~mv2.jpg",
+   "sourcePage": "https://www.gardenroomireland.ie/black-pillars",
+   "atlasAsset": "recnda1T4x53gLYKd",
+   "sha256": "b97ab2e084185244320b41c3bad16249037f6c75950f4708cf01d493a41c8d23",
+   "alt": "Dark grey garden room with a run of glazed windows beside a patio",
+   "caption": "A long run of glazing beside a patio."
+  },
+  {
+   "id": "gri-10-lounge",
+   "role": "interior",
+   "kind": "Photograph",
+   "w": 695,
+   "h": 400,
+   "origin": "https://static.wixstatic.com/media/fef4b6_b23ebc27bce14998aea8f87a6f4da6d8~mv2.jpg",
+   "sourcePage": "https://www.gardenroomireland.ie/interiors",
+   "atlasAsset": "recU2qDefbOvKIb6r",
+   "sha256": "482011892a098c447fb6f1131294c4c14c7b6e2a5d3e6f024dbb7e13d7958055",
+   "alt": "Garden room interior with a sofa, shelving and wall-mounted air conditioning",
+   "caption": "A lounge inside a garden room, with shelving and wall-mounted air conditioning."
+  },
+  {
+   "id": "gri-11-studio",
+   "role": "interior",
+   "kind": "Photograph",
+   "w": 568,
+   "h": 328,
+   "origin": "https://static.wixstatic.com/media/fef4b6_7c58c8d3d2fd4343b824fdae9658f661~mv2.jpg",
+   "sourcePage": "https://www.gardenroomireland.ie/interiors",
+   "atlasAsset": "recPCQnhMmIxaXHqk",
+   "sha256": "c0ea6fd53b944fcccf634e8e6abc7f9ae1246eed6fe80742c95985eaee40cb68",
+   "alt": "Garden room interior used for exercise, with mats and open glazed doors",
+   "caption": "An exercise studio, doors open to the garden."
+  },
+  {
+   "id": "gri-12-kitchen",
+   "role": "interior",
+   "kind": "Photograph",
+   "w": 695,
+   "h": 521,
+   "origin": "https://static.wixstatic.com/media/fef4b6_a81f4c4d2dc34633b96e977464db8060~mv2.jpg",
+   "sourcePage": "https://www.gardenroomireland.ie/interiors",
+   "atlasAsset": "recwBHcCkxsTGkhGl",
+   "sha256": "c8d504fbd330e39441d828738a7a5706be8ce57ba3a231c7f8b75e83913d951c",
+   "alt": "Fitted white kitchen inside a garden room, with oven and washing machine",
+   "caption": "A fitted kitchen with an oven and washing machine inside a garden room."
+  },
+  {
+   "id": "gri-13-bedroom",
+   "role": "interior",
+   "kind": "Photograph",
+   "w": 568,
+   "h": 322,
+   "origin": "https://static.wixstatic.com/media/fef4b6_c611419235ee44909de11cdb685a8ad2~mv2.jpg",
+   "sourcePage": "https://www.gardenroomireland.ie/interiors",
+   "atlasAsset": "rec8uwkm71NDR78gP",
+   "sha256": "2e351516c71bdb8f4aa6c06410cd79528eff1e1989ace12986db50e7e6b7df2e",
+   "alt": "Garden room interior fitted as a bedroom with bedside lamps and wall art",
+   "caption": "A garden room fitted out as a bedroom."
+  }
+ ],
+ "excluded": [
+  {
+   "file": "Floor-plan and 3D layout images (Interiors and home page)",
+   "reason": "Visualisations, not photographs; not needed for a photograph-led page."
+  },
+  {
+   "file": "Images with people (Green Walls owners on a deck; a person on a veranda)",
+   "reason": "Identifiable individuals."
+  },
+  {
+   "file": "Home page decked terrace with a house-number sign; timber veranda interior",
+   "reason": "Shows an address sign; the veranda structure does not read as a Garden Room Ireland building."
+  },
+  {
+   "file": "13 Atlas assets",
+   "reason": "No longer load from the supplier's media account (checked 4 Nov 2026)."
+  }
+ ]
+}

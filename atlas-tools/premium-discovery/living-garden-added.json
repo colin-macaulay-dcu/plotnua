@@ -68,12 +68,23 @@
    "supplier": "Elm Landscaping",
    "declared": "2026-11-04, founder authorisation 'Elm Landscaping supplier presentation upgrade': a text-only reference above the supplier gallery to the PlotNua showcase. Gallery cards, capacity and Maker Explorer unchanged.",
    "blocks": [
-    "Maker showcase",
+    "Maker showcases",
     "Elm Landscaping , a Co. Clare landscaping company, lists five garden rooms in the products below. Its showcase pairs that range with photographs of the gardens it has built.",
-    "See Elm Landscaping on PlotNua →"
+    "Elm Landscaping , a Co. Clare landscaping company, lists five garden rooms in the products below. Its showcase pairs that range with photographs of the gardens it has built."
    ],
    "links": [
     "suppliers/elm-landscaping.html"
+   ]
+  },
+  {
+   "supplier": "Garden Room Ireland",
+   "declared": "2026-11-04, founder instruction 'Garden Room Ireland premium supplier showcase' (private supplier preview; branch preview/garden-room-ireland-showcase). Text-only reference; the gallery card stays held.",
+   "blocks": [
+    "Garden Room Ireland , a Dublin maker of insulated steel-clad garden rooms: the QC6, the QCB garden office and an L-shaped living annex, with photographs of finished rooms.",
+    "Garden Room Ireland , a Dublin maker of insulated steel-clad garden rooms: the QC6, the QCB garden office and an L-shaped living annex, with photographs of finished rooms."
+   ],
+   "links": [
+    "suppliers/garden-room-ireland.html"
    ]
   }
  ]

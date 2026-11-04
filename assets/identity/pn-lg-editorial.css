@@ -177,3 +177,5 @@ body.pn-id.pn-pd .lg-showcase-t{ font-size:clamp(16px,1.5vw,18px); line-height:1
 body.pn-id.pn-pd .lg-showcase-n{ margin-top:10px !important; font-size:14.5px; }
 body.pn-id.pn-pd .lg-showcase a{ color:inherit; text-decoration:underline; text-underline-offset:3px; text-decoration-thickness:1px; }
 body.pn-id.pn-pd .lg-showcase a:focus-visible{ outline:2px solid var(--lg-sage-2,#A9C4A4); outline-offset:3px; }
+body.pn-id.pn-pd .lg-showcase-l{ list-style:none; margin:0; padding:0; display:grid; gap:14px; }
+body.pn-id.pn-pd .lg-showcase-l li + li{ border-top:1px solid var(--lg-field-line,#33453A); padding-top:14px; }
