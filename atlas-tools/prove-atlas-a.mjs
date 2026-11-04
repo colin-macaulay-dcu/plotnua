@@ -267,9 +267,17 @@ else {
        scope-limited reads (insulation, insulationRating, construction,
        installationModel: Range-Level; irishAvailability: Organisation-Wide)
        and no model-level mark: -15. Every other product's reads are
-       unchanged, no scope note was lost, and leak stays 0. */
-    refused === 1356 ? ok('1,356 scope-limited established reads REFUSED ' + JSON.stringify(byScope))
-                     : bad('expected 1,356 scope-limited refusals, measured ' + refused);
+       unchanged, no scope note was lost, and leak stays 0.
+
+       RE-CENSUSED 4 November 2026 for the founder-approved Powersheds Maker
+       Explorer correction (publish-targeted-update.py, three Powersheds log
+       cabins): scope-limited 1356 -> 1359. Each product gained one Irish
+       Availability record, Organisation-Wide (ie.powersheds.com delivers
+       throughout Ireland), which is a scope-limited read: +3. Model-level
+       unchanged at 552; every other product's reads are unchanged, no scope
+       note was lost, and leak stays 0. */
+    refused === 1359 ? ok('1,359 scope-limited established reads REFUSED ' + JSON.stringify(byScope))
+                     : bad('expected 1,359 scope-limited refusals, measured ' + refused);
     allowed === 552 ? ok('552 model-level established reads allowed')
                     : bad('expected 552 model-level marks, measured ' + allowed);
     const none = ['none', 'stated', 'deferred', 'negative', 'flat']
