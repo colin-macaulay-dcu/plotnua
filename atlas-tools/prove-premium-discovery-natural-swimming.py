@@ -59,7 +59,9 @@ CORR = []
 ADDED = []          # new text blocks (chapter labels, approved new copy); populated below from ADDED_FILE
 ADDED_FILE = os.path.join(ROOT, "atlas-tools", "premium-discovery", "natural-swimming-added.json")
 ADDED_LINKS = ["#lg-ch01", "#lg-ch02", "#lg-ch03", "#lg-ch04", "#lg-ch05", "#lg-ch06", "#sources", "#ns-professionals",
-               "#in-ireland", "#before-you-go-further", "your-plot.html?myplot=1", "https://wa.me/353834036695"]
+               "#in-ireland", "#before-you-go-further", "your-plot.html?myplot=1", "https://wa.me/353834036695",
+               # DISC-034 reciprocal exit (founder finalisation instruction, 4 Nov 2026): one added closing-panel link
+               "discovery-the-water-wall.html"]
 ADDED_IDS = ["lg-ch01", "lg-ch02", "lg-ch03", "lg-ch04", "lg-ch05", "lg-ch06", "ns-professionals"]
 ADDED_IMGS = []     # only already-approved assets may be added; declared in ADDED_FILE
 PLACEHOLDER = re.compile(r"\bto research\b|\bTBC\b|\bTBD\b|lorem|placeholder|coming soon", re.I)

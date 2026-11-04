@@ -82,3 +82,24 @@ Nothing is generated or retouched.
 - **Sitemap:** one entry added.
 - **Search index:** one new possibility record. The index is 183,763 bytes (179.5 KB) against the unchanged 180 KB guard, with no record removed.
 - **Proof:** `atlas-tools/prove-disc034-page.py` (W1–W16). It is added to the Image Rights Gate and to the release script's standard checks.
+
+## Finalisation (founder decision, 4 Nov 2026 evening: "Finalise and prepare for launch")
+
+**Images.** The original BEFORE and POSSIBLE are approved and stay unchanged; the proposed pipe correction was rejected. The Experience image is not a launch blocker.
+
+**Retained as built:**
+- the disclosure "AI-generated illustration — not a real installation.";
+- the standard unprefilled WhatsApp link (reference WW);
+- the existing My Plot integration.
+
+**Search.**
+- A governed topic-map entry is added: "water butt" → `discovery-the-water-wall.html`, possibility scope only. The topic map moves to version 3 under the founder's approval.
+- The index is 179.5 KB, against the unchanged 180 KB guard.
+- The wellness route-template optimisation was **not** made. The frozen SEARCH-V1 contract (§2) lists `route` as a product field, so the change needs a contract amendment. It is reported separately.
+
+**Reciprocal exits.**
+- DISC-031 and DISC-033 each gain one closing-panel exit link to The Water Wall.
+- The DISC-031 content guard declares that link as an addition (ADDED_LINKS); every other pin is unchanged.
+- The DISC-033 page proof passes unchanged.
+
+**Rebase.** The branch is rebased onto production `main` `b4af57a` (Superior Pergola commits); there are no conflicts.
