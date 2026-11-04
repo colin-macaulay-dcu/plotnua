@@ -15182,8 +15182,8 @@
     },
     {
       "asset": "assets/disc020/img/DISC-020-BEFORE-M-750.webp",
-      "sha256": "684b5c1a08c6b1e53096dbe1fabd0af7195e3b2d90f81f7127f3471dd2b26298",
-      "bytes": 39482,
+      "sha256": "c288c1a70729e22dab5b17d209eb735f43f661efed16caeb7fce5d4401d6abb6",
+      "bytes": 37690,
       "pixels": [
         750,
         937
@@ -15194,8 +15194,8 @@
       },
       "method": "crop",
       "edit": {
-        "description": "DISC-020 web copy (Governance 2.0, Rule 3): 4:5 crop x 450-1200 (the full height), no resize.",
-        "operation": "4:5 crop x 450-1200 (the full height), no resize",
+        "description": "DISC-020 web copy (Governance 2.0, Rule 3): 4:5 crop x 480-1230 (the full height), no resize.",
+        "operation": "4:5 crop x 480-1230 (the full height), no resize",
         "verified_by": "atlas-tools/build-disc020-images.py --check"
       },
       "encoder": "Pillow 12.3.0, WebP quality 80, method 6",
@@ -15208,8 +15208,8 @@
     },
     {
       "asset": "assets/disc020/img/DISC-020-BEFORE-M-750.jpg",
-      "sha256": "ba7148c76ed3feb50c353b0e012d105ad5a5f61a8ee9e66448e34fc2699a5ef9",
-      "bytes": 85145,
+      "sha256": "6350e643cac25dab56dd8a1991710add9175cd67036aa527286df1b56b67c44f",
+      "bytes": 81580,
       "pixels": [
         750,
         937
@@ -15220,8 +15220,8 @@
       },
       "method": "crop",
       "edit": {
-        "description": "DISC-020 web copy (Governance 2.0, Rule 3): 4:5 crop x 450-1200 (the full height), no resize.",
-        "operation": "4:5 crop x 450-1200 (the full height), no resize",
+        "description": "DISC-020 web copy (Governance 2.0, Rule 3): 4:5 crop x 480-1230 (the full height), no resize.",
+        "operation": "4:5 crop x 480-1230 (the full height), no resize",
         "verified_by": "atlas-tools/build-disc020-images.py --check"
       },
       "encoder": "Pillow 12.3.0, JPEG quality 86, progressive",
@@ -15364,8 +15364,8 @@
     },
     {
       "asset": "assets/disc020/img/DISC-020-POSSIBLE-M-750.webp",
-      "sha256": "460fa741ea53b913a8330abb52b4aa5fac37dc2910efd2ab2b9743b3b72dd095",
-      "bytes": 51774,
+      "sha256": "8418f9da77f1f9c300d5699b4b9c3e6416bcef9866421f1adfbb966a6b9cd2ff",
+      "bytes": 49232,
       "pixels": [
         750,
         937
@@ -15376,8 +15376,8 @@
       },
       "method": "crop",
       "edit": {
-        "description": "DISC-020 web copy (Governance 2.0, Rule 3): 4:5 crop x 450-1200 (the full height), no resize.",
-        "operation": "4:5 crop x 450-1200 (the full height), no resize",
+        "description": "DISC-020 web copy (Governance 2.0, Rule 3): 4:5 crop x 480-1230 (the full height), no resize.",
+        "operation": "4:5 crop x 480-1230 (the full height), no resize",
         "verified_by": "atlas-tools/build-disc020-images.py --check"
       },
       "encoder": "Pillow 12.3.0, WebP quality 80, method 6",
@@ -15390,8 +15390,8 @@
     },
     {
       "asset": "assets/disc020/img/DISC-020-POSSIBLE-M-750.jpg",
-      "sha256": "822d577a9247ab123dcd24e5f65b1a39f5a4be67483040bd292ee62f142962b6",
-      "bytes": 111173,
+      "sha256": "60d6928372ca644681b7d1cc163bd5eb21e0de6a7912ef71cd1d714f9ab09cea",
+      "bytes": 108627,
       "pixels": [
         750,
         937
@@ -15402,8 +15402,8 @@
       },
       "method": "crop",
       "edit": {
-        "description": "DISC-020 web copy (Governance 2.0, Rule 3): 4:5 crop x 450-1200 (the full height), no resize.",
-        "operation": "4:5 crop x 450-1200 (the full height), no resize",
+        "description": "DISC-020 web copy (Governance 2.0, Rule 3): 4:5 crop x 480-1230 (the full height), no resize.",
+        "operation": "4:5 crop x 480-1230 (the full height), no resize",
         "verified_by": "atlas-tools/build-disc020-images.py --check"
       },
       "encoder": "Pillow 12.3.0, JPEG quality 86, progressive",

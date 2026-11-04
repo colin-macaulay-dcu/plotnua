@@ -13,8 +13,8 @@ Both are ChatGPT (OpenAI) outputs. Neither carries a visible generator mark, so 
 
 ROUTINE EDITS (Governance 2.0, Rule 3), each recorded as a derivative bound to its unchanged master:
   * resizing (Lanczos) and encoding to WebP / JPEG;
-  * the phone hero copies are a 4:5 crop of the full height at x 450-1200: the stair through the doorway
-    (x ~480-650) and the whole lift (x 895-1168) stay in view; both crops use the same window, so the pair
+  * the phone hero copies are a 4:5 crop of the full height at x 480-1230 (Phase 2B; was 450-1200): the stair through the doorway
+    (x ~500-690) and the whole lift with its ceiling bulkhead (x 895-1186) stay in view, the lift 44 px clear of the edge; both crops use the same window, so the pair
     stays aligned to the pixel;
   * the Library card copies and the 1200 x 630 social card are taken from the POSSIBLE.
 
@@ -41,7 +41,7 @@ MASTERS = {   # role -> (path, sha256, what)
                  "DISC-020 hero POSSIBLE: the same living room with a glazed residential lift in slim bronze framing "
                  "standing against the back wall and rising through the ceiling"),
 }
-MOBILE_X0, MOBILE_W = 450, 750        # 4:5 phone crop of the 937 px height: stair and lift both in view
+MOBILE_X0, MOBILE_W = 480, 750        # 4:5 phone crop of the 937 px height: stair and lift both in view, lift clear of the edge (Phase 2B)
 DESK = (768, 1024, 1376, 1678)
 
 

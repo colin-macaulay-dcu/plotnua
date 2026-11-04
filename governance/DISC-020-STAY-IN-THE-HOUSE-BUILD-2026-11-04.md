@@ -27,7 +27,7 @@
 **Routine edits only** (Rule 3). Every web copy was made by `atlas-tools/build-disc020-images.py` and is recorded as a derivative of its master. The edits are:
 - Lanczos resizes;
 - WebP and JPEG encodes;
-- one 4:5 phone crop at x 450–1200, applied identically to both images, which keeps the stair and the whole lift in view;
+- one 4:5 phone crop at x 480–1230, applied identically to both images, which keeps the stair and the whole lift in view with the lift clear of the edge (Phase 2B; the first build used 450–1200);
 - two Library card WebPs;
 - a 1200 × 630 social card from the POSSIBLE.
 
