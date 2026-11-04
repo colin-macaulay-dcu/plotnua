@@ -19,6 +19,8 @@ is warped or resampled to "fix" it (founder instruction). The BEFORE is 1672 px 
 every web copy of BOTH is taken from the common 1671 x 941 frame (the BEFORE's right-most pixel column is
 cropped, Rule 3 pair preparation), so the slider layers share one geometry.
 
+CHAPTER IMAGES 03-07: five separate ChatGPT masters (1536 x 1024), each resized whole to 480, 768 and 1024 px as WebP and JPEG.
+
 ROUTINE EDITS (Governance 2.0, Rule 3), each recorded as a derivative bound to its unchanged master:
   * resizing (Lanczos) and encoding to WebP / JPEG;
   * the common-frame crop above (x 0-1671), applied to both;
@@ -48,6 +50,26 @@ MASTERS = {   # role -> (path, sha256, what)
                  "DISC-035 hero POSSIBLE: the same terrace covered by a contemporary anthracite structure with an adjustable-louvre roof "
                  "and integrated warm lighting, a glazed sliding side, an outdoor dining table and a lounge area with a fire table"),
 }
+# THE FIVE CHAPTER IMAGES (founder intake authorisation, 4 Nov 2026): each a separate ChatGPT output, 1536 x 1024 (3:2),
+# shown whole in its chapter-01 card slot (the slot takes the image's own 3:2 ratio, so nothing is cropped or stretched).
+CHAPTERS = {   # role -> (path, sha256, what)
+    "03-COVERED-PATIO": (D + "DISC-035-03-COVERED-PATIO-MASTER.png", "160c2c9c56ec3bfbbac0d255ea88c4cf38adc630e1d2c0676967a113140e0a26",
+        "DISC-035 chapter image 03, The Covered Patio: a glass lean-to roof on anthracite posts over a stone terrace behind a rendered Irish house, "
+        "with an outdoor sofa, a pouf and lanterns, olive trees in pots, hydrangeas, lavender and a lawn"),
+    "04-GLASS-ROOM": (D + "DISC-035-04-GLASS-ROOM-MASTER.png", "d26636f89e355d71fc1bcd14a622975f8f5b1e159070ac5a818b773a7bd258c1",
+        "DISC-035 chapter image 04, The Glass Room: a flat-roofed anthracite frame enclosed by full-height sliding glass walls against the back of a house, "
+        "with a sofa, a floor lamp and a timber coffee table inside, a lawn and planted borders outside"),
+    "05-OUTDOOR-DINING-ROOM": (D + "DISC-035-05-OUTDOOR-DINING-ROOM-MASTER.png", "36fdb80262c0f775f804c6fb04cfaaa0def814516debd4224e504338fe086ac2",
+        "DISC-035 chapter image 05, The Outdoor Dining Room: a flat anthracite roof with a timber soffit and recessed lights over a long timber dining table "
+        "with woven chairs, lanterns and hydrangeas, beside a house's glazed doors"),
+    "06-FLEXIBLE-PERGOLA": (D + "DISC-035-06-FLEXIBLE-PERGOLA-MASTER.png", "caa323bb6195daa411a52816ed9187d9f4c55a1c679c4b8eaaa81cb127c0ff70",
+        "DISC-035 chapter image 06, The Flexible Pergola: an anthracite aluminium pergola with its roof louvres tilted open, sunlight striping the terrace, "
+        "warm lighting along the beams and an outdoor lounge beneath"),
+    "07-OUTDOOR-KITCHEN": (D + "DISC-035-07-OUTDOOR-KITCHEN-MASTER.png", "c2ca92165d87df9ffc5b594cb3f08e382ff613366d8ad65a875adf3a1c78dace",
+        "DISC-035 chapter image 07, The Outdoor Kitchen: a covered terrace with a built-in stainless grill (a small generic badge, no legible mark), "
+        "a wood-fired oven, prep counters, recessed lighting and a dining table with woven chairs"),
+}
+CARD = (480, 768, 1024)
 MOBILE_X0, MOBILE_W = 470, 753        # 4:5 phone crop of the 941 px height: front post, dining table, lounge in view
 COMMON = (1671, 941)                  # the pair's common frame (BEFORE 1672 wide, POSSIBLE 1671)
 DESK = (768, 1024, 1376, 1671)
@@ -67,6 +89,11 @@ def available():
         f = ROOT / p
         if not f.exists() or sha(f.read_bytes()) != h: sys.exit("REFUSED: %s is not the founder's master (sha256)" % p)
         out[role] = (p, h, what)
+    for role, (p, h, what) in CHAPTERS.items():
+        f = ROOT / p
+        if not f.exists() or sha(f.read_bytes()) != h: sys.exit("REFUSED: %s is not the founder's master (sha256)" % p)
+        if Image.open(f).size != (1536, 1024): sys.exit("REFUSED: %s is not 1536 x 1024" % p)
+        out[role] = (p, h, what)
     a, b = (Image.open(ROOT / out[r][0]).size for r in ("BEFORE", "POSSIBLE"))
     if a != (1672, 941) or b != COMMON: sys.exit("REFUSED: the hero pair is not the measured 1672/1671 x 941 pair (%s vs %s)" % (a, b))
     return out
@@ -74,7 +101,15 @@ def available():
 
 def outputs(masters):
     files = {}
+    for role in CHAPTERS:
+        rgb = Image.open(ROOT / masters[role][0]).convert("RGB")
+        stem = D + "DISC-035-%s" % role
+        for w in CARD:
+            op = "Lanczos resize to %d px wide (chapter card, whole image, 3:2 kept)" % w
+            files["%s-%d.webp" % (stem, w)] = (enc(rgb, "WEBP", w, quality=80, method=6), "Pillow %s, WebP quality 80, method 6" % PIL_VERSION, role, op)
+            files["%s-%d.jpg" % (stem, w)] = (enc(rgb, "JPEG", w, quality=86, progressive=True, optimize=True), "Pillow %s, JPEG quality 86, progressive" % PIL_VERSION, role, op)
     for role, (p, h, what) in masters.items():
+        if role in CHAPTERS: continue
         full = Image.open(ROOT / p).convert("RGB")
         rgb = full.crop((0, 0) + COMMON)          # the pair's common frame
         frame = "" if full.size == COMMON else "crop to the pair's common frame x 0-%d, then " % COMMON[0]
@@ -117,7 +152,7 @@ def main():
             if not f.exists() or a not in have or have[a]["sha256"] != sha(f.read_bytes()) or sha(f.read_bytes()) != sha(data):
                 bad.append(a)
         stray = [str(p.relative_to(ROOT)) for p in (ROOT / D).iterdir()
-                 if str(p.relative_to(ROOT)) not in files and str(p.relative_to(ROOT)) not in {m[0] for m in MASTERS.values()}]
+                 if str(p.relative_to(ROOT)) not in files and str(p.relative_to(ROOT)) not in {m[0] for m in list(MASTERS.values()) + list(CHAPTERS.values())}]
         print("DISC-035 IMAGES · " + ("OK (%d credentialed masters declared, %d derivatives, reproducible)" % (len(masters), len(files))
                                       if not bad and not stray else "FAIL %s %s" % (bad, stray)))
         sys.exit(1 if bad or stray else 0)
@@ -133,7 +168,9 @@ def main():
             state += (" (%s: the reader does not trust the signing certificate (not on its trust list; an extended key usage it requires is missing); the claim signature and the data hash "
                       "verify, so the file is unchanged since the issuer signed it)" % ", ".join(fails))
         if not ai: sys.exit("REFUSED: %s: the credential does not record an AI generation" % a)
+        chapter = role in CHAPTERS
         rd = ("UNCERTAIN", "The credential records no input image. Credentials do not record conversation context, so inputs cannot be ruled out. "
+              "A chapter image, generated on its own (signed %s); it is not part of a Before/Possible pair." % (time or "")) if chapter else ("UNCERTAIN", "The credential records no input image. Credentials do not record conversation context, so inputs cannot be ruled out. "
               "The founder states the two were generated separately; the POSSIBLE was signed after the BEFORE (20:58:39 vs 20:49:59 UTC, "
               "4 Nov 2026). They share one camera, house and garden to a median of about 2 px (p90 3.6 px), measured before the build.")
         data = (ROOT / a).read_bytes()
@@ -148,7 +185,8 @@ def main():
             "prompt_status": "UNAVAILABLE", "reference_disclosure": {"status": rd[0], "statement": rd[1]},
             "permitted_surfaces": ["discovery", "library-card"] if role == "POSSIBLE" else ["discovery"],
             "content_credentials": {"embeds_c2pa": True},
-            "founder_approval": "Approved by the founder as the DISC-035 hero pair (build authorisation, private preview only, 4 Nov 2026)",
+            "founder_approval": ("Approved by the founder as a DISC-035 chapter image (final image intake, private preview only, 4 Nov 2026)" if chapter
+                                 else "Approved by the founder as the DISC-035 hero pair (build authorisation, private preview only, 4 Nov 2026)"),
             "introduced": {"date": DATE, "subject": "DISC-035 The Outdoor Room, founder build authorisation (private preview only)"}})
     for a, (data, encoder, role, op) in files.items():
         f = ROOT / a; f.parent.mkdir(parents=True, exist_ok=True); f.write_bytes(data)

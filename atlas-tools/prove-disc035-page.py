@@ -11,8 +11,8 @@
       keyboard control, the phone crop and the pair's real 1671 x 941 proportions
   O6  the standard slider AI disclosure under the hero and in the slider; no image presented as a photograph
   O7  sitemap entry, Discovery Library card in the Garden category, search-index entry
-  O8  six chapters in order with the approved titles; the five possibilities in order, each with a reserved image
-      slot holding a PlotNua drawing (no chapter image is substituted)
+  O8  six chapters in order with the approved titles; the five possibilities in order, each slot showing its own
+      founder-approved chapter image (responsive WebP + JPEG, 3:2, lazy, descriptive alt) with the AI disclosure
   O9  chapter 02: rain, wind, drainage, roofing materials, heating, lighting and maintenance; the bespoke diagram
       is pure vector, labelled not to scale, in desktop and phone layouts, with its seven parts
   O10 chapter 03: the comparison table covers all five rooms, with a phone version
@@ -127,11 +127,17 @@ for t in ("Five rooms you didn’t know you had.", "Built for Irish weather", "W
 rooms = re.findall(r'<h3 id="orR(\d)H">([^<]+)</h3>', s)
 need([r[1] for r in rooms] == ["The Covered Patio", "The Glass Room", "The Outdoor Dining Room",
                               "The Flexible Pergola", "The Outdoor Kitchen"], "O8 the five possibilities in order: %s" % rooms)
-slots = re.findall(r'<figure class="or-slot or-fig" data-or-slot="(DISC-035-0[3-7]-[A-Z-]+)">(.*?)</figure>', s, re.S)
-need(len(slots) == 5, "O8 five reserved image slots")
-for name, body in slots:
-    need("<svg" in body and "<img" not in body and "<image" not in body,
-         "O8 %s holds a PlotNua drawing, not a substitute image" % name)
+slots = re.findall(r'<figure class="or-slot" data-or-slot="(DISC-035-0([3-7])-[A-Z-]+)">(.*?)</figure>', s, re.S)
+need([x[0] for x in slots] == ["DISC-035-03-COVERED-PATIO", "DISC-035-04-GLASS-ROOM", "DISC-035-05-OUTDOOR-DINING-ROOM",
+                              "DISC-035-06-FLEXIBLE-PERGOLA", "DISC-035-07-OUTDOOR-KITCHEN"], "O8 the five image slots, each matched to its room")
+for name, n_, body in slots:
+    srcs = set(re.findall(r'assets/disc035/img/(DISC-035-[0-9A-Z-]+?)-(?:480|768|1024)\.(?:webp|jpg)', body))
+    need(srcs == {name}, "O8 %s shows only its own chapter image (found %s)" % (name, sorted(srcs)))
+    need(body.count('width="1536" height="1024"') == 1 and 'loading="lazy"' in body and "srcset=" in body and 'type="image/webp"' in body,
+         "O8 %s: responsive WebP + JPEG at the image's own 3:2, lazy" % name)
+    need('<figcaption class="or-ai">%s</figcaption>' % LABEL in body, "O8 %s carries the AI disclosure" % name)
+    need(re.search(r'alt="[^"]{40,}"', body), "O8 %s has a descriptive alt text" % name)
+    need("<svg" not in body, "O8 %s still holds the placeholder drawing" % name)
 
 # O9
 wx = re.search(r'<section class="pd-section" id="irish-weather".*?</section>', s, re.S)
@@ -247,15 +253,22 @@ der = {d["asset"]: d for d in reg["derivatives"]}
 used = set(re.findall(r'(assets/(?:disc035|library)/img/DISC-035[^"\s,]+)', s + (card.group(0) if card else "")))
 need(used, "O16 no DISC-035 image found")
 M = ("assets/disc035/img/DISC-035-01-BEFORE-MASTER.png", "assets/disc035/img/DISC-035-02-POSSIBLE-MASTER.png")
+CH = {"assets/disc035/img/DISC-035-%s-MASTER.png" % r: h for r, h in (("03-COVERED-PATIO", "160c2c9c"), ("04-GLASS-ROOM", "d26636f8"),
+      ("05-OUTDOOR-DINING-ROOM", "36fdb802"), ("06-FLEXIBLE-PERGOLA", "caa323bb"), ("07-OUTDOOR-KITCHEN", "c2ca9216"))}
 for u in sorted(used):
     need("MASTER.png" not in u, "O16 a master is served: " + u)
     d = der.get(u)
-    need(d and d["derived_from"]["asset"] in M and d["derived_from"]["asset"] in masters,
+    need(d and d["derived_from"]["asset"] in set(M) | set(CH) and d["derived_from"]["asset"] in masters,
          "O16 %s is not a recorded edit of a declared DISC-035 master" % u)
 for mpath, h in zip(M, ("399e5bce", "180089ee")):
     r = next((x for x in reg["records"] if x["asset"] == mpath), None)
     need(r and r["class"] == "AI_ILLUSTRATION", "O16 %s must be declared AI_ILLUSTRATION" % mpath)
     need(r and r["sha256"].startswith(h), "O16 %s is the founder's approved file (sha256 %s...)" % (mpath, h))
+
+for mpath, h in CH.items():
+    r = next((x for x in reg["records"] if x["asset"] == mpath), None)
+    need(r and r["class"] == "AI_ILLUSTRATION" and r["sha256"].startswith(h), "O16 %s must be the founder's declared AI_ILLUSTRATION (sha256 %s...)" % (mpath, h))
+need(s.count(LABEL) >= 7, "O6/O8 the disclosure under the hero, in the slider and on all five chapter images")
 
 # O17
 need("or-dock-away" in s and "DISC-035 · the hero AI disclosure is never hidden" in s, "O17 the dock step-aside is missing")
