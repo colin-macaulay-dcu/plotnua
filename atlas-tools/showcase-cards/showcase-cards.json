@@ -1,7 +1,7 @@
 {
  "_about": "Maker showcase cards (founder approval, 4 Nov 2026). One entry per Discovery; each card points at an existing PlotNua supplier showcase (supplier-preview-system/showcases/<slug>/showcase.json) and reuses one of that showcase's own approved photographs. Built into the page by atlas-tools/build-showcase-cards.py. To add a showcase: add a card here and rebuild.",
  "discovery-living-in-the-garden.html": {
-  "kicker": "Maker showcases",
+  "kicker": "Showcases on PlotNua",
   "anchor": "<!-- PN-SUPPLIER-GALLERY v1 ·",
   "cards": [
    {
@@ -19,6 +19,8 @@
     "image": "don-01-woodland-dusk",
     "description": "One steel-framed, factory-finished design, from a garden room to a four-bedroom home, at one published rate per square metre."
    }
-  ]
+  ],
+  "embed": "gallery",
+  "note": "Three makers with a full page on PlotNua: photographs, models and what to ask."
  }
 }

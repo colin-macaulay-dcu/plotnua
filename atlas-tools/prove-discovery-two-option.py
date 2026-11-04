@@ -98,7 +98,7 @@ def self_test():
         ("D3", lambda p, c, y: p.__setitem__(L, p[L].replace(comp, "").replace('id="sg-track"', 'id="sg-track"', 1).replace("</ul>{sites}", "") .replace('<ul class="pn-sg-track"', comp + '<ul class="pn-sg-track"').replace('class="pn-sg-figs"', 'class="pn-sg-figs-x"') )),
         ("D4", lambda p, c, y: p.__setitem__(L, p[L].replace(comp, comp.replace('<ul class="pn-two-btns"', '<form action="https://x.workers.dev"></form><ul class="pn-two-btns"')))),
         ("D4", lambda p, c, y: p.__setitem__(L, p[L].replace(comp, comp.replace('href="your-plot.html?discovery=garden-room"', 'href="https://example.com/"')))),
-        ("D5", lambda p, c, y: p.__setitem__(L, p[L].replace('id="sg-track"', 'id="sg-x"'))),
+        ("D5", lambda p, c, y: p.__setitem__(L, p[L].replace('id="%s"' % c["discoveries"][L]["explore"]["target"][1:], 'id="sg-x"'))),
     ]
     missed = 0
     for code, fn in cases:

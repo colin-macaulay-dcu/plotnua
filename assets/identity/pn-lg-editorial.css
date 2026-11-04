@@ -167,3 +167,13 @@ body.pn-id.pn-pd .lg-article .pn-sg .pn-sg-card{ background:#26302A; }
   body.pn-id.pn-pd .lg-article .lg-split > h2{ grid-row:1 / span 40; padding-top:34px; top:110px; }
 }
 
+
+/* ---- bridge: the free check, reachable from the top of the page (founder approval, 4 Nov 2026) ---- */
+body.pn-id.pn-pd .pn-bridge-go{ display:flex; flex-wrap:wrap; justify-content:center; gap:10px 12px; margin:18px 0 4px; }
+body.pn-id.pn-pd .pn-bridge-go a{ display:inline-flex; align-items:center; min-height:46px; padding:0 20px; border-radius:999px;
+  border:1px solid var(--lg-sage,#8FAF8A); background:var(--lg-sage,#8FAF8A); color:var(--lg-sage-ink,#14261C);
+  font:600 15px/1.2 var(--p4-sans); text-decoration:none; }
+body.pn-id.pn-pd .pn-bridge-go a + a{ background:transparent; color:var(--p4-ivory,#F2EBE0); }
+body.pn-id.pn-pd .pn-bridge-go a:hover{ filter:brightness(1.06); }
+body.pn-id.pn-pd .pn-bridge-go a:focus-visible{ outline:2px solid var(--lg-sage-2,#A9C4A4); outline-offset:3px; }
+body.pn-id.pn-pd .pn-bridge-go a::after{ content:"\00a0\2192"; }

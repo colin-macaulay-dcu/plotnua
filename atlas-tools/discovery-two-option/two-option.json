@@ -1,6 +1,30 @@
 {
   "_about": "Discovery two-option component (founder approval, 2 Nov 2026: Living in the Garden pilot). Two ways to explore ONE Discovery: explore the makers and products yourself, or enter that Discovery's EXISTING guided Journey. Rendered by atlas-tools/build-supplier-gallery.py beneath the gallery heading and figures, above the carousel, only for Discoveries listed here. A Discovery may be listed only when it has BOTH a supplier gallery / Maker Explorer AND an existing guided Journey with Atlas-matched results (see the 2 Nov 2026 Discovery audit). No new Journey, matching, intake or form. Guarded by atlas-tools/prove-discovery-two-option.py.",
-  "discoveries": {},
+  "discoveries": {
+    "discovery-living-in-the-garden.html": {
+      "_reinstated": "2026-11-04, founder approval 'DISC-008 homeowner experience improvement': a compact A/B choice at the head of the consolidated supplier section, directly above the supplier cards and the Maker Explorer, so free help is offered before 570 products. Chapter 06 keeps the full decision. Same existing Journey routes; no new form.",
+      "explore": {
+        "label": "Explore the makers yourself",
+        "text": "Browse the makers and their products, compare what each publishes and visit the ones you like.",
+        "cta": "Browse makers and products",
+        "target": "#explore-makers"
+      },
+      "homework": {
+        "label": "Let PlotNua do the homework",
+        "text": "Free for homeowners. Start with your Eircode and a few questions about the garden, and PlotNua checks what may be possible at your address.",
+        "journeys": [
+          {
+            "label": "A garden room",
+            "href": "your-plot.html?discovery=garden-room"
+          },
+          {
+            "label": "A garden home",
+            "href": "your-plot.html?discovery=residential"
+          }
+        ]
+      }
+    }
+  },
   "_retired": {
     "discovery-living-in-the-garden.html": {
       "date": "2026-11-03",

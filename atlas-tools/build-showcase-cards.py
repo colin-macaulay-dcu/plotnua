@@ -24,7 +24,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 CFG = json.loads((ROOT / "atlas-tools" / "showcase-cards" / "showcase-cards.json").read_text(encoding="utf-8"))
 SHOWCASES = ROOT / "supplier-preview-system" / "showcases"
-CSS = "assets/components/pn-showcase-cards.css?v=2"
+CSS = "assets/components/pn-showcase-cards.css?v=3"
 START, END = "<!-- PN-SHOWCASE-CARDS v1 · built by atlas-tools/build-showcase-cards.py from atlas-tools/showcase-cards/showcase-cards.json · do not hand-edit -->", "<!-- /PN-SHOWCASE-CARDS -->"
 E_ = lambda s: html.escape(str(s), quote=True)
 
@@ -63,6 +63,21 @@ def block(d, preview=False):
             f'<ul class="pn-sc-grid" role="list" data-count="{cards.count("<li>")}">{cards}</ul></div></section>\n{END}\n')
 
 
+def embedded(name):
+    """The cards for a Discovery whose entry says "embed": "gallery": rendered INSIDE the supplier
+    gallery section by atlas-tools/build-supplier-gallery.py (founder approval, 4 Nov 2026: one
+    supplier section on DISC-008), so the page carries no standalone region for it."""
+    d = CFG.get(name)
+    if not d or d.get("embed") != "gallery":
+        return ""
+    cards = "".join(card(c) for c in d["cards"] if not c.get("preview"))
+    return (f'\n  <link rel="stylesheet" href="{CSS}">'
+            f'\n  <div class="pn-sc pn-sc--in-gallery" aria-labelledby="pn-sc-k"><div class="pn-sc-wrap">'
+            f'<p class="pn-sc-k" id="pn-sc-k">{E_(d["kicker"])}</p>'
+            + (f'<p class="pn-sc-note">{E_(d["note"])}</p>' if d.get("note") else "")
+            + f'<ul class="pn-sc-grid" role="list" data-count="{cards.count("<li>")}">{cards}</ul></div></div>')
+
+
 def main():
     ok = True
     for name, d in CFG.items():
@@ -71,6 +86,16 @@ def main():
         p = ROOT / name
         src = p.read_text(encoding="utf-8")
         base = re.sub(re.escape(START) + r".*?" + re.escape(END) + r"\n\n?", "", src, flags=re.S)
+        if d.get("embed") == "gallery":
+            embedded(name)   # validates every card
+            same = base == src
+            if "--check" in sys.argv or "--preview-out" in sys.argv:
+                ok &= same
+                print(("SHOWCASE CARDS · CHECK OK — " if same else "STALE: ") + name + " (embedded in the supplier gallery)")
+            elif not same:
+                p.write_text(base, encoding="utf-8")
+                print("removed the standalone region from", name, "(embedded in the supplier gallery)")
+            continue
         if base.count(d["anchor"]) != 1:
             sys.exit(f"FAIL: {name}: anchor not found exactly once")
         out = base.replace(d["anchor"], block(d) + "\n" + d["anchor"], 1)

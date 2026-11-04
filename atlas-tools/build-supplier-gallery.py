@@ -68,6 +68,9 @@ DISCOVERIES = {
         "authority": "universe",
         "directory": "explorer",
         "unified": True,      # consolidation, 31 Oct 2026 (see Garden Retreat)
+        # ONE SUPPLIER SECTION (founder approval, 4 Nov 2026): the Maker Showcase cards render
+        # inside this gallery, under the carousel (atlas-tools/build-showcase-cards.py, "embed").
+        "showcase_cards": True,
         "asset_v": "4", "mobile_fit": "tight",
         # founder decision 30 Oct 2026 (Option B): a hairline rule and a tighter top
         # where the gallery hands over to "Explore makers and products". This page only.
@@ -448,6 +451,7 @@ def gallery(ed, head, sup, cfg=None):
     fit += ' data-sg-unified' if D.get("unified") else ""
     figs = figures_html(cfg) if D.get("unified") else ""
     sites = websites_html(sup) if D.get("websites") else ""
+    showcases = showcase_cards_html(ed["discovery"]) if D.get("showcase_cards") else ""
     return f'''<section class="pn-sg" id="suppliers" data-pn-supplier-gallery data-discovery="{E(ed["discovery"])}"{fit} aria-labelledby="sg-h" style="--sg-mount-ratio:{mw} / {mh}">
   <div class="pn-sg-wrap">
     <div class="pn-sg-head">
@@ -464,7 +468,7 @@ def gallery(ed, head, sup, cfg=None):
       </div>
     </div>
   </div>
-  <ul class="pn-sg-track" id="sg-track" tabindex="0" role="list" aria-label="Featured suppliers, scroll horizontally">{items}</ul>{sites}{directory}
+  <ul class="pn-sg-track" id="sg-track" tabindex="0" role="list" aria-label="Featured suppliers, scroll horizontally">{items}</ul>{sites}{directory}{showcases}
 </section>'''
 
 
@@ -480,6 +484,17 @@ TRANSITION_CSS = ("<style>/* gallery -> Maker Explorer transition (build-supplie
                   ".pn-sg[data-sg-transition=\"rule\"] ~ #explore-makers{ border-top:1px solid var(--rule, #4A4B4F); padding-top:min(72px, 8vw); }\n"
                   "@media (max-width:720px){ .pn-sg[data-sg-transition=\"rule\"] ~ #explore-makers{ padding-top:44px; } }\n"
                   "</style>\n")
+
+
+def showcase_cards_html(name):
+    """Maker Showcase cards embedded under the carousel (built by build-showcase-cards.py)."""
+    import importlib.util
+    spec = importlib.util.spec_from_file_location("showcase_cards", ROOT / "atlas-tools" / "build-showcase-cards.py")
+    m = importlib.util.module_from_spec(spec); spec.loader.exec_module(m)
+    out = m.embedded(name)
+    if not out:
+        sys.exit(f"FAIL: {name}: showcase cards are requested but showcase-cards.json does not embed them")
+    return out
 
 
 def two_option_html(name):

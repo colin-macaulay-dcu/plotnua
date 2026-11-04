@@ -39,7 +39,19 @@
   "Compare garden room makers and specifications",
   "The 2026 planning conditions in full",
   "B",
-  "Free for homeowners."
+  "Free for homeowners.",
+  "Free for homeowners. PlotNua checks what may be possible at your address in about a minute.",
+  "Check for a garden room Check for a garden home",
+  "Or explore the makers",
+  "Start with the use, then compare the complete project: the building, its insulation and glazing, delivery, installation, foundations, VAT and connections. Before you can tell whether one garden room is dearer than another, you have to know what each price covers. Most of the time, it is not published.",
+  "Three researched examples of why the headline price needs a closer look. A starting point, not a ranking of suppliers.",
+  "Three researched examples. Each guide identifies its sources and check date.",
+  "Explore the makers yourself",
+  "Browse the makers and their products, compare what each publishes and visit the ones you like.",
+  "Let PlotNua do the homework",
+  "Free for homeowners. Start with your Eircode and a few questions about the garden, and PlotNua checks what may be possible at your address.",
+  "A garden room →",
+  "A garden home →"
  ],
  "imgs": [],
  "supplierCards": [
@@ -68,7 +80,7 @@
    "supplier": "Maker showcase cards (Elm Landscaping, Garden Room Ireland, Don Modular Homes)",
    "declared": "2026-11-04, founder approval 'Garden Room Ireland final refinement and production release': reusable PN-SHOWCASE-CARDS component (atlas-tools/build-showcase-cards.py) above the supplier gallery. Each card reuses a photograph already published on that supplier's PlotNua showcase. Gallery cards, capacity and Maker Explorer unchanged. Don Modular Homes card added 4 Nov 2026 (founder approval of its production release).",
    "blocks": [
-    "Maker showcases",
+    "Showcases on PlotNua",
     "Photograph © Elm Landscaping",
     "Elm Landscaping",
     "A Co. Clare landscaping company with five garden rooms in the products below, shown alongside the gardens it has built.",
@@ -83,7 +95,8 @@
     "Don Modular Homes",
     "One steel-framed, factory-finished design, from a garden room to a four-bedroom home, at one published rate per square metre.",
     "Explore showcase →",
-    "Visualisation © Don Modular Homes Don Modular Homes One steel-framed, factory-finished design, from a garden room to a four-bedroom home, at one published rate per square metre. Explore showcase →"
+    "Visualisation © Don Modular Homes Don Modular Homes One steel-framed, factory-finished design, from a garden room to a four-bedroom home, at one published rate per square metre. Explore showcase →",
+    "Three makers with a full page on PlotNua: photographs, models and what to ask."
    ],
    "imgs": [
     "https://elmlandscaping.ie/wp-content/uploads/2023/02/driveway1.jpg",
@@ -109,5 +122,28 @@
    "from": "Powersheds 3 garden rooms · Irish availability not yet confirmed",
    "to": "Powersheds 3 garden rooms · Irish availability confirmed"
   }
+ ],
+ "homeownerImprovement": {
+  "declared": "2026-11-04, founder approval 'DISC-008 homeowner experience improvement': the early prompt goes straight to the free check (both existing Journey routes); a compact A/B choice heads the one supplier section; the three comparison introductions become one (every price-comparison figure kept); the Maker Showcase cards sit inside the supplier gallery."
+ },
+ "removedBlocks": [
+  "Comparing garden rooms in Ireland?",
+  "A garden room can give you a separate place to work, make art, exercise or spend time together. PlotNua brings the makers, pricing questions and planning conditions into one guide, so you can compare your options before asking for a quote.",
+  "Start with the use, then compare the complete project: the building, its insulation and glazing, delivery, installation, foundations, VAT and connections. A garden office used every working day and a weekend studio need different specifications. If somebody will live there, follow the separate garden-home guidance below.",
+  "Looking for makers? Explore garden room and garden office makers , then check the product details and the availability information for each option.",
+  "Working out a budget? The garden room prices guide separates published prices by what they cover. Use its checklist to ask about foundations, installation, VAT and electrical connection before comparing quotes.",
+  "Checking your garden? Read the planning conditions below and use the property check on this page. The conditions matter as much as the size of the building.",
+  "Choosing a garden office for everyday use",
+  "Ask the maker to explain the insulation in the floor, walls and roof, the glazing, ventilation and heating, and what is included in the quoted price. Think about where your desk will go, daylight on the screen, sockets and an internet connection. Ask how the building will reach your garden and whether the quote allows for your site.",
+  "Compare garden room makers and specifications.",
+  "These three researched examples show why the headline price needs a closer look. They are a starting point, not a ranking of suppliers or a complete market comparison. Open each guide for the published prices, source links and questions to take to the maker.",
+  "Two researched examples. Each guide identifies its sources and check date.",
+  "See what may be possible at your address now.",
+  "Before you can tell whether one garden room is dearer than another, you have to know what each price covers. Most of the time, it is not published.",
+  "So we are not going to tell you what a garden room costs in Ireland, and we are certainly not going to tell you what a garden home costs: the market has not published enough for anyone to say honestly. What we can tell you is what to ask.",
+  "Explore the makers"
+ ],
+ "removedIds": [
+  "maker-guides-title"
  ]
 }

@@ -180,7 +180,12 @@ def check(src, base):
     # C
     p = parse(body)
     have, want = Counter(p.out), Counter(base["blocks"])
-    for r in REMOVED:
+    removed = list(REMOVED)
+    if os.path.exists(ADDED_FILE):
+        # Declared removals (4 Nov 2026, founder approval 'DISC-008 homeowner experience improvement'):
+        # the three comparison introductions consolidated into one; each removed block named exactly.
+        removed += json.load(open(ADDED_FILE, encoding="utf-8")).get("removedBlocks", [])
+    for r in removed:
         want[norm(r)] -= 1
     corr = list(CORR)
     if os.path.exists(ADDED_FILE):
@@ -209,8 +214,9 @@ def check(src, base):
         if i not in imgs: bad.append("L image lost: " + i)
     for i in imgs - set(base["imgs"]) - set(added_imgs):
         bad.append("L undeclared image: " + i)
+    rem_ids = json.load(open(ADDED_FILE, encoding="utf-8")).get("removedIds", []) if os.path.exists(ADDED_FILE) else []
     for i in base["ids"]:
-        if i not in ids: bad.append("L id lost: " + i)
+        if i not in ids and i not in rem_ids: bad.append("L id lost: " + i)
     ref_ids = []
     if os.path.exists(ADDED_FILE):
         ref_ids = [i for c in json.load(open(ADDED_FILE, encoding="utf-8")).get("showcaseReferences", []) for i in c.get("ids", [])]
@@ -278,7 +284,7 @@ FAULTS = [
     ("route A dropped", lambda s: s.replace("Explore yourself", "Explore", 99), "O"),
     ("free statement removed", lambda s: s.replace("Free for homeowners", "For homeowners", 99), "F"),
     ("a form added to the decision", lambda s: s.replace('id="discover-your-property">', 'id="discover-your-property"><form></form>', 1), "F"),
-    ("a matching promise added", lambda s: s.replace("Free for homeowners.", "Free for homeowners. We match you with the best maker.", 1), "F"),
+    ("a matching promise added", lambda s: s.replace("<p class=\"lg-free\">Free for homeowners.", "<p class=\"lg-free\">Free for homeowners. We match you with the best maker.", 1), "F"),
     ("placeholder published", lambda s: s.replace("</main>", "<p>To research</p></main>", 1), "F"),
     ("plan scale label removed", lambda s: s.replace("not to scale", "", 99).replace("Not to scale", "", 99), "F"),
     ("details opened", lambda s: s.replace('<details class="faq-item">', '<details class="faq-item" open>', 1), "D"),

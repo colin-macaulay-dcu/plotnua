@@ -29,3 +29,9 @@
 }
 @media (max-width:760px){ .pn-sc-grid{ grid-template-columns:1fr; } }
 @media (prefers-reduced-motion:reduce){ .pn-sc-media img{ transition:none; } }
+/* Embedded in a supplier gallery section (DISC-008, 4 Nov 2026): one supplier section, the showcases
+   follow the carousel under a hairline, in the gallery's own column. */
+.pn-sc--in-gallery{ margin:clamp(36px,4.5vw,60px) 0 0; }
+.pn-sc--in-gallery .pn-sc-wrap{ max-width:var(--sg-max,1180px); padding:0 var(--sg-pad-x,clamp(16px,3vw,40px)); }
+.pn-sc--in-gallery .pn-sc-k{ margin-bottom:6px; }
+.pn-sc-note{ margin:0 0 20px; font-size:15px; line-height:1.6; color:var(--sc-stone); max-width:62ch; }

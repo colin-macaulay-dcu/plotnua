@@ -374,7 +374,8 @@ MUTATIONS = {
         "G3 medium relabelled": (p.replace('pn-sg-kind">Photograph', 'pn-sg-kind">Visualisation', 1), c),
         "G5 a licensed maker dropped": (re.sub(r'<li data-sg-placement="editorial"><article class="pn-sg-card" aria-label="Powersheds">.*?</article></li>', "", p, count=1, flags=re.S), c),
         "G5 invented supplier": (p.replace('aria-label="Yardbox"', 'aria-label="Invented Garden Rooms Ltd"', 1), c),
-        "G5 duplicate directory added": (p.replace('</ul>\n</section>', '</ul><details class="pn-sg-grid-wrap"><summary>x</summary></details>\n</section>', 1), c),
+        # anchored on the section's end, which now follows the embedded Maker Showcase cards (4 Nov 2026)
+        "G5 duplicate directory added": (p.replace('\n</section>\n<script src="assets/components/pn-supplier-gallery.js', '<details class="pn-sg-grid-wrap"><summary>x</summary></details>\n</section>\n<script src="assets/components/pn-supplier-gallery.js', 1), c),
         "G5 View all no longer goes to the explorer": (p.replace('href="#explore-makers" data-sg-jump', 'href="#suppliers" data-sg-jump', 1), c),
         "G6 unlabelled sponsor": (p.replace('data-sg-placement="editorial"', 'data-sg-placement="sponsored"', 1), c),
         "G8 endorsement": (p.replace("Apex Classic log cabins, from", "The best Apex Classic log cabins, from", 1), c),
@@ -385,7 +386,7 @@ MUTATIONS = {
         "G15 held maker shown": (p.replace('aria-label="Yardbox"><figure', 'aria-label="Garden Room Ireland"><figure', 1), c),
         "G16 second heading restored": (p.replace('<h3 class="mx-cont-h" id="mx-cont-h">', '<h2>Explore makers and products</h2><h3 class="mx-cont-h" id="mx-cont-h">', 1), c),
         "G16 header figure wrong": (p.replace('<span class="pn-sg-fig">570</span>', '<span class="pn-sg-fig">571</span>', 1), c),
-        "G17 websites row on a page that has not opted in": (p.replace('</ul>\n</section>\n<script src="assets/components/pn-supplier-gallery.js', '</ul><div class="pn-sg-sites"><ul></ul></div>\n</section>\n<script src="assets/components/pn-supplier-gallery.js', 1), c),
+        "G17 websites row on a page that has not opted in": (p.replace('\n</section>\n<script src="assets/components/pn-supplier-gallery.js', '<div class="pn-sg-sites"><ul></ul></div>\n</section>\n<script src="assets/components/pn-supplier-gallery.js', 1), c),
         "G18 A-Z index removed": (p.replace('id="maker-index"', 'id="maker-list"', 1), c),
         "G19 View all back beside the figures": (p.replace('aria-controls="sg-track">' + _b.ARROW_R + '</button>', 'aria-controls="sg-track">' + _b.ARROW_R + '</button>\n        <a class="pn-sg-all" href="#explore-makers" data-sg-jump><span data-sg-label>View all suppliers</span></a>', 1), c),
         "G14 Explore link off the granted domain": (p.replace('<a href="https://oodhouse.com/" rel="noopener noreferrer" target="_blank" aria-label=', '<a href="https://oodhouse.example.net/" rel="noopener noreferrer" target="_blank" aria-label=', 1), c),
