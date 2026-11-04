@@ -67,5 +67,80 @@
     "https://gardenhouse24.ie/?utm_source=plotnua&utm_medium=referral&utm_campaign=supplier-showcase"
    ]
   }
+ ],
+ "targetedUpdates": [
+  {
+   "declared": "2026-11-04, founder authorisation 'Supplier integration Phase 2': Gardenhouse24's four saunas and two hot tubs added to the Maker Explorer by atlas-tools/publish-targeted-update.py (wellness universe, targeted; report atlas-tools/targeted-updates/20261104-114032-gardenhouse24-ireland.md); the gallery header figures rebuilt by build-supplier-gallery.py. The explorer's data payload (script#mx-data) is governed by build-maker-explorer.py --check (G1-G14), not by this guard.",
+   "gallery": [
+    [
+     "<span class=\"pn-sg-fig\">93</span><span class=\"pn-sg-fig-l\">saunas</span>",
+     "<span class=\"pn-sg-fig\">97</span><span class=\"pn-sg-fig-l\">saunas</span>"
+    ],
+    [
+     "<span class=\"pn-sg-fig\">22</span><span class=\"pn-sg-fig-l\">hot tubs</span>",
+     "<span class=\"pn-sg-fig\">24</span><span class=\"pn-sg-fig-l\">hot tubs</span>"
+    ],
+    [
+     "<span class=\"pn-sg-fig\">7</span><span class=\"pn-sg-fig-l\">makers</span>",
+     "<span class=\"pn-sg-fig\">8</span><span class=\"pn-sg-fig-l\">makers</span>"
+    ]
+   ],
+   "explorer": [
+    [
+     "data-k=\"saunas\">Saunas <span class=\"mx-n\">93</span>",
+     "data-k=\"saunas\">Saunas <span class=\"mx-n\">97</span>"
+    ],
+    [
+     "data-k=\"hotTubs\" tabindex=\"-1\">Hot tubs <span class=\"mx-n\">22</span>",
+     "data-k=\"hotTubs\" tabindex=\"-1\">Hot tubs <span class=\"mx-n\">24</span>"
+    ],
+    [
+     "<summary>All 6 sauna, 4 hot tub and 4 cold plunge makers, A to Z</summary>",
+     "<summary>All 7 sauna, 5 hot tub and 4 cold plunge makers, A to Z</summary>"
+    ],
+    [
+     "        <li><a href=\"#p-recIy8ghdKxo7PTjP\">Hansa24 Group</a>",
+     "        <li><a href=\"#p-recdDCBpXBKOa7leI\">Gardenhouse24 Ireland</a> <span>4 saunas &middot; Irish availability not yet confirmed</span></li>\n        <li><a href=\"#p-recIy8ghdKxo7PTjP\">Hansa24 Group</a>"
+    ],
+    [
+     "        <li><a href=\"#p-recjMSl8ncVIuUkQm\">OGNYX</a>",
+     "        <li><a href=\"#p-recEDHcHJ5dWaWklV\">Gardenhouse24 Ireland</a> <span>2 hot tubs &middot; Irish availability not yet confirmed</span></li>\n        <li><a href=\"#p-recjMSl8ncVIuUkQm\">OGNYX</a>"
+    ]
+   ],
+   "blockCorrections": [
+    [
+     "93 saunas",
+     "97 saunas"
+    ],
+    [
+     "22 hot tubs",
+     "24 hot tubs"
+    ],
+    [
+     "7 makers",
+     "8 makers"
+    ],
+    [
+     "Saunas 93",
+     "Saunas 97"
+    ],
+    [
+     "Hot tubs 22",
+     "Hot tubs 24"
+    ],
+    [
+     "All 6 sauna, 4 hot tub and 4 cold plunge makers, A to Z",
+     "All 7 sauna, 5 hot tub and 4 cold plunge makers, A to Z"
+    ]
+   ],
+   "blocks": [
+    "Gardenhouse24 Ireland 4 saunas · Irish availability not yet confirmed",
+    "Gardenhouse24 Ireland 2 hot tubs · Irish availability not yet confirmed"
+   ],
+   "links": [
+    "#p-recdDCBpXBKOa7leI",
+    "#p-recEDHcHJ5dWaWklV"
+   ]
+  }
  ]
 }

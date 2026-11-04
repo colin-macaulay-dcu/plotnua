@@ -153,8 +153,31 @@ def load_added():
         blocks, imgs = list(x.get("blocks", [])), list(x.get("imgs", []))
         for c in x.get("supplierCards", []):
             blocks += c["blocks"]; imgs += c["imgs"]
+        for u in x.get("targetedUpdates", []):
+            blocks += u.get("blocks", [])
         return blocks, imgs
     return [], []
+
+
+def targeted_updates():
+    """Declared targeted supplier updates ("targetedUpdates", 4 Nov 2026, Supplier integration Phase 2):
+    exact from -> to edits to the pinned gallery and explorer regions (each must apply exactly once),
+    text-block corrections, added text blocks and added links. Nothing else may change."""
+    if os.path.exists(ADDED_FILE):
+        return json.load(open(ADDED_FILE, encoding="utf-8")).get("targetedUpdates", [])
+    return []
+
+
+MX_DATA_RE = r'(<script type="application/json" class="pn-mx-config" id="mx-data">).*?(</script>)'
+
+
+def apply_edits(region, edits, what, bad):
+    for a, b in edits:
+        if region is None or region.count(a) != 1:
+            bad.append("G declared %s update no longer applies to the pinned baseline: %s" % (what, a[:80]))
+            continue
+        region = region.replace(a, b, 1)
+    return region
 
 
 def declared_cards():
@@ -165,7 +188,9 @@ def declared_cards():
 
 def added_links():
     if os.path.exists(ADDED_FILE):
-        return [l for c in json.load(open(ADDED_FILE, encoding="utf-8")).get("supplierCards", []) for l in c["links"]]
+        x = json.load(open(ADDED_FILE, encoding="utf-8"))
+        return ([l for c in x.get("supplierCards", []) for l in c["links"]]
+                + [l for u in x.get("targetedUpdates", []) for l in u.get("links", [])])
     return []
 
 
@@ -205,9 +230,18 @@ def check(src, base):
             bad.append("G declared supplier card %s is missing or duplicated" % name)
         else:
             gal = gal.replace(li[0], "", 1)
-    if gal != base["gallery"]:
+    base_gal, base_exp = base["gallery"], base["explorer"]
+    for u in targeted_updates():
+        base_gal = apply_edits(base_gal, u.get("gallery", []), "gallery", bad)
+        base_exp = apply_edits(base_exp, u.get("explorer", []), "explorer", bad)
+    if gal != base_gal:
         bad.append("G the Premium Supplier Gallery region changed")
-    if grab(EXPLORER_RE, body) != base["explorer"]:
+    exp = grab(EXPLORER_RE, body)
+    if targeted_updates():
+        # the explorer's data payload is owned by build-maker-explorer.py --check (G1-G14)
+        exp = re.sub(MX_DATA_RE, r"\1\2", exp or "", flags=re.S)
+        base_exp = re.sub(MX_DATA_RE, r"\1\2", base_exp or "", flags=re.S)
+    if exp != base_exp:
         bad.append("G the Maker Explorer section changed")
     # C
     p = parse(body)
@@ -216,6 +250,9 @@ def check(src, base):
         want[norm(r)] -= 1
     for _c, old, new in CORR:
         want[norm(old)] -= 1; want[norm(new)] += 1
+    for u in targeted_updates():
+        for old, new in u.get("blockCorrections", []):
+            want[norm(old)] -= 1; want[norm(new)] += 1
     for a in added:
         want[norm(a)] += 1
     want = +want
@@ -319,6 +356,11 @@ FAULTS = [
     ("placeholder published", lambda s: s.replace("</main>", "<p>To research</p></main>", 1), "F"),
     ("drawing label removed", lambda s: s.replace("Indicative", "Drawn", 99).replace("indicative", "drawn", 99), "F"),
     ("details opened", lambda s: s.replace('<details class="faq-item gr-acc">', '<details class="faq-item gr-acc" open>', 1), "D"),
+    ("targeted update: an undeclared A-Z line for another maker", lambda s: s.replace('        <li><a href="#p-recIy8ghdKxo7PTjP">Hansa24 Group</a>', '        <li><a href="#p-recIy8ghdKxo7PTjP">Auroom Wellness</a> <span>2 saunas &middot; Irish availability not yet confirmed</span></li>\n        <li><a href="#p-recIy8ghdKxo7PTjP">Hansa24 Group</a>', 1), "G"),
+    ("targeted update: explorer sauna count edited", lambda s: s.replace('Saunas <span class="mx-n">97</span>', 'Saunas <span class="mx-n">98</span>', 1), "G"),
+    ("targeted update: gallery figure edited", lambda s: s.replace('<span class="pn-sg-fig">97</span>', '<span class="pn-sg-fig">99</span>', 1), "G"),
+    ("targeted update: a declared A-Z line removed", lambda s: s.replace('        <li><a href="#p-recEDHcHJ5dWaWklV">Gardenhouse24 Ireland</a> <span>2 hot tubs &middot; Irish availability not yet confirmed</span></li>\n', '', 1), "G"),
+    ("targeted update: availability wording upgraded", lambda s: s.replace('Gardenhouse24 Ireland</a> <span>4 saunas &middot; Irish availability not yet confirmed', 'Gardenhouse24 Ireland</a> <span>4 saunas &middot; Irish availability confirmed', 1), "G"),
     ("footer edited", lambda s: s.replace("Related Discoveries</h2>", "Related</h2>", 1), "H"),
     ("undeclared stylesheet", lambda s: s.replace("</head>", '<link rel="stylesheet" href="x.css">\n</head>', 1), "H"),
     ("an undeclared supplier card is added", lambda s: s.replace('aria-label="Gardenhouse24 Ireland">', 'aria-label="Invented Garden Co">', 1), "G"),
