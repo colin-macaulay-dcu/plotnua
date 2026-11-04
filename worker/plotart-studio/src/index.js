@@ -14,6 +14,7 @@ import { artistBody, artworkBody, previewPage, shown } from './render.js';
 import * as A from './assets.js';
 import { send } from './mailer.js';
 import { AREAS as IDEA_AREAS, clean as ideaClean, problem as ideaProblem } from './ideas-rules.js';
+import { KINDS as G_KINDS, SPACE_TYPES as G_SPACE, AVAILABILITY as G_AVAIL, LISTING_DAYS as G_DAYS, clean as gClean, textProblem as gTextProblem, areaProblem as gAreaProblem } from './garden-rules.js';
 
 const { Bad, now, rid } = L;
 const SEC = {
@@ -467,6 +468,83 @@ async function pipelineIdeas(env) {
     month: String(r.published_at).slice(0, 7), became_discovery: r.became_discovery || null })) };
 }
 
+/* ---------------------------------------------------------------- The Borrowed Garden noticeboard (MVP, 4 Nov 2026)
+   The founder's moderation of noticeboard listings, on the Idea Board pattern. The public intake Worker (garden.js)
+   only ever inserts 'received' listings; nothing is public until the founder approves it here, and only the content
+   pipeline publishes approved listings. Approve / Reject / Remove / Expire, plus tidying the wording and the area.
+   An approved listing expires LISTING_DAYS after approval. The contact e-mail is shown to the founder only (to answer
+   a removal request); it is never in the pipeline. Monetisation fields are never set or read for ordering here.
+   Until migration 0004 is applied these routes say so (503) instead of failing. */
+const G_PURGE_DAYS = 30, G_PENDING_DAYS = 90;
+async function gardenReady(env) {
+  const t = await env.DB.prepare("SELECT name FROM sqlite_master WHERE type='table' AND name='garden_listings'").first();
+  if (!t) throw new Bad('The Borrowed Garden noticeboard isn’t installed yet (migration 0004 has not been applied).', 503);
+}
+async function sweepGarden(env) {
+  const at = now(), ago = d => new Date(Date.now() - d * 86400_000).toISOString();
+  // Expiry: an approved listing past its expiry date leaves the board (the founder can still see it under "Closed").
+  const x = await env.DB.prepare("UPDATE garden_listings SET status='expired', removed_at=? WHERE status='approved' AND expires_at < ?").bind(at, at).run();
+  // Retention. Each DELETE names the statuses it may touch; an approved listing is never deleted here.
+  await env.DB.prepare("DELETE FROM garden_listings WHERE status IN ('rejected','removed','expired') AND COALESCE(removed_at, decided_at) < ?").bind(ago(G_PURGE_DAYS)).run();
+  await env.DB.prepare("DELETE FROM garden_listings WHERE status = 'received' AND created_at < ?").bind(ago(G_PENDING_DAYS)).run();
+  await env.DB.prepare('DELETE FROM garden_intake_days WHERE day < ?').bind(ago(G_PURGE_DAYS).slice(0, 10)).run();
+  return (x.meta && x.meta.changes) || 0;
+}
+async function gardenAdmin(env) {
+  await gardenReady(env); await sweepGarden(env);
+  const cols = 'id, ref, kind, county, area, space_type, availability, description, public_text, photo_key, contact_email, status, edited, created_at, decided_at, published_at, expires_at, removed_at';
+  return {
+    waiting: await all(env, `SELECT ${cols} FROM garden_listings WHERE status='received' ORDER BY created_at`),
+    approved: await all(env, `SELECT ${cols} FROM garden_listings WHERE status='approved' ORDER BY published_at DESC, id DESC`),
+    closed: await all(env, `SELECT ${cols} FROM garden_listings WHERE status IN ('rejected','removed','expired') ORDER BY COALESCE(removed_at, decided_at) DESC LIMIT 50`),
+    kinds: G_KINDS, space_types: G_SPACE, availability: G_AVAIL, listing_days: G_DAYS, purge_days: G_PURGE_DAYS, pending_days: G_PENDING_DAYS,
+  };
+}
+async function decideListing(env, actor, id, b) {
+  await gardenReady(env);
+  const l = await one(env, 'SELECT * FROM garden_listings WHERE id = ?', id);
+  if (!l) throw new Bad('That listing no longer exists.', 404);
+  const action = String(b && b.action || '');
+  const at = now();
+  if (action === 'reject') {
+    if (l.status !== 'received') throw new Bad('Only a listing waiting for review can be rejected.', 409);
+    await env.DB.prepare("UPDATE garden_listings SET status='rejected', decided_at=?, decided_by=? WHERE id=?").bind(at, actor, id).run();
+  } else if (action === 'remove' || action === 'expire') {
+    if (l.status !== 'approved') throw new Bad('Only a listing on the noticeboard can be ' + (action === 'remove' ? 'removed.' : 'expired.'), 409);
+    await env.DB.prepare(`UPDATE garden_listings SET status=?, removed_at=?, decided_by=? WHERE id=?`).bind(action === 'remove' ? 'removed' : 'expired', at, actor, id).run();
+  } else if (action === 'approve' || action === 'save') {
+    if (action === 'approve' && l.status !== 'received') throw new Bad('Only a listing waiting for review can be approved.', 409);
+    if (action === 'save' && l.status !== 'approved') throw new Bad('Only a listing on the noticeboard can be updated.', 409);
+    const text = gClean(b.public_text === undefined || b.public_text === null ? (l.public_text || l.description) : b.public_text);
+    const why = gTextProblem(text);
+    if (why) throw new Bad(why);
+    const area = b.area === undefined ? l.area : gClean(b.area);
+    const whyA = gAreaProblem(area);
+    if (whyA) throw new Bad(whyA);
+    const pub = text === l.description ? null : text;
+    const expires = action === 'approve' ? new Date(Date.now() + G_DAYS * 86400_000).toISOString() : l.expires_at;
+    await env.DB.prepare("UPDATE garden_listings SET status='approved', public_text=?, area=?, edited=?, decided_at=COALESCE(decided_at, ?), decided_by=?, published_at=COALESCE(published_at, ?), expires_at=? WHERE id=?")
+      .bind(pub, area, pub || area !== l.area ? 1 : 0, at, actor, at, expires, id).run();
+  } else if (action === 'delete') {
+    // Erasure now (e.g. a removal request quoting the reference). A listing on the board must be removed first.
+    if (l.status === 'approved') throw new Bad('Remove it from the noticeboard first; it is then deleted on the next publish.', 409);
+    await env.DB.prepare("DELETE FROM garden_listings WHERE id = ? AND status <> 'approved'").bind(id).run();
+  } else throw new Bad('Unknown action');
+  await audit(env, actor, 'founder', 'garden_' + action, null, { ref: l.ref });
+  // Publishing: the noticeboard's publishing workflow is not built yet (MVP); a public change is published on the
+  // next pipeline run. Nothing here holds a GitHub credential for it.
+  return { ...(await gardenAdmin(env)), publish: ['approve', 'save', 'remove', 'expire'].includes(action) ? 'next_run' : 'none' };
+}
+async function pipelineGarden(env) {
+  // Public fields only: the reference, kind, county, general area, type of space, availability, the approved wording,
+  // an approved photograph if any, the date posted and the expiry date. Never the e-mail, id, moderation detail,
+  // or any monetisation field. Ordered by date posted, newest first: no field changes the order.
+  await gardenReady(env); await sweepGarden(env);
+  const rows = await all(env, "SELECT ref, kind, county, area, space_type, availability, description, public_text, photo_key, published_at, expires_at FROM garden_listings WHERE status='approved' ORDER BY published_at DESC, id DESC");
+  return { listings: rows.map(r => ({ ref: r.ref, kind: r.kind, county: r.county, area: r.area, space_type: r.space_type, availability: r.availability,
+    text: r.public_text || r.description, photo: r.photo_key || null, posted: String(r.published_at).slice(0, 10), expires: String(r.expires_at).slice(0, 10) })) };
+}
+
 /* ---------------------------------------------------------------- router */
 export default {
   /* Daily clean-up (cron trigger): enquiries past their 24-month limit are deleted, and photographs removed more than
@@ -481,7 +559,9 @@ export default {
     }
     let ideas_deleted = 0;
     try { await ideasReady(env); ideas_deleted = await purgeIdeas(env); } catch { /* Idea Board not installed */ }
-    await audit(env, 'scheduler', 'system', 'cleanup', null, { images_erased: gone.length, ideas_deleted });
+    let garden_expired = 0;
+    try { await gardenReady(env); garden_expired = await sweepGarden(env); } catch { /* noticeboard not installed */ }
+    await audit(env, 'scheduler', 'system', 'cleanup', null, { images_erased: gone.length, ideas_deleted, garden_expired });
   },
   async fetch(req, env) {
     try { return await route(req, env); }
@@ -563,6 +643,7 @@ async function route(req, env) {
     if (p === '/api/pipeline/queue' && m === 'GET') return json({ ok: true, items: await all(env, "SELECT * FROM publish_queue WHERE status='ready' ORDER BY created_at") });
     if (p === '/api/pipeline/gallery-order' && m === 'GET') return json({ ok: true, ...(await pipelineOrder(env)) });
     if (p === '/api/pipeline/ideas' && m === 'GET') return json({ ok: true, ...(await pipelineIdeas(env)) });   // Idea Board: approved, public fields only
+    if (p === '/api/pipeline/garden' && m === 'GET') return json({ ok: true, ...(await pipelineGarden(env)) });   // Borrowed Garden noticeboard: approved, public fields only
     if (p === '/api/pipeline/gallery-order/result' && m === 'POST') {
       const b = await req.json();
       await audit(env, 'pipeline', 'pipeline', b.status === 'published' ? 'gallery_order_published' : 'gallery_order_failed', null, { detail: String(b.detail || '').slice(0, 2000) });
@@ -622,6 +703,9 @@ async function route(req, env) {
     if (p === '/admin/ideas') return html(A.ADMIN_HTML);
     if (p === '/api/admin/ideas' && m === 'GET') return json({ ok: true, ...(await ideasAdmin(env)) });
     if ((mm = p.match(/^\/api\/admin\/ideas\/(i[0-9a-z]+)$/)) && m === 'POST') return json({ ok: true, ...(await decideIdea(env, me.email, mm[1], await req.json())) });
+    if (p === '/admin/garden') return html(A.ADMIN_HTML);
+    if (p === '/api/admin/garden' && m === 'GET') return json({ ok: true, ...(await gardenAdmin(env)) });
+    if ((mm = p.match(/^\/api\/admin\/garden\/(g[0-9a-z]+)$/)) && m === 'POST') return json({ ok: true, ...(await decideListing(env, me.email, mm[1], await req.json())) });
     if (p === '/api/admin/gallery-order' && m === 'GET') return json({ ok: true, ...(await galleryOrder(env)) });
     if (p === '/api/admin/gallery-order' && m === 'PUT') return json({ ok: true, ...(await saveGalleryOrder(env, me.email, await req.json())) });
     if ((mm = p.match(/^\/api\/admin\/artists\/(a[0-9a-z]+)\/founding-number$/)) && m === 'PUT') {

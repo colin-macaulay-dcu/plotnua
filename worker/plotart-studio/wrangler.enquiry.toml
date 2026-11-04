@@ -11,6 +11,7 @@ preview_urls = false
 ENVIRONMENT = "production"
 ORIGIN = "https://plotnua.ie"
 ENQUIRIES_ENABLED = "false"
+GARDEN_ENQUIRIES_ENABLED = "false"   # The Borrowed Garden noticeboard relay: prepared, NOT switched on (founder, 4 Nov 2026)
 MAILER = "none"                  # "resend" once approved: secret RESEND_API_KEY, sending domain verified for plotnua.ie
 MAIL_FROM = "PlotArt <enquiries@plotnua.ie>"
 REPLY_TO = "hello@plotnua.ie"
