@@ -27,3 +27,6 @@ body.pn-id.pn-pd .pn-tr .lg-route-n{ margin:8px 0 0; font:500 14.5px/1.55 var(--
   body.pn-id.pn-pd .pn-tr-h{ font-size:clamp(32px,8.6vw,40px); }
   body.pn-id.pn-pd .pn-tr .lg-route .pd-btn{ width:100%; justify-content:center; text-align:center; }
 }
+/* screen-reader-only note inside the route B button ("opens in a new tab"): defined here so the
+   component carries it on pages that do not define .ns-sr themselves (DISC-032, DISC-016). */
+body.pn-id.pn-pd .pn-tr .ns-sr{ position:absolute !important; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0 0 0 0); clip-path:inset(50%); white-space:nowrap; border:0; }

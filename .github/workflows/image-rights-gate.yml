@@ -414,6 +414,12 @@ jobs:
           # intake, matching or assessment promise; indicative footprint drawing with desktop and phone layouts.
           python3 atlas-tools/prove-premium-discovery-garden-retreat.py
           python3 atlas-tools/prove-premium-discovery-garden-retreat.py --faults
+          # DISC-016 Above and Beyond six-chapter redesign (founder approval, 4 Nov 2026): every text block, link,
+          # image and id preserved against the pinned ebc14dd snapshot (sections moved, "Further afield" folded into
+          # a closed <details>) plus declared additions; header and hero slider pinned; one decision with both
+          # routes (route B the existing WhatsApp channel), free, no intake or matching promise; no exemption asserted.
+          python3 atlas-tools/prove-premium-discovery-above-and-beyond.py
+          python3 atlas-tools/prove-premium-discovery-above-and-beyond.py --faults
           python3 atlas-tools/prove-discovery-two-option.py --self-test
           # Safety lock (23 Oct 2026): the 17 Oct merge builder must refuse to
           # regenerate the approved Premium page, and must leave every file as it was.
