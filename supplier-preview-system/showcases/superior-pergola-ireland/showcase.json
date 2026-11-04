@@ -334,15 +334,15 @@
     ]
   ],
   "offer": {
-    "_about": "Configurable homeowner-saving panel for the 'Let PlotNua do the homework' route. OFF. The builder renders nothing while enabled is false. It refuses to render a saving unless percent is a whole number, basisConfirmed is true and the wording names the conditions. Keep percent null in this public repository until the founder switches the offer on: the figure is held in Atlas Partners recq33VZAnSDzKyZq.",
+    "_about": "Homeowner-saving panel for the 'Let PlotNua do the homework' route. OFF. The builder renders nothing while enabled is false, and refuses to render unless percent is a whole number, basisConfirmed is true, the wording is founder-approved and names no other figure. Wording approved by the founder 4 Nov 2026. Held OFF because two points are not yet in writing: (1) which ranges are eligible (the supplier confirmed its pergola range; verandas, porches, bin covers and decking are not separately confirmed) and (2) whether the 4% is taken off the final price including or excluding VAT. To switch on: set basisConfirmed and enabled to true, then rebuild. percent is the homeowner's discount only; PlotNua's commission is never stored here.",
     "enabled": false,
     "basisConfirmed": false,
-    "percent": null,
+    "percent": 4,
     "headline": "A PlotNua homeowner saving",
-    "wording": null,
+    "wording": "PlotNua customers receive a 4% discount on eligible Superior Pergola installations.",
     "conditions": [
-      "Only when Superior Pergola Ireland receives your enquiry as a PlotNua introduction, before it quotes.",
-      "Applied by Superior Pergola Ireland to its quote; PlotNua does not set or collect it."
+      "Your enquiry reaches Superior Pergola Ireland as a PlotNua introduction before it quotes.",
+      "Superior Pergola Ireland applies the discount in its final price; PlotNua does not set or collect it."
     ]
   },
   "referral": {

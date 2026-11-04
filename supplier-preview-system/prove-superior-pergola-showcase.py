@@ -8,13 +8,15 @@ Checks the built page, then breaks the data file in memory and proves the builde
   SP2  every photograph is inside the grant's scope (b3819663.assetcdn.net/2.0/3819663/) and shown once
   SP3  every photograph carries the required credit as a working link to superiorpergola.ie
   SP4  the only links to the supplier's site are those credits (no Visit / Shop / Buy button)
-  CM1  no percentage anywhere on the page, and no rate in the data file or the builder
+  CM1  no percentage anywhere on the page while the saving is off; no commission rate in the data file or builder
+  CM4  switched on with its basis confirmed, the saving renders exactly the approved wording, once
   CM2  with the saving switched off, no saving markup exists at all (not hidden: absent)
   CM3  the referral fee is disclosed in words
   PD1  the page collects nothing: no form, no input, no script of its own beyond consent + analytics
   PD2  the consent promise is on the page: nothing reaches the supplier without asking first
   RF1  both help routes carry the attribution ref superior-pergola-ireland
-  MUT  the builder refuses: a saving switched on before its basis is confirmed; an image outside
+  MUT  the builder refuses: a saving switched on before its basis is confirmed; saving wording that
+       names another figure (the combined 8%) or PlotNua's commission; an image outside
        the account prefix; a changed credit; the same photograph twice; a product with no
        Atlas record; a photograph with no Atlas asset record; a review copy written into the repo
 
@@ -64,8 +66,8 @@ text = re.sub(r"<style.*?</style>|<script.*?</script>", "", page, flags=re.S)
 src = DATAF.read_text(encoding="utf-8") + BUILDER.read_text(encoding="utf-8")
 check("CM1", "%" not in re.sub(r"<[^>]+>", " ", text)
       and not re.search(r"(?i)commission[^\n]{0,40}\d|\d\s*%[^\n]{0,30}commission|referral fee[^\n]{0,20}\d", src)
-      and ORIG["offer"]["percent"] is None,
-      "no percentage on the page; no rate in the data file or the builder")
+      and not ORIG["offer"]["enabled"],
+      "no percentage on the page; no commission rate in the data file or the builder")
 check("CM2", "data-pn-offer" not in page and "sp-offer\"" not in page and not ORIG["offer"]["enabled"],
       "saving switched off and absent from the markup")
 check("CM3", "may receive a referral fee from Superior Pergola Ireland" in page, "referral fee disclosed in words")
@@ -99,8 +101,11 @@ def refuses(label, mutate, argv=None):
 
 
 def first_img(d): return d["images"][1]
-refuses("saving switched on, basis unconfirmed", lambda d: d["offer"].update(enabled=True, percent=4, wording="x"))
-refuses("saving switched on with no percent", lambda d: d["offer"].update(enabled=True, basisConfirmed=True, wording="x"))
+refuses("saving switched on, basis unconfirmed", lambda d: d["offer"].update(enabled=True))
+refuses("saving switched on with no percent", lambda d: d["offer"].update(enabled=True, basisConfirmed=True, percent=None))
+refuses("saving wording naming the combined 8%", lambda d: d["offer"].update(wording="Save 8% on Superior Pergola installations"))
+refuses("saving wording naming PlotNua's commission", lambda d: d["offer"].update(wording="4% off; PlotNua earns a commission"))
+refuses("saving switched on with a different figure in its wording", lambda d: d["offer"].update(enabled=True, basisConfirmed=True, percent=3))
 refuses("image from another assetcdn account", lambda d: first_img(d).update(origin=first_img(d)["origin"].replace("/3819663/", "/9999999/")))
 refuses("image from the CDN outside the prefix", lambda d: first_img(d).update(origin="https://b3819663.assetcdn.net/other/x.jpg"))
 refuses("credit changed", lambda d: d["supplier"].update(credit="Photo courtesy of Superior Pergola"))
@@ -110,6 +115,14 @@ refuses("product without Atlas record", lambda d: d["products"][0].update(atlas=
 refuses("photograph without Atlas asset", lambda d: first_img(d).update(asset=None))
 refuses("review copy written inside the repository", lambda d: None,
         argv=["x", "--preview-offer", str(ROOT / "suppliers" / "offer-review.html")])
+
+B.DATA = copy.deepcopy(ORIG); B.DATA["offer"].update(enabled=True, basisConfirmed=True)
+try:
+    on = B.build(); ok4 = on.count("data-pn-offer") == 1 and ORIG["offer"]["wording"] in on and "8%" not in on
+except SystemExit:
+    ok4 = False
+B.DATA = copy.deepcopy(ORIG)
+check("CM4", ok4, "switched on (basis confirmed), the saving renders the approved wording once and nothing else")
 
 print("-" * 74)
 print("GUARD PASSED" if not fails else "GUARD FAILED: " + ", ".join(fails))

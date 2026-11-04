@@ -91,10 +91,14 @@ def guard(offer_preview=False):
         sys.exit("FAIL: exactly one hero image")
     o = DATA["offer"]
     if o["enabled"] or offer_preview:
-        if not (isinstance(o["percent"], int) or offer_preview) or not o["conditions"]:
+        if not isinstance(o["percent"], int) or not o["conditions"]:
             sys.exit("FAIL: a homeowner saving needs a whole-number percent and its conditions")
         if o["enabled"] and (not o["basisConfirmed"] or not o["wording"]):
             sys.exit("FAIL: the saving cannot go live until its basis is confirmed and its wording approved")
+    words = " ".join([o["wording"] or "", o["headline"]] + o["conditions"])
+    figures = {int(n) for n in re.findall(r"(\d+)\s*%", words)}
+    if re.search(r"(?i)commission|referral fee", words) or (figures and figures != {o["percent"]}):
+        sys.exit("FAIL: the saving's wording may name only the homeowner's own discount, never another figure or PlotNua's commission")
     return r
 
 
@@ -233,7 +237,7 @@ def offer_html(preview=False):
     o = DATA["offer"]
     if not (o["enabled"] or preview):
         return ""
-    pct = o["percent"] if isinstance(o["percent"], int) else 4
+    pct = o["percent"]
     tag = '<p class="sp-k" style="margin:0 0 6px;color:#E8B04A">Review copy - not live</p>' if preview else ""
     conds = "".join(f"<li>{E(c)}</li>" for c in o["conditions"])
     words = o["wording"] or f"{pct}% off your Superior Pergola Ireland quote when PlotNua introduces you"
