@@ -141,15 +141,18 @@ def load_added():
     if os.path.exists(ADDED_FILE):
         x = json.load(open(ADDED_FILE, encoding="utf-8"))
         blocks, imgs = list(x.get("blocks", [])), list(x.get("imgs", []))
-        for c in x.get("supplierCards", []):
-            blocks += c["blocks"]; imgs += c["imgs"]
+        for c in x.get("supplierCards", []) + x.get("showcaseReferences", []):
+            blocks += c["blocks"]; imgs += c.get("imgs", [])
         return blocks, imgs
     return [], []
 
 
 def added_links():
     if os.path.exists(ADDED_FILE):
-        return [l for c in json.load(open(ADDED_FILE, encoding="utf-8")).get("supplierCards", []) for l in c["links"]]
+        x = json.load(open(ADDED_FILE, encoding="utf-8"))
+        # "showcaseReferences" (4 Nov 2026, Elm Landscaping): a text-only reference to a maker's
+        # PlotNua showcase, declared with its exact blocks and internal links. No image, no card.
+        return [l for c in x.get("supplierCards", []) + x.get("showcaseReferences", []) for l in c["links"]]
     return []
 
 

@@ -1,0 +1,200 @@
+{
+ "_about": "Data for the Elm Landscaping supplier showcase (suppliers/elm-landscaping.html), read by supplier-preview-system/build-elm-landscaping-showcase.py. Facts restate Atlas (Products, catalogue source SRC-ATLPOP-20261016-010) and Elm's own pages. Images: Atlas-Approved first-party photographs under IPO-046, hotlinked unmodified from elmlandscaping.ie.",
+ "supplier": {
+  "name": "Elm Landscaping",
+  "explorerName": "Elm Landscaping (Garden Rooms)",
+  "slug": "elm-landscaping",
+  "website": "https://elmlandscaping.ie/",
+  "county": "Co. Clare",
+  "countySource": "Atlas ORG-000148: about-us page (Ennis, Co. Clare, established 2008) and the 065 landline.",
+  "creditHref": "https://elmlandscaping.ie/?utm_source=plotnua&utm_medium=referral&utm_campaign=supplier-showcase",
+  "credit": "© Elm Landscaping"
+ },
+ "publication": {
+  "status": "PUBLISHED — founder authorisation 4 Nov 2026",
+  "basis": "Elm Landscaping YES, 2 Oct 2026 (IPO-046, Gmail 1a0d05e8fd940e75). Rights record: image-rights-records.json (Elm Landscaping).",
+  "objection": "If Elm asks for any image to be changed or removed, delete its entry here, rebuild and release.",
+  "commercial": "No referral, commission or customer-benefit arrangement is agreed (a proposal of 22 Oct 2026 is unanswered). None is claimed, advertised or implied."
+ },
+ "intro": "An established Co. Clare landscaping company, working since 2008, that also supplies timber garden rooms and log cabins.",
+ "standfirst": "Elm's own project photographs: paving, decking, stonework, water features and planting at finished Irish gardens. This is the groundwork a garden room sits in.",
+ "products": [
+  {
+   "name": "Ruan Eco Garden Room",
+   "kind": "Insulated timber garden room",
+   "sizes": "3.0 m × 3.3 m up to 6.2 m × 4.4 m (seven sizes)",
+   "source": "Elm Landscaping 2025 log cabin and log home catalogue, p.43",
+   "atlas": "recQxXVefJDxeGWZz"
+  },
+  {
+   "name": "Doughmore Studio Eco Garden Room",
+   "kind": "Insulated timber garden room",
+   "sizes": "5 m × 4 m or 6 m × 4 m",
+   "source": "Elm Landscaping 2025 log cabin and log home catalogue, p.48",
+   "atlas": "recehpri9hsMl3Vyn"
+  },
+  {
+   "name": "Quin Contemporary Log Cabin",
+   "kind": "Contemporary garden room",
+   "sizes": "4 m × 3 m",
+   "source": "Elm Landscaping 2025 log cabin and log home catalogue, p.17",
+   "atlas": "rec6AILkzDIDHZcO8"
+  },
+  {
+   "name": "Tulla Contemporary Log Cabin",
+   "kind": "Contemporary garden room",
+   "sizes": "5 m × 4 m",
+   "source": "Elm Landscaping 2025 log cabin and log home catalogue, p.18",
+   "atlas": "recN9555CIihkgea4"
+  },
+  {
+   "name": "Doolin Contemporary Log Cabin",
+   "kind": "Contemporary garden room",
+   "sizes": "4 m × 3 m or 4 m × 4 m",
+   "source": "Elm Landscaping 2025 log cabin and log home catalogue, p.19",
+   "atlas": "recsmHaT00C5d62O0"
+  }
+ ],
+ "productsNote": "Sizes as published in Elm's 2025 log cabin and log home catalogue. The catalogue does not name the manufacturer of these cabins. Prices are published in that catalogue but PlotNua has only partly verified them, so they are not repeated here: ask Elm for a current quote.",
+ "images": [
+  {
+   "id": "elm-01-coastal-driveway",
+   "role": "hero",
+   "kind": "Photograph",
+   "w": 1024,
+   "h": 682,
+   "origin": "https://elmlandscaping.ie/wp-content/uploads/2023/02/driveway1.jpg",
+   "sourcePage": "https://elmlandscaping.ie/garden-design/",
+   "atlasAsset": "rec36rfJHLzk0ORGR",
+   "sha256": "781cf09bae78cf5a4269ab35e94b43421f156029f43cc7b7a8b45aba0028e5bc",
+   "alt": "A modern two-storey house above the sea, with a new gravel driveway, a lawn edged in stone and a terrace with a parasol.",
+   "caption": "A finished driveway, lawn and terrace at a coastal house."
+  },
+  {
+   "id": "elm-02-sea-terrace",
+   "role": "collection",
+   "kind": "Photograph",
+   "w": 800,
+   "h": 534,
+   "origin": "https://elmlandscaping.ie/wp-content/uploads/2023/02/Patio-Paving-1.jpg",
+   "sourcePage": "https://elmlandscaping.ie/landscaping-services/",
+   "atlasAsset": "recu67DvCdlxxBE65",
+   "sha256": "28e9cfa2df8d715dd3691238d1fc726fd7ad2f195600f9e833b5bca5b9159420",
+   "alt": "A dark stone-paved terrace with a rattan dining set and parasol, looking out over the sea.",
+   "caption": "Stone paving and a dining terrace facing the sea."
+  },
+  {
+   "id": "elm-03-composite-deck",
+   "role": "collection",
+   "kind": "Photograph",
+   "w": 743,
+   "h": 551,
+   "origin": "https://elmlandscaping.ie/wp-content/uploads/2023/04/MILLRS2-jpg.webp",
+   "sourcePage": "https://elmlandscaping.ie/hard-landscaping-and-soft-landscaping/",
+   "atlasAsset": "recmOVs6l9TRrZ8kC",
+   "sha256": "92532863c0d4c575b66f623872d86dd6a2822c4ea99837aa698725f3efae9deb",
+   "alt": "Composite decking meeting artificial grass, with a timber table and chairs and planting beyond.",
+   "caption": "Composite decking laid against an artificial lawn."
+  },
+  {
+   "id": "elm-04-stone-wall-terrace",
+   "role": "collection",
+   "kind": "Photograph",
+   "w": 800,
+   "h": 534,
+   "origin": "https://elmlandscaping.ie/wp-content/uploads/2023/02/Stonework-2.jpg",
+   "sourcePage": "https://elmlandscaping.ie/landscaping-services/",
+   "atlasAsset": "recLMIokx1PjBa5lU",
+   "sha256": "70cd90763ee1c379ad8c9ad246a4fbcc129bbe235da1198d5d5650eeeb2472f6",
+   "alt": "A dry-stone wall and paved coastal terrace with a glass screen, seating and a parasol.",
+   "caption": "A stone wall and paved terrace with a glass screen."
+  },
+  {
+   "id": "elm-05-aerial-patio",
+   "role": "collection",
+   "kind": "Photograph",
+   "w": 1600,
+   "h": 1198,
+   "origin": "https://elmlandscaping.ie/wp-content/uploads/2023/03/patio1-jpg.webp",
+   "sourcePage": "https://elmlandscaping.ie/garden-design/",
+   "atlasAsset": "recxRhgE99i7m6mEk",
+   "sha256": "ba049ad6a19b09d0024f717474dad37edf2cdcd209ebab4f2618a13c03b5bfb7",
+   "alt": "An aerial view of a square patio with a glass surround beside a house, next to an artificial-grass putting green.",
+   "caption": "A sunken patio and putting green, seen from above."
+  },
+  {
+   "id": "elm-06-water-wall",
+   "role": "collection",
+   "kind": "Photograph",
+   "w": 800,
+   "h": 534,
+   "origin": "https://elmlandscaping.ie/wp-content/uploads/2023/02/Water-feature-1-1.jpg",
+   "sourcePage": "https://elmlandscaping.ie/landscaping-services/",
+   "atlasAsset": "receSJxr2n32n3pLw",
+   "sha256": "76ecc75215571658b85b9b68afb4db78d6426068060d76e3dbd31bdc0e0c2cd4",
+   "alt": "Water cascading down a layered stone wall feature.",
+   "caption": "A stone water wall."
+  },
+  {
+   "id": "elm-07-gravel-garden",
+   "role": "collection",
+   "kind": "Photograph",
+   "w": 765,
+   "h": 510,
+   "origin": "https://elmlandscaping.ie/wp-content/uploads/2023/06/kdrs6-jpg.webp",
+   "sourcePage": "https://elmlandscaping.ie/garden-design/",
+   "atlasAsset": "rec2JITFXiOKck5Wj",
+   "sha256": "8f3c9244eabb7bf84859cfc6275bd1019639504263f420612e403242be3c2405",
+   "alt": "A low-maintenance gravel garden with scattered planting and a timber fence.",
+   "caption": "A gravel garden with low planting."
+  },
+  {
+   "id": "elm-08-aerial-garden",
+   "role": "collection",
+   "kind": "Photograph",
+   "w": 700,
+   "h": 524,
+   "origin": "https://elmlandscaping.ie/wp-content/uploads/2023/10/lawnmowing-jpg.webp",
+   "sourcePage": "https://elmlandscaping.ie/landscaping-services/",
+   "atlasAsset": "reczQKXi3MAK9y1Av",
+   "sha256": "8484ff251e96d21ceb58469f5d973a7680d8cc4e30d8152019ffe5a4036259ae",
+   "alt": "An aerial view of a landscaped garden with a rectangular lawn, gravel paths and planted beds.",
+   "caption": "A lawn, gravel paths and planted beds, from above."
+  },
+  {
+   "id": "elm-09-front-garden",
+   "role": "collection",
+   "kind": "Photograph",
+   "w": 700,
+   "h": 467,
+   "origin": "https://elmlandscaping.ie/wp-content/uploads/2023/10/gardencleanup-jpg.webp",
+   "sourcePage": "https://elmlandscaping.ie/landscaping-services/",
+   "atlasAsset": "recwKrBYmxIiHTqH2",
+   "sha256": "f50c831ade12eb6828904065a8bb793a3795e4af48d799ecf2faa4b5c2e98f6f",
+   "alt": "A landscaped front garden with a gravel drive, clipped hedging and young trees in front of a white house.",
+   "caption": "A front garden and gravel drive."
+  }
+ ],
+ "excluded": [
+  {
+   "file": "2025/02/md1rs-jpg.webp (Garden Rooms page)",
+   "reason": "A computer-generated render of a garden room, typed as a product photograph in Atlas; origin not established. Not used."
+  },
+  {
+   "file": "md5rs.webp, Welcome-to-Elm-Landscaping.png, kdrs.webp, decking-hardwood-rs-jpg.webp, garden-main9rs.jpg, jb5rs.jpg, sh2rs.jpg",
+   "reason": "Return 404 on elmlandscaping.ie (checked 4 Nov 2026)."
+  },
+  {
+   "file": "mill2-scaled.webp",
+   "reason": "Reads as a decking manufacturer's marketing photograph, not Elm's own project."
+  },
+  {
+   "file": "3d-render*, Phased Landscaping, Projects and tree-surgery imagery",
+   "reason": "Design renders, works in progress and tree-surgery service photographs: not garden outcomes."
+  },
+  {
+   "file": "JRS2, Flan1rs (spas), kdrs2 (play set), putting-green and duplicate paving frames",
+   "reason": "Off-topic for Living in the Garden or duplicates of chosen frames."
+  }
+ ]
+}

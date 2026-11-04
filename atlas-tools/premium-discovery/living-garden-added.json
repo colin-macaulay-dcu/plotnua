@@ -62,5 +62,19 @@
     "https://gardenhouse24.ie/?utm_source=plotnua&utm_medium=referral&utm_campaign=supplier-showcase"
    ]
   }
+ ],
+ "showcaseReferences": [
+  {
+   "supplier": "Elm Landscaping",
+   "declared": "2026-11-04, founder authorisation 'Elm Landscaping supplier presentation upgrade': a text-only reference above the supplier gallery to the PlotNua showcase. Gallery cards, capacity and Maker Explorer unchanged.",
+   "blocks": [
+    "Maker showcase",
+    "Elm Landscaping , a Co. Clare landscaping company, lists five garden rooms in the products below. Its showcase pairs that range with photographs of the gardens it has built.",
+    "See Elm Landscaping on PlotNua →"
+   ],
+   "links": [
+    "suppliers/elm-landscaping.html"
+   ]
+  }
  ]
 }

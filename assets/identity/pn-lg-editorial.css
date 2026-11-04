@@ -166,3 +166,14 @@ body.pn-id.pn-pd .lg-article .pn-sg .pn-sg-card{ background:#26302A; }
   body.pn-id.pn-pd .lg-article .lg-split > .kicker{ grid-row:1; align-self:start; position:sticky; top:110px; z-index:1; margin:0; }
   body.pn-id.pn-pd .lg-article .lg-split > h2{ grid-row:1 / span 40; padding-top:34px; top:110px; }
 }
+
+/* Maker showcase reference (Elm Landscaping, founder authorisation 4 Nov 2026). Above the supplier gallery;
+   not a gallery card, not part of the Maker Explorer, and not counted in either's figures. */
+body.pn-id.pn-pd .lg-showcase{ max-width:1180px; margin:clamp(8px,2vw,20px) auto clamp(28px,4vw,48px); padding:clamp(18px,2.4vw,26px) clamp(20px,3vw,32px);
+  border-top:1px solid var(--lg-field-line,#33453A); border-bottom:1px solid var(--lg-field-line,#33453A); }
+body.pn-id.pn-pd .lg-showcase p{ margin:0; }
+body.pn-id.pn-pd .lg-showcase-k{ font:700 11.5px/1.2 var(--p4-sans); letter-spacing:.2em; text-transform:uppercase; color:var(--lg-sage-2,#A9C4A4); margin-bottom:10px !important; }
+body.pn-id.pn-pd .lg-showcase-t{ font-size:clamp(16px,1.5vw,18px); line-height:1.6; max-width:68ch; }
+body.pn-id.pn-pd .lg-showcase-n{ margin-top:10px !important; font-size:14.5px; }
+body.pn-id.pn-pd .lg-showcase a{ color:inherit; text-decoration:underline; text-underline-offset:3px; text-decoration-thickness:1px; }
+body.pn-id.pn-pd .lg-showcase a:focus-visible{ outline:2px solid var(--lg-sage-2,#A9C4A4); outline-offset:3px; }
