@@ -135,10 +135,22 @@ def snapshot(ref):
 
 
 def load_added():
+    """Declared additions. "supplierCards" (4 Nov 2026, Gardenhouse24): a supplier gallery card added
+    after the snapshot is declared here, card by card: its exact text blocks, image and links. Each
+    card's image and links must also pass the supplier gallery guard and the Image Rights Gate."""
     if os.path.exists(ADDED_FILE):
         x = json.load(open(ADDED_FILE, encoding="utf-8"))
-        return x.get("blocks", []), x.get("imgs", [])
+        blocks, imgs = list(x.get("blocks", [])), list(x.get("imgs", []))
+        for c in x.get("supplierCards", []):
+            blocks += c["blocks"]; imgs += c["imgs"]
+        return blocks, imgs
     return [], []
+
+
+def added_links():
+    if os.path.exists(ADDED_FILE):
+        return [l for c in json.load(open(ADDED_FILE, encoding="utf-8")).get("supplierCards", []) for l in c["links"]]
+    return []
 
 
 def check(src, base):
@@ -182,7 +194,7 @@ def check(src, base):
     links, imgs, ids = set(p.links), set(p.imgs), set(p.ids)
     for l in base["links"]:
         if l not in links and l not in REMOVED_LINKS: bad.append("L link lost: " + l)
-    for l in links - set(base["links"]) - set(ADDED_LINKS):
+    for l in links - set(base["links"]) - set(ADDED_LINKS) - set(added_links()):
         bad.append("L undeclared link: " + l)
     for i in base["imgs"]:
         if i not in imgs: bad.append("L image lost: " + i)

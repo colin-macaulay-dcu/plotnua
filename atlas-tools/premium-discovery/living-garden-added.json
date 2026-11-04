@@ -41,5 +41,26 @@
   "B",
   "Free for homeowners."
  ],
- "imgs": []
+ "imgs": [],
+ "supplierCards": [
+  {
+   "supplier": "Gardenhouse24 Ireland",
+   "declared": "2026-11-04, founder approval of the Gardenhouse24 release (staging commit f380e58). Built by atlas-tools/build-supplier-gallery.py (showcaseMakers).",
+   "blocks": [
+    "Photograph Image: Gardenhouse24 (opens in a new tab)",
+    "Photograph Image: Gardenhouse24 (opens in a new tab)",
+    "Gardenhouse24 Ireland",
+    "Nordic-spruce garden rooms and log cabins, from the Q-BIC 44 A to the KAARLO 44.",
+    "Explore supplier →",
+    "Photograph Image: Gardenhouse24 (opens in a new tab) Gardenhouse24 Ireland Nordic-spruce garden rooms and log cabins, from the Q-BIC 44 A to the KAARLO 44. Explore supplier →"
+   ],
+   "imgs": [
+    "https://d1l23c7hiawhq3.cloudfront.net/media/catalog/product/cache/631d00a18cc6f2d63e06f2111d31fb8f/2/0/20220606161922_img_0390_1.jpg"
+   ],
+   "links": [
+    "suppliers/gardenhouse24.html",
+    "https://gardenhouse24.ie/?utm_source=plotnua&utm_medium=referral&utm_campaign=supplier-showcase"
+   ]
+  }
+ ]
 }
