@@ -106,5 +106,7 @@ jobs:
           set -euo pipefail
           B=$(cat "$RUNNER_TEMP/url"); [[ "$B" =~ ^https://plotnua-garden-register\. ]] || { echo "FAIL  no workers.dev address found"; exit 1; }
           sleep 5
-          G=$(curl -s -o /dev/null -w "%{http_code}" "$B/v1/garden-register/garden")
-          echo "GET: $G (expect 405: no read surface)"; [ "$G" = 405 ] || { echo "FAIL  unexpected answer"; exit 1; }
+          G=$(curl -s -o /dev/null -w "%{http_code}" -H "Origin: https://plotnua.ie" "$B/v1/garden-register/garden")
+          X=$(curl -s -o /dev/null -w "%{http_code}" -H "Origin: https://evil.example" "$B/v1/garden-register/garden")
+          echo "GET from plotnua.ie: $G (expect 405: no read surface) · other origin: $X (expect 403)"
+          [ "$G" = 405 ] && [ "$X" = 403 ] || { echo "FAIL  unexpected answer"; exit 1; }
