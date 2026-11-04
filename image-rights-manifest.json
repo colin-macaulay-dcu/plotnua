@@ -1120,10 +1120,12 @@
       "permission_outcome": "Granted with Conditions — Founder Confirmed",
       "permitted_domain": "themobilepods.ie",
       "required_credit": "Image: The Mobile Pods",
-      "evidence": "FOUNDER PUBLICATION DECISION, 3 November 2026, on the basis of The Mobile Pods' positive response to PlotNua's Instagram invitation to feature their products and photographs. This is NOT an explicit written image licence and must never be represented as one: no email reply, signed licence or one-click confirmation exists. Recorded in Atlas Image Permission Outreach WELLNESS-FIRST-MOBILE-PODS-20261002 (recLwfIMP9TK1pQpu) as Granted with Conditions — Founder Confirmed, with this basis written into its notes.",
+      "evidence": "WRITTEN REPLY BY INSTAGRAM DIRECT MESSAGE (corrected 4 November 2026; earlier wording said no written reply existed, which was wrong). Thread: PlotNua (@plotnua) ↔ TheMobilePods (@themobilepods), instagram.com/direct/t/17848573742992930/. ASKED, Mon 2 Nov 2026 21:19, by Colin MacAulay for PlotNua: the invitation names The Mobile Pods' \"mix of tiny homes, garden offices and outdoor wellness products\", offers to \"showcase some of your projects, with full credit and direct links to your website\", and asks for \"permission to feature a selection of your photographs\" (no cost or commitment). ANSWERED, Tue 3 Nov 2026 22:53, by @themobilepods: \"Hi, yes\". PlotNua then acknowledged that it would select suitable images from the website or social media, with full credit; the supplier did not reply to that acknowledgement. This is a short informal written consent, not a signed licence: it grants no rehosting, cropping or adaptation right, and names no individual image. Founder confirmation, 4 Nov 2026, that the permission covers wellness imagery (saunas, hot tubs, cold-water tubs); this rests on the invitation naming 'outdoor wellness products'. Evidence archived as four screenshots in ~/Documents/PlotNua/04 Deploy/PlotNua-MobilePods-Wellness-Permission-2026-11-04/evidence/ (SHA-256 d8f31806…, abac2bfd…, 788e0335…, 42f6ea90…). Atlas Image Permission Outreach WELLNESS-FIRST-MOBILE-PODS-20261002 (recLwfIMP9TK1pQpu).",
       "conditions": [
         "Credit 'Image: The Mobile Pods' on every image use, linked to themobilepods.ie.",
-        "Only selected first-party camera photographs and the two published floor plans from themobilepods.ie; no CGI renders presented as photographs and no images of unknown (possibly AI-generated) origin.",
+        "SCOPE: a selection of The Mobile Pods' own photographs of its pods and of its outdoor wellness products (saunas, hot tubs, cold-water tubs), plus the two published floor plans, to feature The Mobile Pods on PlotNua. Each image used must be enumerated in showcase.json (or an equivalent selection file) with its source URL and SHA-256.",
+        "Only first-party camera photographs from themobilepods.ie; no CGI renders presented as photographs and no images of unknown (possibly AI-generated) or third-party origin. Permission does not cure uncertain provenance.",
+        "Images are hotlinked unmodified from themobilepods.ie; no rehosting, cropping or adaptation (none was asked for or granted). Social-media images are outside the delivery scope unless also published on themobilepods.ie.",
         "If The Mobile Pods objects to any photograph, PlotNua removes the affected material promptly."
       ],
       "note": "Exercised on suppliers/the-mobile-pods.html (8 photographs, 2 floor plans, hotlinked from themobilepods.ie/wp-content/uploads/) and on the Living in the Garden supplier gallery (one photograph, IMG_5074). Selection, sources and SHA-256 hashes: supplier-preview-system/showcases/the-mobile-pods/showcase.json. REMOVAL: delete the image entry from showcase.json (or the showcaseMakers entry in atlas-tools/supplier-gallery/living-in-the-garden.editorial.json), rebuild both, regenerate this manifest. WITHDRAWAL: set permission_outcome to 'Withdrawn / Superseded' and the gate refuses every themobilepods.ie image site-wide.",
@@ -1145,15 +1147,15 @@
           "selected-first-party-imagery-only",
           "remove-on-objection"
         ],
-        "asked": "PlotNua invited The Mobile Pods on Instagram to be featured on PlotNua with products and photographs (email outreach of 2 Oct 2026 had no reply).",
-        "answered": "Positive response on Instagram (recorded by the founder, 3 Nov 2026). Not a written licence.",
-        "note": "Founder decision to publish on the basis of that response, 3 Nov 2026."
+        "asked": "Instagram DM, 2 Nov 2026 21:19: invitation naming 'tiny homes, garden offices and outdoor wellness products', asking 'permission to feature a selection of your photographs' with full credit and direct links (the email outreach of 2 Oct 2026 had no reply).",
+        "answered": "Instagram DM, 3 Nov 2026 22:53, @themobilepods: 'Hi, yes'. Short informal written consent; not a signed licence.",
+        "note": "Founder decision to publish, 3 Nov 2026; founder confirmed on 4 Nov 2026 that the consent covers wellness imagery (saunas, hot tubs, cold-water tubs). Gate scope and conditions unchanged."
       },
       "listing_review": {
         "state": "NOT_REQUIRED",
         "requested_by": null,
         "requested_in": null,
-        "note": "No listing review was requested in The Mobile Pods' positive Instagram response (as recorded by the founder). Founder decision, 3 Nov 2026: publish the reviewed staging showcase without a supplier pre-live review; remove any photograph promptly if the supplier objects."
+        "note": "No listing review was requested in The Mobile Pods' Instagram reply ('Hi, yes', 3 Nov 2026). Founder decision, 3 Nov 2026: publish the reviewed staging showcase without a supplier pre-live review; remove any photograph promptly if the supplier objects."
       },
       "public_visibility": "PUBLISHABLE"
     },
