@@ -1,0 +1,92 @@
+/* =====================================================================
+   PLOTNUA · DISC-025 THE BORROWED GARDEN · six-chapter editorial layer
+   (founder approval, 4 Nov 2026: editorial makeover only)
+
+   The Plot Line chapter markers (as DISC-016 / DISC-005), in a kitchen-
+   garden green. Instrument Serif and Hanken Grotesk, as site-wide.
+   Terracotta stays with the actions. Loaded on this page only; selectors
+   are .lg-* / .bg-* or scoped to this page's own ids and existing classes.
+   ===================================================================== */
+body.pn-id.pn-pd{ --bg-amber:#A3BE7E; --bg-amber-2:#CFE0B4; --bg-field:#1F241B; --bg-line:#37422D; }
+
+/* ---- chapter opening ------------------------------------------------------ */
+body.pn-id.pn-pd .lg-ch-wrap{ padding-top:clamp(72px,9vw,140px); padding-bottom:0; }
+body.pn-id.pn-pd main > .lg-ch-wrap:first-child{ padding-top:clamp(48px,6vw,88px); }
+body.pn-id.pn-pd .lg-chapter{ display:flex; align-items:center; gap:18px; margin:0; }
+body.pn-id.pn-pd .lg-chapter::after{ content:""; flex:1; border-top:1.5px dashed rgba(163,190,126,.5); }
+body.pn-id.pn-pd .lg-plot{ flex:0 0 auto; width:62px; height:62px; border:1.5px dashed var(--bg-amber); display:flex; align-items:flex-end; position:relative; box-sizing:border-box; }
+body.pn-id.pn-pd .lg-plot > span{ font-family:var(--p4-serif); font-size:30px; line-height:1; color:var(--p4-ivory); padding:0 0 6px 8px; }
+/* a small sprout in the corner of the plot */
+body.pn-id.pn-pd .lg-plot::after{ content:""; position:absolute; right:8px; top:7px; width:14px; height:14px; border:1.5px solid var(--bg-amber-2); border-radius:0 12px 0 12px; background:rgba(163,190,126,.3); }
+body.pn-id.pn-pd .lg-kicker{ margin:0; font:700 13px/1.2 var(--p4-sans); letter-spacing:.24em; text-transform:uppercase; color:var(--bg-amber-2); }
+body.pn-id.pn-pd .lg-title{ font-family:var(--p4-serif); font-weight:400; font-size:clamp(40px,5.2vw,78px); line-height:1.03; letter-spacing:-.015em; color:var(--p4-ivory); max-width:17ch; margin:24px 0 0; }
+body.pn-id.pn-pd .lg-stand{ font-family:var(--p4-sans); font-size:clamp(18px,1.4vw,20.5px); line-height:1.6; color:var(--p4-stone); max-width:54ch; margin:20px 0 0; }
+body.pn-id.pn-pd #pn-main > .lg-ch-wrap:first-child{ padding-top:clamp(48px,6vw,88px); }
+body.pn-id.pn-pd .lg-ch-wrap + .article > .article-section:first-child{ padding-top:clamp(32px,4vw,56px); }
+body.pn-id.pn-pd .lg-ch-wrap + .imagine-photo{ margin-top:clamp(36px,4vw,56px); }
+/* chapter 05: the existing "Two ways to take part" block, carried over unchanged, set inside the article */
+body.pn-id.pn-pd #pn-main .bg-checks.pb-preview{ background:var(--bg-field); border:1px solid var(--bg-line); border-top:2px solid var(--bg-amber); border-radius:4px;
+  padding:clamp(24px,3.5vw,44px); margin:clamp(24px,3vw,40px) 0 clamp(40px,5vw,72px); text-align:left; }
+body.pn-id.pn-pd #pn-main .bg-checks :is(.pn-wordmark, .kicker){ text-align:left; }
+body.pn-id.pn-pd #pn-main .bg-checks .pb-headline, body.pn-id.pn-pd #pn-main .bg-checks .pb-subhead, body.pn-id.pn-pd #pn-main .bg-checks .pb-note{ text-align:left; margin-left:0; }
+body.pn-id.pn-pd #pn-main .bg-checks .hfa-checks{ margin-left:0; }
+
+/* ---- chapter 03: what could grow here -------------------------------------- */
+.bg-grow{ list-style:none; margin:clamp(32px,3.5vw,48px) 0 0; padding:0; display:grid; }
+.bg-grow{ grid-template-columns:repeat(5,minmax(0,1fr)); gap:clamp(18px,2vw,28px) clamp(18px,2vw,30px); }
+.bg-grow > li{ border-top:1px solid var(--bg-amber,#D2AE6E); padding:18px 0 4px; display:flex; flex-direction:column; }
+body.pn-id.pn-pd .bg-k{ margin:0; font-family:var(--p4-serif); font-weight:400; font-size:clamp(22px,1.8vw,26px); line-height:1.15; color:var(--p4-ivory); }
+body.pn-id.pn-pd .bg-t{ margin:10px 0 0; font:400 16px/1.55 var(--p4-sans); color:#E4DED3; flex:1; }
+body.pn-id.pn-pd .bg-a{ margin-top:12px; align-self:flex-start; font:600 14.5px/1.3 var(--p4-sans); color:#E8A88A; text-decoration:none; border-bottom:1px solid rgba(207,133,102,.5); padding-bottom:2px; }
+body.pn-id.pn-pd .bg-a::after{ content:" \2192"; }
+body.pn-id.pn-pd .bg-a:hover, body.pn-id.pn-pd .bg-a:focus-visible{ color:#F2C9B5; }
+
+/* ---- chapter 06: the closing panel -------------------------------------- */
+body.pn-id.pn-pd #discover-your-property .lg-chapter{ margin-bottom:clamp(18px,2vw,28px); }
+body.pn-id.pn-pd #discover-your-property .pn-tr{ margin-bottom:clamp(30px,3.5vw,48px); border-bottom:0; padding-bottom:0; }
+body.pn-id.pn-pd #discover-your-property .pb-independence{ margin:28px 0 0; max-width:60ch; text-align:left; }
+body.pn-id.pn-pd #discover-your-property .cs-exits{ justify-content:flex-start; }
+
+/* ---- tablet --------------------------------------------------------------- */
+@media (max-width:1023px){
+  .bg-grow{ grid-template-columns:repeat(3,minmax(0,1fr)); }
+}
+/* ---- phones: a phone layout, not a compressed desktop ---------------------- */
+@media (max-width:719px){
+  body.pn-id.pn-pd .lg-ch-wrap{ padding-top:64px; }
+  body.pn-id.pn-pd main > .lg-ch-wrap:first-child{ padding-top:40px; }
+  body.pn-id.pn-pd .lg-chapter{ gap:14px; }
+  body.pn-id.pn-pd .lg-plot{ width:50px; height:50px; }
+  body.pn-id.pn-pd .lg-plot > span{ font-size:22px; padding:0 0 5px 7px; }
+  body.pn-id.pn-pd .lg-plot::after{ width:14px; height:10px; right:6px; top:6px; }
+  body.pn-id.pn-pd .lg-kicker{ font-size:12px; letter-spacing:.2em; }
+  body.pn-id.pn-pd .lg-title{ font-size:clamp(34px,9.4vw,44px); margin-top:18px; }
+  body.pn-id.pn-pd .lg-stand{ font-size:17px; margin-top:14px; }
+  /* what could grow, the six things to settle and the three before-you-agree tiles: swipeable rows of cards (the next card peeks) */
+  .bg-grow, body.pn-id.pn-pd #pn-main .dq-qual, body.pn-id.pn-pd #pn-main .dq-adv-cols{ display:grid; grid-auto-flow:column; grid-template-columns:none; grid-auto-columns:82%;
+    gap:12px; overflow-x:auto; scroll-snap-type:x mandatory; overscroll-behavior-x:contain; padding:0 0 14px; scrollbar-width:thin; }
+  .bg-grow > li, body.pn-id.pn-pd #pn-main .dq-qual > li, body.pn-id.pn-pd #pn-main .dq-adv-cols > li{ scroll-snap-align:start; border:1px solid var(--bg-line,#3F382C); border-top:2px solid var(--bg-amber,#D2AE6E);
+    border-radius:4px; padding:16px 16px 18px; background:var(--bg-field,#24211C); margin:0; }
+  body.pn-id.pn-pd .bg-t{ font-size:15.5px; }
+  /* reading rhythm: shorter on a phone, nothing removed */
+  body.pn-id.pn-pd #pn-main .article-section p, body.pn-id.pn-pd #pn-main .faq-a{ line-height:1.6; }
+  /* the two plates without a burned-in annotation are shorter on a phone (the annotated plate keeps its own height) */
+  body.pn-id.pn-pd .imagine-photo:not(.pa-frame){ height:300px; min-height:0; }
+  /* the two checks: stacked, compact */
+  body.pn-id.pn-pd #pn-main .bg-checks.pb-preview{ padding:22px 18px 24px; }
+  body.pn-id.pn-pd #pn-main .bg-checks .hfa-check{ padding:18px 18px 20px; }
+  body.pn-id.pn-pd #pn-main .bg-checks :is(.pb-step p, .pb-note){ line-height:1.55; font-size:15px; }
+  body.pn-id.pn-pd #pn-main .bg-checks .hfa-checks{ grid-template-columns:1fr; gap:12px; }
+  body.pn-id.pn-pd #pn-main .bg-checks .pb-steps{ gap:14px; margin-top:24px; text-align:left; }
+  /* decision */
+  body.pn-id.pn-pd #discover-your-property .pd-close-card{ padding:28px 20px 30px; }
+  body.pn-id.pn-pd #discover-your-property .lg-route{ padding:20px 18px; }
+  body.pn-id.pn-pd #discover-your-property .lg-route-links a{ min-height:46px; padding:8px 0; }
+  body.pn-id.pn-pd #discover-your-property .lg-route-l{ font-size:36px; }
+  body.pn-id.pn-pd #discover-your-property .lg-route-t{ font-size:19.5px; }
+  body.pn-id.pn-pd #discover-your-property .pn-tr{ margin-bottom:24px; }
+  /* exits: a compact wrapped row rather than four stacked lines */
+  body.pn-id.pn-pd #discover-your-property .cs-exits{ flex-direction:row; flex-wrap:wrap; gap:6px 18px; }
+  body.pn-id.pn-pd #discover-your-property .cs-exit{ padding:10px 0; }
+  body.pn-id.pn-pd #discover-your-property .pb-independence{ margin-top:18px; font-size:15px; }
+}
