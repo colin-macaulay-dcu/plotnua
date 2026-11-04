@@ -314,8 +314,12 @@ run_case("C20 A1 a wellness product loses its template key", "BUILDER",
 
 run_case("C21 A1 a product carries a per-record route again", "BUILDER",
          "carries a per-record route", mutate_tree=_with_wellness,
+         # One product is enough to prove R1 refuses a per-record route. Injecting it
+         # into all 128 wellness products pushed the corpus over the 180 KB guard once
+         # DISC-035 joined the index, so G10 fired first and masked R1 (4 Nov 2026).
+         # The 180 KB guard itself is unchanged.
          mutate_builder=lambda b: b.replace('        rec["rt"] = WL_TEMPLATE_KEY',
-                                            '        rec["rt"] = WL_TEMPLATE_KEY\n        rec["route"] = wl_route(rec["id"][5:])'))
+                                            '        rec["rt"] = WL_TEMPLATE_KEY\n        if rec["id"] == "prod-recdDCBpXBKOa7leI":\n            rec["route"] = wl_route(rec["id"][5:])'))
 
 run_case("C22 A1 the wellness template points somewhere else", "BUILDER",
          "not its own explorer entry", mutate_tree=_with_wellness,

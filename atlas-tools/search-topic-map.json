@@ -1,7 +1,7 @@
 {
   "schema": "plotnua.search.topicmap",
   "version": "3",
-  "governance": "Founder is the approval authority for homeowner-facing synonym/topic entries. V1 ships ONLY the four mappings below, each audited against the public corpus before approval on 2026-10-08. No speculative additions during implementation. No AI or API query expansion. No fuzzy matching. Future additions or changes require founder approval. AMENDED 11 October 2026 by founder decision: a fifth entry, 'garden office' -> discovery-living-in-the-garden.html, possibility scope only, added to restore an association the Discovery's own copy used to carry before it was retitled. The original notIncluded reasoning is preserved verbatim under 'superseded'. AMENDED 4 November 2026 by founder decision (DISC-034 finalisation instruction: \"Add a governed search entry so that 'water butt' can find The Water Wall\"): a seventh entry, 'water butt' -> discovery-the-water-wall.html, possibility scope only.",
+  "governance": "Founder is the approval authority for homeowner-facing synonym/topic entries. V1 ships ONLY the four mappings below, each audited against the public corpus before approval on 2026-10-08. No speculative additions during implementation. No AI or API query expansion. No fuzzy matching. Future additions or changes require founder approval. AMENDED 11 October 2026 by founder decision: a fifth entry, 'garden office' -> discovery-living-in-the-garden.html, possibility scope only, added to restore an association the Discovery's own copy used to carry before it was retitled. The original notIncluded reasoning is preserved verbatim under 'superseded'. AMENDED 4 November 2026 by founder decision (DISC-034 finalisation instruction: \"Add a governed search entry so that 'water butt' can find The Water Wall\"): a seventh entry, 'water butt' -> discovery-the-water-wall.html, possibility scope only. AMENDED 4 November 2026 by founder decision (DISC-035 production approval: \"Add 'covered patio' to the governed search terms for DISC-035\"): an eighth entry, 'covered patio' -> discovery-the-outdoor-room.html, possibility scope only.",
   "notIncluded": [],
   "entries": [
     {
@@ -73,6 +73,16 @@
         "discovery-the-water-wall.html"
       ],
       "evidence": "Measured 4 November 2026, not assumed. 'water butt' returned NO results against the DISC-034 preview index (commit 62a8513): the Discovery's title and standfirst say 'rainwater storage', not 'water butt', and no product in the publishable universe is a water butt. Chapter 02 of the Discovery, 'More than a water butt', compares the two directly, so it is the truthful answer. Scoped to POSSIBILITY: product matching is untouched. Approved by the founder on 4 November 2026.",
+      "status": "APPROVED"
+    },
+    {
+      "phrase": "covered patio",
+      "concept": "the-outdoor-room",
+      "scope": "possibility",
+      "targets": [
+        "discovery-the-outdoor-room.html"
+      ],
+      "evidence": "Measured 4 November 2026, not assumed. 'covered patio' returned no Discovery against the DISC-035 preview index (commit bb8bd1a): its only result was a product, the Lena Timber Cabin with Covered Patio, because the Discovery's title and standfirst say 'pergolas, verandas and glass rooms', not 'covered patio'. Chapter 01 of the Discovery opens with 'The Covered Patio', so it is the truthful answer. Scoped to POSSIBILITY: product matching is untouched, so the Lena cabin result is preserved. Approved by the founder on 4 November 2026.",
       "status": "APPROVED"
     }
   ],
