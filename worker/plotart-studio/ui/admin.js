@@ -111,7 +111,8 @@
           if (btn.dataset.a === 'delete' && !confirm('Delete this listing permanently now? This cannot be undone.')) return;
           try {
             d = await api('POST', `/api/admin/garden/${li.dataset.id}`, body);
-            say({ approve: 'Approved: it appears at the next publishing run', save: 'Saved', remove: 'Removed from the noticeboard', expire: 'Expired', reject: 'Rejected', delete: 'Deleted' }[btn.dataset.a]);
+            const when = d.publish === 'requested' ? 'plotnua.ie updates in a few minutes' : d.publish === 'failed' ? 'publishing could not be started now: it will happen at the next scheduled run' : 'it updates at the next scheduled publishing run';
+            say({ approve: 'Approved: ' + when, save: 'Saved: ' + when, remove: 'Removed: ' + when, expire: 'Expired: ' + when, reject: 'Rejected', delete: 'Deleted' }[btn.dataset.a], d.publish === 'failed');
             draw(); }
           catch (e) { say(e.message, true); }
         }));

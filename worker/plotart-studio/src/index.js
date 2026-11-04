@@ -446,11 +446,11 @@ async function decideIdea(env, actor, id, b) {
 // fine-grained token limited to this repository and "Actions: read and write" (Worker secret GITHUB_DISPATCH_TOKEN).
 // Returns 'requested', 'scheduled' (no token configured: the scheduled run publishes later) or 'failed' (the decision
 // is saved either way; the schedule remains the fallback). Never logs or returns the token.
-async function requestIdeasPublish(env) {
+async function requestIdeasPublish(env, workflow = 'plotnua-ideas-publish.yml') {
   if (!env.GITHUB_DISPATCH_TOKEN) return 'scheduled';
   const api = (env.GITHUB_API || 'https://api.github.com').replace(/\/$/, '');
   try {
-    const r = await fetch(api + '/repos/' + (env.GITHUB_REPO || 'colin-macaulay-dcu/plotnua') + '/actions/workflows/plotnua-ideas-publish.yml/dispatches', {
+    const r = await fetch(api + '/repos/' + (env.GITHUB_REPO || 'colin-macaulay-dcu/plotnua') + '/actions/workflows/' + workflow + '/dispatches', {
       method: 'POST', signal: AbortSignal.timeout(8000),
       headers: { Authorization: 'Bearer ' + env.GITHUB_DISPATCH_TOKEN, Accept: 'application/vnd.github+json',
         'X-GitHub-Api-Version': '2022-11-28', 'User-Agent': 'PlotArt-Studio/1.0 (+https://plotnua.ie)', 'Content-Type': 'application/json' },
@@ -531,9 +531,11 @@ async function decideListing(env, actor, id, b) {
     await env.DB.prepare("DELETE FROM garden_listings WHERE id = ? AND status <> 'approved'").bind(id).run();
   } else throw new Bad('Unknown action');
   await audit(env, actor, 'founder', 'garden_' + action, null, { ref: l.ref });
-  // Publishing: the noticeboard's publishing workflow is not built yet (MVP); a public change is published on the
-  // next pipeline run. Nothing here holds a GitHub credential for it.
-  return { ...(await gardenAdmin(env)), publish: ['approve', 'save', 'remove', 'expire'].includes(action) ? 'next_run' : 'none' };
+  // Publish on a public change, as the Idea Board does: start .github/workflows/plotnua-garden-publish.yml at once
+  // (the schedule is the fallback). Rejecting or deleting a waiting listing changes nothing public.
+  const publicChange = ['approve', 'save', 'remove', 'expire'].includes(action);
+  const publish = publicChange ? await requestIdeasPublish(env, 'plotnua-garden-publish.yml') : 'none';
+  return { ...(await gardenAdmin(env)), publish };
 }
 async function pipelineGarden(env) {
   // Public fields only: the reference, kind, county, general area, type of space, availability, the approved wording,

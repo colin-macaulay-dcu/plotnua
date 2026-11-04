@@ -1,5 +1,5 @@
 {
- "_about": "DISC-025 six-chapter redesign declared additions (founder approval, 4 Nov 2026: editorial makeover only): chapter labels, titles and standfirsts, the chapter 03 list (each line drawn from the page's own facts, or stated as not arranged), and the chapter 06 decision (A and B; route B the existing WhatsApp conversation only). Every other text block is the production text, moved.",
+ "_about": "DISC-025 six-chapter redesign declared additions (founder approval, 4 Nov 2026: editorial makeover only): chapter labels, titles and standfirsts, the chapter 03 list (each line drawn from the page's own facts, or stated as not arranged), and the chapter 06 decision (A and B; route B the existing WhatsApp conversation only). Every other text block is the production text, moved. Noticeboard release candidate (4 Nov 2026): the chapter 05 noticeboard card and the chapter 06 route A link.",
  "blocks": [
   "The garden you already have",
   "A different kind of sharing",
@@ -43,7 +43,12 @@
   "Ask PlotNua about The Borrowed Garden",
   "Ask PlotNua about the idea and your garden, and we’ll talk it through with you, using what PlotNua has researched.",
   "Free for homeowners.",
-  "The Borrowed Garden is an idea PlotNua is still exploring, not a service. Starting a conversation signs you up to nothing, and nobody is put in touch with anybody."
+  "The Borrowed Garden is an idea PlotNua is still exploring, not a service. Starting a conversation signs you up to nothing, and nobody is put in touch with anybody.",
+  "The Borrowed Garden noticeboard",
+  "See who has space, and who is looking.",
+  "A free noticeboard for both sides: garden owners with ground to share, and people nearby who would like somewhere to grow. Every listing is read by PlotNua first and shows a general area only. Contact through the noticeboard isn’t open yet.",
+  "Visit the noticeboard",
+  "The noticeboard: post or browse listings, free"
  ],
  "imgs": []
 }

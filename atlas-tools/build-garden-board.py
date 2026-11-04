@@ -25,6 +25,8 @@ import html, json, pathlib, re, sys
 from datetime import date
 
 HERE = pathlib.Path(__file__).resolve().parent
+sys.path.insert(0, str(HERE))
+import pn_header as H  # noqa: E402  the one global header, rendered for this page
 arg = lambda k: sys.argv[sys.argv.index(k) + 1] if k in sys.argv else None
 ROOT = pathlib.Path(arg("--root") or HERE.parent)
 DATA = pathlib.Path(arg("--data") or HERE / "garden-board" / "approved-listings.json")
@@ -106,7 +108,7 @@ def card(l):
 def form():
     if not ENDPOINT:
         return ('<section class="gb-post" id="post" aria-labelledby="gbPostH"><h2 id="gbPostH" class="gb-h2">Post a listing</h2>'
-                '<p class="gb-closed">The noticeboard isn&rsquo;t taking listings yet. The Borrowed Garden is still being explored.</p></section>')
+                '<p class="gb-closed">The noticeboard isn&rsquo;t taking listings yet. Please come back soon.</p></section>')
     if not ENDPOINT_RE.match(ENDPOINT): die("the intake endpoint must be the noticeboard Worker's /v1/garden-listings address")
     opt = lambda d: "".join('<option value="%s">%s</option>' % (E(k), E(v)) for k, v in d.items())
     counties = "".join("<option>%s</option>" % c for c in COUNTIES)
@@ -126,7 +128,7 @@ def form():
             '<p class="gb-no" id="gbNo">Please leave out names, addresses, Eircodes, phone numbers and e-mail addresses.</p>'
             '<label class="gb-l" for="gbEmail">Your e-mail address (private)</label>'
             '<input id="gbEmail" name="email" type="email" maxlength="120" required autocomplete="email" aria-describedby="gbEmailNote">'
-            '<p class="gb-no" id="gbEmailNote">Never shown on the noticeboard. PlotNua uses it only about this listing.</p>'
+            '<p class="gb-no" id="gbEmailNote">Never shown on the noticeboard. PlotNua uses it only about this listing. <a href="privacy.html#borrowed-garden-noticeboard">How listings are handled</a></p>'
             '<label class="gb-tick"><input type="checkbox" name="consent" value="1" required> %s</label>'
             '<div class="gb-hp" aria-hidden="true"><label>Leave this empty <input type="text" name="website" tabindex="-1" autocomplete="off"></label></div>'
             '<input type="hidden" name="t" value="">'
@@ -148,7 +150,13 @@ def body(listings):
             '  <h1 class="lg-title">Garden space, shared locally.</h1>\n'
             '  <p class="lg-stand">Two sides of one idea: people with ground they barely use, and people nearby looking for somewhere to grow. '
             'Listings are free and show a general area only. <a href="discovery-the-borrowed-garden.html">Read The Borrowed Garden first</a>.</p>\n'
-            '  <ul class="gb-sides" role="list"><li class="is-have"><b>%d</b> I have space</li><li class="is-want"><b>%d</b> I want space</li></ul>\n'
+            '  <div class="gb-act"><a class="gb-cta" href="#post">Post a listing &mdash; Free</a>'
+            '<ul class="gb-sides" role="list"><li class="is-have"><b>%d</b> I have space</li><li class="is-want"><b>%d</b> I want space</li></ul></div>\n'
+            '  <ul class="gb-status" role="list" aria-label="How the noticeboard works">'
+            '<li><b>Free.</b> Listing costs nothing.</li>'
+            '<li><b>Reviewed.</b> PlotNua reads every listing before it appears.</li>'
+            '<li><b>No contact yet.</b> People can&rsquo;t contact each other through the noticeboard yet.</li>'
+            '<li><b>Your arrangement.</b> PlotNua doesn&rsquo;t arrange garden-sharing agreements.</li></ul>\n'
             '</div>\n'
             '<div class="article gb-body">\n'
             '  <div class="gb-filters" role="group" aria-label="Filter the noticeboard">\n'
@@ -159,10 +167,10 @@ def body(listings):
             '  </div>\n'
             '  <p class="gb-showing" id="gbShowing" aria-live="polite"></p>\n'
             '  <ul class="gb-list" id="gbList" role="list">%s</ul>\n  %s\n'
-            '  <div class="gb-limits"><p><strong>How this noticeboard works.</strong> Every listing is read by PlotNua before it appears, and comes down after 90 days. '
-            'Listings never show names, addresses or contact details. PlotNua does not match anyone, and contact between people through the noticeboard isn&rsquo;t open yet: '
-            'each listing carries a reference for when it is. Nothing here is checked or inspected by PlotNua, and anything agreed is between the two people. '
-            'Before agreeing anything, read <a href="discovery-the-borrowed-garden.html#bg-agree">what to settle first</a>.</p></div>\n'
+            '  <div class="gb-limits"><p>Listings show a general area only, never names, addresses or contact details, and come down after 90 days. '
+            'Nothing here is checked or inspected by PlotNua, and anything two people later agree is between them. '
+            'Before agreeing anything, read <a href="discovery-the-borrowed-garden.html#bg-agree">what to settle first</a>. '
+            '<a href="privacy.html#borrowed-garden-noticeboard">How listings are handled</a> &middot; <a href="terms.html#borrowed-garden-noticeboard">Noticeboard terms</a></p></div>\n'
             '  %s\n'
             '</div>\n</main>\n' % (preview, have, want, "".join("<option>%s</option>" % E(c) for c in counties), cards, empty, form()))
 
@@ -178,6 +186,15 @@ body.pn-id.pn-pd .gb-preview{ display:inline-block; margin:0 0 18px; padding:6px
 body.pn-id.pn-pd .gb-sides li{ font:600 14px/1.2 var(--p4-sans); color:var(--p4-ivory); padding:10px 14px; border-radius:999px; border:1px solid var(--bg-line,#37422D); }
 body.pn-id.pn-pd .gb-sides b{ font-family:var(--p4-serif); font-weight:400; font-size:22px; margin-right:6px; }
 body.pn-id.pn-pd .gb-sides .is-have{ border-color:#A3BE7E; } body.pn-id.pn-pd .gb-sides .is-want{ border-color:#D2AE6E; }
+.gb-act{ display:flex; flex-wrap:wrap; align-items:center; gap:14px 18px; margin:26px 0 0; }
+.gb-act .gb-sides{ margin:0; }
+body.pn-id.pn-pd .gb-cta{ display:inline-flex; align-items:center; justify-content:center; min-height:54px; padding:0 28px; border-radius:999px; background:var(--p4-terra,#CF8566); color:var(--p4-anth,#1B1C1E); font:700 16px/1 var(--p4-sans); text-decoration:none; }
+body.pn-id.pn-pd .gb-cta:hover{ background:var(--p4-terra-hover,#E09A7C); }
+body.pn-id.pn-pd .gb-cta:focus-visible{ outline:2px solid var(--p4-ivory); outline-offset:3px; }
+.gb-status{ list-style:none; margin:22px 0 0; padding:0; display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:10px; max-width:980px; }
+body.pn-id.pn-pd .gb-status li{ padding:12px 14px; border:1px solid var(--bg-line,#37422D); border-radius:4px; font:400 14.5px/1.45 var(--p4-sans); color:var(--p4-stone); }
+body.pn-id.pn-pd .gb-status b{ display:block; color:var(--p4-ivory); font-weight:700; margin-bottom:2px; }
+#post{ scroll-margin-top:90px; }
 body.pn-id.pn-pd .gb-body{ padding-top:clamp(28px,3vw,44px); }
 .gb-filters{ display:grid; grid-template-columns:auto 1fr 1fr; gap:14px 18px; align-items:end; padding:18px; border:1px solid var(--bg-line,#37422D); border-radius:4px; background:var(--bg-field,#1F241B); }
 .gb-seg{ display:flex; border:1px solid var(--bg-line,#37422D); border-radius:999px; overflow:hidden; align-self:end; }
@@ -227,9 +244,11 @@ body.pn-id.pn-pd .gb-btn{ min-height:52px; padding:0 26px; border:0; border-radi
 body.pn-id.pn-pd .gb-btn:disabled{ opacity:.6; cursor:wait; }
 body.pn-id.pn-pd .gb-result{ margin:16px 0 0; padding:12px 14px; border-radius:3px; background:rgba(163,190,126,.12); color:var(--p4-ivory); }
 body.pn-id.pn-pd .gb-result.is-bad{ background:rgba(207,133,102,.14); }
-@media (max-width:1023px){ .gb-list{ grid-template-columns:1fr 1fr; } .gb-filters{ grid-template-columns:1fr 1fr; } .gb-seg{ grid-column:1 / -1; justify-self:start; } }
+@media (max-width:1023px){ .gb-status{ grid-template-columns:1fr 1fr; } .gb-list{ grid-template-columns:1fr 1fr; } .gb-filters{ grid-template-columns:1fr 1fr; } .gb-seg{ grid-column:1 / -1; justify-self:start; } }
 @media (max-width:719px){
   .gb-list, .gb-two, .gb-side{ grid-template-columns:1fr; }
+  .gb-act{ flex-direction:column; align-items:stretch; } body.pn-id.pn-pd .gb-cta{ width:100%; }
+  .gb-status{ grid-template-columns:1fr 1fr; gap:8px; } body.pn-id.pn-pd .gb-status li{ padding:10px 11px; font-size:13.5px; }
   .gb-filters{ grid-template-columns:1fr; padding:14px; gap:12px; }
   .gb-seg{ justify-self:stretch; } body.pn-id.pn-pd .gb-seg button{ flex:1; }
   body.pn-id.pn-pd .gb-seg button{ padding:0 12px; font-size:13.5px; }
@@ -312,6 +331,11 @@ def page(shell, listings):
     t = t[:i] + body(listings) + "\n" + t[j:]
     t = t.replace("</head>", PAGE_CSS + "</head>", 1)
     k = t.rindex("</body>"); t = t[:k] + PAGE_JS + t[k:]
+    banner = not H.has_own_banner(t[t.index("<body"):])
+    for k, new in (("BAR", H.bar("borrowed-garden-board.html", H.RAIL_BEGIN in t, banner)), ("ROW", H.row("borrowed-garden-board.html"))):
+        rx = re.compile(re.escape("<!-- PLOTNUA HEADER v2 · %s · BEGIN" % k) + r".*?" + re.escape("<!-- PLOTNUA HEADER v2 · %s · END -->" % k) + r"\n", re.S)
+        if len(rx.findall(t)) != 1: die("Discovery shell: header %s block not found exactly once" % k)
+        t = rx.sub(lambda m: new, t, count=1)
     t = t.replace("<!DOCTYPE html>\n", "<!DOCTYPE html>\n<!-- PLOTNUA BORROWED GARDEN NOTICEBOARD · generated by atlas-tools/build-garden-board.py from the approved listings — do not hand-edit -->\n", 1)
     return t
 

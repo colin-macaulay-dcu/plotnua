@@ -57,6 +57,8 @@ def apply_v9(text: str) -> str:
 def without_v9(text: str) -> str:
     """The exact page beneath V9. A page without V9 passes through untouched; a page that carries the V9 marker but not
     exactly the governed V9 text raises."""
+    from privacy_v10_layer import without_v10       # V10 (The Borrowed Garden noticeboard, 4 Nov 2026) sits on top of V9: take it off first
+    text = without_v10(text)
     if MARKER not in text:
         return text
     for _, new in PAIRS:

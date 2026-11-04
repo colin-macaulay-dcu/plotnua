@@ -24,6 +24,7 @@ PREMIUM_PAGES = {
     "concept-modular-garden-offices.html",   # Maker guide: founder-approved, 26 Oct 2026
     "all-in-one-cabins-garden-rooms.html",   # Maker guide: founder-approved, 26 Oct 2026
     "discovery-a-home-for-art.html",       # Stage 2c, live 23 Oct 2026
+    "borrowed-garden-board.html",          # The Borrowed Garden noticeboard (release candidate, 4 Nov 2026; noindex)
     "garden-room-prices-ireland.html",     # Batch 1 · 1, founder approval 23 Oct 2026
     "discovery-living-in-the-garden.html", # Batch 1 · Garden Living (founder direction 23 Oct 2026)
     "discovery-garden-retreat.html",       # Batch 1 · Garden Living
