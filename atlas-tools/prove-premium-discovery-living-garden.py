@@ -205,7 +205,10 @@ def check(src, base):
         bad.append("L undeclared image: " + i)
     for i in base["ids"]:
         if i not in ids: bad.append("L id lost: " + i)
-    for i in ids - set(base["ids"]) - set(ADDED_IDS):
+    ref_ids = []
+    if os.path.exists(ADDED_FILE):
+        ref_ids = [i for c in json.load(open(ADDED_FILE, encoding="utf-8")).get("showcaseReferences", []) for i in c.get("ids", [])]
+    for i in ids - set(base["ids"]) - set(ADDED_IDS) - set(ref_ids):
         bad.append("L undeclared id: " + i)
     for r in ROUTES:
         if 'href="%s"' % r not in body: bad.append("L Atlas / My Plot route missing: " + r)

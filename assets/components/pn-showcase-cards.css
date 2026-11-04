@@ -1,0 +1,26 @@
+/* PN-SHOWCASE-CARDS v1 — maker showcase cards (founder approval, 4 Nov 2026).
+   Reusable on any Discovery; built by atlas-tools/build-showcase-cards.py. Restrained and editorial:
+   hairlines, no shadows or gloss. Two columns on desktop, one on mobile. */
+.pn-sc{ --sc-ink:var(--p4-ivory,#F2EBE0); --sc-soft:var(--p4-lime,#E7DED0); --sc-stone:var(--p4-stone,#C2BDB5);
+  --sc-line:var(--p4-line2,#4A4B4F); --sc-well:var(--p4-well,#2D2E31); --sc-accent:var(--lg-sage-2,var(--p4-bronze-text,#B39272));
+  margin:clamp(12px,2vw,24px) 0 clamp(36px,5vw,64px); font-family:var(--p4-sans,'Hanken Grotesk',system-ui,sans-serif); }
+.pn-sc *{ box-sizing:border-box; }
+.pn-sc-wrap{ max-width:1180px; margin:0 auto; padding:0 clamp(16px,3vw,0px); }
+.pn-sc-k{ margin:0 0 18px; font-size:11.5px; font-weight:700; letter-spacing:.2em; text-transform:uppercase; color:var(--sc-accent); }
+.pn-sc-grid{ list-style:none; margin:0; padding:0; display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:clamp(18px,2.4vw,32px); }
+.pn-sc-card{ height:100%; display:flex; flex-direction:column; border-top:1px solid var(--sc-line); padding-top:clamp(14px,1.6vw,18px); }
+.pn-sc-media{ display:block; aspect-ratio:3 / 2; overflow:hidden; background:var(--sc-well); }
+.pn-sc-media img{ display:block; width:100%; height:100%; object-fit:cover; transition:opacity .25s ease; }
+.pn-sc-media:hover img{ opacity:.9; }
+.pn-sc-body{ display:flex; flex-direction:column; flex:1; padding-top:12px; }
+.pn-sc-cap{ margin:0 0 14px; font-size:12px; color:var(--sc-stone); }
+.pn-sc-kind{ font-weight:700; font-size:10.5px; letter-spacing:.14em; text-transform:uppercase; color:var(--sc-accent); margin-right:6px; }
+.pn-sc-name{ margin:0 0 8px; font-family:var(--p4-serif,'Instrument Serif',Georgia,serif); font-weight:400; color:var(--sc-ink); font-size:clamp(26px,2.4vw,34px); line-height:1.1; }
+.pn-sc-desc{ margin:0 0 16px; font-size:16px; line-height:1.6; color:var(--sc-soft); max-width:52ch; }
+.pn-sc-go{ margin:auto 0 0; }
+.pn-sc-go a{ display:inline-flex; gap:6px; align-items:center; font-size:14.5px; font-weight:600; color:var(--sc-ink);
+  text-decoration:none; border-bottom:1px solid var(--sc-line); padding-bottom:3px; }
+.pn-sc-go a:hover{ border-bottom-color:var(--sc-ink); }
+.pn-sc-go a:focus-visible{ outline:2px solid var(--sc-accent); outline-offset:3px; }
+@media (max-width:760px){ .pn-sc-grid{ grid-template-columns:1fr; } }
+@media (prefers-reduced-motion:reduce){ .pn-sc-media img{ transition:none; } }

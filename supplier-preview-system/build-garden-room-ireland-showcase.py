@@ -67,7 +67,7 @@ def guard():
         sys.exit("FAIL: the page credit differs from the rights record's required credit")
 
 
-PREVIEW = True   # founder: private supplier preview first. Set False (and rebuild) when the founder releases it.
+PREVIEW = False  # founder approval and production release, 4 Nov 2026 (was True for the private supplier preview)
 
 
 HEAD = """<!DOCTYPE html>

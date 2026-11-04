@@ -65,26 +65,33 @@
  ],
  "showcaseReferences": [
   {
-   "supplier": "Elm Landscaping",
-   "declared": "2026-11-04, founder authorisation 'Elm Landscaping supplier presentation upgrade': a text-only reference above the supplier gallery to the PlotNua showcase. Gallery cards, capacity and Maker Explorer unchanged.",
+   "supplier": "Maker showcase cards (Elm Landscaping, Garden Room Ireland)",
+   "declared": "2026-11-04, founder approval 'Garden Room Ireland final refinement and production release': reusable PN-SHOWCASE-CARDS component (atlas-tools/build-showcase-cards.py) above the supplier gallery. Each card reuses a photograph already published on that supplier's PlotNua showcase. Gallery cards, capacity and Maker Explorer unchanged.",
    "blocks": [
     "Maker showcases",
-    "Elm Landscaping , a Co. Clare landscaping company, lists five garden rooms in the products below. Its showcase pairs that range with photographs of the gardens it has built.",
-    "Elm Landscaping , a Co. Clare landscaping company, lists five garden rooms in the products below. Its showcase pairs that range with photographs of the gardens it has built."
+    "Photograph © Elm Landscaping",
+    "Elm Landscaping",
+    "A Co. Clare landscaping company with five garden rooms in the products below, shown alongside the gardens it has built.",
+    "Explore showcase →",
+    "Photograph © Elm Landscaping Elm Landscaping A Co. Clare landscaping company with five garden rooms in the products below, shown alongside the gardens it has built. Explore showcase →",
+    "Photograph © Garden Room Ireland",
+    "Garden Room Ireland",
+    "Insulated steel-clad garden rooms from Dublin: the QC6, the QCB garden office and an L-shaped living annex.",
+    "Explore showcase →",
+    "Photograph © Garden Room Ireland Garden Room Ireland Insulated steel-clad garden rooms from Dublin: the QC6, the QCB garden office and an L-shaped living annex. Explore showcase →"
+   ],
+   "imgs": [
+    "https://elmlandscaping.ie/wp-content/uploads/2023/02/driveway1.jpg",
+    "https://static.wixstatic.com/media/fef4b6_f1486b2ae80e4ed2bfeecde2d7e5ea71~mv2.jpg"
    ],
    "links": [
-    "suppliers/elm-landscaping.html"
-   ]
-  },
-  {
-   "supplier": "Garden Room Ireland",
-   "declared": "2026-11-04, founder instruction 'Garden Room Ireland premium supplier showcase' (private supplier preview; branch preview/garden-room-ireland-showcase). Text-only reference; the gallery card stays held.",
-   "blocks": [
-    "Garden Room Ireland , a Dublin maker of insulated steel-clad garden rooms: the QC6, the QCB garden office and an L-shaped living annex, with photographs of finished rooms.",
-    "Garden Room Ireland , a Dublin maker of insulated steel-clad garden rooms: the QC6, the QCB garden office and an L-shaped living annex, with photographs of finished rooms."
-   ],
-   "links": [
+    "suppliers/elm-landscaping.html",
     "suppliers/garden-room-ireland.html"
+   ],
+   "ids": [
+    "pn-sc-k",
+    "pn-sc-elm-landscaping",
+    "pn-sc-garden-room-ireland"
    ]
   }
  ]

@@ -1,0 +1,13 @@
+{
+ "_about": "Maker showcase cards (founder approval, 4 Nov 2026). One entry per Discovery; each card points at an existing PlotNua supplier showcase (supplier-preview-system/showcases/<slug>/showcase.json) and reuses one of that showcase's own approved photographs. Built into the page by atlas-tools/build-showcase-cards.py. To add a showcase: add a card here and rebuild.",
+ "discovery-living-in-the-garden.html": {
+  "kicker": "Maker showcases",
+  "anchor": "<!-- PN-SUPPLIER-GALLERY v1 ·",
+  "cards": [
+   {"showcase": "elm-landscaping", "image": "elm-01-coastal-driveway",
+    "description": "A Co. Clare landscaping company with five garden rooms in the products below, shown alongside the gardens it has built."},
+   {"showcase": "garden-room-ireland", "image": "gri-01-under-the-tree",
+    "description": "Insulated steel-clad garden rooms from Dublin: the QC6, the QCB garden office and an L-shaped living annex."}
+  ]
+ }
+}
