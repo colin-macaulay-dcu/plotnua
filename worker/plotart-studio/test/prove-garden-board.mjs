@@ -226,8 +226,55 @@ console.log('W · a real browser');
     await m.screenshot({ path: join(SHOTS, '2-noticeboard-phone.png'), fullPage: true });
     console.log('  page width on a phone: ' + await m.evaluate(() => document.documentElement.scrollWidth));
   }
+  {
+    const m = await browser.newPage({ viewport: { width: 390, height: 844 } });
+    await m.goto(`http://localhost:${port}/_preview-borrowed-garden-board.html`, { waitUntil: 'networkidle' });
+    const cta = m.locator('.gb-cta');
+    const box = await cta.boundingBox();
+    check('W11 phone: "Post a listing — Free" is on the first screen', !!box && box.y + box.height <= 844 && /Post a listing/.test(await cta.textContent()) && /Free/.test(await cta.textContent()));
+    await cta.click(); await m.waitForTimeout(600);
+    const top = await m.evaluate(() => document.getElementById('post').getBoundingClientRect().top);
+    check('W12 phone: the button takes you straight to the form', top >= 0 && top < 300, String(top));
+    check('W13 phone: the status points are shown (free, reviewed, no contact yet, no arrangements)', await m.evaluate(() => { const t = document.querySelector('.gb-status').innerText; return /Free/.test(t) && /Reviewed/.test(t) && /contact/.test(t) && /arrange/.test(t); }));
+    check('W14 phone: nothing scrolls sideways', (await m.evaluate(() => document.documentElement.scrollWidth)) === 390);
+  }
   await browser.close();
   rmSync(previewPath, { force: true });   // never leave the preview page in the repository
+}
+
+console.log('U · publishing (the real publisher, --simulate, in a throw-away clone of this commit)');
+{
+  const clone = mkdtempSync(join(tmpdir(), 'gbpub-'));
+  execFileSync('git', ['clone', '-q', '--no-hardlinks', REPO, clone]);
+  execFileSync('git', ['-C', clone, 'checkout', '-q', execFileSync('git', ['-C', REPO, 'rev-parse', 'HEAD'], { encoding: 'utf8' }).trim()]);
+  const snapFile = join(clone, 'atlas-tools/garden-board/approved-listings.json');
+  check('U1 the repository starts with no listings (no demonstration listing is ever committed)', JSON.parse(readFileSync(snapFile, 'utf8')).listings.length === 0);
+  const publish = (mode = '--simulate', studio = url) => { try { return { ok: true, out: execFileSync('python3', ['atlas-tools/plotnua-garden-publish.py', '--studio', studio, '--token', PIPELINE_TOKEN, mode], { cwd: clone, encoding: 'utf8', stdio: 'pipe' }) }; }
+    catch (e) { return { ok: false, out: String(e.stdout || '') + String(e.stderr || e) }; } };
+  const shown = () => { const t = readFileSync(join(clone, 'borrowed-garden-board.html'), 'utf8'); return [...t.matchAll(/PN-G-\d{6}-[0-9A-F]{4}/g)].map(m => m[0]); };
+  const push = publish('--push', url);
+  check('U2 a local Studio (demonstration listings) can never be published (--push refused)', !push.ok && /never published/.test(push.out));
+  const live = (await pipe()).j.listings.map(l => l.ref);
+  const r1 = publish();
+  check('U3 the publisher builds the page from the approved listings, through every guard', r1.ok && /verified \(simulated\)/.test(r1.out), r1.out.slice(-300));
+  const s1 = shown();
+  check('U4 approved listings appear on the page', live.length > 0 && live.every(r => s1.includes(r)));
+  check('U5 rejected, removed and expired listings never appear', !s1.includes(rej.j.reference) && !s1.includes(extra.j.reference) && !s1.includes(ok3.j.reference));
+  check('U6 the published page carries no e-mail address', !/@example\.invalid/.test(readFileSync(join(clone, 'borrowed-garden-board.html'), 'utf8')));
+  // remove one, expire another, publish again
+  const a2 = await call('GET', '/api/admin/garden', FOUNDER);
+  const onBoard = a2.j.approved.map(l => l.ref);
+  const [rm, xp] = onBoard;
+  await call('POST', `/api/admin/garden/${a2.j.approved.find(l => l.ref === rm).id}`, FOUNDER, { action: 'remove' });
+  if (xp) await db.prepare("UPDATE garden_listings SET expires_at = ? WHERE ref = ?").bind(new Date(Date.now() - 1000).toISOString(), xp).run();
+  const r2 = publish();
+  const s2 = shown();
+  check('U7 after removal, the listing disappears from the published page', r2.ok && !s2.includes(rm), r2.out.slice(-200));
+  check('U8 after expiry, the listing disappears from the published page', !xp || !s2.includes(xp));
+  check('U9 publishing again with nothing new changes nothing', /nothing to publish/.test(publish().out));
+  const commits = execFileSync('git', ['-C', clone, 'log', '--format=%s', '-3'], { encoding: 'utf8' });
+  const files = execFileSync('git', ['-C', clone, 'diff', '--name-only', 'HEAD~2', 'HEAD'], { encoding: 'utf8' }).trim().split('\n').sort();
+  check('U10 each publish commit changes only the snapshot and the page', /noticeboard content/.test(commits) && files.join() === 'atlas-tools/garden-board/approved-listings.json,borrowed-garden-board.html', files.join());
 }
 
 await mf.dispose();
