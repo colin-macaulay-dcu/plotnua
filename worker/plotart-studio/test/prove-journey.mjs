@@ -23,6 +23,11 @@ for i in range(1, 13):
         x, y = r.randrange(w), r.randrange(h); c = tuple(r.randrange(256) for _ in range(3))
         (d.ellipse if r.random() < .5 else d.rectangle)((x, y, x + r.randrange(w // 6, w // 2), y + r.randrange(h // 6, h // 2)), outline=c, width=r.randrange(10, 40))
     im.save(f"{sys.argv[1]}/j{i}.jpg", "JPEG", quality=90)
+r = random.Random(499); pw, ph = 1600, 2000           # the artist's portrait (portrait format, larger than shown)
+im = Image.new("RGB", (pw, ph), (90, 80, 70)); d = ImageDraw.Draw(im)
+for _ in range(20):
+    x, y = r.randrange(pw), r.randrange(ph); d.ellipse((x, y, x + r.randrange(100, 600), y + r.randrange(100, 600)), outline=tuple(r.randrange(256) for _ in range(3)), width=24)
+im.save(f"{sys.argv[1]}/portrait.jpg", "JPEG", quality=90)
 `, TMP]);
 
 // main, after the opening release: a git copy of the release tree, with the relay switched on for this test
@@ -81,6 +86,9 @@ r = await call('GET', '/api/me', A);
 check('J2 the artist signs in (Access) and lands on “Not published yet”', r.s === 200 && r.j.status.state === 'draft' && r.j.artist.account_status === 'active');
 await call('PUT', '/api/me/profile', A, { practice: 'Painter', medium: 'painting', county: 'Clare', county_public: true, statement: 'Burren light, painted slowly.',
   bio: 'Niamh Synthetic is an invented test artist. She paints the limestone and light of the Burren in thin layers of oil, slowly, over many months.' });
+// a portrait (PLOTART-PUBLISHING-PORTRAIT-001: galleries with a portrait were refused by the provenance guard)
+const por = await call('PUT', '/api/me/portrait', A, undefined, readFileSync(join(TMP, 'portrait.jpg')));
+await call('PATCH', `/api/images/${por.j.id}`, A, { alt: 'Portrait of the synthetic test artist in her studio', photographer: 'self' });
 const works = [];
 for (let i = 1; i <= 10; i++) {
   const id = (await call('POST', '/api/artworks', A)).j.id; works.push(id);
@@ -112,6 +120,15 @@ from PIL import Image
 recs={r["asset"]:r for r in json.load(open("image-provenance-records.json"))["records"] if r.get("class")=="ARTIST_SUPPLIED_ARTWORK"}
 fs=glob.glob("plotart/artists/niamh-synthetic/img/*.webp")
 ok=len(fs)>=20 and all(recs["plotart/"+f.split("plotart/",1)[1]]["sha256"]==hashlib.sha256(open(f,"rb").read()).hexdigest() and not Image.open(f).getexif() and "icc_profile" not in Image.open(f).info for f in fs)
+sys.exit(0 if ok else 1)`], { cwd: SITE }).status === 0);
+check('J8b the portrait is published once, at the size the page shows (600 px), with exactly one provenance record (subject portrait)', spawnSync('python3', ['-c', `
+import json,glob,re,sys
+recs=[r for r in json.load(open("image-provenance-records.json"))["records"] if r.get("class")=="ARTIST_SUPPLIED_ARTWORK" and r.get("artist_slug")=="niamh-synthetic" and r.get("subject")=="portrait"]
+fs=sorted(glob.glob("plotart/artists/niamh-synthetic/img/portrait*"))
+html=open("plotart/artists/niamh-synthetic/index.html",encoding="utf-8").read()
+m=re.search(r'class="pa-ag-portrait"><img src="img/([^"]+)" width="(\\d+)" height="(\\d+)"',html)
+ok=bool(m) and len(fs)==1 and fs[0].endswith("/"+m.group(1)) and len(recs)==1 and recs[0]["asset"]=="plotart/artists/niamh-synthetic/img/"+m.group(1) and max(int(m.group(2)),int(m.group(3)))==600 and recs[0]["photographer"]=="self"
+print(fs, [r["asset"] for r in recs], m.groups() if m else None)
 sys.exit(0 if ok else 1)`], { cwd: SITE }).status === 0);
 r = await call('GET', '/api/me', A);
 check('J9 the artist’s Studio shows “Live” with the founding year started', r.j.status.state === 'live' && r.j.artist.first_published_at);
