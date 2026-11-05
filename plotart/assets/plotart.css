@@ -764,4 +764,5 @@ body.pa .pa-free-lines{ margin:0; }
   .pa-ag-grid:has(> .pa-ag-work:only-child) .pa-ag-art, .pa-ag-grid:has(> .pa-ag-work:nth-child(2):last-child) .pa-ag-art{ padding:0; }
   .pa-aw-frame{ padding:0; min-height:0; background:none; border:0; border-radius:0; }
   .pa-aw-frame img{ max-height:82svh; box-shadow:0 22px 40px -22px rgba(0,0,0,.75), 0 3px 8px -3px rgba(0,0,0,.4); }
+  .pa-aw-dl dd{ overflow-wrap:anywhere; }   /* a long unbroken value (e.g. Monoprint/Acrylic/Lacquer) wraps instead of widening the page */
 }
