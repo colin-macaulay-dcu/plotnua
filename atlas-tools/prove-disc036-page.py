@@ -37,7 +37,7 @@ integration (founder authorisation, private preview only, 5 Nov 2026).
   E15 the drawings in the page equal what build-disc036-drawings.py builds (--check)
   E16 provenance: every DISC-036 image the page and its card use is a recorded derivative of a declared
       AI_ILLUSTRATION master that permits that surface; the share image is the POSSIBLE; the web copies equal
-      what build-disc036-images.py builds (--check)
+      recorded derivatives by sha256, made from the declared masters, themselves unchanged
 Prints "DISC-036 PAGE · OK" only when every check passes.
 """
 import html, json, os, re, subprocess, sys
@@ -281,8 +281,18 @@ def main():
             need(not (surf == "library-card" and "BEFORE" in m["asset"]), "E16 the Library never shows the BEFORE")
     need("POSSIBLE" in derivs.get("assets/disc036/img/DISC-036-og-1200x630.jpg", {}).get("derived_from", {}).get("asset", ""),
          "E16 the share image is made from the POSSIBLE")
-    r = subprocess.run([sys.executable, os.path.join(ROOT, "atlas-tools", "build-disc036-images.py"), "--check"], capture_output=True, text=True)
-    need(r.returncode == 0, "E16 the web copies are not what build-disc036-images.py builds")
+    # Integrity, as DISC-035's O16 does, by hash rather than by re-encoding: the CI runner's Pillow / libwebp
+    # differ from the build machine's, so a byte-for-byte rebuild is not a stable CI check (it stays available
+    # locally as build-disc036-images.py --check). Every image in use must be exactly its recorded derivative,
+    # and every derivative's source must be the declared master, unchanged on disk.
+    import hashlib
+    sha = lambda a: hashlib.sha256(open(os.path.join(ROOT, a), "rb").read()).hexdigest()
+    for a in sorted(used):
+        d = derivs.get(a)
+        need(d and os.path.exists(os.path.join(ROOT, a)) and sha(a) == d["sha256"], "E16 %s differs from its recorded derivative" % a)
+        src = (d or {}).get("derived_from", {})
+        m = masters.get(src.get("asset"))
+        need(m and src.get("sha256") == m["sha256"] and sha(m["asset"]) == m["sha256"], "E16 %s: its master is not the declared, unchanged file" % a)
 
     # E15
     r = subprocess.run([sys.executable, os.path.join(ROOT, "atlas-tools", "build-disc036-drawings.py"), "--check"], capture_output=True, text=True)
