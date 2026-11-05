@@ -39,7 +39,7 @@ jobs:
   publish:
     if: ${{ vars.PLOTART_PUBLISH_ENABLED == 'true' && github.ref == 'refs/heads/main' }}
     runs-on: ubuntu-latest
-    timeout-minutes: 60   # automation v1: up to two gated releases (gallery + order), 25 min each
+    timeout-minutes: 90   # each gallery, and the order, is released in turn: gate (up to 30 min) + promotion and live check
     steps:
       - uses: actions/checkout@v4
         with:
@@ -58,8 +58,15 @@ jobs:
       - name: Note where main is before publishing
         id: before
         run: echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+      # Fix 5 Nov 2026 (as the Idea Board and Borrowed Garden): a gate this job dispatches never starts "Release to
+      # production", so the publisher promotes each release itself with promote-after-gate.sh (gate passed on the exact
+      # commit, fast-forward only, live check, automatic rollback). The release scripts are copied from main here, before
+      # anything is built, and never taken from the commit being released.
+      - name: Trusted copy of the release tooling (from main)
+        run: cp -r atlas-tools/release "$RUNNER_TEMP/release-tools"
       - name: Publish approved gallery content (content-only, guarded, fast-forward)
         env:
+          RELEASE_TOOLS: ${{ runner.temp }}/release-tools
           STUDIO_URL: ${{ secrets.STUDIO_URL }}
           STUDIO_PIPELINE_TOKEN: ${{ secrets.STUDIO_PIPELINE_TOKEN }}
           STUDIO_ACCESS_CLIENT_ID: ${{ secrets.STUDIO_ACCESS_CLIENT_ID }}
