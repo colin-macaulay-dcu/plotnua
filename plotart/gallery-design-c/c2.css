@@ -1,0 +1,56 @@
+/* C2 · THE CURATED COLLECTION (design exploration). Same dark wall, slightly stronger editorial character:
+   works stand on a common baseline above a fine rule, a serif catalogue numeral beside each name, and an
+   architectural 5 x 5 plan of the twenty-five positions with a quiet occupancy line. */
+.c2 .vgc-art{ align-items:flex-end; }
+.c2-label{ display:grid; grid-template-columns:auto minmax(0, 1fr); column-gap:18px; margin-top:22px; padding-top:16px; border-top:1px solid rgba(242,235,224,.14); }
+.c2-n{ font-family:var(--serif); font-size:clamp(28px, 2.3vw, 34px); line-height:.95; color:var(--terra-text); font-variant-numeric:lining-nums tabular-nums; }
+.c2-label .vgc-name{ font-size:clamp(24px, 2vw, 28px); line-height:1.1; }
+.c2-label .vgc-practice{ margin-top:5px; }
+
+/* the occupancy line: 25 segments */
+.c2-line{ list-style:none; margin:26px 0 0; padding:0; display:grid; grid-template-columns:repeat(25, minmax(0, 1fr)); gap:4px; }
+.c2-line li{ height:4px; background:rgba(242,235,224,.10); }
+.c2-line .is-pub{ background:var(--terra-text); }
+.c2-line .is-res{ background:transparent; box-shadow:inset 0 0 0 1px rgba(242,235,224,.42); }
+.c2-line .is-prep{ background:repeating-linear-gradient(90deg, rgba(242,235,224,.5) 0 2px, transparent 2px 4px); }
+
+/* the plan */
+.c2-plan{ list-style:none; margin:26px 0 0; padding:0; display:grid; grid-template-columns:repeat(5, minmax(0, 1fr));
+  border-top:1px solid rgba(242,235,224,.13); border-left:1px solid rgba(242,235,224,.13); }
+.c2-cell{ position:relative; min-height:clamp(84px, 7.4vw, 104px); padding:12px 14px 13px; border-right:1px solid rgba(242,235,224,.13); border-bottom:1px solid rgba(242,235,224,.13);
+  display:flex; flex-direction:column; justify-content:space-between; gap:8px; min-width:0; color:var(--mute); font-size:13.5px; }
+.c2-cell b{ font-family:var(--serif); font-weight:400; font-size:24px; line-height:1; color:var(--mute); font-variant-numeric:lining-nums tabular-nums; }
+.c2-cell span{ min-width:0; overflow-wrap:anywhere; }
+.c2-cell.is-pub b{ color:var(--terra-text); }
+.c2-cell.is-pub{ padding:0; }
+.c2-cell.is-pub a{ display:flex; flex-direction:column; justify-content:space-between; gap:8px; height:100%; padding:12px 14px 13px; color:var(--ivory); text-decoration:none; border-radius:0; }
+.c2-cell.is-pub a span{ font-family:var(--serif); font-size:19px; line-height:1.15; }
+.c2-cell.is-pub a:hover{ background:rgba(242,235,224,.035); }
+.c2-cell.is-pub a:hover span{ text-decoration:underline; text-underline-offset:4px; }
+.c2-cell.is-pub a:focus-visible{ outline-offset:-3px; }
+.c2-cell.is-res span{ font-family:var(--serif); font-style:italic; font-size:16px; color:var(--stone); }
+.c2-cell.is-prep span{ color:var(--stone); }
+.c2-cell.is-prep::before{ content:""; position:absolute; top:16px; right:14px; width:9px; height:9px; border-radius:50%; border:1px solid rgba(242,235,224,.5);
+  background:linear-gradient(90deg, rgba(242,235,224,.5) 50%, transparent 50%); }
+.c2-cell.is-res::before{ content:""; position:absolute; top:16px; right:14px; width:9px; height:9px; border:1px solid rgba(242,235,224,.5); }
+
+@media (max-width:639px){
+  .c2-label{ margin-top:18px; padding-top:14px; column-gap:14px; }
+  .c2-line{ gap:3px; }
+  .c2-cell{ min-height:58px; padding:8px 0 8px 9px; justify-content:flex-start; gap:6px; }
+  .c2-cell b{ font-size:19px; }
+  .c2-cell span{ position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; } /* state stays in text for screen readers */
+  .c2-cell.is-pub a{ padding:8px 0 8px 9px; justify-content:flex-start; gap:6px; }
+  .c2-cell.is-pub a::after{ content:""; display:block; width:16px; height:2px; background:var(--terra-text); }
+  .c2-cell.is-res::before, .c2-cell.is-prep::before{ top:auto; bottom:11px; left:9px; right:auto; width:8px; height:8px; }
+  .c2-names{ display:block!important; }
+}
+.c2-names{ display:none; list-style:none; margin:18px 0 0; padding:0; columns:2; column-gap:18px; }
+.c2-names li{ break-inside:avoid; display:flex; gap:9px; align-items:baseline; padding:7px 0; font-size:13.5px; color:var(--mute); }
+.c2-names b{ font-weight:500; color:var(--terra-text); font-variant-numeric:tabular-nums; min-width:1.7em; }
+.c2-names a{ color:var(--ivory); text-decoration:none; font-family:var(--serif); font-size:16.5px; line-height:1.2; }
+.c2-key .k{ display:inline-block; width:9px; height:9px; margin-right:7px; vertical-align:0; }
+.c2-key .k-pub{ height:2px; width:14px; vertical-align:3px; background:var(--terra-text); }
+.c2-key .k-res{ border:1px solid rgba(242,235,224,.5); }
+.c2-key .k-prep{ border-radius:50%; border:1px solid rgba(242,235,224,.5); background:linear-gradient(90deg, rgba(242,235,224,.5) 50%, transparent 50%); }
+.c2-key .k-av{ border-bottom:1px solid rgba(242,235,224,.3); }
