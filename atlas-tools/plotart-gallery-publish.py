@@ -12,7 +12,7 @@ For each queue item the founder has published (or, once authorised, an automatic
      ARTIST_SUPPLIED_ARTWORK provenance records; commits that on top of main;
   5. runs the content-only boundary (with --instant for automatic updates), the PlotArt launch guard L1-L14, the
      image provenance guard and the image-rights scan;
-  6. --push: pushes an audit branch content/plotart-<slug>-v<n> and fast-forwards main (never forced; refused if main
+  6. --push: pushes an audit branch content/plotart-<artist>-v<n>-<commit> (one per attempt) and fast-forwards main (never forced; refused if main
      moved). --simulate (tests): stops before pushing. Any failure: the commit is dropped and the Studio is told why.
 """
 import glob, hashlib, json, os, re, shutil, subprocess, sys, tempfile, urllib.error, urllib.request
@@ -221,7 +221,9 @@ def main():
                 "PlotArt content: %s · version %d · %s (Studio queue %s)" % (q["artist_id"], q["version"], q["kind"], q["id"]))
             why = guards(base, q["kind"] == "instant")
         if why is None and PUSH:
-            branch = "content/plotart-%s-v%d" % (q["artist_id"], q["version"])
+            # one saved copy per attempt (fix 5 Nov 2026): a retry of the same version is a new commit, so it gets its own
+            # branch instead of colliding with an earlier attempt's copy (which is kept, never overwritten or forced)
+            branch = "content/plotart-%s-v%d-%s" % (q["artist_id"], q["version"], git("rev-parse", "--short=12", "HEAD"))
             ok1, o1 = run("git push origin HEAD:refs/heads/%s" % branch)
             ok2, o2 = release("plotart-%s-v%d" % (q["artist_id"], q["version"])) if ok1 else (False, "")   # main only moves after the gate passes
             if not (ok1 and ok2):
