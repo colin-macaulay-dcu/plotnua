@@ -6,6 +6,8 @@
 # release, the revert (release/auto/rollback-*) is released the same way: its own gate must pass on its exact commit.
 # A failing rollback release is never reverted again (promote.sh). Main's ruleset still requires the gate.
 #   bash promote-after-gate.sh <40-char sha> <release/auto/... branch>
+# Several gate runs can exist for one commit (a push run cancelled by the dispatched one): any successful run on the exact
+# commit counts as passed; while any is still running it waits; only when all finished without success is it refused.
 # Env (overridable for the local proof): GATE_STATUS_CMD <branch> <sha> prints "<status>\t<conclusion>";
 # GATE_POLL (seconds, default 15), GATE_TRIES (default 120 = 30 min). Exit: promote.sh's code (0 released, 1 refused,
 # 2 released then rolled back or failed).
@@ -15,7 +17,7 @@ POLL="${GATE_POLL:-15}"; TRIES="${GATE_TRIES:-120}"
 status() {
   if [ -n "${GATE_STATUS_CMD:-}" ]; then $GATE_STATUS_CMD "$1" "$2"; return; fi
   gh run list -R "${GITHUB_REPOSITORY:?}" -w image-rights-gate.yml --branch "$1" -L 5 --json headSha,status,conclusion \
-    -q "[.[] | select(.headSha == \"$2\")][0] | [.status, .conclusion] | @tsv" 2>/dev/null || true
+    -q "[.[] | select(.headSha == \"$2\")] | if any(.status == \"completed\" and .conclusion == \"success\") then \"completed\tsuccess\" elif any(.status != \"completed\") or length == 0 then \"waiting\t\" else \"completed\t\" + (map(.conclusion) | join(\",\")) end" 2>/dev/null || true
 }
 wait_gate() {   # <sha> <branch>
   [[ "$1" =~ ^[0-9a-f]{40}$ ]] && [[ "$2" == release/auto/* ]] || { echo "REFUSED: unexpected release request"; return 1; }
