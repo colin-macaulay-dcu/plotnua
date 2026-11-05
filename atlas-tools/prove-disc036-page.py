@@ -147,8 +147,11 @@ def check(s, files):
         for t in ("27 July 2026", "Class 1", "45 m", "was 40 m", "to the rear", "1 October 1964", "12 m", "20 m", "2 metres",
                   "8 m", "was 11 m", "25 m", "protected structure", "Architectural Conservation Area", "apartments", "Section 5",
                   "€80", "four weeks", "Building Regulations", "Commencement Notice", "14 to 28 days", "assigned certifier",
-                  "opt-out", "project supervisors", "30 days", "not legal advice", "can’t tell you whether"):
+                  "opt-out", "project supervisors", "30 days", "not legal advice", "can’t tell you whether",
+                  "within the grounds of the house", "main house only"):
             need(t in p, "E7 planning point missing: " + t)
+        # S.I. 338/2026 Class 1 condition 5 now measures open space across the curtilage, not only at the rear
+        need("must remain at the rear" not in p and "left at the rear" not in p, "E7 open space described by the pre-2026 rear-only test")
     for bad in ("no planning permission is needed", "never needs planning", "always exempt", "don’t need planning permission",
                 "do not need planning permission", "doesn’t need planning permission.", "guaranteed exempt", "is exempt from planning permission."):
         need(bad not in low, "E7 blanket exemption wording: " + bad)
@@ -293,6 +296,7 @@ def main():
             "E16": s.replace('content="https://plotnua.ie/assets/disc036/img/DISC-036-og-1200x630.jpg"', 'content="https://plotnua.ie/assets/disc036/img/DISC-036-BEFORE-1024.jpg"', 1),
             "E6": s.replace("<dt>Ask</dt>", "<dt>Best for</dt>", 1),
             "E7": s.replace("27 July 2026", "July"),
+            "E7 ": s.replace("must remain within the grounds of the house (before 27 July 2026, this was measured at the rear)", "must remain at the rear", 1),
             "E9": s.replace("contingency.</p>", "contingency.</p><p>From €2,500 per m2.</p>", 1).replace("What makes up the total.", "What makes up the total. €2,500"),
             "E11": s.replace("</main>", "<form action='https://x.workers.dev'></form></main>"),
             "E12": s.replace("track('extension_brief_print', { journey: JOURNEY }", "track('extension_brief_print', { journey: JOURNEY, answer: read() }"),

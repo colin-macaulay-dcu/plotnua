@@ -92,3 +92,53 @@ The brief runs in the page only:
 
 **Held:**
 - **No `your-plot.html` change.** A kept brief appears in My Plot with its title and a Remove button, but without the reopen links. Adding them is a founder decision.
+
+## Final governance review (5 Nov 2026)
+
+**Authorisation:** DISC-036 Final Governance Review and Release Readiness (founder, private preview only, €0).
+
+### F1: the 17 Oct and 28 Oct questions
+- **17 Oct.** The independent professional review requirement was set for the standalone *Garden Room Planning Permission in Ireland* guide (founder approval "PLANNING GUIDE DEVELOPMENT APPROVAL", 17 Oct 2026).
+  - It is written into that guide's own claims register (`professionalReview.requiredBeforePublication: true`) and enforced by its own `--release-check`.
+  - The guide was never merged and is still held.
+  - No record extends the requirement to Discoveries.
+- **14, 19 and 28 Oct, and 30 Oct.** The later decisions moved PlotNua to risk-based, founder-approved compliance:
+  - 14 Oct: mandatory external legal review replaced by a self-assessment plus founder approval (privacy);
+  - 19 Oct: mandatory solicitor's review removed, legal advice made risk-based (images);
+  - 28 Oct: no additional legal reviews without a specific, demonstrable reason;
+  - 30 Oct: Governance 2.0, the authoritative policy. Its Rule 4 keeps legal content guarded by the existing content guards, and Rule 5 has no other approval stages.
+- **None of these repeals the 17 Oct guide condition, and none extends it.** The two coexist:
+  - the guide stays held under its own register;
+  - Discoveries are governed by Governance 2.0.
+- **Precedent:** DISC-008, DISC-033 and DISC-035 were published with planning chapters and no independent review.
+- **For DISC-036:** no independent professional review is mandatory. Its chapter 03 is general, source-linked information, guarded by `prove-disc036-page.py` (E7).
+
+### Regulatory content checked against S.I. 338/2026 (read 5 Nov 2026)
+**Correction made:**
+- Class 1 condition 5 now protects 25 m² of private open space "within the curtilage of the house", not "to the rear".
+- The page and the brief questions are corrected.
+- E7 now refuses the pre-2026 wording.
+
+**Confirmed:**
+- 45 m² (was 40);
+- rear only;
+- 1 October 1964;
+- 12 / 20 m² upstairs;
+- 2 m from a party boundary;
+- upstairs windows 8 m (was 11);
+- "balcony or terrace";
+- the principal house only (new condition 8);
+- Commencement Notice not required within the exemption up to 45 m² (S.I. 359/2026);
+- Section 5: €80 and four weeks;
+- the HSA project-supervisor triggers.
+
+**Added:** a sentence under the opening that the extension in the hero is an illustration, not a checked design. A wrap-around like it would usually need planning permission, and suitability is for a qualified professional to assess. The sources footer now describes the hero as an AI-generated illustration.
+
+### F5: My Plot reopen
+- `your-plot.html` maps journeyId `disc036-extension-brief` to:
+  - "Open your brief" → `discovery-extend-the-house.html?brief=1#extension-brief`;
+  - "View the Discovery".
+- The links are chosen by journeyId and never read from the record.
+- A summary line from the STAGE key only.
+- No Reopen-check link (there is no separate check page).
+- No new storage, data or transmission. Other kept items render byte-identically.

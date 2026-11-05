@@ -19705,12 +19705,16 @@ html.pn-myplot-view:not(.pn-myplot-open) body::after{content:"Opening My Plot\20
   /* THE BRIEF. A third destination, and the only one that is not a page in
      its own right: it is the saved check, reopened at the point where it
      gathers what the homeowner already told us into something they can take
-     to a specialist. Only Hidden Cars has one, so only Hidden Cars is listed.
+     to a specialist. Hidden Cars has one; so does Extend the House (DISC-036),
+     whose extension brief lives on the Discovery page itself, so its brief
+     link opens that page with the kept answers restored (founder approval F5,
+     5 Nov 2026). It has no separate check page, so it has no Reopen link.
 
      Same discipline as the two maps around it: the destination is written
      HERE, chosen by journeyId, never read from the record. */
   const MYPLOT_JOURNEY_BRIEF = {
     'disc022-hidden-cars-check': 'disc022-hidden-cars-check.html?brief=1',
+    'disc036-extension-brief': 'discovery-extend-the-house.html?brief=1#extension-brief',
   };
 
   const MYPLOT_JOURNEY_DISCOVERY = {
@@ -19724,6 +19728,7 @@ html.pn-myplot-view:not(.pn-myplot-open) body::after{content:"Opening My Plot\20
     'disc024-open-your-home-to-art': 'discovery-a-home-for-art.html#open-your-home-to-art',
     'disc027-neighbourhood-parcel-house': 'discovery-neighbourhood-parcel-house.html',
     'disc005-home-exchange': 'discovery-home-exchange.html',
+    'disc036-extension-brief': 'discovery-extend-the-house.html',
   };
 
   /* One safe line per journey, from result KEYS only. An unrecognised key
@@ -20001,6 +20006,18 @@ html.pn-myplot-view:not(.pn-myplot-open) body::after{content:"Opening My Plot\20
       if (x === 'open_to_it')
         return 'Weeks you could move, and the home you told us you live in.';
       return 'Your result, kept as you left it.';
+    }
+    /* DISC-036 EXTEND THE HOUSE — the extension brief. Not a property check
+       and it has no result: the one key is the stage the homeowner said they
+       were at. The line says only that, and never what the answers imply. */
+    if (rec && rec.journeyId === 'disc036-extension-brief') {
+      const st = rk.STAGE;
+      if (st === 'exploring') return 'Your answers, kept while you explore.';
+      if (st === 'ready') return 'Your answers, kept for a first conversation with a professional.';
+      if (st === 'drawings') return 'Your answers, kept alongside the drawings you already have.';
+      if (st === 'permission') return 'Your answers, kept with your planning position settled.';
+      if (st === 'prices') return 'Your answers, kept while you gather builders\u2019 prices.';
+      return 'Your answers, kept as you left them.';
     }
     return 'Your result, kept as you left it.';
   }
