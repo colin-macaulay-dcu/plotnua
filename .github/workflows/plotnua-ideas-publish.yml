@@ -101,12 +101,14 @@ jobs:
   # "Release to production" (workflow_run) from runs started by that token, so approved ideas reached a release branch
   # but never main. This job promotes exactly that commit, through the same route as "Release to production": it waits
   # for the Image rights gate to pass on that exact commit, then runs promote.sh copied from main (fast-forward only,
-  # refused if main moved, live check, automatic rollback). Main's ruleset still requires the gate on the commit.
+  # refused if main moved, live check, automatic rollback). Since 5 Nov 2026 through the shared promote-after-gate.sh
+  # (as the Borrowed Garden), so an automatic rollback is also released, after its own gate passes on its exact commit.
+  # Main's ruleset still requires the gate on the commit.
   promote:
     needs: publish
     if: ${{ needs.publish.outputs.sha != '' }}
     runs-on: ubuntu-latest
-    timeout-minutes: 40
+    timeout-minutes: 60
     concurrency:
       group: production-site
       cancel-in-progress: false
@@ -121,21 +123,8 @@ jobs:
           fetch-depth: 0
       - name: Trusted copy of the release tooling (from main)
         run: cp -r atlas-tools/release "$RUNNER_TEMP/release-tools"
-      - name: Wait for the Image rights gate on this exact commit
+      - name: Wait for the gate on this exact commit, promote, verify live
         run: |
-          set -euo pipefail
-          [[ "$SHA" =~ ^[0-9a-f]{40}$ ]] && [[ "$BRANCH" == release/auto/ideas-* ]] || { echo "REFUSED: unexpected release request"; exit 1; }
-          for i in $(seq 1 120); do
-            R=$(gh run list -R "$GITHUB_REPOSITORY" -w image-rights-gate.yml --branch "$BRANCH" -L 5 \
-                  --json headSha,status,conclusion -q "[.[] | select(.headSha == \"$SHA\")][0] | [.status, .conclusion] | @tsv" 2>/dev/null || true)
-            case "$R" in
-              completed$'\t'success) echo "gate passed on ${SHA:0:7}"; exit 0 ;;
-              completed*) echo "REFUSED: the gate did not pass on ${SHA:0:7} ($R): nothing released"; exit 1 ;;
-            esac
-            sleep 15
-          done
-          echo "REFUSED: the gate did not finish within 30 minutes"; exit 1
-      - name: Promote, verify live, roll back automatically if the live check fails
-        run: |
+          [[ "$BRANCH" == release/auto/ideas-* ]] || { echo "REFUSED: unexpected release branch"; exit 1; }
           git config user.name "PlotNua release automation"; git config user.email "hello@plotnua.ie"
-          bash "$RUNNER_TEMP/release-tools/promote.sh" "$SHA" "$BRANCH"
+          bash "$RUNNER_TEMP/release-tools/promote-after-gate.sh" "$SHA" "$BRANCH"
