@@ -751,3 +751,17 @@ body.pa .pa-free-lines{ margin:0; }
    PlotNua). Tablets keep one row of five; phones use the shared Menu (unchanged). ==== */
 @media (max-width:1180px){ .pa-pills{ grid-template-columns:repeat(5, minmax(0, 1fr)); } }
 @media (max-width:860px){ :where(body.pa) .pa-pills a.pa-pill{ padding:0 4px; font-size:13px; letter-spacing:0; } }
+
+/* Mobile artwork presentation (founder review, 5 Nov 2026). On phones the artwork leads: one frame instead of three,
+   the picture across the card's full width at its own proportions, never cropped or stretched. Below 640px only;
+   tablet and desktop are unchanged. */
+@media (max-width:639px){
+  .pa-ag-grid{ gap:22px; }
+  .pa-ag-tile{ padding:0 0 18px; overflow:hidden; }
+  .pa-ag-art{ aspect-ratio:auto; padding:0; border-radius:0; background:#242220; }
+  .pa-ag-art img{ width:100%; max-height:none; box-shadow:none; }
+  .pa-ag-cap{ padding:16px 16px 0; }
+  .pa-ag-grid:has(> .pa-ag-work:only-child) .pa-ag-art, .pa-ag-grid:has(> .pa-ag-work:nth-child(2):last-child) .pa-ag-art{ padding:0; }
+  .pa-aw-frame{ padding:0; min-height:0; background:none; border:0; border-radius:0; }
+  .pa-aw-frame img{ max-height:82svh; box-shadow:0 22px 40px -22px rgba(0,0,0,.75), 0 3px 8px -3px rgba(0,0,0,.4); }
+}
