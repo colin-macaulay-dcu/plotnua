@@ -29,11 +29,13 @@ STANDARD = [
     # 31 on production main after DISC-015 (1 Nov 2026); 32 since DISC-020 Stay in the House You Love (4 Nov 2026);
     # 33 since DISC-034 The Water Wall (development build, 4 Nov 2026); 34 on main once the Borrowed Garden noticeboard
     # page joined the identity layer (4 Nov 2026; main's expectation still read 33); 35 since DISC-035 The Outdoor Room.
-    ("python3 atlas-tools/build-identity-stage1.py --check", "CHECK OK — 35 pages", "identity layer"),
+    # 36 since DISC-036 Extend the House (PLOTNUA-BUILD-001 Stage 1, development build, 5 Nov 2026).
+    ("python3 atlas-tools/build-identity-stage1.py --check", "CHECK OK — 36 pages", "identity layer"),
     ("python3 atlas-tools/prove-disc033-page.py", "DISC-033 PAGE · OK", "DISC-033 page proof F1-F10"),
     ("python3 atlas-tools/prove-disc020-page.py", "DISC-020 PAGE · OK", "DISC-020 page proof S1-S17"),
     ("python3 atlas-tools/prove-disc034-page.py", "DISC-034 PAGE · OK", "DISC-034 page proof W1-W16"),
     ("python3 atlas-tools/prove-disc035-page.py", "DISC-035 PAGE · OK", "DISC-035 page proof O1-O18"),
+    ("python3 atlas-tools/prove-disc036-page.py --self-test", "DISC-036 PAGE · OK", "DISC-036 page proof E1-E15 (with self-test)"),
     ("python3 atlas-tools/prove-global-header.py", "GLOBAL HEADER · OK", "global header guard G1-G9"),
     # 33 since the My Plot pill and Direction C (28 Oct 2026): the link to your-plot.html?myplot=1, the read-only
     # script (G6, G10) and the Discovery Library compass.
@@ -93,7 +95,8 @@ STANDARD = [
     # 33 on production main (4 Nov 2026); 34 since DISC-020 Stay in the House You Love (4 Nov 2026);
     # 35 since DISC-034 The Water Wall (development build, 4 Nov 2026); 36 on main with the Borrowed Garden noticeboard
     # (4 Nov 2026; main's expectation still read 35); 37 since DISC-035 The Outdoor Room (development build, 4 Nov 2026).
-    ("python3 atlas-tools/prove-plotart-integration.py", "PLOTART INTEGRATION · OK — N1-N4 · 37 header pages", "PlotArt navigation and A Home for Art links N1-N4"),
+    # 38 since DISC-036 Extend the House (development build, 5 Nov 2026).
+    ("python3 atlas-tools/prove-plotart-integration.py", "PLOTART INTEGRATION · OK — N1-N4 · 38 header pages", "PlotArt navigation and A Home for Art links N1-N4"),
     ("python3 atlas-tools/prove-privacy-whatsapp.py", "PRIVACY WHATSAPP · OK", "privacy WhatsApp block exact (status printed)"),
     # GridNua limited launch (founder design approval 29 Oct 2026): two pages, noindex, follow; the
     # Interest Register stays closed; DISC-026 holds exactly one GridNua link and matches its latest freeze record.

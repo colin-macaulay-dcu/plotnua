@@ -1,7 +1,7 @@
 {
   "schema": "plotnua.search.topicmap",
   "version": "3",
-  "governance": "Founder is the approval authority for homeowner-facing synonym/topic entries. V1 ships ONLY the four mappings below, each audited against the public corpus before approval on 2026-10-08. No speculative additions during implementation. No AI or API query expansion. No fuzzy matching. Future additions or changes require founder approval. AMENDED 11 October 2026 by founder decision: a fifth entry, 'garden office' -> discovery-living-in-the-garden.html, possibility scope only, added to restore an association the Discovery's own copy used to carry before it was retitled. The original notIncluded reasoning is preserved verbatim under 'superseded'. AMENDED 4 November 2026 by founder decision (DISC-034 finalisation instruction: \"Add a governed search entry so that 'water butt' can find The Water Wall\"): a seventh entry, 'water butt' -> discovery-the-water-wall.html, possibility scope only. AMENDED 4 November 2026 by founder decision (DISC-035 production approval: \"Add 'covered patio' to the governed search terms for DISC-035\"): an eighth entry, 'covered patio' -> discovery-the-outdoor-room.html, possibility scope only. AMENDED 4 November 2026 by founder decision (DISC-035 final search correction: \"Add the governed search entry: 'outdoor kitchen' -> DISC-035. Scope: Discoveries only.\"): a ninth entry, 'outdoor kitchen' -> discovery-the-outdoor-room.html, possibility scope only.",
+  "governance": "Founder is the approval authority for homeowner-facing synonym/topic entries. V1 ships ONLY the four mappings below, each audited against the public corpus before approval on 2026-10-08. No speculative additions during implementation. No AI or API query expansion. No fuzzy matching. Future additions or changes require founder approval. AMENDED 11 October 2026 by founder decision: a fifth entry, 'garden office' -> discovery-living-in-the-garden.html, possibility scope only, added to restore an association the Discovery's own copy used to carry before it was retitled. The original notIncluded reasoning is preserved verbatim under 'superseded'. AMENDED 4 November 2026 by founder decision (DISC-034 finalisation instruction: \"Add a governed search entry so that 'water butt' can find The Water Wall\"): a seventh entry, 'water butt' -> discovery-the-water-wall.html, possibility scope only. AMENDED 4 November 2026 by founder decision (DISC-035 production approval: \"Add 'covered patio' to the governed search terms for DISC-035\"): an eighth entry, 'covered patio' -> discovery-the-outdoor-room.html, possibility scope only. AMENDED 4 November 2026 by founder decision (DISC-035 final search correction: \"Add the governed search entry: 'outdoor kitchen' -> DISC-035. Scope: Discoveries only.\"): a ninth entry, 'outdoor kitchen' -> discovery-the-outdoor-room.html, possibility scope only. AMENDED 5 November 2026 by founder instruction (PLOTNUA-BUILD-001 Stage 1, 'Prepare search entries for relevant terms'): four entries, 'kitchen extension', 'rear extension', 'side extension' and 'extension planning permission' -> discovery-extend-the-house.html, possibility scope only; the other three listed terms ('house extension', 'home extension', 'extending a house in Ireland') already reach the Discovery through its own title and standfirst and need no entry. Development branch; production with the Discovery's release approval.",
   "notIncluded": [],
   "entries": [
     {
@@ -93,6 +93,46 @@
         "discovery-the-outdoor-room.html"
       ],
       "evidence": "Measured 4 November 2026 on production (commit f7adf43), not assumed: 'outdoor kitchen' returned no result at all (the 'browse all Discoveries' fallback), because the Discovery's title and standfirst do not use the phrase and no product in the publishable universe matches it. Chapter 01 of the Discovery presents 'The Outdoor Kitchen' as its fifth room, so it is the truthful answer. Scoped to POSSIBILITY: product matching is untouched. Approved by the founder on 4 November 2026.",
+      "status": "APPROVED"
+    },
+    {
+      "phrase": "kitchen extension",
+      "concept": "extend-the-house",
+      "scope": "possibility",
+      "targets": [
+        "discovery-extend-the-house.html"
+      ],
+      "evidence": "Measured 5 November 2026 against the DISC-036 development index, not assumed: 'kitchen extension' does not reach Extend the House, because the Discovery's title and standfirst do not contain 'kitchen'. Chapter 02 presents the kitchen extension as one of the six types. The phrase is one of the seven search terms the founder listed for this Discovery in the PLOTNUA-BUILD-001 Stage 1 development authorisation (5 Nov 2026). Scoped to POSSIBILITY: product matching is untouched. Prepared on the development branch; it reaches production only with the Discovery's own release approval.",
+      "status": "APPROVED"
+    },
+    {
+      "phrase": "rear extension",
+      "concept": "extend-the-house",
+      "scope": "possibility",
+      "targets": [
+        "discovery-extend-the-house.html"
+      ],
+      "evidence": "Measured 5 November 2026 against the DISC-036 development index, not assumed: 'rear extension' does not reach Extend the House, because the Discovery's title and standfirst do not contain 'rear'. Chapter 02 opens with the rear extension, and chapter 03 sets out the rear-extension exemption. The phrase is one of the seven search terms the founder listed for this Discovery in the PLOTNUA-BUILD-001 Stage 1 development authorisation (5 Nov 2026). Scoped to POSSIBILITY: product matching is untouched. Prepared on the development branch; it reaches production only with the Discovery's own release approval.",
+      "status": "APPROVED"
+    },
+    {
+      "phrase": "side extension",
+      "concept": "extend-the-house",
+      "scope": "possibility",
+      "targets": [
+        "discovery-extend-the-house.html"
+      ],
+      "evidence": "Measured 5 November 2026 against the DISC-036 development index, not assumed: 'side extension' does not reach Extend the House, because the Discovery's title and standfirst do not contain 'side'. Chapter 02 presents the side extension, and chapter 03 explains that the exemption covers the rear only. The phrase is one of the seven search terms the founder listed for this Discovery in the PLOTNUA-BUILD-001 Stage 1 development authorisation (5 Nov 2026). Scoped to POSSIBILITY: product matching is untouched. Prepared on the development branch; it reaches production only with the Discovery's own release approval.",
+      "status": "APPROVED"
+    },
+    {
+      "phrase": "extension planning permission",
+      "concept": "extend-the-house",
+      "scope": "possibility",
+      "targets": [
+        "discovery-extend-the-house.html"
+      ],
+      "evidence": "Measured 5 November 2026 against the DISC-036 development index, not assumed: 'extension planning permission' does not reach Extend the House, because the Discovery's title and standfirst do not contain 'permission'. Chapter 03 covers planning permission and the July 2026 exemption for extensions. The phrase is one of the seven search terms the founder listed for this Discovery in the PLOTNUA-BUILD-001 Stage 1 development authorisation (5 Nov 2026). Scoped to POSSIBILITY: product matching is untouched. Prepared on the development branch; it reaches production only with the Discovery's own release approval.",
       "status": "APPROVED"
     }
   ],
