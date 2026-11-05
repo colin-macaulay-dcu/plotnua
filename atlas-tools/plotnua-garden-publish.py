@@ -89,13 +89,24 @@ def main():
     if why is None and PUSH:
         sha = git("rev-parse", "--short", "HEAD")
         ok1, o1 = run("git push origin HEAD:refs/heads/content/garden-%s" % sha)
-        ok2, o2 = run("bash atlas-tools/release/request-release.sh garden")  # automation v1: main only moves after the gate passes
+        # automation v1: main only moves after the gate passes. --no-wait (fix 5 Nov 2026, as the Idea Board): a gate
+        # started with the workflow's built-in token never triggers "Release to production", so the publishing workflow's
+        # promote job waits for this exact commit's gate and runs promote-after-gate.sh from main.
+        ok2, o2 = run("bash atlas-tools/release/request-release.sh garden --no-wait")
         if not (ok1 and ok2):
             why = "push refused (main moved or no permission): " + (o1 + " " + o2)[-300:]
+        else:
+            full = git("rev-parse", "HEAD")
+            branch = "release/auto/garden-%s" % full[:7]
+            print("RELEASE_REQUESTED %s %s" % (branch, full))
+            gho = os.environ.get("GITHUB_OUTPUT")
+            if gho:
+                with open(gho, "a", encoding="utf-8") as f:
+                    f.write("branch=%s\nsha=%s\n" % (branch, full))
     if why:
         subprocess.run(["git", "reset", "-q", "--hard", base], cwd=ROOT)
         print("GARDEN NOTICEBOARD · FAILED · %s" % why[:500]); return 1
-    print("GARDEN NOTICEBOARD · %d listings · %s %s" % (len(listings), "published" if PUSH else "verified (simulated)", git("rev-parse", "--short", "HEAD")))
+    print("GARDEN NOTICEBOARD · %d listings · %s %s" % (len(listings), "release requested" if PUSH else "verified (simulated)", git("rev-parse", "--short", "HEAD")))
     return 0
 
 

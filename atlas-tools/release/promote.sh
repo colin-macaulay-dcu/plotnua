@@ -38,5 +38,8 @@ git -c user.name="PlotNua release automation" -c user.email="hello@plotnua.ie" r
 RB="release/auto/rollback-${SHA:0:7}"
 git push -q origin "HEAD:refs/heads/$RB"
 $DISPATCH_CMD "$RB"
+# record the revert for the caller (fix 5 Nov 2026): a gate dispatched with the workflow's built-in token never starts
+# "Release to production", so the caller (promote-after-gate.sh) waits for this exact commit's gate and promotes it.
+printf 'rollback_branch=%s\nrollback_sha=%s\n' "$RB" "$(git rev-parse HEAD)" >> "${PROMOTE_OUT:-${GITHUB_OUTPUT:-/dev/null}}"
 echo "- **automatic rollback requested**: \`$RB\` (content identical to \`${BEFORE:0:7}\`) goes through the gate and is released by the next run" >> "$SUM"
 exit 2

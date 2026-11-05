@@ -35,7 +35,7 @@ jobs:
       (github.event.workflow_run.event == 'push' || github.event.workflow_run.event == 'workflow_dispatch') &&
       startsWith(github.event.workflow_run.head_branch, 'release/auto/')
     runs-on: ubuntu-latest
-    timeout-minutes: 40
+    timeout-minutes: 60   # includes waiting for an automatic rollback's own gate
     env:
       SHA: ${{ github.event.workflow_run.head_sha }}
       BRANCH: ${{ github.event.workflow_run.head_branch }}
@@ -54,6 +54,18 @@ jobs:
         run: |
           git config user.name "PlotNua release automation"; git config user.email "hello@plotnua.ie"
           bash "$RUNNER_TEMP/release-tools/promote.sh" "$SHA" "$BRANCH"
+      # Fix 5 Nov 2026: the gate promote.sh dispatches on an automatic revert runs with this workflow's built-in token,
+      # and GitHub never starts this workflow again from such a run, so the revert stayed on its branch. This step waits
+      # for the gate to pass on the revert's exact commit and releases it through the same promote.sh. Runs only when
+      # promote.sh actually requested a rollback; a failing rollback release is never reverted again.
+      - name: Release the automatic rollback (its own gate must pass on its exact commit)
+        if: failure() && steps.promote.outputs.rollback_sha != ''
+        env:
+          RSHA: ${{ steps.promote.outputs.rollback_sha }}
+          RBRANCH: ${{ steps.promote.outputs.rollback_branch }}
+        run: |
+          git config user.name "PlotNua release automation"; git config user.email "hello@plotnua.ie"
+          bash "$RUNNER_TEMP/release-tools/promote-after-gate.sh" "$RSHA" "$RBRANCH"
       - name: Alert on failure
         if: failure()
         run: |

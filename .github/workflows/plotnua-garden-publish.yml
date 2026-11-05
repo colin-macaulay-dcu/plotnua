@@ -29,7 +29,10 @@ jobs:
   publish:
     if: ${{ github.ref == 'refs/heads/main' }}
     runs-on: ubuntu-latest
-    timeout-minutes: 35   # automation v1: request-release.sh waits up to 25 min for the gated release
+    outputs:
+      branch: ${{ steps.pub.outputs.branch }}
+      sha: ${{ steps.pub.outputs.sha }}
+    timeout-minutes: 15   # the gated release is promoted by the job below, not waited for here
     steps:
       - uses: actions/checkout@v4
         with:
@@ -51,6 +54,7 @@ jobs:
         id: before
         run: echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
       - name: Publish approved noticeboard listings (content-only, guarded, gated)
+        id: pub
         if: steps.on.outputs.on == '1'
         env:
           STUDIO_URL: ${{ secrets.STUDIO_URL }}
@@ -79,3 +83,31 @@ jobs:
           else
             echo "nothing published: no Pages build requested"
           fi
+
+  # Fix 5 Nov 2026 (as the Idea Board): the gate this workflow starts runs with the built-in token, which never starts
+  # "Release to production", so this job promotes that exact commit after its gate passes, through promote.sh copied from
+  # main (fast-forward only, refused if main moved, live check, automatic rollback released the same way).
+  promote:
+    needs: publish
+    if: ${{ needs.publish.outputs.sha != '' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    concurrency:
+      group: production-site
+      cancel-in-progress: false
+    env:
+      SHA: ${{ needs.publish.outputs.sha }}
+      BRANCH: ${{ needs.publish.outputs.branch }}
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+      - name: Trusted copy of the release tooling (from main)
+        run: cp -r atlas-tools/release "$RUNNER_TEMP/release-tools"
+      - name: Wait for the gate on this exact commit, promote, verify live
+        run: |
+          [[ "$BRANCH" == release/auto/garden-* ]] || { echo "REFUSED: unexpected release branch"; exit 1; }
+          git config user.name "PlotNua release automation"; git config user.email "hello@plotnua.ie"
+          bash "$RUNNER_TEMP/release-tools/promote-after-gate.sh" "$SHA" "$BRANCH"

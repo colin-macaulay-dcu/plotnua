@@ -64,4 +64,33 @@ ok "a branch that moved after its checks is refused" '[ $rc = 1 ] && [ "$(main)"
 HEALTH_CMD=true bash "$P" "$S" feature/x >/dev/null 2>&1; rc=$?
 ok "only release/auto/* branches can be promoted" '[ $rc = 1 ]'
 ok "promote.sh never forces a push" '! grep -qE "push[^#]*(-f|--force)" "$P"'
+# 4 promote-after-gate.sh (fix 5 Nov 2026): releases started inside a workflow, and automatic rollbacks, reach main
+PA="$(dirname "$P")/promote-after-gate.sh"
+printf '#!/bin/bash\nif grep -qx "$2" "%s/checks-passed"; then printf "completed\\tsuccess\\n"; elif grep -qx "$2" "%s/gate-failed" 2>/dev/null; then printf "completed\\tfailure\\n"; else printf "in_progress\\t\\n"; fi\n' "$T" "$T" > "$T/gstatus"; chmod +x "$T/gstatus"
+export GATE_STATUS_CMD="$T/gstatus" GATE_POLL=0 GATE_TRIES=3
+git fetch -q origin; git checkout -q -B tmp origin/main
+S=$(rel five v5x); gate release/auto/five; HEALTH_CMD=true bash "$PA" "$S" release/auto/five >/dev/null 2>&1; rc=$?
+ok "after-gate: a release whose gate passed on its exact commit reaches main" '[ $rc = 0 ] && [ "$(main)" = "$S" ]'
+git fetch -q origin; M=$(main); S=$(rel six v6x); echo "$S" > "$T/gate-failed"
+HEALTH_CMD=true bash "$PA" "$S" release/auto/six >/dev/null 2>&1; rc=$?
+ok "after-gate: a failed gate releases nothing" '[ $rc = 1 ] && [ "$(main)" = "$M" ]'
+S=$(rel seven v7x); HEALTH_CMD=true bash "$PA" "$S" release/auto/seven >/dev/null 2>&1; rc=$?
+ok "after-gate: a gate that never finishes releases nothing" '[ $rc = 1 ] && [ "$(main)" = "$M" ]'
+HEALTH_CMD=true bash "$PA" "$S" feature/y >/dev/null 2>&1; rc=$?
+ok "after-gate: only release/auto/* branches" '[ $rc = 1 ] && [ "$(main)" = "$M" ]'
+git fetch -q origin; B=$(main); S=$(rel eight BROKEN8); gate release/auto/eight
+printf '#!/bin/bash\n[ "$1" != "%s" ]\n' "$S" > "$T/h8"; chmod +x "$T/h8"
+O=$(mktemp); HEALTH_CMD="$T/h8" GITHUB_OUTPUT="$O" bash "$PA" "$S" release/auto/eight >/dev/null 2>&1; rc=$?
+git fetch -q origin; RB="release/auto/rollback-${S:0:7}"; R=$(git rev-parse "origin/$RB" 2>/dev/null || echo none)
+ok "after-gate: a failed live check is rolled back AUTOMATICALLY to production (main = revert, content as before)" '[ $rc = 2 ] && [ "$(main)" = "$R" ] && [ -z "$(git diff "$B" "$(main)")" ]'
+ok "after-gate: the rollback reached main only after its own gate passed on its exact commit" 'grep -qx "$R" "$T/checks-passed"'
+ok "after-gate: the rollback is reported (rollback_branch / rollback_sha)" 'grep -qx "rollback_sha=$R" "$O" && grep -qx "rollback_branch=$RB" "$O"'
+git fetch -q origin; S=$(rel nine BROKEN9); gate release/auto/nine
+HEALTH_CMD="$T/hx" bash "$PA" "$S" release/auto/nine >/dev/null 2>&1; rc=$?
+git fetch -q origin; R=$(git rev-parse "origin/release/auto/rollback-${S:0:7}")
+ok "after-gate: a rollback that also fails its live check stops (no revert of the revert)" '[ $rc = 2 ] && ! git ls-remote origin | grep -q "rollback-${R:0:7}"'
+git fetch -q origin; M=$(main); git checkout -q -B release/auto/rollback-fake "$M"; echo x > index.html; git commit -qam fake; git push -q -f origin release/auto/rollback-fake; F=$(git rev-parse HEAD)
+HEALTH_CMD=true bash "$PA" "$F" release/auto/rollback-fake >/dev/null 2>&1; rc=$?
+ok "after-gate: a rollback branch whose gate has not passed is never promoted" '[ $rc = 1 ] && [ "$(main)" = "$M" ]'
+ok "promote-after-gate.sh never forces a push" '! grep -qE "push[^#]*(-f|--force)" "$PA"'
 echo; echo "RELEASE PROMOTE PROOF · $([ $fails = 0 ] && echo OK || echo FAIL) · $fails failed"; rm -rf "$T"; exit $fails
