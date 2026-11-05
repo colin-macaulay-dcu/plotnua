@@ -59,6 +59,12 @@ def srcset(img, prefix):
     return ", ".join("%s%s %dw" % (prefix, d["file"], d["pixels"][0]) for d in img["derivatives"])
 
 
+# The one portrait size the artist's gallery page shows. The import step keeps and records only this derivative
+# (PLOTART-PUBLISHING-PORTRAIT-001, 5 Nov 2026): an image that is recorded but shown on no page is refused by the
+# provenance guard (P9), which is correct, so the pipeline must not make portrait sizes nothing uses.
+PORTRAIT_SHOWN = 600
+
+
 def pick(img, want):
     ds = img["derivatives"]
     best = [d for d in ds if d["long_edge"] >= want]
@@ -133,7 +139,7 @@ def artist_body(pkg, blocks=None, preview=False, enquiry_endpoint=None):
                 E(price_line(w))))
     portrait = ""
     if a.get("portrait"):
-        p = a["portrait"]; d = pick(p, 600)
+        p = a["portrait"]; d = pick(p, PORTRAIT_SHOWN)
         portrait = '<span class="pa-ag-portrait"><img src="img/%s" width="%d" height="%d" alt="%s"></span>' % (
             E(d["file"]), d["pixels"][0], d["pixels"][1], E(p["alt"]))
     links = []

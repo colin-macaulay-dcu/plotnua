@@ -15,6 +15,7 @@ import json, os, shutil, sys, tempfile
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import plotart_gallery as G  # noqa: E402
+import plotart_gallery_pages as PG  # noqa: E402
 
 PROCESSING = ["camera rotation (EXIF orientation) applied", "colour converted to sRGB where a profile was embedded",
               "all metadata removed (EXIF, GPS, XMP, ICC)", "never cropped or upscaled",
@@ -51,6 +52,14 @@ def main(export_dir, root):
         warns.extend("%s: %s" % (stem, x) for x in w)
         if "derivatives" not in rec:
             return None
+        if subject == "portrait":
+            # Only the size the gallery page shows is published and recorded (PLOTART-PUBLISHING-PORTRAIT-001):
+            # chosen by the page's own rule, the other sizes are removed before anything is recorded.
+            keep = PG.pick(rec, PG.PORTRAIT_SHOWN)
+            for d in rec["derivatives"]:
+                if d is not keep:
+                    os.remove(os.path.join(img_dir, d["file"]))
+            rec["derivatives"] = [keep]
         sha, dh = rec["source_sha256"], rec["dhash"]
         if sha in other_sha:
             blocks.append("%s: this exact photograph is already in %s (rights check needed)" % (stem, other_sha[sha]))
