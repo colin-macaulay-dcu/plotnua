@@ -126,6 +126,23 @@ def records(slug, new):
     open(REC, "a", encoding="utf-8").write("\n")
 
 
+def release(topic):
+    """Release the current HEAD through the checked route and wait for the real outcome (fix 5 Nov 2026, as the Idea
+    Board and Borrowed Garden). A gate dispatched with the workflow's built-in token never starts "Release to production"
+    (GitHub does not chain workflow_run from that token), so waiting for main to move never ended. Instead: start the
+    gate (request-release.sh --no-wait), then promote-after-gate.sh waits for the gate to pass on this EXACT commit and
+    runs promote.sh (fast-forward only, refused if main moved, live check, automatic rollback). The release scripts come
+    from a copy of main's taken before anything was built (RELEASE_TOOLS), never from the commit being released.
+    Returns (released, output)."""
+    ok, o = run("bash atlas-tools/release/request-release.sh %s --no-wait" % topic)
+    m = re.search(r" on (release/auto/[a-z0-9-]+)", o)
+    if not ok or not m:
+        return False, o
+    tools = os.environ.get("RELEASE_TOOLS") or os.path.join(ROOT, "atlas-tools", "release")
+    ok2, o2 = run('bash "%s/promote-after-gate.sh" %s %s' % (tools, git("rev-parse", "HEAD"), m.group(1)))
+    return ok2, o + "\n" + o2
+
+
 def guards(base, instant):
     checks = [
         ("content-only boundary", "python3 atlas-tools/release/plotart-content-boundary.py %s HEAD%s" % (base, " --instant" if instant else ""), "CONTENT BOUNDARY · OK"),
@@ -190,6 +207,9 @@ def main():
     items = call("GET", "/api/pipeline/queue")["items"]
     failed = 0
     for q in items:
+        if PUSH:          # build each update on the latest main, so another release moving main can't make it unpromotable
+            git("fetch", "-q", "origin", "main")
+            git("reset", "-q", "--hard", "origin/main")
         base = git("rev-parse", "HEAD")
         try:
             why = one(q)
@@ -203,9 +223,9 @@ def main():
         if why is None and PUSH:
             branch = "content/plotart-%s-v%d" % (q["artist_id"], q["version"])
             ok1, o1 = run("git push origin HEAD:refs/heads/%s" % branch)
-            ok2, o2 = run("bash atlas-tools/release/request-release.sh plotart-%s-v%d" % (q["artist_id"], q["version"]))  # automation v1: main only moves after the gate passes
+            ok2, o2 = release("plotart-%s-v%d" % (q["artist_id"], q["version"])) if ok1 else (False, "")   # main only moves after the gate passes
             if not (ok1 and ok2):
-                why = "push refused (main moved or no permission): " + (o1 + " " + o2)[-300:]
+                why = "not released (gate, main moved, live check or permission): " + (o1 + " " + o2)[-300:]
         if why:
             failed += 1
             subprocess.run(["git", "reset", "-q", "--hard", base], cwd=ROOT)
@@ -228,6 +248,9 @@ def order_sync():
     exactly as for a gallery. Nothing changes when the order is unchanged."""
     if git("status", "--porcelain"):
         return 0
+    if PUSH:
+        git("fetch", "-q", "origin", "main")
+        git("reset", "-q", "--hard", "origin/main")
     base = git("rev-parse", "HEAD")
     try:
         lay = layout()
@@ -246,9 +269,9 @@ def order_sync():
     why = guards(base, False)
     if why is None and PUSH:
         ok1, o1 = run("git push origin HEAD:refs/heads/content/plotart-gallery-order-%s" % git("rev-parse", "--short", "HEAD"))
-        ok2, o2 = run("bash atlas-tools/release/request-release.sh plotart-gallery-order")
+        ok2, o2 = release("plotart-gallery-order") if ok1 else (False, "")
         if not (ok1 and ok2):
-            why = "push refused (main moved or no permission): " + (o1 + " " + o2)[-300:]
+            why = "not released (gate, main moved, live check or permission): " + (o1 + " " + o2)[-300:]
     sha = git("rev-parse", "HEAD")
     if why:
         subprocess.run(["git", "reset", "-q", "--hard", base], cwd=ROOT)
