@@ -229,3 +229,38 @@ export function exportGallery(snap, { version, approvedAt, licenceVersion, licen
       licence_version: licenceVersion, licence_accepted_at: licenceAcceptedAt, permission_ref: `PA-PERM-${artistId}`, test_note: null },
   };
 }
+
+/* Artist sign-in email (PLOTART-STUDIO-ACCESS-002, 5 Nov 2026). Used when an artist account is created AND when the
+   founder corrects an address, so both paths apply exactly the same rule. Cloudflare Access signs people in with the
+   plain address they type, so a stored address that carries an invisible character or a look-alike letter can never
+   match and the artist is refused. The rule:
+   - only spaces, tabs and line breaks at either end are removed (copy-paste); nothing else is changed silently;
+   - letters are lower-cased (as before; the database column is case-insensitive in any case);
+   - every character must be plain ASCII: invisible characters (zero-width space, soft hyphen, no-break space, ...),
+     control characters and look-alike letters (Cyrillic "а", Greek "ο", full-width "＠", ...) are refused with a
+     message naming the character;
+   - no other normalisation: dots and "+tags" are kept, so two distinct addresses can never be merged.
+   Stored addresses are never rewritten by this function; it only judges new input. */
+const INVISIBLE = { 0x00a0: 'no-break space', 0x00ad: 'soft hyphen', 0x034f: 'combining grapheme joiner', 0x061c: 'Arabic letter mark',
+  0x115f: 'Hangul filler', 0x1160: 'Hangul filler', 0x17b4: 'Khmer vowel', 0x17b5: 'Khmer vowel', 0x180e: 'Mongolian vowel separator',
+  0x200b: 'zero-width space', 0x200c: 'zero-width non-joiner', 0x200d: 'zero-width joiner', 0x200e: 'left-to-right mark',
+  0x200f: 'right-to-left mark', 0x2028: 'line separator', 0x2029: 'paragraph separator', 0x202f: 'narrow no-break space',
+  0x2060: 'word joiner', 0x2061: 'invisible function', 0x2062: 'invisible times', 0x2063: 'invisible separator', 0x2064: 'invisible plus',
+  0x3000: 'full-width space', 0x3164: 'Hangul filler', 0xfeff: 'zero-width no-break space (BOM)', 0xffa0: 'Hangul filler' };
+const hex = c => 'U+' + c.toString(16).toUpperCase().padStart(4, '0');
+export const EMAIL_RE = /^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z]{2,63}$/;
+export function artistEmail(raw) {
+  const s = String(raw ?? '').replace(/^[ \t\r\n]+|[ \t\r\n]+$/g, '');
+  if (!s) throw new Bad('Enter the artist’s email address');
+  for (const ch of s) {
+    const c = ch.codePointAt(0);
+    if (c < 0x20 || c === 0x7f || (c >= 0x80 && c < 0xa0)) throw new Bad(`The email address contains a hidden control character (${hex(c)}). This usually comes from copying and pasting. Please type the address again by hand.`);
+    if (INVISIBLE[c] || (c >= 0x2000 && c <= 0x200a) || (c >= 0x202a && c <= 0x202e) || (c >= 0x2066 && c <= 0x2069) || (c >= 0xfe00 && c <= 0xfe0f) || (c >= 0xe0000 && c <= 0xe007f))
+      throw new Bad(`The email address contains an invisible character (${hex(c)}${INVISIBLE[c] ? ', ' + INVISIBLE[c] : ''}). It can’t be seen but would stop the artist signing in. Please type the address again by hand.`);
+    if (c > 0x7e) throw new Bad(`The email address contains “${ch}” (${hex(c)}), which is not a standard keyboard character. It may look like an ordinary letter but would stop the artist signing in. Please type the address again by hand, using plain letters.`);
+    if (c === 0x20) throw new Bad('The email address contains a space. Please remove it.');
+  }
+  const e = s.toLowerCase();
+  if (e.length > 254 || !EMAIL_RE.test(e)) throw new Bad('That doesn’t look like a complete email address (for example name@example.com). Please check it.');
+  return e;
+}

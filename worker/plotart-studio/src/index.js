@@ -29,6 +29,11 @@ const res = (body, type, status = 200, extra = {}) => new Response(body, { statu
 const json = (o, status = 200) => res(JSON.stringify(o), 'application/json; charset=utf-8', status);
 const html = (h, status = 200) => res(h, 'text/html; charset=utf-8', status);
 
+const escHtml = s => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+const founderEmails = env => String(env.FOUNDER_EMAILS || '').toLowerCase().split(',').map(s => s.trim()).filter(Boolean);
+// audit entries keep a recognisable but partial address (le…@gmail.com), so the log does not hold a second full copy
+const maskEmail = e => { const [u, d] = String(e).split('@'); return (u.length <= 2 ? u[0] + '…' : u.slice(0, 2) + '…') + '@' + (d || ''); };
+
 async function audit(env, actor, role, action, artistId, detail) {
   await env.DB.prepare('INSERT INTO audit (at, actor, role, action, artist_id, detail) VALUES (?,?,?,?,?,?)')
     .bind(now(), actor, role, action, artistId || null, detail ? JSON.stringify(detail).slice(0, 4000) : null).run();
@@ -686,8 +691,12 @@ async function route(req, env) {
 
   const me = await who(req, env);
   if (me.role === 'none') {
-    if (p.startsWith('/api/')) return json({ ok: false, error: me.email ? 'Your PlotArt Studio access isn’t active. Please contact hello@plotnua.ie.' : 'Please sign in.' }, me.email ? 403 : 401);
-    return html(A.SIGNED_OUT_HTML.replace('{msg}', me.email ? 'Your PlotArt Studio access isn’t active. If you think this is a mistake, contact hello@plotnua.ie.' : 'Please sign in through PlotArt Studio.'), me.email ? 403 : 401);
+    // PLOTART-STUDIO-ACCESS-002: a verified email with no invited or active artist account sees who they are signed in
+    // as (their OWN verified address only) and a way to sign out and use another address. The wording is identical for
+    // unknown, suspended and ended accounts, so the page never says whether any account exists for any address.
+    if (p.startsWith('/api/')) return json({ ok: false, error: me.email ? `You're signed in as ${me.email}. We couldn't find an active PlotArt Studio account associated with this email address. If you've already been invited, please sign in using the email address shown in your invitation.` : 'Please sign in.', signout: me.email ? '/cdn-cgi/access/logout' : undefined }, me.email ? 403 : 401);
+    if (me.email) return html(A.REFUSED_HTML.replace('{email}', () => escHtml(me.email)), 403);
+    return html(A.SIGNED_OUT_HTML.replace('{msg}', 'Please sign in through PlotArt Studio.'), 401);
   }
   if (m !== 'GET') {
     // same-origin only: a custom header cannot be sent cross-site without a CORS preflight, which this Worker never grants
@@ -755,8 +764,8 @@ async function route(req, env) {
     if (p === '/api/admin/selftest' && m === 'POST') return json({ ok: true, ...(await selftest(env, me)) });
     if (p === '/api/admin/artists' && m === 'POST') {
       const b = await req.json();
-      const email = String(b.email || '').trim().toLowerCase();
-      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) throw new Bad('Enter the artist’s email address');
+      const email = L.artistEmail(b.email);
+      if (founderEmails(env).includes(email)) throw new Bad('That is a founder address and can’t be used for an artist account', 409);
       const name = L.text(b.display_name, 2, 80, 'Name');
       const slug = String(b.slug || L.slugify(name));
       if (!L.SLUG.test(slug)) throw new Bad('Gallery address: lower-case words joined by hyphens');
@@ -769,9 +778,31 @@ async function route(req, env) {
       // Invitation email (sent only when email is switched on; otherwise the desk says to send it by hand).
       const studio = url.origin, first = name.split(' ')[0];
       const r = await send(env, { to: email, replyTo: 'hello@plotnua.ie', subject: 'Your PlotArt Studio is ready',
-        text: `Hello ${first},\n\nWelcome to PlotArt. Your PlotArt Studio is ready: it's where you build your artist gallery, add your works and keep them up to date.\n\nSign in here: ${studio}\n\nUse this email address (${email}). Each time you sign in, you'll be emailed a one-time code; there's no password.\n\nYour gallery will only be published once you've submitted it and PlotArt has approved it.\n\nIf you have any questions, just reply to this email.\n\nColin\nPlotArt · part of PlotNua` }).catch(() => ({ sent: false }));
+        text: `Hello ${first},\n\nWelcome to PlotArt. Your PlotArt Studio is ready: it's where you build your artist gallery, add your works and keep them up to date.\n\nSign in here: ${studio}\n\nYour PlotArt Studio is registered to:\n\n${email}\n\nPlease use this exact email address when signing in. If you sign in with a different address, even another one of your own, the Studio won't recognise you and you won't be able to reach your gallery. Each time you sign in, you'll be emailed a one-time code; there's no password.\n\nYour gallery will only be published once you've submitted it and PlotArt has approved it.\n\nIf you have any questions, just reply to this email.\n\nColin\nPlotArt · part of PlotNua` }).catch(() => ({ sent: false }));
       await audit(env, me.email, 'founder', r.sent ? 'invitation_sent' : 'invitation_not_sent', id, {});
       return json({ ok: true, id, slug, invitation_sent: !!r.sent });
+    }
+    if ((mm = p.match(/^\/api\/admin\/artists\/(a[0-9a-z]+)\/email$/)) && m === 'POST') {
+      // PLOTART-STUDIO-ACCESS-002: the founder corrects an artist's sign-in email. Founder-only (this whole block is
+      // behind the founder check), same-origin only (X-Studio header), and it changes ONLY the email column: the
+      // artist id, status, Founding status, artwork, drafts and audit history all stay as they are. Access follows the
+      // email at the next request (auth.js looks the artist up by the verified address), so the old address stops
+      // working and the new one starts working at once. No email is sent.
+      const b = await req.json();
+      const a = await one(env, 'SELECT id, email, account_status FROM artists WHERE id=?', mm[1]);
+      if (!a) throw new Bad('Artist not found', 404);
+      const email = L.artistEmail(b.email);
+      if (b.confirm_email === undefined || String(b.confirm_email).replace(/^[ \t\r\n]+|[ \t\r\n]+$/g, '').toLowerCase() !== email)
+        throw new Bad('Type the new email address twice. The two entries must match exactly.');
+      if (b.confirm !== true) throw new Bad('Confirm the change before saving');
+      if (email === String(a.email).toLowerCase()) throw new Bad('That is already this artist’s email address');
+      if (founderEmails(env).includes(email)) throw new Bad('That is a founder address and can’t be used for an artist account', 409);
+      if (await one(env, 'SELECT id FROM artists WHERE email=? AND id<>?', email, a.id)) throw new Bad('Another artist account already uses that email address', 409);
+      const r = await env.DB.prepare('UPDATE artists SET email=?, updated_at=? WHERE id=? AND email=?').bind(email, now(), a.id, a.email).run()
+        .catch(e => { if (/UNIQUE/i.test(String(e && e.message))) throw new Bad('Another artist account already uses that email address', 409); throw e; });
+      if (!r.meta || r.meta.changes !== 1) throw new Bad('The account changed while you were editing it. Reload the review desk and try again.', 409);
+      await audit(env, me.email, 'founder', 'email_changed', a.id, { from: maskEmail(a.email), to: maskEmail(email), status: a.account_status });
+      return json({ ok: true, id: a.id, email, account_status: a.account_status, email_sent: false });
     }
     if ((mm = p.match(/^\/api\/admin\/artists\/(a[0-9a-z]+)\/(suspend|reactivate)$/)) && m === 'POST') {
       await env.DB.prepare('UPDATE artists SET account_status=?, updated_at=? WHERE id=?').bind(mm[2] === 'suspend' ? 'suspended' : 'active', now(), mm[1]).run();

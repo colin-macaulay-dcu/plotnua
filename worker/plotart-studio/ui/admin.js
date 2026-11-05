@@ -154,7 +154,17 @@
           <td>${a.account_status === 'suspended' ? '<span class="st-flag">Suspended</span>' : E(STATE[a.state])}${a.account_status === 'invited' ? '<br><span class="st-muted">Not signed in yet</span>' : ''}</td>
           <td>${a.works}</td><td>${a.problems ? `${a.problems} item${a.problems > 1 ? 's' : ''}` : '✓'}</td>
           <td class="st-row">${a.account_status === 'suspended' ? `<button class="st-btn st-btn--small" data-act="reactivate" data-id="${a.id}">Reactivate</button>` : `<button class="st-btn st-btn--small" data-act="suspend" data-id="${a.id}">Suspend</button>`}
-          ${a.live_version ? `<button class="st-btn st-btn--small st-btn--danger" data-act="unpublish" data-id="${a.id}">Unpublish</button>` : ''}</td></tr>`).join('') || '<tr><td colspan="5" class="st-muted">No artists yet.</td></tr>'}
+          ${a.live_version ? `<button class="st-btn st-btn--small st-btn--danger" data-act="unpublish" data-id="${a.id}">Unpublish</button>` : ''}
+          <button class="st-btn st-btn--small" data-email="${a.id}" aria-expanded="false" aria-controls="em-${a.id}">Change email</button></td></tr>
+          <tr id="em-${a.id}" class="st-em-row" hidden><td colspan="5"><form class="st-em" data-emform="${a.id}" novalidate>
+            <p class="st-em-h">Correct the sign-in email for <b>${E(a.display_name)}</b></p>
+            <p class="st-muted st-em-now">Current address: <b>${E(a.email)}</b></p>
+            <div class="st-two"><div class="st-f"><label for="em-n-${a.id}">New email address</label><input id="em-n-${a.id}" type="email" autocomplete="off" spellcheck="false" autocapitalize="off"></div>
+            <div class="st-f"><label for="em-c-${a.id}">Type it again to confirm</label><input id="em-c-${a.id}" type="email" autocomplete="off" spellcheck="false" autocapitalize="off"></div></div>
+            <label class="st-check st-em-ok"><input type="checkbox" data-emok style="accent-color:var(--terra);width:20px;height:20px"> I’ve checked this is the address the artist uses to sign in. The current address will stop working straight away.</label>
+            <p class="st-muted st-em-note">Their gallery, artwork, Founding status and progress stay exactly as they are. No email is sent: let the artist know yourself.</p>
+            <div class="st-row"><button type="submit" class="st-btn st-btn--solid st-btn--small">Save new email</button><button type="button" class="st-btn st-btn--small" data-emcancel="${a.id}">Cancel</button></div>
+            <p class="st-err" role="alert" data-emerr></p></form></td></tr>`).join('') || '<tr><td colspan="5" class="st-muted">No artists yet.</td></tr>'}
       </tbody></table></div></section>
       <section class="st-card"><h2>Invite a selected artist</h2><p class="st-muted">After they accept the Founding Artist Agreement (terms_accepted_at in Airtable), copy their name, email and reference from the application. The invitation email goes automatically when email is switched on.</p>
         <div class="st-two"><div>
@@ -175,6 +185,27 @@
     app.querySelectorAll('[data-act]').forEach(b => b.addEventListener('click', async () => {
       if (!b.dataset.sure) { b.dataset.sure = 1; b.textContent = b.textContent + '?'; return; }
       await api('POST', `/api/admin/artists/${b.dataset.id}/${b.dataset.act}`); say('Done'); home();
+    }));
+    // Change email (PLOTART-STUDIO-ACCESS-002): founder-only, typed twice and confirmed; the server re-checks everything
+    const emRow = id => $(`#em-${id}`);
+    app.querySelectorAll('[data-email]').forEach(b => b.addEventListener('click', () => {
+      const row = emRow(b.dataset.email), open = row.hidden; row.hidden = !open; b.setAttribute('aria-expanded', String(open));
+      if (open) $('input[type=email]', row).focus();
+    }));
+    app.querySelectorAll('[data-emcancel]').forEach(b => b.addEventListener('click', () => {
+      const row = emRow(b.dataset.emcancel); row.hidden = true; $(`[data-email="${b.dataset.emcancel}"]`).setAttribute('aria-expanded', 'false');
+    }));
+    app.querySelectorAll('[data-emform]').forEach(f => f.addEventListener('submit', async ev => {
+      ev.preventDefault();
+      const id = f.dataset.emform, err = $('[data-emerr]', f), [n, c] = f.querySelectorAll('input[type=email]');
+      err.textContent = '';
+      if (!n.value.trim()) { err.textContent = 'Enter the new email address.'; return; }
+      if (n.value.trim().toLowerCase() !== c.value.trim().toLowerCase()) { err.textContent = 'The two entries don’t match. Type the new address the same way twice.'; return; }
+      if (!$('[data-emok]', f).checked) { err.textContent = 'Tick the box to confirm before saving.'; return; }
+      try {
+        const r = await api('POST', `/api/admin/artists/${id}/email`, { email: n.value, confirm_email: c.value, confirm: true });
+        say(`Email changed to ${r.email}. No email was sent.`); home();
+      } catch (e) { err.textContent = e.message; }
     }));
     $('#inv').addEventListener('click', async () => {
       try {
