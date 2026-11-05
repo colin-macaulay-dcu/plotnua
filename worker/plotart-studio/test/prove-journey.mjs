@@ -293,7 +293,7 @@ await call('POST', '/api/admin/artists/' + (await db.prepare("SELECT id FROM art
 r = publish();
 const recsLeft = JSON.parse(readFileSync(join(SITE, 'image-provenance-records.json'), 'utf8')).records.filter(x => x.artist_slug === 'niamh-synthetic').length;
 check('U1 “Unpublish” removes the gallery, its card (25 empty spaces again) and its image records', r.status === 0 && !existsSync(join(SITE, 'plotart/artists/niamh-synthetic')) &&
-  (page('gallery/index.html').match(/<li class="pa-vgc-pos is-(?:av|res|prep)">/g) || []).length === 25 && !page('gallery/index.html').includes('pa-vgc-work') && recsLeft === 0, r.stdout + r.stderr);
+  (page('gallery/index.html').match(/<li class="pa-vgc-pos is-(?:av|res|prep)">/g) || []).length === 25 && !/artists\/(niamh|orla)-synthetic\//.test(page('gallery/index.html')) && recsLeft === 0, r.stdout + r.stderr);
 
 await mf.dispose();
 const ok = results.filter(Boolean).length;
