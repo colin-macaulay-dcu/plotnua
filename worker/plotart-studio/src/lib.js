@@ -178,35 +178,45 @@ export function applyInstant(base, work) {
 }
 
 /* Everything that must be true before a gallery (or a change) can be submitted. */
-export function readiness(snap, { founding, firstPublication = true, licenceOk, imageBlocks }) {
+/* The submission checklist (PLOTART-STUDIO-SUBMISSION-002, 5 Nov 2026). The rules are exactly the publication rules
+   that applied before; each item now also says WHERE it belongs, so the Studio can link straight to the field and the
+   founder can see an artist's list. `text` is unchanged word for word, so readiness() (the list the server enforces on
+   submission) is identical. Nothing here relaxes a requirement.
+   item: { area: 'profile'|'works'|'work'|'licence', field, text, work_id?, title?, needs?: [codes], image_id? } */
+export function checklist(snap, { founding, firstPublication = true, licenceOk, imageBlocks }) {
   const p = [];
   const a = snap.artist;
-  const t = (v, lo, hi, w) => { try { text(v, lo, hi, w); } catch (e) { p.push(e.message); } };
-  t(a.display_name, 2, 80, 'Your name');
-  t(a.bio, 40, 2400, 'Your biography');
-  if (a.statement) t(a.statement, 10, 400, 'Your statement');
-  if (!MEDIA.includes(a.medium)) p.push('Choose your main medium in your profile');
-  if (a.portrait && !a.portrait.alt) p.push('Describe your portrait photograph (for people using screen readers)');
-  if (!snap.works.length && firstPublication) p.push('Add at least one artwork');
+  const t = (v, lo, hi, w, field) => { try { text(v, lo, hi, w); } catch (e) { p.push({ area: 'profile', field, text: e.message }); } };
+  t(a.display_name, 2, 80, 'Your name', 'display_name');
+  t(a.bio, 40, 2400, 'Your biography', 'bio');
+  if (a.statement) t(a.statement, 10, 400, 'Your statement', 'statement');
+  if (!MEDIA.includes(a.medium)) p.push({ area: 'profile', field: 'medium', text: 'Choose your main medium in your profile' });
+  if (a.portrait && !a.portrait.alt) p.push({ area: 'profile', field: 'portrait_alt', image_id: a.portrait.id, text: 'Describe your portrait photograph (for people using screen readers)' });
+  if (!snap.works.length && firstPublication) p.push({ area: 'works', field: 'add', text: 'Add at least one artwork' });
   // One artwork is enough to open a gallery, Founding or not (founder decision 1 Nov 2026). Founding Artists are
   // guaranteed SPACE for at least 10 works at a time (Founding Artist Agreement 3.3(a)): a benefit, never a requirement.
   for (const w of snap.works) {
-    const n = w.title || 'An untitled artwork', q = [];
-    if (!w.title) q.push('a title');
-    if (!w.medium) q.push('the medium');
-    if (!w.h_cm || !w.w_cm) q.push('its size');
-    if (!w.ai_involvement) q.push('the AI question');
-    else if (w.ai_involvement !== 'none' && !w.ai_note) q.push('a short AI disclosure');
-    if (!w.images.some(i => i.role === 'main')) q.push('a main photograph');
-    if (w.images.some(i => !i.alt)) q.push('a description of each photograph');
-    if (w.images.some(i => !i.photographer)) q.push('who took each photograph');
-    if (w.images.some(i => i.photographer === 'other_with_permission' && !i.photo_credit)) q.push('the photographer’s name');
-    if (w.images.some(i => imageBlocks.has(i.id))) q.push('a photograph that passes the checks');
-    if (q.length) p.push(`${n} needs ${q.join(', ')}`);
+    const n = w.title || 'An untitled artwork', q = [], codes = [];
+    let image = null;
+    const need = (cond, words, code, img) => { if (cond) { q.push(words); codes.push(code); if (img && !image) image = img.id; } };
+    need(!w.title, 'a title', 'title');
+    need(!w.medium, 'the medium', 'medium');
+    need(!w.h_cm || !w.w_cm, 'its size', 'size');
+    need(!w.ai_involvement, 'the AI question', 'ai');
+    need(w.ai_involvement && w.ai_involvement !== 'none' && !w.ai_note, 'a short AI disclosure', 'ai_note');
+    need(!w.images.some(i => i.role === 'main'), 'a main photograph', 'main_photo');
+    const noAlt = w.images.find(i => !i.alt), noWho = w.images.find(i => !i.photographer);
+    const noCredit = w.images.find(i => i.photographer === 'other_with_permission' && !i.photo_credit), bad = w.images.find(i => imageBlocks.has(i.id));
+    need(noAlt, 'a description of each photograph', 'photo_alt', noAlt);
+    need(noWho, 'who took each photograph', 'photographer', noWho);
+    need(noCredit, 'the photographer’s name', 'photo_credit', noCredit);
+    need(bad, 'a photograph that passes the checks', 'photo_blocked', bad);
+    if (q.length) p.push({ area: 'work', field: codes[0], needs: codes, work_id: w.id, title: w.title || null, image_id: image, text: `${n} needs ${q.join(', ')}` });
   }
-  if (!licenceOk) p.push('Accept the Gallery Publication and Image Licence');
+  if (!licenceOk) p.push({ area: 'licence', field: 'licence', text: 'Accept the Gallery Publication and Image Licence' });
   return p;
 }
+export function readiness(snap, opts) { return checklist(snap, opts).map(i => i.text); }
 
 /* The gallery export the publishing pipeline ingests (schema plotnua.plotart.gallery.v1, see plotart_gallery.py). */
 export function exportGallery(snap, { version, approvedAt, licenceVersion, licenceAcceptedAt, artistId, aiDecisions = {} }) {

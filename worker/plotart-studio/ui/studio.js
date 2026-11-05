@@ -25,7 +25,46 @@
     if (!r.ok || j.ok === false) { const e = new Error(j.error || (j.problems ? j.problems.join(' · ') : 'That didn’t work.')); e.data = j; e.status = r.status; throw e; }
     return j;
   }
-  const refresh = async () => { ME = await api('GET', '/api/me'); WORKS = (await api('GET', '/api/artworks')).works; };
+  let afterRefresh = null;   // the open view may update itself (e.g. an artwork's "still needed" line) after each save
+  const refresh = async () => { ME = await api('GET', '/api/me'); WORKS = (await api('GET', '/api/artworks')).works; if (afterRefresh) afterRefresh(); };
+
+  /* ------------------------------------------------------------- submission checklist (PLOTART-STUDIO-SUBMISSION-002)
+     The server sends each outstanding item with where it belongs; here it becomes a grouped list of links that open
+     the right page and focus the missing field. The rules themselves live on the server and are unchanged. */
+  const NEED = { title: 'title', medium: 'medium', size: 'size', ai: 'the AI question', ai_note: 'AI note', main_photo: 'main photograph',
+    photo_alt: 'photograph description', photographer: 'who took the photograph', photo_credit: 'photographer’s name', photo_blocked: 'a new photograph' };
+  const PHOTO = ['photo_alt', 'photographer', 'photo_credit'];
+  const onlyPhoto = i => i.needs.every(c => PHOTO.includes(c));
+  const workNeeds = i => onlyPhoto(i) ? 'photograph details' : i.needs.map(c => NEED[c]).join(', ');
+  const fixHref = i => i.area === 'profile' ? `#/profile?fix=${i.field}` : i.area === 'works' ? '#/works?fix=add'
+    : i.area === 'work' ? `#/work/${i.work_id}?fix=${i.field}${i.image_id ? '&img=' + i.image_id : ''}` : '#/submit';
+  const plural = (n, one, many) => `${n} ${n === 1 ? one : many}`;
+  function checklistHTML(list, { openWorks = false } = {}) {
+    const prof = list.filter(i => i.area === 'profile'), wk = list.filter(i => i.area === 'work'), add = list.find(i => i.area === 'works');
+    const link = (href, label, extra = '') => `<li><a class="st-ck-link" href="${href}"><span>${label}</span>${extra}<span class="st-ck-go" aria-hidden="true">→</span></a></li>`;
+    const allPhoto = wk.length && wk.every(onlyPhoto);
+    return `<div class="st-ck">
+      ${prof.length ? `<div class="st-ck-g"><h4 class="st-ck-h">Profile</h4><ul class="st-ck-l">${prof.map(i => link(fixHref(i), E(i.text))).join('')}</ul></div>` : ''}
+      ${add || wk.length ? `<div class="st-ck-g"><h4 class="st-ck-h">Artworks</h4>
+        ${add ? `<ul class="st-ck-l">${link(fixHref(add), 'Add your first artwork')}</ul>` : ''}
+        ${wk.length ? `<details class="st-ck-d"${openWorks || wk.length <= 3 ? ' open' : ''}><summary><span>${plural(wk.length, 'artwork needs', 'artworks need')} ${allPhoto ? 'photograph details' : 'details'}</span><span class="st-ck-n" aria-hidden="true">${wk.length}</span></summary>
+          <ul class="st-ck-l">${wk.map(i => link(fixHref(i), E(i.title || 'Untitled artwork'), `<small>${E(workNeeds(i))}</small>`)).join('')}</ul></details>` : ''}</div>` : ''}
+    </div>`;
+  }
+  // Open the page an item points to, then bring the missing field into view, focus it and mark it briefly.
+  function focusFix(fix, img) {
+    const sel = { photo_alt: `#alt-${img}`, photographer: `[name="photographer-${img}"]`, photo_credit: `#cr-${img}`, photo_blocked: '#mdrop input',
+      main_photo: '#mdrop input', title: '#f-title', medium: '#f-medium', size: '#f-h_cm', ai: '[name=ai_involvement]', ai_note: '#f-ai_note',
+      display_name: '#f-display_name', bio: '#f-bio', statement: '#f-statement', portrait_alt: '#f-palt', add: '[data-act=add]' }[fix];
+    const el = sel && app.querySelector(sel);
+    if (!el) return;
+    const d = el.closest('details'); if (d) d.open = true;
+    if (fix === 'photo_credit') { const box = el.closest('[data-credit]'); if (box) box.hidden = false; }
+    const zone = el.closest('.st-f, .st-req-group, .st-drop') || el;
+    zone.classList.remove('st-fix'); void zone.offsetWidth; zone.classList.add('st-fix');
+    zone.scrollIntoView({ block: 'center', behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
+    el.focus({ preventScroll: true });
+  }
   const live = w => w.in_version;
 
   /* ------------------------------------------------------------- views */
@@ -41,6 +80,7 @@
     const s = ME.status, a = ME.artist, [title, text] = STATE[s.state];
     const n = s.counts.works;
     const canSubmit = s.unsubmitted.length && !s.problems.length && s.state !== 'in_review';
+    const left = s.checklist.length;
     const pendingTier = s.tier === 'light' ? 'a quick check' : 'a review';
     app.innerHTML = `
       <p class="st-muted">Welcome${a.display_name ? ', ' + E(a.display_name.split(' ')[0]) : ''}</p>
@@ -60,8 +100,8 @@
         <p class="st-muted" style="margin:0">${n ? `${n} ${n === 1 ? 'work' : 'works'} in your gallery` : 'No works yet'}. Start with one artwork and add more whenever you wish${a.founding ? ': as a Founding Artist you have space for at least 10 at a time' : ''}.</p>
         <div class="st-actions"><a class="st-btn" href="#/works">Your works</a><button class="st-btn" data-act="add">Add an artwork</button></div></section>
 
-      <section class="st-card"><h3>${s.problems.length ? 'Before you submit' : 'Ready'}</h3>
-        ${s.problems.length ? `<ul class="st-list">${s.problems.slice(0, 8).map(p => `<li>${E(p)}</li>`).join('')}</ul>${s.problems.length > 8 ? `<p class="st-muted">and ${s.problems.length - 8} more</p>` : ''}`
+      <section class="st-card" aria-labelledby="ck-h"><div class="st-ck-top"><h3 id="ck-h">Your gallery checklist</h3>${left ? `<span class="st-ck-count">${plural(left, 'detail', 'details')} to complete</span>` : ''}</div>
+        ${left ? `<p class="st-muted st-ck-intro">Complete these to submit your gallery. Each one opens the right place.</p>${checklistHTML(s.checklist)}`
           : `<ul class="st-list ok"><li>Everything needed is in place${s.unsubmitted.length ? `: submit your changes for ${pendingTier}` : ''}.</li></ul>`}
         ${canSubmit ? `<div class="st-actions"><a class="st-btn st-btn--solid" href="#/submit">Review and submit</a></div>` : ''}
       </section>`;
@@ -82,7 +122,7 @@
       </section></div><div>
       <section class="st-card"><h3>Portrait (optional)</h3>
         <div class="st-drop" id="pdrop">${p ? `<img src="/api/images/${p.id}/view" alt="">` : '<span>Add a portrait photograph</span><small class="st-muted">JPEG, PNG or WebP · at least 800 px</small>'}<input type="file" accept="image/jpeg,image/png,image/webp" aria-label="Upload a portrait"></div>
-        ${p ? `${f('palt', 'Describe your portrait (for screen readers)', p.alt)}<button class="st-btn st-btn--small st-btn--danger" data-act="rmp">Remove portrait</button>` : ''}
+        ${p ? `${f('palt', 'Describe your portrait', p.alt, { req: 1, hint: 'A short line for people using screen readers, e.g. “The artist in her studio”.' })}<button class="st-btn st-btn--small st-btn--danger" data-act="rmp">Remove portrait</button>` : ''}
       </section>
       <section class="st-card"><h3>Where you’re based</h3>
         <div class="st-f"><label for="f-county">County</label><select id="f-county" name="county">${['', ...ME.counties].map(c => `<option${a.county === c ? ' selected' : ''} value="${c}">${c || 'Choose…'}</option>`).join('')}</select></div>
@@ -106,8 +146,9 @@
   }
   function f(name, label, val, o = {}) {
     const id = 'f-' + name;
-    const input = o.area ? `<textarea id="${id}" name="${name}">${E(val)}</textarea>` : `<input id="${id}" name="${name}" type="${o.type || 'text'}" value="${E(val)}"${o.step ? ` step="${o.step}" inputmode="decimal"` : ''}${o.type === 'number' ? ' inputmode="decimal"' : ''}>`;
-    return `<div class="st-f"><label for="${id}">${E(label)}${o.req ? '' : ''}</label>${input}${o.hint ? `<small>${E(o.hint)}</small>` : ''}<span class="st-err" aria-live="polite"></span></div>`;
+    const rq = o.req ? ' aria-required="true"' : '';
+    const input = o.area ? `<textarea id="${id}" name="${name}"${rq}>${E(val)}</textarea>` : `<input id="${id}" name="${name}" type="${o.type || 'text'}" value="${E(val)}"${o.step ? ` step="${o.step}" inputmode="decimal"` : ''}${o.type === 'number' ? ' inputmode="decimal"' : ''}${rq}>`;
+    return `<div class="st-f"><label for="${id}">${E(label)}${o.req ? ' <span class="st-req">Required</span>' : ''}</label>${input}${o.hint ? `<small>${E(o.hint)}</small>` : ''}<span class="st-err" aria-live="polite"></span></div>`;
   }
   const fieldErr = (el, msg) => { const e = el.closest('.st-f')?.querySelector('.st-err'); if (e) e.textContent = msg; };
 
@@ -172,6 +213,7 @@
       <p><a href="#/works" style="color:var(--stone);text-decoration:none">← Your works</a></p>
       <h1 class="st-h1">${E(w.title || 'New artwork')}</h1>
       <p class="st-sub">${live(w) ? 'In your live gallery. Price and detail changes go to us for a quick check; new photographs are reviewed.' : 'Everything saves as you go. Submit when you’re ready.'}</p>
+      <p class="st-needs" id="wneeds" aria-live="polite"></p>
       <div class="st-two"><div>
       <section class="st-card"><h3>Main photograph</h3>
         <div class="st-drop" id="mdrop">${main ? `<img src="/api/images/${main.id}/view" alt="">` : '<strong style="color:var(--ivory)">Add the main photograph</strong><span>Tap to choose a photo · JPEG, PNG or WebP · at least 2,000 px · up to 30 MB</span>'}<input type="file" accept="image/jpeg,image/png,image/webp" aria-label="Upload the main photograph"></div>
@@ -213,23 +255,28 @@
     });
     $('[data-avail]').addEventListener('change', async e => { await api('POST', `/api/artworks/${w.id}/availability`, { availability: e.target.value }); say(live(w) ? 'Updated · your live gallery is updating' : 'Saved'); await refresh(); });
     bindImageFields();
+    const needsLine = () => { const el = $('#wneeds'); if (!el) return; const it = ME.status.checklist.find(i => i.area === 'work' && i.work_id === w.id);
+      el.hidden = !it; el.innerHTML = it ? `<span class="st-needs-dot" aria-hidden="true"></span>Still needed to submit: ${E(it.needs.map(c => NEED[c]).join(', '))}` : ''; };
+    needsLine(); afterRefresh = needsLine;
     $('#mdrop input').addEventListener('change', e => uploadFlow(e.target.files[0], `/api/artworks/${w.id}/images?role=main`, $('#mdrop'), { done: async () => { await refresh(); work(w.id); } }));
     $('#vadd')?.addEventListener('change', e => uploadFlow(e.target.files[0], `/api/artworks/${w.id}/images?role=view`, $('#vadd').parentElement, { done: async () => { await refresh(); work(w.id); } }));
     app.querySelectorAll('[data-rmv]').forEach(b => b.addEventListener('click', async () => { await api('DELETE', `/api/images/${b.dataset.rmv}`); await refresh(); work(w.id); say('View removed'); }));
   }
   function imageFields(i) {
-    return `<div data-img="${i.id}" style="margin-top:12px">
-      <div class="st-f"><label for="alt-${i.id}">Describe the photo (for screen readers)</label><input id="alt-${i.id}" name="alt" type="text" value="${E(i.alt)}" placeholder="e.g. Blue abstract painting with a yellow circle"><span class="st-err"></span></div>
-      <span class="st-lab">Who took this photograph?</span>
-      <div class="st-radio" style="margin:6px 0 10px">${[['self', 'I did'], ['other_with_permission', 'Another photographer, with their permission']].map(([k, v]) => `<label><input type="radio" name="photographer-${i.id}" value="${k}"${i.photographer === k ? ' checked' : ''}> ${v}</label>`).join('')}</div>
-      <div class="st-f" ${i.photographer === 'other_with_permission' ? '' : 'hidden'} data-credit><label for="cr-${i.id}">Photographer’s name (for the credit)</label><input id="cr-${i.id}" name="photo_credit" type="text" value="${E(i.photo_credit)}"><span class="st-err"></span></div></div>`;
+    // Photograph details (required for every photograph before a gallery can be submitted)
+    return `<div data-img="${i.id}" class="st-photo-d">
+      <p class="st-photo-h">Photograph details <span class="st-muted">· needed to submit</span></p>
+      <div class="st-f"><label for="alt-${i.id}">Describe the photo <span class="st-req">Required</span></label><input id="alt-${i.id}" name="alt" type="text" value="${E(i.alt)}" aria-required="true" aria-describedby="alth-${i.id}" placeholder="e.g. Blue abstract painting with a yellow circle"><small id="alth-${i.id}">A short line for people using screen readers.</small><span class="st-err" aria-live="polite"></span></div>
+      <fieldset class="st-req-group"><legend class="st-lab">Who took this photograph? <span class="st-req">Required</span></legend>
+      <div class="st-radio" style="margin:6px 0 10px">${[['self', 'I did'], ['other_with_permission', 'Another photographer, with their permission']].map(([k, v]) => `<label><input type="radio" name="photographer-${i.id}" value="${k}"${i.photographer === k ? ' checked' : ''}> ${v}</label>`).join('')}</div></fieldset>
+      <div class="st-f" ${i.photographer === 'other_with_permission' ? '' : 'hidden'} data-credit><label for="cr-${i.id}">Photographer’s name <span class="st-req">Required</span></label><input id="cr-${i.id}" name="photo_credit" type="text" value="${E(i.photo_credit)}" aria-required="true" aria-describedby="crh-${i.id}"><small id="crh-${i.id}">Shown as the photo credit on your gallery.</small><span class="st-err" aria-live="polite"></span></div></div>`;
   }
   function bindImageFields() {
     app.querySelectorAll('[data-img]').forEach(box => {
       const id = box.dataset.img;
       box.querySelectorAll('input').forEach(el => el.addEventListener('change', async () => {
         const key = el.type === 'radio' ? 'photographer' : el.name;
-        if (key === 'photographer') box.querySelector('[data-credit]').hidden = el.value !== 'other_with_permission';
+        if (key === 'photographer') { const cr = box.querySelector('[data-credit]'); cr.hidden = el.value !== 'other_with_permission'; if (!cr.hidden && !cr.querySelector('input').value) setTimeout(() => cr.querySelector('input').focus(), 0); }
         try { await api('PATCH', `/api/images/${id}`, { [key]: el.value }); fieldErr(el, ''); say('Saved'); await refresh(); }
         catch (e) { fieldErr(el, e.message); say('Not saved: ' + e.message, true); }
       }));
@@ -279,13 +326,16 @@
         ${['full', 'light', 'instant'].filter(t => groups[t].length).map(t => `<p class="st-muted" style="margin:12px 0 4px"><span class="st-tier ${t}">${t === 'full' ? 'Review' : t === 'light' ? 'Quick check' : 'Live'}</span>${label[t]}</p>
           <ul class="st-list">${groups[t].map(c => `<li>${E(c.what)}${c.from !== undefined && c.to !== undefined && typeof c.to !== 'object' ? ` <span class="st-muted">(${E(c.from ?? '—')} → ${E(c.to ?? '—')})</span>` : ''}</li>`).join('')}</ul>`).join('') || '<p class="st-muted">Nothing new to submit.</p>'}
       </section>
-      ${s.problems.length ? `<section class="st-card"><h3>Still to do</h3><ul class="st-list">${s.problems.map(p => `<li>${E(p)}</li>`).join('')}</ul></section>` : ''}
+      ${s.checklist.length ? `<section class="st-card" aria-labelledby="todo-h"><div class="st-ck-top"><h3 id="todo-h">Still to do</h3><span class="st-ck-count">${plural(s.checklist.length, 'detail', 'details')}</span></div>${checklistHTML(s.checklist, { openWorks: true })}</section>` : ''}
       ${!s.licence_ok ? `<section class="st-card"><h3>Gallery Publication and Image Licence</h3>
         <p class="st-muted">You keep your copyright. This licence lets PlotArt show the work and words you approve, on your gallery and PlotArt pages, and nothing more. Version ${E(s.licence_version)}.</p>
         <label class="st-check"><input type="checkbox" id="lic" style="accent-color:var(--terra);width:22px;height:22px;margin-top:2px"> I approve my PlotArt gallery preview and accept the Gallery Publication and Image Licence, version ${E(s.licence_version)}.</label></section>` : ''}
       <section class="st-card"><div class="st-f"><label for="note">A note for us (optional)</label><textarea id="note" placeholder="Anything we should know"></textarea></div>
-        <div class="st-actions"><a class="st-btn" href="/preview/" target="_blank" rel="noopener">Preview first</a><button class="st-btn st-btn--solid" id="go" ${s.unsubmitted.length && !s.problems.length ? '' : 'disabled'}>Submit for review</button></div>
+        <div class="st-actions st-submit-row"><a class="st-btn" href="/preview/" target="_blank" rel="noopener">Preview first</a><button class="st-btn st-btn--solid" id="go" ${s.unsubmitted.length && !s.problems.length ? '' : 'disabled aria-describedby="why"'}>Submit for review</button></div>
+        ${s.problems.length ? `<p class="st-why" id="why"><span class="st-needs-dot" aria-hidden="true"></span><span><b>${plural(s.problems.length, 'detail still needs', 'details still need')} your attention</b> before you can submit your gallery. <a href="#todo-h" data-jump>See the list</a></span></p>`
+          : !s.unsubmitted.length ? '<p class="st-why" id="why">There’s nothing new to submit.</p>' : ''}
         <p class="st-err" id="serr"></p></section>`;
+    $('[data-jump]', app)?.addEventListener('click', e => { e.preventDefault(); const h = $('#todo-h'); h.setAttribute('tabindex', '-1'); h.scrollIntoView({ block: 'start' }); h.focus({ preventScroll: true }); });
     $('#go').addEventListener('click', async () => {
       const lic = $('#lic');
       if (lic && !lic.checked) { $('#serr').textContent = 'Please accept the licence to submit.'; return; }
@@ -308,7 +358,8 @@
 
   /* ------------------------------------------------------------- router */
   async function render() {
-    const h = location.hash || '#/';
+    const full = location.hash || '#/', [h, qs] = full.split('?'), q = new URLSearchParams(qs || '');
+    afterRefresh = null;
     document.querySelectorAll('.st-tabs a').forEach(a => a.toggleAttribute('aria-current', h === a.getAttribute('href') || (a.getAttribute('href') === '#/works' && h.startsWith('#/work/'))));
     document.querySelectorAll('.st-tabs a[aria-current]').forEach(a => a.setAttribute('aria-current', 'page'));
     try {
@@ -322,6 +373,7 @@
       else if (h === '#/enquiries') await enquiries();
       else dashboard();
       window.scrollTo(0, 0);
+      if (q.get('fix')) requestAnimationFrame(() => focusFix(q.get('fix'), q.get('img')));
     } catch (e) { app.innerHTML = `<div class="st-card"><h2>Something went wrong</h2><p class="st-muted">${E(e.message)}</p></div>`; }
   }
   addEventListener('hashchange', render);

@@ -177,3 +177,47 @@ body.st{ background:var(--anth); min-height:100vh; }
 .st-em-now{ margin:0 0 12px; overflow-wrap:anywhere; }
 .st-em-ok{ margin:2px 0 8px; align-items:flex-start; }
 .st-em-note{ margin:0 0 12px; font-size:13.5px; }
+
+/* PLOTART-STUDIO-SUBMISSION-002 · submission checklist, photograph requirements, submit explanation */
+.st [hidden]{ display:none !important; }   /* the hidden attribute always wins (fixes the always-visible photographer name) */
+.st-ck-top{ display:flex; align-items:baseline; justify-content:space-between; gap:12px; flex-wrap:wrap; }
+.st-ck-top h3{ margin:0; }
+.st-ck-count{ font-size:12.5px; letter-spacing:.06em; text-transform:uppercase; color:#F2C9B8; border:1px solid rgba(207,133,102,.45); border-radius:999px; padding:3px 10px; white-space:nowrap; }
+.st-ck-intro{ margin:8px 0 4px; }
+.st-ck{ display:grid; gap:14px; margin-top:10px; }
+.st-ck-h{ margin:0 0 4px; font-size:12px; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:var(--mute, #9a948b); }
+.st-ck-l{ list-style:none; margin:0; padding:0; }
+.st-ck-l li + li{ border-top:1px solid rgba(242,235,224,.06); }
+.st-ck-link{ display:grid; grid-template-columns:minmax(0,1fr) auto; column-gap:12px; align-items:center; min-height:48px; padding:10px 4px; color:var(--lime); text-decoration:none; border-radius:10px; font-size:14.5px; line-height:1.45; }
+.st-ck-link small{ grid-column:1; color:var(--stone); font-size:13px; }
+.st-ck-link > span:first-child{ grid-column:1; }
+.st-ck-go{ grid-column:2; grid-row:1 / span 2; color:var(--terra-text); font-size:17px; transition:transform .15s; }
+.st-ck-link:hover .st-ck-go, .st-ck-link:focus-visible .st-ck-go{ transform:translateX(3px); }
+.st-ck-link:hover{ background:rgba(242,235,224,.04); }
+.st-ck-link:focus-visible{ outline:2px solid var(--terra-text); outline-offset:2px; }
+.st-ck-d > summary{ display:flex; align-items:center; justify-content:space-between; gap:12px; min-height:48px; padding:8px 4px; cursor:pointer; list-style:none; color:var(--ivory); font-size:15px; border-radius:10px; }
+.st-ck-d > summary::-webkit-details-marker{ display:none; }
+.st-ck-d > summary::after{ content:"▾"; color:var(--stone); transition:transform .15s; }
+.st-ck-d[open] > summary::after{ transform:rotate(180deg); }
+.st-ck-d > summary > span:first-child{ flex:1; }
+.st-ck-d > summary:focus-visible{ outline:2px solid var(--terra-text); outline-offset:2px; }
+.st-ck-n{ min-width:26px; text-align:center; font-size:12.5px; color:#F2C9B8; background:rgba(207,133,102,.14); border-radius:999px; padding:2px 8px; }
+.st-ck-d .st-ck-l{ margin:2px 0 0 4px; padding-left:12px; border-left:1px solid rgba(242,235,224,.08); }
+.st-req{ display:inline-block; margin-left:6px; padding:1px 7px; border-radius:999px; font-size:10.5px; font-weight:600; letter-spacing:.08em; text-transform:uppercase; color:#F2C9B8; background:rgba(207,133,102,.14); vertical-align:1px; }
+.st-photo-d{ margin-top:14px; padding-top:14px; border-top:1px solid rgba(242,235,224,.08); }
+.st-photo-h{ margin:0 0 10px; font-size:14px; color:var(--ivory); font-weight:600; }
+.st-photo-h .st-muted{ font-weight:400; }
+.st-req-group{ border:0; margin:0; padding:0; min-width:0; }
+.st-req-group legend{ padding:0; }
+.st-needs{ display:flex; align-items:center; gap:10px; margin:-6px 0 16px; font-size:14px; color:#F2C9B8; }
+.st-needs-dot{ flex:0 0 auto; width:8px; height:8px; border-radius:50%; background:var(--terra); box-shadow:0 0 0 4px rgba(207,133,102,.18); }
+.st-why{ display:flex; align-items:flex-start; gap:10px; margin:12px 0 0; font-size:14.5px; line-height:1.5; color:var(--lime); }
+.st-why .st-needs-dot{ margin-top:7px; }
+.st-why b{ color:var(--ivory); font-weight:600; }
+.st-why a{ color:var(--ivory); }
+.st-fix{ border-radius:12px; outline:2px solid transparent; outline-offset:10px; animation:st-fix 3s ease-out 1 forwards; }
+@keyframes st-fix{ 0%,45%{ outline-color:var(--terra); background:rgba(207,133,102,.07); box-shadow:0 0 0 10px rgba(207,133,102,.07); } 100%{ outline-color:transparent; background:transparent; box-shadow:0 0 0 10px transparent; } }
+@media (prefers-reduced-motion: reduce){ .st-fix{ animation:none; outline-color:var(--terra); } }
+.st-todo-btn{ white-space:nowrap; }
+.st-ck-admin{ padding:6px 2px 4px; }
+.st-ck-table td{ vertical-align:top; }

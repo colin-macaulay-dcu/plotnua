@@ -75,7 +75,8 @@ async function status(env, artist) {
   const queue = await all(env, "SELECT id, version, kind, status, updated_at FROM publish_queue WHERE artist_id = ? AND status IN ('awaiting_founder','ready','exporting') ORDER BY version", artist.id);
   const live = await liveVersion(env, artist.id);
   const licenceOk = d.artist.licence_version === L.LICENCE_VERSION;
-  const problems = L.readiness(snap, { founding: !!d.artist.founding, firstPublication: !lv, licenceOk: true, imageBlocks: blocked(d.images) });
+  const list = L.checklist(snap, { founding: !!d.artist.founding, firstPublication: !lv, licenceOk: true, imageBlocks: blocked(d.images) });
+  const problems = list.map(i => i.text);
   let state;
   if (pending) state = 'in_review';
   else if (queue.length) state = 'publishing';
@@ -86,7 +87,7 @@ async function status(env, artist) {
   return {
     state, live_version: live, latest_version: lv ? lv.version : 0, pending, last_decision: last, queue,
     changes: cs, unsubmitted: cs.filter(c => c.tier !== 'instant'), tier: L.tierOf(cs.filter(c => c.tier !== 'instant')),
-    problems, licence_ok: licenceOk, licence_version: L.LICENCE_VERSION,
+    problems, checklist: list, licence_ok: licenceOk, licence_version: L.LICENCE_VERSION,
     counts: { works: snap.works.length, archived: d.works.filter(w => w.archived).length },
   };
 }
@@ -759,6 +760,14 @@ async function route(req, env) {
       if (rest.startsWith('img/')) { const img = await one(env, 'SELECT * FROM images WHERE id=? AND artist_id=?', rest.slice(4), artistId); return img ? previewImage(env, img) : html('Not found', 404); }
       const images = await all(env, 'SELECT * FROM images WHERE artist_id=?', artistId);
       return previewRoute(rest, previewPkg(snap, images), 'Founder review preview · <a href="/admin">Back to the review desk</a>');
+    }
+    if ((mm = p.match(/^\/api\/admin\/artists\/(a[0-9a-z]+)\/checklist$/)) && m === 'GET') {
+      // PLOTART-STUDIO-SUBMISSION-002: the founder's read-only view of one artist's submission checklist. Same rules
+      // and wording as the artist sees; nothing here can change, waive or bypass an item.
+      const a = await one(env, 'SELECT * FROM artists WHERE id=?', mm[1]);
+      if (!a) return json({ ok: false, error: 'Artist not found' }, 404);
+      const st = await status(env, a);
+      return json({ ok: true, artist: { id: a.id, display_name: a.display_name }, state: st.state, works: st.counts.works, count: st.checklist.length, items: st.checklist });
     }
     if (p === '/api/admin/overview' && m === 'GET') return json({ ok: true, ...(await overview(env)) });
     if (p === '/api/admin/selftest' && m === 'POST') return json({ ok: true, ...(await selftest(env, me)) });

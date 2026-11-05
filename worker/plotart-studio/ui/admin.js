@@ -152,10 +152,11 @@
       <section class="st-card"><h2>Artists</h2><div class="st-scroll"><table class="st-table"><thead><tr><th>Artist</th><th>Status</th><th>Works</th><th>To do</th><th></th></tr></thead><tbody>
         ${o.artists.map(a => `<tr><td><b style="color:var(--ivory)">${E(a.display_name)}</b>${a.founding ? ' <span class="pa-gcard-badge" style="display:inline-block">Founding</span>' : ''}<br><span class="st-muted">${E(a.email)}${a.application_ref ? ' · ' + E(a.application_ref) : ''}</span></td>
           <td>${a.account_status === 'suspended' ? '<span class="st-flag">Suspended</span>' : E(STATE[a.state])}${a.account_status === 'invited' ? '<br><span class="st-muted">Not signed in yet</span>' : ''}</td>
-          <td>${a.works}</td><td>${a.problems ? `${a.problems} item${a.problems > 1 ? 's' : ''}` : '✓'}</td>
+          <td>${a.works}</td><td>${a.problems ? `<button class="st-btn st-btn--small st-todo-btn" data-ck="${a.id}" aria-expanded="false" aria-controls="ck-${a.id}">${a.problems} item${a.problems > 1 ? 's' : ''}</button>` : '✓'}</td>
           <td class="st-row">${a.account_status === 'suspended' ? `<button class="st-btn st-btn--small" data-act="reactivate" data-id="${a.id}">Reactivate</button>` : `<button class="st-btn st-btn--small" data-act="suspend" data-id="${a.id}">Suspend</button>`}
           ${a.live_version ? `<button class="st-btn st-btn--small st-btn--danger" data-act="unpublish" data-id="${a.id}">Unpublish</button>` : ''}
           <button class="st-btn st-btn--small" data-email="${a.id}" aria-expanded="false" aria-controls="em-${a.id}">Change email</button></td></tr>
+          <tr id="ck-${a.id}" class="st-em-row" hidden><td colspan="5"><div class="st-ck-admin" data-ckbox="${a.id}"><p class="st-muted">Loading…</p></div></td></tr>
           <tr id="em-${a.id}" class="st-em-row" hidden><td colspan="5"><form class="st-em" data-emform="${a.id}" novalidate>
             <p class="st-em-h">Correct the sign-in email for <b>${E(a.display_name)}</b></p>
             <p class="st-muted st-em-now">Current address: <b>${E(a.email)}</b></p>
@@ -185,6 +186,21 @@
     app.querySelectorAll('[data-act]').forEach(b => b.addEventListener('click', async () => {
       if (!b.dataset.sure) { b.dataset.sure = 1; b.textContent = b.textContent + '?'; return; }
       await api('POST', `/api/admin/artists/${b.dataset.id}/${b.dataset.act}`); say('Done'); home();
+    }));
+    // Submission checklist (PLOTART-STUDIO-SUBMISSION-002): read-only; exactly what the artist sees, nothing can be waived here
+    const NEED = { title: 'title', medium: 'medium', size: 'size', ai: 'AI question', ai_note: 'AI note', main_photo: 'main photograph',
+      photo_alt: 'photograph description', photographer: 'who took the photograph', photo_credit: 'photographer’s name', photo_blocked: 'replacement photograph' };
+    const SECTION = { profile: 'Profile', works: 'Artworks', work: 'Artwork', licence: 'Licence' };
+    app.querySelectorAll('[data-ck]').forEach(b => b.addEventListener('click', async () => {
+      const row = $(`#ck-${b.dataset.ck}`), open = row.hidden; row.hidden = !open; b.setAttribute('aria-expanded', String(open));
+      if (!open || row.dataset.loaded) return;
+      const box = $(`[data-ckbox="${b.dataset.ck}"]`, row);
+      try {
+        const r = await api('GET', `/api/admin/artists/${b.dataset.ck}/checklist`); row.dataset.loaded = '1';
+        box.innerHTML = `<p class="st-em-h">${E(r.artist.display_name)} · ${r.count} item${r.count === 1 ? '' : 's'} before they can submit <span class="st-muted">(read-only: the artist completes these in their Studio)</span></p>
+          <table class="st-table st-ck-table"><thead><tr><th>Section</th><th>Outstanding</th></tr></thead><tbody>${r.items.map(i => `<tr><td>${E(SECTION[i.area])}${i.area === 'work' ? `<br><span class="st-muted">${E(i.title || 'Untitled artwork')}</span>` : ''}</td>
+            <td>${i.area === 'work' ? E(i.needs.map(c => NEED[c]).join(', ')) : E(i.text)}</td></tr>`).join('')}</tbody></table>`;
+      } catch (e) { box.innerHTML = `<p class="st-err">${E(e.message)}</p>`; }
     }));
     // Change email (PLOTART-STUDIO-ACCESS-002): founder-only, typed twice and confirmed; the server re-checks everything
     const emRow = id => $(`#em-${id}`);
