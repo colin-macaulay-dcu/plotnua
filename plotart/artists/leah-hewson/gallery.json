@@ -1,0 +1,725 @@
+{
+ "artist": {
+  "bio": "Hewson has a First-Class BA(Hons) degree in Fine Art from IADT, Dublin Ireland. Solo exhibitions include Raze the Container, Chateau La Coste, France (2025), 'Kin Connection', The Royal Hibernian Academy (2024), ‘Blowout’ Stoney Road Press, INK Miami(2022), 'Ammo Veil' ,Hillsboro Fine Art gallery (2018) and ‘Scintilla’, The Royal Hibernian Academy, Dublin (2017) which was the culmination of work produced during a six-month residency at The RHA School. Other residencies include Centre Culturel Irlandais, Paris (2026), Nars Foundation, Brooklyn, New York (2018), SIM Residency, Berlin (2019) and Wilton Park Studios Residency, Dublin in (2019 -20), Facebook AIR program (2020).\n\nHewson won the Whyte's Award for painting at the 190th RHA Annual Exhibition, was shortlisted for the Hennessy Craig Biennial Award in 2019 and is accredited with the Elizabeth Fitzpatrick Travel Bursary Award 2018.\n\nHewson's work continues to be collected internationally, including being auctioned at Sotheby's, while public collections include The Trinity College Dublin History of Art collection, The Office of Public Works, Dublin, The Law Society of Ireland, the Microsoft Collection, Fidelity Investments and The Cleveland Clinic. ​\n\nHewson also created an installation for Art on Paper in New York in 2022, and more recently Beyond the Pale Festival and has painted murals at Stoney Road Press and Kicky's restaurant in Dublin.\n\nHewson is currently Artist in Residence at The Royal Hibernian Academy, Dublin.",
+  "county": null,
+  "display_name": "Leah Hewson",
+  "founding": true,
+  "instagram": "leahhewson",
+  "medium": "painting",
+  "portrait": {
+   "alt": "Leah Hewson sitting on a chair in front of some of her paintings",
+   "aspect": 0.78351,
+   "derivatives": [
+    {
+     "file": "portrait-600.webp",
+     "long_edge": 600,
+     "pixels": [
+      470,
+      600
+     ]
+    }
+   ],
+   "photo_credit": null,
+   "pixels": [
+    3840,
+    4901
+   ],
+   "role": "portrait"
+  },
+  "practice": "Painting, Prints, installation, murals, sculpture.",
+  "slug": "leah-hewson",
+  "statement": "I access and explore the unconscious mind through a flow state painting practice. \nThe ever evolving abstract language that emerges extends into print, mural, sculpture and installation work.",
+  "website": "https://www.leahhewson.com/"
+ },
+ "provenance_sources": [
+  {
+   "dhash": "db8b3770f3d1c8ce",
+   "source_sha256": "20f9e50e959c2764e84757b6b3fa980a548330444a35871c60ef1476203a069d",
+   "stem": "portrait"
+  },
+  {
+   "dhash": "d2ccc6aa92dcf66c",
+   "source_sha256": "88fe09486f69f5d338f8be706de6de7f0aa527e5a8afa59a4b6833749a79cb51",
+   "stem": "blowout-series-ii-1-1"
+  },
+  {
+   "dhash": "dad2b2a4aeda5a5a",
+   "source_sha256": "c34998c63d3b3a624c386462c44f02504f307ea71b88f48bab1f0ea494b8415f",
+   "stem": "blowout-series-ii-2-1"
+  },
+  {
+   "dhash": "c4c4e2d8d0fc8ec2",
+   "source_sha256": "f117c3f39a00ea541335569e2401f8b3be5ff59aff63b53f6a9cb4a6ce864b1a",
+   "stem": "blowout-series-ii-3-1"
+  },
+  {
+   "dhash": "a2acc8e0f0ccbcea",
+   "source_sha256": "d5968b62b9f4ab66653d65c3caff1719bd74313b222fafaac7ec96eba73c8060",
+   "stem": "blowout-series-ii-6-1"
+  },
+  {
+   "dhash": "8a9cf4ce94dccca6",
+   "source_sha256": "3ef22042ebdeba38de23359d86058cf74cf4b81912682a222131b88713a7c8e4",
+   "stem": "blowout-series-ii-7-1"
+  },
+  {
+   "dhash": "80c66668e0b49cba",
+   "source_sha256": "d82e7d1160ca55c4967bafc4fd57f468cee6e3f4616164135e2cb71893185da0",
+   "stem": "blowout-series-ii-10-1"
+  },
+  {
+   "dhash": "8e8c9cd8b0ccdcd2",
+   "source_sha256": "c51e7a76eb515976afeab397269abc313481004879074df094e0f1834f43789d",
+   "stem": "blowout-series-ii-11-1"
+  },
+  {
+   "dhash": "c886a6b2a6b29ecc",
+   "source_sha256": "7c70d75bfe1b6677dbb1dba9c17a2902c9dcf9c7e4b61d43889174b9b81bb099",
+   "stem": "blowout-series-ii-12-1"
+  },
+  {
+   "dhash": "b088aad2f18e8692",
+   "source_sha256": "0bb042ef648949db2a622b8b68ca986980ed66e3ea133608d1fd42d44735945f",
+   "stem": "blowout-series-ii-14-1"
+  },
+  {
+   "dhash": "b0f4969e96a6d0f0",
+   "source_sha256": "f4f88f981b359f3a58cbb8eb6e5d6c9a07b55a44233f8da112d4285fbd7d91fa",
+   "stem": "blowout-series-ii-15-1"
+  },
+  {
+   "dhash": "94d2e68ca2d2a4a8",
+   "source_sha256": "12ff0d2a118489cfd5d34faba04c580284ecac1c984d824e0081555a9f38bbce",
+   "stem": "blowout-series-ii-19-1"
+  }
+ ],
+ "publication": {
+  "approved_at": "2026-11-05T15:02:57.256Z",
+  "approved_by": "founder",
+  "licence_accepted_at": "2026-11-05T14:24:00.541Z",
+  "licence_version": "PA-GPIL-2026-10-29",
+  "permission_ref": "PA-PERM-ad22762hgg2",
+  "state": "approved",
+  "test_note": null,
+  "version": "v2"
+ },
+ "schema": "plotnua.plotart.gallery-package.v1",
+ "works": [
+  {
+   "ai_founder_decision": null,
+   "ai_involvement": "none",
+   "ai_note": null,
+   "availability": "available",
+   "d_cm": null,
+   "description": "One off monoprint consisting of multiple print layers, hand embellished with acrylic and Lacquer on Somerset paper.\n1 of 1.\nWork can be viewed in person at Stoney Road Press, Dublin.",
+   "h_cm": 140,
+   "id": "w45csc49r34",
+   "images": [
+    {
+     "alt": "Abstract and geometric shapes and patterns in bright colours.",
+     "aspect": 0.66515,
+     "derivatives": [
+      {
+       "file": "blowout-series-ii-1-1-600.webp",
+       "long_edge": 600,
+       "pixels": [
+        399,
+        600
+       ]
+      },
+      {
+       "file": "blowout-series-ii-1-1-1200.webp",
+       "long_edge": 1200,
+       "pixels": [
+        798,
+        1200
+       ]
+      },
+      {
+       "file": "blowout-series-ii-1-1-2000.webp",
+       "long_edge": 2000,
+       "pixels": [
+        1330,
+        2000
+       ]
+      }
+     ],
+     "photo_credit": null,
+     "pixels": [
+      3647,
+      5483
+     ],
+     "role": "main"
+    }
+   ],
+   "materials": null,
+   "medium": "Monoprint/Acrylic/Lacquer",
+   "price_eur": 10000,
+   "price_on_request": false,
+   "slug": "blowout-series-ii-1",
+   "title": "Blowout Series II #1",
+   "w_cm": 100,
+   "year": 2021
+  },
+  {
+   "ai_founder_decision": null,
+   "ai_involvement": "none",
+   "ai_note": null,
+   "availability": "available",
+   "d_cm": null,
+   "description": "One off monoprint consisting of multiple print layers, hand embellished with acrylic and Lacquer on Somerset paper.\n1 of 1.\nWork can be viewed in person at Stoney Road Press, Dublin.",
+   "h_cm": 140,
+   "id": "wxcp1v5y210",
+   "images": [
+    {
+     "alt": "Abstract and geometric shapes and patterns in bright colours.",
+     "aspect": 0.66515,
+     "derivatives": [
+      {
+       "file": "blowout-series-ii-2-1-600.webp",
+       "long_edge": 600,
+       "pixels": [
+        399,
+        600
+       ]
+      },
+      {
+       "file": "blowout-series-ii-2-1-1200.webp",
+       "long_edge": 1200,
+       "pixels": [
+        798,
+        1200
+       ]
+      },
+      {
+       "file": "blowout-series-ii-2-1-2000.webp",
+       "long_edge": 2000,
+       "pixels": [
+        1330,
+        2000
+       ]
+      }
+     ],
+     "photo_credit": null,
+     "pixels": [
+      3647,
+      5483
+     ],
+     "role": "main"
+    }
+   ],
+   "materials": null,
+   "medium": "Monoprint/Acrylic/Lacquer",
+   "price_eur": 10000,
+   "price_on_request": false,
+   "slug": "blowout-series-ii-2",
+   "title": "Blowout Series II #2",
+   "w_cm": 100,
+   "year": 2021
+  },
+  {
+   "ai_founder_decision": null,
+   "ai_involvement": "none",
+   "ai_note": null,
+   "availability": "available",
+   "d_cm": null,
+   "description": "One off monoprint consisting of multiple print layers, hand embellished with acrylic and Lacquer on Somerset paper.\n1 of 1.\nWork can be viewed in person at Stoney Road Press, Dublin.",
+   "h_cm": 140,
+   "id": "w3isl7g6zbu",
+   "images": [
+    {
+     "alt": "Abstract and geometric shapes and patterns in bright colours.",
+     "aspect": 0.66515,
+     "derivatives": [
+      {
+       "file": "blowout-series-ii-3-1-600.webp",
+       "long_edge": 600,
+       "pixels": [
+        399,
+        600
+       ]
+      },
+      {
+       "file": "blowout-series-ii-3-1-1200.webp",
+       "long_edge": 1200,
+       "pixels": [
+        798,
+        1200
+       ]
+      },
+      {
+       "file": "blowout-series-ii-3-1-2000.webp",
+       "long_edge": 2000,
+       "pixels": [
+        1330,
+        2000
+       ]
+      }
+     ],
+     "photo_credit": null,
+     "pixels": [
+      3647,
+      5483
+     ],
+     "role": "main"
+    }
+   ],
+   "materials": null,
+   "medium": "Monoprint/Acrylic/Lacquer",
+   "price_eur": 10000,
+   "price_on_request": false,
+   "slug": "blowout-series-ii-3",
+   "title": "Blowout Series II #3",
+   "w_cm": 100,
+   "year": 2021
+  },
+  {
+   "ai_founder_decision": null,
+   "ai_involvement": "none",
+   "ai_note": null,
+   "availability": "available",
+   "d_cm": null,
+   "description": "One off monoprint consisting of multiple print layers, hand embellished with acrylic and Lacquer on Somerset paper.\n1 of 1.\nWork can be viewed in person at Stoney Road Press, Dublin.",
+   "h_cm": 140,
+   "id": "wk29r7r7ggl",
+   "images": [
+    {
+     "alt": "Abstract and geometric shapes and patterns in bright colours.",
+     "aspect": 0.66515,
+     "derivatives": [
+      {
+       "file": "blowout-series-ii-6-1-600.webp",
+       "long_edge": 600,
+       "pixels": [
+        399,
+        600
+       ]
+      },
+      {
+       "file": "blowout-series-ii-6-1-1200.webp",
+       "long_edge": 1200,
+       "pixels": [
+        798,
+        1200
+       ]
+      },
+      {
+       "file": "blowout-series-ii-6-1-2000.webp",
+       "long_edge": 2000,
+       "pixels": [
+        1330,
+        2000
+       ]
+      }
+     ],
+     "photo_credit": null,
+     "pixels": [
+      3647,
+      5483
+     ],
+     "role": "main"
+    }
+   ],
+   "materials": null,
+   "medium": "Monoprint/Acrylic/Lacquer",
+   "price_eur": 10000,
+   "price_on_request": false,
+   "slug": "blowout-series-ii-6",
+   "title": "Blowout Series II #6",
+   "w_cm": 100,
+   "year": 2021
+  },
+  {
+   "ai_founder_decision": null,
+   "ai_involvement": "none",
+   "ai_note": null,
+   "availability": "available",
+   "d_cm": null,
+   "description": "One off monoprint consisting of multiple print layers, hand embellished with acrylic and Lacquer on Somerset paper.\n1 of 1.\nWork can be viewed in person at Stoney Road Press, Dublin.",
+   "h_cm": 140,
+   "id": "wzj3jgebf0g",
+   "images": [
+    {
+     "alt": "Abstract and geometric shapes and patterns in bright colours.",
+     "aspect": 0.66515,
+     "derivatives": [
+      {
+       "file": "blowout-series-ii-7-1-600.webp",
+       "long_edge": 600,
+       "pixels": [
+        399,
+        600
+       ]
+      },
+      {
+       "file": "blowout-series-ii-7-1-1200.webp",
+       "long_edge": 1200,
+       "pixels": [
+        798,
+        1200
+       ]
+      },
+      {
+       "file": "blowout-series-ii-7-1-2000.webp",
+       "long_edge": 2000,
+       "pixels": [
+        1330,
+        2000
+       ]
+      }
+     ],
+     "photo_credit": null,
+     "pixels": [
+      3647,
+      5483
+     ],
+     "role": "main"
+    }
+   ],
+   "materials": null,
+   "medium": "Monoprint/Acrylic/Lacquer",
+   "price_eur": 10000,
+   "price_on_request": false,
+   "slug": "blowout-series-ii-7",
+   "title": "Blowout Series II #7",
+   "w_cm": 100,
+   "year": 2021
+  },
+  {
+   "ai_founder_decision": null,
+   "ai_involvement": "none",
+   "ai_note": null,
+   "availability": "available",
+   "d_cm": null,
+   "description": "One off monoprint consisting of multiple print layers, hand embellished with acrylic and Lacquer on Somerset paper.\n1 of 1.\nWork can be viewed in person at Stoney Road Press, Dublin.",
+   "h_cm": 140,
+   "id": "wmrgdrb6nt5",
+   "images": [
+    {
+     "alt": "Abstract and geometric shapes and patterns in bright colours.",
+     "aspect": 0.66515,
+     "derivatives": [
+      {
+       "file": "blowout-series-ii-10-1-600.webp",
+       "long_edge": 600,
+       "pixels": [
+        399,
+        600
+       ]
+      },
+      {
+       "file": "blowout-series-ii-10-1-1200.webp",
+       "long_edge": 1200,
+       "pixels": [
+        798,
+        1200
+       ]
+      },
+      {
+       "file": "blowout-series-ii-10-1-2000.webp",
+       "long_edge": 2000,
+       "pixels": [
+        1330,
+        2000
+       ]
+      }
+     ],
+     "photo_credit": null,
+     "pixels": [
+      3647,
+      5483
+     ],
+     "role": "main"
+    }
+   ],
+   "materials": null,
+   "medium": "Monoprint/Acrylic/Lacquer",
+   "price_eur": 10000,
+   "price_on_request": false,
+   "slug": "blowout-series-ii-10",
+   "title": "Blowout Series II #10",
+   "w_cm": 100,
+   "year": 2018
+  },
+  {
+   "ai_founder_decision": null,
+   "ai_involvement": "none",
+   "ai_note": null,
+   "availability": "available",
+   "d_cm": null,
+   "description": "One off monoprint consisting of multiple print layers, hand embellished with acrylic and Lacquer on Somerset paper.\n1 of 1.\nWork can be viewed in person at Stoney Road Press, Dublin.",
+   "h_cm": 140,
+   "id": "w24603zjuws",
+   "images": [
+    {
+     "alt": "Abstract and geometric shapes and patterns in bright colours.",
+     "aspect": 0.66515,
+     "derivatives": [
+      {
+       "file": "blowout-series-ii-11-1-600.webp",
+       "long_edge": 600,
+       "pixels": [
+        399,
+        600
+       ]
+      },
+      {
+       "file": "blowout-series-ii-11-1-1200.webp",
+       "long_edge": 1200,
+       "pixels": [
+        798,
+        1200
+       ]
+      },
+      {
+       "file": "blowout-series-ii-11-1-2000.webp",
+       "long_edge": 2000,
+       "pixels": [
+        1330,
+        2000
+       ]
+      }
+     ],
+     "photo_credit": null,
+     "pixels": [
+      3647,
+      5483
+     ],
+     "role": "main"
+    }
+   ],
+   "materials": null,
+   "medium": "Monoprint/Acrylic/Lacquer",
+   "price_eur": 10000,
+   "price_on_request": false,
+   "slug": "blowout-series-ii-11",
+   "title": "Blowout Series II #11",
+   "w_cm": 100,
+   "year": 2021
+  },
+  {
+   "ai_founder_decision": null,
+   "ai_involvement": "none",
+   "ai_note": null,
+   "availability": "available",
+   "d_cm": null,
+   "description": "One off monoprint consisting of multiple print layers, hand embellished with acrylic and Lacquer on Somerset paper.\n1 of 1.\nWork can be viewed in person at Stoney Road Press, Dublin.",
+   "h_cm": 140,
+   "id": "wgu7e9b1a3i",
+   "images": [
+    {
+     "alt": "Abstract and geometric shapes and patterns in bright colours.",
+     "aspect": 0.66515,
+     "derivatives": [
+      {
+       "file": "blowout-series-ii-12-1-600.webp",
+       "long_edge": 600,
+       "pixels": [
+        399,
+        600
+       ]
+      },
+      {
+       "file": "blowout-series-ii-12-1-1200.webp",
+       "long_edge": 1200,
+       "pixels": [
+        798,
+        1200
+       ]
+      },
+      {
+       "file": "blowout-series-ii-12-1-2000.webp",
+       "long_edge": 2000,
+       "pixels": [
+        1330,
+        2000
+       ]
+      }
+     ],
+     "photo_credit": null,
+     "pixels": [
+      3647,
+      5483
+     ],
+     "role": "main"
+    }
+   ],
+   "materials": null,
+   "medium": "Monoprint/Acrylic/Lacquer",
+   "price_eur": 10000,
+   "price_on_request": false,
+   "slug": "blowout-series-ii-12",
+   "title": "Blowout Series II #12",
+   "w_cm": 100,
+   "year": 2021
+  },
+  {
+   "ai_founder_decision": null,
+   "ai_involvement": "none",
+   "ai_note": null,
+   "availability": "available",
+   "d_cm": null,
+   "description": "One off monoprint consisting of multiple print layers, hand embellished with acrylic and Lacquer on Somerset paper.\n1 of 1.\nWork can be viewed in person at Stoney Road Press, Dublin.",
+   "h_cm": 140,
+   "id": "wl00e130mt2",
+   "images": [
+    {
+     "alt": "Abstract and geometric shapes and patterns in bright colours.",
+     "aspect": 0.66515,
+     "derivatives": [
+      {
+       "file": "blowout-series-ii-14-1-600.webp",
+       "long_edge": 600,
+       "pixels": [
+        399,
+        600
+       ]
+      },
+      {
+       "file": "blowout-series-ii-14-1-1200.webp",
+       "long_edge": 1200,
+       "pixels": [
+        798,
+        1200
+       ]
+      },
+      {
+       "file": "blowout-series-ii-14-1-2000.webp",
+       "long_edge": 2000,
+       "pixels": [
+        1330,
+        2000
+       ]
+      }
+     ],
+     "photo_credit": null,
+     "pixels": [
+      3647,
+      5483
+     ],
+     "role": "main"
+    }
+   ],
+   "materials": null,
+   "medium": "Monoprint/Acrylic/Lacquer",
+   "price_eur": 10000,
+   "price_on_request": false,
+   "slug": "blowout-series-ii-14",
+   "title": "Blowout Series II #14",
+   "w_cm": 100,
+   "year": 2021
+  },
+  {
+   "ai_founder_decision": null,
+   "ai_involvement": "none",
+   "ai_note": null,
+   "availability": "available",
+   "d_cm": null,
+   "description": "One off monoprint consisting of multiple print layers, hand embellished with acrylic and Lacquer on Somerset paper.\n1 of 1.\nWork can be viewed in person at Stoney Road Press, Dublin.",
+   "h_cm": 100,
+   "id": "waxg0r20owa",
+   "images": [
+    {
+     "alt": "Abstract and geometric shapes and patterns in bright colours.",
+     "aspect": 1.50343,
+     "derivatives": [
+      {
+       "file": "blowout-series-ii-15-1-600.webp",
+       "long_edge": 600,
+       "pixels": [
+        600,
+        399
+       ]
+      },
+      {
+       "file": "blowout-series-ii-15-1-1200.webp",
+       "long_edge": 1200,
+       "pixels": [
+        1200,
+        798
+       ]
+      },
+      {
+       "file": "blowout-series-ii-15-1-2000.webp",
+       "long_edge": 2000,
+       "pixels": [
+        2000,
+        1330
+       ]
+      }
+     ],
+     "photo_credit": null,
+     "pixels": [
+      5483,
+      3647
+     ],
+     "role": "main"
+    }
+   ],
+   "materials": null,
+   "medium": "Monoprint/Acrylic/Lacquer",
+   "price_eur": 10000,
+   "price_on_request": false,
+   "slug": "blowout-series-ii-15",
+   "title": "Blowout Series II #15",
+   "w_cm": 140,
+   "year": 2021
+  },
+  {
+   "ai_founder_decision": null,
+   "ai_involvement": "none",
+   "ai_note": null,
+   "availability": "available",
+   "d_cm": null,
+   "description": "One off monoprint consisting of multiple print layers, hand embellished with acrylic and Lacquer on Somerset paper.\n1 of 1.\nWork can be viewed in person at Stoney Road Press, Dublin.",
+   "h_cm": 100,
+   "id": "wvi497rvwy0",
+   "images": [
+    {
+     "alt": "Abstract and geometric shapes and patterns in bright colours.",
+     "aspect": 1.50343,
+     "derivatives": [
+      {
+       "file": "blowout-series-ii-19-1-600.webp",
+       "long_edge": 600,
+       "pixels": [
+        600,
+        399
+       ]
+      },
+      {
+       "file": "blowout-series-ii-19-1-1200.webp",
+       "long_edge": 1200,
+       "pixels": [
+        1200,
+        798
+       ]
+      },
+      {
+       "file": "blowout-series-ii-19-1-2000.webp",
+       "long_edge": 2000,
+       "pixels": [
+        2000,
+        1330
+       ]
+      }
+     ],
+     "photo_credit": null,
+     "pixels": [
+      5483,
+      3647
+     ],
+     "role": "main"
+    }
+   ],
+   "materials": null,
+   "medium": "Monoprint/Acrylic/Lacquer",
+   "price_eur": 10000,
+   "price_on_request": false,
+   "slug": "blowout-series-ii-19",
+   "title": "Blowout Series II #19",
+   "w_cm": 140,
+   "year": 2021
+  }
+ ]
+}
