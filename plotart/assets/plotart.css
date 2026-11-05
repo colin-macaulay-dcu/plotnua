@@ -576,7 +576,7 @@ body.pa .pa-free-lines{ margin:0; }
    position numeral beside the artist's name; then the twenty-five founding positions as an architectural index.
    No cards, badges, prices or crops. The artwork provides the colour. */
 .pa-vgc .pa-vg2-head{ margin-bottom:0; }
-.pa-vgc-count{ margin:10px 0 clamp(44px, 6vw, 92px); font-size:15px; color:var(--stone); font-variant-numeric:tabular-nums; }
+body.pa .pa-vgc-count{ margin:10px 0 clamp(44px, 6vw, 92px); font-size:15px; color:var(--stone); font-variant-numeric:tabular-nums; }
 .pa-vgc-hang{ list-style:none; margin:0; padding:0; display:grid; grid-template-columns:repeat(3, minmax(0, 1fr)); column-gap:clamp(36px, 5vw, 88px); row-gap:clamp(64px, 7vw, 120px); }
 .pa-vgc-hang.n-1{ grid-template-columns:auto; justify-content:center; }
 .pa-vgc-hang.n-2{ grid-template-columns:repeat(2, minmax(0, 460px)); justify-content:center; }
@@ -643,7 +643,7 @@ body.pa .pa-vgc-pos > a:focus-visible{ outline-offset:-3px; border-radius:0; }
   .pa-vgc-hang.n-1 .pa-vgc-art{ height:clamp(420px, 62vw, 600px); }
 }
 @media (max-width:639px){
-  .pa-vgc-count{ margin-bottom:36px; }
+  body.pa .pa-vgc-count{ margin-bottom:36px; }
   .pa-vgc-hang, .pa-vgc-hang.n-1, .pa-vgc-hang.n-2{ grid-template-columns:minmax(0, 1fr); row-gap:56px; }
   .pa-vgc-hang.n-1 > .pa-vgc-work{ max-width:none; }
   .pa-vgc-art, .pa-vgc-hang.n-1 .pa-vgc-art{ height:auto; justify-content:center; }
