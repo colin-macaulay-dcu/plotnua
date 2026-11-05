@@ -101,13 +101,25 @@ def main():
     if why is None and PUSH:
         sha = git("rev-parse", "--short", "HEAD")
         ok1, o1 = run("git push origin HEAD:refs/heads/content/ideas-%s" % sha)
-        ok2, o2 = run("bash atlas-tools/release/request-release.sh ideas")  # automation v1: main only moves after the gate passes
+        # automation v1: main only moves after the gate passes. --no-wait (fix 5 Nov 2026): a gate started from a
+        # workflow with the built-in GitHub token never triggers "Release to production" (GitHub does not chain
+        # workflow_run from that token), so waiting here only timed out. The publishing workflow's own "promote" job
+        # waits for this exact commit's gate and then runs the same trusted promote.sh from main.
+        ok2, o2 = run("bash atlas-tools/release/request-release.sh ideas --no-wait")
         if not (ok1 and ok2):
             why = "push refused (main moved or no permission): " + (o1 + " " + o2)[-300:]
+        else:
+            full = git("rev-parse", "HEAD")
+            branch = "release/auto/ideas-%s" % full[:7]
+            print("RELEASE_REQUESTED %s %s" % (branch, full))
+            gho = os.environ.get("GITHUB_OUTPUT")
+            if gho:
+                with open(gho, "a", encoding="utf-8") as f:
+                    f.write("branch=%s\nsha=%s\n" % (branch, full))
     if why:
         subprocess.run(["git", "reset", "-q", "--hard", base], cwd=ROOT)
         print("IDEA BOARD · FAILED · %s" % why[:500]); return 1
-    print("IDEA BOARD · %d approved ideas · %s %s" % (len(ideas), "published" if PUSH else "verified (simulated)", git("rev-parse", "--short", "HEAD")))
+    print("IDEA BOARD · %d approved ideas · %s %s" % (len(ideas), "release requested" if PUSH else "verified (simulated)", git("rev-parse", "--short", "HEAD")))
     return 0
 
 
