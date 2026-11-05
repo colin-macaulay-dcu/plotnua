@@ -10,6 +10,7 @@ For each queue item the founder has published (or, once authorised, an automatic
   3. refuses unless every publication safeguard passes;
   4. writes ONLY plotart/artists/<slug>/ (pages, images, gallery.json), the Virtual Gallery grid and the artist's
      ARTIST_SUPPLIED_ARTWORK provenance records; commits that on top of main;
+     (the Virtual Gallery collection is the region between P.VG_BEGIN and P.VG_END: Direction C2, 5 Nov 2026)
   5. runs the content-only boundary (with --instant for automatic updates), the PlotArt launch guard L1-L14, the
      image provenance guard and the image-rights scan;
   6. --push: pushes an audit branch content/plotart-<artist>-v<n>-<commit> (one per attempt) and fast-forwards main (never forced; refused if main
@@ -38,7 +39,6 @@ if ENDPOINT and not re.match(r"^https://[a-z0-9.-]+\.workers\.dev/v1/enquiry$|^h
 ART = os.path.join(ROOT, "plotart", "artists")
 REC = os.path.join(ROOT, "image-provenance-records.json")
 VG = os.path.join(ROOT, "plotart", "gallery", "index.html")
-GRID = re.compile(r'(<ol class="pa-vg2-grid"[^>]*>)(.*?)(\n  </ol>)', re.S)
 
 
 # Cloudflare Access sits in front of the Studio's address: the pipeline passes it with an Access service token
@@ -103,20 +103,25 @@ def layout():
         if e.code == 404:
             return None
         raise
+    # "assigned" (optional, Direction C2): an artist holds the position but their gallery is not published here.
+    # It is a bare true/false and never carries who; anything else is refused.
+    allowed = {"position", "slug", "reserved", "assigned"}
     for e in r.get("positions", []):
-        if set(e) - {"position", "slug", "reserved"}:
-            raise RuntimeError("the gallery order carries a field it must not: %s" % sorted(set(e) - {"position", "slug", "reserved"}))
+        if set(e) - allowed:
+            raise RuntimeError("the gallery order carries a field it must not: %s" % sorted(set(e) - allowed))
+        if "assigned" in e and not isinstance(e["assigned"], bool):
+            raise RuntimeError("the gallery order's 'assigned' flag must be true or false")
     return {"positions": r.get("positions", []), "extra": r.get("extra", [])}
 
 
 def regrid(lay=None):
     pkgs = P.gallery_order(published())
     html = open(VG, encoding="utf-8").read()
-    m = GRID.search(html)
-    if not m:
-        raise RuntimeError("the Virtual Gallery collection grid was not found")
+    span = P.vg_region(html)
+    if not span:
+        raise RuntimeError("the Virtual Gallery collection region was not found")
     lay = layout() if lay is None else lay
-    open(VG, "w", encoding="utf-8").write(html[:m.start()] + m.group(1) + P.vg_grid(pkgs, layout=lay) + m.group(3) + html[m.end():])
+    open(VG, "w", encoding="utf-8").write(html[:span[0]] + P.vg_collection(pkgs, layout=lay) + html[span[1]:])
 
 
 def records(slug, new):

@@ -569,39 +569,97 @@ body.pa .pa-free-lines{ margin:0; }
 .pa-vg2-collection .pa-wrap{ padding-top:clamp(44px, 5vw, 80px); padding-bottom:clamp(56px, 7vw, 110px); }
 .pa-vg2-head{ display:flex; justify-content:space-between; align-items:flex-end; gap:24px 48px; flex-wrap:wrap; margin-bottom:clamp(26px, 3vw, 40px); }
 .pa-vg2-head h2{ font-size:clamp(32px, 3.4vw, 50px); margin:0; }
-.pa-vg2-note{ margin:0; max-width:40ch; color:var(--stone); font-size:15px; }
-.pa-vg2-grid{ list-style:none; margin:0; padding:0; display:grid; grid-template-columns:repeat(5, minmax(0, 1fr)); gap:clamp(16px, 1.8vw, 28px); }
-@media (max-width:1279px){ .pa-vg2-grid{ grid-template-columns:repeat(4, minmax(0, 1fr)); } }
-@media (max-width:959px){ .pa-vg2-grid{ grid-template-columns:repeat(3, minmax(0, 1fr)); } }
-@media (max-width:639px){ .pa-vg2-grid{ grid-template-columns:repeat(2, minmax(0, 1fr)); gap:14px; } }
-/* Gallery tiles (founder refinement, 29 Oct 2026): dark charcoal, softly rounded, fine border, floating */
 .pa-vg2-collection{ background:linear-gradient(180deg, #2B2927 0%, #282624 100%); }
-.pa-vg2-grid{ gap:clamp(18px, 2vw, 30px); }
-.pa-gspace-tile, .pa-gcard-tile{ position:relative; display:block; border-radius:14px; background:linear-gradient(165deg, #363330 0%, #312E2B 100%);
-  border:1px solid rgba(242,235,224,.10); box-shadow:0 22px 44px -28px rgba(0,0,0,.75), 0 2px 6px -2px rgba(0,0,0,.35);
-  transition:transform .45s ease, border-color .45s ease, box-shadow .45s ease; }
-.pa-gspace-tile{ aspect-ratio:4 / 5; overflow:hidden; }
-.pa-gspace-light{ position:absolute; inset:0; background:radial-gradient(ellipse 70% 45% at 50% 0%, rgba(255,236,206,.07), rgba(255,236,206,0) 70%); }
-.pa-gspace-light::after{ content:""; position:absolute; left:22%; right:22%; top:24%; bottom:30%; border:1px solid rgba(242,235,224,.07); border-radius:3px; }
-.pa-gspace--t2 .pa-gspace-light::after{ left:18%; right:18%; top:30%; bottom:34%; }
-.pa-gspace--t3 .pa-gspace-light::after{ left:26%; right:26%; top:20%; bottom:26%; }
-.pa-gspace--t4 .pa-gspace-light::after{ left:20%; right:20%; top:27%; bottom:36%; }
-.pa-gspace--t5 .pa-gspace-light::after{ left:24%; right:24%; top:22%; bottom:30%; }
-.pa-gspace-n{ position:absolute; left:16px; bottom:13px; font-family:var(--sans); font-size:11.5px; font-weight:600; letter-spacing:.18em; color:rgba(207,133,102,.72); }
-.pa-gspace.is-reserved .pa-gspace-n{ bottom:31px; }
-.pa-gspace-r{ position:absolute; left:16px; bottom:13px; font-family:var(--sans); font-size:10.5px; font-weight:600; letter-spacing:.24em; text-transform:uppercase; color:rgba(242,235,224,.62); }
-.pa-gspace.is-reserved .pa-gspace-light::after{ border-color:rgba(207,133,102,.26); }
-.pa-gspace:hover .pa-gspace-tile, .pa-gcard-tile:hover, .pa-gcard-tile:focus-visible{ transform:translateY(-3px); border-color:rgba(242,235,224,.24); box-shadow:0 30px 52px -30px rgba(0,0,0,.85), 0 2px 6px -2px rgba(0,0,0,.35); }
-/* an approved artist's card: the featured artwork leads */
-.pa-gcard-tile{ text-decoration:none; color:inherit; padding:10px 10px 16px; }
-.pa-gcard-art{ display:block; aspect-ratio:4 / 5; border-radius:9px; overflow:hidden; background:#24221F; }
-.pa-gcard-art img{ display:block; width:100%; height:100%; object-fit:cover; }
-.pa-gcard-cap{ display:flex; flex-direction:column; gap:3px; padding:14px 6px 0; }
-.pa-gcard.is-founding .pa-gcard-tile{ border-color:rgba(207,133,102,.55); }
 .pa-gcard-badge{ align-self:flex-start; font-size:10px; letter-spacing:.16em; text-transform:uppercase; color:var(--terra-text); border:1px solid rgba(207,133,102,.45); border-radius:999px; padding:3px 8px; margin-bottom:5px; }
-.pa-gcard-name{ font-family:var(--serif); font-size:clamp(20px, 1.6vw, 23px); color:var(--ivory); line-height:1.15; }
-.pa-gcard-meta{ font-size:13px; color:var(--stone); }
-@media (prefers-reduced-motion:reduce){ .pa-gspace-tile, .pa-gcard-tile{ transition:none; } .pa-gspace:hover .pa-gspace-tile, .pa-gcard-tile:hover{ transform:none; } }
+/* ===== Virtual Gallery collection · Direction C2 "The Curated Collection" (founder approval 5 Nov 2026) =====
+   One uncropped work per open gallery on the dark wall, standing on a common baseline above a fine rule; a serif
+   position numeral beside the artist's name; then the twenty-five founding positions as an architectural index.
+   No cards, badges, prices or crops. The artwork provides the colour. */
+.pa-vgc .pa-vg2-head{ margin-bottom:0; }
+.pa-vgc-count{ margin:10px 0 clamp(44px, 6vw, 92px); font-size:15px; color:var(--stone); font-variant-numeric:tabular-nums; }
+.pa-vgc-hang{ list-style:none; margin:0; padding:0; display:grid; grid-template-columns:repeat(3, minmax(0, 1fr)); column-gap:clamp(36px, 5vw, 88px); row-gap:clamp(64px, 7vw, 120px); }
+.pa-vgc-hang.n-1{ grid-template-columns:auto; justify-content:center; }
+.pa-vgc-hang.n-2{ grid-template-columns:repeat(2, minmax(0, 460px)); justify-content:center; }
+.pa-vgc-work{ position:relative; min-width:0; }
+.pa-vgc-hang.n-1 > .pa-vgc-work{ max-width:min(600px, 100%); }
+.pa-vgc-hang.n-1 .pa-vgc-label{ width:0; min-width:100%; }   /* a single work: the label is exactly as wide as the work */
+.pa-vgc-art{ display:flex; align-items:flex-end; justify-content:flex-start; height:clamp(300px, 31vw, 470px); }
+.pa-vgc-hang.n-1 .pa-vgc-art{ height:clamp(380px, 46vw, 640px); }
+.pa-vgc-art img{ display:block; width:auto; height:auto; max-width:100%; max-height:100%; box-shadow:var(--shadow-art);
+  outline:1px solid rgba(242,235,224,.08); outline-offset:0;   /* a hairline edge so a dark work still reads on the dark wall */
+  transition:box-shadow .5s ease; }
+.pa-vgc-art.is-empty{ align-items:center; justify-content:center; aspect-ratio:4 / 5; height:auto; max-height:clamp(300px, 31vw, 470px); padding:12%;
+  border:1px solid rgba(242,235,224,.12); text-align:center; }
+.pa-vgc-art.is-empty span{ font-family:var(--serif); font-size:clamp(18px, 1.6vw, 22px); line-height:1.3; color:var(--stone); }
+.pa-vgc-work:hover .pa-vgc-art img{ box-shadow:0 2px 3px rgba(0,0,0,.3), 0 22px 40px rgba(0,0,0,.38), 0 48px 80px rgba(0,0,0,.26); }
+.pa-vgc-label{ display:grid; grid-template-columns:auto minmax(0, 1fr); column-gap:18px; margin-top:22px; padding-top:16px; border-top:1px solid rgba(242,235,224,.14); }
+.pa-vgc-n{ min-width:1.1em; font-family:var(--serif); font-size:clamp(28px, 2.3vw, 34px); line-height:.95; color:var(--terra-text); font-variant-numeric:lining-nums tabular-nums; }
+.pa-vgc-name{ font-size:clamp(24px, 2vw, 28px); line-height:1.1; }
+.pa-vgc-name a{ color:var(--ivory); text-decoration:none; }
+.pa-vgc-name a::after{ content:""; position:absolute; inset:0; }   /* the whole work is one link, named by the artist */
+.pa-vgc-work:hover .pa-vgc-name a{ text-decoration:underline; text-decoration-thickness:1px; text-underline-offset:6px; }
+.pa-vgc-name a:focus-visible{ outline:none; text-decoration:underline; text-decoration-thickness:1px; text-underline-offset:6px; }
+.pa-vgc-name a:focus-visible::after{ outline:2px solid var(--terra-text); outline-offset:10px; border-radius:4px; }
+body.pa .pa-vgc-practice{ margin:5px 0 0; font-size:14.5px; line-height:1.45; color:var(--stone); }
+.pa-vgc-enter{ display:inline-block; margin-top:14px; font-size:14px; font-weight:600; color:var(--terra-text); }
+.pa-vgc-work:hover .pa-vgc-enter{ color:var(--terra-hover); }
+.pa-vgc-sr{ position:absolute!important; width:1px; height:1px; margin:-1px; padding:0; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; border:0; }
+/* the twenty-five founding positions */
+.pa-vgc-index{ margin-top:clamp(72px, 8vw, 128px); }
+.pa-vgc-index h3{ font-size:clamp(26px, 2.4vw, 34px); }
+body.pa .pa-vgc-note{ margin:10px 0 0; max-width:62ch; font-size:15px; color:var(--stone); }
+.pa-vgc-line{ list-style:none; margin:26px 0 0; padding:0; display:grid; grid-template-columns:repeat(25, minmax(0, 1fr)); gap:4px; align-items:end; }
+.pa-vgc-line li{ height:4px; }
+.pa-vgc-line .is-pub{ background:var(--terra-text); }
+.pa-vgc-line .is-res{ box-shadow:inset 0 0 0 1px rgba(242,235,224,.42); }
+.pa-vgc-line .is-prep{ background:repeating-linear-gradient(90deg, rgba(242,235,224,.5) 0 2px, transparent 2px 4px); }
+.pa-vgc-line .is-av{ height:1px; background:rgba(242,235,224,.18); }
+.pa-vgc-key{ list-style:none; margin:16px 0 0; padding:0; display:flex; flex-wrap:wrap; gap:6px 22px; font-size:13.5px; color:var(--stone); font-variant-numeric:tabular-nums; }
+.pa-vgc-key b{ font-weight:600; color:var(--ivory); }
+.pa-vgc-k{ display:inline-block; width:9px; height:9px; margin-right:7px; }
+.pa-vgc-k.is-pub{ width:14px; height:2px; vertical-align:3px; background:var(--terra-text); }
+.pa-vgc-k.is-res{ border:1px solid rgba(242,235,224,.5); }
+.pa-vgc-k.is-prep{ border-radius:50%; border:1px solid rgba(242,235,224,.5); background:linear-gradient(90deg, rgba(242,235,224,.5) 50%, transparent 50%); }
+.pa-vgc-k.is-av{ display:none; }
+.pa-vgc-plan{ list-style:none; margin:26px 0 0; padding:0; display:grid; grid-template-columns:repeat(5, minmax(0, 1fr));
+  border-top:1px solid rgba(242,235,224,.13); border-left:1px solid rgba(242,235,224,.13); }
+.pa-vgc-pos{ position:relative; min-width:0; min-height:clamp(84px, 7.4vw, 104px); border-right:1px solid rgba(242,235,224,.13); border-bottom:1px solid rgba(242,235,224,.13); color:var(--mute); font-size:13.5px; }
+.pa-vgc-pos > a, .pa-vgc-pos:not(.is-pub){ display:flex; flex-direction:column; justify-content:space-between; gap:8px; padding:12px 14px 13px; }
+.pa-vgc-pos > a{ height:100%; color:var(--ivory); text-decoration:none; }
+.pa-vgc-pos b{ font-family:var(--serif); font-weight:400; font-size:24px; line-height:1; color:var(--mute); font-variant-numeric:lining-nums tabular-nums; }
+.pa-vgc-st{ min-width:0; overflow-wrap:anywhere; }
+.pa-vgc-pos.is-pub b{ color:var(--terra-text); }
+.pa-vgc-pos.is-pub .pa-vgc-st{ font-family:var(--serif); font-size:19px; line-height:1.15; }
+.pa-vgc-pos > a:hover{ background:rgba(242,235,224,.035); }
+.pa-vgc-pos > a:hover .pa-vgc-st{ text-decoration:underline; text-underline-offset:4px; }
+body.pa .pa-vgc-pos > a:focus-visible{ outline-offset:-3px; border-radius:0; }
+.pa-vgc-pos.is-res .pa-vgc-st{ font-family:var(--serif); font-style:italic; font-size:16px; color:var(--stone); }
+.pa-vgc-pos.is-prep .pa-vgc-st{ color:var(--stone); }
+.pa-vgc-pos.is-res::before, .pa-vgc-pos.is-prep::before{ content:""; position:absolute; top:16px; right:14px; width:9px; height:9px; border:1px solid rgba(242,235,224,.5); }
+.pa-vgc-pos.is-prep::before{ border-radius:50%; background:linear-gradient(90deg, rgba(242,235,224,.5) 50%, transparent 50%); }
+@media (max-width:1023px){
+  .pa-vgc-hang{ grid-template-columns:repeat(2, minmax(0, 1fr)); }
+  .pa-vgc-art{ height:clamp(280px, 44vw, 420px); }
+  .pa-vgc-hang.n-1 .pa-vgc-art{ height:clamp(420px, 62vw, 600px); }
+}
+@media (max-width:639px){
+  .pa-vgc-count{ margin-bottom:36px; }
+  .pa-vgc-hang, .pa-vgc-hang.n-1, .pa-vgc-hang.n-2{ grid-template-columns:minmax(0, 1fr); row-gap:56px; }
+  .pa-vgc-hang.n-1 > .pa-vgc-work{ max-width:none; }
+  .pa-vgc-art, .pa-vgc-hang.n-1 .pa-vgc-art{ height:auto; justify-content:center; }
+  .pa-vgc-art img{ max-height:64svh; }
+  .pa-vgc-art.is-empty{ max-height:none; }
+  .pa-vgc-label{ margin-top:18px; padding-top:14px; column-gap:14px; }
+  .pa-vgc-line{ gap:3px; }
+  /* the plan becomes a compact grid of numerals; each state keeps a mark (and its words for screen readers) */
+  .pa-vgc-pos{ min-height:58px; }
+  .pa-vgc-pos > a, .pa-vgc-pos:not(.is-pub){ padding:8px 0 8px 9px; justify-content:flex-start; gap:6px; }
+  .pa-vgc-pos b{ font-size:19px; }
+  .pa-vgc-st{ position:absolute!important; width:1px; height:1px; margin:-1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; }
+  .pa-vgc-pos.is-pub > a::after{ content:""; display:block; width:16px; height:2px; background:var(--terra-text); }
+  .pa-vgc-pos.is-res::before, .pa-vgc-pos.is-prep::before{ top:auto; bottom:11px; left:9px; right:auto; width:8px; height:8px; }
+}
+@media (prefers-reduced-motion:reduce){ .pa-vgc-art img{ transition:none; } }
 .pa-vg2-close{ background:#2A2725; }
 .pa-vg2-close .pa-wrap{ padding-top:clamp(44px, 5vw, 76px); padding-bottom:clamp(44px, 5vw, 76px); text-align:center; }
 .pa-vg2-close-t{ font-family:var(--serif); font-size:clamp(30px, 3.6vw, 52px); color:var(--ivory); margin:0 0 18px; }
@@ -622,15 +680,8 @@ body.pa .pa-free-lines{ margin:0; }
 @media (max-width:860px){ .pa-lg-promises{ grid-template-columns:1fr; } }
 .pa-lg-aah h2{ font-size:clamp(34px, 3.6vw, 52px); }
 .pa-home-lg .pa-lg-feature{ margin-top:clamp(24px, 3vw, 40px); }
-/* empty tiles match the height of an artist card in the same row */
-.pa-vg2-grid{ align-items:stretch; }
-.pa-gspace, .pa-gcard{ display:flex; }
-.pa-gspace-tile, .pa-gcard-tile{ width:100%; }
-.pa-gspace-tile{ height:100%; }
 
 /* ===== Artist galleries (Phase 1, 29 Oct 2026). The whole artwork is always shown: contain, never cover. ===== */
-.pa-gcard-art{ background:radial-gradient(120% 90% at 50% 18%, #2E2B28 0%, #24221F 70%); }
-.pa-gcard-art img{ object-fit:contain; padding:7%; box-sizing:border-box; filter:drop-shadow(0 10px 14px rgba(0,0,0,.45)); }
 .pa-crumb{ display:flex; flex-wrap:wrap; gap:8px; align-items:center; font-size:13.5px; color:var(--mute); margin:0 0 clamp(26px, 3.4vw, 44px); }
 .pa-crumb a{ color:var(--stone); text-decoration:none; } .pa-crumb a:hover{ color:var(--ivory); }
 .pa-crumb [aria-current]{ color:var(--ivory); }
@@ -653,8 +704,6 @@ body.pa .pa-free-lines{ margin:0; }
 .pa-ag-empty{ max-width:720px; margin:0 auto; text-align:center; padding:clamp(48px, 7vw, 96px) clamp(20px, 4vw, 48px); border:1px solid var(--line); border-radius:14px; background:radial-gradient(120% 90% at 50% 15%, #2F2C29 0%, #242220 72%); }
 .pa-ag-empty .pa-ag-empty-t{ font-family:var(--serif); font-size:clamp(28px, 3vw, 38px); line-height:1.15; color:var(--ivory); margin:0 0 12px; }
 .pa-ag-empty .pa-ag-empty-l{ margin:0 auto; max-width:440px; color:var(--stone); }
-.pa-gcard-art.is-empty{ display:flex; align-items:center; justify-content:center; padding:12%; text-align:center; }
-.pa-gcard-art.is-empty span{ font-family:var(--serif); font-size:clamp(17px, 1.5vw, 20px); line-height:1.3; color:var(--stone); }
 /* One or two works (founder decision 1 Nov 2026): centred and larger; artwork proportions kept (contain). 3+ unchanged. */
 .pa-ag-grid:has(> .pa-ag-work:only-child){ grid-template-columns:minmax(0, 720px); justify-content:center; }
 @media (min-width:640px){ .pa-ag-grid:has(> .pa-ag-work:nth-child(2):last-child){ grid-template-columns:repeat(2, minmax(0, 520px)); justify-content:center; } }
