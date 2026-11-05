@@ -9931,6 +9931,1060 @@
         "date": "2026-11-04",
         "subject": "DISC-035 The Outdoor Room, founder build authorisation (private preview only)"
       }
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "leah-hewson",
+      "asset": "plotart/artists/leah-hewson/img/portrait-600.webp",
+      "bytes": 30450,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (sRGB IEC61966-2.1)",
+      "licence_version": "PA-GPIL-2026-10-29",
+      "permission_ref": "PA-PERM-ad22762hgg2",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        470,
+        600
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "2b6c4c23ba9f6d080d9c51ba11a904b238ed3d9fdcf890019903115653ca8d11",
+      "source_sha256": "20f9e50e959c2764e84757b6b3fa980a548330444a35871c60ef1476203a069d",
+      "subject": "portrait",
+      "work_slug": null
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "leah-hewson",
+      "asset": "plotart/artists/leah-hewson/img/blowout-series-ii-1-1-600.webp",
+      "bytes": 32154,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (sRGB IEC61966-2.1)",
+      "licence_version": "PA-GPIL-2026-10-29",
+      "permission_ref": "PA-PERM-ad22762hgg2",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        399,
+        600
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "3ad18c93ad63c2a8026be09f554e7ee99ba5e6d1c650c1866a468b3808ef778a",
+      "source_sha256": "88fe09486f69f5d338f8be706de6de7f0aa527e5a8afa59a4b6833749a79cb51",
+      "subject": "artwork",
+      "work_slug": "blowout-series-ii-1"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "leah-hewson",
+      "asset": "plotart/artists/leah-hewson/img/blowout-series-ii-1-1-1200.webp",
+      "bytes": 93296,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (sRGB IEC61966-2.1)",
+      "licence_version": "PA-GPIL-2026-10-29",
+      "permission_ref": "PA-PERM-ad22762hgg2",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        798,
+        1200
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "2d6fe54af3acf111caf56033b93cbbe65992b8234049abb4804264d37de99fab",
+      "source_sha256": "88fe09486f69f5d338f8be706de6de7f0aa527e5a8afa59a4b6833749a79cb51",
+      "subject": "artwork",
+      "work_slug": "blowout-series-ii-1"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "leah-hewson",
+      "asset": "plotart/artists/leah-hewson/img/blowout-series-ii-1-1-2000.webp",
+      "bytes": 264704,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (sRGB IEC61966-2.1)",
+      "licence_version": "PA-GPIL-2026-10-29",
+      "permission_ref": "PA-PERM-ad22762hgg2",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        1330,
+        2000
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "41b291ea9ab9c9b56f238535a964124952a2052b967109d87f13cbff29731253",
+      "source_sha256": "88fe09486f69f5d338f8be706de6de7f0aa527e5a8afa59a4b6833749a79cb51",
+      "subject": "artwork",
+      "work_slug": "blowout-series-ii-1"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "leah-hewson",
+      "asset": "plotart/artists/leah-hewson/img/blowout-series-ii-2-1-600.webp",
+      "bytes": 44384,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (sRGB IEC61966-2.1)",
+      "licence_version": "PA-GPIL-2026-10-29",
+      "permission_ref": "PA-PERM-ad22762hgg2",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        399,
+        600
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "da33295af8e0e28af4ac2e0867b692392b4e6f29dfde8017049b861972f11b39",
+      "source_sha256": "c34998c63d3b3a624c386462c44f02504f307ea71b88f48bab1f0ea494b8415f",
+      "subject": "artwork",
+      "work_slug": "blowout-series-ii-2"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "leah-hewson",
+      "asset": "plotart/artists/leah-hewson/img/blowout-series-ii-2-1-1200.webp",
+      "bytes": 119130,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (sRGB IEC61966-2.1)",
+      "licence_version": "PA-GPIL-2026-10-29",
+      "permission_ref": "PA-PERM-ad22762hgg2",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        798,
+        1200
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "1feb162a17197a8aad49482af8826ffb9f6b133b6b6a76d3ed816289de19192f",
+      "source_sha256": "c34998c63d3b3a624c386462c44f02504f307ea71b88f48bab1f0ea494b8415f",
+      "subject": "artwork",
+      "work_slug": "blowout-series-ii-2"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "leah-hewson",
+      "asset": "plotart/artists/leah-hewson/img/blowout-series-ii-2-1-2000.webp",
+      "bytes": 286520,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (sRGB IEC61966-2.1)",
+      "licence_version": "PA-GPIL-2026-10-29",
+      "permission_ref": "PA-PERM-ad22762hgg2",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        1330,
+        2000
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "a1dbb7a6aa06d4852ef4f42ba7e2f0ef3fd6e30b397de42021626fc49af8482d",
+      "source_sha256": "c34998c63d3b3a624c386462c44f02504f307ea71b88f48bab1f0ea494b8415f",
+      "subject": "artwork",
+      "work_slug": "blowout-series-ii-2"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "leah-hewson",
+      "asset": "plotart/artists/leah-hewson/img/blowout-series-ii-3-1-600.webp",
+      "bytes": 40748,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (sRGB IEC61966-2.1)",
+      "licence_version": "PA-GPIL-2026-10-29",
+      "permission_ref": "PA-PERM-ad22762hgg2",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        399,
+        600
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "74343d052be602ad30c87e3fada294da1185eb62ef750f637ae5bdeeb8eb2c6f",
+      "source_sha256": "f117c3f39a00ea541335569e2401f8b3be5ff59aff63b53f6a9cb4a6ce864b1a",
+      "subject": "artwork",
+      "work_slug": "blowout-series-ii-3"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "leah-hewson",
+      "asset": "plotart/artists/leah-hewson/img/blowout-series-ii-3-1-1200.webp",
+      "bytes": 117390,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (sRGB IEC61966-2.1)",
+      "licence_version": "PA-GPIL-2026-10-29",
+      "permission_ref": "PA-PERM-ad22762hgg2",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        798,
+        1200
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "c65f0b7818fde5718776d945fb05788192c2476bdfe3a2f1bc6fe761b153f958",
+      "source_sha256": "f117c3f39a00ea541335569e2401f8b3be5ff59aff63b53f6a9cb4a6ce864b1a",
+      "subject": "artwork",
+      "work_slug": "blowout-series-ii-3"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "leah-hewson",
+      "asset": "plotart/artists/leah-hewson/img/blowout-series-ii-3-1-2000.webp",
+      "bytes": 289336,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (sRGB IEC61966-2.1)",
+      "licence_version": "PA-GPIL-2026-10-29",
+      "permission_ref": "PA-PERM-ad22762hgg2",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        1330,
+        2000
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "7be9ef2fcb35d9d163b0c590f3e6b519c28e1ce864acf60bcfc570b360c8a620",
+      "source_sha256": "f117c3f39a00ea541335569e2401f8b3be5ff59aff63b53f6a9cb4a6ce864b1a",
+      "subject": "artwork",
+      "work_slug": "blowout-series-ii-3"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "leah-hewson",
+      "asset": "plotart/artists/leah-hewson/img/blowout-series-ii-6-1-600.webp",
+      "bytes": 38070,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (sRGB IEC61966-2.1)",
+      "licence_version": "PA-GPIL-2026-10-29",
+      "permission_ref": "PA-PERM-ad22762hgg2",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        399,
+        600
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "11ddfb980ca9659cc0944d966bc4a85b1275115254d7b2512a053f134325172d",
+      "source_sha256": "d5968b62b9f4ab66653d65c3caff1719bd74313b222fafaac7ec96eba73c8060",
+      "subject": "artwork",
+      "work_slug": "blowout-series-ii-6"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "leah-hewson",
+      "asset": "plotart/artists/leah-hewson/img/blowout-series-ii-6-1-1200.webp",
+      "bytes": 99170,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (sRGB IEC61966-2.1)",
+      "licence_version": "PA-GPIL-2026-10-29",
+      "permission_ref": "PA-PERM-ad22762hgg2",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        798,
+        1200
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "7f2f75fef9fd3e8007330d10b3de43c3be9a37216f6e89f98d997460cfc45536",
+      "source_sha256": "d5968b62b9f4ab66653d65c3caff1719bd74313b222fafaac7ec96eba73c8060",
+      "subject": "artwork",
+      "work_slug": "blowout-series-ii-6"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "leah-hewson",
+      "asset": "plotart/artists/leah-hewson/img/blowout-series-ii-6-1-2000.webp",
+      "bytes": 236326,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (sRGB IEC61966-2.1)",
+      "licence_version": "PA-GPIL-2026-10-29",
+      "permission_ref": "PA-PERM-ad22762hgg2",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        1330,
+        2000
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "fbd3b43d3c1f50173bdf4ea1f25df7e72adf0f40221b23027cf17ae0a3577333",
+      "source_sha256": "d5968b62b9f4ab66653d65c3caff1719bd74313b222fafaac7ec96eba73c8060",
+      "subject": "artwork",
+      "work_slug": "blowout-series-ii-6"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "leah-hewson",
+      "asset": "plotart/artists/leah-hewson/img/blowout-series-ii-7-1-600.webp",
+      "bytes": 35836,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (sRGB IEC61966-2.1)",
+      "licence_version": "PA-GPIL-2026-10-29",
+      "permission_ref": "PA-PERM-ad22762hgg2",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        399,
+        600
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "431aa336db0d1a9c25c7af8a8f42c3664b101cfb6d9450fd11ef7348b173f258",
+      "source_sha256": "3ef22042ebdeba38de23359d86058cf74cf4b81912682a222131b88713a7c8e4",
+      "subject": "artwork",
+      "work_slug": "blowout-series-ii-7"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "leah-hewson",
+      "asset": "plotart/artists/leah-hewson/img/blowout-series-ii-7-1-1200.webp",
+      "bytes": 95922,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (sRGB IEC61966-2.1)",
+      "licence_version": "PA-GPIL-2026-10-29",
+      "permission_ref": "PA-PERM-ad22762hgg2",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        798,
+        1200
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "ce0db391b23f5edc463253a25c5aef8cb33340a97bafa6094148c796f20e2b43",
+      "source_sha256": "3ef22042ebdeba38de23359d86058cf74cf4b81912682a222131b88713a7c8e4",
+      "subject": "artwork",
+      "work_slug": "blowout-series-ii-7"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "leah-hewson",
+      "asset": "plotart/artists/leah-hewson/img/blowout-series-ii-7-1-2000.webp",
+      "bytes": 227956,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (sRGB IEC61966-2.1)",
+      "licence_version": "PA-GPIL-2026-10-29",
+      "permission_ref": "PA-PERM-ad22762hgg2",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        1330,
+        2000
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "961b1c12e8fcc07e51dee2c2b3ee4b2866ff2b62a82171e781d3bd84a2b49d41",
+      "source_sha256": "3ef22042ebdeba38de23359d86058cf74cf4b81912682a222131b88713a7c8e4",
+      "subject": "artwork",
+      "work_slug": "blowout-series-ii-7"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "leah-hewson",
+      "asset": "plotart/artists/leah-hewson/img/blowout-series-ii-10-1-600.webp",
+      "bytes": 38746,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (sRGB IEC61966-2.1)",
+      "licence_version": "PA-GPIL-2026-10-29",
+      "permission_ref": "PA-PERM-ad22762hgg2",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        399,
+        600
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "0cdb56c23503de9590e74d3841c384c2f31ce07a6a86d263bcdca4cf2d824cb9",
+      "source_sha256": "d82e7d1160ca55c4967bafc4fd57f468cee6e3f4616164135e2cb71893185da0",
+      "subject": "artwork",
+      "work_slug": "blowout-series-ii-10"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "leah-hewson",
+      "asset": "plotart/artists/leah-hewson/img/blowout-series-ii-10-1-1200.webp",
+      "bytes": 98630,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (sRGB IEC61966-2.1)",
+      "licence_version": "PA-GPIL-2026-10-29",
+      "permission_ref": "PA-PERM-ad22762hgg2",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        798,
+        1200
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "01cda08edfa72d5fa386e83d220eb492212f91edf451306435950fb413847a6d",
+      "source_sha256": "d82e7d1160ca55c4967bafc4fd57f468cee6e3f4616164135e2cb71893185da0",
+      "subject": "artwork",
+      "work_slug": "blowout-series-ii-10"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "leah-hewson",
+      "asset": "plotart/artists/leah-hewson/img/blowout-series-ii-10-1-2000.webp",
+      "bytes": 203798,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (sRGB IEC61966-2.1)",
+      "licence_version": "PA-GPIL-2026-10-29",
+      "permission_ref": "PA-PERM-ad22762hgg2",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        1330,
+        2000
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "7eded87ae964c7c2083ee12d68de6c262f002b4b84f831e03fb7911ded94e5df",
+      "source_sha256": "d82e7d1160ca55c4967bafc4fd57f468cee6e3f4616164135e2cb71893185da0",
+      "subject": "artwork",
+      "work_slug": "blowout-series-ii-10"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "leah-hewson",
+      "asset": "plotart/artists/leah-hewson/img/blowout-series-ii-11-1-600.webp",
+      "bytes": 48902,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (sRGB IEC61966-2.1)",
+      "licence_version": "PA-GPIL-2026-10-29",
+      "permission_ref": "PA-PERM-ad22762hgg2",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        399,
+        600
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "754f9310c6b737cccd5d5e7d9575c2f47ce3d12c81b4ffda0af61ddca639d2e2",
+      "source_sha256": "c51e7a76eb515976afeab397269abc313481004879074df094e0f1834f43789d",
+      "subject": "artwork",
+      "work_slug": "blowout-series-ii-11"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "leah-hewson",
+      "asset": "plotart/artists/leah-hewson/img/blowout-series-ii-11-1-1200.webp",
+      "bytes": 138060,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (sRGB IEC61966-2.1)",
+      "licence_version": "PA-GPIL-2026-10-29",
+      "permission_ref": "PA-PERM-ad22762hgg2",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        798,
+        1200
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "9f88971f2697410f6f0acc4062f6bb27284e53c808d84bb94f84ce477357cbe5",
+      "source_sha256": "c51e7a76eb515976afeab397269abc313481004879074df094e0f1834f43789d",
+      "subject": "artwork",
+      "work_slug": "blowout-series-ii-11"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "leah-hewson",
+      "asset": "plotart/artists/leah-hewson/img/blowout-series-ii-11-1-2000.webp",
+      "bytes": 311176,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (sRGB IEC61966-2.1)",
+      "licence_version": "PA-GPIL-2026-10-29",
+      "permission_ref": "PA-PERM-ad22762hgg2",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        1330,
+        2000
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "c88458a5ff7c1c8f1eb244f856a5296fa8c6ff1e5ea9828bde1360911a26f14b",
+      "source_sha256": "c51e7a76eb515976afeab397269abc313481004879074df094e0f1834f43789d",
+      "subject": "artwork",
+      "work_slug": "blowout-series-ii-11"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "leah-hewson",
+      "asset": "plotart/artists/leah-hewson/img/blowout-series-ii-12-1-600.webp",
+      "bytes": 40896,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (sRGB IEC61966-2.1)",
+      "licence_version": "PA-GPIL-2026-10-29",
+      "permission_ref": "PA-PERM-ad22762hgg2",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        399,
+        600
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "9081591e8d6f6016eca1b4d62c9caa310ed6baaae621f29c5a6c7f63dcc3a6ea",
+      "source_sha256": "7c70d75bfe1b6677dbb1dba9c17a2902c9dcf9c7e4b61d43889174b9b81bb099",
+      "subject": "artwork",
+      "work_slug": "blowout-series-ii-12"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "leah-hewson",
+      "asset": "plotart/artists/leah-hewson/img/blowout-series-ii-12-1-1200.webp",
+      "bytes": 102420,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (sRGB IEC61966-2.1)",
+      "licence_version": "PA-GPIL-2026-10-29",
+      "permission_ref": "PA-PERM-ad22762hgg2",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        798,
+        1200
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "48d7406137c0ae04c127d6e11f055be1147be6ff06021f01d89a7fa8b5388927",
+      "source_sha256": "7c70d75bfe1b6677dbb1dba9c17a2902c9dcf9c7e4b61d43889174b9b81bb099",
+      "subject": "artwork",
+      "work_slug": "blowout-series-ii-12"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "leah-hewson",
+      "asset": "plotart/artists/leah-hewson/img/blowout-series-ii-12-1-2000.webp",
+      "bytes": 237746,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (sRGB IEC61966-2.1)",
+      "licence_version": "PA-GPIL-2026-10-29",
+      "permission_ref": "PA-PERM-ad22762hgg2",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        1330,
+        2000
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "529003bb370412dec86056831d88165361bf7f38cacbdeb27200c6fbb7ef2781",
+      "source_sha256": "7c70d75bfe1b6677dbb1dba9c17a2902c9dcf9c7e4b61d43889174b9b81bb099",
+      "subject": "artwork",
+      "work_slug": "blowout-series-ii-12"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "leah-hewson",
+      "asset": "plotart/artists/leah-hewson/img/blowout-series-ii-14-1-600.webp",
+      "bytes": 44472,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (sRGB IEC61966-2.1)",
+      "licence_version": "PA-GPIL-2026-10-29",
+      "permission_ref": "PA-PERM-ad22762hgg2",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        399,
+        600
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "023fcbdc33eb9a2b09867e879d099534ace9177fdc1d1a0e4d4c0a08be13e1b3",
+      "source_sha256": "0bb042ef648949db2a622b8b68ca986980ed66e3ea133608d1fd42d44735945f",
+      "subject": "artwork",
+      "work_slug": "blowout-series-ii-14"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "leah-hewson",
+      "asset": "plotart/artists/leah-hewson/img/blowout-series-ii-14-1-1200.webp",
+      "bytes": 116144,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (sRGB IEC61966-2.1)",
+      "licence_version": "PA-GPIL-2026-10-29",
+      "permission_ref": "PA-PERM-ad22762hgg2",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        798,
+        1200
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "cd8fc6f4594108e9413e87f0feed3877ea8959b28a568a763b2f0261cb01bf4c",
+      "source_sha256": "0bb042ef648949db2a622b8b68ca986980ed66e3ea133608d1fd42d44735945f",
+      "subject": "artwork",
+      "work_slug": "blowout-series-ii-14"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "leah-hewson",
+      "asset": "plotart/artists/leah-hewson/img/blowout-series-ii-14-1-2000.webp",
+      "bytes": 270270,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (sRGB IEC61966-2.1)",
+      "licence_version": "PA-GPIL-2026-10-29",
+      "permission_ref": "PA-PERM-ad22762hgg2",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        1330,
+        2000
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "8b1706495373e418555ab927da587a138f50e8bf38553f16e28d37d80579d3b8",
+      "source_sha256": "0bb042ef648949db2a622b8b68ca986980ed66e3ea133608d1fd42d44735945f",
+      "subject": "artwork",
+      "work_slug": "blowout-series-ii-14"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "leah-hewson",
+      "asset": "plotart/artists/leah-hewson/img/blowout-series-ii-15-1-600.webp",
+      "bytes": 37310,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (sRGB IEC61966-2.1)",
+      "licence_version": "PA-GPIL-2026-10-29",
+      "permission_ref": "PA-PERM-ad22762hgg2",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        600,
+        399
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "0f0c25f768db12626aafd4c03d0b40d9238fa5380dac530879bea0f97c2cb48f",
+      "source_sha256": "f4f88f981b359f3a58cbb8eb6e5d6c9a07b55a44233f8da112d4285fbd7d91fa",
+      "subject": "artwork",
+      "work_slug": "blowout-series-ii-15"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "leah-hewson",
+      "asset": "plotart/artists/leah-hewson/img/blowout-series-ii-15-1-1200.webp",
+      "bytes": 114026,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (sRGB IEC61966-2.1)",
+      "licence_version": "PA-GPIL-2026-10-29",
+      "permission_ref": "PA-PERM-ad22762hgg2",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        1200,
+        798
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "4369a8ee434caddd2a706a3f79898f6d2ea4272f42ee50d3f2b11220c0cf6742",
+      "source_sha256": "f4f88f981b359f3a58cbb8eb6e5d6c9a07b55a44233f8da112d4285fbd7d91fa",
+      "subject": "artwork",
+      "work_slug": "blowout-series-ii-15"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "leah-hewson",
+      "asset": "plotart/artists/leah-hewson/img/blowout-series-ii-15-1-2000.webp",
+      "bytes": 271942,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (sRGB IEC61966-2.1)",
+      "licence_version": "PA-GPIL-2026-10-29",
+      "permission_ref": "PA-PERM-ad22762hgg2",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        2000,
+        1330
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "a87e28d14be9bcf41284606af6852b5a565f03a65d59863a12387c8956efeaae",
+      "source_sha256": "f4f88f981b359f3a58cbb8eb6e5d6c9a07b55a44233f8da112d4285fbd7d91fa",
+      "subject": "artwork",
+      "work_slug": "blowout-series-ii-15"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "leah-hewson",
+      "asset": "plotart/artists/leah-hewson/img/blowout-series-ii-19-1-600.webp",
+      "bytes": 41410,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (sRGB IEC61966-2.1)",
+      "licence_version": "PA-GPIL-2026-10-29",
+      "permission_ref": "PA-PERM-ad22762hgg2",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        600,
+        399
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "3b11dedf75c8585b3be3c176841cc84c022b475d2030e857e9606bc9608e167c",
+      "source_sha256": "12ff0d2a118489cfd5d34faba04c580284ecac1c984d824e0081555a9f38bbce",
+      "subject": "artwork",
+      "work_slug": "blowout-series-ii-19"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "leah-hewson",
+      "asset": "plotart/artists/leah-hewson/img/blowout-series-ii-19-1-1200.webp",
+      "bytes": 128872,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (sRGB IEC61966-2.1)",
+      "licence_version": "PA-GPIL-2026-10-29",
+      "permission_ref": "PA-PERM-ad22762hgg2",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        1200,
+        798
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "379f948935961e9b5925a8e8a0cd5f9956409892a75fbb50c75f75c5e963036c",
+      "source_sha256": "12ff0d2a118489cfd5d34faba04c580284ecac1c984d824e0081555a9f38bbce",
+      "subject": "artwork",
+      "work_slug": "blowout-series-ii-19"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "leah-hewson",
+      "asset": "plotart/artists/leah-hewson/img/blowout-series-ii-19-1-2000.webp",
+      "bytes": 319628,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (sRGB IEC61966-2.1)",
+      "licence_version": "PA-GPIL-2026-10-29",
+      "permission_ref": "PA-PERM-ad22762hgg2",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        2000,
+        1330
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "1fa1ff2142e59f188aa009441c2b3205db8b9bc08f99e91ec9fd885ac867ebea",
+      "source_sha256": "12ff0d2a118489cfd5d34faba04c580284ecac1c984d824e0081555a9f38bbce",
+      "subject": "artwork",
+      "work_slug": "blowout-series-ii-19"
     }
   ],
   "legacy_undeclared": [
