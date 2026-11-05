@@ -8,7 +8,8 @@ admin "Publish" button (or, with --instant, the automatic availability/removal p
 "CONTENT BOUNDARY · OK" and exits 0 only when EVERY changed path is one of:
 
   plotart/artists/<slug>/index.html | <artwork>.html | img/<name>-<size>.webp   (added, changed or removed)
-  plotart/gallery/index.html            only inside the collection grid (<ol class="pa-vg2-grid">)
+  plotart/gallery/index.html            only inside the generated collection region
+                                        (<!-- pa-vg-collection:begin --> ... <!-- pa-vg-collection:end -->)
   image-provenance-records.json         only ARTIST_SUPPLIED_ARTWORK records; every other record and
                                         every other top-level field byte-for-byte unchanged
 
@@ -22,7 +23,8 @@ Exit codes: 0 content-only; 1 refused; 2 usage or git error.
 import json, re, subprocess, sys
 
 ART = re.compile(r"^plotart/artists/([a-z0-9]+(?:-[a-z0-9]+){0,6})/(?:[a-z0-9]+(?:-[a-z0-9]+){0,6}\.html|gallery\.json|img/[a-z0-9-]+-\d{2,5}\.webp)$")
-GRID = re.compile(rb'<ol class="pa-vg2-grid"[^>]*>.*?</ol>', re.S)
+# the generated collection region (Direction C2, 5 Nov 2026): the open galleries and the twenty-five positions
+GRID = re.compile(rb'<!-- pa-vg-collection:begin -->.*?<!-- pa-vg-collection:end -->', re.S)
 DETAILS = re.compile(r'class="pa-ag-title">([^<]*)<|class="pa-ag-sub">([^<]*)<|<h1>([^<]*)</h1>|class="pa-aw-dl">(.*?)</dl>|class="pa-aw-desc">([^<]*)<|<img [^>]*src="(img/[^"]+)"', re.S)
 PRICES = re.compile(r'class="pa-(?:ag-status|aw-price[^"]*)">(€[^<]*)<')
 
@@ -70,7 +72,7 @@ def main(base, rel, instant):
         if path == "plotart/gallery/index.html" and st == "M":
             a, b = show(base, path), show(rel, path)
             if GRID.sub(b"<grid/>", a) != GRID.sub(b"<grid/>", b):
-                refused.append("%s: changed outside the collection grid" % path)
+                refused.append("%s: changed outside the collection region" % path)
             continue
         if path == "image-provenance-records.json" and st == "M":
             a, b = json.loads(show(base, path)), json.loads(show(rel, path))

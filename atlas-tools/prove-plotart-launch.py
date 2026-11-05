@@ -113,9 +113,17 @@ for d, _, fs in os.walk(PA):
         found.add(os.path.relpath(os.path.join(d, f), PA).replace(os.sep, "/"))
 need(found == ALLOWED, "L1 plotart/ must hold exactly the launch files; extra %s, missing %s" % (sorted(found - ALLOWED), sorted(ALLOWED - found)))
 
+VG_BEGIN, VG_END = b"<!-- pa-vg-collection:begin -->", b"<!-- pa-vg-collection:end -->"
+
+
 def outside_grid(raw):
-    """The Virtual Gallery page with its collection grid (artist cards and spaces) blanked out."""
-    return re.sub(rb'<ol class="pa-vg2-grid"[^>]*>.*?</ol>', b'<ol class="pa-vg2-grid"><!-- collection --></ol>', raw, flags=re.S)
+    """The Virtual Gallery page with its generated collection region (Direction C2, 5 Nov 2026: the open galleries
+    and the twenty-five positions, between the two markers) blanked out. Without exactly one pair of markers the
+    page is returned unchanged, so it can never match the pinned fingerprint."""
+    a, b = raw.find(VG_BEGIN), raw.find(VG_END)
+    if raw.count(VG_BEGIN) != 1 or raw.count(VG_END) != 1 or not 0 <= a < b:
+        return raw
+    return raw[:a] + VG_BEGIN + b"<!-- collection -->" + raw[b:]
 
 
 def visible_text(s):
@@ -309,37 +317,74 @@ if vg:
     # Gallery order (founder decision 31 Oct 2026): the founder places artists in positions 01-25 and may reserve a
     # position. Item N of the grid (N <= 25) is position N: a published artist's card, or space N (its number, or its
     # number and RESERVED). Cards beyond the 25 positions follow. A space never links, shows an image or names anyone.
-    _grid = (re.search(r'<ol class="pa-vg2-grid"[^>]*>(.*?)</ol>', vg, re.S) or [None, ""])[1]
-    _items = re.findall(r'<li class="(pa-gcard[^"]*|pa-gspace[^"]*)"([^>]*)>(.*?)</li>', _grid, re.S)
-    _cards = re.findall(r'<li class="pa-gcard(?: is-founding)?"><a class="pa-gcard-tile" href="\.\./artists/([a-z0-9-]+)/"', vg)
-    spaces, _bad_space = [], []
-    for _i, (_cls, _attrs, _body) in enumerate(_items, 1):
-        if _cls.startswith("pa-gcard"):
-            continue
-        _m = re.fullmatch(r'pa-gspace pa-gspace--t[1-5]( is-reserved)?', _cls)
-        _r = bool(_m and _m.group(1))
-        _want = ' aria-label="Gallery space %02d%s"' % (_i, ", reserved" if _r else "")
-        _vis = re.sub(r"\s+", " ", visible_text(_body)).strip()
-        if not _m or _i > 25 or _attrs != _want or "<a " in _body or "<img" in _body or _vis != ("%02d Reserved" % _i if _r else "%02d" % _i):
-            _bad_space.append(_i)
-        spaces.append(_i)
+    # Direction C2 (founder approval 5 Nov 2026): between the two markers, the open galleries hang as works (one per
+    # published gallery, in position order, then any without a position), followed by the index of the twenty-five
+    # founding positions. Position N of the index is: the published artist placed there (number, name, link to that
+    # gallery), or its number and exactly one of Reserved / In preparation / Available -- never a name, link or image.
+    _ra, _rb = vg.find(VG_BEGIN.decode()), vg.find(VG_END.decode())
+    _region = vg[_ra:_rb] if (vg.count(VG_BEGIN.decode()) == 1 and vg.count(VG_END.decode()) == 1 and 0 <= _ra < _rb) else ""
+    need(bool(_region), "L11 the Virtual Gallery collection region (pa-vg-collection markers) is missing or duplicated")
+    _hang_m = re.search(r'\n  <ol class="pa-vgc-hang n-([123])" aria-label="Open galleries">(.*?)\n  </ol>', _region, re.S)
+    _works = re.findall(r'\n    <li class="pa-vgc-work">(.*?)</li>', _hang_m.group(2), re.S) if _hang_m else []
+    need(not _hang_m or len(re.findall(r"<li\b", _hang_m.group(2))) == len(_works), "L11 the wall holds something other than open galleries")
+    _cards, _wnums, _bad_work = [], [], []
+    for _w in _works:
+        _m = re.search(r'<div class="pa-vgc-label"><span class="pa-vgc-n" aria-hidden="true">(\d\d|)</span><div><h3 class="pa-vgc-name">'
+                       r'<a href="\.\./artists/([a-z0-9-]+)/" data-pa-track="vg_artist">(<span class="pa-vgc-sr">Position (\d\d): </span>)?([^<]+)</a></h3>', _w)
+        if not _m or (_m.group(1) or None) != _m.group(4):
+            _bad_work.append(_w[:80]); continue
+        _cards.append(_m.group(2)); _wnums.append(int(_m.group(1)) if _m.group(1) else None)
+        _imgs = re.findall(r"<img\b[^>]*>", _w)
+        _empty = '<div class="pa-vgc-art is-empty"><span>New work coming soon</span></div>' in _w
+        _own = re.compile(r"\.\./artists/%s/img/[a-z0-9-]+\.webp" % re.escape(_m.group(2)))
+        _urls = []
+        for t in _imgs:
+            _src = re.search(r'\ssrc="([^"]*)"', t); _set = re.search(r'\ssrcset="([^"]*)"', t)
+            _urls += [_src.group(1) if _src else ""] + ([x.strip().split(" ")[0] for x in _set.group(1).split(",")] if _set else [])
+        if len(_imgs) != (0 if _empty else 1) or _w.count('<a ') != 1 or not all(_own.fullmatch(u) for u in _urls):
+            _bad_work.append(_m.group(2))
+    need(_hang_m is not None or not GALLERY_SLUGS, "L11 the Virtual Gallery has published galleries but no wall of open galleries")
+    need(not _hang_m or int(_hang_m.group(1)) == min(len(_works), 3), "L11 the wall's size class does not match the number of open galleries")
+    need(not _bad_work, "L11 an open gallery on the wall is malformed, links elsewhere or shows another artist's image (%s)" % _bad_work)
+    _plan = re.search(r'<ol class="pa-vgc-plan" aria-label="The twenty-five positions">(.*?)\n    </ol>', _region, re.S)
+    _pos = re.findall(r'\n      <li class="pa-vgc-pos is-(pub|res|prep|av)">(.*?)</li>', _plan.group(1)) if _plan else []
+    need(len(_pos) == 25 and _plan and len(re.findall(r"<li\b", _plan.group(1))) == 25, "L11 the index must show exactly the twenty-five founding positions (found %d)" % len(_pos))
+    WORDS = {"res": "Reserved", "prep": "In preparation", "av": "Available"}
+    _bad_pos, _pub_pos = [], {}
+    for _i, (_st, _body) in enumerate(_pos, 1):
+        _num = '<b><span class="pa-vgc-sr">Position </span>%02d</b>' % _i
+        if _st == "pub":
+            _m = re.fullmatch(r'<a href="\.\./artists/([a-z0-9-]+)/" data-pa-track="vg_index">' + re.escape(_num) +
+                              r'<span class="pa-vgc-st"><span class="pa-vgc-sr">: </span>([^<]+)</span></a>', _body)
+            if not _m or _m.group(1) not in GALLERY_SLUGS:
+                _bad_pos.append(_i); continue
+            _pub_pos[_i] = _m.group(1)
+        elif _body != _num + '<span class="pa-vgc-st"><span class="pa-vgc-sr">: </span>%s</span>' % WORDS[_st]:
+            _bad_pos.append(_i)
+    need(not _bad_pos, "L11 a founding position is out of place, names or links an unpublished artist, or carries more than its number and state (positions %s)" % _bad_pos)
+    _numbered = [(n, s) for n, s in zip(_wnums, _cards) if n is not None]
+    need(_numbered == sorted(_pub_pos.items()) and all(n is None for n in _wnums[len(_numbered):]),
+         "L11 the wall and the index disagree: each numbered open gallery must be the published artist at that position, in order, then any without a position")
+    _seg = re.search(r'<ol class="pa-vgc-line" aria-hidden="true">((?:<li class="is-(?:pub|res|prep|av)"></li>){25})</ol>', _region)
+    need(bool(_seg) and re.findall(r'is-(\w+)', _seg.group(1)) == [st for st, _ in _pos], "L11 the occupancy line does not match the twenty-five positions")
+    _cnt = re.search(r'<p class="pa-vgc-count">(\d+) of 25 galleries open</p>', _region)
+    need(bool(_cnt) and int(_cnt.group(1)) == len(_cards), "L11 the open-gallery count does not match the wall")
+    _keyc = {k: int(n) for n, k in re.findall(r'<b>(\d+)</b> (published|reserved|in preparation|available)</li>', _region)}
+    _want = {k: sum(1 for st, _ in _pos if st == c) for c, k in (("pub", "published"), ("res", "reserved"), ("prep", "in preparation"), ("av", "available"))}
+    need(_keyc == {k: v for k, v in _want.items() if v}, "L11 the index summary does not match the twenty-five positions")
     need(OPEN or not _cards, "L15 an artist gallery is published but the gallery opening switch is off")
     need(sorted(_cards) == GALLERY_SLUGS and len(set(_cards)) == len(_cards),
-         "L11 Virtual Gallery cards must match the published artist galleries exactly (cards %s, galleries %s)" % (_cards, GALLERY_SLUGS))
-    need(len(_items) >= 25 and all(c.startswith("pa-gcard") for c, _, _ in _items[25:]),
-         "L11 the Virtual Gallery must show its 25 positions in order, then any further artists (found %d items)" % len(_items))
-    need(not _bad_space,
-         "L11 a gallery space is out of place, links somewhere, or carries content beyond its number and RESERVED (positions %s)" % _bad_space)
+         "L11 the open galleries on the wall must match the published artist galleries exactly (wall %s, galleries %s)" % (_cards, GALLERY_SLUGS))
     _vgm = vg.split("<main", 1)[-1].split("</main>")[0]; _vgmv = re.sub(r"\s+", " ", visible_text(_vgm))
     need("founding-25.html" not in _vgm and "Founding 25" not in _vgmv and "Artist first" not in _vgmv, "L11 the Virtual Gallery carries Founding 25 promotion or an 'Artist first' section")
     need("The first twenty-five galleries." in vgv, "L11 the Virtual Gallery collection heading is not the approved wording")
     _vgimgs = re.findall(r"<img\b[^>]*>", _vgm)
-    # A published gallery with no works on show keeps its card with the empty state and no picture (founder decision
-    # 1 Nov 2026): one picture per card, except those cards. Every picture is still a published artist's own card image.
-    _empty_cards = len(re.findall(r'<span class="pa-gcard-art is-empty"><span>New work coming soon</span></span>', _vgm))
+    # A published gallery with no works on show keeps its place with the empty state and no picture (founder decision
+    # 1 Nov 2026): one picture per open gallery, except those. Every picture is a published artist's own work image.
+    _empty_cards = _vgm.count('<div class="pa-vgc-art is-empty"><span>New work coming soon</span></div>')
     need(not re.search(r"<picture\b|<svg\b|background-image|url\(", _vgm) and len(_vgimgs) == len(_cards) - _empty_cards and
          all(re.search(r'src="\.\./artists/(%s)/img/[a-z0-9-]+\.webp"' % "|".join(map(re.escape, GALLERY_SLUGS or ["-"])), t) for t in _vgimgs),
-         "L11 the Virtual Gallery shows an image other than a published artist's card image")
+         "L11 the Virtual Gallery shows an image other than a published artist's own work image")
     need(not re.search(r"testimonial|“|”|\bsaid\b", visible_text(vg.split("<main", 1)[-1].split("</main>")[0]), re.I), "L11 the Virtual Gallery carries a quotation or testimonial")
     need("<title>Virtual Gallery | PlotArt</title>" in vg, "L11 the Virtual Gallery title is not the approved one")
 smp = os.path.join(SITE, "sitemap.xml")

@@ -105,7 +105,8 @@ const publish = () => spawnSync('python3', ['atlas-tools/plotart-gallery-publish
     GATE_STATUS_CMD: GATE, GATE_POLL: '0', GATE_TRIES: '3', HEALTH_CMD: HEALTH, PAGES_CMD: 'true', DISPATCH_CMD: 'true' } });
 const out = r => (r.stdout + r.stderr);
 const galleryFolders = () => G(ORIGIN, 'ls-tree', '-d', '--name-only', 'main:plotart/artists').split('\n').filter(Boolean);
-const cards = slug => (G(ORIGIN, 'show', 'main:plotart/gallery/index.html').match(new RegExp(`href="\\.\\./artists/${slug}/"`, 'g')) || []).length;
+// one open gallery on the Virtual Gallery wall per artist (Direction C2, 5 Nov 2026: the index of positions links it too, separately)
+const cards = slug => (G(ORIGIN, 'show', 'main:plotart/gallery/index.html').match(new RegExp(`href="\\.\\./artists/${slug}/" data-pa-track="vg_artist"`, 'g')) || []).length;
 
 console.log('PROVE · PlotArt content publishing · the release path, retries and failures');
 

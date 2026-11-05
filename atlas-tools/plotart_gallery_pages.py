@@ -246,62 +246,110 @@ def artwork_body(pkg, w, prev_w, next_w, preview=False, enquiry_endpoint=None):
        cta, ai, nav)
 
 
-def _vg_card(pkg):
+# ---- The Virtual Gallery collection: Direction C2 "The Curated Collection" (founder approval 5 Nov 2026) ----
+# One uncropped representative work per published gallery, equal treatment for every artist, then the twenty-five
+# founding positions as an index. The builder writes everything between the two markers below in
+# plotart/gallery/index.html (the rest of the page is fixed and pinned by the launch manifest).
+VG_BEGIN, VG_END = "<!-- pa-vg-collection:begin -->", "<!-- pa-vg-collection:end -->"
+VG_STATES = (("pub", "Published"), ("res", "Reserved"), ("prep", "In preparation"), ("av", "Available"))
+
+
+def _vg_work(pkg, n):
+    """One open gallery on the wall: its first shown work (never cropped), the position numeral, name, practice."""
     a = pkg["artist"]
     w, im = card_image(pkg)
-    if im is None:   # no works on show (founder decision 1 Nov 2026): the card, its position and badge stay
-        return ("""
-    <li class="pa-gcard%s"><a class="pa-gcard-tile" href="../artists/%s/" data-pa-track="vg_artist">
-      <span class="pa-gcard-art is-empty"><span>New work coming soon</span></span>
-      <span class="pa-gcard-cap">%s<span class="pa-gcard-name">%s</span><span class="pa-gcard-meta">%s</span></span></a></li>""") % (
-            " is-founding" if a.get("founding") else "", E(a["slug"]),
-            '<span class="pa-gcard-badge">Founding Artist</span>' if a.get("founding") else "",
-            E(a["display_name"]), E(meta_line(a)))
-    d = pick(im, 600)
-    return ("""
-    <li class="pa-gcard%s"><a class="pa-gcard-tile" href="../artists/%s/" data-pa-track="vg_artist">
-      <span class="pa-gcard-art"><img src="../artists/%s/img/%s" width="%d" height="%d" alt="%s" loading="lazy" decoding="async"></span>
-      <span class="pa-gcard-cap">%s<span class="pa-gcard-name">%s</span><span class="pa-gcard-meta">%s</span></span></a></li>""") % (
-        " is-founding" if a.get("founding") else "", E(a["slug"]), E(a["slug"]), E(d["file"]), d["pixels"][0], d["pixels"][1], E(im["alt"]),
-        '<span class="pa-gcard-badge">Founding Artist</span>' if a.get("founding") else "",
-        E(a["display_name"]), E(meta_line(a)))
-
-
-def _vg_space(n, reserved=False):
-    if reserved:   # founder-reserved (Gallery order, 31 Oct 2026): the number and RESERVED only; never a name
-        return """
-    <li class="pa-gspace pa-gspace--t%d is-reserved" aria-label="Gallery space %02d, reserved"><span class="pa-gspace-tile" aria-hidden="true"><span class="pa-gspace-light"></span><span class="pa-gspace-n">%02d</span><span class="pa-gspace-r">Reserved</span></span></li>""" % ((n - 1) % 5 + 1, n, n)
+    if im is None:   # no works on show (founder decision 1 Nov 2026): the gallery keeps its place, with the empty state
+        art = '<div class="pa-vgc-art is-empty"><span>New work coming soon</span></div>'
+    else:
+        d = pick(im, 1200)
+        art = ('<div class="pa-vgc-art"><img src="../artists/%s/img/%s" srcset="%s" sizes="(max-width:639px) 100vw, 680px" '
+               'width="%d" height="%d" alt="%s" loading="lazy" decoding="async"></div>') % (
+            E(a["slug"]), E(d["file"]), E(srcset(im, "../artists/%s/img/" % a["slug"])), d["pixels"][0], d["pixels"][1], E(im["alt"]))
+    num = "%02d" % n if n else ""
     return """
-    <li class="pa-gspace pa-gspace--t%d" aria-label="Gallery space %02d"><span class="pa-gspace-tile" aria-hidden="true"><span class="pa-gspace-light"></span><span class="pa-gspace-n">%02d</span></span></li>""" % ((n - 1) % 5 + 1, n, n)
+    <li class="pa-vgc-work">%s
+      <div class="pa-vgc-label"><span class="pa-vgc-n" aria-hidden="true">%s</span><div><h3 class="pa-vgc-name"><a href="../artists/%s/" data-pa-track="vg_artist">%s%s</a></h3>
+        <p class="pa-vgc-practice">%s</p><span class="pa-vgc-enter" aria-hidden="true">Enter the gallery &rarr;</span></div></div></li>""" % (
+        art, num, E(a["slug"]), ('<span class="pa-vgc-sr">Position %s: </span>' % num) if n else "", E(a["display_name"]), E(meta_line(a)))
 
 
-def vg_grid(pkgs, spaces=25, layout=None):
-    """The Virtual Gallery collection grid. Shared by build-plotart.py and the production content pipeline.
+def _vg_pos(n, state, pkg=None):
+    """One of the twenty-five positions in the index. Only a published gallery is named or linked: a reserved
+    position, one whose artist is not yet published, and an open one carry their number and state, never a name."""
+    word = dict(VG_STATES)[state]
+    if state == "pub":
+        a = pkg["artist"]
+        return ('\n      <li class="pa-vgc-pos is-pub"><a href="../artists/%s/" data-pa-track="vg_index"><b><span class="pa-vgc-sr">Position </span>%02d</b>'
+                '<span class="pa-vgc-st"><span class="pa-vgc-sr">: </span>%s</span></a></li>') % (E(a["slug"]), n, E(a["display_name"]))
+    return ('\n      <li class="pa-vgc-pos is-%s"><b><span class="pa-vgc-sr">Position </span>%02d</b>'
+            '<span class="pa-vgc-st"><span class="pa-vgc-sr">: </span>%s</span></li>') % (state, n, word)
 
-    Without a layout: one card per published artist (in the given order), then the remaining numbered spaces up to 25.
+
+def vg_positions(pkgs, spaces=25, layout=None):
+    """[(n, state, pkg)] for positions 1..spaces, plus the published galleries that hold no position.
+
+    Without a layout: published galleries take positions 1..n in the given order; the rest are available.
     With the founder's layout from PlotArt Studio (Gallery order, 31 Oct 2026) -- {"positions": [{"position", "slug",
-    "reserved"}], "extra": [slug, ...]} -- position N shows the artist placed there if their gallery is published here,
-    RESERVED if the founder reserved it, and otherwise its plain number (an artist placed but not yet published keeps the
-    plain number). Published artists without a position follow the 25 spaces in the layout's "extra" order, then by
-    gallery address. The layout never carries a reservation note."""
-    if layout is None:
-        out = [_vg_card(p) for p in pkgs]
-        for n in range(len(out) + 1, max(spaces, len(out)) + 1):
-            out.append(_vg_space(n))
-        return "".join(out)
+    "reserved", "assigned"}], "extra": [slug, ...]} -- position N is the artist placed there if their gallery is
+    published here; otherwise RESERVED if the founder reserved it; otherwise IN PREPARATION if an artist is placed there
+    whose gallery is not published (the Studio sends only "assigned", never who; a gallery address that is not
+    published here counts the same and is never shown); otherwise AVAILABLE. Published galleries without a position
+    follow in the layout's "extra" order, then by gallery address. The layout never carries a reservation note."""
     by = {p["artist"]["slug"]: p for p in pkgs}
-    pos = {int(e["position"]): e for e in layout.get("positions", []) if 1 <= int(e["position"]) <= spaces}
     out, placed = [], set()
+    if layout is None:
+        for i, p in enumerate(pkgs[:spaces], 1):
+            out.append((i, "pub", p)); placed.add(p["artist"]["slug"])
+        out += [(n, "av", None) for n in range(len(out) + 1, spaces + 1)]
+        return out, [p for p in pkgs[spaces:]]
+    pos = {int(e["position"]): e for e in layout.get("positions", []) if 1 <= int(e["position"]) <= spaces}
     for n in range(1, spaces + 1):
         e = pos.get(n) or {}
         if e.get("slug") in by and e["slug"] not in placed:
-            out.append(_vg_card(by[e["slug"]])); placed.add(e["slug"])
+            out.append((n, "pub", by[e["slug"]])); placed.add(e["slug"])
+        elif e.get("reserved"):
+            out.append((n, "res", None))
+        elif e.get("assigned") or e.get("slug"):
+            out.append((n, "prep", None))
         else:
-            out.append(_vg_space(n, reserved=bool(e.get("reserved"))))
+            out.append((n, "av", None))
     rest = [s for s in layout.get("extra", []) if s in by and s not in placed]
     rest += sorted(s for s in by if s not in placed and s not in rest)
-    out += [_vg_card(by[s]) for s in rest]
-    return "".join(out)
+    return out, [by[s] for s in rest]
+
+
+def vg_collection(pkgs, spaces=25, layout=None):
+    """Everything between VG_BEGIN and VG_END on the Virtual Gallery page: the open-count line, the wall of open
+    galleries (in position order, then any without a position) and the index of the twenty-five positions.
+    Shared by the production content pipeline (plotart-gallery-publish.py)."""
+    positions, extra = vg_positions(pkgs, spaces, layout)
+    works = [_vg_work(p, n) for n, st, p in positions if st == "pub"] + [_vg_work(p, None) for p in extra]
+    count = {k: sum(1 for _, st, _ in positions if st == k) for k, _ in VG_STATES}
+    key = "".join('<li><span class="pa-vgc-k is-%s" aria-hidden="true"></span><b>%d</b> %s</li>' % (k, count[k], w.lower())
+                  for k, w in VG_STATES if count[k])
+    line = "".join('<li class="is-%s"></li>' % st for _, st, _ in positions)
+    opened = len(works)
+    hang = ('\n  <ol class="pa-vgc-hang n-%s" aria-label="Open galleries">%s\n  </ol>' % (min(opened, 3), "".join(works))) if works else ""
+    return """%s
+  <p class="pa-vgc-count">%d of %d galleries open</p>%s
+  <div class="pa-vgc-index" role="region" aria-labelledby="vgIdxH">
+    <h3 id="vgIdxH">Founding positions</h3>
+    <p class="pa-vgc-note">Twenty-five numbered positions, one for each Founding Artist. A gallery opens here when the artist&rsquo;s work is published.</p>
+    <ol class="pa-vgc-line" aria-hidden="true">%s</ol>
+    <ul class="pa-vgc-key" aria-label="Summary of the twenty-five positions">%s</ul>
+    <ol class="pa-vgc-plan" aria-label="The twenty-five positions">%s
+    </ol>
+  </div>
+  %s""" % (VG_BEGIN, opened, spaces, hang, line, key, "".join(_vg_pos(n, st, p) for n, st, p in positions), VG_END)
+
+
+def vg_region(html_text):
+    """(start, end) of the generated collection region, markers included; None if the page has no such region."""
+    a = html_text.find(VG_BEGIN)
+    b = html_text.find(VG_END, a + 1) if a >= 0 else -1
+    if a < 0 or b < 0 or html_text.count(VG_BEGIN) != 1 or html_text.count(VG_END) != 1:
+        return None
+    return a, b + len(VG_END)
 
 
 def gallery_order(pkgs):
