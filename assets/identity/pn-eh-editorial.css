@@ -258,10 +258,6 @@ body.pn-id.pn-pd .or-saving{ border:1px solid var(--or-line); border-left:3px so
 }
 
 /* ---- DISC-036 additions ---------------------------------------------------------- */
-/* hero: the interim PlotNua drawing fills each comparison layer exactly as an <img> would */
-body.pn-id.pn-pd .eh-hero .pn-compare__possible, body.pn-id.pn-pd .eh-hero .pn-compare__before{ line-height:0; }
-body.pn-id.pn-pd .eh-hero svg.eh-draw{ display:block; width:100%; height:100%; pointer-events:none; }
-
 /* drawings: plans and footprints */
 body.pn-id.pn-pd .eh-pl{ font:600 13px/1 var(--p4-sans); letter-spacing:.04em; fill:#E6E1D8; }
 body.pn-id.pn-pd .eh-pl.is-soft{ font-weight:500; fill:#B8B0A3; }

@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """DISC-036 · Extend the House: page, SEO, claims, privacy and integration proof (read-only).
-PLOTNUA-BUILD-001 Stage 1 (founder development authorisation, private preview only, 5 Nov 2026).
+PLOTNUA-BUILD-001 Stage 1 (founder development authorisation, private preview only, 5 Nov 2026); final hero
+integration (founder authorisation, private preview only, 5 Nov 2026).
 
     python3 atlas-tools/prove-disc036-page.py [--self-test]
 
@@ -9,8 +10,9 @@ PLOTNUA-BUILD-001 Stage 1 (founder development authorisation, private preview on
   E3  exactly one H1 ("Extend the House"), the hero question and the search-identity line
   E4  every local href/src/srcset on the page resolves to a file
   E5  the hero is the shared pn-compare component, opening on 100 % BEFORE, keyboard-operable, with labels;
-      its two layers are the PlotNua drawings built by build-disc036-drawings.py (vector only: no <img>, no
-      <image>), each with an accessible description, and the hero is labelled as a PlotNua drawing, not AI
+      its two layers are the founder's image pair (DISC-036-POSSIBLE / -BEFORE, WebP sources with a JPEG
+      fallback, 1671 x 941, a 4:5 phone crop), each with a descriptive alt, and the hero carries the registered
+      AI label (PROPERTY) in the figure and under the hero; the retired drawing label is gone
   E6  six chapters in order with their titles; the six types in chapter 02; the four routes in chapter 06,
       each answering the same five questions (parity)
   E7  chapter 03: 27 July 2026, Class 1, 45 m2 (was 40), rear only, 1 October 1964, the upstairs limits
@@ -30,9 +32,12 @@ PLOTNUA-BUILD-001 Stage 1 (founder development authorisation, private preview on
       answer value, note or brief text is read into an event
   E13 no partner, supplier, commission, referral, discount or paid-service wording; no "increase the value"
       claim; the value caveat is present
-  E14 sitemap entry and search-index entry; the four governed search entries target this page; NO Library card
-      on this branch (held for the founder's hero image pair)
+  E14 sitemap entry and search-index entry; the four governed search entries target this page; exactly one
+      Library card, in Space, showing the POSSIBLE (never the BEFORE) with the AI chip
   E15 the drawings in the page equal what build-disc036-drawings.py builds (--check)
+  E16 provenance: every DISC-036 image the page and its card use is a recorded derivative of a declared
+      AI_ILLUSTRATION master that permits that surface; the share image is the POSSIBLE; the web copies equal
+      what build-disc036-images.py builds (--check)
 Prints "DISC-036 PAGE · OK" only when every check passes.
 """
 import html, json, os, re, subprocess, sys
@@ -40,7 +45,8 @@ import html, json, os, re, subprocess, sys
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PAGE = "discovery-extend-the-house.html"
 URL = "https://plotnua.ie/" + PAGE
-DRAW_LABEL = "Illustrative drawing by PlotNua. Not a design for any home."
+DRAW_LABEL = "Illustrative drawing by PlotNua. Not a design for any home."   # retired with the interim drawn hero
+AI_LABEL = "Illustrative AI-generated visualisation. Not an actual property."   # build-ai-disclosure-below.py PROPERTY
 
 
 def text(fragment):
@@ -104,13 +110,17 @@ def check(s, files):
         need(f.index("pn-compare__possible") < f.index("pn-compare__before"), "E5 BEFORE must be the overlay layer")
         need('>Before</p>' in f and '>Possible</p>' in f, "E5 Before / Possible labels")
         need('class="pn-compare__range"' in f and "aria-label=" in f and "arrow keys" in f, "E5 keyboard/screen-reader control")
-        need(f.count('<svg class="eh-draw"') == 2 and "<img" not in f and "<image" not in f, "E5 the two layers are the PlotNua vector drawings")
-        need(len(re.findall(r'class="pn-compare__(?:possible|before)" role="img" aria-label="(?:Possible|Before): [^"]{60,}"', f)) == 2,
-             "E5 each layer carries an accessible description")
-        need(DRAW_LABEL in f, "E5 the in-figure drawing label")
-        need("AI-generated" not in f, "E5 the hero drawing is not labelled as AI")
-    need(s.count(DRAW_LABEL) == 2, "E5 the drawing label under the hero and in the figure")
+        for role in ("POSSIBLE", "BEFORE"):
+            need(f.count("assets/disc036/img/DISC-036-%s-" % role) == 6, "E5 the %s layer's six sources (4 WebP widths, phone WebP, JPEG)" % role)
+        need(f.count('width="1671" height="941"') == 2 and "<svg" not in f, "E5 the two layers are the founder's 1671 x 941 images")
+        need(len(re.findall(r'<img [^>]*alt="(?:Possible|Before): [^"]{60,}"', f)) == 2, "E5 each layer carries a descriptive alt")
+        need(re.search(r'<img fetchpriority="high" src="assets/disc036/img/DISC-036-BEFORE-1024.jpg"', f), "E5 the BEFORE (seen first) loads first")
+        need(AI_LABEL in f, "E5 the in-figure AI label")
+    need(s.count(AI_LABEL) == 2, "E5 the AI label in the figure and under the hero")
+    need(DRAW_LABEL not in s, "E5 the retired drawing label is gone")
     need("pn-compare.js" in s and "pn-compare.css" in s, "E5 the shared component's files")
+    need(s.count("https://plotnua.ie/assets/disc036/img/DISC-036-og-1200x630.jpg") == 2 and 'name="twitter:card" content="summary_large_image"' in s,
+         "E16 the share image (og:image, twitter:image) is the POSSIBLE share crop")
 
     # E6
     order = re.findall(r'id="lg-ch0(\d)"', s)
@@ -241,7 +251,35 @@ def main():
     tm = json.loads(read("atlas-tools/search-topic-map.json"))
     ph = sorted(e["phrase"] for e in tm["entries"] if PAGE in e.get("targets", []))
     need(ph == ["extension planning permission", "kitchen extension", "rear extension", "side extension"], "E14 governed search entries: %s" % ph)
-    need(('href="%s"' % PAGE) not in read("discoveries.html"), "E14 no Library card on this branch (held for the founder's hero pair)")
+    lib = read("discoveries.html")
+    cards = re.findall(r'<a class="lib-card" href="%s" data-cat="([^"]+)">(.*?)</a>' % re.escape(PAGE), lib, re.S)
+    need(len(cards) == 1, "E14 exactly one Library card")
+    if cards:
+        cat, body = cards[0]
+        need(cat == "Space" and '<span class="lib-cat">Space</span>' in body, "E14 the card is in Space")
+        need("DISC-036-POSSIBLE-1024.jpg" in body and "DISC-036-02-POSSIBLE-MASTER-480w.webp" in body and "BEFORE" not in body,
+             "E14 the card shows the POSSIBLE, never the BEFORE")
+        need('<span class="lib-aichip">AI-generated illustration</span>' in body, "E14 the card carries the AI chip")
+
+    # E16
+    reg = json.loads(read("image-provenance-records.json"))
+    masters = {r["asset"]: r for r in reg["records"]}
+    derivs = {d["asset"]: d for d in reg["derivatives"]}
+    used = set(re.findall(r'assets/(?:disc036/img|library/img)/DISC-036-[A-Za-z0-9-]+\.(?:webp|jpg)', s))
+    used |= set(re.findall(r'assets/(?:disc036/img|library/img)/DISC-036-[A-Za-z0-9-]+\.(?:webp|jpg)', "".join(b for _c, b in cards)))
+    need(len(used) >= 15, "E16 the DISC-036 images in use (%d)" % len(used))
+    for a in sorted(used):
+        d = derivs.get(a)
+        m = masters.get((d or {}).get("derived_from", {}).get("asset"))
+        need(d and m and m.get("class") == "AI_ILLUSTRATION", "E16 %s is not a recorded derivative of a declared AI master" % a)
+        if d and m:
+            surf = "library-card" if "/library/" in a else "discovery"
+            need(surf in m.get("permitted_surfaces", []), "E16 %s: its master does not permit %s" % (a, surf))
+            need(not (surf == "library-card" and "BEFORE" in m["asset"]), "E16 the Library never shows the BEFORE")
+    need("POSSIBLE" in derivs.get("assets/disc036/img/DISC-036-og-1200x630.jpg", {}).get("derived_from", {}).get("asset", ""),
+         "E16 the share image is made from the POSSIBLE")
+    r = subprocess.run([sys.executable, os.path.join(ROOT, "atlas-tools", "build-disc036-images.py"), "--check"], capture_output=True, text=True)
+    need(r.returncode == 0, "E16 the web copies are not what build-disc036-images.py builds")
 
     # E15
     r = subprocess.run([sys.executable, os.path.join(ROOT, "atlas-tools", "build-disc036-drawings.py"), "--check"], capture_output=True, text=True)
@@ -251,6 +289,8 @@ def main():
         faults = {
             "E3": s.replace("<h1>Extend the House</h1>", "<h1>Extend the House</h1><h1>x</h1>"),
             "E5": s.replace('data-start="100"', 'data-start="35"', 1),
+            "E5 ": s.replace(AI_LABEL, "Not an actual home.", 1),
+            "E16": s.replace('content="https://plotnua.ie/assets/disc036/img/DISC-036-og-1200x630.jpg"', 'content="https://plotnua.ie/assets/disc036/img/DISC-036-BEFORE-1024.jpg"', 1),
             "E6": s.replace("<dt>Ask</dt>", "<dt>Best for</dt>", 1),
             "E7": s.replace("27 July 2026", "July"),
             "E9": s.replace("contingency.</p>", "contingency.</p><p>From €2,500 per m2.</p>", 1).replace("What makes up the total.", "What makes up the total. €2,500"),
@@ -269,7 +309,7 @@ def main():
         for p in problems:
             print("  " + p)
         sys.exit(1)
-    print("DISC-036 PAGE · OK (E1-E15)")
+    print("DISC-036 PAGE · OK (E1-E16)")
 
 
 if __name__ == "__main__":

@@ -52,6 +52,8 @@ PAGES = {
     "discovery-the-water-wall.html": ILLUS,
     # DISC-035 (founder build authorisation, private preview only, 4 Nov 2026): the standard slider disclosure
     "discovery-the-outdoor-room.html": INSTALL,
+    # DISC-036 (founder hero integration authorisation, private preview only, 5 Nov 2026): a property, not an installation
+    "discovery-extend-the-house.html": PROPERTY,
 }
 # the desktop line aligns with each hero's own copy: the 1240 px content column (default), the copy's viewport
 # inset (Hidden Flood Barrier 4vw, Supper Club 5vw), or centred under centred copy (Natural Swimming Garden)
@@ -61,6 +63,7 @@ ALIGN = {
     "discovery-stay-in-the-house-you-love.html": ' class="pn-hero-note pn-hero-note--inset" style="--pnn-inset:4vw"',
     "discovery-the-water-wall.html": ' class="pn-hero-note pn-hero-note--inset" style="--pnn-inset:4vw"',
     "discovery-the-outdoor-room.html": ' class="pn-hero-note pn-hero-note--inset" style="--pnn-inset:4vw"',
+    "discovery-extend-the-house.html": ' class="pn-hero-note pn-hero-note--inset" style="--pnn-inset:4vw"',
     "discovery-supper-club-at-home.html": ' class="pn-hero-note pn-hero-note--inset" style="--pnn-inset:5vw"',
     "discovery-natural-swimming-garden.html": ' class="pn-hero-note pn-hero-note--centre"',
     "discovery-a-home-for-art.html": ' class="pn-hero-note pn-hero-note--centre"',

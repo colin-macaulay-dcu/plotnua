@@ -16,14 +16,25 @@ A six-chapter Discovery in the existing design system (category **Space**):
 
 It also carries a browser-only **extension brief**.
 
-## Hero (interim)
+## Hero (founder image pair, integrated 5 Nov 2026)
 
-The hero is a **PlotNua drawing**: inline vector, no AI, no third-party imagery.
-- `atlas-tools/build-disc036-drawings.py` draws both Before and Possible from one geometry, so the two layers differ only where the extension is.
-- It sits inside the shared `pn-compare` component, opening at 100 % BEFORE.
-- It is labelled "Illustrative drawing by PlotNua. Not a design for any home."
+**Authorisation:** DISC-036 Final Hero Integration and Private Preview (founder, private preview only, €0).
 
-It is designed to be replaced by a founder-made Before / Possible pair. Because no image file is published, nothing on the page needs a provenance record.
+The interim PlotNua drawing is retired. The hero is now the founder's Before / Possible pair in the shared `pn-compare` component, opening at 100 % BEFORE.
+- **Masters (kept unchanged):**
+  - `assets/disc036/img/DISC-036-01-BEFORE-MASTER.png` (1672 × 941, C2PA OpenAI, signed 13:52:59 UTC);
+  - `assets/disc036/img/DISC-036-02-POSSIBLE-MASTER.png` (1671 × 941, signed 13:57:34 UTC).
+  - Both are declared `AI_ILLUSTRATION` in `image-provenance-records.json`. The POSSIBLE is permitted on the Discovery and the Library card; the BEFORE only on the Discovery.
+- **Alignment:** measured before the build at a median of about 2–3 px on the house, roof, chimneys, upstairs windows and neighbouring house, and judged a pass. The only correction is a 1-pixel crop of the BEFORE's left column to the common 1671 × 941 frame. Nothing was resampled, warped or stretched.
+- **Web copies:** 17 recorded derivatives built by `atlas-tools/build-disc036-images.py` (`--check` reproduces them byte for byte):
+  - WebP at 768 / 1024 / 1376 / 1671;
+  - a 1024 JPEG fallback;
+  - a 753 × 941 phone crop (x 480–1233);
+  - two Library-card WebPs;
+  - the 1200 × 630 share image, made from the POSSIBLE.
+- **Disclosure:** the registered PROPERTY label "Illustrative AI-generated visualisation. Not an actual property." appears in the figure and under the hero (`build-ai-disclosure-below.py`). The Library card carries the "AI-generated illustration" chip.
+
+The chapter plans and footprints are still PlotNua vector drawings (`build-disc036-drawings.py`).
 
 ## Content limits applied
 
@@ -74,8 +85,10 @@ The brief runs in the page only:
 
 **Release and gate:**
 - release-check counts: identity 36, header pages 38;
-- the page proof `prove-disc036-page.py` (E1–E15, plus a 9-fault self-test) runs in the gate and in the release checks.
+- the page proof `prove-disc036-page.py` (E1–E16, plus an 11-fault self-test; E16 is provenance) runs in the gate and in the release checks;
+- the page is registered in `build-ai-disclosure-below.py` and `prove-compare-hero.py`.
+
+**Library card (added with the hero pair):** one card in Space, showing the POSSIBLE. `discovery-library-images.json` and `discovery-library-labels.json` (no action label) are updated, and the card builders now expect 20 cards.
 
 **Held:**
-- **No Library card.** It waits for the founder's image pair, because the card builders require a declared image.
 - **No `your-plot.html` change.** A kept brief appears in My Plot with its title and a Remove button, but without the reopen links. Adding them is a founder decision.
