@@ -183,7 +183,12 @@
     app.querySelectorAll('[data-pub]').forEach(b => b.addEventListener('click', async () => {
       if (!b.dataset.sure) { b.dataset.sure = 1; b.textContent = 'Publish to plotnua.ie?'; return; }
       const warn = b.closest('li').querySelector('[data-pubwarn]');
-      try { await api('POST', `/api/admin/queue/${b.dataset.pub}/publish`, b.dataset.force ? { confirm_without_agreement: true } : {}); say('Sent to the publishing pipeline'); home(); }
+      try {
+        const d = await api('POST', `/api/admin/queue/${b.dataset.pub}/publish`, b.dataset.force ? { confirm_without_agreement: true } : {});
+        say(d.publish === 'requested' ? 'Publishing started: plotnua.ie updates once every check has passed (usually 10–20 minutes)'
+          : d.publish === 'failed' ? 'Approved for publishing. It could not be started just now, so it will go out at the next scheduled run' : 'Approved for publishing: it will go out at the next scheduled run', d.publish === 'failed');
+        home();
+      }
       catch (e) {
         warn.hidden = false; warn.textContent = e.message;
         if (e.data && e.data.needs_confirmation) { b.dataset.force = 1; b.textContent = 'Publish anyway'; } else { b.disabled = true; }

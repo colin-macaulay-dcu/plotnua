@@ -366,8 +366,9 @@ async function endParticipation(env, founder, artistId, b) {
     env.DB.prepare('INSERT INTO record_retention (artist_id, ended_at, delete_after, recorded_by, recorded_at) VALUES (?,?,?,?,?)')
       .bind(a.id, noticeAt, plusMonths(noticeAt, ENDING.records_years * 12), founder, at));
   await env.DB.batch(stmts);
-  await audit(env, founder, 'founder', 'participation_ended', a.id, { source, removal_queue: removal });
-  return { ended_at: at, notice_at: noticeAt, removal_queue: removal };
+  const publish = removal ? await requestGalleryPublish(env) : 'none';
+  await audit(env, founder, 'founder', 'participation_ended', a.id, { source, removal_queue: removal, publish });
+  return { ended_at: at, notice_at: noticeAt, removal_queue: removal, publish };
 }
 /* Stage 1 (12 months, or sooner on request): originals and the Studio account's personal content. Only for an ENDED artist. */
 async function eraseOriginals(env, artistId, actor, why) {
@@ -494,7 +495,9 @@ async function instant(env, artist, actor, what) {
     env.DB.prepare('INSERT INTO publish_queue (id, artist_id, version, kind, status, created_at, updated_at) VALUES (?,?,?,?,?,?,?)')
       .bind(rid('q'), artist.id, v, 'instant', env.INSTANT_AUTOPUBLISH === 'true' ? 'ready' : 'awaiting_founder', now(), now()),
   ]);
-  await audit(env, actor, 'artist', 'instant_change', artist.id, { what, version: v });
+  // publish at once only when the founder has switched this on (instant updates are pre-authorised; default: the schedule)
+  const publish = env.INSTANT_AUTOPUBLISH === 'true' && env.INSTANT_PUBLISH_DISPATCH === 'true' ? await requestGalleryPublish(env) : 'scheduled';
+  await audit(env, actor, 'artist', 'instant_change', artist.id, { what, version: v, publish });
   return v;
 }
 
@@ -652,9 +655,11 @@ async function saveGalleryOrder(env, founder, body) {
   await env.DB.batch([env.DB.prepare('DELETE FROM gallery_positions'),
     ...rows.map(r => env.DB.prepare('INSERT INTO gallery_positions (position, artist_id, reserved, note, updated_at) VALUES (?,?,?,?,?)').bind(r.position, r.artist_id, r.reserved, r.note, t))]);
   const brief = rs => rs.slice().sort((a, b) => a.position - b.position).map(r => r.reserved ? `${r.position}:reserved` : `${r.position}:${r.artist_id}`);
-  await audit(env, founder, 'founder', 'gallery_order', null, { before: brief(before), after: brief(rows),
+  const moved = JSON.stringify(brief(before)) !== JSON.stringify(brief(rows));   // a move, reservation or release changes the public grid
+  const publish = moved ? await requestGalleryPublish(env) : 'none';
+  await audit(env, founder, 'founder', 'gallery_order', null, { before: brief(before), after: brief(rows), publish,
     notes_changed: JSON.stringify(before.filter(r => r.reserved).map(r => [r.position, r.note])) !== JSON.stringify(rows.filter(r => r.reserved).sort((a, b) => a.position - b.position).map(r => [r.position, r.note])) });
-  return galleryOrder(env);
+  return { ...(await galleryOrder(env)), publish };
 }
 
 async function overview(env) {
@@ -809,6 +814,14 @@ async function requestIdeasPublish(env, workflow = 'plotnua-ideas-publish.yml') 
     return r.status === 204 ? 'requested' : 'failed';
   } catch { return 'failed'; }
 }
+// PlotArt galleries · publish on approval (founder decision 6 Nov 2026): a FOUNDER action that makes gallery content ready
+// (Publish in the Review desk, Unpublish, ending an artist's participation, a change to the gallery order) starts the
+// content publishing workflow at once, through the same founder-only link as the Idea Board and the noticeboard. The
+// workflow itself is unchanged: one run at a time, every item rebuilt on the latest main, content-only boundary, launch
+// guard, provenance and image rights, the release gate, fast-forward only, live check and automatic rollback, and a
+// failure marked on the item in the Review desk. The scheduled run stays as the fallback. An artist's own instant
+// updates (sold, availability, withdrawal, order) start it only when INSTANT_PUBLISH_DISPATCH is "true" (off by default).
+const requestGalleryPublish = env => requestIdeasPublish(env, 'plotart-content-publish.yml');
 async function pipelineIdeas(env) {
   // Public fields only (founder decision 1 Nov 2026): wording, area, county where the visitor allowed it, month and
   // year, and a "Now a PlotNua Discovery" link. No reference, id, exact time, status or moderation detail.
@@ -1215,8 +1228,9 @@ async function route(req, env) {
         env.DB.prepare('INSERT INTO versions (artist_id, version, snapshot, source, created_at) VALUES (?,?,?,?,?)').bind(mm[1], v, JSON.stringify({ ...lv.snap, works: [] }), 'unpublish', now()),
         env.DB.prepare('INSERT INTO publish_queue (id, artist_id, version, kind, status, created_at, updated_at) VALUES (?,?,?,?,?,?,?)').bind(rid('q'), mm[1], v, 'remove', 'ready', now(), now()),
       ]);
-      await audit(env, me.email, 'founder', 'unpublish', mm[1]);
-      return json({ ok: true });
+      const publish = await requestGalleryPublish(env);
+      await audit(env, me.email, 'founder', 'unpublish', mm[1], { publish });
+      return json({ ok: true, publish });
     }
     if ((mm = p.match(/^\/api\/admin\/submissions\/(s[0-9a-z]+)$/)) && m === 'GET') {
       const s = await one(env, 'SELECT * FROM submissions WHERE id=?', mm[1]);
@@ -1248,8 +1262,9 @@ async function route(req, env) {
         }
       }
       await env.DB.prepare("UPDATE publish_queue SET status='ready', updated_at=? WHERE id=?").bind(now(), q.id).run();
-      await audit(env, me.email, 'founder', 'publish', q.artist_id, { queue: q.id, version: q.version, ...(warned ? { without_current_agreement: true } : {}) });
-      return json({ ok: true });
+      const publish = await requestGalleryPublish(env);
+      await audit(env, me.email, 'founder', 'publish', q.artist_id, { queue: q.id, version: q.version, publish, ...(warned ? { without_current_agreement: true } : {}) });
+      return json({ ok: true, publish });
     }
     if (p === '/api/admin/enquiries' && m === 'GET') return json({ ok: true, items: await all(env, `SELECT e.reference, e.created_at, e.status, e.artwork_title, a.display_name
       FROM enquiries e JOIN artists a ON a.id = e.artist_id ORDER BY e.created_at DESC LIMIT 200`) });
