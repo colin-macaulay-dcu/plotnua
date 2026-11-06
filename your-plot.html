@@ -21757,6 +21757,9 @@ html.pn-myplot-view:not(.pn-myplot-open) body::after{content:"Opening My Plot\20
       if (!already) checks.push({ label: 'Before you choose', text: consider });
     }
 
+    /* STAGE 3C — a withheld figure: no "what Atlas knows" note may describe "the price". */
+    if (((product.priceEvidence || {}).presentationHold || {}).figure === 'withheld')
+      knows.forEach(function(k){ if (k.meaning && /\bprice\b/i.test(k.meaning)) k.meaning = null; });
     /* STAGE 3B D1(b) — region-limited: no generic "Irish availability" row. */
     const regionOnly = pnRegionOnly(product);
     if (regionOnly) knows.forEach(function(k){
@@ -21775,6 +21778,10 @@ html.pn-myplot-view:not(.pn-myplot-open) body::after{content:"Opening My Plot\20
      they disagree. Piece C1 does not pick a winner. */
   function pnVatPosition(product){
     const pe = product.priceEvidence || {};
+    /* STAGE 3C (6 Nov 2026) — a WITHHELD figure (price-presentation hold, Rayco) has no
+       current price to assess, so no VAT position is asserted for it, and no research
+       note about a "published price" is shown. Absent on NOOK and ECC. */
+    if (pe.presentationHold && pe.presentationHold.figure === 'withheld') return { state: 'unknown' };
     const raw = String(pe.includesVat == null ? '' : pe.includesVat).trim().toLowerCase();
     const f = product.features && product.features.installationModel;
     const text = (f && typeof f.text === 'string') ? f.text : '';
@@ -26722,6 +26729,10 @@ html.pn-myplot-view:not(.pn-myplot-open) body::after{content:"Opening My Plot\20
       out.push({ lab: lab, text: r.answer, cap: r.caption });
     };
     push('Installation', 'installationModel', 'Installation');
+    /* STAGE 3C — with a withheld figure, the installation caption may not describe "the
+       price" (it would read as an installed-price offer). The governed answer stays. */
+    if (((product.priceEvidence || {}).presentationHold || {}).figure === 'withheld')
+      for (let i0 = 0; i0 < out.length; i0++) if (out[i0].lab === 'Installation' && /\bprice\b/i.test(out[i0].cap || '')) out[i0].cap = '';
     push('Warranty', 'warranty', 'Warranty');
     /* Atlas establishes the TYPE of warranty and, measured across all 487, not
        one of the 202 governed captions says what it covers. So the caption

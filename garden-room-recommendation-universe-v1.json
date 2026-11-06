@@ -32,7 +32,7 @@
  "quoteOnlyPriceCount": 19,
  "organisationCount": 65,
  "governedPriceContractVersion": "garden-room-price-contract-v1",
- "governedDigest": "5ba762706598d6a4bb18f12cc145838a0becd0d7c8c8eeaebfbb4fd463243f63",
+ "governedDigest": "f728fadfab0f947925d10ec22382aab492c8420b7df59da9b0eeb359de2f6e03",
  "sourceKind": "airtable-live",
  "missingProductUrlCount": 168,
  "products": [
@@ -68616,7 +68616,14 @@
     "evidenceScope": "Organisation-Wide",
     "adjudication": "adjudicated",
     "quoteOnly": false,
-    "candidateCount": 1
+    "candidateCount": 1,
+    "presentationHold": {
+     "qualification": "Rayco does not publish a current garden-room price. Its earlier starting price covered its whole modular range, so ask Rayco for a garden-room quote. Foundation, external connections and permits are quoted separately.",
+     "matching": "excluded",
+     "label": "Price on request",
+     "reason": "Rayco does not publish a current garden-room price, so PlotNua does not compare this room with your budget or other prices.",
+     "figure": "withheld"
+    }
    },
    "features": {
     "floorArea": {
@@ -68688,9 +68695,9 @@
     "delivery": "UNKNOWN"
    },
    "priceBasisClass": "ERECTED_SERVICES_UNKNOWN",
-   "priceBasisConfidence": "EXPLICIT",
+   "priceBasisConfidence": "UNSAFE",
    "priceIsRangeFloor": true,
-   "priceSafeForMatching": true,
+   "priceSafeForMatching": false,
    "priceEvidenceRef": {
     "recordIds": [
      "rect2y3DTLysQfmdr"

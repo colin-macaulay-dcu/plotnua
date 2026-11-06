@@ -613,6 +613,13 @@ def garden_price_label(r):
         e = r.get("priceEvidence") or {}
         q = (hold.get("qualification") or "").strip()
         vat = (e.get("includesVat") or "").strip().lower()
+        # Stage 3C (6 Nov 2026): a WITHHELD figure (Rayco) is never shown, verified or
+        # not; the label and qualification stand in its place. NOOK and ECC unchanged.
+        if hold.get("figure") == "withheld":
+            lab = (hold.get("label") or "").strip()
+            if not q or not lab or re.search(r"\d", lab + q):
+                die("price: held product %s withholds its figure but has no label/qualification, or shows a number" % r["id"])
+            return lab + ". " + q
         if not q or disp is None or cur != "EUR" or e.get("status") != "Verified":
             die("price: held product %s needs a verified euro price and a qualification" % r["id"])
         # Stage 3B (6 Nov 2026): a VAT-inclusive held price (ECC, a regional price)
@@ -1280,12 +1287,17 @@ def build(fname, P, src):
     # and no other maker carries a note.
     CORR, NOTES = currency_register()
     GOV_CUR = {pid: (r.get("currency") or "").upper() for pid, r in garden_index().items()}
+    WITHHELD = {pid for pid, r in garden_index().items()
+                if ((r.get("priceEvidence") or {}).get("presentationHold") or {}).get("figure") == "withheld"}
     for c in cfgs:
         for m in c["makers"]:
             shown = [p for p in m["p"] if len(p) > 4 and p[4]]
             for p in shown:
                 if p[4] in (PRICE_UNAVAILABLE, PRICE_ENQUIRY):
                     continue   # garden-room labels with no figure (DISC-008 pricing correction)
+                if p[0] in WITHHELD:
+                    if re.search(r"[\d€£$]", p[4]): die("G14 a withheld figure is shown: %s" % p[0])
+                    continue   # Stage 3C: a withheld figure (price-presentation hold) shows no figure at all
                 cur = "GBP" if "£" in p[4] else "EUR" if "€" in p[4] else "USD" if "$" in p[4] else None
                 if cur is None: die("G14 a price with no recognised currency: %s" % p[0])
                 # the record's own governed currency (garden rooms), else the register's, else EUR

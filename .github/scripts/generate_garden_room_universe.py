@@ -928,6 +928,13 @@ def price_presentation_holds():
                 v = (r.get(k) or "").strip()
                 if v:
                     extra[k] = v
+            # Stage 3C (6 Nov 2026): "figure": "withheld" -- no surface shows the figure
+            # (Rayco, whose figure is not a garden-room price). Absent on NOOK and ECC.
+            fg = r.get("figure")
+            if fg is not None:
+                if fg != "withheld":
+                    fail("price-presentation hold %s: figure must be 'withheld'" % r["productId"])
+                extra["figure"] = fg
             vb = r.get("vatBasis")
             if vb is not None:
                 if vb not in ("included", "excluded"):

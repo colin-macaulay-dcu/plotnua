@@ -65,8 +65,11 @@ function check(cfg) {
       if (!q || !v.display.includes(q.replace(/^Ex works\.\s*/, ''))) bad.push(`P6 ${r.id}: page held price without its qualification: "${v.display}"`);
       if (v.known || v.amount != null || /\d/.test(v.display)) bad.push(`P6 ${r.id}: page shows a figure for a held price: "${v.display}"`);
       const incl = (e.presentationHold || {}).vatBasis === 'included';
-      const want = bare.display + (incl ? '. ' : ' excluding VAT. ') + q;
-      if (!bare.known || line !== want) bad.push(`P6 ${r.id}: held price shown without its qualification: "${line}"`);
+      // Stage 3C: a WITHHELD figure (Rayco) is shown nowhere; the explorer shows label + qualification.
+      const withheld = (e.presentationHold || {}).figure === 'withheld';
+      const want = withheld ? (e.presentationHold.label + '. ' + q) : bare.display + (incl ? '. ' : ' excluding VAT. ') + q;
+      if ((!withheld && !bare.known) || line !== want) bad.push(`P6 ${r.id}: held price shown without its qualification: "${line}"`);
+      if (withheld && /\d/.test(line)) bad.push(`P6 ${r.id}: a withheld figure is shown: "${line}"`);
       tally[k] = (tally[k] || 0) + 1; continue;
     }
     if (v.kind === 'quote-only') { k = 'enquiry'; if (line !== 'Price on enquiry') bad.push(`P3 ${r.id}: page quote-only, explorer "${line}"`); }
@@ -112,6 +115,7 @@ const faults = [
   ['an indicative price shown as verified', c => { const p = find(c, p => (p[4] || '').startsWith('Indicative price: €') || (p[4] || '').startsWith('Indicative price: From €')); p[4] = p[4].replace('Indicative price: ', '') + ' · VAT not stated'; }, 'P4'],
   ['the VAT position dropped', c => { const p = find(c, p => (p[4] || '').endsWith(' · VAT not stated')); p[4] = p[4].replace(' · VAT not stated', ''); }, 'P4'],
   ['a regional held price shown without its qualification', c => { const p = find(c, p => (p[4] || '').includes('. Price includes VAT, delivery and installation in Dublin and Wicklow only.')); p[4] = p[4].split('. Price includes')[0] + ' incl. VAT'; }, 'P6'],
+  ['a withheld figure shown in the explorer', c => { const p = find(c, p => (p[4] || '').startsWith('Price on request. Rayco does not publish')); p[4] = 'Indicative price: From \u20ac29,500'; }, 'P6'],
   ['a held price shown without its qualification', c => { const p = find(c, p => (p[4] || '').includes(' excluding VAT. Ex works.')); p[4] = p[4].split(' excluding VAT. ')[0] + ' excl. VAT'; }, 'P6'],
   ['a product delisted', c => { const ms = c.tabs.find(t => t.key === 'gardenRooms').makers; ms[0].p.shift(); }, 'P1'],
 ];
