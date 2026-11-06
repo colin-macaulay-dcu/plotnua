@@ -24,7 +24,7 @@ import hashlib, io, json, os, re
 
 SCHEMA = "plotnua.plotart.gallery.v1"
 PACKAGE_SCHEMA = "plotnua.plotart.gallery-package.v1"
-LICENCE_VERSIONS = ("PA-GPIL-2026-10-29",)          # Gallery Publication and Image Licence, r4
+LICENCE_VERSIONS = ("PA-GPIL-2026-10-29", "PA-GPIL-2026-11")   # Gallery Publication and Image Licence: the label accepted from 29 Oct 2026, and the consolidated text included in the Founding Artist Agreement PA-FAA-2026-11
 SIZES = (600, 1200, 2000)
 MIN_LONG_EDGE = 2000          # BLOCK below this (artworks)
 MIN_PORTRAIT_EDGE = 800       # portraits are shown small (PlotArt Studio, Phase 2)

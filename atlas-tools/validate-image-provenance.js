@@ -91,7 +91,7 @@ if (!records || !legacy) {
    content credentials) is recorded here. Checked by P5e: the master's fingerprint, its origin, every processing step, the
    founder's approval, and brand surfaces only. */
 const ASSET_CLASSES = ['SUPPLIER_IMAGE', 'AI_ILLUSTRATION', 'ILLUSTRATION_VERIFIED_NOT_AI', 'FOUNDER_ORIGINAL_ARTWORK', 'ARTIST_SUPPLIED_ARTWORK', 'BRAND_MARK'];
-const ARTIST_LICENCE_VERSIONS = ['PA-GPIL-2026-10-29'];
+const ARTIST_LICENCE_VERSIONS = ['PA-GPIL-2026-10-29', 'PA-GPIL-2026-11'];   // the label accepted from 29 Oct 2026; the consolidated text in PA-FAA-2026-11
 /* product-card is DELIBERATELY ABSENT. The founder's rule becomes a
    vocabulary restriction rather than a convention somebody has to remember:
    enabling it is a schema change with its own approval, not an oversight
