@@ -1,12 +1,15 @@
-// PlotArt Studio · gallery-order check for deployments (31 Oct 2026). Reads the pipeline's gallery-order view (positions,
-// published gallery addresses, reserved flags; never a private note or an unpublished name) and prints only:
-// whether position 01 is reserved, how many positions are filled, and a short fingerprint of the order.
-//   node order-check.mjs save <file>      before the deployment
-//   node order-check.mjs compare <file>   after: fails unless the order is identical and 01 is still reserved
+// PlotArt Studio · gallery-order check for deployments (31 Oct 2026; corrected 6 Nov 2026). Reads the pipeline's gallery-order
+// view (positions, published gallery addresses, reserved flags; never a private note or an unpublished name) and prints only:
+// whether position 01 is held by the approved artist, how many positions are filled, and a short fingerprint of the order.
+//   node order-check.mjs save <file>      before the deployment: fails unless 01 is held by the approved artist
+//   node order-check.mjs compare <file>   after: fails unless every position is identical and 01 is still held by them
+// Founder decision 6 Nov 2026: Leah Hewson correctly holds position 01 (the earlier "01 must be empty and reserved" rule
+// is withdrawn). Change POSITION_01 only with his approval.
 // Needs STUDIO_URL, STUDIO_PIPELINE_TOKEN and (behind Cloudflare Access) STUDIO_ACCESS_CLIENT_ID / _SECRET.
 import { createHash } from 'node:crypto';
 import { readFileSync, writeFileSync } from 'node:fs';
 const [mode, file] = process.argv.slice(2);
+const POSITION_01 = 'leah-hewson';   // the published gallery that holds position 01, by founder decision
 const E = process.env;
 if (!['save', 'compare'].includes(mode) || !file) { console.log('usage: node order-check.mjs save|compare <file>'); process.exit(2); }
 if (!E.STUDIO_URL || !E.STUDIO_PIPELINE_TOKEN) { console.log('REFUSED: the pipeline secrets are not available'); process.exit(1); }
@@ -23,11 +26,11 @@ for (const p of j.positions) if (Object.keys(p).some(k => !['position', 'slug', 
 const state = JSON.stringify({ positions: j.positions.map(p => [p.position, p.slug || null, !!p.reserved]), extra: j.extra || [] });
 const fp = createHash('sha256').update(state).digest('hex');
 const p01 = j.positions.find(p => p.position === 1);
-const reserved01 = !!(p01 && p01.reserved && !p01.slug);
-const filled = j.positions.filter(p => p.slug).length;
-console.log(`position 01 reserved: ${reserved01 ? 'yes' : 'NO'} · positions with a published gallery: ${filled} · order fingerprint ${fp.slice(0, 12)}`);
-if (mode === 'save') { writeFileSync(file, fp); process.exit(reserved01 ? 0 : 1); }
+const held01 = !!(p01 && !p01.reserved && p01.slug === POSITION_01);
+const filled = j.positions.filter(p => p.slug).length, reserved = j.positions.filter(p => p.reserved).length;
+console.log(`position 01 held by the approved artist: ${held01 ? 'yes' : 'NO'} · positions recorded: ${j.positions.length} (${reserved} reserved, ${filled} with a published gallery) · order fingerprint ${fp.slice(0, 12)}`);
+if (mode === 'save') { writeFileSync(file, fp); if (!held01) console.log('FAIL  position 01 is not held by the approved artist: nothing was deployed'); process.exit(held01 ? 0 : 1); }
 const before = readFileSync(file, 'utf8').trim();
-const ok = before === fp && reserved01;
-console.log(ok ? 'PASS  the gallery order is unchanged and 01 is still reserved' : 'FAIL  the gallery order changed during the deployment, or 01 is not reserved');
+const ok = before === fp && held01;
+console.log(ok ? 'PASS  every gallery position is identical and 01 is still held by the approved artist' : 'FAIL  the gallery order changed during the deployment, or 01 is no longer held by the approved artist');
 process.exit(ok ? 0 : 1);

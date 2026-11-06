@@ -13,9 +13,9 @@ Both are started by hand, default to a dry run, and cannot read their secrets un
 |---|---|
 | `guard.sh` | Full commit ID; on main; contains the live Studio release; the bundle matches its sources; lists changed Studio files |
 | `render-config.py` | Production `wrangler.production.toml` from `wrangler.toml` + environment variables + `worker/plotart-studio/production.json` |
-| `order-check.mjs` | Gallery order before/after a Worker deployment (pipeline view): 01 reserved, order unchanged |
+| `order-check.mjs` | Gallery order before/after a Worker deployment (pipeline view): every position identical, 01 held by the approved artist (Leah Hewson, founder decision 6 Nov 2026) |
 | `migration-check.py` | Approved file (SHA-256), described effects, every table the SQL writes to declared; no triggers, ATTACH or PRAGMA writes |
-| `d1-snapshot.mjs` | Every table's fingerprint before/after a migration: fails if anything outside the declaration changed or 01 is released |
+| `d1-snapshot.mjs` | Every table's fingerprint and the complete gallery order before/after a migration: fails if anything outside the declaration changed, any gallery position changed, or 01 is no longer held by the approved artist |
 
 Logs are public: nothing prints a credential, an environment identifier, a count, a name, an email address or a note.
 A failed check never restores anything by itself: a restore needs the founder's separate approval.

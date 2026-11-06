@@ -73,7 +73,8 @@ try:
         mm = subprocess.run([sys.executable, mainck, path, sha, tables, "Regression check of an earlier migration."], capture_output=True, text=True)
         check("E  %s: same result as main's checker (%s)" % (f, cls(mm.stdout)), rc6 == 0 and cls(o6) == cls(mm.stdout) != "refused", (cls(o6), mm.stdout[-150:]))
     mm = subprocess.run([sys.executable, mainck, MIG, hashlib.sha256(open(MIG, "rb").read()).hexdigest(), TABLES, DESC], capture_output=True, text=True)
-    check("E  main's checker today refuses 0005 (triggers): the checker change must reach main with it", "REFUSED: triggers are not allowed" in mm.stdout, mm.stdout[-150:])
+    # the checker change reached main with Stage D (6 Nov 2026): main's checker now gives the approved result for 0005
+    check("E  main's checker accepts 0005 as destructive (the checker change reached main at Stage D)", "MIGRATION CHECK OK" in mm.stdout and "MIGRATION CLASS: destructive" in mm.stdout, mm.stdout[-150:])
 finally:
     os.remove(mainck)
 cl = subprocess.run([sys.executable, os.path.join(HERE, "prove-migration-classifier.py")], capture_output=True, text=True)
@@ -90,6 +91,20 @@ order = [idx("Check again after approval"), idx("Backup 1 of 2"), idx("Backup 2 
 check("W3 order: re-check → Time Travel restore point → encrypted full export → kept as artifact → fingerprint → apply → only declared tables changed → failure notice", -1 not in order and order == sorted(order), list(zip(order, steps)))
 fail = wf[wf.index("- name: If anything failed after the backups"):]
 check("W4 a failure is never restored automatically (restore needs the founder's separate approval)", "NOT RESTORED AUTOMATICALLY" in fail and "d1 execute" not in fail and "time-travel restore" not in fail)
+
+print("— the gallery order is protected (founder decision 6 Nov 2026: Leah Hewson holds position 01)")
+check("W5 the migration workflow records the complete gallery order before applying and verifies it after (d1-snapshot save → apply → compare)",
+      'd1-snapshot.mjs "$CONFIG" save "$RUNNER_TEMP/db-before"' in wf and 'd1-snapshot.mjs "$CONFIG" compare "$RUNNER_TEMP/db-before" "$TABLES"' in wf)
+dep = open(os.path.join(ROOT, ".github", "workflows", "studio-deploy.yml"), encoding="utf-8").read()
+check("W6 the Studio deploy workflow records the order before deploying and verifies it after (order-check save → deploy → compare, automatic rollback on failure)",
+      'order-check.mjs save "$RUNNER_TEMP/order-before"' in dep and 'order-check.mjs compare "$RUNNER_TEMP/order-before"' in dep and "Automatic rollback to the previous version" in dep)
+for f in ("d1-snapshot.mjs", "order-check.mjs"):
+    t = open(os.path.join(HERE, f), encoding="utf-8").read()
+    check("W7 %s holds position 01 for the approved artist and no longer requires 01 to be empty" % f,
+          "const POSITION_01 = 'leah-hewson'" in t and "reserved01" not in t)
+go = subprocess.run(["node", os.path.join(HERE, "prove-gallery-order-safeguards.mjs")], capture_output=True, text=True)
+check("W8 the gallery-order safeguard proof passes (occupied 01 accepted; any move, release, reassignment or artist-record change stops)",
+      go.returncode == 0 and "GALLERY ORDER SAFEGUARDS · OK" in go.stdout, go.stdout[-300:])
 shutil.rmtree(tmp)
 print("\nMIGRATION GOVERNANCE · %d checks, %d passed, %d failed" % (len(results), sum(results), len(results) - sum(results)))
 sys.exit(0 if all(results) else 1)
