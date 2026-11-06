@@ -77,6 +77,8 @@ additive = bool(stmts) and all(
     for x in stmts)
 if (targets - {"(index)"}) - created or created & existing:
     additive = False                                 # touches, re-creates or indexes an EXISTING table: not additive
+if guards:
+    additive = False                                 # any trigger at all: never automatic, always the founder's approval (6 Nov 2026)
 print("- Class: %s" % ("ADDITIVE (new tables and indexes only)" if additive else "DESTRUCTIVE or changes existing tables"))
 print("MIGRATION CHECK OK")
 print("MIGRATION CLASS: %s" % ("additive" if additive else "destructive"))

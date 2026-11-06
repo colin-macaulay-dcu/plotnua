@@ -516,6 +516,7 @@
         <div class="st-two"><div>
           <div class="st-f"><label for="en-artist">Artist</label><select id="en-artist"><option value="">Choose…</option>${o.artists.filter(a => a.account_status !== 'ended').map(a => `<option value="${E(a.id)}" data-name="${E(a.display_name)}">${E(a.display_name)}${a.leave_requested_at ? ' (asked to leave)' : ''}</option>`).join('')}</select></div>
           <div class="st-row" style="gap:16px;flex-wrap:wrap;margin:0 0 12px"><label class="st-check"><input type="radio" name="en-src" value="artist_request" checked> The artist asked to leave</label><label class="st-check"><input type="radio" name="en-src" value="founder"> I’m ending it</label></div>
+          <div class="st-f"><label for="en-told">If the artist told you by email: the date they did (Irish date)</label><input id="en-told" type="date"><p class="st-hint">The 14 days, 12 months and six years run from when the artist told PlotArt (agreement 10.1). Leave empty for a Studio request or if you are ending it.</p></div>
           <div class="st-f"><label for="en-reason">Reason</label><textarea id="en-reason" maxlength="280" style="min-height:70px" placeholder="e.g. Artist emailed on 6 November asking to leave"></textarea></div>
         </div><div>
           <p class="st-muted" id="en-what">Choose an artist to see exactly what will happen.</p>
@@ -523,7 +524,7 @@
           <div class="st-actions"><button class="st-btn st-btn--solid" id="en-go">End participation</button></div><p class="st-err" id="en-err" role="alert"></p>
         </div></div></section>
       <section class="st-card"><h2>Ended (${ended.length})</h2>
-        ${ended.length ? ended.map(i => `<div class="st-acc"><p class="st-acc-h"><b>${E(i.display_name)}</b> · ended ${E(irish(i.ended.at))} by ${E(i.ended.by)} · ${i.ended.source === 'artist_request' ? 'the artist asked to leave' : 'ended by you'}${i.ended.reason ? ` · “${E(i.ended.reason)}”` : ''}</p>
+        ${ended.length ? ended.map(i => `<div class="st-acc"><p class="st-acc-h"><b>${E(i.display_name)}</b> · ${i.ended.notice_at !== i.ended.at ? `told PlotArt ${E(irish(i.ended.notice_at))} · ` : ''}ended ${E(irish(i.ended.at))} by ${E(i.ended.by)} · ${i.ended.source === 'artist_request' ? 'the artist asked to leave' : 'ended by you'}${i.ended.reason ? ` · “${E(i.ended.reason)}”` : ''}</p>
           ${sched(i)}
           ${i.ended.schedule.find(x => x.key === 'originals').state !== 'done' ? `<div class="st-row" style="margin-top:10px;gap:10px;flex-wrap:wrap;align-items:end"><div class="st-f" style="margin:0;flex:1;min-width:240px"><label>Delete originals now (the artist asked for earlier deletion)</label><input type="text" data-er-reason="${E(i.id)}" placeholder="Reason"></div>
             <button class="st-btn st-btn--small st-btn--danger" data-erase="${E(i.id)}"${d.deletion_enabled ? '' : ' disabled title="Deletion is switched off"'}>Delete originals now</button></div><p class="st-err" data-er-err="${E(i.id)}"></p>` : ''}
@@ -536,7 +537,7 @@
     $('#en-go').addEventListener('click', async () => {
       $('#en-err').textContent = '';
       if (!sel.value) { $('#en-err').textContent = 'Choose the artist.'; return; }
-      try { await api('POST', `/api/admin/artists/${sel.value}/end`, { confirm_name: $('#en-name').value, source: app.querySelector('input[name=en-src]:checked').value, reason: $('#en-reason').value });
+      try { await api('POST', `/api/admin/artists/${sel.value}/end`, { confirm_name: $('#en-name').value, source: app.querySelector('input[name=en-src]:checked').value, reason: $('#en-reason').value, told_on: $('#en-told').value || undefined });
         say('Participation ended · gallery removal queued'); leaving(); }
       catch (e) { $('#en-err').textContent = e.message; }
     });

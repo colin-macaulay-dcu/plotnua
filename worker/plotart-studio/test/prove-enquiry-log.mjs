@@ -109,6 +109,20 @@ await db.prepare("UPDATE enquiries SET delete_after='2000-01-01T00:00:00Z' WHERE
 await mf.getWorker('studio').then(x => x.scheduled({ cron: '23 3 * * *' }));
 const gone = await db.prepare('SELECT COUNT(*) n FROM enquiries WHERE reference=?').bind(ej.reference).first(), kept = await db.prepare('SELECT COUNT(*) n FROM enquiry_log WHERE reference=?').bind(ej.reference).first();
 check('R3 the daily clean-up deletes the buyer’s name, email and message at 24 months as before; the log entry remains', gone.n === 0 && kept.n === 1);
+// an enquiry the relay did not log (e.g. received before the relay was updated): the Studio's daily run logs it
+await db.prepare(`INSERT INTO enquiries (id, reference, artist_id, artwork_id, artwork_title, buyer_name, buyer_email, message, notice_version, created_at, status, delete_after)
+  VALUES ('egap1', 'PA-E-261106-GAP001', 'arel', 'wrel1', 'Tide', 'Gap Buyer', 'gap@example.test', 'Received while the relay was being updated', 'PA-ENQ-2026-10-29', ?, 'sent', '2099-01-01T00:00:00Z')`).bind(new Date(Date.now() - 3600_000).toISOString()).run();
+await mf.getWorker('studio').then(x => x.scheduled({ cron: '23 3 * * *' }));
+const gap = await db.prepare("SELECT * FROM enquiry_log WHERE reference='PA-E-261106-GAP001'").first();
+const dup = await db.prepare("SELECT COUNT(*) n FROM enquiry_log WHERE reference=?").bind(ej.reference).first();
+check('R5 an enquiry the relay did not log is logged by the Studio’s daily run before its buyer details can be deleted (no buyer details; no duplicates of ones already logged)',
+  gap && gap.route === 'relay' && gap.founding === 1 && gap.logged_by === 'studio daily check' && !/Gap Buyer|gap@/.test(JSON.stringify(gap)) && dup.n === 1);
+const nv = await mf.dispatchFetch('http://enquiry.local/v1/enquiry', { method: 'POST', headers: { Origin: 'https://plotnua.ie', 'Content-Type': 'application/json' },
+  body: JSON.stringify({ ref: 'PA-relay-artist', notice: 'PA-ENQ-2026-11', name: 'Next Notice', email: 'next@example.test', message: 'Sent from a page showing the next notice version.' }) });
+const nvRow = await db.prepare("SELECT notice_version FROM enquiries WHERE buyer_name='Next Notice'").first();
+const old = await mf.dispatchFetch('http://enquiry.local/v1/enquiry', { method: 'POST', headers: { Origin: 'https://plotnua.ie', 'Content-Type': 'application/json' },
+  body: JSON.stringify({ ref: 'PA-relay-artist', notice: 'PA-ENQ-2025-01', name: 'Wrong Notice', email: 'w@example.test', message: 'An unknown notice version must still be refused.' }) });
+check('R6 the relay accepts the current and the next enquiry-notice version (recording which one the buyer saw), and still refuses any other', nv.status === 200 && nvRow.notice_version === 'PA-ENQ-2026-11' && old.status === 400);
 // relay before migration 0005: the enquiry still goes through, and the audit says it was not logged
 await db.prepare('DROP TRIGGER enquiry_log_no_update').run(); await db.prepare('DROP TRIGGER enquiry_log_no_delete').run(); await db.prepare('DROP TRIGGER record_retention_no_delete').run();
 await db.prepare('DROP TABLE enquiry_log').run();   // only the log is missing here (the retention guard that reads it is dropped first)

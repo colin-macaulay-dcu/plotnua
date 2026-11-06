@@ -9,7 +9,10 @@
 import { send } from './mailer.js';
 import { foundingAt } from './founding.js';
 
-const NOTICE = 'PA-ENQ-2026-10-29';   // (a Worker entry module may export only handlers)
+const NOTICE = 'PA-ENQ-2026-10-29';
+// Enquiry notice versions the relay accepts. The next version is accepted BEFORE any page shows it, so changing the notice
+// on the website never interrupts enquiries (release step C2). NOTICE stays the version shown today.
+const NOTICES = [NOTICE, 'PA-ENQ-2026-11'];   // (a Worker entry module may export only handlers)
 const DAILY_PER_ARTIST = 40, DAILY_TOTAL = 300, BURST = 5, BURST_MS = 10 * 60_000;
 const hits = new Map();
 const now = () => new Date().toISOString();
@@ -96,7 +99,7 @@ export default {
     const keys = ['ref', 'notice', 'name', 'email', 'message', 'website'];
     if (!b || typeof b !== 'object' || Object.keys(b).some(k => !keys.includes(k))) return reply(env, origin, 400, { ok: false, error: 'Refused' });
     if (b.website) return reply(env, origin, 200, { ok: true, reference: 'PA-E-000000-0000' });       // honeypot: silently dropped
-    if (b.notice !== NOTICE) return reply(env, origin, 400, { ok: false, error: 'Please reload the page and try again.' });
+    if (!NOTICES.includes(b.notice)) return reply(env, origin, 400, { ok: false, error: 'Please reload the page and try again.' });
     const name = String(b.name || '').trim(), email = String(b.email || '').trim(), message = String(b.message || '').trim();
     if (name.length < 1 || name.length > 80 || /[<>]/.test(name)) return reply(env, origin, 400, { ok: false, error: 'Please check your name.' });
     if (!/^[^\s@<>]+@[^\s@<>]+\.[^\s@<>]{2,}$/.test(email) || email.length > 254) return reply(env, origin, 400, { ok: false, error: 'Please check your email address.' });
@@ -119,7 +122,7 @@ export default {
     const id = 'e' + crypto.randomUUID().replace(/-/g, '').slice(0, 16);
     const del = new Date(Date.now() + 730 * 86400_000).toISOString();
     await env.DB.prepare(`INSERT INTO enquiries (id, reference, artist_id, artwork_id, artwork_title, buyer_name, buyer_email, message, notice_version, created_at, status, delete_after)
-      VALUES (?,?,?,?,?,?,?,?,?,?,?,?)`).bind(id, ref, g.artist.id, work ? work.id : null, work ? work.title : null, name, email, message, NOTICE, now(), 'received', del).run();
+      VALUES (?,?,?,?,?,?,?,?,?,?,?,?)`).bind(id, ref, g.artist.id, work ? work.id : null, work ? work.title : null, name, email, message, b.notice, now(), 'received', del).run();
     // Enquiry log (Founding Artist Agreement 5.4; migration 0005): reference, artist, artwork, time and founding status, with
     // NO buyer details. Kept for the agreement's life plus six years; the row above is still deleted at 24 months. If the log
     // isn't installed yet the enquiry goes ahead exactly as before and the audit says so.
