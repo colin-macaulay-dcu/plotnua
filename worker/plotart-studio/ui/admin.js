@@ -185,7 +185,7 @@
       const warn = b.closest('li').querySelector('[data-pubwarn]');
       try {
         const d = await api('POST', `/api/admin/queue/${b.dataset.pub}/publish`, b.dataset.force ? { confirm_without_agreement: true } : {});
-        say(d.publish === 'requested' ? 'Publishing started: plotnua.ie updates once every check has passed (usually 10–20 minutes)'
+        say(d.publish === 'requested' ? 'Publishing started: plotnua.ie updates once every check has passed (usually within 5–15 minutes)'
           : d.publish === 'failed' ? 'Approved for publishing. It could not be started just now, so it will go out at the next scheduled run' : 'Approved for publishing: it will go out at the next scheduled run', d.publish === 'failed');
         home();
       }
