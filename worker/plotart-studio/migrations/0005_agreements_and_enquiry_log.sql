@@ -37,7 +37,7 @@ CREATE TABLE IF NOT EXISTS record_retention (
   delete_after TEXT NOT NULL,
   recorded_by  TEXT NOT NULL,
   recorded_at  TEXT NOT NULL,
-  CHECK (delete_after >= strftime('%Y-%m-%dT%H:%M:%SZ', ended_at, '+6 years'))
+  CHECK (julianday(delete_after) >= julianday(ended_at, '+6 years'))
 );
 CREATE TRIGGER IF NOT EXISTS record_retention_no_update BEFORE UPDATE ON record_retention
 BEGIN SELECT RAISE(ABORT, 'record_retention rows never change'); END;
@@ -71,12 +71,12 @@ CREATE INDEX IF NOT EXISTS agreement_acceptances_artist ON agreement_acceptances
 -- A Studio acceptance must name an installed fixed text, carry exactly its fingerprints, and not predate it.
 CREATE TRIGGER IF NOT EXISTS agreement_acceptances_valid BEFORE INSERT ON agreement_acceptances
 WHEN NEW.method = 'studio_checkbox' AND NOT EXISTS (SELECT 1 FROM agreement_documents d WHERE d.doc_id = NEW.doc_id AND d.text_status = 'fixed'
-  AND d.html_sha256 = NEW.doc_sha256 AND d.pdf_sha256 = NEW.pdf_sha256 AND NEW.accepted_at >= d.effective_at)
+  AND d.html_sha256 = NEW.doc_sha256 AND d.pdf_sha256 = NEW.pdf_sha256 AND julianday(NEW.accepted_at) >= julianday(d.effective_at))
 BEGIN SELECT RAISE(ABORT, 'acceptance refused: not an installed text, wrong fingerprint, or dated before the text took effect'); END;
 CREATE TRIGGER IF NOT EXISTS agreement_acceptances_no_update BEFORE UPDATE ON agreement_acceptances
 BEGIN SELECT RAISE(ABORT, 'agreement_acceptances is append-only'); END;
 CREATE TRIGGER IF NOT EXISTS agreement_acceptances_no_delete BEFORE DELETE ON agreement_acceptances
-WHEN NOT EXISTS (SELECT 1 FROM record_retention r WHERE r.artist_id = OLD.artist_id AND r.delete_after <= strftime('%Y-%m-%dT%H:%M:%SZ', 'now'))
+WHEN NOT EXISTS (SELECT 1 FROM record_retention r WHERE r.artist_id = OLD.artist_id AND julianday(r.delete_after) <= julianday('now'))
 BEGIN SELECT RAISE(ABORT, 'agreement_acceptances is append-only until its retention period has ended'); END;
 
 -- 4 · The enquiry log: one row per enquiry PlotArt introduces, by any route, with NO buyer contact details. Relay enquiries
@@ -99,13 +99,13 @@ CREATE TABLE IF NOT EXISTS enquiry_log (
   corrects          TEXT REFERENCES enquiry_log(id),
   note              TEXT CHECK (note IS NULL OR length(note) <= 280),
   CHECK (route = 'relay' OR reference GLOB 'PA-EM-*'),
-  CHECK (introduced_at <= logged_at)
+  CHECK (julianday(introduced_at) <= julianday(logged_at))
 );
 CREATE INDEX IF NOT EXISTS enquiry_log_artist ON enquiry_log(artist_id, introduced_at);
 CREATE TRIGGER IF NOT EXISTS enquiry_log_no_update BEFORE UPDATE ON enquiry_log
 BEGIN SELECT RAISE(ABORT, 'enquiry_log is append-only; add a correcting row'); END;
 CREATE TRIGGER IF NOT EXISTS enquiry_log_no_delete BEFORE DELETE ON enquiry_log
-WHEN NOT EXISTS (SELECT 1 FROM record_retention r WHERE r.artist_id = OLD.artist_id AND r.delete_after <= strftime('%Y-%m-%dT%H:%M:%SZ', 'now'))
+WHEN NOT EXISTS (SELECT 1 FROM record_retention r WHERE r.artist_id = OLD.artist_id AND julianday(r.delete_after) <= julianday('now'))
 BEGIN SELECT RAISE(ABORT, 'enquiry_log is append-only until its retention period has ended'); END;
 -- @@DDL-END
 

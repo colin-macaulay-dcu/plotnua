@@ -3,6 +3,7 @@
 // (Playwright Chromium) checks navigation, focus, keyboard use and the phone layout. Nothing here touches Cloudflare.
 //   node test/prove-submission.mjs [--shots DIR]
 // Numbered checks T1..T18 follow the brief's test list; X-checks are extra.
+import { acceptAgreement } from './agree.mjs';
 import { start, token, FOUNDER } from './local.mjs';
 import { execFileSync } from 'node:child_process';
 import { mkdtempSync, readFileSync } from 'node:fs';
@@ -37,7 +38,9 @@ const call = async (method, path, who, body, raw) => {
   const t = await r.text(); let j = {}; try { j = JSON.parse(t); } catch { /* html */ } return { s: r.status, j, t };
 };
 const img = n => readFileSync(join(TMP, `${n}.jpg`));
-const mk = async (name, email) => (await call('POST', '/api/admin/artists', FOUNDER, { display_name: name, email, founding: true })).j.id;
+// Founding Artist Agreement (6 Nov 2026): each synthetic artist accepts first, so these checklist counts stay exactly as before
+// (the agreement item itself is proven in prove-agreement.mjs).
+const mk = async (name, email) => { const id = (await call('POST', '/api/admin/artists', FOUNDER, { display_name: name, email, founding: true })).j.id; await acceptAgreement(mf, url, email); return id; };
 const me = async e => (await call('GET', '/api/me', e)).j.status;
 const PROFILE = { practice: 'Painter', medium: 'painting', county: 'Dublin', bio: 'A synthetic test painter used only for these checks. Oil and acrylic on canvas.' };
 const addWork = async (e, i, details = {}) => {
@@ -220,7 +223,7 @@ await call('PATCH', `/api/images/${por.j.id}`, A, { alt: 'Portrait of the synthe
 await p.reload({ waitUntil: 'load' }); await p.waitForTimeout(600);   // the portrait was described through the API here, so load the page again
 const ready = await p.evaluate(() => ({ dis: document.querySelector('#go').disabled, why: !!document.querySelector('#why'), todo: !!document.querySelector('#todo-h') }));
 await shot(p, '09-submit-ready-phone-390.png');
-await p.check('#lic'); await p.click('#go'); await p.waitForTimeout(1200);
+await p.click('#go'); await p.waitForTimeout(1200);   // the agreement was accepted in Studio beforehand (no licence box on this page any more)
 const done = await call('GET', '/api/admin/overview', FOUNDER);
 const ov = done.j.artists.find(a => a.id === AID);
 check('T8e/T15 all complete: explanation and list disappear, the button is enabled, and the submission goes through', !ready.dis && !ready.why && !ready.todo && ov.state === 'in_review' && ov.problems === 0, JSON.stringify(ready));
@@ -231,7 +234,7 @@ await browser.close();
 const t18 = [await call('GET', '/', 'stranger@example.test'), await call('GET', '/api/me', null), await call('GET', '/admin', A), await call('GET', '/api/admin/overview', A)];
 check('T18 authentication unchanged: unknown → refusal page (403), no token → 401, artist → founder desk 403', t18[0].s === 403 && /data-signed-in-as/.test(t18[0].t) && t18[1].s === 401 && t18[2].s === 403 && t18[3].s === 403);
 
-// X4 the rules are word-for-word what they were: readiness() == checklist().map(text), and fixed expectations
+// X4 the rules are word-for-word what they were: readiness() == checklist().map(text), and fixed expectations (the last rule changed on purpose with the Founding Artist Agreement, 6 Nov 2026)
 const snapX = { artist: { display_name: 'X', bio: 'short', statement: 'abc', medium: null, portrait: { id: 'i1', alt: null } },
   works: [{ title: null, medium: null, h_cm: null, w_cm: 1, ai_involvement: 'assisted', ai_note: null, images: [{ id: 'm', role: 'main', alt: null, photographer: 'other_with_permission', photo_credit: null }] }] };
 const got = L.readiness(snapX, { founding: true, licenceOk: false, imageBlocks: new Set(['m']) });
@@ -239,7 +242,7 @@ const got = L.readiness(snapX, { founding: true, licenceOk: false, imageBlocks: 
 check('X4 rule wording unchanged (every rule at once, identical to the released rules)', JSON.stringify(got) === JSON.stringify(['Your name must be 2–80 characters (now 1)', 'Your biography must be 40–2400 characters (now 5)',
   'Your statement must be 10–400 characters (now 3)', 'Choose your main medium in your profile', 'Describe your portrait photograph (for people using screen readers)',
   'An untitled artwork needs a title, the medium, its size, a short AI disclosure, a description of each photograph, the photographer’s name, a photograph that passes the checks',
-  'Accept the Gallery Publication and Image Licence']), JSON.stringify(got));
+  'Read and accept the Founding Artist Agreement and the Gallery Publication and Image Licence']), JSON.stringify(got));
 
 await mf.dispose();
 const pass = results.filter(Boolean).length;
