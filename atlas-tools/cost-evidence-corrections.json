@@ -401,6 +401,97 @@
         }
       ],
       "pageNote": "seven base prices rechecked on 26 October 2026"
+    },
+    {
+      "id": "price-recheck-2026-11-06",
+      "date": "2026-11-06",
+      "approved": "Founder approved the staged garden-room pricing refresh on 6 November 2026 (Stage 1: genuine supplier-price rechecks, existing governed correction process). Sixteen published base prices were re-read on the supplier pages on 6 November 2026 and all matched: Garden Office Solutions (4), Adman Steel Sheds (9), Live in Garden Pods (1), Garden Rooms (2). Atlas Last Price Check and Notes updated for these records only. Rayco Modular Homes was not rechecked: the supplier site no longer shows the price, so its record is unchanged. No price amount, VAT, scope, feature, eligibility or image-rights change is authorised by this batch.",
+      "deployedCommit": "790d1b721497aae3aabf4fc5624cf68fbf59ee0d",
+      "deployedUniverseSha256": "565971774b00f4187fc72ab84f158052eace8c96650437edca0274147ebda0f3",
+      "rule": "Each enumerated product takes its record from the universe at deployedCommit; this batch changes only last-price-check dates. Original snapshot identity, existing corrections, non-target records and founder-held groups remain unchanged. LOCAL RELEASE CANDIDATE: deployedCommit is the local commit 790d1b7; it is valid at release only if that commit reaches production unchanged (fast-forward, no rebase).",
+      "products": [
+        {
+          "id": "recKHXaApIugjOKti",
+          "name": "Garden Office Solutions Garden Room 12.5m²",
+          "expect": "replaced"
+        },
+        {
+          "id": "recUs4gexxlfkaiUj",
+          "name": "Garden Office Solutions Garden Room 17.6m²",
+          "expect": "replaced"
+        },
+        {
+          "id": "reciolethPMEn50gQ",
+          "name": "Garden Office Solutions Garden Room 25m²",
+          "expect": "replaced"
+        },
+        {
+          "id": "recUnUAWq0TWkNO5C",
+          "name": "Garden Office Solutions Garden Room 26.4m²",
+          "expect": "replaced"
+        },
+        {
+          "id": "recagT4dAtSxxdqv4",
+          "name": "Multiroom Garden Room 3m x 3.2m",
+          "expect": "replaced"
+        },
+        {
+          "id": "recXi7u4Hv7tTcB80",
+          "name": "Multiroom Garden Room 3m x 4.2m",
+          "expect": "replaced"
+        },
+        {
+          "id": "recsgAs9snaK2MAfa",
+          "name": "Multiroom Garden Room 3m x 5.2m",
+          "expect": "replaced"
+        },
+        {
+          "id": "recnbJjoXIbfxOgk2",
+          "name": "Multiroom Garden Room 3m x 6.2m",
+          "expect": "replaced"
+        },
+        {
+          "id": "recaGNRHjWWXqcX52",
+          "name": "Multiroom Garden Room 3m x 9.2m",
+          "expect": "replaced"
+        },
+        {
+          "id": "recA0HnNkzltWWhzi",
+          "name": "Multiroom Garden Room 4m x 4.2m",
+          "expect": "replaced"
+        },
+        {
+          "id": "rechMRoBym2H90To9",
+          "name": "Multiroom Garden Room 4m x 5.2m",
+          "expect": "replaced"
+        },
+        {
+          "id": "recWPmFXg8981XQtw",
+          "name": "Multiroom Garden Room 4m x 6.2m",
+          "expect": "replaced"
+        },
+        {
+          "id": "recUpbnPlPJO7N2wa",
+          "name": "Multiroom Garden Room 4m x 9.2m",
+          "expect": "replaced"
+        },
+        {
+          "id": "recrfXlRTCNCf8VB5",
+          "name": "Studio Living Pod",
+          "expect": "replaced"
+        },
+        {
+          "id": "recfFcnNP9ZV4BcVW",
+          "name": "CUBE Garden Room Range",
+          "expect": "replaced"
+        },
+        {
+          "id": "recnBe46LKTCzLJ3P",
+          "name": "Ultimate Garden Room Range",
+          "expect": "replaced"
+        }
+      ],
+      "pageNote": "16 base prices rechecked on 6 November 2026"
     }
   ]
 }
