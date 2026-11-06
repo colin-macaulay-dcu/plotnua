@@ -443,26 +443,116 @@
       const row = $(`#hi-${b.dataset.hist}`), open = row.hidden; row.hidden = !open; b.setAttribute('aria-expanded', String(open));
       if (!open || row.dataset.loaded) return;
       const box = $(`[data-hibox="${b.dataset.hist}"]`, row);
+      row.dataset.loaded = '1'; await historyBox(box, b.dataset.hist);
+    }));
+  }
+
+  /* Acceptance history for one artist, grouped by acceptance, with linked corrections (6 Nov 2026). Nothing here edits a
+     record: "Correct" adds a separate correction with a reason; the original values stay visible. */
+  const FIELD = { legal_name: 'Legal name', display_name: 'Professional name', account_email: 'Studio email address' };
+  async function historyBox(box, id) {
+    let r;
+    try { r = await api('GET', `/api/admin/artists/${id}/agreement`); } catch (e) { box.innerHTML = `<p class="st-err">${E(e.message)}</p>`; return; }
+    const ev = {};
+    for (const x of r.agreement.history) (ev[x.event_id] ||= []).push(x);
+    const groups = Object.values(ev);
+    const corrLine = c => `<li>${E(irish(c.corrected_at))} · ${E(FIELD[c.field])}: “${E(c.previous_value ?? '—')}” → “${E(c.corrected_value ?? '(removed)')}” · asked by ${c.requested_by === 'artist' ? 'the artist' : 'you'} · ${E(c.reason)}</li>`;
+    box.innerHTML = `<p class="st-em-h">${E(r.artist.display_name)} · first published ${r.artist.first_published_at ? E(irish(r.artist.first_published_at)) : 'not yet'}${r.agreement.founding_year ? ` · founding year ${E(irishDay(r.agreement.founding_year.start))} to ${E(irishDay(r.agreement.founding_year.end))}` : ''}</p>
+      ${groups.length ? groups.map(g => { const x = g[0], studio = x.method === 'studio_checkbox', cs = g[0].corrections;
+        return `<div class="st-acc" data-ev="${E(x.event_id)}">
+        <p class="st-acc-h"><b>${E(irish(x.accepted_at))}</b> · ${studio ? 'Ticked in Studio' : 'Carried over from the earlier Studio record (label only)'}</p>
+        <ul class="st-acc-docs">${g.map(d => `<li>${E(DOCNAME[d.doc_id] || d.doc_id)} <span class="st-muted">${E(d.doc_id)}${d.doc_sha256 ? ` · fingerprint ${E(d.doc_sha256.slice(0, 16))}…` : ' · no fixed text'}</span>${d.doc_sha256 ? ` <a class="st-btn st-btn--small" href="/agreements/${E(d.doc_id)}.pdf" download>PDF</a>` : ''}</li>`).join('')}</ul>
+        <dl class="st-dl st-acc-dl"><dt>Professional name</dt><dd>${E(x.display_name || '—')}${x.original.display_name !== x.display_name ? ` <span class="st-muted">(as recorded: ${E(x.original.display_name)})</span>` : ''}</dd>
+          ${studio ? `<dt>Legal name</dt><dd>${E(x.legal_name || '—')}${x.original.legal_name !== x.legal_name ? ` <span class="st-muted">(as recorded: ${E(x.original.legal_name || '—')})</span>` : ''}</dd>
+          <dt>Studio address</dt><dd>${E(x.account_email || '—')}${x.original.account_email !== x.account_email ? ` <span class="st-muted">(as recorded: ${E(x.original.account_email)})</span>` : ''}</dd>` : ''}</dl>
+        ${cs.length ? `<p class="st-acc-ch">Corrections (the record above is unchanged; these are kept beside it)</p><ul class="st-list">${cs.map(corrLine).join('')}</ul>` : ''}
+        <button class="st-btn st-btn--small" data-corr="${E(x.event_id)}" aria-expanded="false">Correct a detail</button>
+        <form class="st-em" data-corrform="${E(x.event_id)}" hidden novalidate>
+          <p class="st-em-h">Correct a detail of this acceptance</p>
+          <p class="st-muted">The documents, versions, fingerprints and the time of acceptance can’t be corrected, and a correction is not a new acceptance.</p>
+          <div class="st-two"><div class="st-f"><label>What to correct</label><select data-k="field">${(studio ? ['legal_name', 'display_name', 'account_email'] : ['display_name']).map(f => `<option value="${f}">${FIELD[f]}</option>`).join('')}</select></div>
+          <div class="st-f"><label>Correct value</label><input type="text" data-k="value" autocomplete="off"><p class="st-hint">For a legal name entered by mistake, leave it empty to remove it.</p></div></div>
+          <div class="st-f"><label>Reason</label><textarea data-k="reason" maxlength="280" style="min-height:70px" placeholder="e.g. The artist emailed: their legal name was mistyped"></textarea></div>
+          <div class="st-row" style="gap:16px;flex-wrap:wrap"><label class="st-check"><input type="radio" name="rq-${E(x.event_id)}" value="artist" checked> The artist asked</label><label class="st-check"><input type="radio" name="rq-${E(x.event_id)}" value="founder"> My own correction</label></div>
+          <label class="st-check"><input type="checkbox" data-k="ok" style="accent-color:var(--terra);width:20px;height:20px"> I’ve checked this correction.</label>
+          <div class="st-row"><button type="submit" class="st-btn st-btn--solid st-btn--small">Save correction</button></div><p class="st-err" role="alert" data-corrERR></p></form></div>`; }).join('')
+        : '<p class="st-muted">No acceptance recorded.</p>'}
+      <p class="st-muted" style="margin:10px 0 0">${r.enquiries.length} logged enquir${r.enquiries.length === 1 ? 'y' : 'ies'}, ${r.enquiries.filter(e => e.founding).length} Founding.</p>`;
+    box.querySelectorAll('[data-corr]').forEach(btn => btn.addEventListener('click', () => {
+      const f = box.querySelector(`[data-corrform="${btn.dataset.corr}"]`); f.hidden = !f.hidden; btn.setAttribute('aria-expanded', String(!f.hidden));
+    }));
+    box.querySelectorAll('[data-corrform]').forEach(f => f.addEventListener('submit', async e => {
+      e.preventDefault();
+      const k = n => f.querySelector(`[data-k="${n}"]`);
       try {
-        const r = await api('GET', `/api/admin/artists/${b.dataset.hist}/agreement`); row.dataset.loaded = '1';
-        const h = r.agreement.history;
-        box.innerHTML = `<p class="st-em-h">${E(r.artist.display_name)} · first published ${r.artist.first_published_at ? E(irish(r.artist.first_published_at)) : 'not yet'}${r.agreement.founding_year ? ` · founding year ${E(irishDay(r.agreement.founding_year.start))} to ${E(irishDay(r.agreement.founding_year.end))}` : ''}</p>
-          ${h.length ? `<div class="st-scroll"><table class="st-table"><thead><tr><th>Accepted (Irish time)</th><th>Document</th><th>How</th><th>Recorded details</th><th>Copy</th></tr></thead><tbody>${h.map(x => `<tr>
-            <td>${E(irish(x.accepted_at))}</td><td>${E(DOCNAME[x.doc_id] || x.doc_id)}<br><span class="st-muted">${E(x.doc_id)}</span></td>
-            <td>${x.method === 'studio_checkbox' ? 'Ticked in Studio' : 'Carried over from the earlier Studio record (label only)'}</td>
-            <td><span class="st-muted">${x.doc_sha256 ? `Fingerprint ${E(x.doc_sha256.slice(0, 16))}…<br>` : 'No fixed text (label only)<br>'}${x.account_email ? E(x.account_email) + '<br>' : ''}${E(x.display_name || '')}${x.legal_name ? ` · legal name ${E(x.legal_name)}` : ''}</span></td>
-            <td>${x.doc_sha256 ? `<a class="st-btn st-btn--small" href="/agreements/${E(x.doc_id)}.pdf" download>PDF</a>` : '—'}</td></tr>`).join('')}</tbody></table></div>` : '<p class="st-muted">No acceptance recorded.</p>'}
-          <p class="st-muted" style="margin:10px 0 0">${r.enquiries.length} logged enquir${r.enquiries.length === 1 ? 'y' : 'ies'}, ${r.enquiries.filter(e => e.founding).length} Founding.</p>`;
-      } catch (e) { box.innerHTML = `<p class="st-err">${E(e.message)}</p>`; }
+        await api('POST', `/api/admin/artists/${id}/acceptance-corrections`, { event_id: f.dataset.corrform, field: k('field').value, value: k('value').value, reason: k('reason').value,
+          requested_by: f.querySelector('input[type=radio]:checked').value, confirm: k('ok').checked });
+        say('Correction saved beside the original record'); historyBox(box, id);
+      } catch (x) { f.querySelector('[data-corrERR]').textContent = x.message; }
+    }));
+  }
+
+  /* ---- Leaving PlotArt (founder decision 6 Nov 2026): requests, ending participation, and the deletion schedule */
+  const STATE_L = { done: ['Done', 'ok'], pending: ['Waiting for the pipeline', 'warn'], overdue: ['Overdue', 'bad'], scheduled: ['Scheduled', ''], due: ['Due: deleted at the next daily run', 'warn'],
+    due_job_off: ['Due, but deletion is switched off', 'bad'], manual: ['Your decision', ''], not_published: ['Never published', 'ok'] };
+  async function leaving() {
+    const d = await api('GET', '/api/admin/participation');
+    const o = await api('GET', '/api/admin/overview');
+    const reqs = d.items.filter(i => i.request), ended = d.items.filter(i => i.ended);
+    const pill = st => `<span class="st-pill${STATE_L[st][1] ? ' st-pill--' + STATE_L[st][1] : ''}">${E(STATE_L[st][0])}</span>`;
+    const sched = i => `<div class="st-scroll"><table class="st-table"><thead><tr><th>Information</th><th>Rule</th><th>Due</th><th>Status</th></tr></thead><tbody>${i.ended.schedule.map(x => `<tr>
+      <td>${E(x.what)}${x.branches ? `<br><span class="st-muted">Audit branches: <code>${E(x.branches)}</code></span>` : ''}</td><td><span class="st-muted">${E(x.rule)}</span></td>
+      <td>${x.due ? E(irishDay(new Date(x.due).toLocaleDateString('en-CA', { timeZone: 'Europe/Dublin' }))) : '—'}</td><td>${pill(x.state)}${x.done_at ? `<br><span class="st-muted">${E(irish(x.done_at))}</span>` : ''}</td></tr>`).join('')}</tbody></table></div>`;
+    app.innerHTML = `<h1 class="st-h1">Leaving PlotArt</h1>
+      <p class="st-sub">An artist can leave at any time. Ending participation removes their gallery from plotnua.ie (within ${d.rules ? d.rules.removal_days : 14} days), stops sign-in and enquiries, and fixes the deletion dates. Records are kept only as long as the agreement and privacy notice say, then deleted. Nothing here touches any other artist.</p>
+      ${!d.installed ? '<div class="st-card" role="alert"><p style="margin:0"><b>Not installed yet.</b> This needs migration 0005.</p></div>' : ''}
+      <div class="st-card ${d.deletion_enabled ? 'st-agr-ok' : 'st-agr-warn'}"><p style="margin:0"><b>Scheduled deletion is ${d.deletion_enabled ? 'ON' : 'OFF'} in this Studio.</b> ${d.deletion_enabled ? 'Due deletions run in the daily clean-up.' : 'Due deletions are shown here but nothing is deleted until it is switched on (a release step that needs your approval).'}</p></div>
+      <section class="st-card"><h2>Requests to leave (${reqs.length})</h2>
+        ${reqs.length ? `<ul class="st-works">${reqs.map(i => `<li class="st-work" style="grid-template-columns:minmax(0,1fr) auto"><div><p class="st-work-t">${E(i.display_name)}</p>
+          <p class="st-work-s" style="margin:0">Asked ${E(irish(i.request.at))} · gallery to be removed by ${E(irishDay(new Date(i.request.due).toLocaleDateString('en-CA', { timeZone: 'Europe/Dublin' })))}${i.request.reason ? ` · “${E(i.request.reason)}”` : ''}</p></div>
+          <a class="st-btn st-btn--solid st-btn--small" href="#end-${E(i.id)}" data-pick="${E(i.id)}">End participation</a></li>`).join('')}</ul>` : '<p class="st-muted">No open requests.</p>'}</section>
+      <section class="st-card" id="endform" aria-labelledby="end-h"><h2 id="end-h">End participation</h2>
+        <p class="st-muted">For an artist who asked to leave (in Studio or by email), or when you end it under the agreement. This can’t be undone from here.</p>
+        <div class="st-two"><div>
+          <div class="st-f"><label for="en-artist">Artist</label><select id="en-artist"><option value="">Choose…</option>${o.artists.filter(a => a.account_status !== 'ended').map(a => `<option value="${E(a.id)}" data-name="${E(a.display_name)}">${E(a.display_name)}${a.leave_requested_at ? ' (asked to leave)' : ''}</option>`).join('')}</select></div>
+          <div class="st-row" style="gap:16px;flex-wrap:wrap;margin:0 0 12px"><label class="st-check"><input type="radio" name="en-src" value="artist_request" checked> The artist asked to leave</label><label class="st-check"><input type="radio" name="en-src" value="founder"> I’m ending it</label></div>
+          <div class="st-f"><label for="en-reason">Reason</label><textarea id="en-reason" maxlength="280" style="min-height:70px" placeholder="e.g. Artist emailed on 6 November asking to leave"></textarea></div>
+        </div><div>
+          <p class="st-muted" id="en-what">Choose an artist to see exactly what will happen.</p>
+          <div class="st-f"><label for="en-name">Type the artist’s name to confirm</label><input id="en-name" type="text" autocomplete="off"></div>
+          <div class="st-actions"><button class="st-btn st-btn--solid" id="en-go">End participation</button></div><p class="st-err" id="en-err" role="alert"></p>
+        </div></div></section>
+      <section class="st-card"><h2>Ended (${ended.length})</h2>
+        ${ended.length ? ended.map(i => `<div class="st-acc"><p class="st-acc-h"><b>${E(i.display_name)}</b> · ended ${E(irish(i.ended.at))} by ${E(i.ended.by)} · ${i.ended.source === 'artist_request' ? 'the artist asked to leave' : 'ended by you'}${i.ended.reason ? ` · “${E(i.ended.reason)}”` : ''}</p>
+          ${sched(i)}
+          ${i.ended.schedule.find(x => x.key === 'originals').state !== 'done' ? `<div class="st-row" style="margin-top:10px;gap:10px;flex-wrap:wrap;align-items:end"><div class="st-f" style="margin:0;flex:1;min-width:240px"><label>Delete originals now (the artist asked for earlier deletion)</label><input type="text" data-er-reason="${E(i.id)}" placeholder="Reason"></div>
+            <button class="st-btn st-btn--small st-btn--danger" data-erase="${E(i.id)}"${d.deletion_enabled ? '' : ' disabled title="Deletion is switched off"'}>Delete originals now</button></div><p class="st-err" data-er-err="${E(i.id)}"></p>` : ''}
+          <details class="st-ck-d"><summary><span>Event log (${i.events.length})</span></summary><ul class="st-list">${i.events.map(e => `<li>${E(irish(e.at))} · ${E(e.kind.replace(/_/g, ' '))} · ${E(e.actor)}${e.reason ? ` · ${E(e.reason)}` : ''}</li>`).join('')}</ul></details></div>`).join('') : '<p class="st-muted">No artist has left.</p>'}</section>`;
+    const sel = $('#en-artist');
+    const what = () => { const a = o.artists.find(x => x.id === sel.value);
+      $('#en-what').innerHTML = !a ? 'Choose an artist to see exactly what will happen.' : `<b>${E(a.display_name)}</b>: ${a.live_version ? 'their gallery is queued for removal from plotnua.ie now' : 'not published, so there is nothing to remove from plotnua.ie'}; pending submissions are withdrawn and nothing of theirs waits to publish; sign-in and enquiries stop. Original photographs and account details are deleted after 12 months; acceptance and enquiry records after 6 years. No other artist is affected.`; };
+    sel.addEventListener('change', what);
+    app.querySelectorAll('[data-pick]').forEach(b => b.addEventListener('click', e => { e.preventDefault(); sel.value = b.dataset.pick; what(); $('#en-reason').focus(); $('#endform').scrollIntoView({ block: 'start' }); }));
+    $('#en-go').addEventListener('click', async () => {
+      $('#en-err').textContent = '';
+      if (!sel.value) { $('#en-err').textContent = 'Choose the artist.'; return; }
+      try { await api('POST', `/api/admin/artists/${sel.value}/end`, { confirm_name: $('#en-name').value, source: app.querySelector('input[name=en-src]:checked').value, reason: $('#en-reason').value });
+        say('Participation ended · gallery removal queued'); leaving(); }
+      catch (e) { $('#en-err').textContent = e.message; }
+    });
+    app.querySelectorAll('[data-erase]').forEach(b => b.addEventListener('click', async () => {
+      if (!b.dataset.sure) { b.dataset.sure = 1; b.textContent = 'Delete them permanently?'; return; }
+      try { await api('POST', `/api/admin/artists/${b.dataset.erase}/erase-originals`, { confirm: true, reason: app.querySelector(`[data-er-reason="${b.dataset.erase}"]`).value }); say('Originals deleted'); leaving(); }
+      catch (e) { app.querySelector(`[data-er-err="${b.dataset.erase}"]`).textContent = e.message; }
     }));
   }
 
   async function render() {
     const h = location.hash || '#/', path = location.pathname.replace(/\/$/, '');
     const am = path.match(/^\/admin\/applications\/(F25-\d{6}-[0-9A-F]{6})$/);
-    document.querySelectorAll('.st-tabs a').forEach(a => a.toggleAttribute('aria-current', a.dataset.t === (path.startsWith('/admin/applications') ? 'apps' : path === '/admin/gallery' ? 'order' : path === '/admin/ideas' ? 'ideas' : path === '/admin/garden' ? 'garden' : path === '/admin/agreements' ? 'agree' : 'desk')));
+    document.querySelectorAll('.st-tabs a').forEach(a => a.toggleAttribute('aria-current', a.dataset.t === (path.startsWith('/admin/applications') ? 'apps' : path === '/admin/gallery' ? 'order' : path === '/admin/ideas' ? 'ideas' : path === '/admin/garden' ? 'garden' : path === '/admin/agreements' ? 'agree' : path === '/admin/leaving' ? 'leave' : 'desk')));
     document.querySelectorAll('.st-tabs a[aria-current]').forEach(a => a.setAttribute('aria-current', 'page'));
-    try { if (am) await appView(am[1]); else if (path === '/admin/gallery') await order(); else if (path === '/admin/ideas') await ideas(); else if (path === '/admin/garden') await garden(); else if (path === '/admin/agreements') await agreements(); else if (path === '/admin/applications') await apps(); else if (h.startsWith('#/review/')) await review(h.slice(9)); else await home(); window.scrollTo(0, 0); }
+    try { if (am) await appView(am[1]); else if (path === '/admin/gallery') await order(); else if (path === '/admin/ideas') await ideas(); else if (path === '/admin/garden') await garden(); else if (path === '/admin/agreements') await agreements(); else if (path === '/admin/leaving') await leaving(); else if (path === '/admin/applications') await apps(); else if (h.startsWith('#/review/')) await review(h.slice(9)); else await home(); window.scrollTo(0, 0); }
     catch (e) { app.innerHTML = `<div class="st-card"><h2>Something went wrong</h2><p class="st-muted">${E(e.message)}</p></div>`; }
   }
   addEventListener('hashchange', render);

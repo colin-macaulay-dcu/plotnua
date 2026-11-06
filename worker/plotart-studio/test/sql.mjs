@@ -17,3 +17,5 @@ export function statements(sql) {
   flush();
   return out;
 }
+// The rollback a migration documents in its trailing comment: every commented line that starts with DROP.
+export const rollbackOf = sql => sql.split('\n').filter(l => /^--\s+DROP\s/.test(l)).map(l => l.replace(/^--\s*/, '')).join('\n');

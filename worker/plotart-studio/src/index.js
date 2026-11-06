@@ -195,6 +195,212 @@ async function logEnquiry(env, founder, b) {
   return { reference: ref, founding: f.founding, founding_year_end: f.year_end, late_entry: late, ...(await enquiryLog(env)) };
 }
 
+/* ---------------------------------------------------------------- acceptance record corrections (founder, 6 Nov 2026)
+   A mistyped legal name, professional name or address in a recorded acceptance is corrected by SEPARATE linked rows
+   (acceptance_corrections), one per document row of the acceptance, with a reason and a time. The acceptance itself
+   (documents, versions, fingerprints, time, statement) is never changed, and a correction is never an acceptance. */
+const CORR_FIELDS = { legal_name: 'Legal name', display_name: 'Professional name', account_email: 'Studio email address' };
+function effectiveRows(rows, corr) {
+  return rows.map(r => {
+    const mine = corr.filter(c => c.acceptance_id === r.id).sort((a, b) => a.corrected_at.localeCompare(b.corrected_at));
+    const out = { ...r, corrections: mine, original: { legal_name: r.legal_name, display_name: r.display_name, account_email: r.account_email } };
+    for (const c of mine) out[c.field] = c.corrected_value;
+    out.corrected = mine.length > 0;
+    return out;
+  });
+}
+async function corrections(env, artistId) {
+  try { return await all(env, 'SELECT * FROM acceptance_corrections WHERE artist_id = ? ORDER BY corrected_at, id', artistId); } catch { return []; }
+}
+async function correctAcceptance(env, founder, artistId, b) {
+  if (!(await agreementDocs(env))) throw new Bad('Acceptance records aren’t installed yet (migration 0005).', 503);
+  const rows = await all(env, 'SELECT * FROM agreement_acceptances WHERE artist_id = ? AND event_id = ? ORDER BY doc_id', artistId, String(b.event_id || ''));
+  if (!rows.length) throw new Bad('That acceptance wasn’t found for this artist', 404);
+  const field = String(b.field || '');
+  if (!CORR_FIELDS[field]) throw new Bad('Choose what to correct: legal name, professional name or Studio email address');
+  if (rows[0].method !== 'studio_checkbox' && field !== 'display_name') throw new Bad('This earlier record was carried over as a label only: it never held a legal name or an address, so none can be added to it.');
+  let value = b.value === undefined || b.value === null ? '' : String(b.value).trim();
+  if (field === 'legal_name') value = value ? L.text(value, 2, 120, 'Legal name') : null;
+  else if (field === 'display_name') value = L.text(value, 2, 80, 'Professional name');
+  else value = L.artistEmail(value);
+  const reason = String(b.reason || '').trim();
+  if (reason.length < 10 || reason.length > 280) throw new Bad('Give the reason for the correction (10–280 characters)');
+  if (L.privateHint(reason) && field !== 'account_email') throw new Bad('Keep contact details out of the reason');
+  if (!['artist', 'founder'].includes(b.requested_by)) throw new Bad('Say who asked for the correction: the artist or you');
+  if (b.confirm !== true) throw new Bad('Confirm the correction before saving');
+  const eff = effectiveRows(rows, await corrections(env, artistId));
+  if (eff.every(r => (r[field] ?? null) === value)) throw new Bad('That is already the recorded value');
+  const group = rid('cg'), at = now();
+  await env.DB.batch(eff.map(r => env.DB.prepare(`INSERT INTO acceptance_corrections (id, acceptance_id, artist_id, correction_group, field, previous_value, corrected_value, reason,
+      requested_by, corrected_by, corrected_at) VALUES (?,?,?,?,?,?,?,?,?,?,?)`).bind(rid('cor'), r.id, artistId, group, field, r[field] ?? null, value, reason, b.requested_by, founder, at)));
+  await audit(env, founder, 'founder', 'acceptance_corrected', artistId, { event: b.event_id, field, group, requested_by: b.requested_by });
+  return { correction_group: group, corrected_at: at, rows: eff.length };
+}
+
+/* ---------------------------------------------------------------- ending participation (founder decision 6 Nov 2026)
+   The artist may ask to leave at any time (Studio or email). The founder ends participation: from that moment the
+   artist's pending submissions are withdrawn, nothing of theirs waits to publish, their gallery is queued for removal from
+   plotnua.ie (licence 6.1: within 14 days), sign-in and enquiries stop, and the deletion dates are fixed:
+     12 months after ending  original photographs, Studio account details, works and drafts (licence 6.5; privacy notice)
+     6 years after ending    acceptance records, corrections, the enquiry log and the publication record (agreement 11.2)
+   Deletion runs only when PARTICIPATION_DELETION is 'on' (off by default: switching it on is a release step). Every step
+   is scoped to the one artist and recorded in participation_events and the audit log. Published web images remain in the
+   private repository history and its audit branches (licence 6.6): listed for the founder, never touched automatically. */
+const ENDING = { removal_days: 14, originals_months: 12, records_years: 6 };
+const plusMonths = (iso, n) => { const d = new Date(iso); d.setUTCMonth(d.getUTCMonth() + n); return d.toISOString(); };
+async function participationEvents(env, artistId) {
+  try { return await all(env, 'SELECT * FROM participation_events WHERE artist_id = ? ORDER BY at, id', artistId); } catch { return null; }
+}
+async function participation(env, a) {
+  const ev = await participationEvents(env, a.id);
+  if (!ev) return { installed: false };
+  const ended = ev.find(e => e.kind === 'ended') || null;
+  const reqs = ev.filter(e => e.kind === 'leave_requested'), wd = ev.filter(e => e.kind === 'leave_request_withdrawn');
+  const lastReq = reqs[reqs.length - 1], lastWd = wd[wd.length - 1];
+  const request = lastReq && (!lastWd || lastWd.at < lastReq.at) ? { at: lastReq.at, actor: lastReq.actor, reason: lastReq.reason, due: new Date(Date.parse(lastReq.at) + ENDING.removal_days * 86400_000).toISOString() } : null;
+  const out = { installed: true, request: ended ? null : request, ended: null, events: ev };
+  if (!ended) return out;
+  const d = JSON.parse(ended.detail || '{}');
+  const rq = d.removal_queue ? await one(env, 'SELECT id, status, updated_at FROM publish_queue WHERE id = ?', d.removal_queue) : null;
+  const ret = await one(env, 'SELECT * FROM record_retention WHERE artist_id = ?', a.id);
+  const orig = ev.find(e => e.kind === 'originals_deleted');
+  const stored = await one(env, "SELECT COUNT(*) AS n FROM images WHERE artist_id = ? AND r2_key <> 'erased'", a.id);
+  const counts = { images: stored.n, works: (await one(env, 'SELECT COUNT(*) AS n FROM artworks WHERE artist_id = ?', a.id)).n,
+    acceptances: (await one(env, 'SELECT COUNT(*) AS n FROM agreement_acceptances WHERE artist_id = ?', a.id)).n,
+    enquiry_log: (await one(env, 'SELECT COUNT(*) AS n FROM enquiry_log WHERE artist_id = ?', a.id)).n,
+    versions: (await one(env, 'SELECT COUNT(*) AS n FROM versions WHERE artist_id = ?', a.id)).n };
+  const nowIso = now(), removalDue = new Date(Date.parse(ended.at) + ENDING.removal_days * 86400_000).toISOString();
+  out.ended = { at: ended.at, by: ended.actor, reason: ended.reason, source: d.source || null, counts, schedule: [
+    { key: 'gallery', what: 'Public gallery, artwork pages and Virtual Gallery card on plotnua.ie', rule: `Removed within ${ENDING.removal_days} days (licence 6.1)`, due: removalDue,
+      state: !d.removal_queue ? 'not_published' : rq && rq.status === 'published' ? 'done' : nowIso > removalDue ? 'overdue' : 'pending', done_at: rq && rq.status === 'published' ? rq.updated_at : null, queue: rq },
+    { key: 'originals', what: `Original photographs in Studio storage (${counts.images} now), Studio profile and contact details, works and drafts`, rule: `${ENDING.originals_months} months after ending (licence 6.5; privacy notice), or sooner on request`,
+      due: plusMonths(ended.at, ENDING.originals_months), state: orig ? 'done' : nowIso >= plusMonths(ended.at, ENDING.originals_months) ? (env.PARTICIPATION_DELETION === 'on' ? 'due' : 'due_job_off') : 'scheduled', done_at: orig ? orig.at : null },
+    { key: 'records', what: `Acceptance records and corrections (${counts.acceptances}), enquiry log (${counts.enquiry_log}), publication record (${counts.versions} versions), this ending record`, rule: `${ENDING.records_years} years after ending (agreement 11.2 and 5.5)`,
+      due: ret ? ret.delete_after : null, state: ret && nowIso >= ret.delete_after ? (env.PARTICIPATION_DELETION === 'on' ? 'due' : 'due_job_off') : 'scheduled', done_at: null },
+    { key: 'history', what: 'Web versions of published photographs in the private website repository history', rule: 'Kept, not public and not used (licence 6.6); removing them would need a history rewrite your release rules forbid', due: null, state: 'manual',
+      branches: `content/plotart-${a.id}-v*` },
+    { key: 'others', what: 'Copies made by others (search engine caches, screenshots, shares)', rule: 'Outside PlotArt’s control (licence 6.8): ask search engines to refresh', due: null, state: 'manual' },
+    ...(a.application_ref ? [{ key: 'application', what: `Founding 25 application images (${a.application_ref})`, rule: 'Erase from Applications when no longer needed', due: null, state: 'manual' }] : []),
+  ] };
+  return out;
+}
+async function requestLeave(env, artist, b) {
+  const a = await one(env, 'SELECT * FROM artists WHERE id = ?', artist.id);
+  const pt = await participation(env, a);
+  if (!pt.installed) throw new Bad('Please email hello@plotnua.ie to leave PlotArt.', 503);
+  if (pt.request) throw new Bad('Your request to leave has already been received.', 409);
+  if (b.confirm !== true) throw new Bad('Tick the box to confirm that you want to leave PlotArt');
+  const reason = b.reason ? L.text(b.reason, 2, 280, 'Your reason', { optional: true }) : null;
+  await env.DB.prepare('INSERT INTO participation_events (id, artist_id, kind, at, actor, reason, detail) VALUES (?,?,?,?,?,?,?)').bind(rid('pe'), a.id, 'leave_requested', now(), artist.email, reason, null).run();
+  await audit(env, artist.email, 'artist', 'leave_requested', a.id, {});
+  return { requested: true };
+}
+async function withdrawLeave(env, artist) {
+  const a = await one(env, 'SELECT * FROM artists WHERE id = ?', artist.id);
+  const pt = await participation(env, a);
+  if (!pt.installed || !pt.request) throw new Bad('There is no request to withdraw', 409);
+  await env.DB.prepare('INSERT INTO participation_events (id, artist_id, kind, at, actor, reason, detail) VALUES (?,?,?,?,?,?,?)').bind(rid('pe'), a.id, 'leave_request_withdrawn', now(), artist.email, null, null).run();
+  await audit(env, artist.email, 'artist', 'leave_request_withdrawn', a.id, {});
+  return { withdrawn: true };
+}
+async function endParticipation(env, founder, artistId, b) {
+  const a = await one(env, 'SELECT * FROM artists WHERE id = ?', artistId);
+  if (!a) throw new Bad('Artist not found', 404);
+  const pt = await participation(env, a);
+  if (!pt.installed) throw new Bad('Ending participation needs migration 0005.', 503);
+  if (pt.ended) throw new Bad('Participation has already ended for this artist', 409);
+  if (String(b.confirm_name || '').trim() !== a.display_name) throw new Bad(`Type the artist’s name exactly (${a.display_name}) to confirm`);
+  const source = b.source === 'artist_request' ? 'artist_request' : b.source === 'founder' ? 'founder' : null;
+  if (!source) throw new Bad('Say whether the artist asked to leave or you are ending it');
+  const reason = String(b.reason || '').trim();
+  if (reason.length < 10 || reason.length > 280) throw new Bad('Give the reason (10–280 characters)');
+  const at = now();
+  const lv = await latestVersion(env, a.id);
+  const visible = (await all(env, VISIBLE_SQL)).some(r => r.artist_id === a.id);
+  const pending = (await all(env, "SELECT id FROM publish_queue WHERE artist_id = ? AND status IN ('awaiting_founder','ready')", a.id)).length;
+  const stmts = [
+    env.DB.prepare("UPDATE submissions SET status='withdrawn', decided_at=? WHERE artist_id=? AND status='pending'").bind(at, a.id),
+    env.DB.prepare("UPDATE publish_queue SET status='superseded', updated_at=? WHERE artist_id=? AND status IN ('awaiting_founder','ready')").bind(at, a.id),
+  ];
+  let removal = null;
+  if (lv && (visible || pending || await one(env, "SELECT id FROM publish_queue WHERE artist_id=? AND status IN ('exporting','published') AND kind<>'remove' LIMIT 1", a.id))) {
+    const v = lv.version + 1; removal = rid('q');
+    stmts.push(env.DB.prepare('INSERT INTO versions (artist_id, version, snapshot, source, created_at) VALUES (?,?,?,?,?)').bind(a.id, v, JSON.stringify({ ...lv.snap, works: [] }), 'ended', at),
+      env.DB.prepare('INSERT INTO publish_queue (id, artist_id, version, kind, status, created_at, updated_at) VALUES (?,?,?,?,?,?,?)').bind(removal, a.id, v, 'remove', 'ready', at, at));
+  }
+  stmts.push(
+    env.DB.prepare("UPDATE artists SET account_status='ended', updated_at=? WHERE id=?").bind(at, a.id),
+    env.DB.prepare('INSERT INTO participation_events (id, artist_id, kind, at, actor, reason, detail) VALUES (?,?,?,?,?,?,?)')
+      .bind(rid('pe'), a.id, 'ended', at, founder, reason, JSON.stringify({ source, removal_queue: removal, pending_superseded: pending })),
+    env.DB.prepare('INSERT INTO record_retention (artist_id, ended_at, delete_after, recorded_by, recorded_at) VALUES (?,?,?,?,?)')
+      .bind(a.id, at, plusMonths(at, ENDING.records_years * 12), founder, at));
+  await env.DB.batch(stmts);
+  await audit(env, founder, 'founder', 'participation_ended', a.id, { source, removal_queue: removal });
+  return { ended_at: at, removal_queue: removal };
+}
+/* Stage 1 (12 months, or sooner on request): originals and the Studio account's personal content. Only for an ENDED artist. */
+async function eraseOriginals(env, artistId, actor, why) {
+  const a = await one(env, "SELECT * FROM artists WHERE id = ? AND account_status = 'ended'", artistId);
+  const ev = await participationEvents(env, artistId);
+  if (!a || !ev || !ev.some(e => e.kind === 'ended')) throw new Bad('Only an artist whose participation has ended', 409);
+  if (ev.some(e => e.kind === 'originals_deleted')) throw new Bad('Already deleted', 409);
+  const imgs = await all(env, 'SELECT id, r2_key, preview_key FROM images WHERE artist_id = ?', artistId);
+  let objects = 0;
+  for (const i of imgs) {
+    if (i.r2_key && i.r2_key !== 'erased') { await env.IMAGES.delete(i.r2_key); objects++; }
+    if (i.preview_key) { await env.IMAGES.delete(i.preview_key); objects++; }
+  }
+  const works = (await one(env, 'SELECT COUNT(*) AS n FROM artworks WHERE artist_id = ?', artistId)).n;
+  await env.DB.batch([
+    env.DB.prepare('DELETE FROM images WHERE artist_id = ?').bind(artistId),
+    env.DB.prepare('DELETE FROM artworks WHERE artist_id = ?').bind(artistId),
+    env.DB.prepare('DELETE FROM submissions WHERE artist_id = ?').bind(artistId),
+    env.DB.prepare(`UPDATE artists SET email=?, practice=NULL, medium=NULL, county=NULL, county_public=0, statement=NULL, bio=NULL, website=NULL, instagram=NULL,
+      portrait_image_id=NULL, below_min_since=NULL, updated_at=? WHERE id=? AND account_status='ended'`).bind(`ended-${artistId}@deleted.invalid`, now(), artistId),
+    env.DB.prepare('INSERT INTO participation_events (id, artist_id, kind, at, actor, reason, detail) VALUES (?,?,?,?,?,?,?)')
+      .bind(rid('pe'), artistId, 'originals_deleted', now(), actor, why, JSON.stringify({ images: imgs.length, storage_objects: objects, works })),
+  ]);
+  await audit(env, actor, actor === 'scheduler' ? 'system' : 'founder', 'originals_deleted', artistId, { images: imgs.length, storage_objects: objects, works, why });
+  return { images: imgs.length, storage_objects: objects, works };
+}
+/* Stage 2 (6 years): every remaining record of the artist, then the artist row. The append-only guards allow this only
+   once record_retention.delete_after has passed. */
+async function deleteRecords(env, artistId) {
+  const ret = await one(env, 'SELECT * FROM record_retention WHERE artist_id = ?', artistId);
+  if (!ret || now() < ret.delete_after) throw new Bad('The retention period has not ended', 409);
+  const ev = await participationEvents(env, artistId);
+  if (!ev.some(e => e.kind === 'originals_deleted')) await eraseOriginals(env, artistId, 'scheduler', 'with the six-year deletion');
+  const t = ['acceptance_corrections', 'agreement_acceptances', 'enquiry_log', 'enquiries', 'versions', 'publish_queue', 'gallery_positions', 'participation_events', 'record_retention'];
+  await env.DB.batch([...t.map(x => env.DB.prepare(`DELETE FROM ${x} WHERE artist_id = ?`).bind(artistId)), env.DB.prepare("DELETE FROM artists WHERE id = ? AND account_status = 'ended'").bind(artistId)]);
+  await audit(env, 'scheduler', 'system', 'records_deleted', artistId, { tables: t.length + 1 });
+  return true;
+}
+async function runDeletionSchedule(env) {
+  const out = { originals: 0, records: 0, enabled: env.PARTICIPATION_DELETION === 'on' };
+  if (!out.enabled) return out;
+  let ended;
+  try { ended = await all(env, "SELECT e.artist_id, e.at FROM participation_events e WHERE e.kind = 'ended'"); } catch { return out; }
+  for (const e of ended) {
+    const done = await one(env, "SELECT id FROM participation_events WHERE artist_id = ? AND kind = 'originals_deleted'", e.artist_id);
+    if (!done && now() >= plusMonths(e.at, ENDING.originals_months)) { await eraseOriginals(env, e.artist_id, 'scheduler', `${ENDING.originals_months} months after ending`); out.originals++; }
+  }
+  for (const r of await all(env, 'SELECT artist_id, delete_after FROM record_retention')) {
+    if (now() >= r.delete_after) { await deleteRecords(env, r.artist_id); out.records++; }
+  }
+  return out;
+}
+async function participationAdmin(env) {
+  const artists = await all(env, 'SELECT * FROM artists ORDER BY display_name');
+  const rows = [];
+  for (const a of artists) {
+    const pt = await participation(env, a);
+    if (!pt.installed) return { installed: false, items: [], deletion_enabled: env.PARTICIPATION_DELETION === 'on' };
+    rows.push({ id: a.id, display_name: a.display_name, account_status: a.account_status, founding: !!a.founding, founding_number: a.founding_number, request: pt.request, ended: pt.ended,
+      events: pt.events.map(e => ({ kind: e.kind, at: e.at, actor: e.kind === 'leave_requested' || e.kind === 'leave_request_withdrawn' ? 'artist' : e.actor, reason: e.reason })) });
+  }
+  return { installed: true, deletion_enabled: env.PARTICIPATION_DELETION === 'on', rules: ENDING, items: rows };
+}
+
 /* ---------------------------------------------------------------- artist: profile and artworks */
 const PROFILE = {
   display_name: v => L.text(v, 2, 80, 'Your name'),
@@ -424,7 +630,9 @@ async function overview(env) {
   const out = [];
   for (const a of artists) {
     const st = await status(env, a);
-    out.push({ ...a, state: st.state, works: st.counts.works, problems: st.problems.length, live_version: st.live_version, latest_version: st.latest_version, agreement: st.agreement });
+    const pt = await participation(env, a);
+    out.push({ ...a, state: st.state, works: st.counts.works, problems: st.problems.length, live_version: st.live_version, latest_version: st.latest_version, agreement: st.agreement,
+      leave_requested_at: pt.request ? pt.request.at : null, ended_at: pt.ended ? pt.ended.at : null });
   }
   const subs = await all(env, `SELECT s.id, s.artist_id, s.created_at, s.tier, s.note, a.display_name FROM submissions s JOIN artists a ON a.id = s.artist_id
     WHERE s.status = 'pending' ORDER BY (s.tier = 'light'), s.created_at`);
@@ -673,7 +881,9 @@ export default {
     try { await ideasReady(env); ideas_deleted = await purgeIdeas(env); } catch { /* Idea Board not installed */ }
     let garden_expired = 0;
     try { await gardenReady(env); garden_expired = await sweepGarden(env); } catch { /* noticeboard not installed */ }
-    await audit(env, 'scheduler', 'system', 'cleanup', null, { images_erased: gone.length, ideas_deleted, garden_expired });
+    let participation_deletion = null;
+    try { participation_deletion = await runDeletionSchedule(env); } catch (e) { participation_deletion = { error: String(e.message || e).slice(0, 120) }; }
+    await audit(env, 'scheduler', 'system', 'cleanup', null, { images_erased: gone.length, ideas_deleted, garden_expired, participation_deletion });
   },
   async fetch(req, env) {
     try { return await route(req, env); }
@@ -831,6 +1041,7 @@ async function route(req, env) {
     if ((mm = p.match(/^\/api\/admin\/ideas\/(i[0-9a-z]+)$/)) && m === 'POST') return json({ ok: true, ...(await decideIdea(env, me.email, mm[1], await req.json())) });
     if (p === '/admin/garden') return html(A.ADMIN_HTML);
     if (p === '/admin/agreements') return html(A.ADMIN_HTML);
+    if (p === '/admin/leaving') return html(A.ADMIN_HTML);
     if (p === '/api/admin/garden' && m === 'GET') return json({ ok: true, ...(await gardenAdmin(env)) });
     if ((mm = p.match(/^\/api\/admin\/garden\/(g[0-9a-z]+)$/)) && m === 'POST') return json({ ok: true, ...(await decideListing(env, me.email, mm[1], await req.json())) });
     if (p === '/api/admin/gallery-order' && m === 'GET') return json({ ok: true, ...(await galleryOrder(env)) });
@@ -889,10 +1100,22 @@ async function route(req, env) {
       if (!a) return json({ ok: false, error: 'Artist not found' }, 404);
       const ag = await agreementState(env, a);
       const log = (await agreementDocs(env)) ? await all(env, 'SELECT reference, route, introduced_at, founding, founding_year_end, late_entry, corrects, logged_at FROM enquiry_log WHERE artist_id=? ORDER BY introduced_at DESC', a.id) : [];
-      return json({ ok: true, artist: { id: a.id, display_name: a.display_name, founding: !!a.founding, founding_number: a.founding_number, first_published_at: a.first_published_at },
-        agreement: { ...agreementSummary(ag), history: ag.history }, documents: (await agreementDocs(env)) || [], enquiries: log });
+      return json({ ok: true, artist: { id: a.id, display_name: a.display_name, founding: !!a.founding, founding_number: a.founding_number, first_published_at: a.first_published_at, account_status: a.account_status },
+        agreement: { ...agreementSummary(ag), history: effectiveRows(ag.history, await corrections(env, a.id)) }, documents: (await agreementDocs(env)) || [], enquiries: log,
+        participation: await participation(env, a) });
     }
     if (p === '/api/admin/enquiry-log' && m === 'GET') return json({ ok: true, ...(await enquiryLog(env)) });
+    if (p === '/api/admin/participation' && m === 'GET') return json({ ok: true, ...(await participationAdmin(env)) });
+    if ((mm = p.match(/^\/api\/admin\/artists\/(a[0-9a-z]+)\/end$/)) && m === 'POST') return json({ ok: true, ...(await endParticipation(env, me.email, mm[1], await req.json())) });
+    if ((mm = p.match(/^\/api\/admin\/artists\/(a[0-9a-z]+)\/erase-originals$/)) && m === 'POST') {
+      const b = await req.json();
+      if (env.PARTICIPATION_DELETION !== 'on') throw new Bad('Deletion is switched off in this Studio (PARTICIPATION_DELETION). Nothing was deleted.', 409);
+      if (b.confirm !== true) throw new Bad('Confirm the deletion before continuing');
+      const why = String(b.reason || '').trim();
+      if (why.length < 10 || why.length > 280) throw new Bad('Give the reason (10–280 characters), e.g. the artist asked for earlier deletion');
+      return json({ ok: true, ...(await eraseOriginals(env, mm[1], me.email, 'early, on request: ' + why)) });
+    }
+    if ((mm = p.match(/^\/api\/admin\/artists\/(a[0-9a-z]+)\/acceptance-corrections$/)) && m === 'POST') return json({ ok: true, ...(await correctAcceptance(env, me.email, mm[1], await req.json())) });
     if (p === '/api/admin/enquiry-log' && m === 'POST') return json({ ok: true, ...(await logEnquiry(env, me.email, await req.json())) });
     if (p === '/api/admin/overview' && m === 'GET') return json({ ok: true, ...(await overview(env)) });
     if (p === '/api/admin/selftest' && m === 'POST') return json({ ok: true, ...(await selftest(env, me)) });
@@ -1120,11 +1343,16 @@ async function route(req, env) {
   if (p === '/api/agreement' && m === 'GET') {
     const a = await one(env, 'SELECT * FROM artists WHERE id=?', artist.id);
     const ag = await agreementState(env, a);
-    return json({ ok: true, ...agreementSummary(ag), history: ag.history.map(r => ({ doc_id: r.doc_id, accepted_at: r.accepted_at, method: r.method, statement: r.statement,
-      doc_sha256: r.doc_sha256, pdf_sha256: r.pdf_sha256, legal_name: r.legal_name, account_email: r.account_email, display_name: r.display_name, note: r.note })),
+    const pt = await participation(env, a);
+    return json({ ok: true, ...agreementSummary(ag), history: effectiveRows(ag.history, await corrections(env, a.id)).map(r => ({ doc_id: r.doc_id, accepted_at: r.accepted_at, method: r.method, statement: r.statement,
+      doc_sha256: r.doc_sha256, pdf_sha256: r.pdf_sha256, legal_name: r.legal_name, account_email: r.account_email, display_name: r.display_name, note: r.note,
+      corrections: r.corrections.map(c => ({ field: c.field, corrected_at: c.corrected_at, reason: c.reason })) })),
+      leave: pt.installed ? { request: pt.request } : null,
       documents: ag.required.map(id => ({ id, title: AG.doc(id).title, html_sha256: AG.doc(id).html_sha256, pdf_sha256: AG.doc(id).pdf_sha256 })) });
   }
   if (p === '/api/agreement/accept' && m === 'POST') return json({ ok: true, ...(await acceptAgreement(env, artist, await req.json())) });
+  if (p === '/api/leave' && m === 'POST') return json({ ok: true, ...(await requestLeave(env, artist, await req.json())) });
+  if (p === '/api/leave/withdraw' && m === 'POST') return json({ ok: true, ...(await withdrawLeave(env, artist)) });
   if (p === '/api/submit' && m === 'POST') return submit(env, artist, await req.json());
   if (p === '/api/submit/withdraw' && m === 'POST') {
     await env.DB.prepare("UPDATE submissions SET status='withdrawn', decided_at=? WHERE artist_id=? AND status='pending'").bind(now(), artist.id).run();

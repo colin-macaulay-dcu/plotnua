@@ -6,7 +6,7 @@ import { createRequire } from 'node:module';
 import { readFileSync } from 'node:fs';
 import { execFileSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
-import { statements } from './sql.mjs';
+import { statements, rollbackOf } from './sql.mjs';
 import { foundingYear } from '../src/founding.js';
 const require = createRequire('/tmp/claude-0/studio-tools/package.json');
 const { Miniflare } = require('miniflare');
@@ -42,7 +42,7 @@ await run(MIG);
 const after = await dump(beforeTables);
 check('M1 every existing table and row is byte-for-byte unchanged (artists, artworks, enquiries, audit, …)', JSON.stringify(after) === JSON.stringify(before));
 const newTables = (await tables()).filter(x => !beforeTables.includes(x)).sort();
-check('M2 it creates exactly four new tables', JSON.stringify(newTables) === JSON.stringify(['agreement_acceptances', 'agreement_documents', 'enquiry_log', 'record_retention']), newTables.join(','));
+check('M2 it creates exactly six new tables', JSON.stringify(newTables) === JSON.stringify(['acceptance_corrections', 'agreement_acceptances', 'agreement_documents', 'enquiry_log', 'participation_events', 'record_retention']), newTables.join(','));
 const docs = (await db.prepare('SELECT * FROM agreement_documents ORDER BY doc_id').all()).results;
 check('M3 three documents: the two new texts with the exact fingerprints of the files Studio serves, effective from the moment it runs; the earlier licence as label only',
   docs.length === 3 && ['PA-FAA-2026-11', 'PA-GPIL-2026-11'].every(id => { const d = docs.find(x => x.doc_id === id); return d.text_status === 'fixed' && d.html_sha256 === FP[id].html_sha256 && d.pdf_sha256 === FP[id].pdf_sha256 && d.effective_at >= startedAt.slice(0, 19); })
@@ -81,16 +81,59 @@ let same = 'refused';
 try { await db.prepare(`INSERT INTO agreement_acceptances (id, event_id, artist_id, doc_id, doc_sha256, pdf_sha256, accepted_at, account_email, display_name, method, statement, created_at) VALUES ('s1','s1','aleah','PA-FAA-2026-11',?,?,?,'leah@example.test','Leah Like','studio_checkbox','s',?)`)
   .bind(FP['PA-FAA-2026-11'].html_sha256, FP['PA-FAA-2026-11'].pdf_sha256, eff.slice(0, 19) + '.500Z', eff.slice(0, 19) + '.500Z').run(); same = 'accepted'; } catch (e) { same = 'refused: ' + e.message.slice(0, 80); }
 check('M12 an acceptance in the same second the texts were installed (with milliseconds) is accepted: times are compared as times, not as text', same === 'accepted', same);
-const rollback = MIG.split('-- Rollback')[1].split('\n').slice(1).map(l => l.replace(/^--\s*/, '')).join('\n');
+const rollback = rollbackOf(MIG);
 await run(rollback);
 const ro = await objects();
 check('M9 the rollback (before any real acceptance) returns the database exactly to its previous state', JSON.stringify(ro) === JSON.stringify(beforeObjects) && JSON.stringify(await dump(beforeTables)) === JSON.stringify(before));
 const sha = createHash('sha256').update(readFileSync(FILE)).digest('hex');
-let chk; try { chk = execFileSync('python3', [HERE + '../../atlas-tools/release/studio/migration-check.py', FILE, sha, 'agreement_documents,agreement_acceptances,enquiry_log,record_retention',
-  'Creates four new tables with refusal-only guards; carries over existing licence acceptances and relay enquiry references.'], { encoding: 'utf8' }); } catch (e) { chk = String(e.stdout || e.message); }
-check('M10 the migration approval check accepts it with exactly these four tables declared, and classes it as needing the founder’s approval (not automatic)', /MIGRATION CHECK OK/.test(chk) && /MIGRATION CLASS: destructive/.test(chk), chk.split('\n').filter(l => /REFUSED|CLASS|OK/.test(l)).join(' '));
-let chk2; try { chk2 = execFileSync('python3', [HERE + '../../atlas-tools/release/studio/migration-check.py', FILE, sha, 'agreement_documents,agreement_acceptances,enquiry_log', 'Declaring one table fewer than the file writes to must be refused.'], { encoding: 'utf8' }); } catch (e) { chk2 = String(e.stdout || e.message); }
+let chk; try { chk = execFileSync('python3', [HERE + '../../atlas-tools/release/studio/migration-check.py', FILE, sha, 'agreement_documents,agreement_acceptances,enquiry_log,record_retention,acceptance_corrections,participation_events',
+  'Creates six new tables with refusal-only guards; carries over existing licence acceptances and relay enquiry references.'], { encoding: 'utf8' }); } catch (e) { chk = String(e.stdout || e.message); }
+check('M10 the migration approval check accepts it with exactly these six tables declared, and classes it as needing the founder’s approval (not automatic)', /MIGRATION CHECK OK/.test(chk) && /MIGRATION CLASS: destructive/.test(chk), chk.split('\n').filter(l => /REFUSED|CLASS|OK/.test(l)).join(' '));
+let chk2; try { chk2 = execFileSync('python3', [HERE + '../../atlas-tools/release/studio/migration-check.py', FILE, sha, 'agreement_documents,agreement_acceptances,enquiry_log,record_retention,acceptance_corrections', 'Declaring one table fewer than the file writes to must be refused.'], { encoding: 'utf8' }); } catch (e) { chk2 = String(e.stdout || e.message); }
 check('M11 … and refuses it if any table it writes to is not declared', /REFUSED/.test(chk2));
+
+// ---- failure and rollback scenarios (each on a fresh copy of the production-shaped database)
+async function freshDb(name) {
+  const m2 = new Miniflare({ modules: true, script: 'export default { fetch() { return new Response("") } }', d1Databases: { DB: name } });
+  const d2 = await m2.getD1Database('DB');
+  for (const st of statements(readFileSync(process.argv[2], 'utf8'))) await d2.prepare(st).run();
+  await d2.prepare(`INSERT INTO artists (id, slug, email, display_name, founding, account_status, licence_version, licence_accepted_at, first_published_at, created_at, updated_at)
+    VALUES ('aleah','leah-like','leah@example.test','Leah Like',1,'active','PA-GPIL-2026-10-29','2026-11-05T16:40:12.345Z','2026-11-05T17:05:00.000Z','2026-10-30T10:00:00Z','2026-11-05T17:05:00Z')`).run();
+  await d2.prepare(`INSERT INTO enquiries (id, reference, artist_id, buyer_name, buyer_email, message, notice_version, created_at, status, delete_after)
+    VALUES ('e1','PA-E-261105-0A1B2C','aleah','Bea','bea@example.test','Hello there, is it available?','PA-ENQ-2026-10-29','2026-11-05T18:00:00.000Z','sent','2028-11-04T18:00:00.000Z')`).run();
+  const snapF = async () => { const o = (await d2.prepare("SELECT type, name, sql FROM sqlite_master WHERE name NOT LIKE 'sqlite_%' AND name NOT LIKE '_cf_%' ORDER BY type, name").all()).results;
+    const t = {}; for (const x of o.filter(x => x.type === 'table')) t[x.name] = (await d2.prepare(`SELECT * FROM ${x.name} ORDER BY rowid`).all()).results; return JSON.stringify([o, t]); };
+  return { m2, d2, snapF };
+}
+const stmts = statements(MIG);
+{ // 1 · atomic run that fails at the very end (D1 runs a batch in one transaction): nothing at all is left behind
+  const { m2, d2, snapF } = await freshDb('fail-atomic'); const b0 = await snapF();
+  let err = ''; try { await d2.batch([...stmts, "INSERT INTO agreement_documents (doc_id) VALUES ('force a failure')"].map(x => d2.prepare(x))); } catch (e) { err = e.message; }
+  check('R1 failure at the last step of an all-or-nothing run: refused, and the database is exactly as before (no table, trigger or row left)', err && (await snapF()) === b0, err.slice(0, 80));
+  await m2.dispose();
+}
+{ // 2 · statement-by-statement run that stops part-way (e.g. connection lost after the documents): rollback, then a clean re-run
+  const { m2, d2, snapF } = await freshDb('fail-partial'); const b0 = await snapF();
+  const cut = stmts.findIndex(x => /^INSERT INTO agreement_acceptances/.test(x));
+  for (const x of stmts.slice(0, cut)) await d2.prepare(x).run();
+  const partial = await snapF();
+  for (const x of statements(rollbackOf(MIG))) await d2.prepare(x).run();
+  const rolled = await snapF();
+  for (const x of statements(rollbackOf(MIG))) await d2.prepare(x).run();   // running the rollback a second time is harmless
+  const twice = await snapF();
+  for (const x of stmts) await d2.prepare(x).run();
+  const acc = (await d2.prepare('SELECT COUNT(*) n FROM agreement_acceptances').first()).n, log = (await d2.prepare('SELECT COUNT(*) n FROM enquiry_log').first()).n;
+  check('R2 a run that stops part-way leaves new tables but no copied records; the rollback returns the database exactly to before (and is safe to repeat); a clean re-run then completes',
+    partial !== b0 && rolled === b0 && twice === b0 && acc === 1 && log === 1);
+  await m2.dispose();
+}
+{ // 3 · a migration file that has been altered (one guard turned into a writing trigger) is refused before it runs
+  let out = ''; const alt = '/tmp/0005_agreements_and_enquiry_log.sql';
+  (await import('node:fs')).writeFileSync(alt, MIG.replace("BEGIN SELECT RAISE(ABORT, 'enquiry_log is append-only; add a correcting row'); END;", "BEGIN DELETE FROM artists; END;"));
+  try { out = execFileSync('python3', [HERE + '../../atlas-tools/release/studio/migration-check.py', alt, createHash('sha256').update(readFileSync(alt)).digest('hex'),
+    'agreement_documents,agreement_acceptances,enquiry_log,record_retention,acceptance_corrections,participation_events,artists', 'An altered copy that must be refused before it runs.'], { encoding: 'utf8' }); } catch (e) { out = String(e.stdout); }
+  check('R3 an altered file (a guard changed into a trigger that deletes) is refused by the approval check before anything runs, even with artists declared', /REFUSED/.test(out), out.slice(-150));
+}
 console.log(`\nMIGRATION 0005 · ${results.length} checks, ${results.filter(Boolean).length} passed, ${results.filter(x => !x).length} failed`);
 console.log(`file SHA-256 ${sha}`);
 await mf.dispose(); process.exit(results.every(Boolean) ? 0 : 1);
