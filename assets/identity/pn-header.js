@@ -67,3 +67,31 @@
   window.addEventListener('storage', function (e) { if (!e || e.key === KEY || e.key === null) apply(); });
   window.addEventListener('pageshow', apply);
 })();
+
+/* PlotNua · tall-section reveal fallback (founder approval 6 Nov 2026: privacy notice visibility fix).
+   Many pages fade a section in (".reveal" -> ".reveal.in") once a set share of it, usually 12%, is on screen.
+   A section taller than about eight screens can never be 12% visible, so it stayed invisible (privacy Section 8;
+   Section 7 on phones). This adds ".in" to such a section as soon as it enters the screen. Ordinary sections keep
+   the page's own animation. With reduced motion requested, every section is shown at once. If the browser has no
+   IntersectionObserver, every section is shown. Read-only: no storage, no network. */
+(function () {
+  'use strict';
+  function show(el) { el.classList.add('in'); }
+  function start() {
+    var els = document.querySelectorAll('.reveal'), i;
+    if (!els.length) return;
+    var still = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (still || !('IntersectionObserver' in window)) { for (i = 0; i < els.length; i++) show(els[i]); return; }
+    var io = new IntersectionObserver(function (entries) {
+      for (var j = 0; j < entries.length; j++) {
+        var e = entries[j], el = e.target;
+        if (el.classList.contains('in')) { io.unobserve(el); continue; }
+        // taller than the screen: the page's own threshold may never be reached, so show it now
+        if (e.isIntersecting && e.boundingClientRect.height > (e.rootBounds ? e.rootBounds.height : window.innerHeight)) { show(el); io.unobserve(el); }
+      }
+    }, { threshold: 0 });
+    for (i = 0; i < els.length; i++) io.observe(els[i]);
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start);
+  else start();
+})();
