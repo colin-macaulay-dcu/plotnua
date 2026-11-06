@@ -134,6 +134,20 @@ check('X8 an artist who told PlotArt by email: the 14 days, the 12 months and th
 const bad8 = await call('POST', '/api/admin/artists/abea/end', FOUNDER, { confirm_name: 'Bea Other', source: 'artist_request', reason: 'Artist emailed hello@ asking to leave', told_on: '2099-01-01' });
 check('X9 a future “told on” date is refused and nothing changes', bad8.s === 400 && (await db.prepare("SELECT account_status FROM artists WHERE id='abea'").first()).account_status === 'active');
 
+// a published photograph replaced 40 days ago, the replacement still waiting for review: the old original is still shown,
+// so it is kept (later sold / withdrawn updates are built from it); once the new version is published it is erased
+await seedPublished(db, { id: 'arep', slug: 'replacer', email: 'rep@example.test', name: 'Re Placer', works: 2, bucket });
+await db.prepare("UPDATE images SET deleted_at=? WHERE id='iarep1'").bind(ago(40)).run();
+await S.mf.getWorker('studio').then(w => w.scheduled({ cron: '23 3 * * *' }));
+const kept = await objects('originals/arep/1.jpg');
+const a2 = await db.prepare("SELECT * FROM artists WHERE id='arep'").first();
+const w2 = (await db.prepare("SELECT * FROM artworks WHERE artist_id='arep'").all()).results, im2 = (await db.prepare("SELECT * FROM images WHERE artist_id='arep' AND deleted_at IS NULL").all()).results;
+const { snapshot: snap2 } = await import('../src/lib.js');
+await db.prepare("INSERT INTO versions (artist_id, version, snapshot, source, created_at) VALUES ('arep', 2, ?, 'test', ?)").bind(JSON.stringify(snap2(a2, w2, im2)), ago(0)).run();
+await S.mf.getWorker('studio').then(w => w.scheduled({ cron: '23 3 * * *' }));
+check('P1 a replaced photograph that is still shown is kept until the version showing it is superseded, then erased at the next daily run (so sold or withdrawn updates never fail)',
+  kept === 1 && await objects('originals/arep/1.jpg') === 0 && await objects('originals/arep/2.jpg') === 1);
+
 console.log('— a new artist who never published');
 await call('POST', '/api/admin/artists', FOUNDER, { display_name: 'New Leaver', email: NEW });
 await call('GET', '/api/me', NEW);
