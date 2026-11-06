@@ -76,6 +76,11 @@ check('M7 schema.sql (new installs and local tests) carries the same tables, tri
 let again = 'ran'; const n0 = JSON.stringify(await dump(await tables()));
 try { await run(MIG); } catch (e) { again = 'refused: ' + e.message.slice(0, 60); }
 check('M8 running it a second time stops at the first document row and changes nothing', again.startsWith('refused') && JSON.stringify(await dump(await tables())) === n0, again);
+const eff = (await db.prepare("SELECT effective_at FROM agreement_documents WHERE doc_id='PA-FAA-2026-11'").first()).effective_at;
+let same = 'refused';
+try { await db.prepare(`INSERT INTO agreement_acceptances (id, event_id, artist_id, doc_id, doc_sha256, pdf_sha256, accepted_at, account_email, display_name, method, statement, created_at) VALUES ('s1','s1','aleah','PA-FAA-2026-11',?,?,?,'leah@example.test','Leah Like','studio_checkbox','s',?)`)
+  .bind(FP['PA-FAA-2026-11'].html_sha256, FP['PA-FAA-2026-11'].pdf_sha256, eff.slice(0, 19) + '.500Z', eff.slice(0, 19) + '.500Z').run(); same = 'accepted'; } catch (e) { same = 'refused: ' + e.message.slice(0, 80); }
+check('M12 an acceptance in the same second the texts were installed (with milliseconds) is accepted: times are compared as times, not as text', same === 'accepted', same);
 const rollback = MIG.split('-- Rollback')[1].split('\n').slice(1).map(l => l.replace(/^--\s*/, '')).join('\n');
 await run(rollback);
 const ro = await objects();

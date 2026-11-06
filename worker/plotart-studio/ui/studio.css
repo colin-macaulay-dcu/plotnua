@@ -60,7 +60,7 @@ body.st{ background:var(--anth); min-height:100vh; }
 .st-f{ display:grid; gap:6px; margin:0 0 16px; }
 .st-f label, .st-lab{ font-size:13.5px; font-weight:600; color:var(--stone); letter-spacing:.02em; }
 .st-f small{ color:var(--mute); font-size:12.5px; }
-.st-in, .st-f input[type=text], .st-f input[type=number], .st-f input[type=url], .st-f input[type=email], .st-f select, .st-f textarea, .st-row select{
+.st-in, .st-f input[type=text], .st-f input[type=number], .st-f input[type=url], .st-f input[type=email], .st-f input[type=date], .st-f select, .st-f textarea, .st-row select{
   width:100%; box-sizing:border-box; min-height:48px; padding:12px 14px; font:16px var(--sans); color:var(--ivory); background:#1F2022;
   border:1px solid var(--line-2); border-radius:12px; }
 .st-f textarea{ min-height:120px; resize:vertical; line-height:1.55; }
