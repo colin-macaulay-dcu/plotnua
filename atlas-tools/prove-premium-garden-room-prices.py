@@ -45,7 +45,8 @@ PAGE = "garden-room-prices-ireland.html"
 BASE = "d9db752c72f1b6b0dda4240e17f957e89074cad6"
 SNAP = TOOLS / "premium-discovery" / "garden-room-prices-ireland-base.json"
 BASE_SNAPSHOT_SHA256 = "31d2e27e6ddf2a551230b2c01ec1a2fb4dc4f1292910e7c6202b164d5cf75607"
-REGIONS = ["JSONLD", "ASOF", "UPDATED", "LEAD", "SPECIALISED", "TABLE", "HELD", "NOAVG", "COMPARE", "FAQ", "METHOD"]
+REGIONS = ["JSONLD", "ASOF", "UPDATED", "LEAD", "SPECIALISED", "TABLE", "HELD", "NOAVG", "COMPARE", "FAQ", "METHOD",
+           "CHECKED", "VAT", "EXTRAS"]   # the last three: Stage 2 pricing refresh (founder decision, 6 Nov 2026)
 
 # Declared additions. The 26 Oct SEO draft adds only the two scope sentences;
 # the original presentation baseline and its fingerprint remain unchanged.
@@ -63,9 +64,14 @@ ADDED_TEXT = {
     "Questions": "in-page navigation label: the section's own kicker",
 }
 ADDED_LINKS = Counter({"terms.html#legal-information": 1, "#price-ranges": 1, "#why-it-is-hard": 1, "#outside-the-price": 1, "#quote-checklist": 1,
-                       "#questions": 1, "https://wa.me/353834036695": 1})
+                       "#questions": 1, "https://wa.me/353834036695": 1,
+                       # Stage 2 pricing refresh (founder decision, 6 Nov 2026): the direct link from the
+                       # answer to the products (item 6) and the extra-costs note's checklist link (item 5)
+                       "discovery-living-in-the-garden.html#explore-makers": 1})
+ADDED_LINKS["#quote-checklist"] += 1
 REMOVED_TEXT = {"Company": "footer heading renamed PlotNua (legal information, founder decision A1-a, 28 Oct 2026)"}
-ADDED_IDS = {"short-answer", "why-it-is-hard", "garden-homes"}
+ADDED_IDS = {"short-answer", "why-it-is-hard", "garden-homes",
+             "what-may-cost-extra"}   # Stage 2 item 5 (6 Nov 2026), inside the EXTRAS region
 ADDED_IMGS = Counter({"assets/brand/plotnua-icon-transparent.svg": 1,
                       "assets/garden-room-prices/garden-room-prices-hero-2026-10-23-1672.jpg": 1})   # hero illustration (founder, 23 Oct 2026)
 NAV = ["#price-ranges", "#why-it-is-hard", "#outside-the-price", "#quote-checklist", "#questions"]
@@ -154,10 +160,27 @@ def main():
     base = json.loads(raw)
     # Bounded content revision: only dateModified moves in the frozen head.
     # A different date or any other structured-data change still fails G1.
-    base["head"]["jsonld"] = [x.replace('"dateModified": "2026-10-20"',
-                                        '"dateModified": "2026-10-26"')
-                                for x in base["head"]["jsonld"]]
+    # Stage 2 pricing refresh (founder decision, 6 Nov 2026): dateModified is the builder's
+    # BUILD_DATE, and the meta description is written by the builder from the published
+    # figures (G5 proves it is the one the evidence produces). Only those two strings may
+    # move, and the description must keep the approved wording around its two figures.
     t = (ROOT / PAGE).read_text(encoding="utf-8")
+    bsrc0 = (ROOT / "atlas-tools" / "build-garden-room-prices.py").read_text(encoding="utf-8")
+    bdate0 = re.search(r'^BUILD_DATE = "(\d{4}-\d{2}-\d{2})"', bsrc0, re.M).group(1)
+    old_desc = ("How much does a garden room cost in Ireland? Published price ranges from PlotNua's "
+                "research, what the advertised price covers, and how to compare quotes.")
+    dm = re.search(r'<meta name="description" content="([^"]*)">', t)
+    new_desc = dm.group(1) if dm else ""
+    if not re.fullmatch(r"Installed garden rooms in Ireland are advertised from €[\d,]+ to €[\d,]+ in "
+                        r"PlotNua's research\. What the price covers, VAT, extras and how to compare quotes\.",
+                        new_desc):
+        bad("G1 the meta description is not the approved figure-bearing wording")
+    ld_desc = json.dumps(new_desc, ensure_ascii=True)[1:-1]
+    base["head"]["metas"] = sorted(m.replace(old_desc, new_desc) if 'name="description"' in m else m
+                                   for m in base["head"]["metas"])
+    base["head"]["jsonld"] = [x.replace('"dateModified": "2026-10-20"', '"dateModified": "%s"' % bdate0)
+                                .replace(old_desc, ld_desc)
+                              for x in base["head"]["jsonld"]]
     # G1
     now = head(t)
     for k in ("title", "metas", "canonical", "scripts", "jsonld"):
@@ -231,9 +254,9 @@ def main():
     if fails:
         for f in fails: print("FAIL " + f)
         print("PREMIUM-GRP · REFUSED — %d problem(s)" % len(fails)); return 2
-    print("PREMIUM-GRP · OK — head, %d images, %d links, %d anchors, 11 price regions (builder check OK), "
+    print("PREMIUM-GRP · OK — head, %d images, %d links, %d anchors, %d price regions (builder check OK), "
           "%d BASE sentences all present with %d declared additions, cautions on view, no new claim, Premium layer"
-          % (sum(imgs(t).values()), sum(have.values()), len(base["ids"]), len(base_s), len(ADDED_TEXT)))
+          % (sum(imgs(t).values()), sum(have.values()), len(base["ids"]), len(REGIONS), len(base_s), len(ADDED_TEXT)))
     return 0
 
 

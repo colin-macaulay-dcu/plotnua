@@ -121,6 +121,11 @@
    "why": "2026-11-04, founder approval 'Powersheds Maker Explorer data correction': Atlas now records Irish availability for Powersheds' three log cabins (ie.powersheds.com, free delivery throughout Ireland); the explorer's own A-Z line follows (publish-targeted-update.py, commit 4a37dba).",
    "from": "Powersheds 3 garden rooms · Irish availability not yet confirmed",
    "to": "Powersheds 3 garden rooms · Irish availability confirmed"
+  },
+  {
+   "why": "6 Nov 2026, founder decision (staged garden-room pricing refresh, Stage 1): the cost-evidence as-of note gains the registered correction 'price-recheck-2026-11-06' (16 base prices rechecked), written by atlas-tools/refresh-garden-cost-figures.py from cluster1-cost-evidence.json; no figure changes.",
+   "from": "245 garden-room products with a euro price we can stand behind. From 24 suppliers, out of 570 garden-room products in PlotNua’s 7 October 2026 research snapshot, corrected on 20 October 2026 for five supplier records, corrected on 26 October 2026 for 59 supplier records, seven base prices rechecked on 26 October 2026.",
+   "to": "245 garden-room products with a euro price we can stand behind. From 24 suppliers, out of 570 garden-room products in PlotNua’s 7 October 2026 research snapshot, corrected on 20 October 2026 for five supplier records, corrected on 26 October 2026 for 59 supplier records, seven base prices rechecked on 26 October 2026, 16 base prices rechecked on 6 November 2026."
   }
  ],
  "homeownerImprovement": {

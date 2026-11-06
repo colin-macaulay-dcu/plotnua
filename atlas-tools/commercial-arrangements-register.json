@@ -1,0 +1,18 @@
+{
+ "schema": "plotnua.commercial-arrangements-register",
+ "version": 1,
+ "what_this_is": "Organisations with which PlotNua holds an ACTIVE commercial arrangement (referral, commission or paid placement), as opaque keys: sha256(Atlas organisation name)[:12], the same key the price-page extract uses. Read by atlas-tools/check-commercial-disclosure.py, which refuses a build while any page that says PlotNua has no commercial arrangement with the suppliers it describes includes one of these organisations. No names are stored.",
+ "source": "Atlas Partners table (tblXlzvJMDu67Mym2), read 6 November 2026: Partnership Status = Active.",
+ "maintenance": "When a Partners record becomes Active, add its organisation's key here in the same change. Records that are Negotiating, Contacted or Paused are not arrangements and are not listed.",
+ "readOn": "2026-11-06",
+ "active": [
+  {
+   "key": "04b38e932bb0",
+   "since": "2026-10-22"
+  },
+  {
+   "key": "b5faacea2330",
+   "since": "2026-11-04"
+  }
+ ]
+}
