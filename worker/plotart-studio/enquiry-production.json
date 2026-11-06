@@ -1,0 +1,5 @@
+{
+  "_note": "Live behaviour switches of the enquiry relay Worker plotart-enquiry (founder decisions). The relay has been OPEN with email sending ON since the PlotArt go-live (29 Oct 2026). The F2 deploy workflow reads the relay's live settings from Cloudflare first and refuses to deploy if these values differ from them, so a deploy can never close the relay or switch email off. The Borrowed Garden route stays OFF (founder, 4 Nov 2026). Never use activate.sh 5-enquiry: it ships the relay closed.",
+  "vars": { "ENQUIRIES_ENABLED": "true", "MAILER": "resend", "GARDEN_ENQUIRIES_ENABLED": "false" },
+  "secrets_required": ["RESEND_API_KEY"]
+}

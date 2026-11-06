@@ -1,0 +1,139 @@
+# PlotArt · enquiry relay Worker deployment ("plotart-enquiry"), release step F2 (prepared 6 Nov 2026). NOT A DATABASE CHANGE.
+#
+# Replaces the relay's code while keeping its LIVE settings. The relay is open with email on; activate.sh 5-enquiry would ship
+# it closed and must never be used for it. This workflow, on the pattern of the Studio and Borrowed Garden deploys:
+#   1. the commit must be on main and carry the relay code that accepts both notice versions;
+#   2. "deploy" waits in the environment "studio-production." until the founder presses Approve in GitHub, and only then can
+#      it read the existing Cloudflare token STUDIO_CF_DEPLOY_TOKEN (no new secret or token);
+#   3. it READS the relay's live settings from Cloudflare and refuses if the deploy would change any of them (relay closed,
+#      email switched off, a variable or binding dropped, another database, a missing secret). This also runs in a dry run,
+#      which is therefore a read-only inspection of the live relay;
+#   4. after deploying it reads the settings again and checks the relay from outside without ever creating an enquiry
+#      (relay-outside-check.sh). If either fails, it rolls back to the previous version at once and checks that too.
+# Logs are public: only switch names and values, binding names and PASS/FAIL; never a secret, the database or the account.
+name: PlotArt enquiry relay deploy
+run-name: "Enquiry relay deploy ${{ inputs.commit }}${{ inputs.dry_run && ' (dry run)' || '' }}"
+
+on:
+  workflow_dispatch:
+    inputs:
+      commit:
+        description: "Full 40-character commit ID approved by the founder (must be on main)"
+        required: true
+        type: string
+      dry_run:
+        description: "Dry run: approval, live-settings check and build only; nothing sent to Cloudflare"
+        required: true
+        type: boolean
+        default: true
+      rollback_drill:
+        description: "Rollback drill: deploy, deliberately fail the outside check, prove the automatic rollback"
+        required: false
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+concurrency:
+  group: plotart-studio-cloudflare
+  cancel-in-progress: false
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: The commit is on main and carries the approved relay code and live settings
+        env:
+          COMMIT: ${{ inputs.commit }}
+        run: |
+          set -euo pipefail
+          [[ "$COMMIT" =~ ^[0-9a-f]{40}$ ]] || { echo "REFUSED: give the full 40-character commit ID"; exit 1; }
+          git merge-base --is-ancestor "$COMMIT" origin/main || { echo "REFUSED: $COMMIT is not on main"; exit 1; }
+          git show "$COMMIT:worker/plotart-studio/src/enquiry.js" | grep -q "const NOTICES = \[NOTICE, 'PA-ENQ-2026-11'\]" || { echo "REFUSED: the relay in $COMMIT does not accept both notice versions"; exit 1; }
+          git show "$COMMIT:worker/plotart-studio/enquiry-production.json" | python3 -c 'import json,sys; v=json.load(sys.stdin)["vars"]; sys.exit(0 if v["ENQUIRIES_ENABLED"]=="true" and v["MAILER"]=="resend" and v["GARDEN_ENQUIRIES_ENABLED"]=="false" else 1)' \
+            || { echo "REFUSED: enquiry-production.json must keep the relay open with email on and the garden route off (changing that is a separate founder decision)"; exit 1; }
+          echo "GUARD OK · $COMMIT" | tee -a "$GITHUB_STEP_SUMMARY"
+
+  deploy:
+    needs: check
+    runs-on: ubuntu-latest
+    environment: "studio-production."   # the configured environment's exact name, including the final full stop
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.commit }}
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Check again after approval
+        env:
+          COMMIT: ${{ inputs.commit }}
+        run: |
+          set -euo pipefail
+          git fetch -q origin main
+          git merge-base --is-ancestor "$COMMIT" origin/main || { echo "REFUSED: $COMMIT is not on main"; exit 1; }
+          test "$(git rev-parse HEAD)" = "$COMMIT" || { echo "REFUSED: the checked-out tree is not $COMMIT"; exit 1; }
+      - name: Production configuration (identifier from the environment, never printed)
+        env:
+          STUDIO_D1_DATABASE_ID: ${{ vars.STUDIO_D1_DATABASE_ID }}
+        run: python3 atlas-tools/release/studio/render-enquiry-config.py worker/plotart-studio
+      - name: Live relay settings (read-only) · the deploy must keep every one
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.STUDIO_CF_DEPLOY_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
+        run: node atlas-tools/release/studio/relay-settings.mjs worker/plotart-studio/enquiry-expected.json before | tee -a "$GITHUB_STEP_SUMMARY"; exit ${PIPESTATUS[0]}
+      - name: The relay as it is now, from outside (nothing is created)
+        run: bash atlas-tools/release/studio/relay-outside-check.sh https://plotart-enquiry.colin-a41.workers.dev previous
+      - name: Build only (dry run; nothing sent to Cloudflare)
+        if: ${{ inputs.dry_run }}
+        working-directory: worker/plotart-studio
+        run: |
+          set -o pipefail
+          npx --yes wrangler@4.150.0 deploy --config wrangler.enquiry.production.toml --dry-run --outdir "$RUNNER_TEMP/build" > "$RUNNER_TEMP/wrangler.log" 2>&1 \
+            || { grep -iE "error" "$RUNNER_TEMP/wrangler.log" | head -5; exit 1; }
+          echo "DRY RUN OK: the relay builds and the deploy would keep every live setting; nothing was sent to Cloudflare"
+      - name: Deploy the relay
+        id: deploy
+        if: ${{ !inputs.dry_run }}
+        working-directory: worker/plotart-studio
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.STUDIO_CF_DEPLOY_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          set -o pipefail
+          npx --yes wrangler@4.150.0 deploy --config wrangler.enquiry.production.toml > "$RUNNER_TEMP/wrangler.log" 2>&1 \
+            || { echo "FAIL  the deployment did not complete"; grep -iE "^\s*(✘|X )?\[?error|permission|authentication" "$RUNNER_TEMP/wrangler.log" | grep -viE "token" | head -5; exit 1; }
+          grep -E "^Uploaded |^Current Version ID" "$RUNNER_TEMP/wrangler.log"
+      - name: After the deploy · live settings unchanged, and the relay checked from outside (nothing is created)
+        id: live
+        if: ${{ !inputs.dry_run }}
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.STUDIO_CF_DEPLOY_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
+          DRILL: ${{ inputs.rollback_drill && 'true' || 'false' }}
+        run: |
+          set -euo pipefail
+          if [ "$DRILL" = true ]; then echo "ROLLBACK DRILL: failing the outside check on purpose"; exit 1; fi
+          sleep 10
+          node atlas-tools/release/studio/relay-settings.mjs worker/plotart-studio/enquiry-expected.json after
+          bash atlas-tools/release/studio/relay-outside-check.sh https://plotart-enquiry.colin-a41.workers.dev new
+          echo "- Relay deployed: open, email on, both notice versions accepted, garden route off" >> "$GITHUB_STEP_SUMMARY"
+      - name: Automatic rollback to the previous version
+        if: ${{ failure() && steps.deploy.outcome == 'success' && steps.live.outcome == 'failure' }}
+        working-directory: worker/plotart-studio
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.STUDIO_CF_DEPLOY_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          npx --yes wrangler@4.150.0 rollback --config wrangler.enquiry.production.toml --message "automatic rollback: failed checks after deploy (run ${{ github.run_id }})" -y > "$RUNNER_TEMP/rb.log" 2>&1 && echo "rolled back to the previous version" || { echo "FAIL  automatic rollback did not complete"; grep -iE "error" "$RUNNER_TEMP/rb.log" | grep -viE "token" | head -3; exit 1; }
+          echo "- **rolled back automatically** after failed checks" >> "$GITHUB_STEP_SUMMARY"
+          sleep 10
+          bash ../../atlas-tools/release/studio/relay-outside-check.sh https://plotart-enquiry.colin-a41.workers.dev previous
