@@ -386,7 +386,7 @@
       <dl class="st-dl">
         <dt>Accepted</dt><dd>${E(irish(mine[mine.length - 1].accepted_at))} (Irish time) in PlotArt Studio</dd>
         <dt>Documents</dt><dd>${mine.filter(r => r.accepted_at === mine[mine.length - 1].accepted_at).map(r => `${E(DOCNAME[r.doc_id] || r.doc_id)}, ${E(r.doc_id)}<br><span class="st-muted st-fp">Fingerprint ${E(r.doc_sha256.slice(0, 16))}…</span>`).join('<br>')}</dd>
-        <dt>Your name</dt><dd>${E(mine[mine.length - 1].display_name)}${mine[mine.length - 1].legal_name ? ` · legal name ${E(mine[mine.length - 1].legal_name)}` : ''}</dd>
+        <dt>Your name</dt><dd>${E(mine[mine.length - 1].display_name)}${mine[mine.length - 1].legal_name ? ` · legal name ${E(mine[mine.length - 1].legal_name)}` : ''}${mine[mine.length - 1].corrections.length ? `<br><span class="st-muted st-fp">Corrected ${E(irish(mine[mine.length - 1].corrections.slice(-1)[0].corrected_at))}: ${E(mine[mine.length - 1].corrections.slice(-1)[0].reason)}. Your original acceptance record is kept unchanged.</span>` : ''}</dd>
         <dt>Studio account</dt><dd>${E(mine[mine.length - 1].account_email)}</dd>
         ${g.founding ? `<dt>Founding year</dt><dd>${fy ? `${E(day(fy.start))} to ${E(day(fy.end))}` : 'Starts on the day your gallery is first published'}</dd>` : ''}
       </dl></section>` : '';
@@ -413,6 +413,14 @@
         <div class="st-actions"><button class="st-btn st-btn--solid" id="accept" disabled>Accept</button></div>
         <p class="st-muted" style="margin:10px 0 0">PlotArt Studio records the date and time, the exact versions and their fingerprints, your Studio account and your name, and keeps them with a copy of each document you can download.</p>
         <p class="st-err" id="aerr" role="alert"></p></section>` : ''}
+      ${g.leave ? `<section class="st-card st-leave" aria-labelledby="lv-h"><h3 id="lv-h">Leaving PlotArt</h3>
+        ${g.leave.request ? `<p class="st-msg">You asked to leave on ${E(irish(g.leave.request.at))}. PlotArt will remove your gallery from plotnua.ie by ${E(day(new Date(g.leave.request.due).toLocaleDateString('en-CA', { timeZone: 'Europe/Dublin' })))} and confirm by email.</p>
+          <div class="st-actions"><button class="st-btn st-btn--small" id="lv-undo">Withdraw my request</button></div>`
+        : `<p class="st-muted" style="margin:0 0 10px">You can leave at any time. PlotArt then removes your gallery from plotnua.ie within 14 days. Your original photographs and Studio details are deleted 12 months after you leave, or sooner if you ask. The record of what you accepted and of enquiries is kept for six years, without buyer details, then deleted. Copies of published images stay in PlotArt’s private website history, which is not public.</p>
+          <div class="st-f"><label for="lv-why">Anything you’d like to tell us (optional)</label><input id="lv-why" type="text" maxlength="280"></div>
+          <label class="st-check"><input type="checkbox" id="lv-ok" style="accent-color:var(--terra);width:20px;height:20px"> I want to leave PlotArt and have my gallery removed.</label>
+          <div class="st-actions"><button class="st-btn st-btn--small st-btn--danger" id="lv-go">Ask to leave</button></div>`}
+        <p class="st-err" id="lv-err" role="alert"></p></section>` : ''}
       ${earlier.length ? `<section class="st-card"><h3>Earlier record</h3><ul class="st-list">${earlier.map(r => `<li>${E(DOCNAME[r.doc_id] || r.doc_id)}, version ${E(r.doc_id)}, accepted ${E(irish(r.accepted_at))}. This earlier version was accepted with a short summary and its version label; the record is kept exactly as it was made.</li>`).join('')}</ul></section>` : ''}`;
     const shown = {};
     await Promise.all(docs.map(async d => {
@@ -426,6 +434,11 @@
         box.innerHTML = art.innerHTML;
       } catch { box.innerHTML = '<p class="st-err">The document couldn’t be loaded. Please reload the page.</p>'; }
     }));
+    $('#lv-go')?.addEventListener('click', async () => {
+      if (!$('#lv-ok').checked) { $('#lv-err').textContent = 'Tick the box to confirm.'; return; }
+      try { await api('POST', '/api/leave', { confirm: true, reason: $('#lv-why').value.trim() || null }); say('Request received'); agreementView(); } catch (e) { $('#lv-err').textContent = e.message; }
+    });
+    $('#lv-undo')?.addEventListener('click', async () => { try { await api('POST', '/api/leave/withdraw', {}); say('Request withdrawn'); agreementView(); } catch (e) { $('#lv-err').textContent = e.message; } });
     const box = $('#agree'), btn = $('#accept');
     if (!box) return;
     box.addEventListener('change', () => { btn.disabled = !box.checked; });

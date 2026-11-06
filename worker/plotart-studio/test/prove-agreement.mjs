@@ -8,7 +8,7 @@ import { acceptAgreement } from './agree.mjs';
 import { snapshot } from '../src/lib.js';
 import { readFileSync } from 'node:fs';
 import { createHash } from 'node:crypto';
-import { statements } from './sql.mjs';
+import { statements, rollbackOf } from './sql.mjs';
 
 const results = [];
 const check = (n, ok, d = '') => { results.push(!!ok); console.log(`  ${ok ? 'PASS' : 'FAIL'}  ${n}${!ok && d ? `  [${String(d).slice(0, 400)}]` : ''}`); };
@@ -245,9 +245,9 @@ check('G1 a retention date shorter than six years after the end is refused; insi
 console.log('— Studio before migration 0005 (the tables do not exist yet)');
 const pre = await start({ port: 8832 });
 const pdb = pre.db;
-for (const s of ['agreement_acceptances_valid', 'agreement_acceptances_no_update', 'agreement_acceptances_no_delete', 'enquiry_log_no_update', 'enquiry_log_no_delete', 'record_retention_no_update', 'record_retention_no_delete', 'agreement_documents_no_update', 'agreement_documents_no_delete'])
-  await pdb.prepare(`DROP TRIGGER ${s}`).run();
-for (const t of ['agreement_acceptances', 'enquiry_log', 'record_retention', 'agreement_documents']) await pdb.prepare(`DROP TABLE ${t}`).run();
+// the migration's own rollback lines take the database back to the state before 0005
+const MIGSQL = readFileSync(HERE + 'migrations/0005_agreements_and_enquiry_log.sql', 'utf8');
+for (const st of statements(rollbackOf(MIGSQL))) await pdb.prepare(st).run();
 const pcall = async (method, path, email, body) => { const x = await pre.mf.dispatchFetch(pre.url + path, { method, headers: H(email), body: body === undefined ? undefined : JSON.stringify(body) }); return { s: x.status, j: await x.json().catch(() => null) }; };
 await pcall('POST', '/api/admin/artists', FOUNDER, { display_name: 'Pre Artist', email: 'pre@example.test' });
 const pme = await pcall('GET', '/api/me', 'pre@example.test'), pov = await pcall('GET', '/api/admin/overview', FOUNDER), pac = await pcall('GET', '/api/agreement', 'pre@example.test');

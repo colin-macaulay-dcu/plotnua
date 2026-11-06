@@ -111,7 +111,7 @@ const gone = await db.prepare('SELECT COUNT(*) n FROM enquiries WHERE reference=
 check('R3 the daily clean-up deletes the buyer’s name, email and message at 24 months as before; the log entry remains', gone.n === 0 && kept.n === 1);
 // relay before migration 0005: the enquiry still goes through, and the audit says it was not logged
 await db.prepare('DROP TRIGGER enquiry_log_no_update').run(); await db.prepare('DROP TRIGGER enquiry_log_no_delete').run(); await db.prepare('DROP TRIGGER record_retention_no_delete').run();
-await db.prepare('DROP TABLE enquiry_log').run();
+await db.prepare('DROP TABLE enquiry_log').run();   // only the log is missing here (the retention guard that reads it is dropped first)
 const enq2 = await mf.dispatchFetch('http://enquiry.local/v1/enquiry', { method: 'POST', headers: { Origin: 'https://plotnua.ie', 'Content-Type': 'application/json' },
   body: JSON.stringify({ ref: 'PA-relay-artist', notice, name: 'Cal Buyer', email: 'cal@example.test', message: 'A general question about commissions.' }) });
 const au = await db.prepare("SELECT detail FROM audit WHERE action='enquiry' ORDER BY id DESC LIMIT 1").first();

@@ -152,8 +152,12 @@ check('T19 other accounts unaffected (emails, statuses, updated_at) and still be
 const okCreate = await mk('Plain Synthetic', 'First.Last+gallery@Sub.Example.ie');
 check('T19b legitimate addresses still accepted on create, kept exactly (dots and +tags preserved; only lower-cased, as before)',
   okCreate.s === 200 && (await row(okCreate.j.id)).email === 'first.last+gallery@sub.example.ie');
-check('T19c the validator never rewrites a stored address: no UPDATE of email outside the founder route (source check)',
-  (await import('node:fs')).readFileSync(new URL('../src/index.js', import.meta.url), 'utf8').match(/UPDATE artists SET email/g).length === 1);
+// 6 Nov 2026: the one other place is the deletion of an ENDED artist's details (ending participation), which replaces the address with
+// a placeholder and is limited to account_status='ended' in the statement itself. Any third place still fails this check.
+const SRC = (await import('node:fs')).readFileSync(new URL('../src/index.js', import.meta.url), 'utf8');
+const emailUpdates = [...SRC.matchAll(/UPDATE artists SET email[^`'"]*[`'"][^;]*?\.bind\(([^)]*)\)/g)];
+check('T19c the validator never rewrites a stored address: no UPDATE of email outside the founder route, except the deletion of an ended artist’s details (source check)',
+  SRC.match(/UPDATE artists SET email/g).length === 2 && emailUpdates.some(m => /account_status='ended'/.test(m[0]) && /deleted\.invalid/.test(m[1])), emailUpdates.length);
 
 // T20 mobile: structural checks here; the screenshots at 390 px are taken by the report script
 r = await call('GET', '/', LEAH_OTHER);

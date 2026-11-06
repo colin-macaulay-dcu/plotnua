@@ -29,8 +29,8 @@ CREATE TRIGGER IF NOT EXISTS agreement_documents_no_delete BEFORE DELETE ON agre
 BEGIN SELECT RAISE(ABORT, 'agreement_documents rows are never removed'); END;
 
 -- 2 · Retention (agreement 11.2: the agreement's life plus six years). One row per artist whose participation has ended,
---     written once by the founder's "End participation" step (not built yet: a separate founder decision). Rows in the
---     append-only tables below can be deleted ONLY when their artist's delete_after has passed; nothing else can delete them.
+--     written once by the founder's "End participation" step. Rows in the append-only tables below can be deleted ONLY
+--     when their artist's delete_after has passed; nothing else can delete them.
 CREATE TABLE IF NOT EXISTS record_retention (
   artist_id    TEXT PRIMARY KEY REFERENCES artists(id),
   ended_at     TEXT NOT NULL,
@@ -43,6 +43,7 @@ CREATE TRIGGER IF NOT EXISTS record_retention_no_update BEFORE UPDATE ON record_
 BEGIN SELECT RAISE(ABORT, 'record_retention rows never change'); END;
 CREATE TRIGGER IF NOT EXISTS record_retention_no_delete BEFORE DELETE ON record_retention
 WHEN EXISTS (SELECT 1 FROM agreement_acceptances WHERE artist_id = OLD.artist_id) OR EXISTS (SELECT 1 FROM enquiry_log WHERE artist_id = OLD.artist_id)
+  OR EXISTS (SELECT 1 FROM acceptance_corrections WHERE artist_id = OLD.artist_id) OR EXISTS (SELECT 1 FROM participation_events WHERE artist_id = OLD.artist_id)
 BEGIN SELECT RAISE(ABORT, 'delete the records this retention row covers first'); END;
 
 -- 3 · Every acceptance, append-only. One tick in Studio = one event_id = one row per document accepted.
@@ -107,6 +108,58 @@ BEGIN SELECT RAISE(ABORT, 'enquiry_log is append-only; add a correcting row'); E
 CREATE TRIGGER IF NOT EXISTS enquiry_log_no_delete BEFORE DELETE ON enquiry_log
 WHEN NOT EXISTS (SELECT 1 FROM record_retention r WHERE r.artist_id = OLD.artist_id AND julianday(r.delete_after) <= julianday('now'))
 BEGIN SELECT RAISE(ABORT, 'enquiry_log is append-only until its retention period has ended'); END;
+
+-- 4b · Corrections to acceptance records (founder decision 6 Nov 2026). A mistyped legal name or another factual error in
+--      a recorded acceptance is corrected by a SEPARATE row linked to it, with a reason and a time. The acceptance row is
+--      never changed: its documents, version, fingerprints, acceptance time and statement cannot be corrected at all (no
+--      column exists for them here), and a correction is not an acceptance.
+CREATE TABLE IF NOT EXISTS acceptance_corrections (
+  id              TEXT PRIMARY KEY,
+  acceptance_id   TEXT NOT NULL REFERENCES agreement_acceptances(id),
+  artist_id       TEXT NOT NULL REFERENCES artists(id),
+  correction_group TEXT NOT NULL,                  -- one founder action across the rows of one acceptance event
+  field           TEXT NOT NULL CHECK (field IN ('legal_name', 'display_name', 'account_email')),
+  previous_value  TEXT,                            -- the value shown before this correction (original or earlier correction)
+  corrected_value TEXT,                            -- NULL only to remove a legal name entered in error
+  reason          TEXT NOT NULL CHECK (length(reason) BETWEEN 10 AND 280),
+  requested_by    TEXT NOT NULL CHECK (requested_by IN ('artist', 'founder')),
+  corrected_by    TEXT NOT NULL,
+  corrected_at    TEXT NOT NULL,
+  CHECK (corrected_value IS NOT NULL OR field = 'legal_name'),
+  UNIQUE (correction_group, acceptance_id)
+);
+CREATE INDEX IF NOT EXISTS acceptance_corrections_acc ON acceptance_corrections(acceptance_id, corrected_at);
+-- the artist must be the one the acceptance belongs to; a label-only (migrated) record never gains a legal name or address
+CREATE TRIGGER IF NOT EXISTS acceptance_corrections_valid BEFORE INSERT ON acceptance_corrections
+WHEN NOT EXISTS (SELECT 1 FROM agreement_acceptances a WHERE a.id = NEW.acceptance_id AND a.artist_id = NEW.artist_id
+  AND julianday(NEW.corrected_at) >= julianday(a.accepted_at) AND (a.method = 'studio_checkbox' OR NEW.field = 'display_name'))
+BEGIN SELECT RAISE(ABORT, 'correction refused: not this artist''s acceptance, dated before it, or a field a label-only record never held'); END;
+CREATE TRIGGER IF NOT EXISTS acceptance_corrections_no_update BEFORE UPDATE ON acceptance_corrections
+BEGIN SELECT RAISE(ABORT, 'acceptance_corrections is append-only; add a further correction'); END;
+CREATE TRIGGER IF NOT EXISTS acceptance_corrections_no_delete BEFORE DELETE ON acceptance_corrections
+WHEN NOT EXISTS (SELECT 1 FROM record_retention r WHERE r.artist_id = OLD.artist_id AND julianday(r.delete_after) <= julianday('now'))
+BEGIN SELECT RAISE(ABORT, 'acceptance_corrections is append-only until its retention period has ended'); END;
+
+-- 4c · Ending participation (founder decision 6 Nov 2026): the artist's request to leave, the founder's ending, the gallery
+--      removal and each scheduled deletion, as an append-only log. The current state is read from it; nothing is overwritten.
+CREATE TABLE IF NOT EXISTS participation_events (
+  id         TEXT PRIMARY KEY,
+  artist_id  TEXT NOT NULL REFERENCES artists(id),
+  kind       TEXT NOT NULL CHECK (kind IN ('leave_requested', 'leave_request_withdrawn', 'ended', 'originals_deleted')),
+  at         TEXT NOT NULL,
+  actor      TEXT NOT NULL,
+  reason     TEXT CHECK (reason IS NULL OR length(reason) <= 280),
+  detail     TEXT
+);
+CREATE INDEX IF NOT EXISTS participation_events_artist ON participation_events(artist_id, at);
+CREATE TRIGGER IF NOT EXISTS participation_events_one_ending BEFORE INSERT ON participation_events
+WHEN NEW.kind = 'ended' AND EXISTS (SELECT 1 FROM participation_events WHERE artist_id = NEW.artist_id AND kind = 'ended')
+BEGIN SELECT RAISE(ABORT, 'participation has already ended'); END;
+CREATE TRIGGER IF NOT EXISTS participation_events_no_update BEFORE UPDATE ON participation_events
+BEGIN SELECT RAISE(ABORT, 'participation_events is append-only'); END;
+CREATE TRIGGER IF NOT EXISTS participation_events_no_delete BEFORE DELETE ON participation_events
+WHEN NOT EXISTS (SELECT 1 FROM record_retention r WHERE r.artist_id = OLD.artist_id AND julianday(r.delete_after) <= julianday('now'))
+BEGIN SELECT RAISE(ABORT, 'participation_events is append-only until its retention period has ended'); END;
 -- @@DDL-END
 
 -- 5 · The documents. The fingerprints are those of agreements/issued/ (fingerprints.json); effective from the moment this runs.
@@ -156,9 +209,13 @@ FROM enquiries e JOIN artists a ON a.id = e.artist_id;
 -- SELECT COUNT(*) FROM agreement_acceptances WHERE doc_id IN ('PA-FAA-2026-11','PA-GPIL-2026-11');   -- 0
 -- SELECT COUNT(*) FROM enquiry_log;                                                                -- equals SELECT COUNT(*) FROM enquiries
 -- SELECT doc_id, text_status, html_sha256, pdf_sha256 FROM agreement_documents;                    -- 3 rows, as section 5
--- Rollback (only before the first real acceptance; drops ONLY what this migration created):
---   DROP TRIGGER agreement_acceptances_valid; DROP TRIGGER agreement_acceptances_no_update; DROP TRIGGER agreement_acceptances_no_delete;
---   DROP TRIGGER enquiry_log_no_update; DROP TRIGGER enquiry_log_no_delete;
---   DROP TRIGGER record_retention_no_update; DROP TRIGGER record_retention_no_delete;
---   DROP TRIGGER agreement_documents_no_update; DROP TRIGGER agreement_documents_no_delete;
---   DROP TABLE agreement_acceptances; DROP TABLE enquiry_log; DROP TABLE record_retention; DROP TABLE agreement_documents;
+-- Rollback (only before the first real acceptance; drops ONLY what this migration created; every line is IF EXISTS, so it
+-- also cleans up after a run that stopped part-way):
+--   DROP TRIGGER IF EXISTS agreement_acceptances_valid; DROP TRIGGER IF EXISTS agreement_acceptances_no_update; DROP TRIGGER IF EXISTS agreement_acceptances_no_delete;
+--   DROP TRIGGER IF EXISTS enquiry_log_no_update; DROP TRIGGER IF EXISTS enquiry_log_no_delete;
+--   DROP TRIGGER IF EXISTS acceptance_corrections_valid; DROP TRIGGER IF EXISTS acceptance_corrections_no_update; DROP TRIGGER IF EXISTS acceptance_corrections_no_delete;
+--   DROP TRIGGER IF EXISTS participation_events_one_ending; DROP TRIGGER IF EXISTS participation_events_no_update; DROP TRIGGER IF EXISTS participation_events_no_delete;
+--   DROP TRIGGER IF EXISTS record_retention_no_update; DROP TRIGGER IF EXISTS record_retention_no_delete;
+--   DROP TRIGGER IF EXISTS agreement_documents_no_update; DROP TRIGGER IF EXISTS agreement_documents_no_delete;
+--   DROP TABLE IF EXISTS acceptance_corrections; DROP TABLE IF EXISTS participation_events; DROP TABLE IF EXISTS agreement_acceptances;
+--   DROP TABLE IF EXISTS enquiry_log; DROP TABLE IF EXISTS record_retention; DROP TABLE IF EXISTS agreement_documents;
