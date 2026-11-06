@@ -906,7 +906,15 @@ export default {
     try { enquiries_logged = await logMissingRelayEnquiries(env); } catch { /* enquiry log not installed */ }
     await env.DB.prepare('DELETE FROM enquiries WHERE delete_after < ?').bind(now()).run();
     const cut = new Date(Date.now() - 30 * 86400_000).toISOString();
-    const gone = await all(env, "SELECT id, r2_key, preview_key FROM images WHERE deleted_at IS NOT NULL AND deleted_at < ? AND r2_key <> 'erased'", cut);
+    const due = await all(env, "SELECT id, artist_id, r2_key, preview_key FROM images WHERE deleted_at IS NOT NULL AND deleted_at < ? AND r2_key <> 'erased'", cut);
+    // A photograph still shown in the artist's newest version (e.g. replaced, with the replacement still waiting for review)
+    // is kept until that version is superseded: later updates to the live gallery are built from it (release review, 6 Nov 2026).
+    const shown = new Map();
+    for (const aid of new Set(due.map(i => i.artist_id))) {
+      const lv = await latestVersion(env, aid);
+      shown.set(aid, new Set(lv ? [...lv.snap.works.flatMap(w => (w.images || []).map(x => x.id)), ...(lv.snap.artist && lv.snap.artist.portrait ? [lv.snap.artist.portrait.id] : [])] : []));
+    }
+    const gone = due.filter(i => !shown.get(i.artist_id).has(i.id));
     for (const i of gone) {
       await env.IMAGES.delete(i.r2_key); if (i.preview_key) await env.IMAGES.delete(i.preview_key);
       await env.DB.prepare("UPDATE images SET r2_key='erased', preview_key=NULL WHERE id=?").bind(i.id).run();
@@ -917,7 +925,7 @@ export default {
     try { await gardenReady(env); garden_expired = await sweepGarden(env); } catch { /* noticeboard not installed */ }
     let participation_deletion = null;
     try { participation_deletion = await runDeletionSchedule(env); } catch (e) { participation_deletion = { error: String(e.message || e).slice(0, 120) }; }
-    await audit(env, 'scheduler', 'system', 'cleanup', null, { images_erased: gone.length, ideas_deleted, garden_expired, participation_deletion, enquiries_logged });
+    await audit(env, 'scheduler', 'system', 'cleanup', null, { images_erased: gone.length, images_kept_while_shown: due.length - gone.length, ideas_deleted, garden_expired, participation_deletion, enquiries_logged });
   },
   async fetch(req, env) {
     try { return await route(req, env); }
