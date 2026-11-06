@@ -597,6 +597,19 @@ def page_price_view(r):
 
 def garden_price_label(r):
     kind, disp, cur = page_price_view(r)
+    # NOOK STAGE 3A (founder decision 6 Nov 2026): a HELD price (atlas-tools/
+    # price-presentation-holds.json, carried as priceEvidence.presentationHold) may be
+    # shown only with its qualification immediately beside it. The product page shows
+    # the qualification instead of the figure; this line has room for both.
+    # prove-explorer-price-parity.mjs P6 proves the wording.
+    hold = (r.get("priceEvidence") or {}).get("presentationHold")
+    if hold:
+        e = r.get("priceEvidence") or {}
+        q = (hold.get("qualification") or "").strip()
+        if not q or disp is None or cur != "EUR" or e.get("status") != "Verified" \
+                or (e.get("includesVat") or "").strip().lower() not in ("no", "excluding vat"):
+            die("price: held product %s needs a verified euro price excluding VAT and a qualification" % r["id"])
+        return disp + " excluding VAT. " + q
     if kind == "quote-only":
         return PRICE_ENQUIRY
     if disp is None or cur not in PAGE_SYMBOL:

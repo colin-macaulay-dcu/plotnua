@@ -896,6 +896,48 @@ def safety_held():
     return _SAFETY_HOLD
 
 
+PRICE_PRESENTATION_HOLD_REGISTER = Path(_ac.__file__).resolve().parent.parent.parent / "atlas-tools" / "price-presentation-holds.json"
+_PRICE_PRESENTATION_HOLD = None
+
+
+def price_presentation_holds():
+    """Product id -> qualification, for products whose Atlas price is kept but
+    must not be matched, compared or shown without its qualification
+    (atlas-tools/price-presentation-holds.json; founder decision 6 Nov 2026,
+    NOOK Stage 3A controlled publication). An unreadable register refuses the
+    run: releasing a held price by accident is the failure this prevents."""
+    global _PRICE_PRESENTATION_HOLD
+    if _PRICE_PRESENTATION_HOLD is None:
+        try:
+            doc = json.loads(PRICE_PRESENTATION_HOLD_REGISTER.read_text(encoding="utf-8"))
+        except (OSError, ValueError) as e:
+            fail("the price-presentation hold register could not be read (%s)" % e)
+        if doc.get("schema") != "plotnua.price-presentation-holds.v1":
+            fail("the price-presentation hold register has an unknown schema")
+        holds = {}
+        for r in doc.get("holds") or []:
+            q = (r.get("qualification") or "").strip()
+            if not r.get("productId") or not q:
+                fail("a price-presentation hold has no productId or no qualification")
+            holds[r["productId"]] = q
+        _PRICE_PRESENTATION_HOLD = holds
+    return _PRICE_PRESENTATION_HOLD
+
+
+def apply_price_presentation_hold(rec, pid):
+    """Additive. A held product keeps its price and its evidence; it is never
+    safe for matching, and its evidence carries the qualification every
+    surface must show beside the figure (or show instead of it)."""
+    q = price_presentation_holds().get(pid)
+    if not q:
+        return
+    rec["priceSafeForMatching"] = False
+    if rec.get("priceBasisConfidence") in ("EXPLICIT", "NO_BASIS_STATED", "NOT_CONFIRMED"):
+        rec["priceBasisConfidence"] = "UNSAFE"
+    if isinstance(rec.get("priceEvidence"), dict):
+        rec["priceEvidence"]["presentationHold"] = {"qualification": q, "matching": "excluded"}
+
+
 def qualify(product, orgs, price_rows, avail_rows, feat_rows,
             all_feat_rows=None, install_rows=None) -> dict:
     """Deterministic. Same inputs, same output, every run.
@@ -1484,6 +1526,9 @@ def main():
             # PHASE 6C — the governed price contract, additive.
             rec.update(price_governance(pick, adj_state, adj_candidates,
                                         price_rows, carried))
+            # NOOK Stage 3A (founder decision 6 Nov 2026): a held price is kept
+            # but never matched, compared or shown without its qualification.
+            apply_price_presentation_hold(rec, pid)
             emitted.append(rec)
 
     gates(garden, emitted, excluded, source_count)

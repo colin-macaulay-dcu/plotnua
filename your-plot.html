@@ -14759,7 +14759,13 @@ html.pn-myplot-view:not(.pn-myplot-open) body::after{content:"Opening My Plot\20
          keeps saying that Atlas holds a record whose figure was never
          captured. Absent, not excluded -- budgetFit() then scores these 1
          (unknown) exactly as it scores any other unpriced product. */
-      price: (typeof raw.price === 'number' && isFinite(raw.price) && raw.price > 0)
+      /* NOOK STAGE 3A (founder decision 6 Nov 2026) — A PRESENTATION HOLD.
+         A held price stays in Atlas and in priceEvidence, but no figure enters
+         this page's matching, budget fit, budget comparisons or price
+         ordering: the published figure is an ex works starting price, not an
+         installed Irish price. pnPriceView() shows the qualification instead. */
+      price: (typeof raw.price === 'number' && isFinite(raw.price) && raw.price > 0
+              && !(raw.priceEvidence && raw.priceEvidence.presentationHold))
              ? raw.price : undefined,
       /* ATLAS 487 BATCH 2 PIECE 2H-2 — was `raw.currency || 'EUR'`, which
          MANUFACTURED euro for every product Atlas holds no currency for. On
@@ -18632,7 +18638,10 @@ html.pn-myplot-view:not(.pn-myplot-open) body::after{content:"Opening My Plot\20
        Both are false for an ambiguous Product, which has published prices
        Atlas cannot rank. The semantic state comes from pnPriceView() rather
        than from a second guess at product.price. */
-    if (pnPriceView(product).kind === 'ambiguous') {
+    if (pnPriceView(product).kind === 'held') {
+      /* NOOK Stage 3A (founder decision 6 Nov 2026): no figure, no budget claim. */
+      reasons.push('The maker publishes an ex works starting price only, so PlotNua does not compare it with installed prices or with your budget. ' + pnPriceView(product).qualification);
+    } else if (pnPriceView(product).kind === 'ambiguous') {
       reasons.push(PB046_AMBIGUOUS_REASON);
     } else if (!pnPriceView(product).known) {
       reasons.push(`${PB046_NO_PRICE} — the supplier quotes this one on enquiry.`);
@@ -35847,6 +35856,20 @@ html.pn-myplot-view:not(.pn-myplot-open) body::after{content:"Opening My Plot\20
        governed state the generator emits, never inferred from price == null:
        a null price on its own means Atlas has nothing, which is a different
        and equally truthful thing to say. */
+    /* NOOK STAGE 3A — A HELD PRICE IS NEVER SHOWN BARE. Tested first: the
+       figure is real and verified, but it is an ex works starting price, and
+       this page's cards and comparison cells cannot carry the founder's
+       qualification beside every figure. So the qualification is shown in
+       place of the figure, and the price is known to nothing downstream. */
+    if (e.presentationHold && e.presentationHold.qualification) {
+      return { known: false, kind: 'held',
+               amount: null, ceiling: null, currency: cur, scopeNote: scope,
+               figure: null,
+               // Self-contained: the price-contract proofs lift this function alone.
+               display: 'Ex works price only. ' + String(e.presentationHold.qualification).replace(/^Ex works\.\s*/, ''),
+               tail: null,
+               qualification: e.presentationHold.qualification };
+    }
     if (e.adjudication === 'ambiguous') {
       return { known: false, kind: 'ambiguous',
                amount: null, ceiling: null, currency: cur, scopeNote: scope,

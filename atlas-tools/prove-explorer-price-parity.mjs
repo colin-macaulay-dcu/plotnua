@@ -56,6 +56,17 @@ function check(cfg) {
     const v = view(P);
     const e = r.priceEvidence || {};
     let k;
+    // P6 (NOOK Stage 3A, 6 Nov 2026): a HELD price. The page shows the qualification and no
+    // figure; the explorer shows the figure, "excluding VAT", then the same qualification.
+    if (v.kind === 'held') {
+      k = 'held';
+      const q = (e.presentationHold || {}).qualification || '';
+      const bare = view(Object.assign({}, P, { priceEvidence: Object.assign({}, e, { presentationHold: undefined }) }));
+      if (!q || !v.display.includes(q.replace(/^Ex works\.\s*/, ''))) bad.push(`P6 ${r.id}: page held price without its qualification: "${v.display}"`);
+      if (v.known || v.amount != null || /\d/.test(v.display)) bad.push(`P6 ${r.id}: page shows a figure for a held price: "${v.display}"`);
+      if (!bare.known || line !== bare.display + ' excluding VAT. ' + q) bad.push(`P6 ${r.id}: held price shown without its qualification: "${line}"`);
+      tally[k] = (tally[k] || 0) + 1; continue;
+    }
     if (v.kind === 'quote-only') { k = 'enquiry'; if (line !== 'Price on enquiry') bad.push(`P3 ${r.id}: page quote-only, explorer "${line}"`); }
     else if (!v.known) { k = 'unavailable'; if (line !== 'Price unavailable') bad.push(`P3 ${r.id}: page ${v.kind}, explorer "${line}"`); }
     else if (!['EUR', 'GBP', 'USD'].includes(v.currency)) { k = 'unavailable'; if (line !== 'Price unavailable') bad.push(`P4 ${r.id}: ${v.currency} figure shown`); }
@@ -98,6 +109,7 @@ const faults = [
   ['sterling shown as euro', c => { const p = find(c, p => (p[4] || '').endsWith('UK price')); p[4] = p[4].replace('£', '€'); }, 'P2'],
   ['an indicative price shown as verified', c => { const p = find(c, p => (p[4] || '').startsWith('Indicative price: €') || (p[4] || '').startsWith('Indicative price: From €')); p[4] = p[4].replace('Indicative price: ', '') + ' · VAT not stated'; }, 'P4'],
   ['the VAT position dropped', c => { const p = find(c, p => (p[4] || '').endsWith(' · VAT not stated')); p[4] = p[4].replace(' · VAT not stated', ''); }, 'P4'],
+  ['a held price shown without its qualification', c => { const p = find(c, p => (p[4] || '').includes(' excluding VAT. Ex works.')); p[4] = p[4].split(' excluding VAT. ')[0] + ' excl. VAT'; }, 'P6'],
   ['a product delisted', c => { const ms = c.tabs.find(t => t.key === 'gardenRooms').makers; ms[0].p.shift(); }, 'P1'],
 ];
 let caught = 0;

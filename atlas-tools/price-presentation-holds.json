@@ -1,0 +1,24 @@
+{
+ "schema": "plotnua.price-presentation-holds.v1",
+ "what_this_is": "Products whose price Atlas holds and keeps, but which PlotNua must not use for price-based matching, budget fit or price comparison, and which may be shown only with the qualification below immediately beside the figure. Read by .github/scripts/generate_garden_room_universe.py, which sets priceSafeForMatching false and carries priceEvidence.presentationHold for each listed product. Because search (build-search-index.py G7) publishes a price only where priceSafeForMatching is true, search carries no figure for these products. your-plot.html pnPriceView() shows the qualification in place of the figure (the product page and its cards cannot show the qualification beside every figure, so the figure is suppressed there). atlas-tools/build-maker-explorer.py shows the figure with the qualification in the same line. atlas-tools/prove-explorer-price-parity.mjs proves both. An unreadable register refuses the run.",
+ "decision": "Founder decision, 6 Nov 2026 15:04, 'PLOTNUA — STAGE 3A NOOK PREFAB CONTROLLED PUBLICATION' items 2 and 3: conservative option; NOOK excluded from price-based matching and budget-fit calculations on Your Plot; wherever a price is displayed, an immediately visible qualification; if a component cannot safely display it, suppress the price on that component. The qualification wording is the founder's.",
+ "liftWhen": "The website can clearly distinguish an ex works starting price, VAT excluded, transport, foundations and installation additional, and Irish delivery terms unconfirmed, AND the founder approves lifting the hold for the product.",
+ "holds": [
+  {
+   "productId": "recDa5vihxcYG9xoH",
+   "product": "NOOK 10",
+   "organisation": "NOOK Prefab (espacio NOOK)",
+   "basis": "Ex works starting price, excluding VAT (nookprefab.com, read 6 Nov 2026)",
+   "qualification": "Ex works. VAT, delivery, foundations and installation are additional. Irish delivery terms require confirmation.",
+   "since": "2026-11-06"
+  },
+  {
+   "productId": "rectQX4XpBbD6H3LU",
+   "product": "NOOK 20",
+   "organisation": "NOOK Prefab (espacio NOOK)",
+   "basis": "Ex works starting price, excluding VAT (nookprefab.com, read 6 Nov 2026)",
+   "qualification": "Ex works. VAT, delivery, foundations and installation are additional. Irish delivery terms require confirmation.",
+   "since": "2026-11-06"
+  }
+ ]
+}

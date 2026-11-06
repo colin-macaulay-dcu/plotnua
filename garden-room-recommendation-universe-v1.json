@@ -24,17 +24,17 @@
  "noPublishedIrishRouteCount": 43,
  "missingPriceCount": 222,
  "priceEvidenceSummary": {
-  "verified": 268,
-  "present-unverified": 60,
-  "quote-only": 20,
+  "verified": 270,
+  "present-unverified": 59,
+  "quote-only": 19,
   "missing": 222
  },
- "quoteOnlyPriceCount": 20,
+ "quoteOnlyPriceCount": 19,
  "organisationCount": 64,
  "governedPriceContractVersion": "garden-room-price-contract-v1",
- "governedDigest": "1b5ef07c7fea82981de7e36a2865cb224042467277bac7861d5d77ac78a685d9",
+ "governedDigest": "2231b53a7ff2466b20b70013e6975690427ae0ad37a074c1d4395215061bced2",
  "sourceKind": "airtable-live",
- "missingProductUrlCount": 170,
+ "missingProductUrlCount": 168,
  "products": [
   {
    "id": "recLcmGihJ0mrfdwV",
@@ -59775,11 +59775,11 @@
   },
   {
    "id": "recDa5vihxcYG9xoH",
-   "name": "NOOK Base 9.75m² (Open Plan)",
+   "name": "NOOK 10",
    "organisation": "NOOK Prefab (espacio NOOK)",
    "productId": "recDa5vihxcYG9xoH",
    "productCode": "PROD-000409",
-   "productName": "NOOK Base 9.75m² (Open Plan)",
+   "productName": "NOOK 10",
    "productType": "Factory-built modular garden studio",
    "productCategory": "Garden Rooms",
    "organisationEvidence": [
@@ -59788,20 +59788,19 @@
      "name": "NOOK Prefab (espacio NOOK)"
     }
    ],
-   "productUrl": null,
+   "productUrl": "https://nookprefab.com/pages/nook-base-garden-room",
    "verificationStatus": "Partially Verified",
    "qualification": {
     "status": "ELIGIBLE — WITH CAVEAT",
     "confidenceTier": "WITH_CAVEAT",
-    "priceEvidence": "present-unverified",
+    "priceEvidence": "verified",
     "reasons": [
+     "A verified price is recorded.",
+     "A product-level source is recorded.",
      "Supplier attribution is confirmed: NOOK Prefab (espacio NOOK)."
     ],
     "caveats": [
-     "Irish availability is not yet confirmed. Nothing establishes it is unavailable.",
-     "A published price is recorded but has not been verified.",
-     "Evidence reaches supplier-level rather than this exact product.",
-     "Product URL is missing; product identity is established by other evidence."
+     "Irish availability is not yet confirmed. Nothing establishes it is unavailable."
     ],
     "hardBlockers": [],
     "evidenceSignals": {
@@ -59810,13 +59809,13 @@
      "irishAvailabilityScope": "Organisation-Wide",
      "irishAvailabilityClassified": true,
      "noPublishedIrishRoute": false,
-     "price": "present-unverified",
-     "source": "supplier-level",
+     "price": "verified",
+     "source": "product-level",
      "supplierAttribution": "confirmed",
      "manufacturerAttribution": "unknown",
-     "productUrl": "missing",
+     "productUrl": "present",
      "contradiction": "none",
-     "productEvidenceCompleteness": "Blocked — Core Attribution or Evidence Missing",
+     "productEvidenceCompleteness": "Product Evidence Complete — Organisation Gate Required",
      "featureValueCount": 1,
      "pricingRecordCount": 1,
      "availabilityRecordCount": 1
@@ -59827,17 +59826,21 @@
     "from": null,
     "to": null,
     "currency": "EUR",
-    "priceType": "Custom Quote",
-    "status": "Researching",
-    "includesVat": null,
-    "evidenceScope": null,
+    "priceType": "Starting From",
+    "status": "Verified",
+    "includesVat": "No",
+    "evidenceScope": "Product-Specific",
     "adjudication": "adjudicated",
     "quoteOnly": false,
-    "candidateCount": 1
+    "candidateCount": 1,
+    "presentationHold": {
+     "qualification": "Ex works. VAT, delivery, foundations and installation are additional. Irish delivery terms require confirmation.",
+     "matching": "excluded"
+    }
    },
    "features": {
     "installationModel": {
-     "text": "TURNKEY INSTALLATION INCLUDED — FOUNDATION, DELIVERY AND CRANE INSIDE THE PRICE. Recorded as published: all-inclusive pricing includes FOUNDATION, DELIVERY, CRANE AND INSTALLATION with no hidden extras. Each unit arrives fully assembled and is installed in the garden IN UNDER 24 HOURS, screw-pile foundation included. The unit rests on screw-in helical piles which take half a day to install with no civil works and no concrete, and which lift out or relocate leaving no mark on the land. Published from EUR 39,000; single module of approximately 9.7 m2, positioned as a garden office pod, creative studio or personal retreat. Designed and manufactured in Spain. Nothing inferred. WHY THIS IS THE MOST COMPLETE SINGLE FIGURE IN THE LAYER: foundation, delivery, CRANE and installation in one price. Craneage is the line that catches buyers out on every other craned product in this catalogue — Concept Modular quotes it separately at EUR 3,000 to 4,000 plus VAT with base and haulage, Iglucraft excludes it, ÖÖD excludes the base entirely. NOOK carries all of it. THE REVERSIBILITY IS A GENUINE PROPERTY, NOT A CLAIM: helical piles, no concrete, no civil works, removable without trace. That matters for a rented site, a short-horizon owner, or a planning position where reversibility is relevant — recorded as intelligence, not as a planning determination. HOMEOWNER IMPLICATION: one figure, one day, one contractor, and the ground left as found. The gating question is crane access, since the unit arrives fully assembled.",
+     "text": "SUPPLY ONLY — INSTALLATION SEPARATE. NOOK publishes the price of the finished unit at the factory ('From €39.000 ex works · excl. VAT'). Transport, foundations and installation, including craning in, are quoted separately for the customer's address. Factory-built in Spain and delivered finished. Nothing inferred about Irish delivery terms or costs.",
      "number": null,
      "unit": null,
      "evidenceScope": "Range-Level"
@@ -59885,7 +59888,7 @@
        "number": 9.75,
        "unit": "m²",
        "evidenceScope": null,
-       "status": "Verified",
+       "status": "Partially Verified",
        "feature": "Internal Floor Area"
       }
      ]
@@ -59943,7 +59946,7 @@
    },
    "price": 39000,
    "currency": "EUR",
-   "priceBasis": "Researching",
+   "priceBasis": "Verified",
    "floorAreaM2": null,
    "glazing": null,
    "insulation": "INSULATED — FOUR-SEASON. Envelope: 50mm sandwich panels plus 80MM MULTI-LAYER ROCK WOOL, high-density roof, double-insulated false ceiling. Double-glazed safety-tempered glazing. Stated Energy A rating — NOT tied to a named certification scheme in any located source. NO U-VALUE PUBLISHED. 2.50 x 3.90 m, 2.5 m height. Turnkey: transport, crane, plumbing and electrical pre-wiring included. IRISH AVAILABILITY UNCONFIRMED — Spanish manufacturer, no Ireland terms located.",
@@ -59954,30 +59957,27 @@
    "availabilityStatus": "Unknown",
    "noPublishedIrishRoute": false,
    "qualificationTier": "WITH_CAVEAT",
-   "priceEvidenceState": "present-unverified",
+   "priceEvidenceState": "verified",
    "qualificationCaveats": [
-    "Irish availability is not yet confirmed. Nothing establishes it is unavailable.",
-    "A published price is recorded but has not been verified.",
-    "Evidence reaches supplier-level rather than this exact product.",
-    "Product URL is missing; product identity is established by other evidence."
+    "Irish availability is not yet confirmed. Nothing establishes it is unavailable."
    ],
    "priceRecordIds": [
     "receDLQj6OQPgfo7h"
    ],
    "priceRecordIdsAvailable": 1,
-   "priceStatus": "Researching",
-   "priceType": "Custom Quote",
-   "priceScope": null,
-   "vatStatus": "Unknown",
+   "priceStatus": "Verified",
+   "priceType": "Starting From",
+   "priceScope": "Product-Specific",
+   "vatStatus": "No",
    "vatRate": null,
    "priceBasisAxes": {
-    "erection": "INCLUDED",
+    "erection": "UNKNOWN",
     "siteWorks": "UNKNOWN",
     "delivery": "UNKNOWN"
    },
-   "priceBasisClass": "ERECTED_SERVICES_UNKNOWN",
+   "priceBasisClass": "UNKNOWN",
    "priceBasisConfidence": "UNSAFE",
-   "priceIsRangeFloor": false,
+   "priceIsRangeFloor": true,
    "priceSafeForMatching": false,
    "priceEvidenceRef": {
     "recordIds": [
@@ -59985,21 +59985,21 @@
     ],
     "adjudication": "adjudicated",
     "candidateCount": 1,
-    "status": "Researching",
-    "priceType": "Custom Quote",
-    "evidenceScope": null,
-    "lastPriceCheck": "2026-08-08",
+    "status": "Verified",
+    "priceType": "Starting From",
+    "evidenceScope": "Product-Specific",
+    "lastPriceCheck": "2026-11-06",
     "basisSource": "installationModel.leadPhrase",
-    "basisLeadPhrase": "TURNKEY INSTALLATION INCLUDED"
+    "basisLeadPhrase": null
    }
   },
   {
    "id": "rectQX4XpBbD6H3LU",
-   "name": "NOOK Double 19.5m² (Open Plan)",
+   "name": "NOOK 20",
    "organisation": "NOOK Prefab (espacio NOOK)",
    "productId": "rectQX4XpBbD6H3LU",
    "productCode": "PROD-000410",
-   "productName": "NOOK Double 19.5m² (Open Plan)",
+   "productName": "NOOK 20",
    "productType": "Factory-built modular garden accommodation",
    "productCategory": "Garden Rooms",
    "organisationEvidence": [
@@ -60008,20 +60008,19 @@
      "name": "NOOK Prefab (espacio NOOK)"
     }
    ],
-   "productUrl": null,
+   "productUrl": "https://nookprefab.com/pages/nook-double-garden-room/",
    "verificationStatus": "Partially Verified",
    "qualification": {
     "status": "ELIGIBLE — WITH CAVEAT",
     "confidenceTier": "WITH_CAVEAT",
-    "priceEvidence": "quote-only",
+    "priceEvidence": "verified",
     "reasons": [
-     "This product is priced by quotation, as the supplier publishes.",
+     "A verified price is recorded.",
+     "A product-level source is recorded.",
      "Supplier attribution is confirmed: NOOK Prefab (espacio NOOK)."
     ],
     "caveats": [
-     "Irish availability is not yet confirmed. Nothing establishes it is unavailable.",
-     "Evidence reaches supplier-level rather than this exact product.",
-     "Product URL is missing; product identity is established by other evidence."
+     "Irish availability is not yet confirmed. Nothing establishes it is unavailable."
     ],
     "hardBlockers": [],
     "evidenceSignals": {
@@ -60030,34 +60029,38 @@
      "irishAvailabilityScope": "Organisation-Wide",
      "irishAvailabilityClassified": true,
      "noPublishedIrishRoute": false,
-     "price": "quote-only",
-     "source": "supplier-level",
+     "price": "verified",
+     "source": "product-level",
      "supplierAttribution": "confirmed",
      "manufacturerAttribution": "unknown",
-     "productUrl": "missing",
+     "productUrl": "present",
      "contradiction": "none",
-     "productEvidenceCompleteness": "Blocked — Core Attribution or Evidence Missing",
+     "productEvidenceCompleteness": "Product Evidence Complete — Organisation Gate Required",
      "featureValueCount": 1,
      "pricingRecordCount": 1,
      "availabilityRecordCount": 1
     }
    },
    "priceEvidence": {
-    "base": null,
+    "base": 59000,
     "from": null,
     "to": null,
     "currency": "EUR",
-    "priceType": "Custom Quote",
-    "status": "Researching",
-    "includesVat": null,
-    "evidenceScope": null,
-    "adjudication": "missing",
-    "quoteOnly": true,
-    "candidateCount": 1
+    "priceType": "Starting From",
+    "status": "Verified",
+    "includesVat": "No",
+    "evidenceScope": "Product-Specific",
+    "adjudication": "adjudicated",
+    "quoteOnly": false,
+    "candidateCount": 1,
+    "presentationHold": {
+     "qualification": "Ex works. VAT, delivery, foundations and installation are additional. Irish delivery terms require confirmation.",
+     "matching": "excluded"
+    }
    },
    "features": {
     "installationModel": {
-     "text": "TURNKEY INSTALLATION INCLUDED — FOUNDATION, DELIVERY AND CRANE INSIDE THE PRICE. All-inclusive pricing including foundation, delivery, crane and installation with no hidden extras; arrives fully assembled and installed in under 24 hours on an included screw-pile foundation; double module of approximately 19.5 m2. Nothing inferred. Both TURNKEY INSTALLATION INCLUDED, both Tier B, recorded at range level because one all-inclusive pricing policy governs the Base and Doble modules. THE SUPPLIER-LEVEL FINDING, and it is the cleanest commercial proposition recorded across this entire layer: all-inclusive pricing includes FOUNDATION, DELIVERY, CRANE AND INSTALLATION with no hidden extras. Four of the items that suppliers in this catalogue most often exclude are named as included in a single published figure from EUR 39,000. THE CRANE IS THE DECISIVE INCLUSION. Every fully-assembled modular product in this layer needs lifting, and every other supplier passes that cost on — Concept Modular bundles craneage with base and haulage at EUR 3,000 to 4,000 plus VAT, Iglucraft excludes it, Big Man Tiny Homes leaves it unpriced, ÖÖD excludes the base outright. NOOK is the only supplier that names craneage as inside the price. THE FOUNDATION TECHNOLOGY IS INCLUDED AND REVERSIBLE: screw-in helical piles, half a day to install, no civil works, no concrete, and removable without leaving a mark on the land. Yardbox offers ground screws as an option and Garden Office Buildings publishes a standard pile system; NOOK includes helical piles as standard and builds the twenty-four-hour installation claim on them. INSTALLED IN UNDER 24 HOURS, foundation included — faster than Sanctum's one day plus base, and faster than ÖÖD's one-day placement onto a base someone else built. GEOGRAPHIC NOTE, recorded not inferred: designed and manufactured in Spain by Intergen Ventures SL. Nothing published states an Irish price, lead time or installation term, and the all-inclusive figure quoted is a European one. THE ONE GATING CONDITION: the unit arrives fully assembled and is craned in, so garden access for a crane is a pass-or-fail site test. HOMEOWNER IMPLICATION AT SUPPLIER LEVEL: use this as the Atlas benchmark for what an all-inclusive modular price should contain — foundation, delivery, crane, installation — and confirm both Irish availability and crane access before treating it as an option.",
+     "text": "SUPPLY ONLY — INSTALLATION SEPARATE. NOOK publishes the price of the finished unit at the factory ('From €59.000 ex works · excl. VAT'). Transport, foundations and installation, including craning in, are quoted separately for the customer's address. Factory-built in Spain and delivered finished. Nothing inferred about Irish delivery terms or costs.",
      "number": null,
      "unit": null,
      "evidenceScope": "Range-Level"
@@ -60067,7 +60070,7 @@
      "number": 19.5,
      "unit": "m²",
      "evidenceScope": null,
-     "status": "Verified",
+     "status": "Partially Verified",
      "feature": "Internal Floor Area",
      "records": [
       {
@@ -60075,7 +60078,7 @@
        "number": 19.5,
        "unit": "m²",
        "evidenceScope": null,
-       "status": "Verified",
+       "status": "Partially Verified",
        "feature": "Internal Floor Area"
       },
       {
@@ -60163,9 +60166,9 @@
      "status": "Verified"
     }
    },
-   "price": null,
+   "price": 59000,
    "currency": "EUR",
-   "priceBasis": "Researching",
+   "priceBasis": "Verified",
    "floorAreaM2": 19.5,
    "glazing": null,
    "insulation": "INSULATED — FOUR-SEASON. 50mm sandwich panels plus 80mm multi-layer rock wool, high-density roof, double-insulated false ceiling, double-glazed safety-tempered glazing. Stated Energy A rating, not tied to a named scheme. NO U-VALUE PUBLISHED. Optional en-suite bathroom and fitted kitchen available on this model. Turnkey including plumbing and electrical pre-wiring. IRISH AVAILABILITY UNCONFIRMED.",
@@ -60176,42 +60179,40 @@
    "availabilityStatus": "Unknown",
    "noPublishedIrishRoute": false,
    "qualificationTier": "WITH_CAVEAT",
-   "priceEvidenceState": "quote-only",
+   "priceEvidenceState": "verified",
    "qualificationCaveats": [
-    "Irish availability is not yet confirmed. Nothing establishes it is unavailable.",
-    "Evidence reaches supplier-level rather than this exact product.",
-    "Product URL is missing; product identity is established by other evidence."
+    "Irish availability is not yet confirmed. Nothing establishes it is unavailable."
    ],
    "priceRecordIds": [
     "reclRPAau3pNeNNuh"
    ],
    "priceRecordIdsAvailable": 1,
-   "priceStatus": "Researching",
-   "priceType": "Custom Quote",
-   "priceScope": null,
-   "vatStatus": "Unknown",
+   "priceStatus": "Verified",
+   "priceType": "Starting From",
+   "priceScope": "Product-Specific",
+   "vatStatus": "No",
    "vatRate": null,
    "priceBasisAxes": {
-    "erection": "INCLUDED",
+    "erection": "UNKNOWN",
     "siteWorks": "UNKNOWN",
     "delivery": "UNKNOWN"
    },
-   "priceBasisClass": "ERECTED_SERVICES_UNKNOWN",
-   "priceBasisConfidence": "NO_PRICE",
-   "priceIsRangeFloor": false,
+   "priceBasisClass": "UNKNOWN",
+   "priceBasisConfidence": "UNSAFE",
+   "priceIsRangeFloor": true,
    "priceSafeForMatching": false,
    "priceEvidenceRef": {
     "recordIds": [
      "reclRPAau3pNeNNuh"
     ],
-    "adjudication": "missing",
+    "adjudication": "adjudicated",
     "candidateCount": 1,
-    "status": "Researching",
-    "priceType": "Custom Quote",
-    "evidenceScope": null,
-    "lastPriceCheck": "2026-08-08",
+    "status": "Verified",
+    "priceType": "Starting From",
+    "evidenceScope": "Product-Specific",
+    "lastPriceCheck": "2026-11-06",
     "basisSource": "installationModel.leadPhrase",
-    "basisLeadPhrase": "TURNKEY INSTALLATION INCLUDED"
+    "basisLeadPhrase": null
    }
   },
   {
