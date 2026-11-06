@@ -192,14 +192,33 @@ run_case("C7  G6 a tier is upgraded", "BUILDER",
 run_case("C8  G7 an unsafe price is emitted", "BUILDER",
          "G7 product",
          mutate_builder=lambda b: b.replace(
-             'if r.get("priceSafeForMatching") and is_price(r.get("price")):',
-             'if is_price(r.get("price")):'))
+             '    if euro_price(r):\n        rec["price"] = r["price"]',
+             '    if is_price(r.get("price")):\n        rec["price"] = r["price"]'))
 
 run_case("C9  G7b a price-safe product loses its price", "BUILDER",
          "G7b price-safe products not carrying a price",
          mutate_builder=lambda b: b.replace(
-             'if r.get("priceSafeForMatching") and is_price(r.get("price")):',
-             'if r.get("priceSafeForMatching") and isinstance(r.get("price"), int):'))
+             '    if euro_price(r):\n        rec["price"] = r["price"]',
+             '    if euro_price(r) and r.get("organisation") != "Adman Steel Sheds":\n        rec["price"] = r["price"]'))
+# Re-anchored 6 Nov 2026 (Stage 3D-B1): the original sabotage (dropping float prices)
+# no longer bites, because every float price in the garden corpus was GBP and those
+# prices now correctly carry no euro figure. The case still drops price-safe EUR
+# prices silently, which is what G7b exists to catch.
+
+# ------------------------------------------------------------------------ G7c
+# STAGE 3D-B1 (6 Nov 2026): Search shows every price as euro. These two cases
+# re-create the defect found in Stage 3D-A (GBP/USD prices shown with a euro sign,
+# matched by euro filters, and setting euro supplier ranges) and prove G7c refuses.
+run_case("C9b G7c a GBP/USD price is shown as euro", "BUILDER",
+         "G7c a non-EUR price would be shown as euro",
+         mutate_builder=lambda b: b.replace(
+             '            and r.get("currency") == "EUR")',
+             '            )'))
+run_case("C9c G7c a supplier range is built from GBP/USD", "BUILDER",
+         "G7c supplier",
+         mutate_builder=lambda b: b.replace(
+             '    prices = [x["price"] for x in rs if euro_price(x)]',
+             '    prices = [x["price"] for x in rs\n              if x.get("priceSafeForMatching") and is_price(x.get("price"))]'))
 
 # ------------------------------------------------------------------------- G8
 # RE-ANCHORED ONLY, same reason as C6.

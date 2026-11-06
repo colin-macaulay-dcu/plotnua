@@ -212,6 +212,22 @@ def is_price(v):
     return isinstance(v, (int, float)) and not isinstance(v, bool)
 
 
+def euro_price(r):
+    """STAGE 3D-B1 (6 Nov 2026) — THE ONE PRICE RULE FOR SEARCH.
+
+    search.js formats every price as euro and filters "under €N" against it, so a
+    price may enter the index ONLY if it is price-safe AND recorded in EUR. Before
+    this rule the garden-room and Additional Home corpora tested priceSafeForMatching
+    alone, which is currency-blind: 43 GBP and 3 USD garden-room prices were shown
+    with a euro sign and matched euro filters (Berko's GBP 26,000 appeared in
+    "garden room under €30,000"). The wellness corpus already applied this rule
+    (founder currency register, 22 Oct 2026). Nothing is converted; the product
+    stays searchable by name and keeps its currency in the universe, Your Plot and
+    the maker explorer, which display it correctly."""
+    return (bool(r.get("priceSafeForMatching")) and is_price(r.get("price"))
+            and r.get("currency") == "EUR")
+
+
 # ---------------------------------------------------------------- read sources
 print("\n  BOUNDED BUILDER · search-index-v1.json\n")
 
@@ -289,6 +305,7 @@ if AH_UNIVERSE.exists():
             "organisationEvidence": None,
             "priceSafeForMatching": bool(safe),
             "price": amount if safe else None,
+            "currency": qprice.get("currency"),
             "priceBasis": qprice.get("basis") or None,
         })
     print("  AH products      %d  (of %d in the corpus, gate + ELIGIBLE only)"
@@ -367,6 +384,7 @@ if WL_UNIVERSE.exists():
             "organisationEvidence": None,
             "priceSafeForMatching": bool(safe),
             "price": qp.get("amount") if safe else None,
+            "currency": qp.get("currency"),
             # The garden-room corpus's own token, not the explorer's sentence.
             # search.js never displays priceBasis; the full basis (VAT
             # position included) is published in the wellness universe and
@@ -640,7 +658,7 @@ for r in rows + ah_rows + wl_rows:
     # G7 at source: a price key exists ONLY where the universe says the price is
     # safe for matching. 279 of 573 are not, and those carry no price at all, so
     # there is nothing for a filter or a card to show wrongly.
-    if r.get("priceSafeForMatching") and is_price(r.get("price")):
+    if euro_price(r):
         rec["price"] = r["price"]
         if r.get("priceBasis"):
             rec["priceBasis"] = norm_space(r.get("priceBasis"))
@@ -692,8 +710,7 @@ for org, rs in sorted(by_org.items()):
     caveats = []
     if all(x.get("noPublishedIrishRoute") for x in rs):
         caveats.append("no-published-irish-route")
-    prices = [x["price"] for x in rs
-              if x.get("priceSafeForMatching") and is_price(x.get("price"))]
+    prices = [x["price"] for x in rs if euro_price(x)]
     rec = {
         "id": "sup-" + slug(org),
         "type": "supplier",
@@ -933,10 +950,10 @@ print("  G6  tier literals carried; per-corpus distributions identical "
 # a real price.
 safe_ids = {("prod-" + str(r.get("id") or r.get("productId")))
             for r in rows + ah_rows + wl_rows
-            if r.get("priceSafeForMatching") and is_price(r.get("price"))}
+            if euro_price(r)}
 for r in records:
     if r["type"] == "product" and "price" in r and r["id"] not in safe_ids:
-        die("G7 product %r carries a price but is not priceSafeForMatching" % r["id"])
+        die("G7 product %r carries a price but is not a price-safe EUR price" % r["id"])
 n_safe = sum(1 for r in records if r["type"] == "product" and "price" in r)
 print("  G7  price present only where priceSafeForMatching (%d)  OK" % n_safe)
 
@@ -950,6 +967,28 @@ if emitted != safe_ids:
     die("G7b price-safe products not carrying a price: %d missing %r / %d unexpected %r"
         % (len(safe_ids - emitted), missing, len(emitted - safe_ids), extra))
 print("  G7b every one of the %d price-safe products carries its price  OK" % len(safe_ids))
+
+# G7c CURRENCY, checked independently of euro_price(): Search formats every price as
+# euro, so no product price and no supplier range may come from a record whose own
+# currency is anything else. Read straight from the source rows.
+_src_cur = {("prod-" + str(r.get("id") or r.get("productId"))): r.get("currency")
+            for r in rows + ah_rows + wl_rows}
+_bad_cur = [r["id"] for r in records if r["type"] == "product" and "price" in r
+            and _src_cur.get(r["id"]) != "EUR"]
+if _bad_cur:
+    die("G7c a non-EUR price would be shown as euro: %r" % _bad_cur[:6])
+_eur_by_org = {}
+for r in rows + wl_rows:
+    if euro_price(r):
+        _eur_by_org.setdefault(norm_space(r.get("organisation")), []).append(r["price"])
+for r in records:
+    if r["type"] == "supplier" and "priceRange" in r:
+        got = _eur_by_org.get(r["name"]) or []
+        if not got or r["priceRange"] != [min(got), max(got)]:
+            die("G7c supplier %r price range is not its EUR prices: %r" % (r["id"], r["priceRange"]))
+_n_nonEUR = sum(1 for r in rows + ah_rows + wl_rows
+                if r.get("priceSafeForMatching") and is_price(r.get("price")) and r.get("currency") != "EUR")
+print("  G7c every price and supplier range is EUR; %d price-safe non-EUR prices carry no figure  OK" % _n_nonEUR)
 
 # G9 caveats
 src_cav = sum(1 for r in rows if r.get("noPublishedIrishRoute"))

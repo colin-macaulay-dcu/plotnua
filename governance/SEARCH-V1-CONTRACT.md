@@ -57,8 +57,10 @@ score, any rank, any Airtable record id.
 `tier` carries the literal `HIGH_CONFIDENCE` / `WITH_CAVEAT` string. Never derived,
 never rounded, never upgraded.
 
-`price` is emitted **only** where `priceSafeForMatching === true`. The other products
-carry no `price` key at all, so there is nothing to filter on or display wrongly.
+`price` is emitted **only** where `priceSafeForMatching === true` **and the source
+record's currency is EUR** (amendment A2). The other products carry no `price` key at
+all, so there is nothing to filter on or display wrongly. Every `price` and
+`priceRange` in the index is therefore a euro amount; the runtime formats them as euro.
 
 ### FEATURES — NEVER INDEXED IN V1
 
@@ -194,7 +196,8 @@ architecture is reconsidered. The corpus is never silently reduced.
 | G4 | Universe sha256 byte-identical across the build; recorded in the envelope |
 | G5 | No forbidden field present |
 | G6 | Every product carries its literal tier; none upgraded or dropped |
-| G7 | A `price` key exists only where `priceSafeForMatching === true` |
+| G7 | A `price` key exists only where `priceSafeForMatching === true` and the currency is EUR (A2) |
+| G7c | Checked independently of the builder's rule: no product `price` comes from a non-EUR record, and every supplier `priceRange` is exactly the min/max of that supplier's EUR prices (A2) |
 | G8 | **No imagery/asset/image-URL field in the index, and no runtime path that could render product or supplier imagery** |
 | G9 | `noPublishedIrishRoute` caveat present on every affected product and supplier |
 | G10 | Index <= 180 KB as a performance guard; no record dropped to achieve it |
@@ -339,6 +342,31 @@ links to all 13 public Discoveries. Search then enhances it.
 - `sync-discovery-makers.py` S7 and its test compose the same route.
 
 **Effect.** The index is 183,775 → 178,193 bytes (−5,582), leaving 6,127 bytes under the 180 KB guard.
+
+---
+
+## AMENDMENT A2 · EURO-ONLY PRICES (6 November 2026, Stage 3D-B1; PREPARED, founder approval pending)
+
+**Defect.** `search.js` formats every `price` as euro (`money()`) and the price intent
+("under €30,000") filters products on `price` and suppliers on `priceRange[0]`. The
+index carried no currency, and for the garden-room and Additional Home corpora the
+builder's rule was `priceSafeForMatching` alone, which is currency-blind. So 46
+garden-room prices recorded in GBP (43) or USD (3) were shown with a euro sign and
+matched euro filters, and 13 suppliers had a "from €…" range built from them. Example:
+Berko Pod Systems — The Aurora Garden Room, GBP 26,000, appeared as "€26,000" in
+"garden room under €30,000". The wellness corpus already applied the EUR rule
+(founder currency register, 22 Oct 2026).
+
+**Rule.** One builder predicate, `euro_price()`: price-safe **and** EUR. It decides the
+product `price`, the supplier `priceRange`, and G7/G7b. G7c re-checks the result
+directly against each source record's currency. No conversion, no exchange rate.
+
+**What does not change.** Every product keeps its record, name, organisation, type,
+tier and caveats, so it stays discoverable by text. Its currency and price stay in the
+universe, Your Plot and the Maker Explorer, which display them correctly. EUR prices,
+holds (NOOK, ECC, Rayco), ranking and the record schema are unchanged. A future
+amendment could add a currency field so Search can show "£26,000"; that would extend
+the closed schema and is deliberately not part of A2.
 
 ---
 
