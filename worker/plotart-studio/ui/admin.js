@@ -10,7 +10,7 @@
   async function api(method, path, body) {
     const r = await fetch(path, { method, headers: { 'X-Studio': '1', ...(body ? { 'Content-Type': 'application/json' } : {}) }, body: body ? JSON.stringify(body) : undefined, credentials: 'same-origin' });
     const j = await r.json().catch(() => ({}));
-    if (!r.ok || j.ok === false) throw new Error(j.error || 'That didn’t work.');
+    if (!r.ok || j.ok === false) { const e = new Error(j.error || 'That didn’t work.'); e.data = j; throw e; }
     return j;
   }
 
@@ -143,21 +143,22 @@
         <p class="st-muted">Publishing sends approved gallery content to plotnua.ie through the content-only pipeline. Nothing else on the website can change this way.${o.instant_autopublish ? ' Availability and removals publish automatically.' : ' Availability and removal updates wait here until automatic publishing is switched on.'}</p>
         ${o.queue.length ? `<ul class="st-works">${o.queue.map(q => `<li class="st-work" style="grid-template-columns:minmax(0,1fr) auto"><div><p class="st-work-t">${E(q.display_name)}</p>
           <p class="st-work-s" style="margin:0">Version ${q.version} · ${q.kind === 'instant' ? 'availability, removal or order' : q.kind === 'remove' ? 'remove the gallery' : 'approved changes'} · ${q.status === 'awaiting_founder' ? 'waiting for you' : E(q.status)}</p></div>
-          ${q.status === 'awaiting_founder' ? `<div class="st-row"><a class="st-btn st-btn--small" href="/admin/preview/v-${q.artist_id}-${q.version}/index.html" target="_blank" rel="noopener">Preview</a><button class="st-btn st-btn--solid st-btn--small" data-pub="${q.id}">Publish</button></div>` : '<span></span>'}</li>`).join('')}</ul>` : '<p class="st-muted">Nothing waiting.</p>'}
+          ${q.status === 'awaiting_founder' ? `<div class="st-row"><a class="st-btn st-btn--small" href="/admin/preview/v-${q.artist_id}-${q.version}/index.html" target="_blank" rel="noopener">Preview</a><button class="st-btn st-btn--solid st-btn--small" data-pub="${q.id}">Publish</button></div>` : '<span></span>'}
+          <p class="st-pubwarn" data-pubwarn role="alert" hidden></p></li>`).join('')}</ul>` : '<p class="st-muted">Nothing waiting.</p>'}
       </section>
       ${o.flags.length ? `<section class="st-card"><h2 class="st-flag">Rights check</h2><p class="st-muted">The same photograph appears in more than one artist’s Studio. Check before approving.</p>
         <ul class="st-list">${o.flags.map(f => `<li>${E(f.display_name)} · image ${E(f.id)} · fingerprint ${E(f.sha256.slice(0, 12))}…</li>`).join('')}</ul></section>` : ''}
       <section class="st-card"><h2>Enquiries</h2><p class="st-muted">Buyer enquiries go straight to the artist (Reply-To the buyer). This is the record of founding-period enquiries.</p>
         <div id="enq"><p class="st-muted">Loading…</p></div></section>
-      <section class="st-card"><h2>Artists</h2><div class="st-scroll"><table class="st-table"><thead><tr><th>Artist</th><th>Status</th><th>Works</th><th>To do</th><th></th></tr></thead><tbody>
+      <section class="st-card"><h2>Artists</h2><div class="st-scroll"><table class="st-table"><thead><tr><th>Artist</th><th>Status</th><th>Agreement</th><th>Works</th><th>To do</th><th></th></tr></thead><tbody>
         ${o.artists.map(a => `<tr><td><b style="color:var(--ivory)">${E(a.display_name)}</b>${a.founding ? ' <span class="pa-gcard-badge" style="display:inline-block">Founding</span>' : ''}<br><span class="st-muted">${E(a.email)}${a.application_ref ? ' · ' + E(a.application_ref) : ''}</span></td>
           <td>${a.account_status === 'suspended' ? '<span class="st-flag">Suspended</span>' : E(STATE[a.state])}${a.account_status === 'invited' ? '<br><span class="st-muted">Not signed in yet</span>' : ''}</td>
-          <td>${a.works}</td><td>${a.problems ? `<button class="st-btn st-btn--small st-todo-btn" data-ck="${a.id}" aria-expanded="false" aria-controls="ck-${a.id}">${a.problems} item${a.problems > 1 ? 's' : ''}</button>` : '✓'}</td>
+          <td>${agrCell(a)}</td><td>${a.works}</td><td>${a.problems ? `<button class="st-btn st-btn--small st-todo-btn" data-ck="${a.id}" aria-expanded="false" aria-controls="ck-${a.id}">${a.problems} item${a.problems > 1 ? 's' : ''}</button>` : '✓'}</td>
           <td class="st-row">${a.account_status === 'suspended' ? `<button class="st-btn st-btn--small" data-act="reactivate" data-id="${a.id}">Reactivate</button>` : `<button class="st-btn st-btn--small" data-act="suspend" data-id="${a.id}">Suspend</button>`}
           ${a.live_version ? `<button class="st-btn st-btn--small st-btn--danger" data-act="unpublish" data-id="${a.id}">Unpublish</button>` : ''}
           <button class="st-btn st-btn--small" data-email="${a.id}" aria-expanded="false" aria-controls="em-${a.id}">Change email</button></td></tr>
-          <tr id="ck-${a.id}" class="st-em-row" hidden><td colspan="5"><div class="st-ck-admin" data-ckbox="${a.id}"><p class="st-muted">Loading…</p></div></td></tr>
-          <tr id="em-${a.id}" class="st-em-row" hidden><td colspan="5"><form class="st-em" data-emform="${a.id}" novalidate>
+          <tr id="ck-${a.id}" class="st-em-row" hidden><td colspan="6"><div class="st-ck-admin" data-ckbox="${a.id}"><p class="st-muted">Loading…</p></div></td></tr>
+          <tr id="em-${a.id}" class="st-em-row" hidden><td colspan="6"><form class="st-em" data-emform="${a.id}" novalidate>
             <p class="st-em-h">Correct the sign-in email for <b>${E(a.display_name)}</b></p>
             <p class="st-muted st-em-now">Current address: <b>${E(a.email)}</b></p>
             <div class="st-two"><div class="st-f"><label for="em-n-${a.id}">New email address</label><input id="em-n-${a.id}" type="email" autocomplete="off" spellcheck="false" autocapitalize="off"></div>
@@ -165,7 +166,7 @@
             <label class="st-check st-em-ok"><input type="checkbox" data-emok style="accent-color:var(--terra);width:20px;height:20px"> I’ve checked this is the address the artist uses to sign in. The current address will stop working straight away.</label>
             <p class="st-muted st-em-note">Their gallery, artwork, Founding status and progress stay exactly as they are. No email is sent: let the artist know yourself.</p>
             <div class="st-row"><button type="submit" class="st-btn st-btn--solid st-btn--small">Save new email</button><button type="button" class="st-btn st-btn--small" data-emcancel="${a.id}">Cancel</button></div>
-            <p class="st-err" role="alert" data-emerr></p></form></td></tr>`).join('') || '<tr><td colspan="5" class="st-muted">No artists yet.</td></tr>'}
+            <p class="st-err" role="alert" data-emerr></p></form></td></tr>`).join('') || '<tr><td colspan="6" class="st-muted">No artists yet.</td></tr>'}
       </tbody></table></div></section>
       <section class="st-card"><h2>Invite a selected artist</h2><p class="st-muted">After they accept the Founding Artist Agreement (terms_accepted_at in Airtable), copy their name, email and reference from the application. The invitation email goes automatically when email is switched on.</p>
         <div class="st-two"><div>
@@ -181,7 +182,12 @@
     api('GET', '/api/admin/enquiries').then(r => { $('#enq').innerHTML = r.items.length ? `<div class="st-scroll"><table class="st-table"><thead><tr><th>Reference</th><th>Date</th><th>Artist</th><th>Artwork</th><th>Delivered</th></tr></thead><tbody>${r.items.slice(0, 30).map(e => `<tr><td>${E(e.reference)}</td><td>${when(e.created_at)}</td><td>${E(e.display_name)}</td><td>${E(e.artwork_title || 'General')}</td><td>${e.status === 'sent' ? '✓ emailed' : 'in Studio'}</td></tr>`).join('')}</tbody></table></div>` : '<p class="st-muted">None yet.</p>'; });
     app.querySelectorAll('[data-pub]').forEach(b => b.addEventListener('click', async () => {
       if (!b.dataset.sure) { b.dataset.sure = 1; b.textContent = 'Publish to plotnua.ie?'; return; }
-      await api('POST', `/api/admin/queue/${b.dataset.pub}/publish`); say('Sent to the publishing pipeline'); home();
+      const warn = b.closest('li').querySelector('[data-pubwarn]');
+      try { await api('POST', `/api/admin/queue/${b.dataset.pub}/publish`, b.dataset.force ? { confirm_without_agreement: true } : {}); say('Sent to the publishing pipeline'); home(); }
+      catch (e) {
+        warn.hidden = false; warn.textContent = e.message;
+        if (e.data && e.data.needs_confirmation) { b.dataset.force = 1; b.textContent = 'Publish anyway'; } else { b.disabled = true; }
+      }
     }));
     app.querySelectorAll('[data-act]').forEach(b => b.addEventListener('click', async () => {
       if (!b.dataset.sure) { b.dataset.sure = 1; b.textContent = b.textContent + '?'; return; }
@@ -362,12 +368,101 @@
     draw();
   }
 
+  /* ---- Founding Artist Agreement (development 6 Nov 2026): status, acceptance history, founding years, enquiry log */
+  const DOCNAME = { 'PA-FAA-2026-11': 'Founding Artist Agreement', 'PA-GPIL-2026-11': 'Image Licence', 'PA-GPIL-2026-10-29': 'Image Licence (earlier label)' };
+  const irishDay = d => d ? new Date(d + 'T12:00:00Z').toLocaleDateString('en-IE', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'Europe/Dublin' }) : '';
+  const irish = t => t ? new Date(t).toLocaleString('en-IE', { dateStyle: 'medium', timeStyle: 'short', timeZone: 'Europe/Dublin' }) : '';
+  function agrCell(a) {
+    const g = a.agreement;
+    if (!g || !g.installed) return '<span class="st-muted">Not installed</span>';
+    if (g.accepted) return `<span class="st-pill st-pill--ok">Accepted</span><br><span class="st-muted">${E(irish(g.accepted_at))}</span>`;
+    if (g.legacy) return `<span class="st-pill st-pill--warn">Earlier licence only</span><br><span class="st-muted">${E(g.legacy.version)}</span>`;
+    return '<span class="st-pill">Not accepted</span>';
+  }
+  async function agreements() {
+    const o = await api('GET', '/api/admin/overview');
+    let L = await api('GET', '/api/admin/enquiry-log');
+    const fy = g => g && g.founding_year ? `${irishDay(g.founding_year.start)} – ${irishDay(g.founding_year.end)}` : g && g.founding ? 'Starts at first publication' : '—';
+    const waiting = o.artists.filter(a => a.agreement && a.agreement.installed && !a.agreement.accepted);
+    function drawLog() {
+      const el = $('#elog');
+      if (!L.installed) { el.innerHTML = '<p class="st-muted">The enquiry log is installed with migration 0005.</p>'; return; }
+      el.innerHTML = `<div class="st-scroll"><table class="st-table"><thead><tr><th>Reference</th><th>Introduced</th><th>Artist</th><th>Artwork</th><th>Route</th><th>Founding</th><th>Recorded</th><th></th></tr></thead><tbody>
+        ${L.items.map(i => `<tr><td>${E(i.reference)}${i.corrects ? `<br><span class="st-muted">corrects ${E((L.items.find(x => x.id === i.corrects) || {}).reference || i.corrects)}</span>` : ''}</td><td>${E(irishDay(new Date(i.introduced_at).toLocaleDateString('en-CA', { timeZone: 'Europe/Dublin' })))}</td>
+          <td>${E(i.display_name)}</td><td>${E(i.artwork_title || 'General')}</td><td>${i.route === 'relay' ? 'Online form' : 'Email'}</td>
+          <td>${i.founding ? '<span class="st-pill st-pill--ok">Founding</span>' : '<span class="st-pill">After founding year</span>'}</td>
+          <td><span class="st-muted">${E(irish(i.logged_at))}${i.late_entry ? '<br><b>late entry</b>' : ''}${i.note ? `<br>“${E(i.note)}”` : ''}</span></td>
+          <td>${i.route === 'email' ? `<button class="st-btn st-btn--small" data-fix="${E(i.id)}">Correct</button>` : ''}</td></tr>`).join('') || '<tr><td colspan="8" class="st-muted">Nothing logged yet.</td></tr>'}</tbody></table></div>`;
+      el.querySelectorAll('[data-fix]').forEach(b => b.addEventListener('click', () => {
+        const i = L.items.find(x => x.id === b.dataset.fix);
+        $('#lg-corrects').value = i.id; $('#lg-artist').value = i.artist_id; works(); $('#lg-work').value = i.artwork_id || '';
+        $('#lg-fixnote').hidden = false; $('#lg-fixnote').textContent = `Correcting ${i.reference}: the original stays on record and this new entry is linked to it.`;
+        $('#lg-form').scrollIntoView({ block: 'start' }); $('#lg-day').focus();
+      }));
+    }
+    function works() {
+      const a = L.artists.find(x => x.id === $('#lg-artist').value);
+      $('#lg-work').innerHTML = '<option value="">General enquiry (no particular work)</option>' + (a ? a.works.map(w => `<option value="${E(w.id)}">${E(w.title)}</option>`).join('') : '');
+      $('#lg-fy').textContent = a ? (a.founding ? (a.founding_year ? `Founding year: ${irishDay(a.founding_year.start)} to ${irishDay(a.founding_year.end)}.` : 'Not published yet: an enquiry now counts as a Founding Enquiry.') : 'Not a Founding Artist.') : '';
+    }
+    app.innerHTML = `<h1 class="st-h1">Agreements</h1>
+      <p class="st-sub">Founding Artist Agreement ${E('PA-FAA-2026-11')} and Image Licence ${E('PA-GPIL-2026-11')}: who has accepted, each artist’s founding year, and the enquiry log. Acceptance records can’t be edited or deleted.</p>
+      ${!o.agreement_installed ? '<div class="st-card" role="alert"><p style="margin:0"><b>Not installed yet.</b> Artists can accept once migration 0005 has been run. Everything else in Studio works as before.</p></div>' : ''}
+      ${waiting.length ? `<div class="st-card st-agr-warn"><p style="margin:0"><b>${waiting.length} artist${waiting.length === 1 ? ' hasn’t' : 's haven’t'} accepted yet.</b> Their galleries stay live and they can keep editing. A first publication is blocked until the artist accepts; for an artist who is already published, Publish asks you to confirm.</p></div>` : ''}
+      <section class="st-card"><h2>Artists</h2><div class="st-scroll"><table class="st-table"><thead><tr><th>Artist</th><th>Agreement</th><th>Founding year</th><th></th></tr></thead><tbody>
+        ${o.artists.map(a => `<tr><td><b style="color:var(--ivory)">${E(a.display_name)}</b>${a.founding ? ' <span class="pa-gcard-badge" style="display:inline-block">Founding</span>' : ''}${a.founding_number ? `<br><span class="st-muted">No. ${a.founding_number}</span>` : ''}</td>
+          <td>${agrCell(a)}</td><td>${E(fy(a.agreement))}</td><td><button class="st-btn st-btn--small" data-hist="${a.id}" aria-expanded="false" aria-controls="hi-${a.id}">History</button></td></tr>
+          <tr id="hi-${a.id}" class="st-em-row" hidden><td colspan="4"><div data-hibox="${a.id}"><p class="st-muted">Loading…</p></div></td></tr>`).join('') || '<tr><td colspan="4" class="st-muted">No artists yet.</td></tr>'}
+      </tbody></table></div></section>
+      <section class="st-card" id="lg-form" aria-labelledby="lg-h"><h2 id="lg-h">Log enquiry</h2>
+        <p class="st-muted">Record an enquiry PlotArt introduced to an artist <b>by email</b>. Enquiries through the online form are logged automatically. Record only real enquiries, with the date you introduced them; an entry more than 7 days old is marked as a late entry. Nothing here can be edited or deleted: use Correct to add a linked correction.</p>
+        <input type="hidden" id="lg-corrects"><p class="st-msg" id="lg-fixnote" hidden></p>
+        <div class="st-two"><div>
+          <div class="st-f"><label for="lg-artist">Artist</label><select id="lg-artist"><option value="">Choose…</option>${L.artists.map(a => `<option value="${E(a.id)}">${E(a.display_name)}</option>`).join('')}</select><p class="st-hint" id="lg-fy"></p></div>
+          <div class="st-f"><label for="lg-work">Artwork (optional)</label><select id="lg-work"><option value="">General enquiry (no particular work)</option></select></div>
+          <div class="st-f"><label for="lg-day">Date PlotArt introduced it (Irish date)</label><input id="lg-day" type="date" value="${E(L.today || '')}" max="${E(L.today || '')}" min="${E(L.floor || '')}"></div>
+        </div><div>
+          <div class="st-f"><label for="lg-note">Note (optional)</label><textarea id="lg-note" maxlength="280" placeholder="e.g. Forwarded from the hello@ inbox"></textarea>
+            <p class="st-hint"><b>Never enter the buyer’s name, email address or phone number.</b> Up to 280 characters.</p></div>
+          <label class="st-check"><input type="checkbox" id="lg-ok" style="accent-color:var(--terra);width:20px;height:20px"> PlotArt introduced this enquiry to the artist on this date.</label>
+          <div class="st-actions"><button class="st-btn st-btn--solid" id="lg-go">Log enquiry</button></div><p class="st-err" id="lg-err" role="alert"></p>
+        </div></div></section>
+      <section class="st-card"><h2>Enquiry log</h2><p class="st-muted">Reference, date, artist and artwork only: no buyer details. Kept for the life of the agreement and six years afterwards. Buyer names, emails and messages from the online form are deleted after 24 months as before.</p><div id="elog"></div></section>`;
+    drawLog();
+    $('#lg-artist').addEventListener('change', works);
+    $('#lg-go').addEventListener('click', async () => {
+      $('#lg-err').textContent = '';
+      try {
+        const corrects = $('#lg-corrects').value || null;
+        L = await api('POST', '/api/admin/enquiry-log', { artist_id: $('#lg-artist').value, artwork_id: $('#lg-work').value || null, introduced_on: $('#lg-day').value, note: $('#lg-note').value || null, confirm: $('#lg-ok').checked, corrects });
+        say(`Logged ${L.reference}${L.founding ? ' · Founding Enquiry' : ''}${L.late_entry ? ' · late entry' : ''}`);
+        $('#lg-note').value = ''; $('#lg-ok').checked = false; $('#lg-corrects').value = ''; $('#lg-fixnote').hidden = true; drawLog();
+      } catch (e) { $('#lg-err').textContent = e.message; }
+    });
+    app.querySelectorAll('[data-hist]').forEach(b => b.addEventListener('click', async () => {
+      const row = $(`#hi-${b.dataset.hist}`), open = row.hidden; row.hidden = !open; b.setAttribute('aria-expanded', String(open));
+      if (!open || row.dataset.loaded) return;
+      const box = $(`[data-hibox="${b.dataset.hist}"]`, row);
+      try {
+        const r = await api('GET', `/api/admin/artists/${b.dataset.hist}/agreement`); row.dataset.loaded = '1';
+        const h = r.agreement.history;
+        box.innerHTML = `<p class="st-em-h">${E(r.artist.display_name)} · first published ${r.artist.first_published_at ? E(irish(r.artist.first_published_at)) : 'not yet'}${r.agreement.founding_year ? ` · founding year ${E(irishDay(r.agreement.founding_year.start))} to ${E(irishDay(r.agreement.founding_year.end))}` : ''}</p>
+          ${h.length ? `<div class="st-scroll"><table class="st-table"><thead><tr><th>Accepted (Irish time)</th><th>Document</th><th>How</th><th>Recorded details</th><th>Copy</th></tr></thead><tbody>${h.map(x => `<tr>
+            <td>${E(irish(x.accepted_at))}</td><td>${E(DOCNAME[x.doc_id] || x.doc_id)}<br><span class="st-muted">${E(x.doc_id)}</span></td>
+            <td>${x.method === 'studio_checkbox' ? 'Ticked in Studio' : 'Carried over from the earlier Studio record (label only)'}</td>
+            <td><span class="st-muted">${x.doc_sha256 ? `Fingerprint ${E(x.doc_sha256.slice(0, 16))}…<br>` : 'No fixed text (label only)<br>'}${x.account_email ? E(x.account_email) + '<br>' : ''}${E(x.display_name || '')}${x.legal_name ? ` · legal name ${E(x.legal_name)}` : ''}</span></td>
+            <td>${x.doc_sha256 ? `<a class="st-btn st-btn--small" href="/agreements/${E(x.doc_id)}.pdf" download>PDF</a>` : '—'}</td></tr>`).join('')}</tbody></table></div>` : '<p class="st-muted">No acceptance recorded.</p>'}
+          <p class="st-muted" style="margin:10px 0 0">${r.enquiries.length} logged enquir${r.enquiries.length === 1 ? 'y' : 'ies'}, ${r.enquiries.filter(e => e.founding).length} Founding.</p>`;
+      } catch (e) { box.innerHTML = `<p class="st-err">${E(e.message)}</p>`; }
+    }));
+  }
+
   async function render() {
     const h = location.hash || '#/', path = location.pathname.replace(/\/$/, '');
     const am = path.match(/^\/admin\/applications\/(F25-\d{6}-[0-9A-F]{6})$/);
-    document.querySelectorAll('.st-tabs a').forEach(a => a.toggleAttribute('aria-current', a.dataset.t === (path.startsWith('/admin/applications') ? 'apps' : path === '/admin/gallery' ? 'order' : path === '/admin/ideas' ? 'ideas' : path === '/admin/garden' ? 'garden' : 'desk')));
+    document.querySelectorAll('.st-tabs a').forEach(a => a.toggleAttribute('aria-current', a.dataset.t === (path.startsWith('/admin/applications') ? 'apps' : path === '/admin/gallery' ? 'order' : path === '/admin/ideas' ? 'ideas' : path === '/admin/garden' ? 'garden' : path === '/admin/agreements' ? 'agree' : 'desk')));
     document.querySelectorAll('.st-tabs a[aria-current]').forEach(a => a.setAttribute('aria-current', 'page'));
-    try { if (am) await appView(am[1]); else if (path === '/admin/gallery') await order(); else if (path === '/admin/ideas') await ideas(); else if (path === '/admin/garden') await garden(); else if (path === '/admin/applications') await apps(); else if (h.startsWith('#/review/')) await review(h.slice(9)); else await home(); window.scrollTo(0, 0); }
+    try { if (am) await appView(am[1]); else if (path === '/admin/gallery') await order(); else if (path === '/admin/ideas') await ideas(); else if (path === '/admin/garden') await garden(); else if (path === '/admin/agreements') await agreements(); else if (path === '/admin/applications') await apps(); else if (h.startsWith('#/review/')) await review(h.slice(9)); else await home(); window.scrollTo(0, 0); }
     catch (e) { app.innerHTML = `<div class="st-card"><h2>Something went wrong</h2><p class="st-muted">${E(e.message)}</p></div>`; }
   }
   addEventListener('hashchange', render);

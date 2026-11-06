@@ -5,6 +5,7 @@
 // check and "another release moving main" are supplied by stand-ins. Synthetic artists only; local Studio (Miniflare);
 // nothing leaves this machine.            node test/prove-publish-release.mjs --release DIR [--shots DIR]
 // Scenarios A–H (founder brief 5 Nov 2026), then E2E: a gallery shaped like the one that failed in production.
+import { acceptAgreement } from './agree.mjs';
 import { start, token, FOUNDER, PIPELINE_TOKEN } from './local.mjs';
 import { execFileSync, execSync, spawnSync, spawn } from 'node:child_process';
 import { mkdtempSync, readFileSync, writeFileSync, chmodSync, mkdirSync, existsSync } from 'node:fs';
@@ -89,6 +90,7 @@ const ready = async (k, name, email, works) => {
     const u = await call('PUT', `/api/artworks/${id2}/images?role=main`, email, undefined, img(w.img));
     await call('PATCH', `/api/images/${u.j.id}`, email, { alt: `${w.title}: a test painting`, photographer: w.other ? 'other_with_permission' : 'self', ...(w.other ? { photo_credit: 'Sam Synthetic' } : {}) });
   }
+  await acceptAgreement(mf, url, email);
   const sub = await call('POST', '/api/submit', email, { accept_licence: true });
   if (sub.s !== 200) throw new Error('submit refused: ' + JSON.stringify(sub.j));
   const sid = (await call('GET', '/api/admin/overview', FOUNDER)).j.submissions.find(s => s.artist_id === id).id;

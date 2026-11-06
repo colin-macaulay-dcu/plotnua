@@ -2,6 +2,8 @@
    The validation mirrors atlas-tools/plotart_gallery.py (Phase 1) so an export the Studio accepts is one the
    publishing pipeline accepts; test/prove-studio.mjs runs every export through the Python ingest to prove it. */
 
+// The licence label Studio recorded from 29 Oct 2026 until the Founding Artist Agreement (PA-FAA-2026-11, which includes
+// PA-GPIL-2026-11). Kept for existing records only; acceptance of current texts is in agreement_acceptances (agreement.js).
 export const LICENCE_VERSION = 'PA-GPIL-2026-10-29';
 export const MAX_BYTES = 30 * 1024 * 1024;
 export const MAX_PREVIEW_BYTES = 4 * 1024 * 1024;
@@ -213,7 +215,8 @@ export function checklist(snap, { founding, firstPublication = true, licenceOk, 
     need(bad, 'a photograph that passes the checks', 'photo_blocked', bad);
     if (q.length) p.push({ area: 'work', field: codes[0], needs: codes, work_id: w.id, title: w.title || null, image_id: image, text: `${n} needs ${q.join(', ')}` });
   }
-  if (!licenceOk) p.push({ area: 'licence', field: 'licence', text: 'Accept the Gallery Publication and Image Licence' });
+  // Founding Artist Agreement (development 6 Nov 2026): a full submission needs the current texts accepted in Studio first.
+  if (!licenceOk) p.push({ area: 'agreement', field: 'agreement', text: founding ? 'Read and accept the Founding Artist Agreement and the Gallery Publication and Image Licence' : 'Read and accept the Gallery Publication and Image Licence' });
   return p;
 }
 export function readiness(snap, opts) { return checklist(snap, opts).map(i => i.text); }

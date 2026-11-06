@@ -2,6 +2,7 @@
 //   node test/prove-journey.mjs --release RELEASE_TREE
 // A temporary git copy of RELEASE_TREE stands in for main. The content pipeline (atlas-tools/plotart-gallery-publish.py)
 // runs in --simulate mode against it: it commits and runs every guard exactly as in production, but does not push.
+import { acceptAgreement } from './agree.mjs';
 import { start, token, FOUNDER, PIPELINE_TOKEN } from './local.mjs';
 import { execFileSync, spawnSync, execSync } from 'node:child_process';
 import { mkdtempSync, readFileSync, writeFileSync, existsSync, readdirSync } from 'node:fs';
@@ -97,8 +98,9 @@ for (let i = 1; i <= 10; i++) {
   const up = await call('PUT', `/api/artworks/${id}/images?role=main`, A, undefined, readFileSync(join(TMP, `j${i}.jpg`)));
   await call('PATCH', `/api/images/${up.j.id}`, A, { alt: `Test painting ${i}: grey limestone shapes`, photographer: 'self' });
 }
+const accA = await acceptAgreement(mf, url, A);
 r = await call('POST', '/api/submit', A, { accept_licence: true, note: 'Ready when you are.' });
-check('J3 the artist submits ten complete works and accepts the licence', r.s === 200 && r.j.tier === 'full');
+check('J3 the artist accepts the Founding Artist Agreement (one tick, both documents) and submits ten complete works', accA.s === 200 && r.s === 200 && r.j.tier === 'full');
 const sid = (await call('GET', '/api/admin/overview', FOUNDER)).j.submissions[0].id;
 await call('POST', `/api/admin/submissions/${sid}/decision`, FOUNDER, { decision: 'approve', message: 'Beautiful. Welcome to PlotArt.' });
 const q1 = (await call('GET', '/api/admin/overview', FOUNDER)).j.queue[0];
@@ -214,6 +216,7 @@ await call('PUT', `/api/artworks/${ow}`, B, { title: 'Atlantic', year: 2026, med
   description: 'Test painting: the Atlantic in winter light.' });
 const oup = await call('PUT', `/api/artworks/${ow}/images?role=main`, B, undefined, readFileSync(join(TMP, 'j11.jpg')));
 await call('PATCH', `/api/images/${oup.j.id}`, B, { alt: 'Test painting: a grey-blue sea under a low sky', photographer: 'self' });
+await acceptAgreement(mf, url, B);
 r = await call('GET', '/api/me', B);
 check('S1 a Founding Artist with ONE complete artwork has nothing blocking submission (no minimum)', r.j.artist.founding && r.j.status.problems.length === 0 && r.j.status.counts.works === 1 && r.j.status.counts.min === undefined, JSON.stringify(r.j.status.problems));
 r = await call('POST', '/api/submit', B, { accept_licence: true });
