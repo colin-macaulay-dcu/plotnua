@@ -23,8 +23,9 @@ board = (ROOT / "borrowed-garden-board.html").read_text(encoding="utf-8")
 disc = (ROOT / "discovery-the-borrowed-garden.html").read_text(encoding="utf-8")
 
 ok(priv.count(V.MARKER) == 1 and "PLOTNUA-IDEA-BOARD-PRIVACY-V9" in priv, "V1 V10 must be applied once, on top of V9")
+import privacy_v11_layer as V11  # noqa: E402  (V11, 6 Nov 2026, may sit on top of V10: V10 is checked beneath it)
 try:
-    ok(V.apply_v10(V.without_v10(priv)) == priv, "V1 V10 is not exactly reversible")
+    ok(V.apply_v10(V.without_v10(priv)) == V11.without_v11(priv), "V1 V10 is not exactly reversible")
 except ValueError as e:
     bad.append("V1 " + str(e))
 sub = priv[priv.find('id="borrowed-garden-noticeboard"'):]

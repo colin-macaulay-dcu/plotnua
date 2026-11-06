@@ -65,6 +65,8 @@ def apply_v10(text: str) -> str:
 def without_v10(text: str) -> str:
     """The exact page beneath V10. A page without V10 passes through untouched; a page that carries the V10 marker but
     not exactly the governed V10 text raises."""
+    from privacy_v11_layer import without_v11       # V11 (PlotArt agreement records, prepared 6 Nov 2026) sits on top of V10: take it off first
+    text = without_v11(text)
     if MARKER not in text:
         return text
     for _, new in PAIRS:
