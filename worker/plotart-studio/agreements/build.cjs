@@ -6,12 +6,17 @@
      issued/<ID>.pdf   the download PlotArt Studio serves (and fingerprints), made from the .docx by LibreOffice
      issued/fingerprints.json   SHA-256 of each served file
    Run ONLY when a text changes (it needs the docx package and LibreOffice):  node agreements/build.cjs
-   A changed text is a NEW identifier, never a rebuild of an existing one: once an identifier has been accepted by
-   anyone, its files must never change. build-assets.mjs refuses to bundle a file whose fingerprint does not match. */
+   A changed text is a NEW identifier, never a rebuild of an existing one, once an identifier has been accepted by anyone:
+   its files must never change. (PA-GPIL-2026-11 clause 6.4 gained one sentence on 6 Nov 2026, founder decision W1, before
+   anyone had accepted it, so it keeps its identifier.) build-assets.mjs refuses to bundle a file whose fingerprint does not match. */
 const fs = require('fs'), path = require('path'), crypto = require('crypto'), { execFileSync } = require('child_process');
 const HERE = __dirname, OUT = path.join(HERE, 'issued');
 const { build } = require('./source/docx.cjs');
-const DOCS = [require('./source/PA-FAA-2026-11.cjs'), require('./source/PA-GPIL-2026-11.cjs')];
+const ALL = [require('./source/PA-FAA-2026-11.cjs'), require('./source/PA-GPIL-2026-11.cjs')];
+// node agreements/build.cjs [ID ...]: rebuild only the named documents; every other document's files and fingerprints are
+// kept byte for byte (a PDF rebuilt from unchanged text would still get new bytes, so it is never rebuilt needlessly).
+const ONLY = process.argv.slice(2);
+const DOCS = ONLY.length ? ALL.filter(d => ONLY.includes(d.id)) : ALL;
 const DATE = '6 November 2026';
 
 const esc = s => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
@@ -59,7 +64,8 @@ ${out.join('\n')}
 
 (async () => {
   const sha = f => crypto.createHash('sha256').update(fs.readFileSync(f)).digest('hex');
-  const prints = { note: 'SHA-256 of the exact files PlotArt Studio serves. Changing any file needs a new identifier.', documents: {} };
+  const prev = fs.existsSync(path.join(OUT, 'fingerprints.json')) ? JSON.parse(fs.readFileSync(path.join(OUT, 'fingerprints.json'), 'utf8')).documents : {};
+  const prints = { note: 'SHA-256 of the exact files PlotArt Studio serves. Once anyone has accepted an identifier, changing any of its files needs a new identifier.', documents: { ...prev } };
   for (const d of DOCS) {
     const issue = { ...d, status: null, sub: `Identifier ${d.id}  ·  Text of ${DATE}` };
     fs.writeFileSync(path.join(OUT, `${d.id}.html`), html(issue));
