@@ -6,6 +6,7 @@ import { createRequire } from 'node:module';
 import { generateKeyPairSync, createSign, randomUUID } from 'node:crypto';
 import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
+import { statements } from './sql.mjs';
 const require = createRequire(process.env.MINIFLARE_FROM || '/tmp/claude-0/studio-tools/package.json');
 const { Miniflare } = require('miniflare');
 
@@ -38,7 +39,7 @@ export async function start({ port, env = {}, enquiry = null, ideas = null, gard
     bindings: { ENVIRONMENT: 'local', ORIGIN: 'https://plotnua.ie', GARDEN_ENABLED: 'true', ...garden } });   // Borrowed Garden noticeboard intake (4 Nov 2026)
   const mf = new Miniflare({ workers, ...(port ? { port, host: '127.0.0.1' } : {}) });
   const db = await mf.getD1Database('DB', 'studio');
-  for (const stmt of readFileSync(HERE + 'schema.sql', 'utf8').replace(/--[^\n]*/g, '').split(';').map(s => s.trim()).filter(Boolean)) await db.prepare(stmt).run();
+  for (const stmt of statements(readFileSync(HERE + 'schema.sql', 'utf8'))) await db.prepare(stmt).run();   // triggers kept whole (migration 0005)
   await db.prepare('CREATE TABLE IF NOT EXISTS mail_capture (id INTEGER PRIMARY KEY AUTOINCREMENT, at TEXT, to_addr TEXT, reply_to TEXT, subject TEXT, body TEXT)').run();   // tests only
   return { mf, db, url: (await mf.ready).toString().replace(/\/$/, ''), enquiryWorker: enquiry ? await mf.getWorker('enquiry') : null, ideasWorker: ideas ? await mf.getWorker('ideas') : null, gardenWorker: garden ? await mf.getWorker('garden') : null };
 }

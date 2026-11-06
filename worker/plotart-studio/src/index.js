@@ -10,6 +10,7 @@
    with the X-Studio header. Images are private (R2) and served only to their artist and the founder. */
 import { verifyAccess, who } from './auth.js';
 import * as L from './lib.js';
+import * as AG from './agreement.js';
 import { artistBody, artworkBody, previewPage, shown } from './render.js';
 import * as A from './assets.js';
 import { send } from './mailer.js';
@@ -74,8 +75,11 @@ async function status(env, artist) {
   const last = await one(env, "SELECT id, status, founder_message, decided_at FROM submissions WHERE artist_id = ? AND status IN ('changes_requested','declined','approved') ORDER BY decided_at DESC LIMIT 1", artist.id);
   const queue = await all(env, "SELECT id, version, kind, status, updated_at FROM publish_queue WHERE artist_id = ? AND status IN ('awaiting_founder','ready','exporting') ORDER BY version", artist.id);
   const live = await liveVersion(env, artist.id);
-  const licenceOk = d.artist.licence_version === L.LICENCE_VERSION;
-  const list = L.checklist(snap, { founding: !!d.artist.founding, firstPublication: !lv, licenceOk: true, imageBlocks: blocked(d.images) });
+  const ag = await agreementState(env, d.artist);
+  const unsubmittedTier = L.tierOf(cs.filter(c => c.tier !== 'instant'));
+  // the agreement item appears only when it is needed now: a first publication, or full-review changes waiting to be submitted
+  const needAgreement = !ag.accepted && (!lv || unsubmittedTier === 'full');
+  const list = L.checklist(snap, { founding: !!d.artist.founding, firstPublication: !lv, licenceOk: !needAgreement, imageBlocks: blocked(d.images) });
   const problems = list.map(i => i.text);
   let state;
   if (pending) state = 'in_review';
@@ -87,9 +91,108 @@ async function status(env, artist) {
   return {
     state, live_version: live, latest_version: lv ? lv.version : 0, pending, last_decision: last, queue,
     changes: cs, unsubmitted: cs.filter(c => c.tier !== 'instant'), tier: L.tierOf(cs.filter(c => c.tier !== 'instant')),
-    problems, checklist: list, licence_ok: licenceOk, licence_version: L.LICENCE_VERSION,
+    problems, checklist: list, licence_ok: ag.accepted, licence_version: ag.licence ? ag.licence.version : null,
+    agreement: agreementSummary(ag),
     counts: { works: snap.works.length, archived: d.works.filter(w => w.archived).length },
   };
+}
+
+/* ---------------------------------------------------------------- Founding Artist Agreement (development 6 Nov 2026)
+   The texts are bundled (assets.js, fingerprint-checked at build). They can be accepted only once migration 0005 has
+   installed the same fingerprints in agreement_documents; until then Studio works exactly as before for everything else. */
+async function agreementDocs(env) {
+  try { return await all(env, 'SELECT doc_id, kind, title, text_status, html_sha256, pdf_sha256, effective_at FROM agreement_documents ORDER BY effective_at, doc_id'); }
+  catch { return null; }   // migration 0005 not applied
+}
+async function agreementState(env, artist) {
+  const docs = await agreementDocs(env);
+  const req = AG.required(artist);
+  const installed = !!docs && req.every(id => { const r = docs.find(d => d.doc_id === id), b = AG.doc(id);
+    return r && b && r.text_status === 'fixed' && r.html_sha256 === b.html_sha256 && r.pdf_sha256 === b.pdf_sha256; });
+  const rows = docs ? await all(env, 'SELECT * FROM agreement_acceptances WHERE artist_id = ? ORDER BY accepted_at, id', artist.id) : [];
+  const current = id => rows.filter(r => r.doc_id === id && r.method === 'studio_checkbox' && AG.doc(id) && r.doc_sha256 === AG.doc(id).html_sha256).pop();
+  const accepted = installed && req.every(id => current(id));
+  const last = accepted ? current(req[0]) : null;
+  const newest = rows.filter(r => r.method === 'studio_checkbox' && r.doc_id.startsWith('PA-GPIL-')).pop();
+  return {
+    installed, required: req, accepted, accepted_at: last ? last.accepted_at : null, event_id: last ? last.event_id : null, legal_name: last ? last.legal_name : null,
+    statement: AG.statementFor(artist), history: rows,
+    legacy: artist.licence_version && artist.licence_accepted_at ? { version: artist.licence_version, accepted_at: artist.licence_accepted_at, migrated: rows.some(r => r.method === 'migrated_from_artists_table' && r.doc_id === artist.licence_version) } : null,
+    // the licence the publishing pipeline carries: the newest Studio acceptance, else the label recorded before 0005
+    licence: newest ? { version: newest.doc_id, accepted_at: newest.accepted_at } : artist.licence_version ? { version: artist.licence_version, accepted_at: artist.licence_accepted_at } : null,
+    founding_year: artist.founding ? AG.foundingYear(artist.first_published_at) : null,
+    first_published_at: artist.first_published_at || null, founding: !!artist.founding,
+  };
+}
+const agreementSummary = ag => ({ installed: ag.installed, required: ag.required, accepted: ag.accepted, accepted_at: ag.accepted_at, legal_name_given: !!ag.legal_name,
+  statement: ag.statement, legacy: ag.legacy, licence: ag.licence, founding_year: ag.founding_year, first_published_at: ag.first_published_at, founding: ag.founding,
+  status: ag.accepted ? 'accepted' : ag.legacy ? 'legacy_licence_only' : 'not_accepted' });
+
+async function acceptAgreement(env, artist, body) {
+  const a = await one(env, 'SELECT * FROM artists WHERE id=?', artist.id);
+  const ag = await agreementState(env, a);
+  if (!ag.installed) throw new Bad('The agreement can’t be accepted just yet. Please try again later, or email hello@plotnua.ie.', 503);
+  if (ag.accepted) throw new Bad('You have already accepted these documents.', 409);
+  if (body.accept !== true) throw new Bad('Tick the box to accept.');
+  const shown = body.documents && typeof body.documents === 'object' ? body.documents : {};
+  if (Object.keys(shown).length !== ag.required.length || ag.required.some(id => shown[id] !== AG.doc(id).html_sha256) || body.statement !== ag.statement)
+    throw new Bad('The documents have changed since you opened this page. Please reload it and read them again.', 409);
+  const legal = body.legal_name === undefined || body.legal_name === null || String(body.legal_name).trim() === '' ? null : L.text(body.legal_name, 2, 120, 'Legal name');
+  // an earlier licence acceptance must already be held in the permanent record before anything new is added beside it
+  if (ag.legacy && !ag.legacy.migrated) throw new Bad('The agreement can’t be accepted just yet. Please try again later, or email hello@plotnua.ie.', 503);
+  const event = rid('evt'), at = now();
+  await env.DB.batch(ag.required.map(id => env.DB.prepare(`INSERT INTO agreement_acceptances (id, event_id, artist_id, doc_id, doc_sha256, pdf_sha256, accepted_at,
+      account_email, display_name, legal_name, method, statement, note, created_at) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)`)
+    .bind(rid('acc'), event, a.id, id, AG.doc(id).html_sha256, AG.doc(id).pdf_sha256, at, artist.email, a.display_name, legal, 'studio_checkbox', ag.statement, null, at)));
+  await audit(env, artist.email, 'artist', 'agreement_accepted', a.id, { event, documents: ag.required, legal_name_given: !!legal });
+  return { event_id: event, accepted_at: at, documents: ag.required };
+}
+
+/* ---------------------------------------------------------------- enquiry log (founder; agreement 5.4)
+   Relay enquiries are logged by the relay itself (enquiry.js). "Log enquiry" records an enquiry PlotArt introduced by
+   email: artist, optional artwork, the Irish date it was introduced, an optional short note. Never buyer contact details.
+   Nothing is edited or deleted: a correction is a new row that points at the row it corrects. */
+const ENQ_FLOOR = '2026-10-01';      // PlotArt was not introducing enquiries before October 2026
+async function enquiryLog(env) {
+  if (!(await agreementDocs(env))) return { installed: false, items: [], artists: [] };
+  const items = await all(env, `SELECT l.*, a.display_name, w.title AS artwork_title FROM enquiry_log l JOIN artists a ON a.id = l.artist_id
+    LEFT JOIN artworks w ON w.id = l.artwork_id ORDER BY l.introduced_at DESC, l.logged_at DESC LIMIT 500`);
+  const artists = await all(env, "SELECT id, display_name, founding, first_published_at FROM artists WHERE account_status <> 'ended' ORDER BY display_name");
+  const works = await all(env, 'SELECT id, artist_id, title FROM artworks WHERE title IS NOT NULL ORDER BY artist_id, ord');
+  return { installed: true, today: AG.dublinToday(), floor: ENQ_FLOOR, late_after_days: 7,
+    items: items.map(i => ({ ...i, logged_by: i.logged_by === 'relay' || i.logged_by.startsWith('migration') ? i.logged_by : 'founder' })),
+    artists: artists.map(a => ({ id: a.id, display_name: a.display_name, founding: !!a.founding, founding_year: a.founding ? AG.foundingYear(a.first_published_at) : null,
+      works: works.filter(w => w.artist_id === a.id).map(w => ({ id: w.id, title: w.title })) })) };
+}
+async function logEnquiry(env, founder, b) {
+  if (!(await agreementDocs(env))) throw new Bad('The enquiry log isn’t installed yet (migration 0005).', 503);
+  const a = await one(env, 'SELECT * FROM artists WHERE id=?', String(b.artist_id || ''));
+  if (!a) throw new Bad('Choose the artist');
+  let work = null;
+  if (b.artwork_id) { work = await one(env, 'SELECT id, title FROM artworks WHERE id=? AND artist_id=?', String(b.artwork_id), a.id); if (!work) throw new Bad('That artwork isn’t one of this artist’s'); }
+  const day = String(b.introduced_on || '');
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(day) || AG.addDays(day, 0) !== day) throw new Bad('Enter the date the enquiry was introduced');
+  const today = AG.dublinToday();
+  if (day > today) throw new Bad('The date can’t be in the future');
+  if (day < ENQ_FLOOR) throw new Bad('PlotArt wasn’t introducing enquiries before October 2026: check the date');
+  let note = null;
+  if (b.note !== undefined && b.note !== null && String(b.note).trim()) {
+    note = String(b.note).trim();
+    if (note.length > 280) throw new Bad('Keep the note to 280 characters');
+    if (/[<>]/.test(note) || /@/.test(note) || L.privateHint(note)) throw new Bad('The note looks as if it contains an email address, phone number or Eircode. Never record a buyer’s contact details here.');
+  }
+  let corrects = null;
+  if (b.corrects) { const c = await one(env, 'SELECT id, artist_id FROM enquiry_log WHERE id=?', String(b.corrects)); if (!c) throw new Bad('The entry being corrected wasn’t found'); corrects = c.id; }
+  if (!corrects && b.confirm !== true) throw new Bad('Confirm that PlotArt introduced this enquiry to the artist');
+  const introducedAt = AG.dublinMidnightUtc(day);
+  const f = AG.foundingAt(a, introducedAt);
+  const late = day < AG.addDays(today, -7) ? 1 : 0;
+  const ref = `PA-EM-${today.slice(2).replace(/-/g, '')}-${[...crypto.getRandomValues(new Uint8Array(3))].map(x => x.toString(16).padStart(2, '0')).join('').toUpperCase()}`;
+  const id = rid('l'), at = now();
+  await env.DB.prepare(`INSERT INTO enquiry_log (id, reference, artist_id, artwork_id, route, introduced_at, founding, founding_year_end, logged_by, logged_at, late_entry, corrects, note)
+    VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)`).bind(id, ref, a.id, work ? work.id : null, 'email', introducedAt, f.founding, f.year_end, founder, at, late, corrects, note).run();
+  await audit(env, founder, 'founder', corrects ? 'enquiry_log_correction' : 'enquiry_logged', a.id, { reference: ref, introduced_on: day, founding: f.founding, late_entry: late, corrects });
+  return { reference: ref, founding: f.founding, founding_year_end: f.year_end, late_entry: late, ...(await enquiryLog(env)) };
 }
 
 /* ---------------------------------------------------------------- artist: profile and artworks */
@@ -195,13 +298,13 @@ async function submit(env, artist, body) {
   const lv = await latestVersion(env, artist.id);
   const cs = L.changes(lv && lv.snap, snap).filter(c => c.tier !== 'instant');
   if (!cs.length) throw new Bad('There are no changes to submit');
-  const licence = d.artist.licence_version === L.LICENCE_VERSION || body.accept_licence === true;
+  // Founding Artist Agreement (development 6 Nov 2026): a FULL submission (always the case for a first publication) needs
+  // the current texts accepted in Studio first (POST /api/agreement/accept). A quick-check submission from an artist who
+  // already holds a licence the publishing pipeline accepts is never blocked. Nothing is accepted on submission any more.
+  const ag = await agreementState(env, d.artist);
+  const licence = ag.accepted || (L.tierOf(cs) !== 'full' && !!ag.licence && AG.PUBLISHABLE_LICENCES.includes(ag.licence.version));
   const problems = L.readiness(snap, { founding: !!d.artist.founding, firstPublication: !lv, licenceOk: licence, imageBlocks: blocked(d.images) });
   if (problems.length) return json({ ok: false, problems }, 422);
-  if (d.artist.licence_version !== L.LICENCE_VERSION) {      // recorded only with a successful submission
-    await env.DB.prepare('UPDATE artists SET licence_version=?, licence_accepted_at=?, updated_at=? WHERE id=?').bind(L.LICENCE_VERSION, now(), now(), artist.id).run();
-    await audit(env, artist.email, 'artist', 'licence_accepted', artist.id, { version: L.LICENCE_VERSION });
-  }
   await env.DB.prepare("UPDATE submissions SET status='withdrawn', decided_at=? WHERE artist_id=? AND status='pending'").bind(now(), artist.id).run();
   const id = rid('s');
   const note = L.text(body.note, 2, 600, 'Your note', { optional: true });
@@ -317,17 +420,17 @@ async function saveGalleryOrder(env, founder, body) {
 }
 
 async function overview(env) {
-  const artists = await all(env, 'SELECT id, slug, email, display_name, founding, account_status, licence_version, first_published_at, application_ref, created_at FROM artists ORDER BY created_at');
+  const artists = await all(env, 'SELECT id, slug, email, display_name, founding, founding_number, account_status, licence_version, licence_accepted_at, first_published_at, application_ref, created_at FROM artists ORDER BY created_at');
   const out = [];
   for (const a of artists) {
     const st = await status(env, a);
-    out.push({ ...a, state: st.state, works: st.counts.works, problems: st.problems.length, live_version: st.live_version, latest_version: st.latest_version });
+    out.push({ ...a, state: st.state, works: st.counts.works, problems: st.problems.length, live_version: st.live_version, latest_version: st.latest_version, agreement: st.agreement });
   }
   const subs = await all(env, `SELECT s.id, s.artist_id, s.created_at, s.tier, s.note, a.display_name FROM submissions s JOIN artists a ON a.id = s.artist_id
     WHERE s.status = 'pending' ORDER BY (s.tier = 'light'), s.created_at`);
   const queue = await all(env, `SELECT q.*, a.display_name FROM publish_queue q JOIN artists a ON a.id = q.artist_id WHERE q.status IN ('awaiting_founder','ready','exporting','failed') ORDER BY q.created_at`);
   const flags = await all(env, `SELECT i.id, i.artist_id, a.display_name, i.sha256 FROM images i JOIN artists a ON a.id=i.artist_id WHERE i.deleted_at IS NULL AND i.checks LIKE '%DUPLICATE_OF_OTHER_ARTIST%'`);
-  return { artists: out, submissions: subs, queue, flags, f25: { selected_with_studio: artists.filter(a => a.founding).length, target: 25 },
+  return { artists: out, submissions: subs, queue, flags, agreement_installed: !!(await agreementDocs(env)), f25: { selected_with_studio: artists.filter(a => a.founding).length, target: 25 },
     instant_autopublish: env.INSTANT_AUTOPUBLISH === 'true' };
 }
 async function decide(env, founder, id, body) {
@@ -368,8 +471,9 @@ async function exportFor(env, q) {
   const artist = await one(env, 'SELECT * FROM artists WHERE id = ?', q.artist_id);
   const v = await one(env, 'SELECT * FROM versions WHERE artist_id = ? AND version = ?', q.artist_id, q.version);
   const snap = JSON.parse(v.snapshot);
-  const g = L.exportGallery(snap, { version: q.version, approvedAt: v.created_at, licenceVersion: artist.licence_version,
-    licenceAcceptedAt: artist.licence_accepted_at, artistId: artist.id, aiDecisions: v.ai_decisions ? JSON.parse(v.ai_decisions) : {} });
+  const lic = (await agreementState(env, artist)).licence || {};   // the most recent licence acceptance (new record first, then the legacy label)
+  const g = L.exportGallery(snap, { version: q.version, approvedAt: v.created_at, licenceVersion: lic.version || null,
+    licenceAcceptedAt: lic.accepted_at || null, artistId: artist.id, aiDecisions: v.ai_decisions ? JSON.parse(v.ai_decisions) : {} });
   const ids = [...snap.works.flatMap(w => w.images.map(i => i.id)), ...(snap.artist.portrait ? [snap.artist.portrait.id] : [])];
   return { gallery: g, images: ids, kind: q.kind };
 }
@@ -691,6 +795,7 @@ async function route(req, env) {
   }
 
   const me = await who(req, env);
+  let mm0;
   if (me.role === 'none') {
     // PLOTART-STUDIO-ACCESS-002: a verified email with no invited or active artist account sees who they are signed in
     // as (their OWN verified address only) and a way to sign out and use another address. The wording is identical for
@@ -706,6 +811,15 @@ async function route(req, env) {
     if (o && o !== url.origin) return json({ ok: false, error: 'Refused' }, 403);
   }
 
+  /* ---- agreement texts: the exact fingerprinted files, to any signed-in artist or the founder (read and download) */
+  if ((mm0 = p.match(/^\/agreements\/(PA-(?:FAA|GPIL)-\d{4}-\d{2}(?:-\d{2})?)\.(html|pdf)$/)) && m === 'GET') {
+    const d = AG.doc(mm0[1]);
+    if (!d) return html('Not found', 404);
+    if (mm0[2] === 'html') return res(d.html, 'text/html; charset=utf-8', 200, { 'X-Document-SHA256': d.html_sha256 });
+    return new Response(Uint8Array.from(atob(d.pdf_b64), c => c.charCodeAt(0)), { headers: { ...SEC, 'Content-Type': 'application/pdf',
+      'Content-Disposition': `attachment; filename="PlotArt-${mm0[1]}.pdf"`, 'X-Document-SHA256': d.pdf_sha256 } });
+  }
+
   /* ---- founder */
   if (p === '/admin' || p.startsWith('/admin/') || p.startsWith('/api/admin/')) {
     if (me.role !== 'founder') return p.startsWith('/api/') ? json({ ok: false, error: 'Not available' }, 403) : html('Not available', 403);
@@ -716,6 +830,7 @@ async function route(req, env) {
     if (p === '/api/admin/ideas' && m === 'GET') return json({ ok: true, ...(await ideasAdmin(env)) });
     if ((mm = p.match(/^\/api\/admin\/ideas\/(i[0-9a-z]+)$/)) && m === 'POST') return json({ ok: true, ...(await decideIdea(env, me.email, mm[1], await req.json())) });
     if (p === '/admin/garden') return html(A.ADMIN_HTML);
+    if (p === '/admin/agreements') return html(A.ADMIN_HTML);
     if (p === '/api/admin/garden' && m === 'GET') return json({ ok: true, ...(await gardenAdmin(env)) });
     if ((mm = p.match(/^\/api\/admin\/garden\/(g[0-9a-z]+)$/)) && m === 'POST') return json({ ok: true, ...(await decideListing(env, me.email, mm[1], await req.json())) });
     if (p === '/api/admin/gallery-order' && m === 'GET') return json({ ok: true, ...(await galleryOrder(env)) });
@@ -769,6 +884,16 @@ async function route(req, env) {
       const st = await status(env, a);
       return json({ ok: true, artist: { id: a.id, display_name: a.display_name }, state: st.state, works: st.counts.works, count: st.checklist.length, items: st.checklist });
     }
+    if ((mm = p.match(/^\/api\/admin\/artists\/(a[0-9a-z]+)\/agreement$/)) && m === 'GET') {
+      const a = await one(env, 'SELECT * FROM artists WHERE id=?', mm[1]);
+      if (!a) return json({ ok: false, error: 'Artist not found' }, 404);
+      const ag = await agreementState(env, a);
+      const log = (await agreementDocs(env)) ? await all(env, 'SELECT reference, route, introduced_at, founding, founding_year_end, late_entry, corrects, logged_at FROM enquiry_log WHERE artist_id=? ORDER BY introduced_at DESC', a.id) : [];
+      return json({ ok: true, artist: { id: a.id, display_name: a.display_name, founding: !!a.founding, founding_number: a.founding_number, first_published_at: a.first_published_at },
+        agreement: { ...agreementSummary(ag), history: ag.history }, documents: (await agreementDocs(env)) || [], enquiries: log });
+    }
+    if (p === '/api/admin/enquiry-log' && m === 'GET') return json({ ok: true, ...(await enquiryLog(env)) });
+    if (p === '/api/admin/enquiry-log' && m === 'POST') return json({ ok: true, ...(await logEnquiry(env, me.email, await req.json())) });
     if (p === '/api/admin/overview' && m === 'GET') return json({ ok: true, ...(await overview(env)) });
     if (p === '/api/admin/selftest' && m === 'POST') return json({ ok: true, ...(await selftest(env, me)) });
     if (p === '/api/admin/artists' && m === 'POST') {
@@ -843,8 +968,23 @@ async function route(req, env) {
     if ((mm = p.match(/^\/api\/admin\/queue\/(q[0-9a-z]+)\/publish$/)) && m === 'POST') {
       const q = await one(env, "SELECT * FROM publish_queue WHERE id=? AND status='awaiting_founder'", mm[1]);
       if (!q) throw new Bad('Nothing to publish', 409);
+      // Founding Artist Agreement (development 6 Nov 2026). Availability, withdrawal, order and removal are never held up.
+      // Reviewed content: a FIRST publication needs the current texts accepted; an artist who is already published and
+      // has not accepted yet is published only after the founder confirms the warning. Nothing is ever unpublished.
+      let warned = false;
+      if (q.kind === 'reviewed') {
+        const a = await one(env, 'SELECT * FROM artists WHERE id=?', q.artist_id);
+        const ag = await agreementState(env, a);
+        const first = !a.first_published_at && !(await one(env, "SELECT id FROM publish_queue WHERE artist_id=? AND status IN ('published','superseded') AND kind<>'remove' LIMIT 1", a.id));
+        if (!ag.accepted && first) throw new Bad(`${a.display_name} has not accepted the ${a.founding ? 'Founding Artist Agreement' : 'Gallery Publication and Image Licence'} yet, so their gallery can’t be published for the first time. They accept it in PlotArt Studio.`, 409);
+        if (!ag.accepted) {
+          const b = await req.json().catch(() => ({}));
+          if (b.confirm_without_agreement !== true) return json({ ok: false, needs_confirmation: true, error: `${a.display_name} is already published but hasn’t accepted the ${a.founding ? 'Founding Artist Agreement' : 'current licence'} yet. Their existing licence (${ag.licence ? ag.licence.version : 'none'}) still applies. Publish anyway?` }, 409);
+          warned = true;
+        }
+      }
       await env.DB.prepare("UPDATE publish_queue SET status='ready', updated_at=? WHERE id=?").bind(now(), q.id).run();
-      await audit(env, me.email, 'founder', 'publish', q.artist_id, { queue: q.id, version: q.version });
+      await audit(env, me.email, 'founder', 'publish', q.artist_id, { queue: q.id, version: q.version, ...(warned ? { without_current_agreement: true } : {}) });
       return json({ ok: true });
     }
     if (p === '/api/admin/enquiries' && m === 'GET') return json({ ok: true, items: await all(env, `SELECT e.reference, e.created_at, e.status, e.artwork_title, a.display_name
@@ -977,6 +1117,14 @@ async function route(req, env) {
   if ((mm = p.match(/^\/api\/images\/(i[0-9a-z]+)\/view$/)) && m === 'GET') return previewImage(env, await ownImage(env, artist, mm[1]));
   if (p === '/api/enquiries' && m === 'GET') return json({ ok: true, items: await all(env,
     'SELECT reference, created_at, artwork_title, buyer_name, buyer_email, message, status FROM enquiries WHERE artist_id = ? ORDER BY created_at DESC LIMIT 200', artist.id) });
+  if (p === '/api/agreement' && m === 'GET') {
+    const a = await one(env, 'SELECT * FROM artists WHERE id=?', artist.id);
+    const ag = await agreementState(env, a);
+    return json({ ok: true, ...agreementSummary(ag), history: ag.history.map(r => ({ doc_id: r.doc_id, accepted_at: r.accepted_at, method: r.method, statement: r.statement,
+      doc_sha256: r.doc_sha256, pdf_sha256: r.pdf_sha256, legal_name: r.legal_name, account_email: r.account_email, display_name: r.display_name, note: r.note })),
+      documents: ag.required.map(id => ({ id, title: AG.doc(id).title, html_sha256: AG.doc(id).html_sha256, pdf_sha256: AG.doc(id).pdf_sha256 })) });
+  }
+  if (p === '/api/agreement/accept' && m === 'POST') return json({ ok: true, ...(await acceptAgreement(env, artist, await req.json())) });
   if (p === '/api/submit' && m === 'POST') return submit(env, artist, await req.json());
   if (p === '/api/submit/withdraw' && m === 'POST') {
     await env.DB.prepare("UPDATE submissions SET status='withdrawn', decided_at=? WHERE artist_id=? AND status='pending'").bind(now(), artist.id).run();

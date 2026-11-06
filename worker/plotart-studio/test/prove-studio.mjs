@@ -1,6 +1,7 @@
 // PROVE · PlotArt Studio (Phase 2, 29 Oct 2026). Synthetic artists only; the Worker runs locally (Miniflare/workerd)
 // with a local D1 and R2. The publishing half runs the real Phase 1 Python ingest and build.
 //   node test/prove-studio.mjs --gallery-tools /path/to/founder-branch/atlas-tools [--release /path/to/release-tree]
+import { acceptAgreement } from './agree.mjs';
 import { start, token, otherKey, FOUNDER, PIPELINE_TOKEN, AUD, TEAM } from './local.mjs';
 import { execFileSync, spawnSync } from 'node:child_process';
 import { mkdtempSync, readFileSync, writeFileSync, existsSync, readdirSync } from 'node:fs';
@@ -149,9 +150,10 @@ check('W1 an incomplete artwork blocks submission; the NUMBER of works never doe
 await fill(works[9], 10);
 r = await call('POST', '/api/submit', A, {});
 check('W2 the licence must be accepted before the first submission', r.s === 422 && r.j.problems.some(p => /Licence/.test(p)));
+const acc = await acceptAgreement(mf, url, A);
 r = await call('POST', '/api/submit', A, { accept_licence: true, note: 'My first ten works.' });
 let me = (await call('GET', '/api/me', A)).j;
-check('W3 a complete gallery is submitted (full review); licence version and date recorded', r.s === 200 && r.j.tier === 'full' && me.status.state === 'in_review' && me.artist.licence_version === 'PA-GPIL-2026-10-29');
+check('W3 a complete gallery is submitted (full review) after the artist accepts the agreement in Studio; the old licence columns are not written', acc.s === 200 && r.s === 200 && r.j.tier === 'full' && me.status.state === 'in_review' && me.status.agreement.accepted && me.artist.licence_version === null, JSON.stringify(acc.j));
 const ov = (await call('GET', '/api/admin/overview', FOUNDER)).j;
 check('W4 the submission appears on the founder’s desk', ov.submissions.length === 1 && ov.submissions[0].display_name === 'Aoife Test');
 const sid = ov.submissions[0].id;
@@ -366,7 +368,7 @@ check('F4 founder system check: database and image storage written, read back an
   check(`Z1 access sweep: ${n} requests across every route: unauthenticated, forged and unknown-email requests refused; artists refused the founder desk and every other artist's records; pipeline refuses all without its token; no other artist's name or email in any refusal`,
     bad.length === 0 && forged.s === 401 && mine.ok !== false, bad.slice(0, 8).join(' | ') + ' forged:' + forged.s);
 }
-check('F3 every action is in the audit log', ['invite', 'image_upload', 'submit', 'licence_accepted', 'submission_changes', 'submission_approve', 'publish', 'published', 'instant_change', 'suspend', 'unpublish'].every(a => audit.includes(a)));
+check('F3 every action is in the audit log', ['invite', 'image_upload', 'submit', 'agreement_accepted', 'submission_changes', 'submission_approve', 'publish', 'published', 'instant_change', 'suspend', 'unpublish'].every(a => audit.includes(a)));
 
 async function prodSnap(artist, v) {
   const db = await mf.getD1Database('DB', 'studio');

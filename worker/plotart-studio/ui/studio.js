@@ -36,14 +36,15 @@
   const PHOTO = ['photo_alt', 'photographer', 'photo_credit'];
   const onlyPhoto = i => i.needs.every(c => PHOTO.includes(c));
   const workNeeds = i => onlyPhoto(i) ? 'photograph details' : i.needs.map(c => NEED[c]).join(', ');
-  const fixHref = i => i.area === 'profile' ? `#/profile?fix=${i.field}` : i.area === 'works' ? '#/works?fix=add'
+  const fixHref = i => i.area === 'agreement' ? '#/agreement' : i.area === 'profile' ? `#/profile?fix=${i.field}` : i.area === 'works' ? '#/works?fix=add'
     : i.area === 'work' ? `#/work/${i.work_id}?fix=${i.field}${i.image_id ? '&img=' + i.image_id : ''}` : '#/submit';
   const plural = (n, one, many) => `${n} ${n === 1 ? one : many}`;
   function checklistHTML(list, { openWorks = false } = {}) {
-    const prof = list.filter(i => i.area === 'profile'), wk = list.filter(i => i.area === 'work'), add = list.find(i => i.area === 'works');
+    const prof = list.filter(i => i.area === 'profile'), wk = list.filter(i => i.area === 'work'), add = list.find(i => i.area === 'works'), agr = list.find(i => i.area === 'agreement');
     const link = (href, label, extra = '') => `<li><a class="st-ck-link" href="${href}"><span>${label}</span>${extra}<span class="st-ck-go" aria-hidden="true">→</span></a></li>`;
     const allPhoto = wk.length && wk.every(onlyPhoto);
     return `<div class="st-ck">
+      ${agr ? `<div class="st-ck-g"><h4 class="st-ck-h">Agreement</h4><ul class="st-ck-l">${link(fixHref(agr), E(agr.text))}</ul></div>` : ''}
       ${prof.length ? `<div class="st-ck-g"><h4 class="st-ck-h">Profile</h4><ul class="st-ck-l">${prof.map(i => link(fixHref(i), E(i.text))).join('')}</ul></div>` : ''}
       ${add || wk.length ? `<div class="st-ck-g"><h4 class="st-ck-h">Artworks</h4>
         ${add ? `<ul class="st-ck-l">${link(fixHref(add), 'Add your first artwork')}</ul>` : ''}
@@ -85,6 +86,7 @@
     app.innerHTML = `
       <p class="st-muted">Welcome${a.display_name ? ', ' + E(a.display_name.split(' ')[0]) : ''}</p>
       <h1 class="st-h1">Your gallery</h1>
+      ${agreementCard(s)}
       <section class="st-card"><div class="st-status" data-s="${s.state}"><span class="st-dot" aria-hidden="true"></span><div>
         <h2>${E(title)}</h2><p class="st-muted" style="margin:0">${E(text)}</p>
         ${s.state === 'changes_requested' && s.last_decision?.founder_message ? `<p class="st-msg">${E(s.last_decision.founder_message)}</p>` : ''}
@@ -327,9 +329,9 @@
           <ul class="st-list">${groups[t].map(c => `<li>${E(c.what)}${c.from !== undefined && c.to !== undefined && typeof c.to !== 'object' ? ` <span class="st-muted">(${E(c.from ?? '—')} → ${E(c.to ?? '—')})</span>` : ''}</li>`).join('')}</ul>`).join('') || '<p class="st-muted">Nothing new to submit.</p>'}
       </section>
       ${s.checklist.length ? `<section class="st-card" aria-labelledby="todo-h"><div class="st-ck-top"><h3 id="todo-h">Still to do</h3><span class="st-ck-count">${plural(s.checklist.length, 'detail', 'details')}</span></div>${checklistHTML(s.checklist, { openWorks: true })}</section>` : ''}
-      ${!s.licence_ok ? `<section class="st-card"><h3>Gallery Publication and Image Licence</h3>
-        <p class="st-muted">You keep your copyright. This licence lets PlotArt show the work and words you approve, on your gallery and PlotArt pages, and nothing more. Version ${E(s.licence_version)}.</p>
-        <label class="st-check"><input type="checkbox" id="lic" style="accent-color:var(--terra);width:22px;height:22px;margin-top:2px"> I approve my PlotArt gallery preview and accept the Gallery Publication and Image Licence, version ${E(s.licence_version)}.</label></section>` : ''}
+      ${s.agreement && s.agreement.installed && !s.agreement.accepted && s.tier === 'full' ? `<section class="st-card st-agr-ask"><h3>${s.agreement.founding ? 'Founding Artist Agreement' : 'Gallery Publication and Image Licence'}</h3>
+        <p class="st-muted" style="margin:0">Changes that we review need ${s.agreement.founding ? 'the Founding Artist Agreement' : 'the current licence'} accepted first. It takes a few minutes and you can download a copy.</p>
+        <div class="st-actions"><a class="st-btn st-btn--solid st-btn--small" href="#/agreement">Read and accept</a></div></section>` : ''}
       <section class="st-card"><div class="st-f"><label for="note">A note for us (optional)</label><textarea id="note" placeholder="Anything we should know"></textarea></div>
         <div class="st-actions st-submit-row"><a class="st-btn" href="/preview/" target="_blank" rel="noopener">Preview first</a><button class="st-btn st-btn--solid" id="go" ${s.unsubmitted.length && !s.problems.length ? '' : 'disabled aria-describedby="why"'}>Submit for review</button></div>
         ${s.problems.length ? `<p class="st-why" id="why"><span class="st-needs-dot" aria-hidden="true"></span><span><b>${plural(s.problems.length, 'detail still needs', 'details still need')} your attention</b> before you can submit your gallery. <a href="#todo-h" data-jump>See the list</a></span></p>`
@@ -337,10 +339,8 @@
         <p class="st-err" id="serr"></p></section>`;
     $('[data-jump]', app)?.addEventListener('click', e => { e.preventDefault(); const h = $('#todo-h'); h.setAttribute('tabindex', '-1'); h.scrollIntoView({ block: 'start' }); h.focus({ preventScroll: true }); });
     $('#go').addEventListener('click', async () => {
-      const lic = $('#lic');
-      if (lic && !lic.checked) { $('#serr').textContent = 'Please accept the licence to submit.'; return; }
       $('#go').disabled = true;
-      try { await api('POST', '/api/submit', { note: $('#note').value || null, accept_licence: !!lic }); say('Submitted'); await refresh(); location.hash = '#/'; }
+      try { await api('POST', '/api/submit', { note: $('#note').value || null }); say('Submitted'); await refresh(); location.hash = '#/'; }
       catch (e) { $('#serr').textContent = e.message; $('#go').disabled = false; }
     });
   }
@@ -354,6 +354,89 @@
         <p class="st-muted" style="white-space:pre-wrap;color:var(--lime);margin:0 0 10px">${E(e.message)}</p>
         <a class="st-btn st-btn--small st-btn--solid" href="mailto:${encodeURIComponent(e.buyer_email)}?subject=${encodeURIComponent('Re: your PlotArt enquiry ' + e.reference)}">Reply to ${E(e.buyer_email)}</a></div></li>`).join('')}</ul>`
         : '<div class="st-card st-empty">No enquiries yet. They’ll appear here when buyers contact you through your gallery.</div>'}`;
+  }
+
+  /* ------------------------------------------------------------- Founding Artist Agreement (development 6 Nov 2026)
+     One page with both documents in full, a PDF of each, an optional legal name and ONE tick for both. The page sends
+     the fingerprint of the exact text it displayed; the server refuses anything that is not the current text. */
+  const DOCNAME = { 'PA-FAA-2026-11': 'Founding Artist Agreement', 'PA-GPIL-2026-11': 'Gallery Publication and Image Licence', 'PA-GPIL-2026-10-29': 'Gallery Publication and Image Licence' };
+  const day = d => d ? new Date(d + 'T12:00:00Z').toLocaleDateString('en-IE', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'Europe/Dublin' }) : '';
+  const irish = t => t ? new Date(t).toLocaleString('en-IE', { dateStyle: 'long', timeStyle: 'short', timeZone: 'Europe/Dublin' }) : '';
+  function agreementCard(s) {
+    const g = s.agreement;
+    if (!g || !g.installed) return '';
+    const what = g.founding ? 'the Founding Artist Agreement' : 'the Gallery Publication and Image Licence';
+    if (g.accepted) return `<section class="st-card st-agr-ok"><h3>${g.founding ? 'Founding Artist Agreement' : 'Gallery Publication and Image Licence'} · accepted</h3>
+      <p class="st-muted" style="margin:0">Accepted ${E(irish(g.accepted_at))}.${g.founding_year ? ` Your founding year: ${E(day(g.founding_year.start))} to ${E(day(g.founding_year.end))}.` : g.founding ? ' Your founding year starts on the day your gallery is first published.' : ''}</p>
+      <div class="st-actions"><a class="st-btn st-btn--small" href="#/agreement">View or download</a></div></section>`;
+    const published = !!g.first_published_at;
+    return `<section class="st-card st-agr-ask" aria-labelledby="agr-h"><h2 id="agr-h">${published ? 'Please read and accept ' + what : 'Before you submit: ' + what}</h2>
+      <p class="st-muted" style="margin:0">${published
+        ? 'Your gallery stays live and nothing changes in the meantime: you can keep editing, marking works sold or reserved, and withdrawing works as usual. You’ll need to accept it before you next submit new works, photographs or profile changes for review.'
+        : 'Read it and accept it here before you submit your gallery for the first time. It takes a few minutes, and you can download a copy to keep.'}</p>
+      <div class="st-actions"><a class="st-btn st-btn--solid" href="#/agreement">Read and accept</a></div></section>`;
+  }
+  async function sha256Hex(text) { return [...new Uint8Array(await crypto.subtle.digest('SHA-256', new TextEncoder().encode(text)))].map(b => b.toString(16).padStart(2, '0')).join(''); }
+  async function agreementView() {
+    const g = await api('GET', '/api/agreement');
+    const fy = g.founding_year;
+    const earlier = g.history.filter(r => r.method === 'migrated_from_artists_table');
+    const mine = g.history.filter(r => r.method === 'studio_checkbox');
+    const record = mine.length ? `<section class="st-card st-agr-ok" aria-labelledby="rec-h"><h2 id="rec-h">Your acceptance</h2>
+      <dl class="st-dl">
+        <dt>Accepted</dt><dd>${E(irish(mine[mine.length - 1].accepted_at))} (Irish time) in PlotArt Studio</dd>
+        <dt>Documents</dt><dd>${mine.filter(r => r.accepted_at === mine[mine.length - 1].accepted_at).map(r => `${E(DOCNAME[r.doc_id] || r.doc_id)}, ${E(r.doc_id)}<br><span class="st-muted st-fp">Fingerprint ${E(r.doc_sha256.slice(0, 16))}…</span>`).join('<br>')}</dd>
+        <dt>Your name</dt><dd>${E(mine[mine.length - 1].display_name)}${mine[mine.length - 1].legal_name ? ` · legal name ${E(mine[mine.length - 1].legal_name)}` : ''}</dd>
+        <dt>Studio account</dt><dd>${E(mine[mine.length - 1].account_email)}</dd>
+        ${g.founding ? `<dt>Founding year</dt><dd>${fy ? `${E(day(fy.start))} to ${E(day(fy.end))}` : 'Starts on the day your gallery is first published'}</dd>` : ''}
+      </dl></section>` : '';
+    const docs = g.documents;
+    app.innerHTML = `
+      <p><a href="#/" style="color:var(--stone);text-decoration:none">← Your gallery</a></p>
+      <h1 class="st-h1">${g.founding ? 'Founding Artist Agreement' : 'Image licence'}</h1>
+      <p class="st-sub">${g.accepted ? 'You have accepted these documents. You can read or download them at any time.' : `Please read ${docs.length > 1 ? 'both documents' : 'the document'} below. ${g.founding ? 'The agreement includes the image licence, so one tick accepts both.' : ''} You can download a PDF of each to keep.`}</p>
+      ${record}
+      ${g.founding && !g.accepted ? `<section class="st-card"><h3>In short</h3><ul class="st-list">
+        <li>No membership, subscription or listing fees, ever.</li>
+        <li>No commission in your founding year${fy ? ` (${E(day(fy.start))} to ${E(day(fy.end))})` : ', which starts on the day your gallery is first published'}, and enquiries from that year stay commission-free for good.</li>
+        <li>Nothing changes automatically afterwards: any commission would apply only if you choose to accept new terms.</li>
+        <li>You keep your copyright and handle your own sales. You can withdraw any work at any time.</li>
+      </ul><p class="st-muted" style="margin:10px 0 0">This summary isn’t part of the agreement: the full text below is what you accept.</p></section>` : ''}
+      ${docs.map(d => `<section class="st-card st-docwrap" aria-labelledby="h-${E(d.id)}">
+        <div class="st-doc-top"><h2 id="h-${E(d.id)}">${E(DOCNAME[d.id] || d.title)}</h2><span class="st-muted">${E(d.id)}</span></div>
+        <div class="st-doc" tabindex="0" role="region" aria-label="${E(DOCNAME[d.id] || d.title)}, full text" data-doc="${E(d.id)}"><p class="st-muted">Loading…</p></div>
+        <div class="st-actions"><a class="st-btn st-btn--small" href="/agreements/${E(d.id)}.pdf" download>Download PDF</a><a class="st-btn st-btn--small" href="/agreements/${E(d.id)}.html" target="_blank" rel="noopener">Open in a new tab ↗</a></div></section>`).join('')}
+      ${!g.accepted ? `<section class="st-card st-accept" aria-labelledby="acc-h"><h2 id="acc-h">Accept</h2>
+        <div class="st-f"><label for="legal">Legal name (optional)</label><input id="legal" type="text" autocomplete="name" maxlength="120">
+          <p class="st-hint">Only if it differs from the name you work under (${E(ME.artist.display_name)}). It’s kept with your acceptance record and never published.</p></div>
+        <label class="st-check st-accept-box"><input type="checkbox" id="agree" style="accent-color:var(--terra);width:22px;height:22px;margin-top:2px"> <span>${E(g.statement)}</span></label>
+        <div class="st-actions"><button class="st-btn st-btn--solid" id="accept" disabled>Accept</button></div>
+        <p class="st-muted" style="margin:10px 0 0">PlotArt Studio records the date and time, the exact versions and their fingerprints, your Studio account and your name, and keeps them with a copy of each document you can download.</p>
+        <p class="st-err" id="aerr" role="alert"></p></section>` : ''}
+      ${earlier.length ? `<section class="st-card"><h3>Earlier record</h3><ul class="st-list">${earlier.map(r => `<li>${E(DOCNAME[r.doc_id] || r.doc_id)}, version ${E(r.doc_id)}, accepted ${E(irish(r.accepted_at))}. This earlier version was accepted with a short summary and its version label; the record is kept exactly as it was made.</li>`).join('')}</ul></section>` : ''}`;
+    const shown = {};
+    await Promise.all(docs.map(async d => {
+      const box = app.querySelector(`.st-doc[data-doc="${d.id}"]`);
+      try {
+        const r = await fetch(`/agreements/${d.id}.html`, { credentials: 'same-origin' }), t = await r.text();
+        shown[d.id] = await sha256Hex(t);
+        const art = new DOMParser().parseFromString(t, 'text/html').querySelector('article');
+        art.querySelectorAll('.eyebrow, h1').forEach(n => n.remove());
+        art.querySelectorAll('[id]').forEach(n => n.removeAttribute('id'));   // both texts share clause numbers
+        box.innerHTML = art.innerHTML;
+      } catch { box.innerHTML = '<p class="st-err">The document couldn’t be loaded. Please reload the page.</p>'; }
+    }));
+    const box = $('#agree'), btn = $('#accept');
+    if (!box) return;
+    box.addEventListener('change', () => { btn.disabled = !box.checked; });
+    btn.addEventListener('click', async () => {
+      if (!box.checked) return;
+      btn.disabled = true; $('#aerr').textContent = '';
+      try {
+        await api('POST', '/api/agreement/accept', { accept: true, documents: shown, statement: g.statement, legal_name: $('#legal').value.trim() || null });
+        say('Accepted'); await refresh(); agreementView();
+      } catch (e) { $('#aerr').textContent = e.message; btn.disabled = !box.checked; }
+    });
   }
 
   /* ------------------------------------------------------------- router */
@@ -371,6 +454,7 @@
       else if (h.startsWith('#/work/')) work(h.slice(7));
       else if (h === '#/submit') submitView();
       else if (h === '#/enquiries') await enquiries();
+      else if (h === '#/agreement') await agreementView();
       else dashboard();
       window.scrollTo(0, 0);
       if (q.get('fix')) requestAnimationFrame(() => focusFix(q.get('fix'), q.get('img')));

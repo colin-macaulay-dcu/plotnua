@@ -3,12 +3,13 @@
 //   node test/prove-migration.mjs /path/to/schema-of-main.sql
 import { createRequire } from 'node:module';
 import { readFileSync } from 'node:fs';
+import { statements } from './sql.mjs';
 const require = createRequire('/tmp/claude-0/studio-tools/package.json');
 const { Miniflare } = require('miniflare');
 const results = []; const check = (n, ok, d = '') => { results.push(!!ok); console.log(`  ${ok ? 'PASS' : 'FAIL'}  ${n}${!ok && d ? `  [${String(d).slice(0, 300)}]` : ''}`); };
 const mf = new Miniflare({ modules: true, script: 'export default { fetch() { return new Response("") } }', d1Databases: { DB: 'mig-test' } });
 const db = await mf.getD1Database('DB');
-const run = async sql => { for (const st of sql.replace(/--[^\n]*/g, '').split(';').map(s => s.trim()).filter(Boolean)) await db.prepare(st).run(); };
+const run = async sql => { for (const st of statements(sql)) await db.prepare(st).run(); };
 await run(readFileSync(process.argv[2], 'utf8'));
 const t = '2026-10-31T12:00:00.000Z';
 await db.prepare("INSERT INTO artists (id, slug, email, display_name, founding, account_status, licence_version, licence_accepted_at, created_at, updated_at) VALUES ('a1test','sophia-test','artist@example.test','Synthetic Artist',1,'active','PA-GPIL-2026-10-29',?,?,?)").bind(t, t, t).run();

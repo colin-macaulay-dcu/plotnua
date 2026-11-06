@@ -17,7 +17,21 @@ declared = set() if tables_in.strip().lower() == "none" else {t.strip().lower() 
 if any(not re.fullmatch(r"[a-z_][a-z0-9_]*", t) for t in declared): refuse("table names: letters, digits and _ only, comma-separated, or none")
 sql = re.sub(r"--[^\n]*", " ", data.decode("utf-8"))
 sql = re.sub(r"/\*.*?\*/", " ", sql, flags=re.S)
-for bad, why in [(r"\bCREATE\s+(TEMP\w*\s+)?TRIGGER\b", "triggers"), (r"\bATTACH\b", "ATTACH"), (r"\bPRAGMA\s+\w+\s*=", "PRAGMA writes")]:
+# Refusal-only triggers (proposed with migration 0005, 6 Nov 2026; needs the founder's approval as a policy change): a
+# BEFORE trigger whose whole body is SELECT RAISE(ABORT, '...') can only STOP a write, never make one. It is allowed when
+# it guards a table this same migration creates and declares, and its WHEN condition (if any) only reads. Every other
+# trigger is still refused. Allowed triggers are listed for the reviewer and removed before the remaining checks.
+_TRIG = re.compile(r"\bCREATE\s+TRIGGER\s+(?:IF\s+NOT\s+EXISTS\s+)?([A-Za-z_][A-Za-z0-9_]*)\s+BEFORE\s+(INSERT|UPDATE|DELETE)\s+ON\s+([A-Za-z_][A-Za-z0-9_]*)\s+"
+                   r"(?:WHEN\s+(.*?)\s+)?BEGIN\s+SELECT\s+RAISE\s*\(\s*ABORT\s*,\s*'[^']*'\s*\)\s*;\s*END\s*;", re.I | re.S)
+_made = {m.lower() for m in re.findall(r"\bCREATE\s+TABLE\s+(?:IF\s+NOT\s+EXISTS\s+)?([A-Za-z_][A-Za-z0-9_]*)", sql, re.I)}
+guards = []
+for m in list(_TRIG.finditer(sql)):
+    name, ev, tbl, when = m.group(1), m.group(2).upper(), m.group(3).lower(), m.group(4) or ""
+    if tbl not in declared or tbl not in _made: refuse("trigger %s guards %s, which this migration does not create and declare" % (name, tbl))
+    if re.search(r"\b(INSERT|UPDATE|DELETE|REPLACE|CREATE|DROP|ALTER|ATTACH|PRAGMA)\b", when, re.I): refuse("trigger %s: its WHEN condition may only read" % name)
+    guards.append("%s (refuses %s on %s)" % (name, ev, tbl))
+sql = _TRIG.sub(" ", sql)
+for bad, why in [(r"\bCREATE\s+(TEMP\w*\s+)?TRIGGER\b", "triggers (other than refusal-only guards)"), (r"\bATTACH\b", "ATTACH"), (r"\bPRAGMA\s+\w+\s*=", "PRAGMA writes")]:
     if re.search(bad, sql, re.I): refuse("%s are not allowed in a migration" % why)
 W = r'[`"\[]?([A-Za-z_][A-Za-z0-9_]*)[`"\]]?'
 pats = [r"\bINSERT\s+(?:OR\s+\w+\s+)?INTO\s+" + W, r"\bREPLACE\s+INTO\s+" + W, r"\bUPDATE\s+(?:OR\s+\w+\s+)?" + W,
@@ -36,6 +50,7 @@ print("- File SHA-256: `%s` (matches the approved file)" % sha)
 print("- Declared tables it may change: %s" % (", ".join(sorted(declared)) or "none"))
 print("- Tables the SQL writes to: %s" % (", ".join(sorted(targets)) or "none"))
 print("- Expected effects: %s" % desc.strip().replace("\n", " "))
+if guards: print("- Refusal-only guards: %s" % "; ".join(guards))
 print("\n```sql\n%s\n```" % data.decode("utf-8").strip())
 # Automation v1 (1 Nov 2026): a migration that only CREATEs new tables or indexes, and touches no existing table, is
 # ADDITIVE: it changes no existing row and is reversed by dropping what it created. Anything else is DESTRUCTIVE and

@@ -1,0 +1,15 @@
+{
+  "note": "SHA-256 of the exact files PlotArt Studio serves. Changing any file needs a new identifier.",
+  "documents": {
+    "PA-FAA-2026-11": {
+      "title": "PlotArt Founding Artist Agreement",
+      "html_sha256": "62adedbf330a0f6d02e952c7f4f7bfc9232696103dd10d52fa72b99a88693463",
+      "pdf_sha256": "cc3294340834db30c14c47cb811042d91e3619e73aca3dfd2fafc032d8bd8011"
+    },
+    "PA-GPIL-2026-11": {
+      "title": "PlotArt Gallery Publication and Image Licence",
+      "html_sha256": "0badf61ee9ad5e8bcc391677b06b495779fc5feedf2d5d21ee209880adc2dafe",
+      "pdf_sha256": "93e9b39878d5b3811bc04769a29be07d2c593c371d71bf19b9d2c588e749ea22"
+    }
+  }
+}

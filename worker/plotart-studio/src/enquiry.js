@@ -7,6 +7,7 @@
    buyer directly: the founder is not an intermediary. The buyer gets a short receipt. Nothing is shown to the buyer
    about the artist's address. No IP address is stored; rate limits are per-isolate and per-day caps in D1. */
 import { send } from './mailer.js';
+import { foundingAt } from './founding.js';
 
 const NOTICE = 'PA-ENQ-2026-10-29';   // (a Worker entry module may export only handlers)
 const DAILY_PER_ARTIST = 40, DAILY_TOTAL = 300, BURST = 5, BURST_MS = 10 * 60_000;
@@ -119,6 +120,15 @@ export default {
     const del = new Date(Date.now() + 730 * 86400_000).toISOString();
     await env.DB.prepare(`INSERT INTO enquiries (id, reference, artist_id, artwork_id, artwork_title, buyer_name, buyer_email, message, notice_version, created_at, status, delete_after)
       VALUES (?,?,?,?,?,?,?,?,?,?,?,?)`).bind(id, ref, g.artist.id, work ? work.id : null, work ? work.title : null, name, email, message, NOTICE, now(), 'received', del).run();
+    // Enquiry log (Founding Artist Agreement 5.4; migration 0005): reference, artist, artwork, time and founding status, with
+    // NO buyer details. Kept for the agreement's life plus six years; the row above is still deleted at 24 months. If the log
+    // isn't installed yet the enquiry goes ahead exactly as before and the audit says so.
+    let logged = 'logged';
+    try {
+      const f = foundingAt(g.artist, now());
+      await env.DB.prepare(`INSERT INTO enquiry_log (id, reference, artist_id, artwork_id, route, introduced_at, founding, founding_year_end, logged_by, logged_at, late_entry)
+        VALUES (?,?,?,?,?,?,?,?,?,?,0)`).bind('l' + id.slice(1), ref, g.artist.id, work ? work.id : null, 'relay', now(), f.founding, f.year_end, 'relay', now()).run();
+    } catch (e) { logged = 'not logged: ' + String(e.message || e).slice(0, 80); }
     const about = work ? `“${work.title}”` : 'your work';
     const r1 = await send(env, { to: g.artist.email, replyTo: email,
       subject: `PlotArt enquiry about ${work ? work.title : 'your work'} · ${ref}`,
@@ -130,7 +140,7 @@ export default {
       text: `Hello ${name},\n\nThank you. Your enquiry about ${work ? `“${work.title}”` : `work by ${g.artist.display_name}`} has been passed to ${g.artist.display_name}, who will reply to you by email.\n\n` +
         `Reference: ${ref}\n\nHow we handle enquiries: https://plotnua.ie/privacy.html#plotart-enquiries\n\nPlotArt · part of PlotNua` });
     await env.DB.prepare('UPDATE enquiries SET status=?, sent_at=?, detail=? WHERE id=?').bind(r1.sent ? 'sent' : 'received', r1.sent ? now() : null, r1.detail, id).run();
-    await env.DB.prepare('INSERT INTO audit (at, actor, role, action, artist_id, detail) VALUES (?,?,?,?,?,?)').bind(now(), 'buyer', 'public', 'enquiry', g.artist.id, JSON.stringify({ ref, work: work ? work.id : null, mail: r1.detail })).run();
+    await env.DB.prepare('INSERT INTO audit (at, actor, role, action, artist_id, detail) VALUES (?,?,?,?,?,?)').bind(now(), 'buyer', 'public', 'enquiry', g.artist.id, JSON.stringify({ ref, work: work ? work.id : null, mail: r1.detail, log: logged })).run();
     return reply(env, origin, 200, { ok: true, reference: ref });
   },
 };
