@@ -6,7 +6,7 @@ from urllib.parse import quote
 
 E = lambda s: html.escape(str(s), quote=True)
 ENQUIRY_ADDRESS = "hello@plotnua.ie"     # interim pilot route (founder decision 29 Oct 2026); the relay replaces it
-ENQUIRY_NOTICE = "PA-ENQ-2026-10-29"     # version of the enquiry notice shown under the form (privacy V8)
+ENQUIRY_NOTICE = "PA-ENQ-2026-11"        # version of the enquiry notice shown under the form (privacy V11; the relay also accepts PA-ENQ-2026-10-29 on pages published earlier)
 
 
 def enquiry_form(pkg, w, endpoint):
