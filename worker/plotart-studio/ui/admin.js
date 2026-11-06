@@ -422,7 +422,7 @@
           <div class="st-f"><label for="lg-work">Artwork (optional)</label><select id="lg-work"><option value="">General enquiry (no particular work)</option></select></div>
           <div class="st-f"><label for="lg-day">Date PlotArt introduced it (Irish date)</label><input id="lg-day" type="date" value="${E(L.today || '')}" max="${E(L.today || '')}" min="${E(L.floor || '')}"></div>
         </div><div>
-          <div class="st-f"><label for="lg-note">Note (optional)</label><textarea id="lg-note" maxlength="280" placeholder="e.g. Forwarded from the hello@ inbox"></textarea>
+          <div class="st-f"><label for="lg-note">Note (optional)</label><textarea id="lg-note" maxlength="280" placeholder="e.g. Forwarded from the PlotNua inbox"></textarea>
             <p class="st-hint"><b>Never enter the buyer’s name, email address or phone number.</b> Up to 280 characters.</p></div>
           <label class="st-check"><input type="checkbox" id="lg-ok" style="accent-color:var(--terra);width:20px;height:20px"> PlotArt introduced this enquiry to the artist on this date.</label>
           <div class="st-actions"><button class="st-btn st-btn--solid" id="lg-go">Log enquiry</button></div><p class="st-err" id="lg-err" role="alert"></p>
