@@ -264,8 +264,24 @@ if (PRICE) {
 if (PRICE) {
   const v = visible(PRICE);
   const errs = [];
-  if (!v.includes('we are certainly not going to tell you what a garden home costs'))
-    errs.push('the explicit garden-home price refusal is missing');
+  // The refusal sentence was removed by the founder-approved DISC-008 redesign
+  // (2d12ac4, 4 Nov 2026) and DECLARED, word for word, in
+  // premium-discovery/living-garden-added.json removedBlocks. A declared,
+  // approved removal satisfies the check; an undeclared one still fails.
+  // P3 correction prepared 6 Nov 2026 (Stage 3B, Part 4).
+  const REFUSAL = 'we are certainly not going to tell you what a garden home costs';
+  if (!v.includes(REFUSAL)) {
+    let declared = false;
+    try {
+      const added = JSON.parse(readFileSync(join(HERE, 'premium-discovery', 'living-garden-added.json'), 'utf8'));
+      declared = (added.removedBlocks || []).some(b => String(b).includes(REFUSAL));
+    } catch (e) { declared = false; }
+    if (!declared) errs.push('the explicit garden-home price refusal is missing (and its removal is not declared)');
+  }
+  // The direct trip-wire the sentence used to stand for: no garden-home price
+  // in the price section, in either word order, with any euro form.
+  if (/garden[- ]homes?\b[^.]{0,160}(?:€|&euro;|&#8364;|\bEUR\b|\beuros?\b)|(?:€|&euro;|&#8364;|\bEUR\b)[^.]{0,160}\bgarden[- ]homes?\b/i.test(v))
+    errs.push('a garden-home price appears in the price section');
   if (/\b(all|every|complete|entire)\b[^.]{0,30}\b(Irish )?(garden[- ]room )?market\b/i.test(v))
     errs.push('the page implies Atlas is a complete census of the market');
   if (EV.homeownerVisibleFigures.class3AProductsInAtlas > 2)
