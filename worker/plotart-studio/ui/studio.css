@@ -230,7 +230,7 @@ body.st{ background:var(--anth); min-height:100vh; }
 .st-doc{ max-height:62vh; overflow:auto; background:#F4F1EC; color:#1B1C1E; border-radius:12px; padding:18px 18px 8px; font:15px/1.6 var(--sans); overscroll-behavior:contain; }
 .st-doc:focus-visible{ outline:2px solid var(--terra-text); outline-offset:3px; }
 .st-doc .sub{ color:#5E5A55; font-size:13.5px; margin:0 0 14px; }
-.st-doc h2{ font:400 19px/1.3 var(--serif); color:#1B1C1E; margin:20px 0 8px; }
+.st-card .st-doc h2{ font:400 19px/1.3 var(--serif); color:#1B1C1E; margin:20px 0 8px; }
 .st-doc p{ margin:0 0 10px; color:#1B1C1E; }
 .st-doc .cl{ display:grid; grid-template-columns:2.8rem minmax(0,1fr); }
 .st-doc .cl .n{ font-weight:700; }
