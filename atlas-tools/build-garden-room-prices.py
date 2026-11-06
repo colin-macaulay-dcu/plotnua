@@ -106,7 +106,14 @@ PARENT_HREF = "discovery-living-in-the-garden.html"
 PARENT_TEXT = "Explore Living in the Garden"
 PARENT_NAME = "Living in the Garden"
 PARENT_MAX_WORDS = 40   # visible words allowed before the parent link
-BUILD_DATE = "2026-10-26"   # the page's dateModified; equals its sitemap lastmod
+BUILD_DATE = "2026-11-06"   # the page's dateModified; equals its sitemap lastmod
+# 6 Nov 2026 (founder decision, staged pricing refresh): 16 base prices rechecked
+# (register entry price-recheck-2026-11-06), so the page content changed and its
+# dateModified and sitemap lastmod move with it. Stage 2 adds four builder regions:
+# CHECKED (visible check dates), VAT, EXTRAS ("What may cost extra", from
+# atlas-tools/garden-room-extras-evidence.json, counts only) and the meta description,
+# now written from the published figures. The commercial-disclosure guard
+# (atlas-tools/check-commercial-disclosure.py) runs on every build and check.
 # 20 Oct 2026 (SEO-C1 Release 1): the figures were corrected for five Outdoor Living
 # records through atlas-tools/build-cluster1-cost-evidence.py and its register.
 # PRICE BY SIZE: NOT PUBLISHED (founder SEO directive, 19 Oct 2026, "price by
@@ -131,8 +138,20 @@ HERO_ILLUSTRATION = {
     "assets/garden-room-prices/garden-room-prices-hero-2026-10-23-960.webp": "a016f563d6f422e42c4f212f8fd929cd28523e304c72171c103064ef27ef97fb",
     "assets/garden-room-prices/garden-room-prices-hero-2026-10-23-1672.webp": "e0ca487506f2db412ad00daaa6a60cfec3b01ec4d48e1a2308c30e548c56a531",
 }
-DESCRIPTION = ("How much does a garden room cost in Ireland? Published price ranges from "
-               "PlotNua's research, what the advertised price covers, and how to compare quotes.")
+# The meta description (founder decision, 6 Nov 2026, Stage 2 item 3) is written from
+# the published turnkey range, so it can never state a figure the page does not.
+DESCRIPTION_FMT = ("Installed garden rooms in Ireland are advertised from %s to %s in "
+                   "PlotNua's research. What the price covers, VAT, extras and how to compare quotes.")
+
+
+def description(t):
+    # No double quote may appear: the text sits inside a content="..." attribute.
+    return DESCRIPTION_FMT % ("\u20ac{:,}".format(int(t["minEur"])), "\u20ac{:,}".format(int(t["maxEur"])))
+
+
+EXTRAS = ROOT / "atlas-tools" / "garden-room-extras-evidence.json"
+EXTRAS_ROWS = (("base", "Base or foundations"), ("delivery", "Delivery"),
+               ("electricalConnection", "Electrical connection to the house"))
 TODAY = dt.date.fromisoformat(
     next((a.split("=", 1)[1] for a in sys.argv if a.startswith("--today=")),
          dt.date.today().isoformat()))
@@ -383,6 +402,30 @@ def render(ev, ex):
         'suppliers advertise, not a typical Irish price and not an all-in quotation: '
         'foundations, electrical connection and VAT can still sit outside it.</p>'
         % (eur(t["minEur"]), eur(t["maxEur"]), t["n"], t["organisations"], date_long(snap)))
+    # Stage 2 item 6 (6 Nov 2026): straight from the answer to the products. No name and no
+    # count (R4, R6); not "the products behind this range", because the Discovery lists
+    # only what PlotNua currently publishes.
+    regions["LEAD"] += (
+        '\n<p class="pr-small pr-makers-link">See the garden rooms PlotNua publishes, with '
+        'their makers, specifications and prices. <a href="%s#explore-makers">Explore garden '
+        'rooms and makers&nbsp;&rarr;</a></p>' % PARENT_HREF)
+    # Stage 2 item 1: the check dates, visible near the top of the page.
+    regions["CHECKED"] = (
+        '<p class="pr-asof">Prices in the published ranges were last checked against each '
+        'supplier&rsquo;s own published information between %s and %s.</p>'
+        % (date_long(oldest), date_long(newest)))
+    # Stage 2 item 4: VAT, from the same rows as the range.
+    regions["VAT"] = (
+        '<h3 class="pd-h3">VAT in these prices</h3>\n'
+        '<p class="pr-small">Of the %d installed, finished prices in the range above, %d %s VAT '
+        'is included, %d %s it is not, and %d %s not say. A price shown &ldquo;+VAT&rdquo; or '
+        '&ldquo;ex VAT&rdquo; is less than you will pay, so add VAT before comparing it with a '
+        'VAT-inclusive price, and ask every supplier for the VAT-inclusive total in writing.</p>'
+        % (t["n"], t["vatIncluded"], "says" if t["vatIncluded"] == 1 else "say",
+           t["vatExcluded"], "says" if t["vatExcluded"] == 1 else "say",
+           t["vatUnknown"], "does" if t["vatUnknown"] == 1 else "do"))
+    regions["EXTRAS"] = extras(dated, t)
+    regions["_DESC"] = description(t)
 
     trs = []
     for k in published:
@@ -540,7 +583,7 @@ def render(ev, ex):
             {"@type": "WebPage", "@id": "https://plotnua.ie/garden-room-prices-ireland.html#webpage",
              "url": "https://plotnua.ie/garden-room-prices-ireland.html",
              "name": "Garden Room Prices in Ireland",
-             "description": DESCRIPTION, "inLanguage": "en-IE",
+             "description": regions["_DESC"], "inLanguage": "en-IE",
              "dateModified": BUILD_DATE,
              # about (19 Oct 2026): what the page is about, as plain named things. No
              # FAQPage, Dataset or Product markup: see the notes below and the
@@ -578,9 +621,64 @@ def render(ev, ex):
     return regions, facts
 
 
+def extras(dated, t):
+    """Stage 2 item 5: what the suppliers behind the published turnkey range say about
+    three costs. Counts only. Refuses unless the evidence covers exactly those suppliers,
+    every state is known, and every statement was checked within MAX_AGE_DAYS (R5)."""
+    doc = json.loads(EXTRAS.read_text(encoding="utf-8"))
+    want = {r["supplierKey"] for r in dated if r["segment"] == "INSTALLED_FINISHED_TURNKEY"}
+    sup = doc["suppliers"]
+    have = [hashlib.sha256(x["organisation"].encode()).hexdigest()[:12] for x in sup]
+    if len(have) != len(set(have)) or set(have) != want or len(want) != t["organisations"]:
+        die("EXTRAS the evidence does not cover exactly the %d suppliers in the published "
+            "installed range" % t["organisations"])
+    dates = []
+    counts = {}
+    for k, _ in EXTRAS_ROWS:
+        c = {"included": 0, "extra": 0, "notEstablished": 0}
+        for x in sup:
+            e = x.get(k) or {}
+            if e.get("state") not in c or not e.get("evidence") or not e.get("source"):
+                die("EXTRAS %s: %s has no recognised state, evidence and source" % (k, x["organisation"]))
+            d = dt.date.fromisoformat(e["checked"])
+            if (TODAY - d).days > MAX_AGE_DAYS:
+                die("EXTRAS %s: %s was checked %s, more than %d days ago" % (k, x["organisation"], d, MAX_AGE_DAYS))
+            c[e["state"]] += 1
+            dates.append(d)
+        counts[k] = c
+    word = {1: "one", 2: "two", 3: "three", 4: "four", 5: "five", 6: "six", 7: "seven", 8: "eight", 9: "nine"}
+    def part(c, k, phrase):
+        return "%s %s" % (phrase, word.get(c[k], c[k]))
+    items = "".join(
+        '<li><strong>%s:</strong> %s, %s, %s.</li>'
+        % (label, part(counts[k], "included", "included in the price by"),
+           part(counts[k], "extra", "charged separately or left to you by"),
+           part(counts[k], "notEstablished", "not stated by"))
+        for k, label in EXTRAS_ROWS)
+    n = t["organisations"]
+    return (
+        '<h3 class="pd-h3" id="what-may-cost-extra">What may cost extra: what the %s suppliers behind the installed range say</h3>\n'
+        '<p>The installed, finished range above comes from %s suppliers. This is what they publish '
+        'about three costs that often sit outside the advertised price. PlotNua shows how many say '
+        'each thing, not who.</p>\n'
+        '<ul class="pr-small-list">%s</ul>\n'
+        '<p class="pr-small">Checked against each supplier&rsquo;s published information between %s '
+        'and %s. &ldquo;Not stated&rdquo; means PlotNua holds no published statement either way, so '
+        'ask. <a href="#quote-checklist">The quote checklist</a> covers all three.</p>'
+        % (word.get(n, n), word.get(n, n), items, date_long(min(dates)), date_long(max(dates))))
+
+
 def fill(page, regions):
     out = page
+    desc = regions.get("_DESC")
+    if desc is not None:
+        pat = re.compile(r'(<meta name="description" content=")[^"]*(">)')
+        if len(pat.findall(out)) != 1:
+            die("the meta description tag is not found exactly once")
+        out = pat.sub(lambda m: m.group(1) + html.escape(desc, quote=False) + m.group(2), out)
     for k, v in regions.items():
+        if k.startswith("_"):
+            continue
         pat = re.compile(r"(<!-- PN-PRICES:%s -->).*?(<!-- /PN-PRICES:%s -->)" % (k, k), re.S)
         if len(pat.findall(out)) != 1:
             die("page region %s not found exactly once" % k)
@@ -614,9 +712,12 @@ def parent_guards(text):
             die("G-PARENT the invitation does not link %s" % need)
 
 
-def page_guards(text, ex_rows):
-    if ('name="description" content="%s"' % DESCRIPTION) not in text:
+def page_guards(text, ex_rows, desc):
+    if ('name="description" content="%s"' % html.escape(desc, quote=False)) not in text:
         die("the meta description is not the one the structured data carries")
+    if re.search(r"&euro;|€", re.sub(r"<[^>]+>", " ", re.search(
+            r"<!-- PN-PRICES:EXTRAS -->(.*?)<!-- /PN-PRICES:EXTRAS -->", text, re.S).group(1))):
+        die("EXTRAS the extra-costs section states a euro amount")
     # R3 exemption, scoped: the NOAVG region is fixed text that explains why no
     # average is published. It must carry no figure at all; everything outside
     # it is still held to the full rule.
@@ -715,7 +816,14 @@ def main():
     regions, facts = render(ev, ex)
     page = PAGE.read_text(encoding="utf-8")
     out = fill(page, regions)
-    page_guards(out, ex["rows"])
+    page_guards(out, ex["rows"], regions["_DESC"])
+    spec = importlib.util.spec_from_file_location("commercial_disclosure",
+                                                  ROOT / "atlas-tools" / "check-commercial-disclosure.py")
+    cd = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(cd)
+    reg, _, _, litg = cd.load()
+    for b in cd.problems(reg, ex, out, litg):
+        die("COMMERCIAL " + b)
     print(json.dumps(facts, indent=1))
     if CHECK:
         if out != page:

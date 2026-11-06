@@ -68,6 +68,10 @@ FAULTS = [
      rx(r'("asset": "assets/garden-room-prices/garden-room-prices-hero-2026-10-23-1672\.jpg".*?"permitted_surfaces": \[\s*)"discovery"', r'\1"homepage"')),
     ("provenance claims a named product", "image-provenance-records.json",
      rx(r'("asset": "assets/garden-room-prices/garden-room-prices-hero-2026-10-23-1672\.avif".*?"depicts_named_product": )false', r"\1true")),
+    ("meta description reworded (6 Nov 2026)", PAGE, rx(r'(<meta name="description" content=")Installed garden rooms', r"\1Cheap garden rooms")),
+    ("meta description figure typed by hand (6 Nov 2026)", PAGE, rx(r'(<meta name="description" content="[^"]*?from )€9,995', r"\1€8,995")),
+    ("extra-costs region removed (6 Nov 2026)", PAGE, rx(r"<!-- PN-PRICES:EXTRAS -->.*?<!-- /PN-PRICES:EXTRAS -->", "")),
+    ("VAT region removed (6 Nov 2026)", PAGE, rx(r"<!-- PN-PRICES:VAT -->.*?<!-- /PN-PRICES:VAT -->", "")),
     ("a pinned hero file altered", "assets/garden-room-prices/garden-room-prices-hero-2026-10-23-1672.avif", None),
 ]
 
@@ -76,7 +80,8 @@ def main():
     with tempfile.TemporaryDirectory() as d:
         base = Path(d) / "base"; base.mkdir()
         shutil.copy2(ROOT / PAGE, base / PAGE)
-        for f in ("garden-room-recommendation-universe-v1.json", "image-provenance-records.json"):
+        for f in ("garden-room-recommendation-universe-v1.json", "image-provenance-records.json",
+                  "discovery-living-in-the-garden.html"):   # the commercial-disclosure guard (6 Nov 2026)
             shutil.copy2(ROOT / f, base / f)
         sys.path.insert(0, str(TOOLS))
         import importlib.util

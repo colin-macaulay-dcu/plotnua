@@ -1,7 +1,7 @@
 {
   "schema": "plotnua.cluster1.cost-evidence",
   "version": 1,
-  "generated": "2026-10-26",
+  "generated": "2026-11-06",
   "source": {
     "file": "garden-room-recommendation-universe-v1.json",
     "generated": "2026-10-07T11:26:27Z",
@@ -16,28 +16,28 @@
     "excludes": "availabilityStatus == Out of Stock"
   },
   "totals": {
-    "gardenRoomRecords": 570,
-    "organisationsAll": 64,
-    "relevant": 245,
-    "relevantOrganisations": 24,
-    "priceBasisNotEstablished": 177,
+    "gardenRoomRecords": 565,
+    "organisationsAll": 63,
+    "relevant": 240,
+    "relevantOrganisations": 23,
+    "priceBasisNotEstablished": 172,
     "vatStatusUnknown": 92,
-    "floorAreaPublished": 43,
-    "floorAreaPublishedOrganisations": 10,
+    "floorAreaPublished": 38,
+    "floorAreaPublishedOrganisations": 9,
     "rangeFloorPrices": 77,
     "quoteOnly": 0
   },
   "segments": {
     "UNKNOWN_NOTHING_PUBLISHED": {
-      "n": 111,
-      "organisations": 6,
+      "n": 106,
+      "organisations": 5,
       "minEur": 4789,
-      "medianEur": 9199,
+      "medianEur": 9371.5,
       "maxEur": 43450,
-      "vatIncluded": 106,
+      "vatIncluded": 101,
       "vatExcluded": 0,
       "vatUnknown": 5,
-      "floorAreaKnown": 7
+      "floorAreaKnown": 2
     },
     "UNKNOWN_DIY_OR_INSTALLED": {
       "n": 65,
@@ -108,11 +108,11 @@
   },
   "classEnvelopes": {
     "lte30_class3": {
-      "n": 41,
-      "organisations": 10,
+      "n": 36,
+      "organisations": 9,
       "minEur": 4870,
       "maxEur": 94900,
-      "medianEur": 9425
+      "medianEur": 10297.5
     },
     "between32and45_class3A": {
       "n": 1,
@@ -130,10 +130,10 @@
     }
   },
   "homeownerVisibleFigures": {
-    "relevantProducts": 245,
-    "priceBasisNotEstablished": 177,
+    "relevantProducts": 240,
+    "priceBasisNotEstablished": 172,
     "vatStatusUnknown": 92,
-    "floorAreaPublished": 43,
+    "floorAreaPublished": 38,
     "class3AProductsInAtlas": 1
   },
   "notes": [
@@ -235,6 +235,76 @@
         "rect9ZuAtfSmjfNuE"
       ],
       "pageNote": "seven base prices rechecked on 26 October 2026"
+    },
+    {
+      "id": "price-recheck-2026-11-06",
+      "date": "2026-11-06",
+      "deployedCommit": "790d1b721497aae3aabf4fc5624cf68fbf59ee0d",
+      "products": [
+        "recKHXaApIugjOKti",
+        "recUs4gexxlfkaiUj",
+        "reciolethPMEn50gQ",
+        "recUnUAWq0TWkNO5C",
+        "recagT4dAtSxxdqv4",
+        "recXi7u4Hv7tTcB80",
+        "recsgAs9snaK2MAfa",
+        "recnbJjoXIbfxOgk2",
+        "recaGNRHjWWXqcX52",
+        "recA0HnNkzltWWhzi",
+        "rechMRoBym2H90To9",
+        "recWPmFXg8981XQtw",
+        "recUpbnPlPJO7N2wa",
+        "recrfXlRTCNCf8VB5",
+        "recfFcnNP9ZV4BcVW",
+        "recnBe46LKTCzLJ3P"
+      ],
+      "pageNote": "16 base prices rechecked on 6 November 2026"
+    },
+    {
+      "id": "price-recheck-pre-release-2026-11-06",
+      "date": "2026-11-06",
+      "deployedCommit": "9900392f1d6cab501da7847c581e6f7254259553",
+      "products": [
+        "recg5tg469ZKE9UwC",
+        "recuyH8VrmIzd3zxC",
+        "recz1fNk9SoCzF2QN",
+        "recCeS3wKxXtuJ6Er",
+        "recErdzg5LWrkYNas",
+        "recLFcbd91L8vYyeC",
+        "recMEoBeFD3t9qknz",
+        "recVNmE92vIrF71er",
+        "recWfFQ7j7PLFXDwz",
+        "recd1HzZxLve2wQal",
+        "recPYxbqwMRlCAXKj",
+        "rec2kgqP990nZPkmN",
+        "rec4sje6wXjpOsYKG",
+        "recAq2NceovXy5f1P",
+        "recLg4z2cQydV02Ky",
+        "recP4MFfAPeQfrRvG",
+        "recQIhbMjC2B1EJvR",
+        "recTm0jDWfdkDrV1T",
+        "recX34lTvJT2y9CVY",
+        "receZKzDGBygAPUmx",
+        "recgzy5w1BEgaXIWh",
+        "recpxuTAtQkRURSTk",
+        "recrTAV9qTBQqNMhB",
+        "recw0oy0R5hOJwoAs",
+        "recwZgVdrpD1osfLQ"
+      ],
+      "pageNote": "a further 25 rechecked the same day"
+    },
+    {
+      "id": "premium-log-house-unverifiable-2026-11-06",
+      "date": "2026-11-06",
+      "deployedCommit": "a8334711f21e6161a273159f991ba49b3be88f06",
+      "products": [
+        "rec1aGbKEhmwHzvOm",
+        "rec27bZcSQCIdgbuL",
+        "reccUcBew2v9mJ6nu",
+        "reclu4szcHAz7T9at",
+        "recnAsdDSAUSN1Md4"
+      ],
+      "pageNote": "five unverifiable supplier records removed"
     }
   ]
 }

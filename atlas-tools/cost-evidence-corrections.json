@@ -401,6 +401,269 @@
         }
       ],
       "pageNote": "seven base prices rechecked on 26 October 2026"
+    },
+    {
+      "id": "price-recheck-2026-11-06",
+      "date": "2026-11-06",
+      "approved": "Founder approved the staged garden-room pricing refresh on 6 November 2026 (Stage 1: genuine supplier-price rechecks, existing governed correction process). Sixteen published base prices were re-read on the supplier pages on 6 November 2026 and all matched: Garden Office Solutions (4), Adman Steel Sheds (9), Live in Garden Pods (1), Garden Rooms (2). Atlas Last Price Check and Notes updated for these records only. Rayco Modular Homes was not rechecked: the supplier site no longer shows the price, so its record is unchanged. No price amount, VAT, scope, feature, eligibility or image-rights change is authorised by this batch.",
+      "deployedCommit": "790d1b721497aae3aabf4fc5624cf68fbf59ee0d",
+      "deployedUniverseSha256": "565971774b00f4187fc72ab84f158052eace8c96650437edca0274147ebda0f3",
+      "rule": "Each enumerated product takes its record from the universe at deployedCommit; this batch changes only last-price-check dates. Original snapshot identity, existing corrections, non-target records and founder-held groups remain unchanged. LOCAL RELEASE CANDIDATE: deployedCommit is the local commit 790d1b7; it is valid at release only if that commit reaches production unchanged (fast-forward, no rebase).",
+      "products": [
+        {
+          "id": "recKHXaApIugjOKti",
+          "name": "Garden Office Solutions Garden Room 12.5m²",
+          "expect": "replaced"
+        },
+        {
+          "id": "recUs4gexxlfkaiUj",
+          "name": "Garden Office Solutions Garden Room 17.6m²",
+          "expect": "replaced"
+        },
+        {
+          "id": "reciolethPMEn50gQ",
+          "name": "Garden Office Solutions Garden Room 25m²",
+          "expect": "replaced"
+        },
+        {
+          "id": "recUnUAWq0TWkNO5C",
+          "name": "Garden Office Solutions Garden Room 26.4m²",
+          "expect": "replaced"
+        },
+        {
+          "id": "recagT4dAtSxxdqv4",
+          "name": "Multiroom Garden Room 3m x 3.2m",
+          "expect": "replaced"
+        },
+        {
+          "id": "recXi7u4Hv7tTcB80",
+          "name": "Multiroom Garden Room 3m x 4.2m",
+          "expect": "replaced"
+        },
+        {
+          "id": "recsgAs9snaK2MAfa",
+          "name": "Multiroom Garden Room 3m x 5.2m",
+          "expect": "replaced"
+        },
+        {
+          "id": "recnbJjoXIbfxOgk2",
+          "name": "Multiroom Garden Room 3m x 6.2m",
+          "expect": "replaced"
+        },
+        {
+          "id": "recaGNRHjWWXqcX52",
+          "name": "Multiroom Garden Room 3m x 9.2m",
+          "expect": "replaced"
+        },
+        {
+          "id": "recA0HnNkzltWWhzi",
+          "name": "Multiroom Garden Room 4m x 4.2m",
+          "expect": "replaced"
+        },
+        {
+          "id": "rechMRoBym2H90To9",
+          "name": "Multiroom Garden Room 4m x 5.2m",
+          "expect": "replaced"
+        },
+        {
+          "id": "recWPmFXg8981XQtw",
+          "name": "Multiroom Garden Room 4m x 6.2m",
+          "expect": "replaced"
+        },
+        {
+          "id": "recUpbnPlPJO7N2wa",
+          "name": "Multiroom Garden Room 4m x 9.2m",
+          "expect": "replaced"
+        },
+        {
+          "id": "recrfXlRTCNCf8VB5",
+          "name": "Studio Living Pod",
+          "expect": "replaced"
+        },
+        {
+          "id": "recfFcnNP9ZV4BcVW",
+          "name": "CUBE Garden Room Range",
+          "expect": "replaced"
+        },
+        {
+          "id": "recnBe46LKTCzLJ3P",
+          "name": "Ultimate Garden Room Range",
+          "expect": "replaced"
+        }
+      ],
+      "pageNote": "16 base prices rechecked on 6 November 2026"
+    },
+    {
+      "id": "price-recheck-pre-release-2026-11-06",
+      "date": "2026-11-06",
+      "approved": "Founder 'FINAL PRE-RELEASE RECHECK', 6 November 2026: recheck the 30 expiring published prices through the existing governed verification process. 25 were re-read on the supplier pages on 6 November 2026 and all matched: All In One Cabins (3), SIPS-House (7), Gardenhouse24 Ireland (1), Hansa24 Group (14). Atlas Last Price Check and Notes updated for these records only. No price amount, VAT, scope, feature, eligibility or image-rights change is authorised by this batch.",
+      "deployedCommit": "9900392f1d6cab501da7847c581e6f7254259553",
+      "deployedUniverseSha256": "51394c35c3daec5141a522bf35f731957164cb5d0d810f730cc9f8a77d4a9c22",
+      "rule": "Each enumerated product takes its record from the universe at deployedCommit; this batch changes only last-price-check dates. LOCAL RELEASE CANDIDATE: deployedCommit is valid at release only if it reaches production unchanged (fast-forward, no rebase).",
+      "products": [
+        {
+          "id": "recg5tg469ZKE9UwC",
+          "name": "The Corry (Single Room Cabin)",
+          "expect": "replaced"
+        },
+        {
+          "id": "recuyH8VrmIzd3zxC",
+          "name": "The Boderg (Single Room Cabin)",
+          "expect": "replaced"
+        },
+        {
+          "id": "recz1fNk9SoCzF2QN",
+          "name": "The Kilglass (Single Room Cabin)",
+          "expect": "replaced"
+        },
+        {
+          "id": "recCeS3wKxXtuJ6Er",
+          "name": "SIPS Garden Room MINT",
+          "expect": "replaced"
+        },
+        {
+          "id": "recErdzg5LWrkYNas",
+          "name": "SIPS Garden Office IRIS",
+          "expect": "replaced"
+        },
+        {
+          "id": "recLFcbd91L8vYyeC",
+          "name": "SIPS Garden Room POPPY",
+          "expect": "replaced"
+        },
+        {
+          "id": "recMEoBeFD3t9qknz",
+          "name": "SIPS Garden Office LILLY",
+          "expect": "replaced"
+        },
+        {
+          "id": "recVNmE92vIrF71er",
+          "name": "SIPS Garden Room ALOE",
+          "expect": "replaced"
+        },
+        {
+          "id": "recWfFQ7j7PLFXDwz",
+          "name": "SIPS Garden Room LOTUS",
+          "expect": "replaced"
+        },
+        {
+          "id": "recd1HzZxLve2wQal",
+          "name": "SIPS Garden Office DAISY",
+          "expect": "replaced"
+        },
+        {
+          "id": "recPYxbqwMRlCAXKj",
+          "name": "Lasse 44 C ALU",
+          "expect": "replaced"
+        },
+        {
+          "id": "rec2kgqP990nZPkmN",
+          "name": "Garden Room Barbados Plus with Storage",
+          "expect": "replaced"
+        },
+        {
+          "id": "rec4sje6wXjpOsYKG",
+          "name": "Garden House Linda",
+          "expect": "replaced"
+        },
+        {
+          "id": "recAq2NceovXy5f1P",
+          "name": "Large Garden Room D",
+          "expect": "replaced"
+        },
+        {
+          "id": "recLg4z2cQydV02Ky",
+          "name": "Corner Garden House Hansa B with Veranda",
+          "expect": "replaced"
+        },
+        {
+          "id": "recP4MFfAPeQfrRvG",
+          "name": "Large Corner Summer House Hansa Deluxe B",
+          "expect": "replaced"
+        },
+        {
+          "id": "recQIhbMjC2B1EJvR",
+          "name": "Large Modern Garden Room Roberta",
+          "expect": "replaced"
+        },
+        {
+          "id": "recTm0jDWfdkDrV1T",
+          "name": "Large Garden Room Hansa E",
+          "expect": "replaced"
+        },
+        {
+          "id": "recX34lTvJT2y9CVY",
+          "name": "Contemporary Garden House Grace ALU",
+          "expect": "replaced"
+        },
+        {
+          "id": "receZKzDGBygAPUmx",
+          "name": "Garden Room Liam",
+          "expect": "replaced"
+        },
+        {
+          "id": "recgzy5w1BEgaXIWh",
+          "name": "Garden Table-Tennis Room Hansa A",
+          "expect": "replaced"
+        },
+        {
+          "id": "recpxuTAtQkRURSTk",
+          "name": "Large Garden Office Barcelona",
+          "expect": "replaced"
+        },
+        {
+          "id": "recrTAV9qTBQqNMhB",
+          "name": "Large Garden Room Hansa F",
+          "expect": "replaced"
+        },
+        {
+          "id": "recw0oy0R5hOJwoAs",
+          "name": "Large Garden Room C",
+          "expect": "replaced"
+        },
+        {
+          "id": "recwZgVdrpD1osfLQ",
+          "name": "Garden House Super Tom with Side Shed",
+          "expect": "replaced"
+        }
+      ],
+      "pageNote": "a further 25 rechecked the same day"
+    },
+    {
+      "id": "premium-log-house-unverifiable-2026-11-06",
+      "date": "2026-11-06",
+      "approved": "Founder 'FINAL PRE-RELEASE RECHECK', 6 November 2026: 'If prices cannot be verified, do not represent them as freshly verified.' The five Premium Log House prices could not be re-verified: on 6 November 2026 premiumloghouse.ie (home page, garden-rooms category and all five product URLs) showed a parked 'Buy this domain' page with no prices. The products were already held from publication (19 Oct 2026 safety hold), so they are absent from the deployed universe; this entry removes their prices from the garden-room price evidence. Atlas price records annotated; their Last Price Check deliberately not changed.",
+      "deployedCommit": "a8334711f21e6161a273159f991ba49b3be88f06",
+      "deployedUniverseSha256": "c4713085a4359c8fab2cc5ac6f8ddec30e17268c01e20b5bf3554df020153556",
+      "rule": "Each enumerated product is absent from the deployed production universe at deployedCommit (held from publication since 19 Oct 2026) and therefore leaves the price evidence. No price is replaced or invented.",
+      "products": [
+        {
+          "id": "rec1aGbKEhmwHzvOm",
+          "name": "Premium Log House — Log Cabin Model 1, 5x4m 44mm, 20m²",
+          "expect": "removed"
+        },
+        {
+          "id": "rec27bZcSQCIdgbuL",
+          "name": "Premium Log House — Log Cabin Model 1, 4x3m 44mm, 12m²",
+          "expect": "removed"
+        },
+        {
+          "id": "reccUcBew2v9mJ6nu",
+          "name": "Premium Log House — Log Cabin Model 1, 4x4m 44mm, 16m²",
+          "expect": "removed"
+        },
+        {
+          "id": "reclu4szcHAz7T9at",
+          "name": "Premium Log House — Log Cabin Model 1, 6x3m 44mm, 18m²",
+          "expect": "removed"
+        },
+        {
+          "id": "recnAsdDSAUSN1Md4",
+          "name": "Premium Log House — Log Cabin Model 1, 5x3m 44mm, 15m²",
+          "expect": "removed"
+        }
+      ],
+      "pageNote": "five unverifiable supplier records removed"
     }
   ]
 }
