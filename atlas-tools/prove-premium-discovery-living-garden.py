@@ -274,7 +274,9 @@ def check(src, base):
 FAULTS = [
     ("hero start moved to POSSIBLE", lambda s: s.replace('data-start="100"', 'data-start="0"', 1), "S"),
     ("a planning fact edited", lambda s: s.replace("The planning minimum is 0.6&nbsp;m", "The planning minimum is 0.5&nbsp;m", 1), "C"),
-    ("a price figure edited", lambda s: s.replace("245 garden-room products", "246 garden-room products", 1), "C"),
+    # 6 Nov 2026: the figure follows the cost evidence (245 -> 240); the fault now edits whatever it is.
+    ("a price figure edited", lambda s: re.sub(r"(\d+)( garden-room products with a euro price)",
+                                                lambda m: str(int(m.group(1)) + 1) + m.group(2), s, count=1), "C"),
     ("a price block removed", lambda s: re.sub(r"<li><span class=\"dq-fact\">92 do not publish.*?</li>", "", s, count=1, flags=re.S), "C"),
     ("a notice dropped", lambda s: s.replace("Separately, tell Building Control.", "", 1), "C"),
     ("an Atlas route removed", lambda s: s.replace('href="your-plot.html?discovery=residential"', 'href="your-plot.html"'), "L"),
