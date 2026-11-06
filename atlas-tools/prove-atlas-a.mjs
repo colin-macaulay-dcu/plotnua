@@ -275,11 +275,22 @@ else {
        Availability record, Organisation-Wide (ie.powersheds.com delivers
        throughout Ireland), which is a scope-limited read: +3. Model-level
        unchanged at 552; every other product's reads are unchanged, no scope
-       note was lost, and leak stays 0. */
-    refused === 1359 ? ok('1,359 scope-limited established reads REFUSED ' + JSON.stringify(byScope))
-                     : bad('expected 1,359 scope-limited refusals, measured ' + refused);
-    allowed === 552 ? ok('552 model-level established reads allowed')
-                    : bad('expected 552 model-level marks, measured ' + allowed);
+       note was lost, and leak stays 0.
+
+       RE-CENSUSED 6 November 2026 for the founder-approved Stage 3B East Coast
+       Carpentry addition (publish-targeted-update.py, ten new garden rooms):
+       model-level 552 -> 572, scope-limited 1359 -> 1404. Decomposed per
+       product before the numbers moved (each of the ten, identically except
+       cladding): +2 model-level (glazing and externalDimensions, Product-
+       Specific); +4 or +5 scope-limited (deliveryBasis, irishAvailability and
+       warranty Organisation-Wide; insulation Range-Level; cladding Range-Level
+       on the five Premium Composite rooms only) = +20 and +45. Every one of the
+       570 pre-existing products is byte-identical, no scope note was lost, and
+       leak stays 0. */
+    refused === 1404 ? ok('1,404 scope-limited established reads REFUSED ' + JSON.stringify(byScope))
+                     : bad('expected 1,404 scope-limited refusals, measured ' + refused);
+    allowed === 572 ? ok('572 model-level established reads allowed')
+                    : bad('expected 572 model-level marks, measured ' + allowed);
     const none = ['none', 'stated', 'deferred', 'negative', 'flat']
       .filter(s => marked({ state: s, scope: null, conflict: null }));
     none.length ? bad('states that must never be marked are: ' + none.join(', '))

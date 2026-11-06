@@ -95,7 +95,12 @@ PINS = {
     # in place of the bare kind, and a product may carry register-worded note lines
     # (X.notes) under its price. Both are optional: a product or image without them
     # renders exactly as before. Previous pin: 3de07e18…
-    SHARED_JS:  "12553309b07bba404e4a8bb387bb38106e8608066c506e85bc9ccea30d75b38a",
+    # Re-pinned 6 Nov 2026 (Stage 3B D1(b), founder approval): a maker carrying m.rg
+    # (every product under a regional price-presentation hold) reads "Available in
+    # <region> only" in its drawer header, product status and directory label in place
+    # of the Irish-availability wording. A maker without m.rg renders exactly as before.
+    # Previous pin: 12553309…
+    SHARED_JS:  "e3ddc87931e200a5814347cf67d25396f176de6d1d8a696e4d4bc6ae064ca595",
     # Re-pinned 13 Oct 2026: the stylesheet is now shared with the Provider
     # Explorer (The Borrowed Garden). Every rule is scoped to
     # :is(#explore-makers, #explore-providers), which keeps each rule's
@@ -148,7 +153,8 @@ def _gr(U):
         if r.get("noPublishedIrishRoute"): return "r"
         return "u"
     eligible = [(r["organisation"], r["id"], r["productName"], r.get("productType") or "", st(r),
-                 {"kinds": [], "price": garden_price_label(r), "nav": universe_nav(r)}) for r in rows]
+                 {"kinds": [], "price": garden_price_label(r), "nav": universe_nav(r),
+                  "region": ((r.get("priceEvidence") or {}).get("presentationHold") or {}).get("region")}) for r in rows]
     # "confirmed" is cross-checked against the qualification signal each
     # LISTED record carries, not against the header: the header's
     # confirmedIrishAvailabilityCount counts excluded products too, so an
@@ -606,8 +612,17 @@ def garden_price_label(r):
     if hold:
         e = r.get("priceEvidence") or {}
         q = (hold.get("qualification") or "").strip()
-        if not q or disp is None or cur != "EUR" or e.get("status") != "Verified" \
-                or (e.get("includesVat") or "").strip().lower() not in ("no", "excluding vat"):
+        vat = (e.get("includesVat") or "").strip().lower()
+        if not q or disp is None or cur != "EUR" or e.get("status") != "Verified":
+            die("price: held product %s needs a verified euro price and a qualification" % r["id"])
+        # Stage 3B (6 Nov 2026): a VAT-inclusive held price (ECC, a regional price)
+        # is shown as the figure followed by its qualification, which states the VAT
+        # basis itself. Declared on the hold, and checked against the Atlas price.
+        if hold.get("vatBasis") == "included":
+            if vat != "yes" or "VAT" not in q:
+                die("price: held product %s is declared VAT-inclusive but Atlas or the qualification disagrees" % r["id"])
+            return disp + ". " + q
+        if vat not in ("no", "excluding vat"):
             die("price: held product %s needs a verified euro price excluding VAT and a qualification" % r["id"])
         return disp + " excluding VAT. " + q
     if kind == "quote-only":
@@ -792,7 +807,7 @@ def load(P):
             if k not in header.get("kindCounts", {}): die("tab %r: the source declares no count for kind %r" % (T["key"], k))
             eligible = [e for e in eligible if len(e) > 5 and k in e[5]["kinds"]]
             header = {"products": header["kindCounts"][k], "makers": header["kindOrganisationCounts"][k]}
-        by = {}
+        by, regions = {}, {}
         MNOTES, PNOTES = notes_register()
         for e in eligible:
             org, pid, pname, ptype, st = e[:5]
@@ -807,9 +822,20 @@ def load(P):
                     row.append("")
                 row.append(nav)
             by.setdefault(org, []).append(row)
+            regions.setdefault(org, set()).add((e[5].get("region") if len(e) > 5 else None) or None)
         makers = []
         for k, v in sorted(by.items(), key=lambda kv: kv[0].lower()):
             mk = {"m": DISPLAY_ALIAS.get(k, k), "p": sorted(v, key=lambda x: x[1].lower())}
+            # Stage 3B D1(b), 6 Nov 2026: a maker whose every product carries a
+            # regional price-presentation hold works in that region only. m.rg
+            # replaces "Irish availability confirmed" with "Available in <region>
+            # only" in the header, product status, directory and A-Z. A maker with
+            # a mixture is refused rather than described wrongly.
+            rgs = regions.get(k, {None})
+            if rgs != {None}:
+                if len(rgs) != 1 or None in rgs: die("RG1 %s mixes regional and non-regional products" % k)
+                if any(r[3] != "c" for r in v): die("RG1 %s is regional but not every product is Irish-confirmed" % k)
+                mk["rg"] = next(iter(rgs))
             lead = lead_image(mk["p"])
             if lead:
                 mk["l"] = lead
@@ -879,7 +905,7 @@ def az_index(tabs):
             n = len(m["p"])
             h.append(f'        <li><a href="#p-{html.escape(m["p"][0][0])}">{html.escape(m["m"])}</a> '
                      f'<span>{n} {html.escape(c["nouns"][0 if n == 1 else 1])} &middot; '
-                     f'{AZ_STATE[maker_state(m)]}</span></li>')
+                     f'{html.escape("Available in " + m["rg"] + " only") if m.get("rg") else AZ_STATE[maker_state(m)]}</span></li>')
         h.append('      </ul>')
     h.append('    </details>')
     return "\n".join(h) + "\n"

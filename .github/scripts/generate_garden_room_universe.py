@@ -901,7 +901,7 @@ _PRICE_PRESENTATION_HOLD = None
 
 
 def price_presentation_holds():
-    """Product id -> qualification, for products whose Atlas price is kept but
+    """Product id -> (qualification, optional label/reason/vatBasis), for products whose Atlas price is kept but
     must not be matched, compared or shown without its qualification
     (atlas-tools/price-presentation-holds.json; founder decision 6 Nov 2026,
     NOOK Stage 3A controlled publication). An unreadable register refuses the
@@ -919,7 +919,21 @@ def price_presentation_holds():
             q = (r.get("qualification") or "").strip()
             if not r.get("productId") or not q:
                 fail("a price-presentation hold has no productId or no qualification")
-            holds[r["productId"]] = q
+            if r["productId"] in holds:
+                fail("price-presentation hold listed twice: %s" % r["productId"])
+            # Stage 3B (6 Nov 2026): optional product-specific presentation. Absent
+            # on the NOOK holds, so NOOK's published record is unchanged.
+            extra = {}
+            for k in ("label", "reason", "region"):
+                v = (r.get(k) or "").strip()
+                if v:
+                    extra[k] = v
+            vb = r.get("vatBasis")
+            if vb is not None:
+                if vb not in ("included", "excluded"):
+                    fail("price-presentation hold %s: vatBasis must be 'included' or 'excluded'" % r["productId"])
+                extra["vatBasis"] = vb
+            holds[r["productId"]] = (q, extra)
         _PRICE_PRESENTATION_HOLD = holds
     return _PRICE_PRESENTATION_HOLD
 
@@ -928,14 +942,17 @@ def apply_price_presentation_hold(rec, pid):
     """Additive. A held product keeps its price and its evidence; it is never
     safe for matching, and its evidence carries the qualification every
     surface must show beside the figure (or show instead of it)."""
-    q = price_presentation_holds().get(pid)
-    if not q:
+    held = price_presentation_holds().get(pid)
+    if not held:
         return
+    q, extra = held
     rec["priceSafeForMatching"] = False
     if rec.get("priceBasisConfidence") in ("EXPLICIT", "NO_BASIS_STATED", "NOT_CONFIRMED"):
         rec["priceBasisConfidence"] = "UNSAFE"
     if isinstance(rec.get("priceEvidence"), dict):
-        rec["priceEvidence"]["presentationHold"] = {"qualification": q, "matching": "excluded"}
+        hold = {"qualification": q, "matching": "excluded"}
+        hold.update(extra)
+        rec["priceEvidence"]["presentationHold"] = hold
 
 
 def qualify(product, orgs, price_rows, avail_rows, feat_rows,

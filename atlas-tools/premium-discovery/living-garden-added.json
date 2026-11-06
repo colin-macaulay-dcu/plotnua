@@ -136,6 +136,26 @@
    "why": "6 Nov 2026, founder decisions (staged garden-room pricing refresh, Stage 1, and the final pre-release recheck): the cost-evidence figures follow the registered corrections price-recheck-2026-11-06, price-recheck-pre-release-2026-11-06 and premium-log-house-unverifiable-2026-11-06 (five unverifiable Premium Log House prices removed from the evidence), written by atlas-tools/refresh-garden-cost-figures.py from cluster1-cost-evidence.json.",
    "from": "Only 43 publish a floor area. Which is the one number the planning rules actually turn on.",
    "to": "Only 38 publish a floor area. Which is the one number the planning rules actually turn on."
+  },
+  {
+   "why": "2026-11-06, founder approval 'PLOTNUA — STAGE 3B EAST COAST CARPENTRY ATLAS IMPLEMENTATION AND PUBLICATION PREPARATION' (19:10): ten East Coast Carpentry garden rooms published by publish-targeted-update.py; the explorer's own counts follow.",
+   "from": "Garden rooms 570",
+   "to": "Garden rooms 580"
+  },
+  {
+   "why": "2026-11-06, founder approval 'PLOTNUA — STAGE 3B EAST COAST CARPENTRY ATLAS IMPLEMENTATION AND PUBLICATION PREPARATION' (19:10): ten East Coast Carpentry garden rooms published by publish-targeted-update.py; the explorer's own counts follow.",
+   "from": "All 64 garden room makers and 9 garden home makers, A to Z",
+   "to": "All 65 garden room makers and 9 garden home makers, A to Z"
+  },
+  {
+   "why": "2026-11-06, founder approval 'PLOTNUA — STAGE 3B EAST COAST CARPENTRY ATLAS IMPLEMENTATION AND PUBLICATION PREPARATION' (19:10): ten East Coast Carpentry garden rooms published by publish-targeted-update.py; the explorer's own counts follow. The supplier gallery header figures follow the explorer (build-supplier-gallery.py).",
+   "from": "570 garden rooms",
+   "to": "580 garden rooms"
+  },
+  {
+   "why": "2026-11-06, founder approval 'PLOTNUA — STAGE 3B EAST COAST CARPENTRY ATLAS IMPLEMENTATION AND PUBLICATION PREPARATION' (19:10): ten East Coast Carpentry garden rooms published by publish-targeted-update.py; the explorer's own counts follow. The supplier gallery header figures follow the explorer (build-supplier-gallery.py).",
+   "from": "75 makers researched",
+   "to": "76 makers researched"
   }
  ],
  "homeownerImprovement": {
@@ -160,5 +180,17 @@
  ],
  "removedIds": [
   "maker-guides-title"
+ ],
+ "makerAdditions": [
+  {
+   "maker": "East Coast Carpentry",
+   "declared": "2026-11-06, founder approval 'PLOTNUA — STAGE 3B EAST COAST CARPENTRY ATLAS IMPLEMENTATION AND PUBLICATION PREPARATION' (19:10): ten East Coast Carpentry garden rooms published by publish-targeted-update.py; the explorer's own counts follow. The A-Z entry is built by atlas-tools/build-maker-explorer.py from the universe.",
+   "blocks": [
+    "East Coast Carpentry 10 garden rooms · Available in Dublin and Wicklow only"
+   ],
+   "links": [
+    "#p-rec45XRwQ4qqGCQbv"
+   ]
+  }
  ]
 }

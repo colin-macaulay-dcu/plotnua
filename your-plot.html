@@ -18640,7 +18640,7 @@ html.pn-myplot-view:not(.pn-myplot-open) body::after{content:"Opening My Plot\20
        than from a second guess at product.price. */
     if (pnPriceView(product).kind === 'held') {
       /* NOOK Stage 3A (founder decision 6 Nov 2026): no figure, no budget claim. */
-      reasons.push('The maker publishes an ex works starting price only, so PlotNua does not compare it with installed prices or with your budget. ' + pnPriceView(product).qualification);
+      reasons.push((pnPriceView(product).holdReason || 'The maker publishes an ex works starting price only, so PlotNua does not compare it with installed prices or with your budget.') + ' ' + pnPriceView(product).qualification);
     } else if (pnPriceView(product).kind === 'ambiguous') {
       reasons.push(PB046_AMBIGUOUS_REASON);
     } else if (!pnPriceView(product).known) {
@@ -21467,6 +21467,17 @@ html.pn-myplot-view:not(.pn-myplot-open) body::after{content:"Opening My Plot\20
     'INTERNATIONAL SHIPPING ONLY': ['International shipping only', null],
     'Confirmed': ['Confirmed', null],
   };
+  /* STAGE 3B D1(b) (6 Nov 2026) — A REGION-LIMITED MAKER IS NEVER SHOWN AS
+     "IRISH AVAILABILITY". Where a price-presentation hold names a region, the
+     maker works there only, so every place this page would say "Irish
+     availability" / "Confirmed" says "Available in <region> only" instead.
+     Read from the governed hold, never from a supplier name. Display only:
+     ranking and matching are untouched. Null for every product without a
+     regional hold, so all other wording is unchanged. */
+  function pnRegionOnly(product){
+    const h = ((product || {}).priceEvidence || {}).presentationHold;
+    return h && h.region ? 'Available in ' + String(h.region) + ' only' : null;
+  }
 
   /* FLOOR AREA — 129 distinct values, but they grow from six stable prefixes
      and the tails are one-offs. The prefix is mapped; the tail is preserved
@@ -21547,6 +21558,10 @@ html.pn-myplot-view:not(.pn-myplot-open) body::after{content:"Opening My Plot\20
       return { answer: PN_LABEL_ELECTRICAL[s][0], note: PN_LABEL_ELECTRICAL[s][1] };
     if (label === 'Irish availability'){
       if (PN_LABEL_IRISH[s]) return { answer: PN_LABEL_IRISH[s][0], note: PN_LABEL_IRISH[s][1] };
+      /* STAGE 3B D1(b) — "AVAILABLE IN REPUBLIC OF IRELAND \u2014 DUBLIN AND WICKLOW ONLY"
+         names a region; it is never collapsed into the nationwide answer. */
+      const rg = s.match(/^AVAILABLE IN REPUBLIC OF IRELAND\s*\u2014\s*([A-Z ,]+?) ONLY\b/);
+      if (rg) return { answer: 'Available in ' + rg[1].toLowerCase().replace(/\b([a-z])/g, function(c){ return c.toUpperCase(); }).replace(/\bAnd\b/g, 'and') + ' only', note: null };
       /* "UK ONLY. <free prose>" — 32 products, every tail different. */
       const m = s.match(/^UK ONLY\.\s*(.*)$/i);
       if (m) return { answer: 'United Kingdom only', note: m[1] ? m[1].replace(/\.$/, '') : null };
@@ -21637,8 +21652,8 @@ html.pn-myplot-view:not(.pn-myplot-open) body::after{content:"Opening My Plot\20
        never multiplied out, never given to ranking. */
     { label: 'External dimensions', keys: ['externalDimensions'], flat: null },
     { label: 'Irish availability', keys: ['irishAvailability'],
-      flat: function(p){ return p.irishAvailabilityConfirmationState === 'Yes'
-        ? 'Confirmed' : null; } },
+      flat: function(p){ return pnRegionOnly(p) || (p.irishAvailabilityConfirmationState === 'Yes'
+        ? 'Confirmed' : null); } },
     { label: 'Installation', keys: ['installationModel'], flat: null },
     /* ISSUE 005 PIECE D3 — beside Installation, because both answer "what do
        I actually get". The answer comes from the Confirmation State, which is
@@ -21742,6 +21757,12 @@ html.pn-myplot-view:not(.pn-myplot-open) body::after{content:"Opening My Plot\20
       if (!already) checks.push({ label: 'Before you choose', text: consider });
     }
 
+    /* STAGE 3B D1(b) — region-limited: no generic "Irish availability" row. */
+    const regionOnly = pnRegionOnly(product);
+    if (regionOnly) knows.forEach(function(k){
+      if (k.label !== 'Irish availability') return;
+      k.label = 'Availability'; k.statement = regionOnly; k.conflict = null;
+    });
     return { knows: knows, checks: checks };
   }
 
@@ -23526,7 +23547,8 @@ html.pn-myplot-view:not(.pn-myplot-open) body::after{content:"Opening My Plot\20
     }
     if (product.glazing === 'double' || product.glazing === 'triple') bullets.push(`Verified ${product.glazing}-glazed construction.`);
     if (product.insulation === 'yes') bullets.push('Verified insulation.');
-    if (product.irishAvailabilityConfirmationState === 'Yes') bullets.push('Verified Irish availability.');
+    if (pnRegionOnly(product)) bullets.push(pnRegionOnly(product) + '.');
+    else if (product.irishAvailabilityConfirmationState === 'Yes') bullets.push('Verified Irish availability.');
     const manufacture = extractManufactureCountry(product);
     if (manufacture.country) bullets.push(`Verified country of manufacture: ${String(manufacture.country).replace(/\.\s*$/, '')}.`);
     bullets.push(`Supplied by ${product.organisation}.`);
@@ -26730,6 +26752,11 @@ html.pn-myplot-view:not(.pn-myplot-open) body::after{content:"Opening My Plot\20
     push('Electrical', 'electricalIncluded', 'Electrical');
     push('Glazing', 'glazing', null);
     push('Irish availability', 'irishAvailability', 'Irish availability');
+    /* STAGE 3B D1(b) — a region-limited maker reads "Available in <region> only". */
+    if (pnRegionOnly(product)) for (let r0 = 0; r0 < out.length; r0++) {
+      if (out[r0].lab !== 'Irish availability') continue;
+      out[r0].lab = 'Availability'; out[r0].text = pnRegionOnly(product); out[r0].cap = '';
+    }
     /* ISSUE 007 — 65 of the governed irishAvailability captions are bare
        instructions to the homeowner ("Confirm they work in your county."),
        which is PlotNua's job, not his. The record's words are WITHHELD, never
@@ -27175,7 +27202,7 @@ html.pn-myplot-view:not(.pn-myplot-open) body::after{content:"Opening My Plot\20
          whether the price above is the whole price. Measured across 487:
          Installation 432, Year-round use 10, Irish availability 5,
          Dimensions 4, none available 36. */
-      const AA_PRIMARY_ORDER = ['Installation', 'Irish availability',
+      const AA_PRIMARY_ORDER = ['Installation', 'Irish availability', 'Availability',
         'Year-round use', 'Warranty', 'Dimensions', 'Floor area',
         'Electrical', 'Glazing'];
       /* STAGE 4.4 — up to TWO key facts, by the same fixed order. */
@@ -30998,7 +31025,8 @@ html.pn-myplot-view:not(.pn-myplot-open) body::after{content:"Opening My Plot\20
     if (product.glazing && product.glazing !== 'unknown') pdChips.push([titleCase(product.glazing) + ' glazing', 'confirmed']);
     if (product.floorAreaConfidence === 'confirmed' && hasValidArea(product.floorAreaM2)) pdChips.push(['Verified dimensions', 'confirmed']);
     if (product.insulation === 'yes') pdChips.push(['Insulated', 'confirmed']);
-    if (product.irishAvailabilityConfirmationState === 'Yes') pdChips.push(['Irish availability', 'confirmed']);
+    if (pnRegionOnly(product)) pdChips.push([pnRegionOnly(product), 'confirmed']);
+    else if (product.irishAvailabilityConfirmationState === 'Yes') pdChips.push(['Irish availability', 'confirmed']);
     /* IH-1 — absence is unconfirmed here too. The gate is unchanged, so
        this chip is as unreachable after this pass as before it. */
     /* ISSUE 005 PIECE C1 — same never-exported field. Dormant behind
@@ -35866,9 +35894,13 @@ html.pn-myplot-view:not(.pn-myplot-open) body::after{content:"Opening My Plot\20
                amount: null, ceiling: null, currency: cur, scopeNote: scope,
                figure: null,
                // Self-contained: the price-contract proofs lift this function alone.
-               display: 'Ex works price only. ' + String(e.presentationHold.qualification).replace(/^Ex works\.\s*/, ''),
+               // Stage 3B (6 Nov 2026): a hold may carry its own label (ECC: a regional
+               // price). Absent on NOOK, whose wording is unchanged.
+               display: String(e.presentationHold.label || 'Ex works price only') + '. '
+                        + String(e.presentationHold.qualification).replace(/^Ex works\.\s*/, ''),
                tail: null,
-               qualification: e.presentationHold.qualification };
+               qualification: e.presentationHold.qualification,
+               holdReason: e.presentationHold.reason || null };
     }
     if (e.adjudication === 'ambiguous') {
       return { known: false, kind: 'ambiguous',

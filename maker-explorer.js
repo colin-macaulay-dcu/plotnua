@@ -84,14 +84,17 @@
         (n - conf) + (F.noRoute ? ', including ' + F.noRoute +
         ' with no published Irish route' : '') + '.';
     }
-    function label(st) { return st === 'c' ? 'Confirmed' : st === 'r' ? 'No published Irish route' : 'Not yet confirmed'; }
+    /* Stage 3B D1(b): a maker that works in one region only (m.rg) is never
+       described as having Irish availability; absent m.rg, wording unchanged. */
+    function regionOnly(m) { return m && m.rg ? 'Available in ' + m.rg + ' only' : null; }
+    function label(st, m) { return st === 'c' && regionOnly(m) ? regionOnly(m) : st === 'c' ? 'Confirmed' : st === 'r' ? 'No published Irish route' : 'Not yet confirmed'; }
     function drawer(m, id) {
       var T = TABS[tab];
       var c = m.p.filter(function (p) { return p[3] === 'c'; }).length;
       var NA = T.availabilityNote;
       var h = '<li class="mx-drawer" id="' + id + '"><h3>' + esc(m.m) + '</h3>' +
         '<p class="mx-meta">' + m.p.length + ' ' + T.nouns[m.p.length === 1 ? 0 : 1] +
-        (NA ? '' : ' · Irish availability confirmed for ' + c + ' of ' + m.p.length) + '</p>' + offer(m) +
+        (NA ? '' : regionOnly(m) ? ' · ' + esc(regionOnly(m)) : ' · Irish availability confirmed for ' + c + ' of ' + m.p.length) + '</p>' + offer(m) +
         (m.cn ? '<p class="mx-meta mx-cur">' + esc(m.cn) + '</p>' : '') + '<ul class="mx-plist' +
         (m.p.some(function (p) { return p[5] && p[5].img; }) ? ' mx-plist-img' : '') + '">';
       m.p.forEach(function (p) {
@@ -105,7 +108,7 @@
           (X.img ? images(X.img) : '') +
           (X.href ? '<a class="mx-ext" href="' + esc(X.href) + '" target="_blank" rel="noopener noreferrer">See it on ' +
             esc(X.site) + '<span class="mx-sr"> (the maker&rsquo;s own page, opens in a new tab)</span>&nbsp;&rarr;</a>' : '') +
-          (NA ? '' : '<span class="mx-st"><span class="mx-dot mx-' + p[3] + '" aria-hidden="true"></span>' + label(p[3]) + '</span>') +
+          (NA ? '' : '<span class="mx-st"><span class="mx-dot mx-' + p[3] + '" aria-hidden="true"></span>' + esc(label(p[3], m)) + '</span>') +
           '</li>';
       });
       h += '</ul>';
@@ -228,7 +231,7 @@
           (isOpen ? ' aria-controls="' + id + '"' : '') + ' data-m="' + esc(m.m) + '">' + lead(m) +
           (NA ? '' : '<span class="mx-dot mx-' + st + '" aria-hidden="true"></span>') +
           '<span class="mx-nm">' + esc(m.m) + (NA ? '' : '<span class="mx-sr"> — ' +
-          (st === 'c' ? 'Irish availability confirmed' : st === 's' ? 'Irish availability confirmed for some products' : 'Irish availability not yet confirmed') +
+          (st === 'c' && regionOnly(m) ? esc(regionOnly(m)) : st === 'c' ? 'Irish availability confirmed' : st === 's' ? 'Irish availability confirmed for some products' : 'Irish availability not yet confirmed') +
           '</span>') + '</span><span class="mx-ct">' + m.p.length + ' product' + (m.p.length === 1 ? '' : 's') + '</span></button></li>';
         if (isOpen) { h += drawer(m, id); }
       });

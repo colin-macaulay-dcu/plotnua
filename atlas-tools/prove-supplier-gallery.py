@@ -385,7 +385,10 @@ MUTATIONS = {
         "G9 gallery duplicated": (p.replace(B_END, B_END + "\n" + B_START + " dup -->", 1), c),
         "G15 held maker shown": (p.replace('aria-label="Yardbox"><figure', 'aria-label="Garden Room Ireland"><figure', 1), c),
         "G16 second heading restored": (p.replace('<h3 class="mx-cont-h" id="mx-cont-h">', '<h2>Explore makers and products</h2><h3 class="mx-cont-h" id="mx-cont-h">', 1), c),
-        "G16 header figure wrong": (p.replace('<span class="pn-sg-fig">570</span>', '<span class="pn-sg-fig">571</span>', 1), c),
+        # Reads whichever garden-room figure the page carries (it follows the explorer: 570 -> 580
+        # on 6 Nov 2026, Stage 3B), rather than a hard-coded number that goes stale.
+        "G16 header figure wrong": (re.sub(r'<span class="pn-sg-fig">(\d+)</span>',
+                                           lambda m: '<span class="pn-sg-fig">%d</span>' % (int(m.group(1)) + 1), p, count=1), c),
         "G17 websites row on a page that has not opted in": (p.replace('\n</section>\n<script src="assets/components/pn-supplier-gallery.js', '<div class="pn-sg-sites"><ul></ul></div>\n</section>\n<script src="assets/components/pn-supplier-gallery.js', 1), c),
         "G18 A-Z index removed": (p.replace('id="maker-index"', 'id="maker-list"', 1), c),
         "G19 View all back beside the figures": (p.replace('aria-controls="sg-track">' + _b.ARROW_R + '</button>', 'aria-controls="sg-track">' + _b.ARROW_R + '</button>\n        <a class="pn-sg-all" href="#explore-makers" data-sg-jump><span data-sg-label>View all suppliers</span></a>', 1), c),

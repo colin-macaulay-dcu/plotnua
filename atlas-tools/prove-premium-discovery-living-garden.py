@@ -141,7 +141,10 @@ def load_added():
     if os.path.exists(ADDED_FILE):
         x = json.load(open(ADDED_FILE, encoding="utf-8"))
         blocks, imgs = list(x.get("blocks", [])), list(x.get("imgs", []))
-        for c in x.get("supplierCards", []) + x.get("showcaseReferences", []):
+        # "makerAdditions" (6 Nov 2026, Stage 3B East Coast Carpentry): a maker newly published
+        # in the Maker Explorer adds exactly one A-Z index entry (its text block and its anchor
+        # link), declared here with the founder approval that published it. No image, no card.
+        for c in x.get("supplierCards", []) + x.get("showcaseReferences", []) + x.get("makerAdditions", []):
             blocks += c["blocks"]; imgs += c.get("imgs", [])
         return blocks, imgs
     return [], []
@@ -152,7 +155,8 @@ def added_links():
         x = json.load(open(ADDED_FILE, encoding="utf-8"))
         # "showcaseReferences" (4 Nov 2026, Elm Landscaping): a text-only reference to a maker's
         # PlotNua showcase, declared with its exact blocks and internal links. No image, no card.
-        return [l for c in x.get("supplierCards", []) + x.get("showcaseReferences", []) for l in c["links"]]
+        return [l for c in x.get("supplierCards", []) + x.get("showcaseReferences", []) + x.get("makerAdditions", [])
+                for l in c["links"]]
     return []
 
 

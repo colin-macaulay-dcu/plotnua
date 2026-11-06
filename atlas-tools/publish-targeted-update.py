@@ -330,8 +330,10 @@ def check_scope(snap, org_id, products):
 # build-maker-explorer.py. Nothing else outside the explorer config may change except numbers.
 AZ_TARGET_LINE = re.compile(r'^ {8}<li><a href="#p-(rec[A-Za-z0-9]{14})">([^<]+)</a> '
                             r'<span>\d+ (?:saunas?|hot tubs?|cold plunges?|garden rooms?|garden homes?) '
-                            r'&middot; Irish availability (?:confirmed|confirmed for some products|not yet confirmed)'
-                            r'</span></li>$')   # build-maker-explorer.py AZ_STATE wording, nothing else
+                            r'&middot; (?:Irish availability (?:confirmed|confirmed for some products|not yet confirmed)'
+                            r'|Available in [A-Z][a-z]+(?:,? (?:and )?[A-Z][a-z]+)* only)'
+                            r'</span></li>$')   # build-maker-explorer.py AZ_STATE wording, or its
+                                                # Stage 3B D1(b) regional line (m.rg), nothing else
 
 
 def outside_text_change(rest_a, rest_b, targets, org_names):

@@ -5,9 +5,9 @@
  "sourceBase": "appoLZFWesvoPhZGR",
  "qualificationRuleVersion": "garden-room-qualification-v1",
  "dryRun": false,
- "sourceGardenRoomCount": 582,
- "eligibleCount": 570,
- "highConfidenceCount": 154,
+ "sourceGardenRoomCount": 592,
+ "eligibleCount": 580,
+ "highConfidenceCount": 164,
  "withCaveatCount": 416,
  "limitedEvidenceCount": 0,
  "excludedCount": 12,
@@ -17,22 +17,22 @@
   "G": 5,
   "C": 3
  },
- "confirmedIrishAvailabilityCount": 274,
+ "confirmedIrishAvailabilityCount": 284,
  "unknownIrishAvailabilityCount": 308,
  "confirmedUnavailableCount": 0,
  "unclassifiedIrishAvailabilityCount": 3,
  "noPublishedIrishRouteCount": 43,
  "missingPriceCount": 222,
  "priceEvidenceSummary": {
-  "verified": 270,
+  "verified": 280,
   "present-unverified": 59,
   "quote-only": 19,
   "missing": 222
  },
  "quoteOnlyPriceCount": 19,
- "organisationCount": 64,
+ "organisationCount": 65,
  "governedPriceContractVersion": "garden-room-price-contract-v1",
- "governedDigest": "2231b53a7ff2466b20b70013e6975690427ae0ad37a074c1d4395215061bced2",
+ "governedDigest": "5ba762706598d6a4bb18f12cc145838a0becd0d7c8c8eeaebfbb4fd463243f63",
  "sourceKind": "airtable-live",
  "missingProductUrlCount": 168,
  "products": [
@@ -65599,6 +65599,1011 @@
    }
   },
   {
+   "id": "rec45XRwQ4qqGCQbv",
+   "name": "Premium Composite Garden Room 3m × 3m",
+   "organisation": "East Coast Carpentry",
+   "productId": "rec45XRwQ4qqGCQbv",
+   "productCode": "",
+   "productName": "Premium Composite Garden Room 3m × 3m",
+   "productType": "Turnkey insulated garden room",
+   "productCategory": "Garden Rooms",
+   "organisationEvidence": [
+    {
+     "id": "reczQAlAQhP3hs9qN",
+     "name": "East Coast Carpentry"
+    }
+   ],
+   "productUrl": "https://eastcoastcarpentry.ie/services/garden-rooms/",
+   "verificationStatus": "Verified",
+   "qualification": {
+    "status": "ELIGIBLE — HIGH CONFIDENCE",
+    "confidenceTier": "HIGH_CONFIDENCE",
+    "priceEvidence": "verified",
+    "reasons": [
+     "Irish availability is confirmed by recorded evidence.",
+     "A verified price is recorded.",
+     "A product-level source is recorded.",
+     "Supplier attribution is confirmed: East Coast Carpentry."
+    ],
+    "caveats": [],
+    "hardBlockers": [],
+    "evidenceSignals": {
+     "irishAvailability": "confirmed",
+     "irishAvailabilityBasis": "AVAILABLE IN REPUBLIC OF IRELAND — DUBLIN AND WICKLOW ONLY. Built and installed by a Kilcoole, Co. Wicklow carpentry company; the price page covers Dublin and Wicklow only.",
+     "irishAvailabilityScope": "Organisation-Wide",
+     "irishAvailabilityClassified": true,
+     "noPublishedIrishRoute": false,
+     "price": "verified",
+     "source": "product-level",
+     "supplierAttribution": "confirmed",
+     "manufacturerAttribution": "unknown",
+     "productUrl": "present",
+     "contradiction": "none",
+     "productEvidenceCompleteness": "Blocked — Core Attribution or Evidence Missing",
+     "featureValueCount": 1,
+     "pricingRecordCount": 1,
+     "availabilityRecordCount": 1
+    }
+   },
+   "priceEvidence": {
+    "base": 16850,
+    "from": null,
+    "to": null,
+    "currency": "EUR",
+    "priceType": "Standard Price",
+    "status": "Verified",
+    "includesVat": "Yes",
+    "evidenceScope": "Product-Specific",
+    "adjudication": "adjudicated",
+    "quoteOnly": false,
+    "candidateCount": 1,
+    "presentationHold": {
+     "qualification": "Price includes VAT, delivery and installation in Dublin and Wicklow only. Mains electrical connection is quoted separately. Additional site-specific costs may apply.",
+     "matching": "excluded",
+     "label": "Dublin and Wicklow price only",
+     "reason": "This price applies in Dublin and Wicklow only, so PlotNua does not compare it with your budget until it can check your area.",
+     "region": "Dublin and Wicklow",
+     "vatBasis": "included"
+    }
+   },
+   "features": {
+    "foundationBaseRequirement": {
+     "text": "INCLUDED. As published: 'Engineered Foundation: Insulated suspended timber floor set on solid concrete piers, complete with a damp-proof membrane.' Site preparation: Included — 'site preparation' is named in the composite inclusions.",
+     "number": null,
+     "unit": null,
+     "evidenceScope": "Organisation-Wide",
+     "status": "Verified"
+    },
+    "cladding": {
+     "text": "Castellated composite cladding, Anthracite Grey, outside; plaster boarded, skimmed and painted inside ('Client provides paint'); 10mm laminate floor, white skirting.",
+     "number": null,
+     "unit": null,
+     "evidenceScope": "Range-Level",
+     "status": "Verified"
+    },
+    "glazing": {
+     "text": "A-rated double-glazed uPVC single entrance door and 1 window, Anthracite Grey (RAL 7016), 5-point locking",
+     "number": null,
+     "unit": null,
+     "evidenceScope": "Product-Specific",
+     "status": "Verified"
+    },
+    "deliveryBasis": {
+     "text": "INCLUDED within Dublin and Wicklow. As published: prices 'include 13.5% VAT, delivery, and complete installation across Dublin and Wicklow.'",
+     "number": null,
+     "unit": null,
+     "evidenceScope": "Organisation-Wide",
+     "status": "Verified"
+    },
+    "irishAvailability": {
+     "text": "AVAILABLE IN REPUBLIC OF IRELAND — DUBLIN AND WICKLOW ONLY. Built and installed by a Kilcoole, Co. Wicklow carpentry company; the price page covers Dublin and Wicklow only.",
+     "number": null,
+     "unit": null,
+     "evidenceScope": "Organisation-Wide",
+     "status": "Verified"
+    },
+    "installationModel": {
+     "text": "TURNKEY INSTALLATION INCLUDED — built on site by the supplier; delivery and the concrete-pier floor foundation are in the price; the mains power connection to the house is quoted separately; Dublin and Wicklow only.",
+     "number": null,
+     "unit": null,
+     "evidenceScope": "Organisation-Wide",
+     "status": "Verified"
+    },
+    "insulation": {
+     "text": "INSULATED. As published: walls, roof and floor 'fully packed with ROCKWOOL FLEXI® 100mm stone wool'. No U-value published.",
+     "number": null,
+     "unit": null,
+     "evidenceScope": "Range-Level",
+     "status": "Verified"
+    },
+    "electricalIncluded": {
+     "text": "Included as standard: 4 interior and 3 exterior recessed LED downlights, 2 double sockets, RECI consumer unit, wall-mounted electric thermostatic panel heater. NOT INCLUDED: the main armoured power cable from the garden room to the house fuse board — 'surveyed and quoted separately on-site'.",
+     "number": null,
+     "unit": null,
+     "evidenceScope": "Range-Level",
+     "status": "Verified"
+    },
+    "floorArea": {
+     "text": "INTERNAL FLOOR AREA NOT PUBLISHED. The supplier publishes a 9 sqm FOOTPRINT (3m × 3m); internal area is not stated and is not estimated.",
+     "number": null,
+     "unit": null,
+     "evidenceScope": "Product-Specific",
+     "status": "Verified"
+    },
+    "construction": {
+     "text": "Site-built timber frame: 5\" × 2\" (125mm × 50mm) posts braced with noggins, OSB sheathing, breathable membrane; EPDM single-sheet rubber roof with gutter and downpipe.",
+     "number": null,
+     "unit": null,
+     "evidenceScope": "Organisation-Wide",
+     "status": "Verified"
+    },
+    "warranty": {
+     "text": "20-Year Structural Guarantee (as published) — covers foundation piers, timber framing, roof structure, EPDM roof membrane, wraps and wall seals. The heading carries an asterisk with no published footnote: conditions UNKNOWN.",
+     "number": null,
+     "unit": null,
+     "evidenceScope": "Organisation-Wide",
+     "status": "Partially Verified"
+    },
+    "externalDimensions": {
+     "text": "3m × 3m footprint (9 sqm), as published under 'FOOTPRINT SIZE'. Height not published.",
+     "number": null,
+     "unit": null,
+     "evidenceScope": "Product-Specific",
+     "status": "Verified"
+    }
+   },
+   "price": 16850,
+   "currency": "EUR",
+   "priceBasis": "Verified",
+   "floorAreaM2": null,
+   "glazing": "A-rated double-glazed uPVC single entrance door and 1 window, Anthracite Grey (RAL 7016), 5-point locking",
+   "insulation": "INSULATED. As published: walls, roof and floor 'fully packed with ROCKWOOL FLEXI® 100mm stone wool'. No U-value published.",
+   "manufactureCountry": null,
+   "designLanguage": null,
+   "irishAvailabilityConfirmationState": "Yes",
+   "irishAvailability": true,
+   "availabilityStatus": "Available to Order",
+   "noPublishedIrishRoute": false,
+   "qualificationTier": "HIGH_CONFIDENCE",
+   "priceEvidenceState": "verified",
+   "qualificationCaveats": [],
+   "priceRecordIds": [
+    "recaNNUmnmn6ayyTQ"
+   ],
+   "priceRecordIdsAvailable": 1,
+   "priceStatus": "Verified",
+   "priceType": "Standard Price",
+   "priceScope": "Product-Specific",
+   "vatStatus": "Yes",
+   "vatRate": null,
+   "priceBasisAxes": {
+    "erection": "INCLUDED",
+    "siteWorks": "UNKNOWN",
+    "delivery": "UNKNOWN"
+   },
+   "priceBasisClass": "ERECTED_SERVICES_UNKNOWN",
+   "priceBasisConfidence": "UNSAFE",
+   "priceIsRangeFloor": false,
+   "priceSafeForMatching": false,
+   "priceEvidenceRef": {
+    "recordIds": [
+     "recaNNUmnmn6ayyTQ"
+    ],
+    "adjudication": "adjudicated",
+    "candidateCount": 1,
+    "status": "Verified",
+    "priceType": "Standard Price",
+    "evidenceScope": "Product-Specific",
+    "lastPriceCheck": "2026-11-06",
+    "basisSource": "installationModel.leadPhrase",
+    "basisLeadPhrase": "TURNKEY INSTALLATION INCLUDED"
+   }
+  },
+  {
+   "id": "recMklMPlZN6DAmwc",
+   "name": "Premium Composite Garden Room 4m × 3m",
+   "organisation": "East Coast Carpentry",
+   "productId": "recMklMPlZN6DAmwc",
+   "productCode": "",
+   "productName": "Premium Composite Garden Room 4m × 3m",
+   "productType": "Turnkey insulated garden room",
+   "productCategory": "Garden Rooms",
+   "organisationEvidence": [
+    {
+     "id": "reczQAlAQhP3hs9qN",
+     "name": "East Coast Carpentry"
+    }
+   ],
+   "productUrl": "https://eastcoastcarpentry.ie/services/garden-rooms/",
+   "verificationStatus": "Verified",
+   "qualification": {
+    "status": "ELIGIBLE — HIGH CONFIDENCE",
+    "confidenceTier": "HIGH_CONFIDENCE",
+    "priceEvidence": "verified",
+    "reasons": [
+     "Irish availability is confirmed by recorded evidence.",
+     "A verified price is recorded.",
+     "A product-level source is recorded.",
+     "Supplier attribution is confirmed: East Coast Carpentry."
+    ],
+    "caveats": [],
+    "hardBlockers": [],
+    "evidenceSignals": {
+     "irishAvailability": "confirmed",
+     "irishAvailabilityBasis": "AVAILABLE IN REPUBLIC OF IRELAND — DUBLIN AND WICKLOW ONLY. Built and installed by a Kilcoole, Co. Wicklow carpentry company; the price page covers Dublin and Wicklow only.",
+     "irishAvailabilityScope": "Organisation-Wide",
+     "irishAvailabilityClassified": true,
+     "noPublishedIrishRoute": false,
+     "price": "verified",
+     "source": "product-level",
+     "supplierAttribution": "confirmed",
+     "manufacturerAttribution": "unknown",
+     "productUrl": "present",
+     "contradiction": "none",
+     "productEvidenceCompleteness": "Blocked — Core Attribution or Evidence Missing",
+     "featureValueCount": 1,
+     "pricingRecordCount": 1,
+     "availabilityRecordCount": 1
+    }
+   },
+   "priceEvidence": {
+    "base": 18950,
+    "from": null,
+    "to": null,
+    "currency": "EUR",
+    "priceType": "Standard Price",
+    "status": "Verified",
+    "includesVat": "Yes",
+    "evidenceScope": "Product-Specific",
+    "adjudication": "adjudicated",
+    "quoteOnly": false,
+    "candidateCount": 1,
+    "presentationHold": {
+     "qualification": "Price includes VAT, delivery and installation in Dublin and Wicklow only. Mains electrical connection is quoted separately. Additional site-specific costs may apply.",
+     "matching": "excluded",
+     "label": "Dublin and Wicklow price only",
+     "reason": "This price applies in Dublin and Wicklow only, so PlotNua does not compare it with your budget until it can check your area.",
+     "region": "Dublin and Wicklow",
+     "vatBasis": "included"
+    }
+   },
+   "features": {
+    "construction": {
+     "text": "Site-built timber frame: 5\" × 2\" (125mm × 50mm) posts braced with noggins, OSB sheathing, breathable membrane; EPDM single-sheet rubber roof with gutter and downpipe.",
+     "number": null,
+     "unit": null,
+     "evidenceScope": "Organisation-Wide",
+     "status": "Verified"
+    },
+    "foundationBaseRequirement": {
+     "text": "INCLUDED. As published: 'Engineered Foundation: Insulated suspended timber floor set on solid concrete piers, complete with a damp-proof membrane.' Site preparation: Included — 'site preparation' is named in the composite inclusions.",
+     "number": null,
+     "unit": null,
+     "evidenceScope": "Organisation-Wide",
+     "status": "Verified"
+    },
+    "irishAvailability": {
+     "text": "AVAILABLE IN REPUBLIC OF IRELAND — DUBLIN AND WICKLOW ONLY. Built and installed by a Kilcoole, Co. Wicklow carpentry company; the price page covers Dublin and Wicklow only.",
+     "number": null,
+     "unit": null,
+     "evidenceScope": "Organisation-Wide",
+     "status": "Verified"
+    },
+    "insulation": {
+     "text": "INSULATED. As published: walls, roof and floor 'fully packed with ROCKWOOL FLEXI® 100mm stone wool'. No U-value published.",
+     "number": null,
+     "unit": null,
+     "evidenceScope": "Range-Level",
+     "status": "Verified"
+    },
+    "installationModel": {
+     "text": "TURNKEY INSTALLATION INCLUDED — built on site by the supplier; delivery and the concrete-pier floor foundation are in the price; the mains power connection to the house is quoted separately; Dublin and Wicklow only.",
+     "number": null,
+     "unit": null,
+     "evidenceScope": "Organisation-Wide",
+     "status": "Verified"
+    },
+    "deliveryBasis": {
+     "text": "INCLUDED within Dublin and Wicklow. As published: prices 'include 13.5% VAT, delivery, and complete installation across Dublin and Wicklow.'",
+     "number": null,
+     "unit": null,
+     "evidenceScope": "Organisation-Wide",
+     "status": "Verified"
+    },
+    "glazing": {
+     "text": "A-rated double-glazed uPVC single entrance door and 1 window, Anthracite Grey (RAL 7016), 5-point locking",
+     "number": null,
+     "unit": null,
+     "evidenceScope": "Product-Specific",
+     "status": "Verified"
+    },
+    "floorArea": {
+     "text": "INTERNAL FLOOR AREA NOT PUBLISHED. The supplier publishes a 12 sqm FOOTPRINT (4m × 3m); internal area is not stated and is not estimated.",
+     "number": null,
+     "unit": null,
+     "evidenceScope": "Product-Specific",
+     "status": "Verified"
+    },
+    "electricalIncluded": {
+     "text": "Included as standard: 4 interior and 3 exterior recessed LED downlights, 2 double sockets, RECI consumer unit, wall-mounted electric thermostatic panel heater. NOT INCLUDED: the main armoured power cable from the garden room to the house fuse board — 'surveyed and quoted separately on-site'.",
+     "number": null,
+     "unit": null,
+     "evidenceScope": "Range-Level",
+     "status": "Verified"
+    },
+    "externalDimensions": {
+     "text": "4m × 3m footprint (12 sqm), as published under 'FOOTPRINT SIZE'. Height not published.",
+     "number": null,
+     "unit": null,
+     "evidenceScope": "Product-Specific",
+     "status": "Verified"
+    },
+    "cladding": {
+     "text": "Castellated composite cladding, Anthracite Grey, outside; plaster boarded, skimmed and painted inside ('Client provides paint'); 10mm laminate floor, white skirting.",
+     "number": null,
+     "unit": null,
+     "evidenceScope": "Range-Level",
+     "status": "Verified"
+    },
+    "warranty": {
+     "text": "20-Year Structural Guarantee (as published) — covers foundation piers, timber framing, roof structure, EPDM roof membrane, wraps and wall seals. The heading carries an asterisk with no published footnote: conditions UNKNOWN.",
+     "number": null,
+     "unit": null,
+     "evidenceScope": "Organisation-Wide",
+     "status": "Partially Verified"
+    }
+   },
+   "price": 18950,
+   "currency": "EUR",
+   "priceBasis": "Verified",
+   "floorAreaM2": null,
+   "glazing": "A-rated double-glazed uPVC single entrance door and 1 window, Anthracite Grey (RAL 7016), 5-point locking",
+   "insulation": "INSULATED. As published: walls, roof and floor 'fully packed with ROCKWOOL FLEXI® 100mm stone wool'. No U-value published.",
+   "manufactureCountry": null,
+   "designLanguage": null,
+   "irishAvailabilityConfirmationState": "Yes",
+   "irishAvailability": true,
+   "availabilityStatus": "Available to Order",
+   "noPublishedIrishRoute": false,
+   "qualificationTier": "HIGH_CONFIDENCE",
+   "priceEvidenceState": "verified",
+   "qualificationCaveats": [],
+   "priceRecordIds": [
+    "recIszql4JDtqnQmH"
+   ],
+   "priceRecordIdsAvailable": 1,
+   "priceStatus": "Verified",
+   "priceType": "Standard Price",
+   "priceScope": "Product-Specific",
+   "vatStatus": "Yes",
+   "vatRate": null,
+   "priceBasisAxes": {
+    "erection": "INCLUDED",
+    "siteWorks": "UNKNOWN",
+    "delivery": "UNKNOWN"
+   },
+   "priceBasisClass": "ERECTED_SERVICES_UNKNOWN",
+   "priceBasisConfidence": "UNSAFE",
+   "priceIsRangeFloor": false,
+   "priceSafeForMatching": false,
+   "priceEvidenceRef": {
+    "recordIds": [
+     "recIszql4JDtqnQmH"
+    ],
+    "adjudication": "adjudicated",
+    "candidateCount": 1,
+    "status": "Verified",
+    "priceType": "Standard Price",
+    "evidenceScope": "Product-Specific",
+    "lastPriceCheck": "2026-11-06",
+    "basisSource": "installationModel.leadPhrase",
+    "basisLeadPhrase": "TURNKEY INSTALLATION INCLUDED"
+   }
+  },
+  {
+   "id": "recN0bJ1hnq0gaZ2R",
+   "name": "Premium Composite Garden Room 5m × 3m",
+   "organisation": "East Coast Carpentry",
+   "productId": "recN0bJ1hnq0gaZ2R",
+   "productCode": "",
+   "productName": "Premium Composite Garden Room 5m × 3m",
+   "productType": "Turnkey insulated garden room",
+   "productCategory": "Garden Rooms",
+   "organisationEvidence": [
+    {
+     "id": "reczQAlAQhP3hs9qN",
+     "name": "East Coast Carpentry"
+    }
+   ],
+   "productUrl": "https://eastcoastcarpentry.ie/services/garden-rooms/",
+   "verificationStatus": "Verified",
+   "qualification": {
+    "status": "ELIGIBLE — HIGH CONFIDENCE",
+    "confidenceTier": "HIGH_CONFIDENCE",
+    "priceEvidence": "verified",
+    "reasons": [
+     "Irish availability is confirmed by recorded evidence.",
+     "A verified price is recorded.",
+     "A product-level source is recorded.",
+     "Supplier attribution is confirmed: East Coast Carpentry."
+    ],
+    "caveats": [],
+    "hardBlockers": [],
+    "evidenceSignals": {
+     "irishAvailability": "confirmed",
+     "irishAvailabilityBasis": "AVAILABLE IN REPUBLIC OF IRELAND — DUBLIN AND WICKLOW ONLY. Built and installed by a Kilcoole, Co. Wicklow carpentry company; the price page covers Dublin and Wicklow only.",
+     "irishAvailabilityScope": "Organisation-Wide",
+     "irishAvailabilityClassified": true,
+     "noPublishedIrishRoute": false,
+     "price": "verified",
+     "source": "product-level",
+     "supplierAttribution": "confirmed",
+     "manufacturerAttribution": "unknown",
+     "productUrl": "present",
+     "contradiction": "none",
+     "productEvidenceCompleteness": "Blocked — Core Attribution or Evidence Missing",
+     "featureValueCount": 1,
+     "pricingRecordCount": 1,
+     "availabilityRecordCount": 1
+    }
+   },
+   "priceEvidence": {
+    "base": 22950,
+    "from": null,
+    "to": null,
+    "currency": "EUR",
+    "priceType": "Standard Price",
+    "status": "Verified",
+    "includesVat": "Yes",
+    "evidenceScope": "Product-Specific",
+    "adjudication": "adjudicated",
+    "quoteOnly": false,
+    "candidateCount": 1,
+    "presentationHold": {
+     "qualification": "Price includes VAT, delivery and installation in Dublin and Wicklow only. Mains electrical connection is quoted separately. Additional site-specific costs may apply.",
+     "matching": "excluded",
+     "label": "Dublin and Wicklow price only",
+     "reason": "This price applies in Dublin and Wicklow only, so PlotNua does not compare it with your budget until it can check your area.",
+     "region": "Dublin and Wicklow",
+     "vatBasis": "included"
+    }
+   },
+   "features": {
+    "insulation": {
+     "text": "INSULATED. As published: walls, roof and floor 'fully packed with ROCKWOOL FLEXI® 100mm stone wool'. No U-value published.",
+     "number": null,
+     "unit": null,
+     "evidenceScope": "Range-Level",
+     "status": "Verified"
+    },
+    "externalDimensions": {
+     "text": "5m × 3m footprint (15 sqm), as published under 'FOOTPRINT SIZE'. Height not published.",
+     "number": null,
+     "unit": null,
+     "evidenceScope": "Product-Specific",
+     "status": "Verified"
+    },
+    "deliveryBasis": {
+     "text": "INCLUDED within Dublin and Wicklow. As published: prices 'include 13.5% VAT, delivery, and complete installation across Dublin and Wicklow.'",
+     "number": null,
+     "unit": null,
+     "evidenceScope": "Organisation-Wide",
+     "status": "Verified"
+    },
+    "cladding": {
+     "text": "Castellated composite cladding, Anthracite Grey, outside; plaster boarded, skimmed and painted inside ('Client provides paint'); 10mm laminate floor, white skirting.",
+     "number": null,
+     "unit": null,
+     "evidenceScope": "Range-Level",
+     "status": "Verified"
+    },
+    "warranty": {
+     "text": "20-Year Structural Guarantee (as published) — covers foundation piers, timber framing, roof structure, EPDM roof membrane, wraps and wall seals. The heading carries an asterisk with no published footnote: conditions UNKNOWN.",
+     "number": null,
+     "unit": null,
+     "evidenceScope": "Organisation-Wide",
+     "status": "Partially Verified"
+    },
+    "floorArea": {
+     "text": "INTERNAL FLOOR AREA NOT PUBLISHED. The supplier publishes a 15 sqm FOOTPRINT (5m × 3m); internal area is not stated and is not estimated.",
+     "number": null,
+     "unit": null,
+     "evidenceScope": "Product-Specific",
+     "status": "Verified"
+    },
+    "installationModel": {
+     "text": "TURNKEY INSTALLATION INCLUDED — built on site by the supplier; delivery and the concrete-pier floor foundation are in the price; the mains power connection to the house is quoted separately; Dublin and Wicklow only.",
+     "number": null,
+     "unit": null,
+     "evidenceScope": "Organisation-Wide",
+     "status": "Verified"
+    },
+    "electricalIncluded": {
+     "text": "Included as standard: 4 interior and 3 exterior recessed LED downlights, 2 double sockets, RECI consumer unit, wall-mounted electric thermostatic panel heater. NOT INCLUDED: the main armoured power cable from the garden room to the house fuse board — 'surveyed and quoted separately on-site'.",
+     "number": null,
+     "unit": null,
+     "evidenceScope": "Range-Level",
+     "status": "Verified"
+    },
+    "glazing": {
+     "text": "A-rated double-glazed uPVC double entrance doors and 2 windows, Anthracite Grey (RAL 7016)",
+     "number": null,
+     "unit": null,
+     "evidenceScope": "Product-Specific",
+     "status": "Verified"
+    },
+    "foundationBaseRequirement": {
+     "text": "INCLUDED. As published: 'Engineered Foundation: Insulated suspended timber floor set on solid concrete piers, complete with a damp-proof membrane.' Site preparation: Included — 'site preparation' is named in the composite inclusions.",
+     "number": null,
+     "unit": null,
+     "evidenceScope": "Organisation-Wide",
+     "status": "Verified"
+    },
+    "construction": {
+     "text": "Site-built timber frame: 5\" × 2\" (125mm × 50mm) posts braced with noggins, OSB sheathing, breathable membrane; EPDM single-sheet rubber roof with gutter and downpipe.",
+     "number": null,
+     "unit": null,
+     "evidenceScope": "Organisation-Wide",
+     "status": "Verified"
+    },
+    "irishAvailability": {
+     "text": "AVAILABLE IN REPUBLIC OF IRELAND — DUBLIN AND WICKLOW ONLY. Built and installed by a Kilcoole, Co. Wicklow carpentry company; the price page covers Dublin and Wicklow only.",
+     "number": null,
+     "unit": null,
+     "evidenceScope": "Organisation-Wide",
+     "status": "Verified"
+    }
+   },
+   "price": 22950,
+   "currency": "EUR",
+   "priceBasis": "Verified",
+   "floorAreaM2": null,
+   "glazing": "A-rated double-glazed uPVC double entrance doors and 2 windows, Anthracite Grey (RAL 7016)",
+   "insulation": "INSULATED. As published: walls, roof and floor 'fully packed with ROCKWOOL FLEXI® 100mm stone wool'. No U-value published.",
+   "manufactureCountry": null,
+   "designLanguage": null,
+   "irishAvailabilityConfirmationState": "Yes",
+   "irishAvailability": true,
+   "availabilityStatus": "Available to Order",
+   "noPublishedIrishRoute": false,
+   "qualificationTier": "HIGH_CONFIDENCE",
+   "priceEvidenceState": "verified",
+   "qualificationCaveats": [],
+   "priceRecordIds": [
+    "rec0pqdiqa7q5hyFM"
+   ],
+   "priceRecordIdsAvailable": 1,
+   "priceStatus": "Verified",
+   "priceType": "Standard Price",
+   "priceScope": "Product-Specific",
+   "vatStatus": "Yes",
+   "vatRate": null,
+   "priceBasisAxes": {
+    "erection": "INCLUDED",
+    "siteWorks": "UNKNOWN",
+    "delivery": "UNKNOWN"
+   },
+   "priceBasisClass": "ERECTED_SERVICES_UNKNOWN",
+   "priceBasisConfidence": "UNSAFE",
+   "priceIsRangeFloor": false,
+   "priceSafeForMatching": false,
+   "priceEvidenceRef": {
+    "recordIds": [
+     "rec0pqdiqa7q5hyFM"
+    ],
+    "adjudication": "adjudicated",
+    "candidateCount": 1,
+    "status": "Verified",
+    "priceType": "Standard Price",
+    "evidenceScope": "Product-Specific",
+    "lastPriceCheck": "2026-11-06",
+    "basisSource": "installationModel.leadPhrase",
+    "basisLeadPhrase": "TURNKEY INSTALLATION INCLUDED"
+   }
+  },
+  {
+   "id": "rec8hgSQtX38xqHdZ",
+   "name": "Premium Composite Garden Room 5m × 4m",
+   "organisation": "East Coast Carpentry",
+   "productId": "rec8hgSQtX38xqHdZ",
+   "productCode": "",
+   "productName": "Premium Composite Garden Room 5m × 4m",
+   "productType": "Turnkey insulated garden room",
+   "productCategory": "Garden Rooms",
+   "organisationEvidence": [
+    {
+     "id": "reczQAlAQhP3hs9qN",
+     "name": "East Coast Carpentry"
+    }
+   ],
+   "productUrl": "https://eastcoastcarpentry.ie/services/garden-rooms/",
+   "verificationStatus": "Verified",
+   "qualification": {
+    "status": "ELIGIBLE — HIGH CONFIDENCE",
+    "confidenceTier": "HIGH_CONFIDENCE",
+    "priceEvidence": "verified",
+    "reasons": [
+     "Irish availability is confirmed by recorded evidence.",
+     "A verified price is recorded.",
+     "A product-level source is recorded.",
+     "Supplier attribution is confirmed: East Coast Carpentry."
+    ],
+    "caveats": [],
+    "hardBlockers": [],
+    "evidenceSignals": {
+     "irishAvailability": "confirmed",
+     "irishAvailabilityBasis": "AVAILABLE IN REPUBLIC OF IRELAND — DUBLIN AND WICKLOW ONLY. Built and installed by a Kilcoole, Co. Wicklow carpentry company; the price page covers Dublin and Wicklow only.",
+     "irishAvailabilityScope": "Organisation-Wide",
+     "irishAvailabilityClassified": true,
+     "noPublishedIrishRoute": false,
+     "price": "verified",
+     "source": "product-level",
+     "supplierAttribution": "confirmed",
+     "manufacturerAttribution": "unknown",
+     "productUrl": "present",
+     "contradiction": "none",
+     "productEvidenceCompleteness": "Blocked — Core Attribution or Evidence Missing",
+     "featureValueCount": 1,
+     "pricingRecordCount": 1,
+     "availabilityRecordCount": 1
+    }
+   },
+   "priceEvidence": {
+    "base": 25850,
+    "from": null,
+    "to": null,
+    "currency": "EUR",
+    "priceType": "Standard Price",
+    "status": "Verified",
+    "includesVat": "Yes",
+    "evidenceScope": "Product-Specific",
+    "adjudication": "adjudicated",
+    "quoteOnly": false,
+    "candidateCount": 1,
+    "presentationHold": {
+     "qualification": "Price includes VAT, delivery and installation in Dublin and Wicklow only. Mains electrical connection is quoted separately. Additional site-specific costs may apply.",
+     "matching": "excluded",
+     "label": "Dublin and Wicklow price only",
+     "reason": "This price applies in Dublin and Wicklow only, so PlotNua does not compare it with your budget until it can check your area.",
+     "region": "Dublin and Wicklow",
+     "vatBasis": "included"
+    }
+   },
+   "features": {
+    "cladding": {
+     "text": "Castellated composite cladding, Anthracite Grey, outside; plaster boarded, skimmed and painted inside ('Client provides paint'); 10mm laminate floor, white skirting.",
+     "number": null,
+     "unit": null,
+     "evidenceScope": "Range-Level",
+     "status": "Verified"
+    },
+    "foundationBaseRequirement": {
+     "text": "INCLUDED. As published: 'Engineered Foundation: Insulated suspended timber floor set on solid concrete piers, complete with a damp-proof membrane.' Site preparation: Included — 'site preparation' is named in the composite inclusions.",
+     "number": null,
+     "unit": null,
+     "evidenceScope": "Organisation-Wide",
+     "status": "Verified"
+    },
+    "electricalIncluded": {
+     "text": "Included as standard: 4 interior and 3 exterior recessed LED downlights, 2 double sockets, RECI consumer unit, wall-mounted electric thermostatic panel heater. NOT INCLUDED: the main armoured power cable from the garden room to the house fuse board — 'surveyed and quoted separately on-site'.",
+     "number": null,
+     "unit": null,
+     "evidenceScope": "Range-Level",
+     "status": "Verified"
+    },
+    "insulation": {
+     "text": "INSULATED. As published: walls, roof and floor 'fully packed with ROCKWOOL FLEXI® 100mm stone wool'. No U-value published.",
+     "number": null,
+     "unit": null,
+     "evidenceScope": "Range-Level",
+     "status": "Verified"
+    },
+    "installationModel": {
+     "text": "TURNKEY INSTALLATION INCLUDED — built on site by the supplier; delivery and the concrete-pier floor foundation are in the price; the mains power connection to the house is quoted separately; Dublin and Wicklow only.",
+     "number": null,
+     "unit": null,
+     "evidenceScope": "Organisation-Wide",
+     "status": "Verified"
+    },
+    "warranty": {
+     "text": "20-Year Structural Guarantee (as published) — covers foundation piers, timber framing, roof structure, EPDM roof membrane, wraps and wall seals. The heading carries an asterisk with no published footnote: conditions UNKNOWN.",
+     "number": null,
+     "unit": null,
+     "evidenceScope": "Organisation-Wide",
+     "status": "Partially Verified"
+    },
+    "externalDimensions": {
+     "text": "5m × 4m footprint (20 sqm), as published under 'FOOTPRINT SIZE'. Height not published.",
+     "number": null,
+     "unit": null,
+     "evidenceScope": "Product-Specific",
+     "status": "Verified"
+    },
+    "deliveryBasis": {
+     "text": "INCLUDED within Dublin and Wicklow. As published: prices 'include 13.5% VAT, delivery, and complete installation across Dublin and Wicklow.'",
+     "number": null,
+     "unit": null,
+     "evidenceScope": "Organisation-Wide",
+     "status": "Verified"
+    },
+    "construction": {
+     "text": "Site-built timber frame: 5\" × 2\" (125mm × 50mm) posts braced with noggins, OSB sheathing, breathable membrane; EPDM single-sheet rubber roof with gutter and downpipe.",
+     "number": null,
+     "unit": null,
+     "evidenceScope": "Organisation-Wide",
+     "status": "Verified"
+    },
+    "irishAvailability": {
+     "text": "AVAILABLE IN REPUBLIC OF IRELAND — DUBLIN AND WICKLOW ONLY. Built and installed by a Kilcoole, Co. Wicklow carpentry company; the price page covers Dublin and Wicklow only.",
+     "number": null,
+     "unit": null,
+     "evidenceScope": "Organisation-Wide",
+     "status": "Verified"
+    },
+    "glazing": {
+     "text": "A-rated double-glazed uPVC double entrance doors and 2 windows, Anthracite Grey (RAL 7016)",
+     "number": null,
+     "unit": null,
+     "evidenceScope": "Product-Specific",
+     "status": "Verified"
+    },
+    "floorArea": {
+     "text": "INTERNAL FLOOR AREA NOT PUBLISHED. The supplier publishes a 20 sqm FOOTPRINT (5m × 4m); internal area is not stated and is not estimated.",
+     "number": null,
+     "unit": null,
+     "evidenceScope": "Product-Specific",
+     "status": "Verified"
+    }
+   },
+   "price": 25850,
+   "currency": "EUR",
+   "priceBasis": "Verified",
+   "floorAreaM2": null,
+   "glazing": "A-rated double-glazed uPVC double entrance doors and 2 windows, Anthracite Grey (RAL 7016)",
+   "insulation": "INSULATED. As published: walls, roof and floor 'fully packed with ROCKWOOL FLEXI® 100mm stone wool'. No U-value published.",
+   "manufactureCountry": null,
+   "designLanguage": null,
+   "irishAvailabilityConfirmationState": "Yes",
+   "irishAvailability": true,
+   "availabilityStatus": "Available to Order",
+   "noPublishedIrishRoute": false,
+   "qualificationTier": "HIGH_CONFIDENCE",
+   "priceEvidenceState": "verified",
+   "qualificationCaveats": [],
+   "priceRecordIds": [
+    "recrkCPOTKhEYjy5P"
+   ],
+   "priceRecordIdsAvailable": 1,
+   "priceStatus": "Verified",
+   "priceType": "Standard Price",
+   "priceScope": "Product-Specific",
+   "vatStatus": "Yes",
+   "vatRate": null,
+   "priceBasisAxes": {
+    "erection": "INCLUDED",
+    "siteWorks": "UNKNOWN",
+    "delivery": "UNKNOWN"
+   },
+   "priceBasisClass": "ERECTED_SERVICES_UNKNOWN",
+   "priceBasisConfidence": "UNSAFE",
+   "priceIsRangeFloor": false,
+   "priceSafeForMatching": false,
+   "priceEvidenceRef": {
+    "recordIds": [
+     "recrkCPOTKhEYjy5P"
+    ],
+    "adjudication": "adjudicated",
+    "candidateCount": 1,
+    "status": "Verified",
+    "priceType": "Standard Price",
+    "evidenceScope": "Product-Specific",
+    "lastPriceCheck": "2026-11-06",
+    "basisSource": "installationModel.leadPhrase",
+    "basisLeadPhrase": "TURNKEY INSTALLATION INCLUDED"
+   }
+  },
+  {
+   "id": "rechrLK9CR0ukDXrY",
+   "name": "Premium Composite Garden Room 5m × 5m",
+   "organisation": "East Coast Carpentry",
+   "productId": "rechrLK9CR0ukDXrY",
+   "productCode": "",
+   "productName": "Premium Composite Garden Room 5m × 5m",
+   "productType": "Turnkey insulated garden room",
+   "productCategory": "Garden Rooms",
+   "organisationEvidence": [
+    {
+     "id": "reczQAlAQhP3hs9qN",
+     "name": "East Coast Carpentry"
+    }
+   ],
+   "productUrl": "https://eastcoastcarpentry.ie/services/garden-rooms/",
+   "verificationStatus": "Verified",
+   "qualification": {
+    "status": "ELIGIBLE — HIGH CONFIDENCE",
+    "confidenceTier": "HIGH_CONFIDENCE",
+    "priceEvidence": "verified",
+    "reasons": [
+     "Irish availability is confirmed by recorded evidence.",
+     "A verified price is recorded.",
+     "A product-level source is recorded.",
+     "Supplier attribution is confirmed: East Coast Carpentry."
+    ],
+    "caveats": [],
+    "hardBlockers": [],
+    "evidenceSignals": {
+     "irishAvailability": "confirmed",
+     "irishAvailabilityBasis": "AVAILABLE IN REPUBLIC OF IRELAND — DUBLIN AND WICKLOW ONLY. Built and installed by a Kilcoole, Co. Wicklow carpentry company; the price page covers Dublin and Wicklow only.",
+     "irishAvailabilityScope": "Organisation-Wide",
+     "irishAvailabilityClassified": true,
+     "noPublishedIrishRoute": false,
+     "price": "verified",
+     "source": "product-level",
+     "supplierAttribution": "confirmed",
+     "manufacturerAttribution": "unknown",
+     "productUrl": "present",
+     "contradiction": "none",
+     "productEvidenceCompleteness": "Blocked — Core Attribution or Evidence Missing",
+     "featureValueCount": 1,
+     "pricingRecordCount": 1,
+     "availabilityRecordCount": 1
+    }
+   },
+   "priceEvidence": {
+    "base": 28450,
+    "from": null,
+    "to": null,
+    "currency": "EUR",
+    "priceType": "Standard Price",
+    "status": "Verified",
+    "includesVat": "Yes",
+    "evidenceScope": "Product-Specific",
+    "adjudication": "adjudicated",
+    "quoteOnly": false,
+    "candidateCount": 1,
+    "presentationHold": {
+     "qualification": "Price includes VAT, delivery and installation in Dublin and Wicklow only. Mains electrical connection is quoted separately. Additional site-specific costs may apply.",
+     "matching": "excluded",
+     "label": "Dublin and Wicklow price only",
+     "reason": "This price applies in Dublin and Wicklow only, so PlotNua does not compare it with your budget until it can check your area.",
+     "region": "Dublin and Wicklow",
+     "vatBasis": "included"
+    }
+   },
+   "features": {
+    "deliveryBasis": {
+     "text": "INCLUDED within Dublin and Wicklow. As published: prices 'include 13.5% VAT, delivery, and complete installation across Dublin and Wicklow.'",
+     "number": null,
+     "unit": null,
+     "evidenceScope": "Organisation-Wide",
+     "status": "Verified"
+    },
+    "warranty": {
+     "text": "20-Year Structural Guarantee (as published) — covers foundation piers, timber framing, roof structure, EPDM roof membrane, wraps and wall seals. The heading carries an asterisk with no published footnote: conditions UNKNOWN.",
+     "number": null,
+     "unit": null,
+     "evidenceScope": "Organisation-Wide",
+     "status": "Partially Verified"
+    },
+    "externalDimensions": {
+     "text": "5m × 5m footprint (25 sqm), as published under 'FOOTPRINT SIZE'. Height not published.",
+     "number": null,
+     "unit": null,
+     "evidenceScope": "Product-Specific",
+     "status": "Verified"
+    },
+    "irishAvailability": {
+     "text": "AVAILABLE IN REPUBLIC OF IRELAND — DUBLIN AND WICKLOW ONLY. Built and installed by a Kilcoole, Co. Wicklow carpentry company; the price page covers Dublin and Wicklow only.",
+     "number": null,
+     "unit": null,
+     "evidenceScope": "Organisation-Wide",
+     "status": "Verified"
+    },
+    "floorArea": {
+     "text": "INTERNAL FLOOR AREA NOT PUBLISHED. The supplier publishes a 25 sqm FOOTPRINT (5m × 5m); internal area is not stated and is not estimated.",
+     "number": null,
+     "unit": null,
+     "evidenceScope": "Product-Specific",
+     "status": "Verified"
+    },
+    "glazing": {
+     "text": "A-rated double-glazed uPVC double entrance doors and 2 windows, Anthracite Grey (RAL 7016)",
+     "number": null,
+     "unit": null,
+     "evidenceScope": "Product-Specific",
+     "status": "Verified"
+    },
+    "cladding": {
+     "text": "Castellated composite cladding, Anthracite Grey, outside; plaster boarded, skimmed and painted inside ('Client provides paint'); 10mm laminate floor, white skirting.",
+     "number": null,
+     "unit": null,
+     "evidenceScope": "Range-Level",
+     "status": "Verified"
+    },
+    "electricalIncluded": {
+     "text": "Included as standard: 4 interior and 3 exterior recessed LED downlights, 2 double sockets, RECI consumer unit, wall-mounted electric thermostatic panel heater. NOT INCLUDED: the main armoured power cable from the garden room to the house fuse board — 'surveyed and quoted separately on-site'.",
+     "number": null,
+     "unit": null,
+     "evidenceScope": "Range-Level",
+     "status": "Verified"
+    },
+    "construction": {
+     "text": "Site-built timber frame: 5\" × 2\" (125mm × 50mm) posts braced with noggins, OSB sheathing, breathable membrane; EPDM single-sheet rubber roof with gutter and downpipe.",
+     "number": null,
+     "unit": null,
+     "evidenceScope": "Organisation-Wide",
+     "status": "Verified"
+    },
+    "installationModel": {
+     "text": "TURNKEY INSTALLATION INCLUDED — built on site by the supplier; delivery and the concrete-pier floor foundation are in the price; the mains power connection to the house is quoted separately; Dublin and Wicklow only.",
+     "number": null,
+     "unit": null,
+     "evidenceScope": "Organisation-Wide",
+     "status": "Verified"
+    },
+    "insulation": {
+     "text": "INSULATED. As published: walls, roof and floor 'fully packed with ROCKWOOL FLEXI® 100mm stone wool'. No U-value published.",
+     "number": null,
+     "unit": null,
+     "evidenceScope": "Range-Level",
+     "status": "Verified"
+    },
+    "foundationBaseRequirement": {
+     "text": "INCLUDED. As published: 'Engineered Foundation: Insulated suspended timber floor set on solid concrete piers, complete with a damp-proof membrane.' Site preparation: Included — 'site preparation' is named in the composite inclusions.",
+     "number": null,
+     "unit": null,
+     "evidenceScope": "Organisation-Wide",
+     "status": "Verified"
+    }
+   },
+   "price": 28450,
+   "currency": "EUR",
+   "priceBasis": "Verified",
+   "floorAreaM2": null,
+   "glazing": "A-rated double-glazed uPVC double entrance doors and 2 windows, Anthracite Grey (RAL 7016)",
+   "insulation": "INSULATED. As published: walls, roof and floor 'fully packed with ROCKWOOL FLEXI® 100mm stone wool'. No U-value published.",
+   "manufactureCountry": null,
+   "designLanguage": null,
+   "irishAvailabilityConfirmationState": "Yes",
+   "irishAvailability": true,
+   "availabilityStatus": "Available to Order",
+   "noPublishedIrishRoute": false,
+   "qualificationTier": "HIGH_CONFIDENCE",
+   "priceEvidenceState": "verified",
+   "qualificationCaveats": [],
+   "priceRecordIds": [
+    "rec3cp8JhCbMgESsP"
+   ],
+   "priceRecordIdsAvailable": 1,
+   "priceStatus": "Verified",
+   "priceType": "Standard Price",
+   "priceScope": "Product-Specific",
+   "vatStatus": "Yes",
+   "vatRate": null,
+   "priceBasisAxes": {
+    "erection": "INCLUDED",
+    "siteWorks": "UNKNOWN",
+    "delivery": "UNKNOWN"
+   },
+   "priceBasisClass": "ERECTED_SERVICES_UNKNOWN",
+   "priceBasisConfidence": "UNSAFE",
+   "priceIsRangeFloor": false,
+   "priceSafeForMatching": false,
+   "priceEvidenceRef": {
+    "recordIds": [
+     "rec3cp8JhCbMgESsP"
+    ],
+    "adjudication": "adjudicated",
+    "candidateCount": 1,
+    "status": "Verified",
+    "priceType": "Standard Price",
+    "evidenceScope": "Product-Specific",
+    "lastPriceCheck": "2026-11-06",
+    "basisSource": "installationModel.leadPhrase",
+    "basisLeadPhrase": "TURNKEY INSTALLATION INCLUDED"
+   }
+  },
+  {
    "id": "recyqFWqZEX7pnIiv",
    "name": "QC8 Gym",
    "organisation": "Booths Garden Studios",
@@ -83610,6 +84615,1011 @@
     "priceType": "Starting From",
     "evidenceScope": null,
     "lastPriceCheck": "2026-08-08",
+    "basisSource": "installationModel.leadPhrase",
+    "basisLeadPhrase": "TURNKEY INSTALLATION INCLUDED"
+   }
+  },
+  {
+   "id": "recCF6Fdi2i1Qo04Z",
+   "name": "Value Timber Garden Room 3m × 3m",
+   "organisation": "East Coast Carpentry",
+   "productId": "recCF6Fdi2i1Qo04Z",
+   "productCode": "",
+   "productName": "Value Timber Garden Room 3m × 3m",
+   "productType": "Turnkey insulated garden room",
+   "productCategory": "Garden Rooms",
+   "organisationEvidence": [
+    {
+     "id": "reczQAlAQhP3hs9qN",
+     "name": "East Coast Carpentry"
+    }
+   ],
+   "productUrl": "https://eastcoastcarpentry.ie/services/garden-rooms/",
+   "verificationStatus": "Verified",
+   "qualification": {
+    "status": "ELIGIBLE — HIGH CONFIDENCE",
+    "confidenceTier": "HIGH_CONFIDENCE",
+    "priceEvidence": "verified",
+    "reasons": [
+     "Irish availability is confirmed by recorded evidence.",
+     "A verified price is recorded.",
+     "A product-level source is recorded.",
+     "Supplier attribution is confirmed: East Coast Carpentry."
+    ],
+    "caveats": [],
+    "hardBlockers": [],
+    "evidenceSignals": {
+     "irishAvailability": "confirmed",
+     "irishAvailabilityBasis": "AVAILABLE IN REPUBLIC OF IRELAND — DUBLIN AND WICKLOW ONLY. Built and installed by a Kilcoole, Co. Wicklow carpentry company; the price page covers Dublin and Wicklow only.",
+     "irishAvailabilityScope": "Organisation-Wide",
+     "irishAvailabilityClassified": true,
+     "noPublishedIrishRoute": false,
+     "price": "verified",
+     "source": "product-level",
+     "supplierAttribution": "confirmed",
+     "manufacturerAttribution": "unknown",
+     "productUrl": "present",
+     "contradiction": "none",
+     "productEvidenceCompleteness": "Blocked — Core Attribution or Evidence Missing",
+     "featureValueCount": 1,
+     "pricingRecordCount": 1,
+     "availabilityRecordCount": 1
+    }
+   },
+   "priceEvidence": {
+    "base": 13450,
+    "from": null,
+    "to": null,
+    "currency": "EUR",
+    "priceType": "Standard Price",
+    "status": "Verified",
+    "includesVat": "Yes",
+    "evidenceScope": "Product-Specific",
+    "adjudication": "adjudicated",
+    "quoteOnly": false,
+    "candidateCount": 1,
+    "presentationHold": {
+     "qualification": "Price includes VAT, delivery and installation in Dublin and Wicklow only. Mains electrical connection is quoted separately. Additional site-specific costs may apply.",
+     "matching": "excluded",
+     "label": "Dublin and Wicklow price only",
+     "reason": "This price applies in Dublin and Wicklow only, so PlotNua does not compare it with your budget until it can check your area.",
+     "region": "Dublin and Wicklow",
+     "vatBasis": "included"
+    }
+   },
+   "features": {
+    "irishAvailability": {
+     "text": "AVAILABLE IN REPUBLIC OF IRELAND — DUBLIN AND WICKLOW ONLY. Built and installed by a Kilcoole, Co. Wicklow carpentry company; the price page covers Dublin and Wicklow only.",
+     "number": null,
+     "unit": null,
+     "evidenceScope": "Organisation-Wide",
+     "status": "Verified"
+    },
+    "installationModel": {
+     "text": "TURNKEY INSTALLATION INCLUDED — built on site by the supplier; delivery and the concrete-pier floor foundation are in the price; the mains power connection to the house is quoted separately; Dublin and Wicklow only.",
+     "number": null,
+     "unit": null,
+     "evidenceScope": "Organisation-Wide",
+     "status": "Verified"
+    },
+    "electricalIncluded": {
+     "text": "Included as standard: 2 double sockets, 4 interior LED spotlights, RECI-compliant internal consumer unit, wall-mounted electric thermostatic panel heater. NOT INCLUDED: the main armoured (SWA) power cable from the garden room to the house fuse board — 'surveyed and quoted separately on-site'.",
+     "number": null,
+     "unit": null,
+     "evidenceScope": "Range-Level",
+     "status": "Verified"
+    },
+    "glazing": {
+     "text": "Double-glazed uPVC single entrance door and 1 standard window, Anthracite Grey (RAL 7016)",
+     "number": null,
+     "unit": null,
+     "evidenceScope": "Product-Specific",
+     "status": "Verified"
+    },
+    "deliveryBasis": {
+     "text": "INCLUDED within Dublin and Wicklow. As published: prices 'include 13.5% VAT, delivery, and complete installation across Dublin and Wicklow.'",
+     "number": null,
+     "unit": null,
+     "evidenceScope": "Organisation-Wide",
+     "status": "Verified"
+    },
+    "floorArea": {
+     "text": "INTERNAL FLOOR AREA NOT PUBLISHED. The supplier publishes a 9 sqm FOOTPRINT (3m × 3m); internal area is not stated and is not estimated.",
+     "number": null,
+     "unit": null,
+     "evidenceScope": "Product-Specific",
+     "status": "Verified"
+    },
+    "externalDimensions": {
+     "text": "3m × 3m footprint (9 sqm), as published under 'FOOTPRINT SIZE'. Height not published.",
+     "number": null,
+     "unit": null,
+     "evidenceScope": "Product-Specific",
+     "status": "Verified"
+    },
+    "foundationBaseRequirement": {
+     "text": "INCLUDED. As published: 'Engineered Foundation: Insulated suspended timber floor set on solid concrete piers, complete with a damp-proof membrane.' Site preparation: UNCONFIRMED — the timber inclusions name a 'full ground-up garden room build' and site waste clean-up, but not site preparation.",
+     "number": null,
+     "unit": null,
+     "evidenceScope": "Organisation-Wide",
+     "status": "Verified"
+    },
+    "construction": {
+     "text": "Site-built timber frame: 5\" × 2\" (125mm × 50mm) posts braced with noggins, OSB sheathing, breathable membrane; EPDM single-sheet rubber roof with gutter and downpipe.",
+     "number": null,
+     "unit": null,
+     "evidenceScope": "Organisation-Wide",
+     "status": "Verified"
+    },
+    "insulation": {
+     "text": "INSULATED. As published: walls, roof and floor 'fully packed with ROCKWOOL FLEXI® 100mm stone wool'. No U-value published.",
+     "number": null,
+     "unit": null,
+     "evidenceScope": "Range-Level",
+     "status": "Verified"
+    },
+    "warranty": {
+     "text": "20-Year Structural Guarantee (as published) — covers foundation piers, timber framing, roof structure, EPDM roof membrane, wraps and wall seals. The heading carries an asterisk with no published footnote: conditions UNKNOWN.",
+     "number": null,
+     "unit": null,
+     "evidenceScope": "Organisation-Wide",
+     "status": "Partially Verified"
+    },
+    "cladding": {
+     "text": "Pressure-treated 21mm TGV timber cladding outside; natural TGV timber-clad walls and ceiling inside; 10mm laminate floor, white skirting.",
+     "number": null,
+     "unit": null,
+     "evidenceScope": "Range-Level",
+     "status": "Verified"
+    }
+   },
+   "price": 13450,
+   "currency": "EUR",
+   "priceBasis": "Verified",
+   "floorAreaM2": null,
+   "glazing": "Double-glazed uPVC single entrance door and 1 standard window, Anthracite Grey (RAL 7016)",
+   "insulation": "INSULATED. As published: walls, roof and floor 'fully packed with ROCKWOOL FLEXI® 100mm stone wool'. No U-value published.",
+   "manufactureCountry": null,
+   "designLanguage": null,
+   "irishAvailabilityConfirmationState": "Yes",
+   "irishAvailability": true,
+   "availabilityStatus": "Available to Order",
+   "noPublishedIrishRoute": false,
+   "qualificationTier": "HIGH_CONFIDENCE",
+   "priceEvidenceState": "verified",
+   "qualificationCaveats": [],
+   "priceRecordIds": [
+    "recJtKyvcfmVzZ9oO"
+   ],
+   "priceRecordIdsAvailable": 1,
+   "priceStatus": "Verified",
+   "priceType": "Standard Price",
+   "priceScope": "Product-Specific",
+   "vatStatus": "Yes",
+   "vatRate": null,
+   "priceBasisAxes": {
+    "erection": "INCLUDED",
+    "siteWorks": "UNKNOWN",
+    "delivery": "UNKNOWN"
+   },
+   "priceBasisClass": "ERECTED_SERVICES_UNKNOWN",
+   "priceBasisConfidence": "UNSAFE",
+   "priceIsRangeFloor": false,
+   "priceSafeForMatching": false,
+   "priceEvidenceRef": {
+    "recordIds": [
+     "recJtKyvcfmVzZ9oO"
+    ],
+    "adjudication": "adjudicated",
+    "candidateCount": 1,
+    "status": "Verified",
+    "priceType": "Standard Price",
+    "evidenceScope": "Product-Specific",
+    "lastPriceCheck": "2026-11-06",
+    "basisSource": "installationModel.leadPhrase",
+    "basisLeadPhrase": "TURNKEY INSTALLATION INCLUDED"
+   }
+  },
+  {
+   "id": "recXNnHMEexJKnLGA",
+   "name": "Value Timber Garden Room 4m × 3m",
+   "organisation": "East Coast Carpentry",
+   "productId": "recXNnHMEexJKnLGA",
+   "productCode": "",
+   "productName": "Value Timber Garden Room 4m × 3m",
+   "productType": "Turnkey insulated garden room",
+   "productCategory": "Garden Rooms",
+   "organisationEvidence": [
+    {
+     "id": "reczQAlAQhP3hs9qN",
+     "name": "East Coast Carpentry"
+    }
+   ],
+   "productUrl": "https://eastcoastcarpentry.ie/services/garden-rooms/",
+   "verificationStatus": "Verified",
+   "qualification": {
+    "status": "ELIGIBLE — HIGH CONFIDENCE",
+    "confidenceTier": "HIGH_CONFIDENCE",
+    "priceEvidence": "verified",
+    "reasons": [
+     "Irish availability is confirmed by recorded evidence.",
+     "A verified price is recorded.",
+     "A product-level source is recorded.",
+     "Supplier attribution is confirmed: East Coast Carpentry."
+    ],
+    "caveats": [],
+    "hardBlockers": [],
+    "evidenceSignals": {
+     "irishAvailability": "confirmed",
+     "irishAvailabilityBasis": "AVAILABLE IN REPUBLIC OF IRELAND — DUBLIN AND WICKLOW ONLY. Built and installed by a Kilcoole, Co. Wicklow carpentry company; the price page covers Dublin and Wicklow only.",
+     "irishAvailabilityScope": "Organisation-Wide",
+     "irishAvailabilityClassified": true,
+     "noPublishedIrishRoute": false,
+     "price": "verified",
+     "source": "product-level",
+     "supplierAttribution": "confirmed",
+     "manufacturerAttribution": "unknown",
+     "productUrl": "present",
+     "contradiction": "none",
+     "productEvidenceCompleteness": "Blocked — Core Attribution or Evidence Missing",
+     "featureValueCount": 1,
+     "pricingRecordCount": 1,
+     "availabilityRecordCount": 1
+    }
+   },
+   "priceEvidence": {
+    "base": 15950,
+    "from": null,
+    "to": null,
+    "currency": "EUR",
+    "priceType": "Standard Price",
+    "status": "Verified",
+    "includesVat": "Yes",
+    "evidenceScope": "Product-Specific",
+    "adjudication": "adjudicated",
+    "quoteOnly": false,
+    "candidateCount": 1,
+    "presentationHold": {
+     "qualification": "Price includes VAT, delivery and installation in Dublin and Wicklow only. Mains electrical connection is quoted separately. Additional site-specific costs may apply.",
+     "matching": "excluded",
+     "label": "Dublin and Wicklow price only",
+     "reason": "This price applies in Dublin and Wicklow only, so PlotNua does not compare it with your budget until it can check your area.",
+     "region": "Dublin and Wicklow",
+     "vatBasis": "included"
+    }
+   },
+   "features": {
+    "warranty": {
+     "text": "20-Year Structural Guarantee (as published) — covers foundation piers, timber framing, roof structure, EPDM roof membrane, wraps and wall seals. The heading carries an asterisk with no published footnote: conditions UNKNOWN.",
+     "number": null,
+     "unit": null,
+     "evidenceScope": "Organisation-Wide",
+     "status": "Partially Verified"
+    },
+    "installationModel": {
+     "text": "TURNKEY INSTALLATION INCLUDED — built on site by the supplier; delivery and the concrete-pier floor foundation are in the price; the mains power connection to the house is quoted separately; Dublin and Wicklow only.",
+     "number": null,
+     "unit": null,
+     "evidenceScope": "Organisation-Wide",
+     "status": "Verified"
+    },
+    "construction": {
+     "text": "Site-built timber frame: 5\" × 2\" (125mm × 50mm) posts braced with noggins, OSB sheathing, breathable membrane; EPDM single-sheet rubber roof with gutter and downpipe.",
+     "number": null,
+     "unit": null,
+     "evidenceScope": "Organisation-Wide",
+     "status": "Verified"
+    },
+    "irishAvailability": {
+     "text": "AVAILABLE IN REPUBLIC OF IRELAND — DUBLIN AND WICKLOW ONLY. Built and installed by a Kilcoole, Co. Wicklow carpentry company; the price page covers Dublin and Wicklow only.",
+     "number": null,
+     "unit": null,
+     "evidenceScope": "Organisation-Wide",
+     "status": "Verified"
+    },
+    "externalDimensions": {
+     "text": "4m × 3m footprint (12 sqm), as published under 'FOOTPRINT SIZE'. Height not published.",
+     "number": null,
+     "unit": null,
+     "evidenceScope": "Product-Specific",
+     "status": "Verified"
+    },
+    "deliveryBasis": {
+     "text": "INCLUDED within Dublin and Wicklow. As published: prices 'include 13.5% VAT, delivery, and complete installation across Dublin and Wicklow.'",
+     "number": null,
+     "unit": null,
+     "evidenceScope": "Organisation-Wide",
+     "status": "Verified"
+    },
+    "electricalIncluded": {
+     "text": "Included as standard: 2 double sockets, 4 interior LED spotlights, RECI-compliant internal consumer unit, wall-mounted electric thermostatic panel heater. NOT INCLUDED: the main armoured (SWA) power cable from the garden room to the house fuse board — 'surveyed and quoted separately on-site'.",
+     "number": null,
+     "unit": null,
+     "evidenceScope": "Range-Level",
+     "status": "Verified"
+    },
+    "foundationBaseRequirement": {
+     "text": "INCLUDED. As published: 'Engineered Foundation: Insulated suspended timber floor set on solid concrete piers, complete with a damp-proof membrane.' Site preparation: UNCONFIRMED — the timber inclusions name a 'full ground-up garden room build' and site waste clean-up, but not site preparation.",
+     "number": null,
+     "unit": null,
+     "evidenceScope": "Organisation-Wide",
+     "status": "Verified"
+    },
+    "insulation": {
+     "text": "INSULATED. As published: walls, roof and floor 'fully packed with ROCKWOOL FLEXI® 100mm stone wool'. No U-value published.",
+     "number": null,
+     "unit": null,
+     "evidenceScope": "Range-Level",
+     "status": "Verified"
+    },
+    "floorArea": {
+     "text": "INTERNAL FLOOR AREA NOT PUBLISHED. The supplier publishes a 12 sqm FOOTPRINT (4m × 3m); internal area is not stated and is not estimated.",
+     "number": null,
+     "unit": null,
+     "evidenceScope": "Product-Specific",
+     "status": "Verified"
+    },
+    "cladding": {
+     "text": "Pressure-treated 21mm TGV timber cladding outside; natural TGV timber-clad walls and ceiling inside; 10mm laminate floor, white skirting.",
+     "number": null,
+     "unit": null,
+     "evidenceScope": "Range-Level",
+     "status": "Verified"
+    },
+    "glazing": {
+     "text": "Double-glazed uPVC single entrance door and 1 standard window, Anthracite Grey (RAL 7016)",
+     "number": null,
+     "unit": null,
+     "evidenceScope": "Product-Specific",
+     "status": "Verified"
+    }
+   },
+   "price": 15950,
+   "currency": "EUR",
+   "priceBasis": "Verified",
+   "floorAreaM2": null,
+   "glazing": "Double-glazed uPVC single entrance door and 1 standard window, Anthracite Grey (RAL 7016)",
+   "insulation": "INSULATED. As published: walls, roof and floor 'fully packed with ROCKWOOL FLEXI® 100mm stone wool'. No U-value published.",
+   "manufactureCountry": null,
+   "designLanguage": null,
+   "irishAvailabilityConfirmationState": "Yes",
+   "irishAvailability": true,
+   "availabilityStatus": "Available to Order",
+   "noPublishedIrishRoute": false,
+   "qualificationTier": "HIGH_CONFIDENCE",
+   "priceEvidenceState": "verified",
+   "qualificationCaveats": [],
+   "priceRecordIds": [
+    "rec7eUIB0if41D0ZN"
+   ],
+   "priceRecordIdsAvailable": 1,
+   "priceStatus": "Verified",
+   "priceType": "Standard Price",
+   "priceScope": "Product-Specific",
+   "vatStatus": "Yes",
+   "vatRate": null,
+   "priceBasisAxes": {
+    "erection": "INCLUDED",
+    "siteWorks": "UNKNOWN",
+    "delivery": "UNKNOWN"
+   },
+   "priceBasisClass": "ERECTED_SERVICES_UNKNOWN",
+   "priceBasisConfidence": "UNSAFE",
+   "priceIsRangeFloor": false,
+   "priceSafeForMatching": false,
+   "priceEvidenceRef": {
+    "recordIds": [
+     "rec7eUIB0if41D0ZN"
+    ],
+    "adjudication": "adjudicated",
+    "candidateCount": 1,
+    "status": "Verified",
+    "priceType": "Standard Price",
+    "evidenceScope": "Product-Specific",
+    "lastPriceCheck": "2026-11-06",
+    "basisSource": "installationModel.leadPhrase",
+    "basisLeadPhrase": "TURNKEY INSTALLATION INCLUDED"
+   }
+  },
+  {
+   "id": "reccTIKHePHQoK7XX",
+   "name": "Value Timber Garden Room 5m × 3m",
+   "organisation": "East Coast Carpentry",
+   "productId": "reccTIKHePHQoK7XX",
+   "productCode": "",
+   "productName": "Value Timber Garden Room 5m × 3m",
+   "productType": "Turnkey insulated garden room",
+   "productCategory": "Garden Rooms",
+   "organisationEvidence": [
+    {
+     "id": "reczQAlAQhP3hs9qN",
+     "name": "East Coast Carpentry"
+    }
+   ],
+   "productUrl": "https://eastcoastcarpentry.ie/services/garden-rooms/",
+   "verificationStatus": "Verified",
+   "qualification": {
+    "status": "ELIGIBLE — HIGH CONFIDENCE",
+    "confidenceTier": "HIGH_CONFIDENCE",
+    "priceEvidence": "verified",
+    "reasons": [
+     "Irish availability is confirmed by recorded evidence.",
+     "A verified price is recorded.",
+     "A product-level source is recorded.",
+     "Supplier attribution is confirmed: East Coast Carpentry."
+    ],
+    "caveats": [],
+    "hardBlockers": [],
+    "evidenceSignals": {
+     "irishAvailability": "confirmed",
+     "irishAvailabilityBasis": "AVAILABLE IN REPUBLIC OF IRELAND — DUBLIN AND WICKLOW ONLY. Built and installed by a Kilcoole, Co. Wicklow carpentry company; the price page covers Dublin and Wicklow only.",
+     "irishAvailabilityScope": "Organisation-Wide",
+     "irishAvailabilityClassified": true,
+     "noPublishedIrishRoute": false,
+     "price": "verified",
+     "source": "product-level",
+     "supplierAttribution": "confirmed",
+     "manufacturerAttribution": "unknown",
+     "productUrl": "present",
+     "contradiction": "none",
+     "productEvidenceCompleteness": "Blocked — Core Attribution or Evidence Missing",
+     "featureValueCount": 1,
+     "pricingRecordCount": 1,
+     "availabilityRecordCount": 1
+    }
+   },
+   "priceEvidence": {
+    "base": 18450,
+    "from": null,
+    "to": null,
+    "currency": "EUR",
+    "priceType": "Standard Price",
+    "status": "Verified",
+    "includesVat": "Yes",
+    "evidenceScope": "Product-Specific",
+    "adjudication": "adjudicated",
+    "quoteOnly": false,
+    "candidateCount": 1,
+    "presentationHold": {
+     "qualification": "Price includes VAT, delivery and installation in Dublin and Wicklow only. Mains electrical connection is quoted separately. Additional site-specific costs may apply.",
+     "matching": "excluded",
+     "label": "Dublin and Wicklow price only",
+     "reason": "This price applies in Dublin and Wicklow only, so PlotNua does not compare it with your budget until it can check your area.",
+     "region": "Dublin and Wicklow",
+     "vatBasis": "included"
+    }
+   },
+   "features": {
+    "deliveryBasis": {
+     "text": "INCLUDED within Dublin and Wicklow. As published: prices 'include 13.5% VAT, delivery, and complete installation across Dublin and Wicklow.'",
+     "number": null,
+     "unit": null,
+     "evidenceScope": "Organisation-Wide",
+     "status": "Verified"
+    },
+    "cladding": {
+     "text": "Pressure-treated 21mm TGV timber cladding outside; natural TGV timber-clad walls and ceiling inside; 10mm laminate floor, white skirting.",
+     "number": null,
+     "unit": null,
+     "evidenceScope": "Range-Level",
+     "status": "Verified"
+    },
+    "construction": {
+     "text": "Site-built timber frame: 5\" × 2\" (125mm × 50mm) posts braced with noggins, OSB sheathing, breathable membrane; EPDM single-sheet rubber roof with gutter and downpipe.",
+     "number": null,
+     "unit": null,
+     "evidenceScope": "Organisation-Wide",
+     "status": "Verified"
+    },
+    "warranty": {
+     "text": "20-Year Structural Guarantee (as published) — covers foundation piers, timber framing, roof structure, EPDM roof membrane, wraps and wall seals. The heading carries an asterisk with no published footnote: conditions UNKNOWN.",
+     "number": null,
+     "unit": null,
+     "evidenceScope": "Organisation-Wide",
+     "status": "Partially Verified"
+    },
+    "insulation": {
+     "text": "INSULATED. As published: walls, roof and floor 'fully packed with ROCKWOOL FLEXI® 100mm stone wool'. No U-value published.",
+     "number": null,
+     "unit": null,
+     "evidenceScope": "Range-Level",
+     "status": "Verified"
+    },
+    "floorArea": {
+     "text": "INTERNAL FLOOR AREA NOT PUBLISHED. The supplier publishes a 15 sqm FOOTPRINT (5m × 3m); internal area is not stated and is not estimated.",
+     "number": null,
+     "unit": null,
+     "evidenceScope": "Product-Specific",
+     "status": "Verified"
+    },
+    "glazing": {
+     "text": "Double-glazed uPVC double entrance doors and 2 standard windows, Anthracite Grey (RAL 7016)",
+     "number": null,
+     "unit": null,
+     "evidenceScope": "Product-Specific",
+     "status": "Verified"
+    },
+    "electricalIncluded": {
+     "text": "Included as standard: 2 double sockets, 4 interior LED spotlights, RECI-compliant internal consumer unit, wall-mounted electric thermostatic panel heater. NOT INCLUDED: the main armoured (SWA) power cable from the garden room to the house fuse board — 'surveyed and quoted separately on-site'.",
+     "number": null,
+     "unit": null,
+     "evidenceScope": "Range-Level",
+     "status": "Verified"
+    },
+    "foundationBaseRequirement": {
+     "text": "INCLUDED. As published: 'Engineered Foundation: Insulated suspended timber floor set on solid concrete piers, complete with a damp-proof membrane.' Site preparation: UNCONFIRMED — the timber inclusions name a 'full ground-up garden room build' and site waste clean-up, but not site preparation.",
+     "number": null,
+     "unit": null,
+     "evidenceScope": "Organisation-Wide",
+     "status": "Verified"
+    },
+    "externalDimensions": {
+     "text": "5m × 3m footprint (15 sqm), as published under 'FOOTPRINT SIZE'. Height not published.",
+     "number": null,
+     "unit": null,
+     "evidenceScope": "Product-Specific",
+     "status": "Verified"
+    },
+    "installationModel": {
+     "text": "TURNKEY INSTALLATION INCLUDED — built on site by the supplier; delivery and the concrete-pier floor foundation are in the price; the mains power connection to the house is quoted separately; Dublin and Wicklow only.",
+     "number": null,
+     "unit": null,
+     "evidenceScope": "Organisation-Wide",
+     "status": "Verified"
+    },
+    "irishAvailability": {
+     "text": "AVAILABLE IN REPUBLIC OF IRELAND — DUBLIN AND WICKLOW ONLY. Built and installed by a Kilcoole, Co. Wicklow carpentry company; the price page covers Dublin and Wicklow only.",
+     "number": null,
+     "unit": null,
+     "evidenceScope": "Organisation-Wide",
+     "status": "Verified"
+    }
+   },
+   "price": 18450,
+   "currency": "EUR",
+   "priceBasis": "Verified",
+   "floorAreaM2": null,
+   "glazing": "Double-glazed uPVC double entrance doors and 2 standard windows, Anthracite Grey (RAL 7016)",
+   "insulation": "INSULATED. As published: walls, roof and floor 'fully packed with ROCKWOOL FLEXI® 100mm stone wool'. No U-value published.",
+   "manufactureCountry": null,
+   "designLanguage": null,
+   "irishAvailabilityConfirmationState": "Yes",
+   "irishAvailability": true,
+   "availabilityStatus": "Available to Order",
+   "noPublishedIrishRoute": false,
+   "qualificationTier": "HIGH_CONFIDENCE",
+   "priceEvidenceState": "verified",
+   "qualificationCaveats": [],
+   "priceRecordIds": [
+    "rec8uj1AsuCGLMaqH"
+   ],
+   "priceRecordIdsAvailable": 1,
+   "priceStatus": "Verified",
+   "priceType": "Standard Price",
+   "priceScope": "Product-Specific",
+   "vatStatus": "Yes",
+   "vatRate": null,
+   "priceBasisAxes": {
+    "erection": "INCLUDED",
+    "siteWorks": "UNKNOWN",
+    "delivery": "UNKNOWN"
+   },
+   "priceBasisClass": "ERECTED_SERVICES_UNKNOWN",
+   "priceBasisConfidence": "UNSAFE",
+   "priceIsRangeFloor": false,
+   "priceSafeForMatching": false,
+   "priceEvidenceRef": {
+    "recordIds": [
+     "rec8uj1AsuCGLMaqH"
+    ],
+    "adjudication": "adjudicated",
+    "candidateCount": 1,
+    "status": "Verified",
+    "priceType": "Standard Price",
+    "evidenceScope": "Product-Specific",
+    "lastPriceCheck": "2026-11-06",
+    "basisSource": "installationModel.leadPhrase",
+    "basisLeadPhrase": "TURNKEY INSTALLATION INCLUDED"
+   }
+  },
+  {
+   "id": "reclM4VYSSq9lsMtp",
+   "name": "Value Timber Garden Room 5m × 4m",
+   "organisation": "East Coast Carpentry",
+   "productId": "reclM4VYSSq9lsMtp",
+   "productCode": "",
+   "productName": "Value Timber Garden Room 5m × 4m",
+   "productType": "Turnkey insulated garden room",
+   "productCategory": "Garden Rooms",
+   "organisationEvidence": [
+    {
+     "id": "reczQAlAQhP3hs9qN",
+     "name": "East Coast Carpentry"
+    }
+   ],
+   "productUrl": "https://eastcoastcarpentry.ie/services/garden-rooms/",
+   "verificationStatus": "Verified",
+   "qualification": {
+    "status": "ELIGIBLE — HIGH CONFIDENCE",
+    "confidenceTier": "HIGH_CONFIDENCE",
+    "priceEvidence": "verified",
+    "reasons": [
+     "Irish availability is confirmed by recorded evidence.",
+     "A verified price is recorded.",
+     "A product-level source is recorded.",
+     "Supplier attribution is confirmed: East Coast Carpentry."
+    ],
+    "caveats": [],
+    "hardBlockers": [],
+    "evidenceSignals": {
+     "irishAvailability": "confirmed",
+     "irishAvailabilityBasis": "AVAILABLE IN REPUBLIC OF IRELAND — DUBLIN AND WICKLOW ONLY. Built and installed by a Kilcoole, Co. Wicklow carpentry company; the price page covers Dublin and Wicklow only.",
+     "irishAvailabilityScope": "Organisation-Wide",
+     "irishAvailabilityClassified": true,
+     "noPublishedIrishRoute": false,
+     "price": "verified",
+     "source": "product-level",
+     "supplierAttribution": "confirmed",
+     "manufacturerAttribution": "unknown",
+     "productUrl": "present",
+     "contradiction": "none",
+     "productEvidenceCompleteness": "Blocked — Core Attribution or Evidence Missing",
+     "featureValueCount": 1,
+     "pricingRecordCount": 1,
+     "availabilityRecordCount": 1
+    }
+   },
+   "priceEvidence": {
+    "base": 20950,
+    "from": null,
+    "to": null,
+    "currency": "EUR",
+    "priceType": "Standard Price",
+    "status": "Verified",
+    "includesVat": "Yes",
+    "evidenceScope": "Product-Specific",
+    "adjudication": "adjudicated",
+    "quoteOnly": false,
+    "candidateCount": 1,
+    "presentationHold": {
+     "qualification": "Price includes VAT, delivery and installation in Dublin and Wicklow only. Mains electrical connection is quoted separately. Additional site-specific costs may apply.",
+     "matching": "excluded",
+     "label": "Dublin and Wicklow price only",
+     "reason": "This price applies in Dublin and Wicklow only, so PlotNua does not compare it with your budget until it can check your area.",
+     "region": "Dublin and Wicklow",
+     "vatBasis": "included"
+    }
+   },
+   "features": {
+    "foundationBaseRequirement": {
+     "text": "INCLUDED. As published: 'Engineered Foundation: Insulated suspended timber floor set on solid concrete piers, complete with a damp-proof membrane.' Site preparation: UNCONFIRMED — the timber inclusions name a 'full ground-up garden room build' and site waste clean-up, but not site preparation.",
+     "number": null,
+     "unit": null,
+     "evidenceScope": "Organisation-Wide",
+     "status": "Verified"
+    },
+    "electricalIncluded": {
+     "text": "Included as standard: 2 double sockets, 4 interior LED spotlights, RECI-compliant internal consumer unit, wall-mounted electric thermostatic panel heater. NOT INCLUDED: the main armoured (SWA) power cable from the garden room to the house fuse board — 'surveyed and quoted separately on-site'.",
+     "number": null,
+     "unit": null,
+     "evidenceScope": "Range-Level",
+     "status": "Verified"
+    },
+    "floorArea": {
+     "text": "INTERNAL FLOOR AREA NOT PUBLISHED. The supplier publishes a 20 sqm FOOTPRINT (5m × 4m); internal area is not stated and is not estimated.",
+     "number": null,
+     "unit": null,
+     "evidenceScope": "Product-Specific",
+     "status": "Verified"
+    },
+    "irishAvailability": {
+     "text": "AVAILABLE IN REPUBLIC OF IRELAND — DUBLIN AND WICKLOW ONLY. Built and installed by a Kilcoole, Co. Wicklow carpentry company; the price page covers Dublin and Wicklow only.",
+     "number": null,
+     "unit": null,
+     "evidenceScope": "Organisation-Wide",
+     "status": "Verified"
+    },
+    "deliveryBasis": {
+     "text": "INCLUDED within Dublin and Wicklow. As published: prices 'include 13.5% VAT, delivery, and complete installation across Dublin and Wicklow.'",
+     "number": null,
+     "unit": null,
+     "evidenceScope": "Organisation-Wide",
+     "status": "Verified"
+    },
+    "cladding": {
+     "text": "Pressure-treated 21mm TGV timber cladding outside; natural TGV timber-clad walls and ceiling inside; 10mm laminate floor, white skirting.",
+     "number": null,
+     "unit": null,
+     "evidenceScope": "Range-Level",
+     "status": "Verified"
+    },
+    "insulation": {
+     "text": "INSULATED. As published: walls, roof and floor 'fully packed with ROCKWOOL FLEXI® 100mm stone wool'. No U-value published.",
+     "number": null,
+     "unit": null,
+     "evidenceScope": "Range-Level",
+     "status": "Verified"
+    },
+    "construction": {
+     "text": "Site-built timber frame: 5\" × 2\" (125mm × 50mm) posts braced with noggins, OSB sheathing, breathable membrane; EPDM single-sheet rubber roof with gutter and downpipe.",
+     "number": null,
+     "unit": null,
+     "evidenceScope": "Organisation-Wide",
+     "status": "Verified"
+    },
+    "warranty": {
+     "text": "20-Year Structural Guarantee (as published) — covers foundation piers, timber framing, roof structure, EPDM roof membrane, wraps and wall seals. The heading carries an asterisk with no published footnote: conditions UNKNOWN.",
+     "number": null,
+     "unit": null,
+     "evidenceScope": "Organisation-Wide",
+     "status": "Partially Verified"
+    },
+    "glazing": {
+     "text": "Double-glazed uPVC double entrance doors and 2 standard windows, Anthracite Grey (RAL 7016)",
+     "number": null,
+     "unit": null,
+     "evidenceScope": "Product-Specific",
+     "status": "Verified"
+    },
+    "externalDimensions": {
+     "text": "5m × 4m footprint (20 sqm), as published under 'FOOTPRINT SIZE'. Height not published.",
+     "number": null,
+     "unit": null,
+     "evidenceScope": "Product-Specific",
+     "status": "Verified"
+    },
+    "installationModel": {
+     "text": "TURNKEY INSTALLATION INCLUDED — built on site by the supplier; delivery and the concrete-pier floor foundation are in the price; the mains power connection to the house is quoted separately; Dublin and Wicklow only.",
+     "number": null,
+     "unit": null,
+     "evidenceScope": "Organisation-Wide",
+     "status": "Verified"
+    }
+   },
+   "price": 20950,
+   "currency": "EUR",
+   "priceBasis": "Verified",
+   "floorAreaM2": null,
+   "glazing": "Double-glazed uPVC double entrance doors and 2 standard windows, Anthracite Grey (RAL 7016)",
+   "insulation": "INSULATED. As published: walls, roof and floor 'fully packed with ROCKWOOL FLEXI® 100mm stone wool'. No U-value published.",
+   "manufactureCountry": null,
+   "designLanguage": null,
+   "irishAvailabilityConfirmationState": "Yes",
+   "irishAvailability": true,
+   "availabilityStatus": "Available to Order",
+   "noPublishedIrishRoute": false,
+   "qualificationTier": "HIGH_CONFIDENCE",
+   "priceEvidenceState": "verified",
+   "qualificationCaveats": [],
+   "priceRecordIds": [
+    "recfK9PtKQHLjfwNJ"
+   ],
+   "priceRecordIdsAvailable": 1,
+   "priceStatus": "Verified",
+   "priceType": "Standard Price",
+   "priceScope": "Product-Specific",
+   "vatStatus": "Yes",
+   "vatRate": null,
+   "priceBasisAxes": {
+    "erection": "INCLUDED",
+    "siteWorks": "UNKNOWN",
+    "delivery": "UNKNOWN"
+   },
+   "priceBasisClass": "ERECTED_SERVICES_UNKNOWN",
+   "priceBasisConfidence": "UNSAFE",
+   "priceIsRangeFloor": false,
+   "priceSafeForMatching": false,
+   "priceEvidenceRef": {
+    "recordIds": [
+     "recfK9PtKQHLjfwNJ"
+    ],
+    "adjudication": "adjudicated",
+    "candidateCount": 1,
+    "status": "Verified",
+    "priceType": "Standard Price",
+    "evidenceScope": "Product-Specific",
+    "lastPriceCheck": "2026-11-06",
+    "basisSource": "installationModel.leadPhrase",
+    "basisLeadPhrase": "TURNKEY INSTALLATION INCLUDED"
+   }
+  },
+  {
+   "id": "rec7SV0aGZjcDYmF7",
+   "name": "Value Timber Garden Room 5m × 5m",
+   "organisation": "East Coast Carpentry",
+   "productId": "rec7SV0aGZjcDYmF7",
+   "productCode": "",
+   "productName": "Value Timber Garden Room 5m × 5m",
+   "productType": "Turnkey insulated garden room",
+   "productCategory": "Garden Rooms",
+   "organisationEvidence": [
+    {
+     "id": "reczQAlAQhP3hs9qN",
+     "name": "East Coast Carpentry"
+    }
+   ],
+   "productUrl": "https://eastcoastcarpentry.ie/services/garden-rooms/",
+   "verificationStatus": "Verified",
+   "qualification": {
+    "status": "ELIGIBLE — HIGH CONFIDENCE",
+    "confidenceTier": "HIGH_CONFIDENCE",
+    "priceEvidence": "verified",
+    "reasons": [
+     "Irish availability is confirmed by recorded evidence.",
+     "A verified price is recorded.",
+     "A product-level source is recorded.",
+     "Supplier attribution is confirmed: East Coast Carpentry."
+    ],
+    "caveats": [],
+    "hardBlockers": [],
+    "evidenceSignals": {
+     "irishAvailability": "confirmed",
+     "irishAvailabilityBasis": "AVAILABLE IN REPUBLIC OF IRELAND — DUBLIN AND WICKLOW ONLY. Built and installed by a Kilcoole, Co. Wicklow carpentry company; the price page covers Dublin and Wicklow only.",
+     "irishAvailabilityScope": "Organisation-Wide",
+     "irishAvailabilityClassified": true,
+     "noPublishedIrishRoute": false,
+     "price": "verified",
+     "source": "product-level",
+     "supplierAttribution": "confirmed",
+     "manufacturerAttribution": "unknown",
+     "productUrl": "present",
+     "contradiction": "none",
+     "productEvidenceCompleteness": "Blocked — Core Attribution or Evidence Missing",
+     "featureValueCount": 1,
+     "pricingRecordCount": 1,
+     "availabilityRecordCount": 1
+    }
+   },
+   "priceEvidence": {
+    "base": 23450,
+    "from": null,
+    "to": null,
+    "currency": "EUR",
+    "priceType": "Standard Price",
+    "status": "Verified",
+    "includesVat": "Yes",
+    "evidenceScope": "Product-Specific",
+    "adjudication": "adjudicated",
+    "quoteOnly": false,
+    "candidateCount": 1,
+    "presentationHold": {
+     "qualification": "Price includes VAT, delivery and installation in Dublin and Wicklow only. Mains electrical connection is quoted separately. Additional site-specific costs may apply.",
+     "matching": "excluded",
+     "label": "Dublin and Wicklow price only",
+     "reason": "This price applies in Dublin and Wicklow only, so PlotNua does not compare it with your budget until it can check your area.",
+     "region": "Dublin and Wicklow",
+     "vatBasis": "included"
+    }
+   },
+   "features": {
+    "foundationBaseRequirement": {
+     "text": "INCLUDED. As published: 'Engineered Foundation: Insulated suspended timber floor set on solid concrete piers, complete with a damp-proof membrane.' Site preparation: UNCONFIRMED — the timber inclusions name a 'full ground-up garden room build' and site waste clean-up, but not site preparation.",
+     "number": null,
+     "unit": null,
+     "evidenceScope": "Organisation-Wide",
+     "status": "Verified"
+    },
+    "electricalIncluded": {
+     "text": "Included as standard: 2 double sockets, 4 interior LED spotlights, RECI-compliant internal consumer unit, wall-mounted electric thermostatic panel heater. NOT INCLUDED: the main armoured (SWA) power cable from the garden room to the house fuse board — 'surveyed and quoted separately on-site'.",
+     "number": null,
+     "unit": null,
+     "evidenceScope": "Range-Level",
+     "status": "Verified"
+    },
+    "floorArea": {
+     "text": "INTERNAL FLOOR AREA NOT PUBLISHED. The supplier publishes a 25 sqm FOOTPRINT (5m × 5m); internal area is not stated and is not estimated.",
+     "number": null,
+     "unit": null,
+     "evidenceScope": "Product-Specific",
+     "status": "Verified"
+    },
+    "irishAvailability": {
+     "text": "AVAILABLE IN REPUBLIC OF IRELAND — DUBLIN AND WICKLOW ONLY. Built and installed by a Kilcoole, Co. Wicklow carpentry company; the price page covers Dublin and Wicklow only.",
+     "number": null,
+     "unit": null,
+     "evidenceScope": "Organisation-Wide",
+     "status": "Verified"
+    },
+    "insulation": {
+     "text": "INSULATED. As published: walls, roof and floor 'fully packed with ROCKWOOL FLEXI® 100mm stone wool'. No U-value published.",
+     "number": null,
+     "unit": null,
+     "evidenceScope": "Range-Level",
+     "status": "Verified"
+    },
+    "installationModel": {
+     "text": "TURNKEY INSTALLATION INCLUDED — built on site by the supplier; delivery and the concrete-pier floor foundation are in the price; the mains power connection to the house is quoted separately; Dublin and Wicklow only.",
+     "number": null,
+     "unit": null,
+     "evidenceScope": "Organisation-Wide",
+     "status": "Verified"
+    },
+    "deliveryBasis": {
+     "text": "INCLUDED within Dublin and Wicklow. As published: prices 'include 13.5% VAT, delivery, and complete installation across Dublin and Wicklow.'",
+     "number": null,
+     "unit": null,
+     "evidenceScope": "Organisation-Wide",
+     "status": "Verified"
+    },
+    "warranty": {
+     "text": "20-Year Structural Guarantee (as published) — covers foundation piers, timber framing, roof structure, EPDM roof membrane, wraps and wall seals. The heading carries an asterisk with no published footnote: conditions UNKNOWN.",
+     "number": null,
+     "unit": null,
+     "evidenceScope": "Organisation-Wide",
+     "status": "Partially Verified"
+    },
+    "externalDimensions": {
+     "text": "5m × 5m footprint (25 sqm), as published under 'FOOTPRINT SIZE'. Height not published.",
+     "number": null,
+     "unit": null,
+     "evidenceScope": "Product-Specific",
+     "status": "Verified"
+    },
+    "glazing": {
+     "text": "Double-glazed uPVC double entrance doors and 2 standard windows, Anthracite Grey (RAL 7016)",
+     "number": null,
+     "unit": null,
+     "evidenceScope": "Product-Specific",
+     "status": "Verified"
+    },
+    "cladding": {
+     "text": "Pressure-treated 21mm TGV timber cladding outside; natural TGV timber-clad walls and ceiling inside; 10mm laminate floor, white skirting.",
+     "number": null,
+     "unit": null,
+     "evidenceScope": "Range-Level",
+     "status": "Verified"
+    },
+    "construction": {
+     "text": "Site-built timber frame: 5\" × 2\" (125mm × 50mm) posts braced with noggins, OSB sheathing, breathable membrane; EPDM single-sheet rubber roof with gutter and downpipe.",
+     "number": null,
+     "unit": null,
+     "evidenceScope": "Organisation-Wide",
+     "status": "Verified"
+    }
+   },
+   "price": 23450,
+   "currency": "EUR",
+   "priceBasis": "Verified",
+   "floorAreaM2": null,
+   "glazing": "Double-glazed uPVC double entrance doors and 2 standard windows, Anthracite Grey (RAL 7016)",
+   "insulation": "INSULATED. As published: walls, roof and floor 'fully packed with ROCKWOOL FLEXI® 100mm stone wool'. No U-value published.",
+   "manufactureCountry": null,
+   "designLanguage": null,
+   "irishAvailabilityConfirmationState": "Yes",
+   "irishAvailability": true,
+   "availabilityStatus": "Available to Order",
+   "noPublishedIrishRoute": false,
+   "qualificationTier": "HIGH_CONFIDENCE",
+   "priceEvidenceState": "verified",
+   "qualificationCaveats": [],
+   "priceRecordIds": [
+    "recd7WQWon9Ue4INw"
+   ],
+   "priceRecordIdsAvailable": 1,
+   "priceStatus": "Verified",
+   "priceType": "Standard Price",
+   "priceScope": "Product-Specific",
+   "vatStatus": "Yes",
+   "vatRate": null,
+   "priceBasisAxes": {
+    "erection": "INCLUDED",
+    "siteWorks": "UNKNOWN",
+    "delivery": "UNKNOWN"
+   },
+   "priceBasisClass": "ERECTED_SERVICES_UNKNOWN",
+   "priceBasisConfidence": "UNSAFE",
+   "priceIsRangeFloor": false,
+   "priceSafeForMatching": false,
+   "priceEvidenceRef": {
+    "recordIds": [
+     "recd7WQWon9Ue4INw"
+    ],
+    "adjudication": "adjudicated",
+    "candidateCount": 1,
+    "status": "Verified",
+    "priceType": "Standard Price",
+    "evidenceScope": "Product-Specific",
+    "lastPriceCheck": "2026-11-06",
     "basisSource": "installationModel.leadPhrase",
     "basisLeadPhrase": "TURNKEY INSTALLATION INCLUDED"
    }
