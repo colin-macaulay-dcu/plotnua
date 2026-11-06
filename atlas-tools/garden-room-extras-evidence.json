@@ -30,12 +30,6 @@
    "electricalConnection": {"state": "notEstablished", "checked": "2026-11-06", "source": "https://liveingardenpods.ie/pricing/", "evidence": "The Atlas record notes 'electrical fittings'; connection to the house is not stated."}
   },
   {
-   "organisation": "Rayco Modular Homes",
-   "base": {"state": "extra", "checked": "2026-08-27", "source": "https://raycomodularhomes.ie/homes/garden-rooms", "evidence": "Atlas record: 'FOUNDATIONS AND SITE WORKS ARE PRICED SEPARATELY'. Not re-read on 6 Nov 2026: the supplier site no longer shows the price."},
-   "delivery": {"state": "included", "checked": "2026-08-27", "source": "https://raycomodularhomes.ie/homes/garden-rooms", "evidence": "Atlas record: 'DELIVERED AND INSTALLED ACROSS IRELAND'."},
-   "electricalConnection": {"state": "notEstablished", "checked": "2026-08-27", "source": "https://raycomodularhomes.ie/homes/garden-rooms", "evidence": "No statement held."}
-  },
-  {
    "organisation": "Shomera",
    "base": {"state": "included", "checked": "2026-10-06", "source": "Atlas record (Shomera Classic Range installation model)", "evidence": "Atlas record: prices 'include poured concrete and galvanised steel foundations'."},
    "delivery": {"state": "notEstablished", "checked": "2026-10-06", "source": "Atlas record (Shomera Classic Range installation model)", "evidence": "Delivery is stated as extra only for a different range (Solo); not stated for this range."},

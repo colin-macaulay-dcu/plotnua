@@ -130,6 +130,22 @@ def apply_corrections(products, reg):
             idx = [i for i, p in enumerate(out) if p["id"] == pid]
             if len(idx) != 1:
                 die("correction %s: %s is not in the snapshot exactly once" % (c["id"], pid))
+            # STAGE 3C (founder approval in principle, 6 Nov 2026): "evidenceExcluded" withdraws a
+            # product's PRICE from the cost evidence while the product stays published and stays
+            # counted as a garden-room record. Bounded: only for a price that is no longer
+            # supported at the supplier; the product must still be published at the deployed
+            # commit (otherwise "removed" applies), and the entry must give its reason. The
+            # snapshot record is kept, marked, and made not safe for matching, so the unchanged
+            # relevance rule leaves it out of every priced figure. No price is replaced.
+            if entry.get("expect") == "evidenceExcluded":
+                if pid not in deployed or not (entry.get("reason") or "").strip():
+                    die("correction %s: %s is evidenceExcluded but is not published at the deployed "
+                        "commit, or no reason is given" % (c["id"], pid))
+                rec = dict(out[idx[0]])
+                rec["priceSafeForMatching"] = False
+                rec["evidenceExcluded"] = entry["reason"].strip()
+                out[idx[0]] = rec
+                continue
             if pid in deployed:
                 if entry.get("expect") != "replaced":
                     die("correction %s: %s is still published; the register expects %s"

@@ -281,7 +281,7 @@ FAULTS = [
     # 6 Nov 2026: the figure follows the cost evidence (245 -> 240); the fault now edits whatever it is.
     ("a price figure edited", lambda s: re.sub(r"(\d+)( garden-room products with a euro price)",
                                                 lambda m: str(int(m.group(1)) + 1) + m.group(2), s, count=1), "C"),
-    ("a price block removed", lambda s: re.sub(r"<li><span class=\"dq-fact\">92 do not publish.*?</li>", "", s, count=1, flags=re.S), "C"),
+    ("a price block removed", lambda s: re.sub(r"<li><span class=\"dq-fact\">\d+ do not publish.*?</li>", "", s, count=1, flags=re.S), "C"),
     ("a notice dropped", lambda s: s.replace("Separately, tell Building Control.", "", 1), "C"),
     ("an Atlas route removed", lambda s: s.replace('href="your-plot.html?discovery=residential"', 'href="your-plot.html"'), "L"),
     ("the explorer anchor renamed", lambda s: s.replace('id="explore-makers"', 'id="makers"', 1), "L"),

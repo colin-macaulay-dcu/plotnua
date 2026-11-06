@@ -156,6 +156,16 @@
    "why": "2026-11-06, founder approval 'PLOTNUA — STAGE 3B EAST COAST CARPENTRY ATLAS IMPLEMENTATION AND PUBLICATION PREPARATION' (19:10): ten East Coast Carpentry garden rooms published by publish-targeted-update.py; the explorer's own counts follow. The supplier gallery header figures follow the explorer (build-supplier-gallery.py).",
    "from": "75 makers researched",
    "to": "76 makers researched"
+  },
+  {
+   "why": "6 Nov 2026, founder Stage 3C (Hansa24 and Rayco): the cost-evidence figures follow the registered corrections hansa24-five-recheck-2026-11-06 (five Hansa24 prices re-read on summerhouse24.ie, all unchanged) and rayco-price-evidence-excluded-2026-11-06 (Rayco's EUR 29,500 withdrawn from the evidence; the product stays published under a price-presentation hold), written by atlas-tools/refresh-garden-cost-figures.py from cluster1-cost-evidence.json.",
+   "from": "240 garden-room products with a euro price we can stand behind. From 23 suppliers, out of 565 garden-room products in PlotNua’s 7 October 2026 research snapshot, corrected on 20 October 2026 for five supplier records, corrected on 26 October 2026 for 59 supplier records, seven base prices rechecked on 26 October 2026, 16 base prices rechecked on 6 November 2026, a further 25 rechecked the same day, five unverifiable supplier records removed.",
+   "to": "239 garden-room products with a euro price we can stand behind. From 22 suppliers, out of 565 garden-room products in PlotNua’s 7 October 2026 research snapshot, corrected on 20 October 2026 for five supplier records, corrected on 26 October 2026 for 59 supplier records, seven base prices rechecked on 26 October 2026, 16 base prices rechecked on 6 November 2026, a further 25 rechecked the same day, five unverifiable supplier records removed, a further five base prices rechecked the same day, one supplier price withdrawn."
+  },
+  {
+   "why": "6 Nov 2026, founder Stage 3C (Hansa24 and Rayco): the cost-evidence figures follow the registered corrections hansa24-five-recheck-2026-11-06 (five Hansa24 prices re-read on summerhouse24.ie, all unchanged) and rayco-price-evidence-excluded-2026-11-06 (Rayco's EUR 29,500 withdrawn from the evidence; the product stays published under a price-presentation hold), written by atlas-tools/refresh-garden-cost-figures.py from cluster1-cost-evidence.json.",
+   "from": "92 do not publish whether VAT is in the price. That can make a substantial difference to the price you actually pay.",
+   "to": "91 do not publish whether VAT is in the price. That can make a substantial difference to the price you actually pay."
   }
  ],
  "homeownerImprovement": {

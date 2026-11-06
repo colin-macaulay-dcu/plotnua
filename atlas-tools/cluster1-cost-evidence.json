@@ -18,13 +18,13 @@
   "totals": {
     "gardenRoomRecords": 565,
     "organisationsAll": 63,
-    "relevant": 240,
-    "relevantOrganisations": 23,
+    "relevant": 239,
+    "relevantOrganisations": 22,
     "priceBasisNotEstablished": 172,
-    "vatStatusUnknown": 92,
+    "vatStatusUnknown": 91,
     "floorAreaPublished": 38,
     "floorAreaPublishedOrganisations": 9,
-    "rangeFloorPrices": 77,
+    "rangeFloorPrices": 76,
     "quoteOnly": 0
   },
   "segments": {
@@ -51,14 +51,14 @@
       "floorAreaKnown": 24
     },
     "INSTALLED_FINISHED_TURNKEY": {
-      "n": 44,
-      "organisations": 7,
+      "n": 43,
+      "organisations": 6,
       "minEur": 9995,
-      "medianEur": 20400.0,
+      "medianEur": 20400,
       "maxEur": 43650,
       "vatIncluded": 2,
       "vatExcluded": 1,
-      "vatUnknown": 41,
+      "vatUnknown": 40,
       "floorAreaKnown": 8
     },
     "SUPPLY_ONLY_INSTALL_SEPARATE": {
@@ -130,9 +130,9 @@
     }
   },
   "homeownerVisibleFigures": {
-    "relevantProducts": 240,
+    "relevantProducts": 239,
     "priceBasisNotEstablished": 172,
-    "vatStatusUnknown": 92,
+    "vatStatusUnknown": 91,
     "floorAreaPublished": 38,
     "class3AProductsInAtlas": 1
   },
@@ -305,6 +305,28 @@
         "recnAsdDSAUSN1Md4"
       ],
       "pageNote": "five unverifiable supplier records removed"
+    },
+    {
+      "id": "hansa24-five-recheck-2026-11-06",
+      "date": "2026-11-06",
+      "deployedCommit": "5414066d302850fba27b92e0bcc3bc8e45f51ef9",
+      "products": [
+        "rec9uQSpCV1OnrV9y",
+        "recEZ2nnKMBzuHnQ6",
+        "rechyfJmxqpq0gXar",
+        "recClI0ZejdwUFLQc",
+        "recjtDoDYtp7TKCze"
+      ],
+      "pageNote": "a further five base prices rechecked the same day"
+    },
+    {
+      "id": "rayco-price-evidence-excluded-2026-11-06",
+      "date": "2026-11-06",
+      "deployedCommit": "5414066d302850fba27b92e0bcc3bc8e45f51ef9",
+      "products": [
+        "recDIcUb7S6pP8JCx"
+      ],
+      "pageNote": "one supplier price withdrawn"
     }
   ]
 }

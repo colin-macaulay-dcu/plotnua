@@ -664,6 +664,59 @@
         }
       ],
       "pageNote": "five unverifiable supplier records removed"
+    },
+    {
+      "id": "hansa24-five-recheck-2026-11-06",
+      "date": "2026-11-06",
+      "approved": "Founder Stage 3C, 6 November 2026 ('Do not update verification dates unless the corresponding live page was actually checked'). The five remaining Hansa24 kit prices were read on summerhouse24.ie on 6 November 2026 (SKUs G0368, G0367, G0384, G0415, G0195) and all five matched the published prices exactly. Atlas Last Price Check and Notes updated for these five price records only. No price amount, VAT, scope, feature, eligibility or image-rights change is authorised by this batch.",
+      "deployedCommit": "5414066d302850fba27b92e0bcc3bc8e45f51ef9",
+      "deployedUniverseSha256": "238b26cbf2f56be9100408b6b25ce581623cc2fe71fa58f05ccef873fb907095",
+      "rule": "Each enumerated product takes its record from the universe at deployedCommit; this batch changes only last-price-check dates. LOCAL RELEASE CANDIDATE: deployedCommit is valid at release only if it reaches production unchanged (fast-forward, no rebase).",
+      "products": [
+        {
+          "id": "rec9uQSpCV1OnrV9y",
+          "name": "Contemporary Garden Office Olivia ALU",
+          "expect": "replaced"
+        },
+        {
+          "id": "recEZ2nnKMBzuHnQ6",
+          "name": "Contemporary Garden Office Pod Olivia",
+          "expect": "replaced"
+        },
+        {
+          "id": "rechyfJmxqpq0gXar",
+          "name": "Contemporary Garden Room Aurora",
+          "expect": "replaced"
+        },
+        {
+          "id": "recClI0ZejdwUFLQc",
+          "name": "Contemporary Garden Room Leo",
+          "expect": "replaced"
+        },
+        {
+          "id": "recjtDoDYtp7TKCze",
+          "name": "Garden Snooker Room Hansa B",
+          "expect": "replaced"
+        }
+      ],
+      "pageNote": "a further five base prices rechecked the same day"
+    },
+    {
+      "id": "rayco-price-evidence-excluded-2026-11-06",
+      "date": "2026-11-06",
+      "approved": "Founder Stage 3C, 6 November 2026: 'Approve removal of the EUR 29,500 Rayco figure from the published price-guide evidence. The existing evidence does not establish that EUR 29,500 is a current garden-room-specific price.' AUDIT NOTE: the figure was recorded on 27 Aug 2026 as 'Starting From', Partially Verified, from navigation and meta text only; Atlas itself records it as Rayco's site-wide headline across modular homes, garden rooms and extensions, not a garden-room price. On 6 Nov 2026 raycomodularhomes.ie/homes/garden-rooms showed no price, its FAQ said 'Foundation, external connections, and permits are quoted separately', and its 2026 price list showed homes only (from EUR 90,000). The figure is withdrawn from comparisons; the product stays published under a price-presentation hold; Atlas price history is kept; no figure is substituted.",
+      "deployedCommit": "5414066d302850fba27b92e0bcc3bc8e45f51ef9",
+      "deployedUniverseSha256": "238b26cbf2f56be9100408b6b25ce581623cc2fe71fa58f05ccef873fb907095",
+      "rule": "The product stays published (Your Plot, Search, Maker Explorer, under a price-presentation hold) and stays counted as a garden-room record; only its price leaves the garden-room cost evidence. No price is replaced or invented.",
+      "products": [
+        {
+          "id": "recDIcUb7S6pP8JCx",
+          "name": "Rayco Modular Homes Garden Room (entry range)",
+          "expect": "evidenceExcluded",
+          "reason": "EUR 29,500 is not a current garden-room price: Rayco no longer publishes it (6 Nov 2026), and Atlas records it as a site-wide headline across homes, garden rooms and extensions."
+        }
+      ],
+      "pageNote": "one supplier price withdrawn"
     }
   ]
 }
