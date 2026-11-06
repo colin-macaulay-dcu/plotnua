@@ -36,6 +36,8 @@ check("G3 every one of its %d triggers is a refusal-only guard on a table it cre
 guarded = set(re.findall(r"refuses (?:INSERT|UPDATE|DELETE) on ([a-z_]+)", out))
 check("G4 the guarded tables are exactly the six new ones; no existing table is guarded", guarded == set(TABLES.split(",")), guarded)
 
+rcg, og = run_check(variant("CREATE TABLE widgets (id TEXT);\nCREATE TRIGGER w_no_update BEFORE UPDATE ON widgets BEGIN SELECT RAISE(ABORT, 'x'); END;\n"), tables="widgets", desc="Only a new table and one refusal-only guard.")
+check("G5 a migration with nothing but a new table and a refusal-only guard is still classed as needing the founder's approval (never automatic)", rcg == 0 and "MIGRATION CLASS: destructive" in og, og[-200:])
 print("— the exception cannot be used for anything else (each variant of the real file must be REFUSED)")
 tamper = {
   "an extra trigger that deletes from an existing table": src + "\nCREATE TRIGGER x AFTER INSERT ON agreement_documents BEGIN DELETE FROM artists; END;\n",

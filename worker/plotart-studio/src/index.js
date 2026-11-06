@@ -195,6 +195,25 @@ async function logEnquiry(env, founder, b) {
   return { reference: ref, founding: f.founding, founding_year_end: f.year_end, late_entry: late, ...(await enquiryLog(env)) };
 }
 
+/* Any relay enquiry the enquiry Worker did not log (for example one received before the relay was updated, or between
+   migration 0005 and the Studio deployment) is logged by the Studio's daily run, from the relay record, BEFORE that record
+   can reach its 24-month deletion. Reference, artist, artwork and time only; never buyer details. */
+async function logMissingRelayEnquiries(env) {
+  if (!(await agreementDocs(env))) return 0;
+  const miss = await all(env, `SELECT e.id, e.reference, e.artist_id, e.artwork_id, e.created_at FROM enquiries e
+    WHERE NOT EXISTS (SELECT 1 FROM enquiry_log l WHERE l.reference = e.reference)`);
+  let n = 0;
+  for (const e of miss) {
+    const a = await one(env, 'SELECT id, founding, first_published_at FROM artists WHERE id = ?', e.artist_id);
+    if (!a) continue;
+    const f = AG.foundingAt(a, e.created_at);
+    await env.DB.prepare(`INSERT INTO enquiry_log (id, reference, artist_id, artwork_id, route, introduced_at, founding, founding_year_end, logged_by, logged_at, late_entry)
+      VALUES (?,?,?,?,?,?,?,?,?,?,?)`).bind('l' + e.id.slice(1), e.reference, a.id, e.artwork_id, 'relay', e.created_at, f.founding, f.year_end, 'studio daily check', now(), 0).run();
+    n++;
+  }
+  return n;
+}
+
 /* ---------------------------------------------------------------- acceptance record corrections (founder, 6 Nov 2026)
    A mistyped legal name, professional name or address in a recorded acceptance is corrected by SEPARATE linked rows
    (acceptance_corrections), one per document row of the acceptance, with a reason and a time. The acceptance itself
@@ -261,6 +280,7 @@ async function participation(env, a) {
   const out = { installed: true, request: ended ? null : request, ended: null, events: ev };
   if (!ended) return out;
   const d = JSON.parse(ended.detail || '{}');
+  const from = d.notice_at || ended.at;   // agreement 10.1: the 14 days, the 12 months and the six years run from when the artist told PlotArt
   const rq = d.removal_queue ? await one(env, 'SELECT id, status, updated_at FROM publish_queue WHERE id = ?', d.removal_queue) : null;
   const ret = await one(env, 'SELECT * FROM record_retention WHERE artist_id = ?', a.id);
   const orig = ev.find(e => e.kind === 'originals_deleted');
@@ -269,12 +289,12 @@ async function participation(env, a) {
     acceptances: (await one(env, 'SELECT COUNT(*) AS n FROM agreement_acceptances WHERE artist_id = ?', a.id)).n,
     enquiry_log: (await one(env, 'SELECT COUNT(*) AS n FROM enquiry_log WHERE artist_id = ?', a.id)).n,
     versions: (await one(env, 'SELECT COUNT(*) AS n FROM versions WHERE artist_id = ?', a.id)).n };
-  const nowIso = now(), removalDue = new Date(Date.parse(ended.at) + ENDING.removal_days * 86400_000).toISOString();
-  out.ended = { at: ended.at, by: ended.actor, reason: ended.reason, source: d.source || null, counts, schedule: [
+  const nowIso = now(), removalDue = new Date(Date.parse(from) + ENDING.removal_days * 86400_000).toISOString();
+  out.ended = { at: ended.at, notice_at: from, by: ended.actor, reason: ended.reason, source: d.source || null, counts, schedule: [
     { key: 'gallery', what: 'Public gallery, artwork pages and Virtual Gallery card on plotnua.ie', rule: `Removed within ${ENDING.removal_days} days (licence 6.1)`, due: removalDue,
       state: !d.removal_queue ? 'not_published' : rq && rq.status === 'published' ? 'done' : nowIso > removalDue ? 'overdue' : 'pending', done_at: rq && rq.status === 'published' ? rq.updated_at : null, queue: rq },
     { key: 'originals', what: `Original photographs in Studio storage (${counts.images} now), Studio profile and contact details, works and drafts`, rule: `${ENDING.originals_months} months after ending (licence 6.5; privacy notice), or sooner on request`,
-      due: plusMonths(ended.at, ENDING.originals_months), state: orig ? 'done' : nowIso >= plusMonths(ended.at, ENDING.originals_months) ? (env.PARTICIPATION_DELETION === 'on' ? 'due' : 'due_job_off') : 'scheduled', done_at: orig ? orig.at : null },
+      due: plusMonths(from, ENDING.originals_months), state: orig ? 'done' : nowIso >= plusMonths(from, ENDING.originals_months) ? (env.PARTICIPATION_DELETION === 'on' ? 'due' : 'due_job_off') : 'scheduled', done_at: orig ? orig.at : null },
     { key: 'records', what: `Acceptance records and corrections (${counts.acceptances}), enquiry log (${counts.enquiry_log}), publication record (${counts.versions} versions), this ending record`, rule: `${ENDING.records_years} years after ending (agreement 11.2 and 5.5)`,
       due: ret ? ret.delete_after : null, state: ret && nowIso >= ret.delete_after ? (env.PARTICIPATION_DELETION === 'on' ? 'due' : 'due_job_off') : 'scheduled', done_at: null },
     { key: 'history', what: 'Web versions of published photographs in the private website repository history', rule: 'Kept, not public and not used (licence 6.6); removing them would need a history rewrite your release rules forbid', due: null, state: 'manual',
@@ -315,6 +335,17 @@ async function endParticipation(env, founder, artistId, b) {
   const reason = String(b.reason || '').trim();
   if (reason.length < 10 || reason.length > 280) throw new Bad('Give the reason (10–280 characters)');
   const at = now();
+  // When the artist told PlotArt (agreement 10.1): their Studio request, or the date of their email (Irish date), never
+  // later than now. The founder ending it is the moment itself.
+  let noticeAt = at;
+  if (source === 'artist_request') {
+    if (b.told_on) {
+      if (!/^\d{4}-\d{2}-\d{2}$/.test(String(b.told_on)) || AG.addDays(String(b.told_on), 0) !== String(b.told_on)) throw new Bad('Enter the date the artist told PlotArt');
+      noticeAt = AG.dublinMidnightUtc(String(b.told_on));
+      if (noticeAt > at) throw new Bad('That date is in the future');
+      if (Date.parse(at) - Date.parse(noticeAt) > 90 * 86400_000) throw new Bad('That date is more than 90 days ago: check it');
+    } else if (pt.request) noticeAt = pt.request.at;
+  }
   const lv = await latestVersion(env, a.id);
   const visible = (await all(env, VISIBLE_SQL)).some(r => r.artist_id === a.id);
   const pending = (await all(env, "SELECT id FROM publish_queue WHERE artist_id = ? AND status IN ('awaiting_founder','ready')", a.id)).length;
@@ -331,12 +362,12 @@ async function endParticipation(env, founder, artistId, b) {
   stmts.push(
     env.DB.prepare("UPDATE artists SET account_status='ended', updated_at=? WHERE id=?").bind(at, a.id),
     env.DB.prepare('INSERT INTO participation_events (id, artist_id, kind, at, actor, reason, detail) VALUES (?,?,?,?,?,?,?)')
-      .bind(rid('pe'), a.id, 'ended', at, founder, reason, JSON.stringify({ source, removal_queue: removal, pending_superseded: pending })),
+      .bind(rid('pe'), a.id, 'ended', at, founder, reason, JSON.stringify({ source, notice_at: noticeAt, removal_queue: removal, pending_superseded: pending })),
     env.DB.prepare('INSERT INTO record_retention (artist_id, ended_at, delete_after, recorded_by, recorded_at) VALUES (?,?,?,?,?)')
-      .bind(a.id, at, plusMonths(at, ENDING.records_years * 12), founder, at));
+      .bind(a.id, noticeAt, plusMonths(noticeAt, ENDING.records_years * 12), founder, at));
   await env.DB.batch(stmts);
   await audit(env, founder, 'founder', 'participation_ended', a.id, { source, removal_queue: removal });
-  return { ended_at: at, removal_queue: removal };
+  return { ended_at: at, notice_at: noticeAt, removal_queue: removal };
 }
 /* Stage 1 (12 months, or sooner on request): originals and the Studio account's personal content. Only for an ENDED artist. */
 async function eraseOriginals(env, artistId, actor, why) {
@@ -356,7 +387,7 @@ async function eraseOriginals(env, artistId, actor, why) {
     env.DB.prepare('DELETE FROM artworks WHERE artist_id = ?').bind(artistId),
     env.DB.prepare('DELETE FROM submissions WHERE artist_id = ?').bind(artistId),
     env.DB.prepare(`UPDATE artists SET email=?, practice=NULL, medium=NULL, county=NULL, county_public=0, statement=NULL, bio=NULL, website=NULL, instagram=NULL,
-      portrait_image_id=NULL, below_min_since=NULL, updated_at=? WHERE id=? AND account_status='ended'`).bind(`ended-${artistId}@deleted.invalid`, now(), artistId),
+      portrait_image_id=NULL, below_min_since=NULL, application_ref=NULL, updated_at=? WHERE id=? AND account_status='ended'`).bind(`ended-${artistId}@deleted.invalid`, now(), artistId),
     env.DB.prepare('INSERT INTO participation_events (id, artist_id, kind, at, actor, reason, detail) VALUES (?,?,?,?,?,?,?)')
       .bind(rid('pe'), artistId, 'originals_deleted', now(), actor, why, JSON.stringify({ images: imgs.length, storage_objects: objects, works })),
   ]);
@@ -371,7 +402,8 @@ async function deleteRecords(env, artistId) {
   const ev = await participationEvents(env, artistId);
   if (!ev.some(e => e.kind === 'originals_deleted')) await eraseOriginals(env, artistId, 'scheduler', 'with the six-year deletion');
   const t = ['acceptance_corrections', 'agreement_acceptances', 'enquiry_log', 'enquiries', 'versions', 'publish_queue', 'gallery_positions', 'participation_events', 'record_retention'];
-  await env.DB.batch([...t.map(x => env.DB.prepare(`DELETE FROM ${x} WHERE artist_id = ?`).bind(artistId)), env.DB.prepare("DELETE FROM artists WHERE id = ? AND account_status = 'ended'").bind(artistId)]);
+  await env.DB.batch([...t.map(x => env.DB.prepare(`DELETE FROM ${x} WHERE artist_id = ?`).bind(artistId)), env.DB.prepare("DELETE FROM artists WHERE id = ? AND account_status = 'ended'").bind(artistId),
+    env.DB.prepare('DELETE FROM audit WHERE artist_id = ?').bind(artistId)]);   // the artist's audit trail goes with their records
   await audit(env, 'scheduler', 'system', 'records_deleted', artistId, { tables: t.length + 1 });
   return true;
 }
@@ -379,7 +411,7 @@ async function runDeletionSchedule(env) {
   const out = { originals: 0, records: 0, enabled: env.PARTICIPATION_DELETION === 'on' };
   if (!out.enabled) return out;
   let ended;
-  try { ended = await all(env, "SELECT e.artist_id, e.at FROM participation_events e WHERE e.kind = 'ended'"); } catch { return out; }
+  try { ended = await all(env, "SELECT e.artist_id, COALESCE(json_extract(e.detail, '$.notice_at'), e.at) AS at FROM participation_events e WHERE e.kind = 'ended'"); } catch { return out; }
   for (const e of ended) {
     const done = await one(env, "SELECT id FROM participation_events WHERE artist_id = ? AND kind = 'originals_deleted'", e.artist_id);
     if (!done && now() >= plusMonths(e.at, ENDING.originals_months)) { await eraseOriginals(env, e.artist_id, 'scheduler', `${ENDING.originals_months} months after ending`); out.originals++; }
@@ -870,6 +902,8 @@ export default {
   /* Daily clean-up (cron trigger): enquiries past their 24-month limit are deleted, and photographs removed more than
      30 days ago are erased from storage (Gallery Publication and Image Licence 6.3). */
   async scheduled(_event, env) {
+    let enquiries_logged = 0;
+    try { enquiries_logged = await logMissingRelayEnquiries(env); } catch { /* enquiry log not installed */ }
     await env.DB.prepare('DELETE FROM enquiries WHERE delete_after < ?').bind(now()).run();
     const cut = new Date(Date.now() - 30 * 86400_000).toISOString();
     const gone = await all(env, "SELECT id, r2_key, preview_key FROM images WHERE deleted_at IS NOT NULL AND deleted_at < ? AND r2_key <> 'erased'", cut);
@@ -883,7 +917,7 @@ export default {
     try { await gardenReady(env); garden_expired = await sweepGarden(env); } catch { /* noticeboard not installed */ }
     let participation_deletion = null;
     try { participation_deletion = await runDeletionSchedule(env); } catch (e) { participation_deletion = { error: String(e.message || e).slice(0, 120) }; }
-    await audit(env, 'scheduler', 'system', 'cleanup', null, { images_erased: gone.length, ideas_deleted, garden_expired, participation_deletion });
+    await audit(env, 'scheduler', 'system', 'cleanup', null, { images_erased: gone.length, ideas_deleted, garden_expired, participation_deletion, enquiries_logged });
   },
   async fetch(req, env) {
     try { return await route(req, env); }
@@ -1109,7 +1143,6 @@ async function route(req, env) {
     if ((mm = p.match(/^\/api\/admin\/artists\/(a[0-9a-z]+)\/end$/)) && m === 'POST') return json({ ok: true, ...(await endParticipation(env, me.email, mm[1], await req.json())) });
     if ((mm = p.match(/^\/api\/admin\/artists\/(a[0-9a-z]+)\/erase-originals$/)) && m === 'POST') {
       const b = await req.json();
-      if (env.PARTICIPATION_DELETION !== 'on') throw new Bad('Deletion is switched off in this Studio (PARTICIPATION_DELETION). Nothing was deleted.', 409);
       if (b.confirm !== true) throw new Bad('Confirm the deletion before continuing');
       const why = String(b.reason || '').trim();
       if (why.length < 10 || why.length > 280) throw new Bad('Give the reason (10–280 characters), e.g. the artist asked for earlier deletion');
