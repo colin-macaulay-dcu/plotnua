@@ -286,11 +286,20 @@ else {
        warranty Organisation-Wide; insulation Range-Level; cladding Range-Level
        on the five Premium Composite rooms only) = +20 and +45. Every one of the
        570 pre-existing products is byte-identical, no scope note was lost, and
-       leak stays 0. */
-    refused === 1404 ? ok('1,404 scope-limited established reads REFUSED ' + JSON.stringify(byScope))
-                     : bad('expected 1,404 scope-limited refusals, measured ' + refused);
-    allowed === 572 ? ok('572 model-level established reads allowed')
-                    : bad('expected 572 model-level marks, measured ' + allowed);
+       leak stays 0.
+
+       RE-CENSUSED 7 November 2026 for the founder-approved Stage 3D-C2 pricing
+       methodology (publish-methodology-correction.py): model-level 572 -> 574,
+       scope-limited 1404 -> 1506. Decomposed before the numbers moved: 102 kits
+       (Pineca 65, Hansa24 34, Powersheds 3) each gained one Installation Model
+       record, Organisation-Wide, a scope-limited read: +102; the two Modular
+       House rooms each gained one, Product-Specific, a model-level read: +2. The
+       17 updated Installation Model records (Adman, ÖÖD, Live in Garden Pods)
+       kept their scope. No scope note was lost and leak stays 0. */
+    refused === 1506 ? ok('1,506 scope-limited established reads REFUSED ' + JSON.stringify(byScope))
+                     : bad('expected 1,506 scope-limited refusals, measured ' + refused);
+    allowed === 574 ? ok('574 model-level established reads allowed')
+                    : bad('expected 574 model-level marks, measured ' + allowed);
     const none = ['none', 'stated', 'deferred', 'negative', 'flat']
       .filter(s => marked({ state: s, scope: null, conflict: null }));
     none.length ? bad('states that must never be marked are: ' + none.join(', '))
