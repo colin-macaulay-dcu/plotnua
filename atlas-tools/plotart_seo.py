@@ -78,3 +78,86 @@ def update_sitemap(document, packages, launch):
 
 def public_packages(root):
     return [json.loads(p.read_text()) for p in sorted((Path(root) / "plotart/artists").glob("*/gallery.json"))]
+
+
+META_BEGIN = "<!-- pa-artist-search:begin -->"
+META_END = "<!-- pa-artist-search:end -->"
+META_REGION = re.compile(re.escape(META_BEGIN) + r".*?" + re.escape(META_END), re.S)
+
+
+def artist_metadata(path, pkg, launch=None):
+    """Public facts only. VisualArtwork describes art; it does not claim merchant eligibility."""
+    launch = switches() if launch is None else launch
+    if pkg["publication"].get("state") != "approved" or not indexable(path, launch):
+        return ""
+    a = pkg["artist"]
+    base = "artists/" + a["slug"] + "/"
+    shown = [w for w in pkg["works"] if w["availability"] in ("available", "reserved", "sold", "not_for_sale")]
+    work = next((w for w in shown if path == base + w["slug"] + ".html"), None)
+    if path != base + "index.html" and work is None:
+        raise ValueError("Metadata requires an artwork currently shown in this gallery")
+    artist_url = canonical(base + "index.html")
+    url = canonical(path)
+    person = {"@type": "Person", "@id": artist_url + "#artist", "name": a["display_name"], "url": artist_url}
+    if a.get("website"):
+        person["sameAs"] = [a["website"]]
+    image = next((i for i in work["images"] if i["role"] == "main"), None) if work else a.get("portrait")
+    graph = [person]
+    page = {"@type": "WebPage" if work else "CollectionPage", "@id": url + "#page", "url": url,
+            "name": work["title"] + " by " + a["display_name"] if work else a["display_name"] + " | PlotArt",
+            "about": {"@id": person["@id"]}, "breadcrumb": {"@id": url + "#breadcrumbs"}}
+    image_tags = []
+    if image and image.get("derivatives"):
+        derivative = max(image["derivatives"], key=lambda d: d["long_edge"])
+        image_url = ORIGIN + base + "img/" + derivative["file"]
+        image_obj = {"@type": "ImageObject", "@id": url + "#image", "contentUrl": image_url,
+                     "url": image_url, "caption": image.get("alt", "")}
+        if derivative.get("pixels"):
+            image_obj.update(width=derivative["pixels"][0], height=derivative["pixels"][1])
+        graph.append(image_obj)
+        page["primaryImageOfPage"] = {"@id": image_obj["@id"]}
+        esc = lambda x: html.escape(str(x), quote=True)
+        image_tags = ['<meta property="og:image" content="%s">' % esc(image_url),
+                      '<meta property="og:image:alt" content="%s">' % esc(image.get("alt", "")),
+                      '<meta name="twitter:card" content="summary_large_image">',
+                      '<meta name="twitter:image" content="%s">' % esc(image_url),
+                      '<meta name="twitter:image:alt" content="%s">' % esc(image.get("alt", ""))]
+        if derivative.get("pixels"):
+            image_tags += ['<meta property="og:image:%s" content="%s">' % (k, v)
+                           for k, v in zip(("width", "height"), derivative["pixels"])]
+    crumbs = [("PlotArt", ORIGIN), ("Virtual Gallery", canonical("gallery/index.html")), (a["display_name"], artist_url)]
+    if work:
+        art = {"@type": "VisualArtwork", "@id": url + "#artwork", "url": url, "name": work["title"],
+               "creator": {"@id": person["@id"]}, "artMedium": work["medium"]}
+        if work.get("description"):
+            art["description"] = work["description"]
+        if work.get("year"):
+            art["dateCreated"] = str(work["year"])
+        for key, field in (("height", "h_cm"), ("width", "w_cm"), ("depth", "d_cm")):
+            if work.get(field):
+                art[key] = {"@type": "QuantitativeValue", "value": work[field], "unitCode": "CMT"}
+        if "primaryImageOfPage" in page:
+            art["image"] = page["primaryImageOfPage"]
+        graph.append(art)
+        page["mainEntity"] = {"@id": art["@id"]}
+        crumbs.append((work["title"], url))
+    else:
+        page["mainEntity"] = {"@type": "ItemList", "numberOfItems": len(shown), "itemListElement": [
+            {"@type": "ListItem", "position": n, "name": w["title"], "url": canonical(base + w["slug"] + ".html")}
+            for n, w in enumerate(shown, 1)]}
+    graph.extend([page, {"@type": "BreadcrumbList", "@id": url + "#breadcrumbs", "itemListElement": [
+        {"@type": "ListItem", "position": n, "name": name, "item": href} for n, (name, href) in enumerate(crumbs, 1)]}])
+    # Never allow public text containing </script> to terminate the JSON script.
+    data = json.dumps({"@context": "https://schema.org", "@graph": graph}, ensure_ascii=False, separators=(",", ":")).replace("<", "\\u003c").replace(">", "\\u003e").replace("&", "\\u0026")
+    return META_BEGIN + "\n" + "\n".join(image_tags) + '\n<script type="application/ld+json">' + data + "</script>\n" + META_END
+
+
+def enrich_artist(path, document, pkg, launch=None):
+    block = artist_metadata(path, pkg, launch)
+    if META_REGION.search(document):
+        return META_REGION.sub(lambda m: block, document)
+    if not block:
+        return document
+    if document.count("</head>") != 1:
+        raise ValueError("Artist page must have exactly one head")
+    return document.replace("</head>", block + "\n</head>", 1)

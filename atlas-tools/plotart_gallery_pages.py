@@ -2,6 +2,7 @@
 packages (see plotart_gallery.py). Public fields only; the whole artwork image is always shown
 (object-fit: contain), never cropped."""
 import html
+import plotart_seo as SEO
 from urllib.parse import quote
 
 E = lambda s: html.escape(str(s), quote=True)
@@ -381,4 +382,4 @@ def gallery_pages(pkg, page, enquiry_endpoint=None):
         out.append(page(base + w["slug"] + ".html", "%s by %s | PlotArt" % (w["title"], a["display_name"]),
                         "%s by %s. %s, %s." % (w["title"], a["display_name"], w["medium"], size_line(w)[0]),
                         artwork_body(pkg, w, ws[i - 1] if i else None, ws[i + 1] if i + 1 < len(ws) else None, enquiry_endpoint=enquiry_endpoint), scripts))
-    return out
+    return [(path, SEO.enrich_artist(path, doc, pkg)) for path, doc in out]

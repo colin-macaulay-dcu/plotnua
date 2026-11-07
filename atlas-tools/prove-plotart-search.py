@@ -72,6 +72,44 @@ pages = P.gallery_pages(future, S.artist_page)
 check("a future approved artist inherits indexability and their own canonical",
       all(Head(doc).canonicals == [SEO.canonical(path)] and Head(doc).robots == ["index, follow"]
           for path, doc in pages))
+# Metadata must match the public export, including after edits and withdrawals.
+def graph(doc):
+    return json.loads(re.search(r'<script type="application/ld\+json">(.*?)</script>', doc, re.S).group(1))["@graph"]
+
+for pkg in packages:
+    for path in SEO.sitemap_paths([pkg], launch):
+        if path.startswith("artists/"):
+            doc = (ROOT / "plotart" / path).read_text()
+            block = SEO.artist_metadata(path, pkg)
+            check("published image/entity metadata matches approved records: " + path,
+                  doc.count(SEO.META_BEGIN) == 1 and block in doc and SEO.enrich_artist(path, doc, pkg) == doc)
+            for node in graph(doc):
+                if node["@type"] == "ImageObject":
+                    check("metadata image exists: " + path,
+                          (ROOT / "plotart" / node["contentUrl"].removeprefix(SEO.ORIGIN)).is_file())
+future_work_path = "artists/future-test/test-work.html"
+future_graph = graph(dict(pages)[future_work_path])
+art = next(n for n in future_graph if n["@type"] == "VisualArtwork")
+check("artwork entity identifies its actual creator and medium",
+      art["creator"]["@id"] == SEO.canonical("artists/future-test/index.html") + "#artist" and art["artMedium"] == "Acrylic")
+check("metadata adds no invented reviews, merchant offers or reuse licence",
+      not any(k in json.dumps(future_graph) for k in ('aggregateRating', 'reviewCount', 'offers', 'license', 'acquireLicensePage')))
+check("head enrichment leaves visible page and enquiry form byte-identical",
+      all(doc.split("</head>", 1)[1] == SEO.enrich_artist(path, doc, future).split("</head>", 1)[1] for path, doc in pages))
+unsafe = copy.deepcopy(future)
+unsafe["works"][0]["description"] = '</script><script>alert("test")</script>&'
+unsafe_doc = SEO.enrich_artist(future_work_path, dict(pages)[future_work_path], unsafe)
+check("artist text cannot break out of JSON script",
+      '<script>alert(' not in unsafe_doc and next(n for n in graph(unsafe_doc) if n["@type"] == "VisualArtwork")["description"] == unsafe["works"][0]["description"])
+check("drafts emit no public entity metadata", SEO.artist_metadata(future_work_path, dict(future, publication={"state": "draft"})) == "")
+check("closed artist indexing emits no public entity metadata",
+      SEO.artist_metadata(future_work_path, future, dict(launch, artist_pages_indexable=False)) == "")
+withdrawn = copy.deepcopy(future)
+withdrawn["works"][0]["availability"] = "archived"
+empty_graph = json.loads(re.search(r'<script type="application/ld\+json">(.*?)</script>', SEO.artist_metadata("artists/future-test/index.html", withdrawn), re.S).group(1))["@graph"]
+check("withdrawn work disappears from gallery entity list",
+      next(n for n in empty_graph if n["@type"] == "CollectionPage")["mainEntity"]["itemListElement"] == [])
+
 closed = dict(launch, artist_pages_indexable=False)
 check("switch off is fail-closed for artist pages",
       SEO.head("artists/future-test/index.html", "Test", "Test", closed) == '<meta name="robots" content="noindex, follow">')
