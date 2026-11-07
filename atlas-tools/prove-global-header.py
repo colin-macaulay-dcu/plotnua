@@ -41,6 +41,7 @@ TOOLS = Path(__file__).resolve().parent
 ROOT = Path(sys.argv[sys.argv.index("--dir") + 1]).resolve() if "--dir" in sys.argv else TOOLS.parent
 sys.path.insert(0, str(TOOLS))
 import pn_header as H  # noqa: E402
+import plotart_seo as SEO  # noqa: E402
 
 fails = []
 def bad(m): fails.append(m)
@@ -53,9 +54,10 @@ def main():
     # G1 coverage
     sitemap = (ROOT / "sitemap.xml").read_text(encoding="utf-8")
     locs = [l or "index.html" for l in re.findall(r"<loc>https://plotnua\.ie/([^<]*)</loc>", sitemap)]
+    plotart_own = {SEO.canonical(p).removeprefix("https://plotnua.ie/") for p in SEO.sitemap_paths(SEO.public_packages(ROOT), SEO.switches())}
     for l in locs:
-        if l in H.OWN_NAV_SECTIONS:   # their own navigation; they must not carry the global header
-            f = ROOT / l / "index.html"
+        if l in H.OWN_NAV_SECTIONS or l in plotart_own:   # their own navigation; they must not carry the global header
+            f = ROOT / (l + "index.html" if l.endswith("/") else l)
             if not f.exists(): bad("G1 sitemap page %s is missing" % l)
             elif "PLOTNUA HEADER v2" in f.read_text(encoding="utf-8"): bad("G1 %s keeps its own navigation and must not carry the global header" % l)
             continue

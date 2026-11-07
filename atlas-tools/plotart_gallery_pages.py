@@ -318,6 +318,16 @@ def vg_positions(pkgs, spaces=25, layout=None):
     return out, [by[s] for s in rest]
 
 
+def artist_index(pkgs):
+    if not pkgs:
+        return ""
+    links = "".join('<li><a href="../artists/%s/" data-pa-track="vg_artist_az">%s</a></li>' %
+                    (E(p["artist"]["slug"]), E(p["artist"]["display_name"]))
+                    for p in sorted(pkgs, key=lambda p: (p["artist"]["display_name"].casefold(), p["artist"]["slug"])))
+    return ('<nav class="pa-vgc-az" aria-labelledby="vgAzH"><h3 id="vgAzH">Artists A–Z</h3>'
+            '<ul>%s</ul></nav>') % links
+
+
 def vg_collection(pkgs, spaces=25, layout=None):
     """Everything between VG_BEGIN and VG_END on the Virtual Gallery page: the open-count line, the wall of open
     galleries (in position order, then any without a position) and the index of the twenty-five positions.
@@ -332,6 +342,7 @@ def vg_collection(pkgs, spaces=25, layout=None):
     hang = ('\n  <ol class="pa-vgc-hang n-%s" aria-label="Open galleries">%s\n  </ol>' % (min(opened, 3), "".join(works))) if works else ""
     return """%s
   <p class="pa-vgc-count">%d of %d galleries open</p>%s
+  %s
   <div class="pa-vgc-index" role="region" aria-labelledby="vgIdxH">
     <h3 id="vgIdxH">Founding positions</h3>
     <p class="pa-vgc-note">Twenty-five numbered positions, one for each Founding Artist. A gallery opens here when the artist&rsquo;s work is published.</p>
@@ -340,7 +351,7 @@ def vg_collection(pkgs, spaces=25, layout=None):
     <ol class="pa-vgc-plan" aria-label="The twenty-five positions">%s
     </ol>
   </div>
-  %s""" % (VG_BEGIN, opened, spaces, hang, line, key, "".join(_vg_pos(n, st, p) for n, st, p in positions), VG_END)
+  %s""" % (VG_BEGIN, opened, spaces, hang, artist_index(pkgs), line, key, "".join(_vg_pos(n, st, p) for n, st, p in positions), VG_END)
 
 
 def vg_region(html_text):
@@ -362,8 +373,8 @@ def gallery_pages(pkg, page, enquiry_endpoint=None):
     a = pkg["artist"]
     base = "artists/%s/" % a["slug"]
     scripts = ("plotart.js", "pa-enquiry.js") if enquiry_endpoint else ("plotart.js",)
-    out = [page(base + "index.html", "%s | Virtual Gallery | PlotArt" % a["display_name"],
-                (a.get("statement") or "Original work by %s in the PlotArt Virtual Gallery." % a["display_name"]),
+    out = [page(base + "index.html", "%s | Original Art | PlotArt" % a["display_name"],
+                ("Explore original work by %s. View artworks, published prices and the artist biography, and enquire through PlotArt." % a["display_name"]),
                 artist_body(pkg, enquiry_endpoint=enquiry_endpoint), scripts)]
     ws = shown(pkg)
     for i, w in enumerate(ws):

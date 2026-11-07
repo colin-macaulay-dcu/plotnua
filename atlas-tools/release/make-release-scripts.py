@@ -22,6 +22,7 @@ HERE = Path(__file__).resolve().parent
 ROOT = HERE.parent.parent
 
 STANDARD = [
+    ("python3 atlas-tools/prove-plotart-search.py", "PLOTART SEARCH ·", "PlotArt public search and sitemap boundary"),
     ("python3 atlas-tools/build-global-header.py --check", "CHECK OK — 2 pages", "global header builder"),
     # 27 since DISC-031 The Natural Swimming Garden (26 Oct 2026); production had 26 after the maker guides.
     # 28 since the DISC-033 The Hidden Flood Barrier release candidate (27 Oct 2026).

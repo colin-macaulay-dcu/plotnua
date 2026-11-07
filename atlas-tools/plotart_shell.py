@@ -2,10 +2,11 @@
 
 The production content pipeline (atlas-tools/plotart-gallery-publish.py, on main) renders artist gallery pages
 WITHOUT the full PlotArt builder. This module reproduces exactly the launch page shell that build-plotart.py's
-page() writes for a gallery page (Virtual Gallery pill current, artist fine print, noindex, follow);
+page() writes for a gallery page (Virtual Gallery pill current, artist fine print, founder-controlled indexing);
 prove-plotart-galleries.py requires the two to be byte-identical, so they cannot drift apart.
 """
 import html
+import plotart_seo as SEO
 
 E = lambda s: html.escape(str(s), quote=True)
 ARTIST_FINE = ("Artworks in this gallery are offered by the artist. PlotArt introduces buyers to artists: it doesn't take "
@@ -40,8 +41,7 @@ def artist_page(path, title, desc, body, scripts=("plotart.js",)):
     sc = "".join('<script src="%sassets/%s" defer></script>' % (R, s) for s in scripts)
     footlinks = ('<li><a href="{R}gallery/">Virtual Gallery</a></li><li><a href="{R}mobile-gallery/">Mobile Gallery</a></li><li><a href="{R}living-gallery.html">Living Gallery</a></li>'
                  '<li><a href="{R}about.html">About PlotArt</a></li><li><a href="{R}founding-25.html">The Founding 25</a></li>').format(R=R)
-    robots = ('<!-- LIMITED LAUNCH: not for indexing until the founder approves indexing. Planned canonical:\n     https://plotnua.ie/plotart/%s -->\n'
-              '<meta name="robots" content="noindex, follow">') % E(path)
+    robots = SEO.head(path, title, desc)
     return path, """<!DOCTYPE html>
 <html lang="en-IE" class="no-js">
 <head>

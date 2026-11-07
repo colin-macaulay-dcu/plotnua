@@ -91,7 +91,7 @@ def main():
         base.mkdir()
         for p in ROOT.glob("*.html"): shutil.copy2(p, base / p.name)
         shutil.copy2(ROOT / "sitemap.xml", base / "sitemap.xml")
-        for sec in ("gridnua", "plotart/mobile-gallery"):   # own-navigation sections listed in the sitemap (GridNua 29 Oct, Mobile Gallery 3 Nov 2026)
+        for sec in ("gridnua", "plotart"):   # own-navigation sections listed in the sitemap (GridNua 29 Oct, Mobile Gallery 3 Nov 2026)
             if (ROOT / sec).is_dir(): shutil.copytree(ROOT / sec, base / sec)
         shutil.copytree(ROOT / "atlas-tools", base / "atlas-tools", ignore=shutil.ignore_patterns("__pycache__"))
         (base / "assets/identity").mkdir(parents=True)

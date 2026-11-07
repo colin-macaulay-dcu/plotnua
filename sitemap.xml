@@ -65,7 +65,7 @@
   <!-- GridNua (founder indexing approval, 29 Oct 2026) -->
   <url><loc>https://plotnua.ie/gridnua/</loc><lastmod>2026-10-29</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
   <url><loc>https://plotnua.ie/gridnua/technology/</loc><lastmod>2026-10-29</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <!-- PlotArt Mobile Gallery: public work-in-progress page, indexable by founder authorisation (3 Nov 2026). Gallery profiles stay noindex. -->
+  <!-- PlotArt Mobile Gallery: public work-in-progress page, indexable by founder authorisation (3 Nov 2026). Unconfirmed Mobile Gallery provider profiles stay noindex. -->
   <url><loc>https://plotnua.ie/plotart/mobile-gallery/</loc><lastmod>2026-11-03</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <!-- TRIQ QUBE public page (URL kept as triq-cube.html): TRIQBRIQ product management approval received 12 October 2026; founder authorised public integration. Product name corrected to TRIQ QUBE on 13 October 2026 at the manufacturer's request. -->
   <url><loc>https://plotnua.ie/triq-cube.html</loc><lastmod>2026-10-13</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
@@ -75,5 +75,23 @@
   <url><loc>https://plotnua.ie/privacy.html</loc><lastmod>2026-10-21</lastmod><changefreq>yearly</changefreq><priority>0.3</priority></url>
   <url><loc>https://plotnua.ie/terms.html</loc><lastmod>2026-10-09</lastmod><changefreq>yearly</changefreq><priority>0.3</priority></url>
   <url><loc>https://plotnua.ie/cookie-policy.html</loc><lastmod>2026-10-09</lastmod><changefreq>yearly</changefreq><priority>0.3</priority></url>
+
+  <!-- plotart-search:begin -->
+  <url><loc>https://plotnua.ie/plotart/</loc></url>
+  <url><loc>https://plotnua.ie/plotart/gallery/</loc></url>
+  <url><loc>https://plotnua.ie/plotart/about.html</loc></url>
+  <url><loc>https://plotnua.ie/plotart/artists/leah-hewson/</loc></url>
+  <url><loc>https://plotnua.ie/plotart/artists/leah-hewson/blowout-series-ii-1.html</loc></url>
+  <url><loc>https://plotnua.ie/plotart/artists/leah-hewson/blowout-series-ii-2.html</loc></url>
+  <url><loc>https://plotnua.ie/plotart/artists/leah-hewson/blowout-series-ii-3.html</loc></url>
+  <url><loc>https://plotnua.ie/plotart/artists/leah-hewson/blowout-series-ii-6.html</loc></url>
+  <url><loc>https://plotnua.ie/plotart/artists/leah-hewson/blowout-series-ii-7.html</loc></url>
+  <url><loc>https://plotnua.ie/plotart/artists/leah-hewson/blowout-series-ii-10.html</loc></url>
+  <url><loc>https://plotnua.ie/plotart/artists/leah-hewson/blowout-series-ii-11.html</loc></url>
+  <url><loc>https://plotnua.ie/plotart/artists/leah-hewson/blowout-series-ii-12.html</loc></url>
+  <url><loc>https://plotnua.ie/plotart/artists/leah-hewson/blowout-series-ii-14.html</loc></url>
+  <url><loc>https://plotnua.ie/plotart/artists/leah-hewson/blowout-series-ii-15.html</loc></url>
+  <url><loc>https://plotnua.ie/plotart/artists/leah-hewson/blowout-series-ii-19.html</loc></url>
+  <!-- plotart-search:end -->
 
 </urlset>

@@ -1,13 +1,16 @@
 {
   "schema": "plotnua.plotart.launch.v1",
-  "status": "FOUNDING 25 APPLICATIONS OPEN (activation release prepared 28 Oct 2026; applies only with the founder's activation approval). Pages noindex, follow; no sitemap entry. Applications NOT open; all pages noindex, follow; both indexable switches off; no sitemap entry. Each value changes only with Colin's explicit approval, through a new release verified by prove-plotart-launch.py L1-L10. galleries_open (29 Oct 2026, Phase 3): false until the founder approves the release that opens the first artist gallery. mobile_gallery_indexable (3 Nov 2026): true by the founder's Mobile Gallery public release authorisation; the page is in the sitemap, gallery profiles are never indexed.",
+  "status": "Public search visibility authorised by Colin on 7 November 2026: homepage, Virtual Gallery, About and approved published artist/artwork pages. Invitations, applications, Living Gallery and unconfirmed Mobile Gallery profiles remain noindex. Mobile Gallery indexability retains its separate 3 November approval. Draft artists are never published by these switches.",
   "f25_form_endpoint": "https://plotnua-art-space-register.colin-a41.workers.dev/v1/art-space-register/founding-25",
   "f25_form_endpoint_allowed": "https://plotnua-art-space-register.colin-a41.workers.dev/v1/art-space-register/founding-25",
   "f25_application_state": "open",
   "f25_page_indexable": false,
   "f25_launch_notice": null,
-  "home_indexable": false,
+  "home_indexable": true,
   "launch_ribbon": null,
   "galleries_open": true,
-  "mobile_gallery_indexable": true
+  "mobile_gallery_indexable": true,
+  "gallery_indexable": true,
+  "about_indexable": true,
+  "artist_pages_indexable": true
 }

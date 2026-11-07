@@ -39,6 +39,7 @@ import json
 import pathlib
 import re
 import sys
+import plotart_seo as SEO
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 SITEMAP = ROOT / "sitemap.xml"
@@ -168,8 +169,9 @@ def strip_stub(text):
 
 
 # --------------------------------------------------------------- target pages
+plotart_own = {SEO.canonical(p).removeprefix("https://plotnua.ie/") for p in SEO.sitemap_paths(SEO.public_packages(ROOT), SEO.switches())}
 pages = [p for p in re.findall(r"<loc>https://plotnua\.ie/([^<]*)</loc>",
-                               SITEMAP.read_text(encoding="utf-8")) if p.endswith(".html")]
+                               SITEMAP.read_text(encoding="utf-8")) if p.endswith(".html") and p not in plotart_own]
 pages = sorted(set(pages + ["index.html"]))
 # 21 = the 20 pre-existing public pages (19 sitemap entries + index.html) PLUS
 # search.html itself, added to the sitemap by this work. The founder's "global

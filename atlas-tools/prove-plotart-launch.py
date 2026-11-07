@@ -63,6 +63,7 @@ once the launch pages are released). Prints "PLOTART LAUNCH · OK" only when:
       homeowner information; no structured data. The page alone may be indexed and listed in the sitemap.
 """
 import html, json, os, posixpath, re, sys
+import plotart_seo as SEO
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 if len(sys.argv) < 2:
@@ -176,13 +177,15 @@ for name in PAGES:
     need(not re.search(r"\d+(?:\.\d+)?\s?(?:%|per\s?cent)", vt4, re.I), "L4 %s shows a percentage" % name)
     need(not re.search(r"commission (?:rate )?of|\d+\s?(?:%|per\s?cent)\s+commission", vt, re.I), "L4 %s states a commission rate" % name)
     # L5
-    indexable = (name == "founding-25.html" and launch.get("f25_page_indexable") is True) or (name == "index.html" and launch.get("home_indexable") is True) \
-        or (name == "mobile-gallery/index.html" and launch.get("mobile_gallery_indexable") is True)
+    indexable = SEO.indexable(name, launch)
     if indexable:
-        canon = MG_URL if name == "mobile-gallery/index.html" else "https://plotnua.ie/plotart/" + ("" if name == "index.html" else name)
-        need('<meta name="robots" content="index, follow">' in s and ('<link rel="canonical" href="%s' % canon) in s, "L5 %s is switched indexable but lacks index/canonical" % name)
+        canon = SEO.canonical(name)
+        need(s.count('<meta name="robots" content="index, follow">') == 1 and 'noindex' not in re.sub(r'<!--.*?-->', '', s.split('</head>')[0], flags=re.S)
+             and re.findall(r'<link rel="canonical" href="([^"]+)"', s) == [canon],
+             "L5 %s is switched indexable but lacks exact index/canonical" % name)
     else:
-        need('<meta name="robots" content="noindex, follow">' in s and 'rel="canonical"' not in s, "L5 %s must be exactly 'noindex, follow' with no canonical until its switch is approved" % name)
+        need('<meta name="robots" content="noindex, follow">' in s and 'rel="canonical"' not in s,
+             "L5 %s must be exactly 'noindex, follow' with no canonical until its switch is approved" % name)
     # L6
     need('class="pa-proto"' not in s, "L6 %s carries a development banner (removed by founder approval, 29 Oct 2026)" % name)
     # L7
@@ -386,12 +389,24 @@ if vg:
          all(re.search(r'src="\.\./artists/(%s)/img/[a-z0-9-]+\.webp"' % "|".join(map(re.escape, GALLERY_SLUGS or ["-"])), t) for t in _vgimgs),
          "L11 the Virtual Gallery shows an image other than a published artist's own work image")
     need(not re.search(r"testimonial|“|”|\bsaid\b", visible_text(vg.split("<main", 1)[-1].split("</main>")[0]), re.I), "L11 the Virtual Gallery carries a quotation or testimonial")
-    need("<title>Virtual Gallery | PlotArt</title>" in vg, "L11 the Virtual Gallery title is not the approved one")
+    need("<title>Irish Artists &amp; Original Art | Virtual Gallery | PlotArt</title>" in vg, "L11 the Virtual Gallery title is not the approved search title")
 smp = os.path.join(SITE, "sitemap.xml")
 if os.path.exists(smp):
     _sm = re.findall(r"<loc>([^<]*plotart[^<]*)</loc>", open(smp, encoding="utf-8").read())
-    need(_sm == ([MG_URL] if launch.get("mobile_gallery_indexable") is True else []),
-         "L11 sitemap.xml may list only the Mobile Gallery page (when its switch is on), not %s" % _sm)
+    _packages = SEO.public_packages(SITE)
+    _want_sm = [SEO.canonical(p) for p in SEO.sitemap_paths(_packages, launch)] + ([MG_URL] if launch.get("mobile_gallery_indexable") is True else [])
+    need(len(_sm) == len(set(_sm)) and sorted(_sm) == sorted(_want_sm),
+         "L11 sitemap must list exactly the approved indexable PlotArt pages, no drafts or withdrawn works")
+    _xml = open(smp, encoding="utf-8").read()
+    try:
+        need(SEO.update_sitemap(_xml, _packages, launch) == _xml, "L11 generated PlotArt sitemap region is stale")
+    except ValueError as e:
+        need(False, "L11 " + str(e))
+    _az = re.search(r'<nav class="pa-vgc-az" aria-labelledby="vgAzH">(.*?)</nav>', vg, re.S)
+    _azlinks = re.findall(r'<a href="../artists/([a-z0-9-]+)/" data-pa-track="vg_artist_az">([^<]+)</a>', _az.group(1)) if _az else []
+    _azwant = [(p["artist"]["slug"], html.escape(p["artist"]["display_name"], quote=True))
+               for p in sorted(_packages, key=lambda p: (p["artist"]["display_name"].casefold(), p["artist"]["slug"]))]
+    need(_azlinks == _azwant and (bool(_az) == bool(_packages)), "L11 artist A-Z must match approved public names exactly")
 NAV_WANT = ["Discover PlotArt", "Virtual Gallery", "Mobile Gallery", "Living Gallery", "PlotNua ↗"]  # Mobile Gallery added 3 Nov 2026
 NAV_CURRENT = {"index.html": "Discover PlotArt", "gallery/index.html": "Virtual Gallery", "living-gallery.html": "Living Gallery", "founding-25.html": None, "invitation.html": None, "about.html": None,
                "mobile-gallery/index.html": "Mobile Gallery", "mobile-gallery/gallery.html": "Mobile Gallery"}
@@ -490,7 +505,13 @@ for slug in GALLERY_SLUGS:
         doc = open(full, encoding="utf-8").read()
         main = doc.split("<main", 1)[-1].split("</main>")[0]
         vis = re.sub(r"\s+", " ", visible_text(doc))
-        need('<meta name="robots" content="noindex, follow">' in doc, "L14 %s must be noindex, follow until indexing is approved" % f)
+        if SEO.indexable(f, launch):
+            need(doc.count('<meta name="robots" content="index, follow">') == 1 and 'noindex' not in re.sub(r'<!--.*?-->', '', doc.split('</head>')[0], flags=re.S)
+                 and re.findall(r'<link rel="canonical" href="([^"]+)"', doc) == [SEO.canonical(f)],
+                 "L14 %s must have exact public index/canonical" % f)
+        else:
+            need('<meta name="robots" content="noindex, follow">' in doc and 'rel="canonical"' not in doc,
+                 "L14 %s must stay noindex without the artist indexing switch" % f)
         need("pa-ag-check" not in doc and "Private preview" not in doc and "pa-proto" not in doc, "L14 %s carries private-preview material" % f)
         need(all(m == "hello@plotnua.ie" for m in re.findall(r"mailto:([^?\"]+)", doc)) and
              not re.search(r"[A-Za-z0-9._%+-]+@(?!plotnua\.ie)[A-Za-z0-9-]+\.[A-Za-z]", vis), "L14 %s exposes an address other than hello@plotnua.ie" % f)

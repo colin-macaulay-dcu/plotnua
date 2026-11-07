@@ -21,6 +21,9 @@ the manifest) is a CODE release: it needs the founder's full seven-step approval
 Exit codes: 0 content-only; 1 refused; 2 usage or git error.
 """
 import json, re, subprocess, sys
+from pathlib import Path
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+import plotart_seo as SEO
 
 ART = re.compile(r"^plotart/artists/([a-z0-9]+(?:-[a-z0-9]+){0,6})/(?:[a-z0-9]+(?:-[a-z0-9]+){0,6}\.html|gallery\.json|img/[a-z0-9-]+-\d{2,5}\.webp)$")
 # the generated collection region (Direction C2, 5 Nov 2026): the open galleries and the twenty-five positions
@@ -73,6 +76,17 @@ def main(base, rel, instant):
             a, b = show(base, path), show(rel, path)
             if GRID.sub(b"<grid/>", a) != GRID.sub(b"<grid/>", b):
                 refused.append("%s: changed outside the collection region" % path)
+            continue
+        if path == "sitemap.xml" and st == "M":
+            a, b = show(base, path).decode(), show(rel, path).decode()
+            try:
+                launch = json.loads(show(rel, "atlas-tools/release/plotart-launch-switches.json"))
+                names = git("ls-tree", "-r", "--name-only", rel, "plotart/artists").splitlines()
+                packages = [json.loads(show(rel, n)) for n in names if re.fullmatch(r"plotart/artists/[a-z0-9-]+/gallery.json", n)]
+                if b != SEO.update_sitemap(a, packages, launch):
+                    refused.append("sitemap.xml: differs from the exact generated PlotArt region")
+            except (ValueError, TypeError) as e:
+                refused.append("sitemap.xml: " + str(e))
             continue
         if path == "image-provenance-records.json" and st == "M":
             a, b = json.loads(show(base, path)), json.loads(show(rel, path))

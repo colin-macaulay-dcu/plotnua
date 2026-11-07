@@ -815,3 +815,6 @@ body.pa .pa-vgc-pos > a:focus-visible{ outline-offset:-3px; border-radius:0; }
   .pa-aw-frame img{ max-height:82svh; box-shadow:0 22px 40px -22px rgba(0,0,0,.75), 0 3px 8px -3px rgba(0,0,0,.4); }
   .pa-aw-dl dd{ overflow-wrap:anywhere; }   /* a long unbroken value (e.g. Monoprint/Acrylic/Lacquer) wraps instead of widening the page */
 }
+
+/* Published artists only: a crawlable alphabetic route alongside the curated wall. */
+.pa-vgc-az{margin:36px 0}.pa-vgc-az h3{font-size:18px;margin:0 0 12px}.pa-vgc-az ul{display:flex;flex-wrap:wrap;gap:12px 28px;list-style:none;padding:0;margin:0}.pa-vgc-az a{text-underline-offset:4px}

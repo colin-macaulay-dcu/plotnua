@@ -17,6 +17,7 @@ For each queue item the founder has published (or, once authorised, an automatic
      moved). --simulate (tests): stops before pushing. Any failure: the commit is dropped and the Studio is told why.
 """
 import glob, hashlib, json, os, re, shutil, subprocess, sys, tempfile, urllib.error, urllib.request
+from pathlib import Path
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(HERE)
@@ -24,6 +25,7 @@ sys.path.insert(0, HERE)
 import plotart_gallery as G  # noqa: E402
 import plotart_gallery_pages as P  # noqa: E402
 import plotart_shell as S  # noqa: E402
+import plotart_seo as SEO  # noqa: E402
 
 arg = lambda k: sys.argv[sys.argv.index(k) + 1] if k in sys.argv else None
 STUDIO, TOKEN = arg("--studio"), arg("--token")
@@ -218,10 +220,13 @@ def main():
         base = git("rev-parse", "HEAD")
         try:
             why = one(q)
+            if why is None:
+                sm = Path(ROOT) / "sitemap.xml"
+                sm.write_text(SEO.update_sitemap(sm.read_text(), published(), SEO.switches()))
         except Exception as e:                       # noqa: BLE001 - any failure refuses this item, never a half-publish
             why = "refused: %s: %s" % (type(e).__name__, e)
         if why is None:
-            git("add", "-A", "plotart/artists", "plotart/gallery/index.html", "image-provenance-records.json")
+            git("add", "-A", "plotart/artists", "plotart/gallery/index.html", "image-provenance-records.json", "sitemap.xml")
             git("-c", "user.name=PlotArt content pipeline", "-c", "user.email=hello@plotnua.ie", "commit", "-q", "-m",
                 "PlotArt content: %s · version %d · %s (Studio queue %s)" % (q["artist_id"], q["version"], q["kind"], q["id"]))
             why = guards(base, q["kind"] == "instant")
