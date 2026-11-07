@@ -84,7 +84,14 @@ const SEARCH_FROZEN = {
   // as the per-record string read; the old per-record path is kept. Same
   // assertion, same strictness. Previous value:
   // 7ae73e451c516dae274cc53d61ab98b4d86310f41fbdfa78ee96f880cacfd7ab.
-  "search.js":  "4af39d1680807d216b440f246cb72818bb210f4076586e08f3291a0cec1eae68",
+  // Re-stamped 7 November 2026 for Stage 3D-D2 (founder approval, matching
+  // eligibility): the euro figure, under-EUR filters and supplier ranges read a
+  // price only while it is current (the record's "fu", on the Europe/Dublin
+  // day), refusing an expired figure at run time; "Price not currently
+  // verified" where a figure is withheld. Same assertion, same strictness.
+  // Previous value:
+  // 4af39d1680807d216b440f246cb72818bb210f4076586e08f3291a0cec1eae68.
+  "search.js":  "627e1dac27e30be53864a57c27090437f67420af662de53264a716a493de950f",
   // Re-stamped 22 October 2026 for the founder-approved Architectural
   // Anthracite Batch 2: one appended, scoped section gives the pill (identity
   // pages) and the overlay (homepage and identity pages) the anthracite

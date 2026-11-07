@@ -129,11 +129,20 @@ def check(d):
     keep = [k for k, x in bprod.items() if x["organisation"] == "Pineca Ireland" and k != PID]
     keep += [k for k, x in bprod.items() if "NOOK" in x["organisation"] or x["organisation"] == "East Coast Carpentry"]
     keep += list(PROTECTED_HOLDS)
+    # Stage 3D-D2 (founder approval 7 Nov 2026) adds R-MATCH presentation keys to
+    # every record: priceState / priceFreshUntil in the universe, ps / fu in the
+    # search index. They are compared separately; everything else stays byte-identical.
+    D2U, D2S = ("priceState", "priceFreshUntil"), ("ps", "fu")
+    def strip(x, ks):
+        return None if x is None else {f: v for f, v in x.items() if f not in ks}
     for k in keep:
-        if prods.get(k) != bprod.get(k):
+        if strip(prods.get(k), D2U) != strip(bprod.get(k), D2U):
             bad.append("P6/P7 published record %s changed" % k)
-        if srec.get("prod-" + k) != bsrec.get("prod-" + k):
+        if strip(srec.get("prod-" + k), D2S) != strip(bsrec.get("prod-" + k), D2S):
             bad.append("P6/P7 search record prod-%s changed" % k)
+        x = prods.get(k) or {}
+        if (x.get("priceEvidence") or {}).get("presentationHold") and (x.get("priceState") != "held" or x.get("priceFreshUntil")):
+            bad.append("P6/P7 held record %s is not in the held price state" % k)
     bh = {h["productId"]: h for h in d["base_holds"]["holds"]}
     for k, h in bh.items():
         if next((x for x in d["holds"]["holds"] if x["productId"] == k), None) != h:

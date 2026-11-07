@@ -156,9 +156,16 @@ ok(at(BASE, "atlas-tools/price-presentation-holds.json") == (ROOT / "atlas-tools
    "M6 price-presentation holds file identical to %s" % BASE)
 base_u = {p["productId"]: p for p in json.loads(at(BASE, "garden-room-recommendation-universe-v1.json"))["products"]}
 held = [p for p, x in base_u.items() if (x.get("priceEvidence") or {}).get("presentationHold")]
-ok(held and all(base_u[p] == U[p] for p in held), "M6 all %d held records byte-identical to %s (NOOK, ECC, Rayco, PREMIUM S)" % (len(held), BASE))
+# Stage 3D-D2 (founder approval 7 Nov 2026) adds the R-MATCH presentation keys
+# priceState / priceFreshUntil to every record; a held record must carry
+# priceState "held" and no expiry. Every other byte is unchanged.
+D2 = ("priceState", "priceFreshUntil")
+def d2(x):
+    return {f: v for f, v in x.items() if f not in D2}
+ok(held and all(d2(base_u[p]) == d2(U[p]) for p in held), "M6 all %d held records byte-identical to %s (NOOK, ECC, Rayco, PREMIUM S), apart from the 3D-D2 price state" % (len(held), BASE))
+ok(held and all(U[p].get("priceState") == "held" and not U[p].get("priceFreshUntil") for p in held), "M6 every held record is in the held price state, with no expiry")
 ok(all(U[p].get("organisation") not in ("NOOK Prefab (espacio NOOK)", "East Coast Carpentry", "Rayco Modular Homes")
-       or base_u[p] == U[p] for p in U if p in base_u), "M6 every NOOK, ECC and Rayco record byte-identical")
+       or d2(base_u[p]) == d2(U[p]) for p in U if p in base_u), "M6 every NOOK, ECC and Rayco record byte-identical")
 
 # ---- M7 planted faults
 n = 0

@@ -14,6 +14,9 @@
          every other priced record reads "Indicative price: ..." (GBP/USD keep their
          region note); no figure is ever shown in a currency the record does not carry
      P5  fault test: each planted mismatch is caught
+     P7  Stage 3D-D2 (R-MATCH): a price the page reads as not currently verified
+         (Partially Verified, undated, range-level, expired) reads
+         "Price not currently verified" in the explorer -- never a figure
 
    node atlas-tools/prove-explorer-price-parity.mjs */
 import fs from 'node:fs';
@@ -27,7 +30,7 @@ const z = page.indexOf('function pnPriceDelta');
 if (a < 0 || z < a) { console.log('PRICE PARITY · REFUSED — pnPriceView not found in your-plot.html'); process.exit(2); }
 const ctx = { window: {} };
 vm.createContext(ctx);
-vm.runInContext(page.slice(a, z) + '\n;globalThis.__view = pnPriceView;', ctx);
+vm.runInContext(page.slice(a, z) + '\n;globalThis.__view = pnPriceView; globalThis.__gov = pnPriceGoverned; globalThis.__cur = pnPriceIsCurrent; globalThis.__st = pnPriceStateOf;', ctx);
 const view = ctx.__view;
 
 const U = JSON.parse(fs.readFileSync(path.join(ROOT, 'garden-room-recommendation-universe-v1.json'), 'utf8')).products;
@@ -51,8 +54,17 @@ function check(cfg) {
     const line = out.get(r.id);
     if (line === undefined) { bad.push('P1 not listed: ' + r.id); continue; }
     if (!line) { bad.push('P1 no price label: ' + r.id); continue; }
-    const P = { price: (typeof r.price === 'number' && isFinite(r.price) && r.price > 0) ? r.price : undefined,
-                currency: r.currency || undefined, priceEvidence: r.priceEvidence || undefined };
+    /* Mirrors normalizePoolProduct(): Stage 3D-D2 carries priceState and
+       priceFreshUntil, and only an eligible, current price arrives as a number.
+       A HELD price keeps its number here (as before) so P6 can rebuild the
+       explorer's held line from the page's own figure. */
+    const P0 = { priceState: r.priceState, priceFreshUntil: r.priceFreshUntil };
+    const gov = ctx.__gov(P0);
+    const P = { price: (typeof r.price === 'number' && isFinite(r.price) && r.price > 0
+                        && (!gov || r.priceState === 'held' || ctx.__cur(P0))) ? r.price : undefined,
+                currency: r.currency || undefined, priceEvidence: r.priceEvidence || undefined,
+                priceFreshUntil: (typeof r.priceFreshUntil === 'string') ? r.priceFreshUntil : undefined,
+                priceState: gov ? ctx.__st(P0) : undefined };
     const v = view(P);
     const e = r.priceEvidence || {};
     let k;
@@ -72,7 +84,8 @@ function check(cfg) {
       if (withheld && /\d/.test(line)) bad.push(`P6 ${r.id}: a withheld figure is shown: "${line}"`);
       tally[k] = (tally[k] || 0) + 1; continue;
     }
-    if (v.kind === 'quote-only') { k = 'enquiry'; if (line !== 'Price on enquiry') bad.push(`P3 ${r.id}: page quote-only, explorer "${line}"`); }
+    if (v.kind === 'unverified') { k = 'not currently verified'; if (line !== 'Price not currently verified') bad.push(`P7 ${r.id}: page not currently verified, explorer "${line}"`); }
+    else if (v.kind === 'quote-only') { k = 'enquiry'; if (line !== 'Price on enquiry') bad.push(`P3 ${r.id}: page quote-only, explorer "${line}"`); }
     else if (!v.known) { k = 'unavailable'; if (line !== 'Price unavailable') bad.push(`P3 ${r.id}: page ${v.kind}, explorer "${line}"`); }
     else if (!['EUR', 'GBP', 'USD'].includes(v.currency)) { k = 'unavailable'; if (line !== 'Price unavailable') bad.push(`P4 ${r.id}: ${v.currency} figure shown`); }
     else {
@@ -118,13 +131,16 @@ const faults = [
   ['a quote-only shown as unavailable', c => { find(c, p => p[4] === 'Price on enquiry')[4] = 'Price unavailable'; }, 'P3'],
   ['an ambiguous price shown as a figure', c => { find(c, p => p[4] === 'Price unavailable')[4] = '€9,999 · VAT not stated'; }, 'P3'],
   ['sterling shown as euro', c => { const p = find(c, p => (p[4] || '').endsWith('UK price')); p[4] = p[4].replace('£', '€'); }, 'P2'],
-  ['an indicative price shown as verified', c => { const p = find(c, p => (p[4] || '').startsWith('Indicative price: €') || (p[4] || '').startsWith('Indicative price: From €')); p[4] = p[4].replace('Indicative price: ', '') + ' · VAT not stated'; }, 'P4'],
+  /* Stage 3D-D2: no Partially Verified EUR figure is published any more, so the
+     wording fault is planted the other way round -- a verified figure relabelled. */
+  ['a verified price relabelled as indicative', c => { const p = find(c, p => /^(From )?\u20ac[\d,]+ /.test(p[4] || '')); p[4] = 'Indicative price: ' + p[4]; }, 'P4'],
   ['the VAT position dropped', c => { const p = find(c, p => (p[4] || '').endsWith(' · VAT not stated')); p[4] = p[4].replace(' · VAT not stated', ''); }, 'P4'],
   ['the supplier-terms VAT basis dropped', c => { const p = find(c, p => (p[4] || '').endsWith(' incl. VAT (supplier\u2019s terms)')); p[4] = p[4].replace(' (supplier\u2019s terms)', ''); }, 'P4'],
   ['a supplier-terms VAT basis claimed for a price-level position', c => { const p = find(c, p => /€[\d,]+ incl\. VAT$/.test(p[4] || '')); p[4] = p[4] + ' (supplier\u2019s terms)'; }, 'P4'],
   ['a regional held price shown without its qualification', c => { const p = find(c, p => (p[4] || '').includes('. Price includes VAT, delivery and installation in Dublin and Wicklow only.')); p[4] = p[4].split('. Price includes')[0] + ' incl. VAT'; }, 'P6'],
   ['a withheld figure shown in the explorer', c => { const p = find(c, p => (p[4] || '').startsWith('Price on request. Rayco does not publish')); p[4] = 'Indicative price: From \u20ac29,500'; }, 'P6'],
   ['a held price shown without its qualification', c => { const p = find(c, p => (p[4] || '').includes(' excluding VAT. Ex works.')); p[4] = p[4].split(' excluding VAT. ')[0] + ' excl. VAT'; }, 'P6'],
+  ['an unverified price shown as a figure', c => { find(c, p => p[4] === 'Price not currently verified')[4] = 'Indicative price: \u20ac19,950'; }, 'P7'],
   ['a product delisted', c => { const ms = c.tabs.find(t => t.key === 'gardenRooms').makers; ms[0].p.shift(); }, 'P1'],
 ];
 let caught = 0;

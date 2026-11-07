@@ -58,7 +58,12 @@ ok("the derivation is deterministic", all(G.derive_basis_class(a) == G.derive_ba
                                           for a, _ in cases))
 
 print("\n--- C · UNKNOWN basis fails closed but does NOT invalidate a real price ---")
-r = rec(**{"Base Price": 12000, "Currency": "EUR", "Status": "Verified"})
+# Stage 3D-D2: R-MATCH also needs a recorded, current check and an accepted
+# type/scope; the point here is only that an UNKNOWN BASIS does not void it.
+G.PRICE_AS_OF = __import__("datetime").date(2026, 11, 7)
+r = rec(**{"Base Price": 12000, "Currency": "EUR", "Status": "Verified",
+           "Last Price Check": "2026-10-16", "Price Type": "Standard Price",
+           "Evidence Scope": "Product-Specific"})
 g = G.price_governance(r, "adjudicated", [r], [r], {})
 ok("no installation evidence -> basis UNKNOWN", g["priceBasisClass"] == "UNKNOWN")
 ok("confidence says why: NO_BASIS_STATED", g["priceBasisConfidence"] == "NO_BASIS_STATED")
