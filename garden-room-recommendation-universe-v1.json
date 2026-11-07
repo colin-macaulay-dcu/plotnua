@@ -32,7 +32,7 @@
  "quoteOnlyPriceCount": 19,
  "organisationCount": 65,
  "governedPriceContractVersion": "garden-room-price-contract-v1",
- "governedDigest": "111bca2f619c234968649183e72b4f3efe45058fc49f376ac2d142622f0238f5",
+ "governedDigest": "5b10741ff8287f04528a4524c4d72db07c17ac93a5be6dbdfae78bb7be4feb18",
  "sourceKind": "airtable-live",
  "missingProductUrlCount": 168,
  "products": [
@@ -36549,7 +36549,14 @@
     "evidenceScope": "Product-Specific",
     "adjudication": "adjudicated",
     "quoteOnly": false,
-    "candidateCount": 1
+    "candidateCount": 1,
+    "presentationHold": {
+     "qualification": "Pineca's page for this model no longer shows a price, so its earlier published price could not be verified as current. Ask Pineca for a current price.",
+     "matching": "excluded",
+     "label": "Price on request",
+     "reason": "A current published price for this model could not be verified, so PlotNua does not compare it with your budget or other prices.",
+     "figure": "withheld"
+    }
    },
    "features": {},
    "price": 8678,
@@ -36584,9 +36591,9 @@
     "delivery": "UNKNOWN"
    },
    "priceBasisClass": "UNKNOWN",
-   "priceBasisConfidence": "NO_BASIS_STATED",
+   "priceBasisConfidence": "UNSAFE",
    "priceIsRangeFloor": false,
-   "priceSafeForMatching": true,
+   "priceSafeForMatching": false,
    "priceEvidenceRef": {
     "recordIds": [
      "recKaV6fOJvp3wJp8"
