@@ -39,7 +39,7 @@ THE ONE RELATIVE GUARD, AND WHY IT IS NOT A FROZEN COUNT.
   this refuses and asks for a human, which is the correct outcome for a change
   that large. FOUNDER: this threshold is my judgement, not your instruction.
 """
-import argparse, gzip, json, math, os, re, sys
+import argparse, datetime, gzip, json, math, os, re, sys
 from collections import Counter
 from pathlib import Path
 
@@ -217,6 +217,91 @@ def validate(doc, raw, production_count, min_fraction):
     return errors, warnings, stats
 
 
+# ---------------------------------------------------------------------------
+# STAGE 3D-D1 — THE SUPPLIER-TERMS VAT BASIS, CHECKED INDEPENDENTLY.
+#
+# Stage 3D-C2 accepted Hansa24 Group's terms of sale as the evidence that its
+# prices include VAT, recorded in atlas-tools/vat-terms-evidence.json. The
+# generator re-derives priceEvidence.vatBasis from that register; this rule
+# does NOT reuse the generator's code. It reads the register itself and
+# rejects any candidate whose VAT basis disagrees with it: a register product
+# missing or without the basis, a basis on a product the register does not
+# name, an unknown basis value, a wrong organisation or price record, a VAT
+# answer other than Yes, an expired or unvettable register, or a candidate
+# that loses a basis production carries. build-garden-room-prices.py R-VAT
+# is separate and unchanged.
+# ---------------------------------------------------------------------------
+VAT_TERMS_REGISTER = Path(__file__).resolve().parent.parent.parent / "atlas-tools" / "vat-terms-evidence.json"
+
+
+def _vat_basis(p):
+    pe = p.get("priceEvidence") if isinstance(p, dict) else None
+    return pe.get("vatBasis") if isinstance(pe, dict) else None
+
+
+def validate_vat_terms(products, register_path, as_of, production=None):
+    errors = []
+    try:
+        reg = json.loads(Path(register_path).read_text(encoding="utf-8"))
+    except (OSError, ValueError) as e:
+        return [f"VAT terms register could not be read ({e})"]
+    if not isinstance(reg, dict) or reg.get("schema") != "plotnua.vat-terms-evidence" \
+            or reg.get("version") != 1 or not isinstance(reg.get("suppliers"), list):
+        return ["VAT terms register has an unknown schema or version"]
+    expected, orgs = {}, set()
+    for e in reg["suppliers"]:
+        org, status = e.get("organisation"), e.get("status")
+        if org in orgs:
+            errors.append(f"VAT terms register lists {org} twice")
+        orgs.add(org)
+        if status == "not-relied-on":
+            continue
+        if status != "accepted":
+            errors.append(f"VAT terms register: {org} has unknown status {status!r}")
+            continue
+        try:
+            expires = datetime.date.fromisoformat(e["expires"])
+        except (KeyError, TypeError, ValueError):
+            errors.append(f"VAT terms register: {org} has no valid expiry")
+            continue
+        if expires < as_of:
+            errors.append(f"VAT terms register: {org}'s accepted terms expired on {expires}")
+            continue
+        for x in e.get("productPagesChecked") or []:
+            if x.get("productId") in expected:
+                errors.append(f"VAT terms register lists {x.get('productId')} twice")
+            expected[x.get("productId")] = (org, set(x.get("priceRecordIds") or []))
+    byid = {p.get("id"): p for p in products if isinstance(p, dict)}
+    for pid, (org, recs) in expected.items():
+        p = byid.get(pid)
+        if p is None:
+            errors.append(f"VAT basis: register product {pid} ({org}) is missing from the candidate")
+            continue
+        pe = p.get("priceEvidence") if isinstance(p.get("priceEvidence"), dict) else {}
+        picked = set((p.get("priceEvidenceRef") or {}).get("recordIds") or [])
+        if pe.get("vatBasis") != "supplier-terms":
+            errors.append(f"VAT basis: {pid} has lost its supplier-terms VAT basis")
+        if p.get("organisation") != org:
+            errors.append(f"VAT basis: {pid} organisation {p.get('organisation')!r} is not the register's {org!r}")
+        if str(pe.get("includesVat") or "").strip().lower() != "yes":
+            errors.append(f"VAT basis: {pid} Atlas VAT is {pe.get('includesVat')!r}, not Yes")
+        if not picked or not picked <= recs:
+            errors.append(f"VAT basis: {pid} price record {sorted(picked)} is not one the register checked")
+    for pid, p in byid.items():
+        vb = _vat_basis(p)
+        if vb is None:
+            continue
+        if vb != "supplier-terms":
+            errors.append(f"VAT basis: {pid} carries an unknown vatBasis {vb!r}")
+        elif pid not in expected:
+            errors.append(f"VAT basis: {pid} carries a supplier-terms basis the register does not support")
+    if production:
+        for p in production:
+            if isinstance(p, dict) and _vat_basis(p) and _vat_basis(byid.get(p.get("id")) or {}) != _vat_basis(p):
+                errors.append(f"VAT basis: the candidate drops or changes {p.get('id')}'s production VAT basis")
+    return errors
+
+
 def materially_same(a, b):
     """Same universe, ignoring metadata that moves on every run.
 
@@ -260,6 +345,10 @@ def main():
     ap.add_argument("--github-output", action="store_true",
                     help="Append changed=true/false to $GITHUB_OUTPUT.")
     ap.add_argument("--min-retained-fraction", type=float, default=0.5)
+    ap.add_argument("--vat-terms-register", default=str(VAT_TERMS_REGISTER),
+                    help="Supplier-terms VAT evidence register (default: the production register).")
+    ap.add_argument("--as-of", default=None,
+                    help="Date the register's expiry is judged against (YYYY-MM-DD; default today). Tests only.")
     args = ap.parse_args()
 
     errors = []
@@ -279,6 +368,12 @@ def main():
     stats, warnings = {}, []
     if cand is not None and not errors:
         errors, warnings, stats = validate(cand, cand_raw, prod_count, args.min_retained_fraction)
+        if isinstance(cand, dict) and isinstance(cand.get("products"), list):
+            as_of = (datetime.date.fromisoformat(args.as_of) if args.as_of else datetime.date.today())
+            prod_products = (prod.get("products") if isinstance(prod, dict)
+                             and isinstance(prod.get("products"), list) else None)
+            errors = errors + validate_vat_terms(cand["products"], args.vat_terms_register,
+                                                 as_of, prod_products)
 
     lines = ["GARDEN ROOM RECOMMENDATION UNIVERSE — VALIDATION", ""]
     if stats:
