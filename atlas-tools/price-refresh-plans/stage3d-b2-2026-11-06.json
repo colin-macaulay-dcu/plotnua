@@ -1,0 +1,718 @@
+{
+ "schema": "plotnua.price-refresh-plan.v1",
+ "id": "stage3d-b2-2026-11-06",
+ "date": "2026-11-06",
+ "approved": "Founder Stage 3D-B2 authorisation, 6 November 2026 ('VERIFIED SUPPLIER PRICING REFRESH — APPROVED FOR CONTROLLED IMPLEMENTATION'). Implements the Stage 3D-A verification (supplier pages read 6 Nov 2026): Irish Log Cabins 7 and Hansa24 50 unchanged; Hansa24 Price Type corrected to Sale Price for four products with standing sale prices; Pineca Ireland 11 verified, five regular prices corrected (AMARA with shed 6x3 12,509->12,745; INES PLUS with terrace 6x3 13,175->13,443; AMARA 5x3 10,462->10,883; LAYLA 4x3 8,987->9,133; AMARA 4x3 9,462->9,867); Modular House 2 unchanged. Regular advertised prices only: no time-limited Black Friday or checkout discount is used. No VAT, installation-classification, eligibility or methodology change. Powersheds (3) not changed; Pineca PREMIUM S and Cosy Cabins Athlone are handled by evidence corrections, not here.",
+ "rule": "Only priceEvidenceRef.lastPriceCheck moves, plus price/priceEvidence.base where approvedPrice differs from publishedPrice, plus priceType/priceEvidence.priceType/priceEvidenceRef.priceType where approvedPriceType is given; the header moves only in governedDigest. Every Atlas pricing record linked to the product must read back with Last Price Check = date, Base Price = approvedPrice, and every other price field equal to the published record.",
+ "products": [
+  {
+   "productId": "rec4dBfSJaa42sAfS",
+   "product": "Irish Log Cabins — Dingle Log Cabin 5m x 4m",
+   "organisation": "Irish Log Cabins",
+   "priceRecordIds": [
+    "reczHUjp8NhIiuNV9"
+   ],
+   "publishedPrice": 7600,
+   "approvedPrice": 7600
+  },
+  {
+   "productId": "rec8tUc1TgnwE7bPd",
+   "product": "Irish Log Cabins — Achill Log Cabin A 5m x 3m",
+   "organisation": "Irish Log Cabins",
+   "priceRecordIds": [
+    "recKsS0IrvtVolbm2"
+   ],
+   "publishedPrice": 7920,
+   "approvedPrice": 7920
+  },
+  {
+   "productId": "rec8zBaDcwc4rl8Hs",
+   "product": "Irish Log Cabins — Dingle Log Cabin 4m x 4m (1 Room)",
+   "organisation": "Irish Log Cabins",
+   "priceRecordIds": [
+    "recPUL19jTwzM10LC"
+   ],
+   "publishedPrice": 7200,
+   "approvedPrice": 7200
+  },
+  {
+   "productId": "recCiSQxRX75wb26c",
+   "product": "Irish Log Cabins — Achill B Log Cabin 5m x 4m",
+   "organisation": "Irish Log Cabins",
+   "priceRecordIds": [
+    "reclDfvYDZR7ZjcKW"
+   ],
+   "publishedPrice": 8700,
+   "approvedPrice": 8700
+  },
+  {
+   "productId": "recSqwOmBcorfTwzN",
+   "product": "Irish Log Cabins — Achill C Log Cabin 6m x 4m",
+   "organisation": "Irish Log Cabins",
+   "priceRecordIds": [
+    "recktJm82vRKZakRN"
+   ],
+   "publishedPrice": 9420,
+   "approvedPrice": 9420
+  },
+  {
+   "productId": "recYXzu6v4toDzUMF",
+   "product": "Irish Log Cabins — Dingle Log Cabin 5m x 3m",
+   "organisation": "Irish Log Cabins",
+   "priceRecordIds": [
+    "recP85MnN4rB81kUk"
+   ],
+   "publishedPrice": 7765,
+   "approvedPrice": 7765
+  },
+  {
+   "productId": "reccrnXRZotxAmCgb",
+   "product": "Irish Log Cabins — Dingle Log Cabin 6m x 4m",
+   "organisation": "Irish Log Cabins",
+   "priceRecordIds": [
+    "recs4YrgoZcKZcElC"
+   ],
+   "publishedPrice": 9425,
+   "approvedPrice": 9425
+  },
+  {
+   "productId": "rec1N3Nk3syFuega5",
+   "product": "Small garden office Hansa Mini 1 (G0310)",
+   "organisation": "Hansa24 Group",
+   "priceRecordIds": [
+    "recC4NdYAoF0O02fS"
+   ],
+   "publishedPrice": 5430,
+   "approvedPrice": 5430
+  },
+  {
+   "productId": "rec1zG67NZtl7Q9eA",
+   "product": "Garden House Lucas D with Canopy",
+   "organisation": "Hansa24 Group",
+   "priceRecordIds": [
+    "recjCLhi9Q1iALITq"
+   ],
+   "publishedPrice": 5770,
+   "approvedPrice": 5770
+  },
+  {
+   "productId": "rec2si77KhUCXZugl",
+   "product": "Small DIY Garden Room Lucas C",
+   "organisation": "Hansa24 Group",
+   "priceRecordIds": [
+    "recOXrfayNEc1GW1x"
+   ],
+   "publishedPrice": 5770,
+   "approvedPrice": 5770
+  },
+  {
+   "productId": "rec3idYKdchyLPRmw",
+   "product": "Garden house with shed and porch Super Eva E (G0245)",
+   "organisation": "Hansa24 Group",
+   "priceRecordIds": [
+    "reckoqePdA3fS8hAc"
+   ],
+   "publishedPrice": 11200,
+   "approvedPrice": 11200
+  },
+  {
+   "productId": "rec4HouUyfBlLhfGw",
+   "product": "Garden House Super Lucas E with Shed and Veranda",
+   "organisation": "Hansa24 Group",
+   "priceRecordIds": [
+    "reciynUar0OLuNebC"
+   ],
+   "publishedPrice": 9050,
+   "approvedPrice": 9050
+  },
+  {
+   "productId": "rec4nfCU2DriX8FTw",
+   "product": "Garden log cabin with sleeping loft Sweden B (G0266)",
+   "organisation": "Hansa24 Group",
+   "priceRecordIds": [
+    "recsG9Rug7s8CEXTl"
+   ],
+   "publishedPrice": 18000,
+   "approvedPrice": 18000
+  },
+  {
+   "productId": "rec5jsM7fGx7P1gSh",
+   "product": "Garden House Lucas D with Veranda",
+   "organisation": "Hansa24 Group",
+   "priceRecordIds": [
+    "rec0l68lTbc31J0u8"
+   ],
+   "publishedPrice": 6380,
+   "approvedPrice": 6380
+  },
+  {
+   "productId": "rec5vWzjIqSh17vrw",
+   "product": "Outdoor garden house Eva C (G0120)",
+   "organisation": "Hansa24 Group",
+   "priceRecordIds": [
+    "recszk9DlGgIVmuUQ"
+   ],
+   "publishedPrice": 6460,
+   "approvedPrice": 6460
+  },
+  {
+   "productId": "rec6knDHpGnLPk10q",
+   "product": "Garden house with canopy Eva D (G0150)",
+   "organisation": "Hansa24 Group",
+   "priceRecordIds": [
+    "recQdCkx400KyLnLE"
+   ],
+   "publishedPrice": 6460,
+   "approvedPrice": 6460
+  },
+  {
+   "productId": "rec8ySMAa9imdlneW",
+   "product": "Garden Room Office Jacob C",
+   "organisation": "Hansa24 Group",
+   "priceRecordIds": [
+    "rec37N1sZJZXw5i2P",
+    "recmQiAX9UzHGnMSE"
+   ],
+   "publishedPrice": 6630,
+   "approvedPrice": 6630
+  },
+  {
+   "productId": "rec9emjJtN4YXaAOF",
+   "product": "Large garden house with sleeping loft Bruno 2 (G0375)",
+   "organisation": "Hansa24 Group",
+   "priceRecordIds": [
+    "recEOMULDP1J7IEPl"
+   ],
+   "publishedPrice": 16450,
+   "approvedPrice": 16450
+  },
+  {
+   "productId": "recBOEv8CRZDDg7ti",
+   "product": "Summer house with canopy Ian C (G0171)",
+   "organisation": "Hansa24 Group",
+   "priceRecordIds": [
+    "recU3g6sZSB21qJwM"
+   ],
+   "publishedPrice": 10680,
+   "approvedPrice": 10680
+  },
+  {
+   "productId": "recD2MUDOfcVYhVAD",
+   "product": "Garden room with shower and toilet Mia 2 (G0305)",
+   "organisation": "Hansa24 Group",
+   "priceRecordIds": [
+    "recLHiy7Z4K1o87b3"
+   ],
+   "publishedPrice": 7150,
+   "approvedPrice": 7150
+  },
+  {
+   "productId": "recF7UuFQftO8qoEC",
+   "product": "Small outdoor garden room Lucas D (G0133)",
+   "organisation": "Hansa24 Group",
+   "priceRecordIds": [
+    "recGsNqgE2uXPEoiR"
+   ],
+   "publishedPrice": 5260,
+   "approvedPrice": 5260
+  },
+  {
+   "productId": "recLXzBKOHCTZDq0z",
+   "product": "Garden home office Jacob D (G0138)",
+   "organisation": "Hansa24 Group",
+   "priceRecordIds": [
+    "recgbnOPo1cK7S3Ri"
+   ],
+   "publishedPrice": 6120,
+   "approvedPrice": 6120
+  },
+  {
+   "productId": "recP87CaHz3Xnnirc",
+   "product": "Golf simulator garden house Sim 4 (G0354)",
+   "organisation": "Hansa24 Group",
+   "priceRecordIds": [
+    "recz6TGEakmCBgxi6"
+   ],
+   "publishedPrice": 15680,
+   "approvedPrice": 15680
+  },
+  {
+   "productId": "recRhYcvhMHoR8FTf",
+   "product": "Small outdoor garden house Nora B (G0116)",
+   "organisation": "Hansa24 Group",
+   "priceRecordIds": [
+    "recBapP6ueAzxgCuk"
+   ],
+   "publishedPrice": 5430,
+   "approvedPrice": 5430
+  },
+  {
+   "productId": "recRjS5zLEtgaJ5d7",
+   "product": "Garden Wooden House Eva B",
+   "organisation": "Hansa24 Group",
+   "priceRecordIds": [
+    "recBsvbpGCGupvGjW"
+   ],
+   "publishedPrice": 6980,
+   "approvedPrice": 6980
+  },
+  {
+   "productId": "recSqpr8Hbph72Lsl",
+   "product": "Large garden room Snooker XL 2 (G0301)",
+   "organisation": "Hansa24 Group",
+   "priceRecordIds": [
+    "recYpFpZDkilg0eB5"
+   ],
+   "publishedPrice": 17910,
+   "approvedPrice": 17910
+  },
+  {
+   "productId": "recStQFDuLyEMVYaG",
+   "product": "Summer house with side shed Super Otto (G0172)",
+   "organisation": "Hansa24 Group",
+   "priceRecordIds": [
+    "recT8uiviSsuyU8Xd"
+   ],
+   "publishedPrice": 6980,
+   "approvedPrice": 6980
+  },
+  {
+   "productId": "recUWK2T4YkXEahne",
+   "product": "Summer Garden House Lucas E with Terrace",
+   "organisation": "Hansa24 Group",
+   "priceRecordIds": [
+    "rechuk2GZXW7YoVwq"
+   ],
+   "publishedPrice": 7410,
+   "approvedPrice": 7410,
+   "approvedPriceType": "Sale Price"
+  },
+  {
+   "productId": "recVXGQJUJjzrnvoS",
+   "product": "Garden summer house Malaga 2 (G0241)",
+   "organisation": "Hansa24 Group",
+   "priceRecordIds": [
+    "recOxPtbkofTW3UOU"
+   ],
+   "publishedPrice": 14560,
+   "approvedPrice": 14560
+  },
+  {
+   "productId": "recZQE4vdTOY4k081",
+   "product": "Garden house Eva D (G0123)",
+   "organisation": "Hansa24 Group",
+   "priceRecordIds": [
+    "recRinaHkseulDaRd"
+   ],
+   "publishedPrice": 5950,
+   "approvedPrice": 5950
+  },
+  {
+   "productId": "recZX63NBfrzmkghd",
+   "product": "Garden Room Jacob E",
+   "organisation": "Hansa24 Group",
+   "priceRecordIds": [
+    "recZR8RBXi1EysR1g",
+    "recsq0c2530NDPKN7"
+   ],
+   "publishedPrice": 5770,
+   "approvedPrice": 5770
+  },
+  {
+   "productId": "recZnSAtp1fnsH1F4",
+   "product": "Spacious garden room Rebeka Plus (G0395)",
+   "organisation": "Hansa24 Group",
+   "priceRecordIds": [
+    "recGpl1MV1sXA3Ha0"
+   ],
+   "publishedPrice": 17400,
+   "approvedPrice": 17400
+  },
+  {
+   "productId": "recaKjk3mMaplGfZn",
+   "product": "Garden house with veranda attached Henry (G0103)",
+   "organisation": "Hansa24 Group",
+   "priceRecordIds": [
+    "reccDEwa2ccx4qnky"
+   ],
+   "publishedPrice": 7930,
+   "approvedPrice": 7930
+  },
+  {
+   "productId": "recc97FOzHnBWS3CX",
+   "product": "Small Garden House Nora E",
+   "organisation": "Hansa24 Group",
+   "priceRecordIds": [
+    "recwqeo61naCmn7V3"
+   ],
+   "publishedPrice": 5170,
+   "approvedPrice": 5170
+  },
+  {
+   "productId": "recdmqC4R70FUdBB9",
+   "product": "Garden house with side shed and veranda Rio (G0165)",
+   "organisation": "Hansa24 Group",
+   "priceRecordIds": [
+    "rec7zQSaLJ8bTDCWb"
+   ],
+   "publishedPrice": 15760,
+   "approvedPrice": 15760
+  },
+  {
+   "productId": "recdvevmu5LvJ3iNe",
+   "product": "Garden Room Nora E with Veranda",
+   "organisation": "Hansa24 Group",
+   "priceRecordIds": [
+    "rec3FHd3Ljnx2BjcO",
+    "recMi6EabeT434vqp"
+   ],
+   "publishedPrice": 7240,
+   "approvedPrice": 7240,
+   "approvedPriceType": "Sale Price"
+  },
+  {
+   "productId": "receZA66qs0E5LT2p",
+   "product": "Corner garden house with porch Hansa A (G0197)",
+   "organisation": "Hansa24 Group",
+   "priceRecordIds": [
+    "recukksHNSVIaCGhI"
+   ],
+   "publishedPrice": 10080,
+   "approvedPrice": 10080
+  },
+  {
+   "productId": "recerRglqc8u2qxkL",
+   "product": "Small Garden Room Lucas B",
+   "organisation": "Hansa24 Group",
+   "priceRecordIds": [
+    "recuPuWorwCvKgOzE"
+   ],
+   "publishedPrice": 5600,
+   "approvedPrice": 5600
+  },
+  {
+   "productId": "recfFE3fvs3AyWJJV",
+   "product": "Small garden room Lucas E (G0134)",
+   "organisation": "Hansa24 Group",
+   "priceRecordIds": [
+    "rec1v2NFkABUnzkPG"
+   ],
+   "publishedPrice": 5340,
+   "approvedPrice": 5340
+  },
+  {
+   "productId": "recfHdGREBnhONH0z",
+   "product": "Garden office room Jacob B (G0136)",
+   "organisation": "Hansa24 Group",
+   "priceRecordIds": [
+    "recJS0NhUYX2uGiUb"
+   ],
+   "publishedPrice": 6630,
+   "approvedPrice": 6630
+  },
+  {
+   "productId": "recgE5ZH8K0BHs2UU",
+   "product": "Small garden house Nora D (G0122)",
+   "organisation": "Hansa24 Group",
+   "priceRecordIds": [
+    "recOsQV8R3xnxr5kJ"
+   ],
+   "publishedPrice": 5080,
+   "approvedPrice": 5080
+  },
+  {
+   "productId": "recgW5dzgjNE0SfUm",
+   "product": "Golf simulator garden house Sim 3 (G0353)",
+   "organisation": "Hansa24 Group",
+   "priceRecordIds": [
+    "recrjtbhUjBqQtU9L"
+   ],
+   "publishedPrice": 15500,
+   "approvedPrice": 15500
+  },
+  {
+   "productId": "recikE6QKqPbkeovi",
+   "product": "Garden Room Jacob E with Canopy",
+   "organisation": "Hansa24 Group",
+   "priceRecordIds": [
+    "recmmjACgw3JfGTuE"
+   ],
+   "publishedPrice": 7750,
+   "approvedPrice": 7750
+  },
+  {
+   "productId": "reckpxBs1ZkYdPEZY",
+   "product": "Small garden house Nora C (G0117)",
+   "organisation": "Hansa24 Group",
+   "priceRecordIds": [
+    "recmw4GQNbUXeOuz1"
+   ],
+   "publishedPrice": 5600,
+   "approvedPrice": 5600
+  },
+  {
+   "productId": "recl3VI1veyjsT24l",
+   "product": "Corner garden house Fargo B (G0346)",
+   "organisation": "Hansa24 Group",
+   "priceRecordIds": [
+    "recs4yptfxrj2fGkB"
+   ],
+   "publishedPrice": 6580,
+   "approvedPrice": 6580
+  },
+  {
+   "productId": "recldnlBYTnpxfY3a",
+   "product": "Garden house Eva E (G0128)",
+   "organisation": "Hansa24 Group",
+   "priceRecordIds": [
+    "rec2gXNGrIyfXkkuZ"
+   ],
+   "publishedPrice": 5600,
+   "approvedPrice": 5600
+  },
+  {
+   "productId": "recn2jneZ7gvsz5bP",
+   "product": "Large garden office with canopy Ian E (G0227)",
+   "organisation": "Hansa24 Group",
+   "priceRecordIds": [
+    "recWF0UmSqGvUPdcU"
+   ],
+   "publishedPrice": 11200,
+   "approvedPrice": 11200
+  },
+  {
+   "productId": "recnz0dYBdb95jpUA",
+   "product": "Small garden house Nora X (G0125)",
+   "organisation": "Hansa24 Group",
+   "priceRecordIds": [
+    "recMS1MKg0BQUA2sL"
+   ],
+   "publishedPrice": 5520,
+   "approvedPrice": 5520
+  },
+  {
+   "productId": "recsgMN8y8DV2On4I",
+   "product": "Garden Room with Shed & Porch Super Jacob E",
+   "organisation": "Hansa24 Group",
+   "priceRecordIds": [
+    "recKiI0BSVIjAlfXa",
+    "recUkyvtfuK8AEV1C"
+   ],
+   "publishedPrice": 11460,
+   "approvedPrice": 11460
+  },
+  {
+   "productId": "rectGPQCXEwkJXCvg",
+   "product": "Garden House Nora E with Canopy",
+   "organisation": "Hansa24 Group",
+   "priceRecordIds": [
+    "reco6FRtlL95zTljW"
+   ],
+   "publishedPrice": 6550,
+   "approvedPrice": 6550
+  },
+  {
+   "productId": "recuScjdzUmWaGDKy",
+   "product": "Garden office pod Hansa Mini 2 (G0311)",
+   "organisation": "Hansa24 Group",
+   "priceRecordIds": [
+    "rec6zj6l17mSIDeXt"
+   ],
+   "publishedPrice": 5600,
+   "approvedPrice": 5600
+  },
+  {
+   "productId": "recuf0hjaMX4UjajA",
+   "product": "Small garden house Eva X (G0124)",
+   "organisation": "Hansa24 Group",
+   "priceRecordIds": [
+    "reclAxsU8TBeoHtxD"
+   ],
+   "publishedPrice": 6380,
+   "approvedPrice": 6380
+  },
+  {
+   "productId": "recuwK4UChkiBcXSD",
+   "product": "Garden house Leon (G0416)",
+   "organisation": "Hansa24 Group",
+   "priceRecordIds": [
+    "rec9Y8qNVQqVR3pER"
+   ],
+   "publishedPrice": 10320,
+   "approvedPrice": 10320
+  },
+  {
+   "productId": "recvDRTUlerLWVQsG",
+   "product": "Summer house with shed Super Fred (G0173)",
+   "organisation": "Hansa24 Group",
+   "priceRecordIds": [
+    "rec3w2uly0BOj9FW0"
+   ],
+   "publishedPrice": 6810,
+   "approvedPrice": 6810
+  },
+  {
+   "productId": "recwDvaFmzWXHhtxK",
+   "product": "Large garden office Ian D (G0210)",
+   "organisation": "Hansa24 Group",
+   "priceRecordIds": [
+    "recim7kFLbr60qwNo"
+   ],
+   "publishedPrice": 9130,
+   "approvedPrice": 9130,
+   "approvedPriceType": "Sale Price"
+  },
+  {
+   "productId": "recwrKkR8cwI5Mru5",
+   "product": "Garden Room Jacob E with Veranda",
+   "organisation": "Hansa24 Group",
+   "priceRecordIds": [
+    "recDKrUWWUQGdSf8I",
+    "rece3teouaDY0uQms"
+   ],
+   "publishedPrice": 8360,
+   "approvedPrice": 8360,
+   "approvedPriceType": "Sale Price"
+  },
+  {
+   "productId": "recyCTqnOalHib0g1",
+   "product": "Garden House Eva D with Terrace",
+   "organisation": "Hansa24 Group",
+   "priceRecordIds": [
+    "recUUHknzA827FKuP"
+   ],
+   "publishedPrice": 7150,
+   "approvedPrice": 7150
+  },
+  {
+   "productId": "recPnncp3xgUp4fXe",
+   "product": "Garden Room INES Insulated 6 × 3 m — 18 m²",
+   "organisation": "Pineca Ireland",
+   "priceRecordIds": [
+    "recEMBF8W24qn2Axx"
+   ],
+   "publishedPrice": 14921,
+   "approvedPrice": 14921
+  },
+  {
+   "productId": "recS2oSLmZfE52362",
+   "product": "Garden Room INES PLUS with front terrace Insulated 6 × 6 m — 36 m²",
+   "organisation": "Pineca Ireland",
+   "priceRecordIds": [
+    "recpc4fOqksiNn8Ke"
+   ],
+   "publishedPrice": 18939,
+   "approvedPrice": 18939
+  },
+  {
+   "productId": "recS6JnqOR9U2sJdN",
+   "product": "Garden Room INES with terrace Insulated 6 × 3 m — 18 m²",
+   "organisation": "Pineca Ireland",
+   "priceRecordIds": [
+    "rechdVi8hPaVLh5HL"
+   ],
+   "publishedPrice": 12041,
+   "approvedPrice": 12041
+  },
+  {
+   "productId": "recaj7Ngc6yeMuLg8",
+   "product": "Garden Room LAYLA Insulated 6 × 3 m — 15 m²",
+   "organisation": "Pineca Ireland",
+   "priceRecordIds": [
+    "recmuLFaAhzRjs4UM"
+   ],
+   "publishedPrice": 12737,
+   "approvedPrice": 12737
+  },
+  {
+   "productId": "recqCSPBdJNaxXdj8",
+   "product": "Garden Room LAYLA Insulated 5 × 3 m — 13 m²",
+   "organisation": "Pineca Ireland",
+   "priceRecordIds": [
+    "rec38w3tlLLxpL3ux"
+   ],
+   "publishedPrice": 11666,
+   "approvedPrice": 11666
+  },
+  {
+   "productId": "recvyBqUCGJbgR7KF",
+   "product": "Garden Room INES PLUS with L-shape terrace Insulated 6 × 6 m — 36 m²",
+   "organisation": "Pineca Ireland",
+   "priceRecordIds": [
+    "rec6Wkapi0bELeKAa"
+   ],
+   "publishedPrice": 18181,
+   "approvedPrice": 18181
+  },
+  {
+   "productId": "recE1sTxnHbf6CDKI",
+   "product": "Garden Room AMARA with a shed Insulated 6 × 3 m — 15 m²",
+   "organisation": "Pineca Ireland",
+   "priceRecordIds": [
+    "rectWJ8PxY3ByIj4J"
+   ],
+   "publishedPrice": 12509,
+   "approvedPrice": 12745
+  },
+  {
+   "productId": "recSCARXaKNvNB6jz",
+   "product": "Garden Room INES PLUS with terrace Insulated 6 × 3 m — 18 m²",
+   "organisation": "Pineca Ireland",
+   "priceRecordIds": [
+    "reczslYDor1AFWv7z"
+   ],
+   "publishedPrice": 13175,
+   "approvedPrice": 13443
+  },
+  {
+   "productId": "recTiY6gVXP1zbBOF",
+   "product": "Garden Room AMARA Insulated 5 × 3 m — 13 m²",
+   "organisation": "Pineca Ireland",
+   "priceRecordIds": [
+    "recMvSc9bRDBQDj8T"
+   ],
+   "publishedPrice": 10462,
+   "approvedPrice": 10883
+  },
+  {
+   "productId": "recX7MXMp0JZ0U02A",
+   "product": "Garden Room LAYLA Insulated 4 × 3 m — 10 m²",
+   "organisation": "Pineca Ireland",
+   "priceRecordIds": [
+    "recX2fPIs4wdHtIOm"
+   ],
+   "publishedPrice": 8987,
+   "approvedPrice": 9133
+  },
+  {
+   "productId": "recxIO17c0iIsnnN2",
+   "product": "Garden Room AMARA Insulated 4 × 3 m — 10 m²",
+   "organisation": "Pineca Ireland",
+   "priceRecordIds": [
+    "recQU4Rg7UHirj5LX"
+   ],
+   "publishedPrice": 9462,
+   "approvedPrice": 9867
+  },
+  {
+   "productId": "recbwAaAUFUWj5OvT",
+   "product": "Modular House — The Studio 25m²",
+   "organisation": "Modular House",
+   "priceRecordIds": [
+    "recVj8SuyFqH5Z7Ud"
+   ],
+   "publishedPrice": 43450,
+   "approvedPrice": 43450
+  },
+  {
+   "productId": "recm4ShGKIAWDlgg9",
+   "product": "Modular House — The Compact 15m²",
+   "organisation": "Modular House",
+   "priceRecordIds": [
+    "recdRuIoEzK90i771"
+   ],
+   "publishedPrice": 32450,
+   "approvedPrice": 32450
+  }
+ ]
+}

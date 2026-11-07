@@ -32,7 +32,7 @@
  "quoteOnlyPriceCount": 19,
  "organisationCount": 65,
  "governedPriceContractVersion": "garden-room-price-contract-v1",
- "governedDigest": "f728fadfab0f947925d10ec22382aab492c8420b7df59da9b0eeb359de2f6e03",
+ "governedDigest": "111bca2f619c234968649183e72b4f3efe45058fc49f376ac2d142622f0238f5",
  "sourceKind": "airtable-live",
  "missingProductUrlCount": 168,
  "products": [
@@ -7951,7 +7951,7 @@
     "status": "Verified",
     "priceType": "Standard Price",
     "evidenceScope": "Product-Specific",
-    "lastPriceCheck": "2026-09-28",
+    "lastPriceCheck": "2026-11-06",
     "basisSource": null,
     "basisLeadPhrase": null
    }
@@ -8062,7 +8062,7 @@
     "status": "Verified",
     "priceType": "Standard Price",
     "evidenceScope": "Product-Specific",
-    "lastPriceCheck": "2026-09-28",
+    "lastPriceCheck": "2026-11-06",
     "basisSource": null,
     "basisLeadPhrase": null
    }
@@ -20193,7 +20193,7 @@
     "status": "Verified",
     "priceType": "Standard Price",
     "evidenceScope": "Product-Specific",
-    "lastPriceCheck": "2026-09-28",
+    "lastPriceCheck": "2026-11-06",
     "basisSource": "installationModel.leadPhrase",
     "basisLeadPhrase": "DIY OR INSTALLED"
    }
@@ -21188,7 +21188,7 @@
     "status": "Verified",
     "priceType": "Standard Price",
     "evidenceScope": "Product-Specific",
-    "lastPriceCheck": "2026-09-28",
+    "lastPriceCheck": "2026-11-06",
     "basisSource": "installationModel.leadPhrase",
     "basisLeadPhrase": "DIY OR INSTALLED"
    }
@@ -21328,7 +21328,7 @@
     "status": "Verified",
     "priceType": "Standard Price",
     "evidenceScope": "Product-Specific",
-    "lastPriceCheck": "2026-09-28",
+    "lastPriceCheck": "2026-11-06",
     "basisSource": "installationModel.leadPhrase",
     "basisLeadPhrase": "DIY OR INSTALLED"
    }
@@ -21849,7 +21849,7 @@
     "status": "Verified",
     "priceType": "Standard Price",
     "evidenceScope": "Product-Specific",
-    "lastPriceCheck": "2026-09-28",
+    "lastPriceCheck": "2026-11-06",
     "basisSource": "installationModel.leadPhrase",
     "basisLeadPhrase": "DIY OR INSTALLED"
    }
@@ -23153,7 +23153,7 @@
     "status": "Verified",
     "priceType": "Standard Price",
     "evidenceScope": "Product-Specific",
-    "lastPriceCheck": "2026-09-28",
+    "lastPriceCheck": "2026-11-06",
     "basisSource": "installationModel.leadPhrase",
     "basisLeadPhrase": "DIY OR INSTALLED"
    }
@@ -28033,7 +28033,7 @@
     }
    },
    "priceEvidence": {
-    "base": 9462,
+    "base": 9867,
     "from": null,
     "to": 12277,
     "currency": "EUR",
@@ -28046,7 +28046,7 @@
     "candidateCount": 1
    },
    "features": {},
-   "price": 9462,
+   "price": 9867,
    "currency": "EUR",
    "priceBasis": "Verified",
    "floorAreaM2": null,
@@ -28090,7 +28090,7 @@
     "status": "Verified",
     "priceType": "Starting From",
     "evidenceScope": "Product-Specific",
-    "lastPriceCheck": "2026-09-23",
+    "lastPriceCheck": "2026-11-06",
     "basisSource": null,
     "basisLeadPhrase": null
    }
@@ -28144,7 +28144,7 @@
     }
    },
    "priceEvidence": {
-    "base": 10462,
+    "base": 10883,
     "from": null,
     "to": 13379,
     "currency": "EUR",
@@ -28157,7 +28157,7 @@
     "candidateCount": 1
    },
    "features": {},
-   "price": 10462,
+   "price": 10883,
    "currency": "EUR",
    "priceBasis": "Verified",
    "floorAreaM2": null,
@@ -28201,7 +28201,7 @@
     "status": "Verified",
     "priceType": "Starting From",
     "evidenceScope": "Product-Specific",
-    "lastPriceCheck": "2026-09-23",
+    "lastPriceCheck": "2026-11-06",
     "basisSource": null,
     "basisLeadPhrase": null
    }
@@ -28255,7 +28255,7 @@
     }
    },
    "priceEvidence": {
-    "base": 12509,
+    "base": 12745,
     "from": null,
     "to": 15292,
     "currency": "EUR",
@@ -28268,7 +28268,7 @@
     "candidateCount": 1
    },
    "features": {},
-   "price": 12509,
+   "price": 12745,
    "currency": "EUR",
    "priceBasis": "Verified",
    "floorAreaM2": null,
@@ -28312,7 +28312,7 @@
     "status": "Verified",
     "priceType": "Starting From",
     "evidenceScope": "Product-Specific",
-    "lastPriceCheck": "2026-09-23",
+    "lastPriceCheck": "2026-11-06",
     "basisSource": null,
     "basisLeadPhrase": null
    }
@@ -31431,7 +31431,7 @@
     "status": "Verified",
     "priceType": "Starting From",
     "evidenceScope": "Product-Specific",
-    "lastPriceCheck": "2026-09-23",
+    "lastPriceCheck": "2026-11-06",
     "basisSource": null,
     "basisLeadPhrase": null
    }
@@ -31542,7 +31542,7 @@
     "status": "Verified",
     "priceType": "Starting From",
     "evidenceScope": "Product-Specific",
-    "lastPriceCheck": "2026-09-23",
+    "lastPriceCheck": "2026-11-06",
     "basisSource": null,
     "basisLeadPhrase": null
    }
@@ -31653,7 +31653,7 @@
     "status": "Verified",
     "priceType": "Starting From",
     "evidenceScope": "Product-Specific",
-    "lastPriceCheck": "2026-09-23",
+    "lastPriceCheck": "2026-11-06",
     "basisSource": null,
     "basisLeadPhrase": null
    }
@@ -31707,7 +31707,7 @@
     }
    },
    "priceEvidence": {
-    "base": 13175,
+    "base": 13443,
     "from": null,
     "to": 16773,
     "currency": "EUR",
@@ -31720,7 +31720,7 @@
     "candidateCount": 1
    },
    "features": {},
-   "price": 13175,
+   "price": 13443,
    "currency": "EUR",
    "priceBasis": "Verified",
    "floorAreaM2": null,
@@ -31764,7 +31764,7 @@
     "status": "Verified",
     "priceType": "Starting From",
     "evidenceScope": "Product-Specific",
-    "lastPriceCheck": "2026-09-23",
+    "lastPriceCheck": "2026-11-06",
     "basisSource": null,
     "basisLeadPhrase": null
    }
@@ -31875,7 +31875,7 @@
     "status": "Verified",
     "priceType": "Starting From",
     "evidenceScope": "Product-Specific",
-    "lastPriceCheck": "2026-09-23",
+    "lastPriceCheck": "2026-11-06",
     "basisSource": null,
     "basisLeadPhrase": null
    }
@@ -32215,7 +32215,7 @@
     "status": "Verified",
     "priceType": "Standard Price",
     "evidenceScope": "Product-Specific",
-    "lastPriceCheck": "2026-09-28",
+    "lastPriceCheck": "2026-11-06",
     "basisSource": "installationModel.leadPhrase",
     "basisLeadPhrase": "DIY OR INSTALLED"
    }
@@ -32355,7 +32355,7 @@
     "status": "Verified",
     "priceType": "Standard Price",
     "evidenceScope": "Product-Specific",
-    "lastPriceCheck": "2026-09-28",
+    "lastPriceCheck": "2026-11-06",
     "basisSource": "installationModel.leadPhrase",
     "basisLeadPhrase": "DIY OR INSTALLED"
    }
@@ -32412,7 +32412,7 @@
     "from": null,
     "to": null,
     "currency": "EUR",
-    "priceType": "Standard Price",
+    "priceType": "Sale Price",
     "status": "Verified",
     "includesVat": "Yes",
     "evidenceScope": "Product-Specific",
@@ -32515,7 +32515,7 @@
    ],
    "priceRecordIdsAvailable": 2,
    "priceStatus": "Verified",
-   "priceType": "Standard Price",
+   "priceType": "Sale Price",
    "priceScope": "Product-Specific",
    "vatStatus": "Yes",
    "vatRate": null,
@@ -32536,9 +32536,9 @@
     "adjudication": "adjudicated",
     "candidateCount": 2,
     "status": "Verified",
-    "priceType": "Standard Price",
+    "priceType": "Sale Price",
     "evidenceScope": "Product-Specific",
-    "lastPriceCheck": "2026-09-28",
+    "lastPriceCheck": "2026-11-06",
     "basisSource": "installationModel.leadPhrase",
     "basisLeadPhrase": "DIY OR INSTALLED"
    }
@@ -32771,7 +32771,7 @@
     }
    },
    "priceEvidence": {
-    "base": 8987,
+    "base": 9133,
     "from": null,
     "to": 12339,
     "currency": "EUR",
@@ -32784,7 +32784,7 @@
     "candidateCount": 1
    },
    "features": {},
-   "price": 8987,
+   "price": 9133,
    "currency": "EUR",
    "priceBasis": "Verified",
    "floorAreaM2": null,
@@ -32828,7 +32828,7 @@
     "status": "Verified",
     "priceType": "Starting From",
     "evidenceScope": "Product-Specific",
-    "lastPriceCheck": "2026-09-23",
+    "lastPriceCheck": "2026-11-06",
     "basisSource": null,
     "basisLeadPhrase": null
    }
@@ -32939,7 +32939,7 @@
     "status": "Verified",
     "priceType": "Starting From",
     "evidenceScope": "Product-Specific",
-    "lastPriceCheck": "2026-09-23",
+    "lastPriceCheck": "2026-11-06",
     "basisSource": null,
     "basisLeadPhrase": null
    }
@@ -33084,7 +33084,7 @@
     "status": "Verified",
     "priceType": "Starting From",
     "evidenceScope": "Product-Specific",
-    "lastPriceCheck": "2026-09-23",
+    "lastPriceCheck": "2026-11-06",
     "basisSource": "installationModel.leadPhrase",
     "basisLeadPhrase": "DIY OR INSTALLED"
    }
@@ -34786,7 +34786,7 @@
     "from": null,
     "to": null,
     "currency": "EUR",
-    "priceType": "Standard Price",
+    "priceType": "Sale Price",
     "status": "Verified",
     "includesVat": "Yes",
     "evidenceScope": "Product-Specific",
@@ -34889,7 +34889,7 @@
    ],
    "priceRecordIdsAvailable": 2,
    "priceStatus": "Verified",
-   "priceType": "Standard Price",
+   "priceType": "Sale Price",
    "priceScope": "Product-Specific",
    "vatStatus": "Yes",
    "vatRate": null,
@@ -34910,9 +34910,9 @@
     "adjudication": "adjudicated",
     "candidateCount": 2,
     "status": "Verified",
-    "priceType": "Standard Price",
+    "priceType": "Sale Price",
     "evidenceScope": "Product-Specific",
-    "lastPriceCheck": "2026-09-28",
+    "lastPriceCheck": "2026-11-06",
     "basisSource": "installationModel.leadPhrase",
     "basisLeadPhrase": "DIY OR INSTALLED"
    }
@@ -35417,7 +35417,7 @@
     "status": "Verified",
     "priceType": "Standard Price",
     "evidenceScope": "Product-Specific",
-    "lastPriceCheck": "2026-09-28",
+    "lastPriceCheck": "2026-11-06",
     "basisSource": "installationModel.leadPhrase",
     "basisLeadPhrase": "DIY OR INSTALLED"
    }
@@ -40327,7 +40327,7 @@
     "status": "Verified",
     "priceType": "Standard Price",
     "evidenceScope": "Product-Specific",
-    "lastPriceCheck": "2026-09-28",
+    "lastPriceCheck": "2026-11-06",
     "basisSource": "installationModel.leadPhrase",
     "basisLeadPhrase": "DIY OR INSTALLED"
    }
@@ -43087,7 +43087,7 @@
     "status": "Verified",
     "priceType": "Standard Price",
     "evidenceScope": "Product-Specific",
-    "lastPriceCheck": "2026-09-28",
+    "lastPriceCheck": "2026-11-06",
     "basisSource": "installationModel.leadPhrase",
     "basisLeadPhrase": "DIY OR INSTALLED"
    }
@@ -43198,7 +43198,7 @@
     "status": "Verified",
     "priceType": "Standard Price",
     "evidenceScope": "Product-Specific",
-    "lastPriceCheck": "2026-09-28",
+    "lastPriceCheck": "2026-11-06",
     "basisSource": null,
     "basisLeadPhrase": null
    }
@@ -43309,7 +43309,7 @@
     "status": "Verified",
     "priceType": "Standard Price",
     "evidenceScope": "Product-Specific",
-    "lastPriceCheck": "2026-09-28",
+    "lastPriceCheck": "2026-11-06",
     "basisSource": null,
     "basisLeadPhrase": null
    }
@@ -43420,7 +43420,7 @@
     "status": "Verified",
     "priceType": "Standard Price",
     "evidenceScope": "Product-Specific",
-    "lastPriceCheck": "2026-09-28",
+    "lastPriceCheck": "2026-11-06",
     "basisSource": null,
     "basisLeadPhrase": null
    }
@@ -43531,7 +43531,7 @@
     "status": "Verified",
     "priceType": "Standard Price",
     "evidenceScope": "Product-Specific",
-    "lastPriceCheck": "2026-09-28",
+    "lastPriceCheck": "2026-11-06",
     "basisSource": null,
     "basisLeadPhrase": null
    }
@@ -43642,7 +43642,7 @@
     "status": "Verified",
     "priceType": "Standard Price",
     "evidenceScope": "Product-Specific",
-    "lastPriceCheck": "2026-09-28",
+    "lastPriceCheck": "2026-11-06",
     "basisSource": null,
     "basisLeadPhrase": null
    }
@@ -43753,7 +43753,7 @@
     "status": "Verified",
     "priceType": "Standard Price",
     "evidenceScope": "Product-Specific",
-    "lastPriceCheck": "2026-09-28",
+    "lastPriceCheck": "2026-11-06",
     "basisSource": null,
     "basisLeadPhrase": null
    }
@@ -43864,7 +43864,7 @@
     "status": "Verified",
     "priceType": "Standard Price",
     "evidenceScope": "Product-Specific",
-    "lastPriceCheck": "2026-09-28",
+    "lastPriceCheck": "2026-11-06",
     "basisSource": null,
     "basisLeadPhrase": null
    }
@@ -43975,7 +43975,7 @@
     "status": "Verified",
     "priceType": "Standard Price",
     "evidenceScope": "Product-Specific",
-    "lastPriceCheck": "2026-09-28",
+    "lastPriceCheck": "2026-11-06",
     "basisSource": null,
     "basisLeadPhrase": null
    }
@@ -44086,7 +44086,7 @@
     "status": "Verified",
     "priceType": "Standard Price",
     "evidenceScope": "Product-Specific",
-    "lastPriceCheck": "2026-09-28",
+    "lastPriceCheck": "2026-11-06",
     "basisSource": null,
     "basisLeadPhrase": null
    }
@@ -44197,7 +44197,7 @@
     "status": "Verified",
     "priceType": "Standard Price",
     "evidenceScope": "Product-Specific",
-    "lastPriceCheck": "2026-09-28",
+    "lastPriceCheck": "2026-11-06",
     "basisSource": null,
     "basisLeadPhrase": null
    }
@@ -44308,7 +44308,7 @@
     "status": "Verified",
     "priceType": "Standard Price",
     "evidenceScope": "Product-Specific",
-    "lastPriceCheck": "2026-09-28",
+    "lastPriceCheck": "2026-11-06",
     "basisSource": null,
     "basisLeadPhrase": null
    }
@@ -44419,7 +44419,7 @@
     "status": "Verified",
     "priceType": "Standard Price",
     "evidenceScope": "Product-Specific",
-    "lastPriceCheck": "2026-09-28",
+    "lastPriceCheck": "2026-11-06",
     "basisSource": null,
     "basisLeadPhrase": null
    }
@@ -44530,7 +44530,7 @@
     "status": "Verified",
     "priceType": "Standard Price",
     "evidenceScope": "Product-Specific",
-    "lastPriceCheck": "2026-09-28",
+    "lastPriceCheck": "2026-11-06",
     "basisSource": null,
     "basisLeadPhrase": null
    }
@@ -46270,7 +46270,7 @@
     "status": "Verified",
     "priceType": "Standard Price",
     "evidenceScope": "Product-Specific",
-    "lastPriceCheck": "2026-09-28",
+    "lastPriceCheck": "2026-11-06",
     "basisSource": null,
     "basisLeadPhrase": null
    }
@@ -46381,7 +46381,7 @@
     "status": "Verified",
     "priceType": "Standard Price",
     "evidenceScope": "Product-Specific",
-    "lastPriceCheck": "2026-09-28",
+    "lastPriceCheck": "2026-11-06",
     "basisSource": null,
     "basisLeadPhrase": null
    }
@@ -48789,7 +48789,7 @@
     "status": "Verified",
     "priceType": "Standard Price",
     "evidenceScope": "Product-Specific",
-    "lastPriceCheck": "2026-09-10",
+    "lastPriceCheck": "2026-11-06",
     "basisSource": "installationModel.leadPhrase",
     "basisLeadPhrase": "DIY OR INSTALLED"
    }
@@ -48943,7 +48943,7 @@
     "status": "Verified",
     "priceType": "Standard Price",
     "evidenceScope": "Product-Specific",
-    "lastPriceCheck": "2026-09-10",
+    "lastPriceCheck": "2026-11-06",
     "basisSource": "installationModel.leadPhrase",
     "basisLeadPhrase": "DIY OR INSTALLED"
    }
@@ -49097,7 +49097,7 @@
     "status": "Verified",
     "priceType": "Standard Price",
     "evidenceScope": "Product-Specific",
-    "lastPriceCheck": "2026-09-10",
+    "lastPriceCheck": "2026-11-06",
     "basisSource": "installationModel.leadPhrase",
     "basisLeadPhrase": "DIY OR INSTALLED"
    }
@@ -49251,7 +49251,7 @@
     "status": "Verified",
     "priceType": "Standard Price",
     "evidenceScope": "Product-Specific",
-    "lastPriceCheck": "2026-09-10",
+    "lastPriceCheck": "2026-11-06",
     "basisSource": "installationModel.leadPhrase",
     "basisLeadPhrase": "DIY OR INSTALLED"
    }
@@ -49405,7 +49405,7 @@
     "status": "Verified",
     "priceType": "Standard Price",
     "evidenceScope": "Product-Specific",
-    "lastPriceCheck": "2026-09-10",
+    "lastPriceCheck": "2026-11-06",
     "basisSource": "installationModel.leadPhrase",
     "basisLeadPhrase": "DIY OR INSTALLED"
    }
@@ -49559,7 +49559,7 @@
     "status": "Verified",
     "priceType": "Standard Price",
     "evidenceScope": "Product-Specific",
-    "lastPriceCheck": "2026-09-10",
+    "lastPriceCheck": "2026-11-06",
     "basisSource": "installationModel.leadPhrase",
     "basisLeadPhrase": "DIY OR INSTALLED"
    }
@@ -49721,7 +49721,7 @@
     "status": "Verified",
     "priceType": "Standard Price",
     "evidenceScope": "Product-Specific",
-    "lastPriceCheck": "2026-09-10",
+    "lastPriceCheck": "2026-11-06",
     "basisSource": "installationModel.leadPhrase",
     "basisLeadPhrase": "DIY OR INSTALLED"
    }
@@ -52619,7 +52619,7 @@
     "status": "Verified",
     "priceType": "Standard Price",
     "evidenceScope": "Product-Specific",
-    "lastPriceCheck": "2026-09-28",
+    "lastPriceCheck": "2026-11-06",
     "basisSource": null,
     "basisLeadPhrase": null
    }
@@ -52677,7 +52677,7 @@
     "from": null,
     "to": null,
     "currency": "EUR",
-    "priceType": "Standard Price",
+    "priceType": "Sale Price",
     "status": "Verified",
     "includesVat": "Yes",
     "evidenceScope": "Product-Specific",
@@ -52708,7 +52708,7 @@
    ],
    "priceRecordIdsAvailable": 1,
    "priceStatus": "Verified",
-   "priceType": "Standard Price",
+   "priceType": "Sale Price",
    "priceScope": "Product-Specific",
    "vatStatus": "Yes",
    "vatRate": null,
@@ -52728,9 +52728,9 @@
     "adjudication": "adjudicated",
     "candidateCount": 1,
     "status": "Verified",
-    "priceType": "Standard Price",
+    "priceType": "Sale Price",
     "evidenceScope": "Product-Specific",
-    "lastPriceCheck": "2026-09-28",
+    "lastPriceCheck": "2026-11-06",
     "basisSource": null,
     "basisLeadPhrase": null
    }
@@ -52841,7 +52841,7 @@
     "status": "Verified",
     "priceType": "Standard Price",
     "evidenceScope": "Product-Specific",
-    "lastPriceCheck": "2026-09-28",
+    "lastPriceCheck": "2026-11-06",
     "basisSource": null,
     "basisLeadPhrase": null
    }
@@ -52952,7 +52952,7 @@
     "status": "Verified",
     "priceType": "Standard Price",
     "evidenceScope": "Product-Specific",
-    "lastPriceCheck": "2026-09-28",
+    "lastPriceCheck": "2026-11-06",
     "basisSource": null,
     "basisLeadPhrase": null
    }
@@ -57495,7 +57495,7 @@
     "status": "Verified",
     "priceType": "Starting From",
     "evidenceScope": "Product-Specific",
-    "lastPriceCheck": "2026-09-22",
+    "lastPriceCheck": "2026-11-06",
     "basisSource": null,
     "basisLeadPhrase": null
    }
@@ -57642,7 +57642,7 @@
     "status": "Verified",
     "priceType": "Starting From",
     "evidenceScope": "Product-Specific",
-    "lastPriceCheck": "2026-09-22",
+    "lastPriceCheck": "2026-11-06",
     "basisSource": null,
     "basisLeadPhrase": null
    }
@@ -62287,7 +62287,7 @@
     "status": "Verified",
     "priceType": "Standard Price",
     "evidenceScope": "Product-Specific",
-    "lastPriceCheck": "2026-09-28",
+    "lastPriceCheck": "2026-11-06",
     "basisSource": null,
     "basisLeadPhrase": null
    }
@@ -71937,7 +71937,7 @@
     "status": "Verified",
     "priceType": "Standard Price",
     "evidenceScope": "Product-Specific",
-    "lastPriceCheck": "2026-09-28",
+    "lastPriceCheck": "2026-11-06",
     "basisSource": "installationModel.leadPhrase",
     "basisLeadPhrase": "DIY OR INSTALLED"
    }
@@ -72077,7 +72077,7 @@
     "status": "Verified",
     "priceType": "Standard Price",
     "evidenceScope": "Product-Specific",
-    "lastPriceCheck": "2026-09-28",
+    "lastPriceCheck": "2026-11-06",
     "basisSource": "installationModel.leadPhrase",
     "basisLeadPhrase": "DIY OR INSTALLED"
    }
@@ -72510,7 +72510,7 @@
     "status": "Verified",
     "priceType": "Standard Price",
     "evidenceScope": "Product-Specific",
-    "lastPriceCheck": "2026-09-28",
+    "lastPriceCheck": "2026-11-06",
     "basisSource": "installationModel.leadPhrase",
     "basisLeadPhrase": "DIY OR INSTALLED"
    }
@@ -73002,7 +73002,7 @@
     "status": "Verified",
     "priceType": "Standard Price",
     "evidenceScope": "Product-Specific",
-    "lastPriceCheck": "2026-09-28",
+    "lastPriceCheck": "2026-11-06",
     "basisSource": null,
     "basisLeadPhrase": null
    }
@@ -73113,7 +73113,7 @@
     "status": "Verified",
     "priceType": "Standard Price",
     "evidenceScope": "Product-Specific",
-    "lastPriceCheck": "2026-09-28",
+    "lastPriceCheck": "2026-11-06",
     "basisSource": null,
     "basisLeadPhrase": null
    }
@@ -73224,7 +73224,7 @@
     "status": "Verified",
     "priceType": "Standard Price",
     "evidenceScope": "Product-Specific",
-    "lastPriceCheck": "2026-09-28",
+    "lastPriceCheck": "2026-11-06",
     "basisSource": null,
     "basisLeadPhrase": null
    }
@@ -73335,7 +73335,7 @@
     "status": "Verified",
     "priceType": "Standard Price",
     "evidenceScope": "Product-Specific",
-    "lastPriceCheck": "2026-09-28",
+    "lastPriceCheck": "2026-11-06",
     "basisSource": null,
     "basisLeadPhrase": null
    }
@@ -73446,7 +73446,7 @@
     "status": "Verified",
     "priceType": "Standard Price",
     "evidenceScope": "Product-Specific",
-    "lastPriceCheck": "2026-09-28",
+    "lastPriceCheck": "2026-11-06",
     "basisSource": null,
     "basisLeadPhrase": null
    }
@@ -73557,7 +73557,7 @@
     "status": "Verified",
     "priceType": "Standard Price",
     "evidenceScope": "Product-Specific",
-    "lastPriceCheck": "2026-09-28",
+    "lastPriceCheck": "2026-11-06",
     "basisSource": null,
     "basisLeadPhrase": null
    }
@@ -73668,7 +73668,7 @@
     "status": "Verified",
     "priceType": "Standard Price",
     "evidenceScope": "Product-Specific",
-    "lastPriceCheck": "2026-09-28",
+    "lastPriceCheck": "2026-11-06",
     "basisSource": null,
     "basisLeadPhrase": null
    }
@@ -73779,7 +73779,7 @@
     "status": "Verified",
     "priceType": "Standard Price",
     "evidenceScope": "Product-Specific",
-    "lastPriceCheck": "2026-09-28",
+    "lastPriceCheck": "2026-11-06",
     "basisSource": null,
     "basisLeadPhrase": null
    }
@@ -74609,7 +74609,7 @@
     "status": "Verified",
     "priceType": "Standard Price",
     "evidenceScope": "Product-Specific",
-    "lastPriceCheck": "2026-09-28",
+    "lastPriceCheck": "2026-11-06",
     "basisSource": null,
     "basisLeadPhrase": null
    }
@@ -79551,7 +79551,7 @@
     "from": null,
     "to": null,
     "currency": "EUR",
-    "priceType": "Standard Price",
+    "priceType": "Sale Price",
     "status": "Verified",
     "includesVat": "Yes",
     "evidenceScope": "Product-Specific",
@@ -79612,7 +79612,7 @@
    ],
    "priceRecordIdsAvailable": 1,
    "priceStatus": "Verified",
-   "priceType": "Standard Price",
+   "priceType": "Sale Price",
    "priceScope": "Product-Specific",
    "vatStatus": "Yes",
    "vatRate": null,
@@ -79632,9 +79632,9 @@
     "adjudication": "adjudicated",
     "candidateCount": 1,
     "status": "Verified",
-    "priceType": "Standard Price",
+    "priceType": "Sale Price",
     "evidenceScope": "Product-Specific",
-    "lastPriceCheck": "2026-09-28",
+    "lastPriceCheck": "2026-11-06",
     "basisSource": "installationModel.leadPhrase",
     "basisLeadPhrase": "DIY OR INSTALLED"
    }
@@ -80888,7 +80888,7 @@
     "status": "Verified",
     "priceType": "Standard Price",
     "evidenceScope": "Product-Specific",
-    "lastPriceCheck": "2026-09-28",
+    "lastPriceCheck": "2026-11-06",
     "basisSource": null,
     "basisLeadPhrase": null
    }
@@ -80999,7 +80999,7 @@
     "status": "Verified",
     "priceType": "Standard Price",
     "evidenceScope": "Product-Specific",
-    "lastPriceCheck": "2026-09-28",
+    "lastPriceCheck": "2026-11-06",
     "basisSource": null,
     "basisLeadPhrase": null
    }
@@ -81110,7 +81110,7 @@
     "status": "Verified",
     "priceType": "Standard Price",
     "evidenceScope": "Product-Specific",
-    "lastPriceCheck": "2026-09-28",
+    "lastPriceCheck": "2026-11-06",
     "basisSource": null,
     "basisLeadPhrase": null
    }
