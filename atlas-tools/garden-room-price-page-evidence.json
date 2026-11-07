@@ -419,6 +419,37 @@
      "recompzydsCVirAt1",
      "recS4ar9jaIFmsb8A"
     ]
+   },
+   {
+    "id": "stage3d-d2-matching-eligibility-2026-11-07",
+    "deployedCommit": "2e6f665fb0955c6dc661c030fe836ee9a640164c",
+    "products": [
+     "rec23XrAeAQXjZOhP",
+     "rec24lUlKe85rkQZr",
+     "rec4ZpfM1zYyV5DIy",
+     "rec7va4elQhxQ0YvV",
+     "recAg0XHsUdWwBRlr",
+     "recBwIwkgMXs2tLHU",
+     "recE6YWfhBPoo6rnO",
+     "recGQnRl8rdrb10OT",
+     "recI4u9qUr2DfWHdo",
+     "recIF1lYitX83aO0Z",
+     "recJhNR1MNaNySnqE",
+     "recTmznLRs94g9fls",
+     "recToZjhvh3r0TiFa",
+     "recUl20yByFnlGf3c",
+     "reccBngfWSjD3vMR9",
+     "recdTWdhauaxBp3I8",
+     "recfChiaXoSuRvriV",
+     "recltaZF2FYRo2Qg6",
+     "recmSMswDKnieOdnI",
+     "recmmVA8lLGddxG2b",
+     "recoxB8dRxrqmSg7L",
+     "recre3F4kjawIxrr3",
+     "recs7MhTctE0OXJAo",
+     "recstfGDfONMJJk4P",
+     "recu5t35P6aTRSjsd"
+    ]
    }
   ]
  },
@@ -458,24 +489,6 @@
    "vat": "Yes",
    "lastPriceCheck": "2026-11-06",
    "priceStatus": "Verified"
-  },
-  {
-   "productId": "rec23XrAeAQXjZOhP",
-   "supplierKey": "e31a16721f3d",
-   "segment": "INSTALLED_FINISHED_TURNKEY",
-   "price": 24200,
-   "vat": "Unknown",
-   "lastPriceCheck": null,
-   "priceStatus": "Partially Verified"
-  },
-  {
-   "productId": "rec24lUlKe85rkQZr",
-   "supplierKey": "e31a16721f3d",
-   "segment": "INSTALLED_FINISHED_TURNKEY",
-   "price": 24200,
-   "vat": "Unknown",
-   "lastPriceCheck": null,
-   "priceStatus": "Partially Verified"
   },
   {
    "productId": "rec2HcpQC2XLbXB6u",
@@ -531,15 +544,6 @@
    "vat": "Yes",
    "lastPriceCheck": "2026-11-06",
    "priceStatus": "Verified"
-  },
-  {
-   "productId": "rec4ZpfM1zYyV5DIy",
-   "supplierKey": "e31a16721f3d",
-   "segment": "INSTALLED_FINISHED_TURNKEY",
-   "price": 20400,
-   "vat": "Unknown",
-   "lastPriceCheck": null,
-   "priceStatus": "Partially Verified"
   },
   {
    "productId": "rec4dBfSJaa42sAfS",
@@ -705,15 +709,6 @@
    "priceStatus": "Verified"
   },
   {
-   "productId": "rec7va4elQhxQ0YvV",
-   "supplierKey": "e31a16721f3d",
-   "segment": "INSTALLED_FINISHED_TURNKEY",
-   "price": 10300,
-   "vat": "Unknown",
-   "lastPriceCheck": null,
-   "priceStatus": "Partially Verified"
-  },
-  {
    "productId": "rec8tUc1TgnwE7bPd",
    "supplierKey": "7e9290161b34",
    "segment": "UNKNOWN_DIY_OR_INSTALLED",
@@ -778,15 +773,6 @@
    "priceStatus": "Verified"
   },
   {
-   "productId": "recAg0XHsUdWwBRlr",
-   "supplierKey": "e31a16721f3d",
-   "segment": "INSTALLED_FINISHED_TURNKEY",
-   "price": 22600,
-   "vat": "Unknown",
-   "lastPriceCheck": null,
-   "priceStatus": "Partially Verified"
-  },
-  {
    "productId": "recAq2NceovXy5f1P",
    "supplierKey": "0a72c8fa7bc1",
    "segment": "UNKNOWN_DIY_OR_INSTALLED",
@@ -840,15 +826,6 @@
    "vat": "Unknown",
    "lastPriceCheck": "2026-10-26",
    "priceStatus": "Verified"
-  },
-  {
-   "productId": "recBwIwkgMXs2tLHU",
-   "supplierKey": "e31a16721f3d",
-   "segment": "INSTALLED_FINISHED_TURNKEY",
-   "price": 20400,
-   "vat": "Unknown",
-   "lastPriceCheck": null,
-   "priceStatus": "Partially Verified"
   },
   {
    "productId": "recCeS3wKxXtuJ6Er",
@@ -924,15 +901,6 @@
    "priceStatus": "Verified"
   },
   {
-   "productId": "recE6YWfhBPoo6rnO",
-   "supplierKey": "e31a16721f3d",
-   "segment": "INSTALLED_FINISHED_TURNKEY",
-   "price": 20400,
-   "vat": "Unknown",
-   "lastPriceCheck": null,
-   "priceStatus": "Partially Verified"
-  },
-  {
    "productId": "recEEE6kGA3EH47QV",
    "supplierKey": "d52f3c51b7f1",
    "segment": "UNKNOWN_DIY_OR_INSTALLED",
@@ -997,15 +965,6 @@
    "priceStatus": "Verified"
   },
   {
-   "productId": "recGQnRl8rdrb10OT",
-   "supplierKey": "e31a16721f3d",
-   "segment": "INSTALLED_FINISHED_TURNKEY",
-   "price": 24200,
-   "vat": "Unknown",
-   "lastPriceCheck": null,
-   "priceStatus": "Partially Verified"
-  },
-  {
    "productId": "recGfh1sJT5PoGlPy",
    "supplierKey": "d52f3c51b7f1",
    "segment": "UNKNOWN_DIY_OR_INSTALLED",
@@ -1024,24 +983,6 @@
    "priceStatus": "Verified"
   },
   {
-   "productId": "recI4u9qUr2DfWHdo",
-   "supplierKey": "e31a16721f3d",
-   "segment": "INSTALLED_FINISHED_TURNKEY",
-   "price": 10300,
-   "vat": "Unknown",
-   "lastPriceCheck": null,
-   "priceStatus": "Partially Verified"
-  },
-  {
-   "productId": "recIF1lYitX83aO0Z",
-   "supplierKey": "e31a16721f3d",
-   "segment": "INSTALLED_FINISHED_TURNKEY",
-   "price": 20400,
-   "vat": "Unknown",
-   "lastPriceCheck": null,
-   "priceStatus": "Partially Verified"
-  },
-  {
    "productId": "recJ3HPVMPrYzaXvH",
    "supplierKey": "1b82952044b7",
    "segment": "SUPPLIED_AND_ERECTED",
@@ -1058,15 +999,6 @@
    "vat": "Yes",
    "lastPriceCheck": "2026-10-26",
    "priceStatus": "Verified"
-  },
-  {
-   "productId": "recJhNR1MNaNySnqE",
-   "supplierKey": "e31a16721f3d",
-   "segment": "INSTALLED_FINISHED_TURNKEY",
-   "price": 18500,
-   "vat": "Unknown",
-   "lastPriceCheck": null,
-   "priceStatus": "Partially Verified"
   },
   {
    "productId": "recKHXaApIugjOKti",
@@ -1433,24 +1365,6 @@
    "vatBasis": "supplier-terms"
   },
   {
-   "productId": "recTmznLRs94g9fls",
-   "supplierKey": "e31a16721f3d",
-   "segment": "INSTALLED_FINISHED_TURNKEY",
-   "price": 20400,
-   "vat": "Unknown",
-   "lastPriceCheck": null,
-   "priceStatus": "Partially Verified"
-  },
-  {
-   "productId": "recToZjhvh3r0TiFa",
-   "supplierKey": "e31a16721f3d",
-   "segment": "INSTALLED_FINISHED_TURNKEY",
-   "price": 10250,
-   "vat": "Unknown",
-   "lastPriceCheck": null,
-   "priceStatus": "Partially Verified"
-  },
-  {
    "productId": "recTpjQUJ7rIgemhk",
    "supplierKey": "1b82952044b7",
    "segment": "SUPPLIED_AND_ERECTED",
@@ -1467,15 +1381,6 @@
    "vat": "Yes",
    "lastPriceCheck": "2026-11-06",
    "priceStatus": "Verified"
-  },
-  {
-   "productId": "recUl20yByFnlGf3c",
-   "supplierKey": "e31a16721f3d",
-   "segment": "INSTALLED_FINISHED_TURNKEY",
-   "price": 24200,
-   "vat": "Unknown",
-   "lastPriceCheck": null,
-   "priceStatus": "Partially Verified"
   },
   {
    "productId": "recUnUAWq0TWkNO5C",
@@ -1704,15 +1609,6 @@
    "priceStatus": "Verified"
   },
   {
-   "productId": "reccBngfWSjD3vMR9",
-   "supplierKey": "e31a16721f3d",
-   "segment": "INSTALLED_FINISHED_TURNKEY",
-   "price": 22600,
-   "vat": "Unknown",
-   "lastPriceCheck": null,
-   "priceStatus": "Partially Verified"
-  },
-  {
    "productId": "reccXg30m5yYP1Fon",
    "supplierKey": "794f6f77a097",
    "segment": "SUPPLY_ONLY_INSTALL_SEPARATE",
@@ -1747,15 +1643,6 @@
    "vat": "Unknown",
    "lastPriceCheck": "2026-10-26",
    "priceStatus": "Verified"
-  },
-  {
-   "productId": "recdTWdhauaxBp3I8",
-   "supplierKey": "e31a16721f3d",
-   "segment": "INSTALLED_FINISHED_TURNKEY",
-   "price": 18500,
-   "vat": "Unknown",
-   "lastPriceCheck": null,
-   "priceStatus": "Partially Verified"
   },
   {
    "productId": "recdmqC4R70FUdBB9",
@@ -1820,15 +1707,6 @@
    "vat": "Yes",
    "lastPriceCheck": "2026-11-06",
    "priceStatus": "Verified"
-  },
-  {
-   "productId": "recfChiaXoSuRvriV",
-   "supplierKey": "e31a16721f3d",
-   "segment": "INSTALLED_FINISHED_TURNKEY",
-   "price": 22600,
-   "vat": "Unknown",
-   "lastPriceCheck": null,
-   "priceStatus": "Partially Verified"
   },
   {
    "productId": "recfFE3fvs3AyWJJV",
@@ -2050,15 +1928,6 @@
    "priceStatus": "Verified"
   },
   {
-   "productId": "recltaZF2FYRo2Qg6",
-   "supplierKey": "e31a16721f3d",
-   "segment": "INSTALLED_FINISHED_TURNKEY",
-   "price": 20400,
-   "vat": "Unknown",
-   "lastPriceCheck": null,
-   "priceStatus": "Partially Verified"
-  },
-  {
    "productId": "recm4ShGKIAWDlgg9",
    "supplierKey": "f3a33e981034",
    "segment": "INSTALLED_FINISHED_TURNKEY",
@@ -2084,15 +1953,6 @@
    "vat": "Yes",
    "lastPriceCheck": "2026-10-26",
    "priceStatus": "Verified"
-  },
-  {
-   "productId": "recmSMswDKnieOdnI",
-   "supplierKey": "e31a16721f3d",
-   "segment": "INSTALLED_FINISHED_TURNKEY",
-   "price": 20400,
-   "vat": "Unknown",
-   "lastPriceCheck": null,
-   "priceStatus": "Partially Verified"
   },
   {
    "productId": "recmVHWJUDvgVkhir",
@@ -2129,15 +1989,6 @@
    "vat": "Yes",
    "lastPriceCheck": "2026-10-26",
    "priceStatus": "Verified"
-  },
-  {
-   "productId": "recmmVA8lLGddxG2b",
-   "supplierKey": "e31a16721f3d",
-   "segment": "INSTALLED_FINISHED_TURNKEY",
-   "price": 22600,
-   "vat": "Unknown",
-   "lastPriceCheck": null,
-   "priceStatus": "Partially Verified"
   },
   {
    "productId": "recmmfGslZeE7icQG",
@@ -2212,15 +2063,6 @@
    "priceStatus": "Verified"
   },
   {
-   "productId": "recoxB8dRxrqmSg7L",
-   "supplierKey": "e31a16721f3d",
-   "segment": "INSTALLED_FINISHED_TURNKEY",
-   "price": 10300,
-   "vat": "Unknown",
-   "lastPriceCheck": null,
-   "priceStatus": "Partially Verified"
-  },
-  {
    "productId": "recpYA6pQlRsFUfIm",
    "supplierKey": "8c8c431aeaa2",
    "segment": "SUPPLY_ONLY_INSTALL_SEPARATE",
@@ -2286,15 +2128,6 @@
    "vatBasis": "supplier-terms"
   },
   {
-   "productId": "recre3F4kjawIxrr3",
-   "supplierKey": "e31a16721f3d",
-   "segment": "INSTALLED_FINISHED_TURNKEY",
-   "price": 22600,
-   "vat": "Unknown",
-   "lastPriceCheck": null,
-   "priceStatus": "Partially Verified"
-  },
-  {
    "productId": "recrfXlRTCNCf8VB5",
    "supplierKey": "481dd9b06a99",
    "segment": "INSTALLED_BASE_NOT_STATED",
@@ -2311,15 +2144,6 @@
    "vat": "Unknown",
    "lastPriceCheck": "2026-09-28",
    "priceStatus": "Verified"
-  },
-  {
-   "productId": "recs7MhTctE0OXJAo",
-   "supplierKey": "e31a16721f3d",
-   "segment": "INSTALLED_FINISHED_TURNKEY",
-   "price": 20400,
-   "vat": "Unknown",
-   "lastPriceCheck": null,
-   "priceStatus": "Partially Verified"
   },
   {
    "productId": "recsgAs9snaK2MAfa",
@@ -2340,15 +2164,6 @@
    "priceStatus": "Verified"
   },
   {
-   "productId": "recstfGDfONMJJk4P",
-   "supplierKey": "e31a16721f3d",
-   "segment": "INSTALLED_FINISHED_TURNKEY",
-   "price": 18500,
-   "vat": "Unknown",
-   "lastPriceCheck": null,
-   "priceStatus": "Partially Verified"
-  },
-  {
    "productId": "rect9ZuAtfSmjfNuE",
    "supplierKey": "0654c9f768e1",
    "segment": "UNKNOWN_DIY_OR_INSTALLED",
@@ -2365,15 +2180,6 @@
    "vat": "Yes",
    "lastPriceCheck": "2026-11-06",
    "priceStatus": "Verified"
-  },
-  {
-   "productId": "recu5t35P6aTRSjsd",
-   "supplierKey": "e31a16721f3d",
-   "segment": "INSTALLED_FINISHED_TURNKEY",
-   "price": 20400,
-   "vat": "Unknown",
-   "lastPriceCheck": null,
-   "priceStatus": "Partially Verified"
   },
   {
    "productId": "recuScjdzUmWaGDKy",

@@ -18,13 +18,13 @@
   "totals": {
     "gardenRoomRecords": 564,
     "organisationsAll": 62,
-    "relevant": 237,
-    "relevantOrganisations": 21,
+    "relevant": 212,
+    "relevantOrganisations": 20,
     "priceBasisNotEstablished": 168,
-    "vatStatusUnknown": 72,
+    "vatStatusUnknown": 47,
     "floorAreaPublished": 38,
     "floorAreaPublishedOrganisations": 9,
-    "rangeFloorPrices": 74,
+    "rangeFloorPrices": 49,
     "quoteOnly": 0
   },
   "segments": {
@@ -40,14 +40,14 @@
       "floorAreaKnown": 24
     },
     "INSTALLED_FINISHED_TURNKEY": {
-      "n": 35,
-      "organisations": 5,
-      "minEur": 10250,
-      "medianEur": 22600,
+      "n": 10,
+      "organisations": 4,
+      "minEur": 19950,
+      "medianEur": 36225.0,
       "maxEur": 43650,
       "vatIncluded": 2,
       "vatExcluded": 0,
-      "vatUnknown": 33,
+      "vatUnknown": 8,
       "floorAreaKnown": 5
     },
     "SUPPLY_ONLY_INSTALL_SEPARATE": {
@@ -130,9 +130,9 @@
     }
   },
   "homeownerVisibleFigures": {
-    "relevantProducts": 237,
+    "relevantProducts": 212,
     "priceBasisNotEstablished": 168,
-    "vatStatusUnknown": 72,
+    "vatStatusUnknown": 47,
     "floorAreaPublished": 38,
     "class3AProductsInAtlas": 1
   },
@@ -575,6 +575,39 @@
         "recS4ar9jaIFmsb8A"
       ],
       "pageNote": "pricing methodology applied on 7 November 2026"
+    },
+    {
+      "id": "stage3d-d2-matching-eligibility-2026-11-07",
+      "date": "2026-11-07",
+      "deployedCommit": "2e6f665fb0955c6dc661c030fe836ee9a640164c",
+      "products": [
+        "rec23XrAeAQXjZOhP",
+        "rec24lUlKe85rkQZr",
+        "rec4ZpfM1zYyV5DIy",
+        "rec7va4elQhxQ0YvV",
+        "recAg0XHsUdWwBRlr",
+        "recBwIwkgMXs2tLHU",
+        "recE6YWfhBPoo6rnO",
+        "recGQnRl8rdrb10OT",
+        "recI4u9qUr2DfWHdo",
+        "recIF1lYitX83aO0Z",
+        "recJhNR1MNaNySnqE",
+        "recTmznLRs94g9fls",
+        "recToZjhvh3r0TiFa",
+        "recUl20yByFnlGf3c",
+        "reccBngfWSjD3vMR9",
+        "recdTWdhauaxBp3I8",
+        "recfChiaXoSuRvriV",
+        "recltaZF2FYRo2Qg6",
+        "recmSMswDKnieOdnI",
+        "recmmVA8lLGddxG2b",
+        "recoxB8dRxrqmSg7L",
+        "recre3F4kjawIxrr3",
+        "recs7MhTctE0OXJAo",
+        "recstfGDfONMJJk4P",
+        "recu5t35P6aTRSjsd"
+      ],
+      "pageNote": "prices that are not currently verified withdrawn on 7 November 2026"
     }
   ]
 }

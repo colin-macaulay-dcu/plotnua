@@ -1842,6 +1842,167 @@
         }
       ],
       "pageNote": "pricing methodology applied on 7 November 2026"
+    },
+    {
+      "id": "stage3d-d2-matching-eligibility-2026-11-07",
+      "date": "2026-11-07",
+      "approved": "Founder Stage 3D-D2, 7 November 2026 ('MATCHING ELIGIBILITY AND PRICE-EVIDENCE SAFEGUARDS — APPROVED FOR CONTROLLED IMPLEMENTATION'): R-MATCH (S3) applied centrally; 'Apply the approved eligibility rule to the guide's evidence population'; the guide's 90-day R5 rule retained. Reconciled before publication: the 25 Sprout Pod rows of the frozen extract are Partially Verified and undated and fail R-MATCH at deployedCommit; the seven other Partially Verified euro prices (Elm Landscaping 5, Don Modular Homes, Garden Room Ireland) were never in the extract; every one of the other 212 rows is eligible at deployedCommit. No Atlas record was written.",
+      "deployedCommit": "2e6f665fb0955c6dc661c030fe836ee9a640164c",
+      "deployedUniverseSha256": "3b889907eec3a2fd7ffb3aee8f9eac6c02c2bdb7ab8b472933042086a7f9dc78",
+      "rule": "R-MATCH: a price enters the pricing evidence only when it is eligible at deployedCommit (Verified, dated, checked within 180 days, currency recorded, one adjudicated product-specific record, an accepted Price Type, no hold). Each listed product stays published and counted as a garden-room record; only its price leaves the priced figures. No price is replaced or invented; the Atlas record and its history are unchanged. LOCAL RELEASE CANDIDATE: deployedCommit is valid at release only if it reaches production unchanged (fast-forward, no rebase).",
+      "pageNote": "prices that are not currently verified withdrawn on 7 November 2026",
+      "products": [
+        {
+          "id": "rec23XrAeAQXjZOhP",
+          "name": "Sprout Pod 7m Teak — French Doors + Window",
+          "expect": "eligibilityWithdrawn",
+          "reason": "Partially Verified in Atlas with no recorded check date; fails R-MATCH (Stage 3D-D2)."
+        },
+        {
+          "id": "rec24lUlKe85rkQZr",
+          "name": "Sprout Pod 7m Siberian Larch — 3m French Doors",
+          "expect": "eligibilityWithdrawn",
+          "reason": "Partially Verified in Atlas with no recorded check date; fails R-MATCH (Stage 3D-D2)."
+        },
+        {
+          "id": "rec4ZpfM1zYyV5DIy",
+          "name": "Sprout Pod 5m Siberian Larch — Sliding Doors",
+          "expect": "eligibilityWithdrawn",
+          "reason": "Partially Verified in Atlas with no recorded check date; fails R-MATCH (Stage 3D-D2)."
+        },
+        {
+          "id": "rec7va4elQhxQ0YvV",
+          "name": "Sprout Pod 3m Siberian Larch — Extended Canopy",
+          "expect": "eligibilityWithdrawn",
+          "reason": "Partially Verified in Atlas with no recorded check date; fails R-MATCH (Stage 3D-D2)."
+        },
+        {
+          "id": "recAg0XHsUdWwBRlr",
+          "name": "Sprout Pod 6m Siberian Larch — Bifold Doors",
+          "expect": "eligibilityWithdrawn",
+          "reason": "Partially Verified in Atlas with no recorded check date; fails R-MATCH (Stage 3D-D2)."
+        },
+        {
+          "id": "recBwIwkgMXs2tLHU",
+          "name": "Sprout Pod 5m Siberian Larch — French Doors",
+          "expect": "eligibilityWithdrawn",
+          "reason": "Partially Verified in Atlas with no recorded check date; fails R-MATCH (Stage 3D-D2)."
+        },
+        {
+          "id": "recE6YWfhBPoo6rnO",
+          "name": "Sprout Pod 5m Teak — Sliding Doors + Hidden Store",
+          "expect": "eligibilityWithdrawn",
+          "reason": "Partially Verified in Atlas with no recorded check date; fails R-MATCH (Stage 3D-D2)."
+        },
+        {
+          "id": "recGQnRl8rdrb10OT",
+          "name": "Sprout Pod 7m Composite Navy — Hidden Store",
+          "expect": "eligibilityWithdrawn",
+          "reason": "Partially Verified in Atlas with no recorded check date; fails R-MATCH (Stage 3D-D2)."
+        },
+        {
+          "id": "recI4u9qUr2DfWHdo",
+          "name": "Sprout Pod 3m Composite Black — Sliding Door",
+          "expect": "eligibilityWithdrawn",
+          "reason": "Partially Verified in Atlas with no recorded check date; fails R-MATCH (Stage 3D-D2)."
+        },
+        {
+          "id": "recIF1lYitX83aO0Z",
+          "name": "Sprout Pod 5m Teak — Bifold Doors",
+          "expect": "eligibilityWithdrawn",
+          "reason": "Partially Verified in Atlas with no recorded check date; fails R-MATCH (Stage 3D-D2)."
+        },
+        {
+          "id": "recJhNR1MNaNySnqE",
+          "name": "Sprout Pod 4m Siberian Larch — Room + Store",
+          "expect": "eligibilityWithdrawn",
+          "reason": "Partially Verified in Atlas with no recorded check date; fails R-MATCH (Stage 3D-D2)."
+        },
+        {
+          "id": "recTmznLRs94g9fls",
+          "name": "Sprout Pod 5m Larch — Letterbox Window",
+          "expect": "eligibilityWithdrawn",
+          "reason": "Partially Verified in Atlas with no recorded check date; fails R-MATCH (Stage 3D-D2)."
+        },
+        {
+          "id": "recToZjhvh3r0TiFa",
+          "name": "Sprout Pod 2m Cedar — Compact Office",
+          "expect": "eligibilityWithdrawn",
+          "reason": "Partially Verified in Atlas with no recorded check date; fails R-MATCH (Stage 3D-D2)."
+        },
+        {
+          "id": "recUl20yByFnlGf3c",
+          "name": "Sprout Pod 7m Siberian Larch — Door + Picture Window",
+          "expect": "eligibilityWithdrawn",
+          "reason": "Partially Verified in Atlas with no recorded check date; fails R-MATCH (Stage 3D-D2)."
+        },
+        {
+          "id": "reccBngfWSjD3vMR9",
+          "name": "Sprout Pod 6m Teak — 3m Sliding Doors",
+          "expect": "eligibilityWithdrawn",
+          "reason": "Partially Verified in Atlas with no recorded check date; fails R-MATCH (Stage 3D-D2)."
+        },
+        {
+          "id": "recdTWdhauaxBp3I8",
+          "name": "Sprout Pod 4m Siberian Larch — French Doors",
+          "expect": "eligibilityWithdrawn",
+          "reason": "Partially Verified in Atlas with no recorded check date; fails R-MATCH (Stage 3D-D2)."
+        },
+        {
+          "id": "recfChiaXoSuRvriV",
+          "name": "Sprout Pod 6m Siberian Larch — Bifold + Picture Window",
+          "expect": "eligibilityWithdrawn",
+          "reason": "Partially Verified in Atlas with no recorded check date; fails R-MATCH (Stage 3D-D2)."
+        },
+        {
+          "id": "recltaZF2FYRo2Qg6",
+          "name": "Sprout Pod 5m Siberian Larch — Bifold Doors",
+          "expect": "eligibilityWithdrawn",
+          "reason": "Partially Verified in Atlas with no recorded check date; fails R-MATCH (Stage 3D-D2)."
+        },
+        {
+          "id": "recmSMswDKnieOdnI",
+          "name": "Sprout Pod 5m Composite Teak — French Doors",
+          "expect": "eligibilityWithdrawn",
+          "reason": "Partially Verified in Atlas with no recorded check date; fails R-MATCH (Stage 3D-D2)."
+        },
+        {
+          "id": "recmmVA8lLGddxG2b",
+          "name": "Sprout Pod 6m Composite Navy — Hidden Store",
+          "expect": "eligibilityWithdrawn",
+          "reason": "Partially Verified in Atlas with no recorded check date; fails R-MATCH (Stage 3D-D2)."
+        },
+        {
+          "id": "recoxB8dRxrqmSg7L",
+          "name": "Sprout Pod 3m Siberian Larch — Sliding Door + Window",
+          "expect": "eligibilityWithdrawn",
+          "reason": "Partially Verified in Atlas with no recorded check date; fails R-MATCH (Stage 3D-D2)."
+        },
+        {
+          "id": "recre3F4kjawIxrr3",
+          "name": "Sprout Pod 6m Composite Black — Sliding Doors",
+          "expect": "eligibilityWithdrawn",
+          "reason": "Partially Verified in Atlas with no recorded check date; fails R-MATCH (Stage 3D-D2)."
+        },
+        {
+          "id": "recs7MhTctE0OXJAo",
+          "name": "Sprout Pod 5m Composite Teak — Sliding Doors",
+          "expect": "eligibilityWithdrawn",
+          "reason": "Partially Verified in Atlas with no recorded check date; fails R-MATCH (Stage 3D-D2)."
+        },
+        {
+          "id": "recstfGDfONMJJk4P",
+          "name": "Sprout Pod 4m Siberian Larch — Bifold Doors",
+          "expect": "eligibilityWithdrawn",
+          "reason": "Partially Verified in Atlas with no recorded check date; fails R-MATCH (Stage 3D-D2)."
+        },
+        {
+          "id": "recu5t35P6aTRSjsd",
+          "name": "Sprout Pod 5m Teak — French Doors + Hidden Store",
+          "expect": "eligibilityWithdrawn",
+          "reason": "Partially Verified in Atlas with no recorded check date; fails R-MATCH (Stage 3D-D2)."
+        }
+      ]
     }
   ]
 }
