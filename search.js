@@ -178,6 +178,38 @@
     });
   }
 
+  /* STAGE 3D-D2 (founder approval 7 Nov 2026) — R-MATCH EXPIRY, CHECKED AT THE
+     TIME OF USE. The generator marks a garden-room price eligible and stamps its
+     last current day ("fu", Europe/Dublin calendar date). The index may have been
+     built before that day passed, so the figure, every "under €N" comparison with
+     it and every supplier range it supports are refused here on any later day,
+     independently of the build. A record without "fu" belongs to a corpus R-MATCH
+     does not govern and is read exactly as before. */
+  function pnsToday() {
+    try {
+      var parts = new Intl.DateTimeFormat('en-GB', { timeZone: 'Europe/Dublin', year: 'numeric',
+        month: '2-digit', day: '2-digit' }).formatToParts(new Date());
+      var v = {};
+      parts.forEach(function (x) { v[x.type] = x.value; });
+      if (v.year && v.month && v.day) { return v.year + '-' + v.month + '-' + v.day; }
+    } catch (e) { /* fall through */ }
+    return new Date().toISOString().slice(0, 10);
+  }
+  function pnsPrice(r) {
+    if (!r || typeof r.price !== 'number') { return null; }
+    if (r.fu && pnsToday() > r.fu) { return null; }
+    return r.price;
+  }
+  function pnsRange(s) {
+    if (!s || !s.priceRange) { return null; }
+    if (s.fu && pnsToday() > s.fu) { return null; }
+    return s.priceRange;
+  }
+  function pnsUnverified(r) {
+    return !!r && (r.ps === 'nv' || (typeof r.price === 'number' && !!r.fu && pnsToday() > r.fu));
+  }
+  var PRICE_UNVERIFIED = 'Price not currently verified';
+
   function search(index, query) {
     var records = (index && index.records) || [];
     var qnorm = normalise(query);
@@ -205,10 +237,12 @@
       var s = scoreRecord(r, terms, qnorm);
       if (!s) { return; }
       if (cap != null && r.type === 'product') {
-        if (typeof r.price !== 'number' || r.price > cap) { return; }
+        var rp = pnsPrice(r);
+        if (rp == null || rp > cap) { return; }
       }
       if (cap != null && r.type === 'supplier') {
-        if (!r.priceRange || r.priceRange[0] > cap) { return; }
+        var rr = pnsRange(r);
+        if (!rr || rr[0] > cap) { return; }
       }
       scored.push({ r: r, s: s });
     });
@@ -361,7 +395,7 @@
         h.push('<p class="pns-sup-name">' + esc(s.name) + '</p>');
         h.push('<p class="pns-sub">' + s.productCount + ' product' +
                (s.productCount === 1 ? '' : 's') + ' in Atlas' +
-               (s.priceRange ? ' \u00b7 from ' + money(s.priceRange[0]) : '') + '</p>');
+               (pnsRange(s) ? ' \u00b7 from ' + money(pnsRange(s)[0]) : '') + '</p>');
         (s.caveats || []).forEach(function (c) {
           h.push('<p class="pns-caveat">' + esc(CAVEAT_TEXT[c] || c) + '</p>');
         });
@@ -427,7 +461,8 @@
       : '<span class="pns-title">' + esc(p.name) + '</span>');
     h.push('<p class="pns-sub">' + esc(p.organisation || '') +
            (p.productType ? ' \u00b7 ' + esc(p.productType) : '') +
-           (typeof p.price === 'number' ? ' \u00b7 ' + money(p.price) : '') + '</p>');
+           (pnsPrice(p) != null ? ' \u00b7 ' + money(pnsPrice(p))
+             : pnsUnverified(p) ? ' \u00b7 ' + PRICE_UNVERIFIED : '') + '</p>');
     (p.caveats || []).forEach(function (c) {
       h.push('<p class="pns-caveat">' + esc(CAVEAT_TEXT[c] || c) + '</p>');
     });
@@ -846,6 +881,7 @@
   return {
     boot: boot, search: search, normalise: normalise, tokens: tokens,
     priceIntent: priceIntent, coreTerms: coreTerms, renderResults: renderResults,
+    pnsToday: pnsToday, pnsPrice: pnsPrice, pnsRange: pnsRange, pnsUnverified: pnsUnverified,
     groupProducts: groupProducts, INDEX_URL: INDEX_URL
   };
 }));

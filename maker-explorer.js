@@ -61,6 +61,17 @@
     var TABS = {};
     CFG.tabs.forEach(function (t) { TABS[t.key] = t; });
     var $ = function (id) { return root.querySelector('#' + id); };
+    /* STAGE 3D-D2: today's Europe/Dublin calendar date, as the generator and Search use. */
+    function mxToday() {
+      try {
+        var parts = new Intl.DateTimeFormat('en-GB', { timeZone: 'Europe/Dublin', year: 'numeric',
+          month: '2-digit', day: '2-digit' }).formatToParts(new Date());
+        var v = {};
+        parts.forEach(function (x) { v[x.type] = x.value; });
+        if (v.year && v.month && v.day) { return v.year + '-' + v.month + '-' + v.day; }
+      } catch (e) { /* fall through */ }
+      return new Date().toISOString().slice(0, 10);
+    }
     function esc(s) { return String(s).replace(/[&<>"]/g, function (c) {
       return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
     function mstate(m) { var c = m.p.filter(function (p) { return p[3] === 'c'; }).length;
@@ -99,11 +110,14 @@
         (m.p.some(function (p) { return p[5] && p[5].img; }) ? ' mx-plist-img' : '') + '">';
       m.p.forEach(function (p) {
         var X = p[5] || {};
+        /* STAGE 3D-D2: a figure carries its last current day ("fu", Europe/Dublin);
+           after it the figure is refused at the time of use, whenever the page was built. */
+        var pp = (p[4] && X.fu && mxToday() > X.fu) ? 'Price not currently verified' : p[4];
         h += '<li id="mx-p-' + esc(p[0]) + '"' + (p[0] === target ? ' class="mx-target"' : '') + '>' + (T.productLink
             ? '<a class="mx-pn" href="' + T.productLink.replace('{id}', encodeURIComponent(p[0])) + '">' + esc(p[1]) + '</a>'
             : '<span class="mx-pn-text">' + esc(p[1]) + '</span>') +
           (p[2] ? '<span class="mx-pt">' + esc(p[2]) + '</span>' : '') +
-          (p[4] ? '<span class="mx-pp">' + esc(p[4]) + '</span>' : '') +
+          (pp ? '<span class="mx-pp">' + esc(pp) + '</span>' : '') +
           (X.notes ? X.notes.map(function (n) { return '<span class="mx-pt mx-pnote">' + esc(n) + '</span>'; }).join('') : '') +
           (X.img ? images(X.img) : '') +
           (X.href ? '<a class="mx-ext" href="' + esc(X.href) + '" target="_blank" rel="noopener noreferrer">See it on ' +

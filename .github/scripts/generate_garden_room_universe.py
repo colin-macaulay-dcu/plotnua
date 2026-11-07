@@ -553,7 +553,67 @@ def derive_basis_class(ax):
 # Only these three are a governed VAT position. Everything else is Unknown;
 # nothing is parsed out of Notes and no rate is ever manufactured.
 VAT_MAP = {"yes": "Yes", "no": "No", "excluding vat": "No"}
-SAFE_STATUSES = {"Verified", "Partially Verified"}
+# ---------------------------------------------------------------------------
+# STAGE 3D-D2 — R-MATCH (founder approval, 7 Nov 2026).
+#
+# A price is ELIGIBLE -- may influence budget matching, price ordering, Search
+# euro figures and filters, supplier ranges, the Maker Explorer and the
+# pricing evidence -- only when ALL of these hold:
+#   1 Atlas Status is Verified          (Partially Verified no longer suffices)
+#   2 Last Price Check is recorded
+#   3 that check is no older than MATCHING_WINDOW_DAYS on the as-of date
+#   4 the currency is recorded          (euro comparison stays EUR-only, 3D-B1)
+#   5 a single adjudicated price record (no ambiguous candidates)
+#   6 the evidence represents the advertised product, and
+#   7 is not Range-Level                (Organisation-Wide or Range-Level scope fails)
+#   8 the Price Type is an accepted type
+#   9 no presentation hold excludes it  (apply_price_presentation_hold, after)
+#  10 no unresolved duplicate or conflicting record (5 again: ambiguity fails)
+# Eligible prices carry priceFreshUntil = Last Price Check + the window; the
+# browser refuses the figure on any later Europe/Dublin calendar day. The
+# published pricing guide keeps its own, stricter, 90-day R5 rule.
+# Every surface reads this one answer; none may invent a weaker one.
+# ---------------------------------------------------------------------------
+SAFE_STATUSES = {"Verified"}
+MATCHING_WINDOW_DAYS = 180
+ACCEPTED_PRICE_TYPES = {"Standard Price", "Starting From", "Sale Price", "Sale"}
+UNREPRESENTATIVE_SCOPES = {"Range-Level", "Organisation-Wide"}
+PRICE_AS_OF = None   # set by main(); a test may set it directly
+
+
+def price_as_of():
+    """The calendar date eligibility is judged on: Europe/Dublin, the same
+    calendar day the browser uses (Intl, timeZone 'Europe/Dublin')."""
+    if PRICE_AS_OF is not None:
+        return PRICE_AS_OF
+    try:
+        from zoneinfo import ZoneInfo
+        return dt.datetime.now(ZoneInfo("Europe/Dublin")).date()
+    except Exception:                                   # pragma: no cover
+        return dt.datetime.utcnow().date()
+
+
+def price_fresh_until(checked):
+    """ISO date string, or None for a missing or malformed check date."""
+    try:
+        d = dt.date.fromisoformat(str(checked or "").strip())
+    except ValueError:
+        return None
+    return (d + dt.timedelta(days=MATCHING_WINDOW_DAYS)).isoformat()
+
+
+def r_match(num, cur, adj_state, status, ptype, scope, checked, as_of=None):
+    """R-MATCH. Returns (eligible, priceFreshUntil or None)."""
+    until = price_fresh_until(checked)
+    today = as_of or price_as_of()
+    ok = bool(num is not None and cur and adj_state == "adjudicated"
+              and status in SAFE_STATUSES
+              and ptype in ACCEPTED_PRICE_TYPES
+              and scope not in UNREPRESENTATIVE_SCOPES
+              and until is not None
+              and dt.date.fromisoformat(str(checked).strip()) <= today
+              and today.isoformat() <= until)
+    return ok, (until if ok else None)
 
 
 def price_governance(pick, adj_state, candidates, price_rows, carried):
@@ -599,8 +659,8 @@ def price_governance(pick, adj_state, candidates, price_rows, carried):
     elif num is None:
         basis_conf = "NO_PRICE"
 
-    safe = bool(num is not None and cur and adj_state == "adjudicated"
-                and status in SAFE_STATUSES)
+    checked = txt(cell(pick, "Last Price Check")) if pick else None
+    safe, fresh_until = r_match(num, cur, adj_state, status, ptype, scope, checked)
     if num is not None and not safe and adj_state != "ambiguous":
         basis_conf = "UNSAFE" if basis_conf in ("EXPLICIT", "NO_BASIS_STATED",
                                                 "NOT_CONFIRMED") else basis_conf
@@ -623,6 +683,9 @@ def price_governance(pick, adj_state, candidates, price_rows, carried):
         "priceBasisConfidence": basis_conf,
         "priceIsRangeFloor": is_floor,
         "priceSafeForMatching": safe,
+        # STAGE 3D-D2 — R-MATCH expiry; null unless eligible. priceState is
+        # completed by finalise_price_state() once any hold has been applied.
+        "priceFreshUntil": fresh_until,
         # Provenance WITHOUT prose: ids, governed states and the check date only.
         # Known Exclusions and Notes are deliberately excluded.
         "priceEvidenceRef": {
@@ -1088,6 +1151,38 @@ def apply_vat_terms_basis(rec, pid):
     pe["vatBasis"] = "supplier-terms"
 
 
+PRICE_STATES = ("eligible", "held", "conflicted", "on-request", "not-verified", "none")
+
+
+def finalise_price_state(rec):
+    """STAGE 3D-D2 — the one presentation state every surface reads:
+         held          a presentation hold applies (its own label and qualification win)
+         conflicted    competing price records Atlas cannot rank
+         eligible      R-MATCH holds (figure may be shown and compared until priceFreshUntil)
+         on-request    the supplier quotes each build
+         not-verified  a price exists in Atlas but fails R-MATCH -- never shown as current
+         none          Atlas holds no price"""
+    pe = rec.get("priceEvidence") if isinstance(rec.get("priceEvidence"), dict) else {}
+    num = rec.get("price")
+    has_num = isinstance(num, (int, float)) and not isinstance(num, bool) and num > 0
+    if pe.get("presentationHold"):
+        state = "held"
+        rec["priceFreshUntil"] = None
+    elif (rec.get("priceEvidenceRef") or {}).get("adjudication") == "ambiguous":
+        state = "conflicted"
+    elif rec.get("priceSafeForMatching") is True:
+        state = "eligible"
+    elif pe.get("quoteOnly") is True and not has_num:
+        state = "on-request"
+    elif has_num:
+        state = "not-verified"
+    else:
+        state = "none"
+    if (state == "eligible") != bool(rec.get("priceFreshUntil")):
+        fail(f"{rec.get('id')}: price state {state} disagrees with priceFreshUntil")
+    rec["priceState"] = state
+
+
 def vat_terms_self_check(emitted):
     """Every register product must be emitted carrying the basis, and nothing
     else may carry it. A register product missing from the regenerated
@@ -1364,6 +1459,9 @@ def main():
                          "workflow), not the preview dry run. Changes the artefact's "
                          "self-description only. It still writes nothing to production "
                          "and still never writes to Airtable.")
+    ap.add_argument("--price-as-of", default=None,
+                    help="Judge R-MATCH freshness on this date (YYYY-MM-DD) instead of today "
+                         "in Europe/Dublin. For offline tests and reproducible publications.")
     ap.add_argument("--vat-terms-register", default=None,
                     help="Read the supplier-terms VAT register from this path instead of "
                          "atlas-tools/vat-terms-evidence.json. For offline tests only: it lets "
@@ -1375,6 +1473,10 @@ def main():
 
     if args.allow_production_write:
         fail("This phase is dry-run only. Production write is not implemented.")
+    global PRICE_AS_OF
+    if args.price_as_of:
+        PRICE_AS_OF = dt.date.fromisoformat(args.price_as_of)
+    print(f"  R-MATCH as of {price_as_of().isoformat()} (window {MATCHING_WINDOW_DAYS} days)")
     if args.vat_terms_register:
         global VAT_TERMS_REGISTER
         VAT_TERMS_REGISTER = Path(args.vat_terms_register).resolve()
@@ -1706,6 +1808,7 @@ def main():
             apply_price_presentation_hold(rec, pid)
             # STAGE 3D-D1 — the 3D-C2 VAT basis, re-derived from its register.
             apply_vat_terms_basis(rec, pid)
+            finalise_price_state(rec)
             emitted.append(rec)
 
     gates(garden, emitted, excluded, source_count)

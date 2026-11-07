@@ -1,0 +1,21 @@
+{
+  "id": "stage3d-d2-r-match-2026-11-07",
+  "date": "2026-11-07",
+  "approved": "Founder authorisation, 7 November 2026 (Stage 3D-D2, matching eligibility and price-evidence safeguards): R-MATCH (S3) applied centrally; 180-day matching and Search window; the published guide keeps its 90-day R5 rule; no Atlas writes.",
+  "eligibility": {
+    "rule": "R-MATCH",
+    "windowDays": 180,
+    "criteria": [
+      "Atlas Status = Verified",
+      "Last Price Check recorded",
+      "check no older than 180 days on the Europe/Dublin calendar day of use",
+      "currency recorded (euro comparison stays EUR-only)",
+      "a single adjudicated price record",
+      "evidence represents the advertised product (not Organisation-Wide)",
+      "Evidence Scope not Range-Level",
+      "Price Type Standard Price, Starting From, Sale Price or Sale",
+      "no presentation or matching hold",
+      "no unresolved duplicate or conflicting record"
+    ]
+  }
+}

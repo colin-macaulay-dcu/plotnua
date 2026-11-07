@@ -23,13 +23,19 @@ import { fileURLToPath } from 'node:url';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const BASE = 'b7cb4dd';
+// STAGE 3D-D2: with no arguments the proof is pinned to the Stage 3D-D1 release itself
+// (the page and universe at RELEASE against BASE), so later, separately approved stages
+// that legitimately move other notes do not re-open it. The current page's Rayco wording
+// is proven by prove-matching-eligibility.py.
+const RELEASE = '34705c4';
 const pos = process.argv.slice(2).filter((a, i, all) => a !== '--plant' && all[i - 1] !== '--plant');
 let [candPath, basePath, uniPath] = pos;
 if (!candPath) {
-  candPath = path.join(ROOT, 'your-plot.html');
-  uniPath = path.join(ROOT, 'garden-room-recommendation-universe-v1.json');
-  basePath = path.join(fs.mkdtempSync(path.join(os.tmpdir(), 'rayco-')), 'your-plot.base.html');
-  fs.writeFileSync(basePath, execFileSync('git', ['show', BASE + ':your-plot.html'], { cwd: ROOT, maxBuffer: 1 << 28 }));
+  const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'rayco-'));
+  const show = (rev, f, out) => { fs.writeFileSync(out, execFileSync('git', ['show', rev + ':' + f], { cwd: ROOT, maxBuffer: 1 << 28 })); return out; };
+  candPath = show(RELEASE, 'your-plot.html', path.join(tmp, 'your-plot.release.html'));
+  uniPath = show(RELEASE, 'garden-room-recommendation-universe-v1.json', path.join(tmp, 'universe.release.json'));
+  basePath = show(BASE, 'your-plot.html', path.join(tmp, 'your-plot.base.html'));
 }
 const plant = process.argv.includes('--plant') ? process.argv[process.argv.indexOf('--plant') + 1] : null;
 const RAYCO = 'recDIcUb7S6pP8JCx';

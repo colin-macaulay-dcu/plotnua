@@ -100,7 +100,7 @@ PINS = {
     # <region> only" in its drawer header, product status and directory label in place
     # of the Irish-availability wording. A maker without m.rg renders exactly as before.
     # Previous pin: 12553309…
-    SHARED_JS:  "e3ddc87931e200a5814347cf67d25396f176de6d1d8a696e4d4bc6ae064ca595",
+    SHARED_JS:  "67189b1c81115c67be512a36d17b633de1b7f815ebaa0113852067036ce8ab67",   # Stage 3D-D2 (7 Nov 2026): R-MATCH runtime expiry
     # Re-pinned 13 Oct 2026: the stylesheet is now shared with the Provider
     # Explorer (The Borrowed Garden). Every rule is scoped to
     # :is(#explore-makers, #explore-providers), which keeps each rule's
@@ -154,6 +154,7 @@ def _gr(U):
         return "u"
     eligible = [(r["organisation"], r["id"], r["productName"], r.get("productType") or "", st(r),
                  {"kinds": [], "price": garden_price_label(r), "nav": universe_nav(r),
+                  "fu": r.get("priceFreshUntil") if (price_current(r) and not (r.get("priceEvidence") or {}).get("presentationHold")) else None,
                   "region": ((r.get("priceEvidence") or {}).get("presentationHold") or {}).get("region")}) for r in rows]
     # "confirmed" is cross-checked against the qualification signal each
     # LISTED record carries, not against the header: the header's
@@ -562,6 +563,31 @@ def notes_register():
 PAGE_SYMBOL = {"EUR": "\u20ac", "GBP": "\u00a3", "USD": "$"}
 REGION_NOTE = {"GBP": " \u00b7 UK price", "USD": " \u00b7 US price"}
 PRICE_UNAVAILABLE, PRICE_ENQUIRY, PRICE_INDICATIVE = "Price unavailable", "Price on enquiry", "Indicative price: "
+# STAGE 3D-D2 (founder approval 7 Nov 2026): a price that fails R-MATCH -- decided once,
+# centrally, by the generator (priceState) -- or whose priceFreshUntil has passed, is
+# never shown as a current figure. maker-explorer.js applies the same expiry at the time
+# of use from the product's "fu".
+PRICE_UNVERIFIED = "Price not currently verified"
+
+
+def _dublin_today():
+    import datetime as _dt, os as _os
+    if _os.environ.get("PLOTNUA_PRICE_AS_OF"):
+        return _dt.date.fromisoformat(_os.environ["PLOTNUA_PRICE_AS_OF"]).isoformat()
+    try:
+        from zoneinfo import ZoneInfo
+        return _dt.datetime.now(ZoneInfo("Europe/Dublin")).date().isoformat()
+    except Exception:
+        return _dt.datetime.utcnow().date().isoformat()
+
+
+PRICE_TODAY = _dublin_today()
+
+
+def price_current(r):
+    """R-MATCH as published: eligible, and its last current day not yet passed."""
+    fu = r.get("priceFreshUntil")
+    return r.get("priceState") == "eligible" and isinstance(fu, str) and PRICE_TODAY <= fu
 
 
 def _usable(v):
@@ -634,6 +660,8 @@ def garden_price_label(r):
         return disp + " excluding VAT. " + q
     if kind == "quote-only":
         return PRICE_ENQUIRY
+    if disp is not None and not price_current(r):
+        return PRICE_UNVERIFIED
     if disp is None or cur not in PAGE_SYMBOL:
         return PRICE_UNAVAILABLE
     e = r.get("priceEvidence") or {}
@@ -828,6 +856,10 @@ def load(P):
             if len(e) > 5 and e[5].get("price"):
                 row.append(e[5]["price"])
             nav = dict(e[5]["nav"]) if len(e) > 5 and e[5].get("nav") else {}
+            # STAGE 3D-D2: the shown figure's last current day; maker-explorer.js
+            # replaces the figure with "Price not currently verified" after it.
+            if len(e) > 5 and e[5].get("fu"):
+                nav["fu"] = e[5]["fu"]
             if pid in PNOTES:
                 nav["notes"] = list(PNOTES[pid])
             if nav:
@@ -1180,7 +1212,11 @@ def build(fname, P, src):
                 if len(p) <= 5:
                     continue
                 X = p[5]
-                if set(X) - {"href", "site", "img", "notes"}: die("G3 unexpected navigation field on " + p[0])
+                if set(X) - {"href", "site", "img", "notes", "fu"}: die("G3 unexpected navigation field on " + p[0])
+                # STAGE 3D-D2: "fu" is a shown figure's R-MATCH last current day, nothing else.
+                if "fu" in X and (not re.fullmatch(r"\d{4}-\d{2}-\d{2}", str(X["fu"])) or len(p) < 5
+                                  or not p[4] or p[4] == PRICE_UNVERIFIED):
+                    die("G3 %s carries a price expiry without a current figure" % p[0])
                 if X.get("notes") is not None and X["notes"] != notes_register()[1].get(p[0]):
                     die("G15 product notes that are not the register's: " + p[0])
                 for im in X.get("img") or []:
@@ -1301,6 +1337,11 @@ def build(fname, P, src):
             for p in shown:
                 if p[4] in (PRICE_UNAVAILABLE, PRICE_ENQUIRY):
                     continue   # garden-room labels with no figure (DISC-008 pricing correction)
+                if p[4] == PRICE_UNVERIFIED:
+                    # Stage 3D-D2: an ineligible price shows no figure at all.
+                    if re.search(r"[\d€£$]", p[4]) or (len(p) > 5 and p[5].get("fu")):
+                        die("G14 an unverified price shows a figure or an expiry: %s" % p[0])
+                    continue
                 if p[0] in WITHHELD:
                     if re.search(r"[\d€£$]", p[4]): die("G14 a withheld figure is shown: %s" % p[0])
                     continue   # Stage 3C: a withheld figure (price-presentation hold) shows no figure at all

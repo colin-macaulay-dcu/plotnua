@@ -56,6 +56,10 @@ ALLOWED_FIELDS = {
     # lost — every record, price, tier and caveat is still here.
     "product": {"id", "type", "name", "organisation", "productType", "price",
                 "priceBasis", "tier", "caveats",
+                # STAGE 3D-D2 (founder approval 7 Nov 2026): "fu" is the R-MATCH
+                # priceFreshUntil of a shown figure; "ps": "nv" marks a product whose
+                # Atlas price is not currently verified. Short keys: G10.
+                "fu", "ps",
                 # 14 Oct 2026: a product with NO PlotNua product page (the
                 # wellness corpus) routes to the Garden Retreat maker explorer
                 # that lists it, and R1 proves that page lists that exact id.
@@ -70,7 +74,7 @@ ALLOWED_FIELDS = {
     # records whose organisation matches its name, which the runtime already
     # has in memory. 14.0 KB of duplication removed, same expansion behaviour.
     "supplier": {"id", "type", "name", "productCount", "priceRange",
-                 "tiersPresent", "caveats"},
+                 "tiersPresent", "caveats", "fu"},
     "journey": {"id", "type", "title", "possibilityId", "route"},
 }
 
@@ -212,6 +216,34 @@ def is_price(v):
     return isinstance(v, (int, float)) and not isinstance(v, bool)
 
 
+def _dublin_today():
+    """STAGE 3D-D2 — the calendar day R-MATCH expiry is judged on: Europe/Dublin,
+    the same day the generator and the browser use. PLOTNUA_PRICE_AS_OF (YYYY-MM-DD)
+    overrides it for tests only."""
+    import datetime as _dt, os as _os
+    if _os.environ.get("PLOTNUA_PRICE_AS_OF"):
+        return _dt.date.fromisoformat(_os.environ["PLOTNUA_PRICE_AS_OF"]).isoformat()
+    try:
+        from zoneinfo import ZoneInfo
+        return _dt.datetime.now(ZoneInfo("Europe/Dublin")).date().isoformat()
+    except Exception:
+        return _dt.datetime.utcnow().date().isoformat()
+
+
+PRICE_TODAY = _dublin_today()
+
+
+def price_current(r):
+    """STAGE 3D-D2 — a garden-room record carries priceFreshUntil (R-MATCH, set
+    centrally by the generator) and is current only through that day. A record with
+    no such key belongs to a corpus R-MATCH does not govern (Additional Home,
+    wellness), which keeps its own, unchanged, rule."""
+    if "priceFreshUntil" not in r:
+        return True
+    fu = r.get("priceFreshUntil")
+    return isinstance(fu, str) and PRICE_TODAY <= fu
+
+
 def euro_price(r):
     """STAGE 3D-B1 (6 Nov 2026) — THE ONE PRICE RULE FOR SEARCH.
 
@@ -225,7 +257,7 @@ def euro_price(r):
     stays searchable by name and keeps its currency in the universe, Your Plot and
     the maker explorer, which display it correctly."""
     return (bool(r.get("priceSafeForMatching")) and is_price(r.get("price"))
-            and r.get("currency") == "EUR")
+            and r.get("currency") == "EUR" and price_current(r))
 
 
 # ---------------------------------------------------------------- read sources
@@ -662,6 +694,14 @@ for r in rows + ah_rows + wl_rows:
         rec["price"] = r["price"]
         if r.get("priceBasis"):
             rec["priceBasis"] = norm_space(r.get("priceBasis"))
+        # STAGE 3D-D2 — the day after which search.js refuses this figure and every
+        # comparison with it, whenever the index itself was built.
+        if r.get("priceFreshUntil"):
+            rec["fu"] = r["priceFreshUntil"]
+    elif r.get("priceState") == "not-verified" or (r.get("priceState") == "eligible" and not price_current(r)):
+        # A price exists in Atlas but is not currently verified: no figure, no filter,
+        # and the card says so (search.js "Price not currently verified").
+        rec["ps"] = "nv"
     prod_recs.append(rec)
 records.extend(prod_recs)
 print("  products          %d  (%d with an evidenced price)"
@@ -711,6 +751,8 @@ for org, rs in sorted(by_org.items()):
     if all(x.get("noPublishedIrishRoute") for x in rs):
         caveats.append("no-published-irish-route")
     prices = [x["price"] for x in rs if euro_price(x)]
+    # STAGE 3D-D2 — a range lasts only as long as its earliest-expiring garden price.
+    fus = [x["priceFreshUntil"] for x in rs if euro_price(x) and x.get("priceFreshUntil")]
     rec = {
         "id": "sup-" + slug(org),
         "type": "supplier",
@@ -725,6 +767,8 @@ for org, rs in sorted(by_org.items()):
     }
     if prices:
         rec["priceRange"] = [min(prices), max(prices)]
+        if fus:
+            rec["fu"] = min(fus)
     sup_recs.append(rec)
 records.extend(sup_recs)
 print("  suppliers         %d  (%d caveated: no published Irish route)"
@@ -989,6 +1033,49 @@ for r in records:
 _n_nonEUR = sum(1 for r in rows + ah_rows + wl_rows
                 if r.get("priceSafeForMatching") and is_price(r.get("price")) and r.get("currency") != "EUR")
 print("  G7c every price and supplier range is EUR; %d price-safe non-EUR prices carry no figure  OK" % _n_nonEUR)
+
+# G7d STAGE 3D-D2 — DISCOVERABILITY. A price losing eligibility must never take a
+# product out of Search: every product the published index holds must still be
+# indexed, unless a separately approved removal names it (none is registered).
+APPROVED_REMOVALS = set()
+_prev = subprocess.run(["git", "show", "HEAD:search-index-v1.json"], cwd=ROOT,
+                       capture_output=True)
+if _prev.returncode == 0 and _prev.stdout:
+    _prev_ids = {r["id"] for r in json.loads(_prev.stdout)["records"] if r.get("type") == "product"}
+    _now_ids = {r["id"] for r in records if r["type"] == "product"}
+    _gone = sorted(_prev_ids - _now_ids - APPROVED_REMOVALS)
+    if _gone:
+        die("G7d %d previously indexed products would disappear: %r" % (len(_gone), _gone[:6]))
+    print("  G7d all %d previously indexed products remain indexed  OK" % len(_prev_ids))
+else:
+    print("  G7d no published index to compare (first build)  OK")
+
+# G7e STAGE 3D-D2 — EXPIRY AND STATE, checked against the universe independently of
+# the emission above: a shown garden figure carries exactly its R-MATCH
+# priceFreshUntil and is current today; "nv" only where a price is not eligible
+# now; a supplier range expires with its earliest garden price.
+_by_pid = {("prod-" + str(r.get("id") or r.get("productId"))): r for r in rows}
+for r in records:
+    if r["type"] != "product" or r["id"] not in _by_pid:
+        continue
+    src = _by_pid[r["id"]]
+    if "price" in r:
+        if r.get("fu") != src.get("priceFreshUntil") or not (src.get("priceFreshUntil") or "") >= PRICE_TODAY \
+                or src.get("priceState") != "eligible":
+            die("G7e %s carries a figure that is not an eligible, current R-MATCH price" % r["id"])
+    elif "fu" in r:
+        die("G7e %s carries an expiry without a figure" % r["id"])
+    if r.get("ps") not in (None, "nv") or (r.get("ps") == "nv" and ("price" in r or not is_price(src.get("price"))
+                                                                   or src.get("priceState") in ("held", "conflicted"))):
+        die("G7e %s carries a wrong price state" % r["id"])
+_garden_orgs = {norm_space(r.get("organisation")) for r in rows}
+for r in records:
+    if r["type"] == "supplier" and r["name"] in _garden_orgs:
+        fus = [x["priceFreshUntil"] for x in rows if norm_space(x.get("organisation")) == r["name"]
+               and euro_price(x) and x.get("priceFreshUntil")]
+        if ("priceRange" in r and fus and r.get("fu") != min(fus)) or ("fu" in r and "priceRange" not in r):
+            die("G7e supplier %s range expiry is not its earliest garden price" % r["id"])
+print("  G7e figures, price states and supplier ranges follow R-MATCH as of %s  OK" % PRICE_TODAY)
 
 # G9 caveats
 src_cav = sum(1 for r in rows if r.get("noPublishedIrishRoute"))

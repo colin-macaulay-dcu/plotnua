@@ -156,6 +156,22 @@ def apply_corrections(products, reg):
                 rec["evidenceExcluded"] = entry["reason"].strip()
                 out[idx[0]] = rec
                 continue
+            # STAGE 3D-D2 (founder approval, 7 Nov 2026): "eligibilityWithdrawn" applies R-MATCH to
+            # the frozen extract. The product stays published and counted as a garden-room record;
+            # its price leaves every priced figure because, at the deployed commit, the generator's
+            # rule no longer finds it eligible (priceState "not-verified"). Bounded exactly like
+            # evidenceExcluded: nothing but the eligibility flag moves, and a reason is required.
+            if entry.get("expect") == "eligibilityWithdrawn":
+                dep = deployed.get(pid)
+                if dep is None or dep.get("priceSafeForMatching") is not False \
+                        or dep.get("priceState") != "not-verified" or not (entry.get("reason") or "").strip():
+                    die("correction %s: %s is eligibilityWithdrawn but the deployed record is not an "
+                        "ineligible, not-verified price, or no reason is given" % (c["id"], pid))
+                rec = dict(out[idx[0]])
+                rec["priceSafeForMatching"] = False
+                rec["eligibilityWithdrawn"] = entry["reason"].strip()
+                out[idx[0]] = rec
+                continue
             # STAGE 3D-C2 (founder approval, 7 Nov 2026): "reclassified" takes from the deployed
             # record ONLY the fields a pricing-methodology correction may move -- the installation
             # classification and the basis fields derived from it, the VAT position, and the Price

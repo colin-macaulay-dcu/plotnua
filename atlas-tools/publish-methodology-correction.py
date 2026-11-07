@@ -15,6 +15,13 @@ re-freeze, explorer/search rebuild, boundary check, validation gates) unchanged:
                 evidence.json must hold a current accepted entry naming the product);
   priceType     an approved Price Type correction (and the range-floor flag it implies);
   price         an approved price correction (base, Price To, check date, range-floor flag).
+  eligibility   STAGE 3D-D2 (founder approval 7 Nov 2026): R-MATCH applied to every published
+                garden-room record -- priceSafeForMatching, priceFreshUntil, priceState and the
+                priceBasisConfidence the generator derives from them -- computed by the
+                generator's own r_match() and finalise_price_state(), after proving the
+                published records reproduce under the rule they were generated with, and that
+                every adjudicated price record reads in Atlas exactly as published. Holds keep
+                their state ("held"); no price, status, date or other field moves.
 
 Refuses unless, for every product in the plan:
   * the published record exists, carries no price-presentation hold, and its organisation is
@@ -48,8 +55,10 @@ ALLOWED = {
     "priceType": {"priceType", "priceEvidence.priceType", "priceEvidenceRef.priceType", "priceIsRangeFloor"},
     "price": {"price", "priceEvidence.base", "priceEvidence.to", "priceEvidenceRef.lastPriceCheck",
               "priceIsRangeFloor"},
+    "eligibility": {"priceSafeForMatching", "priceFreshUntil", "priceState", "priceBasisConfidence"},
 }
-SAFE_STATUSES = {"Verified", "Partially Verified"}
+# The rule the universe was generated under before Stage 3D-D2 (fidelity proof only).
+SAFE_STATUSES_PRE_3DD2 = {"Verified", "Partially Verified"}
 VAT_MAP = {"yes": "Yes", "no": "No", "excluding vat": "No"}
 
 
@@ -76,9 +85,19 @@ def paths(a, b, pre=""):
     return out
 
 
-def derive_basis(g, p, text):
+def r_match_published(g, p, as_of):
+    """The generator's r_match() on a published record's own governed fields."""
+    ref = p.get("priceEvidenceRef") or {}
+    price = p.get("price") if (isinstance(p.get("price"), (int, float)) and p.get("price") > 0) else None
+    return g.r_match(price, p.get("currency"), ref.get("adjudication"), p.get("priceStatus"),
+                     p.get("priceType"), p.get("priceScope"), ref.get("lastPriceCheck"), as_of=as_of)
+
+
+def derive_basis(g, p, text, as_of=None, legacy=False):
     """The generator's price_governance(), restricted to the fields an installation record
-    drives, evaluated on a published record. Proven against the whole universe before use."""
+    drives, evaluated on a published record. Proven against the whole universe before use.
+    STAGE 3D-D2: safety is R-MATCH (g.r_match) on the plan's date; legacy=True reproduces
+    the pre-3D-D2 rule for the eligibility publication's own fidelity proof."""
     lead = g.install_lead_phrase(text)
     if lead is None:
         erection, conf = "UNKNOWN", "NO_BASIS_STATED"
@@ -94,7 +113,11 @@ def derive_basis(g, p, text):
         conf = "CONFLICTED"
     elif price is None:
         conf = "NO_PRICE"
-    safe = bool(price is not None and p.get("currency") and adj == "adjudicated" and p.get("priceStatus") in SAFE_STATUSES)
+    if legacy:
+        safe = bool(price is not None and p.get("currency") and adj == "adjudicated"
+                    and p.get("priceStatus") in SAFE_STATUSES_PRE_3DD2)
+    else:
+        safe = r_match_published(g, p, as_of)[0]
     if price is not None and not safe and adj != "ambiguous":
         conf = "UNSAFE" if conf in ("EXPLICIT", "NO_BASIS_STATED", "NOT_CONFIRMED") else conf
     if (p.get("priceEvidence") or {}).get("presentationHold") and conf in ("EXPLICIT", "NO_BASIS_STATED", "NOT_CONFIRMED"):
@@ -105,8 +128,8 @@ def derive_basis(g, p, text):
             "basisLeadPhrase": lead if lead in g.INSTALL_LEAD_ERECTION else None}
 
 
-def apply_basis(g, p, text):
-    d = derive_basis(g, p, text)
+def apply_basis(g, p, text, as_of=None):
+    d = derive_basis(g, p, text, as_of=as_of)
     p["priceBasisAxes"]["erection"] = d["erection"]
     p["priceBasisClass"] = d["class"]
     p["priceBasisConfidence"] = d["conf"]
@@ -175,6 +198,9 @@ def run(a):
     before = copy.deepcopy(uni)
     by_id = {p["productId"]: p for p in uni["products"]}
 
+    if plan.get("eligibility"):
+        return run_eligibility(a, root, head_sha, g, plan, plan_path, today, snap, snap_sha, raw, uni, before)
+
     kinds = {}
     for k in ("installation", "vat", "priceType", "price"):
         for it in plan.get(k) or []:
@@ -186,7 +212,7 @@ def run(a):
         if p["productId"] in targets:
             continue
         text = ((p.get("features") or {}).get("installationModel") or {}).get("text")
-        d = derive_basis(g, p, text)
+        d = derive_basis(g, p, text, as_of=today)
         got = (d["erection"], d["conf"], d["class"], d["basisSource"], d["basisLeadPhrase"], range_floor(p))
         want = ((p.get("priceBasisAxes") or {}).get("erection"), p.get("priceBasisConfidence"), p.get("priceBasisClass"),
                 (p.get("priceEvidenceRef") or {}).get("basisSource"), (p.get("priceEvidenceRef") or {}).get("basisLeadPhrase"),
@@ -232,7 +258,7 @@ def run(a):
                 if {k: v for k, v in one.items() if k != "text"} != {k: v for k, v in cur.items() if k != "text"}:
                     tu.refuse("%s: the Installation Model's scope or status drifted in Atlas" % pid)
             p.setdefault("features", {})["installationModel"] = one
-            apply_basis(g, p, one["text"])
+            apply_basis(g, p, one["text"], as_of=today)
             notes.append("%s %s" % (it["change"], g.install_lead_phrase(one["text"])))
         for it in [x for x in plan.get("vat") or [] if x["productId"] == pid]:
             ok = accepted.get(it["organisation"]) or tu.refuse("%s: no accepted VAT terms entry for %s" % (pid, it["organisation"]))
@@ -323,6 +349,214 @@ def run(a):
         L += ["", "Header: governedDigest `%s…` → `%s…`" % (before["governedDigest"][:16], uni["governedDigest"][:16])]
         if rep.get("search_pin"):
             L += ["", "Search universe pin re-frozen `%s…` → `%s…`" % (rep["search_pin"][0][:16], rep["search_pin"][1][:16])]
+        L += ["", "## Validation", ""] + ["- %s %s%s" % (v, n, (" — " + d) if d else "") for n, v, d in results]
+        L += ["", "## Files that change", ""] + ["- " + f for f in moved_files]
+        text = "\n".join(L) + "\n"
+        print(text)
+        if a.report:
+            pathlib.Path(a.report).write_text(text, encoding="utf-8")
+        if any(v == "FAIL" for _, v, _ in results):
+            tu.refuse("validation failed")
+        if not a.apply:
+            print("DRY RUN — nothing written.")
+            return 0
+        for f in moved_files:
+            shutil.copy2(wt / f, root / f)
+        (root / report_name).write_text(text, encoding="utf-8")
+        print("APPLIED — %d file(s) + report %s. Nothing committed." % (len(moved_files), report_name))
+        return 0
+    finally:
+        tu.sh(["git", "worktree", "remove", "--force", str(wt)], root)
+        shutil.rmtree(wt.parent, ignore_errors=True)
+
+
+ATLAS_FIELDS = (("Status", "priceStatus"), ("Last Price Check", "lastPriceCheck"), ("Currency", "currency"),
+                ("Price Type", "priceType"), ("Evidence Scope", "priceScope"), ("Base Price", "price"))
+
+
+def run_eligibility(a, root, head_sha, g, plan, plan_path, today, snap, snap_sha, raw, uni, before):
+    """STAGE 3D-D2 — R-MATCH over the whole published universe, bounded to four fields."""
+    elig = plan["eligibility"]
+    if elig.get("rule") != "R-MATCH" or elig.get("windowDays") != g.MATCHING_WINDOW_DAYS:
+        tu.refuse("the plan's eligibility rule is not the generator's R-MATCH (%s days)" % g.MATCHING_WINDOW_DAYS)
+    if any(plan.get(k) for k in ("installation", "vat", "priceType", "price")):
+        tu.refuse("an eligibility publication may not be combined with any other change")
+    products = uni["products"]
+    # 1 FIDELITY under the rule the universe was generated with.
+    for p in products:
+        text = ((p.get("features") or {}).get("installationModel") or {}).get("text")
+        d = derive_basis(g, p, text, legacy=True)
+        ref = p.get("priceEvidenceRef") or {}
+        price = p.get("price") if (isinstance(p.get("price"), (int, float)) and p.get("price") > 0) else None
+        held = bool((p.get("priceEvidence") or {}).get("presentationHold"))
+        old_safe = bool(price is not None and p.get("currency") and ref.get("adjudication") == "adjudicated"
+                        and p.get("priceStatus") in SAFE_STATUSES_PRE_3DD2) and not held
+        if (d["conf"], old_safe, range_floor(p)) != (p.get("priceBasisConfidence"), p.get("priceSafeForMatching"),
+                                                     p.get("priceIsRangeFloor")):
+            tu.refuse("FIDELITY: %s does not reproduce under the pre-3D-D2 rule" % p["productId"])
+        if "priceState" in p or "priceFreshUntil" in p:
+            tu.refuse("%s already carries an R-MATCH state; this publication runs once" % p["productId"])
+    # 2 ATLAS CONSISTENCY: every adjudicated price record is read from Atlas. The published
+    # price is the generator's price_record_number(): Base Price, else Price From. A field that
+    # differs is reported; it REFUSES the publication only when R-MATCH would decide the
+    # product's eligibility differently on Atlas's values than on the published ones.
+    pricing = {r["id"]: r for r in snap["pricing"]}
+    drift, checked_n, noted = [], 0, []
+    for p in products:
+        ref = p.get("priceEvidenceRef") or {}
+        if ref.get("adjudication") != "adjudicated":
+            continue
+        # The adjudicated pick is one of the product's candidate records; with two
+        # candidates the other may legitimately differ, so exactly the pick must match.
+        diffs = {}
+        for rid in ref.get("recordIds") or []:
+            r = pricing.get(rid)
+            if r is None:
+                tu.refuse("%s: price record %s is not in the Atlas read" % (p["productId"], rid))
+            checked_n += 1
+            d = []
+            for af, pf in ATLAS_FIELDS:
+                pv = ref.get("lastPriceCheck") if pf == "lastPriceCheck" else p.get(pf)
+                av = tu.fv(r, af)
+                if pf == "price" and not (isinstance(av, (int, float)) and av > 0):
+                    av = tu.fv(r, "Price From")
+                ok = (num(av) == num(pv)) if pf == "price" else ((norm(av) or None) == (norm(pv) or None))
+                if not ok:
+                    d.append("%s: Atlas %r, published %r" % (af, av, pv))
+            diffs[rid] = d
+        if diffs and not any(not d for d in diffs.values()):
+            # Would R-MATCH decide differently on any candidate's Atlas values?
+            pub = r_match_published(g, p, today)[0]
+            for rid in ref.get("recordIds") or []:
+                r = pricing[rid]
+                av = tu.fv(r, "Base Price")
+                if not (isinstance(av, (int, float)) and av > 0):
+                    av = tu.fv(r, "Price From")
+                atl = g.r_match(av if isinstance(av, (int, float)) and av > 0 else None, tu.fv(r, "Currency"),
+                                "adjudicated", norm(tu.fv(r, "Status")), norm(tu.fv(r, "Price Type")),
+                                norm(tu.fv(r, "Evidence Scope")), tu.fv(r, "Last Price Check"), as_of=today)[0]
+                if atl != pub and len(ref.get("recordIds") or []) == 1:
+                    drift.append("%s %s: R-MATCH on Atlas %s, on published %s; %s" % (p["productId"], rid, atl, pub, diffs[rid]))
+            noted.append("%s (%s): %s" % (p["productId"], p["organisation"],
+                                          "; ".join("%s %s" % (k, ", ".join(v)) for k, v in diffs.items())))
+    if drift:
+        tu.refuse("Atlas no longer reads as published (%d differences), e.g. %s" % (len(drift), drift[:4]))
+    # 3 APPLY R-MATCH, bounded.
+    moved_ids, rows = set(), []
+    for p in products:
+        old = copy.deepcopy(p)
+        held = bool((p.get("priceEvidence") or {}).get("presentationHold"))
+        safe, until = r_match_published(g, p, today)
+        if held:
+            safe, until = False, None
+        text = ((p.get("features") or {}).get("installationModel") or {}).get("text")
+        conf = derive_basis(g, p, text, as_of=today)["conf"]
+        rebuilt = {}
+        for k, v in p.items():
+            rebuilt[k] = v
+            if k == "priceSafeForMatching":
+                rebuilt["priceFreshUntil"] = until
+        p.clear()
+        p.update(rebuilt)
+        p["priceSafeForMatching"] = safe
+        p["priceFreshUntil"] = until
+        p["priceBasisConfidence"] = conf
+        g.finalise_price_state(p)
+        moved = paths(old, p)
+        if moved - ALLOWED["eligibility"]:
+            tu.refuse("%s: the eligibility change would move %s" % (p["productId"], sorted(moved - ALLOWED["eligibility"])))
+        if old.get("priceSafeForMatching") != p["priceSafeForMatching"]:
+            moved_ids.add(p["productId"])
+            rows.append((p["productId"], p["productName"], p["organisation"], p.get("priceStatus"),
+                         (p.get("priceEvidenceRef") or {}).get("lastPriceCheck"), p.get("priceScope"), p["priceState"]))
+    uni["governedDigest"] = g.governed_digest(products)
+    others = [k for k in set(before) | set(uni) if k not in ("products", "governedDigest") and before.get(k) != uni.get(k)]
+    if others:
+        tu.refuse("the universe header would change beyond governedDigest: %s" % others)
+    new = tu.dump1(uni)
+    targets = {p["productId"] for p in products}
+    org_names = {p["organisation"] for p in products}
+    states = {}
+    for p in products:
+        states[p["priceState"]] = states.get(p["priceState"], 0) + 1
+    rep = {"org_id": None}
+    wt = pathlib.Path(tempfile.mkdtemp(prefix="pmc-wt-")) / "wt"
+    tu.sh(["git", "worktree", "add", "--detach", str(wt), "HEAD"], root, check=True)
+    try:
+        (wt / tu.GARDEN).write_text(new, encoding="utf-8")
+        stamp = _dt.datetime.now(_dt.timezone.utc).strftime("%Y%m%d-%H%M%S")
+        report_name = "%s/%s-eligibility-r-match.md" % (tu.REPORT_DIR, stamp)
+        tu.refreeze_search(wt, report_name, rep)
+        tu.run_builders(wt, rep)
+        # A Search possibility (a guide page) whose only change is that it now reads its own
+        # published page's curated description is a refresh of an earlier publication, not a
+        # change made here. Allowed only when the new standfirst is exactly the description
+        # of the page as committed at HEAD; anything else still refuses at the boundary.
+        refreshed = []
+        old_idx = json.loads(tu.sh(["git", "show", "HEAD:" + tu.SEARCH], root, check=True).stdout)
+        new_idx = json.loads((wt / tu.SEARCH).read_text(encoding="utf-8"))
+        oldp = {r["id"]: r for r in old_idx["records"] if r.get("type") == "possibility"}
+        for r in new_idx["records"]:
+            if r.get("type") != "possibility" or r["id"] not in oldp or oldp[r["id"]] == r:
+                continue
+            o = oldp[r["id"]]
+            moved_keys = {k for k in set(o) | set(r) if o.get(k) != r.get(k)}
+            page = (root / (r.get("route") or "").lstrip("/")).resolve()
+            html = page.read_text(encoding="utf-8") if page.is_file() else ""
+            if moved_keys == {"standfirst"} and ('content="%s"' % r["standfirst"]) in html:
+                refreshed.append((r["id"], o["standfirst"], r["standfirst"]))
+        # The shared boundary check has no exception for possibilities, and is not changed:
+        # it runs on the index with each verified refresh set back to its published value,
+        # then the refreshed records are restored. Every other record is checked as always.
+        new_text = (wt / tu.SEARCH).read_text(encoding="utf-8")
+        if refreshed:
+            tmp = json.loads(new_text)
+            back = {rid: old for rid, old, _ in refreshed}
+            for r in tmp["records"]:
+                if r.get("type") == "possibility" and r["id"] in back:
+                    r["standfirst"] = back[r["id"]]
+            (wt / tu.SEARCH).write_text(json.dumps(tmp, ensure_ascii=False, separators=(",", ":")) + "\n"
+                                        if not new_text.startswith("{\n") else json.dumps(tmp, ensure_ascii=False, indent=1) + "\n",
+                                        encoding="utf-8")
+        # Every garden-room record is in scope, so every maker drawer of the garden-room
+        # tabs may move; the explorer shows some makers under a display alias, so those
+        # names are read from the explorer configs themselves (garden-room tabs only).
+        for page in tu.explorer_pages(root):
+            for src in ((root / page).read_text(encoding="utf-8"), (wt / page).read_text(encoding="utf-8")):
+                cfg, _ = tu.explorer_config(src)
+                for t in (cfg or {}).get("tabs") or []:
+                    if t.get("key") == "gardenRooms":
+                        org_names |= {m.get("m") for m in t.get("makers") or []}
+        moved_files = tu.boundary(root, wt, targets, org_names, rep)
+        (wt / tu.SEARCH).write_text(new_text, encoding="utf-8")
+        if refreshed and tu.SEARCH not in moved_files:
+            moved_files.append(tu.SEARCH)
+        refreshed = ["%s: %r -> %r" % x for x in refreshed]
+        results = tu.validate(root, wt, moved_files, rep)
+        L = ["# Matching eligibility (R-MATCH) — %s (%s)" % (plan["id"], plan["date"]), "",
+             "- Tool: atlas-tools/publish-methodology-correction.py, eligibility kind (Stage 3D-D2)",
+             "- Plan: `%s`" % plan_path.as_posix().split("/atlas-tools/")[-1],
+             "- Built on commit `%s`" % head_sha[:12],
+             "- Mode: %s" % ("APPLY" if a.apply else "DRY RUN"),
+             "- R-MATCH as of %s, window %d days" % (today.isoformat(), g.MATCHING_WINDOW_DAYS), "",
+             "- Atlas read `%s` sha256 `%s`: %d adjudicated price records read; on every one, R-MATCH decides as it does on the published record"
+             % (pathlib.Path(a.snapshot).name, snap_sha, checked_n),
+             "- Fidelity: all %d published records reproduce under the pre-3D-D2 rule" % len(products),
+             "- Atlas differences that do not change any R-MATCH decision (reported, not acted on): %d" % len(noted), ""] + \
+            ["  - " + n for n in noted] + ["",
+             "Approval: " + plan["approved"], "",
+             "## Price states after publication", ""] + \
+            ["- %s: %d" % (k, states[k]) for k in sorted(states)] + \
+            ["", "## Records whose matching eligibility changes (%d)" % len(rows), "",
+             "| Product | Organisation | Status | Last check | Scope | State |", "|---|---|---|---|---|---|"]
+        for pid, n, o, st, lc, sc, ps in sorted(rows, key=lambda r: (r[2], r[1])):
+            L.append("| `%s` %s | %s | %s | %s | %s | %s |" % (pid, n, o, st, lc or "—", sc or "—", ps))
+        L += ["", "Header: governedDigest `%s…` → `%s…`" % (before["governedDigest"][:16], uni["governedDigest"][:16])]
+        if rep.get("search_pin"):
+            L += ["", "Search universe pin re-frozen `%s…` → `%s…`" % (rep["search_pin"][0][:16], rep["search_pin"][1][:16])]
+        if refreshed:
+            L += ["", "## Search possibilities refreshed from their own published pages (not changed here)", ""] + \
+                 ["- " + x for x in refreshed]
         L += ["", "## Validation", ""] + ["- %s %s%s" % (v, n, (" — " + d) if d else "") for n, v, d in results]
         L += ["", "## Files that change", ""] + ["- " + f for f in moved_files]
         text = "\n".join(L) + "\n"

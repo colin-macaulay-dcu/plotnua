@@ -302,6 +302,56 @@ def validate_vat_terms(products, register_path, as_of, production=None):
     return errors
 
 
+# ---------------------------------------------------------------------------
+# STAGE 3D-D2 — R-MATCH, CHECKED INDEPENDENTLY (founder approval 7 Nov 2026).
+# Re-reads every record's own governed fields; does not import the generator.
+# A candidate is refused if any price is matching-eligible without meeting the
+# rule, if any eligible price lacks its expiry or carries the wrong one, if an
+# ineligible price carries one, or if priceState disagrees.
+# ---------------------------------------------------------------------------
+R_MATCH_WINDOW_DAYS = 180
+R_MATCH_TYPES = {"Standard Price", "Starting From", "Sale Price", "Sale"}
+R_MATCH_BAD_SCOPES = {"Range-Level", "Organisation-Wide"}
+PRICE_STATES = {"eligible", "held", "conflicted", "on-request", "not-verified", "none"}
+
+
+def validate_r_match(products, as_of):
+    errors = []
+    for p in products:
+        if not isinstance(p, dict):
+            continue
+        pid = p.get("id")
+        st, fu, safe = p.get("priceState"), p.get("priceFreshUntil"), p.get("priceSafeForMatching")
+        if st not in PRICE_STATES:
+            errors.append(f"R-MATCH: {pid} has no valid priceState ({st!r})")
+            continue
+        ref = p.get("priceEvidenceRef") or {}
+        pe = p.get("priceEvidence") or {}
+        checked = ref.get("lastPriceCheck")
+        try:
+            want_fu = (datetime.date.fromisoformat(checked) + datetime.timedelta(days=R_MATCH_WINDOW_DAYS)).isoformat()
+        except (TypeError, ValueError):
+            want_fu = None
+        held = bool(pe.get("presentationHold"))
+        meets = bool(is_num(p.get("price")) and p.get("price") > 0 and p.get("currency")
+                     and ref.get("adjudication") == "adjudicated" and p.get("priceStatus") == "Verified"
+                     and p.get("priceType") in R_MATCH_TYPES and p.get("priceScope") not in R_MATCH_BAD_SCOPES
+                     and want_fu is not None and checked <= as_of.isoformat() <= want_fu and not held)
+        if safe is True and not meets:
+            errors.append(f"R-MATCH: {pid} is matching-eligible but does not meet R-MATCH as of {as_of}")
+        if (st == "eligible") != (safe is True):
+            errors.append(f"R-MATCH: {pid} priceState {st} disagrees with priceSafeForMatching {safe}")
+        if safe is True and fu != want_fu:
+            errors.append(f"R-MATCH: {pid} priceFreshUntil {fu!r} is not Last Price Check + {R_MATCH_WINDOW_DAYS} days")
+        if safe is not True and fu is not None:
+            errors.append(f"R-MATCH: {pid} is not eligible but carries priceFreshUntil {fu!r}")
+        if held and st != "held":
+            errors.append(f"R-MATCH: {pid} is held but its priceState is {st}")
+        if st == "not-verified" and not (is_num(p.get("price")) and p.get("price") > 0):
+            errors.append(f"R-MATCH: {pid} is 'not-verified' but has no price")
+    return errors
+
+
 def materially_same(a, b):
     """Same universe, ignoring metadata that moves on every run.
 
@@ -369,11 +419,19 @@ def main():
     if cand is not None and not errors:
         errors, warnings, stats = validate(cand, cand_raw, prod_count, args.min_retained_fraction)
         if isinstance(cand, dict) and isinstance(cand.get("products"), list):
-            as_of = (datetime.date.fromisoformat(args.as_of) if args.as_of else datetime.date.today())
+            if args.as_of:
+                as_of = datetime.date.fromisoformat(args.as_of)
+            else:
+                try:   # the Europe/Dublin calendar day R-MATCH is judged on everywhere
+                    from zoneinfo import ZoneInfo
+                    as_of = datetime.datetime.now(ZoneInfo("Europe/Dublin")).date()
+                except Exception:
+                    as_of = datetime.date.today()
             prod_products = (prod.get("products") if isinstance(prod, dict)
                              and isinstance(prod.get("products"), list) else None)
             errors = errors + validate_vat_terms(cand["products"], args.vat_terms_register,
                                                  as_of, prod_products)
+            errors = errors + validate_r_match(cand["products"], as_of)
 
     lines = ["GARDEN ROOM RECOMMENDATION UNIVERSE — VALIDATION", ""]
     if stats:

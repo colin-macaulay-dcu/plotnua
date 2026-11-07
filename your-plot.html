@@ -14764,9 +14764,18 @@ html.pn-myplot-view:not(.pn-myplot-open) body::after{content:"Opening My Plot\20
          this page's matching, budget fit, budget comparisons or price
          ordering: the published figure is an ex works starting price, not an
          installed Irish price. pnPriceView() shows the qualification instead. */
+      /* STAGE 3D-D2 (founder approval 7 Nov 2026) — R-MATCH. Only an ELIGIBLE,
+         CURRENT price reaches this page as a number: Verified, dated, within its
+         priceFreshUntil on today's Europe/Dublin calendar day, and not held. A
+         Partially Verified, undated, range-level or expired figure stays in Atlas
+         and in priceEvidence, but nothing here can show it as current, order by
+         it, or compare it; pnPriceView() says "Price not currently verified". */
       price: (typeof raw.price === 'number' && isFinite(raw.price) && raw.price > 0
-              && !(raw.priceEvidence && raw.priceEvidence.presentationHold))
+              && !(raw.priceEvidence && raw.priceEvidence.presentationHold)
+              && pnPriceIsCurrent(raw))
              ? raw.price : undefined,
+      priceFreshUntil: (typeof raw.priceFreshUntil === 'string') ? raw.priceFreshUntil : undefined,
+      priceState: pnPriceStateOf(raw),
       /* ATLAS 487 BATCH 2 PIECE 2H-2 — was `raw.currency || 'EUR'`, which
          MANUFACTURED euro for every product Atlas holds no currency for. On
          the current 487 that is 266 products; none of them carries a usable
@@ -17630,6 +17639,8 @@ html.pn-myplot-view:not(.pn-myplot-open) body::after{content:"Opening My Plot\20
        reverting to the unverified-number rule this replaces. That couples
        this page to the governed universe deliberately and visibly. */
     if (product.priceSafeForMatching !== true) return 1;
+    /* STAGE 3D-D2 — and only while the price is current (priceFreshUntil). */
+    if (!pnPriceIsCurrent(product)) return 1;
     /* PHASE 7B-i.2 — HALF-OPEN BANDS, SO EACH PRICE HAS EXACTLY ONE BAND.
 
        The upper bound used to be inclusive as well as the lower one, so a
@@ -17705,7 +17716,12 @@ html.pn-myplot-view:not(.pn-myplot-open) body::after{content:"Opening My Plot\20
     const cohorts = [], index = {}, unpriced = [];
     for (let i = 0; i < group.length; i++) {
       const e = group[i];
-      const amount = pnUsablePrice(e && e.product && e.product.price);
+      /* STAGE 3D-D2 — only an eligible, current price may order a tie. The pool
+         already carries no ineligible or held figure; expiry is re-read here, at
+         the time of use, so a page left open past a price's last day stops
+         ordering by it. */
+      const amount = (e && e.product && pnPriceIsCurrent(e.product))
+        ? pnUsablePrice(e.product.price) : null;
       if (amount == null) { unpriced.push(e); continue; }
       const cur = pnGovernedCurrency(e.product);
       /* A known currency shares a cohort; an unknown one never does. */
@@ -25598,6 +25614,15 @@ html.pn-myplot-view:not(.pn-myplot-open) body::after{content:"Opening My Plot\20
                          'Atlas has partly verified that record and has not finished, ' +
                          'so treat the figure as published rather than as fully checked.' + pbScopeTail,
                   source:'PlotNua Atlas' });
+    } else if (pnPriceStateOf(product) === 'not-verified') {
+      /* STAGE 3D-D2 — Atlas holds a price, but not one verified to the current
+         standard; it is never shown as a current price. */
+      rows.push({ key:'pricing', label:'Published pricing', state:'not-published',
+                  value:'Not currently verified', tone:'none',
+                  detail:'Atlas holds a price record for this model, but PlotNua has not currently ' +
+                         'verified it, so it is not shown as a current price. Ask ' + org +
+                         ' for its current price.',
+                  source:'PlotNua Atlas' });
     } else if (pnZeroPriceRecord(product)) {
       /* A zero-value record. BATCH 2 PIECE 1 — read from priceEvidence now
          rather than from product.price, because 2A stops that zero ever
@@ -32285,7 +32310,7 @@ html.pn-myplot-view:not(.pn-myplot-open) body::after{content:"Opening My Plot\20
             checked: !!p.priceBasis,
             note: pnZeroPriceRecord(p)
               ? 'Atlas holds a zero-value price record for this product, which is not a published price.'
-              : null,
+              : (pnPriceStateOf(p) === 'not-verified' ? PB046_UNVERIFIED_PRICE + '.' : null),
           });
         }
 
@@ -35777,6 +35802,49 @@ html.pn-myplot-view:not(.pn-myplot-open) body::after{content:"Opening My Plot\20
   /* A figure is usable only if it is a real positive number. Zero is a record
      nobody filled in; NaN, Infinity, strings and booleans are coercion damage.
      None of them is a price. */
+  /* STAGE 3D-D2 — R-MATCH, READ AT THE TIME OF USE.
+     The generator decides eligibility centrally (price_governance) and stamps an
+     eligible price's last current day, priceFreshUntil, as a Europe/Dublin
+     calendar date. This page never invents a weaker rule: it only refuses the
+     figure once that day has passed. The calendar day is computed in
+     Europe/Dublin, exactly as the generator and the Search runtime compute it. */
+  function pnPriceToday(){
+    try {
+      const parts = new Intl.DateTimeFormat('en-GB', { timeZone: 'Europe/Dublin', year: 'numeric',
+        month: '2-digit', day: '2-digit' }).formatToParts(new Date());
+      const v = {};
+      parts.forEach(function(x){ v[x.type] = x.value; });
+      if (v.year && v.month && v.day) return v.year + '-' + v.month + '-' + v.day;
+    } catch (e) { /* fall through */ }
+    return new Date().toISOString().slice(0, 10);
+  }
+  /* Raw universe record OR a pool product: eligible now? Fails closed. */
+  function pnPriceIsCurrent(P){
+    if (!P) return false;
+    const e = P.priceEvidence || {};
+    if (e.presentationHold) return false;
+    if (P.priceState !== undefined && P.priceState !== 'eligible') return false;
+    if (P.priceSafeForMatching !== undefined && P.priceSafeForMatching !== true) return false;
+    if (typeof P.priceFreshUntil !== 'string' || !P.priceFreshUntil) return false;
+    return pnPriceToday() <= P.priceFreshUntil;
+  }
+  /* The presentation state (generator priceState), with expiry applied today:
+     an eligible price whose day has passed reads 'not-verified'. */
+  function pnPriceStateOf(P){
+    if (!P) return 'none';
+    const e = P.priceEvidence || {};
+    if (e.presentationHold) return 'held';
+    const st = P.priceState;
+    if (st === 'eligible') return pnPriceIsCurrent(P) ? 'eligible' : 'not-verified';
+    if (st) return st;
+    /* No governed state (a legacy export): a number without a current R-MATCH
+       stamp is not shown as current. */
+    const n = typeof P.price === 'number' && isFinite(P.price) && P.price > 0;
+    if (n) return pnPriceIsCurrent(P) ? 'eligible' : 'not-verified';
+    return 'none';
+  }
+  const PB046_UNVERIFIED_PRICE = 'Price not currently verified';
+
   function pnUsablePrice(v){
     return (typeof v === 'number' && isFinite(v) && v > 0) ? v : null;
   }
@@ -35980,6 +36048,15 @@ html.pn-myplot-view:not(.pn-myplot-open) body::after{content:"Opening My Plot\20
       return { known: false, kind: 'quote-only',
                amount: null, ceiling: null, currency: cur, scopeNote: scope,
                figure: null, display: PB046_QUOTE_PRICE, tail: 'on enquiry' };
+    }
+    /* STAGE 3D-D2 — a price Atlas holds but that is not currently verified
+       (Partially Verified, undated, range-level, expired). Never shown as a
+       current price; tested before the no-usable-price branch, which would
+       otherwise say the maker publishes no price. */
+    if (pnPriceStateOf(P) === 'not-verified') {
+      return { known: false, kind: 'unverified',
+               amount: null, ceiling: null, currency: cur, scopeNote: scope,
+               figure: null, display: PB046_UNVERIFIED_PRICE, tail: null };
     }
     if (amount == null) {
       return { known: false, kind: pnZeroPriceRecord(P) ? 'zero-record' : 'none',
