@@ -1,13 +1,13 @@
 {
   "schema": "plotnua.plotart.launch-manifest.v1",
-  "note": "SHA-256 of every published PlotArt file, from the launch build that passed prove-plotart-launch.py L1-L12 with the demonstration names (development branch founder/plotart-prototype). Any change to a published PlotArt file must come from a new verified build. Rebuilt 28 Oct 2026 (the legal-information release 2c89865 had changed the footers without updating this manifest). Rebuilt 29 Oct 2026 for the navigation and homepage refinement. Rebuilt 29 Oct 2026 for artist galleries Phase 1: artist gallery files are verified by L14 (provenance fingerprints), not pinned here. Rebuilt 3 Nov 2026 for the Mobile Gallery public work-in-progress release (five-pill navigation on every PlotArt page; plotart/mobile-gallery/ added; founder release authorisation). Search release 7 Nov 2026: homepage, About, Virtual Gallery search metadata, public artist A-Z and its styles verified; all image and unrelated page pins retained.",
+  "note": "SHA-256 of every published PlotArt file, from the launch build that passed prove-plotart-launch.py L1-L12 with the demonstration names (development branch founder/plotart-prototype). Any change to a published PlotArt file must come from a new verified build. Rebuilt 28 Oct 2026 (the legal-information release 2c89865 had changed the footers without updating this manifest). Rebuilt 29 Oct 2026 for the navigation and homepage refinement. Rebuilt 29 Oct 2026 for artist galleries Phase 1: artist gallery files are verified by L14 (provenance fingerprints), not pinned here. Rebuilt 3 Nov 2026 for the Mobile Gallery public work-in-progress release (five-pill navigation on every PlotArt page; plotart/mobile-gallery/ added; founder release authorisation). Search release 7 Nov 2026: homepage, About, Virtual Gallery search metadata, public artist A-Z and its styles verified; all image and unrelated page pins retained. Buyer search release 7 Nov 2026: two guides, their scoped stylesheet and the home/gallery entry links. Generated guide excerpts are checked against approved public exports; all other pins retained.",
   "built_from": "Production b7cb4dd plus PlotArt search visibility release, 7 November 2026",
   "files": {
     "invitation.html": "545666aa900a04845ad2cc6e9a6981503307e03c383bcee5ca7bb36872f5600d",
     "about.html": "cbfdb79486a93a3b0e1399f3a6fddbee11f79fb25b32f1517a39fd91b4bcf65b",
     "founding-25.html": "833502a64ec16553ade8f930b419b3ce755a91f464bba5fe8df998c3a6dbd9b6",
     "living-gallery.html": "552bffacbd9bc72168305fe589eaed8968bba876b272f845b30fb6d5b440dba9",
-    "index.html": "e5dace2e49d59f468501e15f4ad56c6a44fa38dd6f7b9cf8e2e4e420a2cb4109",
+    "index.html": "3f662161edf7162635434d020c773678afbe69a805734067ea7212ca27d5e035",
     "assets/f25-apply.js": "42a81d4a902bbdab7e16207cb98192940e15f0f5f1a0e7aa1622d03d181a77c0",
     "assets/plotart.css": "2b7fd139e088c6648c6a61af4978b399bfbf606543d8921779f97e5ba17f2080",
     "assets/plotart.js": "1aeda046a43a9877413943aa4573f8266280b94a5df21fb68421c5486189dca8",
@@ -21,9 +21,16 @@
     "mobile-gallery/mobile-gallery-data.js": "2752e0065d6d903d7b02f6abe653e684cecd7fe4b6f7e125587aed2cda511833",
     "mobile-gallery/img/mg-hero-colin-macaulay-600.webp": "8092b99a0b4953e570e8f3a54483beae50a58049cae4bc404149c019cf1f5cd2",
     "mobile-gallery/img/mg-hero-colin-macaulay-880.webp": "2a14fdba5c714429e48308aaaa8d550ae4b388e43a0edd08c2f3853e05801b38",
-    "gallery/index.html": "151022fc11b4ae93690016508a85754816626e59b4bafb8e4ba5d91b0e9077bc"
+    "gallery/index.html": "c1c0d43af589256a9fba773750b5de5c740d7a0eb7f6e27f281c8539af18c04f",
+    "assets/plotart-guides.css": "042b453f15c46eaa2e59bbd199ad8f5817417c9269aec7bf0276382489b654c9",
+    "buy-original-art-ireland.html": "bf5d52b2734d798aef0a6fb248e0df2a6c8449e11ac771f5bc7b9c7c4d0a3cb4",
+    "abstract-contemporary-art-ireland.html": "30be567ca7b47e367ed548f05d392a70813494dd9b471d95bc28e74b66384346"
   },
   "outside_grid": {
-    "gallery/index.html": "4f20f30fd04010a48db15fab75bd050114a6688b34f10626594236e5e3ddf322"
+    "gallery/index.html": "d65da3b023536fd89fa636477677e28b76a3e378c2c48dd8dbe9e6dad63c3960"
+  },
+  "outside_search_content": {
+    "buy-original-art-ireland.html": "7897ad1333bb268e307f99bcd1cf6b24717d930fda69b75c06a4fd593bf8597d",
+    "abstract-contemporary-art-ireland.html": "b9d190a47063bb30864c8a0420499dee638395569ebb87dafa4f4c287ff63f28"
   }
 }

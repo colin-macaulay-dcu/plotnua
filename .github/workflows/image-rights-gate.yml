@@ -58,7 +58,9 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Prove PlotArt public search settings and bounded sitemap updates
-        run: python3 atlas-tools/prove-plotart-search.py
+        run: |
+          python3 atlas-tools/prove-plotart-search.py
+          python3 atlas-tools/prove-plotart-buyers.py
 
       - name: Set up Node
         uses: actions/setup-node@v4

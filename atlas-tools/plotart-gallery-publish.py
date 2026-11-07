@@ -26,6 +26,7 @@ import plotart_gallery as G  # noqa: E402
 import plotart_gallery_pages as P  # noqa: E402
 import plotart_shell as S  # noqa: E402
 import plotart_seo as SEO  # noqa: E402
+import plotart_search_content as C  # noqa: E402
 
 arg = lambda k: sys.argv[sys.argv.index(k) + 1] if k in sys.argv else None
 STUDIO, TOKEN = arg("--studio"), arg("--token")
@@ -223,10 +224,11 @@ def main():
             if why is None:
                 sm = Path(ROOT) / "sitemap.xml"
                 sm.write_text(SEO.update_sitemap(sm.read_text(), published(), SEO.switches()))
+                C.refresh(ROOT, published())
         except Exception as e:                       # noqa: BLE001 - any failure refuses this item, never a half-publish
             why = "refused: %s: %s" % (type(e).__name__, e)
         if why is None:
-            git("add", "-A", "plotart/artists", "plotart/gallery/index.html", "image-provenance-records.json", "sitemap.xml")
+            git("add", "-A", "plotart/artists", "plotart/gallery/index.html", "image-provenance-records.json", "sitemap.xml", *["plotart/" + p for p in SEO.GUIDE_PATHS])
             git("-c", "user.name=PlotArt content pipeline", "-c", "user.email=hello@plotnua.ie", "commit", "-q", "-m",
                 "PlotArt content: %s · version %d · %s (Studio queue %s)" % (q["artist_id"], q["version"], q["kind"], q["id"]))
             why = guards(base, q["kind"] == "instant")

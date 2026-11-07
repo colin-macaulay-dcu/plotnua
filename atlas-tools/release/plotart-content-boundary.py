@@ -24,6 +24,7 @@ import json, re, subprocess, sys
 from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 import plotart_seo as SEO
+import plotart_search_content as C
 
 ART = re.compile(r"^plotart/artists/([a-z0-9]+(?:-[a-z0-9]+){0,6})/(?:[a-z0-9]+(?:-[a-z0-9]+){0,6}\.html|gallery\.json|img/[a-z0-9-]+-\d{2,5}\.webp)$")
 # the generated collection region (Direction C2, 5 Nov 2026): the open galleries and the twenty-five positions
@@ -76,6 +77,16 @@ def main(base, rel, instant):
             a, b = show(base, path), show(rel, path)
             if GRID.sub(b"<grid/>", a) != GRID.sub(b"<grid/>", b):
                 refused.append("%s: changed outside the collection region" % path)
+            continue
+        if path in {"plotart/" + p for p in SEO.GUIDE_PATHS} and st == "M":
+            try:
+                a, b = show(base, path).decode(), show(rel, path).decode()
+                names = git("ls-tree", "-r", "--name-only", rel, "plotart/artists").splitlines()
+                packages = [json.loads(show(rel, n)) for n in names if re.fullmatch(r"plotart/artists/[a-z0-9-]+/gallery.json", n)]
+                if b != C.update(a, path.removeprefix("plotart/"), packages):
+                    refused.append(path + ": differs from the exact public collection update")
+            except (ValueError, TypeError) as e:
+                refused.append(path + ": " + str(e))
             continue
         if path == "sitemap.xml" and st == "M":
             a, b = show(base, path).decode(), show(rel, path).decode()
