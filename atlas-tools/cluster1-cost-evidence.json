@@ -16,11 +16,11 @@
     "excludes": "availabilityStatus == Out of Stock"
   },
   "totals": {
-    "gardenRoomRecords": 565,
-    "organisationsAll": 63,
-    "relevant": 239,
-    "relevantOrganisations": 22,
-    "priceBasisNotEstablished": 172,
+    "gardenRoomRecords": 564,
+    "organisationsAll": 62,
+    "relevant": 237,
+    "relevantOrganisations": 21,
+    "priceBasisNotEstablished": 170,
     "vatStatusUnknown": 91,
     "floorAreaPublished": 38,
     "floorAreaPublishedOrganisations": 9,
@@ -29,12 +29,12 @@
   },
   "segments": {
     "UNKNOWN_NOTHING_PUBLISHED": {
-      "n": 106,
-      "organisations": 5,
+      "n": 104,
+      "organisations": 4,
       "minEur": 4789,
-      "medianEur": 9371.5,
+      "medianEur": 9432.5,
       "maxEur": 43450,
-      "vatIncluded": 101,
+      "vatIncluded": 99,
       "vatExcluded": 0,
       "vatUnknown": 5,
       "floorAreaKnown": 2
@@ -130,8 +130,8 @@
     }
   },
   "homeownerVisibleFigures": {
-    "relevantProducts": 239,
-    "priceBasisNotEstablished": 172,
+    "relevantProducts": 237,
+    "priceBasisNotEstablished": 170,
     "vatStatusUnknown": 91,
     "floorAreaPublished": 38,
     "class3AProductsInAtlas": 1
@@ -327,6 +327,102 @@
         "recDIcUb7S6pP8JCx"
       ],
       "pageNote": "one supplier price withdrawn"
+    },
+    {
+      "id": "stage3d-b2-price-refresh-2026-11-06",
+      "date": "2026-11-06",
+      "deployedCommit": "245cba482aea13f06c7393ad3f500c47f29a36e5",
+      "products": [
+        "rec4dBfSJaa42sAfS",
+        "rec8tUc1TgnwE7bPd",
+        "rec8zBaDcwc4rl8Hs",
+        "recCiSQxRX75wb26c",
+        "recSqwOmBcorfTwzN",
+        "recYXzu6v4toDzUMF",
+        "reccrnXRZotxAmCgb",
+        "rec1N3Nk3syFuega5",
+        "rec1zG67NZtl7Q9eA",
+        "rec2si77KhUCXZugl",
+        "rec3idYKdchyLPRmw",
+        "rec4HouUyfBlLhfGw",
+        "rec4nfCU2DriX8FTw",
+        "rec5jsM7fGx7P1gSh",
+        "rec5vWzjIqSh17vrw",
+        "rec6knDHpGnLPk10q",
+        "rec8ySMAa9imdlneW",
+        "rec9emjJtN4YXaAOF",
+        "recBOEv8CRZDDg7ti",
+        "recD2MUDOfcVYhVAD",
+        "recF7UuFQftO8qoEC",
+        "recLXzBKOHCTZDq0z",
+        "recP87CaHz3Xnnirc",
+        "recRhYcvhMHoR8FTf",
+        "recRjS5zLEtgaJ5d7",
+        "recSqpr8Hbph72Lsl",
+        "recStQFDuLyEMVYaG",
+        "recUWK2T4YkXEahne",
+        "recVXGQJUJjzrnvoS",
+        "recZQE4vdTOY4k081",
+        "recZX63NBfrzmkghd",
+        "recZnSAtp1fnsH1F4",
+        "recaKjk3mMaplGfZn",
+        "recc97FOzHnBWS3CX",
+        "recdmqC4R70FUdBB9",
+        "recdvevmu5LvJ3iNe",
+        "receZA66qs0E5LT2p",
+        "recerRglqc8u2qxkL",
+        "recfFE3fvs3AyWJJV",
+        "recfHdGREBnhONH0z",
+        "recgE5ZH8K0BHs2UU",
+        "recgW5dzgjNE0SfUm",
+        "recikE6QKqPbkeovi",
+        "reckpxBs1ZkYdPEZY",
+        "recl3VI1veyjsT24l",
+        "recldnlBYTnpxfY3a",
+        "recn2jneZ7gvsz5bP",
+        "recnz0dYBdb95jpUA",
+        "recsgMN8y8DV2On4I",
+        "rectGPQCXEwkJXCvg",
+        "recuScjdzUmWaGDKy",
+        "recuf0hjaMX4UjajA",
+        "recuwK4UChkiBcXSD",
+        "recvDRTUlerLWVQsG",
+        "recwDvaFmzWXHhtxK",
+        "recwrKkR8cwI5Mru5",
+        "recyCTqnOalHib0g1",
+        "recPnncp3xgUp4fXe",
+        "recS2oSLmZfE52362",
+        "recS6JnqOR9U2sJdN",
+        "recaj7Ngc6yeMuLg8",
+        "recqCSPBdJNaxXdj8",
+        "recvyBqUCGJbgR7KF",
+        "recE1sTxnHbf6CDKI",
+        "recSCARXaKNvNB6jz",
+        "recTiY6gVXP1zbBOF",
+        "recX7MXMp0JZ0U02A",
+        "recxIO17c0iIsnnN2",
+        "recbwAaAUFUWj5OvT",
+        "recm4ShGKIAWDlgg9"
+      ],
+      "pageNote": "70 prices rechecked on 6 November 2026 (five Pineca prices corrected)"
+    },
+    {
+      "id": "pineca-premium-s-unverifiable-2026-11-06",
+      "date": "2026-11-06",
+      "deployedCommit": "245cba482aea13f06c7393ad3f500c47f29a36e5",
+      "products": [
+        "recej5DFaBD76ODlv"
+      ],
+      "pageNote": "one unverifiable supplier price withdrawn"
+    },
+    {
+      "id": "cosy-cabins-athlone-not-published-2026-11-06",
+      "date": "2026-11-06",
+      "deployedCommit": "245cba482aea13f06c7393ad3f500c47f29a36e5",
+      "products": [
+        "recPl3XVtnOR9ZJ9g"
+      ],
+      "pageNote": "one unpublished supplier record removed"
     }
   ]
 }

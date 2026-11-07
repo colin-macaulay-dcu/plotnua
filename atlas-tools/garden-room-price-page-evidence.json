@@ -179,6 +179,96 @@
     "products": [
      "recDIcUb7S6pP8JCx"
     ]
+   },
+   {
+    "id": "stage3d-b2-price-refresh-2026-11-06",
+    "deployedCommit": "245cba482aea13f06c7393ad3f500c47f29a36e5",
+    "products": [
+     "rec4dBfSJaa42sAfS",
+     "rec8tUc1TgnwE7bPd",
+     "rec8zBaDcwc4rl8Hs",
+     "recCiSQxRX75wb26c",
+     "recSqwOmBcorfTwzN",
+     "recYXzu6v4toDzUMF",
+     "reccrnXRZotxAmCgb",
+     "rec1N3Nk3syFuega5",
+     "rec1zG67NZtl7Q9eA",
+     "rec2si77KhUCXZugl",
+     "rec3idYKdchyLPRmw",
+     "rec4HouUyfBlLhfGw",
+     "rec4nfCU2DriX8FTw",
+     "rec5jsM7fGx7P1gSh",
+     "rec5vWzjIqSh17vrw",
+     "rec6knDHpGnLPk10q",
+     "rec8ySMAa9imdlneW",
+     "rec9emjJtN4YXaAOF",
+     "recBOEv8CRZDDg7ti",
+     "recD2MUDOfcVYhVAD",
+     "recF7UuFQftO8qoEC",
+     "recLXzBKOHCTZDq0z",
+     "recP87CaHz3Xnnirc",
+     "recRhYcvhMHoR8FTf",
+     "recRjS5zLEtgaJ5d7",
+     "recSqpr8Hbph72Lsl",
+     "recStQFDuLyEMVYaG",
+     "recUWK2T4YkXEahne",
+     "recVXGQJUJjzrnvoS",
+     "recZQE4vdTOY4k081",
+     "recZX63NBfrzmkghd",
+     "recZnSAtp1fnsH1F4",
+     "recaKjk3mMaplGfZn",
+     "recc97FOzHnBWS3CX",
+     "recdmqC4R70FUdBB9",
+     "recdvevmu5LvJ3iNe",
+     "receZA66qs0E5LT2p",
+     "recerRglqc8u2qxkL",
+     "recfFE3fvs3AyWJJV",
+     "recfHdGREBnhONH0z",
+     "recgE5ZH8K0BHs2UU",
+     "recgW5dzgjNE0SfUm",
+     "recikE6QKqPbkeovi",
+     "reckpxBs1ZkYdPEZY",
+     "recl3VI1veyjsT24l",
+     "recldnlBYTnpxfY3a",
+     "recn2jneZ7gvsz5bP",
+     "recnz0dYBdb95jpUA",
+     "recsgMN8y8DV2On4I",
+     "rectGPQCXEwkJXCvg",
+     "recuScjdzUmWaGDKy",
+     "recuf0hjaMX4UjajA",
+     "recuwK4UChkiBcXSD",
+     "recvDRTUlerLWVQsG",
+     "recwDvaFmzWXHhtxK",
+     "recwrKkR8cwI5Mru5",
+     "recyCTqnOalHib0g1",
+     "recPnncp3xgUp4fXe",
+     "recS2oSLmZfE52362",
+     "recS6JnqOR9U2sJdN",
+     "recaj7Ngc6yeMuLg8",
+     "recqCSPBdJNaxXdj8",
+     "recvyBqUCGJbgR7KF",
+     "recE1sTxnHbf6CDKI",
+     "recSCARXaKNvNB6jz",
+     "recTiY6gVXP1zbBOF",
+     "recX7MXMp0JZ0U02A",
+     "recxIO17c0iIsnnN2",
+     "recbwAaAUFUWj5OvT",
+     "recm4ShGKIAWDlgg9"
+    ]
+   },
+   {
+    "id": "pineca-premium-s-unverifiable-2026-11-06",
+    "deployedCommit": "245cba482aea13f06c7393ad3f500c47f29a36e5",
+    "products": [
+     "recej5DFaBD76ODlv"
+    ]
+   },
+   {
+    "id": "cosy-cabins-athlone-not-published-2026-11-06",
+    "deployedCommit": "245cba482aea13f06c7393ad3f500c47f29a36e5",
+    "products": [
+     "recPl3XVtnOR9ZJ9g"
+    ]
    }
   ]
  },
@@ -207,7 +297,7 @@
    "segment": "UNKNOWN_NOTHING_PUBLISHED",
    "price": 5430,
    "vat": "Yes",
-   "lastPriceCheck": "2026-09-28",
+   "lastPriceCheck": "2026-11-06",
    "priceStatus": "Verified"
   },
   {
@@ -216,7 +306,7 @@
    "segment": "UNKNOWN_DIY_OR_INSTALLED",
    "price": 5770,
    "vat": "Yes",
-   "lastPriceCheck": "2026-09-28",
+   "lastPriceCheck": "2026-11-06",
    "priceStatus": "Verified"
   },
   {
@@ -261,7 +351,7 @@
    "segment": "UNKNOWN_DIY_OR_INSTALLED",
    "price": 5770,
    "vat": "Yes",
-   "lastPriceCheck": "2026-09-28",
+   "lastPriceCheck": "2026-11-06",
    "priceStatus": "Verified"
   },
   {
@@ -270,7 +360,7 @@
    "segment": "UNKNOWN_NOTHING_PUBLISHED",
    "price": 11200,
    "vat": "Yes",
-   "lastPriceCheck": "2026-09-28",
+   "lastPriceCheck": "2026-11-06",
    "priceStatus": "Verified"
   },
   {
@@ -288,7 +378,7 @@
    "segment": "UNKNOWN_DIY_OR_INSTALLED",
    "price": 9050,
    "vat": "Yes",
-   "lastPriceCheck": "2026-09-28",
+   "lastPriceCheck": "2026-11-06",
    "priceStatus": "Verified"
   },
   {
@@ -306,7 +396,7 @@
    "segment": "UNKNOWN_DIY_OR_INSTALLED",
    "price": 7600,
    "vat": "Unknown",
-   "lastPriceCheck": "2026-09-10",
+   "lastPriceCheck": "2026-11-06",
    "priceStatus": "Verified"
   },
   {
@@ -324,7 +414,7 @@
    "segment": "UNKNOWN_NOTHING_PUBLISHED",
    "price": 18000,
    "vat": "Yes",
-   "lastPriceCheck": "2026-09-28",
+   "lastPriceCheck": "2026-11-06",
    "priceStatus": "Verified"
   },
   {
@@ -351,7 +441,7 @@
    "segment": "UNKNOWN_DIY_OR_INSTALLED",
    "price": 6380,
    "vat": "Yes",
-   "lastPriceCheck": "2026-09-28",
+   "lastPriceCheck": "2026-11-06",
    "priceStatus": "Verified"
   },
   {
@@ -378,7 +468,7 @@
    "segment": "UNKNOWN_NOTHING_PUBLISHED",
    "price": 6460,
    "vat": "Yes",
-   "lastPriceCheck": "2026-09-28",
+   "lastPriceCheck": "2026-11-06",
    "priceStatus": "Verified"
   },
   {
@@ -414,7 +504,7 @@
    "segment": "UNKNOWN_NOTHING_PUBLISHED",
    "price": 6460,
    "vat": "Yes",
-   "lastPriceCheck": "2026-09-28",
+   "lastPriceCheck": "2026-11-06",
    "priceStatus": "Verified"
   },
   {
@@ -477,7 +567,7 @@
    "segment": "UNKNOWN_DIY_OR_INSTALLED",
    "price": 7920,
    "vat": "Unknown",
-   "lastPriceCheck": "2026-09-10",
+   "lastPriceCheck": "2026-11-06",
    "priceStatus": "Verified"
   },
   {
@@ -486,7 +576,7 @@
    "segment": "UNKNOWN_DIY_OR_INSTALLED",
    "price": 6630,
    "vat": "Yes",
-   "lastPriceCheck": "2026-09-28",
+   "lastPriceCheck": "2026-11-06",
    "priceStatus": "Verified"
   },
   {
@@ -495,7 +585,7 @@
    "segment": "UNKNOWN_DIY_OR_INSTALLED",
    "price": 7200,
    "vat": "Unknown",
-   "lastPriceCheck": "2026-09-10",
+   "lastPriceCheck": "2026-11-06",
    "priceStatus": "Verified"
   },
   {
@@ -504,7 +594,7 @@
    "segment": "UNKNOWN_NOTHING_PUBLISHED",
    "price": 16450,
    "vat": "Yes",
-   "lastPriceCheck": "2026-09-28",
+   "lastPriceCheck": "2026-11-06",
    "priceStatus": "Verified"
   },
   {
@@ -567,7 +657,7 @@
    "segment": "UNKNOWN_NOTHING_PUBLISHED",
    "price": 10680,
    "vat": "Yes",
-   "lastPriceCheck": "2026-09-28",
+   "lastPriceCheck": "2026-11-06",
    "priceStatus": "Verified"
   },
   {
@@ -621,7 +711,7 @@
    "segment": "UNKNOWN_DIY_OR_INSTALLED",
    "price": 8700,
    "vat": "Unknown",
-   "lastPriceCheck": "2026-09-10",
+   "lastPriceCheck": "2026-11-06",
    "priceStatus": "Verified"
   },
   {
@@ -639,7 +729,7 @@
    "segment": "UNKNOWN_NOTHING_PUBLISHED",
    "price": 7150,
    "vat": "Yes",
-   "lastPriceCheck": "2026-09-28",
+   "lastPriceCheck": "2026-11-06",
    "priceStatus": "Verified"
   },
   {
@@ -673,9 +763,9 @@
    "productId": "recE1sTxnHbf6CDKI",
    "supplierKey": "d52f3c51b7f1",
    "segment": "UNKNOWN_NOTHING_PUBLISHED",
-   "price": 12509,
+   "price": 12745,
    "vat": "Yes",
-   "lastPriceCheck": "2026-09-23",
+   "lastPriceCheck": "2026-11-06",
    "priceStatus": "Verified"
   },
   {
@@ -729,7 +819,7 @@
    "segment": "UNKNOWN_NOTHING_PUBLISHED",
    "price": 5260,
    "vat": "Yes",
-   "lastPriceCheck": "2026-09-28",
+   "lastPriceCheck": "2026-11-06",
    "priceStatus": "Verified"
   },
   {
@@ -873,7 +963,7 @@
    "segment": "UNKNOWN_NOTHING_PUBLISHED",
    "price": 6120,
    "vat": "Yes",
-   "lastPriceCheck": "2026-09-28",
+   "lastPriceCheck": "2026-11-06",
    "priceStatus": "Verified"
   },
   {
@@ -981,7 +1071,7 @@
    "segment": "UNKNOWN_NOTHING_PUBLISHED",
    "price": 15680,
    "vat": "Yes",
-   "lastPriceCheck": "2026-09-28",
+   "lastPriceCheck": "2026-11-06",
    "priceStatus": "Verified"
   },
   {
@@ -1012,21 +1102,12 @@
    "priceStatus": "Verified"
   },
   {
-   "productId": "recPl3XVtnOR9ZJ9g",
-   "supplierKey": "c35e5ba62df1",
-   "segment": "UNKNOWN_NOTHING_PUBLISHED",
-   "price": 10940,
-   "vat": "Yes",
-   "lastPriceCheck": "2026-10-02",
-   "priceStatus": "Verified"
-  },
-  {
    "productId": "recPnncp3xgUp4fXe",
    "supplierKey": "d52f3c51b7f1",
    "segment": "UNKNOWN_NOTHING_PUBLISHED",
    "price": 14921,
    "vat": "Yes",
-   "lastPriceCheck": "2026-09-23",
+   "lastPriceCheck": "2026-11-06",
    "priceStatus": "Verified"
   },
   {
@@ -1062,7 +1143,7 @@
    "segment": "UNKNOWN_NOTHING_PUBLISHED",
    "price": 5430,
    "vat": "Yes",
-   "lastPriceCheck": "2026-09-28",
+   "lastPriceCheck": "2026-11-06",
    "priceStatus": "Verified"
   },
   {
@@ -1071,7 +1152,7 @@
    "segment": "UNKNOWN_DIY_OR_INSTALLED",
    "price": 6980,
    "vat": "Yes",
-   "lastPriceCheck": "2026-09-28",
+   "lastPriceCheck": "2026-11-06",
    "priceStatus": "Verified"
   },
   {
@@ -1080,7 +1161,7 @@
    "segment": "UNKNOWN_NOTHING_PUBLISHED",
    "price": 18939,
    "vat": "Yes",
-   "lastPriceCheck": "2026-09-23",
+   "lastPriceCheck": "2026-11-06",
    "priceStatus": "Verified"
   },
   {
@@ -1098,16 +1179,16 @@
    "segment": "UNKNOWN_NOTHING_PUBLISHED",
    "price": 12041,
    "vat": "Yes",
-   "lastPriceCheck": "2026-09-23",
+   "lastPriceCheck": "2026-11-06",
    "priceStatus": "Verified"
   },
   {
    "productId": "recSCARXaKNvNB6jz",
    "supplierKey": "d52f3c51b7f1",
    "segment": "UNKNOWN_NOTHING_PUBLISHED",
-   "price": 13175,
+   "price": 13443,
    "vat": "Yes",
-   "lastPriceCheck": "2026-09-23",
+   "lastPriceCheck": "2026-11-06",
    "priceStatus": "Verified"
   },
   {
@@ -1143,7 +1224,7 @@
    "segment": "UNKNOWN_NOTHING_PUBLISHED",
    "price": 17910,
    "vat": "Yes",
-   "lastPriceCheck": "2026-09-28",
+   "lastPriceCheck": "2026-11-06",
    "priceStatus": "Verified"
   },
   {
@@ -1152,7 +1233,7 @@
    "segment": "UNKNOWN_DIY_OR_INSTALLED",
    "price": 9420,
    "vat": "Unknown",
-   "lastPriceCheck": "2026-09-10",
+   "lastPriceCheck": "2026-11-06",
    "priceStatus": "Verified"
   },
   {
@@ -1161,7 +1242,7 @@
    "segment": "UNKNOWN_NOTHING_PUBLISHED",
    "price": 6980,
    "vat": "Yes",
-   "lastPriceCheck": "2026-09-28",
+   "lastPriceCheck": "2026-11-06",
    "priceStatus": "Verified"
   },
   {
@@ -1177,9 +1258,9 @@
    "productId": "recTiY6gVXP1zbBOF",
    "supplierKey": "d52f3c51b7f1",
    "segment": "UNKNOWN_NOTHING_PUBLISHED",
-   "price": 10462,
+   "price": 10883,
    "vat": "Yes",
-   "lastPriceCheck": "2026-09-23",
+   "lastPriceCheck": "2026-11-06",
    "priceStatus": "Verified"
   },
   {
@@ -1224,7 +1305,7 @@
    "segment": "UNKNOWN_DIY_OR_INSTALLED",
    "price": 7410,
    "vat": "Yes",
-   "lastPriceCheck": "2026-09-28",
+   "lastPriceCheck": "2026-11-06",
    "priceStatus": "Verified"
   },
   {
@@ -1278,7 +1359,7 @@
    "segment": "UNKNOWN_NOTHING_PUBLISHED",
    "price": 14560,
    "vat": "Yes",
-   "lastPriceCheck": "2026-09-28",
+   "lastPriceCheck": "2026-11-06",
    "priceStatus": "Verified"
   },
   {
@@ -1312,9 +1393,9 @@
    "productId": "recX7MXMp0JZ0U02A",
    "supplierKey": "d52f3c51b7f1",
    "segment": "UNKNOWN_NOTHING_PUBLISHED",
-   "price": 8987,
+   "price": 9133,
    "vat": "Yes",
-   "lastPriceCheck": "2026-09-23",
+   "lastPriceCheck": "2026-11-06",
    "priceStatus": "Verified"
   },
   {
@@ -1359,7 +1440,7 @@
    "segment": "UNKNOWN_DIY_OR_INSTALLED",
    "price": 7765,
    "vat": "Unknown",
-   "lastPriceCheck": "2026-09-10",
+   "lastPriceCheck": "2026-11-06",
    "priceStatus": "Verified"
   },
   {
@@ -1368,7 +1449,7 @@
    "segment": "UNKNOWN_NOTHING_PUBLISHED",
    "price": 5950,
    "vat": "Yes",
-   "lastPriceCheck": "2026-09-28",
+   "lastPriceCheck": "2026-11-06",
    "priceStatus": "Verified"
   },
   {
@@ -1377,7 +1458,7 @@
    "segment": "UNKNOWN_DIY_OR_INSTALLED",
    "price": 5770,
    "vat": "Yes",
-   "lastPriceCheck": "2026-09-28",
+   "lastPriceCheck": "2026-11-06",
    "priceStatus": "Verified"
   },
   {
@@ -1386,7 +1467,7 @@
    "segment": "UNKNOWN_NOTHING_PUBLISHED",
    "price": 17400,
    "vat": "Yes",
-   "lastPriceCheck": "2026-09-28",
+   "lastPriceCheck": "2026-11-06",
    "priceStatus": "Verified"
   },
   {
@@ -1404,7 +1485,7 @@
    "segment": "UNKNOWN_NOTHING_PUBLISHED",
    "price": 7930,
    "vat": "Yes",
-   "lastPriceCheck": "2026-09-28",
+   "lastPriceCheck": "2026-11-06",
    "priceStatus": "Verified"
   },
   {
@@ -1431,7 +1512,7 @@
    "segment": "UNKNOWN_DIY_OR_INSTALLED",
    "price": 12737,
    "vat": "Yes",
-   "lastPriceCheck": "2026-09-23",
+   "lastPriceCheck": "2026-11-06",
    "priceStatus": "Verified"
   },
   {
@@ -1440,7 +1521,7 @@
    "segment": "UNKNOWN_NOTHING_PUBLISHED",
    "price": 43450,
    "vat": "Unknown",
-   "lastPriceCheck": "2026-09-22",
+   "lastPriceCheck": "2026-11-06",
    "priceStatus": "Verified"
   },
   {
@@ -1449,7 +1530,7 @@
    "segment": "UNKNOWN_DIY_OR_INSTALLED",
    "price": 5170,
    "vat": "Yes",
-   "lastPriceCheck": "2026-09-28",
+   "lastPriceCheck": "2026-11-06",
    "priceStatus": "Verified"
   },
   {
@@ -1485,7 +1566,7 @@
    "segment": "UNKNOWN_DIY_OR_INSTALLED",
    "price": 9425,
    "vat": "Unknown",
-   "lastPriceCheck": "2026-09-10",
+   "lastPriceCheck": "2026-11-06",
    "priceStatus": "Verified"
   },
   {
@@ -1521,7 +1602,7 @@
    "segment": "UNKNOWN_NOTHING_PUBLISHED",
    "price": 15760,
    "vat": "Yes",
-   "lastPriceCheck": "2026-09-28",
+   "lastPriceCheck": "2026-11-06",
    "priceStatus": "Verified"
   },
   {
@@ -1548,7 +1629,7 @@
    "segment": "UNKNOWN_DIY_OR_INSTALLED",
    "price": 7240,
    "vat": "Yes",
-   "lastPriceCheck": "2026-09-28",
+   "lastPriceCheck": "2026-11-06",
    "priceStatus": "Verified"
   },
   {
@@ -1557,7 +1638,7 @@
    "segment": "UNKNOWN_NOTHING_PUBLISHED",
    "price": 10080,
    "vat": "Yes",
-   "lastPriceCheck": "2026-09-28",
+   "lastPriceCheck": "2026-11-06",
    "priceStatus": "Verified"
   },
   {
@@ -1570,21 +1651,12 @@
    "priceStatus": "Verified"
   },
   {
-   "productId": "recej5DFaBD76ODlv",
-   "supplierKey": "d52f3c51b7f1",
-   "segment": "UNKNOWN_NOTHING_PUBLISHED",
-   "price": 8678,
-   "vat": "Yes",
-   "lastPriceCheck": "2026-09-23",
-   "priceStatus": "Verified"
-  },
-  {
    "productId": "recerRglqc8u2qxkL",
    "supplierKey": "0a72c8fa7bc1",
    "segment": "UNKNOWN_DIY_OR_INSTALLED",
    "price": 5600,
    "vat": "Yes",
-   "lastPriceCheck": "2026-09-28",
+   "lastPriceCheck": "2026-11-06",
    "priceStatus": "Verified"
   },
   {
@@ -1602,7 +1674,7 @@
    "segment": "UNKNOWN_NOTHING_PUBLISHED",
    "price": 5340,
    "vat": "Yes",
-   "lastPriceCheck": "2026-09-28",
+   "lastPriceCheck": "2026-11-06",
    "priceStatus": "Verified"
   },
   {
@@ -1620,7 +1692,7 @@
    "segment": "UNKNOWN_NOTHING_PUBLISHED",
    "price": 6630,
    "vat": "Yes",
-   "lastPriceCheck": "2026-09-28",
+   "lastPriceCheck": "2026-11-06",
    "priceStatus": "Verified"
   },
   {
@@ -1638,7 +1710,7 @@
    "segment": "UNKNOWN_NOTHING_PUBLISHED",
    "price": 5080,
    "vat": "Yes",
-   "lastPriceCheck": "2026-09-28",
+   "lastPriceCheck": "2026-11-06",
    "priceStatus": "Verified"
   },
   {
@@ -1647,7 +1719,7 @@
    "segment": "UNKNOWN_NOTHING_PUBLISHED",
    "price": 15500,
    "vat": "Yes",
-   "lastPriceCheck": "2026-09-28",
+   "lastPriceCheck": "2026-11-06",
    "priceStatus": "Verified"
   },
   {
@@ -1719,7 +1791,7 @@
    "segment": "UNKNOWN_DIY_OR_INSTALLED",
    "price": 7750,
    "vat": "Yes",
-   "lastPriceCheck": "2026-09-28",
+   "lastPriceCheck": "2026-11-06",
    "priceStatus": "Verified"
   },
   {
@@ -1764,7 +1836,7 @@
    "segment": "UNKNOWN_NOTHING_PUBLISHED",
    "price": 5600,
    "vat": "Yes",
-   "lastPriceCheck": "2026-09-28",
+   "lastPriceCheck": "2026-11-06",
    "priceStatus": "Verified"
   },
   {
@@ -1773,7 +1845,7 @@
    "segment": "UNKNOWN_NOTHING_PUBLISHED",
    "price": 6580,
    "vat": "Yes",
-   "lastPriceCheck": "2026-09-28",
+   "lastPriceCheck": "2026-11-06",
    "priceStatus": "Verified"
   },
   {
@@ -1800,7 +1872,7 @@
    "segment": "UNKNOWN_NOTHING_PUBLISHED",
    "price": 5600,
    "vat": "Yes",
-   "lastPriceCheck": "2026-09-28",
+   "lastPriceCheck": "2026-11-06",
    "priceStatus": "Verified"
   },
   {
@@ -1827,7 +1899,7 @@
    "segment": "UNKNOWN_NOTHING_PUBLISHED",
    "price": 32450,
    "vat": "Unknown",
-   "lastPriceCheck": "2026-09-22",
+   "lastPriceCheck": "2026-11-06",
    "priceStatus": "Verified"
   },
   {
@@ -1917,7 +1989,7 @@
    "segment": "UNKNOWN_NOTHING_PUBLISHED",
    "price": 11200,
    "vat": "Yes",
-   "lastPriceCheck": "2026-09-28",
+   "lastPriceCheck": "2026-11-06",
    "priceStatus": "Verified"
   },
   {
@@ -1944,7 +2016,7 @@
    "segment": "UNKNOWN_NOTHING_PUBLISHED",
    "price": 5520,
    "vat": "Yes",
-   "lastPriceCheck": "2026-09-28",
+   "lastPriceCheck": "2026-11-06",
    "priceStatus": "Verified"
   },
   {
@@ -2007,7 +2079,7 @@
    "segment": "UNKNOWN_NOTHING_PUBLISHED",
    "price": 11666,
    "vat": "Yes",
-   "lastPriceCheck": "2026-09-23",
+   "lastPriceCheck": "2026-11-06",
    "priceStatus": "Verified"
   },
   {
@@ -2097,7 +2169,7 @@
    "segment": "UNKNOWN_DIY_OR_INSTALLED",
    "price": 11460,
    "vat": "Yes",
-   "lastPriceCheck": "2026-09-28",
+   "lastPriceCheck": "2026-11-06",
    "priceStatus": "Verified"
   },
   {
@@ -2124,7 +2196,7 @@
    "segment": "UNKNOWN_DIY_OR_INSTALLED",
    "price": 6550,
    "vat": "Yes",
-   "lastPriceCheck": "2026-09-28",
+   "lastPriceCheck": "2026-11-06",
    "priceStatus": "Verified"
   },
   {
@@ -2142,7 +2214,7 @@
    "segment": "UNKNOWN_NOTHING_PUBLISHED",
    "price": 5600,
    "vat": "Yes",
-   "lastPriceCheck": "2026-09-28",
+   "lastPriceCheck": "2026-11-06",
    "priceStatus": "Verified"
   },
   {
@@ -2160,7 +2232,7 @@
    "segment": "UNKNOWN_NOTHING_PUBLISHED",
    "price": 6380,
    "vat": "Yes",
-   "lastPriceCheck": "2026-09-28",
+   "lastPriceCheck": "2026-11-06",
    "priceStatus": "Verified"
   },
   {
@@ -2169,7 +2241,7 @@
    "segment": "UNKNOWN_NOTHING_PUBLISHED",
    "price": 10320,
    "vat": "Yes",
-   "lastPriceCheck": "2026-09-28",
+   "lastPriceCheck": "2026-11-06",
    "priceStatus": "Verified"
   },
   {
@@ -2187,7 +2259,7 @@
    "segment": "UNKNOWN_NOTHING_PUBLISHED",
    "price": 6810,
    "vat": "Yes",
-   "lastPriceCheck": "2026-09-28",
+   "lastPriceCheck": "2026-11-06",
    "priceStatus": "Verified"
   },
   {
@@ -2205,7 +2277,7 @@
    "segment": "UNKNOWN_NOTHING_PUBLISHED",
    "price": 18181,
    "vat": "Yes",
-   "lastPriceCheck": "2026-09-23",
+   "lastPriceCheck": "2026-11-06",
    "priceStatus": "Verified"
   },
   {
@@ -2232,7 +2304,7 @@
    "segment": "UNKNOWN_NOTHING_PUBLISHED",
    "price": 9130,
    "vat": "Yes",
-   "lastPriceCheck": "2026-09-28",
+   "lastPriceCheck": "2026-11-06",
    "priceStatus": "Verified"
   },
   {
@@ -2259,16 +2331,16 @@
    "segment": "UNKNOWN_DIY_OR_INSTALLED",
    "price": 8360,
    "vat": "Yes",
-   "lastPriceCheck": "2026-09-28",
+   "lastPriceCheck": "2026-11-06",
    "priceStatus": "Verified"
   },
   {
    "productId": "recxIO17c0iIsnnN2",
    "supplierKey": "d52f3c51b7f1",
    "segment": "UNKNOWN_NOTHING_PUBLISHED",
-   "price": 9462,
+   "price": 9867,
    "vat": "Yes",
-   "lastPriceCheck": "2026-09-23",
+   "lastPriceCheck": "2026-11-06",
    "priceStatus": "Verified"
   },
   {
@@ -2277,7 +2349,7 @@
    "segment": "UNKNOWN_DIY_OR_INSTALLED",
    "price": 7150,
    "vat": "Yes",
-   "lastPriceCheck": "2026-09-28",
+   "lastPriceCheck": "2026-11-06",
    "priceStatus": "Verified"
   },
   {

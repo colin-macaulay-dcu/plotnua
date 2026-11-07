@@ -717,6 +717,400 @@
         }
       ],
       "pageNote": "one supplier price withdrawn"
+    },
+    {
+      "id": "stage3d-b2-price-refresh-2026-11-06",
+      "date": "2026-11-06",
+      "approved": "Founder Stage 3D-B2, 6 November 2026 ('VERIFIED SUPPLIER PRICING REFRESH — APPROVED FOR CONTROLLED IMPLEMENTATION'). 70 published prices were re-read on the supplier pages on 6 November 2026 (Stage 3D-A): Irish Log Cabins (7), Hansa24 Group (50), Pineca Ireland (11), Modular House (2). Five Pineca regular prices corrected (AMARA with shed 6x3 EUR 12,509 -> 12,745; INES PLUS with terrace 6x3 13,175 -> 13,443; AMARA 5x3 10,462 -> 10,883; LAYLA 4x3 8,987 -> 9,133; AMARA 4x3 9,462 -> 9,867); time-limited Black Friday prices not used. Four Hansa24 Price Types corrected to Sale Price (figures unchanged). Atlas Last Price Check, Notes, and the approved price and Price Type fields written and read back 7 Nov 2026. No VAT, installation classification, eligibility or methodology change is authorised by this batch.",
+      "deployedCommit": "245cba482aea13f06c7393ad3f500c47f29a36e5",
+      "deployedUniverseSha256": "7eef16c3621630dde3c19d17429faffcff0d1fd47c4dec4ddb78d6f6aa5f6ff1",
+      "rule": "Each enumerated product takes its record from the universe at deployedCommit (published by atlas-tools/publish-price-refresh.py from the real Atlas read-back); this batch changes last-price-check dates, the five approved Pineca prices and the four approved Hansa24 Price Types only. LOCAL RELEASE CANDIDATE: deployedCommit is valid at release only if it reaches production unchanged (fast-forward, no rebase).",
+      "products": [
+        {
+          "id": "rec4dBfSJaa42sAfS",
+          "name": "Irish Log Cabins — Dingle Log Cabin 5m x 4m",
+          "expect": "replaced"
+        },
+        {
+          "id": "rec8tUc1TgnwE7bPd",
+          "name": "Irish Log Cabins — Achill Log Cabin A 5m x 3m",
+          "expect": "replaced"
+        },
+        {
+          "id": "rec8zBaDcwc4rl8Hs",
+          "name": "Irish Log Cabins — Dingle Log Cabin 4m x 4m (1 Room)",
+          "expect": "replaced"
+        },
+        {
+          "id": "recCiSQxRX75wb26c",
+          "name": "Irish Log Cabins — Achill B Log Cabin 5m x 4m",
+          "expect": "replaced"
+        },
+        {
+          "id": "recSqwOmBcorfTwzN",
+          "name": "Irish Log Cabins — Achill C Log Cabin 6m x 4m",
+          "expect": "replaced"
+        },
+        {
+          "id": "recYXzu6v4toDzUMF",
+          "name": "Irish Log Cabins — Dingle Log Cabin 5m x 3m",
+          "expect": "replaced"
+        },
+        {
+          "id": "reccrnXRZotxAmCgb",
+          "name": "Irish Log Cabins — Dingle Log Cabin 6m x 4m",
+          "expect": "replaced"
+        },
+        {
+          "id": "rec1N3Nk3syFuega5",
+          "name": "Small garden office Hansa Mini 1 (G0310)",
+          "expect": "replaced"
+        },
+        {
+          "id": "rec1zG67NZtl7Q9eA",
+          "name": "Garden House Lucas D with Canopy",
+          "expect": "replaced"
+        },
+        {
+          "id": "rec2si77KhUCXZugl",
+          "name": "Small DIY Garden Room Lucas C",
+          "expect": "replaced"
+        },
+        {
+          "id": "rec3idYKdchyLPRmw",
+          "name": "Garden house with shed and porch Super Eva E (G0245)",
+          "expect": "replaced"
+        },
+        {
+          "id": "rec4HouUyfBlLhfGw",
+          "name": "Garden House Super Lucas E with Shed and Veranda",
+          "expect": "replaced"
+        },
+        {
+          "id": "rec4nfCU2DriX8FTw",
+          "name": "Garden log cabin with sleeping loft Sweden B (G0266)",
+          "expect": "replaced"
+        },
+        {
+          "id": "rec5jsM7fGx7P1gSh",
+          "name": "Garden House Lucas D with Veranda",
+          "expect": "replaced"
+        },
+        {
+          "id": "rec5vWzjIqSh17vrw",
+          "name": "Outdoor garden house Eva C (G0120)",
+          "expect": "replaced"
+        },
+        {
+          "id": "rec6knDHpGnLPk10q",
+          "name": "Garden house with canopy Eva D (G0150)",
+          "expect": "replaced"
+        },
+        {
+          "id": "rec8ySMAa9imdlneW",
+          "name": "Garden Room Office Jacob C",
+          "expect": "replaced"
+        },
+        {
+          "id": "rec9emjJtN4YXaAOF",
+          "name": "Large garden house with sleeping loft Bruno 2 (G0375)",
+          "expect": "replaced"
+        },
+        {
+          "id": "recBOEv8CRZDDg7ti",
+          "name": "Summer house with canopy Ian C (G0171)",
+          "expect": "replaced"
+        },
+        {
+          "id": "recD2MUDOfcVYhVAD",
+          "name": "Garden room with shower and toilet Mia 2 (G0305)",
+          "expect": "replaced"
+        },
+        {
+          "id": "recF7UuFQftO8qoEC",
+          "name": "Small outdoor garden room Lucas D (G0133)",
+          "expect": "replaced"
+        },
+        {
+          "id": "recLXzBKOHCTZDq0z",
+          "name": "Garden home office Jacob D (G0138)",
+          "expect": "replaced"
+        },
+        {
+          "id": "recP87CaHz3Xnnirc",
+          "name": "Golf simulator garden house Sim 4 (G0354)",
+          "expect": "replaced"
+        },
+        {
+          "id": "recRhYcvhMHoR8FTf",
+          "name": "Small outdoor garden house Nora B (G0116)",
+          "expect": "replaced"
+        },
+        {
+          "id": "recRjS5zLEtgaJ5d7",
+          "name": "Garden Wooden House Eva B",
+          "expect": "replaced"
+        },
+        {
+          "id": "recSqpr8Hbph72Lsl",
+          "name": "Large garden room Snooker XL 2 (G0301)",
+          "expect": "replaced"
+        },
+        {
+          "id": "recStQFDuLyEMVYaG",
+          "name": "Summer house with side shed Super Otto (G0172)",
+          "expect": "replaced"
+        },
+        {
+          "id": "recUWK2T4YkXEahne",
+          "name": "Summer Garden House Lucas E with Terrace",
+          "expect": "replaced"
+        },
+        {
+          "id": "recVXGQJUJjzrnvoS",
+          "name": "Garden summer house Malaga 2 (G0241)",
+          "expect": "replaced"
+        },
+        {
+          "id": "recZQE4vdTOY4k081",
+          "name": "Garden house Eva D (G0123)",
+          "expect": "replaced"
+        },
+        {
+          "id": "recZX63NBfrzmkghd",
+          "name": "Garden Room Jacob E",
+          "expect": "replaced"
+        },
+        {
+          "id": "recZnSAtp1fnsH1F4",
+          "name": "Spacious garden room Rebeka Plus (G0395)",
+          "expect": "replaced"
+        },
+        {
+          "id": "recaKjk3mMaplGfZn",
+          "name": "Garden house with veranda attached Henry (G0103)",
+          "expect": "replaced"
+        },
+        {
+          "id": "recc97FOzHnBWS3CX",
+          "name": "Small Garden House Nora E",
+          "expect": "replaced"
+        },
+        {
+          "id": "recdmqC4R70FUdBB9",
+          "name": "Garden house with side shed and veranda Rio (G0165)",
+          "expect": "replaced"
+        },
+        {
+          "id": "recdvevmu5LvJ3iNe",
+          "name": "Garden Room Nora E with Veranda",
+          "expect": "replaced"
+        },
+        {
+          "id": "receZA66qs0E5LT2p",
+          "name": "Corner garden house with porch Hansa A (G0197)",
+          "expect": "replaced"
+        },
+        {
+          "id": "recerRglqc8u2qxkL",
+          "name": "Small Garden Room Lucas B",
+          "expect": "replaced"
+        },
+        {
+          "id": "recfFE3fvs3AyWJJV",
+          "name": "Small garden room Lucas E (G0134)",
+          "expect": "replaced"
+        },
+        {
+          "id": "recfHdGREBnhONH0z",
+          "name": "Garden office room Jacob B (G0136)",
+          "expect": "replaced"
+        },
+        {
+          "id": "recgE5ZH8K0BHs2UU",
+          "name": "Small garden house Nora D (G0122)",
+          "expect": "replaced"
+        },
+        {
+          "id": "recgW5dzgjNE0SfUm",
+          "name": "Golf simulator garden house Sim 3 (G0353)",
+          "expect": "replaced"
+        },
+        {
+          "id": "recikE6QKqPbkeovi",
+          "name": "Garden Room Jacob E with Canopy",
+          "expect": "replaced"
+        },
+        {
+          "id": "reckpxBs1ZkYdPEZY",
+          "name": "Small garden house Nora C (G0117)",
+          "expect": "replaced"
+        },
+        {
+          "id": "recl3VI1veyjsT24l",
+          "name": "Corner garden house Fargo B (G0346)",
+          "expect": "replaced"
+        },
+        {
+          "id": "recldnlBYTnpxfY3a",
+          "name": "Garden house Eva E (G0128)",
+          "expect": "replaced"
+        },
+        {
+          "id": "recn2jneZ7gvsz5bP",
+          "name": "Large garden office with canopy Ian E (G0227)",
+          "expect": "replaced"
+        },
+        {
+          "id": "recnz0dYBdb95jpUA",
+          "name": "Small garden house Nora X (G0125)",
+          "expect": "replaced"
+        },
+        {
+          "id": "recsgMN8y8DV2On4I",
+          "name": "Garden Room with Shed & Porch Super Jacob E",
+          "expect": "replaced"
+        },
+        {
+          "id": "rectGPQCXEwkJXCvg",
+          "name": "Garden House Nora E with Canopy",
+          "expect": "replaced"
+        },
+        {
+          "id": "recuScjdzUmWaGDKy",
+          "name": "Garden office pod Hansa Mini 2 (G0311)",
+          "expect": "replaced"
+        },
+        {
+          "id": "recuf0hjaMX4UjajA",
+          "name": "Small garden house Eva X (G0124)",
+          "expect": "replaced"
+        },
+        {
+          "id": "recuwK4UChkiBcXSD",
+          "name": "Garden house Leon (G0416)",
+          "expect": "replaced"
+        },
+        {
+          "id": "recvDRTUlerLWVQsG",
+          "name": "Summer house with shed Super Fred (G0173)",
+          "expect": "replaced"
+        },
+        {
+          "id": "recwDvaFmzWXHhtxK",
+          "name": "Large garden office Ian D (G0210)",
+          "expect": "replaced"
+        },
+        {
+          "id": "recwrKkR8cwI5Mru5",
+          "name": "Garden Room Jacob E with Veranda",
+          "expect": "replaced"
+        },
+        {
+          "id": "recyCTqnOalHib0g1",
+          "name": "Garden House Eva D with Terrace",
+          "expect": "replaced"
+        },
+        {
+          "id": "recPnncp3xgUp4fXe",
+          "name": "Garden Room INES Insulated 6 × 3 m — 18 m²",
+          "expect": "replaced"
+        },
+        {
+          "id": "recS2oSLmZfE52362",
+          "name": "Garden Room INES PLUS with front terrace Insulated 6 × 6 m — 36 m²",
+          "expect": "replaced"
+        },
+        {
+          "id": "recS6JnqOR9U2sJdN",
+          "name": "Garden Room INES with terrace Insulated 6 × 3 m — 18 m²",
+          "expect": "replaced"
+        },
+        {
+          "id": "recaj7Ngc6yeMuLg8",
+          "name": "Garden Room LAYLA Insulated 6 × 3 m — 15 m²",
+          "expect": "replaced"
+        },
+        {
+          "id": "recqCSPBdJNaxXdj8",
+          "name": "Garden Room LAYLA Insulated 5 × 3 m — 13 m²",
+          "expect": "replaced"
+        },
+        {
+          "id": "recvyBqUCGJbgR7KF",
+          "name": "Garden Room INES PLUS with L-shape terrace Insulated 6 × 6 m — 36 m²",
+          "expect": "replaced"
+        },
+        {
+          "id": "recE1sTxnHbf6CDKI",
+          "name": "Garden Room AMARA with a shed Insulated 6 × 3 m — 15 m²",
+          "expect": "replaced"
+        },
+        {
+          "id": "recSCARXaKNvNB6jz",
+          "name": "Garden Room INES PLUS with terrace Insulated 6 × 3 m — 18 m²",
+          "expect": "replaced"
+        },
+        {
+          "id": "recTiY6gVXP1zbBOF",
+          "name": "Garden Room AMARA Insulated 5 × 3 m — 13 m²",
+          "expect": "replaced"
+        },
+        {
+          "id": "recX7MXMp0JZ0U02A",
+          "name": "Garden Room LAYLA Insulated 4 × 3 m — 10 m²",
+          "expect": "replaced"
+        },
+        {
+          "id": "recxIO17c0iIsnnN2",
+          "name": "Garden Room AMARA Insulated 4 × 3 m — 10 m²",
+          "expect": "replaced"
+        },
+        {
+          "id": "recbwAaAUFUWj5OvT",
+          "name": "Modular House — The Studio 25m²",
+          "expect": "replaced"
+        },
+        {
+          "id": "recm4ShGKIAWDlgg9",
+          "name": "Modular House — The Compact 15m²",
+          "expect": "replaced"
+        }
+      ],
+      "pageNote": "70 prices rechecked on 6 November 2026 (five Pineca prices corrected)"
+    },
+    {
+      "id": "pineca-premium-s-unverifiable-2026-11-06",
+      "date": "2026-11-06",
+      "approved": "Founder Stage 3D-B2, 6 November 2026: 'PINECA PREMIUM S. The original product page now redirects to a category page. Exclude its unsupported price from published pricing evidence. Preserve historical Atlas information. Do not delete the product or its price history.' On 6 November 2026 the product URL redirected to the Pineca garden rooms category; no product-specific price could be read. No replacement price is inferred.",
+      "deployedCommit": "245cba482aea13f06c7393ad3f500c47f29a36e5",
+      "deployedUniverseSha256": "7eef16c3621630dde3c19d17429faffcff0d1fd47c4dec4ddb78d6f6aa5f6ff1",
+      "rule": "The product stays published and stays counted as a garden-room record; only its price leaves the garden-room cost evidence. No price is replaced or invented. Atlas record and price history unchanged.",
+      "products": [
+        {
+          "id": "recej5DFaBD76ODlv",
+          "name": "Garden Room PREMIUM S Insulated PLUS — 10 m²",
+          "expect": "evidenceExcluded",
+          "reason": "EUR 8,678 is no longer supported: the supplier's product page redirected to a category page on 6 Nov 2026, so the price cannot be verified."
+        }
+      ],
+      "pageNote": "one unverifiable supplier price withdrawn"
+    },
+    {
+      "id": "cosy-cabins-athlone-not-published-2026-11-06",
+      "date": "2026-11-06",
+      "approved": "Founder Stage 3D-B2, 6 November 2026: 'The Cosy Cabins Athlone product is not currently published. It should not contribute to the public pricing evidence. Exclude its price from the published guide. Preserve its historical Atlas record. Do not publish the product. Do not change the supplier's preview status.'",
+      "deployedCommit": "245cba482aea13f06c7393ad3f500c47f29a36e5",
+      "deployedUniverseSha256": "7eef16c3621630dde3c19d17429faffcff0d1fd47c4dec4ddb78d6f6aa5f6ff1",
+      "rule": "The product is absent from the deployed production universe at deployedCommit (Cosy Cabins publication withheld pending the supplier's preview) and therefore leaves the price evidence. No price is replaced or invented; the Atlas record and the supplier's preview status are unchanged.",
+      "products": [
+        {
+          "id": "recPl3XVtnOR9ZJ9g",
+          "name": "Cosy Cabins Athlone Garden Room 4.5m x 2.5m",
+          "expect": "removed"
+        }
+      ],
+      "pageNote": "one unpublished supplier record removed"
     }
   ]
 }
