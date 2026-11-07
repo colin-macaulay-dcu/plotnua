@@ -14772,10 +14772,10 @@ html.pn-myplot-view:not(.pn-myplot-open) body::after{content:"Opening My Plot\20
          it, or compare it; pnPriceView() says "Price not currently verified". */
       price: (typeof raw.price === 'number' && isFinite(raw.price) && raw.price > 0
               && !(raw.priceEvidence && raw.priceEvidence.presentationHold)
-              && pnPriceIsCurrent(raw))
+              && (!pnPriceGoverned(raw) || pnPriceIsCurrent(raw)))
              ? raw.price : undefined,
       priceFreshUntil: (typeof raw.priceFreshUntil === 'string') ? raw.priceFreshUntil : undefined,
-      priceState: pnPriceStateOf(raw),
+      priceState: pnPriceGoverned(raw) ? pnPriceStateOf(raw) : undefined,
       /* ATLAS 487 BATCH 2 PIECE 2H-2 — was `raw.currency || 'EUR'`, which
          MANUFACTURED euro for every product Atlas holds no currency for. On
          the current 487 that is 266 products; none of them carries a usable
@@ -17640,7 +17640,7 @@ html.pn-myplot-view:not(.pn-myplot-open) body::after{content:"Opening My Plot\20
        this page to the governed universe deliberately and visibly. */
     if (product.priceSafeForMatching !== true) return 1;
     /* STAGE 3D-D2 — and only while the price is current (priceFreshUntil). */
-    if (!pnPriceIsCurrent(product)) return 1;
+    if (pnPriceGoverned(product) && !pnPriceIsCurrent(product)) return 1;
     /* PHASE 7B-i.2 — HALF-OPEN BANDS, SO EACH PRICE HAS EXACTLY ONE BAND.
 
        The upper bound used to be inclusive as well as the lower one, so a
@@ -17720,7 +17720,7 @@ html.pn-myplot-view:not(.pn-myplot-open) body::after{content:"Opening My Plot\20
          already carries no ineligible or held figure; expiry is re-read here, at
          the time of use, so a page left open past a price's last day stops
          ordering by it. */
-      const amount = (e && e.product && pnPriceIsCurrent(e.product))
+      const amount = (e && e.product && (!pnPriceGoverned(e.product) || pnPriceIsCurrent(e.product)))
         ? pnUsablePrice(e.product.price) : null;
       if (amount == null) { unpriced.push(e); continue; }
       const cur = pnGovernedCurrency(e.product);
@@ -35818,6 +35818,10 @@ html.pn-myplot-view:not(.pn-myplot-open) body::after{content:"Opening My Plot\20
     } catch (e) { /* fall through */ }
     return new Date().toISOString().slice(0, 10);
   }
+  /* Governed by R-MATCH: the record carries the generator's priceState. The
+     Additional Home corpus and legacy fallback exports do not, and keep exactly
+     the price behaviour they had before Stage 3D-D2. */
+  function pnPriceGoverned(P){ return !!P && P.priceState !== undefined && P.priceState !== null; }
   /* Raw universe record OR a pool product: eligible now? Fails closed. */
   function pnPriceIsCurrent(P){
     if (!P) return false;
@@ -35837,11 +35841,8 @@ html.pn-myplot-view:not(.pn-myplot-open) body::after{content:"Opening My Plot\20
     const st = P.priceState;
     if (st === 'eligible') return pnPriceIsCurrent(P) ? 'eligible' : 'not-verified';
     if (st) return st;
-    /* No governed state (a legacy export): a number without a current R-MATCH
-       stamp is not shown as current. */
-    const n = typeof P.price === 'number' && isFinite(P.price) && P.price > 0;
-    if (n) return pnPriceIsCurrent(P) ? 'eligible' : 'not-verified';
-    return 'none';
+    /* Not governed by R-MATCH (Additional Home, legacy exports): unchanged. */
+    return 'ungoverned';
   }
   const PB046_UNVERIFIED_PRICE = 'Price not currently verified';
 
