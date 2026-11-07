@@ -234,12 +234,15 @@ PRICE_TEMPLATE = '''
             stand behind.</span>
           <span class="dq-note">From %(orgs)d suppliers, out of %(records)d garden-room
             products in PlotNua&rsquo;s %(asof)s research snapshot%(note)s.</span></li>
-      <li><span class="dq-fact">%(nobasis)d of them do not establish what the price
-            includes.</span>
-          <span class="dq-note">A kit you assemble, a building delivered and erected,
-            and a turnkey finish with foundations and power are three different
-            purchases. The same building lands at very different numbers depending on
-            which one you are being quoted.</span></li>
+      <!-- Stage 3D-C2 (founder decision, 7 Nov 2026): the statistic "N of them do not
+           establish what the price includes" is retired; the approved explanation
+           replaces it, with no figure. -->
+      <li><span class="dq-fact">Not every garden-room price covers the same
+            things.</span>
+          <span class="dq-note">Some prices include the building, foundations and
+            installation. Others are for kits or buildings that need additional
+            work. PlotNua separates these so you can compare your options more
+            confidently.</span></li>
       <li><span class="dq-fact">%(novat)d do not publish whether VAT is in the
             price.</span>
           <span class="dq-note">That can make a substantial difference to the price

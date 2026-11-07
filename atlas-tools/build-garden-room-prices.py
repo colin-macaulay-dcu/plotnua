@@ -761,15 +761,19 @@ def extras(dated, t):
             dates.append(d)
         counts[k] = c
     word = {1: "one", 2: "two", 3: "three", 4: "four", 5: "five", 6: "six", 7: "seven", 8: "eight", 9: "nine"}
-    def part(c, k, phrase):
-        return "%s %s" % (phrase, word.get(c[k], c[k]))
-    items = "".join(
-        '<li><strong>%s:</strong> %s, %s, %s.</li>'
-        % (label, part(counts[k], "included", "included in the price by"),
-           part(counts[k], "extra", "charged separately or left to you by"),
-           part(counts[k], "notEstablished", "not stated by"))
-        for k, label in EXTRAS_ROWS)
     n = t["organisations"]
+
+    # Stage 3D-C2: a state no supplier is in is left out rather than counted as "by 0", and a
+    # state every supplier is in reads "by all four".
+    def parts(c):
+        out = []
+        for k, phrase in (("included", "included in the price by"),
+                          ("extra", "charged separately or left to you by"),
+                          ("notEstablished", "not stated by")):
+            if c[k]:
+                out.append("%s %s%s" % (phrase, "all " if c[k] == n and n > 1 else "", word.get(c[k], c[k])))
+        return ", ".join(out)
+    items = "".join('<li><strong>%s:</strong> %s.</li>' % (label, parts(counts[k])) for k, label in EXTRAS_ROWS)
     return (
         '<h3 class="pd-h3" id="what-may-cost-extra">What may cost extra: what the %s suppliers behind the installed range say</h3>\n'
         '<p>The installed, finished range above comes from %s suppliers. This is what they publish '

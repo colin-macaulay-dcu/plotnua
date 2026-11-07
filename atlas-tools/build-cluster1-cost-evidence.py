@@ -25,6 +25,7 @@ atlas-tools/build-garden-room-prices.py (relevant(), segment()).
   python3 atlas-tools/build-cluster1-cost-evidence.py --check        fidelity + committed file == generated
   python3 atlas-tools/build-cluster1-cost-evidence.py --apply        fidelity, then write
 """
+import copy
 import hashlib
 import importlib.util
 import json
@@ -104,6 +105,15 @@ def register():
     return reg
 
 
+RECLASSIFY_PATHS = (
+    ("features", "installationModel"), ("priceEvidenceRef", "basisLeadPhrase"),
+    ("priceEvidenceRef", "basisSource"), ("priceBasisAxes",), ("priceBasisClass",),
+    ("priceBasisConfidence",), ("vatStatus",), ("priceEvidence", "includesVat"),
+    ("priceEvidence", "vatBasis"), ("priceType",), ("priceEvidence", "priceType"),
+    ("priceEvidenceRef", "priceType"), ("priceIsRangeFloor",),
+)
+
+
 def apply_corrections(products, reg):
     """The snapshot's product list with every registered correction applied.
     Each listed product takes its record from the universe at the deployed
@@ -144,6 +154,29 @@ def apply_corrections(products, reg):
                 rec = dict(out[idx[0]])
                 rec["priceSafeForMatching"] = False
                 rec["evidenceExcluded"] = entry["reason"].strip()
+                out[idx[0]] = rec
+                continue
+            # STAGE 3D-C2 (founder approval, 7 Nov 2026): "reclassified" takes from the deployed
+            # record ONLY the fields a pricing-methodology correction may move -- the installation
+            # classification and the basis fields derived from it, the VAT position, and the Price
+            # Type -- and keeps every other field (price, check date, status) as the evidence
+            # already holds it. A methodology correction can therefore never carry an unrelated,
+            # unregistered price or check-date change into the price evidence.
+            if entry.get("expect") == "reclassified":
+                if pid not in deployed:
+                    die("correction %s: %s is reclassified but is not published at the deployed commit"
+                        % (c["id"], pid))
+                rec = copy.deepcopy(out[idx[0]])
+                dep = deployed[pid]
+                for path in RECLASSIFY_PATHS:
+                    src, dst = dep, rec
+                    for k in path[:-1]:
+                        src = src.get(k) or {}
+                        dst = dst.setdefault(k, {})
+                    if path[-1] in src:
+                        dst[path[-1]] = copy.deepcopy(src[path[-1]])
+                    else:
+                        dst.pop(path[-1], None)
                 out[idx[0]] = rec
                 continue
             if pid in deployed:

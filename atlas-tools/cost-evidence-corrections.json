@@ -1111,6 +1111,737 @@
         }
       ],
       "pageNote": "one unpublished supplier record removed"
+    },
+    {
+      "id": "stage3d-c2-pricing-methodology-2026-11-07",
+      "date": "2026-11-07",
+      "approved": "Founder Stage 3D-C2, 7 November 2026 ('PRICING METHODOLOGY — CONTROLLED IMPLEMENTATION AND PRODUCTION RELEASE', implementing the Stage 3D-C1 package): Adman Steel Sheds (9) reclassified 'Installed, but foundations excluded' (founder-held); ÖÖD House (7) 'Supply only, installation extra' (held); Modular House (2) 'Installed and finished', Price Type Sale Price, figures preserved; Live in Garden Pods 'Installed, base not stated' (founder-held); Loghouse unchanged; kits classified for Pineca Ireland (65), Hansa24 Group (34) and Powersheds (3); VAT rule B with safeguards for 21 Hansa24 products (atlas-tools/vat-terms-evidence.json); Shomera Contemporary 36,450 -> 35,950 (Price To 46,950 -> 46,450) and Classic Price To 44,950 -> 44,450, both re-read 7 Nov 2026. Atlas written and read back field by field on 7 Nov 2026 (147 records, 0 mismatches).",
+      "deployedCommit": "c3234cc96a10a12aee3ee0dd3d8daf99e94ed39e",
+      "deployedUniverseSha256": "b09fc66f8f9647ea31daea493ea013a5cd60a8f667409e2e2df7d3ff58d0854f",
+      "rule": "The two Shomera products (approved price corrections SH1-SH2) take their record from the universe at deployedCommit. Every other enumerated product is RECLASSIFIED: it takes from that universe only its installation classification and the basis fields derived from it, its VAT position and its Price Type, and keeps its price and check date as the evidence already holds them (published by atlas-tools/publish-methodology-correction.py from the real Atlas read-back). LOCAL RELEASE CANDIDATE: deployedCommit is valid at release only if it reaches production unchanged (fast-forward, no rebase).",
+      "products": [
+        {
+          "id": "recagT4dAtSxxdqv4",
+          "name": "Multiroom Garden Room 3m x 3.2m",
+          "expect": "reclassified"
+        },
+        {
+          "id": "recXi7u4Hv7tTcB80",
+          "name": "Multiroom Garden Room 3m x 4.2m",
+          "expect": "reclassified"
+        },
+        {
+          "id": "recsgAs9snaK2MAfa",
+          "name": "Multiroom Garden Room 3m x 5.2m",
+          "expect": "reclassified"
+        },
+        {
+          "id": "recnbJjoXIbfxOgk2",
+          "name": "Multiroom Garden Room 3m x 6.2m",
+          "expect": "reclassified"
+        },
+        {
+          "id": "recaGNRHjWWXqcX52",
+          "name": "Multiroom Garden Room 3m x 9.2m",
+          "expect": "reclassified"
+        },
+        {
+          "id": "recA0HnNkzltWWhzi",
+          "name": "Multiroom Garden Room 4m x 4.2m",
+          "expect": "reclassified"
+        },
+        {
+          "id": "rechMRoBym2H90To9",
+          "name": "Multiroom Garden Room 4m x 5.2m",
+          "expect": "reclassified"
+        },
+        {
+          "id": "recWPmFXg8981XQtw",
+          "name": "Multiroom Garden Room 4m x 6.2m",
+          "expect": "reclassified"
+        },
+        {
+          "id": "recUpbnPlPJO7N2wa",
+          "name": "Multiroom Garden Room 4m x 9.2m",
+          "expect": "reclassified"
+        },
+        {
+          "id": "recGGCVFmV7lY1zkj",
+          "name": "ÖÖD Extended House",
+          "expect": "reclassified"
+        },
+        {
+          "id": "recyc7vNON16NzYFD",
+          "name": "ÖÖD Glämping House",
+          "expect": "reclassified"
+        },
+        {
+          "id": "recl9ITOz7WlqPPBn",
+          "name": "ÖÖD Glääzy House",
+          "expect": "reclassified"
+        },
+        {
+          "id": "reczasgBzBbqP1lBg",
+          "name": "ÖÖD Mobile House",
+          "expect": "reclassified"
+        },
+        {
+          "id": "reciFE98KRWuAhBwP",
+          "name": "ÖÖD Möön House",
+          "expect": "reclassified"
+        },
+        {
+          "id": "recoQZlqmpfv3T5bz",
+          "name": "ÖÖD Signature House",
+          "expect": "reclassified"
+        },
+        {
+          "id": "recPWKdUbLnAvXxmU",
+          "name": "ÖÖD The Big Monolith",
+          "expect": "reclassified"
+        },
+        {
+          "id": "recrfXlRTCNCf8VB5",
+          "name": "Studio Living Pod",
+          "expect": "reclassified"
+        },
+        {
+          "id": "recl3VI1veyjsT24l",
+          "name": "Corner garden house Fargo B (G0346)",
+          "expect": "reclassified"
+        },
+        {
+          "id": "receZA66qs0E5LT2p",
+          "name": "Corner garden house with porch Hansa A (G0197)",
+          "expect": "reclassified"
+        },
+        {
+          "id": "recqDgZWzbf4ZBCjV",
+          "name": "Garden Office Pod EMMY Insulated — 4 m² (2 × 2 m)",
+          "expect": "reclassified"
+        },
+        {
+          "id": "recSWydkgzSMz5B7j",
+          "name": "Garden Office Pod EMMY Insulated — 6 m² (3 × 2 m)",
+          "expect": "reclassified"
+        },
+        {
+          "id": "recAKghANvktTh5th",
+          "name": "Garden Office Pod EMMY Insulated — 9 m² (3 × 3 m)",
+          "expect": "reclassified"
+        },
+        {
+          "id": "reckQ8q0LG5kn3SzA",
+          "name": "Garden Office Pod EVELIN Insulated — 4 m² (2 × 2 m)",
+          "expect": "reclassified"
+        },
+        {
+          "id": "recDhG3uyGgWDOaRc",
+          "name": "Garden Office Pod EVELIN Insulated — 6 m² (3 × 2 m)",
+          "expect": "reclassified"
+        },
+        {
+          "id": "rec5sm0JPQlW12IhM",
+          "name": "Garden Office Pod EVELIN Insulated — 9 m² (3 × 3 m)",
+          "expect": "reclassified"
+        },
+        {
+          "id": "recMRt5v3NinVqVZA",
+          "name": "Garden Office Pod PIA Insulated — 4 m² (2 × 2 m)",
+          "expect": "reclassified"
+        },
+        {
+          "id": "reclhiSZzZ8Z1o8Vr",
+          "name": "Garden Office Pod PIA Insulated — 6 m² (3 × 2 m)",
+          "expect": "reclassified"
+        },
+        {
+          "id": "recmVHWJUDvgVkhir",
+          "name": "Garden Office Pod PIA Insulated — 9 m² (3 × 3 m)",
+          "expect": "reclassified"
+        },
+        {
+          "id": "recmLjSRTqGnWo2HH",
+          "name": "Garden Office Pod PREMIUM Insulated — 4 m² (2 × 2 m)",
+          "expect": "reclassified"
+        },
+        {
+          "id": "rec7XxofruouZ8Ky0",
+          "name": "Garden Office Pod PREMIUM Insulated — 6 m² (3 × 2 m)",
+          "expect": "reclassified"
+        },
+        {
+          "id": "recKNc0MiKQsCBxPp",
+          "name": "Garden Office Pod PREMIUM Insulated — 9 m² (3 × 3 m)",
+          "expect": "reclassified"
+        },
+        {
+          "id": "recmjltdnxHrLHFGY",
+          "name": "Garden Office Pod TONIA Insulated — 4 m² (2 × 2 m)",
+          "expect": "reclassified"
+        },
+        {
+          "id": "recLZzmBaX7HTUL64",
+          "name": "Garden Office Pod TONIA Insulated — 6 m² (3 × 2 m)",
+          "expect": "reclassified"
+        },
+        {
+          "id": "recGfh1sJT5PoGlPy",
+          "name": "Garden Office Pod TONIA Insulated — 9 m² (3 × 3 m)",
+          "expect": "reclassified"
+        },
+        {
+          "id": "rec2HcpQC2XLbXB6u",
+          "name": "Garden Office Room TINA Insulated — 12 m² (4 × 4 m)",
+          "expect": "reclassified"
+        },
+        {
+          "id": "reconmJKlMWJ5pyMP",
+          "name": "Garden Office Room TINA Insulated — 15 m² (5 × 4 m)",
+          "expect": "reclassified"
+        },
+        {
+          "id": "recgzLoJn6ZqFrRQa",
+          "name": "Garden Office Room TINA Insulated — 16.5 m² (5.5 × 4 m)",
+          "expect": "reclassified"
+        },
+        {
+          "id": "recyhf1UYBH0UyQCZ",
+          "name": "Garden Office Room TINA Insulated — 20 m² (7 × 4 m)",
+          "expect": "reclassified"
+        },
+        {
+          "id": "rec7j3UAWh2YlI5yY",
+          "name": "Garden Office Shed CLOCKHOUSE 34 mm — 4 × 3 m, 12 m²",
+          "expect": "reclassified"
+        },
+        {
+          "id": "recM97JxF5ApSVDEN",
+          "name": "Garden Office Shed ESSEX 34 mm — 5 × 4 m, 20 m²",
+          "expect": "reclassified"
+        },
+        {
+          "id": "rec3kF9a2ilxfDwdK",
+          "name": "Garden Office Shed POOLHOUSE 34 mm — 4 × 3 m, 12 m²",
+          "expect": "reclassified"
+        },
+        {
+          "id": "recmmfGslZeE7icQG",
+          "name": "Garden Office TINA Insulated — 22 m² (5.5 × 5 m)",
+          "expect": "reclassified"
+        },
+        {
+          "id": "recEEE6kGA3EH47QV",
+          "name": "Garden Room + Terrace PREMIUM Insulated — 15 m² + 9 m² (5 × 3 m)",
+          "expect": "reclassified"
+        },
+        {
+          "id": "recxIO17c0iIsnnN2",
+          "name": "Garden Room AMARA Insulated 4 × 3 m — 10 m²",
+          "expect": "reclassified"
+        },
+        {
+          "id": "recTiY6gVXP1zbBOF",
+          "name": "Garden Room AMARA Insulated 5 × 3 m — 13 m²",
+          "expect": "reclassified"
+        },
+        {
+          "id": "recE1sTxnHbf6CDKI",
+          "name": "Garden Room AMARA with a shed Insulated 6 × 3 m — 15 m²",
+          "expect": "reclassified"
+        },
+        {
+          "id": "recHIPdYOuXrB58Ja",
+          "name": "Garden Room CLOCKHOUSE 44 mm — 5.5 × 4 m, 22 m²",
+          "expect": "reclassified"
+        },
+        {
+          "id": "recSZs9cj2ied4PUZ",
+          "name": "Garden Room DEVON 34 mm — 6 × 4 m, 24 m²",
+          "expect": "reclassified"
+        },
+        {
+          "id": "recNaU2YoNF4hwr81",
+          "name": "Garden Room DEVON 44 mm — 6 × 4 m, 24 m²",
+          "expect": "reclassified"
+        },
+        {
+          "id": "recdpqAF9uwvrY8SE",
+          "name": "Garden Room EMMY PLUS — 18 m² (6 × 3 m)",
+          "expect": "reclassified"
+        },
+        {
+          "id": "recuZ2uhqaZ7vTHXn",
+          "name": "Garden Room ESSEX 44 mm — 20 m²",
+          "expect": "reclassified"
+        },
+        {
+          "id": "recPnncp3xgUp4fXe",
+          "name": "Garden Room INES Insulated 6 × 3 m — 18 m²",
+          "expect": "reclassified"
+        },
+        {
+          "id": "recvyBqUCGJbgR7KF",
+          "name": "Garden Room INES PLUS with L-shape terrace Insulated 6 × 6 m — 36 m²",
+          "expect": "reclassified"
+        },
+        {
+          "id": "recS2oSLmZfE52362",
+          "name": "Garden Room INES PLUS with front terrace Insulated 6 × 6 m — 36 m²",
+          "expect": "reclassified"
+        },
+        {
+          "id": "recSCARXaKNvNB6jz",
+          "name": "Garden Room INES PLUS with terrace Insulated 6 × 3 m — 18 m²",
+          "expect": "reclassified"
+        },
+        {
+          "id": "recS6JnqOR9U2sJdN",
+          "name": "Garden Room INES with terrace Insulated 6 × 3 m — 18 m²",
+          "expect": "reclassified"
+        },
+        {
+          "id": "recX7MXMp0JZ0U02A",
+          "name": "Garden Room LAYLA Insulated 4 × 3 m — 10 m²",
+          "expect": "reclassified"
+        },
+        {
+          "id": "recqCSPBdJNaxXdj8",
+          "name": "Garden Room LAYLA Insulated 5 × 3 m — 13 m²",
+          "expect": "reclassified"
+        },
+        {
+          "id": "rec5peu653lMb8Mwr",
+          "name": "Garden Room MAJA 44 mm — 30 m²",
+          "expect": "reclassified"
+        },
+        {
+          "id": "recmfx280vF18ZMio",
+          "name": "Garden Room PIA PLUS Insulated — 15 m² (5 × 3 m)",
+          "expect": "reclassified"
+        },
+        {
+          "id": "recG8ZURqipnYxkPv",
+          "name": "Garden Room POOLHOUSE 44 mm — 4 × 3 m, 12 m²",
+          "expect": "reclassified"
+        },
+        {
+          "id": "recKdqQuuzZJq5HsA",
+          "name": "Garden Room PREMIUM Insulated — 10 m² (4.1 × 2.4 m)",
+          "expect": "reclassified"
+        },
+        {
+          "id": "rec4mZnfwNaZY3Cct",
+          "name": "Garden Room PREMIUM Insulated — 15 m² (5 × 3 m)",
+          "expect": "reclassified"
+        },
+        {
+          "id": "recDnzOilx5J3gZkq",
+          "name": "Garden Room PREMIUM Insulated — 18 m² (6 × 3 m)",
+          "expect": "reclassified"
+        },
+        {
+          "id": "recSmHx380ErbPKqR",
+          "name": "Garden Room PREMIUM Insulated — 20 m² (5 × 4 m)",
+          "expect": "reclassified"
+        },
+        {
+          "id": "recLJUSuiWceOIhB2",
+          "name": "Garden Room PREMIUM Insulated — 24 m² (6 × 4 m)",
+          "expect": "reclassified"
+        },
+        {
+          "id": "rec7lCEgSoUMphJOK",
+          "name": "Garden Room PREMIUM Insulated — 28 m² (7 × 4 m)",
+          "expect": "reclassified"
+        },
+        {
+          "id": "recJ7l2wnNtqA81Di",
+          "name": "Garden Room Studio MARINA Modern 34 mm Insulated — 48 m²",
+          "expect": "reclassified"
+        },
+        {
+          "id": "recqztqIHLNw0oxiC",
+          "name": "Garden Room Studio MARINA Modern 44 mm Insulated — 48 m²",
+          "expect": "reclassified"
+        },
+        {
+          "id": "recacexFxPvge0zmd",
+          "name": "Garden Room TONIA PLUS Insulated — 15 m² (5 × 3 m)",
+          "expect": "reclassified"
+        },
+        {
+          "id": "recc9X2WIaSTIDdpM",
+          "name": "Garden Studio ANNA 34 mm — 20 m² + 16 m² terrace",
+          "expect": "reclassified"
+        },
+        {
+          "id": "recvzbW2TrkQJ2Jri",
+          "name": "Garden Studio ANNA 44 mm — 20 m² + 16 m² terrace",
+          "expect": "reclassified"
+        },
+        {
+          "id": "recAw3tJ6Tbv2NApd",
+          "name": "Garden Studio MAJA 66 mm — 30 m²",
+          "expect": "reclassified"
+        },
+        {
+          "id": "rec6xZihu22JTKLHa",
+          "name": "Garden Studio MARINA 44 mm — 48 m²",
+          "expect": "reclassified"
+        },
+        {
+          "id": "recmXWkxGMIFCScnQ",
+          "name": "Garden Studio MARINA 66 mm — 48 m²",
+          "expect": "reclassified"
+        },
+        {
+          "id": "recmBwEjSR1XciA4e",
+          "name": "Garden Studio MARTA 44 mm — 5 × 4 m, 20 m²",
+          "expect": "reclassified"
+        },
+        {
+          "id": "recY2qfKsFU8AiRF7",
+          "name": "Garden Studio MARTA 66 mm — 5 × 4 m, 20 m²",
+          "expect": "reclassified"
+        },
+        {
+          "id": "recLXzBKOHCTZDq0z",
+          "name": "Garden home office Jacob D (G0138)",
+          "expect": "reclassified"
+        },
+        {
+          "id": "recZQE4vdTOY4k081",
+          "name": "Garden house Eva D (G0123)",
+          "expect": "reclassified"
+        },
+        {
+          "id": "recldnlBYTnpxfY3a",
+          "name": "Garden house Eva E (G0128)",
+          "expect": "reclassified"
+        },
+        {
+          "id": "recuwK4UChkiBcXSD",
+          "name": "Garden house Leon (G0416)",
+          "expect": "reclassified"
+        },
+        {
+          "id": "rec6knDHpGnLPk10q",
+          "name": "Garden house with canopy Eva D (G0150)",
+          "expect": "reclassified"
+        },
+        {
+          "id": "rec3idYKdchyLPRmw",
+          "name": "Garden house with shed and porch Super Eva E (G0245)",
+          "expect": "reclassified"
+        },
+        {
+          "id": "recdmqC4R70FUdBB9",
+          "name": "Garden house with side shed and veranda Rio (G0165)",
+          "expect": "reclassified"
+        },
+        {
+          "id": "recaKjk3mMaplGfZn",
+          "name": "Garden house with veranda attached Henry (G0103)",
+          "expect": "reclassified"
+        },
+        {
+          "id": "rec4nfCU2DriX8FTw",
+          "name": "Garden log cabin with sleeping loft Sweden B (G0266)",
+          "expect": "reclassified"
+        },
+        {
+          "id": "recuScjdzUmWaGDKy",
+          "name": "Garden office pod Hansa Mini 2 (G0311)",
+          "expect": "reclassified"
+        },
+        {
+          "id": "recfHdGREBnhONH0z",
+          "name": "Garden office room Jacob B (G0136)",
+          "expect": "reclassified"
+        },
+        {
+          "id": "recD2MUDOfcVYhVAD",
+          "name": "Garden room with shower and toilet Mia 2 (G0305)",
+          "expect": "reclassified"
+        },
+        {
+          "id": "recVXGQJUJjzrnvoS",
+          "name": "Garden summer house Malaga 2 (G0241)",
+          "expect": "reclassified"
+        },
+        {
+          "id": "recgW5dzgjNE0SfUm",
+          "name": "Golf simulator garden house Sim 3 (G0353)",
+          "expect": "reclassified"
+        },
+        {
+          "id": "recP87CaHz3Xnnirc",
+          "name": "Golf simulator garden house Sim 4 (G0354)",
+          "expect": "reclassified"
+        },
+        {
+          "id": "recYEbdh609RbWrDm",
+          "name": "Granny Annexe PREMIUM 10.5 × 4.5 m — 47 m²",
+          "expect": "reclassified"
+        },
+        {
+          "id": "rec5WMRAy3Vmvvt5i",
+          "name": "Granny Annexe PREMIUM 6 × 5 m — 30 m²",
+          "expect": "reclassified"
+        },
+        {
+          "id": "recEbONDLwU5yM5VO",
+          "name": "Granny Annexe PREMIUM 6.5 × 4.5 m — 30 m²",
+          "expect": "reclassified"
+        },
+        {
+          "id": "rec074zfl5rheSI3y",
+          "name": "Granny Annexe PREMIUM 7.5 × 4 m — 30 m²",
+          "expect": "reclassified"
+        },
+        {
+          "id": "rec9emjJtN4YXaAOF",
+          "name": "Large garden house with sleeping loft Bruno 2 (G0375)",
+          "expect": "reclassified"
+        },
+        {
+          "id": "recwDvaFmzWXHhtxK",
+          "name": "Large garden office Ian D (G0210)",
+          "expect": "reclassified"
+        },
+        {
+          "id": "recn2jneZ7gvsz5bP",
+          "name": "Large garden office with canopy Ian E (G0227)",
+          "expect": "reclassified"
+        },
+        {
+          "id": "recSqpr8Hbph72Lsl",
+          "name": "Large garden room Snooker XL 2 (G0301)",
+          "expect": "reclassified"
+        },
+        {
+          "id": "recm4ShGKIAWDlgg9",
+          "name": "Modular House — The Compact 15m²",
+          "expect": "reclassified"
+        },
+        {
+          "id": "recbwAaAUFUWj5OvT",
+          "name": "Modular House — The Studio 25m²",
+          "expect": "reclassified"
+        },
+        {
+          "id": "recBe8RNLA9PMLnKn",
+          "name": "Office Pod PREMIUM L Insulated — 4 m² (2 × 2 m)",
+          "expect": "reclassified"
+        },
+        {
+          "id": "reci2mq7Tol26wCfU",
+          "name": "Office Pod PREMIUM L Insulated — 6 m² (3 × 2 m)",
+          "expect": "reclassified"
+        },
+        {
+          "id": "recN9D3RTtuasOQZf",
+          "name": "Office Pod PREMIUM L Insulated — 9 m² (3 × 3 m)",
+          "expect": "reclassified"
+        },
+        {
+          "id": "rec5vWzjIqSh17vrw",
+          "name": "Outdoor garden house Eva C (G0120)",
+          "expect": "reclassified"
+        },
+        {
+          "id": "recuf0hjaMX4UjajA",
+          "name": "Small garden house Eva X (G0124)",
+          "expect": "reclassified"
+        },
+        {
+          "id": "reckpxBs1ZkYdPEZY",
+          "name": "Small garden house Nora C (G0117)",
+          "expect": "reclassified"
+        },
+        {
+          "id": "recgE5ZH8K0BHs2UU",
+          "name": "Small garden house Nora D (G0122)",
+          "expect": "reclassified"
+        },
+        {
+          "id": "recnz0dYBdb95jpUA",
+          "name": "Small garden house Nora X (G0125)",
+          "expect": "reclassified"
+        },
+        {
+          "id": "rec1N3Nk3syFuega5",
+          "name": "Small garden office Hansa Mini 1 (G0310)",
+          "expect": "reclassified"
+        },
+        {
+          "id": "recfFE3fvs3AyWJJV",
+          "name": "Small garden room Lucas E (G0134)",
+          "expect": "reclassified"
+        },
+        {
+          "id": "recRhYcvhMHoR8FTf",
+          "name": "Small outdoor garden house Nora B (G0116)",
+          "expect": "reclassified"
+        },
+        {
+          "id": "recF7UuFQftO8qoEC",
+          "name": "Small outdoor garden room Lucas D (G0133)",
+          "expect": "reclassified"
+        },
+        {
+          "id": "recZnSAtp1fnsH1F4",
+          "name": "Spacious garden room Rebeka Plus (G0395)",
+          "expect": "reclassified"
+        },
+        {
+          "id": "recBOEv8CRZDDg7ti",
+          "name": "Summer house with canopy Ian C (G0171)",
+          "expect": "reclassified"
+        },
+        {
+          "id": "recvDRTUlerLWVQsG",
+          "name": "Summer house with shed Super Fred (G0173)",
+          "expect": "reclassified"
+        },
+        {
+          "id": "recStQFDuLyEMVYaG",
+          "name": "Summer house with side shed Super Otto (G0172)",
+          "expect": "reclassified"
+        },
+        {
+          "id": "recLcmGihJ0mrfdwV",
+          "name": "12x12 Apex Classic Log Cabin",
+          "expect": "reclassified"
+        },
+        {
+          "id": "recYM6hUVXceIrmmv",
+          "name": "14x14 Apex Classic Log Cabin",
+          "expect": "reclassified"
+        },
+        {
+          "id": "recrmlUXvX9TbgTj7",
+          "name": "16x12 Apex Log Cabin",
+          "expect": "reclassified"
+        },
+        {
+          "id": "rec2kgqP990nZPkmN",
+          "name": "Garden Room Barbados Plus with Storage",
+          "expect": "reclassified"
+        },
+        {
+          "id": "rec4sje6wXjpOsYKG",
+          "name": "Garden House Linda",
+          "expect": "reclassified"
+        },
+        {
+          "id": "rec5lkqEoNRHGuXn3",
+          "name": "Modern Garden Room Trinity",
+          "expect": "reclassified"
+        },
+        {
+          "id": "rec9uQSpCV1OnrV9y",
+          "name": "Contemporary Garden Office Olivia ALU",
+          "expect": "reclassified"
+        },
+        {
+          "id": "recAq2NceovXy5f1P",
+          "name": "Large Garden Room D",
+          "expect": "reclassified"
+        },
+        {
+          "id": "recClI0ZejdwUFLQc",
+          "name": "Contemporary Garden Room Leo",
+          "expect": "reclassified"
+        },
+        {
+          "id": "recEZ2nnKMBzuHnQ6",
+          "name": "Contemporary Garden Office Pod Olivia",
+          "expect": "reclassified"
+        },
+        {
+          "id": "recLg4z2cQydV02Ky",
+          "name": "Corner Garden House Hansa B with Veranda",
+          "expect": "reclassified"
+        },
+        {
+          "id": "recP4MFfAPeQfrRvG",
+          "name": "Large Corner Summer House Hansa Deluxe B",
+          "expect": "reclassified"
+        },
+        {
+          "id": "recQIhbMjC2B1EJvR",
+          "name": "Large Modern Garden Room Roberta",
+          "expect": "reclassified"
+        },
+        {
+          "id": "recTm0jDWfdkDrV1T",
+          "name": "Large Garden Room Hansa E",
+          "expect": "reclassified"
+        },
+        {
+          "id": "recX34lTvJT2y9CVY",
+          "name": "Contemporary Garden House Grace ALU",
+          "expect": "reclassified"
+        },
+        {
+          "id": "receZKzDGBygAPUmx",
+          "name": "Garden Room Liam",
+          "expect": "reclassified"
+        },
+        {
+          "id": "recgzy5w1BEgaXIWh",
+          "name": "Garden Table-Tennis Room Hansa A",
+          "expect": "reclassified"
+        },
+        {
+          "id": "rechyfJmxqpq0gXar",
+          "name": "Contemporary Garden Room Aurora",
+          "expect": "reclassified"
+        },
+        {
+          "id": "recjtDoDYtp7TKCze",
+          "name": "Garden Snooker Room Hansa B",
+          "expect": "reclassified"
+        },
+        {
+          "id": "recpxuTAtQkRURSTk",
+          "name": "Large Garden Office Barcelona",
+          "expect": "reclassified"
+        },
+        {
+          "id": "recrTAV9qTBQqNMhB",
+          "name": "Large Garden Room Hansa F",
+          "expect": "reclassified"
+        },
+        {
+          "id": "recs0H7XsOVufI4ap",
+          "name": "Garden Room Barbados",
+          "expect": "reclassified"
+        },
+        {
+          "id": "recw0oy0R5hOJwoAs",
+          "name": "Large Garden Room C",
+          "expect": "reclassified"
+        },
+        {
+          "id": "recwZgVdrpD1osfLQ",
+          "name": "Garden House Super Tom with Side Shed",
+          "expect": "reclassified"
+        },
+        {
+          "id": "recompzydsCVirAt1",
+          "name": "Shomera Contemporary Range",
+          "expect": "replaced"
+        },
+        {
+          "id": "recS4ar9jaIFmsb8A",
+          "name": "Shomera Classic Range",
+          "expect": "replaced"
+        }
+      ],
+      "pageNote": "pricing methodology applied on 7 November 2026"
     }
   ]
 }
