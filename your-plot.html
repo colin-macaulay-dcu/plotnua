@@ -20558,7 +20558,7 @@ html.pn-myplot-view:not(.pn-myplot-open) body::after{content:"Opening My Plot\20
     'TURNKEY INSTALLATION INCLUDED \u2014 FOUNDATIONS TO ELECTRICS AT A FIXED PRICE':
       ['Turnkey installation included', 'Foundations to electrics at a fixed price'],
     'TURNKEY INSTALLATION INCLUDED \u2014 FOUNDATIONS AND SITE WORKS PRICED SEPARATELY':
-      ['Turnkey installation included', 'Foundations and site works priced separately'],
+      ['Installation included', 'Foundations and site works priced separately'],
     'TURNKEY INSTALLATION INCLUDED \u2014 SITE PREPARATION INSIDE THE SCOPE':
       ['Turnkey installation included', 'Site preparation inside the scope'],
   };
@@ -33737,6 +33737,11 @@ html.pn-myplot-view:not(.pn-myplot-open) body::after{content:"Opening My Plot\20
     { key: 'baseNotStated', re: /^TURNKEY INSTALLATION INCLUDED\b.*FOUNDATION NOT STATED/ },
     { key: 'baseExcluded', re: /^TURNKEY INSTALLATION INCLUDED\b.*(FOUNDATION EXCLUDED|BASE AND INTERIOR EXCLUDED|BUILDING ONLY, THREE EXCLUSIONS)/ },
     { key: 'supply',   re: /^INSTALLATION AVAILABLE \(OPTIONAL\)/ },
+    /* STAGE 3D-D1 (founder approved 7 Nov 2026): Rayco's head says installation is included
+       but foundations and site works are priced separately. Without this class it reached the
+       plain turnkey lead, which then claimed the foundations were included. Tested before
+       'included'; Rayco is the only product it matches. */
+    { key: 'siteWorksSeparate', re: /^TURNKEY INSTALLATION INCLUDED\b.*FOUNDATIONS AND SITE WORKS PRICED SEPARATELY/ },
     { key: 'included', re: /^(TURNKEY INSTALLATION INCLUDED|SUPPLY AND FIT)/ },
     { key: 'optional', re: /^DIY OR INSTALLED/ },
     { key: 'kit',      re: /^(DIY KIT ONLY|SUPPLY-ONLY KIT)/ },
@@ -33765,7 +33770,15 @@ html.pn-myplot-view:not(.pn-myplot-open) body::after{content:"Opening My Plot\20
     if (!inst && vat.state === 'included') return null;
 
     let lead;
-    if (inst === 'baseExcluded') {
+    /* For this class only: a WITHHELD figure (presentation hold) is never shown, so nothing
+       is said about "this price" -- no price-type or VAT caveat. Other withheld products
+       (PREMIUM S) are deliberately not affected. */
+    let priceCaveats = true;
+    if (inst === 'siteWorksSeparate') {
+      lead = maker + ' describes its garden rooms as installed, with foundations and site works '
+           + 'quoted separately.';
+      if (pe.presentationHold && pe.presentationHold.figure === 'withheld') priceCaveats = false;
+    } else if (inst === 'baseExcluded') {
       lead = maker + ' includes installation in this price, but not the base it stands on, '
            + 'which is a separate cost.';
     } else if (inst === 'baseNotStated') {
@@ -33799,13 +33812,17 @@ html.pn-myplot-view:not(.pn-myplot-open) body::after{content:"Opening My Plot\20
     catch (e) { figure = null; }
 
     const caveats = [];
-    if (/^(Starting From|Custom Quote|Estimated Price)$/i.test(basis)) {
+    if (!priceCaveats) {
+      /* nothing: see siteWorksSeparate above */
+    } else if (/^(Starting From|Custom Quote|Estimated Price)$/i.test(basis)) {
       const word = /custom quote/i.test(basis) ? 'quoted price'
                  : /estimated/i.test(basis)    ? 'estimated price'
                  : 'starting price';
       caveats.push((figure ? figure + ' is a ' : 'this is a ') + word);
     }
-    if (vat.state === 'disputed') {
+    if (!priceCaveats) {
+      /* nothing */
+    } else if (vat.state === 'disputed') {
       caveats.push('Atlas found conflicting information about whether VAT is included');
     } else if (vat.state === 'unknown') {
       caveats.push('Atlas hasn’t established whether VAT is included');
