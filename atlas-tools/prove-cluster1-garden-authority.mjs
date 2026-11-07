@@ -238,7 +238,8 @@ if (PRICE) {
   const v = visible(PRICE);
   const want = {
     relevantProducts: FIG.relevantProducts,
-    priceBasisNotEstablished: FIG.priceBasisNotEstablished,
+    // Stage 3D-C2 (founder decision, 7 Nov 2026): the "N of them do not establish what the
+    // price includes" statistic is retired from the page; the figure stays in the artefact only.
     vatStatusUnknown: FIG.vatStatusUnknown,
     floorAreaPublished: FIG.floorAreaPublished,
     gardenRoomRecords: EV.totals.gardenRoomRecords,
@@ -257,7 +258,7 @@ if (PRICE) {
   const rogue = [...new Set([...v.matchAll(/\b(\d{2,})\b/g)].map(m => m[1]))].filter(n => !allowed.has(n));
   if (missing.length) bad('P2', `artefact figure(s) absent from the page: ${missing.join(', ')}`);
   else if (rogue.length) bad('P2', `untraced figure(s) in the price section: ${rogue.join(', ')}`);
-  else ok('P2', `all six artefact figures present (${Object.values(want).join('/')}), no untraced figures`);
+  else ok('P2', `all five artefact figures present (${Object.values(want).join('/')}), no untraced figures`);
 }
 
 // --- P3 · no Class 3A price, no census claim -------------------------------

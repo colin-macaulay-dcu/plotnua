@@ -24,7 +24,10 @@ import copy, json, pathlib, re, subprocess, sys
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 PID = "recej5DFaBD76ODlv"
 FIG_RE = re.compile(r"8,678|8678|8 678")
-BASE = "651a154"
+# Moved forward 7 Nov 2026 (Stage 3D-C2, founder-approved pricing methodology): 64 other Pineca
+# records gained an approved Installation Model in c3234cc, so "every other record unchanged"
+# is now measured from that publication. PREMIUM S itself is byte-identical across it.
+BASE = "c3234cc"
 for i, a in enumerate(sys.argv):
     if a == "--base" and i + 1 < len(sys.argv):
         BASE = sys.argv[i + 1]
