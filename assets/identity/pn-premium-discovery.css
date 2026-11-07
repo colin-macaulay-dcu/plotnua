@@ -387,6 +387,8 @@ body.pn-id.pn-pd .pd-figs > div > p > span:first-child{ display:block; font-fami
 body.pn-id.pn-pd .pd-figs > div > p > span + span{ display:block; font-family:var(--p4-sans); font-size:16.5px; line-height:1.5; color:var(--p4-lime); }
 body.pn-id.pn-pd .pd-figs > div + p{ margin-top:16px; font-size:14.5px !important; color:var(--p4-stone) !important; }
 body.pn-id.pn-pd .pd-figs-note{ margin-top:var(--pd-gap); }
+/* Stage 3D-C2 (7 Nov 2026): the approved explanation that replaced the retired statistic. */
+body.pn-id.pn-pd .pd-figs > p.pr-stats-intro{ margin:0 0 var(--pd-gap); max-width:68ch; }
 
 /* ---- a list read as short cards ----------------------------------------------- */
 body.pn-id.pn-pd ul.pd-tiles{ list-style:none; margin:0; padding:0; display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:var(--pd-gap); }
@@ -466,7 +468,7 @@ body.pn-id.pn-pd .pd-wa-ico img{ width:20px; height:20px; display:block; }
   body.pn-id.pn-pd .pd-pricecards tbody td:not(.pr-range){ font-size:15px; color:var(--p4-stone); padding-bottom:22px; }
   body.pn-id.pn-pd .pd-pricecards tbody td:not(.pr-range)::before{ display:block; font-family:var(--p4-sans); font-weight:700; font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:var(--p4-bronze-text); margin:0 0 4px; }
   body.pn-id.pn-pd .pd-pricecards tbody td:nth-of-type(2)::before{ content:"Based on"; }
-  body.pn-id.pn-pd .pd-pricecards tbody td:nth-of-type(3)::before{ content:"Price says VAT is included"; }
+  body.pn-id.pn-pd .pd-pricecards tbody td:nth-of-type(3)::before{ content:"VAT included, as stated by the supplier"; }
   body.pn-id.pn-pd .pd-pricecards caption{ display:block; }
   body.pn-id.pn-pd .pd-paper{ padding:28px 20px; }
   body.pn-id.pn-pd ol.pd-checklist > li{ grid-template-columns:36px 1fr; font-size:16px; }
