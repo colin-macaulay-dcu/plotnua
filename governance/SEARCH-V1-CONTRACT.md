@@ -345,7 +345,7 @@ links to all 13 public Discoveries. Search then enhances it.
 
 ---
 
-## AMENDMENT A2 · EURO-ONLY PRICES (6 November 2026, Stage 3D-B1; PREPARED, founder approval pending)
+## AMENDMENT A2 · EURO-ONLY PRICES (6 November 2026, Stage 3D-B1; founder-approved and released to production 6 November 2026, commit 8d7e882)
 
 **Defect.** `search.js` formats every `price` as euro (`money()`) and the price intent
 ("under €30,000") filters products on `price` and suppliers on `priceRange[0]`. The
