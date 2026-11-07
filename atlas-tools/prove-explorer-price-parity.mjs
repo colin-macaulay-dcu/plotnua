@@ -80,8 +80,14 @@ function check(cfg) {
       const verified = e.status === 'Verified';
       if (verified && v.currency === 'EUR') {
         k = 'verified EUR';
-        if (line !== v.display + ' incl. VAT' && line !== v.display + ' excl. VAT' && line !== v.display + ' · VAT not stated')
-          bad.push(`P4 ${r.id}: verified EUR without its VAT position: "${line}"`);
+        /* Stage 3D-C2: the exact VAT tail the record's own position calls for. A terms-based
+           VAT-inclusive price (vatBasis "supplier-terms") reads "incl. VAT (supplier's terms)". */
+        const vat = String(e.includesVat || '').trim().toLowerCase();
+        const tail = vat === 'yes' ? (e.vatBasis === 'supplier-terms' ? ' incl. VAT (supplier\u2019s terms)' : ' incl. VAT')
+                   : (vat === 'no' || vat === 'excluding vat') ? ' excl. VAT' : ' · VAT not stated';
+        if (line !== v.display + tail)
+          bad.push(`P4 ${r.id}: verified EUR without its exact VAT position: "${line}"`);
+        if (e.vatBasis === 'supplier-terms') k = 'verified EUR (supplier terms)';
       } else if (verified && v.currency === 'GBP') {
         k = 'verified GBP';
         if (line !== v.display + ' · UK price') bad.push(`P4 ${r.id}: verified GBP wording: "${line}"`);
@@ -114,6 +120,8 @@ const faults = [
   ['sterling shown as euro', c => { const p = find(c, p => (p[4] || '').endsWith('UK price')); p[4] = p[4].replace('£', '€'); }, 'P2'],
   ['an indicative price shown as verified', c => { const p = find(c, p => (p[4] || '').startsWith('Indicative price: €') || (p[4] || '').startsWith('Indicative price: From €')); p[4] = p[4].replace('Indicative price: ', '') + ' · VAT not stated'; }, 'P4'],
   ['the VAT position dropped', c => { const p = find(c, p => (p[4] || '').endsWith(' · VAT not stated')); p[4] = p[4].replace(' · VAT not stated', ''); }, 'P4'],
+  ['the supplier-terms VAT basis dropped', c => { const p = find(c, p => (p[4] || '').endsWith(' incl. VAT (supplier\u2019s terms)')); p[4] = p[4].replace(' (supplier\u2019s terms)', ''); }, 'P4'],
+  ['a supplier-terms VAT basis claimed for a price-level position', c => { const p = find(c, p => /€[\d,]+ incl\. VAT$/.test(p[4] || '')); p[4] = p[4] + ' (supplier\u2019s terms)'; }, 'P4'],
   ['a regional held price shown without its qualification', c => { const p = find(c, p => (p[4] || '').includes('. Price includes VAT, delivery and installation in Dublin and Wicklow only.')); p[4] = p[4].split('. Price includes')[0] + ' incl. VAT'; }, 'P6'],
   ['a withheld figure shown in the explorer', c => { const p = find(c, p => (p[4] || '').startsWith('Price on request. Rayco does not publish')); p[4] = 'Indicative price: From \u20ac29,500'; }, 'P6'],
   ['a held price shown without its qualification', c => { const p = find(c, p => (p[4] || '').includes(' excluding VAT. Ex works.')); p[4] = p[4].split(' excluding VAT. ')[0] + ' excl. VAT'; }, 'P6'],

@@ -1,0 +1,264 @@
+{
+ "schema": "plotnua.vat-terms-evidence",
+ "version": 1,
+ "what_this_is": "Founder rule B with safeguards (Stage 3D-C2, approved 7 Nov 2026): where a supplier's CURRENT terms of sale state that all its website prices include VAT, a published price on that website may be counted as VAT-inclusive. Read by atlas-tools/build-garden-room-prices.py (R-VAT), atlas-tools/publish-methodology-correction.py, Your Plot and the Maker Explorer (through priceEvidence.vatBasis = 'supplier-terms'). An accepted entry lapses 90 days after the terms were read; the guide then refuses to build until they are re-read. PlotNua records what suppliers state; it does not check or confirm any supplier's VAT rate or tax treatment.",
+ "approved": "Founder Stage 3D-C2, 7 Nov 2026: 'Implement Rule B with safeguards. Hansa24: approve VAT-inclusive classification for the 21 verified products. Use the supplier-terms evidence register. Require: current supplier-wide terms; recorded source; verification date; no contradictory product wording; rate-consistency safeguard; expiry after 90 days. Irish Log Cabins: VAT remains Unknown. Powersheds: VAT remains Unknown. Pineca: preserve existing product-level evidence.'",
+ "revenueGuidance": {
+  "read": "2026-11-07",
+  "sources": [
+   {
+    "title": "Revenue Tax and Duty Manual, VAT and Garden Sheds (last reviewed July 2025)",
+    "finding": "The supply of garden sheds and similar prefabricated structures is standard-rated; the reduced rate can apply only where the supplier erects the structure on the customer's site and the conditions (two-thirds rule, permanence, customer declaration) are met."
+   },
+   {
+    "title": "Revenue VAT rates database (garden buildings / portable buildings)",
+    "finding": "Portable buildings are standard-rated; supply and installation as a fixture is reduced-rated."
+   }
+  ],
+  "use": "The rate-consistency safeguard: a supplier statement naming a VAT rate is not relied on where that rate is inconsistent with this guidance for the kind of supply priced."
+ },
+ "suppliers": [
+  {
+   "organisation": "Hansa24 Group",
+   "status": "accepted",
+   "clause": "Terms and conditions, clause 5.3",
+   "quote": "All amounts stated in these terms and conditions or on our website are stated inclusive of VAT",
+   "source": "https://summerhouse24.ie/terms-and-conditions",
+   "checked": "2026-11-07",
+   "expires": "2027-02-05",
+   "coversWebsitePrices": true,
+   "rateStated": null,
+   "rateCheck": {
+    "result": "consistent",
+    "basis": "The terms state no VAT rate, so no stated rate conflicts with Revenue's treatment of the supply; PlotNua does not assess the rate."
+   },
+   "contraryWordingFound": false,
+   "productPagesChecked": [
+    {
+     "productId": "rec2kgqP990nZPkmN",
+     "product": "Garden Room Barbados Plus with Storage",
+     "url": "https://summerhouse24.ie/garden-room-with-storage-shed-barbados-plus-g0295/",
+     "priceShownEur": 11460,
+     "priceRecordIds": [
+      "recPfvbvSuk2xrGLf",
+      "recuRi3VYl6CEydco"
+     ],
+     "contraryVatWording": false
+    },
+    {
+     "productId": "rec4sje6wXjpOsYKG",
+     "product": "Garden House Linda",
+     "url": "https://summerhouse24.ie/garden-house-linda-g0234/",
+     "priceShownEur": 7500,
+     "priceRecordIds": [
+      "recEK2RKhYsN5VTFi"
+     ],
+     "contraryVatWording": false
+    },
+    {
+     "productId": "rec5lkqEoNRHGuXn3",
+     "product": "Modern Garden Room Trinity",
+     "url": "https://summerhouse24.ie/garden-room-trinity-g0377/",
+     "priceShownEur": 7670,
+     "priceRecordIds": [
+      "recP5rBN4RQ4wEtE4"
+     ],
+     "contraryVatWording": false
+    },
+    {
+     "productId": "rec9uQSpCV1OnrV9y",
+     "product": "Contemporary Garden Office Olivia ALU",
+     "url": "https://summerhouse24.ie/garden-office-olivia-alu-g0368/",
+     "priceShownEur": 8870,
+     "priceRecordIds": [
+      "rec7N63XObCPQYHzS"
+     ],
+     "contraryVatWording": false
+    },
+    {
+     "productId": "recAq2NceovXy5f1P",
+     "product": "Large Garden Room D",
+     "url": "https://summerhouse24.ie/large-garden-room-d-g0229/",
+     "priceShownEur": 15760,
+     "priceRecordIds": [
+      "recKwqKYVHRAz91Qi"
+     ],
+     "contraryVatWording": false
+    },
+    {
+     "productId": "recClI0ZejdwUFLQc",
+     "product": "Contemporary Garden Room Leo",
+     "url": "https://summerhouse24.ie/contemporary-garden-room-leo-g0415/",
+     "priceShownEur": 8570,
+     "priceRecordIds": [
+      "rec0yjDgfeISpEki5"
+     ],
+     "contraryVatWording": false
+    },
+    {
+     "productId": "recEZ2nnKMBzuHnQ6",
+     "product": "Contemporary Garden Office Pod Olivia",
+     "url": "https://summerhouse24.ie/garden-office-pod-olivia-g0367/",
+     "priceShownEur": 6630,
+     "priceRecordIds": [
+      "recq7Rl2SC6CqKORb"
+     ],
+     "contraryVatWording": false
+    },
+    {
+     "productId": "recLg4z2cQydV02Ky",
+     "product": "Corner Garden House Hansa B with Veranda",
+     "url": "https://summerhouse24.ie/corner-garden-house-with-veranda-hansa-b-g0198/",
+     "priceShownEur": 11370,
+     "priceRecordIds": [
+      "recWQF7J7v86hvUw9"
+     ],
+     "contraryVatWording": false
+    },
+    {
+     "productId": "recP4MFfAPeQfrRvG",
+     "product": "Large Corner Summer House Hansa Deluxe B",
+     "url": "https://summerhouse24.ie/large-corner-summer-house-deluxe-b-g0230/",
+     "priceShownEur": 14560,
+     "priceRecordIds": [
+      "recp46icELbgAVdTl"
+     ],
+     "contraryVatWording": false
+    },
+    {
+     "productId": "recQIhbMjC2B1EJvR",
+     "product": "Large Modern Garden Room Roberta",
+     "url": "https://summerhouse24.ie/modern-garden-room-roberta-g0396/",
+     "priceShownEur": 13520,
+     "priceRecordIds": [
+      "recqVSIRxiEVCMuN2"
+     ],
+     "contraryVatWording": false
+    },
+    {
+     "productId": "recTm0jDWfdkDrV1T",
+     "product": "Large Garden Room Hansa E",
+     "url": "https://summerhouse24.ie/garden-room-hansa-e-g0251/",
+     "priceShownEur": 12920,
+     "priceRecordIds": [
+      "recxLThKYOSnYe6IA"
+     ],
+     "contraryVatWording": false
+    },
+    {
+     "productId": "recX34lTvJT2y9CVY",
+     "product": "Contemporary Garden House Grace ALU",
+     "url": "https://summerhouse24.ie/garden-house-grace-alu-g0370/",
+     "priceShownEur": 9480,
+     "priceRecordIds": [
+      "recmVGTajic7fu7xs"
+     ],
+     "contraryVatWording": false
+    },
+    {
+     "productId": "receZKzDGBygAPUmx",
+     "product": "Garden Room Liam",
+     "url": "https://summerhouse24.ie/garden-room-liam-g0058/",
+     "priceShownEur": 7320,
+     "priceRecordIds": [
+      "recKUtDXga8O0f2XZ"
+     ],
+     "contraryVatWording": false
+    },
+    {
+     "productId": "recgzy5w1BEgaXIWh",
+     "product": "Garden Table-Tennis Room Hansa A",
+     "url": "https://summerhouse24.ie/garden-table-tennis-room-hansa-a-g0194/",
+     "priceShownEur": 14470,
+     "priceRecordIds": [
+      "rectxK76kNxACaavu"
+     ],
+     "contraryVatWording": false
+    },
+    {
+     "productId": "rechyfJmxqpq0gXar",
+     "product": "Contemporary Garden Room Aurora",
+     "url": "https://summerhouse24.ie/contemporary-garden-room-aurora-g0384/",
+     "priceShownEur": 10600,
+     "priceRecordIds": [
+      "recrXjXLBCZhNlOJu"
+     ],
+     "contraryVatWording": false
+    },
+    {
+     "productId": "recjtDoDYtp7TKCze",
+     "product": "Garden Snooker Room Hansa B",
+     "url": "https://summerhouse24.ie/garden-snooker-room-hansa-b-g0195/",
+     "priceShownEur": 15680,
+     "priceRecordIds": [
+      "recQaXsKXHkrBpHne"
+     ],
+     "contraryVatWording": false
+    },
+    {
+     "productId": "recpxuTAtQkRURSTk",
+     "product": "Large Garden Office Barcelona",
+     "url": "https://summerhouse24.ie/garden-office-barcelona-g0249/",
+     "priceShownEur": 7930,
+     "priceRecordIds": [
+      "rec8QOoj4qxJSVUha"
+     ],
+     "contraryVatWording": false
+    },
+    {
+     "productId": "recrTAV9qTBQqNMhB",
+     "product": "Large Garden Room Hansa F",
+     "url": "https://summerhouse24.ie/garden-room-hansa-f-g0252/",
+     "priceShownEur": 13010,
+     "priceRecordIds": [
+      "recTeR0gPgVOjmTvu"
+     ],
+     "contraryVatWording": false
+    },
+    {
+     "productId": "recs0H7XsOVufI4ap",
+     "product": "Garden Room Barbados",
+     "url": "https://summerhouse24.ie/garden-room-barbados-g0097/",
+     "priceShownEur": 7750,
+     "priceRecordIds": [
+      "rec3Lh19LkHplBdwD"
+     ],
+     "contraryVatWording": false
+    },
+    {
+     "productId": "recw0oy0R5hOJwoAs",
+     "product": "Large Garden Room C",
+     "url": "https://summerhouse24.ie/large-garden-room-c-g0228/",
+     "priceShownEur": 14380,
+     "priceRecordIds": [
+      "rec6FwXdikZl889yq"
+     ],
+     "contraryVatWording": false
+    },
+    {
+     "productId": "recwZgVdrpD1osfLQ",
+     "product": "Garden House Super Tom with Side Shed",
+     "url": "https://summerhouse24.ie/garden-house-with-side-shed-super-tom-g0203/",
+     "priceShownEur": 6980,
+     "priceRecordIds": [
+      "recfVHrLfyJsLe1Se"
+     ],
+     "contraryVatWording": false
+    }
+   ],
+   "productPagesNote": "Each product page was read on 7 Nov 2026: it shows the published price and carries no VAT wording; the shop is configured to show prices including tax. A struck-through original price appears on some pages (standing sale prices); only the current price is recorded."
+  },
+  {
+   "organisation": "Irish Log Cabins",
+   "status": "not-relied-on",
+   "reason": "Terms 2.2 state 'All prices quoted are in Euro and include 13.5% VAT' in the invoicing clause, undated. The 13.5% rate is inconsistent with Revenue's standard rate for prefabricated buildings supplied without erection, which is what these kit prices are, so the statement fails the rate-consistency safeguard. VAT remains Unknown.",
+   "checked": "2026-11-07"
+  },
+  {
+   "organisation": "Powersheds",
+   "status": "not-relied-on",
+   "reason": "No statement that prices include VAT: the site banner reads 'NO EXTRA VAT OR IMPORT CHARGES ON DELIVERY' and the terms of service carry no price-VAT statement. VAT remains Unknown.",
+   "checked": "2026-11-07"
+  }
+ ]
+}

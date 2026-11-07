@@ -1,0 +1,1182 @@
+{
+ "id": "stage3d-c2-2026-11-07",
+ "date": "2026-11-07",
+ "approved": "Founder Stage 3D-C2 authorisation, 7 November 2026 ('PRICING METHODOLOGY — CONTROLLED IMPLEMENTATION AND PRODUCTION RELEASE'): implement the approved Stage 3D-C1 methodology. Adman (9) installed, foundations excluded (founder-held); ÖÖD (7) supply only, installation extra (held); Modular House (2) installed and finished, Price Type Sale Price, figures preserved; Live in Garden Pods installed, base not stated (held); Loghouse unchanged; kits Pineca 65, Hansa24 34, Powersheds 3; VAT rule B for the 21 verified Hansa24 products (atlas-tools/vat-terms-evidence.json); Shomera SH1-SH2 price corrections. Atlas written, read back field by field (147 records, 0 mismatches) on 7 Nov 2026.",
+ "installation": [
+  {
+   "productId": "recagT4dAtSxxdqv4",
+   "featureValueIds": [
+    "recATIKctfzeQo8FS"
+   ],
+   "change": "A1",
+   "organisation": "Adman Steel Sheds"
+  },
+  {
+   "productId": "recXi7u4Hv7tTcB80",
+   "featureValueIds": [
+    "recfKtQY98MpyPwFw"
+   ],
+   "change": "A1",
+   "organisation": "Adman Steel Sheds"
+  },
+  {
+   "productId": "recsgAs9snaK2MAfa",
+   "featureValueIds": [
+    "recymeFsnUMOBJdAH"
+   ],
+   "change": "A1",
+   "organisation": "Adman Steel Sheds"
+  },
+  {
+   "productId": "recnbJjoXIbfxOgk2",
+   "featureValueIds": [
+    "recJQtKp4n1Ev3ag6"
+   ],
+   "change": "A1",
+   "organisation": "Adman Steel Sheds"
+  },
+  {
+   "productId": "recaGNRHjWWXqcX52",
+   "featureValueIds": [
+    "recuKbPJHlOlX89Wz"
+   ],
+   "change": "A1",
+   "organisation": "Adman Steel Sheds"
+  },
+  {
+   "productId": "recA0HnNkzltWWhzi",
+   "featureValueIds": [
+    "recSE0wB5SP149INE"
+   ],
+   "change": "A1",
+   "organisation": "Adman Steel Sheds"
+  },
+  {
+   "productId": "rechMRoBym2H90To9",
+   "featureValueIds": [
+    "recen5C8QMVm0wXGx"
+   ],
+   "change": "A1",
+   "organisation": "Adman Steel Sheds"
+  },
+  {
+   "productId": "recWPmFXg8981XQtw",
+   "featureValueIds": [
+    "recC4S1v9JyaALvSc"
+   ],
+   "change": "A1",
+   "organisation": "Adman Steel Sheds"
+  },
+  {
+   "productId": "recUpbnPlPJO7N2wa",
+   "featureValueIds": [
+    "recqkpvDkVKq0J4FE"
+   ],
+   "change": "A1",
+   "organisation": "Adman Steel Sheds"
+  },
+  {
+   "productId": "recGGCVFmV7lY1zkj",
+   "featureValueIds": [
+    "recuNTswWXgkFzZVR"
+   ],
+   "change": "Ö1",
+   "organisation": "ÖÖD House"
+  },
+  {
+   "productId": "recyc7vNON16NzYFD",
+   "featureValueIds": [
+    "rec4hB3Z0esZWxb7N"
+   ],
+   "change": "Ö1",
+   "organisation": "ÖÖD House"
+  },
+  {
+   "productId": "recl9ITOz7WlqPPBn",
+   "featureValueIds": [
+    "recTzktJTIRdHNimE"
+   ],
+   "change": "Ö1",
+   "organisation": "ÖÖD House"
+  },
+  {
+   "productId": "reczasgBzBbqP1lBg",
+   "featureValueIds": [
+    "recdLkItMj4vYAvV4"
+   ],
+   "change": "Ö1",
+   "organisation": "ÖÖD House"
+  },
+  {
+   "productId": "reciFE98KRWuAhBwP",
+   "featureValueIds": [
+    "recMVEsWHodykOx7W"
+   ],
+   "change": "Ö1",
+   "organisation": "ÖÖD House"
+  },
+  {
+   "productId": "recoQZlqmpfv3T5bz",
+   "featureValueIds": [
+    "rec8L8lgah8Qc8RLE"
+   ],
+   "change": "Ö1",
+   "organisation": "ÖÖD House"
+  },
+  {
+   "productId": "recPWKdUbLnAvXxmU",
+   "featureValueIds": [
+    "recinhy2iFqhiLNeD"
+   ],
+   "change": "Ö1",
+   "organisation": "ÖÖD House"
+  },
+  {
+   "productId": "recrfXlRTCNCf8VB5",
+   "featureValueIds": [
+    "recrTChUBHMWbxwLl"
+   ],
+   "change": "L1",
+   "organisation": "Live in Garden Pods"
+  },
+  {
+   "productId": "recl3VI1veyjsT24l",
+   "featureValueIds": [
+    "recqFbvRuwqu7t1dy"
+   ],
+   "change": "K1",
+   "organisation": "Hansa24 Group"
+  },
+  {
+   "productId": "receZA66qs0E5LT2p",
+   "featureValueIds": [
+    "recfppHD7Lv2OfXEP"
+   ],
+   "change": "K1",
+   "organisation": "Hansa24 Group"
+  },
+  {
+   "productId": "recqDgZWzbf4ZBCjV",
+   "featureValueIds": [
+    "rec9gwvrAlPkthI55"
+   ],
+   "change": "K1",
+   "organisation": "Pineca Ireland"
+  },
+  {
+   "productId": "recSWydkgzSMz5B7j",
+   "featureValueIds": [
+    "recT0LORteVEbntQR"
+   ],
+   "change": "K1",
+   "organisation": "Pineca Ireland"
+  },
+  {
+   "productId": "recAKghANvktTh5th",
+   "featureValueIds": [
+    "recA58BfNG1S6GR0f"
+   ],
+   "change": "K1",
+   "organisation": "Pineca Ireland"
+  },
+  {
+   "productId": "reckQ8q0LG5kn3SzA",
+   "featureValueIds": [
+    "reckJKiSBNEHisYq8"
+   ],
+   "change": "K1",
+   "organisation": "Pineca Ireland"
+  },
+  {
+   "productId": "recDhG3uyGgWDOaRc",
+   "featureValueIds": [
+    "recenEVu6FZVCDyGg"
+   ],
+   "change": "K1",
+   "organisation": "Pineca Ireland"
+  },
+  {
+   "productId": "rec5sm0JPQlW12IhM",
+   "featureValueIds": [
+    "recCyZDaQmH9xDhga"
+   ],
+   "change": "K1",
+   "organisation": "Pineca Ireland"
+  },
+  {
+   "productId": "recMRt5v3NinVqVZA",
+   "featureValueIds": [
+    "rec9UjyzHmVKVqJG1"
+   ],
+   "change": "K1",
+   "organisation": "Pineca Ireland"
+  },
+  {
+   "productId": "reclhiSZzZ8Z1o8Vr",
+   "featureValueIds": [
+    "recBqVVRXJxqOgMqr"
+   ],
+   "change": "K1",
+   "organisation": "Pineca Ireland"
+  },
+  {
+   "productId": "recmVHWJUDvgVkhir",
+   "featureValueIds": [
+    "recsF1LjNDB75qpSw"
+   ],
+   "change": "K1",
+   "organisation": "Pineca Ireland"
+  },
+  {
+   "productId": "recmLjSRTqGnWo2HH",
+   "featureValueIds": [
+    "recyoojg5CoIEHOVb"
+   ],
+   "change": "K1",
+   "organisation": "Pineca Ireland"
+  },
+  {
+   "productId": "rec7XxofruouZ8Ky0",
+   "featureValueIds": [
+    "recQ8YeVVraygpewm"
+   ],
+   "change": "K1",
+   "organisation": "Pineca Ireland"
+  },
+  {
+   "productId": "recKNc0MiKQsCBxPp",
+   "featureValueIds": [
+    "recGQoeH5qpAh13wT"
+   ],
+   "change": "K1",
+   "organisation": "Pineca Ireland"
+  },
+  {
+   "productId": "recmjltdnxHrLHFGY",
+   "featureValueIds": [
+    "recbZqE3kw66ARoYn"
+   ],
+   "change": "K1",
+   "organisation": "Pineca Ireland"
+  },
+  {
+   "productId": "recLZzmBaX7HTUL64",
+   "featureValueIds": [
+    "rec0qPKM9TuRsD8NC"
+   ],
+   "change": "K1",
+   "organisation": "Pineca Ireland"
+  },
+  {
+   "productId": "recGfh1sJT5PoGlPy",
+   "featureValueIds": [
+    "recd7wRStbLkvlG9L"
+   ],
+   "change": "K1",
+   "organisation": "Pineca Ireland"
+  },
+  {
+   "productId": "rec2HcpQC2XLbXB6u",
+   "featureValueIds": [
+    "recTEdMkzComTiGHD"
+   ],
+   "change": "K1",
+   "organisation": "Pineca Ireland"
+  },
+  {
+   "productId": "reconmJKlMWJ5pyMP",
+   "featureValueIds": [
+    "rec1ZxqSbtVi1j7I9"
+   ],
+   "change": "K1",
+   "organisation": "Pineca Ireland"
+  },
+  {
+   "productId": "recgzLoJn6ZqFrRQa",
+   "featureValueIds": [
+    "recSaO8rWg7KHiTYi"
+   ],
+   "change": "K1",
+   "organisation": "Pineca Ireland"
+  },
+  {
+   "productId": "recyhf1UYBH0UyQCZ",
+   "featureValueIds": [
+    "recmEGzAOpRhlELTX"
+   ],
+   "change": "K1",
+   "organisation": "Pineca Ireland"
+  },
+  {
+   "productId": "rec7j3UAWh2YlI5yY",
+   "featureValueIds": [
+    "rece7Il5cI8lzmxGA"
+   ],
+   "change": "K1",
+   "organisation": "Pineca Ireland"
+  },
+  {
+   "productId": "recM97JxF5ApSVDEN",
+   "featureValueIds": [
+    "recjD40C2voFLXG1E"
+   ],
+   "change": "K1",
+   "organisation": "Pineca Ireland"
+  },
+  {
+   "productId": "rec3kF9a2ilxfDwdK",
+   "featureValueIds": [
+    "recv6jPiyozFVc3mR"
+   ],
+   "change": "K1",
+   "organisation": "Pineca Ireland"
+  },
+  {
+   "productId": "recmmfGslZeE7icQG",
+   "featureValueIds": [
+    "recHn5MkeNgNKuTrN"
+   ],
+   "change": "K1",
+   "organisation": "Pineca Ireland"
+  },
+  {
+   "productId": "recEEE6kGA3EH47QV",
+   "featureValueIds": [
+    "rec9pY5hJEQyVkKpj"
+   ],
+   "change": "K1",
+   "organisation": "Pineca Ireland"
+  },
+  {
+   "productId": "recxIO17c0iIsnnN2",
+   "featureValueIds": [
+    "recTguHsLwcAETPea"
+   ],
+   "change": "K1",
+   "organisation": "Pineca Ireland"
+  },
+  {
+   "productId": "recTiY6gVXP1zbBOF",
+   "featureValueIds": [
+    "rec9HikH8votmulfT"
+   ],
+   "change": "K1",
+   "organisation": "Pineca Ireland"
+  },
+  {
+   "productId": "recE1sTxnHbf6CDKI",
+   "featureValueIds": [
+    "recJ4NnTHheyO8Kdo"
+   ],
+   "change": "K1",
+   "organisation": "Pineca Ireland"
+  },
+  {
+   "productId": "recHIPdYOuXrB58Ja",
+   "featureValueIds": [
+    "recR4RMDMgMRwnkle"
+   ],
+   "change": "K1",
+   "organisation": "Pineca Ireland"
+  },
+  {
+   "productId": "recSZs9cj2ied4PUZ",
+   "featureValueIds": [
+    "recNKvhH5EnUlp4Eq"
+   ],
+   "change": "K1",
+   "organisation": "Pineca Ireland"
+  },
+  {
+   "productId": "recNaU2YoNF4hwr81",
+   "featureValueIds": [
+    "rec3uT0OmGch0brXG"
+   ],
+   "change": "K1",
+   "organisation": "Pineca Ireland"
+  },
+  {
+   "productId": "recdpqAF9uwvrY8SE",
+   "featureValueIds": [
+    "recmC4Oyd3UlVckBq"
+   ],
+   "change": "K1",
+   "organisation": "Pineca Ireland"
+  },
+  {
+   "productId": "recuZ2uhqaZ7vTHXn",
+   "featureValueIds": [
+    "recy0s7ivPdooS3w9"
+   ],
+   "change": "K1",
+   "organisation": "Pineca Ireland"
+  },
+  {
+   "productId": "recPnncp3xgUp4fXe",
+   "featureValueIds": [
+    "recQzeBqbsHlrQMcA"
+   ],
+   "change": "K1",
+   "organisation": "Pineca Ireland"
+  },
+  {
+   "productId": "recvyBqUCGJbgR7KF",
+   "featureValueIds": [
+    "rec2J4MWLVkUkdb9Q"
+   ],
+   "change": "K1",
+   "organisation": "Pineca Ireland"
+  },
+  {
+   "productId": "recS2oSLmZfE52362",
+   "featureValueIds": [
+    "recdxI1j7I6CuQ11K"
+   ],
+   "change": "K1",
+   "organisation": "Pineca Ireland"
+  },
+  {
+   "productId": "recSCARXaKNvNB6jz",
+   "featureValueIds": [
+    "recEx2Pp2E7iIkrSg"
+   ],
+   "change": "K1",
+   "organisation": "Pineca Ireland"
+  },
+  {
+   "productId": "recS6JnqOR9U2sJdN",
+   "featureValueIds": [
+    "recLimXWpAZddqhpl"
+   ],
+   "change": "K1",
+   "organisation": "Pineca Ireland"
+  },
+  {
+   "productId": "recX7MXMp0JZ0U02A",
+   "featureValueIds": [
+    "rec0wE6XSttPwJj1C"
+   ],
+   "change": "K1",
+   "organisation": "Pineca Ireland"
+  },
+  {
+   "productId": "recqCSPBdJNaxXdj8",
+   "featureValueIds": [
+    "recmtLmSJjOmaT2wU"
+   ],
+   "change": "K1",
+   "organisation": "Pineca Ireland"
+  },
+  {
+   "productId": "rec5peu653lMb8Mwr",
+   "featureValueIds": [
+    "recjrmmahXeA0IFYS"
+   ],
+   "change": "K1",
+   "organisation": "Pineca Ireland"
+  },
+  {
+   "productId": "recmfx280vF18ZMio",
+   "featureValueIds": [
+    "recL5kYl2Gca6zONA"
+   ],
+   "change": "K1",
+   "organisation": "Pineca Ireland"
+  },
+  {
+   "productId": "recG8ZURqipnYxkPv",
+   "featureValueIds": [
+    "reccBfMur2xSlIiF8"
+   ],
+   "change": "K1",
+   "organisation": "Pineca Ireland"
+  },
+  {
+   "productId": "recKdqQuuzZJq5HsA",
+   "featureValueIds": [
+    "rec2RgWoKvfppr9gk"
+   ],
+   "change": "K1",
+   "organisation": "Pineca Ireland"
+  },
+  {
+   "productId": "rec4mZnfwNaZY3Cct",
+   "featureValueIds": [
+    "rec4NhoARAc4cYnDu"
+   ],
+   "change": "K1",
+   "organisation": "Pineca Ireland"
+  },
+  {
+   "productId": "recDnzOilx5J3gZkq",
+   "featureValueIds": [
+    "recA1LGeoyi1jZtpz"
+   ],
+   "change": "K1",
+   "organisation": "Pineca Ireland"
+  },
+  {
+   "productId": "recSmHx380ErbPKqR",
+   "featureValueIds": [
+    "recp19lgVaNm4JRxY"
+   ],
+   "change": "K1",
+   "organisation": "Pineca Ireland"
+  },
+  {
+   "productId": "recLJUSuiWceOIhB2",
+   "featureValueIds": [
+    "recGRtIsagEuH2CDo"
+   ],
+   "change": "K1",
+   "organisation": "Pineca Ireland"
+  },
+  {
+   "productId": "rec7lCEgSoUMphJOK",
+   "featureValueIds": [
+    "rechbkxWP1FiWvTqW"
+   ],
+   "change": "K1",
+   "organisation": "Pineca Ireland"
+  },
+  {
+   "productId": "recJ7l2wnNtqA81Di",
+   "featureValueIds": [
+    "recgQig6nZWAWXvVO"
+   ],
+   "change": "K1",
+   "organisation": "Pineca Ireland"
+  },
+  {
+   "productId": "recqztqIHLNw0oxiC",
+   "featureValueIds": [
+    "rectvXYKPubV6yNbD"
+   ],
+   "change": "K1",
+   "organisation": "Pineca Ireland"
+  },
+  {
+   "productId": "recacexFxPvge0zmd",
+   "featureValueIds": [
+    "rec2vTNKxgGk6H5PQ"
+   ],
+   "change": "K1",
+   "organisation": "Pineca Ireland"
+  },
+  {
+   "productId": "recc9X2WIaSTIDdpM",
+   "featureValueIds": [
+    "recAiJhDUKldScjMJ"
+   ],
+   "change": "K1",
+   "organisation": "Pineca Ireland"
+  },
+  {
+   "productId": "recvzbW2TrkQJ2Jri",
+   "featureValueIds": [
+    "recbcQxYCMMxPjIMp"
+   ],
+   "change": "K1",
+   "organisation": "Pineca Ireland"
+  },
+  {
+   "productId": "recAw3tJ6Tbv2NApd",
+   "featureValueIds": [
+    "reclCjtljlEOkMYAo"
+   ],
+   "change": "K1",
+   "organisation": "Pineca Ireland"
+  },
+  {
+   "productId": "rec6xZihu22JTKLHa",
+   "featureValueIds": [
+    "recCMZgrF0CtpfcDz"
+   ],
+   "change": "K1",
+   "organisation": "Pineca Ireland"
+  },
+  {
+   "productId": "recmXWkxGMIFCScnQ",
+   "featureValueIds": [
+    "recDxK67RAaei3lrf"
+   ],
+   "change": "K1",
+   "organisation": "Pineca Ireland"
+  },
+  {
+   "productId": "recmBwEjSR1XciA4e",
+   "featureValueIds": [
+    "recOJoeJG12eWClpD"
+   ],
+   "change": "K1",
+   "organisation": "Pineca Ireland"
+  },
+  {
+   "productId": "recY2qfKsFU8AiRF7",
+   "featureValueIds": [
+    "recZns7N3LeGBhbmM"
+   ],
+   "change": "K1",
+   "organisation": "Pineca Ireland"
+  },
+  {
+   "productId": "recLXzBKOHCTZDq0z",
+   "featureValueIds": [
+    "recLcm2XyVa71cCcX"
+   ],
+   "change": "K1",
+   "organisation": "Hansa24 Group"
+  },
+  {
+   "productId": "recZQE4vdTOY4k081",
+   "featureValueIds": [
+    "recUtjj5ATBFFnk3F"
+   ],
+   "change": "K1",
+   "organisation": "Hansa24 Group"
+  },
+  {
+   "productId": "recldnlBYTnpxfY3a",
+   "featureValueIds": [
+    "reczEHyWwVjhG2yYI"
+   ],
+   "change": "K1",
+   "organisation": "Hansa24 Group"
+  },
+  {
+   "productId": "recuwK4UChkiBcXSD",
+   "featureValueIds": [
+    "recWpLFGRnaSas2ye"
+   ],
+   "change": "K1",
+   "organisation": "Hansa24 Group"
+  },
+  {
+   "productId": "rec6knDHpGnLPk10q",
+   "featureValueIds": [
+    "rec7YAulruqdntNBO"
+   ],
+   "change": "K1",
+   "organisation": "Hansa24 Group"
+  },
+  {
+   "productId": "rec3idYKdchyLPRmw",
+   "featureValueIds": [
+    "recIgauhG6XvbCwrb"
+   ],
+   "change": "K1",
+   "organisation": "Hansa24 Group"
+  },
+  {
+   "productId": "recdmqC4R70FUdBB9",
+   "featureValueIds": [
+    "rec68eA6Xlts5FIOq"
+   ],
+   "change": "K1",
+   "organisation": "Hansa24 Group"
+  },
+  {
+   "productId": "recaKjk3mMaplGfZn",
+   "featureValueIds": [
+    "recOFLTnk9OXSj5RO"
+   ],
+   "change": "K1",
+   "organisation": "Hansa24 Group"
+  },
+  {
+   "productId": "rec4nfCU2DriX8FTw",
+   "featureValueIds": [
+    "rec8xy5mmPdsoYhKY"
+   ],
+   "change": "K1",
+   "organisation": "Hansa24 Group"
+  },
+  {
+   "productId": "recuScjdzUmWaGDKy",
+   "featureValueIds": [
+    "recfxHi78mCBTIy7u"
+   ],
+   "change": "K1",
+   "organisation": "Hansa24 Group"
+  },
+  {
+   "productId": "recfHdGREBnhONH0z",
+   "featureValueIds": [
+    "rec0tRMmMwjRLNi3S"
+   ],
+   "change": "K1",
+   "organisation": "Hansa24 Group"
+  },
+  {
+   "productId": "recD2MUDOfcVYhVAD",
+   "featureValueIds": [
+    "rec2NNj24nSIQkwE1"
+   ],
+   "change": "K1",
+   "organisation": "Hansa24 Group"
+  },
+  {
+   "productId": "recVXGQJUJjzrnvoS",
+   "featureValueIds": [
+    "recXn5RIZJgoLS3IC"
+   ],
+   "change": "K1",
+   "organisation": "Hansa24 Group"
+  },
+  {
+   "productId": "recgW5dzgjNE0SfUm",
+   "featureValueIds": [
+    "recFhTK8uSoo8CIpP"
+   ],
+   "change": "K1",
+   "organisation": "Hansa24 Group"
+  },
+  {
+   "productId": "recP87CaHz3Xnnirc",
+   "featureValueIds": [
+    "recnWU5A7ZfLMKGn2"
+   ],
+   "change": "K1",
+   "organisation": "Hansa24 Group"
+  },
+  {
+   "productId": "recYEbdh609RbWrDm",
+   "featureValueIds": [
+    "recn79QYSHANoCZw7"
+   ],
+   "change": "K1",
+   "organisation": "Pineca Ireland"
+  },
+  {
+   "productId": "rec5WMRAy3Vmvvt5i",
+   "featureValueIds": [
+    "recFhr7FSbO0M9OlY"
+   ],
+   "change": "K1",
+   "organisation": "Pineca Ireland"
+  },
+  {
+   "productId": "recEbONDLwU5yM5VO",
+   "featureValueIds": [
+    "recjXcfpMdwoWNhCj"
+   ],
+   "change": "K1",
+   "organisation": "Pineca Ireland"
+  },
+  {
+   "productId": "rec074zfl5rheSI3y",
+   "featureValueIds": [
+    "recbfW1MhfAXfoXv5"
+   ],
+   "change": "K1",
+   "organisation": "Pineca Ireland"
+  },
+  {
+   "productId": "rec9emjJtN4YXaAOF",
+   "featureValueIds": [
+    "recLHqW38ii4Z0MbX"
+   ],
+   "change": "K1",
+   "organisation": "Hansa24 Group"
+  },
+  {
+   "productId": "recwDvaFmzWXHhtxK",
+   "featureValueIds": [
+    "rec51PYPpxbW9bFFv"
+   ],
+   "change": "K1",
+   "organisation": "Hansa24 Group"
+  },
+  {
+   "productId": "recn2jneZ7gvsz5bP",
+   "featureValueIds": [
+    "rec9CIDmqkWaDpNNA"
+   ],
+   "change": "K1",
+   "organisation": "Hansa24 Group"
+  },
+  {
+   "productId": "recSqpr8Hbph72Lsl",
+   "featureValueIds": [
+    "recnDlEkeESzw8hBK"
+   ],
+   "change": "K1",
+   "organisation": "Hansa24 Group"
+  },
+  {
+   "productId": "recm4ShGKIAWDlgg9",
+   "featureValueIds": [
+    "recbH1ReZCnZqm0GP"
+   ],
+   "change": "M1",
+   "organisation": "Modular House"
+  },
+  {
+   "productId": "recbwAaAUFUWj5OvT",
+   "featureValueIds": [
+    "rech6yMk6iwXo7Ifs"
+   ],
+   "change": "M1",
+   "organisation": "Modular House"
+  },
+  {
+   "productId": "recBe8RNLA9PMLnKn",
+   "featureValueIds": [
+    "recaJk8Hwl6zLmJ76"
+   ],
+   "change": "K1",
+   "organisation": "Pineca Ireland"
+  },
+  {
+   "productId": "reci2mq7Tol26wCfU",
+   "featureValueIds": [
+    "recC8l8c61yRyXxJo"
+   ],
+   "change": "K1",
+   "organisation": "Pineca Ireland"
+  },
+  {
+   "productId": "recN9D3RTtuasOQZf",
+   "featureValueIds": [
+    "recCTXbsx17kF11Zt"
+   ],
+   "change": "K1",
+   "organisation": "Pineca Ireland"
+  },
+  {
+   "productId": "rec5vWzjIqSh17vrw",
+   "featureValueIds": [
+    "rec4HQHAIhrnIvcHM"
+   ],
+   "change": "K1",
+   "organisation": "Hansa24 Group"
+  },
+  {
+   "productId": "recuf0hjaMX4UjajA",
+   "featureValueIds": [
+    "recQGMjE5NW2n3fQA"
+   ],
+   "change": "K1",
+   "organisation": "Hansa24 Group"
+  },
+  {
+   "productId": "reckpxBs1ZkYdPEZY",
+   "featureValueIds": [
+    "recnaIRQMj1SQbtkq"
+   ],
+   "change": "K1",
+   "organisation": "Hansa24 Group"
+  },
+  {
+   "productId": "recgE5ZH8K0BHs2UU",
+   "featureValueIds": [
+    "rec2fS6ae4QK9O9K3"
+   ],
+   "change": "K1",
+   "organisation": "Hansa24 Group"
+  },
+  {
+   "productId": "recnz0dYBdb95jpUA",
+   "featureValueIds": [
+    "recORP948XYN6Pzwd"
+   ],
+   "change": "K1",
+   "organisation": "Hansa24 Group"
+  },
+  {
+   "productId": "rec1N3Nk3syFuega5",
+   "featureValueIds": [
+    "recVSAqkW9LkX66U5"
+   ],
+   "change": "K1",
+   "organisation": "Hansa24 Group"
+  },
+  {
+   "productId": "recfFE3fvs3AyWJJV",
+   "featureValueIds": [
+    "recBAc9LJVZU3LVYK"
+   ],
+   "change": "K1",
+   "organisation": "Hansa24 Group"
+  },
+  {
+   "productId": "recRhYcvhMHoR8FTf",
+   "featureValueIds": [
+    "rechTFsBWpK4cMI3D"
+   ],
+   "change": "K1",
+   "organisation": "Hansa24 Group"
+  },
+  {
+   "productId": "recF7UuFQftO8qoEC",
+   "featureValueIds": [
+    "recNs78uDhRTyptJe"
+   ],
+   "change": "K1",
+   "organisation": "Hansa24 Group"
+  },
+  {
+   "productId": "recZnSAtp1fnsH1F4",
+   "featureValueIds": [
+    "rec7wN0WsT4PfPjbb"
+   ],
+   "change": "K1",
+   "organisation": "Hansa24 Group"
+  },
+  {
+   "productId": "recBOEv8CRZDDg7ti",
+   "featureValueIds": [
+    "recefjWVgVQxNyuyC"
+   ],
+   "change": "K1",
+   "organisation": "Hansa24 Group"
+  },
+  {
+   "productId": "recvDRTUlerLWVQsG",
+   "featureValueIds": [
+    "recc3TUM1rIaL1cM7"
+   ],
+   "change": "K1",
+   "organisation": "Hansa24 Group"
+  },
+  {
+   "productId": "recStQFDuLyEMVYaG",
+   "featureValueIds": [
+    "recfGZViV46ITvm4b"
+   ],
+   "change": "K1",
+   "organisation": "Hansa24 Group"
+  },
+  {
+   "productId": "recLcmGihJ0mrfdwV",
+   "featureValueIds": [
+    "recrVRIIQBQVCZCwr"
+   ],
+   "change": "K1",
+   "organisation": "Powersheds"
+  },
+  {
+   "productId": "recYM6hUVXceIrmmv",
+   "featureValueIds": [
+    "recji4wMOaQB3WxwQ"
+   ],
+   "change": "K1",
+   "organisation": "Powersheds"
+  },
+  {
+   "productId": "recrmlUXvX9TbgTj7",
+   "featureValueIds": [
+    "recsAAMTHtSSiZ1Bp"
+   ],
+   "change": "K1",
+   "organisation": "Powersheds"
+  }
+ ],
+ "vat": [
+  {
+   "productId": "rec2kgqP990nZPkmN",
+   "priceRecordIds": [
+    "recPfvbvSuk2xrGLf",
+    "recuRi3VYl6CEydco"
+   ],
+   "basis": "supplier-terms",
+   "organisation": "Hansa24 Group"
+  },
+  {
+   "productId": "rec4sje6wXjpOsYKG",
+   "priceRecordIds": [
+    "recEK2RKhYsN5VTFi"
+   ],
+   "basis": "supplier-terms",
+   "organisation": "Hansa24 Group"
+  },
+  {
+   "productId": "rec5lkqEoNRHGuXn3",
+   "priceRecordIds": [
+    "recP5rBN4RQ4wEtE4"
+   ],
+   "basis": "supplier-terms",
+   "organisation": "Hansa24 Group"
+  },
+  {
+   "productId": "rec9uQSpCV1OnrV9y",
+   "priceRecordIds": [
+    "rec7N63XObCPQYHzS"
+   ],
+   "basis": "supplier-terms",
+   "organisation": "Hansa24 Group"
+  },
+  {
+   "productId": "recAq2NceovXy5f1P",
+   "priceRecordIds": [
+    "recKwqKYVHRAz91Qi"
+   ],
+   "basis": "supplier-terms",
+   "organisation": "Hansa24 Group"
+  },
+  {
+   "productId": "recClI0ZejdwUFLQc",
+   "priceRecordIds": [
+    "rec0yjDgfeISpEki5"
+   ],
+   "basis": "supplier-terms",
+   "organisation": "Hansa24 Group"
+  },
+  {
+   "productId": "recEZ2nnKMBzuHnQ6",
+   "priceRecordIds": [
+    "recq7Rl2SC6CqKORb"
+   ],
+   "basis": "supplier-terms",
+   "organisation": "Hansa24 Group"
+  },
+  {
+   "productId": "recLg4z2cQydV02Ky",
+   "priceRecordIds": [
+    "recWQF7J7v86hvUw9"
+   ],
+   "basis": "supplier-terms",
+   "organisation": "Hansa24 Group"
+  },
+  {
+   "productId": "recP4MFfAPeQfrRvG",
+   "priceRecordIds": [
+    "recp46icELbgAVdTl"
+   ],
+   "basis": "supplier-terms",
+   "organisation": "Hansa24 Group"
+  },
+  {
+   "productId": "recQIhbMjC2B1EJvR",
+   "priceRecordIds": [
+    "recqVSIRxiEVCMuN2"
+   ],
+   "basis": "supplier-terms",
+   "organisation": "Hansa24 Group"
+  },
+  {
+   "productId": "recTm0jDWfdkDrV1T",
+   "priceRecordIds": [
+    "recxLThKYOSnYe6IA"
+   ],
+   "basis": "supplier-terms",
+   "organisation": "Hansa24 Group"
+  },
+  {
+   "productId": "recX34lTvJT2y9CVY",
+   "priceRecordIds": [
+    "recmVGTajic7fu7xs"
+   ],
+   "basis": "supplier-terms",
+   "organisation": "Hansa24 Group"
+  },
+  {
+   "productId": "receZKzDGBygAPUmx",
+   "priceRecordIds": [
+    "recKUtDXga8O0f2XZ"
+   ],
+   "basis": "supplier-terms",
+   "organisation": "Hansa24 Group"
+  },
+  {
+   "productId": "recgzy5w1BEgaXIWh",
+   "priceRecordIds": [
+    "rectxK76kNxACaavu"
+   ],
+   "basis": "supplier-terms",
+   "organisation": "Hansa24 Group"
+  },
+  {
+   "productId": "rechyfJmxqpq0gXar",
+   "priceRecordIds": [
+    "recrXjXLBCZhNlOJu"
+   ],
+   "basis": "supplier-terms",
+   "organisation": "Hansa24 Group"
+  },
+  {
+   "productId": "recjtDoDYtp7TKCze",
+   "priceRecordIds": [
+    "recQaXsKXHkrBpHne"
+   ],
+   "basis": "supplier-terms",
+   "organisation": "Hansa24 Group"
+  },
+  {
+   "productId": "recpxuTAtQkRURSTk",
+   "priceRecordIds": [
+    "rec8QOoj4qxJSVUha"
+   ],
+   "basis": "supplier-terms",
+   "organisation": "Hansa24 Group"
+  },
+  {
+   "productId": "recrTAV9qTBQqNMhB",
+   "priceRecordIds": [
+    "recTeR0gPgVOjmTvu"
+   ],
+   "basis": "supplier-terms",
+   "organisation": "Hansa24 Group"
+  },
+  {
+   "productId": "recs0H7XsOVufI4ap",
+   "priceRecordIds": [
+    "rec3Lh19LkHplBdwD"
+   ],
+   "basis": "supplier-terms",
+   "organisation": "Hansa24 Group"
+  },
+  {
+   "productId": "recw0oy0R5hOJwoAs",
+   "priceRecordIds": [
+    "rec6FwXdikZl889yq"
+   ],
+   "basis": "supplier-terms",
+   "organisation": "Hansa24 Group"
+  },
+  {
+   "productId": "recwZgVdrpD1osfLQ",
+   "priceRecordIds": [
+    "recfVHrLfyJsLe1Se"
+   ],
+   "basis": "supplier-terms",
+   "organisation": "Hansa24 Group"
+  }
+ ],
+ "priceType": [
+  {
+   "productId": "recbwAaAUFUWj5OvT",
+   "priceRecordId": "recVj8SuyFqH5Z7Ud",
+   "from": "Starting From",
+   "to": "Sale Price"
+  },
+  {
+   "productId": "recm4ShGKIAWDlgg9",
+   "priceRecordId": "recdRuIoEzK90i771",
+   "from": "Starting From",
+   "to": "Sale Price"
+  }
+ ],
+ "price": [
+  {
+   "productId": "recompzydsCVirAt1",
+   "priceRecordId": "recoP4v6gYk8wQ9uS",
+   "publishedPrice": 36450,
+   "approvedPrice": 35950,
+   "publishedTo": 46950,
+   "approvedTo": 46450,
+   "checked": "2026-11-07",
+   "correction": "SH1"
+  },
+  {
+   "productId": "recS4ar9jaIFmsb8A",
+   "priceRecordId": "recDiJX5C1S3DbbUo",
+   "publishedPrice": 28450,
+   "approvedPrice": 28450,
+   "publishedTo": 44950,
+   "approvedTo": 44450,
+   "checked": "2026-11-07",
+   "correction": "SH2"
+  }
+ ]
+}

@@ -639,6 +639,12 @@ def garden_price_label(r):
     e = r.get("priceEvidence") or {}
     if e.get("status") == "Verified" and cur == "EUR":
         vat = (e.get("includesVat") or "").strip().lower()
+        # Stage 3D-C2 (founder approval, 7 Nov 2026): a VAT-inclusive position resting on
+        # the supplier's current terms of sale (atlas-tools/vat-terms-evidence.json) says so.
+        if vat == "yes" and e.get("vatBasis") == "supplier-terms":
+            return disp + " incl. VAT (supplier\u2019s terms)"
+        if e.get("vatBasis") not in (None, "supplier-terms") or (e.get("vatBasis") and vat != "yes"):
+            die("price: %s carries an unknown or contradictory VAT basis" % r["id"])
         return disp + (" incl. VAT" if vat == "yes" else " excl. VAT" if vat in ("no", "excluding vat") else " \u00b7 VAT not stated")
     if e.get("status") == "Verified" and cur == "GBP":
         return disp + REGION_NOTE["GBP"]

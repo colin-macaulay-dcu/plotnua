@@ -20440,6 +20440,15 @@ html.pn-myplot-view:not(.pn-myplot-open) body::after{content:"Opening My Plot\20
   /* A finding sized for a table cell. 5% of findings run past 72 characters;
      for those the clause before Atlas's own em-dash or semicolon is used —
      still Atlas's words, never a paraphrase. */
+  /* STAGE 3D-C2 — an installation finding the closed label map knows is looked up WHOLE,
+     even past a table cell's length: cutting "TURNKEY INSTALLATION INCLUDED — SITE
+     PREPARATION INSIDE THE SCOPE, FOUNDATION NOT STATED" at its dash would drop the very
+     words that say the base is not established, and read as plain turnkey. */
+  function pnInstallShort(read, max){
+    if (read && read.finding && PN_LABEL_INSTALL[String(read.finding).trim()]) return String(read.finding).trim();
+    return atlasFeatureShort(read, max);
+  }
+
   function atlasFeatureShort(read, max){
     if (!read || !read.finding) return null;
     const cap = max || 72;
@@ -20519,10 +20528,19 @@ html.pn-myplot-view:not(.pn-myplot-open) body::after{content:"Opening My Plot\20
       ['Turnkey installation included', 'Foundations and VAT inside the price'],
     'TURNKEY INSTALLATION INCLUDED \u2014 WITHIN ENGLAND':
       ['Turnkey installation included', 'Within England'],
+    /* STAGE 3D-C2 (founder, 7 Nov 2026): "Do not describe a price as turnkey when its
+       required base is excluded." Every key whose own words exclude the base answers
+       "Installation included", with the exclusion as the note. */
     'TURNKEY INSTALLATION INCLUDED \u2014 UNIT ONLY, FOUNDATION EXCLUDED':
-      ['Turnkey installation included', 'Unit only \u2014 foundation excluded'],
+      ['Installation included', 'Unit only \u2014 foundation excluded'],
     'TURNKEY INSTALLATION INCLUDED \u2014 BUILDING ONLY, THREE EXCLUSIONS':
-      ['Turnkey installation included', 'Building only \u2014 three exclusions'],
+      ['Installation included', 'Building only \u2014 three exclusions'],
+    'TURNKEY INSTALLATION INCLUDED \u2014 FOUNDATION EXCLUDED':
+      ['Installation included', 'Base not included'],
+    'TURNKEY INSTALLATION INCLUDED \u2014 SITE PREPARATION INSIDE THE SCOPE, FOUNDATION NOT STATED':
+      ['Installation included', 'Base not stated by the supplier'],
+    'INSTALLATION AVAILABLE (OPTIONAL) \u2014 ARRANGED BY THE CUSTOMER IN IRELAND':
+      ['Supply only', 'Installation arranged by you'],
     'TURNKEY INSTALLATION INCLUDED \u2014 FOUNDATIONS AND SERVICES INSIDE THE SCOPE':
       ['Turnkey installation included', 'Foundations and services inside the scope'],
     'TURNKEY INSTALLATION INCLUDED \u2014 FOUNDATION, DELIVERY AND CRANE INSIDE THE PRICE':
@@ -20530,7 +20548,7 @@ html.pn-myplot-view:not(.pn-myplot-open) body::after{content:"Opening My Plot\20
     'TURNKEY INSTALLATION INCLUDED \u2014 FOUNDATIONS INSIDE THE SCOPE':
       ['Turnkey installation included', 'Foundations inside the scope'],
     'TURNKEY INSTALLATION INCLUDED \u2014 STRUCTURE ONLY, BASE AND INTERIOR EXCLUDED':
-      ['Turnkey installation included', 'Structure only \u2014 base and interior excluded'],
+      ['Installation included', 'Structure only \u2014 base and interior excluded'],
     'TURNKEY INSTALLATION INCLUDED \u2014 SITE PREPARATION AND CONNECTIONS COORDINATED':
       ['Turnkey installation included', 'Site preparation and connections coordinated'],
     'TURNKEY INSTALLATION INCLUDED \u2014 GROUND PREPARATION EXCLUDED':
@@ -21799,7 +21817,9 @@ html.pn-myplot-view:not(.pn-myplot-open) body::after{content:"Opening My Plot\20
         research: saysIn ? 'states VAT is inside the published price'
           : 'states the published price is before VAT' };
     }
-    if (peIn) return { state: 'included' };
+    /* STAGE 3D-C2 — founder rule B: a VAT-inclusive position that rests on the supplier's
+       current terms of sale (atlas-tools/vat-terms-evidence.json) says so. */
+    if (peIn) return pe.vatBasis === 'supplier-terms' ? { state: 'included', basis: 'supplier-terms' } : { state: 'included' };
     if (peOut) return { state: 'excluded' };
     return { state: 'unknown' };
   }
@@ -22093,7 +22113,7 @@ html.pn-myplot-view:not(.pn-myplot-open) body::after{content:"Opening My Plot\20
            evidence resolver instead. Dormant today; correct when revived. */
         ['VAT', (function(){
           const v = pnVatPosition(product);
-          if (v.state === 'included') return 'Recorded as included';
+          if (v.state === 'included') return v.basis === 'supplier-terms' ? 'Included, according to the supplier\u2019s terms of sale' : 'Recorded as included';
           if (v.state === 'excluded') return 'Recorded as NOT included';
           if (v.state === 'disputed') return 'Atlas holds conflicting evidence \u2014 confirm with the provider';
           return 'Provider confirmation required';
@@ -22246,7 +22266,9 @@ html.pn-myplot-view:not(.pn-myplot-open) body::after{content:"Opening My Plot\20
           + '; separate research ' + vat.research + '.';
         vatLi.appendChild(d);
       } else if (vat.state === 'included'){
-        vatVal.textContent = 'Recorded as included in the published price';
+        vatVal.textContent = vat.basis === 'supplier-terms'
+          ? 'Included, according to the supplier\u2019s terms of sale'
+          : 'Recorded as included in the published price';
       } else if (vat.state === 'excluded'){
         vatVal.textContent = 'Recorded as NOT included \u2014 budget for it on top';
       } else {
@@ -26536,7 +26558,7 @@ html.pn-myplot-view:not(.pn-myplot-open) body::after{content:"Opening My Plot\20
     let answer = '', note = '';
     if (labelKey) {
       let m = null;
-      try { m = pnHomeownerLabel(labelKey, atlasFeatureShort(ev, 72)); } catch (e) { m = null; }
+      try { m = pnHomeownerLabel(labelKey, labelKey === 'Installation' ? pnInstallShort(ev, 72) : atlasFeatureShort(ev, 72)); } catch (e) { m = null; }
       if (m && m.answer) { answer = m.answer; note = m.note || ''; }
     }
     if (!answer) answer = atlasFeatureShort(ev, 88) || raw;
@@ -32325,7 +32347,7 @@ html.pn-myplot-view:not(.pn-myplot-open) body::after{content:"Opening My Plot\20
                included" instead of a shouted research heading. Unmapped values
                fall through to the Piece C behaviour unchanged; Compare is not
                widened and no other row is touched. */
-            ev.finding, pnHomeownerLabel('Installation', atlasFeatureShort(ev, 72)).answer,
+            ev.finding, pnHomeownerLabel('Installation', pnInstallShort(ev, 72)).answer,
             'atlas:feature/installationModel', null, note || null);
         }
         /* ATLAS 487 BATCH 4 PIECE 3 — THE FALLBACK NOW READS GOVERNED DATA
@@ -33707,7 +33729,14 @@ html.pn-myplot-view:not(.pn-myplot-open) body::after{content:"Opening My Plot\20
      to 23 per cent. pnVatPosition() is the shipped resolver, reused rather
      than re-implemented, so this card cannot disagree with any other surface
      about VAT. */
+  /* STAGE 3D-C2 (founder approval, 7 Nov 2026). A price is not called turnkey where the
+     classification's own words exclude the base or leave it unstated, and a supply-only
+     price says installation is arranged separately. Order matters: the specific heads are
+     tested before the plain turnkey one. Rayco's withheld record is untouched. */
   const BYD_INSTALL_CLASS = [
+    { key: 'baseNotStated', re: /^TURNKEY INSTALLATION INCLUDED\b.*FOUNDATION NOT STATED/ },
+    { key: 'baseExcluded', re: /^TURNKEY INSTALLATION INCLUDED\b.*(FOUNDATION EXCLUDED|BASE AND INTERIOR EXCLUDED|BUILDING ONLY, THREE EXCLUSIONS)/ },
+    { key: 'supply',   re: /^INSTALLATION AVAILABLE \(OPTIONAL\)/ },
     { key: 'included', re: /^(TURNKEY INSTALLATION INCLUDED|SUPPLY AND FIT)/ },
     { key: 'optional', re: /^DIY OR INSTALLED/ },
     { key: 'kit',      re: /^(DIY KIT ONLY|SUPPLY-ONLY KIT)/ },
@@ -33736,7 +33765,15 @@ html.pn-myplot-view:not(.pn-myplot-open) body::after{content:"Opening My Plot\20
     if (!inst && vat.state === 'included') return null;
 
     let lead;
-    if (inst === 'included') {
+    if (inst === 'baseExcluded') {
+      lead = maker + ' includes installation in this price, but not the base it stands on, '
+           + 'which is a separate cost.';
+    } else if (inst === 'baseNotStated') {
+      lead = maker + ' includes installation in this price, but does not say whether the '
+           + 'base is included.';
+    } else if (inst === 'supply') {
+      lead = maker + ' sells this without installation; putting it up is arranged separately.';
+    } else if (inst === 'included') {
       /* FOUNDATIONS is read from the classification head only, and only where
          the same head does not exclude them — measured: 24 include, 7 exclude. */
       const founds = head.indexOf('FOUNDATION') > -1 && head.indexOf('EXCLUDED') < 0;

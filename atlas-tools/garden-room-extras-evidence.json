@@ -2,20 +2,14 @@
  "schema": "plotnua.garden-room-extras-evidence",
  "version": 1,
  "what_this_is": "What each supplier behind the published installed, finished (turnkey) range says about three costs that often sit outside an advertised price. Read by atlas-tools/build-garden-room-prices.py, which publishes COUNTS only (no supplier name, no euro amount) and refuses unless these suppliers are exactly the suppliers in that published range. 'notEstablished' means PlotNua holds no published statement either way; it is never read as included or excluded.",
- "approved": "Founder decision, 6 Nov 2026, Stage 2 item 5: add a clear 'What may cost extra' section using documented supplier evidence.",
+ "approved": "Founder decision, 6 Nov 2026, Stage 2 item 5: add a clear 'What may cost extra' section using documented supplier evidence. Stage 3D-C2 (founder approval, 7 Nov 2026): every supplier in the published installed-and-finished range must show its base as included (R-INSTALLED); Adman Steel Sheds (foundations excluded) and Live in Garden Pods (base not stated) leave the range and this file; Modular House joins it; Shomera re-read on its live model pages.",
  "states": ["included", "extra", "notEstablished"],
  "suppliers": [
   {
    "organisation": "Garden Office Solutions",
-   "base": {"state": "included", "checked": "2026-11-06", "source": "https://gardenofficesolutions.ie/garden-room-cost/", "evidence": "Prices 'include electrical connections and hookup, interior painting, insulation & foundations'; 'no hidden extras'."},
+   "base": {"state": "included", "checked": "2026-11-07", "source": "https://gardenofficesolutions.ie/garden-office/", "evidence": "'All cabins are A rated and include electrical connections and hookup, interior painting, insulation & foundations.' (read 7 Nov 2026)"},
    "delivery": {"state": "notEstablished", "checked": "2026-11-06", "source": "https://gardenofficesolutions.ie/garden-room-cost/", "evidence": "'All prices include full turnkey installation in five working days'; delivery is not named."},
-   "electricalConnection": {"state": "included", "checked": "2026-11-06", "source": "https://gardenofficesolutions.ie/garden-room-cost/", "evidence": "Prices 'include electrical connections and hookup'."}
-  },
-  {
-   "organisation": "Adman Steel Sheds",
-   "base": {"state": "extra", "checked": "2026-11-06", "source": "https://admansteelsheds.com/sheds/garden-room/", "evidence": "'A concrete base is required'; the Atlas record (Sept 2026) quotes 'A rebated concrete base is required' and records that the base is not included."},
-   "delivery": {"state": "included", "checked": "2026-11-06", "source": "https://admansteelsheds.com/sheds/garden-room/", "evidence": "'FREE Nationwide Delivery & Professional Installation'."},
-   "electricalConnection": {"state": "notEstablished", "checked": "2026-11-06", "source": "https://admansteelsheds.com/sheds/garden-room/", "evidence": "'Fully wired ... ready to be connected to mains electricity'; who makes and pays for the connection to the house is not stated."}
+   "electricalConnection": {"state": "included", "checked": "2026-11-07", "source": "https://gardenofficesolutions.ie/garden-office/", "evidence": "'All cabins ... include electrical connections and hookup' (read 7 Nov 2026)."}
   },
   {
    "organisation": "Garden Rooms",
@@ -24,16 +18,16 @@
    "electricalConnection": {"state": "extra", "checked": "2026-11-06", "source": "gardenrooms.ie (www.gardenrooms.ie/designs/cube-range/ and /designs/ultimate-range/), read for the 6 Nov 2026 evidence audit", "evidence": "Electrical connection listed as an extra, charged per linear metre ex VAT, per the 6 Nov 2026 evidence audit."}
   },
   {
-   "organisation": "Live in Garden Pods",
-   "base": {"state": "notEstablished", "checked": "2026-11-06", "source": "https://liveingardenpods.ie/pricing/", "evidence": "The pricing page gives 'Starting from EUR 39,950 +VAT'; the Atlas record says the team handles 'site preparation', which is not a statement about the foundation."},
-   "delivery": {"state": "notEstablished", "checked": "2026-11-06", "source": "https://liveingardenpods.ie/pricing/", "evidence": "No statement on whether delivery is in the price."},
-   "electricalConnection": {"state": "notEstablished", "checked": "2026-11-06", "source": "https://liveingardenpods.ie/pricing/", "evidence": "The Atlas record notes 'electrical fittings'; connection to the house is not stated."}
+   "organisation": "Shomera",
+   "base": {"state": "included", "checked": "2026-11-07", "source": "https://www.shomera.ie/garden-rooms/contemporary-range/shomera-14 and https://www.shomera.ie/garden-rooms/classic-range/shomera-12", "evidence": "Each model page: 'From EUR ... including build and installation'; under Foundations & Floors: 'In-situ poured concrete pads with galvanised steel beams'."},
+   "delivery": {"state": "notEstablished", "checked": "2026-11-07", "source": "https://www.shomera.ie/garden-rooms/contemporary-range/shomera-14 and https://www.shomera.ie/garden-rooms/classic-range/shomera-12", "evidence": "Payment 'In three stages: a 30% deposit, 50% on delivery, and the final 20% on completion'; whether delivery is in the price is not stated."},
+   "electricalConnection": {"state": "notEstablished", "checked": "2026-11-07", "source": "https://www.shomera.ie/garden-rooms/contemporary-range/shomera-14 and https://www.shomera.ie/garden-rooms/classic-range/shomera-12", "evidence": "'Electrical and plumbing work is carried out by fully registered tradesmen'; whether the connection to the house supply is in the price is not stated."}
   },
   {
-   "organisation": "Shomera",
-   "base": {"state": "included", "checked": "2026-10-06", "source": "Atlas record (Shomera Classic Range installation model)", "evidence": "Atlas record: prices 'include poured concrete and galvanised steel foundations'."},
-   "delivery": {"state": "notEstablished", "checked": "2026-10-06", "source": "Atlas record (Shomera Classic Range installation model)", "evidence": "Delivery is stated as extra only for a different range (Solo); not stated for this range."},
-   "electricalConnection": {"state": "notEstablished", "checked": "2026-10-06", "source": "Atlas record (Shomera Classic Range installation model)", "evidence": "No statement held."}
+   "organisation": "Modular House",
+   "base": {"state": "included", "checked": "2026-11-07", "source": "https://modularhouse.ie/garden-rooms", "evidence": "FAQ: 'The quoted price for all four models includes ... foundation works'."},
+   "delivery": {"state": "notEstablished", "checked": "2026-11-07", "source": "https://modularhouse.ie/garden-rooms", "evidence": "'Precision-manufactured in our Dublin factory, rapid on-site assembly'; delivery is not itemised."},
+   "electricalConnection": {"state": "notEstablished", "checked": "2026-11-07", "source": "https://modularhouse.ie/garden-rooms", "evidence": "'A full consumer-unit-ready electrical package is included'; connection to the house supply is not stated."}
   }
  ]
 }

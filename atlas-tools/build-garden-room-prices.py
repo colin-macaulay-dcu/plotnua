@@ -73,7 +73,8 @@ MAX_AGE_DAYS = 90
 # maximum. On the 7 Oct snapshot the highest such price is 3.4x.
 SPECIALISED_FACTOR = 1.5
 INSTALL_DIFFERS = {"SUPPLY_ONLY_INSTALL_SEPARATE", "INSTALLED_FINISHED_FOUNDATIONS_EXCLUDED",
-                   "SUPPLIED_AND_ERECTED", "UNKNOWN_DEALER_SOLD"}
+                   "SUPPLIED_AND_ERECTED", "UNKNOWN_DEALER_SOLD",
+                   "INSTALLED_BASE_NOT_STATED"}   # Stage 3D-C2 (7 Nov 2026)
 NOAVG_TEXT = (
     '<h2>Why PlotNua does not publish an average garden room price</h2>\n'
     '<p>An average only means something when every price covers the same thing. These do not. '
@@ -106,7 +107,13 @@ PARENT_HREF = "discovery-living-in-the-garden.html"
 PARENT_TEXT = "Explore Living in the Garden"
 PARENT_NAME = "Living in the Garden"
 PARENT_MAX_WORDS = 40   # visible words allowed before the parent link
-BUILD_DATE = "2026-11-06"   # the page's dateModified; equals its sitemap lastmod
+BUILD_DATE = "2026-11-07"   # the page's dateModified; equals its sitemap lastmod
+# 7 Nov 2026 (founder Stage 3D-C2, pricing methodology): "installed and finished" now
+# requires published evidence of the building, on-site installation, the required base
+# and the standard finish (R-INSTALLED, below); kits are labelled as kits; two new
+# founder-held groups (foundations excluded, base not stated); VAT may rest on a
+# supplier's current terms of sale (atlas-tools/vat-terms-evidence.json, R-VAT below);
+# the "do not establish what the price includes" statistic is retired.
 # 6 Nov 2026 (founder decision, staged pricing refresh): 16 base prices rechecked
 # (register entry price-recheck-2026-11-06), so the page content changed and its
 # dateModified and sitemap lastmod move with it. Stage 2 adds four builder regions:
@@ -159,16 +166,22 @@ TODAY = dt.date.fromisoformat(
 # What each segment means to a homeowner, in the order the page shows them.
 # The key is the frozen evidence's own segment name.
 SEGMENTS = [
-    ("INSTALLED_FINISHED_TURNKEY", "Installed and finished (turnkey)",
-     "The supplier's price includes building it on your site and finishing it."),
-    ("UNKNOWN_DIY_OR_INSTALLED", "Kit, or installation unclear",
-     "The supplier sells it as a kit or installed, and the price does not say which."),
+    # Stage 3D-C2 (founder approval, 7 Nov 2026): the two published groups' labels and notes.
+    ("INSTALLED_FINISHED_TURNKEY", "Installed and finished",
+     "The supplier's price includes the building, putting it up on your site, the base it "
+     "stands on and its standard finish. Delivery, the connection to your house's electricity "
+     "and VAT may still need to be confirmed."),
+    ("UNKNOWN_DIY_OR_INSTALLED", "Kit or self-build: installation optional or extra",
+     "The price is for the building as a kit. Depending on the supplier, assembly, the base, "
+     "the electrical connection and other site work may be extra or optional, and delivery "
+     "terms differ."),
     ("UNKNOWN_NOTHING_PUBLISHED", "What the price covers is not stated",
      "The price is published, but nothing says what it includes."),
     ("SUPPLY_ONLY_INSTALL_SEPARATE", "Supply only, installation extra", ""),
     ("INSTALLED_FINISHED_FOUNDATIONS_EXCLUDED", "Installed, but foundations excluded", ""),
     ("SUPPLIED_AND_ERECTED", "Supplied and erected", ""),
     ("UNKNOWN_DEALER_SOLD", "Sold through a dealer, basis unknown", ""),
+    ("INSTALLED_BASE_NOT_STATED", "Installed, base not stated", ""),
 ]
 LABEL = {k: (lab, note) for k, lab, note in SEGMENTS}
 
@@ -180,6 +193,12 @@ LABEL = {k: (lab, note) for k, lab, note in SEGMENTS}
 FOUNDER_HELD = {
     "SUPPLY_ONLY_INSTALL_SEPARATE":
         "Founder direction, 20 Oct 2026: 'Keep the new supply-only price range unpublished.'",
+    "INSTALLED_FINISHED_FOUNDATIONS_EXCLUDED":
+        "Founder Stage 3D-C2, 7 Nov 2026: Adman reclassified 'Installed, but foundations "
+        "excluded'. 'Keep this category founder-held.'",
+    "INSTALLED_BASE_NOT_STATED":
+        "Founder Stage 3D-C2, 7 Nov 2026: Live in Garden Pods 'Installed, base not stated'. "
+        "'Keep this category founder-held.'",
 }
 
 
@@ -208,6 +227,10 @@ def relevant(p):
 # The basis lead-phrases that record a foundation exclusion. "BUILDING ONLY,
 # THREE EXCLUSIONS" names foundation, electrics and plumbing as excluded.
 FOUNDATION_EXCLUDED = re.compile(r"FOUNDATION EXCLUDED|BUILDING ONLY, THREE EXCLUSIONS")
+# Stage 3D-C2 (7 Nov 2026): an installed price whose evidence does not say whether the
+# base is included. Read from the classification head only (the text before the first
+# full stop), so a later sentence can never move a product into or out of the group.
+BASE_NOT_STATED = re.compile(r"FOUNDATION NOT STATED")
 
 
 def segment(p):
@@ -218,6 +241,8 @@ def segment(p):
     if lead == "DIY OR INSTALLED":
         return "UNKNOWN_DIY_OR_INSTALLED"
     if lead == "TURNKEY INSTALLATION INCLUDED":
+        if BASE_NOT_STATED.search(im.split(".")[0]):
+            return "INSTALLED_BASE_NOT_STATED"
         return ("INSTALLED_FINISHED_FOUNDATIONS_EXCLUDED" if FOUNDATION_EXCLUDED.search(im)
                 else "INSTALLED_FINISHED_TURNKEY")
     if lead == "INSTALLATION AVAILABLE (OPTIONAL)":
@@ -311,6 +336,9 @@ def freeze(ev):
             "vat": p.get("vatStatus"),
             "lastPriceCheck": (p.get("priceEvidenceRef") or {}).get("lastPriceCheck") or None,
             "priceStatus": (p.get("priceEvidenceRef") or {}).get("status"),
+            # Stage 3D-C2: carried only where the VAT position rests on supplier terms.
+            **({"vatBasis": (p.get("priceEvidence") or {})["vatBasis"]}
+               if (p.get("priceEvidence") or {}).get("vatBasis") else {}),
         })
     agree(summarise(rows), ev, "freeze")
     doc = {
@@ -349,11 +377,81 @@ def as_of(ev, snap):
     return date_long(snap) + "".join(", " + n for n in notes)
 
 
+# The founder-approved explanation that replaces the retired statistic (Stage 3D-C2,
+# 7 Nov 2026). Fixed words, no figure; the same words on Living in the Garden.
+COMPARE_EXPLANATION = (
+    "Not every garden-room price covers the same things. Some prices include the building, "
+    "foundations and installation. Others are for kits or buildings that need additional work. "
+    "PlotNua separates these so you can compare your options more confidently.")
+RETIRED_STATISTIC = re.compile(r"do(?:es)? not establish what the price includes", re.I)
+
+# ------------------------------------------------------- R-VAT (Stage 3D-C2)
+VAT_REGISTER = ROOT / "atlas-tools" / "vat-terms-evidence.json"
+VAT_FOOTNOTE = (
+    "PlotNua counts a price as including VAT where the supplier says so beside the price or, "
+    "for all its website prices, in its current terms of sale. PlotNua records what suppliers "
+    "state; it does not check or confirm any supplier&rsquo;s VAT rate or tax treatment. Ask "
+    "for the VAT-inclusive total in writing.")
+
+
+def vat_register():
+    """Founder rule B with safeguards (Stage 3D-C2, 7 Nov 2026). A VAT position resting on
+    a supplier's terms of sale is counted only while its register entry is current."""
+    doc = json.loads(VAT_REGISTER.read_text(encoding="utf-8"))
+    if doc.get("schema") != "plotnua.vat-terms-evidence":
+        die("R-VAT the VAT terms register has the wrong schema")
+    return doc
+
+
+def vat_guards(rows):
+    """R-VAT. Every row whose VAT position rests on supplier terms must be covered by an
+    ACCEPTED register entry for its supplier that is current (checked within MAX_AGE_DAYS),
+    names the product among the pages checked with no contrary wording, and passed the
+    rate-consistency safeguard. A product the register accepts must carry the basis (so a
+    regenerated record cannot silently turn a terms-based position into a price-level one),
+    and no supplier the register does NOT rely on may contribute a terms-based position."""
+    doc = vat_register()
+    acc = {}
+    for e in doc["suppliers"]:
+        key = hashlib.sha256(e["organisation"].encode()).hexdigest()[:12]
+        if e["status"] == "accepted":
+            for f in ("quote", "clause", "source", "checked", "coversWebsitePrices", "productPagesChecked",
+                      "contraryWordingFound", "rateCheck", "expires"):
+                if f not in e or e[f] in (None, "", []):
+                    die("R-VAT %s: the accepted entry has no %s" % (e["organisation"], f))
+            d = dt.date.fromisoformat(e["checked"])
+            if dt.date.fromisoformat(e["expires"]) != d + dt.timedelta(days=MAX_AGE_DAYS):
+                die("R-VAT %s: expiry must be %d days after the check" % (e["organisation"], MAX_AGE_DAYS))
+            if (TODAY - d).days > MAX_AGE_DAYS:
+                die("R-VAT %s: the terms were last read %s, more than %d days ago; re-read them or "
+                    "stop counting these prices as VAT-inclusive" % (e["organisation"], d, MAX_AGE_DAYS))
+            if e["coversWebsitePrices"] is not True or e["contraryWordingFound"] is not False \
+                    or e["rateCheck"].get("result") != "consistent":
+                die("R-VAT %s: the terms do not cover website prices, a page contradicts them, or "
+                    "the rate-consistency safeguard failed" % e["organisation"])
+            acc[key] = (e, {x["productId"] for x in e["productPagesChecked"]})
+        elif e["status"] != "not-relied-on":
+            die("R-VAT %s: unknown status %r" % (e["organisation"], e["status"]))
+    for r in rows:
+        basis = r.get("vatBasis")
+        if basis not in (None, "supplier-terms"):
+            die("R-VAT %s: unknown VAT basis %r" % (r["productId"], basis))
+        if basis == "supplier-terms":
+            if r["vat"] != "Yes" or r["supplierKey"] not in acc or r["productId"] not in acc[r["supplierKey"]][1]:
+                die("R-VAT %s: a terms-based VAT position without a current accepted register entry "
+                    "naming this product" % r["productId"])
+        elif r["supplierKey"] in acc and r["productId"] in acc[r["supplierKey"]][1]:
+            die("R-VAT %s: the register accepts this product's terms-based VAT position but the "
+                "record does not carry it" % r["productId"])
+    return doc
+
+
 # --------------------------------------------------------------------- render
 def render(ev, ex):
     rows = ex["rows"]
     seg = summarise(rows)
     agree(seg, ev, "build")
+    vat_guards(rows)
     if ex["source"]["sha256"] != ev["source"]["sha256"]:
         die("the extract was frozen from a different snapshot than the evidence")
     if [c["id"] for c in ex["source"].get("corrections") or []] != \
@@ -400,7 +498,8 @@ def render(ev, ex):
         '<p class="pr-answer-note">That range comes from %d products sold by %d suppliers, '
         'in PlotNua&rsquo;s research snapshot of %s. It is the spread of prices those '
         'suppliers advertise, not a typical Irish price and not an all-in quotation: '
-        'foundations, electrical connection and VAT can still sit outside it.</p>'
+        'delivery, the connection to your house&rsquo;s electricity and VAT can still sit '
+        'outside it.</p>'
         % (eur(t["minEur"]), eur(t["maxEur"]), t["n"], t["organisations"], date_long(snap)))
     # Stage 2 item 6 (6 Nov 2026): straight from the answer to the products. No name and no
     # count (R4, R6); not "the products behind this range", because the Discovery lists
@@ -444,15 +543,17 @@ def render(ev, ex):
         '    <caption>Published garden room prices in PlotNua&rsquo;s research, grouped by '
         'what the advertised price covers. Research snapshot of %s.</caption>\n'
         '    <thead><tr><th scope="col">What the price covers</th><th scope="col">Published range</th>'
-        '<th scope="col">Based on</th><th scope="col">Price says VAT is included</th></tr></thead>\n'
+        '<th scope="col">Based on</th><th scope="col">VAT included, as stated by the supplier</th></tr></thead>\n'
         '    <tbody>\n%s\n    </tbody>\n  </table>\n</div>\n'
+        # Stage 3D-C2 (founder approval, 7 Nov 2026): the VAT footnote, beneath the table.
+        '<p class="pr-small pr-vat-note">%s</p>\n'
         # SEO-C2.2 (20 Oct 2026): from the prices to the makers behind them, with
         # no name on this page (R4). No count, so it cannot disagree with R6.
         # Not "every maker behind these prices": two suppliers in the 7 Oct
         # snapshot are held from publication today (Cosy Cabins, Premium Log House).
         '<p class="pr-small pr-makers-link">Living in the Garden lists every garden room maker '
         'PlotNua currently publishes. <a href="%s#maker-index">Browse the makers, A to Z&nbsp;&rarr;</a></p>'
-        % (date_long(snap), "\n".join(trs), PARENT_HREF))
+        % (date_long(snap), "\n".join(trs), VAT_FOOTNOTE, PARENT_HREF))
 
     held_items = "".join('<li>%s: %d product%s from %s supplier%s</li>'
                          % (LABEL[k][0], seg[k]["n"], "" if seg[k]["n"] == 1 else "s",
@@ -494,10 +595,13 @@ def render(ev, ex):
     regions["ASOF"] = as_of(ev, snap)
     # SEO guide phase 1 (17 Oct 2026): the disclosure research made prominent.
     # Same three figures, same source, now set as figures rather than a sentence.
+    # Stage 3D-C2 (founder decision, 7 Nov 2026): the statistic "N of 237 published prices
+    # do not establish what the price includes" is RETIRED (it counted every kit) and is not
+    # replaced by another count. The approved explanation takes its place; the detailed
+    # category counts stay in the table and the held-group list above.
     regions["COMPARE"] = (
+        '<p class="pr-stats-intro">%s</p>\n'
         '<div class="pr-stats">\n'
-        '  <p class="pr-stat"><span class="pr-stat-n">%d</span><span class="pr-stat-l">of %d '
-        'published prices do not establish what the price includes</span></p>\n'
         '  <p class="pr-stat"><span class="pr-stat-n">%d</span><span class="pr-stat-l">of %d '
         'do not say whether VAT is in the price</span></p>\n'
         '  <p class="pr-stat"><span class="pr-stat-n">%d</span><span class="pr-stat-l">of %d '
@@ -505,7 +609,7 @@ def render(ev, ex):
         '</div>\n'
         '<p class="pr-stats-src">PlotNua&rsquo;s research snapshot of %s: every priced garden '
         'room in the research, %d in all.</p>'
-        % (tot["priceBasisNotEstablished"], tot["relevant"], tot["vatStatusUnknown"], tot["relevant"],
+        % (COMPARE_EXPLANATION, tot["vatStatusUnknown"], tot["relevant"],
            tot["floorAreaPublished"], tot["relevant"], date_long(snap), tot["relevant"]))
 
     # FAQ (19 Oct 2026): short answers to the questions searchers ask, built
@@ -517,17 +621,17 @@ def render(ev, ex):
           'the price for the same finish.' % (tot["floorAreaPublished"], tot["relevant"]))
     kit = pub_seg.get("UNKNOWN_DIY_OR_INSTALLED")
     if not kit:
-        die("FAQ: the kit-or-unclear range is no longer published -- re-approve the wording")
+        die("FAQ: the kit or self-build range is no longer published -- re-approve the wording")
     faq = [
         FAQ_AVG,
         ("How much does a 3 &times; 3&nbsp;m garden room cost?",
          a3 + ' <a href="#quote-checklist">The quote checklist</a> covers both.'),
         ("Is it cheaper to buy a kit than an installed garden room?",
          'Kit prices start lower, but a kit buys less. In PlotNua&rsquo;s research, prices for '
-         'a kit, or where installation is unclear, ran from %s to %s, and installed, finished '
-         'rooms from %s to %s. A kit price leaves putting the building up to you or a builder you '
-         'hire, and may leave out the base and the electrical connection, so price those before '
-         'comparing. '
+         'a kit or self-build, where installation is optional or extra, ran from %s to %s, and '
+         'installed, finished rooms from %s to %s. A kit price leaves putting the building up to '
+         'you or a builder you hire, and usually leaves out the base and the electrical '
+         'connection, so price those before comparing. '
          '<a href="#quote-checklist">The quote checklist</a> shows what to ask.'
          % (eur(kit["minEur"]), eur(kit["maxEur"]), eur(t["minEur"]), eur(t["maxEur"]))),
         ("Do garden room prices include VAT?",
@@ -632,6 +736,16 @@ def extras(dated, t):
     if len(have) != len(set(have)) or set(have) != want or len(want) != t["organisations"]:
         die("EXTRAS the evidence does not cover exactly the %d suppliers in the published "
             "installed range" % t["organisations"])
+    # R-INSTALLED (Stage 3D-C2, founder approval 7 Nov 2026): a supplier's price is
+    # "installed and finished" only where published evidence establishes the building,
+    # on-site installation, the required base and the standard finish. The classification
+    # establishes installation and finish; the base must be shown INCLUDED, and current,
+    # for every supplier in the published range, or the build refuses.
+    for x in sup:
+        b = x.get("base") or {}
+        if b.get("state") != "included":
+            die("R-INSTALLED %s is in the published installed-and-finished range but its base is "
+                "%r, not established as included" % (x["organisation"], b.get("state")))
     dates = []
     counts = {}
     for k, _ in EXTRAS_ROWS:
@@ -738,6 +852,13 @@ def page_guards(text, ex_rows, desc):
     vis = re.sub(r"<script.*?</script>|<style.*?</style>|<!--.*?-->", " ", text_r3, flags=re.S)
     vis = html.unescape(re.sub(r"<[^>]+>", " ", vis))
     parent_guards(text)
+    # Stage 3D-C2: the retired statistic is gone and the approved explanation is in place.
+    if RETIRED_STATISTIC.search(vis):
+        die("the retired 'do not establish what the price includes' statistic is on the page")
+    if COMPARE_EXPLANATION not in vis:
+        die("the approved price explanation is missing from the page")
+    if html.unescape(VAT_FOOTNOTE) not in vis:
+        die("R-VAT the VAT footnote is missing from the page")
     # R7: no founder-held segment appears in the published table
     tbl = re.search(r"<!-- PN-PRICES:TABLE -->(.*?)<!-- /PN-PRICES:TABLE -->", text, re.S)
     if not tbl:
