@@ -227,8 +227,19 @@ def run_generator(gen_path, out_dir, snap_path):
     env = dict(os.environ)
     existing = env.get("PYTHONPATH", "")
     env["PYTHONPATH"] = str(HERE) + (os.pathsep + existing if existing else "")
+    # STAGE 3D-D1 — the synthetic snapshot holds none of the real register's
+    # Hansa24 products, and the generator now (correctly) refuses a run that
+    # loses a register product. This suite tests provenance, not VAT, so it
+    # supplies an empty register of its own; the production register is never
+    # read or written here. The VAT basis has its own offline suite:
+    # test_generator_vat_basis.py.
+    reg = Path(snap_path).with_name("vat-terms-evidence.fixture.json")
+    if not reg.exists():
+        reg.write_text(json.dumps({"schema": "plotnua.vat-terms-evidence", "version": 1,
+                                   "suppliers": []}), encoding="utf-8")
     return subprocess.run(
-        [sys.executable, str(gen_path), "--out-dir", str(out_dir), "--snapshot", str(snap_path)],
+        [sys.executable, str(gen_path), "--out-dir", str(out_dir), "--snapshot", str(snap_path),
+         "--vat-terms-register", str(reg)],
         capture_output=True, text=True, env=env)
 
 

@@ -59,6 +59,7 @@ Standard library only, matching .github/scripts/atlas_stats.py.
 from __future__ import annotations
 
 import argparse
+import datetime as dt
 import hashlib
 import json
 import os
@@ -962,6 +963,147 @@ def apply_price_presentation_hold(rec, pid):
         rec["priceEvidence"]["presentationHold"] = hold
 
 
+# ---------------------------------------------------------------------------
+# STAGE 3D-D1 — THE SUPPLIER-TERMS VAT BASIS SURVIVES A FULL REGENERATION.
+#
+# Stage 3D-C2 (rule B) accepted Hansa24 Group's terms of sale (clause 5.3) as
+# the evidence that its published prices include VAT. Atlas carries VAT = Yes
+# on those price records, but the BASIS of that answer -- the supplier's terms,
+# not a statement on the product page -- lived only in the published universe.
+# A full regeneration would have emitted "VAT included" with nothing to say
+# why, a stronger claim than the evidence makes.
+#
+# The basis is therefore re-derived here, on every run, from the evidence
+# register (atlas-tools/vat-terms-evidence.json). Nothing is inferred: a
+# product carries the basis only when the register names it, its organisation
+# matches, its adjudicated price record is one the register checked, and
+# Atlas records VAT = Yes. ANY disagreement, an unreadable register or an
+# expired acceptance REFUSES THE RUN: the basis is never silently dropped and
+# never extended to a product the register did not check.
+# build-garden-room-prices.py R-VAT is independent of this and unchanged.
+# ---------------------------------------------------------------------------
+VAT_TERMS_REGISTER = Path(_ac.__file__).resolve().parent.parent.parent / "atlas-tools" / "vat-terms-evidence.json"
+VAT_TERMS_SCHEMA, VAT_TERMS_VERSION = "plotnua.vat-terms-evidence", 1
+VAT_TERMS_STATUSES = {"accepted", "not-relied-on"}
+_VAT_TERMS = None
+
+
+def _vat_yes(v):
+    """Atlas's 'Price Includes VAT' answer, read as given: only an explicit Yes counts."""
+    if isinstance(v, dict):
+        v = v.get("name")
+    return isinstance(v, str) and v.strip().lower() == "yes"
+
+
+def vat_terms_register(as_of=None):
+    """Product id -> (organisation, frozenset of checked price-record ids), for
+    every ACCEPTED, CURRENT register entry. Refuses on anything it cannot
+    vouch for."""
+    global _VAT_TERMS
+    if _VAT_TERMS is not None:
+        return _VAT_TERMS
+    try:
+        doc = json.loads(VAT_TERMS_REGISTER.read_text(encoding="utf-8"))
+    except (OSError, ValueError) as e:
+        fail(f"VAT terms register {VAT_TERMS_REGISTER} could not be read ({e}). "
+             "Refusing to regenerate rather than drop the supplier-terms VAT basis.")
+    if not isinstance(doc, dict) or doc.get("schema") != VAT_TERMS_SCHEMA \
+            or doc.get("version") != VAT_TERMS_VERSION or not isinstance(doc.get("suppliers"), list):
+        fail("VAT terms register has an unknown schema or version. Refusing to regenerate.")
+    today = as_of or dt.date.today()
+    out, seen_orgs, seen_records = {}, set(), {}
+    for e in doc["suppliers"]:
+        org, status = e.get("organisation"), e.get("status")
+        if not isinstance(org, str) or not org.strip():
+            fail("VAT terms register: an entry has no organisation.")
+        if status not in VAT_TERMS_STATUSES:
+            fail(f"VAT terms register: {org} has unknown status {status!r}.")
+        if org in seen_orgs:
+            fail(f"VAT terms register: {org} is listed twice (contradictory evidence).")
+        seen_orgs.add(org)
+        if status == "not-relied-on":
+            if e.get("productPagesChecked"):
+                fail(f"VAT terms register: {org} is not relied on but lists products (contradictory).")
+            continue
+        try:
+            checked = dt.date.fromisoformat(e["checked"])
+            expires = dt.date.fromisoformat(e["expires"])
+        except (KeyError, TypeError, ValueError):
+            fail(f"VAT terms register: {org} has no valid checked/expires dates.")
+        if checked > today:
+            fail(f"VAT terms register: {org} is dated in the future ({checked}).")
+        if expires < today:
+            fail(f"VAT terms register: {org}'s terms of sale expired on {expires}. Re-read "
+                 "them and renew the register before regenerating; the basis is not dropped silently.")
+        if e.get("contraryWordingFound") is not False or e.get("coversWebsitePrices") is not True \
+                or (e.get("rateCheck") or {}).get("result") != "consistent":
+            fail(f"VAT terms register: {org}'s acceptance is not supported by its own safeguards.")
+        pages = e.get("productPagesChecked")
+        if not isinstance(pages, list) or not pages:
+            fail(f"VAT terms register: {org} is accepted but names no products.")
+        for x in pages:
+            pid, recs = x.get("productId"), x.get("priceRecordIds")
+            if not isinstance(pid, str) or not isinstance(recs, list) or not recs:
+                fail(f"VAT terms register: {org} has a product entry without an id or price records.")
+            if x.get("contraryVatWording") is not False:
+                fail(f"VAT terms register: {pid} carries contrary VAT wording.")
+            if pid in out:
+                fail(f"VAT terms register lists {pid} twice.")
+            for r in recs:
+                if r in seen_records and seen_records[r] != pid:
+                    fail(f"VAT terms register: price record {r} is listed under two products.")
+                seen_records[r] = pid
+            out[pid] = (org, frozenset(recs))
+    _VAT_TERMS = out
+    return _VAT_TERMS
+
+
+def apply_vat_terms_basis(rec, pid):
+    """Additive. Emits priceEvidence.vatBasis = "supplier-terms" for a register
+    product, or refuses the run if the regenerated record disagrees with the
+    register in any way. Products the register does not name are untouched."""
+    hit = vat_terms_register().get(pid)
+    if not hit:
+        return
+    org, recs = hit
+    pe = rec.get("priceEvidence")
+    picked = set((rec.get("priceEvidenceRef") or {}).get("recordIds") or [])
+    problems = []
+    if rec.get("organisation") != org:
+        problems.append(f"organisation is {rec.get('organisation')!r}, register says {org!r}")
+    if not isinstance(pe, dict):
+        problems.append("no structured price evidence")
+    else:
+        if pe.get("adjudication") != "adjudicated":
+            problems.append(f"price adjudication is {pe.get('adjudication')!r}")
+        if not _vat_yes(pe.get("includesVat")):
+            problems.append(f"Atlas VAT is {pe.get('includesVat')!r}, not Yes")
+        if pe.get("presentationHold"):
+            problems.append("a presentation hold applies")
+    if not picked or not picked <= recs:
+        problems.append(f"adjudicated price record {sorted(picked)} is not one the register checked {sorted(recs)}")
+    if problems:
+        fail(f"VAT terms register names {pid} ({org}) but the regenerated record disagrees: "
+             + "; ".join(problems) + ". Refusing to regenerate rather than drop or invent the basis.")
+    pe["vatBasis"] = "supplier-terms"
+
+
+def vat_terms_self_check(emitted):
+    """Every register product must be emitted carrying the basis, and nothing
+    else may carry it. A register product missing from the regenerated
+    universe is contradictory evidence and refuses the run."""
+    reg = vat_terms_register()
+    have = {e["id"] for e in emitted if (e.get("priceEvidence") or {}).get("vatBasis") == "supplier-terms"}
+    other = sorted({str((e.get("priceEvidence") or {}).get("vatBasis")) for e in emitted
+                    if (e.get("priceEvidence") or {}).get("vatBasis") not in (None, "supplier-terms")})
+    want = set(reg)
+    if have != want or other:
+        fail(f"VAT basis self-check failed: emitted {len(have)}, register requires {len(want)} "
+             f"(missing {sorted(want - have)[:5]}, unexpected {sorted(have - want)[:5]}, "
+             f"unknown values {other}). Refusing to regenerate.")
+    print(f"  Supplier-terms VAT basis: {len(have)} products, matching the register exactly")
+
+
 def qualify(product, orgs, price_rows, avail_rows, feat_rows,
             all_feat_rows=None, install_rows=None) -> dict:
     """Deterministic. Same inputs, same output, every run.
@@ -1222,12 +1364,21 @@ def main():
                          "workflow), not the preview dry run. Changes the artefact's "
                          "self-description only. It still writes nothing to production "
                          "and still never writes to Airtable.")
+    ap.add_argument("--vat-terms-register", default=None,
+                    help="Read the supplier-terms VAT register from this path instead of "
+                         "atlas-tools/vat-terms-evidence.json. For offline tests only: it lets "
+                         "a test exercise the register's refusals without touching the "
+                         "production evidence.")
     ap.add_argument("--allow-production-write", action="store_true",
                     help="Refused. Present so that its absence is explicit, not implied.")
     args = ap.parse_args()
 
     if args.allow_production_write:
         fail("This phase is dry-run only. Production write is not implemented.")
+    if args.vat_terms_register:
+        global VAT_TERMS_REGISTER
+        VAT_TERMS_REGISTER = Path(args.vat_terms_register).resolve()
+    vat_terms_register()   # read and vet the register before Atlas is touched
 
     out = Path(args.out_dir)
     for forbidden in ("recommendation-universe-v1.json", "atlas-match-pool.json",
@@ -1553,9 +1704,12 @@ def main():
             # NOOK Stage 3A (founder decision 6 Nov 2026): a held price is kept
             # but never matched, compared or shown without its qualification.
             apply_price_presentation_hold(rec, pid)
+            # STAGE 3D-D1 — the 3D-C2 VAT basis, re-derived from its register.
+            apply_vat_terms_basis(rec, pid)
             emitted.append(rec)
 
     gates(garden, emitted, excluded, source_count)
+    vat_terms_self_check(emitted)
 
     tiers = {t: sum(1 for e in emitted if e["qualification"]["confidenceTier"] == t)
              for t in ("HIGH_CONFIDENCE", "WITH_CAVEAT", "LIMITED_EVIDENCE")}
