@@ -57,9 +57,17 @@ check("sitemap is an exact set with no duplicate URLs",
 check("public A-Z names have real gallery links",
       all('href="../artists/%s/"' % p["artist"]["slug"] in P.artist_index(packages) for p in packages))
 
-future = copy.deepcopy(packages[0])
-future["artist"].update(slug="future-test", display_name="Future Test")
-future["works"] = future["works"][:1]
+# A self-contained synthetic fixture: the release gate must also work after the
+# last real artist withdraws. Never depend on an artist remaining published.
+future = {
+    "artist": {"slug": "future-test", "display_name": "Future Test", "bio": "Test biography", "practice": "Painting"},
+    "publication": {"state": "approved"},
+    "works": [{"id": "test-work", "slug": "test-work", "title": "Test Work", "medium": "Acrylic", "h_cm": 20, "w_cm": 20,
+               "availability": "available", "price_eur": 100, "ai_involvement": "none",
+               "images": [{"role": "main", "alt": "Test work", "derivatives": [
+                   {"file": "test-work-600.webp", "long_edge": 600, "pixels": [600, 600]}]}]}]
+}
+check("an empty gallery directory publishes no artist names", P.artist_index([]) == "")
 pages = P.gallery_pages(future, S.artist_page)
 check("a future approved artist inherits indexability and their own canonical",
       all(Head(doc).canonicals == [SEO.canonical(path)] and Head(doc).robots == ["index, follow"]
