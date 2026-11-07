@@ -5,7 +5,11 @@ Each case plants one defect in a copy of the Atlas read-back (or the plan) and r
 publisher to REFUSE before it writes anything. The unmodified read-back must pass the
 pre-flight checks (it is run with --dry-run; the refusal cases stop before any build).
 
-  python3 atlas-tools/test-publish-price-refresh.py --plan PLAN --snapshot READBACK
+  python3 atlas-tools/test-publish-price-refresh.py --plan PLAN --snapshot READBACK [--base REF]
+
+--base runs every case against a temporary worktree at REF (the commit the plan was
+published onto, e.g. 8d7e882 for Stage 3D-B2); without it the cases run against HEAD,
+which is only meaningful before the plan is applied.
 """
 import argparse, copy, json, pathlib, subprocess, sys, tempfile
 
@@ -26,7 +30,22 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--plan", required=True)
     ap.add_argument("--snapshot", required=True)
+    ap.add_argument("--base")
     a = ap.parse_args()
+    root_args, wt = [], None
+    if a.base:
+        wt = pathlib.Path(tempfile.mkdtemp(prefix="prf-base-")) / "wt"
+        subprocess.run(["git", "worktree", "add", "--detach", str(wt), a.base], cwd=HERE,
+                       check=True, capture_output=True)
+        root_args = ["--root", str(wt)]
+    try:
+        return run_cases(a, root_args)
+    finally:
+        if wt:
+            subprocess.run(["git", "worktree", "remove", "--force", str(wt)], cwd=HERE, capture_output=True)
+
+
+def run_cases(a, root_args):
     snap0 = json.loads(pathlib.Path(a.snapshot).read_text(encoding="utf-8"))
     plan0 = json.loads(pathlib.Path(a.plan).read_text(encoding="utf-8"))
     by = {i["productId"]: i for i in plan0["products"]}
@@ -82,7 +101,7 @@ def main():
         (tmp / "s.json").write_text(json.dumps(s), encoding="utf-8")
         (tmp / "p.json").write_text(json.dumps(p), encoding="utf-8")
         r = subprocess.run([sys.executable, str(TOOL), "--plan", str(tmp / "p.json"), "--snapshot",
-                            str(tmp / "s.json"), "--dry-run"], capture_output=True, text=True, timeout=600)
+                            str(tmp / "s.json"), "--dry-run"] + root_args, capture_output=True, text=True, timeout=600)
         out = (r.stdout + r.stderr).strip().splitlines()
         last = next((l for l in out if l.startswith("REFUSED")), out[-1] if out else "")
         ok = r.returncode == 2 and last.startswith("REFUSED") and want in last
