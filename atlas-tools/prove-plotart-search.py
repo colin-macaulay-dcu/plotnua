@@ -126,6 +126,34 @@ archived["works"][0]["availability"] = "archived"
 check("archived artwork leaves sitemap", len(SEO.sitemap_paths([archived], launch)) == len(SEO.sitemap_paths([], launch)) + 1)
 check("removal leaves no artist or artwork URL", all("/artists/" not in u for u in re.findall(r"<loc>(.*?)</loc>", SEO.sitemap_block([], launch))))
 
+# Parse image namespace independently; page URL checks must never count image URLs.
+root = ET.fromstring(xml)
+ns = {"sm": "http://www.sitemaps.org/schemas/sitemap/0.9", "image": SEO.IMAGE_NS}
+expected_images = {SEO.canonical(p): urls for p, urls in SEO.sitemap_images(packages, launch).items()}
+actual_images = {row.find("sm:loc", ns).text: [im.text for im in row.findall("image:image/image:loc", ns)]
+                 for row in root.findall("sm:url", ns) if row.findall("image:image", ns)}
+check("XML image namespace and landing-page mappings match approved records", actual_images == expected_images)
+check("all sitemap images are real public image files",
+      all((ROOT / "plotart" / u.removeprefix(SEO.ORIGIN)).is_file() for urls in actual_images.values() for u in urls))
+for path, urls in SEO.sitemap_images(packages, launch).items():
+    doc = (ROOT / "plotart" / path).read_text()
+    check("sitemap images are displayed on their landing page: " + path,
+          all(u.split("/img/", 1)[1] in doc for u in urls))
+check("artist indexing switch removes artist images",
+      SEO.sitemap_images([future], dict(launch, artist_pages_indexable=False)) == {})
+check("withdrawal removes artwork image mapping", future_work_path not in SEO.sitemap_images([withdrawn], launch))
+check("empty roster emits no artist images", SEO.sitemap_images([], launch) == {})
+more_images = copy.deepcopy(future)
+more_images["works"][0]["images"][0]["derivatives"].append({"file": "test-work-2000.webp", "long_edge": 2000, "pixels": [2000, 2000]})
+more_images["works"][0]["images"].append({"role": "detail", "derivatives": [{"file": "test-detail.webp", "long_edge": 600}]})
+check("largest derivative and genuine detail views are listed once",
+      SEO.sitemap_images([more_images], launch)[future_work_path] == [SEO.ORIGIN + "artists/future-test/img/test-work-2000.webp", SEO.ORIGIN + "artists/future-test/img/test-detail.webp"])
+try:
+    SEO.sitemap_images([draft], launch)
+    check("draft images cannot enter sitemap", False)
+except ValueError:
+    check("draft images cannot enter sitemap", True)
+
 # Exercise the actual content boundary against commits, including unrelated sitemap tampering.
 with tempfile.TemporaryDirectory(prefix="pa-search-boundary-") as d:
     site = Path(d)
@@ -150,13 +178,17 @@ with tempfile.TemporaryDirectory(prefix="pa-search-boundary-") as d:
 
     git("init", "-q")
     write("atlas-tools/release/plotart-launch-switches.json", json.dumps(launch))
-    skeleton = '<urlset><url><loc>https://plotnua.ie/</loc></url>' + SEO.sitemap_block([], launch) + '</urlset>'
+    skeleton = '<urlset xmlns:image="' + SEO.IMAGE_NS + '"><url><loc>https://plotnua.ie/</loc></url>' + SEO.sitemap_block([], launch) + '</urlset>'
     write("sitemap.xml", skeleton)
     base = commit()
     write("plotart/artists/future-test/gallery.json", json.dumps(future))
     write("sitemap.xml", SEO.update_sitemap(skeleton, [future], launch))
     published = commit()
     check("boundary accepts only the generated publish sitemap update", boundary(base, published) == 0)
+    clean_sitemap = SEO.update_sitemap(skeleton, [future], launch)
+    write("sitemap.xml", clean_sitemap.replace("test-work-600.webp", "private-preview.webp"))
+    poisoned_image = commit()
+    check("boundary refuses injected image URL", boundary(published, poisoned_image) != 0)
     write("sitemap.xml", SEO.update_sitemap(skeleton, [future], launch).replace("https://plotnua.ie/</loc>", "https://other.invalid/</loc>"))
     poisoned = commit()
     check("boundary refuses unrelated sitemap changes", boundary(published, poisoned) != 0)

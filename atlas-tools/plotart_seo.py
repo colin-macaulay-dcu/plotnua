@@ -64,9 +64,39 @@ def sitemap_paths(packages, launch):
     return paths
 
 
+IMAGE_NS = "http://www.google.com/schemas/sitemap-image/1.1"
+
+
+def sitemap_images(packages, launch):
+    """Largest approved derivative of each displayed image, on its own landing page."""
+    paths = set(sitemap_paths(packages, launch))  # also refuses draft exports
+    images = {}
+    for pkg in packages:
+        a = pkg["artist"]
+        base = "artists/" + a["slug"] + "/"
+        entries = [(base + "index.html", [a["portrait"]] if a.get("portrait") else [])]
+        entries += [(base + w["slug"] + ".html", w["images"]) for w in pkg["works"]
+                    if w["availability"] in ("available", "reserved", "sold", "not_for_sale")]
+        for path, pictures in entries:
+            if path not in paths:
+                continue
+            urls = list(dict.fromkeys(ORIGIN + base + "img/" + max(i["derivatives"], key=lambda d: d["long_edge"])["file"]
+                                     for i in pictures if i.get("derivatives")))
+            if len(urls) > 1000:
+                raise ValueError("Image sitemap supports at most 1000 images per page")
+            if urls:
+                images[path] = urls
+    return images
+
+
 def sitemap_block(packages, launch):
-    return BEGIN + "\n" + "\n".join("  <url><loc>%s</loc></url>" % html.escape(canonical(p))
-                                     for p in sitemap_paths(packages, launch)) + "\n  " + END
+    images = sitemap_images(packages, launch)
+    rows = []
+    for path in sitemap_paths(packages, launch):
+        tags = "".join("<image:image><image:loc>%s</image:loc></image:image>" % html.escape(url)
+                       for url in images.get(path, []))
+        rows.append("  <url><loc>%s</loc>%s</url>" % (html.escape(canonical(path)), tags))
+    return BEGIN + "\n" + "\n".join(rows) + "\n  " + END
 
 
 def update_sitemap(document, packages, launch):
