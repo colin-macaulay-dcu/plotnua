@@ -127,6 +127,7 @@ def check(s, files):
          "R5 the desktop AI disclosure directly beneath the hero")
     need("font-size:clamp(40px,4.05vw,72px)" in s, "R5 the Stage 8 desktop heading size")
     need(not re.search(r"rg-views|rgViews|rg-hero--views", s), "R5 no crossfade left behind")
+    need("pn-hero-compare__mtitle" not in h5, "R5 no compact title above the image (Stage 11A founder decision: one heading, below the image)")
     need(re.search(r'<meta property="og:image" content="https://plotnua\.ie/assets/disc037/img/DISC-037-og-1200x630\.jpg"', s), "R5 the share image")
 
     # R6
@@ -255,6 +256,7 @@ def main():
             "R5": s.replace('id="rgHeroCompare" data-start="100"', 'id="rgHeroCompare" data-start="35"', 1),
             "R5 ": s.replace('<img fetchpriority="high" src="assets/disc037/img/DISC-037-HERO-BEFORE', '<img src="assets/disc037/img/DISC-037-HERO-BEFORE', 1),
             "R5   ": s.replace('<p class="pn-hero-note pn-hero-note--inset" style="--pnn-inset:4vw">Illustrative AI-generated visualisation. Not an actual installation.</p>\n', '', 1),
+            "R5    ": s.replace('<figure class="pn-compare pn-compare--hero" id="rgHeroCompare"', '<div class="pn-hero-compare__mtitle" aria-hidden="true"></div>\n  <figure class="pn-compare pn-compare--hero" id="rgHeroCompare"', 1),
             "R5  ": s.replace('Illustrative AI-generated visualisation. Not an actual installation.</p>\n  </figure>', '</p>\n  </figure>', 1),
             "R6": s.replace('<p class="lg-kicker">Make it happen</p>', '<p class="lg-kicker">Next steps</p>', 1),
             "R7": s.replace("Not an actual installation or a specific product.", "Not an actual installation.", 1),

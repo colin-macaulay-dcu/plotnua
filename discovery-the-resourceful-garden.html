@@ -532,8 +532,13 @@ body.pn-id.pn-pd .rg-hero .d-hero-copy .intro{ max-width:58ch; margin-top:14px; 
 @media (max-width:1024px) and (orientation:portrait), (max-width:719px){
   body.pn-id.pn-pd .rg-hero .pn-compare--hero{ --pnc-focus:72.8% 50%; }
   body.pn-id.pn-pd .rg-hero .pn-compare--hero .pn-compare__stage{ aspect-ratio:16/9; }
-  body.pn-id.pn-pd .rg-hero .d-hero-copy{ padding:24px clamp(16px,4vw,40px) 28px; }
-  body.pn-id.pn-pd .rg-hero .d-hero-copy .subtitle{ max-width:28ch; }
+  /* Stage 11A (founder): no compact title above the image on phones and portrait tablets; the heading below is the
+     only title, with its eyebrow shown again (the shared rule hides it only because the compact title repeats it). */
+  body.pn-id.pn-pd .rg-hero .d-hero-copy{ padding:18px clamp(16px,4vw,40px) 20px; }
+  body.pn-id.pn-pd .d-hero.pn-hero-compare--std.rg-hero .d-hero-copy .eyebrow{ position:static !important; width:auto; height:auto; margin:0 0 8px; overflow:visible; clip:auto; clip-path:none; white-space:normal; }
+  body.pn-id.pn-pd .rg-hero .d-hero-copy h1{ line-height:1.02; }
+  body.pn-id.pn-pd .rg-hero .d-hero-copy .subtitle{ max-width:28ch; margin-top:10px; }
+  body.pn-id.pn-pd .rg-hero .d-hero-copy .intro{ margin-top:10px; }
 }
 body.pn-id.pn-pd #rg-questions{ margin-top:clamp(18px,2vw,28px); }
 body.pn-id.pn-pd .or-cap .or-link{ color:var(--p4-terra-text); text-decoration:underline; text-underline-offset:3px; }
@@ -608,7 +613,6 @@ body.pn-id.pn-pd #make-it-happen .pn-tr{ padding-left:0; padding-right:0; }
      with no confirmed Irish route. No payment, order or new data collection: route B is the existing free WhatsApp link
      (ref RG), the contact page and email. -->
 <header class="d-hero ns-hero rg-hero pn-hero-compare pn-hero-compare--std">
-  <div class="pn-hero-compare__mtitle" aria-hidden="true"><span class="pn-hero-compare__mkicker">A PlotNua Discovery</span><span class="pn-hero-compare__mname">The Resourceful Garden</span></div>
   <figure class="pn-compare pn-compare--hero" id="rgHeroCompare" data-start="100" data-subject="the garden" data-line-fade-under="#dHeroCopy">
     <div class="pn-compare__stage">
       <div class="pn-compare__possible">
