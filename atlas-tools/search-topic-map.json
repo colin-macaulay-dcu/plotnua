@@ -134,6 +134,36 @@
       ],
       "evidence": "Measured 5 November 2026 against the DISC-036 development index, not assumed: 'extension planning permission' does not reach Extend the House, because the Discovery's title and standfirst do not contain 'permission'. Chapter 03 covers planning permission and the July 2026 exemption for extensions. The phrase is one of the seven search terms the founder listed for this Discovery in the PLOTNUA-BUILD-001 Stage 1 development authorisation (5 Nov 2026). Scoped to POSSIBILITY: product matching is untouched. Prepared on the development branch; it reaches production only with the Discovery's own release approval.",
       "status": "APPROVED"
+    },
+    {
+      "phrase": "grow your own",
+      "concept": "resourceful-garden",
+      "scope": "possibility",
+      "targets": [
+        "discovery-the-resourceful-garden.html"
+      ],
+      "evidence": "Measured 8 November 2026 against the DISC-037 release-candidate index, not assumed: 'grow your own' and 'grow your own food ireland' reach nothing (only 'browse all Discoveries'); The Borrowed Garden is not reached either, so there is no competing result. Chapter 01 (The Garden That Feeds You) is about growing your own food. Covers the founder's candidate 'grow your own food Ireland' (its other words are already in the page's title and standfirst). Scoped to POSSIBILITY: product matching is untouched. Recommended in the Stage 8 production preparation (founder authorisation, 8 Nov 2026); prepared on the release-candidate branch and reaches production only with the Discovery's own release approval.",
+      "status": "APPROVED"
+    },
+    {
+      "phrase": "underground food storage",
+      "concept": "resourceful-garden",
+      "scope": "possibility",
+      "targets": [
+        "discovery-the-resourceful-garden.html"
+      ],
+      "evidence": "Measured 8 November 2026 against the DISC-037 release-candidate index: 'underground garden storage', 'food storage' and 'root cellar' reach nothing. Chapter 02 (The Underground Pantry) covers underground food storage. Chosen over the founder's literal candidate 'underground garden storage', which could read as storage for garden tools; with this entry that query also reaches the page (its other word, 'garden', is in the title). Scoped to POSSIBILITY: product matching is untouched. Recommended in the Stage 8 production preparation (founder authorisation, 8 Nov 2026); prepared on the release-candidate branch and reaches production only with the Discovery's own release approval.",
+      "status": "APPROVED"
+    },
+    {
+      "phrase": "vegetable garden",
+      "concept": "resourceful-garden",
+      "scope": "possibility",
+      "targets": [
+        "discovery-the-resourceful-garden.html"
+      ],
+      "evidence": "Measured 8 November 2026 against the DISC-037 release-candidate index: 'vegetable garden' and 'grow vegetables' reach nothing. Chapter 01 covers raised vegetable beds and productive planting. Replaces the founder's candidate 'sustainable garden ideas Ireland', which already reaches the page through its title, so needs no entry. Scoped to POSSIBILITY: product matching is untouched. Recommended in the Stage 8 production preparation (founder authorisation, 8 Nov 2026); prepared on the release-candidate branch and reaches production only with the Discovery's own release approval.",
+      "status": "APPROVED"
     }
   ],
   "superseded": [

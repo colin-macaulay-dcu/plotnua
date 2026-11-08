@@ -118,6 +118,13 @@ def outputs():
         m = rgb.crop((MOBILE_X0, 0, MOBILE_X0 + MOBILE_W, H)); op = "4:5 crop x %d-%d (the full height), no resize; the same window for both views" % (MOBILE_X0, MOBILE_X0 + MOBILE_W)
         files["%s-M-%d.webp" % (stem, MOBILE_W)] = (enc(m, "WEBP", quality=80, method=6), "Pillow %s, WebP quality 80, method 6" % PIL_VERSION, role, op)
         files["%s-M-%d.jpg" % (stem, MOBILE_W)] = (enc(m, "JPEG", quality=86, progressive=True, optimize=True), "Pillow %s, JPEG quality 86, progressive" % PIL_VERSION, role, op)
+        if role == "POSSIBLE":
+            # Discovery Library card copies, named as build-library-card-webp.py names them for this source, so that
+            # builder reuses them (it never re-encodes a recorded file). Release candidate, Stage 8.
+            for w in (480, 960):
+                files["assets/library/img/DISC-037-02-POSSIBLE-MASTER-%dw.webp" % w] = (
+                    enc(rgb, "WEBP", w, quality=80, method=6), "Pillow %s, WebP quality 80, method 6" % PIL_VERSION, role,
+                    "Lanczos resize to %d px wide (Discovery Library card, whole image)" % w)
         if role == OG_FROM:
             ch = round(W * 630 / 1200); y0 = (H - ch) // 2
             og = rgb.crop((0, y0, W, y0 + ch)).resize((1200, 630), Image.LANCZOS)

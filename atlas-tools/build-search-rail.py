@@ -209,7 +209,8 @@ pages = sorted(set(pages + ["index.html"]))
 # 31 since DISC-034 The Water Wall (founder build authorisation, private preview only, 4 Nov 2026).
 # 32 since DISC-035 The Outdoor Room (founder build authorisation, private preview only, 4 Nov 2026).
 # 33 since DISC-036 Extend the House (PLOTNUA-BUILD-001 Stage 1, private preview only, 5 Nov 2026).
-EXPECTED_PAGES = 33
+# 34 since DISC-037 The Resourceful Garden (release candidate, 8 Nov 2026).
+EXPECTED_PAGES = 34
 if len(pages) != EXPECTED_PAGES:
     die("expected %d public pages, found %d — refusing to guess the rail scope. "
         "If a public page was added or removed, update EXPECTED_PAGES "

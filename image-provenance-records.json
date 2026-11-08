@@ -20570,6 +20570,58 @@
       }
     },
     {
+      "asset": "assets/library/img/DISC-037-02-POSSIBLE-MASTER-480w.webp",
+      "sha256": "6778ebf2e6f6f37316b37941478b0fc446e5daba2be793acb98b25368fc38a60",
+      "bytes": 52644,
+      "pixels": [
+        480,
+        320
+      ],
+      "derived_from": {
+        "asset": "assets/disc037/img/DISC-037-02-POSSIBLE-MASTER.png",
+        "sha256": "c923e8e7ffc3645d6cefa3d6e65debdcffc7cdc7eb8f1407c2eb24351e904480"
+      },
+      "method": "optimise",
+      "edit": {
+        "description": "DISC-037 web copy (Governance 2.0, Rule 3): Lanczos resize to 480 px wide (Discovery Library card, whole image).",
+        "operation": "Lanczos resize to 480 px wide (Discovery Library card, whole image)",
+        "verified_by": "atlas-tools/build-disc037-images.py --check"
+      },
+      "encoder": "Pillow 12.3.0, WebP quality 80, method 6",
+      "made": "2026-11-08",
+      "content_credentials": {
+        "source_file_embeds_c2pa": true,
+        "derivative_embeds_c2pa": false,
+        "note": "Resizing and re-encoding remove the embedded C2PA credential. This copy carries NO signed credential; the master keeps it, and its record carries the AI classification."
+      }
+    },
+    {
+      "asset": "assets/library/img/DISC-037-02-POSSIBLE-MASTER-960w.webp",
+      "sha256": "1e8f3adb72426488ea950721fc4cfee91e1f7d7fa7a6476070e959d47d7a6870",
+      "bytes": 193958,
+      "pixels": [
+        960,
+        640
+      ],
+      "derived_from": {
+        "asset": "assets/disc037/img/DISC-037-02-POSSIBLE-MASTER.png",
+        "sha256": "c923e8e7ffc3645d6cefa3d6e65debdcffc7cdc7eb8f1407c2eb24351e904480"
+      },
+      "method": "optimise",
+      "edit": {
+        "description": "DISC-037 web copy (Governance 2.0, Rule 3): Lanczos resize to 960 px wide (Discovery Library card, whole image).",
+        "operation": "Lanczos resize to 960 px wide (Discovery Library card, whole image)",
+        "verified_by": "atlas-tools/build-disc037-images.py --check"
+      },
+      "encoder": "Pillow 12.3.0, WebP quality 80, method 6",
+      "made": "2026-11-08",
+      "content_credentials": {
+        "source_file_embeds_c2pa": true,
+        "derivative_embeds_c2pa": false,
+        "note": "Resizing and re-encoding remove the embedded C2PA credential. This copy carries NO signed credential; the master keeps it, and its record carries the AI classification."
+      }
+    },
+    {
       "asset": "assets/disc037/img/DISC-037-og-1200x630.jpg",
       "sha256": "c1c526549b6e2bf22a81b6faaa66eef2a12e599e6137065e3ace7d78e5234aaa",
       "bytes": 278472,
