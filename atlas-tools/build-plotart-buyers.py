@@ -60,6 +60,7 @@ COLLECTION
 </div></section>
 <section class="pa-guide-section" id="choose-art"><div class="pa-wrap pa-guide-reading">
 <h2>Choosing a painting or artwork for your home</h2>
+<p>Compare proportions before choosing a work with the free <a href="art-size-calculator.html">PlotArt art size calculator</a>. Enter the furniture or clear wall width and the outer artwork dimensions to see the relationship.</p>
 <ol><li><strong>Begin with your response.</strong> Spend time with the image and the artist’s description. Look for something you want to return to, beyond a colour match.</li><li><strong>Measure the space.</strong> Check the artwork’s actual dimensions and any frame dimensions. Mark the outline on the wall with removable paper to help judge the scale.</li><li><strong>Read the medium and support.</strong> A work on paper, a canvas and a sculptural object can need different display arrangements. Ask the artist about care, light and hanging.</li><li><strong>Look closely.</strong> Ask for additional photographs or details if surface, texture, condition or colour is important to your decision. A screen cannot show every quality of a physical work.</li><li><strong>Confirm the details.</strong> Availability can change. Ask about the exact piece, the total price and whether an in-person viewing can be arranged.</li></ol>
 </div></section>
 <section class="pa-guide-section" id="how-to-buy"><div class="pa-wrap pa-guide-reading">

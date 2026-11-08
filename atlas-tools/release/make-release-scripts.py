@@ -22,6 +22,8 @@ HERE = Path(__file__).resolve().parent
 ROOT = HERE.parent.parent
 
 STANDARD = [
+    ("python3 atlas-tools/prove-plotart-wall-size.py", "WALL SIZE PAGE ·", "PlotArt wall-size reviewed page and search boundary"),
+    ("node atlas-tools/prove-plotart-wall-size.cjs", "WALL SIZE CALCULATIONS ·", "PlotArt wall-size geometry, input validation and shared comparisons"),
     ("python3 atlas-tools/prove-plotart-buyers.py", "PLOTART BUYERS ·", "PlotArt buyer guide copy, prices and automatic withdrawal cleanup"),
     ("python3 atlas-tools/prove-plotart-search.py", "PLOTART SEARCH ·", "PlotArt public search and sitemap boundary"),
     ("python3 atlas-tools/build-global-header.py --check", "CHECK OK — 2 pages", "global header builder"),

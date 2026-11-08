@@ -82,7 +82,7 @@ SWITCHES = sys.argv[sys.argv.index("--switches") + 1] if "--switches" in sys.arg
 launch = json.load(open(SWITCHES, encoding="utf-8"))
 ENDPOINT = launch.get("f25_form_endpoint")
 PAGES = ["index.html", "founding-25.html", "living-gallery.html", "gallery/index.html", "invitation.html", "about.html",
-         "mobile-gallery/index.html", "mobile-gallery/gallery.html"] + list(SEO.GUIDE_PATHS)  # invitation.html: private Founding Artist invitation (noindex, mailto only, no form)
+         "mobile-gallery/index.html", "mobile-gallery/gallery.html"] + list(SEO.GUIDE_PATHS) + list(SEO.TOOL_PATHS)  # invitation.html: private Founding Artist invitation (noindex, mailto only, no form)
 # Mobile Gallery (founder release authorisation, 3 Nov 2026): a public work-in-progress page (indexable only by its own
 # switch) and an illustrative gallery profile that is never indexed while participation is unconfirmed.
 MG_FILES = {"mobile-gallery/mobile-gallery.css", "mobile-gallery/mobile-gallery.js", "mobile-gallery/mobile-gallery-data.js",
@@ -95,7 +95,7 @@ MG_URL = "https://plotnua.ie/plotart/mobile-gallery/"
 HERO_IMAGES = {"assets/hero/founder-01-abstract.webp"}
 # The Living Gallery image (consolidated brief, 29 Oct 2026): the founder's painting in an AI-generated interior visualisation.
 LG_IMAGE = "assets/living/plotart-living-gallery-colin-macaulay-artwork.webp"
-ALLOWED = set(PAGES) | MG_FILES | {"assets/plotart.css", "assets/plotart-guides.css", "assets/plotart.js", "assets/pa-enquiry.js", LG_IMAGE} | HERO_IMAGES | ({"assets/f25-apply.js"} if launch.get("f25_application_state") == "open" else set())
+ALLOWED = set(PAGES) | MG_FILES | {"assets/plotart.css", "assets/plotart-guides.css", "assets/plotart-wall-size.css", "assets/plotart-wall-size.js", "assets/plotart.js", "assets/pa-enquiry.js", LG_IMAGE} | HERO_IMAGES | ({"assets/f25-apply.js"} if launch.get("f25_application_state") == "open" else set())
 # Published artist galleries (Phase 1, 29 Oct 2026; checked in full by L14). Only these shapes are allowed:
 #   artists/<slug>/index.html · artists/<slug>/<artwork-slug>.html · artists/<slug>/img/<name>.webp
 ART_FILE = re.compile(r"^artists/([a-z0-9]+(?:-[a-z0-9]+){0,6})/(?:[a-z0-9]+(?:-[a-z0-9]+){0,6}\.html|gallery\.json|img/[a-z0-9-]+-\d{2,5}\.webp)$")
@@ -425,7 +425,7 @@ if os.path.exists(smp):
 NAV_WANT = ["Discover PlotArt", "Virtual Gallery", "Mobile Gallery", "Living Gallery", "PlotNua ↗"]  # Mobile Gallery added 3 Nov 2026
 NAV_CURRENT = {"index.html": "Discover PlotArt", "gallery/index.html": "Virtual Gallery", "living-gallery.html": "Living Gallery", "founding-25.html": None, "invitation.html": None, "about.html": None,
                "mobile-gallery/index.html": "Mobile Gallery", "mobile-gallery/gallery.html": "Mobile Gallery"}
-NAV_CURRENT.update({p: None for p in SEO.GUIDE_PATHS})
+NAV_CURRENT.update({p: None for p in SEO.GUIDE_PATHS + SEO.TOOL_PATHS})
 for name in PAGES:
     p = os.path.join(PA, name)
     if os.path.exists(p):

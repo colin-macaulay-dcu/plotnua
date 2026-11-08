@@ -13,5 +13,6 @@
   "gallery_indexable": true,
   "about_indexable": true,
   "artist_pages_indexable": true,
-  "buyer_guides_indexable": true
+  "buyer_guides_indexable": true,
+  "wall_size_indexable": true
 }

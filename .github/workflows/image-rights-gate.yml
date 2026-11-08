@@ -61,6 +61,8 @@ jobs:
         run: |
           python3 atlas-tools/prove-plotart-search.py
           python3 atlas-tools/prove-plotart-buyers.py
+          python3 atlas-tools/prove-plotart-wall-size.py
+          node atlas-tools/prove-plotart-wall-size.cjs
 
       - name: Set up Node
         uses: actions/setup-node@v4

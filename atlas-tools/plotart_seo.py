@@ -13,6 +13,7 @@ BEGIN = "<!-- plotart-search:begin -->"
 END = "<!-- plotart-search:end -->"
 REGION = re.compile(re.escape(BEGIN) + r".*?" + re.escape(END), re.S)
 GUIDE_PATHS = ("buy-original-art-ireland.html", "abstract-contemporary-art-ireland.html")
+TOOL_PATHS = ("art-size-calculator.html",)
 SWITCHES = Path(__file__).resolve().parent / "release/plotart-launch-switches.json"
 
 
@@ -25,6 +26,8 @@ def canonical(path):
 
 
 def indexable(path, launch):
+    if path in TOOL_PATHS:
+        return launch.get("wall_size_indexable") is True
     if path in GUIDE_PATHS:
         return launch.get("buyer_guides_indexable") is True
     key = {"index.html": "home_indexable", "gallery/index.html": "gallery_indexable",
@@ -53,7 +56,7 @@ def head(path, title, description, launch=None):
 
 
 def sitemap_paths(packages, launch):
-    paths = [p for p in ("index.html", "gallery/index.html", "about.html", "founding-25.html") + GUIDE_PATHS if indexable(p, launch)]
+    paths = [p for p in ("index.html", "gallery/index.html", "about.html", "founding-25.html") + GUIDE_PATHS + TOOL_PATHS if indexable(p, launch)]
     for pkg in sorted(packages, key=lambda p: p["artist"]["slug"]):
         # Only the already-approved public export is an input. Never read Studio drafts.
         if pkg["publication"].get("state") != "approved":
