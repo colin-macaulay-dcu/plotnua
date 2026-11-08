@@ -116,6 +116,7 @@ CSS = """<style>
 .mp-cap{ margin:10px 0 0; font-size:12.5px; line-height:1.5; color:var(--stone); display:flex; gap:10px; flex-wrap:wrap; }
 .mp-cap .mp-kind{ font-weight:700; letter-spacing:.14em; text-transform:uppercase; font-size:10.5px; color:var(--bronze); padding-top:2px; }
 .mp-cap a{ color:inherit; text-decoration:underline; text-decoration-color:var(--line); text-underline-offset:3px; }
+.mp-note p a, .mp-p a{ color:inherit; text-decoration:underline; text-decoration-color:var(--bronze); text-underline-offset:3px; }
 .mp-hero .mp-cap{ justify-content:flex-end; }
 .mp-sec{ padding:clamp(48px,7vw,104px) 0; border-top:1px solid var(--line); }
 .mp-h2{ font-family:var(--serif); font-weight:400; color:var(--ink); font-size:clamp(32px,4vw,54px); line-height:1.08; margin:0 0 18px; }
@@ -293,7 +294,7 @@ f"""<link rel="stylesheet" href="../assets/components/pn-two-option.css?v=1">
   <p class="mp-p">{E(DATA["productsNote"])}</p></div>
   <div class="mp-range">{"".join(models)}</div>
   <div class="mp-notes">
-    <div class="mp-note"><h3>Prices</h3><p>Garden Room Ireland quotes each room to its size, finish and fit-out. Ask for a written quote, and check whether the base, delivery, installation, electrics and VAT are included.</p></div>
+    <div class="mp-note"><h3>Prices</h3><p>Garden Room Ireland quotes each room to its size, finish and fit-out. Ask for a written quote, and check whether the base, delivery, installation, electrics and VAT are included. PlotNua&rsquo;s guide to <a href="../garden-room-prices-ireland.html">garden room prices in Ireland</a> shows the published ranges for installed rooms and kits across the suppliers it has researched.</p></div>
     <div class="mp-note"><h3>Planning</h3><p>{E(DATA["planningNote"])}</p></div>
   </div>
 </div></section>

@@ -109,6 +109,7 @@ CSS = """<style>
 .mp-cap{ margin:10px 0 0; font-size:12.5px; line-height:1.5; color:var(--stone); display:flex; gap:10px; flex-wrap:wrap; }
 .mp-cap .mp-kind{ font-weight:700; letter-spacing:.14em; text-transform:uppercase; font-size:10.5px; color:var(--bronze); padding-top:2px; }
 .mp-cap a{ color:inherit; text-decoration:underline; text-decoration-color:var(--line); text-underline-offset:3px; }
+.mp-note p a, .mp-p a{ color:inherit; text-decoration:underline; text-decoration-color:var(--bronze); text-underline-offset:3px; }
 .mp-hero .mp-cap{ justify-content:flex-end; }
 .mp-sec{ padding:clamp(48px,7vw,104px) 0; border-top:1px solid var(--line); }
 .mp-h2{ font-family:var(--serif); font-weight:400; color:var(--ink); font-size:clamp(32px,4vw,54px); line-height:1.08; margin:0 0 18px; }
@@ -263,7 +264,7 @@ f"""<link rel="stylesheet" href="../assets/components/pn-two-option.css?v=1">
 
 <section class="mp-sec" id="garden-rooms" aria-labelledby="mp-mod-h"><div class="mp-w">
   <div class="mp-head"><div><p class="mp-k">Garden rooms</p><h2 class="mp-h2" id="mp-mod-h">Five garden rooms, as Elm lists them.</h2></div>
-  <p class="mp-p">{E(DATA["productsNote"])}</p></div>
+  <p class="mp-p">{E(DATA["productsNote"])} To compare it with other garden room prices in Ireland, use PlotNua&rsquo;s <a href="../garden-room-prices-ireland.html#quote-checklist">quote checklist for garden rooms</a>.</p></div>
   <div class="mp-range">{rows}</div>
 </div></section>
 
