@@ -9,8 +9,10 @@ Stage 3 private preview (8 Nov 2026), development branch dev/disc037-resourceful
   R2  JSON-LD parses; no Product, Offer, price, LocalBusiness, Review, FAQPage or AggregateOffer data
   R3  exactly one H1 ("The Resourceful Garden") and the approved hero question
   R4  every local href/src/srcset on the page resolves to a file
-  R5  the hero is the labelled pending frame: no <img>, <picture> or pn-compare inside it, and no
-      DISC-037-01-BEFORE / 02-POSSIBLE file is referenced anywhere (the supplied pair failed alignment, 8 Nov 2026)
+  R5  the hero is the DISC-037-only two-view presentation (Stage 7 founder decision): the approved BEFORE and POSSIBLE
+      as two labelled views, each with a descriptive alt; two buttons with aria-pressed and a live region; the script
+      opens on BEFORE and changes only on a press (no timer, no autoplay); the reduced-motion rule; the AI disclosure;
+      no pn-compare slider on the page; the share image is made from the POSSIBLE
   R6  six chapters, in order, with the six approved titles
   R7  exactly the five supplied chapter images, each whole, with a descriptive alt and the AI disclosure;
       the pantry image says it is not a specific product
@@ -95,12 +97,25 @@ def check(s, files):
         need(files(ref), "R4 local reference does not resolve: " + ref)
 
     # R5
-    hero = re.search(r'<header class="d-hero[^"]*"[^>]*>(.*?)</header>', s, re.S)
-    need(hero and 'data-rg-pending="hero"' in s[hero.start():hero.start() + 200], "R5 the hero is the labelled pending frame")
-    if hero:
-        need(not re.search(r"<img|<picture|pn-compare", hero.group(1)), "R5 an image or compare component inside the pending hero")
-    need(not re.search(r"DISC-037-0[12]-(?:BEFORE|POSSIBLE)[^\"']*\.(?:png|jpg|webp)", nocom), "R5 a hero image file is referenced")
-    need("did not pass PlotNua’s alignment check" in flat, "R5 the pending hero says why the comparison is not shown")
+    hero = re.search(r'<header class="d-hero[^"]*rg-hero--views[^"]*">(.*?)</header>', s, re.S)
+    need(hero, "R5 the two-view hero")
+    h5 = hero.group(1) if hero else ""
+    for role in ("BEFORE", "POSSIBLE"):
+        pc = re.search(r'<picture class="rg-views__img is-%s"[^>]*>(.*?)</picture>' % role.lower(), h5, re.S)
+        need(pc and ("assets/disc037/img/DISC-037-%s-1024.jpg" % role) in pc.group(1) and ("DISC-037-%s-M-819.webp" % role) in pc.group(1),
+             "R5 the %s view and its phone copy" % role)
+        alt = re.search(r'alt="([^"]*)"', pc.group(1)) if pc else None
+        need(alt and alt.group(1).startswith(role.capitalize() + ":") and len(alt.group(1)) >= 60, "R5 the %s view needs its descriptive alt" % role)
+    need(h5.count('class="rg-views__btn"') == 2 and 'data-show="before"' in h5 and 'data-show="possible"' in h5 and h5.count("aria-pressed=") == 2,
+         "R5 two view buttons with aria-pressed")
+    need('role="group"' in h5 and 'id="rgViewsLive" aria-live="polite"' in h5, "R5 the button group and the live region")
+    need('<span class="is-before">Before</span><span class="is-possible">Possible</span>' in h5, "R5 the visible view labels")
+    need("Illustrative AI-generated visualisations. Not an actual installation." in h5, "R5 the hero AI disclosure")
+    need(not re.search(r'class="pn-compare[\s"]|pn-compare\.(?:js|css)|class="pn-compare__range"', s), "R5 no comparison slider on this page")
+    js = re.search(r"/\* DISC-037 · the two-view hero.*?</script>", s, re.S)
+    need(js and "show('before', false);" in js.group(0), "R5 the hero opens on BEFORE")
+    need(js and not re.search(r"setInterval|setTimeout|requestAnimationFrame", js.group(0)), "R5 no timer or autoplay in the hero")
+    need(re.search(r'<meta property="og:image" content="https://plotnua\.ie/assets/disc037/img/DISC-037-og-1200x630\.jpg"', s), "R5 the share image")
 
     # R6
     ks = re.findall(r'<div class="lg-chapter" id="lg-ch0(\d)">.*?<p class="lg-kicker">([^<]+)</p>', s)
@@ -197,11 +212,14 @@ def main():
         need(d and files(a) and sha(a) == d["sha256"], "R16 %s differs from its recorded derivative" % a)
         need(m and src.get("sha256") == m["sha256"] and sha(m["asset"]) == m["sha256"], "R16 %s: its master is not the declared, unchanged file" % a)
 
+    need("POSSIBLE" in derivs.get("assets/disc037/img/DISC-037-og-1200x630.jpg", {}).get("derived_from", {}).get("asset", ""),
+         "R16 the share image is made from the POSSIBLE")
     if "--self-test" in sys.argv:
         faults = {
             "R1": s.replace('content="noindex, nofollow"', 'content="index, follow"', 1),
             "R3": s.replace("<h1>The Resourceful Garden</h1>", "<h1>The Resourceful Garden</h1><h1>x</h1>"),
-            "R5": s.replace('<div class="rg-await">', '<div class="rg-await"><img src="assets/disc037/img/DISC-037-03-GARDEN-THAT-FEEDS-YOU-1024.jpg" alt="">', 1),
+            "R5": s.replace("show('before', false);", "show('before', false); setInterval(function(){}, 4000);", 1),
+            "R5 ": s.replace('data-show="possible" aria-pressed="true"', 'data-show="possible"', 1),
             "R6": s.replace('<p class="lg-kicker">Make it happen</p>', '<p class="lg-kicker">Next steps</p>', 1),
             "R7": s.replace("Not an actual installation or a specific product.", "Not an actual installation.", 1),
             "R8": s.replace("the barrels act as thermal mass", "the barrels hold rainwater", 1),
