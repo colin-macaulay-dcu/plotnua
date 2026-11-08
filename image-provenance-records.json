@@ -12569,6 +12569,66 @@
       "source_sha256": "3177c855968f44600bbccc9bd5856897640986e865c0257a845941765b2b96f5",
       "subject": "artwork",
       "work_slug": "void"
+    },
+    {
+      "asset": "assets/disc038/img/DISC-038-BEFORE-MASTER.png",
+      "sha256": "6d6b2cc5cff245a5830b2c575ae041afdfff29fc47d4b281281620796b90e3ad",
+      "bytes": 149969,
+      "pixels": [
+        3072,
+        2048
+      ],
+      "class": "AI_ILLUSTRATION",
+      "what": "DISC-038 hero, BEFORE side of the slider: a vector section drawing of a generic contemporary two-storey Irish house and back garden at dusk, with plain ground below the lawn.",
+      "generated": {
+        "tool": "Claude (Anthropic), in a PlotNua Claude session: the SVG was written as code by the model (atlas-tools/build-disc038-hero-illustration.py) and rasterised with rsvg-convert. No image-generation service, no raster model.",
+        "date": "2026-11-08"
+      },
+      "prompt": "Founder brief, Stage 3, 8 Nov 2026 (hero, verbatim extract): \"BEFORE is an ordinary contemporary Irish home and garden. POSSIBLE is the same view with a discreet, engineered underground shelter entrance, open, giving a glimpse of a spacious modern underground living environment.\" Interim drawing: a section through a generic two-storey house and garden at dusk; POSSIBLE adds a generic shelter shell with stair and entry, living and kitchen, bunks, shower and WC, a plant room, an open entrance hatch, an air intake and an escape hatch, with labels. No image generation service and no reference images: every shape is drawn by the script.",
+      "reference_inputs": [],
+      "depicts_named_product": false,
+      "depicts_named_organisation": false,
+      "human_review": {
+        "reviewer": null,
+        "date": null,
+        "attests": null,
+        "status": "PENDING FOUNDER REVIEW. Not reviewed by a human. The build session checked the drawing visually for alignment and legibility only; that is not a human review and is not recorded as one."
+      },
+      "label_on_page": "Illustrative AI-generated visualisation. Not an actual installation. A vector drawing made with Claude for PlotNua; not to scale and not a specific product.",
+      "permitted_surfaces": [
+        "discovery"
+      ],
+      "status_note": "DISC-038 private preview only (branch dev/disc038-hidden-shelter). Interim drawing; to be replaced if the founder supplies a photographic AI hero pair."
+    },
+    {
+      "asset": "assets/disc038/img/DISC-038-POSSIBLE-MASTER.png",
+      "sha256": "6bcd489274652e5a5cfb5355cd1aa930fb5f862ebcc27406aadccc0c7bf3b6a8",
+      "bytes": 313891,
+      "pixels": [
+        3072,
+        2048
+      ],
+      "class": "AI_ILLUSTRATION",
+      "what": "DISC-038 hero, POSSIBLE side of the slider: the same drawing and frame with a generic family shelter under the lawn (entrance stair, living and kitchen, bunks, shower and WC, plant room, air intake, escape hatch), labelled. Not to scale; no real product or installation.",
+      "generated": {
+        "tool": "Claude (Anthropic), in a PlotNua Claude session: the SVG was written as code by the model (atlas-tools/build-disc038-hero-illustration.py) and rasterised with rsvg-convert. No image-generation service, no raster model.",
+        "date": "2026-11-08"
+      },
+      "prompt": "Founder brief, Stage 3, 8 Nov 2026 (hero, verbatim extract): \"BEFORE is an ordinary contemporary Irish home and garden. POSSIBLE is the same view with a discreet, engineered underground shelter entrance, open, giving a glimpse of a spacious modern underground living environment.\" Interim drawing: a section through a generic two-storey house and garden at dusk; POSSIBLE adds a generic shelter shell with stair and entry, living and kitchen, bunks, shower and WC, a plant room, an open entrance hatch, an air intake and an escape hatch, with labels. No image generation service and no reference images: every shape is drawn by the script.",
+      "reference_inputs": [],
+      "depicts_named_product": false,
+      "depicts_named_organisation": false,
+      "human_review": {
+        "reviewer": null,
+        "date": null,
+        "attests": null,
+        "status": "PENDING FOUNDER REVIEW. Not reviewed by a human. The build session checked the drawing visually for alignment and legibility only; that is not a human review and is not recorded as one."
+      },
+      "label_on_page": "Illustrative AI-generated visualisation. Not an actual installation. A vector drawing made with Claude for PlotNua; not to scale and not a specific product.",
+      "permitted_surfaces": [
+        "discovery"
+      ],
+      "status_note": "DISC-038 private preview only (branch dev/disc038-hidden-shelter). Interim drawing; to be replaced if the founder supplies a photographic AI hero pair."
     }
   ],
   "legacy_undeclared": [
@@ -21749,6 +21809,344 @@
         "source_file_embeds_c2pa": true,
         "derivative_embeds_c2pa": false,
         "note": "Resizing and re-encoding remove the embedded C2PA credential. This copy carries NO signed credential; the master keeps it, and its record carries the AI classification."
+      }
+    },
+    {
+      "asset": "assets/disc038/img/DISC-038-BEFORE-768.webp",
+      "sha256": "a5949b36b52bbf47710ff6e0b8ada1fea8e662866348e3298386c636b7b415c2",
+      "bytes": 9560,
+      "pixels": [
+        768,
+        512
+      ],
+      "derived_from": {
+        "asset": "assets/disc038/img/DISC-038-BEFORE-MASTER.png",
+        "sha256": "6d6b2cc5cff245a5830b2c575ae041afdfff29fc47d4b281281620796b90e3ad"
+      },
+      "method": "optimise",
+      "edit": {
+        "description": "DISC-038 web copy (Governance 2.0, Rule 3): Lanczos resize to 768 px wide (whole image, aspect kept).",
+        "operation": "Lanczos resize to 768 px wide (whole image, aspect kept)",
+        "verified_by": "atlas-tools/build-disc038-hero-illustration.py (deterministic rebuild)"
+      },
+      "encoder": "Pillow, WebP quality 86, method 6",
+      "made": "2026-11-08",
+      "content_credentials": {
+        "source_file_embeds_c2pa": false,
+        "derivative_embeds_c2pa": false,
+        "note": "Neither the master nor this copy carries a C2PA credential: the drawing was made as code, not by an image-generation service. Its record carries the AI classification."
+      }
+    },
+    {
+      "asset": "assets/disc038/img/DISC-038-BEFORE-1024.webp",
+      "sha256": "2b275652de9a1c147996a1779d3c56ea6119f50b9d6eaf92f8d01a0f8d2becf4",
+      "bytes": 13022,
+      "pixels": [
+        1024,
+        683
+      ],
+      "derived_from": {
+        "asset": "assets/disc038/img/DISC-038-BEFORE-MASTER.png",
+        "sha256": "6d6b2cc5cff245a5830b2c575ae041afdfff29fc47d4b281281620796b90e3ad"
+      },
+      "method": "optimise",
+      "edit": {
+        "description": "DISC-038 web copy (Governance 2.0, Rule 3): Lanczos resize to 1024 px wide (whole image, aspect kept).",
+        "operation": "Lanczos resize to 1024 px wide (whole image, aspect kept)",
+        "verified_by": "atlas-tools/build-disc038-hero-illustration.py (deterministic rebuild)"
+      },
+      "encoder": "Pillow, WebP quality 86, method 6",
+      "made": "2026-11-08",
+      "content_credentials": {
+        "source_file_embeds_c2pa": false,
+        "derivative_embeds_c2pa": false,
+        "note": "Neither the master nor this copy carries a C2PA credential: the drawing was made as code, not by an image-generation service. Its record carries the AI classification."
+      }
+    },
+    {
+      "asset": "assets/disc038/img/DISC-038-BEFORE-1376.webp",
+      "sha256": "3f389013720a9d96aed6b23b66e573e6319bfea0ba55ff61af86dc1efb22b6ec",
+      "bytes": 18330,
+      "pixels": [
+        1376,
+        917
+      ],
+      "derived_from": {
+        "asset": "assets/disc038/img/DISC-038-BEFORE-MASTER.png",
+        "sha256": "6d6b2cc5cff245a5830b2c575ae041afdfff29fc47d4b281281620796b90e3ad"
+      },
+      "method": "optimise",
+      "edit": {
+        "description": "DISC-038 web copy (Governance 2.0, Rule 3): Lanczos resize to 1376 px wide (whole image, aspect kept).",
+        "operation": "Lanczos resize to 1376 px wide (whole image, aspect kept)",
+        "verified_by": "atlas-tools/build-disc038-hero-illustration.py (deterministic rebuild)"
+      },
+      "encoder": "Pillow, WebP quality 86, method 6",
+      "made": "2026-11-08",
+      "content_credentials": {
+        "source_file_embeds_c2pa": false,
+        "derivative_embeds_c2pa": false,
+        "note": "Neither the master nor this copy carries a C2PA credential: the drawing was made as code, not by an image-generation service. Its record carries the AI classification."
+      }
+    },
+    {
+      "asset": "assets/disc038/img/DISC-038-BEFORE-1536.webp",
+      "sha256": "d96d99640dbbb5262854c178d4e500a9d89bd444230452f0c21bcf38af132d29",
+      "bytes": 21126,
+      "pixels": [
+        1536,
+        1024
+      ],
+      "derived_from": {
+        "asset": "assets/disc038/img/DISC-038-BEFORE-MASTER.png",
+        "sha256": "6d6b2cc5cff245a5830b2c575ae041afdfff29fc47d4b281281620796b90e3ad"
+      },
+      "method": "optimise",
+      "edit": {
+        "description": "DISC-038 web copy (Governance 2.0, Rule 3): Lanczos resize to 1536 px wide (whole image, aspect kept).",
+        "operation": "Lanczos resize to 1536 px wide (whole image, aspect kept)",
+        "verified_by": "atlas-tools/build-disc038-hero-illustration.py (deterministic rebuild)"
+      },
+      "encoder": "Pillow, WebP quality 86, method 6",
+      "made": "2026-11-08",
+      "content_credentials": {
+        "source_file_embeds_c2pa": false,
+        "derivative_embeds_c2pa": false,
+        "note": "Neither the master nor this copy carries a C2PA credential: the drawing was made as code, not by an image-generation service. Its record carries the AI classification."
+      }
+    },
+    {
+      "asset": "assets/disc038/img/DISC-038-BEFORE-1024.jpg",
+      "sha256": "dd95dcfc1155ecd5cc23175a325565636000c2bbb8c32b1ec7f0d70895153a50",
+      "bytes": 34569,
+      "pixels": [
+        1024,
+        683
+      ],
+      "derived_from": {
+        "asset": "assets/disc038/img/DISC-038-BEFORE-MASTER.png",
+        "sha256": "6d6b2cc5cff245a5830b2c575ae041afdfff29fc47d4b281281620796b90e3ad"
+      },
+      "method": "optimise",
+      "edit": {
+        "description": "DISC-038 web copy (Governance 2.0, Rule 3): Lanczos resize to 1024 px wide (whole image, aspect kept).",
+        "operation": "Lanczos resize to 1024 px wide (whole image, aspect kept)",
+        "verified_by": "atlas-tools/build-disc038-hero-illustration.py (deterministic rebuild)"
+      },
+      "encoder": "Pillow, JPEG quality 86, progressive",
+      "made": "2026-11-08",
+      "content_credentials": {
+        "source_file_embeds_c2pa": false,
+        "derivative_embeds_c2pa": false,
+        "note": "Neither the master nor this copy carries a C2PA credential: the drawing was made as code, not by an image-generation service. Its record carries the AI classification."
+      }
+    },
+    {
+      "asset": "assets/disc038/img/DISC-038-BEFORE-M-819.webp",
+      "sha256": "4260655bcac728aeecd209fa1544549ae6714c84c3a8c97ec5e9a7e4983ec4cf",
+      "bytes": 12612,
+      "pixels": [
+        819,
+        1024
+      ],
+      "derived_from": {
+        "asset": "assets/disc038/img/DISC-038-BEFORE-MASTER.png",
+        "sha256": "6d6b2cc5cff245a5830b2c575ae041afdfff29fc47d4b281281620796b90e3ad"
+      },
+      "method": "crop",
+      "edit": {
+        "description": "DISC-038 web copy (Governance 2.0, Rule 3): 4:5 phone window: crop x 1380-3018 of the 3072 master (x 690-1509 of the 1536 frame), full height, Lanczos resize to 819 x 1024; the same window for both views.",
+        "operation": "4:5 phone window: crop x 1380-3018 of the 3072 master (x 690-1509 of the 1536 frame), full height, Lanczos resize to 819 x 1024; the same window for both views",
+        "verified_by": "atlas-tools/build-disc038-hero-illustration.py (deterministic rebuild)"
+      },
+      "encoder": "Pillow, WebP quality 86, method 6",
+      "made": "2026-11-08",
+      "content_credentials": {
+        "source_file_embeds_c2pa": false,
+        "derivative_embeds_c2pa": false,
+        "note": "Neither the master nor this copy carries a C2PA credential: the drawing was made as code, not by an image-generation service. Its record carries the AI classification."
+      }
+    },
+    {
+      "asset": "assets/disc038/img/DISC-038-POSSIBLE-768.webp",
+      "sha256": "0f42b2d13a2eb2a7dfab89de3bd00161e33fad25e856fcfbcf24a54710630694",
+      "bytes": 20064,
+      "pixels": [
+        768,
+        512
+      ],
+      "derived_from": {
+        "asset": "assets/disc038/img/DISC-038-POSSIBLE-MASTER.png",
+        "sha256": "6bcd489274652e5a5cfb5355cd1aa930fb5f862ebcc27406aadccc0c7bf3b6a8"
+      },
+      "method": "optimise",
+      "edit": {
+        "description": "DISC-038 web copy (Governance 2.0, Rule 3): Lanczos resize to 768 px wide (whole image, aspect kept).",
+        "operation": "Lanczos resize to 768 px wide (whole image, aspect kept)",
+        "verified_by": "atlas-tools/build-disc038-hero-illustration.py (deterministic rebuild)"
+      },
+      "encoder": "Pillow, WebP quality 86, method 6",
+      "made": "2026-11-08",
+      "content_credentials": {
+        "source_file_embeds_c2pa": false,
+        "derivative_embeds_c2pa": false,
+        "note": "Neither the master nor this copy carries a C2PA credential: the drawing was made as code, not by an image-generation service. Its record carries the AI classification."
+      }
+    },
+    {
+      "asset": "assets/disc038/img/DISC-038-POSSIBLE-1024.webp",
+      "sha256": "9b899f19a398cd7d203b49c40a58c6900ec59098b5a0f08e58b0fa40698c2bfc",
+      "bytes": 26810,
+      "pixels": [
+        1024,
+        683
+      ],
+      "derived_from": {
+        "asset": "assets/disc038/img/DISC-038-POSSIBLE-MASTER.png",
+        "sha256": "6bcd489274652e5a5cfb5355cd1aa930fb5f862ebcc27406aadccc0c7bf3b6a8"
+      },
+      "method": "optimise",
+      "edit": {
+        "description": "DISC-038 web copy (Governance 2.0, Rule 3): Lanczos resize to 1024 px wide (whole image, aspect kept).",
+        "operation": "Lanczos resize to 1024 px wide (whole image, aspect kept)",
+        "verified_by": "atlas-tools/build-disc038-hero-illustration.py (deterministic rebuild)"
+      },
+      "encoder": "Pillow, WebP quality 86, method 6",
+      "made": "2026-11-08",
+      "content_credentials": {
+        "source_file_embeds_c2pa": false,
+        "derivative_embeds_c2pa": false,
+        "note": "Neither the master nor this copy carries a C2PA credential: the drawing was made as code, not by an image-generation service. Its record carries the AI classification."
+      }
+    },
+    {
+      "asset": "assets/disc038/img/DISC-038-POSSIBLE-1376.webp",
+      "sha256": "e5789da7fe8fca13b9069587130c45a08cc1ae4fbe4a33ee97bf50bbe0389c10",
+      "bytes": 37690,
+      "pixels": [
+        1376,
+        917
+      ],
+      "derived_from": {
+        "asset": "assets/disc038/img/DISC-038-POSSIBLE-MASTER.png",
+        "sha256": "6bcd489274652e5a5cfb5355cd1aa930fb5f862ebcc27406aadccc0c7bf3b6a8"
+      },
+      "method": "optimise",
+      "edit": {
+        "description": "DISC-038 web copy (Governance 2.0, Rule 3): Lanczos resize to 1376 px wide (whole image, aspect kept).",
+        "operation": "Lanczos resize to 1376 px wide (whole image, aspect kept)",
+        "verified_by": "atlas-tools/build-disc038-hero-illustration.py (deterministic rebuild)"
+      },
+      "encoder": "Pillow, WebP quality 86, method 6",
+      "made": "2026-11-08",
+      "content_credentials": {
+        "source_file_embeds_c2pa": false,
+        "derivative_embeds_c2pa": false,
+        "note": "Neither the master nor this copy carries a C2PA credential: the drawing was made as code, not by an image-generation service. Its record carries the AI classification."
+      }
+    },
+    {
+      "asset": "assets/disc038/img/DISC-038-POSSIBLE-1536.webp",
+      "sha256": "1199ee76a79b72d056b780024b5684ce015aace05b74a093fe50a66ae7460edc",
+      "bytes": 42860,
+      "pixels": [
+        1536,
+        1024
+      ],
+      "derived_from": {
+        "asset": "assets/disc038/img/DISC-038-POSSIBLE-MASTER.png",
+        "sha256": "6bcd489274652e5a5cfb5355cd1aa930fb5f862ebcc27406aadccc0c7bf3b6a8"
+      },
+      "method": "optimise",
+      "edit": {
+        "description": "DISC-038 web copy (Governance 2.0, Rule 3): Lanczos resize to 1536 px wide (whole image, aspect kept).",
+        "operation": "Lanczos resize to 1536 px wide (whole image, aspect kept)",
+        "verified_by": "atlas-tools/build-disc038-hero-illustration.py (deterministic rebuild)"
+      },
+      "encoder": "Pillow, WebP quality 86, method 6",
+      "made": "2026-11-08",
+      "content_credentials": {
+        "source_file_embeds_c2pa": false,
+        "derivative_embeds_c2pa": false,
+        "note": "Neither the master nor this copy carries a C2PA credential: the drawing was made as code, not by an image-generation service. Its record carries the AI classification."
+      }
+    },
+    {
+      "asset": "assets/disc038/img/DISC-038-POSSIBLE-1024.jpg",
+      "sha256": "8bebf9cacaf8307d2e28f178f0d1c230bb7df62b618ace767d8030ec26e4ec79",
+      "bytes": 61477,
+      "pixels": [
+        1024,
+        683
+      ],
+      "derived_from": {
+        "asset": "assets/disc038/img/DISC-038-POSSIBLE-MASTER.png",
+        "sha256": "6bcd489274652e5a5cfb5355cd1aa930fb5f862ebcc27406aadccc0c7bf3b6a8"
+      },
+      "method": "optimise",
+      "edit": {
+        "description": "DISC-038 web copy (Governance 2.0, Rule 3): Lanczos resize to 1024 px wide (whole image, aspect kept).",
+        "operation": "Lanczos resize to 1024 px wide (whole image, aspect kept)",
+        "verified_by": "atlas-tools/build-disc038-hero-illustration.py (deterministic rebuild)"
+      },
+      "encoder": "Pillow, JPEG quality 86, progressive",
+      "made": "2026-11-08",
+      "content_credentials": {
+        "source_file_embeds_c2pa": false,
+        "derivative_embeds_c2pa": false,
+        "note": "Neither the master nor this copy carries a C2PA credential: the drawing was made as code, not by an image-generation service. Its record carries the AI classification."
+      }
+    },
+    {
+      "asset": "assets/disc038/img/DISC-038-POSSIBLE-M-819.webp",
+      "sha256": "a1814169a4ab0309097a232f01d15e74fae78d56da5f86e48ad2d7f1dcb344bf",
+      "bytes": 34252,
+      "pixels": [
+        819,
+        1024
+      ],
+      "derived_from": {
+        "asset": "assets/disc038/img/DISC-038-POSSIBLE-MASTER.png",
+        "sha256": "6bcd489274652e5a5cfb5355cd1aa930fb5f862ebcc27406aadccc0c7bf3b6a8"
+      },
+      "method": "crop",
+      "edit": {
+        "description": "DISC-038 web copy (Governance 2.0, Rule 3): 4:5 phone window: crop x 1380-3018 of the 3072 master (x 690-1509 of the 1536 frame), full height, Lanczos resize to 819 x 1024; the same window for both views.",
+        "operation": "4:5 phone window: crop x 1380-3018 of the 3072 master (x 690-1509 of the 1536 frame), full height, Lanczos resize to 819 x 1024; the same window for both views",
+        "verified_by": "atlas-tools/build-disc038-hero-illustration.py (deterministic rebuild)"
+      },
+      "encoder": "Pillow, WebP quality 86, method 6",
+      "made": "2026-11-08",
+      "content_credentials": {
+        "source_file_embeds_c2pa": false,
+        "derivative_embeds_c2pa": false,
+        "note": "Neither the master nor this copy carries a C2PA credential: the drawing was made as code, not by an image-generation service. Its record carries the AI classification."
+      }
+    },
+    {
+      "asset": "assets/disc038/img/DISC-038-og-1200x630.jpg",
+      "sha256": "a3d5a50c93cd3ec1049e08d7fb75dfc9f0ab34af9c8abcc6b9f291395ab3efde",
+      "bytes": 66461,
+      "pixels": [
+        1200,
+        630
+      ],
+      "derived_from": {
+        "asset": "assets/disc038/img/DISC-038-POSSIBLE-MASTER.png",
+        "sha256": "6bcd489274652e5a5cfb5355cd1aa930fb5f862ebcc27406aadccc0c7bf3b6a8"
+      },
+      "method": "crop",
+      "edit": {
+        "description": "DISC-038 web copy (Governance 2.0, Rule 3): Lanczos resize to 1200 x 800, crop y 85-715 to 1200 x 630 (social card from the hero POSSIBLE).",
+        "operation": "Lanczos resize to 1200 x 800, crop y 85-715 to 1200 x 630 (social card from the hero POSSIBLE)",
+        "verified_by": "atlas-tools/build-disc038-hero-illustration.py (deterministic rebuild)"
+      },
+      "encoder": "Pillow, JPEG quality 86",
+      "made": "2026-11-08",
+      "content_credentials": {
+        "source_file_embeds_c2pa": false,
+        "derivative_embeds_c2pa": false,
+        "note": "Neither the master nor this copy carries a C2PA credential: the drawing was made as code, not by an image-generation service. Its record carries the AI classification."
       }
     }
   ],
