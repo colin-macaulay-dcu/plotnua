@@ -153,6 +153,12 @@ CSS = """<style>
 /* the guided route reuses the Discovery two-option component (pn-two-option.css) as-is */
 .mp-route .pn-two{ max-width:none; }
 .mp-fine{ margin:26px 0 0; font-size:13.5px; line-height:1.7; color:var(--stone); max-width:78ch; }
+/* SEO-GR4 (8 Nov 2026): links to PlotNua's other garden-room maker profiles, A to Z */
+.mp-more{ margin:30px 0 0; padding-top:20px; border-top:1px solid var(--line); }
+.mp-more-k{ margin:0 0 8px; font-size:11.5px; font-weight:700; letter-spacing:.2em; text-transform:uppercase; color:var(--bronze); }
+.mp-more-l{ margin:0; font-size:14.5px; line-height:1.9; color:var(--stone); max-width:78ch; }
+.mp-more-l a{ color:var(--soft); text-decoration:underline; text-decoration-color:var(--line); text-underline-offset:3px; }
+.mp-more-l a:hover{ color:var(--ink); text-decoration-color:var(--bronze); }
 .mp-rec{ padding:34px 0 64px; border-top:1px solid var(--line); font-size:13.5px; line-height:1.7; color:var(--stone); }
 .mp-rec p{ margin:0 0 6px; max-width:80ch; }
 .mp-rec a{ color:inherit; }
@@ -181,10 +187,62 @@ PUBLIC_HEAD = """<!DOCTYPE html>
   gtag('config', 'G-PKKJ0RK6N8');
 </script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Garden Room Ireland: QC6, QCB and steel-clad garden rooms | PlotNua</title>
-<meta name="description" content="Garden Room Ireland builds insulated steel-clad garden rooms in Dublin. See the QC6, the QCB garden office and the L-shaped living annex, with photographs of finished rooms.">
+<title>Garden Room Ireland: insulated steel-clad garden rooms | PlotNua</title>
+<meta name="description" content="Garden Room Ireland builds insulated steel-clad garden rooms in Dublin: the QC6, the QCB garden office and the L-shaped living annex, with finished-room photos.">
 <meta name="robots" content="index, follow">
 <link rel="canonical" href="https://plotnua.ie/suppliers/garden-room-ireland.html">
+<!-- SEO-GR4 (8 Nov 2026): page and breadcrumb only; no product, price, offer, rating or review data -->
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@graph": [
+  {
+   "@type": "WebPage",
+   "@id": "https://plotnua.ie/suppliers/garden-room-ireland.html#webpage",
+   "url": "https://plotnua.ie/suppliers/garden-room-ireland.html",
+   "name": "Garden Room Ireland",
+   "description": "Garden Room Ireland builds insulated steel-clad garden rooms in Dublin: the QC6, the QCB garden office and the L-shaped living annex, with finished-room photos.",
+   "inLanguage": "en-IE",
+   "about": {
+    "@type": "Thing",
+    "name": "Garden Room Ireland"
+   },
+   "isPartOf": {
+    "@id": "https://plotnua.ie/#website"
+   },
+   "publisher": {
+    "@id": "https://plotnua.ie/#organisation"
+   },
+   "breadcrumb": {
+    "@id": "https://plotnua.ie/suppliers/garden-room-ireland.html#breadcrumb"
+   }
+  },
+  {
+   "@type": "BreadcrumbList",
+   "@id": "https://plotnua.ie/suppliers/garden-room-ireland.html#breadcrumb",
+   "itemListElement": [
+    {
+     "@type": "ListItem",
+     "position": 1,
+     "name": "PlotNua",
+     "item": "https://plotnua.ie/"
+    },
+    {
+     "@type": "ListItem",
+     "position": 2,
+     "name": "Living in the Garden",
+     "item": "https://plotnua.ie/discovery-living-in-the-garden.html"
+    },
+    {
+     "@type": "ListItem",
+     "position": 3,
+     "name": "Garden Room Ireland"
+    }
+   ]
+  }
+ ]
+}
+</script>
 <meta name="theme-color" content="#27282A">
 <link rel="icon" href="/assets/brand/plotnua-mark-master.svg" type="image/svg+xml">
 <meta property="og:type" content="website">
@@ -309,6 +367,7 @@ f"""<link rel="stylesheet" href="../assets/components/pn-two-option.css?v=1">
       <ul class="pn-two-btns" role="list">{j}</ul></div>
   </div>
   <p class="mp-fine">PlotNua is free for homeowners. Inclusion here is not a recommendation, there is no paid placement, and recommendations cannot be bought.</p>
+  <nav class="mp-more" aria-label="Other garden room maker profiles on PlotNua"><p class="mp-more-k">More garden room makers on PlotNua, A to Z</p><p class="mp-more-l"><a href="../all-in-one-cabins-garden-rooms.html">All In One Cabins garden cabins</a> &middot; <a href="../concept-modular-garden-offices.html">Concept Modular garden offices</a> &middot; <a href="../suppliers/don-modular-homes.html">Don Modular Homes</a> &middot; <a href="../suppliers/elm-landscaping.html">Elm Landscaping garden rooms</a> &middot; <a href="../suppliers/gardenhouse24.html">Gardenhouse24 garden rooms and saunas</a> &middot; <a href="../shomera-garden-rooms.html">Shomera garden rooms</a> &middot; <a href="../suppliers/the-mobile-pods.html">The Mobile Pods garden pods</a></p></nav>
 </div></section>
 
 <footer class="mp-rec"><div class="mp-w">

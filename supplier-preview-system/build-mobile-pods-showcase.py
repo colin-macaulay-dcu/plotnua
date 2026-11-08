@@ -155,6 +155,12 @@ CSS = """<style>
 /* the guided route reuses the Discovery two-option component (pn-two-option.css) as-is */
 .mp-route .pn-two{ max-width:none; }
 .mp-fine{ margin:26px 0 0; font-size:13.5px; line-height:1.7; color:var(--stone); max-width:78ch; }
+/* SEO-GR4 (8 Nov 2026): links to PlotNua's other garden-room maker profiles, A to Z */
+.mp-more{ margin:30px 0 0; padding-top:20px; border-top:1px solid var(--line); }
+.mp-more-k{ margin:0 0 8px; font-size:11.5px; font-weight:700; letter-spacing:.2em; text-transform:uppercase; color:var(--bronze); }
+.mp-more-l{ margin:0; font-size:14.5px; line-height:1.9; color:var(--stone); max-width:78ch; }
+.mp-more-l a{ color:var(--soft); text-decoration:underline; text-decoration-color:var(--line); text-underline-offset:3px; }
+.mp-more-l a:hover{ color:var(--ink); text-decoration-color:var(--bronze); }
 .mp-rec{ padding:34px 0 64px; border-top:1px solid var(--line); font-size:13.5px; line-height:1.7; color:var(--stone); }
 .mp-rec p{ margin:0 0 6px; max-width:80ch; }
 .mp-rec a{ color:inherit; }
@@ -183,10 +189,62 @@ PUBLIC_HEAD = """<!DOCTYPE html>
   gtag('config', 'G-PKKJ0RK6N8');
 </script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>The Mobile Pods: Deluxe21, Deluxe25+ and custom garden pods | PlotNua</title>
-<meta name="description" content="The Mobile Pods build timber-frame garden pods and compact garden homes to order in Ireland. See the Deluxe21 and Deluxe25+ specifications, published prices and photographs.">
+<title>The Mobile Pods: Deluxe21 and Deluxe25+ garden pods | PlotNua</title>
+<meta name="description" content="The Mobile Pods build timber-frame garden pods and compact garden homes to order in Ireland: Deluxe21 and Deluxe25+ specifications, prices and photographs.">
 <meta name="robots" content="index, follow">
 <link rel="canonical" href="https://plotnua.ie/suppliers/the-mobile-pods.html">
+<!-- SEO-GR4 (8 Nov 2026): page and breadcrumb only; no product, price, offer, rating or review data -->
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@graph": [
+  {
+   "@type": "WebPage",
+   "@id": "https://plotnua.ie/suppliers/the-mobile-pods.html#webpage",
+   "url": "https://plotnua.ie/suppliers/the-mobile-pods.html",
+   "name": "The Mobile Pods",
+   "description": "The Mobile Pods build timber-frame garden pods and compact garden homes to order in Ireland: Deluxe21 and Deluxe25+ specifications, prices and photographs.",
+   "inLanguage": "en-IE",
+   "about": {
+    "@type": "Thing",
+    "name": "The Mobile Pods"
+   },
+   "isPartOf": {
+    "@id": "https://plotnua.ie/#website"
+   },
+   "publisher": {
+    "@id": "https://plotnua.ie/#organisation"
+   },
+   "breadcrumb": {
+    "@id": "https://plotnua.ie/suppliers/the-mobile-pods.html#breadcrumb"
+   }
+  },
+  {
+   "@type": "BreadcrumbList",
+   "@id": "https://plotnua.ie/suppliers/the-mobile-pods.html#breadcrumb",
+   "itemListElement": [
+    {
+     "@type": "ListItem",
+     "position": 1,
+     "name": "PlotNua",
+     "item": "https://plotnua.ie/"
+    },
+    {
+     "@type": "ListItem",
+     "position": 2,
+     "name": "Living in the Garden",
+     "item": "https://plotnua.ie/discovery-living-in-the-garden.html"
+    },
+    {
+     "@type": "ListItem",
+     "position": 3,
+     "name": "The Mobile Pods"
+    }
+   ]
+  }
+ ]
+}
+</script>
 <meta name="theme-color" content="#27282A">
 <link rel="icon" href="/assets/brand/plotnua-mark-master.svg" type="image/svg+xml">
 <meta property="og:type" content="website">
@@ -238,6 +296,10 @@ def journeys(prefix):
 # SEO-GR3 (founder, 8 Nov 2026): the public page links to the garden room prices guide.
 PRICES_GUIDE = (' PlotNua&rsquo;s guide to <a href="../garden-room-prices-ireland.html">garden room costs in Ireland</a> '
                 'shows what installed rooms and kits are advertised for across suppliers.')
+
+
+# SEO-GR4 (8 Nov 2026): the public page links to PlotNua's other garden-room maker profiles.
+MORE_PROFILES = '\n  <nav class="mp-more" aria-label="Other garden room maker profiles on PlotNua"><p class="mp-more-k">More garden room makers on PlotNua, A to Z</p><p class="mp-more-l"><a href="../all-in-one-cabins-garden-rooms.html">All In One Cabins garden cabins</a> &middot; <a href="../concept-modular-garden-offices.html">Concept Modular garden offices</a> &middot; <a href="../suppliers/don-modular-homes.html">Don Modular Homes</a> &middot; <a href="../suppliers/elm-landscaping.html">Elm Landscaping garden rooms</a> &middot; <a href="../suppliers/garden-room-ireland.html">Garden Room Ireland steel-clad garden rooms</a> &middot; <a href="../suppliers/gardenhouse24.html">Gardenhouse24 garden rooms and saunas</a> &middot; <a href="../shomera-garden-rooms.html">Shomera garden rooms</a></p></nav>'
 
 
 def showcase(bundle, public=False):
@@ -307,7 +369,7 @@ f"""<link rel="stylesheet" href="{two_css}?v=1">
     <div class="pn-two-opt is-help"><p class="pn-two-k">Let PlotNua do the homework</p><p class="pn-two-t">Tell us what you&rsquo;re looking for. We&rsquo;ll use our Atlas research to help you find options that match your preferences and budget.</p>
       <ul class="pn-two-btns" role="list">{j}</ul></div>
   </div>
-  <p class="mp-fine">PlotNua is free for homeowners. Inclusion here is not a recommendation, there is no paid placement, and recommendations cannot be bought.</p>
+  <p class="mp-fine">PlotNua is free for homeowners. Inclusion here is not a recommendation, there is no paid placement, and recommendations cannot be bought.</p>{MORE_PROFILES if public else ""}
 </div></section>
 
 <footer class="mp-rec"><div class="mp-w">
