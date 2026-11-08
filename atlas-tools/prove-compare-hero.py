@@ -39,7 +39,9 @@ PAGES = ["discovery-supper-club-at-home.html", "discovery-natural-swimming-garde
          # DISC-035 (founder build authorisation, private preview only, 4 Nov 2026)
          "discovery-the-outdoor-room.html",
          # DISC-036 (founder hero integration authorisation, private preview only, 5 Nov 2026)
-         "discovery-extend-the-house.html"]
+         "discovery-extend-the-house.html",
+         # DISC-037 (founder Stage 10 decision, 8 Nov 2026: the standard slider replaces the two-view crossfade)
+         "discovery-the-resourceful-garden.html"]
 
 
 def read(p):

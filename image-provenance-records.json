@@ -11361,7 +11361,7 @@
       "prompt_status": "UNAVAILABLE",
       "reference_disclosure": {
         "status": "UNCERTAIN",
-        "statement": "The credential records no input image. The founder states (Stage 6, 8 Nov 2026) that the POSSIBLE was made first and approved, and that this BEFORE was then created separately by removing the resourceful-garden features; it is not a verified masked edit. Measured: the cottage aligns at a median of 0 px and the trees, wall and horizon within 2 px, but the patio dining set, patio edge and lawn light differ, so the pair is shown as two labelled views with a crossfade, not as a comparison slider (founder decision, Stage 7)."
+        "statement": "The credential records no input image. The founder states (Stage 6, 8 Nov 2026) that the POSSIBLE was made first and approved, and that this BEFORE was then created separately by removing the resourceful-garden features; it is not a verified masked edit. Measured: the cottage aligns at a median of 0 px and the trees, wall and horizon within 2 px, but the patio dining set, patio edge and lawn light differ, so the pair was first shown as two labelled views with a crossfade (Stage 7); by founder decision (Stage 10, 8 Nov 2026) it is shown in the standard Before/Possible comparison slider, the founder accepting these minor differences."
       },
       "permitted_surfaces": [
         "discovery"
@@ -11369,7 +11369,7 @@
       "content_credentials": {
         "embeds_c2pa": true
       },
-      "founder_approval": "Approved by the founder as the DISC-037 hero BEFORE for the two-view crossfade presentation (Stage 7 founder decision, private preview only, 8 Nov 2026); production use awaits the founder's release approval",
+      "founder_approval": "Approved by the founder as the DISC-037 hero BEFORE (Stage 7, 8 Nov 2026), released 8 Nov 2026 (Stage 9); approved for the standard Before/Possible slider by founder decision (Stage 10, 8 Nov 2026)",
       "introduced": {
         "date": "2026-11-08",
         "subject": "DISC-037 The Resourceful Garden, Stage 7 hero presentation (not deployed)"
@@ -11399,7 +11399,7 @@
       "prompt_status": "UNAVAILABLE",
       "reference_disclosure": {
         "status": "UNCERTAIN",
-        "statement": "The credential records no input image. Approved by the founder as the DISC-037 hero POSSIBLE (Stages 5-7, 8 Nov 2026); its paired BEFORE was made afterwards. Shown as one of two labelled views with a crossfade, not as a comparison slider (founder decision, Stage 7)."
+        "statement": "The credential records no input image. Approved by the founder as the DISC-037 hero POSSIBLE (Stages 5-7, 8 Nov 2026); its paired BEFORE was made afterwards. First shown as one of two labelled views with a crossfade (Stage 7); shown in the standard Before/Possible comparison slider by founder decision (Stage 10, 8 Nov 2026)."
       },
       "permitted_surfaces": [
         "discovery",
@@ -11408,7 +11408,7 @@
       "content_credentials": {
         "embeds_c2pa": true
       },
-      "founder_approval": "Approved by the founder as the DISC-037 hero POSSIBLE for the two-view crossfade presentation (Stage 7 founder decision, private preview only, 8 Nov 2026); production use awaits the founder's release approval",
+      "founder_approval": "Approved by the founder as the DISC-037 hero POSSIBLE (Stages 5-7, 8 Nov 2026), released 8 Nov 2026 (Stage 9); approved for the standard Before/Possible slider by founder decision (Stage 10, 8 Nov 2026)",
       "introduced": {
         "date": "2026-11-08",
         "subject": "DISC-037 The Resourceful Garden, Stage 7 hero presentation (not deployed)"

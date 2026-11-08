@@ -9,10 +9,11 @@ Stage 3 private preview (8 Nov 2026), development branch dev/disc037-resourceful
   R2  JSON-LD parses; no Product, Offer, price, LocalBusiness, Review, FAQPage or AggregateOffer data
   R3  exactly one H1 ("The Resourceful Garden") and the approved hero question
   R4  every local href/src/srcset on the page resolves to a file
-  R5  the hero is the DISC-037-only two-view presentation (Stage 7 founder decision): the approved BEFORE and POSSIBLE
-      as two labelled views, each with a descriptive alt; two buttons with aria-pressed and a live region; the script
-      opens on BEFORE and changes only on a press (no timer, no autoplay); the reduced-motion rule; the AI disclosure;
-      no pn-compare slider on the page; the share image is made from the POSSIBLE
+  R5  the hero is the standard PlotNua Before/Possible slider (Stage 10 founder decision, 8 Nov 2026; Stages 7-9 used a
+      two-view crossfade): the shared pn-compare stylesheet and script, the standard hero variant, opening at 100% BEFORE,
+      the approved BEFORE (priority image) and POSSIBLE layers with their phone copies and descriptive alts, the tags,
+      keyboard help and jump group, the AI disclosure, the Stage 8 desktop heading size, no crossfade left behind;
+      the share image is made from the POSSIBLE
   R6  six chapters, in order, with the six approved titles
   R7  exactly the five supplied chapter images, each whole, with a descriptive alt and the AI disclosure;
       the pantry image says it is not a specific product
@@ -102,24 +103,29 @@ def check(s, files):
         need(files(ref), "R4 local reference does not resolve: " + ref)
 
     # R5
-    hero = re.search(r'<header class="d-hero[^"]*rg-hero--views[^"]*">(.*?)</header>', s, re.S)
-    need(hero, "R5 the two-view hero")
+    hero = re.search(r'<header class="d-hero[^"]*\bpn-hero-compare--std\b[^"]*">(.*?)</header>', s, re.S)
+    need(hero and "rg-hero" in hero.group(0)[:80], "R5 the standard slider hero")
     h5 = hero.group(1) if hero else ""
-    for role in ("BEFORE", "POSSIBLE"):
-        pc = re.search(r'<picture class="rg-views__img is-%s"[^>]*>(.*?)</picture>' % role.lower(), h5, re.S)
-        need(pc and ("assets/disc037/img/DISC-037-%s-1024.jpg" % role) in pc.group(1) and ("DISC-037-%s-M-819.webp" % role) in pc.group(1),
-             "R5 the %s view and its phone copy" % role)
+    need('href="assets/identity/pn-compare.css?v=' in s and 'src="assets/identity/pn-compare.js?v=' in s, "R5 the shared slider stylesheet and script")
+    need(re.search(r'<figure class="pn-compare pn-compare--hero" id="rgHeroCompare" data-start="100"', h5)
+         and re.search(r'class="pn-compare__range" type="range" min="0" max="100" step="1" value="100"', h5), "R5 the slider opens at 100% BEFORE")
+    for role, layer in (("BEFORE", "before"), ("POSSIBLE", "possible")):
+        pc = re.search(r'<div class="pn-compare__%s">\s*<picture>(.*?)</picture>' % layer, h5, re.S)
+        need(pc and ("assets/disc037/img/DISC-037-%s-1024.jpg" % role) in pc.group(1) and ("DISC-037-%s-M-819.webp" % role) in pc.group(1)
+             and ("DISC-037-%s-1536.webp 1536w" % role) in pc.group(1), "R5 the %s layer and its phone copy" % role)
         alt = re.search(r'alt="([^"]*)"', pc.group(1)) if pc else None
-        need(alt and alt.group(1).startswith(role.capitalize() + ":") and len(alt.group(1)) >= 60, "R5 the %s view needs its descriptive alt" % role)
-    need(h5.count('class="rg-views__btn"') == 2 and 'data-show="before"' in h5 and 'data-show="possible"' in h5 and h5.count("aria-pressed=") == 2,
-         "R5 two view buttons with aria-pressed")
-    need('role="group"' in h5 and 'id="rgViewsLive" aria-live="polite"' in h5, "R5 the button group and the live region")
-    need('<span class="is-before">Before</span><span class="is-possible">Possible</span>' in h5, "R5 the visible view labels")
-    need("Illustrative AI-generated visualisations. Not an actual installation." in h5, "R5 the hero AI disclosure")
-    need(not re.search(r'class="pn-compare[\s"]|pn-compare\.(?:js|css)|class="pn-compare__range"', s), "R5 no comparison slider on this page")
-    js = re.search(r"/\* DISC-037 · the two-view hero.*?</script>", s, re.S)
-    need(js and "show('before', false);" in js.group(0), "R5 the hero opens on BEFORE")
-    need(js and not re.search(r"setInterval|setTimeout|requestAnimationFrame", js.group(0)), "R5 no timer or autoplay in the hero")
+        need(alt and alt.group(1).startswith(role.capitalize() + ":") and len(alt.group(1)) >= 60, "R5 the %s layer needs its descriptive alt" % role)
+        if role == "BEFORE":
+            need(pc and 'fetchpriority="high"' in pc.group(1), "R5 BEFORE, seen first, is the priority image")
+    need('<p class="pn-compare__tag is-before" aria-hidden="true">Before</p>' in h5 and '<p class="pn-compare__tag is-possible" aria-hidden="true">Possible</p>' in h5,
+         "R5 the Before and Possible tags")
+    need('aria-describedby="rgHeroCompareKeys"' in h5 and 'id="rgHeroCompareKeys"' in h5 and 'class="pn-compare__jump" role="group"' in h5
+         and 'data-to="100"' in h5 and 'data-to="0"' in h5, "R5 the keyboard help and the jump group")
+    need('<p class="pn-compare__note">Illustrative AI-generated visualisation. Not an actual installation.</p>' in h5, "R5 the hero AI disclosure")
+    need(re.search(r'</header>\n<p class="pn-hero-note pn-hero-note--inset"[^>]*>Illustrative AI-generated visualisation\. Not an actual installation\.</p>', s),
+         "R5 the desktop AI disclosure directly beneath the hero")
+    need("font-size:clamp(40px,4.05vw,72px)" in s, "R5 the Stage 8 desktop heading size")
+    need(not re.search(r"rg-views|rgViews|rg-hero--views", s), "R5 no crossfade left behind")
     need(re.search(r'<meta property="og:image" content="https://plotnua\.ie/assets/disc037/img/DISC-037-og-1200x630\.jpg"', s), "R5 the share image")
 
     # R6
@@ -245,8 +251,10 @@ def main():
         faults = {
             "R1": s.replace('<meta name="robots" content="', '<meta name="robots" content="noindex, follow', 1),
             "R3": s.replace("<h1>The Resourceful Garden</h1>", "<h1>The Resourceful Garden</h1><h1>x</h1>"),
-            "R5": s.replace("show('before', false);", "show('before', false); setInterval(function(){}, 4000);", 1),
-            "R5 ": s.replace('data-show="possible" aria-pressed="true"', 'data-show="possible"', 1),
+            "R5": s.replace('id="rgHeroCompare" data-start="100"', 'id="rgHeroCompare" data-start="35"', 1),
+            "R5 ": s.replace('<img fetchpriority="high" src="assets/disc037/img/DISC-037-BEFORE', '<img src="assets/disc037/img/DISC-037-BEFORE', 1),
+            "R5   ": s.replace('<p class="pn-hero-note pn-hero-note--inset" style="--pnn-inset:4vw">Illustrative AI-generated visualisation. Not an actual installation.</p>\n', '', 1),
+            "R5  ": s.replace('Illustrative AI-generated visualisation. Not an actual installation.</p>\n  </figure>', '</p>\n  </figure>', 1),
             "R6": s.replace('<p class="lg-kicker">Make it happen</p>', '<p class="lg-kicker">Next steps</p>', 1),
             "R7": s.replace("Not an actual installation or a specific product.", "Not an actual installation.", 1),
             "R8": s.replace("the barrels act as thermal mass", "the barrels hold rainwater", 1),

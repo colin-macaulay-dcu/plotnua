@@ -463,8 +463,8 @@ jobs:
           # cost figures, no data collection or endpoint, the frozen journey-save block, anonymous analytics only, no commercial claims.
           python3 atlas-tools/prove-disc036-page.py --self-test
           # DISC-037 The Resourceful Garden (released 8 Nov 2026): SEO, one H1, index/follow with exactly one sitemap entry,
-          # search record and Garden Library card; the page-only two-view Before/Possible hero (no slider, no autoplay, opens
-          # on BEFORE); the five declared chapter images with the AI label; provenance by hash; Groundfridge as an example
+          # search record and Garden Library card; the standard Before/Possible slider hero (Stage 10, opens at 100% BEFORE,
+          # no crossfade left behind); the five declared chapter images with the AI label; provenance by hash; Groundfridge as an example
           # only (no partner, distributor or endorsement wording); planning limits without exemption guarantees.
           python3 atlas-tools/prove-disc037-page.py --self-test
           # Safety lock (23 Oct 2026): the 17 Oct merge builder must refuse to
