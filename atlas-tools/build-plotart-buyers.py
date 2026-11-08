@@ -60,6 +60,7 @@ COLLECTION
 </div></section>
 <section class="pa-guide-section" id="choose-art"><div class="pa-wrap pa-guide-reading">
 <h2>Choosing a painting or artwork for your home</h2>
+<p>For a room-by-room approach, read <a href="choose-art-for-living-room.html">how to choose art for your living room</a>, with a printable buying checklist.</p>
 <p>Compare proportions before choosing a work with the free <a href="art-size-calculator.html">PlotArt art size calculator</a>. Enter the furniture or clear wall width and the outer artwork dimensions to see the relationship.</p>
 <ol><li><strong>Begin with your response.</strong> Spend time with the image and the artist’s description. Look for something you want to return to, beyond a colour match.</li><li><strong>Measure the space.</strong> Check the artwork’s actual dimensions and any frame dimensions. Mark the outline on the wall with removable paper to help judge the scale.</li><li><strong>Read the medium and support.</strong> A work on paper, a canvas and a sculptural object can need different display arrangements. Ask the artist about care, light and hanging.</li><li><strong>Look closely.</strong> Ask for additional photographs or details if surface, texture, condition or colour is important to your decision. A screen cannot show every quality of a physical work.</li><li><strong>Confirm the details.</strong> Availability can change. Ask about the exact piece, the total price and whether an in-person viewing can be arranged.</li></ol>
 </div></section>
@@ -100,7 +101,10 @@ COLLECTION
 </div></section>
 '''
 
+import plotart_living_room_content as LIVING
+
 PAGES = {
+    LIVING.PATH: (LIVING.TITLE, LIVING.DESCRIPTION, LIVING.BODY),
     'buy-original-art-ireland.html': ('Buy Original Irish Art | Prices & Buying Guide | PlotArt',
         'Where to buy original Irish art, how artwork prices work and what to ask before buying. Explore live artist-supplied prices and enquire through PlotArt.', BUY),
     'abstract-contemporary-art-ireland.html': ('Abstract & Contemporary Irish Art | PlotArt',
@@ -123,7 +127,10 @@ def render(path, packages):
         head = head.replace('<meta name="robots" content="index, follow">', '<meta name="robots" content="noindex, follow">')
         head = re.sub(r'<link rel="canonical" href="[^"]+">\n?', '', head)
     head += '<link rel="stylesheet" href="assets/plotart-guides.css">\n'
-    body = body.replace('COLLECTION', C.BEGIN+'\n'+C.content(path,packages)+'\n'+C.END)
+    if 'COLLECTION' in body:
+        body = body.replace('COLLECTION', C.BEGIN+'\n'+C.content(path,packages)+'\n'+C.END)
+    if path == LIVING.PATH:
+        head += '<style>.pa-living-example{margin:34px 0}.pa-living-example img{display:block;width:100%;height:auto}.pa-living-example figcaption{font-size:14px;line-height:1.65;max-width:820px;margin-top:16px;opacity:.85}</style>\n'
     related = '<div class="pa-wrap pa-guide-related"><a class="pa-btn pa-btn--ghost" href="gallery/">Artist galleries →</a><a class="pa-btn pa-btn--ghost" href="'+('abstract-contemporary-art-ireland.html' if path.startswith('buy-') else 'buy-original-art-ireland.html')+'">'+('Abstract &amp; contemporary art →' if path.startswith('buy-') else 'Buying art &amp; prices →')+'</a></div>'
     return '<!DOCTYPE html>\n<html lang="en-IE" class="no-js">\n<head>'+head+'</head>\n<body class="pa">\n<a class="pa-skip" href="#main">Skip to content</a>\n'+header+'\n<main id="main" class="pa-guide">'+body+related+'</main>\n'+footer+'\n<script src="assets/plotart.js" defer></script>\n<script src="/assets/identity/pn-menu.js?v=1" defer></script>\n</body>\n</html>\n'
 
@@ -135,9 +142,9 @@ def main():
     if '--check' in sys.argv:
         bad=[str(p.relative_to(ROOT)) for p,t in expected.items() if not p.exists() or p.read_text()!=t]
         if bad:raise SystemExit('BUYER GUIDES · differ from reviewed source: '+', '.join(bad))
-        print('BUYER GUIDES · OK — two pages and styles match reviewed copy and public collection; nothing written')
+        print('BUYER GUIDES · OK — three pages and styles match reviewed copy and public collection; nothing written')
     else:
         for p,t in expected.items():p.write_text(t)
-        print('BUYER GUIDES · built two pages and styles')
+        print('BUYER GUIDES · built three pages and styles')
 
 if __name__=='__main__':main()

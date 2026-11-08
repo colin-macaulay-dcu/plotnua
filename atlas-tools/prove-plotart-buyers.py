@@ -44,18 +44,21 @@ class Page(HTMLParser):
             self.images.append(a)
 
 
-for path in SEO.GUIDE_PATHS:
+for path in SEO.GUIDE_PATHS + SEO.EDITORIAL_PATHS:
     doc = (ROOT / 'plotart' / path).read_text()
     parsed = Page(doc)
     check(path + ': exact reviewed copy and live collection', doc == B['render'](path, packages))
     check(path + ': one H1 and unique IDs', parsed.h1 == 1 and len(parsed.ids) == len(set(parsed.ids)))
-    check(path + ': exact approved generated region', C.update(doc, path, packages) == doc)
+    if path in SEO.GUIDE_PATHS:
+        check(path + ': exact approved generated region', C.update(doc, path, packages) == doc)
+    else:
+        check(path + ': editorial guide never reads artist inventory', doc == B['render'](path, []) and C.BEGIN not in doc)
     check(path + ': local links and anchors resolve', all(
         (ref[1:] in parsed.ids if ref.startswith('#') else (ROOT / 'plotart' / ref.split('#')[0] / ('index.html' if ref.endswith('/') else '')).exists())
         for ref in parsed.links if not ref.startswith(('https:', 'http:', 'mailto:', '/'))))
     check(path + ': no checkout, new form or purchase claim', not re.search(r'<form|add to cart|buy now|checkout', doc, re.I))
     check(path + ': all images have alt text and explicit dimensions', all('alt' in i and i.get('width') and i.get('height') for i in parsed.images))
-    check(path + ': no numeric price outside the generated region', '€' not in C.outside(doc))
+    check(path + ': no numeric price outside the generated region', '€' not in (C.outside(doc) if path in SEO.GUIDE_PATHS else doc))
 check('stylesheet matches reviewed source', (ROOT / 'plotart/assets/plotart-guides.css').read_text() == B['CSS'])
 check('artwork display preserves the whole image', 'object-fit:contain' in B['CSS'] and 'object-fit:cover' not in B['CSS'])
 

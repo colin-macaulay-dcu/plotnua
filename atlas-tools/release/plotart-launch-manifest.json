@@ -1,13 +1,13 @@
 {
   "schema": "plotnua.plotart.launch-manifest.v1",
-  "note": "SHA-256 of every published PlotArt file, from the launch build that passed prove-plotart-launch.py L1-L12 with the demonstration names (development branch founder/plotart-prototype). Any change to a published PlotArt file must come from a new verified build. Rebuilt 28 Oct 2026 (the legal-information release 2c89865 had changed the footers without updating this manifest). Rebuilt 29 Oct 2026 for the navigation and homepage refinement. Rebuilt 29 Oct 2026 for artist galleries Phase 1: artist gallery files are verified by L14 (provenance fingerprints), not pinned here. Rebuilt 3 Nov 2026 for the Mobile Gallery public work-in-progress release (five-pill navigation on every PlotArt page; plotart/mobile-gallery/ added; founder release authorisation). Search release 7 Nov 2026: homepage, About, Virtual Gallery search metadata, public artist A-Z and its styles verified; all image and unrelated page pins retained. Buyer search release 7 Nov 2026: two guides, their scoped stylesheet and the home/gallery entry links. Generated guide excerpts are checked against approved public exports; all other pins retained. Wall-size release 8 Nov 2026: reviewed calculator, scoped assets, home/buyer entry links and public sitemap. Homepage campaign release 8 Nov 2026: full three-room image beside calculator invitation, responsive layout, artwork credit and visible illustration disclosure.",
+  "note": "SHA-256 of every published PlotArt file, from the launch build that passed prove-plotart-launch.py L1-L12 with the demonstration names (development branch founder/plotart-prototype). Any change to a published PlotArt file must come from a new verified build. Rebuilt 28 Oct 2026 (the legal-information release 2c89865 had changed the footers without updating this manifest). Rebuilt 29 Oct 2026 for the navigation and homepage refinement. Rebuilt 29 Oct 2026 for artist galleries Phase 1: artist gallery files are verified by L14 (provenance fingerprints), not pinned here. Rebuilt 3 Nov 2026 for the Mobile Gallery public work-in-progress release (five-pill navigation on every PlotArt page; plotart/mobile-gallery/ added; founder release authorisation). Search release 7 Nov 2026: homepage, About, Virtual Gallery search metadata, public artist A-Z and its styles verified; all image and unrelated page pins retained. Buyer search release 7 Nov 2026: two guides, their scoped stylesheet and the home/gallery entry links. Generated guide excerpts are checked against approved public exports; all other pins retained. Wall-size release 8 Nov 2026: reviewed calculator, scoped assets, home/buyer entry links and public sitemap. Homepage campaign release 8 Nov 2026: full three-room image beside calculator invitation, responsive layout, artwork credit and visible illustration disclosure. Living-room guide release 8 Nov 2026: public editorial guide, printable checklist, homepage and buyer-guide links. No new artist inventory.",
   "built_from": "Production b7cb4dd plus PlotArt search visibility release, 7 November 2026",
   "files": {
     "invitation.html": "545666aa900a04845ad2cc6e9a6981503307e03c383bcee5ca7bb36872f5600d",
     "about.html": "cbfdb79486a93a3b0e1399f3a6fddbee11f79fb25b32f1517a39fd91b4bcf65b",
     "founding-25.html": "833502a64ec16553ade8f930b419b3ce755a91f464bba5fe8df998c3a6dbd9b6",
     "living-gallery.html": "552bffacbd9bc72168305fe589eaed8968bba876b272f845b30fb6d5b440dba9",
-    "index.html": "7b1432ddad24de37f2df7bc13a6f10c69e02bdc8edfbd51648062de66591244b",
+    "index.html": "fb709a9ad770a012aab6acf93d6a11934c0d9353d79d6291f2c3bcee7b2ae074",
     "assets/f25-apply.js": "42a81d4a902bbdab7e16207cb98192940e15f0f5f1a0e7aa1622d03d181a77c0",
     "assets/plotart.css": "3d1c1de6c8680eb7d6b485bfd877f29c225c708cad88d89434c77fff6b3d7492",
     "assets/plotart.js": "1aeda046a43a9877413943aa4573f8266280b94a5df21fb68421c5486189dca8",
@@ -23,19 +23,21 @@
     "mobile-gallery/img/mg-hero-colin-macaulay-880.webp": "2a14fdba5c714429e48308aaaa8d550ae4b388e43a0edd08c2f3853e05801b38",
     "gallery/index.html": "c1c0d43af589256a9fba773750b5de5c740d7a0eb7f6e27f281c8539af18c04f",
     "assets/plotart-guides.css": "042b453f15c46eaa2e59bbd199ad8f5817417c9269aec7bf0276382489b654c9",
-    "buy-original-art-ireland.html": "ddd6dfc652201abff4ee63374dc12dd90f56b62f7fe7e6bef33becf98a67c00f",
+    "buy-original-art-ireland.html": "6a898fc9a882a3ecb67c7915539707e97d3ab41ae098a903d06153971eb33585",
     "abstract-contemporary-art-ireland.html": "30be567ca7b47e367ed548f05d392a70813494dd9b471d95bc28e74b66384346",
     "art-size-calculator.html": "e117ffc41ffeae7a2a036b9491ae7c40be734c5a15cf7fd459590c5cd47c78b6",
     "assets/plotart-wall-size.css": "82e9bc4e4652fc9042d4fae072a7d44ab768f0d00e19418d05bcdecaf1cde1c5",
     "assets/plotart-wall-size.js": "4f5d108eb5184d4bec0e1c23503f4c3c40b7aad05021a09621c7c9f5c92cf709",
     "assets/campaigns/one-painting-three-rooms-1672.webp": "94241c926d0587b37c105fb15f39b724365dfbbe2ab00d390881222d6420230c",
-    "assets/campaigns/one-painting-three-rooms-840.webp": "83ce36503871355645711021c306da85fd95883485036ac1f50d2606ea08a26f"
+    "assets/campaigns/one-painting-three-rooms-840.webp": "83ce36503871355645711021c306da85fd95883485036ac1f50d2606ea08a26f",
+    "choose-art-for-living-room.html": "6b5205cd8924fedc0cae2c6c4a3ce2188767cc70bbc11d86f5ea5081601e9695",
+    "downloads/plotart-art-buying-checklist.pdf": "d7c8329122a20f316e84a7b5b8deb84c9b4612a1c16c94732bd7e322c19b34a6"
   },
   "outside_grid": {
     "gallery/index.html": "d65da3b023536fd89fa636477677e28b76a3e378c2c48dd8dbe9e6dad63c3960"
   },
   "outside_search_content": {
-    "buy-original-art-ireland.html": "9310265b5b0c58eef75172c7acdf89e6be54fa29a5bee5ff6ec226761faa899b",
+    "buy-original-art-ireland.html": "44a897ed135c3c90571970beb707ab42c8f5daa33692d8ce8999161c1f455af2",
     "abstract-contemporary-art-ireland.html": "b9d190a47063bb30864c8a0420499dee638395569ebb87dafa4f4c287ff63f28"
   }
 }
