@@ -47,6 +47,7 @@ PREMIUM_PAGES = {
     "discovery-stay-in-the-house-you-love.html", # DISC-020, built Premium from the start (founder Phase 2 build authorisation, 4 Nov 2026)
     "discovery-the-water-wall.html", # DISC-034, built Premium from the start (founder build authorisation, private preview only, 4 Nov 2026)
     "discovery-extend-the-house.html", # DISC-036, built Premium from the start (PLOTNUA-BUILD-001 Stage 1, private preview only, 5 Nov 2026)
+    "discovery-the-resourceful-garden.html", # DISC-037, built Premium from the start (Stage 3 private preview only, 8 Nov 2026)
     "discovery-the-outdoor-room.html", # DISC-035, built Premium from the start (founder build authorisation, private preview only, 4 Nov 2026)
     "discovery-supper-club-at-home.html",    # DISC-032, built Premium from the start (founder Phase 2 authorisation, 27 Oct 2026)
 }
