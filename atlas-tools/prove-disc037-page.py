@@ -1,0 +1,225 @@
+#!/usr/bin/env python3
+"""DISC-037 · The Resourceful Garden: page, SEO, claims, containment and provenance proof (read-only).
+Stage 3 private preview (8 Nov 2026), development branch dev/disc037-resourceful-garden, NOT deployed.
+
+    python3 atlas-tools/prove-disc037-page.py [--self-test]
+
+  R1  one <title>, a meta description (60-160 chars), canonical and og:url for this page; robots is
+      "noindex, nofollow" while this is a private preview (flip deliberately at launch, with this check)
+  R2  JSON-LD parses; no Product, Offer, price, LocalBusiness, Review, FAQPage or AggregateOffer data
+  R3  exactly one H1 ("The Resourceful Garden") and the approved hero question
+  R4  every local href/src/srcset on the page resolves to a file
+  R5  the hero is the labelled pending frame: no <img>, <picture> or pn-compare inside it, and no
+      DISC-037-01-BEFORE / 02-POSSIBLE file is referenced anywhere (nothing substituted for the missing pair)
+  R6  six chapters, in order, with the six approved titles
+  R7  exactly the four supplied chapter images, each whole, with a descriptive alt and the AI disclosure;
+      the pantry image says it is not a specific product
+  R8  chapter 04 carries the labelled empty slot for the missing greenhouse image, with no image in it
+  R9  Groundfridge is framed as an example: Ireland/UK not listed, Irish delivery not confirmed, not a
+      PlotNua partner, delivery/excavation/installation excluded
+  R10 planning: Class 3, 30 m2, 25 m2 open space, 27 July 2026, poultry excluded, Section 5 (EUR 80), the
+      buried store untested, not legal advice; no blanket "no planning needed" wording
+  R11 living roof structure check; costs labelled indicative and not quotes, with the checked date
+  R12 no data collection or payment: no <form>, fetch, XHR, beacon, Workers or Formspree endpoint
+  R13 no partner / commission / referral-fee / affiliate / discount wording, no savings, carbon or
+      self-sufficiency promises; the no-relationship disclaimer is present; no business image is shown
+  R14 containment: not in the sitemap, the search index, the governed search map or the Discovery Library
+  R15 related links go only to live Discoveries (Borrowed Garden, Water Wall, Outdoor Room, House as a
+      Power Station, Extend the House)
+  R16 provenance: every DISC-037 image in use is exactly a recorded derivative (sha256) of a declared,
+      unchanged AI_ILLUSTRATION master that permits the discovery surface
+Prints "DISC-037 PAGE · OK" only when every check passes.
+"""
+import hashlib, html, json, os, re, sys
+
+ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+PAGE = "discovery-the-resourceful-garden.html"
+URL = "https://plotnua.ie/" + PAGE
+AI_LABEL = "Illustrative AI-generated visualisation. Not an actual installation."
+ROLES = ["03-GARDEN-THAT-FEEDS-YOU", "04-UNDERGROUND-PANTRY", "05-WASTE-INTO-WONDERFUL", "07-LIVING-ROOF-WILD-GARDEN"]
+CHAPTERS = ["The garden that feeds you", "The underground pantry", "Waste into something wonderful",
+            "The greenhouse that stores sunshine", "The living roof and wild garden", "Make it happen"]
+RELATED = ["discovery-the-borrowed-garden.html", "discovery-the-water-wall.html", "discovery-the-outdoor-room.html",
+           "discovery-house-as-power-station.html", "discovery-extend-the-house.html"]
+
+
+def text(fragment):
+    t = re.sub(r"<script.*?</script>|<style.*?</style>|<!--.*?-->", " ", fragment, flags=re.S)
+    return re.sub(r"\s+", " ", html.unescape(re.sub(r"<[^>]+>", " ", t)))
+
+
+def read(p):
+    return open(os.path.join(ROOT, p), encoding="utf-8").read()
+
+
+def check(s, files):
+    problems = []
+
+    def need(cond, msg):
+        if not cond:
+            problems.append(msg)
+
+    flat = text(s)
+    low = flat.lower()
+    nocom = re.sub(r"<!--.*?-->", " ", s, flags=re.S)
+
+    # R1
+    need(len(re.findall(r"<title>[^<]+</title>", s)) == 1, "R1 one <title>")
+    for pat in (r'<meta name="description" content="[^"]{60,160}"', r'<link rel="canonical" href="%s"' % re.escape(URL),
+                r'<meta property="og:url" content="%s"' % re.escape(URL), r'<meta name="robots" content="noindex, nofollow"'):
+        need(re.search(pat, s), "R1 missing: " + pat)
+
+    # R2
+    blocks = re.findall(r'<script type="application/ld\+json">(.*?)</script>', s, re.S)
+    need(blocks, "R2 no JSON-LD")
+    for b in blocks:
+        try:
+            j = json.dumps(json.loads(b))
+        except ValueError as e:
+            problems.append("R2 JSON-LD does not parse: %s" % e); continue
+        for bad in ('"Product"', '"Offer"', '"price"', '"LocalBusiness"', '"Review"', '"FAQPage"', '"AggregateOffer"'):
+            need(bad not in j, "R2 unsupported structured data: " + bad)
+
+    # R3
+    need(len(re.findall(r"<h1[\s>]", s)) == 1, "R3 exactly one H1")
+    need("<h1>The Resourceful Garden</h1>" in s, "R3 the H1 is the title")
+    need("What if your garden could grow more, waste less and give something back?" in s, "R3 the hero question")
+
+    # R4
+    refs = set(re.findall(r'(?:href|src)="([^"#?]+)', nocom)) | {
+        u.strip().split(" ")[0] for ss in re.findall(r'(?:srcset|imagesrcset)="([^"]+)"', nocom) for u in ss.split(",")}
+    for ref in refs:
+        if ref.startswith(("http:", "https:", "mailto:", "tel:", "data:", "/")) or not ref:
+            continue
+        need(files(ref), "R4 local reference does not resolve: " + ref)
+
+    # R5
+    hero = re.search(r'<header class="d-hero[^"]*"[^>]*>(.*?)</header>', s, re.S)
+    need(hero and 'data-rg-pending="hero"' in s[hero.start():hero.start() + 200], "R5 the hero is the labelled pending frame")
+    if hero:
+        need(not re.search(r"<img|<picture|pn-compare", hero.group(1)), "R5 an image or compare component inside the pending hero")
+    need(not re.search(r"DISC-037-0[12]-(?:BEFORE|POSSIBLE)[^\"']*\.(?:png|jpg|webp)", nocom), "R5 a hero image file is referenced")
+    need("have not been supplied" in flat, "R5 the pending hero says the pair has not been supplied")
+
+    # R6
+    ks = re.findall(r'<div class="lg-chapter" id="lg-ch0(\d)">.*?<p class="lg-kicker">([^<]+)</p>', s)
+    need([k for k, _t in ks] == list("123456"), "R6 six chapters in order: %s" % [k for k, _t in ks])
+    need([html.unescape(t) for _k, t in ks] == CHAPTERS, "R6 the approved chapter titles: %s" % [t for _k, t in ks])
+
+    # R7
+    figs = re.findall(r'<figure class="rg-feature[^"]*" data-rg-image="DISC-037-([A-Z0-9-]+)">(.*?)</figure>', s, re.S)
+    need([r for r, _b in figs] == ROLES, "R7 the four chapter images in order: %s" % [r for r, _b in figs])
+    for role, body in figs:
+        alt = re.search(r'alt="([^"]*)"', body)
+        need(alt and len(alt.group(1)) >= 40, "R7 %s needs a descriptive alt" % role)
+        need("AI-generated visualisation" in body and "Not an actual installation" in body, "R7 %s lacks the AI disclosure" % role)
+    pan = dict(figs).get("04-UNDERGROUND-PANTRY", "")
+    need("Not an actual installation or a specific product." in pan, "R7 the pantry image is not a specific product")
+
+    # R8
+    ch4 = re.search(r'id="lg-ch04".*?id="lg-ch05"', s, re.S)
+    slot = re.search(r'<div class="rg-pending[^"]*" data-rg-pending="ch04"[^>]*>(.*?)</div>\s*</div>', ch4.group(0) if ch4 else "", re.S)
+    need(slot and "<img" not in slot.group(1) and "missing from the supplied package" in slot.group(1), "R8 the chapter 04 pending slot")
+    need(ch4 and "<img" not in ch4.group(0), "R8 an image in chapter 04")
+
+    # R9
+    for must in ("Ireland and the UK are not listed among its delivery regions", "Irish delivery is not confirmed",
+                 "the Groundfridge is not a PlotNua partner", "Delivery, excavation and installation"):
+        need(must in flat, "R9 Groundfridge qualification missing: " + must)
+
+    # R10
+    for must in ("27 July 2026", "30 m²", "25 m²", "not for keeping pigs, poultry", "Section 5 declaration", "€80",
+                 "no rule or decision we found deals with a buried one", "not legal advice"):
+        need(must in flat, "R10 planning statement missing: " + must)
+    for bad in ("no planning permission needed", "doesn't need planning", "does not need planning", "planning-free",
+                "always exempt", "guaranteed exempt", "no permission required"):
+        need(bad not in low, "R10 blanket exemption wording: " + bad)
+
+    # R11
+    need("have the building’s structure checked" in low, "R11 the living roof structure check")
+    need("not quotes" in flat and "checked 8 November 2026" in flat and "indicative" in low, "R11 costs labelled indicative, not quotes, dated")
+
+    # R12
+    for bad in ("<form", "fetch(", "xmlhttprequest", "sendbeacon", "workers.dev", "formspree"):
+        need(bad not in s.lower(), "R12 data collection or payment: " + bad)
+
+    # R13
+    need(not re.search(r"commission(?! for regulation of utilities)", low), "R13 commercial or unsupported-claim wording: commission")
+    for bad in ("our partner", "partnered", "referral fee", "affiliate", "discount", "exclusive offer",
+                "save €", "savings", "carbon", "co2", "cut your bills", "pay for itself", "recommended supplier"):
+        need(bad not in low, "R13 commercial or unsupported-claim wording: " + bad)
+    need(low.count("self-sufficient") == 1 and "none of this makes a household self-sufficient" in low, "R13 self-sufficiency is only disclaimed")
+    need("PlotNua has no commercial relationship with any business named on this page" in flat, "R13 the no-relationship disclaimer")
+    who = re.search(r'id="who-can-help".*?</ul>', s, re.S)
+    need(who and "<img" not in who.group(0), "R13 a business image is shown")
+
+    # R15
+    for link in RELATED:
+        need(('href="%s"' % link) in s and files(link), "R15 related link missing or not live: " + link)
+    for bad in ("discovery-underground-space", "discovery-hens", "discovery-off-grid"):
+        need(bad not in s, "R15 a speculative link: " + bad)
+    return problems
+
+
+def main():
+    s = read(PAGE)
+    files = lambda p: os.path.exists(os.path.join(ROOT, p))
+    problems = check(s, files)
+
+    def need(cond, msg):
+        if not cond:
+            problems.append(msg)
+
+    # R14 containment (private preview)
+    need(PAGE not in read("sitemap.xml"), "R14 the page is in the sitemap")
+    need(PAGE not in read("search-index-v1.json"), "R14 the page is in the search index")
+    tm = json.loads(read("atlas-tools/search-topic-map.json"))
+    need(not [e for e in tm["entries"] if PAGE in e.get("targets", [])], "R14 a governed search entry targets the page")
+    need(('href="%s"' % PAGE) not in read("discoveries.html"), "R14 a Discovery Library card links the page")
+
+    # R16 provenance by hash (as DISC-035 O16 / DISC-036 E16)
+    reg = json.loads(read("image-provenance-records.json"))
+    masters = {r["asset"]: r for r in reg["records"]}
+    derivs = {d["asset"]: d for d in reg["derivatives"]}
+    used = set(re.findall(r'assets/disc037/img/DISC-037-[A-Za-z0-9-]+\.(?:webp|jpg)', s))
+    need(len(used) >= 25, "R16 the DISC-037 images in use (%d)" % len(used))
+    sha = lambda a: hashlib.sha256(open(os.path.join(ROOT, a), "rb").read()).hexdigest()
+    for a in sorted(used):
+        d = derivs.get(a)
+        src = (d or {}).get("derived_from", {})
+        m = masters.get(src.get("asset"))
+        need(d and m and m.get("class") == "AI_ILLUSTRATION", "R16 %s is not a recorded derivative of a declared AI master" % a)
+        need(m and "discovery" in m.get("permitted_surfaces", []), "R16 %s: its master does not permit the discovery surface" % a)
+        need(d and files(a) and sha(a) == d["sha256"], "R16 %s differs from its recorded derivative" % a)
+        need(m and src.get("sha256") == m["sha256"] and sha(m["asset"]) == m["sha256"], "R16 %s: its master is not the declared, unchanged file" % a)
+
+    if "--self-test" in sys.argv:
+        faults = {
+            "R1": s.replace('content="noindex, nofollow"', 'content="index, follow"', 1),
+            "R3": s.replace("<h1>The Resourceful Garden</h1>", "<h1>The Resourceful Garden</h1><h1>x</h1>"),
+            "R5": s.replace('<div class="rg-await">', '<div class="rg-await"><img src="assets/disc037/img/DISC-037-03-GARDEN-THAT-FEEDS-YOU-1024.jpg" alt="">', 1),
+            "R6": s.replace('<p class="lg-kicker">Make it happen</p>', '<p class="lg-kicker">Next steps</p>', 1),
+            "R7": s.replace("Not an actual installation or a specific product.", "Not an actual installation.", 1),
+            "R8": s.replace('<div class="rg-pending reveal" data-rg-pending="ch04"', '<div class="rg-pending reveal" data-rg-pending="x"', 1),
+            "R9": s.replace("Irish delivery is not confirmed", "Irish delivery is available", 1),
+            "R10": s.replace("no rule or decision we found deals with a buried one", "a buried one is exempt", 1),
+            "R11": s.replace("not quotes", "firm prices"),
+            "R12": s.replace("</main>", "<form action='https://x.workers.dev'></form></main>"),
+            "R13": s.replace("Irish businesses that can help.", "Irish businesses that can help. Ask our partner.", 1),
+            "R15": s.replace('href="discovery-the-water-wall.html"', 'href="discovery-underground-space.html"'),
+        }
+        missed = [k for k, t in faults.items() if not any(p.startswith(k + " ") for p in check(t, files))]
+        print("DISC-037 PAGE · SELF-TEST " + ("OK (%d planted faults caught)" % len(faults) if not missed else "MISSED %s" % missed))
+        if missed:
+            sys.exit(1)
+
+    if problems:
+        print("DISC-037 PAGE · FAILED")
+        for p in problems:
+            print("  " + p)
+        sys.exit(1)
+    print("DISC-037 PAGE · OK (R1-R16)")
+
+
+if __name__ == "__main__":
+    main()
