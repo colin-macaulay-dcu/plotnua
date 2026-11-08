@@ -120,6 +120,8 @@ PAGES = {
     "discovery-the-outdoor-room.html": "dark",
     # DISC-036 Extend the House (PLOTNUA-BUILD-001 Stage 1, founder development authorisation, private preview only, 5 Nov 2026)
     "discovery-extend-the-house.html": "dark",
+    # DISC-037 The Resourceful Garden (Stage 3 private preview only, 8 Nov 2026)
+    "discovery-the-resourceful-garden.html": "dark",
     # Idea Board, the Discovery Library's companion page (Phase 1 build, 1 Nov 2026; noindex; release pending)
     "ideas.html": "dark",
     # The Borrowed Garden noticeboard, the Discovery's companion page (release candidate, 4 Nov 2026; noindex)
@@ -133,7 +135,7 @@ DISC = {"discoveries.html", "discovery-hidden-bins.html", "discovery-living-in-t
         "discovery-natural-swimming-garden.html", "discovery-hidden-flood-barrier.html",
         "discovery-supper-club-at-home.html", "discovery-underground-swimming-pool.html",
         "discovery-stay-in-the-house-you-love.html", "discovery-the-water-wall.html",
-        "discovery-the-outdoor-room.html", "discovery-extend-the-house.html", "ideas.html", "borrowed-garden-board.html"}
+        "discovery-the-outdoor-room.html", "discovery-extend-the-house.html", "discovery-the-resourceful-garden.html", "ideas.html", "borrowed-garden-board.html"}
 # Pages that also load the Premium component layer (I13, I14): the registry.
 PREMIUM = set(premium_pages.PREMIUM_PAGES)
 # Premium pages that are a Discovery's guide rather than a Discovery (no Discovery layer).
