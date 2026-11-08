@@ -573,8 +573,58 @@ SUPPLIER_INFO_PAGES = {
         "former_names": ["TRIQ CUBE"],
     },
 }
+# SEO-GR5b (8 Nov 2026): the six published supplier profiles, held apart from
+# SUPPLIER_INFO_PAGES on purpose. build-maker-explorer.py reads SUPPLIER_INFO_PAGES
+# for its G7 (no manufacturer-information page linked from an explorer), while the
+# explorer's own A-Z index links four of these profiles under its G12b (SEO-GR4).
+# Two lists keep both guards meaning what they say. Both lists pass through the
+# SAME G15 checks below and produce the same possibility-shape info- record.
+SUPPLIER_PROFILE_PAGES = {
+    # A profile is supplier INFORMATION about a page, not an Atlas record: it carries no
+    # price, tier, product count, verification state or endorsement, and it
+    # never replaces the supplier summary (type "supplier"), which stays as it
+    # was. The title says plainly what the result opens; every standfirst word
+    # is pinned to the profile page by page_must_contain.
+    "suppliers/the-mobile-pods.html": {
+        "id": "info-the-mobile-pods",
+        "title": "Supplier profile: The Mobile Pods",
+        "standfirst": "Timber-frame garden pods and compact garden homes, built to order in Ireland.",
+        "page_must_contain": ["The Mobile Pods", "garden pods", "compact garden homes", "to order in Ireland"],
+    },
+    "suppliers/gardenhouse24.html": {
+        "id": "info-gardenhouse24",
+        "title": "Supplier profile: Gardenhouse24",
+        "standfirst": "Nordic-spruce garden rooms, log cabins, outdoor saunas and hot tubs.",
+        "page_must_contain": ["Gardenhouse24", "Nordic-spruce", "log cabins", "saunas", "hot tubs"],
+    },
+    "suppliers/elm-landscaping.html": {
+        "id": "info-elm-landscaping",
+        "title": "Supplier profile: Elm Landscaping",
+        "standfirst": "A Co. Clare landscaping company that also supplies garden rooms and log cabins.",
+        "page_must_contain": ["Elm Landscaping", "Co. Clare", "garden rooms and log cabins"],
+    },
+    "suppliers/garden-room-ireland.html": {
+        "id": "info-garden-room-ireland",
+        "title": "Supplier profile: Garden Room Ireland",
+        "standfirst": "Insulated steel-clad garden rooms, built in Dublin.",
+        "page_must_contain": ["Garden Room Ireland", "insulated steel-clad garden rooms", "Dublin"],
+    },
+    "suppliers/don-modular-homes.html": {
+        "id": "info-don-modular-homes",
+        "title": "Supplier profile: Don Modular Homes",
+        "standfirst": "One steel-framed, factory-finished design, from a garden room to a four-bedroom home.",
+        "page_must_contain": ["Don Modular Homes", "steel-framed", "factory-finished", "four-bedroom home"],
+    },
+    "suppliers/superior-pergola-ireland.html": {
+        "id": "info-superior-pergola-ireland",
+        "title": "Supplier profile: Superior Pergola Ireland",
+        "standfirst": "Made-to-measure aluminium pergolas, verandas and porches.",
+        "page_must_contain": ["Superior Pergola Ireland", "made-to-measure",
+                              "aluminium pergolas, verandas and porches"],
+    },
+}
 info_recs = []
-for fname, spec in sorted(SUPPLIER_INFO_PAGES.items()):
+for fname, spec in sorted(list(SUPPLIER_INFO_PAGES.items()) + list(SUPPLIER_PROFILE_PAGES.items())):
     if fname not in ALLOW:
         die("G15 supplier information page %r is not in sitemap.xml" % fname)
     src = (ROOT / fname).read_text(encoding="utf-8")
@@ -882,8 +932,24 @@ if "-preview.html" in low:
     die("G2 PRIVATE PREVIEW LEAK: '-preview.html' appears in the index")
 if "supplier-preview-system" in low:
     die("G2 PRIVATE PREVIEW LEAK: the preview template path appears in the index")
+# SEO-GR5b (8 Nov 2026), PROPOSED CONTRACT AMENDMENT A3 — needs founder
+# approval with the release. Two PUBLISHED supplier profiles share a slug with
+# a private preview: suppliers/elm-landscaping.html with
+# elm-landscaping-preview.html, and suppliers/garden-room-ireland.html with
+# garden-room-ireland-preview.html. The slug test cannot tell a published page
+# from its private preview, so it read the published route as a leak. The
+# exemption is exact and counted: each G15 route, which G15 has already proved
+# sitemap-listed and indexable, is excused ONCE, as the exact JSON
+# '"route":"<route>"'. Any other appearance of a preview slug anywhere in the
+# index, including a second copy of the same route, still refuses the build;
+# the '-preview.html' and template checks above are untouched.
+g2_low = low
+for r in info_recs:
+    frag = ('"route":"%s"' % r["route"]).lower()
+    if frag in g2_low:
+        g2_low = g2_low.replace(frag, '"route":""', 1)
 for s in preview_slugs:
-    if len(s) > 6 and ("/" + s) in low:
+    if len(s) > 6 and ("/" + s) in g2_low:
         die("G2 PRIVATE PREVIEW LEAK: preview slug %r appears as a path" % s)
 print("  G2  no private preview, by filename, path or template  OK")
 
@@ -1105,6 +1171,26 @@ for r in info_recs:
         die("G15 %r must route to its own page, never to Results / My Plot" % r["id"])
     if not r["id"].startswith("info-"):
         die("G15 %r must carry the info- prefix" % r["id"])
+# G15b (SEO-GR5b): a published supplier profile is described, never rated. Its title
+# says what the result opens; its text carries no price, figure or endorsement.
+PROFILE_WORDS_REFUSED = ("recommend", "verified", "approved", "partner", "endorse", "best",
+                         "top ", "trusted", "featured", "preferred", "commission", "referral",
+                         "discount", "saving", "offer", "rated", "award")
+for r in info_recs:
+    if r["route"] not in SUPPLIER_PROFILE_PAGES:
+        continue
+    if not r["title"].startswith("Supplier profile: "):
+        die("G15b %r must say plainly that it opens a supplier profile" % r["id"])
+    txt = (r["title"] + " " + r["standfirst"]).lower()
+    if re.search(r"[\u20ac\u00a3$%]", txt) or re.search(r"\d", r["standfirst"]):
+        die("G15b %r carries a price or figure; a profile record states none" % r["id"])
+    for w in PROFILE_WORDS_REFUSED:
+        if w in txt:
+            die("G15b %r carries endorsement or commercial wording: %r" % (r["id"], w.strip()))
+if set(SUPPLIER_PROFILE_PAGES) & set(SUPPLIER_INFO_PAGES):
+    die("G15b a page is declared both as supplier information and as a supplier profile")
+print("  G15b %d supplier profile record(s): named as profiles, no price, figure or endorsement  OK"
+      % sum(1 for r in info_recs if r["route"] in SUPPLIER_PROFILE_PAGES))
 ids_seen = [r["id"] for r in records]
 if len(ids_seen) != len(set(ids_seen)):
     die("G15 duplicate record id in the index")

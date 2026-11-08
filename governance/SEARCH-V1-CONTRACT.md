@@ -370,6 +370,79 @@ the closed schema and is deliberately not part of A2.
 
 ---
 
+## AMENDMENT A3 · PUBLISHED SUPPLIER PROFILES (8 November 2026, SEO-GR5b; PROPOSED, effective only on founder approval of the release)
+
+**Gap.** Six published supplier profiles were not reachable through Search:
+- The Mobile Pods
+- Gardenhouse24
+- Elm Landscaping
+- Garden Room Ireland
+- Don Modular Homes
+- Superior Pergola Ireland
+
+Four of them appeared only as unlinked supplier summaries (R2: a supplier record carries no route). The Mobile Pods and Superior Pergola were absent from Search.
+
+**Rule.** Each profile enters through the existing G15 supplier-information mechanism.
+
+The profiles are declared in their own list, `SUPPLIER_PROFILE_PAGES`, beside `SUPPLIER_INFO_PAGES`, for two reasons:
+- `build-maker-explorer.py` G7 reads `SUPPLIER_INFO_PAGES` to keep manufacturer-information pages out of the explorers;
+- the explorer's A–Z index already links four of these profiles under its own G12b (SEO-GR4).
+
+Both lists pass through the same G15 checks:
+- sitemap-listed;
+- not noindex;
+- `page_must_contain`;
+- possibility shape;
+- own route;
+- `info-` prefix.
+
+**Record shape**
+- Possibility-shape record, no new type and no new field.
+- Id: `info-<slug>`.
+- Title: "Supplier profile: <name>". The result says plainly what it opens.
+- Standfirst: one factual line. Every phrase in it is pinned to the page by `page_must_contain`.
+- No topics: no synonym is added to the governed map.
+- Route: the published page.
+
+**What the record does not carry**
+- price, tier or product count;
+- verification state, rank or endorsement;
+- any partner or referral wording.
+
+**What does not change**
+- **Supplier summaries are untouched.** All 65 `supplier` records are byte-identical, R2 still holds, and the product expansion is unchanged.
+- **Indexing rules.** No product is added or removed. G7–G7e, G9, R-MATCH and the holds are unchanged.
+- **The G10 size guard is not raised.** It stays at 184,320 bytes. The index is 183,532 bytes, 788 bytes under it.
+
+**G15b (new).** A profile record is described, never rated. The build refuses a profile record when:
+- its title does not begin "Supplier profile: ";
+- its title or standfirst carries a currency or percentage sign;
+- its standfirst carries a figure;
+- either field carries endorsement or commercial wording: recommend, verified, approved, partner, endorse, best, top, trusted, featured, preferred, commission, referral, discount, saving, offer, rated or award.
+
+**G2, narrowed exactly.** Two published profiles share a slug with a private, noindex preview:
+- `suppliers/elm-landscaping.html` and `elm-landscaping-preview.html`;
+- `suppliers/garden-room-ireland.html` and `garden-room-ireland-preview.html`.
+
+How the narrowed G2 works:
+1. G2's slug test now excuses each G15 route **once**, as the exact JSON `"route":"<route>"`. G15 has already proved that route sitemap-listed and indexable.
+2. Any other appearance of a preview slug still refuses the build. This includes a second copy of the same route.
+3. The `-preview.html` and template checks are unchanged.
+
+Capability:
+- the baseline builds;
+- a duplicate profile route, a slug in a product field, a preview filename, and a non-exact profile route are each refused;
+- the three G15b sabotages are each refused.
+
+The evidence file is `guard-capability.txt`.
+
+**Ordering.** In `search.js`, at **equal** relevance, a result whose route is a published supplier profile (`suppliers/…`) follows every other result of its group.
+
+- **Why.** Ties were broken by title alone, so "Supplier profile: …" sorted ahead of Discoveries titled "The …". For example, "outdoor room" would have opened on Gardenhouse24.
+- **Effect.** A higher score still wins outright. No tier, price or Atlas signal takes part. Every result that existed before keeps exactly its previous membership and order: measured across 74 queries.
+
+---
+
 ## 12 · OUT OF SCOPE FOR V1
 
 - product deep-links depend on JC-2 / JC-4; product results route to supplier-grouped

@@ -249,6 +249,16 @@
 
     scored.sort(function (a, b) {
       if (b.s !== a.s) { return b.s - a.s; }
+      /* SEO-GR5b (8 Nov 2026): AT EQUAL RELEVANCE, A PUBLISHED SUPPLIER PROFILE
+         FOLLOWS EVERY OTHER RESULT OF ITS GROUP. Ties were broken by title alone,
+         so "Supplier profile: …" sorted ahead of every Discovery titled
+         "The …": "outdoor room" would have opened on Gardenhouse24, not The
+         Outdoor Room. Scoped to profile routes (suppliers/…), so every result
+         that existed before keeps exactly its old order. A higher score still
+         wins outright; no tier, price or Atlas signal takes part. */
+      var ai = /^suppliers\//.test(a.r.route || '') ? 1 : 0,
+          bi = /^suppliers\//.test(b.r.route || '') ? 1 : 0;
+      if (ai !== bi) { return ai - bi; }
       var an = (a.r.name || a.r.title || ''), bn = (b.r.name || b.r.title || '');
       return an.localeCompare(bn);
     });
