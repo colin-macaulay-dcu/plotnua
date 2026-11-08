@@ -152,6 +152,40 @@
    "links": [
     "suppliers/the-mobile-pods.html"
    ]
+  },
+  {
+   "declared": "2026-11-08, founder approval 'SEO-GR4 garden room supplier visibility and internal linking': the A-Z maker index links each maker that has an approved public PlotNua supplier profile to that page (atlas-tools/build-maker-explorer.py PROFILE_PAGES, guard G12b). Same makers, order and counts.",
+   "explorer": [
+    [
+     "<p class=\"mx-az-note\">An index, not a ranking: makers are listed alphabetically so each one can be found. Counts are the products PlotNua currently makes public. Choose a maker to open it in the directory above.</p>",
+     "<p class=\"mx-az-note\">An index, not a ranking: makers are listed alphabetically so each one can be found. Counts are the products PlotNua currently makes public. Choose a maker to open it in the directory above. Where PlotNua has published a maker profile, it is linked beside the maker.</p>"
+    ],
+    [
+     "<li><a href=\"#p-recdDCBpXBKOa7leI\">Gardenhouse24 Ireland</a> <span>4 saunas &middot; Irish availability not yet confirmed</span></li>",
+     "<li><a href=\"#p-recdDCBpXBKOa7leI\">Gardenhouse24 Ireland</a> <span>4 saunas &middot; Irish availability not yet confirmed</span> <a class=\"mx-az-pf\" href=\"suppliers/gardenhouse24.html\">Gardenhouse24 profile</a></li>"
+    ],
+    [
+     "<li><a href=\"#p-recEDHcHJ5dWaWklV\">Gardenhouse24 Ireland</a> <span>2 hot tubs &middot; Irish availability not yet confirmed</span></li>",
+     "<li><a href=\"#p-recEDHcHJ5dWaWklV\">Gardenhouse24 Ireland</a> <span>2 hot tubs &middot; Irish availability not yet confirmed</span> <a class=\"mx-az-pf\" href=\"suppliers/gardenhouse24.html\">Gardenhouse24 profile</a></li>"
+    ]
+   ],
+   "blockCorrections": [
+    [
+     "An index, not a ranking: makers are listed alphabetically so each one can be found. Counts are the products PlotNua currently makes public. Choose a maker to open it in the directory above.",
+     "An index, not a ranking: makers are listed alphabetically so each one can be found. Counts are the products PlotNua currently makes public. Choose a maker to open it in the directory above. Where PlotNua has published a maker profile, it is linked beside the maker."
+    ],
+    [
+     "Gardenhouse24 Ireland 4 saunas · Irish availability not yet confirmed",
+     "Gardenhouse24 Ireland 4 saunas · Irish availability not yet confirmed Gardenhouse24 profile"
+    ],
+    [
+     "Gardenhouse24 Ireland 2 hot tubs · Irish availability not yet confirmed",
+     "Gardenhouse24 Ireland 2 hot tubs · Irish availability not yet confirmed Gardenhouse24 profile"
+    ]
+   ],
+   "links": [
+    "suppliers/gardenhouse24.html"
+   ]
   }
  ]
 }

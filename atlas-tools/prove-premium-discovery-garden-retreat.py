@@ -359,7 +359,9 @@ FAULTS = [
     ("targeted update: an undeclared A-Z line for another maker", lambda s: s.replace('        <li><a href="#p-recIy8ghdKxo7PTjP">Hansa24 Group</a>', '        <li><a href="#p-recIy8ghdKxo7PTjP">Auroom Wellness</a> <span>2 saunas &middot; Irish availability not yet confirmed</span></li>\n        <li><a href="#p-recIy8ghdKxo7PTjP">Hansa24 Group</a>', 1), "G"),
     ("targeted update: explorer sauna count edited", lambda s: s.replace('Saunas <span class="mx-n">97</span>', 'Saunas <span class="mx-n">98</span>', 1), "G"),
     ("targeted update: gallery figure edited", lambda s: s.replace('<span class="pn-sg-fig">97</span>', '<span class="pn-sg-fig">99</span>', 1), "G"),
-    ("targeted update: a declared A-Z line removed", lambda s: s.replace('        <li><a href="#p-recEDHcHJ5dWaWklV">Gardenhouse24 Ireland</a> <span>2 hot tubs &middot; Irish availability not yet confirmed</span></li>\n', '', 1), "G"),
+    # SEO-GR4 (8 Nov 2026): the declared line now ends with the maker's approved profile link
+    ("targeted update: a declared A-Z line removed", lambda s: s.replace('        <li><a href="#p-recEDHcHJ5dWaWklV">Gardenhouse24 Ireland</a> <span>2 hot tubs &middot; Irish availability not yet confirmed</span> <a class="mx-az-pf" href="suppliers/gardenhouse24.html">Gardenhouse24 profile</a></li>\n', '', 1), "G"),
+    ("SEO-GR4: a profile link added to a maker without an approved profile", lambda s: s.replace('Hansa24 Group</a> <span>', 'Hansa24 Group</a> <a class="mx-az-pf" href="suppliers/gardenhouse24.html">Hansa24 profile</a> <span>', 1), "G"),
     ("targeted update: availability wording upgraded", lambda s: s.replace('Gardenhouse24 Ireland</a> <span>4 saunas &middot; Irish availability not yet confirmed', 'Gardenhouse24 Ireland</a> <span>4 saunas &middot; Irish availability confirmed', 1), "G"),
     ("footer edited", lambda s: s.replace("Related Discoveries</h2>", "Related</h2>", 1), "H"),
     ("undeclared stylesheet", lambda s: s.replace("</head>", '<link rel="stylesheet" href="x.css">\n</head>', 1), "H"),

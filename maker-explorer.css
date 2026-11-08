@@ -162,6 +162,8 @@
   text-decoration-color:rgba(31,59,46,.3); text-underline-offset:2px; }
 #explore-makers .mx-az-list a:hover{ text-decoration-color:currentColor; }
 #explore-makers .mx-az-list span{ display:block; font-size:12px; }
+/* SEO-GR4 (8 Nov 2026): the maker's published profile or guide, beside its index line */
+#explore-makers .mx-az-list a.mx-az-pf{ display:inline-block; margin-top:2px; font-size:12px; font-weight:400; }
 @media (max-width:600px){ #explore-makers .mx-az-list{ columns:1; } }
 /* Arrival at the A-Z index from another page (e.g. Garden Room Prices ->
    #maker-index). The page's html{scroll-behavior:smooth} animates the load-time

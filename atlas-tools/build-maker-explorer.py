@@ -112,7 +112,9 @@ PINS = {
     # only while #maker-index is the URL target (arrival fix); every existing rule is unchanged. Previous pin: 105905f348d99fca2635033deeea955587c8c0b7e5c267766b4a1a03f5611b21
     # Re-pinned 22 Oct 2026 (G13 referral-code panel rules appended, scoped to #explore-makers;
     # every existing rule unchanged). Previous pin: 8db1e7bb…
-    SHARED_CSS: "ce7df9af32959025e16fa51fa3d9691c0c478439310a83766f0dbb0611a0dbf7",
+    # Re-pinned 8 Nov 2026 (SEO-GR4): one rule appended for the A-Z index's profile links
+    # (#explore-makers .mx-az-list a.mx-az-pf); every existing rule unchanged. Previous pin: ce7df9af…
+    SHARED_CSS: "6ba0729b4e19a67bbc94b8380e098e23142d5d8005ea9ad1baf86e3f22b02d72",
 }
 CSS_LINK = '<link rel="stylesheet" href="maker-explorer.css">'
 JS_TAG = '<script src="maker-explorer.js"></script>'
@@ -929,6 +931,42 @@ AZ_STATE = {"c": "Irish availability confirmed",
             "s": "Irish availability confirmed for some products",
             "u": "Irish availability not yet confirmed"}
 
+# SEO-GR4 (founder approval 8 Nov 2026): a maker that has an approved PUBLIC profile page on PlotNua
+# gets a second, plain link beside its index line, to that page. The index stays an index: same
+# makers, same A-to-Z order, same counts; no ranking, badge or preference, and every maker with a
+# profile is linked the same way. A profile page qualifies only while it is in sitemap.xml, carries
+# index/follow, has a self canonical and names the maker in its <title> (guard G12b).
+PROFILE_PAGES = {   # maker name exactly as the index shows it -> (public page, link text)
+    "Don Modular Homes": ("suppliers/don-modular-homes.html", "Don Modular Homes profile"),
+    "Elm Landscaping (Garden Rooms)": ("suppliers/elm-landscaping.html", "Elm Landscaping profile"),
+    "Garden Room Ireland": ("suppliers/garden-room-ireland.html", "Garden Room Ireland profile"),
+    "Gardenhouse24 Ireland": ("suppliers/gardenhouse24.html", "Gardenhouse24 profile"),
+}
+# The three maker guides (All In One Cabins, Concept Modular, Shomera) are NOT linked here: their own
+# builders (build-garden-maker-pages.py, build-shomera-guide.py) require exactly one link from Living in
+# the Garden, which they already have. They gain links from the supplier profiles' "More garden room
+# makers" row instead.
+PROFILE_TITLE_NAME = {"Elm Landscaping (Garden Rooms)": "Elm Landscaping", "Gardenhouse24 Ireland": "Gardenhouse24"}
+
+
+def profile_ok(name):
+    """G12b: the profile page is published and is about this maker."""
+    page, _ = PROFILE_PAGES[name]
+    f = ROOT / page
+    if not f.exists(): die("G12b profile page missing for %s: %s" % (name, page))
+    src = f.read_text(encoding="utf-8")
+    if ("<loc>https://plotnua.ie/%s</loc>" % page) not in (ROOT / "sitemap.xml").read_text(encoding="utf-8"):
+        die("G12b profile page for %s is not in sitemap.xml" % name)
+    if not re.search(r'<meta name="robots" content="index, follow">', src):
+        die("G12b profile page for %s is not index, follow" % name)
+    if ('<link rel="canonical" href="https://plotnua.ie/%s">' % page) not in src:
+        die("G12b profile page for %s does not canonicalise to itself" % name)
+    t = re.search(r"<title>(.*?)</title>", src, re.S)
+    if not t or PROFILE_TITLE_NAME.get(name, name).lower() not in html.unescape(t.group(1)).lower():
+        die("G12b profile page for %s does not name the maker in its title" % name)
+    return page
+
+
 def maker_state(m):
     c = sum(1 for p in m["p"] if p[3] == "c")
     return "c" if c == len(m["p"]) else ("s" if c else "u")
@@ -941,16 +979,21 @@ def az_index(tabs):
          f'      <summary>All {counts}, A to Z</summary>',
          '      <p class="mx-az-note">An index, not a ranking: makers are listed alphabetically so each one '
          'can be found. Counts are the products PlotNua currently makes public. Choose a maker to open it '
-         'in the directory above.</p>']
+         'in the directory above.' + (' Where PlotNua has published a maker profile, it is linked beside '
+         'the maker.' if any(m["m"] in PROFILE_PAGES for t in tabs for m in t["cfg"]["makers"]) else '') + '</p>']
     for t in tabs:
         c = t["cfg"]
         h.append(f'      <h3 class="mx-az-h">{html.escape(t["T"]["label"])}</h3>')
         h.append(f'      <ul class="mx-az-list" aria-label="{html.escape(c["nouns"][0].capitalize())} makers, A to Z">')
         for m in c["makers"]:
             n = len(m["p"])
+            pf = ""
+            if m["m"] in PROFILE_PAGES:   # SEO-GR4: the maker's approved public profile page
+                pf = ' <a class="mx-az-pf" href="%s">%s</a>' % (html.escape(profile_ok(m["m"])),
+                                                              html.escape(PROFILE_PAGES[m["m"]][1]))
             h.append(f'        <li><a href="#p-{html.escape(m["p"][0][0])}">{html.escape(m["m"])}</a> '
                      f'<span>{n} {html.escape(c["nouns"][0 if n == 1 else 1])} &middot; '
-                     f'{html.escape("Available in " + m["rg"] + " only") if m.get("rg") else AZ_STATE[maker_state(m)]}</span></li>')
+                     f'{html.escape("Available in " + m["rg"] + " only") if m.get("rg") else AZ_STATE[maker_state(m)]}</span>{pf}</li>')
         h.append('      </ul>')
     h.append('    </details>')
     return "\n".join(h) + "\n"
@@ -1418,6 +1461,18 @@ def build(fname, P, src):
             nums = [int(x) for x in re.findall(r'</a> <span>(\d+) ', seg)]
             if nums != [len(m["p"]) for m in c["makers"]]: die("G12 an index count differs from the directory")
         if re.search(r"<img|https?://|price|€|&euro;", az, re.I): die("G12 the index carries an image, link out or price")
+        # G12b (SEO-GR4): the only other links in the index are approved profile pages, one per maker
+        # line that has one, never a line without one, and each to a published page about that maker.
+        pf = re.findall(r'<li><a href="#p-rec[A-Za-z0-9]{14}">([^<]*)</a> <span>[^<]*</span>(?: <a class="mx-az-pf" href="([^"]+)">([^<]*)</a>)?</li>', az)
+        if len(pf) != sum(len(t["cfg"]["makers"]) for t in tabs): die("G12b an index line has an unexpected shape")
+        for name, href, text in pf:
+            name = html.unescape(name)
+            want = PROFILE_PAGES.get(name)
+            if (href or None) != (want[0] if want else None) or (want and html.unescape(text) != want[1]):
+                die("G12b the profile link for %s is not the approved one" % name)
+            if want: profile_ok(name)
+        if len(re.findall(r'href="', az)) != len(pf) + sum(1 for x in pf if x[1]):
+            die("G12b the index carries a link that is neither a maker nor its approved profile")
         if mode_check() and page_text(fname).count(az) != 1:
             die("G12 the page on disk does not carry the generated A-Z index (run --apply)")
     elif 'id="maker-index"' in blk:

@@ -201,6 +201,31 @@
    "why": "7 Nov 2026, founder Stage 3D-D2 (matching eligibility and price-evidence safeguards, controlled implementation approved 7 Nov 2026): R-MATCH applied to the guide's evidence population by the registered correction stage3d-d2-matching-eligibility-2026-11-07 (25 Partially Verified, undated Sprout Pod prices withdrawn; the products stay published), written by atlas-tools/refresh-garden-cost-figures.py from cluster1-cost-evidence.json.",
    "from": "72 do not publish whether VAT is in the price. That can make a substantial difference to the price you actually pay.",
    "to": "47 do not publish whether VAT is in the price. That can make a substantial difference to the price you actually pay."
+  },
+  {
+   "why": "2026-11-08, founder approval 'SEO-GR4 garden room supplier visibility and internal linking': the A-Z maker index links each maker that has an approved public PlotNua supplier profile to that page (atlas-tools/build-maker-explorer.py PROFILE_PAGES, guard G12b). Same makers, order and counts.",
+   "from": "An index, not a ranking: makers are listed alphabetically so each one can be found. Counts are the products PlotNua currently makes public. Choose a maker to open it in the directory above.",
+   "to": "An index, not a ranking: makers are listed alphabetically so each one can be found. Counts are the products PlotNua currently makes public. Choose a maker to open it in the directory above. Where PlotNua has published a maker profile, it is linked beside the maker."
+  },
+  {
+   "why": "2026-11-08, founder approval 'SEO-GR4 garden room supplier visibility and internal linking': the A-Z maker index links each maker that has an approved public PlotNua supplier profile to that page (atlas-tools/build-maker-explorer.py PROFILE_PAGES, guard G12b). Same makers, order and counts.",
+   "from": "Don Modular Homes 1 garden room · Irish availability confirmed",
+   "to": "Don Modular Homes 1 garden room · Irish availability confirmed Don Modular Homes profile"
+  },
+  {
+   "why": "2026-11-08, founder approval 'SEO-GR4 garden room supplier visibility and internal linking': the A-Z maker index links each maker that has an approved public PlotNua supplier profile to that page (atlas-tools/build-maker-explorer.py PROFILE_PAGES, guard G12b). Same makers, order and counts.",
+   "from": "Elm Landscaping (Garden Rooms) 5 garden rooms · Irish availability confirmed",
+   "to": "Elm Landscaping (Garden Rooms) 5 garden rooms · Irish availability confirmed Elm Landscaping profile"
+  },
+  {
+   "why": "2026-11-08, founder approval 'SEO-GR4 garden room supplier visibility and internal linking': the A-Z maker index links each maker that has an approved public PlotNua supplier profile to that page (atlas-tools/build-maker-explorer.py PROFILE_PAGES, guard G12b). Same makers, order and counts.",
+   "from": "Garden Room Ireland 1 garden room · Irish availability confirmed",
+   "to": "Garden Room Ireland 1 garden room · Irish availability confirmed Garden Room Ireland profile"
+  },
+  {
+   "why": "2026-11-08, founder approval 'SEO-GR4 garden room supplier visibility and internal linking': the A-Z maker index links each maker that has an approved public PlotNua supplier profile to that page (atlas-tools/build-maker-explorer.py PROFILE_PAGES, guard G12b). Same makers, order and counts.",
+   "from": "Gardenhouse24 Ireland 8 garden rooms · Irish availability confirmed",
+   "to": "Gardenhouse24 Ireland 8 garden rooms · Irish availability confirmed Gardenhouse24 profile"
   }
  ],
  "homeownerImprovement": {
