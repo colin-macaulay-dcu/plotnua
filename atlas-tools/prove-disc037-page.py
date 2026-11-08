@@ -4,8 +4,8 @@ Stage 3 private preview (8 Nov 2026), development branch dev/disc037-resourceful
 
     python3 atlas-tools/prove-disc037-page.py [--self-test]
 
-  R1  one <title>, a meta description (60-160 chars), canonical and og:url for this page; robots is
-      "noindex, nofollow" while this is a private preview (flip deliberately at launch, with this check)
+  R1  one <title>, a meta description (60-160 chars), canonical and og:url for this page; robots is either
+      "noindex, nofollow" (private preview) or "index, follow" (release candidate), and R14 follows whichever it is
   R2  JSON-LD parses; no Product, Offer, price, LocalBusiness, Review, FAQPage or AggregateOffer data
   R3  exactly one H1 ("The Resourceful Garden") and the approved hero question
   R4  every local href/src/srcset on the page resolves to a file
@@ -25,7 +25,10 @@ Stage 3 private preview (8 Nov 2026), development branch dev/disc037-resourceful
   R12 no data collection or payment: no <form>, fetch, XHR, beacon, Workers or Formspree endpoint
   R13 no partner / commission / referral-fee / affiliate / discount wording, no savings, carbon or
       self-sufficiency promises; the no-relationship disclaimer is present; no business image is shown
-  R14 containment: not in the sitemap, the search index, the governed search map or the Discovery Library
+  R14 preview: not in the sitemap, the search index, the governed search map or the Discovery Library.
+      release (index, follow): exactly one sitemap entry, one search-index possibility record, the three governed
+      phrases (grow your own, underground food storage, vegetable garden), and exactly one Library card, in Garden,
+      showing the POSSIBLE (never the BEFORE) with the AI chip
   R15 related links go only to live Discoveries (Borrowed Garden, Water Wall, Outdoor Room, House as a
       Power Station, Extend the House)
   R16 provenance: every DISC-037 image in use is exactly a recorded derivative (sha256) of a declared,
@@ -69,8 +72,10 @@ def check(s, files):
     # R1
     need(len(re.findall(r"<title>[^<]+</title>", s)) == 1, "R1 one <title>")
     for pat in (r'<meta name="description" content="[^"]{60,160}"', r'<link rel="canonical" href="%s"' % re.escape(URL),
-                r'<meta property="og:url" content="%s"' % re.escape(URL), r'<meta name="robots" content="noindex, nofollow"'):
+                r'<meta property="og:url" content="%s"' % re.escape(URL)):
         need(re.search(pat, s), "R1 missing: " + pat)
+
+    need(re.search(r'<meta name="robots" content="(?:noindex, nofollow|index, follow)">', s), "R1 robots must be noindex,nofollow or index,follow")
 
     # R2
     blocks = re.findall(r'<script type="application/ld\+json">(.*?)</script>', s, re.S)
@@ -190,18 +195,38 @@ def main():
         if not cond:
             problems.append(msg)
 
-    # R14 containment (private preview)
-    need(PAGE not in read("sitemap.xml"), "R14 the page is in the sitemap")
-    need(PAGE not in read("search-index-v1.json"), "R14 the page is in the search index")
+    # R14 containment (private preview) or publication (release candidate)
+    released = '<meta name="robots" content="index, follow">' in s
+    sm, idx, lib = read("sitemap.xml"), read("search-index-v1.json"), read("discoveries.html")
     tm = json.loads(read("atlas-tools/search-topic-map.json"))
-    need(not [e for e in tm["entries"] if PAGE in e.get("targets", [])], "R14 a governed search entry targets the page")
-    need(('href="%s"' % PAGE) not in read("discoveries.html"), "R14 a Discovery Library card links the page")
+    phrases = sorted(e["phrase"] for e in tm["entries"] if PAGE in e.get("targets", []))
+    cards = re.findall(r'<a class="lib-card" href="%s" data-cat="([^"]+)">(.*?)</a>' % re.escape(PAGE), lib, re.S)
+    if not released:
+        need(PAGE not in sm, "R14 the page is in the sitemap")
+        need(PAGE not in idx, "R14 the page is in the search index")
+        need(not phrases, "R14 a governed search entry targets the page")
+        need(not cards and ('href="%s"' % PAGE) not in lib, "R14 a Discovery Library card links the page")
+    else:
+        need(sm.count("<loc>%s</loc>" % URL) == 1, "R14 exactly one sitemap entry")
+        recs = [r for r in json.loads(idx)["records"] if r.get("route") == PAGE]
+        need(len(recs) == 1 and recs[0]["type"] == "possibility", "R14 exactly one search-index possibility record")
+        need(phrases == ["grow your own", "underground food storage", "vegetable garden"], "R14 governed search phrases: %s" % phrases)
+        need(len(cards) == 1, "R14 exactly one Library card")
+        if cards:
+            cat, body = cards[0]
+            need(cat == "Garden" and '<span class="lib-cat">Garden</span>' in body, "R14 the card is in Garden")
+            need("DISC-037-POSSIBLE-1024.jpg" in body and "DISC-037-02-POSSIBLE-MASTER-480w.webp" in body and "BEFORE" not in body,
+                 "R14 the card shows the POSSIBLE, never the BEFORE")
+            need('<span class="lib-aichip">AI-generated illustration</span>' in body, "R14 the card carries the AI chip")
+            need('<span class="lib-title">The Resourceful Garden</span>' in body and
+                 "What if your garden could grow more, waste less and give something back?" in body, "R14 the card title and line")
 
     # R16 provenance by hash (as DISC-035 O16 / DISC-036 E16)
     reg = json.loads(read("image-provenance-records.json"))
     masters = {r["asset"]: r for r in reg["records"]}
     derivs = {d["asset"]: d for d in reg["derivatives"]}
     used = set(re.findall(r'assets/disc037/img/DISC-037-[A-Za-z0-9-]+\.(?:webp|jpg)', s))
+    used |= set(re.findall(r'assets/(?:disc037/img|library/img)/DISC-037-[A-Za-z0-9-]+\.(?:webp|jpg)', "".join(b for _c, b in cards)))
     need(len(used) >= 25, "R16 the DISC-037 images in use (%d)" % len(used))
     sha = lambda a: hashlib.sha256(open(os.path.join(ROOT, a), "rb").read()).hexdigest()
     for a in sorted(used):
@@ -209,7 +234,8 @@ def main():
         src = (d or {}).get("derived_from", {})
         m = masters.get(src.get("asset"))
         need(d and m and m.get("class") == "AI_ILLUSTRATION", "R16 %s is not a recorded derivative of a declared AI master" % a)
-        need(m and "discovery" in m.get("permitted_surfaces", []), "R16 %s: its master does not permit the discovery surface" % a)
+        surf = "library-card" if "/library/" in a else "discovery"
+        need(m and surf in m.get("permitted_surfaces", []), "R16 %s: its master does not permit the %s surface" % (a, surf))
         need(d and files(a) and sha(a) == d["sha256"], "R16 %s differs from its recorded derivative" % a)
         need(m and src.get("sha256") == m["sha256"] and sha(m["asset"]) == m["sha256"], "R16 %s: its master is not the declared, unchanged file" % a)
 
@@ -217,7 +243,7 @@ def main():
          "R16 the share image is made from the POSSIBLE")
     if "--self-test" in sys.argv:
         faults = {
-            "R1": s.replace('content="noindex, nofollow"', 'content="index, follow"', 1),
+            "R1": s.replace('<meta name="robots" content="', '<meta name="robots" content="noindex, follow', 1),
             "R3": s.replace("<h1>The Resourceful Garden</h1>", "<h1>The Resourceful Garden</h1><h1>x</h1>"),
             "R5": s.replace("show('before', false);", "show('before', false); setInterval(function(){}, 4000);", 1),
             "R5 ": s.replace('data-show="possible" aria-pressed="true"', 'data-show="possible"', 1),
