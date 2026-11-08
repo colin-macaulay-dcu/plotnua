@@ -50,6 +50,8 @@ BASE_SNAPSHOT_SHA256 = "6855b4d804b830fea5c4fad5db15f469e9c642768ae2147de16497cb
 
 # BASE wording -> (new wording or None when removed, reason). Founder-reviewable.
 EDITORIAL = {
+    "PlotArt is in development.": ("Discover original Irish art with PlotArt.", "Public gallery status and buyer links, visibility work authorised 8 Nov 2026; home matching stays in development"),
+    "PlotNua does not publish price guides.": ("Published asking prices describe individual works, rather than market-wide price ranges.", "Published artist-supplied prices are live; no market-wide valuation is offered, 8 Nov 2026"),
     "Company": ("PlotNua", "footer heading: PlotNua is a registered business name, not a company (legal information, founder decision A1-a, 28 Oct 2026)"),
     # round 1 (prototype, 23 Oct 2026)
     "Why This Discovery?": ("Why it matters", "kicker under Possibility three read as a page-level label"),
@@ -91,15 +93,23 @@ EDITORIAL = {
 ADDED_SENTENCES = {
     "Legal information": "footer link to the Terms page legal information (legal information, founder decision A1-a, 28 Oct 2026)",
     # written as visible() reads them: a link's closing tag becomes a space before the full stop
-    "PlotArt’s introductory pages are now online: what PlotArt is, the Founding 25 programme for artists, and the proposed Living Gallery.": "PlotArt introduction in 'PlotArt is in development' (integration, proposed 27 Oct 2026)",
-    "Artist galleries are not open, and applications are not yet open.": "status beside the PlotArt link (integration, proposed 27 Oct 2026)",
+    "Discover original Irish art with PlotArt.": "Live gallery and buyer resources, 8 Nov 2026",
+    "PlotArt’s Virtual Gallery of Irish artists is now online.": "Approved public galleries only, 8 Nov 2026",
+    "Browse published artist profiles and artwork details, then send an enquiry to the artist about a work that interests you.": "Existing enquiry flow, 8 Nov 2026",
+    "Any sale is arranged directly with the artist.": "Artist remains seller, 8 Nov 2026",
+    "Start with the guide to buying original Irish art and artwork prices , explore abstract and contemporary Irish art , or compare proportions with the free art size calculator .": "Contextual links to existing public buyer resources, 8 Nov 2026",
+    "Published asking prices describe individual works, rather than market-wide price ranges.": "Scope of existing artist-supplied prices, 8 Nov 2026",
     "Explore PlotArt": "button to the PlotArt homepage (integration, proposed 27 Oct 2026)",
-    "Artists can also find out about the PlotArt Founding 25 , a forthcoming programme for artists based or working in Ireland.": "Founding 25 pointer in the Take part section (limited launch, decision 27 Oct 2026)",
+    "Artists can also find out about the PlotArt Founding 25 , a programme accepting applications from artists based or working in Ireland.": "Founding 25 status matches live application page, 8 Nov 2026",
     "The PlotArt Living Gallery is a separate, proposed programme exploring how original work could be shown in homes like yours.": "Living Gallery pointer: A Home for Art and the Living Gallery linked both ways (PlotArt clarity, founder decision 28 Oct 2026)",
     "It isn’t running yet.": "status beside the Living Gallery pointer (PlotArt clarity, 28 Oct 2026)",
     "When you choose to open: a few people, one evening, the work on your walls.": "caption for the relocated hosting photograph dfb125ba in section 01 (Release 6, founder approval 31 Oct 2026)",
 }
 ADDED_HREFS = {
+    "plotart/gallery/": "Approved public artist directory, 8 Nov 2026",
+    "plotart/buy-original-art-ireland.html": "Public buying/prices guide, 8 Nov 2026",
+    "plotart/abstract-contemporary-art-ireland.html": "Public abstract/contemporary guide, 8 Nov 2026",
+    "plotart/art-size-calculator.html": "Public wall-size tool, 8 Nov 2026",
     "plotart/": "PlotArt homepage (limited launch)",
     "terms.html#legal-information": "footer Legal information link (legal information, founder decision A1-a, 28 Oct 2026)",
     "plotart/founding-25.html": "Founding 25 recruitment page (limited launch)",
@@ -125,7 +135,7 @@ INTERFACE = [
 STAY_ON_VIEW = [
     "PlotNua does not currently arrange artwork loans, rentals or placements.",
     "Any arrangement would need to be agreed directly with the artist or gallery.",
-    "PlotNua does not publish price guides.",
+    "Published asking prices describe individual works, rather than market-wide price ranges.",
     "This matching service is not live yet.",
     "Both are expressions of interest only: free, private and non-binding.",
     "PlotNua is not currently matching participants or arranging exhibitions, and has not verified any space or artist.",

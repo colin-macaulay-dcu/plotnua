@@ -11,15 +11,10 @@ Prints "PLOTART INTEGRATION · OK" only when:
       approval 28 Oct 2026). PlotArt points to plotart/ (/plotart/ on the
       root-absolute 404 page) and never carries aria-current; My Plot points to
       your-plot.html?myplot=1.
-  N2  outside the PlotNua header, the ONLY PlotNua page that links into PlotArt is
-      discovery-a-home-for-art.html, with exactly one link to plotart/ (the
-      "Explore PlotArt" button), one to plotart/founding-25.html and one to
-      plotart/living-gallery.html (A Home for Art and the Living Gallery are linked both
-      ways, founder decision 28 Oct 2026). No PlotNua page
-      links to any other PlotArt path.
-  N3  the A Home for Art wording beside those links says PlotArt is in development
-      and that applications are not yet open, and never invites anyone to apply.
-  N4  every PlotArt link target exists in the repository (the three launch pages).
+  N2  outside the PlotNua header, A Home for Art links exactly the public PlotArt
+      introduction, gallery, two buyer guides, calculator, Founding 25 and Living Gallery.
+  N3  live artist galleries and applications are distinguished from proposed home matching.
+  N4  every declared PlotArt link target exists.
 """
 import os, re, sys, glob, html
 
@@ -72,7 +67,8 @@ for p in glob.glob(os.path.join(ROOT, "*.html")):
         outside[os.path.basename(p)] = refs
 need(set(outside) <= {"discovery-a-home-for-art.html"}, "N2 pages outside the header linking into PlotArt: %s" % sorted(set(outside) - {"discovery-a-home-for-art.html"}))
 hfa = outside.get("discovery-a-home-for-art.html", [])
-need(sorted(hfa) == ["plotart/", "plotart/founding-25.html", "plotart/living-gallery.html"], "N2 A Home for Art PlotArt links are %s" % hfa)
+PUBLIC_TARGETS = ["plotart/", "plotart/founding-25.html", "plotart/living-gallery.html", "plotart/gallery/", "plotart/buy-original-art-ireland.html", "plotart/abstract-contemporary-art-ireland.html", "plotart/art-size-calculator.html"]
+need(sorted(hfa) == sorted(PUBLIC_TARGETS), "N2 A Home for Art PlotArt links are %s" % hfa)
 
 # N3
 t = open(os.path.join(ROOT, "discovery-a-home-for-art.html"), encoding="utf-8").read()
@@ -80,14 +76,17 @@ sec = re.search(r'<section class="pd-section reveal hfa-future".*?</section>', t
 need(sec is not None, "N3 the A Home for Art PlotArt section is missing")
 if sec:
     v = re.sub(r"\s+", " ", html.unescape(re.sub(r"<[^>]+>", " ", sec.group(0))))
-    need("PlotArt is in development." in v, "N3 the section no longer says PlotArt is in development")
-    need("applications are not yet open" in v, "N3 the section must say applications are not yet open")
-    need('>Explore PlotArt</a>' in sec.group(0), "N3 the 'Explore PlotArt' button is missing")
-    need(not re.search(r"\bapply\b(?! to)|applications are open|now open|open soon|join the Founding 25", v, re.I),
-         "N3 the section invites applications or implies they are open")
+    need("Virtual Gallery of Irish artists" in v and "is now online." in v, "N3 the live gallery status is missing")
+    need("accepting applications" in v, "N3 the Founding 25 application status is missing")
+    need("This matching service is not live yet." in v, "N3 home matching must remain described as unavailable")
+    need("It isn’t running yet." in v, "N3 Living Gallery must remain described as unavailable")
+    need("Any sale is arranged directly with the artist." in v, "N3 artist-direct sale explanation missing")
+    need('>Explore PlotArt</a>' in sec.group(0), "N3 the Explore PlotArt button is missing")
+    need(not re.search(r"Artist galleries are not open|applications are not yet open|a forthcoming programme", v, re.I), "N3 obsolete launch status returned")
 
 # N4
-for target in ["plotart/index.html", "plotart/founding-25.html", "plotart/living-gallery.html"]:
+for ref in PUBLIC_TARGETS:
+    target = ref + "index.html" if ref.endswith("/") else ref
     need(os.path.exists(os.path.join(ROOT, target)), "N4 %s is missing" % target)
 
 if problems:
@@ -95,4 +94,4 @@ if problems:
     for x in problems[:40]:
         print("  " + x)
     sys.exit(1)
-print("PLOTART INTEGRATION · OK — N1-N4 · %d header pages carry Discovery Library > PlotArt > GridNua > My Plot; A Home for Art links exactly plotart/, plotart/founding-25.html and plotart/living-gallery.html" % len(pn_header.HEADER_PAGES))
+print("PLOTART INTEGRATION · OK — N1-N4 · %d header pages carry Discovery Library > PlotArt > GridNua > My Plot; A Home for Art links the seven declared PlotArt destinations; public galleries and proposed home hosting remain distinct" % len(pn_header.HEADER_PAGES))
