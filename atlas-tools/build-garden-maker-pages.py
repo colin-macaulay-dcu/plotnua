@@ -146,7 +146,7 @@ def render(page, profile, evidence, identity, published=False, extra_values=None
 <script type="application/ld+json">{json.dumps(graph, ensure_ascii=False, indent=2)}</script>
 </head>
 <body>
-<a href="index.html" class="brand-mark" aria-label="PlotNua home"><img src="assets/brand/plotnua-icon-transparent.svg" alt="" width="34" height="34"></a>
+<a href="/" class="brand-mark" aria-label="PlotNua home"><img src="assets/brand/plotnua-icon-transparent.svg" alt="" width="34" height="34"></a>
 {rail}
 <main id="pn-main">
   <div class="mp-hero">

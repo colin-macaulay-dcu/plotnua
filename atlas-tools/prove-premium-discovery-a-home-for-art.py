@@ -145,6 +145,12 @@ ANCHORS = ["open-your-home-to-art", "live-with-art", "discover-and-own", "before
 NAV = ["open-your-home-to-art", "live-with-art", "discover-and-own", "before-anything-arrives", "discover-your-property"]
 
 class Refused(Exception): pass
+
+def seo_gr2_home(h):
+    """SEO-GR2 (founder approval 8 Nov 2026): a homepage link "index.html[#x]" is now "/[#x]", the
+    homepage's canonical URL. Declared mapping applied to the BASE links; nothing else is relaxed."""
+    return "/" + h[len("index.html"):] if h == "index.html" or h.startswith(("index.html#", "index.html?")) else h
+
 def die(m): raise Refused(m)
 
 # ---------------------------------------------------------------- extraction
@@ -231,7 +237,7 @@ def check(new, base):
     want = sorted((Counter(base["img"]) - Counter(R6_IMG_REMOVED) + Counter(R6_IMG_ADDED)).elements())   # P2
     if imgs(new) != want: die("P2 the set of <img> tags differs from BASE + the declared Release 6 changes")
     if hashlib.sha256(hero(new).encode("utf-8")).hexdigest() != R6_HERO_SHA256: die("P2 the hero is not the approved Release 6 slider")
-    a, b = Counter(base["href"]) + Counter(ADDED_HREFS.keys()), Counter(hrefs(new))   # P3 (+ declared additions, each exactly once)
+    a, b = Counter(map(seo_gr2_home, base["href"])) + Counter(ADDED_HREFS.keys()), Counter(hrefs(new))   # P3 (+ declared additions, each exactly once; SEO-GR2 homepage mapping)
     if a != b: die("P3 links differ: removed %s added %s" % (dict(a - b), dict(b - a)))
     for i in ANCHORS:                                                  # P4
         if new.count('id="%s"' % i) != 1: die("P4 #%s not present exactly once" % i)

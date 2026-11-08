@@ -156,7 +156,8 @@ def bar(page, has_search, banner):
     """banner=False when the page already has its own top-level <header> (one banner per page)."""
     open_tag = '<header class="pn-hdr">' if banner else '<div class="pn-hdr" role="region" aria-label="PlotNua site">'
     close_tag = "</header>" if banner else "</div>"
-    home = "#top" if page == "index.html" else href(page, "index.html")
+    # SEO-GR2 (8 Nov 2026): the homepage's canonical URL is "/", not /index.html (SEO-GR1 T3).
+    home = "#top" if page == "index.html" else "/"
     wa = ('<a class="pn-hdr-wa" href="%s" target="_blank" rel="noopener noreferrer" aria-label="%s">'
           '<span class="pn-hdr-wa-ico" aria-hidden="true">%s<img src="%s" alt="" width="22" height="22"></span>'
           '<span class="pn-hdr-lb">Chat on WhatsApp</span></a>') % (

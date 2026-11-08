@@ -368,7 +368,7 @@ footer.site .footer-base{{ margin-top:64px; text-align:center; font-size:11.5px;
 </head>
 <body>
 
-<a href="index.html" class="brand-mark" id="brandMark" aria-label="PlotNua — Home">
+<a href="/" class="brand-mark" id="brandMark" aria-label="PlotNua — Home">
   <img src="assets/brand/plotnua-mark-master.svg" alt="" width="34" height="34">
 </a>
 {RAIL}

@@ -85,6 +85,12 @@ STAY_ON_VIEW = [
 CLAIM_WORDS = r"\b(best|cheapest|recommend\w*|guarantee\w*|partner\w*|sponsor\w*|discount\w*|offer\w*|commission\w*|affiliate\w*|rank\w*|top-rated|trusted|verified|approved supplier|deal\w*)\b"
 
 fails = []
+
+def seo_gr2_home(h):
+    """SEO-GR2 (founder approval 8 Nov 2026): a homepage link "index.html[#x]" is now "/[#x]", the
+    homepage's canonical URL. Declared mapping applied to the BASE links; nothing else is relaxed."""
+    return "/" + h[len("index.html"):] if h == "index.html" or h.startswith(("index.html#", "index.html?")) else h
+
 def bad(m): fails.append(m)
 
 
@@ -190,7 +196,7 @@ def main():
     if imgs(t) != Counter(base["imgs"]) + ADDED_IMGS:
         bad("G2 images differ from BASE + declared: %s" % dict(imgs(t) - Counter(base["imgs"]) - ADDED_IMGS or Counter(base["imgs"]) + ADDED_IMGS - imgs(t)))
     # G3
-    want = Counter(base["links"]) + ADDED_LINKS
+    want = Counter({seo_gr2_home(k): v for k, v in base["links"].items()}) + ADDED_LINKS
     have = links(t)
     if have != want:
         bad("G3 links differ: missing %s, extra %s" % (dict(want - have), dict(have - want)))
