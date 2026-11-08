@@ -462,6 +462,10 @@ jobs:
           # hero on the PlotNua drawings opening on BEFORE, planning and building-control claims without exemption guarantees, no
           # cost figures, no data collection or endpoint, the frozen journey-save block, anonymous analytics only, no commercial claims.
           python3 atlas-tools/prove-disc036-page.py --self-test
+          # DISC-037 The Resourceful Garden (Stage 3 private preview only, 8 Nov 2026): SEO, one H1, noindex while private,
+          # the hero and chapter 04 as labelled empty slots (nothing substituted), the four declared chapter images with the AI
+          # label, Groundfridge as an example only, planning limits without exemption guarantees, no partner or savings claims.
+          python3 atlas-tools/prove-disc037-page.py --self-test
           # Safety lock (23 Oct 2026): the 17 Oct merge builder must refuse to
           # regenerate the approved Premium page, and must leave every file as it was.
           set +e; out=$(python3 atlas-tools/build-a-home-for-art-merge.py --apply 2>&1); rc=$?; set -e
