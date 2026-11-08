@@ -107,7 +107,14 @@ PARENT_HREF = "discovery-living-in-the-garden.html"
 PARENT_TEXT = "Explore Living in the Garden"
 PARENT_NAME = "Living in the Garden"
 PARENT_MAX_WORDS = 40   # visible words allowed before the parent link
-BUILD_DATE = "2026-11-07"   # the page's dateModified; equals its sitemap lastmod
+BUILD_DATE = "2026-11-08"   # the page's dateModified; equals its sitemap lastmod
+# 8 Nov 2026 (founder SEO-GR3, search relevance and content): presentation and wording only.
+# No evidence, range, count, rule, hold or freshness date changes. The meta description now
+# names both published ranges and the research totals (DESCRIPTION_FMT); the opening answer
+# gives the installed and the kit range side by side, each under its own heading (LEAD); the
+# hero line states the research totals, the snapshot date and the check dates (CHECKED); and
+# the method section explains how prices are checked, what counts as installed, and VAT
+# (METHOD). The snapshot-and-recheck history (ASOF) moves from the hero to the method section.
 # 7 Nov 2026 (founder Stage 3D-C2, pricing methodology): "installed and finished" now
 # requires published evidence of the building, on-site installation, the required base
 # and the standard finish (R-INSTALLED, below); kits are labelled as kits; two new
@@ -147,13 +154,24 @@ HERO_ILLUSTRATION = {
 }
 # The meta description (founder decision, 6 Nov 2026, Stage 2 item 3) is written from
 # the published turnkey range, so it can never state a figure the page does not.
-DESCRIPTION_FMT = ("Installed garden rooms in Ireland are advertised from %s to %s in "
-                   "PlotNua's research. What the price covers, VAT, extras and how to compare quotes.")
+# SEO-GR3 (founder, 8 Nov 2026): independent research, installed and kit, multiple suppliers.
+# Both figures pairs and both counts come from the same published evidence as the page. The
+# kit figure is its published lower bound only, so the first "\u20acX to \u20acY" range on the page stays
+# the installed range (prove-matching-eligibility E7 compares it with production).
+DESCRIPTION_FMT = ("Independent research on garden room prices in Ireland: %d advertised prices from "
+                   "%d suppliers. Installed rooms ran from %s to %s; kits from %s.")
+_DESC_CONTEXT = {}   # the kit range and research totals of the last render(), for description(t)
 
 
-def description(t):
+def description(t, kit=None, tot=None):
     # No double quote may appear: the text sits inside a content="..." attribute.
-    return DESCRIPTION_FMT % ("\u20ac{:,}".format(int(t["minEur"])), "\u20ac{:,}".format(int(t["maxEur"])))
+    kit = kit or _DESC_CONTEXT.get("kit")
+    tot = tot or _DESC_CONTEXT.get("tot")
+    if not kit or not tot:
+        die("the meta description needs the published kit range and the research totals")
+    e = lambda n: "\u20ac{:,}".format(int(n))
+    return DESCRIPTION_FMT % (tot["relevant"], tot["relevantOrganisations"], e(t["minEur"]), e(t["maxEur"]),
+                              e(kit["minEur"]))
 
 
 EXTRAS = ROOT / "atlas-tools" / "garden-room-extras-evidence.json"
@@ -490,17 +508,38 @@ def render(ev, ex):
     expires = oldest + dt.timedelta(days=MAX_AGE_DAYS)
 
     t = pub_seg["INSTALLED_FINISHED_TURNKEY"]
+    kit = pub_seg.get("UNKNOWN_DIY_OR_INSTALLED")
+    if not kit or "UNKNOWN_DIY_OR_INSTALLED" not in published:
+        die("the kit or self-build range is no longer published -- the opening answer, the meta "
+            "description and the FAQ are written around it; re-approve the wording")
+    tot = ev["totals"]
+    _DESC_CONTEXT.clear(); _DESC_CONTEXT.update(kit=kit, tot=tot)
     regions = {}
+    # SEO-GR3 (founder, 8 Nov 2026): both published ranges side by side, each under its own
+    # heading, with what each kind of price covers and how many products and suppliers sit
+    # behind it. The ranges are the observed spread in PlotNua's research, so the note says
+    # they are neither typical prices nor the limits of the Irish market.
+    card = ('<div class="pr-range-card">\n'
+            '<h3>%s</h3>\n'
+            '<p class="pr-range-fig">%s &ndash; %s</p>\n'
+            '<p>%s %d products from %d suppliers.</p>\n'
+            '</div>')
     regions["LEAD"] = (
-        '<p class="pr-answer">In PlotNua&rsquo;s research, published prices for '
-        '<strong>installed, finished garden rooms</strong> ran from '
-        '<strong>%s to %s</strong>.</p>\n'
-        '<p class="pr-answer-note">That range comes from %d products sold by %d suppliers, '
-        'in PlotNua&rsquo;s research snapshot of %s. It is the spread of prices those '
-        'suppliers advertise, not a typical Irish price and not an all-in quotation: '
-        'delivery, the connection to your house&rsquo;s electricity and VAT can still sit '
-        'outside it.</p>'
-        % (eur(t["minEur"]), eur(t["maxEur"]), t["n"], t["organisations"], date_long(snap)))
+        '<p class="pr-answer">In PlotNua&rsquo;s research, garden room prices come in two '
+        'very different kinds: a room <strong>installed and finished</strong> on your site, '
+        'or a <strong>kit</strong> that you or a builder put up.</p>\n'
+        '<div class="pr-ranges">\n%s\n%s\n</div>\n'
+        '<p class="pr-answer-note">Each range runs from the lowest to the highest price advertised '
+        'in that group of PlotNua&rsquo;s research. It is not a typical Irish price, and not the '
+        'lowest or highest price on the Irish market. Neither is an all-in quotation: delivery, the '
+        'connection to your house&rsquo;s electricity and VAT can sit outside an installed price, '
+        'and a kit price leaves putting the building up to you or a builder you hire.</p>'
+        % (card % ("Installed garden room costs", eur(t["minEur"]), eur(t["maxEur"]),
+                   "Installed and finished: the building, putting it up on your site, the base it "
+                   "stands on and its standard finish.", t["n"], t["organisations"]),
+           card % ("Garden room kit prices", eur(kit["minEur"]), eur(kit["maxEur"]),
+                   "Kit or self-build: installation is optional or extra, and the base and the "
+                   "electrical connection may be extra too.", kit["n"], kit["organisations"])))
     # Stage 2 item 6 (6 Nov 2026): straight from the answer to the products. No name and no
     # count (R4, R6); not "the products behind this range", because the Discovery lists
     # only what PlotNua currently publishes.
@@ -508,11 +547,17 @@ def render(ev, ex):
         '\n<p class="pr-small pr-makers-link">See the garden rooms PlotNua publishes, with '
         'their makers, specifications and prices. <a href="%s#explore-makers">Explore garden '
         'rooms and makers&nbsp;&rarr;</a></p>' % PARENT_HREF)
-    # Stage 2 item 1: the check dates, visible near the top of the page.
+    # Stage 2 item 1: the check dates, visible near the top of the page. SEO-GR3: with the
+    # research totals and the snapshot date, so the first screen says what the figures are.
+    # The snapshot date and the check dates stay separate statements: the prices were not
+    # all rechecked on one day.
     regions["CHECKED"] = (
-        '<p class="pr-asof">Prices in the published ranges were last checked against each '
-        'supplier&rsquo;s own published information between %s and %s.</p>'
-        % (date_long(oldest), date_long(newest)))
+        '<p class="pr-asof">Independent research: %d priced garden room products from %d suppliers, '
+        'in PlotNua&rsquo;s research snapshot of %s. The %d prices in the published ranges were '
+        'each last checked against the supplier&rsquo;s own published information between %s and %s. '
+        '<a href="#how-these-figures-were-made">How the evidence is checked</a></p>'
+        % (tot["relevant"], tot["relevantOrganisations"], date_long(snap), len(checks),
+           date_long(oldest), date_long(newest)))
     # Stage 2 item 4: VAT, from the same rows as the range.
     regions["VAT"] = (
         '<h3 class="pd-h3">VAT in these prices</h3>\n'
@@ -573,17 +618,34 @@ def render(ev, ex):
             % "".join('<li>%s: %d products from %d suppliers</li>'
                       % (LABEL[k][0], seg[k]["n"], seg[k]["organisations"]) for k in by_decision))
 
-    tot = ev["totals"]
+    # SEO-GR3 (founder, 8 Nov 2026): the method, under plain sub-headings, adds how freshness and
+    # withdrawals work, what counts as installed (R-INSTALLED) and how VAT is recorded (R-VAT).
+    # Every figure is the builder's own; the two original paragraphs are unchanged.
     regions["METHOD"] = (
+        '<h3>What the research covers</h3>\n'
         '<p>These figures come from PlotNua&rsquo;s research snapshot of <strong>%s</strong>: '
         '%d garden room products in the Atlas, of which %d carry a euro price PlotNua can '
         'stand behind, from %d suppliers, with a published route to Irish customers.</p>\n'
+        '<h3>How each price is checked</h3>\n'
         '<p>Every price inside a range above was last checked against the supplier&rsquo;s own '
         'published information between <strong>%s</strong> and <strong>%s</strong>. Ranges are '
         'shown only where at least %d suppliers price on the same basis, and prices on different '
-        'bases are never combined.</p>'
+        'bases are never combined.</p>\n'
+        '<p>A price stays in a published range only while its last check is no more than %d days '
+        'old: PlotNua&rsquo;s daily check fails as soon as one is older, and the range must then be '
+        'rechecked. A price PlotNua cannot currently verify is withdrawn rather than estimated, and '
+        'no figure is added that a supplier does not publish.</p>\n'
+        '<h3>Installed or kit</h3>\n'
+        '<p>A price counts as installed and finished only where the supplier&rsquo;s published '
+        'information covers the building, putting it up on your site, the base it stands on and its '
+        'standard finish. A kit is counted as a kit. Prices on any other basis, or whose basis is not '
+        'stated, are counted separately and never mixed into these ranges.</p>\n'
+        '<h3>VAT</h3>\n'
+        '<p>PlotNua records the VAT position each supplier states, beside the price or in its current '
+        'terms of sale, and does not check any supplier&rsquo;s VAT rate or tax treatment. Where a '
+        'price does not say, PlotNua counts it as not stated rather than assuming either way.</p>'
         % (date_long(snap), tot["gardenRoomRecords"], tot["relevant"], tot["relevantOrganisations"],
-           date_long(oldest), date_long(newest), MIN_SUPPLIERS))
+           date_long(oldest), date_long(newest), MIN_SUPPLIERS, MAX_AGE_DAYS))
     und_pub = [r for r in undated if r["segment"] in published]
     if und_pub:
         regions["METHOD"] += (

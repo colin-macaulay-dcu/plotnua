@@ -27,7 +27,8 @@ def rx(pat, new):
 
 
 FAULTS = [
-    ("title changed", PAGE, sub("<title>Garden Room Prices in Ireland (2026) | PlotNua</title>", "<title>Garden Room Prices | PlotNua</title>")),
+    # SEO-GR3 (8 Nov 2026): the approved title is now "Garden Room Prices & Costs in Ireland (2026)".
+    ("title changed", PAGE, sub("<title>Garden Room Prices &amp; Costs in Ireland (2026) | PlotNua</title>", "<title>Garden Room Prices | PlotNua</title>")),
     ("meta description changed", PAGE, rx(r'(<meta name="description" content=")[^"]*', r"\1Garden room prices.")),
     ("canonical changed", PAGE, sub('href="https://plotnua.ie/garden-room-prices-ireland.html">', 'href="https://plotnua.ie/prices.html">')),
     ("consent script removed", PAGE, rx(r'<script id="Cookiebot"[^>]*></script>\n', "")),
@@ -38,10 +39,12 @@ FAULTS = [
     ("an undeclared link added", PAGE, sub('<a class="pd-btn is-ghost" href="discovery-living-in-the-garden.html#explore-makers">',
                                            '<a href="https://example.com/">x</a><a class="pd-btn is-ghost" href="discovery-living-in-the-garden.html#explore-makers">')),
     ("an anchor renamed", PAGE, sub('id="quote-checklist"', 'id="checklist"')),
-    ("navigation out of order", PAGE, sub('<li><a href="#price-ranges">Published Prices</a></li>\n        <li><a href="#why-it-is-hard">Why It Is Hard</a></li>',
-                                          '<li><a href="#why-it-is-hard">Why It Is Hard</a></li>\n        <li><a href="#price-ranges">Published Prices</a></li>')),
+    # SEO-GR3 (8 Nov 2026): the navigation, the checklist heading and the meta description's opening
+    # words changed by declaration; these faults are planted on the approved SEO-GR3 text.
+    ("navigation out of order", PAGE, sub('<li><a href="#what-affects-prices">What Affects Price</a></li>\n        <li><a href="#why-it-is-hard">Why It Is Hard</a></li>',
+                                          '<li><a href="#why-it-is-hard">Why It Is Hard</a></li>\n        <li><a href="#what-affects-prices">What Affects Price</a></li>')),
     ("a checklist question removed", PAGE, rx(r"<li>What warranty applies, and to which parts\?</li>\s*", "")),
-    ("a heading reworded", PAGE, sub("A garden room quote checklist", "Your quote checklist")),
+    ("a heading reworded", PAGE, sub("How to compare garden room suppliers: a quote checklist", "Your quote checklist")),
     ("an undeclared sentence added", PAGE, sub("<p>Ask every supplier the same questions", "<p>Prices are falling fast. Ask every supplier the same questions")),
     ("content folded into <details>", PAGE, rx(r'(<section class="pd-section reveal" id="garden-homes">)', r"\1<details><summary>More</summary></details>")),
     ("the no-commercial-arrangement caution removed", PAGE, sub(" and PlotNua has no commercial arrangement with any of them", "")),
@@ -68,11 +71,20 @@ FAULTS = [
      rx(r'("asset": "assets/garden-room-prices/garden-room-prices-hero-2026-10-23-1672\.jpg".*?"permitted_surfaces": \[\s*)"discovery"', r'\1"homepage"')),
     ("provenance claims a named product", "image-provenance-records.json",
      rx(r'("asset": "assets/garden-room-prices/garden-room-prices-hero-2026-10-23-1672\.avif".*?"depicts_named_product": )false', r"\1true")),
-    ("meta description reworded (6 Nov 2026)", PAGE, rx(r'(<meta name="description" content=")Installed garden rooms', r"\1Cheap garden rooms")),
+    ("meta description reworded (6 Nov 2026)", PAGE, rx(r'(<meta name="description" content=")Independent research', r"\1Cheap garden rooms")),
     ("meta description figure typed by hand (6 Nov 2026)", PAGE, rx(r'(<meta name="description" content="[^"]*?from )€19,950', r"\1€18,950")),
     ("extra-costs region removed (6 Nov 2026)", PAGE, rx(r"<!-- PN-PRICES:EXTRAS -->.*?<!-- /PN-PRICES:EXTRAS -->", "")),
     ("VAT region removed (6 Nov 2026)", PAGE, rx(r"<!-- PN-PRICES:VAT -->.*?<!-- /PN-PRICES:VAT -->", "")),
     ("a pinned hero file altered", "assets/garden-room-prices/garden-room-prices-hero-2026-10-23-1672.avif", None),
+]
+# SEO-GR3 (8 Nov 2026): the declared additions stay exactly that narrow.
+FAULTS += [
+    ("SEO-GR3 new section reworded with a claim", PAGE, sub("Two garden rooms of a similar size can be priced very differently.",
+                                                             "The best garden rooms are priced very differently.")),
+    ("SEO-GR3 navigation entry removed", PAGE, sub('        <li><a href="#how-these-figures-were-made">The Research</a></li>\n', "")),
+    ("SEO-GR3 new section dropped", PAGE, rx(r'  <section class="pd-section reveal" id="what-affects-prices">.*?</section>\n', "")),
+    ("SEO-GR3 Open Graph title reworded", PAGE, sub('<meta property="og:title" content="Garden Room Prices &amp; Costs in Ireland | PlotNua">',
+                                                    '<meta property="og:title" content="Cheapest Garden Rooms in Ireland | PlotNua">')),
 ]
 
 

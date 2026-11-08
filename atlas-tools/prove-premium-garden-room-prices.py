@@ -69,12 +69,71 @@ ADDED_LINKS = Counter({"terms.html#legal-information": 1, "#price-ranges": 1, "#
                        # answer to the products (item 6) and the extra-costs note's checklist link (item 5)
                        "discovery-living-in-the-garden.html#explore-makers": 1})
 ADDED_LINKS["#quote-checklist"] += 1
+# SEO-GR3: the hero's link to the method and the method's place in the in-page navigation; the new
+# section's navigation entry; its link to the additional costs.
+ADDED_LINKS.update({"#how-these-figures-were-made": 2, "#what-affects-prices": 1, "#outside-the-price": 1})
 REMOVED_TEXT = {"Company": "footer heading renamed PlotNua (legal information, founder decision A1-a, 28 Oct 2026)"}
+
+# SEO-GR3 (founder approval 8 Nov 2026: "Garden Room Prices Ireland: search relevance and content
+# optimisation", controlled implementation). Wording and structure only: the figures stay in the
+# PN-PRICES regions, written and proved by the price builder (G5). Each change is declared here.
+GR3 = "SEO-GR3 (8 Nov 2026)"
+GR3_HEAD = {   # BASE head element -> its SEO-GR3 replacement (title, Open Graph and Twitter cards)
+    "<title>Garden Room Prices in Ireland (2026) | PlotNua</title>":
+        "<title>Garden Room Prices &amp; Costs in Ireland (2026) | PlotNua</title>",
+    '<meta property="og:title" content="Garden Room Prices in Ireland | PlotNua">':
+        '<meta property="og:title" content="Garden Room Prices &amp; Costs in Ireland | PlotNua">',
+    '<meta name="twitter:title" content="Garden Room Prices in Ireland | PlotNua">':
+        '<meta name="twitter:title" content="Garden Room Prices &amp; Costs in Ireland | PlotNua">',
+    '<meta property="og:description" content="What advertised garden room prices in Ireland actually cover, and how to compare two quotes.">':
+        '<meta property="og:description" content="Independent research on what garden rooms cost in Ireland: installed rooms and kits, what each price covers, and how to compare quotes.">',
+    '<meta name="twitter:description" content="What advertised garden room prices in Ireland actually cover, and how to compare two quotes.">':
+        '<meta name="twitter:description" content="Independent research on what garden rooms cost in Ireland: installed rooms and kits, what each price covers, and how to compare quotes.">',
+}
+GR3_REMOVED = {   # BASE sentences replaced by SEO-GR3 (each replacement is in GR3_ADDED)
+    "So treat it as a guide to what is advertised, then use the checklist further down to": "now refers to both ranges",
+    "turn any price into one you can actually compare.": "the same sentence, rewrapped",
+    "What can sit outside the advertised price": "H2 renamed: Additional garden room costs to consider",
+    "A garden room quote checklist": "H2 renamed: How to compare garden room suppliers: a quote checklist",
+    "How these figures were made": "H2 renamed: How PlotNua checks garden room price evidence",
+}
+GR3_ADDED = [
+    "So treat these ranges as a guide to what is advertised, then use the checklist further down to turn any price into one you can actually compare.",
+    "Additional garden room costs to consider",
+    "How to compare garden room suppliers: a quote checklist",
+    "How PlotNua checks garden room price evidence",
+    # in-page navigation labels: the two sections' own kickers
+    "What Affects Price", "The Research",
+    # the new section "What affects garden room prices" (no figure, no name, no claim)
+    "What affects garden room prices",
+    "Two garden rooms of a similar size can be priced very differently.",
+    "These are the things that most often explain the difference, and the quote checklist further down turns them into questions for each supplier.",
+    "What the price includes",
+    "Whether a building is installed and finished on your site, supplied and erected, or sold as a kit is the first thing to establish.",
+    "This guide gives a separate range for each kind of price it can publish.",
+    "Size and layout",
+    "Floor area, height and the rooms inside change what a price buys.",
+    "Many prices come without a floor area, and some suppliers measure inside while others measure outside, so ask for the internal floor area.",
+    "Construction and finish",
+    "Insulation, glazing, cladding and what is finished inside, such as lining, flooring, sockets, lighting and heating, vary between suppliers and between models.",
+    "Your garden and access",
+    "Sloping or soft ground, tight side access and the distance from the house can change the base, the delivery and the electrical connection.",
+    "See the additional costs to consider \u2192",
+    # the method section: the snapshot history moves here from the hero, with what it means
+    "Snapshot date and later rechecks",
+    "The research snapshot is the starting point.",
+    "Since then, individual supplier records have been corrected, rechecked or withdrawn on different dates, so not every price was rechecked on the same day.",
+    "The full record:",
+]
+ADDED_TEXT.update({x: GR3 for x in GR3_ADDED})
+REMOVED_TEXT.update(GR3_REMOVED)
 ADDED_IDS = {"short-answer", "why-it-is-hard", "garden-homes",
-             "what-may-cost-extra"}   # Stage 2 item 5 (6 Nov 2026), inside the EXTRAS region
+             "what-may-cost-extra",   # Stage 2 item 5 (6 Nov 2026), inside the EXTRAS region
+             "what-affects-prices"}   # SEO-GR3 (8 Nov 2026): the new section
 ADDED_IMGS = Counter({"assets/brand/plotnua-icon-transparent.svg": 1,
                       "assets/garden-room-prices/garden-room-prices-hero-2026-10-23-1672.jpg": 1})   # hero illustration (founder, 23 Oct 2026)
-NAV = ["#price-ranges", "#why-it-is-hard", "#outside-the-price", "#quote-checklist", "#questions"]
+NAV = ["#price-ranges", "#what-affects-prices", "#why-it-is-hard", "#outside-the-price", "#quote-checklist",
+       "#questions", "#how-these-figures-were-made"]   # SEO-GR3 adds the second and the last
 STAY_ON_VIEW = [
     "not a census of the Irish garden room market",
     "PlotNua has no commercial arrangement with any of them",
@@ -177,13 +236,16 @@ def main():
                 "research, what the advertised price covers, and how to compare quotes.")
     dm = re.search(r'<meta name="description" content="([^"]*)">', t)
     new_desc = dm.group(1) if dm else ""
-    if not re.fullmatch(r"Installed garden rooms in Ireland are advertised from €[\d,]+ to €[\d,]+ in "
-                        r"PlotNua's research\. What the price covers, VAT, extras and how to compare quotes\.",
+    # SEO-GR3 (8 Nov 2026): the approved wording names both published ranges and the research totals.
+    if not re.fullmatch(r"Independent research on garden room prices in Ireland: \d+ advertised prices from "
+                        r"\d+ suppliers\. Installed rooms ran from €[\d,]+ to €[\d,]+; kits from €[\d,]+\.",
                         new_desc):
         bad("G1 the meta description is not the approved figure-bearing wording")
     ld_desc = json.dumps(new_desc, ensure_ascii=True)[1:-1]
     base["head"]["metas"] = sorted(m.replace(old_desc, new_desc) if 'name="description"' in m else m
                                    for m in base["head"]["metas"])
+    base["head"]["title"] = [GR3_HEAD.get(x, x) for x in base["head"]["title"]]
+    base["head"]["metas"] = sorted(GR3_HEAD.get(m, m) for m in base["head"]["metas"])
     base["head"]["jsonld"] = [x.replace('"dateModified": "2026-10-20"', '"dateModified": "%s"' % bdate0)
                                 .replace(old_desc, ld_desc)
                               for x in base["head"]["jsonld"]]
