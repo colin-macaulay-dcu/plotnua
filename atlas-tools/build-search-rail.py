@@ -172,6 +172,12 @@ def strip_stub(text):
 plotart_own = {SEO.canonical(p).removeprefix("https://plotnua.ie/") for p in SEO.sitemap_paths(SEO.public_packages(ROOT), SEO.switches())}
 pages = [p for p in re.findall(r"<loc>https://plotnua\.ie/([^<]*)</loc>",
                                SITEMAP.read_text(encoding="utf-8")) if p.endswith(".html") and p not in plotart_own]
+# SEO-GR2 (8 Nov 2026): pages with their own navigation (pn_header.OWN_NAV_SECTIONS: GridNua, the PlotArt
+# Mobile Gallery and the six supplier showcases, which entered the sitemap in SEO-GR2) do not carry the
+# rail, exactly as PlotArt's own pages do not. The count below is therefore unchanged.
+import importlib.util as _ilu
+_hs = _ilu.spec_from_file_location("pn_header", ROOT / "atlas-tools" / "pn_header.py"); _H = _ilu.module_from_spec(_hs); _hs.loader.exec_module(_H)
+pages = [p for p in pages if p not in _H.OWN_NAV_SECTIONS]
 pages = sorted(set(pages + ["index.html"]))
 # 21 = the 20 pre-existing public pages (19 sitemap entries + index.html) PLUS
 # search.html itself, added to the sitemap by this work. The founder's "global

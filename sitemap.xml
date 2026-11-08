@@ -27,6 +27,15 @@
   <url><loc>https://plotnua.ie/all-in-one-cabins-garden-rooms.html</loc><lastmod>2026-10-26</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://plotnua.ie/concept-modular-garden-offices.html</loc><lastmod>2026-10-26</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://plotnua.ie/shomera-garden-rooms.html</loc><lastmod>2026-10-26</lastmod></url>
+  <!-- SEO-GR2 (founder approval 8 Nov 2026): the six public supplier showcase pages, indexable since release,
+       were never listed. lastmod = each page's last content commit (7fade08, 5 Nov 2026), except Don Modular,
+       whose prices were withdrawn under R-MATCH in this release (8 Nov 2026). -->
+  <url><loc>https://plotnua.ie/suppliers/the-mobile-pods.html</loc><lastmod>2026-11-05</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://plotnua.ie/suppliers/gardenhouse24.html</loc><lastmod>2026-11-05</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://plotnua.ie/suppliers/elm-landscaping.html</loc><lastmod>2026-11-05</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://plotnua.ie/suppliers/garden-room-ireland.html</loc><lastmod>2026-11-05</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://plotnua.ie/suppliers/don-modular-homes.html</loc><lastmod>2026-11-08</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://plotnua.ie/suppliers/superior-pergola-ireland.html</loc><lastmod>2026-11-05</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://plotnua.ie/discovery-a-home-for-art.html</loc><lastmod>2026-10-27</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
   <url><loc>https://plotnua.ie/artist-register.html</loc><lastmod>2026-10-14</lastmod><changefreq>monthly</changefreq><priority>0.5</priority></url>
   <url><loc>https://plotnua.ie/discovery-the-borrowed-garden.html</loc><lastmod>2026-10-16</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>

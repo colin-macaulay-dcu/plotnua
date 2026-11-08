@@ -80,7 +80,12 @@ EXCLUDED = ["your-plot.html"]          # plus every disc0NN-* property check / j
 # Initiative sections with their own pill navigation (PlotArt / GridNua pattern). They are reached
 # FROM the header but do not carry it. GridNua's two pages are indexable (founder approval 29 Oct 2026).
 # PlotArt Mobile Gallery is indexable by the founder's release authorisation (3 Nov 2026).
-OWN_NAV_SECTIONS = ["gridnua/", "gridnua/technology/", "plotart/mobile-gallery/"]
+OWN_NAV_SECTIONS = ["gridnua/", "gridnua/technology/", "plotart/mobile-gallery/",
+                    # SEO-GR2 (founder approval 8 Nov 2026): the six public supplier showcases, indexable since
+                    # release (4-5 Nov 2026) and now listed in the sitemap, keep their own maker bar (mp-bar).
+                    "suppliers/the-mobile-pods.html", "suppliers/gardenhouse24.html", "suppliers/elm-landscaping.html",
+                    "suppliers/garden-room-ireland.html", "suppliers/don-modular-homes.html",
+                    "suppliers/superior-pergola-ireland.html"]
 ROOTABS = {"404.html"}                 # served for any missing address, so root-absolute links
 
 # The homepage keeps its approved (i) "What is PlotNua?" control, seated beside the brand
