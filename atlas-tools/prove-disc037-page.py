@@ -10,13 +10,13 @@ Stage 3 private preview (8 Nov 2026), development branch dev/disc037-resourceful
   R3  exactly one H1 ("The Resourceful Garden") and the approved hero question
   R4  every local href/src/srcset on the page resolves to a file
   R5  the hero is the labelled pending frame: no <img>, <picture> or pn-compare inside it, and no
-      DISC-037-01-BEFORE / 02-POSSIBLE file is referenced anywhere (nothing substituted for the missing pair)
+      DISC-037-01-BEFORE / 02-POSSIBLE file is referenced anywhere (the supplied pair failed alignment, 8 Nov 2026)
   R6  six chapters, in order, with the six approved titles
-  R7  exactly the four supplied chapter images, each whole, with a descriptive alt and the AI disclosure;
+  R7  exactly the five supplied chapter images, each whole, with a descriptive alt and the AI disclosure;
       the pantry image says it is not a specific product
-  R8  chapter 04 carries the labelled empty slot for the missing greenhouse image, with no image in it
+  R8  chapter 04 shows the greenhouse image, and the text explains the dark barrels as thermal mass
   R9  Groundfridge is framed as an example: Ireland/UK not listed, Irish delivery not confirmed, not a
-      PlotNua partner, delivery/excavation/installation excluded
+      PlotNua partner, delivery/excavation/installation excluded; no distributor or endorsement wording
   R10 planning: Class 3, 30 m2, 25 m2 open space, 27 July 2026, poultry excluded, Section 5 (EUR 80), the
       buried store untested, not legal advice; no blanket "no planning needed" wording
   R11 living roof structure check; costs labelled indicative and not quotes, with the checked date
@@ -36,7 +36,8 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PAGE = "discovery-the-resourceful-garden.html"
 URL = "https://plotnua.ie/" + PAGE
 AI_LABEL = "Illustrative AI-generated visualisation. Not an actual installation."
-ROLES = ["03-GARDEN-THAT-FEEDS-YOU", "04-UNDERGROUND-PANTRY", "05-WASTE-INTO-WONDERFUL", "07-LIVING-ROOF-WILD-GARDEN"]
+ROLES = ["03-GARDEN-THAT-FEEDS-YOU", "04-UNDERGROUND-PANTRY", "05-WASTE-INTO-WONDERFUL", "06-GREENHOUSE-STORES-SUNSHINE",
+         "07-LIVING-ROOF-WILD-GARDEN"]
 CHAPTERS = ["The garden that feeds you", "The underground pantry", "Waste into something wonderful",
             "The greenhouse that stores sunshine", "The living roof and wild garden", "Make it happen"]
 RELATED = ["discovery-the-borrowed-garden.html", "discovery-the-water-wall.html", "discovery-the-outdoor-room.html",
@@ -99,7 +100,7 @@ def check(s, files):
     if hero:
         need(not re.search(r"<img|<picture|pn-compare", hero.group(1)), "R5 an image or compare component inside the pending hero")
     need(not re.search(r"DISC-037-0[12]-(?:BEFORE|POSSIBLE)[^\"']*\.(?:png|jpg|webp)", nocom), "R5 a hero image file is referenced")
-    need("have not been supplied" in flat, "R5 the pending hero says the pair has not been supplied")
+    need("did not pass PlotNua’s alignment check" in flat, "R5 the pending hero says why the comparison is not shown")
 
     # R6
     ks = re.findall(r'<div class="lg-chapter" id="lg-ch0(\d)">.*?<p class="lg-kicker">([^<]+)</p>', s)
@@ -116,13 +117,16 @@ def check(s, files):
     pan = dict(figs).get("04-UNDERGROUND-PANTRY", "")
     need("Not an actual installation or a specific product." in pan, "R7 the pantry image is not a specific product")
 
-    # R8
+    # R8 (Stage 4): chapter 04 shows the founder's greenhouse image, and the text explains the barrels as thermal mass
     ch4 = re.search(r'id="lg-ch04".*?id="lg-ch05"', s, re.S)
-    slot = re.search(r'<div class="rg-pending[^"]*" data-rg-pending="ch04"[^>]*>(.*?)</div>\s*</div>', ch4.group(0) if ch4 else "", re.S)
-    need(slot and "<img" not in slot.group(1) and "missing from the supplied package" in slot.group(1), "R8 the chapter 04 pending slot")
-    need(ch4 and "<img" not in ch4.group(0), "R8 an image in chapter 04")
+    c4 = ch4.group(0) if ch4 else ""
+    need('data-rg-image="DISC-037-06-GREENHOUSE-STORES-SUNSHINE"' in c4 and 'data-rg-pending="ch04"' not in c4, "R8 the chapter 04 greenhouse image")
+    need("the barrels act as thermal mass" in text(c4), "R8 the barrels are explained as thermal mass")
 
     # R9
+    for bad in ("authorised distributor", "authorized distributor", "official distributor", "endorsed by", "approved by groundfridge",
+                "groundfridge installation", "stockist", "buy a groundfridge"):
+        need(bad not in low, "R9 distributor or endorsement wording: " + bad)
     for must in ("Ireland and the UK are not listed among its delivery regions", "Irish delivery is not confirmed",
                  "the Groundfridge is not a PlotNua partner", "Delivery, excavation and installation"):
         need(must in flat, "R9 Groundfridge qualification missing: " + must)
@@ -200,7 +204,8 @@ def main():
             "R5": s.replace('<div class="rg-await">', '<div class="rg-await"><img src="assets/disc037/img/DISC-037-03-GARDEN-THAT-FEEDS-YOU-1024.jpg" alt="">', 1),
             "R6": s.replace('<p class="lg-kicker">Make it happen</p>', '<p class="lg-kicker">Next steps</p>', 1),
             "R7": s.replace("Not an actual installation or a specific product.", "Not an actual installation.", 1),
-            "R8": s.replace('<div class="rg-pending reveal" data-rg-pending="ch04"', '<div class="rg-pending reveal" data-rg-pending="x"', 1),
+            "R8": s.replace("the barrels act as thermal mass", "the barrels hold rainwater", 1),
+            "R9 ": s.replace("Shown as an example of what exists", "PlotNua is an authorised distributor. Shown as an example of what exists", 1),
             "R9": s.replace("Irish delivery is not confirmed", "Irish delivery is available", 1),
             "R10": s.replace("no rule or decision we found deals with a buried one", "a buried one is exempt", 1),
             "R11": s.replace("not quotes", "firm prices"),
@@ -208,7 +213,7 @@ def main():
             "R13": s.replace("Irish businesses that can help.", "Irish businesses that can help. Ask our partner.", 1),
             "R15": s.replace('href="discovery-the-water-wall.html"', 'href="discovery-underground-space.html"'),
         }
-        missed = [k for k, t in faults.items() if not any(p.startswith(k + " ") for p in check(t, files))]
+        missed = [k for k, t in faults.items() if not any(p.startswith(k.strip() + " ") for p in check(t, files))]
         print("DISC-037 PAGE · SELF-TEST " + ("OK (%d planted faults caught)" % len(faults) if not missed else "MISSED %s" % missed))
         if missed:
             sys.exit(1)

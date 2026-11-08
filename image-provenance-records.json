@@ -11298,6 +11298,44 @@
         "date": "2026-11-08",
         "subject": "DISC-037 The Resourceful Garden, Stage 3 private preview (not deployed)"
       }
+    },
+    {
+      "asset": "assets/disc037/img/DISC-037-06-GREENHOUSE-STORES-SUNSHINE-MASTER.png",
+      "sha256": "3f2e20a7989511e2762ae0594ff19a11525a5cc5fdac94f672bb1b3e0d7fa68e",
+      "bytes": 3607304,
+      "pixels": [
+        1536,
+        1024
+      ],
+      "class": "AI_ILLUSTRATION",
+      "what": "DISC-037 chapter 04 image, The Greenhouse That Stores Sunshine: inside a timber lean-to glasshouse against a stone wall on a frosty, sunny winter morning, with dark water barrels fed by a downpipe, staging of salads and herbs in pots and trays, and a timber raised bed under a propped-open glazed lid; a generic illustrated greenhouse, no brand or mark visible (founder's master; the page shows its prepared copies)",
+      "depicts_named_product": false,
+      "depicts_named_organisation": false,
+      "origin": {
+        "basis": "C2PA_EMBEDDED",
+        "evidence": "Embedded C2PA manifest, read with c2pa-python: issuer OpenAI OpCo, LLC, signed 2026-11-08T14:24:18.043040+00:00; the credential chain records c2pa.created with digital source type trainedAlgorithmicMedia; 0 ingredient link(s), 0 credentialed; validation Valid. Supplied by the founder as 'DISC-037-06-GREENHOUSE-STORES-SUNSHINE-MASTER.png' in the package DISC-037-Remaining-Three-Images-2026-11-08.zip (8 Nov 2026), added unchanged under its own name.",
+        "declared_under": "Governance 2.0, Rule 2 (30 Oct 2026)"
+      },
+      "generated": {
+        "tool": "OpenAI OpCo, LLC generative AI (ChatGPT), per the file's own signed C2PA credential",
+        "date": "2026-11-08"
+      },
+      "prompt_status": "UNAVAILABLE",
+      "reference_disclosure": {
+        "status": "UNCERTAIN",
+        "statement": "The credential records no input image. Credentials do not record conversation context, so inputs cannot be ruled out. A chapter image, generated on its own (signed 2026-11-08T14:24:18.043040+00:00); it is not part of a Before/Possible pair."
+      },
+      "permitted_surfaces": [
+        "discovery"
+      ],
+      "content_credentials": {
+        "embeds_c2pa": true
+      },
+      "founder_approval": "Supplied by the founder as the DISC-037 chapter 04 image (Stage 4 image integration, private preview only, 8 Nov 2026); production use awaits the founder's release approval",
+      "introduced": {
+        "date": "2026-11-08",
+        "subject": "DISC-037 The Resourceful Garden, Stage 4 image integration (private preview, not deployed)"
+      }
     }
   ],
   "legacy_undeclared": [
@@ -19789,6 +19827,162 @@
       "derived_from": {
         "asset": "assets/disc037/img/DISC-037-05-WASTE-INTO-WONDERFUL-MASTER.png",
         "sha256": "dfbbf9fc07383dd64a9e673a15b725d8210bb680339fef6090aa6563c2fbbf7b"
+      },
+      "method": "optimise",
+      "edit": {
+        "description": "DISC-037 web copy (Governance 2.0, Rule 3): Lanczos resize to 1024 px wide (whole image, aspect kept).",
+        "operation": "Lanczos resize to 1024 px wide (whole image, aspect kept)",
+        "verified_by": "atlas-tools/build-disc037-images.py --check"
+      },
+      "encoder": "Pillow 12.3.0, JPEG quality 86, progressive",
+      "made": "2026-11-08",
+      "content_credentials": {
+        "source_file_embeds_c2pa": true,
+        "derivative_embeds_c2pa": false,
+        "note": "Resizing and re-encoding remove the embedded C2PA credential. This copy carries NO signed credential; the master keeps it, and its record carries the AI classification."
+      }
+    },
+    {
+      "asset": "assets/disc037/img/DISC-037-06-GREENHOUSE-STORES-SUNSHINE-480.webp",
+      "sha256": "81d4baacbc5ac5c0983517d34f32ad4446ad5e3b3e78f981ff6b59ce8b1e9d19",
+      "bytes": 52684,
+      "pixels": [
+        480,
+        320
+      ],
+      "derived_from": {
+        "asset": "assets/disc037/img/DISC-037-06-GREENHOUSE-STORES-SUNSHINE-MASTER.png",
+        "sha256": "3f2e20a7989511e2762ae0594ff19a11525a5cc5fdac94f672bb1b3e0d7fa68e"
+      },
+      "method": "optimise",
+      "edit": {
+        "description": "DISC-037 web copy (Governance 2.0, Rule 3): Lanczos resize to 480 px wide (whole image, aspect kept).",
+        "operation": "Lanczos resize to 480 px wide (whole image, aspect kept)",
+        "verified_by": "atlas-tools/build-disc037-images.py --check"
+      },
+      "encoder": "Pillow 12.3.0, WebP quality 80, method 6",
+      "made": "2026-11-08",
+      "content_credentials": {
+        "source_file_embeds_c2pa": true,
+        "derivative_embeds_c2pa": false,
+        "note": "Resizing and re-encoding remove the embedded C2PA credential. This copy carries NO signed credential; the master keeps it, and its record carries the AI classification."
+      }
+    },
+    {
+      "asset": "assets/disc037/img/DISC-037-06-GREENHOUSE-STORES-SUNSHINE-768.webp",
+      "sha256": "8375693e1672f88694be3845f6db4669a35300848d5a323abf178f1a37dddf26",
+      "bytes": 124634,
+      "pixels": [
+        768,
+        512
+      ],
+      "derived_from": {
+        "asset": "assets/disc037/img/DISC-037-06-GREENHOUSE-STORES-SUNSHINE-MASTER.png",
+        "sha256": "3f2e20a7989511e2762ae0594ff19a11525a5cc5fdac94f672bb1b3e0d7fa68e"
+      },
+      "method": "optimise",
+      "edit": {
+        "description": "DISC-037 web copy (Governance 2.0, Rule 3): Lanczos resize to 768 px wide (whole image, aspect kept).",
+        "operation": "Lanczos resize to 768 px wide (whole image, aspect kept)",
+        "verified_by": "atlas-tools/build-disc037-images.py --check"
+      },
+      "encoder": "Pillow 12.3.0, WebP quality 80, method 6",
+      "made": "2026-11-08",
+      "content_credentials": {
+        "source_file_embeds_c2pa": true,
+        "derivative_embeds_c2pa": false,
+        "note": "Resizing and re-encoding remove the embedded C2PA credential. This copy carries NO signed credential; the master keeps it, and its record carries the AI classification."
+      }
+    },
+    {
+      "asset": "assets/disc037/img/DISC-037-06-GREENHOUSE-STORES-SUNSHINE-1024.webp",
+      "sha256": "2c5231696a159f90734d2ccb2f846db7efc06f7d072c74fce4613150caf13b9f",
+      "bytes": 207864,
+      "pixels": [
+        1024,
+        683
+      ],
+      "derived_from": {
+        "asset": "assets/disc037/img/DISC-037-06-GREENHOUSE-STORES-SUNSHINE-MASTER.png",
+        "sha256": "3f2e20a7989511e2762ae0594ff19a11525a5cc5fdac94f672bb1b3e0d7fa68e"
+      },
+      "method": "optimise",
+      "edit": {
+        "description": "DISC-037 web copy (Governance 2.0, Rule 3): Lanczos resize to 1024 px wide (whole image, aspect kept).",
+        "operation": "Lanczos resize to 1024 px wide (whole image, aspect kept)",
+        "verified_by": "atlas-tools/build-disc037-images.py --check"
+      },
+      "encoder": "Pillow 12.3.0, WebP quality 80, method 6",
+      "made": "2026-11-08",
+      "content_credentials": {
+        "source_file_embeds_c2pa": true,
+        "derivative_embeds_c2pa": false,
+        "note": "Resizing and re-encoding remove the embedded C2PA credential. This copy carries NO signed credential; the master keeps it, and its record carries the AI classification."
+      }
+    },
+    {
+      "asset": "assets/disc037/img/DISC-037-06-GREENHOUSE-STORES-SUNSHINE-1376.webp",
+      "sha256": "18745ca20f8dc05a6bf49f62210dc18b1a906e19e33ffddb3dc846f38fabe6d1",
+      "bytes": 323046,
+      "pixels": [
+        1376,
+        917
+      ],
+      "derived_from": {
+        "asset": "assets/disc037/img/DISC-037-06-GREENHOUSE-STORES-SUNSHINE-MASTER.png",
+        "sha256": "3f2e20a7989511e2762ae0594ff19a11525a5cc5fdac94f672bb1b3e0d7fa68e"
+      },
+      "method": "optimise",
+      "edit": {
+        "description": "DISC-037 web copy (Governance 2.0, Rule 3): Lanczos resize to 1376 px wide (whole image, aspect kept).",
+        "operation": "Lanczos resize to 1376 px wide (whole image, aspect kept)",
+        "verified_by": "atlas-tools/build-disc037-images.py --check"
+      },
+      "encoder": "Pillow 12.3.0, WebP quality 80, method 6",
+      "made": "2026-11-08",
+      "content_credentials": {
+        "source_file_embeds_c2pa": true,
+        "derivative_embeds_c2pa": false,
+        "note": "Resizing and re-encoding remove the embedded C2PA credential. This copy carries NO signed credential; the master keeps it, and its record carries the AI classification."
+      }
+    },
+    {
+      "asset": "assets/disc037/img/DISC-037-06-GREENHOUSE-STORES-SUNSHINE-768.jpg",
+      "sha256": "291d520e6a536981a8cae1384fe3e55419d2f26019d908762cb95fc64f7cae06",
+      "bytes": 152728,
+      "pixels": [
+        768,
+        512
+      ],
+      "derived_from": {
+        "asset": "assets/disc037/img/DISC-037-06-GREENHOUSE-STORES-SUNSHINE-MASTER.png",
+        "sha256": "3f2e20a7989511e2762ae0594ff19a11525a5cc5fdac94f672bb1b3e0d7fa68e"
+      },
+      "method": "optimise",
+      "edit": {
+        "description": "DISC-037 web copy (Governance 2.0, Rule 3): Lanczos resize to 768 px wide (whole image, aspect kept).",
+        "operation": "Lanczos resize to 768 px wide (whole image, aspect kept)",
+        "verified_by": "atlas-tools/build-disc037-images.py --check"
+      },
+      "encoder": "Pillow 12.3.0, JPEG quality 86, progressive",
+      "made": "2026-11-08",
+      "content_credentials": {
+        "source_file_embeds_c2pa": true,
+        "derivative_embeds_c2pa": false,
+        "note": "Resizing and re-encoding remove the embedded C2PA credential. This copy carries NO signed credential; the master keeps it, and its record carries the AI classification."
+      }
+    },
+    {
+      "asset": "assets/disc037/img/DISC-037-06-GREENHOUSE-STORES-SUNSHINE-1024.jpg",
+      "sha256": "c47f2f6fad5e92595497f6e4bebec1c15d2bb056dc7dfddd89e8a0ea8756049b",
+      "bytes": 259406,
+      "pixels": [
+        1024,
+        683
+      ],
+      "derived_from": {
+        "asset": "assets/disc037/img/DISC-037-06-GREENHOUSE-STORES-SUNSHINE-MASTER.png",
+        "sha256": "3f2e20a7989511e2762ae0594ff19a11525a5cc5fdac94f672bb1b3e0d7fa68e"
       },
       "method": "optimise",
       "edit": {
