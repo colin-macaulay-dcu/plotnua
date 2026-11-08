@@ -165,8 +165,9 @@ def check(s, files):
     # R13
     need(not re.search(r"commission(?! for regulation of utilities)", low), "R13 commercial or unsupported-claim wording: commission")
     for bad in ("our partner", "partnered", "referral fee", "affiliate", "discount", "exclusive offer",
-                "save €", "savings", "carbon", "co2", "cut your bills", "pay for itself", "recommended supplier"):
+                "save €", "savings", "co2", "cut your bills", "pay for itself", "recommended supplier"):
         need(bad not in low, "R13 commercial or unsupported-claim wording: " + bad)
+    need(not re.search(r"\bcarbon\b", low), "R13 commercial or unsupported-claim wording: carbon")
     need(low.count("self-sufficient") == 1 and "none of this makes a household self-sufficient" in low, "R13 self-sufficiency is only disclaimed")
     need("PlotNua has no commercial relationship with any business named on this page" in flat, "R13 the no-relationship disclaimer")
     who = re.search(r'id="who-can-help".*?</ul>', s, re.S)

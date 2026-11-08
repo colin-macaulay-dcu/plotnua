@@ -509,6 +509,11 @@ body.pn-id.pn-pd .rg-hero--views .d-hero-scrim{ z-index:1; pointer-events:none; 
 body.pn-id.pn-pd .rg-hero--views .d-hero-copy{ text-align:left; left:0; right:auto; width:calc(46% - 4vw); max-width:600px; padding:0 0 clamp(56px,9vh,96px) 4vw; }
 body.pn-id.pn-pd .rg-hero--views .d-hero-copy :is(.subtitle,.intro){ margin-left:0; margin-right:0; }
 body.pn-id.pn-pd .rg-hero--views .d-hero-copy h1{ font-size:clamp(44px,4.6vw,82px); text-shadow:0 2px 28px rgba(15,14,10,.5); }
+/* Stage 8 (founder-approved): the desktop title about 12% smaller, so more of the productive garden shows. Desktop and
+   landscape tablets only (the overlay layout); phones and portrait tablets keep their size. */
+@media (min-width:1025px), (min-width:720px) and (orientation:landscape){
+  body.pn-id.pn-pd .rg-hero--views .d-hero-copy h1{ font-size:clamp(40px,4.05vw,72px); }
+}
 body.pn-id.pn-pd .rg-hero--views .d-hero-copy .subtitle{ max-width:22ch; margin-top:18px; }
 body.pn-id.pn-pd .rg-hero--views .d-hero-copy .intro{ max-width:42ch; margin-top:16px; font-size:16px; }
 @media (max-width:1024px) and (orientation:portrait), (max-width:719px){
@@ -767,16 +772,16 @@ body.pn-id.pn-pd #make-it-happen .pn-tr{ padding-left:0; padding-right:0; }
     <div class="rg-example reveal" id="groundfridge">
       <span class="pd-kicker">An example of an existing product</span>
       <h3>The Groundfridge.</h3>
-      <p>Made in the Netherlands, the Groundfridge is a factory-made underground store with a fibreglass-reinforced shell, set into the ground and covered with excavated soil. Its maker says the inside tracks the soil at about one metre down, typically 8&ndash;15&thinsp;&deg;C, without mains power.</p>
+      <p>Made in the Netherlands, the Groundfridge is a factory-made underground store with a fibreglass-reinforced shell, set into the ground and covered with excavated soil. Its maker says the inside tracks the soil at about one metre down, typically 8&ndash;15&thinsp;&deg;C in its Dutch installations, without mains power.</p>
       <dl>
         <div><dt>Size</dt><dd>About 7.8&thinsp;m&sup3; in total; the shell weighs about 560&thinsp;kg</dd></div>
-        <div><dt>Advertised price</dt><dd>US$21,995 for the fitted version, US$18,995 empty, on its own site; about &euro;17,990 including tax in one European listing</dd></div>
+        <div><dt>Advertised price</dt><dd>US$21,995 for the fitted version (shelves, railing, solar-powered ventilation) and US$18,995 empty, as listed on its webshop</dd></div>
         <div><dt>Not included</dt><dd>Delivery, excavation and installation, which the buyer arranges with a contractor</dd></div>
         <div><dt>Delivery</dt><dd>By trailer from the factory within Europe. Ireland and the UK are not listed among its delivery regions</dd></div>
-        <div><dt>Warranty</dt><dd>Two years on the casing, door, fittings and shelving, per its 2023 product sheet</dd></div>
+        <div><dt>Not stated</dt><dd>Warranty terms, lead times and the cost of delivery to Ireland aren&rsquo;t given on its website; ask before ordering</dd></div>
         <div><dt>Permits</dt><dd>The maker says permits are &ldquo;probably not required&rdquo; and advises checking with the local council. That reflects its home market, not Irish rules</dd></div>
       </dl>
-      <p class="rg-not">Shown as an example of what exists, not a recommendation. Irish delivery is not confirmed, and the Groundfridge is not a PlotNua partner. Advertised prices, checked 8 November 2026; exchange rates and taxes vary.</p>
+      <p class="rg-not">Shown as an example of what exists, not a recommendation. Irish delivery is not confirmed, and the Groundfridge is not a PlotNua partner. Advertised prices in US dollars, checked on its website on 8 November 2026; exchange rates, taxes and transport vary.</p>
     </div>
     <div class="lg-group is-guide"><p class="lg-group-k">Before you dig</p><p class="lg-group-n">An underground store is the most ambitious idea on this page. These are the checks that decide whether it suits your garden.</p></div>
     <ul class="rg-check reveal" role="list">
@@ -827,7 +832,7 @@ body.pn-id.pn-pd #make-it-happen .pn-tr{ padding-left:0; padding-right:0; }
         <p class="rg-tier-k">Step up</p>
         <h3>A hot composter</h3>
         <p>An insulated bin that keeps the heap working through winter and, because it runs hot, can take cooked food as well. One well-known 200-litre model needs at least 5&thinsp;kg of waste a week to stay hot.</p>
-        <p class="rg-tier-n">Sold in Ireland; one Irish retailer listed it at &euro;295 when checked in November 2026.</p>
+        <p class="rg-tier-n">Sold in Ireland; one Irish retailer listed it at &euro;329.50, on offer at &euro;289.50, when checked on 8 November 2026.</p>
       </li>
       <li>
         <p class="rg-tier-k">Go further</p>
@@ -1047,10 +1052,10 @@ body.pn-id.pn-pd #make-it-happen .pn-tr{ padding-left:0; padding-right:0; }
         <caption>Advertised prices and published guide figures, checked 8 November 2026. VAT treatment isn&rsquo;t always stated. No supplier has quoted for this page.</caption>
         <thead><tr><th scope="col">Idea</th><th scope="col">Indicative cost</th><th scope="col">What the figure is</th></tr></thead>
         <tbody>
-          <tr><th scope="row">Hot composter</th><td data-k="Indicative cost"><span class="rg-fig">&euro;295</span></td><td data-k="What the figure is">One 200-litre model, as listed by an Irish retailer</td></tr>
-          <tr><th scope="row">Glass greenhouse</th><td data-k="Indicative cost"><span class="rg-fig">from about &euro;1,220</span></td><td data-k="What the figure is">A 3 &times; 8&thinsp;m greenhouse, as listed by an Irish retailer, before any base or installation</td></tr>
+          <tr><th scope="row">Hot composter</th><td data-k="Indicative cost"><span class="rg-fig">&euro;290&ndash;330</span></td><td data-k="What the figure is">One 200-litre model, as listed by an Irish retailer: &euro;329.50, on offer at &euro;289.50</td></tr>
+          <tr><th scope="row">Polycarbonate greenhouse</th><td data-k="Indicative cost"><span class="rg-fig">about &euro;1,220</span></td><td data-k="What the figure is">A 3 &times; 8&thinsp;m polycarbonate greenhouse on a galvanised steel frame, as listed by an Irish retailer, plus &euro;49.99 delivery, before any base or assembly; VAT treatment not stated. Glass greenhouses cost more</td></tr>
           <tr><th scope="row">Living roof</th><td data-k="Indicative cost"><span class="rg-fig">&euro;90&ndash;160 / m&sup2;</span></td><td data-k="What the figure is">Installed, from basic sedum to a biodiversity mix, including waterproofing and drainage; an Irish 2025 guide</td></tr>
-          <tr><th scope="row">Factory-made underground store</th><td data-k="Indicative cost"><span class="rg-fig">about &euro;18,000</span></td><td data-k="What the figure is">The Groundfridge, as advertised (&euro;17,990 including tax in one European listing), before delivery, excavation and installation; no confirmed Irish route</td></tr>
+          <tr><th scope="row">Factory-made underground store</th><td data-k="Indicative cost"><span class="rg-fig">US$18,995&ndash;21,995</span></td><td data-k="What the figure is">The Groundfridge, as listed on its webshop, before transport, excavation and installation; no confirmed Irish route</td></tr>
           <tr><th scope="row">Section 5 declaration</th><td data-k="Indicative cost"><span class="rg-fig">&euro;80</span></td><td data-k="What the figure is">The council fee for a formal view on whether a proposal is exempt</td></tr>
         </tbody>
       </table>
@@ -1113,7 +1118,7 @@ body.pn-id.pn-pd #make-it-happen .pn-tr{ padding-left:0; padding-right:0; }
     <ul class="or-makers reveal" role="list">
       <li><h4>Quickcrop</h4><p class="or-where">Ballymote, Co. Sligo</p><p>Raised beds, polytunnels, composters and seeds, delivered throughout Ireland.</p></li>
       <li><h4>D Plant Horticulture</h4><p class="or-where">Enniscorthy, Co. Wexford</p><p>Irish-made polytunnels, carrying the Guaranteed Irish mark.</p></li>
-      <li><h4>Keans</h4><p class="or-where">Irish-owned, nationwide delivery</p><p>Greenhouses and polytunnels, with published prices.</p></li>
+      <li><h4>Keans</h4><p class="or-where">Claremorris, Co. Mayo</p><p>Irish-owned retailer of greenhouses and polytunnels, with published prices and home delivery.</p></li>
       <li><h4>Peppermint Farm Glasshouses</h4><p class="or-where">Bantry, West Cork</p><p>Greenhouses, lean-tos and conservatories, installed nationwide. It sponsored the Sun Harness Garden at Bloom 2024.</p></li>
       <li><h4>Polydome</h4><p class="or-where">Birr, Co. Offaly</p><p>Glasshouses and polytunnels, built by its own greenhouse constructors.</p></li>
       <li><h4>Landtech Soils</h4><p class="or-where">Ireland</p><p>Grows sedum trays and installs green roofs.</p></li>
@@ -1130,15 +1135,15 @@ body.pn-id.pn-pd #make-it-happen .pn-tr{ padding-left:0; padding-right:0; }
       <div class="pd-detail-body">
         <ol class="ns-sources">
           <li>Planning and Development (Exempted Development) Regulations 2026, S.I. No. 338 of 2026: amended Class 3 (30&thinsp;m&sup2;), in force 27 July 2026, as published by <a href="https://sdcc.ie/en/services/planning-building-control/exempted-development/new-exemptions-27-07-26/" rel="noopener" target="_blank">South Dublin County Council</a> and <a href="https://www.galwaycity.ie/ga/node/2639" rel="noopener" target="_blank">Galway City Council</a>.</li>
-          <li>Section 5 declarations: <a href="https://www.cavancoco.ie/services/planning-building/planning-permission/planning-exemption-section-v/" rel="noopener" target="_blank">Cavan County Council</a> and <a href="https://www.dublincity.ie/residential/planning/planning-applications/find-planning-application/exempt-development/exempted-development-section-5" rel="noopener" target="_blank">Dublin City Council</a>.</li>
+          <li>Section 5 declarations (&euro;80; a decision due within four weeks; appeals): <a href="https://kilkennycoco.ie/eng/services/planning/planning-applications/exempted-development/" rel="noopener" target="_blank">Kilkenny County Council</a> (2026 Regulations) and <a href="https://www.dublincity.ie/residential/planning/planning-applications/find-planning-application/exempt-development/exempted-development-section-5" rel="noopener" target="_blank">Dublin City Council</a>.</li>
           <li>Climate: Met &Eacute;ireann 1991&ndash;2020 averages, as reported by The Irish Times (18 July 2023); sunshine: <a href="https://www.teagasc.ie/news--events/daily/weather-trends-over-the-past-60-years/" rel="noopener" target="_blank">Teagasc</a>.</li>
           <li>Growing: <a href="https://giy.ie/blogs/news/growing-food-a-climate-action-tool" rel="noopener" target="_blank">GIY community survey</a>; forest gardening: <a href="https://www.gardensillustrated.com/gardens/gardeners/forest-garden-martin-crawford" rel="noopener" target="_blank">Gardens Illustrated</a>.</li>
           <li>Clamps and storage: <a href="https://www.fruithillfarm.com/info/2021/10/harvesting-and-storing-maincrop-potatoes/" rel="noopener" target="_blank">Fruit Hill Farm</a>; <a href="https://www.safefood.net/blog/storing-veg" rel="noopener" target="_blank">safefood</a>; <a href="https://stopfoodwaste.ie/shopping-and-storage/how-to-keep-potatoes-fresh-for-longer" rel="noopener" target="_blank">Stop Food Waste</a>. Earth cellars: Leca <i lang="sv">jordk&auml;llare</i> guide (Swedish).</li>
-          <li>Groundfridge: <a href="https://groundfridge.com" rel="noopener" target="_blank">groundfridge.com</a> (prices, delivery, temperature, permits) and its 2023 product sheet; <a href="https://www.jeccomposites.com/news/by-jec/a-fibreglass-reinforced-polyester-hobbit-hole-for-your-pantry/" rel="noopener" target="_blank">JEC Composites</a>.</li>
+          <li>Groundfridge: <a href="https://groundfridge.com" rel="noopener" target="_blank">groundfridge.com</a> (delivery, temperature, installation, permits) and its <a href="https://groundfridge.com/collections/frontpage" rel="noopener" target="_blank">webshop</a> (prices, exclusive of transport and installation), checked 8 November 2026.</li>
           <li>Hazards: <a href="https://www.gsi.ie" rel="noopener" target="_blank">Geological Survey Ireland</a> (groundwater flooding, radon); Commission for Regulation of Utilities, <a href="https://www.cru.ie/consumer-information/home-safety/electrical-works/" rel="noopener" target="_blank">Electrical works in your home</a>.</li>
-          <li>Food waste: <a href="https://www.epa.ie/our-services/monitoring--assessment/waste/national-waste-statistics/food/" rel="noopener" target="_blank">EPA food waste statistics</a>; <a href="https://www.gaillimh.ie/en/services/environment/wasteandlitter/foodwaste" rel="noopener" target="_blank">Galway County Council</a> (food waste duties and home composting). Hot composting: HOTBIN specification; Irish listing on <a href="https://quickcrop.ie/product/hotbin-composters" rel="noopener" target="_blank">Quickcrop</a>.</li>
-          <li>Greenhouses: <a href="https://www.growveg.co.uk/guides/how-to-make-a-hotbed-for-the-earliest-sowings/" rel="noopener" target="_blank">GrowVeg</a> (hotbeds); sunlight greenhouses, Chen et al., Journal of the Society of Agricultural Structures, Japan (2000); <a href="https://ceresgs.com" rel="noopener" target="_blank">Ceres Greenhouse Solutions</a> (climate battery); Benson Institute walipini guide; Pardo (2020), compost heat recovery pilot, Theseus; <a href="https://www.bordbiabloom.com" rel="noopener" target="_blank">Bord Bia Bloom</a>; Keans and Quickcrop published ranges.</li>
-          <li>Living roofs: Stovin et al., <a href="https://eprints.whiterose.ac.uk/128999/" rel="noopener" target="_blank">University of Sheffield</a>; <a href="https://bookmyroofer.ie/blog/posts/green-roof-benefits-costs-ireland/" rel="noopener" target="_blank">BookMyRoofer.ie</a> (Irish prices and weights, 2025); Sempergreen Blarney reference.</li>
+          <li>Food waste: <a href="https://www.epa.ie/our-services/monitoring--assessment/waste/national-waste-statistics/food/" rel="noopener" target="_blank">EPA food waste statistics</a>; <a href="https://www.gaillimh.ie/en/services/environment/wasteandlitter/foodwaste" rel="noopener" target="_blank">Galway County Council</a> (food waste duties and home composting). Hot composting: HOTBIN specification; Irish listing on <a href="https://quickcrop.ie/product/hotbin-composters" rel="noopener" target="_blank">Quickcrop</a>, checked 8 November 2026.</li>
+          <li>Greenhouses: <a href="https://www.growveg.co.uk/guides/how-to-make-a-hotbed-for-the-earliest-sowings/" rel="noopener" target="_blank">GrowVeg</a> (hotbeds); sunlight greenhouses, Chen et al., Journal of the Society of Agricultural Structures, Japan (2000); <a href="https://ceresgs.com" rel="noopener" target="_blank">Ceres Greenhouse Solutions</a> (climate battery); Benson Institute walipini guide; Pardo (2020), compost heat recovery pilot, Theseus; <a href="https://www.bordbiabloom.com" rel="noopener" target="_blank">Bord Bia Bloom</a>; <a href="https://keanscm.ie/products/strong-greenhouse-3x8m-46mm" rel="noopener" target="_blank">Keans</a> (checked 8 November 2026) and Quickcrop published ranges.</li>
+          <li>Living roofs: Stovin et al., <a href="https://eprints.whiterose.ac.uk/128999/" rel="noopener" target="_blank">University of Sheffield</a>; <a href="https://bookmyroofer.ie/blog/posts/green-roof-benefits-costs-ireland/" rel="noopener" target="_blank">BookMyRoofer.ie</a> (Irish indicative prices and weights, 8 March 2025; rechecked 8 November 2026); Sempergreen Blarney reference.</li>
           <li>Pollinators and bees: All-Ireland Pollinator Plan, <a href="https://pollinators.ie/gardens/" rel="noopener" target="_blank">How can I help pollinators in my garden?</a>; <a href="https://www.irishbeekeepers.ie" rel="noopener" target="_blank">Federation of Irish Beekeepers&rsquo; Associations</a>. Poultry: <a href="https://www.gov.ie/en/department-of-agriculture-food-and-the-marine/services/poultry-register" rel="noopener" target="_blank">gov.ie Poultry Register</a>.</li>
           <li>Businesses: Quickcrop, D Plant Horticulture, Keans, <a href="https://westcorkpeople.ie/?p=21284" rel="noopener" target="_blank">Peppermint Farm Glasshouses</a>, <a href="https://polydome.ie/irelands-leading-greenhouse-supplier/" rel="noopener" target="_blank">Polydome</a> and Landtech Soils, from their own published pages and press.</li>
         </ol>
