@@ -19,8 +19,8 @@
 <meta name="robots" content="index, follow">
 <link rel="canonical" href="https://plotnua.ie/discovery-the-resourceful-garden.html">
 
-<link rel="preload" as="image" type="image/webp" media="(max-width:719px)" imagesrcset="assets/disc037/img/DISC-037-BEFORE-M-819.webp 819w" imagesizes="100vw" fetchpriority="high">
-<link rel="preload" as="image" type="image/webp" media="(min-width:720px)" imagesrcset="assets/disc037/img/DISC-037-BEFORE-768.webp 768w, assets/disc037/img/DISC-037-BEFORE-1024.webp 1024w, assets/disc037/img/DISC-037-BEFORE-1376.webp 1376w, assets/disc037/img/DISC-037-BEFORE-1536.webp 1536w" imagesizes="100vw" fetchpriority="high">
+<link rel="preload" as="image" type="image/webp" media="(max-width:719px)" imagesrcset="assets/disc037/img/DISC-037-HERO-BEFORE-M-793.webp 793w" imagesizes="100vw" fetchpriority="high">
+<link rel="preload" as="image" type="image/webp" media="(min-width:720px)" imagesrcset="assets/disc037/img/DISC-037-HERO-BEFORE-1024.webp 1024w, assets/disc037/img/DISC-037-HERO-BEFORE-1376.webp 1376w, assets/disc037/img/DISC-037-HERO-BEFORE-1672.webp 1672w" imagesizes="(max-width:1024px) and (orientation:portrait) 211vw, 137vw" fetchpriority="high">
 
 <!-- Favicons — PlotNua Brand Package v1.0 -->
 <link rel="icon" href="/favicon.ico" sizes="any">
@@ -503,29 +503,37 @@ body.pn-id.pn-pd .ns-hero.pn-hero-compare .pn-compare__before picture{ height:10
 <link rel="stylesheet" href="assets/identity/pn-rg-editorial.css?v=3">
 <link rel="stylesheet" href="assets/components/pn-two-route.css?v=1">
 <style>
-/* DISC-037 · page-local: the standard Before/Possible slider hero (Stage 10 founder decision, 8 Nov 2026). The copy
-   sits low on the left over a soft scrim, as before; the hero AI disclosure is never covered by the Back dock (as DISC-035).
-   On phones and portrait tablets the compact title sits above the image and the copy, with its heading, below it. */
+/* DISC-037 · page-local: the standard Before/Possible slider hero (Stage 10), with the Stage 11 image pair. The new pair is a
+   wide 1672 x 452 strip, so at every width the image sits in a wide frame (2.75:1 on desktop and landscape tablets, 16:9 on
+   phones and portrait tablets) with the copy below it on a solid background, rather than a full-height frame that would
+   enlarge the strip about 1.8x and crop away the pantry. Slider behaviour is the shared component's, unchanged. The hero
+   AI disclosure is never covered by the Back dock (as DISC-035); the dock also steps aside from the hero intro. */
 body.pn-id.pn-pd .pn-return{ transition:transform .28s ease, opacity .28s ease; }
 body.pn-id.pn-pd:has(> .pn-return)::after{ transition:transform .28s ease; }
 body.pn-id.pn-pd.rg-dock-away .pn-return{ transform:translateY(calc(100% + 28px)); opacity:0; pointer-events:none; }
 body.pn-id.pn-pd.rg-dock-away:has(> .pn-return)::after{ transform:translateY(calc(100% + 12px)); }
 @media (prefers-reduced-motion:reduce){ body.pn-id.pn-pd .pn-return, body.pn-id.pn-pd:has(> .pn-return)::after{ transition:none; } }
-body.pn-id.pn-pd .rg-hero .d-hero-scrim{ background:linear-gradient(180deg, rgba(15,14,10,.22) 0%, rgba(15,14,10,0) 24%, rgba(15,14,10,0) 50%, rgba(15,14,10,.7) 100%), linear-gradient(90deg, rgba(15,14,10,.55) 0%, rgba(15,14,10,0) 50%); }
-body.pn-id.pn-pd .rg-hero .d-hero-copy{ text-align:left; left:0; right:auto; width:calc(46% - 4vw); max-width:600px; padding:0 0 clamp(56px,9vh,96px) 4vw; }
+body.pn-id.pn-pd .d-hero.ns-hero.rg-hero.pn-hero-compare,
+body:has(> .pn-return) .d-hero.ns-hero.rg-hero.pn-hero-compare{ height:auto; min-height:0; display:flex; flex-direction:column; background:var(--pnc-anth,#27282A); }
+body.pn-id.pn-pd .rg-hero .pn-compare--hero{ position:relative; inset:auto; --pnc-knob-y:50%; --pnc-focus:43% 50%; }
+body.pn-id.pn-pd .rg-hero .pn-compare--hero .pn-compare__stage{ position:relative; inset:auto; aspect-ratio:11/4; }
+body.pn-id.pn-pd .rg-hero .pn-compare--hero.is-live .pn-compare__tag{ top:14px; }
+body.pn-id.pn-pd .rg-hero .d-hero-scrim{ display:none; }
+body.pn-id.pn-pd .rg-hero .d-hero-copy{ position:relative; inset:auto; text-align:left; width:auto; max-width:none; margin:0; box-sizing:border-box;
+  padding:clamp(28px,3.4vw,48px) 4vw clamp(24px,2.6vw,36px); pointer-events:auto; }
 body.pn-id.pn-pd .rg-hero .d-hero-copy :is(.subtitle,.intro){ margin-left:0; margin-right:0; }
-body.pn-id.pn-pd .rg-hero .d-hero-copy h1{ font-size:clamp(44px,4.6vw,82px); text-shadow:0 2px 28px rgba(15,14,10,.5); }
-/* Stage 8 (founder-approved): the desktop title about 12% smaller, so more of the productive garden shows. Desktop and
-   landscape tablets only (the overlay layout); phones and portrait tablets keep their size. */
+body.pn-id.pn-pd .rg-hero .d-hero-copy h1{ font-size:clamp(44px,4.6vw,82px); text-shadow:none; }
+/* Stage 8 (founder-approved): the desktop title about 12% smaller. Desktop and landscape tablets only. */
 @media (min-width:1025px), (min-width:720px) and (orientation:landscape){
   body.pn-id.pn-pd .rg-hero .d-hero-copy h1{ font-size:clamp(40px,4.05vw,72px); }
 }
-body.pn-id.pn-pd .rg-hero .d-hero-copy .subtitle{ max-width:22ch; margin-top:18px; }
-body.pn-id.pn-pd .rg-hero .d-hero-copy .intro{ max-width:42ch; margin-top:16px; font-size:16px; }
+body.pn-id.pn-pd .rg-hero .d-hero-copy .subtitle{ max-width:30ch; margin-top:14px; }
+body.pn-id.pn-pd .rg-hero .d-hero-copy .intro{ max-width:58ch; margin-top:14px; font-size:16px; }
 @media (max-width:1024px) and (orientation:portrait), (max-width:719px){
-  body.pn-id.pn-pd .rg-hero .d-hero-scrim{ display:none; }
-  body.pn-id.pn-pd .rg-hero .d-hero-copy{ position:relative; inset:auto; width:auto; max-width:none; padding:24px clamp(16px,4vw,40px) 28px; }
-  body.pn-id.pn-pd .rg-hero .d-hero-copy h1{ text-shadow:none; }
+  body.pn-id.pn-pd .rg-hero .pn-compare--hero{ --pnc-focus:72.8% 50%; }
+  body.pn-id.pn-pd .rg-hero .pn-compare--hero .pn-compare__stage{ aspect-ratio:16/9; }
+  body.pn-id.pn-pd .rg-hero .d-hero-copy{ padding:24px clamp(16px,4vw,40px) 28px; }
+  body.pn-id.pn-pd .rg-hero .d-hero-copy .subtitle{ max-width:28ch; }
 }
 body.pn-id.pn-pd #rg-questions{ margin-top:clamp(18px,2vw,28px); }
 body.pn-id.pn-pd .or-cap .or-link{ color:var(--p4-terra-text); text-decoration:underline; text-underline-offset:3px; }
@@ -589,9 +597,9 @@ body.pn-id.pn-pd #make-it-happen .pn-tr{ padding-left:0; padding-right:0; }
      Library card (Garden, the POSSIBLE) and search entries prepared. NOT DEPLOYED: production release needs explicit
      founder approval. The private preview (dev/disc037-resourceful-garden) stays noindex.
      HERO (Stage 10 founder decision, 8 Nov 2026): the standard PlotNua Before/Possible slider (pn-compare, shared
-     component), opening on BEFORE, with the approved POSSIBLE and the founder-chosen BEFORE v2 (the Stage 7-9 pair,
-     unaltered). The founder accepts the pair's minor differences (patio edge, dining set, lawn light); it does not meet
-     the 27 Oct pixel-alignment standard and is used by explicit founder decision. Stage 7-9 used a two-view crossfade.
+     component), opening on BEFORE. IMAGES (Stage 11, 8 Nov 2026, founder-selected): the wide 1672 x 452 pair
+     DISC-037-0x-*-WIDE-MASTER.png, shown in a wide frame (2.75:1 desktop, 16:9 phones) with the copy below. The founder
+     accepts the pair's differences between views. Development preview: production release needs his approval.
      CHAPTER IMAGES: four founder-supplied ChatGPT masters (C2PA declared), shown whole with the standard AI disclosure.
      Chapter 04 (the greenhouse): the founder's DISC-037-06 master, added 8 Nov 2026 (Stage 4).
      HERO: see above (standard slider, Stage 10).
@@ -601,20 +609,20 @@ body.pn-id.pn-pd #make-it-happen .pn-tr{ padding-left:0; padding-right:0; }
      (ref RG), the contact page and email. -->
 <header class="d-hero ns-hero rg-hero pn-hero-compare pn-hero-compare--std">
   <div class="pn-hero-compare__mtitle" aria-hidden="true"><span class="pn-hero-compare__mkicker">A PlotNua Discovery</span><span class="pn-hero-compare__mname">The Resourceful Garden</span></div>
-  <figure class="pn-compare pn-compare--hero" id="rgHeroCompare" data-start="100" data-subject="the garden" data-line-fade-under="#dHeroCopy" style="--pnc-focus:50% 58%">
+  <figure class="pn-compare pn-compare--hero" id="rgHeroCompare" data-start="100" data-subject="the garden" data-line-fade-under="#dHeroCopy">
     <div class="pn-compare__stage">
       <div class="pn-compare__possible">
         <picture>
-          <source type="image/webp" media="(max-width:719px)" srcset="assets/disc037/img/DISC-037-POSSIBLE-M-819.webp 819w" sizes="100vw">
-          <source type="image/webp" srcset="assets/disc037/img/DISC-037-POSSIBLE-768.webp 768w, assets/disc037/img/DISC-037-POSSIBLE-1024.webp 1024w, assets/disc037/img/DISC-037-POSSIBLE-1376.webp 1376w, assets/disc037/img/DISC-037-POSSIBLE-1536.webp 1536w" sizes="(max-width:1024px) and (orientation:portrait) 150vw, max(100vw, 150svh)">
-          <img id="dHeroImg" class="on" src="assets/disc037/img/DISC-037-POSSIBLE-1024.jpg" width="1536" height="1024" decoding="async" alt="Possible: the same cottage garden made productive, with timber raised beds, a small glasshouse, a bean wigwam, compost bays, a water butt and a turf-covered underground pantry with a timber door beside the patio, while the lawn and planting are kept.">
+          <source type="image/webp" media="(max-width:719px)" srcset="assets/disc037/img/DISC-037-HERO-POSSIBLE-M-793.webp 793w" sizes="100vw">
+          <source type="image/webp" srcset="assets/disc037/img/DISC-037-HERO-POSSIBLE-1024.webp 1024w, assets/disc037/img/DISC-037-HERO-POSSIBLE-1376.webp 1376w, assets/disc037/img/DISC-037-HERO-POSSIBLE-1672.webp 1672w" sizes="(max-width:1024px) and (orientation:portrait) 211vw, 137vw">
+          <img id="dHeroImg" class="on" src="assets/disc037/img/DISC-037-HERO-POSSIBLE-1024.jpg" width="1672" height="446" decoding="async" alt="Possible: the same garden made productive, with timber raised vegetable beds and bean poles, a small green-framed glasshouse, dark water butts, compost bays by the shed and, in the foreground, the open domed hatch of an underground pantry with jars inside, set in a grassy bank; the patio, hedge and trees are kept.">
         </picture>
       </div>
       <div class="pn-compare__before">
         <picture>
-          <source type="image/webp" media="(max-width:719px)" srcset="assets/disc037/img/DISC-037-BEFORE-M-819.webp 819w" sizes="100vw">
-          <source type="image/webp" srcset="assets/disc037/img/DISC-037-BEFORE-768.webp 768w, assets/disc037/img/DISC-037-BEFORE-1024.webp 1024w, assets/disc037/img/DISC-037-BEFORE-1376.webp 1376w, assets/disc037/img/DISC-037-BEFORE-1536.webp 1536w" sizes="(max-width:1024px) and (orientation:portrait) 150vw, max(100vw, 150svh)">
-          <img fetchpriority="high" src="assets/disc037/img/DISC-037-BEFORE-1024.jpg" width="1536" height="1024" decoding="async" alt="Before: the garden of a white-rendered Irish cottage with a slate roof, a stone patio with a teak dining set and potted hydrangeas, a broad lawn in dappled shade, mature trees, a dry-stone wall and rolling hills beyond.">
+          <source type="image/webp" media="(max-width:719px)" srcset="assets/disc037/img/DISC-037-HERO-BEFORE-M-793.webp 793w" sizes="100vw">
+          <source type="image/webp" srcset="assets/disc037/img/DISC-037-HERO-BEFORE-1024.webp 1024w, assets/disc037/img/DISC-037-HERO-BEFORE-1376.webp 1376w, assets/disc037/img/DISC-037-HERO-BEFORE-1672.webp 1672w" sizes="(max-width:1024px) and (orientation:portrait) 211vw, 137vw">
+          <img fetchpriority="high" src="assets/disc037/img/DISC-037-HERO-BEFORE-1024.jpg" width="1672" height="446" decoding="async" alt="Before: the back garden of a contemporary white-rendered Irish home, with dark-framed sliding doors, a small patio with a timber table, chairs and potted plants, a broad lawn with worn patches, a tall clipped hedge, mature trees and a timber shed, and green hills under a grey sky.">
         </picture>
       </div>
       <span class="pn-compare__line" aria-hidden="true"></span>
@@ -1374,7 +1382,7 @@ body.pn-id.pn-pd #make-it-happen .pn-tr{ padding-left:0; padding-right:0; }
 /* DISC-037 · the hero AI disclosure is never hidden behind the Back dock or pill (page-local, as DISC-015/034). */
 (function(){
   var b = document.body, back = document.getElementById('pnReturn');
-  var notes = [].slice.call(document.querySelectorAll('.pn-compare__note, .pn-hero-note'));
+  var notes = [].slice.call(document.querySelectorAll('.pn-compare__note, .pn-hero-note, #dHeroCopy .intro'));
   if (!back || !notes.length) return;
   var queued = false;
   function shown(n){ return n.offsetParent !== null && n.getBoundingClientRect().height > 0; }

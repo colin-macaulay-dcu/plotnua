@@ -10,7 +10,7 @@ Stage 3 private preview (8 Nov 2026), development branch dev/disc037-resourceful
   R3  exactly one H1 ("The Resourceful Garden") and the approved hero question
   R4  every local href/src/srcset on the page resolves to a file
   R5  the hero is the standard PlotNua Before/Possible slider (Stage 10 founder decision, 8 Nov 2026; Stages 7-9 used a
-      two-view crossfade): the shared pn-compare stylesheet and script, the standard hero variant, opening at 100% BEFORE,
+      two-view crossfade), showing the Stage 11 founder-selected wide pair (DISC-037-HERO-* copies): the shared pn-compare stylesheet and script, the standard hero variant, opening at 100% BEFORE,
       the approved BEFORE (priority image) and POSSIBLE layers with their phone copies and descriptive alts, the tags,
       keyboard help and jump group, the AI disclosure, the Stage 8 desktop heading size, no crossfade left behind;
       the share image is made from the POSSIBLE
@@ -111,8 +111,9 @@ def check(s, files):
          and re.search(r'class="pn-compare__range" type="range" min="0" max="100" step="1" value="100"', h5), "R5 the slider opens at 100% BEFORE")
     for role, layer in (("BEFORE", "before"), ("POSSIBLE", "possible")):
         pc = re.search(r'<div class="pn-compare__%s">\s*<picture>(.*?)</picture>' % layer, h5, re.S)
-        need(pc and ("assets/disc037/img/DISC-037-%s-1024.jpg" % role) in pc.group(1) and ("DISC-037-%s-M-819.webp" % role) in pc.group(1)
-             and ("DISC-037-%s-1536.webp 1536w" % role) in pc.group(1), "R5 the %s layer and its phone copy" % role)
+        need(pc and ("assets/disc037/img/DISC-037-HERO-%s-1024.jpg" % role) in pc.group(1) and ("DISC-037-HERO-%s-M-793.webp" % role) in pc.group(1)
+             and ("DISC-037-HERO-%s-1672.webp 1672w" % role) in pc.group(1) and 'width="1672" height="446"' in pc.group(1),
+             "R5 the %s layer (Stage 11 pair) and its phone copy" % role)
         alt = re.search(r'alt="([^"]*)"', pc.group(1)) if pc else None
         need(alt and alt.group(1).startswith(role.capitalize() + ":") and len(alt.group(1)) >= 60, "R5 the %s layer needs its descriptive alt" % role)
         if role == "BEFORE":
@@ -252,7 +253,7 @@ def main():
             "R1": s.replace('<meta name="robots" content="', '<meta name="robots" content="noindex, follow', 1),
             "R3": s.replace("<h1>The Resourceful Garden</h1>", "<h1>The Resourceful Garden</h1><h1>x</h1>"),
             "R5": s.replace('id="rgHeroCompare" data-start="100"', 'id="rgHeroCompare" data-start="35"', 1),
-            "R5 ": s.replace('<img fetchpriority="high" src="assets/disc037/img/DISC-037-BEFORE', '<img src="assets/disc037/img/DISC-037-BEFORE', 1),
+            "R5 ": s.replace('<img fetchpriority="high" src="assets/disc037/img/DISC-037-HERO-BEFORE', '<img src="assets/disc037/img/DISC-037-HERO-BEFORE', 1),
             "R5   ": s.replace('<p class="pn-hero-note pn-hero-note--inset" style="--pnn-inset:4vw">Illustrative AI-generated visualisation. Not an actual installation.</p>\n', '', 1),
             "R5  ": s.replace('Illustrative AI-generated visualisation. Not an actual installation.</p>\n  </figure>', '</p>\n  </figure>', 1),
             "R6": s.replace('<p class="lg-kicker">Make it happen</p>', '<p class="lg-kicker">Next steps</p>', 1),

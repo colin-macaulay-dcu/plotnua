@@ -19,6 +19,13 @@ HERO (Stage 7, 8 Nov 2026): the approved POSSIBLE (DISC-037-02-POSSIBLE-APPROVED
 alignment standard, so the founder approved a DISC-037-only presentation: two labelled views with a crossfade. Desktop
 copies are whole images; the phone copies use one identical centred 4:5 window; the social card is made from the POSSIBLE.
 
+HERO (Stage 11, 8 Nov 2026): the founder's preferred new pair, DISC-037-BEFORE-candidate.png / DISC-037-POSSIBLE-candidate.png
+(package DISC-037-slider-candidate-review.zip), added unchanged as DISC-037-01-BEFORE-WIDE-MASTER.png / -02-POSSIBLE-WIDE-MASTER.png,
+1672 x 452 each. They carry no content credentials, so they are declared in the founder-attested form (see the records), not
+from C2PA. Shown in the standard slider. Both copies drop the same top 6 rows (a pale strip along the POSSIBLE's top edge, a
+leftover of the founder-side label removal) and nothing else; phones get one identical 16:9 window from the same strip.
+The Stage 7-10 pair stays recorded: its POSSIBLE still makes the Library card and the social card (unchanged at Stage 11).
+
 ROUTINE EDITS (Governance 2.0, Rule 3), each recorded as a derivative bound to its unchanged master:
   * resizing (Lanczos) of the WHOLE image, aspect kept, to 480/768/1024/1376 px WebP and 768/1024 px JPEG;
   * the 1200 x 630 social card: a centred crop of chapter 01 (PROVISIONAL, to be replaced by the hero POSSIBLE).
@@ -60,24 +67,30 @@ CHAPTERS = {   # role -> (path, sha256, size, package file, what)
         "DISC-037 chapter 05 image, The Living Roof and Wild Garden: a timber garden building with a flowering sedum and wildflower "
         "roof, foxgloves, ferns and daisies in front and a dry-stone wall at the side"),
 }
-# THE HERO PAIR (Stage 7, founder decision 8 Nov 2026): shown as two labelled views with a crossfade (NOT the standard
+# THE STAGE 7-10 HERO PAIR (founder decision 8 Nov 2026; replaced in the hero at Stage 11). Its POSSIBLE still makes the Library
+# card and the social card. Its BEFORE (DISC-037-01-BEFORE-MASTER.png) was removed at Stage 11 with its record: nothing
+# references it any more (it stays in git history and in the founder's folder): shown as two labelled views with a crossfade (NOT the standard
 # comparison slider; the pair did not meet the slider alignment standard, and the founder approved this DISC-037-only
 # presentation). Both are added unchanged: the approved POSSIBLE and the Stage 6 BEFORE v2 (founder's choice).
-HERO = {   # role -> (path, sha256, size, package file, what)
-    "BEFORE": (D + "DISC-037-01-BEFORE-MASTER.png",
-        "4566a209b737831309e87bb8d15ca63d135c5a966f2f4ad2ee98804b5d5e0531", (1536, 1024), "DISC-037-01-BEFORE-CANDIDATE-v2.png",
-        "DISC-037 hero BEFORE: the garden of a white-rendered Irish cottage with a slate roof and chimney, a stone patio with a teak "
-        "dining set, potted hydrangeas, a broad lawn in dappled shade, mature trees, a dry-stone wall and rolling hills beyond"),
+CARD = {   # role -> (path, sha256, size, package file, what)
     "POSSIBLE": (D + "DISC-037-02-POSSIBLE-MASTER.png",
         "c923e8e7ffc3645d6cefa3d6e65debdcffc7cdc7eb8f1407c2eb24351e904480", (1536, 1024), "DISC-037-02-POSSIBLE-APPROVED.png",
         "DISC-037 hero POSSIBLE: the same cottage garden made productive: timber raised beds, a small glasshouse, a bean wigwam, "
         "compost bays, a water butt and a turf-covered underground pantry with a timber door beside the patio, with lawn and planting kept"),
 }
-HERO_DESK = (768, 1024, 1376, 1536)
-MOBILE_X0, MOBILE_W = 358, 819        # identical centred 4:5 window for both views (full 1024 px height)
+HERO = {   # Stage 11: role -> (path, sha256, size, package file, what). Records are founder-attested (no C2PA), added separately.
+    "BEFORE": (D + "DISC-037-01-BEFORE-WIDE-MASTER.png",
+        "3c653de3367f6868a416797dfa1391b592fd4e23039e24bd2a613e49b0633e84", (1672, 452), "DISC-037-BEFORE-candidate.png",
+        "DISC-037 hero BEFORE (Stage 11): an ordinary garden at a contemporary white-rendered Irish home"),
+    "POSSIBLE": (D + "DISC-037-02-POSSIBLE-WIDE-MASTER.png",
+        "8f85339993dbb2d01477f26655944fa79834f1ed3ae030a5ccd986b6f6de54b9", (1672, 452), "DISC-037-POSSIBLE-candidate.png",
+        "DISC-037 hero POSSIBLE (Stage 11): the same garden made productive"),
+}
+HERO_TOP = 6                          # both copies drop the same top 6 rows (pale strip on the POSSIBLE)
+HERO_WIDTHS = (1024, 1376, 1672)
+MOBILE_X0, MOBILE_W = 647, 793        # identical 16:9 window for both views (full remaining height, 446 px)
 WEBP = (480, 768, 1024, 1376)
 JPEG = (768, 1024)
-OG_FROM = "POSSIBLE"
 
 
 def sha(b): return hashlib.sha256(b).hexdigest()
@@ -89,11 +102,12 @@ def enc(im, fmt, w=None, **kw):
 
 
 def available():
-    for role, (p, h, size, *_r) in list(CHAPTERS.items()) + list(HERO.items()):
+    for role, (p, h, size, *_r) in list(CHAPTERS.items()) + list(CARD.items()) + list(HERO.items()):
         f = ROOT / p
         if not f.exists() or sha(f.read_bytes()) != h: sys.exit("REFUSED: %s is not the founder's master (sha256)" % p)
         if Image.open(f).size != size: sys.exit("REFUSED: %s is not %d x %d" % ((p,) + size))
-    return dict(CHAPTERS, **HERO)
+    m = dict(CHAPTERS); m.update({"CARD-" + k: v for k, v in CARD.items()}); m.update(HERO)
+    return m
 
 
 def outputs():
@@ -108,24 +122,31 @@ def outputs():
             op = "Lanczos resize to %d px wide (whole image, aspect kept)" % w
             files["%s-%d.jpg" % (stem, w)] = (enc(rgb, "JPEG", w, quality=86, progressive=True, optimize=True), "Pillow %s, JPEG quality 86, progressive" % PIL_VERSION, role, op)
     for role, (p, h, size, *_r) in HERO.items():
+        strip = Image.open(ROOT / p).convert("RGB"); W, H = strip.size
+        strip = strip.crop((0, HERO_TOP, W, H)); H -= HERO_TOP
+        stem = D + "DISC-037-HERO-%s" % role
+        for w in HERO_WIDTHS:
+            op = ("crop y %d-%d (drops the top %d rows; the same crop on both views), " % (HERO_TOP, HERO_TOP + H, HERO_TOP)) + \
+                 ("Lanczos resize to %d px wide (hero, whole width)" % w if w != W else "no resize (hero, whole width)")
+            files["%s-%d.webp" % (stem, w)] = (enc(strip, "WEBP", w, quality=82, method=6), "Pillow %s, WebP quality 82, method 6" % PIL_VERSION, role, op)
+        files["%s-1024.jpg" % stem] = (enc(strip, "JPEG", 1024, quality=88, progressive=True, optimize=True), "Pillow %s, JPEG quality 88, progressive" % PIL_VERSION, role,
+                                       "crop y %d-%d (drops the top %d rows; the same crop on both views), Lanczos resize to 1024 px wide (hero, whole width)" % (HERO_TOP, HERO_TOP + H, HERO_TOP))
+        m = strip.crop((MOBILE_X0, 0, MOBILE_X0 + MOBILE_W, H))
+        op = "crop y %d-%d and x %d-%d (a 16:9 window: beds, glasshouse and pantry), no resize; the same window for both views" % (HERO_TOP, HERO_TOP + H, MOBILE_X0, MOBILE_X0 + MOBILE_W)
+        files["%s-M-%d.webp" % (stem, MOBILE_W)] = (enc(m, "WEBP", quality=82, method=6), "Pillow %s, WebP quality 82, method 6" % PIL_VERSION, role, op)
+        files["%s-M-%d.jpg" % (stem, MOBILE_W)] = (enc(m, "JPEG", quality=88, progressive=True, optimize=True), "Pillow %s, JPEG quality 88, progressive" % PIL_VERSION, role, op)
+    for role, (p, h, size, *_r) in CARD.items():
         rgb = Image.open(ROOT / p).convert("RGB"); W, H = rgb.size
-        stem = D + "DISC-037-%s" % role
-        for w in HERO_DESK:
-            op = "Lanczos resize to %d px wide (hero view, whole image)" % w if w != W else "no resize (hero view, whole image)"
-            files["%s-%d.webp" % (stem, w)] = (enc(rgb, "WEBP", w, quality=80, method=6), "Pillow %s, WebP quality 80, method 6" % PIL_VERSION, role, op)
-        files["%s-1024.jpg" % stem] = (enc(rgb, "JPEG", 1024, quality=88, progressive=True, optimize=True), "Pillow %s, JPEG quality 88, progressive" % PIL_VERSION, role,
-                                       "Lanczos resize to 1024 px wide (hero view, whole image)")
-        m = rgb.crop((MOBILE_X0, 0, MOBILE_X0 + MOBILE_W, H)); op = "4:5 crop x %d-%d (the full height), no resize; the same window for both views" % (MOBILE_X0, MOBILE_X0 + MOBILE_W)
-        files["%s-M-%d.webp" % (stem, MOBILE_W)] = (enc(m, "WEBP", quality=80, method=6), "Pillow %s, WebP quality 80, method 6" % PIL_VERSION, role, op)
-        files["%s-M-%d.jpg" % (stem, MOBILE_W)] = (enc(m, "JPEG", quality=86, progressive=True, optimize=True), "Pillow %s, JPEG quality 86, progressive" % PIL_VERSION, role, op)
-        if role == "POSSIBLE":
-            # Discovery Library card copies, named as build-library-card-webp.py names them for this source, so that
-            # builder reuses them (it never re-encodes a recorded file). Release candidate, Stage 8.
+        role = "CARD-" + role
+        if role == "CARD-POSSIBLE":
+            # Discovery Library card copies (unchanged since Stage 8), named as build-library-card-webp.py names them.
             for w in (480, 960):
                 files["assets/library/img/DISC-037-02-POSSIBLE-MASTER-%dw.webp" % w] = (
                     enc(rgb, "WEBP", w, quality=80, method=6), "Pillow %s, WebP quality 80, method 6" % PIL_VERSION, role,
                     "Lanczos resize to %d px wide (Discovery Library card, whole image)" % w)
-        if role == OG_FROM:
+            # the page's structured data (primaryImageOfPage) names this file: kept, byte-identical, so SEO metadata is unchanged
+            files[D + "DISC-037-POSSIBLE-1024.jpg"] = (enc(rgb, "JPEG", 1024, quality=88, progressive=True, optimize=True), "Pillow %s, JPEG quality 88, progressive" % PIL_VERSION, role,
+                                                       "Lanczos resize to 1024 px wide (hero view, whole image)")
             ch = round(W * 630 / 1200); y0 = (H - ch) // 2
             og = rgb.crop((0, y0, W, y0 + ch)).resize((1200, 630), Image.LANCZOS)
             files[D + "DISC-037-og-1200x630.jpg"] = (enc(og, "JPEG", quality=86, progressive=True, optimize=True),
@@ -148,7 +169,7 @@ def main():
                 bad.append(a)
         known = set(files) | {m[0] for m in masters.values()}
         stray = [str(q.relative_to(ROOT)) for q in (ROOT / D).iterdir() if str(q.relative_to(ROOT)) not in known]
-        print("DISC-037 IMAGES · " + ("OK (%d credentialed masters declared, %d derivatives, reproducible)" % (len(masters), len(files))
+        print("DISC-037 IMAGES · " + ("OK (%d masters declared: %d credentialed, %d founder-attested; %d derivatives, reproducible)" % (len(masters), len(masters) - len(HERO), len(HERO), len(files))
                                       if not bad and not stray else "FAIL %s %s" % (bad, stray)))
         sys.exit(1 if bad or stray else 0)
     for role, (a, h, size, pkg, what) in masters.items():
@@ -196,6 +217,12 @@ def main():
              "content_credentials": {"source_file_embeds_c2pa": True, "derivative_embeds_c2pa": False,
                                      "note": "Resizing and re-encoding remove the embedded C2PA credential. This copy carries NO signed credential; the master keeps it, and its record carries the AI classification."}}
         reg["derivatives"] = [d for d in reg["derivatives"] if d["asset"] != a] + [e]
+    # Stage 11: copies this builder no longer makes (the Stage 7-10 hero copies) are removed with their records.
+    known = set(files) | {m[0] for m in masters.values()}
+    for q in sorted((ROOT / D).iterdir()):
+        a = str(q.relative_to(ROOT))
+        if a not in known:
+            q.unlink(); reg["derivatives"] = [d for d in reg["derivatives"] if d["asset"] != a]
     REG.write_text(json.dumps(reg, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
     print("DISC-037 IMAGES · written: %d masters, %d derivatives" % (len(masters), len(files)))
 
