@@ -244,6 +244,12 @@
         var rr = pnsRange(r);
         if (!rr || rr[0] > cap) { return; }
       }
+      /* SEO-GR5b: A PUBLISHED SUPPLIER PROFILE CARRIES NO PRICE, SO A PRICED
+         SEARCH NEVER SHOWS ONE. Same rule as an unpriced product: it cannot be
+         shown as fitting "under €N". Without this, "garden room under €15,000"
+         excluded Don Modular Homes from Suppliers and then offered its profile
+         under Possibilities. Discoveries and guides are unaffected. */
+      if (cap != null && /^suppliers\//.test(r.route || '')) { return; }
       scored.push({ r: r, s: s });
     });
 

@@ -436,6 +436,11 @@ Capability:
 
 The evidence file is `guard-capability.txt`.
 
+**Price intent.** A published supplier profile carries no price. So a search with a price clause ("under €N") never shows one, exactly as an unpriced product is excluded.
+
+- **Why.** Without this rule, "garden room under €15,000" excluded Don Modular Homes from Suppliers on price and then offered its profile under Possibilities. This was caught by the functional suite.
+- **Effect.** Priced searches return exactly what production returned. Discoveries and guides are unaffected.
+
 **Ordering.** In `search.js`, at **equal** relevance, a result whose route is a published supplier profile (`suppliers/…`) follows every other result of its group.
 
 - **Why.** Ties were broken by title alone, so "Supplier profile: …" sorted ahead of Discoveries titled "The …". For example, "outdoor room" would have opened on Gardenhouse24.

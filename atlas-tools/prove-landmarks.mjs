@@ -93,11 +93,12 @@ const SEARCH_FROZEN = {
   // 4af39d1680807d216b440f246cb72818bb210f4076586e08f3291a0cec1eae68.
   // Re-stamped 8 November 2026 for SEO-GR5b (pending founder approval of the
   // release): at EQUAL relevance a published supplier profile (route
-  // suppliers/...) follows every other result of its group; every result that
-  // existed before keeps its order. Same assertion, same strictness. Previous
+  // suppliers/...) follows every other result of its group, and a search with
+  // a price clause never shows a profile (it carries no price); every result
+  // that existed before keeps its order. Same assertion, same strictness. Previous
   // value:
   // 627e1dac27e30be53864a57c27090437f67420af662de53264a716a493de950f.
-  "search.js":  "0bbce09242d9cc6eee14441bf4c643c834bbff5c5932d88bdb76a6b11b434f13",
+  "search.js":  "abda3b569739a15be08ad3c6707b2d92adb31d2c78ac7817e8ddca2ad769430e",
   // Re-stamped 22 October 2026 for the founder-approved Architectural
   // Anthracite Batch 2: one appended, scoped section gives the pill (identity
   // pages) and the overlay (homepage and identity pages) the anthracite
