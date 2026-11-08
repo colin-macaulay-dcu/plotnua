@@ -20,6 +20,9 @@
 <!-- DISC-037 private preview: noindex until the founder approves release; switch to "index, follow" at launch. -->
 <link rel="canonical" href="https://plotnua.ie/discovery-the-resourceful-garden.html">
 
+<link rel="preload" as="image" type="image/webp" media="(max-width:719px)" imagesrcset="assets/disc037/img/DISC-037-BEFORE-M-819.webp 819w" imagesizes="100vw" fetchpriority="high">
+<link rel="preload" as="image" type="image/webp" media="(min-width:720px)" imagesrcset="assets/disc037/img/DISC-037-BEFORE-768.webp 768w, assets/disc037/img/DISC-037-BEFORE-1024.webp 1024w, assets/disc037/img/DISC-037-BEFORE-1376.webp 1376w, assets/disc037/img/DISC-037-BEFORE-1536.webp 1536w" imagesizes="100vw" fetchpriority="high">
+
 <!-- Favicons — PlotNua Brand Package v1.0 -->
 <link rel="icon" href="/favicon.ico" sizes="any">
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
@@ -46,7 +49,7 @@
 <meta property="og:image" content="https://plotnua.ie/assets/disc037/img/DISC-037-og-1200x630.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="Illustrative AI-generated visualisation of timber raised beds of kale, lettuce and herbs in an Irish country garden, with a polytunnel behind and fields beyond.">
+<meta property="og:image:alt" content="Illustrative AI-generated visualisation of an Irish cottage garden made productive, with raised beds, a small glasshouse, compost bays and a turf-covered underground pantry beside the patio.">
 <meta property="og:url" content="https://plotnua.ie/discovery-the-resourceful-garden.html">
 <meta property="og:locale" content="en_IE">
 
@@ -443,7 +446,7 @@ body.pn-id.pn-pd .ns-hero.pn-hero-compare .pn-compare__before picture{ height:10
       "dateModified": "2026-11-08",
       "primaryImageOfPage": {
         "@type": "ImageObject",
-        "url": "https://plotnua.ie/assets/disc037/img/DISC-037-03-GARDEN-THAT-FEEDS-YOU-1024.jpg"
+        "url": "https://plotnua.ie/assets/disc037/img/DISC-037-POSSIBLE-1024.jpg"
       },
       "isPartOf": {
         "@id": "https://plotnua.ie/#website"
@@ -497,19 +500,22 @@ body.pn-id.pn-pd .ns-hero.pn-hero-compare .pn-compare__before picture{ height:10
   ]
 }
 </script>
-<link rel="stylesheet" href="assets/identity/pn-rg-editorial.css?v=1">
+<link rel="stylesheet" href="assets/identity/pn-rg-editorial.css?v=2">
 <link rel="stylesheet" href="assets/components/pn-two-route.css?v=1">
 <style>
-/* DISC-037 · page-local: the hero has no image pair yet (private preview), so it is a dark, labelled frame with the
-   standard hero copy at the foot; nothing stands in for the pending pair. */
-body.pn-id.pn-pd .rg-hero .d-hero-scrim{ background:linear-gradient(180deg, rgba(15,14,10,0) 45%, rgba(15,14,10,.5) 100%); }
-body.pn-id.pn-pd .rg-hero .d-hero-copy .subtitle{ max-width:26ch; margin-left:auto; margin-right:auto; }
-body.pn-id.pn-pd .rg-hero .d-hero-copy .intro{ max-width:52ch; margin-left:auto; margin-right:auto; }
-@media (max-width:719px){
-  body.pn-id.pn-pd .d-hero.ns-hero.rg-hero{ height:auto; min-height:0; padding-bottom:8px; }
-  body.pn-id.pn-pd .rg-hero .d-hero-scrim{ display:none; }
-  body.pn-id.pn-pd .rg-hero .d-hero-copy{ position:relative; inset:auto; padding:28px 22px 24px; text-align:left; }
-  body.pn-id.pn-pd .rg-hero .d-hero-copy :is(.subtitle,.intro){ margin-left:0; margin-right:0; }
+/* DISC-037 · page-local: the two-view hero (Stage 7). The copy sits low on the left over a soft scrim, the view controls
+   low on the right; on phones and portrait tablets the copy moves below the image and the controls. */
+body.pn-id.pn-pd .rg-hero--views .d-hero-scrim{ z-index:1; pointer-events:none; background:linear-gradient(180deg, rgba(15,14,10,.22) 0%, rgba(15,14,10,0) 24%, rgba(15,14,10,0) 50%, rgba(15,14,10,.7) 100%), linear-gradient(90deg, rgba(15,14,10,.55) 0%, rgba(15,14,10,0) 50%); }
+body.pn-id.pn-pd .rg-hero--views .d-hero-copy{ text-align:left; left:0; right:auto; width:calc(46% - 4vw); max-width:600px; padding:0 0 clamp(56px,9vh,96px) 4vw; }
+body.pn-id.pn-pd .rg-hero--views .d-hero-copy :is(.subtitle,.intro){ margin-left:0; margin-right:0; }
+body.pn-id.pn-pd .rg-hero--views .d-hero-copy h1{ font-size:clamp(44px,4.6vw,82px); text-shadow:0 2px 28px rgba(15,14,10,.5); }
+body.pn-id.pn-pd .rg-hero--views .d-hero-copy .subtitle{ max-width:22ch; margin-top:18px; }
+body.pn-id.pn-pd .rg-hero--views .d-hero-copy .intro{ max-width:42ch; margin-top:16px; font-size:16px; }
+@media (max-width:1024px) and (orientation:portrait), (max-width:719px){
+  body.pn-id.pn-pd .d-hero.ns-hero.rg-hero--views{ height:auto; min-height:0; }
+  body.pn-id.pn-pd .rg-hero--views .d-hero-scrim{ display:none; }
+  body.pn-id.pn-pd .rg-hero--views .d-hero-copy{ position:relative; inset:auto; width:auto; max-width:none; padding:24px clamp(16px,4vw,40px) 28px; }
+  body.pn-id.pn-pd .rg-hero--views .d-hero-copy h1{ text-shadow:none; }
 }
 body.pn-id.pn-pd #rg-questions{ margin-top:clamp(18px,2vw,28px); }
 body.pn-id.pn-pd .or-cap .or-link{ color:var(--p4-terra-text); text-decoration:underline; text-underline-offset:3px; }
@@ -571,23 +577,33 @@ body.pn-id.pn-pd #make-it-happen .pn-tr{ padding-left:0; padding-right:0; }
 <!-- DISC-037 · THE RESOURCEFUL GARDEN · DEVELOPMENT BUILD (Stage 3 private preview, 8 Nov 2026).
      Branch dev/disc037-resourceful-garden. NOT DEPLOYED, NOT INDEXED (robots noindex, not in the sitemap, the
      Library or the search index); production release needs explicit founder approval.
-     HERO: the founder's approved Before/Possible pair has NOT been supplied. The hero is a labelled empty frame
-     (data-rg-pending="hero"); no image is substituted. When DISC-037-01-BEFORE / 02-POSSIBLE arrive they go into the
-     standard pn-compare hero (opening at 100% BEFORE) after the alignment check.
+     HERO (Stage 7 founder decision, 8 Nov 2026, DISC-037 only): the approved POSSIBLE and the founder-chosen BEFORE v2 as
+     TWO LABELLED VIEWS with a crossfade, opening on BEFORE. Not the standard pn-compare slider: no pair met its alignment
+     standard (Stages 4-6). Images unaltered (whole on desktop; one identical 4:5 window on phones). Buttons with
+     aria-pressed, a polite live region, no autoplay, no transition under reduced motion. Page-local script below.
      CHAPTER IMAGES: four founder-supplied ChatGPT masters (C2PA declared), shown whole with the standard AI disclosure.
      Chapter 04 (the greenhouse): the founder's DISC-037-06 master, added 8 Nov 2026 (Stage 4).
-     HERO PAIR: supplied 8 Nov 2026 but FAILED the alignment check (separately generated, different composition), so the
-     hero stays the labelled pending frame; nothing substituted.
+     HERO: see above (two-view crossfade, Stage 7).
      DRAWINGS: PlotNua vectors, not AI, not to scale.
      COMMERCIAL: none. Suppliers are named as researched, text only, never as partners; Groundfridge is an example only,
      with no confirmed Irish route. No payment, order or new data collection: route B is the existing free WhatsApp link
      (ref RG), the contact page and email. -->
-<header class="d-hero ns-hero rg-hero" data-rg-pending="hero">
-  <div class="rg-await">
-    <p class="rg-await-k">Private preview &middot; image pending</p>
-    <p class="rg-await-t">The Before / Possible hero is waiting for a matched image pair.</p>
-    <p class="rg-await-n">The supplied <code>DISC-037-01-BEFORE</code> and <code>DISC-037-02-POSSIBLE</code> did not pass PlotNua&rsquo;s alignment check, so the comparison isn&rsquo;t shown yet. No other image has been put in their place.</p>
-  </div>
+<header class="d-hero ns-hero rg-hero rg-hero--views">
+  <figure class="rg-views" id="rgViews" data-view="possible" aria-label="The garden before and as it could be">
+    <div class="rg-views__stage">
+      <picture class="rg-views__img is-before"><source type="image/webp" media="(max-width:719px)" srcset="assets/disc037/img/DISC-037-BEFORE-M-819.webp 819w" sizes="100vw"><source type="image/webp" srcset="assets/disc037/img/DISC-037-BEFORE-768.webp 768w, assets/disc037/img/DISC-037-BEFORE-1024.webp 1024w, assets/disc037/img/DISC-037-BEFORE-1376.webp 1376w, assets/disc037/img/DISC-037-BEFORE-1536.webp 1536w" sizes="100vw"><img src="assets/disc037/img/DISC-037-BEFORE-1024.jpg" width="1536" height="1024" decoding="async" fetchpriority="high" alt="Before: the garden of a white-rendered Irish cottage with a slate roof, a stone patio with a teak dining set and potted hydrangeas, a broad lawn in dappled shade, mature trees, a dry-stone wall and rolling hills beyond."></picture>
+      <picture class="rg-views__img is-possible" aria-hidden="true"><source type="image/webp" media="(max-width:719px)" srcset="assets/disc037/img/DISC-037-POSSIBLE-M-819.webp 819w" sizes="100vw"><source type="image/webp" srcset="assets/disc037/img/DISC-037-POSSIBLE-768.webp 768w, assets/disc037/img/DISC-037-POSSIBLE-1024.webp 1024w, assets/disc037/img/DISC-037-POSSIBLE-1376.webp 1376w, assets/disc037/img/DISC-037-POSSIBLE-1536.webp 1536w" sizes="100vw"><img src="assets/disc037/img/DISC-037-POSSIBLE-1024.jpg" width="1536" height="1024" decoding="async" alt="Possible: the same cottage garden made productive, with timber raised beds, a small glasshouse, a bean wigwam, compost bays, a water butt and a turf-covered underground pantry with a timber door beside the patio, while the lawn and planting are kept."></picture>
+      <p class="rg-views__tag" aria-hidden="true"><span class="is-before">Before</span><span class="is-possible">Possible</span></p>
+    </div>
+    <figcaption class="rg-views__bar">
+      <div class="rg-views__ctl" role="group" aria-label="Choose a view of the garden">
+        <button type="button" class="rg-views__btn" data-show="before" aria-pressed="false" aria-controls="rgViews">Before</button>
+        <button type="button" class="rg-views__btn" data-show="possible" aria-pressed="true" aria-controls="rgViews">Possible</button>
+      </div>
+      <p class="rg-views__note">Illustrative AI-generated visualisations. Not an actual installation.</p>
+    </figcaption>
+    <p class="ns-sr" id="rgViewsLive" aria-live="polite"></p>
+  </figure>
   <div class="d-hero-scrim"></div>
   <div class="d-hero-copy in" id="dHeroCopy">
     <div class="eyebrow">A PlotNua Discovery</div>
@@ -1321,6 +1337,35 @@ body.pn-id.pn-pd #make-it-happen .pn-tr{ padding-left:0; padding-right:0; }
       location.href = prev;
     }
   });
+})();
+</script>
+<script>
+/* DISC-037 · the two-view hero (Stage 7, DISC-037 only). Opens on BEFORE; changes only when a button is pressed. */
+(function(){
+  var fig = document.getElementById('rgViews'); if (!fig) return;
+  var btns = [].slice.call(fig.querySelectorAll('.rg-views__btn'));
+  var pics = { before: fig.querySelector('.rg-views__img.is-before'), possible: fig.querySelector('.rg-views__img.is-possible') };
+  var live = document.getElementById('rgViewsLive');
+  var words = { before: 'Showing the garden as it is today.', possible: 'Showing the garden as it could be.' };
+  function show(v, announce){
+    fig.setAttribute('data-view', v);
+    btns.forEach(function(b){ var on = b.getAttribute('data-show') === v; b.setAttribute('aria-pressed', on ? 'true' : 'false'); b.tabIndex = on ? 0 : -1; });
+    pics.before.setAttribute('aria-hidden', v === 'before' ? 'false' : 'true');
+    pics.possible.setAttribute('aria-hidden', v === 'possible' ? 'false' : 'true');
+    if (announce && live) live.textContent = words[v];
+  }
+  btns.forEach(function(b, i){
+    b.addEventListener('click', function(){ show(b.getAttribute('data-show'), true); });
+    b.addEventListener('keydown', function(e){
+      var k = e.key, n = null;
+      if (k === 'ArrowRight' || k === 'ArrowDown') n = btns[(i + 1) % btns.length];
+      else if (k === 'ArrowLeft' || k === 'ArrowUp') n = btns[(i - 1 + btns.length) % btns.length];
+      else if (k === 'Home') n = btns[0]; else if (k === 'End') n = btns[btns.length - 1];
+      if (n){ e.preventDefault(); n.focus(); show(n.getAttribute('data-show'), true); }
+    });
+  });
+  fig.classList.add('is-ready');
+  show('before', false);
 })();
 </script>
 <script src="assets/identity/pn-premium.js" defer></script>
