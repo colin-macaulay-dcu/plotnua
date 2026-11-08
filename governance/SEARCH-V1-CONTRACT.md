@@ -370,7 +370,7 @@ the closed schema and is deliberately not part of A2.
 
 ---
 
-## AMENDMENT A3 · PUBLISHED SUPPLIER PROFILES (8 November 2026, SEO-GR5b; PROPOSED, effective only on founder approval of the release)
+## AMENDMENT A3 · PUBLISHED SUPPLIER PROFILES (8 November 2026, SEO-GR5b; FOUNDER-APPROVED 8 November 2026, effective from the SEO-GR5b release)
 
 **Gap.** Six published supplier profiles were not reachable through Search:
 - The Mobile Pods
@@ -412,7 +412,7 @@ Both lists pass through the same G15 checks:
 **What does not change**
 - **Supplier summaries are untouched.** All 65 `supplier` records are byte-identical, R2 still holds, and the product expansion is unchanged.
 - **Indexing rules.** No product is added or removed. G7–G7e, G9, R-MATCH and the holds are unchanged.
-- **The G10 size guard is not raised.** It stays at 184,320 bytes. The index is 183,532 bytes, 788 bytes under it.
+- **The G10 size guard is not raised.** It stays at 184,320 bytes. The index is 183,946 bytes, 374 bytes under it. This includes the DISC-037 record released just before SEO-GR5b. **Capacity constraint:** the next significant addition to Search needs the size decision in §7 first.
 
 **G15b (new).** A profile record is described, never rated. The build refuses a profile record when:
 - its title does not begin "Supplier profile: ";

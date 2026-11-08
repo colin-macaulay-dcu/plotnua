@@ -932,8 +932,8 @@ if "-preview.html" in low:
     die("G2 PRIVATE PREVIEW LEAK: '-preview.html' appears in the index")
 if "supplier-preview-system" in low:
     die("G2 PRIVATE PREVIEW LEAK: the preview template path appears in the index")
-# SEO-GR5b (8 Nov 2026), PROPOSED CONTRACT AMENDMENT A3 — needs founder
-# approval with the release. Two PUBLISHED supplier profiles share a slug with
+# SEO-GR5b (8 Nov 2026), CONTRACT AMENDMENT A3 (founder-approved 8 Nov 2026,
+# effective from the SEO-GR5b release). Two PUBLISHED supplier profiles share a slug with
 # a private preview: suppliers/elm-landscaping.html with
 # elm-landscaping-preview.html, and suppliers/garden-room-ireland.html with
 # garden-room-ireland-preview.html. The slug test cannot tell a published page

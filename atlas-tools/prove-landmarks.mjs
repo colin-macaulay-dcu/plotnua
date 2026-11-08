@@ -91,8 +91,8 @@ const SEARCH_FROZEN = {
   // verified" where a figure is withheld. Same assertion, same strictness.
   // Previous value:
   // 4af39d1680807d216b440f246cb72818bb210f4076586e08f3291a0cec1eae68.
-  // Re-stamped 8 November 2026 for SEO-GR5b (pending founder approval of the
-  // release): at EQUAL relevance a published supplier profile (route
+  // Re-stamped 8 November 2026 for SEO-GR5b (founder-approved 8 November 2026,
+  // amendment A3): at EQUAL relevance a published supplier profile (route
   // suppliers/...) follows every other result of its group, and a search with
   // a price clause never shows a profile (it carries no price); every result
   // that existed before keeps its order. Same assertion, same strictness. Previous
