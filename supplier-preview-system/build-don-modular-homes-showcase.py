@@ -14,6 +14,14 @@ FACTS. The five Atlas product records. Prices: the supplier's single published r
 fitted) and its published size ranges, re-checked on the supplier's prices page on 4 Nov 2026. VAT
 treatment is not stated and site works are quoted separately; both are said on the page.
 
+SEO-GR2 (founder approval 8 Nov 2026): PRICES WITHDRAWN UNDER R-MATCH. Atlas holds all five Don Modular
+price records (Garden Room and the one- to four-bedroom homes) as "Partially Verified", Range-Level, last
+checked 16 Oct 2026 (read-only Atlas read, 8 Nov 2026). Under the Stage 3D-D2 matching rule (R-MATCH) none
+is eligible, so the page shows no figure: every price and the per-square-metre rate read "Price not
+currently verified". showcase.json still records what the supplier publishes (its guard is unchanged);
+only the rendering withholds it. Sizes, specifications, inclusions, exclusions and imagery are unchanged.
+Lift this only when Atlas holds Verified, dated, product-specific prices and the founder approves.
+
 PREVIEW. Built noindex with a private-preview band while PREVIEW = True.
 
 Run: python3 supplier-preview-system/build-don-modular-homes-showcase.py [--check]
@@ -69,6 +77,9 @@ def guard():
     if rec[0]["required_credit"] != s["credit"]:
         sys.exit("FAIL: the page credit differs from the rights record's required credit")
 
+
+PRICE_UNVERIFIED = "Price not currently verified"   # R-MATCH wording (Stage 3D-D2); SEO-GR2
+PRICES_VERIFIED = False   # Atlas: all five price records Partially Verified, Range-Level (read 8 Nov 2026)
 
 PREVIEW = False  # founder approval and production release, 4 Nov 2026 (was True for the private supplier preview)
 
@@ -184,15 +195,15 @@ PUBLIC_HEAD = """<!DOCTYPE html>
 </script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Don Modular Homes: steel-framed modular homes and garden rooms | PlotNua</title>
-<meta name="description" content="Don Modular Homes builds one steel-framed, factory-finished design from a 25 m² garden room to a four-bedroom home at €2,400 per m² fully fitted. See sizes, published prices and the supplier's visualisations.">
+<meta name="description" content="Don Modular Homes builds one steel-framed, factory-finished design, from a 25 m² garden room to a four-bedroom home: sizes, what is included and visualisations.">
 <meta name="robots" content="index, follow">
-<link rel="canonical" href="https://plotnua.ie/suppliers/garden-room-ireland.html">
+<link rel="canonical" href="https://plotnua.ie/suppliers/don-modular-homes.html">
 <meta name="theme-color" content="#27282A">
 <link rel="icon" href="/assets/brand/plotnua-mark-master.svg" type="image/svg+xml">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="PlotNua">
 <meta property="og:locale" content="en_IE">
-<meta property="og:url" content="https://plotnua.ie/suppliers/garden-room-ireland.html">
+<meta property="og:url" content="https://plotnua.ie/suppliers/don-modular-homes.html">
 <meta property="og:title" content="Don Modular Homes | PlotNua">
 <meta property="og:description" content="One steel-framed modular design, from garden room to four-bedroom home.">
 <meta property="og:image" content="{og}">
@@ -237,13 +248,15 @@ def showcase():
     inside = [i for i in DATA["images"] if i["role"] == "interior"]
     models = []
     for p in DATA["products"]:
-        price = dict(p["specs"])["Price"]
+        price = dict(p["specs"])["Price"] if PRICES_VERIFIED else PRICE_UNVERIFIED
         dl = "".join(f"<dt>{E(k)}</dt><dd>{E(v)}</dd>" for k, v in p["specs"] if k != "Price")
+        src = (f'As published by {E(s["name"])} &middot; checked 4 Nov 2026 &middot; VAT not stated' if PRICES_VERIFIED
+               else f'Sizes as published by {E(s["name"])} &middot; checked 4 Nov 2026')
         models.append(
             f'<article class="mp-model no-plan" aria-label="{E(p["name"])}"><div>'
             f'<h3>{E(p["name"])}</h3><p class="mp-kind2">{E(p["kind"])}</p><p class="mp-sum">{E(p["summary"])}</p>'
-            f'<dl class="mp-spec">{dl}<dt>Indicative price</dt><dd>{E(price)}</dd></dl>'
-            f'<p class="mp-src">As published by {E(s["name"])} &middot; checked 4 Nov 2026 &middot; VAT not stated</p></div></article>')
+            f'<dl class="mp-spec">{dl}<dt>{"Indicative price" if PRICES_VERIFIED else "Price"}</dt><dd>{E(price)}</dd></dl>'
+            f'<p class="mp-src">{src}</p></div></article>')
     j = "".join(f'<li><a class="pn-two-b" href="{E(h)}">{E(l)} <span aria-hidden="true">&rarr;</span></a></li>' for l, h in journeys("../"))
     head = PUBLIC_HEAD.replace("{og}", E(hero["origin"]))
     if PREVIEW:
@@ -263,6 +276,7 @@ def showcase():
 .mp-rate .mp-rate-n{ font-family:var(--serif); color:var(--ink); font-size:clamp(34px,4vw,56px); line-height:1.05; margin:0; }
 .mp-rate h3{ margin:0 0 8px; font-size:11.5px; font-weight:700; letter-spacing:.18em; text-transform:uppercase; color:var(--bronze); }
 .mp-rate p{ margin:0 0 14px; font-size:15px; line-height:1.7; }
+.mp-rate .mp-rate-n.is-nv{ font-size:clamp(24px,2.6vw,34px); }
 @media (max-width:900px){ .mp-rate{ grid-template-columns:1fr; } }
 </style>
 """ +
@@ -295,9 +309,9 @@ f"""<link rel="stylesheet" href="../assets/components/pn-two-option.css?v=1">
 </div></section>
 
 <section class="mp-sec" id="models" aria-labelledby="mp-mod-h"><div class="mp-w">
-  <div class="mp-head"><div><p class="mp-k">Sizes and prices</p><h2 class="mp-h2" id="mp-mod-h">Priced by the square metre.</h2></div>
-  <p class="mp-p">Don Modular Homes publishes one rate for every size. The figures below are the supplier&rsquo;s own, read from its website and re-checked on 4 November 2026. They are indicative prices for the factory-finished home, not quotes: the cost of your project depends on your site and is confirmed only in the supplier&rsquo;s written quote.</p></div>
-  <div class="mp-rate"><p class="mp-rate-n">{E(DATA["rate"])}</p><div>
+  <div class="mp-head"><div><p class="mp-k">{"Sizes and prices" if PRICES_VERIFIED else "Sizes"}</p><h2 class="mp-h2" id="mp-mod-h">{"Priced by the square metre." if PRICES_VERIFIED else "Sizes, and what is included."}</h2></div>
+  <p class="mp-p">{MODELS_P}</p></div>
+  <div class="mp-rate"><p class="mp-rate-n{"" if PRICES_VERIFIED else " is-nv"}">{E(DATA["rate"] if PRICES_VERIFIED else PRICE_UNVERIFIED)}</p><div>
     <h3>Included</h3><p>{E(DATA["included"])}</p>
     <h3>Quoted separately</h3><p>{E(DATA["excludedCosts"])}</p></div></div>
   <div class="mp-range">{"".join(models)}</div>
@@ -321,12 +335,25 @@ f"""<link rel="stylesheet" href="../assets/components/pn-two-option.css?v=1">
 
 <footer class="mp-rec"><div class="mp-w">
   <p>Visualisations: {E(s["name"])}, from <a href="{E(s["creditHref"])}" rel="noopener" target="_blank">donmodularhomes.ie</a>. Don Modular Homes keeps ownership of its imagery.</p>
-  <p>Sizes, specifications and prices as published on the supplier&rsquo;s website, recorded in PlotNua&rsquo;s Atlas and re-checked on 4 November 2026. They can change; confirm them with Don Modular Homes.</p>
+  <p>{FOOT_P}</p>
+  <p><a href="/terms.html#legal-information">Terms &amp; legal information</a></p>
 </div></footer>
 </main>
 </body>
 </html>
 """)
+
+
+MODELS_P = ("Don Modular Homes publishes one rate for every size. The figures below are the supplier&rsquo;s own, read from its website "
+            "and re-checked on 4 November 2026. They are indicative prices for the factory-finished home, not quotes: the cost of your "
+            "project depends on your site and is confirmed only in the supplier&rsquo;s written quote.") if PRICES_VERIFIED else (
+            "Don Modular Homes publishes one rate per square metre for every size. PlotNua has not verified those prices to its "
+            "pricing standard, so it does not show them here: each reads &ldquo;Price not currently verified&rdquo;. The sizes and "
+            "what the supplier includes are below; the cost of your project is confirmed only in the supplier&rsquo;s written quote.")
+FOOT_P = ("Sizes, specifications and prices as published on the supplier&rsquo;s website, recorded in PlotNua&rsquo;s Atlas and re-checked "
+          "on 4 November 2026. They can change; confirm them with Don Modular Homes.") if PRICES_VERIFIED else (
+          "Sizes and specifications as published on the supplier&rsquo;s website and recorded in PlotNua&rsquo;s Atlas. Prices are not "
+          "shown because they are not currently verified to PlotNua&rsquo;s pricing standard. Confirm current prices with Don Modular Homes.")
 
 
 def journeys(prefix):
@@ -338,6 +365,15 @@ def main():
     guard()
     out = ROOT / "suppliers" / "don-modular-homes.html"
     txt = showcase()
+    if not PRICES_VERIFIED:
+        import re
+        body = re.sub(r"<script.*?</script>|<style.*?</style>", "", txt, flags=re.S)
+        if re.search(r"(?:€|&euro;)\s?\d", body):
+            sys.exit("FAIL: a euro figure appears although Don Modular prices are not currently verified (R-MATCH)")
+        if body.count(PRICE_UNVERIFIED) < len(DATA["products"]) + 1:
+            sys.exit("FAIL: every product and the rate must read 'Price not currently verified'")
+        if 'canonical" href="https://plotnua.ie/suppliers/don-modular-homes.html"' not in txt:
+            sys.exit("FAIL: canonical must be the page's own URL")
     if "--check" in sys.argv:
         same = out.exists() and out.read_text(encoding="utf-8") == txt
         print(("CHECK OK " if same else "STALE    ") + "suppliers/don-modular-homes.html")
