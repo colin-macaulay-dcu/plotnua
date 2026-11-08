@@ -11062,6 +11062,90 @@
       "source_sha256": "12ff0d2a118489cfd5d34faba04c580284ecac1c984d824e0081555a9f38bbce",
       "subject": "artwork",
       "work_slug": "blowout-series-ii-19"
+    },
+    {
+      "asset": "plotart/assets/campaigns/one-painting-three-rooms-840.webp",
+      "sha256": "83ce36503871355645711021c306da85fd95883485036ac1f50d2606ea08a26f",
+      "bytes": 93644,
+      "pixels": [
+        840,
+        473
+      ],
+      "class": "AI_ILLUSTRATION",
+      "what": "One painting, three rooms: three AI-generated interior visualisations using the founder’s original painting as the supplied reference. Promotional illustration, not photographs of real homes or an artwork listing.",
+      "generated": {
+        "tool": "ChatGPT image generation (OpenAI image_gen); website encoding with Pillow",
+        "date": "2026-11-08",
+        "source_master": {
+          "file": "One painting, three rooms.png",
+          "sha256": "5e8df22c4043943c034b06f7df848c3e2c47c3e0c53a0c147db6baa5290941fd",
+          "pixels": [
+            1672,
+            941
+          ]
+        },
+        "processing_chain": [
+          "Generated from the founder painting reference in this conversation, 8 November 2026.",
+          "Whole image retained without cropping; Lanczos downsample to 840 pixels wide; WebP quality 86, method 6."
+        ]
+      },
+      "prompt": "Create a sophisticated PlotArt social campaign PREVIEW as one beautifully composed wide editorial triptych image, three equal room panels side by side, with an elegant ivory top title band and a slim clear bottom credit band. The campaign headline exactly: 'ONE PAINTING. THREE ROOMS.' Secondary small headline: 'Where would you hang it?' Brand wordmark in tasteful serif typography: 'PlotArt'. Use the supplied original abstract painting by Colin MacAulay as the SAME recognisable, complete, uncropped artwork in ALL THREE rooms. Preserve its landscape aspect ratio 1332:940, all its distinctive shapes, marks and composition, yellow outlined shapes, violet loops, pink bands and grey ground. Do not redraw, reinterpret or change the painting, and do not crop any of it in the frames. It is the focal point hung on each wall with the whole frame visible. Three tasteful realistic Irish home interior visualisations: left a bright warm white living room with natural oak and a soft linen sofa; middle a compact contemporary garden studio with soft clay plaster walls and a simple oak desk, intimate but premium; right a deep forest green snug with warm lighting and a cognac reading chair. Similar frontal room photography, calm natural materials, no people, no busy decor, carefully controlled daylight and soft shadows. Each panel has a small tasteful label at bottom: '01 · Bright & calm', '02 · Warm & creative', '03 · Deep & dramatic'. Clear legible bottom credit text: 'Original artwork: Colin MacAulay. AI-generated room visualisations. Painting not offered for sale.' Add concise call to action in bottom band: 'Find your scale at plotnua.ie/plotart/art-size-calculator.html'. This is a clearly labelled concept preview, never imply these are photographs of actual homes or works for sale. Refined charcoal, ivory and muted terracotta brand accent, gallery quality typography, generous breathing room.",
+      "reference_inputs": [
+        "plotart/assets/hero/founder-01-abstract.webp; sha256 7812df17f3651108820ed79dfe69aa1fdaa27640d5aa1d5464c3b08007b802b1; founder original artwork, already declared and authorised for PlotArt."
+      ],
+      "human_review": {
+        "reviewer": "Colin Macaulay (founder)",
+        "date": "2026-11-08",
+        "attests": "After viewing the generated campaign preview, the founder approved adding this image beside the calculator link on the PlotArt homepage. Approval recorded by the founder’s “ok” after the proposed placement; the existing founder-artwork permission remains the source for the referenced painting."
+      },
+      "permitted_surfaces": [
+        "plotart"
+      ],
+      "depicts_named_product": false,
+      "depicts_named_organisation": false,
+      "label_on_page": "AI-generated illustration. Original artwork by Colin MacAulay. These are illustrative rooms, not photographs of real homes. The painting is not offered for sale."
+    },
+    {
+      "asset": "plotart/assets/campaigns/one-painting-three-rooms-1672.webp",
+      "sha256": "94241c926d0587b37c105fb15f39b724365dfbbe2ab00d390881222d6420230c",
+      "bytes": 274802,
+      "pixels": [
+        1672,
+        941
+      ],
+      "class": "AI_ILLUSTRATION",
+      "what": "One painting, three rooms: three AI-generated interior visualisations using the founder’s original painting as the supplied reference. Promotional illustration, not photographs of real homes or an artwork listing.",
+      "generated": {
+        "tool": "ChatGPT image generation (OpenAI image_gen); website encoding with Pillow",
+        "date": "2026-11-08",
+        "source_master": {
+          "file": "One painting, three rooms.png",
+          "sha256": "5e8df22c4043943c034b06f7df848c3e2c47c3e0c53a0c147db6baa5290941fd",
+          "pixels": [
+            1672,
+            941
+          ]
+        },
+        "processing_chain": [
+          "Generated from the founder painting reference in this conversation, 8 November 2026.",
+          "Whole image retained without cropping; original pixel dimensions; WebP quality 86, method 6."
+        ]
+      },
+      "prompt": "Create a sophisticated PlotArt social campaign PREVIEW as one beautifully composed wide editorial triptych image, three equal room panels side by side, with an elegant ivory top title band and a slim clear bottom credit band. The campaign headline exactly: 'ONE PAINTING. THREE ROOMS.' Secondary small headline: 'Where would you hang it?' Brand wordmark in tasteful serif typography: 'PlotArt'. Use the supplied original abstract painting by Colin MacAulay as the SAME recognisable, complete, uncropped artwork in ALL THREE rooms. Preserve its landscape aspect ratio 1332:940, all its distinctive shapes, marks and composition, yellow outlined shapes, violet loops, pink bands and grey ground. Do not redraw, reinterpret or change the painting, and do not crop any of it in the frames. It is the focal point hung on each wall with the whole frame visible. Three tasteful realistic Irish home interior visualisations: left a bright warm white living room with natural oak and a soft linen sofa; middle a compact contemporary garden studio with soft clay plaster walls and a simple oak desk, intimate but premium; right a deep forest green snug with warm lighting and a cognac reading chair. Similar frontal room photography, calm natural materials, no people, no busy decor, carefully controlled daylight and soft shadows. Each panel has a small tasteful label at bottom: '01 · Bright & calm', '02 · Warm & creative', '03 · Deep & dramatic'. Clear legible bottom credit text: 'Original artwork: Colin MacAulay. AI-generated room visualisations. Painting not offered for sale.' Add concise call to action in bottom band: 'Find your scale at plotnua.ie/plotart/art-size-calculator.html'. This is a clearly labelled concept preview, never imply these are photographs of actual homes or works for sale. Refined charcoal, ivory and muted terracotta brand accent, gallery quality typography, generous breathing room.",
+      "reference_inputs": [
+        "plotart/assets/hero/founder-01-abstract.webp; sha256 7812df17f3651108820ed79dfe69aa1fdaa27640d5aa1d5464c3b08007b802b1; founder original artwork, already declared and authorised for PlotArt."
+      ],
+      "human_review": {
+        "reviewer": "Colin Macaulay (founder)",
+        "date": "2026-11-08",
+        "attests": "After viewing the generated campaign preview, the founder approved adding this image beside the calculator link on the PlotArt homepage. Approval recorded by the founder’s “ok” after the proposed placement; the existing founder-artwork permission remains the source for the referenced painting."
+      },
+      "permitted_surfaces": [
+        "plotart"
+      ],
+      "depicts_named_product": false,
+      "depicts_named_organisation": false,
+      "label_on_page": "AI-generated illustration. Original artwork by Colin MacAulay. These are illustrative rooms, not photographs of real homes. The painting is not offered for sale."
     }
   ],
   "legacy_undeclared": [

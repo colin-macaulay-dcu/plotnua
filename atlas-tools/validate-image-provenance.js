@@ -832,7 +832,10 @@ console.log('-'.repeat(74));
                                                     String(s.sha256).toLowerCase()]).filter(Boolean) : [];
     /* The attested form's free text is held to the same rule as a prompt. */
     const prompt = [r.prompt, r.creative_direction_reconstructed, r.reference_disclosure, r.resemblance_review]
-      .filter(Boolean).map(x => typeof x === 'string' ? x : JSON.stringify(x)).join(' ').toLowerCase();
+      .filter(Boolean).map(x => typeof x === 'string' ? x : JSON.stringify(x)).join(' ').toLowerCase()
+      // PlotArt's own exact calculator CTA is a destination, not a supplier reference.
+      // Keep supplier names, every reference input and lookalike URLs subject to P6.
+      .replace(/(^|[\s"'(])(?:https?:\/\/)?plotnua\.ie\/plotart\/art-size-calculator\.html(?=$|[\s"',)])/g, '$1[own calculator link]');
     for (const o of orgs) {
       if (o.length > 3 && prompt.includes(o)) {
         problems.push(`${id}: prompt names ${o}`);          // never excepted

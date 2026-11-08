@@ -307,6 +307,22 @@ const CASES = [
       r.records[0].prompt = 'A garden building in the style of '
         + supplier.organisation_name + ', photographic.'; } } },
 
+  { id: 'C-OWN-CTA', mustPassOpts: () => ({ regEdit: r => {
+      r.records[0].prompt = 'Generic illustrated room. Add a link to plotnua.ie/plotart/art-size-calculator.html';
+    } }), expect: ['(accepts)'], why: 'the exact owned calculator CTA is a destination, not a supplier input' },
+  { id: 'C-OWN-CTA-supplier', expect: ['P6'],
+    why: 'an own-site CTA cannot hide a named supplier in the same prompt',
+    opts: { regEdit: r => { r.records[0].prompt = 'Show ' + supplier.organisation_name + ' with plotnua.ie/plotart/art-size-calculator.html'; } } },
+  { id: 'C-OWN-CTA-external', expect: ['P6'],
+    why: 'the owned calculator text inside an external URL is not excepted',
+    opts: { regEdit: r => { r.records[0].prompt = 'Show https://external.invalid/plotnua.ie/plotart/art-size-calculator.html'; } } },
+  { id: 'C-OWN-CTA-lookalike', expect: ['P6'],
+    why: 'a calculator URL with an appended hostname is not excepted',
+    opts: { regEdit: r => { r.records[0].prompt = 'Show https://plotnua.ie/plotart/art-size-calculator.html.external.invalid'; } } },
+  { id: 'C-OWN-CTA-reference', expect: ['P6'],
+    why: 'an owned CTA does not create an image-reference exemption',
+    opts: { regEdit: r => { r.records[0].reference_inputs = ['https://plotnua.ie/plotart/art-size-calculator.html']; } } },
+
   { id: 'C-P6b', expect: ['P6'],
     why: 'a reference input comes from a supplier’s own domain',
     opts: { regEdit: r => {

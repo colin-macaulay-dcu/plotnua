@@ -818,3 +818,8 @@ body.pa .pa-vgc-pos > a:focus-visible{ outline-offset:-3px; border-radius:0; }
 
 /* Published artists only: a crawlable alphabetic route alongside the curated wall. */
 .pa-vgc-az{margin:36px 0}.pa-vgc-az h3{font-size:18px;margin:0 0 12px}.pa-vgc-az ul{display:flex;flex-wrap:wrap;gap:12px 28px;list-style:none;padding:0;margin:0}.pa-vgc-az a{text-underline-offset:4px}
+
+/* Homepage art-size invitation: the whole campaign image, with readable disclosure. */
+.pa-size-promo{display:grid;grid-template-columns:minmax(0,1.8fr) minmax(0,1fr);gap:36px;align-items:center;margin-top:48px;padding-top:40px;border-top:1px solid var(--line)}
+.pa-size-promo figure{margin:0;min-width:0}.pa-size-promo figure a{display:block}.pa-size-promo img{display:block;width:100%;height:auto;object-fit:contain}.pa-size-promo figcaption{font-size:12px;line-height:1.65;opacity:.8;margin-top:14px}.pa-size-promo figcaption .pa-chip{margin-right:8px}.pa-size-promo h3{font:400 clamp(28px,3.2vw,44px)/1.08 var(--serif);margin:12px 0 20px}.pa-size-promo p{line-height:1.75}.pa-size-promo .pa-btn{white-space:normal;text-align:center;max-width:100%}.pa-size-promo-note{font-size:12px;opacity:.75;margin-top:14px}
+@media(max-width:800px){.pa-size-promo{grid-template-columns:1fr;gap:24px;margin-top:32px;padding-top:30px}.pa-size-promo h3 br{display:none}}

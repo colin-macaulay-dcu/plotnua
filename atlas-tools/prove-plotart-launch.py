@@ -95,7 +95,8 @@ MG_URL = "https://plotnua.ie/plotart/mobile-gallery/"
 HERO_IMAGES = {"assets/hero/founder-01-abstract.webp"}
 # The Living Gallery image (consolidated brief, 29 Oct 2026): the founder's painting in an AI-generated interior visualisation.
 LG_IMAGE = "assets/living/plotart-living-gallery-colin-macaulay-artwork.webp"
-ALLOWED = set(PAGES) | MG_FILES | {"assets/plotart.css", "assets/plotart-guides.css", "assets/plotart-wall-size.css", "assets/plotart-wall-size.js", "assets/plotart.js", "assets/pa-enquiry.js", LG_IMAGE} | HERO_IMAGES | ({"assets/f25-apply.js"} if launch.get("f25_application_state") == "open" else set())
+CAMPAIGN_IMAGES = {"assets/campaigns/one-painting-three-rooms-840.webp", "assets/campaigns/one-painting-three-rooms-1672.webp"}
+ALLOWED = set(PAGES) | MG_FILES | {"assets/plotart.css", "assets/plotart-guides.css", "assets/plotart-wall-size.css", "assets/plotart-wall-size.js", "assets/plotart.js", "assets/pa-enquiry.js", LG_IMAGE} | HERO_IMAGES | CAMPAIGN_IMAGES | ({"assets/f25-apply.js"} if launch.get("f25_application_state") == "open" else set())
 # Published artist galleries (Phase 1, 29 Oct 2026; checked in full by L14). Only these shapes are allowed:
 #   artists/<slug>/index.html · artists/<slug>/<artwork-slug>.html · artists/<slug>/img/<name>.webp
 ART_FILE = re.compile(r"^artists/([a-z0-9]+(?:-[a-z0-9]+){0,6})/(?:[a-z0-9]+(?:-[a-z0-9]+){0,6}\.html|gallery\.json|img/[a-z0-9-]+-\d{2,5}\.webp)$")
@@ -208,8 +209,12 @@ for name in PAGES:
 
 home = open(os.path.join(PA, "index.html"), encoding="utf-8").read() if os.path.exists(os.path.join(PA, "index.html")) else ""
 need(all(('src="%s"' % x) in home for x in HERO_IMAGES) and "Original artwork by Colin MacAulay, founder of PlotArt." in visible_text(home)
-     and len(re.findall(r'<img [^>]*alt="Painting by Colin MacAulay', home)) == 1 and len(re.findall(r"<img\b", home)) == 3 + home.count("plotnua-mark-master.svg") + home.count('<img class="pa-logo" '),   # + the PlotArt logo in the header (31 Oct 2026)
-     "L6 the homepage images must be exactly the founder's credited painting, the Living Gallery visualisation and the A Home for Art image")
+     and len(re.findall(r'<img [^>]*alt="Painting by Colin MacAulay', home)) == 1 and len(re.findall(r"<img\b", home)) == 4 + home.count("plotnua-mark-master.svg") + home.count('<img class="pa-logo" '),   # + the PlotArt logo in the header (31 Oct 2026)
+     "L6 the homepage images must be exactly the founder's credited painting, the Living Gallery visualisation, the three-room calculator invitation and the A Home for Art image")
+need(all(x in home for x in CAMPAIGN_IMAGES) and 'aria-labelledby="sizePromoH"' in home
+     and 'href="art-size-calculator.html" aria-label="Try the PlotArt art size calculator"' in home
+     and 'These are illustrative rooms, not photographs of real homes. The painting is not offered for sale.' in visible_text(home),
+     "L6 the calculator campaign must be complete, linked, credited and visibly disclosed")
 LG_CAP = "Original artwork by Colin MacAulay. The room is an AI-generated interior visualisation for PlotArt, not a real home."
 for _n, _s in (("index.html", home), ("living-gallery.html", open(os.path.join(PA, "living-gallery.html"), encoding="utf-8").read() if os.path.exists(os.path.join(PA, "living-gallery.html")) else "")):
     need(_s.count(LG_IMAGE) == 1 and LG_CAP in visible_text(_s) and "AI-generated illustration" in visible_text(_s),

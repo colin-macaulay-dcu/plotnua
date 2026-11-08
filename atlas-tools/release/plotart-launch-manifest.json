@@ -1,15 +1,15 @@
 {
   "schema": "plotnua.plotart.launch-manifest.v1",
-  "note": "SHA-256 of every published PlotArt file, from the launch build that passed prove-plotart-launch.py L1-L12 with the demonstration names (development branch founder/plotart-prototype). Any change to a published PlotArt file must come from a new verified build. Rebuilt 28 Oct 2026 (the legal-information release 2c89865 had changed the footers without updating this manifest). Rebuilt 29 Oct 2026 for the navigation and homepage refinement. Rebuilt 29 Oct 2026 for artist galleries Phase 1: artist gallery files are verified by L14 (provenance fingerprints), not pinned here. Rebuilt 3 Nov 2026 for the Mobile Gallery public work-in-progress release (five-pill navigation on every PlotArt page; plotart/mobile-gallery/ added; founder release authorisation). Search release 7 Nov 2026: homepage, About, Virtual Gallery search metadata, public artist A-Z and its styles verified; all image and unrelated page pins retained. Buyer search release 7 Nov 2026: two guides, their scoped stylesheet and the home/gallery entry links. Generated guide excerpts are checked against approved public exports; all other pins retained. Wall-size release 8 Nov 2026: reviewed calculator, scoped assets, home/buyer entry links and public sitemap.",
+  "note": "SHA-256 of every published PlotArt file, from the launch build that passed prove-plotart-launch.py L1-L12 with the demonstration names (development branch founder/plotart-prototype). Any change to a published PlotArt file must come from a new verified build. Rebuilt 28 Oct 2026 (the legal-information release 2c89865 had changed the footers without updating this manifest). Rebuilt 29 Oct 2026 for the navigation and homepage refinement. Rebuilt 29 Oct 2026 for artist galleries Phase 1: artist gallery files are verified by L14 (provenance fingerprints), not pinned here. Rebuilt 3 Nov 2026 for the Mobile Gallery public work-in-progress release (five-pill navigation on every PlotArt page; plotart/mobile-gallery/ added; founder release authorisation). Search release 7 Nov 2026: homepage, About, Virtual Gallery search metadata, public artist A-Z and its styles verified; all image and unrelated page pins retained. Buyer search release 7 Nov 2026: two guides, their scoped stylesheet and the home/gallery entry links. Generated guide excerpts are checked against approved public exports; all other pins retained. Wall-size release 8 Nov 2026: reviewed calculator, scoped assets, home/buyer entry links and public sitemap. Homepage campaign release 8 Nov 2026: full three-room image beside calculator invitation, responsive layout, artwork credit and visible illustration disclosure.",
   "built_from": "Production b7cb4dd plus PlotArt search visibility release, 7 November 2026",
   "files": {
     "invitation.html": "545666aa900a04845ad2cc6e9a6981503307e03c383bcee5ca7bb36872f5600d",
     "about.html": "cbfdb79486a93a3b0e1399f3a6fddbee11f79fb25b32f1517a39fd91b4bcf65b",
     "founding-25.html": "833502a64ec16553ade8f930b419b3ce755a91f464bba5fe8df998c3a6dbd9b6",
     "living-gallery.html": "552bffacbd9bc72168305fe589eaed8968bba876b272f845b30fb6d5b440dba9",
-    "index.html": "e8e97075ee0ff8ed8d9cd86a052328127d1309881aa4f8c0ff0612e76d33c28c",
+    "index.html": "7b1432ddad24de37f2df7bc13a6f10c69e02bdc8edfbd51648062de66591244b",
     "assets/f25-apply.js": "42a81d4a902bbdab7e16207cb98192940e15f0f5f1a0e7aa1622d03d181a77c0",
-    "assets/plotart.css": "2b7fd139e088c6648c6a61af4978b399bfbf606543d8921779f97e5ba17f2080",
+    "assets/plotart.css": "3d1c1de6c8680eb7d6b485bfd877f29c225c708cad88d89434c77fff6b3d7492",
     "assets/plotart.js": "1aeda046a43a9877413943aa4573f8266280b94a5df21fb68421c5486189dca8",
     "assets/pa-enquiry.js": "e57ef00d58f3f2783d0ec3a9225869aa2cd3be215737d39d08c9f6dd22c78781",
     "assets/hero/founder-01-abstract.webp": "7812df17f3651108820ed79dfe69aa1fdaa27640d5aa1d5464c3b08007b802b1",
@@ -27,7 +27,9 @@
     "abstract-contemporary-art-ireland.html": "30be567ca7b47e367ed548f05d392a70813494dd9b471d95bc28e74b66384346",
     "art-size-calculator.html": "e117ffc41ffeae7a2a036b9491ae7c40be734c5a15cf7fd459590c5cd47c78b6",
     "assets/plotart-wall-size.css": "82e9bc4e4652fc9042d4fae072a7d44ab768f0d00e19418d05bcdecaf1cde1c5",
-    "assets/plotart-wall-size.js": "4f5d108eb5184d4bec0e1c23503f4c3c40b7aad05021a09621c7c9f5c92cf709"
+    "assets/plotart-wall-size.js": "4f5d108eb5184d4bec0e1c23503f4c3c40b7aad05021a09621c7c9f5c92cf709",
+    "assets/campaigns/one-painting-three-rooms-1672.webp": "94241c926d0587b37c105fb15f39b724365dfbbe2ab00d390881222d6420230c",
+    "assets/campaigns/one-painting-three-rooms-840.webp": "83ce36503871355645711021c306da85fd95883485036ac1f50d2606ea08a26f"
   },
   "outside_grid": {
     "gallery/index.html": "d65da3b023536fd89fa636477677e28b76a3e378c2c48dd8dbe9e6dad63c3960"
