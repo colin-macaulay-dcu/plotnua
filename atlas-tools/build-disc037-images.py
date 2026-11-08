@@ -12,9 +12,11 @@ AI_ILLUSTRATION from each file's signed C2PA credential (Governance 2.0, Rule 2)
   03-Waste-Into-Something-Wonderful.png     DISC-037-05-WASTE-INTO-WONDERFUL-MASTER.png         1536 x 1024
   05-Living-Roof-and-Wild-Garden.png        DISC-037-07-LIVING-ROOF-WILD-GARDEN-MASTER.png      1536 x 1024
 
-MISSING, NOT SUBSTITUTED (founder's package README): chapter 04, The Greenhouse That Stores Sunshine
-(DISC-037-06-...). The hero pair (DISC-037-01-BEFORE / 02-POSSIBLE) has not been supplied either. The page
-shows labelled empty slots for all three; this builder refuses nothing for their absence and invents nothing.
+CHAPTER 04 (added 8 Nov 2026, Stage 4): DISC-037-06-GREENHOUSE-STORES-SUNSHINE-MASTER.png, 1536 x 1024, from the founder's
+package DISC-037-Remaining-Three-Images-2026-11-08.zip, added unchanged under its own name.
+HERO PAIR NOT USED: DISC-037-01-BEFORE / 02-POSSIBLE (same package) FAILED the alignment check on 8 Nov 2026 (separately
+generated, different composition: the cottage is on the right in the BEFORE and on the left in the POSSIBLE). They are not
+added here and the page keeps its labelled pending hero until a matched pair is approved.
 
 ROUTINE EDITS (Governance 2.0, Rule 3), each recorded as a derivative bound to its unchanged master:
   * resizing (Lanczos) of the WHOLE image, aspect kept, to 480/768/1024/1376 px WebP and 768/1024 px JPEG;
@@ -47,6 +49,11 @@ CHAPTERS = {   # role -> (path, sha256, size, package file, what)
         "dfbbf9fc07383dd64a9e673a15b725d8210bb680339fef6090aa6563c2fbbf7b", (1536, 1024), "03-Waste-Into-Something-Wonderful.png",
         "DISC-037 chapter 03 image, Waste Into Something Wonderful: slatted timber compost bays, a dark plastic compost bin, a green "
         "stacking bin and a tub of peelings on a gravel path among planting; no brand or mark legible"),
+    "06-GREENHOUSE-STORES-SUNSHINE": (D + "DISC-037-06-GREENHOUSE-STORES-SUNSHINE-MASTER.png",
+        "3f2e20a7989511e2762ae0594ff19a11525a5cc5fdac94f672bb1b3e0d7fa68e", (1536, 1024), "DISC-037-06-GREENHOUSE-STORES-SUNSHINE-MASTER.png",
+        "DISC-037 chapter 04 image, The Greenhouse That Stores Sunshine: inside a timber lean-to glasshouse against a stone wall on a frosty, "
+        "sunny winter morning, with dark water barrels fed by a downpipe, staging of salads and herbs in pots and trays, and a timber raised bed "
+        "under a propped-open glazed lid; a generic illustrated greenhouse, no brand or mark visible"),
     "07-LIVING-ROOF-WILD-GARDEN": (D + "DISC-037-07-LIVING-ROOF-WILD-GARDEN-MASTER.png",
         "4b21a577cf252084dc3c7d73ce96067622c0ff58214e7ba2d3cf535f702c212e", (1536, 1024), "05-Living-Roof-and-Wild-Garden.png",
         "DISC-037 chapter 05 image, The Living Roof and Wild Garden: a timber garden building with a flowering sedum and wildflower "
@@ -128,7 +135,9 @@ def main():
             "what": what + " (founder's master; the page shows its prepared copies)",
             "depicts_named_product": False, "depicts_named_organisation": False,
             "origin": {"basis": "C2PA_EMBEDDED",
-                       "evidence": "Embedded C2PA manifest, read with c2pa-python: issuer %s, signed %s; the credential chain records c2pa.created with digital source type trainedAlgorithmicMedia; %d ingredient link(s), %d credentialed; validation %s. Supplied by the founder as '%s' in the package DISC-037-Resourceful-Garden-Chapter-Images (8 Nov 2026), renamed unchanged." % (issuer, time, n, linked, state, pkg),
+                       "evidence": "Embedded C2PA manifest, read with c2pa-python: issuer %s, signed %s; the credential chain records c2pa.created with digital source type trainedAlgorithmicMedia; %d ingredient link(s), %d credentialed; validation %s. Supplied by the founder as '%s' in the package %s (8 Nov 2026), %s." % (issuer, time, n, linked, state, pkg,
+                           "DISC-037-Remaining-Three-Images-2026-11-08.zip" if pkg.startswith("DISC-037-") else "DISC-037-Resourceful-Garden-Chapter-Images",
+                           "added unchanged under its own name" if pkg.startswith("DISC-037-") else "renamed unchanged"),
                        "declared_under": "Governance 2.0, Rule 2 (30 Oct 2026)"},
             "generated": {"tool": "%s generative AI (ChatGPT), per the file's own signed C2PA credential" % issuer, "date": (time or "")[:10]},
             "prompt_status": "UNAVAILABLE",
