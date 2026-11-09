@@ -127,9 +127,32 @@ GR3_ADDED = [
 ]
 ADDED_TEXT.update({x: GR3 for x in GR3_ADDED})
 REMOVED_TEXT.update(GR3_REMOVED)
+# SEO GR8 (link to the garden offices guide) and the individual price comparison (commit 1ac9fa8), both on main
+# 9 Nov 2026; declared under the founder's approval of 9 Nov 2026 to resolve the gate. Wording as published, except
+# two sentences reworded with the same meaning so that no G8 claim word is added (CLAIM_WORDS unchanged).
+GR9 = "garden offices link + individual price comparison (founder approval 9 Nov 2026)"
+GR9_ADDED = [
+    "Exploring a workspace specifically?", "See PlotNua\u2019s garden offices in Ireland guide", ".",
+    "Compare actual advertised prices", "Garden room prices \u2014 lowest to highest",
+    "Explore individually recorded supplier prices, starting with the lowest price.",
+    "These are", "advertised product prices, not like-for-like installed quotations",
+    "Use the purchase-basis filter to distinguish kits from installed rooms.",
+    "A lower price may exclude VAT, delivery, foundations, fitting or electrics.",
+    "Price includes All advertised prices Installed and finished (including base) Installed, foundations excluded Supplied and erected Supply only / kit Installation basis not confirmed",
+    "Supplier-advertised product prices, ascending; PlotNua research snapshot 7 October 2026, with subsequent checks.",
+    "#", "Supplier and model", "Advertised price", "What the price covers", "Last checked",
+    "VAT status is shown for each entry.",
+    "An unconfirmed installation basis is not a kit or an installed quote.",
+    "Prices may change; follow the supplier link and confirm a current written quotation.",
+    "PlotNua does not rate supplier quality or suggest choosing the lowest-priced product simply because it costs less.",
+]
+ADDED_TEXT.update({x: GR9 for x in GR9_ADDED})
+ADDED_LINKS.update({"garden-offices-ireland.html": 1})
 ADDED_IDS = {"short-answer", "why-it-is-hard", "garden-homes",
              "what-may-cost-extra",   # Stage 2 item 5 (6 Nov 2026), inside the EXTRAS region
-             "what-affects-prices"}   # SEO-GR3 (8 Nov 2026): the new section
+             "what-affects-prices",   # SEO-GR3 (8 Nov 2026): the new section
+             # the individual price comparison (founder approval 9 Nov 2026)
+             "garden-room-price-ranking", "pr-ranking-heading", "pr-compare-basis", "pr-compare-count", "pr-compare-rows", "pr-compare-data"}
 ADDED_IMGS = Counter({"assets/brand/plotnua-icon-transparent.svg": 1,
                       "assets/garden-room-prices/garden-room-prices-hero-2026-10-23-1672.jpg": 1})   # hero illustration (founder, 23 Oct 2026)
 NAV = ["#price-ranges", "#what-affects-prices", "#why-it-is-hard", "#outside-the-price", "#quote-checklist",
