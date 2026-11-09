@@ -1,0 +1,307 @@
+{
+ "schema": "plotnua.h6v7-provenance-declaration.draft",
+ "status": "DRAFT, not applied: needs the founder decision in section decision_needed",
+ "date": "2026-11-09",
+ "masters": [
+  {
+   "role": "BEFORE",
+   "handover_file": "preview/assets/hero-before.png",
+   "sha256": "373b6805b127067454422bcd3140fdb7242a4403ac8f6403ca132a2df91d23b3",
+   "pixels": [
+    1670,
+    942
+   ],
+   "c2pa": "embedded; issuer OpenAI OpCo, LLC (OpenAI Media Service API); softwareAgent ChatGPT gpt-image; c2pa.created 2026-11-08T20:10:23Z; digitalSourceType trainedAlgorithmicMedia; read from the file bytes"
+  },
+  {
+   "role": "POSSIBLE",
+   "handover_file": "preview/assets/hero-possible.png",
+   "sha256": "8af0550f814df72ef78bd4bbc94df27e1648843e0158701250e81f772c642e7e",
+   "pixels": [
+    1670,
+    941
+   ],
+   "c2pa": "embedded; issuer OpenAI OpCo, LLC (OpenAI Media Service API); softwareAgent ChatGPT gpt-image; c2pa.created 2026-11-08T20:04:37Z; digitalSourceType trainedAlgorithmicMedia; read from the file bytes"
+  }
+ ],
+ "prompt_status": "UNAVAILABLE",
+ "reference_disclosure": {
+  "status": "UNCERTAIN",
+  "statement": "The credentials record no input image; conversation context is not recorded, so inputs cannot be ruled out. The POSSIBLE was signed six minutes before the BEFORE and the two share one camera (permanent scenery registers to a +0.34/-0.58 px translation)."
+ },
+ "processing": [
+  "POSSIBLE padded by one replicated bottom row to 1670 x 942 (no stretching) and registered to the BEFORE by a sub-pixel translation (ECC on permanent scenery)",
+  "six feature layers = POSSIBLE pixels + mattes over the unchanged BEFORE; local reconstruction where one feature hid another (pod end behind pool reeds; retreat gravel under reeds) from the same photograph's own pixels; no generative fill",
+  "battery and EV-charger sprites (Power Station layer) and the heat-pump sprite: pixels transplanted from the approved H6 evening assets (H6-layer-power-station-1677.webp, H6-garden-base-v6-1677.webp; PN-FDR-2026-10-26-H6-HOME), re-graded to daylight",
+  "sky-src/tgt/flow/time: the BEFORE sky band and a target made by translating pieces of that sky's own clouds into letterforms; flow/time are data maps, not pictures",
+  "water textures: crops of the POSSIBLE pool and tub water"
+ ],
+ "permitted_surfaces": [
+  "homepage"
+ ],
+ "visible_label": "AI-generated illustration (existing H6 label, unchanged)",
+ "decision_needed": "The provenance guard (P1) accepts metadata-declared AI images only when the served file itself carries the C2PA credential; re-encoded, masked layers cannot. Either (A) a pinned founder decision for exactly these hashes on the homepage, as was done for H6 (PN-FDR-2026-10-26-H6-HOME), or (B) a guard extension for composites of C2PA-credentialed masters. Also: retire the 22 records of the evening H6 image set, which the page no longer references (P9).",
+ "assets": [
+  {
+   "asset": "assets/h6/img/H6v7-before-1670.avif",
+   "sha256": "5660cf881d7a68118c539c02985560120135f0d9c3673d31d5cd5d0ec1c1f8dc",
+   "bytes": 356618,
+   "pixels": [
+    1670,
+    942
+   ],
+   "referenced": true
+  },
+  {
+   "asset": "assets/h6/img/H6v7-before-1670.webp",
+   "sha256": "bb1429075d13fbd1e6998c5f7552819ff2a89649baff22deeeee1ea9def3a0df",
+   "bytes": 439444,
+   "pixels": [
+    1670,
+    942
+   ],
+   "referenced": true
+  },
+  {
+   "asset": "assets/h6/img/H6v7-before-960.avif",
+   "sha256": "d45768aeabfd9a6c928e6d335e283628e7b8e753408737ee9f3b7404d1b44e43",
+   "bytes": 144784,
+   "pixels": [
+    960,
+    542
+   ],
+   "referenced": true
+  },
+  {
+   "asset": "assets/h6/img/H6v7-before-960.webp",
+   "sha256": "dd6c7956bcdb422dd44eb596ded9052d31ed9b1d87811cbb23156ce9a3e0cd0d",
+   "bytes": 178464,
+   "pixels": [
+    960,
+    542
+   ],
+   "referenced": true
+  },
+  {
+   "asset": "assets/h6/img/H6v7-device-heatpump.webp",
+   "sha256": "3936a2e36c29f4d38af0ccd62b54b009f4d1d062c52eb7049ccff836181d5250",
+   "bytes": 1188,
+   "pixels": [
+    100,
+    72
+   ],
+   "referenced": true
+  },
+  {
+   "asset": "assets/h6/img/H6v7-layer-borrowed-garden-1670.webp",
+   "sha256": "b52a71a4bf36cc6c3cb3cc50e20293585cab5cba26249d9ccfce91b8829506cb",
+   "bytes": 44308,
+   "pixels": [
+    1670,
+    942
+   ],
+   "referenced": true
+  },
+  {
+   "asset": "assets/h6/img/H6v7-layer-borrowed-garden-960.webp",
+   "sha256": "681fddb550f82b6aef177672c0da071260c055ddca35010486b2902b2843188b",
+   "bytes": 20846,
+   "pixels": [
+    960,
+    542
+   ],
+   "referenced": true
+  },
+  {
+   "asset": "assets/h6/img/H6v7-layer-garden-retreat-1670.webp",
+   "sha256": "68db25252ad046bdf78aaa622dce81191d521ff5527c32a87ccb0aee3d6d6d5b",
+   "bytes": 30714,
+   "pixels": [
+    1670,
+    942
+   ],
+   "referenced": true
+  },
+  {
+   "asset": "assets/h6/img/H6v7-layer-garden-retreat-960.webp",
+   "sha256": "e2f6e6d413e4ee2fed7e99511b53a415fe95c3e50f3f74f803672069d65fc739",
+   "bytes": 13912,
+   "pixels": [
+    960,
+    542
+   ],
+   "referenced": true
+  },
+  {
+   "asset": "assets/h6/img/H6v7-layer-garden-room-1670.webp",
+   "sha256": "0f76917d447089247b53a575fbbf253dc48e34569a14fd9177d861d01147f017",
+   "bytes": 29870,
+   "pixels": [
+    1670,
+    942
+   ],
+   "referenced": true
+  },
+  {
+   "asset": "assets/h6/img/H6v7-layer-garden-room-960.webp",
+   "sha256": "edeaef43deba06c2976302951fee4e8f74b6ed4ff2050f3fa58b470beaf253be",
+   "bytes": 14116,
+   "pixels": [
+    960,
+    542
+   ],
+   "referenced": true
+  },
+  {
+   "asset": "assets/h6/img/H6v7-layer-garden-room-reflection-1670.webp",
+   "sha256": "fdbaa72b805ca375bc9ff57ad6f8409b55d01a0b4293202d0598922cbe5cc4f9",
+   "bytes": 13476,
+   "pixels": [
+    1670,
+    942
+   ],
+   "referenced": true
+  },
+  {
+   "asset": "assets/h6/img/H6v7-layer-garden-room-reflection-960.webp",
+   "sha256": "d2a40988de2232d71ad98e3d8b02d70fa312e36ab5c86275b08da650d242826c",
+   "bytes": 6412,
+   "pixels": [
+    960,
+    542
+   ],
+   "referenced": true
+  },
+  {
+   "asset": "assets/h6/img/H6v7-layer-natural-swimming-pool-1670.webp",
+   "sha256": "208ef0dfd3370dcb3d5c30a0c39b816470fac499575bee47f65e157f70ebb52e",
+   "bytes": 116140,
+   "pixels": [
+    1670,
+    942
+   ],
+   "referenced": true
+  },
+  {
+   "asset": "assets/h6/img/H6v7-layer-natural-swimming-pool-960.webp",
+   "sha256": "9125be94253cd29d07ac2078638b52c6e2b26906f9eac3aeaf30bb962b5788e3",
+   "bytes": 51146,
+   "pixels": [
+    960,
+    542
+   ],
+   "referenced": true
+  },
+  {
+   "asset": "assets/h6/img/H6v7-layer-power-station-1670.webp",
+   "sha256": "089cc5c11713f67eec775986cefa6c33588726f84a48e76b0142ca1073f9260f",
+   "bytes": 11356,
+   "pixels": [
+    1670,
+    942
+   ],
+   "referenced": true
+  },
+  {
+   "asset": "assets/h6/img/H6v7-layer-power-station-960.webp",
+   "sha256": "e2a139e2897a7eea6ddf0229e781dc38fb5a39d62b58eac561b0fefa6c12b7ac",
+   "bytes": 4982,
+   "pixels": [
+    960,
+    542
+   ],
+   "referenced": true
+  },
+  {
+   "asset": "assets/h6/img/H6v7-layer-treehouse-1670.webp",
+   "sha256": "05ff1541e4e4c23e2c4fd88bbe6bc5ac699f69f4403e26e12f1887287eab51c3",
+   "bytes": 55980,
+   "pixels": [
+    1670,
+    942
+   ],
+   "referenced": true
+  },
+  {
+   "asset": "assets/h6/img/H6v7-layer-treehouse-960.webp",
+   "sha256": "5cb4f484dd8abd5f6f5e2af17dc12aaa64766207f96059f73edbc1da8bc08e67",
+   "bytes": 25280,
+   "pixels": [
+    960,
+    542
+   ],
+   "referenced": true
+  },
+  {
+   "asset": "assets/h6/img/H6v7-sky-flow.png",
+   "sha256": "8d660ffcc1fc185330a77c490aece8564312086309e1fbbbe8d27f00c9cea295",
+   "bytes": 22429,
+   "pixels": [
+    640,
+    196
+   ],
+   "referenced": true
+  },
+  {
+   "asset": "assets/h6/img/H6v7-sky-src.webp",
+   "sha256": "da249504fbe7f86f82e36f7e6252f9b5bf006c4acfb11c78be114a58a396c0bf",
+   "bytes": 15192,
+   "pixels": [
+    640,
+    196
+   ],
+   "referenced": true
+  },
+  {
+   "asset": "assets/h6/img/H6v7-sky-tgt.webp",
+   "sha256": "26f0ee9dc9ee5edd3bddeeac1566e0f5b245858071fbc349a7606741d84604fb",
+   "bytes": 20220,
+   "pixels": [
+    640,
+    196
+   ],
+   "referenced": true
+  },
+  {
+   "asset": "assets/h6/img/H6v7-sky-time.png",
+   "sha256": "ed021e708d98b80b811549013b4b79442e9ce4ba541dc61bfa5e860dfbd02c9e",
+   "bytes": 66916,
+   "pixels": [
+    640,
+    196
+   ],
+   "referenced": true
+  },
+  {
+   "asset": "assets/h6/img/H6v7-water-pool-reflect.webp",
+   "sha256": "30fb11ba35aeaebbc9e09294bc0fe2c0e348d777042c6ea678ddf97c4a0742c2",
+   "bytes": 54320,
+   "pixels": [
+    952,
+    320
+   ],
+   "referenced": true
+  },
+  {
+   "asset": "assets/h6/img/H6v7-water-pool.webp",
+   "sha256": "d592d85556a26e9f72b15a7dad260363c73d6981e80ca9b97eea98671db95d56",
+   "bytes": 54438,
+   "pixels": [
+    952,
+    320
+   ],
+   "referenced": true
+  },
+  {
+   "asset": "assets/h6/img/H6v7-water-tub.webp",
+   "sha256": "741fe24ac1d9d1a29e55f1f5361834b21b1bfd893895d13bb3f74f37a912672d",
+   "bytes": 1380,
+   "pixels": [
+    157,
+    21
+   ],
+   "referenced": true
+  }
+ ],
+ "note": "Sky and water files are referenced by h6.js (prefix + name); the battery and charger sprites are composited into H6v7-layer-power-station-* and are not served on their own."
+}

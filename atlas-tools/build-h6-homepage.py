@@ -9,6 +9,9 @@ its eight scenes and persistent navigation, Show All / Clear All.
   python3 atlas-tools/build-h6-homepage.py --mount                    mount the snippet and the head links in index.html
   python3 atlas-tools/build-h6-homepage.py --check                    guard (no source needed)
 
+v7 (8 Nov 2026): the snippet was moved to the daylight BEFORE/POSSIBLE pair by atlas-tools/h6v7/migrate-snippet.py; the
+--source path below is the historical v5 prototype transform and is not used for v7.
+
 MECHANICAL TRANSFORM of the approved prototype block only:
   1. image paths point to assets/h6/img/ and become responsive (AVIF/WebP for the photograph; WebP with exact
      transparency for every layer); the same widths and sizes for every layer keep them in register;
@@ -40,7 +43,7 @@ HERO_COMMENT = ('<!-- ==========================================================
                 '         H6 prototype: do not hand-edit it. Its styles and script load from assets/h6/,\n'
                 '         its images from assets/h6/img/ (held to assets/h6/h6-record.json).\n'
                 '         ================================================================ -->')
-W = (960, 1677); SIZES = '(max-width: 700px) 100vw, 1677px'
+W = (960, 1670); SIZES = '(max-width: 700px) 100vw, 1670px'   # v7 (8 Nov 2026): daylight pair, 1670 x 942
 RESERVED = ['heroFrame','heroPhoto','heroCardsDock','heroCopy','heroWordmark','brandMark','atlasFigures','dCarousel',
             'pn-main','top','discover','research','libInfoBtn','libInfo','continuePanel','pnsOpen','heroStage']
 AI_LABEL = 'AI-generated illustration'
@@ -53,11 +56,12 @@ def die(m): print('REFUSED: ' + m); sys.exit(1)
 # Cache version for every H6 image URL (2 Nov 2026, Option A re-grade). The filenames stay the same, so a returning
 # visitor's browser could otherwise reuse a cached ungraded base beneath a newly fetched graded layer. Bump this token
 # whenever any H6 image changes: the whole set then loads together. The guard below refuses an unversioned reference.
-IMG_V = '?v=20261103'
+IMG_V = '?v=20261109'   # v7 daylight pair (9 Nov fix pass: layers, devices)
 def srcset(stem, ext): return ', '.join('assets/h6/img/%s-%d.%s%s %dw' % (stem, w, ext, IMG_V, w) for w in W)
 H6_PRELOAD_RE = re.compile(r'<link rel="preload" as="image" type="image/avif" imagesrcset="assets/h6/img/[^"]*"[^>]*>\n')
+BASE = 'H6v7-before'   # v7: the BEFORE master is the photograph (was H6-garden-base-v6)
 def h6_preload(): return ('<link rel="preload" as="image" type="image/avif" imagesrcset="%s" imagesizes="%s" fetchpriority="high">\n'
-                          % (srcset('H6-garden-base-v6', 'avif'), SIZES))
+                          % (srcset(BASE, 'avif'), SIZES))
 
 def transform(block):
     def one(t, a, b):
