@@ -13,6 +13,14 @@
   "alt_text_policy": "Each card carries standalone alt text written for the Library, not inherited from the page. Page-side descriptions open with phrases like 'The same living room after...' which read correctly in sequence on the Discovery page and read as a non-sequitur on a card seen alone. Every card's alt text is nonetheless held to what its image actually shows, derived from the page's own description of that image.",
 
   "cards": [
+{
+  "title": "The Reinvented Interior",
+  "card": "discovery-reinvented-interior.html",
+  "image": "assets/disc039/DISC-039-possible-v2.webp",
+  "alt": "A contemporary charcoal living room with a sculptural silver-grey sofa and a giant monochrome whale mural.",
+  "why": "Founder-approved DISC-039 POSSIBLE: the whale mural transformation, the Discovery realised.",
+  "previous": null
+},
     {
       "title": "What Could You Build in Your Garden?",
       "card": "discovery-living-in-the-garden.html",
