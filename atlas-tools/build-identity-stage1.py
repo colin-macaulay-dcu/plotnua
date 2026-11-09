@@ -83,6 +83,7 @@ CHECK = "--check" in sys.argv
 # page -> reading surface. Founder decision 3 (20 Oct 2026): dark-first, not
 # dark-only. The three legal pages read on a Warm Ivory sheet; the rest are dark.
 PAGES = {
+    "discovery-reinvented-interior.html": "dark",
     "shomera-garden-rooms.html": "dark", # noindex review draft; presentation only
     "concept-modular-garden-offices.html": "dark", "all-in-one-cabins-garden-rooms.html": "dark",
     "about.html": "dark", "contact.html": "dark", "privacy.html": "paper",
@@ -127,7 +128,7 @@ PAGES = {
     # The Borrowed Garden noticeboard, the Discovery's companion page (release candidate, 4 Nov 2026; noindex)
     "borrowed-garden-board.html": "dark",
 }
-DISC = {"discoveries.html", "discovery-hidden-bins.html", "discovery-living-in-the-garden.html",
+DISC = {"discovery-reinvented-interior.html", "discoveries.html", "discovery-hidden-bins.html", "discovery-living-in-the-garden.html",
         "discovery-the-borrowed-garden.html", "discovery-driveway-income.html", "discovery-hidden-cars.html",
         "discovery-home-exchange.html", "discovery-neighbourhood-parcel-house.html", "discovery-your-home-on-screen.html",
         "discovery-a-home-for-art.html", "discovery-garden-retreat.html",
