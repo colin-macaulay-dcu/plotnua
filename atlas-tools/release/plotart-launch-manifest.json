@@ -3,41 +3,41 @@
   "note": "SHA-256 of every published PlotArt file, from the launch build that passed prove-plotart-launch.py L1-L12 with the demonstration names (development branch founder/plotart-prototype). Any change to a published PlotArt file must come from a new verified build. Rebuilt 28 Oct 2026 (the legal-information release 2c89865 had changed the footers without updating this manifest). Rebuilt 29 Oct 2026 for the navigation and homepage refinement. Rebuilt 29 Oct 2026 for artist galleries Phase 1: artist gallery files are verified by L14 (provenance fingerprints), not pinned here. Rebuilt 3 Nov 2026 for the Mobile Gallery public work-in-progress release (five-pill navigation on every PlotArt page; plotart/mobile-gallery/ added; founder release authorisation). Search release 7 Nov 2026: homepage, About, Virtual Gallery search metadata, public artist A-Z and its styles verified; all image and unrelated page pins retained. Buyer search release 7 Nov 2026: two guides, their scoped stylesheet and the home/gallery entry links. Generated guide excerpts are checked against approved public exports; all other pins retained. Wall-size release 8 Nov 2026: reviewed calculator, scoped assets, home/buyer entry links and public sitemap. Homepage campaign release 8 Nov 2026: full three-room image beside calculator invitation, responsive layout, artwork credit and visible illustration disclosure. Living-room guide release 8 Nov 2026: public editorial guide, printable checklist, homepage and buyer-guide links. No new artist inventory.",
   "built_from": "Production b7cb4dd plus PlotArt search visibility release, 7 November 2026",
   "files": {
-    "invitation.html": "545666aa900a04845ad2cc6e9a6981503307e03c383bcee5ca7bb36872f5600d",
-    "about.html": "cbfdb79486a93a3b0e1399f3a6fddbee11f79fb25b32f1517a39fd91b4bcf65b",
-    "founding-25.html": "833502a64ec16553ade8f930b419b3ce755a91f464bba5fe8df998c3a6dbd9b6",
-    "living-gallery.html": "552bffacbd9bc72168305fe589eaed8968bba876b272f845b30fb6d5b440dba9",
-    "index.html": "fb709a9ad770a012aab6acf93d6a11934c0d9353d79d6291f2c3bcee7b2ae074",
+    "invitation.html": "cf5a99cc27a0e9762bbd3825dbe916aa14770ce7445ebefab27db6b60c392906",
+    "about.html": "b13c30cdad3d33ac280e9faa4da4846ff2dedbd07c4b5ab5b63d91342e92ee9c",
+    "founding-25.html": "c6650e1577e74905198397622c502a491b53cd16da183f9de5b2401c91ef5843",
+    "living-gallery.html": "7b8848929a108910b05380a7a436233322a21283588b394be53c590fb0d7010f",
+    "index.html": "c55241db7d2fd952d28894b50fc411d58a0b3c78d0c1fa762f663fcd8084ff37",
     "assets/f25-apply.js": "42a81d4a902bbdab7e16207cb98192940e15f0f5f1a0e7aa1622d03d181a77c0",
     "assets/plotart.css": "3d1c1de6c8680eb7d6b485bfd877f29c225c708cad88d89434c77fff6b3d7492",
     "assets/plotart.js": "1aeda046a43a9877413943aa4573f8266280b94a5df21fb68421c5486189dca8",
     "assets/pa-enquiry.js": "e57ef00d58f3f2783d0ec3a9225869aa2cd3be215737d39d08c9f6dd22c78781",
     "assets/hero/founder-01-abstract.webp": "7812df17f3651108820ed79dfe69aa1fdaa27640d5aa1d5464c3b08007b802b1",
     "assets/living/plotart-living-gallery-colin-macaulay-artwork.webp": "f4861333a80fda7f704fd3c57d0a2b8f18db589b8505eb11192ac05c08d8d0f9",
-    "mobile-gallery/gallery.html": "4f533a92e386ae17f090a87b73b6e500558a75c971a860181e3fe388a092225a",
+    "mobile-gallery/gallery.html": "f23efb52a9a6305ff4170fa2e63f8910861534c2081d472bfc0f73ec6dad3eae",
     "mobile-gallery/mobile-gallery.css": "2e4eac8d6b16d6d8512fa6bf470dc85fcd0acd30f8a4dad4b0940f36f0273280",
     "mobile-gallery/mobile-gallery.js": "7eaa96947308db08a9cca30af7f452c3eb2550b1754dc552a9d6d7945db1abcd",
-    "mobile-gallery/index.html": "dea1ad6099c7327637642a91c4d10ca3dcc163592c38bcb7359d280fd43c77bc",
+    "mobile-gallery/index.html": "00292ea75fa644a1d057f3f580b0042b498ed32c5cdaa7abd524dbfd78513123",
     "mobile-gallery/mobile-gallery-data.js": "2752e0065d6d903d7b02f6abe653e684cecd7fe4b6f7e125587aed2cda511833",
     "mobile-gallery/img/mg-hero-colin-macaulay-600.webp": "8092b99a0b4953e570e8f3a54483beae50a58049cae4bc404149c019cf1f5cd2",
     "mobile-gallery/img/mg-hero-colin-macaulay-880.webp": "2a14fdba5c714429e48308aaaa8d550ae4b388e43a0edd08c2f3853e05801b38",
-    "gallery/index.html": "c1c0d43af589256a9fba773750b5de5c740d7a0eb7f6e27f281c8539af18c04f",
+    "gallery/index.html": "280192900022936d835b0a1de80fdf458d2e8dd3494f9eb0510de932443a8003",
     "assets/plotart-guides.css": "042b453f15c46eaa2e59bbd199ad8f5817417c9269aec7bf0276382489b654c9",
-    "buy-original-art-ireland.html": "6a898fc9a882a3ecb67c7915539707e97d3ab41ae098a903d06153971eb33585",
-    "abstract-contemporary-art-ireland.html": "30be567ca7b47e367ed548f05d392a70813494dd9b471d95bc28e74b66384346",
-    "art-size-calculator.html": "e117ffc41ffeae7a2a036b9491ae7c40be734c5a15cf7fd459590c5cd47c78b6",
+    "buy-original-art-ireland.html": "1d911f8facc38da9072f88bee9887bcb4f5140c118ce41c6be43ced6bb9a92db",
+    "abstract-contemporary-art-ireland.html": "d436c6b6cffec57627aa084ec9e3c6926a1f418d6ec33612a81627e4334f4de8",
+    "art-size-calculator.html": "e544dac5eed90db1666ec3854e66ab265721255e1b73030bc6387fec8bbbe8c9",
     "assets/plotart-wall-size.css": "82e9bc4e4652fc9042d4fae072a7d44ab768f0d00e19418d05bcdecaf1cde1c5",
     "assets/plotart-wall-size.js": "4f5d108eb5184d4bec0e1c23503f4c3c40b7aad05021a09621c7c9f5c92cf709",
     "assets/campaigns/one-painting-three-rooms-1672.webp": "94241c926d0587b37c105fb15f39b724365dfbbe2ab00d390881222d6420230c",
     "assets/campaigns/one-painting-three-rooms-840.webp": "83ce36503871355645711021c306da85fd95883485036ac1f50d2606ea08a26f",
-    "choose-art-for-living-room.html": "09f16937ea6e9e98d63c8ba4041ee20a9054fd98e0220f0a9f3c6084a1aae35e",
+    "choose-art-for-living-room.html": "56aa7f37016036260fc6aff3d34378ad4e4b2f53edb12dd7de5a3adb874bb092",
     "downloads/plotart-art-buying-checklist.pdf": "d7c8329122a20f316e84a7b5b8deb84c9b4612a1c16c94732bd7e322c19b34a6"
   },
   "outside_grid": {
-    "gallery/index.html": "d65da3b023536fd89fa636477677e28b76a3e378c2c48dd8dbe9e6dad63c3960"
+    "gallery/index.html": "fb560923de45b9081f677bf123229dc4a623c0d561dda4445f8fcce01a6917d1"
   },
   "outside_search_content": {
-    "buy-original-art-ireland.html": "44a897ed135c3c90571970beb707ab42c8f5daa33692d8ce8999161c1f455af2",
-    "abstract-contemporary-art-ireland.html": "b9d190a47063bb30864c8a0420499dee638395569ebb87dafa4f4c287ff63f28"
+    "buy-original-art-ireland.html": "7642688fe2d8e0e5b0351f558d70860a1ee72740af5cf8510875d6c7bffa28a5",
+    "abstract-contemporary-art-ireland.html": "6db040b3b4df7984d2f33afb3b6294a1072f7b4a6791f5850fe5a835d1c95f55"
   }
 }

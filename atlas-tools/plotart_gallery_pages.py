@@ -151,7 +151,7 @@ def artist_body(pkg, blocks=None, preview=False, enquiry_endpoint=None):
     bio = "".join("<p>%s</p>" % E(p.strip()) for p in a["bio"].split("\n\n") if p.strip())
     return """%s
 <section class="pa-ag-hero%s"><div class="pa-wrap">
-  <nav class="pa-crumb" aria-label="Breadcrumb"><a href="../../gallery/">Virtual Gallery</a><span aria-hidden="true">/</span><span aria-current="page">%s</span></nav>
+  <nav class="pa-crumb" aria-label="Breadcrumb"><a href="../../gallery/">Artists’ Gallery</a><span aria-hidden="true">/</span><span aria-current="page">%s</span></nav>
   <div class="pa-ag-id">%s<div>
     %s<h1>%s</h1>
     %s%s
@@ -223,7 +223,7 @@ def artwork_body(pkg, w, prev_w, next_w, preview=False, enquiry_endpoint=None):
         ('<a href="%s.html" rel="next">%s <span aria-hidden="true">→</span></a>' % (E(next_w["slug"]), E(next_w["title"]))) if next_w else "<span></span>")
     return """
 <section class="pa-aw"><div class="pa-wrap">
-  <nav class="pa-crumb" aria-label="Breadcrumb"><a href="../../gallery/">Virtual Gallery</a><span aria-hidden="true">/</span><a href="index.html">%s</a><span aria-hidden="true">/</span><span aria-current="page">%s</span></nav>
+  <nav class="pa-crumb" aria-label="Breadcrumb"><a href="../../gallery/">Artists’ Gallery</a><span aria-hidden="true">/</span><a href="index.html">%s</a><span aria-hidden="true">/</span><span aria-current="page">%s</span></nav>
   <div class="pa-aw-in">
     <figure class="pa-aw-fig"><span class="pa-aw-frame"><img src="img/%s" srcset="%s" sizes="(max-width:1023px) 94vw, 62vw" width="%d" height="%d" alt="%s" decoding="async" fetchpriority="high"></span>%s
       <figcaption>%s, <i>%s</i>%s</figcaption></figure>

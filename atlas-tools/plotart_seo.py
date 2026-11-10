@@ -159,7 +159,7 @@ def artist_metadata(path, pkg, launch=None):
         if derivative.get("pixels"):
             image_tags += ['<meta property="og:image:%s" content="%s">' % (k, v)
                            for k, v in zip(("width", "height"), derivative["pixels"])]
-    crumbs = [("PlotArt", ORIGIN), ("Virtual Gallery", canonical("gallery/index.html")), (a["display_name"], artist_url)]
+    crumbs = [("PlotArt", ORIGIN), ("Artists’ Gallery", canonical("gallery/index.html")), (a["display_name"], artist_url)]
     if work:
         art = {"@type": "VisualArtwork", "@id": url + "#artwork", "url": url, "name": work["title"],
                "creator": {"@id": person["@id"]}, "artMedium": work["medium"]}

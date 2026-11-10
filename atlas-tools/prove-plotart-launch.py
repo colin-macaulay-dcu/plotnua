@@ -409,7 +409,7 @@ if vg:
          all(re.search(r'src="\.\./artists/(%s)/img/[a-z0-9-]+\.webp"' % "|".join(map(re.escape, GALLERY_SLUGS or ["-"])), t) for t in _vgimgs),
          "L11 the Virtual Gallery shows an image other than a published artist's own work image")
     need(not re.search(r"testimonial|“|”|\bsaid\b", visible_text(vg.split("<main", 1)[-1].split("</main>")[0]), re.I), "L11 the Virtual Gallery carries a quotation or testimonial")
-    need("<title>Irish Artists &amp; Original Art | Virtual Gallery | PlotArt</title>" in vg, "L11 the Virtual Gallery title is not the approved search title")
+    need("<title>Irish Artists &amp; Original Art | Artists’ Gallery | PlotArt</title>" in vg, "L11 the Virtual Gallery title is not the approved search title")
 smp = os.path.join(SITE, "sitemap.xml")
 if os.path.exists(smp):
     _sm = re.findall(r"<loc>([^<]*plotart[^<]*)</loc>", open(smp, encoding="utf-8").read())
@@ -427,8 +427,8 @@ if os.path.exists(smp):
     _azwant = [(p["artist"]["slug"], html.escape(p["artist"]["display_name"], quote=True))
                for p in sorted(_packages, key=lambda p: (p["artist"]["display_name"].casefold(), p["artist"]["slug"]))]
     need(_azlinks == _azwant and (bool(_az) == bool(_packages)), "L11 artist A-Z must match approved public names exactly")
-NAV_WANT = ["Discover PlotArt", "Virtual Gallery", "Mobile Gallery", "Living Gallery", "PlotNua ↗"]  # Mobile Gallery added 3 Nov 2026
-NAV_CURRENT = {"index.html": "Discover PlotArt", "gallery/index.html": "Virtual Gallery", "living-gallery.html": "Living Gallery", "founding-25.html": None, "invitation.html": None, "about.html": None,
+NAV_WANT = ["Discover PlotArt", "Artists’ Gallery", "Mobile Gallery", "Living Gallery", "PlotNua ↗"]  # Mobile Gallery added 3 Nov 2026
+NAV_CURRENT = {"index.html": "Discover PlotArt", "gallery/index.html": "Artists’ Gallery", "living-gallery.html": "Living Gallery", "founding-25.html": None, "invitation.html": None, "about.html": None,
                "mobile-gallery/index.html": "Mobile Gallery", "mobile-gallery/gallery.html": "Mobile Gallery"}
 NAV_CURRENT.update({p: None for p in SEO.GUIDE_PATHS + SEO.EDITORIAL_PATHS + SEO.TOOL_PATHS})
 for name in PAGES:
@@ -450,7 +450,7 @@ for name in PAGES:
         need("Founding 25" not in hv and "About" not in hv, "L11 %s header still offers Founding 25 or About" % name)
 
 # L12 · the Founding 25 and the Living Gallery are separate programmes (founder decision 28 Oct 2026)
-SEP = "The Founding 25 is the PlotArt Virtual Gallery. The Living Gallery is a separate, proposed programme. Taking part in it is optional, and it is never a condition of being a Founding Artist."
+SEP = "The Founding 25 is the PlotArt Artists’ Gallery. The Living Gallery is a separate, proposed programme. Taking part in it is optional, and it is never a condition of being a Founding Artist."
 def main_of(name):
     p = os.path.join(PA, name)
     if not os.path.exists(p):

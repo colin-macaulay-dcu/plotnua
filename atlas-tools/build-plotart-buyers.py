@@ -42,7 +42,7 @@ BUY = '''
 <p>You can explore work through an artist’s own studio or website, a physical gallery, an exhibition or an online gallery. The useful starting point is a particular artist and a particular work: who made it, what it is, whether it is available and who will arrange the sale.</p>
 <p>PlotArt brings individual artists’ galleries together online. You can read their biographies, see each artwork in full and check its stated medium, dimensions, asking price and availability. When a piece interests you, send an enquiry through PlotArt to the artist.</p>
 <div class="pa-guide-callout"><h3>How buying through PlotArt works</h3><p>PlotArt introduces buyers to artists. It does not take payment or deliver artwork. The artist arranges any sale with you directly, including payment, collection or delivery. An enquiry is a way to ask questions; it is not a purchase or a reservation.</p></div>
-<p>For names you already know, use <a href="gallery/">Artists A–Z in the Virtual Gallery</a>. If you are beginning with a style, explore <a href="abstract-contemporary-art-ireland.html">abstract and contemporary Irish art</a>.</p>
+<p>For names you already know, use <a href="gallery/">the A–Z of artists in the Artists’ Gallery</a>. If you are beginning with a style, explore <a href="abstract-contemporary-art-ireland.html">abstract and contemporary Irish art</a>.</p>
 </div></section>
 <section class="pa-guide-section" id="original-or-print"><div class="pa-wrap pa-guide-reading">
 <h2>Original painting, original print or reproduction?</h2>

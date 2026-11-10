@@ -44,7 +44,7 @@ S2_NEW = S2_OLD + "    <p>If you apply to the PlotArt Founding 25, we also colle
 
 F25_SUB = f"""  <!-- {MARKER} · PlotArt Founding 25 applications, privacy notice {VERSION} -->
     <h3 class="pv5-sub" id="founding-25-applications">PlotArt Founding 25 applications (artists)</h3>
-    <p>PlotArt, an initiative of PlotNua, is inviting artists based or working on the island of Ireland to apply to become one of up to 25 Founding Artists, the first artists in the PlotArt Virtual Gallery. Applications are reviewed individually, and places are awarded through a curated selection, not on a first-come, first-served basis. Applying is separate from the Artist Register: it does not add you to the Artist Register, and being on the Artist Register does not count as an application.</p>
+    <p>PlotArt, an initiative of PlotNua, is inviting artists based or working on the island of Ireland to apply to become one of up to 25 Founding Artists, the first artists in the PlotArt Artists’ Gallery. Applications are reviewed individually, and places are awarded through a curated selection, not on a first-come, first-served basis. Applying is separate from the Artist Register: it does not add you to the Artist Register, and being on the Artist Register does not count as an application.</p>
     <p>What we collect when you apply:</p>
     <ul>
       <li>the name you work under, your email address and your county;</li>

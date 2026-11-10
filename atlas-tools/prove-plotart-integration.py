@@ -76,7 +76,7 @@ sec = re.search(r'<section class="pd-section reveal hfa-future".*?</section>', t
 need(sec is not None, "N3 the A Home for Art PlotArt section is missing")
 if sec:
     v = re.sub(r"\s+", " ", html.unescape(re.sub(r"<[^>]+>", " ", sec.group(0))))
-    need("Virtual Gallery of Irish artists" in v and "is now online." in v, "N3 the live gallery status is missing")
+    need("Artists’ Gallery of original Irish art" in v and "is now online." in v, "N3 the live gallery status is missing")
     need("accepting applications" in v, "N3 the Founding 25 application status is missing")
     need("This matching service is not live yet." in v, "N3 home matching must remain described as unavailable")
     need("It isn’t running yet." in v, "N3 Living Gallery must remain described as unavailable")

@@ -94,7 +94,7 @@ ADDED_SENTENCES = {
     "Legal information": "footer link to the Terms page legal information (legal information, founder decision A1-a, 28 Oct 2026)",
     # written as visible() reads them: a link's closing tag becomes a space before the full stop
     "Discover original Irish art with PlotArt.": "Live gallery and buyer resources, 8 Nov 2026",
-    "PlotArt’s Virtual Gallery of Irish artists is now online.": "Approved public galleries only, 8 Nov 2026",
+    "PlotArt’s Artists’ Gallery of original Irish art is now online.": "Approved public galleries only, 8 Nov 2026",
     "Browse published artist profiles and artwork details, then send an enquiry to the artist about a work that interests you.": "Existing enquiry flow, 8 Nov 2026",
     "Any sale is arranged directly with the artist.": "Artist remains seller, 8 Nov 2026",
     "Start with the guide to buying original Irish art and artwork prices , explore abstract and contemporary Irish art , or compare proportions with the free art size calculator .": "Contextual links to existing public buyer resources, 8 Nov 2026",
