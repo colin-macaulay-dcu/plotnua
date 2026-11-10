@@ -356,3 +356,20 @@ The 180 KB raw-size guard recorded above (§ "180 KB is a performance guard") is
 The principle above is unchanged: not a corpus ceiling, the build fails rather than drop a record. Early warnings are at 1,000 records, 36 KB compressed, and a p95 above 100 ms at 6x.
 
 There is no change to `search.js`, the index format or any record. The full text, measurements and capability proofs are in `governance/SEARCH-V1-CONTRACT.md`, Amendment A4.
+
+### 10 November 2026 — AMENDMENT A5 · STARTING PRICES (founder brief; not yet released)
+
+**What changed.**
+- A product price recorded in Atlas as "Starting From" now reads "From €X" in Search.
+- The index marks such a price with `"pf": 1`. The builder's new guard G7f allows that mark only where the source records "Starting From", and requires it there.
+- No other display, record, rule or limit changes.
+
+**Re-stamped:**
+
+| Asset | Before | After |
+|---|---|---|
+| `search.js` | `abda3b569739a15b` | **`f5112ccaa76d67eb`** |
+| `search.css` | unchanged | unchanged |
+
+Same assertion, same strictness (`atlas-tools/prove-landmarks.mjs`). The full text is in `governance/SEARCH-V1-CONTRACT.md`, Amendment A5.
+

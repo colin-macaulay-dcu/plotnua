@@ -477,7 +477,10 @@
       : '<span class="pns-title">' + esc(p.name) + '</span>');
     h.push('<p class="pns-sub">' + esc(p.organisation || '') +
            (p.productType ? ' \u00b7 ' + esc(p.productType) : '') +
-           (pnsPrice(p) != null ? ' \u00b7 ' + money(pnsPrice(p))
+           /* AMENDMENT A5 (10 Nov 2026): a price the source records as a starting
+              price ("pf", set by the index builder only for Atlas "Starting From")
+              reads "From €X"; every other price is shown exactly as before. */
+           (pnsPrice(p) != null ? ' \u00b7 ' + (p.pf === 1 ? 'From\u00a0' : '') + money(pnsPrice(p))
              : pnsUnverified(p) ? ' \u00b7 ' + PRICE_UNVERIFIED : '') + '</p>');
     (p.caveats || []).forEach(function (c) {
       h.push('<p class="pns-caveat">' + esc(CAVEAT_TEXT[c] || c) + '</p>');

@@ -208,6 +208,19 @@ run_case("C9  G7b a price-safe product loses its price", "BUILDER",
 # prices now correctly carry no euro figure. The case still drops price-safe EUR
 # prices silently, which is what G7b exists to catch.
 
+# ------------------------------------------------------------------------ G7f
+# AMENDMENT A5 (10 Nov 2026): "From" only where the source records "Starting From".
+run_case("C9d G7f a 'From' is inferred for a fixed price", "BUILDER",
+         "G7f starting-price marks",
+         mutate_builder=lambda b: b.replace(
+             '        if norm_space(r.get("priceType") or "") == STARTING_FROM:\n            rec["pf"] = 1',
+             '        if norm_space(r.get("priceType") or "") in (STARTING_FROM, "Standard Price"):\n            rec["pf"] = 1'))
+run_case("C9e G7f an explicit starting price loses its 'From'", "BUILDER",
+         "G7f starting-price marks",
+         mutate_builder=lambda b: b.replace(
+             '        if norm_space(r.get("priceType") or "") == STARTING_FROM:\n            rec["pf"] = 1',
+             '        if norm_space(r.get("priceType") or "") == STARTING_FROM and r.get("organisation") != "SIPS-House":\n            rec["pf"] = 1'))
+
 # ------------------------------------------------------------------------ G7c
 # STAGE 3D-B1 (6 Nov 2026): Search shows every price as euro. These two cases
 # re-create the defect found in Stage 3D-A (GBP/USD prices shown with a euro sign,

@@ -82,7 +82,12 @@ ALLOWED_FIELDS = {
                 # envelope template, routes.wellness, named by the short key
                 # "rt": "wellness"; the runtime composes it exactly as it did the
                 # stored string. No product carries a per-record "route" any more.
-                "rt"},
+                "rt",
+                # 10 Nov 2026 (AMENDMENT A5, starting prices): "pf": 1 marks a shown
+                # price that the source records explicitly as a starting price (Atlas
+                # Price Type "Starting From"); search.js then reads it "From €X".
+                # Never inferred: a range floor or any other price type has no "pf".
+                "pf"},
     # NO "route": a supplier expands inside Search (D-7) and cannot navigate.
     # Likewise no "productIds": a supplier's products are exactly the product
     # records whose organisation matches its name, which the runtime already
@@ -258,6 +263,9 @@ def price_current(r):
     return isinstance(fu, str) and PRICE_TODAY <= fu
 
 
+STARTING_FROM = "Starting From"   # the Atlas Price Type value, verbatim (AMENDMENT A5)
+
+
 def euro_price(r):
     """STAGE 3D-B1 (6 Nov 2026) — THE ONE PRICE RULE FOR SEARCH.
 
@@ -353,6 +361,7 @@ if AH_UNIVERSE.exists():
             "price": amount if safe else None,
             "currency": qprice.get("currency"),
             "priceBasis": qprice.get("basis") or None,
+            "priceType": qprice.get("priceType"),        # A5: read only to mark "pf"
         })
     print("  AH products      %d  (of %d in the corpus, gate + ELIGIBLE only)"
           % (len(ah_rows), len(AH.get("products") or [])))
@@ -439,6 +448,7 @@ if WL_UNIVERSE.exists():
             # index past G10 when the 59 shared-maker products joined, and G10
             # forbids dropping records -- so the redundancy went, not records.
             "priceBasis": "Verified" if safe else None,
+            "priceType": qp.get("type"),                # A5: read only to mark "pf"
         })
     print("  WL products      %d  (of %d in the corpus, gate + ELIGIBLE only)"
           % (len(wl_rows), len(WL.get("products") or [])))
@@ -768,6 +778,9 @@ for r in rows + ah_rows + wl_rows:
         # comparison with it, whenever the index itself was built.
         if r.get("priceFreshUntil"):
             rec["fu"] = r["priceFreshUntil"]
+        # AMENDMENT A5 (10 Nov 2026): explicitly recorded starting prices only.
+        if norm_space(r.get("priceType") or "") == STARTING_FROM:
+            rec["pf"] = 1
     elif r.get("priceState") == "not-verified" or (r.get("priceState") == "eligible" and not price_current(r)):
         # A price exists in Atlas but is not currently verified: no figure, no filter,
         # and the card says so (search.js "Price not currently verified").
@@ -1097,6 +1110,22 @@ if emitted != safe_ids:
     die("G7b price-safe products not carrying a price: %d missing %r / %d unexpected %r"
         % (len(safe_ids - emitted), missing, len(emitted - safe_ids), extra))
 print("  G7b every one of the %d price-safe products carries its price  OK" % len(safe_ids))
+# G7f (AMENDMENT A5, 10 Nov 2026) "From" only on a shown price, and only where the
+# source corpus itself records the price type "Starting From": checked here against
+# the corpora read directly, independently of the emitter above.
+_explicit_from = set()
+for _r in rows + ah_rows + wl_rows:
+    if norm_space(_r.get("priceType") or "") == STARTING_FROM:
+        _explicit_from.add("prod-" + str(_r.get("id") or _r.get("productId") or ""))
+_pf = {r["id"] for r in records if r["type"] == "product" and "pf" in r}
+_bad_pf = [r["id"] for r in records if r["type"] == "product" and "pf" in r
+           and (r.get("pf") != 1 or "price" not in r or r["id"] not in _explicit_from)]
+_missing_pf = [r["id"] for r in records if r["type"] == "product" and "price" in r
+               and r["id"] in _explicit_from and "pf" not in r]
+if _bad_pf or _missing_pf:
+    die("G7f starting-price marks: %d unexplained %r / %d missing %r"
+        % (len(_bad_pf), _bad_pf[:3], len(_missing_pf), _missing_pf[:3]))
+print("  G7f %d shown prices marked 'From' (explicit Starting From only)  OK" % len(_pf))
 
 # G7c CURRENCY, checked independently of euro_price(): Search formats every price as
 # euro, so no product price and no supplier range may come from a record whose own

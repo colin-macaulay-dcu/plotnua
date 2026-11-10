@@ -508,6 +508,32 @@ No early warning is reached.
 
 **Capacity gained.** About 277 more records before G10c, or about 76 KB raw before G10b, whichever comes first.
 
+## AMENDMENT A5 · STARTING PRICES (10 November 2026; founder brief "Correct the display of starting prices in PlotNua site-search results"; NOT YET RELEASED)
+
+**Defect.** A product row showed every price as a bare figure, "€X". For a product whose Atlas price is recorded as a starting price (Atlas Price Type "Starting From"), that read as a fixed price. For example, Arctic Wellness Ember showed "€11,550"; its supplier publishes €11,550 to €11,800.
+
+**Rule.**
+- A product record may carry `"pf": 1` only when both are true:
+  - it shows a price; and
+  - its source corpus records that price's type as exactly "Starting From". The source fields are: garden-room `priceType`; Additional Home `price.priceType`; wellness `price.type`.
+- `search.js` then reads the row "From €X".
+- Nothing is inferred. A Standard Price or Sale Price stays "€X". This includes a garden-room Standard Price that is the floor of a published range (`priceIsRangeFloor`).
+- Supplier ranges ("· from €X") are unchanged.
+
+**Guard G7f.** The builder refuses:
+- a "pf" mark without a shown price;
+- a "pf" mark on a price whose source type is not "Starting From"; and
+- a shown "Starting From" price without the mark.
+
+The source corpora are read directly for this check. Capability cases C9d (a "From" inferred for a fixed price) and C9e (an explicit starting price losing its "From") are in `atlas-tools/prove-search-guards.py`.
+
+**Effect at introduction:**
+- 90 of 346 shown prices carry "From": 51 wellness and 39 garden-room. No Additional Home product shows a price figure in Search today, so none is marked; the rule applies to them unchanged if one does.
+- No record is added or removed, and no other field changes.
+- Index: 187,104 bytes raw, 27.0 KB gzip-9, 831 records (rebuilt on main fbd272b). All are within the A4 guards.
+
+**Shared asset.** `search.js` changes in one expression, `productItem()` ("From" plus a non-breaking space before the figure, so the two never wrap apart). Its frozen hash is re-stamped in `atlas-tools/prove-landmarks.mjs` and in the freeze record. `search.css` is unchanged.
+
 ## TARGETED-UPDATE RE-FREEZES
 
 The universe pin above is moved only by a targeted publication whose boundary check proved every other record byte-identical.
