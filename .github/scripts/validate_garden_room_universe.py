@@ -214,7 +214,60 @@ def validate(doc, raw, production_count, min_fraction):
         "rawBytes": len(raw) if raw else 0,
         "gzipBytes": len(gzip.compress(raw, 9)) if raw else 0,
     }
+    errors.extend(validate_no_correspondence(products))
     return errors, warnings, stats
+
+
+# ---------------------------------------------------------------------------
+# M8C STAGE 1 — NO SUPPLIER CORRESPONDENCE IN THE PUBLISHED UNIVERSE.
+#
+# This file is served to every homeowner's browser. Atlas research text once
+# carried a supplier contact's name and a Gmail identifier into it (ÖÖD House,
+# removed 10 Nov 2026). The evidence itself lives in Atlas and the Supplier
+# CRM, which are private; the public artefact may say THAT a supplier confirmed
+# something by email and when, never who wrote it or which message it was.
+#
+# Every string anywhere in a product is checked, not only features[].text, so
+# moving the wording to another field does not get it through. All patterns
+# were measured at zero matches across the whole universe when introduced.
+# ---------------------------------------------------------------------------
+CORRESPONDENCE_PATTERNS = (
+    ("a Gmail reference", re.compile(r"(?i)\bgmail\b")),
+    ("an email thread or message identifier",
+     re.compile(r"(?i)\b(?:thread|message)\s+[0-9a-f]{16}\b")),
+    ("a bare 16-hex mail identifier", re.compile(r"\b[0-9a-f]{16}\b")),
+    ("a link into a mailbox or private message thread",
+     re.compile(r"(?i)mail\.google\.com|instagram\.com/direct")),
+    ("correspondence attributed to a named person",
+     re.compile(r"\b(?:e-?mail(?:ed)?|DM|direct message|message|wrote|replied)\b"
+                r"[^.;:]{0,25}\b(?:from|to|by)\s+[A-Z][a-z]+ [A-Z][a-z]{2,}\b")),
+)
+
+
+def _strings(x, path):
+    if isinstance(x, dict):
+        for k, v in x.items():
+            yield from _strings(v, f"{path}.{k}")
+    elif isinstance(x, list):
+        for i, v in enumerate(x):
+            yield from _strings(v, f"{path}[{i}]")
+    elif isinstance(x, str):
+        yield path, x
+
+
+def validate_no_correspondence(products):
+    errors = []
+    for i, p in enumerate(products):
+        if not isinstance(p, dict):
+            continue
+        pid = p.get("id") if isinstance(p.get("id"), str) else f"#{i}"
+        for path, s in _strings(p, ""):
+            for label, rx in CORRESPONDENCE_PATTERNS:
+                if rx.search(s):
+                    errors.append(f"{pid}{path}: published text carries {label}; "
+                                  "supplier correspondence stays in Atlas, never in the universe")
+                    break
+    return errors
 
 
 # ---------------------------------------------------------------------------

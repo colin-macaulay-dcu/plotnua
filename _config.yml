@@ -18,3 +18,7 @@ exclude:
   - PLOTNUA-JOURNEY-CONTRACT.md
   - QUALIFICATION-BATCH1-SOURCE-DATA-REMEDIATION.md
   - _config.yml
+  # M8C Stage 1 (10 Nov 2026): the rights records carry supplier correspondence
+  # and are read only by the gate and the builders, never by a page.
+  - image-rights-records.json
+  - image-rights-manifest.json
