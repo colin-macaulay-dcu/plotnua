@@ -49,7 +49,7 @@
 <meta property="og:image" content="https://plotnua.ie/assets/disc038/img/DISC-038-og-1200x630.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="Illustrative AI-generated visualisation (vector drawing made with Claude), not to scale, of an Irish house and garden with a family shelter under the lawn. Not an actual installation or a specific product.">
+<meta property="og:image:alt" content="Illustrative AI-generated visualisation of an Irish back garden at dusk with an engineered shelter entrance open beside the patio and a warmly lit room below. Not an actual installation.">
 <meta property="og:url" content="https://plotnua.ie/discovery-the-hidden-shelter.html">
 <meta property="og:locale" content="en_IE">
 
@@ -548,6 +548,19 @@ body.pn-id.pn-pd .hs-form .hs-consent{ flex-direction:row; align-items:flex-star
 body.pn-id.pn-pd .hs-form .hs-consent input{ margin-top:3px; }
 body.pn-id.pn-pd .hs-promise{ list-style:none; margin:22px 0 0; padding:18px 0 0; border-top:1px solid var(--p4-line); display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:10px 22px; font-size:15px; color:var(--p4-stone); }
 body.pn-id.pn-pd #hs-questions{ margin-top:clamp(18px,2vw,28px); }
+@media (max-width:1024px) and (orientation:portrait), (max-width:719px){
+  /* Stage 4 (as DISC-037 Stage 11A): no compact title above the image on phones and portrait tablets; the heading below is
+     the only title, with its eyebrow shown again; tighter copy spacing. */
+  body.pn-id.pn-pd .hs-hero .d-hero-copy{ padding:18px clamp(16px,4vw,40px) 20px; }
+  body.pn-id.pn-pd .d-hero.pn-hero-compare--std.hs-hero .d-hero-copy .eyebrow{ position:static !important; width:auto; height:auto; margin:0 0 8px; overflow:visible; clip:auto; clip-path:none; white-space:normal; }
+  body.pn-id.pn-pd .hs-hero .d-hero-copy h1{ line-height:1.02; }
+  body.pn-id.pn-pd .hs-hero .d-hero-copy .subtitle{ max-width:28ch; margin-top:10px; }
+  body.pn-id.pn-pd .hs-hero .d-hero-copy .intro{ margin-top:10px; }
+  body.pn-id.pn-pd .hs-hero .pn-compare--hero{ --pnc-focus:76% 55%; }
+}
+body.pn-id.pn-pd .hs-section{ margin:0; }
+body.pn-id.pn-pd .hs-section img{ display:block; width:100%; height:auto; border-radius:14px; border:1px solid var(--p4-line); }
+body.pn-id.pn-pd .hs-section figcaption{ margin-top:12px; }
 </style>
 </head>
 <body class="pn-id pn-id--dark pn-id--disc pn-pd pn-hdr-on">
@@ -606,28 +619,29 @@ body.pn-id.pn-pd #hs-questions{ margin-top:clamp(18px,2vw,28px); }
      release, merge into main and any public enquiry route each need explicit founder approval.
      TEMPLATE: the DISC-037 page (premium Discovery toolkit, shared pn-compare slider, pn-rg-editorial components),
      content replaced; no shared CSS or JS changed.
-     HERO: an interim vector section drawing written as code by Claude (atlas-tools/build-disc038-hero-illustration.py),
-     classed AI_ILLUSTRATION as the GridNua precedent; not a photograph, not any real product, house or installation. One coordinate frame, so BEFORE and POSSIBLE align.
-     The photographic AI hero proposed in the Stage 3 image plan replaces it only once the founder supplies it.
+     HERO (Stage 4, 8 Nov 2026): the founder's ChatGPT pair (C2PA-declared AI_ILLUSTRATION, atlas-tools/build-disc038-images.py),
+     in the standard pn-compare slider opening at 100% BEFORE. Hero copies crop y 64-1024 to remove generated lettering; phone copies
+     are the 4:5 window x 640-1459. Minor BEFORE/POSSIBLE differences accepted by the founder.
+     CHAPTER 02 SECTION: the Stage 3 interim hero drawing (POSSIBLE view), written as code by Claude
+     (atlas-tools/build-disc038-section-illustration.py; AI_ILLUSTRATION, the GridNua precedent), retained on the founder's instruction.
      DRAWINGS: PlotNua vectors, not to scale.
      COMMERCIAL: none. Manufacturers are named as researched, text only, never as partners; none has confirmed Irish
      supply. The register-interest form is a NON-FUNCTIONAL preview: no action, no endpoint, inputs disabled. -->
 <header class="d-hero ns-hero rg-hero hs-hero pn-hero-compare pn-hero-compare--std">
-  <div class="pn-hero-compare__mtitle" aria-hidden="true"><span class="pn-hero-compare__mkicker">A PlotNua Discovery</span><span class="pn-hero-compare__mname">The Hidden Shelter</span></div>
-  <figure class="pn-compare pn-compare--hero" id="hsHeroCompare" data-start="100" data-subject="the garden" data-line-fade-under="#dHeroCopy" style="--pnc-focus:68% 60%">
+  <figure class="pn-compare pn-compare--hero" id="hsHeroCompare" data-start="100" data-subject="the garden" data-line-fade-under="#dHeroCopy" style="--pnc-focus:72% 58%">
     <div class="pn-compare__stage">
       <div class="pn-compare__possible">
         <picture>
           <source type="image/webp" media="(max-width:719px)" srcset="assets/disc038/img/DISC-038-POSSIBLE-M-819.webp 819w" sizes="100vw">
           <source type="image/webp" srcset="assets/disc038/img/DISC-038-POSSIBLE-768.webp 768w, assets/disc038/img/DISC-038-POSSIBLE-1024.webp 1024w, assets/disc038/img/DISC-038-POSSIBLE-1376.webp 1376w, assets/disc038/img/DISC-038-POSSIBLE-1536.webp 1536w" sizes="(max-width:1024px) and (orientation:portrait) 150vw, max(100vw, 150svh)">
-          <img id="dHeroImg" class="on" src="assets/disc038/img/DISC-038-POSSIBLE-1024.jpg" width="1536" height="1024" decoding="async" alt="Possible: the same house and garden drawn in section, with a family shelter under the lawn: an open entrance hatch beside the patio, a stair down to an entry room, a living and kitchen room, a bunk room, a shower and WC, and a plant room for air filtration, water and batteries, with an air intake in the planting and an escape hatch at the far end. An AI-generated illustration (vector drawing made with Claude), not to scale.">
+          <img id="dHeroImg" class="on" src="assets/disc038/img/DISC-038-POSSIBLE-1024.jpg" width="1536" height="960" decoding="async" alt="Possible: the same garden at dusk with an engineered shelter entrance open in the planting beside the patio: a concrete-edged steel lid raised on struts above a lit concrete stair that leads down to a warmly lit room with a sofa, shelves and a table. An AI-generated illustration, not an actual installation.">
         </picture>
       </div>
       <div class="pn-compare__before">
         <picture>
           <source type="image/webp" media="(max-width:719px)" srcset="assets/disc038/img/DISC-038-BEFORE-M-819.webp 819w" sizes="100vw">
           <source type="image/webp" srcset="assets/disc038/img/DISC-038-BEFORE-768.webp 768w, assets/disc038/img/DISC-038-BEFORE-1024.webp 1024w, assets/disc038/img/DISC-038-BEFORE-1376.webp 1376w, assets/disc038/img/DISC-038-BEFORE-1536.webp 1536w" sizes="(max-width:1024px) and (orientation:portrait) 150vw, max(100vw, 150svh)">
-          <img fetchpriority="high" src="assets/disc038/img/DISC-038-BEFORE-1024.jpg" width="1536" height="1024" decoding="async" alt="Before: a contemporary two-storey Irish house at dusk, drawn in section, with lit windows, a patio, a long lawn, trees and a hedge, and plain ground below the garden. An AI-generated illustration (vector drawing made with Claude), not to scale.">
+          <img fetchpriority="high" src="assets/disc038/img/DISC-038-BEFORE-1024.jpg" width="1536" height="960" decoding="async" alt="Before: the back garden of a contemporary Irish house at dusk, with lit glass doors, a stone patio with a dining table and a lantern, a broad lawn, lit planting of lavender, grasses and ferns, mature trees and a tall hedge. An AI-generated illustration.">
         </picture>
       </div>
       <span class="pn-compare__line" aria-hidden="true"></span>
@@ -645,7 +659,7 @@ body.pn-id.pn-pd #hs-questions{ margin-top:clamp(18px,2vw,28px); }
         <button type="button" data-to="0" aria-pressed="false">Possible</button>
       </div>
     </div>
-    <p class="pn-compare__note">Illustrative AI-generated visualisation. Not an actual installation. A vector drawing made with Claude for PlotNua; not to scale and not a specific product.</p>
+    <p class="pn-compare__note">Illustrative AI-generated visualisation. Not an actual installation.</p>
   </figure>
   <div class="d-hero-scrim"></div>
   <div class="d-hero-copy in" id="dHeroCopy">
@@ -656,7 +670,7 @@ body.pn-id.pn-pd #hs-questions{ margin-top:clamp(18px,2vw,28px); }
     <p class="intro">Purpose-built family shelters are now sold to homeowners across Europe and the US. What they contain, how they&rsquo;re engineered, and whether one could ever work in Ireland.</p>
   </div>
 </header>
-<p class="pn-hero-note pn-hero-note--inset" style="--pnn-inset:4vw">Illustrative AI-generated visualisation. Not an actual installation. A vector drawing made with Claude for PlotNua; not to scale and not a specific product.</p>
+<p class="pn-hero-note pn-hero-note--inset" style="--pnn-inset:4vw">Illustrative AI-generated visualisation. Not an actual installation.</p>
 <p class="hs-preview" role="note"><strong>Private preview</strong> &middot; DISC-038 &middot; not published &middot; the register-interest form on this page is not connected</p>
 
 <main id="pn-main">
@@ -731,6 +745,13 @@ body.pn-id.pn-pd #hs-questions{ margin-top:clamp(18px,2vw,28px); }
 <section class="pd-section" id="life-below" aria-labelledby="hsLifeH">
   <div class="pd-wrap pd-stack">
     <h2 class="ns-sr" id="hsLifeH">What a modern residential shelter contains</h2>
+    <figure class="hs-section reveal">
+      <picture>
+        <source type="image/webp" srcset="assets/disc038/img/DISC-038-SECTION-768.webp 768w, assets/disc038/img/DISC-038-SECTION-1024.webp 1024w, assets/disc038/img/DISC-038-SECTION-1376.webp 1376w, assets/disc038/img/DISC-038-SECTION-1536.webp 1536w" sizes="(max-width:1200px) 100vw, 1160px">
+        <img src="assets/disc038/img/DISC-038-SECTION-1024.jpg" width="1536" height="1024" loading="lazy" decoding="async" alt="A section through a house and back garden with a family shelter under the lawn: an open entrance hatch beside the patio, a stair down to an entry room, a living and kitchen room, a bunk room, a shower and WC, and a plant room for air filtration, water and batteries, with an air intake in the planting and an escape hatch at the far end. An AI-generated illustration, not to scale.">
+      </picture>
+      <figcaption class="or-cap">In section: how a family shelter is laid out under a garden, from the entrance stair to the plant room and the escape hatch. AI-generated illustration (vector drawing made with Claude). Not to scale; not a specific product or installation.</figcaption>
+    </figure>
     <figure class="or-diagram reveal">
       <svg viewBox="0 0 960 420" role="img" aria-labelledby="hsPlanT hsPlanD">
         <title id="hsPlanT">A generic plan of a family shelter for four to six people. Not to scale, and not any specific product.</title>
@@ -816,7 +837,7 @@ body.pn-id.pn-pd #hs-questions{ margin-top:clamp(18px,2vw,28px); }
         <div><dt>Advertised price</dt><dd>&pound;105,000 plus 5% UK VAT, before delivery, excavation, crane, backfill and services (2025 brochure)</dd></div>
         <div><dt>Ireland</dt><dd>Not confirmed. Its brochure asks for a quote outside the UK mainland; its FAQ says it can&rsquo;t install outside the UK</dd></div>
       </dl>
-      <p class="rg-not">Shown as an example of what exists, not a recommendation. Burrowed is not a PlotNua partner and has not been contacted. Details from its published brochure, checked 8 November 2026.</p>
+      <p class="rg-not">Shown as an example of what exists, not a recommendation. Burrowed is not a PlotNua partner, and PlotNua has no agreement with it. Details from its published brochure, checked 8 November 2026.</p>
     </div>
     <div class="lg-group is-guide"><p class="lg-group-k">Features are not protection</p><p class="lg-group-n">Everything in this chapter is what makers say their products include. How well any shelter protects the people inside depends on its design, its installation, its certification and its upkeep. PlotNua has tested none of them, and no Irish standard for private shelters exists.</p></div>
   </div>
@@ -906,7 +927,7 @@ body.pn-id.pn-pd #hs-questions{ margin-top:clamp(18px,2vw,28px); }
       <li><h4>Atlas Survival Shelters</h4><p class="or-where">Texas, USA</p><p>Steel shelters with Swiss or Israeli air filtration. It says it ships worldwide and has dealers in more than 30 countries; installation and freight are extra, and it suggests budgeting about 30% of the price to install.</p></li>
       <li><h4>Rising S Company</h4><p class="or-where">Texas, USA</p><p>All-steel shelters; its 3 &times; 12-metre (10 &times; 40&thinsp;ft) base model is listed at US$103,900 with NBC filtration included, before delivery and installation.</p></li>
     </ul>
-    <p class="pd-small ns-credit reveal">From each company&rsquo;s own published pages and brochures, and press reports where noted (BSSD), checked 8 November 2026. Prices are as advertised in each company&rsquo;s home market and exclude delivery, excavation, installation and Irish taxes. <strong>None of these companies has confirmed that it supplies or installs in Ireland. None is a PlotNua partner, none has been contacted, and inclusion is not a recommendation.</strong> No photographs from these companies are shown.</p>
+    <p class="pd-small ns-credit reveal">From each company&rsquo;s own published pages and brochures, and press reports where noted (BSSD), checked 8 November 2026. Prices are as advertised in each company&rsquo;s home market and exclude delivery, excavation, installation and Irish taxes. <strong>None of these companies has confirmed that it supplies or installs in Ireland. None is a PlotNua partner, PlotNua has no agreement with any of them, and inclusion is not a recommendation.</strong> No photographs from these companies are shown.</p>
   </div>
 </section>
 
@@ -1050,7 +1071,7 @@ body.pn-id.pn-pd #hs-questions{ margin-top:clamp(18px,2vw,28px); }
           <li>Radon: EPA radon map and indoor levels, as reported by TheJournal.ie, 2022; Technical Guidance Document C (radon protection in High Radon Areas). Groundwater: <a href="https://www.gsi.ie" rel="noopener" target="_blank">Geological Survey Ireland</a>. Electrical work: Commission for Regulation of Utilities.</li>
           <li>Engineering: ingenieur.de, &ldquo;Bunker im Garten: Warum privater Schutzraumbau so kompliziert ist&rdquo;, 23 March 2026 (groundwater and buoyancy).</li>
         </ol>
-        <p class="pd-small">Last checked 8 November 2026. PlotNua is an independent discovery platform and has no commercial relationship with any company named on this page. Manufacturers&rsquo; descriptions and claims are reported as theirs and have not been independently tested. The planning summary is general information, not legal advice. The hero drawing is an AI-generated illustration (a vector drawing made with Claude for PlotNua). The plan and section drawings in the chapters are simplified PlotNua diagrams. None is to scale or shows a real installation or specific product.</p>
+        <p class="pd-small">Last checked 8 November 2026. PlotNua is an independent discovery platform and has no agreement or commercial relationship with any company named on this page. Manufacturers&rsquo; descriptions and claims are reported as theirs and have not been independently tested. The planning summary is general information, not legal advice. The hero images are AI-generated illustrations (ChatGPT), and the chapter 02 section is an AI-generated illustration (a vector drawing made with Claude). The plan and systems drawings are simplified PlotNua diagrams. None shows a real installation or a specific product.</p>
       </div>
     </details>
   </div>

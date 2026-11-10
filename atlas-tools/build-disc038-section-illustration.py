@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
-"""DISC-038 The Hidden Shelter: the interim hero illustration (Stage 3 private preview, 8 Nov 2026).
+"""DISC-038 The Hidden Shelter: the section illustration (chapter 02). Stage 3 interim hero (8 Nov 2026); since Stage 4
+(8 Nov 2026) the chapter 02 illustration of how a shelter is laid out, after the founder's photographic hero pair replaced it.
 
-A PlotNua vector illustration, written here by hand. It is not AI-generated imagery, it reproduces no photograph and
-no manufacturer's design, and it is not a drawing of any real product, house or installation. It is a generic,
+A vector drawing written as code by Claude (declared AI_ILLUSTRATION, the GridNua precedent). It reproduces no photograph
+and no manufacturer's design, and it is not a drawing of any real product, house or installation. It is a generic,
 illustrative section through an ordinary Irish house and back garden:
 
   BEFORE    the garden as it is today: the house, a patio, a lawn, trees and a hedge, with plain ground below.
@@ -13,9 +14,9 @@ illustrative section through an ordinary Irish house and back garden:
 Both files share one coordinate frame (1536 x 1024), so the Before/Possible slider aligns to the pixel. The phone
 crop (819 x 1024) is the same drawing seen through a narrower window, so it aligns too.
 
-Usage:  python3 atlas-tools/build-disc038-hero-illustration.py
-Writes: assets/disc038/img/DISC-038-{BEFORE,POSSIBLE}.svg, -MASTER.png (3072 wide), -{768,1024,1376,1536}.webp,
-        -1024.jpg, -M-819.webp, and DISC-038-og-1200x630.jpg.
+Usage:  python3 atlas-tools/build-disc038-section-illustration.py
+Writes (since Stage 4, the POSSIBLE view only): assets/disc038/img/DISC-038-SECTION.svg, -MASTER.png (3072 wide),
+        -{768,1024,1376,1536}.webp and -1024.jpg.
 """
 import os, subprocess, io
 from PIL import Image
@@ -303,24 +304,18 @@ def render(svg_path, png_path, width):
 
 
 def main():
+    """Stage 4 (8 Nov 2026): the drawing is no longer the hero. Only the POSSIBLE view is kept, as the chapter 02 section
+    illustration. Its pixels are unchanged from Stage 3; only the file names and the set of copies changed."""
     os.makedirs(OUT, exist_ok=True)
-    for name, possible in (("BEFORE", False), ("POSSIBLE", True)):
-        sp = os.path.join(OUT, f"DISC-038-{name}.svg")
-        with open(sp, "w") as f:
-            f.write(svg(possible))
-        master = os.path.join(OUT, f"DISC-038-{name}-MASTER.png")
-        render(sp, master, W * 2)
-        im = Image.open(master).convert("RGB")
-        for w in (768, 1024, 1376, 1536):
-            im.resize((w, round(w * H / W)), Image.LANCZOS).save(os.path.join(OUT, f"DISC-038-{name}-{w}.webp"), "WEBP", quality=86, method=6)
-        im.resize((1024, round(1024 * H / W)), Image.LANCZOS).save(os.path.join(OUT, f"DISC-038-{name}-1024.jpg"), "JPEG", quality=86, optimize=True, progressive=True)
-        # phone window: the same drawing, 819 x 1024 in the 1536 frame
-        sc = im.width / W
-        crop = im.crop((round(M_X0 * sc), 0, round((M_X0 + 819) * sc), round(H * sc))).resize((819, 1024), Image.LANCZOS)
-        crop.save(os.path.join(OUT, f"DISC-038-{name}-M-819.webp"), "WEBP", quality=86, method=6)
-        if possible:
-            og = im.resize((1200, 800), Image.LANCZOS).crop((0, 85, 1200, 715))
-            og.save(os.path.join(OUT, "DISC-038-og-1200x630.jpg"), "JPEG", quality=86, optimize=True)
+    sp = os.path.join(OUT, "DISC-038-SECTION.svg")
+    with open(sp, "w") as f:
+        f.write(svg(True))
+    master = os.path.join(OUT, "DISC-038-SECTION-MASTER.png")
+    render(sp, master, W * 2)
+    im = Image.open(master).convert("RGB")
+    for w in (768, 1024, 1376, 1536):
+        im.resize((w, round(w * H / W)), Image.LANCZOS).save(os.path.join(OUT, f"DISC-038-SECTION-{w}.webp"), "WEBP", quality=86, method=6)
+    im.resize((1024, round(1024 * H / W)), Image.LANCZOS).save(os.path.join(OUT, "DISC-038-SECTION-1024.jpg"), "JPEG", quality=86, optimize=True, progressive=True)
     print("written to", OUT)
 
 

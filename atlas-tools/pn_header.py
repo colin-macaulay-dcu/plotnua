@@ -72,6 +72,7 @@ IDENTITY_PAGES = [
     "discovery-the-outdoor-room.html",  # DISC-035 (founder build authorisation, private preview only, 4 Nov 2026)
     "discovery-extend-the-house.html",  # DISC-036 (PLOTNUA-BUILD-001 Stage 1, private preview only, 5 Nov 2026)
     "discovery-the-resourceful-garden.html",  # DISC-037 (Stage 3 private preview only, 8 Nov 2026)
+    "discovery-the-hidden-shelter.html",  # DISC-038 (Stage 3/4 private preview only, noindex, unlinked, 8-10 Nov 2026)
     "ideas.html",                       # Idea Board (Phase 1 build, 1 Nov 2026; noindex; release pending)
     "borrowed-garden-board.html",       # The Borrowed Garden noticeboard (release candidate, 4 Nov 2026; noindex)
 ]

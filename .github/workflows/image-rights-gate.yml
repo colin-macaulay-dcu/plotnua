@@ -467,6 +467,10 @@ jobs:
           # no crossfade left behind); the five declared chapter images with the AI label; provenance by hash; Groundfridge as an example
           # only (no partner, distributor or endorsement wording); planning limits without exemption guarantees.
           python3 atlas-tools/prove-disc037-page.py --self-test
+          # DISC-038 The Hidden Shelter (Stage 3/4 private preview only, noindex, unlinked, 8-10 Nov 2026): noindex/nofollow, one
+          # H1, the standard slider on the founder's C2PA pair opening at 100% BEFORE, the AI label, the chapter section drawing,
+          # no distributor/installer/partner claims, planning and price qualifications, an inert form and no enquiry routing.
+          python3 atlas-tools/prove-disc038-page.py --self-test
           # Safety lock (23 Oct 2026): the 17 Oct merge builder must refuse to
           # regenerate the approved Premium page, and must leave every file as it was.
           set +e; out=$(python3 atlas-tools/build-a-home-for-art-merge.py --apply 2>&1); rc=$?; set -e

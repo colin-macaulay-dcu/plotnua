@@ -124,6 +124,8 @@ PAGES = {
     "discovery-extend-the-house.html": "dark",
     # DISC-037 The Resourceful Garden (Stage 3 private preview only, 8 Nov 2026)
     "discovery-the-resourceful-garden.html": "dark",
+    # DISC-038 The Hidden Shelter (Stage 3/4 private preview only, noindex, unlinked, 8-10 Nov 2026)
+    "discovery-the-hidden-shelter.html": "dark",
     # Idea Board, the Discovery Library's companion page (Phase 1 build, 1 Nov 2026; noindex; release pending)
     "ideas.html": "dark",
     # The Borrowed Garden noticeboard, the Discovery's companion page (release candidate, 4 Nov 2026; noindex)
@@ -137,7 +139,7 @@ DISC = {"discovery-reinvented-interior.html", "discoveries.html", "discovery-hid
         "discovery-natural-swimming-garden.html", "discovery-hidden-flood-barrier.html",
         "discovery-supper-club-at-home.html", "discovery-underground-swimming-pool.html",
         "discovery-stay-in-the-house-you-love.html", "discovery-the-water-wall.html",
-        "discovery-the-outdoor-room.html", "discovery-extend-the-house.html", "discovery-the-resourceful-garden.html", "ideas.html", "borrowed-garden-board.html"}
+        "discovery-the-outdoor-room.html", "discovery-extend-the-house.html", "discovery-the-resourceful-garden.html", "discovery-the-hidden-shelter.html", "ideas.html", "borrowed-garden-board.html"}
 # Pages that also load the Premium component layer (I13, I14): the registry.
 PREMIUM = set(premium_pages.PREMIUM_PAGES)
 # Premium pages that are a Discovery's guide rather than a Discovery (no Discovery layer).
