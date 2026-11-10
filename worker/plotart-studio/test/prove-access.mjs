@@ -187,7 +187,7 @@ check('S6 no new table and no refused-sign-in logging (brief §8): schema unchan
   !(await db.prepare("SELECT name FROM sqlite_master WHERE type='table' AND name LIKE '%refus%'").first()) &&
   (await db.prepare("SELECT COUNT(*) n FROM audit WHERE actor LIKE '%lara-studio%' OR actor LIKE 'nobody@%'").first()).n === 0);
 check('S7 unit: the shared validator (create and update) accepts plain addresses and rejects hidden characters',
-  L.artistEmail(' Leah@Gmail.com\n') === 'leah@gmail.com' && (() => { try { L.artistEmail('leah​hewson@gmail.com'); return false; } catch (e) { return /U\+200B/.test(e.message); } })());
+  L.artistEmail(' Test.Artist@Example.COM\n') === 'test.artist@example.com' && (() => { try { L.artistEmail('test​artist@example.com'); return false; } catch (e) { return /U\+200B/.test(e.message); } })());
 
 await mf.dispose();
 const pass = results.filter(Boolean).length;

@@ -470,7 +470,7 @@ def build(src):
     out = re.sub(r'"dateModified":\s*"[0-9-]+"', '"dateModified": "%s"' % TODAY, out, count=1)
     # ── THE SAUNA EXAMPLE (14 Oct 2026, final publication consistency
     # corrections). MyCabin is held from the Garden Retreat directory and
-    # replied "This is not something we are interested in" (17 Sep 2026), so
+    # declined by email (17 Sep 2026; wording held privately), so
     # its Cube Sauna M, price and showrooms leave the comparison. The
     # replacement is a product the directory publishes: Hansa24's Lisette
     # (G0093), Atlas recu6KOXm4cJngQHW -- external 365 x 208 cm, room area

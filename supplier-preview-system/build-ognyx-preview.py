@@ -7,9 +7,9 @@ TEMPLATE: supplier-preview-system/template-provider-led.html (variant B).
 
 WHAT CHANGED, AND WHY THE SENT PAGE WAS NOT LEFT FROZEN.
 The first edition of this page (commit b7cddb8, 2 October 2026) was sent to
-Fabian at OGNYX and is preserved in git. On 13 October 2026 he replied to the
-12 October follow-up -- "We have reviewed your offer and can confirm we would
-be happy to proceed with this" -- and on 14 October the founder decided to
+OGNYX and is preserved in git. On 13 October 2026 OGNYX replied to the
+12 October follow-up confirming it was happy to proceed (held privately,
+PN-EVID-RIGHTS-OGNYX-20261013) -- and on 14 October the founder decided to
 onboard OGNYX as a participating supplier. That reply is the "genuine reason"
 SUPPLIER-PREVIEW-SYSTEM-V1 §10.1 requires before a sent preview is edited:
 the page now has to show what OGNYX will look like once their full range is in
@@ -24,9 +24,9 @@ ognyx.com page) and the one PlotNua Discovery it belongs to, DISC-001 Garden
 Retreat.
 
 IMAGERY — STILL THE SAME FOUR, STILL PREVIEW-SCOPED.
-Fabian's 2 October reply invited "any example imagery ... you propose to use"
-for this preview, and the 12 October ask that he said yes to named "the
-selected product images shown there". That is the four images below and no
+OGNYX's 2 October reply invited any example imagery PlotNua proposed to use
+for this preview, and the 12 October ask that OGNYX said yes to named the
+selected product images shown there. That is the four images below and no
 others. On 14 October 2026 the founder confirmed that the 13 October reply
 covers those four images, within this approved context and no wider (Atlas
 WELLNESS-FIRST-OGNYX-20261002: "Granted with Conditions — Founder

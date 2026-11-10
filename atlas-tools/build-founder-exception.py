@@ -16,8 +16,8 @@ that check comes back, and accepts responsibility for doing so.
 
 There were only three ways to make the gate let that through:
 
-  1. Set listing_review.state to CONFIRMED. REFUSED. Mateus has not
-     confirmed, and writing that he did would be falsifying a supplier's
+  1. Set listing_review.state to CONFIRMED. REFUSED. BIOBUILDS has not
+     confirmed, and writing that it did would be falsifying a supplier's
      words in PlotNua's own records. It would also survive this decision and
      mislead everyone who read the file afterwards.
   2. Relax the AWAITING_CONFIRMATION condition for everyone. REFUSED. That is

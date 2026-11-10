@@ -24,9 +24,8 @@ FIRST-PARTY EVIDENCE, read 14 October 2026:
     (guard G12), because a UK price is not an Irish price.
 
 IRISH ARRANGEMENTS — SUPPLIER-CONFIRMED, 14 OCTOBER 2026.
-    Keir Tetsmann, Sales Consultant for ÖÖD's UK and Irish clients,
-    keir@oodhouse.com, Gmail thread 1a13a4b45780ba3b (introduced by Gertrud
-    Ots in 1a088713c8eccf73): ÖÖD serves customers in the Republic of Ireland;
+    ÖÖD's sales team for UK and Irish clients, by email (held privately,
+    PN-EVID-RIGHTS-ORG-000149-20261014): ÖÖD serves customers in the Republic of Ireland;
     it helps organise transport from its factory in Estonia and every
     transport is quoted individually; it has no local team in Ireland, so
     installation, foundations and utility connections are arranged by the
@@ -53,9 +52,8 @@ Atlas 14 Oct 2026, reaching the published universe at its next refresh):
     range", never inside the Results card.
 
 IMAGERY — STATE A, AUTHORISED.
-    Gertrud Ots, Head of Marketing, gertrud@oodhouse.com, Gmail thread
-    1a088713c8eccf73, message 1a139105565814d0, 14 October 2026 06:18 UTC,
-    supplied ÖÖD's photo library organised by product in reply to PlotNua's
+    ÖÖD House, by email, 14 October 2026 (held privately,
+    PN-EVID-RIGHTS-ORG-000149-20261014), supplied ÖÖD's photo library organised by product in reply to PlotNua's
     permission request. Atlas IPO-007 (recqvHdcTwNdBRszM). Rights record in
     image-rights-records.json, scoped PER FILE on lh3.googleusercontent.com
     (/d/<Drive file id>=), never a bare host. Every image here is hot-linked
@@ -97,7 +95,7 @@ def img(fid, alt, photo=None, place=None):
 PRICE_BASIS = ("As published on ÖÖD&rsquo;s euro site, for the house itself. "
                "Transport and local works are extra, and VAT isn&rsquo;t "
                "stated.")
-# Supplier-confirmed 14 Oct 2026 (Keir Tetsmann, ÖÖD). Says exactly what ÖÖD
+# Supplier-confirmed 14 Oct 2026 (ÖÖD, by email). Says exactly what ÖÖD
 # said and nothing more: no price, no time, nothing included.
 IRISH_FACT = ("Serves customers in the Republic of Ireland. Transport from "
               "ÖÖD&rsquo;s factory in Estonia is quoted individually; "

@@ -83,7 +83,7 @@ the private preview only" — is recorded as superseded, with the reason: that
 was PlotNua's own reading of its own restraint, not a limit BIOBUILDS placed
 on the grant.
 
-Mateus has still not confirmed the corrected preview, and nothing in this
+BIOBUILDS has still not confirmed the corrected preview, and nothing in this
 change says he has.
 
 ---

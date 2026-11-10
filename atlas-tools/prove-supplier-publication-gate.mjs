@@ -207,13 +207,33 @@ console.log(`  ${gated.length} gated record(s) under test\n`);
   };
   const caught = gateIntegrityProblems(probe)
     .some(p => /NOT_REQUIRED/.test(p));
+  /* M8C Stage 2: the requirement is ALSO structural, and each channel must
+     refuse on its own -- a probe per channel, plus the coupling rule. */
+  const PG4_MSG = /pre-live review|NOT_REQUIRED/;
+  const refuses = rec => gateIntegrityProblems(rec).some(p => PG4_MSG.test(p));
+  const structuredCaught = refuses({            // flag alone, no wording
+    permission: { state: 'GRANTED', pre_live_review_requested: true },
+    listing_review: { state: 'NOT_REQUIRED' } });
+  const requesterCaught = refuses({             // requester alone, no wording, no flag
+    permission: { state: 'GRANTED' },
+    listing_review: { state: 'NOT_REQUIRED', requested_by: 'supplier' } });
+  const couplingCaught = refuses({              // wording kept, flag dropped
+    evidence: 'Please send us the listing before it goes live, so we can check it.',
+    permission: { state: 'GRANTED' },
+    listing_review: { state: 'AWAITING_CONFIRMATION', requested_by: 'supplier' } });
+  const legitPasses = !refuses({                // a correct record is not refused
+    permission: { state: 'GRANTED', pre_live_review_requested: true },
+    listing_review: { state: 'AWAITING_CONFIRMATION', requested_by: 'supplier' } });
   const realClean = gated.every(r => !(
     PRE_LIVE_REVIEW_LANGUAGE.test(String(r.evidence || '')) &&
-    (r.listing_review || {}).state === 'NOT_REQUIRED'));
-  (caught && realClean)
-    ? ok('PG4 a grant asking for pre-live review cannot be NOT_REQUIRED')
+    (r.listing_review || {}).state === 'NOT_REQUIRED')) &&
+    gated.every(r => !refuses(r));
+  (caught && structuredCaught && requesterCaught && couplingCaught && legitPasses && realClean)
+    ? ok('PG4 a grant asking for pre-live review cannot be NOT_REQUIRED ' +
+         '(wording, structured flag and requester each refuse alone; channels coupled)')
     : bad('PG4 a grant asking for pre-live review cannot be NOT_REQUIRED',
-          `probeCaught=${caught} realClean=${realClean}`);
+          `wording=${caught} structured=${structuredCaught} requester=${requesterCaught} ` +
+          `coupling=${couplingCaught} legitPasses=${legitPasses} realClean=${realClean}`);
 }
 
 /* ── PG5 · a GRANTED supplier is never called unpermitted ─────────────── */

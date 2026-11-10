@@ -46,6 +46,8 @@ ORG = "ORG-000153"
 # The three dimensions. Every value here is evidenced, not inferred.
 PERMISSION = {
     "state": "GRANTED",
+    # M8C Stage 2: the supplier's pre-live-review request, as structure (PG4s).
+    "pre_live_review_requested": True,
     "ref": "C2-GRANT-BIOBUILDS-20261002",
     "record": "rec6JPwNYPIj7EIfZ",
     "date": "2026-10-02",
@@ -77,11 +79,7 @@ LISTING_REVIEW = {
     "corrections_received": "2026-10-11",
     "corrections_applied": ["edecc86", "7b81224"],
     "confirmed_at": None,
-    "note": ("Mateus reviewed the original preview and asked for factual "
-             "corrections on 11 October 2026. The corrections are applied and "
-             "the revised preview awaits his confirmation. This is a granted "
-             "permission's condition being exercised, not a permission "
-             "withheld."),
+    "note": ("BIOBUILDS reviewed the original preview and asked for factual corrections on 11 October 2026. The corrections are applied and the revised preview awaits BIOBUILDS' confirmation. This is a granted permission's condition being exercised, not a permission withheld."),
 }
 
 # ── THE FOUNDER'S DECISION, AS DATA ───────────────────────────────────────
@@ -92,7 +90,7 @@ LISTING_REVIEW = {
 #
 # The founder has decided to publish without it and to own that decision.
 # This is the record of that, and it is deliberately NOT a change to the
-# review state: Mateus has not confirmed, the record still says he has not
+# review state: BIOBUILDS has not confirmed, the record still says it has not
 # confirmed, and `supplier_confirmation_received: False` says it a second time
 # in the place a future reader is most likely to look.
 FOUNDER_EXCEPTION = {
@@ -381,7 +379,7 @@ def main():
                     "Nothing written." % w)
 
     # G1b · AND THE DECISION MUST NOT CLAIM A CONFIRMATION.
-    # The one thing the founder explicitly forbade: do not record Mateus as
+    # The one thing the founder explicitly forbade: do not record BIOBUILDS as
     # having confirmed the corrected preview.
     if (ACTIVE_FOUNDER_EXCEPTION is not None and
             ACTIVE_FOUNDER_EXCEPTION.get("supplier_confirmation_received") is not False):
@@ -436,7 +434,7 @@ def main():
         # G3 · THE EVIDENCE MUST STILL BE THERE. These fields describe a
         # grant; writing them onto a row that has lost its evidence would be
         # manufacturing a permission.
-        if "happy for PlotNua to feature BioBuilds" not in str(row.get("evidence", "")):
+        if "PlotNua may feature BioBuilds and use selected images" not in str(row.get("evidence", "")):
             die("the BIOBUILDS grant evidence is not in %s. These fields "
                 "describe that grant and must not be written without it." % path.name)
 

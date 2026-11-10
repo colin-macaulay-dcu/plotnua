@@ -5,13 +5,13 @@
 Builds suppliers/nook-prefab.html. It is the private preview NOOK approved (6 Nov 2026, local only; built by
 build-nook-preview.py in the founder's Documents/PlotNua/03 Website folder) made public, with NOOK's one
 requested change and nothing else of substance:
-  - build time 8-13 weeks ("the larger models can take a little longer"; Dimple Lalwani, NOOK, 11 Nov 2026,
-    Gmail 1a1ca03c0388c1c8), replacing the brochure's 8-10 weeks;
+  - build time 8-13 weeks (NOOK's correction for its larger models, by email 11 Nov 2026; held privately,
+    PN-EVID-RIGHTS-ORG-000209-20261111), replacing the brochure's 8-10 weeks;
   - the "awaiting NOOK's confirmation" preview notes removed, because NOOK confirmed the September 2026
-    brochure starting prices in the same email, "with taxes, delivery and installation shown as extra";
+    brochure starting prices in the same email, with taxes, delivery and installation shown as extra;
   - the private-preview bar and noindex removed; the site's Cookiebot, GA4, canonical and share image added.
 
-IMAGES. Six images NOOK supplied by email (6 Nov 2026, Gmail 1a1b08cf25c1fcb1) and NOOK's written permission to
+IMAGES. Six images NOOK supplied by email (6 Nov 2026; held privately) and NOOK's written permission to
 host them on PlotNua (11 Nov 2026): optimised copies under assets/suppliers/nook-prefab/ (resize + recompress,
 metadata stripped; original hashes in showcases/nook-prefab/image-copies.json). Each copy is declared in
 image-provenance-records.json as a SUPPLIER_IMAGE pointing at NOOK's rights record (ORG-000209); the provenance

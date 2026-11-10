@@ -2,10 +2,11 @@
 """
 POWERSHEDS · SUPPLIER NAME CORRECTION — "Power Sheds" -> "Powersheds"
 ===============================================================================
-AUTHORITY. Email from Jack Sutcliffe, Powersheds, 8 October 2026, verbatim:
-"Hello / Seems ok to me - can you just change Power Sheds to Powersheds? /
-Cheers / Jack Sutcliffe". Two separate things: approval of the feature as
-shown, and an explicit correction of his own company name. Founder decisions of
+AUTHORITY. Email from Powersheds, 8 October 2026 (held privately,
+PN-EVID-RIGHTS-ORG-000065-20261008): approval of the feature as shown, and a
+request that 'Power Sheds' be written 'Powersheds'. Two separate things:
+approval of the feature as shown, and an explicit correction of the
+supplier's own company name. Founder decisions of
 8 October 2026: change the governed credit to "Image: Powersheds", and move the
 credit, grant record, manifest, preview and universe TOGETHER.
 
@@ -28,9 +29,9 @@ WHAT THIS DOES NOT TOUCH — and the reason, in each case:
     every atlas-*-report.md, the PHASE-6* write ledgers and release-diff
     records. These record the state and the wording in force at the time. A
     global replace would falsify them.
-  * THE PERMISSION EVIDENCE SENTENCE. "Granted by Jack Sutcliffe of Power
-    Sheds BY EMAIL, Gmail thread 1a0b5d1a7cf5e664 … IPO-POWERSHEDS-0001" is
-    preserved VERBATIM. It is the record of what was granted, by whom, under
+  * THE PERMISSION EVIDENCE SENTENCE (neutralised 10 Nov 2026 under M8C, so
+    that no correspondence is published; it still names Power Sheds and
+    IPO-POWERSHEDS-0001) is preserved VERBATIM. It is the record of what was granted, by whom, under
     what name, on 28 September. The correction is APPENDED beside it.
   * THE ORG-ID-CORRECTION NOTE. Also preserved verbatim, for the same reason:
     it documents a real earlier mistake and its repair.
@@ -63,30 +64,13 @@ OLD_CREDIT, NEW_CREDIT = "Image: Power Sheds", "Image: Powersheds"
 # the file that holds it, the builder refuses: the historical record is the
 # thing most easily destroyed by a rename, so it is guarded hardest.
 EVIDENCE_SENTENCE = (
-    "Granted by Jack Sutcliffe of Power Sheds BY EMAIL, Gmail thread "
-    "1a0b5d1a7cf5e664, recorded in Atlas 28 September 2026 as Image Permission "
-    "Outreach IPO-POWERSHEDS-0001 (reczCyWXPWvoA27GX)")
+    "Granted in writing by Power Sheds, BY EMAIL, recorded in Atlas 28 September 2026 as Image Permission Outreach IPO-POWERSHEDS-0001 (reczCyWXPWvoA27GX)")
 ORG_ID_NOTE_OPENING = (
     "ORGANISATION ID CORRECTED BEFORE PUSH. This record was first written with "
     "ORG-000194, which is Nua Modular (recuvqPv7XW0b0PFJ), not Power Sheds.")
 
 CORRECTION_NOTE = (
-    "\n\nSUPPLIER NAME CORRECTED 2026-10-08. Jack Sutcliffe of Powersheds "
-    "wrote: \"Seems ok to me - can you just change Power Sheds to "
-    "Powersheds?\". That email is two things: his approval of the feature as "
-    "shown to him, and an explicit correction of his own company name. It is "
-    "NOT a new or wider grant — the grant is still exactly "
-    "IPO-POWERSHEDS-0001 of 28 September 2026 and its scope is unchanged. "
-    "Under founder decision of 2026-10-08 the required credit moved from "
-    "'Image: Power Sheds' to 'Image: Powersheds', and the credit, this record, "
-    "the generated manifest, powersheds-preview.html and the recommendation "
-    "universe were changed in ONE atomic pass, because the gate refuses any "
-    "image whose required credit is absent from the page and they cannot be "
-    "allowed to drift apart. The evidence sentence above and the "
-    "ORGANISATION ID note below are preserved verbatim: they record the state "
-    "and the wording in force at the time, and are not rewritten. "
-    "Corroboration already held: the registered entity is 'Powersheds "
-    "Limited, UK company number 11790351'.")
+    "\n\nSUPPLIER NAME CORRECTED 2026-10-08. Powersheds replied by email approving the feature as shown and asking that 'Power Sheds' be written 'Powersheds' (wording held privately, PN-EVID-RIGHTS-ORG-000065-20261008). That email is two things: the supplier's approval of the feature as shown, and an explicit correction of its own company name. It is NOT a new or wider grant — the grant is still exactly IPO-POWERSHEDS-0001 of 28 September 2026 and its scope is unchanged. Under founder decision of 2026-10-08 the required credit moved from 'Image: Power Sheds' to 'Image: Powersheds', and the credit, this record, the generated manifest, powersheds-preview.html and the recommendation universe were changed in ONE atomic pass, because the gate refuses any image whose required credit is absent from the page and they cannot be allowed to drift apart. The ORGANISATION ID note above is preserved verbatim. The evidence sentence was neutralised on 10 Nov 2026 (M8C) so that no correspondence is published; the wording in force at the time is held privately. Corroboration already held: the registered entity is 'Powersheds Limited, UK company number 11790351'.")
 
 # ---------------------------------------------------------------- live targets
 ROOT_JSON = ["atlas-recognition-pool.json",
