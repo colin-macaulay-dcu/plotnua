@@ -32,7 +32,7 @@
  "quoteOnlyPriceCount": 19,
  "organisationCount": 65,
  "governedPriceContractVersion": "garden-room-price-contract-v1",
- "governedDigest": "601cbc0bc2fa20b5f62594f1365d2d8263f7f4d458087f337807050ac538942c",
+ "governedDigest": "25386231d5eac5d697932484a8a561552cb7c1a78392a7eeee426fa801128eb0",
  "sourceKind": "airtable-live",
  "missingProductUrlCount": 168,
  "products": [
@@ -14471,7 +14471,7 @@
     "from": 14280,
     "to": 19890,
     "currency": "EUR",
-    "priceType": "Standard Price",
+    "priceType": "Starting From",
     "status": "Verified",
     "includesVat": "Yes",
     "evidenceScope": "Product-Specific",
@@ -14564,7 +14564,7 @@
    ],
    "priceRecordIdsAvailable": 1,
    "priceStatus": "Verified",
-   "priceType": "Standard Price",
+   "priceType": "Starting From",
    "priceScope": "Product-Specific",
    "vatStatus": "Yes",
    "vatRate": null,
@@ -14577,7 +14577,7 @@
    "priceBasisConfidence": "EXPLICIT",
    "priceIsRangeFloor": true,
    "priceSafeForMatching": true,
-   "priceFreshUntil": "2027-03-09",
+   "priceFreshUntil": "2027-05-09",
    "priceEvidenceRef": {
     "recordIds": [
      "recaubl44SGrtcDOX"
@@ -14585,9 +14585,9 @@
     "adjudication": "adjudicated",
     "candidateCount": 1,
     "status": "Verified",
-    "priceType": "Standard Price",
+    "priceType": "Starting From",
     "evidenceScope": "Product-Specific",
-    "lastPriceCheck": "2026-09-10",
+    "lastPriceCheck": "2026-11-10",
     "basisSource": "installationModel.leadPhrase",
     "basisLeadPhrase": "INSTALLED / ASSEMBLED INCLUDED"
    },
@@ -14645,7 +14645,7 @@
     "from": null,
     "to": 22920,
     "currency": "EUR",
-    "priceType": "Standard Price",
+    "priceType": "Starting From",
     "status": "Verified",
     "includesVat": "Yes",
     "evidenceScope": "Product-Specific",
@@ -14738,7 +14738,7 @@
    ],
    "priceRecordIdsAvailable": 1,
    "priceStatus": "Verified",
-   "priceType": "Standard Price",
+   "priceType": "Starting From",
    "priceScope": "Product-Specific",
    "vatStatus": "Yes",
    "vatRate": null,
@@ -14751,7 +14751,7 @@
    "priceBasisConfidence": "EXPLICIT",
    "priceIsRangeFloor": true,
    "priceSafeForMatching": true,
-   "priceFreshUntil": "2027-04-04",
+   "priceFreshUntil": "2027-05-09",
    "priceEvidenceRef": {
     "recordIds": [
      "recThHwTwhFjnqgCw"
@@ -14759,9 +14759,9 @@
     "adjudication": "adjudicated",
     "candidateCount": 1,
     "status": "Verified",
-    "priceType": "Standard Price",
+    "priceType": "Starting From",
     "evidenceScope": "Product-Specific",
-    "lastPriceCheck": "2026-10-06",
+    "lastPriceCheck": "2026-11-10",
     "basisSource": "installationModel.leadPhrase",
     "basisLeadPhrase": "INSTALLED / ASSEMBLED INCLUDED"
    },
@@ -14819,7 +14819,7 @@
     "from": null,
     "to": 27090,
     "currency": "EUR",
-    "priceType": "Standard Price",
+    "priceType": "Starting From",
     "status": "Verified",
     "includesVat": "Yes",
     "evidenceScope": null,
@@ -14912,7 +14912,7 @@
    ],
    "priceRecordIdsAvailable": 1,
    "priceStatus": "Verified",
-   "priceType": "Standard Price",
+   "priceType": "Starting From",
    "priceScope": null,
    "vatStatus": "Yes",
    "vatRate": null,
@@ -14925,7 +14925,7 @@
    "priceBasisConfidence": "EXPLICIT",
    "priceIsRangeFloor": true,
    "priceSafeForMatching": true,
-   "priceFreshUntil": "2027-04-04",
+   "priceFreshUntil": "2027-05-09",
    "priceEvidenceRef": {
     "recordIds": [
      "recUhaluaReaTxSLQ"
@@ -14933,9 +14933,9 @@
     "adjudication": "adjudicated",
     "candidateCount": 1,
     "status": "Verified",
-    "priceType": "Standard Price",
+    "priceType": "Starting From",
     "evidenceScope": null,
-    "lastPriceCheck": "2026-10-06",
+    "lastPriceCheck": "2026-11-10",
     "basisSource": "installationModel.leadPhrase",
     "basisLeadPhrase": "INSTALLED / ASSEMBLED INCLUDED"
    },
@@ -14993,7 +14993,7 @@
     "from": null,
     "to": 27090,
     "currency": "EUR",
-    "priceType": "Standard Price",
+    "priceType": "Starting From",
     "status": "Verified",
     "includesVat": "Yes",
     "evidenceScope": null,
@@ -15086,7 +15086,7 @@
    ],
    "priceRecordIdsAvailable": 1,
    "priceStatus": "Verified",
-   "priceType": "Standard Price",
+   "priceType": "Starting From",
    "priceScope": null,
    "vatStatus": "Yes",
    "vatRate": null,
@@ -15099,7 +15099,7 @@
    "priceBasisConfidence": "EXPLICIT",
    "priceIsRangeFloor": true,
    "priceSafeForMatching": true,
-   "priceFreshUntil": "2027-04-04",
+   "priceFreshUntil": "2027-05-09",
    "priceEvidenceRef": {
     "recordIds": [
      "recebyySwa1aZB6Qz"
@@ -15107,9 +15107,9 @@
     "adjudication": "adjudicated",
     "candidateCount": 1,
     "status": "Verified",
-    "priceType": "Standard Price",
+    "priceType": "Starting From",
     "evidenceScope": null,
-    "lastPriceCheck": "2026-10-06",
+    "lastPriceCheck": "2026-11-10",
     "basisSource": "installationModel.leadPhrase",
     "basisLeadPhrase": "INSTALLED / ASSEMBLED INCLUDED"
    },
@@ -15167,7 +15167,7 @@
     "from": null,
     "to": 31590,
     "currency": "EUR",
-    "priceType": "Standard Price",
+    "priceType": "Starting From",
     "status": "Verified",
     "includesVat": "Yes",
     "evidenceScope": null,
@@ -15260,7 +15260,7 @@
    ],
    "priceRecordIdsAvailable": 1,
    "priceStatus": "Verified",
-   "priceType": "Standard Price",
+   "priceType": "Starting From",
    "priceScope": null,
    "vatStatus": "Yes",
    "vatRate": null,
@@ -15273,7 +15273,7 @@
    "priceBasisConfidence": "EXPLICIT",
    "priceIsRangeFloor": true,
    "priceSafeForMatching": true,
-   "priceFreshUntil": "2027-04-04",
+   "priceFreshUntil": "2027-05-09",
    "priceEvidenceRef": {
     "recordIds": [
      "rechsZvDCyrdLDrNU"
@@ -15281,9 +15281,9 @@
     "adjudication": "adjudicated",
     "candidateCount": 1,
     "status": "Verified",
-    "priceType": "Standard Price",
+    "priceType": "Starting From",
     "evidenceScope": null,
-    "lastPriceCheck": "2026-10-06",
+    "lastPriceCheck": "2026-11-10",
     "basisSource": "installationModel.leadPhrase",
     "basisLeadPhrase": "INSTALLED / ASSEMBLED INCLUDED"
    },
@@ -15341,7 +15341,7 @@
     "from": null,
     "to": 31240,
     "currency": "EUR",
-    "priceType": "Standard Price",
+    "priceType": "Starting From",
     "status": "Verified",
     "includesVat": "Yes",
     "evidenceScope": null,
@@ -15434,7 +15434,7 @@
    ],
    "priceRecordIdsAvailable": 1,
    "priceStatus": "Verified",
-   "priceType": "Standard Price",
+   "priceType": "Starting From",
    "priceScope": null,
    "vatStatus": "Yes",
    "vatRate": null,
@@ -15447,7 +15447,7 @@
    "priceBasisConfidence": "EXPLICIT",
    "priceIsRangeFloor": true,
    "priceSafeForMatching": true,
-   "priceFreshUntil": "2027-04-04",
+   "priceFreshUntil": "2027-05-09",
    "priceEvidenceRef": {
     "recordIds": [
      "recwAWG6vylMAuHsD"
@@ -15455,9 +15455,9 @@
     "adjudication": "adjudicated",
     "candidateCount": 1,
     "status": "Verified",
-    "priceType": "Standard Price",
+    "priceType": "Starting From",
     "evidenceScope": null,
-    "lastPriceCheck": "2026-10-06",
+    "lastPriceCheck": "2026-11-10",
     "basisSource": "installationModel.leadPhrase",
     "basisLeadPhrase": "INSTALLED / ASSEMBLED INCLUDED"
    },
@@ -15515,7 +15515,7 @@
     "from": null,
     "to": 36420,
     "currency": "EUR",
-    "priceType": "Standard Price",
+    "priceType": "Starting From",
     "status": "Verified",
     "includesVat": "Yes",
     "evidenceScope": "Product-Specific",
@@ -15608,7 +15608,7 @@
    ],
    "priceRecordIdsAvailable": 1,
    "priceStatus": "Verified",
-   "priceType": "Standard Price",
+   "priceType": "Starting From",
    "priceScope": "Product-Specific",
    "vatStatus": "Yes",
    "vatRate": null,
@@ -15621,7 +15621,7 @@
    "priceBasisConfidence": "EXPLICIT",
    "priceIsRangeFloor": true,
    "priceSafeForMatching": true,
-   "priceFreshUntil": "2027-04-04",
+   "priceFreshUntil": "2027-05-09",
    "priceEvidenceRef": {
     "recordIds": [
      "recRrxTAURDOmxjW6"
@@ -15629,9 +15629,9 @@
     "adjudication": "adjudicated",
     "candidateCount": 1,
     "status": "Verified",
-    "priceType": "Standard Price",
+    "priceType": "Starting From",
     "evidenceScope": "Product-Specific",
-    "lastPriceCheck": "2026-10-06",
+    "lastPriceCheck": "2026-11-10",
     "basisSource": "installationModel.leadPhrase",
     "basisLeadPhrase": "INSTALLED / ASSEMBLED INCLUDED"
    },
@@ -80877,7 +80877,7 @@
     "from": null,
     "to": 40775,
     "currency": "EUR",
-    "priceType": "Standard Price",
+    "priceType": "Starting From",
     "status": "Verified",
     "includesVat": "Yes",
     "evidenceScope": null,
@@ -80970,7 +80970,7 @@
    ],
    "priceRecordIdsAvailable": 1,
    "priceStatus": "Verified",
-   "priceType": "Standard Price",
+   "priceType": "Starting From",
    "priceScope": null,
    "vatStatus": "Yes",
    "vatRate": null,
@@ -80983,7 +80983,7 @@
    "priceBasisConfidence": "EXPLICIT",
    "priceIsRangeFloor": true,
    "priceSafeForMatching": true,
-   "priceFreshUntil": "2027-04-04",
+   "priceFreshUntil": "2027-05-09",
    "priceEvidenceRef": {
     "recordIds": [
      "recp2utO11YWRg1qe"
@@ -80991,9 +80991,9 @@
     "adjudication": "adjudicated",
     "candidateCount": 1,
     "status": "Verified",
-    "priceType": "Standard Price",
+    "priceType": "Starting From",
     "evidenceScope": null,
-    "lastPriceCheck": "2026-10-06",
+    "lastPriceCheck": "2026-11-10",
     "basisSource": "installationModel.leadPhrase",
     "basisLeadPhrase": "INSTALLED / ASSEMBLED INCLUDED"
    },

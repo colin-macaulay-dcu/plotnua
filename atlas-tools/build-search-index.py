@@ -56,7 +56,7 @@ WARN_GZIP = 36 * 1024
 # its boundary check has proved every record outside the update byte-
 # identical; each such re-freeze is logged in governance/SEARCH-V1-CONTRACT.md
 # (TARGETED-UPDATE RE-FREEZES) with the update's report.
-BASE_UNIVERSE_SHA = "3b889907eec3a2fd7ffb3aee8f9eac6c02c2bdb7ab8b472933042086a7f9dc78"
+BASE_UNIVERSE_SHA = "6a30d341d91a03adfd9bcde9838749501cdb11691230d61101d4fc1500aa9ee7"
 
 ALLOWED_FIELDS = {
     "possibility": {"id", "type", "title", "standfirst", "topics", "route"},

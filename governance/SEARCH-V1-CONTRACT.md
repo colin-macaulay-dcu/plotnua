@@ -528,7 +528,7 @@ No early warning is reached.
 The source corpora are read directly for this check. Capability cases C9d (a "From" inferred for a fixed price) and C9e (an explicit starting price losing its "From") are in `atlas-tools/prove-search-guards.py`.
 
 **Effect at introduction:**
-- 90 of 346 shown prices carry "From": 51 wellness and 39 garden-room. No Additional Home product shows a price figure in Search today, so none is marked; the rule applies to them unchanged if one does.
+- 90 of 346 shown prices carried "From" at release (51 wellness, 39 garden-room). After the Loghouse Starting From refresh (founder approval 10 Nov 2026; 8 Atlas records) it is 98: 51 wellness and 47 garden-room. No Additional Home product shows a price figure in Search today, so none is marked; the rule applies to them unchanged if one does.
 - No record is added or removed, and no other field changes.
 - Index: 187,104 bytes raw, 27.0 KB gzip-9, 831 records (rebuilt on main fbd272b). All are within the A4 guards.
 
@@ -560,3 +560,4 @@ Shomera guide publication, 26 October 2026: one informational possibility record
 - 2026-11-07 · re-frozen to `33ea49448343e8a93c66d76a0fea825c96a2794f2def02766bb09a98580b19d8` by atlas-tools/publish-targeted-update.py for a targeted update (atlas-tools/targeted-updates/20261107-095121-presentation-hold.md); only the targeted records differ.
 - 2026-11-07 · re-frozen to `b09fc66f8f9647ea31daea493ea013a5cd60a8f667409e2e2df7d3ff58d0854f` by atlas-tools/publish-targeted-update.py for a targeted update (atlas-tools/targeted-updates/20261107-131108-methodology-correction.md); only the targeted records differ.
 - 2026-11-07 · re-frozen to `3b889907eec3a2fd7ffb3aee8f9eac6c02c2bdb7ab8b472933042086a7f9dc78` by atlas-tools/publish-targeted-update.py for a targeted update (atlas-tools/targeted-updates/20261107-175815-eligibility-r-match.md); only the targeted records differ.
+- 2026-11-10 · re-frozen to `6a30d341d91a03adfd9bcde9838749501cdb11691230d61101d4fc1500aa9ee7` by atlas-tools/publish-targeted-update.py for a targeted update (atlas-tools/targeted-updates/20261110-124337-price-refresh.md); only the targeted records differ.
