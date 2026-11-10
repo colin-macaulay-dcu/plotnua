@@ -1,0 +1,97 @@
+{
+ "schema": "plotnua.price-refresh-plan.v1",
+ "id": "loghouse-starting-from-2026-11-10",
+ "date": "2026-11-10",
+ "approved": "Founder approval, 10 November 2026 ('Implement and publish the eight approved Loghouse garden-room price classifications'), approving the range-floor investigation of 10 Nov 2026. Loghouse ECO and Studio ECO garden rooms (8): supplier pages re-read 10 Nov 2026 publish a two-point, finish-driven range (Internal T&G + External Thermowood floor; Internal Plasterboard + External Rendering ceiling), unchanged since the last check; Price Type corrected Standard Price -> Starting From. No price, range, VAT, exclusion, evidence or attribution change. Atlas note on the 4.0m x 3.0m record corrected (EUR 22,990 -> 22,920; the field was already correct). Powersheds 12x12 and 14x14 stay Standard Price; Powersheds promotional prices are not recorded here.",
+ "rule": "Only priceEvidenceRef.lastPriceCheck (with priceFreshUntil, by the generator's R-MATCH rule) moves, plus priceType/priceEvidence.priceType/priceEvidenceRef.priceType (approvedPriceType); no price moves; the header moves only in governedDigest. Every linked Atlas pricing record must read back with Last Price Check = date, Price Type = Starting From, and every price field equal to the published record.",
+ "products": [
+  {
+   "productId": "rec6hBlyxKfJEA6C5",
+   "product": "Loghouse — ECO Garden Room 3.0m × 3.0m",
+   "organisation": "Loghouse",
+   "priceRecordIds": [
+    "recaubl44SGrtcDOX"
+   ],
+   "publishedPrice": 14280,
+   "approvedPrice": 14280,
+   "approvedPriceType": "Starting From"
+  },
+  {
+   "productId": "rech7TfmJLA8n4Jj9",
+   "product": "Loghouse — ECO Garden Room 4.0m × 3.0m",
+   "organisation": "Loghouse",
+   "priceRecordIds": [
+    "recThHwTwhFjnqgCw"
+   ],
+   "publishedPrice": 16380,
+   "approvedPrice": 16380,
+   "approvedPriceType": "Starting From"
+  },
+  {
+   "productId": "recTpjQUJ7rIgemhk",
+   "product": "Loghouse — ECO Garden Room 4.0m × 4.0m",
+   "organisation": "Loghouse",
+   "priceRecordIds": [
+    "recUhaluaReaTxSLQ"
+   ],
+   "publishedPrice": 19630,
+   "approvedPrice": 19630,
+   "approvedPriceType": "Starting From"
+  },
+  {
+   "productId": "recr7HRb2CIqnyoAa",
+   "product": "Loghouse — ECO Garden Room 5.0m × 3.0m",
+   "organisation": "Loghouse",
+   "priceRecordIds": [
+    "recebyySwa1aZB6Qz"
+   ],
+   "publishedPrice": 19630,
+   "approvedPrice": 19630,
+   "approvedPriceType": "Starting From"
+  },
+  {
+   "productId": "rec66xKgPx0ipzfOQ",
+   "product": "Loghouse — ECO Garden Room 5.0m × 4.0m",
+   "organisation": "Loghouse",
+   "priceRecordIds": [
+    "rechsZvDCyrdLDrNU"
+   ],
+   "publishedPrice": 23190,
+   "approvedPrice": 23190,
+   "approvedPriceType": "Starting From"
+  },
+  {
+   "productId": "rec6pnA2GkdMzlmPf",
+   "product": "Loghouse — ECO Garden Room 6.0m × 3.0m",
+   "organisation": "Loghouse",
+   "priceRecordIds": [
+    "recwAWG6vylMAuHsD"
+   ],
+   "publishedPrice": 22840,
+   "approvedPrice": 22840,
+   "approvedPriceType": "Starting From"
+  },
+  {
+   "productId": "recDHVxszqcxMTrXs",
+   "product": "Loghouse — ECO Garden Room 6.0m × 4.0m",
+   "organisation": "Loghouse",
+   "priceRecordIds": [
+    "recRrxTAURDOmxjW6"
+   ],
+   "publishedPrice": 27090,
+   "approvedPrice": 27090,
+   "approvedPriceType": "Starting From"
+  },
+  {
+   "productId": "recJ3HPVMPrYzaXvH",
+   "product": "Loghouse — Studio ECO Garden Room 5.2m × 4.7m",
+   "organisation": "Loghouse",
+   "priceRecordIds": [
+    "recp2utO11YWRg1qe"
+   ],
+   "publishedPrice": 30610,
+   "approvedPrice": 30610,
+   "approvedPriceType": "Starting From"
+  }
+ ]
+}

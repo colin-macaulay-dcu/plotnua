@@ -13,13 +13,17 @@ validation gates) unchanged.
 Refuses unless, for every product in the plan:
   * the published record exists and its organisation is in the Atlas read;
   * EVERY Atlas pricing record in priceEvidenceRef.recordIds is in the read, links the
-    product, reads Last Price Check == --date and Base Price == approvedPrice, and its
+    product, reads Last Price Check == --date and a governed figure (Base Price, else Price
+    From: the generator's rule) == approvedPrice, with Base Price equal to the published
+    base unless the plan moves the price, and its
     Currency, Status, Price From, Price To and Evidence Scope equal the published record
     (unapproved Atlas drift is refused, not published);
   * Price Type reads approvedPriceType where the plan gives one, otherwise the published
     Price Type (no unapproved Price Type change);
   * a price moves only where the plan's approvedPrice differs from publishedPrice, and
     publishedPrice equals the price published today;
+  * priceFreshUntil follows the new check date by the generator's R-MATCH rule, and price
+    eligibility may not change;
   * afterwards only the allowed keys differ in each target, no other record differs, and
     in the header only governedDigest moves.
 
@@ -36,7 +40,8 @@ tu = importlib.util.module_from_spec(_spec)
 _spec.loader.exec_module(tu)
 
 ALLOWED_PATHS = {"priceEvidenceRef.lastPriceCheck", "price", "priceEvidence.base",
-                 "priceType", "priceEvidence.priceType", "priceEvidenceRef.priceType"}
+                 "priceType", "priceEvidence.priceType", "priceEvidenceRef.priceType",
+                 "priceFreshUntil"}
 
 
 def norm(v):
@@ -130,7 +135,17 @@ def run(a):
             checks = [
                 ("Product", pid in tu.link_ids(r, "Product"), tu.link_ids(r, "Product")),
                 ("Last Price Check", tu.fv(r, "Last Price Check") == date, tu.fv(r, "Last Price Check")),
-                ("Base Price", num(tu.fv(r, "Base Price")) == num(it["approvedPrice"]), tu.fv(r, "Base Price")),
+                # The governed figure is the generator's own rule (Base Price first, then
+                # Price From; generate_garden_room_universe.py). A record that carries its
+                # figure in Price From with Base Price blank (published base null) is read
+                # the same way the universe was built; Base Price itself must still equal
+                # the published base, so no field may drift (Loghouse refresh, 10 Nov 2026).
+                ("Price", num(tu.fv(r, "Base Price") if tu.fv(r, "Base Price") is not None
+                              else tu.fv(r, "Price From")) == num(it["approvedPrice"]),
+                 (tu.fv(r, "Base Price"), tu.fv(r, "Price From"))),
+                ("Base Price", num(tu.fv(r, "Base Price")) == (num(it["approvedPrice"])
+                               if num(it["approvedPrice"]) != num(p["price"]) else num(pe.get("base"))),
+                 tu.fv(r, "Base Price")),
                 ("Currency", tu.fv(r, "Currency") == p["currency"], tu.fv(r, "Currency")),
                 ("Price Type", norm(tu.fv(r, "Price Type")) == want_type, tu.fv(r, "Price Type")),
                 ("Price From", num(tu.fv(r, "Price From")) == num(pe.get("from")), tu.fv(r, "Price From")),
@@ -165,6 +180,15 @@ def run(a):
             pe["base"] = newp
         if it.get("approvedPriceType") and it["approvedPriceType"] != p["priceType"]:
             p["priceType"] = pe["priceType"] = ref["priceType"] = it["approvedPriceType"]
+        # R-MATCH freshness (validator rule of 7 Nov 2026): a new check date moves
+        # priceFreshUntil by the generator's own rule. Eligibility itself may not change.
+        safe, until = g.r_match(p["price"], p["currency"], ref["adjudication"], p["priceStatus"],
+                                p["priceType"], p["priceScope"], date)
+        if safe != p["priceSafeForMatching"]:
+            tu.refuse("%s: the refresh would change price eligibility (%s -> %s)"
+                      % (pid, p["priceSafeForMatching"], safe))
+        if p.get("priceFreshUntil") is not None:
+            p["priceFreshUntil"] = until
         moved = paths(old, p)
         if not moved or moved - ALLOWED_PATHS:
             tu.refuse("%s: the refresh would change %s" % (pid, sorted(moved - ALLOWED_PATHS)))
