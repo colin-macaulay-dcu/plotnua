@@ -403,7 +403,7 @@ async function deleteRecords(env, artistId) {
   if (!ret || now() < ret.delete_after) throw new Bad('The retention period has not ended', 409);
   const ev = await participationEvents(env, artistId);
   if (!ev.some(e => e.kind === 'originals_deleted')) await eraseOriginals(env, artistId, 'scheduler', 'with the six-year deletion');
-  // Art for Hire records (migration 0006) go BEFORE record_retention: their append-only guards allow deletion only while
+  // Art for Hire records (migration 0007) go BEFORE record_retention: their append-only guards allow deletion only while
   // the artist's retention row still shows the period has ended (Stage 3B-1 finding). Absent tables are skipped.
   const t = ['acceptance_corrections', 'agreement_acceptances', 'enquiry_log', 'enquiries', 'versions', 'publish_queue', 'gallery_positions', 'participation_events',
     ...(await H.recordTables(env)), 'record_retention'];
@@ -941,7 +941,7 @@ export default {
     let garden_expired = 0;
     try { await gardenReady(env); garden_expired = await sweepGarden(env); } catch { /* noticeboard not installed */ }
     let hire = null;
-    try { hire = await H.sweep(env); } catch (e) { hire = { error: String(e.message || e).slice(0, 120) }; }   // Art for Hire retention (0006)
+    try { hire = await H.sweep(env); } catch (e) { hire = { error: String(e.message || e).slice(0, 120) }; }   // Art for Hire retention (0007)
     let participation_deletion = null;
     try { participation_deletion = await runDeletionSchedule(env); } catch (e) { participation_deletion = { error: String(e.message || e).slice(0, 120) }; }
     await audit(env, 'scheduler', 'system', 'cleanup', null, { images_erased: gone.length, images_kept_while_shown: due.length - gone.length, ideas_deleted, garden_expired, participation_deletion, enquiries_logged, hire });

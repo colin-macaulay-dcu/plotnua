@@ -27,8 +27,8 @@ async function shot(page, name, { full = true, ribbon = false } = {}) {
 }
 async function axe(page) {
   await page.addScriptTag({ content: AXE });
-  // the shared PlotArt footer is excluded here and reported separately (A0): it is identical on every existing page
-  const r = await page.evaluate(async () => (await window.axe.run({ exclude: [['.pa-foot']] }, { resultTypes: ['violations'] })).violations.map(v => ({ id: v.id, impact: v.impact, n: v.nodes.length, t: v.nodes[0] && v.nodes[0].target.join(' ') })));
+  // the whole page, shared footer included (its in-sentence link underline was fixed in Stage 3B-5)
+  const r = await page.evaluate(async () => (await window.axe.run(document, { resultTypes: ['violations'] })).violations.map(v => ({ id: v.id, impact: v.impact, n: v.nodes.length, t: v.nodes[0] && v.nodes[0].target.join(' ') })));
   return r.filter(v => ['serious', 'critical'].includes(v.impact));
 }
 const visible = page => page.$$eval('[data-hire-work]', a => a.filter(x => !x.hidden && x.getBoundingClientRect().height > 0).map(x => x.dataset.hireWork));
@@ -38,8 +38,10 @@ console.log('PROVE · Art for Hire page\n— building the private previews');
 buildPreview(P.empty); buildPreview(P.fix, { fixture: true }); buildPreview(P.form, { fixture: true, form: true });
 
 console.log('— existing pages and galleries unchanged');
-const dirty = execSync('git status --porcelain -- plotart', { cwd: REPO }).toString().trim() + execSync('git diff origin/main --stat -- plotart', { cwd: REPO }).toString().trim();
-check('G1 the repository’s PlotArt pages, galleries and stylesheet are untouched (no change against main)', dirty === '', dirty);
+const changed = execSync('git diff origin/main --name-only -- plotart', { cwd: REPO }).toString().trim() + execSync('git ls-files --others --exclude-standard -- plotart', { cwd: REPO }).toString().trim();
+const cssDiff = execSync('git diff origin/main -U0 -- plotart/assets/plotart.css', { cwd: REPO }).toString().split('\n').filter(l => /^[-+][^-+]/.test(l));
+check('G1 against main, no PlotArt page, gallery, gallery.json or image changed; the only change is ONE added footer rule in plotart.css (Stage 3B-5 accessibility fix)',
+  changed === 'plotart/assets/plotart.css' && cssDiff.length === 1 && /^\+\.pa-foot p a\{ text-decoration:underline;/.test(cssDiff[0]), changed + ' | ' + cssDiff.join(' | '));
 const SHELL_DIFF = execFileSync('python3', ['-c', `
 import importlib.util,subprocess,sys
 sys.path.insert(0,'atlas-tools'); import plotart_shell as new
@@ -57,7 +59,7 @@ for (const f of pages) {
   if (a.includes('class="pa-pills')) withNav++;
   if (strip(b) === a) same++; else bad.push(f);
 }
-check(`G3 in the preview, each of the ${pages.length} existing PlotArt pages differs from the original ONLY by the added tab (pill, Menu link, footer link): ${withNav} pages gain it`, bad.length === 0 && withNav === 37, bad.join(', '));
+check(`G3 in the preview, each of the ${pages.length} existing PlotArt pages differs from the original ONLY by the added tab (pill, Menu link, footer link): ${withNav} pages gain it`, bad.length === 0 && withNav >= 37 && pages.every(f => !readFileSync(path.join(REPO, f), 'utf8').includes('class="pa-pills') || readFileSync(path.join(P.fix, f), 'utf8').includes('nav_art_for_hire')), bad.join(', '));
 const cssA = readFileSync(path.join(REPO, 'plotart/assets/plotart.css'), 'utf8'), cssB = readFileSync(path.join(P.fix, 'plotart/assets/plotart.css'), 'utf8');
 check('G4 the shared stylesheet only gains one appended block, scoped to .pa-pills--hire', cssB.startsWith(cssA.trimEnd()) && /pa-hire-nav:begin/.test(cssB) && !/^(?!.*pa-pills--hire).*\{/m.test(cssB.slice(cssA.trimEnd().length).split('\n').filter(l => l.includes('{')).join('\n')));
 const again = execFileSync('python3', [path.join(REPO, 'atlas-tools/plotart-hire-nav.py'), P.fix], { encoding: 'utf8' });
@@ -118,8 +120,7 @@ console.log('— the gallery and its cards');
   const foot = async u => { const x = await open(browser, P.fix, S, { url: u, viewport: { width: 1440, height: 900 } }); await x.page.addScriptTag({ content: AXE });
     const v = await x.page.evaluate(async () => (await window.axe.run({ include: [['.pa-foot']] }, { resultTypes: ['violations'] })).violations.map(v => v.id + ':' + v.impact)); await x.ctx.close(); return v.sort().join(); };
   const fa = await foot('/plotart/art-for-hire/'), fb = await foot('/plotart/living-gallery.html');
-  console.log('  NOTE  shared footer (all PlotArt pages, unchanged): ' + (fa || 'no issues'));
-  check('A0 the shared PlotArt footer on this page behaves exactly as on the existing Living Gallery page (same accessibility result)', fa === fb, fa + ' vs ' + fb);
+  check('A0 the shared PlotArt footer now passes accessibility checks, here and on an existing page (links in footer sentences are underlined)', fa === '' && fb === '', fa + ' vs ' + fb);
 }
 o = await open(browser, P.fix, S, { viewport: { width: 1440, height: 1000 } });
 let vis = await visible(o.page);
@@ -161,6 +162,9 @@ const emp = await o.page.evaluate(() => ({ cards: document.querySelectorAll('[da
   closed: document.querySelector('[data-hire-closed]').hidden }));
 ax = await axe(o.page);
 check('E1 with no listed works the page shows a polished empty state, no cards and no invented listings; no serious accessibility issues', emp.cards === 0 && emp.empty && /No works are available for hire just now/.test(emp.h) && emp.closed && ax.length === 0, JSON.stringify(emp) + JSON.stringify(ax));
+const intro = await o.page.evaluate(() => ({ h1: document.querySelector('h1').textContent, lede: document.querySelector('.pa-hire-intro .pa-lede').textContent }));
+check('I1 the approved headline “Original art, on hire.” is kept; the introduction speaks to creative uses, with no sales language', intro.h1 === 'Original art,on hire.'
+  && /set the tone of a room/.test(intro.lede) && /agreed directly with the artist/.test(intro.lede) && !/\b(buy|sale|deal|discount|offer|price|cheap|best|exclusive|book now)\b/i.test(intro.lede), JSON.stringify(intro));
 await shot(o.page, 'empty-desktop-1440');
 await o.ctx.close();
 o = await open(browser, P.empty, S, { device: 'iPhone 13' });

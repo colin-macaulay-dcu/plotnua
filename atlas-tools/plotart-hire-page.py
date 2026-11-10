@@ -103,7 +103,7 @@ def body(cards, api, form):
   <p class="pa-eyebrow">Art for Hire</p>
   <h1>Original art,<br><em>on hire.</em></h1>
   <div class="pa-hire-intro">
-    <p class="pa-lede">Original work by Irish artists, available to hire for productions, photography, property staging and interiors. Choose a work, send an enquiry, and agree the hire directly with the artist.</p>
+    <p class="pa-lede">An original work by an Irish artist can set the tone of a room, give a shoot its character or make a staged home feel lived in. The works here can be hired for productions, photography, property staging and interiors, and every hire is agreed directly with the artist.</p>
     <p class="pa-hire-for"><strong>For</strong>Production designers and set decorators, photographers, advertising teams, property stagers and interior designers.</p>
   </div>
 </div></section>

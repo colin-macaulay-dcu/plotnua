@@ -27,6 +27,8 @@ const render = env => spawnSync('python3', [join(HERE, 'render-enquiry-config.py
 let r = render({ STUDIO_D1_DATABASE_ID: DB });
 const toml = r.status === 0 ? readFileSync(join(wt, 'wrangler.enquiry.production.toml'), 'utf8') : '';
 check('renders with the relay OPEN, email ON (resend), garden route OFF', r.status === 0 && /^ENQUIRIES_ENABLED = "true"/m.test(toml) && /^MAILER = "resend"/m.test(toml) && /^GARDEN_ENQUIRIES_ENABLED = "false"/m.test(toml), r.stdout + r.stderr);
+check('Art for Hire (3B-5): production renders all three hire switches CLOSED, and the settings file cannot open them',
+  /^HIRE_ENQUIRIES_ENABLED = "false"/m.test(toml) && /^HIRE_TERMS_ENABLED = "false"/m.test(toml) && /^HIRE_SCREEN_USE = "false"/m.test(toml));
 check('the database identifier comes from the environment and is not printed', toml.includes(DB) && !(r.stdout + r.stderr).includes(DB));
 const expected = r.status === 0 ? JSON.parse(readFileSync(join(wt, 'enquiry-expected.json'), 'utf8')) : null;
 check('writes what the deploy will set, for the live comparison', expected && expected.vars.ENQUIRIES_ENABLED === 'true' && expected.d1.DB === DB && expected.secrets_required.includes('RESEND_API_KEY'));
@@ -65,8 +67,11 @@ const sc = async (name, bindings, expect, when = 'before', must) => {
   const s = await settings(bindings, when);
   check(`${name} → ${expect ? 'deploy proceeds' : 'deploy REFUSED'}`, (s.code === 0) === expect && noLeak(s.out) && (!must || must.test(s.out)), s.out.trim().split('\n').pop());
 };
-await sc("today's live relay (29 Oct: open, email on, no garden switch yet)", TODAY, true, 'before', /will be added, with no change in behaviour: GARDEN_ENQUIRIES_ENABLED="false"/);
-await sc('after the deploy: exactly the expected settings', [...TODAY, plain('GARDEN_ENQUIRIES_ENABLED', 'false')], true, 'after');
+await sc("today's live relay (29 Oct: open, email on, no garden switch yet)", TODAY, true, 'before', /will be added, with no change in behaviour: GARDEN_ENQUIRIES_ENABLED="false", HIRE_ENQUIRIES_ENABLED="false", HIRE_TERMS_ENABLED="false", HIRE_SCREEN_USE="false"/);
+const HIRE_OFF = ['HIRE_ENQUIRIES_ENABLED', 'HIRE_TERMS_ENABLED', 'HIRE_SCREEN_USE'].map(k => plain(k, 'false'));
+await sc('after the deploy: exactly the expected settings', [...TODAY, plain('GARDEN_ENQUIRIES_ENABLED', 'false'), ...HIRE_OFF], true, 'after');
+await sc('after the deploy: an Art for Hire switch missing', [...TODAY, plain('GARDEN_ENQUIRIES_ENABLED', 'false'), ...HIRE_OFF.slice(1)], false, 'after');
+await sc('live Art for Hire enquiries ON: the deploy would close them', [...TODAY, plain('HIRE_ENQUIRIES_ENABLED', 'true')], false);
 await sc('after the deploy: the garden switch missing', TODAY, false, 'after');
 await sc('live relay with email OFF (MAILER none): the deploy would switch it on', TODAY.map(b => b.name === 'MAILER' ? plain('MAILER', 'none') : b), false);
 await sc('live relay CLOSED: the deploy would open it', TODAY.map(b => b.name === 'ENQUIRIES_ENABLED' ? plain('ENQUIRIES_ENABLED', 'false') : b), false);
@@ -84,7 +89,7 @@ server.close();
 console.log('C · the relay code (no database touched: every request is refused before it)');
 async function relay(srcDir, env) {
   const d = join(T, 'r' + Math.random().toString(36).slice(2)); mkdirSync(d);
-  for (const f of ['enquiry.js', 'mailer.js', 'founding.js']) { try { copyFileSync(join(srcDir, f), join(d, f)); } catch {} }
+  for (const f of ['enquiry.js', 'mailer.js', 'founding.js', 'hire-enquiry.js', 'hire-rules.js']) { try { copyFileSync(join(srcDir, f), join(d, f)); } catch {} }   // + Art for Hire (3B-3)
   writeFileSync(join(d, 'package.json'), '{"type":"module"}');
   const mod = (await import(pathToFileURL(join(d, 'enquiry.js')).href)).default;
   let ip = 0;

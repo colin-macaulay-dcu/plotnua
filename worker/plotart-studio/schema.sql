@@ -358,8 +358,8 @@ INSERT INTO agreement_documents (doc_id, kind, title, text_status, html_sha256, 
   '62adedbf330a0f6d02e952c7f4f7bfc9232696103dd10d52fa72b99a88693463', 'cc3294340834db30c14c47cb811042d91e3619e73aca3dfd2fafc032d8bd8011',
   strftime('%Y-%m-%dT%H:%M:%SZ','now'), strftime('%Y-%m-%dT%H:%M:%SZ','now'));
 
--- Art for Hire tables (migration 0006, development 10 Nov 2026): the same tables, indexes and guards, for new installs and
--- local tests. Kept identical to the migration by test/prove-migration-0006.mjs.
+-- Art for Hire tables (migration 0007, file 0007_art_for_hire.sql, development 10 Nov 2026): the same tables, indexes and guards, for new installs and
+-- local tests. Kept identical to the migration by test/prove-migration-0007.mjs.
 
 -- 1 · The Art for Hire Artist Terms texts. A row is never changed or removed: a new text is a new identifier.
 CREATE TABLE IF NOT EXISTS hire_terms (

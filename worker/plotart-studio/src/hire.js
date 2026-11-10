@@ -1,6 +1,6 @@
 /* PlotArt Studio · Art for Hire (Stage 3B-2, development 10 Nov 2026). NOT DEPLOYED.
    A separate layer BESIDE the gallery: it never writes versions, submissions, publish_queue, gallery files, artworks or any
-   agreement table. Hire details live in artwork_hire (migration 0006); acceptances of the separate, optional Art for Hire
+   agreement table. Hire details live in artwork_hire (migration 0007); acceptances of the separate, optional Art for Hire
    Artist Terms (PA-AFH) live in hire_terms_acceptances.
 
    A work is LISTED for hire only when all three gates hold, checked in one place (listedRows):
@@ -273,7 +273,7 @@ export async function sweep(env) {
   const enq = await env.DB.prepare('DELETE FROM hire_enquiries WHERE delete_after < ?').bind(at).run();
   return { withdrawn: off.meta.changes || 0, details_deleted: del.meta.changes || 0, enquiry_details_deleted: enq.meta.changes || 0 };
 }
-/* The tables the six-year deletion must clear BEFORE record_retention (Stage 3B-1 finding): present only once 0006 has run. */
+/* The tables the six-year deletion must clear BEFORE record_retention (Stage 3B-1 finding): present only once 0007 has run. */
 export async function recordTables(env) {
   return (await installed(env)) ? ['hire_use_permissions', 'hire_participation_events', 'hire_terms_acceptances', 'artwork_hire'] : [];
 }

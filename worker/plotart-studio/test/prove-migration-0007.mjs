@@ -1,16 +1,16 @@
-// PROVE · migration 0006 (Art for Hire) on a database built with the CURRENT PRODUCTION schema (main) and realistic rows:
+// PROVE · migration 0007 (Art for Hire) on a database built with the CURRENT PRODUCTION schema (main) and realistic rows:
 // two published Founding Artists (Leah-shaped at 01, PIGSY-shaped at 02), artworks, versions, gallery positions, agreement
 // acceptances, relay enquiries and the enquiry log. Local only (Miniflare D1); nothing here touches Cloudflare.
-//   node test/prove-migration-0006.mjs /path/to/schema-of-main.sql
+//   node test/prove-migration-0007.mjs /path/to/schema-of-main.sql
 import { createRequire } from 'node:module';
 import { readFileSync } from 'node:fs';
 import { statements, rollbackOf } from './sql.mjs';
 const require = createRequire('/tmp/claude-0/studio-tools/package.json');
 const { Miniflare } = require('miniflare');
 const results = []; const check = (n, ok, d = '') => { results.push(!!ok); console.log(`  ${ok ? 'PASS' : 'FAIL'}  ${n}${!ok && d ? `  [${String(d).slice(0, 400)}]` : ''}`); };
-if (!process.argv[2]) { console.log('usage: node test/prove-migration-0006.mjs SCHEMA_OF_MAIN.sql'); process.exit(2); }
+if (!process.argv[2]) { console.log('usage: node test/prove-migration-0007.mjs SCHEMA_OF_MAIN.sql'); process.exit(2); }
 const HERE = new URL('..', import.meta.url).pathname;
-const MIG = readFileSync(HERE + 'migrations/0006_art_for_hire.sql', 'utf8');
+const MIG = readFileSync(HERE + 'migrations/0007_art_for_hire.sql', 'utf8');
 const SCHEMA_NEW = readFileSync(HERE + 'schema.sql', 'utf8');
 const NEW = ['artwork_hire', 'hire_enquiries', 'hire_participation_events', 'hire_terms', 'hire_terms_acceptances', 'hire_use_permissions'];
 const mf = new Miniflare({ modules: true, script: 'export default { fetch() { return new Response("") } }', d1Databases: { DB: 'mig6-test' } });
@@ -19,7 +19,7 @@ const run = async sql => { for (const st of statements(sql)) await db.prepare(st
 const refused = async (sql, ...b) => { try { await db.prepare(sql).bind(...b).run(); return false; } catch { return true; } };
 await run(readFileSync(process.argv[2], 'utf8'));
 
-console.log('PROVE · migration 0006 (Art for Hire) on the production schema');
+console.log('PROVE · migration 0007 (Art for Hire) on the production schema');
 const t = '2026-10-30T10:00:00.000Z', pub = '2026-11-05T17:05:00.000Z';
 for (const [id, slug, name, n] of [['aleah', 'leah-like', 'Leah Like', 1], ['apigsy', 'pigsy-like', 'Pigsy Like', 2]]) {
   await db.prepare(`INSERT INTO artists (id, slug, email, display_name, founding, founding_number, account_status, first_published_at, created_at, updated_at)
@@ -131,5 +131,5 @@ await run(rollbackOf(MIG));
 check('R3 the documented rollback removes exactly the six new tables and leaves every existing object as it was', JSON.stringify(await objects()) === JSON.stringify(beforeObjects));
 
 const fail = results.filter(x => !x).length;
-console.log(`\nMIGRATION 0006 · ${results.length} checks, ${results.length - fail} passed, ${fail} failed`);
+console.log(`\nMIGRATION 0007 · ${results.length} checks, ${results.length - fail} passed, ${fail} failed`);
 process.exit(fail ? 1 : 0);

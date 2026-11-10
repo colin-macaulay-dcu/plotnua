@@ -315,6 +315,7 @@ body.pa .pa-foot h2{ font-family:var(--sans); font-size:12px; letter-spacing:.2e
 .pa-foot ul{ list-style:none; margin:0; padding:0; display:grid; gap:8px; }
 .pa-foot a{ color:var(--lime); text-decoration:none; }
 .pa-foot a:hover{ color:var(--ivory); text-decoration:underline; }
+.pa-foot p a{ text-decoration:underline; text-underline-offset:3px; text-decoration-thickness:1px; }   /* a link inside a sentence is underlined, not told apart by colour alone (WCAG 1.4.1; Art for Hire 3B-5) */
 .pa-foot .fine{ grid-column:1 / -1; border-top:1px solid var(--line); padding-top:22px; font-size:13px; color:var(--mute); }
 @media (max-width:760px){ .pa-foot .pa-wrap{ grid-template-columns:1fr; } }
 
