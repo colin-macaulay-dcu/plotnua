@@ -19,7 +19,7 @@ FIRST-PARTY EVIDENCE, read 1 October 2026:
     https://hutsmith.co.uk/saunas    saunas, with published prices
 
 ── IMAGERY ────────────────────────────────────────────────────────────────
-Dudley Radford has GRANTED permission. The state is therefore decided by one
+Hutsmith's owner has GRANTED permission. The state is therefore decided by one
 list, HUTSMITH_IMAGES, and nothing else:
 
     empty  -> the certified held slot, worded as authorised-and-awaiting.
@@ -58,7 +58,7 @@ PERMISSION_DATE = "1 October 2026"
 # Both from one project -- Creative Studio, published at £72,500 on
 # hutsmith.com/portfolio/new-portfolio-item -- so the card shows a single
 # coherent building rather than two unrelated ones.
-# The hero is the EXTERIOR, so the first thing Dudley sees is a whole
+# The hero is the EXTERIOR, so the first thing the supplier sees is a whole
 # Hutsmith building rather than a detail of one. Uncropped, full frame, the
 # building complete in its garden. The interior follows as the second image.
 HUTSMITH_IMAGES = [
@@ -94,7 +94,7 @@ FILL = {
     # supporting line are removed outright, not reworded -- a replacement
     # slogan was explicitly ruled out. After the private-preview bar the page
     # goes straight to the demonstration, so the first substantive thing
-    # Dudley sees is the Hutsmith result itself. {{PROPOSITION}} and {{LEDE}}
+    # the supplier sees is the Hutsmith result itself. {{PROPOSITION}} and {{LEDE}}
     # therefore no longer exist and are absent from this fill set.
 
     # Concrete, not speculative. No "imagine".
@@ -344,7 +344,7 @@ def main():
         FILL.pop("PHOTO_SLOT_LINE", None)
         # The state-A credit line, as yardbox-preview.html carries it.
         # The credit carries BOTH halves of what was actually promised to
-        # Dudley: clear credit, and a link back to his website. "© Hutsmith"
+        # the supplier: clear credit, and a link back to its website. "© Hutsmith"
         # is the machine-checkable token the rights gate looks for, so if it
         # is ever dropped the gate refuses the images rather than publishing
         # them uncredited.

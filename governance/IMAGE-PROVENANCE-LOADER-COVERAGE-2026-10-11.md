@@ -173,7 +173,7 @@ hash-verified untouched.
 - **The BIOBUILDS publication decision untouched** — `FX-BIOBUILDS-PUBLISH-20261011`,
   its six approved and two withheld assets, and
   `listing_review.state: AWAITING_CONFIRMATION` with `confirmed_at: null`
-  all stand. Mateus is still not recorded as having confirmed anything.
+  all stand. BIOBUILDS is still not recorded as having confirmed anything.
 - Atlas pricing, Results, Compare, the publication gates and Cluster 1 are
   byte-identical.
 

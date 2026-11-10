@@ -17,15 +17,15 @@ BIOBUILDS **granted** permission in writing on 2 October 2026, recorded as
 `C2-GRANT-BIOBUILDS-20261002` (`rec6JPwNYPIj7EIfZ`) against `ORG-000153`
 (`recjNpnrIr2KT5BWh`), outcome *Granted with Conditions — Founder Confirmed*:
 
-> "Yes. We are happy for PlotNua to feature BioBuilds and use selected images
-> from our website, with credit and a link back to us. We supply the Republic
-> of Ireland. Please send us the listing before it goes live, so we can check
-> it."
+> (Wording held privately since 10 Nov 2026, PN-EVID-RIGHTS-ORG-000153-20261002.)
+> PlotNua may feature BioBuilds and use selected images from its website, with
+> credit and a link back; BIOBUILDS supplies the Republic of Ireland; and PlotNua
+> should send the listing before it goes live so that BIOBUILDS can check it.
 
 That is a grant. The last sentence is a **condition attached to a grant**, not
 the withholding of one. The 11 October email is that condition being
-exercised: Mateus reviewed, asked for factual corrections, and those
-corrections are now applied (`edecc86`, `7b81224`) and awaiting his
+exercised: BIOBUILDS reviewed, asked for factual corrections, and those
+corrections are now applied (`edecc86`, `7b81224`) and awaiting its
 confirmation.
 
 | Dimension | State |
@@ -314,7 +314,7 @@ Three effects when something does change:
 6. **Airtable values for BIOBUILDS**: prices, VAT basis, terms, descriptions,
    refreshed sources, and `Model Name Number`. **Area last, deliberately**,
    with PG6 proving it changes no visibility.
-7. **On Mateus's confirmation**: `listingReview → CONFIRMED`, promote the eight
+7. **On BIOBUILDS' confirmation**: `listingReview → CONFIRMED`, promote the eight
    exercised assets from *Reference Only — Not Published* to *Approved*, re-run
    containment. Only then does `publicVisibility` derive to `PUBLISHABLE`.
 
@@ -370,7 +370,7 @@ test is not passing vacuously.
    verify the basis with BIOBUILDS and populate. **I recommend leaving it
    null.** It sits outside the 32–45 m² band either way, so populating buys
    nothing and risks publishing an unverified measurement. It is also not
-   something to add to Mateus's current review — it can wait.
+   something to add to BIOBUILDS' current review — it can wait.
 2. **How Compare handles configurations.** Comparing one supplier's turnkey
    price against another's shell price is misleading even when both are
    labelled. Options: compare like-for-like only; show both and refuse to rank

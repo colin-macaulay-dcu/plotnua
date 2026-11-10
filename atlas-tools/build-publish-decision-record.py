@@ -17,12 +17,12 @@ WHAT IS PRESERVED EXACTLY.
   * permission            GRANTED, 2 October 2026, ref C2-GRANT-BIOBUILDS-20261002
   * listing_review.state  AWAITING_CONFIRMATION -- UNCHANGED
   * confirmed_at          null -- UNCHANGED
-  * the evidence quote    Mateus's words, verbatim, untouched
+  * the evidence          the 2 October grant, untouched
   * asset_approval_state  REFERENCE_ONLY -- UNCHANGED, because the 34 governed
                           assets genuinely are Reference Only in Atlas and no
                           decision changed that
 
-Mateus has not confirmed the corrected preview. After this builder runs, the
+BIOBUILDS has not confirmed the corrected preview. After this builder runs, the
 record still says so, in the same words, and says separately that the founder
 decided to proceed anyway. Anyone reading the file afterwards can tell exactly
 what happened and who decided it.
@@ -68,7 +68,7 @@ A1_NEW = '''
 #
 # The founder has decided to publish without it and to own that decision.
 # This is the record of that, and it is deliberately NOT a change to the
-# review state: Mateus has not confirmed, the record still says he has not
+# review state: BIOBUILDS has not confirmed, the record still says it has not
 # confirmed, and `supplier_confirmation_received: False` says it a second time
 # in the place a future reader is most likely to look.
 FOUNDER_EXCEPTION = {
@@ -230,7 +230,7 @@ A3_NEW = '''    asset_state = "REFERENCE_ONLY"
                     "Nothing written." % w)
 
     # G1b · AND THE DECISION MUST NOT CLAIM A CONFIRMATION.
-    # The one thing the founder explicitly forbade: do not record Mateus as
+    # The one thing the founder explicitly forbade: do not record BIOBUILDS as
     # having confirmed the corrected preview.
     if FOUNDER_EXCEPTION.get("supplier_confirmation_received") is not False:
         die("the founder exception does not state that the supplier's "

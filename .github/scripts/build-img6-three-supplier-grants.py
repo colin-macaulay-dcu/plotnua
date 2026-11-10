@@ -84,7 +84,7 @@ NEW = [
             }
         ],
         "required_credit": "© Garden Room Ireland",
-        "evidence": "Founder-confirmed grant recorded in Atlas as Image Permission Outreach IPO-049 (recQV5mDeIFBj9CZM) against Organisations ORG-000012 (recUrpkOqKbynjQP0), supplier YES 2 October 2026, Gmail thread 1a0fb8c10027247e.",
+        "evidence": "Founder-confirmed grant recorded in Atlas as Image Permission Outreach IPO-049 (recQV5mDeIFBj9CZM) against Organisations ORG-000012 (recUrpkOqKbynjQP0), supplier YES by email 2 October 2026. Correspondence held privately.",
         "conditions": [
             "Credit '© Garden Room Ireland' on every image use.",
             "Garden Room Ireland may request change or removal of any image at any time, and PlotNua complies.",
@@ -104,7 +104,7 @@ NEW = [
         "permission_outcome": "Granted with Conditions — Founder Confirmed",
         "permitted_domain": "elmlandscaping.ie",
         "required_credit": "© Elm Landscaping",
-        "evidence": "Founder-confirmed grant recorded in Atlas as Image Permission Outreach IPO-046 (reccLICqUV2mAGicg) against Organisations ORG-000148 (recyCu5OjHlUObM8f), supplier YES 2 October 2026, Gmail thread 1a0d05e8fd940e75.",
+        "evidence": "Founder-confirmed grant recorded in Atlas as Image Permission Outreach IPO-046 (reccLICqUV2mAGicg) against Organisations ORG-000148 (recyCu5OjHlUObM8f), supplier YES by email 2 October 2026. Correspondence held privately.",
         "conditions": [
             "Credit '© Elm Landscaping' on every image use.",
             "Elm Landscaping may request change or removal of any image at any time, and PlotNua complies.",
@@ -123,7 +123,7 @@ NEW = [
         "permission_outcome": "Granted with Conditions — Founder Confirmed",
         "permitted_domain": "donmodularhomes.ie",
         "required_credit": "© Don Modular Homes",
-        "evidence": "Founder-confirmed grant recorded in Atlas as Image Permission Outreach C2-FIRST-DON-MODULAR-20261002 (recAFBJW5nwWv0Z20) against Organisations recOLYgRSUdzU8zwI, supplier YES 2 October 2026, Gmail thread 1a0fbe3f8fdf7329.",
+        "evidence": "Founder-confirmed grant recorded in Atlas as Image Permission Outreach C2-FIRST-DON-MODULAR-20261002 (recAFBJW5nwWv0Z20) against Organisations recOLYgRSUdzU8zwI, supplier YES by email 2 October 2026. Correspondence held privately.",
         "conditions": [
             "Credit '© Don Modular Homes' on every image use.",
             "Don Modular Homes may request change or removal of any image at any time, and PlotNua complies.",

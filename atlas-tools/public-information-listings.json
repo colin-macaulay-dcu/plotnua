@@ -52,7 +52,7 @@
    "supplier_permission": false,
    "imagery": "none",
    "maker_identity": "Atlas organisation, Website https://polaris-sauna.ie/; every product URL is on polaris-sauna.ie.",
-   "objection_check": "Outreach 2 Oct and 9 Oct 2026 (Gmail 1a0fd8a12a864ab8) unanswered; the 9 Oct email offered NO as a reply and none came (Gmail searched 14 Oct 2026, including trash).",
+   "objection_check": "Outreach 2 Oct and 9 Oct 2026 (by email; correspondence held privately) unanswered; the 9 Oct email offered NO as a reply and none came (Gmail searched 14 Oct 2026, including trash).",
    "objection": "none recorded"
   },
   {
@@ -62,13 +62,13 @@
    "supplier_permission": false,
    "imagery": "none",
    "maker_identity": "Atlas organisation, Website https://www.woodenhottubsale.co.uk/; every product URL is on www.woodenhottubsale.co.uk.",
-   "objection_check": "Outreach 2 Oct and 9 Oct 2026 (Gmail 1a0fd82f2f874b01) unanswered; the 9 Oct email offered NO as a reply and none came (Gmail searched 14 Oct 2026, including trash).",
+   "objection_check": "Outreach 2 Oct and 9 Oct 2026 (by email; correspondence held privately) unanswered; the 9 Oct email offered NO as a reply and none came (Gmail searched 14 Oct 2026, including trash).",
    "objection": "none recorded",
    "note": "Delivery to the Republic of Ireland is not confirmed for TimberIN and is never stated: every wellness record carries Irish availability UNCONFIRMED."
   }
  ],
  "not_listed": [
-  {"name": "MyCabin.ie", "why": "Founder review pending (14 Oct 2026 brief: \"10 MyCabin products pending founder review\"). MyCabin replied on 17 Sep 2026, \"This is not something we are interested in\" (Gmail 1a0aaefbe7bdea42), and declined image permission."},
+  {"name": "MyCabin.ie", "why": "Founder review pending (14 Oct 2026 brief: \"10 MyCabin products pending founder review\"). MyCabin replied by email on 17 Sep 2026 that it was not interested, and declined image permission (correspondence held privately)."},
   {"name": "Cosy Cabins", "why": "Asked on 2 Oct 2026 to see a preview before anything is published (PN-EVID-PREVIEW-COSY-CABINS-20261002, held privately); unanswered since. Held in atlas-tools/preview-only-suppliers.json."},
   {"name": "Auroom Wellness", "why": "Preview-only and never searchable; its two products also lack a verified price and a classified type."},
   {"name": "Sommarnöjen", "why": "Its one product page returns HTTP 404, so the product page is not live."}

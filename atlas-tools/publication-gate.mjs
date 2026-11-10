@@ -208,6 +208,40 @@ export function gateIntegrityProblems(record) {
              "listing_review.state is NOT_REQUIRED");
   }
 
+  /* PG4, STRUCTURED (M8C Stage 2, 10 Nov 2026). The wording check above reads
+     the supplier's own words, and supplier correspondence no longer lives in
+     this public file -- it is held privately and cited by evidence reference.
+     So the request for pre-live review is ALSO carried as structure, and is
+     enforced from structure. Two independent channels, either one sufficient
+     to refuse:
+       PG4s  permission.pre_live_review_requested === true, or
+             listing_review.requested_by === "supplier"
+             -> listing_review.state may not be NOT_REQUIRED.
+       PG4c  the two channels may not disagree: if any permission text
+             (evidence, conditions, permission.*) still carries pre-live review
+             wording, or the supplier is recorded as the requester, the flag
+             must be present and true. Dropping the flag is refused, so
+             neutralising wording can never quietly remove the requirement. */
+  const flag = permission.pre_live_review_requested;
+  const supplierAsked = review.requested_by === "supplier";
+  if ((flag === true || supplierAsked) && review.state === "NOT_REQUIRED") {
+    out.push("the supplier asked for pre-live review " +
+             "(permission.pre_live_review_requested / listing_review.requested_by) " +
+             "but listing_review.state is NOT_REQUIRED");
+  }
+  const permissionText = [evidence]
+    .concat((record.conditions || []).map(String))
+    .concat(Object.values(permission).filter(v => typeof v === "string"))
+    .join(" \n ");
+  if ((PRE_LIVE_REVIEW_LANGUAGE.test(permissionText) || supplierAsked) &&
+      flag !== true) {
+    out.push("pre-live review is recorded (wording or requested_by=supplier) " +
+             "but permission.pre_live_review_requested is not true");
+  }
+  if (flag !== undefined && typeof flag !== "boolean") {
+    out.push("permission.pre_live_review_requested must be true or false");
+  }
+
   // PG5 · never call a granted supplier unpermitted.
   if (permission.state === "GRANTED" && derived.holdReason === "no-permission") {
     out.push("holdReason says no-permission for a supplier whose permission " +

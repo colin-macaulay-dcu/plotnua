@@ -101,6 +101,22 @@ const CASES = [
       r.hold_reason = 'assets-not-approved';
     })],
 
+  /* M8C Stage 2: the structured channel must be load-bearing on the REAL
+     record. Every trace of review wording is removed from BIOBUILDS' evidence,
+     so the wording rule is blind; only the structured flag and the recorded
+     requester remain, and NOT_REQUIRED is claimed. */
+  ['C-PG4s', 'PG4', 'review wording is removed and NOT_REQUIRED claimed; only the structured channel remains',
+    t => t.record(r => {
+      r.permission.pre_live_review_requested = true;
+      r.evidence = String(r.evidence).replace(/before it goes live/g, 'later');
+      r.listing_review.state = 'NOT_REQUIRED';
+      r.public_visibility = 'HOLD';
+      r.hold_reason = 'assets-not-approved';
+    })],
+
+  ['C-PG4c', 'PG4', 'pre-live review stays recorded but the structured flag is removed',
+    t => t.record(r => { delete r.permission.pre_live_review_requested; })],
+
   ['C-PG5', 'PG5', 'a GRANTED supplier is labelled no-permission',
     t => t.record(r => { r.hold_reason = 'no-permission'; })],
 

@@ -72,12 +72,12 @@ NEW = {
     "permitted_domain": DOMAIN,
     "required_credit": CREDIT,
     "evidence": (
-        "Mateus, BIOBUILDS, to PlotNua from marketing@biobuilds.com, Gmail "
-        "thread 1a0d05d7cd1d4aea, message 1a0fc4a334452803, 2026-10-02 "
-        "11:05:03 UTC: \"Yes. We are happy for PlotNua to feature BioBuilds "
-        "and use selected images from our website, with credit and a link "
-        "back to us. We supply the Republic of Ireland. Please send us the "
-        "listing before it goes live, so we can check it.\" Recorded in Atlas "
+        "Granted in writing by BIOBUILDS BY EMAIL, 2 October 2026: PlotNua may "
+        "feature BioBuilds and use selected images from its website, with "
+        "credit and a link back; BIOBUILDS supplies the Republic of Ireland. "
+        "The same reply asked PlotNua to send the listing before it goes live "
+        "so that BIOBUILDS can check it. Correspondence held privately "
+        "(PN-EVID-RIGHTS-ORG-000153-20261002). Recorded in Atlas "
         "as Image Permission Outreach " + IPO_REF + " (" + IPO_RECORD + ") "
         "against Organisations ORG-000153 (" + ORG + "), outcome 'Granted "
         "with Conditions — Founder Confirmed'."

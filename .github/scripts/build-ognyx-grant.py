@@ -5,15 +5,14 @@ BOUNDED BUILDER — the OGNYX image-rights record.
 
 *** THIS IS A PREVIEW-SCOPED RECORD, NOT A PUBLICATION GRANT. ***
 
-Fabian at OGNYX replied on 2 October 2026 asking to see the preview before
-proceeding, and wrote, in his own words:
-
-    "Please feel free to prepare the preview, including any example imagery,
-     product presentation and links you propose to use."
+OGNYX replied by email on 2 October 2026 asking to see the preview before
+proceeding, and invited PlotNua to prepare the preview, including any example
+imagery, product presentation and links it proposed to use (wording held
+privately, PN-EVID-RIGHTS-OGNYX-20261002).
 
 That is written permission, and it is written permission for ONE THING: the
 private preview. It is not approval to publish OGNYX imagery to homeowners,
-and Atlas Permission Outcome stays "Unknown -- Awaiting Reply" until he says
+and Atlas Permission Outcome stays "Unknown -- Awaiting Reply" until OGNYX says
 so.
 
 WHY A RECORD EXISTS AT ALL. The publish-time gate walks every .html in the
@@ -70,16 +69,15 @@ NEW = {
     "permitted_domain": DOMAIN,
     "required_credit": CREDIT,
     "evidence": (
-        "Fabian of OGNYX replied on 2 October 2026 to the Home Wellness "
-        "outreach, Gmail thread 1a0fd83e5f6c284f, message 1a0fe3d7b43366cf: "
-        "“Before proceeding, we would be interested in seeing the preview of "
-        "how OGNYX would be presented within PlotNua. Please feel free to "
-        "prepare the preview, including any example imagery, product "
-        "presentation and links you propose to use.” Recorded in Atlas as "
+        "OGNYX replied by email on 2 October 2026 to the Home Wellness "
+        "outreach, asking first to see a preview of how OGNYX would be "
+        "presented within PlotNua, including example imagery, product "
+        "presentation and links (held privately, "
+        "PN-EVID-RIGHTS-OGNYX-20261002). Recorded in Atlas as "
         "Image Permission Outreach " + IPO_REF + " (" + IPO_RECORD + ") "
-        "against Organisations " + ORG + ", contact info@ognyx.com. THE "
-        "OUTCOME IN ATLAS REMAINS “Unknown — Awaiting Reply”: he asked to "
-        "see the preview, he did not say yes to publication."
+        "against Organisations " + ORG + ". THE "
+        "OUTCOME IN ATLAS REMAINS “Unknown — Awaiting Reply”: OGNYX asked "
+        "to see the preview; it did not say yes to publication."
     ),
     "conditions": [
         "PREVIEW ONLY. This permission covers " + PREVIEW_PAGE + " and "

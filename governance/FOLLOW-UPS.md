@@ -494,7 +494,7 @@ OPEN:
   Lisette (G0093); GR10 refuses any held maker's name on the page. Original
   note: Garden Retreat's comparison section names MyCabin's
   Cube Sauna M with its price and showrooms (editorial since September).
-  MyCabin replied "This is not something we are interested in" (17 Sep).
+  MyCabin declined by email (17 Sep; wording held privately).
   The directory holds MyCabin; the editorial does not. Founder to decide.
 * COSY-CLUSTER1 · RESOLVED 14 Oct 2026: the figure is the 7 October research
   snapshot (B); the page now says so, with the date derived from the evidence

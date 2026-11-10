@@ -2,7 +2,7 @@
 """
 TRIQ QUBE · PUBLIC PAGE — BOUNDED BUILDER (12 October 2026)
 
-PRODUCT NAME CORRECTION, 13 October 2026. TRIQBRIQ AG (Christian Klerner)
+PRODUCT NAME CORRECTION, 13 October 2026. TRIQBRIQ AG, by email,
 confirmed the product is "TRIQ QUBE", not "TRIQ CUBE". The visible name and
 metadata use TRIQ QUBE. The frozen preview, which still says CUBE, is NOT
 edited: its approved blocks are lifted verbatim and the product name is then
@@ -17,7 +17,7 @@ the page marker, and the GA4 product_id 'triq-cube' (so the first-month
 outbound report to TRIQBRIQ is one continuous series).
 
 Founder decision, 12 October 2026: TRIQBRIQ AG's product management approved
-the landing page (Christian Klerner, email of 12 October 2026). The approved
+the landing page (TRIQBRIQ AG, email of 12 October 2026; held privately). The approved
 page may proceed to public publication.
 
 triq-cube-preview.html stays FROZEN (SUPPLIER-PREVIEW-SYSTEM-V1 §12). This
@@ -144,10 +144,10 @@ for _v in ("#2A2622", "#27282A"):
 IMG, PRICE_SPEC_PUB, EQUIP_PUB, OPEN_PUB = (name_fix(IMG), name_fix(PRICE_SPEC_PUB),
                                            name_fix(EQUIP_PUB), name_fix(OPEN_PUB))
 
-# DELIVERY EVIDENCE, 13 October 2026. Christian Klerner (TRIQBRIQ AG), in
-# writing: "In principle, our building kit is available for delivery
-# worldwide. We would be happy to review specific delivery addresses
-# individually with each prospective customer upon enquiry." The two panel
+# DELIVERY EVIDENCE, 13 October 2026. TRIQBRIQ AG, in writing (held
+# privately): the building kit is available for delivery worldwide in
+# principle, and specific delivery addresses are reviewed individually with
+# each prospective customer on enquiry. The two panel
 # items that said Irish supply/delivery was not established are replaced by
 # the FOUNDER-APPROVED wording below, word for word. Still NOT claimed: Irish
 # delivery as guaranteed, any shipping price or time, Irish installation, or

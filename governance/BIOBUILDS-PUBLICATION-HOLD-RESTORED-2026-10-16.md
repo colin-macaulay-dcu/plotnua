@@ -56,6 +56,6 @@ Pre-existing failures on `origin/main` itself, unchanged by this patch and not i
 
 ## Return path
 
-BIOBUILDS becomes PUBLISHABLE again only when Mateus confirms the corrected
+BIOBUILDS becomes PUBLISHABLE again only when BIOBUILDS confirms the corrected
 listing (`listing_review.state` → CONFIRMED with a date), or by a new, separately
 dated founder decision.

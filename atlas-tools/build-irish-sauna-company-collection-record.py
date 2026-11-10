@@ -10,12 +10,11 @@ The Skellig) and use eight approved collection images, two per sauna,
 displayed as "Product visualisation", credited "© Irish Sauna Company" and
 linked to the supplier.
 
-THE EVIDENCE. Brona, info@irishsaunacompany.com, 27 Oct 2026 09:04 UTC,
-Gmail 1a17c9a56ea0fdca (thread 1a0fd83ddde922b1):
-  "would it be possible to update our listing on PlotNua to feature our new
-   Irish-made collection instead of the previously listed range?"
-  "Please feel free to use the product imagery and information from the
-   collection"
+THE EVIDENCE. Irish Sauna Company, by email, 27 Oct 2026 (held privately,
+PN-EVID-RIGHTS-IRISH-SAUNA-COMPANY-20261027): asked PlotNua to update its
+listing to feature the new Irish-made collection instead of the previously
+listed range, and gave permission to use the product imagery and information
+from the collection.
 The permission itself (scope, conditions, collection_grant) is written by
 atlas-tools/build-wellness-publication-records.py, which owns every wellness
 publication state. THIS builder writes only the imagery enumeration that
@@ -39,7 +38,7 @@ Checks, each refusing the build:
   I1  exactly one Irish Sauna Company row, Atlas Organisation recLW0vZbkBGPRkZ9,
       and no other rights row changes;
   I2  the permission written by the wellness builder carries the 27 Oct
-      collection grant (Gmail 1a17c9a56ea0fdca) and scope feature + imagery;
+      collection grant (PN-EVID-RIGHTS-IRISH-SAUNA-COMPANY-20261027) and scope feature + imagery;
   I3  eight distinct URLs on irishsaunacompany.com/cdn/shop/files/, two per
       product code, one primary each, all visualisations with alt text
       opening "Visualisation", each with an Atlas Asset record;
@@ -100,8 +99,7 @@ ASSET_APPROVAL = {
     "state": "SELECTED_ASSETS_APPROVED",
     "default_for_unlisted": "NOT_AUTHORISED",
     "approved_count": 8,
-    "authorised_by": "Irish Sauna Company (Brona), 27 Oct 2026, Gmail 1a17c9a56ea0fdca; "
-                     "founder approval 27 Oct 2026",
+    "authorised_by": "Irish Sauna Company, by email 27 Oct 2026; founder approval 27 Oct 2026",
     "note": "Approval is by ENUMERATION, per asset: two product visualisations for each Island "
             "Collection sauna. An Irish Sauna Company image is usable because it appears in "
             "approved_assets, never because it is served from irishsaunacompany.com. Floor plans, "
@@ -115,12 +113,8 @@ ASSET_APPROVAL = {
     ],
 }
 CONDITIONS = [
-    "FEATURE: PlotNua may feature Irish Sauna Company and its products (9 Oct 2026, Gmail "
-    "1a1208b5549f0e23; listing approved 12 Oct, 1a12f28526374227).",
-    "IMAGES: the eight Island Collection product visualisations enumerated in approved_assets "
-    "(two per sauna) and NO OTHER Irish Sauna Company image, under the supplier's 27 Oct 2026 "
-    "permission for 'the product imagery and information from the collection' (Gmail "
-    "1a17c9a56ea0fdca). Pods, mobile saunas and any Harvia manufacturer image are excluded.",
+    "FEATURE: PlotNua may feature Irish Sauna Company and its products (by email 9 Oct 2026; listing approved by email 12 Oct).",
+    "IMAGES: the eight Island Collection product visualisations enumerated in approved_assets (two per sauna) and NO OTHER Irish Sauna Company image, under the supplier's 27 Oct 2026 email permission for the product imagery and information from the collection (PN-EVID-RIGHTS-IRISH-SAUNA-COMPANY-20261027). Pods, mobile saunas and any Harvia manufacturer image are excluded.",
     "Credit '© Irish Sauna Company' and a link back to https://irishsaunacompany.com/ wherever "
     "an image appears.",
     "Every image is a product visualisation (computer-generated render) and is labelled so; it "
@@ -141,11 +135,7 @@ NOTE = ("27 OCTOBER 2026 — ISLAND COLLECTION. Irish Sauna Company withdrew the
         "served from irishsaunacompany.com/cdn/shop/files/, inside permitted_domain, so no "
         "delivery host is declared. Written by "
         "atlas-tools/build-irish-sauna-company-collection-record.py.")
-EVIDENCE_ADD = (" COLLECTION PERMISSION, 27 October 2026: Brona asked PlotNua to feature the new "
-                "Irish-made collection \"instead of the previously listed range\" and wrote \"Please "
-                "feel free to use the product imagery and information from the collection\" (Gmail "
-                "1a17c9a56ea0fdca). Founder approved the replacement on 27 October 2026. Atlas Image "
-                "Permission Outreach recH6lssOAemyP9rz records the 27 October scope.")
+EVIDENCE_ADD = (" COLLECTION PERMISSION, 27 October 2026: Irish Sauna Company asked PlotNua to feature its new Irish-made collection instead of the previously listed range, and gave permission to use the product imagery and information from that collection. Founder approved the replacement on 27 October 2026. Atlas Image Permission Outreach recH6lssOAemyP9rz records the 27 October scope.")
 REG_OLD = ("irish-sauna-company-preview.html remains noindex and unlisted, and the grant has not "
            "been exercised on any other page.")
 REG_NEW = ("irish-sauna-company-preview.html was retired on 27 Oct 2026 (it described the "
@@ -172,7 +162,8 @@ def main():
     perm = row.get("permission") or {}
     cg = perm.get("collection_grant") or {}
     if (perm.get("state") != "GRANTED" or sorted(perm.get("scope") or []) != ["feature", "imagery"]
-            or cg.get("gmail") != "1a17c9a56ea0fdca" or "from the collection" not in cg.get("verbatim", "")):
+            or cg.get("evidence_ref") != "PN-EVID-RIGHTS-IRISH-SAUNA-COMPANY-20261027"
+            or "from the collection" not in cg.get("granted", "")):
         die("I2 the permission does not carry the 27 Oct 2026 collection grant; run "
             "atlas-tools/build-wellness-publication-records.py first")
 

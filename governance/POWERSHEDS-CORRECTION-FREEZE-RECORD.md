@@ -17,15 +17,14 @@ bytes verified and the bytes deployed are the same bytes.
 
 ## 1 · AUTHORITY
 
-Email from **Jack Sutcliffe, Powersheds**, received 8 October 2026, verbatim:
-
-> Hello / Seems ok to me - can you just change Power Sheds to Powersheds? /
-> Cheers / Jack Sutcliffe
+Email from **Powersheds**, received 8 October 2026 (wording held privately since
+10 Nov 2026, PN-EVID-RIGHTS-ORG-000065-20261008): approval of the feature as
+shown, and a request that "Power Sheds" be written "Powersheds".
 
 **Two separate things are recorded, and they must not be conflated.**
 
-**1. APPROVAL.** "Seems ok to me" is the supplier's approval of the PlotNua
-supplier preview and the feature **as shown to him**.
+**1. APPROVAL.** The email is the supplier's approval of the PlotNua
+supplier preview and the feature **as shown to it**.
 
 **2. NAME CORRECTION.** An explicit correction of his own company's name.
 
@@ -139,8 +138,8 @@ nobody else's. Governed credit: **`Image: Powersheds`**.
 These are not omissions. Each one is a decision, and each one is load-bearing.
 
 **Historical evidence preserved verbatim.** The `IPO-POWERSHEDS-0001` evidence
-sentence still reads "Granted by Jack Sutcliffe of **Power Sheds** BY EMAIL,
-Gmail thread 1a0b5d1a7cf5e664…", and the earlier ORG-ID-correction note is
+sentence still names **Power Sheds** (it was neutralised on 10 Nov 2026 under
+M8C so that no correspondence is published), and the earlier ORG-ID-correction note is
 preserved as written. Verified on the **live** manifest: all four surviving
 occurrences of the old name sit inside `note` (3) and `evidence` (1), and
 **zero** sit in any operative field. The dated correction is appended beneath
@@ -296,5 +295,5 @@ bounded pass, and it stays open.
 | `IPO-POWERSHEDS-0001` | **unchanged — the sole governing grant** |
 | `WRITES_ENABLED` / `EMAIL_ENABLED` / `INTEREST_PUBLIC` | **false / false / false** |
 | G5 | **not executed** |
-| Email to Jack Sutcliffe | **none sent, none drafted, none authorised** |
+| Email to Powersheds | **none sent, none drafted, none authorised** |
 | `P12_no_new_css` | **pre-existing, out of scope, open** |

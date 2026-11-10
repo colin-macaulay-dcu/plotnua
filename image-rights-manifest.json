@@ -13,8 +13,8 @@
       "permission_outcome": "Granted — Founder Confirmed",
       "permitted_domain": "triqbriq.de",
       "required_credit": "© TRIQBRIQ AG",
-      "evidence": "Written permission recorded in supplier-contact-register.json as imagery_rights_state AUTHORISED and imagery_permission_state GRANTED_IN_WRITING_2026_09_22. The register note reads: FROZEN sent preview. Do not modify. Credit “© TRIQBRIQ AG” required.",
-      "note": "RECONCILED 26 September 2026. The written grant of 22 September 2026 now has an authoritative Atlas home: Organisations ORG-000195 (recztK0C8LeTavhVJ) and Image Permission Outreach IPO-TRIQBRIQ-20260922 (recuk2DE2BJOAGnOP), Permission Outcome 'Granted — Founder Confirmed'. Atlas and this manifest now agree. Scope is exactly as evidenced and no wider: images from triqbriq.de used in connection with featuring TRIQBRIQ, credited '© TRIQBRIQ AG'. Exercised on two pages: the frozen supplier preview triq-cube-preview.html, and from 12 October 2026 the public page triq-cube.html (TRIQBRIQ product management approved the page, email from Christian Klerner of 12 October 2026; founder authorised public integration). Both use the same two triqbriq.de images, unmodified and hot-linked, each captioned “© TRIQBRIQ AG”. The gate refuses these images on any page where that credit disappears. UPDATED 13 October 2026: triq-cube.html now also shows five further official triqbriq.de images in its 'Built differently' construction story (briq-25-50-1.png, IMG_7644-scaled-e1676563466189.jpg, Verriegelung-Holzbausteine-1.jpg, Proof-of-concept-anbau-53.jpg, TRIQ-QUBE_Tiny-House-Park.jpg), chosen from TRIQBRIQ's own TRIQ QUBE, TRIQBRIQ-System, Massivholzhaus and Produktion pages; all hot-linked, unmodified and each captioned '© TRIQBRIQ AG', within the same written grant (images from triqbriq.de, used in featuring TRIQBRIQ). An image whose file name credits an outside photographer was deliberately not used. No new supplier correspondence (founder decision).",
+      "evidence": "Written permission recorded in supplier-contact-register.json as imagery_rights_state AUTHORISED and imagery_permission_state GRANTED_IN_WRITING_2026_09_22. The register note reads: FROZEN sent preview. Do not modify. Credit “© TRIQBRIQ AG” required. Evidence reference PN-EVID-RIGHTS-ORG-000195-20260922.",
+      "note": "RECONCILED 26 September 2026. The written grant of 22 September 2026 now has an authoritative Atlas home: Organisations ORG-000195 (recztK0C8LeTavhVJ) and Image Permission Outreach IPO-TRIQBRIQ-20260922 (recuk2DE2BJOAGnOP), Permission Outcome 'Granted — Founder Confirmed'. Atlas and this manifest now agree. Scope is exactly as evidenced and no wider: images from triqbriq.de used in connection with featuring TRIQBRIQ, credited '© TRIQBRIQ AG'. Exercised on two pages: the frozen supplier preview triq-cube-preview.html, and from 12 October 2026 the public page triq-cube.html (TRIQBRIQ product management approved the page by email of 12 October 2026; founder authorised public integration). Both use the same two triqbriq.de images, unmodified and hot-linked, each captioned “© TRIQBRIQ AG”. The gate refuses these images on any page where that credit disappears. UPDATED 13 October 2026: triq-cube.html now also shows five further official triqbriq.de images in its 'Built differently' construction story (briq-25-50-1.png, IMG_7644-scaled-e1676563466189.jpg, Verriegelung-Holzbausteine-1.jpg, Proof-of-concept-anbau-53.jpg, TRIQ-QUBE_Tiny-House-Park.jpg), chosen from TRIQBRIQ's own TRIQ QUBE, TRIQBRIQ-System, Massivholzhaus and Produktion pages; all hot-linked, unmodified and each captioned '© TRIQBRIQ AG', within the same written grant (images from triqbriq.de, used in featuring TRIQBRIQ). An image whose file name credits an outside photographer was deliberately not used. No new supplier correspondence (founder decision).",
       "atlas_permission_record": "recuk2DE2BJOAGnOP",
       "atlas_permission_ref": "IPO-TRIQBRIQ-20260922",
       "permission_date": "2026-09-22"
@@ -42,13 +42,13 @@
         }
       ],
       "required_credit": "Image: Powersheds",
-      "evidence": "Granted by Jack Sutcliffe of Power Sheds BY EMAIL, Gmail thread 1a0b5d1a7cf5e664, recorded in Atlas 28 September 2026 as Image Permission Outreach IPO-POWERSHEDS-0001 (reczCyWXPWvoA27GX), Permission Method 'Reply by Email', Permission Outcome 'Granted with Conditions — Founder Confirmed'. The email thread is the evidence.",
+      "evidence": "Granted in writing by Power Sheds, BY EMAIL, recorded in Atlas 28 September 2026 as Image Permission Outreach IPO-POWERSHEDS-0001 (reczCyWXPWvoA27GX), Permission Method 'Reply by Email', Permission Outcome 'Granted with Conditions — Founder Confirmed'. The email thread is the evidence; it is held privately (evidence reference PN-EVID-RIGHTS-ORG-000065-20260928).",
       "conditions": [
         "Powersheds attribution on every image use.",
         "Powersheds may request removal or change of any image at any time.",
         "PlotNua complies with any such request."
       ],
-      "note": "ORGANISATION ID CORRECTED BEFORE PUSH. This record was first written with ORG-000194, which is Nua Modular (recuvqPv7XW0b0PFJ), not Power Sheds. The Airtable record id recZyvRt8pDg5spUU was always correct and is what the gate keys on, so nothing was ever mis-authorised -- but a publication-rights record carrying another organisation's code is not something to leave standing. Verified against the live Organisations table: recZyvRt8pDg5spUU is Powersheds, ORG-000065.\n\nNOT A ONE-CLICK GRANT, and must never be represented as one. No PERM-W-2.0 wording was shown to Powersheds and no decision token was ever issued to them; this row belongs to the reply-by-email arm. Scope is exactly as evidenced and no wider: selected imagery from the Powersheds website, used when featuring Powersheds on PlotNua, carrying the credit 'Image: Powersheds'. Exercised on one page only, powersheds-preview.html, which is noindex and unlisted. The gate refuses the image if that credit ever disappears from the page. REMOVAL: delete image_url in supplier-outreach/powersheds/powersheds-manifest.json and rebuild -- the builder renders no image without one -- then regenerate this manifest.\n\nSUPPLIER NAME CORRECTED 2026-10-08. Jack Sutcliffe of Powersheds wrote: \"Seems ok to me - can you just change Power Sheds to Powersheds?\". That email is two things: his approval of the feature as shown to him, and an explicit correction of his own company name. It is NOT a new or wider grant — the grant is still exactly IPO-POWERSHEDS-0001 of 28 September 2026 and its scope is unchanged. Under founder decision of 2026-10-08 the required credit moved from 'Image: Power Sheds' to 'Image: Powersheds', and the credit, this record, the generated manifest, powersheds-preview.html and the recommendation universe were changed in ONE atomic pass, because the gate refuses any image whose required credit is absent from the page and they cannot be allowed to drift apart. The evidence sentence above and the ORGANISATION ID note below are preserved verbatim: they record the state and the wording in force at the time, and are not rewritten. Corroboration already held: the registered entity is 'Powersheds Limited, UK company number 11790351'.",
+      "note": "ORGANISATION ID CORRECTED BEFORE PUSH. This record was first written with ORG-000194, which is Nua Modular (recuvqPv7XW0b0PFJ), not Power Sheds. The Airtable record id recZyvRt8pDg5spUU was always correct and is what the gate keys on, so nothing was ever mis-authorised -- but a publication-rights record carrying another organisation's code is not something to leave standing. Verified against the live Organisations table: recZyvRt8pDg5spUU is Powersheds, ORG-000065.\n\nNOT A ONE-CLICK GRANT, and must never be represented as one. No PERM-W-2.0 wording was shown to Powersheds and no decision token was ever issued to them; this row belongs to the reply-by-email arm. Scope is exactly as evidenced and no wider: selected imagery from the Powersheds website, used when featuring Powersheds on PlotNua, carrying the credit 'Image: Powersheds'. Exercised on one page only, powersheds-preview.html, which is noindex and unlisted. The gate refuses the image if that credit ever disappears from the page. REMOVAL: delete image_url in supplier-outreach/powersheds/powersheds-manifest.json and rebuild -- the builder renders no image without one -- then regenerate this manifest.\n\nSUPPLIER NAME CORRECTED 2026-10-08. Powersheds replied by email approving the feature as shown and asking that 'Power Sheds' be written 'Powersheds' (wording held privately, PN-EVID-RIGHTS-ORG-000065-20261008). That email is two things: the supplier's approval of the feature as shown, and an explicit correction of its own company name. It is NOT a new or wider grant — the grant is still exactly IPO-POWERSHEDS-0001 of 28 September 2026 and its scope is unchanged. Under founder decision of 2026-10-08 the required credit moved from 'Image: Power Sheds' to 'Image: Powersheds', and the credit, this record, the generated manifest, powersheds-preview.html and the recommendation universe were changed in ONE atomic pass, because the gate refuses any image whose required credit is absent from the page and they cannot be allowed to drift apart. The ORGANISATION ID note above is preserved verbatim. The evidence sentence was neutralised on 10 Nov 2026 (M8C) so that no correspondence is published; the wording in force at the time is held privately. Corroboration already held: the registered entity is 'Powersheds Limited, UK company number 11790351'.",
       "atlas_permission_record": "reczCyWXPWvoA27GX",
       "atlas_permission_ref": "IPO-POWERSHEDS-0001",
       "permission_date": "2026-09-28"
@@ -67,13 +67,13 @@
         }
       ],
       "required_credit": "Image: Yard Box",
-      "evidence": "Granted by Cormac Carville of Yard Box BY EMAIL, 29 September 2026, Gmail thread 1a0d05e09446b7fe, message 1a0ed8a508425026: \"Imagery is ok to use.\" Recorded in Atlas as Image Permission Outreach IPO-032 (recAWWIwLpJX8mAiW), Permission Method 'Reply by Email', Permission Outcome 'Granted with Conditions — Founder Confirmed'.",
+      "evidence": "Granted in writing by Yard Box BY EMAIL, 29 September 2026: imagery may be used. Recorded in Atlas as Image Permission Outreach IPO-032 (recAWWIwLpJX8mAiW), Permission Method 'Reply by Email', Permission Outcome 'Granted with Conditions — Founder Confirmed'. Correspondence held privately (evidence reference PN-EVID-RIGHTS-ORG-000157-20260929).",
       "conditions": [
         "Yard Box attribution on every image use.",
         "Images are referenced from Yard Box's own site, never copied.",
-        "Cormac's request to credit design AND manufacture to Yard Box is recorded as conflicting supplier correspondence — see bothan_attribution below. It does not override the more specific current published product attribution."
+        "Yard Box's request to credit design AND manufacture to Yard Box is recorded as conflicting supplier correspondence — see bothan_attribution below. It does not override the more specific current published product attribution."
       ],
-      "note": "NOT A ONE-CLICK GRANT and must never be represented as one. No PERM-W-2.0 wording was shown and no decision token was issued.\n\nDOMAIN: weareyardbox.com (the outreach address) redirects to yardbox.co.uk, which is the live site and the permitted domain. Imagery is served from Squarespace's CDN inside Yard Box's own site namespace, scoped above.\n\nTHE BOTHÁN ATTRIBUTION HOLD IS LIFTED — see bothan_attribution. It was held because two suppliers made incompatible authorship statements and PlotNua would not invent a compromise. The INTUMODULAR product page is the more specific current published attribution and resolves it without contacting either party. Cormac's conflicting instruction is retained as evidence rather than deleted.\n\nSEPARATELY AND NEVER HELD: Cormac's statement that the Bothán 45 sqm figure is the INTERNAL footprint is unambiguous and is applied.",
+      "note": "NOT A ONE-CLICK GRANT and must never be represented as one. No PERM-W-2.0 wording was shown and no decision token was issued.\n\nDOMAIN: weareyardbox.com (the outreach address) redirects to yardbox.co.uk, which is the live site and the permitted domain. Imagery is served from Squarespace's CDN inside Yard Box's own site namespace, scoped above.\n\nTHE BOTHÁN ATTRIBUTION HOLD IS LIFTED — see bothan_attribution. It was held because two suppliers made incompatible authorship statements and PlotNua would not invent a compromise. The INTUMODULAR product page is the more specific current published attribution and resolves it without contacting either party. Yard Box's conflicting instruction is retained as evidence rather than deleted.\n\nSEPARATELY AND NEVER HELD: Yard Box's statement that the Bothán 45 sqm figure is the INTERNAL footprint is unambiguous and is applied.",
       "atlas_permission_record": "recAWWIwLpJX8mAiW",
       "atlas_permission_ref": "IPO-032",
       "permission_date": "2026-09-29",
@@ -81,11 +81,11 @@
         "status": "RESOLVED — hold lifted 29 September 2026",
         "attribution": "Designed by INTUMODULAR. Manufactured with Yard Box.",
         "basis": "Current first-party INTUMODULAR product page, https://www.intumodular.co.uk/the-bothan, read in a rendered browser 29 September 2026. It states verbatim: \"Designed by INTUMODULAR. Manufactured with YardBox.\" and \"BOTHAN is developed by INTUMODULAR in partnership with YardBox, combining design-led modular architecture with recognised manufacturing expertise.\" It also states \"YardBox brings proven experience in precision-built modular structures.\"",
-        "conflicting_evidence": "Cormac Carville, Yard Box, by email 29 September 2026 (thread 1a0d05e09446b7fe, message 1a0ed8a508425026): \"Credit design and Manufacture to Yardbox.\" Yard Box's own models page also calls Bothán \"our premium 45sqm modular home\". RETAINED, NOT DELETED. It is the less specific statement and is not a published product attribution for the Bothán, so it does not overwrite the INTUMODULAR product page without further evidence.",
+        "conflicting_evidence": "Yard Box, by email 29 September 2026: asked that design and manufacture be credited to Yard Box (wording held privately, PN-EVID-RIGHTS-ORG-000157-20260929). Yard Box's own models page also calls Bothán \"our premium 45sqm modular home\". RETAINED, NOT DELETED. It is the less specific statement and is not a published product attribution for the Bothán, so it does not overwrite the INTUMODULAR product page without further evidence.",
         "imagery_effect": "The attribution hold no longer excludes Bothán imagery. Any Bothán image must still pass the ordinary ownership, permission and delivery-host checks on its own merits — the lifted hold grants nothing.",
         "do_not_import": "Only the published attribution sentence and the partnership statement are evidenced. Broader characterisations — 'technical architecture and procurement brain', 'master manufacturer', or any split of individual design responsibilities — are NOT evidenced and must not be stated.",
-        "footprint": "Cormac's correction stands and is unaffected: the Bothán 45 m² figure is the INTERNAL footprint. INTUMODULAR's page publishes 45 sqm without stating a measurement basis, so it neither confirms nor contradicts this.",
-        "contact": "Cormac is NOT to be contacted about this. Founder direction, 29 September 2026: resolved from first-party published evidence."
+        "footprint": "Yard Box's correction stands and is unaffected: the Bothán 45 m² figure is the INTERNAL footprint. INTUMODULAR's page publishes 45 sqm without stating a measurement basis, so it neither confirms nor contradicts this.",
+        "contact": "Yard Box is NOT to be contacted about this. Founder direction, 29 September 2026: resolved from first-party published evidence."
       }
     },
     {
@@ -102,7 +102,7 @@
         }
       ],
       "required_credit": "Image: Superior Pergola Ireland",
-      "evidence": "Granted by Neringa of Superior Pergola Ireland BY EMAIL, 29 September 2026 at 14:59:12 UTC, from admin@superiorpergola.ie, Gmail thread 1a0b5b8814a3baa1, message 1a0edad5eca5a3a6: \"No worries, feel free to use our photos.\" Recorded in Atlas as Image Permission Outreach IPO-SUPERIORPERGOLA-20260929 (recXRyXBNu0UMvSZ6), Permission Method 'Reply by Email', Permission Outcome 'Granted — Founder Confirmed'.",
+      "evidence": "Granted in writing by Superior Pergola Ireland BY EMAIL, 29 September 2026: the supplier's photographs may be used, unqualified. Recorded in Atlas as Image Permission Outreach IPO-SUPERIORPERGOLA-20260929 (recXRyXBNu0UMvSZ6), Permission Method 'Reply by Email', Permission Outcome 'Granted — Founder Confirmed'. Correspondence held privately (evidence reference PN-EVID-RIGHTS-ORG-000200-20260929).",
       "note": "NOT A ONE-CLICK GRANT and must never be represented as one. No PERM-W-2.0 wording was shown and no decision token was issued.\n\nUNCONDITIONAL GRANT, WITH A PLOTNUA UNDERTAKING. The supplier attached no condition. The credit and the link back to superiorpergola.ie are PlotNua's own commitments, made in PlotNua's reply on the same thread, and are honoured regardless. They are recorded as required_credit here so the gate refuses the imagery if the credit ever disappears from the page — PlotNua holding itself to its own word, not a supplier condition being enforced.\n\nDELIVERY HOST. superiorpergola.ie is a WordPress site serving its media through b3819663.assetcdn.net under /2.0/3819663/wp-content/uploads/. The scope above is that host and that prefix only.\n\nExercised on superior-pergola-platform-preview.html (private, noindex, 5 images) and, from 4 Nov 2026 on the development branch only, on suppliers/superior-pergola-ireland.html (public supplier showcase, 9 photographs, each credited and linked to superiorpergola.ie). Images are referenced from the supplier's own delivery path, unmodified, and are not copied into any PlotNua asset pool. REMOVAL: delete the image's entry in supplier-preview-system/showcases/superior-pergola-ireland/showcase.json and rebuild with build-superior-pergola-showcase.py (the private preview is hand-built: remove its <img>), then regenerate this manifest. (An earlier version of this note named supplier_superior_pergola.py; no such file exists in the repository.)\n\nNOTHING ELSE IS INFERRED from the photographs: not price, not lead time, not warranty, not installation coverage, not planning status, and not any supplier relationship, exclusivity or endorsement.",
       "atlas_permission_record": "recXRyXBNu0UMvSZ6",
       "atlas_permission_ref": "IPO-SUPERIORPERGOLA-20260929",
@@ -112,9 +112,10 @@
         "That same surface must provide a working link to https://www.superiorpergola.ie/",
         "The private, noindex supplier preview is a demonstration surface, not the public homeowner referral surface. It does NOT discharge the public link-back requirement, and the fact that it does not implement a link is NOT a reason to weaken or remove this requirement."
       ],
-      "publication_requirements_note": "PLOTNUA'S OWN UNDERTAKING, NOT A SUPPLIER CONDITION. Neringa granted use of the photographs without conditions. PlotNua's reply on the same thread promised a credit and a link back. This block is where that promise lives, so it survives the preview that cannot yet keep it. Founder direction, 29 September 2026: do not alter the certified private-preview template merely to create an outbound supplier link. The credit half is enforced today by required_credit and by guard SP14; the link half falls due the first time this imagery appears on a live homeowner surface.",
+      "publication_requirements_note": "PLOTNUA'S OWN UNDERTAKING, NOT A SUPPLIER CONDITION. The supplier granted use of the photographs without conditions. PlotNua's reply on the same thread promised a credit and a link back. This block is where that promise lives, so it survives the preview that cannot yet keep it. Founder direction, 29 September 2026: do not alter the certified private-preview template merely to create an outbound supplier link. The credit half is enforced today by required_credit and by guard SP14; the link half falls due the first time this imagery appears on a live homeowner surface.",
       "permission": {
         "state": "GRANTED",
+        "pre_live_review_requested": false,
         "ref": "IPO-SUPERIORPERGOLA-20260929",
         "record": "recXRyXBNu0UMvSZ6",
         "date": "2026-09-29",
@@ -126,8 +127,8 @@
           "credit",
           "link-back"
         ],
-        "asked": "Email, 21 Sep 2026, PlotNua to admin@superiorpergola.ie (thread 1a0b5b8814a3baa1): would Superior Pergola be happy for PlotNua to use a small selection of its approved product/project images 'while I develop and test the Garden Room experience', credited appropriately.",
-        "answered": "Email, 29 Sep 2026 14:59 UTC, Neringa, admin@superiorpergola.ie: \"No worries, feel free to use our photos.\" Unqualified; no condition attached. PlotNua replied the same day undertaking a credit and a link to superiorpergola.ie.",
+        "asked": "Email, 21 Sep 2026, from PlotNua to Superior Pergola Ireland: would Superior Pergola be happy for PlotNua to use a small selection of its approved product/project images while PlotNua develops and tests the Garden Room experience, credited appropriately.",
+        "answered": "Email, 29 Sep 2026, from Superior Pergola Ireland: the photographs may be used. Unqualified; no condition attached. PlotNua replied the same day undertaking a credit and a link to superiorpergola.ie. Wording held privately (PN-EVID-RIGHTS-ORG-000200-20260929).",
         "note": "'feature' rests on the written referral arrangement in the same thread (22 Oct and 4 Nov 2026: Superior Pergola agreed to receive PlotNua homeowner enquiries as PlotNua referrals), which presupposes PlotNua presenting the supplier to homeowners. The image request itself was framed around development and testing; the reply did not limit it. Founder to mention the public showcase to the supplier in the next routine email (suggested line in the staging report); remove any photograph promptly if the supplier objects."
       },
       "listing_review": {
@@ -152,8 +153,8 @@
         }
       ],
       "required_credit": "© Hutsmith",
-      "evidence": "Dudley Radford to PlotNua, Gmail thread 1a0d27372227dae9, message 1a0f7adce2edeebc, 2026-10-01 13:35:49 UTC, replying \"sounds good\" to the request in message 1a0f75edde00136d which asked to feature Hutsmith and use selected website images and stated that a simple yes was sufficient. Identity confirmed first-party on hutsmith.com/about-1, read 1 October 2026: \"Hi, I am Dudley Radford.\"",
-      "note": "Two images are published, both from one project -- Creative Studio, published at £72,500 on hutsmith.com/portfolio/new-portfolio-item -- read off that live page and each opened and confirmed to render on 1 October 2026:\n  IMG_2871.jpg                               1206x1956  HERO, exterior: the whole cabin in its garden, dark timber, pitched roof with a rooflight, lit from within\n  79c5a028-956d-416e-8db7-ba419bddcdd7.JPG   1500x2000  interior: pitched roof, skylights, glazing to the garden\nBoth are served unmodified and uncropped from Hutsmith's own store, never rehosted. Publication-logo and AI-generated assets on the same site are deliberately excluded, as is the portrait of Dudley.\n\nATLAS ROW NOW EXISTS: recT7pcIdeMuERdjI / IPO-HUTSMITH-20261001, in Image Permission Outreach, carrying the Gmail thread 1a0d27372227dae9, the request message 1a0f75edde00136d, the grant message 1a0f7adce2edeebc of 2026-10-01 13:35:49 UTC, both wordings verbatim, and the conditions. Dudley's commission sentence is recorded there as OUTSIDE image-rights scope and appears on no published surface.",
+      "evidence": "Granted in writing by Hutsmith's owner BY EMAIL, 1 October 2026, agreeing to PlotNua's request to feature Hutsmith and use selected website images (the request stated that a simple yes was sufficient). The replying person's identity as Hutsmith's owner was confirmed first-party on hutsmith.com, read 1 October 2026. Correspondence held privately (evidence reference PN-EVID-RIGHTS-ORG-000174-20261001).",
+      "note": "Two images are published, both from one project -- Creative Studio, published at £72,500 on hutsmith.com/portfolio/new-portfolio-item -- read off that live page and each opened and confirmed to render on 1 October 2026:\n  IMG_2871.jpg                               1206x1956  HERO, exterior: the whole cabin in its garden, dark timber, pitched roof with a rooflight, lit from within\n  79c5a028-956d-416e-8db7-ba419bddcdd7.JPG   1500x2000  interior: pitched roof, skylights, glazing to the garden\nBoth are served unmodified and uncropped from Hutsmith's own store, never rehosted. Publication-logo and AI-generated assets on the same site are deliberately excluded, as is the owner's portrait.\n\nATLAS ROW NOW EXISTS: recT7pcIdeMuERdjI / IPO-HUTSMITH-20261001, in Image Permission Outreach, carrying the email thread, the request and the grant of 2026-10-01 13:35:49 UTC, both wordings verbatim, and the conditions (held privately, PN-EVID-RIGHTS-ORG-000174-20261001). A remark in the reply that falls outside image-rights scope is recorded there and appears on no published surface.",
       "atlas_permission_record": "recT7pcIdeMuERdjI",
       "atlas_permission_ref": "IPO-HUTSMITH-20261001",
       "permission_date": "2026-10-01"
@@ -177,7 +178,7 @@
         }
       ],
       "required_credit": "© Garden Room Ireland",
-      "evidence": "Founder-confirmed grant recorded in Atlas as Image Permission Outreach IPO-049 (recQV5mDeIFBj9CZM) against Organisations ORG-000012 (recUrpkOqKbynjQP0), supplier YES 2 October 2026, Gmail thread 1a0fb8c10027247e.",
+      "evidence": "Founder-confirmed grant recorded in Atlas as Image Permission Outreach IPO-049 (recQV5mDeIFBj9CZM) against Organisations ORG-000012 (recUrpkOqKbynjQP0), supplier YES by email 2 October 2026. Correspondence held privately (evidence reference PN-EVID-RIGHTS-ORG-000012-20261002).",
       "conditions": [
         "Credit '© Garden Room Ireland' on every image use.",
         "Garden Room Ireland may request change or removal of any image at any time, and PlotNua complies.",
@@ -196,7 +197,7 @@
       "permission_outcome": "Granted with Conditions — Founder Confirmed",
       "permitted_domain": "elmlandscaping.ie",
       "required_credit": "© Elm Landscaping",
-      "evidence": "Founder-confirmed grant recorded in Atlas as Image Permission Outreach IPO-046 (reccLICqUV2mAGicg) against Organisations ORG-000148 (recyCu5OjHlUObM8f), supplier YES 2 October 2026, Gmail thread 1a0d05e8fd940e75.",
+      "evidence": "Founder-confirmed grant recorded in Atlas as Image Permission Outreach IPO-046 (reccLICqUV2mAGicg) against Organisations ORG-000148 (recyCu5OjHlUObM8f), supplier YES by email 2 October 2026. Correspondence held privately (evidence reference PN-EVID-RIGHTS-ORG-000148-20261002).",
       "conditions": [
         "Credit '© Elm Landscaping' on every image use.",
         "Elm Landscaping may request change or removal of any image at any time, and PlotNua complies.",
@@ -214,7 +215,7 @@
       "permission_outcome": "Granted with Conditions — Founder Confirmed",
       "permitted_domain": "donmodularhomes.ie",
       "required_credit": "© Don Modular Homes",
-      "evidence": "Founder-confirmed grant recorded in Atlas as Image Permission Outreach C2-FIRST-DON-MODULAR-20261002 (recAFBJW5nwWv0Z20) against Organisations recOLYgRSUdzU8zwI, supplier YES 2 October 2026, Gmail thread 1a0fbe3f8fdf7329.",
+      "evidence": "Founder-confirmed grant recorded in Atlas as Image Permission Outreach C2-FIRST-DON-MODULAR-20261002 (recAFBJW5nwWv0Z20) against Organisations recOLYgRSUdzU8zwI, supplier YES by email 2 October 2026. Correspondence held privately (evidence reference PN-EVID-RIGHTS-DON-MODULAR-20261002).",
       "conditions": [
         "Credit '© Don Modular Homes' on every image use.",
         "Don Modular Homes may request change or removal of any image at any time, and PlotNua complies.",
@@ -234,7 +235,7 @@
       "permission_outcome": "Granted with Conditions — Founder Confirmed",
       "permitted_domain": "biobuilds.com",
       "required_credit": "© BIOBUILDS",
-      "evidence": "Mateus, BIOBUILDS, to PlotNua from marketing@biobuilds.com, Gmail thread 1a0d05d7cd1d4aea, message 1a0fc4a334452803, 2026-10-02 11:05:03 UTC: \"Yes. We are happy for PlotNua to feature BioBuilds and use selected images from our website, with credit and a link back to us. We supply the Republic of Ireland. Please send us the listing before it goes live, so we can check it.\" Recorded in Atlas as Image Permission Outreach C2-GRANT-BIOBUILDS-20261002 (rec6JPwNYPIj7EIfZ) against Organisations ORG-000153 (recjNpnrIr2KT5BWh), outcome 'Granted with Conditions — Founder Confirmed'.",
+      "evidence": "Granted in writing by BIOBUILDS BY EMAIL, 2 October 2026: PlotNua may feature BioBuilds and use selected images from its website, with credit and a link back; BIOBUILDS supplies the Republic of Ireland. The same reply asked PlotNua to send the listing before it goes live so that BIOBUILDS can check it (recorded structurally as permission.pre_live_review_requested). Recorded in Atlas as Image Permission Outreach C2-GRANT-BIOBUILDS-20261002 (rec6JPwNYPIj7EIfZ) against Organisations ORG-000153 (recjNpnrIr2KT5BWh), outcome 'Granted with Conditions — Founder Confirmed'. Correspondence held privately (evidence reference PN-EVID-RIGHTS-ORG-000153-20261002).",
       "conditions": [
         "Credit '© BIOBUILDS' on every image use.",
         "Link back to https://www.biobuilds.com/ wherever the imagery appears.",
@@ -250,6 +251,7 @@
       "permission_date": "2026-10-02",
       "permission": {
         "state": "GRANTED",
+        "pre_live_review_requested": true,
         "ref": "C2-GRANT-BIOBUILDS-20261002",
         "record": "rec6JPwNYPIj7EIfZ",
         "date": "2026-10-02",
@@ -280,7 +282,7 @@
           "7b81224"
         ],
         "confirmed_at": null,
-        "note": "Mateus reviewed the original preview and asked for factual corrections on 11 October 2026. The corrections are applied and the revised preview awaits his confirmation. This is a granted permission's condition being exercised, not a permission withheld."
+        "note": "BIOBUILDS reviewed the original preview and asked for factual corrections on 11 October 2026. The corrections are applied and the revised preview awaits BIOBUILDS' confirmation. This is a granted permission's condition being exercised, not a permission withheld."
       },
       "asset_approval_state": "REFERENCE_ONLY",
       "public_visibility": "HOLD",
@@ -412,7 +414,7 @@
             "assets-not-approved"
           ],
           "basis": "BIOBUILDS granted written permission on 2 October 2026 to feature its products and to use selected imagery with credit and a link back (C2-GRANT-BIOBUILDS-20261002). The supplier then asked for factual corrections on 11 October 2026; those corrections are implemented in Atlas and in the private preview. The founder has decided to publish the corrected listing without waiting for the supplier's confirmation of the revised preview, and accepts responsibility for proceeding before that confirmation is received.",
-          "scope": "Authorises PUBLICATION OF THE PRODUCT LISTING in public Results and Compare, AND publication of the SIX ENUMERATED ASSETS in approved_assets, each with the supplier's caption, the credit and a working link back. WIDENED 11 October 2026 by the same founder decision: the earlier version of this scope excluded imagery entirely, because at that point no imagery had been authorised. It does NOT authorise any asset outside that list -- every other BIOBUILDS asset, including the two exercised on the private preview, remains Reference Only, and prove-biobuilds-containment.mjs enforces the difference per asset rather than per domain. WIDENED AGAIN 11 October 2026 by the same founder decision, after a permission recheck against the original grant wording (\"use selected images from our website, with credit and a link back to us\"): the enumeration now covers TEN assets, adding two Sanctuary (PROD-001215) and two Bloom (PROD-001216) model images, each served from the permitted domain biobuilds.com, each carrying the supplier's credit and a working link back, each described in medium-neutral terms. Still excluded and still Reference Only: every other BIOBUILDS asset, the two withheld process and construction-detail images, all material swatches and finish thumbnails, and the supplier's own AI-labelled lifestyle image couple-configuring-sofa-ai.",
+          "scope": "Authorises PUBLICATION OF THE PRODUCT LISTING in public Results and Compare, AND publication of the SIX ENUMERATED ASSETS in approved_assets, each with the supplier's caption, the credit and a working link back. WIDENED 11 October 2026 by the same founder decision: the earlier version of this scope excluded imagery entirely, because at that point no imagery had been authorised. It does NOT authorise any asset outside that list -- every other BIOBUILDS asset, including the two exercised on the private preview, remains Reference Only, and prove-biobuilds-containment.mjs enforces the difference per asset rather than per domain. WIDENED AGAIN 11 October 2026 by the same founder decision, after a permission recheck against the original grant (selected images from BIOBUILDS' website, with credit and a link back): the enumeration now covers TEN assets, adding two Sanctuary (PROD-001215) and two Bloom (PROD-001216) model images, each served from the permitted domain biobuilds.com, each carrying the supplier's credit and a working link back, each described in medium-neutral terms. Still excluded and still Reference Only: every other BIOBUILDS asset, the two withheld process and construction-detail images, all material swatches and finish thumbnails, and the supplier's own AI-labelled lifestyle image couple-configuring-sofa-ai.",
           "withdrawal": "BIOBUILDS may request change or removal at any time and PlotNua complies, exactly as the original grant provides. If the supplier objects to the published listing, remove this exception and the gate returns the product to HOLD with no other change.",
           "assets_enumerated": 10
         }
@@ -431,7 +433,7 @@
         }
       ],
       "required_credit": "© Tanktribe",
-      "evidence": "Derek O'Rourke / Tanktribe replied “YES” on 2 October 2026 in Gmail thread 1a0fd832b4b384f2, message 1a0fd9de5ac55e40, to PlotNua's request for permission to feature Tanktribe and use selected imagery from its website, clearly credit Tanktribe and link back to tanktribe.ie. Recorded in Atlas Image Permission Outreach WELLNESS-FIRST-TANKTRIBE-20261002 (recHf6UOaAVMmmoGA) as Granted — Founder Confirmed.",
+      "evidence": "Tanktribe replied YES by email on 2 October 2026 to PlotNua's request for permission to feature Tanktribe and use selected imagery from its website, clearly credit Tanktribe and link back to tanktribe.ie. Recorded in Atlas Image Permission Outreach WELLNESS-FIRST-TANKTRIBE-20261002 (recHf6UOaAVMmmoGA) as Granted — Founder Confirmed. Correspondence held privately (evidence reference PN-EVID-RIGHTS-TANKTRIBE-20261002).",
       "conditions": [
         "Credit '© Tanktribe' on every image use.",
         "Link back to https://www.tanktribe.ie/ wherever Tanktribe imagery appears.",
@@ -445,7 +447,7 @@
       "preview_approvals": [
         {
           "date": "2026-10-08",
-          "reply_verbatim": "yes all looks great thanks",
+          "reply": "approved the private preview by email (wording held privately, PN-EVID-RIGHTS-TANKTRIBE-20261008)",
           "what_this_is": "SUPPLEMENTARY PREVIEW APPROVAL. Tanktribe's approval of the PlotNua private supplier preview as shown to them, which already carried all six governed images with credit and link back.",
           "what_this_is_not": "NOT a new grant and NOT an expansion of the existing licence. The operative imagery permission remains the 2 October 2026 grant recorded in 'evidence' above: permission to feature Tanktribe, use selected imagery from its website, clear credit, link back. Scope, conditions and permitted hosts are unchanged by this reply.",
           "does_not_resolve": "This reply does not answer the open TANKKD provenance question recorded against IMG_8455 and DSC_2111, and must not be read as doing so."
@@ -453,6 +455,7 @@
       ],
       "permission": {
         "state": "GRANTED",
+        "pre_live_review_requested": false,
         "ref": "WELLNESS-FIRST-TANKTRIBE-20261002",
         "record": "recHf6UOaAVMmmoGA",
         "date": "2026-10-02",
@@ -465,17 +468,17 @@
           "link-back",
           "selected-first-party-imagery-only"
         ],
-        "asked": "PlotNua asked on 2 Oct 2026 for permission to feature Tanktribe and use selected imagery from its website, with credit and a link back (Gmail 1a0fd832b4b384f2).",
-        "answered": "\"YES\" (Tanktribe, 2 Oct 2026, Gmail 1a0fd9de5ac55e40)",
+        "asked": "PlotNua asked by email on 2 Oct 2026 for permission to feature Tanktribe and use selected imagery from its website, with credit and a link back.",
+        "answered": "YES (Tanktribe, by email, 2 Oct 2026; wording held privately, PN-EVID-RIGHTS-TANKTRIBE-20261002)",
         "note": "Recorded 14 Oct 2026 from the supplier's own reply. Images are not enumerated here, so no Tanktribe image is published by this record."
       },
       "listing_review": {
         "state": "CONFIRMED",
         "requested_by": "plotnua",
-        "requested_in": "Gmail 1a0fe7aaf1258126, 2 Oct 2026 (private preview sent)",
+        "requested_in": "Email, 2 Oct 2026 (private preview sent)",
         "confirmed_at": "2026-10-08",
-        "confirmed_in": "Gmail 1a11bff8584a50b1",
-        "note": "\"yes all looks great thanks\" — Tanktribe on the private preview, 8 Oct 2026."
+        "confirmed_in": "Email, 8 Oct 2026 (PN-EVID-RIGHTS-TANKTRIBE-20261008)",
+        "note": "Tanktribe confirmed the private preview by email, 8 Oct 2026."
       },
       "public_visibility": "PUBLISHABLE",
       "approved_assets": [
@@ -521,7 +524,7 @@
         "state": "SELECTED_ASSETS_APPROVED",
         "default_for_unlisted": "NOT_AUTHORISED",
         "approved_count": 4,
-        "authorised_by": "Tanktribe, 2 Oct 2026 (Gmail 1a0fd9de5ac55e40; preview confirmed 8 Oct 2026, Gmail 1a11bff8584a50b1); founder decision 16 Oct 2026 (Authorised Imagery Integration: include Tanktribe's approved photographs in Garden Retreat)",
+        "authorised_by": "Tanktribe, by email 2 Oct 2026 (preview confirmed by email 8 Oct 2026); founder decision 16 Oct 2026 (Authorised Imagery Integration: include Tanktribe's approved photographs in Garden Retreat)",
         "note": "Approval is by ENUMERATION, per asset. Four of the six Atlas assets (Rights Status Supplier Provided, Publication Status Approved) are listed. IMG_8455 (recof108g0iEgsiaD) and DSC_2111 (recy8wh3Ptb23MdLp) are deliberately NOT listed: each carries an open provenance question (TANKKD manufacturer imagery and third-party branding, recorded in Atlas) that this record does not resolve. Recorded presentation considerations, not rights problems: IMG_8495 shows a person submerged (not identifiable); IMG_2531 shows a third-party drinks can; IMG_2518 and IMG_2580 are near-duplicate close-ups of the WILD TUB heating coil and do not show the whole tub.",
         "conditions_on_every_use": [
           "Credit: © Tanktribe",
@@ -549,9 +552,9 @@
       "permission_outcome": "Granted with Conditions — Founder Confirmed",
       "permitted_domain": "ognyx.com",
       "required_credit": "© OGNYX",
-      "evidence": "Fabian of OGNYX replied on 2 October 2026 to the Home Wellness outreach, Gmail thread 1a0fd83e5f6c284f, message 1a0fe3d7b43366cf: “Before proceeding, we would be interested in seeing the preview of how OGNYX would be presented within PlotNua. Please feel free to prepare the preview, including any example imagery, product presentation and links you propose to use.” Recorded in Atlas as Image Permission Outreach WELLNESS-FIRST-OGNYX-20261002 (recIjRDMQ55nk6cOn) against Organisations recGxi1agXCBR1FLt, contact info@ognyx.com. SECOND REPLY, 13 October 2026, message 1a13699d55beb7f9: “We have reviewed your offer and can confirm we would be happy to proceed with this.” — answering the 12 October ask (message 1a1303acc64d5590) to “use the selected product images shown there”. FOUNDER DECISION, 14 October 2026: treat that as permission for the four specific images shown in the preview, within that approved context, and no wider. Atlas Permission Outcome is now “Granted with Conditions — Founder Confirmed”, limited to those four images on ognyx-preview.html. PUBLICATION RECORD, 14 October 2026: the founder decided to PROCEED on the original words of the 12 October ask (\"feature OGNYX and use the selected product images shown there\") and OGNYX's 13 October reply (\"happy to proceed ... let us know once this is launched and we can see our products on your page\"). The four images are no longer confined to the preview.",
+      "evidence": "OGNYX replied by email on 2 October 2026 to the Home Wellness outreach, asking first to see a preview of how OGNYX would be presented within PlotNua, including example imagery, product presentation and links. Recorded in Atlas as Image Permission Outreach WELLNESS-FIRST-OGNYX-20261002 (recIjRDMQ55nk6cOn) against Organisations recGxi1agXCBR1FLt. SECOND REPLY, 13 October 2026: OGNYX confirmed it was happy to proceed, answering PlotNua's 12 October ask to feature OGNYX and use the selected product images shown in the preview. FOUNDER DECISION, 14 October 2026: treat that as permission for the four specific images shown in the preview, within that approved context, and no wider. Atlas Permission Outcome is now “Granted with Conditions — Founder Confirmed”, limited to those four images on ognyx-preview.html. PUBLICATION RECORD, 14 October 2026: the founder decided to PROCEED on the 12 October ask (feature OGNYX and use the selected product images) and OGNYX's 13 October reply (happy to proceed; asked to be told once the page is launched). The four images are no longer confined to the preview. Correspondence held privately (evidence references PN-EVID-RIGHTS-OGNYX-20261002 and PN-EVID-RIGHTS-OGNYX-20261013).",
       "conditions": [
-        "FEATURE: PlotNua may feature OGNYX and its products publicly (OGNYX, 13 Oct 2026, Gmail 1a13699d55beb7f9, answering the 12 Oct ask 1a1303acc64d5590 to \"feature OGNYX and use the selected product images shown there\").",
+        "FEATURE: PlotNua may feature OGNYX and its products publicly (OGNYX, by email 13 Oct 2026, answering PlotNua's 12 Oct ask to feature OGNYX and use the selected product images shown in the preview).",
         "IMAGES: the four images enumerated in approved_assets and NO OTHER OGNYX image, on any page. Enforced per asset by atlas-tools/prove-ognyx-imagery-containment.mjs.",
         "Credit '© OGNYX' and a link back to https://www.ognyx.com/ wherever an image appears; the two visualisations are labelled as visualisations.",
         "Images are used unmodified and served from OGNYX's own domain. Nothing is downloaded, re-hosted, cropped or altered.",
@@ -565,6 +568,7 @@
       "permission_date": "2026-10-02",
       "permission": {
         "state": "GRANTED",
+        "pre_live_review_requested": true,
         "ref": "WELLNESS-FIRST-OGNYX-20261002",
         "record": "recIjRDMQ55nk6cOn",
         "date": "2026-10-13",
@@ -580,16 +584,16 @@
           "unmodified-hotlink",
           "withdrawable-on-request"
         ],
-        "asked": "If you're happy for us to feature OGNYX and use the selected product images shown there (where you have the rights to authorise their use), a simple YES is perfect. (PlotNua, 12 Oct 2026, Gmail 1a1303acc64d5590)",
-        "answered": "We have reviewed your offer and can confirm we would be happy to proceed with this. ... Please let us know once this is launched and we can see our products on your page. (OGNYX, 13 Oct 2026, Gmail 1a13699d55beb7f9)",
+        "asked": "PlotNua, by email 12 Oct 2026: asked whether OGNYX was happy for PlotNua to feature OGNYX and use the selected product images shown in the preview (where OGNYX has the rights to authorise their use); a simple YES would suffice.",
+        "answered": "OGNYX, by email 13 Oct 2026: confirmed it was happy to proceed, and asked to be told once the page is launched so it can see its products. Wording held privately (PN-EVID-RIGHTS-OGNYX-20261013).",
         "note": "Founder decision 14 Oct 2026: PROCEED, scope established from the original correspondence. Featuring OGNYX and its products is permitted; imagery is permitted for the four selected images shown in the preview and no others, by enumeration in approved_assets. Supersedes the 14 Oct morning reading that confined those images to ognyx-preview.html, which was PlotNua's own restraint, not OGNYX's."
       },
       "listing_review": {
         "state": "CONFIRMED",
         "requested_by": "supplier",
-        "requested_in": "Gmail 1a0fe3d7b43366cf, 2 Oct 2026: \"Before proceeding, we would be interested in seeing the preview\"",
+        "requested_in": "Email, 2 Oct 2026: OGNYX asked to see the preview before proceeding",
         "confirmed_at": "2026-10-13",
-        "confirmed_in": "Gmail 1a13699d55beb7f9",
+        "confirmed_in": "Email, 13 Oct 2026 (PN-EVID-RIGHTS-OGNYX-20261013)",
         "note": "OGNYX asked to see the presentation before proceeding, reviewed the preview sent on 2 Oct (re-sent 9 and 12 Oct) and confirmed on 13 Oct. The public listing is a subset of the range in that preview: twelve products whose own pages contradict themselves are held in Atlas (Standards = BLOCKED) and are not published."
       },
       "public_visibility": "PUBLISHABLE",
@@ -598,7 +602,7 @@
         "state": "SELECTED_ASSETS_APPROVED",
         "default_for_unlisted": "NOT_AUTHORISED",
         "approved_count": 4,
-        "authorised_by": "OGNYX, 13 Oct 2026 (Gmail 1a13699d55beb7f9); founder decision 14 Oct 2026",
+        "authorised_by": "OGNYX, by email 13 Oct 2026; founder decision 14 Oct 2026",
         "note": "Approval is by ENUMERATION, per asset. An OGNYX image is usable because it appears in approved_assets, never because it is served from ognyx.com. atlas-tools/prove-ognyx-imagery-containment.mjs refuses any other OGNYX image on any page.",
         "conditions_on_every_use": [
           "Credit: © OGNYX",
@@ -652,10 +656,10 @@
       "permission_outcome": "Granted — Founder Confirmed",
       "permitted_domain": "irishsaunacompany.com",
       "required_credit": "© Irish Sauna Company",
-      "evidence": "Brona, info@irishsaunacompany.com, emailed PlotNua 9 October 2026 at 13:02, subject 'Re: Irish Sauna Company × PlotNua — Irish home wellness': 'we would be delighted for you to use our imagery and product on your site.' Colin confirmed this permission on 10 October 2026. Atlas Image Permission Outreach WELLNESS-FIRST-IRISH-SAUNA-COMPANY-20261002 (recH6lssOAemyP9rz), Permission Outcome 'Granted — Founder Confirmed'. COLLECTION PERMISSION, 27 October 2026: Brona asked PlotNua to feature the new Irish-made collection \"instead of the previously listed range\" and wrote \"Please feel free to use the product imagery and information from the collection\" (Gmail 1a17c9a56ea0fdca). Founder approved the replacement on 27 October 2026. Atlas Image Permission Outreach recH6lssOAemyP9rz records the 27 October scope.",
+      "evidence": "Granted in writing by Irish Sauna Company BY EMAIL, 9 October 2026: PlotNua may use the company's imagery and products on its site. The founder confirmed this permission on 10 October 2026. Atlas Image Permission Outreach WELLNESS-FIRST-IRISH-SAUNA-COMPANY-20261002 (recH6lssOAemyP9rz), Permission Outcome 'Granted — Founder Confirmed'. COLLECTION PERMISSION, 27 October 2026: Irish Sauna Company asked PlotNua to feature its new Irish-made collection instead of the previously listed range, and gave permission to use the product imagery and information from that collection. Founder approved the replacement on 27 October 2026. Atlas Image Permission Outreach recH6lssOAemyP9rz records the 27 October scope. Correspondence held privately (evidence references PN-EVID-RIGHTS-IRISH-SAUNA-COMPANY-20261009 and PN-EVID-RIGHTS-IRISH-SAUNA-COMPANY-20261027).",
       "conditions": [
-        "FEATURE: PlotNua may feature Irish Sauna Company and its products (9 Oct 2026, Gmail 1a1208b5549f0e23; listing approved 12 Oct, 1a12f28526374227).",
-        "IMAGES: the eight Island Collection product visualisations enumerated in approved_assets (two per sauna) and NO OTHER Irish Sauna Company image, under the supplier's 27 Oct 2026 permission for 'the product imagery and information from the collection' (Gmail 1a17c9a56ea0fdca). Pods, mobile saunas and any Harvia manufacturer image are excluded.",
+        "FEATURE: PlotNua may feature Irish Sauna Company and its products (by email 9 Oct 2026; listing approved by email 12 Oct).",
+        "IMAGES: the eight Island Collection product visualisations enumerated in approved_assets (two per sauna) and NO OTHER Irish Sauna Company image, under the supplier's 27 Oct 2026 email permission for the product imagery and information from the collection (PN-EVID-RIGHTS-IRISH-SAUNA-COMPANY-20261027). Pods, mobile saunas and any Harvia manufacturer image are excluded.",
         "Credit '© Irish Sauna Company' and a link back to https://irishsaunacompany.com/ wherever an image appears.",
         "Every image is a product visualisation (computer-generated render) and is labelled so; it is never described as a photograph of a completed installation.",
         "PROVENANCE: the Island Collection saunas may be described as designed and handcrafted to order by Irish Sauna Company in Connemara, Co. Galway, with heaters by Harvia. No PlotNua surface may imply every component is made in Ireland. The withdrawn Harvia range was never Irish-built and is not published.",
@@ -668,6 +672,7 @@
       "permission_date": "2026-10-09",
       "permission": {
         "state": "GRANTED",
+        "pre_live_review_requested": true,
         "ref": "WELLNESS-FIRST-IRISH-SAUNA-COMPANY-20261002",
         "record": "recH6lssOAemyP9rz",
         "date": "2026-10-09",
@@ -682,16 +687,15 @@
           "visualisations-labelled",
           "no-harvia-manufacturer-imagery"
         ],
-        "asked": "PlotNua asked to feature Irish Sauna Company and use selected imagery from its website (Gmail 1a0fd83ddde922b1, 2 and 9 Oct 2026).",
-        "answered": "\"we would be delighted for you to use our imagery and product on your site\" (Irish Sauna Company, 9 Oct 2026, Gmail 1a1208b5549f0e23)",
-        "note": "Recorded 14 Oct 2026. PlotNua's 12 Oct question about Harvia manufacturer photographs (Gmail 1a13036feca9cc4b) was never answered, so no Harvia image was ever enumerated. 27 Oct 2026: Irish Sauna Company withdrew the Harvia range and asked PlotNua to feature its own Irish-made Island Collection instead, writing \"Please feel free to use the product imagery and information from the collection\" (Gmail 1a17c9a56ea0fdca). Imagery is permitted for that collection only: eight enumerated product visualisations, credited and linked.",
+        "asked": "PlotNua asked by email to feature Irish Sauna Company and use selected imagery from its website (2 and 9 Oct 2026).",
+        "answered": "Irish Sauna Company, by email 9 Oct 2026: PlotNua may use its imagery and products on its site. Wording held privately (PN-EVID-RIGHTS-IRISH-SAUNA-COMPANY-20261009).",
+        "note": "Recorded 14 Oct 2026. PlotNua's 12 Oct question about Harvia manufacturer photographs was never answered, so no Harvia image was ever enumerated. 27 Oct 2026: Irish Sauna Company withdrew the Harvia range and asked PlotNua to feature its own Irish-made Island Collection instead, giving permission to use the product imagery and information from the collection (PN-EVID-RIGHTS-IRISH-SAUNA-COMPANY-20261027). Imagery is permitted for that collection only: eight enumerated product visualisations, credited and linked.",
         "collection_grant": {
           "date": "2026-10-27",
-          "gmail": "1a17c9a56ea0fdca",
-          "thread": "1a0fd83ddde922b1",
-          "from": "info@irishsaunacompany.com (Brona)",
-          "asked_by_supplier": "would it be possible to update our listing on PlotNua to feature our new Irish-made collection instead of the previously listed range?",
-          "verbatim": "Please feel free to use the product imagery and information from the collection",
+          "evidence_ref": "PN-EVID-RIGHTS-IRISH-SAUNA-COMPANY-20261027",
+          "from": "Irish Sauna Company, by email",
+          "asked_by_supplier": "asked PlotNua to update its listing to feature the new Irish-made collection instead of the previously listed range",
+          "granted": "permission to use the product imagery and information from the collection (wording held privately)",
           "collection": "https://irishsaunacompany.com/collections/residential-outdoor-saunas-ireland",
           "scope": "The four products of that collection (The Clare, The Inis, The Aran, The Skellig) and their product images as of 27 Oct 2026. NOT the supplier's pods or mobile saunas, NOT any Harvia manufacturer imagery, NOT any other company.",
           "founder_approval": "2026-10-27, 'Irish Sauna Company collection — implementation approved'"
@@ -700,10 +704,10 @@
       "listing_review": {
         "state": "CONFIRMED",
         "requested_by": "supplier",
-        "requested_in": "Irish Sauna Company, 2 Oct 2026: happy to take a look at the private preview first (Gmail 1a0fdc60270190fd)",
+        "requested_in": "Irish Sauna Company, by email 2 Oct 2026: asked to see the private preview first",
         "confirmed_at": "2026-10-12",
-        "confirmed_in": "Gmail 1a12f28526374227",
-        "note": "\"That looks great, I am happy for it to go.\" — Irish Sauna Company on the private preview, 12 Oct 2026."
+        "confirmed_in": "Email, 12 Oct 2026 (PN-EVID-RIGHTS-IRISH-SAUNA-COMPANY-20261012)",
+        "note": "Irish Sauna Company approved the private preview for publication by email, 12 Oct 2026."
       },
       "public_visibility": "PUBLISHABLE",
       "asset_approval_state": "APPROVED",
@@ -711,7 +715,7 @@
         "state": "SELECTED_ASSETS_APPROVED",
         "default_for_unlisted": "NOT_AUTHORISED",
         "approved_count": 8,
-        "authorised_by": "Irish Sauna Company (Brona), 27 Oct 2026, Gmail 1a17c9a56ea0fdca; founder approval 27 Oct 2026",
+        "authorised_by": "Irish Sauna Company, by email 27 Oct 2026; founder approval 27 Oct 2026",
         "note": "Approval is by ENUMERATION, per asset: two product visualisations for each Island Collection sauna. An Irish Sauna Company image is usable because it appears in approved_assets, never because it is served from irishsaunacompany.com. Floor plans, the footprint infographic, pods, mobile saunas and any Harvia manufacturer image are not authorised.",
         "conditions_on_every_use": [
           "Credit: © Irish Sauna Company",
@@ -1017,13 +1021,14 @@
         }
       ],
       "required_credit": "ÖÖD House",
-      "evidence": "Gertrud Ots, Head of Marketing <gertrud@oodhouse.com>, to PlotNua, Gmail thread 1a088713c8eccf73, message 1a139105565814d0, 2026-10-14 06:18:32 UTC, replying to the permission request 1a08876b76df3f50 of 9 September (quoted beneath her reply) with a Drive library of photographs organised by product: \"Here you can find our photos by products: https://drive.google.com/drive/folders/1Lm1aTPvVA_WkEEy4rBJsZ8zSa_mYbEPj\". The request asked for images to represent ÖÖD's own products only, unaltered, with ÖÖD identified and no implied endorsement, recommendation or residential suitability. Recorded as granted on the founder's brief of 14 October 2026.",
+      "evidence": "ÖÖD House replied by email on 14 October 2026 to PlotNua's permission request of 9 September 2026, supplying a library of its photographs organised by product. The request asked for images to represent ÖÖD's own products only, unaltered, with ÖÖD identified and no implied endorsement, recommendation or residential suitability. Recorded as granted on the founder's brief of 14 October 2026. Correspondence and the library link are held privately (evidence reference PN-EVID-RIGHTS-ORG-000149-20261014).",
       "note": "41 photographs are scoped, each by its own Drive file id, hot-linked unmodified from ÖÖD's Drive via lh3.googleusercontent.com and never rehosted. Each is used only for the model named by ÖÖD's own folder. The 'Medium Office' folder holds Glämping House photographs and is NOT used for Medium Office. Filenames that name a photographer are credited by name in addition to ÖÖD House. Exercised on one page only: ood-house-preview.html (private, noindex, unlinked). Scope excludes unrelated advertising, social media, redistribution and resale.\n  Signature House   1zfB24bun-dr7Smh0ZeFSX_OaNVDh6DMX  Copy of ÖÖD Signature House - ÖÖD by Vermont Glass House - Vermont - United States - Katherine Berke.jpg\n  Signature House   1Bz95Xl1AzKeEI84zBbMBpGW_xDOwT9y0  ÖÖD Signature House - ÖÖD by Pilguse - Estonia - Valmarifoto (1).JPG\n  Signature House   1vmuC_8SoSGh569AfqkKwdffpoSoFQ6-i  Copy of ÖÖD Signature House - ÖÖD at Roosisaare - Estonia (1).jpg\n  Signature House   1DgirwuCSVsqIVR-Gjh2vsLshp_KiIZkG  Copy of ÖÖD Signature House - ÖÖD by Furu, Norway - House Mørke by Ragnar Hartvig 1.8.24.670 kopier.jpg\n  Extended House    126bHQPCLpLoZE2C7qddQ-v__3gR85Hmg  Extended House.jpg\n  Extended House    1uCwtWOKNIG_xXoEy7yMPgbRKNPXCfNGa  3J2A9028.jpg\n  Extended House    1LNGkuROBSI4edwkw0FM9S6EJieOrsZg5  Copy of B0020630-Edit.jpeg\n  Extended House    1ZF7sYK4WvnXQD_7gUzruD6eT6O1vEzZI  Lava (Extended) ÖÖD Hekla Horizon.JPG\n  Extended House    10XNiu4r28DOUPflIOknPDNmM3wJOPx7Y  _MG_0333-Edit.jpg\n  The Big Monolith  1FZqxVCAG_jNbx5bpOzAcG58o1hV2NAW0  Copy of _MG_0367.jpg\n  The Big Monolith  17Odd2cNOaEQoEjI584ut6cqI8qFqNVJS  Copy of DJI_20250309110857_0163_D.jpg\n  The Big Monolith  1V7_11MkyiQ-8doHTyyIi2ywM2wu00FkK  Copy of DJI_20260322092406_0333_D.jpg\n  The Big Monolith  1CKxn4Aw9mWNQUoq_QHsuixi7tiiewQ7s  Copy of Glacier (Family) ÖÖD Hekla Horizon Iceland by Ingibergur Thor.jpg\n  Möön House        1V0G-aX7veOinUIDuqn4poqjmMTO2GgzF  Copy of 1M5A9752.jpg\n  Möön House        1PmSreci2uYbdaBxpwUnzz9EdynTUWJGk  Copy of DJI_20250728233442_0177_D.jpg\n  Möön House        1OrRzUbCQ02bhxDk5--mPR6KDFUIrIzy2  Copy of DJI_20250728233557_0188_D.jpg\n  Möön House        14OqokuAczh_R0finpF-szBWogsOrVd48  Copy of 1M5A9775.jpg\n  Möön House        1Du2PTFM9Ggb_QU9iWZcxOb0uxy-AEBPx  Copy of 1M5A0002.jpg\n  Glääzy House      1XIBfJ7rSHrjjFLlvpmTyWLo99A33bnlq  Copy of DSC06924.jpg\n  Glääzy House      1ejJG2ntzGHxim7ht-NtypqpBJ06ydomW  Copy of DSC07145.jpg\n  Glääzy House      1mOp5MeibJ5j6fCUivqfj_3wlCZsjpG1F  Copy of OOD_Norway_01.jpg\n  Glääzy House      1WZrrO7P28dYuSZhGfM_MDotq_-0q6J20  Copy of ÖÖD by WonderInn Arctic (photo by Even Tryggstrand - Instagram: @eventyr).jpeg\n  Mobile House      1RekoPNxkpfEus5BoFLXNHGhDvAkwz0ar  Copy of SEI-MIROIR-OOD-202604-007.jpg\n  Mobile House      1-s3JU-5MhvXYPrKEWYlW2Qhhhwe3RXIM  Copy of SEI-MIROIR-OOD-202604-008.jpg\n  Mobile House      1NxvKE77I0ENDH75o3kki2Bs7J0z-Yfmh  Copy of SEI-MIROIR-OOD-202604-044.jpg\n  Glämping House    1ob8p3n_CpDwJXh4SNSgImKA_h-kWF0xJ  Copy of ÖÖD by Starry Nights Glamping, Arizona_2.jpg\n  Glämping House    1o0i2YfvE8Kc9tLH_mZwGADXbiXzJuHB_  Copy of ÖÖD by Starry Nights Glamping, Arizona_4.jpg\n  Glämping House    1yfaBudGFv1m7K98RfozvxlZzV-g1Ksio  Copy of ÖÖD Glämping House - Starry Nights Glamping - Arizona - United States - Marcario Photo .jpg\n  Glämping House    1GvCJ4OCDAn9NgQ6W4jwjlyfIpyV9ZwKv  Copy of ÖÖD Glämping House - Starry Nights Glamping - Arizona - United States - Marcario Photo (2).jpg\n  Mini Sauna        19wfqQGI8YTnaGoKndiJc-F_m1Xv-GgRB  Copy of Copy of ÖÖD Mini Sauna (photo by Oliver Soostar in Rooslepa) (2).jpg\n  Mini Sauna        13LQRYro5iXvFPzQIjDpgb-NVIW2u7M1t  Copy of Copy of ÖÖD posts feb 2025.jpg\n  Mini Sauna        1xBI9pc3gS_Kg1t0ArfDuHCR_CyYhKaI6  Copy of ÖÖD Mini Sauna - Nanohouse(1).jpg\n  Mini Sauna        19OP1mGKnvn1tKqN59chG5qdtooPwUPCd  Copy of Copy of Arbikie_OOD_AlecBrown-61.jpg\n  Medium Sauna      1exBx3pdtmh0AhYacPVMkK5kllB9qGnh5  Copy of Ammon Cluff (@ammoncluff) A7401315.jpg\n  Medium Sauna      1F_dlp1gDk_VNkwox2d-gFPJiuERFkkrw  Copy of EMILY B. PHOTO CO. -- Oregon Wedding Photographer -- Tu Tu Tun Lodge Wedding -- Briley + Robbie -- TU TU TUN LODGE-292.jpg\n  Medium Sauna      1HsNaEV6JCPFI75NY7dTdrsJfCoB_jwbO  Copy of Ammon Cluff (@ammoncluff) A7401318.jpg\n  Medium Sauna      1tbnj-t7LsbW24elGe-_0ogFY6yPY5LZA  Copy of EMILY B. PHOTO CO. -- Oregon Wedding Photographer -- Tu Tu Tun Lodge Wedding -- Briley + Robbie -- TU TU TUN LODGE-294.jpg\n  Large Sauna       1cOZjC0XjnmPlAGcAp_2fTpfhISOMncB7  Copy of Copy of DJI_0688.jpg\n  Large Sauna       1vLMgSlzawfO0_Lj5fP3Ic_JszE1BLJWd  Copy of IMG_1457.jpg\n  Large Sauna       1zMx9M9ETIpLWCSjSSLW7DbhFCNbRVoHN  Copy of IMG_2701.jpg\n  Large Sauna       17Y9bVWCk_97IKZ6aZR2eHrgtxVdMqPM7  Copy of IMG_1518.jpg",
       "atlas_permission_record": "recqvHdcTwNdBRszM",
       "atlas_permission_ref": "IPO-007",
       "permission_date": "2026-10-14",
       "permission": {
         "state": "GRANTED",
+        "pre_live_review_requested": false,
         "ref": "IPO-007",
         "record": "recqvHdcTwNdBRszM",
         "date": "2026-10-14",
@@ -1042,15 +1047,15 @@
           "no-advertising-redistribution-or-resale",
           "withdrawable-on-request"
         ],
-        "asked": "PlotNua, 9 Sep 2026 (Gmail 1a08876b76df3f50): having \"included published information about ... ÖÖD House\", asked \"for permission to use a small selection of your product photographs on PlotNua so homeowners can see the actual buildings alongside the information we hold about them\"; own products only, ÖÖD identified, unaltered, displayed on plotnua.ie.",
-        "answered": "\"Here you can find our photos by products: https://drive.google.com/drive/folders/1Lm1aTPvVA_WkEEy4rBJsZ8zSa_mYbEPj\" (Gertrud Ots, Head of Marketing, 14 Oct 2026, Gmail 1a139105565814d0, replying to the request quoted beneath it)",
+        "asked": "PlotNua, by email 9 Sep 2026: having included published information about ÖÖD House, asked for permission to use a small selection of ÖÖD's product photographs on PlotNua so homeowners can see the actual buildings alongside that information; own products only, ÖÖD identified, unaltered, displayed on plotnua.ie.",
+        "answered": "ÖÖD House, by email 14 Oct 2026, replying to that request: supplied a library of its photographs organised by product. Wording and library link held privately (PN-EVID-RIGHTS-ORG-000149-20261014).",
         "note": "Reconciled 14 Oct 2026 against the correspondence. 'feature' rests on the request's own premise (PlotNua's information about ÖÖD, shown with the photographs), which ÖÖD answered by supplying the library; the 2 Oct YES follow-up was not itself answered. Imagery remains scoped per Drive file in permitted_delivery_hosts; no other image is covered."
       },
       "listing_review": {
         "state": "NOT_REQUIRED",
         "requested_by": null,
         "requested_in": null,
-        "note": "ÖÖD did not ask to review a listing (Gertrud 1a139105565814d0; Keir 1a13a4b45780ba3b). PlotNua offered a private preview on 14 Oct (1a13993898984e9b); it was not requested or sent. Founder ruling, 14 Oct 2026: a private preview existing creates no supplier-review requirement."
+        "note": "ÖÖD did not ask to review a listing (its replies of 14 Oct 2026). PlotNua offered a private preview on 14 Oct; it was not requested or sent. Founder ruling, 14 Oct 2026: a private preview existing creates no supplier-review requirement."
       },
       "public_visibility": "PUBLISHABLE"
     },
@@ -1061,7 +1066,7 @@
       "permission_outcome": "Granted — Founder Confirmed",
       "permitted_domain": "nuamodular.com",
       "required_credit": "© Nua Modular",
-      "evidence": "PlotNua asked on 27 October 2026 at 13:40 UTC (Gmail 1a17d976ddf345a4, thread 1a1648439ab5db83, from hello@plotnua.ie to contact@nuamodular.com): “Would you mind if I used some of the product images currently available on your website and social media pages for the preview? Naturally, everything would be credited to Nua Modular and linked back to your website.” Sean Lannen, Founder of Nua Modular, replied the same day at 15:29 UTC (Gmail 1a17dfb25a1be992, from contact@nuamodular.com): “Ya no problem at all - use whatever you need. If you need anything particular from me, just ask and I'll fire it across.” Founder confirmation, 27 October 2026 15:45: explicit permission to use Nua Modular's existing website imagery and product information for the PlotNua presentation of Nua Modular. Recorded in Atlas as Image Permission Outreach PREVIEW-NUA-MODULAR-20261027 (recHiUyd9FkxqeW5e), Permission Outcome “Granted — Founder Confirmed”, against Organisations recuvqPv7XW0b0PFJ; correspondence row recMFJuHeDdDm5ORM. THIS IS NOT AGREEMENT TO ANY COMMISSION OR REFERRAL TERMS.",
+      "evidence": "PlotNua asked Nua Modular by email on 27 October 2026 whether it could use product images from Nua Modular's website and social media for the preview, credited to Nua Modular and linked back to its website. Nua Modular's founder replied the same day giving permission without restriction. Founder confirmation, 27 October 2026 15:45: explicit permission to use Nua Modular's existing website imagery and product information for the PlotNua presentation of Nua Modular. Recorded in Atlas as Image Permission Outreach PREVIEW-NUA-MODULAR-20261027 (recHiUyd9FkxqeW5e), Permission Outcome “Granted — Founder Confirmed”, against Organisations recuvqPv7XW0b0PFJ; correspondence row recMFJuHeDdDm5ORM. Correspondence held privately (evidence reference PN-EVID-RIGHTS-ORG-000194-20261027).",
       "conditions": [
         "IMAGES: the two photographs enumerated in approved_assets and NO OTHER Nua Modular image, on any page. Anything unlisted is not authorised.",
         "Credit '© Nua Modular' and a link back to https://www.nuamodular.com/ wherever an image appears (offered by PlotNua in the 13:40 request).",
@@ -1076,6 +1081,7 @@
       "permission_date": "2026-10-27",
       "permission": {
         "state": "GRANTED",
+        "pre_live_review_requested": true,
         "ref": "PREVIEW-NUA-MODULAR-20261027",
         "record": "recHiUyd9FkxqeW5e",
         "date": "2026-10-27",
@@ -1090,16 +1096,16 @@
           "unmodified-hotlink",
           "withdrawable-on-request"
         ],
-        "asked": "Would you mind if I used some of the product images currently available on your website and social media pages for the preview? Naturally, everything would be credited to Nua Modular and linked back to your website. (PlotNua, 27 Oct 2026 13:40 UTC, Gmail 1a17d976ddf345a4)",
-        "answered": "Ya no problem at all - use whatever you need. If you need anything particular from me, just ask and I'll fire it across. (Sean Lannen, Nua Modular, 27 Oct 2026 15:29 UTC, Gmail 1a17dfb25a1be992)",
-        "note": "Founder confirmed 27 Oct 2026 15:45. Not agreement to commission or referral terms; Partners record unchanged (Negotiating, no terms)."
+        "asked": "PlotNua, by email 27 Oct 2026 13:40 UTC: asked whether it could use product images from Nua Modular's website and social media pages for the preview, credited to Nua Modular and linked back to its website.",
+        "answered": "Nua Modular's founder, by email 27 Oct 2026 15:29 UTC: permission given without restriction, with an offer to supply anything particular PlotNua needs. Wording held privately (PN-EVID-RIGHTS-ORG-000194-20261027).",
+        "note": "Founder confirmed 27 Oct 2026 15:45. Not agreement to any commission or referral terms."
       },
       "listing_review": {
         "state": "AWAITING_CONFIRMATION",
         "requested_by": "supplier",
-        "requested_in": "Gmail 1a17d44ae4db9a0c, 27 Oct 2026: Sean asked to see the preview and to have a chat this week",
+        "requested_in": "Email, 27 Oct 2026: Nua Modular asked to see the preview",
         "confirmed_at": null,
-        "note": "The preview has not yet been sent. Sean asked to see it; the founder sends it after approval (send gate)."
+        "note": "The preview has not yet been sent. Nua Modular asked to see it; the founder sends it after approval (send gate)."
       },
       "public_visibility": "HOLD",
       "hold_reason": "permission-scope-excludes-listing",
@@ -1108,7 +1114,7 @@
         "state": "SELECTED_ASSETS_APPROVED",
         "default_for_unlisted": "NOT_AUTHORISED",
         "approved_count": 2,
-        "authorised_by": "Nua Modular, 27 Oct 2026 (Gmail 1a17dfb25a1be992); founder confirmation 27 Oct 2026",
+        "authorised_by": "Nua Modular, by email 27 Oct 2026; founder confirmation 27 Oct 2026",
         "note": "Approval is by ENUMERATION, per asset. A Nua Modular image is usable because it appears in approved_assets, never because it is served from nuamodular.com. nua-ultra-real-field.jpg is deliberately NOT listed: it appears to be the yard photograph with a replaced background. Renders of other designs (nua-pod-*) are not listed.",
         "conditions_on_every_use": [
           "Credit: © Nua Modular",
@@ -1144,7 +1150,7 @@
       "permission_outcome": "Granted with Conditions — Founder Confirmed",
       "permitted_domain": "themobilepods.ie",
       "required_credit": "Image: The Mobile Pods",
-      "evidence": "WRITTEN REPLY BY INSTAGRAM DIRECT MESSAGE (corrected 4 November 2026; earlier wording said no written reply existed, which was wrong). Thread: PlotNua (@plotnua) ↔ TheMobilePods (@themobilepods), instagram.com/direct/t/17848573742992930/. ASKED, Mon 2 Nov 2026 21:19, by Colin MacAulay for PlotNua: the invitation names The Mobile Pods' \"mix of tiny homes, garden offices and outdoor wellness products\", offers to \"showcase some of your projects, with full credit and direct links to your website\", and asks for \"permission to feature a selection of your photographs\" (no cost or commitment). ANSWERED, Tue 3 Nov 2026 22:53, by @themobilepods: \"Hi, yes\". PlotNua then acknowledged that it would select suitable images from the website or social media, with full credit; the supplier did not reply to that acknowledgement. This is a short informal written consent, not a signed licence: it grants no rehosting, cropping or adaptation right, and names no individual image. Founder confirmation, 4 Nov 2026, that the permission covers wellness imagery (saunas, hot tubs, cold-water tubs); this rests on the invitation naming 'outdoor wellness products'. Evidence archived as four screenshots in ~/Documents/PlotNua/04 Deploy/PlotNua-MobilePods-Wellness-Permission-2026-11-04/evidence/ (SHA-256 d8f31806…, abac2bfd…, 788e0335…, 42f6ea90…). Atlas Image Permission Outreach WELLNESS-FIRST-MOBILE-PODS-20261002 (recLwfIMP9TK1pQpu).",
+      "evidence": "WRITTEN REPLY BY INSTAGRAM DIRECT MESSAGE (corrected 4 November 2026; earlier wording said no written reply existed, which was wrong). ASKED, 2 November 2026, by PlotNua: the invitation named The Mobile Pods' tiny homes, garden offices and outdoor wellness products, offered to showcase some of its projects with full credit and direct links to its website, and asked for permission to feature a selection of its photographs (no cost or commitment). ANSWERED, 3 November 2026, by The Mobile Pods: yes. PlotNua then acknowledged that it would select suitable images from the website or social media, with full credit; the supplier did not reply to that acknowledgement. This is a short informal written consent, not a signed licence: it grants no rehosting, cropping or adaptation right, and names no individual image. Founder confirmation, 4 Nov 2026, that the permission covers wellness imagery (saunas, hot tubs, cold-water tubs); this rests on the invitation naming outdoor wellness products. Evidence archived privately as four screenshots (evidence reference PN-EVID-RIGHTS-ORG-000235-20261103). Atlas Image Permission Outreach WELLNESS-FIRST-MOBILE-PODS-20261002 (recLwfIMP9TK1pQpu).",
       "conditions": [
         "Credit 'Image: The Mobile Pods' on every image use, linked to themobilepods.ie.",
         "SCOPE: a selection of The Mobile Pods' own photographs of its pods and of its outdoor wellness products (saunas, hot tubs, cold-water tubs), plus the two published floor plans, to feature The Mobile Pods on PlotNua. Each image used must be enumerated in showcase.json (or an equivalent selection file) with its source URL and SHA-256.",
@@ -1158,6 +1164,7 @@
       "permission_date": "2026-11-03",
       "permission": {
         "state": "GRANTED",
+        "pre_live_review_requested": false,
         "ref": "WELLNESS-FIRST-MOBILE-PODS-20261002",
         "record": "recLwfIMP9TK1pQpu",
         "date": "2026-11-03",
@@ -1171,15 +1178,15 @@
           "selected-first-party-imagery-only",
           "remove-on-objection"
         ],
-        "asked": "Instagram DM, 2 Nov 2026 21:19: invitation naming 'tiny homes, garden offices and outdoor wellness products', asking 'permission to feature a selection of your photographs' with full credit and direct links (the email outreach of 2 Oct 2026 had no reply).",
-        "answered": "Instagram DM, 3 Nov 2026 22:53, @themobilepods: 'Hi, yes'. Short informal written consent; not a signed licence.",
+        "asked": "Instagram DM, 2 Nov 2026: invitation naming tiny homes, garden offices and outdoor wellness products, asking permission to feature a selection of the supplier's photographs with full credit and direct links (the email outreach of 2 Oct 2026 had no reply).",
+        "answered": "Instagram DM, 3 Nov 2026 22:53, The Mobile Pods: yes (wording held privately, PN-EVID-RIGHTS-ORG-000235-20261103). Short informal written consent; not a signed licence.",
         "note": "Founder decision to publish, 3 Nov 2026; founder confirmed on 4 Nov 2026 that the consent covers wellness imagery (saunas, hot tubs, cold-water tubs). Gate scope and conditions unchanged."
       },
       "listing_review": {
         "state": "NOT_REQUIRED",
         "requested_by": null,
         "requested_in": null,
-        "note": "No listing review was requested in The Mobile Pods' Instagram reply ('Hi, yes', 3 Nov 2026). Founder decision, 3 Nov 2026: publish the reviewed staging showcase without a supplier pre-live review; remove any photograph promptly if the supplier objects."
+        "note": "No listing review was requested in The Mobile Pods' Instagram reply (yes, 3 Nov 2026). Founder decision, 3 Nov 2026: publish the reviewed staging showcase without a supplier pre-live review; remove any photograph promptly if the supplier objects."
       },
       "public_visibility": "PUBLISHABLE"
     },
@@ -1197,7 +1204,7 @@
         }
       ],
       "required_credit": "Image: Gardenhouse24",
-      "evidence": "Gardenhouse24 replied on Instagram (direct message, recorded by the founder on 4 November 2026): \"Hi that's no problem if you could take pictures from the website and social media that would be great.\" This is a written permission to use photographs from gardenhouse24.ie and its social media accounts. The supplier also invited PlotNua to use its published product information and prices. Recorded in Atlas Image Permission Outreach IPO-024 (recMJXwJNNajU7EjY) as Granted with Conditions — Founder Confirmed. Earlier email outreach (Sep-Oct 2026, from colin@plotnua.ie) had no reply.",
+      "evidence": "Gardenhouse24 replied on Instagram (direct message, recorded by the founder on 4 November 2026) giving permission to use photographs from its website and social media. This is a written permission to use photographs from gardenhouse24.ie and its social media accounts. The supplier also invited PlotNua to use its published product information and prices. Recorded in Atlas Image Permission Outreach IPO-024 (recMJXwJNNajU7EjY) as Granted with Conditions — Founder Confirmed. Earlier email outreach (Sep-Oct 2026) had no reply. Correspondence held privately (evidence reference PN-EVID-RIGHTS-ORG-000010-20261104).",
       "conditions": [
         "Credit 'Image: Gardenhouse24' on every image use, linked to gardenhouse24.ie.",
         "Only photographs and visualisations published on gardenhouse24.ie or the supplier's own social media; computer-generated images are always labelled 'Visualisation'.",
@@ -1209,6 +1216,7 @@
       "permission_date": "2026-11-04",
       "permission": {
         "state": "GRANTED",
+        "pre_live_review_requested": false,
         "ref": "IPO-024",
         "record": "recMJXwJNNajU7EjY",
         "date": "2026-11-04",
@@ -1224,7 +1232,7 @@
           "remove-on-request"
         ],
         "asked": "PlotNua asked Gardenhouse24 on Instagram for permission to feature it and use its photographs (email outreach of Sep-Oct 2026 had no reply).",
-        "answered": "\"Hi that's no problem if you could take pictures from the website and social media that would be great.\" (Gardenhouse24, Instagram, recorded 4 Nov 2026)",
+        "answered": "Gardenhouse24, Instagram DM, recorded 4 Nov 2026: permission to take pictures from its website and social media. Wording held privately (PN-EVID-RIGHTS-ORG-000010-20261104).",
         "note": "Recorded verbatim from the supplier's reply as relayed by the founder."
       },
       "listing_review": {
@@ -1254,19 +1262,20 @@
         }
       ],
       "required_credit": "Image: Arctic Wellness",
-      "evidence": "PlotNua emailed Jonathan Chadwick (founder) on 9 Nov 2026 asking to feature 'a small selection of photographs you approve, with clear credit and links to Arctic Wellness' (Gmail 1a1c21565a8f9e22). He replied on 10 Nov 2026: \"Yes you can use our images no problem. Sounds good\" (Gmail 1a1c3e4b7e7a6db8). The founder's brief of 10 Nov 2026 confirms the grant ('Arctic Wellness has explicitly granted PlotNua permission to use its product images and showcase its products'). Recorded in Atlas Image Permission Outreach OUTREACH-ARCTIC-WELLNESS-20261109 (recCp3k5b4wpqoLYb) as Granted with Conditions — Founder Confirmed.",
+      "evidence": "PlotNua emailed Arctic Wellness's founder on 9 Nov 2026 asking to feature a small selection of photographs the supplier approves, with clear credit and links to Arctic Wellness. Arctic Wellness replied by email on 10 Nov 2026 giving permission to use its images. The founder's brief of 10 Nov 2026 confirms the grant: Arctic Wellness has explicitly granted PlotNua permission to use its product images and showcase its products. Recorded in Atlas Image Permission Outreach OUTREACH-ARCTIC-WELLNESS-20261109 (recCp3k5b4wpqoLYb) as Granted with Conditions — Founder Confirmed. Correspondence held privately (evidence reference PN-EVID-RIGHTS-ORG-000253-20261110).",
       "conditions": [
         "Credit 'Image: Arctic Wellness' on every image use, linked to arcticwellness.ie.",
         "Only Arctic Wellness's own photographs of its installations and products as published on arcticwellness.ie. Images the site names 'ChatGPT Image' (AI-generated or AI-edited) and the apparent third-party manufacturer photographs of the PolarPool, PolarPlunge and Icepod tubs are excluded. Every image used is enumerated in supplier-preview-system/showcases/arctic-wellness/showcase.json with its source URL and SHA-256.",
         "Images are hotlinked unmodified from Arctic Wellness's own CDN folders; no rehosting, cropping or adaptation.",
         "If Arctic Wellness asks for any image to be changed or removed, PlotNua does so promptly."
       ],
-      "note": "Exercised on suppliers/arctic-wellness.html (10 photographs, hotlinked from Arctic Wellness's Webflow CDN folders) and on one Garden Retreat showcase card. Selection, source pages and SHA-256 hashes: supplier-preview-system/showcases/arctic-wellness/showcase.json. REMOVAL: delete the image from showcase.json (and the card in atlas-tools/showcase-cards/showcase-cards.json if it is the card image), rebuild, regenerate this manifest. WITHDRAWAL: set permission_outcome to 'Withdrawn / Superseded' and the gate refuses every Arctic Wellness image site-wide. COMMERCIAL: Jonathan welcomed a conversation about a referral arrangement; no terms exist and this grant implies none.",
+      "note": "Exercised on suppliers/arctic-wellness.html (10 photographs, hotlinked from Arctic Wellness's Webflow CDN folders) and on one Garden Retreat showcase card. Selection, source pages and SHA-256 hashes: supplier-preview-system/showcases/arctic-wellness/showcase.json. REMOVAL: delete the image from showcase.json (and the card in atlas-tools/showcase-cards/showcase-cards.json if it is the card image), rebuild, regenerate this manifest. WITHDRAWAL: set permission_outcome to 'Withdrawn / Superseded' and the gate refuses every Arctic Wellness image site-wide. COMMERCIAL: no referral terms exist and this grant implies none.",
       "atlas_permission_record": "recCp3k5b4wpqoLYb",
       "atlas_permission_ref": "OUTREACH-ARCTIC-WELLNESS-20261109",
       "permission_date": "2026-11-10",
       "permission": {
         "state": "GRANTED",
+        "pre_live_review_requested": false,
         "ref": "OUTREACH-ARCTIC-WELLNESS-20261109",
         "record": "recCp3k5b4wpqoLYb",
         "date": "2026-11-10",
@@ -1280,15 +1289,15 @@
           "selected-first-party-imagery-only",
           "remove-on-request"
         ],
-        "asked": "Email, 9 Nov 2026 (Gmail 1a1c21565a8f9e22): 'Would you be open to us featuring a small selection of photographs you approve, with clear credit and links to Arctic Wellness? We would send you a private preview before publishing any imagery.'",
-        "answered": "Email, 10 Nov 2026 (Gmail 1a1c3e4b7e7a6db8), Jonathan Chadwick: 'Yes you can use our images no problem. Sounds good'",
+        "asked": "Email, 9 Nov 2026: asked whether Arctic Wellness would be open to PlotNua featuring a small selection of photographs it approves, with clear credit and links to Arctic Wellness, and said PlotNua would send a private preview before publishing any imagery.",
+        "answered": "Arctic Wellness's founder, by email 10 Nov 2026: permission to use its images. Wording held privately (PN-EVID-RIGHTS-ORG-000253-20261110).",
         "note": "Founder confirmation in the brief of 10 Nov 2026."
       },
       "listing_review": {
         "state": "NOT_REQUIRED",
         "requested_by": null,
         "requested_in": null,
-        "note": "Arctic Wellness did not ask to review the listing. Founder decision, 10 Nov 2026: Jonathan has authorised use of Arctic Wellness imagery and no additional supplier approval or preview is required."
+        "note": "Arctic Wellness did not ask to review the listing. Founder decision, 10 Nov 2026: Arctic Wellness has authorised use of its imagery and no additional supplier approval or preview is required."
       },
       "public_visibility": "PUBLISHABLE"
     }

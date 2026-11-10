@@ -52,7 +52,7 @@ console.log('='.repeat(78));
 
 const raws = uni.products;
 /* Organisation renamed 2026-10-08 on the supplier's own correction
-   (Jack Sutcliffe, Powersheds). This is an ASSERTION on the live
+   (Powersheds, by email). This is an ASSERTION on the live
    organisation value, so it had to move with the data — it failed on the
    first guard run after the rename, which is the guard working. */
 const ps = raws.filter(p => p.organisation === 'Powersheds' && p.imagery);
