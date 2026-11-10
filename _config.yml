@@ -1,0 +1,20 @@
+# GitHub Pages build configuration (M8A, founder-approved 10 Nov 2026).
+# Pages builds the repository root with Jekyll. Nothing in the public site is
+# processed: no public file carries YAML front matter, so every page, asset and
+# data file is copied byte-for-byte. This file exists only to keep internal
+# development and governance material from being served on plotnua.ie.
+# A NEW internal folder must be added here, or it will be served.
+theme: null
+exclude:
+  - atlas-tools/
+  - governance/
+  - worker/
+  - commercial/
+  - supplier-preview-system/
+  - atlas-visual-references/
+  - README.md
+  - PLATFORM-EVIDENCE-GOVERNANCE.md
+  - PLOTNUA-DEFAULT-JOURNEY-UI-FREEZE.md
+  - PLOTNUA-JOURNEY-CONTRACT.md
+  - QUALIFICATION-BATCH1-SOURCE-DATA-REMEDIATION.md
+  - _config.yml
