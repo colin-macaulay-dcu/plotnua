@@ -18,7 +18,7 @@ Stage 4 private preview (8 Nov 2026), branch dev/disc038-hidden-shelter, NOT dep
   S9  planning and feasibility cautions: Class 3 excludes habitation, 30 m2, Section 5 (EUR 80), not legal advice,
       groundwater, radon; no blanket exemption wording
   S10 prices are advertised international prices, exclude delivery and installation, no maker has quoted, checked date
-  S11 the register-interest form is inert: no action, every control inside a disabled fieldset, the preview notice;
+  S11 no form or form control (no-form route), the exploratory-status statement kept;
       no fetch, XHR, beacon, Workers, Formspree, Airtable or WhatsApp enquiry link
   S12 protection is never promised: "Features are not protection" and "No guarantees" present; no "guaranteed safe",
       "bomb-proof", "nuclear-proof", "fully protected" wording
@@ -135,15 +135,15 @@ def check(s, files):
                  "An Irish installed price isn’t known yet"):
         need(must in flat, "S10 price qualification missing: " + must)
     # S11
-    form = re.search(r'<form\b([^>]*)>(.*?)</form>', s, re.S)
-    need(len(re.findall(r"<form\b", s)) <= 1, "S11 more than one form")
-    if form:
-        attrs, fb = form.groups()
-        need("action=" not in attrs and 'onsubmit="return false"' in attrs, "S11 the form has an action or can submit")
-        need(fb.count("<fieldset disabled>") == 1, "S11 the controls are not inside a disabled fieldset")
-        outside = re.sub(r"<fieldset disabled>.*?</fieldset>", "", fb, flags=re.S)
-        need(not re.search(r"<(input|select|textarea|button)\b", outside), "S11 a control outside the disabled fieldset")
-        need("Preview only." in text(fb) and "nothing typed here would be sent or stored" in text(fb), "S11 the preview notice")
+    # No-form publication route (founder Stage 6, 10 Nov 2026): no form or form control anywhere on the page, and the
+    # exploratory-status statement is kept.
+    need(not re.search(r"<(form|select|textarea)\b", s), "S11 a form or form control is present (no-form route)")
+    inputs = re.findall(r"<input\b[^>]*>", s)   # only the shared search rail and the slider's own range control may remain
+    need(len(inputs) == 2 and any('class="pns-input"' in i and 'type="search"' in i for i in inputs)
+         and any('class="pn-compare__range"' in i and 'type="range"' in i for i in inputs),
+         "S11 an input other than the site search and the slider range: %s" % [i[:60] for i in inputs])
+    need("No shelter is available through PlotNua today" in flat and "not taking orders, deposits or quote requests" in flat,
+         "S11 the exploratory-status statement is missing")
     # The generated site-wide header (pn_header.py, byte-checked by prove-global-header.py) carries PlotNua's general WhatsApp
     # contact pill on every page; it is not a DISC-038 enquiry route, so the scan covers everything outside the header blocks.
     page_only = re.sub(r"<!-- PLOTNUA HEADER v2 · (BAR|ROW) · BEGIN.*?<!-- PLOTNUA HEADER v2 · \1 · END -->", "", s, flags=re.S)
@@ -201,9 +201,11 @@ def main():
             "S8": s.replace("None is a PlotNua partner", "PlotNua is the authorised distributor", 1),
             "S9": s.replace("not for human habitation", "fine for living in", 1),
             "S10": s.replace("No maker has quoted for this page", "Irish price confirmed", 1),
-            "S11": s.replace("<fieldset disabled>", "<fieldset>", 1),
-            "S11 ": s.replace('onsubmit="return false"', 'action="https://x.workers.dev/submit"', 1),
-            "S11  ": s.replace('<ul class="hs-promise"', '<a href="https://wa.me/353000000000?text=HS">WhatsApp us</a><ul class="hs-promise"', 1),
+            "S11": s.replace('<div class="rg-panel reveal">', '<form><textarea name="m"></textarea></form><div class="rg-panel reveal">', 1),
+            "S11    ": s.replace('<div class="rg-panel reveal">', '<input type="email" name="email"><div class="rg-panel reveal">', 1),
+            "S11 ": s.replace("No shelter is available through PlotNua today", "Shelters available now", 1),
+            "S11  ": s.replace('<div class="rg-panel reveal">', '<a href="https://wa.me/353000000000?text=HS">WhatsApp us</a><div class="rg-panel reveal">', 1),
+            "S11   ": s.replace('<div class="rg-panel reveal">', '<script>fetch("https://x.workers.dev/i")</script><div class="rg-panel reveal">', 1),
             "S12": s.replace("No guarantees", "Fully protected", 1),
         }
         missed = [k for k, t in faults.items() if not any(p.startswith(k.strip() + " ") for p in check(t, files))]
