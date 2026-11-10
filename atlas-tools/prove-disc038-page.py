@@ -190,7 +190,12 @@ def main():
     recs = [r for r in json.loads(idx)["records"] if r.get("route") == PAGE]
     need(len(recs) == 1 and recs[0].get("type") == "possibility",
          "S13 no Search record for the page (the Search build is blocked by its G10 180 KB guard; founder decision required)")
-    need(not [e for e in tm["entries"] if PAGE in e.get("targets", [])], "S13 a governed search entry targets the page")
+    # Stage 16A (founder decision, 10 Nov 2026): exactly one governed phrase may target the page, "garden bunker",
+    # possibility scope, approved, targeting this page only. Any other phrase (e.g. a protection term) still fails.
+    gov = [e for e in tm["entries"] if PAGE in e.get("targets", [])]
+    need(len(gov) == 1 and gov[0].get("phrase") == "garden bunker" and gov[0].get("scope") == "possibility"
+         and gov[0].get("status") == "APPROVED" and gov[0].get("targets") == [PAGE],
+         "S13 governed search entries for the page must be exactly the approved 'garden bunker' (possibility scope)")
     cards = re.findall(r'<a class="lib-card" href="%s" data-cat="([^"]+)">(.*?)</a>' % re.escape(PAGE), lib, re.S)
     need(len(cards) == 1 and cards[0][0] == "Garden" and "assets/disc038/img/DISC-038-POSSIBLE-1024.jpg" in cards[0][1]
          and '<span class="lib-aichip">AI-generated illustration</span>' in cards[0][1] and "BEFORE" not in cards[0][1],
