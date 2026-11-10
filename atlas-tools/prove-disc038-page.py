@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
 """DISC-038 · The Hidden Shelter: page, claims, containment and provenance proof (read-only).
-Stage 4 private preview (8 Nov 2026), branch dev/disc038-hidden-shelter, NOT deployed. Modelled on prove-disc037-page.py.
+Release candidate (Stage 6, prepared 10 Nov 2026), branch release-prep/disc038-hidden-shelter, NOT deployed. Modelled on prove-disc037-page.py.
 
     python3 atlas-tools/prove-disc038-page.py [--self-test]
 
-  S1  one <title>, a meta description (60-160 chars), canonical and og:url; robots "noindex, nofollow" (private preview)
+  S1  one <title>, a meta description (60-160 chars), canonical and og:url; robots "index, follow" (release candidate);
+      no preview chip or band left
   S2  JSON-LD parses; no Product, Offer, price, LocalBusiness, Review, FAQPage or AggregateOffer data
   S3  exactly one H1 ("The Hidden Shelter") and the approved hero question; no compact title above the image
   S4  every local href/src/srcset resolves to a file
@@ -22,7 +23,8 @@ Stage 4 private preview (8 Nov 2026), branch dev/disc038-hidden-shelter, NOT dep
       no fetch, XHR, beacon, Workers, Formspree, Airtable or WhatsApp enquiry link
   S12 protection is never promised: "Features are not protection" and "No guarantees" present; no "guaranteed safe",
       "bomb-proof", "nuclear-proof", "fully protected" wording
-  S13 containment: not in the sitemap, the search index, the governed search map or the Discovery Library
+  S13 release wiring: exactly one sitemap entry; a Search possibility record routed to the page; exactly one Garden
+      Library card showing the recorded POSSIBLE copy with the AI chip; no governed search-map entry
   S14 provenance: every DISC-038 image in use is exactly a recorded derivative (sha256) of a declared, unchanged
       AI_ILLUSTRATION master that permits the discovery surface
 Prints "DISC-038 PAGE · OK" only when every check passes.
@@ -58,8 +60,10 @@ def check(s, files):
     # S1
     need(len(re.findall(r"<title>[^<]+</title>", s)) == 1, "S1 one <title>")
     for pat in (r'<meta name="description" content="[^"]{60,160}"', r'<link rel="canonical" href="%s"' % re.escape(URL),
-                r'<meta property="og:url" content="%s"' % re.escape(URL), r'<meta name="robots" content="noindex, nofollow">'):
+                r'<meta property="og:url" content="%s"' % re.escape(URL), r'<meta name="robots" content="index, follow">'):
         need(re.search(pat, s), "S1 missing: " + pat)
+    need("noindex" not in s and "hs-chip" not in s and "hs-preview" not in s and "Private preview" not in s,
+         "S1 a preview marker is left (noindex, preview chip or band)")
     # S2
     blocks = re.findall(r'<script type="application/ld\+json">(.*?)</script>', s, re.S)
     need(blocks, "S2 no JSON-LD")
@@ -169,10 +173,15 @@ def main():
     # S13 containment
     sm, idx, lib = read("sitemap.xml"), read("search-index-v1.json"), read("discoveries.html")
     tm = json.loads(read("atlas-tools/search-topic-map.json"))
-    need(PAGE not in sm, "S13 the page is in the sitemap")
-    need(PAGE not in idx, "S13 the page is in the search index")
+    need(sm.count("<loc>https://plotnua.ie/%s</loc>" % PAGE) == 1, "S13 not exactly one sitemap entry")
+    recs = [r for r in json.loads(idx)["records"] if r.get("route") == PAGE]
+    need(len(recs) == 1 and recs[0].get("type") == "possibility",
+         "S13 no Search record for the page (the Search build is blocked by its G10 180 KB guard; founder decision required)")
     need(not [e for e in tm["entries"] if PAGE in e.get("targets", [])], "S13 a governed search entry targets the page")
-    need(PAGE not in lib, "S13 the Discovery Library links the page")
+    cards = re.findall(r'<a class="lib-card" href="%s" data-cat="([^"]+)">(.*?)</a>' % re.escape(PAGE), lib, re.S)
+    need(len(cards) == 1 and cards[0][0] == "Garden" and "assets/disc038/img/DISC-038-POSSIBLE-1024.jpg" in cards[0][1]
+         and '<span class="lib-aichip">AI-generated illustration</span>' in cards[0][1] and "BEFORE" not in cards[0][1],
+         "S13 the Library card (one, Garden, the POSSIBLE copy, with the AI chip)")
     # S14 provenance by hash
     reg = json.loads(read("image-provenance-records.json"))
     masters = {r["asset"]: r for r in reg["records"]}
@@ -191,7 +200,7 @@ def main():
 
     if "--self-test" in sys.argv:
         faults = {
-            "S1": s.replace('<meta name="robots" content="noindex, nofollow">', '<meta name="robots" content="index, follow">', 1),
+            "S1": s.replace('<meta name="robots" content="index, follow">', '<meta name="robots" content="noindex, nofollow">', 1),
             "S3": s.replace("<h1>The Hidden Shelter</h1>", "<h1>The Hidden Shelter</h1><h1>x</h1>", 1),
             "S3 ": s.replace('<header class="d-hero ns-hero rg-hero hs-hero', '<div class="pn-hero-compare__mtitle"></div><header class="d-hero ns-hero rg-hero hs-hero', 1),
             "S5": s.replace('id="hsHeroCompare" data-start="100"', 'id="hsHeroCompare" data-start="50"', 1),

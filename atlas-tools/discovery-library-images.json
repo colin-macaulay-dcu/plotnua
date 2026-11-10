@@ -14,6 +14,14 @@
 
   "cards": [
 {
+  "title": "The Hidden Shelter",
+  "card": "discovery-the-hidden-shelter.html",
+  "image": "assets/disc038/img/DISC-038-POSSIBLE-1024.jpg",
+  "alt": "An Irish back garden at dusk with an engineered shelter entrance open beside the patio: a steel lid raised on struts above a lit concrete stair leading down to a warmly lit room with a sofa and shelves.",
+  "why": "Founder-approved DISC-038 POSSIBLE (Stage 4, approved for preview Stage 5): the open shelter entrance in an ordinary garden, the Discovery realised. The hero's BEFORE (the same garden without the shelter) is the starting point and the Library must not show it. A recorded edit of the founder's credentialed POSSIBLE master (build-disc038-images.py).",
+  "previous": null
+},
+{
   "title": "The Reinvented Interior",
   "card": "discovery-reinvented-interior.html",
   "image": "assets/disc039/DISC-039-possible-v2.webp",

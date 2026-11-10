@@ -101,7 +101,7 @@ def main():
     cur = PAGE.read_text(encoding="utf-8")
     base = OLD_SPANS.sub("", strip_layer(cur))           # labels removed entirely; everything else as live
     found = CARD.findall(base)
-    if len(found) != 22 or set(found) != set(cards):   # 16 since DISC-015 (1 Nov 2026); 17 since DISC-020 (4 Nov 2026); 18 since DISC-034 (4 Nov 2026); 19 since DISC-035 (4 Nov 2026); 20 since DISC-036; 21 since DISC-037 (8 Nov 2026)
+    if len(found) != 23 or set(found) != set(cards):   # 16 since DISC-015 (1 Nov 2026); 17 since DISC-020 (4 Nov 2026); 18 since DISC-034 (4 Nov 2026); 19 since DISC-035 (4 Nov 2026); 20 since DISC-036; 21 since DISC-037 (8 Nov 2026); 22 since DISC-039; 23 since DISC-038 (release candidate, prepared 10 Nov 2026)
         die("the Library cards (%d) do not match the label register (%d)" % (len(found), len(cards)))
 
     def card(mo):
