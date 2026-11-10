@@ -1,4 +1,4 @@
--- PlotArt Studio · migration 0006 · Art for Hire (Stage 3B-1, development 10 Nov 2026)
+-- PlotArt Studio · migration 0007 · Art for Hire (Stage 3B-1, development 10 Nov 2026)
 -- PROPOSAL FOR FOUNDER APPROVAL. NOT RUN against any real database.
 -- Additive only: six NEW tables, their indexes and refusal-only guards. No existing table, column, row, trigger,
 -- agreement, gallery, enquiry route or document is changed. artists, artworks and enquiries are referenced, never written.

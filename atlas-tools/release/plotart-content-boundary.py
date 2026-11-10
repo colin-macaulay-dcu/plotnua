@@ -18,6 +18,18 @@ size, description or price: an instant release may only change availability, rem
 
 Anything else (code, styles, templates, other pages, the Worker, privacy wording, launch switches,
 the manifest) is a CODE release: it needs the founder's full seven-step approval and is refused here.
+
+Art for Hire (Stage 3B-6). The gallery release above can NEVER touch plotart/art-for-hire/ (refused by name). The hire
+page has its own, narrower boundary:
+
+    python3 atlas-tools/release/plotart-content-boundary.py BASE REL --hire [--removals-only]
+
+  --hire           every changed path must be plotart/art-for-hire/index.html, modified (never added or removed), and
+                   only inside its generated catalogue region (<!-- pa-hire-catalogue:begin --> ... :end -->). Nothing
+                   else at all: no gallery, artist page, record, style, script or switch. Adding the page, its assets
+                   or the navigation tab is a CODE release.
+  --removals-only  (automatic runs, founder decision D2: withdrawals publish without approval, additions never do) the
+                   new region may only drop works: every card left must be byte-identical to a card already there.
 Exit codes: 0 content-only; 1 refused; 2 usage or git error.
 """
 import json, re, subprocess, sys
@@ -29,6 +41,9 @@ import plotart_search_content as C
 ART = re.compile(r"^plotart/artists/([a-z0-9]+(?:-[a-z0-9]+){0,6})/(?:[a-z0-9]+(?:-[a-z0-9]+){0,6}\.html|gallery\.json|img/[a-z0-9-]+-\d{2,5}\.webp)$")
 # the generated collection region (Direction C2, 5 Nov 2026): the open galleries and the twenty-five positions
 GRID = re.compile(rb'<!-- pa-vg-collection:begin -->.*?<!-- pa-vg-collection:end -->', re.S)
+HIRE_PAGE = "plotart/art-for-hire/index.html"
+HIRE = re.compile(rb'<!-- pa-hire-catalogue:begin -->.*?<!-- pa-hire-catalogue:end -->', re.S)
+HIRE_CARD = re.compile(rb'<li class="pa-hire-card" data-hire-work="[^"]+".*?</li>', re.S)
 DETAILS = re.compile(r'class="pa-ag-title">([^<]*)<|class="pa-ag-sub">([^<]*)<|<h1>([^<]*)</h1>|class="pa-aw-dl">(.*?)</dl>|class="pa-aw-desc">([^<]*)<|<img [^>]*src="(img/[^"]+)"', re.S)
 PRICES = re.compile(r'class="pa-(?:ag-status|aw-price[^"]*)">(€[^<]*)<')
 
@@ -55,6 +70,37 @@ def show(rev, path):
     return r.stdout if r.returncode == 0 else None
 
 
+def hire_main(base, rel, removals_only):
+    """The Art for Hire catalogue region, and nothing else."""
+    git("merge-base", "--is-ancestor", base, rel)
+    refused = []
+    rows = [l.split("\t") for l in git("diff", "--no-renames", "--name-status", base, rel).splitlines() if l]
+    if not rows:
+        refused.append("nothing changed")
+    for row in rows:
+        st, path = row[0], row[-1]
+        if path != HIRE_PAGE or st != "M":
+            refused.append("%s (%s): outside the Art for Hire boundary (only the hire page's catalogue region may change)" % (path, st))
+            continue
+        a, b = show(base, path), show(rel, path)
+        if len(HIRE.findall(a)) != 1 or len(HIRE.findall(b)) != 1:
+            refused.append("%s: the catalogue region markers are missing or repeated" % path)
+            continue
+        if HIRE.sub(b"<region/>", a) != HIRE.sub(b"<region/>", b):
+            refused.append("%s: changed outside the catalogue region" % path)
+        if removals_only:
+            old, new = HIRE_CARD.findall(HIRE.search(a).group(0)), HIRE_CARD.findall(HIRE.search(b).group(0))
+            if any(c not in old for c in new):
+                refused.append("%s: a work was added or changed; only withdrawals publish automatically (additions need the founder)" % path)
+    if refused:
+        print("HIRE BOUNDARY · REFUSED (%d)" % len(refused))
+        for x in refused:
+            print("  " + x)
+        return 1
+    print("HIRE BOUNDARY · OK — the Art for Hire catalogue region only%s" % (" (withdrawals only)" if removals_only else ""))
+    return 0
+
+
 def main(base, rel, instant):
     git("merge-base", "--is-ancestor", base, rel)
     refused = []
@@ -63,6 +109,9 @@ def main(base, rel, instant):
         refused.append("nothing changed")
     for row in rows:
         st, path = row[0], row[-1]
+        if path.startswith("plotart/art-for-hire/"):          # Art for Hire: never through the gallery release (3B-6)
+            refused.append("%s (%s): the Art for Hire page is never published by a gallery release (use --hire)" % (path, st))
+            continue
         m = ART.match(path)
         if m:
             if instant and path.endswith(".webp") and st != "D":
@@ -121,4 +170,6 @@ if __name__ == "__main__":
     args = [a for a in sys.argv[1:] if not a.startswith("--")]
     if len(args) != 2:
         sys.exit(__doc__)
+    if "--hire" in sys.argv:
+        sys.exit(hire_main(args[0], args[1], "--removals-only" in sys.argv))
     sys.exit(main(args[0], args[1], "--instant" in sys.argv))

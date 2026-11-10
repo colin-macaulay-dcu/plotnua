@@ -17,6 +17,8 @@ ACCESS_TEAM_DOMAIN = ""          # e.g. https://plotnua.cloudflareaccess.com  (e
 ACCESS_AUD = ""                  # the Access application's AUD tag            (empty = every request refused)
 # FOUNDER_EMAILS is set as a secret (wrangler secret put FOUNDER_EMAILS): the repository is public.
 INSTANT_AUTOPUBLISH = "false"    # availability / removal / order publish automatically only when the founder turns this on
+HIRE_TERMS_ENABLED = "false"     # Art for Hire: artists can accept PA-AFH and offer works only when the founder turns this on (after legal review)
+HIRE_RETENTION = "off"           # Art for Hire retention: a dry run (counts only) until the founder turns deletion on
 MAILER = "none"                  # "resend" once approved (top-up reminders); secret RESEND_API_KEY
 MAIL_FROM = "PlotArt Studio <studio@plotnua.ie>"   # replies go to hello@plotnua.ie (Reply-To)
 

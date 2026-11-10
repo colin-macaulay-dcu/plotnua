@@ -268,9 +268,15 @@ export async function sweep(env) {
   const off = await env.DB.prepare(`UPDATE artwork_hire SET offered = 0, withdrawn_at = COALESCE(withdrawn_at, ?), updated_at = ? WHERE offered = 1 AND (
       NOT EXISTS (SELECT 1 FROM artworks w WHERE w.id = artwork_hire.artwork_id AND w.archived = 0 AND w.availability IN ('available', 'reserved'))
       OR EXISTS (SELECT 1 FROM participation_events p WHERE p.artist_id = artwork_hire.artist_id AND p.kind = 'ended'))`).bind(at, at).run();
-  // hire details of withdrawn works are deleted 30 days after withdrawal (privacy addendum); the gallery record is unaffected
-  const del = await env.DB.prepare('DELETE FROM artwork_hire WHERE offered = 0 AND withdrawn_at IS NOT NULL AND withdrawn_at < ?').bind(cut).run();
-  const enq = await env.DB.prepare('DELETE FROM hire_enquiries WHERE delete_after < ?').bind(at).run();
+  // hire details of withdrawn works are deleted 30 days after withdrawal (privacy addendum); the gallery record is unaffected.
+  // Stage 3A safeguard 8: DRY RUN until the founder sets HIRE_RETENTION = "on": the daily run only counts what it would delete.
+  const DUE_DETAILS = 'FROM artwork_hire WHERE offered = 0 AND withdrawn_at IS NOT NULL AND withdrawn_at < ?', DUE_ENQ = 'FROM hire_enquiries WHERE delete_after < ?';
+  if (env.HIRE_RETENTION !== 'on') {
+    const d = await env.DB.prepare('SELECT COUNT(*) AS n ' + DUE_DETAILS).bind(cut).first(), e = await env.DB.prepare('SELECT COUNT(*) AS n ' + DUE_ENQ).bind(at).first();
+    return { withdrawn: off.meta.changes || 0, dry_run: true, details_due: d.n, enquiry_details_due: e.n };
+  }
+  const del = await env.DB.prepare('DELETE ' + DUE_DETAILS).bind(cut).run();
+  const enq = await env.DB.prepare('DELETE ' + DUE_ENQ).bind(at).run();
   return { withdrawn: off.meta.changes || 0, details_deleted: del.meta.changes || 0, enquiry_details_deleted: enq.meta.changes || 0 };
 }
 /* The tables the six-year deletion must clear BEFORE record_retention (Stage 3B-1 finding): present only once 0007 has run. */

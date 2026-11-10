@@ -5,8 +5,11 @@ Adds "Art for Hire" as the fourth gallery tab (Artists' Gallery · Mobile Galler
 PlotArt page under ROOT/plotart: the header pill, the phone Menu link and the footer link, plus a small, scoped stylesheet
 block for six pills. Everything else on each page is left byte-for-byte as it was.
 
-  python3 atlas-tools/plotart-hire-nav.py ROOT            apply (ROOT is a copy of the site, e.g. the private preview)
-  python3 atlas-tools/plotart-hire-nav.py ROOT --check    report what would change; change nothing
+  python3 atlas-tools/plotart-hire-nav.py ROOT [--preview]   apply
+  python3 atlas-tools/plotart-hire-nav.py ROOT --check        report what would change; change nothing
+
+Disabled until authorised (Stage 3B-6): it writes into a site only when that site's launch switches have
+art_for_hire_page = true (the founder's release approval); --preview writes a private copy, never the repository.
 
 Strict: a page whose PlotArt navigation does not have exactly the expected shape stops the run with nothing written.
 Idempotent: a page that already has the tab is left alone. Used now for the private preview only; at release the founder
@@ -64,7 +67,21 @@ def css(text):
     return text.rstrip("\n") + "\n\n" + CSS
 
 
-def main(root, check=False):
+def authorised(root, preview):
+    repo = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), ".."))
+    if preview:
+        return None if os.path.abspath(root) != repo else "--preview never writes into the repository"
+    sw = os.path.join(root, "atlas-tools", "release", "plotart-launch-switches.json")
+    import json
+    on = os.path.isfile(sw) and json.load(open(sw, encoding="utf-8")).get("art_for_hire_page") is True
+    return None if on else "the Art for Hire tab is not switched on (art_for_hire_page needs the founder's release approval)"
+
+
+def main(root, check=False, preview=False):
+    why = None if check else authorised(root, preview)
+    if why:
+        print("REFUSED (nothing written): " + why)
+        return 2
     base = os.path.join(root, "plotart")
     plan, errors = [], []
     for d, _, files in os.walk(base):
@@ -99,4 +116,4 @@ def main(root, check=False):
 if __name__ == "__main__":
     if len(sys.argv) < 2:
         sys.exit(__doc__)
-    sys.exit(main(sys.argv[1], "--check" in sys.argv))
+    sys.exit(main(sys.argv[1], "--check" in sys.argv, "--preview" in sys.argv))

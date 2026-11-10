@@ -16,6 +16,7 @@ import argparse
 import html
 import json
 import os
+import re
 import shutil
 import sys
 
@@ -92,12 +93,6 @@ def resolve(root, catalogue):
 
 
 def body(cards, api, form):
-    gallery = ('<ul class="pa-hire-grid" aria-label="Works available for hire">\n%s\n</ul>' % "\n".join(cards)) if cards else ""
-    empty = ('<div class="pa-hire-empty" data-hire-empty%s%s><span class="pa-hire-frame" aria-hidden="true"></span><div>'
-             '<h2>No works are available for hire just now.</h2>'
-             '<p>Art for Hire is new. Works appear here once their artists choose to offer them and PlotArt has checked each one.</p>'
-             '<p>Looking for something specific for a production, shoot or space? Email <a href="mailto:hello@plotnua.ie">hello@plotnua.ie</a> and tell us what you need.</p>'
-             '</div></div>') % ("" if cards else " data-hire-static", " hidden" if cards else "")
     return """
 <section class="pa-hire-hero"><div class="pa-wrap">
   <p class="pa-eyebrow">Art for Hire</p>
@@ -112,8 +107,7 @@ def body(cards, api, form):
   <div class="pa-hire-gal-h"><h2 id="pa-hire-gal-h">Works for hire</h2><p>Every work is offered by its artist and checked by PlotArt. Price on request.</p></div>
   <p class="pa-hire-note" data-hire-status role="status" hidden></p>
   <noscript><p class="pa-hire-note">Please turn on JavaScript to see which works are available for hire right now.</p></noscript>
-  <p class="pa-hire-note" id="pa-hire-closed" data-hire-closed tabindex="-1"%s>Hire enquiries are not yet open.</p>
-  %s
+  <p class="pa-hire-note" id="pa-hire-closed" data-hire-closed tabindex="-1" hidden>Hire enquiries are not yet open.</p>
   %s
 </div></section>
 
@@ -141,12 +135,37 @@ def body(cards, api, form):
   <p><strong>For PlotArt artists.</strong> Taking part is optional. Once Art for Hire opens to artists, you’ll be able to choose works to offer from your PlotArt Studio account. Nothing is listed without your consent.</p>
 </div></section>
 <script src="hire-live.js" data-api="%s" data-enquiries="%s" defer></script>
-""" % ("" if cards else " hidden", gallery, empty, E(api), "on" if form else "off")
+""" % (region(cards), E(api), "on" if form else "off")
 
 
-def build(root, catalogue, api, form=False):
+# The generated catalogue region (Stage 3B-6). Everything outside it is fixed by the page's code release and pinned in
+# the launch manifest; scheduled hire publishing may change only this region (plotart-content-boundary.py --hire).
+BEGIN, END = "<!-- pa-hire-catalogue:begin -->", "<!-- pa-hire-catalogue:end -->"
+
+
+def region(cards):
+    gallery = ('<ul class="pa-hire-grid" aria-label="Works available for hire">\n%s\n</ul>' % "\n".join(cards)) if cards else ""
+    empty = ('<div class="pa-hire-empty" data-hire-empty%s%s><span class="pa-hire-frame" aria-hidden="true"></span><div>'
+             '<h2>No works are available for hire just now.</h2>'
+             '<p>Art for Hire is new. Works appear here once their artists choose to offer them and PlotArt has checked each one.</p>'
+             '<p>Looking for something specific for a production, shoot or space? Email <a href="mailto:hello@plotnua.ie">hello@plotnua.ie</a> and tell us what you need.</p>'
+             '</div></div>') % ("" if cards else " data-hire-static", " hidden" if cards else "")
+    return "%s\n  %s\n  %s\n  %s" % (BEGIN, gallery, empty, END)
+
+
+def build(root, catalogue, api, form=False, update=False):
     rows = resolve(root, catalogue)
     cards = [card(it, a, w) for it, a, w in rows]
+    if update:      # scheduled publishing: the catalogue region only; the page itself is the approved code release
+        ip = os.path.join(root, "plotart", "art-for-hire", "index.html")
+        if not os.path.isfile(ip):
+            raise Refused("--update needs the released Art for Hire page; adding the page is a code release")
+        page = open(ip, encoding="utf-8").read()
+        if page.count(BEGIN) != 1 or page.count(END) != 1:
+            raise Refused("the released page has no single catalogue region")
+        a, b = page.index(BEGIN), page.index(END) + len(END)
+        open(ip, "w", encoding="utf-8").write(page[:a] + region(cards) + page[b:])
+        return len(cards)
     path, page = SHELL.artist_page("art-for-hire/index.html", TITLE, DESC, body(cards, api, form), scripts=("plotart.js",),
                                    current="hire", hire_nav=True, fine=FINE, styles=("art-for-hire.css",))
     out = os.path.join(root, "plotart", "art-for-hire")
@@ -157,15 +176,45 @@ def build(root, catalogue, api, form=False):
     return len(cards)
 
 
+def authorised(root, preview, form):
+    """The page is built into the site only when the founder has switched it on (launch switches); a private preview
+    copy (--preview) may be built anywhere except the repository itself."""
+    repo = os.path.abspath(os.path.join(HERE, ".."))
+    if preview:
+        if os.path.abspath(root) == repo:
+            raise Refused("--preview never writes into the repository; build the preview in a copy")
+        return
+    sw = os.path.join(root, "atlas-tools", "release", "plotart-launch-switches.json")
+    launch = json.load(open(sw, encoding="utf-8")) if os.path.isfile(sw) else {}
+    if launch.get("art_for_hire_page") is not True:
+        raise Refused("the Art for Hire page is not switched on (art_for_hire_page in plotart-launch-switches.json needs the founder's release approval)")
+    if form and launch.get("art_for_hire_enquiry_form") is not True:
+        raise Refused("the enquiry form is not switched on (art_for_hire_enquiry_form needs the founder's approval after legal and privacy review)")
+
+
+def relay_base(root):
+    cfg = json.load(open(os.path.join(root, "atlas-tools", "release", "plotart-gallery-config.json"), encoding="utf-8"))
+    ep = cfg.get("enquiry_endpoint") or ""
+    if not re.fullmatch(r"https://[a-z0-9.-]+\.workers\.dev/v1/enquiry", ep):
+        raise Refused("no approved enquiry relay in plotart-gallery-config.json")
+    return ep[:-len("/v1/enquiry")]
+
+
 if __name__ == "__main__":
     ap = argparse.ArgumentParser()
     ap.add_argument("root")
     ap.add_argument("--catalogue", required=True)
-    ap.add_argument("--api", required=True)
+    ap.add_argument("--api", help="relay base address (default: the approved relay in plotart-gallery-config.json)")
     ap.add_argument("--enquiries-form", action="store_true")
+    ap.add_argument("--update", action="store_true", help="rewrite only the catalogue region of the released page")
+    ap.add_argument("--preview", action="store_true", help="a private local preview copy, never the repository")
     a = ap.parse_args()
     try:
-        n = build(a.root, json.load(open(a.catalogue, encoding="utf-8")), a.api, a.enquiries_form)
+        authorised(a.root, a.preview, a.enquiries_form)
+        api = a.api if (a.preview and a.api) else relay_base(a.root) if not a.preview else (a.api or "https://relay.invalid")
+        if a.api and not a.preview and a.api != api:
+            raise Refused("--api may differ from the approved relay only in a preview")
+        n = build(a.root, json.load(open(a.catalogue, encoding="utf-8")), api, a.enquiries_form, a.update)
     except Refused as e:
         sys.exit("REFUSED (nothing written): %s" % e)
-    print("Art for Hire page written: %d listed work(s); enquiry form %s" % (n, "built" if a.enquiries_form else "not built"))
+    print("Art for Hire page %s: %d listed work(s); enquiry form %s" % ("catalogue region updated" if a.update else "written", n, "built" if a.enquiries_form else "not built"))

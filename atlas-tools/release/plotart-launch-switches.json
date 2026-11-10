@@ -14,5 +14,7 @@
   "about_indexable": true,
   "artist_pages_indexable": true,
   "buyer_guides_indexable": true,
-  "wall_size_indexable": true
+  "wall_size_indexable": true,
+  "art_for_hire_page": false,
+  "art_for_hire_enquiry_form": false
 }

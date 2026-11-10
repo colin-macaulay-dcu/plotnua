@@ -108,6 +108,23 @@ for _d, _, _fs in os.walk(os.path.join(PA, "artists")):
             ARTIST_FILES.add(_r)
 GALLERY_SLUGS = sorted({ART_FILE.match(f).group(1) for f in ARTIST_FILES if f.endswith("/index.html")})
 ALLOWED |= ARTIST_FILES
+# Art for Hire (Stage 3B-6): the page, its two assets and the fourth gallery tab exist ONLY when the founder switches
+# art_for_hire_page on (release approval). Off (or absent): no hire file may exist and no page may link to it or carry the tab.
+HIRE_ON = launch.get("art_for_hire_page") is True
+HIRE_FORM = launch.get("art_for_hire_enquiry_form") is True
+HIRE_PAGE = "art-for-hire/index.html"
+HIRE_FILES = {HIRE_PAGE, "art-for-hire/art-for-hire.css", "art-for-hire/hire-live.js"}
+if HIRE_ON:
+    ALLOWED |= HIRE_FILES
+HIRE_BEGIN, HIRE_END = b"<!-- pa-hire-catalogue:begin -->", b"<!-- pa-hire-catalogue:end -->"
+
+
+def outside_hire(raw):
+    """The Art for Hire page with its generated catalogue region blanked out (as outside_grid)."""
+    a, b = raw.find(HIRE_BEGIN), raw.find(HIRE_END)
+    if raw.count(HIRE_BEGIN) != 1 or raw.count(HIRE_END) != 1 or not 0 <= a < b:
+        return raw
+    return raw[:a] + HIRE_BEGIN + b"<!-- catalogue -->" + raw[b:]
 
 # L1
 found = set()
@@ -252,6 +269,7 @@ if "--manifest" in sys.argv:
         raw = open(fp, "rb").read() if os.path.exists(fp) else None
         got = hashlib.sha256(raw).hexdigest() if raw is not None else None
         og = man.get("outside_grid", {}).get(rel)
+        oh = man.get("outside_hire_catalogue", {}).get(rel)
         guide_pin = man.get("outside_search_content", {}).get(rel)
         guide_ok = False
         if guide_pin is not None and raw is not None and rel in SEO.GUIDE_PATHS:
@@ -259,7 +277,8 @@ if "--manifest" in sys.argv:
                 guide_ok = hashlib.sha256(C.outside(raw.decode()).encode()).hexdigest() == guide_pin
             except ValueError:
                 pass
-        need(got == sha or guide_ok or (og is not None and raw is not None and hashlib.sha256(outside_grid(raw)).hexdigest() == og),
+        need(got == sha or guide_ok or (og is not None and raw is not None and hashlib.sha256(outside_grid(raw)).hexdigest() == og)
+             or (oh is not None and raw is not None and hashlib.sha256(outside_hire(raw)).hexdigest() == oh),
              "L3 %s differs from the verified build (manifest)" % rel)
 elif not os.path.exists(cat_path):
     need(False, "L3 no demonstration data and no --manifest: content cannot be verified")
@@ -428,15 +447,18 @@ if os.path.exists(smp):
                for p in sorted(_packages, key=lambda p: (p["artist"]["display_name"].casefold(), p["artist"]["slug"]))]
     need(_azlinks == _azwant and (bool(_az) == bool(_packages)), "L11 artist A-Z must match approved public names exactly")
 NAV_WANT = ["Discover PlotArt", "Artists’ Gallery", "Mobile Gallery", "Living Gallery", "PlotNua ↗"]  # Mobile Gallery added 3 Nov 2026
+if HIRE_ON:
+    NAV_WANT.insert(4, "Art for Hire")                                                    # the fourth gallery tab (3B-6)
 NAV_CURRENT = {"index.html": "Discover PlotArt", "gallery/index.html": "Artists’ Gallery", "living-gallery.html": "Living Gallery", "founding-25.html": None, "invitation.html": None, "about.html": None,
                "mobile-gallery/index.html": "Mobile Gallery", "mobile-gallery/gallery.html": "Mobile Gallery"}
 NAV_CURRENT.update({p: None for p in SEO.GUIDE_PATHS + SEO.EDITORIAL_PATHS + SEO.TOOL_PATHS})
-for name in PAGES:
+NAV_CURRENT[HIRE_PAGE] = "Art for Hire"
+for name in PAGES + ([HIRE_PAGE] if HIRE_ON else []):
     p = os.path.join(PA, name)
     if os.path.exists(p):
         s = open(p, encoding="utf-8").read()
         head = re.search(r'<header class="pa-head[^"]*">(.*?)</header>', s, re.S)
-        nav = re.search(r'<nav class="pa-pills" aria-label="PlotArt">(.*?)</nav>', head.group(1) if head else "", re.S)
+        nav = re.search(r'<nav class="pa-pills%s" aria-label="PlotArt">(.*?)</nav>' % (" pa-pills--hire" if HIRE_ON else ""), head.group(1) if head else "", re.S)
         links = [(h, c, re.sub(r"<[^>]+>", "", t)) for h, c, t in re.findall(r'<a class="pa-pill[^"]*" href="([^"]+)"( aria-current="page")?[^>]*>(.*?)</a>', nav.group(1))] if nav else []
         labels = [html.unescape(x[2]) for x in links]
         need(labels == NAV_WANT, "L11 %s navigation is %s, not %s" % (name, labels, NAV_WANT))
@@ -444,7 +466,8 @@ for name in PAGES:
         need(cur == ([NAV_CURRENT[name]] if NAV_CURRENT[name] else []), "L11 %s current pill is %s, not %s" % (name, cur, NAV_CURRENT[name]))
         depth = "../" * name.count("/")
         mg_href = "index.html" if name.startswith("mobile-gallery/") else depth + "mobile-gallery/"
-        need(len(links) == 5 and [x[0] for x in links] == [depth + "index.html", depth + "gallery/", mg_href, depth + "living-gallery.html", depth + "../index.html"],
+        want_hrefs = [depth + "index.html", depth + "gallery/", mg_href, depth + "living-gallery.html"] + ([depth + "art-for-hire/"] if HIRE_ON else []) + [depth + "../index.html"]
+        need(len(links) == len(want_hrefs) and [x[0] for x in links] == want_hrefs,
              "L11 %s pills must link to the PlotArt homepage, the Virtual Gallery, the Mobile Gallery, the Living Gallery and the PlotNua homepage" % name)
         hv = visible_text(head.group(1)) if head else ""
         need("Founding 25" not in hv and "About" not in hv, "L11 %s header still offers Founding 25 or About" % name)
@@ -544,6 +567,58 @@ for slug in GALLERY_SLUGS:
 for asset in _arts:
     need(asset[len("plotart/"):] in ARTIST_FILES, "L14 provenance record for %s describes no published file" % asset)
 
+# L17 · Art for Hire (Stage 3B-6). Switched off: nothing of it exists or is linked. Switched on: the page, its assets and the
+# tab are exactly as built, the page is noindex, every card ships hidden (the live check shows it), every card is a work
+# that is available in its artist's published gallery, no contact details, prices or forms are in the HTML, and the enquiry
+# form is present only with its own switch (legal and privacy approval).
+for d, _, fs in os.walk(PA):
+    for f in fs:
+        if not f.endswith(".html"):
+            continue
+        rel = os.path.relpath(os.path.join(d, f), PA).replace(os.sep, "/")
+        doc = open(os.path.join(d, f), encoding="utf-8").read()
+        tab = 'data-pa-track="nav_art_for_hire"' in doc
+        if not HIRE_ON:
+            need("art-for-hire/" not in doc and not tab and "pa-pills--hire" not in doc, "L17 %s links to Art for Hire or carries its tab, but art_for_hire_page is off" % rel)
+        elif 'class="pa-pills' in doc:
+            need(tab and "pa-pills--hire" in doc and doc.count('href="') and 'data-pa-track="nav_art_for_hire_menu"' in doc,
+                 "L17 %s lacks the Art for Hire tab (pill and Menu) although art_for_hire_page is on" % rel)
+_css = open(os.path.join(PA, "assets", "plotart.css"), encoding="utf-8").read() if os.path.exists(os.path.join(PA, "assets", "plotart.css")) else ""
+need(("pa-hire-nav:begin" in _css) == HIRE_ON, "L17 plotart.css %s the six-pill navigation block" % ("lacks" if HIRE_ON else "already carries"))
+if HIRE_ON:
+    _hp = open(os.path.join(PA, HIRE_PAGE), encoding="utf-8").read() if os.path.exists(os.path.join(PA, HIRE_PAGE)) else ""
+    _hv = re.sub(r"\s+", " ", visible_text(_hp))
+    need('<meta name="robots" content="noindex, follow">' in _hp and 'rel="canonical"' not in _hp, "L17 the Art for Hire page must stay noindex, follow with no canonical")
+    need(_hp.count(HIRE_BEGIN.decode()) == 1 and _hp.count(HIRE_END.decode()) == 1, "L17 the Art for Hire page needs exactly one catalogue region")
+    need("Original art," in _hv and "on hire." in _hv, "L17 the approved headline is missing")
+    for _st in ("PlotArt introduces you to the artist.", "Hire prices are agreed directly with the artist.", "Transport and insurance are arranged between you and the artist.",
+                "Photography and screen use are not automatically included.", "Film and television screen use can’t yet be arranged through PlotArt."):
+        need(_st in _hv, "L17 the Art for Hire page lacks the statement: " + _st)
+    _cards = re.findall(r'<li class="pa-hire-card" data-hire-work="([^"]+)" data-hire-ref="PA-([a-z0-9-]+)-\1"[^>]*>', _hp)
+    need(len(_cards) == _hp.count('class="pa-hire-card"'), "L17 a card's reference does not match its work")
+    need(len(re.findall(r'<li class="pa-hire-card"[^>]* hidden>', _hp)) == len(_cards), "L17 every card must ship hidden (shown only by the live check)")
+    for _wid, _slug in _cards:
+        _gp = os.path.join(PA, "artists", _slug, "gallery.json")
+        _w = next((w for w in json.load(open(_gp, encoding="utf-8"))["works"] if w["id"] == _wid), None) if os.path.exists(_gp) else None
+        need(_w is not None and _w.get("availability") == "available", "L17 card %s is not an available work in %s's published gallery" % (_wid, _slug))
+    for _src in re.findall(r'<img\b[^>]*\bsrc="([^"]+)"', _hp.split("<main", 1)[-1].split("</main>")[0]):
+        need(_src.startswith("../artists/") and _src[3:] in ARTIST_FILES, "L17 the Art for Hire page shows an image that is not a published artist image: %s" % _src)
+    need("€" not in _hv and "%" not in _hv and not re.search(r"<form\b", _hp), "L17 the Art for Hire page shows a price, a percentage or a form")
+    need(all(m == "hello@plotnua.ie" for m in re.findall(r"mailto:([^?\"]+)", _hp)) and not re.search(r"[A-Za-z0-9._%+-]+@(?!plotnua\.ie)[A-Za-z0-9-]+\.[A-Za-z]", _hv),
+         "L17 the Art for Hire page exposes an address other than hello@plotnua.ie")
+    need(('data-enquiries="on"' in _hp) == HIRE_FORM and ('data-enquiries="off"' in _hp) != HIRE_FORM, "L17 the enquiry form state does not match art_for_hire_enquiry_form")
+    _api = re.search(r'<script src="hire-live\.js" data-api="(https://[a-z0-9.-]+\.workers\.dev)" data-enquiries="(?:on|off)" defer></script>', _hp)
+    _cfg = json.load(open(os.path.join(ROOT, "atlas-tools", "release", "plotart-gallery-config.json"), encoding="utf-8")).get("enquiry_endpoint") or ""
+    need(_api is not None and _cfg == _api.group(1) + "/v1/enquiry", "L17 the Art for Hire page must use the approved enquiry relay")
+    for _ref in re.findall(r'(?:href|src)="([^"]+)"', _hp):
+        if _ref.startswith(("https://", "http://", "mailto:", "#")):
+            continue
+        _p = _ref.split("#")[0].split("?")[0]
+        _sr = _p.lstrip("/") if _p.startswith("/") else posixpath.normpath(posixpath.join("plotart/art-for-hire", _p))
+        if _p.endswith("/"):
+            _sr = posixpath.join(_sr, "index.html")
+        need(os.path.exists(os.path.join(ROOT, _sr)) and (not _sr.startswith("plotart/") or _sr[len("plotart/"):] in ALLOWED), "L17 the Art for Hire page has a broken or unpublished link: %s" % _ref)
+
 # L16 · Mobile Gallery (founder release authorisation, 3 Nov 2026): the concept is public, no gallery has joined.
 _mgd = os.path.join(PA, "mobile-gallery", "mobile-gallery-data.js")
 if os.path.exists(_mgd):
@@ -565,4 +640,4 @@ if problems:
     for x in problems:
         print("  " + x)
     sys.exit(1)
-print("PLOTART LAUNCH · OK — L1-L15 on %d pages · applications %s (%d demonstration names checked absent)" % (len(PAGES), STATE, len(demo_names)))
+print("PLOTART LAUNCH · OK — L1-L17 on %d pages · applications %s · Art for Hire %s (%d demonstration names checked absent)" % (len(PAGES), STATE, ("ON" + (", enquiry form on" if HIRE_FORM else "")) if HIRE_ON else "off", len(demo_names)))

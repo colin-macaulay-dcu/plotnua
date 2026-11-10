@@ -81,12 +81,12 @@ def main():
             os.symlink(src, os.path.join(prev, f))
     cat = fixture(prev) if a.fixture else {"generated_at": "2026-11-10T22:00:00Z", "items": []}
     json.dump(cat, open(os.path.join(prev, "fixture-catalogue.json" if a.fixture else "catalogue.json"), "w"), indent=1)
-    r = subprocess.run([sys.executable, os.path.join(REPO, "atlas-tools", "plotart-hire-nav.py"), prev], capture_output=True, text=True)
+    r = subprocess.run([sys.executable, os.path.join(REPO, "atlas-tools", "plotart-hire-nav.py"), prev, "--preview"], capture_output=True, text=True)
     if r.returncode:
         sys.exit(r.stdout + r.stderr)
     print(r.stdout.strip().splitlines()[-1])
     cmd = [sys.executable, os.path.join(REPO, "atlas-tools", "plotart-hire-page.py"), prev, "--catalogue",
-           os.path.join(prev, "fixture-catalogue.json" if a.fixture else "catalogue.json"), "--api", a.api] + (["--enquiries-form"] if a.form else [])
+           os.path.join(prev, "fixture-catalogue.json" if a.fixture else "catalogue.json"), "--api", a.api, "--preview"] + (["--enquiries-form"] if a.form else [])
     r = subprocess.run(cmd, capture_output=True, text=True)
     if r.returncode:
         sys.exit(r.stdout + r.stderr)

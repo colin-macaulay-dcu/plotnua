@@ -27,7 +27,7 @@ const DOC = 'PA-AFH-2026-11';
 
 try {
 console.log('PROVE · Art for Hire (Studio)\n— switched on, test text bundled');
-const S = await start({ port: 8851, env: { HIRE_TERMS_ENABLED: 'true', PARTICIPATION_DELETION: 'on' }, enquiry: {}, script: FIX + 'src/index.js' });
+const S = await start({ port: 8851, env: { HIRE_TERMS_ENABLED: 'true', PARTICIPATION_DELETION: 'on', HIRE_RETENTION: 'on' }, enquiry: {}, script: FIX + 'src/index.js' });
 const { db } = S, call = mk(S), bucket = await S.mf.getR2Bucket('IMAGES', 'studio');
 const LEAH = 'leah-like@example.test', BEA = 'bea-other@example.test';
 await seedPublished(db, { id: 'aleah', slug: 'leah-like', email: LEAH, name: 'Leah Like', works: 4, bucket, number: 1 });
@@ -216,6 +216,16 @@ await db.prepare(`INSERT INTO artwork_hire (artwork_id, artist_id, offered, revi
 await db.prepare(`INSERT INTO enquiries (id, reference, artist_id, buyer_name, buyer_email, message, notice_version, created_at, status, delete_after) VALUES ('eh1','PA-E-H1','aleah','Hirer','h@example.test','Hire','t',?, 'sent', ?)`).bind(ago(400), ago(-300)).run();
 await db.prepare(`INSERT INTO hire_enquiries (enquiry_id, business, role, project_type, intended_use, territory_flag, delete_after, created_at) VALUES ('eh1', 'Test Productions', 'Art director', 'film_tv', 'display_staging', 'ie', ?, ?)`).bind(ago(1), ago(400)).run();
 await S.mf.getWorker('studio').then(w => w.scheduled({ cron: '23 3 * * *' }));
+{
+  const SD = await start({ port: 8854, env: { HIRE_TERMS_ENABLED: 'true' }, script: FIX + 'src/index.js' });
+  await seedPublished(SD.db, { id: 'adry', slug: 'dry-run', email: 'dry@example.test', name: 'Dry Run', works: 1 });
+  await SD.db.prepare("INSERT INTO artwork_hire (artwork_id, artist_id, offered, review_state, withdrawn_at, updated_at, created_at) VALUES ('wadry1', 'adry', 0, 'draft', ?, ?, ?)").bind(ago(31), ago(31), ago(40)).run();
+  await SD.mf.getWorker('studio').then(w => w.scheduled({ cron: '23 3 * * *' }));
+  const kept = await SD.db.prepare("SELECT 1 FROM artwork_hire WHERE artwork_id='wadry1'").first();
+  const aud = await SD.db.prepare("SELECT detail FROM audit WHERE action='cleanup' ORDER BY id DESC LIMIT 1").first();
+  check('R0 retention is a DRY RUN until HIRE_RETENTION is on: the daily run deletes nothing and reports what is due', !!kept && /"hire":\{"withdrawn":0,"dry_run":true,"details_due":1/.test(aud.detail), aud && aud.detail);
+  await SD.mf.dispose();
+}
 check('R1 hire details of a work withdrawn more than 30 days ago are deleted; one withdrawn 10 days ago is kept', !(await hireRow('waleah3')) && !!(await hireRow('waleah4')));
 check('R2 the business details of a hire enquiry are deleted at their own date, the enquiry itself kept to its 24 months', !(await db.prepare("SELECT 1 FROM hire_enquiries WHERE enquiry_id='eh1'").first()) && !!(await db.prepare("SELECT 1 FROM enquiries WHERE id='eh1'").first()));
 const au = await db.prepare("SELECT detail FROM audit WHERE action='cleanup' ORDER BY id DESC LIMIT 1").first();

@@ -62,11 +62,11 @@ for (const f of pages) {
 check(`G3 in the preview, each of the ${pages.length} existing PlotArt pages differs from the original ONLY by the added tab (pill, Menu link, footer link): ${withNav} pages gain it`, bad.length === 0 && withNav >= 37 && pages.every(f => !readFileSync(path.join(REPO, f), 'utf8').includes('class="pa-pills') || readFileSync(path.join(P.fix, f), 'utf8').includes('nav_art_for_hire')), bad.join(', '));
 const cssA = readFileSync(path.join(REPO, 'plotart/assets/plotart.css'), 'utf8'), cssB = readFileSync(path.join(P.fix, 'plotart/assets/plotart.css'), 'utf8');
 check('G4 the shared stylesheet only gains one appended block, scoped to .pa-pills--hire', cssB.startsWith(cssA.trimEnd()) && /pa-hire-nav:begin/.test(cssB) && !/^(?!.*pa-pills--hire).*\{/m.test(cssB.slice(cssA.trimEnd().length).split('\n').filter(l => l.includes('{')).join('\n')));
-const again = execFileSync('python3', [path.join(REPO, 'atlas-tools/plotart-hire-nav.py'), P.fix], { encoding: 'utf8' });
+const again = execFileSync('python3', [path.join(REPO, 'atlas-tools/plotart-hire-nav.py'), P.fix, '--preview'], { encoding: 'utf8' });
 cpSync(path.join(REPO, 'plotart'), path.join(TMP, 'raw/plotart'), { recursive: true });
 const rawLg = path.join(TMP, 'raw/plotart/about.html'); writeFileSync(rawLg, readFileSync(rawLg, 'utf8').replace(/<a class="pa-pill" href="[^"]*living-gallery\.html"[^>]*>Living Gallery<\/a>/, ''));
 const rawBefore = readFileSync(path.join(TMP, 'raw/plotart/index.html'), 'utf8');
-const refuse2 = spawnSync('python3', [path.join(REPO, 'atlas-tools/plotart-hire-nav.py'), path.join(TMP, 'raw')], { encoding: 'utf8' });
+const refuse2 = spawnSync('python3', [path.join(REPO, 'atlas-tools/plotart-hire-nav.py'), path.join(TMP, 'raw'), '--preview'], { encoding: 'utf8' });
 check('G5 the navigation tool is idempotent (a second run changes nothing) and strict (an unexpected page stops it with nothing written)',
   /\d+ pages, 0 patched/.test(again) && refuse2.status === 2 && /REFUSED/.test(refuse2.stdout) && readFileSync(path.join(TMP, 'raw/plotart/index.html'), 'utf8') === rawBefore, again + refuse2.stdout);
 
@@ -252,7 +252,7 @@ await o.ctx.close(); await S2.mf.dispose();
 console.log('— the builder refuses anything not approved and published');
 const cat = JSON.parse(readFileSync(path.join(P.fix, 'fixture-catalogue.json'), 'utf8'));
 const tryBuild = mut => { const c = JSON.parse(JSON.stringify(cat)); mut(c); const fp = path.join(TMP, 'c.json'); writeFileSync(fp, JSON.stringify(c));
-  return spawnSync('python3', [path.join(REPO, 'atlas-tools/plotart-hire-page.py'), P.fix, '--catalogue', fp, '--api', 'https://relay.test'], { encoding: 'utf8' }); };
+  return spawnSync('python3', [path.join(REPO, 'atlas-tools/plotart-hire-page.py'), P.fix, '--catalogue', fp, '--api', 'https://relay.test', '--preview'], { encoding: 'utf8' }); };
 const r1 = tryBuild(c => { c.items[0].hire.handling_note = 'x'; }), r2 = tryBuild(c => { c.items[0].artwork_id = 'wnotthere'; }), r3 = tryBuild(c => { c.items[0].artist_slug = 'leah-hewson'; }),
   r4 = tryBuild(c => { c.items.push(c.items[0]); });
 const sold = path.join(P.fix, 'plotart/artists/fixture-artist-a/gallery.json'), g0 = readFileSync(sold, 'utf8');

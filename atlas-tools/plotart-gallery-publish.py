@@ -39,6 +39,9 @@ CONFIG = json.load(open(os.path.join(HERE, "release", "plotart-gallery-config.js
 ENDPOINT = CONFIG.get("enquiry_endpoint")
 if ENDPOINT and not re.match(r"^https://[a-z0-9.-]+\.workers\.dev/v1/enquiry$|^http://(127\.0\.0\.1|localhost):\d{2,5}/v1/enquiry$", ENDPOINT):
     sys.exit("REFUSED: enquiry_endpoint must be the PlotArt enquiry relay route")
+# Art for Hire (Stage 3B-6): artist pages carry the fourth gallery tab only once the founder has switched the hire page on;
+# until then the shell writes them byte-for-byte as before. The hire page itself is never written by this pipeline.
+S.HIRE_NAV = json.load(open(os.path.join(HERE, "release", "plotart-launch-switches.json"), encoding="utf-8")).get("art_for_hire_page") is True
 ART = os.path.join(ROOT, "plotart", "artists")
 REC = os.path.join(ROOT, "image-provenance-records.json")
 VG = os.path.join(ROOT, "plotart", "gallery", "index.html")
