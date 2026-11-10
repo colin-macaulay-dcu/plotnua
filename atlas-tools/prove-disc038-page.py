@@ -126,7 +126,7 @@ def check(s, files):
     for must in ("PlotNua has no confirmed commercial relationship with the manufacturers listed",
                  "Irish availability, installation arrangements and final prices would need to be established directly with each supplier",
                  "Inclusion is not a recommendation", "no confirmed partnership or commercial relationship with any manufacturer",
-                 "we are not a distributor or an installer", "Burrowed is not a PlotNua partner"):
+                 "we are not a distributor or an installer", "PlotNua has no confirmed commercial relationship with Burrowed"):
         need(must in flat, "S8 supplier qualification missing: " + must)
     for bad in ("authorised distributor", "authorized distributor", "official distributor", "exclusive irish", "certified installer",
                 "our partner", "partnered with", "endorsed by", "approved installer", "we install", "we supply"):
@@ -146,7 +146,10 @@ def check(s, files):
         need(must in flat, "S10 price qualification missing: " + must)
     # Stage 11: claims corrected by the Stage 10 evidence verification must not return.
     for bad in ("twice the european", "order book has tripled", "can’t install outside the uk", "with nbc filtration included",
-                "a safe maker since 1978", "a leading us maker", "for 72 hours", "no maker has quoted"):
+                "a safe maker since 1978", "a leading us maker", "for 72 hours", "no maker has quoted",
+                # Stage 14 (founder-approved W1-W4, W6, 10 Nov 2026)
+                "burrowed is not a plotnua partner", "no agreement with it", "£132,000–€170,000",
+                "no irish business sells", "a shelter reduces some risks", "plotnua is looking into whether"):
         need(bad not in low, "S10 corrected claim has returned: " + bad)
     # S11
     # No-form publication route (founder Stage 6, 10 Nov 2026): no form or form control anywhere on the page, and the
@@ -222,6 +225,8 @@ def main():
             "S9": s.replace("not for human habitation", "fine for living in", 1),
             "S10": s.replace("None of these figures is a quote for an Irish installation", "Irish price confirmed", 1),
             "S10 ": s.replace("about twice the worldwide average", "about twice the European level", 1),
+            "S10  ": s.replace("A shelter may reduce some risks", "A shelter reduces some risks", 1),
+            "S8 ": s.replace("PlotNua has no confirmed commercial relationship with Burrowed", "Burrowed is a PlotNua partner", 1),
             "S11": s.replace('<div class="rg-panel reveal">', '<form><textarea name="m"></textarea></form><div class="rg-panel reveal">', 1),
             "S11    ": s.replace('<div class="rg-panel reveal">', '<input type="email" name="email"><div class="rg-panel reveal">', 1),
             "S11 ": s.replace("No shelter is available through PlotNua today", "Shelters available now", 1),
