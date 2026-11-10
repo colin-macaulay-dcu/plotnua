@@ -200,7 +200,7 @@ architecture is reconsidered. The corpus is never silently reduced.
 | G7c | Checked independently of the builder's rule: no product `price` comes from a non-EUR record, and every supplier `priceRange` is exactly the min/max of that supplier's EUR prices (A2) |
 | G8 | **No imagery/asset/image-URL field in the index, and no runtime path that could render product or supplier imagery** |
 | G9 | `noPublishedIrishRoute` caveat present on every affected product and supplier |
-| G10 | Index <= 180 KB as a performance guard; no record dropped to achieve it |
+| G10 | **Amended by A4 (10 Nov 2026):** G10a compressed (gzip-9) <= 40 KB; G10b uncompressed <= 256 KB; G10c <= 1,100 searchable records. Performance guards; no record dropped to achieve any of them. (Was: index <= 180 KB.) |
 | G11 | No term in URL, history, storage or any network call |
 | G11b | No term reaches `dataLayer`, GTM or any analytics call |
 | G12 | Every route resolves to a file that exists |
@@ -457,6 +457,56 @@ The evidence file is `guard-capability.txt`.
 - G5 is not started
 
 ---
+
+## AMENDMENT A4 · PERFORMANCE BUDGET (10 November 2026; FOUNDER-APPROVED 10 November 2026, Stage 7 Option B; not yet released)
+
+**Why.** G10 measured the raw, uncompressed index against 180 KB. By 10 November the index stood at 184,294 bytes, 26 bytes under it, so the next Discovery (DISC-038, a ~350-byte record) could not be indexed. The Stage 7 investigation found that the raw size is not what a visitor pays:
+- GitHub Pages serves the index gzip-compressed: **28,582 bytes** measured live (`content-encoding: gzip`).
+- Parsing it costs under 4 ms even at 6x CPU throttling.
+- Per-keystroke search time scales with the **number of records**, not bytes. 87% of the index is the 715 products; Discoveries are 6%.
+
+**Rule.** G10 becomes three guards on what the phone actually pays. Each refuses the build:
+
+| Guard | Limit | Measures |
+|---|---|---|
+| G10a | gzip level 9, mtime 0 (deterministic) ≤ 40 KB (40,960 bytes) | The download |
+| G10b | uncompressed ≤ 256 KB (262,144 bytes) | Parse time and memory |
+| G10c | ≤ 1,100 searchable records (all types) | Per-keystroke scan time |
+
+**§7 is unchanged in principle.** These are performance guards, not a corpus ceiling. No eligible record may be omitted, truncated or suppressed to fit any of them. If the complete governed corpus exceeds one, THE BUILD FAILS and the architecture is reconsidered. Every refusal says so.
+
+**Early warnings (A4).** Each prints a warning and never fails a build. When any is reached, an architecture review (Option C: a small core index loaded first, with products in a separate shard) is due:
+1. 1,000 searchable records (`build-search-index.py`);
+2. 36 KB compressed (`build-search-index.py`);
+3. 95th-percentile query time above 100 ms at 6x CPU throttling, taking the worse of warmed runs and the cold first pass (`atlas-tools/bench-search-mobile.py`, local tool).
+
+**What does not change.**
+- `search.js`, the index format, every record, field, order, route, ranking and result.
+- Verified: a rebuild under A4 produces all 822 records identical to the committed index (only `generated` and `sourceCommit` differ).
+- Across 971 queries, results are identical to the pre-A4 index.
+
+**Proved capable.** `prove-search-guards.py`:
+- C13a–C13c each lower one limit in the builder and must be refused by that guard alone;
+- C13d checks the refusal states it is not a corpus ceiling;
+- C13e, C13f and C13g grow the real corpus past exactly one limit (records, raw size, compressed size), each refused by its own guard.
+
+The harness also creates sub-folders for sitemap pages before copying them. It had crashed on `plotart/` pages, a pre-existing defect.
+
+**Measured at approval (10 Nov 2026).**
+
+| Index | G10a | G10b | G10c |
+|---|---|---|---|
+| Live index | 27,194 B (26.6 KB) | 184,294 B | 822 records |
+| With DISC-038 | 27,299 B (26.7 KB) | 184,640 B | 823 records |
+
+Mobile emulation, 390 × 844, 6x CPU, 39 queries including the 1–2 character prefixes:
+- Warm: median 11.5 ms, p95 18.8 ms.
+- Cold first pass: median 11.7 ms, p95 17.7 ms, max 93.7 ms.
+- Slowest query: "garden room under €30,000", median 60.6 ms.
+
+No early warning is reached.
+
+**Capacity gained.** About 277 more records before G10c, or about 76 KB raw before G10b, whichever comes first.
 
 ## TARGETED-UPDATE RE-FREEZES
 

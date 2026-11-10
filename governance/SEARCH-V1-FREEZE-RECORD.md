@@ -345,3 +345,14 @@ focus containment both directions, background inert, all three close routes,
 dynamic and zero-result states, `search.html` non-trapping, My Plot season
 semantics) and `atlas-tools/prove-job6-capability.py` (9 mutations, each caught
 by the checks that own it).
+
+### 10 November 2026 — AMENDMENT A4 · PERFORMANCE BUDGET (founder-approved, Stage 7 Option B)
+
+The 180 KB raw-size guard recorded above (§ "180 KB is a performance guard") is replaced by three performance guards:
+- G10a: compressed ≤ 40 KB;
+- G10b: uncompressed ≤ 256 KB;
+- G10c: ≤ 1,100 searchable records.
+
+The principle above is unchanged: not a corpus ceiling, the build fails rather than drop a record. Early warnings are at 1,000 records, 36 KB compressed, and a p95 above 100 ms at 6x.
+
+There is no change to `search.js`, the index format or any record. The full text, measurements and capability proofs are in `governance/SEARCH-V1-CONTRACT.md`, Amendment A4.
