@@ -941,6 +941,8 @@ PROFILE_PAGES = {   # maker name exactly as the index shows it -> (public page, 
     "Elm Landscaping (Garden Rooms)": ("suppliers/elm-landscaping.html", "Elm Landscaping profile"),
     "Garden Room Ireland": ("suppliers/garden-room-ireland.html", "Garden Room Ireland profile"),
     "Gardenhouse24 Ireland": ("suppliers/gardenhouse24.html", "Gardenhouse24 profile"),
+    # Arctic Wellness (founder brief, 10 Nov 2026): its live showcase.
+    "Arctic Wellness": ("suppliers/arctic-wellness.html", "Arctic Wellness profile"),
 }
 # The three maker guides (All In One Cabins, Concept Modular, Shomera) are NOT linked here: their own
 # builders (build-garden-maker-pages.py, build-shomera-guide.py) require exactly one link from Living in

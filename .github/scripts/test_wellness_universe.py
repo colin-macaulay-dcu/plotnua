@@ -21,7 +21,7 @@
       holds; a rights record always wins over the register; a product whose
       page is not VERIFIED holds; a register row claiming permission,
       imagery or an objection refuses the build
-  W11 the committed artefact: 128 public from 8 makers (43 on supplier
+  W11 the committed artefact: 135 public from 9 makers (50 on supplier
       permission, 85 on the public-information basis); MyCabin, Cosy Cabins,
       Sommarnöjen and Auroom held; the five 14 Oct contradictions held;
       every public-information product has a VERIFIED page; TimberIN's
@@ -165,9 +165,13 @@ per = collections.Counter(r["organisation"] for r in pub)
 # withdrawn Harvia products leave and the four Irish-made saunas join, 120 -> 122.
 # 4 Nov 2026 (founder authorisation, Supplier integration Phase 2): Gardenhouse24's four saunas
 # and two hot tubs join on its own rights record (IPO-024), 122 -> 128.
-check("W11 128 public products: OGNYX 29, Tanktribe 4, Irish Sauna Company 4, Gardenhouse24 6, "
-      "Pineca 34, Hansa24 25, Polaris 20, TimberIN 6",
+# 10 Nov 2026 (founder brief, Arctic Wellness Maker Explorer): Arctic Wellness's three priced
+# saunas and four priced ice baths join on its own rights record; its six unpriced or
+# unclassified products are held by the rule, 128 -> 135.
+check("W11 135 public products: OGNYX 29, Tanktribe 4, Irish Sauna Company 4, Gardenhouse24 6, "
+      "Arctic Wellness 7, Pineca 34, Hansa24 25, Polaris 20, TimberIN 6",
       per == {"OGNYX": 29, "Tanktribe": 4, "Irish Sauna Company": 4, "Gardenhouse24 Ireland": 6,
+              "Arctic Wellness": 7,
               "Pineca Ireland": 34, "Hansa24 Group": 25, "Polaris Sauna": 20, "TimberIN": 6}, dict(per))
 ISLAND = {"recTBQcdOO0yoULqN", "rect8UKFyZodW593p", "recQszPvHe5Cu7wY5", "reccdnuccLgq8dlqh"}
 WITHDRAWN = {"recSYzKR0BjBrdYMQ", "recRgVJcPwTtY1ikY", "recJlhoNav6YNU1zj"}
@@ -188,7 +192,7 @@ check("W7/W11 every public maker is either on its own rights record or on the re
       and not (listed & rights), sorted(listed & rights))
 check("W11 basis matches: supplier permission for rights-record makers, public information otherwise",
       all(r["listingBasis"] == ("SUPPLIER_PERMISSION" if r["organisation"] in rights else "PUBLIC_INFORMATION")
-          for r in pub) and A["listingBasisCounts"] == {"SUPPLIER_PERMISSION": 43, "PUBLIC_INFORMATION": 85})
+          for r in pub) and A["listingBasisCounts"] == {"SUPPLIER_PERMISSION": 50, "PUBLIC_INFORMATION": 85})
 check("W11 MyCabin, Cosy Cabins, Sommarnöjen and Auroom Wellness are not public",
       not ({r["organisation"] for r in pub} & {"MyCabin.ie", "Cosy Cabins", "Sommarnöjen", "Auroom Wellness"}))
 BLOCKERS = {"rectXEcIBSgq92QFn", "recQT6LbDFnfrssoi", "recu1Y1kHvG90k7GL", "recZcGYcwzf2Fa1re",

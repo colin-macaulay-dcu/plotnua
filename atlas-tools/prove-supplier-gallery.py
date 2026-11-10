@@ -290,7 +290,13 @@ def unified_checks(name, full, page, names, offers, cfgp):
             # maker (Gardenhouse24 on Garden Retreat) is linked to its PlotNua showcase page instead
             # (founder decision 4 Nov 2026: no prominent outbound link); it must NOT appear in this row.
             ed_sm = json.loads((ROOT / "atlas-tools/supplier-gallery" / cfgp["editorial"]).read_text()).get("showcaseMakers") or {}
-            want_row = sorted(names - set(ed_sm), key=str.casefold)
+            # 10 Nov 2026 (Arctic Wellness): a live explorer maker whose PlotNua showcase is linked by a
+            # Maker Showcase card on this page (atlas-tools/showcase-cards/showcase-cards.json) is treated
+            # the same way: its showcase is the link, so it is not in the outbound websites row.
+            sc_cfg = json.loads((ROOT / "atlas-tools/showcase-cards/showcase-cards.json").read_text()).get(name) or {}
+            sc_names = {json.loads((ROOT / "supplier-preview-system/showcases" / c["showcase"] / "showcase.json")
+                                   .read_text())["supplier"]["atlasName"] for c in sc_cfg.get("cards", [])}
+            want_row = sorted(names - set(ed_sm) - sc_names, key=str.casefold)
             if listed != want_row:
                 fails.append(f"G17 {name}: websites row {listed} is not exactly the live makers without a "
                              f"PlotNua showcase, A to Z {want_row}")
@@ -352,8 +358,12 @@ MUTATIONS = {
         "G9 gallery moved after explorer": (p.replace(EXPLORER, "<p>moved</p>\n  " + EXPLORER, 1), c),
         "G9 gallery duplicated": (p.replace(B_END, B_END + "\n" + B_START + " dup -->", 1), c),
         "G16 second heading restored": (p.replace('<h3 class="mx-cont-h" id="mx-cont-h">', '<h2>Explore makers and products</h2><h3 class="mx-cont-h" id="mx-cont-h">', 1), c),
-        "G16 header figure wrong": (p.replace('<span class="pn-sg-fig">97</span>', '<span class="pn-sg-fig">98</span>', 1), c),
-        "G16 makers figure wrong": (p.replace('<span class="pn-sg-fig">8</span>', '<span class="pn-sg-fig">11</span>', 1), c),
+        # 10 Nov 2026: the first (saunas) and the makers figure are found, not typed, so the mutations keep
+        # applying as the published counts grow (they were pinned to 97 and 8).
+        "G16 header figure wrong": (re.sub(r'<span class="pn-sg-fig">(\d+)</span>',
+                                           lambda m: '<span class="pn-sg-fig">%d</span>' % (int(m.group(1)) + 1), p, count=1), c),
+        "G16 makers figure wrong": (re.sub(r'<span class="pn-sg-fig">(\d+)</span>(<span class="pn-sg-fig-l">makers)',
+                                           lambda m: '<span class="pn-sg-fig">%d</span>%s' % (int(m.group(1)) + 2, m.group(2)), p, count=1), c),
         "G17 showcase maker given an outbound websites link": (p.replace('<ul role="list" aria-labelledby="sg-sites-h">', '<ul role="list" aria-labelledby="sg-sites-h"><li><a href="https://gardenhouse24.ie/" rel="noopener noreferrer" target="_blank" aria-label="Gardenhouse24 Ireland on gardenhouse24.ie (opens in a new tab)"><span>Gardenhouse24 Ireland</span></a></li>', 1), c),
         "G17 a maker dropped from the websites row": (re.sub(r'<li><a href="https://pineca\.ie/"[^>]*>.*?</li>', "", p, count=1, flags=re.S), c),
         "G17 website link off the maker's domain": (p.replace('<li><a href="https://pineca.ie/"', '<li><a href="https://pineca.example.com/"', 1), c),

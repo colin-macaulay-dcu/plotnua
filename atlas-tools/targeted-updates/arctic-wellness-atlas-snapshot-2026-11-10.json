@@ -1,0 +1,495 @@
+{
+ "source": "Atlas Core appoLZFWesvoPhZGR via the Airtable connector: scoped read-back 2026-11-10 of Arctic Wellness ORG-000253 and its 13 products and 7 pricing records created under founder brief 10 Nov 2026 ('Complete Arctic Wellness integration into search and Maker Explorer')",
+ "products": [
+  {
+   "id": "recdNv5o1QaZVF0xW",
+   "createdTime": "2026-11-10T10:38:09.000Z",
+   "fields": {
+    "Product Name": "Ember Mini",
+    "Product Code": "PROD-001343",
+    "Status": "Done",
+    "Product Category": "Wellness / Sauna",
+    "Organisation": [
+     "recPy0NyMdqGfEeyG"
+    ],
+    "Verification Status": "Verified",
+    "Product URL": "https://www.arcticwellness.ie/prebuilt-saunas/ember-mini",
+    "Last Reviewed": "2026-11-10",
+    "Sources": [
+     "rec5qbL35dxDJhfRC"
+    ],
+    "Habitation Classification": "ANCILLARY / NON-DWELLING",
+    "Habitation Applicability": "ANCILLARY_STRUCTURE",
+    "Product Type": "Configurable Outdoor Sauna Pod",
+    "Product Pricing": [
+     "recTWvKX1gKFtxKzY"
+    ]
+   }
+  },
+  {
+   "id": "recfuOvNvJDJI2DX0",
+   "createdTime": "2026-11-10T10:38:09.000Z",
+   "fields": {
+    "Product Name": "Ember",
+    "Product Code": "PROD-001344",
+    "Status": "Done",
+    "Product Category": "Wellness / Sauna",
+    "Organisation": [
+     "recPy0NyMdqGfEeyG"
+    ],
+    "Verification Status": "Verified",
+    "Product URL": "https://www.arcticwellness.ie/prebuilt-saunas/ember",
+    "Last Reviewed": "2026-11-10",
+    "Sources": [
+     "recDPG4VuyBKE1wSN"
+    ],
+    "Habitation Classification": "ANCILLARY / NON-DWELLING",
+    "Habitation Applicability": "ANCILLARY_STRUCTURE",
+    "Product Type": "Configurable Outdoor Sauna Pod",
+    "Product Pricing": [
+     "recsUgtfUSjnIfKGt"
+    ]
+   }
+  },
+  {
+   "id": "rece2V0mAAoF88e2e",
+   "createdTime": "2026-11-10T10:38:09.000Z",
+   "fields": {
+    "Product Name": "Nordic",
+    "Product Code": "PROD-001345",
+    "Status": "Done",
+    "Product Category": "Wellness / Sauna",
+    "Organisation": [
+     "recPy0NyMdqGfEeyG"
+    ],
+    "Verification Status": "Verified",
+    "Product URL": "https://www.arcticwellness.ie/prebuilt-saunas/nordic",
+    "Last Reviewed": "2026-11-10",
+    "Sources": [
+     "recD7Y1el8hPXdQ9F"
+    ],
+    "Habitation Classification": "ANCILLARY / NON-DWELLING",
+    "Habitation Applicability": "ANCILLARY_STRUCTURE",
+    "Product Type": "Configurable Outdoor Sauna Pod",
+    "Product Pricing": [
+     "reclLRlDXnlVqcqTe"
+    ]
+   }
+  },
+  {
+   "id": "recNwcXf6tdHJETqj",
+   "createdTime": "2026-11-10T10:38:09.000Z",
+   "fields": {
+    "Product Name": "Custom-built sauna",
+    "Product Code": "PROD-001346",
+    "Status": "Done",
+    "Product Category": "Wellness / Sauna",
+    "Organisation": [
+     "recPy0NyMdqGfEeyG"
+    ],
+    "Verification Status": "Verified",
+    "Product URL": "https://www.arcticwellness.ie/custom-home-sauna",
+    "Last Reviewed": "2026-11-10",
+    "Sources": [
+     "recxthOXBo4SLxqXC"
+    ],
+    "Habitation Classification": "ANCILLARY / NON-DWELLING",
+    "Habitation Applicability": "ANCILLARY_STRUCTURE"
+   }
+  },
+  {
+   "id": "recbVYK8gkmonG045",
+   "createdTime": "2026-11-10T10:38:09.000Z",
+   "fields": {
+    "Product Name": "Fjord",
+    "Product Code": "PROD-001347",
+    "Status": "Done",
+    "Product Category": "Wellness / Sauna",
+    "Organisation": [
+     "recPy0NyMdqGfEeyG"
+    ],
+    "Verification Status": "Verified",
+    "Product URL": "https://www.arcticwellness.ie/ice-baths/fjord",
+    "Last Reviewed": "2026-11-10",
+    "Sources": [
+     "recKqYSFqyXmQQxKP"
+    ],
+    "Habitation Classification": "ANCILLARY / NON-DWELLING",
+    "Habitation Applicability": "NON_BUILDING_EQUIPMENT",
+    "Product Type": "Cold Plunge / Ice Bath",
+    "Product Pricing": [
+     "rec9cIwJ3ljPQMhPd"
+    ]
+   }
+  },
+  {
+   "id": "rechFbEp1tHQkWfZC",
+   "createdTime": "2026-11-10T10:38:09.000Z",
+   "fields": {
+    "Product Name": "Fjell Black",
+    "Product Code": "PROD-001348",
+    "Status": "Done",
+    "Product Category": "Wellness / Sauna",
+    "Organisation": [
+     "recPy0NyMdqGfEeyG"
+    ],
+    "Verification Status": "Verified",
+    "Product URL": "https://www.arcticwellness.ie/ice-baths/fjell-black",
+    "Last Reviewed": "2026-11-10",
+    "Sources": [
+     "recjULtLVlA2yZI3J"
+    ],
+    "Habitation Classification": "ANCILLARY / NON-DWELLING",
+    "Habitation Applicability": "NON_BUILDING_EQUIPMENT",
+    "Product Type": "Cold Plunge / Ice Bath",
+    "Product Pricing": [
+     "recZTi1SEIVMmKjgW"
+    ]
+   }
+  },
+  {
+   "id": "rec9exIBzamZEZtKw",
+   "createdTime": "2026-11-10T10:38:09.000Z",
+   "fields": {
+    "Product Name": "Fjell",
+    "Product Code": "PROD-001349",
+    "Status": "Done",
+    "Product Category": "Wellness / Sauna",
+    "Organisation": [
+     "recPy0NyMdqGfEeyG"
+    ],
+    "Verification Status": "Verified",
+    "Product URL": "https://www.arcticwellness.ie/ice-baths/fjell",
+    "Last Reviewed": "2026-11-10",
+    "Sources": [
+     "recgQXQBezZxflTEn"
+    ],
+    "Habitation Classification": "ANCILLARY / NON-DWELLING",
+    "Habitation Applicability": "NON_BUILDING_EQUIPMENT",
+    "Product Type": "Cold Plunge / Ice Bath",
+    "Product Pricing": [
+     "rec2FHE8DfksYO3oW"
+    ]
+   }
+  },
+  {
+   "id": "recOIidOkCYoQB9Bg",
+   "createdTime": "2026-11-10T10:38:09.000Z",
+   "fields": {
+    "Product Name": "Tarn",
+    "Product Code": "PROD-001350",
+    "Status": "Done",
+    "Product Category": "Wellness / Sauna",
+    "Organisation": [
+     "recPy0NyMdqGfEeyG"
+    ],
+    "Verification Status": "Verified",
+    "Product URL": "https://www.arcticwellness.ie/ice-baths/tarn",
+    "Last Reviewed": "2026-11-10",
+    "Sources": [
+     "recZYgVSsGRvsUjqf"
+    ],
+    "Habitation Classification": "ANCILLARY / NON-DWELLING",
+    "Habitation Applicability": "NON_BUILDING_EQUIPMENT",
+    "Product Type": "Cold Plunge / Ice Bath",
+    "Product Pricing": [
+     "recRXi91MR6jDpa6V"
+    ]
+   }
+  },
+  {
+   "id": "recgpvHqVSNbHALGL",
+   "createdTime": "2026-11-10T10:38:09.000Z",
+   "fields": {
+    "Product Name": "PolarPool",
+    "Product Code": "PROD-001351",
+    "Status": "Done",
+    "Product Category": "Wellness / Sauna",
+    "Organisation": [
+     "recPy0NyMdqGfEeyG"
+    ],
+    "Verification Status": "Verified",
+    "Product URL": "https://www.arcticwellness.ie/ice-baths/polarpool",
+    "Last Reviewed": "2026-11-10",
+    "Sources": [
+     "recVOVXHjgSnoXn5v"
+    ],
+    "Habitation Classification": "ANCILLARY / NON-DWELLING",
+    "Habitation Applicability": "NON_BUILDING_EQUIPMENT",
+    "Product Type": "Cold Plunge / Ice Bath"
+   }
+  },
+  {
+   "id": "recjxAwX2COLnJTne",
+   "createdTime": "2026-11-10T10:38:09.000Z",
+   "fields": {
+    "Product Name": "PolarPlunge",
+    "Product Code": "PROD-001352",
+    "Status": "Done",
+    "Product Category": "Wellness / Sauna",
+    "Organisation": [
+     "recPy0NyMdqGfEeyG"
+    ],
+    "Verification Status": "Verified",
+    "Product URL": "https://www.arcticwellness.ie/ice-baths/polarplunge",
+    "Last Reviewed": "2026-11-10",
+    "Sources": [
+     "recfmag2zsT8BaTp6"
+    ],
+    "Habitation Classification": "ANCILLARY / NON-DWELLING",
+    "Habitation Applicability": "NON_BUILDING_EQUIPMENT",
+    "Product Type": "Cold Plunge / Ice Bath"
+   }
+  },
+  {
+   "id": "rec86AdyHExmZ5lN5",
+   "createdTime": "2026-11-10T10:38:09.000Z",
+   "fields": {
+    "Product Name": "Icepod Plus",
+    "Product Code": "PROD-001353",
+    "Status": "Done",
+    "Product Category": "Wellness / Sauna",
+    "Organisation": [
+     "recPy0NyMdqGfEeyG"
+    ],
+    "Verification Status": "Verified",
+    "Product URL": "https://www.arcticwellness.ie/ice-baths/icepod-plus",
+    "Last Reviewed": "2026-11-10",
+    "Sources": [
+     "recnjub6m6qNYrcXz"
+    ],
+    "Habitation Classification": "ANCILLARY / NON-DWELLING",
+    "Habitation Applicability": "NON_BUILDING_EQUIPMENT",
+    "Product Type": "Cold Plunge / Ice Bath"
+   }
+  },
+  {
+   "id": "recSmWNWnzhg6KkFp",
+   "createdTime": "2026-11-10T10:38:09.000Z",
+   "fields": {
+    "Product Name": "Ice Fall",
+    "Product Code": "PROD-001354",
+    "Status": "Done",
+    "Product Category": "Wellness / Sauna",
+    "Organisation": [
+     "recPy0NyMdqGfEeyG"
+    ],
+    "Verification Status": "Verified",
+    "Product URL": "https://www.arcticwellness.ie/other-wellness/ice-fall",
+    "Last Reviewed": "2026-11-10",
+    "Sources": [
+     "recGdP9dXKZqrgr1O"
+    ],
+    "Habitation Classification": "ANCILLARY / NON-DWELLING",
+    "Habitation Applicability": "NON_BUILDING_EQUIPMENT"
+   }
+  },
+  {
+   "id": "recJJd2bfuE9J8efR",
+   "createdTime": "2026-11-10T10:38:09.000Z",
+   "fields": {
+    "Product Name": "Red Light Bed",
+    "Product Code": "PROD-001355",
+    "Status": "Done",
+    "Product Category": "Wellness / Sauna",
+    "Organisation": [
+     "recPy0NyMdqGfEeyG"
+    ],
+    "Verification Status": "Verified",
+    "Product URL": "https://www.arcticwellness.ie/other-wellness/red-light-bed",
+    "Last Reviewed": "2026-11-10",
+    "Sources": [
+     "rec8AWpeQXIXCfDNU"
+    ],
+    "Habitation Classification": "ANCILLARY / NON-DWELLING",
+    "Habitation Applicability": "NON_BUILDING_EQUIPMENT"
+   }
+  }
+ ],
+ "pricing": [
+  {
+   "id": "recTWvKX1gKFtxKzY",
+   "createdTime": "2026-11-10T10:38:55.000Z",
+   "fields": {
+    "Price Record Name": "Ember Mini — published unit price range",
+    "Product": [
+     "recdNv5o1QaZVF0xW"
+    ],
+    "Price Includes VAT": "Unknown",
+    "Currency": "EUR",
+    "Price Type": "Starting From",
+    "Sources": [
+     "rec5qbL35dxDJhfRC"
+    ],
+    "Last Price Check": "2026-11-10",
+    "Status": "Verified",
+    "Primary Price": true,
+    "Evidence Scope": "Product-Specific",
+    "Price From": 7000,
+    "Price To": 8500
+   }
+  },
+  {
+   "id": "recsUgtfUSjnIfKGt",
+   "createdTime": "2026-11-10T10:38:55.000Z",
+   "fields": {
+    "Price Record Name": "Ember — published unit price range",
+    "Product": [
+     "recfuOvNvJDJI2DX0"
+    ],
+    "Price Includes VAT": "Unknown",
+    "Currency": "EUR",
+    "Price Type": "Starting From",
+    "Sources": [
+     "recDPG4VuyBKE1wSN"
+    ],
+    "Last Price Check": "2026-11-10",
+    "Status": "Verified",
+    "Primary Price": true,
+    "Evidence Scope": "Product-Specific",
+    "Price From": 11550,
+    "Price To": 11800
+   }
+  },
+  {
+   "id": "reclLRlDXnlVqcqTe",
+   "createdTime": "2026-11-10T10:38:55.000Z",
+   "fields": {
+    "Price Record Name": "Nordic — published unit price",
+    "Product": [
+     "rece2V0mAAoF88e2e"
+    ],
+    "Price Includes VAT": "Unknown",
+    "Currency": "EUR",
+    "Price Type": "Standard Price",
+    "Sources": [
+     "recD7Y1el8hPXdQ9F"
+    ],
+    "Last Price Check": "2026-11-10",
+    "Status": "Verified",
+    "Primary Price": true,
+    "Evidence Scope": "Product-Specific",
+    "Base Price": 16500
+   }
+  },
+  {
+   "id": "rec9cIwJ3ljPQMhPd",
+   "createdTime": "2026-11-10T10:38:55.000Z",
+   "fields": {
+    "Price Record Name": "Fjord — published unit price",
+    "Product": [
+     "recbVYK8gkmonG045"
+    ],
+    "Price Includes VAT": "Unknown",
+    "Currency": "EUR",
+    "Price Type": "Standard Price",
+    "Sources": [
+     "recKqYSFqyXmQQxKP"
+    ],
+    "Last Price Check": "2026-11-10",
+    "Status": "Verified",
+    "Primary Price": true,
+    "Evidence Scope": "Product-Specific",
+    "Base Price": 5000
+   }
+  },
+  {
+   "id": "recZTi1SEIVMmKjgW",
+   "createdTime": "2026-11-10T10:38:55.000Z",
+   "fields": {
+    "Price Record Name": "Fjell Black — published unit price",
+    "Product": [
+     "rechFbEp1tHQkWfZC"
+    ],
+    "Price Includes VAT": "Unknown",
+    "Currency": "EUR",
+    "Price Type": "Standard Price",
+    "Sources": [
+     "recjULtLVlA2yZI3J"
+    ],
+    "Last Price Check": "2026-11-10",
+    "Status": "Verified",
+    "Primary Price": true,
+    "Evidence Scope": "Product-Specific",
+    "Base Price": 6000
+   }
+  },
+  {
+   "id": "rec2FHE8DfksYO3oW",
+   "createdTime": "2026-11-10T10:38:55.000Z",
+   "fields": {
+    "Price Record Name": "Fjell — published unit price",
+    "Product": [
+     "rec9exIBzamZEZtKw"
+    ],
+    "Price Includes VAT": "Unknown",
+    "Currency": "EUR",
+    "Price Type": "Standard Price",
+    "Sources": [
+     "recgQXQBezZxflTEn"
+    ],
+    "Last Price Check": "2026-11-10",
+    "Status": "Verified",
+    "Primary Price": true,
+    "Evidence Scope": "Product-Specific",
+    "Base Price": 6100
+   }
+  },
+  {
+   "id": "recRXi91MR6jDpa6V",
+   "createdTime": "2026-11-10T10:38:55.000Z",
+   "fields": {
+    "Price Record Name": "Tarn — published unit price",
+    "Product": [
+     "recOIidOkCYoQB9Bg"
+    ],
+    "Price Includes VAT": "Unknown",
+    "Currency": "EUR",
+    "Price Type": "Standard Price",
+    "Sources": [
+     "recZYgVSsGRvsUjqf"
+    ],
+    "Last Price Check": "2026-11-10",
+    "Status": "Verified",
+    "Primary Price": true,
+    "Evidence Scope": "Product-Specific",
+    "Base Price": 6500
+   }
+  }
+ ],
+ "availability": [],
+ "featureValues": [],
+ "features": [],
+ "organisations": [
+  {
+   "id": "recPy0NyMdqGfEeyG",
+   "createdTime": "2026-11-10T09:46:58.000Z",
+   "fields": {
+    "Organisation Name": "Arctic Wellness",
+    "Organisation Code": "ORG-000253",
+    "Organisation Type": "Installer",
+    "Status": "Partially Verified",
+    "Website": "https://www.arcticwellness.ie/",
+    "Products 2": [
+     "recdNv5o1QaZVF0xW",
+     "recfuOvNvJDJI2DX0",
+     "rece2V0mAAoF88e2e",
+     "recNwcXf6tdHJETqj",
+     "recbVYK8gkmonG045",
+     "rechFbEp1tHQkWfZC",
+     "rec9exIBzamZEZtKw",
+     "recOIidOkCYoQB9Bg",
+     "recgpvHqVSNbHALGL",
+     "recjxAwX2COLnJTne",
+     "rec86AdyHExmZ5lN5",
+     "recSmWNWnzhg6KkFp",
+     "recJJd2bfuE9J8efR"
+    ],
+    "Image Permission Outreach": [
+     "recCp3k5b4wpqoLYb"
+    ]
+   }
+  }
+ ],
+ "assets": []
+}

@@ -214,6 +214,71 @@
     "pn-sc-arctic-wellness",
     "pn-sc-k"
    ]
+  },
+  {
+   "declared": "2026-11-10, founder brief 'Complete Arctic Wellness integration into search and Maker Explorer': Arctic Wellness's three priced saunas and four priced ice baths added to the Maker Explorer by atlas-tools/publish-targeted-update.py (wellness universe, targeted; report atlas-tools/targeted-updates/20261110-104004-arctic-wellness.md); its six unpriced or unclassified products held by the existing rule. Gallery figures rebuilt by build-supplier-gallery.py; A-Z profile link (G12b) by build-maker-explorer.py. The explorer's data payload is governed by build-maker-explorer.py --check (G1-G14).",
+   "gallery": [
+    [
+     "        <ul class=\"pn-sg-figs\" role=\"list\" aria-label=\"On PlotNua in this Discovery\"><li><span class=\"pn-sg-fig\">97</span><span class=\"pn-sg-fig-l\">saunas</span></li><li><span class=\"pn-sg-fig\">24</span><span class=\"pn-sg-fig-l\">hot tubs</span></li><li><span class=\"pn-sg-fig\">12</span><span class=\"pn-sg-fig-l\">cold plunges</span></li><li><span class=\"pn-sg-fig\">8</span><span class=\"pn-sg-fig-l\">makers</span></li></ul>",
+     "        <ul class=\"pn-sg-figs\" role=\"list\" aria-label=\"On PlotNua in this Discovery\"><li><span class=\"pn-sg-fig\">100</span><span class=\"pn-sg-fig-l\">saunas</span></li><li><span class=\"pn-sg-fig\">24</span><span class=\"pn-sg-fig-l\">hot tubs</span></li><li><span class=\"pn-sg-fig\">16</span><span class=\"pn-sg-fig-l\">cold plunges</span></li><li><span class=\"pn-sg-fig\">9</span><span class=\"pn-sg-fig-l\">makers</span></li></ul>"
+    ]
+   ],
+   "explorer": [
+    [
+     "        <button type=\"button\" class=\"mx-tab\" role=\"tab\" id=\"mx-t-saunas\" aria-selected=\"true\" aria-controls=\"mx-pane\" data-k=\"saunas\">Saunas <span class=\"mx-n\">97</span></button>",
+     "        <button type=\"button\" class=\"mx-tab\" role=\"tab\" id=\"mx-t-saunas\" aria-selected=\"true\" aria-controls=\"mx-pane\" data-k=\"saunas\">Saunas <span class=\"mx-n\">100</span></button>"
+    ],
+    [
+     "        <button type=\"button\" class=\"mx-tab\" role=\"tab\" id=\"mx-t-cold-plunges\" aria-selected=\"false\" aria-controls=\"mx-pane\" data-k=\"coldPlunges\" tabindex=\"-1\">Cold plunges <span class=\"mx-n\">12</span></button>",
+     "        <button type=\"button\" class=\"mx-tab\" role=\"tab\" id=\"mx-t-cold-plunges\" aria-selected=\"false\" aria-controls=\"mx-pane\" data-k=\"coldPlunges\" tabindex=\"-1\">Cold plunges <span class=\"mx-n\">16</span></button>"
+    ],
+    [
+     "      <summary>All 7 sauna, 5 hot tub and 4 cold plunge makers, A to Z</summary>",
+     "      <summary>All 8 sauna, 5 hot tub and 5 cold plunge makers, A to Z</summary>"
+    ],
+    [
+     "      <ul class=\"mx-az-list\" aria-label=\"Sauna makers, A to Z\">",
+     "      <ul class=\"mx-az-list\" aria-label=\"Sauna makers, A to Z\">\n        <li><a href=\"#p-recfuOvNvJDJI2DX0\">Arctic Wellness</a> <span>3 saunas &middot; Irish availability not yet confirmed</span> <a class=\"mx-az-pf\" href=\"suppliers/arctic-wellness.html\">Arctic Wellness profile</a></li>"
+    ],
+    [
+     "      <ul class=\"mx-az-list\" aria-label=\"Cold plunge makers, A to Z\">",
+     "      <ul class=\"mx-az-list\" aria-label=\"Cold plunge makers, A to Z\">\n        <li><a href=\"#p-rec9exIBzamZEZtKw\">Arctic Wellness</a> <span>4 cold plunges &middot; Irish availability not yet confirmed</span> <a class=\"mx-az-pf\" href=\"suppliers/arctic-wellness.html\">Arctic Wellness profile</a></li>"
+    ]
+   ],
+   "blockCorrections": [
+    [
+     "97 saunas",
+     "100 saunas"
+    ],
+    [
+     "12 cold plunges",
+     "16 cold plunges"
+    ],
+    [
+     "8 makers",
+     "9 makers"
+    ],
+    [
+     "Saunas 97",
+     "Saunas 100"
+    ],
+    [
+     "Cold plunges 12",
+     "Cold plunges 16"
+    ],
+    [
+     "All 7 sauna, 5 hot tub and 4 cold plunge makers, A to Z",
+     "All 8 sauna, 5 hot tub and 5 cold plunge makers, A to Z"
+    ]
+   ],
+   "blocks": [
+    "Arctic Wellness 3 saunas · Irish availability not yet confirmed Arctic Wellness profile",
+    "Arctic Wellness 4 cold plunges · Irish availability not yet confirmed Arctic Wellness profile"
+   ],
+   "links": [
+    "#p-recfuOvNvJDJI2DX0",
+    "#p-rec9exIBzamZEZtKw"
+   ]
   }
  ]
 }

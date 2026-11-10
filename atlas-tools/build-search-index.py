@@ -587,7 +587,7 @@ SUPPLIER_INFO_PAGES = {
         "former_names": ["TRIQ CUBE"],
     },
 }
-# SEO-GR5b (8 Nov 2026): the six published supplier profiles, held apart from
+# SEO-GR5b (8 Nov 2026): the published supplier profiles (six, then Arctic Wellness on 10 Nov 2026), held apart from
 # SUPPLIER_INFO_PAGES on purpose. build-maker-explorer.py reads SUPPLIER_INFO_PAGES
 # for its G7 (no manufacturer-information page linked from an explorer), while the
 # explorer's own A-Z index links four of these profiles under its G12b (SEO-GR4).
@@ -635,6 +635,12 @@ SUPPLIER_PROFILE_PAGES = {
         "standfirst": "Made-to-measure aluminium pergolas, verandas and porches.",
         "page_must_contain": ["Superior Pergola Ireland", "made-to-measure",
                               "aluminium pergolas, verandas and porches"],
+    },    # Arctic Wellness showcase (founder brief, 10 Nov 2026: complete its search integration).
+    "suppliers/arctic-wellness.html": {
+        "id": "info-arctic-wellness",
+        "title": "Supplier profile: Arctic Wellness",
+        "standfirst": "Saunas and ice baths, supplied and installed across Ireland from Dublin.",
+        "page_must_contain": ["Arctic Wellness", "saunas, ice baths", "Supplied and installed across Ireland", "Dublin"],
     },
 }
 info_recs = []

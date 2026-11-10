@@ -21,31 +21,420 @@
     ]
   },
   "snapshotSha256": "31397887e2de5dc534d100a32c8a6791c3e9c9339b08df718f94dd0b45a66613",
-  "snapshotScope": "Atlas Core appoLZFWesvoPhZGR via the Airtable connector, 14 Oct 2026, with the five 14 Oct recorded contradictions written to Standards (all 153 Wellness / Sauna products, 11 organisations); internal governance data, never committed; targeted update 2026-10-16 for Irish Sauna Company (1 record(s), snapshot sha256 35695f8a4916c3fc); targeted update 2026-10-27 for Irish Sauna Company (7 record(s), snapshot sha256 7442073f692e12db); targeted update 2026-11-04 for Gardenhouse24 Ireland (6 record(s), snapshot sha256 9199a3bbc373333e)",
+  "snapshotScope": "Atlas Core appoLZFWesvoPhZGR via the Airtable connector, 14 Oct 2026, with the five 14 Oct recorded contradictions written to Standards (all 153 Wellness / Sauna products, 11 organisations); internal governance data, never committed; targeted update 2026-10-16 for Irish Sauna Company (1 record(s), snapshot sha256 35695f8a4916c3fc); targeted update 2026-10-27 for Irish Sauna Company (7 record(s), snapshot sha256 7442073f692e12db); targeted update 2026-11-04 for Gardenhouse24 Ireland (6 record(s), snapshot sha256 9199a3bbc373333e); targeted update 2026-11-10 for Arctic Wellness (13 record(s), snapshot sha256 3e3598e557978c33)",
   "sourceCategory": "Wellness / Sauna",
-  "sourceCategoryCount": 164,
-  "eligibleCount": 128,
-  "organisationCount": 8,
+  "sourceCategoryCount": 177,
+  "eligibleCount": 135,
+  "organisationCount": 9,
   "kindCounts": {
-    "sauna": 97,
+    "sauna": 100,
     "hot-tub": 24,
-    "cold-plunge": 12,
+    "cold-plunge": 16,
     "combination": 4
   },
   "kindOrganisationCounts": {
-    "sauna": 7,
+    "sauna": 8,
     "hot-tub": 5,
-    "cold-plunge": 4,
+    "cold-plunge": 5,
     "combination": 1
   },
-  "heldCount": 24,
+  "heldCount": 30,
   "excludedCount": 0,
   "gateHeldCount": 12,
   "listingBasisCounts": {
-    "SUPPLIER_PERMISSION": 43,
+    "SUPPLIER_PERMISSION": 50,
     "PUBLIC_INFORMATION": 85
   },
   "products": [
+    {
+      "id": "recNwcXf6tdHJETqj",
+      "productCode": "PROD-001346",
+      "productName": "Custom-built sauna",
+      "organisation": "Arctic Wellness",
+      "productCategory": "Wellness / Sauna",
+      "productType": null,
+      "kinds": [
+        "sauna"
+      ],
+      "productUrl": null,
+      "price": {
+        "state": "PRICE_NOT_ESTABLISHED"
+      },
+      "irish": {
+        "state": "UNCONFIRMED"
+      },
+      "qualification": {
+        "rule": "wellness-qualification-v3",
+        "state": "HELD",
+        "heldReasons": [
+          "evidence-incomplete"
+        ],
+        "excludedReasons": []
+      },
+      "publicVisibility": "PUBLISHABLE",
+      "holdReason": null,
+      "listingBasis": null
+    },
+    {
+      "id": "recfuOvNvJDJI2DX0",
+      "productCode": "PROD-001344",
+      "productName": "Ember",
+      "organisation": "Arctic Wellness",
+      "productCategory": "Wellness / Sauna",
+      "productType": "Configurable Outdoor Sauna Pod",
+      "kinds": [
+        "sauna"
+      ],
+      "productUrl": "https://www.arcticwellness.ie/prebuilt-saunas/ember",
+      "price": {
+        "state": "VERIFIED_NUMERIC_PRICE",
+        "amount": 11550,
+        "currency": "EUR",
+        "type": "Starting From",
+        "basis": "Published 'from' price. The supplier does not state whether it includes VAT."
+      },
+      "irish": {
+        "state": "UNCONFIRMED"
+      },
+      "qualification": {
+        "rule": "wellness-qualification-v3",
+        "state": "ELIGIBLE",
+        "heldReasons": [],
+        "excludedReasons": []
+      },
+      "publicVisibility": "PUBLISHABLE",
+      "holdReason": null,
+      "listingBasis": "SUPPLIER_PERMISSION"
+    },
+    {
+      "id": "recdNv5o1QaZVF0xW",
+      "productCode": "PROD-001343",
+      "productName": "Ember Mini",
+      "organisation": "Arctic Wellness",
+      "productCategory": "Wellness / Sauna",
+      "productType": "Configurable Outdoor Sauna Pod",
+      "kinds": [
+        "sauna"
+      ],
+      "productUrl": "https://www.arcticwellness.ie/prebuilt-saunas/ember-mini",
+      "price": {
+        "state": "VERIFIED_NUMERIC_PRICE",
+        "amount": 7000,
+        "currency": "EUR",
+        "type": "Starting From",
+        "basis": "Published 'from' price. The supplier does not state whether it includes VAT."
+      },
+      "irish": {
+        "state": "UNCONFIRMED"
+      },
+      "qualification": {
+        "rule": "wellness-qualification-v3",
+        "state": "ELIGIBLE",
+        "heldReasons": [],
+        "excludedReasons": []
+      },
+      "publicVisibility": "PUBLISHABLE",
+      "holdReason": null,
+      "listingBasis": "SUPPLIER_PERMISSION"
+    },
+    {
+      "id": "rec9exIBzamZEZtKw",
+      "productCode": "PROD-001349",
+      "productName": "Fjell",
+      "organisation": "Arctic Wellness",
+      "productCategory": "Wellness / Sauna",
+      "productType": "Cold Plunge / Ice Bath",
+      "kinds": [
+        "cold-plunge"
+      ],
+      "productUrl": "https://www.arcticwellness.ie/ice-baths/fjell",
+      "price": {
+        "state": "VERIFIED_NUMERIC_PRICE",
+        "amount": 6100,
+        "currency": "EUR",
+        "type": "Standard Price",
+        "basis": "Published price. The supplier does not state whether it includes VAT."
+      },
+      "irish": {
+        "state": "UNCONFIRMED"
+      },
+      "qualification": {
+        "rule": "wellness-qualification-v3",
+        "state": "ELIGIBLE",
+        "heldReasons": [],
+        "excludedReasons": []
+      },
+      "publicVisibility": "PUBLISHABLE",
+      "holdReason": null,
+      "listingBasis": "SUPPLIER_PERMISSION"
+    },
+    {
+      "id": "rechFbEp1tHQkWfZC",
+      "productCode": "PROD-001348",
+      "productName": "Fjell Black",
+      "organisation": "Arctic Wellness",
+      "productCategory": "Wellness / Sauna",
+      "productType": "Cold Plunge / Ice Bath",
+      "kinds": [
+        "cold-plunge"
+      ],
+      "productUrl": "https://www.arcticwellness.ie/ice-baths/fjell-black",
+      "price": {
+        "state": "VERIFIED_NUMERIC_PRICE",
+        "amount": 6000,
+        "currency": "EUR",
+        "type": "Standard Price",
+        "basis": "Published price. The supplier does not state whether it includes VAT."
+      },
+      "irish": {
+        "state": "UNCONFIRMED"
+      },
+      "qualification": {
+        "rule": "wellness-qualification-v3",
+        "state": "ELIGIBLE",
+        "heldReasons": [],
+        "excludedReasons": []
+      },
+      "publicVisibility": "PUBLISHABLE",
+      "holdReason": null,
+      "listingBasis": "SUPPLIER_PERMISSION"
+    },
+    {
+      "id": "recbVYK8gkmonG045",
+      "productCode": "PROD-001347",
+      "productName": "Fjord",
+      "organisation": "Arctic Wellness",
+      "productCategory": "Wellness / Sauna",
+      "productType": "Cold Plunge / Ice Bath",
+      "kinds": [
+        "cold-plunge"
+      ],
+      "productUrl": "https://www.arcticwellness.ie/ice-baths/fjord",
+      "price": {
+        "state": "VERIFIED_NUMERIC_PRICE",
+        "amount": 5000,
+        "currency": "EUR",
+        "type": "Standard Price",
+        "basis": "Published price. The supplier does not state whether it includes VAT."
+      },
+      "irish": {
+        "state": "UNCONFIRMED"
+      },
+      "qualification": {
+        "rule": "wellness-qualification-v3",
+        "state": "ELIGIBLE",
+        "heldReasons": [],
+        "excludedReasons": []
+      },
+      "publicVisibility": "PUBLISHABLE",
+      "holdReason": null,
+      "listingBasis": "SUPPLIER_PERMISSION"
+    },
+    {
+      "id": "recSmWNWnzhg6KkFp",
+      "productCode": "PROD-001354",
+      "productName": "Ice Fall",
+      "organisation": "Arctic Wellness",
+      "productCategory": "Wellness / Sauna",
+      "productType": null,
+      "kinds": [],
+      "productUrl": null,
+      "price": {
+        "state": "PRICE_NOT_ESTABLISHED"
+      },
+      "irish": {
+        "state": "UNCONFIRMED"
+      },
+      "qualification": {
+        "rule": "wellness-qualification-v3",
+        "state": "HELD",
+        "heldReasons": [
+          "evidence-incomplete",
+          "kind-unclassified"
+        ],
+        "excludedReasons": []
+      },
+      "publicVisibility": "PUBLISHABLE",
+      "holdReason": null,
+      "listingBasis": null
+    },
+    {
+      "id": "rec86AdyHExmZ5lN5",
+      "productCode": "PROD-001353",
+      "productName": "Icepod Plus",
+      "organisation": "Arctic Wellness",
+      "productCategory": "Wellness / Sauna",
+      "productType": "Cold Plunge / Ice Bath",
+      "kinds": [
+        "cold-plunge"
+      ],
+      "productUrl": null,
+      "price": {
+        "state": "PRICE_NOT_ESTABLISHED"
+      },
+      "irish": {
+        "state": "UNCONFIRMED"
+      },
+      "qualification": {
+        "rule": "wellness-qualification-v3",
+        "state": "HELD",
+        "heldReasons": [
+          "evidence-incomplete"
+        ],
+        "excludedReasons": []
+      },
+      "publicVisibility": "PUBLISHABLE",
+      "holdReason": null,
+      "listingBasis": null
+    },
+    {
+      "id": "rece2V0mAAoF88e2e",
+      "productCode": "PROD-001345",
+      "productName": "Nordic",
+      "organisation": "Arctic Wellness",
+      "productCategory": "Wellness / Sauna",
+      "productType": "Configurable Outdoor Sauna Pod",
+      "kinds": [
+        "sauna"
+      ],
+      "productUrl": "https://www.arcticwellness.ie/prebuilt-saunas/nordic",
+      "price": {
+        "state": "VERIFIED_NUMERIC_PRICE",
+        "amount": 16500,
+        "currency": "EUR",
+        "type": "Standard Price",
+        "basis": "Published price. The supplier does not state whether it includes VAT."
+      },
+      "irish": {
+        "state": "UNCONFIRMED"
+      },
+      "qualification": {
+        "rule": "wellness-qualification-v3",
+        "state": "ELIGIBLE",
+        "heldReasons": [],
+        "excludedReasons": []
+      },
+      "publicVisibility": "PUBLISHABLE",
+      "holdReason": null,
+      "listingBasis": "SUPPLIER_PERMISSION"
+    },
+    {
+      "id": "recjxAwX2COLnJTne",
+      "productCode": "PROD-001352",
+      "productName": "PolarPlunge",
+      "organisation": "Arctic Wellness",
+      "productCategory": "Wellness / Sauna",
+      "productType": "Cold Plunge / Ice Bath",
+      "kinds": [
+        "cold-plunge"
+      ],
+      "productUrl": null,
+      "price": {
+        "state": "PRICE_NOT_ESTABLISHED"
+      },
+      "irish": {
+        "state": "UNCONFIRMED"
+      },
+      "qualification": {
+        "rule": "wellness-qualification-v3",
+        "state": "HELD",
+        "heldReasons": [
+          "evidence-incomplete"
+        ],
+        "excludedReasons": []
+      },
+      "publicVisibility": "PUBLISHABLE",
+      "holdReason": null,
+      "listingBasis": null
+    },
+    {
+      "id": "recgpvHqVSNbHALGL",
+      "productCode": "PROD-001351",
+      "productName": "PolarPool",
+      "organisation": "Arctic Wellness",
+      "productCategory": "Wellness / Sauna",
+      "productType": "Cold Plunge / Ice Bath",
+      "kinds": [
+        "cold-plunge"
+      ],
+      "productUrl": null,
+      "price": {
+        "state": "PRICE_NOT_ESTABLISHED"
+      },
+      "irish": {
+        "state": "UNCONFIRMED"
+      },
+      "qualification": {
+        "rule": "wellness-qualification-v3",
+        "state": "HELD",
+        "heldReasons": [
+          "evidence-incomplete"
+        ],
+        "excludedReasons": []
+      },
+      "publicVisibility": "PUBLISHABLE",
+      "holdReason": null,
+      "listingBasis": null
+    },
+    {
+      "id": "recJJd2bfuE9J8efR",
+      "productCode": "PROD-001355",
+      "productName": "Red Light Bed",
+      "organisation": "Arctic Wellness",
+      "productCategory": "Wellness / Sauna",
+      "productType": null,
+      "kinds": [],
+      "productUrl": null,
+      "price": {
+        "state": "PRICE_NOT_ESTABLISHED"
+      },
+      "irish": {
+        "state": "UNCONFIRMED"
+      },
+      "qualification": {
+        "rule": "wellness-qualification-v3",
+        "state": "HELD",
+        "heldReasons": [
+          "evidence-incomplete",
+          "kind-unclassified"
+        ],
+        "excludedReasons": []
+      },
+      "publicVisibility": "PUBLISHABLE",
+      "holdReason": null,
+      "listingBasis": null
+    },
+    {
+      "id": "recOIidOkCYoQB9Bg",
+      "productCode": "PROD-001350",
+      "productName": "Tarn",
+      "organisation": "Arctic Wellness",
+      "productCategory": "Wellness / Sauna",
+      "productType": "Cold Plunge / Ice Bath",
+      "kinds": [
+        "cold-plunge"
+      ],
+      "productUrl": "https://www.arcticwellness.ie/ice-baths/tarn",
+      "price": {
+        "state": "VERIFIED_NUMERIC_PRICE",
+        "amount": 6500,
+        "currency": "EUR",
+        "type": "Standard Price",
+        "basis": "Published price. The supplier does not state whether it includes VAT."
+      },
+      "irish": {
+        "state": "UNCONFIRMED"
+      },
+      "qualification": {
+        "rule": "wellness-qualification-v3",
+        "state": "ELIGIBLE",
+        "heldReasons": [],
+        "excludedReasons": []
+      },
+      "publicVisibility": "PUBLISHABLE",
+      "holdReason": null,
+      "listingBasis": "SUPPLIER_PERMISSION"
+    },
     {
       "id": "recpZW4echDhHtEVv",
       "productCode": "PROD-000522",
