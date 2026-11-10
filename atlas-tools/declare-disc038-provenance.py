@@ -7,9 +7,9 @@ interim hero, kept in chapter 02 on the founder's instruction. It is classed AI_
 precedent. It also withdraws the Stage 3 records for the two drawing masters that are no longer on the page
 (DISC-038-BEFORE-MASTER.png, DISC-038-POSSIBLE-MASTER.png) and every derivative of them.
 
-HUMAN REVIEW: recorded from the founder's own Stage 4 instruction, quoted verbatim. Stage 3 sent him the drawing as screenshots.
-If he does not regard that instruction as his review of the drawing, delete the human_review block and the guard (P5) will
-fail again, as it should.
+HUMAN REVIEW: the founder's own confirmation, Stage 5 private-preview approval (10 Nov 2026), quoted verbatim, given after
+he saw the drawing in the Stage 3 and Stage 4 screenshots. It supersedes the Stage 4 placeholder that quoted his "retain it"
+instruction.
 
   python3 atlas-tools/declare-disc038-provenance.py
 """
@@ -56,10 +56,10 @@ reg['records'].append({
     'depicts_named_organisation': False,
     'human_review': {
         'reviewer': 'Colin MacAulay (founder)',
-        'date': TODAY,
-        'attests': ('Founder Stage 4 brief, 8 Nov 2026, after the Stage 3 screenshots of this drawing, verbatim: "Retain the technical illustration '
-                    'for an appropriate chapter explaining underground shelter design. Do not discard it." Recorded from that instruction; '
-                    'not a separate signed review.'),
+        'date': '2026-11-10',
+        'attests': ('Founder Stage 5 private-preview approval, 10 Nov 2026, after reviewing the drawing in the Stage 3 and Stage 4 screenshots, '
+                    'verbatim: "Record the founder\'s confirmation that the Chapter 02 section drawing is illustrative and does not depict a '
+                    'verified real product or installation." Private preview only; publication awaits the founder\'s release approval.'),
     },
     'label_on_page': 'Caption: AI-generated illustration (vector drawing made with Claude). Not to scale; not a specific product or installation.',
     'permitted_surfaces': ['discovery'],
