@@ -1,7 +1,7 @@
 {
  "head": "d5278e3ee4bd8156e1cd631d91e16e742fa398fb0f7a9c061a13662fe69cdcc0",
  "pre_main": "ed6ec0c4410ec92f30753356e37ac68612c9862035b5a5e08e7d5ad95d0f516d",
- "post_main": "396124fac3bcd5534fb90580b1a59d528a47dd13a68e7cdd5341f316b7eb22d3",
+ "post_main": "717bf2302ee2a5716ee4e9f3037fd91ecddaf45f80b4bea618086a4cda7a6115",
  "jsonld": [],
  "blocks": [
   "Look again at your house.",
@@ -573,5 +573,5 @@
  "banner": "cfa6403cecafb2088613112f8e046d4d312fa4b09c171c2080972e9c3afb5a48",
  "details": 8,
  "unbalanced": 0,
- "ref": "e0af0cd"
+ "ref": "e0af0cd (post_main re-baselined 10 Nov 2026 for the founder-approved DISC-038 Stage 16 Related card)"
 }
