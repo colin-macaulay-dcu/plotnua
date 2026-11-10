@@ -244,7 +244,7 @@
         <div class="st-radio">${[['none', 'No'], ['assisted', 'Yes: AI-assisted, made by me'], ['generated', 'Yes: generated entirely from prompts']].map(([k, v]) => `<label><input type="radio" name="ai_involvement" value="${k}"${w.ai_involvement === k ? ' checked' : ''}> ${v}</label>`).join('')}</div>
         <div id="ainote" ${w.ai_involvement && w.ai_involvement !== 'none' ? '' : 'hidden'}>${f('ai_note', 'Say briefly how (shown on the work’s page)', w.ai_note, { area: 1 })}</div>
         <p class="st-muted" style="margin:6px 0 0">PlotArt welcomes digital and AI-assisted practice. Entirely prompt-generated images are reviewed for eligibility.</p>
-      </section></div></div>
+      </section><div id="hirepanel"></div></div></div>
       <div class="st-sticky"><a class="st-btn" href="/preview/${E(w.slug)}.html" target="_blank" rel="noopener">Preview</a><a class="st-btn st-btn--solid" href="#/works">Done</a></div>`;
     app.querySelectorAll('[name]').forEach(el => {
       if (el.closest('[data-img]')) return;
@@ -263,6 +263,75 @@
     $('#mdrop input').addEventListener('change', e => uploadFlow(e.target.files[0], `/api/artworks/${w.id}/images?role=main`, $('#mdrop'), { done: async () => { await refresh(); work(w.id); } }));
     $('#vadd')?.addEventListener('change', e => uploadFlow(e.target.files[0], `/api/artworks/${w.id}/images?role=view`, $('#vadd').parentElement, { done: async () => { await refresh(); work(w.id); } }));
     app.querySelectorAll('[data-rmv]').forEach(b => b.addEventListener('click', async () => { await api('DELETE', `/api/images/${b.dataset.rmv}`); await refresh(); work(w.id); say('View removed'); }));
+    hirePanel(w.id);
+  }
+
+  /* ------------------------------------------------------------- Art for Hire (separate, optional; Stage 3B-2)
+     Shown only once Art for Hire is open (terms issued and switched on), or while a work is still offered so the artist
+     can always take it off. Nothing here changes the gallery. Screen and photo choices are willingness to discuss only. */
+  const HIRE = {
+    availability: { now: 'Available for hire now', from: 'Available from a date', not_now: 'Not available for hire at the moment' },
+    screen_use: { none: 'No', background: 'Open to discussing background use on screen', featured: 'Open to discussing featured use on screen' },
+    photo_use: { none: 'No', yes: 'Open to discussing photography of the work' },
+    framing: { '': 'Choose', framed: 'Framed', unframed: 'Unframed', ready_to_hang: 'Ready to hang (unframed)' },
+    weight_band: { '': 'Choose', under_5kg: 'Under 5 kg', '5_15kg': '5 to 15 kg', over_15kg: 'Over 15 kg' },
+    collection: { ask: 'Ask me', collect: 'Hirer collects', deliver_local: 'I can deliver locally' },
+    review: { draft: 'Off', pending: 'Waiting for PlotArt to check', approved: 'Checked', declined: 'Not accepted' } };
+  async function hirePanel(workId) {
+    const box = $('#hirepanel'); if (!box) return;
+    let H;
+    try { H = await api('GET', '/api/hire'); } catch { return; }                    // not installed: nothing shown
+    const it = H.works.find(x => x.artwork_id === workId);
+    if (!it || (!H.active && !it.hire.offered)) {
+      if (H.enabled && H.terms && it) box.innerHTML = `<section class="st-card"><h3>Commercial hire (optional)</h3><p class="st-muted" style="margin:0">Art for Hire is separate from your gallery and from your Founding Artist agreement. ${H.left ? 'You have left Art for Hire.' : 'To take part, read and accept the Art for Hire Artist Terms first.'} <a href="#/hire">Art for Hire</a></p></section>`;
+      return;
+    }
+    const h = it.hire, sel = (k, map) => `<select name="hire_${k}" id="hire_${k}">${Object.entries(map).map(([v, t]) => `<option value="${v}"${String(h[k] ?? '') === v ? ' selected' : ''}>${E(t)}</option>`).join('')}</select>`;
+    box.innerHTML = `<section class="st-card" aria-labelledby="hireh"><h3 id="hireh">Commercial hire (optional)</h3>
+      <p class="st-muted" style="margin:0 0 10px">Separate from your gallery. Off unless you switch it on. PlotArt checks each work before it is listed, and you can take it off at any time.</p>
+      <label class="st-check"><input type="checkbox" name="hire_offered"${h.offered ? ' checked' : ''} ${!it.published && !h.offered ? 'disabled' : ''} style="accent-color:var(--terra);width:20px;height:20px"> Offer this work for commercial hire</label>
+      ${!it.published && !h.offered ? '<p class="st-muted">Only works already published in your gallery can be offered.</p>' : ''}
+      <p class="st-muted" style="margin:6px 0 10px">Status: <strong>${E(h.offered ? HIRE.review[h.review_state] : 'Off')}</strong>${it.listed ? ' · listed' : ''}${h.review_state === 'declined' && h.decline_reason ? ` · ${E(h.decline_reason)}` : ''}</p>
+      <div ${h.offered ? '' : 'hidden'} id="hirefields">
+        <div class="st-f"><label for="hire_availability">Hire availability</label>${sel('availability', HIRE.availability)}</div>
+        <div class="st-f" ${h.availability === 'from' ? '' : 'hidden'} id="hirefrom"><label for="hire_available_from">Available from</label><input type="date" id="hire_available_from" name="hire_available_from" value="${E(h.available_from || '')}"></div>
+        <div class="st-f"><label for="hire_county">County where the work is kept</label><input type="text" id="hire_county" name="hire_county" maxlength="40" value="${E(h.county || '')}"></div>
+        <div class="st-grid2"><div class="st-f"><label for="hire_framing">Framing</label>${sel('framing', HIRE.framing)}</div><div class="st-f"><label for="hire_weight_band">Weight</label>${sel('weight_band', HIRE.weight_band)}</div></div>
+        <div class="st-grid2"><div class="st-f"><label for="hire_collection">Collection</label>${sel('collection', HIRE.collection)}</div>
+          <div class="st-f" ${h.collection === 'deliver_local' ? '' : 'hidden'} id="hirekm"><label for="hire_deliver_km">Delivery distance (km)</label><input type="number" min="1" max="500" id="hire_deliver_km" name="hire_deliver_km" value="${E(h.deliver_km ?? '')}"></div></div>
+        <div class="st-f"><label for="hire_handling_note">Handling note (private: shared only with a hirer you agree to)</label><textarea id="hire_handling_note" name="hire_handling_note" maxlength="280">${E(h.handling_note || '')}</textarea></div>
+        <div class="st-f"><label for="hire_screen_use">Screen use (film, TV or video)</label>${sel('screen_use', HIRE.screen_use)}</div>
+        <div class="st-f"><label for="hire_photo_use">Photography</label>${sel('photo_use', HIRE.photo_use)}</div>
+        <p class="st-muted" style="margin:6px 0 0"><strong>${E(H.notice)}</strong> ${E(H.pilot_notice)}</p>
+      </div></section>`;
+    box.querySelectorAll('[name^="hire_"]').forEach(el => el.addEventListener('change', async () => {
+      const k = el.name.slice(5);
+      let v = el.type === 'checkbox' ? el.checked : (el.value === '' ? null : el.value);
+      if (k === 'offered' && !v && !confirm('Take this work off hire now? It stops being listed at once. Your gallery is not affected.')) { el.checked = true; return; }
+      const body = { [k]: v };
+      if (k === 'availability' && v === 'from') { $('#hirefrom').hidden = false; if (!$('#hire_available_from').value) return; body.available_from = $('#hire_available_from').value; }
+      if (k === 'available_from') body.availability = 'from';
+      try { const r = await api('PUT', `/api/hire/artwork/${workId}`, body); say(r.review_state === 'pending' ? 'Saved · PlotArt will check it before it is listed' : 'Saved'); hirePanel(workId); }
+      catch (e) { say('Not saved: ' + e.message, true); hirePanel(workId); }
+    }));
+  }
+  async function hireView() {
+    let H;
+    try { H = await api('GET', '/api/hire'); } catch { H = null; }
+    if (!H || !H.enabled || !H.terms) { app.innerHTML = '<div class="st-card"><h2>Art for Hire</h2><p class="st-muted">Art for Hire is not open yet.</p></div>'; return; }
+    app.innerHTML = `<h1 class="st-h1">Art for Hire</h1>
+      <p class="st-sub">Optional, and separate from your gallery and your Founding Artist agreement. PlotArt only introduces hirers to you; any hire, fee, replacement value or screen-use permission is agreed between you and the hirer.</p>
+      <section class="st-card"><h3>${E(H.terms.title)} <span class="st-muted">(${E(H.terms.doc_id)})</span></h3>
+        <p><a href="/hire-terms/${E(H.terms.doc_id)}.pdf" target="_blank" rel="noopener">Read the Art for Hire Artist Terms (PDF)</a></p>
+        ${H.active ? `<p class="ok">You accepted these terms on ${E(new Date(H.accepted_at).toLocaleDateString('en-IE'))}.</p>
+          <label class="st-check"><input type="checkbox" id="lv"> I want to leave Art for Hire. All my works come off hire at once; my gallery is not affected.</label>
+          <button class="st-btn st-btn--danger" id="lvb" disabled>Leave Art for Hire</button>`
+        : `<label class="st-check"><input type="checkbox" id="acc"> ${E(H.statement)}</label><button class="st-btn st-btn--solid" id="accb" disabled>Accept</button>`}
+        <p class="st-err" id="herr" aria-live="polite"></p></section>`;
+    const pair = (c, b, fn) => { const x = $(c), y = $(b); if (!x) return; x.addEventListener('change', () => { y.disabled = !x.checked; });
+      y.addEventListener('click', async () => { y.disabled = true; try { await fn(); await hireView(); } catch (e) { $('#herr').textContent = e.message; y.disabled = !x.checked; } }); };
+    pair('#acc', '#accb', async () => { await api('POST', '/api/hire/accept', { confirm: true, doc_id: H.terms.doc_id }); say('Accepted'); });
+    pair('#lv', '#lvb', async () => { await api('POST', '/api/hire/leave', { confirm: true }); say('You have left Art for Hire'); });
   }
   function imageFields(i) {
     // Photograph details (required for every photograph before a gallery can be submitted)
@@ -468,6 +537,7 @@
       else if (h === '#/submit') submitView();
       else if (h === '#/enquiries') await enquiries();
       else if (h === '#/agreement') await agreementView();
+      else if (h === '#/hire') await hireView();
       else dashboard();
       window.scrollTo(0, 0);
       if (q.get('fix')) requestAnimationFrame(() => focusFix(q.get('fix'), q.get('img')));

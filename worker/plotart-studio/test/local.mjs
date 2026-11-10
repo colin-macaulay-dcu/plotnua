@@ -26,9 +26,9 @@ export function token(email, { aud = AUD, iss = TEAM, exp = 3600, kid = KID, key
 }
 export const otherKey = generateKeyPairSync('rsa', { modulusLength: 2048 }).privateKey;
 
-export async function start({ port, env = {}, enquiry = null, ideas = null, garden = null } = {}) {
+export async function start({ port, env = {}, enquiry = null, ideas = null, garden = null, script = null } = {}) {
   const common = { modules: true, modulesRoot: HERE, modulesRules: [{ type: 'ESModule', include: ['**/*.js'] }], compatibilityDate: '2026-08-01' };
-  const workers = [{ name: 'studio', ...common, scriptPath: HERE + 'src/index.js', d1Databases: { DB: 'plotart-studio-local' }, r2Buckets: ['IMAGES', 'APPLICATIONS'],
+  const workers = [{ name: 'studio', ...common, scriptPath: HERE + (script || 'src/index.js'), d1Databases: { DB: 'plotart-studio-local' }, r2Buckets: ['IMAGES', 'APPLICATIONS'],
     bindings: { ENVIRONMENT: 'local', MAILER: 'capture', ACCESS_TEAM_DOMAIN: TEAM, ACCESS_AUD: AUD, ACCESS_JWKS_JSON: JSON.stringify({ keys: [jwk] }),
       FOUNDER_EMAILS: FOUNDER, PIPELINE_TOKEN, INSTANT_AUTOPUBLISH: 'false', ...env } }];
   if (enquiry) workers.push({ name: 'enquiry', routes: ['enquiry.local/*', '*/v1/enquiry'], ...common, scriptPath: HERE + 'src/enquiry.js', d1Databases: { DB: 'plotart-studio-local' },

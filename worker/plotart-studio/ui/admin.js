@@ -500,6 +500,48 @@
   /* ---- Leaving PlotArt (founder decision 6 Nov 2026): requests, ending participation, and the deletion schedule */
   const STATE_L = { done: ['Done', 'ok'], pending: ['Waiting for the pipeline', 'warn'], overdue: ['Overdue', 'bad'], scheduled: ['Scheduled', ''], due: ['Due: deleted at the next daily run', 'warn'],
     due_job_off: ['Due, but deletion is switched off', 'bad'], manual: ['Your decision', ''], not_published: ['Never published', 'ok'] };
+  /* ---- Art for Hire (Stage 3B-2): the founder's separate approval queue and recorded use permissions. Nothing here
+     touches galleries, publishing or agreements. Screen and photo choices are the artist's willingness to discuss only. */
+  async function hire() {
+    let d;
+    try { d = await api('GET', '/api/admin/hire'); } catch (e) { app.innerHTML = `<div class="st-card"><h1 class="st-h1">Art for Hire</h1><p class="st-muted">${E(e.message)}</p></div>`; return; }
+    const L = { availability: 'Availability', available_from: 'From', county: 'County', screen_use: 'Screen use (willing to discuss)', photo_use: 'Photography (willing to discuss)',
+      framing: 'Framing', glazed: 'Glazed', weight_band: 'Weight', collection: 'Collection', deliver_km: 'Delivery km' };
+    const row = (k, p, a) => `<tr><td>${L[k]}</td><td>${E(p[k] ?? '—')}</td><td${a && (a[k] ?? null) !== (p[k] ?? null) ? ' style="color:#CF8566;font-weight:600"' : ''}>${a ? E(a[k] ?? '—') : 'not listed before'}</td></tr>`;
+    app.innerHTML = `<h1 class="st-h1">Art for Hire</h1>
+      <p class="st-sub">Status: ${d.enabled ? 'switched on' : '<b>switched off</b>'} · terms: ${d.terms ? E(d.terms.doc_id) : '<b>not issued</b>'}. A work is listed only when the artist holds the terms, has offered it, and you approve it. ${E(d.notice)}</p>
+      <section class="st-card"><h2>Waiting for you (${d.pending.length})</h2>
+        ${d.pending.length ? d.pending.map(i => `<div class="st-acc" data-w="${E(i.artwork_id)}"><p class="st-acc-h"><b>${E(i.artist)}</b> · ${E(i.title || 'Untitled')} · changed ${when(i.updated_at)}</p>
+          <table class="st-table"><tr><th></th><th>Proposed</th><th>Listed now</th></tr>${Object.keys(L).map(k => row(k, i.proposed, i.approved)).join('')}</table>
+          <div class="st-f"><label>Reason if not accepted (sent to the artist in Studio)</label><input type="text" data-reason maxlength="280"></div>
+          <div class="st-row" style="gap:10px"><button class="st-btn st-btn--solid" data-ok>Approve</button><button class="st-btn st-btn--danger" data-no>Not accepted</button></div></div>`).join('') : '<p class="st-muted">Nothing waiting.</p>'}
+      </section>
+      <section class="st-card"><h2>Listed for hire (${d.listed.length})</h2>
+        ${d.listed.length ? `<ul>${d.listed.map(i => `<li>${E(i.artist_slug)} / ${E(i.work_slug)} · ${E(i.hire.availability)} · ${E(i.hire.county || '')}</li>`).join('')}</ul>` : '<p class="st-muted">None.</p>'}
+      </section>
+      <section class="st-card"><h2>Record a use permission</h2>
+        <p class="st-muted">For one specific use only (for example a lookbook sent to named businesses), and only after the artist has answered in writing. A “no” is recorded too.</p>
+        <div class="st-grid2"><div class="st-f"><label for="pm-artist">Artist ID</label><input id="pm-artist" type="text"></div>
+          <div class="st-f"><label for="pm-kind">Use</label><select id="pm-kind"><option value="lookbook">Lookbook</option><option value="social">Social</option><option value="press">Press</option><option value="other">Other</option></select></div></div>
+        <div class="st-f"><label for="pm-purpose">The specific use</label><textarea id="pm-purpose" maxlength="500"></textarea></div>
+        <div class="st-f"><label for="pm-rec">Recipients</label><input id="pm-rec" type="text" maxlength="500"></div>
+        <div class="st-f"><label for="pm-works">Work IDs (comma separated)</label><input id="pm-works" type="text"></div>
+        <div class="st-grid2"><div class="st-f"><label for="pm-ans">Artist’s answer</label><select id="pm-ans"><option value="yes">Yes</option><option value="no">No</option></select></div>
+          <div class="st-f"><label for="pm-at">Answered on</label><input id="pm-at" type="datetime-local"></div></div>
+        <button class="st-btn st-btn--solid" id="pm-go">Record</button><p class="st-err" id="pm-err" aria-live="polite"></p>
+        ${d.permissions.length ? `<table class="st-table"><tr><th>Artist</th><th>Use</th><th>Answer</th><th>Answered</th></tr>${d.permissions.map(x => `<tr><td>${E(x.display_name || x.artist_id)}</td><td>${E(x.use_kind)}: ${E(x.purpose)}</td><td>${E(x.answer)}</td><td>${when(x.answered_at)}</td></tr>`).join('')}</table>` : ''}
+      </section>`;
+    app.querySelectorAll('[data-w]').forEach(box => {
+      const id = box.dataset.w;
+      box.querySelector('[data-ok]').addEventListener('click', async () => { try { await api('POST', `/api/admin/hire/artwork/${id}/decision`, { decision: 'approve' }); say('Approved'); hire(); } catch (e) { say(e.message, true); } });
+      box.querySelector('[data-no]').addEventListener('click', async () => { try { await api('POST', `/api/admin/hire/artwork/${id}/decision`, { decision: 'decline', reason: box.querySelector('[data-reason]').value }); say('Not accepted'); hire(); } catch (e) { say(e.message, true); } });
+    });
+    $('#pm-go').addEventListener('click', async () => {
+      try { await api('POST', '/api/admin/hire/permissions', { artist_id: $('#pm-artist').value.trim(), use_kind: $('#pm-kind').value, purpose: $('#pm-purpose').value, recipients: $('#pm-rec').value,
+        artwork_ids: $('#pm-works').value.split(',').map(x => x.trim()).filter(Boolean), answer: $('#pm-ans').value, answered_at: $('#pm-at').value ? new Date($('#pm-at').value).toISOString() : '' }); say('Recorded'); hire(); }
+      catch (e) { $('#pm-err').textContent = e.message; }
+    });
+  }
   async function leaving() {
     const d = await api('GET', '/api/admin/participation');
     const o = await api('GET', '/api/admin/overview');
@@ -556,9 +598,9 @@
   async function render() {
     const h = location.hash || '#/', path = location.pathname.replace(/\/$/, '');
     const am = path.match(/^\/admin\/applications\/(F25-\d{6}-[0-9A-F]{6})$/);
-    document.querySelectorAll('.st-tabs a').forEach(a => a.toggleAttribute('aria-current', a.dataset.t === (path.startsWith('/admin/applications') ? 'apps' : path === '/admin/gallery' ? 'order' : path === '/admin/ideas' ? 'ideas' : path === '/admin/garden' ? 'garden' : path === '/admin/agreements' ? 'agree' : path === '/admin/leaving' ? 'leave' : 'desk')));
+    document.querySelectorAll('.st-tabs a').forEach(a => a.toggleAttribute('aria-current', a.dataset.t === (path.startsWith('/admin/applications') ? 'apps' : path === '/admin/gallery' ? 'order' : path === '/admin/ideas' ? 'ideas' : path === '/admin/garden' ? 'garden' : path === '/admin/agreements' ? 'agree' : path === '/admin/leaving' ? 'leave' : path === '/admin/hire' ? 'hire' : 'desk')));
     document.querySelectorAll('.st-tabs a[aria-current]').forEach(a => a.setAttribute('aria-current', 'page'));
-    try { if (am) await appView(am[1]); else if (path === '/admin/gallery') await order(); else if (path === '/admin/ideas') await ideas(); else if (path === '/admin/garden') await garden(); else if (path === '/admin/agreements') await agreements(); else if (path === '/admin/leaving') await leaving(); else if (path === '/admin/applications') await apps(); else if (h.startsWith('#/review/')) await review(h.slice(9)); else await home(); window.scrollTo(0, 0); }
+    try { if (am) await appView(am[1]); else if (path === '/admin/gallery') await order(); else if (path === '/admin/ideas') await ideas(); else if (path === '/admin/garden') await garden(); else if (path === '/admin/agreements') await agreements(); else if (path === '/admin/leaving') await leaving(); else if (path === '/admin/hire') await hire(); else if (path === '/admin/applications') await apps(); else if (h.startsWith('#/review/')) await review(h.slice(9)); else await home(); window.scrollTo(0, 0); }
     catch (e) { app.innerHTML = `<div class="st-card"><h2>Something went wrong</h2><p class="st-muted">${E(e.message)}</p></div>`; }
   }
   addEventListener('hashchange', render);

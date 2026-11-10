@@ -11,6 +11,7 @@
 import { verifyAccess, who } from './auth.js';
 import * as L from './lib.js';
 import * as AG from './agreement.js';
+import * as H from './hire.js';
 import { artistBody, artworkBody, previewPage, shown } from './render.js';
 import * as A from './assets.js';
 import { send } from './mailer.js';
@@ -402,7 +403,10 @@ async function deleteRecords(env, artistId) {
   if (!ret || now() < ret.delete_after) throw new Bad('The retention period has not ended', 409);
   const ev = await participationEvents(env, artistId);
   if (!ev.some(e => e.kind === 'originals_deleted')) await eraseOriginals(env, artistId, 'scheduler', 'with the six-year deletion');
-  const t = ['acceptance_corrections', 'agreement_acceptances', 'enquiry_log', 'enquiries', 'versions', 'publish_queue', 'gallery_positions', 'participation_events', 'record_retention'];
+  // Art for Hire records (migration 0006) go BEFORE record_retention: their append-only guards allow deletion only while
+  // the artist's retention row still shows the period has ended (Stage 3B-1 finding). Absent tables are skipped.
+  const t = ['acceptance_corrections', 'agreement_acceptances', 'enquiry_log', 'enquiries', 'versions', 'publish_queue', 'gallery_positions', 'participation_events',
+    ...(await H.recordTables(env)), 'record_retention'];
   await env.DB.batch([...t.map(x => env.DB.prepare(`DELETE FROM ${x} WHERE artist_id = ?`).bind(artistId)), env.DB.prepare("DELETE FROM artists WHERE id = ? AND account_status = 'ended'").bind(artistId),
     env.DB.prepare('DELETE FROM audit WHERE artist_id = ?').bind(artistId)]);   // the artist's audit trail goes with their records
   await audit(env, 'scheduler', 'system', 'records_deleted', artistId, { tables: t.length + 1 });
@@ -936,9 +940,11 @@ export default {
     try { await ideasReady(env); ideas_deleted = await purgeIdeas(env); } catch { /* Idea Board not installed */ }
     let garden_expired = 0;
     try { await gardenReady(env); garden_expired = await sweepGarden(env); } catch { /* noticeboard not installed */ }
+    let hire = null;
+    try { hire = await H.sweep(env); } catch (e) { hire = { error: String(e.message || e).slice(0, 120) }; }   // Art for Hire retention (0006)
     let participation_deletion = null;
     try { participation_deletion = await runDeletionSchedule(env); } catch (e) { participation_deletion = { error: String(e.message || e).slice(0, 120) }; }
-    await audit(env, 'scheduler', 'system', 'cleanup', null, { images_erased: gone.length, images_kept_while_shown: due.length - gone.length, ideas_deleted, garden_expired, participation_deletion, enquiries_logged });
+    await audit(env, 'scheduler', 'system', 'cleanup', null, { images_erased: gone.length, images_kept_while_shown: due.length - gone.length, ideas_deleted, garden_expired, participation_deletion, enquiries_logged, hire });
   },
   async fetch(req, env) {
     try { return await route(req, env); }
@@ -1021,6 +1027,10 @@ async function route(req, env) {
     if (p === '/api/pipeline/gallery-order' && m === 'GET') return json({ ok: true, ...(await pipelineOrder(env)) });
     if (p === '/api/pipeline/ideas' && m === 'GET') return json({ ok: true, ...(await pipelineIdeas(env)) });   // Idea Board: approved, public fields only
     if (p === '/api/pipeline/garden' && m === 'GET') return json({ ok: true, ...(await pipelineGarden(env)) });   // Borrowed Garden noticeboard: approved, public fields only
+    if (p === '/api/pipeline/hire-catalogue' && m === 'GET') {   // Art for Hire: separate from the gallery export; listed works only
+      if (!(await H.installed(env))) return json({ ok: true, generated_at: now(), items: [] });
+      return json({ ok: true, ...(await H.catalogue(env)) });
+    }
     if (p === '/api/pipeline/gallery-order/result' && m === 'POST') {
       const b = await req.json();
       await audit(env, 'pipeline', 'pipeline', b.status === 'published' ? 'gallery_order_published' : 'gallery_order_failed', null, { detail: String(b.detail || '').slice(0, 2000) });
@@ -1097,6 +1107,11 @@ async function route(req, env) {
     if (p === '/admin/garden') return html(A.ADMIN_HTML);
     if (p === '/admin/agreements') return html(A.ADMIN_HTML);
     if (p === '/admin/leaving') return html(A.ADMIN_HTML);
+    if (p === '/admin/hire') return html(A.ADMIN_HTML);
+    if (p.startsWith('/api/admin/hire') && !(await H.installed(env))) return json({ ok: false, error: 'Art for Hire is not installed' }, 409);
+    if (p === '/api/admin/hire' && m === 'GET') return json({ ok: true, ...(await H.adminView(env)) });
+    if ((mm = p.match(/^\/api\/admin\/hire\/artwork\/(w[0-9a-z]+)\/decision$/)) && m === 'POST') return json({ ok: true, ...(await H.decide(env, me.email, mm[1], await req.json())) });
+    if (p === '/api/admin/hire/permissions' && m === 'POST') return json({ ok: true, ...(await H.recordPermission(env, me.email, await req.json())) });
     if (p === '/api/admin/garden' && m === 'GET') return json({ ok: true, ...(await gardenAdmin(env)) });
     if ((mm = p.match(/^\/api\/admin\/garden\/(g[0-9a-z]+)$/)) && m === 'POST') return json({ ok: true, ...(await decideListing(env, me.email, mm[1], await req.json())) });
     if (p === '/api/admin/gallery-order' && m === 'GET') return json({ ok: true, ...(await galleryOrder(env)) });
@@ -1283,6 +1298,21 @@ async function route(req, env) {
     return previewRoute(rest, previewPkg(L.snapshot(d.artist, d.works, d.images), d.images), 'Your private preview · only you can see this · <a href="/">Back to Studio</a>');
   }
   let mm;
+  if ((mm = p.match(/^\/hire-terms\/(PA-AFH-[0-9]{4}-[0-9]{2})\.(pdf|html)$/)) && m === 'GET') {   // the issued PA-AFH text, only once installed
+    const t = (await H.installed(env)) ? await H.currentTerms(env) : null, d = t && t.doc_id === mm[1] ? (A.HIRE_TERMS || {})[mm[1]] : null;
+    if (!d) return html('Not available', 404);
+    return mm[2] === 'html' ? res(d.html, 'text/html; charset=utf-8', 200, { 'X-Document-SHA256': d.html_sha256 })
+      : res(Uint8Array.from(atob(d.pdf_b64), c => c.charCodeAt(0)), 'application/pdf', 200, { 'Content-Disposition': `inline; filename="${mm[1]}.pdf"`, 'X-Document-SHA256': d.pdf_sha256 });
+  }
+  /* Art for Hire (separate and optional; never touches the gallery, its versions or the Founding Artist agreement) */
+  if (p.startsWith('/api/hire')) {
+    if (!(await H.installed(env))) return json({ ok: false, error: 'Art for Hire is not available' }, 404);
+    if (p === '/api/hire' && m === 'GET') return json({ ok: true, ...(await H.artistView(env, artist)) });
+    if (p === '/api/hire/accept' && m === 'POST') return json({ ok: true, ...(await H.accept(env, artist, await req.json())) });
+    if (p === '/api/hire/leave' && m === 'POST') return json({ ok: true, ...(await H.leave(env, artist, await req.json())) });
+    if ((mm = p.match(/^\/api\/hire\/artwork\/([0-9a-z]+)$/)) && m === 'PUT') return json({ ok: true, ...(await H.saveWork(env, artist, mm[1], await req.json())) });
+    return json({ ok: false }, 404);
+  }
   if (p === '/api/me' && m === 'GET') {
     const d = await load(env, artist.id);
     const { email, ...a } = d.artist;
