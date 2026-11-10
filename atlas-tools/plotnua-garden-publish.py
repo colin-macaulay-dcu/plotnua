@@ -89,9 +89,8 @@ def main():
     if why is None and PUSH:
         sha = git("rev-parse", "--short", "HEAD")
         ok1, o1 = run("git push origin HEAD:refs/heads/content/garden-%s" % sha)
-        # automation v1: main only moves after the gate passes. --no-wait (fix 5 Nov 2026, as the Idea Board): a gate
-        # started with the workflow's built-in token never triggers "Release to production", so the publishing workflow's
-        # promote job waits for this exact commit's gate and runs promote-after-gate.sh from main.
+        # main only moves after the gate passes. request-release.sh pushes release/auto/... with the release App token,
+        # so the gate starts on that push; --no-wait because the workflow's own promote job promotes it.
         ok2, o2 = run("bash atlas-tools/release/request-release.sh garden --no-wait")
         if not (ok1 and ok2):
             why = "push refused (main moved or no permission): " + (o1 + " " + o2)[-300:]

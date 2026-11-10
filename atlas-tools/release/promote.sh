@@ -9,9 +9,10 @@ SHA="$1"; BRANCH="$2"
 HERE="$(cd "$(dirname "$0")" && pwd)"
 HEALTH_CMD="${HEALTH_CMD:-python3 $HERE/site-health.py --expect-commit}"
 PAGES_CMD="${PAGES_CMD:-bash $HERE/pages-build.sh}"
-# A revert is a new commit: it gets no exemption from main's required checks. It is pushed to its own release branch and
-# the gate is dispatched on it; this workflow then promotes it like any other release.
-DISPATCH_CMD="${DISPATCH_CMD:-gh workflow run image-rights-gate.yml -R ${GITHUB_REPOSITORY:-} --ref}"
+# A revert is a new commit: it gets no exemption from main's required checks. It is pushed to its own release branch by
+# push-release-branch.sh (the "PlotNua Release" App token in GitHub Actions), so its gate starts on that PUSH, and it is
+# then promoted like any other release (Stage 1, 10 Nov 2026: nothing is dispatched any more).
+PUSH_CMD="${PUSH_CMD:-bash $HERE/push-release-branch.sh}"
 SUM="${GITHUB_STEP_SUMMARY:-/dev/null}"
 refuse() { echo "REFUSED: $*"; echo "- **refused:** $*" >> "$SUM"; exit 1; }
 [[ "$SHA" =~ ^[0-9a-f]{40}$ ]] || refuse "bad commit id"
@@ -22,7 +23,7 @@ BEFORE=$(git rev-parse origin/main)
 if [ "$BEFORE" = "$SHA" ]; then echo "nothing to release: main is already ${SHA:0:7}"; exit 0; fi
 git merge-base --is-ancestor "$BEFORE" "$SHA" || refuse "${SHA:0:7} does not contain the current main ${BEFORE:0:7}"
 { echo "### Release ${SHA:0:7} from \`$BRANCH\`"; echo "- main before: \`$BEFORE\`"; echo "- files changed:"; git diff --name-only "$BEFORE" "$SHA" | sed 's/^/  - `/; s/$/`/'; } >> "$SUM"
-git push origin "$SHA:refs/heads/main"                                  # fast-forward only: the ruleset forbids forcing
+git push origin "$SHA:refs/heads/main"                                  # fast-forward only; main's ruleset requires the gate on $SHA
 T="prod/$(date -u +%Y%m%d-%H%M%S)-${SHA:0:7}"; git tag "$T" "$SHA"; git push -q origin "refs/tags/$T"
 echo "- released and tagged \`$T\`" >> "$SUM"
 $PAGES_CMD || true
@@ -32,14 +33,26 @@ echo "live check FAILED"
 if [[ "$BRANCH" == release/auto/rollback-* ]]; then echo "- **a rollback release failed its live check: no further automatic action**" >> "$SUM"; exit 2; fi
 git fetch -q origin main
 [ "$(git rev-parse origin/main)" = "$SHA" ] || { echo "- **live check failed and main moved after the release: NOT reverted automatically**" >> "$SUM"; exit 2; }
+# A release that changed workflow files cannot be reverted automatically: the release App has no Workflows permission
+# (by design), so GitHub would refuse the revert's push. Those releases come through the founder route and are rolled
+# back by the founder's rollback-<name>.sh.
+WF=$(git diff --name-only "$BEFORE" "$SHA" -- .github/workflows | tr '\n' ' ')
+if [ -n "$WF" ]; then
+  echo "FOUNDER ROLLBACK REQUIRED: ${SHA:0:7} changed workflow files ($WF)"
+  { echo "- **live check failed and this release changed workflow files (\`$WF\`): automatic rollback is not possible.**"
+    echo "  **FOUNDER ROLLBACK REQUIRED** (\`rollback-<name>.sh\`, or a revert of ${BEFORE:0:7}..${SHA:0:7} through the release route)."; } >> "$SUM"
+  printf 'founder_rollback_required=%s\n' "${SHA}" >> "${PROMOTE_OUT:-${GITHUB_OUTPUT:-/dev/null}}"
+  exit 2
+fi
 git -c user.name="PlotNua release automation" -c user.email="hello@plotnua.ie" checkout -q -B plotnua-rollback "$SHA"
 git -c user.name="PlotNua release automation" -c user.email="hello@plotnua.ie" revert --no-edit "$BEFORE..$SHA" > /dev/null
 [ -z "$(git diff "$BEFORE" HEAD --stat)" ] || { echo "- **revert does not restore ${BEFORE:0:7} exactly: NOT pushed**" >> "$SUM"; exit 2; }
-RB="release/auto/rollback-${SHA:0:7}"
-git push -q origin "HEAD:refs/heads/$RB"
-$DISPATCH_CMD "$RB"
-# record the revert for the caller (fix 5 Nov 2026): a gate dispatched with the workflow's built-in token never starts
-# "Release to production", so the caller (promote-after-gate.sh) waits for this exact commit's gate and promotes it.
+# The rollback branch keeps the released branch's topic, so "Release to production" can leave the rollbacks of
+# self-promoting publishers (plotart, garden, ideas) to their own promote step, exactly like their releases.
+RB="release/auto/rollback-${BRANCH#release/auto/}"
+$PUSH_CMD "$(git rev-parse HEAD)" "$RB" || { echo "- **the revert could not be pushed to \`$RB\`: FOUNDER ROLLBACK REQUIRED**" >> "$SUM"; exit 2; }
+# record the revert for the caller: promote-after-gate.sh waits for this exact commit's push-started gate and promotes
+# it (in "Release to production" a second run started by that gate then finds nothing left to release).
 printf 'rollback_branch=%s\nrollback_sha=%s\n' "$RB" "$(git rev-parse HEAD)" >> "${PROMOTE_OUT:-${GITHUB_OUTPUT:-/dev/null}}"
 echo "- **automatic rollback requested**: \`$RB\` (content identical to \`${BEFORE:0:7}\`) goes through the gate and is released by the next run" >> "$SUM"
 exit 2

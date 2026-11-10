@@ -26,19 +26,22 @@ on:
 permissions:
   contents: write
   pages: write        # to request the GitHub Pages build after a publish (see the last step)
-  actions: write      # automation v1: start the gate on its release branch (request-release.sh)
+  actions: read       # promote-after-gate.sh reads gate results; nothing is dispatched any more (Stage 1)
 
 concurrency:
   group: plotart-content-publish
   cancel-in-progress: false
 
 env:
-  GH_TOKEN: ${{ github.token }}   # automation v1: request-release.sh dispatches the gate
+  GH_TOKEN: ${{ github.token }}   # reads gate results and requests Pages builds (the gate is no longer dispatched)
 
 jobs:
   publish:
     if: ${{ vars.PLOTART_PUBLISH_ENABLED == 'true' && github.ref == 'refs/heads/main' }}
     runs-on: ubuntu-latest
+    environment:
+      name: release-automation   # holds the release App key; deployment branches: main only
+      deployment: false          # the key is available, no deployment record is created
     timeout-minutes: 90   # each gallery, and the order, is released in turn: gate (up to 30 min) + promotion and live check
     steps:
       - uses: actions/checkout@v4
@@ -58,14 +61,25 @@ jobs:
       - name: Note where main is before publishing
         id: before
         run: echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
-      # Fix 5 Nov 2026 (as the Idea Board and Borrowed Garden): a gate this job dispatches never starts "Release to
-      # production", so the publisher promotes each release itself with promote-after-gate.sh (gate passed on the exact
-      # commit, fast-forward only, live check, automatic rollback). The release scripts are copied from main here, before
-      # anything is built, and never taken from the commit being released.
+      # The publisher promotes each release itself with promote-after-gate.sh (push-started gate passed on the exact
+      # commit, fast-forward only, live check, automatic rollback); "Release to production" leaves release/auto/plotart-*
+      # to it. The release scripts are copied from main here, before anything is built, and never taken from the commit
+      # being released.
       - name: Trusted copy of the release tooling (from main)
         run: cp -r atlas-tools/release "$RUNNER_TEMP/release-tools"
+      # A 1-hour token of the "PlotNua Release" GitHub App (Contents only, this repository only, no Workflows
+      # permission), from the release-automation environment (main only). Used only to push release/auto/ branches,
+      # so that the Image rights gate starts on a PUSH: the only gate main's required check counts (Stage 1, 10 Nov 2026).
+      - name: Release push token (PlotNua Release App)
+        id: app
+        uses: actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510   # v3.3.0
+        with:
+          app-id: ${{ vars.RELEASE_APP_ID }}
+          private-key: ${{ secrets.RELEASE_APP_KEY }}
+          permission-contents: write
       - name: Publish approved gallery content (content-only, guarded, fast-forward)
         env:
+          RELEASE_PUSH_TOKEN: ${{ steps.app.outputs.token }}
           RELEASE_TOOLS: ${{ runner.temp }}/release-tools
           STUDIO_URL: ${{ secrets.STUDIO_URL }}
           STUDIO_PIPELINE_TOKEN: ${{ secrets.STUDIO_PIPELINE_TOKEN }}

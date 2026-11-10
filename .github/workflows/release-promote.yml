@@ -2,16 +2,22 @@
 # the founder's approval of the automation policy).
 #
 # How a website release happens without anyone opening GitHub:
-#   1. Claude finishes and tests a founder-authorised change and pushes it to a branch named release/auto/<topic>.
-#   2. The Image rights gate (every governed check) runs on that exact commit.
+#   1. Claude finishes and tests a founder-authorised change and pushes it to a branch named release/auto/<topic>
+#      (request-release.sh; in GitHub Actions the push is made with the "PlotNua Release" App token, Stage 1 10 Nov 2026).
+#   2. The Image rights gate (every governed check) runs on that exact commit, started by that PUSH: only push-started
+#      gate checks count for main's required "gate" check, and only they start this workflow.
 #   3. Only if it succeeds, this workflow fast-forwards main to that commit: never forced, refused if main has moved
 #      (the release branch must contain the current main), and refused for any commit already behind main.
 #   4. It requests the GitHub Pages build, waits for it, and runs the site health check against that commit (the live
 #      files must be byte-identical to the commit).
 #   5. If the live check fails, it restores the previous site automatically: a revert commit on top (fast-forward,
-#      never a reset), a new Pages build and a second check, and it opens an "ops-alert" issue.
+#      never a reset), pushed to release/auto/rollback-<topic> with the App token, gated, released, re-checked, and an
+#      "ops-alert" issue is opened. A release that changed workflow files cannot be reverted by the App (no Workflows
+#      permission, by design): the run stops and asks for the founder's rollback.
 #   6. Every release is tagged prod/<UTC time>-<sha> and summarised in the run summary: the audit trail.
-# Worker and database changes are NOT released here: they keep their own workflows.
+# Worker and database changes are NOT released here: they keep their own workflows. The PlotArt, Garden and Idea Board
+# publishers promote their own releases (and those releases' rollbacks) themselves, so this workflow leaves those
+# branches alone and never races them.
 name: Release to production
 on:
   workflow_run:
@@ -19,10 +25,10 @@ on:
     types: [completed]
 
 permissions:
-  contents: write     # to fast-forward main: main's ruleset still requires the gate to have passed on that exact commit
+  contents: write     # to fast-forward main and tag: main's ruleset requires the gate to have passed on that exact commit
   pages: write        # to request the Pages build
   issues: write       # ops-alert issues
-  actions: write      # to start the gate on an automatic revert (a workflow may dispatch, not push-trigger)
+  actions: read       # promote-after-gate.sh reads the gate result of an automatic rollback (nothing is dispatched)
 
 concurrency:
   group: production-site
@@ -33,8 +39,19 @@ jobs:
     if: >-
       github.event.workflow_run.conclusion == 'success' &&
       (github.event.workflow_run.event == 'push' || github.event.workflow_run.event == 'workflow_dispatch') &&
-      startsWith(github.event.workflow_run.head_branch, 'release/auto/')
+      startsWith(github.event.workflow_run.head_branch, 'release/auto/') &&
+      !startsWith(github.event.workflow_run.head_branch, 'release/auto/plotart-') &&
+      !startsWith(github.event.workflow_run.head_branch, 'release/auto/garden-') &&
+      !startsWith(github.event.workflow_run.head_branch, 'release/auto/ideas-') &&
+      !startsWith(github.event.workflow_run.head_branch, 'release/auto/rollback-plotart-') &&
+      !startsWith(github.event.workflow_run.head_branch, 'release/auto/rollback-garden-') &&
+      !startsWith(github.event.workflow_run.head_branch, 'release/auto/rollback-ideas-')
     runs-on: ubuntu-latest
+    # The release App's key lives in this environment (deployment branches: main only). This workflow always runs on
+    # main (workflow_run). deployment: false = the key is available but no deployment record is created.
+    environment:
+      name: release-automation
+      deployment: false
     timeout-minutes: 60   # includes waiting for an automatic rollback's own gate
     env:
       SHA: ${{ github.event.workflow_run.head_sha }}
@@ -49,20 +66,32 @@ jobs:
       # how it is itself checked, promoted or rolled back.
       - name: Trusted copy of the release tooling (from main)
         run: cp -r atlas-tools/release "$RUNNER_TEMP/release-tools"
+      # A 1-hour token of the "PlotNua Release" GitHub App (Contents only, this repository only). Used for ONE thing:
+      # pushing an automatic rollback to its release/auto/rollback-* branch, so that its gate starts on a push.
+      - name: Release push token (PlotNua Release App)
+        id: app
+        uses: actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510   # v3.3.0
+        with:
+          app-id: ${{ vars.RELEASE_APP_ID }}
+          private-key: ${{ secrets.RELEASE_APP_KEY }}
+          permission-contents: write
       - name: Promote, verify live, roll back automatically if the live check fails
         id: promote
+        env:
+          RELEASE_PUSH_TOKEN: ${{ steps.app.outputs.token }}
         run: |
           git config user.name "PlotNua release automation"; git config user.email "hello@plotnua.ie"
           bash "$RUNNER_TEMP/release-tools/promote.sh" "$SHA" "$BRANCH"
-      # Fix 5 Nov 2026: the gate promote.sh dispatches on an automatic revert runs with this workflow's built-in token,
-      # and GitHub never starts this workflow again from such a run, so the revert stayed on its branch. This step waits
-      # for the gate to pass on the revert's exact commit and releases it through the same promote.sh. Runs only when
-      # promote.sh actually requested a rollback; a failing rollback release is never reverted again.
+      # Releases the automatic rollback within this run: waits for the push-started gate on the revert's exact commit
+      # and promotes it through the same promote.sh (a second run of this workflow, started by that gate, waits for
+      # this one on the production-site lock and then finds nothing left to release). Runs only when promote.sh
+      # actually pushed a rollback; a failing rollback release is never reverted again.
       - name: Release the automatic rollback (its own gate must pass on its exact commit)
         if: failure() && steps.promote.outputs.rollback_sha != ''
         env:
           RSHA: ${{ steps.promote.outputs.rollback_sha }}
           RBRANCH: ${{ steps.promote.outputs.rollback_branch }}
+          RELEASE_PUSH_TOKEN: ${{ steps.app.outputs.token }}
         run: |
           git config user.name "PlotNua release automation"; git config user.email "hello@plotnua.ie"
           bash "$RUNNER_TEMP/release-tools/promote-after-gate.sh" "$RSHA" "$RBRANCH"

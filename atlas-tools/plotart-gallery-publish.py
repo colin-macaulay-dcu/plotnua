@@ -135,12 +135,12 @@ def records(slug, new):
 
 
 def release(topic):
-    """Release the current HEAD through the checked route and wait for the real outcome (fix 5 Nov 2026, as the Idea
-    Board and Borrowed Garden). A gate dispatched with the workflow's built-in token never starts "Release to production"
-    (GitHub does not chain workflow_run from that token), so waiting for main to move never ended. Instead: start the
-    gate (request-release.sh --no-wait), then promote-after-gate.sh waits for the gate to pass on this EXACT commit and
-    runs promote.sh (fast-forward only, refused if main moved, live check, automatic rollback). The release scripts come
-    from a copy of main's taken before anything was built (RELEASE_TOOLS), never from the commit being released.
+    """Release the current HEAD through the checked route and wait for the real outcome. request-release.sh --no-wait
+    pushes release/auto/plotart-... with the release App token, so the gate starts on that push (Stage 1, 10 Nov 2026);
+    then promote-after-gate.sh waits for the gate to pass on this EXACT commit and runs promote.sh (fast-forward only,
+    refused if main moved, live check, automatic rollback). "Release to production" leaves these branches to this
+    publisher. The release scripts come from a copy of main's taken before anything was built (RELEASE_TOOLS), never
+    from the commit being released.
     Returns (released, output)."""
     ok, o = run("bash atlas-tools/release/request-release.sh %s --no-wait" % topic)
     m = re.search(r" on (release/auto/[a-z0-9-]+)", o)

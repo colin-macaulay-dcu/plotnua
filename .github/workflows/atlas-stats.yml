@@ -18,18 +18,18 @@ on:
 # Least privilege: the job needs to push two files and nothing else.
 permissions:
   contents: write
-  actions: write      # automation v1: start the gate on its release branch (request-release.sh)
 
 concurrency:
   group: atlas-stats
   cancel-in-progress: false
 
-env:
-  GH_TOKEN: ${{ github.token }}   # automation v1: request-release.sh dispatches the gate
 
 jobs:
   refresh:
     runs-on: ubuntu-latest
+    environment:
+      name: release-automation   # holds the release App key; deployment branches: main only
+      deployment: false          # the key is available, no deployment record is created
     steps:
       - name: Check out the site
         uses: actions/checkout@v4
@@ -47,7 +47,19 @@ jobs:
           AIRTABLE_TOKEN: ${{ secrets.AIRTABLE_TOKEN }}
         run: python .github/scripts/atlas_stats.py
 
+      # A 1-hour token of the "PlotNua Release" GitHub App (Contents only, this repository only, no Workflows
+      # permission), from the release-automation environment (main only). Used only to push release/auto/ branches,
+      # so that the Image rights gate starts on a PUSH: the only gate main's required check counts (Stage 1, 10 Nov 2026).
+      - name: Release push token (PlotNua Release App)
+        id: app
+        uses: actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510   # v3.3.0
+        with:
+          app-id: ${{ vars.RELEASE_APP_ID }}
+          private-key: ${{ secrets.RELEASE_APP_KEY }}
+          permission-contents: write
       - name: Commit, only if a governed figure changed
+        env:
+          RELEASE_PUSH_TOKEN: ${{ steps.app.outputs.token }}
         run: |
           set -euo pipefail
 

@@ -73,7 +73,6 @@ on:
 # Least privilege. The job pushes one file; it needs nothing else.
 permissions:
   contents: write
-  actions: write      # automation v1: start the gate on its release branch (request-release.sh)
 
 concurrency:
   group: atlas-match-universe-refresh
@@ -88,12 +87,14 @@ env:
   # ISSUE 005 PIECE E2 — the partition index. The runtime reads this to learn
   # which per-category files exist, so it never guesses a filename.
   DETAIL_INDEX: garden-room-detail-index-v1.json
-  GH_TOKEN: ${{ github.token }}   # automation v1: request-release.sh dispatches the gate
 
 
 jobs:
   refresh:
     runs-on: ubuntu-latest
+    environment:
+      name: release-automation   # holds the release App key; deployment branches: main only
+      deployment: false          # the key is available, no deployment record is created
     timeout-minutes: 40   # automation v1: request-release.sh waits up to 25 min for the gated release
 
     steps:
@@ -237,6 +238,16 @@ jobs:
             --partitions-production-dir . \
             --github-output
 
+      # A 1-hour token of the "PlotNua Release" GitHub App (Contents only, this repository only, no Workflows
+      # permission), from the release-automation environment (main only). Used only to push release/auto/ branches,
+      # so that the Image rights gate starts on a PUSH: the only gate main's required check counts (Stage 1, 10 Nov 2026).
+      - name: Release push token (PlotNua Release App)
+        id: app
+        uses: actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510   # v3.3.0
+        with:
+          app-id: ${{ vars.RELEASE_APP_ID }}
+          private-key: ${{ secrets.RELEASE_APP_KEY }}
+          permission-contents: write
       # ATOMIC. Both artefacts are validated above; this publishes BOTH or
       # NEITHER, so production can never hold a fresh core beside a stale or
       # rejected detail file. It runs when the core universe, the main detail
@@ -253,6 +264,8 @@ jobs:
           (steps.validate.outputs.changed == 'true' ||
            steps.validate_detail.outputs.detail_changed == 'true' ||
            steps.validate_parts.outputs.parts_changed == 'true')
+        env:
+          RELEASE_PUSH_TOKEN: ${{ steps.app.outputs.token }}
         run: |
           set -euo pipefail
           cp "${{ steps.outdir.outputs.path }}/$PRODUCTION_FILE" "$PRODUCTION_FILE"

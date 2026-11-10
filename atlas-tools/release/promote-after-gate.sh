@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
-# PlotNua · promote a release whose gate was started from inside a workflow (fix 5 Nov 2026).
-# A gate dispatched with a workflow's built-in GitHub token never triggers "Release to production" (GitHub does not
-# chain workflow_run from that token). This waits for the Image rights gate to pass on the EXACT commit, then runs
+# PlotNua · promote a release from inside the workflow that requested it (PlotArt, Garden, Idea Board, and automatic
+# rollbacks inside "Release to production"). Its gate starts on the App-token push of its release/auto/ branch (Stage 1,
+# 10 Nov 2026). This waits for the Image rights gate to pass on the EXACT commit, then runs
 # promote.sh (fast-forward only, refused if main moved, live check, automatic rollback). If promote.sh reverts a failed
 # release, the revert (release/auto/rollback-*) is released the same way: its own gate must pass on its exact commit.
 # A failing rollback release is never reverted again (promote.sh). Main's ruleset still requires the gate.
 #   bash promote-after-gate.sh <40-char sha> <release/auto/... branch>
-# Several gate runs can exist for one commit (a push run cancelled by the dispatched one): any successful run on the exact
+# Several gate runs can exist for one commit (e.g. a re-run): any successful run on the exact
 # commit counts as passed; while any is still running it waits; only when all finished without success is it refused.
 # Env (overridable for the local proof): GATE_STATUS_CMD <branch> <sha> prints "<status>\t<conclusion>";
 # GATE_POLL (seconds, default 15), GATE_TRIES (default 120 = 30 min). Exit: promote.sh's code (0 released, 1 refused,

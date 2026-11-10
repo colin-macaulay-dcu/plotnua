@@ -14,7 +14,7 @@ on:
 permissions:
   contents: write
   pages: write
-  actions: write      # automation v1: start the gate on its release branch (request-release.sh)
+  actions: read       # promote-after-gate.sh reads gate results; nothing is dispatched any more (Stage 1)
 
 # Own lock (2 Nov 2026): runs started on approval must not be cancelled by a queued PlotArt run sharing a lock. If the
 # PlotArt pipeline moves main at the same moment, the push is refused (never forced) and the run retries once below.
@@ -23,12 +23,15 @@ concurrency:
   cancel-in-progress: false
 
 env:
-  GH_TOKEN: ${{ github.token }}   # automation v1: request-release.sh dispatches the gate
+  GH_TOKEN: ${{ github.token }}   # reads gate results and requests Pages builds (the gate is no longer dispatched)
 
 jobs:
   publish:
     if: ${{ github.ref == 'refs/heads/main' }}
     runs-on: ubuntu-latest
+    environment:
+      name: release-automation   # holds the release App key; deployment branches: main only
+      deployment: false          # the key is available, no deployment record is created
     outputs:
       branch: ${{ steps.pub.outputs.branch }}
       sha: ${{ steps.pub.outputs.sha }}
@@ -53,10 +56,22 @@ jobs:
         if: steps.on.outputs.on == '1'
         id: before
         run: echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+      # A 1-hour token of the "PlotNua Release" GitHub App (Contents only, this repository only, no Workflows
+      # permission), from the release-automation environment (main only). Used only to push release/auto/ branches,
+      # so that the Image rights gate starts on a PUSH: the only gate main's required check counts (Stage 1, 10 Nov 2026).
+      - name: Release push token (PlotNua Release App)
+        if: steps.on.outputs.on == '1'
+        id: app
+        uses: actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510   # v3.3.0
+        with:
+          app-id: ${{ vars.RELEASE_APP_ID }}
+          private-key: ${{ secrets.RELEASE_APP_KEY }}
+          permission-contents: write
       - name: Publish approved noticeboard listings (content-only, guarded, gated)
         id: pub
         if: steps.on.outputs.on == '1'
         env:
+          RELEASE_PUSH_TOKEN: ${{ steps.app.outputs.token }}
           STUDIO_URL: ${{ secrets.STUDIO_URL }}
           STUDIO_PIPELINE_TOKEN: ${{ secrets.STUDIO_PIPELINE_TOKEN }}
           STUDIO_ACCESS_CLIENT_ID: ${{ secrets.STUDIO_ACCESS_CLIENT_ID }}
@@ -84,13 +99,16 @@ jobs:
             echo "nothing published: no Pages build requested"
           fi
 
-  # Fix 5 Nov 2026 (as the Idea Board): the gate this workflow starts runs with the built-in token, which never starts
-  # "Release to production", so this job promotes that exact commit after its gate passes, through promote.sh copied from
-  # main (fast-forward only, refused if main moved, live check, automatic rollback released the same way).
+  # This job promotes the exact commit the publish job released, once its push-started gate has passed, through
+  # promote.sh copied from main (fast-forward only, refused if main moved, live check, automatic rollback released the
+  # same way). "Release to production" deliberately leaves release/auto/garden-* (and its rollbacks) to this job.
   promote:
     needs: publish
     if: ${{ needs.publish.outputs.sha != '' }}
     runs-on: ubuntu-latest
+    environment:
+      name: release-automation   # holds the release App key; deployment branches: main only
+      deployment: false          # the key is available, no deployment record is created
     timeout-minutes: 60
     concurrency:
       group: production-site
@@ -106,7 +124,19 @@ jobs:
           fetch-depth: 0
       - name: Trusted copy of the release tooling (from main)
         run: cp -r atlas-tools/release "$RUNNER_TEMP/release-tools"
+      # A 1-hour token of the "PlotNua Release" GitHub App (Contents only, this repository only, no Workflows
+      # permission), from the release-automation environment (main only). Used only to push release/auto/ branches,
+      # so that the Image rights gate starts on a PUSH: the only gate main's required check counts (Stage 1, 10 Nov 2026).
+      - name: Release push token (PlotNua Release App)
+        id: app
+        uses: actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510   # v3.3.0
+        with:
+          app-id: ${{ vars.RELEASE_APP_ID }}
+          private-key: ${{ secrets.RELEASE_APP_KEY }}
+          permission-contents: write
       - name: Wait for the gate on this exact commit, promote, verify live
+        env:
+          RELEASE_PUSH_TOKEN: ${{ steps.app.outputs.token }}
         run: |
           [[ "$BRANCH" == release/auto/garden-* ]] || { echo "REFUSED: unexpected release branch"; exit 1; }
           git config user.name "PlotNua release automation"; git config user.email "hello@plotnua.ie"

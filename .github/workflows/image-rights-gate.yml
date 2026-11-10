@@ -490,6 +490,16 @@ jobs:
           python3 atlas-tools/release/prove-gate-result.py
           grep -q "branches: \[main, 'release/\*\*'\]" .github/workflows/image-rights-gate.yml
 
+      # Stage 1 (10 Nov 2026): release branches are pushed with the "PlotNua Release" App token, so this gate starts on
+      # a PUSH (the only gate run main's required check counts); nothing dispatches it. Static check of every releasing
+      # workflow (A1-A8, planted-fault self-test) and the release route's local proof (throw-away repositories, no network).
+      - name: Release branches are pushed by the release App and nothing dispatches the gate
+        run: |
+          set -euo pipefail
+          python3 atlas-tools/release/prove-release-app-push.py
+          python3 atlas-tools/release/prove-release-app-push.py --self-test
+          bash atlas-tools/release/prove-release-promote.sh
+
       # Premium pages (Batch 1, founder approval 23 Oct 2026). One registry
       # (atlas-tools/premium_pages.py); every legacy layout builder that could rewrite
       # a garden-room family page refuses before writing on a Premium page; each
