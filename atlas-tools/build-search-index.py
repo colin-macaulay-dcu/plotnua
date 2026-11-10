@@ -20,6 +20,7 @@ and a preview URL inside it would be discoverable from the index file itself.
     python3 build-search-index.py --check    guards only, write nothing
 """
 
+import gzip
 import hashlib
 import json
 import pathlib
@@ -34,7 +35,20 @@ SITEMAP = ROOT / "sitemap.xml"
 TOPICMAP = ROOT / "atlas-tools" / "search-topic-map.json"
 
 CHECK = "--check" in sys.argv
-SIZE_GUARD = 180 * 1024
+# G10 PERFORMANCE BUDGET (Amendment A4, founder approval 10 Nov 2026). Three guards on what a
+# visitor's phone actually pays, replacing the single 180 KB raw-size guard. NONE of them is a
+# corpus ceiling: no eligible record may be omitted, truncated or suppressed to fit any of them.
+#   G10a  the compressed index (gzip level 9, mtime 0: deterministic) <= 40 KB  (the download)
+#   G10b  the uncompressed index                                       <= 256 KB (parse and memory)
+#   G10c  searchable records                                           <= 1,100  (per-keystroke scan time)
+GZIP_GUARD = 40 * 1024
+RAW_GUARD = 256 * 1024
+RECORD_GUARD = 1100
+# Early warnings (A4): architecture review (Option C, a sharded index) is due when any is reached.
+# They print and never fail the build. The third trigger, 95th-percentile query latency above
+# 100 ms at 6x CPU throttling, is measured by atlas-tools/bench-search-mobile.py.
+WARN_RECORDS = 1000
+WARN_GZIP = 36 * 1024
 
 # The universe this contract was frozen against.
 # RE-FROZEN deliberately, never silently. Since 14 Oct 2026 a supplier update
@@ -1152,16 +1166,32 @@ if src_cav != out_cav:
 print("  G9  noPublishedIrishRoute caveat on all %d products, %d suppliers  OK"
       % (out_cav, sum(1 for s in sup_recs if s["caveats"])))
 
-# G10 size — a PERFORMANCE guard, never a corpus ceiling
-size = len(out_text.encode("utf-8"))
-print("  G10 size %d bytes (%.1f KB) against the %d KB performance guard"
-      % (size, size / 1024, SIZE_GUARD // 1024))
-if size > SIZE_GUARD:
-    die("G10 the complete governed corpus is %.1f KB, over the %d KB V1 performance "
-        "guard. 180 KB IS NOT A CORPUS CEILING: no eligible record may be omitted, "
-        "truncated or suppressed to fit. THE BUILD FAILS and the architecture is "
-        "reconsidered. Do not reduce the corpus."
-        % (size / 1024, SIZE_GUARD // 1024))
+# G10 performance budget (A4) — PERFORMANCE guards, never a corpus ceiling
+raw_bytes = out_text.encode("utf-8")
+size = len(raw_bytes)
+gz = len(gzip.compress(raw_bytes, compresslevel=9, mtime=0))
+nrec = len(index["records"])
+NOT_A_CEILING = ("THESE GUARDS ARE NOT A CORPUS CEILING: no eligible record may be omitted, "
+                 "truncated or suppressed to fit. THE BUILD FAILS and the architecture is "
+                 "reconsidered (Option C, contract Amendment A4). Do not reduce the corpus.")
+print("  G10a compressed %d bytes (%.1f KB gzip-9) against the %d KB guard"
+      % (gz, gz / 1024, GZIP_GUARD // 1024))
+print("  G10b uncompressed %d bytes (%.1f KB) against the %d KB guard"
+      % (size, size / 1024, RAW_GUARD // 1024))
+print("  G10c %d searchable records against the %d-record guard" % (nrec, RECORD_GUARD))
+if gz > GZIP_GUARD:
+    die("G10a the complete governed corpus compresses to %.1f KB, over the %d KB download guard. %s"
+        % (gz / 1024, GZIP_GUARD // 1024, NOT_A_CEILING))
+if size > RAW_GUARD:
+    die("G10b the complete governed corpus is %.1f KB uncompressed, over the %d KB guard. %s"
+        % (size / 1024, RAW_GUARD // 1024, NOT_A_CEILING))
+if nrec > RECORD_GUARD:
+    die("G10c the complete governed corpus has %d searchable records, over the %d-record guard. %s"
+        % (nrec, RECORD_GUARD, NOT_A_CEILING))
+if nrec >= WARN_RECORDS:
+    print("  WARNING A4 early warning: %d searchable records (trigger %d). Plan Option C." % (nrec, WARN_RECORDS))
+if gz >= WARN_GZIP:
+    print("  WARNING A4 early warning: %.1f KB compressed (trigger %d KB). Plan Option C." % (gz / 1024, WARN_GZIP // 1024))
 
 # G15 supplier information records: possibility shape only, own page only
 for r in info_recs:

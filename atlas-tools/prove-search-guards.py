@@ -64,6 +64,9 @@ def make_tree(tmp):
                  tmp / "atlas-tools" / "search-topic-map.json")
     for f in PAGES:
         if (ROOT / f).exists():
+            # Sitemap pages may sit in sub-folders (plotart/, suppliers/): create the folder first.
+            # Pre-existing harness defect, repaired 10 Nov 2026 (Amendment A4 work): the suite crashed.
+            (tmp / f).parent.mkdir(parents=True, exist_ok=True)
             shutil.copy2(ROOT / f, tmp / f)
     # One real preview, so the G2 sabotage has something true to leak.
     prev = sorted(ROOT.glob("*-preview.html"))
@@ -247,10 +250,65 @@ run_case("C12 G9 the Irish-route caveat is dropped", "BUILDER",
              '    if False:\n        caveats.append("no-published-irish-route")'))
 
 # ------------------------------------------------------------------------ G10
-run_case("C13 G10 the corpus exceeds the performance guard", "BUILDER",
-         "180 KB IS NOT A CORPUS CEILING",
-         mutate_builder=lambda b: b.replace("SIZE_GUARD = 180 * 1024",
-                                            "SIZE_GUARD = 4 * 1024"))
+# Amendment A4 (founder approval 10 Nov 2026): the single 180 KB raw-size guard became three
+# performance guards. Each is proved separately, and each refusal must still say the guard is
+# NOT a corpus ceiling (nothing dropped to fit). The real index passes all three, so each
+# BUILDER case lowers exactly one limit below the real corpus and leaves the other two alone.
+run_case("C13a G10a the compressed index exceeds its guard", "BUILDER",
+         "G10a the complete governed corpus compresses",
+         mutate_builder=lambda b: b.replace("GZIP_GUARD = 40 * 1024", "GZIP_GUARD = 4 * 1024"))
+run_case("C13b G10b the uncompressed index exceeds its guard", "BUILDER",
+         "G10b the complete governed corpus is",
+         mutate_builder=lambda b: b.replace("RAW_GUARD = 256 * 1024", "RAW_GUARD = 4 * 1024"))
+run_case("C13c G10c the record count exceeds its guard", "BUILDER",
+         "G10c the complete governed corpus has",
+         mutate_builder=lambda b: b.replace("RECORD_GUARD = 1100", "RECORD_GUARD = 100"))
+run_case("C13d every G10 refusal says it is not a corpus ceiling", "BUILDER",
+         "THESE GUARDS ARE NOT A CORPUS CEILING",
+         mutate_builder=lambda b: b.replace("RECORD_GUARD = 1100", "RECORD_GUARD = 100"))
+
+
+def _grow_corpus(d):
+    # INPUT growth: clone eligible products under new ids until the corpus has more than
+    # 1,100 searchable records. The real G10c limit (not a lowered one) must refuse it.
+    # The harness corpus is smaller than the live one (it carries the garden-room universe only), so
+    # 450 clones are needed to pass 1,100. Each clone gets a well-formed governed id (rec + 14).
+    base = list(d["products"])
+    for i in range(450):
+        c = json.loads(json.dumps(base[i % len(base)]))
+        c["id"] = "recA4G%011d" % i
+        d["products"].append(c)
+
+
+run_case("C13e G10c the real corpus grows past 1,100 records", "INPUT",
+         "G10c the complete governed corpus has",
+         mutate_tree=lambda t: set_universe(t, _grow_corpus))
+
+
+def _fatten_compressible(d):
+    # INPUT: every product name (productName, what the index shows) gains 200 highly compressible characters. The raw index passes
+    # 256 KB while the compressed size and the record count stay inside their limits: only G10b fires.
+    for p in d["products"]:
+        p["productName"] = (p.get("productName") or p["name"]) + " " + "a" * 200
+
+
+def _fatten_incompressible(d):
+    # INPUT: every product name (productName) gains 40 pseudo-random characters (fixed seed, reproducible).
+    # gzip cannot remove them, so the download passes 40 KB while the raw size stays under
+    # 256 KB and the record count is unchanged: only G10a fires.
+    import random
+    rnd = random.Random(20261110)
+    alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+    for p in d["products"]:
+        p["productName"] = (p.get("productName") or p["name"]) + " " + "".join(rnd.choice(alphabet) for _ in range(40))
+
+
+run_case("C13f G10b the real corpus grows past 256 KB uncompressed", "INPUT",
+         "G10b the complete governed corpus is",
+         mutate_tree=lambda t: set_universe(t, _fatten_compressible))
+run_case("C13g G10a the real corpus grows past 40 KB compressed", "INPUT",
+         "G10a the complete governed corpus compresses",
+         mutate_tree=lambda t: set_universe(t, _fatten_incompressible))
 
 # ------------------------------------------------------------------------ G12
 # C14 ORIGINALLY MIS-AIMED. A journey file that does not exist is also a file
