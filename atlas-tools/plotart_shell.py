@@ -11,24 +11,30 @@ import plotart_seo as SEO
 E = lambda s: html.escape(str(s), quote=True)
 ARTIST_FINE = ("Artworks in this gallery are offered by the artist. PlotArt introduces buyers to artists: it doesn't take "
                "payment or deliver work. Photographs of artworks are supplied by the artist and credited where taken by someone else.")
+# Art for Hire (Stage 3B-4): the fourth gallery tab. OFF until the founder releases the Art for Hire page; with it off every
+# page this module writes is byte-identical to before. atlas-tools/plotart-hire-nav.py adds the same tab to hand-built pages.
+HIRE_NAV = False
+HIRE_PILL = ("hire", "art-for-hire/", "Art for Hire", "nav_art_for_hire")
 
 
-def artist_page(path, title, desc, body, scripts=("plotart.js",)):
+def artist_page(path, title, desc, body, scripts=("plotart.js",), current="vg", hire_nav=None, fine=ARTIST_FINE, styles=()):
+    hire_nav = HIRE_NAV if hire_nav is None else hire_nav
     depth = path.count("/")
     R = "../" * depth
     T = "../" * (depth + 1)
-    pill = lambda key, href, lbl, track: '<a class="pa-pill" href="%s"%s data-pa-track="%s">%s</a>' % (href, ' aria-current="page"' if key == "vg" else "", track, lbl)
+    pill = lambda key, href, lbl, track: '<a class="pa-pill" href="%s"%s data-pa-track="%s">%s</a>' % (href, ' aria-current="page"' if key == current else "", track, lbl)
     header = ('<header class="pa-head pa-head--pills">\n  <div class="pa-wrap">\n'
               '    <a class="pa-brand" href="%sindex.html" aria-label="PlotArt home"><img class="pa-logo" src="/assets/brand/plotart-p-48.webp" srcset="/assets/brand/plotart-p-96.webp 2x" width="30" height="30" alt=""><span class="pa-word">PlotArt</span><span class="pa-part"><img src="/assets/brand/plotnua-mark-master.svg" alt="" width="18" height="18"><span>Part of PlotNua</span></span></a>\n'
-              '    <nav class="pa-pills" aria-label="PlotArt">%s%s%s%s%s</nav>\n  </div>\n</header>') % (
-        R, pill("home", R + "index.html", "Discover PlotArt", "nav_discover_plotart"),
+              '    <nav class="pa-pills%s" aria-label="PlotArt">%s%s%s%s%s%s</nav>\n  </div>\n</header>') % (
+        R, " pa-pills--hire" if hire_nav else "", pill("home", R + "index.html", "Discover PlotArt", "nav_discover_plotart"),
         pill("vg", R + "gallery/", "Artists’ Gallery", "nav_virtual_gallery"),
         pill("mg", R + "mobile-gallery/", "Mobile Gallery", "nav_mobile_gallery"),
         pill("lg", R + "living-gallery.html", "Living Gallery", "nav_living_gallery"),
+        pill(HIRE_PILL[0], R + HIRE_PILL[1], HIRE_PILL[2], HIRE_PILL[3]) if hire_nav else "",
         '<a class="pa-pill pa-pill--out" href="%sindex.html" aria-label="PlotNua homepage" data-pa-track="cross_plotnua_home">PlotNua <span aria-hidden="true">↗</span></a>' % T)
     # Phone Menu (founder approval 30 Oct 2026): the same links in the shared one-row Menu
     import re as _re
-    _nav = _re.search(r'<nav class="pa-pills"[^>]*>(.*?)</nav>', header, _re.S).group(1)
+    _nav = _re.search(r'<nav class="pa-pills[^"]*"[^>]*>(.*?)</nav>', header, _re.S).group(1)
     _items = []
     for _a in _re.findall(r'<a\b[^>]*>.*?</a>', _nav, _re.S):
         _a2 = _re.sub(r'class="[^"]*"', 'class="%s"' % ('pn-sm-link is-out' if 'pa-pill--out' in _a else 'pn-sm-link'), _a, 1)
@@ -40,6 +46,7 @@ def artist_page(path, title, desc, body, scripts=("plotart.js",)):
     header = header.replace('</nav>\n  </div>\n</header>', '</nav>\n    ' + _menu + '\n  </div>\n</header>', 1)
     sc = "".join('<script src="%sassets/%s" defer></script>' % (R, s) for s in scripts)
     footlinks = ('<li><a href="{R}gallery/">Artists’ Gallery</a></li><li><a href="{R}mobile-gallery/">Mobile Gallery</a></li><li><a href="{R}living-gallery.html">Living Gallery</a></li>'
+                 + ('<li><a href="{R}art-for-hire/">Art for Hire</a></li>' if hire_nav else '') +
                  '<li><a href="{R}about.html">About PlotArt</a></li><li><a href="{R}founding-25.html">The Founding 25</a></li>').format(R=R)
     robots = SEO.head(path, title, desc)
     return path, """<!DOCTYPE html>
@@ -56,7 +63,7 @@ def artist_page(path, title, desc, body, scripts=("plotart.js",)):
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Hanken+Grotesk:wght@400;500;600;700&display=swap">
-<link rel="stylesheet" href="{R}assets/plotart.css">
+<link rel="stylesheet" href="{R}assets/plotart.css">{styles}
 <link rel="stylesheet" href="/assets/identity/pn-section-menu.css?v=1">
 <script>document.documentElement.classList.remove('no-js');</script>
 </head>
@@ -88,4 +95,5 @@ def artist_page(path, title, desc, body, scripts=("plotart.js",)):
 <script src="/assets/identity/pn-menu.js?v=1" defer></script>
 </body>
 </html>
-""".format(title=E(title), desc=E(desc), robots=robots, R=R, T=T, header=header, body=body, footlinks=footlinks, fine=ARTIST_FINE, sc=sc)
+""".format(title=E(title), desc=E(desc), robots=robots, R=R, T=T, header=header, body=body, footlinks=footlinks, fine=fine, sc=sc,
+           styles="".join('\n<link rel="stylesheet" href="%s">' % s for s in styles))

@@ -42,10 +42,12 @@ function cors(env, origin, methods) {
 const reply = (env, origin, status, body, extra = {}) => new Response(JSON.stringify(body), { status,
   headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store', ...cors(env, origin, 'POST'), ...extra } });
 
-/* Listing, as the relay sees it: both switches on, then the current terms in force (latest effective) and the shared rules. */
-export const open = env => env.HIRE_ENQUIRIES_ENABLED === 'true' && env.HIRE_TERMS_ENABLED === 'true';
+/* Two switches (Stage 3B-4): HIRE_TERMS_ENABLED lists works (the page may show them); HIRE_ENQUIRIES_ENABLED additionally
+   opens enquiries, so the gallery can be shown while the enquiry form stays closed pending legal and privacy approval. */
+export const listing = env => env.HIRE_TERMS_ENABLED === 'true';
+export const open = env => env.HIRE_ENQUIRIES_ENABLED === 'true' && listing(env);
 async function listed(env, opts = {}) {
-  if (!open(env)) return [];
+  if (!listing(env)) return [];
   const t = await env.DB.prepare('SELECT doc_id FROM hire_terms WHERE effective_at <= ? ORDER BY effective_at DESC LIMIT 1').bind(now()).first();
   return t ? listedFor(env, { docId: t.doc_id, ...opts }) : [];
 }
@@ -58,7 +60,7 @@ export async function hireListed(req, env, origin) {
   try {
     const items = (await listed(env)).map(r => ({ id: r.artwork_id, availability: r.hire.availability, available_from: r.hire.available_from }));
     const at = Date.now();
-    return new Response(JSON.stringify({ ok: true, open: open(env), generated_at: new Date(at).toISOString(), valid_until: new Date(at + 120_000).toISOString(), items }),
+    return new Response(JSON.stringify({ ok: true, open: listing(env), enquiries: open(env), generated_at: new Date(at).toISOString(), valid_until: new Date(at + 120_000).toISOString(), items }),
       { status: 200, headers: { ...h, 'Cache-Control': 'public, max-age=30' } });
   } catch {
     return new Response(JSON.stringify({ ok: false, error: 'unavailable' }), { status: 503, headers: { ...h, 'Cache-Control': 'no-store' } });

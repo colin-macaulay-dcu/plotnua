@@ -4,7 +4,6 @@
 import { cpSync, readFileSync, writeFileSync, rmSync } from 'node:fs';
 import { createHash } from 'node:crypto';
 import { execSync } from 'node:child_process';
-import { createRequire } from 'node:module';
 import { start, token, FOUNDER, PIPELINE_TOKEN } from './local.mjs';
 import { seedPublished } from './seed.mjs';
 
@@ -60,13 +59,19 @@ console.log('PROVE · Art for Hire enquiries\n— switched off (the default)');
   await scenario(S);
   const r = await hire(S, good('PA-leah-like-waleah1')), l = await listed(S);
   check('OFF1 with the default configuration, a hire enquiry is refused (503) and nothing is stored or sent', r.s === 503 && await count(S.db, 'enquiries') === 0 && (await mails(S.db)).length === 0);
-  check('OFF2 the live listed-works check answers “not open” with no works', l.s === 200 && l.j.open === false && l.j.items.length === 0);
+  check('OFF2 the live listed-works check answers “not open” with no works', l.s === 200 && l.j.open === false && l.j.enquiries === false && l.j.items.length === 0);
   await S.mf.dispose();
   const S2 = await start({ port: 8872, enquiry: { HIRE_ENQUIRIES_ENABLED: 'true' } });
   await scenario(S2);
   const r2 = await hire(S2, good('PA-leah-like-waleah1'));
   check('OFF3 enquiries switched on but HIRE_TERMS_ENABLED off: still refused (both switches are needed)', r2.s === 503 && (await listed(S2)).j.items.length === 0);
   await S2.mf.dispose();
+  const S2b = await start({ port: 8878, enquiry: { HIRE_TERMS_ENABLED: 'true' } });
+  await scenario(S2b);
+  const r2b = await hire(S2b, good('PA-leah-like-waleah1')), l2b = await listed(S2b);
+  check('OFF3b listing switched on but enquiries off (the page may show works): the check lists them with enquiries closed, and an enquiry is still refused (503)',
+    r2b.s === 503 && l2b.j.open === true && l2b.j.enquiries === false && l2b.j.items.length === 8 && await count(S2b.db, 'enquiries') === 0);
+  await S2b.mf.dispose();
   const wr = readFileSync(HERE + 'wrangler.enquiry.toml', 'utf8');
   check('OFF4 the relay configuration ships with HIRE_ENQUIRIES_ENABLED, HIRE_TERMS_ENABLED and HIRE_SCREEN_USE all "false"',
     /HIRE_ENQUIRIES_ENABLED = "false"/.test(wr) && /HIRE_TERMS_ENABLED = "false"/.test(wr) && /HIRE_SCREEN_USE = "false"/.test(wr));
@@ -222,88 +227,8 @@ check('S4 the hire script is not part of the Studio or the public site (no publi
   && execSync('git ls-files ../../plotart ../../*.html', { cwd: HERE }).toString().split('\n').every(f => !/hire/i.test(f)));
 await S5.mf.dispose();
 
-console.log('— the page script fails closed (real browser)');
-const { chromium } = createRequire('/tmp/claude-0/studio-tools/package.json')('playwright');
-const S6 = await start({ port: 8877, enquiry: { ...ON, ORIGIN: 'https://plotnua.test' } });
-await scenario(S6);
-const script = readFileSync(HERE + 'public-hire/hire-live.js', 'utf8');
-const page = `<!doctype html><meta charset="utf-8"><title>test</title><p data-hire-status></p>
-  ${['waleah1', 'waleah2', 'wabea1'].map(w => `<article data-hire-work="${w}" data-hire-ref="PA-${w.startsWith('wal') ? 'leah-like' : 'bea-other'}-${w}" data-hire-title="Work ${w}" hidden><h3>${w}</h3><p data-hire-availability></p><button data-hire-enquire>Hire enquiry</button></article>`).join('')}
-  <script src="https://plotnua.test/hire-live.js" data-api="https://relay.test" defer></script>`;
-const browser = await chromium.launch();
-async function run(mode, act) {
-  const ctx = await browser.newContext({ javaScriptEnabled: mode !== 'nojs' });
-  const p = await ctx.newPage();
-  const errs = []; p.on('pageerror', e => errs.push(e.message));
-  await p.route('https://plotnua.test/**', rt => rt.request().url().endsWith('hire-live.js') ? rt.fulfill({ body: script, contentType: 'text/javascript' }) : rt.fulfill({ body: page, contentType: 'text/html' }));
-  await p.route('https://relay.test/**', async rt => {
-    const q = rt.request();
-    if (mode.fail === 'abort') return rt.abort();
-    if (mode.fail === '503') return rt.fulfill({ status: 503, body: '{"ok":false}', headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': 'https://plotnua.test' } });
-    const res = await S6.mf.dispatchFetch('http://enquiry.local' + new URL(q.url()).pathname, { method: q.method(), headers: { Origin: 'https://plotnua.test', 'Content-Type': 'application/json' }, body: q.postData() || undefined });
-    let body = await res.text();
-    if (mode.fail === 'stale' && q.url().endsWith('hire-listed')) { const j = JSON.parse(body); j.valid_until = new Date(Date.now() - 1000).toISOString(); body = JSON.stringify(j); }
-    return rt.fulfill({ status: res.status, body, headers: Object.fromEntries(res.headers) });
-  });
-  await p.goto('https://plotnua.test/hire.html');
-  await p.waitForTimeout(900);
-  const out = await (act ? act(p) : null);
-  const vis = await p.$$eval('[data-hire-work]', a => a.filter(x => !x.hidden).map(x => x.dataset.hireWork));
-  const statusText = await p.$eval('[data-hire-status]', x => x.textContent);
-  await ctx.close();
-  return { vis, statusText, out, errs };
-}
-let u = await run('nojs');
-check('U1 with no script (blocked or failed to load), no work is shown as available for hire', u.vis.length === 0);
-u = await run({ fail: 'abort' });
-check('U2 if the live check cannot be reached, nothing is shown and the page says availability can’t be confirmed', u.vis.length === 0 && /can’t be confirmed/.test(u.statusText));
-u = await run({ fail: '503' });
-check('U3 if the live check answers with an error, nothing is shown', u.vis.length === 0 && /can’t be confirmed/.test(u.statusText));
-u = await run({ fail: 'stale' });
-check('U4 an out-of-date answer is treated as a failure: nothing is shown', u.vis.length === 0);
-u = await run({}, async p => p.$eval('[data-hire-work="waleah1"] [data-hire-availability]', x => x.textContent));
-check('U5 when the check answers, exactly the listed works are shown with their hire availability', u.vis.join() === 'waleah1,waleah2,wabea1' && u.out === 'Available for hire' && !u.errs.length, JSON.stringify(u));
-u = await run({}, async p => {
-  await S6.db.prepare("UPDATE artwork_hire SET offered = 0, withdrawn_at = ? WHERE artwork_id = 'waleah2'").bind(new Date().toISOString()).run();
-  await p.evaluate(() => document.dispatchEvent(new Event('visibilitychange')));
-  await p.waitForTimeout(700);
-  await S6.db.prepare("UPDATE artwork_hire SET offered = 1, withdrawn_at = NULL WHERE artwork_id = 'waleah2'").run();
-});
-check('U6 a work withdrawn while the page is open disappears at the next check', u.vis.join() === 'waleah1,wabea1', u.vis.join());
-u = await run({}, async p => {
-  await p.click('[data-hire-work="waleah1"] [data-hire-enquire]');
-  const f = '.pa-hire-form form';
-  const hasFilming = await p.$eval(`${f} [name=intended_use]`, s => [...s.options].some(o => o.value === 'filming'));
-  const explain = await p.$$eval('.pa-hire-explain li', l => l.map(x => x.textContent));
-  for (const [k, val] of Object.entries({ name: 'Hana Hirer', email: 'hana@studio.example.test', business: 'Example Productions Ltd', role: 'Art director', use_place: 'Dublin 8' })) await p.fill(`${f} [name=${k}]`, val);
-  await p.selectOption(`${f} [name=project_type]`, 'staging'); await p.selectOption(`${f} [name=intended_use]`, 'display_staging'); await p.selectOption(`${f} [name=territory]`, 'ie');
-  await p.fill(`${f} [name=date_from]`, plusDays(10)); await p.fill(`${f} [name=date_to]`, plusDays(20));
-  await p.click(`${f} [type=submit]`); await p.waitForTimeout(500);
-  const noTick = await p.$eval('.pa-hire-err', x => x.textContent);
-  await p.check(`${f} [name=privacy]`); await p.click(`${f} [type=submit]`); await p.waitForTimeout(900);
-  return { hasFilming, explain, noTick, done: await p.$eval('.pa-hire-form', x => x.textContent) };
-});
-check('U7 the form collects every required field, shows the five statements, needs the privacy tick, and confirms with a PA-H- reference; it offers no filming option',
-  u.out.explain.length === 5 && /privacy|handles hire enquiries|confirm/i.test(u.out.noTick) && /Enquiry sent/.test(u.out.done) && /PA-H-\d{6}-/.test(u.out.done) && u.out.hasFilming === false, JSON.stringify(u.out));
-u = await run({}, async p => {
-  await p.click('[data-hire-work="wabea1"] [data-hire-enquire]');
-  await S6.db.prepare("UPDATE artwork_hire SET offered = 0, withdrawn_at = ? WHERE artwork_id = 'wabea1'").bind(new Date().toISOString()).run();
-  const f = '.pa-hire-form form';
-  for (const [k, val] of Object.entries({ name: 'Hana Hirer', email: 'hana@studio.example.test', business: 'Example Productions Ltd', role: 'Art director', use_place: 'Cork' })) await p.fill(`${f} [name=${k}]`, val);
-  await p.selectOption(`${f} [name=project_type]`, 'interiors'); await p.selectOption(`${f} [name=intended_use]`, 'display_staging'); await p.selectOption(`${f} [name=territory]`, 'ie');
-  await p.fill(`${f} [name=date_from]`, plusDays(10)); await p.fill(`${f} [name=date_to]`, plusDays(20)); await p.check(`${f} [name=privacy]`);
-  await p.click(`${f} [type=submit]`); await p.waitForTimeout(1200);
-  return (await p.$('.pa-hire-form')) ? await p.$eval('.pa-hire-form', x => x.textContent) : 'form closed';
-});
-check('U8 if the work is withdrawn while the form is open, the relay refuses it and the tile and form disappear', !u.vis.includes('wabea1') && await count(S6.db, 'hire_enquiries', "enquiry_id IN (SELECT id FROM enquiries WHERE artwork_id='wabea1')") === 0, JSON.stringify(u));
-u = await run({}, async p => {
-  await p.route('https://relay.test/**', rt => rt.abort());
-  await p.evaluate(() => document.dispatchEvent(new Event('visibilitychange')));
-  await p.waitForTimeout(700);
-});
-check('U9 if the check fails after works were shown, every work is hidden again', u.vis.length === 0 && /can’t be confirmed/.test(u.statusText));
-await browser.close();
-await S6.mf.dispose();
+// The page script's fail-closed behaviour and the enquiry dialog are proved in a real browser by test/prove-hire-page.mjs (Stage 3B-4),
+// against the page as the builder writes it.
 await S3.mf.dispose();
 } finally { rmSync(HERE + FIX, { recursive: true, force: true }); }
 const pass = results.filter(Boolean).length;
