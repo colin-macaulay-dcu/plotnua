@@ -31,6 +31,9 @@ chmod +x origin.git/hooks/post-receive
 git clone -q origin.git w 2>/dev/null; cd w; git config user.name t; git config user.email t@t; git checkout -q -b main
 echo v1 > index.html; git add -A; git commit -qm base; git rev-parse HEAD >> "$T/checks-passed"; git push -q origin main
 export PAGES_CMD=true GITHUB_STEP_SUMMARY=/dev/null
+# The proof plays a caller outside GitHub Actions (plain pushes to the throw-away origin), even when it runs inside the
+# gate in Actions; the App-token cases in section 5 set GITHUB_ACTIONS / RELEASE_PUSH_TOKEN explicitly.
+unset GITHUB_ACTIONS RELEASE_PUSH_TOKEN RELEASE_PUSH_REMOTE
 gate() { git -C "$T/w" fetch -q origin "$1" && git -C "$T/w" rev-parse "origin/$1" >> "$T/checks-passed"; }   # the gate passes
 rel() { git checkout -q -B "release/auto/$1" origin/main; echo "$2" > index.html; git commit -qam "$1"; git push -q -f origin "release/auto/$1"; git rev-parse HEAD; }
 main() { git ls-remote origin refs/heads/main | cut -f1; }
