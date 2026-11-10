@@ -419,8 +419,9 @@
     const when = t => new Date(t).toLocaleString('en-IE', { dateStyle: 'medium', timeStyle: 'short' });
     app.innerHTML = `<h1 class="st-h1">Enquiries</h1><p class="st-sub">Buyers who contact you through your gallery. Each one is also emailed to you; reply to the buyer directly. Any sale is agreed between you and the buyer.</p>
       ${items.length ? `<ul class="st-works">${items.map(e => `<li class="st-work" style="grid-template-columns:minmax(0,1fr)"><div>
-        <p class="st-work-t">${E(e.buyer_name)}</p><p class="st-work-s">${when(e.created_at)} · ${E(e.artwork_title || 'Your work in general')} · ${E(e.reference)}</p>
+        <p class="st-work-t">${e.kind === 'hire' ? '<span style="display:inline-block;font-size:12px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--terra);margin-right:6px">Hire enquiry</span>' : ''}${E(e.buyer_name)}${e.kind === 'hire' ? ` · ${E(e.role)}, ${E(e.business)}` : ''}</p><p class="st-work-s">${when(e.created_at)} · ${E(e.artwork_title || 'Your work in general')} · ${E(e.reference)}${e.business_url ? ` · ${E(e.business_url)}` : ''}</p>
         <p class="st-muted" style="white-space:pre-wrap;color:var(--lime);margin:0 0 10px">${E(e.message)}</p>
+        ${e.kind === 'hire' ? '<p class="st-muted" style="margin:0 0 10px">A hire, not a sale. You agree any fee, insurance, transport and return with the hirer, in writing. Screen and photo use is never included unless you agree it in writing.</p>' : ''}
         <a class="st-btn st-btn--small st-btn--solid" href="mailto:${encodeURIComponent(e.buyer_email)}?subject=${encodeURIComponent('Re: your PlotArt enquiry ' + e.reference)}">Reply to ${E(e.buyer_email)}</a></div></li>`).join('')}</ul>`
         : '<div class="st-card st-empty">No enquiries yet. They’ll appear here when buyers contact you through your gallery.</div>'}`;
   }

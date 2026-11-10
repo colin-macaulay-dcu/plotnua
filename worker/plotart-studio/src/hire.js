@@ -13,6 +13,7 @@
    is agreed in writing between the artist and the hirer (Artist Terms 2.4–2.5). */
 import { Bad, now, rid } from './lib.js';
 import * as A from './assets.js';
+import * as R from './hire-rules.js';
 
 const all = async (env, sql, ...b) => (await env.DB.prepare(sql).bind(...b).all()).results;
 const one = (env, sql, ...b) => env.DB.prepare(sql).bind(...b).first();
@@ -21,8 +22,7 @@ async function audit(env, actor, role, action, artistId, detail) {
     .bind(now(), actor, role, action, artistId || null, detail ? JSON.stringify(detail).slice(0, 4000) : null).run();
 }
 
-export const SCREEN_NOTICE = 'Screen and photo use is never included in a hire. Any permission is agreed in writing with the artist.';
-export const PILOT_NOTICE = 'Screen-use arrangements are not yet facilitated through PlotArt.';
+export const { SCREEN_NOTICE, PILOT_NOTICE } = R;
 export const STATEMENT = (doc) => `I have read and accept the PlotArt Art for Hire Artist Terms ${doc}. I understand that taking part is optional, that PlotArt only introduces hirers to me, and that any hire, fee, replacement value or screen-use permission is agreed between me and the hirer.`;
 
 /* The switch: acceptance (and therefore any new offer) is possible only when the founder turns HIRE_TERMS_ENABLED on AND
@@ -37,12 +37,10 @@ export async function currentTerms(env) {
   return d && text && text.html_sha256 === d.html_sha256 && text.pdf_sha256 === d.pdf_sha256 ? d : null;
 }
 
-const SCREEN = { none: 0, background: 1, featured: 2 }, PHOTO = { none: 0, yes: 1 };
+const { SCREEN, PHOTO, REVIEWED, pick } = R;
 const PUBLIC = ['availability', 'available_from', 'county', 'screen_use', 'photo_use', 'framing', 'glazed', 'weight_band', 'collection', 'deliver_km'];
-const REVIEWED = ['county', 'framing', 'glazed', 'weight_band', 'collection', 'deliver_km'];   // a change waits for the founder
 const DEFAULTS = { offered: 0, availability: 'now', available_from: null, county: null, screen_use: 'none', photo_use: 'none', framing: null, glazed: null,
   weight_band: null, handling_note: null, collection: 'ask', deliver_km: null, review_state: 'draft', approved_public: null };
-const pick = (o, keys) => Object.fromEntries(keys.map(k => [k, o[k] ?? null]));
 const day = () => now().slice(0, 10);
 
 /* Field rules (values from the Stage 3A design; no price, fee or value field exists). */
@@ -79,13 +77,7 @@ export async function standing(env, artistId) {
   return { enabled: enabled(env), terms: terms ? { doc_id: terms.doc_id, title: terms.title } : null, accepted: !!acc, accepted_at: acc ? acc.accepted_at : null,
     left, active: enabled(env) && !!terms && !!acc && !left };
 }
-/* The artist's PUBLISHED gallery (the last version the pipeline published), so a work only waiting for review is never listed. */
-async function published(env, artistId) {
-  const q = await one(env, "SELECT version FROM publish_queue WHERE artist_id = ? AND status = 'published' ORDER BY version DESC LIMIT 1", artistId);
-  if (!q) return null;
-  const v = await one(env, 'SELECT snapshot FROM versions WHERE artist_id = ? AND version = ?', artistId, q.version);
-  return v ? JSON.parse(v.snapshot) : null;
-}
+const published = R.published;
 
 /* ---------------------------------------------------------------- the artist's own hire records (always scoped) */
 export async function artistView(env, artist) {
@@ -185,36 +177,12 @@ export async function saveWork(env, artist, artworkId, body) {
   return { review_state: review, listed: (await listedRows(env, { artworkId })).length === 1 };
 }
 
-/* ---------------------------------------------------------------- the three gates, in one query */
+/* ---------------------------------------------------------------- the three gates (shared with the enquiry relay: hire-rules.js) */
 export async function listedRows(env, { artistId = null, artworkId = null } = {}) {
   if (!enabled(env)) return [];
   const terms = await currentTerms(env);
   if (!terms) return [];
-  const rows = await all(env, `SELECT h.*, a.slug AS artist_slug, a.display_name, w.slug AS work_slug, w.title, w.availability AS gallery_availability
-    FROM artwork_hire h JOIN artworks w ON w.id = h.artwork_id AND w.artist_id = h.artist_id JOIN artists a ON a.id = h.artist_id
-    WHERE h.offered = 1 AND h.approved_public IS NOT NULL AND h.availability <> 'not_now' AND w.archived = 0 AND w.availability = 'available'
-      AND a.account_status = 'active'
-      AND EXISTS (SELECT 1 FROM hire_terms_acceptances x WHERE x.artist_id = h.artist_id AND x.doc_id = ?)
-      AND NOT EXISTS (SELECT 1 FROM participation_events p WHERE p.artist_id = h.artist_id AND p.kind = 'ended')
-      AND COALESCE((SELECT kind FROM hire_participation_events e WHERE e.artist_id = h.artist_id ORDER BY e.at DESC, e.rowid DESC LIMIT 1), 'none') <> 'left'
-      AND (? IS NULL OR h.artist_id = ?) AND (? IS NULL OR h.artwork_id = ?)
-    ORDER BY a.display_name, w.ord`, terms.doc_id, artistId, artistId, artworkId, artworkId);
-  const out = [];
-  const snaps = new Map();
-  for (const r of rows) {
-    if (!snaps.has(r.artist_id)) snaps.set(r.artist_id, await published(env, r.artist_id));
-    const snap = snaps.get(r.artist_id);
-    const pw = snap && snap.works.find(x => x.id === r.artwork_id);
-    if (!pw || pw.availability !== 'available') continue;                               // published and available in the gallery
-    const ap = JSON.parse(r.approved_public);
-    out.push({ artwork_id: r.artwork_id, artist_id: r.artist_id, artist_slug: r.artist_slug, work_slug: r.work_slug,
-      hire: { ...pick(ap, REVIEWED),                                                       // last approved details
-        availability: r.availability, available_from: r.available_from,                    // availability: the artist's own, at once
-        screen_use: SCREEN[r.screen_use] < SCREEN[ap.screen_use] ? r.screen_use : ap.screen_use,   // never wider than approved
-        photo_use: PHOTO[r.photo_use] < PHOTO[ap.photo_use] ? r.photo_use : ap.photo_use,
-        price: 'Price on request' } });
-  }
-  return out;
+  return R.listedFor(env, { docId: terms.doc_id, artistId, artworkId });
 }
 export const isListed = async (env, artworkId) => (await listedRows(env, { artworkId })).length === 1;
 export async function catalogue(env) {

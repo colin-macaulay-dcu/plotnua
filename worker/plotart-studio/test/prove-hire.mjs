@@ -183,8 +183,8 @@ const qn = (await db.prepare('SELECT COUNT(*) n FROM publish_queue').first()).n;
 check('E2 no hire action created a submission, version or publish job', qn === 2 && (await db.prepare('SELECT COUNT(*) n FROM versions').first()).n === 2 && (await db.prepare('SELECT COUNT(*) n FROM submissions').first()).n === 0);
 check('E3 the purchase enquiry route works as before for both galleries', await enquire('leah-like') === 200 && await enquire('bea-other') === 200
   && (await db.prepare("SELECT COUNT(*) n FROM enquiries WHERE artist_id='aleah'").first()).n === 1);
-const studioSrc = readFileSync(HERE + 'src/enquiry.js', 'utf8');
-check('E4 the purchase relay code does not reference Art for Hire', !/hire/i.test(studioSrc));
+const relayDiff = (await import('node:child_process')).execSync('git diff origin/main -- src/enquiry.js', { cwd: HERE }).toString().split('\n');
+check('E4 the purchase relay code is unchanged from main (Stage 3B-3 only adds the hire paths beside it)', !relayDiff.some(l => /^-[^-]/.test(l)) && relayDiff.filter(l => /^\+[^+]/.test(l)).every(l => /hire/.test(l)));
 
 console.log('— C · withdrawn and sold works are never eligible');
 r = await call('POST', '/api/artworks/waleah2/availability', LEAH, { availability: 'sold' });

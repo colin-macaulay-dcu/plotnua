@@ -1281,7 +1281,8 @@ async function route(req, env) {
       await audit(env, me.email, 'founder', 'publish', q.artist_id, { queue: q.id, version: q.version, publish, ...(warned ? { without_current_agreement: true } : {}) });
       return json({ ok: true, publish });
     }
-    if (p === '/api/admin/enquiries' && m === 'GET') return json({ ok: true, items: await all(env, `SELECT e.reference, e.created_at, e.status, e.artwork_title, a.display_name
+    if (p === '/api/admin/enquiries' && m === 'GET') return json({ ok: true, items: await all(env, `SELECT e.reference, e.created_at, e.status, e.artwork_title, a.display_name,
+      CASE WHEN e.reference LIKE 'PA-H-%' THEN 'hire' ELSE 'purchase' END AS kind
       FROM enquiries e JOIN artists a ON a.id = e.artist_id ORDER BY e.created_at DESC LIMIT 200`) });
     if (p === '/api/admin/audit' && m === 'GET') return json({ ok: true, items: await all(env, 'SELECT * FROM audit ORDER BY id DESC LIMIT 200') });
     return json({ ok: false }, 404);
@@ -1424,8 +1425,11 @@ async function route(req, env) {
     return json({ ok: true });
   }
   if ((mm = p.match(/^\/api\/images\/(i[0-9a-z]+)\/view$/)) && m === 'GET') return previewImage(env, await ownImage(env, artist, mm[1]));
-  if (p === '/api/enquiries' && m === 'GET') return json({ ok: true, items: await all(env,
-    'SELECT reference, created_at, artwork_title, buyer_name, buyer_email, message, status FROM enquiries WHERE artist_id = ? ORDER BY created_at DESC LIMIT 200', artist.id) });
+  if (p === '/api/enquiries' && m === 'GET') return json({ ok: true, items: (await H.installed(env))   // purchase and hire enquiries, told apart (Art for Hire 3B-3)
+    ? await all(env, `SELECT e.reference, e.created_at, e.artwork_title, e.buyer_name, e.buyer_email, e.message, e.status,
+        CASE WHEN h.enquiry_id IS NULL THEN 'purchase' ELSE 'hire' END AS kind, h.business, h.role, h.business_url
+        FROM enquiries e LEFT JOIN hire_enquiries h ON h.enquiry_id = e.id WHERE e.artist_id = ? ORDER BY e.created_at DESC LIMIT 200`, artist.id)
+    : await all(env, 'SELECT reference, created_at, artwork_title, buyer_name, buyer_email, message, status FROM enquiries WHERE artist_id = ? ORDER BY created_at DESC LIMIT 200', artist.id) });
   if (p === '/api/agreement' && m === 'GET') {
     const a = await one(env, 'SELECT * FROM artists WHERE id=?', artist.id);
     const ag = await agreementState(env, a);

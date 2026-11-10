@@ -31,7 +31,7 @@ export async function start({ port, env = {}, enquiry = null, ideas = null, gard
   const workers = [{ name: 'studio', ...common, scriptPath: HERE + (script || 'src/index.js'), d1Databases: { DB: 'plotart-studio-local' }, r2Buckets: ['IMAGES', 'APPLICATIONS'],
     bindings: { ENVIRONMENT: 'local', MAILER: 'capture', ACCESS_TEAM_DOMAIN: TEAM, ACCESS_AUD: AUD, ACCESS_JWKS_JSON: JSON.stringify({ keys: [jwk] }),
       FOUNDER_EMAILS: FOUNDER, PIPELINE_TOKEN, INSTANT_AUTOPUBLISH: 'false', ...env } }];
-  if (enquiry) workers.push({ name: 'enquiry', routes: ['enquiry.local/*', '*/v1/enquiry'], ...common, scriptPath: HERE + 'src/enquiry.js', d1Databases: { DB: 'plotart-studio-local' },
+  if (enquiry) workers.push({ name: 'enquiry', routes: ['enquiry.local/*', '*/v1/enquiry', '*/v1/hire-enquiry', '*/v1/hire-listed'], ...common, scriptPath: HERE + 'src/enquiry.js', d1Databases: { DB: 'plotart-studio-local' },
     bindings: { ENVIRONMENT: 'local', ORIGIN: 'https://plotnua.ie', ENQUIRIES_ENABLED: 'true', MAILER: 'capture', REPLY_TO: 'hello@plotnua.ie', ...enquiry } });
   if (ideas) workers.push({ name: 'ideas', routes: ['ideas.local/*', '*/v1/ideas'], ...common, scriptPath: HERE + 'src/ideas.js', d1Databases: { DB: 'plotart-studio-local' },
     bindings: { ENVIRONMENT: 'local', ORIGIN: 'https://plotnua.ie', IDEAS_ENABLED: 'true', ...ideas } });   // Idea Board intake (1 Nov 2026)

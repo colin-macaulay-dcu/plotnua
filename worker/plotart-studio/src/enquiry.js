@@ -8,6 +8,7 @@
    about the artist's address. No IP address is stored; rate limits are per-isolate and per-day caps in D1. */
 import { send } from './mailer.js';
 import { foundingAt } from './founding.js';
+import { hireEnquiry, hireListed } from './hire-enquiry.js';   // Art for Hire (Stage 3B-3): separate routes, switched off
 
 const NOTICE = 'PA-ENQ-2026-10-29';
 // Enquiry notice versions the relay accepts. The next version is accepted BEFORE any page shows it, so changing the notice
@@ -84,6 +85,8 @@ export default {
   async fetch(req, env) {
     const url = new URL(req.url), origin = req.headers.get('Origin');
     if (url.pathname === '/v1/garden-enquiry') return gardenEnquiry(req, env, origin);   // prepared, OFF (see below)
+    if (url.pathname === '/v1/hire-enquiry') return hireEnquiry(req, env, origin);       // prepared, OFF (hire-enquiry.js)
+    if (url.pathname === '/v1/hire-listed') return hireListed(req, env, origin);         // live listed-works check, fails closed
     if (url.pathname !== '/v1/enquiry') return new Response('Not found', { status: 404 });
     if (req.method === 'OPTIONS') return new Response(null, { status: 204, headers: cors(env, origin) });
     if (req.method !== 'POST') return reply(env, origin, 405, { ok: false });
