@@ -11422,6 +11422,1153 @@
         "date": "2026-11-08",
         "subject": "DISC-037 The Resourceful Garden, Stage 11 hero replacement (development, not deployed)"
       }
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "ciaran-mccoy",
+      "asset": "plotart/artists/ciaran-mccoy/img/portrait-600.webp",
+      "bytes": 37914,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "sRGB (no embedded profile; treated as sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aks1ttuiytg",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        600,
+        600
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "cd5a95610b59d3fea2f094120d343bab02daea9d81a8ffce7e7a489e18ebd9dc",
+      "source_sha256": "ac1c78b2e4842324483dbace8379862612df9fa5d0520defacd9bffde7704bdb",
+      "subject": "portrait",
+      "work_slug": null
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "ciaran-mccoy",
+      "asset": "plotart/artists/ciaran-mccoy/img/as-i-say-it-1-600.webp",
+      "bytes": 42354,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (sRGB IEC61966-2.1)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aks1ttuiytg",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        600,
+        397
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "64b2b2fea6636cf9fe3ce4fe35639a68f72ed76dd3ae198caa68599c2e9431b0",
+      "source_sha256": "f0aed7c86daa5143d9f62f1f07c27172e8bda11d76ade8a9944b1b248b886d35",
+      "subject": "artwork",
+      "work_slug": "as-i-say-it"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "ciaran-mccoy",
+      "asset": "plotart/artists/ciaran-mccoy/img/as-i-say-it-1-1200.webp",
+      "bytes": 127066,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (sRGB IEC61966-2.1)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aks1ttuiytg",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        1200,
+        794
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "20363498b77a6eed110b1500c67349984a591e6fd458a6c8ce2ef04833277693",
+      "source_sha256": "f0aed7c86daa5143d9f62f1f07c27172e8bda11d76ade8a9944b1b248b886d35",
+      "subject": "artwork",
+      "work_slug": "as-i-say-it"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "ciaran-mccoy",
+      "asset": "plotart/artists/ciaran-mccoy/img/as-i-say-it-1-2000.webp",
+      "bytes": 289000,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (sRGB IEC61966-2.1)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aks1ttuiytg",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        2000,
+        1323
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "382f8a65692883cd42cddc19366333ab99275006b041e925656b8f9506abb82e",
+      "source_sha256": "f0aed7c86daa5143d9f62f1f07c27172e8bda11d76ade8a9944b1b248b886d35",
+      "subject": "artwork",
+      "work_slug": "as-i-say-it"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "ciaran-mccoy",
+      "asset": "plotart/artists/ciaran-mccoy/img/non-serviam-1-600.webp",
+      "bytes": 120130,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (sRGB IEC61966-2.1)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aks1ttuiytg",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        596,
+        600
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "9f37be95594513f5637b34377f413fc633164956679bb5be801b2b12a406956a",
+      "source_sha256": "a97def0db9a3fa95631cc4692924a6e7d129e899583e18ee9d810062b03b00b4",
+      "subject": "artwork",
+      "work_slug": "non-serviam"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "ciaran-mccoy",
+      "asset": "plotart/artists/ciaran-mccoy/img/non-serviam-1-1200.webp",
+      "bytes": 395326,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (sRGB IEC61966-2.1)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aks1ttuiytg",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        1191,
+        1200
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "07c0bdebc5d4d15e7053e1902f5ec93a3b8277d02eef9a7bc1f3a1df051d5962",
+      "source_sha256": "a97def0db9a3fa95631cc4692924a6e7d129e899583e18ee9d810062b03b00b4",
+      "subject": "artwork",
+      "work_slug": "non-serviam"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "ciaran-mccoy",
+      "asset": "plotart/artists/ciaran-mccoy/img/non-serviam-1-2000.webp",
+      "bytes": 873056,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (sRGB IEC61966-2.1)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aks1ttuiytg",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        1985,
+        2000
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "69422ec0ceed8c831a534058705e834430aea92a725b143743971b439f526616",
+      "source_sha256": "a97def0db9a3fa95631cc4692924a6e7d129e899583e18ee9d810062b03b00b4",
+      "subject": "artwork",
+      "work_slug": "non-serviam"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "ciaran-mccoy",
+      "asset": "plotart/artists/ciaran-mccoy/img/insatiable-greed-1-600.webp",
+      "bytes": 114954,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (sRGB IEC61966-2.1)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aks1ttuiytg",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        600,
+        595
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "9f5f85e3bc8fc3119a13ca82843534cf3eaba67a9caa4e90349f930ef02639f0",
+      "source_sha256": "8761ec1f7c0712a463b9fb4f19e908f197c9523c7243d4b865c61996623cad29",
+      "subject": "artwork",
+      "work_slug": "insatiable-greed"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "ciaran-mccoy",
+      "asset": "plotart/artists/ciaran-mccoy/img/insatiable-greed-1-1200.webp",
+      "bytes": 387186,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (sRGB IEC61966-2.1)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aks1ttuiytg",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        1200,
+        1190
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "47f7a80ecb6f0ab927fd7f2c7235a7f127e3fe481bb73b40eb2f956bdce67352",
+      "source_sha256": "8761ec1f7c0712a463b9fb4f19e908f197c9523c7243d4b865c61996623cad29",
+      "subject": "artwork",
+      "work_slug": "insatiable-greed"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "ciaran-mccoy",
+      "asset": "plotart/artists/ciaran-mccoy/img/insatiable-greed-1-2000.webp",
+      "bytes": 883180,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (sRGB IEC61966-2.1)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aks1ttuiytg",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        2000,
+        1983
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "e05d7c6ab056d6c7175de14967b3807b784aad3952dc24fe39db2081f11d0e4e",
+      "source_sha256": "8761ec1f7c0712a463b9fb4f19e908f197c9523c7243d4b865c61996623cad29",
+      "subject": "artwork",
+      "work_slug": "insatiable-greed"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "ciaran-mccoy",
+      "asset": "plotart/artists/ciaran-mccoy/img/walk-your-way-1-600.webp",
+      "bytes": 71266,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (sRGB IEC61966-2.1)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aks1ttuiytg",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        600,
+        470
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "247504cc204908e05487ed0aba722f5b05efea9c26f5cb30a271f1b869867381",
+      "source_sha256": "a053273de64d88cd692f66031fc34afd43a526980a9398b274f32349a3aa9204",
+      "subject": "artwork",
+      "work_slug": "walk-your-way"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "ciaran-mccoy",
+      "asset": "plotart/artists/ciaran-mccoy/img/walk-your-way-1-1200.webp",
+      "bytes": 269884,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (sRGB IEC61966-2.1)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aks1ttuiytg",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        1200,
+        940
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "5291b30587b6e784b824877ccb679a808a5ab50589329f85a014b0e223265eea",
+      "source_sha256": "a053273de64d88cd692f66031fc34afd43a526980a9398b274f32349a3aa9204",
+      "subject": "artwork",
+      "work_slug": "walk-your-way"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "ciaran-mccoy",
+      "asset": "plotart/artists/ciaran-mccoy/img/walk-your-way-1-2000.webp",
+      "bytes": 745624,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (sRGB IEC61966-2.1)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aks1ttuiytg",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        2000,
+        1567
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "808dfd92affdf2d40389e897e8999ef248c2b5277231ef031185575f9e60f43a",
+      "source_sha256": "a053273de64d88cd692f66031fc34afd43a526980a9398b274f32349a3aa9204",
+      "subject": "artwork",
+      "work_slug": "walk-your-way"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "ciaran-mccoy",
+      "asset": "plotart/artists/ciaran-mccoy/img/sacred-words-1-600.webp",
+      "bytes": 53080,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (sRGB IEC61966-2.1)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aks1ttuiytg",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        600,
+        399
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "687c531501aa416708adad786a6689d96cf8eb0e8ee0099763fbcf138aa227b5",
+      "source_sha256": "d49b2032fa5c38a133232fbb6a277dd9290b6c1a576f875b83ca585baca0eb86",
+      "subject": "artwork",
+      "work_slug": "sacred-words"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "ciaran-mccoy",
+      "asset": "plotart/artists/ciaran-mccoy/img/sacred-words-1-1200.webp",
+      "bytes": 153400,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (sRGB IEC61966-2.1)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aks1ttuiytg",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        1200,
+        798
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "a2852813f4953dc7e27d05a034a87dd7ee1691341304af79eefe8672b7c24522",
+      "source_sha256": "d49b2032fa5c38a133232fbb6a277dd9290b6c1a576f875b83ca585baca0eb86",
+      "subject": "artwork",
+      "work_slug": "sacred-words"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "ciaran-mccoy",
+      "asset": "plotart/artists/ciaran-mccoy/img/sacred-words-1-2000.webp",
+      "bytes": 324926,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (sRGB IEC61966-2.1)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aks1ttuiytg",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        2000,
+        1329
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "71147c4509d8d92216a373ddc09b58c06db390006beaf67afffaa390adc0a290",
+      "source_sha256": "d49b2032fa5c38a133232fbb6a277dd9290b6c1a576f875b83ca585baca0eb86",
+      "subject": "artwork",
+      "work_slug": "sacred-words"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "ciaran-mccoy",
+      "asset": "plotart/artists/ciaran-mccoy/img/hope-1-600.webp",
+      "bytes": 40816,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (sRGB IEC61966-2.1)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aks1ttuiytg",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        372,
+        600
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "2506b1fbdd23803ebc972e7e4ac30717d61f95ee438588c023501464ea0ee329",
+      "source_sha256": "a1aafb40fbbbb7e163593af97e2553fb01f9dbe291050ebc624aa6fd43729797",
+      "subject": "artwork",
+      "work_slug": "hope"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "ciaran-mccoy",
+      "asset": "plotart/artists/ciaran-mccoy/img/hope-1-1200.webp",
+      "bytes": 134148,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (sRGB IEC61966-2.1)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aks1ttuiytg",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        745,
+        1200
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "24a2727ea2eb9f620e798c9886d0936834bf6e19d86bb76769c96919368c9d74",
+      "source_sha256": "a1aafb40fbbbb7e163593af97e2553fb01f9dbe291050ebc624aa6fd43729797",
+      "subject": "artwork",
+      "work_slug": "hope"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "ciaran-mccoy",
+      "asset": "plotart/artists/ciaran-mccoy/img/hope-1-2000.webp",
+      "bytes": 312242,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (sRGB IEC61966-2.1)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aks1ttuiytg",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        1241,
+        2000
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "950e86caf72aca9b39f5dd84b77e06e3b00444f92f675a7983b07db766398814",
+      "source_sha256": "a1aafb40fbbbb7e163593af97e2553fb01f9dbe291050ebc624aa6fd43729797",
+      "subject": "artwork",
+      "work_slug": "hope"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "ciaran-mccoy",
+      "asset": "plotart/artists/ciaran-mccoy/img/there-is-always-another-matthias-1-600.webp",
+      "bytes": 117178,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (sRGB IEC61966-2.1)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aks1ttuiytg",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        600,
+        478
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "d8a3aa54d286696f9b7a304355a08096d3257e7fe2caeb01daa69b4d8c3454dd",
+      "source_sha256": "798a2db238a06244a2297f9a0961fadd8b7cb06f55a87285f65e1f23152e7829",
+      "subject": "artwork",
+      "work_slug": "there-is-always-another-matthias"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "ciaran-mccoy",
+      "asset": "plotart/artists/ciaran-mccoy/img/there-is-always-another-matthias-1-1200.webp",
+      "bytes": 421580,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (sRGB IEC61966-2.1)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aks1ttuiytg",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        1200,
+        955
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "ce496eda526ffd81152e82dbe1a17db04dcbec677621904709a3dc883ea03379",
+      "source_sha256": "798a2db238a06244a2297f9a0961fadd8b7cb06f55a87285f65e1f23152e7829",
+      "subject": "artwork",
+      "work_slug": "there-is-always-another-matthias"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "ciaran-mccoy",
+      "asset": "plotart/artists/ciaran-mccoy/img/there-is-always-another-matthias-1-2000.webp",
+      "bytes": 942278,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (sRGB IEC61966-2.1)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aks1ttuiytg",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        2000,
+        1592
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "823fab041a9c4da9ef151b0b6aec97fedda0fe6641afc220f21053b1035813b4",
+      "source_sha256": "798a2db238a06244a2297f9a0961fadd8b7cb06f55a87285f65e1f23152e7829",
+      "subject": "artwork",
+      "work_slug": "there-is-always-another-matthias"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "ciaran-mccoy",
+      "asset": "plotart/artists/ciaran-mccoy/img/suspended-1-600.webp",
+      "bytes": 33840,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (sRGB IEC61966-2.1)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aks1ttuiytg",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        600,
+        371
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "2f22dd54c030850e8a7b9ad92d28f84d5ae1281bea9d9498189871c6046ad3d7",
+      "source_sha256": "4616ed8819e8e54bf5d011f65d010260cd2c5e9c0d0ece8822121d1b603228b6",
+      "subject": "artwork",
+      "work_slug": "suspended"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "ciaran-mccoy",
+      "asset": "plotart/artists/ciaran-mccoy/img/suspended-1-1200.webp",
+      "bytes": 91336,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (sRGB IEC61966-2.1)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aks1ttuiytg",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        1200,
+        742
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "83f34b85ac17f581307f96e4c2c13efb2e96316b7b904e74035096d9a478ffb1",
+      "source_sha256": "4616ed8819e8e54bf5d011f65d010260cd2c5e9c0d0ece8822121d1b603228b6",
+      "subject": "artwork",
+      "work_slug": "suspended"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "ciaran-mccoy",
+      "asset": "plotart/artists/ciaran-mccoy/img/suspended-1-2000.webp",
+      "bytes": 193774,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (sRGB IEC61966-2.1)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aks1ttuiytg",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        2000,
+        1236
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "455816087acf521f8052569ca09e868d402af112e6cef949c495030eed89188a",
+      "source_sha256": "4616ed8819e8e54bf5d011f65d010260cd2c5e9c0d0ece8822121d1b603228b6",
+      "subject": "artwork",
+      "work_slug": "suspended"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "ciaran-mccoy",
+      "asset": "plotart/artists/ciaran-mccoy/img/an-offering-1-600.webp",
+      "bytes": 41264,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (sRGB IEC61966-2.1)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aks1ttuiytg",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        600,
+        367
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "46ea5677c2f73093c34d46f241b24a3f4ee3d786dae204a82a09523507b02ba9",
+      "source_sha256": "087768507dbc5013d41aeb88143ce601ab0ab92fc5feab58db262798c73b97c6",
+      "subject": "artwork",
+      "work_slug": "an-offering"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "ciaran-mccoy",
+      "asset": "plotart/artists/ciaran-mccoy/img/an-offering-1-1200.webp",
+      "bytes": 126744,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (sRGB IEC61966-2.1)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aks1ttuiytg",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        1200,
+        734
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "21f6fe716a57a14fa2499ee72cd3948852fcfcfcff1169d902c8cb5e77921c89",
+      "source_sha256": "087768507dbc5013d41aeb88143ce601ab0ab92fc5feab58db262798c73b97c6",
+      "subject": "artwork",
+      "work_slug": "an-offering"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "ciaran-mccoy",
+      "asset": "plotart/artists/ciaran-mccoy/img/an-offering-1-2000.webp",
+      "bytes": 280498,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (sRGB IEC61966-2.1)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aks1ttuiytg",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        2000,
+        1223
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "d7589b5fe7805ef6f5d3e4376f797f56d48555f5cec0c73d0d49aebec3fa0b56",
+      "source_sha256": "087768507dbc5013d41aeb88143ce601ab0ab92fc5feab58db262798c73b97c6",
+      "subject": "artwork",
+      "work_slug": "an-offering"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "ciaran-mccoy",
+      "asset": "plotart/artists/ciaran-mccoy/img/one-two-three-iii-1-600.webp",
+      "bytes": 79740,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (sRGB IEC61966-2.1)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aks1ttuiytg",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        405,
+        600
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "27cec2cbe061979eac15432d75812301037dfdde2a0c05bf6b954df712dc6f88",
+      "source_sha256": "5bf784b2c76dddd929da34260cf89904587f0b88a86a3e6912133320074c8164",
+      "subject": "artwork",
+      "work_slug": "one-two-three-iii"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "ciaran-mccoy",
+      "asset": "plotart/artists/ciaran-mccoy/img/one-two-three-iii-1-1200.webp",
+      "bytes": 274322,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (sRGB IEC61966-2.1)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aks1ttuiytg",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        811,
+        1200
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "90cef8aa8ee3b534c3d9b9925b8a91abf78df72d0f3d48e7f1451aedb63ce00a",
+      "source_sha256": "5bf784b2c76dddd929da34260cf89904587f0b88a86a3e6912133320074c8164",
+      "subject": "artwork",
+      "work_slug": "one-two-three-iii"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "ciaran-mccoy",
+      "asset": "plotart/artists/ciaran-mccoy/img/one-two-three-iii-1-2000.webp",
+      "bytes": 700498,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (sRGB IEC61966-2.1)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aks1ttuiytg",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        1351,
+        2000
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "f21bc9750645250b9cad8af47534e2cfbfe2a870382d830e78de4169e4202012",
+      "source_sha256": "5bf784b2c76dddd929da34260cf89904587f0b88a86a3e6912133320074c8164",
+      "subject": "artwork",
+      "work_slug": "one-two-three-iii"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "ciaran-mccoy",
+      "asset": "plotart/artists/ciaran-mccoy/img/disconnected-head-1-600.webp",
+      "bytes": 52324,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (sRGB IEC61966-2.1)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aks1ttuiytg",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        420,
+        600
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "d97ac6f0632b5761bf4cd4bfd9c42de15cf07833c4cd968636f6ee1b961a30b4",
+      "source_sha256": "2842343f2b9588a413f2be3d8a208b5cf8e74a0e7fc85e944b8d9e498aea9900",
+      "subject": "artwork",
+      "work_slug": "disconnected-head"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "ciaran-mccoy",
+      "asset": "plotart/artists/ciaran-mccoy/img/disconnected-head-1-1200.webp",
+      "bytes": 133706,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (sRGB IEC61966-2.1)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aks1ttuiytg",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        840,
+        1200
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "b7e1e7c4ceba056e603e0f53a4606408e187ac5ed3c9b1996a5f7dd9cff44136",
+      "source_sha256": "2842343f2b9588a413f2be3d8a208b5cf8e74a0e7fc85e944b8d9e498aea9900",
+      "subject": "artwork",
+      "work_slug": "disconnected-head"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "ciaran-mccoy",
+      "asset": "plotart/artists/ciaran-mccoy/img/disconnected-head-1-2000.webp",
+      "bytes": 237062,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (sRGB IEC61966-2.1)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aks1ttuiytg",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        1399,
+        2000
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "ef1a140e9cc6b27e9346e935dbd5cc56eede1ec6515463239ae5b80b57d0e441",
+      "source_sha256": "2842343f2b9588a413f2be3d8a208b5cf8e74a0e7fc85e944b8d9e498aea9900",
+      "subject": "artwork",
+      "work_slug": "disconnected-head"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "ciaran-mccoy",
+      "asset": "plotart/artists/ciaran-mccoy/img/void-1-600.webp",
+      "bytes": 61160,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (sRGB IEC61966-2.1)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aks1ttuiytg",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        600,
+        388
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "435db4f45445c6dddbd7588b761f35b0e9817792e7cf9a19af413ea1f3b6c357",
+      "source_sha256": "3177c855968f44600bbccc9bd5856897640986e865c0257a845941765b2b96f5",
+      "subject": "artwork",
+      "work_slug": "void"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "ciaran-mccoy",
+      "asset": "plotart/artists/ciaran-mccoy/img/void-1-1200.webp",
+      "bytes": 246068,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (sRGB IEC61966-2.1)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aks1ttuiytg",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        1200,
+        776
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "31330aa3e37e60340cf8657e7f46830c8aa634f1b6182d4d2c625a7286552f21",
+      "source_sha256": "3177c855968f44600bbccc9bd5856897640986e865c0257a845941765b2b96f5",
+      "subject": "artwork",
+      "work_slug": "void"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "ciaran-mccoy",
+      "asset": "plotart/artists/ciaran-mccoy/img/void-1-2000.webp",
+      "bytes": 527914,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (sRGB IEC61966-2.1)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aks1ttuiytg",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        2000,
+        1293
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "b33881fd210c47534eceb83c6f75cde3ccd66b2054be0545f9ec897b98d033c2",
+      "source_sha256": "3177c855968f44600bbccc9bd5856897640986e865c0257a845941765b2b96f5",
+      "subject": "artwork",
+      "work_slug": "void"
     }
   ],
   "legacy_undeclared": [

@@ -1,0 +1,786 @@
+{
+ "artist": {
+  "bio": "PIGSY is the artistic identity of Dublin-born Irish artist Ciarán McCoy. His practice centres on painting, exploring the psychological terrain of language, memory, identity and belonging through bold, instinctive mark-making. Working across canvas, mixed media and paper, he confronts the tension between structure and chaos, discipline and emotional expression.\n\nA qualified architect turned artist, PIGSY brings an understanding of structure, construction and deconstruction to a practice driven by spontaneity and intuition. Drawing on personal experience, including dyslexia, his work embraces fragmentation, layered imagery and handwritten language as ways of exploring the subconscious and the psychological forces that shape human behaviour.\n\nHis recent solo exhibitions include \"Wayward Tribe\" (AcentricSpace, Shanghai, 2026), \"Language as Wound, Silence as War\" (Fade Street Studios, Dublin, 2025), \"Níl Brón Orm\" (360XQMX, Ajijic, Mexico, 2025), \"Tá Brón Orm\" (Casa Lü Sur, Mexico City, 2024) and \"First Things Last\" (La Casa Amarilla, Málaga, Spain, 2024).\n\nPIGSY has exhibited internationally across Ireland, Spain, Mexico, Brazil and China, and undertaken artist residencies in Ireland, Spain, Mexico and China. His work has featured in the Hunt Museum Open Submission exhibition in Ireland and is held in private collections internationally and in the collection of Fitzwilliam Lawn Tennis Club, Dublin.",
+  "county": "Dublin",
+  "display_name": "PIGSY",
+  "founding": true,
+  "instagram": "pigsyinspace",
+  "medium": "painting",
+  "portrait": {
+   "alt": "PIGSY in his studio",
+   "aspect": 1.0,
+   "derivatives": [
+    {
+     "file": "portrait-600.webp",
+     "long_edge": 600,
+     "pixels": [
+      600,
+      600
+     ]
+    }
+   ],
+   "photo_credit": null,
+   "pixels": [
+    950,
+    950
+   ],
+   "role": "portrait"
+  },
+  "practice": "Mixed Media Painting",
+  "slug": "ciaran-mccoy",
+  "statement": "I explore the human psyche through bold, instinctive painting. Gestural marks, layered imagery and fragmented language become a means of examining the forces that shape human behaviour, memory and identity.",
+  "website": "https://pigsy.art/"
+ },
+ "provenance_sources": [
+  {
+   "dhash": "733321e2c9d8c8c4",
+   "source_sha256": "ac1c78b2e4842324483dbace8379862612df9fa5d0520defacd9bffde7704bdb",
+   "stem": "portrait"
+  },
+  {
+   "dhash": "e098a68c8cc8e2f0",
+   "source_sha256": "f0aed7c86daa5143d9f62f1f07c27172e8bda11d76ade8a9944b1b248b886d35",
+   "stem": "as-i-say-it-1"
+  },
+  {
+   "dhash": "bb59696b5df66bab",
+   "source_sha256": "a97def0db9a3fa95631cc4692924a6e7d129e899583e18ee9d810062b03b00b4",
+   "stem": "non-serviam-1"
+  },
+  {
+   "dhash": "6b2b1efba9b12712",
+   "source_sha256": "8761ec1f7c0712a463b9fb4f19e908f197c9523c7243d4b865c61996623cad29",
+   "stem": "insatiable-greed-1"
+  },
+  {
+   "dhash": "c89c2d6d696969d9",
+   "source_sha256": "a053273de64d88cd692f66031fc34afd43a526980a9398b274f32349a3aa9204",
+   "stem": "walk-your-way-1"
+  },
+  {
+   "dhash": "9f2f3ebbbfb9bdbb",
+   "source_sha256": "d49b2032fa5c38a133232fbb6a277dd9290b6c1a576f875b83ca585baca0eb86",
+   "stem": "sacred-words-1"
+  },
+  {
+   "dhash": "b312b6e4e0f0f0e0",
+   "source_sha256": "a1aafb40fbbbb7e163593af97e2553fb01f9dbe291050ebc624aa6fd43729797",
+   "stem": "hope-1"
+  },
+  {
+   "dhash": "085c98d9b1596322",
+   "source_sha256": "798a2db238a06244a2297f9a0961fadd8b7cb06f55a87285f65e1f23152e7829",
+   "stem": "there-is-always-another-matthias-1"
+  },
+  {
+   "dhash": "86a2b2b2b2971559",
+   "source_sha256": "4616ed8819e8e54bf5d011f65d010260cd2c5e9c0d0ece8822121d1b603228b6",
+   "stem": "suspended-1"
+  },
+  {
+   "dhash": "c68e8aaa8a92d571",
+   "source_sha256": "087768507dbc5013d41aeb88143ce601ab0ab92fc5feab58db262798c73b97c6",
+   "stem": "an-offering-1"
+  },
+  {
+   "dhash": "8fc7cdcd89830f07",
+   "source_sha256": "5bf784b2c76dddd929da34260cf89904587f0b88a86a3e6912133320074c8164",
+   "stem": "one-two-three-iii-1"
+  },
+  {
+   "dhash": "c49cbcb874f4b4e6",
+   "source_sha256": "2842343f2b9588a413f2be3d8a208b5cf8e74a0e7fc85e944b8d9e498aea9900",
+   "stem": "disconnected-head-1"
+  },
+  {
+   "dhash": "94b4b4a5f1e6e4f2",
+   "source_sha256": "3177c855968f44600bbccc9bd5856897640986e865c0257a845941765b2b96f5",
+   "stem": "void-1"
+  }
+ ],
+ "publication": {
+  "approved_at": "2026-11-10T11:48:05.889Z",
+  "approved_by": "founder",
+  "licence_accepted_at": "2026-11-10T10:15:24.589Z",
+  "licence_version": "PA-GPIL-2026-11",
+  "permission_ref": "PA-PERM-aks1ttuiytg",
+  "state": "approved",
+  "test_note": null,
+  "version": "v1"
+ },
+ "schema": "plotnua.plotart.gallery-package.v1",
+ "works": [
+  {
+   "ai_founder_decision": null,
+   "ai_involvement": "none",
+   "ai_note": null,
+   "availability": "available",
+   "d_cm": 5,
+   "description": "Gestures become syllables, every mark an unfinished sentence. Blues and oranges collide with shocks of neon pink, echoing the chaos of articulation. The figure stretches like a phrase breaking mid-breath. Created in isolation and meditation, As I Say It captures the threshold between expression and silence where truth trembles but still insists on being heard.",
+   "h_cm": 54,
+   "id": "w1yt3pkcsxk",
+   "images": [
+    {
+     "alt": "Abstract figurative painting with sweeping black and blue marks, a pink-and-yellow figure, and vivid orange and red brushstrokes against a pale background.",
+     "aspect": 1.5121,
+     "derivatives": [
+      {
+       "file": "as-i-say-it-1-600.webp",
+       "long_edge": 600,
+       "pixels": [
+        600,
+        397
+       ]
+      },
+      {
+       "file": "as-i-say-it-1-1200.webp",
+       "long_edge": 1200,
+       "pixels": [
+        1200,
+        794
+       ]
+      },
+      {
+       "file": "as-i-say-it-1-2000.webp",
+       "long_edge": 2000,
+       "pixels": [
+        2000,
+        1323
+       ]
+      }
+     ],
+     "photo_credit": null,
+     "pixels": [
+      3000,
+      1984
+     ],
+     "role": "main"
+    }
+   ],
+   "materials": "Acrylic, Oil Paint, Spray Paint, Oil Pastels, Marker, Pencil and Glue on Canvas",
+   "medium": "Mixed Media on Canvas",
+   "price_eur": 4500,
+   "price_on_request": false,
+   "slug": "as-i-say-it",
+   "title": "As I Say It",
+   "w_cm": 81,
+   "year": 2025
+  },
+  {
+   "ai_founder_decision": null,
+   "ai_involvement": "none",
+   "ai_note": null,
+   "availability": "available",
+   "d_cm": 5,
+   "description": "\"Non-Serviam\" (I Will Not Serve) explores the contradiction between rejecting society's rules and the isolation and vulnerability that can follow.\n\nThe central figure appears defiant, yet its outstretched hands and angel-like wings suggest a need for protection. The word \"Malaka\" on the figure's chest, a mistaken rendering of \"Malaika\" (angel), introduces a further conflict between language and meaning.\n\nWhat begins as a declaration of independence becomes a call for help. The painting suggests that the guardian angel the artist seeks may ultimately be his own art, offering the possibility of self-salvation.",
+   "h_cm": 150,
+   "id": "w2j298wac6v",
+   "images": [
+    {
+     "alt": "Square mixed-media painting of a skeletal, winged figure with large yellow eyes and raised hands, surrounded by pink, purple, black and white expressive marks, with the words “Non-Serviam” above its head.",
+     "aspect": 0.99272,
+     "derivatives": [
+      {
+       "file": "non-serviam-1-600.webp",
+       "long_edge": 600,
+       "pixels": [
+        596,
+        600
+       ]
+      },
+      {
+       "file": "non-serviam-1-1200.webp",
+       "long_edge": 1200,
+       "pixels": [
+        1191,
+        1200
+       ]
+      },
+      {
+       "file": "non-serviam-1-2000.webp",
+       "long_edge": 2000,
+       "pixels": [
+        1985,
+        2000
+       ]
+      }
+     ],
+     "photo_credit": null,
+     "pixels": [
+      3000,
+      3022
+     ],
+     "role": "main"
+    }
+   ],
+   "materials": "Acrylic, Oil Paint, Spray Paint, Oil Stick, Marker, Ink and Pencil  on Canvas",
+   "medium": "Mixed Media on Canvas",
+   "price_eur": 14000,
+   "price_on_request": false,
+   "slug": "non-serviam",
+   "title": "Non-Serviam",
+   "w_cm": 150,
+   "year": 2018
+  },
+  {
+   "ai_founder_decision": null,
+   "ai_involvement": "none",
+   "ai_note": null,
+   "availability": "available",
+   "d_cm": 5,
+   "description": "\" Insatiable Greed \" explores the darker side of success and the temptation to pursue financial gain at the expense of personal principles.\n\nThe words \"Not Me\" serve as a warning to the artist, while the ambiguous positioning of the letters in \"Your\" and \"Our\" questions where individual ambition ends and collective expectations begin.\n\nThe crossed bones symbolize the toxicity of compromising one's ideals, while the fencing suggests the confinement that can accompany the pursuit of profit. The painting looks towards the past on one side and an uncertain future on the other, questioning whether success can be achieved without losing oneself.",
+   "h_cm": 160,
+   "id": "wtjtvws7aq5",
+   "images": [
+    {
+     "alt": "Square mixed-media painting in pink, cream, red, green and black, with a large outlined head in profile, the words “INSATIABLE”, “NOT ME” and “GREED”, crossed-bone symbols and a red panel containing a question mark.",
+     "aspect": 1.0084,
+     "derivatives": [
+      {
+       "file": "insatiable-greed-1-600.webp",
+       "long_edge": 600,
+       "pixels": [
+        600,
+        595
+       ]
+      },
+      {
+       "file": "insatiable-greed-1-1200.webp",
+       "long_edge": 1200,
+       "pixels": [
+        1200,
+        1190
+       ]
+      },
+      {
+       "file": "insatiable-greed-1-2000.webp",
+       "long_edge": 2000,
+       "pixels": [
+        2000,
+        1983
+       ]
+      }
+     ],
+     "photo_credit": null,
+     "pixels": [
+      3000,
+      2975
+     ],
+     "role": "main"
+    }
+   ],
+   "materials": "Acrylic, Oil Paint, Spray Paint, Oil Stick, Marker, Ink and Pencil  on Canvas",
+   "medium": "Mixed Media on Canvas",
+   "price_eur": 11000,
+   "price_on_request": false,
+   "slug": "insatiable-greed",
+   "title": "Insatiable Greed",
+   "w_cm": 160,
+   "year": 2018
+  },
+  {
+   "ai_founder_decision": null,
+   "ai_involvement": "none",
+   "ai_note": null,
+   "availability": "available",
+   "d_cm": 3,
+   "description": "\"Walk Your Way\" explores the tension between individuality, self-expression and the pressures of conformity.\n\nA distorted figure emerges from a collision of vivid colors, fragmented language and forceful gestural marks. Its extended tongue and unsettling expression suggest both defiance and vulnerability, while the emphatic lettering reinforces the idea of choosing one's own direction.\n\nThe painting questions what it means to follow an independent path, and whether that freedom can exist without conflict.",
+   "h_cm": 115,
+   "id": "w63a1qbtp8h",
+   "images": [
+    {
+     "alt": "Mixed-media painting depicting a distorted pink-faced figure with mismatched eyes and an extended pink tongue, surrounded by expressive blue, yellow, orange and white brushstrokes, handwritten text and large black lettering spelling “WAY”.",
+     "aspect": 1.27605,
+     "derivatives": [
+      {
+       "file": "walk-your-way-1-600.webp",
+       "long_edge": 600,
+       "pixels": [
+        600,
+        470
+       ]
+      },
+      {
+       "file": "walk-your-way-1-1200.webp",
+       "long_edge": 1200,
+       "pixels": [
+        1200,
+        940
+       ]
+      },
+      {
+       "file": "walk-your-way-1-2000.webp",
+       "long_edge": 2000,
+       "pixels": [
+        2000,
+        1567
+       ]
+      }
+     ],
+     "photo_credit": null,
+     "pixels": [
+      3000,
+      2351
+     ],
+     "role": "main"
+    }
+   ],
+   "materials": "Acrylic, Oil Paint, Spray Paint, Oil Stick, Marker, Ink, Pencil, Paper and Glue on Canvas",
+   "medium": "Mixed Media on Canvas",
+   "price_eur": 7500,
+   "price_on_request": false,
+   "slug": "walk-your-way",
+   "title": "Walk Your Way",
+   "w_cm": 146,
+   "year": 2021
+  },
+  {
+   "ai_founder_decision": null,
+   "ai_involvement": "none",
+   "ai_note": null,
+   "availability": "available",
+   "d_cm": 5,
+   "description": "\"Sacred Words\" explores the power of language to both heal and harm.\n\nA dark figure faces a vulnerable heart, connected through a forceful black line suggesting the impact of spoken words. Religious symbolism, expressivemarks and vivid splashes of color create a tension between devotion, tenderness and emotional injury.",
+   "h_cm": 54,
+   "id": "wk4faqb7zs4",
+   "images": [
+    {
+     "alt": "Mixed-media painting with a dark silhouetted profile on the right, a red outlined heart and candle on the left, and the words “SACRED WORDS” across a background of turquoise, pink and white brushstrokes, with red paint splashes and a sweeping yellow line.",
+     "aspect": 1.50451,
+     "derivatives": [
+      {
+       "file": "sacred-words-1-600.webp",
+       "long_edge": 600,
+       "pixels": [
+        600,
+        399
+       ]
+      },
+      {
+       "file": "sacred-words-1-1200.webp",
+       "long_edge": 1200,
+       "pixels": [
+        1200,
+        798
+       ]
+      },
+      {
+       "file": "sacred-words-1-2000.webp",
+       "long_edge": 2000,
+       "pixels": [
+        2000,
+        1329
+       ]
+      }
+     ],
+     "photo_credit": null,
+     "pixels": [
+      3000,
+      1994
+     ],
+     "role": "main"
+    }
+   ],
+   "materials": "Acrylic, Oil Paint, Spray Paint, Oil Pastels, Marker, Pencil and Glue on Canvas",
+   "medium": "Mixed Media on Canvas",
+   "price_eur": 4500,
+   "price_on_request": false,
+   "slug": "sacred-words",
+   "title": "Sacred Words",
+   "w_cm": 81,
+   "year": 2025
+  },
+  {
+   "ai_founder_decision": null,
+   "ai_involvement": "none",
+   "ai_note": null,
+   "availability": "available",
+   "d_cm": 5,
+   "description": "\"Hope\" explores the emotional weight of perseverance and the struggle to hold on to optimism in difficult circumstances.\n\nA dark, heavily worked figure reaches upward into an intense field of fluorescent pink, beneath the handwritten word \"HOPE\". The contrast between the dense black marks and the vibrant color above suggests the tension between burden and possibility.",
+   "h_cm": 130,
+   "id": "wpu1i0j2ule",
+   "images": [
+    {
+     "alt": "Portrait-format mixed-media painting depicting a dark figure with raised arms beneath the handwritten word “HOPE”, surrounded by vivid fluorescent pink, black and gray expressive brushstrokes against a pale background.",
+     "aspect": 0.62067,
+     "derivatives": [
+      {
+       "file": "hope-1-600.webp",
+       "long_edge": 600,
+       "pixels": [
+        372,
+        600
+       ]
+      },
+      {
+       "file": "hope-1-1200.webp",
+       "long_edge": 1200,
+       "pixels": [
+        745,
+        1200
+       ]
+      },
+      {
+       "file": "hope-1-2000.webp",
+       "long_edge": 2000,
+       "pixels": [
+        1241,
+        2000
+       ]
+      }
+     ],
+     "photo_credit": null,
+     "pixels": [
+      1862,
+      3000
+     ],
+     "role": "main"
+    }
+   ],
+   "materials": "Acrylic, Spray Paint and Oil Stick on Canvas",
+   "medium": "Mixed Media on Canvas",
+   "price_eur": 7000,
+   "price_on_request": false,
+   "slug": "hope",
+   "title": "Hope",
+   "w_cm": 81,
+   "year": 2025
+  },
+  {
+   "ai_founder_decision": null,
+   "ai_involvement": "none",
+   "ai_note": null,
+   "availability": "available",
+   "d_cm": 5,
+   "description": "\"There Is Always Another Matthias\" explores betrayal, loyalty and the unsettling realization that even those considered indispensable can be replaced.\n\nTaking its title from the biblical figure of Matthias, the apostle chosen to replace Judas, the painting examines the fragility of allegiance and the consequences of broken trust.\n\nA large skull-like figure dominates the composition, accompanied by two smaller faces emerging from layers of expressive marks and vivid color. The figures suggest a shifting relationship between identity, belonging and replaceability.",
+   "h_cm": 120,
+   "id": "whlcnuagvoj",
+   "images": [
+    {
+     "alt": "Landscape-format mixed-media painting featuring a large skull-like face with circular eyes and exposed teeth, flanked by two smaller faces, against a heavily layered background of blue, yellow, orange, black and white marks.",
+     "aspect": 1.25628,
+     "derivatives": [
+      {
+       "file": "there-is-always-another-matthias-1-600.webp",
+       "long_edge": 600,
+       "pixels": [
+        600,
+        478
+       ]
+      },
+      {
+       "file": "there-is-always-another-matthias-1-1200.webp",
+       "long_edge": 1200,
+       "pixels": [
+        1200,
+        955
+       ]
+      },
+      {
+       "file": "there-is-always-another-matthias-1-2000.webp",
+       "long_edge": 2000,
+       "pixels": [
+        2000,
+        1592
+       ]
+      }
+     ],
+     "photo_credit": null,
+     "pixels": [
+      3000,
+      2388
+     ],
+     "role": "main"
+    }
+   ],
+   "materials": "Acrylic, Oil Paint, Spray Paint, Oil Stick, Marker, Ink and Pencil  on Canvas",
+   "medium": "Mixed Media on Canvas",
+   "price_eur": 7500,
+   "price_on_request": false,
+   "slug": "there-is-always-another-matthias",
+   "title": "There is Always Another Matthias",
+   "w_cm": 150,
+   "year": 2022
+  },
+  {
+   "ai_founder_decision": null,
+   "ai_involvement": "none",
+   "ai_note": null,
+   "availability": "available",
+   "d_cm": 5,
+   "description": "\"Suspended\" explores the psychological tension of being caught between opposing forces, unable to move forward or retreat.\n\nTwo dark silhouettes hold a striking red form between them, creating an uneasy balance of control, vulnerability and resistance. The stark composition and expressive black marks reinforce a sense of confinement, while the suspended central form suggests a moment of unresolved judgment.",
+   "h_cm": 81,
+   "id": "wazcdds261l",
+   "images": [
+    {
+     "alt": "Landscape-format mixed-media painting featuring a large red, suspended form held between two dark silhouetted figures with raised arms. Bold black outlines and dripping paint contrast with a textured white and pale blue background, above a broad red band along the bottom.",
+     "aspect": 1.61812,
+     "derivatives": [
+      {
+       "file": "suspended-1-600.webp",
+       "long_edge": 600,
+       "pixels": [
+        600,
+        371
+       ]
+      },
+      {
+       "file": "suspended-1-1200.webp",
+       "long_edge": 1200,
+       "pixels": [
+        1200,
+        742
+       ]
+      },
+      {
+       "file": "suspended-1-2000.webp",
+       "long_edge": 2000,
+       "pixels": [
+        2000,
+        1236
+       ]
+      }
+     ],
+     "photo_credit": null,
+     "pixels": [
+      3000,
+      1854
+     ],
+     "role": "main"
+    }
+   ],
+   "materials": "Acrylic, Spray Paint and Oil Stick on Canvas",
+   "medium": "Mixed Media on Canvas",
+   "price_eur": 7000,
+   "price_on_request": false,
+   "slug": "suspended",
+   "title": "Suspended",
+   "w_cm": 130,
+   "year": 2025
+  },
+  {
+   "ai_founder_decision": null,
+   "ai_involvement": "none",
+   "ai_note": null,
+   "availability": "available",
+   "d_cm": 5,
+   "description": "\"An Offering\" explores sacrifice, vulnerability and the complicated negotiations that shape human relationships.\n\nTwo dark silhouettes stand on opposite sides of the composition, holding a suspended, head-like form between them. The central figure appears vulnerable, caught between opposing forces, while the surrounding layers of pink, blue and black create an atmosphere of emotional tension.",
+   "h_cm": 81,
+   "id": "wm9azv7n538",
+   "images": [
+    {
+     "alt": "Landscape-format mixed-media painting featuring two dark, standing silhouettes on either side of a pale, suspended head-like form, against layered pink, blue and white brushstrokes, with a bold orange line running across the bottom.",
+     "aspect": 1.63488,
+     "derivatives": [
+      {
+       "file": "an-offering-1-600.webp",
+       "long_edge": 600,
+       "pixels": [
+        600,
+        367
+       ]
+      },
+      {
+       "file": "an-offering-1-1200.webp",
+       "long_edge": 1200,
+       "pixels": [
+        1200,
+        734
+       ]
+      },
+      {
+       "file": "an-offering-1-2000.webp",
+       "long_edge": 2000,
+       "pixels": [
+        2000,
+        1223
+       ]
+      }
+     ],
+     "photo_credit": null,
+     "pixels": [
+      3000,
+      1835
+     ],
+     "role": "main"
+    }
+   ],
+   "materials": "Acrylic,  Spray Paint and Oil Stick, on Canvas",
+   "medium": "Mixed Media on Canvas",
+   "price_eur": 7000,
+   "price_on_request": false,
+   "slug": "an-offering",
+   "title": "An Offering",
+   "w_cm": 130,
+   "year": 2025
+  },
+  {
+   "ai_founder_decision": null,
+   "ai_involvement": "none",
+   "ai_note": null,
+   "availability": "available",
+   "d_cm": 3,
+   "description": "\"One Two Three (iii)\" forms part of PIGSY's five-painting \"One Two Three\" series, exploring the tension between internal thought, external expectations and the struggle to trust one's own instincts.\n\nThrough repeated gestures, layered marks and expressive fields of color, the painting captures the restless movement of the mind. Circular forms and overlapping lines emerge from a dense, energetic composition, suggesting thoughts that repeat, interrupt and compete for attention.\n\nAccompanied by a poem written by PIGSY, the series questions whether the voices we listen to are genuinely our own, and what happens when we begin to trust our internal instincts rather than the expectations imposed upon us.",
+   "h_cm": 202,
+   "id": "wdnw495vv27",
+   "images": [
+    {
+     "alt": "Large portrait abstract painting with five red circular forms near the top, bold pink and red gestural marks across the centre, and a dense black area to the left. Layers of yellow, blue, turquoise and pale pink paint create a vibrant composition with extensive drips and overlapping brushstrokes.",
+     "aspect": 0.67567,
+     "derivatives": [
+      {
+       "file": "one-two-three-iii-1-600.webp",
+       "long_edge": 600,
+       "pixels": [
+        405,
+        600
+       ]
+      },
+      {
+       "file": "one-two-three-iii-1-1200.webp",
+       "long_edge": 1200,
+       "pixels": [
+        811,
+        1200
+       ]
+      },
+      {
+       "file": "one-two-three-iii-1-2000.webp",
+       "long_edge": 2000,
+       "pixels": [
+        1351,
+        2000
+       ]
+      }
+     ],
+     "photo_credit": null,
+     "pixels": [
+      2027,
+      3000
+     ],
+     "role": "main"
+    }
+   ],
+   "materials": "Acrylic, Spray Paint, Oil Stick, Marker, Ink and Pencil on Canvas",
+   "medium": "Mixed Media on Canvas",
+   "price_eur": 9000,
+   "price_on_request": false,
+   "slug": "one-two-three-iii",
+   "title": "One Two Three (iii)",
+   "w_cm": 125,
+   "year": 2021
+  },
+  {
+   "ai_founder_decision": null,
+   "ai_involvement": "none",
+   "ai_note": null,
+   "availability": "available",
+   "d_cm": 0.1,
+   "description": "\"Disconnected Head\" explores the fragmentation of identity and the psychological tension between internal thoughts and outward expression.\n\nA distorted face emerges from layers of gestural marks, fragmented language and contrasting colors. Partially obscured by a dominant black form, the figure suggests vulnerability, isolation and a struggle to communicate what lies beneath the surface.",
+   "h_cm": 42,
+   "id": "w1s1ro4dw5a",
+   "images": [
+    {
+     "alt": "Portrait-format mixed-media painting on paper featuring a distorted human face with red eyes and lips, loosely drawn in black against a vivid pink and green background. A large black and gray angular form dominates the right side, surrounded by fragmented handwritten text and expressive marks.",
+     "aspect": 0.69967,
+     "derivatives": [
+      {
+       "file": "disconnected-head-1-600.webp",
+       "long_edge": 600,
+       "pixels": [
+        420,
+        600
+       ]
+      },
+      {
+       "file": "disconnected-head-1-1200.webp",
+       "long_edge": 1200,
+       "pixels": [
+        840,
+        1200
+       ]
+      },
+      {
+       "file": "disconnected-head-1-2000.webp",
+       "long_edge": 2000,
+       "pixels": [
+        1399,
+        2000
+       ]
+      }
+     ],
+     "photo_credit": null,
+     "pixels": [
+      2099,
+      3000
+     ],
+     "role": "main"
+    }
+   ],
+   "materials": "Acrylic, Spray Paint, Oil Stick, Acrylic Stick snd Pencil on Paper",
+   "medium": "Mixed Media on Paper",
+   "price_eur": 900,
+   "price_on_request": false,
+   "slug": "disconnected-head",
+   "title": "Disconnected Head",
+   "w_cm": 29.7,
+   "year": 2025
+  },
+  {
+   "ai_founder_decision": null,
+   "ai_involvement": "none",
+   "ai_note": null,
+   "availability": "available",
+   "d_cm": 0.1,
+   "description": "\"Void\" explores the tension between emotional expression and the emptiness that words can sometimes conceal.\n\nA distorted figure raises its arms against a background crowded with repeated handwritten marks and fragments of language. Its vivid yellow face contrasts with the dark body, while the word \"Void\" anchors the composition.\n\nThrough instinctive gestures, exaggerated features and overlapping text, PIGSY questions the relationship between what we say and what we feel, particularly when familiar words lose their meaning through repetition.",
+   "h_cm": 32.5,
+   "id": "w8kmsg8kcef",
+   "images": [
+    {
+     "alt": "Landscape mixed-media painting on paper depicting a dark figure with raised arms, a bright yellow outlined face and expressive blue, red and black brushstrokes. Repeated handwritten marks and fragments of text fill the pale pink background, with the word “VOID” painted in red at the lower right.",
+     "aspect": 1.54719,
+     "derivatives": [
+      {
+       "file": "void-1-600.webp",
+       "long_edge": 600,
+       "pixels": [
+        600,
+        388
+       ]
+      },
+      {
+       "file": "void-1-1200.webp",
+       "long_edge": 1200,
+       "pixels": [
+        1200,
+        776
+       ]
+      },
+      {
+       "file": "void-1-2000.webp",
+       "long_edge": 2000,
+       "pixels": [
+        2000,
+        1293
+       ]
+      }
+     ],
+     "photo_credit": null,
+     "pixels": [
+      3000,
+      1939
+     ],
+     "role": "main"
+    }
+   ],
+   "materials": "Acrylic, Spray Paint, Oil Stick, Acrylic Stick snd Pencil on Paper",
+   "medium": "Mixed Media on Paper",
+   "price_eur": 1250,
+   "price_on_request": false,
+   "slug": "void",
+   "title": "Void",
+   "w_cm": 50,
+   "year": 2024
+  }
+ ]
+}
