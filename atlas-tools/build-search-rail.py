@@ -211,8 +211,10 @@ pages = sorted(set(pages + ["index.html"]))
 # 33 since DISC-036 Extend the House (PLOTNUA-BUILD-001 Stage 1, private preview only, 5 Nov 2026).
 # 34 since DISC-037 The Resourceful Garden (release candidate, 8 Nov 2026).
 # 35 since DISC-039 The Reinvented Interior (published 9 Nov 2026).
-# 36 since DISC-038 The Hidden Shelter (release candidate prepared 10 Nov 2026; founder release approval required).
-EXPECTED_PAGES = 36
+# 36 since garden-offices-ireland.html entered the sitemap (separate release, 9 Nov 2026; the count was not
+#    updated then, so main refused 35/36 — recorded here by the DISC-038 Stage 12 release preparation).
+# 37 since DISC-038 The Hidden Shelter (release candidate prepared 10 Nov 2026; founder release approval required).
+EXPECTED_PAGES = 37
 if len(pages) != EXPECTED_PAGES:
     die("expected %d public pages, found %d — refusing to guess the rail scope. "
         "If a public page was added or removed, update EXPECTED_PAGES "
