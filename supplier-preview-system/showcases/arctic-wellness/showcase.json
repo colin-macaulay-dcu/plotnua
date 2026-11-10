@@ -1,0 +1,748 @@
+{
+ "_about": "Arctic Wellness supplier showcase (founder brief, 10 Nov 2026). Every fact is from arcticwellness.ie as fetched on 10 Nov 2026 (archive: Documents/PlotNua/Images/Arctic Wellness/evidence-2026-11-10). Images: Arctic Wellness's own photographs only, hotlinked from its Webflow CDN folders; images the site names 'ChatGPT Image' and the apparent manufacturer photographs of PolarPool, PolarPlunge and Icepod Plus are deliberately not used. Built by supplier-preview-system/build-arctic-wellness-showcase.py.",
+ "supplier": {
+  "name": "Arctic Wellness",
+  "atlasName": "Arctic Wellness",
+  "slug": "arctic-wellness",
+  "website": "https://www.arcticwellness.ie/",
+  "credit": "Image: Arctic Wellness",
+  "creditHref": "https://www.arcticwellness.ie/?utm_source=plotnua&utm_medium=referral&utm_campaign=supplier-showcase",
+  "base": "Dublin",
+  "baseSource": "Arctic Wellness's own site: prebuilt saunas 'assembled in our Dublin warehouse' (checked 10 Nov 2026). City only is shown."
+ },
+ "intro": "A Dublin team that designs, builds and installs saunas, ice baths and complete home wellness rooms, from the first conversation to the finished build.",
+ "standfirst": "Every project includes installation: Arctic Wellness supplies the sauna or ice bath and fits it, working with your builder or architect where there is one. These are its own photographs of finished projects.",
+ "categories": [
+  {
+   "id": "saunas",
+   "title": "Saunas",
+   "line": "Three prebuilt models, or one designed for your space."
+  },
+  {
+   "id": "ice-baths",
+   "title": "Ice baths",
+   "line": "From a single-person cold tub to group baths."
+  },
+  {
+   "id": "more",
+   "title": "To complete the routine",
+   "line": "A cold bucket shower and a red light bed."
+  }
+ ],
+ "products": [
+  {
+   "category": "saunas",
+   "name": "Ember Mini",
+   "kind": "Small garden sauna",
+   "summary": "Arctic Wellness's smallest sauna, for estate homes and gardens where space is tight.",
+   "specs": [
+    [
+     "Size",
+     "1.80 m × 1.80 m"
+    ],
+    [
+     "Seats",
+     "2 to 3 people"
+    ],
+    [
+     "Heater",
+     "Compact Harvia electric (the supplier's specification list also offers wood-fired)"
+    ],
+    [
+     "Maximum temperature",
+     "90°C"
+    ],
+    [
+     "Built from",
+     "Thermally treated alderwood, fully insulated"
+    ],
+    [
+     "Made",
+     "To order, assembled in Dublin"
+    ]
+   ],
+   "price": 7000,
+   "priceHigh": 8500,
+   "priceNote": null,
+   "source": "https://www.arcticwellness.ie/prebuilt-saunas/ember-mini",
+   "checked": "2026-11-10",
+   "images": []
+  },
+  {
+   "category": "saunas",
+   "name": "Ember",
+   "kind": "Prebuilt sauna",
+   "summary": "A made-to-order flagship model, assembled in Dublin and crane-lifted into the garden.",
+   "specs": [
+    [
+     "Size",
+     "2.34 m × 2.20 m × 2.35 m"
+    ],
+    [
+     "Seats",
+     "Up to 8 people"
+    ],
+    [
+     "Heater",
+     "Electric or wood-fired"
+    ],
+    [
+     "Maximum temperature",
+     "90°C"
+    ],
+    [
+     "Built from",
+     "Thermally treated alderwood, fully insulated"
+    ],
+    [
+     "Made",
+     "To order, assembled in Dublin, then crane-lifted in"
+    ]
+   ],
+   "price": 11550,
+   "priceHigh": 11800,
+   "priceNote": null,
+   "source": "https://www.arcticwellness.ie/prebuilt-saunas/ember",
+   "checked": "2026-11-10",
+   "images": [
+    "aw-07-ember-at-night"
+   ]
+  },
+  {
+   "category": "saunas",
+   "name": "Nordic",
+   "kind": "Prebuilt sauna",
+   "summary": "The larger flagship model, also used in hotels, with a Harvia heater as standard.",
+   "specs": [
+    [
+     "Size",
+     "Ask Arctic Wellness: its site gives two different sizes"
+    ],
+    [
+     "Seats",
+     "Up to 8 people"
+    ],
+    [
+     "Heater",
+     "Harvia electric as standard; wood-fired as an upgrade"
+    ],
+    [
+     "Maximum temperature",
+     "90°C"
+    ],
+    [
+     "Built from",
+     "Thermally treated alderwood, fully insulated"
+    ],
+    [
+     "Made",
+     "To order, assembled in Dublin, then crane-lifted in"
+    ]
+   ],
+   "price": 16500,
+   "priceHigh": null,
+   "priceNote": null,
+   "source": "https://www.arcticwellness.ie/prebuilt-saunas/nordic",
+   "checked": "2026-11-10",
+   "images": [
+    "aw-08-nordic-on-a-patio"
+   ]
+  },
+  {
+   "category": "saunas",
+   "name": "Custom-built sauna",
+   "kind": "Designed for your space",
+   "summary": "Designed around a garden, garage or bathroom and built on site by Arctic Wellness's own carpenters.",
+   "specs": [
+    [
+     "Where",
+     "Indoors or outdoors: a garden, a garage, a bathroom or part of an extension"
+    ],
+    [
+     "Built by",
+     "Arctic Wellness's own sauna builders and carpenters, on site"
+    ],
+    [
+     "Lead time",
+     "Typically 10 to 14 weeks (5 to 6 weeks for an existing design)"
+    ],
+    [
+     "Included",
+     "Design, electrics, base preparation and installation, managed by Arctic Wellness"
+    ]
+   ],
+   "price": null,
+   "priceHigh": null,
+   "priceNote": null,
+   "source": "https://www.arcticwellness.ie/custom-home-sauna",
+   "checked": "2026-11-10",
+   "images": [
+    "aw-04-custom-garden-sauna"
+   ]
+  },
+  {
+   "category": "ice-baths",
+   "name": "Fjord",
+   "kind": "Acrylic ice bath",
+   "summary": "A wider acrylic bath that is easier to get into and move around in than a tall, narrow tub.",
+   "specs": [
+    [
+     "Tub",
+     "Acrylic, wider than a barrel"
+    ],
+    [
+     "Cooling",
+     "Optional external chiller, 3°C to 15°C"
+    ],
+    [
+     "Use",
+     "Indoors or outdoors"
+    ],
+    [
+     "Included",
+     "Supply, installation, set-up and maintenance support"
+    ]
+   ],
+   "price": 5000,
+   "priceHigh": null,
+   "priceNote": "Whether the listed price includes the chiller is not stated.",
+   "source": "https://www.arcticwellness.ie/ice-baths/fjord",
+   "checked": "2026-11-10",
+   "images": []
+  },
+  {
+   "category": "ice-baths",
+   "name": "Fjell Black",
+   "kind": "Steel barrel cold tub",
+   "summary": "The handcrafted Fjell in black steel: tall and narrow for full immersion.",
+   "specs": [
+    [
+     "Tub",
+     "Black steel, handcrafted, fully insulated"
+    ],
+    [
+     "Cooling",
+     "Optional external chiller, 3°C to 15°C"
+    ],
+    [
+     "Comes with",
+     "Steps"
+    ],
+    [
+     "Use",
+     "Indoors or outdoors"
+    ]
+   ],
+   "price": 6000,
+   "priceHigh": null,
+   "priceNote": "Whether the listed price includes the chiller is not stated.",
+   "source": "https://www.arcticwellness.ie/ice-baths/fjell-black",
+   "checked": "2026-11-10",
+   "images": []
+  },
+  {
+   "category": "ice-baths",
+   "name": "Fjell",
+   "kind": "Stainless-steel cold tub",
+   "summary": "A tall, narrow stainless-steel tub, handcrafted in Ireland, for full immersion.",
+   "specs": [
+    [
+     "Tub",
+     "Stainless steel, handcrafted in Ireland, fully insulated"
+    ],
+    [
+     "Cooling",
+     "Optional external chiller, 3°C to 15°C"
+    ],
+    [
+     "Comes with",
+     "Steps; custom steps can be built to suit the space"
+    ],
+    [
+     "Use",
+     "Indoors or outdoors"
+    ]
+   ],
+   "price": 6100,
+   "priceHigh": null,
+   "priceNote": "Whether the listed price includes the chiller is not stated.",
+   "source": "https://www.arcticwellness.ie/ice-baths/fjell",
+   "checked": "2026-11-10",
+   "images": [
+    "aw-09-fjell-with-steps"
+   ]
+  },
+  {
+   "category": "ice-baths",
+   "name": "Tarn",
+   "kind": "Self-cooling ice bath",
+   "summary": "A stainless-steel tub with a built-in cooler and filtration, in a grey brushed-steel case.",
+   "specs": [
+    [
+     "Tub",
+     "Stainless steel, grey brushed-steel exterior"
+    ],
+    [
+     "Cooling",
+     "Built-in cooler, down to 3°C"
+    ],
+    [
+     "Water",
+     "Built-in filtration"
+    ],
+    [
+     "Use",
+     "Indoors or outdoors, homes and commercial settings"
+    ]
+   ],
+   "price": 6500,
+   "priceHigh": null,
+   "priceNote": null,
+   "source": "https://www.arcticwellness.ie/ice-baths/tarn",
+   "checked": "2026-11-10",
+   "images": [
+    "aw-02-k-club-wellness-garden"
+   ]
+  },
+  {
+   "category": "ice-baths",
+   "name": "PolarPool",
+   "kind": "Large ice bath, 3 to 5 people",
+   "summary": "A large round bath for group sessions, made for gyms and recovery centres and also suited to homes with the space.",
+   "specs": [
+    [
+     "Capacity",
+     "3 to 5 people"
+    ],
+    [
+     "Cooling",
+     "Built in; 6°C to 40°C"
+    ],
+    [
+     "Use",
+     "Commercial, or homes with the space"
+    ]
+   ],
+   "price": null,
+   "priceHigh": null,
+   "priceNote": null,
+   "source": "https://www.arcticwellness.ie/ice-baths/polarpool",
+   "checked": "2026-11-10",
+   "images": []
+  },
+  {
+   "category": "ice-baths",
+   "name": "PolarPlunge",
+   "kind": "Extra-large ice bath, 8 to 12 people",
+   "summary": "Arctic Wellness's largest bath, with bench seating for full immersion or edge seating for the legs.",
+   "specs": [
+    [
+     "Capacity",
+     "8 to 12 people"
+    ],
+    [
+     "Cooling",
+     "Built in; 6°C to 40°C"
+    ],
+    [
+     "Use",
+     "Commercial, or homes with the space"
+    ]
+   ],
+   "price": null,
+   "priceHigh": null,
+   "priceNote": null,
+   "source": "https://www.arcticwellness.ie/ice-baths/polarplunge",
+   "checked": "2026-11-10",
+   "images": []
+  },
+  {
+   "category": "ice-baths",
+   "name": "Icepod Plus",
+   "kind": "Tall ice bath",
+   "summary": "A longer bath designed for taller people.",
+   "specs": [
+    [
+     "Design",
+     "Longer than a standard Icepod, same width"
+    ],
+    [
+     "Cooling",
+     "Built in; 6°C to 40°C"
+    ],
+    [
+     "Use",
+     "Homes and commercial settings"
+    ]
+   ],
+   "price": null,
+   "priceHigh": null,
+   "priceNote": null,
+   "source": "https://www.arcticwellness.ie/ice-baths/icepod-plus",
+   "checked": "2026-11-10",
+   "images": []
+  },
+  {
+   "category": "more",
+   "name": "Ice Fall",
+   "kind": "Bucket shower",
+   "summary": "A Nordic-style cold drench: pull the handle and a bucket of cold water empties over you, then refills.",
+   "specs": [
+    [
+     "Fits",
+     "Beside a sauna, indoors or outdoors; needs far less room than an ice bath"
+    ],
+    [
+     "Included",
+     "Arctic Wellness connects the water supply and drainage"
+    ]
+   ],
+   "price": null,
+   "priceHigh": null,
+   "priceNote": null,
+   "source": "https://www.arcticwellness.ie/other-wellness/ice-fall",
+   "checked": "2026-11-10",
+   "images": [
+    "aw-10-ice-fall-bucket-shower"
+   ]
+  },
+  {
+   "category": "more",
+   "name": "Red Light Bed",
+   "kind": "Red light therapy bed",
+   "summary": "A full-body red light bed with a built-in emergency stop, for a home or a business.",
+   "specs": [
+    [
+     "Use",
+     "Lie back for a full-body session"
+    ],
+    [
+     "Safety",
+     "Built-in emergency stop button"
+    ],
+    [
+     "Included",
+     "Supply, installation and maintenance support"
+    ]
+   ],
+   "price": null,
+   "priceHigh": null,
+   "priceNote": null,
+   "source": "https://www.arcticwellness.ie/other-wellness/red-light-bed",
+   "checked": "2026-11-10",
+   "images": []
+  }
+ ],
+ "images": [
+  {
+   "id": "aw-01-lakeside-garden-sauna",
+   "origin": "https://cdn.prod.website-files.com/69b2b4ea265b07ec4ef98873/6a43ec5fd66e3416b0c16850_13b28fc9-2980-481c-a6d6-17dc5b1b5e13.webp",
+   "variants": [
+    [
+     "https://cdn.prod.website-files.com/69b2b4ea265b07ec4ef98873/6a43ec5fd66e3416b0c16850_13b28fc9-2980-481c-a6d6-17dc5b1b5e13-p-500.webp",
+     500
+    ],
+    [
+     "https://cdn.prod.website-files.com/69b2b4ea265b07ec4ef98873/6a43ec5fd66e3416b0c16850_13b28fc9-2980-481c-a6d6-17dc5b1b5e13-p-800.webp",
+     800
+    ],
+    [
+     "https://cdn.prod.website-files.com/69b2b4ea265b07ec4ef98873/6a43ec5fd66e3416b0c16850_13b28fc9-2980-481c-a6d6-17dc5b1b5e13-p-1080.webp",
+     1080
+    ]
+   ],
+   "w": 1600,
+   "h": 1066,
+   "kind": "Photograph",
+   "alt": "A black timber garden sauna with tall glass panels and a covered timber porch, on a lawn beside a pond.",
+   "caption": "A garden sauna with a covered porch, installed beside a pond.",
+   "product": null,
+   "role": "hero",
+   "source": "https://www.arcticwellness.ie/custom-home-sauna",
+   "sha256": "b699df3f92724fc97d7ebe8f424bc3865093cdd02ce3627ba34ec30551d89179"
+  },
+  {
+   "id": "aw-02-k-club-wellness-garden",
+   "origin": "https://cdn.prod.website-files.com/69b2b4ea265b07ec4ef98873/69d30b1ee303c08eb23ee99a_d4186892-114d-46bd-beac-1b3e1b7ff32a.webp",
+   "variants": [
+    [
+     "https://cdn.prod.website-files.com/69b2b4ea265b07ec4ef98873/69d30b1ee303c08eb23ee99a_d4186892-114d-46bd-beac-1b3e1b7ff32a-p-500.webp",
+     500
+    ],
+    [
+     "https://cdn.prod.website-files.com/69b2b4ea265b07ec4ef98873/69d30b1ee303c08eb23ee99a_d4186892-114d-46bd-beac-1b3e1b7ff32a-p-800.webp",
+     800
+    ],
+    [
+     "https://cdn.prod.website-files.com/69b2b4ea265b07ec4ef98873/69d30b1ee303c08eb23ee99a_d4186892-114d-46bd-beac-1b3e1b7ff32a-p-1080.webp",
+     1080
+    ]
+   ],
+   "w": 1536,
+   "h": 2048,
+   "kind": "Photograph",
+   "alt": "A black sauna cabin on a raised terrace behind two black self-cooling ice baths, beside a shallow pool, with festoon lights overhead.",
+   "caption": "The K Club wellness garden: a Nordic sauna and two Tarn ice baths.",
+   "product": "Tarn",
+   "role": "collection",
+   "source": "https://www.arcticwellness.ie/",
+   "sha256": "57f4114655a9a7e8af50d66d3f3eb8dcb2a814b5dddfcc06b8c62ceef1086a8a"
+  },
+  {
+   "id": "aw-03-garage-wellness-room",
+   "origin": "https://cdn.prod.website-files.com/69b2b4ea265b07ec4ef98873/69ca7d89e84ee6c054b3a454_ca385cfb-e3bc-4023-9cee-ee2ee2d01c09.webp",
+   "variants": [
+    [
+     "https://cdn.prod.website-files.com/69b2b4ea265b07ec4ef98873/69ca7d89e84ee6c054b3a454_ca385cfb-e3bc-4023-9cee-ee2ee2d01c09-p-500.webp",
+     500
+    ],
+    [
+     "https://cdn.prod.website-files.com/69b2b4ea265b07ec4ef98873/69ca7d89e84ee6c054b3a454_ca385cfb-e3bc-4023-9cee-ee2ee2d01c09-p-800.webp",
+     800
+    ],
+    [
+     "https://cdn.prod.website-files.com/69b2b4ea265b07ec4ef98873/69ca7d89e84ee6c054b3a454_ca385cfb-e3bc-4023-9cee-ee2ee2d01c09-p-1080.webp",
+     1080
+    ]
+   ],
+   "w": 1600,
+   "h": 1200,
+   "kind": "Photograph",
+   "alt": "A converted garage with a light timber sauna cabin, a black barrel ice bath with steps, a shower and a low lounge table.",
+   "caption": "A disused garage turned into a home wellness room: a custom sauna, a Fjell ice bath and a shower.",
+   "product": null,
+   "role": "collection",
+   "source": "https://www.arcticwellness.ie/home-wellness-suite",
+   "sha256": "f904c548db7d4f11260801434c912ff6c2cc75b72c7e371309ed1f410b5ad64b"
+  },
+  {
+   "id": "aw-04-custom-garden-sauna",
+   "origin": "https://cdn.prod.website-files.com/69b2b4ea265b07ec4ef98873/6a97ed0655642d974abc0a86_PHOTO-2026-07-13-19-28-10.webp",
+   "variants": [
+    [
+     "https://cdn.prod.website-files.com/69b2b4ea265b07ec4ef98873/6a97ed0655642d974abc0a86_PHOTO-2026-07-13-19-28-10-p-500.webp",
+     500
+    ],
+    [
+     "https://cdn.prod.website-files.com/69b2b4ea265b07ec4ef98873/6a97ed0655642d974abc0a86_PHOTO-2026-07-13-19-28-10-p-800.webp",
+     800
+    ],
+    [
+     "https://cdn.prod.website-files.com/69b2b4ea265b07ec4ef98873/6a97ed0655642d974abc0a86_PHOTO-2026-07-13-19-28-10-p-1080.webp",
+     1080
+    ]
+   ],
+   "w": 1536,
+   "h": 2048,
+   "kind": "Photograph",
+   "alt": "A compact black-clad garden sauna with a large glass front, on a grey composite deck beside a stone wall and a mature tree.",
+   "caption": "A custom-built garden sauna on a timber deck.",
+   "product": "Custom-built sauna",
+   "role": "collection",
+   "source": "https://www.arcticwellness.ie/custom-home-sauna",
+   "sha256": "206c2adfb66dc1d67289924f2afc08f70d7ef502bf3e84c62a8bf354b6190114"
+  },
+  {
+   "id": "aw-05-sauna-interior",
+   "origin": "https://cdn.prod.website-files.com/69b2b4ea265b07ec4ef98873/6a97f8924c4225f0bc57d466_a3ff819f-9023-42b6-9b5e-e6faff6b1bff.jpg",
+   "variants": [
+    [
+     "https://cdn.prod.website-files.com/69b2b4ea265b07ec4ef98873/6a97f8924c4225f0bc57d466_a3ff819f-9023-42b6-9b5e-e6faff6b1bff-p-500.jpg",
+     500
+    ],
+    [
+     "https://cdn.prod.website-files.com/69b2b4ea265b07ec4ef98873/6a97f8924c4225f0bc57d466_a3ff819f-9023-42b6-9b5e-e6faff6b1bff-p-800.jpg",
+     800
+    ],
+    [
+     "https://cdn.prod.website-files.com/69b2b4ea265b07ec4ef98873/6a97f8924c4225f0bc57d466_a3ff819f-9023-42b6-9b5e-e6faff6b1bff-p-1080.jpg",
+     1080
+    ]
+   ],
+   "w": 1600,
+   "h": 1066,
+   "kind": "Photograph",
+   "alt": "Inside a sauna: two tiers of pale timber benches, with a wooden bucket on the upper bench.",
+   "caption": "Inside a custom sauna: two tiers of timber benches.",
+   "product": null,
+   "role": "collection",
+   "source": "https://www.arcticwellness.ie/custom-home-sauna",
+   "sha256": "d0a3ea8b807324af2d954fcd9bf9074ad27c68f1ca87cf1ad55833ab36783839"
+  },
+  {
+   "id": "aw-06-carlton-hotel",
+   "origin": "https://cdn.prod.website-files.com/69b2b4ea265b07ec4ef98873/6a69083ca729a50e535a3e14_PHOTO-2026-07-13-19-26-58.jpg",
+   "variants": [
+    [
+     "https://cdn.prod.website-files.com/69b2b4ea265b07ec4ef98873/6a69083ca729a50e535a3e14_PHOTO-2026-07-13-19-26-58-p-500.jpg",
+     500
+    ],
+    [
+     "https://cdn.prod.website-files.com/69b2b4ea265b07ec4ef98873/6a69083ca729a50e535a3e14_PHOTO-2026-07-13-19-26-58-p-800.jpg",
+     800
+    ],
+    [
+     "https://cdn.prod.website-files.com/69b2b4ea265b07ec4ef98873/6a69083ca729a50e535a3e14_PHOTO-2026-07-13-19-26-58-p-1080.jpg",
+     1080
+    ]
+   ],
+   "w": 1536,
+   "h": 2048,
+   "kind": "Photograph",
+   "alt": "A black sauna cabin at the end of a gravel path in a hotel garden, between two covered black tubs in the foreground.",
+   "caption": "At the Carlton Hotel: a Nordic sauna, crane-lifted into place, with a hot tub and a cold tub.",
+   "product": null,
+   "role": "collection",
+   "source": "https://www.arcticwellness.ie/",
+   "sha256": "c005fc417d70fbb8b78fa8abeb8d82fd9a8afe54d911ee872b2f40e7ede1dfa2"
+  },
+  {
+   "id": "aw-07-ember-at-night",
+   "origin": "https://cdn.prod.website-files.com/69cad605ae4dde184701e4e1/6ab64051003b85ae100b18de_da05f57e-3d0d-4b36-8fbd-1e9ca0568955%20(1).webp",
+   "variants": [
+    [
+     "https://cdn.prod.website-files.com/69cad605ae4dde184701e4e1/6ab64051003b85ae100b18de_da05f57e-3d0d-4b36-8fbd-1e9ca0568955%20(1)-p-500.webp",
+     500
+    ],
+    [
+     "https://cdn.prod.website-files.com/69cad605ae4dde184701e4e1/6ab64051003b85ae100b18de_da05f57e-3d0d-4b36-8fbd-1e9ca0568955%20(1)-p-800.webp",
+     800
+    ],
+    [
+     "https://cdn.prod.website-files.com/69cad605ae4dde184701e4e1/6ab64051003b85ae100b18de_da05f57e-3d0d-4b36-8fbd-1e9ca0568955%20(1)-p-1080.webp",
+     1080
+    ]
+   ],
+   "w": 1536,
+   "h": 2048,
+   "kind": "Photograph",
+   "alt": "A black-clad Ember sauna at night, its glass front lit warm from inside, on a large paved patio.",
+   "caption": "An Ember sauna at night.",
+   "product": "Ember",
+   "role": "collection",
+   "source": "https://www.arcticwellness.ie/prebuilt-saunas/ember",
+   "sha256": "36e3818b0d84a64bfa16827f4b512831a6c8ba1700288116460832929938a7a9"
+  },
+  {
+   "id": "aw-08-nordic-on-a-patio",
+   "origin": "https://cdn.prod.website-files.com/69cad605ae4dde184701e4e1/6ab650fa22c68280e1f68b4d_68aaf772688c12491eb8cfb5_IMG_9193%201%20(1).webp",
+   "variants": [
+    [
+     "https://cdn.prod.website-files.com/69cad605ae4dde184701e4e1/6ab650fa22c68280e1f68b4d_68aaf772688c12491eb8cfb5_IMG_9193%201%20(1)-p-500.webp",
+     500
+    ],
+    [
+     "https://cdn.prod.website-files.com/69cad605ae4dde184701e4e1/6ab650fa22c68280e1f68b4d_68aaf772688c12491eb8cfb5_IMG_9193%201%20(1)-p-800.webp",
+     800
+    ]
+   ],
+   "w": 908,
+   "h": 1210,
+   "kind": "Photograph",
+   "alt": "A black Nordic sauna cabin with a full-height glass front on a pale stone patio, beneath festoon lights.",
+   "caption": "A Nordic sauna installed on a patio.",
+   "product": "Nordic",
+   "role": "collection",
+   "source": "https://www.arcticwellness.ie/prebuilt-saunas/nordic",
+   "sha256": "c7b0eab090511ccfd7fea47f6fde152797952e31429ff2b77c20c6c14ec6ade8"
+  },
+  {
+   "id": "aw-09-fjell-with-steps",
+   "origin": "https://cdn.prod.website-files.com/69cad605ae4dde184701e4e1/6ab6d0e35f5798e865aff567_c2whoggygb0lienhpqzl.webp",
+   "variants": [
+    [
+     "https://cdn.prod.website-files.com/69cad605ae4dde184701e4e1/6ab6d0e35f5798e865aff567_c2whoggygb0lienhpqzl-p-500.webp",
+     500
+    ],
+    [
+     "https://cdn.prod.website-files.com/69cad605ae4dde184701e4e1/6ab6d0e35f5798e865aff567_c2whoggygb0lienhpqzl-p-800.webp",
+     800
+    ],
+    [
+     "https://cdn.prod.website-files.com/69cad605ae4dde184701e4e1/6ab6d0e35f5798e865aff567_c2whoggygb0lienhpqzl-p-1080.webp",
+     1080
+    ]
+   ],
+   "w": 1122,
+   "h": 1402,
+   "kind": "Photograph",
+   "alt": "A tall stainless-steel Fjell ice bath on a garden terrace, reached by a set of varnished timber steps.",
+   "caption": "A Fjell ice bath with custom timber steps.",
+   "product": "Fjell",
+   "role": "collection",
+   "source": "https://www.arcticwellness.ie/ice-baths/fjell",
+   "sha256": "be485861dd5eab10b757c4b926372e43a7dccddced7b63a998cd9aaada048bca"
+  },
+  {
+   "id": "aw-10-ice-fall-bucket-shower",
+   "origin": "https://cdn.prod.website-files.com/69cad605ae4dde184701e4e1/6ab6e51622b514ced83fbbcc_WhatsApp%20Image%202026-09-17%20at%2015.50.45.webp",
+   "variants": [
+    [
+     "https://cdn.prod.website-files.com/69cad605ae4dde184701e4e1/6ab6e51622b514ced83fbbcc_WhatsApp%20Image%202026-09-17%20at%2015.50.45-p-500.webp",
+     500
+    ],
+    [
+     "https://cdn.prod.website-files.com/69cad605ae4dde184701e4e1/6ab6e51622b514ced83fbbcc_WhatsApp%20Image%202026-09-17%20at%2015.50.45-p-800.webp",
+     800
+    ],
+    [
+     "https://cdn.prod.website-files.com/69cad605ae4dde184701e4e1/6ab6e51622b514ced83fbbcc_WhatsApp%20Image%202026-09-17%20at%2015.50.45-p-1080.webp",
+     1080
+    ]
+   ],
+   "w": 1536,
+   "h": 2048,
+   "kind": "Photograph",
+   "alt": "A free-standing timber post with a bucket shower at the top, on a gravel patch in front of trees.",
+   "caption": "An Ice Fall bucket shower, mounted on its own timber post.",
+   "product": "Ice Fall",
+   "role": "collection",
+   "source": "https://www.arcticwellness.ie/other-wellness/ice-fall",
+   "sha256": "e0510f27e61c4a07cce83e8a9c58a83d8f98caa82ec33b69594dc7cf6063064c"
+  }
+ ],
+ "costs": {
+  "title": "What the listed price covers.",
+  "items": [
+   [
+    "Installation",
+    "Arctic Wellness installs every project itself and quotes supply and installation together. Its site does not say whether the listed unit prices already include installation, so ask for the full quote."
+   ],
+   [
+    "VAT",
+    "Not stated beside the listed prices."
+   ],
+   [
+    "The base and electrics",
+    "For a prebuilt sauna, the team prepares the base, the electrics and crane access before it is lifted in. These are handled within the project; their cost is not listed separately."
+   ],
+   [
+    "Ice bath running needs",
+    "A socket within reach and a hose to fill it. Larger commercial baths may need plumbing, which Arctic Wellness arranges."
+   ],
+   [
+    "Custom builds",
+    "Priced per project. Typical lead time is 10 to 14 weeks; an existing design takes 5 to 6 weeks."
+   ]
+  ],
+  "note": "Prices are those listed on arcticwellness.ie on 10 November 2026. Where no price is listed, the product is quoted per project."
+ },
+ "considerations": [
+  [
+   "Planning",
+   "A garden sauna is usually treated as a garden structure, and size, height and position limits apply. Arctic Wellness says it checks whether planning permission applies for each build; confirm this for your own garden."
+  ],
+  [
+   "Crane access",
+   "Prebuilt saunas arrive in one piece and are lifted in by crane, so there needs to be a route for it. A custom build is made on site instead."
+  ],
+  [
+   "Power",
+   "A sauna heater needs its own electrical supply. Arctic Wellness arranges the electrics as part of the project."
+  ],
+  [
+   "Cold water",
+   "Cold immersion isn't for everyone. If you have a heart or blood-pressure condition, check with your doctor first."
+  ]
+ ]
+}

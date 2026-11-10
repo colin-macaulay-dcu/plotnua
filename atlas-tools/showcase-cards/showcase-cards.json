@@ -23,6 +23,18 @@
   "embed": "gallery",
   "note": "Three makers with a full page on PlotNua: photographs, models and what to ask."
  },
+ "discovery-garden-retreat.html": {
+  "kicker": "A showcase on PlotNua",
+  "anchor": "<!-- PN-SUPPLIER-GALLERY v1 ·",
+  "cards": [
+   {
+    "showcase": "arctic-wellness",
+    "image": "aw-01-lakeside-garden-sauna",
+    "description": "Saunas and ice baths, supplied and installed from Dublin."
+   }
+  ],
+  "embed": "gallery"
+ },
  "discovery-the-outdoor-room.html": {
   "kicker": "A showcase on PlotNua",
   "anchor": "<!-- PN-SHOWCASE-ANCHOR · DISC-035 -->",

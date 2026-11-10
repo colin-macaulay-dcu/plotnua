@@ -1,9 +1,9 @@
 {
   "schema": "plotnua.image-rights.manifest.v1",
-  "generated": "2026-11-04",
+  "generated": "2026-11-10",
   "source_of_record": "Atlas Core · Image Permission Outreach (tblDnEVrH26beMy1B)",
   "governance": "GENERATED, NOT HAND-EDITED. Produced by .github/scripts/generate_image_rights_manifest.py from image-rights-records.json, which carries the canonical rights records and the Atlas id behind each one. It is the input to atlas-tools/validate-image-rights.js, which runs in the publish path and refuses to publish any supplier image without a live grant here. Regenerate and commit it in the same act as recording a grant or a withdrawal: the gate refuses a manifest older than 30 days precisely so a stale one cannot quietly authorise anything.",
-  "reality_note": "PlotNua publishes supplier imagery for 16 supplier(s) under a live grant: TRIQBRIQ AG, Powersheds, Yard Box, Superior Pergola Ireland, Hutsmith, Garden Room Ireland, Elm Landscaping, Don Modular Homes, BIOBUILDS, Tanktribe, OGNYX, Irish Sauna Company, ÖÖD House, Nua Modular, The Mobile Pods, Gardenhouse24 Ireland. Every other supplier row in Image Permission Outreach reads Unknown — Awaiting Reply, and no other supplier image is published anywhere on the site.",
+  "reality_note": "PlotNua publishes supplier imagery for 17 supplier(s) under a live grant: TRIQBRIQ AG, Powersheds, Yard Box, Superior Pergola Ireland, Hutsmith, Garden Room Ireland, Elm Landscaping, Don Modular Homes, BIOBUILDS, Tanktribe, OGNYX, Irish Sauna Company, ÖÖD House, Nua Modular, The Mobile Pods, Gardenhouse24 Ireland, Arctic Wellness. Every other supplier row in Image Permission Outreach reads Unknown — Awaiting Reply, and no other supplier image is published anywhere on the site.",
   "reconciliation": "Every row carries the Atlas record id it reflects, so a disagreement between this manifest and Atlas is visible rather than silent. Generated from image-rights-records.json; edit that file, never this one.",
   "rows": [
     {
@@ -1232,6 +1232,63 @@
         "requested_by": null,
         "requested_in": null,
         "note": "Gardenhouse24's reply did not ask to review a listing before publication. A private preview (gardenhouse24-ireland-preview.html) was sent by email in September 2026 without reply; it creates no review requirement."
+      },
+      "public_visibility": "PUBLISHABLE"
+    },
+    {
+      "organisation_record": "recPy0NyMdqGfEeyG",
+      "organisation_code": "ORG-000253",
+      "organisation_name": "Arctic Wellness",
+      "permission_outcome": "Granted with Conditions — Founder Confirmed",
+      "permitted_domain": "arcticwellness.ie",
+      "permitted_delivery_hosts": [
+        {
+          "host": "cdn.prod.website-files.com",
+          "path_prefix": "/69b2b4ea265b07ec4ef98873/",
+          "why": "arcticwellness.ie is a Webflow site: its pages and stylesheet serve the site's own images from this Webflow CDN folder (checked 10 Nov 2026). The site folder id is Arctic Wellness's alone; the host without it is not permitted."
+        },
+        {
+          "host": "cdn.prod.website-files.com",
+          "path_prefix": "/69cad605ae4dde184701e4e1/",
+          "why": "The second Webflow asset folder used by arcticwellness.ie for its product-catalogue (CMS) images, referenced from its product pages (checked 10 Nov 2026). Folder-scoped, as above."
+        }
+      ],
+      "required_credit": "Image: Arctic Wellness",
+      "evidence": "PlotNua emailed Jonathan Chadwick (founder) on 9 Nov 2026 asking to feature 'a small selection of photographs you approve, with clear credit and links to Arctic Wellness' (Gmail 1a1c21565a8f9e22). He replied on 10 Nov 2026: \"Yes you can use our images no problem. Sounds good\" (Gmail 1a1c3e4b7e7a6db8). The founder's brief of 10 Nov 2026 confirms the grant ('Arctic Wellness has explicitly granted PlotNua permission to use its product images and showcase its products'). Recorded in Atlas Image Permission Outreach OUTREACH-ARCTIC-WELLNESS-20261109 (recCp3k5b4wpqoLYb) as Granted with Conditions — Founder Confirmed.",
+      "conditions": [
+        "Credit 'Image: Arctic Wellness' on every image use, linked to arcticwellness.ie.",
+        "Only Arctic Wellness's own photographs of its installations and products as published on arcticwellness.ie. Images the site names 'ChatGPT Image' (AI-generated or AI-edited) and the apparent third-party manufacturer photographs of the PolarPool, PolarPlunge and Icepod tubs are excluded. Every image used is enumerated in supplier-preview-system/showcases/arctic-wellness/showcase.json with its source URL and SHA-256.",
+        "Images are hotlinked unmodified from Arctic Wellness's own CDN folders; no rehosting, cropping or adaptation.",
+        "If Arctic Wellness asks for any image to be changed or removed, PlotNua does so promptly."
+      ],
+      "note": "Exercised on suppliers/arctic-wellness.html (10 photographs, hotlinked from Arctic Wellness's Webflow CDN folders) and on one Garden Retreat showcase card. Selection, source pages and SHA-256 hashes: supplier-preview-system/showcases/arctic-wellness/showcase.json. REMOVAL: delete the image from showcase.json (and the card in atlas-tools/showcase-cards/showcase-cards.json if it is the card image), rebuild, regenerate this manifest. WITHDRAWAL: set permission_outcome to 'Withdrawn / Superseded' and the gate refuses every Arctic Wellness image site-wide. COMMERCIAL: Jonathan welcomed a conversation about a referral arrangement; no terms exist and this grant implies none.",
+      "atlas_permission_record": "recCp3k5b4wpqoLYb",
+      "atlas_permission_ref": "OUTREACH-ARCTIC-WELLNESS-20261109",
+      "permission_date": "2026-11-10",
+      "permission": {
+        "state": "GRANTED",
+        "ref": "OUTREACH-ARCTIC-WELLNESS-20261109",
+        "record": "recCp3k5b4wpqoLYb",
+        "date": "2026-11-10",
+        "scope": [
+          "feature",
+          "imagery"
+        ],
+        "conditions": [
+          "credit",
+          "link-back",
+          "selected-first-party-imagery-only",
+          "remove-on-request"
+        ],
+        "asked": "Email, 9 Nov 2026 (Gmail 1a1c21565a8f9e22): 'Would you be open to us featuring a small selection of photographs you approve, with clear credit and links to Arctic Wellness? We would send you a private preview before publishing any imagery.'",
+        "answered": "Email, 10 Nov 2026 (Gmail 1a1c3e4b7e7a6db8), Jonathan Chadwick: 'Yes you can use our images no problem. Sounds good'",
+        "note": "Founder confirmation in the brief of 10 Nov 2026."
+      },
+      "listing_review": {
+        "state": "NOT_REQUIRED",
+        "requested_by": null,
+        "requested_in": null,
+        "note": "Arctic Wellness did not ask to review the listing. Founder decision, 10 Nov 2026: Jonathan has authorised use of Arctic Wellness imagery and no additional supplier approval or preview is required."
       },
       "public_visibility": "PUBLISHABLE"
     }

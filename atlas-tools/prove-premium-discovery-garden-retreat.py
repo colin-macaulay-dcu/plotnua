@@ -154,7 +154,7 @@ def load_added():
         for c in x.get("supplierCards", []):
             blocks += c["blocks"]; imgs += c["imgs"]
         for u in x.get("targetedUpdates", []):
-            blocks += u.get("blocks", [])
+            blocks += u.get("blocks", []); imgs += u.get("imgs", [])   # imgs: 10 Nov 2026 (Arctic Wellness card)
         return blocks, imgs
     return [], []
 
@@ -272,7 +272,7 @@ def check(src, base):
         bad.append("L undeclared image: " + i)
     for i in base["ids"]:
         if i not in ids: bad.append("L id lost: " + i)
-    for i in ids - set(base["ids"]) - set(ADDED_IDS):
+    for i in ids - set(base["ids"]) - set(ADDED_IDS) - {i for u in targeted_updates() for i in u.get("ids", [])}:
         bad.append("L undeclared id: " + i)
     for a in INBOUND:
         if 'id="%s"' % a not in src: bad.append("L inbound anchor missing: #" + a)

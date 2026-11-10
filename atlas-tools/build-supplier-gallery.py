@@ -60,6 +60,9 @@ DISCOVERIES = {
         "directory": "explorer",
         "unified": True, "websites": True, "transition": "rule",
         "asset_v": "2",
+        # Arctic Wellness (founder brief, 10 Nov 2026): one Maker Showcase card under the carousel,
+        # as on Living in the Garden (atlas-tools/build-showcase-cards.py, "embed"). Carousel unchanged.
+        "showcase_cards": True,
         "tabs": {"saunas": ("sauna", "saunas"), "hotTubs": ("hot tub", "hot tubs"), "coldPlunges": ("cold plunge", "cold plunges")},
         "nouns": {"saunas": "outdoor saunas", "hotTubs": "hot tubs", "coldPlunges": "cold plunges"},
     },

@@ -186,6 +186,34 @@
    "links": [
     "suppliers/gardenhouse24.html"
    ]
+  },
+  {
+   "declared": "2026-11-10, founder brief 'Add Arctic Wellness to PlotNua': one Maker Showcase card (Arctic Wellness) embedded under the supplier gallery by atlas-tools/build-showcase-cards.py via build-supplier-gallery.py (showcase_cards), as on Living in the Garden. Carousel, figures and Maker Explorer unchanged. Card image and link pass the showcase-card builder's rights check and the Image Rights Gate.",
+   "gallery": [
+    [
+     "\n</section>\n<script src=\"assets/components/pn-supplier-gallery.js",
+     "\n  <link rel=\"stylesheet\" href=\"assets/components/pn-showcase-cards.css?v=3\">\n  <div class=\"pn-sc pn-sc--in-gallery\" aria-labelledby=\"pn-sc-k\"><div class=\"pn-sc-wrap\"><p class=\"pn-sc-k\" id=\"pn-sc-k\">A showcase on PlotNua</p><ul class=\"pn-sc-grid\" role=\"list\" data-count=\"1\"><li><article class=\"pn-sc-card\" aria-labelledby=\"pn-sc-arctic-wellness\"><a class=\"pn-sc-media\" href=\"suppliers/arctic-wellness.html\" tabindex=\"-1\" aria-hidden=\"true\"><img src=\"https://cdn.prod.website-files.com/69b2b4ea265b07ec4ef98873/6a43ec5fd66e3416b0c16850_13b28fc9-2980-481c-a6d6-17dc5b1b5e13.webp\" alt=\"\" width=\"1600\" height=\"1066\" loading=\"lazy\" decoding=\"async\" referrerpolicy=\"no-referrer\"></a><div class=\"pn-sc-body\"><p class=\"pn-sc-cap\"><span class=\"pn-sc-kind\">Photograph</span> Image: Arctic Wellness</p><h3 class=\"pn-sc-name\" id=\"pn-sc-arctic-wellness\">Arctic Wellness</h3><p class=\"pn-sc-desc\">Saunas and ice baths, supplied and installed from Dublin.</p><p class=\"pn-sc-go\"><a href=\"suppliers/arctic-wellness.html\" aria-label=\"Explore the Arctic Wellness showcase on PlotNua\"><span>Explore showcase</span> <span aria-hidden=\"true\">&rarr;</span></a></p></div></article></li></ul></div></div>\n</section>\n<script src=\"assets/components/pn-supplier-gallery.js"
+    ]
+   ],
+   "explorer": [],
+   "blocks": [
+    "A showcase on PlotNua",
+    "Photograph Image: Arctic Wellness",
+    "Arctic Wellness",
+    "Saunas and ice baths, supplied and installed from Dublin.",
+    "Explore showcase →",
+    "Photograph Image: Arctic Wellness Arctic Wellness Saunas and ice baths, supplied and installed from Dublin. Explore showcase →"
+   ],
+   "links": [
+    "suppliers/arctic-wellness.html"
+   ],
+   "imgs": [
+    "https://cdn.prod.website-files.com/69b2b4ea265b07ec4ef98873/6a43ec5fd66e3416b0c16850_13b28fc9-2980-481c-a6d6-17dc5b1b5e13.webp"
+   ],
+   "ids": [
+    "pn-sc-arctic-wellness",
+    "pn-sc-k"
+   ]
   }
  ]
 }
