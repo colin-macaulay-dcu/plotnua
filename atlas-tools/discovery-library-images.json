@@ -14,6 +14,14 @@
 
   "cards": [
 {
+  "title": "The Home You Build",
+  "card": "discovery-the-home-you-build.html",
+  "image": "assets/disc040/img/DISC-040-POSSIBLE-1024.jpg",
+  "alt": "A contemporary single-storey stone and timber home with a fully glazed gable and a dark slate roof, behind a lawn, a gravel drive and a field gate in the Irish countryside.",
+  "why": "Founder-approved DISC-040 POSSIBLE (Stage 2 brief, 10 Nov 2026): the newly built home on the once-empty field, the Discovery realised. The hero's BEFORE (the same field without the house) is the starting point and the Library must not show it. A recorded edit of the founder's credentialed POSSIBLE master (build-disc040-images.py).",
+  "previous": null
+},
+{
   "title": "The Hidden Shelter",
   "card": "discovery-the-hidden-shelter.html",
   "image": "assets/disc038/img/DISC-038-POSSIBLE-1024.jpg",

@@ -214,7 +214,8 @@ pages = sorted(set(pages + ["index.html"]))
 # 36 since garden-offices-ireland.html entered the sitemap (separate release, 9 Nov 2026; the count was not
 #    updated then, so main refused 35/36 — recorded here by the DISC-038 Stage 12 release preparation).
 # 37 since DISC-038 The Hidden Shelter (release candidate prepared 10 Nov 2026; founder release approval required).
-EXPECTED_PAGES = 37
+# 38 since DISC-040 The Home You Build (release candidate prepared 10 Nov 2026; founder release approval required).
+EXPECTED_PAGES = 38
 if len(pages) != EXPECTED_PAGES:
     die("expected %d public pages, found %d — refusing to guess the rail scope. "
         "If a public page was added or removed, update EXPECTED_PAGES "

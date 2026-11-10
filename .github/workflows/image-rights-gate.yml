@@ -471,6 +471,10 @@ jobs:
           # H1, the standard slider on the founder's C2PA pair opening at 100% BEFORE, the AI label, the chapter section drawing,
           # no distributor/installer/partner claims, planning and price qualifications, an inert form and no enquiry routing.
           python3 atlas-tools/prove-disc038-page.py --self-test
+          # DISC-040 The Home You Build (release candidate prepared 10 Nov 2026): index/follow, one H1, the standard slider on the
+          # founder's C2PA pair opening at 100% BEFORE, the AI label, maker qualifications (no partner or distributor claims),
+          # regulatory and figure qualifications, no form, Space Library card, sitemap, Search record, provenance by hash.
+          python3 atlas-tools/prove-disc040-page.py --self-test
           # Safety lock (23 Oct 2026): the 17 Oct merge builder must refuse to
           # regenerate the approved Premium page, and must leave every file as it was.
           set +e; out=$(python3 atlas-tools/build-a-home-for-art-merge.py --apply 2>&1); rc=$?; set -e
