@@ -122,8 +122,10 @@ def check(s, files):
     need(alt and len(alt.group(1)) >= 60, "S7 the section illustration needs a descriptive alt")
     need("AI-generated illustration" in sb and "Not to scale" in sb and "not a specific product or installation" in sb, "S7 the section illustration lacks its AI disclosure")
     # S8
-    for must in ("None of these companies has confirmed that it supplies or installs in Ireland", "None is a PlotNua partner",
-                 "PlotNua has no agreement with any of them", "inclusion is not a recommendation",
+    # Stage 11 (10 Nov 2026): founder-approved relationship wording replaces the Stage 6 "None has confirmed" sentences.
+    for must in ("PlotNua has no confirmed commercial relationship with the manufacturers listed",
+                 "Irish availability, installation arrangements and final prices would need to be established directly with each supplier",
+                 "Inclusion is not a recommendation", "no confirmed partnership or commercial relationship with any manufacturer",
                  "we are not a distributor or an installer", "Burrowed is not a PlotNua partner"):
         need(must in flat, "S8 supplier qualification missing: " + must)
     for bad in ("authorised distributor", "authorized distributor", "official distributor", "exclusive irish", "certified installer",
@@ -134,10 +136,18 @@ def check(s, files):
         need(must.replace("m2", "m²") in flat or must.replace("m2", "m 2") in flat, "S9 planning or feasibility caution missing: " + must)
     for bad in ("no planning permission needed", "does not need planning", "always exempt", "guaranteed exempt", "no permission required"):
         need(bad not in low, "S9 blanket exemption wording: " + bad)
+    # Stage 11: Class 3A is mentioned only with the caution that neither class permits an underground shelter.
+    need("Class 3A" in flat and "Neither class should be read as permitting an underground shelter" in flat,
+         "S9 Class 3A context or its caution missing")
     # S10
-    for must in ("Advertised prices in each maker’s home market", "No maker has quoted for this page", "checked 8 November 2026",
+    for must in ("Advertised prices in each maker’s home market", "None of these figures is a quote for an Irish installation",
+                 "checked 10 November 2026",
                  "An Irish installed price isn’t known yet"):
         need(must in flat, "S10 price qualification missing: " + must)
+    # Stage 11: claims corrected by the Stage 10 evidence verification must not return.
+    for bad in ("twice the european", "order book has tripled", "can’t install outside the uk", "with nbc filtration included",
+                "a safe maker since 1978", "a leading us maker", "for 72 hours", "no maker has quoted"):
+        need(bad not in low, "S10 corrected claim has returned: " + bad)
     # S11
     # No-form publication route (founder Stage 6, 10 Nov 2026): no form or form control anywhere on the page, and the
     # exploratory-status statement is kept.
@@ -207,9 +217,11 @@ def main():
             "S5 ": s.replace('<p class="pn-compare__note">%s</p>' % AI, '<p class="pn-compare__note"></p>', 1),
             "S6": s.replace('<p class="lg-kicker">Explore the possibility</p>', '<p class="lg-kicker">Buy now</p>', 1),
             "S7": s.replace('<figure class="hs-section', '<figure class="hs-gone', 1),
-            "S8": s.replace("None is a PlotNua partner", "PlotNua is the authorised distributor", 1),
+            "S8": s.replace("Inclusion is not a recommendation", "PlotNua is the authorised distributor", 1),
+            "S9 ": s.replace("Neither class should be read as permitting an underground shelter", "Class 3A allows a shelter", 1),
             "S9": s.replace("not for human habitation", "fine for living in", 1),
-            "S10": s.replace("No maker has quoted for this page", "Irish price confirmed", 1),
+            "S10": s.replace("None of these figures is a quote for an Irish installation", "Irish price confirmed", 1),
+            "S10 ": s.replace("about twice the worldwide average", "about twice the European level", 1),
             "S11": s.replace('<div class="rg-panel reveal">', '<form><textarea name="m"></textarea></form><div class="rg-panel reveal">', 1),
             "S11    ": s.replace('<div class="rg-panel reveal">', '<input type="email" name="email"><div class="rg-panel reveal">', 1),
             "S11 ": s.replace("No shelter is available through PlotNua today", "Shelters available now", 1),
