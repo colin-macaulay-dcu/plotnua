@@ -89,10 +89,17 @@ function matchDelivery(delivery, host, pathname) {
   return null;
 }
 
+/* fail() must not call process.exit(): when stdout is a pipe, Node can drop
+ * output still queued for writing, and a caller that reads this report (the
+ * grant proofs) then sees a truncated list. Set the exit code and unwind with a
+ * private sentinel; Node exits with `code` once stdout has drained. Do not call
+ * fail() inside a try block that catches everything (it would swallow GateExit). */
+class GateExit extends Error {}
 function fail(code, lines) {
   console.log('\nGATE FAILED');
   lines.forEach(l => console.log('  ' + l));
-  process.exit(code);
+  process.exitCode = code;
+  throw new GateExit();
 }
 
 function readJson(p, what) {
@@ -513,4 +520,4 @@ function main() {
   }
   console.log('\nGATE PASS — every publishable asset has a live grant behind it.');
 }
-main();
+try { main(); } catch (e) { if (!(e instanceof GateExit)) throw e; }
