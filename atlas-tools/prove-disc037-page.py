@@ -128,7 +128,8 @@ def check(s, files):
     need("font-size:clamp(40px,4.05vw,72px)" in s, "R5 the Stage 8 desktop heading size")
     need(not re.search(r"rg-views|rgViews|rg-hero--views", s), "R5 no crossfade left behind")
     need("pn-hero-compare__mtitle" not in h5, "R5 no compact title above the image (Stage 11A founder decision: one heading, below the image)")
-    need(re.search(r'<meta property="og:image" content="https://plotnua\.ie/assets/disc037/img/DISC-037-og-1200x630\.jpg"', s), "R5 the share image")
+    need(re.search(r'<meta property="og:image" content="https://plotnua\.ie/assets/disc037/img/DISC-037-og-850x446\.jpg"', s)
+         and '<meta property="og:image:width" content="850">' in s and '<meta property="og:image:height" content="446">' in s, "R5 the share image (Stage 11D: native 850 x 446)")
 
     # R6
     ks = re.findall(r'<div class="lg-chapter" id="lg-ch0(\d)">.*?<p class="lg-kicker">([^<]+)</p>', s)
@@ -223,8 +224,9 @@ def main():
         if cards:
             cat, body = cards[0]
             need(cat == "Garden" and '<span class="lib-cat">Garden</span>' in body, "R14 the card is in Garden")
-            need("DISC-037-POSSIBLE-1024.jpg" in body and "DISC-037-02-POSSIBLE-MASTER-480w.webp" in body and "BEFORE" not in body,
-                 "R14 the card shows the POSSIBLE, never the BEFORE")
+            need("DISC-037-HERO-POSSIBLE-1024.jpg" in body and "DISC-037-02-POSSIBLE-WIDE-MASTER-480w.webp" in body
+                 and "DISC-037-02-POSSIBLE-WIDE-MASTER-960w.webp" in body and "BEFORE" not in body,
+                 "R14 the card shows the Stage 11 POSSIBLE (Stage 11D card window), never the BEFORE")
             need('<span class="lib-aichip">AI-generated illustration</span>' in body, "R14 the card carries the AI chip")
             need('<span class="lib-title">The Resourceful Garden</span>' in body and
                  "What if your garden could grow more, waste less and give something back?" in body, "R14 the card title and line")
@@ -247,7 +249,7 @@ def main():
         need(d and files(a) and sha(a) == d["sha256"], "R16 %s differs from its recorded derivative" % a)
         need(m and src.get("sha256") == m["sha256"] and sha(m["asset"]) == m["sha256"], "R16 %s: its master is not the declared, unchanged file" % a)
 
-    need("POSSIBLE" in derivs.get("assets/disc037/img/DISC-037-og-1200x630.jpg", {}).get("derived_from", {}).get("asset", ""),
+    need("POSSIBLE" in derivs.get("assets/disc037/img/DISC-037-og-850x446.jpg", {}).get("derived_from", {}).get("asset", ""),
          "R16 the share image is made from the POSSIBLE")
     if "--self-test" in sys.argv:
         faults = {

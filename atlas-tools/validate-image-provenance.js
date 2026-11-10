@@ -344,7 +344,7 @@ const FOUNDER_ATTESTED_H6V7 = {
 /* PN-FDR-2026-11-08-DISC037-HERO (founder, 8 Nov 2026, Stage 11C release authorisation): the DISC-037 Stage 11 hero
    pair, two views split from one AI-generated two-panel composite with the labels removed, supplied without content
    credentials. The founder confirms ChatGPT image generation; the editing history is not independently verified and
-   the prompt, generation date, label-removal tool and any reference inputs are not recorded. Founder-attested form. ONLY these two masters, ONLY on the discovery surface; their copies are
+   the prompt, generation date, label-removal tool and any reference inputs are not recorded. Founder-attested form. ONLY these two masters, ONLY on the discovery page and its Library card (Stage 11D); their copies are
    recorded derivatives. Not a way to declare future images. */
 const FOUNDER_ATTESTED_DISC037_HERO = {
   decision: 'PN-FDR-2026-11-08-DISC037-HERO',
@@ -352,7 +352,7 @@ const FOUNDER_ATTESTED_DISC037_HERO = {
     '3c653de3367f6868a416797dfa1391b592fd4e23039e24bd2a613e49b0633e84',   // DISC-037-01-BEFORE-WIDE-MASTER.png
     '8f85339993dbb2d01477f26655944fa79834f1ed3ae030a5ccd986b6f6de54b9',   // DISC-037-02-POSSIBLE-WIDE-MASTER.png
   ]),
-  surfaces: ['discovery'],
+  surfaces: ['discovery', 'library-card'],   // Stage 11D (founder, 10 Nov 2026): the Library card shows the POSSIBLE
 };
 const FOUNDER_ATTESTED_ALL = [FOUNDER_ATTESTED_DISC037_HERO, FOUNDER_ATTESTED_GRP, FOUNDER_ATTESTED_H6, FOUNDER_ATTESTED_DISC031, FOUNDER_ATTESTED_DISC033, FOUNDER_ATTESTED_DISC032, FOUNDER_ATTESTED_PLOTART_LG, FOUNDER_ATTESTED_PLOTART_MG, FOUNDER_ATTESTED_FOUNDER_PORTRAIT, FOUNDER_ATTESTED_SUPPLIER_INVITE, FOUNDER_ATTESTED_H6V7];
 const attestedFor = h => FOUNDER_ATTESTED_ALL.find(x => x.sha256.has(String(h)));

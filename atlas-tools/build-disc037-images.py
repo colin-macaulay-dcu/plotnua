@@ -67,17 +67,13 @@ CHAPTERS = {   # role -> (path, sha256, size, package file, what)
         "DISC-037 chapter 05 image, The Living Roof and Wild Garden: a timber garden building with a flowering sedum and wildflower "
         "roof, foxgloves, ferns and daisies in front and a dry-stone wall at the side"),
 }
-# THE STAGE 7-10 HERO PAIR (founder decision 8 Nov 2026; replaced in the hero at Stage 11). Its POSSIBLE still makes the Library
-# card and the social card. Its BEFORE (DISC-037-01-BEFORE-MASTER.png) was removed at Stage 11 with its record: nothing
-# references it any more (it stays in git history and in the founder's folder): shown as two labelled views with a crossfade (NOT the standard
+# THE STAGE 7-10 HERO PAIR (founder decision 8 Nov 2026; replaced in the hero at Stage 11). Both masters are retired with their
+# records: the BEFORE (DISC-037-01-BEFORE-MASTER.png) at Stage 11, the POSSIBLE (DISC-037-02-POSSIBLE-MASTER.png) at Stage 11D
+# (proposed), when the Library card, social card and structured-data image moved to the Stage 11 POSSIBLE. Both stay in git
+# history and in the founder's folder. History: the pair was: shown as two labelled views with a crossfade (NOT the standard
 # comparison slider; the pair did not meet the slider alignment standard, and the founder approved this DISC-037-only
 # presentation). Both are added unchanged: the approved POSSIBLE and the Stage 6 BEFORE v2 (founder's choice).
-CARD = {   # role -> (path, sha256, size, package file, what)
-    "POSSIBLE": (D + "DISC-037-02-POSSIBLE-MASTER.png",
-        "c923e8e7ffc3645d6cefa3d6e65debdcffc7cdc7eb8f1407c2eb24351e904480", (1536, 1024), "DISC-037-02-POSSIBLE-APPROVED.png",
-        "DISC-037 hero POSSIBLE: the same cottage garden made productive: timber raised beds, a small glasshouse, a bean wigwam, "
-        "compost bays, a water butt and a turf-covered underground pantry with a timber door beside the patio, with lawn and planting kept"),
-}
+CARD = {}   # Stage 11D (proposed): the Stage 7-10 POSSIBLE master is retired with its record; nothing references it any more
 HERO = {   # Stage 11: role -> (path, sha256, size, package file, what). Records are founder-attested (no C2PA), added separately.
     "BEFORE": (D + "DISC-037-01-BEFORE-WIDE-MASTER.png",
         "3c653de3367f6868a416797dfa1391b592fd4e23039e24bd2a613e49b0633e84", (1672, 452), "DISC-037-BEFORE-candidate.png",
@@ -89,6 +85,8 @@ HERO = {   # Stage 11: role -> (path, sha256, size, package file, what). Records
 HERO_TOP = 6                          # both copies drop the same top 6 rows (pale strip on the POSSIBLE)
 HERO_WIDTHS = (1024, 1376, 1672)
 MOBILE_X0, MOBILE_W = 647, 793        # identical 16:9 window for both views (full remaining height, 446 px)
+CARD_X0 = 670                         # Stage 11D: Library card window x 670-1630 of the POSSIBLE (proposed)
+OG_X0 = 590                           # Stage 11D: social card window x 590-1440 of the POSSIBLE (proposed)
 WEBP = (480, 768, 1024, 1376)
 JPEG = (768, 1024)
 
@@ -135,23 +133,24 @@ def outputs():
         op = "crop y %d-%d and x %d-%d (a 16:9 window: beds, glasshouse and pantry), no resize; the same window for both views" % (HERO_TOP, HERO_TOP + H, MOBILE_X0, MOBILE_X0 + MOBILE_W)
         files["%s-M-%d.webp" % (stem, MOBILE_W)] = (enc(m, "WEBP", quality=82, method=6), "Pillow %s, WebP quality 82, method 6" % PIL_VERSION, role, op)
         files["%s-M-%d.jpg" % (stem, MOBILE_W)] = (enc(m, "JPEG", quality=88, progressive=True, optimize=True), "Pillow %s, JPEG quality 88, progressive" % PIL_VERSION, role, op)
-    for role, (p, h, size, *_r) in CARD.items():
-        rgb = Image.open(ROOT / p).convert("RGB"); W, H = rgb.size
-        role = "CARD-" + role
-        if role == "CARD-POSSIBLE":
-            # Discovery Library card copies (unchanged since Stage 8), named as build-library-card-webp.py names them.
+        if role == "POSSIBLE":
+            # Stage 11D (proposed, 10 Nov 2026): the Library card and the social card from the new POSSIBLE.
+            # Card: one 960 x 446 window (beds, bean poles, glasshouse, water butts, the open pantry), no upscaling; the
+            # card frame (about 1.6:1, 200 px tall) shows its centre. The WebPs are named after the master, as
+            # build-library-card-webp.py names a Discovery card's copies. The card's <img> fallback is the hero's own
+            # DISC-037-HERO-POSSIBLE-1024.jpg, because the Library rule requires the card image to appear on the page.
+            c = strip.crop((CARD_X0, 0, CARD_X0 + 960, H))
+            op = "crop y %d-%d and x %d-%d (Discovery Library card window: beds, glasshouse and pantry)" % (HERO_TOP, HERO_TOP + H, CARD_X0, CARD_X0 + 960)
             for w in (480, 960):
-                files["assets/library/img/DISC-037-02-POSSIBLE-MASTER-%dw.webp" % w] = (
-                    enc(rgb, "WEBP", w, quality=80, method=6), "Pillow %s, WebP quality 80, method 6" % PIL_VERSION, role,
-                    "Lanczos resize to %d px wide (Discovery Library card, whole image)" % w)
-            # the page's structured data (primaryImageOfPage) names this file: kept, byte-identical, so SEO metadata is unchanged
-            files[D + "DISC-037-POSSIBLE-1024.jpg"] = (enc(rgb, "JPEG", 1024, quality=88, progressive=True, optimize=True), "Pillow %s, JPEG quality 88, progressive" % PIL_VERSION, role,
-                                                       "Lanczos resize to 1024 px wide (hero view, whole image)")
-            ch = round(W * 630 / 1200); y0 = (H - ch) // 2
-            og = rgb.crop((0, y0, W, y0 + ch)).resize((1200, 630), Image.LANCZOS)
-            files[D + "DISC-037-og-1200x630.jpg"] = (enc(og, "JPEG", quality=86, progressive=True, optimize=True),
+                files["assets/library/img/DISC-037-02-POSSIBLE-WIDE-MASTER-%dw.webp" % w] = (
+                    enc(c, "WEBP", w, quality=80, method=6), "Pillow %s, WebP quality 80, method 6" % PIL_VERSION, role,
+                    op + (", no resize" if w == 960 else ", Lanczos resize to %d px wide" % w))
+            # Social card: the standard 1200:630 shape at the strip's native height (850 x 446), never enlarged (gate P12).
+            ow = round(H * 1200 / 630)
+            og = strip.crop((OG_X0, 0, OG_X0 + ow, H))
+            files[D + "DISC-037-og-%dx%d.jpg" % (ow, H)] = (enc(og, "JPEG", quality=86, progressive=True, optimize=True),
                 "Pillow %s, JPEG quality 86, progressive" % PIL_VERSION, role,
-                "crop y %d-%d to 1200:630, Lanczos resize to 1200 x 630 (social card from the hero POSSIBLE)" % (y0, y0 + ch))
+                "crop y %d-%d and x %d-%d (1200:630 shape: beds, glasshouse and pantry), no resize (social card)" % (HERO_TOP, HERO_TOP + H, OG_X0, OG_X0 + ow))
     return files
 
 

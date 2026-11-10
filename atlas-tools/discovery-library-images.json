@@ -104,10 +104,14 @@
     {
       "title": "The Resourceful Garden",
       "card": "discovery-the-resourceful-garden.html",
-      "image": "assets/disc037/img/DISC-037-POSSIBLE-1024.jpg",
-      "alt": "An Irish cottage garden made productive, with timber raised beds, a small glasshouse, a bean wigwam, compost bays and a turf-covered underground pantry beside the patio, with lawn and planting kept.",
-      "why": "The productive cottage garden: the Discovery realised. The hero's BEFORE (the same garden as it is today) is the starting point and the Library must not show it. Card copies are recorded edits of the founder's credentialed POSSIBLE master (build-disc037-images.py).",
-      "previous": null
+      "image": "assets/disc037/img/DISC-037-HERO-POSSIBLE-1024.jpg",
+      "alt": "A back garden made productive, with timber raised beds and bean poles, a small green-framed glasshouse, water butts and the open domed hatch of an underground pantry with jars inside, set in a grassy bank.",
+      "why": "The productive garden: the Discovery realised. A window of the Stage 11 hero POSSIBLE (founder-selected, 8 Nov 2026) chosen to show the raised beds, the glasshouse and the open underground pantry. The hero's BEFORE is the starting point and the Library must not show it. The card's <img> is the hero's own POSSIBLE JPEG (it must appear on the page); its WebPs are a recorded crop of the founder-attested master framing the beds, glasshouse and pantry (build-disc037-images.py).",
+      "previous": {
+        "image": "assets/disc037/img/DISC-037-POSSIBLE-1024.jpg",
+        "alt": "An Irish cottage garden made productive, with timber raised beds, a small glasshouse, a bean wigwam, compost bays and a turf-covered underground pantry beside the patio, with lawn and planting kept.",
+        "replaced": "2026-11-10 (Stage 11D: the card follows the Stage 11 hero pair)"
+      }
     },
     {
       "title": "The Borrowed Garden",
