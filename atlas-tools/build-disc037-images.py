@@ -69,11 +69,11 @@ CHAPTERS = {   # role -> (path, sha256, size, package file, what)
 }
 # THE STAGE 7-10 HERO PAIR (founder decision 8 Nov 2026; replaced in the hero at Stage 11). Both masters are retired with their
 # records: the BEFORE (DISC-037-01-BEFORE-MASTER.png) at Stage 11, the POSSIBLE (DISC-037-02-POSSIBLE-MASTER.png) at Stage 11D
-# (proposed), when the Library card, social card and structured-data image moved to the Stage 11 POSSIBLE. Both stay in git
+# (Stage 11E, 10 Nov 2026), when the Library card, social card and structured-data image moved to the Stage 11 POSSIBLE. Both stay in git
 # history and in the founder's folder. History: the pair was: shown as two labelled views with a crossfade (NOT the standard
 # comparison slider; the pair did not meet the slider alignment standard, and the founder approved this DISC-037-only
 # presentation). Both are added unchanged: the approved POSSIBLE and the Stage 6 BEFORE v2 (founder's choice).
-CARD = {}   # Stage 11D (proposed): the Stage 7-10 POSSIBLE master is retired with its record; nothing references it any more
+CARD = {}   # Stage 11E (founder-approved, 10 Nov 2026): the Stage 7-10 POSSIBLE master is retired with its record; nothing references it any more
 HERO = {   # Stage 11: role -> (path, sha256, size, package file, what). Records are founder-attested (no C2PA), added separately.
     "BEFORE": (D + "DISC-037-01-BEFORE-WIDE-MASTER.png",
         "3c653de3367f6868a416797dfa1391b592fd4e23039e24bd2a613e49b0633e84", (1672, 452), "DISC-037-BEFORE-candidate.png",
@@ -85,8 +85,8 @@ HERO = {   # Stage 11: role -> (path, sha256, size, package file, what). Records
 HERO_TOP = 6                          # both copies drop the same top 6 rows (pale strip on the POSSIBLE)
 HERO_WIDTHS = (1024, 1376, 1672)
 MOBILE_X0, MOBILE_W = 647, 793        # identical 16:9 window for both views (full remaining height, 446 px)
-CARD_X0 = 670                         # Stage 11D: Library card window x 670-1630 of the POSSIBLE (proposed)
-OG_X0 = 590                           # Stage 11D: social card window x 590-1440 of the POSSIBLE (proposed)
+CARD_X0 = 670                         # Stage 11D/11E: Library card window x 670-1630 of the POSSIBLE (founder-approved)
+OG_X0 = 590                           # Stage 11D/11E: social card window x 590-1440 of the POSSIBLE (founder-approved)
 WEBP = (480, 768, 1024, 1376)
 JPEG = (768, 1024)
 
@@ -134,7 +134,7 @@ def outputs():
         files["%s-M-%d.webp" % (stem, MOBILE_W)] = (enc(m, "WEBP", quality=82, method=6), "Pillow %s, WebP quality 82, method 6" % PIL_VERSION, role, op)
         files["%s-M-%d.jpg" % (stem, MOBILE_W)] = (enc(m, "JPEG", quality=88, progressive=True, optimize=True), "Pillow %s, JPEG quality 88, progressive" % PIL_VERSION, role, op)
         if role == "POSSIBLE":
-            # Stage 11D (proposed, 10 Nov 2026): the Library card and the social card from the new POSSIBLE.
+            # Stage 11D/11E (founder-approved, 10 Nov 2026): the Library card and the social card from the new POSSIBLE.
             # Card: one 960 x 446 window (beds, bean poles, glasshouse, water butts, the open pantry), no upscaling; the
             # card frame (about 1.6:1, 200 px tall) shows its centre. The WebPs are named after the master, as
             # build-library-card-webp.py names a Discovery card's copies. The card's <img> fallback is the hero's own
