@@ -38,10 +38,11 @@ WHAT v2 TAKES FROM THE TEMPLATE, AND WHAT IT DOES NOT.
 
 *** RECONCILIATION, EVIDENCE AND TRAPS: UNCHANGED FROM v1. ***
 
-Atlas ORG-000218 "EcoSauna Ireland" (rec7or5nAX2Z57tiN), reused. Reply of
-18 Oct 2026 from ecosauna2022hottub@gmail.com (Gmail 1a14e93ff0d46b6b) is a
-request to SEE a preview; nothing else is granted. That the address speaks
-for www.ecosauna.ie is AWAITING SUPPLIER CONFIRMATION. Every figure is from
+Atlas ORG-000218 "EcoSauna Ireland" (rec7or5nAX2Z57tiN), reused. The reply
+of 18 Oct 2026 (PN-EVID-PREVIEW-ECOSAUNA-20261018, held privately in
+plotnua-infrastructure, M8B) is a request to SEE a preview; nothing else is
+granted. That the replying address speaks for www.ecosauna.ie is AWAITING
+SUPPLIER CONFIRMATION. Every figure is from
 the code www.ecosauna.ie serves (/assets/index-Cy6LUy6E.js), read 18 Oct
 2026: the configurator catalogue ("Starting from €…"), its option price
 table, and its delivery, base and estimate notices.

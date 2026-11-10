@@ -22,7 +22,7 @@
   O12 chapter 05: the shared two-route component; route B is the existing free WhatsApp link (unprefilled) with
       reference OR and the contact page; no form, payment or new endpoint
   O13 the Superior Pergola showcase card comes from the shared builder; the 4% saving is stated for aluminium
-      pergolas only, exactly once, with no other percentage; no commission figure or 8%; the referral disclosure
+      pergolas only, exactly once, with no other percentage; no commission figure in digits or words; the referral disclosure
   O14 Apex Verandas, The Outdoor Scene and QOLA are named as researched installers only: no partner claim, no
       link to their sites from the makers section, no photograph
   O15 euro figures appear only where approved (Section 5 fee, the advertised prices, the relative-cost symbols);
@@ -215,7 +215,9 @@ pct = re.findall(r"\d+(?:\.\d+)?\s?%", flat)
 need(pct == ["4%"], "O13 exactly one percentage on the page, the pergola saving: %s" % pct)
 need("applies a 4% saving to aluminium pergola installations introduced through PlotNua. It doesn’t apply to verandas, porches or its other products." in flat,
      "O13 the saving is stated for aluminium pergolas only")
-for bad in ("8%", "commission", "eight per cent", "4% on all", "4% off verandas"):
+need(not re.search(r"\b(?:one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|fifteen|twenty)[ -]per[ -]?cent\b", low),
+     "O13 a percentage written in words (the commission figure must never appear, in any form)")
+for bad in ("commission", "4% on all", "4% off verandas"):
     need(bad not in low.replace("commission for regulation of utilities", "").replace("law reform commission", ""), "O13 commission or widened saving: " + bad)
 need("may receive a referral fee from Superior Pergola Ireland" in flat and "paid by the supplier" in flat,
      "O13 the referral disclosure")

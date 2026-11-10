@@ -24,7 +24,9 @@ exists, not to suggest Switch Electrical is in it.
 
 *** IMAGERY STATE C. NO IMAGERY. ***
 
-The reply was "Preview pls". That is a request to SEE the page, not a grant.
+The reply was PREVIEW (PN-EVID-PREVIEW-SWITCH-ELECTRICAL-20261005, held
+privately in plotnua-infrastructure, M8B). That is a request to SEE the page,
+not a grant.
 UNKNOWN IS NOT GRANTED. Their site carries real installation photography --
 roof installs, Sigenergy batteries and inverters on Irish walls -- and none of
 it may be downloaded, re-hosted, hotlinked or shown. The page being private
@@ -282,7 +284,7 @@ def main():
     # G0 · IMAGERY MAY NOT APPEAR WHILE PERMISSION IS UNKNOWN.
     if SWITCH_IMAGES:
         die("Switch Electrical imagery was added to this builder, but the "
-            "reply was \"Preview pls\" — a request to see the page, not a "
+            "reply was PREVIEW — a request to see the page, not a "
             "grant. UNKNOWN is not GRANTED, and the publish-time rights gate "
             "refuses external images on any deployed page. Get written "
             "permission and a manifest row first.")

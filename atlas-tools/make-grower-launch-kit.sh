@@ -14,7 +14,7 @@ s=re.sub(r'^APPROVAL = None.*$', 'APPROVAL = %r' % sys.argv[1], s, count=1, flag
 PY
 python3 atlas-tools/build-privacy-v6.py && python3 atlas-tools/build-privacy-v6.py --check
 python3 atlas-tools/build-grower-register.py --check
-git add -A && git -c user.name="Colin MacAulay" -c user.email="kolin.macaulay@gmail.com" commit -qm "Privacy V6: Grower Register added to Section 7 (founder-approved)
+git add -A && git -c user.name="Colin MacAulay" -c user.email="hello@plotnua.ie" commit -qm "Privacy V6: Grower Register added to Section 7 (founder-approved)
 
 $V6A"
 python3 - "$OPENA" "$V6A" <<'PY'
@@ -26,7 +26,7 @@ p='worker/garden-register/wrangler.toml'; s=open(p).read()
 s=s.replace('GROWER_WRITES_ENABLED  = "false"','GROWER_WRITES_ENABLED  = "true"').replace('GROWER_PRIVACY_VERSION = ""','GROWER_PRIVACY_VERSION = "2026-10-PHASE2-V6"'); open(p,'w').write(s)
 PY
 python3 atlas-tools/build-grower-register.py && python3 atlas-tools/build-grower-register.py --check
-git add -A && git -c user.name="Colin MacAulay" -c user.email="kolin.macaulay@gmail.com" commit -qm "Grower Register: open, with two routes on The Borrowed Garden
+git add -A && git -c user.name="Colin MacAulay" -c user.email="hello@plotnua.ie" commit -qm "Grower Register: open, with two routes on The Borrowed Garden
 
 $OPENA"
 mkdir -p "$OUT"

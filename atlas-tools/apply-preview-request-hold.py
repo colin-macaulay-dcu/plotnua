@@ -5,12 +5,12 @@ BOUNDED HOLD — A SUPPLIER WHO ASKED TO SEE A PREVIEW FIRST LEAVES THE
 GARDEN-ROOM UNIVERSE NOW, WITHOUT A FULL ATLAS REFRESH (14 OCTOBER 2026).
 
 Founder brief "Garden Retreat — controlled text-only publication expansion",
-item 5. Cosy Cabins, 2 Oct 2026 (Gmail 1a0fd84efd61b0fa), answering outreach
-that offered YES or PREVIEW: "PREVIEW please — I'd like to see how Cosy Cabins
-would appear on PlotNua before anything is published." PlotNua replied the same
-day that "nothing from Cosy Cabins has been published into the PlotNua
-homeowner experience" and that the preview showed Cosy Cabins "through a
-separate garden-room journey" as well as the sauna. The garden-room listing
+item 5. Cosy Cabins, 2 Oct 2026 (PN-EVID-PREVIEW-COSY-CABINS-20261002, held
+privately in plotnua-infrastructure, M8B), answering outreach that offered YES
+or PREVIEW, asked to see a preview before anything is published. PlotNua
+replied the same day that nothing from Cosy Cabins had been published into the
+PlotNua homeowner experience, and that the preview showed Cosy Cabins through a
+separate garden-room journey as well as the sauna. The garden-room listing
 (Athlone Garden Room 4.5m x 2.5m) entered the universe on 6 Oct, Search on
 8 Oct and Living in the Garden on 13 Oct, with the request unanswered. The
 request clearly covers it, so it is held.

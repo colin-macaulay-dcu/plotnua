@@ -552,7 +552,7 @@ def T12(c):
     files = sorted(git(c.p, "show", "--name-only", "--format=", "HEAD").split())
     check("T12 the commit holds exactly the applied files", files == applied, "%s vs %s" % (files, applied))
     msg = git(c.p, "log", "-1", "--format=%an <%ae>%n%B")
-    check("T12 author and trailers", msg.startswith("Colin MacAulay <kolin.macaulay@gmail.com>")
+    check("T12 author and trailers", msg.startswith("Colin MacAulay <hello@plotnua.ie>")
           and "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>" in msg
           and "Claude-Session: https://claude.ai/code/session_" in msg)
     check("T12 nothing pushed (no remote touched)", "push" not in out.lower() or "not pushed" in out.lower())

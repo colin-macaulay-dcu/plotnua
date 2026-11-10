@@ -1,6 +1,6 @@
 {
   "schema": "plotnua.referral-offers.v1",
-  "purpose": "Public display facts for supplier referral codes shown to homeowners. Read ONLY by atlas-tools/build-maker-explorer.py to render a maker's own drawer. Never read by the Atlas snapshot, Search, matching, scoring, ranking or the maker order. Commission rates, statements, private partner links and correspondence stay in Airtable (Partners) and are never published here.",
+  "purpose": "Public display facts for supplier referral codes shown to homeowners. Read ONLY by atlas-tools/build-maker-explorer.py to render a maker's own drawer. Never read by the Atlas snapshot, Search, matching, scoring, ranking or the maker order. Commission rates, terms, statements, private partner links, partner record ids and correspondence stay in Airtable (Partners) and the private repository plotnua-infrastructure (confidential-records/, evidence_ref PN-EVID-REFERRAL-TIMBERIN-20261022), and are never published here.",
   "displayStates": {
     "PREVIEW": "Renders only in a local preview build (environment PN_PREVIEW_OFFERS=1). A normal build ignores it, so a merge cannot publish it.",
     "LIVE": "Renders in every build. Set only after the founder approves the visual result and the disclosure wording."
@@ -13,9 +13,7 @@
       "discountPercent": 4,
       "shopSite": "woodenhottubsale.co.uk",
       "shopHref": "https://www.woodenhottubsale.co.uk/",
-      "how": "Use at checkout or quote when ordering directly with TimberIN.",
-      "termsAgreed": "2026-10-22",
-      "termsEvidence": "Partners recvAYDiCRilMTeGw (private)"
+      "how": "Use at checkout or quote when ordering directly with TimberIN."
     }
   ]
 }

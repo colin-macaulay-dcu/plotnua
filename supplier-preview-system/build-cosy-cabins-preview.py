@@ -17,10 +17,11 @@ variant B.
 
 *** THE IMAGERY DECISION, AND WHY THERE IS NONE. ***
 
-Bruno replied "PREVIEW please" on 2 October 2026. The outreach he was
-answering offered him two replies: "YES" for permission to feature Cosy
-Cabins and use selected website imagery, or "PREVIEW" to see the page
-first. He chose PREVIEW. He did not say YES.
+Cosy Cabins replied PREVIEW on 2 October 2026 (PN-EVID-PREVIEW-COSY-
+CABINS-20261002, held privately in plotnua-infrastructure, M8B). The
+outreach offered two replies: "YES" for permission to feature Cosy Cabins
+and use selected website imagery, or "PREVIEW" to see the page first. They
+chose PREVIEW. They did not say YES.
 
 So Atlas holds Permission Outcome "Unknown -- Awaiting Reply", and that is
 correct. UNKNOWN is not GRANTED.
@@ -46,7 +47,7 @@ has not granted one -- which is converting PREVIEW into GRANTED, and is
 exactly what the founder's instruction forbids.
 
 THEREFORE: IMAGERY STATE C. The page carries no Cosy Cabins imagery and the
-held panel says so plainly, in a way that is useful to Bruno rather than
+held panel says so plainly, in a way that is useful to the supplier rather than
 apologetic -- it tells him his pictures are not being used until he says
 they can be. COSY_CABINS_IMAGES stays empty, and G0 refuses any attempt to
 fill it while the permission outcome is unknown.
@@ -110,7 +111,7 @@ def die(msg):
 # demonstration above: the point is to show the cross-category reach, not to
 # run the whole result twice.
 #
-# WELLNESS LEADS, GARDEN ROOM FOLLOWS. Founder-reframed 2026-10-02. Bruno
+# WELLNESS LEADS, GARDEN ROOM FOLLOWS. Founder-reframed 2026-10-02. The supplier
 # replied to the HOME WELLNESS outreach -- outdoor saunas, garden retreat --
 # so the sauna is the result he is shown first and the garden room is the
 # extra reach he did not ask about. The earlier build had these the other way
@@ -163,11 +164,11 @@ SECOND_POSSIBILITY = """<!-- THE SECOND POSSIBILITY — the cross-category reach
 """
 
 # ── THE COPY ───────────────────────────────────────────────────────────────
-# Voice: plain, direct, the way Colin would put it to Bruno. Every figure
+# Voice: plain, direct, the way Colin would put it to the supplier. Every figure
 # traces to cosycabins.ie read live on 2 October 2026. No claim about
 # insulation as a property, planning, lead times, warranties or nationwide
 # coverage -- those are either not published or contradicted on the
-# supplier's own site, and the contradictions go to Bruno as questions.
+# supplier's own site, and the contradictions go to the supplier as questions.
 FILL = {
     "SUPPLIER_NAME": SUPPLIER,
     "SUPPLIER_SHORT": SUPPLIER,
@@ -188,7 +189,7 @@ FILL = {
 
     # IMAGERY STATE C. This line is the honest version of an empty panel.
 
-    # THE WELLNESS RESULT LEADS. Bruno answered the home-wellness outreach,
+    # THE WELLNESS RESULT LEADS. The supplier answered the home-wellness outreach,
     # so the framed example is the sauna. The garden room moved to the
     # second-possibility section below.
     "OFFER_NAME": "Sauna 2m",
@@ -269,8 +270,8 @@ def main():
     # rather than a note somebody can ignore in six weeks.
     if COSY_CABINS_IMAGES:
         die("Cosy Cabins imagery was added to this builder, but the Atlas "
-            "Permission Outcome is 'Unknown — Awaiting Reply'. Bruno "
-            "replied PREVIEW, not YES. UNKNOWN is not GRANTED, and the "
+            "Permission Outcome is 'Unknown — Awaiting Reply'. Cosy "
+            "Cabins replied PREVIEW, not YES. UNKNOWN is not GRANTED, and the "
             "publish-time rights gate refuses these images on any deployed "
             "page. Get written permission and a manifest row first.")
 
@@ -282,7 +283,7 @@ def main():
     src = src.replace(block.group(0), "\n")
 
     # G1b · Remove the introductory hero so the page opens on the
-    # demonstration: the first thing Bruno sees is his own result.
+    # demonstration: the first thing the supplier sees is their own result.
     hero = re.search(r"\n<div class=\"wrap\">\n  <header class=\"hero\">.*?"
                      r"\n  </header>\n</div>\n", src, re.S)
     if not hero:

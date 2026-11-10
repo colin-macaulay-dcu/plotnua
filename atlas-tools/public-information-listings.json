@@ -69,7 +69,7 @@
  ],
  "not_listed": [
   {"name": "MyCabin.ie", "why": "Founder review pending (14 Oct 2026 brief: \"10 MyCabin products pending founder review\"). MyCabin replied on 17 Sep 2026, \"This is not something we are interested in\" (Gmail 1a0aaefbe7bdea42), and declined image permission."},
-  {"name": "Cosy Cabins", "why": "Asked on 2 Oct 2026 to see a preview \"before anything is published\" (Gmail 1a0fd84efd61b0fa); unanswered since. Held in atlas-tools/preview-only-suppliers.json."},
+  {"name": "Cosy Cabins", "why": "Asked on 2 Oct 2026 to see a preview before anything is published (PN-EVID-PREVIEW-COSY-CABINS-20261002, held privately); unanswered since. Held in atlas-tools/preview-only-suppliers.json."},
   {"name": "Auroom Wellness", "why": "Preview-only and never searchable; its two products also lack a verified price and a classified type."},
   {"name": "Sommarnöjen", "why": "Its one product page returns HTTP 404, so the product page is not live."}
  ]

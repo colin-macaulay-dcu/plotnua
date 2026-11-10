@@ -18,6 +18,10 @@ supplier who invited imagery for the preview in writing; neither did, and the
 two modes are checked by different code paths precisely so that a one-character
 edit cannot promote one into the other.
 
+NO CORRESPONDENCE IS WRITTEN HERE (M8B, 10 Nov 2026). This repository is
+public. Each row cites a PN-EVID evidence_ref; the reply itself is held in the
+private repository plotnua-infrastructure (confidential-records/).
+
 THE FORBIDDEN LISTS ARE PER SUPPLIER and are not copies of each other. Switch
 Electrical's is built around MONEY and SERVICE AREA, because the thing a solar
 preview overclaims is a return and a county. Sauna Experts' is built around
@@ -66,7 +70,8 @@ NEW_ROWS = """    },
         "warranty", "guaranteed for", "lead time of"
       ],
       "forbidden_claims_note": "MONEY AND SERVICE AREA, not product facts. Switch Electrical's own homepage says \\"cut your electricity bills\\" and carries three customer reviews mentioning bill reductions; that is their copy about their customers and would be an unevidenced claim about a stranger's house in PlotNua's voice. The service-area bans exist because the site names five counties and adds \\"across Leinster\\" -- a page that rounded that up to nationwide would send them enquiries they cannot serve. NOTE WHAT IS NOT BANNED: the words \\"free\\" and \\"guarantee\\". The free survey, the free quote and the free BER are all published, and the Clean Export Guarantee is the name of a real scheme.",
-      "evidence": "Switch Electrical replied \\"Preview pls\\" on 5 October 2026 to outreach sent to sales@switchelectrical.ie, when the outreach offered both YES and PREVIEW. A request to see the page is not a grant.",
+      "evidence_ref": "PN-EVID-PREVIEW-SWITCH-ELECTRICAL-20261005",
+      "reply_state": "PREVIEW: a request to see the page, not a grant. The outreach offered both YES and PREVIEW.",
       "atlas_permission_ref": "NOT IN ATLAS — Switch Electrical Limited has no organisation record, no product record and no permission record. A full-tree search on 5 October 2026 returned nothing. There is no relationship to reflect and none is implied."
     },
     {
@@ -91,7 +96,8 @@ NEW_ROWS = """    },
         "cures", "treats", "proven to reduce"
       ],
       "forbidden_claims_note": "BORROWED SUPERLATIVES FIRST. Their own site calls them \\"Ireland's Number One Sauna Shop\\", \\"the highest rated sauna supplier in Ireland\\", \\"Ireland's Top Sauna Manufacturer\\" and \\"the most professional\\". Those are their marketing and nobody's verified fact; PlotNua repeating one would convert an unchecked claim into an apparent ranking on a page whose whole purpose is to show editorial independence. THE EXPERIENCE FIGURES ARE BANNED BECAUSE THEY CONTRADICT EACH OTHER: the homepage says \\"over 20 years of experience\\" of the custom saunas and, four paragraphs later, \\"over 16 years\\" of the founders. Both are first-party and they disagree, so neither is used. NOTE WHAT IS NOT BANNED: installation and nationwide delivery. Unlike the Irish Sauna Company case, this supplier publishes both on the product page itself -- \\"nationwide delivery, sauna installation, and comprehensive support with building advisory\\" -- so they are evidenced and may be reported, with the open question of what sits inside the price left open rather than answered.",
-      "evidence": "Sauna Experts replied \\"PREVIEW\\" on 5 October 2026 to outreach sent to saunaexpertsltd@gmail.com, when the outreach offered both YES and PREVIEW. A request to see the page is not a grant.",
+      "evidence_ref": "PN-EVID-PREVIEW-SAUNA-EXPERTS-20261005",
+      "reply_state": "PREVIEW: a request to see the page, not a grant. The outreach offered both YES and PREVIEW.",
       "atlas_permission_ref": "NOT IN ATLAS — Sauna Experts Limited has no organisation record, no product record and no permission record. A full-tree search on 5 October 2026 returned nothing. There is no relationship to reflect and none is implied."
     }
   ]
@@ -137,7 +143,7 @@ for who in ("Switch Electrical", "Sauna Experts"):
 
 for s in after["suppliers"]:
     for field in ("name", "imagery_mode", "legal_name", "page", "site_host",
-                  "credit", "image_hosts", "forbidden_claims", "evidence",
+                  "credit", "image_hosts", "forbidden_claims", "evidence_ref",
                   "atlas_permission_ref"):
         if field not in s:
             die("row %r is missing the required field %r" % (s["name"], field))

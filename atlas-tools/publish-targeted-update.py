@@ -114,7 +114,7 @@ SEPARATE = {
 # Validators whose failure means a deliberate census pin moved, not a defect.
 CENSUS = {"prove-atlas-a", "test_wellness_universe"}
 
-AUTHOR = "Colin MacAulay <kolin.macaulay@gmail.com>"
+AUTHOR = "Colin MacAulay <hello@plotnua.ie>"
 TRAILERS = ("Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>\n"
             "Claude-Session: https://claude.ai/code/session_014nLz9crW4XPQJHi2VrmREz")
 
@@ -1144,8 +1144,8 @@ def commit(a):
            "Published with atlas-tools/publish-targeted-update.py from a scoped Atlas read; "
            "only these records moved. Report: %s\n\n%s\n"
            % (m["organisationName"], len(m["products"]), m["files"][-1], TRAILERS))
-    env = dict(os.environ, GIT_AUTHOR_NAME="Colin MacAulay", GIT_AUTHOR_EMAIL="kolin.macaulay@gmail.com",
-               GIT_COMMITTER_NAME="Colin MacAulay", GIT_COMMITTER_EMAIL="kolin.macaulay@gmail.com")
+    env = dict(os.environ, GIT_AUTHOR_NAME="Colin MacAulay", GIT_AUTHOR_EMAIL="hello@plotnua.ie",
+               GIT_COMMITTER_NAME="Colin MacAulay", GIT_COMMITTER_EMAIL="hello@plotnua.ie")
     sh(["git", "commit", "-q", "-m", msg], root, check=True, env=env)
     (gitdir / LAST).unlink()
     print("COMMITTED %s locally. Not pushed." %

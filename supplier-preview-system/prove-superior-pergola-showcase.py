@@ -17,7 +17,7 @@ Checks the built page, then breaks the data file in memory and proves the builde
   PD2  the consent promise is on the page: nothing reaches the supplier without asking first
   RF1  both help routes carry the attribution ref superior-pergola-ireland
   MUT  the builder refuses: a saving switched on before its basis is confirmed; saving wording that
-       names another figure (the combined 8%) or PlotNua's commission; an image outside
+       names another figure or PlotNua's commission; an image outside
        the account prefix; a changed credit; the same photograph twice; a product with no
        Atlas record; a photograph with no Atlas asset record; a review copy written into the repo
 
@@ -74,7 +74,7 @@ if O["enabled"]:
     check("CM1", no_rate and pcts == [str(O["percent"])] and len(panel) == 1 and f'{O["percent"]}%' in panel[0],
           f"exactly one percentage on the page ({O['percent']}%, the homeowner saving, inside the offer panel); no commission rate in the source")
     ptxt = re.sub(r"<[^>]+>", " ", panel[0]).lower() if panel else ""
-    check("CM2", len(panel) == 1 and "8%" not in visible and "commission" not in ptxt, "one saving panel; no 8% and no commission in it")
+    check("CM2", len(panel) == 1 and set(pcts) == {str(O["percent"])} and "commission" not in ptxt, "one saving panel; no other figure and no commission in it")
     check("CM5", "pergolas only" in ptxt and "pergola" in O["headline"].lower() and O["wording"] in page
           and all(w in ptxt for w in ("verandas", "porches", "decking", "bin covers")) and "not included" in ptxt,
           "the saving says it applies to pergolas only and that the other ranges are not included")
@@ -116,7 +116,7 @@ refuses("saving switched on, basis unconfirmed", lambda d: d["offer"].update(ena
 refuses("saving switched on with no percent", lambda d: d["offer"].update(enabled=True, basisConfirmed=True, percent=None))
 refuses("saving with no range named", lambda d: d["offer"].update(enabled=True, scope=None))
 refuses("saving widened to verandas without saying so", lambda d: d["offer"].update(enabled=True, scope="Verandas"))
-refuses("saving wording naming the combined 8%", lambda d: d["offer"].update(wording="Save 8% on Superior Pergola installations"))
+refuses("saving wording naming another figure", lambda d: d["offer"].update(wording="Save 12% on Superior Pergola installations"))
 refuses("saving wording naming PlotNua's commission", lambda d: d["offer"].update(wording="4% off; PlotNua earns a commission"))
 refuses("saving switched on with a different figure in its wording", lambda d: d["offer"].update(enabled=True, basisConfirmed=True, percent=3))
 refuses("image from another assetcdn account", lambda d: first_img(d).update(origin=first_img(d)["origin"].replace("/3819663/", "/9999999/")))
@@ -131,7 +131,9 @@ refuses("review copy written inside the repository", lambda d: None,
 
 B.DATA = copy.deepcopy(ORIG); B.DATA["offer"].update(enabled=True, basisConfirmed=True)
 try:
-    on = B.build(); ok4 = on.count("data-pn-offer") == 1 and ORIG["offer"]["wording"] in on and "8%" not in on
+    on = B.build(); on_vis = re.sub(r"<[^>]+>", " ", re.sub(r"<style.*?</style>|<script.*?</script>", "", on, flags=re.S))
+    ok4 = (on.count("data-pn-offer") == 1 and ORIG["offer"]["wording"] in on
+           and set(re.findall(r"(\d+)\s*%", on_vis)) == {str(ORIG["offer"]["percent"])})
 except SystemExit:
     ok4 = False
 B.DATA = copy.deepcopy(ORIG)
