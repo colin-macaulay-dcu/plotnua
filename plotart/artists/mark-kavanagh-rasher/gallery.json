@@ -1,0 +1,115 @@
+{
+ "artist": {
+  "bio": "My Paintings are compositions of visualisations depicting and interrogating unanswered questions that have and continue to pester and agonise humanity.\n\nBy exploring our place within the context of our civilisation and probing our collective consciousness, my paintings urges viewers to form a critical and analytical opinion of humanity's place within the natural world, the universe, and the vast unknown.\n\nThrough an informed presentation of vices and virtues, depictions of greed, shame , and innocence, my work brings viewers on a journey moving through realism, abstraction until surreality frames our experience of the exploration of the existential absurdity of life, and interconnectedness the many facets of our being and the universe we inhabit. My work accuses humanity of being innately sinful and flawed, simultaneously, my work applauds and celebrates creative acts inspired by the natural world, unrestrained by our formal understanding of the universe.\n\nMy work is not expecting viewers to know the answers, but aims to provoke and awaken deep and shared yearning we have to understand the world we share.",
+  "county": "Wicklow",
+  "display_name": "Rasher Mark Kavanagh",
+  "founding": true,
+  "instagram": "rashermarkkavanagh",
+  "medium": "painting",
+  "portrait": {
+   "alt": "The Artist in front of the painting  called The Muse",
+   "aspect": 1.42942,
+   "derivatives": [
+    {
+     "file": "portrait-600.webp",
+     "long_edge": 600,
+     "pixels": [
+      600,
+      420
+     ]
+    }
+   ],
+   "photo_credit": null,
+   "pixels": [
+    2400,
+    1679
+   ],
+   "role": "portrait"
+  },
+  "practice": "Painter",
+  "slug": "mark-kavanagh-rasher",
+  "statement": null,
+  "website": "https://wwwrmkavanagh.ie"
+ },
+ "provenance_sources": [
+  {
+   "dhash": "169e988ccc8c0c4d",
+   "source_sha256": "37f1cae5ca6c7e9f8021a32a5ff954b7faeb5f8c1bac712fff8808f8e5459fa9",
+   "stem": "portrait"
+  },
+  {
+   "dhash": "0b4c4633b5a5a5a1",
+   "source_sha256": "65bdc3e3060f6f288639cbfddc31a76d163e3eab97413ed64f0cc8139d31749f",
+   "stem": "sweat-from-the-sun-tears-from-1"
+  }
+ ],
+ "publication": {
+  "approved_at": "2026-11-10T22:17:30.131Z",
+  "approved_by": "founder",
+  "licence_accepted_at": "2026-11-10T20:53:57.148Z",
+  "licence_version": "PA-GPIL-2026-11",
+  "permission_ref": "PA-PERM-avhiqiv1u1c",
+  "state": "approved",
+  "test_note": null,
+  "version": "v1"
+ },
+ "schema": "plotnua.plotart.gallery-package.v1",
+ "works": [
+  {
+   "ai_founder_decision": null,
+   "ai_involvement": "none",
+   "ai_note": null,
+   "availability": "available",
+   "d_cm": 25,
+   "description": null,
+   "h_cm": 109,
+   "id": "wd82l6xepkm",
+   "images": [
+    {
+     "alt": "Two Figures in a landscape",
+     "aspect": 1.12148,
+     "derivatives": [
+      {
+       "file": "sweat-from-the-sun-tears-from-1-600.webp",
+       "long_edge": 600,
+       "pixels": [
+        600,
+        535
+       ]
+      },
+      {
+       "file": "sweat-from-the-sun-tears-from-1-1200.webp",
+       "long_edge": 1200,
+       "pixels": [
+        1200,
+        1070
+       ]
+      },
+      {
+       "file": "sweat-from-the-sun-tears-from-1-2000.webp",
+       "long_edge": 2000,
+       "pixels": [
+        2000,
+        1783
+       ]
+      }
+     ],
+     "photo_credit": null,
+     "pixels": [
+      3979,
+      3548
+     ],
+     "role": "main"
+    }
+   ],
+   "materials": "oil paint on panel, framed with a teak tray frame",
+   "medium": "Oil on Panel",
+   "price_eur": 15000,
+   "price_on_request": false,
+   "slug": "sweat-from-the-sun-tears-from",
+   "title": "Sweat from the Sun , Tears from the Moon",
+   "w_cm": 122,
+   "year": 2025
+  }
+ ]
+}

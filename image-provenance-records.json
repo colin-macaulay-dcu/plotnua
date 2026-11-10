@@ -12752,6 +12752,130 @@
         "date": "2026-11-10",
         "subject": "DISC-040 The Home You Build, Stage 2 hero integration (not deployed)"
       }
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "mark-kavanagh-rasher",
+      "asset": "plotart/artists/mark-kavanagh-rasher/img/portrait-600.webp",
+      "bytes": 38866,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (sRGB IEC61966-2.1)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-avhiqiv1u1c",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        600,
+        420
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "507e4289a29620f251370b7627db63ce38afbbf9e18c259390125d55a7a76da7",
+      "source_sha256": "37f1cae5ca6c7e9f8021a32a5ff954b7faeb5f8c1bac712fff8808f8e5459fa9",
+      "subject": "portrait",
+      "work_slug": null
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "mark-kavanagh-rasher",
+      "asset": "plotart/artists/mark-kavanagh-rasher/img/sweat-from-the-sun-tears-from-1-600.webp",
+      "bytes": 42136,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (Adobe RGB (1998))",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-avhiqiv1u1c",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        600,
+        535
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "0a1f47a6668fea7337878f38390c40c8613b855a59e571f30232ab9c4881d2e5",
+      "source_sha256": "65bdc3e3060f6f288639cbfddc31a76d163e3eab97413ed64f0cc8139d31749f",
+      "subject": "artwork",
+      "work_slug": "sweat-from-the-sun-tears-from"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "mark-kavanagh-rasher",
+      "asset": "plotart/artists/mark-kavanagh-rasher/img/sweat-from-the-sun-tears-from-1-1200.webp",
+      "bytes": 127456,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (Adobe RGB (1998))",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-avhiqiv1u1c",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        1200,
+        1070
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "eba9bcbb6c8616536db9ba8095d6ffd1d0b3c634672a8263bc9f8524025629dd",
+      "source_sha256": "65bdc3e3060f6f288639cbfddc31a76d163e3eab97413ed64f0cc8139d31749f",
+      "subject": "artwork",
+      "work_slug": "sweat-from-the-sun-tears-from"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "mark-kavanagh-rasher",
+      "asset": "plotart/artists/mark-kavanagh-rasher/img/sweat-from-the-sun-tears-from-1-2000.webp",
+      "bytes": 316242,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (Adobe RGB (1998))",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-avhiqiv1u1c",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        2000,
+        1783
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "1b1f7f0fb61a12f8918a1b55a33335cbe6d16ae81efeb29188c94d68cf43d62d",
+      "source_sha256": "65bdc3e3060f6f288639cbfddc31a76d163e3eab97413ed64f0cc8139d31749f",
+      "subject": "artwork",
+      "work_slug": "sweat-from-the-sun-tears-from"
     }
   ],
   "legacy_undeclared": [
