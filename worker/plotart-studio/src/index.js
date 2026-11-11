@@ -1512,7 +1512,11 @@ async function route(req, env) {
       if ('alt' in b) f.alt = L.text(b.alt, 5, 300, 'Photo description', { optional: true });
       if ('photographer' in b) { if (!['self', 'other_with_permission'].includes(b.photographer)) throw new Bad('Who took the photograph?'); f.photographer = b.photographer; }
       if ('photo_credit' in b) f.photo_credit = L.text(b.photo_credit, 2, 80, 'Photographer’s name', { optional: true });
-      if (Object.keys(f).length) await env.DB.prepare(`UPDATE images SET ${Object.keys(f).map(k => `${k}=?`).join(', ')} WHERE id=? AND artist_id=?`).bind(...Object.values(f), img.id, artist.id).run();
+      if (Object.keys(f).length) {
+        await env.DB.prepare(`UPDATE images SET ${Object.keys(f).map(k => `${k}=?`).join(', ')} WHERE id=? AND artist_id=?`).bind(...Object.values(f), img.id, artist.id).run();
+        // 11 Nov 2026: photograph-detail saves are recorded, field names only (never the description or a name)
+        await audit(env, artist.email, 'artist', 'image_details', artist.id, { image: img.id, artwork: img.artwork_id, role: img.role, fields: Object.keys(f) });
+      }
       return json({ ok: true, saved_at: now() });
     }
     if (m === 'DELETE') {

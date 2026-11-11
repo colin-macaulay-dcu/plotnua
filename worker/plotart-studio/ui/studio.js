@@ -220,12 +220,12 @@
       <section class="st-card"><h3>Main photograph</h3>
         <div class="st-drop" id="mdrop">${main ? `<img src="/api/images/${main.id}/view" alt="">` : '<strong style="color:var(--ivory)">Add the main photograph</strong><span>Tap to choose a photo · JPEG, PNG or WebP · at least 2,000 px · up to 30 MB</span>'}<input type="file" accept="image/jpeg,image/png,image/webp" aria-label="Upload the main photograph"></div>
         ${main ? `<ul class="st-checks"><li class="ok">${main.width} × ${main.height} px · ${(main.bytes / 1048576).toFixed(1)} MB · ${main.format.toUpperCase()}</li>${c.warns.map(x => `<li class="w">${E(x)}</li>`).join('')}<li class="ok">Shown whole: never cropped</li></ul>
-          ${imageFields(main)}<p class="st-muted" style="margin:6px 0 0">To replace it, tap the photo and choose another.</p>` : '<p class="st-muted" style="margin:10px 0 0">See the photography guide: straight on, soft daylight, cropped to the edge of the work.</p>'}
+          ${imageFields(main, 'Main photograph')}<p class="st-muted" style="margin:6px 0 0">To replace it, tap the photo and choose another.</p>` : '<p class="st-muted" style="margin:10px 0 0">See the photography guide: straight on, soft daylight, cropped to the edge of the work.</p>'}
       </section>
-      <section class="st-card"><h3>More views (optional, up to 3)</h3><p class="st-muted" style="margin:0 0 10px">A detail, the side of a sculpture, or the work installed.</p>
-        <div class="st-views">${views.map(v => `<div class="st-view" style="background-image:url(/api/images/${v.id}/view)"><button data-rmv="${v.id}" aria-label="Remove this view">✕</button></div>`).join('')}
+      <section class="st-card"><h3>More views (optional, up to 3)</h3><p class="st-muted" style="margin:0 0 10px">A detail, the side of a sculpture, or the work installed.${views.length ? ' <strong style="color:var(--ivory)">Each view needs its own description and photographer</strong>, just like the main photograph.' : ''}</p>
+        <div class="st-views">${views.map((v, n) => `<div class="st-view" style="background-image:url(/api/images/${v.id}/view)">${photoComplete(v) ? '' : `<span class="st-view-flag" data-flag="${v.id}">View ${n + 1}: details needed</span>`}<button data-rmv="${v.id}" aria-label="Remove view ${n + 1}">✕</button></div>`).join('')}
         ${views.length < 3 ? `<label class="st-view st-drop" style="min-height:0;padding:0"><span style="font-size:28px">+</span><input type="file" accept="image/jpeg,image/png,image/webp" id="vadd" aria-label="Add a view"></label>` : ''}</div>
-        ${views.map(v => `<details style="margin-top:10px"><summary class="st-muted">Details for view ${views.indexOf(v) + 1}</summary>${imageFields(v)}</details>`).join('')}
+        ${views.map((v, n) => `<div class="st-view-d"><span class="st-view-mini" style="background-image:url(/api/images/${v.id}/view)" aria-hidden="true"></span>${imageFields(v, `View ${n + 1}`)}</div>`).join('')}
       </section></div><div>
       <section class="st-card"><h3>About the work</h3>
         ${f('title', 'Title', w.title)}
@@ -260,9 +260,9 @@
     const needsLine = () => { const el = $('#wneeds'); if (!el) return; const it = ME.status.checklist.find(i => i.area === 'work' && i.work_id === w.id);
       el.hidden = !it; el.innerHTML = it ? `<span class="st-needs-dot" aria-hidden="true"></span>Still needed to submit: ${E(it.needs.map(c => NEED[c]).join(', '))}` : ''; };
     needsLine(); afterRefresh = needsLine;
-    $('#mdrop input').addEventListener('change', e => uploadFlow(e.target.files[0], `/api/artworks/${w.id}/images?role=main`, $('#mdrop'), { done: async () => { await refresh(); work(w.id); } }));
-    $('#vadd')?.addEventListener('change', e => uploadFlow(e.target.files[0], `/api/artworks/${w.id}/images?role=view`, $('#vadd').parentElement, { done: async () => { await refresh(); work(w.id); } }));
-    app.querySelectorAll('[data-rmv]').forEach(b => b.addEventListener('click', async () => { await api('DELETE', `/api/images/${b.dataset.rmv}`); await refresh(); work(w.id); say('View removed'); }));
+    $('#mdrop input').addEventListener('change', e => uploadFlow(e.target.files[0], `/api/artworks/${w.id}/images?role=main`, $('#mdrop'), { done: async () => { await flushPhotoEdits(); await refresh(); work(w.id); } }));
+    $('#vadd')?.addEventListener('change', e => uploadFlow(e.target.files[0], `/api/artworks/${w.id}/images?role=view`, $('#vadd').parentElement, { done: async () => { await flushPhotoEdits(); await refresh(); work(w.id); } }));
+    app.querySelectorAll('[data-rmv]').forEach(b => b.addEventListener('click', async () => { await flushPhotoEdits(); await api('DELETE', `/api/images/${b.dataset.rmv}`); await refresh(); work(w.id); say('View removed'); }));
     hirePanel(w.id);
   }
 
@@ -418,24 +418,85 @@
       } catch (err) { $('#rp-err').textContent = err.message; go.disabled = !paid.checked; }
     });
   }
-  function imageFields(i) {
-    // Photograph details (required for every photograph before a gallery can be submitted)
-    return `<div data-img="${i.id}" class="st-photo-d">
-      <p class="st-photo-h">Photograph details <span class="st-muted">· needed to submit</span></p>
+  /* Photograph details (11 Nov 2026 reliability fix). Every photograph, main or extra view, needs its own description and
+     photographer before a gallery can be submitted (the server's rule, unchanged). Here:
+     · the description and photographer's name save as you type (a moment after you stop) as well as when you leave the field,
+       and anything still unsaved is saved BEFORE the page is redrawn (after an upload), before moving to another page and
+       when the app is put in the background, so typed text is never silently lost;
+     · each photograph shows a status that stays until the next save: "Saved", or "Not saved" with a Retry button;
+     · a field is only ever sent when the artist changed it, so nothing previously saved is overwritten. */
+  const photoComplete = i => !!(i.alt && i.photographer && (i.photographer !== 'other_with_permission' || i.photo_credit));
+  const PENDING = new Map();            // `${imageId}:${field}` → { id, field, value, box }
+  const MIN = { alt: 5, photo_credit: 2 };
+  function imageFields(i, label = 'Photograph') {
+    const done = photoComplete(i);
+    return `<div data-img="${i.id}" class="st-photo-d" data-alt="${E(i.alt || '')}" data-who="${E(i.photographer || '')}" data-credit-saved="${E(i.photo_credit || '')}">
+      <p class="st-photo-h">${E(label)} details <span class="st-chip ${done ? 'st-chip--live' : 'st-chip--todo'}" data-badge>${done ? 'Complete' : 'Needed to submit'}</span></p>
       <div class="st-f"><label for="alt-${i.id}">Describe the photo <span class="st-req">Required</span></label><input id="alt-${i.id}" name="alt" type="text" value="${E(i.alt)}" aria-required="true" aria-describedby="alth-${i.id}" placeholder="e.g. Blue abstract painting with a yellow circle"><small id="alth-${i.id}">A short line for people using screen readers.</small><span class="st-err" aria-live="polite"></span></div>
       <fieldset class="st-req-group"><legend class="st-lab">Who took this photograph? <span class="st-req">Required</span></legend>
       <div class="st-radio" style="margin:6px 0 10px">${[['self', 'I did'], ['other_with_permission', 'Another photographer, with their permission']].map(([k, v]) => `<label><input type="radio" name="photographer-${i.id}" value="${k}"${i.photographer === k ? ' checked' : ''}> ${v}</label>`).join('')}</div></fieldset>
-      <div class="st-f" ${i.photographer === 'other_with_permission' ? '' : 'hidden'} data-credit><label for="cr-${i.id}">Photographer’s name <span class="st-req">Required</span></label><input id="cr-${i.id}" name="photo_credit" type="text" value="${E(i.photo_credit)}" aria-required="true" aria-describedby="crh-${i.id}"><small id="crh-${i.id}">Shown as the photo credit on your gallery.</small><span class="st-err" aria-live="polite"></span></div></div>`;
+      <div class="st-f" ${i.photographer === 'other_with_permission' ? '' : 'hidden'} data-credit><label for="cr-${i.id}">Photographer’s name <span class="st-req">Required</span></label><input id="cr-${i.id}" name="photo_credit" type="text" value="${E(i.photo_credit)}" aria-required="true" aria-describedby="crh-${i.id}"><small id="crh-${i.id}">Shown as the photo credit on your gallery.</small><span class="st-err" aria-live="polite"></span></div>
+      <p class="st-photo-s" data-pstat role="status" aria-live="polite">${done ? '' : 'Not complete yet'}</p></div>`;
   }
+  const savedOf = (box, field) => field === 'alt' ? box.dataset.alt : field === 'photographer' ? box.dataset.who : box.dataset.creditSaved;
+  function setSaved(box, field, value) { if (field === 'alt') box.dataset.alt = value; else if (field === 'photographer') box.dataset.who = value; else box.dataset.creditSaved = value; }
+  function paint(box, state, msg) {
+    const st = box.querySelector('[data-pstat]'), done = photoComplete({ alt: box.dataset.alt, photographer: box.dataset.who, photo_credit: box.dataset.creditSaved });
+    const badge = box.querySelector('[data-badge]');
+    badge.textContent = done ? 'Complete' : 'Needed to submit'; badge.className = `st-chip ${done ? 'st-chip--live' : 'st-chip--todo'}`;
+    const flag = app.querySelector(`[data-flag="${box.dataset.img}"]`); if (flag) flag.hidden = done;
+    st.className = 'st-photo-s' + (state === 'bad' ? ' bad' : state === 'ok' ? ' ok' : '');
+    if (state === 'bad') { st.innerHTML = `Not saved: ${E(msg)} <button type="button" class="st-btn st-btn--small" data-retry>Retry</button>`; st.querySelector('[data-retry]').onclick = () => flushPhotoEdits(); }
+    else if (state === 'saving') st.textContent = 'Saving…';
+    else if (state === 'ok') st.textContent = `Saved ${new Date().toLocaleTimeString('en-IE', { hour: '2-digit', minute: '2-digit' })}${done ? ' · this photograph is complete' : ' · still needed: ' + [!box.dataset.alt && 'a description', !box.dataset.who && 'who took it', box.dataset.who === 'other_with_permission' && !box.dataset.creditSaved && 'the photographer’s name'].filter(Boolean).join(', ')}`;
+  }
+  async function saveField(id, field, value, box) {
+    const key = `${id}:${field}`;
+    PENDING.set(key, { id, field, value, box });
+    if (box && box.isConnected) paint(box, 'saving');
+    try {
+      await api('PATCH', `/api/images/${id}`, { [field]: value });
+      const cur = PENDING.get(key); if (cur && cur.value === value) PENDING.delete(key);   // a newer edit stays pending
+      const live = app.querySelector(`[data-img="${id}"]`) || box;
+      if (live) { setSaved(live, field, value); const el = field === 'photographer' ? null : live.querySelector(`[name="${field}"]`); if (el) fieldErr(el, ''); if (live.isConnected) paint(live, 'ok'); }
+      try { await refresh(); } catch { /* the save itself succeeded */ }
+      return true;
+    } catch (e) {
+      const live = app.querySelector(`[data-img="${id}"]`) || box;
+      if (live && live.isConnected) { const el = field === 'photographer' ? null : live.querySelector(`[name="${field}"]`); if (el) fieldErr(el, e.message); paint(live, 'bad', e.message); }
+      say('Not saved: ' + e.message, true);
+      return false;
+    }
+  }
+  // Save every photograph edit not yet saved (typed text included). Called before any redraw or navigation.
+  async function flushPhotoEdits() {
+    app.querySelectorAll('[data-img] input[type=text]').forEach(el => {
+      const box = el.closest('[data-img]'), v = el.value.trim();
+      if (v !== (savedOf(box, el.name) || '') && v.length >= MIN[el.name]) PENDING.set(`${box.dataset.img}:${el.name}`, { id: box.dataset.img, field: el.name, value: v, box });
+    });
+    let ok = true;
+    for (const p of [...PENDING.values()]) ok = (await saveField(p.id, p.field, p.value, p.box)) && ok;
+    return ok;
+  }
+  window.addEventListener('beforeunload', e => { if (PENDING.size || [...app.querySelectorAll('[data-img] input[type=text]')].some(el => el.value.trim() !== (savedOf(el.closest('[data-img]'), el.name) || ''))) { e.preventDefault(); e.returnValue = ''; } });
+  document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'hidden') flushPhotoEdits(); });
   function bindImageFields() {
     app.querySelectorAll('[data-img]').forEach(box => {
       const id = box.dataset.img;
-      box.querySelectorAll('input').forEach(el => el.addEventListener('change', async () => {
-        const key = el.type === 'radio' ? 'photographer' : el.name;
-        if (key === 'photographer') { const cr = box.querySelector('[data-credit]'); cr.hidden = el.value !== 'other_with_permission'; if (!cr.hidden && !cr.querySelector('input').value) setTimeout(() => cr.querySelector('input').focus(), 0); }
-        try { await api('PATCH', `/api/images/${id}`, { [key]: el.value }); fieldErr(el, ''); say('Saved'); await refresh(); }
-        catch (e) { fieldErr(el, e.message); say('Not saved: ' + e.message, true); }
+      box.querySelectorAll('input[type=radio]').forEach(el => el.addEventListener('change', () => {
+        const cr = box.querySelector('[data-credit]'); cr.hidden = el.value !== 'other_with_permission';
+        if (!cr.hidden && !cr.querySelector('input').value) setTimeout(() => cr.querySelector('input').focus(), 0);
+        saveField(id, 'photographer', el.value, box);
       }));
+      box.querySelectorAll('input[type=text]').forEach(el => {
+        let t = null;
+        const go = force => { clearTimeout(t); const v = el.value.trim();
+          if (v === (savedOf(box, el.name) || '')) return;            // unchanged: nothing is sent
+          if (!force && v.length < MIN[el.name]) return;              // still typing a very short value: wait for the field to be left
+          saveField(id, el.name, force && !v ? '' : v, box); };
+        el.addEventListener('input', () => { clearTimeout(t); t = setTimeout(() => go(false), 900); });
+        el.addEventListener('change', () => go(true));
+      });
     });
   }
 
@@ -609,6 +670,7 @@
 
   /* ------------------------------------------------------------- router */
   async function render() {
+    await flushPhotoEdits();
     const full = location.hash || '#/', [h, qs] = full.split('?'), q = new URLSearchParams(qs || '');
     afterRefresh = null;
     document.querySelectorAll('.st-tabs a').forEach(a => a.toggleAttribute('aria-current', h === a.getAttribute('href') || (a.getAttribute('href') === '#/works' && h.startsWith('#/work/'))));

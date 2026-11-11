@@ -262,3 +262,14 @@ body.st{ background:var(--anth); min-height:100vh; }
 .st-acc-ch{ margin:6px 0 2px; font-size:13px; color:#E8CF9E; letter-spacing:.02em; }
 .st-pill--bad{ color:#F2B8A6; border-color:rgba(242,184,166,.45); }
 .st-leave{ border-color:rgba(242,235,224,.12); }
+/* Photograph details reliability (11 Nov 2026): per-photo status that stays until the next save, visible view details */
+.st-photo-h{ display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+.st-photo-s{ margin:10px 0 0; font-size:13px; color:var(--stone); min-height:1.2em; }
+.st-photo-s.ok{ color:#A9C9A4; }
+.st-photo-s.bad{ color:#F2B8A8; display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+.st-view-d{ display:grid; grid-template-columns:56px 1fr; gap:12px; margin-top:14px; }
+.st-view-mini{ width:56px; height:56px; border-radius:6px; background:#222 center/cover no-repeat; margin-top:14px; }
+.st-view{ position:relative; }
+.st-view-flag{ position:absolute; left:4px; right:4px; bottom:4px; background:rgba(207,133,102,.92); color:#1a1a1a; font-size:11px; font-weight:600; border-radius:4px; padding:2px 4px; text-align:center; }
+.st-view-flag[hidden]{ display:none; }
+@media (max-width:560px){ .st-view-d{ grid-template-columns:40px 1fr; } .st-view-mini{ width:40px; height:40px; } }
