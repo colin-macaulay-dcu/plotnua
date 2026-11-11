@@ -36,6 +36,12 @@ PROTECTED = {"recDa5vihxcYG9xoH": "NOOK 1", "rectQX4XpBbD6H3LU": "NOOK 2", "rec4
 RAYCO_NOTE = ("Rayco Modular Homes describes its garden rooms as installed, with foundations and site works "
               "quoted separately.")
 UNVERIFIED = "Price not currently verified"
+# 11 Nov 2026 (founder approval, combined Garden Room Evidence and Price-Presentation release):
+# exactly these six holds are added after BASE, each with its approved label; the guide's
+# installed range moves only through register entry availability-and-reverification-2026-11-11.
+HOLDS_2026_11_11 = {"recKHXaApIugjOKti": "Not currently taking orders", "recUs4gexxlfkaiUj": "Not currently taking orders",
+                    "reciolethPMEn50gQ": "Not currently taking orders", "recUnUAWq0TWkNO5C": "Not currently taking orders",
+                    "recBVDyal8VGGVEZM": "Out of stock", "reczxM0lggLXTBCdU": "Price requires verification"}
 WINDOW = 180
 TYPES = {"Standard Price", "Starting From", "Sale Price", "Sale"}
 BAD_SCOPES = {"Range-Level", "Organisation-Wide"}
@@ -177,7 +183,10 @@ def check_tree(S, tmp):
             fail("E4 %s Explorer figure carries the wrong expiry" % pid)
         if st != "eligible" and X.get("fu"):
             fail("E4 %s carries an expiry without an eligible figure" % pid)
-        if st == "held" and lab != base_ex.get(pid, ("", {}))[0]:
+        if st == "held" and pid in HOLDS_2026_11_11:
+            if not lab.startswith(HOLDS_2026_11_11[pid] + ".") or re.search(r"[\d€£$]", lab):
+                fail("E4 held %s Explorer does not show its approved label without a figure: %r" % (pid, lab))
+        elif st == "held" and lab != base_ex.get(pid, ("", {}))[0]:
             fail("E4 held %s Explorer label changed" % pid)
         if st == "eligible" and "incl. VAT (supplier’s terms)" in base_ex.get(pid, ("", {}))[0] \
                 and "incl. VAT (supplier’s terms)" not in lab:
@@ -259,14 +268,26 @@ def check_tree(S, tmp):
             or ("%d do not publish whether VAT" % nvat) not in lg:
         fail("E7 Living in the Garden does not state %d / %d / %d" % (n, nsup, nvat))
     rng = lambda h: re.findall(r"€[\d,]+\s*(?:&ndash;|–|to)\s*€[\d,]+", h)[:4]
-    if rng(g) != rng(S["base_guide"]):
-        fail("E7 the guide's published ranges changed", (rng(g), rng(S["base_guide"])))
+    want_rng = rng(S["base_guide"])
+    reg = json.loads(read("atlas-tools/cost-evidence-corrections.json"))
+    if any(c["id"] == "availability-and-reverification-2026-11-11" for c in reg["corrections"]):
+        # Independent of the guide HTML: the installed range is the min/max of the frozen evidence rows.
+        tk = [r["price"] for r in rows if r["segment"] == "INSTALLED_FINISHED_TURNKEY"]
+        want_rng = ["€%s to €%s" % (format(min(tk), ","), format(max(tk), ","))] + want_rng[1:]
+    if rng(g) != want_rng:
+        fail("E7 the guide's published ranges changed", (rng(g), want_rng))
     fresh = lambda h: re.findall(r"between <strong>[^<]+</strong> and <strong>[^<]+</strong>", h)
     if fresh(g) != fresh(S["base_guide"]):
         fail("E7 the guide's freshness statement changed")
     # E8 holds and VAT
-    if S["holds"] != S["base_holds"]:
-        fail("E8 the hold register changed")
+    cur_h = json.loads(S["holds"]); cur_h.pop("decision_2026_11_11", None)
+    added = [h for h in cur_h["holds"] if h["productId"] in HOLDS_2026_11_11]
+    cur_h["holds"] = [h for h in cur_h["holds"] if h["productId"] not in HOLDS_2026_11_11]
+    if cur_h != json.loads(S["base_holds"]):
+        fail("E8 the hold register changed beyond the six approved 11 Nov 2026 holds")
+    if sorted((h["productId"], h["label"], h.get("figure")) for h in added) != \
+            sorted((k, v, "withheld") for k, v in HOLDS_2026_11_11.items()):
+        fail("E8 the 11 Nov 2026 holds are not exactly the six approved, figure withheld")
     bU = {p["id"]: p for p in S["base_uni"]["products"]}
     for pid, name in PROTECTED.items():
         a, b = copy.deepcopy(U.get(pid) or {}), copy.deepcopy(bU.get(pid) or {})
