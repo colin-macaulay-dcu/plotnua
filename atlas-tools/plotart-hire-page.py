@@ -23,6 +23,7 @@ import sys
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
 import plotart_shell as SHELL  # noqa: E402
+import plotart_hire_scenes as SCENES  # noqa: E402
 
 E = lambda s: html.escape(str(s), quote=True)
 PUBLIC_HIRE = os.path.join(HERE, "..", "worker", "plotart-studio", "public-hire")
@@ -93,49 +94,58 @@ def resolve(root, catalogue):
 
 
 def body(cards, api, form):
+    # Version 3 (founder approval, 11 Nov 2026). The hero's primary action ships as "How it works"; hire-live.js turns it into
+    # "See works for hire" only while the live check is showing approved works (data-hire-cta).
     return """
-<section class="pa-hire-hero"><div class="pa-wrap">
-  <p class="pa-eyebrow">Art for Hire</p>
-  <h1>Original art,<br><em>on hire.</em></h1>
-  <div class="pa-hire-intro">
-    <p class="pa-lede">An original work by an Irish artist can set the tone of a room, give a shoot its character or make a staged home feel lived in. The works here can be hired for productions, photography, property staging and interiors, and every hire is agreed directly with the artist.</p>
-    <p class="pa-hire-for"><strong>For</strong>Production designers and set decorators, photographers, advertising teams, property stagers and interior designers.</p>
+<section class="afh3-hero" aria-labelledby="afh3-h">
+  <div class="afh3-hero-art"><img src="%(art)s" alt="%(alt)s" width="1332" height="940" fetchpriority="high"></div>
+  <div class="afh3-hero-copy">
+    <h1 id="afh3-h">Original art,<br>on hire.</h1>
+    <div class="afh3-hero-row">
+      <p class="afh3-sub">Irish artists’ original work for film and television, interiors and staged homes. You agree each hire directly with the artist.</p>
+      <p class="afh3-cta"><a class="afh3-btn" href="#afh3-how" data-hire-cta>How it works</a><a class="afh3-link" href="mailto:hello@plotnua.ie?subject=Art%%20for%%20Hire%%20brief">Send a brief</a></p>
+    </div>
   </div>
-</div></section>
+  <p class="afh3-hero-credit">%(credit)s</p>
+</section>
+<p class="afh3-hero-credit-m">%(credit)s</p>
 
-<section class="pa-hire-gal" aria-labelledby="pa-hire-gal-h"><div class="pa-wrap">
-  <div class="pa-hire-gal-h"><h2 id="pa-hire-gal-h">Works for hire</h2><p>Every work is offered by its artist and checked by PlotArt. Price on request.</p></div>
+<section class="afh3-scenes" aria-labelledby="afh3-scenes-h">
+  <div class="pa-wrap afh3-scenes-h"><h2 id="afh3-scenes-h">Where a hired work goes</h2><p>One painting, three settings. The settings are illustrations; the painting is real.</p></div>
+  %(scenes)s
+</section>
+
+<section class="pa-hire-gal afh3-works" id="afh3-works" aria-labelledby="pa-hire-gal-h"><div class="pa-wrap">
+  <div class="afh3-works-h"><h2 id="pa-hire-gal-h">Available to hire</h2><p>Every work is offered by its artist and checked by PlotArt. Price on request.</p></div>
   <p class="pa-hire-note" data-hire-status role="status" hidden></p>
   <noscript><p class="pa-hire-note">Please turn on JavaScript to see which works are available for hire right now.</p></noscript>
   <p class="pa-hire-note" id="pa-hire-closed" data-hire-closed tabindex="-1" hidden>Hire enquiries are not yet open.</p>
-  %s
+  %(region)s
 </div></section>
 
-<section class="pa-hire-how" aria-labelledby="pa-hire-how-h"><div class="pa-wrap">
-  <p class="pa-eyebrow">How hire works</p>
-  <h2 id="pa-hire-how-h">Simple, direct, between you and the artist.</h2>
-  <ol class="pa-hire-steps">
-    <li><h3>Choose a work</h3><p>Each work here has been offered by its artist and checked by PlotArt. Sizes and media are shown with every work.</p></li>
-    <li><h3>Send an enquiry</h3><p>Tell the artist about your project: the dates, where the work would go and how it would be used. Your enquiry goes straight to the artist.</p></li>
-    <li><h3>Agree the hire together</h3><p>The fee, dates, insurance, transport, installation and return are agreed directly between you and the artist, in writing.</p></li>
+<section class="afh3-how" id="afh3-how" aria-labelledby="afh3-how-h"><div class="pa-wrap">
+  <h2 id="afh3-how-h">How a hire works</h2>
+  <ol class="afh3-steps">
+    <li><h3>Choose a work</h3><p>Each work has been offered by its artist and checked by PlotArt. Every listing shows the size, medium and when it’s available.</p></li>
+    <li><h3>Send an enquiry</h3><p>Tell the artist your dates, where the work will go and how it will be used. Your enquiry goes straight to the artist.</p></li>
+    <li><h3>Agree it with the artist</h3><p>The fee, dates, insurance, transport, installation and return are agreed directly between you and the artist, in writing.</p></li>
   </ol>
-  <div class="pa-hire-know">
-    <h2>Good to know</h2>
-    <ul>
-      <li><strong>PlotArt introduces you to the artist.</strong> We’re not a party to the hire and we don’t take payment.</li>
-      <li><strong>Hire prices are agreed directly with the artist.</strong> Every work is price on request.</li>
-      <li><strong>Transport and insurance are arranged between you and the artist.</strong></li>
-      <li><strong>Photography and screen use are not automatically included.</strong> Any permission must be agreed in writing with the artist.</li>
-      <li><strong>Film and television screen use can’t yet be arranged through PlotArt.</strong></li>
-    </ul>
-  </div>
+  <ul class="afh3-know">
+    <li><strong>PlotArt introduces you to the artist.</strong> We’re not a party to the hire and we don’t take payment.</li>
+    <li><strong>Hire prices are agreed directly with the artist.</strong> Every work is price on request.</li>
+    <li><strong>Transport and insurance are arranged between you and the artist.</strong></li>
+    <li><strong>Photography and screen use are not automatically included.</strong> Any permission must be agreed in writing with the artist.</li>
+    <li><strong>Film and television screen use can’t yet be arranged through PlotArt.</strong></li>
+  </ul>
 </div></section>
 
-<section class="pa-hire-artists" aria-label="For PlotArt artists"><div class="pa-wrap">
-  <p><strong>For PlotArt artists.</strong> Taking part is optional. Once Art for Hire opens to artists, you’ll be able to choose works to offer from your PlotArt Studio account. Nothing is listed without your consent.</p>
+<section class="afh3-artists" aria-labelledby="afh3-artists-h"><div class="pa-wrap">
+  <h2 id="afh3-artists-h">Offer your work for hire</h2>
+  <p>For PlotArt artists. Taking part is optional. Once Art for Hire opens to artists, you’ll be able to choose works to offer from your PlotArt Studio account. Nothing is listed without your consent.</p>
 </div></section>
-<script src="hire-live.js" data-api="%s" data-enquiries="%s" defer></script>
-""" % (region(cards), E(api), "on" if form else "off")
+<script src="hire-live.js" data-api="%(api)s" data-enquiries="%(enq)s" defer></script>
+""" % {"art": SCENES.ART, "alt": SCENES.HERO_ALT, "credit": SCENES.CREDIT, "scenes": SCENES.SCENES, "region": region(cards),
+       "api": E(api), "enq": "on" if form else "off"}
 
 
 # The generated catalogue region (Stage 3B-6). Everything outside it is fixed by the page's code release and pinned in
@@ -145,11 +155,10 @@ BEGIN, END = "<!-- pa-hire-catalogue:begin -->", "<!-- pa-hire-catalogue:end -->
 
 def region(cards):
     gallery = ('<ul class="pa-hire-grid" aria-label="Works available for hire">\n%s\n</ul>' % "\n".join(cards)) if cards else ""
-    empty = ('<div class="pa-hire-empty" data-hire-empty%s%s><span class="pa-hire-frame" aria-hidden="true"></span><div>'
-             '<h2>No works are available for hire just now.</h2>'
-             '<p>Art for Hire is new. Works appear here once their artists choose to offer them and PlotArt has checked each one.</p>'
+    empty = ('<div class="pa-hire-empty afh3-empty" data-hire-empty%s%s>'
+             '<p><strong>No works are available for hire just now.</strong> Art for Hire is new. Works appear here once their artists choose to offer them and PlotArt has checked each one.</p>'
              '<p>Looking for something specific for a production, shoot or space? Email <a href="mailto:hello@plotnua.ie">hello@plotnua.ie</a> and tell us what you need.</p>'
-             '</div></div>') % ("" if cards else " data-hire-static", " hidden" if cards else "")
+             '</div>') % ("" if cards else " data-hire-static", " hidden" if cards else "")
     return "%s\n  %s\n  %s\n  %s" % (BEGIN, gallery, empty, END)
 
 

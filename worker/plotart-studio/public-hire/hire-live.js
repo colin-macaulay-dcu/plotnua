@@ -11,7 +11,10 @@
 
    Page contract:  <script src="hire-live.js" data-api="https://<relay>" data-enquiries="off|on" defer></script>
      [data-hire-work="<id>"] a card, hidden in the HTML, with data-hire-ref / -title / -artist
-     [data-hire-availability] [data-hire-enquire]  inside a card      [data-hire-status] [data-hire-empty] [data-hire-closed] */
+     [data-hire-availability] [data-hire-enquire]  inside a card      [data-hire-status] [data-hire-empty] [data-hire-closed]
+     [data-hire-cta]  the hero's primary action (v3, 11 Nov 2026): ships as "How it works" (#afh3-how); it becomes
+                      "See works for hire" (#afh3-works) only while the live check is showing at least one work, and
+                      returns to "How it works" whenever nothing is shown. It never promises works that are not there. */
 (() => {
   'use strict';
   const me = document.currentScript, API = (me && me.dataset.api || '').replace(/\/$/, ''), FORM_BUILT = !!me && me.dataset.enquiries === 'on';
@@ -29,6 +32,10 @@
   const cards = () => $$('[data-hire-work]');
   const empty = $$('[data-hire-empty]'), staticEmpty = empty.some(x => x.hasAttribute('data-hire-static'));
   const status = msg => $$('[data-hire-status]').forEach(el => { el.textContent = msg; el.hidden = !msg; });
+  const cta = shown => $$('[data-hire-cta]').forEach(a => {
+    a.textContent = shown ? 'See works for hire' : 'How it works';
+    a.setAttribute('href', shown ? '#afh3-works' : '#afh3-how');
+  });
   let state = { listed: new Map(), validUntil: 0, enquiries: false };
 
   function setEnquiries(on) {
@@ -40,6 +47,7 @@
     state = { listed: new Map(), validUntil: 0, enquiries: false };
     cards().forEach(c => { c.hidden = true; });
     empty.forEach(el => { el.hidden = !staticEmpty; });
+    cta(false);
     setEnquiries(false);
     closeForm();
     status(msg);
@@ -65,6 +73,7 @@
         if (i) { shown++; const a = c.querySelector('[data-hire-availability]'); if (a) a.textContent = label(i); }
       });
       empty.forEach(el => { el.hidden = shown > 0; });
+      cta(shown > 0);
       setEnquiries(FORM_BUILT && j.enquiries === true);
       if (openRef && !state.listed.has(openRef.id)) closeForm('This work is no longer available for hire.');
       status('');

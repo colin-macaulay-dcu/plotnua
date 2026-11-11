@@ -601,8 +601,23 @@ if HIRE_ON:
         _gp = os.path.join(PA, "artists", _slug, "gallery.json")
         _w = next((w for w in json.load(open(_gp, encoding="utf-8"))["works"] if w["id"] == _wid), None) if os.path.exists(_gp) else None
         need(_w is not None and _w.get("availability") == "available", "L17 card %s is not an available work in %s's published gallery" % (_wid, _slug))
-    for _src in re.findall(r'<img\b[^>]*\bsrc="([^"]+)"', _hp.split("<main", 1)[-1].split("</main>")[0]):
-        need(_src.startswith("../artists/") and _src[3:] in ARTIST_FILES, "L17 the Art for Hire page shows an image that is not a published artist image: %s" % _src)
+    # Version 3 (founder approval, 11 Nov 2026): outside the catalogue region the page may also show the founder's own
+    # painting, and only while the image register permits it on the Art for Hire surface and the file matches its record.
+    # Inside the catalogue region only published artist images may appear, exactly as before.
+    import hashlib as _hl
+    _FOUNDER = "assets/hero/founder-01-abstract.webp"
+    _rec = next((r for r in json.load(open(os.path.join(ROOT, "image-provenance-records.json"), encoding="utf-8")).get("records", [])
+                 if r.get("asset") == "plotart/" + _FOUNDER), None)
+    _fp = os.path.join(PA, _FOUNDER)
+    _founder_ok = (_rec is not None and _rec.get("class") == "FOUNDER_ORIGINAL_ARTWORK" and "plotart-art-for-hire" in (_rec.get("permitted_surfaces") or [])
+                   and os.path.exists(_fp) and _hl.sha256(open(_fp, "rb").read()).hexdigest() == _rec.get("sha256"))
+    _main = _hp.split("<main", 1)[-1].split("</main>")[0]
+    _inside = _main[_main.find(HIRE_BEGIN.decode()):_main.find(HIRE_END.decode())] if HIRE_BEGIN.decode() in _main else ""
+    for _src in re.findall(r'<img\b[^>]*\bsrc="([^"]+)"', _inside):
+        need(_src.startswith("../artists/") and _src[3:] in ARTIST_FILES, "L17 the Art for Hire catalogue shows an image that is not a published artist image: %s" % _src)
+    for _src in re.findall(r'<img\b[^>]*\bsrc="([^"]+)"', _main.replace(_inside, "")):
+        need((_src.startswith("../artists/") and _src[3:] in ARTIST_FILES) or (_src == "../" + _FOUNDER and _founder_ok),
+             "L17 the Art for Hire page shows an image that is neither a published artist image nor the founder painting registered for Art for Hire: %s" % _src)
     need("€" not in _hv and "%" not in _hv and not re.search(r"<form\b", _hp), "L17 the Art for Hire page shows a price, a percentage or a form")
     need(all(m == "hello@plotnua.ie" for m in re.findall(r"mailto:([^?\"]+)", _hp)) and not re.search(r"[A-Za-z0-9._%+-]+@(?!plotnua\.ie)[A-Za-z0-9-]+\.[A-Za-z]", _hv),
          "L17 the Art for Hire page exposes an address other than hello@plotnua.ie")

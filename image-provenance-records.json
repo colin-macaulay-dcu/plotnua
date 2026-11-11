@@ -4800,7 +4800,18 @@
         "founder_confirmation": "Founder confirmation (Colin Macaulay, 29 Oct 2026, 15:04): I created the original painting; I personally took the photograph of that painting; I authorise both to be used within PlotArt."
       },
       "permitted_surfaces": [
-        "plotart-homepage"
+        "plotart-homepage",
+        "plotart-art-for-hire"
+      ],
+      "surface_extensions": [
+        {
+          "surface": "plotart-art-for-hire",
+          "page": "plotart/art-for-hire/index.html",
+          "use": "Hero image and the painting hung, unaltered, in three illustrated settings (drawn in SVG). Credited on the page; labelled as not offered for hire.",
+          "approved_by": "Colin MacAulay (founder)",
+          "date": "2026-11-11",
+          "approval": "Founder approval, 11 Nov 2026: extend the image provenance permission of founder-01-abstract.webp to the Art for Hire page (Version 3 redesign)."
+        }
       ]
     },
     {

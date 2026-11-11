@@ -154,6 +154,7 @@ check('C2 images come from each artist’s existing published image folder and l
 check('C3 the page carries no artist contact details, handling notes, price figures or Studio data', !/@artist|PRIVATE|handling|€|price_eur|mailto:(?!hello@plotnua\.ie)/i.test(html) && /Price on request/.test(html));
 check('C4 every card is written HIDDEN in the HTML (shown only by a successful live check)', (html.match(/data-hire-work="[^"]+"[^>]*hidden>/g) || []).length === 6);
 check('C5 the empty-state panel and status line stay hidden while works are shown; no script errors', await o.page.$eval('[data-hire-empty]', e => e.hidden) && await o.page.$eval('[data-hire-status]', e => e.hidden) && o.errors.length === 0, o.errors.join());
+check('C6 while the live check is showing works, the hero action becomes “See works for hire” and leads to them (v3)', (await o.page.$eval('[data-hire-cta]', e => e.textContent + e.getAttribute('href'))) === 'See works for hire#afh3-works' && !!(await o.page.$('#afh3-works')));
 let ax = await axe(o.page);
 check('A1 accessibility (axe-core): no serious or critical issues on the desktop page', ax.length === 0, JSON.stringify(ax));
 await shot(o.page, 'desktop-1440-test-render', { ribbon: true });
@@ -163,7 +164,7 @@ vis = await visible(o.page);
 const mob = await o.page.evaluate(() => ({ sw: document.documentElement.scrollWidth, cw: document.documentElement.clientWidth, cols: getComputedStyle(document.querySelector('.pa-hire-grid')).gridTemplateColumns.split(' ').length }));
 ax = await axe(o.page);
 check('R1 phone (iPhone 13): one column, no sideways scrolling, all six works, no serious accessibility issues', vis.length === 6 && mob.sw <= mob.cw && mob.cols === 1 && ax.length === 0, JSON.stringify(mob) + JSON.stringify(ax));
-for (const [n, sel] of [['top', null], ['card', '[data-hire-work="wfixa1"]'], ['how', '.pa-hire-how']]) {
+for (const [n, sel] of [['top', null], ['card', '[data-hire-work="wfixa1"]'], ['how', '#afh3-how']]) {
   await o.page.evaluate(q => q ? document.querySelector(q).scrollIntoView() : window.scrollTo(0, 0), sel); await o.page.waitForTimeout(300);
   await shot(o.page, `phone-390-${n}-test-render`, { full: false, ribbon: true });
 }
@@ -175,13 +176,26 @@ await o.ctx.close();
 
 console.log('— empty state (the real state today: no work is listed)');
 o = await open(browser, P.empty, S, { viewport: { width: 1440, height: 1000 } });
-const emp = await o.page.evaluate(() => ({ cards: document.querySelectorAll('[data-hire-work]').length, empty: !document.querySelector('[data-hire-empty]').hidden, h: document.querySelector('[data-hire-empty] h2').textContent,
+const emp = await o.page.evaluate(() => ({ cards: document.querySelectorAll('[data-hire-work]').length, empty: !document.querySelector('[data-hire-empty]').hidden, h: document.querySelector('[data-hire-empty] strong').textContent,
+  cta: [document.querySelector('[data-hire-cta]').textContent, document.querySelector('[data-hire-cta]').getAttribute('href'), !!document.querySelector('#afh3-how')],
   closed: document.querySelector('[data-hire-closed]').hidden }));
 ax = await axe(o.page);
 check('E1 with no listed works the page shows a polished empty state, no cards and no invented listings; no serious accessibility issues', emp.cards === 0 && emp.empty && /No works are available for hire just now/.test(emp.h) && emp.closed && ax.length === 0, JSON.stringify(emp) + JSON.stringify(ax));
-const intro = await o.page.evaluate(() => ({ h1: document.querySelector('h1').textContent, lede: document.querySelector('.pa-hire-intro .pa-lede').textContent }));
+check('E4 with no listed works the hero’s primary action is “How it works” and leads to that section (v3, 11 Nov 2026)', emp.cta[0] === 'How it works' && emp.cta[1] === '#afh3-how' && emp.cta[2], JSON.stringify(emp.cta));
+const intro = await o.page.evaluate(() => ({ h1: document.querySelector('h1').textContent, lede: document.querySelector('.afh3-sub').textContent }));
 check('I1 the approved headline “Original art, on hire.” is kept; the introduction speaks to creative uses, with no sales language', intro.h1 === 'Original art,on hire.'
-  && /set the tone of a room/.test(intro.lede) && /agreed directly with the artist/.test(intro.lede) && !/\b(buy|sale|deal|discount|offer|price|cheap|best|exclusive|book now)\b/i.test(intro.lede), JSON.stringify(intro));
+  && /film and television, interiors and staged homes/.test(intro.lede) && /directly with the artist/.test(intro.lede) && !/\b(buy|sale|deal|discount|offer|price|cheap|best|exclusive|book now)\b/i.test(intro.lede), JSON.stringify(intro));
+const v3 = await o.page.evaluate(() => {
+  const scenes = [...document.querySelectorAll('.afh3-scene')];
+  const credit = 'Painting by Colin Macaulay, PlotArt’s founder. Not offered for hire.';
+  const pics = [...document.querySelectorAll('main img')].map(i => i.getAttribute('src'));
+  return { scenes: scenes.length, tags: scenes.filter(f => f.querySelector('.afh3-tag')?.textContent === 'Illustration').length,
+    credits: scenes.filter(f => f.querySelector('.afh3-credit')?.textContent === credit).length, heroCredit: document.querySelector('.afh3-hero-credit')?.textContent === credit,
+    mCredit: document.querySelector('.afh3-hero + .afh3-hero-credit-m')?.textContent === credit, pics: [...new Set(pics)],
+    intro: /The settings are illustrations; the painting is real\./.test(document.querySelector('.afh3-scenes-h').textContent) };
+});
+check('V1 three environments, each labelled “Illustration” and credited; the founder painting is the only image and is credited in the hero (v3)', v3.scenes === 3 && v3.tags === 3 && v3.credits === 3 && v3.heroCredit && v3.mCredit && v3.intro
+  && v3.pics.length === 1 && v3.pics[0] === '../assets/hero/founder-01-abstract.webp', JSON.stringify(v3));
 await shot(o.page, 'empty-desktop-1440');
 await o.ctx.close();
 o = await open(browser, P.empty, S, { device: 'iPhone 13' });
@@ -191,7 +205,8 @@ await shot(o.page, 'empty-phone-390-empty-state', { full: false });
 await o.ctx.close();
 await S.db.prepare("UPDATE artwork_hire SET offered = 0, withdrawn_at = '2026-11-10T22:00:00Z'").run();
 o = await open(browser, P.fix, S, { viewport: { width: 1440, height: 1000 } });
-check('E2 if every listed work is withdrawn, the built cards stay hidden and the empty state appears', (await visible(o.page)).length === 0 && !(await o.page.$eval('[data-hire-empty]', e => e.hidden)));
+check('E2 if every listed work is withdrawn, the built cards stay hidden, the empty state appears and the hero action stays “How it works”', (await visible(o.page)).length === 0 && !(await o.page.$eval('[data-hire-empty]', e => e.hidden))
+  && (await o.page.$eval('[data-hire-cta]', e => e.textContent + e.getAttribute('href'))) === 'How it works#afh3-how');
 await o.ctx.close();
 await S.db.prepare("UPDATE artwork_hire SET offered = 1, withdrawn_at = NULL").run();
 await S.db.prepare("UPDATE artwork_hire SET offered = 0, withdrawn_at = '2026-11-10T22:00:00Z' WHERE artwork_id = 'wfixb2'").run();
