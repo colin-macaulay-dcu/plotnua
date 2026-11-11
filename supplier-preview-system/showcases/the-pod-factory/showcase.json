@@ -1,0 +1,458 @@
+{
+ "_about": "The Pod Factory supplier showcase (founder brief, 11 Nov 2026). Every fact is from thepodfactory.ie as read on 11 Nov 2026 (product pages, FAQ, About, Modular Homes, Metal Frame Construction and Showroom pages). Images: The Pod Factory's own photographs only, hotlinked unmodified from www.thepodfactory.ie/wp-content/uploads/; 14 chosen from 47 candidates (copies and contact sheets: Documents/PlotNua/Images/The Pod Factory/candidates-2026-11-11). Not used: photographs with identifiable people, Facebook-exported and 'Untitled design' files of uncertain origin, and a low-resolution duplicate. MEASUREMENTS (founder brief, 11 Nov 2026): Pod 52 is published as 'Measuring: 7.2m x 8.5m' with 'roughly 52 sqm of floor space', and Pod 72 as 'Measuring: 7.2m x 10.7m' with '72sqm'. The products' measurements multiply to 61.2 m² and 77.04 m²; no page says whether they are external dimensions or the areas internal floor space (checked 11 Nov 2026), so both figures are shown as published, with a note to confirm them. Built by supplier-preview-system/build-the-pod-factory-showcase.py.",
+ "supplier": {
+  "name": "The Pod Factory",
+  "atlasName": "The Pod Factory",
+  "slug": "the-pod-factory",
+  "website": "https://www.thepodfactory.ie/",
+  "credit": "Image: The Pod Factory",
+  "creditHref": "https://www.thepodfactory.ie/?utm_source=plotnua&utm_medium=referral&utm_campaign=supplier-showcase",
+  "base": "Co. Meath",
+  "baseSource": "thepodfactory.ie: showroom at Unit 1, Ballymurphy, Dunshaughlin, Co. Meath A85 XV12; pods 'custom-built in our facility in Meath' (checked 11 Nov 2026). County only is shown."
+ },
+ "publication": {
+  "status": "PRIVATE PREVIEW — founder brief 11 Nov 2026: not published until founder approval.",
+  "basis": "Team Pod Factory, relayed by the founder 11 Nov 2026: 'sure you can showcase our products with direct credits to our website'. Atlas Image Permission Outreach IPO-050 (rec57qy9fknIG8tI3), Granted with Conditions — Founder Confirmed.",
+  "commercial": "No referral, commission, exclusivity or endorsement arrangement exists; none is claimed or implied."
+ },
+ "intro": "An Irish maker of steel-framed pods, built and fitted out in its factory in Co. Meath and craned into place: garden studios, garden homes, family homes and extensions.",
+ "standfirst": "Every pod starts from a base model and is then designed with you, from the layout to the level of insulation. These are The Pod Factory's own photographs of finished pods.",
+ "categories": [
+  {
+   "id": "rooms",
+   "title": "Garden rooms and garden homes",
+   "line": "A studio, and a one-bedroom pod."
+  },
+  {
+   "id": "homes",
+   "title": "Modular homes",
+   "line": "Two and three bedrooms, fitted out in the factory."
+  },
+  {
+   "id": "extension",
+   "title": "Extensions",
+   "line": "A pod joined to your house."
+  }
+ ],
+ "products": [
+  {
+   "category": "rooms",
+   "name": "Pod 17",
+   "atlas": "rec6emodtImdSPOUm",
+   "kind": "Garden studio",
+   "summary": "The Pod Factory's garden studio, for a home office, gym, music studio or somewhere to get away from the house.",
+   "specs": [
+    [
+     "Size",
+     "3.6 m × 5.8 m"
+    ],
+    [
+     "Uses",
+     "Home office, gym, garden or music studio"
+    ],
+    [
+     "Layout",
+     "Fully bespoke, designed with you"
+    ],
+    [
+     "Made",
+     "Off-site, in the factory in Co. Meath"
+    ]
+   ],
+   "price": null,
+   "priceHigh": null,
+   "priceNote": null,
+   "source": "https://www.thepodfactory.ie/garden-office/pod-17-home-office-garden-studio/",
+   "checked": "2026-11-11",
+   "images": [
+    "pf-02-pod17-doors-open"
+   ]
+  },
+  {
+   "category": "rooms",
+   "name": "Pod 22",
+   "atlas": "recwB65msRX01JISW",
+   "kind": "One-bedroom garden pod",
+   "summary": "A one-bedroom pod for a guest house, a holiday home or a small permanent home; it can also be fitted out as an office with a reception.",
+   "specs": [
+    [
+     "Size",
+     "3.6 m × 7.5 m"
+    ],
+    [
+     "Rooms",
+     "1 double bedroom, 1 bathroom, a living and dining area"
+    ],
+    [
+     "Use",
+     "Year-round or seasonal, as the supplier describes it"
+    ],
+    [
+     "Made",
+     "Off-site, in the factory in Co. Meath"
+    ]
+   ],
+   "price": null,
+   "priceHigh": null,
+   "priceNote": null,
+   "source": "https://www.thepodfactory.ie/garden-office/pod-22-cosy-garden-room/",
+   "checked": "2026-11-11",
+   "images": [
+    "pf-05-pod22-garden"
+   ]
+  },
+  {
+   "category": "homes",
+   "name": "Pod 52",
+   "atlas": null,
+   "kind": "Two-bedroom modular home",
+   "summary": "An open-plan, two-bedroom home with roughly 52 m² of floor space, as the supplier states, for a small family, a couple or a guest home; also fitted out as offices.",
+   "specs": [
+    [
+     "Size",
+     "7.2 m × 8.5 m, as published (not stated whether external)"
+    ],
+    [
+     "Floor space",
+     "Roughly 52 m², as the supplier states. 7.2 × 8.5 m would be 61.2 m², so confirm both figures with the supplier"
+    ],
+    [
+     "Rooms",
+     "2 bedrooms, 1 bathroom, open-plan kitchen, living and dining area"
+    ],
+    [
+     "Finish",
+     "Acrylic render or red cedar cladding, in a range of colours"
+    ],
+    [
+     "Layout",
+     "Fully customisable, including the internal layout"
+    ]
+   ],
+   "price": null,
+   "priceHigh": null,
+   "priceNote": null,
+   "source": "https://www.thepodfactory.ie/garden-office/pod-52-two-bed-modular-home-2/",
+   "checked": "2026-11-11",
+   "images": [
+    "pf-08-pod52-exterior"
+   ]
+  },
+  {
+   "category": "homes",
+   "name": "Pod 72",
+   "atlas": null,
+   "kind": "Three-bedroom modular home",
+   "summary": "The largest pod: a three-bedroom family home of 72 m², as the supplier states, delivered fitted out and connected to services.",
+   "specs": [
+    [
+     "Size",
+     "7.2 m × 10.7 m, as published (not stated whether external)"
+    ],
+    [
+     "Floor space",
+     "72 m², as the supplier states. 7.2 × 10.7 m would be about 77 m², so confirm both figures with the supplier"
+    ],
+    [
+     "Rooms",
+     "3 bedrooms, 1 bathroom, open-plan kitchen, living and dining area"
+    ],
+    [
+     "Delivered",
+     "Fully fitted and connected to services, as the supplier describes it"
+    ],
+    [
+     "Layout",
+     "Fully bespoke, designed with you"
+    ]
+   ],
+   "price": null,
+   "priceHigh": null,
+   "priceNote": "The supplier publishes interior photographs of Pod 72 only.",
+   "source": "https://www.thepodfactory.ie/garden-office/pod-72-family-dream-home/",
+   "checked": "2026-11-11",
+   "images": [
+    "pf-11-pod72-living"
+   ]
+  },
+  {
+   "category": "extension",
+   "name": "Pod Extension",
+   "atlas": null,
+   "kind": "Factory-built house extension",
+   "summary": "A pod built off-site and fitted to your house as an extension, from the supplier's design or your own.",
+   "specs": [
+    [
+     "Size",
+     "Bespoke to the house"
+    ],
+    [
+     "Use",
+     "Office, games room, living space or anything else"
+    ],
+    [
+     "Built",
+     "Off-site, then delivered, dropped in place and fitted to the house"
+    ],
+    [
+     "Design",
+     "Your own designs, or designed with the supplier"
+    ]
+   ],
+   "price": null,
+   "priceHigh": null,
+   "priceNote": null,
+   "source": "https://www.thepodfactory.ie/garden-office/pod-house-extension/",
+   "checked": "2026-11-11",
+   "images": [
+    "pf-13-extension-patio"
+   ]
+  }
+ ],
+ "images": [
+  {
+   "id": "pf-01-pod17-showroom",
+   "origin": "https://www.thepodfactory.ie/wp-content/uploads/2023/05/Showroom-Pod-17-scaled.jpg",
+   "w": 2560,
+   "h": 1182,
+   "kind": "Photograph",
+   "alt": "A single-storey garden pod with cedar cladding, a dark grey render frame and full-height anthracite glazing, beside a paved yard.",
+   "caption": "A Pod 17 garden studio, cedar-clad with anthracite glazing.",
+   "product": null,
+   "role": "hero",
+   "sha256": "e280dcdc26f4c63218f53ddb65ea0f2a13c6b0d92b43090bbd7661d247151b87",
+   "sourcePage": "https://www.thepodfactory.ie/garden-office/pod-17-home-office-garden-studio/",
+   "variants": [
+    [
+     "https://www.thepodfactory.ie/wp-content/uploads/2023/05/Showroom-Pod-17-768x355.jpg",
+     768
+    ],
+    [
+     "https://www.thepodfactory.ie/wp-content/uploads/2023/05/Showroom-Pod-17-1024x473.jpg",
+     1024
+    ],
+    [
+     "https://www.thepodfactory.ie/wp-content/uploads/2023/05/Showroom-Pod-17-1536x709.jpg",
+     1536
+    ]
+   ]
+  },
+  {
+   "id": "pf-02-pod17-doors-open",
+   "origin": "https://www.thepodfactory.ie/wp-content/uploads/2022/03/Garden-Room-Pod-17-Showroom-Ireland.jpg",
+   "w": 900,
+   "h": 600,
+   "kind": "Photograph",
+   "alt": "A cedar-clad garden pod with its folding glass doors open onto a paved yard, showing a desk and chairs inside.",
+   "caption": "Pod 17 with its folding doors open: the studio set up as a home office.",
+   "product": "Pod 17",
+   "role": "product",
+   "sha256": "9447d44957433740d82ff0f705011884a099d59e9f8914b61877ac0ba5c3a587",
+   "sourcePage": "https://www.thepodfactory.ie/garden-office/pod-17-home-office-garden-studio/"
+  },
+  {
+   "id": "pf-03-pod17-night",
+   "origin": "https://www.thepodfactory.ie/wp-content/uploads/2022/03/Garden-Room-Pod-17-Pod-Factory-Ireland.jpg",
+   "w": 900,
+   "h": 600,
+   "kind": "Photograph",
+   "alt": "A garden pod lit at night, its glazed front showing a furnished interior, with downlights under the roof edge.",
+   "caption": "Pod 17 at night, with downlights under the roof edge.",
+   "product": "Pod 17",
+   "role": "collection",
+   "sha256": "990d6ebc2900bae3629a3c4e91adad58703108788e9038f63f9dd97240b12252",
+   "sourcePage": "https://www.thepodfactory.ie/garden-office/pod-17-home-office-garden-studio/"
+  },
+  {
+   "id": "pf-04-pod17-interior",
+   "origin": "https://www.thepodfactory.ie/wp-content/uploads/2022/03/Office-Pod-17-Pod-Factory-Ireland.jpg",
+   "w": 900,
+   "h": 600,
+   "kind": "Photograph",
+   "alt": "Inside a garden pod: a grey corner sofa, a striped rug and a small desk with a yellow chair, under white walls.",
+   "caption": "Inside a Pod 17: a lounge corner and a small desk.",
+   "product": "Pod 17",
+   "role": "collection",
+   "sha256": "a3fb1f7a32f312405a9901d154c70a736f099fe639a03b17b75855af589def2f",
+   "sourcePage": "https://www.thepodfactory.ie/garden-office/pod-17-home-office-garden-studio/"
+  },
+  {
+   "id": "pf-05-pod22-garden",
+   "origin": "https://www.thepodfactory.ie/wp-content/uploads/2022/03/Garden-Room-Pod-22-Ireland.jpg",
+   "w": 900,
+   "h": 600,
+   "kind": "Photograph",
+   "alt": "A long cedar-clad garden pod with white render corners and two glazed openings, on a lawn in a suburban back garden.",
+   "caption": "Pod 22: a one-bedroom garden pod on a suburban lawn.",
+   "product": "Pod 22",
+   "role": "product",
+   "sha256": "7103e84175a1e6f4b736a66e9efa575e44c60fe62ec5941ab011421779c554b8",
+   "sourcePage": "https://www.thepodfactory.ie/garden-office/pod-22-cosy-garden-room/"
+  },
+  {
+   "id": "pf-06-pod22-wide",
+   "origin": "https://www.thepodfactory.ie/wp-content/uploads/2022/03/Garden-Room-Ireland-Pod-22.jpg",
+   "w": 900,
+   "h": 600,
+   "kind": "Photograph",
+   "alt": "A cedar and white-render garden pod at the end of a long, planted back garden with a curving path.",
+   "caption": "A Pod 22 at the end of a planted back garden.",
+   "product": "Pod 22",
+   "role": "collection",
+   "sha256": "ef55b773492176e48b8c16134a80d657c9f0b72eebb3daf309980d07fab93ac4",
+   "sourcePage": "https://www.thepodfactory.ie/garden-office/pod-22-cosy-garden-room/"
+  },
+  {
+   "id": "pf-07-pod22-gravel",
+   "origin": "https://www.thepodfactory.ie/wp-content/uploads/2022/03/Granny-Flat-Garden-Room-22-Ireland.jpg",
+   "w": 900,
+   "h": 600,
+   "kind": "Photograph",
+   "alt": "A cedar-clad pod front with a sliding glass door, a cast-iron bench and potted flowers on gravel.",
+   "caption": "A Pod 22 front, with a sliding door onto a gravel terrace.",
+   "product": "Pod 22",
+   "role": "collection",
+   "sha256": "05e03736a231724805307ff94d38c603d64b3d3a1308b042ac4517b1cc69aa43",
+   "sourcePage": "https://www.thepodfactory.ie/garden-office/pod-22-cosy-garden-room/"
+  },
+  {
+   "id": "pf-08-pod52-exterior",
+   "origin": "https://www.thepodfactory.ie/wp-content/uploads/2022/03/Pod-52-Exterior-Pod-Factory-Ireland.jpg",
+   "w": 900,
+   "h": 600,
+   "kind": "Photograph",
+   "alt": "A wide single-storey modular home clad in cedar with dark glazing, on a lawn with young planting.",
+   "caption": "Pod 52: a two-bedroom modular home.",
+   "product": "Pod 52",
+   "role": "product",
+   "sha256": "b5d04e0639910514f06423f8871f166a41c5e9254d28dcc6eb4080f2254517bf",
+   "sourcePage": "https://www.thepodfactory.ie/garden-office/pod-52-two-bed-modular-home-2/"
+  },
+  {
+   "id": "pf-09-pod52-rural",
+   "origin": "https://www.thepodfactory.ie/wp-content/uploads/2022/03/Airbnb-Pod-52-Ireland-Garden-Room-Rural-Hotel.jpg",
+   "w": 900,
+   "h": 600,
+   "kind": "Photograph",
+   "alt": "Two single-storey cedar and render modular buildings on a rural site, with a gravel drive and a lamp post.",
+   "caption": "Pod 52 homes on a rural site.",
+   "product": "Pod 52",
+   "role": "collection",
+   "sha256": "7ca0e0df4f9859167a4125b633bcee4d27addca820fc9f041602c04c35924ad5",
+   "sourcePage": "https://www.thepodfactory.ie/garden-office/pod-52-two-bed-modular-home-2/"
+  },
+  {
+   "id": "pf-10-pod52-living",
+   "origin": "https://www.thepodfactory.ie/wp-content/uploads/2022/03/Pod-52-Living-Dining-room-Ireland.jpg",
+   "w": 900,
+   "h": 600,
+   "kind": "Photograph",
+   "alt": "An open-plan living room with a grey corner sofa and a fitted white kitchen behind, in a modular home.",
+   "caption": "Inside a Pod 52: open-plan living and kitchen.",
+   "product": "Pod 52",
+   "role": "collection",
+   "sha256": "a240c112e0513fdeed94e3e35230281523996af27ef348eb44218b9083cff821",
+   "sourcePage": "https://www.thepodfactory.ie/garden-office/pod-52-two-bed-modular-home-2/"
+  },
+  {
+   "id": "pf-11-pod72-living",
+   "origin": "https://www.thepodfactory.ie/wp-content/uploads/2022/03/Living-Kitchen-Pod-72-Ireland-Pod-Factory.jpg",
+   "w": 900,
+   "h": 600,
+   "kind": "Photograph",
+   "alt": "A bright open-plan room with a sofa, a dining table, a tall timber display cabinet and a white fitted kitchen.",
+   "caption": "Inside a Pod 72: the open-plan kitchen, dining and living room.",
+   "product": "Pod 72",
+   "role": "product",
+   "sha256": "3bbd3a699d08b4c8dff2a25c760455745264aca40f28d157056b6ef48d2c8583",
+   "sourcePage": "https://www.thepodfactory.ie/garden-office/pod-72-family-dream-home/"
+  },
+  {
+   "id": "pf-12-pod72-bedroom",
+   "origin": "https://www.thepodfactory.ie/wp-content/uploads/2022/03/Pod-72-3-Bedrooms-House-Pod-Factory-Ireland.jpg",
+   "w": 900,
+   "h": 600,
+   "kind": "Photograph",
+   "alt": "A bedroom with a double bed, a white wardrobe and a full-height window, in grey and white.",
+   "caption": "A Pod 72 bedroom.",
+   "product": "Pod 72",
+   "role": "collection",
+   "sha256": "5b807abdb99d58e87ca0a96049c1360c48f267663bc777dd2e531a0b73fb9f21",
+   "sourcePage": "https://www.thepodfactory.ie/garden-office/pod-72-family-dream-home/"
+  },
+  {
+   "id": "pf-13-extension-patio",
+   "origin": "https://www.thepodfactory.ie/wp-content/uploads/2022/03/Home-Extension-Ireland-Pod-Factory.jpg",
+   "w": 900,
+   "h": 600,
+   "kind": "Photograph",
+   "alt": "A cedar-clad, flat-roofed extension with glazed doors added to the back of a two-storey house, opening onto a patio with a table.",
+   "caption": "A Pod Extension at the back of a two-storey house.",
+   "product": "Pod Extension",
+   "role": "product",
+   "sha256": "9e9c51efed39f553cb5b0ad6cb1da516f4696aa31805245704482b2015a39d2c",
+   "sourcePage": "https://www.thepodfactory.ie/garden-office/pod-house-extension/"
+  },
+  {
+   "id": "pf-14-extension-bungalow",
+   "origin": "https://www.thepodfactory.ie/wp-content/uploads/2022/03/Extension-Pod-Ireland.jpg",
+   "w": 900,
+   "h": 600,
+   "kind": "Photograph",
+   "alt": "A cedar and white-render extension joined to the side of a grey bungalow, with gravel and a lawn in front.",
+   "caption": "A Pod Extension joined to a bungalow.",
+   "product": "Pod Extension",
+   "role": "collection",
+   "sha256": "7d74dd1381979a2a561f5e03d6465859f27a052bd15ccbdf0e8276883db8af42",
+   "sourcePage": "https://www.thepodfactory.ie/garden-office/pod-house-extension/"
+  }
+ ],
+ "costs": {
+  "title": "How The Pod Factory prices a pod.",
+  "items": [
+   [
+    "Price",
+    "No price list is published. Every pod is bespoke, so the supplier prices each one for the client; ask for a quote."
+   ],
+   [
+    "Delivery and installation",
+    "Pods are delivered by lorry and craned into place, anywhere with access for the trucks and crane."
+   ],
+   [
+    "Groundworks",
+    "The site's groundworks must be completed before the pod arrives. The site does not say whether these are in the quote; ask."
+   ],
+   [
+    "Services",
+    "Water and electricity are connected to the services already on site, as part of the installation."
+   ],
+   [
+    "Heating",
+    "ATC radiators are fitted as standard. Solar panels, heat pumps and triple glazing can be added."
+   ],
+   [
+    "VAT",
+    "Not stated."
+   ]
+  ],
+  "note": "Lead time: the supplier's pages give about 10 weeks to delivery (modular homes page) and as little as twelve weeks (FAQ) once the design is finalised. Its showroom near Dunshaughlin, Co. Meath, can be visited by appointment, including out of hours."
+ },
+ "considerations": [
+  [
+   "Planning",
+   "Whether a pod needs planning permission depends on its size, its use and your site. The Pod Factory advises asking your local planning department; it also publishes its own guidance on the newer exemptions. A pod you live in is treated differently from a garden studio."
+  ],
+  [
+   "Crane access",
+   "Pods arrive finished and are lifted in by crane, so there has to be a route for the lorry and the crane."
+  ],
+  [
+   "Groundworks first",
+   "The base and groundworks are done before delivery. Agree who does them and what they cost before you sign."
+  ],
+  [
+   "The frame",
+   "The pods are framed in light gauge steel made by the supplier's sister company, Metal Frame Construction, which the supplier says holds NSAI and UKAS accreditations. Ask for the certificates that apply to your build."
+  ]
+ ]
+}

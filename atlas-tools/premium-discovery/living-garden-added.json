@@ -77,8 +77,8 @@
  ],
  "showcaseReferences": [
   {
-   "supplier": "Maker showcase cards (Elm Landscaping, Garden Room Ireland, Don Modular Homes)",
-   "declared": "2026-11-04, founder approval 'Garden Room Ireland final refinement and production release': reusable PN-SHOWCASE-CARDS component (atlas-tools/build-showcase-cards.py) above the supplier gallery. Each card reuses a photograph already published on that supplier's PlotNua showcase. Gallery cards, capacity and Maker Explorer unchanged. Don Modular Homes card added 4 Nov 2026 (founder approval of its production release).",
+   "supplier": "Maker showcase cards (Elm Landscaping, Garden Room Ireland, Don Modular Homes, The Pod Factory)",
+   "declared": "2026-11-04, founder approval 'Garden Room Ireland final refinement and production release': reusable PN-SHOWCASE-CARDS component (atlas-tools/build-showcase-cards.py) above the supplier gallery. Each card reuses a photograph already published on that supplier's PlotNua showcase. Gallery cards, capacity and Maker Explorer unchanged. Don Modular Homes card added 4 Nov 2026 (founder approval of its production release). The Pod Factory card added 11 Nov 2026 (founder approval of its production release); the note reads \"Four makers\".",
    "blocks": [
     "Showcases on PlotNua",
     "Photograph © Elm Landscaping",
@@ -96,23 +96,31 @@
     "One steel-framed, factory-finished design, from a garden room to a four-bedroom home, at one published rate per square metre.",
     "Explore showcase →",
     "Visualisation © Don Modular Homes Don Modular Homes One steel-framed, factory-finished design, from a garden room to a four-bedroom home, at one published rate per square metre. Explore showcase →",
-    "Three makers with a full page on PlotNua: photographs, models and what to ask."
+    "Four makers with a full page on PlotNua: photographs, models and what to ask.",
+    "Photograph Image: The Pod Factory",
+    "The Pod Factory",
+    "Steel-framed pods built in Co. Meath and craned into place, from a garden studio to a three-bedroom home.",
+    "Explore showcase →",
+    "Photograph Image: The Pod Factory The Pod Factory Steel-framed pods built in Co. Meath and craned into place, from a garden studio to a three-bedroom home. Explore showcase →"
    ],
    "imgs": [
     "https://elmlandscaping.ie/wp-content/uploads/2023/02/driveway1.jpg",
     "https://static.wixstatic.com/media/fef4b6_f1486b2ae80e4ed2bfeecde2d7e5ea71~mv2.jpg",
-    "https://donmodularhomes.ie/images/don-modular-home-exterior.webp"
+    "https://donmodularhomes.ie/images/don-modular-home-exterior.webp",
+    "https://www.thepodfactory.ie/wp-content/uploads/2023/05/Showroom-Pod-17-scaled.jpg"
    ],
    "links": [
     "suppliers/elm-landscaping.html",
     "suppliers/garden-room-ireland.html",
-    "suppliers/don-modular-homes.html"
+    "suppliers/don-modular-homes.html",
+    "suppliers/the-pod-factory.html"
    ],
    "ids": [
     "pn-sc-k",
     "pn-sc-elm-landscaping",
     "pn-sc-garden-room-ireland",
-    "pn-sc-don-modular-homes"
+    "pn-sc-don-modular-homes",
+    "pn-sc-the-pod-factory"
    ]
   }
  ],

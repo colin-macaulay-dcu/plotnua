@@ -18,10 +18,15 @@
     "showcase": "don-modular-homes",
     "image": "don-01-woodland-dusk",
     "description": "One steel-framed, factory-finished design, from a garden room to a four-bedroom home, at one published rate per square metre."
+   },
+   {
+    "showcase": "the-pod-factory",
+    "image": "pf-01-pod17-showroom",
+    "description": "Steel-framed pods built in Co. Meath and craned into place, from a garden studio to a three-bedroom home."
    }
   ],
   "embed": "gallery",
-  "note": "Three makers with a full page on PlotNua: photographs, models and what to ask."
+  "note": "Four makers with a full page on PlotNua: photographs, models and what to ask."
  },
  "discovery-garden-retreat.html": {
   "kicker": "A showcase on PlotNua",

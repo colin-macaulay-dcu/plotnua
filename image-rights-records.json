@@ -1351,6 +1351,59 @@
       },
       "public_visibility": "PUBLISHABLE",
       "hold_reason": null
+    },
+    {
+      "organisation_record": "recaVJQjZD9UV8JSs",
+      "organisation_code": "ORG-000008",
+      "organisation_name": "The Pod Factory",
+      "permission_outcome": "Granted with Conditions — Founder Confirmed",
+      "permitted_domain": "thepodfactory.ie",
+      "permitted_delivery_hosts": [
+        {
+          "host": "www.thepodfactory.ie",
+          "path_prefix": "/wp-content/uploads/",
+          "why": "thepodfactory.ie is a WordPress site: its pages serve the supplier's own photographs from its media library under /wp-content/uploads/ on its own host (checked 11 Nov 2026). Scoped to the uploads folder of the supplier's own domain."
+        }
+      ],
+      "required_credit": "Image: The Pod Factory",
+      "evidence": "PlotNua emailed sales@thepodfactory.ie on 2, 9 and 15 Oct 2026 asking to feature The Pod Factory (Gmail thread 1a0fb8bf4d245749). The reply, signed 'Team Pod Factory', reads: \"Hi, sure you can showcase our products with direct credits to our website. Thanks, Team Pod Factory\"; it is quoted verbatim in the founder's brief of 11 Nov 2026 ('Team Pod Factory has explicitly authorised PlotNua to showcase its products, provided we give direct credit and links to its website'), which directs use of the supplier's genuine imagery. The reply itself was not found in the hello@/colin@ mailbox on 11 Nov 2026. Recorded in Atlas Image Permission Outreach IPO-050 (rec57qy9fknIG8tI3) as Granted with Conditions — Founder Confirmed.",
+      "conditions": [
+        "Direct credit 'Image: The Pod Factory' on every image use, linked to thepodfactory.ie.",
+        "Only The Pod Factory's own photographs of its pods as published on thepodfactory.ie. Photographs with identifiable people, Facebook-exported and 'Untitled design' files of uncertain origin are excluded. Every image used is enumerated in supplier-preview-system/showcases/the-pod-factory/showcase.json with its source URL, source page and SHA-256.",
+        "Images are hotlinked unmodified from www.thepodfactory.ie/wp-content/uploads/; no rehosting, cropping or adaptation.",
+        "If The Pod Factory asks for any image to be changed or removed, PlotNua does so promptly."
+      ],
+      "note": "Exercised on suppliers/the-pod-factory.html (14 photographs, hotlinked from www.thepodfactory.ie/wp-content/uploads/) and on one Living in the Garden showcase card; founder approval for production, 11 Nov 2026. The grant's wording is 'showcase our products'; it does not mention photographs in so many words and is treated as covering the supplier's own product photographs on the founder's instruction. REMOVAL: delete the image from showcase.json (and the card in atlas-tools/showcase-cards/showcase-cards.json if it is the card image), rebuild, regenerate this manifest. WITHDRAWAL: set permission_outcome to 'Withdrawn / Superseded' and the gate refuses every The Pod Factory image site-wide. COMMERCIAL: no terms exist and this grant implies none.",
+      "atlas_permission_record": "rec57qy9fknIG8tI3",
+      "atlas_permission_ref": "IPO-050",
+      "permission_date": "2026-11-11",
+      "permission": {
+        "state": "GRANTED",
+        "ref": "IPO-050",
+        "record": "rec57qy9fknIG8tI3",
+        "date": "2026-11-11",
+        "scope": [
+          "feature",
+          "imagery"
+        ],
+        "conditions": [
+          "credit",
+          "link-back",
+          "selected-first-party-imagery-only",
+          "remove-on-request"
+        ],
+        "asked": "Email, 2 Oct 2026 with follow-ups 9 and 15 Oct (Gmail thread 1a0fb8bf4d245749), to sales@thepodfactory.ie: featuring The Pod Factory on PlotNua.",
+        "answered": "Reply signed 'Team Pod Factory', relayed by the founder 11 Nov 2026: 'sure you can showcase our products with direct credits to our website'.",
+        "note": "Founder confirmation in the brief of 11 Nov 2026."
+      },
+      "hold_reason": null,
+      "listing_review": {
+        "state": "NOT_REQUIRED",
+        "requested_by": null,
+        "requested_in": null,
+        "note": "The Pod Factory did not ask to review the listing. The founder reviewed the private preview and approved production on 11 Nov 2026."
+      },
+      "public_visibility": "PUBLISHABLE"
     }
   ]
 }
