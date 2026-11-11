@@ -450,6 +450,18 @@
      "recstfGDfONMJJk4P",
      "recu5t35P6aTRSjsd"
     ]
+   },
+   {
+    "id": "availability-and-reverification-2026-11-11",
+    "deployedCommit": "55fa07ece40078ab1325d82aae1ff99ebfe03e54",
+    "products": [
+     "recKHXaApIugjOKti",
+     "recUs4gexxlfkaiUj",
+     "reciolethPMEn50gQ",
+     "recUnUAWq0TWkNO5C",
+     "recBVDyal8VGGVEZM",
+     "reczxM0lggLXTBCdU"
+    ]
    }
   ]
  },
@@ -801,15 +813,6 @@
    "priceStatus": "Verified"
   },
   {
-   "productId": "recBVDyal8VGGVEZM",
-   "supplierKey": "249888bef7db",
-   "segment": "SUPPLY_ONLY_INSTALL_SEPARATE",
-   "price": 9799,
-   "vat": "Unknown",
-   "lastPriceCheck": "2026-08-19",
-   "priceStatus": "Verified"
-  },
-  {
    "productId": "recBe8RNLA9PMLnKn",
    "supplierKey": "d52f3c51b7f1",
    "segment": "UNKNOWN_DIY_OR_INSTALLED",
@@ -998,15 +1001,6 @@
    "price": 23423,
    "vat": "Yes",
    "lastPriceCheck": "2026-10-26",
-   "priceStatus": "Verified"
-  },
-  {
-   "productId": "recKHXaApIugjOKti",
-   "supplierKey": "e92b1649b110",
-   "segment": "INSTALLED_FINISHED_TURNKEY",
-   "price": 19950,
-   "vat": "Unknown",
-   "lastPriceCheck": "2026-11-06",
    "priceStatus": "Verified"
   },
   {
@@ -1383,28 +1377,10 @@
    "priceStatus": "Verified"
   },
   {
-   "productId": "recUnUAWq0TWkNO5C",
-   "supplierKey": "e92b1649b110",
-   "segment": "INSTALLED_FINISHED_TURNKEY",
-   "price": 43600,
-   "vat": "Unknown",
-   "lastPriceCheck": "2026-11-06",
-   "priceStatus": "Verified"
-  },
-  {
    "productId": "recUpbnPlPJO7N2wa",
    "supplierKey": "673afaf4adee",
    "segment": "INSTALLED_FINISHED_FOUNDATIONS_EXCLUDED",
    "price": 19995,
-   "vat": "Unknown",
-   "lastPriceCheck": "2026-11-06",
-   "priceStatus": "Verified"
-  },
-  {
-   "productId": "recUs4gexxlfkaiUj",
-   "supplierKey": "e92b1649b110",
-   "segment": "INSTALLED_FINISHED_TURNKEY",
-   "price": 26400,
    "vat": "Unknown",
    "lastPriceCheck": "2026-11-06",
    "priceStatus": "Verified"
@@ -1833,15 +1809,6 @@
    "segment": "UNKNOWN_DIY_OR_INSTALLED",
    "price": 7750,
    "vat": "Yes",
-   "lastPriceCheck": "2026-11-06",
-   "priceStatus": "Verified"
-  },
-  {
-   "productId": "reciolethPMEn50gQ",
-   "supplierKey": "e92b1649b110",
-   "segment": "INSTALLED_FINISHED_TURNKEY",
-   "price": 37500,
-   "vat": "Unknown",
    "lastPriceCheck": "2026-11-06",
    "priceStatus": "Verified"
   },
@@ -2361,15 +2328,6 @@
    "price": 89900,
    "vat": "Unknown",
    "lastPriceCheck": "2026-08-15",
-   "priceStatus": "Verified"
-  },
-  {
-   "productId": "reczxM0lggLXTBCdU",
-   "supplierKey": "1ea406f775e8",
-   "segment": "UNKNOWN_DEALER_SOLD",
-   "price": 10762,
-   "vat": "Unknown",
-   "lastPriceCheck": "2026-08-27",
    "priceStatus": "Verified"
   },
   {

@@ -2,18 +2,12 @@
  "schema": "plotnua.garden-room-extras-evidence",
  "version": 1,
  "what_this_is": "What each supplier behind the published installed, finished (turnkey) range says about three costs that often sit outside an advertised price. Read by atlas-tools/build-garden-room-prices.py, which publishes COUNTS only (no supplier name, no euro amount) and refuses unless these suppliers are exactly the suppliers in that published range. 'notEstablished' means PlotNua holds no published statement either way; it is never read as included or excluded.",
- "approved": "Founder decision, 6 Nov 2026, Stage 2 item 5: add a clear 'What may cost extra' section using documented supplier evidence. Stage 3D-C2 (founder approval, 7 Nov 2026): every supplier in the published installed-and-finished range must show its base as included (R-INSTALLED); Adman Steel Sheds (foundations excluded) and Live in Garden Pods (base not stated) leave the range and this file; Modular House joins it; Shomera re-read on its live model pages.",
+ "approved": "Founder decision, 6 Nov 2026, Stage 2 item 5: add a clear 'What may cost extra' section using documented supplier evidence. Stage 3D-C2 (founder approval, 7 Nov 2026): every supplier in the published installed-and-finished range must show its base as included (R-INSTALLED); Adman Steel Sheds (foundations excluded) and Live in Garden Pods (base not stated) leave the range and this file; Modular House joins it; Shomera re-read on its live model pages. 11 Nov 2026 (founder decision): Garden Office Solutions leaves the range and this file while it is temporarily unable to take new orders (site notice read 11 Nov 2026); its base evidence, re-read unchanged on 11 Nov 2026, stays in git history. Garden Rooms base wording re-read verbatim on 11 Nov 2026.",
  "states": ["included", "extra", "notEstablished"],
  "suppliers": [
   {
-   "organisation": "Garden Office Solutions",
-   "base": {"state": "included", "checked": "2026-11-07", "source": "https://gardenofficesolutions.ie/garden-office/", "evidence": "'All cabins are A rated and include electrical connections and hookup, interior painting, insulation & foundations.' (read 7 Nov 2026)"},
-   "delivery": {"state": "notEstablished", "checked": "2026-11-06", "source": "https://gardenofficesolutions.ie/garden-room-cost/", "evidence": "'All prices include full turnkey installation in five working days'; delivery is not named."},
-   "electricalConnection": {"state": "included", "checked": "2026-11-07", "source": "https://gardenofficesolutions.ie/garden-office/", "evidence": "'All cabins ... include electrical connections and hookup' (read 7 Nov 2026)."}
-  },
-  {
    "organisation": "Garden Rooms",
-   "base": {"state": "included", "checked": "2026-11-06", "source": "gardenrooms.ie (www.gardenrooms.ie/designs/cube-range/ and /designs/ultimate-range/), read for the 6 Nov 2026 evidence audit", "evidence": "Foundations (concrete posts) included, per the 6 Nov 2026 evidence audit."},
+   "base": {"state": "included", "checked": "2026-11-11", "source": "https://www.gardenrooms.ie/designs/cube-range/ and https://www.gardenrooms.ie/designs/ultimate-range/", "evidence": "'Foundations: Post foundations in concrete.' listed under Standard Specifications on both range pages (read 11 Nov 2026; first recorded in the 6 Nov 2026 evidence audit)."},
    "delivery": {"state": "extra", "checked": "2026-11-06", "source": "gardenrooms.ie (www.gardenrooms.ie/designs/cube-range/ and /designs/ultimate-range/), read for the 6 Nov 2026 evidence audit", "evidence": "Delivery listed as an extra, charged ex VAT (Greater Dublin), per the 6 Nov 2026 evidence audit."},
    "electricalConnection": {"state": "extra", "checked": "2026-11-06", "source": "gardenrooms.ie (www.gardenrooms.ie/designs/cube-range/ and /designs/ultimate-range/), read for the 6 Nov 2026 evidence audit", "evidence": "Electrical connection listed as an extra, charged per linear metre ex VAT, per the 6 Nov 2026 evidence audit."}
   },

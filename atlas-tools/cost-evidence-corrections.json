@@ -2003,6 +2003,53 @@
           "reason": "Partially Verified in Atlas with no recorded check date; fails R-MATCH (Stage 3D-D2)."
         }
       ]
+    },
+    {
+      "id": "availability-and-reverification-2026-11-11",
+      "date": "2026-11-11",
+      "approved": "Founder decisions, 11 November 2026 ('Prepare the approved evidence corrections for PlotNua's Garden Room Prices guide and Atlas records'), following the Media Brief v2 evidence verification of 11 Nov 2026: (1) Garden Office Solutions: preserve its four records and historical prices, mark temporarily unavailable for new orders, exclude the four prices from current available-product comparisons, do not describe the supplier as closed; (2) Outdoor Living Nova Pavilion: out of stock, preserve, exclude; (3) Lugarde PSML2: URL no longer resolves to a verifiable product, preserve, mark price as requiring re-verification, exclude, do not claim discontinuation. Live checks made in a browser on 11 Nov 2026. No replacement price is inferred. No Atlas record was written by this correction.",
+      "deployedCommit": "55fa07ece40078ab1325d82aae1ff99ebfe03e54",
+      "deployedUniverseSha256": "f6e10315b4c3d0055e61a70b6aa7571f31793d79f69eb823885a63e7bcb60c66",
+      "rule": "Each product stays published and stays counted as a garden-room record; only its price leaves the garden-room cost evidence (the guide and Living in the Garden's price section). No price is replaced or invented. Atlas record and price history unchanged. Reversible: remove this entry once availability or a product-specific price is re-verified and separately approved.",
+      "products": [
+        {
+          "id": "recKHXaApIugjOKti",
+          "name": "Garden Office Solutions Garden Room 12.5m²",
+          "expect": "evidenceExcluded",
+          "reason": "The supplier's website showed a site-wide notice on 11 Nov 2026: 'Customer Notice — We're currently unable to take new orders.' (gardenofficesolutions.ie/garden-office/ and the home page; the price was still listed). Temporarily unavailable for new orders; the supplier is not described as closed. Price withdrawn from current available-product comparisons; historical price kept."
+        },
+        {
+          "id": "recUs4gexxlfkaiUj",
+          "name": "Garden Office Solutions Garden Room 17.6m²",
+          "expect": "evidenceExcluded",
+          "reason": "The supplier's website showed a site-wide notice on 11 Nov 2026: 'Customer Notice — We're currently unable to take new orders.' (gardenofficesolutions.ie/garden-office/ and the home page; the price was still listed). Temporarily unavailable for new orders; the supplier is not described as closed. Price withdrawn from current available-product comparisons; historical price kept."
+        },
+        {
+          "id": "reciolethPMEn50gQ",
+          "name": "Garden Office Solutions Garden Room 25m²",
+          "expect": "evidenceExcluded",
+          "reason": "The supplier's website showed a site-wide notice on 11 Nov 2026: 'Customer Notice — We're currently unable to take new orders.' (gardenofficesolutions.ie/garden-office/ and the home page; the price was still listed). Temporarily unavailable for new orders; the supplier is not described as closed. Price withdrawn from current available-product comparisons; historical price kept."
+        },
+        {
+          "id": "recUnUAWq0TWkNO5C",
+          "name": "Garden Office Solutions Garden Room 26.4m²",
+          "expect": "evidenceExcluded",
+          "reason": "The supplier's website showed a site-wide notice on 11 Nov 2026: 'Customer Notice — We're currently unable to take new orders.' (gardenofficesolutions.ie/garden-office/ and the home page; the price was still listed). Temporarily unavailable for new orders; the supplier is not described as closed. Price withdrawn from current available-product comparisons; historical price kept."
+        },
+        {
+          "id": "recBVDyal8VGGVEZM",
+          "name": "The Nova 21.5m Pavillion Sun Room",
+          "expect": "evidenceExcluded",
+          "reason": "Out of stock: on 11 Nov 2026 outdoorliving.ie/the-nova-21-5m-pavillion-sun-room showed 'Sorry we are temporarily out of stock' / 'Out of stock' (EUR 9,799 still displayed). Unavailable; price withdrawn from current available-product comparisons; historical price kept."
+        },
+        {
+          "id": "reczxM0lggLXTBCdU",
+          "name": "Garden Room PSML2",
+          "expect": "evidenceExcluded",
+          "reason": "Price requires re-verification: on 11 Nov 2026 the recorded product URL (lugarde.com/nl/product/tuinkamer-psml2/) redirected to the category page lugarde.com/nl/assortiment/tuinhuizen, where no PSML2 product or price could be found. Not described as discontinued; price withdrawn from current verified-price comparisons; historical price kept."
+        }
+      ],
+      "pageNote": "six prices withdrawn on 11 November 2026 (unavailable or awaiting re-verification)"
     }
   ]
 }
