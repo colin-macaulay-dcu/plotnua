@@ -173,9 +173,82 @@
    "figure": "withheld",
    "since": "2026-11-07",
    "liftWhen": "A current, product-specific Pineca price for this model is verified on the supplier's site, recorded in Atlas, and the founder separately approves lifting the hold."
+  },
+  {
+   "productId": "recKHXaApIugjOKti",
+   "product": "Garden Office Solutions Garden Room 12.5m²",
+   "organisation": "Garden Office Solutions",
+   "basis": "EUR 19,950 turnkey price (Atlas). On 11 Nov 2026 gardenofficesolutions.ie showed a site-wide notice: 'Customer Notice — We're currently unable to take new orders.' The supplier is not described as closed. Excluded from the Garden Room Prices evidence (register entry availability-and-reverification-2026-11-11).",
+   "qualification": "Garden Office Solutions says it is currently unable to take new orders. Its last published price is not shown or compared while it is not taking orders.",
+   "label": "Not currently taking orders",
+   "reason": "The supplier says it is currently unable to take new orders, so PlotNua does not compare this price with your budget or other prices.",
+   "figure": "withheld",
+   "since": "2026-11-11",
+   "liftWhen": "Garden Office Solutions' website shows it is taking new orders again, the price is re-checked, and the founder separately approves lifting the hold."
+  },
+  {
+   "productId": "recUs4gexxlfkaiUj",
+   "product": "Garden Office Solutions Garden Room 17.6m²",
+   "organisation": "Garden Office Solutions",
+   "basis": "EUR 26,400 turnkey price (Atlas). Site-wide supplier notice read 11 Nov 2026: 'currently unable to take new orders'. Excluded from the Garden Room Prices evidence (register entry availability-and-reverification-2026-11-11).",
+   "qualification": "Garden Office Solutions says it is currently unable to take new orders. Its last published price is not shown or compared while it is not taking orders.",
+   "label": "Not currently taking orders",
+   "reason": "The supplier says it is currently unable to take new orders, so PlotNua does not compare this price with your budget or other prices.",
+   "figure": "withheld",
+   "since": "2026-11-11",
+   "liftWhen": "Garden Office Solutions' website shows it is taking new orders again, the price is re-checked, and the founder separately approves lifting the hold."
+  },
+  {
+   "productId": "reciolethPMEn50gQ",
+   "product": "Garden Office Solutions Garden Room 25m²",
+   "organisation": "Garden Office Solutions",
+   "basis": "EUR 37,500 turnkey price (Atlas). Site-wide supplier notice read 11 Nov 2026: 'currently unable to take new orders'. Excluded from the Garden Room Prices evidence (register entry availability-and-reverification-2026-11-11).",
+   "qualification": "Garden Office Solutions says it is currently unable to take new orders. Its last published price is not shown or compared while it is not taking orders.",
+   "label": "Not currently taking orders",
+   "reason": "The supplier says it is currently unable to take new orders, so PlotNua does not compare this price with your budget or other prices.",
+   "figure": "withheld",
+   "since": "2026-11-11",
+   "liftWhen": "Garden Office Solutions' website shows it is taking new orders again, the price is re-checked, and the founder separately approves lifting the hold."
+  },
+  {
+   "productId": "recUnUAWq0TWkNO5C",
+   "product": "Garden Office Solutions Garden Room 26.4m²",
+   "organisation": "Garden Office Solutions",
+   "basis": "EUR 43,600 turnkey price (Atlas). Site-wide supplier notice read 11 Nov 2026: 'currently unable to take new orders'. Excluded from the Garden Room Prices evidence (register entry availability-and-reverification-2026-11-11).",
+   "qualification": "Garden Office Solutions says it is currently unable to take new orders. Its last published price is not shown or compared while it is not taking orders.",
+   "label": "Not currently taking orders",
+   "reason": "The supplier says it is currently unable to take new orders, so PlotNua does not compare this price with your budget or other prices.",
+   "figure": "withheld",
+   "since": "2026-11-11",
+   "liftWhen": "Garden Office Solutions' website shows it is taking new orders again, the price is re-checked, and the founder separately approves lifting the hold."
+  },
+  {
+   "productId": "recBVDyal8VGGVEZM",
+   "product": "The Nova 21.5m Pavillion Sun Room",
+   "organisation": "Outdoor Living (ModPod)",
+   "basis": "EUR 9,799 retailer price (Atlas price record recljrE5xBDhHfx32). On 11 Nov 2026 outdoorliving.ie showed 'Sorry we are temporarily out of stock' / 'Out of stock'. Excluded from the Garden Room Prices evidence (register entry availability-and-reverification-2026-11-11).",
+   "qualification": "The retailer lists this product as temporarily out of stock. Its last listed price is not shown or compared until it is back in stock.",
+   "label": "Out of stock",
+   "reason": "The retailer lists this product as out of stock, so PlotNua does not compare its price with your budget or other prices.",
+   "figure": "withheld",
+   "since": "2026-11-11",
+   "liftWhen": "The retailer lists the product as in stock again, the price is re-checked, and the founder separately approves lifting the hold."
+  },
+  {
+   "productId": "reczxM0lggLXTBCdU",
+   "product": "Garden Room PSML2",
+   "organisation": "Lugarde",
+   "basis": "EUR 10,762 starting price, recorded Verified on 27 Aug 2026 (Atlas price record recnO4DZMoJ0MkoGz). On 11 Nov 2026 the product URL redirected to the category page lugarde.com/nl/assortiment/tuinhuizen and no PSML2 price could be read. Not recorded as discontinued. Excluded from the Garden Room Prices evidence (register entry availability-and-reverification-2026-11-11).",
+   "qualification": "The previously recorded price could not be verified against a current product page. A current quotation should be requested from the supplier.",
+   "label": "Price requires verification",
+   "reason": "A current published price for this model could not be verified, so PlotNua does not compare it with your budget or other prices.",
+   "figure": "withheld",
+   "since": "2026-11-11",
+   "liftWhen": "A current, product-specific Lugarde price for this model is verified on the supplier's site, recorded in Atlas, and the founder separately approves lifting the hold."
   }
  ],
  "decision_stage3b": "Founder decision, 6 Nov 2026 19:10, 'PLOTNUA — STAGE 3B EAST COAST CARPENTRY ATLAS IMPLEMENTATION AND PUBLICATION PREPARATION', Part 2: extend the NOOK hold narrowly; product-specific qualification wording; until geographical matching exists, East Coast Carpentry is excluded from price-based matching, budget fit and price-filtered search, and its prices are never presented as nationwide offers. Optional fields: 'label' (Your Plot's price slot, in place of the figure), 'reason' (Your Plot's reason line), 'vatBasis' ('included' lets the Maker Explorer show a VAT-inclusive held price as the figure followed by the qualification). Absent on the NOOK holds, so NOOK is unchanged. Founder decision D1(b), 6 Nov 2026 20:09: 'region' makes the restriction explicit wherever availability is shown — Your Plot reads 'Available in Dublin and Wicklow only' in place of the generic 'Irish availability', and the Maker Explorer's maker header, product status and A-Z line read the same. Display only: no matching or ranking change.",
  "decision_stage3c": "Founder decision, Stage 3C, 6 Nov 2026 21:37: approve a Rayco price-presentation hold. The product stays discoverable; EUR 29,500 is excluded from price matching, budget fit and price-filtered search, is never shown as a verified garden-room price or as an installed-price offer, and the homeowner is told a current garden-room price needs confirmation from Rayco. 'figure': 'withheld' means no surface shows the figure at all (the NOOK and ECC holds show it beside their qualification). No price is substituted.",
- "decision_stage3d_b3": "Founder decision, Stage 3D-B3, 7 Nov 2026: 'PINECA PREMIUM S PRICE-PRESENTATION SAFEGUARD — APPROVED FOR INVESTIGATION AND CONTROLLED IMPLEMENTATION'. The historical EUR 8,678 (already excluded from the Garden Room Prices evidence, Stage 3D-B2) must not appear in Your Plot, the Maker Explorer, Search, supplier price ranges, budget matching or euro price-filtered search. Public wording 'Price on request' with a concise qualification that a current published price could not be verified. The product stays discoverable by name; no replacement price, no starting-from price. Atlas price record, historical price, Last Price Check and verification status unchanged. The hold may be lifted only after a current, product-specific supplier price has been verified and separately approved."
+ "decision_stage3d_b3": "Founder decision, Stage 3D-B3, 7 Nov 2026: 'PINECA PREMIUM S PRICE-PRESENTATION SAFEGUARD — APPROVED FOR INVESTIGATION AND CONTROLLED IMPLEMENTATION'. The historical EUR 8,678 (already excluded from the Garden Room Prices evidence, Stage 3D-B2) must not appear in Your Plot, the Maker Explorer, Search, supplier price ranges, budget matching or euro price-filtered search. Public wording 'Price on request' with a concise qualification that a current published price could not be verified. The product stays discoverable by name; no replacement price, no starting-from price. Atlas price record, historical price, Last Price Check and verification status unchanged. The hold may be lifted only after a current, product-specific supplier price has been verified and separately approved.",
+ "decision_2026_11_11": "Founder approval, 11 November 2026 (combined Garden Room Evidence and Price-Presentation release): six products held with the figure withheld -- Garden Office Solutions x4 ('Not currently taking orders'; supplier temporarily unable to take new orders, not described as closed), Outdoor Living Nova 21.5m Pavillion ('Out of stock'), Lugarde Garden Room PSML2 ('Price requires verification'; not described as discontinued). Atlas records and historical prices unchanged; no Atlas write. Published by atlas-tools/publish-presentation-hold.py. The separate Nova 17.8m product is deliberately not included."
 }

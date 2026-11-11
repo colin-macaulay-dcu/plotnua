@@ -29,7 +29,9 @@ _spec = importlib.util.spec_from_file_location("tu", HERE / "publish-targeted-up
 tu = importlib.util.module_from_spec(_spec)
 _spec.loader.exec_module(tu)
 
-ALLOWED = {"priceSafeForMatching", "priceBasisConfidence", "priceEvidence"}
+# 11 Nov 2026: R-MATCH (Stage 3D-D2) derives priceState/priceFreshUntil from the hold; the
+# generator's own finalise_price_state() sets them exactly as a full regeneration would.
+ALLOWED = {"priceSafeForMatching", "priceBasisConfidence", "priceEvidence", "priceState", "priceFreshUntil"}
 
 
 def main(argv=None):
@@ -71,6 +73,7 @@ def run(a):
             tu.refuse("%s already carries a presentation hold" % pid)
         old = copy.deepcopy(p)
         g.apply_price_presentation_hold(p, pid)
+        g.finalise_price_state(p)
         changed = {k for k in set(old) | set(p) if old.get(k) != p.get(k)}
         if not changed or changed - ALLOWED:
             tu.refuse("%s: the hold would change %s" % (pid, sorted(changed - ALLOWED) or "nothing"))
