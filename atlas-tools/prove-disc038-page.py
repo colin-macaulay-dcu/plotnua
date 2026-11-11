@@ -84,7 +84,7 @@ def check(s, files):
     for ref in refs:
         if ref.startswith(("http:", "https:", "mailto:", "tel:", "data:", "/")) or not ref:
             continue
-        need(files(ref), "S4 local reference does not resolve: " + ref)
+        need(files(ref.split("?", 1)[0].split("#", 1)[0]), "S4 local reference does not resolve: " + ref)
     # S5
     hero = re.search(r'<header class="d-hero[^"]*\bpn-hero-compare--std\b[^"]*">(.*?)</header>', s, re.S)
     h5 = hero.group(1) if hero else ""
@@ -94,7 +94,7 @@ def check(s, files):
          and re.search(r'class="pn-compare__range" type="range" min="0" max="100" step="1" value="100"', h5), "S5 the slider opens at 100% BEFORE")
     for role, layer in (("BEFORE", "before"), ("POSSIBLE", "possible")):
         pc = re.search(r'<div class="pn-compare__%s">\s*<picture>(.*?)</picture>' % layer, h5, re.S)
-        body = pc.group(1) if pc else ""
+        body = (pc.group(1) if pc else "").replace("?v=20261111", "")
         need(("assets/disc038/img/DISC-038-%s-1024.jpg" % role) in body and ("DISC-038-%s-M-819.webp" % role) in body
              and ("DISC-038-%s-1536.webp 1536w" % role) in body, "S5 the %s layer and its phone copy" % role)
         alt = re.search(r'alt="([^"]*)"', body)
