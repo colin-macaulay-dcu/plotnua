@@ -187,6 +187,20 @@ CSS = """<style>
 .aw-notes{ display:grid; grid-template-columns:1fr 1fr; gap:clamp(18px,3vw,44px); }
 .aw-note{ border-top:1px solid var(--line); padding-top:16px; }
 .aw-route .pn-two{ max-width:none; }
+/* Supplier's own booking facility (added at the supplier's request, 11 Nov 2026). Bronze, the supplier side;
+   sage stays PlotNua's own help. */
+.aw-book{ margin:18px 0 0; display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:14px 24px;
+  padding:20px 22px; border:1px solid var(--line); border-radius:16px; background:var(--card); }
+.aw-book-t{ margin:0; flex:1 1 320px; min-width:0; }
+.aw-book-t b{ display:block; margin:0 0 4px; font-weight:700; font-size:11.5px; letter-spacing:.18em; text-transform:uppercase; color:var(--bronze); }
+.aw-book-t span{ display:block; font-size:15px; line-height:1.55; color:var(--soft); }
+.aw-book-b{ display:inline-flex; align-items:center; gap:8px; min-height:44px; padding:0 18px; border-radius:999px;
+  border:1px solid rgba(179,146,114,.7); background:rgba(179,146,114,.10); color:var(--ink); text-decoration:none;
+  font-weight:600; font-size:14.5px; transition:background .2s ease, border-color .2s ease; }
+.aw-book-b:hover{ border-color:var(--bronze); background:rgba(179,146,114,.20); }
+.aw-book-b:focus-visible{ outline:2px solid #CF8566; outline-offset:3px; }
+@media (max-width:560px){ .aw-book-b{ width:100%; justify-content:center; text-align:center; padding:10px 18px; line-height:1.35; } }
+@media (prefers-reduced-motion:reduce){ .aw-book-b{ transition:none; } }
 .aw-rec{ padding:34px 0 64px; border-top:1px solid var(--line); font-size:13.5px; line-height:1.7; color:var(--stone); }
 .aw-rec p{ margin:0 0 6px; max-width:84ch; }
 .aw-rec a{ color:inherit; }
@@ -337,6 +351,8 @@ def build():
     <div class="pn-two-opt is-help"><p class="pn-two-k">Let PlotNua do the homework</p><p class="pn-two-t">Tell us what you&rsquo;re looking for. We&rsquo;ll help you narrow the options and, when you&rsquo;re ready, introduce you to The Pod Factory.</p>
       <ul class="pn-two-btns" role="list">{routes}</ul></div>
   </div>
+  <div class="aw-book"><p class="aw-book-t"><b>See the pods in person</b><span>{E(s["name"])} offers showroom visits in {E(s["base"])}. Appointments are booked directly with {E(s["name"])} through its own booking page; PlotNua does not arrange or manage them.</span></p>
+    <a class="aw-book-b" href="{E(s["bookingHref"])}" target="_blank" rel="noopener">Book an appointment with {E(s["name"])} <span aria-hidden="true">&rarr;</span></a></div>
   <p class="aw-fine">PlotNua is free for homeowners. PlotNua does not sell these products and cannot guarantee a supplier&rsquo;s availability or prices; you buy directly from the supplier. Inclusion here is not a recommendation or an endorsement, there is no paid placement, and recommendations cannot be bought.</p>
 </div></section>
 
