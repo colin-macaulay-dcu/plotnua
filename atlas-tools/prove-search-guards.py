@@ -83,6 +83,14 @@ def run_case(label, kind, expect, mutate_tree=None, mutate_builder=None,
         if mutate_tree:
             mutate_tree(tmp)
         b = mutate_builder(BUILDER_SRC) if mutate_builder else BUILDER_SRC
+        if mutate_builder and b == BUILDER_SRC:
+            # A builder mutation whose anchor no longer exists changes nothing, so the
+            # unmutated builder passes and the case reports BLIND for the wrong reason
+            # (C9b, found 11 Nov 2026: its anchor went stale when price_current() was
+            # added to euro_price()). Fail it as a stale anchor, naming the cause.
+            failed += 1
+            print("  [*** STALE] %-48s %-8s the mutation anchor is not in the builder" % (label, kind))
+            return
         if refresh_sha:
             # So the case under test fires rather than the base-sha guard, which
             # has its own case (C4).
@@ -228,8 +236,8 @@ run_case("C9e G7f an explicit starting price loses its 'From'", "BUILDER",
 run_case("C9b G7c a GBP/USD price is shown as euro", "BUILDER",
          "G7c a non-EUR price would be shown as euro",
          mutate_builder=lambda b: b.replace(
-             '            and r.get("currency") == "EUR")',
-             '            )'))
+             '            and r.get("currency") == "EUR" and price_current(r))',
+             '            and price_current(r))'))
 run_case("C9c G7c a supplier range is built from GBP/USD", "BUILDER",
          "G7c supplier",
          mutate_builder=lambda b: b.replace(

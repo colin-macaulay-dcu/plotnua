@@ -87,7 +87,15 @@ MARK_RE = re.compile(r'(<a[^>]*class="brand-mark"[^>]*>.*?</a>)', re.S)
 # Neither job touched the Search rail region itself: it has hashed
 # 0b7f22d248698550 since Job 1 and still equals the donor's. No shipped 404
 # or Search defect existed -- only this constant was stale.
-EXPECTED_BEFORE = "515e0897dd83"
+# THIRD OMITTED RE-STAMP, found 11 Nov 2026. Five approved releases edited the 404 OUTSIDE
+# the Search region without re-stamping this constant, so this pre-flight has refused since
+# at least 29 Oct (traced through every 404.html revision on main):
+#   c9ec1c3 GridNua navigation (29 Oct) · 91d21c7 Pass 2 Release 1 phone Menu (30 Oct) ·
+#   ba4d178 PlotArt logo (31 Oct) · 4686d1e SEO-GR2 C4 homepage links to "/" (8 Nov).
+# The Search region itself is unchanged (0b7f22d248698550 throughout); see F3 for why
+# that region is now behind its donor.
+#   515e0897dd83 -> efc5a8bdfd97, re-stamped here.
+EXPECTED_BEFORE = "efc5a8bdfd97"
 
 
 def die(msg):

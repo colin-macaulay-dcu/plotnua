@@ -92,7 +92,12 @@ def m_f3(b, t):
                            '"Search the site")')
 
 def m_f4(b, t):
-    return after_splice(b, 'out = out.replace("<body>", "<body >", 1)')
+    # Re-anchored 11 Nov 2026: the old anchor, a bare "<body>", has not existed since the
+    # 404 gained <body class="pn-id ...">, so the mutation changed nothing and the proof
+    # reported F4 BLIND. "</body>" is structural; the assert makes a future stale anchor
+    # crash loudly instead of silently mutating nothing.
+    return after_splice(b, 'assert "</body>" in out; '
+                           'out = out.replace("</body>", "<!-- x -->\\n</body>", 1)')
 
 def m_f5(b, t):
     # redesign the 404's copy — exactly what this job must not do

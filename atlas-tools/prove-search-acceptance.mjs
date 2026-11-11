@@ -109,9 +109,19 @@ console.log('  PART A · THE EIGHT REPRESENTATIVE QUERIES\n');
   const prices = r.groups.product.map((p) => p.price).sort((a, b) => a - b);
   check('A1c the three prices are 6129 / 6959 / 9199',
     JSON.stringify(prices) === JSON.stringify([6129, 6959, 9199]), JSON.stringify(prices));
-  check('A1d all three are WITH_CAVEAT',
-    r.groups.product.every((p) => p.tier === 'WITH_CAVEAT'),
-    JSON.stringify(r.groups.product.map((p) => p.tier)));
+  // Updated 11 Nov 2026: the founder-approved Powersheds targeted update of 4 Nov 2026
+  // (atlas-tools/targeted-updates/20261104-142554-powersheds.md) recorded organisation-wide
+  // Irish availability and moved all three from WITH_CAVEAT to HIGH_CONFIDENCE. The check
+  // now proves Search carries each tier exactly as the governed universe states it, so the
+  // next approved evidence change cannot make this check stale again.
+  const UNI = JSON.parse(fs.readFileSync(path.join(ROOT, 'garden-room-recommendation-universe-v1.json'), 'utf8'));
+  const uniTier = new Map((UNI.products || UNI.rows || []).map((u) =>
+    ['prod-' + (u.id || u.productId), u.qualificationTier || (u.qualification || {}).confidenceTier]));
+  check('A1d each tier is the governed universe tier (all HIGH_CONFIDENCE since 4 Nov 2026)',
+    r.groups.product.length === 3 &&
+    r.groups.product.every((p) => uniTier.has(p.id) && p.tier === uniTier.get(p.id)) &&
+    r.groups.product.every((p) => p.tier === 'HIGH_CONFIDENCE'),
+    JSON.stringify(r.groups.product.map((p) => [p.tier, uniTier.get(p.id)])));
   check('A1e the supplier is named Powersheds, not "Power Sheds"',
     r.groups.supplier[0].name === 'Powersheds', r.groups.supplier[0].name);
 }
@@ -194,18 +204,28 @@ console.log('  PART A · THE EIGHT REPRESENTATIVE QUERIES\n');
     JSON.stringify(ids(r2.groups.possibility)));
 }
 
-/* --- A5 artist: the productType hit, and no retired Discovery ------------- */
+/* --- A5 artist: no withdrawn product, the merged art Discovery, no retired one -- */
+// Updated 11 Nov 2026. Hutsmith Type III Cabin, the only product whose productType was
+// "Artist Studio / Writer's Retreat Cabin", was withdrawn from publication by the
+// generator's own rules in the targeted update of 16 Oct 2026
+// (atlas-tools/targeted-updates/20261016-112927-hutsmith.md), and DISC-024 Open Your Home
+// to Art was merged into DISC-023 A Home for Art on 13 Oct 2026 (founder decision). Native
+// productType matching is still proved by A2f. The old A5c read groups.product[0] without
+// checking it existed, so an empty result crashed the suite instead of failing a check.
 {
   const r = q('artist');
-  check('A5a artist returns exactly 1 product', r.counts.product === 1,
+  check('A5a artist returns no product (Hutsmith Type III Cabin withdrawn 16 Oct 2026)',
+    r.counts.product === 0, JSON.stringify(names(r.groups.product)));
+  check('A5b the withdrawn Hutsmith Type III Cabin is not in the index or the result',
+    !INDEX.records.some((x) => x.name === 'Hutsmith Type III Cabin') &&
+    !names(r.groups.product).includes('Hutsmith Type III Cabin'),
     JSON.stringify(names(r.groups.product)));
-  check('A5b and it is Hutsmith Type III Cabin',
-    r.groups.product[0] && r.groups.product[0].name === 'Hutsmith Type III Cabin',
-    r.groups.product[0] && r.groups.product[0].name);
-  check('A5c matched on productType "Artist Studio / Writer\'s Retreat Cabin"',
-    /Artist Studio/i.test(r.groups.product[0].productType),
-    r.groups.product[0].productType);
-  check('A5d art possibilities are returned too', r.counts.possibility >= 2,
+  check('A5c no indexed product claims an Artist Studio productType',
+    !INDEX.records.some((x) => x.type === 'product' && /Artist Studio/i.test(x.productType || '')),
+    JSON.stringify(INDEX.records.filter((x) => x.type === 'product' &&
+      /Artist Studio/i.test(x.productType || '')).map((x) => x.name)));
+  check('A5d the merged art Discovery, A Home for Art, is returned',
+    names(r.groups.possibility).some((n) => /^A Home for Art\b/.test(String(n))),
     JSON.stringify(names(r.groups.possibility)));
   check('A5e the RETIRED Artist Studio Discovery is NOT returned',
     !names(r.groups.possibility).some((n) => /^artist studio$/i.test(String(n).trim())) &&
@@ -582,14 +602,14 @@ console.log('\n  PART A4 · RETURN PATH (history state, no URL, no storage)\n');
     '033652069264d4c4a89f330c90fcc1a2eecc43d8f3070a35ff73151865ab988b': 'faded',
     'ca57050a4872e231': 'nofade'
   };
-  const seen = { faded: 0, nofade: 0, other: [] };
+  const seen = { faded: 0, nofade: 0, other: [], fadedFiles: [], nofadeFiles: [] };
   fs.readdirSync(ROOT).filter((f) => f.endsWith('.html')).forEach(function (f) {
     const src = fs.readFileSync(path.join(ROOT, f), 'utf8');
     const mk = src.match(/<a class="pns-pill"[\s\S]*?<\/a>/);
     if (!mk) { return; }
     const h = crypto.createHash('sha256').update(mk[0]).digest('hex');
-    if (h === '033652069264d4c4a89f330c90fcc1a2eecc43d8f3070a35ff73151865ab988b') { seen.faded++; }
-    else if (h.indexOf('ca57050a4872e231') === 0) { seen.nofade++; }
+    if (h === '033652069264d4c4a89f330c90fcc1a2eecc43d8f3070a35ff73151865ab988b') { seen.faded++; seen.fadedFiles.push(f); }
+    else if (h.indexOf('ca57050a4872e231') === 0) { seen.nofade++; seen.nofadeFiles.push(f); }
     else { seen.other.push(f + ':' + h.slice(0, 16)); }
   });
   check('H12a every pill on every page is one of the two approved variants',
@@ -613,10 +633,69 @@ console.log('\n  PART A4 · RETURN PATH (history state, no URL, no storage)\n');
      public page, entered the sitemap by founder decision. It carries the
      canonical nofade pill (its brand mark has no fade), so H12a still holds
      byte for byte; only the nofade count moves, from 2 to 3. */
-  check('H12b 20 faded + 3 nofade = 22 public surfaces + the 404',
-    seen.faded === 20 && seen.nofade === 3,
-    `faded=${seen.faded} nofade=${seen.nofade}`);
-  check('H12b2 the 20th faded surface is 404.html specifically',
+  /* RE-BASELINED 11 November 2026, AND NOW PINNED BY NAME. Between 12 Oct and 11 Nov
+     the site gained 19 surfaces through separately approved releases (new Discoveries,
+     the legal pages, the Idea Board, the Borrowed Garden noticeboard, the garden-room
+     guides). Each of those releases raised build-search-rail.py's EXPECTED_PAGES, but
+     this census was never raised with them, and the A5 crash further up hid that from
+     every run. H12a proved throughout that every one of these pills is an approved
+     variant, byte for byte. The census now names every surface instead of counting
+     them, so a page that gains, loses or switches its pill fails here BY NAME. */
+  const H12_FADED = [
+    '404.html',
+    'about.html',
+    'artist-register.html',
+    'borrowed-garden-board.html',
+    'contact.html',
+    'cookie-policy.html',
+    'discovery-a-home-for-art.html',
+    'discovery-above-and-beyond.html',
+    'discovery-driveway-income.html',
+    'discovery-extend-the-house.html',
+    'discovery-garden-retreat.html',
+    'discovery-hidden-bins.html',
+    'discovery-hidden-cars.html',
+    'discovery-hidden-flood-barrier.html',
+    'discovery-home-exchange.html',
+    'discovery-house-as-power-station.html',
+    'discovery-living-in-the-garden.html',
+    'discovery-natural-swimming-garden.html',
+    'discovery-neighbourhood-parcel-house.html',
+    'discovery-reinvented-interior.html',
+    'discovery-stay-in-the-house-you-love.html',
+    'discovery-supper-club-at-home.html',
+    'discovery-the-borrowed-garden.html',
+    'discovery-the-hidden-shelter.html',
+    'discovery-the-home-you-build.html',
+    'discovery-the-outdoor-room.html',
+    'discovery-the-resourceful-garden.html',
+    'discovery-the-water-wall.html',
+    'discovery-underground-swimming-pool.html',
+    'discovery-your-home-on-screen.html',
+    'index.html',
+    'privacy.html',
+    'terms.html',
+  ];
+  const H12_NOFADE = [
+    'all-in-one-cabins-garden-rooms.html',
+    'concept-modular-garden-offices.html',
+    'discoveries.html',
+    'garden-offices-ireland.html',
+    'garden-room-prices-ireland.html',
+    'ideas.html',
+    'search.html',
+    'shomera-garden-rooms.html',
+    'triq-cube.html',
+  ];
+  const sameSet = (a, b) => JSON.stringify([...a].sort()) === JSON.stringify([...b].sort());
+  check('H12b 33 faded + 9 nofade = 42 named public surfaces (incl. the 404)',
+    sameSet(seen.fadedFiles, H12_FADED) && sameSet(seen.nofadeFiles, H12_NOFADE),
+    JSON.stringify({
+      fadedAdded: seen.fadedFiles.filter((f) => !H12_FADED.includes(f)),
+      fadedMissing: H12_FADED.filter((f) => !seen.fadedFiles.includes(f)),
+      nofadeAdded: seen.nofadeFiles.filter((f) => !H12_NOFADE.includes(f)),
+      nofadeMissing: H12_NOFADE.filter((f) => !seen.nofadeFiles.includes(f)) }));
+  check('H12b2 404.html carries the approved faded pill specifically',
     (function () {
       const src = fs.readFileSync(path.join(ROOT, '404.html'), 'utf8');
       const mk = src.match(/<a class="pns-pill"[\s\S]*?<\/a>/);
