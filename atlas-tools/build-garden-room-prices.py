@@ -892,6 +892,68 @@ def parent_guards(text):
             die("G-PARENT the invitation does not link %s" % need)
 
 
+# ---- Ranking table (founder approval, 11 Nov 2026) --------------------------------
+# The interactive "Garden room prices — lowest to highest" table (#pr-compare-data,
+# added 9 Nov 2026 in 1ac9fa8) was a hand-written data block, so a withdrawal from the
+# evidence (11 Nov 2026) left it listing 212 entries under a 206 headline. It is now
+# generated here from the SAME frozen extract as every figure on the page: one entry
+# per evidence row, in evidence order, joined to the published universe only for the
+# product name, supplier and product link. Markup, filters, sorting and script unchanged.
+COMPARE_DATA_RE = re.compile(r'(<script type="application/json" id="pr-compare-data">)(.*?)(</script>)', re.S)
+
+
+def compare_entries(ex_rows):
+    u = {p["id"]: p for p in json.loads((ROOT / UNIVERSE).read_text(encoding="utf-8"))["products"]}
+    out = []
+    for r in ex_rows:
+        p = u.get(r["productId"]) or die("RANK %s is in the evidence but not in the universe" % r["productId"])
+        out.append({"name": p["name"], "supplier": p["organisation"], "url": p.get("productUrl") or "",
+                    "price": r["price"], "segment": r["segment"], "vat": r["vat"], "checked": r["lastPriceCheck"]})
+    return out
+
+
+def fill_compare(page, ex_rows):
+    if len(COMPARE_DATA_RE.findall(page)) != 1:
+        die("RANK the ranking-table data block is not found exactly once")
+    data = json.dumps(compare_entries(ex_rows), ensure_ascii=False, separators=(",", ":"))
+    return COMPARE_DATA_RE.sub(lambda m: m.group(1) + data + m.group(3), page)
+
+
+def compare_guards(text, ex_rows):
+    """The table, the frozen evidence and the page's advertised count must agree, and
+    nothing withdrawn or held may be ranked."""
+    m = COMPARE_DATA_RE.search(text)
+    if not m:
+        die("RANK the ranking-table data block is missing")
+    data = json.loads(m.group(2))
+    n, nsup = len(ex_rows), len({r["supplierKey"] for r in ex_rows})
+    if len(data) != n:
+        die("RANK the ranking table holds %d entries; the frozen evidence holds %d" % (len(data), n))
+    if ("room in the research, %d in all." % n) not in text:
+        die("RANK the page's advertised count is not the evidence count %d" % n)
+    if len({d["supplier"] for d in data}) != nsup or ("from %d suppliers" % nsup) not in text:
+        die("RANK the ranking table's suppliers (%d) are not the evidence's %d" % (len({d['supplier'] for d in data}), nsup))
+    keys = [json.dumps(d, sort_keys=True, ensure_ascii=False) for d in data]
+    if len(set(keys)) != len(keys):
+        die("RANK the ranking table holds a duplicate entry")
+    if sorted(d["price"] for d in data) != sorted(r["price"] for r in ex_rows):
+        die("RANK the ranking table's prices are not the evidence prices")
+    u = {p["id"]: p for p in json.loads((ROOT / UNIVERSE).read_text(encoding="utf-8"))["products"]}
+    reg = json.loads((ROOT / "atlas-tools" / "cost-evidence-corrections.json").read_text(encoding="utf-8"))
+    withdrawn = {x["id"] for c in reg["corrections"] for x in c["products"]
+                 if x.get("expect") in ("evidenceExcluded", "eligibilityWithdrawn")}
+    for r in ex_rows:
+        if r["productId"] in withdrawn:
+            die("RANK %s is withdrawn by the corrections register but ranked" % r["productId"])
+        if ((u.get(r["productId"]) or {}).get("priceEvidence") or {}).get("presentationHold"):
+            die("RANK %s carries a price-presentation hold but is ranked" % r["productId"])
+    held_names = {(p["name"], p["organisation"]) for p in u.values()
+                  if (p.get("priceEvidence") or {}).get("presentationHold") or p["id"] in withdrawn}
+    bad = sorted({d["name"] for d in data if (d["name"], d["supplier"]) in held_names})
+    if bad:
+        die("RANK held or withdrawn product(s) in the ranking table: %s" % bad[:5])
+
+
 def page_guards(text, ex_rows, desc):
     if ('name="description" content="%s"' % html.escape(desc, quote=False)) not in text:
         die("the meta description is not the one the structured data carries")
@@ -1002,8 +1064,9 @@ def main():
     ex = json.loads(EXTRACT.read_text(encoding="utf-8"))
     regions, facts = render(ev, ex)
     page = PAGE.read_text(encoding="utf-8")
-    out = fill(page, regions)
+    out = fill_compare(fill(page, regions), ex["rows"])
     page_guards(out, ex["rows"], regions["_DESC"])
+    compare_guards(out, ex["rows"])
     spec = importlib.util.spec_from_file_location("commercial_disclosure",
                                                   ROOT / "atlas-tools" / "check-commercial-disclosure.py")
     cd = importlib.util.module_from_spec(spec)
