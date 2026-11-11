@@ -55,12 +55,20 @@ def fixture(prev):
                 image(os.path.join(d, f), pix, col)
                 ders.append({"file": f, "long_edge": le, "pixels": list(pix)})
             ws.append({"id": wid, "slug": wid, "title": title, "medium": medium, "h_cm": hcm, "w_cm": wcm, "d_cm": None, "availability": "available",
-                       "images": [{"role": "main", "alt": "Synthetic test image for %s (not an artwork)" % title, "derivatives": ders}]})
+                       "year": 2026, "materials": None, "description": None, "price_eur": None, "price_on_request": True, "ai_involvement": "none", "ai_note": None,
+                       "images": [{"role": "main", "alt": "Synthetic test image for %s (not an artwork)" % title, "pixels": ders[-1]["pixels"], "derivatives": ders}]})
             items.append({"artwork_id": wid, "artist_id": "a" + slug.replace("-", ""), "artist_slug": slug, "work_slug": wid,
                           "hire": {"county": county, "framing": "framed", "glazed": 0, "weight_band": "5_15kg", "collection": "ask", "deliver_km": None,
                                    "availability": "now", "available_from": None, "screen_use": "none", "photo_use": "none", "price": "Price on request"}})
-        json.dump({"artist": {"slug": slug, "display_name": name}, "publication": {"state": "approved"}, "works": ws},
-                  open(os.path.join(prev, "plotart", "artists", slug, "gallery.json"), "w"), indent=1)
+        pkg = {"artist": {"slug": slug, "display_name": name, "county": county, "bio": "Synthetic fixture artist for local tests.", "founding": False,
+                          "instagram": None, "website": None, "portrait": None, "statement": None, "medium": None, "practice": None},
+               "publication": {"state": "approved"}, "works": ws}
+        json.dump(pkg, open(os.path.join(prev, "plotart", "artists", slug, "gallery.json"), "w"), indent=1)
+        # the artist's gallery pages, written by the production builder (11 Nov 2026: Art for Hire marks are checked on them)
+        sys.path.insert(0, os.path.join(REPO, "atlas-tools"))
+        import plotart_gallery_pages as GP, plotart_shell as SH
+        for path, doc in GP.gallery_pages(pkg, SH.artist_page):
+            open(os.path.join(prev, "plotart", path), "w", encoding="utf-8").write(doc)
     return {"generated_at": "2026-11-10T22:00:00Z", "items": items}
 
 

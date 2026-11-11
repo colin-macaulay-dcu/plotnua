@@ -60,10 +60,14 @@ const strip = s => s.replace(' pa-pills--hire', '').replace(/<a class="pa-pill" 
     if (f.startsWith('plotart/art-for-hire/')) return false;
     const o = old(f); if (o === null) return true;
     const n = readFileSync(path.join(REPO, f), 'utf8');
-    if (f === 'plotart/assets/plotart.css') return cssBase(n) !== cssBase(o);
+    // 11 Nov 2026: the gallery marks add one block to plotart.css and one self-contained block to plotart.js (nothing else in either)
+    const marksCss = c => c.replace(/\n\/\* Art for Hire marks, added by plotart\.js[\s\S]*?\.pa-aw-hire\{[^\n]*\}/, '');
+    const marksJs = c => c.replace(/\n\n\/\* ---- Art for Hire marks in an artist's gallery[\s\S]*$/, '\n');
+    if (f === 'plotart/assets/plotart.css') return cssBase(marksCss(n)) !== cssBase(marksCss(o));
+    if (f === 'plotart/assets/plotart.js') return marksJs(n) !== marksJs(o);
     return !f.endsWith('.html') || strip(n) !== strip(o);
   });
-  check(`G1 against main, Art for Hire changes PlotArt only by the tab, the footer rule and the scoped nav block, and its own folder (${changedFiles.length} file(s) differ); no gallery, gallery.json, image or other content changed`,
+  check(`G1 against main, Art for Hire changes PlotArt only by the tab, the footer rule, the scoped nav block, the gallery-marks blocks in plotart.css and plotart.js, and its own folder (${changedFiles.length} file(s) differ); no gallery, gallery.json, image or other content changed`,
     wrong.length === 0, wrong.join(', '));
 }
 const pages = execSync('git ls-files plotart', { cwd: REPO }).toString().split('\n').filter(f => f.endsWith('.html') && !f.startsWith('plotart/art-for-hire/'));
@@ -215,6 +219,70 @@ vis = await visible(o.page);
 check('E3 a single withdrawn work is not shown; the others are', vis.length === 5 && !vis.includes('wfixb2'), vis.join());
 await o.ctx.close();
 await S.db.prepare("UPDATE artwork_hire SET offered = 1, withdrawn_at = NULL WHERE artwork_id = 'wfixb2'").run();
+
+console.log('— links to the artist and the gallery marks (11 Nov 2026)');
+o = await open(browser, P.fix, S, { viewport: { width: 1440, height: 1000 } });
+const lk = await o.page.$eval('[data-hire-work="wfixa1"]', c => ({ title: c.querySelector('h3 a')?.getAttribute('href'), artist: c.querySelector('.pa-hire-artist a')?.getAttribute('href'),
+  more: c.querySelector('.pa-hire-more a')?.getAttribute('href'), moreText: c.querySelector('.pa-hire-more a')?.textContent, slug: c.dataset.hireArtistSlug + '/' + c.dataset.hireSlug }));
+await o.ctx.close();
+const exists = f => { try { readFileSync(path.join(P.fix, 'plotart', f)); return true; } catch { return false; } };
+check('K1 each listing links its title to the work’s own page and its artist line and “See more by …” to the artist’s gallery (both exist)',
+  lk.title === '../artists/fixture-artist-a/wfixa1.html' && lk.artist === '../artists/fixture-artist-a/' && lk.more === lk.artist && /^See more by Fixture Artist A/.test(lk.moreText)
+  && lk.slug === 'fixture-artist-a/wfixa1' && exists('artists/fixture-artist-a/wfixa1.html') && exists('artists/fixture-artist-a/index.html'), JSON.stringify(lk));
+const relayCalls = async (dir, url, fail = null, opts = {}) => {
+  const r = await open(browser, dir, S, { viewport: { width: 1440, height: 1000 }, url, fail, ...opts }); await r.page.waitForTimeout(500);
+  const marks = await r.page.$$eval('[data-pa-hire-mark]', a => a.map(x => x.className + ':' + x.textContent.trim().slice(0, 40)));
+  const tiles = await r.page.$$eval('.pa-ag-work', a => a.filter(x => x.querySelector('.pa-ag-hire')).map(x => x.querySelector('a').getAttribute('href')));
+  return { r, marks, tiles };
+};
+let gm = await relayCalls(P.fix, '/plotart/artists/fixture-artist-a/');
+const noteHref = await gm.r.page.$eval('.pa-ag-hirenote a', a => a.getAttribute('href')).catch(() => null);
+const axGal = await axe(gm.r.page);
+await shot(gm.r.page, 'gallery-marks-1440-test-render', { ribbon: true });
+await gm.r.ctx.close();
+check('K2 while both works are listed, the artist’s gallery marks each “Available to hire” and adds one line linking to Art for Hire; no serious accessibility issue',
+  gm.tiles.join() === 'wfixa1.html,wfixa2.html' && gm.marks.filter(m => m.startsWith('pa-ag-hire:')).length === 2 && gm.marks.some(m => m.startsWith('pa-ag-hirenote:'))
+  && noteHref === '../../art-for-hire/#afh3-works' && axGal.length === 0, JSON.stringify([gm, noteHref, axGal]));
+gm = await relayCalls(P.fix, '/plotart/artists/fixture-artist-a/wfixa1.html');
+await gm.r.ctx.close();
+check('K3 the work’s own page says it is also available to hire, with a link to Art for Hire', gm.marks.length === 1 && /^pa-aw-hire:Also available to hire/.test(gm.marks[0]), JSON.stringify(gm.marks));
+await S.db.prepare("UPDATE artwork_hire SET offered = 0, withdrawn_at = '2026-11-10T22:00:00Z' WHERE artwork_id = 'wfixa2'").run();
+gm = await relayCalls(P.fix, '/plotart/artists/fixture-artist-a/');
+const one2 = await relayCalls(P.fix, '/plotart/artists/fixture-artist-a/wfixa2.html');
+await gm.r.ctx.close(); await one2.r.ctx.close();
+await S.db.prepare("UPDATE artwork_hire SET offered = 1, withdrawn_at = NULL WHERE artwork_id = 'wfixa2'").run();
+check('K4 a withdrawn work loses its mark at once (gallery and its own page); the listed one keeps it', gm.tiles.join() === 'wfixa1.html' && one2.marks.length === 0, JSON.stringify([gm.tiles, one2.marks]));
+const kf = [];
+for (const fail of ['abort', '503', 'stale']) { const x = await relayCalls(P.fix, '/plotart/artists/fixture-artist-a/', fail); kf.push([fail, x.marks.length]); await x.r.ctx.close(); }
+check('K5 if the live check fails, errors or is out of date, the gallery shows no mark (fail closed)', kf.every(([, n]) => n === 0), JSON.stringify(kf));
+const seen = async (dir, url) => { const r = await open(browser, dir, S, { viewport: { width: 1440, height: 1000 }, url: 'about:blank' === url ? url : url });
+  const n = []; r.page.on('request', q => { if (q.url().startsWith('https://relay.test')) n.push(q.url()); });
+  await r.page.reload(); await r.page.waitForTimeout(900);
+  const m = await r.page.$$eval('[data-pa-hire-mark]', a => a.length); await r.ctx.close(); return [n.length, m]; };
+const real = await seen(P.fix, '/plotart/artists/leah-hewson/'), realW = await seen(P.fix, '/plotart/artists/leah-hewson/blowout-series-ii-1.html'),
+  today = await seen(P.empty, '/plotart/artists/leah-hewson/'), fixA = await seen(P.fix, '/plotart/artists/fixture-artist-a/');
+check('K6 an artist with no listed work gets no mark and their gallery makes no request beyond plotnua.ie (today, with nothing listed, no gallery does)',
+  real[0] === 0 && real[1] === 0 && realW[0] === 0 && realW[1] === 0 && today[0] === 0 && today[1] === 0 && fixA[0] === 1 && fixA[1] === 3, JSON.stringify({ real, realW, today, fixA }));
+{
+  const S3 = await relay({ port: 8893, listing: false });
+  const r = await open(browser, P.fix, S3, { viewport: { width: 1440, height: 1000 }, url: '/plotart/artists/fixture-artist-a/' }); await r.page.waitForTimeout(500);
+  const m = await r.page.$$eval('[data-pa-hire-mark]', a => a.length); await r.ctx.close(); await S3.mf.dispose();
+  check('K7 while Art for Hire is not open (artist terms switched off), no gallery mark appears even if a page lists works', m === 0, String(m));
+}
+const pj = readFileSync(path.join(REPO, 'plotart/assets/plotart.js'), 'utf8');
+check('K8 the gallery marks need no change to any gallery page: they are added by the shared script, from the published Art for Hire page and the live check only',
+  /data-hire-artist-slug/.test(pj) && /\/v1\/hire-listed/.test(pj) && !/localStorage|sessionStorage|document\.cookie/.test(pj.slice(pj.indexOf('Art for Hire marks'))));
+{
+  const r = await open(browser, P.fix, S, { device: 'iPhone 13', url: '/plotart/artists/fixture-artist-a/' }); await r.page.waitForTimeout(500);
+  const ov = await r.page.evaluate(() => document.documentElement.scrollWidth <= innerWidth);
+  await r.page.evaluate(() => document.querySelector('.pa-ag-hirenote').scrollIntoView({ block: 'start' })); await r.page.evaluate(() => scrollBy(0, -80));
+  await shot(r.page, 'gallery-marks-phone-test-render', { full: false, ribbon: true });
+  const r2 = await open(browser, P.fix, S, { device: 'iPhone 13', url: '/plotart/artists/fixture-artist-a/wfixa1.html' }); await r2.page.waitForTimeout(500);
+  await r2.page.evaluate(() => document.querySelector('.pa-aw-hire').scrollIntoView({ block: 'center' }));
+  await shot(r2.page, 'artwork-mark-phone-test-render', { full: false, ribbon: true });
+  check('K9 on a phone the marked gallery has no sideways scrolling', ov);
+  await r.ctx.close(); await r2.ctx.close();
+}
 
 console.log('— live eligibility failures (fail closed)');
 const fails = [];

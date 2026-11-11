@@ -722,6 +722,11 @@ body.pa .pa-vgc-pos > a:focus-visible{ outline-offset:-3px; border-radius:0; }
 .pa-ag-status{ margin-top:6px; font-size:14px; font-weight:600; color:var(--lime); letter-spacing:.02em; }
 .pa-ag-work.is-reserved .pa-ag-status, .pa-ag-work.is-sold .pa-ag-status, .pa-ag-work.is-not-for-sale .pa-ag-status{ color:var(--stone); font-weight:500; letter-spacing:.12em; text-transform:uppercase; font-size:12px; }
 .pa-ag-work.is-sold .pa-ag-status::before{ content:""; display:inline-block; width:8px; height:8px; border-radius:50%; background:#B44A3C; margin-right:8px; vertical-align:1px; }
+/* Art for Hire marks, added by plotart.js only while a work is listed for hire (11 Nov 2026) */
+.pa-ag-hire{ justify-self:start; margin-top:8px; padding:3px 11px; border:1px solid rgba(242,235,224,.32); border-radius:999px; font-size:12.5px; font-weight:500; color:var(--ivory); letter-spacing:.02em; }
+.pa-ag-hirenote{ margin:-8px 0 clamp(22px, 2.6vw, 30px); max-width:68ch; font-size:15px; line-height:1.55; color:var(--stone); }
+.pa-ag-hirenote a, .pa-aw-hire a{ color:var(--ivory); text-decoration:underline; text-underline-offset:.22em; text-decoration-thickness:1px; }
+.pa-aw-hire{ margin:-10px 0 22px; font-size:15px; line-height:1.55; color:var(--stone); }
 .pa-ag-about .pa-wrap{ padding-top:clamp(52px, 6vw, 96px); padding-bottom:clamp(52px, 6vw, 96px); }
 .pa-ag-about-in{ display:grid; grid-template-columns:minmax(0, .8fr) minmax(0, 1.2fr); gap:clamp(24px, 5vw, 80px); align-items:start; }
 @media (max-width:860px){ .pa-ag-about-in{ grid-template-columns:1fr; } }

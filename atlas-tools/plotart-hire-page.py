@@ -59,12 +59,17 @@ def card(item, artist, w):
     rows.append(("Availability", None))
     dl = "".join('<dt>%s</dt><dd>%s</dd>' % (k, E(v)) if v is not None else '<dt>%s</dt><dd data-hire-availability>Checking…</dd>' % k for k, v in rows if v or k == "Availability")
     ref = "PA-%s-%s" % (artist["slug"], w["id"])
-    return ('<li class="pa-hire-card" data-hire-work="%s" data-hire-ref="%s" data-hire-title="%s" data-hire-artist="%s" hidden>\n'
-            '  <figure class="pa-hire-art"><img src="%s%s" srcset="%s" sizes="(max-width:639px) 92vw, (max-width:1100px) 44vw, 30vw" width="%d" height="%d" alt="%s" loading="lazy" decoding="async"></figure>\n'
-            '  <p class="pa-hire-artist">%s</p>\n  <h3>%s</h3>\n  <dl class="pa-hire-dl">%s</dl>\n'
+    # Links (11 Nov 2026): the title opens the work's page in the artist's gallery, the artist line opens the gallery itself.
+    # data-hire-artist-slug / data-hire-slug let the artist's gallery mark this work while the live check lists it (plotart.js).
+    gal = "../artists/%s/" % artist["slug"]
+    return ('<li class="pa-hire-card" data-hire-work="%s" data-hire-ref="%s" data-hire-title="%s" data-hire-artist="%s" data-hire-artist-slug="%s" data-hire-slug="%s" hidden>\n'
+            '  <figure class="pa-hire-art"><a href="%s%s.html" tabindex="-1" aria-hidden="true"><img src="%s%s" srcset="%s" sizes="(max-width:639px) 92vw, (max-width:1100px) 44vw, 30vw" width="%d" height="%d" alt="%s" loading="lazy" decoding="async"></a></figure>\n'
+            '  <p class="pa-hire-artist"><a href="%s">%s</a></p>\n  <h3><a href="%s%s.html">%s</a></h3>\n  <dl class="pa-hire-dl">%s</dl>\n'
+            '  <p class="pa-hire-more"><a href="%s">See more by %s<span class="pa-sr"> in the Artists’ Gallery</span></a></p>\n'
             '  <button type="button" class="pa-btn pa-btn--ghost" data-hire-enquire aria-describedby="pa-hire-closed">Enquire about hire<span class="pa-sr"> of %s by %s</span></button>\n</li>') % (
-        E(w["id"]), E(ref), E(w["title"]), E(artist["display_name"]), base, E(mid["file"]), E(srcset), mid["pixels"][0], mid["pixels"][1],
-        E(img.get("alt") or w["title"]), E(artist["display_name"]), E(w["title"]), dl, E(w["title"]), E(artist["display_name"]))
+        E(w["id"]), E(ref), E(w["title"]), E(artist["display_name"]), E(artist["slug"]), E(w["slug"]),
+        gal, E(w["slug"]), base, E(mid["file"]), E(srcset), mid["pixels"][0], mid["pixels"][1], E(img.get("alt") or w["title"]),
+        gal, E(artist["display_name"]), gal, E(w["slug"]), E(w["title"]), dl, gal, E(artist["display_name"]), E(w["title"]), E(artist["display_name"]))
 
 
 def resolve(root, catalogue):

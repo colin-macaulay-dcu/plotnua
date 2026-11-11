@@ -140,3 +140,82 @@
     }
   });
 })();
+
+/* ---- Art for Hire marks in an artist's gallery (11 Nov 2026) ------------------
+   Runs only on an artist's gallery page or one of their artwork pages. It reads the
+   published Art for Hire page (this site) and keeps the listings for THIS artist; if
+   there are none it stops there, and nothing is asked of any other service. Otherwise
+   it asks PlotArt's enquiry service which works are listed for hire right now (the
+   same check the Art for Hire page makes; no personal data is sent). Only works that
+   are both on the published page and listed now are marked. Any failure, an expired
+   answer or Art for Hire not being open shows nothing, and the check repeats when the
+   answer expires. Nothing is stored. */
+(function () {
+  'use strict';
+  if (!window.fetch || !window.DOMParser || !window.AbortController) return;
+  var m = location.pathname.match(/\/plotart\/artists\/([a-z0-9-]+)\/(?:([a-z0-9-]+)\.html)?$/);
+  var grid = document.querySelector('.pa-ag-grid'), info = document.querySelector('.pa-aw-info');
+  if (!m || (!grid && !info)) return;
+  var ARTIST = m[1], WORK = m[2] || null, HIRE = '../../art-for-hire/';
+  function timed(url, opts) {
+    var c = new AbortController(), t = setTimeout(function () { c.abort(); }, 6000);
+    opts.signal = c.signal;
+    return fetch(url, opts).then(function (r) { clearTimeout(t); return r; }, function (e) { clearTimeout(t); throw e; });
+  }
+  function clear() {
+    document.querySelectorAll('[data-pa-hire-mark]').forEach(function (el) { el.parentNode.removeChild(el); });
+  }
+  function el(tag, cls, html) { var e = document.createElement(tag); e.className = cls; e.setAttribute('data-pa-hire-mark', ''); e.innerHTML = html; return e; }
+  function mark(listed) {
+    clear();
+    var link = '<a href="' + HIRE + '#afh3-works">';
+    if (grid) {
+      var n = 0;
+      grid.querySelectorAll('.pa-ag-work').forEach(function (li) {
+        var a = li.querySelector('a.pa-ag-tile'), cap = li.querySelector('.pa-ag-cap');
+        var slug = a && (a.getAttribute('href') || '').replace(/\.html$/, '');
+        if (cap && listed.indexOf(slug) !== -1) { cap.appendChild(el('span', 'pa-ag-hire', 'Available to hire')); n++; }
+      });
+      var head = document.querySelector('.pa-ag-head');
+      if (n && head) head.parentNode.insertBefore(el('p', 'pa-ag-hirenote',
+        (n === 1 ? 'One of these works is' : 'Works marked “Available to hire” are') +
+        ' also offered for hire, for film and television, interiors and staging. ' + link + 'See ' + (n === 1 ? 'it' : 'them') + ' on Art for Hire</a>'), head.nextSibling);
+    }
+    if (info && WORK && listed.indexOf(WORK) !== -1) {
+      var price = info.querySelector('.pa-aw-price');
+      var p = el('p', 'pa-aw-hire', 'Also available to hire. ' + link + 'Enquire on Art for Hire</a>');
+      if (price) price.parentNode.insertBefore(p, price.nextSibling); else info.appendChild(p);
+    }
+  }
+  var bySlug = null, api = null, timer = null;
+  function check() {
+    timed(api + '/v1/hire-listed', { credentials: 'omit', cache: 'no-store' })
+      .then(function (r) { return r.json().then(function (j) { return [r, j]; }); })
+      .then(function (rj) {
+        var r = rj[0], j = rj[1], until = Date.parse(j && j.valid_until);
+        if (!r.ok || !j || j.ok !== true || j.open !== true || !Array.isArray(j.items) || !(until > Date.now())) return clear();
+        var live = {};
+        j.items.forEach(function (i) { if (i && typeof i.id === 'string') live[i.id] = true; });
+        var listed = Object.keys(bySlug).filter(function (s) { return live[bySlug[s]]; });
+        if (!listed.length) return clear();
+        mark(listed);
+        clearTimeout(timer);
+        timer = setTimeout(check, Math.max(30000, until - Date.now()));
+      })
+      .catch(clear);
+  }
+  timed(HIRE, { credentials: 'same-origin' })
+    .then(function (r) { if (!r.ok) throw new Error('hire page'); return r.text(); })
+    .then(function (html) {
+      var doc = new DOMParser().parseFromString(html, 'text/html');
+      var cards = doc.querySelectorAll('[data-hire-work][data-hire-artist-slug="' + ARTIST + '"][data-hire-slug]');
+      if (!cards.length) return;
+      var s = doc.querySelector('script[src$="hire-live.js"][data-api]');
+      api = s && s.getAttribute('data-api');
+      if (!api || !/^https:\/\/[a-z0-9.-]+$/.test(api)) return;
+      bySlug = {};
+      cards.forEach(function (c) { bySlug[c.getAttribute('data-hire-slug')] = c.getAttribute('data-hire-work'); });
+      check();
+    })
+    .catch(function () {});
+})();

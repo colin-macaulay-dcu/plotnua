@@ -20,6 +20,13 @@ body.pa{ --hf-line:rgba(242,235,224,.14); }   /* this stylesheet is loaded only 
 .pa-hire-dl dt{ color:var(--mute); }
 .pa-hire-dl dd{ margin:0; color:var(--lime); overflow-wrap:anywhere; }
 .pa-hire-dl dd[data-hire-availability]{ color:var(--ivory); }
+/* links to the artist's gallery and the work's own page (11 Nov 2026) */
+.pa-hire-artist a, .pa-hire-card h3 a{ color:inherit; text-decoration:none; }
+.pa-hire-artist a:hover, .pa-hire-card h3 a:hover{ text-decoration:underline; text-underline-offset:.18em; text-decoration-thickness:1px; }
+.pa-hire-art a{ display:block; }
+.pa-hire-more{ margin:-6px 0 18px; font-size:15px; }
+.pa-hire-more a{ color:var(--ivory); text-decoration:underline; text-underline-offset:.22em; text-decoration-thickness:1px; text-decoration-color:var(--stone); }
+.pa-hire-more a:hover{ text-decoration-color:var(--ivory); }
 .pa-hire-card .pa-btn{ align-self:flex-start; margin-top:auto; }
 .pa-btn.is-off{ opacity:.55; cursor:not-allowed; }
 
