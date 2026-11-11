@@ -529,6 +529,22 @@ jobs:
           python3 atlas-tools/build-garden-board.py --check
           python3 atlas-tools/prove-privacy-v10.py
 
+      # SEARCH CONTRACT (founder approval, 11 Nov 2026, after the M8C investigation). The search index is built only
+      # against the garden-room universe its contract was frozen on (BASE_UNIVERSE_SHA in build-search-index.py). A
+      # direct edit to the universe that does not re-freeze the pin used to pass every release unnoticed and only
+      # surfaced at the next index rebuild. This runs the builder's 14 guards without writing anything and refuses
+      # the release when the pinned fingerprint no longer matches the universe being published.
+      - name: Search contract — the index builder's pinned universe must match the published universe
+        run: |
+          set -uo pipefail
+          if python3 atlas-tools/build-search-index.py --check > "${RUNNER_TEMP}/search-check.txt" 2>&1; then
+            tail -n 3 "${RUNNER_TEMP}/search-check.txt"
+          else
+            cat "${RUNNER_TEMP}/search-check.txt"
+            echo "::error title=Search contract fingerprint mismatch::garden-room-recommendation-universe-v1.json no longer matches BASE_UNIVERSE_SHA in atlas-tools/build-search-index.py (or a search guard failed; see the log). Re-freeze deliberately: update the pin, log the reason in governance/SEARCH-V1-CONTRACT.md and regenerate search-index-v1.json."
+            exit 1
+          fi
+
       - name: Summary
         if: always()
         run: |
