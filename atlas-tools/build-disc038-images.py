@@ -1,151 +1,61 @@
 #!/usr/bin/env python3
-"""DISC-038 · The Hidden Shelter: the hero pair and its web copies (Stage 4, 8 Nov 2026; branch dev/disc038-hidden-shelter,
-private preview, NOT deployed).
+"""Rebuild founder-approved daylight hero pair (11 November 2026).
 
-SOURCES: the founder's ChatGPT pair, from Documents/PlotNua/Images/Discoveries/DISC-038-Hidden-Shelter/
-DISC-038-Hidden-Shelter-Hero-Pair/ (the "DISC-038-Hidden-Shelter-Hero-Pair" package), added UNCHANGED under governed names and
-declared AI_ILLUSTRATION from each file's own signed C2PA credential (Governance 2.0, Rule 2). Nothing is generated here.
-
-  package file            governed master                        size          C2PA signed (OpenAI OpCo, LLC)
-  DISC-038-BEFORE.png     DISC-038-01-BEFORE-MASTER.png          1536 x 1024   2026-11-08 20:17 UTC
-  DISC-038-POSSIBLE.png   DISC-038-02-POSSIBLE-MASTER.png        1536 x 1024   2026-11-08 20:08 UTC
-
-ROUTINE EDITS (Governance 2.0, Rule 3), the SAME for both views, each recorded as a derivative bound to its unchanged master:
-  * hero copies: crop y 64-1024 (the full width), which removes faint generated lettering at y 30-56 over the tree canopy
-    (x 365-465), then Lanczos resize of that 1536 x 960 frame to 768/1024/1376/1536 px WebP and 1024 px JPEG;
-  * phone copies: the 4:5 window x 640-1459 at the full height (819 x 1024, no resize), centred on the shelter entrance;
-    the lettering lies outside it;
-  * the 1200 x 630 social card, from the POSSIBLE only: crop y 64-1024, resize to 1200 x 750, crop y 60-690.
-No pixel is painted, retouched or inpainted; no content is added.
-
-  python3 atlas-tools/build-disc038-images.py          build files + register records/derivatives
-  python3 atlas-tools/build-disc038-images.py --check  verify, write nothing
+The generation originals are retained in ChatGPT as Contemporary Irish Home and Garden
+Before.png and Hidden garden shelter entrance.png. The two DAYLIGHT-MASTER.webp files
+are quality-95 WebP encodings at original dimensions, without crop or retouching.
+This builder performs only identical crops/resizes/encoding for the paired delivery files.
+The earlier sunset masters remain archived with their existing provenance records.
 """
-import hashlib, importlib.util, io, json, pathlib, sys
+import hashlib, io, json, pathlib, sys
 from PIL import Image, __version__ as PIL_VERSION
-
-ROOT = pathlib.Path(__file__).resolve().parent.parent
-REG = ROOT / "image-provenance-records.json"
-CHECK = "--check" in sys.argv
-D = "assets/disc038/img/"
-DATE = "2026-11-08"
-PKG = "DISC-038-Hidden-Shelter-Hero-Pair"
-_s = importlib.util.spec_from_file_location("d16", ROOT / "atlas-tools/build-disc016-hero-final.py")
-D16 = importlib.util.module_from_spec(_s); _s.loader.exec_module(D16)   # read_c2pa (no side effects)
-
-TOP = 64            # first row kept in the hero copies (the lettering ends at y 56)
-MX0, MW = 640, 819  # phone window
-MASTERS = {   # role -> (path, sha256, package file, what)
-    "BEFORE": (D + "DISC-038-01-BEFORE-MASTER.png",
-               "205b4a5887b9fbdd92c406791bdf38206249f95e5da13a799b30952c400c8334", "DISC-038-BEFORE.png",
-               "DISC-038 hero BEFORE: the back garden of a contemporary rendered Irish house at dusk, with lit glazed doors, a stone "
-               "patio with a dining table, chairs and a lantern, potted hydrangeas, a broad lawn, lit planting of lavender, grasses and "
-               "ferns with boulders, mature trees and a tall hedge, under a pink sunset sky"),
-    "POSSIBLE": (D + "DISC-038-02-POSSIBLE-MASTER.png",
-                 "b5b14231fc36a5a8163e9ccc43f10dda812870873ca297040638497932d76774", "DISC-038-POSSIBLE.png",
-                 "DISC-038 hero POSSIBLE: the same garden with an engineered underground shelter entrance in the planting beside the "
-                 "patio, its concrete-edged steel lid raised on struts, a lit concrete stair descending to a warmly lit room with a sofa, "
-                 "shelves and a table; a generic illustrated entrance, no brand, product or mark visible"),
+ROOT=pathlib.Path(__file__).resolve().parent.parent
+D='assets/disc038/img/'
+REG=ROOT/'image-provenance-records.json'
+DATE='2026-11-11'
+CHECK='--check' in sys.argv
+MASTERS={
+ 'BEFORE': D+'DISC-038-BEFORE-DAYLIGHT-MASTER.webp',
+ 'POSSIBLE': D+'DISC-038-POSSIBLE-DAYLIGHT-MASTER.webp',
 }
-
-
+PROMPTS={
+ 'BEFORE': "Create ONE landscape 3:2 photorealistic architectural editorial photograph, BEFORE view for a precise before/possible comparison slider. A very contemporary architect-designed Irish family house and modest stylish suburban back garden in soft bright natural daylight, mild early summer, neutral colours. Not twilight. House occupies left third: white mineral render, large slim anthracite sliding glass doors, a clean contemporary flat-roof single-storey rear extension, partial two-storey upper volume, oak flooring and understated modern furniture glimpsed inside. Garden is inviting and believable, not a CGI mansion: rectangular fresh lawn, restrained beds of grasses and leafy perennials, pale large-format limestone patio foreground, tall privacy hedging at rear, one mature tree near rear left, a little neighbouring roof barely visible. Edge of a cool modern dark outdoor dining table and two slim chairs cropped at far left foreground, no lanterns or styled props. Crucial future edit zone: right foreground-to-middle of garden next to patio is a clear broad strip of flat lawn approximately 1.5 metres wide and 3 metres long, with planting along its right edge; this is where a discreet stair entrance will later appear. For THIS BEFORE image this strip is just normal lawn with no hatch, no hole, no stairs, no shelter visible. Camera at standing eye level from patio looking diagonally towards rear boundary, 35mm architectural lens, straight verticals, wide enough to retain house at left and entrance zone at right in same shot. Contemporary, modern, cool and inviting, clear airy day without harsh sun or grey gloom. Real photograph aesthetic: material variation, naturally irregular foliage, credible glazing reflections, gentle soft shadows, subtle camera grain, no HDR or glossy render surfaces. Premium but lived in, immaculate enough to be appealing without sterile perfection. No people, no text or lettering, no logos, no borders, no diagrams, no sunset, no garden uplighting, no orange light, no fantasy cutaway. Output a full standalone photograph only.",
+ 'POSSIBLE': "Edit this exact photograph to make its POSSIBLE comparison-slider counterpart. Preserve the original photograph, exact camera position, lens, crop, canvas dimensions, house, every glazing mullion, trees, sky, hedge, furniture, lawn edges, patio joints, lighting and colour grading. Change ONLY the right-hand lawn immediately beside the patio to reveal a discreet contemporary underground shelter stair entrance. It must be a plausible modest scale engineered stairwell approximately 1.1 metres clear width, 2.8 metres long, aligned away from viewer towards rear hedge, on the right side just inside the planting border. The near end starts at the lawn/patio edge, walking entry from patio. A slim low concrete curb around sides and rear, realistic smooth light architectural concrete walls and seven or eight narrow descending concrete treads, one slim anthracite handrail fixed internally. A single flat anthracite steel hatch lid hinged across the FAR end of the rectangular opening, raised backwards to roughly 80 degrees, held by two realistic compact gas struts outside the clear stair passage. Hatch exactly sized to close the opening. The stair descends under the garden to a real small landing and a modest open doorway; glimpse only a tiny section of an understated contemporary underground living space in shadow beyond, soft neutral practical light, no bright orange glow. No impossible full-size room visible through the stairs, no cutaway view, no huge cavern. Opening and stairs clear and legible at normal website size, elegantly integrated but recognisably functional, not science fiction. The garden remains the dominant scene. Add physically credible local shadows on the stairwell and lid matching the original daylight. Keep all surrounding lawn, planting, patio, architecture, reflections and trees unchanged. Same 3:2 landscape dimensions. Maintain the natural real-camera photographic texture of the source, no render finish or cinematic grading, no people, no text, no labels, no border. This is the same shot with only the shelter entrance introduced.",
+}
 def sha(b): return hashlib.sha256(b).hexdigest()
-
-
-def enc(im, fmt):
-    b = io.BytesIO()
-    if fmt == "webp":
-        im.save(b, "WEBP", quality=82, method=6); return b.getvalue(), "Pillow %s, WebP quality 82, method 6" % PIL_VERSION
-    im.save(b, "JPEG", quality=86, optimize=True, progressive=True); return b.getvalue(), "Pillow %s, JPEG quality 86, progressive" % PIL_VERSION
-
-
+def facts(a,b): return {'asset':a,'sha256':sha(b),'bytes':len(b),'pixels':list(Image.open(io.BytesIO(b)).size)}
+def encode(im,fmt):
+ out=io.BytesIO()
+ if fmt=='webp': im.save(out,'WEBP',quality=82,method=6)
+ else: im.save(out,'JPEG',quality=86,optimize=True,progressive=True)
+ return out.getvalue()
 def build():
-    files = {}   # asset -> (bytes, encoder, role, operation)
-    for role, (a, h, _pkg, _w) in MASTERS.items():
-        src = Image.open(ROOT / a).convert("RGB")
-        hero = src.crop((0, TOP, 1536, 1024))
-        for w in (768, 1024, 1376, 1536):
-            im = hero if w == 1536 else hero.resize((w, round(w * hero.height / hero.width)), Image.LANCZOS)
-            op = "crop y %d-1024 (full width; removes the generated lettering at y 30-56)%s" % (TOP, ", no resize" if w == 1536 else ", Lanczos resize to %d px wide" % w)
-            files[D + "DISC-038-%s-%d.webp" % (role, w)] = enc(im, "webp") + (role, op)
-        files[D + "DISC-038-%s-1024.jpg" % role] = enc(hero.resize((1024, 640), Image.LANCZOS), "jpg") + (role, "crop y %d-1024 (full width; removes the generated lettering at y 30-56), Lanczos resize to 1024 px wide" % TOP)
-        files[D + "DISC-038-%s-M-819.webp" % role] = enc(src.crop((MX0, 0, MX0 + MW, 1024)), "webp") + (role, "4:5 crop x %d-%d (the full height), no resize; the same window for both views" % (MX0, MX0 + MW))
-        if role == "POSSIBLE":
-            og = hero.resize((1200, 750), Image.LANCZOS).crop((0, 60, 1200, 690))
-            files[D + "DISC-038-og-1200x630.jpg"] = enc(og, "jpg") + (role, "crop y %d-1024, Lanczos resize to 1200 x 750, crop y 60-690 to 1200 x 630 (social card from the hero POSSIBLE)" % TOP)
-    return files
-
-
-def main():
-    reg = json.loads(REG.read_text(encoding="utf-8"))
-    bad = []
-    for role, (a, h, pkg, _w) in MASTERS.items():
-        p = ROOT / a
-        if not p.exists():
-            if CHECK: bad.append("missing master " + a); continue
-            sys.exit("REFUSED: %s is missing; copy the package file %s here unchanged first" % (a, pkg))
-        if sha(p.read_bytes()) != h: bad.append("master changed: " + a)
-    if bad: print("DISC-038 IMAGES · FAIL", bad); sys.exit(1)
-    files = build()
-    if CHECK:
-        recs = {r["asset"]: r for r in reg["records"]}; ders = {d["asset"]: d for d in reg["derivatives"]}
-        for role, (a, h, _p, _w) in MASTERS.items():
-            if a not in recs or recs[a]["sha256"] != h: bad.append("no record " + a)
-        for a, (data, *_r) in files.items():
-            if not (ROOT / a).exists() or sha((ROOT / a).read_bytes()) != sha(data): bad.append("not reproducible " + a)
-            if a not in ders or ders[a]["sha256"] != sha(data): bad.append("no derivative record " + a)
-        print("DISC-038 IMAGES · " + ("OK (2 credentialed masters, %d derivatives, reproducible)" % len(files) if not bad else "FAIL %s" % bad))
-        sys.exit(1 if bad else 0)
-    recs = {r["asset"] for r in reg["records"]}
-    for role, (a, h, pkg, what) in MASTERS.items():
-        reg["records"] = [r for r in reg["records"] if r["asset"] != a]
-        ai, issuer, time, n, linked, state = D16.read_c2pa(ROOT / a)
-        if state != "Valid":
-            import c2pa
-            with c2pa.Reader(str(ROOT / a)) as r: vr = json.loads(r.json()).get("validation_results", {}).get("activeManifest", {})
-            fails = sorted({f["code"] for f in vr.get("failure", [])}); oks = {f["code"] for f in vr.get("success", [])}
-            if not set(fails) <= {"signingCredential.untrusted", "signingCredential.invalid"} or not {"claimSignature.validated", "assertion.dataHash.match"} <= oks:
-                sys.exit("REFUSED: %s: the credential's claim signature or data hash does not verify (%s)" % (a, fails))
-            state += (" (%s: the reader does not trust the signing certificate (not on its trust list; an extended key usage it requires is missing); "
-                      "the claim signature and the data hash verify, so the file is unchanged since the issuer signed it)" % ", ".join(fails))
-        if not ai: sys.exit("REFUSED: %s: the credential does not record an AI generation" % a)
-        data = (ROOT / a).read_bytes()
-        reg["records"].append({
-            "asset": a, "sha256": h, "bytes": len(data), "pixels": [1536, 1024], "class": "AI_ILLUSTRATION",
-            "what": what + " (founder's master; the page shows its prepared copies)",
-            "depicts_named_product": False, "depicts_named_organisation": False,
-            "origin": {"basis": "C2PA_EMBEDDED",
-                       "evidence": "Embedded C2PA manifest, read with c2pa-python: issuer %s, signed %s; the credential chain records c2pa.created with digital source type trainedAlgorithmicMedia; %d ingredient link(s), %d credentialed; validation %s. Supplied by the founder as '%s' in the package %s (8 Nov 2026), renamed unchanged." % (issuer, time, n, linked, state, pkg, PKG),
-                       "declared_under": "Governance 2.0, Rule 2 (30 Oct 2026)"},
-            "generated": {"tool": "%s generative AI (ChatGPT), per the file's own signed C2PA credential" % issuer, "date": (time or "")[:10]},
-            "prompt_status": "UNAVAILABLE",
-            "reference_disclosure": {"status": "UNCERTAIN", "statement": (
-                "The credential records no input image. Signed nine minutes after the POSSIBLE, which suggests it was made from it, but that is not a verified masked edit. "
-                "Measured against the POSSIBLE (8 Nov 2026): the house matches at 0 px offset and the patio and dining set agree closely; fine texture differs "
-                "throughout, as in any regenerated image; the hedge, trees and sky differ in detail; the lawn, borders and planting in the middle and right of the "
-                "garden differ substantially (open lawn and a curved border where the POSSIBLE has the entrance and its planting). The founder accepts these "
-                "differences (Stage 4 brief, 8 Nov 2026: minor differences acceptable, pixel-perfect alignment not required)." if role == "BEFORE" else
-                "The credential records no input image. Credentials do not record conversation context, so inputs cannot be ruled out. Approved by the founder as the "
-                "DISC-038 hero POSSIBLE (Stage 4 brief, 8 Nov 2026); its paired BEFORE was signed nine minutes later.")},
-            "permitted_surfaces": ["discovery", "library-card"] if role == "POSSIBLE" else ["discovery"],
-            "content_credentials": {"embeds_c2pa": True},
-            "founder_approval": "Approved by the founder as the DISC-038 hero %s for the standard Before/Possible slider (Stage 4 brief, 'founder-approved image direction', 8 Nov 2026); private preview only, production use awaits the founder's release approval" % role,
-            "introduced": {"date": DATE, "subject": "DISC-038 The Hidden Shelter, Stage 4 hero integration (not deployed)"}})
-    for a, (data, encoder, role, op) in files.items():
-        f = ROOT / a; f.parent.mkdir(parents=True, exist_ok=True); f.write_bytes(data)
-        src = MASTERS[role][0]
-        e = {"asset": a, "sha256": sha(data), "bytes": len(data), "pixels": list(Image.open(io.BytesIO(data)).size),
-             "derived_from": {"asset": src, "sha256": MASTERS[role][1]},
-             "method": "crop",
-             "edit": {"description": "DISC-038 web copy (Governance 2.0, Rule 3): " + op + ".", "operation": op,
-                      "verified_by": "atlas-tools/build-disc038-images.py --check"},
-             "encoder": encoder, "made": DATE,
-             "content_credentials": {"source_file_embeds_c2pa": True, "derivative_embeds_c2pa": False,
-                                     "note": "Cropping, resizing and re-encoding remove the embedded C2PA credential. This copy carries NO signed credential; the master keeps it, and its record carries the AI classification."}}
-        reg["derivatives"] = [d for d in reg["derivatives"] if d["asset"] != a] + [e]
-    REG.write_text(json.dumps(reg, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
-    print("DISC-038 IMAGES · written: 2 masters, %d derivatives" % len(files))
-
-
-if __name__ == "__main__":
-    main()
+ files={}
+ for role,a in MASTERS.items():
+  im=Image.open(ROOT/a).convert('RGB');assert im.size==(1536,1024)
+  for w in (768,1024,1376,1536):
+   files[D+f'DISC-038-{role}-{w}.webp']=(encode(im.resize((w,round(w*2/3)),Image.Resampling.LANCZOS),'webp'),role,f'Whole frame, Lanczos resize to {w} pixels wide')
+  files[D+f'DISC-038-{role}-1024.jpg']=(encode(im.resize((1024,683),Image.Resampling.LANCZOS),'jpg'),role,'Whole frame, Lanczos resize to 1024 x 683')
+  files[D+f'DISC-038-{role}-M-819.webp']=(encode(im.crop((717,0,1536,1024)),'webp'),role,'Identical 819 x 1024 phone window x 717-1536, full height; entrance remains visible')
+  if role=='POSSIBLE': files[D+'DISC-038-og-1200x630.jpg']=(encode(im.resize((1200,800),Image.Resampling.LANCZOS).crop((0,85,1200,715)),'jpg'),role,'Resize whole frame to 1200 x 800; crop y 85-715 for social card')
+ return files
+reg=json.loads(REG.read_text());files=build()
+if CHECK:
+ records={r['asset']:r for r in reg['records']};ders={d['asset']:d for d in reg['derivatives']}
+ for a in MASTERS.values(): assert records[a]['sha256']==sha((ROOT/a).read_bytes()),a
+ for a,(b,*_) in files.items(): assert (ROOT/a).read_bytes()==b and ders[a]['sha256']==sha(b),a
+ print('DISC-038 IMAGES: two daylight masters and 13 reproducible delivery files verified');sys.exit(0)
+old={D+'DISC-038-01-BEFORE-MASTER.png',D+'DISC-038-02-POSSIBLE-MASTER.png'}
+for row in reg['records']:
+ if row['asset'] in old:
+  archived=dict(row);archived['superseded']='Replaced by founder-approved daylight pair, 11 November 2026; not published.'
+  reg.setdefault('superseded_records',[]).append(archived)
+reg['records']=[row for row in reg['records'] if row['asset'] not in old]
+for role,a in MASTERS.items():
+ b=(ROOT/a).read_bytes();r=facts(a,b);r.update({'class':'AI_ILLUSTRATION','what': 'Generic contemporary Irish house and garden in daylight'+(' with an open underground shelter entrance.' if role=='POSSIBLE' else ' before the shelter entrance is introduced.'),'generated':{'tool':'OpenAI image_gen built-in image generation tool','date':DATE},'prompt':PROMPTS[role],'reference_inputs':[] if role=='BEFORE' else [{'asset':MASTERS['BEFORE'],'description':'The BEFORE generation original PNG was supplied to image_gen as the sole edit target; this WebP is its whole-frame delivery master.'}],'depicts_named_product':False,'depicts_named_organisation':False,'human_review':{'reviewer':'Colin Macaulay (founder)','date':DATE,'attests':'Reviewed both generated images in this conversation and instructed: great now implement and publish.'},'permitted_surfaces':['discovery','library-card'],'label_on_page':'AI-generated illustration','processing':'Generation original encoded as quality-95 WebP, original dimensions retained, no crop or retouching. Original retained in ChatGPT.'})
+ reg['records']=[v for v in reg['records'] if v['asset']!=a]+[r]
+for a,(b,role,op) in files.items():
+ (ROOT/a).write_bytes(b);src=MASTERS[role];r=facts(a,b);r.update({'derived_from':{'asset':src,'sha256':sha((ROOT/src).read_bytes())},'method':'crop' if 'window' in op or 'crop' in op else 'optimise','edit':{'description':op,'operation':op,'verified_by':'atlas-tools/build-disc038-images.py --check'},'encoder':f'Pillow {PIL_VERSION}, WebP quality 82 method 6 or JPEG quality 86 progressive','made':DATE,'content_credentials':{'source_file_embeds_c2pa':False,'derivative_embeds_c2pa':False,'note':'WebP master and delivery copies carry no signed credential; AI origin is explicitly declared from this generation session.'}})
+ reg['derivatives']=[v for v in reg['derivatives'] if v['asset']!=a]+[r]
+REG.write_text(json.dumps(reg,indent=2,ensure_ascii=False)+'\n')
+print('Built two approved daylight masters and 13 delivery files')
