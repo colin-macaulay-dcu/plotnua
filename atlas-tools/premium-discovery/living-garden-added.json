@@ -240,6 +240,21 @@
    "why": "Founder-approved imagery refresh, 11 Nov 2026",
    "from": "Tonight it belongs to the teenagers. Tomorrow it could be anything.",
    "to": "A room of its own, with space to make it yours."
+  },
+  {
+   "why": "11 Nov 2026, founder decisions (Garden Office Solutions temporarily unable to take new orders, Outdoor Living Nova out of stock, Lugarde PSML2 awaiting re-verification): the cost-evidence figures follow the registered correction availability-and-reverification-2026-11-11 (six prices withdrawn from current comparisons; the products and their historical prices stay published), written by atlas-tools/refresh-garden-cost-figures.py from cluster1-cost-evidence.json.",
+   "from": "212 garden-room products with a euro price we can stand behind. From 20 suppliers, out of 564 garden-room products in PlotNua’s 7 October 2026 research snapshot, corrected on 20 October 2026 for five supplier records, corrected on 26 October 2026 for 59 supplier records, seven base prices rechecked on 26 October 2026, 16 base prices rechecked on 6 November 2026, a further 25 rechecked the same day, five unverifiable supplier records removed, a further five base prices rechecked the same day, one supplier price withdrawn, 70 prices rechecked on 6 November 2026 (five corrected), one unverifiable supplier price withdrawn, one unpublished supplier record removed, pricing methodology applied on 7 November 2026, prices that are not currently verified withdrawn on 7 November 2026.",
+   "to": "206 garden-room products with a euro price we can stand behind. From 17 suppliers, out of 564 garden-room products in PlotNua’s 7 October 2026 research snapshot, corrected on 20 October 2026 for five supplier records, corrected on 26 October 2026 for 59 supplier records, seven base prices rechecked on 26 October 2026, 16 base prices rechecked on 6 November 2026, a further 25 rechecked the same day, five unverifiable supplier records removed, a further five base prices rechecked the same day, one supplier price withdrawn, 70 prices rechecked on 6 November 2026 (five corrected), one unverifiable supplier price withdrawn, one unpublished supplier record removed, pricing methodology applied on 7 November 2026, prices that are not currently verified withdrawn on 7 November 2026, six prices withdrawn on 11 November 2026 (unavailable or awaiting re-verification)."
+  },
+  {
+   "why": "11 Nov 2026, founder decisions (Garden Office Solutions temporarily unable to take new orders, Outdoor Living Nova out of stock, Lugarde PSML2 awaiting re-verification): the cost-evidence figures follow the registered correction availability-and-reverification-2026-11-11 (six prices withdrawn from current comparisons; the products and their historical prices stay published), written by atlas-tools/refresh-garden-cost-figures.py from cluster1-cost-evidence.json.",
+   "from": "47 do not publish whether VAT is in the price. That can make a substantial difference to the price you actually pay.",
+   "to": "41 do not publish whether VAT is in the price. That can make a substantial difference to the price you actually pay."
+  },
+  {
+   "why": "11 Nov 2026, founder decisions (Garden Office Solutions temporarily unable to take new orders, Outdoor Living Nova out of stock, Lugarde PSML2 awaiting re-verification): the cost-evidence figures follow the registered correction availability-and-reverification-2026-11-11 (six prices withdrawn from current comparisons; the products and their historical prices stay published), written by atlas-tools/refresh-garden-cost-figures.py from cluster1-cost-evidence.json.",
+   "from": "Only 38 publish a floor area. Which is the one number the planning rules actually turn on.",
+   "to": "Only 35 publish a floor area. Which is the one number the planning rules actually turn on."
   }
  ],
  "homeownerImprovement": {

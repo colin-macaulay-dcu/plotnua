@@ -1,7 +1,7 @@
 {
   "schema": "plotnua.cluster1.cost-evidence",
   "version": 1,
-  "generated": "2026-11-07",
+  "generated": "2026-11-11",
   "source": {
     "file": "garden-room-recommendation-universe-v1.json",
     "generated": "2026-10-07T11:26:27Z",
@@ -18,12 +18,12 @@
   "totals": {
     "gardenRoomRecords": 564,
     "organisationsAll": 62,
-    "relevant": 212,
-    "relevantOrganisations": 20,
-    "priceBasisNotEstablished": 168,
-    "vatStatusUnknown": 47,
-    "floorAreaPublished": 38,
-    "floorAreaPublishedOrganisations": 9,
+    "relevant": 206,
+    "relevantOrganisations": 17,
+    "priceBasisNotEstablished": 167,
+    "vatStatusUnknown": 41,
+    "floorAreaPublished": 35,
+    "floorAreaPublishedOrganisations": 8,
     "rangeFloorPrices": 49,
     "quoteOnly": 0
   },
@@ -40,25 +40,25 @@
       "floorAreaKnown": 24
     },
     "INSTALLED_FINISHED_TURNKEY": {
-      "n": 10,
-      "organisations": 4,
-      "minEur": 19950,
+      "n": 6,
+      "organisations": 3,
+      "minEur": 28450,
       "medianEur": 36225.0,
       "maxEur": 43650,
       "vatIncluded": 2,
       "vatExcluded": 0,
-      "vatUnknown": 8,
-      "floorAreaKnown": 5
+      "vatUnknown": 4,
+      "floorAreaKnown": 2
     },
     "SUPPLY_ONLY_INSTALL_SEPARATE": {
-      "n": 13,
-      "organisations": 4,
-      "minEur": 9799,
-      "medianEur": 48000,
+      "n": 12,
+      "organisations": 3,
+      "minEur": 17800,
+      "medianEur": 66450.0,
       "maxEur": 149900,
       "vatIncluded": 0,
       "vatExcluded": 5,
-      "vatUnknown": 8,
+      "vatUnknown": 7,
       "floorAreaKnown": 4
     },
     "INSTALLED_FINISHED_FOUNDATIONS_EXCLUDED": {
@@ -83,17 +83,6 @@
       "vatUnknown": 0,
       "floorAreaKnown": 0
     },
-    "UNKNOWN_DEALER_SOLD": {
-      "n": 1,
-      "organisations": 1,
-      "minEur": 10762,
-      "medianEur": 10762,
-      "maxEur": 10762,
-      "vatIncluded": 0,
-      "vatExcluded": 0,
-      "vatUnknown": 1,
-      "floorAreaKnown": 0
-    },
     "INSTALLED_BASE_NOT_STATED": {
       "n": 1,
       "organisations": 1,
@@ -108,11 +97,11 @@
   },
   "classEnvelopes": {
     "lte30_class3": {
-      "n": 36,
-      "organisations": 9,
+      "n": 33,
+      "organisations": 8,
       "minEur": 4870,
       "maxEur": 94900,
-      "medianEur": 10297.5
+      "medianEur": 9844
     },
     "between32and45_class3A": {
       "n": 1,
@@ -130,10 +119,10 @@
     }
   },
   "homeownerVisibleFigures": {
-    "relevantProducts": 212,
-    "priceBasisNotEstablished": 168,
-    "vatStatusUnknown": 47,
-    "floorAreaPublished": 38,
+    "relevantProducts": 206,
+    "priceBasisNotEstablished": 167,
+    "vatStatusUnknown": 41,
+    "floorAreaPublished": 35,
     "class3AProductsInAtlas": 1
   },
   "notes": [
@@ -608,6 +597,20 @@
         "recu5t35P6aTRSjsd"
       ],
       "pageNote": "prices that are not currently verified withdrawn on 7 November 2026"
+    },
+    {
+      "id": "availability-and-reverification-2026-11-11",
+      "date": "2026-11-11",
+      "deployedCommit": "55fa07ece40078ab1325d82aae1ff99ebfe03e54",
+      "products": [
+        "recKHXaApIugjOKti",
+        "recUs4gexxlfkaiUj",
+        "reciolethPMEn50gQ",
+        "recUnUAWq0TWkNO5C",
+        "recBVDyal8VGGVEZM",
+        "reczxM0lggLXTBCdU"
+      ],
+      "pageNote": "six prices withdrawn on 11 November 2026 (unavailable or awaiting re-verification)"
     }
   ]
 }
