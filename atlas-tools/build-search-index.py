@@ -538,6 +538,9 @@ GUIDE_PAGES = {
     "concept-modular-garden-offices.html": "poss-concept-modular-garden-offices",
     # Shomera text-only editorial guide, founder approved 26 Oct 2026.
     "shomera-garden-rooms.html": "poss-shomera-garden-rooms",
+    # Garden Offices in Ireland guide (SEO GR7-GR14, published 9 Nov 2026), added to
+    # Search by founder approval, 11 Nov 2026. Same rule, same record shape, no priority.
+    "garden-offices-ireland.html": "poss-garden-offices-ireland",
 }
 for fname, rid in sorted(GUIDE_PAGES.items()):
     if fname not in ALLOW:
