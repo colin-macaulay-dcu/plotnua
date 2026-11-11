@@ -51,7 +51,8 @@
   "Let PlotNua do the homework",
   "Free for homeowners. Start with your Eircode and a few questions about the garden, and PlotNua checks what may be possible at your address.",
   "A garden room →",
-  "A garden home →"
+  "A garden home →",
+  "AI-generated illustration"
  ],
  "imgs": [],
  "supplierCards": [
@@ -234,6 +235,11 @@
    "why": "2026-11-08, founder approval 'SEO-GR4 garden room supplier visibility and internal linking': the A-Z maker index links each maker that has an approved public PlotNua supplier profile to that page (atlas-tools/build-maker-explorer.py PROFILE_PAGES, guard G12b). Same makers, order and counts.",
    "from": "Gardenhouse24 Ireland 8 garden rooms · Irish availability confirmed",
    "to": "Gardenhouse24 Ireland 8 garden rooms · Irish availability confirmed Gardenhouse24 profile"
+  },
+  {
+   "why": "Founder-approved imagery refresh, 11 Nov 2026",
+   "from": "Tonight it belongs to the teenagers. Tomorrow it could be anything.",
+   "to": "A room of its own, with space to make it yours."
   }
  ],
  "homeownerImprovement": {

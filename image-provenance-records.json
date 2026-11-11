@@ -13192,6 +13192,71 @@
       ],
       "label_on_page": "AI-generated illustration",
       "processing": "Generation original encoded as quality-95 WebP, original dimensions retained, no crop or retouching. Original retained in ChatGPT."
+    },
+    {
+      "asset": "assets/disc008/img/DISC-008-POSSIBLE-20261111.webp",
+      "sha256": "0e26bdac8b1a4ced54daf12d5e0fe812dfb4114d1057fce96ed945b80b9fcbae",
+      "bytes": 709062,
+      "pixels": [
+        1672,
+        941
+      ],
+      "class": "AI_ILLUSTRATION",
+      "what": "Generic Irish garden with a contemporary charcoal-timber garden room.",
+      "generated": {
+        "tool": "OpenAI image_gen built-in image generation tool",
+        "date": "2026-11-11"
+      },
+      "prompt": "Create one highly photorealistic architectural editorial photograph, wide landscape 16:9, for an Irish contemporary garden room website hero. Real suburban South Dublin back garden, generous but believable 11m wide x 22m deep, viewed from the rear patio of the main home at human eye level 1.5m, looking towards the end of the garden. Hero subject at rear centre-right is a beautifully designed single-storey modest contemporary garden living studio about 6m wide, low flat roof, dark charcoal vertical timber cladding, slim anthracite aluminium full-height sliding glass, softly warm interior showing a comfortable low modern grey sofa, one olive armchair, books and an understated floor lamp. No people. Studio is about 35 percent of frame width and clearly visible, architectural quality without being a mansion. A small weathered limestone terrace immediately outside studio, simple stepping stone route across natural slightly uneven lawn. Authentic mature Irish planting, ferns grasses hydrangeas, one airy multistem tree on left, established hedges above modest rendered boundary walls, slight glimpse of real neighbouring Irish rooflines. Soft late afternoon daylight after rain, pale textured overcast sky, no orange sunset. Restrained palette anthracite warm oak green. Lived in, relaxed, aspirational but ordinary enough to believe, no staged symmetry, no excessive decor, no fairy lights. Accurate construction, straight glazing, subtle glass reflections, believable textures and imperfections, natural camera optics 35mm, no CGI smoothness, no illustration, no text, no logo. Leave foreground lawn sufficiently open so this exact scene can subsequently be edited to remove only the garden room and its immediate terrace to create a matching before photograph.",
+      "reference_inputs": [],
+      "depicts_named_product": false,
+      "depicts_named_organisation": false,
+      "human_review": {
+        "reviewer": "Colin Macaulay (founder)",
+        "date": "2026-11-11",
+        "attests": "Reviewed the two new generated images in this conversation and approved: yes much better - continue and publish."
+      },
+      "permitted_surfaces": [
+        "discovery",
+        "library-card"
+      ],
+      "label_on_page": "AI-generated illustration",
+      "processing": "Original generated PNG converted to RGB WebP quality 93 without cropping or retouching; 1672 x 941 pixels retained."
+    },
+    {
+      "asset": "assets/disc008/img/DISC-008-BEFORE-20261111.webp",
+      "sha256": "daebc966ba3a77a67227e546c1b41d398e1d2c73cec1ef94032e5fdc9280020d",
+      "bytes": 675526,
+      "pixels": [
+        1672,
+        941
+      ],
+      "class": "AI_ILLUSTRATION",
+      "what": "Generic Irish garden before the garden room is added.",
+      "generated": {
+        "tool": "OpenAI image_gen built-in image generation tool",
+        "date": "2026-11-11"
+      },
+      "prompt": "Edit this exact image to create the BEFORE member of a before-and-after website slider. Keep exact canvas dimensions, camera, crop, perspective, lighting, sky, trees, neighbouring rooflines, left and right boundary walls and all visible foreground lawn, stepping stones, patio furniture and planting absolutely unchanged. Remove ONLY the dark garden room building at the rear and its immediate small terrace and pots. Replace its footprint with ordinary natural lawn continuing the existing grass and reveal a believable plain weathered grey rendered rear boundary wall with an established green hedge behind, continuous with side boundaries. This is the identical real-looking Irish garden before any garden room was built. Do not redesign anything, do not shift objects, do not change colour grade or weather. Preserve all pixels outside the immediate removed-building region as closely as possible. No text no labels.",
+      "reference_inputs": [
+        {
+          "asset": "assets/disc008/img/DISC-008-POSSIBLE-20261111.webp",
+          "description": "The generation original PNG of the POSSIBLE image was the sole edit target; this WebP is its whole-frame delivery master."
+        }
+      ],
+      "depicts_named_product": false,
+      "depicts_named_organisation": false,
+      "human_review": {
+        "reviewer": "Colin Macaulay (founder)",
+        "date": "2026-11-11",
+        "attests": "Reviewed the two new generated images in this conversation and approved: yes much better - continue and publish."
+      },
+      "permitted_surfaces": [
+        "discovery",
+        "library-card"
+      ],
+      "label_on_page": "AI-generated illustration",
+      "processing": "Original generated PNG converted to RGB WebP quality 93 without cropping or retouching; 1672 x 941 pixels retained."
     }
   ],
   "legacy_undeclared": [
@@ -23179,6 +23244,54 @@
         "derivative_embeds_c2pa": false,
         "note": "WebP master and delivery copies carry no signed credential; AI origin is explicitly declared from this generation session."
       }
+    },
+    {
+      "asset": "assets/disc008/img/DISC-008-POSSIBLE-480w-20261111.webp",
+      "sha256": "c1a15ba2e5f05586e76ed198a24519f06cdc70ee614721f3115380a6fc494817",
+      "bytes": 49364,
+      "pixels": [
+        480,
+        270
+      ],
+      "derived_from": {
+        "asset": "assets/disc008/img/DISC-008-POSSIBLE-20261111.webp",
+        "sha256": "0e26bdac8b1a4ced54daf12d5e0fe812dfb4114d1057fce96ed945b80b9fcbae"
+      },
+      "method": "webp-resize",
+      "encoder": "Pillow, WebP quality 88, whole-frame proportional resize from generation PNG",
+      "made": "2026-11-11"
+    },
+    {
+      "asset": "assets/disc008/img/DISC-008-POSSIBLE-960w-20261111.webp",
+      "sha256": "536083882be7e8f5fde44bc0025736a45589083f8d6bd96f7e3dea26b459aff0",
+      "bytes": 194320,
+      "pixels": [
+        960,
+        540
+      ],
+      "derived_from": {
+        "asset": "assets/disc008/img/DISC-008-POSSIBLE-20261111.webp",
+        "sha256": "0e26bdac8b1a4ced54daf12d5e0fe812dfb4114d1057fce96ed945b80b9fcbae"
+      },
+      "method": "webp-resize",
+      "encoder": "Pillow, WebP quality 88, whole-frame proportional resize from generation PNG",
+      "made": "2026-11-11"
+    },
+    {
+      "asset": "assets/disc008/img/DISC-008-BEFORE-960w-20261111.webp",
+      "sha256": "ea1614da769cf631fbf5d790073731e329e28f43124bc52f1c32ee706be996a6",
+      "bytes": 195340,
+      "pixels": [
+        960,
+        540
+      ],
+      "derived_from": {
+        "asset": "assets/disc008/img/DISC-008-BEFORE-20261111.webp",
+        "sha256": "daebc966ba3a77a67227e546c1b41d398e1d2c73cec1ef94032e5fdc9280020d"
+      },
+      "method": "webp-resize",
+      "encoder": "Pillow, WebP quality 88, whole-frame proportional resize from generation PNG",
+      "made": "2026-11-11"
     }
   ],
   "derivative_holds": [
