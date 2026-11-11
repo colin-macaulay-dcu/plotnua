@@ -1,0 +1,237 @@
+{
+ "artist": {
+  "bio": "Daniel Chester is a visual artist living in County Leitrim. He obtained a Masters in Visual Arts Practices from IADT in 2009, previously to that he received a Degree in Fine Art from Sligo IT in 2001. Chester has exhibited throughout Ireland and abroad, with a number of recent solo and group shows such as”Beyond the Stile” SolartGallery  “The Land is Ours” Luan Gallery, Athlone. Beyond the Plains Couthouse Gallery, Ennistymon, “The Ethereal Space” Hamilton Gallery, Sligo. “Identity” Westival Westport Co Mayo, Seeing is believing, Solartgallery Dublin. Daniels work has been selected for the RUA awards every year for the last four years and he recently was awarded the cairde visual and the model award residency for his painting “Mayo Marshlands”. Daniel has been awarded a number of artist bursary awards from Leitrim Coco\n\nDaniels work has been purchased by the Google Ireland, OPW, Leitrim Coco,Sligo coco, Sligo IT, Danske Bank and in numerous private collections throughout the world",
+  "county": "Leitrim",
+  "display_name": "Daniel Chester",
+  "founding": true,
+  "instagram": "danielchesterartist",
+  "medium": "painting",
+  "portrait": {
+   "alt": "Artist in studio, working on large painting",
+   "aspect": 1.32369,
+   "derivatives": [
+    {
+     "file": "portrait-600.webp",
+     "long_edge": 600,
+     "pixels": [
+      600,
+      453
+     ]
+    }
+   ],
+   "photo_credit": null,
+   "pixels": [
+    3844,
+    2904
+   ],
+   "role": "portrait"
+  },
+  "practice": "Painter",
+  "slug": "daniel-chester",
+  "statement": "Painter of landscapes inspired by romanticism art",
+  "website": "https://www.danielchesterartist.com"
+ },
+ "provenance_sources": [
+  {
+   "dhash": "9fcfcfdcf4ec68f9",
+   "source_sha256": "ee89799100d20a957c010478fab28ca2d8139c11572ae0954ca19ff8662d22e3",
+   "stem": "portrait"
+  },
+  {
+   "dhash": "3f7d7f7f6b735391",
+   "source_sha256": "851db5e028702e9e70a5b12c7122cf739eaa8570462216a1f663ba51d7da3589",
+   "stem": "forest-fest-1"
+  },
+  {
+   "dhash": "e0c1011818002424",
+   "source_sha256": "a82bcbb2df5b4c91d27863468d7a9f910f0f1132ed756a4bb1c3887558d05eae",
+   "stem": "foxgloves-and-gorse-1"
+  },
+  {
+   "dhash": "01010141014747c3",
+   "source_sha256": "52de778d0d844eec5bde4f8f5b867c62a94dd63709406ce35f7e13c6cfa873a3",
+   "stem": "the-crossing-1"
+  }
+ ],
+ "publication": {
+  "approved_at": "2026-11-11T19:54:16.639Z",
+  "approved_by": "founder",
+  "licence_accepted_at": "2026-11-10T21:22:55.611Z",
+  "licence_version": "PA-GPIL-2026-11",
+  "permission_ref": "PA-PERM-ax2ah6xhpmx",
+  "state": "approved",
+  "test_note": null,
+  "version": "v1"
+ },
+ "schema": "plotnua.plotart.gallery-package.v1",
+ "works": [
+  {
+   "ai_founder_decision": null,
+   "ai_involvement": "none",
+   "ai_note": null,
+   "availability": "available",
+   "d_cm": 4,
+   "description": "This painting was inspired by a warm summer evening along a wild bank in Leitrim. Foxgloves are dotted all over the woodland floor,alongside wild ferns.",
+   "h_cm": 125,
+   "id": "wychp9cm2em",
+   "images": [
+    {
+     "alt": "Red painting, describing a wild forest scene",
+     "aspect": 0.83686,
+     "derivatives": [
+      {
+       "file": "forest-fest-1-600.webp",
+       "long_edge": 600,
+       "pixels": [
+        502,
+        600
+       ]
+      },
+      {
+       "file": "forest-fest-1-1200.webp",
+       "long_edge": 1200,
+       "pixels": [
+        1004,
+        1200
+       ]
+      },
+      {
+       "file": "forest-fest-1-2000.webp",
+       "long_edge": 2000,
+       "pixels": [
+        1674,
+        2000
+       ]
+      }
+     ],
+     "photo_credit": null,
+     "pixels": [
+      2765,
+      3304
+     ],
+     "role": "main"
+    }
+   ],
+   "materials": "oil paint",
+   "medium": "oil on dibond panel",
+   "price_eur": 4800,
+   "price_on_request": false,
+   "slug": "forest-fest",
+   "title": "Forest Fest",
+   "w_cm": 105,
+   "year": 2024
+  },
+  {
+   "ai_founder_decision": null,
+   "ai_involvement": "none",
+   "ai_note": null,
+   "availability": "available",
+   "d_cm": 2,
+   "description": "This painting was inspired by a wild area at the end of my road, love the smell of Gorse.",
+   "h_cm": 80,
+   "id": "wfhtcyurvgf",
+   "images": [
+    {
+     "alt": "Foxgloves and Gorse oil on dibond 70cm*80cm",
+     "aspect": 0.82338,
+     "derivatives": [
+      {
+       "file": "foxgloves-and-gorse-1-600.webp",
+       "long_edge": 600,
+       "pixels": [
+        494,
+        600
+       ]
+      },
+      {
+       "file": "foxgloves-and-gorse-1-1200.webp",
+       "long_edge": 1200,
+       "pixels": [
+        988,
+        1200
+       ]
+      },
+      {
+       "file": "foxgloves-and-gorse-1-2000.webp",
+       "long_edge": 2000,
+       "pixels": [
+        1647,
+        2000
+       ]
+      }
+     ],
+     "photo_credit": null,
+     "pixels": [
+      3254,
+      3952
+     ],
+     "role": "main"
+    }
+   ],
+   "materials": null,
+   "medium": "Oil on dibond panel",
+   "price_eur": 1800,
+   "price_on_request": false,
+   "slug": "foxgloves-and-gorse",
+   "title": "Foxgloves and Gorse",
+   "w_cm": 70,
+   "year": 2026
+  },
+  {
+   "ai_founder_decision": null,
+   "ai_involvement": "none",
+   "ai_note": null,
+   "availability": "available",
+   "d_cm": 4,
+   "description": "The painting arose from an area in Sligo town i like to kayak around, its mystical and holds a lot of drama between the marshland and the river.",
+   "h_cm": 125,
+   "id": "w98mfl2ia7g",
+   "images": [
+    {
+     "alt": "Blue and green painting, representing a river and a bridge",
+     "aspect": 0.84837,
+     "derivatives": [
+      {
+       "file": "the-crossing-1-600.webp",
+       "long_edge": 600,
+       "pixels": [
+        509,
+        600
+       ]
+      },
+      {
+       "file": "the-crossing-1-1200.webp",
+       "long_edge": 1200,
+       "pixels": [
+        1018,
+        1200
+       ]
+      },
+      {
+       "file": "the-crossing-1-2000.webp",
+       "long_edge": 2000,
+       "pixels": [
+        1697,
+        2000
+       ]
+      }
+     ],
+     "photo_credit": null,
+     "pixels": [
+      2557,
+      3014
+     ],
+     "role": "main"
+    }
+   ],
+   "materials": "oil paint",
+   "medium": "oil on dibond panel",
+   "price_eur": 4800,
+   "price_on_request": false,
+   "slug": "the-crossing",
+   "title": "The Crossing",
+   "w_cm": 105,
+   "year": 2025
+  }
+ ]
+}

@@ -12977,6 +12977,316 @@
       ],
       "label_on_page": "AI-generated illustration",
       "processing": "Original generated PNG converted to RGB WebP quality 93 without cropping or retouching; 1672 x 941 pixels retained."
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "daniel-chester",
+      "asset": "plotart/artists/daniel-chester/img/portrait-600.webp",
+      "bytes": 31526,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "sRGB (no embedded profile; treated as sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-ax2ah6xhpmx",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        600,
+        453
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "869a86bf7664c85dd55b3b8b7f03f4e909206054c351efabedcf22e8303a08e1",
+      "source_sha256": "ee89799100d20a957c010478fab28ca2d8139c11572ae0954ca19ff8662d22e3",
+      "subject": "portrait",
+      "work_slug": null
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "daniel-chester",
+      "asset": "plotart/artists/daniel-chester/img/forest-fest-1-600.webp",
+      "bytes": 28160,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "sRGB (no embedded profile; treated as sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-ax2ah6xhpmx",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        502,
+        600
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "63aff9fbcc54a5da2aad3e7d9d5f8b04622522c10474eeb4945f1d324bdc8fb2",
+      "source_sha256": "851db5e028702e9e70a5b12c7122cf739eaa8570462216a1f663ba51d7da3589",
+      "subject": "artwork",
+      "work_slug": "forest-fest"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "daniel-chester",
+      "asset": "plotart/artists/daniel-chester/img/forest-fest-1-1200.webp",
+      "bytes": 94614,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "sRGB (no embedded profile; treated as sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-ax2ah6xhpmx",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        1004,
+        1200
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "c65c75010d092c2f765a6f17400f937738c9b42c45c5349bf05074c59bc8d69a",
+      "source_sha256": "851db5e028702e9e70a5b12c7122cf739eaa8570462216a1f663ba51d7da3589",
+      "subject": "artwork",
+      "work_slug": "forest-fest"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "daniel-chester",
+      "asset": "plotart/artists/daniel-chester/img/forest-fest-1-2000.webp",
+      "bytes": 223222,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "sRGB (no embedded profile; treated as sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-ax2ah6xhpmx",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        1674,
+        2000
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "80488aa81c34a002f89f72375b26d5b41c3c703bf713707511062a42ff511223",
+      "source_sha256": "851db5e028702e9e70a5b12c7122cf739eaa8570462216a1f663ba51d7da3589",
+      "subject": "artwork",
+      "work_slug": "forest-fest"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "daniel-chester",
+      "asset": "plotart/artists/daniel-chester/img/foxgloves-and-gorse-1-600.webp",
+      "bytes": 41408,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-ax2ah6xhpmx",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        494,
+        600
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "bf3ac09bb2d6eba63c91c7652bab562a2461155e9ddfb7d7cdaa7fc1af8a786e",
+      "source_sha256": "a82bcbb2df5b4c91d27863468d7a9f910f0f1132ed756a4bb1c3887558d05eae",
+      "subject": "artwork",
+      "work_slug": "foxgloves-and-gorse"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "daniel-chester",
+      "asset": "plotart/artists/daniel-chester/img/foxgloves-and-gorse-1-1200.webp",
+      "bytes": 146532,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-ax2ah6xhpmx",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        988,
+        1200
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "78fd5bfda200bafdd98cdaf7c8dea47b11befafe6eb46362d8150fc5324daeec",
+      "source_sha256": "a82bcbb2df5b4c91d27863468d7a9f910f0f1132ed756a4bb1c3887558d05eae",
+      "subject": "artwork",
+      "work_slug": "foxgloves-and-gorse"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "daniel-chester",
+      "asset": "plotart/artists/daniel-chester/img/foxgloves-and-gorse-1-2000.webp",
+      "bytes": 391464,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-ax2ah6xhpmx",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        1647,
+        2000
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "6a23eebef98671c013e3005c20d9ac93254d0c856124a151a35189d8c0e03f6d",
+      "source_sha256": "a82bcbb2df5b4c91d27863468d7a9f910f0f1132ed756a4bb1c3887558d05eae",
+      "subject": "artwork",
+      "work_slug": "foxgloves-and-gorse"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "daniel-chester",
+      "asset": "plotart/artists/daniel-chester/img/the-crossing-1-600.webp",
+      "bytes": 34598,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "sRGB (no embedded profile; treated as sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-ax2ah6xhpmx",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        509,
+        600
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "87b2c239ba2da6d68f301f666bc720a9ca4e871afb86c692578ce2c92167c6ac",
+      "source_sha256": "52de778d0d844eec5bde4f8f5b867c62a94dd63709406ce35f7e13c6cfa873a3",
+      "subject": "artwork",
+      "work_slug": "the-crossing"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "daniel-chester",
+      "asset": "plotart/artists/daniel-chester/img/the-crossing-1-1200.webp",
+      "bytes": 191980,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "sRGB (no embedded profile; treated as sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-ax2ah6xhpmx",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        1018,
+        1200
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "1361c65a0e4bcd0cb9fc8b880acbf24e541725ad854f99ea359d87a4b08f24f9",
+      "source_sha256": "52de778d0d844eec5bde4f8f5b867c62a94dd63709406ce35f7e13c6cfa873a3",
+      "subject": "artwork",
+      "work_slug": "the-crossing"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "daniel-chester",
+      "asset": "plotart/artists/daniel-chester/img/the-crossing-1-2000.webp",
+      "bytes": 609386,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "sRGB (no embedded profile; treated as sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-ax2ah6xhpmx",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        1697,
+        2000
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "84cc25fe0b72c2371b5ac579f7da56efb9cafe3d37b63478aac3d9f4da9961d5",
+      "source_sha256": "52de778d0d844eec5bde4f8f5b867c62a94dd63709406ce35f7e13c6cfa873a3",
+      "subject": "artwork",
+      "work_slug": "the-crossing"
     }
   ],
   "legacy_undeclared": [
