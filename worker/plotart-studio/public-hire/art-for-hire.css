@@ -139,6 +139,7 @@ body.pa main a:focus-visible, .afh3-btn:focus-visible{ outline:2px solid var(--t
 
 /* ---------- How a hire works ---------- */
 .afh3-how{ padding:clamp(64px, 8vw, 112px) 0; }
+#afh3-how, #afh3-works{ scroll-margin-top:64px; }   /* the hero action lands below the sticky header */
 .afh3-how h2, .afh3-artists h2{ font-size:clamp(40px, 4.4vw, 64px); line-height:1.02; margin:0 0 clamp(28px, 3.4vw, 48px); letter-spacing:-.01em; }
 .afh3-steps{ list-style:none; margin:0 0 clamp(36px, 5vw, 64px); padding:0; display:grid; grid-template-columns:repeat(3, minmax(0, 1fr)); gap:clamp(20px, 3vw, 44px); counter-reset:s; }
 .afh3-steps li{ counter-increment:s; padding-top:22px; border-top:1px solid var(--line-2); }
