@@ -387,6 +387,11 @@
     });
   }
   function resetAnims(g) {
+    /* 11 Nov 2026 fix: a scene switched off twice within the 520 ms fade (off, on, off quickly) queues two resets for
+       the same group; the first replaces it, so the second found it detached (parentNode null → TypeError). A group
+       that is no longer the live one for its scene has already been reset: leave it. */
+    var key = g.getAttribute('data-scene');
+    if (!g.parentNode || groups[key] !== g) return groups[key];
     if (g._orig) { var o = g._orig; o.classList.remove('is-on'); g.parentNode.replaceChild(o, g); groups[o.getAttribute('data-scene')] = o; return o; }
     Array.prototype.forEach.call(g.querySelectorAll('animate,animateMotion,animateTransform'), function (a) { try { a.endElement(); } catch (e) {} });
     /* re-arm: clone so every animation starts from its first frame next time */
