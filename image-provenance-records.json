@@ -13175,6 +13175,35 @@
       },
       "supplier_label": "Visualisation",
       "source": "NOOK Prefab's supplied file NOOK-20-oak-garden-room.jpg (sha256 13ad711ef5de3208…, emailed 6 Nov 2026); PlotNua web copy: resize and recompress only, metadata stripped, no crop or other edit."
+    },
+    {
+      "asset": "assets/img/home-garden-room-20261111.webp",
+      "sha256": "f1631b6169b8488860f86f385e56790f3852f05923716f55067281f927aabdc1",
+      "bytes": 378256,
+      "pixels": [
+        1448,
+        1086
+      ],
+      "class": "AI_ILLUSTRATION",
+      "what": "Generic contemporary Irish garden room; no specific supplier or actual installation.",
+      "generated": {
+        "tool": "OpenAI image_gen built-in image generation tool",
+        "date": "2026-11-11"
+      },
+      "prompt": "Use case: photorealistic-natural. Create a landscape 4:3 editorial architectural photograph for an Irish homeowner discovery website. A cool contemporary garden room in a real attractive suburban Irish back garden, photographed from the patio on a bright mild day with soft sun through thin clouds. Architecture is beautifully designed but attainable: clean flat roof, slim anthracite aluminium sliding glazing with one large section open, pale fresh natural timber cladding, carefully resolved realistic detailing. Small comfortable interior hangout with a compact pool table, understated contemporary sofa, a few books and one simple artwork. One casually dressed young adult seen obliquely inside, naturally concentrating on a pool shot, face small and unposed; no other people, no person posing for camera. Building is the primary subject, a genuinely appealing room opening into a garden. Broad patio of light grey large paving slabs, fresh lawn with subtle natural variation, restrained grasses and leafy planting, a couple of good simple terracotta pots, ordinary Irish neighbouring house roof partially glimpsed behind foliage to establish real context. Foreground edge of a modern outdoor table partly cropped, one casually left drinking glass, no arranged props. Camera at human eye height, slightly off-centre observational framing, credible perspective and dimensions, approximately 35mm full frame lens. Modern, cool, inviting, fresh and comfortably lived in. Visual mood like an excellent real architecture magazine photograph of someone's actual home, not an estate-agent rendering or luxury resort. Neutral daylight colours with natural green foliage and pale wood, gently warm interior from daylight only. Real optical behaviour, subtle reflections, realistic material texture, restrained exposure, ordinary soft shadows, small incidental imperfections without dirt or decay. Do not make it dark or gloomy. No heavy weathering, moss, dead plants, orange glowing interior, dramatic sunset, teal-orange colour grading, HDR, plastic skin, CGI gloss, hyper-detailed vegetation, artificial symmetry, excessive styling, decorative fairy lights, text, logos, borders or website UI. Output photograph only.",
+      "reference_inputs": [],
+      "depicts_named_product": false,
+      "depicts_named_organisation": false,
+      "human_review": {
+        "reviewer": "Colin Macaulay (founder)",
+        "date": "2026-11-11",
+        "attests": "Reviewed generated image in this conversation and approved with “ok”, then instructed “update the home page with this to replace the current first”."
+      },
+      "label_on_page": "AI-generated illustration",
+      "permitted_surfaces": [
+        "homepage"
+      ],
+      "processing": "Original generated PNG encoded to WebP using Pillow, quality 88, method 6, no crop, dimensions retained. Generated original retained in ChatGPT as Contemporary Irish Garden Room.png."
     }
   ],
   "legacy_undeclared": [
