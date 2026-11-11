@@ -156,7 +156,14 @@
           <td>${agrCell(a)}</td><td>${a.works}</td><td>${a.problems ? `<button class="st-btn st-btn--small st-todo-btn" data-ck="${a.id}" aria-expanded="false" aria-controls="ck-${a.id}">${a.problems} item${a.problems > 1 ? 's' : ''}</button>` : '✓'}</td>
           <td class="st-row">${a.account_status === 'suspended' ? `<button class="st-btn st-btn--small" data-act="reactivate" data-id="${a.id}">Reactivate</button>` : `<button class="st-btn st-btn--small" data-act="suspend" data-id="${a.id}">Suspend</button>`}
           ${a.live_version ? `<button class="st-btn st-btn--small st-btn--danger" data-act="unpublish" data-id="${a.id}">Unpublish</button>` : ''}
-          <button class="st-btn st-btn--small" data-email="${a.id}" aria-expanded="false" aria-controls="em-${a.id}">Change email</button></td></tr>
+          <button class="st-btn st-btn--small" data-email="${a.id}" aria-expanded="false" aria-controls="em-${a.id}">Change email</button>
+          ${a.account_status !== 'ended' ? `<button class="st-btn st-btn--small" data-pf="${a.id}" aria-expanded="false" aria-controls="pf-${a.id}">Start profile from application</button>` : ''}</td></tr>
+          <tr id="pf-${a.id}" class="st-em-row" hidden><td colspan="6"><form class="st-em" data-pfform="${a.id}" novalidate>
+            <p class="st-em-h">Start the profile of <b>${E(a.display_name)}</b> from their Founding 25 application</p>
+            <div class="st-f"><label for="pf-r-${a.id}">Application reference</label><input id="pf-r-${a.id}" type="text" autocomplete="off" spellcheck="false" placeholder="F25-YYMMDD-XXXXXX" value="${E(a.application_ref || '')}"></div>
+            <p class="st-muted st-em-note">Fills only the empty biography, medium, county, website and Instagram fields, using the Studio’s normal checks. Nothing already written is replaced. The county stays hidden from the public, application images and additional information are never copied, and no email is sent: let the artist know yourself.</p>
+            <div class="st-row"><button type="submit" class="st-btn st-btn--solid st-btn--small">Start profile</button><button type="button" class="st-btn st-btn--small" data-pfcancel="${a.id}">Cancel</button></div>
+            <p class="st-err" role="alert" data-pferr></p></form></td></tr>
           <tr id="ck-${a.id}" class="st-em-row" hidden><td colspan="6"><div class="st-ck-admin" data-ckbox="${a.id}"><p class="st-muted">Loading…</p></div></td></tr>
           <tr id="em-${a.id}" class="st-em-row" hidden><td colspan="6"><form class="st-em" data-emform="${a.id}" novalidate>
             <p class="st-em-h">Correct the sign-in email for <b>${E(a.display_name)}</b></p>
@@ -212,6 +219,26 @@
           <table class="st-table st-ck-table"><thead><tr><th>Section</th><th>Outstanding</th></tr></thead><tbody>${r.items.map(i => `<tr><td>${E(SECTION[i.area])}${i.area === 'work' ? `<br><span class="st-muted">${E(i.title || 'Untitled artwork')}</span>` : ''}</td>
             <td>${i.area === 'work' ? E(i.needs.map(c => NEED[c]).join(', ')) : E(i.text)}</td></tr>`).join('')}</tbody></table>`;
       } catch (e) { box.innerHTML = `<p class="st-err">${E(e.message)}</p>`; }
+    }));
+    // Start profile from application (11 Nov 2026): founder-only; the server applies every pre-fill safeguard and sends no email
+    const PF = { bio: 'biography', medium: 'medium', county: 'county', website: 'website', instagram: 'Instagram' };
+    app.querySelectorAll('[data-pf]').forEach(b => b.addEventListener('click', () => {
+      const row = $(`#pf-${b.dataset.pf}`), open = row.hidden; row.hidden = !open; b.setAttribute('aria-expanded', String(open));
+      if (open) $('input', row).focus();
+    }));
+    app.querySelectorAll('[data-pfcancel]').forEach(b => b.addEventListener('click', () => {
+      $(`#pf-${b.dataset.pfcancel}`).hidden = true; $(`[data-pf="${b.dataset.pfcancel}"]`).setAttribute('aria-expanded', 'false');
+    }));
+    app.querySelectorAll('[data-pfform]').forEach(f => f.addEventListener('submit', async ev => {
+      ev.preventDefault();
+      const err = $('[data-pferr]', f), ref = $('input', f).value.trim();
+      err.textContent = '';
+      if (!ref) { err.textContent = 'Enter the application reference.'; return; }
+      try {
+        const r = await api('POST', `/api/admin/artists/${f.dataset.pfform}/prefill`, { application_ref: ref });
+        say(r.fields.length ? `Profile started from ${r.application_ref}: ${r.fields.map(k => PF[k]).join(', ')}. No email was sent.`
+          : `Nothing to fill: those fields already hold information. No email was sent.`); home();
+      } catch (e) { err.textContent = e.message; }
     }));
     // Change email (PLOTART-STUDIO-ACCESS-002): founder-only, typed twice and confirmed; the server re-checks everything
     const emRow = id => $(`#em-${id}`);
