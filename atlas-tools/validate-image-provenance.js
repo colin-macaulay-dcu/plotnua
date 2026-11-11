@@ -32,6 +32,7 @@ import { posix } from 'node:path';
 import { createHash } from 'node:crypto';
 import { dirname, join, basename } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { createRequire } from 'node:module';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const arg = (n, d) => {
@@ -542,9 +543,18 @@ for (const v of brandVectors) if (v && v.asset) brandSet.set(v.asset, v);
          must then be present.
    What it never relaxes: a prompt naming any supplier; any other
    organisation; any other reference input; depicts_named_organisation. */
-const LIVE_GRANTS = ['Granted — Founder Confirmed',
-                     'Granted with Conditions — Founder Confirmed',
-                     'Granted — Supplier Confirmed (one-click)'];
+/* 11 Nov 2026: the live-grant vocabulary and the grant-status rule come from the
+   rights gate itself (validate-image-rights.js, loaded with require()), never
+   from a second copy kept here: a hosted copy, a licence and an externally
+   hosted image are judged by the same words. If the gate cannot be loaded,
+   nothing can be shown to be live, so the guard refuses. */
+let RIGHTS_GATE = null;
+try { RIGHTS_GATE = createRequire(import.meta.url)(join(HERE, 'validate-image-rights.js')); }
+catch (e) { refuse('the rights gate (validate-image-rights.js) could not be loaded for its grant rule: ' + e.message); }
+if (!RIGHTS_GATE || typeof RIGHTS_GATE.grantStatus !== 'function' || !(RIGHTS_GATE.LIVE_GRANTS instanceof Set)) {
+  refuse('the rights gate does not provide its grant rule (grantStatus, LIVE_GRANTS)');
+}
+const LIVE_GRANTS = [...RIGHTS_GATE.LIVE_GRANTS];
 let licenceRows = [];
 if (existsSync(LICENCES)) {
   try {
@@ -685,16 +695,19 @@ console.log('-'.repeat(74));
      images, NOOK Prefab): resolving to a row is not enough, because the
      rights gate never sees a local file. A hosted supplier image is accepted
      only while its ONE resolving row is a live grant that covers hosting:
-       - the outcome is one of the gate's live-grant values (LIVE_GRANTS);
-       - no withdrawal_effective_at (a withdrawal always wins, exactly as in
-         validate-image-rights.js);
-       - not expired: permission_expires_on / permission.expires_on, when
-         present, must be an ISO date later than today; a malformed date fails;
+       - live by the rights gate's OWN rule, grantStatus() (11 Nov 2026: one
+         rule for hosted and externally hosted images): a recognised live
+         outcome, no withdrawal, and no expired or malformed expiry
+         (permission_expires_on / permission.expires_on);
        - public_visibility is PUBLISHABLE (the publication gate's derivation:
          permission state, 'feature' scope, review state);
        - permission.state is GRANTED and permission.scope includes both
          'imagery' and 'hosting' -- permission to show a supplier's images
-         from its own site is not permission for PlotNua to host copies.
+         from its own site is not permission for PlotNua to host copies;
+       - a hosted supplier VISUALISATION needs a grant that explicitly covers
+         visualisations: 'label-visualisations' among permission.conditions
+         (11 Nov 2026). A photograph needs no such condition. P4b separately
+         keeps each image's Photograph / Visualisation label consistent.
      Nothing here grants anything (P11): every value is read from the row. */
   const sup = records.filter(r => r.class === 'SUPPLIER_IMAGE');
   if (!sup.length) {
@@ -712,7 +725,6 @@ console.log('-'.repeat(74));
                                       && typeof v[0] === 'object') || []);
     } catch { /* handled below */ }
     const today = new Date().toISOString().slice(0, 10);
-    const ISO = /^\d{4}-\d{2}-\d{2}$/;
     const why = new Map();      // asset -> first reason
     for (const r of sup) {
       const x = r.rights_ref || {};
@@ -723,21 +735,21 @@ console.log('-'.repeat(74));
       const w = hits[0];
       const perm = (w.permission && typeof w.permission === 'object') ? w.permission : {};
       const scope = Array.isArray(perm.scope) ? perm.scope : [];
-      const expiries = [w.permission_expires_on, perm.expires_on].filter(v => v !== undefined && v !== null && v !== '');
-      if (!LIVE_GRANTS.includes(w.permission_outcome)) fail(`grant is not live (${w.permission_outcome || 'no outcome'})`);
-      else if (w.withdrawal_effective_at) fail(`grant withdrawn (${w.withdrawal_effective_at})`);
-      else if (expiries.some(v => !ISO.test(String(v)) || (d => isNaN(d) || d.toISOString().slice(0, 10) !== String(v))(new Date(String(v) + 'T00:00:00Z')))) fail('grant has a malformed expiry date');
-      else if (expiries.some(v => String(v) <= today)) fail(`grant expired (${expiries.join(', ')})`);
+      const cond = Array.isArray(perm.conditions) ? perm.conditions : [];
+      const status = RIGHTS_GATE.grantStatus(w, today);
+      if (!status.live) fail(`grant is not live (${status.why})`);
       else if (w.public_visibility !== 'PUBLISHABLE') fail(`grant is not publishable (${w.public_visibility || 'no public_visibility'})`);
       else if (perm.state !== 'GRANTED') fail(`permission state is ${perm.state || 'missing'}`);
       else if (!scope.includes('imagery') || !scope.includes('hosting')) fail('permission scope does not cover hosting the imagery');
+      else if (r.supplier_label === 'Visualisation' && !cond.includes('label-visualisations'))
+        fail('the grant does not cover supplier visualisations (no label-visualisations condition)');
     }
     const broken = [...why.entries()];
     broken.length
       ? bad('P4 a SUPPLIER_IMAGE row resolves to a live grant',
             `${broken.length} refused: ${broken.slice(0, 3).map(([a, m]) => a + ' (' + m + ')').join('; ')}`)
       : ok('P4 a SUPPLIER_IMAGE row resolves to a live grant',
-           `${sup.length} checked: live, unexpired, publishable, hosting in scope`);
+           `${sup.length} checked: live, unexpired, publishable, hosting in scope, visualisations covered`);
   }
 }
 

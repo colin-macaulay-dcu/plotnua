@@ -138,6 +138,29 @@ function expiryOf(p, today) {
   return { malformed: false, expired: dates.some(v => String(v) <= today), dates };
 }
 
+/* GRANT STATUS (11 Nov 2026). THE ONE RULE for whether a grant row is live on a
+   given day: a recognised live outcome, no withdrawal, and no expired or
+   malformed expiry. evaluate() uses it for externally hosted images; the
+   provenance guard's P4 loads it with require() for the copies PlotNua hosts
+   itself, so the two can never drift apart. This file still reads nothing of
+   the guard's (P11): the dependency runs one way only.
+   Returns { live, why }. */
+function grantStatus(p, today = new Date().toISOString().slice(0, 10)) {
+  const outcome = p ? p.permission_outcome : undefined;
+  if (typeof outcome !== 'string' || !outcome) return { live: false, why: 'no permission outcome' };
+  if (!LIVE_GRANTS.has(outcome) && !KNOWN_NON_GRANTS.has(outcome)) {
+    return { live: false, why: 'unrecognised permission outcome ' + JSON.stringify(outcome) };
+  }
+  if (p.withdrawal_effective_at || outcome === 'Withdrawn / Superseded') {
+    return { live: false, why: 'withdrawn' + (p.withdrawal_effective_at ? ' (' + p.withdrawal_effective_at + ')' : '') };
+  }
+  if (!LIVE_GRANTS.has(outcome)) return { live: false, why: 'not a grant (' + outcome + ')' };
+  const exp = expiryOf(p, today);
+  if (exp && exp.malformed) return { live: false, why: 'malformed expiry date ' + JSON.stringify(exp.dates) };
+  if (exp && exp.expired) return { live: false, why: 'expired (' + exp.dates.join(', ') + ')' };
+  return { live: true, why: 'live grant' };
+}
+
 function evaluate(assets, permissions, today = new Date().toISOString().slice(0, 10)) {
   const byOrg = new Map();
   const problems = [];
@@ -167,7 +190,7 @@ function evaluate(assets, permissions, today = new Date().toISOString().slice(0,
         + JSON.stringify(exp.dates) + '; the gate refuses to read it as a grant');
     }
     const prev = byOrg.get(org);
-    const grant = LIVE_GRANTS.has(outcome) && !withdrawn && !expired;
+    const grant = grantStatus(p, today).live;   /* the one rule, shared with hosted copies (P4) */
     const delivery = normaliseDelivery(p.permitted_delivery_hosts);
     const expiry = exp ? exp.dates.join(', ') + (exp.malformed ? ' (malformed)' : '') : null;
     if (!prev || prev.grant) byOrg.set(org, { grant: prev ? (prev.grant && grant) : grant, outcome, withdrawn, expired, expiry, domain: p.permitted_domain, delivery });
@@ -589,4 +612,9 @@ function main() {
   }
   console.log('\nGATE PASS — every publishable asset has a live grant behind it.');
 }
-try { main(); } catch (e) { if (!(e instanceof GateExit)) throw e; }
+/* Run as a command it is the gate, exactly as before. Loaded with require() it
+   only lends its grant rule (11 Nov 2026: copies PlotNua hosts itself, P4). */
+if (require.main === module) {
+  try { main(); } catch (e) { if (!(e instanceof GateExit)) throw e; }
+}
+module.exports = { LIVE_GRANTS, KNOWN_NON_GRANTS, grantStatus };
