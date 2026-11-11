@@ -726,7 +726,7 @@ console.log('-'.repeat(74));
       const expiries = [w.permission_expires_on, perm.expires_on].filter(v => v !== undefined && v !== null && v !== '');
       if (!LIVE_GRANTS.includes(w.permission_outcome)) fail(`grant is not live (${w.permission_outcome || 'no outcome'})`);
       else if (w.withdrawal_effective_at) fail(`grant withdrawn (${w.withdrawal_effective_at})`);
-      else if (expiries.some(v => !ISO.test(String(v)))) fail('grant has a malformed expiry date');
+      else if (expiries.some(v => !ISO.test(String(v)) || (d => isNaN(d) || d.toISOString().slice(0, 10) !== String(v))(new Date(String(v) + 'T00:00:00Z')))) fail('grant has a malformed expiry date');
       else if (expiries.some(v => String(v) <= today)) fail(`grant expired (${expiries.join(', ')})`);
       else if (w.public_visibility !== 'PUBLISHABLE') fail(`grant is not publishable (${w.public_visibility || 'no public_visibility'})`);
       else if (perm.state !== 'GRANTED') fail(`permission state is ${perm.state || 'missing'}`);

@@ -164,6 +164,30 @@ const CASES = [
 <script type="application/json" class="pn-mx-config">{"tabs":[ broken</script></body></html>`,
     expect: /does not parse/i },
 
+  { id: 'C-SCAN8',
+    why: 'the grant expired yesterday while the page is unchanged',
+    html: page(granted.permitted_domain,
+               granted.required_credit ? `<p>${granted.required_credit}</p>` : ''),
+    manifestEdit: m => {
+      const list = Array.isArray(m) ? m
+        : Object.values(m).find(v => Array.isArray(v) && v[0]);
+      const row = list.find(r => r.organisation_code === granted.organisation_code);
+      row.permission_expires_on = new Date(Date.now() - 86400000).toISOString().slice(0, 10);
+    },
+    expect: /EXPIRED/ },
+
+  { id: 'C-SCAN9',
+    why: 'the grant carries an expiry date the gate cannot read',
+    html: page(granted.permitted_domain,
+               granted.required_credit ? `<p>${granted.required_credit}</p>` : ''),
+    manifestEdit: m => {
+      const list = Array.isArray(m) ? m
+        : Object.values(m).find(v => Array.isArray(v) && v[0]);
+      const row = list.find(r => r.organisation_code === granted.organisation_code);
+      row.permission = Object.assign({}, row.permission, { expires_on: '2099-02-30' });
+    },
+    expect: /MALFORMED/ },
+
   { id: 'C-SCAN5',
     why: 'the manifest is removed entirely',
     html: page(granted.permitted_domain),

@@ -90,6 +90,22 @@ ORDER = [
 ]
 
 
+def expiry_dates(r):
+    perm = r.get("permission") if isinstance(r.get("permission"), dict) else {}
+    return [v for v in (r.get("permission_expires_on"), perm.get("expires_on"))
+            if v not in (None, "")]
+
+
+def is_live(r):
+    """Live means: a granted outcome, not withdrawn, and not expired. The
+    same reading as validate-image-rights.js; expiry is exclusive (a grant
+    expiring on a date no longer authorises on that date)."""
+    if r.get("permission_outcome") not in LIVE_GRANTS or r.get("withdrawal_effective_at"):
+        return False
+    today = datetime.date.today().isoformat()
+    return not any(str(v) <= today for v in expiry_dates(r))
+
+
 def die(msg):
     print("ABORT: " + msg)
     sys.exit(1)
@@ -109,6 +125,18 @@ def check_record(i, r):
             + " is not in the gate's vocabulary. Spell it exactly, or add it to "
               "the gate first and understand what you are widening.")
 
+    # EXPIRY (11 Nov 2026). Optional; read by both gates. A date the gates
+    # cannot read must not reach the manifest at all.
+    for v in expiry_dates(r):
+        try:
+            datetime.date.fromisoformat(str(v))
+            ok = len(str(v)) == 10
+        except ValueError:
+            ok = False
+        if not ok:
+            die(who + ": expiry date " + json.dumps(v) + " is not a real YYYY-MM-DD date")
+    # Evidence rules apply to every granted, unwithdrawn record, expired or
+    # not: an expired grant still has to say where it came from.
     live = outcome in LIVE_GRANTS and not r.get("withdrawal_effective_at")
 
     # A LIVE GRANT MUST SAY WHERE IT CAME FROM. A grant with no evidence and no
@@ -209,9 +237,7 @@ def main():
                 row[k] = r[k]
         rows.append(row)
 
-    live = [r for r in records
-            if r["permission_outcome"] in LIVE_GRANTS
-            and not r.get("withdrawal_effective_at")]
+    live = [r for r in records if is_live(r)]
 
     out = collections.OrderedDict([
         ("schema", "plotnua.image-rights.manifest.v1"),

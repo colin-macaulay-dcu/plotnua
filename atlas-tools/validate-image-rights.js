@@ -111,7 +111,34 @@ function readJson(p, what) {
 
 /* ---------------------------------------------------------------- core ----
    Pure function so the self-test can drive it without files.              */
-function evaluate(assets, permissions) {
+const ISO_DATE = /^\d{4}-\d{2}-\d{2}$/;
+
+/* EXPIRY (11 Nov 2026). A grant may carry an expiry date, either as
+   permission_expires_on on the row or as permission.expires_on. The grant
+   authorises publication up to the day BEFORE that date; on the date itself it
+   has expired. A malformed date is not read generously: it is not a grant.
+   The same rule P4 applies to locally hosted supplier copies.
+   Returns null when the row carries no expiry at all. */
+/* A real calendar date, not merely date-shaped: 2026-02-30 is refused. */
+function realIsoDate(v) {
+  const t = String(v);
+  if (!ISO_DATE.test(t)) return false;
+  const d = new Date(t + 'T00:00:00Z');
+  return !isNaN(d) && d.toISOString().slice(0, 10) === t;
+}
+
+function expiryOf(p, today) {
+  const perm = (p.permission && typeof p.permission === 'object') ? p.permission : {};
+  const dates = [p.permission_expires_on, perm.expires_on]
+    .filter(v => v !== undefined && v !== null && v !== '');
+  if (!dates.length) return null;
+  if (dates.some(v => !realIsoDate(v))) {
+    return { malformed: true, expired: true, dates };
+  }
+  return { malformed: false, expired: dates.some(v => String(v) <= today), dates };
+}
+
+function evaluate(assets, permissions, today = new Date().toISOString().slice(0, 10)) {
   const byOrg = new Map();
   const problems = [];
 
@@ -132,11 +159,19 @@ function evaluate(assets, permissions) {
     }
     /* A withdrawal always wins, whatever else the row says. */
     const withdrawn = !!p.withdrawal_effective_at || outcome === 'Withdrawn / Superseded';
+    /* An expired or malformed expiry is not a grant either. */
+    const exp = expiryOf(p, today);
+    const expired = !!(exp && exp.expired);
+    if (exp && exp.malformed) {
+      problems.push('ORG ' + org + ' has a MALFORMED expiry date '
+        + JSON.stringify(exp.dates) + '; the gate refuses to read it as a grant');
+    }
     const prev = byOrg.get(org);
-    const grant = LIVE_GRANTS.has(outcome) && !withdrawn;
+    const grant = LIVE_GRANTS.has(outcome) && !withdrawn && !expired;
     const delivery = normaliseDelivery(p.permitted_delivery_hosts);
-    if (!prev || prev.grant) byOrg.set(org, { grant: prev ? (prev.grant && grant) : grant, outcome, withdrawn, domain: p.permitted_domain, delivery });
-    if (withdrawn) byOrg.set(org, { grant: false, outcome, withdrawn: true, domain: p.permitted_domain, delivery });
+    const expiry = exp ? exp.dates.join(', ') + (exp.malformed ? ' (malformed)' : '') : null;
+    if (!prev || prev.grant) byOrg.set(org, { grant: prev ? (prev.grant && grant) : grant, outcome, withdrawn, expired, expiry, domain: p.permitted_domain, delivery });
+    if (withdrawn) byOrg.set(org, { grant: false, outcome, withdrawn: true, expired, expiry, domain: p.permitted_domain, delivery });
   }
 
   const verdicts = [];
@@ -164,6 +199,9 @@ function evaluate(assets, permissions) {
         why: 'marked for publication but the permission outcome is '
            + JSON.stringify(perm.outcome)
            + (perm.withdrawn ? ' and it has been WITHDRAWN' : '')
+           + (perm.expired && !perm.withdrawn
+               ? (/malformed/.test(perm.expiry || '') ? ' but its expiry date is MALFORMED (' : ' but the grant has EXPIRED (') + perm.expiry + ')'
+               : '')
            + '. NOT A GRANT' });
       continue;
     }
@@ -352,6 +390,37 @@ function selfTest() {
   }
 
   console.log('\n' + '='.repeat(74));
+  /* GRANT STATE (11 Nov 2026). The same hotlinked asset under a valid,
+     expired, withdrawn and missing grant, on a fixed date so the test does not
+     depend on the day it runs. Expiry is checked by the same rule as P4. */
+  console.log('\nGRANT-STATE TEST · one hotlinked asset, today = 2026-11-11');
+  const T = '2026-11-11';
+  const ORG_X = 'recTESTEXPIRY001';
+  const xa = [{ asset_name: 'expiry/x.jpg', organisation_record: ORG_X, rights_status: 'Supplier Provided', publication_status: 'Published', source_url: 'https://expiry.ie/x.jpg' }];
+  const xg = extra => [Object.assign({ organisation_record: ORG_X, permission_outcome: 'Granted — Founder Confirmed', permitted_domain: 'expiry.ie' }, extra)];
+  const STATES = [
+    ['valid, no expiry',                     xg({}),                                             true],
+    ['valid, expires tomorrow',              xg({ permission_expires_on: '2026-11-12' }),        true],
+    ['valid, permission.expires_on later',   xg({ permission: { state: 'GRANTED', expires_on: '2027-01-01' } }), true],
+    ['expired yesterday',                    xg({ permission_expires_on: '2026-11-10' }),        false],
+    ['expires today',                        xg({ permission_expires_on: '2026-11-11' }),        false],
+    ['permission.expires_on passed',         xg({ permission: { state: 'GRANTED', expires_on: '2026-01-01' } }), false],
+    ['one of two expiry dates passed',       xg({ permission_expires_on: '2027-01-01', permission: { expires_on: '2026-11-01' } }), false],
+    ['malformed expiry',                     xg({ permission_expires_on: '11/12/2026' }),        false],
+    ['impossible expiry date',               xg({ permission_expires_on: '2026-13-45' }),        false],
+    ['30 February expiry',                   xg({ permission_expires_on: '2027-02-30' }),        false],
+    ['withdrawn, expiry still in future',    xg({ permission_outcome: 'Withdrawn / Superseded', withdrawal_effective_at: '2026-11-02', permission_expires_on: '2027-01-01' }), false],
+    ['withdrawn by date only',               xg({ withdrawal_effective_at: '2026-11-02' }),      false],
+    ['missing grant row',                    [],                                                 false],
+    ['another supplier\'s live grant only', [{ organisation_record: 'recTESTOTHER0001', permission_outcome: 'Granted — Founder Confirmed', permitted_domain: 'expiry.ie' }], false]
+  ];
+  for (const [label, rows, want] of STATES) {
+    const v = evaluate(xa, rows, T).verdicts[0];
+    const good = v.publishable === want && (want || v.violation);
+    console.log('  ' + (good ? 'ok  ' : 'FAIL') + ' ' + label.padEnd(38) + (v.publishable ? 'ALLOW' : 'REFUSE') + ' — ' + v.why);
+    if (!good) ok = false;
+  }
+
   console.log(ok ? 'SELF-TEST PASS' : 'SELF-TEST FAIL');
   process.exit(ok ? 0 : 1);
 }
