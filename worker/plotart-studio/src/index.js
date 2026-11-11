@@ -1283,6 +1283,30 @@ async function route(req, env) {
       await audit(env, me.email, 'founder', r.sent ? 'invitation_sent' : 'invitation_not_sent', id, {});
       return json({ ok: true, id, slug, invitation_sent: !!r.sent, prefill: { fields: prefill.fields, skipped: prefill.skipped, reason: prefill.reason || null } });
     }
+    if ((mm = p.match(/^\/api\/admin\/artists\/(a[0-9a-z]+)\/prefill$/)) && m === 'POST') {
+      // "Start profile from application" (founder decision 11 Nov 2026): the account-creation pre-fill, for an account
+      // that already exists. Same rules and safeguards (prefillFromApplication); it links the reference only once every
+      // safeguard has passed, never replaces a different reference, never sends an email, and touches nothing but the
+      // five empty profile fields and (when it was empty) the application reference.
+      const b = await req.json();
+      const ref = String(b.application_ref || '').trim();
+      if (!/^F25-\d{6}-[0-9A-F]{6}$/.test(ref)) throw new Bad('Application reference looks like F25-YYMMDD-XXXXXX');
+      const a = await one(env, 'SELECT id, display_name, account_status, application_ref FROM artists WHERE id=?', mm[1]);
+      if (!a) throw new Bad('Artist not found', 404);
+      const refuse = async (msg, reason) => {
+        await audit(env, me.email, 'founder', 'profile_prefill_not_applied', a.id, { ref, via: 'existing_account', reason });
+        throw new Bad(msg, 409);
+      };
+      if (a.account_status === 'ended') await refuse('This account has ended, so its profile can’t be started from an application.', 'account ended');
+      if (a.application_ref && a.application_ref !== ref) await refuse(`This account is already linked to application ${a.application_ref}. A different application can’t be used.`, 'account linked to a different application');
+      const r = await prefillFromApplication(env, a.id, ref, a.display_name);
+      if (r.reason) await refuse(`Nothing was filled in: ${r.reason}.`, r.reason);
+      let linked = false;
+      if (!a.application_ref) linked = (await env.DB.prepare('UPDATE artists SET application_ref=?, updated_at=? WHERE id=? AND application_ref IS NULL').bind(ref, now(), a.id).run()).meta.changes === 1;
+      await audit(env, me.email, 'founder', r.fields.length ? 'profile_prefilled_from_application' : 'profile_prefill_not_applied', a.id,
+        { ref, via: 'existing_account', linked, fields: r.fields, skipped: r.skipped, ...(r.fields.length ? {} : { reason: 'no empty field to fill' }) });
+      return json({ ok: true, application_ref: ref, linked, fields: r.fields, skipped: r.skipped, email_sent: false });
+    }
     if ((mm = p.match(/^\/api\/admin\/artists\/(a[0-9a-z]+)\/email$/)) && m === 'POST') {
       // PLOTART-STUDIO-ACCESS-002: the founder corrects an artist's sign-in email. Founder-only (this whole block is
       // behind the founder check), same-origin only (X-Studio header), and it changes ONLY the email column: the
