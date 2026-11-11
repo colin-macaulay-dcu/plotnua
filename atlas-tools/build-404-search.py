@@ -162,8 +162,17 @@ for f in ("search.css", "search.js"):
 print("  F2b both shared Search assets present (search.css, search.js)  OK")
 
 # ======================================================================= BUILD
+# A FIRST injection goes straight after the .brand-mark anchor. A REFRESH replaces the
+# existing region IN PLACE (11 Nov 2026): the 404's region sits between the shared header
+# BAR and ROW, as on every other page, and stripping and re-injecting it after the anchor
+# moved the header bar below the Search panel. F4 now refuses any change of position.
 m = MARK_RE.search(base)
-out = base[:m.end()] + "\n" + REGION + base[m.end():]
+if BEGIN in page:
+    _i, _j = page.index(BEGIN), page.index(END) + len(END)
+    out = page[:_i] + REGION + page[_j:]
+else:
+    out = base[:m.end()] + "\n" + REGION + base[m.end():]
+OUT_BUILT = True  # the mutation proof splices its faults in after this line
 
 # ====================================================================== GUARDS
 print()
@@ -224,22 +233,25 @@ if re.search(r'name="robots"[^>]*noindex', base).group(0) not in out:
     die("F8 the noindex directive changed")
 print("  F8  the 404's noindex directive preserved  OK")
 
+# F9 — idempotence (runs before the F4 catch-all, which would otherwise claim a
+#      duplicated region as a moved one)
+if out.count(BEGIN) != 1 or out.count(END) != 1:
+    die("F9 %s does not carry exactly one region" % TARGET)
+_a, _b = out.index(BEGIN), out.index(END) + len(END)
+if out[:_a] + REGION + out[_b:] != out:
+    die("F9 not idempotent under re-injection")
+print("  F9  exactly one region, and re-injection is idempotent  OK")
+
 # F4 — the catch-all. Every byte outside the injection point unchanged.
 #      Deliberately AFTER F5/F6/F8: it would otherwise claim every failure
 #      those guards describe better. The mutation proof caught exactly that
 #      misattribution three times, and this ordering is the fix.
 if strip_region(out) != base:
     die("F4 %s changed outside the injection point" % TARGET)
+if BEGIN in page and (out[:out.index(BEGIN)] != page[:page.index(BEGIN)] or
+                      out[out.index(END) + len(END):] != page[page.index(END) + len(END):]):
+    die("F4 %s's Search region moved: a refresh must replace it in place" % TARGET)
 print("  F4  every byte outside the injection point unchanged  OK")
-
-# F9 — idempotence
-if out.count(BEGIN) != 1 or out.count(END) != 1:
-    die("F9 %s does not carry exactly one region" % TARGET)
-again = strip_region(out)
-m2 = MARK_RE.search(again)
-if again[:m2.end()] + "\n" + REGION + again[m2.end():] != out:
-    die("F9 not idempotent under re-injection")
-print("  F9  exactly one region, and re-injection is idempotent  OK")
 
 # F10 — the Search entry works without JavaScript
 if 'href="search.html"' not in REGION:
@@ -247,11 +259,22 @@ if 'href="search.html"' not in REGION:
 print("  F10 the pill is a real <a href=\"search.html\">, so Search is\n"
       "      reachable from the 404 with JavaScript disabled  OK")
 
-print("\n  11 guards passed.")
-
+# F11 — THE SHIPPED PAGE IS CURRENT (11 Nov 2026). Every guard above tests the page this
+#       builder WOULD write, so until now --check passed while the shipped 404 still
+#       carried an out-of-date panel (an <h2> prompt and an unlabelled input) that every
+#       other page had replaced. In --check the shipped 404 must equal that page exactly.
+if CHECK and out != page:
+    die("F11 the shipped %s Search panel is not the approved panel copied from %s "
+        "(shipped region %s, approved %s). Run atlas-tools/build-404-search.py to refresh it."
+        % (TARGET, DONOR,
+           sha(page[page.index(BEGIN):page.index(END) + len(END)])[:16] if BEGIN in page else "absent",
+           sha(REGION)[:16]))
 if CHECK:
+    print("  F11 the shipped 404 carries exactly the approved Search panel  OK")
+    print("\n  12 guards passed.")
     print("  --check: nothing written.\n")
     sys.exit(0)
+print("\n  11 guards passed (F11 is a --check guard).")
 
 (ROOT / TARGET).write_text(out, encoding="utf-8")
 STATE.write_text(json.dumps({"before": sha(base), "after": sha(out),

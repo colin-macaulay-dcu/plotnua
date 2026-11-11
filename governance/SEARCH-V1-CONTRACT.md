@@ -296,11 +296,11 @@ links to all 13 public Discoveries. Search then enhances it.
 
 | query | required behaviour |
 |---|---|
-| Powersheds | 1 supplier + 3 products (€6,129 / €6,959 / €9,199, all WITH_CAVEAT) |
+| Powersheds | 1 supplier + 3 products (€6,129 / €6,959 / €9,199), each carrying its governed tier: all HIGH_CONFIDENCE since the founder-approved Powersheds targeted update of 4 Nov 2026 recorded organisation-wide Irish availability (WITH_CAVEAT before). *Amended 11 Nov 2026.* |
 | garden office | ~4 possibilities, suppliers grouped, 140 products **grouped by supplier with counts** — never flat |
 | garden room under €20,000 | price intent parsed; restricted to price-safe products; surface says prices shown are the evidenced ones |
 | solar battery | **0 products**; returns The House as a Power Station via the map |
-| artist | 1 product — Hutsmith Type III Cabin, on `productType` — plus art possibilities; must NOT surface the retired Artist Studio Discovery |
+| artist | **0 products** — Hutsmith Type III Cabin, the only product typed "Artist Studio / Writer's Retreat Cabin", was withdrawn by the targeted update of 16 Oct 2026 and must not reappear; returns A Home for Art (DISC-024 was merged into it, 13 Oct 2026); must NOT surface the retired Artist Studio Discovery. Native `productType` matching is proved by the garden office query. *Amended 11 Nov 2026; until then: 1 product, Hutsmith Type III Cabin, plus art possibilities.* |
 | spare garden | The Borrowed Garden; must NOT return open-your-home-to-art or about |
 | parking | Hidden Cars + Driveway Income; must NOT return hidden-bins or your-home-on-screen |
 | sauna | **Garden Retreat first.** Then only saunas from the governed wellness corpus (wellness-universe-v1.json, published through the supplier publication gate), each routed to its own entry in the Garden Retreat maker explorer (`discovery-garden-retreat.html#p-<record id>`, which the explorer opens; amended 14 Oct 2026, pre-launch corrections). Zero suppliers. Auroom and every other private preview stay invisible; the incidental features mentions still cannot answer. *Amended 14 Oct 2026 by founder decision (OGNYX public integration); until then: Garden Retreat only, zero products.* |

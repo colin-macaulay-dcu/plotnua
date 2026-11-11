@@ -27,7 +27,7 @@ NEEDED = ["404.html", "index.html", "sitemap.xml", "search.css", "search.js"]
 
 F0_BLOCK = "if sha(base)[:12] != EXPECTED_BEFORE:"
 F0_OFF = "if False:"
-SPLICE = 'out = base[:m.end()] + "\\n" + REGION + base[m.end():]'
+SPLICE = 'OUT_BUILT = True'
 
 
 def mk(tmp):
@@ -62,6 +62,20 @@ def after_splice(b, stmt):
 
 
 # ------------------------------------------------------------------ the cases
+def m_f4b(b, t):
+    # re-inject after the anchor instead of in place: the pre-11-Nov behaviour
+    return after_splice(b, '_s = strip_region(out); _m = MARK_RE.search(_s); '
+                           'out = _s[:_m.end()] + "\\n" + REGION + _s[_m.end():]')
+
+def m_f11(b, t):
+    # put back the panel the 404 shipped before 11 Nov 2026
+    p = t / "404.html"
+    s = p.read_text(encoding="utf-8")
+    new = s.replace('<p class="pns-ask" id="pnsAsk">What are you looking for?</p>',
+                    '<h2 class="pns-ask">What are you looking for?</h2>', 1)
+    p.write_text(new, encoding="utf-8")
+    return new != s
+
 def m_f0(b, t):
     p = t / "404.html"
     p.write_text(p.read_text(encoding="utf-8")
@@ -121,9 +135,7 @@ def m_f8(b, t):
     return after_splice(b, 'out = out.replace("noindex", "index", 1)')
 
 def m_f9(b, t):
-    return patch(b, SPLICE,
-                 'out = base[:m.end()] + "\\n" + REGION + "\\n" + REGION '
-                 '+ base[m.end():]')
+    return after_splice(b, 'out = out.replace(REGION, REGION + "\\n" + REGION, 1)')
 
 def m_f10(b, t):
     return patch(b, 'if \'href="search.html"\' not in REGION:',
@@ -144,6 +156,8 @@ CASES = [
     ("noindex flipped to index",               "builder", "F8",  m_f8),
     ("region injected twice",                  "builder", "F9",  m_f9),
     ("search.html href replaced with #",       "builder", "F10", m_f10),
+    ("a refresh moves the region",             "builder", "F4",  m_f4b),
+    ("the shipped 404 carries a stale panel",  "input",   "F11", m_f11),
 ]
 NO_BYPASS = {"F0"}
 
