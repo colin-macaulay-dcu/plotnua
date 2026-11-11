@@ -1,5 +1,5 @@
 {
- "_about": "The Pod Factory supplier showcase (founder brief, 11 Nov 2026). Every fact is from thepodfactory.ie as read on 11 Nov 2026 (product pages, FAQ, About, Modular Homes, Metal Frame Construction and Showroom pages). Images: The Pod Factory's own photographs only, hotlinked unmodified from www.thepodfactory.ie/wp-content/uploads/; 14 chosen from 47 candidates (copies and contact sheets: Documents/PlotNua/Images/The Pod Factory/candidates-2026-11-11). Not used: photographs with identifiable people, Facebook-exported and 'Untitled design' files of uncertain origin, and a low-resolution duplicate. MEASUREMENTS (founder brief, 11 Nov 2026): Pod 52 is published as 'Measuring: 7.2m x 8.5m' with 'roughly 52 sqm of floor space', and Pod 72 as 'Measuring: 7.2m x 10.7m' with '72sqm'. The products' measurements multiply to 61.2 m² and 77.04 m²; no page says whether they are external dimensions or the areas internal floor space (checked 11 Nov 2026), so both figures are shown as published, with a note to confirm them. Built by supplier-preview-system/build-the-pod-factory-showcase.py.",
+ "_about": "The Pod Factory supplier showcase (founder brief, 11 Nov 2026). Every fact is from thepodfactory.ie as read on 11 Nov 2026 (product pages, FAQ, About, Modular Homes, Metal Frame Construction and Showroom pages). Images: The Pod Factory's own photographs only, hotlinked unmodified from www.thepodfactory.ie/wp-content/uploads/; 14 chosen from 47 candidates (copies and contact sheets: Documents/PlotNua/Images/The Pod Factory/candidates-2026-11-11). Not used: photographs with identifiable people, Facebook-exported and 'Untitled design' files of uncertain origin, and a low-resolution duplicate. MEASUREMENTS (founder brief, 11 Nov 2026): Pod 52 is published as 'Measuring: 7.2m x 8.5m' with 'roughly 52 sqm of floor space', and Pod 72 as 'Measuring: 7.2m x 10.7m' with '72sqm'. The products' measurements multiply to 61.2 m² and 77.04 m²; no page says whether they are external dimensions or the areas internal floor space (checked 11 Nov 2026), so both figures are shown as published, separately, with a neutral note that the supplier does not specify how they relate (founder refinement, 11 Nov 2026). Built by supplier-preview-system/build-the-pod-factory-showcase.py.",
  "supplier": {
   "name": "The Pod Factory",
   "atlasName": "The Pod Factory",
@@ -110,11 +110,11 @@
    "specs": [
     [
      "Size",
-     "7.2 m × 8.5 m, as published (not stated whether external)"
+     "7.2 m × 8.5 m, as published"
     ],
     [
      "Floor space",
-     "Roughly 52 m², as the supplier states. 7.2 × 8.5 m would be 61.2 m², so confirm both figures with the supplier"
+     "Roughly 52 m², as stated. The supplier does not specify how this relates to the measurements."
     ],
     [
      "Rooms",
@@ -147,11 +147,11 @@
    "specs": [
     [
      "Size",
-     "7.2 m × 10.7 m, as published (not stated whether external)"
+     "7.2 m × 10.7 m, as published"
     ],
     [
      "Floor space",
-     "72 m², as the supplier states. 7.2 × 10.7 m would be about 77 m², so confirm both figures with the supplier"
+     "72 m², as stated. The supplier does not specify how this relates to the measurements."
     ],
     [
      "Rooms",
