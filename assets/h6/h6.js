@@ -613,7 +613,9 @@
   /* ---- first visit: lettering fades in, one gentle highlight across the controls ---- */
   var seen = false; try { seen = localStorage.getItem('h6p-seen') === '1'; } catch (e) {}
   if (!seen) root.classList.add('is-hint');
-  requestAnimationFrame(function () { setTimeout(function () { if (!state.letterGone) lettering(true); }, reduce.matches ? 0 : 700); });
+  /* the cloud maps load only once the page itself has finished loading, so they never compete with the photograph */
+  function afterLoad(fn) { if (document.readyState === 'complete') fn(); else window.addEventListener('load', fn, { once: true }); }
+  afterLoad(function () { requestAnimationFrame(function () { setTimeout(function () { if (!state.letterGone) lettering(true); }, reduce.matches ? 0 : 700); }); });
   window.addEventListener('load', function () {
     /* nothing beyond the photograph and the lettering is fetched on arrival (layers load on demand; see prefetchRest) */
   });
