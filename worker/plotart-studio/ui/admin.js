@@ -237,7 +237,10 @@
     $('#inv').addEventListener('click', async () => {
       try {
         const r = await api('POST', '/api/admin/artists', { display_name: $('#i-name').value, email: $('#i-email').value, application_ref: $('#i-ref').value || null, founding: $('#i-f').checked });
-        say(r.invitation_sent ? 'Account created · invitation emailed' : 'Account created · email is off, so send the invitation by hand'); home();
+        const pf = r.prefill || {};
+        const pfNote = pf.fields && pf.fields.length ? ` · profile started from the application (${pf.fields.length} of 5 fields)`
+          : ($('#i-ref').value ? ` · profile not pre-filled: ${pf.reason || 'nothing usable in the application'}` : '');
+        say((r.invitation_sent ? 'Account created · invitation emailed' : 'Account created · email is off, so send the invitation by hand') + pfNote); home();
       } catch (e) { $('#ierr').textContent = e.message; }
     });
   }
