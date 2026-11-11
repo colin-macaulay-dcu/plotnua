@@ -988,6 +988,69 @@ async function applications(env) {
   return { connected: true, items };
 }
 
+/* ---- Profile pre-fill from a Founding 25 application (founder decision 11 Nov 2026).
+   When the founder creates an account with an application reference, the artist's working profile is started from the
+   private review copy of that application, so a selected artist doesn't type the same things twice.
+   · Only five fields: biography, medium, county, website, Instagram. Never the statement, practice, portrait,
+     "additional information", the public-county switch (county_public stays 0) or any application image.
+   · Each value goes through the same validator the artist's own Profile form uses (PROFILE); a value it refuses is
+     skipped, never altered to fit.
+   · Empty fields only: the UPDATE re-checks emptiness in SQL, so nothing the artist (or anyone) has written is replaced.
+   · It is the working copy only: nothing is public until the artist submits and the founder approves, as always.
+   · Safeguards against the wrong person's details: the application's name must match the name the founder entered,
+     and an application already linked to another account is never used again.
+   · The audit log records which fields were filled and why any were skipped (field names only, never values). */
+const PREFILL_FIELDS = ['bio', 'medium', 'county', 'website', 'instagram'];
+const PREFILL_LABEL = { bio: 'biography', medium: 'medium', county: 'county', website: 'website', instagram: 'Instagram' };
+const sameName = (a, b) => {
+  const n = s => String(s ?? '').normalize('NFKD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
+  return !!n(a) && n(a) === n(b);
+};
+function prefillValues(app) {
+  const out = {}, skipped = {};
+  const take = (field, raw) => {
+    if (raw === undefined || raw === null || raw === '') { skipped[field] = 'not in application'; return; }
+    try { const v = PROFILE[field](raw); if (v === null || v === undefined || v === '') skipped[field] = 'empty after checks'; else out[field] = v; }
+    catch (e) { skipped[field] = e instanceof Bad ? 'did not pass Studio checks' : 'could not be read'; }
+  };
+  take('bio', typeof app.bio === 'string' ? app.bio : null);
+  // the application form's "digital" is the Studio's "digital_new_media"; every other medium has the same name
+  take('medium', typeof app.medium === 'string' ? (app.medium === 'digital' ? 'digital_new_media' : app.medium) : null);
+  // the application stores counties in lower case ("wicklow"); the Studio list is capitalised ("Wicklow")
+  take('county', typeof app.region === 'string' ? (L.COUNTIES.find(c => c.toLowerCase() === app.region.toLowerCase()) || app.region) : null);
+  take('website', typeof app.website === 'string' ? app.website : null);
+  // social_link is either an @handle or a link; only an Instagram handle or instagram.com profile link is used
+  let ig = null;
+  if (typeof app.social_link === 'string') {
+    const s = app.social_link.trim(), m = s.match(/^https:\/\/(?:www\.)?instagram\.com\/([A-Za-z0-9._]{1,30})\/?(?:\?.*)?$/i);
+    if (/^@?[A-Za-z0-9._]{1,30}$/.test(s)) ig = s; else if (m) ig = m[1]; else { skipped.instagram = 'not an Instagram handle'; }
+  }
+  if (!skipped.instagram) take('instagram', ig);
+  return { out, skipped };
+}
+async function prefillFromApplication(env, artistId, ref, displayName) {
+  const done = (r) => ({ fields: [], skipped: {}, ...r });
+  if (!ref) return done({ reason: 'no application reference' });
+  if (!env.APPLICATIONS) return done({ reason: 'application storage not connected' });
+  let app = null;
+  try { const o = await env.APPLICATIONS.get(`applications/${ref}/application.json`); if (o) app = JSON.parse(await o.text()); } catch { app = null; }
+  if (!app || typeof app !== 'object') return done({ reason: 'no Studio copy of this application' });
+  if (app.application_ref && app.application_ref !== ref) return done({ reason: 'application copy does not match the reference' });
+  if (!sameName(app.artist_name, displayName)) return done({ reason: 'name on the application does not match the name entered' });
+  if (await one(env, 'SELECT id FROM artists WHERE application_ref=? AND id<>?', ref, artistId)) return done({ reason: 'application already linked to another account' });
+  const { out, skipped } = prefillValues(app);
+  const cur = await one(env, `SELECT ${PREFILL_FIELDS.join(', ')} FROM artists WHERE id=?`, artistId);
+  if (!cur) return done({ reason: 'account not found' });
+  const empty = v => v === null || v === undefined || String(v).trim() === '';
+  for (const k of Object.keys(out)) if (!empty(cur[k])) { skipped[k] = 'already filled in'; delete out[k]; }
+  const keys = Object.keys(out);
+  if (keys.length) {
+    await env.DB.prepare(`UPDATE artists SET ${keys.map(k => `${k}=CASE WHEN ${k} IS NULL OR trim(${k})='' THEN ? ELSE ${k} END`).join(', ')}, updated_at=? WHERE id=?`)
+      .bind(...keys.map(k => out[k]), now(), artistId).run();
+  }
+  return done({ fields: keys, skipped });
+}
+
 /* Founder system check: the Worker's own D1 and R2 bindings, written, read back and removed. No personal data. */
 async function selftest(env, me) {
   const out = {}, id = 'selftest-' + crypto.randomUUID();
@@ -1201,12 +1264,24 @@ async function route(req, env) {
       await env.DB.prepare('INSERT INTO artists (id, slug, email, display_name, founding, application_ref, created_at, updated_at) VALUES (?,?,?,?,?,?,?,?)')
         .bind(id, slug, email, name, b.founding === false ? 0 : 1, b.application_ref || null, now(), now()).run();
       await audit(env, me.email, 'founder', 'invite', id, { slug, founding: b.founding !== false });
+      // Start the artist's private working profile from their Founding 25 application, where there is one (11 Nov 2026).
+      let prefill = { fields: [], skipped: {}, reason: 'no application reference' };
+      if (b.application_ref) {
+        prefill = await prefillFromApplication(env, id, b.application_ref, name).catch(() => ({ fields: [], skipped: {}, reason: 'pre-fill failed' }));
+        await audit(env, me.email, 'founder', prefill.fields.length ? 'profile_prefilled_from_application' : 'profile_prefill_not_applied', id,
+          { ref: b.application_ref, fields: prefill.fields, skipped: prefill.skipped, ...(prefill.reason ? { reason: prefill.reason } : {}) });
+      }
       // Invitation email (sent only when email is switched on; otherwise the desk says to send it by hand).
       const studio = url.origin, first = name.split(' ')[0];
+      const started = prefill.fields.map(k => PREFILL_LABEL[k]);
+      const startedList = started.length > 1 ? `${started.slice(0, -1).join(', ')} and ${started[started.length - 1]}` : started[0];
+      const prefillPara = started.length
+        ? `To save you time, we've started your profile using the details from your Founding 25 application: your ${startedList}. Please review these when you sign in, and change anything you'd like before you submit your gallery. Your profile stays private until then. Your county is not shown publicly unless you choose to show it, and the images you sent with your application aren't used: you'll add your artworks in the Studio.\n\n`
+        : '';
       const r = await send(env, { to: email, replyTo: 'hello@plotnua.ie', subject: 'Your PlotArt Studio is ready',
-        text: `Hello ${first},\n\nWelcome to PlotArt. Your PlotArt Studio is ready: it's where you build your artist gallery, add your works and keep them up to date.\n\nSign in here: ${studio}\n\nYour PlotArt Studio is registered to:\n\n${email}\n\nPlease use this exact email address when signing in. If you sign in with a different address, even another one of your own, the Studio won't recognise you and you won't be able to reach your gallery. Each time you sign in, you'll be emailed a one-time code; there's no password.\n\nYour gallery will only be published once you've submitted it and PlotArt has approved it.\n\nIf you have any questions, just reply to this email.\n\nColin\nPlotArt · part of PlotNua` }).catch(() => ({ sent: false }));
+        text: `Hello ${first},\n\nWelcome to PlotArt. Your PlotArt Studio is ready: it's where you build your artist gallery, add your works and keep them up to date.\n\nSign in here: ${studio}\n\nYour PlotArt Studio is registered to:\n\n${email}\n\nPlease use this exact email address when signing in. If you sign in with a different address, even another one of your own, the Studio won't recognise you and you won't be able to reach your gallery. Each time you sign in, you'll be emailed a one-time code; there's no password.\n\n${prefillPara}Your gallery will only be published once you've submitted it and PlotArt has approved it.\n\nIf you have any questions, just reply to this email.\n\nColin\nPlotArt · part of PlotNua` }).catch(() => ({ sent: false }));
       await audit(env, me.email, 'founder', r.sent ? 'invitation_sent' : 'invitation_not_sent', id, {});
-      return json({ ok: true, id, slug, invitation_sent: !!r.sent });
+      return json({ ok: true, id, slug, invitation_sent: !!r.sent, prefill: { fields: prefill.fields, skipped: prefill.skipped, reason: prefill.reason || null } });
     }
     if ((mm = p.match(/^\/api\/admin\/artists\/(a[0-9a-z]+)\/email$/)) && m === 'POST') {
       // PLOTART-STUDIO-ACCESS-002: the founder corrects an artist's sign-in email. Founder-only (this whole block is
