@@ -270,5 +270,17 @@
     "#p-rec45XRwQ4qqGCQbv"
    ]
   }
+ ],
+ "guideReferences": [
+  {
+   "guide": "Garden Offices in Ireland (garden-offices-ireland.html)",
+   "declared": "2026-11-11, founder approval 'SEO Opportunity 1' (Garden-Room Organic Search Assessment, 11 Nov 2026): one contextual sentence after the price-guide reference, linking the hub to the existing Garden Offices guide. No image, no card, no other copy changed.",
+   "blocks": [
+    "If the room is mainly for work, our guide to garden offices in Ireland covers the practical questions to settle before choosing one."
+   ],
+   "links": [
+    "garden-offices-ireland.html"
+   ]
+  }
  ]
 }

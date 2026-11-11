@@ -179,6 +179,8 @@ CSS = """<style>
 .aw-price span{ display:block; font-size:12px; color:var(--stone); margin-top:4px; line-height:1.4; }
 .aw-src{ margin:0; font-size:12px; color:var(--stone); }
 .aw-src a{ color:inherit; }
+.aw-guide{ margin:0; font-size:14px; line-height:1.55; color:var(--stone); }
+.aw-guide a{ color:var(--ink); text-decoration:underline; text-decoration-color:var(--line); text-underline-offset:3px; }
 .aw-costs{ display:grid; grid-template-columns:repeat(auto-fill, minmax(280px,1fr)); gap:0 clamp(20px,3vw,44px); }
 .aw-cost{ border-top:1px solid var(--line); padding:16px 0 20px; }
 .pn-pd .aw .aw-cost h3, .pn-pd .aw .aw-note h3{ margin:0 0 8px; font-family:var(--sans); font-size:11.5px; font-weight:700; letter-spacing:.18em; text-transform:uppercase; color:var(--bronze); line-height:1.4; }
@@ -267,9 +269,14 @@ def product(p, I, used):
     rest = (f'<details class="aw-more" open><summary>More details</summary><dl class="aw-spec">{"".join(row(kv) for kv in more)}</dl></details>'
             if more else "")
     note = f'<p class="aw-pnote">{E(p["priceNote"])}</p>' if p.get("priceNote") else ""
+    # SEO Opportunity 1 (founder approval, 11 Nov 2026): an internal PlotNua guide link, only on a
+    # product whose own published uses support it (Pod 17: "Home office", supplier's garden-office page).
+    g = p.get("guide")
+    guide = (f'<p class="aw-guide">{E(g["lead"])} <a href="{E(g["href"])}">{E(g["text"])}</a></p>'
+             if g else "")
     return (f'<article class="aw-prod" aria-label="{E(p["name"])}">{img}<h4>{E(p["name"])}</h4>'
             f'<p class="aw-type">{E(p["kind"])}</p>'
-            f'<p class="aw-sum">{E(p["summary"])}</p>'
+            f'<p class="aw-sum">{E(p["summary"])}</p>{guide}'
             f'<div class="aw-price">{price_html(p)}</div>{note}'
             f'<dl class="aw-spec">{"".join(row(kv) for kv in key)}</dl>{rest}'
             f'<p class="aw-src">As published by {E(DATA["supplier"]["name"])} &middot; <a href="{E(p["source"])}" rel="noopener" target="_blank">product page</a> &middot; checked {int(p["checked"][8:10])} Nov 2026</p></article>')

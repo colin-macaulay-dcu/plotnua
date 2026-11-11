@@ -68,7 +68,12 @@
    "checked": "2026-11-11",
    "images": [
     "pf-02-pod17-doors-open"
-   ]
+   ],
+   "guide": {
+    "lead": "Planning it as a garden office?",
+    "text": "Read PlotNua’s guide to garden offices in Ireland",
+    "href": "../garden-offices-ireland.html"
+   }
   },
   {
    "category": "rooms",
