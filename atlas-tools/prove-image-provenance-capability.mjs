@@ -730,4 +730,17 @@ for (const c of CASES) {
 console.log('-'.repeat(74));
 console.log(`${CASES.length} mutations, ${proved} proved capable, `
             + `${broken} not proved\n`);
-process.exit(broken ? 1 : 0);
+
+/* HOSTED SUPPLIER IMAGES (11 Nov 2026). P4 and P4b are also driven against the
+   REAL hosted supplier images (NOOK Prefab's), with valid, withdrawn, expired,
+   missing and mislabelled cases: atlas-tools/prove-hosted-supplier-grants.mjs.
+   Run from here so the gate's existing step carries it without a workflow change. */
+let hosted = 0;
+try {
+  process.stdout.write(execFileSync('node', [join(HERE, 'prove-hosted-supplier-grants.mjs')],
+    { encoding: 'utf8', maxBuffer: 16 * 1024 * 1024 }));
+} catch (e) {
+  process.stdout.write((e.stdout || '') + (e.stderr || ''));
+  hosted = 1;
+}
+process.exit(broken || hosted ? 1 : 0);

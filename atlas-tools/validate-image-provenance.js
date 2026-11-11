@@ -679,7 +679,23 @@ console.log('-'.repeat(74));
 {
   /* Routed through the EXISTING rights manifest's own vocabulary. This guard
      does not invent a second rights rule; it checks that the pointer lands
-     on a row the rights gate already recognises. */
+     on a row the rights gate already recognises.
+
+     STRENGTHENED 11 Nov 2026 (founder brief, after the first hosted supplier
+     images, NOOK Prefab): resolving to a row is not enough, because the
+     rights gate never sees a local file. A hosted supplier image is accepted
+     only while its ONE resolving row is a live grant that covers hosting:
+       - the outcome is one of the gate's live-grant values (LIVE_GRANTS);
+       - no withdrawal_effective_at (a withdrawal always wins, exactly as in
+         validate-image-rights.js);
+       - not expired: permission_expires_on / permission.expires_on, when
+         present, must be an ISO date later than today; a malformed date fails;
+       - public_visibility is PUBLISHABLE (the publication gate's derivation:
+         permission state, 'feature' scope, review state);
+       - permission.state is GRANTED and permission.scope includes both
+         'imagery' and 'hosting' -- permission to show a supplier's images
+         from its own site is not permission for PlotNua to host copies.
+     Nothing here grants anything (P11): every value is read from the row. */
   const sup = records.filter(r => r.class === 'SUPPLIER_IMAGE');
   if (!sup.length) {
     ok('P4 a SUPPLIER_IMAGE row resolves to a live grant',
@@ -695,17 +711,74 @@ console.log('-'.repeat(74));
         : (Object.values(d).find(v => Array.isArray(v) && v[0]
                                       && typeof v[0] === 'object') || []);
     } catch { /* handled below */ }
-    const codes = new Set(rows.map(r => r.organisation_code).filter(Boolean));
-    const refs = new Set(rows.map(r => r.atlas_permission_ref).filter(Boolean));
-    const broken = sup.filter(r => {
+    const today = new Date().toISOString().slice(0, 10);
+    const ISO = /^\d{4}-\d{2}-\d{2}$/;
+    const why = new Map();      // asset -> first reason
+    for (const r of sup) {
       const x = r.rights_ref || {};
-      return !(codes.has(x.organisation_code) && refs.has(x.atlas_permission_ref));
-    });
+      const hits = rows.filter(w => w.organisation_code && w.organisation_code === x.organisation_code
+                                    && w.atlas_permission_ref === x.atlas_permission_ref);
+      const fail = m => { if (!why.has(r.asset)) why.set(r.asset, m); };
+      if (hits.length !== 1) { fail(`resolves to ${hits.length} grant rows`); continue; }
+      const w = hits[0];
+      const perm = (w.permission && typeof w.permission === 'object') ? w.permission : {};
+      const scope = Array.isArray(perm.scope) ? perm.scope : [];
+      const expiries = [w.permission_expires_on, perm.expires_on].filter(v => v !== undefined && v !== null && v !== '');
+      if (!LIVE_GRANTS.includes(w.permission_outcome)) fail(`grant is not live (${w.permission_outcome || 'no outcome'})`);
+      else if (w.withdrawal_effective_at) fail(`grant withdrawn (${w.withdrawal_effective_at})`);
+      else if (expiries.some(v => !ISO.test(String(v)))) fail('grant has a malformed expiry date');
+      else if (expiries.some(v => String(v) <= today)) fail(`grant expired (${expiries.join(', ')})`);
+      else if (w.public_visibility !== 'PUBLISHABLE') fail(`grant is not publishable (${w.public_visibility || 'no public_visibility'})`);
+      else if (perm.state !== 'GRANTED') fail(`permission state is ${perm.state || 'missing'}`);
+      else if (!scope.includes('imagery') || !scope.includes('hosting')) fail('permission scope does not cover hosting the imagery');
+    }
+    const broken = [...why.entries()];
     broken.length
       ? bad('P4 a SUPPLIER_IMAGE row resolves to a live grant',
-            `${broken.length} unresolved`)
-      : ok('P4 a SUPPLIER_IMAGE row resolves to a live grant', `${sup.length} checked`);
+            `${broken.length} refused: ${broken.slice(0, 3).map(([a, m]) => a + ' (' + m + ')').join('; ')}`)
+      : ok('P4 a SUPPLIER_IMAGE row resolves to a live grant',
+           `${sup.length} checked: live, unexpired, publishable, hosting in scope`);
   }
+}
+
+/* ── P4b · a hosted supplier image keeps its Photograph / Visualisation label ── */
+{
+  /* 11 Nov 2026. A supplier's photograph and a supplier's visualisation are
+     different claims. Each SUPPLIER_IMAGE record carries supplier_label
+     ('Photograph' or 'Visualisation'), and wherever a page shows the asset
+     in an <img> or <picture>, that element carries the same label in
+     data-kind. A missing or contradicting label fails. (A share-image meta
+     tag is not a shown image and is not checked here.) */
+  const sup = records.filter(r => r.class === 'SUPPLIER_IMAGE');
+  const LABELS = ['Photograph', 'Visualisation'];
+  const problems = [];
+  const bodies = new Map();
+  const bodyOf = page => {
+    if (!bodies.has(page)) {
+      let b = '';
+      try { b = readFileSync(join(ROOT, page), 'utf8').replace(/<!--[\s\S]*?-->/g, ' '); } catch { b = ''; }
+      bodies.set(page, b);
+    }
+    return bodies.get(page);
+  };
+  for (const r of sup) {
+    if (!LABELS.includes(r.supplier_label)) { problems.push(`${r.asset}: supplier_label ${JSON.stringify(r.supplier_label)}`); continue; }
+    for (const page of found.get(r.asset) || []) {
+      const body = bodyOf(page);
+      const blocks = [...body.matchAll(/<picture\b[\s\S]*?<\/picture>|<img\b[^>]*>/gi)].map(m => m[0])
+        .filter(b => b.includes(r.asset));
+      for (const b of blocks) {
+        const kinds = [...b.matchAll(/\bdata-kind\s*=\s*["']([^"']+)["']/gi)].map(m => m[1]);
+        if (!kinds.length) problems.push(`${r.asset} on ${page}: no data-kind label`);
+        else if (kinds.some(k => k !== r.supplier_label)) problems.push(`${r.asset} on ${page}: shown as ${kinds.join('/')}, recorded as ${r.supplier_label}`);
+      }
+    }
+  }
+  !sup.length
+    ? ok('P4b a hosted supplier image keeps its Photograph / Visualisation label', 'no SUPPLIER_IMAGE rows yet')
+    : problems.length
+      ? bad('P4b a hosted supplier image keeps its Photograph / Visualisation label', `${problems.length}: ${problems.slice(0, 3).join('; ')}`)
+      : ok('P4b a hosted supplier image keeps its Photograph / Visualisation label', `${sup.length} checked`);
 }
 
 /* ── P5 · an AI_ILLUSTRATION is fully declared ────────────────────────── */
