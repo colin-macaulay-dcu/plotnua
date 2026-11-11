@@ -159,8 +159,20 @@ ok("Not every garden-room price covers the same" in litg and b.COMPARE_EXPLANATI
 # ---- M6
 def at(rev, f):
     return subprocess.run(["git", "show", "%s:%s" % (rev, f)], cwd=ROOT, capture_output=True).stdout
-ok(at(BASE, "atlas-tools/price-presentation-holds.json") == (ROOT / "atlas-tools/price-presentation-holds.json").read_bytes(),
-   "M6 price-presentation holds file identical to %s" % BASE)
+# 11 Nov 2026 (founder approval): exactly six holds are added (figure withheld) with their decision
+# note; every earlier hold and every other byte of the register's content is unchanged.
+SIX_2026_11_11 = {"recKHXaApIugjOKti", "recUs4gexxlfkaiUj", "reciolethPMEn50gQ", "recUnUAWq0TWkNO5C",
+                  "recBVDyal8VGGVEZM", "reczxM0lggLXTBCdU"}
+_hc = json.loads((ROOT / "atlas-tools/price-presentation-holds.json").read_text(encoding="utf-8"))
+_new = [h for h in _hc["holds"] if h["productId"] in SIX_2026_11_11]
+_hc["holds"] = [h for h in _hc["holds"] if h["productId"] not in SIX_2026_11_11]
+_hc.pop("decision_2026_11_11", None)
+ok(json.loads(at(BASE, "atlas-tools/price-presentation-holds.json")) == _hc,
+   "M6 price-presentation holds identical to %s apart from the six approved 11 Nov 2026 holds" % BASE)
+ok(sorted(h["productId"] for h in _new) == sorted(SIX_2026_11_11) and all(h.get("figure") == "withheld" for h in _new)
+   and all(U[pid].get("priceState") == "held" and not U[pid].get("priceFreshUntil") and U[pid].get("priceSafeForMatching") is False
+           for pid in SIX_2026_11_11),
+   "M6 the six 11 Nov 2026 holds are present, figure withheld, held and out of matching")
 base_u = {p["productId"]: p for p in json.loads(at(BASE, "garden-room-recommendation-universe-v1.json"))["products"]}
 held = [p for p, x in base_u.items() if (x.get("priceEvidence") or {}).get("presentationHold")]
 # Stage 3D-D2 (founder approval 7 Nov 2026) adds the R-MATCH presentation keys
