@@ -1,0 +1,75 @@
+
+/* NOOK Prefab supplier showcase - scoped to .nk (CSS from the live The Mobile Pods showcase). Uses the site's --p4-* identity tokens. Supplier
+   images are shown WHOLE: natural aspect ratio, never cropped, filtered, rounded or overlaid. */
+.nk{ --ink:var(--p4-ivory,#F2EBE0); --soft:var(--p4-lime,#E7DED0); --stone:var(--p4-stone,#C2BDB5);
+  --bronze:var(--p4-bronze-text,#B39272); --line:var(--p4-line2,#4A4B4F); --card:var(--p4-deep,#2C2E30);
+  --well:var(--p4-well,#2D2E31); --serif:var(--p4-serif,'Instrument Serif',Georgia,serif);
+  --sans:var(--p4-sans,'Hanken Grotesk',system-ui,sans-serif);
+  color:var(--soft); font-family:var(--sans); }
+.nk *{ box-sizing:border-box; }
+.nk-w{ max-width:1240px; margin:0 auto; padding:0 clamp(18px,3.4vw,44px); }
+.nk-bar{ border-bottom:1px solid var(--line); }
+.nk-bar .nk-w{ display:flex; justify-content:space-between; align-items:center; gap:16px; padding-top:16px; padding-bottom:16px; }
+.nk-brand{ font-family:var(--serif); font-size:26px; color:var(--ink); text-decoration:none; letter-spacing:-.01em; }
+.nk-back{ font-size:14px; color:var(--soft); text-decoration:none; border-bottom:1px solid var(--line); padding-bottom:2px; }
+.nk-back:hover, .nk-brand:hover{ color:var(--ink); }
+.nk-hold{ border-bottom:1px solid var(--line); font-size:12.5px; letter-spacing:.04em; color:var(--stone); }
+.nk-hold .nk-w{ padding-top:12px; padding-bottom:12px; display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
+.nk-hold b{ font-weight:700; letter-spacing:.16em; text-transform:uppercase; font-size:11px; color:var(--bronze); }
+.nk-k{ margin:0 0 18px; font-size:11.5px; font-weight:700; letter-spacing:.2em; text-transform:uppercase; color:var(--bronze); }
+.nk-hero{ padding:clamp(40px,7vw,96px) 0 clamp(36px,5vw,72px); }
+.nk-hero .nk-w{ display:grid; grid-template-columns:minmax(0,5fr) minmax(0,6fr); gap:clamp(28px,5vw,80px); align-items:center; }
+.nk-h1{ font-family:var(--serif); font-weight:400; color:var(--ink); font-size:clamp(44px,6.4vw,92px); line-height:1.02; letter-spacing:-.01em; margin:0 0 22px; }
+.nk-lede{ font-size:clamp(17px,1.5vw,20px); line-height:1.6; max-width:34ch; margin:0 0 28px; color:var(--ink); }
+.nk-meta{ list-style:none; margin:0; padding:18px 0 0; border-top:1px solid var(--line); display:flex; flex-wrap:wrap; gap:8px 26px; font-size:13.5px; color:var(--stone); }
+.nk-fig{ margin:0; }
+.nk-fig img{ display:block; width:100%; height:auto; background:var(--well); }
+.nk-hero .nk-fig img{ max-height:78vh; width:auto; max-width:100%; margin-left:auto; }
+.nk-cap{ margin:10px 0 0; font-size:12.5px; line-height:1.5; color:var(--stone); display:flex; gap:10px; flex-wrap:wrap; }
+.nk-cap .nk-kind{ font-weight:700; letter-spacing:.14em; text-transform:uppercase; font-size:10.5px; color:var(--bronze); padding-top:2px; }
+.nk-cap a{ color:inherit; text-decoration:underline; text-decoration-color:var(--line); text-underline-offset:3px; }
+.nk-hero .nk-cap{ justify-content:flex-end; }
+.nk-sec{ padding:clamp(48px,7vw,104px) 0; border-top:1px solid var(--line); }
+.nk-h2{ font-family:var(--serif); font-weight:400; color:var(--ink); font-size:clamp(32px,4vw,54px); line-height:1.08; margin:0 0 18px; }
+.nk-p{ font-size:17px; line-height:1.75; max-width:62ch; margin:0; }
+.nk-head{ display:grid; grid-template-columns:minmax(0,5fr) minmax(0,6fr); gap:clamp(20px,5vw,80px); align-items:end; margin-bottom:clamp(30px,4vw,56px); }
+/* the collection: masonry by columns, so every photograph keeps its own shape */
+.nk-col{ columns:3 300px; column-gap:clamp(16px,2vw,28px); }
+.nk-col .nk-fig{ break-inside:avoid; margin:0 0 clamp(26px,3vw,40px); }
+/* models */
+.nk-models{ display:grid; gap:clamp(18px,2vw,28px); }
+.nk-model{ display:grid; grid-template-columns:minmax(0,7fr) minmax(0,5fr); gap:clamp(20px,4vw,56px); background:var(--card); border:1px solid var(--line); border-radius:24px; padding:clamp(22px,3.4vw,44px); }
+.nk-model.no-plan{ grid-template-columns:1fr; }
+.nk-model h3{ font-family:var(--serif); font-weight:400; color:var(--ink); font-size:clamp(30px,3.2vw,42px); margin:0 0 6px; line-height:1.1; }
+.nk-model .nk-kind2{ margin:0 0 16px; font-size:11.5px; font-weight:700; letter-spacing:.18em; text-transform:uppercase; color:var(--bronze); }
+.nk-model .nk-sum{ font-size:16.5px; line-height:1.65; margin:0 0 22px; max-width:56ch; color:var(--ink); }
+.nk-spec{ margin:0; display:grid; grid-template-columns:minmax(110px,150px) 1fr; border-top:1px solid var(--line); }
+.nk-spec dt, .nk-spec dd{ padding:11px 0; border-bottom:1px solid var(--line); margin:0; font-size:14.5px; line-height:1.55; }
+.nk-spec dt{ font-size:11px; font-weight:700; letter-spacing:.14em; text-transform:uppercase; color:var(--stone); padding-top:14px; padding-right:14px; }
+.nk-src{ margin:14px 0 0; font-size:12.5px; color:var(--stone); }
+.nk-src a{ color:inherit; }
+.nk-plan{ align-self:start; background:#F4F2EE; border-radius:14px; padding:10px; }
+.nk-plan img{ background:transparent; }
+.nk-plan .nk-cap{ color:#55565A; padding:0 4px 2px; }
+.nk-plan .nk-cap .nk-kind{ color:#7A6248; }
+.nk-notes{ display:grid; grid-template-columns:1fr 1fr; gap:clamp(18px,3vw,44px); margin-top:clamp(28px,3vw,44px); }
+.nk-note{ border-top:1px solid var(--line); padding-top:16px; }
+.pn-pd .nk .nk-note h3{ margin:0 0 8px; font-family:var(--sans); line-height:1.4; font-size:11.5px; font-weight:700; letter-spacing:.18em; text-transform:uppercase; color:var(--bronze); }
+.nk-note p{ margin:0; font-size:15px; line-height:1.7; }
+.nk-well{ display:grid; grid-template-columns:minmax(0,5fr) minmax(0,7fr); gap:clamp(24px,4vw,64px); align-items:center; }
+.nk-well .nk-p{ max-width:52ch; }
+.nk-price{ display:inline-block; margin:22px 0 10px; padding:10px 18px; border:1px solid var(--line); border-radius:999px; font-size:12px; font-weight:700; letter-spacing:.16em; text-transform:uppercase; color:var(--bronze); }
+.nk-pnote{ margin:0; font-size:14px; line-height:1.6; color:var(--stone); max-width:52ch; }
+.nk-also{ margin-top:22px; font-size:15px; color:var(--stone); }
+/* the guided route reuses the Discovery two-option component (pn-two-option.css) as-is */
+.nk-route .pn-two{ max-width:none; }
+.nk-fine{ margin:26px 0 0; font-size:13.5px; line-height:1.7; color:var(--stone); max-width:78ch; }
+.nk-rec{ padding:34px 0 64px; border-top:1px solid var(--line); font-size:13.5px; line-height:1.7; color:var(--stone); }
+.nk-rec p{ margin:0 0 6px; max-width:80ch; }
+.nk-rec a{ color:inherit; }
+@media (max-width:900px){
+  .nk-hero .nk-w, .nk-head, .nk-model, .nk-notes, .nk-well{ grid-template-columns:1fr; }
+  .nk-hero .nk-fig img{ max-height:none; width:100%; }
+  .nk-hero .nk-cap{ justify-content:flex-start; }
+}
+@media (max-width:560px){ .nk-spec{ grid-template-columns:1fr; } .nk-spec dt{ border-bottom:0; padding-bottom:0; } }

@@ -1300,6 +1300,57 @@
       },
       "public_visibility": "PUBLISHABLE",
       "hold_reason": null
+    },
+    {
+      "organisation_record": "recmBdXALBPGk5wSI",
+      "organisation_code": "ORG-000209",
+      "organisation_name": "NOOK Prefab (espacio NOOK)",
+      "permission_outcome": "Granted with Conditions — Founder Confirmed",
+      "permitted_domain": "nookprefab.com",
+      "required_credit": "Image: NOOK Prefab",
+      "permitted_delivery_hosts": null,
+      "evidence": "Written permission from NOOK Prefab's co-founder by email, 11 November 2026 (Gmail 1a1ca03c0388c1c8, thread 1a0b14742f930b41): \"You're welcome to host the photographs and visualisations we sent on PlotNua once the page goes live.\" The images are the six NOOK selected and sent to PlotNua by email on 6 November 2026 (Gmail 1a1b08cf25c1fcb1). Recorded in Atlas Image Permission Outreach OUTREACH-NOOK-PREFAB-20261002 (receUDY5Nh2GXZOwh) as Granted with Conditions — Founder Confirmed.",
+      "conditions": [
+        "Only the six images NOOK supplied on 6 November 2026 (1 photograph, 5 architectural visualisations), hosted on plotnua.ie as optimised copies (resize and recompress only, metadata stripped).",
+        "Credit 'Image: NOOK Prefab' on every image use, linked to nookprefab.com; visualisations always labelled 'Visualisation'.",
+        "If NOOK asks for any image to be changed or removed, PlotNua does so promptly."
+      ],
+      "note": "HOSTED, NOT HOTLINKED: the only supplier in this file whose images PlotNua hosts itself, because NOOK supplied the files by email and gave written permission to host them. The rights gate does not examine local files; each hosted copy is declared in image-provenance-records.json as a SUPPLIER_IMAGE whose rights_ref is this record (ORG-000209 / OUTREACH-NOOK-PREFAB-20261002), so the provenance guard binds its bytes (P2) and requires each copy to point at this record (P4). Exercised on suppliers/nook-prefab.html (18 files: each of the 6 images as a 1600 px JPEG, a 1600 px WebP and an 800 px WebP, under assets/suppliers/nook-prefab/; the originals' hashes are in supplier-preview-system/showcases/nook-prefab/image-copies.json). REMOVAL: delete the image from build-nook-prefab-showcase.py, its three files and their provenance records, and rebuild. WITHDRAWAL: set permission_outcome to 'Withdrawn / Superseded' and regenerate; the showcase builder then refuses to build, and the six images must be removed as above (P4 checks that a hosted copy resolves to this record, not that the grant is still live). COMMERCIAL: referral terms have been proposed by PlotNua and NOT agreed by NOOK; this grant implies none, and the page shows none.",
+      "atlas_permission_record": "receUDY5Nh2GXZOwh",
+      "atlas_permission_ref": "OUTREACH-NOOK-PREFAB-20261002",
+      "permission_date": "2026-11-11",
+      "permission": {
+        "state": "GRANTED",
+        "ref": "OUTREACH-NOOK-PREFAB-20261002",
+        "record": "receUDY5Nh2GXZOwh",
+        "date": "2026-11-11",
+        "scope": [
+          "feature",
+          "imagery",
+          "product-information",
+          "hosting"
+        ],
+        "conditions": [
+          "credit",
+          "link-back",
+          "supplied-images-only",
+          "label-visualisations",
+          "remove-on-request"
+        ],
+        "asked": "NOOK agreed on 5 November 2026 to be on PlotNua, choosing the images itself and asking to see a preview first; PlotNua sent the private preview on 6 November 2026.",
+        "answered": "\"You're welcome to host the photographs and visualisations we sent on PlotNua once the page goes live.\" (NOOK Prefab, email, 11 November 2026)",
+        "note": "Recorded verbatim from the supplier's email."
+      },
+      "listing_review": {
+        "state": "CONFIRMED",
+        "requested_by": "supplier",
+        "requested_in": "Gmail 1a1ac3eef830c361, 5 Nov 2026: \"we'll pick the images, and we'd like to see a preview before anything goes live\"",
+        "confirmed_at": "2026-11-11",
+        "confirmed_in": "Gmail 1a1ca03c0388c1c8",
+        "note": "NOOK reviewed the private preview sent on 6 Nov 2026 and approved publication on 11 Nov 2026 with one change, the build time to read 8–13 weeks: \"Once that's in, it's good to go from our side.\" The published page carries that change."
+      },
+      "public_visibility": "PUBLISHABLE",
+      "hold_reason": null
     }
   ]
 }

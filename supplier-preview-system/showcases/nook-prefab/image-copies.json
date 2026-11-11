@@ -1,0 +1,89 @@
+{
+  "_about": "NOOK Prefab's six supplied images (Gmail 1a1b08cf25c1fcb1, 6 Nov 2026) and the optimised copies PlotNua hosts under assets/suppliers/nook-prefab/ (resize + recompress, metadata stripped; no crop, no other edit). 'sha256' is the supplier's ORIGINAL file, kept unmodified off-repository. Hosting permission: NOOK Prefab, 11 Nov 2026 (image-rights-records.json, ORG-000209).",
+  "images": {
+    "nook-10-installed-spain": {
+      "original": "NOOK-10-installed-Spain.jpg",
+      "sha256": "b4d111914637ecd3b9d3896ee5b1c790327daac7118b3c5c9944e21db5b949df",
+      "size": [
+        2000,
+        1333
+      ],
+      "gps_in_original": false,
+      "copies": {
+        "assets/suppliers/nook-prefab/nook-10-installed-spain-800.webp": 67328,
+        "assets/suppliers/nook-prefab/nook-10-installed-spain-1600.webp": 233204,
+        "assets/suppliers/nook-prefab/nook-10-installed-spain-1600.jpg": 298737
+      }
+    },
+    "nook-20-black-home-office": {
+      "original": "NOOK-20-black-home-office.jpg",
+      "sha256": "b0f1b2079f3f41e94f860b5889ad2a2638695a6ab3017eedc212ecb0c77d2c0d",
+      "size": [
+        2000,
+        2000
+      ],
+      "gps_in_original": false,
+      "copies": {
+        "assets/suppliers/nook-prefab/nook-20-black-home-office-800.webp": 152408,
+        "assets/suppliers/nook-prefab/nook-20-black-home-office-1600.webp": 467232,
+        "assets/suppliers/nook-prefab/nook-20-black-home-office-1600.jpg": 540235
+      }
+    },
+    "nook-20-interior-bedroom-bathroom": {
+      "original": "NOOK-20-interior-bedroom-bathroom.jpg",
+      "sha256": "a36f096f00a8f78b9fe8b7416463ca1a7fbe70a0d7f9bbd897cc3fa31d5a5d93",
+      "size": [
+        2000,
+        1125
+      ],
+      "gps_in_original": false,
+      "copies": {
+        "assets/suppliers/nook-prefab/nook-20-interior-bedroom-bathroom-800.webp": 45504,
+        "assets/suppliers/nook-prefab/nook-20-interior-bedroom-bathroom-1600.webp": 151948,
+        "assets/suppliers/nook-prefab/nook-20-interior-bedroom-bathroom-1600.jpg": 223106
+      }
+    },
+    "nook-20-interior-kitchen-bathroom": {
+      "original": "NOOK-20-interior-kitchen-bathroom.jpg",
+      "sha256": "2e82b7b619967ba7a20eded8df86bb979abef07ed89d477bb6db4005577e03de",
+      "size": [
+        2000,
+        1125
+      ],
+      "gps_in_original": false,
+      "copies": {
+        "assets/suppliers/nook-prefab/nook-20-interior-kitchen-bathroom-800.webp": 48270,
+        "assets/suppliers/nook-prefab/nook-20-interior-kitchen-bathroom-1600.webp": 152490,
+        "assets/suppliers/nook-prefab/nook-20-interior-kitchen-bathroom-1600.jpg": 227572
+      }
+    },
+    "nook-20-interior-window-seat": {
+      "original": "NOOK-20-interior-window-seat.jpg",
+      "sha256": "27c7d8bd0a4b898dbf2563dc5e4aed69b29f1268486d3e84b471de23a29e801f",
+      "size": [
+        2000,
+        1125
+      ],
+      "gps_in_original": false,
+      "copies": {
+        "assets/suppliers/nook-prefab/nook-20-interior-window-seat-800.webp": 49506,
+        "assets/suppliers/nook-prefab/nook-20-interior-window-seat-1600.webp": 156110,
+        "assets/suppliers/nook-prefab/nook-20-interior-window-seat-1600.jpg": 231451
+      }
+    },
+    "nook-20-oak-garden-room": {
+      "original": "NOOK-20-oak-garden-room.jpg",
+      "sha256": "13ad711ef5de32084f79073c12316d0c87a36917041f39f7ca1cfaac042b9499",
+      "size": [
+        2000,
+        2000
+      ],
+      "gps_in_original": false,
+      "copies": {
+        "assets/suppliers/nook-prefab/nook-20-oak-garden-room-800.webp": 174232,
+        "assets/suppliers/nook-prefab/nook-20-oak-garden-room-1600.webp": 548376,
+        "assets/suppliers/nook-prefab/nook-20-oak-garden-room-1600.jpg": 613022
+      }
+    }
+  }
+}

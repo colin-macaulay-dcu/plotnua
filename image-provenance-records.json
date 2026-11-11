@@ -12876,6 +12876,294 @@
       "source_sha256": "65bdc3e3060f6f288639cbfddc31a76d163e3eab97413ed64f0cc8139d31749f",
       "subject": "artwork",
       "work_slug": "sweat-from-the-sun-tears-from"
+    },
+    {
+      "asset": "assets/suppliers/nook-prefab/nook-10-installed-spain-1600.jpg",
+      "sha256": "9809b2d884b36970bb5637597484cdc5df8222deea1a718bfb73761c881cf137",
+      "bytes": 298737,
+      "pixels": [
+        1600,
+        1066
+      ],
+      "class": "SUPPLIER_IMAGE",
+      "rights_ref": {
+        "organisation_code": "ORG-000209",
+        "atlas_permission_ref": "OUTREACH-NOOK-PREFAB-20261002"
+      },
+      "supplier_label": "Photograph",
+      "source": "NOOK Prefab's supplied file NOOK-10-installed-Spain.jpg (sha256 b4d111914637ecd3…, emailed 6 Nov 2026); PlotNua web copy: resize and recompress only, metadata stripped, no crop or other edit."
+    },
+    {
+      "asset": "assets/suppliers/nook-prefab/nook-10-installed-spain-1600.webp",
+      "sha256": "acab1886e1c13002fda9261f6e33ff169b132163e93cefbbe4ebae5355ee9317",
+      "bytes": 233204,
+      "pixels": [
+        1600,
+        1066
+      ],
+      "class": "SUPPLIER_IMAGE",
+      "rights_ref": {
+        "organisation_code": "ORG-000209",
+        "atlas_permission_ref": "OUTREACH-NOOK-PREFAB-20261002"
+      },
+      "supplier_label": "Photograph",
+      "source": "NOOK Prefab's supplied file NOOK-10-installed-Spain.jpg (sha256 b4d111914637ecd3…, emailed 6 Nov 2026); PlotNua web copy: resize and recompress only, metadata stripped, no crop or other edit."
+    },
+    {
+      "asset": "assets/suppliers/nook-prefab/nook-10-installed-spain-800.webp",
+      "sha256": "e3968dbcb2dedf8796e155d6173b257c87e928d091f39bd84ab086d2b1fa6278",
+      "bytes": 67328,
+      "pixels": [
+        800,
+        533
+      ],
+      "class": "SUPPLIER_IMAGE",
+      "rights_ref": {
+        "organisation_code": "ORG-000209",
+        "atlas_permission_ref": "OUTREACH-NOOK-PREFAB-20261002"
+      },
+      "supplier_label": "Photograph",
+      "source": "NOOK Prefab's supplied file NOOK-10-installed-Spain.jpg (sha256 b4d111914637ecd3…, emailed 6 Nov 2026); PlotNua web copy: resize and recompress only, metadata stripped, no crop or other edit."
+    },
+    {
+      "asset": "assets/suppliers/nook-prefab/nook-20-black-home-office-1600.jpg",
+      "sha256": "1020175e2d3559a2d9981197746506dcb5109e26c629fbc2e9455e142ef722ed",
+      "bytes": 540235,
+      "pixels": [
+        1600,
+        1600
+      ],
+      "class": "SUPPLIER_IMAGE",
+      "rights_ref": {
+        "organisation_code": "ORG-000209",
+        "atlas_permission_ref": "OUTREACH-NOOK-PREFAB-20261002"
+      },
+      "supplier_label": "Visualisation",
+      "source": "NOOK Prefab's supplied file NOOK-20-black-home-office.jpg (sha256 b0f1b2079f3f41e9…, emailed 6 Nov 2026); PlotNua web copy: resize and recompress only, metadata stripped, no crop or other edit."
+    },
+    {
+      "asset": "assets/suppliers/nook-prefab/nook-20-black-home-office-1600.webp",
+      "sha256": "9fef09f291b566980e31ce9c5bc7883ca9e0b902a54533f49a7c4da5f1a98595",
+      "bytes": 467232,
+      "pixels": [
+        1600,
+        1600
+      ],
+      "class": "SUPPLIER_IMAGE",
+      "rights_ref": {
+        "organisation_code": "ORG-000209",
+        "atlas_permission_ref": "OUTREACH-NOOK-PREFAB-20261002"
+      },
+      "supplier_label": "Visualisation",
+      "source": "NOOK Prefab's supplied file NOOK-20-black-home-office.jpg (sha256 b0f1b2079f3f41e9…, emailed 6 Nov 2026); PlotNua web copy: resize and recompress only, metadata stripped, no crop or other edit."
+    },
+    {
+      "asset": "assets/suppliers/nook-prefab/nook-20-black-home-office-800.webp",
+      "sha256": "3d17981b2516c5c5109c82b2247e0286240b7110689bcb974dfb0715df80b844",
+      "bytes": 152408,
+      "pixels": [
+        800,
+        800
+      ],
+      "class": "SUPPLIER_IMAGE",
+      "rights_ref": {
+        "organisation_code": "ORG-000209",
+        "atlas_permission_ref": "OUTREACH-NOOK-PREFAB-20261002"
+      },
+      "supplier_label": "Visualisation",
+      "source": "NOOK Prefab's supplied file NOOK-20-black-home-office.jpg (sha256 b0f1b2079f3f41e9…, emailed 6 Nov 2026); PlotNua web copy: resize and recompress only, metadata stripped, no crop or other edit."
+    },
+    {
+      "asset": "assets/suppliers/nook-prefab/nook-20-interior-bedroom-bathroom-1600.jpg",
+      "sha256": "c952dced4dc35838e40441208cf77a41509909d424f5e219dbb565ebcefa41be",
+      "bytes": 223106,
+      "pixels": [
+        1600,
+        900
+      ],
+      "class": "SUPPLIER_IMAGE",
+      "rights_ref": {
+        "organisation_code": "ORG-000209",
+        "atlas_permission_ref": "OUTREACH-NOOK-PREFAB-20261002"
+      },
+      "supplier_label": "Visualisation",
+      "source": "NOOK Prefab's supplied file NOOK-20-interior-bedroom-bathroom.jpg (sha256 a36f096f00a8f78b…, emailed 6 Nov 2026); PlotNua web copy: resize and recompress only, metadata stripped, no crop or other edit."
+    },
+    {
+      "asset": "assets/suppliers/nook-prefab/nook-20-interior-bedroom-bathroom-1600.webp",
+      "sha256": "44a1efe06a6dd11b74a6bd9deb488ff3e9d2366edd1ab3cc2da52bdbc7015a3b",
+      "bytes": 151948,
+      "pixels": [
+        1600,
+        900
+      ],
+      "class": "SUPPLIER_IMAGE",
+      "rights_ref": {
+        "organisation_code": "ORG-000209",
+        "atlas_permission_ref": "OUTREACH-NOOK-PREFAB-20261002"
+      },
+      "supplier_label": "Visualisation",
+      "source": "NOOK Prefab's supplied file NOOK-20-interior-bedroom-bathroom.jpg (sha256 a36f096f00a8f78b…, emailed 6 Nov 2026); PlotNua web copy: resize and recompress only, metadata stripped, no crop or other edit."
+    },
+    {
+      "asset": "assets/suppliers/nook-prefab/nook-20-interior-bedroom-bathroom-800.webp",
+      "sha256": "6ee89800b77bd7c83165e8a8be88c55b77edea287115144932294aaa60d58536",
+      "bytes": 45504,
+      "pixels": [
+        800,
+        450
+      ],
+      "class": "SUPPLIER_IMAGE",
+      "rights_ref": {
+        "organisation_code": "ORG-000209",
+        "atlas_permission_ref": "OUTREACH-NOOK-PREFAB-20261002"
+      },
+      "supplier_label": "Visualisation",
+      "source": "NOOK Prefab's supplied file NOOK-20-interior-bedroom-bathroom.jpg (sha256 a36f096f00a8f78b…, emailed 6 Nov 2026); PlotNua web copy: resize and recompress only, metadata stripped, no crop or other edit."
+    },
+    {
+      "asset": "assets/suppliers/nook-prefab/nook-20-interior-kitchen-bathroom-1600.jpg",
+      "sha256": "a8e8c5457a480e9a8c2716010c6f7fe17e8beb1adec5b4a82e9cf0c34f57507c",
+      "bytes": 227572,
+      "pixels": [
+        1600,
+        900
+      ],
+      "class": "SUPPLIER_IMAGE",
+      "rights_ref": {
+        "organisation_code": "ORG-000209",
+        "atlas_permission_ref": "OUTREACH-NOOK-PREFAB-20261002"
+      },
+      "supplier_label": "Visualisation",
+      "source": "NOOK Prefab's supplied file NOOK-20-interior-kitchen-bathroom.jpg (sha256 2e82b7b619967ba7…, emailed 6 Nov 2026); PlotNua web copy: resize and recompress only, metadata stripped, no crop or other edit."
+    },
+    {
+      "asset": "assets/suppliers/nook-prefab/nook-20-interior-kitchen-bathroom-1600.webp",
+      "sha256": "fb6bae2afae4ed0e4bc711dcaaf6983870c3a7ea11c4d900ad92fdd5eeb6caae",
+      "bytes": 152490,
+      "pixels": [
+        1600,
+        900
+      ],
+      "class": "SUPPLIER_IMAGE",
+      "rights_ref": {
+        "organisation_code": "ORG-000209",
+        "atlas_permission_ref": "OUTREACH-NOOK-PREFAB-20261002"
+      },
+      "supplier_label": "Visualisation",
+      "source": "NOOK Prefab's supplied file NOOK-20-interior-kitchen-bathroom.jpg (sha256 2e82b7b619967ba7…, emailed 6 Nov 2026); PlotNua web copy: resize and recompress only, metadata stripped, no crop or other edit."
+    },
+    {
+      "asset": "assets/suppliers/nook-prefab/nook-20-interior-kitchen-bathroom-800.webp",
+      "sha256": "bcbc41af54f142b088eead5030f5466f6bf2f734ccb1b1785651e9a71a192479",
+      "bytes": 48270,
+      "pixels": [
+        800,
+        450
+      ],
+      "class": "SUPPLIER_IMAGE",
+      "rights_ref": {
+        "organisation_code": "ORG-000209",
+        "atlas_permission_ref": "OUTREACH-NOOK-PREFAB-20261002"
+      },
+      "supplier_label": "Visualisation",
+      "source": "NOOK Prefab's supplied file NOOK-20-interior-kitchen-bathroom.jpg (sha256 2e82b7b619967ba7…, emailed 6 Nov 2026); PlotNua web copy: resize and recompress only, metadata stripped, no crop or other edit."
+    },
+    {
+      "asset": "assets/suppliers/nook-prefab/nook-20-interior-window-seat-1600.jpg",
+      "sha256": "ba49d3f7d21203f3f0bc5177828c544efc976d3fbc0da98898ff474f0335efc0",
+      "bytes": 231451,
+      "pixels": [
+        1600,
+        900
+      ],
+      "class": "SUPPLIER_IMAGE",
+      "rights_ref": {
+        "organisation_code": "ORG-000209",
+        "atlas_permission_ref": "OUTREACH-NOOK-PREFAB-20261002"
+      },
+      "supplier_label": "Visualisation",
+      "source": "NOOK Prefab's supplied file NOOK-20-interior-window-seat.jpg (sha256 27c7d8bd0a4b898d…, emailed 6 Nov 2026); PlotNua web copy: resize and recompress only, metadata stripped, no crop or other edit."
+    },
+    {
+      "asset": "assets/suppliers/nook-prefab/nook-20-interior-window-seat-1600.webp",
+      "sha256": "972ac3c0b9ba3bb9f62076db7c6a74112307d33dba288085b94aa7a8167b0c5a",
+      "bytes": 156110,
+      "pixels": [
+        1600,
+        900
+      ],
+      "class": "SUPPLIER_IMAGE",
+      "rights_ref": {
+        "organisation_code": "ORG-000209",
+        "atlas_permission_ref": "OUTREACH-NOOK-PREFAB-20261002"
+      },
+      "supplier_label": "Visualisation",
+      "source": "NOOK Prefab's supplied file NOOK-20-interior-window-seat.jpg (sha256 27c7d8bd0a4b898d…, emailed 6 Nov 2026); PlotNua web copy: resize and recompress only, metadata stripped, no crop or other edit."
+    },
+    {
+      "asset": "assets/suppliers/nook-prefab/nook-20-interior-window-seat-800.webp",
+      "sha256": "016fe982ca8dbe22f5624370bc1cdd5cc700644a0cf8067963f7fb7bef635618",
+      "bytes": 49506,
+      "pixels": [
+        800,
+        450
+      ],
+      "class": "SUPPLIER_IMAGE",
+      "rights_ref": {
+        "organisation_code": "ORG-000209",
+        "atlas_permission_ref": "OUTREACH-NOOK-PREFAB-20261002"
+      },
+      "supplier_label": "Visualisation",
+      "source": "NOOK Prefab's supplied file NOOK-20-interior-window-seat.jpg (sha256 27c7d8bd0a4b898d…, emailed 6 Nov 2026); PlotNua web copy: resize and recompress only, metadata stripped, no crop or other edit."
+    },
+    {
+      "asset": "assets/suppliers/nook-prefab/nook-20-oak-garden-room-1600.jpg",
+      "sha256": "78c49ae6141b45bceaf67ddc9c25df8e409ddcd2f75fe93653a1c7ed20ed35c7",
+      "bytes": 613022,
+      "pixels": [
+        1600,
+        1600
+      ],
+      "class": "SUPPLIER_IMAGE",
+      "rights_ref": {
+        "organisation_code": "ORG-000209",
+        "atlas_permission_ref": "OUTREACH-NOOK-PREFAB-20261002"
+      },
+      "supplier_label": "Visualisation",
+      "source": "NOOK Prefab's supplied file NOOK-20-oak-garden-room.jpg (sha256 13ad711ef5de3208…, emailed 6 Nov 2026); PlotNua web copy: resize and recompress only, metadata stripped, no crop or other edit."
+    },
+    {
+      "asset": "assets/suppliers/nook-prefab/nook-20-oak-garden-room-1600.webp",
+      "sha256": "e5bfb8ae51e5558f3fefc21526f5539a2245b3f7c5d0b2b9655ad38ae6061d70",
+      "bytes": 548376,
+      "pixels": [
+        1600,
+        1600
+      ],
+      "class": "SUPPLIER_IMAGE",
+      "rights_ref": {
+        "organisation_code": "ORG-000209",
+        "atlas_permission_ref": "OUTREACH-NOOK-PREFAB-20261002"
+      },
+      "supplier_label": "Visualisation",
+      "source": "NOOK Prefab's supplied file NOOK-20-oak-garden-room.jpg (sha256 13ad711ef5de3208…, emailed 6 Nov 2026); PlotNua web copy: resize and recompress only, metadata stripped, no crop or other edit."
+    },
+    {
+      "asset": "assets/suppliers/nook-prefab/nook-20-oak-garden-room-800.webp",
+      "sha256": "49dea3908c6513e74e4bdd02fb7ae19e6e2cc08310c46b5c5d0a74eea8768d67",
+      "bytes": 174232,
+      "pixels": [
+        800,
+        800
+      ],
+      "class": "SUPPLIER_IMAGE",
+      "rights_ref": {
+        "organisation_code": "ORG-000209",
+        "atlas_permission_ref": "OUTREACH-NOOK-PREFAB-20261002"
+      },
+      "supplier_label": "Visualisation",
+      "source": "NOOK Prefab's supplied file NOOK-20-oak-garden-room.jpg (sha256 13ad711ef5de3208…, emailed 6 Nov 2026); PlotNua web copy: resize and recompress only, metadata stripped, no crop or other edit."
     }
   ],
   "legacy_undeclared": [

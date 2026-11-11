@@ -92,7 +92,9 @@ OWN_NAV_SECTIONS = ["gridnua/", "gridnua/technology/", "plotart/mobile-gallery/"
                     "suppliers/garden-room-ireland.html", "suppliers/don-modular-homes.html",
                     "suppliers/superior-pergola-ireland.html",
                     # Arctic Wellness showcase (founder brief, 10 Nov 2026): same maker bar, same rule.
-                    "suppliers/arctic-wellness.html"]
+                    "suppliers/arctic-wellness.html",
+                    # NOOK Prefab showcase (supplier-approved, 11 Nov 2026): same maker bar, same rule.
+                    "suppliers/nook-prefab.html"]
 ROOTABS = {"404.html"}                 # served for any missing address, so root-absolute links
 
 # The homepage keeps its approved (i) "What is PlotNua?" control, seated beside the brand
