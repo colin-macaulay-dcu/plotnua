@@ -32,7 +32,7 @@
  "quoteOnlyPriceCount": 19,
  "organisationCount": 65,
  "governedPriceContractVersion": "garden-room-price-contract-v1",
- "governedDigest": "25386231d5eac5d697932484a8a561552cb7c1a78392a7eeee426fa801128eb0",
+ "governedDigest": "e4773d7d74b4d48428ad20a0ae8ad9e53ce317f01a2f54195e1a5bf2cbd6ab7f",
  "sourceKind": "airtable-live",
  "missingProductUrlCount": 168,
  "products": [
@@ -27340,7 +27340,14 @@
     "evidenceScope": "Product-Specific",
     "adjudication": "adjudicated",
     "quoteOnly": false,
-    "candidateCount": 2
+    "candidateCount": 2,
+    "presentationHold": {
+     "qualification": "Garden Office Solutions says it is currently unable to take new orders. Its last published price is not shown or compared while it is not taking orders.",
+     "matching": "excluded",
+     "label": "Not currently taking orders",
+     "reason": "The supplier says it is currently unable to take new orders, so PlotNua does not compare this price with your budget or other prices.",
+     "figure": "withheld"
+    }
    },
    "features": {
     "insulation": {
@@ -27498,10 +27505,10 @@
     "delivery": "UNKNOWN"
    },
    "priceBasisClass": "ERECTED_SERVICES_UNKNOWN",
-   "priceBasisConfidence": "EXPLICIT",
+   "priceBasisConfidence": "UNSAFE",
    "priceIsRangeFloor": false,
-   "priceSafeForMatching": true,
-   "priceFreshUntil": "2027-05-05",
+   "priceSafeForMatching": false,
+   "priceFreshUntil": null,
    "priceEvidenceRef": {
     "recordIds": [
      "recEpVTcTZO6kk5K7",
@@ -27516,7 +27523,7 @@
     "basisSource": "installationModel.leadPhrase",
     "basisLeadPhrase": "TURNKEY INSTALLATION INCLUDED"
    },
-   "priceState": "eligible"
+   "priceState": "held"
   },
   {
    "id": "recUs4gexxlfkaiUj",
@@ -27576,7 +27583,14 @@
     "evidenceScope": null,
     "adjudication": "adjudicated",
     "quoteOnly": false,
-    "candidateCount": 2
+    "candidateCount": 2,
+    "presentationHold": {
+     "qualification": "Garden Office Solutions says it is currently unable to take new orders. Its last published price is not shown or compared while it is not taking orders.",
+     "matching": "excluded",
+     "label": "Not currently taking orders",
+     "reason": "The supplier says it is currently unable to take new orders, so PlotNua does not compare this price with your budget or other prices.",
+     "figure": "withheld"
+    }
    },
    "features": {
     "floorArea": {
@@ -27727,10 +27741,10 @@
     "delivery": "UNKNOWN"
    },
    "priceBasisClass": "ERECTED_SERVICES_UNKNOWN",
-   "priceBasisConfidence": "EXPLICIT",
+   "priceBasisConfidence": "UNSAFE",
    "priceIsRangeFloor": false,
-   "priceSafeForMatching": true,
-   "priceFreshUntil": "2027-05-05",
+   "priceSafeForMatching": false,
+   "priceFreshUntil": null,
    "priceEvidenceRef": {
     "recordIds": [
      "recclnSttD0nkE0OF",
@@ -27745,7 +27759,7 @@
     "basisSource": "installationModel.leadPhrase",
     "basisLeadPhrase": "TURNKEY INSTALLATION INCLUDED"
    },
-   "priceState": "eligible"
+   "priceState": "held"
   },
   {
    "id": "reciolethPMEn50gQ",
@@ -27805,7 +27819,14 @@
     "evidenceScope": null,
     "adjudication": "adjudicated",
     "quoteOnly": false,
-    "candidateCount": 2
+    "candidateCount": 2,
+    "presentationHold": {
+     "qualification": "Garden Office Solutions says it is currently unable to take new orders. Its last published price is not shown or compared while it is not taking orders.",
+     "matching": "excluded",
+     "label": "Not currently taking orders",
+     "reason": "The supplier says it is currently unable to take new orders, so PlotNua does not compare this price with your budget or other prices.",
+     "figure": "withheld"
+    }
    },
    "features": {
     "insulationRating": {
@@ -27956,10 +27977,10 @@
     "delivery": "UNKNOWN"
    },
    "priceBasisClass": "ERECTED_SERVICES_UNKNOWN",
-   "priceBasisConfidence": "EXPLICIT",
+   "priceBasisConfidence": "UNSAFE",
    "priceIsRangeFloor": false,
-   "priceSafeForMatching": true,
-   "priceFreshUntil": "2027-05-05",
+   "priceSafeForMatching": false,
+   "priceFreshUntil": null,
    "priceEvidenceRef": {
     "recordIds": [
      "recR8qWkG4VkK6BxC",
@@ -27974,7 +27995,7 @@
     "basisSource": "installationModel.leadPhrase",
     "basisLeadPhrase": "TURNKEY INSTALLATION INCLUDED"
    },
-   "priceState": "eligible"
+   "priceState": "held"
   },
   {
    "id": "recUnUAWq0TWkNO5C",
@@ -28034,7 +28055,14 @@
     "evidenceScope": null,
     "adjudication": "adjudicated",
     "quoteOnly": false,
-    "candidateCount": 2
+    "candidateCount": 2,
+    "presentationHold": {
+     "qualification": "Garden Office Solutions says it is currently unable to take new orders. Its last published price is not shown or compared while it is not taking orders.",
+     "matching": "excluded",
+     "label": "Not currently taking orders",
+     "reason": "The supplier says it is currently unable to take new orders, so PlotNua does not compare this price with your budget or other prices.",
+     "figure": "withheld"
+    }
    },
    "features": {
     "electricalIncluded": {
@@ -28186,10 +28214,10 @@
     "delivery": "UNKNOWN"
    },
    "priceBasisClass": "ERECTED_SERVICES_UNKNOWN",
-   "priceBasisConfidence": "EXPLICIT",
+   "priceBasisConfidence": "UNSAFE",
    "priceIsRangeFloor": false,
-   "priceSafeForMatching": true,
-   "priceFreshUntil": "2027-05-05",
+   "priceSafeForMatching": false,
+   "priceFreshUntil": null,
    "priceEvidenceRef": {
     "recordIds": [
      "rec3c6M5ZTV2jbMtE",
@@ -28204,7 +28232,7 @@
     "basisSource": "installationModel.leadPhrase",
     "basisLeadPhrase": "TURNKEY INSTALLATION INCLUDED"
    },
-   "priceState": "eligible"
+   "priceState": "held"
   },
   {
    "id": "recmmfGslZeE7icQG",
@@ -37573,7 +37601,14 @@
     "evidenceScope": null,
     "adjudication": "adjudicated",
     "quoteOnly": false,
-    "candidateCount": 1
+    "candidateCount": 1,
+    "presentationHold": {
+     "qualification": "The previously recorded price could not be verified against a current product page. A current quotation should be requested from the supplier.",
+     "matching": "excluded",
+     "label": "Price requires verification",
+     "reason": "A current published price for this model could not be verified, so PlotNua does not compare it with your budget or other prices.",
+     "figure": "withheld"
+    }
    },
    "features": {
     "irishAvailability": {
@@ -37712,10 +37747,10 @@
     "delivery": "UNKNOWN"
    },
    "priceBasisClass": "UNKNOWN",
-   "priceBasisConfidence": "NOT_CONFIRMED",
+   "priceBasisConfidence": "UNSAFE",
    "priceIsRangeFloor": false,
-   "priceSafeForMatching": true,
-   "priceFreshUntil": "2027-02-23",
+   "priceSafeForMatching": false,
+   "priceFreshUntil": null,
    "priceEvidenceRef": {
     "recordIds": [
      "recnO4DZMoJ0MkoGz"
@@ -37729,7 +37764,7 @@
     "basisSource": "installationModel.leadPhrase",
     "basisLeadPhrase": "INSTALLATION UNKNOWN"
    },
-   "priceState": "eligible"
+   "priceState": "held"
   },
   {
    "id": "recH2Hb0tWlLEEbWY",
@@ -84551,7 +84586,14 @@
     "evidenceScope": null,
     "adjudication": "adjudicated",
     "quoteOnly": false,
-    "candidateCount": 1
+    "candidateCount": 1,
+    "presentationHold": {
+     "qualification": "The retailer lists this product as temporarily out of stock. Its last listed price is not shown or compared until it is back in stock.",
+     "matching": "excluded",
+     "label": "Out of stock",
+     "reason": "The retailer lists this product as out of stock, so PlotNua does not compare its price with your budget or other prices.",
+     "figure": "withheld"
+    }
    },
    "features": {
     "floorArea": {
@@ -84633,10 +84675,10 @@
     "delivery": "UNKNOWN"
    },
    "priceBasisClass": "KIT_SELF_ASSEMBLY",
-   "priceBasisConfidence": "EXPLICIT",
+   "priceBasisConfidence": "UNSAFE",
    "priceIsRangeFloor": false,
-   "priceSafeForMatching": true,
-   "priceFreshUntil": "2027-02-15",
+   "priceSafeForMatching": false,
+   "priceFreshUntil": null,
    "priceEvidenceRef": {
     "recordIds": [
      "recljrE5xBDhHfx32"
@@ -84650,7 +84692,7 @@
     "basisSource": "installationModel.leadPhrase",
     "basisLeadPhrase": "INSTALLATION AVAILABLE (OPTIONAL)"
    },
-   "priceState": "eligible"
+   "priceState": "held"
   },
   {
    "id": "recmUztxenbT07NQD",
