@@ -13124,9 +13124,12 @@
       },
       "label_on_page": "AI-generated illustration",
       "permitted_surfaces": [
-        "homepage"
+        "homepage",
+        "discovery",
+        "library-card"
       ],
-      "processing": "Original generated PNG encoded to WebP using Pillow, quality 88, method 6, no crop, dimensions retained. Generated original retained in ChatGPT as Contemporary Irish Garden Room.png."
+      "processing": "Original generated PNG encoded to WebP using Pillow, quality 88, method 6, no crop, dimensions retained. Generated original retained in ChatGPT as Contemporary Irish Garden Room.png.",
+      "status_note": "Founder instruction, 11 November 2026: also fix the image in the Discovery Library and the Living in the Garden Discovery using this approved contemporary replacement."
     },
     {
       "asset": "assets/disc038/img/DISC-038-BEFORE-DAYLIGHT-MASTER.webp",
@@ -13192,6 +13195,70 @@
       ],
       "label_on_page": "AI-generated illustration",
       "processing": "Generation original encoded as quality-95 WebP, original dimensions retained, no crop or retouching. Original retained in ChatGPT."
+    },
+    {
+      "asset": "assets/disc008/img/DISC-008-BEFORE-20261111-MASTER.png",
+      "sha256": "cc1ce27d429fb1929b5dabe95aee096c5dd3360d3757845d4b2c70356ff695f7",
+      "bytes": 3372765,
+      "pixels": [
+        1672,
+        941
+      ],
+      "class": "AI_ILLUSTRATION",
+      "what": "Contemporary Irish garden in natural daylight, before the addition of a generic timber and anthracite garden building. Not a specific product or installation.",
+      "generated": {
+        "tool": "OpenAI image_gen (ChatGPT), per embedded C2PA AI-generation metadata",
+        "date": "2026-11-11"
+      },
+      "origin": {
+        "basis": "C2PA_EMBEDDED",
+        "evidence": "Original generation PNG retained unchanged; bytes embed jumdc2pa and trainedAlgorithmicMedia. Generated in this ChatGPT session on 11 November 2026.",
+        "declared_under": "Governance 2.0 Rule 2"
+      },
+      "prompt_status": "UNAVAILABLE",
+      "prompt_note": "Metadata-only declaration: the exact generation prompt remains in the ChatGPT conversation, rather than being asserted from C2PA metadata.",
+      "reference_disclosure": {
+        "status": "CREDENTIALED",
+        "statement": "Session evidence: BEFORE was generated without input images. POSSIBLE was an edit with the BEFORE PNG as its sole image input. This disclosure comes from the tool call in the session, not an inference from appearance."
+      },
+      "depicts_named_product": false,
+      "depicts_named_organisation": false,
+      "permitted_surfaces": [
+        "discovery"
+      ],
+      "label_on_page": "AI-generated illustration"
+    },
+    {
+      "asset": "assets/disc008/img/DISC-008-POSSIBLE-20261111-MASTER.png",
+      "sha256": "2bd3e7b1d4f3a809840f7e6270f541dc19ead6b742f5ac8036c490bda6d7d17c",
+      "bytes": 3098287,
+      "pixels": [
+        1671,
+        941
+      ],
+      "class": "AI_ILLUSTRATION",
+      "what": "Contemporary Irish garden in natural daylight, possible the addition of a generic timber and anthracite garden building. Not a specific product or installation.",
+      "generated": {
+        "tool": "OpenAI image_gen (ChatGPT), per embedded C2PA AI-generation metadata",
+        "date": "2026-11-11"
+      },
+      "origin": {
+        "basis": "C2PA_EMBEDDED",
+        "evidence": "Original generation PNG retained unchanged; bytes embed jumdc2pa and trainedAlgorithmicMedia. Generated in this ChatGPT session on 11 November 2026.",
+        "declared_under": "Governance 2.0 Rule 2"
+      },
+      "prompt_status": "UNAVAILABLE",
+      "prompt_note": "Metadata-only declaration: the exact generation prompt remains in the ChatGPT conversation, rather than being asserted from C2PA metadata.",
+      "reference_disclosure": {
+        "status": "CREDENTIALED",
+        "statement": "Session evidence: BEFORE was generated without input images. POSSIBLE was an edit with the BEFORE PNG as its sole image input. This disclosure comes from the tool call in the session, not an inference from appearance."
+      },
+      "depicts_named_product": false,
+      "depicts_named_organisation": false,
+      "permitted_surfaces": [
+        "discovery"
+      ],
+      "label_on_page": "AI-generated illustration"
     }
   ],
   "legacy_undeclared": [
@@ -23178,6 +23245,214 @@
         "source_file_embeds_c2pa": false,
         "derivative_embeds_c2pa": false,
         "note": "WebP master and delivery copies carry no signed credential; AI origin is explicitly declared from this generation session."
+      }
+    },
+    {
+      "asset": "assets/disc008/img/DISC-008-BEFORE-20261111-960.webp",
+      "sha256": "66a67ccd9a39fdba2c8e00f2b0ecfda62ed7a1d638da58cb6781b7483f93d083",
+      "bytes": 160112,
+      "pixels": [
+        960,
+        540
+      ],
+      "derived_from": {
+        "asset": "assets/disc008/img/DISC-008-BEFORE-20261111-MASTER.png",
+        "sha256": "cc1ce27d429fb1929b5dabe95aee096c5dd3360d3757845d4b2c70356ff695f7"
+      },
+      "method": "optimise",
+      "edit": {
+        "description": "Whole frame, Lanczos resize to 960 pixels wide",
+        "operation": "Whole frame, Lanczos resize to 960 pixels wide",
+        "verified_by": "Pillow conversion in Codex generation session, 11 November 2026"
+      },
+      "encoder": "Pillow, WebP quality 84, method 6",
+      "made": "2026-11-11",
+      "content_credentials": {
+        "source_file_embeds_c2pa": true,
+        "derivative_embeds_c2pa": false,
+        "note": "Original PNG retains its embedded C2PA metadata. WebP derivative carries no signed credential."
+      }
+    },
+    {
+      "asset": "assets/disc008/img/DISC-008-BEFORE-20261111-1672.webp",
+      "sha256": "267551a42db4aa40f9fd2d9dacab64b3ebfe5c5c00ddc2f07cb6eeda955b81ec",
+      "bytes": 411978,
+      "pixels": [
+        1672,
+        941
+      ],
+      "derived_from": {
+        "asset": "assets/disc008/img/DISC-008-BEFORE-20261111-MASTER.png",
+        "sha256": "cc1ce27d429fb1929b5dabe95aee096c5dd3360d3757845d4b2c70356ff695f7"
+      },
+      "method": "optimise",
+      "edit": {
+        "description": "Whole frame, original dimensions",
+        "operation": "Whole frame, original dimensions",
+        "verified_by": "Pillow conversion in Codex generation session, 11 November 2026"
+      },
+      "encoder": "Pillow, WebP quality 84, method 6",
+      "made": "2026-11-11",
+      "content_credentials": {
+        "source_file_embeds_c2pa": true,
+        "derivative_embeds_c2pa": false,
+        "note": "Original PNG retains its embedded C2PA metadata. WebP derivative carries no signed credential."
+      }
+    },
+    {
+      "asset": "assets/disc008/img/DISC-008-BEFORE-20261111-mobile.webp",
+      "sha256": "432d6047afd95a1b7a1bf95b9b294072e4abbaea8314c3c6ee16c0ebff1e7597",
+      "bytes": 183994,
+      "pixels": [
+        753,
+        941
+      ],
+      "derived_from": {
+        "asset": "assets/disc008/img/DISC-008-BEFORE-20261111-MASTER.png",
+        "sha256": "cc1ce27d429fb1929b5dabe95aee096c5dd3360d3757845d4b2c70356ff695f7"
+      },
+      "method": "crop",
+      "edit": {
+        "description": "Identical mobile crop x760-1513, y0-941, retaining the building",
+        "operation": "Identical mobile crop x760-1513, y0-941, retaining the building",
+        "verified_by": "Pillow conversion in Codex generation session, 11 November 2026"
+      },
+      "encoder": "Pillow, WebP quality 84, method 6",
+      "made": "2026-11-11",
+      "content_credentials": {
+        "source_file_embeds_c2pa": true,
+        "derivative_embeds_c2pa": false,
+        "note": "Original PNG retains its embedded C2PA metadata. WebP derivative carries no signed credential."
+      }
+    },
+    {
+      "asset": "assets/disc008/img/DISC-008-POSSIBLE-20261111-960.webp",
+      "sha256": "fb24b1cb7397043e7033584d0c9538114c55bef61ea47de1bc400677bd77af3e",
+      "bytes": 153390,
+      "pixels": [
+        960,
+        541
+      ],
+      "derived_from": {
+        "asset": "assets/disc008/img/DISC-008-POSSIBLE-20261111-MASTER.png",
+        "sha256": "2bd3e7b1d4f3a809840f7e6270f541dc19ead6b742f5ac8036c490bda6d7d17c"
+      },
+      "method": "optimise",
+      "edit": {
+        "description": "Whole frame, Lanczos resize to 960 pixels wide",
+        "operation": "Whole frame, Lanczos resize to 960 pixels wide",
+        "verified_by": "Pillow conversion in Codex generation session, 11 November 2026"
+      },
+      "encoder": "Pillow, WebP quality 84, method 6",
+      "made": "2026-11-11",
+      "content_credentials": {
+        "source_file_embeds_c2pa": true,
+        "derivative_embeds_c2pa": false,
+        "note": "Original PNG retains its embedded C2PA metadata. WebP derivative carries no signed credential."
+      }
+    },
+    {
+      "asset": "assets/disc008/img/DISC-008-POSSIBLE-20261111-1672.webp",
+      "sha256": "b4f21121f1179012583d3d6ca78908bc6b040397de88fc8cc89e8b471ff84add",
+      "bytes": 364316,
+      "pixels": [
+        1671,
+        941
+      ],
+      "derived_from": {
+        "asset": "assets/disc008/img/DISC-008-POSSIBLE-20261111-MASTER.png",
+        "sha256": "2bd3e7b1d4f3a809840f7e6270f541dc19ead6b742f5ac8036c490bda6d7d17c"
+      },
+      "method": "optimise",
+      "edit": {
+        "description": "Whole frame, original dimensions",
+        "operation": "Whole frame, original dimensions",
+        "verified_by": "Pillow conversion in Codex generation session, 11 November 2026"
+      },
+      "encoder": "Pillow, WebP quality 84, method 6",
+      "made": "2026-11-11",
+      "content_credentials": {
+        "source_file_embeds_c2pa": true,
+        "derivative_embeds_c2pa": false,
+        "note": "Original PNG retains its embedded C2PA metadata. WebP derivative carries no signed credential."
+      }
+    },
+    {
+      "asset": "assets/disc008/img/DISC-008-POSSIBLE-20261111-mobile.webp",
+      "sha256": "37e6bd8d5cd251c38f6152d3742c332829e30cba2e2e2112f7fc326abdd045a0",
+      "bytes": 153234,
+      "pixels": [
+        753,
+        941
+      ],
+      "derived_from": {
+        "asset": "assets/disc008/img/DISC-008-POSSIBLE-20261111-MASTER.png",
+        "sha256": "2bd3e7b1d4f3a809840f7e6270f541dc19ead6b742f5ac8036c490bda6d7d17c"
+      },
+      "method": "crop",
+      "edit": {
+        "description": "Identical mobile crop x760-1513, y0-941, retaining the building",
+        "operation": "Identical mobile crop x760-1513, y0-941, retaining the building",
+        "verified_by": "Pillow conversion in Codex generation session, 11 November 2026"
+      },
+      "encoder": "Pillow, WebP quality 84, method 6",
+      "made": "2026-11-11",
+      "content_credentials": {
+        "source_file_embeds_c2pa": true,
+        "derivative_embeds_c2pa": false,
+        "note": "Original PNG retains its embedded C2PA metadata. WebP derivative carries no signed credential."
+      }
+    },
+    {
+      "asset": "assets/img/home-garden-room-20261111-480w.webp",
+      "sha256": "72128d9226c42a93fe2ea2cccd616ce41435678a1a316b287089e39f17cd2bfc",
+      "bytes": 44350,
+      "pixels": [
+        480,
+        360
+      ],
+      "derived_from": {
+        "asset": "assets/img/home-garden-room-20261111.webp",
+        "sha256": "f1631b6169b8488860f86f385e56790f3852f05923716f55067281f927aabdc1"
+      },
+      "method": "optimise",
+      "edit": {
+        "description": "Lanczos resize to 480 pixels wide",
+        "operation": "Resize whole frame",
+        "verified_by": "Pillow conversion in Codex session"
+      },
+      "encoder": "Pillow WebP quality 82 method 6",
+      "made": "2026-11-11",
+      "content_credentials": {
+        "source_file_embeds_c2pa": false,
+        "derivative_embeds_c2pa": false,
+        "note": "Inherits the approved source image AI declaration; no signed credential claimed."
+      }
+    },
+    {
+      "asset": "assets/img/home-garden-room-20261111-960w.webp",
+      "sha256": "d68e359bb4d236f3993075f4ae410f9c1add9a9991dd087646132e1df2e88c1c",
+      "bytes": 149788,
+      "pixels": [
+        960,
+        720
+      ],
+      "derived_from": {
+        "asset": "assets/img/home-garden-room-20261111.webp",
+        "sha256": "f1631b6169b8488860f86f385e56790f3852f05923716f55067281f927aabdc1"
+      },
+      "method": "optimise",
+      "edit": {
+        "description": "Lanczos resize to 960 pixels wide",
+        "operation": "Resize whole frame",
+        "verified_by": "Pillow conversion in Codex session"
+      },
+      "encoder": "Pillow WebP quality 82 method 6",
+      "made": "2026-11-11",
+      "content_credentials": {
+        "source_file_embeds_c2pa": false,
+        "derivative_embeds_c2pa": false,
+        "note": "Inherits the approved source image AI declaration; no signed credential claimed."
       }
     }
   ],

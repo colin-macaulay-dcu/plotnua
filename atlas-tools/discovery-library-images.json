@@ -1,48 +1,42 @@
 {
   "schema": "plotnua.discovery-library-images.v1",
   "what_this_is": "The explicit, governed mapping from each Discovery to the image its Library card shows on discoveries.html, with the standalone alt text written for that card. One row per card. Read by atlas-tools/build-discovery-library-images.py, which writes the page, and by atlas-tools/prove-discovery-library-images.mjs, which guards it.",
-
   "the_founder_rule": "FOUNDER DECISION, 3 October 2026. The Library card shows the image that best communicates THE DISCOVERY REALISED -- the payoff, the possibility made real. It is an EDITORIAL selection, recorded here, and it is deliberately NOT derived from any rule over the page's markup.",
-
   "why_not_a_selector": "Two attempts to infer this failed in ways worth recording, because the next person will be tempted the same way. The first followed the personalised Results engine, which was the wrong layer entirely -- Property Check journeys carry no result imagery at all and the garden room result differs per homeowner. The second followed '.d-hero', then 'the first .imagine-photo that is not a cmp frame'. That one looked principled and systematically selected the POTENTIAL ASSET plate: the empty wall, the bare lawn, the frontage before the bins are gone. Measured on 3 October 2026, four of the images it chose carry 'potential asset' or 'annotated by PlotNua' in their own page-side alt text. Discovery pages have different image rhythms and no selector encodes editorial judgement. So the judgement is written down instead.",
-
   "what_is_not_a_library_image": "Potential Asset annotations, empty wall / empty lawn / empty roof, 'before' states, diagnostic or context plates, and planning or measurement diagrams. The Library is where the revelation goes.",
-
   "the_guard": "prove-discovery-library-images.mjs refuses any row whose image carries a potential-asset marker in its page-side alt text -- 'potential asset', 'annotated by PlotNua', 'before anything is planted', 'standing completely empty'. The bare word 'empty' is deliberately NOT a marker: Driveway Income's realised image describes two cars parked in spaces 'that stood empty', and a guard that cannot tell a realised image from a description of what it replaced would be worse than none.",
-
   "alt_text_policy": "Each card carries standalone alt text written for the Library, not inherited from the page. Page-side descriptions open with phrases like 'The same living room after...' which read correctly in sequence on the Discovery page and read as a non-sequitur on a card seen alone. Every card's alt text is nonetheless held to what its image actually shows, derived from the page's own description of that image.",
-
   "cards": [
-{
-  "title": "The Home You Build",
-  "card": "discovery-the-home-you-build.html",
-  "image": "assets/disc040/img/DISC-040-POSSIBLE-1024.jpg",
-  "alt": "A contemporary single-storey stone and timber home with a fully glazed gable and a dark slate roof, behind a lawn, a gravel drive and a field gate in the Irish countryside.",
-  "why": "Founder-approved DISC-040 POSSIBLE (Stage 2 brief, 10 Nov 2026): the newly built home on the once-empty field, the Discovery realised. The hero's BEFORE (the same field without the house) is the starting point and the Library must not show it. A recorded edit of the founder's credentialed POSSIBLE master (build-disc040-images.py).",
-  "previous": null
-},
-{
-  "title": "The Hidden Shelter",
-  "card": "discovery-the-hidden-shelter.html",
-  "image": "assets/disc038/img/DISC-038-POSSIBLE-1024.jpg",
-  "alt": "An Irish back garden at dusk with an engineered shelter entrance open beside the patio: a steel lid raised on struts above a lit concrete stair leading down to a warmly lit room with a sofa and shelves.",
-  "why": "Founder-approved DISC-038 POSSIBLE (Stage 4, approved for preview Stage 5): the open shelter entrance in an ordinary garden, the Discovery realised. The hero's BEFORE (the same garden without the shelter) is the starting point and the Library must not show it. A recorded edit of the founder's credentialed POSSIBLE master (build-disc038-images.py).",
-  "previous": null
-},
-{
-  "title": "The Reinvented Interior",
-  "card": "discovery-reinvented-interior.html",
-  "image": "assets/disc039/DISC-039-possible-v2.webp",
-  "alt": "A contemporary charcoal living room with a sculptural silver-grey sofa and a giant monochrome whale mural.",
-  "why": "Founder-approved DISC-039 POSSIBLE: the whale mural transformation, the Discovery realised.",
-  "previous": null
-},
+    {
+      "title": "The Home You Build",
+      "card": "discovery-the-home-you-build.html",
+      "image": "assets/disc040/img/DISC-040-POSSIBLE-1024.jpg",
+      "alt": "A contemporary single-storey stone and timber home with a fully glazed gable and a dark slate roof, behind a lawn, a gravel drive and a field gate in the Irish countryside.",
+      "why": "Founder-approved DISC-040 POSSIBLE (Stage 2 brief, 10 Nov 2026): the newly built home on the once-empty field, the Discovery realised. The hero's BEFORE (the same field without the house) is the starting point and the Library must not show it. A recorded edit of the founder's credentialed POSSIBLE master (build-disc040-images.py).",
+      "previous": null
+    },
+    {
+      "title": "The Hidden Shelter",
+      "card": "discovery-the-hidden-shelter.html",
+      "image": "assets/disc038/img/DISC-038-POSSIBLE-1024.jpg",
+      "alt": "An Irish back garden at dusk with an engineered shelter entrance open beside the patio: a steel lid raised on struts above a lit concrete stair leading down to a warmly lit room with a sofa and shelves.",
+      "why": "Founder-approved DISC-038 POSSIBLE (Stage 4, approved for preview Stage 5): the open shelter entrance in an ordinary garden, the Discovery realised. The hero's BEFORE (the same garden without the shelter) is the starting point and the Library must not show it. A recorded edit of the founder's credentialed POSSIBLE master (build-disc038-images.py).",
+      "previous": null
+    },
+    {
+      "title": "The Reinvented Interior",
+      "card": "discovery-reinvented-interior.html",
+      "image": "assets/disc039/DISC-039-possible-v2.webp",
+      "alt": "A contemporary charcoal living room with a sculptural silver-grey sofa and a giant monochrome whale mural.",
+      "why": "Founder-approved DISC-039 POSSIBLE: the whale mural transformation, the Discovery realised.",
+      "previous": null
+    },
     {
       "title": "What Could You Build in Your Garden?",
       "card": "discovery-living-in-the-garden.html",
-      "image": "assets/img/3cac96685bcd03a5.jpg",
-      "alt": "A woman with a mug in her kitchen doorway, looking down the garden to a lit timber garden room where three teenagers are playing pool.",
-      "why": "The garden room in use after dark, seen from the house: the possibility realised and occupied, not an empty building.",
+      "image": "assets/img/home-garden-room-20261111.webp",
+      "alt": "AI-generated illustration of a contemporary timber garden room with anthracite sliding doors, a pool table and a sunlit patio.",
+      "why": "Founder-approved contemporary garden room in use; same photograph as the homepage and the Discovery, refreshed 11 November 2026.",
       "previous": "assets/img/8c60a8f27eb9c697.jpg"
     },
     {
