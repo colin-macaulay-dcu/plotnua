@@ -79,6 +79,10 @@ MODELS = [
    ("Built", f"In {BUILD}; craned in and connected in hours")],
   59000),
 ]
+# SEO Opportunity 1 (founder approval, 11 Nov 2026): an internal PlotNua guide link, only on the model
+# NOOK itself describes as "an office, a studio or a quiet room at the end of the garden" (NOOK 10).
+GUIDE = {"NOOK 10": ("Using it as a garden office?", "Read PlotNua’s guide to garden offices in Ireland",
+                     "../garden-offices-ireland.html")}
 PRICE_NOTE = ("Starting price for the unit, ex works. Taxes (VAT), delivery, foundations and installation are extra; "
               "NOOK quotes the delivered price for your address.")
 
@@ -101,6 +105,8 @@ def model(m):
     return (f'<article class="nk-model no-plan" aria-label="{E(name)}"><div><h3>{E(name)}</h3><p class="nk-kind2">{E(kind)}</p>'
             f'<p class="nk-key"><span>{E(size)}</span><span>{E(usable)} usable</span></p>'
             f'<p class="nk-sum">{E(summ)}</p>'
+            + (f'<p class="nk-guide">{E(GUIDE[name][0])} <a href="{E(GUIDE[name][2])}">{E(GUIDE[name][1])}</a></p>'
+               if name in GUIDE else "") +
             f'<p class="nk-price">From €{price:,}</p><p class="nk-pnote">{E(PRICE_NOTE)}</p>'
             f'<details class="nk-more" open><summary>Full specifications</summary><dl class="nk-spec">{dl}</dl></details></div></article>')
 
@@ -119,6 +125,8 @@ EXTRA_CSS = """
 .nk-more summary::after{ content:"+"; font-size:16px; color:var(--bronze); }
 .nk-more[open] summary::after{ content:"\\2212"; }
 .nk-more[open] summary{ margin-bottom:14px; }
+.nk-guide{ margin:-4px 0 14px; font-size:14px; line-height:1.55; color:var(--stone); }
+.nk-guide a{ color:var(--ink); text-decoration:underline; text-decoration-color:var(--line); text-underline-offset:3px; }
 .nk-p a, .nk-cap a{ color:inherit; text-decoration:underline; text-decoration-color:var(--line); text-underline-offset:3px; }
 .nk-g2, .nk-g3{ display:grid; gap:clamp(16px,2vw,28px); align-items:start; }
 .nk-g2{ grid-template-columns:3fr 2fr; margin-bottom:clamp(26px,3vw,44px); }

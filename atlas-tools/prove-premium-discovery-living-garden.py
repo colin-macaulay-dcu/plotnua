@@ -144,7 +144,8 @@ def load_added():
         # "makerAdditions" (6 Nov 2026, Stage 3B East Coast Carpentry): a maker newly published
         # in the Maker Explorer adds exactly one A-Z index entry (its text block and its anchor
         # link), declared here with the founder approval that published it. No image, no card.
-        for c in x.get("supplierCards", []) + x.get("showcaseReferences", []) + x.get("makerAdditions", []):
+        for c in (x.get("supplierCards", []) + x.get("showcaseReferences", []) + x.get("makerAdditions", [])
+                  + x.get("guideReferences", [])):
             blocks += c["blocks"]; imgs += c.get("imgs", [])
         return blocks, imgs
     return [], []
@@ -155,7 +156,10 @@ def added_links():
         x = json.load(open(ADDED_FILE, encoding="utf-8"))
         # "showcaseReferences" (4 Nov 2026, Elm Landscaping): a text-only reference to a maker's
         # PlotNua showcase, declared with its exact blocks and internal links. No image, no card.
-        return [l for c in x.get("supplierCards", []) + x.get("showcaseReferences", []) + x.get("makerAdditions", [])
+        # "guideReferences" (11 Nov 2026, SEO Opportunity 1): a one-sentence text reference to an
+        # existing PlotNua guide, declared with its exact block and internal link. No image, no card.
+        return [l for c in (x.get("supplierCards", []) + x.get("showcaseReferences", []) + x.get("makerAdditions", [])
+                            + x.get("guideReferences", []))
                 for l in c["links"]]
     return []
 
