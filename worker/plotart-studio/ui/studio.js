@@ -257,8 +257,11 @@
     });
     $('[data-avail]').addEventListener('change', async e => { await api('POST', `/api/artworks/${w.id}/availability`, { availability: e.target.value }); say(live(w) ? 'Updated · your live gallery is updating' : 'Saved'); await refresh(); });
     bindImageFields();
-    const needsLine = () => { const el = $('#wneeds'); if (!el) return; const it = ME.status.checklist.find(i => i.area === 'work' && i.work_id === w.id);
-      el.hidden = !it; el.innerHTML = it ? `<span class="st-needs-dot" aria-hidden="true"></span>Still needed to submit: ${E(it.needs.map(c => NEED[c]).join(', '))}` : ''; };
+    // "Still needed" line (11 Nov 2026): counted from the SAVED photographs (main and additional views separately), plus any
+    // other missing detail from the checklist. Recalculated after every successful save (afterRefresh).
+    const needsLine = () => { const el = $('#wneeds'); if (!el) return;
+      el.innerHTML = photoNeeds(WORKS.find(x => x.id === w.id) || w, ME.status.checklist.find(i => i.area === 'work' && i.work_id === w.id));
+      el.hidden = !el.innerHTML; };
     needsLine(); afterRefresh = needsLine;
     $('#mdrop input').addEventListener('change', e => uploadFlow(e.target.files[0], `/api/artworks/${w.id}/images?role=main`, $('#mdrop'), { done: async () => { await flushPhotoEdits(); await refresh(); work(w.id); } }));
     $('#vadd')?.addEventListener('change', e => uploadFlow(e.target.files[0], `/api/artworks/${w.id}/images?role=view`, $('#vadd').parentElement, { done: async () => { await flushPhotoEdits(); await refresh(); work(w.id); } }));
@@ -426,6 +429,17 @@
      · each photograph shows a status that stays until the next save: "Saved", or "Not saved" with a Retry button;
      · a field is only ever sent when the artist changed it, so nothing previously saved is overwritten. */
   const photoComplete = i => !!(i.alt && i.photographer && (i.photographer !== 'other_with_permission' || i.photo_credit));
+  // "The main photograph and 2 additional photographs still need details. …" (counts of photographs, not of fields)
+  function photoNeeds(w, item) {
+    const imgs = w.images || [], main = imgs.filter(i => i.role === 'main' && !photoComplete(i)).length, views = imgs.filter(i => i.role === 'view' && !photoComplete(i)).length;
+    const other = item ? item.needs.filter(c => !PHOTO.includes(c)) : [];
+    const add = n => `${n} additional photograph${n === 1 ? '' : 's'}`;
+    const subj = main && views ? `The main photograph and ${add(views)}` : main ? 'The main photograph' : views ? add(views) : '';
+    const one = main + views === 1;
+    const photo = subj ? `${subj} still need${one ? 's' : ''} details. Complete the description and photographer information for ${one ? 'it' : 'each photograph'} below.` : '';
+    const rest = other.length ? `${photo ? 'Also still needed' : 'Still needed to submit'}: ${other.map(c => NEED[c]).join(', ')}.` : '';
+    return photo || rest ? `<span class="st-needs-dot" aria-hidden="true"></span><span>${E([photo, rest].filter(Boolean).join(' '))}</span>` : '';
+  }
   const PENDING = new Map();            // `${imageId}:${field}` → { id, field, value, box }
   const MIN = { alt: 5, photo_credit: 2 };
   function imageFields(i, label = 'Photograph') {

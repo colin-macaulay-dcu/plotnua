@@ -67,6 +67,9 @@ async function scenario(label, vp) {
   const intro = await p.locator('text=Each view needs its own description and photographer').count();
   check(`${label} · R2 all three photographs show their own details (none collapsed), each marked "Needed to submit", views flagged`,
     blocks === 3 && collapsed === 0 && badges.every(b => b === 'Needed to submit') && flags === 2 && intro === 1, JSON.stringify({ blocks, collapsed, badges, flags, intro }));
+  const msg = async () => (await p.locator('#wneeds').isHidden()) ? '' : (await p.locator('#wneeds').innerText()).trim();
+  check(`${label} · M1 the message counts photographs: main and additional views separately`,
+    (await msg()) === 'The main photograph and 2 additional photographs still need details. Complete the description and photographer information for each photograph below.', await msg());
   const head = await p.locator('.st-photo-h').allInnerTexts();
   check(`${label} · R2 the photographs are labelled "Main photograph", "View 1", "View 2"`,
     /^Main photograph details/.test(head[0]) && /^View 1 details/.test(head[1]) && /^View 2 details/.test(head[2]), JSON.stringify(head));
@@ -75,6 +78,8 @@ async function scenario(label, vp) {
   await p.locator(`#alt-${main}`).fill('Large abstract painting in blues and gold');
   await p.waitForTimeout(1600);
   check(`${label} · R1 a description saves a moment after typing stops, without leaving the field`, (await img(main)).alt === 'Large abstract painting in blues and gold');
+  check(`${label} · M2 a description alone doesn't complete a photograph, so the count is unchanged after the save`,
+    /^The main photograph and 2 additional photographs still need details\./.test(await msg()), await msg());
   check(`${label} · R3 a "Saved" status stays on that photograph`, /^Saved \d\d:\d\d/.test(await p.locator(`[data-img="${main}"] [data-pstat]`).innerText()));
 
   // R1 · an upload redraws the page while a description is mid-typing: the text is saved, not lost
@@ -99,6 +104,7 @@ async function scenario(label, vp) {
   await p.locator(`#alt-${v3}`).press('Tab');
   await p.waitForTimeout(7000);                                                    // longer than the old 5-second message
   const failTxt = await p.locator(`[data-img="${v3}"] [data-pstat]`).innerText();
+  check(`${label} · M4 a failed save does not change the count (only saved photographs count)`, /^The main photograph and 3 additional photographs still need details\./.test(await msg()), await msg());
   check(`${label} · R3 an interrupted save shows "Not saved" with Retry, and it is still there after 7 seconds`,
     /^Not saved: No connection/.test(failTxt) && await p.locator(`[data-img="${v3}"] [data-retry]`).count() === 1 && (await img(v3)).alt === null, failTxt);
   await p.unroute('**/api/images/*');
@@ -117,7 +123,12 @@ async function scenario(label, vp) {
   await p.locator(`#alt-${v3}`).fill('Side view showing the canvas edge'); await p.locator(`#alt-${v3}`).press('Tab'); await p.waitForTimeout(700);
 
   // photographer for each photograph; the artwork's "still needed" line and the checklist follow
-  for (const id of [main, v1, v2, v3]) { await tap(`input[name="photographer-${id}"][value="self"]`); await p.waitForTimeout(700); }
+  const expect = ['3 additional photographs still need details. Complete the description and photographer information for each photograph below.',
+    '2 additional photographs still need details. Complete the description and photographer information for each photograph below.',
+    '1 additional photograph still needs details. Complete the description and photographer information for it below.', ''];
+  const seen = [];
+  for (const id of [main, v1, v2, v3]) { await tap(`input[name="photographer-${id}"][value="self"]`); await p.waitForTimeout(900); seen.push(await msg()); }
+  check(`${label} · M3 the message updates after each successful save: 3 views → 2 → 1 → cleared`, JSON.stringify(seen) === JSON.stringify(expect), JSON.stringify(seen));
   const badges2 = await p.locator('[data-badge]').allInnerTexts();
   const flags2 = await p.locator('.st-view-flag:visible').count();
   check(`${label} · R2 every photograph now shows "Complete" and the view flags have gone`, badges2.length === 4 && badges2.every(b => b === 'Complete') && flags2 === 0, JSON.stringify({ badges2, flags2 }));
@@ -128,6 +139,8 @@ async function scenario(label, vp) {
   check(`${label} · R5 the works list no longer says "photo details"`, !(await p.locator(`.st-work:has(a[href="#/work/${wid}"]) .st-chip--todo`).count()));
 
   // R6 · nothing previously saved was overwritten
+  check(`${label} · R6 earlier saved descriptions on this artwork are unchanged by later saves on other photographs`,
+    (await img(main)).alt === 'Large abstract painting in blues and gold' && (await img(v1)).alt === 'Close detail of the gold layer' && (await img(v2)).alt === 'The painting installed above a fireplace');
   check(`${label} · R6 a photograph saved earlier on another artwork is untouched (identical record)`, JSON.stringify(await img(kept)) === keptBefore);
   // R4 · audit: one entry per save, field names only, never the text
   const au = (await db.prepare("SELECT detail FROM audit WHERE artist_id=? AND action='image_details'").bind(aid).all()).results.map(r => r.detail);

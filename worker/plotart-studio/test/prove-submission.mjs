@@ -109,16 +109,16 @@ await shot(p, '02-home-checklist-expanded-1280.png');
 await p.locator(`a.st-ck-link[href^="#/work/${W[1].id}"]`).click(); await p.waitForTimeout(700);
 let focus = await p.evaluate(() => ({ id: document.activeElement.id, hash: location.hash, marked: !!document.querySelector('.st-fix'), needs: document.querySelector('#wneeds').innerText }));
 check('T9a checklist → artwork: opens that artwork and focuses + highlights "Describe the photo"', focus.hash.startsWith(`#/work/${W[1].id}?fix=photo_alt`) && focus.id === `alt-${W[1].image}` && focus.marked, JSON.stringify(focus));
-check('T9b the artwork page says what is still needed ("photograph description, who took the photograph")', /Still needed to submit: photograph description, who took the photograph/.test(focus.needs), focus.needs);
+check('T9b the artwork page says what is still needed (11 Nov 2026 wording: "The main photograph still needs details…")', /^The main photograph still needs details\. Complete the description and photographer information for it below\.$/.test(focus.needs.trim()), focus.needs);
 await shot(p, '03-artwork-focused-photo-description-1280.png', false);
 // fill it in through the page: the "still needed" line updates as each field saves
 await p.fill(`#alt-${W[1].image}`, 'Synthetic painting, red and blue rectangles'); await p.keyboard.press('Tab');
-await p.waitForFunction(() => !/photograph description/.test(document.querySelector('#wneeds').innerText), null, { timeout: 8000 }).catch(() => {});
+await p.waitForTimeout(1200);
 const after1 = await p.locator('#wneeds').innerText();
 await p.check(`[name="photographer-${W[1].image}"][value="self"]`);
 await p.waitForFunction(() => document.querySelector('#wneeds').hidden, null, { timeout: 8000 }).catch(() => {});
 const after2 = await p.evaluate(() => ({ hidden: document.querySelector('#wneeds').hidden }));
-check('T8b dynamic: the artwork’s line shrinks to "who took the photograph", then disappears when complete', /Still needed to submit: who took the photograph$/.test(after1) && after2.hidden, after1);
+check('T8b dynamic: the description alone keeps the photograph counted ("still needs details"); the line disappears once it is complete', /^The main photograph still needs details\./.test(after1.trim()) && after2.hidden, after1);
 await go(p, '#/');
 check('T8c dynamic: the home count drops to 10', /10 details to complete/i.test(await p.locator('section[aria-labelledby=ck-h]').innerText()));
 
