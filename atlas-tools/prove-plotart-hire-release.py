@@ -4,9 +4,11 @@ repository. Nothing is committed to the repository, pushed or published.
 
     python3 atlas-tools/prove-plotart-hire-release.py
 
-  D  disabled until authorised: with the switches off (as committed) the launch guard passes on the real site, and it
-     refuses a planted hire page, a planted tab or the style block; the page builder and the navigation tool refuse to
-     write without the switch, and a preview can never be written into the repository.
+  D  the committed state, and disabled until authorised: the enquiry form switch stays off and the page switch matches
+     what is published; the launch guard passes on the real site. On the last tree where Art for Hire was off (HEAD
+     itself until the founder switched the page on, 11 Nov 2026; found from the switches' git history) the guard
+     passes with Art for Hire off and refuses a planted hire page or tab; the page builder and the navigation tool
+     refuse to write without the switch, and a preview can never be written into the repository.
   C  the release candidate: switches on, tab added, page built (empty state), manifest re-pinned: the guard passes (L1-L17)
      and refuses a visible card, an enquiry form without its switch, a contact address, an indexable page, a page
      missing the tab or a changed pinned file.
@@ -44,9 +46,9 @@ def guard(root, switches=None, manifest=None):
               "--manifest", manifest or os.path.join(rel, "plotart-launch-manifest.json"))
 
 
-def export(dest):
+def export(dest, rev="HEAD"):
     os.makedirs(dest)
-    tar = subprocess.run(["git", "-C", REPO, "archive", "HEAD"], capture_output=True, check=True).stdout
+    tar = subprocess.run(["git", "-C", REPO, "archive", rev], capture_output=True, check=True).stdout
     subprocess.run(["tar", "-x", "-C", dest], input=tar, check=True)
     return dest
 
@@ -54,11 +56,26 @@ def export(dest):
 T = tempfile.mkdtemp(prefix="pa-hire-rel-")
 try:
     print("PROVE · Art for Hire release preparation\n— D · disabled until authorised")
-    sw = json.load(open(os.path.join(REPO, "atlas-tools/release/plotart-launch-switches.json"), encoding="utf-8"))
-    check("D1 the committed switches keep Art for Hire OFF (page and enquiry form)", sw.get("art_for_hire_page") is False and sw.get("art_for_hire_enquiry_form") is False)
+    SWP = "atlas-tools/release/plotart-launch-switches.json"
+    sw = json.load(open(os.path.join(REPO, SWP), encoding="utf-8"))
+    ON = sw.get("art_for_hire_page") is True
+    published = os.path.exists(os.path.join(REPO, "plotart/art-for-hire/index.html"))
+    tabbed = "nav_art_for_hire" in open(os.path.join(REPO, "plotart/index.html"), encoding="utf-8").read()
+    check("D1 the enquiry form switch is OFF, and the page switch matches what is published (%s)" % ("on: page and tab present" if ON else "off: no page, no tab"),
+          sw.get("art_for_hire_enquiry_form") is False and isinstance(sw.get("art_for_hire_page"), bool) and published == ON and tabbed == ON)
     c, o = guard(REPO)
-    check("D2 the launch guard passes on the real site with Art for Hire off (L1-L17)", c == 0 and "Art for Hire off" in o, o)
-    off = export(os.path.join(T, "off"))
+    check("D2 the launch guard passes on the real site with the committed switches (Art for Hire %s, L1-L17)" % ("ON" if ON else "off"),
+          c == 0 and ("Art for Hire ON" if ON else "Art for Hire off") in o, o)
+    # the last tree where Art for Hire was off: HEAD itself, or the newest commit of the switches file with the page off
+    off_rev = "HEAD"
+    if ON:
+        revs = subprocess.run(["git", "-C", REPO, "rev-list", "HEAD", "--", SWP], capture_output=True, text=True, check=True).stdout.split()
+        off_rev = next((r for r in revs if json.loads(subprocess.run(["git", "-C", REPO, "show", "%s:%s" % (r, SWP)], capture_output=True, text=True,
+                        check=True).stdout).get("art_for_hire_page") is not True), None)
+    off = export(os.path.join(T, "off"), off_rev) if off_rev else None
+    c, o = guard(off) if off else (1, "no commit with Art for Hire off was found")
+    check("D2b on the last tree with Art for Hire off (%s) the launch guard passes with Art for Hire off" % (off_rev[:7] if off_rev else "none"),
+          c == 0 and "Art for Hire off" in o, o)
     os.makedirs(os.path.join(off, "plotart/art-for-hire"))
     open(os.path.join(off, "plotart/art-for-hire/index.html"), "w").write("<p>planted</p>")
     c, o = guard(off)
@@ -120,7 +137,9 @@ try:
     c, o = guard(rc)
     open(au, "w", encoding="utf-8").write(a0)
     check("C10 a page missing the tab while the switch is on → refused", c == 1 and ("L11 about.html" in o or "L17 about.html" in o), o)
-    c, o = guard(rc, switches=os.path.join(REPO, "atlas-tools/release/plotart-launch-switches.json"))
+    swoff = os.path.join(T, "switches-off.json")
+    json.dump(dict(sw, art_for_hire_page=False, art_for_hire_enquiry_form=False), open(swoff, "w"))
+    c, o = guard(rc, switches=swoff)
     check("C11 the candidate site with the switch OFF → refused (the page and tab must not exist)", c == 1 and "L17" in o, o)
 
     print("— P · the gallery pipeline and the tab")
@@ -139,7 +158,7 @@ try:
                     same += 1
                     base.add(path)
         return same, total, base
-    s0, t0, b0 = regen(REPO, False)
+    s0, t0, b0 = regen(REPO, ON)          # the real site as committed (tab on every page once the switch is on)
     s1, t1, b1 = regen(rc, True)
     S.HIRE_NAV = False
     check("P1 with the switch on, the pipeline writes artist pages identical to the tool-patched candidate (%d of %d; the rest differ identically with the switch off, from older SEO metadata)" % (s1, t1),

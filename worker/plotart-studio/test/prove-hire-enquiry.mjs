@@ -185,9 +185,13 @@ check('L3 if the listing data cannot be read, the check answers 503 (never a lis
 await S3.db.prepare('ALTER TABLE artwork_hire_broken RENAME TO artwork_hire').run();
 
 console.log('— purchase enquiries unchanged (E)');
-const diff = execSync('git diff origin/main -- src/enquiry.js', { cwd: HERE }).toString();
+/* 11 Nov 2026 (Art for Hire released): compare with the tree before the hire relay existed, i.e. the parent of the commit
+   that added src/hire-enquiry.js; on a development branch where it is not committed yet, with main as before. */
+const addedIn = execSync('git log --diff-filter=A --format=%H -- src/hire-enquiry.js', { cwd: HERE }).toString().trim().split('\n').filter(Boolean).pop();
+const PRE = addedIn ? addedIn + '^' : 'origin/main';
+const diff = execSync(`git diff ${PRE} -- src/enquiry.js`, { cwd: HERE }).toString();
 const added = diff.split('\n').filter(l => /^\+[^+]/.test(l)), removed = diff.split('\n').filter(l => /^-[^-]/.test(l));
-check('P1 the purchase relay file differs from main only by three added lines (the import and the two new paths); nothing removed or changed',
+check('P1 the purchase relay file differs from before Art for Hire only by three added lines (the import and the two new paths); nothing removed or changed',
   removed.length === 0 && added.length === 3 && added.every(l => /hire-enquiry\.js|\/v1\/hire-enquiry|\/v1\/hire-listed/.test(l)), added.join(' | '));
 const PN = readFileSync(HERE + 'src/enquiry.js', 'utf8').match(/const NOTICE = '([^']+)'/)[1];
 const buy = (body) => S3.mf.dispatchFetch('http://enquiry.local/v1/enquiry', { method: 'POST', headers: { Origin: ORIGIN, 'Content-Type': 'application/json', 'CF-Connecting-IP': '192.0.2.77' }, body: JSON.stringify(body) }).then(async x => ({ s: x.status, j: await x.json() }));
@@ -223,8 +227,12 @@ const cat5 = await (await S5.mf.dispatchFetch(S5.url + '/api/pipeline/hire-catal
 check('S3 the Studio catalogue and the relay use the one rule set (same works listed) and neither exposes an artist address', JSON.stringify(cat5.items.map(i => i.artwork_id).sort()) === JSON.stringify((await listed(S5)).j.items.map(i => i.id).sort())
   && !JSON.stringify(cat5).includes('@'));
 const s5 = await (await S5.mf.dispatchFetch(S5.url + '/', { headers: Hd(LEAH) })).text();
-check('S4 the hire script is not part of the Studio or the public site (no public Art for Hire page)', !/hire-live/.test(s5)
-  && execSync('git ls-files ../../plotart ../../*.html', { cwd: HERE }).toString().split('\n').every(f => !/hire/i.test(f)));
+/* 11 Nov 2026: the founder published the Art for Hire page. The hire script may now exist on the public site, but only in
+   the page's own folder and only while the page switch is on; never in the Studio and never on any other page. */
+const HIRE_ON = JSON.parse(readFileSync(HERE + '../../atlas-tools/release/plotart-launch-switches.json', 'utf8')).art_for_hire_page === true;
+const hireFiles = execSync('git ls-files ../../plotart ../../*.html', { cwd: HERE }).toString().split('\n').filter(f => /hire/i.test(f));
+check(`S4 the hire script is not part of the Studio; on the public site it lives only in plotart/art-for-hire/ and only while the page switch is on (${HIRE_ON ? 'on' : 'off'})`, !/hire-live/.test(s5)
+  && (HIRE_ON ? hireFiles.length > 0 && hireFiles.every(f => /plotart\/art-for-hire\//.test(f)) : hireFiles.length === 0), hireFiles.join(', '));
 await S5.mf.dispose();
 
 // The page script's fail-closed behaviour and the enquiry dialog are proved in a real browser by test/prove-hire-page.mjs (Stage 3B-4),

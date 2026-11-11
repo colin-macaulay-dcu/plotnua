@@ -63,7 +63,11 @@ json.dump(m, open("atlas-tools/release/plotart-launch-manifest.json", "w"), inde
 `], { cwd: SITE });
 }
 const cfg = join(SITE, 'atlas-tools/release/plotart-gallery-config.json');
-writeFileSync(cfg, JSON.stringify({ ...JSON.parse(readFileSync(cfg, 'utf8')), enquiry_endpoint: 'http://127.0.0.1:8796/v1/enquiry' }, null, 2));
+/* 11 Nov 2026: production's config already names the approved relay (artwork pages carry the enquiry form). Keep it, so
+   the published Art for Hire page and the config still agree (launch guard L17), and only switch the relay on for this
+   test when the config has none. The test's enquiries go to the local relay directly (enquire() below), never by URL. */
+{ const c0 = JSON.parse(readFileSync(cfg, 'utf8'));
+  if (!c0.enquiry_endpoint) writeFileSync(cfg, JSON.stringify({ ...c0, enquiry_endpoint: 'http://127.0.0.1:8796/v1/enquiry' }, null, 2)); }
 const git = (...a) => execFileSync('git', ['-c', 'user.name=Test', '-c', 'user.email=test@plotnua.invalid', ...a], { cwd: SITE, encoding: 'utf8' }).trim();
 git('init', '-q'); git('add', '-A'); git('commit', '-q', '-m', 'main after the opening release (test copy)');
 const BASE = git('rev-parse', 'HEAD');

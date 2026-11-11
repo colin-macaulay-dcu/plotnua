@@ -38,10 +38,6 @@ console.log('PROVE · Art for Hire page\n— building the private previews');
 buildPreview(P.empty); buildPreview(P.fix, { fixture: true }); buildPreview(P.form, { fixture: true, form: true });
 
 console.log('— existing pages and galleries unchanged');
-const changed = execSync('git diff origin/main --name-only -- plotart', { cwd: REPO }).toString().trim() + execSync('git ls-files --others --exclude-standard -- plotart', { cwd: REPO }).toString().trim();
-const cssDiff = execSync('git diff origin/main -U0 -- plotart/assets/plotart.css', { cwd: REPO }).toString().split('\n').filter(l => /^[-+][^-+]/.test(l));
-check('G1 against main, no PlotArt page, gallery, gallery.json or image changed; the only change is ONE added footer rule in plotart.css (Stage 3B-5 accessibility fix)',
-  changed === 'plotart/assets/plotart.css' && cssDiff.length === 1 && /^\+\.pa-foot p a\{ text-decoration:underline;/.test(cssDiff[0]), changed + ' | ' + cssDiff.join(' | '));
 const SHELL_DIFF = execFileSync('python3', ['-c', `
 import importlib.util,subprocess,sys
 sys.path.insert(0,'atlas-tools'); import plotart_shell as new
@@ -52,18 +48,39 @@ print('same' if ok and new.HIRE_NAV is False else 'DIFF')`], { cwd: REPO, encodi
 check('G2 artist gallery pages the pipeline writes are byte-identical (plotart_shell HIRE_NAV is off by default)', SHELL_DIFF === 'same', SHELL_DIFF);
 const strip = s => s.replace(' pa-pills--hire', '').replace(/<a class="pa-pill" href="[^"]*art-for-hire\/"[^>]*>Art for Hire<\/a>/, '')
   .replace(/<a class="pn-sm-link" href="[^"]*art-for-hire\/"[^>]*>Art for Hire<\/a>/, '').replace(/<li><a href="[^"]*art-for-hire\/">Art for Hire<\/a><\/li>/, '');
-const pages = execSync('git ls-files plotart', { cwd: REPO }).toString().split('\n').filter(f => f.endsWith('.html'));
+/* G1 (11 Nov 2026: Art for Hire published). Against main, whatever main holds today, Art for Hire may change PlotArt only
+   by: the tab on a page (nothing else on that page), the footer rule and the scoped nav block in plotart.css, and new
+   files under plotart/art-for-hire/. No gallery, gallery.json, image or other page change. Nothing changed also passes. */
+{
+  const git = a => execSync('git ' + a, { cwd: REPO }).toString();
+  const changedFiles = (git('diff origin/main --name-only -- plotart') + git('ls-files --others --exclude-standard -- plotart')).split('\n').filter(Boolean);
+  const old = f => { try { return execSync(`git show origin/main:${f}`, { cwd: REPO, stdio: ['ignore', 'pipe', 'ignore'] }).toString(); } catch { return null; } };
+  const cssBase = c => c.replace(/\n*\/\* ==== pa-hire-nav:begin[\s\S]*?pa-hire-nav:end ==== \*\/\n?/, '\n').replace(/^\.pa-foot p a\{ text-decoration:underline;[^\n]*\n/m, '').trimEnd();
+  const wrong = changedFiles.filter(f => {
+    if (f.startsWith('plotart/art-for-hire/')) return false;
+    const o = old(f); if (o === null) return true;
+    const n = readFileSync(path.join(REPO, f), 'utf8');
+    if (f === 'plotart/assets/plotart.css') return cssBase(n) !== cssBase(o);
+    return !f.endsWith('.html') || strip(n) !== strip(o);
+  });
+  check(`G1 against main, Art for Hire changes PlotArt only by the tab, the footer rule and the scoped nav block, and its own folder (${changedFiles.length} file(s) differ); no gallery, gallery.json, image or other content changed`,
+    wrong.length === 0, wrong.join(', '));
+}
+const pages = execSync('git ls-files plotart', { cwd: REPO }).toString().split('\n').filter(f => f.endsWith('.html') && !f.startsWith('plotart/art-for-hire/'));
 let same = 0, withNav = 0, bad = [];
 for (const f of pages) {
   const a = readFileSync(path.join(REPO, f), 'utf8'), b = readFileSync(path.join(P.fix, f), 'utf8');
   if (a.includes('class="pa-pills')) withNav++;
-  if (strip(b) === a) same++; else bad.push(f);
+  if (strip(b) === strip(a)) same++; else bad.push(f);   // the published site may already carry the tab (11 Nov 2026)
 }
 check(`G3 in the preview, each of the ${pages.length} existing PlotArt pages differs from the original ONLY by the added tab (pill, Menu link, footer link): ${withNav} pages gain it`, bad.length === 0 && withNav >= 37 && pages.every(f => !readFileSync(path.join(REPO, f), 'utf8').includes('class="pa-pills') || readFileSync(path.join(P.fix, f), 'utf8').includes('nav_art_for_hire')), bad.join(', '));
 const cssA = readFileSync(path.join(REPO, 'plotart/assets/plotart.css'), 'utf8'), cssB = readFileSync(path.join(P.fix, 'plotart/assets/plotart.css'), 'utf8');
 check('G4 the shared stylesheet only gains one appended block, scoped to .pa-pills--hire', cssB.startsWith(cssA.trimEnd()) && /pa-hire-nav:begin/.test(cssB) && !/^(?!.*pa-pills--hire).*\{/m.test(cssB.slice(cssA.trimEnd().length).split('\n').filter(l => l.includes('{')).join('\n')));
 const again = execFileSync('python3', [path.join(REPO, 'atlas-tools/plotart-hire-nav.py'), P.fix, '--preview'], { encoding: 'utf8' });
 cpSync(path.join(REPO, 'plotart'), path.join(TMP, 'raw/plotart'), { recursive: true });
+// a tab-free copy, as before publication (11 Nov 2026), so the tool's strictness is tested on pages it would patch
+for (const f of pages) { const q = path.join(TMP, 'raw', f); writeFileSync(q, strip(readFileSync(q, 'utf8'))); }
+rmSync(path.join(TMP, 'raw/plotart/art-for-hire'), { recursive: true, force: true });
 const rawLg = path.join(TMP, 'raw/plotart/about.html'); writeFileSync(rawLg, readFileSync(rawLg, 'utf8').replace(/<a class="pa-pill" href="[^"]*living-gallery\.html"[^>]*>Living Gallery<\/a>/, ''));
 const rawBefore = readFileSync(path.join(TMP, 'raw/plotart/index.html'), 'utf8');
 const refuse2 = spawnSync('python3', [path.join(REPO, 'atlas-tools/plotart-hire-nav.py'), path.join(TMP, 'raw'), '--preview'], { encoding: 'utf8' });
