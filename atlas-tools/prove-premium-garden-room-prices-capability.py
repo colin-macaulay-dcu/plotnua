@@ -32,7 +32,8 @@ FAULTS = [
     ("meta description changed", PAGE, rx(r'(<meta name="description" content=")[^"]*', r"\1Garden room prices.")),
     ("canonical changed", PAGE, sub('href="https://plotnua.ie/garden-room-prices-ireland.html">', 'href="https://plotnua.ie/prices.html">')),
     ("consent script removed", PAGE, rx(r'<script id="Cookiebot"[^>]*></script>\n', "")),
-    ("a figure typed by hand", PAGE, sub("&euro;19,950 to &euro;43,650", "&euro;19,500 to &euro;43,650")),
+    # 11 Nov 2026: planted on whatever the builder last wrote (no figure hard-coded), so an evidence change cannot break the setup.
+    ("a figure typed by hand", PAGE, rx(r"&euro;(\d[\d,]*) to &euro;", r"&euro;1\1 to &euro;")),
     ("a price region removed", PAGE, rx(r"<!-- PN-PRICES:HELD -->.*?<!-- /PN-PRICES:HELD -->", "")),
     ("an image added", PAGE, sub('<main id="pn-main">', '<main id="pn-main"><img src="assets/x.jpg" alt="">')),
     ("the maker-index link removed", PAGE, rx(r'<a href="discovery-living-in-the-garden.html#maker-index">.*?</a>', "")),
@@ -72,7 +73,7 @@ FAULTS = [
     ("provenance claims a named product", "image-provenance-records.json",
      rx(r'("asset": "assets/garden-room-prices/garden-room-prices-hero-2026-10-23-1672\.avif".*?"depicts_named_product": )false', r"\1true")),
     ("meta description reworded (6 Nov 2026)", PAGE, rx(r'(<meta name="description" content=")Independent research', r"\1Cheap garden rooms")),
-    ("meta description figure typed by hand (6 Nov 2026)", PAGE, rx(r'(<meta name="description" content="[^"]*?from )€19,950', r"\1€18,950")),
+    ("meta description figure typed by hand (6 Nov 2026)", PAGE, rx(r'(<meta name="description" content="[^"]*?from )€(\d)', r"\1€9\2")),
     ("extra-costs region removed (6 Nov 2026)", PAGE, rx(r"<!-- PN-PRICES:EXTRAS -->.*?<!-- /PN-PRICES:EXTRAS -->", "")),
     ("VAT region removed (6 Nov 2026)", PAGE, rx(r"<!-- PN-PRICES:VAT -->.*?<!-- /PN-PRICES:VAT -->", "")),
     ("a pinned hero file altered", "assets/garden-room-prices/garden-room-prices-hero-2026-10-23-1672.avif", None),
