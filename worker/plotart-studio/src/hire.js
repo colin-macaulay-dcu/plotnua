@@ -299,10 +299,11 @@ export async function reportsInstalled(env) {
 const YMD = /^\d{4}-\d{2}-\d{2}$/;
 const isYmd = v => typeof v === 'string' && YMD.test(v) && new Date(v + 'T12:00:00Z').toISOString().slice(0, 10) === v;
 const shiftYears = (ymd, n) => { const d = new Date(ymd + 'T12:00:00Z'); d.setUTCFullYear(d.getUTCFullYear() + n); return d.toISOString().slice(0, 10); };
-/* Clause 6.3 first, then 6.2(c), then 6.4 (no fee). Only "commission" carries an amount: 10% of the net hire fee, in cents. */
-export function basisFor({ founding, introduced_at, hire_start, net_fee_cents }) {
+/* Clause 6.3 first (the founding flag fixed when PlotArt introduced the enquiry), then 6.2(c) (the hire AGREED more than 12
+   months after the introduction), then 6.4 (no fee). Only "commission" carries an amount: 10% of the net hire fee, in cents. */
+export function basisFor({ founding, introduced_at, agreed_on, net_fee_cents }) {
   if (founding === 1) return { basis: 'founding_year', commission_cents: 0 };
-  if (hire_start > shiftYears(dublinDate(introduced_at), 1)) return { basis: 'outside_window', commission_cents: 0 };
+  if (agreed_on > shiftYears(dublinDate(introduced_at), 1)) return { basis: 'outside_window', commission_cents: 0 };
   if (!net_fee_cents) return { basis: 'no_fee', commission_cents: 0 };
   return { basis: 'commission', commission_cents: Math.round(net_fee_cents * RATE_BP / 10000) };
 }
@@ -318,7 +319,7 @@ async function acceptedDoc(env, artistId) {
   const a = await one(env, 'SELECT doc_id FROM hire_terms_acceptances WHERE artist_id = ? ORDER BY accepted_at DESC LIMIT 1', artistId);
   return a ? a.doc_id : null;
 }
-const REPORT_KEYS = ['reference', 'artwork_ids', 'hire_start', 'hire_end', 'net_fee_cents', 'more_to_pay', 'payment_received', 'corrects'];
+const REPORT_KEYS = ['reference', 'artwork_ids', 'agreed_on', 'hire_start', 'hire_end', 'net_fee_cents', 'more_to_pay', 'payment_received', 'corrects'];
 export async function reportHire(env, artist, body) {
   if (!(await reportsInstalled(env))) throw new Bad('Hire reports are not available yet', 409);
   const b = body || {};
@@ -331,10 +332,20 @@ export async function reportHire(env, artist, body) {
   const ids = Array.isArray(b.artwork_ids) ? [...new Set(b.artwork_ids.map(String))] : [];
   if (!ids.length || ids.length > 20) throw new Bad('Choose the work or works that were hired');
   for (const id of ids) if (!(await one(env, 'SELECT 1 AS x FROM artworks WHERE id = ? AND artist_id = ?', id, artist.id))) throw new Bad('Choose your own works', 400);
+  // Dates (11 Nov 2026 review). Refused only when the combination is impossible; an advance booking is fine.
+  //  · the hire was agreed on or after the day PlotArt introduced the hirer, and not in the future (it is being reported);
+  //  · the hire ends on or after it starts; start and end within a sensible range of today;
+  //  · a hire period that STARTS before the introduction is accepted but flagged for the founder (for example a hire
+  //    already running that the introduction extended): the commission is decided by the agreement date, not the start.
+  if (!isYmd(b.agreed_on)) throw new Bad('Give the date the hire was agreed (YYYY-MM-DD)');
   if (!isYmd(b.hire_start) || !isYmd(b.hire_end)) throw new Bad('Give the hire dates as YYYY-MM-DD');
+  const today = dublinToday(), introOn = dublinDate(intro.introduced_at);
+  if (b.agreed_on > today) throw new Bad('The date the hire was agreed cannot be in the future');
+  if (b.agreed_on < introOn) throw new Bad(`The hire was agreed before PlotArt introduced this hirer (${introOn}), so it did not come from this enquiry. Check the date or the enquiry`);
   if (b.hire_end < b.hire_start) throw new Bad('The hire cannot end before it starts');
-  const today = dublinToday();
-  if (b.hire_start < shiftYears(today, -3) || b.hire_start > shiftYears(today, 2)) throw new Bad('Check the hire start date');
+  if (b.hire_start < shiftYears(today, -3) || b.hire_start > shiftYears(today, 3)) throw new Bad('Check the hire start date');
+  if (b.hire_end > shiftYears(b.hire_start, 5)) throw new Bad('Check the hire end date: the hire period is longer than five years');
+  const startsBefore = b.hire_start < introOn ? 1 : 0;
   if (!Number.isInteger(b.net_fee_cents) || b.net_fee_cents < 0 || b.net_fee_cents > 100000000) throw new Bad('Give the hire fee received, excluding VAT and expenses');
   if (b.more_to_pay !== true && b.more_to_pay !== false) throw new Bad('Say whether more of the fee is still to be paid');
   let corrects = null;
@@ -344,20 +355,21 @@ export async function reportHire(env, artist, body) {
     if (await one(env, 'SELECT 1 AS x FROM hire_reports WHERE corrects = ?', c.id)) throw new Bad('That report has already been corrected', 409);
     corrects = c.id;
   }
-  const { basis, commission_cents } = basisFor({ founding: intro.founding, introduced_at: intro.introduced_at, hire_start: b.hire_start, net_fee_cents: b.net_fee_cents });
+  const { basis, commission_cents } = basisFor({ founding: intro.founding, introduced_at: intro.introduced_at, agreed_on: b.agreed_on, net_fee_cents: b.net_fee_cents });
   const id = rid('hr'), at = now();
   await env.DB.batch([
-    env.DB.prepare(`INSERT INTO hire_reports (id, artist_id, reference, artwork_ids, hire_start, hire_end, net_fee_cents, more_to_pay, introduced_at, founding, basis, rate_bp,
-        commission_cents, terms_doc, corrects, reported_at, reported_by) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`)
-      .bind(id, artist.id, intro.reference, JSON.stringify(ids), b.hire_start, b.hire_end, b.net_fee_cents, b.more_to_pay ? 1 : 0, intro.introduced_at, intro.founding, basis, RATE_BP,
-        commission_cents, doc, corrects, at, artist.email),
+    env.DB.prepare(`INSERT INTO hire_reports (id, artist_id, reference, artwork_ids, hire_start, hire_end, agreed_on, starts_before_introduction, net_fee_cents, more_to_pay,
+        introduced_at, founding, basis, rate_bp, commission_cents, terms_doc, corrects, reported_at, reported_by) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`)
+      .bind(id, artist.id, intro.reference, JSON.stringify(ids), b.hire_start, b.hire_end, b.agreed_on, startsBefore, b.net_fee_cents, b.more_to_pay ? 1 : 0, intro.introduced_at,
+        intro.founding, basis, RATE_BP, commission_cents, doc, corrects, at, artist.email),
     env.DB.prepare(`INSERT INTO hire_report_records (report_id, artist_id, invoice_status, payment_status, updated_at, updated_by) VALUES (?,?,?,?,?,?)`)
       .bind(id, artist.id, basis === 'commission' ? 'not_invoiced' : 'no_commission', basis === 'commission' ? 'unpaid' : 'not_due', at, 'system'),
   ]);
-  await audit(env, artist.email, 'artist', 'hire_reported', artist.id, { report: id, reference: intro.reference, basis, corrects });   // no amounts in the audit trail
-  return { report: { id, reference: intro.reference, basis, commission_cents, net_fee_cents: b.net_fee_cents } };
+  await audit(env, artist.email, 'artist', 'hire_reported', artist.id, { report: id, reference: intro.reference, basis, corrects, starts_before_introduction: !!startsBefore });   // no amounts
+  return { report: { id, reference: intro.reference, basis, commission_cents, net_fee_cents: b.net_fee_cents, starts_before_introduction: !!startsBefore } };
 }
-const reportView = r => ({ id: r.id, reference: r.reference, artwork_ids: JSON.parse(r.artwork_ids), hire_start: r.hire_start, hire_end: r.hire_end, net_fee_cents: r.net_fee_cents,
+const reportView = r => ({ id: r.id, reference: r.reference, artwork_ids: JSON.parse(r.artwork_ids), agreed_on: r.agreed_on, starts_before_introduction: !!r.starts_before_introduction,
+  hire_start: r.hire_start, hire_end: r.hire_end, net_fee_cents: r.net_fee_cents,
   more_to_pay: !!r.more_to_pay, introduced_at: r.introduced_at, founding: r.founding, basis: r.basis, commission_cents: r.commission_cents, corrects: r.corrects, reported_at: r.reported_at });
 export async function myReports(env, artist) {
   if (!(await reportsInstalled(env))) return { installed: false, introductions: [], reports: [] };
@@ -420,10 +432,11 @@ const eur = c => (c / 100).toFixed(2);
 export async function reportsCsv(env, founder) {
   if (!(await reportsInstalled(env))) throw new Bad('Hire reports are not available yet', 409);
   const rows = await reportRows(env);
-  const head = ['report_id', 'reported_at', 'artist', 'reference', 'introduced_on', 'founding_year_protected', 'artworks', 'hire_start', 'hire_end', 'net_hire_fee_eur',
+  const head = ['report_id', 'reported_at', 'artist', 'reference', 'introduced_on', 'founding_year_protected', 'artworks', 'agreed_on', 'hire_start', 'hire_end',
+    'starts_before_introduction', 'net_hire_fee_eur',
     'more_to_pay', 'basis', 'rate', 'commission_eur', 'corrects', 'corrected_by', 'invoice_status', 'invoice_no', 'invoiced_on', 'payment_status', 'paid_on', 'terms'];
   const lines = [head.map(cell).join(',')].concat(rows.map(r => [r.id, r.reported_at, r.artist, r.reference, dublinDate(r.introduced_at), r.founding ? 'yes' : 'no', r.artworks.join('; '),
-    r.hire_start, r.hire_end, eur(r.net_fee_cents), r.more_to_pay ? 'yes' : 'no', r.basis, '10%', eur(r.commission_cents), r.corrects, r.corrected_by, r.invoice_status, r.invoice_no,
+    r.agreed_on, r.hire_start, r.hire_end, r.starts_before_introduction ? 'yes' : 'no', eur(r.net_fee_cents), r.more_to_pay ? 'yes' : 'no', r.basis, '10%', eur(r.commission_cents), r.corrects, r.corrected_by, r.invoice_status, r.invoice_no,
     r.invoiced_on, r.payment_status, r.paid_on, r.terms_doc].map(cell).join(',')));
   await audit(env, founder, 'founder', 'hire_reports_exported', null, { rows: rows.length });
   return lines.join('\r\n') + '\r\n';

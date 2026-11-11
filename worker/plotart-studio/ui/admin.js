@@ -593,7 +593,7 @@
       ${d.reports.length ? `<div class="st-scroll"><table class="st-table"><thead><tr><th>Reported</th><th>Artist</th><th>Enquiry</th><th>Artwork</th><th>Hire fee</th><th>Commission</th><th>Invoice</th><th>Payment</th><th></th></tr></thead><tbody>
         ${d.reports.map(r => `<tr${r.corrected_by ? ' style="opacity:.55"' : ''}><td>${E(new Date(r.reported_at).toLocaleDateString('en-IE'))}</td><td>${E(r.artist)}</td>
           <td>${E(r.reference)}${r.founding ? '<br><span class="st-muted">founding year</span>' : ''}${r.corrects ? '<br><span class="st-muted">correction</span>' : ''}${r.corrected_by ? '<br><span class="st-muted">replaced</span>' : ''}</td>
-          <td>${E(r.artworks.join(', '))}<br><span class="st-muted">${E(r.hire_start)} to ${E(r.hire_end)}</span></td>
+          <td>${E(r.artworks.join(', '))}<br><span class="st-muted">${E(r.hire_start)} to ${E(r.hire_end)} · agreed ${E(r.agreed_on)}</span>${r.starts_before_introduction ? '<br><span style="color:#CF8566">starts before the introduction: check</span>' : ''}</td>
           <td>${eur(r.net_fee_cents)}${r.more_to_pay ? '<br><span class="st-muted">instalment</span>' : ''}</td>
           <td>${r.basis === 'commission' ? eur(r.commission_cents) : E(RB[r.basis])}</td>
           <td>${E(RI[r.invoice_status] || '')}${r.invoice_no ? `<br><span class="st-muted">${E(r.invoice_no)} · ${E(r.invoiced_on || '')}</span>` : ''}</td>

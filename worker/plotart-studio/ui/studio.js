@@ -356,8 +356,11 @@
           <small id="rp-prot" class="st-muted"></small></div>
         <fieldset class="st-req-group"><legend class="st-lab">Work or works hired</legend>
           ${R.works.map(w => `<label class="st-check"><input type="checkbox" name="rp-w" value="${E(w.id)}"> ${E(w.title || 'Untitled')}</label>`).join('')}</fieldset>
+        <div class="st-f"><label for="rp-agreed">Date hire agreed</label><input type="date" id="rp-agreed" aria-describedby="rp-agreed-h">
+          <small id="rp-agreed-h" class="st-muted">The day you and the hirer agreed this hire. It decides whether the hire falls within 12 months of PlotArt’s introduction.</small></div>
         <div class="st-grid2"><div class="st-f"><label for="rp-start">Hire starts</label><input type="date" id="rp-start"></div>
           <div class="st-f"><label for="rp-end">Hire ends</label><input type="date" id="rp-end"></div></div>
+        <p class="st-muted" id="rp-dates" aria-live="polite"></p>
         <div class="st-f"><label for="rp-fee">Hire fee received (€), excluding VAT and itemised costs</label><input type="text" id="rp-fee" inputmode="decimal" autocomplete="off" placeholder="e.g. 450.00" aria-describedby="rp-calc">
           <small id="rp-calc" class="st-muted" aria-live="polite"></small></div>
         <fieldset class="st-req-group"><legend class="st-lab">Is more of the fee still to be paid?</legend><div class="st-radio">
@@ -367,7 +370,7 @@
         <p class="st-err" id="rp-err" aria-live="polite"></p></form>`
       : '<p class="st-muted">There are no hire enquiries from PlotArt to report yet.</p>'}
       ${R.reports.length ? `<h3>Your reports</h3><div class="st-scroll"><table class="st-table"><thead><tr><th>Reported</th><th>Enquiry</th><th>Hire</th><th>Fee</th><th>Commission</th><th>Status</th><th></th></tr></thead><tbody>
-        ${R.reports.map(r => `<tr><td>${E(new Date(r.reported_at).toLocaleDateString('en-IE'))}</td><td>${E(r.reference)}${r.corrects ? '<br><span class="st-muted">correction</span>' : ''}</td><td>${E(r.hire_start)} to ${E(r.hire_end)}</td>
+        ${R.reports.map(r => `<tr><td>${E(new Date(r.reported_at).toLocaleDateString('en-IE'))}</td><td>${E(r.reference)}${r.corrects ? '<br><span class="st-muted">correction</span>' : ''}</td><td>${E(r.hire_start)} to ${E(r.hire_end)}<br><span class="st-muted">agreed ${E(r.agreed_on)}${r.starts_before_introduction ? ' · starts before the introduction' : ''}</span></td>
           <td>${euro(r.net_fee_cents)}${r.more_to_pay ? '<br><span class="st-muted">instalment</span>' : ''}</td><td>${r.basis === 'commission' ? euro(r.commission_cents) : E(BASIS[r.basis])}</td>
           <td>${r.corrected_by ? 'Replaced by a correction' : `${E(INV[r.invoice_status] || '')}<br><span class="st-muted">${E(PAY[r.payment_status] || '')}</span>`}</td>
           <td>${r.corrected_by ? '' : `<button class="st-btn" type="button" data-corr="${E(r.id)}" data-ref="${E(r.reference)}">Correct</button>`}</td></tr>`).join('')}</tbody></table></div>` : ''}
@@ -375,15 +378,28 @@
     const f = $('#rpf'); if (!f) return;
     const ref = $('#rp-ref'), fee = $('#rp-fee'), paid = $('#rp-paid'), go = $('#rp-go');
     const cents = () => { const v = fee.value.trim().replace(/,/g, ''); return /^\d{1,7}(\.\d{1,2})?$/.test(v) ? Math.round(Number(v) * 100) : null; };
+    const dmy = v => new Date(v + 'T12:00:00Z').toLocaleDateString('en-IE');
+    const dates = () => {   // says what PlotArt will make of the dates; the Studio checks them again when the report is sent
+      const i = intro.get(ref.value), ag = $('#rp-agreed').value, st = $('#rp-start').value, en = $('#rp-end').value, today = new Date().toISOString().slice(0, 10), msg = [];
+      if (i && ag && ag < i.introduced_on) msg.push(`The hire can’t have been agreed before PlotArt introduced this hirer on ${dmy(i.introduced_on)}. Check the date or the enquiry.`);
+      else if (ag && ag > today) msg.push('The date the hire was agreed can’t be in the future.');
+      else if (i && ag && !i.protected && ag > i.window_ends) msg.push(`Agreed more than 12 months after the introduction: no commission on this hire.`);
+      if (st && en && en < st) msg.push('The hire can’t end before it starts.');
+      if (i && st && st < i.introduced_on) msg.push(`The hire period starts before PlotArt’s introduction (${dmy(i.introduced_on)}). You can still report it; PlotArt will check it with you.`);
+      $('#rp-dates').textContent = msg.join(' ');
+      return i && ag && (ag < i.introduced_on || ag > today) || (st && en && en < st);
+    };
     const sync = () => {
       const i = intro.get(ref.value);
       $('#rp-prot').textContent = i ? (i.protected ? 'Introduced during your founding year: no commission on this hire or its follow-on hires.' : `Introduced on ${new Date(i.introduced_on + 'T12:00:00Z').toLocaleDateString('en-IE')}. Hires with this hirer until ${new Date(i.window_ends + 'T12:00:00Z').toLocaleDateString('en-IE')} carry commission.`) : '';
-      const c = cents();
-      $('#rp-calc').textContent = c === null ? '' : i && i.protected ? 'No commission (founding year).' : c === 0 ? 'No commission (no fee).' : `Commission at 10%: ${euro(Math.round(c / 10))}. PlotArt confirms it when invoicing.`;
-      go.disabled = !paid.checked;
+      const c = cents(), ag = $('#rp-agreed').value, late = i && !i.protected && ag && ag > i.window_ends;
+      $('#rp-calc').textContent = c === null ? '' : i && i.protected ? 'No commission (founding year).' : late ? 'No commission (agreed more than 12 months after the introduction).' : c === 0 ? 'No commission (no fee).' : `Commission at 10%: ${euro(Math.round(c / 10))}. PlotArt confirms it when invoicing.`;
+      const blocked = dates();
+      go.disabled = !paid.checked || !!blocked;
     };
     const pickWorks = () => { const i = intro.get(ref.value); f.querySelectorAll('[name=rp-w]').forEach(x => { x.checked = !!i && x.value === i.artwork_id; }); };
     ref.addEventListener('change', () => { pickWorks(); sync(); }); fee.addEventListener('input', sync); paid.addEventListener('change', sync);
+    ['#rp-agreed', '#rp-start', '#rp-end'].forEach(x => $(x).addEventListener('input', sync));
     pickWorks(); sync();
     box.querySelectorAll('[data-corr]').forEach(b => b.addEventListener('click', () => {
       $('#rp-corrects').value = b.dataset.corr; ref.value = b.dataset.ref; pickWorks(); sync();
@@ -396,7 +412,7 @@
       const works = [...f.querySelectorAll('[name=rp-w]:checked')].map(x => x.value);
       go.disabled = true;
       try {
-        const r = await api('POST', '/api/hire/reports', { reference: ref.value, artwork_ids: works, hire_start: $('#rp-start').value, hire_end: $('#rp-end').value, net_fee_cents: c,
+        const r = await api('POST', '/api/hire/reports', { reference: ref.value, artwork_ids: works, agreed_on: $('#rp-agreed').value, hire_start: $('#rp-start').value, hire_end: $('#rp-end').value, net_fee_cents: c,
           more_to_pay: f.querySelector('[name=rp-more]:checked').value === 'yes', payment_received: paid.checked, corrects: $('#rp-corrects').value || null });
         say(r.report.basis === 'commission' ? `Reported · commission ${euro(r.report.commission_cents)}` : 'Reported · no commission'); await hireReports();
       } catch (err) { $('#rp-err').textContent = err.message; go.disabled = !paid.checked; }

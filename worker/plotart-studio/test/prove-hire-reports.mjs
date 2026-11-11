@@ -29,6 +29,7 @@ const T = { title: 'PlotArt Art for Hire Artist Terms (TEST)', html: TXT, pdf_b6
 const af = HERE + FIX + 'src/assets.js';
 writeFileSync(af, readFileSync(af, 'utf8').replace('export const HIRE_TERMS = {};', `export const HIRE_TERMS = ${JSON.stringify({ 'PA-AFH-2026-11': T })};`));
 const DOC = 'PA-AFH-2026-11';
+const H0 = await import(HERE + FIX + 'src/hire.js');
 
 let S, browser;
 try {
@@ -62,7 +63,7 @@ const count = async () => (await db.prepare('SELECT (SELECT COUNT(*) FROM hire_r
 
 console.log('— the artist side');
 let r = await call('GET', '/api/hire/reports', BEA);
-const notYet = await call('POST', '/api/hire/reports', BEA, { reference: 'PA-H-250101-BBBBBB', artwork_ids: ['wabea1'], hire_start: ymd(-20), hire_end: ymd(-5), net_fee_cents: 45000, more_to_pay: false, payment_received: true });
+const notYet = await call('POST', '/api/hire/reports', BEA, { reference: 'PA-H-250101-BBBBBB', artwork_ids: ['wabea1'], agreed_on: ymd(-25), hire_start: ymd(-20), hire_end: ymd(-5), net_fee_cents: 45000, more_to_pay: false, payment_received: true });
 check('R1 before accepting PA-AFH an artist sees no report form (accepted: false) and a report is refused (409); nothing written',
   r.s === 200 && r.j.installed === true && r.j.accepted === false && notYet.s === 409 && await count() === 0, JSON.stringify([r.j, notYet.j]));
 for (const e of [LEAH, BEA]) await call('POST', '/api/hire/accept', e, { confirm: true, doc_id: DOC });
@@ -72,7 +73,7 @@ check('R2 an artist sees only their OWN hire introductions (relay PA-H- and logg
   JSON.stringify(refsB) === JSON.stringify(['PA-EM-250201-CCCCCC', 'PA-H-250101-BBBBBB']) && lr.j.introductions.length === 1 && lr.j.introductions[0].reference === 'PA-H-261101-AAAAAA', JSON.stringify([refsB, lr.j.introductions]));
 check('R3 Founding Artist enquiries introduced in the founding year are marked protected; others are not, with their 12-month window shown',
   lr.j.introductions[0].protected === true && r.j.introductions.every(i => i.protected === false && /^\d{4}-\d{2}-\d{2}$/.test(i.window_ends)), JSON.stringify(r.j.introductions));
-const good = { reference: 'PA-H-250101-BBBBBB', artwork_ids: ['wabea1'], hire_start: ymd(-20), hire_end: ymd(-5), net_fee_cents: 45000, more_to_pay: false, payment_received: true };
+const good = { reference: 'PA-H-250101-BBBBBB', artwork_ids: ['wabea1'], agreed_on: ymd(-25), hire_start: ymd(-20), hire_end: ymd(-5), net_fee_cents: 45000, more_to_pay: false, payment_received: true };
 const bad = [
   ['another artist\'s reference', BEA, { ...good, reference: 'PA-H-261101-AAAAAA' }],
   ['a purchase enquiry', BEA, { ...good, reference: 'PA-E-250301-DDDDDD' }],
@@ -81,6 +82,10 @@ const bad = [
   ['no artwork', BEA, { ...good, artwork_ids: [] }],
   ['end before start', BEA, { ...good, hire_end: ymd(-30) }],
   ['an impossible date', BEA, { ...good, hire_start: '2026-02-30' }],
+  ['no date agreed', BEA, { ...good, agreed_on: undefined }],
+  ['agreed before PlotArt introduced the hirer', BEA, { ...good, agreed_on: ymd(-61) }],
+  ['agreed in the future', BEA, { ...good, agreed_on: ymd(2) }],
+  ['a hire period over five years', BEA, { ...good, hire_end: ymd(5 * 366) }],
   ['a negative fee', BEA, { ...good, net_fee_cents: -1 }],
   ['a fee in euro with decimals', BEA, { ...good, net_fee_cents: 450.5 }],
   ['payment not confirmed', BEA, { ...good, payment_received: false }],
@@ -94,7 +99,7 @@ check('R4 refused, with nothing written: ' + bad.map(b => b[0]).join('; '), out.
 
 console.log('— commission only where the agreement allows it');
 const rep = async (who, body) => (await call('POST', '/api/hire/reports', who, body)).j;
-const lf = await rep(LEAH, { reference: 'PA-H-261101-AAAAAA', artwork_ids: ['waleah1'], hire_start: ymd(-3), hire_end: ymd(10), net_fee_cents: 80000, more_to_pay: false, payment_received: true });
+const lf = await rep(LEAH, { reference: 'PA-H-261101-AAAAAA', artwork_ids: ['waleah1'], agreed_on: ymd(-5), hire_start: ymd(-3), hire_end: ymd(10), net_fee_cents: 80000, more_to_pay: false, payment_received: true });
 const bc = await rep(BEA, good);
 const bround = await rep(BEA, { ...good, net_fee_cents: 12345, more_to_pay: true });
 const bwin = await rep(BEA, { ...good, reference: 'PA-EM-250201-CCCCCC', artwork_ids: ['wabea2'] });
@@ -106,7 +111,7 @@ check('R5 a hire from a founding-year introduction carries NO commission (clause
 check('R6 a hire outside the founding year carries 10% of the net hire fee (€450.00 → €45.00), recorded as not yet invoiced and unpaid',
   B1.basis === 'commission' && B1.commission_cents === 4500 && B1.rate_bp === 1000 && B1.invoice_status === 'not_invoiced' && B1.payment_status === 'unpaid' && B1.terms_doc === DOC, JSON.stringify(B1));
 check('R7 commission is rounded to the cent (€123.45 → €12.35) and an instalment is marked', B2.commission_cents === 1235 && B2.more_to_pay === 1, JSON.stringify(B2));
-check('R8 a hire starting more than 12 months after the introduction carries no commission (6.2(c)); a hire with no fee carries none (6.4)',
+check('R8 a hire AGREED more than 12 months after the introduction carries no commission (6.2(c)); a hire with no fee carries none (6.4)',
   B3.basis === 'outside_window' && B3.commission_cents === 0 && B4.basis === 'no_fee' && B4.commission_cents === 0, JSON.stringify([B3, B4]));
 const auditRep = (await db.prepare("SELECT detail FROM audit WHERE action = 'hire_reported'").all()).results.map(x => x.detail);
 check('R9 every report is audited, with no fee or commission amounts in the audit trail', auditRep.length === 5 && auditRep.every(d => !/45000|4500|12345|80000|cents/.test(d)), auditRep.join(' | '));
@@ -121,7 +126,7 @@ check('R10 the database refuses to change or delete a report or its record befor
   upd === 'refused' && del === 'refused' && delRec === 'refused' && forged === 'refused', JSON.stringify([upd, del, delRec, forged]));
 const corr = await call('POST', '/api/hire/reports', BEA, { ...good, net_fee_cents: 40000, corrects: B1.id });
 const corr2 = await call('POST', '/api/hire/reports', BEA, { ...good, corrects: B1.id });
-const corrX = await call('POST', '/api/hire/reports', LEAH, { reference: 'PA-H-261101-AAAAAA', artwork_ids: ['waleah1'], hire_start: ymd(-3), hire_end: ymd(10), net_fee_cents: 1, more_to_pay: false, payment_received: true, corrects: B2.id });
+const corrX = await call('POST', '/api/hire/reports', LEAH, { reference: 'PA-H-261101-AAAAAA', artwork_ids: ['waleah1'], agreed_on: ymd(-5), hire_start: ymd(-3), hire_end: ymd(10), net_fee_cents: 1, more_to_pay: false, payment_received: true, corrects: B2.id });
 const B1after = await row(B1.id);
 check('R11 a mistake is corrected by a new report that names the old one (kept unchanged); a second correction of the same report and correcting another artist\'s report are refused',
   corr.s === 200 && corr.j.report.commission_cents === 4000 && corr2.s === 409 && corrX.s === 400 && B1after.net_fee_cents === 45000, JSON.stringify([corr.j, corr2.j, corrX.j]));
@@ -160,12 +165,30 @@ check('R19 the CSV makes formula-like cells literal (an artist name starting "="
   csv.t.includes('"\'=Bea Other"') && !/buyer|@example\.test|Sent by email/.test(csv.t), csv.t.slice(0, 300));
 check('R20 the export is audited', (await db.prepare("SELECT COUNT(*) AS n FROM audit WHERE action = 'hire_reports_exported' AND actor = ?").bind(FOUNDER).first()).n === 1);
 
+console.log('— dates (11 Nov 2026 review)');
+const adv = await rep(BEA, { ...good, agreed_on: ymd(-1), hire_start: ymd(500), hire_end: ymd(530), net_fee_cents: 30000 });
+const old = await rep(BEA, { ...good, reference: 'PA-EM-250201-CCCCCC', artwork_ids: ['wabea2'], agreed_on: ymd(-400), hire_start: ymd(-20), hire_end: ymd(-10), net_fee_cents: 20000 });
+const startEarly = await rep(BEA, { ...good, agreed_on: ymd(-25), hire_start: ymd(-70), hire_end: ymd(-5), net_fee_cents: 10000 });
+const [ADV, OLD, EARLY] = await Promise.all([adv, old, startEarly].map(x => row(x.report.id)));
+check('R26 an advance booking (agreed now, hire starting in 16 months) is accepted and carries commission: the 12-month window runs to the date AGREED, not the start',
+  ADV.basis === 'commission' && ADV.commission_cents === 3000 && ADV.agreed_on === ymd(-1) && ADV.starts_before_introduction === 0, JSON.stringify(ADV));
+check('R27 a hire agreed within 12 months of an older introduction carries commission even though it starts more than 12 months after it',
+  OLD.basis === 'commission' && OLD.commission_cents === 2000, JSON.stringify(OLD));
+const csv2 = await call('GET', '/api/admin/hire/reports.csv', FOUNDER);
+const earlyLine = csv2.t.split('\r\n').find(l => l.startsWith(`"${EARLY.id}"`)) || '';
+check('R28 a hire period that starts before the PlotArt introduction is accepted, not refused, and flagged for the founder (stored, shown to the artist and in the CSV)',
+  EARLY.starts_before_introduction === 1 && EARLY.basis === 'commission' && startEarly.report.starts_before_introduction === true && csv2.t.split('\r\n')[0].includes('"agreed_on"')
+  && csv2.t.split('\r\n')[0].includes('"starts_before_introduction"') && /"yes","100\.00"/.test(earlyLine), earlyLine);
+check('R29 founding-year protection still follows the introduction date: a founding-year enquiry is protected whatever date the hire was agreed',
+  H0.basisFor({ founding: 1, introduced_at: ago(300), agreed_on: ymd(0), net_fee_cents: 50000 }).basis === 'founding_year'
+  && H0.basisFor({ founding: 0, introduced_at: ago(300), agreed_on: ymd(0), net_fee_cents: 50000 }).commission_cents === 5000);
+
 console.log('— nothing else changes');
 const after = { leah: await artistRows(db, 'aleah'), bea: await artistRows(db, 'abea'), docs: (await db.prepare('SELECT * FROM agreement_documents ORDER BY rowid').all()).results };
 check('R21 galleries, works, versions, agreements, enquiries and the enquiry log are unchanged by reporting and recording', JSON.stringify(after) === JSON.stringify(before));
 
 console.log('— retention');
-const H = await import(HERE + FIX + 'src/hire.js');
+const H = H0;
 const tables = await H.recordTables({ DB: db });
 check('R22 the six-year deletion clears hire_report_records, then hire_reports, before record_retention', tables.indexOf('hire_report_records') === 0 && tables.indexOf('hire_reports') === 1, JSON.stringify(tables));
 const early = await db.prepare("DELETE FROM hire_reports WHERE artist_id = 'abea'").run().then(() => 'deleted', () => 'refused');
@@ -175,11 +198,11 @@ await db.prepare("DELETE FROM hire_reports WHERE artist_id = 'abea'").run();
 check('R23 once the retention period has ended, the reports and records can be deleted (and only then)', early === 'refused' && (await db.prepare("SELECT COUNT(*) AS n FROM hire_reports WHERE artist_id = 'abea'").first()).n === 0
   && (await db.prepare("SELECT COUNT(*) AS n FROM hire_reports WHERE artist_id = 'aleah'").first()).n === 1);
 check('R24 the commission rule itself: founding first, then the 12-month window, then no fee, else 10% rounded to the cent', [
-  H.basisFor({ founding: 1, introduced_at: ago(1), hire_start: ymd(0), net_fee_cents: 99999 }).basis === 'founding_year',
-  H.basisFor({ founding: 0, introduced_at: ago(400), hire_start: ymd(0), net_fee_cents: 1000 }).basis === 'outside_window',
-  H.basisFor({ founding: 0, introduced_at: ago(300), hire_start: ymd(0), net_fee_cents: 1000 }).commission_cents === 100,
-  H.basisFor({ founding: 0, introduced_at: ago(1), hire_start: ymd(0), net_fee_cents: 5 }).commission_cents === 1,
-  H.basisFor({ founding: 0, introduced_at: ago(1), hire_start: ymd(0), net_fee_cents: 0 }).basis === 'no_fee'].every(Boolean));
+  H.basisFor({ founding: 1, introduced_at: ago(1), agreed_on: ymd(0), net_fee_cents: 99999 }).basis === 'founding_year',
+  H.basisFor({ founding: 0, introduced_at: ago(400), agreed_on: ymd(0), net_fee_cents: 1000 }).basis === 'outside_window',
+  H.basisFor({ founding: 0, introduced_at: ago(300), agreed_on: ymd(0), net_fee_cents: 1000 }).commission_cents === 100,
+  H.basisFor({ founding: 0, introduced_at: ago(1), agreed_on: ymd(0), net_fee_cents: 5 }).commission_cents === 1,
+  H.basisFor({ founding: 0, introduced_at: ago(1), agreed_on: ymd(0), net_fee_cents: 0 }).basis === 'no_fee'].every(Boolean));
 
 console.log('— in the browser');
 browser = await chromium.launch();
@@ -199,7 +222,16 @@ await shot(p, 'artist-report-founding-1280.png', '#hirereports');
 await p.ctx.close();
 p = await page(BEA);
 await p.goto(S.url + '/#/hire', { waitUntil: 'load' }); await p.waitForTimeout(800);
-await p.selectOption('#rp-ref', 'PA-H-250101-BBBBBB'); await p.fill('#rp-start', ymd(-10)); await p.fill('#rp-end', ymd(-2)); await p.fill('#rp-fee', '250.00');
+await p.selectOption('#rp-ref', 'PA-H-250101-BBBBBB'); await p.fill('#rp-agreed', ymd(-80)); await p.fill('#rp-start', ymd(-10)); await p.fill('#rp-end', ymd(-2)); await p.fill('#rp-fee', '250.00');
+await p.check('#rp-paid');
+const tooEarly = await p.locator('#rp-dates').innerText(), blockedEarly = await p.locator('#rp-go').isDisabled();
+await shot(p, 'artist-report-agreed-before-introduction-1280.png', '#rpf');
+await p.fill('#rp-agreed', ymd(-12)); await p.fill('#rp-start', ymd(-70));
+const flagged = await p.locator('#rp-dates').innerText(), allowedFlag = !(await p.locator('#rp-go').isDisabled());
+await shot(p, 'artist-report-starts-before-introduction-1280.png', '#rpf');
+await p.fill('#rp-start', ymd(-10)); await p.uncheck('#rp-paid');
+check('U5 the form asks for "Date hire agreed", stops a date before the introduction with a plain explanation, and flags (without blocking) a hire starting before it',
+  /can’t have been agreed before PlotArt introduced this hirer/.test(tooEarly) && blockedEarly && /starts before PlotArt’s introduction/.test(flagged) && allowedFlag, JSON.stringify([tooEarly, flagged]));
 const calc = await p.locator('#rp-calc').innerText(), disabled = await p.locator('#rp-go').isDisabled();
 await p.check('#rp-paid'); await shot(p, 'artist-report-form-1280.png', '#hirereports');
 await p.click('#rp-go'); await p.waitForTimeout(800);

@@ -53,9 +53,9 @@ check('M7 the gallery order is unchanged', JSON.stringify((await db.prepare('SEL
   === JSON.stringify([{ position: 1, artist_id: 'aleah' }, { position: 2, artist_id: 'apigsy' }]));
 
 const ins = (id, o = {}) => {
-  const v = { artist: 'apigsy', ref: 'PA-H-261105-0A1B2C', works: '["apigsy-w1"]', start: '2026-11-20', end: '2026-11-30', fee: 50000, more: 0, founding: 0, basis: 'commission', rate: 1000, comm: 5000, corrects: null, ...o };
-  return db.prepare(`INSERT INTO hire_reports (id, artist_id, reference, artwork_ids, hire_start, hire_end, net_fee_cents, more_to_pay, introduced_at, founding, basis, rate_bp, commission_cents, terms_doc, corrects, reported_at, reported_by)
-    VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,'PA-AFH-TEST',?,?,'x@example.test')`).bind(id, v.artist, v.ref, v.works, v.start, v.end, v.fee, v.more, '2026-11-05T18:00:00.000Z', v.founding, v.basis, v.rate, v.comm, v.corrects, now);
+  const v = { artist: 'apigsy', ref: 'PA-H-261105-0A1B2C', works: '["apigsy-w1"]', agreed: '2026-11-10', before: 0, start: '2026-11-20', end: '2026-11-30', fee: 50000, more: 0, founding: 0, basis: 'commission', rate: 1000, comm: 5000, corrects: null, ...o };
+  return db.prepare(`INSERT INTO hire_reports (id, artist_id, reference, artwork_ids, hire_start, hire_end, agreed_on, starts_before_introduction, net_fee_cents, more_to_pay, introduced_at, founding, basis, rate_bp, commission_cents, terms_doc, corrects, reported_at, reported_by)
+    VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,'PA-AFH-TEST',?,?,'x@example.test')`).bind(id, v.artist, v.ref, v.works, v.start, v.end, v.agreed, v.before, v.fee, v.more, '2026-11-05T18:00:00.000Z', v.founding, v.basis, v.rate, v.comm, v.corrects, now);
 };
 let ok = true; try { await ins('hr1').run(); await db.prepare("INSERT INTO hire_report_records (report_id, artist_id, updated_at, updated_by) VALUES ('hr1','apigsy',?, 'system')").bind(now).run(); } catch { ok = false; }
 const rec = await db.prepare("SELECT invoice_status, payment_status FROM hire_report_records WHERE report_id='hr1'").first();
@@ -63,7 +63,7 @@ check('C1 a valid report and its record are stored; the record starts "not invoi
 const bad = [];
 for (const [why, o] of [['commission on a founding-year report', { basis: 'founding_year', founding: 1, comm: 100 }], ['founding-year basis without the founding flag', { basis: 'founding_year', comm: 0 }],
   ['a rate other than 10%', { rate: 1500 }], ['a negative fee', { fee: -1, comm: 0, basis: 'no_fee' }], ['end before start', { end: '2026-11-01' }], ['an empty work list', { works: '[]' }], ['not JSON', { works: 'w1' }],
-  ['an impossible date format', { start: '20/11/2026' }], ['an unknown basis', { basis: 'discount', comm: 0 }], ['a correction of a report that does not exist', { corrects: 'nope' }]]) {
+  ['an impossible date format', { start: '20/11/2026' }], ['no agreed date', { agreed: null }], ['an agreed date in another format', { agreed: '10/11/2026' }], ['a flag other than 0 or 1', { before: 2 }], ['an unknown basis', { basis: 'discount', comm: 0 }], ['a correction of a report that does not exist', { corrects: 'nope' }]]) {
   let r; try { await ins('hrb' + bad.length, o).run(); r = false; } catch { r = true; } bad.push([why, r]);
 }
 check('C2 the table itself refuses: ' + bad.map(b => b[0]).join('; '), bad.every(b => b[1]), JSON.stringify(bad));

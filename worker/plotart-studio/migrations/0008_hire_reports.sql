@@ -16,7 +16,8 @@
 
 -- 1 · An artist's report of a successful hire (r5 clause 6.5). Append-only: a mistake is corrected by a NEW report that
 --     names the one it corrects. The commission basis and amount are fixed when the report is made, from the enquiry log's
---     founding flag (fixed at introduction, clause 6.3) and the 12-month window (clause 6.2(c)).
+--     founding flag (fixed at introduction, clause 6.3) and the 12-month window measured from the introduction to the date
+--     the hire was AGREED (clause 6.2(c)). A hire period starting before the introduction is flagged for the founder.
 CREATE TABLE IF NOT EXISTS hire_reports (
   id               TEXT PRIMARY KEY,
   artist_id        TEXT NOT NULL,                     -- artists.id (no foreign key: see the header)
@@ -24,6 +25,8 @@ CREATE TABLE IF NOT EXISTS hire_reports (
   artwork_ids      TEXT NOT NULL CHECK (json_valid(artwork_ids) AND json_array_length(artwork_ids) BETWEEN 1 AND 20),
   hire_start       TEXT NOT NULL CHECK (hire_start GLOB '[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]'),
   hire_end         TEXT NOT NULL CHECK (hire_end GLOB '[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]' AND hire_end >= hire_start),
+  agreed_on        TEXT NOT NULL CHECK (agreed_on GLOB '[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]'),   -- the date the hire was agreed (clause 6.2(c))
+  starts_before_introduction INTEGER NOT NULL CHECK (starts_before_introduction IN (0, 1)),            -- flagged for the founder, not refused
   net_fee_cents    INTEGER NOT NULL CHECK (net_fee_cents BETWEEN 0 AND 100000000),   -- excludes VAT and itemised expenses (6.2(d))
   more_to_pay      INTEGER NOT NULL CHECK (more_to_pay IN (0, 1)),                  -- an instalment: more of the fee is still due
   introduced_at    TEXT NOT NULL,                     -- copied from enquiry_log.introduced_at
