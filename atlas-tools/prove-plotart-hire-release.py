@@ -125,7 +125,7 @@ try:
         ("C5 an enquiry form without its switch", lambda s: s.replace('data-enquiries="off"', 'data-enquiries="on"'), "L17 the enquiry form state"),
         ("C6 a contact address on the page", lambda s: s.replace("Price on request.", "Price on request. artist@example.com"), "L17 the Art for Hire page exposes an address"),
         ("C7 the page made indexable", lambda s: s.replace('content="noindex, follow"', 'content="index, follow"'), "noindex"),
-        ("C8 a change outside the catalogue region (pinned)", lambda s: s.replace("Simple, direct,", "Simple, quick,"), "L3 art-for-hire/index.html differs from the verified build"),
+        ("C8 a change outside the catalogue region (pinned)", lambda s: s.replace("Where a hired work goes", "Where a hired work went"), "L3 art-for-hire/index.html differs from the verified build"),
         ("C9 another relay address", lambda s: s.replace("plotart-enquiry.colin-a41", "evil.example"), "L17 the Art for Hire page must use the approved enquiry relay"),
     ]
     for name, fn, want in tests:
@@ -192,7 +192,7 @@ try:
     base = two
     one = commit(lambda: open(gp, "w", encoding="utf-8").write(reg(["wa1"])))
     three = commit(lambda: open(gp, "w", encoding="utf-8").write(reg(["wa1", "wa2", "wa3"])))
-    outside = commit(lambda: open(gp, "w", encoding="utf-8").write(reg(["wa1", "wa2"]).replace("Simple, direct,", "Simple, quick,")))
+    outside = commit(lambda: open(gp, "w", encoding="utf-8").write(reg(["wa1", "wa2"]).replace("Where a hired work goes", "Where a hired work went")))
     other = commit(lambda: open(os.path.join(g, "plotart/assets/plotart.css"), "a").write("/* x */\n"))
     bd = lambda rel, *f: py(BOUND, base, rel, *f, cwd=g)
     r = [bd(one, "--hire", "--removals-only"), bd(three, "--hire", "--removals-only"), bd(three, "--hire"), bd(outside, "--hire"), bd(other, "--hire"), bd(one)]
