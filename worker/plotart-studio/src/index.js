@@ -1175,6 +1175,11 @@ async function route(req, env) {
     if (p === '/api/admin/hire' && m === 'GET') return json({ ok: true, ...(await H.adminView(env)) });
     if ((mm = p.match(/^\/api\/admin\/hire\/artwork\/(w[0-9a-z]+)\/decision$/)) && m === 'POST') return json({ ok: true, ...(await H.decide(env, me.email, mm[1], await req.json())) });
     if (p === '/api/admin/hire/permissions' && m === 'POST') return json({ ok: true, ...(await H.recordPermission(env, me.email, await req.json())) });
+    // Hire reports (migration 0008, PA-AFH r5 6.5–6.6): the founder's manual invoice and payment records, and a CSV for them
+    if (p === '/api/admin/hire/reports' && m === 'GET') return json({ ok: true, ...(await H.adminReports(env)) });
+    if (p === '/api/admin/hire/reports.csv' && m === 'GET') return res(await H.reportsCsv(env, me.email), 'text/csv; charset=utf-8', 200,
+      { 'Content-Disposition': `attachment; filename="plotart-hire-reports-${now().slice(0, 10)}.csv"`, 'Cache-Control': 'no-store' });
+    if ((mm = p.match(/^\/api\/admin\/hire\/reports\/(hr[0-9a-z]+)\/record$/)) && m === 'POST') return json({ ok: true, ...(await H.setRecord(env, me.email, mm[1], await req.json())) });
     if (p === '/api/admin/garden' && m === 'GET') return json({ ok: true, ...(await gardenAdmin(env)) });
     if ((mm = p.match(/^\/api\/admin\/garden\/(g[0-9a-z]+)$/)) && m === 'POST') return json({ ok: true, ...(await decideListing(env, me.email, mm[1], await req.json())) });
     if (p === '/api/admin/gallery-order' && m === 'GET') return json({ ok: true, ...(await galleryOrder(env)) });
@@ -1411,6 +1416,8 @@ async function route(req, env) {
     if (p === '/api/hire/accept' && m === 'POST') return json({ ok: true, ...(await H.accept(env, artist, await req.json())) });
     if (p === '/api/hire/leave' && m === 'POST') return json({ ok: true, ...(await H.leave(env, artist, await req.json())) });
     if ((mm = p.match(/^\/api\/hire\/artwork\/([0-9a-z]+)$/)) && m === 'PUT') return json({ ok: true, ...(await H.saveWork(env, artist, mm[1], await req.json())) });
+    if (p === '/api/hire/reports' && m === 'GET') return json({ ok: true, ...(await H.myReports(env, artist)) });       // the artist's own only
+    if (p === '/api/hire/reports' && m === 'POST') return json({ ok: true, ...(await H.reportHire(env, artist, await req.json())) });
     return json({ ok: false }, 404);
   }
   if (p === '/api/me' && m === 'GET') {

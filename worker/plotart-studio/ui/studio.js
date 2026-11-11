@@ -327,11 +327,80 @@
           <label class="st-check"><input type="checkbox" id="lv"> I want to leave Art for Hire. All my works come off hire at once; my gallery is not affected.</label>
           <button class="st-btn st-btn--danger" id="lvb" disabled>Leave Art for Hire</button>`
         : `<label class="st-check"><input type="checkbox" id="acc"> ${E(H.statement)}</label><button class="st-btn st-btn--solid" id="accb" disabled>Accept</button>`}
-        <p class="st-err" id="herr" aria-live="polite"></p></section>`;
+        <p class="st-err" id="herr" aria-live="polite"></p></section>
+      <div id="hirereports"></div>`;
     const pair = (c, b, fn) => { const x = $(c), y = $(b); if (!x) return; x.addEventListener('change', () => { y.disabled = !x.checked; });
       y.addEventListener('click', async () => { y.disabled = true; try { await fn(); await hireView(); } catch (e) { $('#herr').textContent = e.message; y.disabled = !x.checked; } }); };
     pair('#acc', '#accb', async () => { await api('POST', '/api/hire/accept', { confirm: true, doc_id: H.terms.doc_id }); say('Accepted'); });
     pair('#lv', '#lvb', async () => { await api('POST', '/api/hire/leave', { confirm: true }); say('You have left Art for Hire'); });
+    await hireReports();
+  }
+  /* Report a hire (PA-AFH r5 clause 6.5): only the artist's own hire introductions, once paid. Commission is worked out by
+     PlotArt from the enquiry log; a hire introduced in the founding year shows "no commission". Invoicing is by email. */
+  const BASIS = { commission: 'Commission', founding_year: 'No commission: founding year', outside_window: 'No commission: more than 12 months after the introduction', no_fee: 'No commission: no fee' };
+  const INV = { not_invoiced: 'Not yet invoiced', invoiced: 'Invoiced', no_commission: 'No commission due', disputed: 'Under review', superseded: 'Replaced by a correction' };
+  const PAY = { unpaid: 'Not paid', paid: 'Paid', not_due: 'Nothing to pay', refunded: 'Refunded' };
+  const euro = c => '€' + (c / 100).toLocaleString('en-IE', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  async function hireReports() {
+    const box = $('#hirereports'); if (!box) return;
+    let R; try { R = await api('GET', '/api/hire/reports'); } catch { return; }
+    if (!R.installed || !R.accepted) return;
+    const intro = new Map(R.introductions.map(i => [i.reference, i]));
+    const opt = i => `<option value="${E(i.reference)}">${E(i.reference)} · ${E(new Date(i.introduced_on + 'T12:00:00Z').toLocaleDateString('en-IE'))}${i.artwork_title ? ' · ' + E(i.artwork_title) : ''}${i.protected ? ' · Founding year: no commission' : ''}</option>`;
+    box.innerHTML = `<section class="st-card" aria-labelledby="rph"><h2 id="rph">Report a hire</h2>
+      <p class="st-muted" style="margin-top:0">When a hire that came from a PlotArt hire enquiry has been paid, report it here within 14 days. PlotArt charges 10% of the hire fee, not counting VAT or separately itemised costs such as transport, insurance and installation. <b>Hires introduced during your founding year carry no commission.</b> PlotArt sends any invoice by email; nothing is charged here.</p>
+      ${R.introductions.length ? `<form id="rpf" novalidate>
+        <input type="hidden" id="rp-corrects" value="">
+        <p class="st-muted" id="rp-corr" hidden></p>
+        <div class="st-f"><label for="rp-ref">Hire enquiry</label><select id="rp-ref">${R.introductions.map(opt).join('')}</select>
+          <small id="rp-prot" class="st-muted"></small></div>
+        <fieldset class="st-req-group"><legend class="st-lab">Work or works hired</legend>
+          ${R.works.map(w => `<label class="st-check"><input type="checkbox" name="rp-w" value="${E(w.id)}"> ${E(w.title || 'Untitled')}</label>`).join('')}</fieldset>
+        <div class="st-grid2"><div class="st-f"><label for="rp-start">Hire starts</label><input type="date" id="rp-start"></div>
+          <div class="st-f"><label for="rp-end">Hire ends</label><input type="date" id="rp-end"></div></div>
+        <div class="st-f"><label for="rp-fee">Hire fee received (€), excluding VAT and itemised costs</label><input type="text" id="rp-fee" inputmode="decimal" autocomplete="off" placeholder="e.g. 450.00" aria-describedby="rp-calc">
+          <small id="rp-calc" class="st-muted" aria-live="polite"></small></div>
+        <fieldset class="st-req-group"><legend class="st-lab">Is more of the fee still to be paid?</legend><div class="st-radio">
+          <label><input type="radio" name="rp-more" value="no" checked> No</label><label><input type="radio" name="rp-more" value="yes"> Yes, this is an instalment</label></div></fieldset>
+        <label class="st-check"><input type="checkbox" id="rp-paid"> I have received payment of this fee.</label>
+        <button class="st-btn st-btn--solid" id="rp-go" type="submit" disabled>Report this hire</button>
+        <p class="st-err" id="rp-err" aria-live="polite"></p></form>`
+      : '<p class="st-muted">There are no hire enquiries from PlotArt to report yet.</p>'}
+      ${R.reports.length ? `<h3>Your reports</h3><div class="st-scroll"><table class="st-table"><thead><tr><th>Reported</th><th>Enquiry</th><th>Hire</th><th>Fee</th><th>Commission</th><th>Status</th><th></th></tr></thead><tbody>
+        ${R.reports.map(r => `<tr><td>${E(new Date(r.reported_at).toLocaleDateString('en-IE'))}</td><td>${E(r.reference)}${r.corrects ? '<br><span class="st-muted">correction</span>' : ''}</td><td>${E(r.hire_start)} to ${E(r.hire_end)}</td>
+          <td>${euro(r.net_fee_cents)}${r.more_to_pay ? '<br><span class="st-muted">instalment</span>' : ''}</td><td>${r.basis === 'commission' ? euro(r.commission_cents) : E(BASIS[r.basis])}</td>
+          <td>${r.corrected_by ? 'Replaced by a correction' : `${E(INV[r.invoice_status] || '')}<br><span class="st-muted">${E(PAY[r.payment_status] || '')}</span>`}</td>
+          <td>${r.corrected_by ? '' : `<button class="st-btn" type="button" data-corr="${E(r.id)}" data-ref="${E(r.reference)}">Correct</button>`}</td></tr>`).join('')}</tbody></table></div>` : ''}
+    </section>`;
+    const f = $('#rpf'); if (!f) return;
+    const ref = $('#rp-ref'), fee = $('#rp-fee'), paid = $('#rp-paid'), go = $('#rp-go');
+    const cents = () => { const v = fee.value.trim().replace(/,/g, ''); return /^\d{1,7}(\.\d{1,2})?$/.test(v) ? Math.round(Number(v) * 100) : null; };
+    const sync = () => {
+      const i = intro.get(ref.value);
+      $('#rp-prot').textContent = i ? (i.protected ? 'Introduced during your founding year: no commission on this hire or its follow-on hires.' : `Introduced on ${new Date(i.introduced_on + 'T12:00:00Z').toLocaleDateString('en-IE')}. Hires with this hirer until ${new Date(i.window_ends + 'T12:00:00Z').toLocaleDateString('en-IE')} carry commission.`) : '';
+      const c = cents();
+      $('#rp-calc').textContent = c === null ? '' : i && i.protected ? 'No commission (founding year).' : c === 0 ? 'No commission (no fee).' : `Commission at 10%: ${euro(Math.round(c / 10))}. PlotArt confirms it when invoicing.`;
+      go.disabled = !paid.checked;
+    };
+    const pickWorks = () => { const i = intro.get(ref.value); f.querySelectorAll('[name=rp-w]').forEach(x => { x.checked = !!i && x.value === i.artwork_id; }); };
+    ref.addEventListener('change', () => { pickWorks(); sync(); }); fee.addEventListener('input', sync); paid.addEventListener('change', sync);
+    pickWorks(); sync();
+    box.querySelectorAll('[data-corr]').forEach(b => b.addEventListener('click', () => {
+      $('#rp-corrects').value = b.dataset.corr; ref.value = b.dataset.ref; pickWorks(); sync();
+      const n = $('#rp-corr'); n.hidden = false; n.textContent = 'Correcting an earlier report: enter the details as they should be. The earlier report stays on record, marked as replaced.';
+      ref.focus();
+    }));
+    f.addEventListener('submit', async e => {
+      e.preventDefault(); $('#rp-err').textContent = '';
+      const c = cents(); if (c === null) { $('#rp-err').textContent = 'Give the fee in euro, for example 450 or 450.00.'; fee.focus(); return; }
+      const works = [...f.querySelectorAll('[name=rp-w]:checked')].map(x => x.value);
+      go.disabled = true;
+      try {
+        const r = await api('POST', '/api/hire/reports', { reference: ref.value, artwork_ids: works, hire_start: $('#rp-start').value, hire_end: $('#rp-end').value, net_fee_cents: c,
+          more_to_pay: f.querySelector('[name=rp-more]:checked').value === 'yes', payment_received: paid.checked, corrects: $('#rp-corrects').value || null });
+        say(r.report.basis === 'commission' ? `Reported · commission ${euro(r.report.commission_cents)}` : 'Reported · no commission'); await hireReports();
+      } catch (err) { $('#rp-err').textContent = err.message; go.disabled = !paid.checked; }
+    });
   }
   function imageFields(i) {
     // Photograph details (required for every photograph before a gallery can be submitted)

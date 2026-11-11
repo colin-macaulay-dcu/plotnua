@@ -14,6 +14,7 @@
 import { Bad, now, rid } from './lib.js';
 import * as A from './assets.js';
 import * as R from './hire-rules.js';
+import { dublinDate, dublinToday } from './founding.js';
 
 const all = async (env, sql, ...b) => (await env.DB.prepare(sql).bind(...b).all()).results;
 const one = (env, sql, ...b) => env.DB.prepare(sql).bind(...b).first();
@@ -279,7 +280,151 @@ export async function sweep(env) {
   const enq = await env.DB.prepare('DELETE ' + DUE_ENQ).bind(at).run();
   return { withdrawn: off.meta.changes || 0, details_deleted: del.meta.changes || 0, enquiry_details_deleted: enq.meta.changes || 0 };
 }
-/* The tables the six-year deletion must clear BEFORE record_retention (Stage 3B-1 finding): present only once 0007 has run. */
+/* The tables the six-year deletion must clear BEFORE record_retention (Stage 3B-1 finding): present only once 0007 has run.
+   Hire reports (0008) go first: hire_report_records references hire_reports. */
 export async function recordTables(env) {
-  return (await installed(env)) ? ['hire_use_permissions', 'hire_participation_events', 'hire_terms_acceptances', 'artwork_hire'] : [];
+  const reports = (await reportsInstalled(env)) ? ['hire_report_records', 'hire_reports'] : [];
+  return (await installed(env)) ? [...reports, 'hire_use_permissions', 'hire_participation_events', 'hire_terms_acceptances', 'artwork_hire'] : [];
+}
+
+/* ---------------------------------------------------------------- hire reports (migration 0008; PA-AFH-2026-11 r5 clauses 6.2–6.6, 10.1)
+   The lightweight model (founder decision, 11 Nov 2026): the artist reports a successful hire here; the commission basis is
+   worked out ONCE, from the enquiry log (whose founding flag was fixed when PlotArt introduced the enquiry, clause 6.3) and the
+   12-month window (6.2(c)); the founder keeps the invoice and payment status by hand. Studio never invoices, takes payment,
+   sends reminders or stores anything about the hirer. Reports are append-only: a mistake is corrected by a new report. */
+export const RATE_BP = 1000;                                                    // 10% (clause 6.1)
+export async function reportsInstalled(env) {
+  try { await env.DB.prepare('SELECT 1 FROM hire_reports LIMIT 1').all(); return true; } catch { return false; }
+}
+const YMD = /^\d{4}-\d{2}-\d{2}$/;
+const isYmd = v => typeof v === 'string' && YMD.test(v) && new Date(v + 'T12:00:00Z').toISOString().slice(0, 10) === v;
+const shiftYears = (ymd, n) => { const d = new Date(ymd + 'T12:00:00Z'); d.setUTCFullYear(d.getUTCFullYear() + n); return d.toISOString().slice(0, 10); };
+/* Clause 6.3 first, then 6.2(c), then 6.4 (no fee). Only "commission" carries an amount: 10% of the net hire fee, in cents. */
+export function basisFor({ founding, introduced_at, hire_start, net_fee_cents }) {
+  if (founding === 1) return { basis: 'founding_year', commission_cents: 0 };
+  if (hire_start > shiftYears(dublinDate(introduced_at), 1)) return { basis: 'outside_window', commission_cents: 0 };
+  if (!net_fee_cents) return { basis: 'no_fee', commission_cents: 0 };
+  return { basis: 'commission', commission_cents: Math.round(net_fee_cents * RATE_BP / 10000) };
+}
+/* The artist's own hire introductions: relay hire enquiries (PA-H-) and email introductions the founder logged (route email),
+   using the latest correction of each log entry. Purchase enquiries (PA-E-) are not hire introductions. */
+async function introductions(env, artistId) {
+  return all(env, `SELECT l.reference, l.introduced_at, l.founding, l.founding_year_end, l.route, l.artwork_id, w.title AS artwork_title
+    FROM enquiry_log l LEFT JOIN artworks w ON w.id = l.artwork_id AND w.artist_id = l.artist_id
+    WHERE l.artist_id = ? AND (l.reference LIKE 'PA-H-%' OR l.route = 'email') AND NOT EXISTS (SELECT 1 FROM enquiry_log c WHERE c.corrects = l.id)
+    ORDER BY l.introduced_at DESC LIMIT 300`, artistId);
+}
+async function acceptedDoc(env, artistId) {
+  const a = await one(env, 'SELECT doc_id FROM hire_terms_acceptances WHERE artist_id = ? ORDER BY accepted_at DESC LIMIT 1', artistId);
+  return a ? a.doc_id : null;
+}
+const REPORT_KEYS = ['reference', 'artwork_ids', 'hire_start', 'hire_end', 'net_fee_cents', 'more_to_pay', 'payment_received', 'corrects'];
+export async function reportHire(env, artist, body) {
+  if (!(await reportsInstalled(env))) throw new Bad('Hire reports are not available yet', 409);
+  const b = body || {};
+  for (const k of Object.keys(b)) if (!REPORT_KEYS.includes(k)) throw new Bad(`Unknown field ${k}`);
+  const doc = await acceptedDoc(env, artist.id);
+  if (!doc) throw new Bad('Accept the Art for Hire Artist Terms before reporting a hire', 409);
+  if (b.payment_received !== true) throw new Bad('Report a hire once you have received payment of the fee (clause 6.5)');
+  const intro = (await introductions(env, artist.id)).find(i => i.reference === b.reference);
+  if (!intro) throw new Bad('Choose one of your own hire enquiry references', 400);         // another artist's, a purchase enquiry, or unknown: refused alike
+  const ids = Array.isArray(b.artwork_ids) ? [...new Set(b.artwork_ids.map(String))] : [];
+  if (!ids.length || ids.length > 20) throw new Bad('Choose the work or works that were hired');
+  for (const id of ids) if (!(await one(env, 'SELECT 1 AS x FROM artworks WHERE id = ? AND artist_id = ?', id, artist.id))) throw new Bad('Choose your own works', 400);
+  if (!isYmd(b.hire_start) || !isYmd(b.hire_end)) throw new Bad('Give the hire dates as YYYY-MM-DD');
+  if (b.hire_end < b.hire_start) throw new Bad('The hire cannot end before it starts');
+  const today = dublinToday();
+  if (b.hire_start < shiftYears(today, -3) || b.hire_start > shiftYears(today, 2)) throw new Bad('Check the hire start date');
+  if (!Number.isInteger(b.net_fee_cents) || b.net_fee_cents < 0 || b.net_fee_cents > 100000000) throw new Bad('Give the hire fee received, excluding VAT and expenses');
+  if (b.more_to_pay !== true && b.more_to_pay !== false) throw new Bad('Say whether more of the fee is still to be paid');
+  let corrects = null;
+  if (b.corrects !== undefined && b.corrects !== null && b.corrects !== '') {
+    const c = await one(env, 'SELECT id FROM hire_reports WHERE id = ? AND artist_id = ?', String(b.corrects), artist.id);
+    if (!c) throw new Bad('You can correct only your own reports', 400);
+    if (await one(env, 'SELECT 1 AS x FROM hire_reports WHERE corrects = ?', c.id)) throw new Bad('That report has already been corrected', 409);
+    corrects = c.id;
+  }
+  const { basis, commission_cents } = basisFor({ founding: intro.founding, introduced_at: intro.introduced_at, hire_start: b.hire_start, net_fee_cents: b.net_fee_cents });
+  const id = rid('hr'), at = now();
+  await env.DB.batch([
+    env.DB.prepare(`INSERT INTO hire_reports (id, artist_id, reference, artwork_ids, hire_start, hire_end, net_fee_cents, more_to_pay, introduced_at, founding, basis, rate_bp,
+        commission_cents, terms_doc, corrects, reported_at, reported_by) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`)
+      .bind(id, artist.id, intro.reference, JSON.stringify(ids), b.hire_start, b.hire_end, b.net_fee_cents, b.more_to_pay ? 1 : 0, intro.introduced_at, intro.founding, basis, RATE_BP,
+        commission_cents, doc, corrects, at, artist.email),
+    env.DB.prepare(`INSERT INTO hire_report_records (report_id, artist_id, invoice_status, payment_status, updated_at, updated_by) VALUES (?,?,?,?,?,?)`)
+      .bind(id, artist.id, basis === 'commission' ? 'not_invoiced' : 'no_commission', basis === 'commission' ? 'unpaid' : 'not_due', at, 'system'),
+  ]);
+  await audit(env, artist.email, 'artist', 'hire_reported', artist.id, { report: id, reference: intro.reference, basis, corrects });   // no amounts in the audit trail
+  return { report: { id, reference: intro.reference, basis, commission_cents, net_fee_cents: b.net_fee_cents } };
+}
+const reportView = r => ({ id: r.id, reference: r.reference, artwork_ids: JSON.parse(r.artwork_ids), hire_start: r.hire_start, hire_end: r.hire_end, net_fee_cents: r.net_fee_cents,
+  more_to_pay: !!r.more_to_pay, introduced_at: r.introduced_at, founding: r.founding, basis: r.basis, commission_cents: r.commission_cents, corrects: r.corrects, reported_at: r.reported_at });
+export async function myReports(env, artist) {
+  if (!(await reportsInstalled(env))) return { installed: false, introductions: [], reports: [] };
+  const intros = await introductions(env, artist.id);
+  const reps = await all(env, `SELECT r.*, c.invoice_status, c.payment_status, (SELECT x.id FROM hire_reports x WHERE x.corrects = r.id) AS corrected_by
+    FROM hire_reports r LEFT JOIN hire_report_records c ON c.report_id = r.id WHERE r.artist_id = ? ORDER BY r.reported_at DESC LIMIT 200`, artist.id);
+  const works = await all(env, 'SELECT id, title FROM artworks WHERE artist_id = ? AND archived = 0 ORDER BY ord', artist.id);
+  return { installed: true, accepted: !!(await acceptedDoc(env, artist.id)), rate_bp: RATE_BP, works,
+    introductions: intros.map(i => ({ reference: i.reference, introduced_on: dublinDate(i.introduced_at), route: i.route, artwork_id: i.artwork_id, artwork_title: i.artwork_title,
+      protected: i.founding === 1, window_ends: shiftYears(dublinDate(i.introduced_at), 1) })),
+    reports: reps.map(r => ({ ...reportView(r), invoice_status: r.invoice_status, payment_status: r.payment_status, corrected_by: r.corrected_by })) };   // never the founder's note
+}
+async function reportRows(env) {
+  const rows = await all(env, `SELECT r.*, a.display_name, c.invoice_status, c.invoice_no, c.invoiced_on, c.payment_status, c.paid_on, c.note, c.updated_at AS record_updated_at,
+      (SELECT x.id FROM hire_reports x WHERE x.corrects = r.id) AS corrected_by
+    FROM hire_reports r LEFT JOIN artists a ON a.id = r.artist_id LEFT JOIN hire_report_records c ON c.report_id = r.id ORDER BY r.reported_at DESC LIMIT 2000`);
+  const titles = new Map((await all(env, 'SELECT id, title FROM artworks')).map(w => [w.id, w.title]));
+  return rows.map(r => ({ ...reportView(r), artist_id: r.artist_id, artist: r.display_name || r.artist_id, artworks: JSON.parse(r.artwork_ids).map(i => titles.get(i) || i),
+    invoice_status: r.invoice_status, invoice_no: r.invoice_no, invoiced_on: r.invoiced_on, payment_status: r.payment_status, paid_on: r.paid_on, note: r.note,
+    corrected_by: r.corrected_by, terms_doc: r.terms_doc }));
+}
+export async function adminReports(env) {
+  if (!(await reportsInstalled(env))) return { installed: false, reports: [], totals: null };
+  const reports = await reportRows(env);
+  const live = reports.filter(r => !r.corrected_by && r.basis === 'commission');
+  const sum = f => live.filter(f).reduce((n, r) => n + r.commission_cents, 0);
+  return { installed: true, rate_bp: RATE_BP, reports,
+    totals: { commission_cents: sum(() => true), invoiced_unpaid_cents: sum(r => r.invoice_status === 'invoiced' && r.payment_status === 'unpaid'),
+      not_invoiced_cents: sum(r => r.invoice_status === 'not_invoiced'), paid_cents: sum(r => r.payment_status === 'paid') } };
+}
+const RECORD = {
+  invoice_status: v => { if (!['not_invoiced', 'invoiced', 'no_commission', 'disputed', 'superseded'].includes(v)) throw new Bad('Choose an invoice status'); return v; },
+  invoice_no: v => { if (v === null || v === '') return null; const s = String(v).trim(); if (!/^[A-Za-z0-9 ._\/-]{1,40}$/.test(s)) throw new Bad('Invoice number: letters, numbers and - _ . / only, 40 at most'); return s; },
+  invoiced_on: v => { if (v === null || v === '') return null; if (!isYmd(v)) throw new Bad('Invoice date as YYYY-MM-DD'); return v; },
+  payment_status: v => { if (!['unpaid', 'paid', 'not_due', 'refunded'].includes(v)) throw new Bad('Choose a payment status'); return v; },
+  paid_on: v => { if (v === null || v === '') return null; if (!isYmd(v)) throw new Bad('Payment date as YYYY-MM-DD'); return v; },
+  note: v => { if (v === null || v === '') return null; const s = String(v).trim(); if (s.length > 280) throw new Bad('Note: 280 characters at most'); return s; },
+};
+export async function setRecord(env, founder, reportId, body) {
+  if (!(await reportsInstalled(env))) throw new Bad('Hire reports are not available yet', 409);
+  const cur = await one(env, 'SELECT c.*, r.basis FROM hire_report_records c JOIN hire_reports r ON r.id = c.report_id WHERE c.report_id = ?', reportId);
+  if (!cur) throw new Bad('Not found', 404);
+  const f = {};
+  for (const [k, v] of Object.entries(body || {})) { if (!(k in RECORD)) throw new Bad(`Unknown field ${k}`); f[k] = RECORD[k](v); }
+  const next = { ...cur, ...f };
+  if (next.invoice_status === 'invoiced' && (!next.invoice_no || !next.invoiced_on)) throw new Bad('An invoiced report needs the invoice number and date');
+  if (next.payment_status === 'paid' && !next.paid_on) throw new Bad('A paid report needs the payment date');
+  if (cur.basis !== 'commission' && (next.invoice_status === 'invoiced' || next.payment_status === 'paid'))
+    throw new Bad('No commission is due on this report (clause 6.3, 6.2(c) or 6.4): it cannot be invoiced', 409);
+  const at = now();
+  await env.DB.prepare(`UPDATE hire_report_records SET invoice_status=?, invoice_no=?, invoiced_on=?, payment_status=?, paid_on=?, note=?, updated_at=?, updated_by=? WHERE report_id=?`)
+    .bind(next.invoice_status, next.invoice_no, next.invoiced_on, next.payment_status, next.paid_on, next.note, at, founder, reportId).run();
+  await audit(env, founder, 'founder', 'hire_record_updated', cur.artist_id, { report: reportId, fields: Object.keys(f), invoice_status: next.invoice_status, payment_status: next.payment_status });
+  return { report_id: reportId, invoice_status: next.invoice_status, payment_status: next.payment_status };
+}
+/* CSV for the founder's own records: no hirer details, no private note; cells that a spreadsheet would read as a formula are
+   made literal (a leading ' ). */
+const cell = v => { let s = v === null || v === undefined ? '' : String(v); if (/^[=+\-@\t\r]/.test(s)) s = "'" + s; return '"' + s.replace(/"/g, '""') + '"'; };
+const eur = c => (c / 100).toFixed(2);
+export async function reportsCsv(env, founder) {
+  if (!(await reportsInstalled(env))) throw new Bad('Hire reports are not available yet', 409);
+  const rows = await reportRows(env);
+  const head = ['report_id', 'reported_at', 'artist', 'reference', 'introduced_on', 'founding_year_protected', 'artworks', 'hire_start', 'hire_end', 'net_hire_fee_eur',
+    'more_to_pay', 'basis', 'rate', 'commission_eur', 'corrects', 'corrected_by', 'invoice_status', 'invoice_no', 'invoiced_on', 'payment_status', 'paid_on', 'terms'];
+  const lines = [head.map(cell).join(',')].concat(rows.map(r => [r.id, r.reported_at, r.artist, r.reference, dublinDate(r.introduced_at), r.founding ? 'yes' : 'no', r.artworks.join('; '),
+    r.hire_start, r.hire_end, eur(r.net_fee_cents), r.more_to_pay ? 'yes' : 'no', r.basis, '10%', eur(r.commission_cents), r.corrects, r.corrected_by, r.invoice_status, r.invoice_no,
+    r.invoiced_on, r.payment_status, r.paid_on, r.terms_doc].map(cell).join(',')));
+  await audit(env, founder, 'founder', 'hire_reports_exported', null, { rows: rows.length });
+  return lines.join('\r\n') + '\r\n';
 }

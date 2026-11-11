@@ -560,7 +560,8 @@
           <div class="st-f"><label for="pm-at">Answered on</label><input id="pm-at" type="datetime-local"></div></div>
         <button class="st-btn st-btn--solid" id="pm-go">Record</button><p class="st-err" id="pm-err" aria-live="polite"></p>
         ${d.permissions.length ? `<table class="st-table"><tr><th>Artist</th><th>Use</th><th>Answer</th><th>Answered</th></tr>${d.permissions.map(x => `<tr><td>${E(x.display_name || x.artist_id)}</td><td>${E(x.use_kind)}: ${E(x.purpose)}</td><td>${E(x.answer)}</td><td>${when(x.answered_at)}</td></tr>`).join('')}</table>` : ''}
-      </section>`;
+      </section>
+      <div id="hrep"></div>`;
     app.querySelectorAll('[data-w]').forEach(box => {
       const id = box.dataset.w;
       box.querySelector('[data-ok]').addEventListener('click', async () => { try { await api('POST', `/api/admin/hire/artwork/${id}/decision`, { decision: 'approve' }); say('Approved'); hire(); } catch (e) { say(e.message, true); } });
@@ -571,6 +572,46 @@
         artwork_ids: $('#pm-works').value.split(',').map(x => x.trim()).filter(Boolean), answer: $('#pm-ans').value, answered_at: $('#pm-at').value ? new Date($('#pm-at').value).toISOString() : '' }); say('Recorded'); hire(); }
       catch (e) { $('#pm-err').textContent = e.message; }
     });
+    await hireReports();
+  }
+  /* Hire reports (PA-AFH r5 6.5–6.6, 10.1): the founder's manual record of invoices and payments. Studio sends nothing and
+     takes no payment; invoices are issued by email outside Studio. */
+  const RB = { commission: 'Commission', founding_year: 'Founding year: none', outside_window: 'Over 12 months: none', no_fee: 'No fee: none' };
+  const RI = { not_invoiced: 'Not invoiced', invoiced: 'Invoiced', no_commission: 'No commission', disputed: 'Disputed', superseded: 'Superseded' };
+  const RP = { unpaid: 'Unpaid', paid: 'Paid', not_due: 'Not due', refunded: 'Refunded' };
+  const eur = c => '€' + (c / 100).toLocaleString('en-IE', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  async function hireReports() {
+    const box = $('#hrep'); if (!box) return;
+    let d; try { d = await api('GET', '/api/admin/hire/reports'); } catch (e) { box.innerHTML = `<section class="st-card"><h2>Hire reports</h2><p class="st-muted">${E(e.message)}</p></section>`; return; }
+    if (!d.installed) { box.innerHTML = '<section class="st-card"><h2>Hire reports</h2><p class="st-muted">Hire reports are not installed (migration 0008).</p></section>'; return; }
+    const sel = (name, map, v) => `<select name="${name}">${Object.entries(map).map(([k, t]) => `<option value="${k}"${k === v ? ' selected' : ''}>${E(t)}</option>`).join('')}</select>`;
+    const T = d.totals;
+    box.innerHTML = `<section class="st-card" aria-labelledby="hrep-h"><h2 id="hrep-h">Hire reports (${d.reports.length})</h2>
+      <p class="st-muted">Reported by artists. Commission is 10% of the net hire fee, worked out from the enquiry log; founding-year introductions carry none. Invoices and payments are handled outside Studio: record them here by hand.</p>
+      <p>Commission reported ${eur(T.commission_cents)} · not yet invoiced ${eur(T.not_invoiced_cents)} · invoiced, unpaid ${eur(T.invoiced_unpaid_cents)} · paid ${eur(T.paid_cents)}
+        · <a href="/api/admin/hire/reports.csv" download>Download CSV</a></p>
+      ${d.reports.length ? `<div class="st-scroll"><table class="st-table"><thead><tr><th>Reported</th><th>Artist</th><th>Enquiry</th><th>Artwork</th><th>Hire fee</th><th>Commission</th><th>Invoice</th><th>Payment</th><th></th></tr></thead><tbody>
+        ${d.reports.map(r => `<tr${r.corrected_by ? ' style="opacity:.55"' : ''}><td>${E(new Date(r.reported_at).toLocaleDateString('en-IE'))}</td><td>${E(r.artist)}</td>
+          <td>${E(r.reference)}${r.founding ? '<br><span class="st-muted">founding year</span>' : ''}${r.corrects ? '<br><span class="st-muted">correction</span>' : ''}${r.corrected_by ? '<br><span class="st-muted">replaced</span>' : ''}</td>
+          <td>${E(r.artworks.join(', '))}<br><span class="st-muted">${E(r.hire_start)} to ${E(r.hire_end)}</span></td>
+          <td>${eur(r.net_fee_cents)}${r.more_to_pay ? '<br><span class="st-muted">instalment</span>' : ''}</td>
+          <td>${r.basis === 'commission' ? eur(r.commission_cents) : E(RB[r.basis])}</td>
+          <td>${E(RI[r.invoice_status] || '')}${r.invoice_no ? `<br><span class="st-muted">${E(r.invoice_no)} · ${E(r.invoiced_on || '')}</span>` : ''}</td>
+          <td>${E(RP[r.payment_status] || '')}${r.paid_on ? `<br><span class="st-muted">${E(r.paid_on)}</span>` : ''}</td>
+          <td><button class="st-btn" type="button" data-edit="${E(r.id)}" aria-expanded="false">Update</button></td></tr>
+          <tr data-form="${E(r.id)}" hidden><td colspan="9"><div class="st-grid2">
+            <div class="st-f"><label>Invoice</label>${sel('invoice_status', RI, r.invoice_status)}</div><div class="st-f"><label>Invoice number</label><input name="invoice_no" maxlength="40" value="${E(r.invoice_no || '')}"></div>
+            <div class="st-f"><label>Invoice date</label><input type="date" name="invoiced_on" value="${E(r.invoiced_on || '')}"></div><div class="st-f"><label>Payment</label>${sel('payment_status', RP, r.payment_status)}</div>
+            <div class="st-f"><label>Payment date</label><input type="date" name="paid_on" value="${E(r.paid_on || '')}"></div><div class="st-f"><label>Private note</label><input name="note" maxlength="280" value="${E(r.note || '')}"></div></div>
+            <button class="st-btn st-btn--solid" type="button" data-save="${E(r.id)}">Save</button> <span class="st-err" data-err aria-live="polite"></span></td></tr>`).join('')}</tbody></table></div>`
+      : '<p class="st-muted">No hire has been reported yet.</p>'}</section>`;
+    box.querySelectorAll('[data-edit]').forEach(b => b.addEventListener('click', () => { const r = box.querySelector(`[data-form="${b.dataset.edit}"]`); r.hidden = !r.hidden; b.setAttribute('aria-expanded', String(!r.hidden)); }));
+    box.querySelectorAll('[data-save]').forEach(b => b.addEventListener('click', async () => {
+      const r = box.querySelector(`[data-form="${b.dataset.save}"]`), v = n => r.querySelector(`[name=${n}]`).value;
+      try { await api('POST', `/api/admin/hire/reports/${b.dataset.save}/record`, { invoice_status: v('invoice_status'), invoice_no: v('invoice_no'), invoiced_on: v('invoiced_on'),
+        payment_status: v('payment_status'), paid_on: v('paid_on'), note: v('note') }); say('Saved'); await hireReports(); }
+      catch (e) { r.querySelector('[data-err]').textContent = e.message; }
+    }));
   }
   async function leaving() {
     const d = await api('GET', '/api/admin/participation');
