@@ -113,8 +113,15 @@ ok(list(facts["published"]) == ["INSTALLED_FINISHED_TURNKEY", "UNKNOWN_DIY_OR_IN
    "M1 exactly two groups are published: installed and finished, kit or self-build")
 # ---- M2
 inst = {ORG[r["productId"]] for r in EX["rows"] if r["segment"] == "INSTALLED_FINISHED_TURNKEY" and r["lastPriceCheck"]}
-ok(inst == {"Garden Office Solutions", "Garden Rooms", "Modular House", "Shomera"},
-   "M2 the published installed suppliers are the four with the base shown included: %s" % sorted(inst))
+# 11 Nov 2026 (founder decision): Garden Office Solutions is temporarily unable to take new orders;
+# its four prices leave the evidence through the registered correction, not by any rule change here.
+_reg = json.loads((ROOT / "atlas-tools" / "cost-evidence-corrections.json").read_text(encoding="utf-8"))
+_withdrawn = {p["id"] for c in _reg["corrections"] if c["id"] == "availability-and-reverification-2026-11-11"
+              for p in c["products"] if p["expect"] == "evidenceExcluded"}
+ok({"recKHXaApIugjOKti", "recUs4gexxlfkaiUj", "reciolethPMEn50gQ", "recUnUAWq0TWkNO5C"} <= _withdrawn,
+   "M2 Garden Office Solutions' four prices are withdrawn by the registered 11 Nov 2026 correction")
+ok(inst == {"Garden Rooms", "Modular House", "Shomera"},
+   "M2 the published installed suppliers are the three with the base shown included: %s" % sorted(inst))
 ok(all(s["base"]["state"] == "included" for s in EXTRAS0["suppliers"]), "M2 every extras entry shows the base included")
 # ---- M3
 segs = {}
