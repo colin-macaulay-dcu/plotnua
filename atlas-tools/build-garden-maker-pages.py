@@ -34,6 +34,9 @@ PAGES = {
         "description": "Compare Concept Modular's Standard and Signature garden offices: published prices excluding VAT, fit-out differences and site costs to confirm.",
         "lead": "Standard or Signature? Compare the published office specifications, then check what it will cost to put one in your garden.",
         "about": "Concept Modular garden offices",
+        # SEO GR10 (9 Nov 2026, live since 09431de): this guide alone opens its closing paragraph with the
+        # Garden Offices in Ireland guide. The builder now carries the approved live wording.
+        "keep_exploring": 'Explore <a href="garden-offices-ireland.html">PlotNua’s independent garden offices in Ireland guide</a> for workspace options, or return to <a href="discovery-living-in-the-garden.html">the wider garden-room Discovery</a>,',
     },
     "all-in-one-cabins-garden-rooms.html": {
         "template": "all-in-one-cabins.html",
@@ -163,7 +166,7 @@ def render(page, profile, evidence, identity, published=False, extra_values=None
       <div class="pd-card pd-card--raised mp-copy">
         <div class="pd-kicker">Keep exploring</div>
         <h2 class="pd-h3">What could work in your garden?</h2>
-        <p>Return to <a href="{PARENT}">PlotNua’s guide to garden rooms in Ireland</a> for the wider picture,
+        <p>{profile.get('keep_exploring', f'Return to <a href="{PARENT}">PlotNua’s guide to garden rooms in Ireland</a> for the wider picture,')}
           <a href="{PARENT}#explore-makers">explore the researched makers</a>, or use the
           <a href="garden-room-prices-ireland.html#quote-checklist">garden room quote checklist</a>
           to compare what different prices cover.</p>
