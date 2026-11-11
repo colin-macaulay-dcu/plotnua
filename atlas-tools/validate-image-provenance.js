@@ -309,7 +309,7 @@ const FOUNDER_ATTESTED_SUPPLIER_INVITE = {
    production, 9 Nov 2026, provenance Option A). The two masters are the founder's ChatGPT images (gpt-image; OpenAI C2PA
    credentials, created 8 Nov 2026, trainedAlgorithmicMedia); prompts unavailable, reference inputs not recorded. The served
    files are masked layers and re-encodings that cannot carry the credential, so the founder-attested form is the only
-   truthful record. ONLY these 26 files, and ONLY on the homepage. Not a way to declare future images. */
+   truthful record. ONLY these 22 files, and ONLY on the homepage (the four v1 sky maps were retired on 11 Nov 2026). Not a way to declare future images. */
 const FOUNDER_ATTESTED_H6V7 = {
   decision: 'PN-FDR-2026-11-09-H6V7-HOME',
   sha256: new Set([
@@ -332,10 +332,6 @@ const FOUNDER_ATTESTED_H6V7 = {
     'e2a139e2897a7eea6ddf0229e781dc38fb5a39d62b58eac561b0fefa6c12b7ac',   // H6v7-layer-power-station-960.webp
     '05ff1541e4e4c23e2c4fd88bbe6bc5ac699f69f4403e26e12f1887287eab51c3',   // H6v7-layer-treehouse-1670.webp
     '5cb4f484dd8abd5f6f5e2af17dc12aaa64766207f96059f73edbc1da8bc08e67',   // H6v7-layer-treehouse-960.webp
-    '8d660ffcc1fc185330a77c490aece8564312086309e1fbbbe8d27f00c9cea295',   // H6v7-sky-flow.png
-    'da249504fbe7f86f82e36f7e6252f9b5bf006c4acfb11c78be114a58a396c0bf',   // H6v7-sky-src.webp
-    '26f0ee9dc9ee5edd3bddeeac1566e0f5b245858071fbc349a7606741d84604fb',   // H6v7-sky-tgt.webp
-    'ed021e708d98b80b811549013b4b79442e9ce4ba541dc61bfa5e860dfbd02c9e',   // H6v7-sky-time.png
     '30fb11ba35aeaebbc9e09294bc0fe2c0e348d777042c6ea678ddf97c4a0742c2',   // H6v7-water-pool-reflect.webp
     'd592d85556a26e9f72b15a7dad260363c73d6981e80ca9b97eea98671db95d56',   // H6v7-water-pool.webp
     '741fe24ac1d9d1a29e55f1f5361834b21b1bfd893895d13bb3f74f37a912672d',   // H6v7-water-tub.webp

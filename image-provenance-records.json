@@ -10835,286 +10835,6 @@
       }
     },
     {
-      "asset": "assets/h6/img/H6v7-sky-flow.png",
-      "sha256": "8d660ffcc1fc185330a77c490aece8564312086309e1fbbbe8d27f00c9cea295",
-      "bytes": 22429,
-      "pixels": [
-        640,
-        196
-      ],
-      "class": "AI_ILLUSTRATION",
-      "what": "H6 v7 sky band: the BEFORE sky, its clouds rearranged into the words, and the two data maps that drive the cloud animation",
-      "depicts_named_product": false,
-      "depicts_named_organisation": false,
-      "generated": {
-        "tool": "OpenAI ChatGPT image generation (gpt-image), per the masters' own signed C2PA credentials; then PlotNua deterministic build tools (atlas-tools/h6v7/pipeline), no generative fill",
-        "date": "2026-11-08",
-        "source_masters": [
-          {
-            "role": "BEFORE",
-            "sha256": "373b6805b127067454422bcd3140fdb7242a4403ac8f6403ca132a2df91d23b3",
-            "pixels": [
-              1670,
-              942
-            ],
-            "c2pa_created": "2026-11-08T20:10:23Z"
-          },
-          {
-            "role": "POSSIBLE",
-            "sha256": "8af0550f814df72ef78bd4bbc94df27e1648843e0158701250e81f772c642e7e",
-            "pixels": [
-              1670,
-              941
-            ],
-            "c2pa_created": "2026-11-08T20:04:37Z"
-          }
-        ]
-      },
-      "decision_ref": "PN-FDR-2026-11-09-H6V7-HOME (governance/PN-FDR-2026-11-09-H6V7-HOME.md)",
-      "prompt_status": "UNAVAILABLE",
-      "reference_disclosure": {
-        "status": "UNCERTAIN",
-        "statement": "The masters' credentials record no input image; the ChatGPT conversation context is not recorded, so inputs cannot be ruled out. reference_inputs is therefore not recorded.",
-        "evidence": "Embedded C2PA manifests of the two masters (read from the file bytes, 9 Nov 2026); governance/H6V7-PROVENANCE-DECLARATION-DRAFT-2026-11-09.json"
-      },
-      "resemblance_review": {
-        "date": "2026-11-09",
-        "reviewed_by": "PlotNua build session (full-resolution review of every state)",
-        "compared_against": "the two masters and the approved H6 evening set",
-        "verdict": "Accepted by the founder: generic garden structures (treehouse, curved garden pod, sauna, wood-fired hot tub, natural swimming pool, rooftop PV); no supplier product, logo or organisation is identifiable or named.",
-        "findings": [
-          "No brand marks, logos or text on any structure.",
-          "No supplier credit is shown or implied; no licensed supplier photograph is used in v7."
-        ]
-      },
-      "human_review": {
-        "reviewer": "Colin MacAulay (founder)",
-        "date": "2026-11-09",
-        "attests": "Founder approved the H6 v7 daylight homepage hero for production on 9 Nov 2026 under provenance Option A. AI-generated illustration, labelled as such; not presented as a photograph of a real property or any supplier's product. Prompts unavailable; recorded without inventing facts."
-      },
-      "permitted_surfaces": [
-        "homepage"
-      ],
-      "content_credentials": {
-        "embeds_c2pa": false,
-        "note": "The PNG masters carry OpenAI C2PA credentials; masking and web re-encoding remove them."
-      },
-      "introduced": {
-        "date": "2026-11-09",
-        "subject": "H6 v7 daylight homepage hero (founder production approval)"
-      }
-    },
-    {
-      "asset": "assets/h6/img/H6v7-sky-src.webp",
-      "sha256": "da249504fbe7f86f82e36f7e6252f9b5bf006c4acfb11c78be114a58a396c0bf",
-      "bytes": 15192,
-      "pixels": [
-        640,
-        196
-      ],
-      "class": "AI_ILLUSTRATION",
-      "what": "H6 v7 sky band: the BEFORE sky, its clouds rearranged into the words, and the two data maps that drive the cloud animation",
-      "depicts_named_product": false,
-      "depicts_named_organisation": false,
-      "generated": {
-        "tool": "OpenAI ChatGPT image generation (gpt-image), per the masters' own signed C2PA credentials; then PlotNua deterministic build tools (atlas-tools/h6v7/pipeline), no generative fill",
-        "date": "2026-11-08",
-        "source_masters": [
-          {
-            "role": "BEFORE",
-            "sha256": "373b6805b127067454422bcd3140fdb7242a4403ac8f6403ca132a2df91d23b3",
-            "pixels": [
-              1670,
-              942
-            ],
-            "c2pa_created": "2026-11-08T20:10:23Z"
-          },
-          {
-            "role": "POSSIBLE",
-            "sha256": "8af0550f814df72ef78bd4bbc94df27e1648843e0158701250e81f772c642e7e",
-            "pixels": [
-              1670,
-              941
-            ],
-            "c2pa_created": "2026-11-08T20:04:37Z"
-          }
-        ]
-      },
-      "decision_ref": "PN-FDR-2026-11-09-H6V7-HOME (governance/PN-FDR-2026-11-09-H6V7-HOME.md)",
-      "prompt_status": "UNAVAILABLE",
-      "reference_disclosure": {
-        "status": "UNCERTAIN",
-        "statement": "The masters' credentials record no input image; the ChatGPT conversation context is not recorded, so inputs cannot be ruled out. reference_inputs is therefore not recorded.",
-        "evidence": "Embedded C2PA manifests of the two masters (read from the file bytes, 9 Nov 2026); governance/H6V7-PROVENANCE-DECLARATION-DRAFT-2026-11-09.json"
-      },
-      "resemblance_review": {
-        "date": "2026-11-09",
-        "reviewed_by": "PlotNua build session (full-resolution review of every state)",
-        "compared_against": "the two masters and the approved H6 evening set",
-        "verdict": "Accepted by the founder: generic garden structures (treehouse, curved garden pod, sauna, wood-fired hot tub, natural swimming pool, rooftop PV); no supplier product, logo or organisation is identifiable or named.",
-        "findings": [
-          "No brand marks, logos or text on any structure.",
-          "No supplier credit is shown or implied; no licensed supplier photograph is used in v7."
-        ]
-      },
-      "human_review": {
-        "reviewer": "Colin MacAulay (founder)",
-        "date": "2026-11-09",
-        "attests": "Founder approved the H6 v7 daylight homepage hero for production on 9 Nov 2026 under provenance Option A. AI-generated illustration, labelled as such; not presented as a photograph of a real property or any supplier's product. Prompts unavailable; recorded without inventing facts."
-      },
-      "permitted_surfaces": [
-        "homepage"
-      ],
-      "content_credentials": {
-        "embeds_c2pa": false,
-        "note": "The PNG masters carry OpenAI C2PA credentials; masking and web re-encoding remove them."
-      },
-      "introduced": {
-        "date": "2026-11-09",
-        "subject": "H6 v7 daylight homepage hero (founder production approval)"
-      }
-    },
-    {
-      "asset": "assets/h6/img/H6v7-sky-tgt.webp",
-      "sha256": "26f0ee9dc9ee5edd3bddeeac1566e0f5b245858071fbc349a7606741d84604fb",
-      "bytes": 20220,
-      "pixels": [
-        640,
-        196
-      ],
-      "class": "AI_ILLUSTRATION",
-      "what": "H6 v7 sky band: the BEFORE sky, its clouds rearranged into the words, and the two data maps that drive the cloud animation",
-      "depicts_named_product": false,
-      "depicts_named_organisation": false,
-      "generated": {
-        "tool": "OpenAI ChatGPT image generation (gpt-image), per the masters' own signed C2PA credentials; then PlotNua deterministic build tools (atlas-tools/h6v7/pipeline), no generative fill",
-        "date": "2026-11-08",
-        "source_masters": [
-          {
-            "role": "BEFORE",
-            "sha256": "373b6805b127067454422bcd3140fdb7242a4403ac8f6403ca132a2df91d23b3",
-            "pixels": [
-              1670,
-              942
-            ],
-            "c2pa_created": "2026-11-08T20:10:23Z"
-          },
-          {
-            "role": "POSSIBLE",
-            "sha256": "8af0550f814df72ef78bd4bbc94df27e1648843e0158701250e81f772c642e7e",
-            "pixels": [
-              1670,
-              941
-            ],
-            "c2pa_created": "2026-11-08T20:04:37Z"
-          }
-        ]
-      },
-      "decision_ref": "PN-FDR-2026-11-09-H6V7-HOME (governance/PN-FDR-2026-11-09-H6V7-HOME.md)",
-      "prompt_status": "UNAVAILABLE",
-      "reference_disclosure": {
-        "status": "UNCERTAIN",
-        "statement": "The masters' credentials record no input image; the ChatGPT conversation context is not recorded, so inputs cannot be ruled out. reference_inputs is therefore not recorded.",
-        "evidence": "Embedded C2PA manifests of the two masters (read from the file bytes, 9 Nov 2026); governance/H6V7-PROVENANCE-DECLARATION-DRAFT-2026-11-09.json"
-      },
-      "resemblance_review": {
-        "date": "2026-11-09",
-        "reviewed_by": "PlotNua build session (full-resolution review of every state)",
-        "compared_against": "the two masters and the approved H6 evening set",
-        "verdict": "Accepted by the founder: generic garden structures (treehouse, curved garden pod, sauna, wood-fired hot tub, natural swimming pool, rooftop PV); no supplier product, logo or organisation is identifiable or named.",
-        "findings": [
-          "No brand marks, logos or text on any structure.",
-          "No supplier credit is shown or implied; no licensed supplier photograph is used in v7."
-        ]
-      },
-      "human_review": {
-        "reviewer": "Colin MacAulay (founder)",
-        "date": "2026-11-09",
-        "attests": "Founder approved the H6 v7 daylight homepage hero for production on 9 Nov 2026 under provenance Option A. AI-generated illustration, labelled as such; not presented as a photograph of a real property or any supplier's product. Prompts unavailable; recorded without inventing facts."
-      },
-      "permitted_surfaces": [
-        "homepage"
-      ],
-      "content_credentials": {
-        "embeds_c2pa": false,
-        "note": "The PNG masters carry OpenAI C2PA credentials; masking and web re-encoding remove them."
-      },
-      "introduced": {
-        "date": "2026-11-09",
-        "subject": "H6 v7 daylight homepage hero (founder production approval)"
-      }
-    },
-    {
-      "asset": "assets/h6/img/H6v7-sky-time.png",
-      "sha256": "ed021e708d98b80b811549013b4b79442e9ce4ba541dc61bfa5e860dfbd02c9e",
-      "bytes": 66916,
-      "pixels": [
-        640,
-        196
-      ],
-      "class": "AI_ILLUSTRATION",
-      "what": "H6 v7 sky band: the BEFORE sky, its clouds rearranged into the words, and the two data maps that drive the cloud animation",
-      "depicts_named_product": false,
-      "depicts_named_organisation": false,
-      "generated": {
-        "tool": "OpenAI ChatGPT image generation (gpt-image), per the masters' own signed C2PA credentials; then PlotNua deterministic build tools (atlas-tools/h6v7/pipeline), no generative fill",
-        "date": "2026-11-08",
-        "source_masters": [
-          {
-            "role": "BEFORE",
-            "sha256": "373b6805b127067454422bcd3140fdb7242a4403ac8f6403ca132a2df91d23b3",
-            "pixels": [
-              1670,
-              942
-            ],
-            "c2pa_created": "2026-11-08T20:10:23Z"
-          },
-          {
-            "role": "POSSIBLE",
-            "sha256": "8af0550f814df72ef78bd4bbc94df27e1648843e0158701250e81f772c642e7e",
-            "pixels": [
-              1670,
-              941
-            ],
-            "c2pa_created": "2026-11-08T20:04:37Z"
-          }
-        ]
-      },
-      "decision_ref": "PN-FDR-2026-11-09-H6V7-HOME (governance/PN-FDR-2026-11-09-H6V7-HOME.md)",
-      "prompt_status": "UNAVAILABLE",
-      "reference_disclosure": {
-        "status": "UNCERTAIN",
-        "statement": "The masters' credentials record no input image; the ChatGPT conversation context is not recorded, so inputs cannot be ruled out. reference_inputs is therefore not recorded.",
-        "evidence": "Embedded C2PA manifests of the two masters (read from the file bytes, 9 Nov 2026); governance/H6V7-PROVENANCE-DECLARATION-DRAFT-2026-11-09.json"
-      },
-      "resemblance_review": {
-        "date": "2026-11-09",
-        "reviewed_by": "PlotNua build session (full-resolution review of every state)",
-        "compared_against": "the two masters and the approved H6 evening set",
-        "verdict": "Accepted by the founder: generic garden structures (treehouse, curved garden pod, sauna, wood-fired hot tub, natural swimming pool, rooftop PV); no supplier product, logo or organisation is identifiable or named.",
-        "findings": [
-          "No brand marks, logos or text on any structure.",
-          "No supplier credit is shown or implied; no licensed supplier photograph is used in v7."
-        ]
-      },
-      "human_review": {
-        "reviewer": "Colin MacAulay (founder)",
-        "date": "2026-11-09",
-        "attests": "Founder approved the H6 v7 daylight homepage hero for production on 9 Nov 2026 under provenance Option A. AI-generated illustration, labelled as such; not presented as a photograph of a real property or any supplier's product. Prompts unavailable; recorded without inventing facts."
-      },
-      "permitted_surfaces": [
-        "homepage"
-      ],
-      "content_credentials": {
-        "embeds_c2pa": false,
-        "note": "The PNG masters carry OpenAI C2PA credentials; masking and web re-encoding remove them."
-      },
-      "introduced": {
-        "date": "2026-11-09",
-        "subject": "H6 v7 daylight homepage hero (founder production approval)"
-      }
-    },
-    {
       "asset": "assets/h6/img/H6v7-water-pool-reflect.webp",
       "sha256": "30fb11ba35aeaebbc9e09294bc0fe2c0e348d777042c6ea678ddf97c4a0742c2",
       "bytes": 54320,
@@ -23292,6 +23012,188 @@
       "method": "webp-resize",
       "encoder": "Pillow, WebP quality 88, whole-frame proportional resize from generation PNG",
       "made": "2026-11-11"
+    },
+    {
+      "asset": "assets/h6/img/H6v7-cloud-src.webp",
+      "sha256": "5e6b1ea4951335c9c6993fc1f4a37681c70f0594531b5628b3bd537e4b8aaab2",
+      "bytes": 35584,
+      "pixels": [
+        820,
+        224
+      ],
+      "derived_from": {
+        "asset": "assets/h6/img/H6v7-before-1670.webp",
+        "sha256": "bb1429075d13fbd1e6998c5f7552819ff2a89649baff22deeeee1ea9def3a0df"
+      },
+      "method": "crop",
+      "edit": {
+        "description": "H6 v7 cloud lettering v2 (Governance 2.0, Rule 3): crop of the sky band x 730-1550, y 0-224 of the hero photograph, unchanged (the first frame of the animation).",
+        "operation": "crop of the sky band x 730-1550, y 0-224 of the hero photograph, unchanged (the first frame of the animation)",
+        "verified_by": "atlas-tools/h6v7/pipeline/clouds.py (deterministic; reproduces these bytes from the photograph)"
+      },
+      "encoder": "Pillow, WebP",
+      "made": "2026-11-11",
+      "content_credentials": {
+        "source_file_embeds_c2pa": false,
+        "derivative_embeds_c2pa": false,
+        "note": "The served photograph carries no credential (its master does); these maps carry none."
+      }
+    },
+    {
+      "asset": "assets/h6/img/H6v7-cloud-fill.webp",
+      "sha256": "2bdccd7da7707d8acb70291af72f4cdd48ee96de92a254e4cd59135a7de464d2",
+      "bytes": 13436,
+      "pixels": [
+        820,
+        224
+      ],
+      "derived_from": {
+        "asset": "assets/h6/img/H6v7-before-1670.webp",
+        "sha256": "bb1429075d13fbd1e6998c5f7552819ff2a89649baff22deeeee1ea9def3a0df"
+      },
+      "method": "crop",
+      "edit": {
+        "description": "H6 v7 cloud lettering v2 (Governance 2.0, Rule 3): crop of the sky band x 730-1550, y 0-224 of the hero photograph, with the branches, roofs, chimney and antenna painted out (OpenCV Telea inpaint, then a 4 px blur inside that mask only): the cloud that drifts.",
+        "operation": "crop of the sky band x 730-1550, y 0-224 of the hero photograph, with the branches, roofs, chimney and antenna painted out (OpenCV Telea inpaint, then a 4 px blur inside that mask only): the cloud that drifts",
+        "verified_by": "atlas-tools/h6v7/pipeline/clouds.py (deterministic; reproduces these bytes from the photograph)"
+      },
+      "encoder": "Pillow, WebP",
+      "made": "2026-11-11",
+      "content_credentials": {
+        "source_file_embeds_c2pa": false,
+        "derivative_embeds_c2pa": false,
+        "note": "The served photograph carries no credential (its master does); these maps carry none."
+      }
+    },
+    {
+      "asset": "assets/h6/img/H6v7-cloud-plate.webp",
+      "sha256": "65bd954363c953052f663b99eead7cc85b6e21f9689b187f381a41550cd0b9fa",
+      "bytes": 2510,
+      "pixels": [
+        820,
+        224
+      ],
+      "derived_from": {
+        "asset": "assets/h6/img/H6v7-before-1670.webp",
+        "sha256": "bb1429075d13fbd1e6998c5f7552819ff2a89649baff22deeeee1ea9def3a0df"
+      },
+      "method": "crop",
+      "edit": {
+        "description": "H6 v7 cloud lettering v2 (Governance 2.0, Rule 3): crop of the sky band x 730-1550, y 0-224 of the hero photograph, replaced by a smooth least-squares fit of its own blue-sky pixels plus a light horizon haze: the clear sky that shows where cloud thins.",
+        "operation": "crop of the sky band x 730-1550, y 0-224 of the hero photograph, replaced by a smooth least-squares fit of its own blue-sky pixels plus a light horizon haze: the clear sky that shows where cloud thins",
+        "verified_by": "atlas-tools/h6v7/pipeline/clouds.py (deterministic; reproduces these bytes from the photograph)"
+      },
+      "encoder": "Pillow, WebP",
+      "made": "2026-11-11",
+      "content_credentials": {
+        "source_file_embeds_c2pa": false,
+        "derivative_embeds_c2pa": false,
+        "note": "The served photograph carries no credential (its master does); these maps carry none."
+      }
+    },
+    {
+      "asset": "assets/h6/img/H6v7-cloud-colour.webp",
+      "sha256": "4326b8a354bda13053787fa9e34d08e2fe6ba703da424f7227d2f9c607d9ad20",
+      "bytes": 45472,
+      "pixels": [
+        1640,
+        448
+      ],
+      "derived_from": {
+        "asset": "assets/h6/img/H6v7-before-1670.webp",
+        "sha256": "bb1429075d13fbd1e6998c5f7552819ff2a89649baff22deeeee1ea9def3a0df"
+      },
+      "method": "crop",
+      "edit": {
+        "description": "H6 v7 cloud lettering v2 (Governance 2.0, Rule 3): procedural rendering at 2x the band: the words \"Discover what’s possible.\" set in Noto Serif CJK Black and rebuilt as a lit heap of spherical cloud puffs, coloured with cloud colours measured from the sky band x 730-1550, y 0-224 of the hero photograph; no generative AI.",
+        "operation": "procedural rendering at 2x the band: the words \"Discover what’s possible.\" set in Noto Serif CJK Black and rebuilt as a lit heap of spherical cloud puffs, coloured with cloud colours measured from the sky band x 730-1550, y 0-224 of the hero photograph; no generative AI",
+        "verified_by": "atlas-tools/h6v7/pipeline/clouds.py (deterministic; reproduces these bytes from the photograph)"
+      },
+      "encoder": "Pillow, WebP",
+      "made": "2026-11-11",
+      "content_credentials": {
+        "source_file_embeds_c2pa": false,
+        "derivative_embeds_c2pa": false,
+        "note": "The served photograph carries no credential (its master does); these maps carry none."
+      }
+    },
+    {
+      "asset": "assets/h6/img/H6v7-cloud-density.webp",
+      "sha256": "84e5e7e340af5903f960e1a9870d845913f7f378a9db9f914e5ca78b9588a76c",
+      "bytes": 30532,
+      "pixels": [
+        1640,
+        448
+      ],
+      "derived_from": {
+        "asset": "assets/h6/img/H6v7-before-1670.webp",
+        "sha256": "bb1429075d13fbd1e6998c5f7552819ff2a89649baff22deeeee1ea9def3a0df"
+      },
+      "method": "crop",
+      "edit": {
+        "description": "H6 v7 cloud lettering v2 (Governance 2.0, Rule 3): procedural, 2x the band, greyscale: the density of the cloud letters (same build as the colour map).",
+        "operation": "procedural, 2x the band, greyscale: the density of the cloud letters (same build as the colour map)",
+        "verified_by": "atlas-tools/h6v7/pipeline/clouds.py (deterministic; reproduces these bytes from the photograph)"
+      },
+      "encoder": "Pillow, WebP",
+      "made": "2026-11-11",
+      "content_credentials": {
+        "source_file_embeds_c2pa": false,
+        "derivative_embeds_c2pa": false,
+        "note": "The served photograph carries no credential (its master does); these maps carry none."
+      }
+    },
+    {
+      "asset": "assets/h6/img/H6v7-cloud-data.webp",
+      "sha256": "7e9a61fe09027774238cc29ef79f288ce74848dc8fe52bb9ee9690e531f25457",
+      "bytes": 84258,
+      "pixels": [
+        820,
+        224
+      ],
+      "derived_from": {
+        "asset": "assets/h6/img/H6v7-before-1670.webp",
+        "sha256": "bb1429075d13fbd1e6998c5f7552819ff2a89649baff22deeeee1ea9def3a0df"
+      },
+      "method": "crop",
+      "edit": {
+        "description": "H6 v7 cloud lettering v2 (Governance 2.0, Rule 3): procedural, band size: R = when each billow condenses, G = the open-sky mask measured from the sky band x 730-1550, y 0-224 of the hero photograph, B = the words as loose cloud masses.",
+        "operation": "procedural, band size: R = when each billow condenses, G = the open-sky mask measured from the sky band x 730-1550, y 0-224 of the hero photograph, B = the words as loose cloud masses",
+        "verified_by": "atlas-tools/h6v7/pipeline/clouds.py (deterministic; reproduces these bytes from the photograph)"
+      },
+      "encoder": "Pillow, WebP lossless",
+      "made": "2026-11-11",
+      "content_credentials": {
+        "source_file_embeds_c2pa": false,
+        "derivative_embeds_c2pa": false,
+        "note": "The served photograph carries no credential (its master does); these maps carry none."
+      }
+    },
+    {
+      "asset": "assets/h6/img/H6v7-cloud-field.webp",
+      "sha256": "65fbce88e523f5087f2d10181db6340e990f0722af7cd2ad4007b0f6b8136fb9",
+      "bytes": 25000,
+      "pixels": [
+        410,
+        112
+      ],
+      "derived_from": {
+        "asset": "assets/h6/img/H6v7-before-1670.webp",
+        "sha256": "bb1429075d13fbd1e6998c5f7552819ff2a89649baff22deeeee1ea9def3a0df"
+      },
+      "method": "crop",
+      "edit": {
+        "description": "H6 v7 cloud lettering v2 (Governance 2.0, Rule 3): procedural, half band size: the drift field toward the words (R, G) and where the sky thins around them (B).",
+        "operation": "procedural, half band size: the drift field toward the words (R, G) and where the sky thins around them (B)",
+        "verified_by": "atlas-tools/h6v7/pipeline/clouds.py (deterministic; reproduces these bytes from the photograph)"
+      },
+      "encoder": "Pillow, WebP lossless",
+      "made": "2026-11-11",
+      "content_credentials": {
+        "source_file_embeds_c2pa": false,
+        "derivative_embeds_c2pa": false,
+        "note": "The served photograph carries no credential (its master does); these maps carry none."
+      }
     }
   ],
   "derivative_holds": [

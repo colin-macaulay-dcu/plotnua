@@ -111,11 +111,11 @@
     var cw = $('h6p-water'), cs = $('h6p-smoke'), ck = $('h6p-sky'), btn = $('h6p-motion');
     if (!cw || !cs || !ck) return { features: function () {}, sky: function () {} };
     /* boxes in image pixels [x, y, w, h]; the canvases sit inside the camera container, so they zoom with the photograph */
-    var BOX = { water: [718, 427, 954, 452], smoke: [1450, 93, 230, 210], sky: [870, 0, 640, 196] };
+    var BOX = { water: [718, 427, 954, 452], smoke: [1450, 93, 230, 210], sky: [730, 0, 820, 224] };
     var TEX = { pool: [718, 559, 954, 320], tub: [1493, 427, 157, 21] };
     function place(c, b) { c.style.left = (b[0] / IW * 100) + '%'; c.style.top = (b[1] / IH * 100) + '%'; c.style.width = (b[2] / IW * 100) + '%'; c.style.height = (b[3] / IH * 100) + '%'; }
     place(cw, BOX.water); place(cs, BOX.smoke); place(ck, BOX.sky);
-    var wx = cw.getContext('2d'), sx = cs.getContext('2d'), kx = ck.getContext('2d');
+    var wx = cw.getContext('2d'), sx = cs.getContext('2d');   /* the sky canvas is WebGL: see skyGL() */
     var show = { pool: false, reflect: false, tub: false, smoke: false };
     var paused = false, onScreen = true, raf = 0, clock = 0, prev = 0, lastW = 0, lastS = 0, lastK = 0;
     var img = {};
@@ -172,55 +172,105 @@
       sx.clearRect(0, 0, cs.width, cs.height); sx.imageSmoothingEnabled = true; sx.drawImage(vap, 0, 0, cs.width, cs.height);
     }
 
-    /* sky: every letter is a translated piece of a real cloud from this sky (prepared offline from the BEFORE photograph);
-       the frame between is a transport of the cloud material along that field with a late cross-fade into the words */
-    var K = { w: 640, h: 196, src: null, tgt: null, flow: null, time: null, out: null, u: 0, dir: 0, t0: 0, from: 0, dur: 0, wanted: false };
-    function pixels(name) {
-      var im = load(name);
-      return (im.decode ? im.decode() : new Promise(function (r) { im.onload = r; })).then(function () {
-        var c = document.createElement('canvas'); c.width = K.w; c.height = K.h; var x = c.getContext('2d');
-        x.drawImage(im, 0, 0, K.w, K.h); return x.getImageData(0, 0, K.w, K.h).data;
-      });
+    /* sky (v2, 11 Nov 2026): cumulus letters condense out of the photograph's own sky. One small WebGL pass per frame:
+       the band's clouds drift and gather toward the words while the sky behind them thins to clear blue, and the
+       letters (a lit heap of cloud puffs, prepared offline by atlas-tools/h6v7/pipeline/clouds.py) condense core-first
+       from vapour streaming in from around them. u = 0 is the photograph itself (no jump); u = 1 is the formed words.
+       No WebGL: the words are simply not drawn (the heading below the photograph carries the same invitation). */
+    var K = { u: 0, dir: 0, t0: 0, from: 0, dur: 0, wanted: false, gl: null, ok: false, w: 0, h: 0 };
+    var SKY_FILES = ['cloud-src.webp', 'cloud-plate.webp', 'cloud-colour.webp', 'cloud-density.webp', 'cloud-data.webp', 'cloud-field.webp', 'cloud-fill.webp'];
+    var VS = 'attribute vec2 p;varying vec2 v;void main(){v=vec2(p.x*.5+.5,.5-p.y*.5);gl_Position=vec4(p,0.,1.);}';
+    var FS = ['precision mediump float;varying vec2 v;uniform sampler2D S,P,C,D,Q,F,G;uniform float u,t;uniform vec2 px;',
+      'float h(vec2 p){return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453);}',
+      'float n(vec2 p){vec2 i=floor(p),f=fract(p);f=f*f*(3.-2.*f);return mix(mix(h(i),h(i+vec2(1.,0.)),f.x),mix(h(i+vec2(0.,1.)),h(i+1.),f.x),f.y);}',
+      'float fb(vec2 p){return n(p)*.55+n(p*2.03+7.1)*.3+n(p*4.07+3.3)*.15;}',
+      'void main(){',
+      ' vec4 fl=texture2D(F,v);vec2 dr=(fl.rg*255.-128.)/127.;',
+      /* three overlapping movements: the sky's clouds drift in (m), loose masses gather on the words (g),
+         the masses condense into the letters billow by billow (s); the spare vapour then evaporates (x) */
+      ' float m=smoothstep(0.,.5,u),g=smoothstep(.08,.55,u),s=smoothstep(.24,.84,u),x=smoothstep(.66,.99,u);',
+      ' float ed=smoothstep(0.,.1,v.x)*smoothstep(1.,.9,v.x)*smoothstep(1.,.8,v.y);',
+      ' vec2 tb=vec2(fb(v*vec2(5.,1.8)+vec2(t*.04,0.))-.5,fb(v*vec2(5.,1.8)+vec2(9.,t*.03))-.5);',
+      ' vec2 off=(dr*20.*m*(1.-.5*s)+tb*5.*sin(3.14159*m)+vec2(-3.*m,0.))*ed;',
+      ' vec3 bg=mix(texture2D(S,v).rgb,texture2D(G,v-off*px).rgb,smoothstep(0.,.12,m));',
+      ' float nz=fb(v*vec2(7.,2.5)+3.);',
+      ' float th=fl.b*clamp((smoothstep(.15,.75,u)*1.3-nz*.4)*1.6,0.,1.);',
+      ' bg=mix(bg,texture2D(P,v).rgb,th*.88);',
+      /* loose masses: the words as broad, irregular cloud bodies, coloured by the cloud that drifted in */
+      ' vec4 dq=texture2D(Q,v);',
+      ' float nm=fb(v*vec2(15.,5.5)+vec2(t*.10,t*.04)),nm2=fb(v*vec2(34.,12.)-vec2(t*.07,0.));',
+      ' float M=dq.b+(nm-.5)*.55+(nm2-.5)*.18;',
+      ' float ma=smoothstep(.62-.42*g,.92-.42*g,M)*g*(1.-x);',
+      ' vec3 cin=texture2D(G,v-(off+dr*14.)*px).rgb;',
+      ' float lit=smoothstep(.15,.95,M+nm2*.25)-.18*smoothstep(.4,1.,v.y+(nm-.5)*.3);',
+      ' vec3 mc=mix(max(cin,vec3(.84,.86,.9)),mix(vec3(.80,.83,.88),vec3(.995,.995,.99),lit),.65);',
+      /* the letters condense inside the masses, each billow from its dense core outward */
+      ' float r=1.-s;vec2 q=v-dr*px*12.*r*r+tb*px*8.*r;',
+      ' float dn=texture2D(D,q).r,o=texture2D(Q,q).r;',
+      ' float L=clamp((s*1.16-o+.02)/.22,0.,1.);',
+      ' float la=smoothstep(1.-L,1.3-L,dn)*sqrt(L);',
+      ' vec3 c=mix(mc,texture2D(C,q).rgb,smoothstep(.15,.85,L));',
+      /* the first thin vapour streaming in along the drift */
+      ' vec2 e=dr*px*9.;float vp=(texture2D(Q,v+e).b+texture2D(Q,v-e).b+texture2D(Q,v+e*2.+tb*px*9.).b)/3.;',
+      ' vp*=.32*sin(3.14159*clamp(u*1.7,0.,1.))*smoothstep(.3,.8,fb(v*vec2(18.,6.)-vec2(t*.3,0.)));',
+      ' vec3 o3=mix(bg,vec3(.95,.96,.975),vp);',
+      ' o3=mix(o3,mc,ma);',
+      ' o3=mix(o3,c,la);',
+      ' float k=dq.g;',
+      ' gl_FragColor=vec4(o3*k,k);}'].join('');
+    function skyGL() {
+      if (K.gl !== null) return K.gl;
+      var gl = null;
+      try { gl = ck.getContext('webgl', { premultipliedAlpha: true, alpha: true, antialias: false, preserveDrawingBuffer: false, powerPreference: 'low-power' }); } catch (e) {}
+      if (!gl) { K.gl = false; return false; }
+      function sh(type, s) { var o = gl.createShader(type); gl.shaderSource(o, s); gl.compileShader(o); if (!gl.getShaderParameter(o, gl.COMPILE_STATUS)) throw new Error(gl.getShaderInfoLog(o)); return o; }
+      try {
+        var pr = gl.createProgram(); gl.attachShader(pr, sh(gl.VERTEX_SHADER, VS)); gl.attachShader(pr, sh(gl.FRAGMENT_SHADER, FS)); gl.linkProgram(pr);
+        if (!gl.getProgramParameter(pr, gl.LINK_STATUS)) throw new Error('link');
+        gl.useProgram(pr);
+        var b = gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER, b); gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 1, -1, -1, 1, 1, 1]), gl.STATIC_DRAW);
+        var loc = gl.getAttribLocation(pr, 'p'); gl.enableVertexAttribArray(loc); gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
+        K.U = { u: gl.getUniformLocation(pr, 'u'), t: gl.getUniformLocation(pr, 't'), px: gl.getUniformLocation(pr, 'px') };
+        ['S', 'P', 'C', 'D', 'Q', 'F', 'G'].forEach(function (n, i) { gl.uniform1i(gl.getUniformLocation(pr, n), i); });
+        gl.uniform2f(K.U.px, 1 / 820, 1 / 224);
+      } catch (e) { K.gl = false; return false; }
+      ck.addEventListener('webglcontextlost', function (e) { e.preventDefault(); K.ok = false; ck.classList.remove('is-on'); });
+      K.gl = gl; return gl;
     }
     var skyReady = null;
     function skyLoad() {
-      if (!skyReady) skyReady = Promise.all([pixels('sky-src.webp'), pixels('sky-tgt.webp'), pixels('sky-flow.png'), pixels('sky-time.png')]).then(function (r) {
-        K.src = r[0]; K.tgt = r[1]; K.flow = r[2]; K.time = r[3]; ck.width = K.w; ck.height = K.h; K.out = kx.createImageData(K.w, K.h);
-      }).catch(function () { K.src = null; });
+      if (skyReady) return skyReady;
+      var gl = skyGL();
+      if (!gl) return (skyReady = Promise.resolve());
+      skyReady = Promise.all(SKY_FILES.map(function (f) { var im = load(f); return im.decode ? im.decode().then(function () { return im; }) : new Promise(function (r) { im.onload = function () { r(im); }; }); })).then(function (ims) {
+        gl.pixelStorei(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL, false);
+        ims.forEach(function (im, i) {
+          var tx = gl.createTexture(); gl.activeTexture(gl.TEXTURE0 + i); gl.bindTexture(gl.TEXTURE_2D, tx);
+          gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR); gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+          gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE); gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+          gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGB, gl.RGB, gl.UNSIGNED_BYTE, im);
+        });
+        K.ok = true;
+      }).catch(function () { K.ok = false; });
       return skyReady;
     }
-    function ss(e0, e1, x) { var v = Math.max(0, Math.min(1, (x - e0) / (e1 - e0))); return v * v * (3 - 2 * v); }
-    function drawSky(u, t) {
-      if (!K.src) return;
-      var S = K.src, T = K.tgt, F = K.flow, Q = K.time, O = K.out.data, w = K.w, h = K.h;
-      var td = ss(0, 0.85, u), bump = Math.sin(Math.PI * td) * 1.2;
-      for (var y = 0; y < h; y++) {
-        for (var x = 0; x < w; x++) {
-          var i = (y * w + x) * 4, reg = F[i + 2];
-          if (reg === 0) { O[i + 3] = 0; continue; }
-          var fx = F[i] - 128, fy = F[i + 1] - 128;
-          var jx = Math.sin(y * 0.09 + t * 1.7 + x * 0.013) * bump, jy = Math.sin(x * 0.07 + t * 1.3) * bump * 0.6;
-          var ax = x + td * fx + jx, ay = y + td * fy + jy, bx = x - (1 - td) * fx + jx, by = y - (1 - td) * fy + jy;
-          var wv = ss(0, 0.45, u - Q[i] * 0.55 / 255);   /* letters condense core-first; the cloud around them thins in patches */
-          for (var c = 0; c < 3; c++) O[i + c] = samp(S, ax, ay, c) * (1 - wv) + samp(T, bx, by, c) * wv;
-          O[i + 3] = reg;
-        }
-      }
-      kx.putImageData(K.out, 0, 0);
+    function skySize() {   /* drawing buffer = the band's on-screen size x device pixels, capped at the 2x maps */
+      var r = ck.getBoundingClientRect(), dpr = Math.min(window.devicePixelRatio || 1, 2);
+      var w = Math.max(2, Math.min(1640, Math.round(r.width * dpr))), h = Math.max(2, Math.round(w * 224 / 820));
+      if (w !== K.w) { K.w = ck.width = w; K.h = ck.height = h; K.gl.viewport(0, 0, w, h); }
     }
-    function samp(A, x, y, c) {
-      var w = K.w, h = K.h;
-      if (x < 0) x = 0; else if (x > w - 1.001) x = w - 1.001; if (y < 0) y = 0; else if (y > h - 1.001) y = h - 1.001;
-      var x0 = x | 0, y0 = y | 0, fx = x - x0, fy = y - y0, i = (y0 * w + x0) * 4 + c, j = i + w * 4;
-      return (A[i] * (1 - fx) + A[i + 4] * fx) * (1 - fy) + (A[j] * (1 - fx) + A[j + 4] * fx) * fy;
+    function drawSky(u, t) {
+      if (!K.ok) return;
+      var gl = K.gl; skySize();
+      gl.uniform1f(K.U.u, u); gl.uniform1f(K.U.t, t); gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
     }
     function sky(on) {
       K.wanted = on;
       skyLoad().then(function () {
-        if (!K.src || K.wanted !== on) return;
-        ck.classList.add('is-on');
-        if (reduce.matches) { K.u = on ? 1 : 0; K.dir = 0; drawSky(K.u, 0); if (!on) ck.classList.remove('is-on'); return; }
-        K.from = K.u; K.dir = on ? 1 : -1; K.dur = on ? 7000 * (1 - K.u) + 400 : 3200 * K.u + 200; K.t0 = -1; go();
+        if (!K.ok || K.wanted !== on) return;
+        if (on) ck.classList.add('is-on');
+        if (reduce.matches) { K.u = on ? 1 : 0; K.dir = 0; if (on) drawSky(1, 0); else ck.classList.remove('is-on'); return; }
+        K.from = K.u; K.dir = on ? 1 : -1; K.dur = on ? 7200 * (1 - K.u) + 300 : 2600 * K.u + 200; K.t0 = -1; go();
       });
     }
 
@@ -234,12 +284,12 @@
       var dt = prev ? Math.min(0.1, (now - prev) / 1000) : 0; prev = now; clock += dt;
       if ((show.pool || show.tub) && now - lastW > 42) { drawWater(clock); lastW = now; }
       if (show.smoke && now - lastS > 42) { drawSmoke(clock); lastS = now; }
-      if (K.dir !== 0 && now - lastK > 33) {
+      if (K.dir !== 0 && now - lastK > 30) {
         if (K.t0 < 0) K.t0 = now - 0;
         var p = Math.min(1, (now - K.t0) / K.dur);
         K.u = K.dir > 0 ? K.from + (1 - K.from) * p : K.from * (1 - p);
-        drawSky(K.u, clock); lastK = now;
-        if (p >= 1) { if (K.dir < 0) { ck.classList.remove('is-on'); kx.clearRect(0, 0, K.w, K.h); } K.dir = 0; }
+        drawSky(K.u, K.dir > 0 ? (now - K.t0) / 1000 : 7.5 + (now - K.t0) / 1000); lastK = now;
+        if (p >= 1) { if (K.dir < 0) ck.classList.remove('is-on'); K.dir = 0; }
       }
       if (busy()) raf = requestAnimationFrame(tick);
     }
@@ -261,7 +311,7 @@
     if (btn && reduce.matches) btn.hidden = true;
     if ('IntersectionObserver' in window) new IntersectionObserver(function (es) { onScreen = es[0].isIntersecting; if (onScreen) go(); else stop(); }).observe(stage);
     document.addEventListener('visibilitychange', function () { if (document.hidden) stop(); else go(); });
-    window.addEventListener('resize', function () { wk = 0; });
+    window.addEventListener('resize', function () { wk = 0; if (K.ok && K.dir === 0 && K.u > 0) drawSky(K.u, 7.5); });
     return { features: features, sky: sky, _debug: function () { return { show: show, K: { u: K.u, dir: K.dir }, raf: !!raf, paused: paused, onScreen: onScreen }; } };
   })();
 
