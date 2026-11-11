@@ -229,8 +229,15 @@ check('E2E-4 descriptions and prices on the artwork pages (€1,200 on the first
 check('E2E-5 the full provenance and image-rights checks pass on the published result',
   spawnSync('node', ['atlas-tools/validate-image-provenance.js'], { cwd: S, encoding: 'utf8' }).status === 0
   && spawnSync('node', ['atlas-tools/validate-image-rights.js', '--scan-html', '.', '--permissions', 'image-rights-manifest.json', '--max-age-days', '30'], { cwd: S, encoding: 'utf8' }).status === 0);
-check('E2E-6 no other content changed in that release: only the artist’s folder, the Virtual Gallery grid and image records',
-  G(ORIGIN, 'diff', '--name-only', mL, 'main').split('\n').every(f => f.startsWith(`plotart/artists/${L.slug}/`) || f === 'plotart/gallery/index.html' || f === 'image-provenance-records.json'));
+// Since 7 Nov 2026 (founder-authorised search visibility) a publication also refreshes the GENERATED regions of sitemap.xml and the
+// buyer guides. They are allowed here only because the content boundary, run on exactly this release, verifies them byte-for-byte.
+const GENERATED = JSON.parse(execSync('python3 -c \'import sys,json;sys.path.insert(0,"atlas-tools");import plotart_seo as S;print(json.dumps(["plotart/"+p for p in S.GUIDE_PATHS]))\'', { cwd: S, encoding: 'utf8' }));
+const e2e6 = G(ORIGIN, 'diff', '--name-only', mL, 'main').split('\n');
+const e2e6b = spawnSync('python3', ['atlas-tools/release/plotart-content-boundary.py', mL, 'main'], { cwd: S, encoding: 'utf8' });
+check('E2E-6 no other content changed in that release: only the artist’s folder, the Artists’ Gallery grid, image records and the generated sitemap and buyer-guide regions (the content boundary accepts exactly this release)',
+  e2e6.every(f => f.startsWith(`plotart/artists/${L.slug}/`) || f === 'plotart/gallery/index.html' || f === 'image-provenance-records.json' || f === 'sitemap.xml' || GENERATED.includes(f))
+  && e2e6b.status === 0 && /CONTENT BOUNDARY · OK/.test(e2e6b.stdout),
+  e2e6.filter(f => !(f.startsWith(`plotart/artists/${L.slug}/`) || f === 'plotart/gallery/index.html' || f === 'image-provenance-records.json')).join(' ') + ' | ' + e2e6b.stdout + e2e6b.stderr);
 check('X1 main only ever moved forward (no force anywhere): the first main is an ancestor of the last', ancestor(m0, 'main'));
 
 // desktop and phone views of the generated public gallery (served from the published tree, no network)

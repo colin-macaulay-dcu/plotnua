@@ -4,6 +4,7 @@
 // runs in --simulate mode against it: it commits and runs every guard exactly as in production, but does not push.
 import { acceptAgreement } from './agree.mjs';
 import { start, token, FOUNDER, PIPELINE_TOKEN } from './local.mjs';
+import { seedPublished } from './seed.mjs';
 import { execFileSync, spawnSync, execSync } from 'node:child_process';
 import { mkdtempSync, readFileSync, writeFileSync, existsSync, readdirSync } from 'node:fs';
 import { tmpdir } from 'node:os';
@@ -79,6 +80,37 @@ const page = p => existsSync(join(SITE, 'plotart', p)) ? readFileSync(join(SITE,
 const enquire = (body, origin = 'https://plotnua.ie') => mf.dispatchFetch('http://enquiry.local/v1/enquiry', { method: 'POST', headers: { Origin: origin, 'Content-Type': 'application/json' }, body: JSON.stringify(body) })
   .then(async r => ({ s: r.status, j: await r.json() }));
 const A = 'niamh@example.test';
+// Direction C2 (5 Nov 2026): positions 01-25 are read from the index of founding positions ('card:<slug>' for a published
+// gallery, 'reserved', 'prep' for an artist placed but not published, 'space' for an available position), then any open
+// gallery on the wall that holds no position.
+const gridItems = () => {
+  const vg = page('gallery/index.html');
+  const plan = [...((vg.match(/<ol class="pa-vgc-plan"[^>]*>([\s\S]*?)\n    <\/ol>/) || [, ''])[1]).matchAll(/<li class="pa-vgc-pos is-(pub|res|prep|av)">([\s\S]*?)<\/li>/g)]
+    .map(m => m[1] === 'pub' ? 'card:' + ((m[2].match(/artists\/([a-z0-9-]+)\//) || [])[1]) : m[1] === 'res' ? 'reserved' : m[1] === 'prep' ? 'prep' : 'space');
+  const extra = [...vg.matchAll(/<span class="pa-vgc-n" aria-hidden="true"><\/span><div><h3 class="pa-vgc-name"><a href="\.\.\/artists\/([a-z0-9-]+)\//g)].map(m => 'card:' + m[1]);
+  return plan.concat(extra);
+};
+// The release tree is the REAL site (11 Nov 2026: 01 Leah Hewson, 02-03 published artists, 04-18 reserved). The production
+// Studio holds that same order, and the pipeline treats the Studio's order as authoritative; so the test Studio mirrors it
+// (published artists as seeded rows at their positions, reserved positions with a private note) instead of starting empty.
+const BEFORE = gridItems();
+{
+  let k = 0;
+  for (const [i, it] of BEFORE.entries()) {
+    if (it.startsWith('card:')) {
+      const slug = it.slice(5), g = JSON.parse(readFileSync(join(SITE, 'plotart/artists', slug, 'gallery.json'), 'utf8'));
+      const id = 'areal' + (++k);
+      await seedPublished(db, { id, slug, email: `${slug}@real-mirror.invalid`, name: g.artist.display_name, works: 1, publishedAt: new Date(Date.parse('2026-11-01') + k * 60000).toISOString() });
+      if (i < 25) await db.prepare('INSERT INTO gallery_positions (position, artist_id, reserved, note, updated_at) VALUES (?,?,0,NULL,?)').bind(i + 1, id, '2026-11-01').run();
+    } else if (it === 'reserved') {
+      await db.prepare('INSERT INTO gallery_positions (position, artist_id, reserved, note, updated_at) VALUES (?,NULL,1,?,?)').bind(i + 1, 'Held for a named artist (private)', '2026-11-01').run();
+    }
+  }
+}
+const NP = BEFORE.indexOf('space') + 1;                    // the lowest open position: where a first publication goes
+const T7 = BEFORE.indexOf('space', NP) + 1;                // another open position, for the founder's move
+const same = (gi, except) => gi.length === BEFORE.length && gi.every((x, i) => except[i + 1] !== undefined ? x === except[i + 1] : x === BEFORE[i]);
+const GENERATED = JSON.parse(spawnSync('python3', ['-c', 'import sys,json;sys.path.insert(0,"atlas-tools");import plotart_seo as S;print(json.dumps(["plotart/"+p for p in S.GUIDE_PATHS]))'], { cwd: SITE, encoding: 'utf8' }).stdout);
 
 console.log('PROVE · the complete artist journey\n— selection to first publication');
 let r = await call('POST', '/api/admin/artists', FOUNDER, { display_name: 'Niamh Synthetic', email: A, application_ref: 'F25-261029-1A2B3C' });
@@ -106,14 +138,17 @@ await call('POST', `/api/admin/submissions/${sid}/decision`, FOUNDER, { decision
 const q1 = (await call('GET', '/api/admin/overview', FOUNDER)).j.queue[0];
 r = publish();
 check('J4 before the founder presses Publish, the pipeline publishes nothing', /nothing to publish/.test(r.stdout) && git('rev-parse', 'HEAD') === BASE, r.stdout + r.stderr);
-// Gallery order (31 Oct 2026): the founder reserves position 01 (private note) before the first publication.
-await call('PUT', '/api/admin/gallery-order', FOUNDER, { positions: [{ position: 1, state: 'reserved', note: 'Held for a named artist (private)' }] });
+// Gallery order: the mirrored real order stands (01 Leah Hewson, founder decision 6 Nov 2026); reserved positions carry a private note.
 await call('POST', `/api/admin/queue/${q1.id}/publish`, FOUNDER, {});
 r = publish();
 const head1 = git('rev-parse', 'HEAD');
 check('J5 Publish → the pipeline commits the gallery and every guard passes (boundary, L1–L14, provenance, image rights)', r.status === 0 && /verified \(simulated\)/.test(r.stdout) && head1 !== BASE, r.stdout + r.stderr);
 const changed = git('diff', '--name-only', BASE, head1).split('\n');
-check('J6 the commit touches only the artist’s folder, the Virtual Gallery grid and image records', changed.every(f => f.startsWith('plotart/artists/niamh-synthetic/') || f === 'plotart/gallery/index.html' || f === 'image-provenance-records.json'), changed.join(' '));
+// Since 7 Nov 2026 (founder-authorised search visibility) a publication also refreshes the GENERATED regions of sitemap.xml and the
+// buyer guides; the content boundary verifies both byte-for-byte against the generator (J5: every guard passed).
+check('J6 the commit touches only the artist’s folder, the Artists’ Gallery grid, image records and the generated sitemap and buyer-guide regions',
+  changed.every(f => f.startsWith('plotart/artists/niamh-synthetic/') || f === 'plotart/gallery/index.html' || f === 'image-provenance-records.json' || f === 'sitemap.xml' || GENERATED.includes(f))
+  && spawnSync('python3', ['atlas-tools/release/plotart-content-boundary.py', BASE, head1], { cwd: SITE, encoding: 'utf8' }).status === 0, changed.join(' '));
 check('J7 the gallery, its 10 artwork pages and its Virtual Gallery card are on the site', page('artists/niamh-synthetic/index.html').includes('Niamh Synthetic') &&
   readdirSync(join(SITE, 'plotart/artists/niamh-synthetic')).filter(f => f.endsWith('.html')).length === 11 && page('gallery/index.html').includes('href="../artists/niamh-synthetic/"'));
 check('J8 published images carry no metadata and match their provenance records', spawnSync('python3', ['-c', `
@@ -177,31 +212,22 @@ await call('POST', `/api/admin/queue/${q2.id}/publish`, FOUNDER, {});
 r = publish();
 check('I5 ... and publishes after the founder approves and presses Publish', r.status === 0 && page('artists/niamh-synthetic/burren-2.html').includes('€1,450'), r.stdout + r.stderr);
 // ---- Gallery order (founder decision 31 Oct 2026)
-// Direction C2 (5 Nov 2026): positions 01-25 are read from the index of founding positions ('card:<slug>' for a published
-// gallery, 'reserved', 'prep' for an artist placed but not published, 'space' for an available position), then any open
-// gallery on the wall that holds no position.
-const gridItems = () => {
-  const vg = page('gallery/index.html');
-  const plan = [...((vg.match(/<ol class="pa-vgc-plan"[^>]*>([\s\S]*?)\n    <\/ol>/) || [, ''])[1]).matchAll(/<li class="pa-vgc-pos is-(pub|res|prep|av)">([\s\S]*?)<\/li>/g)]
-    .map(m => m[1] === 'pub' ? 'card:' + ((m[2].match(/artists\/([a-z0-9-]+)\//) || [])[1]) : m[1] === 'res' ? 'reserved' : m[1] === 'prep' ? 'prep' : 'space');
-  const extra = [...vg.matchAll(/<span class="pa-vgc-n" aria-hidden="true"><\/span><div><h3 class="pa-vgc-name"><a href="\.\.\/artists\/([a-z0-9-]+)\//g)].map(m => 'card:' + m[1]);
-  return plan.concat(extra);
-};
 let gi = gridItems();
-check('O1 position 01 shows RESERVED with no name; the first published Founding Artist took the lowest open position (02)',
-  gi.length === 25 && gi[0] === 'reserved' && gi[1] === 'card:niamh-synthetic' && gi.slice(2).every(x => x === 'space') && !page('gallery/index.html').includes('Held for'), gi.join(','));
+check(`O1 every existing position is unchanged (01 Leah Hewson, published and reserved positions); reserved positions show no name or note; the first published Founding Artist took the lowest open position (${String(NP).padStart(2, '0')})`,
+  gi[0] === 'card:leah-hewson' && same(gi, { [NP]: 'card:niamh-synthetic' }) && !page('gallery/index.html').includes('Held for'), gi.join(','));
 check('O2 the order the pipeline receives carries positions and gallery addresses only, never the private note',
   await (async () => { const t = await (await mf.dispatchFetch(url + '/api/pipeline/gallery-order', { headers: { Authorization: 'Bearer ' + PIPELINE_TOKEN } })).text();
-    return !t.includes('Held for') && !/"note"/.test(t) && JSON.parse(t).positions.some(e => e.position === 2 && e.slug === 'niamh-synthetic'); })());
-check('O3 after a reviewed update is published, the artist keeps position 02 (no automatic reordering)', gridItems()[1] === 'card:niamh-synthetic');
-const aid = (await call('GET', '/api/admin/gallery-order', FOUNDER)).j.positions[1].artist_id;
+    return !t.includes('Held for') && !/"note"/.test(t) && JSON.parse(t).positions.some(e => e.position === NP && e.slug === 'niamh-synthetic'); })());
+check('O3 after a reviewed update is published, the artist keeps her position (no automatic reordering)', same(gridItems(), { [NP]: 'card:niamh-synthetic' }));
+const ord = (await call('GET', '/api/admin/gallery-order', FOUNDER)).j.positions, aid = ord[NP - 1].artist_id;
 r = await call('PUT', '/api/admin/gallery-order', A, { positions: [{ position: 9, state: 'artist', artist_id: aid }] });
 check('O4 the artist cannot change gallery positions (403)', r.s === 403);
 const headO = git('rev-parse', 'HEAD');
-await call('PUT', '/api/admin/gallery-order', FOUNDER, { positions: [{ position: 1, state: 'reserved', note: 'Held for a named artist (private)' }, { position: 7, state: 'artist', artist_id: aid }] });
+await call('PUT', '/api/admin/gallery-order', FOUNDER, { positions: ord.filter(e => e.state !== 'open').map(e => e.state === 'reserved' ? { position: e.position, state: 'reserved', note: e.note }
+  : { position: e.artist_id === aid ? T7 : e.position, state: 'artist', artist_id: e.artist_id }) });
 r = publish(); gi = gridItems();
-check('O5 the founder moves the artist to 07: the next pipeline run commits ONLY the grid and every guard passes',
-  r.status === 0 && /gallery order · verified \(simulated\)/.test(r.stdout) && gi[0] === 'reserved' && gi[6] === 'card:niamh-synthetic' && gi.filter(x => x.startsWith('card')).length === 1 &&
+check(`O5 the founder moves the artist to ${String(T7).padStart(2, '0')}: the next pipeline run commits ONLY the grid, everyone else keeps their position, and every guard passes`,
+  r.status === 0 && /gallery order · verified \(simulated\)/.test(r.stdout) && same(gi, { [T7]: 'card:niamh-synthetic' }) &&
   git('diff', '--name-only', headO, 'HEAD') === 'plotart/gallery/index.html', r.stdout + r.stderr + gi.join(','));
 r = publish();
 check('O6 an unchanged order publishes nothing', /nothing to publish/.test(r.stdout) && !/gallery order/.test(r.stdout), r.stdout + r.stderr);
@@ -231,7 +257,7 @@ r = publish(); gi = gridItems();
 check('S4 Publish → the one-artwork gallery passes every publication guard and goes live', r.status === 0 && / v1 · reviewed · verified \(simulated\)/.test(r.stdout) && existsSync(join(SITE, 'plotart/artists/orla-synthetic/atlantic.html')), r.stdout + r.stderr);
 check('S5 its gallery page says “1 artwork”, has one artwork page, and the larger single-work image size', page('artists/orla-synthetic/index.html').includes('<p>1 artwork</p>') &&
   readdirSync(join(SITE, 'plotart/artists/orla-synthetic')).filter(f => f.endsWith('.html')).length === 2 && page('artists/orla-synthetic/index.html').includes('sizes="(max-width:639px) 92vw, 720px"'));
-check('S6 it takes the lowest open position (02); 01 stays reserved; the other artist keeps 07', gi[0] === 'reserved' && gi[1] === 'card:orla-synthetic' && gi[6] === 'card:niamh-synthetic', gi.join(','));
+check('S6 it takes the lowest open position; every existing position is kept (01 Leah Hewson); the other artist keeps hers', same(gi, { [NP]: 'card:orla-synthetic', [T7]: 'card:niamh-synthetic' }), gi.join(','));
 r = await call('GET', '/api/me', B);
 check('S7 the artist’s Studio shows “Live”, as a Founding Artist', r.j.status.state === 'live' && r.j.artist.founding);
 console.log('— a live gallery whose only work is withdrawn');
@@ -248,8 +274,8 @@ check('Z2 the withdrawn artwork is no longer public: its page, its images and it
 const og = page('artists/orla-synthetic/index.html');
 check('Z3 the gallery stays live with its profile and biography, and shows the empty state', og.includes('Orla Synthetic') && og.includes('paints a single large view of the sea') &&
   og.includes('class="pa-ag-empty"') && og.includes('New work coming soon') && og.includes('None on show right now') && !og.includes('pa-ag-grid"'));
-check('Z4 the artist keeps the Founding badge and gallery position 02 (01 still reserved); the card shows the empty state', og.includes('pa-gcard-badge">Founding Artist') &&
-  gi[0] === 'reserved' && gi[1] === 'card:orla-synthetic' && page('gallery/index.html').includes('<div class="pa-vgc-art is-empty"><span>New work coming soon</span></div>'), gi.join(','));
+check('Z4 the artist keeps the Founding badge and her gallery position (all others unchanged); the card shows the empty state', og.includes('pa-gcard-badge">Founding Artist') &&
+  same(gi, { [NP]: 'card:orla-synthetic', [T7]: 'card:niamh-synthetic' }) && page('gallery/index.html').includes('<div class="pa-vgc-art is-empty"><span>New work coming soon</span></div>'), gi.join(','));
 r = await call('GET', '/api/me', B);
 const fnum = (await db.prepare("SELECT founding, founding_number FROM artists WHERE id=?").bind(oid).first());
 check('Z5 the Studio still shows Live; Founding status and the permanent Founding number (7) are unchanged', r.j.status.state === 'live' && fnum.founding === 1 && fnum.founding_number === 7);
@@ -265,8 +291,8 @@ await call('POST', `/api/admin/submissions/${zs.id}/decision`, FOUNDER, { decisi
 const zq = (await call('GET', '/api/admin/overview', FOUNDER)).j.queue.filter(x => x.display_name === 'Orla Synthetic' && x.status === 'awaiting_founder').pop();
 await call('POST', `/api/admin/queue/${zq.id}/publish`, FOUNDER, {});
 r = publish(); gi = gridItems();
-check('Z7 ... and after approval and Publish it is live again: one work, empty state gone, still at position 02', r.status === 0 && existsSync(join(SITE, 'plotart/artists/orla-synthetic/spring-tide.html')) &&
-  page('artists/orla-synthetic/index.html').includes('<p>1 artwork</p>') && !page('artists/orla-synthetic/index.html').includes('pa-ag-empty') && gi[1] === 'card:orla-synthetic', r.stdout + r.stderr + gi.join(','));
+check('Z7 ... and after approval and Publish it is live again: one work, empty state gone, still at her position', r.status === 0 && existsSync(join(SITE, 'plotart/artists/orla-synthetic/spring-tide.html')) &&
+  page('artists/orla-synthetic/index.html').includes('<p>1 artwork</p>') && !page('artists/orla-synthetic/index.html').includes('pa-ag-empty') && gi[NP - 1] === 'card:orla-synthetic', r.stdout + r.stderr + gi.join(','));
 await call('POST', `/api/artworks/${works[9]}/archive`, A, { archived: true });
 r = publish();
 check('I6 removing a work publishes straight away; no minimum applies (9 works left)', r.status === 0 && !existsSync(join(SITE, 'plotart/artists/niamh-synthetic/burren-10.html')), r.stdout + r.stderr);
@@ -295,8 +321,9 @@ await call('POST', '/api/admin/artists/' + (await db.prepare("SELECT id FROM art
 await call('POST', '/api/admin/artists/' + (await db.prepare("SELECT id FROM artists WHERE slug='orla-synthetic'").first()).id + '/unpublish', FOUNDER, {});
 r = publish();
 const recsLeft = JSON.parse(readFileSync(join(SITE, 'image-provenance-records.json'), 'utf8')).records.filter(x => x.artist_slug === 'niamh-synthetic').length;
-check('U1 “Unpublish” removes the gallery, its card (25 empty spaces again) and its image records', r.status === 0 && !existsSync(join(SITE, 'plotart/artists/niamh-synthetic')) &&
-  (page('gallery/index.html').match(/<li class="pa-vgc-pos is-(?:av|res|prep)">/g) || []).length === 25 && !/artists\/(niamh|orla)-synthetic\//.test(page('gallery/index.html')) && recsLeft === 0, r.stdout + r.stderr);
+const gu = gridItems();
+check('U1 “Unpublish” removes the gallery, its card and its image records; the grid is exactly the real gallery again (their positions open or held in preparation)', r.status === 0 && !existsSync(join(SITE, 'plotart/artists/niamh-synthetic')) &&
+  gu.map(x => x === 'prep' ? 'space' : x).join() === BEFORE.join() && !/artists\/(niamh|orla)-synthetic\//.test(page('gallery/index.html')) && recsLeft === 0, r.stdout + r.stderr + gu.join(','));
 
 await mf.dispose();
 const ok = results.filter(Boolean).length;
