@@ -121,6 +121,10 @@
     draw();
   }
 
+  // the first line of a publishing failure that names what failed (the publisher puts FAIL/REFUSED lines first)
+  const failLine = d => { const l = String(d).split('\n').map(x => x.trim()).filter(Boolean);
+    const f = l.find(x => /^(FAIL|REFUSED|ERROR)\b/.test(x)) || l[0] || ''; return 'Last attempt: ' + (f.length > 220 ? f.slice(0, 220) + '…' : f); };
+
   async function home() {
     const o = await api('GET', '/api/admin/overview');
     const ready = o.queue.filter(q => q.status === 'awaiting_founder');
@@ -142,8 +146,10 @@
       <section class="st-card"><h2>Ready to publish</h2>
         <p class="st-muted">Publishing sends approved gallery content to plotnua.ie through the content-only pipeline. Nothing else on the website can change this way.${o.instant_autopublish ? ' Availability and removals publish automatically.' : ' Availability and removal updates wait here until automatic publishing is switched on.'}</p>
         ${o.queue.length ? `<ul class="st-works">${o.queue.map(q => `<li class="st-work" style="grid-template-columns:minmax(0,1fr) auto"><div><p class="st-work-t">${E(q.display_name)}</p>
-          <p class="st-work-s" style="margin:0">Version ${q.version} · ${q.kind === 'instant' ? 'availability, removal or order' : q.kind === 'remove' ? 'remove the gallery' : 'approved changes'} · ${q.status === 'awaiting_founder' ? 'waiting for you' : E(q.status)}</p></div>
-          ${q.status === 'awaiting_founder' ? `<div class="st-row"><a class="st-btn st-btn--small" href="/admin/preview/v-${q.artist_id}-${q.version}/index.html" target="_blank" rel="noopener">Preview</a><button class="st-btn st-btn--solid st-btn--small" data-pub="${q.id}">Publish</button></div>` : '<span></span>'}
+          <p class="st-work-s" style="margin:0">Version ${q.version} · ${q.kind === 'instant' ? 'availability, removal or order' : q.kind === 'remove' ? 'remove the gallery' : 'approved changes'} · ${q.status === 'awaiting_founder' ? 'waiting for you' : q.status === 'failed' ? '<span class="st-flag">publishing failed</span>' : E(q.status)}</p>
+          ${q.status === 'failed' && q.detail ? `<p class="st-muted st-pubfail" style="margin:.25rem 0 0">${E(failLine(q.detail))}</p>` : ''}</div>
+          ${q.status === 'awaiting_founder' ? `<div class="st-row"><a class="st-btn st-btn--small" href="/admin/preview/v-${q.artist_id}-${q.version}/index.html" target="_blank" rel="noopener">Preview</a><button class="st-btn st-btn--solid st-btn--small" data-pub="${q.id}">Publish</button></div>`
+            : q.status === 'failed' ? `<div class="st-row"><a class="st-btn st-btn--small" href="/admin/preview/v-${q.artist_id}-${q.version}/index.html" target="_blank" rel="noopener">Preview</a><button class="st-btn st-btn--solid st-btn--small" data-retry="${q.id}">Retry publishing</button></div>` : '<span></span>'}
           <p class="st-pubwarn" data-pubwarn role="alert" hidden></p></li>`).join('')}</ul>` : '<p class="st-muted">Nothing waiting.</p>'}
       </section>
       ${o.flags.length ? `<section class="st-card"><h2 class="st-flag">Rights check</h2><p class="st-muted">The same photograph appears in more than one artist’s Studio. Check before approving.</p>
@@ -199,6 +205,22 @@
       catch (e) {
         warn.hidden = false; warn.textContent = e.message;
         if (e.data && e.data.needs_confirmation) { b.dataset.force = 1; b.textContent = 'Publish anyway'; } else { b.disabled = true; }
+      }
+    }));
+    // Retry publishing (12 Nov 2026): a failed job goes back through the same protected workflow and every image check
+    app.querySelectorAll('[data-retry]').forEach(b => b.addEventListener('click', async () => {
+      if (!b.dataset.sure) { b.dataset.sure = 1; b.textContent = 'Retry publishing to plotnua.ie?'; return; }
+      const warn = b.closest('li').querySelector('[data-pubwarn]');
+      b.disabled = true;
+      try {
+        const d = await api('POST', `/api/admin/queue/${b.dataset.retry}/retry`, b.dataset.force ? { confirm_without_agreement: true } : {});
+        say(d.publish === 'requested' ? 'Retry started: plotnua.ie updates once every check has passed (usually within 5–15 minutes). If a check fails again, it shows here as failed.'
+          : d.publish === 'failed' ? 'Retry queued. Publishing could not be started just now, so it will go out at the next scheduled run' : 'Retry queued: it will go out at the next scheduled publishing run', d.publish === 'failed');
+        home();
+      }
+      catch (e) {
+        warn.hidden = false; warn.textContent = 'Not retried: ' + e.message;
+        if (e.data && e.data.needs_confirmation) { b.disabled = false; b.dataset.force = 1; b.textContent = 'Retry anyway'; }
       }
     }));
     app.querySelectorAll('[data-act]').forEach(b => b.addEventListener('click', async () => {

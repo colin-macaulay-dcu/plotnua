@@ -625,6 +625,57 @@ async function pipelineOrder(env) {
 }
 // First publication of a Founding Artist with no position: the lowest position that is neither taken nor reserved.
 // Never moves anyone; never takes a reserved position; does nothing when all 25 are taken.
+// Founding Artist Agreement (development 6 Nov 2026), shared by Publish and Retry publishing. Availability, withdrawal,
+// order and removal are never held up. Reviewed content: a FIRST publication needs the current texts accepted; an artist
+// who is already published and has not accepted yet is published only after the founder confirms the warning.
+async function agreementGate(env, q, req) {
+  if (q.kind !== 'reviewed') return { warned: false };
+  const a = await one(env, 'SELECT * FROM artists WHERE id=?', q.artist_id);
+  const ag = await agreementState(env, a);
+  const first = !a.first_published_at && !(await one(env, "SELECT id FROM publish_queue WHERE artist_id=? AND status IN ('published','superseded') AND kind<>'remove' LIMIT 1", a.id));
+  if (!ag.accepted && first) throw new Bad(`${a.display_name} has not accepted the ${a.founding ? 'Founding Artist Agreement' : 'Gallery Publication and Image Licence'} yet, so their gallery can’t be published for the first time. They accept it in PlotArt Studio.`, 409);
+  if (ag.accepted) return { warned: false };
+  const b = await req.json().catch(() => ({}));
+  if (b.confirm_without_agreement !== true) return { response: json({ ok: false, needs_confirmation: true, error: `${a.display_name} is already published but hasn’t accepted the ${a.founding ? 'Founding Artist Agreement' : 'current licence'} yet. Their existing licence (${ag.licence ? ag.licence.version : 'none'}) still applies. Publish anyway?` }, 409) };
+  return { warned: true };
+}
+
+// Retry publishing (development 12 Nov 2026). A FAILED job goes back to 'ready' unchanged: same queue record, same
+// approved version (snapshot, AI decisions, approval), so the protected publishing workflow and every image-provenance
+// check run again exactly as for Publish. Refused unless: the job failed; the artist is active or invited; for reviewed
+// content the submission behind the version is still approved; no newer version exists or is published; and nothing
+// else for that artist is ready or exporting. The switch itself is one conditional UPDATE, so two presses (or two
+// tabs) can never queue it twice. The earlier failure stays in the audit log.
+async function retryPublication(env, founder, id, req) {
+  const q = await one(env, 'SELECT * FROM publish_queue WHERE id=?', id);
+  if (!q) throw new Bad('That publication job doesn’t exist', 404);
+  if (q.status === 'ready' || q.status === 'exporting') throw new Bad('This publication is already being published: it can’t be retried until it finishes', 409);
+  if (q.status === 'published') throw new Bad('This version is already published: there is nothing to retry', 409);
+  if (q.status !== 'failed') throw new Bad('Only a publication that failed can be retried', 409);
+  const a = await one(env, 'SELECT id, display_name, account_status FROM artists WHERE id=?', q.artist_id);
+  if (!a || !['invited', 'active'].includes(a.account_status)) throw new Bad('This artist’s account isn’t active, so their gallery can’t be published', 409);
+  if (q.kind === 'reviewed') {
+    const v = await one(env, 'SELECT source FROM versions WHERE artist_id=? AND version=?', q.artist_id, q.version);
+    const s = v && await one(env, 'SELECT status FROM submissions WHERE id=?', v.source);
+    if (!s || s.status !== 'approved') throw new Bad('The submission behind this version is no longer approved, so it can’t be published', 409);
+  }
+  if (await one(env, "SELECT id FROM publish_queue WHERE artist_id=? AND id<>? AND version>=? AND status<>'superseded' LIMIT 1", q.artist_id, q.id, q.version))
+    throw new Bad('A newer version of this gallery exists, so this older version can’t be retried', 409);
+  if (await one(env, "SELECT id FROM publish_queue WHERE artist_id=? AND id<>? AND status IN ('ready','exporting') LIMIT 1", q.artist_id, q.id))
+    throw new Bad('Another publication for this artist is already in progress: try again once it has finished', 409);
+  const gate = await agreementGate(env, q, req);
+  if (gate.response) return gate.response;
+  const r = await env.DB.prepare(`UPDATE publish_queue SET status='ready', updated_at=? WHERE id=? AND status='failed'
+    AND NOT EXISTS (SELECT 1 FROM publish_queue o WHERE o.artist_id=publish_queue.artist_id AND o.id<>publish_queue.id
+      AND (o.status IN ('ready','exporting') OR (o.version>=publish_queue.version AND o.status<>'superseded')))`).bind(now(), q.id).run();
+  if (!r.meta || r.meta.changes !== 1) throw new Bad('This publication has already been retried', 409);
+  const attempt = 1 + (await one(env, "SELECT COUNT(*) AS n FROM audit WHERE action='publish_retry' AND artist_id=? AND detail LIKE ?", q.artist_id, `%"queue":"${q.id}"%`)).n;
+  const publish = await requestGalleryPublish(env);
+  await audit(env, founder, 'founder', 'publish_retry', q.artist_id, { queue: q.id, version: q.version, attempt, publish,
+    previous_failure: String(q.detail || '').slice(0, 2000), ...(gate.warned ? { without_current_agreement: true } : {}) });
+  return json({ ok: true, publish, attempt });
+}
+
 async function placeOnFirstPublication(env, artistId) {
   const a = await one(env, 'SELECT id, founding FROM artists WHERE id = ?', artistId);
   if (!a || !a.founding || await one(env, 'SELECT position FROM gallery_positions WHERE artist_id = ?', artistId)) return null;
@@ -1367,24 +1418,13 @@ async function route(req, env) {
         images: imgs.map(i => ({ ...i, checks: JSON.parse(i.checks) })) });
     }
     if ((mm = p.match(/^\/api\/admin\/submissions\/(s[0-9a-z]+)\/decision$/)) && m === 'POST') return decide(env, me.email, mm[1], await req.json());
+    if ((mm = p.match(/^\/api\/admin\/queue\/(q[0-9a-z]+)\/retry$/)) && m === 'POST') return retryPublication(env, me.email, mm[1], req);
     if ((mm = p.match(/^\/api\/admin\/queue\/(q[0-9a-z]+)\/publish$/)) && m === 'POST') {
       const q = await one(env, "SELECT * FROM publish_queue WHERE id=? AND status='awaiting_founder'", mm[1]);
       if (!q) throw new Bad('Nothing to publish', 409);
-      // Founding Artist Agreement (development 6 Nov 2026). Availability, withdrawal, order and removal are never held up.
-      // Reviewed content: a FIRST publication needs the current texts accepted; an artist who is already published and
-      // has not accepted yet is published only after the founder confirms the warning. Nothing is ever unpublished.
-      let warned = false;
-      if (q.kind === 'reviewed') {
-        const a = await one(env, 'SELECT * FROM artists WHERE id=?', q.artist_id);
-        const ag = await agreementState(env, a);
-        const first = !a.first_published_at && !(await one(env, "SELECT id FROM publish_queue WHERE artist_id=? AND status IN ('published','superseded') AND kind<>'remove' LIMIT 1", a.id));
-        if (!ag.accepted && first) throw new Bad(`${a.display_name} has not accepted the ${a.founding ? 'Founding Artist Agreement' : 'Gallery Publication and Image Licence'} yet, so their gallery can’t be published for the first time. They accept it in PlotArt Studio.`, 409);
-        if (!ag.accepted) {
-          const b = await req.json().catch(() => ({}));
-          if (b.confirm_without_agreement !== true) return json({ ok: false, needs_confirmation: true, error: `${a.display_name} is already published but hasn’t accepted the ${a.founding ? 'Founding Artist Agreement' : 'current licence'} yet. Their existing licence (${ag.licence ? ag.licence.version : 'none'}) still applies. Publish anyway?` }, 409);
-          warned = true;
-        }
-      }
+      const gate = await agreementGate(env, q, req);
+      if (gate.response) return gate.response;
+      const warned = gate.warned;
       await env.DB.prepare("UPDATE publish_queue SET status='ready', updated_at=? WHERE id=?").bind(now(), q.id).run();
       const publish = await requestGalleryPublish(env);
       await audit(env, me.email, 'founder', 'publish', q.artist_id, { queue: q.id, version: q.version, publish, ...(warned ? { without_current_agreement: true } : {}) });
