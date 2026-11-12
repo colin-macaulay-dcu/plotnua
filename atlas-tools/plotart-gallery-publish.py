@@ -165,8 +165,9 @@ def guards(base, instant):
     for name, cmd, want in checks:
         ok, out = run(cmd)
         if not ok or (want and want not in out):
-            return "%s refused: %s" % (name, out[-600:])
+            return G.refusal(name, out)
     return None
+
 
 
 def one(q):

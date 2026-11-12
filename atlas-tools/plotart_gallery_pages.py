@@ -65,6 +65,11 @@ def srcset(img, prefix):
 # provenance guard (P9), which is correct, so the pipeline must not make portrait sizes nothing uses.
 PORTRAIT_SHOWN = 600
 
+# The sizes an artwork page shows for each extra view: a thumbnail and the full-size link (PLOTART-PUBLISHING-VIEWS-001,
+# 12 Nov 2026). The import step keeps and records only these, for the same reason as the portrait above: a view size
+# that no page shows would be a recorded-but-unreferenced image, which the provenance guard (P9) rightly refuses.
+VIEW_SHOWN = {"thumb": 600, "full": 2000}
+
 
 def pick(img, want):
     ds = img["derivatives"]
@@ -202,7 +207,7 @@ def artwork_body(pkg, w, prev_w, next_w, preview=False, enquiry_endpoint=None):
     if len(imgs) > 1:
         views = '<ul class="pa-aw-views" aria-label="More views">%s</ul>' % "".join(
             '<li><a href="img/%s"><img src="img/%s" alt="%s" loading="lazy" decoding="async"></a></li>' % (
-                E(pick(i, 2000)["file"]), E(pick(i, 600)["file"]), E(i["alt"])) for i in imgs[1:])
+                E(pick(i, VIEW_SHOWN["full"])["file"]), E(pick(i, VIEW_SHOWN["thumb"])["file"]), E(i["alt"])) for i in imgs[1:])
     credit = ' <span>Photo: %s</span>' % E(im["photo_credit"]) if im.get("photo_credit") else ""
     avail = w["availability"]
     if avail in ("available", "reserved"):

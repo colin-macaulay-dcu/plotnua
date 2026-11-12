@@ -60,6 +60,14 @@ def main(export_dir, root):
                 if d is not keep:
                     os.remove(os.path.join(img_dir, d["file"]))
             rec["derivatives"] = [keep]
+        elif entry.get("role") == "view":
+            # Extra views: only the sizes the artwork page shows (PLOTART-PUBLISHING-VIEWS-001, 12 Nov 2026), chosen by
+            # the page's own rule; any other size is removed before anything is recorded. Main photographs keep every size.
+            keep = [d for d in rec["derivatives"] if any(d is PG.pick(rec, w) for w in PG.VIEW_SHOWN.values())]
+            for d in rec["derivatives"]:
+                if not any(d is k for k in keep):
+                    os.remove(os.path.join(img_dir, d["file"]))
+            rec["derivatives"] = keep
         sha, dh = rec["source_sha256"], rec["dhash"]
         if sha in other_sha:
             blocks.append("%s: this exact photograph is already in %s (rights check needed)" % (stem, other_sha[sha]))

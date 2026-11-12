@@ -324,3 +324,15 @@ def publication_blocks(pkg):
         if w["ai_involvement"] == "generated" and w.get("ai_founder_decision") != "approved":
             out.append("%s: entirely prompt-generated work needs the founder's eligibility decision" % w["slug"])
     return out
+
+
+
+def refusal(name, out):
+    """The Studio shows this message. Lead with the failing check(s) by name and detail, then the summary line; the long
+    PASS list and legacy census only follow if there is room (12 Nov 2026: the bare 600-character tail had cut the
+    failing line off, leaving "...nd is pure vector")."""
+    lines = [l.strip() for l in out.splitlines()]
+    fails = [l for l in lines if re.match(r"^(FAIL|REFUSED|ERROR)\b", l)]
+    summary = [l for l in lines if re.search(r"\b\d+ checks?, \d+ passed, \d+ failed\b", l)]
+    head = "\n".join(fails + summary[-1:])
+    return "%s refused: %s" % (name, (head + "\n--\n" + out[-600:]) if head else out[-600:])
