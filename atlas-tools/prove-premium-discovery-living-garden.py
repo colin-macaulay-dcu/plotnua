@@ -144,8 +144,11 @@ def load_added():
         # "makerAdditions" (6 Nov 2026, Stage 3B East Coast Carpentry): a maker newly published
         # in the Maker Explorer adds exactly one A-Z index entry (its text block and its anchor
         # link), declared here with the founder approval that published it. No image, no card.
+        # "atAGlance" (12 Nov 2026, SEO-GRR): the early "Garden rooms in Ireland, compared." block, built
+        # by atlas-tools/build-lg-at-a-glance.py from the page's own Maker Explorer data and declared by
+        # that builder from its own output (its --check fails if page and declaration drift apart).
         for c in (x.get("supplierCards", []) + x.get("showcaseReferences", []) + x.get("makerAdditions", [])
-                  + x.get("guideReferences", [])):
+                  + x.get("guideReferences", []) + x.get("atAGlance", [])):
             blocks += c["blocks"]; imgs += c.get("imgs", [])
         return blocks, imgs
     return [], []
@@ -159,7 +162,7 @@ def added_links():
         # "guideReferences" (11 Nov 2026, SEO Opportunity 1): a one-sentence text reference to an
         # existing PlotNua guide, declared with its exact block and internal link. No image, no card.
         return [l for c in (x.get("supplierCards", []) + x.get("showcaseReferences", []) + x.get("makerAdditions", [])
-                            + x.get("guideReferences", []))
+                            + x.get("guideReferences", []) + x.get("atAGlance", []))
                 for l in c["links"]]
     return []
 
@@ -227,7 +230,8 @@ def check(src, base):
         if i not in ids and i not in rem_ids: bad.append("L id lost: " + i)
     ref_ids = []
     if os.path.exists(ADDED_FILE):
-        ref_ids = [i for c in json.load(open(ADDED_FILE, encoding="utf-8")).get("showcaseReferences", []) for i in c.get("ids", [])]
+        _x = json.load(open(ADDED_FILE, encoding="utf-8"))
+        ref_ids = [i for c in _x.get("showcaseReferences", []) + _x.get("atAGlance", []) for i in c.get("ids", [])]
     for i in ids - set(base["ids"]) - set(ADDED_IDS) - set(ref_ids):
         bad.append("L undeclared id: " + i)
     for r in ROUTES:
@@ -300,6 +304,7 @@ FAULTS = [
     ("details opened", lambda s: s.replace('<details class="faq-item">', '<details class="faq-item" open>', 1), "D"),
     ("footer edited", lambda s: s.replace("Related Discoveries", "Related", 1), "H"),
     ("undeclared stylesheet", lambda s: s.replace("</head>", '<link rel="stylesheet" href="x.css">\n</head>', 1), "H"),
+    ("an at-a-glance price note edited", lambda s: s.replace("Price not currently verified, so none is shown.", "From €9,000.", 1), "C"),
     ("an undeclared supplier card is added", lambda s: s.replace('<h3 class="pn-sg-name">Gardenhouse24 Ireland</h3>', '<h3 class="pn-sg-name">Invented Garden Co</h3>', 1), "C"),
 ]
 

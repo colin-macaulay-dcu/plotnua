@@ -303,5 +303,80 @@
     "garden-offices-ireland.html"
    ]
   }
+ ],
+ "atAGlance": [
+  {
+   "declared": "2026-11-12, SEO-GRR (garden rooms Ireland visibility): an early 'at a glance' comparison after the hero, built by atlas-tools/build-lg-at-a-glance.py from the page's Maker Explorer data. Founder approval required before release.",
+   "blocks": [
+    "At a glance",
+    "Garden rooms in Ireland, compared.",
+    "PlotNua has researched 580 garden rooms from 65 makers. 280 of them are confirmed as available in Ireland. Below are the makers with a published PlotNua profile, A to Z: what each makes, how many of its garden rooms PlotNua lists, and how their prices appear.",
+    "Makers with a published PlotNua profile, A to Z. An index, not a ranking; PlotNua has no commercial arrangement with any maker listed here. Counts and price notes come from the Maker Explorer below.",
+    "Maker",
+    "What they make",
+    "Garden rooms on PlotNua",
+    "Available in Ireland",
+    "Prices on PlotNua",
+    "Visualisation Don Modular Homes",
+    "One steel-framed, factory-finished design, from a 25 m² garden room to a four-bedroom home.",
+    "1",
+    "Confirmed",
+    "Price not currently verified, so none is shown.",
+    "Elm Landscaping",
+    "A Co. Clare landscaping company that also supplies timber garden rooms and log cabins.",
+    "5",
+    "Confirmed",
+    "All 5 have prices not currently verified, so none is shown.",
+    "Photograph Garden Room Ireland",
+    "Insulated steel-clad garden rooms, built in Dublin.",
+    "1",
+    "Confirmed",
+    "Price not currently verified, so none is shown.",
+    "Photograph Gardenhouse24",
+    "Nordic-spruce garden rooms and log cabins, as well as outdoor saunas and hot tubs.",
+    "8",
+    "Confirmed",
+    "All 8 show a euro price; VAT is not stated.",
+    "NOOK Prefab",
+    "NOOK 10 and NOOK 20 garden rooms, made in Spain and delivered finished.",
+    "2",
+    "Not yet confirmed",
+    "Both show a starting price excluding VAT, ex works; delivery and installation are extra.",
+    "Photograph The Pod Factory",
+    "Steel-framed garden studios and garden pods, built in Co. Meath and craned into place.",
+    "2",
+    "Confirmed",
+    "Both have no published price PlotNua can show.",
+    "Images: © Don Modular Homes; © Garden Room Ireland; Image: Gardenhouse24 ; Image: The Pod Factory . Images are shown as supplied by each maker; a visualisation is computer-generated, not a photograph.",
+    "Compare published prices: garden room prices in Ireland",
+    "Working from home: garden offices in Ireland",
+    "Every maker and all 580 garden rooms",
+    "What the 2026 planning conditions say"
+   ],
+   "links": [
+    "suppliers/don-modular-homes.html",
+    "suppliers/elm-landscaping.html",
+    "suppliers/garden-room-ireland.html",
+    "suppliers/gardenhouse24.html",
+    "suppliers/nook-prefab.html",
+    "suppliers/the-pod-factory.html",
+    "https://gardenhouse24.ie/",
+    "https://www.thepodfactory.ie/",
+    "garden-room-prices-ireland.html",
+    "garden-offices-ireland.html",
+    "#suppliers",
+    "#planning-conditions"
+   ],
+   "imgs": [
+    "https://donmodularhomes.ie/images/don-modular-home-exterior.webp",
+    "https://static.wixstatic.com/media/fef4b6_f1486b2ae80e4ed2bfeecde2d7e5ea71~mv2.jpg",
+    "https://d1l23c7hiawhq3.cloudfront.net/media/catalog/product/cache/631d00a18cc6f2d63e06f2111d31fb8f/2/0/20220606161922_img_0390_1.jpg",
+    "https://www.thepodfactory.ie/wp-content/uploads/2023/05/Showroom-Pod-17-scaled.jpg"
+   ],
+   "ids": [
+    "garden-rooms-at-a-glance",
+    "lg-glance-h"
+   ]
+  }
  ]
 }
