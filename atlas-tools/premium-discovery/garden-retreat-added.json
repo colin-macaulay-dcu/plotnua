@@ -291,6 +291,55 @@
    "links": [
     "garden-saunas-ireland.html"
    ]
+  },
+  {
+   "declared": "2026-11-12, founder instruction 'Finish the release candidate from f61a91d' — PROPOSED Irish Sauna Company correction (ISC-1..ISC-4, not yet written to Atlas): The Aran and The Skellig are no longer offered (product pages answer 404) and leave the Maker Explorer by atlas-tools/publish-targeted-update.py (report atlas-tools/targeted-updates/20261112-102618-irish-sauna-company.md); The Inis Mor renamed and relinked. Sauna figures 100 -> 98; the ISC A-Z line now points at The Clare, and the ISC gallery card's lead image follows. Gallery rebuilt by build-supplier-gallery.py. Local only; not released.",
+   "gallery": [
+    [
+     "        <ul class=\"pn-sg-figs\" role=\"list\" aria-label=\"On PlotNua in this Discovery\"><li><span class=\"pn-sg-fig\">100</span><span class=\"pn-sg-fig-l\">saunas</span></li><li><span class=\"pn-sg-fig\">24</span><span class=\"pn-sg-fig-l\">hot tubs</span></li><li><span class=\"pn-sg-fig\">16</span><span class=\"pn-sg-fig-l\">cold plunges</span></li><li><span class=\"pn-sg-fig\">9</span><span class=\"pn-sg-fig-l\">makers</span></li></ul>",
+     "        <ul class=\"pn-sg-figs\" role=\"list\" aria-label=\"On PlotNua in this Discovery\"><li><span class=\"pn-sg-fig\">98</span><span class=\"pn-sg-fig-l\">saunas</span></li><li><span class=\"pn-sg-fig\">24</span><span class=\"pn-sg-fig-l\">hot tubs</span></li><li><span class=\"pn-sg-fig\">16</span><span class=\"pn-sg-fig-l\">cold plunges</span></li><li><span class=\"pn-sg-fig\">9</span><span class=\"pn-sg-fig-l\">makers</span></li></ul>"
+    ],
+    [
+     "<img src=\"https://irishsaunacompany.com/cdn/shop/files/4-6_Person_Sauna_-_Front_View.png?width=1024\" alt=\"Visualisation of The Aran from the front: a black-clad garden sauna with a large panoramic window, two-tier benches and a cylindrical heater\" width=\"1024\" height=\"1024\" loading=\"lazy\" decoding=\"async\" referrerpolicy=\"no-referrer\">",
+     "<img src=\"https://irishsaunacompany.com/cdn/shop/files/1-2-PersonSauna-Front-View.png?width=1024\" alt=\"Visualisation of The Clare from the front: a compact black-clad garden sauna with a full-height glass door and a warm-lit Thermowood interior\" width=\"1024\" height=\"1024\" loading=\"lazy\" decoding=\"async\" referrerpolicy=\"no-referrer\">"
+    ]
+   ],
+   "explorer": [
+    [
+     "        <button type=\"button\" class=\"mx-tab\" role=\"tab\" id=\"mx-t-saunas\" aria-selected=\"true\" aria-controls=\"mx-pane\" data-k=\"saunas\">Saunas <span class=\"mx-n\">100</span></button>",
+     "        <button type=\"button\" class=\"mx-tab\" role=\"tab\" id=\"mx-t-saunas\" aria-selected=\"true\" aria-controls=\"mx-pane\" data-k=\"saunas\">Saunas <span class=\"mx-n\">98</span></button>"
+    ],
+    [
+     "        <li><a href=\"#p-recQszPvHe5Cu7wY5\">Irish Sauna Company</a> <span>4 saunas &middot; Irish availability not yet confirmed</span></li>",
+     "        <li><a href=\"#p-recTBQcdOO0yoULqN\">Irish Sauna Company</a> <span>2 saunas &middot; Irish availability not yet confirmed</span></li>"
+    ]
+   ],
+   "blockCorrections": [
+    [
+     "100 saunas",
+     "98 saunas"
+    ],
+    [
+     "Saunas 100",
+     "Saunas 98"
+    ],
+    [
+     "Irish Sauna Company 4 saunas · Irish availability not yet confirmed",
+     "Irish Sauna Company 2 saunas · Irish availability not yet confirmed"
+    ]
+   ],
+   "links": [
+    "#p-recTBQcdOO0yoULqN"
+   ],
+   "removedLinks": [
+    "#p-recQszPvHe5Cu7wY5"
+   ],
+   "imgs": [
+    "https://irishsaunacompany.com/cdn/shop/files/1-2-PersonSauna-Front-View.png?width=1024"
+   ],
+   "removedImgs": [
+    "https://irishsaunacompany.com/cdn/shop/files/4-6_Person_Sauna_-_Front_View.png?width=1024"
+   ]
   }
  ]
 }

@@ -263,11 +263,15 @@ def check(src, base):
     # L
     links, imgs, ids = set(p.links), set(p.imgs), set(p.ids)
     for l in base["links"]:
-        if l not in links and l not in REMOVED_LINKS: bad.append("L link lost: " + l)
+        # removedLinks / removedImgs in a targeted update (12 Nov 2026, ISC Aran/Skellig leave): a product
+        # that leaves the explorer takes its anchor and lead image with it; each must be declared
+        if l not in links and l not in REMOVED_LINKS and l not in {x for u in targeted_updates() for x in u.get("removedLinks", [])}:
+            bad.append("L link lost: " + l)
     for l in links - set(base["links"]) - set(ADDED_LINKS) - set(added_links()):
         bad.append("L undeclared link: " + l)
     for i in base["imgs"]:
-        if i not in imgs: bad.append("L image lost: " + i)
+        if i not in imgs and i not in {x for u in targeted_updates() for x in u.get("removedImgs", [])}:
+            bad.append("L image lost: " + i)
     for i in imgs - set(base["imgs"]) - set(added_imgs):
         bad.append("L undeclared image: " + i)
     for i in base["ids"]:
