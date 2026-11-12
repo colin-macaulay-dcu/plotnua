@@ -21,13 +21,13 @@
     ]
   },
   "snapshotSha256": "31397887e2de5dc534d100a32c8a6791c3e9c9339b08df718f94dd0b45a66613",
-  "snapshotScope": "Atlas Core appoLZFWesvoPhZGR via the Airtable connector, 14 Oct 2026, with the five 14 Oct recorded contradictions written to Standards (all 153 Wellness / Sauna products, 11 organisations); internal governance data, never committed; targeted update 2026-10-16 for Irish Sauna Company (1 record(s), snapshot sha256 35695f8a4916c3fc); targeted update 2026-10-27 for Irish Sauna Company (7 record(s), snapshot sha256 7442073f692e12db); targeted update 2026-11-04 for Gardenhouse24 Ireland (6 record(s), snapshot sha256 9199a3bbc373333e); targeted update 2026-11-10 for Arctic Wellness (13 record(s), snapshot sha256 3e3598e557978c33)",
+  "snapshotScope": "Atlas Core appoLZFWesvoPhZGR via the Airtable connector, 14 Oct 2026, with the five 14 Oct recorded contradictions written to Standards (all 153 Wellness / Sauna products, 11 organisations); internal governance data, never committed; targeted update 2026-10-16 for Irish Sauna Company (1 record(s), snapshot sha256 35695f8a4916c3fc); targeted update 2026-10-27 for Irish Sauna Company (7 record(s), snapshot sha256 7442073f692e12db); targeted update 2026-11-04 for Gardenhouse24 Ireland (6 record(s), snapshot sha256 9199a3bbc373333e); targeted update 2026-11-10 for Arctic Wellness (13 record(s), snapshot sha256 3e3598e557978c33); targeted update 2026-11-12 for Irish Sauna Company (4 record(s), snapshot sha256 bb828b7be7c18c50)",
   "sourceCategory": "Wellness / Sauna",
   "sourceCategoryCount": 177,
-  "eligibleCount": 135,
+  "eligibleCount": 133,
   "organisationCount": 9,
   "kindCounts": {
-    "sauna": 100,
+    "sauna": 98,
     "hot-tub": 24,
     "cold-plunge": 16,
     "combination": 4
@@ -38,11 +38,11 @@
     "cold-plunge": 5,
     "combination": 1
   },
-  "heldCount": 30,
+  "heldCount": 32,
   "excludedCount": 0,
   "gateHeldCount": 12,
   "listingBasisCounts": {
-    "SUPPLIER_PERMISSION": 50,
+    "SUPPLIER_PERMISSION": 48,
     "PUBLIC_INFORMATION": 85
   },
   "products": [
@@ -1646,26 +1646,24 @@
       "kinds": [
         "sauna"
       ],
-      "productUrl": "https://irishsaunacompany.com/products/the-aran-4-6-person-luxury-garden-sauna",
+      "productUrl": null,
       "price": {
-        "state": "VERIFIED_NUMERIC_PRICE",
-        "amount": 11500,
-        "currency": "EUR",
-        "type": "Sale Price",
-        "basis": "Published sale price, including VAT."
+        "state": "PRICE_NOT_ESTABLISHED"
       },
       "irish": {
         "state": "UNCONFIRMED"
       },
       "qualification": {
         "rule": "wellness-qualification-v3",
-        "state": "ELIGIBLE",
-        "heldReasons": [],
+        "state": "HELD",
+        "heldReasons": [
+          "evidence-incomplete"
+        ],
         "excludedReasons": []
       },
       "publicVisibility": "PUBLISHABLE",
       "holdReason": null,
-      "listingBasis": "SUPPLIER_PERMISSION"
+      "listingBasis": null
     },
     {
       "id": "recTBQcdOO0yoULqN",
@@ -1701,14 +1699,14 @@
     {
       "id": "rect8UKFyZodW593p",
       "productCode": "PROD-001332",
-      "productName": "The Inis | 2–4 Person Garden Sauna",
+      "productName": "The Inis Mor | 2–4 Person Garden Sauna",
       "organisation": "Irish Sauna Company",
       "productCategory": "Wellness / Sauna",
       "productType": null,
       "kinds": [
         "sauna"
       ],
-      "productUrl": "https://irishsaunacompany.com/products/the-inis-2-4-person-garden-sauna",
+      "productUrl": "https://irishsaunacompany.com/products/the-inis-mor-2-4-person-garden-sauna",
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
         "amount": 8400,
@@ -1739,26 +1737,24 @@
       "kinds": [
         "sauna"
       ],
-      "productUrl": "https://irishsaunacompany.com/products/the-skellig-luxury-8-person-garden-sauna",
+      "productUrl": null,
       "price": {
-        "state": "VERIFIED_NUMERIC_PRICE",
-        "amount": 19600,
-        "currency": "EUR",
-        "type": "Sale Price",
-        "basis": "Published sale price, including VAT."
+        "state": "PRICE_NOT_ESTABLISHED"
       },
       "irish": {
         "state": "UNCONFIRMED"
       },
       "qualification": {
         "rule": "wellness-qualification-v3",
-        "state": "ELIGIBLE",
-        "heldReasons": [],
+        "state": "HELD",
+        "heldReasons": [
+          "evidence-incomplete"
+        ],
         "excludedReasons": []
       },
       "publicVisibility": "PUBLISHABLE",
       "holdReason": null,
-      "listingBasis": "SUPPLIER_PERMISSION"
+      "listingBasis": null
     },
     {
       "id": "recWYh1cQPtKDBsvL",
