@@ -87,6 +87,7 @@ PAGES = {
     "shomera-garden-rooms.html": "dark", # noindex review draft; presentation only
     "concept-modular-garden-offices.html": "dark", "all-in-one-cabins-garden-rooms.html": "dark",
     "garden-offices-ireland.html": "dark",   # SEO GR7-GR14 garden offices guide (founder approval, 9 Nov 2026)
+    "garden-saunas-ireland.html": "dark",    # Garden Saunas in Ireland guide (founder instruction, 12 Nov 2026)
     "about.html": "dark", "contact.html": "dark", "privacy.html": "paper",
     "terms.html": "paper", "cookie-policy.html": "paper",
     "artist-register.html": "dark", "404.html": "dark", "thanks.html": "dark",
@@ -145,7 +146,7 @@ DISC = {"discovery-reinvented-interior.html", "discoveries.html", "discovery-hid
 # Pages that also load the Premium component layer (I13, I14): the registry.
 PREMIUM = set(premium_pages.PREMIUM_PAGES)
 # Premium pages that are a Discovery's guide rather than a Discovery (no Discovery layer).
-GUIDES = {"shomera-garden-rooms.html", "garden-room-prices-ireland.html", "concept-modular-garden-offices.html", "all-in-one-cabins-garden-rooms.html", "garden-offices-ireland.html"}
+GUIDES = {"shomera-garden-rooms.html", "garden-room-prices-ireland.html", "concept-modular-garden-offices.html", "all-in-one-cabins-garden-rooms.html", "garden-offices-ireland.html", "garden-saunas-ireland.html"}
 # Premium product pages (Batch 1 · Garden Living): a maker's product page, no Discovery layer.
 PRODUCTS = {"triq-cube.html"}
 # Premium brand and conversion pages (Batch 3): About, Contact, Artist Register. No Discovery layer.

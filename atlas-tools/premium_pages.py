@@ -25,6 +25,7 @@ PREMIUM_PAGES = {
     "concept-modular-garden-offices.html",   # Maker guide: founder-approved, 26 Oct 2026
     "all-in-one-cabins-garden-rooms.html",   # Maker guide: founder-approved, 26 Oct 2026
     "garden-offices-ireland.html",           # SEO GR7-GR14 garden offices guide (founder approval, 9 Nov 2026)
+    "garden-saunas-ireland.html",            # Garden Saunas in Ireland guide (founder instruction, 12 Nov 2026; local build, not released)
     "discovery-a-home-for-art.html",       # Stage 2c, live 23 Oct 2026
     "borrowed-garden-board.html",          # The Borrowed Garden noticeboard (release candidate, 4 Nov 2026; noindex)
     "garden-room-prices-ireland.html",     # Batch 1 · 1, founder approval 23 Oct 2026

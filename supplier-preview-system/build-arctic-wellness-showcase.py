@@ -319,7 +319,8 @@ def build():
   <p class="aw-p">Browse at your own pace, or let PlotNua help you work out what would suit your space and how you&rsquo;d use it, and then put you in touch with Arctic Wellness. It&rsquo;s free.</p></div>
   <div class="pn-two" role="group" aria-label="Two ways to explore">
     <div class="pn-two-opt"><p class="pn-two-k">Explore yourself</p><p class="pn-two-t">Compare Arctic Wellness with other makers of saunas, hot tubs and cold plunges on PlotNua, side by side.</p>
-      <a class="pn-two-a" href="../discovery-garden-retreat.html#suppliers">Saunas, hot tubs and cold plunges <span aria-hidden="true">&rarr;</span></a></div>
+      <a class="pn-two-a" href="../discovery-garden-retreat.html#suppliers">Saunas, hot tubs and cold plunges <span aria-hidden="true">&rarr;</span></a>
+      <a class="pn-two-a" href="../garden-saunas-ireland.html">Garden saunas in Ireland, compared <span aria-hidden="true">&rarr;</span></a></div>
     <div class="pn-two-opt is-help"><p class="pn-two-k">Let PlotNua do the homework</p><p class="pn-two-t">Tell us what you&rsquo;re looking for. We&rsquo;ll help you narrow the options and, when you&rsquo;re ready, introduce you to Arctic Wellness.</p>
       <ul class="pn-two-btns" role="list">{routes}</ul></div>
   </div>
