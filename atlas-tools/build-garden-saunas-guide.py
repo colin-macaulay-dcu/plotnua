@@ -121,8 +121,9 @@ def render(ev):
         out.append('<p class="sx-links">%s</p>' % "".join(acts))
         out.append('</article>')
     out.append('</div>')
-    out.append('<p class="sx-excl">Not compared here: makers PlotNua has not been able to confirm sell to homes in the '
-               'Republic of Ireland. Garden Retreat lists every sauna maker PlotNua has published.</p>')
+    out.append('<p class="sx-excl">Not compared here: one maker listed in Garden Retreat that publishes its prices in sterling '
+               'and whose delivery to the Republic of Ireland PlotNua has not yet confirmed. Garden Retreat lists every '
+               'sauna maker PlotNua has published.</p>')
     return "\n".join(out)
 
 
