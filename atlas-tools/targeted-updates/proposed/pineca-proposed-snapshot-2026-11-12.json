@@ -1,0 +1,1621 @@
+{
+ "source": "PROPOSED SNAPSHOT — NOT AN ATLAS READ-BACK. Built 12 Nov 2026 from a read-only Atlas read (Airtable connector, same day) of the 34 published Pineca Ireland ORG-000019 sauna products and their 34 pricing records, with the proposed Pineca writes of atlas-tools/proposed-atlas-updates/2026-11-12-wellness-isc-pineca.json applied in memory. For local generation and validation only; Atlas itself is unchanged. Must be replaced by a genuine scoped read-back after the approved Atlas writes, before any production release.",
+ "products": [
+  {
+   "id": "recnnzXeiXIoKdP7d",
+   "createdTime": "2026-09-23T13:24:01.000Z",
+   "fields": {
+    "Notes": "PINECA EXPANSION BATCH 4, created 2026-09-23. SKU AV365. Canonical Product URL set at creation.\n\nNO FLOOR AREA PUBLISHED — inherent to barrel geometry, which the supplier describes by length and diameter instead. Recorded UNKNOWN; no area derived from the cylinder dimensions. Measurement basis UNKNOWN.\n\nProduct Type left EMPTY — no existing Atlas option describes a barrel sauna; gap reported. NO planning badge. NO Irish electrical, stove, flue, fire or building compliance inferred. PRICE SCOPE: supply-only kit; VAT included, VAT RATE UNKNOWN; installation, electrics, heater and flue NOT evidenced as included. Image permission UNKNOWN ≠ GRANTED. No supplier contact.",
+    "Status": "Done",
+    "Product Name": "Outdoor Barrel Sauna HELGA 17 — 46 mm, 1.7 m",
+    "Habitation Classification Basis": "HABITATION-BOUNDARY-v1 applied to first-party evidence (SRC-PIN-B4-024).\nSignal 1 — published as habitation: NO. Published use is sauna bathing.\nSignal 2 — self-contained: NO.\nSignal 3 — sited on grounds of an existing home: YES, but not habitation on its own.\nConclusion: ANCILLARY / NON-DWELLING. Published seating capacity is a sauna specification and is expressly NOT habitation evidence.",
+    "Organisation": [
+     "recAbCMI3LkwWO3Z6"
+    ],
+    "Atlas Product Certification Audit v1": "Product Evidence Complete — Organisation Gate Required",
+    "Product Code": "PROD-000848",
+    "Product Category": "Wellness / Sauna",
+    "Results Eligibility v1": "Not Eligible — Gold Standard Not Achieved",
+    "Product Pricing": [
+     "recHa1qLMW20q89l7"
+    ],
+    "Sources": [
+     "recS5VEZOLPA8dxTg"
+    ],
+    "Product URL": "https://www.pineca.ie/outdoor-barrel-sauna-helga-17-46mm-1-7m-1-97m.html",
+    "Description": "Supplier-published: \"Outdoor Barrel Sauna HELGA 17 (46 mm), 1.7 m, ⌀ 1.97 m\". PUBLISHED CAPACITY: fits 2–4 people; the smallest barrel sauna in the range. Barrel construction in 46 mm timber — a materially different building form from the ELDA and DELLA cabin saunas. Dimensions published as length and diameter.",
+    "Habitation Classification": "ANCILLARY / NON-DWELLING"
+   }
+  },
+  {
+   "id": "recScMV22mIrgij6w",
+   "createdTime": "2026-09-23T13:24:01.000Z",
+   "fields": {
+    "Notes": "PINECA EXPANSION BATCH 4, created 2026-09-23. SKU AV368.\n\nMATERIAL VARIANT: own SKU and own copy. The HELGA 17 glazing ladder runs EUR 5,157.00 (none) / EUR 5,535.00 (half-height) / EUR 6,008.00 (full height) — a 16% spread on glazing specification alone. All three retained.\n\nSUPPLIER SLUG DEFECT PRESERVED: the URL reads \"helga17\" and \"windowfull\" with missing separators. NOT normalised — it is the resolving URL.\n\nNo floor area published — UNKNOWN. Product Type left EMPTY — gap reported. NO planning badge. NO Irish compliance inferred. PRICE SCOPE: supply-only kit; VAT included, VAT RATE UNKNOWN; installation, electrics, heater and flue NOT evidenced as included. Image permission UNKNOWN ≠ GRANTED. No supplier contact.",
+    "Status": "Done",
+    "Product Name": "Outdoor Barrel Sauna HELGA 17 — panoramic window, full height",
+    "Habitation Classification Basis": "HABITATION-BOUNDARY-v1 applied to first-party evidence (SRC-PIN-B4-026).\nSignal 1 — published as habitation: NO. Sauna bathing.\nSignal 2 — self-contained: NO.\nSignal 3 — sited on grounds of an existing home: YES, but not habitation on its own.\nConclusion: ANCILLARY / NON-DWELLING.",
+    "Organisation": [
+     "recAbCMI3LkwWO3Z6"
+    ],
+    "Atlas Product Certification Audit v1": "Product Evidence Complete — Organisation Gate Required",
+    "Product Code": "PROD-000850",
+    "Product Category": "Wellness / Sauna",
+    "Results Eligibility v1": "Not Eligible — Gold Standard Not Achieved",
+    "Product Pricing": [
+     "recc1y0QQgslsuaIm"
+    ],
+    "Sources": [
+     "recMU4ZzK2Mril3Ue"
+    ],
+    "Product URL": "https://www.pineca.ie/outdoor-barrel-sauna-helga17-with-panoramic-windowfull-height.html",
+    "Description": "Supplier-published: \"Outdoor Barrel Sauna HELGA 17 (46 mm), 1.7 m, ⌀ 1.97 m With Panoramic Window (Full Height)\". The full-height glazing specification of the HELGA 17.",
+    "Habitation Classification": "ANCILLARY / NON-DWELLING"
+   }
+  },
+  {
+   "id": "rec6oVostIGd6JNxR",
+   "createdTime": "2026-09-23T13:24:01.000Z",
+   "fields": {
+    "Notes": "PINECA EXPANSION BATCH 4, created 2026-09-23. SKU AV367.\n\nMATERIAL VARIANT, NOT COSMETIC — THE KEY IDENTITY TEST OF THIS BATCH: a panoramic window is a glazing and structural specification change, not an exterior finish. Three independent grounds: it carries its OWN SKU (AV367 against AV365); the product copy is REWRITTEN around the window rather than repeating the base text; and it is priced EUR 378.00 above the base.\n\nCONTRAST WITH BATCH 3: the collapsed garden-room sets shared IDENTICAL copy and differed only in cladding material. Here the copy changes and the feature is the selling point. Retained as a distinct product.\n\nNo floor area published — UNKNOWN. Product Type left EMPTY — gap reported. NO planning badge. NO Irish compliance inferred. PRICE SCOPE: supply-only kit; VAT included, VAT RATE UNKNOWN; installation, electrics, heater and flue NOT evidenced as included. Image permission UNKNOWN ≠ GRANTED. No supplier contact.",
+    "Status": "Done",
+    "Product Name": "Outdoor Barrel Sauna HELGA 17 — panoramic window, half-height",
+    "Habitation Classification Basis": "HABITATION-BOUNDARY-v1 applied to first-party evidence (SRC-PIN-B4-025).\nSignal 1 — published as habitation: NO. Sauna bathing.\nSignal 2 — self-contained: NO.\nSignal 3 — sited on grounds of an existing home: YES, but not habitation on its own.\nConclusion: ANCILLARY / NON-DWELLING.",
+    "Organisation": [
+     "recAbCMI3LkwWO3Z6"
+    ],
+    "Atlas Product Certification Audit v1": "Product Evidence Complete — Organisation Gate Required",
+    "Product Code": "PROD-000849",
+    "Product Category": "Wellness / Sauna",
+    "Results Eligibility v1": "Not Eligible — Gold Standard Not Achieved",
+    "Product Pricing": [
+     "recEzf4dfc4ugK9kD"
+    ],
+    "Sources": [
+     "rec1EfmEJ1Q6mzXmN"
+    ],
+    "Product URL": "https://www.pineca.ie/outdoor-barrel-sauna-helga-17-with-panoramic-window-half-height.html",
+    "Description": "Supplier-published: \"Outdoor Barrel Sauna HELGA 17 (46 mm), 1.7 m, ⌀ 1.97 m With Panoramic Window (Half-Height)\". Published copy centres on the glazing: \"observing the surroundings through the huge panoramic windows\". Capacity published as 1–3 friends.",
+    "Habitation Classification": "ANCILLARY / NON-DWELLING"
+   }
+  },
+  {
+   "id": "rechMoa1ZWtcAMvKX",
+   "createdTime": "2026-09-23T13:24:01.000Z",
+   "fields": {
+    "Notes": "PINECA EXPANSION BATCH 4, created 2026-09-23. SKU AV369. No floor area published — UNKNOWN. Product Type left EMPTY — gap reported. NO planning badge. NO Irish compliance inferred. PRICE SCOPE: supply-only kit; VAT included, VAT RATE UNKNOWN; installation, electrics, heater and flue NOT evidenced as included. Image permission UNKNOWN ≠ GRANTED. No supplier contact.",
+    "Status": "Done",
+    "Product Name": "Outdoor Barrel Sauna HELGA 24 — 46 mm, 2.4 m",
+    "Habitation Classification Basis": "HABITATION-BOUNDARY-v1 applied to first-party evidence (SRC-PIN-B4-027).\nSignal 1 — published as habitation: NO. Sauna bathing.\nSignal 2 — self-contained: NO. Bench seating is a sauna specification, expressly not habitation evidence.\nSignal 3 — sited on grounds of an existing home: YES, but not habitation on its own.\nConclusion: ANCILLARY / NON-DWELLING.",
+    "Organisation": [
+     "recAbCMI3LkwWO3Z6"
+    ],
+    "Atlas Product Certification Audit v1": "Product Evidence Complete — Organisation Gate Required",
+    "Product Code": "PROD-000851",
+    "Product Category": "Wellness / Sauna",
+    "Results Eligibility v1": "Not Eligible — Gold Standard Not Achieved",
+    "Product Pricing": [
+     "recQ3tQPOpvEewyxm"
+    ],
+    "Sources": [
+     "rec2FaLkCyNtbWScq"
+    ],
+    "Product URL": "https://www.pineca.ie/outdoor-barrel-sauna-helga-24-46mm-2-4m-1-97m.html",
+    "Description": "Supplier-published: \"Outdoor Barrel Sauna HELGA 24 (46 mm), 2.4 m, ⌀ 1.97 m\". PUBLISHED CAPACITY: \"benches on the side walls offers space for 4 - 6 people\". No changing room.",
+    "Habitation Classification": "ANCILLARY / NON-DWELLING"
+   }
+  },
+  {
+   "id": "recmDjaXN4SF70Ifr",
+   "createdTime": "2026-09-23T13:24:01.000Z",
+   "fields": {
+    "Notes": "PINECA EXPANSION BATCH 4, created 2026-09-23. SKU AV370. The presence or absence of a changing room is the material dividing line in the HELGA range: HELGA 17–30 have none, HELGA 35 and above do. No floor area published — UNKNOWN. Product Type left EMPTY — gap reported. NO planning badge. NO Irish compliance inferred. PRICE SCOPE: supply-only kit; VAT included, VAT RATE UNKNOWN; installation, electrics, heater and flue NOT evidenced as included. Image permission UNKNOWN ≠ GRANTED. No supplier contact.",
+    "Status": "Done",
+    "Product Name": "Outdoor Barrel Sauna HELGA 30 — 46 mm, 3.0 m",
+    "Habitation Classification Basis": "HABITATION-BOUNDARY-v1 applied to first-party evidence (SRC-PIN-B4-028).\nSignal 1 — published as habitation: NO. Sauna bathing.\nSignal 2 — self-contained: NO.\nSignal 3 — sited on grounds of an existing home: YES, but not habitation on its own.\nConclusion: ANCILLARY / NON-DWELLING.",
+    "Organisation": [
+     "recAbCMI3LkwWO3Z6"
+    ],
+    "Atlas Product Certification Audit v1": "Product Evidence Complete — Organisation Gate Required",
+    "Product Code": "PROD-000852",
+    "Product Category": "Wellness / Sauna",
+    "Results Eligibility v1": "Not Eligible — Gold Standard Not Achieved",
+    "Product Pricing": [
+     "recs3rSZ2a0zaQLva"
+    ],
+    "Sources": [
+     "recK1GcsPQlSsL6dB"
+    ],
+    "Product URL": "https://www.pineca.ie/outdoor-barrel-sauna-helga-30-46mm-3m-1-97m.html",
+    "Description": "Supplier-published: \"Outdoor Barrel Sauna HELGA 30 (46 mm), 3.0 m, ⌀ 1.97 m\". PUBLISHED CAPACITY: 6–8 people. The supplier explicitly states this model does NOT include a changing room — the largest HELGA without one.",
+    "Habitation Classification": "ANCILLARY / NON-DWELLING"
+   }
+  },
+  {
+   "id": "recJCju35GC3GOUAo",
+   "createdTime": "2026-09-23T13:24:01.000Z",
+   "fields": {
+    "Notes": "PINECA EXPANSION BATCH 4, created 2026-09-23. SKU AV374. The HELGA 40 glazing ladder runs EUR 10,266.00 / EUR 10,645.00 / EUR 11,118.00 — an 8% spread on glazing specification alone. All three retained as distinct products on SKU, copy and price. No floor area published — UNKNOWN. Product Type left EMPTY — gap reported. NO planning badge. NO Irish compliance inferred. PRICE SCOPE: supply-only kit; VAT included, VAT RATE UNKNOWN; installation, electrics, heater and flue NOT evidenced as included. Image permission UNKNOWN ≠ GRANTED. No supplier contact.",
+    "Status": "Done",
+    "Product Name": "Outdoor Barrel Sauna HELGA 40 — panoramic window, full height",
+    "Habitation Classification Basis": "HABITATION-BOUNDARY-v1 applied to first-party evidence (SRC-PIN-B4-032).\nSignal 1 — published as habitation: NO. Sauna bathing.\nSignal 2 — self-contained: NO.\nSignal 3 — sited on grounds of an existing home: YES, but not habitation on its own.\nConclusion: ANCILLARY / NON-DWELLING.",
+    "Organisation": [
+     "recAbCMI3LkwWO3Z6"
+    ],
+    "Atlas Product Certification Audit v1": "Product Evidence Complete — Organisation Gate Required",
+    "Product Code": "PROD-000856",
+    "Product Category": "Wellness / Sauna",
+    "Results Eligibility v1": "Not Eligible — Gold Standard Not Achieved",
+    "Product Pricing": [
+     "recvZ7ioiOLKd8HHY"
+    ],
+    "Sources": [
+     "recpkZfqnb9Enufqi"
+    ],
+    "Product URL": "https://www.pineca.ie/outdoor-barrel-sauna-with-changing-room-helga-40-46mm-4m-1-97m-panoramic-window-full-height.html",
+    "Description": "Supplier-published: \"Outdoor Barrel Sauna With Changing Room HELGA 40 (46 mm), 4.0 m, ⌀ 1.97 m, Panoramic Window (Full Height)\". Supplier publishes: \"maybe your own sauna barrel with a beautiful view of your own garden! A panorama window...\".",
+    "Habitation Classification": "ANCILLARY / NON-DWELLING"
+   }
+  },
+  {
+   "id": "reckAzBLbtQLK46Gz",
+   "createdTime": "2026-09-23T13:24:01.000Z",
+   "fields": {
+    "Notes": "PINECA EXPANSION BATCH 4, created 2026-09-23. SKU AV373. MATERIAL VARIANT: own SKU, own copy explicitly making the window the product's defining feature, and a EUR 379.00 price step. Retained as distinct. No floor area published — UNKNOWN. Product Type left EMPTY — gap reported. NO planning badge. NO Irish compliance inferred. PRICE SCOPE: supply-only kit; VAT included, VAT RATE UNKNOWN; installation, electrics, heater and flue NOT evidenced as included. Image permission UNKNOWN ≠ GRANTED. No supplier contact.",
+    "Status": "Done",
+    "Product Name": "Outdoor Barrel Sauna HELGA 40 — panoramic window, half-height",
+    "Habitation Classification Basis": "HABITATION-BOUNDARY-v1 applied to first-party evidence (SRC-PIN-B4-031).\nSignal 1 — published as habitation: NO. Sauna bathing.\nSignal 2 — self-contained: NO.\nSignal 3 — sited on grounds of an existing home: YES, but not habitation on its own.\nConclusion: ANCILLARY / NON-DWELLING.",
+    "Organisation": [
+     "recAbCMI3LkwWO3Z6"
+    ],
+    "Atlas Product Certification Audit v1": "Product Evidence Complete — Organisation Gate Required",
+    "Product Code": "PROD-000855",
+    "Product Category": "Wellness / Sauna",
+    "Results Eligibility v1": "Not Eligible — Gold Standard Not Achieved",
+    "Product Pricing": [
+     "recia2Cl5zESazbNt"
+    ],
+    "Sources": [
+     "reclBm9dHXmGdYvnE"
+    ],
+    "Product URL": "https://www.pineca.ie/outdoor-barrel-sauna-with-changing-room-helga-40-46mm-4m-1-97m-panoramic-window-half-height.html",
+    "Description": "Supplier-published: \"Outdoor Barrel Sauna With Changing Room HELGA 40 (46 mm), 4.0 m, ⌀ 1.97 m, Panoramic Window (Half-height)\". Supplier states: \"The absolute highlight of this version of our HELGA 40 barrel sauna is the half-height panoramic window in the back wall. It allows much more natural light inside.\"",
+    "Habitation Classification": "ANCILLARY / NON-DWELLING"
+   }
+  },
+  {
+   "id": "recUHbn0U2qqKQYCl",
+   "createdTime": "2026-09-23T13:24:01.000Z",
+   "fields": {
+    "Notes": "PINECA EXPANSION BATCH 4, created 2026-09-23. SKU AV371. No floor area published — UNKNOWN. Product Type left EMPTY — gap reported. NO planning badge. NO Irish compliance inferred. PRICE SCOPE: supply-only kit; VAT included, VAT RATE UNKNOWN; installation, electrics, heater and flue NOT evidenced as included. Image permission UNKNOWN ≠ GRANTED. No supplier contact.",
+    "Status": "Done",
+    "Product Name": "Outdoor Barrel Sauna with changing room HELGA 35 — 46 mm, 3.5 m",
+    "Habitation Classification Basis": "HABITATION-BOUNDARY-v1 applied to first-party evidence (SRC-PIN-B4-029).\nSignal 1 — published as habitation: NO. Sauna bathing.\nSignal 2 — self-contained: NO. A changing room is a functional part of a sauna and is expressly not habitation evidence.\nSignal 3 — sited on grounds of an existing home: YES, but not habitation on its own.\nConclusion: ANCILLARY / NON-DWELLING.",
+    "Organisation": [
+     "recAbCMI3LkwWO3Z6"
+    ],
+    "Atlas Product Certification Audit v1": "Product Evidence Complete — Organisation Gate Required",
+    "Product Code": "PROD-000853",
+    "Product Category": "Wellness / Sauna",
+    "Results Eligibility v1": "Not Eligible — Gold Standard Not Achieved",
+    "Product Pricing": [
+     "recXfVe2cI2tZAmoq"
+    ],
+    "Sources": [
+     "recDkiAL082MaSAdQ"
+    ],
+    "Product URL": "https://www.pineca.ie/outdoor-barrel-sauna-with-changing-room-helga-35-46mm-3-5m-1-97m.html",
+    "Description": "Supplier-published: \"Outdoor Barrel Sauna With Changing Room HELGA 35 (46 mm), 3.5 m, ⌀ 1.97 m\". PUBLISHED CAPACITY: 6–8 people. First HELGA to include a changing room.",
+    "Habitation Classification": "ANCILLARY / NON-DWELLING"
+   }
+  },
+  {
+   "id": "rec7EZDz2AVIVHqwb",
+   "createdTime": "2026-09-23T13:24:01.000Z",
+   "fields": {
+    "Notes": "PINECA EXPANSION BATCH 4, created 2026-09-23. SKU AV372. Base of the second three-step glazing ladder in the HELGA range. No floor area published — UNKNOWN. Product Type left EMPTY — gap reported. NO planning badge. NO Irish compliance inferred. PRICE SCOPE: supply-only kit; VAT included, VAT RATE UNKNOWN; installation, electrics, heater and flue NOT evidenced as included. Image permission UNKNOWN ≠ GRANTED. No supplier contact.",
+    "Status": "Done",
+    "Product Name": "Outdoor Barrel Sauna with changing room HELGA 40 — 46 mm, 4.0 m",
+    "Habitation Classification Basis": "HABITATION-BOUNDARY-v1 applied to first-party evidence (SRC-PIN-B4-030).\nSignal 1 — published as habitation: NO. Sauna bathing.\nSignal 2 — self-contained: NO. Changing room is not habitation evidence.\nSignal 3 — sited on grounds of an existing home: YES, but not habitation on its own.\nConclusion: ANCILLARY / NON-DWELLING.",
+    "Organisation": [
+     "recAbCMI3LkwWO3Z6"
+    ],
+    "Atlas Product Certification Audit v1": "Product Evidence Complete — Organisation Gate Required",
+    "Product Code": "PROD-000854",
+    "Product Category": "Wellness / Sauna",
+    "Results Eligibility v1": "Not Eligible — Gold Standard Not Achieved",
+    "Product Pricing": [
+     "recYmL1sys7iwOvpp"
+    ],
+    "Sources": [
+     "recvxOooTRrKgL2OK"
+    ],
+    "Product URL": "https://www.pineca.ie/outdoor-barrel-sauna-with-changing-room-helga-40-46mm-4m-1-97m.html",
+    "Description": "Supplier-published: \"Outdoor Barrel Sauna With Changing Room HELGA 40 (46 mm), 4.0 m, ⌀ 1.97 m\". PUBLISHED CAPACITY: \"interior space for 6-8 people\". Base glazing specification of the HELGA 40.",
+    "Habitation Classification": "ANCILLARY / NON-DWELLING"
+   }
+  },
+  {
+   "id": "rech22hBIhQ5ypYrf",
+   "createdTime": "2026-09-23T13:24:01.000Z",
+   "fields": {
+    "Notes": "PINECA EXPANSION BATCH 4, created 2026-09-23. SKU AV375.\n\nPRICING NOTE: at EUR 10,883.00 the HELGA 45 costs LESS than the HELGA 40 with full-height panoramic window (EUR 11,118.00), which is shorter. Length does not order this range — glazing specification can outweigh size.\n\nNo floor area published — UNKNOWN. Product Type left EMPTY — gap reported. NO planning badge. NO Irish compliance inferred. PRICE SCOPE: supply-only kit; VAT included, VAT RATE UNKNOWN; installation, electrics, heater and flue NOT evidenced as included. Image permission UNKNOWN ≠ GRANTED. No supplier contact.",
+    "Status": "Done",
+    "Product Name": "Outdoor Barrel Sauna with changing room HELGA 45 — 46 mm, 4.5 m",
+    "Habitation Classification Basis": "HABITATION-BOUNDARY-v1 applied to first-party evidence (SRC-PIN-B4-033).\nSignal 1 — published as habitation: NO. Sauna bathing.\nSignal 2 — self-contained: NO. A divided room and a changing room are sauna layout, not self-containment.\nSignal 3 — sited on grounds of an existing home: YES, but not habitation on its own.\nConclusion: ANCILLARY / NON-DWELLING.",
+    "Organisation": [
+     "recAbCMI3LkwWO3Z6"
+    ],
+    "Atlas Product Certification Audit v1": "Product Evidence Complete — Organisation Gate Required",
+    "Product Code": "PROD-000857",
+    "Product Category": "Wellness / Sauna",
+    "Results Eligibility v1": "Not Eligible — Gold Standard Not Achieved",
+    "Product Pricing": [
+     "recIIefw6I8jSyAMK"
+    ],
+    "Sources": [
+     "recLVVe02eDCSPPZW"
+    ],
+    "Product URL": "https://www.pineca.ie/outdoor-barrel-sauna-with-changing-room-helga-45.html",
+    "Description": "Supplier-published: \"Outdoor Barrel Sauna With Changing Room HELGA 45 (46 mm), 4.5 m, ⌀ 1.97 m\". PUBLISHED CAPACITY: \"4.5m length and a comfortable stay for 6-8 people. By default, the room is divided\".",
+    "Habitation Classification": "ANCILLARY / NON-DWELLING"
+   }
+  },
+  {
+   "id": "recemLQAqOSIKhCI5",
+   "createdTime": "2026-09-23T13:24:01.000Z",
+   "fields": {
+    "Notes": "PINECA EXPANSION BATCH 4, created 2026-09-23. SKU AV376. No floor area published — UNKNOWN. Product Type left EMPTY — gap reported. NO planning badge. NO Irish compliance inferred. PRICE SCOPE: supply-only kit; VAT included, VAT RATE UNKNOWN; installation, electrics, heater and flue NOT evidenced as included. Image permission UNKNOWN ≠ GRANTED. No supplier contact.",
+    "Status": "Done",
+    "Product Name": "Outdoor Barrel Sauna with changing room HELGA 48 — 46 mm, 4.8 m",
+    "Habitation Classification Basis": "HABITATION-BOUNDARY-v1 applied to first-party evidence (SRC-PIN-B4-034).\nSignal 1 — published as habitation: NO. Sauna bathing.\nSignal 2 — self-contained: NO. Changing room is not habitation evidence.\nSignal 3 — sited on grounds of an existing home: YES, but not habitation on its own.\nConclusion: ANCILLARY / NON-DWELLING.",
+    "Organisation": [
+     "recAbCMI3LkwWO3Z6"
+    ],
+    "Atlas Product Certification Audit v1": "Product Evidence Complete — Organisation Gate Required",
+    "Product Code": "PROD-000858",
+    "Product Category": "Wellness / Sauna",
+    "Results Eligibility v1": "Not Eligible — Gold Standard Not Achieved",
+    "Product Pricing": [
+     "recLM0lLRZLImPrhY"
+    ],
+    "Sources": [
+     "recr0gVe612stlvCP"
+    ],
+    "Product URL": "https://www.pineca.ie/outdoor-barrel-sauna-with-changing-room-helga-48.html",
+    "Description": "Supplier-published: \"Outdoor Barrel Sauna With Changing Room HELGA 48 (46 mm), 4.8 m, ⌀ 1.97 m\". PUBLISHED CAPACITY: \"a main room for 6-8 people and a convenient changing room at the\" end. One of the largest barrels in the range.",
+    "Habitation Classification": "ANCILLARY / NON-DWELLING"
+   }
+  },
+  {
+   "id": "reciclyouGByVnjyy",
+   "createdTime": "2026-09-23T13:24:01.000Z",
+   "fields": {
+    "Notes": "PINECA EXPANSION BATCH 4, created 2026-09-23. SKU AV377. Largest and most expensive HELGA.\n\nSUPPLIER TITLE DEFECT: the page title reads \"Outdoor Barrel Sauna With Changing Room 59 (46 mm)\" — the model name HELGA is MISSING, unlike every other product in the range. Identity confirmed from the body copy and URL; the Atlas product name restores the model name for clarity and the defect is recorded here.\n\nNo floor area published — UNKNOWN. Product Type left EMPTY — gap reported. NO planning badge. NO Irish compliance inferred. PRICE SCOPE: supply-only kit; VAT included, VAT RATE UNKNOWN; installation, electrics, heater and flue NOT evidenced as included. Image permission UNKNOWN ≠ GRANTED. No supplier contact.",
+    "Status": "Done",
+    "Product Name": "Outdoor Barrel Sauna with changing room HELGA 59 — 46 mm, 5.9 m",
+    "Habitation Classification Basis": "HABITATION-BOUNDARY-v1 applied to first-party evidence (SRC-PIN-B4-035).\nSignal 1 — published as habitation: NO. Sauna bathing.\nSignal 2 — self-contained: NO. \"Accommodating 6-8 sauna fans\" describes sauna capacity, NOT residential accommodation — the word \"accommodating\" here is expressly not treated as habitation evidence.\nSignal 3 — sited on grounds of an existing home: YES, but not habitation on its own.\nConclusion: ANCILLARY / NON-DWELLING.\n\nThis is the last of 35 Batch 4 products, ALL of which classified ANCILLARY / NON-DWELLING.",
+    "Organisation": [
+     "recAbCMI3LkwWO3Z6"
+    ],
+    "Atlas Product Certification Audit v1": "Product Evidence Complete — Organisation Gate Required",
+    "Product Code": "PROD-000859",
+    "Product Category": "Wellness / Sauna",
+    "Results Eligibility v1": "Not Eligible — Gold Standard Not Achieved",
+    "Product Pricing": [
+     "recUPyyqhbwJSRyQU"
+    ],
+    "Sources": [
+     "rec9x1wTgcdRIJGbH"
+    ],
+    "Product URL": "https://www.pineca.ie/outdoor-barrel-sauna-with-changing-room-helga-59.html",
+    "Description": "Supplier-published as \"Outdoor Barrel Sauna With Changing Room 59 (46 mm), 5.9 m, ⌀ 1.97 m\". PUBLISHED CAPACITY: \"the longest (5.9 m) and most spacious sauna barrel in our range, easily and comfortably accommodating 6 - 8 sauna fans\", with a large main room and a changing room.",
+    "Habitation Classification": "ANCILLARY / NON-DWELLING"
+   }
+  },
+  {
+   "id": "rec3ZEySd0n7wowm2",
+   "createdTime": "2026-09-23T13:18:45.000Z",
+   "fields": {
+    "Notes": "PINECA EXPANSION BATCH 4, created 2026-09-23. SKU AV2359. Canonical Product URL set at creation.\n\nDELLA IS A MATERIALLY DISTINCT RANGE from ELDA: 34 mm timber plus exterior cladding and modern full-height glazing, versus ELDA's plain 44 mm timber. Different construction and specification, not a finish option.\n\nProduct Type left EMPTY — gap reported. NO planning badge. NO Irish compliance inferred. PRICE SCOPE: supply-only kit; VAT included, VAT RATE UNKNOWN; installation, electrics, heater and flue NOT evidenced as included. Measurement basis UNKNOWN. Image permission UNKNOWN ≠ GRANTED. No supplier contact.",
+    "Status": "Done",
+    "Product Name": "Outdoor Sauna DELLA 34 mm + Cladding — 2.6 × 2.1 m, 3.8 m²",
+    "Habitation Classification Basis": "HABITATION-BOUNDARY-v1 applied to first-party evidence (SRC-PIN-B4-012).\nSignal 1 — published as habitation: NO. Sauna bathing and relaxation.\nSignal 2 — self-contained: NO.\nSignal 3 — sited on grounds of an existing home: YES, but not habitation on its own.\nConclusion: ANCILLARY / NON-DWELLING.",
+    "Organisation": [
+     "recAbCMI3LkwWO3Z6"
+    ],
+    "Atlas Product Certification Audit v1": "Product Evidence Complete — Organisation Gate Required",
+    "Product Code": "PROD-000836",
+    "Product Category": "Wellness / Sauna",
+    "Results Eligibility v1": "Not Eligible — Gold Standard Not Achieved",
+    "Product Pricing": [
+     "recVD42SfFz8Kf6ho"
+    ],
+    "Sources": [
+     "recnwhJbdGHsK2RmG"
+    ],
+    "Product URL": "https://www.pineca.ie/outdoor-sauna-della-34mm-cladding-2-6x2-1m-3-8m2.html",
+    "Description": "Supplier-published: \"Outdoor Sauna DELLA (34 mm + Cladding), 2,6 x 2,1 m, 3,8 m²\". A modern cladded garden sauna with \"almost floor-to-ceiling windows\". Smallest DELLA. Published floor area 4 m² against a 3.8 m² title.",
+    "Habitation Classification": "ANCILLARY / NON-DWELLING"
+   }
+  },
+  {
+   "id": "recFozPL70R9FYfDj",
+   "createdTime": "2026-09-23T13:21:12.000Z",
+   "fields": {
+    "Notes": "PINECA EXPANSION BATCH 4, created 2026-09-23. SKU AV2361. Product Type left EMPTY — gap reported. NO planning badge. NO Irish compliance inferred. PRICE SCOPE: supply-only kit; VAT included, VAT RATE UNKNOWN; installation, electrics, heater and flue NOT evidenced as included. Measurement basis UNKNOWN. Image permission UNKNOWN ≠ GRANTED. No supplier contact.",
+    "Status": "Done",
+    "Product Name": "Outdoor Sauna DELLA — 2.6 × 2.6 m, 5 m²",
+    "Habitation Classification Basis": "HABITATION-BOUNDARY-v1 applied to first-party evidence (SRC-PIN-B4-014).\nSignal 1 — published as habitation: NO. Sauna bathing and relaxation.\nSignal 2 — self-contained: NO.\nSignal 3 — sited on grounds of an existing home: YES, but not habitation on its own.\nConclusion: ANCILLARY / NON-DWELLING.",
+    "Organisation": [
+     "recAbCMI3LkwWO3Z6"
+    ],
+    "Atlas Product Certification Audit v1": "Product Evidence Complete — Organisation Gate Required",
+    "Product Code": "PROD-000838",
+    "Product Category": "Wellness / Sauna",
+    "Results Eligibility v1": "Not Eligible — Gold Standard Not Achieved",
+    "Product Pricing": [
+     "recVJXxIYrf48VhuU"
+    ],
+    "Sources": [
+     "reck34fY9cMDlO6Uy"
+    ],
+    "Product URL": "https://www.pineca.ie/outdoor-sauna-della-34mm-cladding-2-6x2-6m-5m2.html",
+    "Description": "Supplier-published: \"Outdoor Sauna DELLA (34 mm + Cladding), 2,6 x 2,6 m, 5 m²\". Modern cladded garden sauna with near floor-to-ceiling windows. Published floor area 5 m², agreeing with the title.",
+    "Habitation Classification": "ANCILLARY / NON-DWELLING"
+   }
+  },
+  {
+   "id": "recaYnMVQyFJSSSBw",
+   "createdTime": "2026-09-23T13:21:12.000Z",
+   "fields": {
+    "Notes": "PINECA EXPANSION BATCH 4, created 2026-09-23. SKU AV2363.\n\nSUPPLIER NAMING INCONSISTENCY: this product is titled WITHOUT \"With Changing Room\" although it shares the 3.6×2.1 m footprint of AV2362 which is titled with it. Recorded as published; identity taken from the full evidence set, not the title alone.\n\nThe 5 m² terrace is separate from the 5.5 m² building. Product Type left EMPTY — gap reported. NO planning badge. NO Irish compliance inferred. PRICE SCOPE: supply-only kit; VAT included, VAT RATE UNKNOWN; installation, electrics, heater and flue NOT evidenced as included. Image permission UNKNOWN ≠ GRANTED. No supplier contact.",
+    "Status": "Done",
+    "Product Name": "Outdoor Sauna DELLA — 3.6 × 2.1 m, 5.5 m² + 5 m² terrace",
+    "Habitation Classification Basis": "HABITATION-BOUNDARY-v1 applied to first-party evidence (SRC-PIN-B4-016).\nSignal 1 — published as habitation: NO. Sauna bathing followed by lounging on the terrace.\nSignal 2 — self-contained: NO.\nSignal 3 — sited on grounds of an existing home: YES, but not habitation on its own.\nConclusion: ANCILLARY / NON-DWELLING.",
+    "Organisation": [
+     "recAbCMI3LkwWO3Z6"
+    ],
+    "Atlas Product Certification Audit v1": "Product Evidence Complete — Organisation Gate Required",
+    "Product Code": "PROD-000840",
+    "Product Category": "Wellness / Sauna",
+    "Results Eligibility v1": "Not Eligible — Gold Standard Not Achieved",
+    "Product Pricing": [
+     "recOujExkah91IgYQ"
+    ],
+    "Sources": [
+     "recG9vABtfi1AN2iX"
+    ],
+    "Product URL": "https://www.pineca.ie/outdoor-sauna-della-34mm-cladding-3-6x2-1m-5-5m2-terrace-5m2.html",
+    "Description": "Supplier-published: \"Outdoor Sauna DELLA (34 mm + Cladding), 3,6 x 2,1 m, 5,5 m², Terrace 5 m²\". Same footprint as the changing-room version with an integral 5 m² covered terrace; the supplier publishes \"lounge with your family and friends on the covered terrace afterwards\". Published floor area 6 m².",
+    "Habitation Classification": "ANCILLARY / NON-DWELLING"
+   }
+  },
+  {
+   "id": "recs5RhdwFIrdEh0o",
+   "createdTime": "2026-09-23T13:21:12.000Z",
+   "fields": {
+    "Notes": "PINECA EXPANSION BATCH 4, created 2026-09-23. SKU AV2360. MATERIAL VARIANT of AV2359 by the integral 3 m² terrace, priced EUR 1,549.00 higher. The terrace is separate from the 3.8 m² building. Product Type left EMPTY — gap reported. NO planning badge. NO Irish compliance inferred. PRICE SCOPE: supply-only kit; VAT included, VAT RATE UNKNOWN; installation, electrics, heater and flue NOT evidenced as included. Image permission UNKNOWN ≠ GRANTED. No supplier contact.",
+    "Status": "Done",
+    "Product Name": "Outdoor Sauna DELLA — 3.8 m² + 3 m² terrace",
+    "Habitation Classification Basis": "HABITATION-BOUNDARY-v1 applied to first-party evidence (SRC-PIN-B4-013).\nSignal 1 — published as habitation: NO. Sauna bathing and relaxation.\nSignal 2 — self-contained: NO. A terrace is outdoor space, not habitation evidence.\nSignal 3 — sited on grounds of an existing home: YES, but not habitation on its own.\nConclusion: ANCILLARY / NON-DWELLING.",
+    "Organisation": [
+     "recAbCMI3LkwWO3Z6"
+    ],
+    "Atlas Product Certification Audit v1": "Product Evidence Complete — Organisation Gate Required",
+    "Product Code": "PROD-000837",
+    "Product Category": "Wellness / Sauna",
+    "Results Eligibility v1": "Not Eligible — Gold Standard Not Achieved",
+    "Product Pricing": [
+     "rechUKE6pn6waSTXt"
+    ],
+    "Sources": [
+     "recIRWhNOYyyaFd6W"
+    ],
+    "Product URL": "https://www.pineca.ie/outdoor-sauna-della-34mm-cladding-2-6x2-1m-3-8m2-terrace-3m2.html",
+    "Description": "Supplier-published: \"Outdoor Sauna DELLA (34 mm + Cladding), 2,6 x 2,1 m, 3,8 m², Terrace 3 m²\". Modern cladded garden sauna with an integral 3 m² covered terrace.",
+    "Habitation Classification": "ANCILLARY / NON-DWELLING"
+   }
+  },
+  {
+   "id": "recIasmbt67BrogkF",
+   "createdTime": "2026-09-23T13:16:14.000Z",
+   "fields": {
+    "Notes": "PINECA EXPANSION BATCH 4, created 2026-09-23. SKU AV347. Canonical Product URL set correctly at creation.\n\nFIRST PRODUCT IN THE NEW \"Wellness / Sauna\" CATEGORY, created under founder authorisation. These are purpose-built domestic sauna structures and are NOT Garden Rooms; a sauna is not a garden room merely because it stands in a garden.\n\nPRODUCT TYPE LEFT EMPTY — REPORTED GAP: Atlas's existing sauna-related Product Type options (Configurable Outdoor Sauna Pod, Turnkey Scandinavian Sauna House, Sauna & Hot Tub Combination Building) describe configurable pods, turnkey houses and hot-tub combinations. None describes a supply-only timber sauna cabin. No new Product Type was created; the gap is reported instead.\n\nNO PLANNING BADGE on this or any of the 35 Batch 4 saunas.\n\nNO IRISH COMPLIANCE INFERRED: nothing about Irish electrical, stove, flue, fire or building compliance is implied by Pineca selling this product in Ireland. The heater and its installation are not evidenced here.\n\nPRICE SCOPE: supply-only self-assembly kit; delivery, offloading, hardware kit and VAT included. VAT RATE NOT PUBLISHED — UNKNOWN. Installation, groundworks, electrics, heater/stove and flue NOT evidenced as included. Measurement basis NOT published — UNKNOWN. Image permission UNKNOWN ≠ GRANTED. No supplier contact.",
+    "Status": "Done",
+    "Product Name": "Outdoor Sauna ELDA 44 mm — 2 × 2 m, 4 m²",
+    "Habitation Classification Basis": "HABITATION-BOUNDARY-v1 applied to first-party evidence (SRC-PIN-B4-001).\nSignal 1 — published as habitation: NO. Published use is sauna bathing and relaxation.\nSignal 2 — self-contained: NO. No kitchen, bathroom or sleeping accommodation.\nSignal 3 — sited on the grounds of an existing home: YES, but not habitation on its own.\nConclusion: ANCILLARY / NON-DWELLING.\n\nA sauna is not residential habitation. Bench seating, a changing room, a relaxation area and insulation are expressly NOT treated as habitation evidence anywhere in this batch.",
+    "Organisation": [
+     "recAbCMI3LkwWO3Z6"
+    ],
+    "Atlas Product Certification Audit v1": "Product Evidence Complete — Organisation Gate Required",
+    "Product Code": "PROD-000825",
+    "Product Category": "Wellness / Sauna",
+    "Results Eligibility v1": "Not Eligible — Gold Standard Not Achieved",
+    "Product Pricing": [
+     "rec3CzCVK0EdcpYAK"
+    ],
+    "Sources": [
+     "recVd8vXeVka1aDBv"
+    ],
+    "Product URL": "https://www.pineca.ie/outdoor-sauna-elda-44mm-2x2m-4m2.html",
+    "Description": "Supplier-published: \"Outdoor Sauna ELDA (44 mm), 2x2 m, 4 m²\". A purpose-built domestic garden sauna in 44 mm timber, published as a place \"to rewind, reflect, and refill your batteries\". Published floor area 4 m², agreeing with the title. Smallest ELDA cabin sauna. Supply-only self-assembly kit.",
+    "Habitation Classification": "ANCILLARY / NON-DWELLING"
+   }
+  },
+  {
+   "id": "recRWg0ZciauFPdlC",
+   "createdTime": "2026-09-23T13:18:45.000Z",
+   "fields": {
+    "Notes": "PINECA EXPANSION BATCH 4, created 2026-09-23. SKU AV349. Canonical Product URL set at creation. Product Type left EMPTY — gap reported. NO planning badge. NO Irish compliance inferred. PRICE SCOPE: supply-only kit; VAT included, VAT RATE UNKNOWN; installation, electrics, heater and flue NOT evidenced as included. Measurement basis UNKNOWN. Image permission UNKNOWN ≠ GRANTED. No supplier contact.",
+    "Status": "Done",
+    "Product Name": "Outdoor Sauna ELDA 44 mm — 2.5 × 2.9 m, 7 m²",
+    "Habitation Classification Basis": "HABITATION-BOUNDARY-v1 applied to first-party evidence (SRC-PIN-B4-003).\nSignal 1 — published as habitation: NO. Sauna bathing and relaxation.\nSignal 2 — self-contained: NO.\nSignal 3 — sited on grounds of an existing home: YES, but not habitation on its own.\nConclusion: ANCILLARY / NON-DWELLING.",
+    "Organisation": [
+     "recAbCMI3LkwWO3Z6"
+    ],
+    "Atlas Product Certification Audit v1": "Product Evidence Complete — Organisation Gate Required",
+    "Product Code": "PROD-000827",
+    "Product Category": "Wellness / Sauna",
+    "Results Eligibility v1": "Not Eligible — Gold Standard Not Achieved",
+    "Product Pricing": [
+     "recz0pFK5eU0M3Y7c"
+    ],
+    "Sources": [
+     "rece8nhIiUSeq1jMw"
+    ],
+    "Product URL": "https://www.pineca.ie/outdoor-sauna-elda-44mm-2-5x2-9m-7m2.html",
+    "Description": "Supplier-published: \"Outdoor Sauna ELDA (44 mm), 2,5x2,9 m, 7 m²\". Purpose-built domestic garden sauna in 44 mm timber. Published floor area 7 m², agreeing with the title.",
+    "Habitation Classification": "ANCILLARY / NON-DWELLING"
+   }
+  },
+  {
+   "id": "recev6BrPKTiWkomb",
+   "createdTime": "2026-09-23T13:18:45.000Z",
+   "fields": {
+    "Notes": "PINECA EXPANSION BATCH 4, created 2026-09-23. SKU AV350. Canonical Product URL set at creation. Product Type left EMPTY — gap reported. NO planning badge. NO Irish compliance inferred. PRICE SCOPE: supply-only kit; VAT included, VAT RATE UNKNOWN; installation, electrics, heater and flue NOT evidenced as included. Measurement basis UNKNOWN. Image permission UNKNOWN ≠ GRANTED. No supplier contact.",
+    "Status": "Done",
+    "Product Name": "Outdoor Sauna ELDA 44 mm — 2.5 × 3.2 m, 8 m²",
+    "Habitation Classification Basis": "HABITATION-BOUNDARY-v1 applied to first-party evidence (SRC-PIN-B4-004).\nSignal 1 — published as habitation: NO. Sauna bathing and relaxation.\nSignal 2 — self-contained: NO.\nSignal 3 — sited on grounds of an existing home: YES, but not habitation on its own.\nConclusion: ANCILLARY / NON-DWELLING.",
+    "Organisation": [
+     "recAbCMI3LkwWO3Z6"
+    ],
+    "Atlas Product Certification Audit v1": "Product Evidence Complete — Organisation Gate Required",
+    "Product Code": "PROD-000828",
+    "Product Category": "Wellness / Sauna",
+    "Results Eligibility v1": "Not Eligible — Gold Standard Not Achieved",
+    "Product Pricing": [
+     "rectL9YuPcQKlCdIw"
+    ],
+    "Sources": [
+     "recVig49oVlq47kAT"
+    ],
+    "Product URL": "https://www.pineca.ie/outdoor-sauna-elda-44mm-2-5x3-2m-8m2.html",
+    "Description": "Supplier-published: \"Outdoor Sauna ELDA (44 mm), 2,5x3,2 m, 8 m²\". Purpose-built domestic garden sauna in 44 mm timber. Published floor area 8 m², agreeing with the title.",
+    "Habitation Classification": "ANCILLARY / NON-DWELLING"
+   }
+  },
+  {
+   "id": "rec4qnJON1gEbCT62",
+   "createdTime": "2026-09-23T13:18:45.000Z",
+   "fields": {
+    "Notes": "PINECA EXPANSION BATCH 4, created 2026-09-23. SKU AV351. Canonical Product URL set at creation. Product Type left EMPTY — gap reported. NO planning badge. NO Irish compliance inferred. PRICE SCOPE: supply-only kit; VAT included, VAT RATE UNKNOWN; installation, electrics, heater and flue NOT evidenced as included. Measurement basis UNKNOWN. Image permission UNKNOWN ≠ GRANTED. No supplier contact.",
+    "Status": "Done",
+    "Product Name": "Outdoor Sauna ELDA 44 mm — 3 × 4 m, 12 m²",
+    "Habitation Classification Basis": "HABITATION-BOUNDARY-v1 applied to first-party evidence (SRC-PIN-B4-005).\nSignal 1 — published as habitation: NO. Sauna bathing and relaxation.\nSignal 2 — self-contained: NO.\nSignal 3 — sited on grounds of an existing home: YES, but not habitation on its own.\nConclusion: ANCILLARY / NON-DWELLING.",
+    "Organisation": [
+     "recAbCMI3LkwWO3Z6"
+    ],
+    "Atlas Product Certification Audit v1": "Product Evidence Complete — Organisation Gate Required",
+    "Product Code": "PROD-000829",
+    "Product Category": "Wellness / Sauna",
+    "Results Eligibility v1": "Not Eligible — Gold Standard Not Achieved",
+    "Product Pricing": [
+     "rec1UGbGGBmxd49rJ"
+    ],
+    "Sources": [
+     "recGK5x51z03MdCCl"
+    ],
+    "Product URL": "https://www.pineca.ie/outdoor-sauna-elda-44mm-3x4m-12m2.html",
+    "Description": "Supplier-published: \"Outdoor Sauna ELDA (44 mm), 3x4 m, 12 m²\". Purpose-built domestic garden sauna in 44 mm timber. Published floor area 12 m², agreeing with the title.",
+    "Habitation Classification": "ANCILLARY / NON-DWELLING"
+   }
+  },
+  {
+   "id": "recwW2OeFYlhQ1o20",
+   "createdTime": "2026-09-23T13:18:45.000Z",
+   "fields": {
+    "Notes": "PINECA EXPANSION BATCH 4, created 2026-09-23. SKU AV352. Canonical Product URL set at creation.\n\nMATERIAL VARIANT RETAINED: the 4×4 m ELDA is published in 3-room and 4-room layouts at EUR 7,438.00 and EUR 7,690.00. Internal room count is a layout difference, not a finish, so both are separate Atlas products.\n\nSUPPLIER SKU COLLISION: both layouts publish SKU AV352, so SKU cannot distinguish them — they are separated by title, room count and price.\n\nProduct Type left EMPTY — gap reported. NO planning badge. NO Irish compliance inferred. PRICE SCOPE: supply-only kit; VAT included, VAT RATE UNKNOWN; installation, electrics, heater and flue NOT evidenced as included. Image permission UNKNOWN ≠ GRANTED. No supplier contact.",
+    "Status": "Done",
+    "Product Name": "Outdoor Sauna ELDA 44 mm — 4 × 4 m, 16 m² (3 rooms)",
+    "Habitation Classification Basis": "HABITATION-BOUNDARY-v1 applied to first-party evidence (SRC-PIN-B4-006).\nSignal 1 — published as habitation: NO. Sauna bathing and relaxation.\nSignal 2 — self-contained: NO. Three internal rooms evidence layout, not self-containment; no kitchen, bathroom or sleeping accommodation.\nSignal 3 — sited on grounds of an existing home: YES, but not habitation on its own.\nConclusion: ANCILLARY / NON-DWELLING.",
+    "Organisation": [
+     "recAbCMI3LkwWO3Z6"
+    ],
+    "Atlas Product Certification Audit v1": "Product Evidence Complete — Organisation Gate Required",
+    "Product Code": "PROD-000830",
+    "Product Category": "Wellness / Sauna",
+    "Results Eligibility v1": "Not Eligible — Gold Standard Not Achieved",
+    "Product Pricing": [
+     "reck6UDe9koAT3k9D"
+    ],
+    "Sources": [
+     "reciaP8Ksdy8YfNx8"
+    ],
+    "Product URL": "https://www.pineca.ie/outdoor-sauna-elda-44mm-4x4m-16m2-3rooms.html",
+    "Description": "Supplier-published: \"Outdoor Sauna ELDA (44 mm), 4x4 m, 16 m² (3 Rooms)\". Purpose-built domestic garden sauna with a three-room internal layout. Published floor area 16 m², agreeing with the title.",
+    "Habitation Classification": "ANCILLARY / NON-DWELLING"
+   }
+  },
+  {
+   "id": "reciOtvf4FhzPE7vz",
+   "createdTime": "2026-09-23T13:18:45.000Z",
+   "fields": {
+    "Notes": "PINECA EXPANSION BATCH 4, created 2026-09-23. SKU AV352 — SHARED with the 3-room version (PROD-000830). Canonical Product URL set at creation. Retained as a distinct product on layout and price. Product Type left EMPTY — gap reported. NO planning badge. NO Irish compliance inferred. PRICE SCOPE: supply-only kit; VAT included, VAT RATE UNKNOWN; installation, electrics, heater and flue NOT evidenced as included. Image permission UNKNOWN ≠ GRANTED. No supplier contact.",
+    "Status": "Done",
+    "Product Name": "Outdoor Sauna ELDA 44 mm — 4 × 4 m, 16 m² (4 rooms)",
+    "Habitation Classification Basis": "HABITATION-BOUNDARY-v1 applied to first-party evidence (SRC-PIN-B4-007).\nSignal 1 — published as habitation: NO. Sauna bathing and relaxation.\nSignal 2 — self-contained: NO. Four internal rooms evidence layout, not self-containment.\nSignal 3 — sited on grounds of an existing home: YES, but not habitation on its own.\nConclusion: ANCILLARY / NON-DWELLING. A higher room count in a sauna is not a step toward a dwelling.",
+    "Organisation": [
+     "recAbCMI3LkwWO3Z6"
+    ],
+    "Atlas Product Certification Audit v1": "Product Evidence Complete — Organisation Gate Required",
+    "Product Code": "PROD-000831",
+    "Product Category": "Wellness / Sauna",
+    "Results Eligibility v1": "Not Eligible — Gold Standard Not Achieved",
+    "Product Pricing": [
+     "recjUvyFlH1REsbm1"
+    ],
+    "Sources": [
+     "recYQd2BOSHyGi5dB"
+    ],
+    "Product URL": "https://www.pineca.ie/outdoor-sauna-elda-44mm-4x4m-16m2-4rooms.html",
+    "Description": "Supplier-published: \"Outdoor Sauna ELDA (44 mm), 4x4 m, 16 m² (4 Rooms)\". Purpose-built domestic garden sauna with a four-room internal layout at the same 4×4 m footprint as the three-room version. Published floor area 16 m².",
+    "Habitation Classification": "ANCILLARY / NON-DWELLING"
+   }
+  },
+  {
+   "id": "recaBRv5sobM9Exvy",
+   "createdTime": "2026-09-23T13:18:45.000Z",
+   "fields": {
+    "Notes": "PINECA EXPANSION BATCH 4, created 2026-09-23. SKU AV1597. Canonical Product URL set at creation. Retained as distinct from the 4-room 5×5 m version (AV1592) on layout and price; the two also carry DIFFERENT descriptive copy, supporting the material distinction. Product Type left EMPTY — gap reported. NO planning badge. NO Irish compliance inferred. PRICE SCOPE: supply-only kit; VAT included, VAT RATE UNKNOWN; installation, electrics, heater and flue NOT evidenced as included. Image permission UNKNOWN ≠ GRANTED. No supplier contact.",
+    "Status": "Done",
+    "Product Name": "Outdoor Sauna ELDA 44 mm — 5 × 5 m, 25 m² (3 rooms)",
+    "Habitation Classification Basis": "HABITATION-BOUNDARY-v1 applied to first-party evidence (SRC-PIN-B4-008).\nSignal 1 — published as habitation: NO. Published use is personal relaxation and sauna bathing.\nSignal 2 — self-contained: NO.\nSignal 3 — sited on grounds of an existing home: YES, but not habitation on its own.\nConclusion: ANCILLARY / NON-DWELLING. At 25 m² this is a substantial building, but size is expressly not grounds for a habitation classification.",
+    "Organisation": [
+     "recAbCMI3LkwWO3Z6"
+    ],
+    "Atlas Product Certification Audit v1": "Product Evidence Complete — Organisation Gate Required",
+    "Product Code": "PROD-000832",
+    "Product Category": "Wellness / Sauna",
+    "Results Eligibility v1": "Not Eligible — Gold Standard Not Achieved",
+    "Product Pricing": [
+     "rec0N1Gey7UZ5DVbh"
+    ],
+    "Sources": [
+     "rec20SvYc7ZWGTr8f"
+    ],
+    "Product URL": "https://www.pineca.ie/outdoor-sauna-elda-44mm-5x5m-25m2-3rooms.html",
+    "Description": "Supplier-published: \"Outdoor Sauna ELDA (44 mm), 5x5 m, 25 m² (3 Rooms)\". Made of eco-friendly natural conifer timber and published as providing \"a personal relaxation\" space. Published floor area 25 m², agreeing with the title.",
+    "Habitation Classification": "ANCILLARY / NON-DWELLING"
+   }
+  },
+  {
+   "id": "recME6y19ziTIzC5J",
+   "createdTime": "2026-09-23T13:18:45.000Z",
+   "fields": {
+    "Notes": "PINECA EXPANSION BATCH 4, created 2026-09-23. SKU AV1592. Canonical Product URL set at creation. Product Type left EMPTY — gap reported. NO planning badge. NO Irish compliance inferred. PRICE SCOPE: supply-only kit; VAT included, VAT RATE UNKNOWN; installation, electrics, heater and flue NOT evidenced as included. Measurement basis UNKNOWN. Image permission UNKNOWN ≠ GRANTED. No supplier contact.",
+    "Status": "Done",
+    "Product Name": "Outdoor Sauna ELDA 44 mm — 5 × 5 m, 25 m² (4 rooms)",
+    "Habitation Classification Basis": "HABITATION-BOUNDARY-v1 applied to first-party evidence (SRC-PIN-B4-009).\nSignal 1 — published as habitation: NO. \"An individual retreat\" is sauna-and-relaxation language, not residential occupation; no occupants, bedroom, kitchen or bathroom are published.\nSignal 2 — self-contained: NO.\nSignal 3 — sited on grounds of an existing home: YES, but not habitation on its own.\nConclusion: ANCILLARY / NON-DWELLING.",
+    "Organisation": [
+     "recAbCMI3LkwWO3Z6"
+    ],
+    "Atlas Product Certification Audit v1": "Product Evidence Complete — Organisation Gate Required",
+    "Product Code": "PROD-000833",
+    "Product Category": "Wellness / Sauna",
+    "Results Eligibility v1": "Not Eligible — Gold Standard Not Achieved",
+    "Product Pricing": [
+     "recNwT50T44hOSpTI"
+    ],
+    "Sources": [
+     "recjirnAJDPAFlUhT"
+    ],
+    "Product URL": "https://www.pineca.ie/outdoor-sauna-elda-44mm-5x5m-25m2-4-rooms.html",
+    "Description": "Supplier-published: \"Outdoor Sauna ELDA (44 mm), 5x5 m, 25 m² (4 Rooms)\". Constructed from sustainable timber and published as \"an individual retreat or a beloved place for enjoying time\". Published floor area 25 m².",
+    "Habitation Classification": "ANCILLARY / NON-DWELLING"
+   }
+  },
+  {
+   "id": "recfWu1hLmcJPZSo7",
+   "createdTime": "2026-09-23T13:18:45.000Z",
+   "fields": {
+    "Notes": "PINECA EXPANSION BATCH 4, created 2026-09-23. SKU AV1598. Canonical Product URL set at creation.\n\nMATERIAL VARIANT: retained as distinct from the 5×5 m 3-room version by the larger 5×7.5 m footprint and the integral terrace.\n\nSCOPE: the 12 m² terrace is separate from the 25 m² building; the two figures must not be added.\n\nProduct Type left EMPTY — gap reported. NO planning badge. NO Irish compliance inferred. PRICE SCOPE: supply-only kit; VAT included, VAT RATE UNKNOWN; installation, electrics, heater and flue NOT evidenced as included. Image permission UNKNOWN ≠ GRANTED. No supplier contact.",
+    "Status": "Done",
+    "Product Name": "Outdoor Sauna ELDA 44 mm — 5 × 7.5 m, 25 m² (3 rooms) + 12 m² terrace",
+    "Habitation Classification Basis": "HABITATION-BOUNDARY-v1 applied to first-party evidence (SRC-PIN-B4-010).\nSignal 1 — published as habitation: NO. Sauna bathing and relaxation.\nSignal 2 — self-contained: NO. A terrace is outdoor space, expressly not habitation evidence.\nSignal 3 — sited on grounds of an existing home: YES, but not habitation on its own.\nConclusion: ANCILLARY / NON-DWELLING.",
+    "Organisation": [
+     "recAbCMI3LkwWO3Z6"
+    ],
+    "Atlas Product Certification Audit v1": "Product Evidence Complete — Organisation Gate Required",
+    "Product Code": "PROD-000834",
+    "Product Category": "Wellness / Sauna",
+    "Results Eligibility v1": "Not Eligible — Gold Standard Not Achieved",
+    "Product Pricing": [
+     "recHAoTqpM44DvlvO"
+    ],
+    "Sources": [
+     "reco6727VrBEDZi4Q"
+    ],
+    "Product URL": "https://www.pineca.ie/outdoor-sauna-elda-44mm-5x7-5m-25m2-3rooms-terrace-12m2.html",
+    "Description": "Supplier-published: \"Outdoor Sauna ELDA (44 mm), 5x7.5 m, 25 m² (3 Rooms), Terrace 12 m²\". Three-room sauna with an integral 12 m² terrace. Published floor area 25 m²; the 12 m² terrace is stated separately.",
+    "Habitation Classification": "ANCILLARY / NON-DWELLING"
+   }
+  },
+  {
+   "id": "rec6BCzxZ5jITxE8Q",
+   "createdTime": "2026-09-23T13:18:45.000Z",
+   "fields": {
+    "Notes": "PINECA EXPANSION BATCH 4, created 2026-09-23. SKU AV1596. Canonical Product URL set at creation. The 12 m² terrace is separate from the 25 m² building. Product Type left EMPTY — gap reported. NO planning badge. NO Irish compliance inferred. PRICE SCOPE: supply-only kit; VAT included, VAT RATE UNKNOWN; installation, electrics, heater and flue NOT evidenced as included. Image permission UNKNOWN ≠ GRANTED. No supplier contact.",
+    "Status": "Done",
+    "Product Name": "Outdoor Sauna ELDA 44 mm — 5 × 7.5 m, 25 m² (4 rooms) + 12 m² terrace",
+    "Habitation Classification Basis": "HABITATION-BOUNDARY-v1 applied to first-party evidence (SRC-PIN-B4-011).\nSignal 1 — published as habitation: NO. Sauna bathing and relaxation.\nSignal 2 — self-contained: NO. Four rooms and a terrace evidence layout and outdoor space, not self-containment.\nSignal 3 — sited on grounds of an existing home: YES, but not habitation on its own.\nConclusion: ANCILLARY / NON-DWELLING.",
+    "Organisation": [
+     "recAbCMI3LkwWO3Z6"
+    ],
+    "Atlas Product Certification Audit v1": "Product Evidence Complete — Organisation Gate Required",
+    "Product Code": "PROD-000835",
+    "Product Category": "Wellness / Sauna",
+    "Results Eligibility v1": "Not Eligible — Gold Standard Not Achieved",
+    "Product Pricing": [
+     "recMXlnSL6SVsiulC"
+    ],
+    "Sources": [
+     "recMgWHpS2yI0DeAX"
+    ],
+    "Product URL": "https://www.pineca.ie/outdoor-sauna-elda-44mm-5x7-5m-25m2-4rooms-terrace-12m2.html",
+    "Description": "Supplier-published: \"Outdoor Sauna ELDA (44 mm), 5x7.5 m, 25 m² (4 Rooms), Terrace 12 m²\". Four-room sauna with an integral 12 m² terrace. Largest and most expensive ELDA.",
+    "Habitation Classification": "ANCILLARY / NON-DWELLING"
+   }
+  },
+  {
+   "id": "reczDDWlkGCzinMCm",
+   "createdTime": "2026-09-23T13:21:12.000Z",
+   "fields": {
+    "Notes": "PINECA EXPANSION BATCH 4, created 2026-09-23. SKU AV2362. MATERIAL VARIANT by the addition of a changing room. Product Type left EMPTY — gap reported. NO planning badge. NO Irish compliance inferred. PRICE SCOPE: supply-only kit; VAT included, VAT RATE UNKNOWN; installation, electrics, heater and flue NOT evidenced as included. Image permission UNKNOWN ≠ GRANTED. No supplier contact.",
+    "Status": "Done",
+    "Product Name": "Outdoor Sauna with changing room DELLA — 3.6 × 2.1 m, 5.5 m²",
+    "Habitation Classification Basis": "HABITATION-BOUNDARY-v1 applied to first-party evidence (SRC-PIN-B4-015).\nSignal 1 — published as habitation: NO. Sauna bathing and relaxation.\nSignal 2 — self-contained: NO. A CHANGING ROOM is expressly NOT habitation evidence — it is a functional part of a sauna, not a dwelling room, and it provides no cooking, sanitary or sleeping facility.\nSignal 3 — sited on grounds of an existing home: YES, but not habitation on its own.\nConclusion: ANCILLARY / NON-DWELLING.\n\nThis is the first changing-room product in the batch and sets the treatment for the twelve others that follow.",
+    "Organisation": [
+     "recAbCMI3LkwWO3Z6"
+    ],
+    "Atlas Product Certification Audit v1": "Product Evidence Complete — Organisation Gate Required",
+    "Product Code": "PROD-000839",
+    "Product Category": "Wellness / Sauna",
+    "Results Eligibility v1": "Not Eligible — Gold Standard Not Achieved",
+    "Product Pricing": [
+     "rec4Nqtit8qOIuZtE"
+    ],
+    "Sources": [
+     "rechxe03KC1gIGdXr"
+    ],
+    "Product URL": "https://www.pineca.ie/outdoor-sauna-with-changing-room-della-34mm-cladding-3-6x2-1m-5-5m2.html",
+    "Description": "Supplier-published: \"Outdoor Sauna With Changing Room DELLA (34 mm + Cladding), 3,6 x 2,1 m, 5,5 m²\". Modern cladded garden sauna with a dedicated changing room. Published floor area 5 m² against a 5.5 m² title.",
+    "Habitation Classification": "ANCILLARY / NON-DWELLING"
+   }
+  },
+  {
+   "id": "reck2zLfXcxNSIgJ8",
+   "createdTime": "2026-09-23T13:21:12.000Z",
+   "fields": {
+    "Notes": "PINECA EXPANSION BATCH 4, created 2026-09-23. SKU AV2364. Product Type left EMPTY — gap reported. NO planning badge. NO Irish compliance inferred. PRICE SCOPE: supply-only kit; VAT included, VAT RATE UNKNOWN; installation, electrics, heater and flue NOT evidenced as included. Measurement basis UNKNOWN. Image permission UNKNOWN ≠ GRANTED. No supplier contact.",
+    "Status": "Done",
+    "Product Name": "Outdoor Sauna with changing room DELLA — 4.6 × 2.1 m, 7.2 m²",
+    "Habitation Classification Basis": "HABITATION-BOUNDARY-v1 applied to first-party evidence (SRC-PIN-B4-017).\nSignal 1 — published as habitation: NO. Sauna bathing and relaxation.\nSignal 2 — self-contained: NO. Changing room is not habitation evidence.\nSignal 3 — sited on grounds of an existing home: YES, but not habitation on its own.\nConclusion: ANCILLARY / NON-DWELLING.",
+    "Organisation": [
+     "recAbCMI3LkwWO3Z6"
+    ],
+    "Atlas Product Certification Audit v1": "Product Evidence Complete — Organisation Gate Required",
+    "Product Code": "PROD-000841",
+    "Product Category": "Wellness / Sauna",
+    "Results Eligibility v1": "Not Eligible — Gold Standard Not Achieved",
+    "Product Pricing": [
+     "reci440OCjkZsmBqy"
+    ],
+    "Sources": [
+     "recDsFZWaqaLP9veQ"
+    ],
+    "Product URL": "https://www.pineca.ie/outdoor-sauna-with-changing-room-della-34mm-cladding-4-6x2-1m-7-2m2.html",
+    "Description": "Supplier-published: \"Outdoor Sauna With Changing Room DELLA (34 mm + Cladding), 4,6 x 2,1 m, 7,2 m²\". Modern cladded garden sauna with changing room. Published floor area 7 m² against a 7.2 m² title.",
+    "Habitation Classification": "ANCILLARY / NON-DWELLING"
+   }
+  },
+  {
+   "id": "recTIZL9Z61tonRaZ",
+   "createdTime": "2026-09-23T13:21:12.000Z",
+   "fields": {
+    "Notes": "PINECA EXPANSION BATCH 4, created 2026-09-23. SKU AV2366.\n\nBASE OF A THREE-TERRACE LADDER: the 4.6×2.6 m DELLA is published in three terrace configurations — none (this record), 3.6 m² (PROD-000844) and 6.7 m² (PROD-000845) — at EUR 7,815.00, EUR 9,660.00 and EUR 10,116.00. Terrace size is a published specification, not a finish, so all three are retained.\n\nNO FLOOR AREA PUBLISHED — UNKNOWN, not derived from the title. Product Type left EMPTY — gap reported. NO planning badge. NO Irish compliance inferred. PRICE SCOPE: supply-only kit; VAT included, VAT RATE UNKNOWN; installation, electrics, heater and flue NOT evidenced as included. Image permission UNKNOWN ≠ GRANTED. No supplier contact.",
+    "Status": "Done",
+    "Product Name": "Outdoor Sauna with changing room DELLA — 4.6 × 2.6 m, 9.3 m²",
+    "Habitation Classification Basis": "HABITATION-BOUNDARY-v1 applied to first-party evidence (SRC-PIN-B4-019).\nSignal 1 — published as habitation: NO. Sauna bathing and relaxation.\nSignal 2 — self-contained: NO. Changing room is not habitation evidence.\nSignal 3 — sited on grounds of an existing home: YES, but not habitation on its own.\nConclusion: ANCILLARY / NON-DWELLING.",
+    "Organisation": [
+     "recAbCMI3LkwWO3Z6"
+    ],
+    "Atlas Product Certification Audit v1": "Product Evidence Complete — Organisation Gate Required",
+    "Product Code": "PROD-000843",
+    "Product Category": "Wellness / Sauna",
+    "Results Eligibility v1": "Not Eligible — Gold Standard Not Achieved",
+    "Product Pricing": [
+     "rec8LUY9Y5TMAO1hq"
+    ],
+    "Sources": [
+     "recNoFMF2D2erjN6B"
+    ],
+    "Product URL": "https://www.pineca.ie/outdoor-sauna-with-changing-room-della-34mm-cladding-4-6x2-6m-9-3m2.html",
+    "Description": "Supplier-published: \"Outdoor Sauna With Changing Room DELLA (34 mm + Cladding), 4,6 x 2,6 m, 9,3 m²\". Modern cladded garden sauna with changing room. NO floor area is published in the specification table for this product.",
+    "Habitation Classification": "ANCILLARY / NON-DWELLING"
+   }
+  },
+  {
+   "id": "rec9UC4R71N1xOz9s",
+   "createdTime": "2026-09-23T13:21:12.000Z",
+   "fields": {
+    "Notes": "PINECA EXPANSION BATCH 4, created 2026-09-23. SKU AV2369. Most expensive Batch 4 product at EUR 12,195.00. No floor area published — UNKNOWN. Product Type left EMPTY — gap reported. NO planning badge. NO Irish compliance inferred. PRICE SCOPE: supply-only kit; VAT included, VAT RATE UNKNOWN; installation, electrics, heater and flue NOT evidenced as included. Image permission UNKNOWN ≠ GRANTED. No supplier contact.",
+    "Status": "Done",
+    "Product Name": "Outdoor Sauna with changing room DELLA — 5.1 × 5.1 m, 22 m²",
+    "Habitation Classification Basis": "HABITATION-BOUNDARY-v1 applied to first-party evidence (SRC-PIN-B4-023).\nSignal 1 — published as habitation: NO. Sauna bathing, lounging and relaxation.\nSignal 2 — self-contained: NO. Changing room is not habitation evidence.\nSignal 3 — sited on grounds of an existing home: YES, but not habitation on its own.\nConclusion: ANCILLARY / NON-DWELLING. At 22 m² with a changing room this is the largest and most elaborate sauna in the batch, and it is still not a dwelling — size and internal rooms are expressly not habitation grounds.",
+    "Organisation": [
+     "recAbCMI3LkwWO3Z6"
+    ],
+    "Atlas Product Certification Audit v1": "Product Evidence Complete — Organisation Gate Required",
+    "Product Code": "PROD-000847",
+    "Product Category": "Wellness / Sauna",
+    "Results Eligibility v1": "Not Eligible — Gold Standard Not Achieved",
+    "Product Pricing": [
+     "recGg6dwXkXlGlpcH"
+    ],
+    "Sources": [
+     "recnRP68mGF3k02DB"
+    ],
+    "Product URL": "https://www.pineca.ie/outdoor-sauna-with-changing-room-della-34mm-cladding-5-1x5-1m-22m2.html",
+    "Description": "Supplier-published: \"Outdoor Sauna With Changing Room DELLA (34 mm + Cladding), 5,1 x 5,1 m, 22 m²\". Square-plan modern cladded sauna with changing room. Largest and most expensive sauna in the Pineca range. No floor area published.",
+    "Habitation Classification": "ANCILLARY / NON-DWELLING"
+   }
+  },
+  {
+   "id": "reczrQJvhvSVag3QP",
+   "createdTime": "2026-09-23T13:21:12.000Z",
+   "fields": {
+    "Notes": "PINECA EXPANSION BATCH 4, created 2026-09-23. SKU AV2370. No floor area published — UNKNOWN. Product Type left EMPTY — gap reported. NO planning badge. NO Irish compliance inferred. PRICE SCOPE: supply-only kit; VAT included, VAT RATE UNKNOWN; installation, electrics, heater and flue NOT evidenced as included. Image permission UNKNOWN ≠ GRANTED. No supplier contact.",
+    "Status": "Done",
+    "Product Name": "Outdoor Sauna with changing room DELLA — 6.1 × 2.6 m, 12.5 m²",
+    "Habitation Classification Basis": "HABITATION-BOUNDARY-v1 applied to first-party evidence (SRC-PIN-B4-022).\nSignal 1 — published as habitation: NO. \"More than just a gartensauna\" refers to lounging and socialising, not residential occupation; no occupants, bedroom, kitchen or bathroom are published.\nSignal 2 — self-contained: NO.\nSignal 3 — sited on grounds of an existing home: YES, but not habitation on its own.\nConclusion: ANCILLARY / NON-DWELLING.",
+    "Organisation": [
+     "recAbCMI3LkwWO3Z6"
+    ],
+    "Atlas Product Certification Audit v1": "Product Evidence Complete — Organisation Gate Required",
+    "Product Code": "PROD-000846",
+    "Product Category": "Wellness / Sauna",
+    "Results Eligibility v1": "Not Eligible — Gold Standard Not Achieved",
+    "Product Pricing": [
+     "recc6gfAxl82iDeYb"
+    ],
+    "Sources": [
+     "rec8uvdzXzXQgYDNR"
+    ],
+    "Product URL": "https://www.pineca.ie/outdoor-sauna-with-changing-room-della-34mm-cladding-6-1x2-6m-12-5m2.html",
+    "Description": "Supplier-published: \"Outdoor Sauna With Changing Room DELLA (34 mm + Cladding), 6,1 x 2,6 m, 12.5 m²\". Published as \"a bit more than just a gartensauna – it's a great way to connect, lounge, relax, and spend your free time\". No floor area published.",
+    "Habitation Classification": "ANCILLARY / NON-DWELLING"
+   }
+  },
+  {
+   "id": "recqWyGu5FDvta874",
+   "createdTime": "2026-09-23T13:21:12.000Z",
+   "fields": {
+    "Notes": "PINECA EXPANSION BATCH 4, created 2026-09-23. SKU AV2365. MATERIAL VARIANT of AV2364 by the integral terrace, priced EUR 2,129.00 higher. The 6.7 m² terrace is separate from the 7.2 m² building. Product Type left EMPTY — gap reported. NO planning badge. NO Irish compliance inferred. PRICE SCOPE: supply-only kit; VAT included, VAT RATE UNKNOWN; installation, electrics, heater and flue NOT evidenced as included. Image permission UNKNOWN ≠ GRANTED. No supplier contact.",
+    "Status": "Done",
+    "Product Name": "Outdoor Sauna with changing room DELLA — 7.2 m² + 6.7 m² terrace",
+    "Habitation Classification Basis": "HABITATION-BOUNDARY-v1 applied to first-party evidence (SRC-PIN-B4-018).\nSignal 1 — published as habitation: NO.\nSignal 2 — self-contained: NO. Changing room and terrace are not habitation evidence.\nSignal 3 — sited on grounds of an existing home: YES, but not habitation on its own.\nConclusion: ANCILLARY / NON-DWELLING.",
+    "Organisation": [
+     "recAbCMI3LkwWO3Z6"
+    ],
+    "Atlas Product Certification Audit v1": "Product Evidence Complete — Organisation Gate Required",
+    "Product Code": "PROD-000842",
+    "Product Category": "Wellness / Sauna",
+    "Results Eligibility v1": "Not Eligible — Gold Standard Not Achieved",
+    "Product Pricing": [
+     "recFvivgjZgsYgPm4"
+    ],
+    "Sources": [
+     "reckGPiQKURJCOD6g"
+    ],
+    "Product URL": "https://www.pineca.ie/outdoor-sauna-with-changing-room-della-34mm-cladding-4-6x2-1m-7-2m2-terrace-6-7m2.html",
+    "Description": "Supplier-published: \"Outdoor Sauna With Changing Room DELLA (34 mm + Cladding), 4,6 x 2,1 m, 7,2 m², Terrace 6,7 m²\". Sauna and changing room with an integral 6.7 m² covered terrace. Published floor area 7 m².",
+    "Habitation Classification": "ANCILLARY / NON-DWELLING"
+   }
+  },
+  {
+   "id": "recHpiHApAiJgA5CR",
+   "createdTime": "2026-09-23T13:21:12.000Z",
+   "fields": {
+    "Notes": "PINECA EXPANSION BATCH 4, created 2026-09-23. SKU AV2367. Middle of the 4.6×2.6 m terrace ladder; retained as distinct from the 6.7 m²-terrace version by terrace dimension and price. No floor area published — UNKNOWN. Product Type left EMPTY — gap reported. NO planning badge. NO Irish compliance inferred. PRICE SCOPE: supply-only kit; VAT included, VAT RATE UNKNOWN; installation, electrics, heater and flue NOT evidenced as included. Image permission UNKNOWN ≠ GRANTED. No supplier contact.",
+    "Status": "Done",
+    "Product Name": "Outdoor Sauna with changing room DELLA — 9.3 m² + 3.6 m² terrace",
+    "Habitation Classification Basis": "HABITATION-BOUNDARY-v1 applied to first-party evidence (SRC-PIN-B4-020).\nSignal 1 — published as habitation: NO.\nSignal 2 — self-contained: NO.\nSignal 3 — sited on grounds of an existing home: YES, but not habitation on its own.\nConclusion: ANCILLARY / NON-DWELLING.",
+    "Organisation": [
+     "recAbCMI3LkwWO3Z6"
+    ],
+    "Atlas Product Certification Audit v1": "Product Evidence Complete — Organisation Gate Required",
+    "Product Code": "PROD-000844",
+    "Product Category": "Wellness / Sauna",
+    "Results Eligibility v1": "Not Eligible — Gold Standard Not Achieved",
+    "Product Pricing": [
+     "recWh2BN3xuL5xVvb"
+    ],
+    "Sources": [
+     "recZuN09qFFVQAZNy"
+    ],
+    "Product URL": "https://www.pineca.ie/outdoor-sauna-with-changing-room-della-34mm-cladding-4-6x2-6m-9-3m2-terrace-3-6m2.html",
+    "Description": "Supplier-published: \"Outdoor Sauna With Changing Room DELLA (34 mm + Cladding), 4,6 x 2,6 m, 9,3 m², Terrace 3,6 m²\". Sauna and changing room with a 3.6 m² covered terrace. No floor area published.",
+    "Habitation Classification": "ANCILLARY / NON-DWELLING"
+   }
+  },
+  {
+   "id": "recU5cehhAJfWqrXy",
+   "createdTime": "2026-09-23T13:21:12.000Z",
+   "fields": {
+    "Notes": "PINECA EXPANSION BATCH 4, created 2026-09-23. SKU AV2368. Top of the 4.6×2.6 m terrace ladder. No floor area published — UNKNOWN. Product Type left EMPTY — gap reported. NO planning badge. NO Irish compliance inferred. PRICE SCOPE: supply-only kit; VAT included, VAT RATE UNKNOWN; installation, electrics, heater and flue NOT evidenced as included. Image permission UNKNOWN ≠ GRANTED. No supplier contact.",
+    "Status": "Done",
+    "Product Name": "Outdoor Sauna with changing room DELLA — 9.3 m² + 6.7 m² terrace",
+    "Habitation Classification Basis": "HABITATION-BOUNDARY-v1 applied to first-party evidence (SRC-PIN-B4-021).\nSignal 1 — published as habitation: NO.\nSignal 2 — self-contained: NO.\nSignal 3 — sited on grounds of an existing home: YES, but not habitation on its own.\nConclusion: ANCILLARY / NON-DWELLING.",
+    "Organisation": [
+     "recAbCMI3LkwWO3Z6"
+    ],
+    "Atlas Product Certification Audit v1": "Product Evidence Complete — Organisation Gate Required",
+    "Product Code": "PROD-000845",
+    "Product Category": "Wellness / Sauna",
+    "Results Eligibility v1": "Not Eligible — Gold Standard Not Achieved",
+    "Product Pricing": [
+     "recIsajSijmc1fMjj"
+    ],
+    "Sources": [
+     "recQFfOKcukPEP4kh"
+    ],
+    "Product URL": "https://www.pineca.ie/outdoor-sauna-with-changing-room-della-34mm-cladding-4-6x2-6m-9-3m2-terrace-6-7m2.html",
+    "Description": "Supplier-published: \"Outdoor Sauna With Changing Room DELLA (34 mm + Cladding), 4,6 x 2,6 m, 9,3 m², Terrace 6,7 m²\". Sauna and changing room with the largest terrace in the 4.6×2.6 m ladder. No floor area published.",
+    "Habitation Classification": "ANCILLARY / NON-DWELLING"
+   }
+  }
+ ],
+ "pricing": [
+  {
+   "id": "recHa1qLMW20q89l7",
+   "createdTime": "2026-09-23T13:29:33.000Z",
+   "fields": {
+    "Evidence Scope": "Product-Specific",
+    "Price Includes VAT": "Unknown",
+    "Notes": "Captured 2026-09-23. No line-through former price; NO Sale Price inferred. Instalment fractions and the EUR 0.00 delivery line excluded.\n\nNO FLOOR AREA PUBLISHED — inherent to barrel geometry. NO price-per-square-metre figure may be derived for any HELGA product. The supplier's own comparable is PUBLISHED CAPACITY (2-4 people here), which is the honest basis for comparing barrel saunas.\n\nSCOPE: supply-only kit; installation, electrics, heater/stove and flue NOT evidenced as included. VAT-INCLUSIVE established; VAT RATE UNKNOWN. | RECHECK 2026-11-12 (PROPOSED, not yet written to Atlas): listed (struck-through) price €5,241 read on https://www.pineca.ie/outdoor-barrel-sauna-helga-17-46mm-1-7m-1-97m.html; time-limited Black Friday price €5,003 not recorded. The page does not state whether VAT is included.",
+    "Price Record Name": "Outdoor Barrel Sauna HELGA 17 — Standard Price (Pineca.ie)",
+    "Sources": [
+     "recS5VEZOLPA8dxTg"
+    ],
+    "Base Price": 5241,
+    "Currency": "EUR",
+    "Price Type": "    Standard Price",
+    "Status": "Verified",
+    "Last Price Check": "2026-11-12",
+    "Product": [
+     "recnnzXeiXIoKdP7d"
+    ]
+   }
+  },
+  {
+   "id": "recc1y0QQgslsuaIm",
+   "createdTime": "2026-09-23T13:29:33.000Z",
+   "fields": {
+    "Evidence Scope": "Product-Specific",
+    "Price Includes VAT": "Unknown",
+    "Notes": "Captured 2026-09-23. No line-through former price; NO Sale Price inferred. Instalment fractions and the EUR 0.00 delivery line excluded. Top of the HELGA 17 glazing ladder — EUR 851.00 (16%) above the base specification. SCOPE: supply-only kit; installation, electrics, heater/stove and flue NOT evidenced as included. VAT-INCLUSIVE established; VAT RATE UNKNOWN. | RECHECK 2026-11-12 (PROPOSED, not yet written to Atlas): listed (struck-through) price €6,106 read on https://www.pineca.ie/outdoor-barrel-sauna-helga17-with-panoramic-windowfull-height.html; time-limited Black Friday price €5,829 not recorded. The page does not state whether VAT is included.",
+    "Price Record Name": "Outdoor Barrel Sauna HELGA 17 panoramic full height — Standard Price (Pineca.ie)",
+    "Sources": [
+     "recMU4ZzK2Mril3Ue"
+    ],
+    "Base Price": 6106,
+    "Currency": "EUR",
+    "Price Type": "    Standard Price",
+    "Status": "Verified",
+    "Last Price Check": "2026-11-12",
+    "Product": [
+     "recScMV22mIrgij6w"
+    ]
+   }
+  },
+  {
+   "id": "recEzf4dfc4ugK9kD",
+   "createdTime": "2026-09-23T13:29:33.000Z",
+   "fields": {
+    "Evidence Scope": "Product-Specific",
+    "Price Includes VAT": "Unknown",
+    "Notes": "Captured 2026-09-23. No line-through former price; NO Sale Price inferred. Instalment fractions and the EUR 0.00 delivery line excluded.\n\nGLAZING LADDER, NOT A FINISH RANGE: HELGA 17 is published at EUR 5,157.00 (no panoramic window), EUR 5,535.00 (half-height) and EUR 6,008.00 (full height). Because these are MATERIAL specification variants with their own SKUs and their own copy, each carries its own Standard Price — they are NOT collapsed into a single Starting From range, unlike the Batch 3 cosmetic finish sets.\n\nSCOPE: supply-only kit; installation, electrics, heater/stove and flue NOT evidenced as included. VAT-INCLUSIVE established; VAT RATE UNKNOWN. | RECHECK 2026-11-12 (PROPOSED, not yet written to Atlas): listed (struck-through) price €5,625 read on https://www.pineca.ie/outdoor-barrel-sauna-helga-17-with-panoramic-window-half-height.html; time-limited Black Friday price €5,369 not recorded. The page does not state whether VAT is included.",
+    "Price Record Name": "Outdoor Barrel Sauna HELGA 17 panoramic half-height — Standard Price (Pineca.ie)",
+    "Sources": [
+     "rec1EfmEJ1Q6mzXmN"
+    ],
+    "Base Price": 5625,
+    "Currency": "EUR",
+    "Price Type": "    Standard Price",
+    "Status": "Verified",
+    "Last Price Check": "2026-11-12",
+    "Product": [
+     "rec6oVostIGd6JNxR"
+    ]
+   }
+  },
+  {
+   "id": "recQ3tQPOpvEewyxm",
+   "createdTime": "2026-09-23T13:29:33.000Z",
+   "fields": {
+    "Evidence Scope": "Product-Specific",
+    "Price Includes VAT": "Unknown",
+    "Notes": "Captured 2026-09-23. No line-through former price; NO Sale Price inferred. Instalment fractions and the EUR 0.00 delivery line excluded. Published capacity 4-6 people; no changing room. No floor area published. SCOPE: supply-only kit; installation, electrics, heater/stove and flue NOT evidenced as included. VAT-INCLUSIVE established; VAT RATE UNKNOWN. | RECHECK 2026-11-12 (PROPOSED, not yet written to Atlas): listed (struck-through) price €7,018 read on https://www.pineca.ie/outdoor-barrel-sauna-helga-24-46mm-2-4m-1-97m.html; time-limited Black Friday price €6,699 not recorded. The page does not state whether VAT is included.",
+    "Price Record Name": "Outdoor Barrel Sauna HELGA 24 — Standard Price (Pineca.ie)",
+    "Sources": [
+     "rec2FaLkCyNtbWScq"
+    ],
+    "Base Price": 7018,
+    "Currency": "EUR",
+    "Price Type": "    Standard Price",
+    "Status": "Verified",
+    "Last Price Check": "2026-11-12",
+    "Product": [
+     "rechMoa1ZWtcAMvKX"
+    ]
+   }
+  },
+  {
+   "id": "recs3rSZ2a0zaQLva",
+   "createdTime": "2026-09-23T13:29:33.000Z",
+   "fields": {
+    "Evidence Scope": "Product-Specific",
+    "Price Includes VAT": "Unknown",
+    "Notes": "Captured 2026-09-23. No line-through former price; NO Sale Price inferred. Instalment fractions and the EUR 0.00 delivery line excluded.\n\nCOINCIDENTAL PRICE MATCH — NOT A DUPLICATE: identical to Outdoor Sauna ELDA 16 m² (4 rooms) at EUR 7,690.00. Different family, SKU and building form.\n\nLargest HELGA without a changing room; published capacity 6-8 people. No floor area published. SCOPE: supply-only kit; installation, electrics, heater/stove and flue NOT evidenced as included. VAT-INCLUSIVE established; VAT RATE UNKNOWN. | RECHECK 2026-11-12 (PROPOSED, not yet written to Atlas): listed (struck-through) price €7,815 read on https://www.pineca.ie/outdoor-barrel-sauna-helga-30-46mm-3m-1-97m.html; time-limited Black Friday price €7,460 not recorded. The page does not state whether VAT is included.",
+    "Price Record Name": "Outdoor Barrel Sauna HELGA 30 — Standard Price (Pineca.ie)",
+    "Sources": [
+     "recK1GcsPQlSsL6dB"
+    ],
+    "Base Price": 7815,
+    "Currency": "EUR",
+    "Price Type": "    Standard Price",
+    "Status": "Verified",
+    "Last Price Check": "2026-11-12",
+    "Product": [
+     "recmDjaXN4SF70Ifr"
+    ]
+   }
+  },
+  {
+   "id": "recvZ7ioiOLKd8HHY",
+   "createdTime": "2026-09-23T13:29:33.000Z",
+   "fields": {
+    "Evidence Scope": "Product-Specific",
+    "Price Includes VAT": "Unknown",
+    "Notes": "Captured 2026-09-23. No line-through former price; NO Sale Price inferred. Instalment fractions and the EUR 0.00 delivery line excluded.\n\nRANKING CAUTION: at EUR 11,118.00 this 4.0 m barrel costs MORE than the 4.5 m HELGA 45 (EUR 10,883.00). Glazing specification can outweigh length — the HELGA range must not be ordered by size.\n\nNo floor area published. SCOPE: supply-only kit; installation, electrics, heater/stove and flue NOT evidenced as included. VAT-INCLUSIVE established; VAT RATE UNKNOWN. | RECHECK 2026-11-12 (PROPOSED, not yet written to Atlas): listed (struck-through) price €11,298 read on https://www.pineca.ie/outdoor-barrel-sauna-with-changing-room-helga-40-46mm-4m-1-97m-panoramic-window-full-height.html; time-limited Black Friday price €10,784 not recorded. The page does not state whether VAT is included.",
+    "Price Record Name": "Outdoor Barrel Sauna HELGA 40 panoramic full height — Standard Price (Pineca.ie)",
+    "Sources": [
+     "recpkZfqnb9Enufqi"
+    ],
+    "Base Price": 11298,
+    "Currency": "EUR",
+    "Price Type": "    Standard Price",
+    "Status": "Verified",
+    "Last Price Check": "2026-11-12",
+    "Product": [
+     "recJCju35GC3GOUAo"
+    ]
+   }
+  },
+  {
+   "id": "recia2Cl5zESazbNt",
+   "createdTime": "2026-09-23T13:29:33.000Z",
+   "fields": {
+    "Evidence Scope": "Product-Specific",
+    "Price Includes VAT": "Unknown",
+    "Notes": "Captured 2026-09-23. No line-through former price; NO Sale Price inferred. Instalment fractions and the EUR 0.00 delivery line excluded. Middle of the HELGA 40 glazing ladder (EUR 10,266.00 / EUR 10,645.00 / EUR 11,118.00). No floor area published. SCOPE: supply-only kit; installation, electrics, heater/stove and flue NOT evidenced as included. VAT-INCLUSIVE established; VAT RATE UNKNOWN. | RECHECK 2026-11-12 (PROPOSED, not yet written to Atlas): listed (struck-through) price €10,818 read on https://www.pineca.ie/outdoor-barrel-sauna-with-changing-room-helga-40-46mm-4m-1-97m-panoramic-window-half-height.html; time-limited Black Friday price €10,326 not recorded. The page does not state whether VAT is included.",
+    "Price Record Name": "Outdoor Barrel Sauna HELGA 40 panoramic half-height — Standard Price (Pineca.ie)",
+    "Sources": [
+     "reclBm9dHXmGdYvnE"
+    ],
+    "Base Price": 10818,
+    "Currency": "EUR",
+    "Price Type": "    Standard Price",
+    "Status": "Verified",
+    "Last Price Check": "2026-11-12",
+    "Product": [
+     "reckAzBLbtQLK46Gz"
+    ]
+   }
+  },
+  {
+   "id": "recXfVe2cI2tZAmoq",
+   "createdTime": "2026-09-23T13:29:33.000Z",
+   "fields": {
+    "Evidence Scope": "Product-Specific",
+    "Price Includes VAT": "Unknown",
+    "Notes": "Captured 2026-09-23. No line-through former price; NO Sale Price inferred. Instalment fractions and the EUR 0.00 delivery line excluded.\n\nTHE CHANGING-ROOM STEP: HELGA 30 (no changing room) is EUR 7,690.00 and HELGA 35 (changing room) is EUR 9,669.00 — a EUR 1,979.00 step for 0.5 m of extra length plus the changing room. This is the material dividing line in the HELGA range.\n\nNo floor area published. SCOPE: supply-only kit; installation, electrics, heater/stove and flue NOT evidenced as included. VAT-INCLUSIVE established; VAT RATE UNKNOWN. | RECHECK 2026-11-12 (PROPOSED, not yet written to Atlas): listed (struck-through) price €9,826 read on https://www.pineca.ie/outdoor-barrel-sauna-with-changing-room-helga-35-46mm-3-5m-1-97m.html; time-limited Black Friday price €9,379 not recorded. The page does not state whether VAT is included.",
+    "Price Record Name": "Outdoor Barrel Sauna with changing room HELGA 35 — Standard Price (Pineca.ie)",
+    "Sources": [
+     "recDkiAL082MaSAdQ"
+    ],
+    "Base Price": 9826,
+    "Currency": "EUR",
+    "Price Type": "    Standard Price",
+    "Status": "Verified",
+    "Last Price Check": "2026-11-12",
+    "Product": [
+     "recUHbn0U2qqKQYCl"
+    ]
+   }
+  },
+  {
+   "id": "recYmL1sys7iwOvpp",
+   "createdTime": "2026-09-23T13:29:33.000Z",
+   "fields": {
+    "Evidence Scope": "Product-Specific",
+    "Price Includes VAT": "Unknown",
+    "Notes": "Captured 2026-09-23. No line-through former price; NO Sale Price inferred. Instalment fractions and the EUR 0.00 delivery line excluded. Base of the second glazing ladder. No floor area published. SCOPE: supply-only kit; installation, electrics, heater/stove and flue NOT evidenced as included. VAT-INCLUSIVE established; VAT RATE UNKNOWN. | RECHECK 2026-11-12 (PROPOSED, not yet written to Atlas): listed (struck-through) price €10,433 read on https://www.pineca.ie/outdoor-barrel-sauna-with-changing-room-helga-40-46mm-4m-1-97m.html; time-limited Black Friday price €9,959 not recorded. The page does not state whether VAT is included.",
+    "Price Record Name": "Outdoor Barrel Sauna with changing room HELGA 40 — Standard Price (Pineca.ie)",
+    "Sources": [
+     "recvxOooTRrKgL2OK"
+    ],
+    "Base Price": 10433,
+    "Currency": "EUR",
+    "Price Type": "    Standard Price",
+    "Status": "Verified",
+    "Last Price Check": "2026-11-12",
+    "Product": [
+     "rec7EZDz2AVIVHqwb"
+    ]
+   }
+  },
+  {
+   "id": "recIIefw6I8jSyAMK",
+   "createdTime": "2026-09-23T13:29:33.000Z",
+   "fields": {
+    "Evidence Scope": "Product-Specific",
+    "Price Includes VAT": "Unknown",
+    "Notes": "Captured 2026-09-23. No line-through former price; NO Sale Price inferred. Instalment fractions and the EUR 0.00 delivery line excluded. See the ranking caution on the HELGA 40 full-height panoramic version. No floor area published. SCOPE: supply-only kit; installation, electrics, heater/stove and flue NOT evidenced as included. VAT-INCLUSIVE established; VAT RATE UNKNOWN. | RECHECK 2026-11-12 (PROPOSED, not yet written to Atlas): listed (struck-through) price €11,060 read on https://www.pineca.ie/outdoor-barrel-sauna-with-changing-room-helga-45.html; time-limited Black Friday price €10,557 not recorded. The page does not state whether VAT is included.",
+    "Price Record Name": "Outdoor Barrel Sauna with changing room HELGA 45 — Standard Price (Pineca.ie)",
+    "Sources": [
+     "recLVVe02eDCSPPZW"
+    ],
+    "Base Price": 11060,
+    "Currency": "EUR",
+    "Price Type": "    Standard Price",
+    "Status": "Verified",
+    "Last Price Check": "2026-11-12",
+    "Product": [
+     "rech22hBIhQ5ypYrf"
+    ]
+   }
+  },
+  {
+   "id": "recLM0lLRZLImPrhY",
+   "createdTime": "2026-09-23T13:29:33.000Z",
+   "fields": {
+    "Evidence Scope": "Product-Specific",
+    "Price Includes VAT": "Unknown",
+    "Notes": "Captured 2026-09-23. No line-through former price; NO Sale Price inferred. Instalment fractions and the EUR 0.00 delivery line excluded. Published capacity 6-8 people with a changing room. No floor area published. SCOPE: supply-only kit; installation, electrics, heater/stove and flue NOT evidenced as included. VAT-INCLUSIVE established; VAT RATE UNKNOWN. | RECHECK 2026-11-12 (PROPOSED, not yet written to Atlas): listed (struck-through) price €11,324 read on https://www.pineca.ie/outdoor-barrel-sauna-with-changing-room-helga-48.html; time-limited Black Friday price €10,809 not recorded. The page does not state whether VAT is included.",
+    "Price Record Name": "Outdoor Barrel Sauna with changing room HELGA 48 — Standard Price (Pineca.ie)",
+    "Sources": [
+     "recr0gVe612stlvCP"
+    ],
+    "Base Price": 11324,
+    "Currency": "EUR",
+    "Price Type": "    Standard Price",
+    "Status": "Verified",
+    "Last Price Check": "2026-11-12",
+    "Product": [
+     "recemLQAqOSIKhCI5"
+    ]
+   }
+  },
+  {
+   "id": "recUPyyqhbwJSRyQU",
+   "createdTime": "2026-09-23T13:29:33.000Z",
+   "fields": {
+    "Evidence Scope": "Product-Specific",
+    "Price Includes VAT": "Unknown",
+    "Notes": "Captured 2026-09-23. No line-through former price; NO Sale Price inferred. Instalment fractions and the EUR 0.00 delivery line excluded.\n\nMOST EXPENSIVE BARREL SAUNA at EUR 13,282.00 and the longest at 5.9 m. Published capacity is still 6-8 people — the same as HELGA 30 at EUR 7,690.00 — so capacity alone does not justify the price difference; length, changing room and internal layout do. Capacity must not be used as the sole comparison basis.\n\nNo floor area published. SCOPE: supply-only kit; installation, electrics, heater/stove and flue NOT evidenced as included. VAT-INCLUSIVE established; VAT RATE UNKNOWN. | RECHECK 2026-11-12 (PROPOSED, not yet written to Atlas): listed (struck-through) price €13,498 read on https://www.pineca.ie/outdoor-barrel-sauna-with-changing-room-helga-59.html; time-limited Black Friday price €12,884 not recorded. The page does not state whether VAT is included.",
+    "Price Record Name": "Outdoor Barrel Sauna with changing room HELGA 59 — Standard Price (Pineca.ie)",
+    "Sources": [
+     "rec9x1wTgcdRIJGbH"
+    ],
+    "Base Price": 13498,
+    "Currency": "EUR",
+    "Price Type": "    Standard Price",
+    "Status": "Verified",
+    "Last Price Check": "2026-11-12",
+    "Product": [
+     "reciclyouGByVnjyy"
+    ]
+   }
+  },
+  {
+   "id": "recVD42SfFz8Kf6ho",
+   "createdTime": "2026-09-23T13:26:55.000Z",
+   "fields": {
+    "Evidence Scope": "Product-Specific",
+    "Price Includes VAT": "Yes",
+    "Notes": "Captured 2026-09-23. No line-through former price; NO Sale Price inferred. Instalment fractions and the EUR 0.00 delivery line excluded.\n\nRANGE COMPARISON: the smallest DELLA (3.8 m², EUR 4,856.00) costs MORE than the largest small ELDA (8 m², EUR 4,849.00). DELLA's cladding and full-height glazing, not size, drive its pricing. The two ranges must not be compared on area alone.\n\nSCOPE: supply-only kit; installation, electrics, heater/stove and flue NOT evidenced as included. VAT-INCLUSIVE established; VAT RATE UNKNOWN. | RECHECK 2026-11-12 (PROPOSED, not yet written to Atlas): listed (struck-through) price €4,935 read on https://www.pineca.ie/outdoor-sauna-della-34mm-cladding-2-6x2-1m-3-8m2.html; time-limited Black Friday price €4,711 not recorded.",
+    "Price Record Name": "Outdoor Sauna DELLA 3.8 m² — Standard Price (Pineca.ie)",
+    "Sources": [
+     "recnwhJbdGHsK2RmG"
+    ],
+    "Base Price": 4935,
+    "Currency": "EUR",
+    "Price Type": "    Standard Price",
+    "Status": "Verified",
+    "Last Price Check": "2026-11-12",
+    "Product": [
+     "rec3ZEySd0n7wowm2"
+    ]
+   }
+  },
+  {
+   "id": "recVJXxIYrf48VhuU",
+   "createdTime": "2026-09-23T13:26:55.000Z",
+   "fields": {
+    "Evidence Scope": "Product-Specific",
+    "Price Includes VAT": "Yes",
+    "Notes": "Captured 2026-09-23. No line-through former price; NO Sale Price inferred. Instalment fractions and the EUR 0.00 delivery line excluded. SCOPE: supply-only kit; installation, electrics, heater/stove and flue NOT evidenced as included. VAT-INCLUSIVE established; VAT RATE UNKNOWN. | RECHECK 2026-11-12 (PROPOSED, not yet written to Atlas): listed (struck-through) price €5,292 read on https://www.pineca.ie/outdoor-sauna-della-34mm-cladding-2-6x2-6m-5m2.html; time-limited Black Friday price €5,051 not recorded.",
+    "Price Record Name": "Outdoor Sauna DELLA 5 m² — Standard Price (Pineca.ie)",
+    "Sources": [
+     "reck34fY9cMDlO6Uy"
+    ],
+    "Base Price": 5292,
+    "Currency": "EUR",
+    "Price Type": "    Standard Price",
+    "Status": "Verified",
+    "Last Price Check": "2026-11-12",
+    "Product": [
+     "recFozPL70R9FYfDj"
+    ]
+   }
+  },
+  {
+   "id": "recOujExkah91IgYQ",
+   "createdTime": "2026-09-23T13:26:55.000Z",
+   "fields": {
+    "Evidence Scope": "Product-Specific",
+    "Price Includes VAT": "Yes",
+    "Notes": "Captured 2026-09-23. No line-through former price; NO Sale Price inferred. Instalment fractions and the EUR 0.00 delivery line excluded. The 5 m² terrace is separate from the 5.5 m² building. SCOPE: supply-only kit; installation, electrics, heater/stove and flue NOT evidenced as included. VAT-INCLUSIVE established; VAT RATE UNKNOWN. | RECHECK 2026-11-12 (PROPOSED, not yet written to Atlas): listed (struck-through) price €8,586 read on https://www.pineca.ie/outdoor-sauna-della-34mm-cladding-3-6x2-1m-5-5m2-terrace-5m2.html; time-limited Black Friday price €7,969 not recorded.",
+    "Price Record Name": "Outdoor Sauna DELLA 5.5 m² + 5 m² terrace — Standard Price (Pineca.ie)",
+    "Sources": [
+     "recG9vABtfi1AN2iX"
+    ],
+    "Base Price": 8586,
+    "Currency": "EUR",
+    "Price Type": "    Standard Price",
+    "Status": "Verified",
+    "Last Price Check": "2026-11-12",
+    "Product": [
+     "recaYnMVQyFJSSSBw"
+    ]
+   }
+  },
+  {
+   "id": "rechUKE6pn6waSTXt",
+   "createdTime": "2026-09-23T13:26:55.000Z",
+   "fields": {
+    "Evidence Scope": "Product-Specific",
+    "Price Includes VAT": "Yes",
+    "Notes": "Captured 2026-09-23. No line-through former price; NO Sale Price inferred. Instalment fractions and the EUR 0.00 delivery line excluded. The 3 m² terrace accounts for EUR 1,549.00 against the non-terrace version. Terrace area is separate from building area. SCOPE: supply-only kit; installation, electrics, heater/stove and flue NOT evidenced as included. VAT-INCLUSIVE established; VAT RATE UNKNOWN. | RECHECK 2026-11-12 (PROPOSED, not yet written to Atlas): listed (struck-through) price €6,509 read on https://www.pineca.ie/outdoor-sauna-della-34mm-cladding-2-6x2-1m-3-8m2-terrace-3m2.html; time-limited Black Friday price €6,214 not recorded.",
+    "Price Record Name": "Outdoor Sauna DELLA 3.8 m² + 3 m² terrace — Standard Price (Pineca.ie)",
+    "Sources": [
+     "recIRWhNOYyyaFd6W"
+    ],
+    "Base Price": 6509,
+    "Currency": "EUR",
+    "Price Type": "    Standard Price",
+    "Status": "Verified",
+    "Last Price Check": "2026-11-12",
+    "Product": [
+     "recs5RhdwFIrdEh0o"
+    ]
+   }
+  },
+  {
+   "id": "rec3CzCVK0EdcpYAK",
+   "createdTime": "2026-09-23T13:26:55.000Z",
+   "fields": {
+    "Evidence Scope": "Product-Specific",
+    "Price Includes VAT": "Yes",
+    "Notes": "Captured 2026-09-23. Structured price panel shows a current price only — no line-through former price and no saving element — so NO Sale Price is inferred. Instalment fractions and the EUR 0.00 delivery line excluded.\n\nSCOPE CAVEAT SPECIFIC TO SAUNAS: supply-only self-assembly kit. Installation, groundworks, electrics AND THE HEATER/STOVE AND FLUE are not evidenced as included. On a sauna the heater is the functional core of the product, so this is a materially larger omission than on a garden room. VAT-INCLUSIVE established; VAT RATE UNKNOWN. | RECHECK 2026-11-12 (PROPOSED, not yet written to Atlas): listed (struck-through) price €4,083 read on https://www.pineca.ie/outdoor-sauna-elda-44mm-2x2m-4m2.html; time-limited Black Friday price €3,898 not recorded.",
+    "Price Record Name": "Outdoor Sauna ELDA 44 mm 4 m² — Standard Price (Pineca.ie)",
+    "Sources": [
+     "recVd8vXeVka1aDBv"
+    ],
+    "Base Price": 4083,
+    "Currency": "EUR",
+    "Price Type": "    Standard Price",
+    "Status": "Verified",
+    "Last Price Check": "2026-11-12",
+    "Product": [
+     "recIasmbt67BrogkF"
+    ]
+   }
+  },
+  {
+   "id": "recz0pFK5eU0M3Y7c",
+   "createdTime": "2026-09-23T13:26:55.000Z",
+   "fields": {
+    "Evidence Scope": "Product-Specific",
+    "Price Includes VAT": "Yes",
+    "Notes": "Captured 2026-09-23. No line-through former price; NO Sale Price inferred. Instalment fractions and the EUR 0.00 delivery line excluded. SCOPE: supply-only kit; installation, electrics, heater/stove and flue NOT evidenced as included. VAT-INCLUSIVE established; VAT RATE UNKNOWN. | RECHECK 2026-11-12 (PROPOSED, not yet written to Atlas): listed (struck-through) price €4,552 read on https://www.pineca.ie/outdoor-sauna-elda-44mm-2-5x2-9m-7m2.html; time-limited Black Friday price €4,346 not recorded.",
+    "Price Record Name": "Outdoor Sauna ELDA 44 mm 7 m² — Standard Price (Pineca.ie)",
+    "Sources": [
+     "rece8nhIiUSeq1jMw"
+    ],
+    "Base Price": 4552,
+    "Currency": "EUR",
+    "Price Type": "    Standard Price",
+    "Status": "Verified",
+    "Last Price Check": "2026-11-12",
+    "Product": [
+     "recRWg0ZciauFPdlC"
+    ]
+   }
+  },
+  {
+   "id": "rectL9YuPcQKlCdIw",
+   "createdTime": "2026-09-23T13:26:55.000Z",
+   "fields": {
+    "Evidence Scope": "Product-Specific",
+    "Price Includes VAT": "Yes",
+    "Notes": "Captured 2026-09-23. No line-through former price; NO Sale Price inferred. Instalment fractions and the EUR 0.00 delivery line excluded. SCOPE: supply-only kit; installation, electrics, heater/stove and flue NOT evidenced as included. VAT-INCLUSIVE established; VAT RATE UNKNOWN. | RECHECK 2026-11-12 (PROPOSED, not yet written to Atlas): listed (struck-through) price €4,928 read on https://www.pineca.ie/outdoor-sauna-elda-44mm-2-5x3-2m-8m2.html; time-limited Black Friday price €4,704 not recorded.",
+    "Price Record Name": "Outdoor Sauna ELDA 44 mm 8 m² — Standard Price (Pineca.ie)",
+    "Sources": [
+     "recVig49oVlq47kAT"
+    ],
+    "Base Price": 4928,
+    "Currency": "EUR",
+    "Price Type": "    Standard Price",
+    "Status": "Verified",
+    "Last Price Check": "2026-11-12",
+    "Product": [
+     "recev6BrPKTiWkomb"
+    ]
+   }
+  },
+  {
+   "id": "rec1UGbGGBmxd49rJ",
+   "createdTime": "2026-09-23T13:26:55.000Z",
+   "fields": {
+    "Evidence Scope": "Product-Specific",
+    "Price Includes VAT": "Yes",
+    "Notes": "Captured 2026-09-23. No line-through former price; NO Sale Price inferred. Instalment fractions and the EUR 0.00 delivery line excluded. SCOPE: supply-only kit; installation, electrics, heater/stove and flue NOT evidenced as included. VAT-INCLUSIVE established; VAT RATE UNKNOWN. | RECHECK 2026-11-12 (PROPOSED, not yet written to Atlas): listed (struck-through) price €6,396 read on https://www.pineca.ie/outdoor-sauna-elda-44mm-3x4m-12m2.html; time-limited Black Friday price €6,106 not recorded.",
+    "Price Record Name": "Outdoor Sauna ELDA 44 mm 12 m² — Standard Price (Pineca.ie)",
+    "Sources": [
+     "recGK5x51z03MdCCl"
+    ],
+    "Base Price": 6396,
+    "Currency": "EUR",
+    "Price Type": "    Standard Price",
+    "Status": "Verified",
+    "Last Price Check": "2026-11-12",
+    "Product": [
+     "rec4qnJON1gEbCT62"
+    ]
+   }
+  },
+  {
+   "id": "reck6UDe9koAT3k9D",
+   "createdTime": "2026-09-23T13:26:55.000Z",
+   "fields": {
+    "Evidence Scope": "Product-Specific",
+    "Price Includes VAT": "Yes",
+    "Notes": "Captured 2026-09-23. No line-through former price; NO Sale Price inferred. Instalment fractions and the EUR 0.00 delivery line excluded.\n\nLAYOUT PAIR: the 4×4 m ELDA is published as 3 rooms (EUR 7,438.00) and 4 rooms (EUR 7,690.00) — EUR 252.00 apart on an identical footprint. Both share SKU AV352, so price and title are the only separators.\n\nSCOPE: supply-only kit; installation, electrics, heater/stove and flue NOT evidenced as included. VAT-INCLUSIVE established; VAT RATE UNKNOWN. | RECHECK 2026-11-12 (PROPOSED, not yet written to Atlas): listed (struck-through) price €7,559 read on https://www.pineca.ie/outdoor-sauna-elda-44mm-4x4m-16m2-3rooms.html; time-limited Black Friday price €7,216 not recorded.",
+    "Price Record Name": "Outdoor Sauna ELDA 44 mm 16 m² (3 rooms) — Standard Price (Pineca.ie)",
+    "Sources": [
+     "reciaP8Ksdy8YfNx8"
+    ],
+    "Base Price": 7559,
+    "Currency": "EUR",
+    "Price Type": "    Standard Price",
+    "Status": "Verified",
+    "Last Price Check": "2026-11-12",
+    "Product": [
+     "recwW2OeFYlhQ1o20"
+    ]
+   }
+  },
+  {
+   "id": "recjUvyFlH1REsbm1",
+   "createdTime": "2026-09-23T13:26:55.000Z",
+   "fields": {
+    "Evidence Scope": "Product-Specific",
+    "Price Includes VAT": "Yes",
+    "Notes": "Captured 2026-09-23. No line-through former price; NO Sale Price inferred. Instalment fractions and the EUR 0.00 delivery line excluded.\n\nCOINCIDENTAL PRICE MATCH — NOT A DUPLICATE: identical to Barrel Sauna HELGA 30 at EUR 7,690.00. Different family, different SKU, different building form.\n\nSCOPE: supply-only kit; installation, electrics, heater/stove and flue NOT evidenced as included. VAT-INCLUSIVE established; VAT RATE UNKNOWN. | RECHECK 2026-11-12 (PROPOSED, not yet written to Atlas): listed (struck-through) price €7,815 read on https://www.pineca.ie/outdoor-sauna-elda-44mm-4x4m-16m2-4rooms.html; time-limited Black Friday price €7,460 not recorded.",
+    "Price Record Name": "Outdoor Sauna ELDA 44 mm 16 m² (4 rooms) — Standard Price (Pineca.ie)",
+    "Sources": [
+     "recYQd2BOSHyGi5dB"
+    ],
+    "Base Price": 7815,
+    "Currency": "EUR",
+    "Price Type": "    Standard Price",
+    "Status": "Verified",
+    "Last Price Check": "2026-11-12",
+    "Product": [
+     "reciOtvf4FhzPE7vz"
+    ]
+   }
+  },
+  {
+   "id": "rec0N1Gey7UZ5DVbh",
+   "createdTime": "2026-09-23T13:26:55.000Z",
+   "fields": {
+    "Evidence Scope": "Product-Specific",
+    "Price Includes VAT": "Yes",
+    "Notes": "Captured 2026-09-23. No line-through former price; NO Sale Price inferred. Instalment fractions and the EUR 0.00 delivery line excluded. SCOPE: supply-only kit; installation, electrics, heater/stove and flue NOT evidenced as included. VAT-INCLUSIVE established; VAT RATE UNKNOWN. | RECHECK 2026-11-12 (PROPOSED, not yet written to Atlas): listed (struck-through) price €10,226 read on https://www.pineca.ie/outdoor-sauna-elda-44mm-5x5m-25m2-3rooms.html; time-limited Black Friday price €9,561 not recorded.",
+    "Price Record Name": "Outdoor Sauna ELDA 44 mm 25 m² (3 rooms) — Standard Price (Pineca.ie)",
+    "Sources": [
+     "rec20SvYc7ZWGTr8f"
+    ],
+    "Base Price": 10226,
+    "Currency": "EUR",
+    "Price Type": "    Standard Price",
+    "Status": "Verified",
+    "Last Price Check": "2026-11-12",
+    "Product": [
+     "recaBRv5sobM9Exvy"
+    ]
+   }
+  },
+  {
+   "id": "recNwT50T44hOSpTI",
+   "createdTime": "2026-09-23T13:26:55.000Z",
+   "fields": {
+    "Evidence Scope": "Product-Specific",
+    "Price Includes VAT": "Yes",
+    "Notes": "Captured 2026-09-23. No line-through former price; NO Sale Price inferred. Instalment fractions and the EUR 0.00 delivery line excluded. Layout pair with the 3-room 5×5 m version, EUR 412.00 apart. SCOPE: supply-only kit; installation, electrics, heater/stove and flue NOT evidenced as included. VAT-INCLUSIVE established; VAT RATE UNKNOWN. | RECHECK 2026-11-12 (PROPOSED, not yet written to Atlas): listed (struck-through) price €10,638 read on https://www.pineca.ie/outdoor-sauna-elda-44mm-5x5m-25m2-4-rooms.html; time-limited Black Friday price €9,961 not recorded.",
+    "Price Record Name": "Outdoor Sauna ELDA 44 mm 25 m² (4 rooms) — Standard Price (Pineca.ie)",
+    "Sources": [
+     "recjirnAJDPAFlUhT"
+    ],
+    "Base Price": 10638,
+    "Currency": "EUR",
+    "Price Type": "    Standard Price",
+    "Status": "Verified",
+    "Last Price Check": "2026-11-12",
+    "Product": [
+     "recME6y19ziTIzC5J"
+    ]
+   }
+  },
+  {
+   "id": "recHAoTqpM44DvlvO",
+   "createdTime": "2026-09-23T13:26:55.000Z",
+   "fields": {
+    "Evidence Scope": "Product-Specific",
+    "Price Includes VAT": "Yes",
+    "Notes": "Captured 2026-09-23. No line-through former price; NO Sale Price inferred. Instalment fractions and the EUR 0.00 delivery line excluded.\n\nSCOPE: the 12 m² terrace is part of the published design but is separate from the 25 m² building; the areas must not be added. Against the 5×5 m 3-room version the terrace and larger footprint account for EUR 1,430.00.\n\nSupply-only kit; installation, electrics, heater/stove and flue NOT evidenced as included. VAT-INCLUSIVE established; VAT RATE UNKNOWN. | RECHECK 2026-11-12 (PROPOSED, not yet written to Atlas): listed (struck-through) price €11,846 read on https://www.pineca.ie/outdoor-sauna-elda-44mm-5x7-5m-25m2-3rooms-terrace-12m2.html; time-limited Black Friday price €11,307 not recorded.",
+    "Price Record Name": "Outdoor Sauna ELDA 44 mm 25 m² (3 rooms) + 12 m² terrace — Standard Price (Pineca.ie)",
+    "Sources": [
+     "reco6727VrBEDZi4Q"
+    ],
+    "Base Price": 11846,
+    "Currency": "EUR",
+    "Price Type": "    Standard Price",
+    "Status": "Verified",
+    "Last Price Check": "2026-11-12",
+    "Product": [
+     "recfWu1hLmcJPZSo7"
+    ]
+   }
+  },
+  {
+   "id": "recMXlnSL6SVsiulC",
+   "createdTime": "2026-09-23T13:26:55.000Z",
+   "fields": {
+    "Evidence Scope": "Product-Specific",
+    "Price Includes VAT": "Yes",
+    "Notes": "Captured 2026-09-23. No line-through former price; NO Sale Price inferred. Instalment fractions and the EUR 0.00 delivery line excluded. Most expensive ELDA. The 12 m² terrace is separate from the 25 m² building. SCOPE: supply-only kit; installation, electrics, heater/stove and flue NOT evidenced as included. VAT-INCLUSIVE established; VAT RATE UNKNOWN. | RECHECK 2026-11-12 (PROPOSED, not yet written to Atlas): listed (struck-through) price €12,265 read on https://www.pineca.ie/outdoor-sauna-elda-44mm-5x7-5m-25m2-4rooms-terrace-12m2.html; time-limited Black Friday price €11,707 not recorded.",
+    "Price Record Name": "Outdoor Sauna ELDA 44 mm 25 m² (4 rooms) + 12 m² terrace — Standard Price (Pineca.ie)",
+    "Sources": [
+     "recMgWHpS2yI0DeAX"
+    ],
+    "Base Price": 12265,
+    "Currency": "EUR",
+    "Price Type": "    Standard Price",
+    "Status": "Verified",
+    "Last Price Check": "2026-11-12",
+    "Product": [
+     "rec6BCzxZ5jITxE8Q"
+    ]
+   }
+  },
+  {
+   "id": "rec4Nqtit8qOIuZtE",
+   "createdTime": "2026-09-23T13:26:55.000Z",
+   "fields": {
+    "Evidence Scope": "Product-Specific",
+    "Price Includes VAT": "Yes",
+    "Notes": "Captured 2026-09-23. No line-through former price; NO Sale Price inferred. Instalment fractions and the EUR 0.00 delivery line excluded. First DELLA with a changing room. SCOPE: supply-only kit; installation, electrics, heater/stove and flue NOT evidenced as included. VAT-INCLUSIVE established; VAT RATE UNKNOWN. | RECHECK 2026-11-12 (PROPOSED, not yet written to Atlas): listed (struck-through) price €6,784 read on https://www.pineca.ie/outdoor-sauna-with-changing-room-della-34mm-cladding-3-6x2-1m-5-5m2.html; time-limited Black Friday price €6,475 not recorded.",
+    "Price Record Name": "Outdoor Sauna with changing room DELLA 5.5 m² — Standard Price (Pineca.ie)",
+    "Sources": [
+     "rechxe03KC1gIGdXr"
+    ],
+    "Base Price": 6784,
+    "Currency": "EUR",
+    "Price Type": "    Standard Price",
+    "Status": "Verified",
+    "Last Price Check": "2026-11-12",
+    "Product": [
+     "reczDDWlkGCzinMCm"
+    ]
+   }
+  },
+  {
+   "id": "reci440OCjkZsmBqy",
+   "createdTime": "2026-09-23T13:26:55.000Z",
+   "fields": {
+    "Evidence Scope": "Product-Specific",
+    "Price Includes VAT": "Yes",
+    "Notes": "Captured 2026-09-23. No line-through former price; NO Sale Price inferred. Instalment fractions and the EUR 0.00 delivery line excluded. SCOPE: supply-only kit; installation, electrics, heater/stove and flue NOT evidenced as included. VAT-INCLUSIVE established; VAT RATE UNKNOWN. | RECHECK 2026-11-12 (PROPOSED, not yet written to Atlas): listed (struck-through) price €7,598 read on https://www.pineca.ie/outdoor-sauna-with-changing-room-della-34mm-cladding-4-6x2-1m-7-2m2.html; time-limited Black Friday price €7,253 not recorded.",
+    "Price Record Name": "Outdoor Sauna with changing room DELLA 7.2 m² — Standard Price (Pineca.ie)",
+    "Sources": [
+     "recDsFZWaqaLP9veQ"
+    ],
+    "Base Price": 7598,
+    "Currency": "EUR",
+    "Price Type": "    Standard Price",
+    "Status": "Verified",
+    "Last Price Check": "2026-11-12",
+    "Product": [
+     "reck2zLfXcxNSIgJ8"
+    ]
+   }
+  },
+  {
+   "id": "rec8LUY9Y5TMAO1hq",
+   "createdTime": "2026-09-23T13:29:33.000Z",
+   "fields": {
+    "Evidence Scope": "Product-Specific",
+    "Price Includes VAT": "Yes",
+    "Notes": "Captured 2026-09-23. No line-through former price; NO Sale Price inferred. Instalment fractions and the EUR 0.00 delivery line excluded.\n\nBASE OF A THREE-TERRACE LADDER: the 4.6×2.6 m DELLA is published with no terrace (EUR 7,815.00), a 3.6 m² terrace (EUR 9,660.00) and a 6.7 m² terrace (EUR 10,116.00). Terrace dimension is a published specification, so all three are separate products.\n\nNO FLOOR AREA PUBLISHED — no price-per-area figure may be derived. SCOPE: supply-only kit; installation, electrics, heater/stove and flue NOT evidenced as included. VAT-INCLUSIVE established; VAT RATE UNKNOWN. | RECHECK 2026-11-12 (PROPOSED, not yet written to Atlas): listed (struck-through) price €7,942 read on https://www.pineca.ie/outdoor-sauna-with-changing-room-della-34mm-cladding-4-6x2-6m-9-3m2.html; time-limited Black Friday price €7,581 not recorded.",
+    "Price Record Name": "Outdoor Sauna with changing room DELLA 9.3 m² — Standard Price (Pineca.ie)",
+    "Sources": [
+     "recNoFMF2D2erjN6B"
+    ],
+    "Base Price": 7942,
+    "Currency": "EUR",
+    "Price Type": "    Standard Price",
+    "Status": "Verified",
+    "Last Price Check": "2026-11-12",
+    "Product": [
+     "recTIZL9Z61tonRaZ"
+    ]
+   }
+  },
+  {
+   "id": "recGg6dwXkXlGlpcH",
+   "createdTime": "2026-09-23T13:29:33.000Z",
+   "fields": {
+    "Evidence Scope": "Product-Specific",
+    "Price Includes VAT": "Yes",
+    "Notes": "Captured 2026-09-23. No line-through former price; NO Sale Price inferred. Instalment fractions and the EUR 0.00 delivery line excluded. MOST EXPENSIVE PRODUCT IN BATCH 4 at EUR 12,195.00. No floor area published. SCOPE: supply-only kit; installation, electrics, heater/stove and flue NOT evidenced as included. VAT-INCLUSIVE established; VAT RATE UNKNOWN. | RECHECK 2026-11-12 (PROPOSED, not yet written to Atlas): listed (struck-through) price €12,394 read on https://www.pineca.ie/outdoor-sauna-with-changing-room-della-34mm-cladding-5-1x5-1m-22m2.html; time-limited Black Friday price €11,830 not recorded.",
+    "Price Record Name": "Outdoor Sauna with changing room DELLA 22 m² — Standard Price (Pineca.ie)",
+    "Sources": [
+     "recnRP68mGF3k02DB"
+    ],
+    "Base Price": 12394,
+    "Currency": "EUR",
+    "Price Type": "    Standard Price",
+    "Status": "Verified",
+    "Last Price Check": "2026-11-12",
+    "Product": [
+     "rec9UC4R71N1xOz9s"
+    ]
+   }
+  },
+  {
+   "id": "recc6gfAxl82iDeYb",
+   "createdTime": "2026-09-23T13:29:33.000Z",
+   "fields": {
+    "Evidence Scope": "Product-Specific",
+    "Price Includes VAT": "Yes",
+    "Notes": "Captured 2026-09-23. No line-through former price; NO Sale Price inferred. Instalment fractions and the EUR 0.00 delivery line excluded.\n\nRANKING CAUTION: at 12.5 m² by title this is LARGER than the 9.3 m² DELLA with a 6.7 m² terrace, yet costs EUR 342.00 LESS. Terrace provision, not internal size, drives DELLA pricing.\n\nNo floor area published. SCOPE: supply-only kit; installation, electrics, heater/stove and flue NOT evidenced as included. VAT-INCLUSIVE established; VAT RATE UNKNOWN. | RECHECK 2026-11-12 (PROPOSED, not yet written to Atlas): listed (struck-through) price €9,774 read on https://www.pineca.ie/outdoor-sauna-with-changing-room-della-34mm-cladding-6-1x2-6m-12-5m2.html; time-limited Black Friday price €9,121 not recorded.",
+    "Price Record Name": "Outdoor Sauna with changing room DELLA 12.5 m² — Standard Price (Pineca.ie)",
+    "Sources": [
+     "rec8uvdzXzXQgYDNR"
+    ],
+    "Base Price": 9774,
+    "Currency": "EUR",
+    "Price Type": "    Standard Price",
+    "Status": "Verified",
+    "Last Price Check": "2026-11-12",
+    "Product": [
+     "reczrQJvhvSVag3QP"
+    ]
+   }
+  },
+  {
+   "id": "recFvivgjZgsYgPm4",
+   "createdTime": "2026-09-23T13:26:55.000Z",
+   "fields": {
+    "Evidence Scope": "Product-Specific",
+    "Price Includes VAT": "Yes",
+    "Notes": "Captured 2026-09-23. No line-through former price; NO Sale Price inferred. Instalment fractions and the EUR 0.00 delivery line excluded. The 6.7 m² terrace accounts for EUR 2,129.00 against the non-terrace version. SCOPE: supply-only kit; installation, electrics, heater/stove and flue NOT evidenced as included. VAT-INCLUSIVE established; VAT RATE UNKNOWN. | RECHECK 2026-11-12 (PROPOSED, not yet written to Atlas): listed (struck-through) price €9,605 read on https://www.pineca.ie/outdoor-sauna-with-changing-room-della-34mm-cladding-4-6x2-1m-7-2m2-terrace-6-7m2.html; time-limited Black Friday price €8,958 not recorded.",
+    "Price Record Name": "Outdoor Sauna with changing room DELLA 7.2 m² + 6.7 m² terrace — Standard Price (Pineca.ie)",
+    "Sources": [
+     "reckGPiQKURJCOD6g"
+    ],
+    "Base Price": 9605,
+    "Currency": "EUR",
+    "Price Type": "    Standard Price",
+    "Status": "Verified",
+    "Last Price Check": "2026-11-12",
+    "Product": [
+     "recqWyGu5FDvta874"
+    ]
+   }
+  },
+  {
+   "id": "recWh2BN3xuL5xVvb",
+   "createdTime": "2026-09-23T13:29:33.000Z",
+   "fields": {
+    "Evidence Scope": "Product-Specific",
+    "Price Includes VAT": "Yes",
+    "Notes": "Captured 2026-09-23. No line-through former price; NO Sale Price inferred. Instalment fractions and the EUR 0.00 delivery line excluded. Middle of the 4.6×2.6 m terrace ladder. No floor area published. SCOPE: supply-only kit; installation, electrics, heater/stove and flue NOT evidenced as included. VAT-INCLUSIVE established; VAT RATE UNKNOWN. | RECHECK 2026-11-12 (PROPOSED, not yet written to Atlas): listed (struck-through) price €9,660 read on https://www.pineca.ie/outdoor-sauna-with-changing-room-della-34mm-cladding-4-6x2-6m-9-3m2-terrace-3-6m2.html; time-limited Black Friday price €9,011 not recorded.",
+    "Price Record Name": "Outdoor Sauna with changing room DELLA 9.3 m² + 3.6 m² terrace — Standard Price (Pineca.ie)",
+    "Sources": [
+     "recZuN09qFFVQAZNy"
+    ],
+    "Base Price": 9660,
+    "Currency": "EUR",
+    "Price Type": "    Standard Price",
+    "Status": "Verified",
+    "Last Price Check": "2026-11-12",
+    "Product": [
+     "recHpiHApAiJgA5CR"
+    ]
+   }
+  },
+  {
+   "id": "recIsajSijmc1fMjj",
+   "createdTime": "2026-09-23T13:29:33.000Z",
+   "fields": {
+    "Evidence Scope": "Product-Specific",
+    "Price Includes VAT": "Yes",
+    "Notes": "Captured 2026-09-23. No line-through former price; NO Sale Price inferred. Instalment fractions and the EUR 0.00 delivery line excluded. Top of the 4.6×2.6 m terrace ladder; the terrace step from 3.6 m² to 6.7 m² costs EUR 456.00. No floor area published. SCOPE: supply-only kit; installation, electrics, heater/stove and flue NOT evidenced as included. VAT-INCLUSIVE established; VAT RATE UNKNOWN. | RECHECK 2026-11-12 (PROPOSED, not yet written to Atlas): listed (struck-through) price €10,116 read on https://www.pineca.ie/outdoor-sauna-with-changing-room-della-34mm-cladding-4-6x2-6m-9-3m2-terrace-6-7m2.html; time-limited Black Friday price €9,454 not recorded.",
+    "Price Record Name": "Outdoor Sauna with changing room DELLA 9.3 m² + 6.7 m² terrace — Standard Price (Pineca.ie)",
+    "Sources": [
+     "recQFfOKcukPEP4kh"
+    ],
+    "Base Price": 10116,
+    "Currency": "EUR",
+    "Price Type": "    Standard Price",
+    "Status": "Verified",
+    "Last Price Check": "2026-11-12",
+    "Product": [
+     "recU5cehhAJfWqrXy"
+    ]
+   }
+  }
+ ],
+ "availability": [],
+ "featureValues": [],
+ "features": [],
+ "organisations": [
+  {
+   "id": "recAbCMI3LkwWO3Z6",
+   "createdTime": "2026-08-06T09:02:52.000Z",
+   "fields": {
+    "Organisation Name": "Pineca Ireland",
+    "Organisation Code": "ORG-000019",
+    "Status": "Partially Verified",
+    "Website": "https://www.pineca.ie/",
+    "Organisation Type": "Supplier"
+   }
+  }
+ ]
+}
