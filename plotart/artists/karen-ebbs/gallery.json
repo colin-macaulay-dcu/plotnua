@@ -1,0 +1,1096 @@
+{
+ "artist": {
+  "bio": "Statement\n\nMy name is Karen Ebbs and I am Dublin-born visual artist with years of professional practice, working from my studio at the Digital Hub, Dublin. I am an alumna of NCAD and the RHA School. I hold first class honours degrees for both an MA and a BA in Fine Art in Painting from NCAD. Following my MA I was shortlisted for the RDS visual Artis Awards, 2023. I am a member of Pallas Projects + Studios.\n\nAbstract painting and colour are central to my practice and visual language. I paint to interpret the world around me and explore the mystery of existence. Painting is my way of thinking and processing my experience of reality. I work across painting, sculpture and installation, using oil paint, porcelain, aluminium, plexiglass and wood. I create large-scale, luminous colour fields through gestural mark-making and recurring motifs. Elements are often installed as immersive spaces enveloping the viewer.\n\nRooted in a fascination with perception and how it occurs, my work begins with the belief that seeing is never passive; what we perceive is inseparable from who we are. I have an intuitive relationship with colour which is underpinned by research in colour theory, perceptual psychology, philosophy and neuroscience.\n\nBio Selection\n\nI have exhibited widely in group shows including the RHA annual, Boyle Arts Festival, and Draoicht Arts Centre. Recent solo exhibitions include ‘An Outer Reflection of an Inner Reality’, Municipal Gallery, dlr Lexicon (2025) (open call solo award), ‘Circumambulation’, Rathfarnham Castle OPW (2024), ‘Wild Accumulations’, The LAB Gallery (2022), and ‘I Am More Blue Than You’, Farmleigh Estate OPW. I received the Arts Council Agility Award (2022) and Dún Laoghaire Professional Development Award (2022).",
+  "county": null,
+  "display_name": "Karen Ebbs",
+  "founding": true,
+  "instagram": "karen.ebbs",
+  "medium": "painting",
+  "portrait": {
+   "alt": "Karen Ebbs in front of her painting  'A World Beyond Words' 2025",
+   "aspect": 1.28826,
+   "derivatives": [
+    {
+     "file": "portrait-600.webp",
+     "long_edge": 600,
+     "pixels": [
+      600,
+      466
+     ]
+    }
+   ],
+   "photo_credit": null,
+   "pixels": [
+    3830,
+    2973
+   ],
+   "role": "portrait"
+  },
+  "practice": "Painter, Colourist, Sculptor, Immersive Installation",
+  "slug": "karen-ebbs",
+  "statement": "Abstract painting and colour are central to my practice and visual language.  I am curious about  perception, consciousness and the nature of reality, which I explore through thinking and making.  Working intuitively, I make large-scale artworks spanning sculpture and installation, bringing elements together to create immersive spaces.",
+  "website": "https://www.karenebbs.com/"
+ },
+ "provenance_sources": [
+  {
+   "dhash": "4118981d1c306674",
+   "source_sha256": "234035658b096e83f84e1060fb0ecb6f33f1978cff0da5504412e2c9ac9bd11f",
+   "stem": "portrait"
+  },
+  {
+   "dhash": "f3b3b3b3b959c7cf",
+   "source_sha256": "47cf220a302f53ad4438e096b6f33007ba898b185b208a6f1f3dc23d4553a34f",
+   "stem": "simply-put-life-is-complex-1"
+  },
+  {
+   "dhash": "dcdcded6c707b3e3",
+   "source_sha256": "3cc8b51fba3bb81230f546bc07ca337ea7e42108fc4a488ebd5d4104d510868f",
+   "stem": "simply-put-life-is-complex-2"
+  },
+  {
+   "dhash": "e3a3a33333b3b399",
+   "source_sha256": "d85382d0a62444a8b0995e8a13aee6d37769b791cf242099bf342deaa19eacc0",
+   "stem": "simply-put-life-is-complex-3"
+  },
+  {
+   "dhash": "949654545454c4c6",
+   "source_sha256": "d5a5449d94fb9bdbdfda190346bfeab81f010d30a04494fddee1b0055a06af1d",
+   "stem": "once-a-day-find-yourself-lost-1"
+  },
+  {
+   "dhash": "8243410113552198",
+   "source_sha256": "ad179a7002dc492595d3eda9ffa3fdf70145ff61e13904883c3445feb4f891ee",
+   "stem": "a-world-beyond-words-1"
+  },
+  {
+   "dhash": "ae9c3c784d0cdeba",
+   "source_sha256": "4ffb91a18be43d6e9fc2ce448a0f91ee932bbbbad0d43dd1967e22813de6a8ab",
+   "stem": "in-flux-1"
+  },
+  {
+   "dhash": "f0f0cc8484ccd8d0",
+   "source_sha256": "ef9af06ea05a501bef1db5a7326ec312c706db6fc88fac59d036af82e76dc65d",
+   "stem": "the-shape-of-motion-1"
+  },
+  {
+   "dhash": "d1d1d1d1d1d15151",
+   "source_sha256": "05e14a38f017e391e0a2e6cd1a086919fd9c130d3288d719f8cbbca68ee586d2",
+   "stem": "vibrations-of-light-i-1"
+  },
+  {
+   "dhash": "1d1d1d1d1d1d1d1d",
+   "source_sha256": "f5c3135db2f841ab33d33f529aaecc1f9df9edab909cf2a35be3a7a9f40b4da6",
+   "stem": "vibrations-of-light-ii-1"
+  },
+  {
+   "dhash": "9797979393971313",
+   "source_sha256": "d6132f9b2b98eaca6c5fc26986cde245398237158ca9bc36586c5d136bf7b8a6",
+   "stem": "vibrations-of-light-iii-1"
+  },
+  {
+   "dhash": "e386acadd2d0e8e9",
+   "source_sha256": "feee61efac302dcc08a7d9b49f655181e0c9c161c25a1139b00ff4f4f2d99286",
+   "stem": "immersed-in-the-act-of-becoming-1"
+  },
+  {
+   "dhash": "13038f9b9f9fcd93",
+   "source_sha256": "908b48d0fa5100beeed07f70edaa57c60b27bd8b979c4de9dff4478656374f88",
+   "stem": "becoming-1"
+  },
+  {
+   "dhash": "c7478e8e8e9e83c9",
+   "source_sha256": "b8e5c84f4f8bfe953632932f3d9972f26eddd3321b29eb208d1a39c231485956",
+   "stem": "perception-a-best-guess-1"
+  },
+  {
+   "dhash": "a4bbd8ca3830d953",
+   "source_sha256": "8c86eab12d434d12d854156ebd43899ca7c190c55e3e18ebf64c76b0f74ade86",
+   "stem": "a-field-of-all-potentialities-1"
+  },
+  {
+   "dhash": "f0f0f0e4e4e0f0f0",
+   "source_sha256": "290175485cc1160787927616ed1dd23609b79b9157761d6f210a5ac4a7ab0032",
+   "stem": "the-act-of-becoming-1"
+  },
+  {
+   "dhash": "f0cc9e0f0f8eccf0",
+   "source_sha256": "c94e94bd3672881544c893991c7dddf23663986539a291611b305c4a4be70b3d",
+   "stem": "everthing-is-revealed-eventually-1"
+  },
+  {
+   "dhash": "f0cc8e979786c6f0",
+   "source_sha256": "1e3957771553078cad7f3b56bd7af7249da0787e33657fd4dcec5a7ab330e007",
+   "stem": "stillness-speaks-1"
+  },
+  {
+   "dhash": "f0f0b233b3b2f0f0",
+   "source_sha256": "46f639010ae32c2adfd5ba12553f561224a3f4747239fa2099496931e31fa46f",
+   "stem": "the-layers-beneath-1"
+  }
+ ],
+ "publication": {
+  "approved_at": "2026-11-12T21:50:43.000Z",
+  "approved_by": "founder",
+  "licence_accepted_at": "2026-11-10T11:56:59.861Z",
+  "licence_version": "PA-GPIL-2026-11",
+  "permission_ref": "PA-PERM-ahbfq0jgav5",
+  "state": "approved",
+  "test_note": null,
+  "version": "v1"
+ },
+ "schema": "plotnua.plotart.gallery-package.v1",
+ "works": [
+  {
+   "ai_founder_decision": null,
+   "ai_involvement": "none",
+   "ai_note": null,
+   "availability": "available",
+   "d_cm": 2.5,
+   "description": "As its title suggest, 'Simply Put, Life is Complex\" alludes to the idea that life is an accumulation of all our experiences, a layered complex system, informing how we perceive the world around us.",
+   "h_cm": 230,
+   "id": "wxurdauu8yk",
+   "images": [
+    {
+     "alt": "Large-scale abstract, colourful oil painting with translucent and opaque layers, gestural mark-making and lines",
+     "aspect": 0.77143,
+     "derivatives": [
+      {
+       "file": "simply-put-life-is-complex-1-600.webp",
+       "long_edge": 600,
+       "pixels": [
+        463,
+        600
+       ]
+      },
+      {
+       "file": "simply-put-life-is-complex-1-1200.webp",
+       "long_edge": 1200,
+       "pixels": [
+        926,
+        1200
+       ]
+      },
+      {
+       "file": "simply-put-life-is-complex-1-2000.webp",
+       "long_edge": 2000,
+       "pixels": [
+        1543,
+        2000
+       ]
+      }
+     ],
+     "photo_credit": null,
+     "pixels": [
+      3780,
+      4900
+     ],
+     "role": "main"
+    },
+    {
+     "alt": "Detail view of 'Simply Put, Life is Complex'",
+     "aspect": 1.24988,
+     "derivatives": [
+      {
+       "file": "simply-put-life-is-complex-2-600.webp",
+       "long_edge": 600,
+       "pixels": [
+        600,
+        480
+       ]
+      },
+      {
+       "file": "simply-put-life-is-complex-2-2000.webp",
+       "long_edge": 2000,
+       "pixels": [
+        2000,
+        1600
+       ]
+      }
+     ],
+     "photo_credit": null,
+     "pixels": [
+      2556,
+      2045
+     ],
+     "role": "view"
+    },
+    {
+     "alt": "Detail view of 'Simply Put, Life is Complex'",
+     "aspect": 1.25017,
+     "derivatives": [
+      {
+       "file": "simply-put-life-is-complex-3-600.webp",
+       "long_edge": 600,
+       "pixels": [
+        600,
+        480
+       ]
+      },
+      {
+       "file": "simply-put-life-is-complex-3-2000.webp",
+       "long_edge": 2000,
+       "pixels": [
+        2000,
+        1600
+       ]
+      }
+     ],
+     "photo_credit": null,
+     "pixels": [
+      3668,
+      2934
+     ],
+     "role": "view"
+    }
+   ],
+   "materials": "This is an abstract oil painting on stretched primed linen",
+   "medium": "Oil on linen",
+   "price_eur": 8000,
+   "price_on_request": false,
+   "slug": "simply-put-life-is-complex",
+   "title": "'Simply Put, Life is Complex'",
+   "w_cm": 180,
+   "year": 2025
+  },
+  {
+   "ai_founder_decision": null,
+   "ai_involvement": "none",
+   "ai_note": null,
+   "availability": "available",
+   "d_cm": 2.5,
+   "description": "The idea behind this painting relates to the benefits of not always knowing where one is going.  There is freedom in being lost, a freedom obtained only when one relinquishes all control and fully trusts.  I had read 'A Field Guide to Getting Lost' by Rebecca Solnit and I was inspired by this.",
+   "h_cm": 230,
+   "id": "w1gwaet9ho5",
+   "images": [
+    {
+     "alt": "Large-scale abstract, colourful oil painting with translucent and opaque layers, painted structural portal frames, and gestural mark-making",
+     "aspect": 0.77917,
+     "derivatives": [
+      {
+       "file": "once-a-day-find-yourself-lost-1-600.webp",
+       "long_edge": 600,
+       "pixels": [
+        468,
+        600
+       ]
+      },
+      {
+       "file": "once-a-day-find-yourself-lost-1-1200.webp",
+       "long_edge": 1200,
+       "pixels": [
+        935,
+        1200
+       ]
+      },
+      {
+       "file": "once-a-day-find-yourself-lost-1-2000.webp",
+       "long_edge": 2000,
+       "pixels": [
+        1558,
+        2000
+       ]
+      }
+     ],
+     "photo_credit": null,
+     "pixels": [
+      3846,
+      4936
+     ],
+     "role": "main"
+    }
+   ],
+   "materials": "This is an oil painting on stretched primed linen",
+   "medium": "Oil on linen",
+   "price_eur": 8000,
+   "price_on_request": false,
+   "slug": "once-a-day-find-yourself-lost",
+   "title": "'Once A Day, Find Yourself Lost'",
+   "w_cm": 180,
+   "year": 2025
+  },
+  {
+   "ai_founder_decision": null,
+   "ai_involvement": "none",
+   "ai_note": null,
+   "availability": "available",
+   "d_cm": 2.5,
+   "description": "The idea behind this painting was inspired by a poem by RUMI the 13th century Persian poet, 'Out Beyond Ideas of Wrong-doing and Right-doing'.  My painting references the notion that in a world beyond words, there is a space of non-judgement, where the need for words no longer exists, where there is freedom to express.",
+   "h_cm": 230,
+   "id": "w3a7g1zf1l5",
+   "images": [
+    {
+     "alt": "Large-scale abstract, predominately yellow oil painting with patches of blue, round forms and translucent \"dancing\" figures.",
+     "aspect": 0.79063,
+     "derivatives": [
+      {
+       "file": "a-world-beyond-words-1-600.webp",
+       "long_edge": 600,
+       "pixels": [
+        474,
+        600
+       ]
+      },
+      {
+       "file": "a-world-beyond-words-1-1200.webp",
+       "long_edge": 1200,
+       "pixels": [
+        949,
+        1200
+       ]
+      },
+      {
+       "file": "a-world-beyond-words-1-2000.webp",
+       "long_edge": 2000,
+       "pixels": [
+        1581,
+        2000
+       ]
+      }
+     ],
+     "photo_credit": null,
+     "pixels": [
+      3882,
+      4910
+     ],
+     "role": "main"
+    }
+   ],
+   "materials": "This is an oil painting on stretched primed linen",
+   "medium": "Oil on linen",
+   "price_eur": 8000,
+   "price_on_request": false,
+   "slug": "a-world-beyond-words",
+   "title": "'A World Beyond Words'",
+   "w_cm": 180,
+   "year": 2025
+  },
+  {
+   "ai_founder_decision": null,
+   "ai_involvement": "none",
+   "ai_note": null,
+   "availability": "available",
+   "d_cm": 2.5,
+   "description": "This painting relates to the idea that all things are in flux until settling into one form or another - biological structures or through-forms.",
+   "h_cm": 230,
+   "id": "wqrfds1q6sa",
+   "images": [
+    {
+     "alt": "Large-scale abstract, colourful oil painting with colours folding into each other, interspersed with gesture and mark-making.",
+     "aspect": 0.7848,
+     "derivatives": [
+      {
+       "file": "in-flux-1-600.webp",
+       "long_edge": 600,
+       "pixels": [
+        471,
+        600
+       ]
+      },
+      {
+       "file": "in-flux-1-1200.webp",
+       "long_edge": 1200,
+       "pixels": [
+        942,
+        1200
+       ]
+      },
+      {
+       "file": "in-flux-1-2000.webp",
+       "long_edge": 2000,
+       "pixels": [
+        1570,
+        2000
+       ]
+      }
+     ],
+     "photo_credit": null,
+     "pixels": [
+      3450,
+      4396
+     ],
+     "role": "main"
+    }
+   ],
+   "materials": "This is an oil painting on stretched primed linen",
+   "medium": "Oil on linen",
+   "price_eur": 8000,
+   "price_on_request": false,
+   "slug": "in-flux",
+   "title": "'In Flux'",
+   "w_cm": 180,
+   "year": 2025
+  },
+  {
+   "ai_founder_decision": null,
+   "ai_involvement": "none",
+   "ai_note": null,
+   "availability": "available",
+   "d_cm": 2.5,
+   "description": "Large-scale abstract, colourful oil painting, a space created in which untethered swirling bands are is captured in motion.",
+   "h_cm": 230,
+   "id": "wfgx06n7ceq",
+   "images": [
+    {
+     "alt": "Large-scale abstract, colourful oil painting, a space created in which untethered swirling bands are  captured in motion.",
+     "aspect": 0.77531,
+     "derivatives": [
+      {
+       "file": "the-shape-of-motion-1-600.webp",
+       "long_edge": 600,
+       "pixels": [
+        465,
+        600
+       ]
+      },
+      {
+       "file": "the-shape-of-motion-1-1200.webp",
+       "long_edge": 1200,
+       "pixels": [
+        930,
+        1200
+       ]
+      },
+      {
+       "file": "the-shape-of-motion-1-2000.webp",
+       "long_edge": 2000,
+       "pixels": [
+        1551,
+        2000
+       ]
+      }
+     ],
+     "photo_credit": null,
+     "pixels": [
+      3906,
+      5038
+     ],
+     "role": "main"
+    }
+   ],
+   "materials": "This is an oil painting on stretched primed linen",
+   "medium": "Oil on linen",
+   "price_eur": 8000,
+   "price_on_request": false,
+   "slug": "the-shape-of-motion",
+   "title": "'The Shape of Motion'",
+   "w_cm": 180,
+   "year": 2025
+  },
+  {
+   "ai_founder_decision": null,
+   "ai_involvement": "none",
+   "ai_note": null,
+   "availability": "available",
+   "d_cm": 2.5,
+   "description": "This painting alludes to the light as a vibration; light which is taken in by our eyes and bestowed with the properties of colour.",
+   "h_cm": 180,
+   "id": "wtit8ftdyny",
+   "images": [
+    {
+     "alt": "Large-scale abstract,  oil painting with bands of luminous colour",
+     "aspect": 1.29252,
+     "derivatives": [
+      {
+       "file": "vibrations-of-light-i-1-600.webp",
+       "long_edge": 600,
+       "pixels": [
+        600,
+        464
+       ]
+      },
+      {
+       "file": "vibrations-of-light-i-1-1200.webp",
+       "long_edge": 1200,
+       "pixels": [
+        1200,
+        928
+       ]
+      },
+      {
+       "file": "vibrations-of-light-i-1-2000.webp",
+       "long_edge": 2000,
+       "pixels": [
+        2000,
+        1547
+       ]
+      }
+     ],
+     "photo_credit": null,
+     "pixels": [
+      4180,
+      3234
+     ],
+     "role": "main"
+    }
+   ],
+   "materials": "This is an oil painting on  stretched primed linen",
+   "medium": "Oil on linen",
+   "price_eur": 8000,
+   "price_on_request": false,
+   "slug": "vibrations-of-light-i",
+   "title": "'Vibrations of Light' I",
+   "w_cm": 230,
+   "year": 2025
+  },
+  {
+   "ai_founder_decision": null,
+   "ai_involvement": "none",
+   "ai_note": null,
+   "availability": "available",
+   "d_cm": 2.5,
+   "description": "This painting alludes to the light as a vibration; light which is taken in by our eyes and bestowed with the properties of colour.",
+   "h_cm": 180,
+   "id": "wwb9ru0r8dm",
+   "images": [
+    {
+     "alt": "Large-scale abstract,  oil painting with bands of luminous colour",
+     "aspect": 1.29229,
+     "derivatives": [
+      {
+       "file": "vibrations-of-light-ii-1-600.webp",
+       "long_edge": 600,
+       "pixels": [
+        600,
+        464
+       ]
+      },
+      {
+       "file": "vibrations-of-light-ii-1-1200.webp",
+       "long_edge": 1200,
+       "pixels": [
+        1200,
+        929
+       ]
+      },
+      {
+       "file": "vibrations-of-light-ii-1-2000.webp",
+       "long_edge": 2000,
+       "pixels": [
+        2000,
+        1548
+       ]
+      }
+     ],
+     "photo_credit": null,
+     "pixels": [
+      4744,
+      3671
+     ],
+     "role": "main"
+    }
+   ],
+   "materials": "This is an oil painting on stretched primed linen",
+   "medium": "Oil on linen",
+   "price_eur": 8000,
+   "price_on_request": false,
+   "slug": "vibrations-of-light-ii",
+   "title": "'Vibrations of Light' II",
+   "w_cm": 230,
+   "year": 2025
+  },
+  {
+   "ai_founder_decision": null,
+   "ai_involvement": "none",
+   "ai_note": null,
+   "availability": "available",
+   "d_cm": 2.5,
+   "description": "This painting alludes to the light as a vibration; light which is taken in by our eyes and bestowed with the properties of colour.",
+   "h_cm": 180,
+   "id": "wsba3bgz53r",
+   "images": [
+    {
+     "alt": "Large-scale abstract,  oil painting with bands of luminous colour",
+     "aspect": 1.29583,
+     "derivatives": [
+      {
+       "file": "vibrations-of-light-iii-1-600.webp",
+       "long_edge": 600,
+       "pixels": [
+        600,
+        463
+       ]
+      },
+      {
+       "file": "vibrations-of-light-iii-1-1200.webp",
+       "long_edge": 1200,
+       "pixels": [
+        1200,
+        926
+       ]
+      },
+      {
+       "file": "vibrations-of-light-iii-1-2000.webp",
+       "long_edge": 2000,
+       "pixels": [
+        2000,
+        1543
+       ]
+      }
+     ],
+     "photo_credit": null,
+     "pixels": [
+      4665,
+      3600
+     ],
+     "role": "main"
+    }
+   ],
+   "materials": "This is an oil painting on stretched primed linen",
+   "medium": "Oil on linen",
+   "price_eur": 8000,
+   "price_on_request": false,
+   "slug": "vibrations-of-light-iii",
+   "title": "'Vibrations of Light' III",
+   "w_cm": 230,
+   "year": 2025
+  },
+  {
+   "ai_founder_decision": null,
+   "ai_involvement": "none",
+   "ai_note": null,
+   "availability": "available",
+   "d_cm": 2.5,
+   "description": "This painting is about the coming together of all of our creative ideas and accumulated ideas, and how one form gives rise to another.",
+   "h_cm": 230,
+   "id": "w9brnzc40rf",
+   "images": [
+    {
+     "alt": "Large-scale abstract, colourful oil painting with translucent and opaque layers,",
+     "aspect": 0.7877,
+     "derivatives": [
+      {
+       "file": "immersed-in-the-act-of-becoming-1-600.webp",
+       "long_edge": 600,
+       "pixels": [
+        473,
+        600
+       ]
+      },
+      {
+       "file": "immersed-in-the-act-of-becoming-1-1200.webp",
+       "long_edge": 1200,
+       "pixels": [
+        945,
+        1200
+       ]
+      },
+      {
+       "file": "immersed-in-the-act-of-becoming-1-2000.webp",
+       "long_edge": 2000,
+       "pixels": [
+        1575,
+        2000
+       ]
+      }
+     ],
+     "photo_credit": null,
+     "pixels": [
+      2267,
+      2878
+     ],
+     "role": "main"
+    }
+   ],
+   "materials": "This is an oil painting on stretched primed linen",
+   "medium": "Oil on linen",
+   "price_eur": 8000,
+   "price_on_request": false,
+   "slug": "immersed-in-the-act-of-becoming",
+   "title": "'Immersed in the Act of Becoming'",
+   "w_cm": 180,
+   "year": 2023
+  },
+  {
+   "ai_founder_decision": null,
+   "ai_involvement": "none",
+   "ai_note": null,
+   "availability": "available",
+   "d_cm": 2.5,
+   "description": "This painting is about the act of becoming, how  all accumulated experiences come together to bring something into reality.",
+   "h_cm": 180,
+   "id": "wbf0qrjhkx2",
+   "images": [
+    {
+     "alt": "Large-scale abstract, colourful oil painting with translucent and opaque layers, gestural mark-making and lines",
+     "aspect": 1.12968,
+     "derivatives": [
+      {
+       "file": "becoming-1-600.webp",
+       "long_edge": 600,
+       "pixels": [
+        600,
+        531
+       ]
+      },
+      {
+       "file": "becoming-1-1200.webp",
+       "long_edge": 1200,
+       "pixels": [
+        1200,
+        1062
+       ]
+      },
+      {
+       "file": "becoming-1-2000.webp",
+       "long_edge": 2000,
+       "pixels": [
+        2000,
+        1770
+       ]
+      }
+     ],
+     "photo_credit": null,
+     "pixels": [
+      3955,
+      3501
+     ],
+     "role": "main"
+    }
+   ],
+   "materials": "Oil on stretched  primed canvas",
+   "medium": "Oil on canvas",
+   "price_eur": 8000,
+   "price_on_request": false,
+   "slug": "becoming",
+   "title": "'Becoming'",
+   "w_cm": 200,
+   "year": 2022
+  },
+  {
+   "ai_founder_decision": null,
+   "ai_involvement": "none",
+   "ai_note": null,
+   "availability": "available",
+   "d_cm": 2.5,
+   "description": "The idea behind this painting has to do with how our perceptions are primed by all of our accumulated life experiences.",
+   "h_cm": 150,
+   "id": "wrvt9bav8h3",
+   "images": [
+    {
+     "alt": "Large-scale, oil painting on primed canvas, dyptych",
+     "aspect": 2.55556,
+     "derivatives": [
+      {
+       "file": "perception-a-best-guess-1-600.webp",
+       "long_edge": 600,
+       "pixels": [
+        600,
+        235
+       ]
+      },
+      {
+       "file": "perception-a-best-guess-1-1200.webp",
+       "long_edge": 1200,
+       "pixels": [
+        1200,
+        470
+       ]
+      },
+      {
+       "file": "perception-a-best-guess-1-2000.webp",
+       "long_edge": 2000,
+       "pixels": [
+        2000,
+        783
+       ]
+      }
+     ],
+     "photo_credit": null,
+     "pixels": [
+      3197,
+      1251
+     ],
+     "role": "main"
+    }
+   ],
+   "materials": "Diptych, Oil on stretched primed canvas",
+   "medium": "Oil on canvas",
+   "price_eur": 10000,
+   "price_on_request": false,
+   "slug": "perception-a-best-guess",
+   "title": "'Perception: A \"Best Guess\"'",
+   "w_cm": 380,
+   "year": 2021
+  },
+  {
+   "ai_founder_decision": null,
+   "ai_involvement": "none",
+   "ai_note": null,
+   "availability": "available",
+   "d_cm": 2.5,
+   "description": "This idea here relates to how we manifest reality, how there are so many possibilities.",
+   "h_cm": 150,
+   "id": "w7sw4wuj1p5",
+   "images": [
+    {
+     "alt": "Large-scale abstract, colourful oil painting with translucent and opaque layers and gestural mark-making.",
+     "aspect": 1.25014,
+     "derivatives": [
+      {
+       "file": "a-field-of-all-potentialities-1-600.webp",
+       "long_edge": 600,
+       "pixels": [
+        600,
+        480
+       ]
+      },
+      {
+       "file": "a-field-of-all-potentialities-1-1200.webp",
+       "long_edge": 1200,
+       "pixels": [
+        1200,
+        960
+       ]
+      },
+      {
+       "file": "a-field-of-all-potentialities-1-2000.webp",
+       "long_edge": 2000,
+       "pixels": [
+        2000,
+        1600
+       ]
+      }
+     ],
+     "photo_credit": null,
+     "pixels": [
+      2304,
+      1843
+     ],
+     "role": "main"
+    }
+   ],
+   "materials": "This is an oil painting on stretched primed canvas",
+   "medium": "Oil on canvas",
+   "price_eur": 7800,
+   "price_on_request": false,
+   "slug": "a-field-of-all-potentialities",
+   "title": "'A Field of All Potentialities'",
+   "w_cm": 190,
+   "year": 2021
+  },
+  {
+   "ai_founder_decision": null,
+   "ai_involvement": "none",
+   "ai_note": null,
+   "availability": "available",
+   "d_cm": 3,
+   "description": "This painting refers to how everthing comes into being; how life is not linear but is rather series of course corrections and glorious moments.",
+   "h_cm": 150,
+   "id": "w1jph8fmz77",
+   "images": [
+    {
+     "alt": "This oil painting on custom-made wooden tondo, depicts, gestural makr-making and layers of colour as everything moves around and through each other in harmony.",
+     "aspect": 1.0,
+     "derivatives": [
+      {
+       "file": "the-act-of-becoming-1-600.webp",
+       "long_edge": 600,
+       "pixels": [
+        600,
+        600
+       ]
+      },
+      {
+       "file": "the-act-of-becoming-1-1200.webp",
+       "long_edge": 1200,
+       "pixels": [
+        1200,
+        1200
+       ]
+      },
+      {
+       "file": "the-act-of-becoming-1-2000.webp",
+       "long_edge": 2000,
+       "pixels": [
+        2000,
+        2000
+       ]
+      }
+     ],
+     "photo_credit": null,
+     "pixels": [
+      2880,
+      2880
+     ],
+     "role": "main"
+    }
+   ],
+   "materials": "Oil painting on custom-made, primed, wooden tondo cradle",
+   "medium": "Oil on wooden tondo",
+   "price_eur": 6500,
+   "price_on_request": false,
+   "slug": "the-act-of-becoming",
+   "title": "'The Act of Becoming'",
+   "w_cm": 150,
+   "year": 2024
+  },
+  {
+   "ai_founder_decision": null,
+   "ai_involvement": "none",
+   "ai_note": null,
+   "availability": "available",
+   "d_cm": 3,
+   "description": "The idea behind this painting is that nothing can remain hidden indefinitely, that all is eventally revealed.",
+   "h_cm": 150,
+   "id": "wryuq2m68mi",
+   "images": [
+    {
+     "alt": "This is an abstract oil painting on primed wooden tondo.  Forms overlay each other and some are obscured and luminous circular bands spread light onto the darker outer circular bands of colour.",
+     "aspect": 1.0,
+     "derivatives": [
+      {
+       "file": "everthing-is-revealed-eventually-1-600.webp",
+       "long_edge": 600,
+       "pixels": [
+        600,
+        600
+       ]
+      },
+      {
+       "file": "everthing-is-revealed-eventually-1-1200.webp",
+       "long_edge": 1200,
+       "pixels": [
+        1200,
+        1200
+       ]
+      },
+      {
+       "file": "everthing-is-revealed-eventually-1-2000.webp",
+       "long_edge": 2000,
+       "pixels": [
+        2000,
+        2000
+       ]
+      }
+     ],
+     "photo_credit": null,
+     "pixels": [
+      2880,
+      2880
+     ],
+     "role": "main"
+    }
+   ],
+   "materials": "Oil painting on custom-made, primed, wooden tondo cradle",
+   "medium": "Oil on wooden tondo",
+   "price_eur": 6500,
+   "price_on_request": false,
+   "slug": "everthing-is-revealed-eventually",
+   "title": "'Everthing is Revealed... Eventually'",
+   "w_cm": 150,
+   "year": 2024
+  },
+  {
+   "ai_founder_decision": null,
+   "ai_involvement": "none",
+   "ai_note": null,
+   "availability": "available",
+   "d_cm": 3,
+   "description": "The idea behind this painting is that so much can be achieved when one is silent and when one practices taking time out of the noisy world and listens to what is going on in one's inner world.",
+   "h_cm": 150,
+   "id": "wr7vh26ovxg",
+   "images": [
+    {
+     "alt": "Abstract oil painting with light at the centre and  overlapping forms at the centre and on the outer violet segments",
+     "aspect": 1.0,
+     "derivatives": [
+      {
+       "file": "stillness-speaks-1-600.webp",
+       "long_edge": 600,
+       "pixels": [
+        600,
+        600
+       ]
+      },
+      {
+       "file": "stillness-speaks-1-1200.webp",
+       "long_edge": 1200,
+       "pixels": [
+        1200,
+        1200
+       ]
+      },
+      {
+       "file": "stillness-speaks-1-2000.webp",
+       "long_edge": 2000,
+       "pixels": [
+        2000,
+        2000
+       ]
+      }
+     ],
+     "photo_credit": null,
+     "pixels": [
+      2880,
+      2880
+     ],
+     "role": "main"
+    }
+   ],
+   "materials": "Oil painting on custom-made, primed, wooden tondo cradle",
+   "medium": "Oil on wooden tondo",
+   "price_eur": 6500,
+   "price_on_request": false,
+   "slug": "stillness-speaks",
+   "title": "'Stillness Speaks'",
+   "w_cm": 150,
+   "year": 2024
+  },
+  {
+   "ai_founder_decision": null,
+   "ai_involvement": "none",
+   "ai_note": null,
+   "availability": "available",
+   "d_cm": 3,
+   "description": "The idea behind this painting relates to the many layers of complexities in existence when working out how perceptions are formed.",
+   "h_cm": 150,
+   "id": "wsn0ixux2ta",
+   "images": [
+    {
+     "alt": "Large-scale abstract, colourful oil painting with translucent and opaque layers, genstural mark-making",
+     "aspect": 1.0,
+     "derivatives": [
+      {
+       "file": "the-layers-beneath-1-600.webp",
+       "long_edge": 600,
+       "pixels": [
+        600,
+        600
+       ]
+      },
+      {
+       "file": "the-layers-beneath-1-1200.webp",
+       "long_edge": 1200,
+       "pixels": [
+        1200,
+        1200
+       ]
+      },
+      {
+       "file": "the-layers-beneath-1-2000.webp",
+       "long_edge": 2000,
+       "pixels": [
+        2000,
+        2000
+       ]
+      }
+     ],
+     "photo_credit": null,
+     "pixels": [
+      2880,
+      2880
+     ],
+     "role": "main"
+    }
+   ],
+   "materials": "Oil painting on custom-made, primed, wooden tondo cradle",
+   "medium": "Oil on wooden tondo",
+   "price_eur": 6500,
+   "price_on_request": false,
+   "slug": "the-layers-beneath",
+   "title": "'The Layers Beneath'",
+   "w_cm": 150,
+   "year": 2024
+  }
+ ]
+}

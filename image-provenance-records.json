@@ -15333,6 +15333,1649 @@
       "source_sha256": "b109a99fcef12b18cd07d4fc3cc1178532acb411e3c12049501f9838a5416c9a",
       "subject": "artwork",
       "work_slug": "the-messenger"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "karen-ebbs",
+      "asset": "plotart/artists/karen-ebbs/img/portrait-600.webp",
+      "bytes": 58760,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (Apple Wide Color Sharing Profile)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-ahbfq0jgav5",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        600,
+        466
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "c75a9c2b062d1b2c85019495ac91bd253a2d2122cb3437a483babce9e2eb7328",
+      "source_sha256": "234035658b096e83f84e1060fb0ecb6f33f1978cff0da5504412e2c9ac9bd11f",
+      "subject": "portrait",
+      "work_slug": null
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "karen-ebbs",
+      "asset": "plotart/artists/karen-ebbs/img/simply-put-life-is-complex-1-600.webp",
+      "bytes": 59088,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (Apple Wide Color Sharing Profile)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-ahbfq0jgav5",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        463,
+        600
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "6475f29a9a64c31ed9086a0f0384dcc478bd733846cbff3bc1f544ebcf6818aa",
+      "source_sha256": "47cf220a302f53ad4438e096b6f33007ba898b185b208a6f1f3dc23d4553a34f",
+      "subject": "artwork",
+      "work_slug": "simply-put-life-is-complex"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "karen-ebbs",
+      "asset": "plotart/artists/karen-ebbs/img/simply-put-life-is-complex-1-1200.webp",
+      "bytes": 179680,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (Apple Wide Color Sharing Profile)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-ahbfq0jgav5",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        926,
+        1200
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "20182c0bc30ae52ea40f18f4d62e8feba081438e342c06991058636c5ff7949d",
+      "source_sha256": "47cf220a302f53ad4438e096b6f33007ba898b185b208a6f1f3dc23d4553a34f",
+      "subject": "artwork",
+      "work_slug": "simply-put-life-is-complex"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "karen-ebbs",
+      "asset": "plotart/artists/karen-ebbs/img/simply-put-life-is-complex-1-2000.webp",
+      "bytes": 380858,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (Apple Wide Color Sharing Profile)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-ahbfq0jgav5",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        1543,
+        2000
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "1d75251ef66923cea2d1fc6be17adecf42cdf0ee3bdbe64b50cce174326f02fc",
+      "source_sha256": "47cf220a302f53ad4438e096b6f33007ba898b185b208a6f1f3dc23d4553a34f",
+      "subject": "artwork",
+      "work_slug": "simply-put-life-is-complex"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "karen-ebbs",
+      "asset": "plotart/artists/karen-ebbs/img/simply-put-life-is-complex-2-600.webp",
+      "bytes": 57354,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (Apple Wide Color Sharing Profile)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-ahbfq0jgav5",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        600,
+        480
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "162a7673cb52b0e339b6dd67997f9bdfb936b0682952b1ee130020e66f3caab1",
+      "source_sha256": "3cc8b51fba3bb81230f546bc07ca337ea7e42108fc4a488ebd5d4104d510868f",
+      "subject": "artwork",
+      "work_slug": "simply-put-life-is-complex"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "karen-ebbs",
+      "asset": "plotart/artists/karen-ebbs/img/simply-put-life-is-complex-2-2000.webp",
+      "bytes": 327860,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (Apple Wide Color Sharing Profile)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-ahbfq0jgav5",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        2000,
+        1600
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "4eefd454418f771494cefde13d7c70407d28e8765f4a44038195b87a22361f54",
+      "source_sha256": "3cc8b51fba3bb81230f546bc07ca337ea7e42108fc4a488ebd5d4104d510868f",
+      "subject": "artwork",
+      "work_slug": "simply-put-life-is-complex"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "karen-ebbs",
+      "asset": "plotart/artists/karen-ebbs/img/simply-put-life-is-complex-3-600.webp",
+      "bytes": 47858,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (Apple Wide Color Sharing Profile)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-ahbfq0jgav5",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        600,
+        480
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "d4193c6b72457f64f81a3e2df11a9b553919d06c74e8bce5b28c636ef123c30f",
+      "source_sha256": "d85382d0a62444a8b0995e8a13aee6d37769b791cf242099bf342deaa19eacc0",
+      "subject": "artwork",
+      "work_slug": "simply-put-life-is-complex"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "karen-ebbs",
+      "asset": "plotart/artists/karen-ebbs/img/simply-put-life-is-complex-3-2000.webp",
+      "bytes": 289154,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (Apple Wide Color Sharing Profile)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-ahbfq0jgav5",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        2000,
+        1600
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "e524d3a6ee8c64836b87b9bc6fc5c485c3fcd23c319810bd6ec0a5d4dcc98726",
+      "source_sha256": "d85382d0a62444a8b0995e8a13aee6d37769b791cf242099bf342deaa19eacc0",
+      "subject": "artwork",
+      "work_slug": "simply-put-life-is-complex"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "karen-ebbs",
+      "asset": "plotart/artists/karen-ebbs/img/once-a-day-find-yourself-lost-1-600.webp",
+      "bytes": 38018,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (Apple Wide Color Sharing Profile)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-ahbfq0jgav5",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        468,
+        600
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "a2fbf2b426651598292613f5c986642f1fa46626c18b090a4c403be51dfa608b",
+      "source_sha256": "d5a5449d94fb9bdbdfda190346bfeab81f010d30a04494fddee1b0055a06af1d",
+      "subject": "artwork",
+      "work_slug": "once-a-day-find-yourself-lost"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "karen-ebbs",
+      "asset": "plotart/artists/karen-ebbs/img/once-a-day-find-yourself-lost-1-1200.webp",
+      "bytes": 139052,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (Apple Wide Color Sharing Profile)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-ahbfq0jgav5",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        935,
+        1200
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "ef2921767b15a5518b612055aedf31dbffbff3953b58b28cf97b4f0c9fcd4e56",
+      "source_sha256": "d5a5449d94fb9bdbdfda190346bfeab81f010d30a04494fddee1b0055a06af1d",
+      "subject": "artwork",
+      "work_slug": "once-a-day-find-yourself-lost"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "karen-ebbs",
+      "asset": "plotart/artists/karen-ebbs/img/once-a-day-find-yourself-lost-1-2000.webp",
+      "bytes": 359118,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (Apple Wide Color Sharing Profile)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-ahbfq0jgav5",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        1558,
+        2000
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "f6ee0d490bf76c0ffdf9e46e61862b6618b74a69ddcc6874073f8a3ce7b5cd34",
+      "source_sha256": "d5a5449d94fb9bdbdfda190346bfeab81f010d30a04494fddee1b0055a06af1d",
+      "subject": "artwork",
+      "work_slug": "once-a-day-find-yourself-lost"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "karen-ebbs",
+      "asset": "plotart/artists/karen-ebbs/img/a-world-beyond-words-1-600.webp",
+      "bytes": 85502,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (Apple Wide Color Sharing Profile)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-ahbfq0jgav5",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        474,
+        600
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "8a4012f56c31aa7482defd9a664cdc9a0b3968c9e06c449333f149460693cca0",
+      "source_sha256": "ad179a7002dc492595d3eda9ffa3fdf70145ff61e13904883c3445feb4f891ee",
+      "subject": "artwork",
+      "work_slug": "a-world-beyond-words"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "karen-ebbs",
+      "asset": "plotart/artists/karen-ebbs/img/a-world-beyond-words-1-1200.webp",
+      "bytes": 282044,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (Apple Wide Color Sharing Profile)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-ahbfq0jgav5",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        949,
+        1200
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "db687986a5e3c58525a9fa1fabd9123b0ccfd360a437aa7cb892fdff14236d6d",
+      "source_sha256": "ad179a7002dc492595d3eda9ffa3fdf70145ff61e13904883c3445feb4f891ee",
+      "subject": "artwork",
+      "work_slug": "a-world-beyond-words"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "karen-ebbs",
+      "asset": "plotart/artists/karen-ebbs/img/a-world-beyond-words-1-2000.webp",
+      "bytes": 712686,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (Apple Wide Color Sharing Profile)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-ahbfq0jgav5",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        1581,
+        2000
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "4ca39adb59c06768f29513038cb5e1241ccb01e83155300b69a4c64101377f46",
+      "source_sha256": "ad179a7002dc492595d3eda9ffa3fdf70145ff61e13904883c3445feb4f891ee",
+      "subject": "artwork",
+      "work_slug": "a-world-beyond-words"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "karen-ebbs",
+      "asset": "plotart/artists/karen-ebbs/img/in-flux-1-600.webp",
+      "bytes": 43630,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "sRGB (no embedded profile; treated as sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-ahbfq0jgav5",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        471,
+        600
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "77bdb1de84f7ca92986f8b69eae0763a92e4c7a3e847c2429d60c73d33e085c2",
+      "source_sha256": "4ffb91a18be43d6e9fc2ce448a0f91ee932bbbbad0d43dd1967e22813de6a8ab",
+      "subject": "artwork",
+      "work_slug": "in-flux"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "karen-ebbs",
+      "asset": "plotart/artists/karen-ebbs/img/in-flux-1-1200.webp",
+      "bytes": 143084,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "sRGB (no embedded profile; treated as sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-ahbfq0jgav5",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        942,
+        1200
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "195f76fccb15d43b4f5989dc88d50b3188ce17f154cd85bd4ed972af4d634a8c",
+      "source_sha256": "4ffb91a18be43d6e9fc2ce448a0f91ee932bbbbad0d43dd1967e22813de6a8ab",
+      "subject": "artwork",
+      "work_slug": "in-flux"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "karen-ebbs",
+      "asset": "plotart/artists/karen-ebbs/img/in-flux-1-2000.webp",
+      "bytes": 336032,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "sRGB (no embedded profile; treated as sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-ahbfq0jgav5",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        1570,
+        2000
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "77ecbdb5ab4ccb7ded2ffd3927e2d6fb88bd0b76dbcf46b7770b9651fb3927e3",
+      "source_sha256": "4ffb91a18be43d6e9fc2ce448a0f91ee932bbbbad0d43dd1967e22813de6a8ab",
+      "subject": "artwork",
+      "work_slug": "in-flux"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "karen-ebbs",
+      "asset": "plotart/artists/karen-ebbs/img/the-shape-of-motion-1-600.webp",
+      "bytes": 37420,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (Apple Wide Color Sharing Profile)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-ahbfq0jgav5",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        465,
+        600
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "120f3b0c0b1ce1d924ebed264f2979916ec94b5018fbdd6041243ae1ca1171db",
+      "source_sha256": "ef9af06ea05a501bef1db5a7326ec312c706db6fc88fac59d036af82e76dc65d",
+      "subject": "artwork",
+      "work_slug": "the-shape-of-motion"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "karen-ebbs",
+      "asset": "plotart/artists/karen-ebbs/img/the-shape-of-motion-1-1200.webp",
+      "bytes": 114228,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (Apple Wide Color Sharing Profile)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-ahbfq0jgav5",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        930,
+        1200
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "7215744b14f150a5c26c3f3ad5668e56a14230b9b85bde6a4db0989d8e3c3a50",
+      "source_sha256": "ef9af06ea05a501bef1db5a7326ec312c706db6fc88fac59d036af82e76dc65d",
+      "subject": "artwork",
+      "work_slug": "the-shape-of-motion"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "karen-ebbs",
+      "asset": "plotart/artists/karen-ebbs/img/the-shape-of-motion-1-2000.webp",
+      "bytes": 263102,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (Apple Wide Color Sharing Profile)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-ahbfq0jgav5",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        1551,
+        2000
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "7b5b14aab04af4305e6fa37cd21d07570ed0d2b5c1d26e2a8fbfe81fbdf7a43b",
+      "source_sha256": "ef9af06ea05a501bef1db5a7326ec312c706db6fc88fac59d036af82e76dc65d",
+      "subject": "artwork",
+      "work_slug": "the-shape-of-motion"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "karen-ebbs",
+      "asset": "plotart/artists/karen-ebbs/img/vibrations-of-light-i-1-600.webp",
+      "bytes": 12102,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (Apple Wide Color Sharing Profile)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-ahbfq0jgav5",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        600,
+        464
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "96f285d26495e8412da737132cc83012b10de3341d65f184354320f71b6c7d15",
+      "source_sha256": "05e14a38f017e391e0a2e6cd1a086919fd9c130d3288d719f8cbbca68ee586d2",
+      "subject": "artwork",
+      "work_slug": "vibrations-of-light-i"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "karen-ebbs",
+      "asset": "plotart/artists/karen-ebbs/img/vibrations-of-light-i-1-1200.webp",
+      "bytes": 34908,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (Apple Wide Color Sharing Profile)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-ahbfq0jgav5",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        1200,
+        928
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "72d36afc76ea92cd628e545b72a73562c681990179cc2c3800200c4c975d2003",
+      "source_sha256": "05e14a38f017e391e0a2e6cd1a086919fd9c130d3288d719f8cbbca68ee586d2",
+      "subject": "artwork",
+      "work_slug": "vibrations-of-light-i"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "karen-ebbs",
+      "asset": "plotart/artists/karen-ebbs/img/vibrations-of-light-i-1-2000.webp",
+      "bytes": 83260,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (Apple Wide Color Sharing Profile)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-ahbfq0jgav5",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        2000,
+        1547
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "392cc495577b8290fb4b9a7f03005bdd200cdb9a0f6b988e3273ace2584221df",
+      "source_sha256": "05e14a38f017e391e0a2e6cd1a086919fd9c130d3288d719f8cbbca68ee586d2",
+      "subject": "artwork",
+      "work_slug": "vibrations-of-light-i"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "karen-ebbs",
+      "asset": "plotart/artists/karen-ebbs/img/vibrations-of-light-ii-1-600.webp",
+      "bytes": 10922,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "sRGB (no embedded profile; treated as sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-ahbfq0jgav5",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        600,
+        464
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "7f45dcc230b799a80180bc45762ee644fd114e52cc098f8686aba4ef9e4dcc47",
+      "source_sha256": "f5c3135db2f841ab33d33f529aaecc1f9df9edab909cf2a35be3a7a9f40b4da6",
+      "subject": "artwork",
+      "work_slug": "vibrations-of-light-ii"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "karen-ebbs",
+      "asset": "plotart/artists/karen-ebbs/img/vibrations-of-light-ii-1-1200.webp",
+      "bytes": 32500,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "sRGB (no embedded profile; treated as sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-ahbfq0jgav5",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        1200,
+        929
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "352a3f8a6c9dc0f4b2b63cf32525f734ae93ffe33321e3772dfdfcadaea0ac20",
+      "source_sha256": "f5c3135db2f841ab33d33f529aaecc1f9df9edab909cf2a35be3a7a9f40b4da6",
+      "subject": "artwork",
+      "work_slug": "vibrations-of-light-ii"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "karen-ebbs",
+      "asset": "plotart/artists/karen-ebbs/img/vibrations-of-light-ii-1-2000.webp",
+      "bytes": 93598,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "sRGB (no embedded profile; treated as sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-ahbfq0jgav5",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        2000,
+        1548
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "f353a6645cfddb26f6e56347de1929ffa74b4c3e9b4eecd3d75dea321b83dddf",
+      "source_sha256": "f5c3135db2f841ab33d33f529aaecc1f9df9edab909cf2a35be3a7a9f40b4da6",
+      "subject": "artwork",
+      "work_slug": "vibrations-of-light-ii"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "karen-ebbs",
+      "asset": "plotart/artists/karen-ebbs/img/vibrations-of-light-iii-1-600.webp",
+      "bytes": 11890,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (Apple Wide Color Sharing Profile)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-ahbfq0jgav5",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        600,
+        463
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "2113a6eb00c9ed876d04bd6ad30e0f94ab767742dfa7f48ba11e9980b50c49d7",
+      "source_sha256": "d6132f9b2b98eaca6c5fc26986cde245398237158ca9bc36586c5d136bf7b8a6",
+      "subject": "artwork",
+      "work_slug": "vibrations-of-light-iii"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "karen-ebbs",
+      "asset": "plotart/artists/karen-ebbs/img/vibrations-of-light-iii-1-1200.webp",
+      "bytes": 37680,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (Apple Wide Color Sharing Profile)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-ahbfq0jgav5",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        1200,
+        926
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "726feb8942a658d2e643012e6f9f026219c11ba2864a9fbeea117989f3ae989b",
+      "source_sha256": "d6132f9b2b98eaca6c5fc26986cde245398237158ca9bc36586c5d136bf7b8a6",
+      "subject": "artwork",
+      "work_slug": "vibrations-of-light-iii"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "karen-ebbs",
+      "asset": "plotart/artists/karen-ebbs/img/vibrations-of-light-iii-1-2000.webp",
+      "bytes": 105912,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (Apple Wide Color Sharing Profile)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-ahbfq0jgav5",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        2000,
+        1543
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "bf83878a2762f81484e39b728f4336e5457dfb48cf518a6e5292ed89a56b5f17",
+      "source_sha256": "d6132f9b2b98eaca6c5fc26986cde245398237158ca9bc36586c5d136bf7b8a6",
+      "subject": "artwork",
+      "work_slug": "vibrations-of-light-iii"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "karen-ebbs",
+      "asset": "plotart/artists/karen-ebbs/img/immersed-in-the-act-of-becoming-1-600.webp",
+      "bytes": 56132,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (Apple Wide Color Sharing Profile)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-ahbfq0jgav5",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        473,
+        600
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "016bc8ff78a690060f5448ebd9fefdf2aa6b786e726f05b93f31aa66d08799e2",
+      "source_sha256": "feee61efac302dcc08a7d9b49f655181e0c9c161c25a1139b00ff4f4f2d99286",
+      "subject": "artwork",
+      "work_slug": "immersed-in-the-act-of-becoming"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "karen-ebbs",
+      "asset": "plotart/artists/karen-ebbs/img/immersed-in-the-act-of-becoming-1-1200.webp",
+      "bytes": 172006,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (Apple Wide Color Sharing Profile)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-ahbfq0jgav5",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        945,
+        1200
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "32e013d9007c099c7d449d524ebba71315f24d0b1dd4fd2747ca0798531da795",
+      "source_sha256": "feee61efac302dcc08a7d9b49f655181e0c9c161c25a1139b00ff4f4f2d99286",
+      "subject": "artwork",
+      "work_slug": "immersed-in-the-act-of-becoming"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "karen-ebbs",
+      "asset": "plotart/artists/karen-ebbs/img/immersed-in-the-act-of-becoming-1-2000.webp",
+      "bytes": 382548,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (Apple Wide Color Sharing Profile)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-ahbfq0jgav5",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        1575,
+        2000
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "090e52c1e6b9c9cb64d357e686d54f76a6cca0ccec7ebba92871eb11ecf85cff",
+      "source_sha256": "feee61efac302dcc08a7d9b49f655181e0c9c161c25a1139b00ff4f4f2d99286",
+      "subject": "artwork",
+      "work_slug": "immersed-in-the-act-of-becoming"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "karen-ebbs",
+      "asset": "plotart/artists/karen-ebbs/img/becoming-1-600.webp",
+      "bytes": 50260,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (Apple Wide Color Sharing Profile)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-ahbfq0jgav5",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        600,
+        531
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "f2538e4027fa0dec58c56316eb0aae077c9c4370b433f13977357c5c74d1f92b",
+      "source_sha256": "908b48d0fa5100beeed07f70edaa57c60b27bd8b979c4de9dff4478656374f88",
+      "subject": "artwork",
+      "work_slug": "becoming"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "karen-ebbs",
+      "asset": "plotart/artists/karen-ebbs/img/becoming-1-1200.webp",
+      "bytes": 176768,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (Apple Wide Color Sharing Profile)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-ahbfq0jgav5",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        1200,
+        1062
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "1169287046ce31901afc4cdfaa893f1b768801d2c2bc9c697952dab3f4c55546",
+      "source_sha256": "908b48d0fa5100beeed07f70edaa57c60b27bd8b979c4de9dff4478656374f88",
+      "subject": "artwork",
+      "work_slug": "becoming"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "karen-ebbs",
+      "asset": "plotart/artists/karen-ebbs/img/becoming-1-2000.webp",
+      "bytes": 613772,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (Apple Wide Color Sharing Profile)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-ahbfq0jgav5",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        2000,
+        1770
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "57a86b60166110a416dce18465b6cf9a67550bd9bcdd279946bdda28eb15a145",
+      "source_sha256": "908b48d0fa5100beeed07f70edaa57c60b27bd8b979c4de9dff4478656374f88",
+      "subject": "artwork",
+      "work_slug": "becoming"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "karen-ebbs",
+      "asset": "plotart/artists/karen-ebbs/img/perception-a-best-guess-1-600.webp",
+      "bytes": 23300,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "sRGB (no embedded profile; treated as sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-ahbfq0jgav5",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        600,
+        235
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "37fa541d9d491a847822c7d42e98b0c81a556738f492aaed6dbb303f2dff1160",
+      "source_sha256": "b8e5c84f4f8bfe953632932f3d9972f26eddd3321b29eb208d1a39c231485956",
+      "subject": "artwork",
+      "work_slug": "perception-a-best-guess"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "karen-ebbs",
+      "asset": "plotart/artists/karen-ebbs/img/perception-a-best-guess-1-1200.webp",
+      "bytes": 66628,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "sRGB (no embedded profile; treated as sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-ahbfq0jgav5",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        1200,
+        470
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "1322181ba36f6ab1907c6fa11566803d42a818228a77214f984f61154ce3d813",
+      "source_sha256": "b8e5c84f4f8bfe953632932f3d9972f26eddd3321b29eb208d1a39c231485956",
+      "subject": "artwork",
+      "work_slug": "perception-a-best-guess"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "karen-ebbs",
+      "asset": "plotart/artists/karen-ebbs/img/perception-a-best-guess-1-2000.webp",
+      "bytes": 137868,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "sRGB (no embedded profile; treated as sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-ahbfq0jgav5",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        2000,
+        783
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "86e76f61e5d0cd2932e0f85e9187dcef813362ef7db7993221cbceb9da160e08",
+      "source_sha256": "b8e5c84f4f8bfe953632932f3d9972f26eddd3321b29eb208d1a39c231485956",
+      "subject": "artwork",
+      "work_slug": "perception-a-best-guess"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "karen-ebbs",
+      "asset": "plotart/artists/karen-ebbs/img/a-field-of-all-potentialities-1-600.webp",
+      "bytes": 46878,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (Apple Wide Color Sharing Profile)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-ahbfq0jgav5",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        600,
+        480
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "98cf81326591218da528a4d5711aff1d64f1a137366d75e02f6dd124f8f84a90",
+      "source_sha256": "8c86eab12d434d12d854156ebd43899ca7c190c55e3e18ebf64c76b0f74ade86",
+      "subject": "artwork",
+      "work_slug": "a-field-of-all-potentialities"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "karen-ebbs",
+      "asset": "plotart/artists/karen-ebbs/img/a-field-of-all-potentialities-1-1200.webp",
+      "bytes": 168874,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (Apple Wide Color Sharing Profile)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-ahbfq0jgav5",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        1200,
+        960
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "d4500d8b7d36337a8c76ac98b3c90992aca1f7c2bdb36686b8902a84dc132a17",
+      "source_sha256": "8c86eab12d434d12d854156ebd43899ca7c190c55e3e18ebf64c76b0f74ade86",
+      "subject": "artwork",
+      "work_slug": "a-field-of-all-potentialities"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "karen-ebbs",
+      "asset": "plotart/artists/karen-ebbs/img/a-field-of-all-potentialities-1-2000.webp",
+      "bytes": 415924,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (Apple Wide Color Sharing Profile)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-ahbfq0jgav5",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        2000,
+        1600
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "d7ca7b953ede7aa5f2c5831b6c04fc3633bebd6d41748155283c45a94f4e9d29",
+      "source_sha256": "8c86eab12d434d12d854156ebd43899ca7c190c55e3e18ebf64c76b0f74ade86",
+      "subject": "artwork",
+      "work_slug": "a-field-of-all-potentialities"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "karen-ebbs",
+      "asset": "plotart/artists/karen-ebbs/img/the-act-of-becoming-1-600.webp",
+      "bytes": 25314,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (Apple Wide Color Sharing Profile)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-ahbfq0jgav5",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        600,
+        600
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "93ad29d6d4a9dbdf1459218d8fd206c7735fa221974112f11ebcc53ac04c4503",
+      "source_sha256": "290175485cc1160787927616ed1dd23609b79b9157761d6f210a5ac4a7ab0032",
+      "subject": "artwork",
+      "work_slug": "the-act-of-becoming"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "karen-ebbs",
+      "asset": "plotart/artists/karen-ebbs/img/the-act-of-becoming-1-1200.webp",
+      "bytes": 64338,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (Apple Wide Color Sharing Profile)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-ahbfq0jgav5",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        1200,
+        1200
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "2025f8983fdc6dc879296691ee16b91d956a462abfef722aca266433877c533c",
+      "source_sha256": "290175485cc1160787927616ed1dd23609b79b9157761d6f210a5ac4a7ab0032",
+      "subject": "artwork",
+      "work_slug": "the-act-of-becoming"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "karen-ebbs",
+      "asset": "plotart/artists/karen-ebbs/img/the-act-of-becoming-1-2000.webp",
+      "bytes": 132534,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (Apple Wide Color Sharing Profile)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-ahbfq0jgav5",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        2000,
+        2000
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "ff3cb52d4cbd90b573341cf5f6c92e91558a9ae623d377818cd3d72057930dd7",
+      "source_sha256": "290175485cc1160787927616ed1dd23609b79b9157761d6f210a5ac4a7ab0032",
+      "subject": "artwork",
+      "work_slug": "the-act-of-becoming"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "karen-ebbs",
+      "asset": "plotart/artists/karen-ebbs/img/everthing-is-revealed-eventually-1-600.webp",
+      "bytes": 32886,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (Apple Wide Color Sharing Profile)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-ahbfq0jgav5",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        600,
+        600
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "1e48ce698c3a70c720835a04da0a17c6bc6c600d6f9b8cc00fe0f22eb0df7ad8",
+      "source_sha256": "c94e94bd3672881544c893991c7dddf23663986539a291611b305c4a4be70b3d",
+      "subject": "artwork",
+      "work_slug": "everthing-is-revealed-eventually"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "karen-ebbs",
+      "asset": "plotart/artists/karen-ebbs/img/everthing-is-revealed-eventually-1-1200.webp",
+      "bytes": 92998,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (Apple Wide Color Sharing Profile)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-ahbfq0jgav5",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        1200,
+        1200
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "11239a4d5f216d2ece43eeae423254753c3d2b0f2a7e07a61f4d67b6338f0be2",
+      "source_sha256": "c94e94bd3672881544c893991c7dddf23663986539a291611b305c4a4be70b3d",
+      "subject": "artwork",
+      "work_slug": "everthing-is-revealed-eventually"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "karen-ebbs",
+      "asset": "plotart/artists/karen-ebbs/img/everthing-is-revealed-eventually-1-2000.webp",
+      "bytes": 226918,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (Apple Wide Color Sharing Profile)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-ahbfq0jgav5",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        2000,
+        2000
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "41c549cb73b4a12d866d7a3b11f150d5e6a08ceb9afe78030733ed99dad3115c",
+      "source_sha256": "c94e94bd3672881544c893991c7dddf23663986539a291611b305c4a4be70b3d",
+      "subject": "artwork",
+      "work_slug": "everthing-is-revealed-eventually"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "karen-ebbs",
+      "asset": "plotart/artists/karen-ebbs/img/stillness-speaks-1-600.webp",
+      "bytes": 29844,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (Apple Wide Color Sharing Profile)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-ahbfq0jgav5",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        600,
+        600
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "a9236c5055c2f1821ecd4e91e936c4425bd00b085f4f6d44bfc095a2c8279a33",
+      "source_sha256": "1e3957771553078cad7f3b56bd7af7249da0787e33657fd4dcec5a7ab330e007",
+      "subject": "artwork",
+      "work_slug": "stillness-speaks"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "karen-ebbs",
+      "asset": "plotart/artists/karen-ebbs/img/stillness-speaks-1-1200.webp",
+      "bytes": 72998,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (Apple Wide Color Sharing Profile)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-ahbfq0jgav5",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        1200,
+        1200
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "1f06d05d7d6682b161659718c2d6fde5fac6077b080ae9ca069c858cae04de14",
+      "source_sha256": "1e3957771553078cad7f3b56bd7af7249da0787e33657fd4dcec5a7ab330e007",
+      "subject": "artwork",
+      "work_slug": "stillness-speaks"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "karen-ebbs",
+      "asset": "plotart/artists/karen-ebbs/img/stillness-speaks-1-2000.webp",
+      "bytes": 159418,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (Apple Wide Color Sharing Profile)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-ahbfq0jgav5",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        2000,
+        2000
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "abfbaf7e9bf16e443357ece89edb2c15555ad5d4f43f6e6b5ab289f77ea0f01c",
+      "source_sha256": "1e3957771553078cad7f3b56bd7af7249da0787e33657fd4dcec5a7ab330e007",
+      "subject": "artwork",
+      "work_slug": "stillness-speaks"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "karen-ebbs",
+      "asset": "plotart/artists/karen-ebbs/img/the-layers-beneath-1-600.webp",
+      "bytes": 16776,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "sRGB (no embedded profile; treated as sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-ahbfq0jgav5",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        600,
+        600
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "759ec30f4c7be53735d44542c3516857028763fadf20be50b6d369955b9e35e5",
+      "source_sha256": "46f639010ae32c2adfd5ba12553f561224a3f4747239fa2099496931e31fa46f",
+      "subject": "artwork",
+      "work_slug": "the-layers-beneath"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "karen-ebbs",
+      "asset": "plotart/artists/karen-ebbs/img/the-layers-beneath-1-1200.webp",
+      "bytes": 46418,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "sRGB (no embedded profile; treated as sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-ahbfq0jgav5",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        1200,
+        1200
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "cc2dcb85bb9040770259cde7f9b05564896cb1fd4f201d364f13a964cd1b4ef4",
+      "source_sha256": "46f639010ae32c2adfd5ba12553f561224a3f4747239fa2099496931e31fa46f",
+      "subject": "artwork",
+      "work_slug": "the-layers-beneath"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "karen-ebbs",
+      "asset": "plotart/artists/karen-ebbs/img/the-layers-beneath-1-2000.webp",
+      "bytes": 105074,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "sRGB (no embedded profile; treated as sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-ahbfq0jgav5",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        2000,
+        2000
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "5f677482b2a86eb761fa6fc8a87f5b59981acec37ce4128afa8254c692d5e6d6",
+      "source_sha256": "46f639010ae32c2adfd5ba12553f561224a3f4747239fa2099496931e31fa46f",
+      "subject": "artwork",
+      "work_slug": "the-layers-beneath"
     }
   ],
   "legacy_undeclared": [
