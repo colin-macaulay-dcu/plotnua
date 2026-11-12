@@ -19,8 +19,10 @@ Guards (every run; --check also refuses a stale generated region):
   S6 imagery: the page carries no images other than PlotNua's own brand assets.
   S7 freshness: the evidence is no older than 30 days; every time-limited price is a dated schedule ending in an
      open 'from' period, so the page stays accurate after a price change without a rebuild.
-  S8 disclosure: "PlotNua has no commercial arrangement with any maker listed here" is present and no listed
-     maker has an ACTIVE entry in atlas-tools/commercial-arrangements-register.json.
+  S8 disclosure: every maker with agreed-but-not-live referral terms (AGREED_NOT_LIVE, from the Atlas Partners
+     table) is named in its own disclosure sentence; "PlotNua has no commercial arrangement with any other maker
+     listed here" is present; and no listed maker has an ACTIVE entry in
+     atlas-tools/commercial-arrangements-register.json (an active arrangement needs a new, approved disclosure).
   S9 parent: the first link in <main> goes to Garden Retreat; the hero states the number of makers compared.
 
   python3 atlas-tools/build-garden-saunas-guide.py            build the region, then run the guards
@@ -43,7 +45,11 @@ ATLAS_NAME = {v: k for k, v in ALIAS.items()}
 EXCLUDED = {"TimberIN": "founder instruction, 12 Nov 2026: excluded until Republic of Ireland delivery is verified"}
 BESPOKE_ONLY = {"The Mobile Pods"}          # no products in the sauna explorer; public PlotNua showcase
 EXCLUDED_TEXT = ["TimberIN", "woodenhottubsale", "PLOTNUA4"]
-DISCLOSURE = "PlotNua has no commercial arrangement with any maker listed here"
+DISCLOSURE = "PlotNua has no commercial arrangement with any other maker listed here"
+# Atlas Partners recxATM8LXV9vlyEA, read 12 Nov 2026: Irish Sauna Company, "Agreed — not live" (terms agreed
+# 29 Oct 2026, not operational, no start date). Wording PROPOSED, pending founder approval.
+AGREED_NOT_LIVE = {"Irish Sauna Company": "PlotNua has agreed referral terms with Irish Sauna Company that are not "
+                   "yet in operation; once they start, PlotNua would receive a commission on sales it refers."}
 NS = "Not stated by the maker"
 ROUTE = {"kit": "Kit", "assembled": "Delivered assembled", "made-to-order": "Made to order", "installed": "Supplied and installed"}
 LEVEL = {"supplier": "Maker-wide statement", "product": "Stated on the product page"}
@@ -263,8 +269,12 @@ def guards(ev, page, files):
                     if dt.date.fromisoformat(b["from"]) != dt.date.fromisoformat(a["until"]) + dt.timedelta(days=1):
                         bad.append("S7 %s / %s: price periods do not join up" % (m["maker"], p["name"]))
     # S8
-    if DISCLOSURE not in re.sub(r"\s+", " ", page):
+    flat = re.sub(r"\s+", " ", page)
+    if DISCLOSURE not in flat:
         bad.append("S8 the no-commercial-arrangement disclosure is missing")
+    for n, sentence in AGREED_NOT_LIVE.items():
+        if n in names and sentence not in flat:
+            bad.append("S8 %s has agreed referral terms: its disclosure sentence is missing" % n)
     active = {a["key"] for a in json.loads(files["_register"])["active"]}
     for n in names:
         if hashlib.sha256(ATLAS_NAME.get(n, n).encode()).hexdigest()[:12] in active:
@@ -326,6 +336,8 @@ def prove(ev, page, files):
     mut("S7 a time-limited price without its later price", f_ev=lambda e: [p["price"].update(schedule=p["price"]["schedule"][:1]) for m in e["makers"] for p in m["products"] if p["price"].get("schedule")])
     mut("S4 a maker without a visible summary", f_ev=lambda e: e["makers"][0].pop("summary"))
     mut("S8 disclosure removed", f_page=lambda p: p.replace(DISCLOSURE, "PlotNua is independent"))
+    mut("S8 agreed-not-live disclosure removed",
+        f_page=lambda p: p.replace(AGREED_NOT_LIVE["Irish Sauna Company"], "PlotNua is independent."))
     mut("S8 an active arrangement", f_files=lambda fs: fs.update(_register=json.dumps({"active": [{"key": hashlib.sha256(b"OGNYX").hexdigest()[:12]}]})))
     mut("S9 parent link removed", f_page=lambda p: p.replace('<p class="parent"><a href="discovery-garden-retreat.html">', '<p class="parent"><a href="discoveries.html">', 1))
     ok = True
