@@ -275,6 +275,20 @@ def check(src, base):
         bad.append("F the garden plan is missing")
     elif not re.search(r"illustrative", plan.group(0), re.I) or not re.search(r"not to scale", plan.group(0), re.I):
         bad.append("F the garden plan must say it is illustrative and not to scale")
+    # A (12 Nov 2026, SEO-GRR): the early "Garden rooms in Ireland, compared." block must still say exactly
+    # what its builder derives from the page's own Maker Explorer data (counts, availability, price kinds,
+    # freshness dates) and the makers' profiles. Run here so the Image rights gate refuses a stale block.
+    if "PN-LG-AT-A-GLANCE v1 · BEGIN" in src:
+        import importlib.util
+        spec = importlib.util.spec_from_file_location("lg_glance", os.path.join(ROOT, "atlas-tools", "build-lg-at-a-glance.py"))
+        lg = importlib.util.module_from_spec(spec); spec.loader.exec_module(lg)
+        try:
+            fresh = lg.build(src)
+        except SystemExit as e:
+            bad.append("A the at-a-glance builder refuses: %s" % e)
+        else:
+            if lg.current_block(src) != fresh:
+                bad.append("A the at-a-glance block no longer matches the Maker Explorer data: run atlas-tools/build-lg-at-a-glance.py")
     # D
     if p.bad or p.stack:
         bad.append("D tags do not balance (%d mismatches, %d open)" % (p.bad, len(p.stack)))
@@ -304,7 +318,8 @@ FAULTS = [
     ("details opened", lambda s: s.replace('<details class="faq-item">', '<details class="faq-item" open>', 1), "D"),
     ("footer edited", lambda s: s.replace("Related Discoveries", "Related", 1), "H"),
     ("undeclared stylesheet", lambda s: s.replace("</head>", '<link rel="stylesheet" href="x.css">\n</head>', 1), "H"),
-    ("an at-a-glance price note edited", lambda s: s.replace("Price not currently verified, so none is shown.", "From €9,000.", 1), "C"),
+    ("explorer data changed under the at-a-glance block", lambda s: re.sub(r'"figures":\{"products":(\d+)', lambda m: '"figures":{"products":%d' % (int(m.group(1)) + 1), s, count=1), "A"),
+    ("an at-a-glance price note edited", lambda s: s.replace("Published price not currently verified, so not shown (all 5).", "From €9,000.", 1), "C"),
     ("an undeclared supplier card is added", lambda s: s.replace('<h3 class="pn-sg-name">Gardenhouse24 Ireland</h3>', '<h3 class="pn-sg-name">Invented Garden Co</h3>', 1), "C"),
 ]
 
