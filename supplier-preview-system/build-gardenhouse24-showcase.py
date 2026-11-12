@@ -273,7 +273,8 @@ def build():
   <div class="pn-two" role="group" aria-label="Two ways to explore">
     <div class="pn-two-opt"><p class="pn-two-k">Explore yourself</p><p class="pn-two-t">Compare Gardenhouse24 with other makers of garden rooms, saunas and hot tubs on PlotNua, side by side.</p>
       <a class="pn-two-a" href="../discovery-living-in-the-garden.html#explore-makers">Garden rooms and cabins <span aria-hidden="true">&rarr;</span></a>
-      <a class="pn-two-a" href="../discovery-garden-retreat.html#suppliers">Saunas and hot tubs <span aria-hidden="true">&rarr;</span></a></div>
+      <a class="pn-two-a" href="../discovery-garden-retreat.html#suppliers">Saunas and hot tubs <span aria-hidden="true">&rarr;</span></a>
+      <a class="pn-two-a" href="../garden-saunas-ireland.html">Garden saunas in Ireland, compared <span aria-hidden="true">&rarr;</span></a></div>
     <div class="pn-two-opt is-help"><p class="pn-two-k">Let PlotNua do the homework</p><p class="pn-two-t">Tell us what you&rsquo;re looking for. We&rsquo;ll help you narrow the options and, when you&rsquo;re ready, introduce you to Gardenhouse24.</p>
       <ul class="pn-two-btns" role="list">{routes}</ul></div>
   </div>

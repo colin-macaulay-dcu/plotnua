@@ -682,13 +682,14 @@ console.log('\n  PART A4 · RETURN PATH (history state, no URL, no storage)\n');
     'discoveries.html',
     'garden-offices-ireland.html',
     'garden-room-prices-ireland.html',
+    'garden-saunas-ireland.html',   // Garden Saunas in Ireland guide (founder instruction, 12 Nov 2026; local build)
     'ideas.html',
     'search.html',
     'shomera-garden-rooms.html',
     'triq-cube.html',
   ];
   const sameSet = (a, b) => JSON.stringify([...a].sort()) === JSON.stringify([...b].sort());
-  check('H12b 33 faded + 9 nofade = 42 named public surfaces (incl. the 404)',
+  check('H12b 33 faded + 10 nofade = 43 named public surfaces (incl. the 404)',
     sameSet(seen.fadedFiles, H12_FADED) && sameSet(seen.nofadeFiles, H12_NOFADE),
     JSON.stringify({
       fadedAdded: seen.fadedFiles.filter((f) => !H12_FADED.includes(f)),

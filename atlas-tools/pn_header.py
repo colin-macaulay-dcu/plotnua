@@ -54,6 +54,7 @@ IDENTITY_PAGES = [
     "shomera-garden-rooms.html", # noindex review draft
     "concept-modular-garden-offices.html", "all-in-one-cabins-garden-rooms.html",
     "garden-offices-ireland.html",   # SEO GR7-GR14 garden offices guide, live 9 Nov 2026 (founder approval, 9 Nov 2026)
+    "garden-saunas-ireland.html",    # Garden Saunas in Ireland guide (founder instruction, 12 Nov 2026; local build)
     "about.html", "contact.html", "privacy.html", "terms.html", "cookie-policy.html",
     "artist-register.html", "404.html", "thanks.html", "discoveries.html",
     "discovery-hidden-bins.html", "discovery-living-in-the-garden.html",

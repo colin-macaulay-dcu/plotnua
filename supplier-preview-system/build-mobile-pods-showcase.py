@@ -282,7 +282,8 @@ def wellness_section(bundle):
   <div><p class="mp-k">Wellness</p><h2 class="mp-h2" id="mp-wl-h">{E(w["title"])}</h2>
   <p class="mp-p">{E(w["body"])}</p>
   <p class="mp-price">{E(w["price"])}</p>
-  <p class="mp-pnote">{E(w["priceNote"])}</p></div>
+  <p class="mp-pnote">{E(w["priceNote"])}</p>
+  <p class="mp-pnote">Comparing saunas? <a href="../garden-saunas-ireland.html">See PlotNua&rsquo;s guide to garden saunas in Ireland</a>.</p></div>
   {fig(I[w["image"]], bundle, s["creditHref"])}
 </div></div></section>
 ''')

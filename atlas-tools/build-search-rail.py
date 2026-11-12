@@ -215,7 +215,9 @@ pages = sorted(set(pages + ["index.html"]))
 #    updated then, so main refused 35/36 — recorded here by the DISC-038 Stage 12 release preparation).
 # 37 since DISC-038 The Hidden Shelter (release candidate prepared 10 Nov 2026; founder release approval required).
 # 38 since DISC-040 The Home You Build (release candidate prepared 10 Nov 2026; founder release approval required).
-EXPECTED_PAGES = 38
+# 39 since garden-saunas-ireland.html, the Garden Saunas in Ireland guide (founder instruction, 12 Nov 2026;
+#    local build, founder release approval required), entered the sitemap.
+EXPECTED_PAGES = 39
 if len(pages) != EXPECTED_PAGES:
     die("expected %d public pages, found %d — refusing to guess the rail scope. "
         "If a public page was added or removed, update EXPECTED_PAGES "
