@@ -1,0 +1,767 @@
+{
+ "schema": "plotnua.proposed-atlas-updates.v1",
+ "date": "2026-11-12",
+ "status": "PROPOSED — not written to Atlas. Requires founder approval; the Atlas write, then a scoped read-back and publish-targeted-update.py, publish these to the website.",
+ "base": "appoLZFWesvoPhZGR",
+ "readBack": "Current values read read-only from Atlas through the Airtable connector on 12 Nov 2026.",
+ "irishSaunaCompany": {
+  "organisation": "recLW0vZbkBGPRkZ9",
+  "evidence": {
+   "checked": "2026-11-12",
+   "catalogue": "https://irishsaunacompany.com/collections/all and /products.json list 8 products; garden saunas: The Clare, The Inis Mor",
+   "aran": "https://irishsaunacompany.com/products/the-aran-4-6-person-luxury-garden-sauna -> HTTP 404; not in catalogue; site search 'aran' returns no product",
+   "skellig": "https://irishsaunacompany.com/products/the-skellig-luxury-8-person-garden-sauna -> HTTP 404; not in catalogue; site search 'skellig' returns no product",
+   "inis": "https://irishsaunacompany.com/products/the-inis-2-4-person-garden-sauna redirects to /products/the-inis-mor-2-4-person-garden-sauna, titled 'The Inis Mor | 2–4 Person Garden Sauna'",
+   "prices": "Clare: 'Current introductory price: €6,500 including VAT, available until 29 November 2026' / 'Price increases to €7,500 including VAT on 30 November 2026'. Inis Mor: €8,400 until 29 Nov 2026 / €9,300 from 30 Nov 2026."
+  },
+  "updates": [
+   {
+    "id": "ISC-1",
+    "table": "Product Pricing",
+    "record": "recBSFDzqVB3usnIJ",
+    "product": "recQszPvHe5Cu7wY5 The Aran",
+    "writes": {
+     "Status": [
+      "Verified",
+      "Archived"
+     ],
+     "Notes": [
+      "(27 Oct note)",
+      "append: 'ARCHIVED 2026-11-12: product no longer listed by the maker (product URL 404; absent from catalogue and site search). Historical price kept. Not described as discontinued.'"
+     ]
+    },
+    "effect": "Generator reads no Verified price -> HELD (evidence-incomplete) -> leaves the Garden Retreat Maker Explorer, its counts and Search. Record and price history kept."
+   },
+   {
+    "id": "ISC-2",
+    "table": "Product Pricing",
+    "record": "recZiDlNEHs8hU3Tj",
+    "product": "reccdnuccLgq8dlqh The Skellig",
+    "writes": {
+     "Status": [
+      "Verified",
+      "Archived"
+     ],
+     "Notes": [
+      "(27 Oct note)",
+      "append: as ISC-1"
+     ]
+    },
+    "effect": "As ISC-1. Its three-phase note in maker-product-notes.json then no longer displays (the product is not published)."
+   },
+   {
+    "id": "ISC-3",
+    "table": "Products",
+    "record": "rect8UKFyZodW593p",
+    "writes": {
+     "Product Name": [
+      "The Inis | 2–4 Person Garden Sauna",
+      "The Inis Mor | 2–4 Person Garden Sauna"
+     ],
+     "Product URL": [
+      "https://irishsaunacompany.com/products/the-inis-2-4-person-garden-sauna",
+      "https://irishsaunacompany.com/products/the-inis-mor-2-4-person-garden-sauna"
+     ]
+    },
+    "note": "maker-product-links-v1.json must be re-verified for the new URL (page_verified) before publication."
+   },
+   {
+    "id": "ISC-4",
+    "table": "Product Pricing",
+    "records": [
+     "recWVOoCFSetBnk8X",
+     "recwBrnjeLTTGhYp7"
+    ],
+    "when": "now",
+    "writes": {
+     "Notes": [
+      "'…until 30 November 2026…'",
+      "correct to 'until 29 November 2026; increases to €7,500 (Clare) / €9,300 (Inis Mor) including VAT on 30 November 2026' (re-read 12 Nov 2026)"
+     ],
+     "Last Price Check": [
+      "2026-10-27",
+      "2026-11-12"
+     ]
+    }
+   },
+   {
+    "id": "ISC-5",
+    "table": "Product Pricing",
+    "records": [
+     "recWVOoCFSetBnk8X",
+     "recwBrnjeLTTGhYp7"
+    ],
+    "when": "on 30 Nov 2026, after re-reading the product pages",
+    "writes": {
+     "Base Price": [
+      [
+       6500,
+       8400
+      ],
+      [
+       7500,
+       9300
+      ]
+     ],
+     "Price Type": [
+      "Sale Price",
+      "Standard Price (if the page no longer calls it introductory)"
+     ],
+     "Last Price Check": [
+      "2026-11-12",
+      "2026-11-30"
+     ]
+    },
+    "then": "remove the two validUntil notes from maker-product-notes.json and rebuild the Maker Explorer; G15 refuses any explorer rebuild from 1 Dec 2026 until this is done."
+   }
+  ]
+ },
+ "pineca": {
+  "organisation": "recAbCMI3LkwWO3Z6",
+  "evidence": {
+   "checked": "2026-11-12",
+   "method": "All 34 published Pineca sauna product pages read on pineca.ie; 'listed price' = the struck-through regular price beside the time-limited BLACK FRIDAY DEAL (offer stated to end Thursday 26 November, 23:59). Promotional prices are not recorded, consistent with the Powersheds decision of 10 Nov 2026.",
+   "vat": "ELDA and DELLA pages state 'The price includes … delivery, offloading, VAT'. The 12 HELGA barrel-sauna pages list what the price includes without VAT or delivery, and the word 'VAT' does not appear on the page; 'Free delivery in 6-8 weeks' is stated."
+  },
+  "summary": {
+   "records": 34,
+   "priceChanges": 27,
+   "unchangedPrice": 7,
+   "vatToUnknown": 12
+  },
+  "updates": [
+   {
+    "product": "recnnzXeiXIoKdP7d",
+    "name": "Outdoor Barrel Sauna HELGA 17 — 46 mm, 1.7 m",
+    "pricingRecord": "recHa1qLMW20q89l7",
+    "url": "https://www.pineca.ie/outdoor-barrel-sauna-helga-17-46mm-1-7m-1-97m.html",
+    "listedPrice12Nov": 5241,
+    "promotionalPrice12Nov_notRecorded": 5003,
+    "writes": {
+     "Last Price Check": [
+      "2026-09-23",
+      "2026-11-12"
+     ],
+     "Base Price": [
+      5157,
+      5241
+     ],
+     "Price Includes VAT": [
+      "Yes",
+      "Unknown"
+     ]
+    }
+   },
+   {
+    "product": "recScMV22mIrgij6w",
+    "name": "Outdoor Barrel Sauna HELGA 17 — panoramic window, full height",
+    "pricingRecord": "recc1y0QQgslsuaIm",
+    "url": "https://www.pineca.ie/outdoor-barrel-sauna-helga17-with-panoramic-windowfull-height.html",
+    "listedPrice12Nov": 6106,
+    "promotionalPrice12Nov_notRecorded": 5829,
+    "writes": {
+     "Last Price Check": [
+      "2026-09-23",
+      "2026-11-12"
+     ],
+     "Base Price": [
+      6008,
+      6106
+     ],
+     "Price Includes VAT": [
+      "Yes",
+      "Unknown"
+     ]
+    }
+   },
+   {
+    "product": "rec6oVostIGd6JNxR",
+    "name": "Outdoor Barrel Sauna HELGA 17 — panoramic window, half-height",
+    "pricingRecord": "recEzf4dfc4ugK9kD",
+    "url": "https://www.pineca.ie/outdoor-barrel-sauna-helga-17-with-panoramic-window-half-height.html",
+    "listedPrice12Nov": 5625,
+    "promotionalPrice12Nov_notRecorded": 5369,
+    "writes": {
+     "Last Price Check": [
+      "2026-09-23",
+      "2026-11-12"
+     ],
+     "Base Price": [
+      5535,
+      5625
+     ],
+     "Price Includes VAT": [
+      "Yes",
+      "Unknown"
+     ]
+    }
+   },
+   {
+    "product": "rechMoa1ZWtcAMvKX",
+    "name": "Outdoor Barrel Sauna HELGA 24 — 46 mm, 2.4 m",
+    "pricingRecord": "recQ3tQPOpvEewyxm",
+    "url": "https://www.pineca.ie/outdoor-barrel-sauna-helga-24-46mm-2-4m-1-97m.html",
+    "listedPrice12Nov": 7018,
+    "promotionalPrice12Nov_notRecorded": 6699,
+    "writes": {
+     "Last Price Check": [
+      "2026-09-23",
+      "2026-11-12"
+     ],
+     "Base Price": [
+      6905,
+      7018
+     ],
+     "Price Includes VAT": [
+      "Yes",
+      "Unknown"
+     ]
+    }
+   },
+   {
+    "product": "recmDjaXN4SF70Ifr",
+    "name": "Outdoor Barrel Sauna HELGA 30 — 46 mm, 3.0 m",
+    "pricingRecord": "recs3rSZ2a0zaQLva",
+    "url": "https://www.pineca.ie/outdoor-barrel-sauna-helga-30-46mm-3m-1-97m.html",
+    "listedPrice12Nov": 7815,
+    "promotionalPrice12Nov_notRecorded": 7460,
+    "writes": {
+     "Last Price Check": [
+      "2026-09-23",
+      "2026-11-12"
+     ],
+     "Base Price": [
+      7690,
+      7815
+     ],
+     "Price Includes VAT": [
+      "Yes",
+      "Unknown"
+     ]
+    }
+   },
+   {
+    "product": "recJCju35GC3GOUAo",
+    "name": "Outdoor Barrel Sauna HELGA 40 — panoramic window, full height",
+    "pricingRecord": "recvZ7ioiOLKd8HHY",
+    "url": "https://www.pineca.ie/outdoor-barrel-sauna-with-changing-room-helga-40-46mm-4m-1-97m-panoramic-window-full-height.html",
+    "listedPrice12Nov": 11298,
+    "promotionalPrice12Nov_notRecorded": 10784,
+    "writes": {
+     "Last Price Check": [
+      "2026-09-23",
+      "2026-11-12"
+     ],
+     "Base Price": [
+      11118,
+      11298
+     ],
+     "Price Includes VAT": [
+      "Yes",
+      "Unknown"
+     ]
+    }
+   },
+   {
+    "product": "reckAzBLbtQLK46Gz",
+    "name": "Outdoor Barrel Sauna HELGA 40 — panoramic window, half-height",
+    "pricingRecord": "recia2Cl5zESazbNt",
+    "url": "https://www.pineca.ie/outdoor-barrel-sauna-with-changing-room-helga-40-46mm-4m-1-97m-panoramic-window-half-height.html",
+    "listedPrice12Nov": 10818,
+    "promotionalPrice12Nov_notRecorded": 10326,
+    "writes": {
+     "Last Price Check": [
+      "2026-09-23",
+      "2026-11-12"
+     ],
+     "Base Price": [
+      10645,
+      10818
+     ],
+     "Price Includes VAT": [
+      "Yes",
+      "Unknown"
+     ]
+    }
+   },
+   {
+    "product": "recUHbn0U2qqKQYCl",
+    "name": "Outdoor Barrel Sauna with changing room HELGA 35 — 46 mm, 3.5 m",
+    "pricingRecord": "recXfVe2cI2tZAmoq",
+    "url": "https://www.pineca.ie/outdoor-barrel-sauna-with-changing-room-helga-35-46mm-3-5m-1-97m.html",
+    "listedPrice12Nov": 9826,
+    "promotionalPrice12Nov_notRecorded": 9379,
+    "writes": {
+     "Last Price Check": [
+      "2026-09-23",
+      "2026-11-12"
+     ],
+     "Base Price": [
+      9669,
+      9826
+     ],
+     "Price Includes VAT": [
+      "Yes",
+      "Unknown"
+     ]
+    }
+   },
+   {
+    "product": "rec7EZDz2AVIVHqwb",
+    "name": "Outdoor Barrel Sauna with changing room HELGA 40 — 46 mm, 4.0 m",
+    "pricingRecord": "recYmL1sys7iwOvpp",
+    "url": "https://www.pineca.ie/outdoor-barrel-sauna-with-changing-room-helga-40-46mm-4m-1-97m.html",
+    "listedPrice12Nov": 10433,
+    "promotionalPrice12Nov_notRecorded": 9959,
+    "writes": {
+     "Last Price Check": [
+      "2026-09-23",
+      "2026-11-12"
+     ],
+     "Base Price": [
+      10266,
+      10433
+     ],
+     "Price Includes VAT": [
+      "Yes",
+      "Unknown"
+     ]
+    }
+   },
+   {
+    "product": "rech22hBIhQ5ypYrf",
+    "name": "Outdoor Barrel Sauna with changing room HELGA 45 — 46 mm, 4.5 m",
+    "pricingRecord": "recIIefw6I8jSyAMK",
+    "url": "https://www.pineca.ie/outdoor-barrel-sauna-with-changing-room-helga-45.html",
+    "listedPrice12Nov": 11060,
+    "promotionalPrice12Nov_notRecorded": 10557,
+    "writes": {
+     "Last Price Check": [
+      "2026-09-23",
+      "2026-11-12"
+     ],
+     "Base Price": [
+      10883,
+      11060
+     ],
+     "Price Includes VAT": [
+      "Yes",
+      "Unknown"
+     ]
+    }
+   },
+   {
+    "product": "recemLQAqOSIKhCI5",
+    "name": "Outdoor Barrel Sauna with changing room HELGA 48 — 46 mm, 4.8 m",
+    "pricingRecord": "recLM0lLRZLImPrhY",
+    "url": "https://www.pineca.ie/outdoor-barrel-sauna-with-changing-room-helga-48.html",
+    "listedPrice12Nov": 11324,
+    "promotionalPrice12Nov_notRecorded": 10809,
+    "writes": {
+     "Last Price Check": [
+      "2026-09-23",
+      "2026-11-12"
+     ],
+     "Base Price": [
+      11143,
+      11324
+     ],
+     "Price Includes VAT": [
+      "Yes",
+      "Unknown"
+     ]
+    }
+   },
+   {
+    "product": "reciclyouGByVnjyy",
+    "name": "Outdoor Barrel Sauna with changing room HELGA 59 — 46 mm, 5.9 m",
+    "pricingRecord": "recUPyyqhbwJSRyQU",
+    "url": "https://www.pineca.ie/outdoor-barrel-sauna-with-changing-room-helga-59.html",
+    "listedPrice12Nov": 13498,
+    "promotionalPrice12Nov_notRecorded": 12884,
+    "writes": {
+     "Last Price Check": [
+      "2026-09-23",
+      "2026-11-12"
+     ],
+     "Base Price": [
+      13282,
+      13498
+     ],
+     "Price Includes VAT": [
+      "Yes",
+      "Unknown"
+     ]
+    }
+   },
+   {
+    "product": "rec3ZEySd0n7wowm2",
+    "name": "Outdoor Sauna DELLA 34 mm + Cladding — 2.6 × 2.1 m, 3.8 m²",
+    "pricingRecord": "recVD42SfFz8Kf6ho",
+    "url": "https://www.pineca.ie/outdoor-sauna-della-34mm-cladding-2-6x2-1m-3-8m2.html",
+    "listedPrice12Nov": 4935,
+    "promotionalPrice12Nov_notRecorded": 4711,
+    "writes": {
+     "Last Price Check": [
+      "2026-09-23",
+      "2026-11-12"
+     ],
+     "Base Price": [
+      4856,
+      4935
+     ]
+    }
+   },
+   {
+    "product": "recFozPL70R9FYfDj",
+    "name": "Outdoor Sauna DELLA — 2.6 × 2.6 m, 5 m²",
+    "pricingRecord": "recVJXxIYrf48VhuU",
+    "url": "https://www.pineca.ie/outdoor-sauna-della-34mm-cladding-2-6x2-6m-5m2.html",
+    "listedPrice12Nov": 5292,
+    "promotionalPrice12Nov_notRecorded": 5051,
+    "writes": {
+     "Last Price Check": [
+      "2026-09-23",
+      "2026-11-12"
+     ],
+     "Base Price": [
+      5208,
+      5292
+     ]
+    }
+   },
+   {
+    "product": "recaYnMVQyFJSSSBw",
+    "name": "Outdoor Sauna DELLA — 3.6 × 2.1 m, 5.5 m² + 5 m² terrace",
+    "pricingRecord": "recOujExkah91IgYQ",
+    "url": "https://www.pineca.ie/outdoor-sauna-della-34mm-cladding-3-6x2-1m-5-5m2-terrace-5m2.html",
+    "listedPrice12Nov": 8586,
+    "promotionalPrice12Nov_notRecorded": 7969,
+    "writes": {
+     "Last Price Check": [
+      "2026-09-23",
+      "2026-11-12"
+     ]
+    }
+   },
+   {
+    "product": "recs5RhdwFIrdEh0o",
+    "name": "Outdoor Sauna DELLA — 3.8 m² + 3 m² terrace",
+    "pricingRecord": "rechUKE6pn6waSTXt",
+    "url": "https://www.pineca.ie/outdoor-sauna-della-34mm-cladding-2-6x2-1m-3-8m2-terrace-3m2.html",
+    "listedPrice12Nov": 6509,
+    "promotionalPrice12Nov_notRecorded": 6214,
+    "writes": {
+     "Last Price Check": [
+      "2026-09-23",
+      "2026-11-12"
+     ],
+     "Base Price": [
+      6405,
+      6509
+     ]
+    }
+   },
+   {
+    "product": "recIasmbt67BrogkF",
+    "name": "Outdoor Sauna ELDA 44 mm — 2 × 2 m, 4 m²",
+    "pricingRecord": "rec3CzCVK0EdcpYAK",
+    "url": "https://www.pineca.ie/outdoor-sauna-elda-44mm-2x2m-4m2.html",
+    "listedPrice12Nov": 4083,
+    "promotionalPrice12Nov_notRecorded": 3898,
+    "writes": {
+     "Last Price Check": [
+      "2026-09-23",
+      "2026-11-12"
+     ],
+     "Base Price": [
+      4018,
+      4083
+     ]
+    }
+   },
+   {
+    "product": "recRWg0ZciauFPdlC",
+    "name": "Outdoor Sauna ELDA 44 mm — 2.5 × 2.9 m, 7 m²",
+    "pricingRecord": "recz0pFK5eU0M3Y7c",
+    "url": "https://www.pineca.ie/outdoor-sauna-elda-44mm-2-5x2-9m-7m2.html",
+    "listedPrice12Nov": 4552,
+    "promotionalPrice12Nov_notRecorded": 4346,
+    "writes": {
+     "Last Price Check": [
+      "2026-09-23",
+      "2026-11-12"
+     ],
+     "Base Price": [
+      4480,
+      4552
+     ]
+    }
+   },
+   {
+    "product": "recev6BrPKTiWkomb",
+    "name": "Outdoor Sauna ELDA 44 mm — 2.5 × 3.2 m, 8 m²",
+    "pricingRecord": "rectL9YuPcQKlCdIw",
+    "url": "https://www.pineca.ie/outdoor-sauna-elda-44mm-2-5x3-2m-8m2.html",
+    "listedPrice12Nov": 4928,
+    "promotionalPrice12Nov_notRecorded": 4704,
+    "writes": {
+     "Last Price Check": [
+      "2026-09-23",
+      "2026-11-12"
+     ],
+     "Base Price": [
+      4849,
+      4928
+     ]
+    }
+   },
+   {
+    "product": "rec4qnJON1gEbCT62",
+    "name": "Outdoor Sauna ELDA 44 mm — 3 × 4 m, 12 m²",
+    "pricingRecord": "rec1UGbGGBmxd49rJ",
+    "url": "https://www.pineca.ie/outdoor-sauna-elda-44mm-3x4m-12m2.html",
+    "listedPrice12Nov": 6396,
+    "promotionalPrice12Nov_notRecorded": 6106,
+    "writes": {
+     "Last Price Check": [
+      "2026-09-23",
+      "2026-11-12"
+     ],
+     "Base Price": [
+      6294,
+      6396
+     ]
+    }
+   },
+   {
+    "product": "recwW2OeFYlhQ1o20",
+    "name": "Outdoor Sauna ELDA 44 mm — 4 × 4 m, 16 m² (3 rooms)",
+    "pricingRecord": "reck6UDe9koAT3k9D",
+    "url": "https://www.pineca.ie/outdoor-sauna-elda-44mm-4x4m-16m2-3rooms.html",
+    "listedPrice12Nov": 7559,
+    "promotionalPrice12Nov_notRecorded": 7216,
+    "writes": {
+     "Last Price Check": [
+      "2026-09-23",
+      "2026-11-12"
+     ],
+     "Base Price": [
+      7438,
+      7559
+     ]
+    }
+   },
+   {
+    "product": "reciOtvf4FhzPE7vz",
+    "name": "Outdoor Sauna ELDA 44 mm — 4 × 4 m, 16 m² (4 rooms)",
+    "pricingRecord": "recjUvyFlH1REsbm1",
+    "url": "https://www.pineca.ie/outdoor-sauna-elda-44mm-4x4m-16m2-4rooms.html",
+    "listedPrice12Nov": 7815,
+    "promotionalPrice12Nov_notRecorded": 7460,
+    "writes": {
+     "Last Price Check": [
+      "2026-09-23",
+      "2026-11-12"
+     ],
+     "Base Price": [
+      7690,
+      7815
+     ]
+    }
+   },
+   {
+    "product": "recaBRv5sobM9Exvy",
+    "name": "Outdoor Sauna ELDA 44 mm — 5 × 5 m, 25 m² (3 rooms)",
+    "pricingRecord": "rec0N1Gey7UZ5DVbh",
+    "url": "https://www.pineca.ie/outdoor-sauna-elda-44mm-5x5m-25m2-3rooms.html",
+    "listedPrice12Nov": 10226,
+    "promotionalPrice12Nov_notRecorded": 9561,
+    "writes": {
+     "Last Price Check": [
+      "2026-09-23",
+      "2026-11-12"
+     ]
+    }
+   },
+   {
+    "product": "recME6y19ziTIzC5J",
+    "name": "Outdoor Sauna ELDA 44 mm — 5 × 5 m, 25 m² (4 rooms)",
+    "pricingRecord": "recNwT50T44hOSpTI",
+    "url": "https://www.pineca.ie/outdoor-sauna-elda-44mm-5x5m-25m2-4-rooms.html",
+    "listedPrice12Nov": 10638,
+    "promotionalPrice12Nov_notRecorded": 9961,
+    "writes": {
+     "Last Price Check": [
+      "2026-09-23",
+      "2026-11-12"
+     ]
+    }
+   },
+   {
+    "product": "recfWu1hLmcJPZSo7",
+    "name": "Outdoor Sauna ELDA 44 mm — 5 × 7.5 m, 25 m² (3 rooms) + 12 m² terrace",
+    "pricingRecord": "recHAoTqpM44DvlvO",
+    "url": "https://www.pineca.ie/outdoor-sauna-elda-44mm-5x7-5m-25m2-3rooms-terrace-12m2.html",
+    "listedPrice12Nov": 11846,
+    "promotionalPrice12Nov_notRecorded": 11307,
+    "writes": {
+     "Last Price Check": [
+      "2026-09-23",
+      "2026-11-12"
+     ],
+     "Base Price": [
+      11656,
+      11846
+     ]
+    }
+   },
+   {
+    "product": "rec6BCzxZ5jITxE8Q",
+    "name": "Outdoor Sauna ELDA 44 mm — 5 × 7.5 m, 25 m² (4 rooms) + 12 m² terrace",
+    "pricingRecord": "recMXlnSL6SVsiulC",
+    "url": "https://www.pineca.ie/outdoor-sauna-elda-44mm-5x7-5m-25m2-4rooms-terrace-12m2.html",
+    "listedPrice12Nov": 12265,
+    "promotionalPrice12Nov_notRecorded": 11707,
+    "writes": {
+     "Last Price Check": [
+      "2026-09-23",
+      "2026-11-12"
+     ],
+     "Base Price": [
+      12069,
+      12265
+     ]
+    }
+   },
+   {
+    "product": "reczDDWlkGCzinMCm",
+    "name": "Outdoor Sauna with changing room DELLA — 3.6 × 2.1 m, 5.5 m²",
+    "pricingRecord": "rec4Nqtit8qOIuZtE",
+    "url": "https://www.pineca.ie/outdoor-sauna-with-changing-room-della-34mm-cladding-3-6x2-1m-5-5m2.html",
+    "listedPrice12Nov": 6784,
+    "promotionalPrice12Nov_notRecorded": 6475,
+    "writes": {
+     "Last Price Check": [
+      "2026-09-23",
+      "2026-11-12"
+     ],
+     "Base Price": [
+      6676,
+      6784
+     ]
+    }
+   },
+   {
+    "product": "reck2zLfXcxNSIgJ8",
+    "name": "Outdoor Sauna with changing room DELLA — 4.6 × 2.1 m, 7.2 m²",
+    "pricingRecord": "reci440OCjkZsmBqy",
+    "url": "https://www.pineca.ie/outdoor-sauna-with-changing-room-della-34mm-cladding-4-6x2-1m-7-2m2.html",
+    "listedPrice12Nov": 7598,
+    "promotionalPrice12Nov_notRecorded": 7253,
+    "writes": {
+     "Last Price Check": [
+      "2026-09-23",
+      "2026-11-12"
+     ],
+     "Base Price": [
+      7476,
+      7598
+     ]
+    }
+   },
+   {
+    "product": "recTIZL9Z61tonRaZ",
+    "name": "Outdoor Sauna with changing room DELLA — 4.6 × 2.6 m, 9.3 m²",
+    "pricingRecord": "rec8LUY9Y5TMAO1hq",
+    "url": "https://www.pineca.ie/outdoor-sauna-with-changing-room-della-34mm-cladding-4-6x2-6m-9-3m2.html",
+    "listedPrice12Nov": 7942,
+    "promotionalPrice12Nov_notRecorded": 7581,
+    "writes": {
+     "Last Price Check": [
+      "2026-09-23",
+      "2026-11-12"
+     ],
+     "Base Price": [
+      7815,
+      7942
+     ]
+    }
+   },
+   {
+    "product": "rec9UC4R71N1xOz9s",
+    "name": "Outdoor Sauna with changing room DELLA — 5.1 × 5.1 m, 22 m²",
+    "pricingRecord": "recGg6dwXkXlGlpcH",
+    "url": "https://www.pineca.ie/outdoor-sauna-with-changing-room-della-34mm-cladding-5-1x5-1m-22m2.html",
+    "listedPrice12Nov": 12394,
+    "promotionalPrice12Nov_notRecorded": 11830,
+    "writes": {
+     "Last Price Check": [
+      "2026-09-23",
+      "2026-11-12"
+     ],
+     "Base Price": [
+      12195,
+      12394
+     ]
+    }
+   },
+   {
+    "product": "reczrQJvhvSVag3QP",
+    "name": "Outdoor Sauna with changing room DELLA — 6.1 × 2.6 m, 12.5 m²",
+    "pricingRecord": "recc6gfAxl82iDeYb",
+    "url": "https://www.pineca.ie/outdoor-sauna-with-changing-room-della-34mm-cladding-6-1x2-6m-12-5m2.html",
+    "listedPrice12Nov": 9774,
+    "promotionalPrice12Nov_notRecorded": 9121,
+    "writes": {
+     "Last Price Check": [
+      "2026-09-23",
+      "2026-11-12"
+     ]
+    }
+   },
+   {
+    "product": "recqWyGu5FDvta874",
+    "name": "Outdoor Sauna with changing room DELLA — 7.2 m² + 6.7 m² terrace",
+    "pricingRecord": "recFvivgjZgsYgPm4",
+    "url": "https://www.pineca.ie/outdoor-sauna-with-changing-room-della-34mm-cladding-4-6x2-1m-7-2m2-terrace-6-7m2.html",
+    "listedPrice12Nov": 9605,
+    "promotionalPrice12Nov_notRecorded": 8958,
+    "writes": {
+     "Last Price Check": [
+      "2026-09-23",
+      "2026-11-12"
+     ]
+    }
+   },
+   {
+    "product": "recHpiHApAiJgA5CR",
+    "name": "Outdoor Sauna with changing room DELLA — 9.3 m² + 3.6 m² terrace",
+    "pricingRecord": "recWh2BN3xuL5xVvb",
+    "url": "https://www.pineca.ie/outdoor-sauna-with-changing-room-della-34mm-cladding-4-6x2-6m-9-3m2-terrace-3-6m2.html",
+    "listedPrice12Nov": 9660,
+    "promotionalPrice12Nov_notRecorded": 9011,
+    "writes": {
+     "Last Price Check": [
+      "2026-09-23",
+      "2026-11-12"
+     ]
+    }
+   },
+   {
+    "product": "recU5cehhAJfWqrXy",
+    "name": "Outdoor Sauna with changing room DELLA — 9.3 m² + 6.7 m² terrace",
+    "pricingRecord": "recIsajSijmc1fMjj",
+    "url": "https://www.pineca.ie/outdoor-sauna-with-changing-room-della-34mm-cladding-4-6x2-6m-9-3m2-terrace-6-7m2.html",
+    "listedPrice12Nov": 10116,
+    "promotionalPrice12Nov_notRecorded": 9454,
+    "writes": {
+     "Last Price Check": [
+      "2026-09-23",
+      "2026-11-12"
+     ]
+    }
+   }
+  ]
+ }
+}

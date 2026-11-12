@@ -27,7 +27,11 @@
       },
       "installation": {
         "level": "product",
-        "text": "Supply and installation; end-to-end installation managed by the supplier's team. The supplier's prebuilt page says its team prepares the base and electrics before installation; what each quote includes is not itemised."
+        "text": "Each prebuilt model page states: \"The quote covers supply, installation, setup, aftercare, and ongoing support\" and \"Everything from supply through to handover is included in the quote.\" The pages do not say whether the listed unit price is that installed figure, and do not state VAT.",
+        "sources": [
+          "https://www.arcticwellness.ie/prebuilt-saunas/ember-mini",
+          "https://www.arcticwellness.ie/prebuilt-saunas/nordic"
+        ]
       },
       "products": [
         {
@@ -35,12 +39,12 @@
           "url": "https://www.arcticwellness.ie/prebuilt-saunas/ember-mini",
           "price": {
             "text": "€7,000–€8,500",
-            "basis": "unit price range, supply & installation quote",
+            "basis": "listed unit price; the maker's quote covers supply, installation, setup and aftercare",
             "vat": "not stated"
           },
-          "external": "1.80 m × 1.80 m (height not stated)",
-          "capacity": "1–3 people",
-          "heater": "Electric (default) or wood-fired, chosen at quote; make not stated",
+          "external": "1.80 × 1.80 m footprint (height not stated)",
+          "capacity": "2–3 people (the specification line says 1–3)",
+          "heater": "Compact Harvia electric heater as described; wood-fired offered at quote",
           "atlas_price_note": "Atlas records From €7,000 (10 Nov 2026); unchanged."
         },
         {
@@ -48,12 +52,12 @@
           "url": "https://www.arcticwellness.ie/prebuilt-saunas/nordic",
           "price": {
             "text": "€16,500",
-            "basis": "unit price, supply & installation quote",
+            "basis": "listed unit price; the maker's quote covers supply, installation, setup and aftercare",
             "vat": "not stated"
           },
-          "external": "2.65 × 2.25 × 2.50 m",
+          "external": "2.65 × 2.25 × 2.50 m (specification line; the page's description also gives 2.34 × 2.20 × 2.35 m)",
           "capacity": "up to 8 people",
-          "heater": "Electric (default) or wood-fired; make not stated",
+          "heater": "Harvia electric heater as standard; wood-fired as an upgrade",
           "atlas_price_note": "Unchanged."
         }
       ],
@@ -63,7 +67,7 @@
       },
       "summary": {
         "price": "€7,000–€8,500",
-        "basis": "Ember Mini, supply and installation; VAT not stated",
+        "basis": "Ember Mini listed unit price; the maker's quote includes supply and installation; VAT not stated",
         "delivery": "Supplied and installed by its own team across Ireland."
       }
     },
@@ -408,9 +412,10 @@
     "Pineca: listed price €4,083 differs from Atlas €4,018 (14 Oct). Atlas not changed. A Black Friday promotional price (€3,898, 5% off, ending about 25 Nov) was running on 12 Nov and is deliberately not shown.",
     "Summerhouse24: VAT basis not shown on the product page at recheck.",
     "OGNYX: no Ireland-specific delivery statement on the pages checked.",
-    "Arctic Wellness: VAT basis not stated; Ember Mini height not stated; heater make not stated.",
     "Capacity not stated for the Summerhouse24 G0383.",
-    "The Mobile Pods: delivery and installation scope for saunas not stated."
+    "The Mobile Pods: delivery and installation scope for saunas not stated.",
+    "Arctic Wellness: whether the listed unit price is the installed figure, and the VAT basis, are not stated; the Nordic page gives two sets of dimensions."
   ],
-  "recheck_2": "12 Nov 2026 (second pass, founder refinement brief): OGNYX product variants and configurator re-read; Irish Sauna Company price schedule recorded as dated periods; Pineca list prices spot-checked on five models."
+  "recheck_2": "12 Nov 2026 (second pass, founder refinement brief): OGNYX product variants and configurator re-read; Irish Sauna Company price schedule recorded as dated periods; Pineca list prices spot-checked on five models.",
+  "recheck_3": "12 Nov 2026 (third pass, release preparation): Arctic Wellness prebuilt pages re-read for the price basis; all 34 published Pineca sauna pages re-read; Irish Sauna Company catalogue re-read."
 }
