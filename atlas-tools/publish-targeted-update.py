@@ -358,7 +358,10 @@ def outside_text_change(rest_a, rest_b, targets, org_names):
             oa = rest_a.splitlines()
             if i2 - i1 == j2 - j1 and all(
                     (ma := AZ_TARGET_LINE.match(a)) and (mb := AZ_TARGET_LINE.match(b))
-                    and ma.group(1) == mb.group(1) and ma.group(1) in targets
+                    # 12 Nov 2026 (release preparation, ISC Aran/Skellig removal): the line's first
+                    # product link may move to ANOTHER TARGET product of the same organisation when
+                    # its first product leaves the explorer; never to a non-target product.
+                    and ma.group(1) in targets and mb.group(1) in targets
                     and ma.group(2) == mb.group(2) and ma.group(2) in org_names
                     for a, b in zip(oa[i1:i2], ob[j1:j2])):
                 continue
