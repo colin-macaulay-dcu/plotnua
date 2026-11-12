@@ -10,116 +10,407 @@
   "makers": [
     {
       "maker": "Arctic Wellness",
-      "route": ["installed", "made-to-order"],
+      "route": [
+        "installed",
+        "made-to-order"
+      ],
       "listing_basis": "SUPPLIER_PERMISSION",
       "profile": "suppliers/arctic-wellness.html",
       "site": "https://www.arcticwellness.ie/",
-      "delivery": {"level": "supplier", "text": "Designs and installs saunas into homes across Ireland; prebuilt saunas are made in its Dublin warehouse and crane-lifted in.", "sources": ["https://www.arcticwellness.ie/installation-services", "https://www.arcticwellness.ie/prebuilt-saunas"]},
-      "installation": {"level": "product", "text": "Supply and installation; end-to-end installation managed by the supplier's team. The supplier's prebuilt page says its team prepares the base and electrics before installation; what each quote includes is not itemised."},
+      "delivery": {
+        "level": "supplier",
+        "text": "Designs and installs saunas into homes across Ireland; prebuilt saunas are made in its Dublin warehouse and crane-lifted in.",
+        "sources": [
+          "https://www.arcticwellness.ie/installation-services",
+          "https://www.arcticwellness.ie/prebuilt-saunas"
+        ]
+      },
+      "installation": {
+        "level": "product",
+        "text": "Supply and installation; end-to-end installation managed by the supplier's team. The supplier's prebuilt page says its team prepares the base and electrics before installation; what each quote includes is not itemised."
+      },
       "products": [
-        {"name": "Ember Mini", "url": "https://www.arcticwellness.ie/prebuilt-saunas/ember-mini", "price": {"text": "€7,000–€8,500", "basis": "unit price range, supply & installation quote", "vat": "not stated"}, "external": "1.80 m × 1.80 m (height not stated)", "capacity": "1–3 people", "heater": "Electric (default) or wood-fired, chosen at quote; make not stated", "atlas_price_note": "Atlas records From €7,000 (10 Nov 2026); unchanged."},
-        {"name": "Nordic", "url": "https://www.arcticwellness.ie/prebuilt-saunas/nordic", "price": {"text": "€16,500", "basis": "unit price, supply & installation quote", "vat": "not stated"}, "external": "2.65 × 2.25 × 2.50 m", "capacity": "up to 8 people", "heater": "Electric (default) or wood-fired; make not stated", "atlas_price_note": "Unchanged."}
+        {
+          "name": "Ember Mini",
+          "url": "https://www.arcticwellness.ie/prebuilt-saunas/ember-mini",
+          "price": {
+            "text": "€7,000–€8,500",
+            "basis": "unit price range, supply & installation quote",
+            "vat": "not stated"
+          },
+          "external": "1.80 m × 1.80 m (height not stated)",
+          "capacity": "1–3 people",
+          "heater": "Electric (default) or wood-fired, chosen at quote; make not stated",
+          "atlas_price_note": "Atlas records From €7,000 (10 Nov 2026); unchanged."
+        },
+        {
+          "name": "Nordic",
+          "url": "https://www.arcticwellness.ie/prebuilt-saunas/nordic",
+          "price": {
+            "text": "€16,500",
+            "basis": "unit price, supply & installation quote",
+            "vat": "not stated"
+          },
+          "external": "2.65 × 2.25 × 2.50 m",
+          "capacity": "up to 8 people",
+          "heater": "Electric (default) or wood-fired; make not stated",
+          "atlas_price_note": "Unchanged."
+        }
       ],
-      "bespoke": {"text": "Custom-built saunas designed around a house or garden, built in place by the supplier's own builders; quoted per project.", "url": "https://www.arcticwellness.ie/custom-home-sauna"}
+      "bespoke": {
+        "text": "Custom-built saunas designed around a house or garden, built in place by the supplier's own builders; quoted per project.",
+        "url": "https://www.arcticwellness.ie/custom-home-sauna"
+      },
+      "summary": {
+        "price": "€7,000–€8,500",
+        "basis": "Ember Mini, supply and installation; VAT not stated",
+        "delivery": "Supplied and installed by its own team across Ireland."
+      }
     },
     {
       "maker": "Gardenhouse24",
-      "route": ["kit"],
+      "route": [
+        "kit"
+      ],
       "listing_basis": "SUPPLIER_PERMISSION",
       "profile": "suppliers/gardenhouse24.html",
       "site": "https://gardenhouse24.ie/",
-      "delivery": {"level": "product", "text": "\"Free Delivery Mainland\"; kerbside delivery.", "sources": ["https://gardenhouse24.ie/thermo-barrel-sauna-leo-with-front-full-glass-200-x-160cm-6-5-x-5-4.html"]},
-      "installation": {"level": "product", "text": "Optional installation service, €1,430 for the LEO; foundation quoted separately."},
+      "delivery": {
+        "level": "product",
+        "text": "\"Free Delivery Mainland\"; kerbside delivery.",
+        "sources": [
+          "https://gardenhouse24.ie/thermo-barrel-sauna-leo-with-front-full-glass-200-x-160cm-6-5-x-5-4.html"
+        ]
+      },
+      "installation": {
+        "level": "product",
+        "text": "Optional installation service, €1,430 for the LEO; foundation quoted separately."
+      },
       "products": [
-        {"name": "LEO thermo barrel sauna, full-glass front", "url": "https://gardenhouse24.ie/thermo-barrel-sauna-leo-with-front-full-glass-200-x-160cm-6-5-x-5-4.html", "price": {"text": "€4,884", "basis": "kit price", "vat": "not stated"}, "external": "200 cm diameter × 160 cm long", "capacity": "2–4 people", "heater": "Not included: Harvia 8 kW wall-mounted heater €650 extra, offered only with the supplier's electrical service package", "lead_time": "10–12 weeks", "atlas_price_note": "Unchanged."}
-      ]
+        {
+          "name": "LEO thermo barrel sauna, full-glass front",
+          "url": "https://gardenhouse24.ie/thermo-barrel-sauna-leo-with-front-full-glass-200-x-160cm-6-5-x-5-4.html",
+          "price": {
+            "text": "€4,884",
+            "basis": "kit price",
+            "vat": "not stated"
+          },
+          "external": "200 cm diameter × 160 cm long",
+          "capacity": "2–4 people",
+          "heater": "Not included: Harvia 8 kW wall-mounted heater €650 extra, offered only with the supplier's electrical service package",
+          "lead_time": "10–12 weeks",
+          "atlas_price_note": "Unchanged."
+        }
+      ],
+      "summary": {
+        "price": "€4,884",
+        "basis": "LEO barrel kit; heater extra; VAT not stated",
+        "delivery": "Free kerbside delivery to mainland Ireland."
+      }
     },
     {
       "maker": "Irish Sauna Company",
-      "route": ["made-to-order"],
+      "route": [
+        "made-to-order"
+      ],
       "listing_basis": "SUPPLIER_PERMISSION",
       "profile": null,
       "site": "https://irishsaunacompany.com/",
-      "delivery": {"level": "supplier", "text": "Delivered fully assembled from its Galway workshop; delivery is additional and quoted by location (typically €600–€1,400, more for complex or crane deliveries).", "sources": ["https://irishsaunacompany.com/pages/static-sauna-delivery-installation-electrical-guide"]},
-      "installation": {"level": "supplier", "text": "Delivered assembled and placed in position where access allows. Base preparation and the electrical connection by a Registered Electrical Contractor are arranged and paid for by the customer and are not included."},
+      "delivery": {
+        "level": "supplier",
+        "text": "Delivered fully assembled from its Galway workshop; delivery is additional and quoted by location (typically €600–€1,400, more for complex or crane deliveries).",
+        "sources": [
+          "https://irishsaunacompany.com/pages/static-sauna-delivery-installation-electrical-guide"
+        ]
+      },
+      "installation": {
+        "level": "supplier",
+        "text": "Delivered assembled and placed in position where access allows. Base preparation and the electrical connection by a Registered Electrical Contractor are arranged and paid for by the customer and are not included."
+      },
       "products": [
-        {"name": "The Clare (1–2 person)", "url": "https://irishsaunacompany.com/products/the-clare-1-2-person-garden-sauna", "price": {"text": "€6,500", "basis": "introductory price until 29 Nov 2026; €7,500 from 30 Nov 2026; delivery additional", "vat": "including VAT"}, "external": "1.5 × 1.5 × 2.4 m", "capacity": "1–2 people", "heater": "Harvia The Wall SW60 6 kW electric, included", "lead_time": "Production generally 2–3 weeks from deposit", "atlas_price_note": "Unchanged until 29 Nov; changes on 30 Nov."},
-        {"name": "The Inis Mor (2–4 person)", "url": "https://irishsaunacompany.com/products/the-inis-mor-2-4-person-garden-sauna", "price": {"text": "€8,400", "basis": "introductory price until 29 Nov 2026; €9,300 from 30 Nov 2026; delivery additional", "vat": "including VAT"}, "external": "2.0 × 2.0 × 2.4 m", "capacity": "2–4 people", "heater": "Harvia The Wall SW80 8 kW electric, included", "lead_time": "Production generally 2–3 weeks from deposit", "atlas_price_note": "Renamed from 'The Inis'; Atlas URL /products/the-inis-2-4-person-garden-sauna still resolves to the same product."}
-      ]
+        {
+          "name": "The Clare (1–2 person)",
+          "url": "https://irishsaunacompany.com/products/the-clare-1-2-person-garden-sauna",
+          "price": {
+            "text": "€6,500 until 29 Nov 2026, then €7,500",
+            "schedule": [
+              {
+                "price": "€6,500",
+                "until": "2026-11-29",
+                "label": "introductory price"
+              },
+              {
+                "price": "€7,500",
+                "from": "2026-11-30"
+              }
+            ],
+            "basis": "delivery additional",
+            "vat": "including VAT"
+          },
+          "external": "1.5 × 1.5 × 2.4 m",
+          "capacity": "1–2 people",
+          "heater": "Harvia The Wall SW60 6 kW electric heater, included",
+          "lead_time": "Production generally 2–3 weeks from deposit",
+          "atlas_price_note": "Unchanged until 29 Nov; changes on 30 Nov."
+        },
+        {
+          "name": "The Inis Mor (2–4 person)",
+          "url": "https://irishsaunacompany.com/products/the-inis-mor-2-4-person-garden-sauna",
+          "price": {
+            "text": "€8,400 until 29 Nov 2026, then €9,300",
+            "schedule": [
+              {
+                "price": "€8,400",
+                "until": "2026-11-29",
+                "label": "introductory price"
+              },
+              {
+                "price": "€9,300",
+                "from": "2026-11-30"
+              }
+            ],
+            "basis": "delivery additional",
+            "vat": "including VAT"
+          },
+          "external": "2.0 × 2.0 × 2.4 m",
+          "capacity": "2–4 people",
+          "heater": "Harvia The Wall SW80 8 kW electric heater, included",
+          "lead_time": "Production generally 2–3 weeks from deposit",
+          "atlas_price_note": "Renamed from 'The Inis'; Atlas URL /products/the-inis-2-4-person-garden-sauna still resolves to the same product."
+        }
+      ],
+      "summary": {
+        "price": "€6,500 until 29 Nov 2026, then €7,500",
+        "basis": "The Clare; including VAT and heater; delivery extra",
+        "delivery": "Delivered assembled from Connemara; delivery quoted by location."
+      }
     },
     {
       "maker": "OGNYX",
-      "route": ["kit", "assembled"],
+      "route": [
+        "kit",
+        "assembled"
+      ],
       "listing_basis": "SUPPLIER_PERMISSION",
       "profile": null,
       "site": "https://www.ognyx.com/",
-      "delivery": {"level": "supplier", "text": "Shipping policy (updated 2 Sep 2026): supplies multiple European destinations; free standard delivery only where stated on the product page or at checkout. No Ireland-specific delivery statement found on the product pages checked.", "sources": ["https://www.ognyx.com/policies/shipping-policy"]},
-      "installation": {"level": "supplier", "text": "Available flat-pack or fully assembled. Saunas may be supplied for customer assembly unless agreed otherwise; professional installation is quoted separately on request."},
+      "delivery": {
+        "level": "supplier",
+        "text": "Shipping policy (updated 2 Sep 2026): supplies multiple European destinations; free standard delivery only where stated on the product page or at checkout. No Ireland-specific delivery statement found on the product pages checked.",
+        "sources": [
+          "https://www.ognyx.com/policies/shipping-policy"
+        ]
+      },
+      "installation": {
+        "level": "supplier",
+        "text": "Available flat-pack or fully assembled. Saunas may be supplied for customer assembly unless agreed otherwise; professional installation is quoted separately on request."
+      },
       "products": [
-        {"name": "1.6 m outdoor sauna for 3 people (S16E)", "url": "https://www.ognyx.com/products/1-6m-outdoor-sauna-for-3-persons", "price": {"text": "€2,850", "basis": "base configuration; options extra", "vat": "not stated"}, "external": "160 × 200 × 210 cm assembled", "capacity": "about 2–3 people", "heater": "Harvia Top Steel M60 6 kW listed as the default stove option with no surcharge; whether the base price includes the stove is not stated in words", "atlas_price_note": "Unchanged."},
-        {"name": "2–2.3 m outdoor sauna for 4 people (S2/S23)", "url": "https://www.ognyx.com/products/2-2-3m-for-4-persons-outdoor-sauna", "price": {"text": "€3,580", "basis": "base configuration; options extra", "vat": "not stated"}, "external": "200 × 200 × 210 cm (2 m, Ø2.0 m) up to 230 × 220 × 230 cm", "capacity": "about 4 (Ø2.0 m) to 6 (Ø2.2 m) people", "heater": "Electric or wood-burning, chosen in the configurator", "atlas_price_note": "Unchanged."}
+        {
+          "name": "1.6 m outdoor barrel sauna (S16E)",
+          "url": "https://www.ognyx.com/products/1-6m-outdoor-sauna-for-3-persons",
+          "price": {
+            "text": "€2,850",
+            "basis": "base configuration (flat-pack, spruce); options extra",
+            "vat": "not stated"
+          },
+          "external": "160 × 200 × 210 cm assembled (2 m diameter)",
+          "capacity": "about 2–3 people (the maker's product title says 3)",
+          "heater": "Harvia Top Steel M60 6 kW electric is the base stove option, with no surcharge",
+          "atlas_price_note": "Unchanged. Single listed variant (Shopify 'Default Title', €2,850), configured in the page's option panel."
+        },
+        {
+          "name": "2 m outdoor barrel sauna (S2), base size",
+          "url": "https://www.ognyx.com/products/2-2-3m-for-4-persons-outdoor-sauna",
+          "price": {
+            "text": "€3,580",
+            "basis": "base configuration: 2 m long, 2 m diameter, flat-pack, spruce; larger sizes and options extra",
+            "vat": "not stated"
+          },
+          "external": "200 × 200 × 210 cm assembled (2 m long, 2 m diameter)",
+          "capacity": "about 4 people",
+          "heater": "Harvia M3 16.5 kW wood-burning stove is the base option; an electric stove is offered",
+          "options_note": "Same product, larger sizes: 2.2 m diameter +€300 (about 6 people; 200 × 220 × 230 cm); 2.3 m length +€50 (230 × 200 × 210 cm at 2 m diameter). Capacity is given by diameter: about 4 people at 2 m, about 6 at 2.2 m.",
+          "atlas_price_note": "Unchanged. Single listed variant (€3,580) = 2 m length, 2 m diameter base configuration."
+        }
       ],
-      "location_rule": "Location not shown: standing rule — OGNYX's location appears only if supplier confirmation authorises it."
+      "location_rule": "Location not shown: standing rule — OGNYX's location appears only if supplier confirmation authorises it.",
+      "summary": {
+        "price": "€2,850",
+        "basis": "1.6 m barrel, base configuration; VAT not stated",
+        "delivery": "Supplies European destinations; no Ireland-specific delivery terms found."
+      }
     },
     {
       "maker": "Pineca Ireland",
-      "route": ["kit"],
+      "route": [
+        "kit"
+      ],
       "listing_basis": "PUBLIC_INFORMATION",
       "profile": null,
       "site": "https://www.pineca.ie/",
-      "delivery": {"level": "product", "text": "Price includes delivery and offloading; \"Free delivery to most of Ireland\"; extra charge for Northern Ireland and parts of Co. Donegal.", "sources": ["https://www.pineca.ie/outdoor-sauna-elda-44mm-2x2m-4m2.html"]},
-      "installation": {"level": "product", "text": "Kit with assembly instructions; assembly service price on request."},
+      "delivery": {
+        "level": "product",
+        "text": "Price includes delivery and offloading; \"Free delivery to most of Ireland\"; extra charge for Northern Ireland and parts of Co. Donegal.",
+        "sources": [
+          "https://www.pineca.ie/outdoor-sauna-elda-44mm-2x2m-4m2.html"
+        ]
+      },
+      "installation": {
+        "level": "product",
+        "text": "Kit with assembly instructions; assembly service price on request."
+      },
       "products": [
-        {"name": "ELDA outdoor sauna, 44 mm, 2 × 2 m", "url": "https://www.pineca.ie/outdoor-sauna-elda-44mm-2x2m-4m2.html", "price": {"text": "€4,083", "basis": "listed kit price incl. delivery and offloading; a time-limited promotional price running when checked is not shown", "vat": "including VAT"}, "external": "200 × 200 cm, ridge 229.5 cm, 4 m² floor", "capacity": "3 people", "heater": "Not included: Harvia Vega BC80 8 kW electric (+€519) or wood-burning stoves offered as options", "lead_time": "Free delivery in 6–8 weeks (product page)", "atlas_price_note": "DIFFERS: Atlas (14 Oct snapshot) records €4,018 incl. VAT; listed price on 12 Nov is €4,083. Atlas not changed."}
-      ]
+        {
+          "name": "ELDA outdoor sauna, 44 mm, 2 × 2 m",
+          "url": "https://www.pineca.ie/outdoor-sauna-elda-44mm-2x2m-4m2.html",
+          "price": {
+            "text": "€4,083",
+            "basis": "listed kit price incl. delivery and offloading; a time-limited promotional price running when checked is not shown",
+            "vat": "including VAT"
+          },
+          "external": "200 × 200 cm, ridge 229.5 cm, 4 m² floor",
+          "capacity": "3 people",
+          "heater": "Not included: Harvia Vega BC80 8 kW electric (+€519) or wood-burning stoves offered as options",
+          "lead_time": "Free delivery in 6–8 weeks (product page)",
+          "atlas_price_note": "DIFFERS: Atlas (14 Oct snapshot) records €4,018 incl. VAT; listed price on 12 Nov is €4,083. Atlas not changed."
+        }
+      ],
+      "summary": {
+        "price": "€4,083",
+        "basis": "ELDA 2 × 2 m kit; including VAT, delivery and offloading; heater extra",
+        "delivery": "Free delivery to most of Ireland; extra for Northern Ireland and parts of Donegal."
+      }
     },
     {
       "maker": "Polaris Sauna",
-      "route": ["kit", "installed"],
+      "route": [
+        "kit",
+        "installed"
+      ],
       "listing_basis": "PUBLIC_INFORMATION",
       "profile": null,
       "site": "https://polaris-sauna.ie/",
-      "delivery": {"level": "product", "text": "\"Free delivery in Ireland\"; kerbside delivery included within the Republic of Ireland.", "sources": ["https://polaris-sauna.ie/product/compact-minicube-1-6m/", "https://polaris-sauna.ie/delivery-and-installation/"]},
-      "installation": {"level": "product", "text": "DIY kit, or assembly by the supplier's team (+€900 on this model); screw-pile foundation +€1,200. The 230 V/400 V electrical connection is by the customer's electrician."},
+      "delivery": {
+        "level": "product",
+        "text": "\"Free delivery in Ireland\"; kerbside delivery included within the Republic of Ireland.",
+        "sources": [
+          "https://polaris-sauna.ie/product/compact-minicube-1-6m/",
+          "https://polaris-sauna.ie/delivery-and-installation/"
+        ]
+      },
+      "installation": {
+        "level": "product",
+        "text": "DIY kit, or assembly by the supplier's team (+€900 on this model); screw-pile foundation +€1,200. The 230 V/400 V electrical connection is by the customer's electrician."
+      },
       "products": [
-        {"name": "Compact MiniCube 1.6 m", "url": "https://polaris-sauna.ie/product/compact-minicube-1-6m/", "price": {"text": "€4,700", "basis": "kit, no heater", "vat": "not stated"}, "external": "1.60 × 1.25 × 2.16 m (approx.)", "capacity": "seats up to 2", "heater": "Not included: Harvia Vega BC45 4.5 kW electric +€400; no wood-burning option on this model", "lead_time": "approx. 6–8 weeks", "atlas_price_note": "Unchanged."}
-      ]
+        {
+          "name": "Compact MiniCube 1.6 m",
+          "url": "https://polaris-sauna.ie/product/compact-minicube-1-6m/",
+          "price": {
+            "text": "€4,700",
+            "basis": "kit, no heater",
+            "vat": "not stated"
+          },
+          "external": "1.60 × 1.25 × 2.16 m (approx.)",
+          "capacity": "seats up to 2",
+          "heater": "Not included: Harvia Vega BC45 4.5 kW electric +€400; no wood-burning option on this model",
+          "lead_time": "approx. 6–8 weeks",
+          "atlas_price_note": "Unchanged."
+        }
+      ],
+      "summary": {
+        "price": "€4,700",
+        "basis": "MiniCube 1.6 m kit; heater extra; VAT not stated",
+        "delivery": "Free kerbside delivery in the Republic of Ireland."
+      }
     },
     {
       "maker": "Summerhouse24 (Hansa24 Group)",
-      "route": ["kit"],
+      "route": [
+        "kit"
+      ],
       "listing_basis": "PUBLIC_INFORMATION",
       "profile": null,
       "site": "https://summerhouse24.ie/",
-      "delivery": {"level": "supplier", "text": "\"We offer free delivery to all locations across Ireland\" with standard vehicles; kerbside, by crane lorry.", "sources": ["https://summerhouse24.ie/delivery-information/"]},
-      "installation": {"level": "product", "text": "Optional cabin installation, +€1,650 on this model; foundation kit options extra."},
+      "delivery": {
+        "level": "supplier",
+        "text": "\"We offer free delivery to all locations across Ireland\" with standard vehicles; kerbside, by crane lorry.",
+        "sources": [
+          "https://summerhouse24.ie/delivery-information/"
+        ]
+      },
+      "installation": {
+        "level": "product",
+        "text": "Optional cabin installation, +€1,650 on this model; foundation kit options extra."
+      },
       "products": [
-        {"name": "Small garden sauna cabin (G0383)", "url": "https://summerhouse24.ie/garden-sauna-cabin-g0383/", "price": {"text": "€5,460", "basis": "kit price", "vat": "basis not shown on the product page when checked"}, "external": "198 × 198 × 249 cm; 3.2 m² room", "capacity": null, "heater": "Not included: Tylo Sense Sport 6 (+€1,410) or Sport 8 (+€1,560) heater and stones", "lead_time": "Delivery estimate 3–5 weeks", "atlas_price_note": "Unchanged."}
-      ]
+        {
+          "name": "Small garden sauna cabin (G0383)",
+          "url": "https://summerhouse24.ie/garden-sauna-cabin-g0383/",
+          "price": {
+            "text": "€5,460",
+            "basis": "kit price",
+            "vat": "basis not shown on the product page when checked"
+          },
+          "external": "198 × 198 × 249 cm; 3.2 m² room",
+          "capacity": null,
+          "heater": "Not included: Tylo Sense Sport 6 (+€1,410) or Sport 8 (+€1,560) heater and stones",
+          "lead_time": "Delivery estimate 3–5 weeks",
+          "atlas_price_note": "Unchanged."
+        }
+      ],
+      "summary": {
+        "price": "€5,460",
+        "basis": "G0383 cabin kit; heater extra; VAT basis not shown",
+        "delivery": "Free kerbside delivery across Ireland."
+      }
     },
     {
       "maker": "The Mobile Pods",
-      "route": ["made-to-order"],
+      "route": [
+        "made-to-order"
+      ],
       "listing_basis": "SUPPLIER_PERMISSION",
       "profile": "suppliers/the-mobile-pods.html",
       "site": "https://themobilepods.ie/",
-      "delivery": {"level": "supplier", "text": "Not stated on the sauna page.", "sources": ["https://themobilepods.ie/hot-tubs-saunas-cold-water-tubs/"]},
-      "installation": {"level": "supplier", "text": "Not stated on the sauna page."},
+      "delivery": {
+        "level": "supplier",
+        "text": "Not stated on the sauna page.",
+        "sources": [
+          "https://themobilepods.ie/hot-tubs-saunas-cold-water-tubs/"
+        ]
+      },
+      "installation": {
+        "level": "supplier",
+        "text": "Not stated on the sauna page."
+      },
       "products": [],
-      "bespoke": {"text": "Saunas, hot tubs and cold-water tubs configured to order (electric or wood-burning stoves, lighting, finishes) and custom designs; priced per configuration on enquiry.", "url": "https://themobilepods.ie/hot-tubs-saunas-cold-water-tubs/"}
+      "bespoke": {
+        "text": "Saunas, hot tubs and cold-water tubs configured to order (electric or wood-burning stoves, lighting, finishes) and custom designs; priced per configuration on enquiry.",
+        "url": "https://themobilepods.ie/hot-tubs-saunas-cold-water-tubs/"
+      },
+      "summary": {
+        "price": "Price on enquiry",
+        "basis": "Each sauna is configured and priced to order",
+        "delivery": "Delivery terms for saunas not stated."
+      }
     }
   ],
   "excluded": [
-    {"maker": "TimberIN", "why": "Founder instruction 12 Nov 2026: excluded until Republic of Ireland delivery is verified. Garden Retreat listing and PLOTNUA4 disclosure unchanged."}
+    {
+      "maker": "TimberIN",
+      "why": "Founder instruction 12 Nov 2026: excluded until Republic of Ireland delivery is verified. Garden Retreat listing and PLOTNUA4 disclosure unchanged."
+    }
   ],
   "unresolved": [
     "Irish Sauna Company: The Aran and The Skellig product URLs return 404 and neither appears in the shop's current product list (12 Nov). Garden Retreat's Maker Explorer still lists both. Not changed here — needs a separate Atlas/explorer decision.",
-    "Irish Sauna Company: introductory prices end 29 Nov 2026; the guide must be rebuilt with the 30 Nov prices (€7,500 / €9,300) or it will be out of date.",
     "Pineca: listed price €4,083 differs from Atlas €4,018 (14 Oct). Atlas not changed. A Black Friday promotional price (€3,898, 5% off, ending about 25 Nov) was running on 12 Nov and is deliberately not shown.",
     "Summerhouse24: VAT basis not shown on the product page at recheck.",
-    "OGNYX: no Ireland-specific delivery statement on the pages checked; whether the base price includes the default Harvia stove is not stated in words.",
+    "OGNYX: no Ireland-specific delivery statement on the pages checked.",
     "Arctic Wellness: VAT basis not stated; Ember Mini height not stated; heater make not stated.",
     "Capacity not stated for the Summerhouse24 G0383.",
     "The Mobile Pods: delivery and installation scope for saunas not stated."
-  ]
+  ],
+  "recheck_2": "12 Nov 2026 (second pass, founder refinement brief): OGNYX product variants and configurator re-read; Irish Sauna Company price schedule recorded as dated periods; Pineca list prices spot-checked on five models."
 }

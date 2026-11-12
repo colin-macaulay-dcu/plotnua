@@ -17,7 +17,8 @@ Guards (every run; --check also refuses a stale generated region):
      dimension, capacity or heater is printed as "Not stated by the maker", never left blank.
   S5 money: every euro figure on the page appears in the evidence (no stray or invented price).
   S6 imagery: the page carries no images other than PlotNua's own brand assets.
-  S7 freshness: the evidence is no older than 30 days, and no introductory price is shown after its end date.
+  S7 freshness: the evidence is no older than 30 days; every time-limited price is a dated schedule ending in an
+     open 'from' period, so the page stays accurate after a price change without a rebuild.
   S8 disclosure: "PlotNua has no commercial arrangement with any maker listed here" is present and no listed
      maker has an ACTIVE entry in atlas-tools/commercial-arrangements-register.json.
   S9 parent: the first link in <main> goes to Garden Retreat; the hero states the number of makers compared.
@@ -73,22 +74,45 @@ def cell(v, label):
     return '<td data-label="%s">%s</td>' % (label, inner)
 
 
+def fmt_day(iso):
+    d = dt.date.fromisoformat(iso)
+    return "%d %s %d" % (d.day, d.strftime("%b"), d.year)
+
+
+def price_html(pr):
+    """A dated price schedule is printed in full, so the page stays true after a price change without a rebuild:
+    each period carries its own date, and a small script only marks a period that has ended."""
+    if pr.get("schedule"):
+        parts = []
+        for st in pr["schedule"]:
+            if st.get("until"):
+                parts.append('<span class="sx-per" data-until="%s">%s <span class="sx-when">%s until %s</span></span>'
+                             % (st["until"], E(st["price"]), E(st.get("label", "price")), fmt_day(st["until"])))
+            else:
+                parts.append('<span class="sx-per" data-from="%s">%s <span class="sx-when">from %s</span></span>'
+                             % (st["from"], E(st["price"]), fmt_day(st["from"])))
+        return "".join(parts)
+    return E(pr["text"])
+
+
 def render(ev):
     when = dt.date.fromisoformat(ev["captured"])
     day = "%d %s %d" % (when.day, when.strftime("%B"), when.year)
     out = ['<div class="sx">']
     for m in sorted(ev["makers"], key=lambda m: m["maker"].lower()):
-        name = m["maker"]
-        if m.get("profile"):
-            name_html = '<a href="%s">%s</a>' % (E(m["profile"]), E(name))
-        else:
-            name_html = E(name)
+        name, sm = m["maker"], dict({"price": "", "basis": "", "delivery": ""}, **m.get("summary", {}))
+        name_html = '<a href="%s">%s</a>' % (E(m["profile"]), E(name)) if m.get("profile") else E(name)
         routes = "".join("<li>%s</li>" % ROUTE[r] for r in m["route"])
         d, i = m["delivery"], m["installation"]
-        out.append('<article class="sx-maker" id="maker-%s">' % slug(name))
-        out.append('<div class="sx-top"><h3>%s</h3><ul class="sx-routes" aria-label="How it is sold">%s</ul></div>'
-                   % (name_html, routes))
-        out.append('<dl class="sx-facts"><div><dt>Delivery</dt><dd>%s<span class="sx-lvl">%s</span></dd></div>'
+        sid = slug(name)
+        out.append('<article class="sx-maker" id="maker-%s" aria-labelledby="sx-h-%s">' % (sid, sid))
+        out.append('<div class="sx-top"><h3 id="sx-h-%s">%s</h3><ul class="sx-routes" aria-label="How it is sold">%s</ul></div>'
+                   % (sid, name_html, routes))
+        out.append('<dl class="sx-sum"><div><dt>Representative price</dt><dd><span class="sx-sum-p">%s</span>'
+                   '<span class="sx-basis">%s</span></dd></div><div><dt>Delivery</dt><dd>%s</dd></div></dl>'
+                   % (E(sm["price"]), E(sm["basis"]), E(sm["delivery"])))
+        out.append('<details class="sx-more" data-desktop-open><summary>Models, installation and sources</summary><div class="sx-more-in">')
+        out.append('<dl class="sx-facts"><div><dt>Delivery in full</dt><dd>%s<span class="sx-lvl">%s</span></dd></div>'
                    '<div><dt>Installation</dt><dd>%s<span class="sx-lvl">%s</span></dd></div></dl>'
                    % (E(d["text"]), LEVEL[d["level"]], E(i["text"]), LEVEL[i["level"]]))
         if m["products"]:
@@ -97,22 +121,24 @@ def render(ev):
                        '<th scope="col">Heater</th><th scope="col">Published price</th></tr></thead><tbody>' % E(name))
             for p in m["products"]:
                 pr = p["price"]
-                basis = "%s; VAT %s" % (pr["basis"], pr["vat"]) if not pr["vat"].startswith("including") \
-                    else "%s; %s" % (pr["basis"], pr["vat"])
-                lead = ("; " + p["lead_time"]) if p.get("lead_time") else ""
+                vat = pr["vat"] if pr["vat"].startswith("including") else "VAT " + pr["vat"]
+                basis = "; ".join(x for x in (vat, pr["basis"], p.get("lead_time")) if x)
                 out.append('<tr><td><a href="%s" target="_blank" rel="noopener noreferrer">%s</a></td>%s%s%s'
-                           '<td data-label="Published price" class="sx-price">%s<span class="sx-basis">%s%s</span></td></tr>'
+                           '<td data-label="Published price" class="sx-price">%s<span class="sx-basis">%s</span></td></tr>'
                            % (E(p["url"]), E(p["name"]), cell(p.get("external"), "Size"),
                               cell(p.get("capacity"), "Capacity"), cell(p.get("heater"), "Heater"),
-                              E(pr["text"]), E(basis), E(lead)))
+                              price_html(pr), E(basis)))
+                if p.get("options_note"):
+                    out.append('<tr class="sx-opt"><td colspan="5" data-label="Other sizes">%s</td></tr>' % E(p["options_note"]))
             out.append('</tbody></table>')
         if m.get("bespoke"):
             out.append('<p class="sx-bespoke">%s</p>' % E(m["bespoke"]["text"]))
         srcs = sorted(set(d.get("sources", []) + [p["url"] for p in m["products"]]
                           + ([m["bespoke"]["url"]] if m.get("bespoke") else [])))
-        links = " &middot; ".join('<a href="%s" target="_blank" rel="noopener noreferrer">%s</a>'
-                                  % (E(u), E(host(u) + urlparse(u).path.rstrip("/"))) for u in srcs)
-        out.append('<p class="sx-src">Checked on the maker&rsquo;s own pages, %s: %s</p>' % (day, links))
+        links = "</li><li>".join('<a href="%s" target="_blank" rel="noopener noreferrer">%s</a>'
+                                 % (E(u), E(host(u) + urlparse(u).path.rstrip("/"))) for u in srcs)
+        out.append('<p class="sx-src">Checked on the maker&rsquo;s own pages, %s:</p><ul class="sx-srcs"><li>%s</li></ul>' % (day, links))
+        out.append('</div></details>')
         acts = []
         if m.get("profile"):
             acts.append('<a href="%s">PlotNua&rsquo;s %s profile &rarr;</a>' % (E(m["profile"]), E(name)))
@@ -124,7 +150,19 @@ def render(ev):
     out.append('<p class="sx-excl">Not compared here: one maker listed in Garden Retreat that publishes its prices in sterling '
                'and whose delivery to the Republic of Ireland PlotNua has not yet confirmed. Garden Retreat lists every '
                'sauna maker PlotNua has published.</p>')
+    out.append(SCRIPT)
     return "\n".join(out)
+
+
+# Progressive enhancement only: with no script every <details> stays a native, collapsed disclosure and every
+# price period stays printed with its own dates. On wide screens the details open so the desktop comparison
+# reads in full; after a period's end date the period is marked as ended (no content is added or removed).
+SCRIPT = ("<script>(function(){var q=window.matchMedia('(min-width: 861px)');function o(){"
+          "document.querySelectorAll('details[data-desktop-open]').forEach(function(d){d.open=q.matches;});}"
+          "o();if(q.addEventListener){q.addEventListener('change',o);}"
+          "var t=new Date();t.setHours(0,0,0,0);document.querySelectorAll('.sx-per[data-until]').forEach(function(e){"
+          "var u=new Date(e.getAttribute('data-until')+'T23:59:59');if(t>u){e.classList.add('is-ended');"
+          "var s=document.createElement('span');s.className='sx-ended';s.textContent=' (ended)';e.appendChild(s);}});})();</script>")
 
 
 def splice(page, region):
@@ -190,6 +228,9 @@ def guards(ev, page, files):
                     bad.append("S4 %s / %s has no price %s" % (m["maker"], p.get("name"), k))
             if not p.get("url"):
                 bad.append("S4 %s / %s has no source URL" % (m["maker"], p.get("name")))
+        for k in ("price", "basis", "delivery"):
+            if not (m.get("summary") or {}).get(k):
+                bad.append("S4 %s has no visible summary %s" % (m["maker"], k))
         if not m["products"] and not m.get("bespoke"):
             bad.append("S4 %s has neither products nor a bespoke statement" % m["maker"])
     if re.search(r'<td data-label="[^"]+">\s*</td>', main):
@@ -210,11 +251,17 @@ def guards(ev, page, files):
         bad.append("S7 evidence captured %s is more than 30 days old" % cap)
     for m in ev["makers"]:
         for p in m["products"]:
-            hit = re.search(r"until (\d{1,2}) (\w+) (\d{4})", p["price"]["basis"])
-            if hit and "introductory" in p["price"]["basis"]:
-                end = dt.datetime.strptime(" ".join(hit.groups()), "%d %b %Y").date()
-                if today > end:
-                    bad.append("S7 %s / %s: introductory price ended %s" % (m["maker"], p["name"], end))
+            sch = p["price"].get("schedule")
+            if "introductory" in p["price"]["basis"].lower() or "until" in p["price"]["text"]:
+                if not sch:
+                    bad.append("S7 %s / %s: a time-limited price has no dated schedule" % (m["maker"], p["name"]))
+            if sch:
+                last = sch[-1]
+                if any("until" not in st for st in sch[:-1]) or "from" not in last:
+                    bad.append("S7 %s / %s: the price schedule must end with an open 'from' period" % (m["maker"], p["name"]))
+                for a, b in zip(sch, sch[1:]):
+                    if dt.date.fromisoformat(b["from"]) != dt.date.fromisoformat(a["until"]) + dt.timedelta(days=1):
+                        bad.append("S7 %s / %s: price periods do not join up" % (m["maker"], p["name"]))
     # S8
     if DISCLOSURE not in re.sub(r"\s+", " ", page):
         bad.append("S8 the no-commercial-arrangement disclosure is missing")
@@ -276,6 +323,8 @@ def prove(ev, page, files):
     mut("S5 an invented price", f_page=lambda p: p.replace("</main>", "<p>from €999</p></main>"))
     mut("S6 a supplier image", f_page=lambda p: p.replace("</main>", '<img src="https://x.ie/a.jpg" alt=""></main>'))
     mut("S7 stale evidence", f_ev=lambda e: e.update(captured="2026-09-01"))
+    mut("S7 a time-limited price without its later price", f_ev=lambda e: [p["price"].update(schedule=p["price"]["schedule"][:1]) for m in e["makers"] for p in m["products"] if p["price"].get("schedule")])
+    mut("S4 a maker without a visible summary", f_ev=lambda e: e["makers"][0].pop("summary"))
     mut("S8 disclosure removed", f_page=lambda p: p.replace(DISCLOSURE, "PlotNua is independent"))
     mut("S8 an active arrangement", f_files=lambda fs: fs.update(_register=json.dumps({"active": [{"key": hashlib.sha256(b"OGNYX").hexdigest()[:12]}]})))
     mut("S9 parent link removed", f_page=lambda p: p.replace('<p class="parent"><a href="discovery-garden-retreat.html">', '<p class="parent"><a href="discoveries.html">', 1))

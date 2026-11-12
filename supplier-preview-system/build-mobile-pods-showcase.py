@@ -376,6 +376,7 @@ f"""<link rel="stylesheet" href="{two_css}?v=1">
 <footer class="mp-rec"><div class="mp-w">
   <p>Photography and floor plans: {E(s["name"])}, from <a href="{E(s["creditHref"])}" rel="noopener" target="_blank">themobilepods.ie</a>. The supplier keeps ownership of its imagery.</p>
   <p>Product details checked against the supplier&rsquo;s website on 3 November 2026. Prices and specifications can change; confirm them with the supplier.</p>
+  <p><a href="/terms.html#legal-information">Terms &amp; legal information</a></p>
 </div></footer>
 </main>
 </body>
