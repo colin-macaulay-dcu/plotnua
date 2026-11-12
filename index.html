@@ -1740,14 +1740,14 @@ body.pn-p4 #discover .p4s-all-link{ margin-top:40px; }
    A type-led editorial band on the deepest anthracite, directly above the Atlas; the Atlas keeps its figures and
    control, with a little more air at the top so the two read as one argument. The Library intro gains supporting
    copy and a prominent text route (serif, terracotta rule), not a button. Existing tokens only. */
-body.pn-p4 .pn-prop{ background:var(--p4-anth); color:var(--p4-ivory); padding:clamp(72px,8.2vw,120px) 0 clamp(62px,6.6vw,96px); }
-body.pn-p4 .pn-prop-inner{ padding:0 var(--p4-gutter); display:grid; grid-template-columns:repeat(12,minmax(0,1fr)); column-gap:32px; }
-body.pn-p4 .pn-prop-title{ grid-column:1 / span 11; margin:0; font-family:var(--p4-serif); font-weight:400;
-  font-size:clamp(50px,6.9vw,116px); line-height:.95; letter-spacing:-.022em; color:var(--p4-ivory); max-width:15ch; text-wrap:balance; }
+body.pn-p4 .pn-prop{ background:var(--p4-anth); color:var(--p4-ivory); padding:clamp(80px,10.8vw,156px) 0 clamp(76px,10.1vw,146px); }
+body.pn-p4 .pn-prop-inner{ padding:0 var(--p4-gutter); display:grid; grid-template-columns:repeat(12,minmax(0,1fr)); column-gap:32px; align-items:end; }
+body.pn-p4 .pn-prop-title{ grid-column:1 / span 6; margin:0; font-family:var(--p4-serif); font-weight:400;
+  font-size:clamp(44px,4.9vw,80px); line-height:.98; letter-spacing:-.02em; color:var(--p4-ivory); max-width:6.7em; text-wrap:balance; }
 body.pn-p4 .pn-prop-title em{ font-style:italic; color:var(--p4-stone); }
-body.pn-p4 .pn-prop-body{ grid-column:6 / span 7; margin-top:clamp(40px,4.4vw,64px); padding-top:28px; border-top:1px solid rgba(179,146,114,.4); }
-body.pn-p4 .pn-prop-copy{ margin:0; max-width:46ch; font-family:var(--p4-sans); font-size:clamp(18px,1.45vw,21px); line-height:1.6; color:var(--p4-stone); }
-body.pn-p4 .pn-prop-close{ margin:clamp(32px,3.2vw,44px) 0 0; font-family:var(--p4-serif); font-weight:400; font-size:clamp(28px,2.7vw,42px); line-height:1.12; color:var(--p4-ivory); }
+body.pn-p4 .pn-prop-body{ grid-column:7 / span 6; margin:0; padding-bottom:.35em; }
+body.pn-p4 .pn-prop-copy{ margin:0; max-width:40ch; font-family:var(--p4-sans); font-size:clamp(17px,1.3vw,19px); line-height:1.6; color:var(--p4-stone); }
+body.pn-p4 .pn-prop-close{ margin:clamp(22px,2.2vw,30px) 0 0; font-family:var(--p4-serif); font-weight:400; font-size:clamp(30px,2.9vw,46px); line-height:1.08; letter-spacing:-.01em; color:var(--p4-ivory); }
 body.pn-p4 .pn-prop-close span{ display:block; }
 body.pn-p4 .pn-prop-close em{ display:block; font-style:italic; color:var(--p4-terra-text); }
 /* hand-over to the Atlas: slightly more air above "We do the research." */
@@ -1764,23 +1764,26 @@ body.pn-p4 #discover .p4s-lib-cta a:hover{ color:var(--p4-terra-text); border-co
 body.pn-p4 #discover .p4s-lib-cta a:hover span{ transform:translateX(5px); }
 body.pn-p4 #discover .p4s-lib-cta a:focus-visible{ outline:2px solid var(--p4-ivory); outline-offset:6px; border-radius:2px; }
 @media (max-width:1100px){
-  body.pn-p4 .pn-prop-body{ grid-column:4 / span 9; }
+  body.pn-p4 .pn-prop-title{ grid-column:1 / span 6; font-size:clamp(44px,5.4vw,80px); }
+  body.pn-p4 .pn-prop-body{ grid-column:7 / span 6; }
 }
 @media (max-width:900px){
+  body.pn-p4 .pn-prop{ padding:64px 0 60px; }
   body.pn-p4 .pn-prop-inner{ padding:0 20px; }
-  body.pn-p4 .pn-prop-title{ grid-column:1 / -1; }
-  body.pn-p4 .pn-prop-body{ grid-column:1 / -1; }
+  body.pn-p4 .pn-prop-title{ grid-column:1 / -1; max-width:11em; }
+  body.pn-p4 .pn-prop-body{ grid-column:1 / -1; margin-top:28px; padding-bottom:0; }
+  body.pn-p4 .pn-prop-copy{ max-width:52ch; }
   body.pn-p4 #research.article-section{ padding:52px 0 44px; }
   body.pn-p4 #discover .p4s-intro-row{ grid-template-columns:minmax(0,1fr); row-gap:26px; }
   body.pn-p4 #discover .p4s-lib-cta{ justify-self:start; }
 }
 @media (max-width:720px){
-  body.pn-p4 .pn-prop{ padding:60px 0 52px; }
+  body.pn-p4 .pn-prop{ padding:52px 0 48px; }
   body.pn-p4 .pn-prop-inner{ padding:0 20px; column-gap:0; }
-  body.pn-p4 .pn-prop-title{ font-size:clamp(42px,11.5vw,56px); line-height:.98; }
-  body.pn-p4 .pn-prop-body{ margin-top:32px; padding-top:22px; }
-  body.pn-p4 .pn-prop-copy{ font-size:18px; }
-  body.pn-p4 .pn-prop-close{ font-size:30px; }
+  body.pn-p4 .pn-prop-title{ font-size:clamp(36px,9.8vw,46px); line-height:1; max-width:6.7em; }
+  body.pn-p4 .pn-prop-body{ margin-top:22px; }
+  body.pn-p4 .pn-prop-copy{ font-size:17px; }
+  body.pn-p4 .pn-prop-close{ margin-top:20px; font-size:31px; }
   body.pn-p4 #discover .p4s-intro-row{ margin-top:20px; }
   body.pn-p4 #discover .p4s-intro{ font-size:17px; }
   body.pn-p4 #discover .p4s-lib-cta a{ font-size:28px; }
@@ -1955,12 +1958,13 @@ body.pn-p4 #discover .p4s-lib-cta a:focus-visible{ outline:2px solid var(--p4-iv
 
 <!-- PROPOSITION (founder, 12 Nov 2026): the homepage's central value proposition, placed directly above
      the Atlas so "The homework is ours." hands over to "We do the research." Copy is the founder's, verbatim.
+     12 Nov 2026 (founder, compact revision): two balanced columns, bottom-aligned; smaller headline; no rule.
      Type and palette only (existing serif/sans tokens, anthracite/ivory/stone/terracotta); no imagery, cards or green. -->
 <section class="pn-prop reveal" id="possibilities" aria-labelledby="propTitle">
   <div class="pn-prop-inner">
     <h2 id="propTitle" class="pn-prop-title">Your property holds more possibilities <em>than you think.</em></h2>
     <div class="pn-prop-body">
-      <p class="pn-prop-copy">Discover what you could do with your home, garden or land. Explore the ideas, understand the costs, compare the options and find the people who can make them happen.</p>
+      <p class="pn-prop-copy">Discover what your home, garden or land could become. Explore the possibilities, understand the costs and make informed decisions.</p>
       <p class="pn-prop-close"><span>The possibilities are yours.</span> <em>The homework is ours.</em></p>
     </div>
   </div>
