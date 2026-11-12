@@ -92,8 +92,9 @@ KIND_TEXT = {
     "eur_incl": ("Shows a euro price including VAT", "show a euro price including VAT"),
     "eur_nostated": ("Shows a euro price; VAT is not stated", "show a euro price; VAT is not stated"),
     "eur_excl": ("Shows a euro price excluding VAT", "show a euro price excluding VAT"),
-    "eur_exworks": ("Shows a starting price excluding VAT, ex works; delivery and installation are extra",
-                    "show a starting price excluding VAT, ex works; delivery and installation are extra"),
+    # NOOK founder rule (6 Nov 2026): its qualification travels with any mention of its price.
+    "eur_exworks": ("Shows a starting price, ex works. VAT, delivery, foundations and installation are additional. Irish delivery terms require confirmation",
+                    "show a starting price, ex works. VAT, delivery, foundations and installation are additional. Irish delivery terms require confirmation"),
     "gbp": ("Shows a UK sterling price", "show a UK sterling price"),
     "enquiry": ("Price on enquiry", "are priced on enquiry"),
     "unverified": ("Price not currently verified, so none is shown", "have prices not currently verified, so none is shown"),
