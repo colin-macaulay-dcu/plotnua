@@ -562,7 +562,12 @@ async function submit(env, artist, body) {
 /* ---------------------------------------------------------------- preview */
 function previewPkg(snap, images) {
   const dims = Object.fromEntries(images.map(i => [i.id, i]));
-  const fix = i => i && { ...i, pw: dims[i.id]?.width, ph: dims[i.id]?.height };
+  // The preview serves the browser-made preview copy (long side at most 1600 px, made in ui/studio.js with exactly this
+  // rounding) when there is one, otherwise the original. The srcset width must describe THAT file: describing the
+  // original's width made browsers shrink the picture by original/1600 (Uisce Salach V, 7200 px, showed at ~22%; 12 Nov 2026).
+  const served = d => { if (!d) return [undefined, undefined]; if (!d.preview_key) return [d.width, d.height];
+    const s = Math.min(1, 1600 / Math.max(d.width, d.height)); return [Math.round(d.width * s), Math.round(d.height * s)]; };
+  const fix = i => { if (!i) return i; const [pw, ph] = served(dims[i.id]); return { ...i, pw, ph }; };
   return {
     artist: { ...snap.artist, county: snap.artist.county_public ? snap.artist.county : null, portrait: fix(snap.artist.portrait) },
     works: snap.works.filter(w => w.images.some(i => i.role === 'main')).map(w => ({ ...w, title: w.title || 'Untitled', medium: w.medium || '', images: w.images.map(fix) })),
