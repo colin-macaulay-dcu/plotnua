@@ -361,8 +361,8 @@ FAULTS = [
     ("drawing label removed", lambda s: s.replace("Indicative", "Drawn", 99).replace("indicative", "drawn", 99), "F"),
     ("details opened", lambda s: s.replace('<details class="faq-item gr-acc">', '<details class="faq-item gr-acc" open>', 1), "D"),
     ("targeted update: an undeclared A-Z line for another maker", lambda s: s.replace('        <li><a href="#p-recIy8ghdKxo7PTjP">Hansa24 Group</a>', '        <li><a href="#p-recIy8ghdKxo7PTjP">Auroom Wellness</a> <span>2 saunas &middot; Irish availability not yet confirmed</span></li>\n        <li><a href="#p-recIy8ghdKxo7PTjP">Hansa24 Group</a>', 1), "G"),
-    ("targeted update: explorer sauna count edited", lambda s: s.replace('Saunas <span class="mx-n">100</span>', 'Saunas <span class="mx-n">101</span>', 1), "G"),
-    ("targeted update: gallery figure edited", lambda s: s.replace('<span class="pn-sg-fig">100</span>', '<span class="pn-sg-fig">99</span>', 1), "G"),
+    ("targeted update: explorer sauna count edited", lambda s: s.replace('Saunas <span class="mx-n">98</span>', 'Saunas <span class="mx-n">99</span>', 1), "G"),
+    ("targeted update: gallery figure edited", lambda s: s.replace('<span class="pn-sg-fig">98</span>', '<span class="pn-sg-fig">97</span>', 1), "G"),
     # SEO-GR4 (8 Nov 2026): the declared line now ends with the maker's approved profile link
     ("targeted update: a declared A-Z line removed", lambda s: s.replace('        <li><a href="#p-recEDHcHJ5dWaWklV">Gardenhouse24 Ireland</a> <span>2 hot tubs &middot; Irish availability not yet confirmed</span> <a class="mx-az-pf" href="suppliers/gardenhouse24.html">Gardenhouse24 profile</a></li>\n', '', 1), "G"),
     ("SEO-GR4: a profile link added to a maker without an approved profile", lambda s: s.replace('Hansa24 Group</a> <span>', 'Hansa24 Group</a> <a class="mx-az-pf" href="suppliers/gardenhouse24.html">Hansa24 profile</a> <span>', 1), "G"),
