@@ -70,7 +70,7 @@
       "delivery": {"level": "product", "text": "Price includes delivery and offloading; \"Free delivery to most of Ireland\"; extra charge for Northern Ireland and parts of Co. Donegal.", "sources": ["https://www.pineca.ie/outdoor-sauna-elda-44mm-2x2m-4m2.html"]},
       "installation": {"level": "product", "text": "Kit with assembly instructions; assembly service price on request."},
       "products": [
-        {"name": "ELDA outdoor sauna, 44 mm, 2 × 2 m", "url": "https://www.pineca.ie/outdoor-sauna-elda-44mm-2x2m-4m2.html", "price": {"text": "€4,083", "basis": "listed kit price incl. delivery and offloading; a time-limited promotion (€3,898) was running on 12 Nov and is not used", "vat": "including VAT"}, "external": "200 × 200 cm, ridge 229.5 cm, 4 m² floor", "capacity": "3 people", "heater": "Not included: Harvia Vega BC80 8 kW electric (+€519) or wood-burning stoves offered as options", "lead_time": "Free delivery in 6–8 weeks (product page)", "atlas_price_note": "DIFFERS: Atlas (14 Oct snapshot) records €4,018 incl. VAT; listed price on 12 Nov is €4,083. Atlas not changed."}
+        {"name": "ELDA outdoor sauna, 44 mm, 2 × 2 m", "url": "https://www.pineca.ie/outdoor-sauna-elda-44mm-2x2m-4m2.html", "price": {"text": "€4,083", "basis": "listed kit price incl. delivery and offloading; a time-limited promotional price running when checked is not shown", "vat": "including VAT"}, "external": "200 × 200 cm, ridge 229.5 cm, 4 m² floor", "capacity": "3 people", "heater": "Not included: Harvia Vega BC80 8 kW electric (+€519) or wood-burning stoves offered as options", "lead_time": "Free delivery in 6–8 weeks (product page)", "atlas_price_note": "DIFFERS: Atlas (14 Oct snapshot) records €4,018 incl. VAT; listed price on 12 Nov is €4,083. Atlas not changed."}
       ]
     },
     {
@@ -94,7 +94,7 @@
       "delivery": {"level": "supplier", "text": "\"We offer free delivery to all locations across Ireland\" with standard vehicles; kerbside, by crane lorry.", "sources": ["https://summerhouse24.ie/delivery-information/"]},
       "installation": {"level": "product", "text": "Optional cabin installation, +€1,650 on this model; foundation kit options extra."},
       "products": [
-        {"name": "Small garden sauna cabin (G0383)", "url": "https://summerhouse24.ie/garden-sauna-cabin-g0383/", "price": {"text": "€5,460", "basis": "kit price", "vat": "not shown on the product page at recheck (Atlas records incl. VAT)"}, "external": "198 × 198 × 249 cm; 3.2 m² room", "capacity": null, "heater": "Not included: Tylo Sense Sport 6 (+€1,410) or Sport 8 (+€1,560) heater and stones", "lead_time": "Delivery estimate 3–5 weeks", "atlas_price_note": "Unchanged."}
+        {"name": "Small garden sauna cabin (G0383)", "url": "https://summerhouse24.ie/garden-sauna-cabin-g0383/", "price": {"text": "€5,460", "basis": "kit price", "vat": "basis not shown on the product page when checked"}, "external": "198 × 198 × 249 cm; 3.2 m² room", "capacity": null, "heater": "Not included: Tylo Sense Sport 6 (+€1,410) or Sport 8 (+€1,560) heater and stones", "lead_time": "Delivery estimate 3–5 weeks", "atlas_price_note": "Unchanged."}
       ]
     },
     {
@@ -115,7 +115,7 @@
   "unresolved": [
     "Irish Sauna Company: The Aran and The Skellig product URLs return 404 and neither appears in the shop's current product list (12 Nov). Garden Retreat's Maker Explorer still lists both. Not changed here — needs a separate Atlas/explorer decision.",
     "Irish Sauna Company: introductory prices end 29 Nov 2026; the guide must be rebuilt with the 30 Nov prices (€7,500 / €9,300) or it will be out of date.",
-    "Pineca: listed price €4,083 differs from Atlas €4,018 (14 Oct). Atlas not changed.",
+    "Pineca: listed price €4,083 differs from Atlas €4,018 (14 Oct). Atlas not changed. A Black Friday promotional price (€3,898, 5% off, ending about 25 Nov) was running on 12 Nov and is deliberately not shown.",
     "Summerhouse24: VAT basis not shown on the product page at recheck.",
     "OGNYX: no Ireland-specific delivery statement on the pages checked; whether the base price includes the default Harvia stove is not stated in words.",
     "Arctic Wellness: VAT basis not stated; Ember Mini height not stated; heater make not stated.",
