@@ -86,10 +86,10 @@ def price_html(pr):
         parts = []
         for st in pr["schedule"]:
             if st.get("until"):
-                parts.append('<span class="sx-per" data-until="%s">%s <span class="sx-when">%s until %s</span></span>'
+                parts.append('<span class="sx-per" data-until="%s"><span class="sx-amt">%s</span> <span class="sx-when">%s until %s</span></span>'
                              % (st["until"], E(st["price"]), E(st.get("label", "price")), fmt_day(st["until"])))
             else:
-                parts.append('<span class="sx-per" data-from="%s">%s <span class="sx-when">from %s</span></span>'
+                parts.append('<span class="sx-per" data-from="%s"><span class="sx-amt">%s</span> <span class="sx-when">from %s</span></span>'
                              % (st["from"], E(st["price"]), fmt_day(st["from"])))
         return "".join(parts)
     return E(pr["text"])
