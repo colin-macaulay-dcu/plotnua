@@ -1,6 +1,6 @@
 {
   "schema": "plotnua.maker-product-notes.v1",
-  "decision": "Founder approval 27 Oct 2026, 'Irish Sauna Company collection — implementation approved'. The wording of every note below is the founder's. Read by atlas-tools/build-maker-explorer.py (guard G15). A note shows only where it is listed; a note with validUntil refuses the build after that date. Extended 4 Nov 2026 (founder approval 'Powersheds Maker Explorer data correction'): a Powersheds maker line (its register prices were retired 4 Nov 2026 by the DISC-008 pricing correction: all garden-room prices now come from the product records, by the product page's rule).",
+  "decision": "Founder approval 27 Oct 2026, 'Irish Sauna Company collection — implementation approved'. The wording of every note below is the founder's. Read by atlas-tools/build-maker-explorer.py (guard G15). A note shows only where it is listed; a note with validUntil refuses the build after that date. Extended 4 Nov 2026 (founder approval 'Powersheds Maker Explorer data correction'): a Powersheds maker line (its register prices were retired 4 Nov 2026 by the DISC-008 pricing correction: all garden-room prices now come from the product records, by the product page's rule). Amended locally 12 Nov 2026 (release preparation, not yet founder-approved): the Clare and Inis Mor introductory-price notes corrected to the supplier's current dates and later prices.",
   "makerNotes": {
     "Irish Sauna Company": {
       "text": "Designed and handcrafted to order by Irish Sauna Company in Connemara, Co. Galway. Heaters by Harvia.",
@@ -14,16 +14,16 @@
   "productNotes": {
     "recTBQcdOO0yoULqN": [
       {
-        "text": "Introductory price until 30 November 2026",
+        "text": "Introductory price until 29 November 2026; €7,500 including VAT from 30 November 2026",
         "validUntil": "2026-11-30",
-        "evidence": "Product page, 27 Oct 2026: 'Introductory price: €6,500 including VAT until 30 November 2026' (Atlas Product Pricing recWVOoCFSetBnk8X)."
+        "evidence": "Product page re-read 12 Nov 2026 (https://irishsaunacompany.com/products/the-clare-1-2-person-garden-sauna): 'Current introductory price: €6,500 including VAT, available until 29 November 2026' and 'Price increases to €7,500 including VAT on 30 November 2026.' Supersedes the 27 Oct reading ('until 30 November 2026'). Wording proposed 12 Nov 2026 for founder approval; Atlas Product Pricing recWVOoCFSetBnk8X to be updated on 30 Nov 2026 (proposed Atlas update ISC-5)."
       }
     ],
     "rect8UKFyZodW593p": [
       {
-        "text": "Introductory price until 30 November 2026",
+        "text": "Introductory price until 29 November 2026; €9,300 including VAT from 30 November 2026",
         "validUntil": "2026-11-30",
-        "evidence": "Product page, 27 Oct 2026: 'Introductory price: €8,400 including VAT until 30 November 2026' (Atlas Product Pricing recwBrnjeLTTGhYp7)."
+        "evidence": "Product page re-read 12 Nov 2026 (https://irishsaunacompany.com/products/the-inis-mor-2-4-person-garden-sauna; the Atlas URL redirects here): 'Current introductory price: €8,400 including VAT, available until 29 November 2026' and 'Price increases to €9,300 including VAT on 30 November 2026.' Wording proposed 12 Nov 2026 for founder approval; Atlas Product Pricing recwBrnjeLTTGhYp7 to be updated on 30 Nov 2026 (proposed Atlas update ISC-5)."
       }
     ],
     "recQszPvHe5Cu7wY5": [

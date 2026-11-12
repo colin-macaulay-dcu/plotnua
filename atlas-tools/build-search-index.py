@@ -541,6 +541,9 @@ GUIDE_PAGES = {
     # Garden Offices in Ireland guide (SEO GR7-GR14, published 9 Nov 2026), added to
     # Search by founder approval, 11 Nov 2026. Same rule, same record shape, no priority.
     "garden-offices-ireland.html": "poss-garden-offices-ireland",
+    # Garden Saunas in Ireland guide (founder instruction, 12 Nov 2026: add to internal Search;
+    # release preparation, not yet released). Same rule, same record shape, no priority.
+    "garden-saunas-ireland.html": "poss-garden-saunas-ireland",
 }
 for fname, rid in sorted(GUIDE_PAGES.items()):
     if fname not in ALLOW:
