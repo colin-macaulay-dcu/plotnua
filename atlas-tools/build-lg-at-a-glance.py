@@ -173,7 +173,7 @@ def build(src):
             tag = '<img class="lg-glance-img" src="%s" alt="%s" width="88" height="66" loading="lazy" decoding="async">' % (esc(img["src"]), esc(img["alt"]))
             fig_html = '<span class="lg-glance-thumb">%s<span class="lg-glance-kind">%s</span></span>' % (tag, esc(img["kind"]))
             c = esc(img["credit"])
-            credits.append('<a href="%s" rel="noopener" target="_blank">%s</a>' % (esc(img["credit_href"]), c) if img["credit_href"] else c)
+            credits.append('<a href="%s" target="_blank" rel="noopener noreferrer">%s</a>' % (esc(img["credit_href"]), c) if img["credit_href"] else c)
         else:
             fig_html = ""
         n = len(prods)
