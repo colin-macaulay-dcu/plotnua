@@ -13783,6 +13783,316 @@
       "source_sha256": "fc3bdce0e5c41acaebf81cbffa3cc61475173ea0aaeb392bfd98e6a1081765f6",
       "subject": "artwork",
       "work_slug": "uisce-salach-v-2"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "fintan-whelan",
+      "asset": "plotart/artists/fintan-whelan/img/portrait-600.webp",
+      "bytes": 26472,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "sRGB (no embedded profile; treated as sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-a420f3op1jw",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        600,
+        546
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "72a817f6ebc38cd3b734510b76f4e470e07a199725c8b4dbf8af211ee12755a4",
+      "source_sha256": "e3ce8ebc90a83abb77a00ab783c87c21bb811b9b16f9a15570a42cb10acc9fc2",
+      "subject": "portrait",
+      "work_slug": null
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "fintan-whelan",
+      "asset": "plotart/artists/fintan-whelan/img/walk-of-life-1-600.webp",
+      "bytes": 59990,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (sRGB IEC61966-2.1)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-a420f3op1jw",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        454,
+        600
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "8381160ab9ae999e3fde909cfac8edab82dd64573ec46f09f897843520463783",
+      "source_sha256": "3e85314dbc9c7389c76cb071513b46ffb129904c7c3234db94d2be5910bac7fc",
+      "subject": "artwork",
+      "work_slug": "walk-of-life"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "fintan-whelan",
+      "asset": "plotart/artists/fintan-whelan/img/walk-of-life-1-1200.webp",
+      "bytes": 212278,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (sRGB IEC61966-2.1)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-a420f3op1jw",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        909,
+        1200
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "5cd35ea3b3a526aa3d07730a2d6d36fdfb319fc37da9d687a68b321897c45268",
+      "source_sha256": "3e85314dbc9c7389c76cb071513b46ffb129904c7c3234db94d2be5910bac7fc",
+      "subject": "artwork",
+      "work_slug": "walk-of-life"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "fintan-whelan",
+      "asset": "plotart/artists/fintan-whelan/img/walk-of-life-1-2000.webp",
+      "bytes": 539338,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (sRGB IEC61966-2.1)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-a420f3op1jw",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        1515,
+        2000
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "752c04e1ef8e8eff06f5713232f1aa83a86399b04bb5cb60d0578998b8e06ff7",
+      "source_sha256": "3e85314dbc9c7389c76cb071513b46ffb129904c7c3234db94d2be5910bac7fc",
+      "subject": "artwork",
+      "work_slug": "walk-of-life"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "fintan-whelan",
+      "asset": "plotart/artists/fintan-whelan/img/walk-of-life-2-600.webp",
+      "bytes": 66728,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (sRGB IEC61966-2.1)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-a420f3op1jw",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        400,
+        600
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "e1412e788cf8319ba985e26844969d918175cb961a0e8cbfefcff7bbe2c97904",
+      "source_sha256": "c976c48d17131da01057f9a6470f0e50844193465f25cedfb79c5d073c25135c",
+      "subject": "artwork",
+      "work_slug": "walk-of-life"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "fintan-whelan",
+      "asset": "plotart/artists/fintan-whelan/img/walk-of-life-2-2000.webp",
+      "bytes": 652388,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (sRGB IEC61966-2.1)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-a420f3op1jw",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        1335,
+        2000
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "615437ec098da3410ad1611334b15c5efe2f30fb64bda9f6172847eca94a37df",
+      "source_sha256": "c976c48d17131da01057f9a6470f0e50844193465f25cedfb79c5d073c25135c",
+      "subject": "artwork",
+      "work_slug": "walk-of-life"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "fintan-whelan",
+      "asset": "plotart/artists/fintan-whelan/img/walk-of-life-3-600.webp",
+      "bytes": 24578,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (sRGB IEC61966-2.1)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-a420f3op1jw",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        400,
+        600
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "82686f8b5d829ca9424c0b3812afd08e9d79703c47d617e56fca4471106b0a09",
+      "source_sha256": "e74ac1bc09442e97bc9d8e6871a781338cad9702e3987735725422e8835a976d",
+      "subject": "artwork",
+      "work_slug": "walk-of-life"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "fintan-whelan",
+      "asset": "plotart/artists/fintan-whelan/img/walk-of-life-3-2000.webp",
+      "bytes": 186002,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (sRGB IEC61966-2.1)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-a420f3op1jw",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        1335,
+        2000
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "4228a448a5166879386efda9f6190e179f94324fc9387ab8b230843e0f4599e4",
+      "source_sha256": "e74ac1bc09442e97bc9d8e6871a781338cad9702e3987735725422e8835a976d",
+      "subject": "artwork",
+      "work_slug": "walk-of-life"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "fintan-whelan",
+      "asset": "plotart/artists/fintan-whelan/img/walk-of-life-4-600.webp",
+      "bytes": 50782,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "sRGB (no embedded profile; treated as sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-a420f3op1jw",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        400,
+        600
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "ef8047c5140859ef1294127659436b6b238ed44d8a1b0aa752f652238d8bcd97",
+      "source_sha256": "62e3b181417821e9313912f7366d1433028e57762f486adcb9bcd46a880b3786",
+      "subject": "artwork",
+      "work_slug": "walk-of-life"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "fintan-whelan",
+      "asset": "plotart/artists/fintan-whelan/img/walk-of-life-4-2000.webp",
+      "bytes": 472204,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "sRGB (no embedded profile; treated as sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-a420f3op1jw",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        1335,
+        2000
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "2fe21a31558c9941c46b0c2a4444a8adb6c01f07b6cb8fd1e26cc19c99cb3535",
+      "source_sha256": "62e3b181417821e9313912f7366d1433028e57762f486adcb9bcd46a880b3786",
+      "subject": "artwork",
+      "work_slug": "walk-of-life"
     }
   ],
   "legacy_undeclared": [

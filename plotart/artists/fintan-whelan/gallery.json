@@ -1,0 +1,214 @@
+{
+ "artist": {
+  "bio": "Fintan Whelan (b. 1967, Dublin, Ireland) is an acclaimed contemporary Irish abstract painter exploring the interplay of colour, light, movement and organic form. He studied fine art at Dún Laoghaire School of Art and Dublin Institute of Technology, Mountjoy Square. After living and working in Ireland and Spain, he relocated to Germany, where his studio occupies a former church organ factory near the historic centre of Göttingen. He retains close ties with Ireland.\n\nAfter committing himself to painting full-time, Whelan developed a distinctive visual language shaped by diverse cultures and landscapes. His practice combines experimentation with a tactile and precise approach to materials. Working with pigments, oils, emulsions and varnishes, he incorporates raw silk powder and fibres into his compositions, exploring the possibilities of the painted surface. Through meticulous layering of translucent and opaque substances, he creates complex textures and fluid forms evoking cosmic expanses, undulating waters and natural rhythms. Spontaneity provides the initial impulse, but each painting evolves through deliberate decisions and refinement. Whelan carefully directs its development, continually adjusting surfaces, colours and spatial relationships. This balance of instinct and technical mastery gives his work its distinctive tension and depth.\n\nNature, transformation and the relationship between the visible and intangible remain central to his artistic vision. Rather than reproducing the natural world, Whelan evokes its underlying energy, movement and emotional resonance, inviting contemplation and personal interpretation.\n\nA member of the German Federal Association of Visual Artists (BBK), Whelan has exhibited across Europe, Asia and North America. Career milestones include two participations in Personal Structures during the Venice Biennale: at Palazzo Bembo in 2022 and Palazzo Mora in 2026. His exhibition history also includes London, Seoul, Shanghai, Beijing, Florence, Paris, Toronto and New York. He has undertaken artist residencies in London, Newfoundland, New Delhi, Seoul and Antalya.\n\nHis work is held in private collections and prestigious residential and commercial spaces worldwide. Through his exploration of colour, material and abstraction, Whelan continues to develop a distinctive practice bridging the physical and the contemplative.",
+  "county": null,
+  "display_name": "Fintan Whelan",
+  "founding": true,
+  "instagram": "fintan_whelan",
+  "medium": "painting",
+  "portrait": {
+   "alt": "Artist in his studio",
+   "aspect": 1.09951,
+   "derivatives": [
+    {
+     "file": "portrait-600.webp",
+     "long_edge": 600,
+     "pixels": [
+      600,
+      546
+     ]
+    }
+   ],
+   "photo_credit": null,
+   "pixels": [
+    2000,
+    1819
+   ],
+   "role": "portrait"
+  },
+  "practice": "Painter",
+  "slug": "fintan-whelan",
+  "statement": "Fintan Whelan is an internationally recognised Irish abstract artist whose paintings explore the interplay of colour, light, texture and organic movement. Combining spontaneity with technical mastery and exceptional precision, he transforms pigments and unconventional materials into richly layered compositions that evoke the elemental forces of nature.",
+  "website": "https://www.fintanwhelan.com"
+ },
+ "provenance_sources": [
+  {
+   "dhash": "99173e6e61e0cc84",
+   "source_sha256": "e3ce8ebc90a83abb77a00ab783c87c21bb811b9b16f9a15570a42cb10acc9fc2",
+   "stem": "portrait"
+  },
+  {
+   "dhash": "d2d0f0b8f8f0ead8",
+   "source_sha256": "3e85314dbc9c7389c76cb071513b46ffb129904c7c3234db94d2be5910bac7fc",
+   "stem": "walk-of-life-1"
+  },
+  {
+   "dhash": "1c1a1860f0f0fc7e",
+   "source_sha256": "c976c48d17131da01057f9a6470f0e50844193465f25cedfb79c5d073c25135c",
+   "stem": "walk-of-life-2"
+  },
+  {
+   "dhash": "031f737173713100",
+   "source_sha256": "e74ac1bc09442e97bc9d8e6871a781338cad9702e3987735725422e8835a976d",
+   "stem": "walk-of-life-3"
+  },
+  {
+   "dhash": "d3de9af0d1d0c469",
+   "source_sha256": "62e3b181417821e9313912f7366d1433028e57762f486adcb9bcd46a880b3786",
+   "stem": "walk-of-life-4"
+  }
+ ],
+ "publication": {
+  "approved_at": "2026-11-12T18:27:53.502Z",
+  "approved_by": "founder",
+  "licence_accepted_at": "2026-11-12T15:56:18.240Z",
+  "licence_version": "PA-GPIL-2026-11",
+  "permission_ref": "PA-PERM-a420f3op1jw",
+  "state": "approved",
+  "test_note": null,
+  "version": "v1"
+ },
+ "schema": "plotnua.plotart.gallery-package.v1",
+ "works": [
+  {
+   "ai_founder_decision": null,
+   "ai_involvement": "none",
+   "ai_note": null,
+   "availability": "available",
+   "d_cm": 4,
+   "description": "Walk of Life is a defining work within Irish artist Fintan Whelan’s visual language, centred on a fundamental human condition: our attempt to shape life while responding to forces beyond our control.\n\nWhelan combines raw silk powder and structural silk fibres with intense pigments, oils, varnishes, and emulsions. Through pouring, tilting, layering, and scraping, intention and material behaviour continually alter one another. Every decision creates a new condition that must be confronted.\n\nThis tension gives the painting its distinctive character: fluidity meets resistance, order meets disruption, and control opens onto unexpected possibilities.\n\nWalk of Life is not a depiction of life, but a metaphor for its unfolding—a reflection on how we navigate uncertainty, adapt to change, and find direction within what cannot be predetermined.",
+   "h_cm": 160,
+   "id": "wi2ggh2x2rt",
+   "images": [
+    {
+     "alt": "Full frontal image of the painting",
+     "aspect": 0.75729,
+     "derivatives": [
+      {
+       "file": "walk-of-life-1-600.webp",
+       "long_edge": 600,
+       "pixels": [
+        454,
+        600
+       ]
+      },
+      {
+       "file": "walk-of-life-1-1200.webp",
+       "long_edge": 1200,
+       "pixels": [
+        909,
+        1200
+       ]
+      },
+      {
+       "file": "walk-of-life-1-2000.webp",
+       "long_edge": 2000,
+       "pixels": [
+        1515,
+        2000
+       ]
+      }
+     ],
+     "photo_credit": null,
+     "pixels": [
+      2000,
+      2641
+     ],
+     "role": "main"
+    },
+    {
+     "alt": "Detail of artwork",
+     "aspect": 0.66739,
+     "derivatives": [
+      {
+       "file": "walk-of-life-2-600.webp",
+       "long_edge": 600,
+       "pixels": [
+        400,
+        600
+       ]
+      },
+      {
+       "file": "walk-of-life-2-2000.webp",
+       "long_edge": 2000,
+       "pixels": [
+        1335,
+        2000
+       ]
+      }
+     ],
+     "photo_credit": null,
+     "pixels": [
+      4912,
+      7360
+     ],
+     "role": "view"
+    },
+    {
+     "alt": "View from an angle",
+     "aspect": 0.66739,
+     "derivatives": [
+      {
+       "file": "walk-of-life-3-600.webp",
+       "long_edge": 600,
+       "pixels": [
+        400,
+        600
+       ]
+      },
+      {
+       "file": "walk-of-life-3-2000.webp",
+       "long_edge": 2000,
+       "pixels": [
+        1335,
+        2000
+       ]
+      }
+     ],
+     "photo_credit": null,
+     "pixels": [
+      4912,
+      7360
+     ],
+     "role": "view"
+    },
+    {
+     "alt": "Detail of artwork",
+     "aspect": 0.66739,
+     "derivatives": [
+      {
+       "file": "walk-of-life-4-600.webp",
+       "long_edge": 600,
+       "pixels": [
+        400,
+        600
+       ]
+      },
+      {
+       "file": "walk-of-life-4-2000.webp",
+       "long_edge": 2000,
+       "pixels": [
+        1335,
+        2000
+       ]
+      }
+     ],
+     "photo_credit": null,
+     "pixels": [
+      4912,
+      7360
+     ],
+     "role": "view"
+    }
+   ],
+   "materials": null,
+   "medium": "Mixed media, raw silk & oil on canvas",
+   "price_eur": 6200,
+   "price_on_request": false,
+   "slug": "walk-of-life",
+   "title": "Walk of life",
+   "w_cm": 120,
+   "year": 2025
+  }
+ ]
+}
