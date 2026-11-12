@@ -168,19 +168,24 @@ per = collections.Counter(r["organisation"] for r in pub)
 # 10 Nov 2026 (founder brief, Arctic Wellness Maker Explorer): Arctic Wellness's three priced
 # saunas and four priced ice baths join on its own rights record; its six unpriced or
 # unclassified products are held by the rule, 128 -> 135.
-check("W11 135 public products: OGNYX 29, Tanktribe 4, Irish Sauna Company 4, Gardenhouse24 6, "
+# 12 Nov 2026 (release preparation, PROPOSED ISC correction ISC-1..ISC-4, founder approval
+# pending): The Aran and The Skellig are no longer offered (404) and leave, 135 -> 133.
+check("W11 133 public products: OGNYX 29, Tanktribe 4, Irish Sauna Company 2, Gardenhouse24 6, "
       "Arctic Wellness 7, Pineca 34, Hansa24 25, Polaris 20, TimberIN 6",
-      per == {"OGNYX": 29, "Tanktribe": 4, "Irish Sauna Company": 4, "Gardenhouse24 Ireland": 6,
+      per == {"OGNYX": 29, "Tanktribe": 4, "Irish Sauna Company": 2, "Gardenhouse24 Ireland": 6,
               "Arctic Wellness": 7,
               "Pineca Ireland": 34, "Hansa24 Group": 25, "Polaris Sauna": 20, "TimberIN": 6}, dict(per))
 ISLAND = {"recTBQcdOO0yoULqN", "rect8UKFyZodW593p", "recQszPvHe5Cu7wY5", "reccdnuccLgq8dlqh"}
 WITHDRAWN = {"recSYzKR0BjBrdYMQ", "recRgVJcPwTtY1ikY", "recJlhoNav6YNU1zj"}
-check("W12 Irish Sauna Company: exactly the four Island Collection saunas are public, "
-      "each at its own irishsaunacompany.com page with a verified incl.-VAT EUR price",
-      {r["id"] for r in pub if r["organisation"] == "Irish Sauna Company"} == ISLAND
+ISC_CURRENT = {"recTBQcdOO0yoULqN", "rect8UKFyZodW593p"}   # The Clare, The Inis Mor
+check("W12 Irish Sauna Company: exactly the two current models (The Clare, The Inis Mor) are public, "
+      "each at its own irishsaunacompany.com page with a verified incl.-VAT EUR price; "
+      "The Aran and The Skellig are kept as records but not public",
+      {r["id"] for r in pub if r["organisation"] == "Irish Sauna Company"} == ISC_CURRENT
+      and ISLAND <= {r["id"] for r in A["products"]}
       and all(r["productUrl"].startswith("https://irishsaunacompany.com/products/the-")
               and r["price"]["currency"] == "EUR" and r["price"]["basis"].endswith("including VAT.")
-              for r in pub if r["id"] in ISLAND))
+              for r in pub if r["id"] in ISC_CURRENT))
 check("W12 the withdrawn Harvia products are kept as records but never public",
       WITHDRAWN <= {r["id"] for r in A["products"]} and not (WITHDRAWN & {r["id"] for r in pub}))
 REG = json.loads((ROOT / "atlas-tools" / "public-information-listings.json").read_text(encoding="utf-8"))
@@ -192,7 +197,7 @@ check("W7/W11 every public maker is either on its own rights record or on the re
       and not (listed & rights), sorted(listed & rights))
 check("W11 basis matches: supplier permission for rights-record makers, public information otherwise",
       all(r["listingBasis"] == ("SUPPLIER_PERMISSION" if r["organisation"] in rights else "PUBLIC_INFORMATION")
-          for r in pub) and A["listingBasisCounts"] == {"SUPPLIER_PERMISSION": 50, "PUBLIC_INFORMATION": 85})
+          for r in pub) and A["listingBasisCounts"] == {"SUPPLIER_PERMISSION": 48, "PUBLIC_INFORMATION": 85})
 check("W11 MyCabin, Cosy Cabins, Sommarnöjen and Auroom Wellness are not public",
       not ({r["organisation"] for r in pub} & {"MyCabin.ie", "Cosy Cabins", "Sommarnöjen", "Auroom Wellness"}))
 BLOCKERS = {"rectXEcIBSgq92QFn", "recQT6LbDFnfrssoi", "recu1Y1kHvG90k7GL", "recZcGYcwzf2Fa1re",
