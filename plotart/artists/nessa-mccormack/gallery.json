@@ -1,0 +1,755 @@
+{
+ "artist": {
+  "bio": "I am an abstract painter and teacher living in County Wicklow, Ireland.\n\nMy work is a celebration of the energy of life.\n\nThe vitality, movement, colour, rhythm and interconnectedness that exist within the natural world and within human experience.\n\nI am inspired by the many ways different cultures express this life force through their textiles, customs, rituals, patterns, adornment and surroundings. These expressions reveal a shared human desire to celebrate existence, honour place and communicate a sense of belonging and connection. It is this vitality that I seek to engage within my own practice. I respond through a felt sense of place rather than seeking an exact depiction of what I see. Paint, printed patterns and drawn imagery become ways of building surfaces. Layer upon layer, marks and forms accumulate, echoing lived experience.",
+  "county": "Wicklow",
+  "display_name": "Nessa McCormack",
+  "founding": true,
+  "instagram": "nessamccormackart",
+  "medium": "painting",
+  "portrait": {
+   "alt": "In Studio",
+   "aspect": 0.6178,
+   "derivatives": [
+    {
+     "file": "portrait-600.webp",
+     "long_edge": 600,
+     "pixels": [
+      371,
+      600
+     ]
+    }
+   ],
+   "photo_credit": null,
+   "pixels": [
+    2305,
+    3731
+   ],
+   "role": "portrait"
+  },
+  "practice": "Painter",
+  "slug": "nessa-mccormack",
+  "statement": "Paintings, Prints, Abstract Painting Workshops.",
+  "website": "https://www.nessamccormackart.com/"
+ },
+ "provenance_sources": [
+  {
+   "dhash": "cc83d9599ccfe69e",
+   "source_sha256": "9e557ee8dafa4d60e44f8ba4b19959fb04e5b46b49a18aff724597b237d8588f",
+   "stem": "portrait"
+  },
+  {
+   "dhash": "8c92e68c8ee2428b",
+   "source_sha256": "a051b24e163aa390635b2b1ba3bbd1e0b678568555a95772fe6dde161d4acfca",
+   "stem": "humming-light-1"
+  },
+  {
+   "dhash": "6a4c8c9e868acb62",
+   "source_sha256": "5ff395e239aa43394c3712defe44d3a579651b18d0882b126351555482576ab3",
+   "stem": "humming-light-2"
+  },
+  {
+   "dhash": "060405495b73e12d",
+   "source_sha256": "825f053decaab7d204a14bd307bd2d21879fc4baf9b55d69bf22b135b4cd4ad8",
+   "stem": "humming-light-3"
+  },
+  {
+   "dhash": "8cd8c8e8c4c6396a",
+   "source_sha256": "2788c051e7e896ccdfa093600ea478f17459786f1e6d38df0b99d29c71229ca0",
+   "stem": "humming-light-ii-1"
+  },
+  {
+   "dhash": "000191b191931907",
+   "source_sha256": "913997b78777e56b94ad1b352c175dfa46d37afcde1237d61d26093c20736a17",
+   "stem": "humming-light-ii-2"
+  },
+  {
+   "dhash": "e7e3b39be2d0da4a",
+   "source_sha256": "8fa07415be1ea1347f8099dfee41352c1f965dfc281856a1e3b15bf25f62522f",
+   "stem": "humming-light-ii-3"
+  },
+  {
+   "dhash": "018d61783e3202ce",
+   "source_sha256": "29758ea1117ba51e9d253b6e58aba6d07b829bc38be11d2bb7031e43fbe11dea",
+   "stem": "humming-light-ii-4"
+  },
+  {
+   "dhash": "9c34a48eca9eacfc",
+   "source_sha256": "403f357bc36b191b77809f626013397a434325a083a9c066f84a8b6e7799cf4f",
+   "stem": "humming-light-i-1"
+  },
+  {
+   "dhash": "968e8e3a346861f3",
+   "source_sha256": "2bfcf369260eacffa689aa2780b89082ee65bee78e6450dd22fb1c782087ac6d",
+   "stem": "humming-light-i-2"
+  },
+  {
+   "dhash": "93b1e4cf865359d8",
+   "source_sha256": "dda25863a7e892bd1fdd8c6df753482539251dff983d41f9c9ffa2c9b4021e41",
+   "stem": "humming-light-i-3"
+  },
+  {
+   "dhash": "65c38cec56115049",
+   "source_sha256": "b6f27df9cfa8830b09942ea0ca179b52fb0d08037c2e27ebe435f5d33fdc7e03",
+   "stem": "pomegranates-in-the-blue-city-1"
+  },
+  {
+   "dhash": "1c1db6a0c0c8e9c1",
+   "source_sha256": "1f2b81b6c52e016ee70141dc8e6094abd8c3ae45ab6c3d68ae7c71dcb72ea5fa",
+   "stem": "pomegranates-in-the-blue-city-2"
+  },
+  {
+   "dhash": "b038d88b92b29c9a",
+   "source_sha256": "3d066ac737fc458ddf64db6d497717f142fae267aafc39626bdf1f7356bbf39d",
+   "stem": "pomegranates-in-the-blue-city-3"
+  },
+  {
+   "dhash": "d0a2c39c9c8c2c0c",
+   "source_sha256": "554ee2191ed5df72488e52bff2d2adf4eef8e044e3d8638125063486ca27fa39",
+   "stem": "the-messenger-1"
+  },
+  {
+   "dhash": "139818c86850ccb8",
+   "source_sha256": "b2ceba1b4cc37f003ea4075bb086834f1caaf555e36d1bf7d16b419a4f80e0ad",
+   "stem": "the-messenger-2"
+  },
+  {
+   "dhash": "4c28a8a890dcb8f2",
+   "source_sha256": "bb6cf0952d421f4756e91f3206f45dc5cb66f3856068c94c67e5740f121d69d0",
+   "stem": "the-messenger-3"
+  },
+  {
+   "dhash": "001b03110d050d03",
+   "source_sha256": "b109a99fcef12b18cd07d4fc3cc1178532acb411e3c12049501f9838a5416c9a",
+   "stem": "the-messenger-4"
+  }
+ ],
+ "publication": {
+  "approved_at": "2026-11-12T20:08:05.945Z",
+  "approved_by": "founder",
+  "licence_accepted_at": "2026-11-11T22:05:14.883Z",
+  "licence_version": "PA-GPIL-2026-11",
+  "permission_ref": "PA-PERM-an04i96p1en",
+  "state": "approved",
+  "test_note": null,
+  "version": "v1"
+ },
+ "schema": "plotnua.plotart.gallery-package.v1",
+ "works": [
+  {
+   "ai_founder_decision": null,
+   "ai_involvement": "none",
+   "ai_note": null,
+   "availability": "available",
+   "d_cm": 5,
+   "description": "The Humming light collection is a celebration of an energy of life, inspired by the people, architecture, colour and vibrancy of exotic wildlife I experienced on artist residency in the “Pueblo Magico” (magical town) of Ajijic, Mexico.",
+   "h_cm": 33,
+   "id": "w43yzxe0fk8",
+   "images": [
+    {
+     "alt": "Vibrant, expressive abstract painting featuring soft aqua blues, pale turquoise, blush pink and warm cream tones are juxtaposed with vivid coral red, burnt orange, deep teal, ochre and touches of mustard yellow.",
+     "aspect": 1.0235,
+     "derivatives": [
+      {
+       "file": "humming-light-1-600.webp",
+       "long_edge": 600,
+       "pixels": [
+        600,
+        586
+       ]
+      },
+      {
+       "file": "humming-light-1-1200.webp",
+       "long_edge": 1200,
+       "pixels": [
+        1200,
+        1172
+       ]
+      },
+      {
+       "file": "humming-light-1-2000.webp",
+       "long_edge": 2000,
+       "pixels": [
+        2000,
+        1954
+       ]
+      }
+     ],
+     "photo_credit": null,
+     "pixels": [
+      2047,
+      2000
+     ],
+     "role": "main"
+    },
+    {
+     "alt": "Vibrant, expressive abstract painting featuring soft aqua blues, pale turquoise, blush pink and warm cream tones are juxtaposed with vivid coral red, burnt orange, deep teal, ochre and touches of mustard yellow.",
+     "aspect": 2.40733,
+     "derivatives": [
+      {
+       "file": "humming-light-2-600.webp",
+       "long_edge": 600,
+       "pixels": [
+        600,
+        249
+       ]
+      },
+      {
+       "file": "humming-light-2-2000.webp",
+       "long_edge": 2000,
+       "pixels": [
+        2000,
+        831
+       ]
+      }
+     ],
+     "photo_credit": null,
+     "pixels": [
+      3611,
+      1500
+     ],
+     "role": "view"
+    },
+    {
+     "alt": "Vibrant, expressive abstract painting featuring soft aqua blues, pale turquoise, blush pink and warm cream tones are juxtaposed with vivid coral red, burnt orange, deep teal, ochre and touches of mustard yellow.",
+     "aspect": 2.448,
+     "derivatives": [
+      {
+       "file": "humming-light-3-600.webp",
+       "long_edge": 600,
+       "pixels": [
+        600,
+        245
+       ]
+      },
+      {
+       "file": "humming-light-3-2000.webp",
+       "long_edge": 2000,
+       "pixels": [
+        2000,
+        817
+       ]
+      }
+     ],
+     "photo_credit": null,
+     "pixels": [
+      3672,
+      1500
+     ],
+     "role": "view"
+    }
+   ],
+   "materials": "Acrylic & caran d’ache neo pastel on Wood Panel,",
+   "medium": "Acrylic on Wood Panel",
+   "price_eur": 495,
+   "price_on_request": false,
+   "slug": "humming-light",
+   "title": "Humming Light",
+   "w_cm": 33,
+   "year": 2026
+  },
+  {
+   "ai_founder_decision": null,
+   "ai_involvement": "none",
+   "ai_note": null,
+   "availability": "available",
+   "d_cm": 5,
+   "description": "The Humming light collection is a celebration of an energy of life, inspired by the people, architecture, colour and vibrancy of exotic wildlife I experienced on artist residency in the “Pueblo Magico” (magical town) of Ajijic, Mexico.",
+   "h_cm": 33,
+   "id": "w6stt966ksq",
+   "images": [
+    {
+     "alt": "Contemporary abstract expressionist painting pastel, turquoise, coral pink, green organic shapes",
+     "aspect": 1.0,
+     "derivatives": [
+      {
+       "file": "humming-light-ii-1-600.webp",
+       "long_edge": 600,
+       "pixels": [
+        600,
+        600
+       ]
+      },
+      {
+       "file": "humming-light-ii-1-1200.webp",
+       "long_edge": 1200,
+       "pixels": [
+        1200,
+        1200
+       ]
+      },
+      {
+       "file": "humming-light-ii-1-2000.webp",
+       "long_edge": 2000,
+       "pixels": [
+        2000,
+        2000
+       ]
+      }
+     ],
+     "photo_credit": null,
+     "pixels": [
+      2000,
+      2000
+     ],
+     "role": "main"
+    },
+    {
+     "alt": "Vibrant, expressive abstract painting featuring soft aqua blues, pale turquoise, blush pink and warm pale blue tones are juxtaposed with vivid coral red, dusky pink, burnt orange, deep teal",
+     "aspect": 1.059,
+     "derivatives": [
+      {
+       "file": "humming-light-ii-2-600.webp",
+       "long_edge": 600,
+       "pixels": [
+        600,
+        567
+       ]
+      },
+      {
+       "file": "humming-light-ii-2-2000.webp",
+       "long_edge": 2000,
+       "pixels": [
+        2000,
+        1889
+       ]
+      }
+     ],
+     "photo_credit": null,
+     "pixels": [
+      2172,
+      2051
+     ],
+     "role": "view"
+    },
+    {
+     "alt": "Vibrant, expressive abstract painting featuring soft aqua blues, pale turquoise, blush pink and warm cream tones are juxtaposed with vivid coral red, burnt orange, deep teal, ochre and touches of mustard yellow.",
+     "aspect": 0.92379,
+     "derivatives": [
+      {
+       "file": "humming-light-ii-3-600.webp",
+       "long_edge": 600,
+       "pixels": [
+        554,
+        600
+       ]
+      },
+      {
+       "file": "humming-light-ii-3-2000.webp",
+       "long_edge": 2000,
+       "pixels": [
+        1848,
+        2000
+       ]
+      }
+     ],
+     "photo_credit": null,
+     "pixels": [
+      2000,
+      2165
+     ],
+     "role": "view"
+    },
+    {
+     "alt": "Vibrant, expressive abstract painting featuring soft aqua blues, pale turquoise, blush pink and warm cream tones are juxtaposed with vivid coral red, burnt orange, deep teal, ochre and touches of mustard yellow.",
+     "aspect": 0.81833,
+     "derivatives": [
+      {
+       "file": "humming-light-ii-4-600.webp",
+       "long_edge": 600,
+       "pixels": [
+        491,
+        600
+       ]
+      },
+      {
+       "file": "humming-light-ii-4-2000.webp",
+       "long_edge": 2000,
+       "pixels": [
+        1637,
+        2000
+       ]
+      }
+     ],
+     "photo_credit": null,
+     "pixels": [
+      2000,
+      2444
+     ],
+     "role": "view"
+    }
+   ],
+   "materials": "Acrylic & caran d’ache neo pastel on Wood Panel,",
+   "medium": "Acrylic on Wood Panel",
+   "price_eur": 495,
+   "price_on_request": false,
+   "slug": "humming-light-ii",
+   "title": "Humming Light II",
+   "w_cm": 33,
+   "year": 2026
+  },
+  {
+   "ai_founder_decision": null,
+   "ai_involvement": "none",
+   "ai_note": null,
+   "availability": "available",
+   "d_cm": 5,
+   "description": "The Humming light collection is a celebration of an energy of life, inspired by the people, architecture, colour and vibrancy of exotic wildlife I experienced on artist residency in the “Pueblo Magico” (magical town) of Ajijic, Mexico.",
+   "h_cm": 33,
+   "id": "wrqzcg5xzpf",
+   "images": [
+    {
+     "alt": "Contemporary abstract expressionist painting pastel, turquoise, coral pink, green, blue organic shapes",
+     "aspect": 1.02407,
+     "derivatives": [
+      {
+       "file": "humming-light-i-1-600.webp",
+       "long_edge": 600,
+       "pixels": [
+        600,
+        586
+       ]
+      },
+      {
+       "file": "humming-light-i-1-1200.webp",
+       "long_edge": 1200,
+       "pixels": [
+        1200,
+        1172
+       ]
+      },
+      {
+       "file": "humming-light-i-1-2000.webp",
+       "long_edge": 2000,
+       "pixels": [
+        2000,
+        1953
+       ]
+      }
+     ],
+     "photo_credit": null,
+     "pixels": [
+      2000,
+      1953
+     ],
+     "role": "main"
+    },
+    {
+     "alt": "Vibrant, expressive abstract painting featuring soft aqua blues, pale turquoise, blush pink and warm cream tones are juxtaposed with vivid coral red, burnt orange, deep teal, ochre and touches of mustard yellow.",
+     "aspect": 0.82816,
+     "derivatives": [
+      {
+       "file": "humming-light-i-2-600.webp",
+       "long_edge": 600,
+       "pixels": [
+        497,
+        600
+       ]
+      },
+      {
+       "file": "humming-light-i-2-2000.webp",
+       "long_edge": 2000,
+       "pixels": [
+        1656,
+        2000
+       ]
+      }
+     ],
+     "photo_credit": null,
+     "pixels": [
+      2000,
+      2415
+     ],
+     "role": "view"
+    },
+    {
+     "alt": "Vibrant, expressive abstract painting featuring soft aqua blues, pale turquoise, blush pink and warm cream tones are juxtaposed with vivid coral red, burnt orange, deep teal, ochre and touches of mustard yellow.",
+     "aspect": 0.85434,
+     "derivatives": [
+      {
+       "file": "humming-light-i-3-600.webp",
+       "long_edge": 600,
+       "pixels": [
+        513,
+        600
+       ]
+      },
+      {
+       "file": "humming-light-i-3-2000.webp",
+       "long_edge": 2000,
+       "pixels": [
+        1709,
+        2000
+       ]
+      }
+     ],
+     "photo_credit": null,
+     "pixels": [
+      2000,
+      2341
+     ],
+     "role": "view"
+    }
+   ],
+   "materials": "Acrylic, pencil  & caran d’ache neo pastel on Wood Panel,",
+   "medium": "Acrylic on Wood Panel",
+   "price_eur": 495,
+   "price_on_request": true,
+   "slug": "humming-light-i",
+   "title": "Humming Light I",
+   "w_cm": 33,
+   "year": 2026
+  },
+  {
+   "ai_founder_decision": null,
+   "ai_involvement": "none",
+   "ai_note": null,
+   "availability": "available",
+   "d_cm": 5,
+   "description": "This series of paintings is inspired by a shared love of Andalucian and Moroccan art, a sacred geometry found in their paradise garden design and architecture. A collaboration with two other artists, Rafael Sanchez Ponce- a jeweller and Diana Garcia Fernandez - a ceramicist, each responding to one anothers work, creating a new contemporary response to an ancient civilisation and culture. The exhibition took place in the town of Vejer de la Frontera, Cadiz, its architecture recalls the period of Moorish rule dating from 711 to 1248.",
+   "h_cm": 47,
+   "id": "wxn6yb0323u",
+   "images": [
+    {
+     "alt": "Contemporary abstract expressionist painting, dusty pink, deep burgundy, blues, grey and  mustard organic shapes",
+     "aspect": 0.99672,
+     "derivatives": [
+      {
+       "file": "pomegranates-in-the-blue-city-1-600.webp",
+       "long_edge": 600,
+       "pixels": [
+        598,
+        600
+       ]
+      },
+      {
+       "file": "pomegranates-in-the-blue-city-1-1200.webp",
+       "long_edge": 1200,
+       "pixels": [
+        1196,
+        1200
+       ]
+      },
+      {
+       "file": "pomegranates-in-the-blue-city-1-2000.webp",
+       "long_edge": 2000,
+       "pixels": [
+        1993,
+        2000
+       ]
+      }
+     ],
+     "photo_credit": null,
+     "pixels": [
+      2430,
+      2438
+     ],
+     "role": "main"
+    },
+    {
+     "alt": "Contemporary abstract expressionist painting, dusty pink, deep burgundy, blues, grey and  mustard organic shapes",
+     "aspect": 1.3947,
+     "derivatives": [
+      {
+       "file": "pomegranates-in-the-blue-city-2-600.webp",
+       "long_edge": 600,
+       "pixels": [
+        600,
+        430
+       ]
+      },
+      {
+       "file": "pomegranates-in-the-blue-city-2-2000.webp",
+       "long_edge": 2000,
+       "pixels": [
+        2000,
+        1434
+       ]
+      }
+     ],
+     "photo_credit": null,
+     "pixels": [
+      2000,
+      1434
+     ],
+     "role": "view"
+    },
+    {
+     "alt": "Contemporary abstract expressionist painting, dusty pink, deep burgundy, blues, grey and  mustard organic shapes",
+     "aspect": 1.15075,
+     "derivatives": [
+      {
+       "file": "pomegranates-in-the-blue-city-3-600.webp",
+       "long_edge": 600,
+       "pixels": [
+        600,
+        521
+       ]
+      },
+      {
+       "file": "pomegranates-in-the-blue-city-3-2000.webp",
+       "long_edge": 2000,
+       "pixels": [
+        2000,
+        1738
+       ]
+      }
+     ],
+     "photo_credit": null,
+     "pixels": [
+      2000,
+      1738
+     ],
+     "role": "view"
+    }
+   ],
+   "materials": "Acrylic, Pencil & Neo Pastel on Wooden Panel",
+   "medium": "Acrylic on Wood Panel",
+   "price_eur": 595,
+   "price_on_request": false,
+   "slug": "pomegranates-in-the-blue-city",
+   "title": "Pomegranates in the Blue City",
+   "w_cm": 47,
+   "year": 2024
+  },
+  {
+   "ai_founder_decision": null,
+   "ai_involvement": "none",
+   "ai_note": null,
+   "availability": "available",
+   "d_cm": 3,
+   "description": "This painting is part of the Humming Light collection, a celebration of an energy of life, and exploration of the mysticism of the Otomi people of Mexico, in particular the hummingbird, during my time on artist residency in Ajijic, Lake Chapala, Mexico.\n\nI am thrilled to have had this painting selected as finalist in the John Richardson French Residency award by Hambly & Hambly Gallery, Enniskillen.",
+   "h_cm": 70,
+   "id": "wqd7j21q1fk",
+   "images": [
+    {
+     "alt": "Contemporary abstract expressionist painting pastel, turquoise, coral pink, lemon yellow and mustard organic shapes",
+     "aspect": 0.739,
+     "derivatives": [
+      {
+       "file": "the-messenger-1-600.webp",
+       "long_edge": 600,
+       "pixels": [
+        443,
+        600
+       ]
+      },
+      {
+       "file": "the-messenger-1-1200.webp",
+       "long_edge": 1200,
+       "pixels": [
+        887,
+        1200
+       ]
+      },
+      {
+       "file": "the-messenger-1-2000.webp",
+       "long_edge": 2000,
+       "pixels": [
+        1478,
+        2000
+       ]
+      }
+     ],
+     "photo_credit": null,
+     "pixels": [
+      1478,
+      2000
+     ],
+     "role": "main"
+    },
+    {
+     "alt": "Contemporary abstract expressionist painting pastel, turquoise, coral pink, lemon yellow and mustard organic shapes",
+     "aspect": 0.412,
+     "derivatives": [
+      {
+       "file": "the-messenger-2-600.webp",
+       "long_edge": 600,
+       "pixels": [
+        247,
+        600
+       ]
+      },
+      {
+       "file": "the-messenger-2-2000.webp",
+       "long_edge": 2000,
+       "pixels": [
+        824,
+        2000
+       ]
+      }
+     ],
+     "photo_credit": null,
+     "pixels": [
+      824,
+      2000
+     ],
+     "role": "view"
+    },
+    {
+     "alt": "Contemporary abstract expressionist painting pastel, turquoise, coral pink, lemon yellow and mustard organic shapes",
+     "aspect": 2.442,
+     "derivatives": [
+      {
+       "file": "the-messenger-3-600.webp",
+       "long_edge": 600,
+       "pixels": [
+        600,
+        246
+       ]
+      },
+      {
+       "file": "the-messenger-3-2000.webp",
+       "long_edge": 2000,
+       "pixels": [
+        2000,
+        819
+       ]
+      }
+     ],
+     "photo_credit": null,
+     "pixels": [
+      2000,
+      819
+     ],
+     "role": "view"
+    },
+    {
+     "alt": "Contemporary abstract expressionist painting pastel, turquoise, coral pink, lemon yellow and mustard organic shapes",
+     "aspect": 0.95796,
+     "derivatives": [
+      {
+       "file": "the-messenger-4-600.webp",
+       "long_edge": 600,
+       "pixels": [
+        575,
+        600
+       ]
+      },
+      {
+       "file": "the-messenger-4-2000.webp",
+       "long_edge": 2000,
+       "pixels": [
+        1916,
+        2000
+       ]
+      }
+     ],
+     "photo_credit": null,
+     "pixels": [
+      2484,
+      2593
+     ],
+     "role": "view"
+    }
+   ],
+   "materials": "Acrylic, pencil & caran d’ache neo pastel on fabriano paper,",
+   "medium": "Acrylic on Fabriano Paper",
+   "price_eur": 1500,
+   "price_on_request": false,
+   "slug": "the-messenger",
+   "title": "The Messenger",
+   "w_cm": 50,
+   "year": 2026
+  }
+ ]
+}

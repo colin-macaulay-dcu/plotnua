@@ -14093,6 +14093,1246 @@
       "source_sha256": "62e3b181417821e9313912f7366d1433028e57762f486adcb9bcd46a880b3786",
       "subject": "artwork",
       "work_slug": "walk-of-life"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "nessa-mccormack",
+      "asset": "plotart/artists/nessa-mccormack/img/portrait-600.webp",
+      "bytes": 35968,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (Display P3)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-an04i96p1en",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        371,
+        600
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "39584ecb262531b68ed87401145470bbe5f1c353caab02b1b3cbb59dddf65730",
+      "source_sha256": "9e557ee8dafa4d60e44f8ba4b19959fb04e5b46b49a18aff724597b237d8588f",
+      "subject": "portrait",
+      "work_slug": null
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "nessa-mccormack",
+      "asset": "plotart/artists/nessa-mccormack/img/humming-light-1-600.webp",
+      "bytes": 84188,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "sRGB (no embedded profile; treated as sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-an04i96p1en",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        600,
+        586
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "5a12eabe92dcc7f6a9fb44ece54452f101997b6c150914cd83859f3f43a20011",
+      "source_sha256": "a051b24e163aa390635b2b1ba3bbd1e0b678568555a95772fe6dde161d4acfca",
+      "subject": "artwork",
+      "work_slug": "humming-light"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "nessa-mccormack",
+      "asset": "plotart/artists/nessa-mccormack/img/humming-light-1-1200.webp",
+      "bytes": 221080,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "sRGB (no embedded profile; treated as sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-an04i96p1en",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        1200,
+        1172
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "3ad6cde814cf025e262512562fb5e282043264cd320f32e1391fa838dfaad67c",
+      "source_sha256": "a051b24e163aa390635b2b1ba3bbd1e0b678568555a95772fe6dde161d4acfca",
+      "subject": "artwork",
+      "work_slug": "humming-light"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "nessa-mccormack",
+      "asset": "plotart/artists/nessa-mccormack/img/humming-light-1-2000.webp",
+      "bytes": 408288,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "sRGB (no embedded profile; treated as sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-an04i96p1en",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        2000,
+        1954
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "73eb45d3695d37259634a86c7b9fe8a1807b6f7e074d48985d06d82ae11e5f75",
+      "source_sha256": "a051b24e163aa390635b2b1ba3bbd1e0b678568555a95772fe6dde161d4acfca",
+      "subject": "artwork",
+      "work_slug": "humming-light"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "nessa-mccormack",
+      "asset": "plotart/artists/nessa-mccormack/img/humming-light-2-600.webp",
+      "bytes": 43138,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "sRGB (no embedded profile; treated as sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-an04i96p1en",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        600,
+        249
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "fe62d21a34dc41728446777558d55fbf70403ba0c8a5d67e4baf27917d74e526",
+      "source_sha256": "5ff395e239aa43394c3712defe44d3a579651b18d0882b126351555482576ab3",
+      "subject": "artwork",
+      "work_slug": "humming-light"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "nessa-mccormack",
+      "asset": "plotart/artists/nessa-mccormack/img/humming-light-2-2000.webp",
+      "bytes": 186108,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "sRGB (no embedded profile; treated as sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-an04i96p1en",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        2000,
+        831
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "70301a72d1258881fa4991d55a1031531009fcc6a2d11d3eabf430dd4989ab0e",
+      "source_sha256": "5ff395e239aa43394c3712defe44d3a579651b18d0882b126351555482576ab3",
+      "subject": "artwork",
+      "work_slug": "humming-light"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "nessa-mccormack",
+      "asset": "plotart/artists/nessa-mccormack/img/humming-light-3-600.webp",
+      "bytes": 34166,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "sRGB (no embedded profile; treated as sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-an04i96p1en",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        600,
+        245
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "84a428eadf3afd6dfcc49efb52bfde2357545542c476d28cb60afc5aa9d84063",
+      "source_sha256": "825f053decaab7d204a14bd307bd2d21879fc4baf9b55d69bf22b135b4cd4ad8",
+      "subject": "artwork",
+      "work_slug": "humming-light"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "nessa-mccormack",
+      "asset": "plotart/artists/nessa-mccormack/img/humming-light-3-2000.webp",
+      "bytes": 138060,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "sRGB (no embedded profile; treated as sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-an04i96p1en",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        2000,
+        817
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "a8fced457ddb21802547038b8142037eecd336a5e03c2df954857a13b9ed555b",
+      "source_sha256": "825f053decaab7d204a14bd307bd2d21879fc4baf9b55d69bf22b135b4cd4ad8",
+      "subject": "artwork",
+      "work_slug": "humming-light"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "nessa-mccormack",
+      "asset": "plotart/artists/nessa-mccormack/img/humming-light-ii-1-600.webp",
+      "bytes": 59124,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "sRGB (no embedded profile; treated as sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-an04i96p1en",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        600,
+        600
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "deafa0fd0fd85c60da4cbcfa86a97e0f3d67941d0aa01c226b1e851f981a97c8",
+      "source_sha256": "2788c051e7e896ccdfa093600ea478f17459786f1e6d38df0b99d29c71229ca0",
+      "subject": "artwork",
+      "work_slug": "humming-light-ii"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "nessa-mccormack",
+      "asset": "plotart/artists/nessa-mccormack/img/humming-light-ii-1-1200.webp",
+      "bytes": 138902,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "sRGB (no embedded profile; treated as sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-an04i96p1en",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        1200,
+        1200
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "872ade175b2a7a3ad46bbe4603283853c75f6645d1114df00abb490691a9631d",
+      "source_sha256": "2788c051e7e896ccdfa093600ea478f17459786f1e6d38df0b99d29c71229ca0",
+      "subject": "artwork",
+      "work_slug": "humming-light-ii"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "nessa-mccormack",
+      "asset": "plotart/artists/nessa-mccormack/img/humming-light-ii-1-2000.webp",
+      "bytes": 251320,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "sRGB (no embedded profile; treated as sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-an04i96p1en",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        2000,
+        2000
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "dc26deed1a4066ae4092f16e6deb559d17d3a4f000b18e646c5801b0bdc3cc6f",
+      "source_sha256": "2788c051e7e896ccdfa093600ea478f17459786f1e6d38df0b99d29c71229ca0",
+      "subject": "artwork",
+      "work_slug": "humming-light-ii"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "nessa-mccormack",
+      "asset": "plotart/artists/nessa-mccormack/img/humming-light-ii-2-600.webp",
+      "bytes": 47762,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "sRGB (no embedded profile; treated as sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-an04i96p1en",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        600,
+        567
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "a46b36af5f13e7ac75068827db0537f29b4da85cb5e50886559c662f34bbd237",
+      "source_sha256": "913997b78777e56b94ad1b352c175dfa46d37afcde1237d61d26093c20736a17",
+      "subject": "artwork",
+      "work_slug": "humming-light-ii"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "nessa-mccormack",
+      "asset": "plotart/artists/nessa-mccormack/img/humming-light-ii-2-2000.webp",
+      "bytes": 346490,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "sRGB (no embedded profile; treated as sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-an04i96p1en",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        2000,
+        1889
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "35ac66d87b12dc7143cf4ea66e72feb6b04048cb58d584ebf5b9657ef1554bfb",
+      "source_sha256": "913997b78777e56b94ad1b352c175dfa46d37afcde1237d61d26093c20736a17",
+      "subject": "artwork",
+      "work_slug": "humming-light-ii"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "nessa-mccormack",
+      "asset": "plotart/artists/nessa-mccormack/img/humming-light-ii-3-600.webp",
+      "bytes": 32980,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "sRGB (no embedded profile; treated as sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-an04i96p1en",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        554,
+        600
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "17940ddfae9018648c12d3094b13d778ad7f3b35052b8069ea2f9101a4ce2262",
+      "source_sha256": "8fa07415be1ea1347f8099dfee41352c1f965dfc281856a1e3b15bf25f62522f",
+      "subject": "artwork",
+      "work_slug": "humming-light-ii"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "nessa-mccormack",
+      "asset": "plotart/artists/nessa-mccormack/img/humming-light-ii-3-2000.webp",
+      "bytes": 134456,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "sRGB (no embedded profile; treated as sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-an04i96p1en",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        1848,
+        2000
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "184718a76796006cb815c7f4452c217ea4488bb207ebeaf8bc4c1b4d8cad55d9",
+      "source_sha256": "8fa07415be1ea1347f8099dfee41352c1f965dfc281856a1e3b15bf25f62522f",
+      "subject": "artwork",
+      "work_slug": "humming-light-ii"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "nessa-mccormack",
+      "asset": "plotart/artists/nessa-mccormack/img/humming-light-ii-4-600.webp",
+      "bytes": 32182,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "sRGB (no embedded profile; treated as sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-an04i96p1en",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        491,
+        600
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "3504dbc79ee04d7dfb35c09f2cbd79437be6f15f13ad6147d293c8a1db834823",
+      "source_sha256": "29758ea1117ba51e9d253b6e58aba6d07b829bc38be11d2bb7031e43fbe11dea",
+      "subject": "artwork",
+      "work_slug": "humming-light-ii"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "nessa-mccormack",
+      "asset": "plotart/artists/nessa-mccormack/img/humming-light-ii-4-2000.webp",
+      "bytes": 131518,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "sRGB (no embedded profile; treated as sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-an04i96p1en",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        1637,
+        2000
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "bc1a08999f8d1692d5fa883730394e8d1983f27ee76f51b412c7ff5470a0251f",
+      "source_sha256": "29758ea1117ba51e9d253b6e58aba6d07b829bc38be11d2bb7031e43fbe11dea",
+      "subject": "artwork",
+      "work_slug": "humming-light-ii"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "nessa-mccormack",
+      "asset": "plotart/artists/nessa-mccormack/img/humming-light-i-1-600.webp",
+      "bytes": 90346,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "sRGB (no embedded profile; treated as sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-an04i96p1en",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        600,
+        586
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "15734b91188a633b477e53f2db4ed787d8f29d31a5417e72e08e9b6c3d51a085",
+      "source_sha256": "403f357bc36b191b77809f626013397a434325a083a9c066f84a8b6e7799cf4f",
+      "subject": "artwork",
+      "work_slug": "humming-light-i"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "nessa-mccormack",
+      "asset": "plotart/artists/nessa-mccormack/img/humming-light-i-1-1200.webp",
+      "bytes": 249872,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "sRGB (no embedded profile; treated as sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-an04i96p1en",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        1200,
+        1172
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "9f52625d350340fd4615a61790f2394b449dd295be4f13d67128a9875b646804",
+      "source_sha256": "403f357bc36b191b77809f626013397a434325a083a9c066f84a8b6e7799cf4f",
+      "subject": "artwork",
+      "work_slug": "humming-light-i"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "nessa-mccormack",
+      "asset": "plotart/artists/nessa-mccormack/img/humming-light-i-1-2000.webp",
+      "bytes": 464100,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "sRGB (no embedded profile; treated as sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-an04i96p1en",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        2000,
+        1953
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "e98b36048cf41caf17b11f5ae1fd77300fecc004b2db07d36b239307bf7703c8",
+      "source_sha256": "403f357bc36b191b77809f626013397a434325a083a9c066f84a8b6e7799cf4f",
+      "subject": "artwork",
+      "work_slug": "humming-light-i"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "nessa-mccormack",
+      "asset": "plotart/artists/nessa-mccormack/img/humming-light-i-2-600.webp",
+      "bytes": 61542,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "sRGB (no embedded profile; treated as sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-an04i96p1en",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        497,
+        600
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "03171bdd88cec85d59f1a8921827e348efe3de4fb33c22998e94ac25ba241e90",
+      "source_sha256": "2bfcf369260eacffa689aa2780b89082ee65bee78e6450dd22fb1c782087ac6d",
+      "subject": "artwork",
+      "work_slug": "humming-light-i"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "nessa-mccormack",
+      "asset": "plotart/artists/nessa-mccormack/img/humming-light-i-2-2000.webp",
+      "bytes": 238216,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "sRGB (no embedded profile; treated as sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-an04i96p1en",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        1656,
+        2000
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "8c4768b73803fb2440bc70282e6993df6b18c9d3cc4f46e25ca98775b07b838a",
+      "source_sha256": "2bfcf369260eacffa689aa2780b89082ee65bee78e6450dd22fb1c782087ac6d",
+      "subject": "artwork",
+      "work_slug": "humming-light-i"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "nessa-mccormack",
+      "asset": "plotart/artists/nessa-mccormack/img/humming-light-i-3-600.webp",
+      "bytes": 50650,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "sRGB (no embedded profile; treated as sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-an04i96p1en",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        513,
+        600
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "72770df9d7fcccda4f68f11172ef4d6ce1905bec74031cec05eb8fc2651773fc",
+      "source_sha256": "dda25863a7e892bd1fdd8c6df753482539251dff983d41f9c9ffa2c9b4021e41",
+      "subject": "artwork",
+      "work_slug": "humming-light-i"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "nessa-mccormack",
+      "asset": "plotart/artists/nessa-mccormack/img/humming-light-i-3-2000.webp",
+      "bytes": 201050,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "sRGB (no embedded profile; treated as sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-an04i96p1en",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        1709,
+        2000
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "0e0f850b53c2f802d7db8c6566086eac52c4a3e6dc931a12ac61979f77062ba3",
+      "source_sha256": "dda25863a7e892bd1fdd8c6df753482539251dff983d41f9c9ffa2c9b4021e41",
+      "subject": "artwork",
+      "work_slug": "humming-light-i"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "nessa-mccormack",
+      "asset": "plotart/artists/nessa-mccormack/img/pomegranates-in-the-blue-city-1-600.webp",
+      "bytes": 102258,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "sRGB (no embedded profile; treated as sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-an04i96p1en",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        598,
+        600
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "486f07c411dbda39a24072a790dee2053df40a31b058d40d6438e4c4f6de84f5",
+      "source_sha256": "b6f27df9cfa8830b09942ea0ca179b52fb0d08037c2e27ebe435f5d33fdc7e03",
+      "subject": "artwork",
+      "work_slug": "pomegranates-in-the-blue-city"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "nessa-mccormack",
+      "asset": "plotart/artists/nessa-mccormack/img/pomegranates-in-the-blue-city-1-1200.webp",
+      "bytes": 349942,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "sRGB (no embedded profile; treated as sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-an04i96p1en",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        1196,
+        1200
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "ab87ed0fe66425b5efffd181c513be1535d03a8c6ea91610336b491e0d4fc718",
+      "source_sha256": "b6f27df9cfa8830b09942ea0ca179b52fb0d08037c2e27ebe435f5d33fdc7e03",
+      "subject": "artwork",
+      "work_slug": "pomegranates-in-the-blue-city"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "nessa-mccormack",
+      "asset": "plotart/artists/nessa-mccormack/img/pomegranates-in-the-blue-city-1-2000.webp",
+      "bytes": 798106,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "sRGB (no embedded profile; treated as sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-an04i96p1en",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        1993,
+        2000
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "7f86ba6a8afbb09317ac254d7318ba971ce0f4aeda550cc744fb727e8f6be711",
+      "source_sha256": "b6f27df9cfa8830b09942ea0ca179b52fb0d08037c2e27ebe435f5d33fdc7e03",
+      "subject": "artwork",
+      "work_slug": "pomegranates-in-the-blue-city"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "nessa-mccormack",
+      "asset": "plotart/artists/nessa-mccormack/img/pomegranates-in-the-blue-city-2-600.webp",
+      "bytes": 62392,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "sRGB (no embedded profile; treated as sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-an04i96p1en",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        600,
+        430
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "755ff8e91675e1f6233911a6a26548385efe4dbdb215a3744aea3f303690d285",
+      "source_sha256": "1f2b81b6c52e016ee70141dc8e6094abd8c3ae45ab6c3d68ae7c71dcb72ea5fa",
+      "subject": "artwork",
+      "work_slug": "pomegranates-in-the-blue-city"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "nessa-mccormack",
+      "asset": "plotart/artists/nessa-mccormack/img/pomegranates-in-the-blue-city-2-2000.webp",
+      "bytes": 258172,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "sRGB (no embedded profile; treated as sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-an04i96p1en",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        2000,
+        1434
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "c00f0bc78cb6812050e131c4b72528bb7a6704f033e5cc3502e37fd4f8555adc",
+      "source_sha256": "1f2b81b6c52e016ee70141dc8e6094abd8c3ae45ab6c3d68ae7c71dcb72ea5fa",
+      "subject": "artwork",
+      "work_slug": "pomegranates-in-the-blue-city"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "nessa-mccormack",
+      "asset": "plotart/artists/nessa-mccormack/img/pomegranates-in-the-blue-city-3-600.webp",
+      "bytes": 62514,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "sRGB (no embedded profile; treated as sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-an04i96p1en",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        600,
+        521
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "8142979b347047037a5e7e129f741647b46a98562ec3a7bc172119e2950bcfa2",
+      "source_sha256": "3d066ac737fc458ddf64db6d497717f142fae267aafc39626bdf1f7356bbf39d",
+      "subject": "artwork",
+      "work_slug": "pomegranates-in-the-blue-city"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "nessa-mccormack",
+      "asset": "plotart/artists/nessa-mccormack/img/pomegranates-in-the-blue-city-3-2000.webp",
+      "bytes": 251624,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "sRGB (no embedded profile; treated as sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-an04i96p1en",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        2000,
+        1738
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "ae067d066f246f4a67cd03519a0b3175a0ce5155314bf7934dd1ec23ccc9c430",
+      "source_sha256": "3d066ac737fc458ddf64db6d497717f142fae267aafc39626bdf1f7356bbf39d",
+      "subject": "artwork",
+      "work_slug": "pomegranates-in-the-blue-city"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "nessa-mccormack",
+      "asset": "plotart/artists/nessa-mccormack/img/the-messenger-1-600.webp",
+      "bytes": 70820,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "sRGB (no embedded profile; treated as sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-an04i96p1en",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        443,
+        600
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "3dd605bd800575c689478060a5004184f7d5da7ab2caa9491eaf61858740a626",
+      "source_sha256": "554ee2191ed5df72488e52bff2d2adf4eef8e044e3d8638125063486ca27fa39",
+      "subject": "artwork",
+      "work_slug": "the-messenger"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "nessa-mccormack",
+      "asset": "plotart/artists/nessa-mccormack/img/the-messenger-1-1200.webp",
+      "bytes": 252658,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "sRGB (no embedded profile; treated as sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-an04i96p1en",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        887,
+        1200
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "045183aa4dd711b9041123f8e916605434555c4a262273e22d2a9861e32f8c01",
+      "source_sha256": "554ee2191ed5df72488e52bff2d2adf4eef8e044e3d8638125063486ca27fa39",
+      "subject": "artwork",
+      "work_slug": "the-messenger"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "nessa-mccormack",
+      "asset": "plotart/artists/nessa-mccormack/img/the-messenger-1-2000.webp",
+      "bytes": 518308,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "sRGB (no embedded profile; treated as sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-an04i96p1en",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        1478,
+        2000
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "f907900c8b681c4c5c0173e768cbed877957797f8989373c7014c2d6e3240f7c",
+      "source_sha256": "554ee2191ed5df72488e52bff2d2adf4eef8e044e3d8638125063486ca27fa39",
+      "subject": "artwork",
+      "work_slug": "the-messenger"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "nessa-mccormack",
+      "asset": "plotart/artists/nessa-mccormack/img/the-messenger-2-600.webp",
+      "bytes": 38548,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "sRGB (no embedded profile; treated as sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-an04i96p1en",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        247,
+        600
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "d807906e0e1aa6fd96417431729a3f0ed52a6b79941241e6222ca76d658e431f",
+      "source_sha256": "b2ceba1b4cc37f003ea4075bb086834f1caaf555e36d1bf7d16b419a4f80e0ad",
+      "subject": "artwork",
+      "work_slug": "the-messenger"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "nessa-mccormack",
+      "asset": "plotart/artists/nessa-mccormack/img/the-messenger-2-2000.webp",
+      "bytes": 192592,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "sRGB (no embedded profile; treated as sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-an04i96p1en",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        824,
+        2000
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "2af89f640c666bc5f200b88028d0ad43f5281ee56623288474eac90ea8488019",
+      "source_sha256": "b2ceba1b4cc37f003ea4075bb086834f1caaf555e36d1bf7d16b419a4f80e0ad",
+      "subject": "artwork",
+      "work_slug": "the-messenger"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "nessa-mccormack",
+      "asset": "plotart/artists/nessa-mccormack/img/the-messenger-3-600.webp",
+      "bytes": 44430,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "sRGB (no embedded profile; treated as sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-an04i96p1en",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        600,
+        246
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "65f831d515a24fbd61f4b967d3ba42e8e6df370019c811171ed2694cc1b300ec",
+      "source_sha256": "bb6cf0952d421f4756e91f3206f45dc5cb66f3856068c94c67e5740f121d69d0",
+      "subject": "artwork",
+      "work_slug": "the-messenger"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "nessa-mccormack",
+      "asset": "plotart/artists/nessa-mccormack/img/the-messenger-3-2000.webp",
+      "bytes": 185714,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "sRGB (no embedded profile; treated as sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-an04i96p1en",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        2000,
+        819
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "43a9654f65a5546c582ee7011df7c0169265acd2b23ba763bb646f94793af04f",
+      "source_sha256": "bb6cf0952d421f4756e91f3206f45dc5cb66f3856068c94c67e5740f121d69d0",
+      "subject": "artwork",
+      "work_slug": "the-messenger"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "nessa-mccormack",
+      "asset": "plotart/artists/nessa-mccormack/img/the-messenger-4-600.webp",
+      "bytes": 41354,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "sRGB (no embedded profile; treated as sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-an04i96p1en",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        575,
+        600
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "fca0ea8e5787857139c927e674079418e60ffdd02063bb7ae13ddba600fdf5d1",
+      "source_sha256": "b109a99fcef12b18cd07d4fc3cc1178532acb411e3c12049501f9838a5416c9a",
+      "subject": "artwork",
+      "work_slug": "the-messenger"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "nessa-mccormack",
+      "asset": "plotart/artists/nessa-mccormack/img/the-messenger-4-2000.webp",
+      "bytes": 465488,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "sRGB (no embedded profile; treated as sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-an04i96p1en",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        1916,
+        2000
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "0ff0bd0a5f75c79914c4ec3acd0891bb9fa068e0be8cc8277ba2623242513f62",
+      "source_sha256": "b109a99fcef12b18cd07d4fc3cc1178532acb411e3c12049501f9838a5416c9a",
+      "subject": "artwork",
+      "work_slug": "the-messenger"
     }
   ],
   "legacy_undeclared": [
