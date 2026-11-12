@@ -1158,9 +1158,9 @@ print("  G7c every price and supplier range is EUR; %d price-safe non-EUR prices
 # G7d STAGE 3D-D2 — DISCOVERABILITY. A price losing eligibility must never take a
 # product out of Search: every product the published index holds must still be
 # indexed, unless a separately approved removal names it (none is registered).
-# 12 Nov 2026 (release preparation; PROPOSED, founder approval required with the Atlas writes ISC-1/ISC-2):
+# 12 Nov 2026 (founder approval of release candidate bc4ba8c and Atlas writes ISC-1/ISC-2, written and read back):
 # Irish Sauna Company's The Aran and The Skellig are no longer listed by the maker (product URLs answer 404,
-# absent from its catalogue and site search). Their pricing records are proposed for 'Archived', which holds them
+# absent from its catalogue and site search). Their pricing records are 'Archived' (written 12 Nov 2026), which holds them
 # in the wellness universe; these two declared removals let them leave Search. No other removal is registered.
 APPROVED_REMOVALS = {"prod-recQszPvHe5Cu7wY5", "prod-reccdnuccLgq8dlqh"}
 _prev = subprocess.run(["git", "show", "HEAD:search-index-v1.json"], cwd=ROOT,

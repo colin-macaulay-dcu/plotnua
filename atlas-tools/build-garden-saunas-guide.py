@@ -47,7 +47,7 @@ BESPOKE_ONLY = {"The Mobile Pods"}          # no products in the sauna explorer;
 EXCLUDED_TEXT = ["TimberIN", "woodenhottubsale", "PLOTNUA4"]
 DISCLOSURE = "PlotNua has no commercial arrangement with any other maker listed here"
 # Atlas Partners recxATM8LXV9vlyEA, read 12 Nov 2026: Irish Sauna Company, "Agreed — not live" (terms agreed
-# 29 Oct 2026, not operational, no start date). Wording PROPOSED, pending founder approval.
+# 29 Oct 2026, not operational, no start date). Wording approved by the founder 12 Nov 2026.
 AGREED_NOT_LIVE = {"Irish Sauna Company": "PlotNua has agreed referral terms with Irish Sauna Company that are not "
                    "yet in operation; once they start, PlotNua would receive a commission on sales it refers."}
 NS = "Not stated by the maker"
