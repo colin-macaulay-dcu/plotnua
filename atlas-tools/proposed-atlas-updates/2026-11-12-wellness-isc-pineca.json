@@ -1,7 +1,7 @@
 {
  "schema": "plotnua.proposed-atlas-updates.v1",
  "date": "2026-11-12",
- "status": "PROPOSED — not written to Atlas. Requires founder approval; the Atlas write, then a scoped read-back and publish-targeted-update.py, publish these to the website.",
+ "status": "WRITTEN 12 Nov 2026 (founder approval of release candidate bc4ba8c, same day): ISC-1 to ISC-4 and the 34 Pineca pricing-record writes were applied after re-reading every record and confirming the current values still matched the reviewed 'from' values (no differences). ISC-4 notes corrected by appending a dated line (original evidence kept). ISC-5 is a future change, excluded and NOT written. Scoped read-backs: atlas-tools/targeted-updates/isc-atlas-readback-2026-11-12.json and pineca-atlas-readback-2026-11-12.json; regenerating both targeted updates from them gives NOTHING TO PUBLISH (identical to the reviewed candidate). The proposed snapshots' illustrative Pineca recheck notes were not part of the approved writes and were not written.",
  "base": "appoLZFWesvoPhZGR",
  "readBack": "Current values read read-only from Atlas through the Airtable connector on 12 Nov 2026.",
  "irishSaunaCompany": {

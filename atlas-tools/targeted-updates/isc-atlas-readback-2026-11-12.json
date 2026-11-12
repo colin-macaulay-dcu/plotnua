@@ -1,0 +1,298 @@
+{
+ "source": "ATLAS READ-BACK — scoped read of Atlas Core appoLZFWesvoPhZGR via the Airtable connector (read-only), 12 Nov 2026, after the founder-approved writes of atlas-tools/proposed-atlas-updates/2026-11-12-wellness-isc-pineca.json (ISC-1 to ISC-4). 4 products, 4 pricing records, 1 organisation.",
+ "products": [
+  {
+   "id": "recQszPvHe5Cu7wY5",
+   "createdTime": "2026-10-27T10:25:43.000Z",
+   "fields": {
+    "Notes": "ISLAND COLLECTION INGESTION 2026-10-27 (founder approval 27 Oct 2026, 'Irish Sauna Company collection — implementation approved'). Replaces the withdrawn Harvia range (PROD-001209, PROD-001210, PROD-001266) at the supplier's request: Brona, 27 Oct 2026, Gmail 1a17c9a56ea0fdca — \"would it be possible to update our listing on PlotNua to feature our new Irish-made collection instead of the previously listed range?\". IMAGERY: \"Please feel free to use the product imagery and information from the collection\" (same email). Scope: this collection only. Two collection images are enumerated for this product as PRODUCT VISUALISATIONS (computer-generated renders; never described as photographs of completed installations). Credit © Irish Sauna Company with a link back. Commercial status unchanged; no partnership terms.",
+    "Verification Status": "Verified",
+    "Product Feature Values": [
+     "recdCUfgJ2V6THJyN",
+     "recUEHHPlgplZbkbQ",
+     "recHJl5fOI8NceUwU",
+     "recvUGAK4EkJ2p1cS",
+     "recNwOAbMvFzvvgOL"
+    ],
+    "Product Name": "The Aran | 4–6 Person Luxury Garden Sauna",
+    "Product Availability": [
+     "rec25Fk6JxQTt24Om"
+    ],
+    "Habitation Applicability": "ANCILLARY_STRUCTURE",
+    "    Last Reviewed": "2026-10-27",
+    "Habitation Classification Basis": "HABITATION-BOUNDARY-v1 applied independently. ANCILLARY / NON-DWELLING. A single insulated outdoor sauna room for bathers; no sleeping, kitchen, sanitary, water or self-containment provision is published.",
+    "Organisation": [
+     "recLW0vZbkBGPRkZ9"
+    ],
+    "Atlas Product Certification Audit v1": "Product Evidence Complete — Organisation Gate Required",
+    "Product Code": "PROD-001333",
+    "Product Category": "Wellness / Sauna",
+    "Results Eligibility v1": "Not Eligible — Gold Standard Not Achieved",
+    "Habitation Applicability Basis": "ANCILLARY_STRUCTURE on first-party product evidence read 27 Oct 2026: an insulated garden sauna room with stated external dimensions and an electric heater; the published inclusions name no habitable provision. NO PLANNING CLAIM IS MADE OR IMPLIED.",
+    "Assets": [
+     "recd2xqlMd6qyKxhI",
+     "reckdF69PkRdLNUHs"
+    ],
+    "Product Pricing": [
+     "recBSFDzqVB3usnIJ"
+    ],
+    "Sources": [
+     "recKf9Q1YZUHdxUnv",
+     "recV1sy1ZiHptzeBN"
+    ],
+    "Product URL": "https://irishsaunacompany.com/products/the-aran-4-6-person-luxury-garden-sauna",
+    "Manufacturer SKU": "ISC-ISLAND-ARAN",
+    "Description": "PUBLISHED SPECIFICATION, read live 27 Oct 2026 from the supplier's own product page and collection (products.json). 4–6 people; exterior 2.5m W × 2.2m D × 2.4m H; Harvia Cilindro BlackSteel 10.8kW electric heater with digital controls; fully insulated walls and ceiling with foil vapour barrier; Finnish Thermowood; two-tier floating Black Alder benches; large panoramic window; toughened-glass door; Douglas Fir exterior in black Tikkurila Opaque; steel-clad roof; LED lighting; ventilation; thermometer, hygrometer and sand timer.\nPRICE: introductory price including VAT until 30 November 2026 (see Product Pricing). Made to order; contact to order (no online cart); 50% deposit; delivery additional, quoted by location.\nORIGIN: \"Handcrafted to order in Connemara, Galway\" (product page) / \"designed and built by Irish Sauna Company in Connemara\" (collection page). The heater is manufactured by Harvia; PlotNua must not imply every component is made in Ireland.\nNOT PUBLISHED BY PLOTNUA: interior approx. 2.3m × 2.0m 'subject to construction drawings' — not published by PlotNua.\nNOT PUBLISHED, not inferred: delivery cost, warranty terms, installation responsibility, planning position. Production time ('generally 2–3 weeks from receipt of deposit') is recorded here and is NOT published as a lead time.",
+    "Habitation Classification": "ANCILLARY / NON-DWELLING"
+   }
+  },
+  {
+   "id": "reccdnuccLgq8dlqh",
+   "createdTime": "2026-10-27T10:25:43.000Z",
+   "fields": {
+    "Notes": "ISLAND COLLECTION INGESTION 2026-10-27 (founder approval 27 Oct 2026, 'Irish Sauna Company collection — implementation approved'). Replaces the withdrawn Harvia range (PROD-001209, PROD-001210, PROD-001266) at the supplier's request: Brona, 27 Oct 2026, Gmail 1a17c9a56ea0fdca — \"would it be possible to update our listing on PlotNua to feature our new Irish-made collection instead of the previously listed range?\". IMAGERY: \"Please feel free to use the product imagery and information from the collection\" (same email). Scope: this collection only. Two collection images are enumerated for this product as PRODUCT VISUALISATIONS (computer-generated renders; never described as photographs of completed installations). Credit © Irish Sauna Company with a link back. Commercial status unchanged; no partnership terms.",
+    "Verification Status": "Verified",
+    "Product Feature Values": [
+     "rec8ibh7wjyaGCji0",
+     "recBcWYsGFjOIyNsG",
+     "recf1iEk2UekGuaey",
+     "rechhz9obD2QptJVd",
+     "rect7tDwrqk8qGNMc"
+    ],
+    "Product Name": "The Skellig | Luxury 6–8 Person Garden Sauna",
+    "Product Availability": [
+     "rec5o1pUycKTDH6qR"
+    ],
+    "Habitation Applicability": "ANCILLARY_STRUCTURE",
+    "    Last Reviewed": "2026-10-27",
+    "Habitation Classification Basis": "HABITATION-BOUNDARY-v1 applied independently. ANCILLARY / NON-DWELLING. A single insulated outdoor sauna room for bathers; no sleeping, kitchen, sanitary, water or self-containment provision is published.",
+    "Organisation": [
+     "recLW0vZbkBGPRkZ9"
+    ],
+    "Atlas Product Certification Audit v1": "Product Evidence Complete — Organisation Gate Required",
+    "Product Code": "PROD-001334",
+    "Product Category": "Wellness / Sauna",
+    "Results Eligibility v1": "Not Eligible — Gold Standard Not Achieved",
+    "Habitation Applicability Basis": "ANCILLARY_STRUCTURE on first-party product evidence read 27 Oct 2026: an insulated garden sauna room with stated external dimensions and an electric heater; the published inclusions name no habitable provision. NO PLANNING CLAIM IS MADE OR IMPLIED.",
+    "Assets": [
+     "recFRo2HR5jSQ9qnG",
+     "recKjOUkGP623IS8K"
+    ],
+    "Product Pricing": [
+     "recZiDlNEHs8hU3Tj"
+    ],
+    "Sources": [
+     "recWA9UnWGlFzflXG",
+     "recV1sy1ZiHptzeBN"
+    ],
+    "Product URL": "https://irishsaunacompany.com/products/the-skellig-luxury-8-person-garden-sauna",
+    "Manufacturer SKU": "ISC-ISLAND-SKELLIG",
+    "Description": "PUBLISHED SPECIFICATION, read live 27 Oct 2026 from the supplier's own product page and collection (products.json). 6–8 people; exterior 3.6m W × 2.6m D × 2.4m H; Harvia Cilindro Pro HPCE165400 16.5kW electric heater, approx. 220kg stones, Harvia Xenio CX170 digital controller; 400V three-phase supply required, subject to a qualified electrician's assessment; fully insulated with foil vapour barrier; Thermowood spruce interior; two-tier L-shaped Black Alder benches; 1.8m × 1.8m panoramic window; outward-opening glazed door; Douglas Fir exterior in black Tikkurila Valtti Opaque; black steel roof; Altro non-slip flooring with drainage; ISC Flowbase ventilation.\nPRICE: introductory price including VAT until 30 November 2026 (see Product Pricing). Made to order; contact to order (no online cart); 50% deposit; delivery additional, quoted by location.\nORIGIN: \"Handcrafted to order in Connemara, Galway\" (product page) / \"designed and built by Irish Sauna Company in Connemara\" (collection page). The heater is manufactured by Harvia; PlotNua must not imply every component is made in Ireland.\nNOT PUBLISHED BY PLOTNUA: bench depths contradict (400/500 mm in 'What's Included' vs 500/600 mm in 'Specifications') and interior dimensions are 'subject to final construction drawings' — neither published by PlotNua.\nNOT PUBLISHED, not inferred: delivery cost, warranty terms, installation responsibility, planning position. Production time ('generally 4 weeks from receipt of deposit') is recorded here and is NOT published as a lead time.",
+    "Habitation Classification": "ANCILLARY / NON-DWELLING"
+   }
+  },
+  {
+   "id": "rect8UKFyZodW593p",
+   "createdTime": "2026-10-27T10:25:43.000Z",
+   "fields": {
+    "Notes": "ISLAND COLLECTION INGESTION 2026-10-27 (founder approval 27 Oct 2026, 'Irish Sauna Company collection — implementation approved'). Replaces the withdrawn Harvia range (PROD-001209, PROD-001210, PROD-001266) at the supplier's request: Brona, 27 Oct 2026, Gmail 1a17c9a56ea0fdca — \"would it be possible to update our listing on PlotNua to feature our new Irish-made collection instead of the previously listed range?\". IMAGERY: \"Please feel free to use the product imagery and information from the collection\" (same email). Scope: this collection only. Two collection images are enumerated for this product as PRODUCT VISUALISATIONS (computer-generated renders; never described as photographs of completed installations). Credit © Irish Sauna Company with a link back. Commercial status unchanged; no partnership terms.",
+    "Verification Status": "Verified",
+    "Product Feature Values": [
+     "recgzhQAcTUiKBzg2",
+     "reck0L88vSvO80xQW",
+     "recYNMqEDzp2Kv2jp",
+     "recUvpjKBys73Klpq",
+     "rec4CmleSbqfde04p"
+    ],
+    "Product Name": "The Inis Mor | 2–4 Person Garden Sauna",
+    "Product Availability": [
+     "recwFTPjFY1ubsKRH"
+    ],
+    "Habitation Applicability": "ANCILLARY_STRUCTURE",
+    "    Last Reviewed": "2026-10-27",
+    "Habitation Classification Basis": "HABITATION-BOUNDARY-v1 applied independently. ANCILLARY / NON-DWELLING. A single insulated outdoor sauna room for bathers; no sleeping, kitchen, sanitary, water or self-containment provision is published.",
+    "Organisation": [
+     "recLW0vZbkBGPRkZ9"
+    ],
+    "Atlas Product Certification Audit v1": "Product Evidence Complete — Organisation Gate Required",
+    "Product Code": "PROD-001332",
+    "Product Category": "Wellness / Sauna",
+    "Results Eligibility v1": "Not Eligible — Gold Standard Not Achieved",
+    "Habitation Applicability Basis": "ANCILLARY_STRUCTURE on first-party product evidence read 27 Oct 2026: an insulated garden sauna room with stated external dimensions and an electric heater; the published inclusions name no habitable provision. NO PLANNING CLAIM IS MADE OR IMPLIED.",
+    "Assets": [
+     "recnoZpQDkfooFP2v",
+     "recTCNM71LSYMSW4u"
+    ],
+    "Product Pricing": [
+     "recwBrnjeLTTGhYp7"
+    ],
+    "Sources": [
+     "recwe5PJWoIb006Vc",
+     "recV1sy1ZiHptzeBN"
+    ],
+    "Product URL": "https://irishsaunacompany.com/products/the-inis-mor-2-4-person-garden-sauna",
+    "Manufacturer SKU": "ISC-ISLAND-INIS",
+    "Description": "PUBLISHED SPECIFICATION, read live 27 Oct 2026 from the supplier's own product page and collection (products.json). Approx. 2–4 people; exterior 2.0m W × 2.0m D × 2.4m H; Harvia The Wall SW80 BlackSteel 8kW electric heater with 20kg stones and built-in manual controls; insulated walls and ceiling; Finnish Thermowood interior; two tiered floating Alder benches (approx. 1.8m) and backrest; Douglas Fir exterior in black Tikkurila Valtti Opaque; powder-coated metal roof; full-height glazed door; ventilation; LED lighting.\nPRICE: introductory price including VAT until 30 November 2026 (see Product Pricing). Made to order; contact to order (no online cart); 50% deposit; delivery additional, quoted by location.\nORIGIN: \"Handcrafted to order in Connemara, Galway\" (product page) / \"designed and built by Irish Sauna Company in Connemara\" (collection page). The heater is manufactured by Harvia; PlotNua must not imply every component is made in Ireland.\nNOT PUBLISHED, not inferred: delivery cost, warranty terms, installation responsibility, planning position. Production time ('generally 2–3 weeks from receipt of deposit') is recorded here and is NOT published as a lead time.",
+    "Habitation Classification": "ANCILLARY / NON-DWELLING"
+   }
+  },
+  {
+   "id": "recTBQcdOO0yoULqN",
+   "createdTime": "2026-10-27T10:25:43.000Z",
+   "fields": {
+    "Notes": "ISLAND COLLECTION INGESTION 2026-10-27 (founder approval 27 Oct 2026, 'Irish Sauna Company collection — implementation approved'). Replaces the withdrawn Harvia range (PROD-001209, PROD-001210, PROD-001266) at the supplier's request: Brona, 27 Oct 2026, Gmail 1a17c9a56ea0fdca — \"would it be possible to update our listing on PlotNua to feature our new Irish-made collection instead of the previously listed range?\". IMAGERY: \"Please feel free to use the product imagery and information from the collection\" (same email). Scope: this collection only. Two collection images are enumerated for this product as PRODUCT VISUALISATIONS (computer-generated renders; never described as photographs of completed installations). Credit © Irish Sauna Company with a link back. Commercial status unchanged; no partnership terms.",
+    "Verification Status": "Verified",
+    "Product Feature Values": [
+     "rec3nGjk1hnkSYRnC",
+     "recgaWOEWFe490cXZ",
+     "rec15CUjwFkEWcMh9",
+     "recY5nhZefu34PX0m",
+     "rec1h7SjTjYgs4rt1"
+    ],
+    "Product Name": "The Clare | 1–2 Person Garden Sauna",
+    "Product Availability": [
+     "recpG3QrreMp3eDJc"
+    ],
+    "Habitation Applicability": "ANCILLARY_STRUCTURE",
+    "    Last Reviewed": "2026-10-27",
+    "Habitation Classification Basis": "HABITATION-BOUNDARY-v1 applied independently. ANCILLARY / NON-DWELLING. A single insulated outdoor sauna room for bathers; no sleeping, kitchen, sanitary, water or self-containment provision is published.",
+    "Organisation": [
+     "recLW0vZbkBGPRkZ9"
+    ],
+    "Atlas Product Certification Audit v1": "Product Evidence Complete — Organisation Gate Required",
+    "Product Code": "PROD-001331",
+    "Product Category": "Wellness / Sauna",
+    "Results Eligibility v1": "Not Eligible — Gold Standard Not Achieved",
+    "Habitation Applicability Basis": "ANCILLARY_STRUCTURE on first-party product evidence read 27 Oct 2026: an insulated garden sauna room with stated external dimensions and an electric heater; the published inclusions name no habitable provision. NO PLANNING CLAIM IS MADE OR IMPLIED.",
+    "Assets": [
+     "recpt4Qq6NPz95fWM",
+     "recXNhcB54gi9SmXq"
+    ],
+    "Product Pricing": [
+     "recWVOoCFSetBnk8X"
+    ],
+    "Sources": [
+     "recyCtgayu8yxBfhh",
+     "recV1sy1ZiHptzeBN"
+    ],
+    "Product URL": "https://irishsaunacompany.com/products/the-clare-1-2-person-garden-sauna",
+    "Manufacturer SKU": "ISC-ISLAND-CLARE",
+    "Description": "PUBLISHED SPECIFICATION, read live 27 Oct 2026 from the supplier's own product page and collection (products.json). 1–2 people; exterior 1.5m W × 1.5m D × 2.4m H; Harvia The Wall SW60 BlackSteel 6kW electric heater with 20kg stones and built-in controls; insulated walls and ceiling; Finnish Thermowood interior cladding; Alder floating bench and backrest; Douglas Fir exterior in black Tikkurila paint; powder-coated metal roof; full-height toughened-glass door; ventilation intake and exhaust; LED lighting; thermometer, hygrometer and sand timer.\nPRICE: introductory price including VAT until 30 November 2026 (see Product Pricing). Made to order; contact to order (no online cart); 50% deposit; delivery additional, quoted by location.\nORIGIN: \"Handcrafted to order in Connemara, Galway\" (product page) / \"designed and built by Irish Sauna Company in Connemara\" (collection page). The heater is manufactured by Harvia; PlotNua must not imply every component is made in Ireland.\nNOT PUBLISHED BY PLOTNUA: approx. internal length 1.3m in text vs '1200 mm (W)' on the plan image — internal size not published by PlotNua.\nNOT PUBLISHED, not inferred: delivery cost, warranty terms, installation responsibility, planning position. Production time ('generally 2–3 weeks from receipt of deposit') is recorded here and is NOT published as a lead time.",
+    "Habitation Classification": "ANCILLARY / NON-DWELLING"
+   }
+  }
+ ],
+ "pricing": [
+  {
+   "id": "recBSFDzqVB3usnIJ",
+   "createdTime": "2026-10-27T10:26:25.000Z",
+   "fields": {
+    "Evidence Scope": "Product-Specific",
+    "Price Includes VAT": "Yes",
+    "Notes": "MARKET: REPUBLIC OF IRELAND. Verified live 27 Oct 2026: \"Introductory price: €11,500 including VAT until 30 November 2026\"; Shopify variant 11500.00 EUR with compare-at 12700.00 EUR (recorded, not published). INTRODUCTORY PRICE ENDING 30 NOVEMBER 2026: 'Sale Price' type for the generator; displayed as 'Introductory price until 30 November 2026' via atlas-tools/maker-product-notes.json, which refuses to build after that date. VAT inclusive; rate not published. Re-check on or after 1 Dec 2026.\n\nARCHIVED 2026-11-12: product no longer listed by the maker (product URL 404; absent from catalogue and site search). Historical price kept. Not described as discontinued.",
+    "Price Record Name": "The Aran | 4–6 Person Luxury Garden Sauna — Introductory Price (Irish Sauna Company)",
+    "Sources": [
+     "recKf9Q1YZUHdxUnv"
+    ],
+    "Primary Price": true,
+    "Base Price": 11500,
+    "Currency": "EUR",
+    "Price Type": "Sale Price",
+    "Status": "Archived",
+    "Known Exclusions": "Delivery is additional and quoted by location (supplier). Made to order; contact to order; 50% deposit.",
+    "Last Price Check": "2026-10-27",
+    "Product": [
+     "recQszPvHe5Cu7wY5"
+    ],
+    "Price From": 11500
+   }
+  },
+  {
+   "id": "recZiDlNEHs8hU3Tj",
+   "createdTime": "2026-10-27T10:26:25.000Z",
+   "fields": {
+    "Evidence Scope": "Product-Specific",
+    "Price Includes VAT": "Yes",
+    "Notes": "MARKET: REPUBLIC OF IRELAND. Verified live 27 Oct 2026: \"Introductory price: €19,600 including VAT\" \"Offer ends 30 November 2026.\"; Shopify variant 19600.00 EUR with compare-at 20500.00 EUR (recorded, not published). INTRODUCTORY PRICE ENDING 30 NOVEMBER 2026: 'Sale Price' type for the generator; displayed as 'Introductory price until 30 November 2026' via atlas-tools/maker-product-notes.json, which refuses to build after that date. VAT inclusive; rate not published. Re-check on or after 1 Dec 2026.\n\nARCHIVED 2026-11-12: product no longer listed by the maker (product URL 404; absent from catalogue and site search). Historical price kept. Not described as discontinued.",
+    "Price Record Name": "The Skellig | Luxury 6–8 Person Garden Sauna — Introductory Price (Irish Sauna Company)",
+    "Sources": [
+     "recWA9UnWGlFzflXG"
+    ],
+    "Primary Price": true,
+    "Base Price": 19600,
+    "Currency": "EUR",
+    "Price Type": "Sale Price",
+    "Status": "Archived",
+    "Known Exclusions": "Delivery is additional and quoted according to location (supplier). Made to order; contact to order; 50% deposit. Requires a suitable 400V three-phase electrical supply, assessed by a qualified electrician.",
+    "Last Price Check": "2026-10-27",
+    "Product": [
+     "reccdnuccLgq8dlqh"
+    ],
+    "Price From": 19600
+   }
+  },
+  {
+   "id": "recwBrnjeLTTGhYp7",
+   "createdTime": "2026-10-27T10:26:25.000Z",
+   "fields": {
+    "Evidence Scope": "Product-Specific",
+    "Price Includes VAT": "Yes",
+    "Notes": "MARKET: REPUBLIC OF IRELAND. Verified live 27 Oct 2026: \"Introductory price: €8,400 including VAT until 30 November 2026\"; Shopify variant 8400.00 EUR with compare-at 9600.00 EUR (regular price as shown by the shop; recorded, not published). INTRODUCTORY PRICE ENDING 30 NOVEMBER 2026: 'Sale Price' type for the generator; displayed as 'Introductory price until 30 November 2026' via atlas-tools/maker-product-notes.json, which refuses to build after that date. VAT inclusive; rate not published. Re-check on or after 1 Dec 2026.\n\nCORRECTED 2026-11-12 (product page re-read): the introductory price runs until 29 November 2026; increases to €9,300 including VAT on 30 November 2026.",
+    "Price Record Name": "The Inis | 2–4 Person Garden Sauna — Introductory Price (Irish Sauna Company)",
+    "Sources": [
+     "recwe5PJWoIb006Vc"
+    ],
+    "Primary Price": true,
+    "Base Price": 8400,
+    "Currency": "EUR",
+    "Price Type": "Sale Price",
+    "Status": "Verified",
+    "Known Exclusions": "Delivery is additional and quoted by location (supplier). Made to order; contact to order; 50% deposit.",
+    "Last Price Check": "2026-11-12",
+    "Product": [
+     "rect8UKFyZodW593p"
+    ],
+    "Price From": 8400
+   }
+  },
+  {
+   "id": "recWVOoCFSetBnk8X",
+   "createdTime": "2026-10-27T10:26:25.000Z",
+   "fields": {
+    "Evidence Scope": "Product-Specific",
+    "Price Includes VAT": "Yes",
+    "Notes": "MARKET: REPUBLIC OF IRELAND. Verified live 27 Oct 2026: \"Introductory price: €6,500 including VAT until 30 November 2026\" (product page), Shopify variant price 6500.00 EUR. INTRODUCTORY PRICE ENDING 30 NOVEMBER 2026: Price Type recorded as 'Sale Price' because the Atlas vocabulary has no 'introductory' type that the wellness generator reads; PlotNua displays it as 'Introductory price until 30 November 2026' through atlas-tools/maker-product-notes.json, which refuses to build after that date. NO regular (compare-at) price is published for The Clare. VAT inclusive; rate not published, not inferred. Re-check on or after 1 Dec 2026.\n\nCORRECTED 2026-11-12 (product page re-read): the introductory price runs until 29 November 2026; increases to €7,500 including VAT on 30 November 2026.",
+    "Price Record Name": "The Clare | 1–2 Person Garden Sauna — Introductory Price (Irish Sauna Company)",
+    "Sources": [
+     "recyCtgayu8yxBfhh"
+    ],
+    "Primary Price": true,
+    "Base Price": 6500,
+    "Currency": "EUR",
+    "Price Type": "Sale Price",
+    "Status": "Verified",
+    "Known Exclusions": "Delivery is additional and quoted by location (supplier). Made to order; contact to order; 50% deposit.",
+    "Last Price Check": "2026-11-12",
+    "Product": [
+     "recTBQcdOO0yoULqN"
+    ],
+    "Price From": 6500
+   }
+  }
+ ],
+ "availability": [],
+ "featureValues": [],
+ "features": [],
+ "organisations": [
+  {
+   "id": "recLW0vZbkBGPRkZ9",
+   "createdTime": "2026-10-02T16:46:34.000Z",
+   "fields": {
+    "Status": "Partially Verified",
+    "Organisation Code": "ORG-000226",
+    "Organisation Name": "Irish Sauna Company",
+    "Website": "https://irishsaunacompany.com/"
+   }
+  }
+ ]
+}

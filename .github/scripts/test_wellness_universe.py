@@ -168,8 +168,8 @@ per = collections.Counter(r["organisation"] for r in pub)
 # 10 Nov 2026 (founder brief, Arctic Wellness Maker Explorer): Arctic Wellness's three priced
 # saunas and four priced ice baths join on its own rights record; its six unpriced or
 # unclassified products are held by the rule, 128 -> 135.
-# 12 Nov 2026 (release preparation, PROPOSED ISC correction ISC-1..ISC-4, founder approval
-# pending): The Aran and The Skellig are no longer offered (404) and leave, 135 -> 133.
+# 12 Nov 2026 (founder approval, ISC correction ISC-1..ISC-4, written to Atlas and read back
+# the same day): The Aran and The Skellig are no longer offered (404) and leave, 135 -> 133.
 check("W11 133 public products: OGNYX 29, Tanktribe 4, Irish Sauna Company 2, Gardenhouse24 6, "
       "Arctic Wellness 7, Pineca 34, Hansa24 25, Polaris 20, TimberIN 6",
       per == {"OGNYX": 29, "Tanktribe": 4, "Irish Sauna Company": 2, "Gardenhouse24 Ireland": 6,
