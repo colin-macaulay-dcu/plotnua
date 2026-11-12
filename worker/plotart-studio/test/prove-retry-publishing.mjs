@@ -133,6 +133,19 @@ x = await call('POST', `/api/admin/queue/${N.q}/retry`, FOUNDER, {});
 check('R15 an older failed version cannot be retried once a newer version exists; the old job stays failed',
   x.s === 409 && /newer version/.test(x.j.error) && fresh().length === 0 && (await q1('SELECT status FROM publish_queue WHERE id=?', N.q)).status === 'failed', JSON.stringify(x.j));
 
+const desk = async () => (await call('GET', '/api/admin/overview', FOUNDER)).j.queue.map(q => q.id);
+check('R15b the Review Desk no longer lists that older failed job (a newer version is waiting), so no Retry button appears; its record is kept',
+  !(await desk()).includes(N.q) && (await desk()).includes(nq2.id) && (await q1('SELECT status FROM publish_queue WHERE id=?', N.q)).status === 'failed');
+await call('POST', `/api/admin/queue/${nq2.id}/publish`, FOUNDER, {});
+await pipe('POST', `/api/pipeline/export/${nq2.id}`);
+await pipe('POST', `/api/pipeline/result/${nq2.id}`, { status: 'published', detail: 'published' });
+fresh();
+check('R15c Leah-shaped: once the newer version is live, the old failed job is marked superseded (history kept in the audit log) and stays off the desk',
+  (await q1('SELECT status FROM publish_queue WHERE id=?', N.q)).status === 'superseded' && !(await desk()).includes(N.q)
+  && await q1("SELECT 1 FROM audit WHERE action='publish_failed' AND artist_id=? AND detail LIKE ?", N.id, `%${N.q}%`));
+x = await call('POST', `/api/admin/queue/${N.q}/retry`, FOUNDER, {});
+check('R15d and it still cannot be retried', x.s === 409 && fresh().length === 0, JSON.stringify(x.j));
+
 const D = await artistWithFailedV1(4, 'Dara Declined');
 await db.prepare("UPDATE submissions SET status='declined' WHERE id=?").bind(D.sid).run();   // synthetic: approval withdrawn
 x = await call('POST', `/api/admin/queue/${D.q}/retry`, FOUNDER, {});
@@ -200,7 +213,7 @@ const li = pg.locator('li', { has: pg.locator(`[data-retry="${D.q}"]`) });
 const txt = await li.innerText().catch(() => '');
 check('R23 a failed job shows "publishing failed", the failing check (FAIL P9 …) and a Retry publishing button; ready/waiting jobs do not',
   /publishing failed/.test(txt) && /Last attempt: Image provenance refused: FAIL P9/.test(txt) && /Retry publishing/.test(txt)
-  && !(await pg.locator(`[data-retry="${P.q}"]`).count()) && (await pg.locator('[data-retry]').count()) === 5, txt);
+  && !(await pg.locator(`[data-retry="${P.q}"]`).count()) && (await pg.locator('[data-retry]').count()) === 4 && !(await pg.locator(`[data-retry="${N.q}"]`).count()), txt);
 const btn = li.locator('[data-retry]');
 await btn.click();
 check('R24 the first press only asks to confirm (nothing sent)', /Retry publishing to plotnua.ie\?/.test(await btn.innerText()) && fresh().length === 0);

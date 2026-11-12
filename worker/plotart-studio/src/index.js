@@ -733,7 +733,10 @@ async function overview(env) {
   }
   const subs = await all(env, `SELECT s.id, s.artist_id, s.created_at, s.tier, s.note, a.display_name FROM submissions s JOIN artists a ON a.id = s.artist_id
     WHERE s.status = 'pending' ORDER BY (s.tier = 'light'), s.created_at`);
-  const queue = await all(env, `SELECT q.*, a.display_name FROM publish_queue q JOIN artists a ON a.id = q.artist_id WHERE q.status IN ('awaiting_founder','ready','exporting','failed') ORDER BY q.created_at`);
+  // a failed job is shown only while it is the artist's newest version: once a newer version exists (waiting, publishing
+  // or live), the old failure is history (it stays in the audit log and the record) and could never be retried anyway
+  const queue = await all(env, `SELECT q.*, a.display_name FROM publish_queue q JOIN artists a ON a.id = q.artist_id WHERE (q.status IN ('awaiting_founder','ready','exporting')
+    OR (q.status = 'failed' AND NOT EXISTS (SELECT 1 FROM publish_queue n WHERE n.artist_id = q.artist_id AND n.version > q.version AND n.status <> 'superseded'))) ORDER BY q.created_at`);
   const flags = await all(env, `SELECT i.id, i.artist_id, a.display_name, i.sha256 FROM images i JOIN artists a ON a.id=i.artist_id WHERE i.deleted_at IS NULL AND i.checks LIKE '%DUPLICATE_OF_OTHER_ARTIST%'`);
   return { artists: out, submissions: subs, queue, flags, agreement_installed: !!(await agreementDocs(env)), f25: { selected_with_studio: artists.filter(a => a.founding).length, target: 25 },
     instant_autopublish: env.INSTANT_AUTOPUBLISH === 'true' };
@@ -1179,7 +1182,7 @@ async function route(req, env) {
       const ok = b.status === 'published';
       await env.DB.prepare('UPDATE publish_queue SET status=?, detail=?, updated_at=? WHERE id=?').bind(ok ? 'published' : 'failed', String(b.detail || '').slice(0, 2000), now(), q.id).run();
       if (ok) {
-        await env.DB.prepare("UPDATE publish_queue SET status='superseded', updated_at=? WHERE artist_id=? AND status='published' AND version<?").bind(now(), q.artist_id, q.version).run();
+        await env.DB.prepare("UPDATE publish_queue SET status='superseded', updated_at=? WHERE artist_id=? AND status IN ('published','failed') AND version<?").bind(now(), q.artist_id, q.version).run();
         await env.DB.prepare('UPDATE artists SET first_published_at=COALESCE(first_published_at, ?), updated_at=? WHERE id=?').bind(now(), now(), q.artist_id).run();
       }
       await audit(env, 'pipeline', 'pipeline', ok ? 'published' : 'publish_failed', q.artist_id, { queue: q.id, version: q.version, detail: b.detail });
