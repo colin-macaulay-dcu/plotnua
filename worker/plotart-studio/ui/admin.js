@@ -130,7 +130,7 @@
     const ready = o.queue.filter(q => q.status === 'awaiting_founder');
     const live = o.artists.filter(a => a.state === 'live').length;
     app.innerHTML = `
-      <h1 class="st-h1">Review desk</h1><p class="st-sub">Everything that needs you, in one place.</p>
+      <h1 class="st-h1" style="margin-bottom:1.75rem">Review desk</h1>
       <div class="st-kpis">
         <div class="st-kpi"><b>${o.submissions.length}</b><span>to review</span></div>
         <div class="st-kpi"><b>${ready.length}</b><span>ready to publish</span></div>
@@ -141,7 +141,7 @@
         ${o.submissions.length ? `<ul class="st-works">${o.submissions.map(s => `<li class="st-work" style="grid-template-columns:minmax(0,1fr) auto"><div>
           <p class="st-work-t">${E(s.display_name)}</p><p class="st-work-s"><span class="st-tier ${s.tier}">${s.tier === 'full' ? 'Review' : 'Quick check'}</span>Submitted ${when(s.created_at)}</p>
           ${s.note ? `<p class="st-muted" style="margin:0">“${E(s.note)}”</p>` : ''}</div>
-          <div class="st-row"><a class="st-btn st-btn--solid st-btn--small" href="#/review/${s.id}">Open</a></div></li>`).join('')}</ul>` : '<p class="st-muted">Nothing waiting. 🎨</p>'}
+          <div class="st-row"><a class="st-btn st-btn--solid st-btn--small" href="#/review/${s.id}">Open</a></div></li>`).join('')}</ul>` : '<p class="st-muted">Nothing waiting.</p>'}
       </section>
       <section class="st-card"><h2>Ready to publish</h2>
         <p class="st-muted">Publishing sends approved gallery content to plotnua.ie through the content-only pipeline. Nothing else on the website can change this way.${o.instant_autopublish ? ' Availability and removals publish automatically.' : ' Availability and removal updates wait here until automatic publishing is switched on.'}</p>
