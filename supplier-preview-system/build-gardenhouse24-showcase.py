@@ -284,6 +284,7 @@ def build():
 <footer class="gh-rec"><div class="gh-w">
   <p>Photography and visualisations: {E(s["name"])}, from <a href="{E(s["creditHref"])}" rel="noopener" target="_blank">gardenhouse24.ie</a>, used with the supplier&rsquo;s permission. The supplier keeps ownership of its imagery.</p>
   <p>Product details checked against the supplier&rsquo;s website on 4 November 2026. Prices and specifications can change; confirm them with the supplier.</p>
+  <p><a href="/terms.html#legal-information">Terms &amp; legal information</a></p>
 </div></footer>
 </main>
 </body>
