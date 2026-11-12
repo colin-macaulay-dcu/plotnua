@@ -21,7 +21,7 @@
     ]
   },
   "snapshotSha256": "31397887e2de5dc534d100a32c8a6791c3e9c9339b08df718f94dd0b45a66613",
-  "snapshotScope": "Atlas Core appoLZFWesvoPhZGR via the Airtable connector, 14 Oct 2026, with the five 14 Oct recorded contradictions written to Standards (all 153 Wellness / Sauna products, 11 organisations); internal governance data, never committed; targeted update 2026-10-16 for Irish Sauna Company (1 record(s), snapshot sha256 35695f8a4916c3fc); targeted update 2026-10-27 for Irish Sauna Company (7 record(s), snapshot sha256 7442073f692e12db); targeted update 2026-11-04 for Gardenhouse24 Ireland (6 record(s), snapshot sha256 9199a3bbc373333e); targeted update 2026-11-10 for Arctic Wellness (13 record(s), snapshot sha256 3e3598e557978c33); targeted update 2026-11-12 for Irish Sauna Company (4 record(s), snapshot sha256 bb828b7be7c18c50)",
+  "snapshotScope": "Atlas Core appoLZFWesvoPhZGR via the Airtable connector, 14 Oct 2026, with the five 14 Oct recorded contradictions written to Standards (all 153 Wellness / Sauna products, 11 organisations); internal governance data, never committed; targeted update 2026-10-16 for Irish Sauna Company (1 record(s), snapshot sha256 35695f8a4916c3fc); targeted update 2026-10-27 for Irish Sauna Company (7 record(s), snapshot sha256 7442073f692e12db); targeted update 2026-11-04 for Gardenhouse24 Ireland (6 record(s), snapshot sha256 9199a3bbc373333e); targeted update 2026-11-10 for Arctic Wellness (13 record(s), snapshot sha256 3e3598e557978c33); targeted update 2026-11-12 for Irish Sauna Company (4 record(s), snapshot sha256 bb828b7be7c18c50); targeted update 2026-11-12 for Pineca Ireland (34 record(s), snapshot sha256 c04d421a1d46dda1)",
   "sourceCategory": "Wellness / Sauna",
   "sourceCategoryCount": 177,
   "eligibleCount": 133,
@@ -3440,10 +3440,10 @@
       "productUrl": "https://www.pineca.ie/outdoor-barrel-sauna-helga-17-46mm-1-7m-1-97m.html",
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
-        "amount": 5157,
+        "amount": 5241,
         "currency": "EUR",
         "type": "Standard Price",
-        "basis": "Published price, including VAT."
+        "basis": "Published price. The supplier does not state whether it includes VAT."
       },
       "irish": {
         "state": "UNCONFIRMED"
@@ -3471,10 +3471,10 @@
       "productUrl": "https://www.pineca.ie/outdoor-barrel-sauna-helga17-with-panoramic-windowfull-height.html",
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
-        "amount": 6008,
+        "amount": 6106,
         "currency": "EUR",
         "type": "Standard Price",
-        "basis": "Published price, including VAT."
+        "basis": "Published price. The supplier does not state whether it includes VAT."
       },
       "irish": {
         "state": "UNCONFIRMED"
@@ -3502,10 +3502,10 @@
       "productUrl": "https://www.pineca.ie/outdoor-barrel-sauna-helga-17-with-panoramic-window-half-height.html",
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
-        "amount": 5535,
+        "amount": 5625,
         "currency": "EUR",
         "type": "Standard Price",
-        "basis": "Published price, including VAT."
+        "basis": "Published price. The supplier does not state whether it includes VAT."
       },
       "irish": {
         "state": "UNCONFIRMED"
@@ -3533,10 +3533,10 @@
       "productUrl": "https://www.pineca.ie/outdoor-barrel-sauna-helga-24-46mm-2-4m-1-97m.html",
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
-        "amount": 6905,
+        "amount": 7018,
         "currency": "EUR",
         "type": "Standard Price",
-        "basis": "Published price, including VAT."
+        "basis": "Published price. The supplier does not state whether it includes VAT."
       },
       "irish": {
         "state": "UNCONFIRMED"
@@ -3564,10 +3564,10 @@
       "productUrl": "https://www.pineca.ie/outdoor-barrel-sauna-helga-30-46mm-3m-1-97m.html",
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
-        "amount": 7690,
+        "amount": 7815,
         "currency": "EUR",
         "type": "Standard Price",
-        "basis": "Published price, including VAT."
+        "basis": "Published price. The supplier does not state whether it includes VAT."
       },
       "irish": {
         "state": "UNCONFIRMED"
@@ -3595,10 +3595,10 @@
       "productUrl": "https://www.pineca.ie/outdoor-barrel-sauna-with-changing-room-helga-40-46mm-4m-1-97m-panoramic-window-full-height.html",
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
-        "amount": 11118,
+        "amount": 11298,
         "currency": "EUR",
         "type": "Standard Price",
-        "basis": "Published price, including VAT."
+        "basis": "Published price. The supplier does not state whether it includes VAT."
       },
       "irish": {
         "state": "UNCONFIRMED"
@@ -3626,10 +3626,10 @@
       "productUrl": "https://www.pineca.ie/outdoor-barrel-sauna-with-changing-room-helga-40-46mm-4m-1-97m-panoramic-window-half-height.html",
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
-        "amount": 10645,
+        "amount": 10818,
         "currency": "EUR",
         "type": "Standard Price",
-        "basis": "Published price, including VAT."
+        "basis": "Published price. The supplier does not state whether it includes VAT."
       },
       "irish": {
         "state": "UNCONFIRMED"
@@ -3657,10 +3657,10 @@
       "productUrl": "https://www.pineca.ie/outdoor-barrel-sauna-with-changing-room-helga-35-46mm-3-5m-1-97m.html",
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
-        "amount": 9669,
+        "amount": 9826,
         "currency": "EUR",
         "type": "Standard Price",
-        "basis": "Published price, including VAT."
+        "basis": "Published price. The supplier does not state whether it includes VAT."
       },
       "irish": {
         "state": "UNCONFIRMED"
@@ -3688,10 +3688,10 @@
       "productUrl": "https://www.pineca.ie/outdoor-barrel-sauna-with-changing-room-helga-40-46mm-4m-1-97m.html",
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
-        "amount": 10266,
+        "amount": 10433,
         "currency": "EUR",
         "type": "Standard Price",
-        "basis": "Published price, including VAT."
+        "basis": "Published price. The supplier does not state whether it includes VAT."
       },
       "irish": {
         "state": "UNCONFIRMED"
@@ -3719,10 +3719,10 @@
       "productUrl": "https://www.pineca.ie/outdoor-barrel-sauna-with-changing-room-helga-45.html",
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
-        "amount": 10883,
+        "amount": 11060,
         "currency": "EUR",
         "type": "Standard Price",
-        "basis": "Published price, including VAT."
+        "basis": "Published price. The supplier does not state whether it includes VAT."
       },
       "irish": {
         "state": "UNCONFIRMED"
@@ -3750,10 +3750,10 @@
       "productUrl": "https://www.pineca.ie/outdoor-barrel-sauna-with-changing-room-helga-48.html",
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
-        "amount": 11143,
+        "amount": 11324,
         "currency": "EUR",
         "type": "Standard Price",
-        "basis": "Published price, including VAT."
+        "basis": "Published price. The supplier does not state whether it includes VAT."
       },
       "irish": {
         "state": "UNCONFIRMED"
@@ -3781,10 +3781,10 @@
       "productUrl": "https://www.pineca.ie/outdoor-barrel-sauna-with-changing-room-helga-59.html",
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
-        "amount": 13282,
+        "amount": 13498,
         "currency": "EUR",
         "type": "Standard Price",
-        "basis": "Published price, including VAT."
+        "basis": "Published price. The supplier does not state whether it includes VAT."
       },
       "irish": {
         "state": "UNCONFIRMED"
@@ -3812,7 +3812,7 @@
       "productUrl": "https://www.pineca.ie/outdoor-sauna-della-34mm-cladding-2-6x2-1m-3-8m2.html",
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
-        "amount": 4856,
+        "amount": 4935,
         "currency": "EUR",
         "type": "Standard Price",
         "basis": "Published price, including VAT."
@@ -3843,7 +3843,7 @@
       "productUrl": "https://www.pineca.ie/outdoor-sauna-della-34mm-cladding-2-6x2-6m-5m2.html",
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
-        "amount": 5208,
+        "amount": 5292,
         "currency": "EUR",
         "type": "Standard Price",
         "basis": "Published price, including VAT."
@@ -3905,7 +3905,7 @@
       "productUrl": "https://www.pineca.ie/outdoor-sauna-della-34mm-cladding-2-6x2-1m-3-8m2-terrace-3m2.html",
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
-        "amount": 6405,
+        "amount": 6509,
         "currency": "EUR",
         "type": "Standard Price",
         "basis": "Published price, including VAT."
@@ -3936,7 +3936,7 @@
       "productUrl": "https://www.pineca.ie/outdoor-sauna-elda-44mm-2x2m-4m2.html",
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
-        "amount": 4018,
+        "amount": 4083,
         "currency": "EUR",
         "type": "Standard Price",
         "basis": "Published price, including VAT."
@@ -3967,7 +3967,7 @@
       "productUrl": "https://www.pineca.ie/outdoor-sauna-elda-44mm-2-5x2-9m-7m2.html",
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
-        "amount": 4480,
+        "amount": 4552,
         "currency": "EUR",
         "type": "Standard Price",
         "basis": "Published price, including VAT."
@@ -3998,7 +3998,7 @@
       "productUrl": "https://www.pineca.ie/outdoor-sauna-elda-44mm-2-5x3-2m-8m2.html",
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
-        "amount": 4849,
+        "amount": 4928,
         "currency": "EUR",
         "type": "Standard Price",
         "basis": "Published price, including VAT."
@@ -4029,7 +4029,7 @@
       "productUrl": "https://www.pineca.ie/outdoor-sauna-elda-44mm-3x4m-12m2.html",
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
-        "amount": 6294,
+        "amount": 6396,
         "currency": "EUR",
         "type": "Standard Price",
         "basis": "Published price, including VAT."
@@ -4060,7 +4060,7 @@
       "productUrl": "https://www.pineca.ie/outdoor-sauna-elda-44mm-4x4m-16m2-3rooms.html",
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
-        "amount": 7438,
+        "amount": 7559,
         "currency": "EUR",
         "type": "Standard Price",
         "basis": "Published price, including VAT."
@@ -4091,7 +4091,7 @@
       "productUrl": "https://www.pineca.ie/outdoor-sauna-elda-44mm-4x4m-16m2-4rooms.html",
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
-        "amount": 7690,
+        "amount": 7815,
         "currency": "EUR",
         "type": "Standard Price",
         "basis": "Published price, including VAT."
@@ -4217,7 +4217,7 @@
       "productUrl": "https://www.pineca.ie/outdoor-sauna-elda-44mm-5x7-5m-25m2-3rooms-terrace-12m2.html",
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
-        "amount": 11656,
+        "amount": 11846,
         "currency": "EUR",
         "type": "Standard Price",
         "basis": "Published price, including VAT."
@@ -4248,7 +4248,7 @@
       "productUrl": "https://www.pineca.ie/outdoor-sauna-elda-44mm-5x7-5m-25m2-4rooms-terrace-12m2.html",
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
-        "amount": 12069,
+        "amount": 12265,
         "currency": "EUR",
         "type": "Standard Price",
         "basis": "Published price, including VAT."
@@ -4279,7 +4279,7 @@
       "productUrl": "https://www.pineca.ie/outdoor-sauna-with-changing-room-della-34mm-cladding-3-6x2-1m-5-5m2.html",
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
-        "amount": 6676,
+        "amount": 6784,
         "currency": "EUR",
         "type": "Standard Price",
         "basis": "Published price, including VAT."
@@ -4310,7 +4310,7 @@
       "productUrl": "https://www.pineca.ie/outdoor-sauna-with-changing-room-della-34mm-cladding-4-6x2-1m-7-2m2.html",
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
-        "amount": 7476,
+        "amount": 7598,
         "currency": "EUR",
         "type": "Standard Price",
         "basis": "Published price, including VAT."
@@ -4341,7 +4341,7 @@
       "productUrl": "https://www.pineca.ie/outdoor-sauna-with-changing-room-della-34mm-cladding-4-6x2-6m-9-3m2.html",
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
-        "amount": 7815,
+        "amount": 7942,
         "currency": "EUR",
         "type": "Standard Price",
         "basis": "Published price, including VAT."
@@ -4372,7 +4372,7 @@
       "productUrl": "https://www.pineca.ie/outdoor-sauna-with-changing-room-della-34mm-cladding-5-1x5-1m-22m2.html",
       "price": {
         "state": "VERIFIED_NUMERIC_PRICE",
-        "amount": 12195,
+        "amount": 12394,
         "currency": "EUR",
         "type": "Standard Price",
         "basis": "Published price, including VAT."
