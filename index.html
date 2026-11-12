@@ -1736,6 +1736,59 @@ body.pn-p4 #discover .p4s-all-link{ margin-top:40px; }
   body.pn-p4 #discover .p4s-card:hover{ transform:none; }
   body.pn-p4 #discover .p4s-card:hover .p4s-media img{ transform:none; }
 }
+/* ==== PROPOSITION + LIBRARY INTRO (founder, 12 Nov 2026) ====
+   A type-led editorial band on the deepest anthracite, directly above the Atlas; the Atlas keeps its figures and
+   control, with a little more air at the top so the two read as one argument. The Library intro gains supporting
+   copy and a prominent text route (serif, terracotta rule), not a button. Existing tokens only. */
+body.pn-p4 .pn-prop{ background:var(--p4-anth); color:var(--p4-ivory); padding:clamp(88px,10vw,148px) 0 clamp(76px,8vw,116px); }
+body.pn-p4 .pn-prop-inner{ padding:0 var(--p4-gutter); display:grid; grid-template-columns:repeat(12,minmax(0,1fr)); column-gap:32px; }
+body.pn-p4 .pn-prop-title{ grid-column:1 / span 11; margin:0; font-family:var(--p4-serif); font-weight:400;
+  font-size:clamp(50px,6.9vw,116px); line-height:.95; letter-spacing:-.022em; color:var(--p4-ivory); max-width:15ch; text-wrap:balance; }
+body.pn-p4 .pn-prop-title em{ font-style:italic; color:var(--p4-stone); }
+body.pn-p4 .pn-prop-body{ grid-column:6 / span 7; margin-top:clamp(40px,4.4vw,64px); padding-top:28px; border-top:1px solid rgba(179,146,114,.4); }
+body.pn-p4 .pn-prop-copy{ margin:0; max-width:46ch; font-family:var(--p4-sans); font-size:clamp(18px,1.45vw,21px); line-height:1.6; color:var(--p4-stone); }
+body.pn-p4 .pn-prop-close{ margin:clamp(32px,3.2vw,44px) 0 0; font-family:var(--p4-serif); font-weight:400; font-size:clamp(28px,2.7vw,42px); line-height:1.12; color:var(--p4-ivory); }
+body.pn-p4 .pn-prop-close span{ display:block; }
+body.pn-p4 .pn-prop-close em{ display:block; font-style:italic; color:var(--p4-terra-text); }
+/* hand-over to the Atlas: slightly more air above "We do the research." */
+body.pn-p4 #research.article-section{ padding:68px 0 56px; }
+/* Library intro */
+body.pn-p4 #discover .p4s-intro-row{ display:grid; grid-template-columns:minmax(0,7fr) minmax(0,5fr); column-gap:72px; align-items:end; margin-top:30px; }
+body.pn-p4 #discover .p4s-intro{ margin:0; max-width:52ch; font-family:var(--p4-sans); font-size:clamp(18px,1.4vw,20px); line-height:1.6; color:var(--p4-stone); }
+body.pn-p4 #discover .p4s-lib-cta{ margin:0; justify-self:end; }
+body.pn-p4 #discover .p4s-lib-cta a{ display:inline-flex; align-items:baseline; gap:14px; padding:6px 0 10px;
+  font-family:var(--p4-serif); font-size:clamp(28px,2.5vw,38px); line-height:1.1; color:var(--p4-ivory); text-decoration:none;
+  border-bottom:2px solid var(--p4-terra); transition:color .2s ease, border-color .2s ease; }
+body.pn-p4 #discover .p4s-lib-cta a span{ color:var(--p4-terra-text); transition:transform .2s ease; }
+body.pn-p4 #discover .p4s-lib-cta a:hover{ color:var(--p4-terra-text); border-color:var(--p4-terra-text); }
+body.pn-p4 #discover .p4s-lib-cta a:hover span{ transform:translateX(5px); }
+body.pn-p4 #discover .p4s-lib-cta a:focus-visible{ outline:2px solid var(--p4-ivory); outline-offset:6px; border-radius:2px; }
+@media (max-width:1100px){
+  body.pn-p4 .pn-prop-body{ grid-column:4 / span 9; }
+}
+@media (max-width:900px){
+  body.pn-p4 .pn-prop-inner{ padding:0 20px; }
+  body.pn-p4 .pn-prop-title{ grid-column:1 / -1; }
+  body.pn-p4 .pn-prop-body{ grid-column:1 / -1; }
+  body.pn-p4 #research.article-section{ padding:52px 0 44px; }
+  body.pn-p4 #discover .p4s-intro-row{ grid-template-columns:minmax(0,1fr); row-gap:26px; }
+  body.pn-p4 #discover .p4s-lib-cta{ justify-self:start; }
+}
+@media (max-width:720px){
+  body.pn-p4 .pn-prop{ padding:72px 0 64px; }
+  body.pn-p4 .pn-prop-inner{ padding:0 20px; column-gap:0; }
+  body.pn-p4 .pn-prop-title{ font-size:clamp(42px,11.5vw,56px); line-height:.98; }
+  body.pn-p4 .pn-prop-body{ margin-top:32px; padding-top:22px; }
+  body.pn-p4 .pn-prop-copy{ font-size:18px; }
+  body.pn-p4 .pn-prop-close{ font-size:30px; }
+  body.pn-p4 #discover .p4s-intro-row{ margin-top:20px; }
+  body.pn-p4 #discover .p4s-intro{ font-size:17px; }
+  body.pn-p4 #discover .p4s-lib-cta a{ font-size:28px; }
+}
+@media (prefers-reduced-motion:reduce){
+  body.pn-p4 #discover .p4s-lib-cta a, body.pn-p4 #discover .p4s-lib-cta a span{ transition:none; }
+  body.pn-p4 #discover .p4s-lib-cta a:hover span{ transform:none; }
+}
 </style>
 </head>
 <body class="pn-p4 pn-hdr-on">
@@ -1900,6 +1953,19 @@ body.pn-p4 #discover .p4s-all-link{ margin-top:40px; }
 <!-- FA-03 continuation panel removed (founder decision, 25 Oct 2026): Your Plot stays in the main navigation;
      saved ideas and their storage are untouched. -->
 
+<!-- PROPOSITION (founder, 12 Nov 2026): the homepage's central value proposition, placed directly above
+     the Atlas so "The homework is ours." hands over to "We do the research." Copy is the founder's, verbatim.
+     Type and palette only (existing serif/sans tokens, anthracite/ivory/stone/terracotta); no imagery, cards or green. -->
+<section class="pn-prop reveal" id="possibilities" aria-labelledby="propTitle">
+  <div class="pn-prop-inner">
+    <h2 id="propTitle" class="pn-prop-title">Your property holds more possibilities <em>than you think.</em></h2>
+    <div class="pn-prop-body">
+      <p class="pn-prop-copy">Discover what you could do with your home, garden or land. Explore the ideas, understand the costs, compare the options and find the people who can make them happen.</p>
+      <p class="pn-prop-close"><span>The possibilities are yours.</span> <em>The homework is ours.</em></p>
+    </div>
+  </div>
+</section>
+
 <!-- TRUST — stage 3 of the journey. Not "what PlotNua is", which describes
      the company, but where a Discovery comes from and the fact that the
      looking has already been done. The section hands off to the Atlas in its
@@ -1998,6 +2064,11 @@ body.pn-p4 #discover .p4s-all-link{ margin-top:40px; }
           id="libInfoBtn" aria-expanded="false" aria-controls="libInfo"
           aria-label="What is a Discovery?"><span aria-hidden="true">i</span></button></div>
       <h2 id="discoverTitle">Different properties. Different opportunities.</h2>
+      <!-- 12 Nov 2026 (founder): supporting copy and a prominent route make the Library a primary destination. -->
+      <div class="p4s-intro-row">
+        <p class="p4s-intro">A growing collection of ideas, innovations and practical possibilities for Irish homeowners. From garden rooms and renewable energy to unexpected ways of using the space you already own.</p>
+        <p class="p4s-lib-cta"><a href="discoveries.html">Explore the Discovery Library <span aria-hidden="true">&rarr;</span></a></p>
+      </div>
       <div class="lib-info-pop" id="libInfo" role="region" aria-labelledby="libInfoBtn" hidden>
         <p>A Discovery is one researched opportunity for your property.</p>
         <p>Some Discoveries include a Property Check &mdash; a few simple
@@ -2086,7 +2157,7 @@ body.pn-p4 #discover .p4s-all-link{ margin-top:40px; }
         <img src="assets/brand/plotnua-icon-transparent.svg" alt="" width="40" height="40">
         <span class="footer-word">PlotNua</span>
       </div>
-      <p class="footer-about">PlotNua helps Irish homeowners see what their property could make possible &mdash; and understand what each option would really take, before committing to anything.</p>
+      <p class="footer-about">Property possibilities for Irish homeowners.</p>
     </div>
 
     <nav class="footer-cols" aria-label="Footer">

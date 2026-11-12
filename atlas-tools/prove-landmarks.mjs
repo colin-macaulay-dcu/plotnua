@@ -214,8 +214,12 @@ for (const f of CAROUSEL) {
   /* 22 Oct 2026 (founder, final visual refinement): the Library route is the
      text link beneath the featured cards, exactly once; the large CTA button
      beside the heading is retired. */
+  /* 12 Nov 2026 (founder): the Library intro also carries one prominent text
+     route, "Explore the Discovery Library", beside its supporting copy. Both
+     routes exactly once; no third link (and no CTA button) to the Library. */
   const all = (sect.match(/<div class="d-all p4s-all-link"><a href="discoveries\.html">Explore all Discoveries &rarr;<\/a><\/div>/g) || []).length === 1
-    && (sect.match(/href="discoveries\.html"/g) || []).length === 1;
+    && (sect.match(/<p class="p4s-lib-cta"><a href="discoveries\.html">Explore the Discovery Library <span aria-hidden="true">&rarr;<\/span><\/a><\/p>/g) || []).length === 1
+    && (sect.match(/href="discoveries\.html"/g) || []).length === 2;
   const lib = code(read("discoveries.html"));
   const unlisted = DISCOVERIES.filter(d => !lib.includes(`href="${d}"`));
   if (sect && !tabRoles && !ariaSel && !missing.length && !extra.length && all && !unlisted.length)
