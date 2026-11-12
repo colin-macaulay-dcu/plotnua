@@ -545,8 +545,8 @@ def render(ev, ex):
     # only what PlotNua currently publishes.
     regions["LEAD"] += (
         '\n<p class="pr-small pr-makers-link">See the garden rooms PlotNua publishes, with '
-        'their makers, specifications and prices. <a href="%s#explore-makers">Explore garden '
-        'rooms and makers&nbsp;&rarr;</a></p>' % PARENT_HREF)
+        'their makers, specifications and prices. <a href="%s#explore-makers">Compare garden '
+        'rooms in Ireland by maker&nbsp;&rarr;</a></p>' % PARENT_HREF)
     # Stage 2 item 1: the check dates, visible near the top of the page. SEO-GR3: with the
     # research totals and the snapshot date, so the first screen says what the figures are.
     # The snapshot date and the check dates stay separate statements: the prices were not

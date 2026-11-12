@@ -331,7 +331,7 @@ f"""<link rel="stylesheet" href="../assets/components/pn-two-option.css?v=1">
   <p class="mp-p">Before you contact any maker, PlotNua can help you work out what your garden can take and which options fit how you&rsquo;d use it. It&rsquo;s free.</p></div>
   <div class="pn-two" role="group" aria-label="Two ways to explore">
     <div class="pn-two-opt"><p class="pn-two-k">Explore yourself</p><p class="pn-two-t">Compare Elm Landscaping with the other garden-room makers on PlotNua, side by side.</p>
-      <a class="pn-two-a" href="../discovery-living-in-the-garden.html#explore-makers">Browse makers and products <span aria-hidden="true">&rarr;</span></a></div>
+      <a class="pn-two-a" href="../discovery-living-in-the-garden.html#explore-makers">Garden rooms and log cabins, compared <span aria-hidden="true">&rarr;</span></a></div>
     <div class="pn-two-opt is-help"><p class="pn-two-k">Let PlotNua do the homework</p><p class="pn-two-t">Tell us what you&rsquo;re looking for. We&rsquo;ll use our Atlas research to help you find options that match your preferences and budget.</p>
       <ul class="pn-two-btns" role="list">{j}</ul></div>
   </div>
