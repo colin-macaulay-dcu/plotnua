@@ -1,0 +1,359 @@
+{
+ "artist": {
+  "bio": "Anna Marie Savage is a visual artist based in Omeath, Co. Louth, whose practice centres on abstract oil painting informed by environmental research, fieldwork and microscopy. Her work explores the relationship between human activity, environmental degradation and the often unseen ecological systems within our waterways.\nHer recent body of work, Uisce Salach (Dirty Water), investigates the environmental impact of illicit fuel dumping along the Irish border, developed through water sampling, photomicrography and collaboration with researchers at the University of Leeds. Her practice has since expanded into three-dimensional experimentation with laser-cut fluorescent acrylic, while painting remains central to her work.\nRecent solo exhibitions include Uisce Salach agus Dríodar at An Cultúrlann, Belfast (2025) and Uisce Salach at Watergate Theatre, Kilkenny (2025).\nShe received the Newgrange Gold Award at Surveyor 2025. In 2026, she was an award winner at the inaugural international Sidney Nolan Art Prize, receiving a residency at the Burren College of Art. The prize invited artists to explore humanity's relationship with the natural world and the environment. Her award-winning work, Uisce Salach I, reflects these concerns through its investigation of environmental damage along the Irish border.\nShe graduated with First Class Honours in Fine Art from the University of Ulster in 2009.",
+  "county": null,
+  "display_name": "Anna Marie Savage",
+  "founding": true,
+  "instagram": "anna_marie_savage",
+  "medium": "painting",
+  "portrait": {
+   "alt": "The artist with her painting at the opening of OXO 2026.",
+   "aspect": 0.7756,
+   "derivatives": [
+    {
+     "file": "portrait-600.webp",
+     "long_edge": 600,
+     "pixels": [
+      465,
+      600
+     ]
+    }
+   ],
+   "photo_credit": null,
+   "pixels": [
+    909,
+    1172
+   ],
+   "role": "portrait"
+  },
+  "practice": "Painter",
+  "slug": "anna-marie-savage",
+  "statement": "Anna Marie Savage is an abstract painter whose work explores the relationship between art, science and the environment, using microscopy to make the invisible visible through colour, form and texture.",
+  "website": "https://www.annamariesavage.com"
+ },
+ "provenance_sources": [
+  {
+   "dhash": "b4b5b1acd0d4b0bc",
+   "source_sha256": "27426c0c41567d59bea07d8cc014a5ab219f71d2b24a46b5cd4323da652ef97a",
+   "stem": "portrait"
+  },
+  {
+   "dhash": "8b8bc5c3918cb9a7",
+   "source_sha256": "b01ebe6855bc7f2d6fafdb28e4ecfec500789c04a068710ef3cd75eb06a73627",
+   "stem": "uisce-salach-i-1"
+  },
+  {
+   "dhash": "96d6e6a6e6ce8ea7",
+   "source_sha256": "f3fa8886ddfd539b6ca0350caabeb0e46307164fdc85fbac4abfc7ff06c650d0",
+   "stem": "uisce-salach-ii-1"
+  },
+  {
+   "dhash": "ead6e6ed8e8e2f3b",
+   "source_sha256": "066c01e5535e5bec3349ccdfc3e9b5ae8b24e7466c2393e0b8717366a9f54e92",
+   "stem": "uisce-salach-iii-1"
+  },
+  {
+   "dhash": "9486e7c7a3e5a7e2",
+   "source_sha256": "a2a70c097805be6336107b8221451babbaa36db08858d00f693b62fe04101280",
+   "stem": "uisce-salach-iv-1"
+  },
+  {
+   "dhash": "94f5b29299b9f292",
+   "source_sha256": "fc3bdce0e5c41acaebf81cbffa3cc61475173ea0aaeb392bfd98e6a1081765f6",
+   "stem": "uisce-salach-v-2-1"
+  }
+ ],
+ "publication": {
+  "approved_at": "2026-11-12T17:44:04.396Z",
+  "approved_by": "founder",
+  "licence_accepted_at": "2026-11-12T15:59:17.560Z",
+  "licence_version": "PA-GPIL-2026-11",
+  "permission_ref": "PA-PERM-aw9ehfcs0ct",
+  "state": "approved",
+  "test_note": null,
+  "version": "v1"
+ },
+ "schema": "plotnua.plotart.gallery-package.v1",
+ "works": [
+  {
+   "ai_founder_decision": null,
+   "ai_involvement": "none",
+   "ai_note": null,
+   "availability": "available",
+   "d_cm": 3.5,
+   "description": "Uisce Salach (Dirty Water) is a series of abstract paintings exploring the environmental impact of illegal fuel dumping along the Irish border, particularly in the River Fane.\n\nWorking with water samples collected from affected sites, I use microscopy and photomicrography to reveal details that are invisible to the naked eye. These images become the starting point for paintings that explore colour, form and texture, bringing attention to the hidden effects of pollution on our waterways.",
+   "h_cm": 100,
+   "id": "wx8gh81e5bu",
+   "images": [
+    {
+     "alt": "Multi colured bright abstract painting with large pink circle",
+     "aspect": 0.7168,
+     "derivatives": [
+      {
+       "file": "uisce-salach-i-1-600.webp",
+       "long_edge": 600,
+       "pixels": [
+        430,
+        600
+       ]
+      },
+      {
+       "file": "uisce-salach-i-1-1200.webp",
+       "long_edge": 1200,
+       "pixels": [
+        860,
+        1200
+       ]
+      },
+      {
+       "file": "uisce-salach-i-1-2000.webp",
+       "long_edge": 2000,
+       "pixels": [
+        1434,
+        2000
+       ]
+      }
+     ],
+     "photo_credit": "Simon Mills",
+     "pixels": [
+      1792,
+      2500
+     ],
+     "role": "main"
+    }
+   ],
+   "materials": null,
+   "medium": "Oil and Oil Bar on Canvas",
+   "price_eur": 2155,
+   "price_on_request": false,
+   "slug": "uisce-salach-i",
+   "title": "Uisce Salach I",
+   "w_cm": 70,
+   "year": 2024
+  },
+  {
+   "ai_founder_decision": null,
+   "ai_involvement": "none",
+   "ai_note": null,
+   "availability": "available",
+   "d_cm": 5,
+   "description": "Uisce Salach (Dirty Water) is a series of abstract paintings exploring the environmental impact of illegal fuel dumping along the Irish border, particularly in the River Fane.\n\nWorking with water samples collected from affected sites, I use microscopy and photomicrography to reveal details that are invisible to the naked eye. These images become the starting point for paintings that explore colour, form and texture, bringing attention to the hidden effects of pollution on our waterways.",
+   "h_cm": 92,
+   "id": "wf4c2t689v0",
+   "images": [
+    {
+     "alt": "Pink abstract painting with large teal semi-circle",
+     "aspect": 0.812,
+     "derivatives": [
+      {
+       "file": "uisce-salach-ii-1-600.webp",
+       "long_edge": 600,
+       "pixels": [
+        487,
+        600
+       ]
+      },
+      {
+       "file": "uisce-salach-ii-1-1200.webp",
+       "long_edge": 1200,
+       "pixels": [
+        974,
+        1200
+       ]
+      },
+      {
+       "file": "uisce-salach-ii-1-2000.webp",
+       "long_edge": 2000,
+       "pixels": [
+        1624,
+        2000
+       ]
+      }
+     ],
+     "photo_credit": "Simon Mills",
+     "pixels": [
+      2030,
+      2500
+     ],
+     "role": "main"
+    }
+   ],
+   "materials": null,
+   "medium": "Oil and Oil Bar on Canvas",
+   "price_eur": 2155,
+   "price_on_request": false,
+   "slug": "uisce-salach-ii",
+   "title": "Uisce Salach II",
+   "w_cm": 73,
+   "year": 2025
+  },
+  {
+   "ai_founder_decision": null,
+   "ai_involvement": "none",
+   "ai_note": null,
+   "availability": "available",
+   "d_cm": 5,
+   "description": "Uisce Salach (Dirty Water) is a series of abstract paintings exploring the environmental impact of illegal fuel dumping along the Irish border, particularly in the River Fane.\n\nWorking with water samples collected from affected sites, I use microscopy and photomicrography to reveal details that are invisible to the naked eye. These images become the starting point for paintings that explore colour, form and texture, bringing attention to the hidden effects of pollution on our waterways.",
+   "h_cm": 92,
+   "id": "wu7njc3hw3h",
+   "images": [
+    {
+     "alt": "Green abstract painting with large teal semi-circle",
+     "aspect": 0.80918,
+     "derivatives": [
+      {
+       "file": "uisce-salach-iii-1-600.webp",
+       "long_edge": 600,
+       "pixels": [
+        486,
+        600
+       ]
+      },
+      {
+       "file": "uisce-salach-iii-1-1200.webp",
+       "long_edge": 1200,
+       "pixels": [
+        971,
+        1200
+       ]
+      },
+      {
+       "file": "uisce-salach-iii-1-2000.webp",
+       "long_edge": 2000,
+       "pixels": [
+        1618,
+        2000
+       ]
+      }
+     ],
+     "photo_credit": "Simon Mills",
+     "pixels": [
+      2027,
+      2505
+     ],
+     "role": "main"
+    }
+   ],
+   "materials": null,
+   "medium": "Oil and Oil Bar on Canvas",
+   "price_eur": 2155,
+   "price_on_request": false,
+   "slug": "uisce-salach-iii",
+   "title": "Uisce Salach III",
+   "w_cm": 73,
+   "year": 2025
+  },
+  {
+   "ai_founder_decision": null,
+   "ai_involvement": "none",
+   "ai_note": null,
+   "availability": "available",
+   "d_cm": 5,
+   "description": "Uisce Salach (Dirty Water) is a series of abstract paintings exploring the environmental impact of illegal fuel dumping along the Irish border, particularly in the River Fane.\n\nWorking with water samples collected from affected sites, I use microscopy and photomicrography to reveal details that are invisible to the naked eye. These images become the starting point for paintings that explore colour, form and texture, bringing attention to the hidden effects of pollution on our waterways.",
+   "h_cm": 73,
+   "id": "w2c6z4um41y",
+   "images": [
+    {
+     "alt": "Multi colured bright abstract painting with teal semi circle to the righthand side of the painting",
+     "aspect": 1.26004,
+     "derivatives": [
+      {
+       "file": "uisce-salach-iv-1-600.webp",
+       "long_edge": 600,
+       "pixels": [
+        600,
+        476
+       ]
+      },
+      {
+       "file": "uisce-salach-iv-1-1200.webp",
+       "long_edge": 1200,
+       "pixels": [
+        1200,
+        952
+       ]
+      },
+      {
+       "file": "uisce-salach-iv-1-2000.webp",
+       "long_edge": 2000,
+       "pixels": [
+        2000,
+        1587
+       ]
+      }
+     ],
+     "photo_credit": "Simon Mills",
+     "pixels": [
+      3169,
+      2515
+     ],
+     "role": "main"
+    }
+   ],
+   "materials": null,
+   "medium": "Oil and Oil Bar on Canvas",
+   "price_eur": 2155,
+   "price_on_request": false,
+   "slug": "uisce-salach-iv",
+   "title": "Uisce Salach IV",
+   "w_cm": 92,
+   "year": 2025
+  },
+  {
+   "ai_founder_decision": null,
+   "ai_involvement": "none",
+   "ai_note": null,
+   "availability": "available",
+   "d_cm": 5,
+   "description": "Uisce Salach (Dirty Water) is a series of abstract paintings exploring the environmental impact of illegal fuel dumping along the Irish border, particularly in the River Fane.\n\nWorking with water samples collected from affected sites, I use microscopy and photomicrography to reveal details that are invisible to the naked eye. These images become the starting point for paintings that explore colour, form and texture, bringing attention to the hidden effects of pollution on our waterways.",
+   "h_cm": 72,
+   "id": "wr944dchdgg",
+   "images": [
+    {
+     "alt": "Multi colured bright abstract painting with teal semi circle to the left hand side of the painting",
+     "aspect": 1.22013,
+     "derivatives": [
+      {
+       "file": "uisce-salach-v-2-1-600.webp",
+       "long_edge": 600,
+       "pixels": [
+        600,
+        492
+       ]
+      },
+      {
+       "file": "uisce-salach-v-2-1-1200.webp",
+       "long_edge": 1200,
+       "pixels": [
+        1200,
+        984
+       ]
+      },
+      {
+       "file": "uisce-salach-v-2-1-2000.webp",
+       "long_edge": 2000,
+       "pixels": [
+        2000,
+        1639
+       ]
+      }
+     ],
+     "photo_credit": "Simon Mills",
+     "pixels": [
+      7200,
+      5901
+     ],
+     "role": "main"
+    }
+   ],
+   "materials": null,
+   "medium": "Oil and Oil Bar on Canvas",
+   "price_eur": 2155,
+   "price_on_request": false,
+   "slug": "uisce-salach-v-2",
+   "title": "Uisce Salach V",
+   "w_cm": 93,
+   "year": 2025
+  }
+ ]
+}

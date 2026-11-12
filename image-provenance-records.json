@@ -13287,6 +13287,502 @@
       "source_sha256": "52de778d0d844eec5bde4f8f5b867c62a94dd63709406ce35f7e13c6cfa873a3",
       "subject": "artwork",
       "work_slug": "the-crossing"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "anna-marie-savage",
+      "asset": "plotart/artists/anna-marie-savage/img/portrait-600.webp",
+      "bytes": 48166,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "sRGB (no embedded profile; treated as sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aw9ehfcs0ct",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        465,
+        600
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "6d75f9b8d5506cf970730e63cac33e766c95194fe9d7b4d5c2ce5e7c617da104",
+      "source_sha256": "27426c0c41567d59bea07d8cc014a5ab219f71d2b24a46b5cd4323da652ef97a",
+      "subject": "portrait",
+      "work_slug": null
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "anna-marie-savage",
+      "asset": "plotart/artists/anna-marie-savage/img/uisce-salach-i-1-600.webp",
+      "bytes": 51346,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "sRGB (no embedded profile; treated as sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aw9ehfcs0ct",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": "Simon Mills",
+      "photographer": "other_with_permission",
+      "pixels": [
+        430,
+        600
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "d429b86389124acb7450d61001a44a7975cfd47cd10932acc0d2c2df9b481abd",
+      "source_sha256": "b01ebe6855bc7f2d6fafdb28e4ecfec500789c04a068710ef3cd75eb06a73627",
+      "subject": "artwork",
+      "work_slug": "uisce-salach-i"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "anna-marie-savage",
+      "asset": "plotart/artists/anna-marie-savage/img/uisce-salach-i-1-1200.webp",
+      "bytes": 222884,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "sRGB (no embedded profile; treated as sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aw9ehfcs0ct",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": "Simon Mills",
+      "photographer": "other_with_permission",
+      "pixels": [
+        860,
+        1200
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "92688002705b3b9eca40cf317edbafe92065c4e78f0c507eac5f1fc0b537a12f",
+      "source_sha256": "b01ebe6855bc7f2d6fafdb28e4ecfec500789c04a068710ef3cd75eb06a73627",
+      "subject": "artwork",
+      "work_slug": "uisce-salach-i"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "anna-marie-savage",
+      "asset": "plotart/artists/anna-marie-savage/img/uisce-salach-i-1-2000.webp",
+      "bytes": 732412,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "sRGB (no embedded profile; treated as sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aw9ehfcs0ct",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": "Simon Mills",
+      "photographer": "other_with_permission",
+      "pixels": [
+        1434,
+        2000
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "77ebfcb713990ee49452592b833624684568e597bf5b85b9173a53e48ce297c4",
+      "source_sha256": "b01ebe6855bc7f2d6fafdb28e4ecfec500789c04a068710ef3cd75eb06a73627",
+      "subject": "artwork",
+      "work_slug": "uisce-salach-i"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "anna-marie-savage",
+      "asset": "plotart/artists/anna-marie-savage/img/uisce-salach-ii-1-600.webp",
+      "bytes": 39864,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "sRGB (no embedded profile; treated as sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aw9ehfcs0ct",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": "Simon Mills",
+      "photographer": "other_with_permission",
+      "pixels": [
+        487,
+        600
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "c1ddb49f046e2400a982c4c878149106678c3bae71dcaa9c91581bcb2fb98165",
+      "source_sha256": "f3fa8886ddfd539b6ca0350caabeb0e46307164fdc85fbac4abfc7ff06c650d0",
+      "subject": "artwork",
+      "work_slug": "uisce-salach-ii"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "anna-marie-savage",
+      "asset": "plotart/artists/anna-marie-savage/img/uisce-salach-ii-1-1200.webp",
+      "bytes": 174812,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "sRGB (no embedded profile; treated as sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aw9ehfcs0ct",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": "Simon Mills",
+      "photographer": "other_with_permission",
+      "pixels": [
+        974,
+        1200
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "c97642ad4ffd7f197ff86c02bb0df476d7d9a0877e4410b3a33c6c87ce47c853",
+      "source_sha256": "f3fa8886ddfd539b6ca0350caabeb0e46307164fdc85fbac4abfc7ff06c650d0",
+      "subject": "artwork",
+      "work_slug": "uisce-salach-ii"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "anna-marie-savage",
+      "asset": "plotart/artists/anna-marie-savage/img/uisce-salach-ii-1-2000.webp",
+      "bytes": 524510,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "sRGB (no embedded profile; treated as sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aw9ehfcs0ct",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": "Simon Mills",
+      "photographer": "other_with_permission",
+      "pixels": [
+        1624,
+        2000
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "0b6bff036a59b8dcb983445adf4e0961b61a35ad4e714b80db1c35cc8c45cf29",
+      "source_sha256": "f3fa8886ddfd539b6ca0350caabeb0e46307164fdc85fbac4abfc7ff06c650d0",
+      "subject": "artwork",
+      "work_slug": "uisce-salach-ii"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "anna-marie-savage",
+      "asset": "plotart/artists/anna-marie-savage/img/uisce-salach-iii-1-600.webp",
+      "bytes": 35814,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "sRGB (no embedded profile; treated as sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aw9ehfcs0ct",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": "Simon Mills",
+      "photographer": "other_with_permission",
+      "pixels": [
+        486,
+        600
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "33fa3b2915263e778007e871c5dbcdb870fdcd494f8b0f884d4c5560cb85330c",
+      "source_sha256": "066c01e5535e5bec3349ccdfc3e9b5ae8b24e7466c2393e0b8717366a9f54e92",
+      "subject": "artwork",
+      "work_slug": "uisce-salach-iii"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "anna-marie-savage",
+      "asset": "plotart/artists/anna-marie-savage/img/uisce-salach-iii-1-1200.webp",
+      "bytes": 159972,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "sRGB (no embedded profile; treated as sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aw9ehfcs0ct",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": "Simon Mills",
+      "photographer": "other_with_permission",
+      "pixels": [
+        971,
+        1200
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "d7eb2c9e3e610997546757c8e14b4ddd793b4d8823ffb4036cfd0656f406dd99",
+      "source_sha256": "066c01e5535e5bec3349ccdfc3e9b5ae8b24e7466c2393e0b8717366a9f54e92",
+      "subject": "artwork",
+      "work_slug": "uisce-salach-iii"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "anna-marie-savage",
+      "asset": "plotart/artists/anna-marie-savage/img/uisce-salach-iii-1-2000.webp",
+      "bytes": 510084,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "sRGB (no embedded profile; treated as sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aw9ehfcs0ct",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": "Simon Mills",
+      "photographer": "other_with_permission",
+      "pixels": [
+        1618,
+        2000
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "bf626504061bb9ed5bcd29620fd3fe6a88e78513a7875125a7490d7cb81008c3",
+      "source_sha256": "066c01e5535e5bec3349ccdfc3e9b5ae8b24e7466c2393e0b8717366a9f54e92",
+      "subject": "artwork",
+      "work_slug": "uisce-salach-iii"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "anna-marie-savage",
+      "asset": "plotart/artists/anna-marie-savage/img/uisce-salach-iv-1-600.webp",
+      "bytes": 56904,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "sRGB (no embedded profile; treated as sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aw9ehfcs0ct",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": "Simon Mills",
+      "photographer": "other_with_permission",
+      "pixels": [
+        600,
+        476
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "a3879664ee717dddac0ae6e10d995026893aab9c9e0891e76512b8f8b115218e",
+      "source_sha256": "a2a70c097805be6336107b8221451babbaa36db08858d00f693b62fe04101280",
+      "subject": "artwork",
+      "work_slug": "uisce-salach-iv"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "anna-marie-savage",
+      "asset": "plotart/artists/anna-marie-savage/img/uisce-salach-iv-1-1200.webp",
+      "bytes": 232598,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "sRGB (no embedded profile; treated as sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aw9ehfcs0ct",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": "Simon Mills",
+      "photographer": "other_with_permission",
+      "pixels": [
+        1200,
+        952
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "b08b0bbae8c27a946350395734ef90494d4dccabe74b0c6adbb99f7e0468aa9c",
+      "source_sha256": "a2a70c097805be6336107b8221451babbaa36db08858d00f693b62fe04101280",
+      "subject": "artwork",
+      "work_slug": "uisce-salach-iv"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "anna-marie-savage",
+      "asset": "plotart/artists/anna-marie-savage/img/uisce-salach-iv-1-2000.webp",
+      "bytes": 721318,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "sRGB (no embedded profile; treated as sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aw9ehfcs0ct",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": "Simon Mills",
+      "photographer": "other_with_permission",
+      "pixels": [
+        2000,
+        1587
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "dbd45ccfffca758c6fa3c015dbe343e8e5860a6e8b2cc1378d23a9f297cdf89d",
+      "source_sha256": "a2a70c097805be6336107b8221451babbaa36db08858d00f693b62fe04101280",
+      "subject": "artwork",
+      "work_slug": "uisce-salach-iv"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "anna-marie-savage",
+      "asset": "plotart/artists/anna-marie-savage/img/uisce-salach-v-2-1-600.webp",
+      "bytes": 51548,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "sRGB (no embedded profile; treated as sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aw9ehfcs0ct",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": "Simon Mills",
+      "photographer": "other_with_permission",
+      "pixels": [
+        600,
+        492
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "a4ceaefdb7ce9276ddbac2e16feb97487bae72fd7f6844018808eaf4ea376df3",
+      "source_sha256": "fc3bdce0e5c41acaebf81cbffa3cc61475173ea0aaeb392bfd98e6a1081765f6",
+      "subject": "artwork",
+      "work_slug": "uisce-salach-v-2"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "anna-marie-savage",
+      "asset": "plotart/artists/anna-marie-savage/img/uisce-salach-v-2-1-1200.webp",
+      "bytes": 209256,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "sRGB (no embedded profile; treated as sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aw9ehfcs0ct",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": "Simon Mills",
+      "photographer": "other_with_permission",
+      "pixels": [
+        1200,
+        984
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "c234d4f764bd51dc54e1c0de9923e7a8e4f14418315c4b8849545bdbf57468b2",
+      "source_sha256": "fc3bdce0e5c41acaebf81cbffa3cc61475173ea0aaeb392bfd98e6a1081765f6",
+      "subject": "artwork",
+      "work_slug": "uisce-salach-v-2"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "anna-marie-savage",
+      "asset": "plotart/artists/anna-marie-savage/img/uisce-salach-v-2-1-2000.webp",
+      "bytes": 643978,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "sRGB (no embedded profile; treated as sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aw9ehfcs0ct",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": "Simon Mills",
+      "photographer": "other_with_permission",
+      "pixels": [
+        2000,
+        1639
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "3cb0d51a53403edbd751bad116046ede45ac2c5d9601053ed3a1015e4ca3e76e",
+      "source_sha256": "fc3bdce0e5c41acaebf81cbffa3cc61475173ea0aaeb392bfd98e6a1081765f6",
+      "subject": "artwork",
+      "work_slug": "uisce-salach-v-2"
     }
   ],
   "legacy_undeclared": [
