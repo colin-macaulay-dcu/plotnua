@@ -448,6 +448,20 @@ def garden_emitted_header(products, g):
             "governedDigest": g.governed_digest(products)}
 
 
+VAT_TERMS = "atlas-tools/vat-terms-evidence.json"
+
+
+def scoped_vat_terms(wt, snap):
+    """The supplier-terms VAT register, restricted to the organisations the
+    snapshot carries (matched on Organisation Name, as the register is keyed).
+    Every other field is copied unaltered, so the generator vets it exactly as
+    it vets the full register."""
+    doc = json.loads((wt / VAT_TERMS).read_text(encoding="utf-8"))
+    names = {fv(o, "Organisation Name") for o in snap.get("organisations") or []}
+    doc["suppliers"] = [e for e in doc.get("suppliers") or [] if e.get("organisation") in names]
+    return doc
+
+
 def garden_adapter(wt, snap_path, snap, targets, explicit, org_id, rep):
     g = load_module(wt / GARDEN_GEN, "grgen_targeted")
     cur_raw = (wt / GARDEN).read_text(encoding="utf-8")
@@ -468,8 +482,21 @@ def garden_adapter(wt, snap_path, snap, targets, explicit, org_id, rep):
         if not any(fv(p, "Product Category") == g.GARDEN_ROOMS for p in snap["products"]):
             new_em, new_ex, gen_files = {}, {}, {}
         else:
+            # 13 Nov 2026 (MGR release preparation): the generator's supplier-terms
+            # VAT self-check (Stage 3D-D1, 7 Nov) requires EVERY register product to
+            # be emitted, which a scoped snapshot cannot do. Hand it the register
+            # restricted to the organisations in this snapshot: the check stays
+            # exact for any in-scope supplier-terms product and asks nothing of
+            # suppliers the run does not touch (their published records are carried
+            # over byte-identical by the boundary check).
+            vat_dir = pathlib.Path(tempfile.mkdtemp(prefix="tu-vat-"))
+            scoped_vat = vat_dir / "vat-terms-scoped.json"
+            scoped_vat.write_text(json.dumps(scoped_vat_terms(wt, snap), ensure_ascii=False),
+                                  encoding="utf-8")
             r = sh([sys.executable, str(wt / GARDEN_GEN), "--snapshot", str(snap_path),
-                    "--out-dir", str(out), "--production-candidate"], wt)
+                    "--out-dir", str(out), "--production-candidate",
+                    "--vat-terms-register", str(scoped_vat)], wt)
+            shutil.rmtree(vat_dir, ignore_errors=True)
             if r.returncode:
                 refuse("the garden generator refused the snapshot:\n" + (r.stdout + r.stderr)[-2500:])
             gen_files = {p.name: json.loads(p.read_text(encoding="utf-8")) for p in out.glob("*.json")}
