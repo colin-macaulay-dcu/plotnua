@@ -245,10 +245,59 @@
    "figure": "withheld",
    "since": "2026-11-11",
    "liftWhen": "A current, product-specific Lugarde price for this model is verified on the supplier's site, recorded in Atlas, and the founder separately approves lifting the hold."
+  },
+  {
+   "productId": "recSpzyQeSlo8yylE",
+   "product": "Modern Garden Office",
+   "organisation": "Modern Garden Rooms",
+   "basis": "Turnkey starting price for a typical 10–15 m² room, excluding VAT (moderngardenrooms.ie/garden-room-cost/, read 13 Nov 2026)",
+   "qualification": "Turnkey starting price for a finished, insulated room; the supplier states no VAT rate. Final price by written quote after a free site visit.",
+   "label": "Price excludes VAT",
+   "reason": "This starting price excludes VAT, so PlotNua does not compare it with your budget or with prices that include VAT.",
+   "vatBasis": "excluded",
+   "since": "2026-11-13",
+   "liftWhen": "The website can present an ex-VAT starting price for a bespoke room alongside VAT-inclusive prices without misleading a homeowner (or the supplier publishes VAT-inclusive prices), AND the founder approves lifting the hold for the product."
+  },
+  {
+   "productId": "recQhafVxkW46trn6",
+   "product": "Modern Garden Gym",
+   "organisation": "Modern Garden Rooms",
+   "basis": "Turnkey starting price for a typical 15–25 m² room, excluding VAT (moderngardenrooms.ie/garden-room-cost/, read 13 Nov 2026)",
+   "qualification": "Turnkey starting price for a finished, insulated room; the supplier states no VAT rate. Final price by written quote after a free site visit.",
+   "label": "Price excludes VAT",
+   "reason": "This starting price excludes VAT, so PlotNua does not compare it with your budget or with prices that include VAT.",
+   "vatBasis": "excluded",
+   "since": "2026-11-13",
+   "liftWhen": "The website can present an ex-VAT starting price for a bespoke room alongside VAT-inclusive prices without misleading a homeowner (or the supplier publishes VAT-inclusive prices), AND the founder approves lifting the hold for the product."
+  },
+  {
+   "productId": "recBW2vBPcT0kOT1o",
+   "product": "Modern Garden Guest Room",
+   "organisation": "Modern Garden Rooms",
+   "basis": "Turnkey starting price for a typical 15–25 m² room, excluding VAT (moderngardenrooms.ie/garden-room-cost/, read 13 Nov 2026)",
+   "qualification": "Turnkey starting price for a finished, insulated room, en-suite or kitchenette extra; the supplier states no VAT rate. Final price by written quote after a free site visit.",
+   "label": "Price excludes VAT",
+   "reason": "This starting price excludes VAT, so PlotNua does not compare it with your budget or with prices that include VAT.",
+   "vatBasis": "excluded",
+   "since": "2026-11-13",
+   "liftWhen": "The website can present an ex-VAT starting price for a bespoke room alongside VAT-inclusive prices without misleading a homeowner (or the supplier publishes VAT-inclusive prices), AND the founder approves lifting the hold for the product."
+  },
+  {
+   "productId": "rec8yqq3yj2qFyU7T",
+   "product": "Modern Golf Simulator Room",
+   "organisation": "Modern Garden Rooms",
+   "basis": "Turnkey starting price for a typical 25–30 m² room, excluding VAT (moderngardenrooms.ie/garden-room-cost/, read 13 Nov 2026)",
+   "qualification": "Turnkey starting price for a finished, insulated room, simulator not included; the supplier states no VAT rate. Final price by written quote after a free site visit.",
+   "label": "Price excludes VAT",
+   "reason": "This starting price excludes VAT, so PlotNua does not compare it with your budget or with prices that include VAT.",
+   "vatBasis": "excluded",
+   "since": "2026-11-13",
+   "liftWhen": "The website can present an ex-VAT starting price for a bespoke room alongside VAT-inclusive prices without misleading a homeowner (or the supplier publishes VAT-inclusive prices), AND the founder approves lifting the hold for the product."
   }
  ],
  "decision_stage3b": "Founder decision, 6 Nov 2026 19:10, 'PLOTNUA — STAGE 3B EAST COAST CARPENTRY ATLAS IMPLEMENTATION AND PUBLICATION PREPARATION', Part 2: extend the NOOK hold narrowly; product-specific qualification wording; until geographical matching exists, East Coast Carpentry is excluded from price-based matching, budget fit and price-filtered search, and its prices are never presented as nationwide offers. Optional fields: 'label' (Your Plot's price slot, in place of the figure), 'reason' (Your Plot's reason line), 'vatBasis' ('included' lets the Maker Explorer show a VAT-inclusive held price as the figure followed by the qualification). Absent on the NOOK holds, so NOOK is unchanged. Founder decision D1(b), 6 Nov 2026 20:09: 'region' makes the restriction explicit wherever availability is shown — Your Plot reads 'Available in Dublin and Wicklow only' in place of the generic 'Irish availability', and the Maker Explorer's maker header, product status and A-Z line read the same. Display only: no matching or ranking change.",
  "decision_stage3c": "Founder decision, Stage 3C, 6 Nov 2026 21:37: approve a Rayco price-presentation hold. The product stays discoverable; EUR 29,500 is excluded from price matching, budget fit and price-filtered search, is never shown as a verified garden-room price or as an installed-price offer, and the homeowner is told a current garden-room price needs confirmation from Rayco. 'figure': 'withheld' means no surface shows the figure at all (the NOOK and ECC holds show it beside their qualification). No price is substituted.",
  "decision_stage3d_b3": "Founder decision, Stage 3D-B3, 7 Nov 2026: 'PINECA PREMIUM S PRICE-PRESENTATION SAFEGUARD — APPROVED FOR INVESTIGATION AND CONTROLLED IMPLEMENTATION'. The historical EUR 8,678 (already excluded from the Garden Room Prices evidence, Stage 3D-B2) must not appear in Your Plot, the Maker Explorer, Search, supplier price ranges, budget matching or euro price-filtered search. Public wording 'Price on request' with a concise qualification that a current published price could not be verified. The product stays discoverable by name; no replacement price, no starting-from price. Atlas price record, historical price, Last Price Check and verification status unchanged. The hold may be lifted only after a current, product-specific supplier price has been verified and separately approved.",
- "decision_2026_11_11": "Founder approval, 11 November 2026 (combined Garden Room Evidence and Price-Presentation release): six products held with the figure withheld -- Garden Office Solutions x4 ('Not currently taking orders'; supplier temporarily unable to take new orders, not described as closed), Outdoor Living Nova 21.5m Pavillion ('Out of stock'), Lugarde Garden Room PSML2 ('Price requires verification'; not described as discontinued). Atlas records and historical prices unchanged; no Atlas write. Published by atlas-tools/publish-presentation-hold.py. The separate Nova 17.8m product is deliberately not included."
+ "decision_2026_11_11": "Founder approval, 11 November 2026 (combined Garden Room Evidence and Price-Presentation release): six products held with the figure withheld -- Garden Office Solutions x4 ('Not currently taking orders'; supplier temporarily unable to take new orders, not described as closed), Outdoor Living Nova 21.5m Pavillion ('Out of stock'), Lugarde Garden Room PSML2 ('Price requires verification'; not described as discontinued). Atlas records and historical prices unchanged; no Atlas write. Published by atlas-tools/publish-presentation-hold.py. The separate Nova 17.8m product is deliberately not included.",
+ "decision_2026_11_13": "Founder approval, 13 Nov 2026 08:45 (Modern Garden Rooms Atlas correction): the supplier's turnkey starting prices are recorded as published, all excluding VAT (rate not stated; never inferred) -- Office EUR 24,000, Gym EUR 32,000, Guest Room EUR 32,000, Golf Simulator EUR 50,000. Each is held: excluded from price-based matching, budget fit and price-filtered Search; wherever the figure is shown the ex-VAT qualification sits beside it. 'label' replaces the NOOK default 'Ex works price only' (wrong for a turnkey price) on Your Plot; the qualification carries no digits because Your Plot shows the qualification in place of the figure; the typical size bands are in 'basis'. Wording subject to founder confirmation at release approval. The Modular Garden Room stays price on request (no figure, no hold). The 45 m2 Garden Home (Additional Home) is recorded in Atlas only; it is not in the garden-room universe, so no hold applies until it is published, which needs a separate approval."
 }
