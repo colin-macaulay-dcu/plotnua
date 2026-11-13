@@ -117,7 +117,7 @@ const same = (gi, except) => gi.length === BEFORE.length && gi.every((x, i) => e
 const GENERATED = JSON.parse(spawnSync('python3', ['-c', 'import sys,json;sys.path.insert(0,"atlas-tools");import plotart_seo as S;print(json.dumps(["plotart/"+p for p in S.GENERATED_PATHS]))'], { cwd: SITE, encoding: 'utf8' }).stdout);
 
 console.log('PROVE · the complete artist journey\n— selection to first publication');
-let r = await call('POST', '/api/admin/artists', FOUNDER, { display_name: 'Niamh Synthetic', email: A, application_ref: 'F25-261029-1A2B3C' });
+let r = await call('POST', '/api/admin/artists', FOUNDER, { display_name: 'Niamh Synthetic', email: A, application_ref: 'F25-261029-1A2B3C', founding: true });
 check('J1 the founder creates the selected artist’s Studio account', r.s === 200 && r.j.slug === 'niamh-synthetic');
 r = await call('GET', '/api/me', A);
 check('J2 the artist signs in (Access) and lands on “Not published yet”', r.s === 200 && r.j.status.state === 'draft' && r.j.artist.account_status === 'active');
@@ -238,7 +238,7 @@ check('O6 an unchanged order publishes nothing', /nothing to publish/.test(r.std
 // One-artwork galleries (founder decision 1 Nov 2026): a Founding Artist may open with a single work.
 console.log('— a one-artwork Founding gallery');
 const B = 'orla@example.test';
-await call('POST', '/api/admin/artists', FOUNDER, { display_name: 'Orla Synthetic', email: B });
+await call('POST', '/api/admin/artists', FOUNDER, { display_name: 'Orla Synthetic', email: B, founding: true });
 await call('PUT', '/api/me/profile', B, { practice: 'Painter', medium: 'painting', county: 'Kerry', county_public: true,
   bio: 'Orla Synthetic is an invented test artist. She paints a single large view of the sea at a time, building it up over a whole season.' });
 const ow = (await call('POST', '/api/artworks', B)).j.id;

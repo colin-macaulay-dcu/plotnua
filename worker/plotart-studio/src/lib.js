@@ -195,7 +195,7 @@ export function applyInstant(base, work) {
    founder can see an artist's list. `text` is unchanged word for word, so readiness() (the list the server enforces on
    submission) is identical. Nothing here relaxes a requirement.
    item: { area: 'profile'|'works'|'work'|'licence', field, text, work_id?, title?, needs?: [codes], image_id? } */
-export function checklist(snap, { founding, firstPublication = true, licenceOk, imageBlocks }) {
+export function checklist(snap, { founding, programme = null, firstPublication = true, licenceOk, imageBlocks }) {
   const p = [];
   const a = snap.artist;
   const t = (v, lo, hi, w, field) => { try { text(v, lo, hi, w); } catch (e) { p.push({ area: 'profile', field, text: e.message }); } };
@@ -226,7 +226,9 @@ export function checklist(snap, { founding, firstPublication = true, licenceOk, 
     if (q.length) p.push({ area: 'work', field: codes[0], needs: codes, work_id: w.id, title: w.title || null, image_id: image, text: `${n} needs ${q.join(', ')}` });
   }
   // Founding Artist Agreement (development 6 Nov 2026): a full submission needs the current texts accepted in Studio first.
-  if (!licenceOk) p.push({ area: 'agreement', field: 'agreement', text: founding ? 'Read and accept the Founding Artist Agreement and the Gallery Publication and Image Licence' : 'Read and accept the Gallery Publication and Image Licence' });
+  // programme (Phase 2, 13 Nov 2026): a Gallery Artist accepts the Gallery Artist Agreement with the licence; the other texts are unchanged
+  if (!licenceOk) p.push({ area: 'agreement', field: 'agreement', text: programme === 'gallery_artist' ? 'Read and accept the Gallery Artist Agreement and the Gallery Publication and Image Licence'
+    : founding ? 'Read and accept the Founding Artist Agreement and the Gallery Publication and Image Licence' : 'Read and accept the Gallery Publication and Image Licence' });
   return p;
 }
 export function readiness(snap, opts) { return checklist(snap, opts).map(i => i.text); }

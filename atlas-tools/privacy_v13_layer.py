@@ -8,7 +8,7 @@ replacements on top of the published page, inside the V12 wording in Section 8 (
   P2  the #plotart-opportunities paragraph: those arrangements are discussed for every placement, whether or not the
       artist ticks that box
 The "Last updated" label is governed by the V4/V5 verifiers and is not changed by V13.
-without_v13() returns the exact page beneath V13 (privacy_v12_layer.without_v12 takes V13 off first).
+without_v13() returns the exact page beneath V13 (privacy_v12_layer.without_v12 takes V13 off first; it takes V14 off first itself).
 
     python3 atlas-tools/privacy_v13_layer.py --apply     write V13 into privacy.html (only with the founder's authorisation)
 """
@@ -43,6 +43,8 @@ def apply_v13(text: str) -> str:
 def without_v13(text: str) -> str:
     """The exact page beneath V13. A page without V13 passes through untouched; a page that carries the V13 marker but
     not exactly the governed V13 text raises."""
+    from privacy_v14_layer import without_v14       # V14 (Gallery Artist commission records, prepared 13 Nov 2026) sits on top of V13: take it off first
+    text = without_v14(text)
     if MARKER not in text:
         return text
     for _, new in PAIRS:

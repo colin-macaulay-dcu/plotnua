@@ -12,7 +12,8 @@
 const fs = require('fs'), path = require('path'), crypto = require('crypto'), { execFileSync } = require('child_process');
 const HERE = __dirname, OUT = path.join(HERE, 'issued');
 const { build } = require('./source/docx.cjs');
-const ALL = [require('./source/PA-FAA-2026-11.cjs'), require('./source/PA-GPIL-2026-11.cjs')];
+const ALL = [require('./source/PA-FAA-2026-11.cjs'), require('./source/PA-GPIL-2026-11.cjs'),
+  require('./source/PA-GAA-2026-11.cjs')];   // Gallery Artist Agreement: final draft r4 (13 Nov 2026), installed only after founder approval
 // node agreements/build.cjs [ID ...]: rebuild only the named documents; every other document's files and fingerprints are
 // kept byte for byte (a PDF rebuilt from unchanged text would still get new bytes, so it is never rebuilt needlessly).
 const ONLY = process.argv.slice(2);
@@ -55,7 +56,7 @@ thead th{background:#EFEBE5}tbody th{font-weight:700;width:34%}footer{margin-top
 <body><main><article data-doc="${esc(doc.id)}">
 <p class="eyebrow">PLOTART</p>
 <h1>${esc(doc.title)}</h1>
-<p class="sub">Identifier ${esc(doc.id)} · Text of ${DATE}</p>
+<p class="sub">Identifier ${esc(doc.id)} · Text of ${doc.date || DATE}</p>
 ${out.join('\n')}
 </article>
 <footer>${esc(doc.footer)} · plotnua.ie · hello@plotnua.ie</footer></main></body></html>
@@ -67,7 +68,7 @@ ${out.join('\n')}
   const prev = fs.existsSync(path.join(OUT, 'fingerprints.json')) ? JSON.parse(fs.readFileSync(path.join(OUT, 'fingerprints.json'), 'utf8')).documents : {};
   const prints = { note: 'SHA-256 of the exact files PlotArt Studio serves. Once anyone has accepted an identifier, changing any of its files needs a new identifier.', documents: { ...prev } };
   for (const d of DOCS) {
-    const issue = { ...d, status: null, sub: `Identifier ${d.id}  ·  Text of ${DATE}` };
+    const issue = { ...d, status: null, sub: `Identifier ${d.id}  ·  Text of ${d.date || DATE}` };
     fs.writeFileSync(path.join(OUT, `${d.id}.html`), html(issue));
     const docx = path.join(OUT, `${d.id}.docx`);
     await build(issue, docx);

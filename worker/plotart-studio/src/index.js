@@ -86,7 +86,7 @@ async function status(env, artist) {
   const unsubmittedTier = L.tierOf(cs.filter(c => c.tier !== 'instant'));
   // the agreement item appears only when it is needed now: a first publication, or full-review changes waiting to be submitted
   const needAgreement = !ag.accepted && (!lv || unsubmittedTier === 'full');
-  const list = L.checklist(snap, { founding: !!d.artist.founding, firstPublication: !lv, licenceOk: !needAgreement, imageBlocks: blocked(d.images) });
+  const list = L.checklist(snap, { founding: !!d.artist.founding, programme: ag.programme, firstPublication: !lv, licenceOk: !needAgreement, imageBlocks: blocked(d.images) });
   const problems = list.map(i => i.text);
   let state;
   if (pending) state = 'in_review';
@@ -108,22 +108,40 @@ async function status(env, artist) {
    The texts are bundled (assets.js, fingerprint-checked at build). They can be accepted only once migration 0005 has
    installed the same fingerprints in agreement_documents; until then Studio works exactly as before for everything else. */
 async function agreementDocs(env) {
-  try { return await all(env, 'SELECT doc_id, kind, title, text_status, html_sha256, pdf_sha256, effective_at FROM agreement_documents ORDER BY effective_at, doc_id'); }
+  let docs;
+  try { docs = await all(env, 'SELECT doc_id, kind, title, text_status, html_sha256, pdf_sha256, effective_at FROM agreement_documents ORDER BY effective_at, doc_id'); }
   catch { return null; }   // migration 0005 not applied
+  // Gallery Artist Agreement texts (migration 0012; the approved text is installed by 0013). Absent: nothing added.
+  try { docs = docs.concat(await all(env, 'SELECT doc_id, kind, title, text_status, html_sha256, pdf_sha256, effective_at FROM gallery_agreement_documents ORDER BY effective_at, doc_id')); } catch { /* 0012 not applied */ }
+  return docs;
+}
+/* Gallery Artist terms (migration 0012). null when the artist has none (every Founding Artist) or 0012 has not run. */
+async function termsFor(env, artistId) {
+  try { return await one(env, 'SELECT * FROM artist_terms WHERE artist_id = ?', artistId); } catch { return null; }
+}
+async function termsInstalled(env) {
+  try { await env.DB.prepare('SELECT 1 FROM artist_terms LIMIT 1').all(); return true; } catch { return false; }
+}
+async function acceptanceRows(env, artistId) {
+  const rows = await all(env, 'SELECT * FROM agreement_acceptances WHERE artist_id = ? ORDER BY accepted_at, id', artistId);
+  let gaa = [];
+  try { gaa = await all(env, 'SELECT * FROM gallery_agreement_acceptances WHERE artist_id = ? ORDER BY accepted_at, id', artistId); } catch { /* 0012 not applied */ }
+  return gaa.length ? rows.concat(gaa).sort((x, y) => String(x.accepted_at).localeCompare(String(y.accepted_at)) || String(x.id).localeCompare(String(y.id))) : rows;
 }
 async function agreementState(env, artist) {
   const docs = await agreementDocs(env);
-  const req = AG.required(artist);
+  const terms = await termsFor(env, artist.id);
+  const req = AG.required(artist, terms);
   const installed = !!docs && req.every(id => { const r = docs.find(d => d.doc_id === id), b = AG.doc(id);
     return r && b && r.text_status === 'fixed' && r.html_sha256 === b.html_sha256 && r.pdf_sha256 === b.pdf_sha256; });
-  const rows = docs ? await all(env, 'SELECT * FROM agreement_acceptances WHERE artist_id = ? ORDER BY accepted_at, id', artist.id) : [];
+  const rows = docs ? await acceptanceRows(env, artist.id) : [];
   const current = id => rows.filter(r => r.doc_id === id && r.method === 'studio_checkbox' && AG.doc(id) && r.doc_sha256 === AG.doc(id).html_sha256).pop();
   const accepted = installed && req.every(id => current(id));
   const last = accepted ? current(req[0]) : null;
   const newest = rows.filter(r => r.method === 'studio_checkbox' && r.doc_id.startsWith('PA-GPIL-')).pop();
   return {
     installed, required: req, accepted, accepted_at: last ? last.accepted_at : null, event_id: last ? last.event_id : null, legal_name: last ? last.legal_name : null,
-    statement: AG.statementFor(artist), history: rows,
+    statement: AG.statementFor(artist, terms), history: rows, programme: AG.programmeOf(artist, terms),
     legacy: artist.licence_version && artist.licence_accepted_at ? { version: artist.licence_version, accepted_at: artist.licence_accepted_at, migrated: rows.some(r => r.method === 'migrated_from_artists_table' && r.doc_id === artist.licence_version) } : null,
     // the licence the publishing pipeline carries: the newest Studio acceptance, else the label recorded before 0005
     licence: newest ? { version: newest.doc_id, accepted_at: newest.accepted_at } : artist.licence_version ? { version: artist.licence_version, accepted_at: artist.licence_accepted_at } : null,
@@ -131,7 +149,7 @@ async function agreementState(env, artist) {
     first_published_at: artist.first_published_at || null, founding: !!artist.founding,
   };
 }
-const agreementSummary = ag => ({ installed: ag.installed, required: ag.required, accepted: ag.accepted, accepted_at: ag.accepted_at, legal_name_given: !!ag.legal_name,
+const agreementSummary = ag => ({ installed: ag.installed, required: ag.required, accepted: ag.accepted, accepted_at: ag.accepted_at, legal_name_given: !!ag.legal_name, programme: ag.programme,
   statement: ag.statement, legacy: ag.legacy, licence: ag.licence, founding_year: ag.founding_year, first_published_at: ag.first_published_at, founding: ag.founding,
   status: ag.accepted ? 'accepted' : ag.legacy ? 'legacy_licence_only' : 'not_accepted' });
 
@@ -148,7 +166,8 @@ async function acceptAgreement(env, artist, body) {
   // an earlier licence acceptance must already be held in the permanent record before anything new is added beside it
   if (ag.legacy && !ag.legacy.migrated) throw new Bad('The agreement can’t be accepted just yet. Please try again later, or email hello@plotnua.ie.', 503);
   const event = rid('evt'), at = now();
-  await env.DB.batch(ag.required.map(id => env.DB.prepare(`INSERT INTO agreement_acceptances (id, event_id, artist_id, doc_id, doc_sha256, pdf_sha256, accepted_at,
+  // one tick, one event: each document in its own record table (PA-GAA in gallery_agreement_acceptances, 0012), same event_id
+  await env.DB.batch(ag.required.map(id => env.DB.prepare(`INSERT INTO ${AG.acceptanceTable(id)} (id, event_id, artist_id, doc_id, doc_sha256, pdf_sha256, accepted_at,
       account_email, display_name, legal_name, method, statement, note, created_at) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)`)
     .bind(rid('acc'), event, a.id, id, AG.doc(id).html_sha256, AG.doc(id).pdf_sha256, at, artist.email, a.display_name, legal, 'studio_checkbox', ag.statement, null, at)));
   await audit(env, artist.email, 'artist', 'agreement_accepted', a.id, { event, documents: ag.required, legal_name_given: !!legal });
@@ -415,7 +434,7 @@ async function deleteRecords(env, artistId) {
   if (!ev.some(e => e.kind === 'originals_deleted')) await eraseOriginals(env, artistId, 'scheduler', 'with the six-year deletion');
   // Art for Hire records (migration 0007) go BEFORE record_retention: their append-only guards allow deletion only while
   // the artist's retention row still shows the period has ended (Stage 3B-1 finding). Absent tables are skipped.
-  const t = [...(await O.recordTables(env)), 'acceptance_corrections', 'agreement_acceptances', 'enquiry_log', 'enquiries', 'versions', 'publish_queue', 'gallery_positions', 'participation_events',
+  const t = [...(await O.recordTables(env)), ...((await termsInstalled(env)) ? ['gallery_agreement_acceptances', 'artist_terms'] : []), 'acceptance_corrections', 'agreement_acceptances', 'enquiry_log', 'enquiries', 'versions', 'publish_queue', 'gallery_positions', 'participation_events',
     ...(await H.recordTables(env)), 'record_retention'];
   await env.DB.batch([...t.map(x => env.DB.prepare(`DELETE FROM ${x} WHERE artist_id = ?`).bind(artistId)), env.DB.prepare("DELETE FROM artists WHERE id = ? AND account_status = 'ended'").bind(artistId),
     env.DB.prepare('DELETE FROM audit WHERE artist_id = ?').bind(artistId)]);   // the artist's audit trail goes with their records
@@ -558,7 +577,7 @@ async function submit(env, artist, body) {
   // already holds a licence the publishing pipeline accepts is never blocked. Nothing is accepted on submission any more.
   const ag = await agreementState(env, d.artist);
   const licence = ag.accepted || (L.tierOf(cs) !== 'full' && !!ag.licence && AG.PUBLISHABLE_LICENCES.includes(ag.licence.version));
-  const problems = L.readiness(snap, { founding: !!d.artist.founding, firstPublication: !lv, licenceOk: licence, imageBlocks: blocked(d.images) });
+  const problems = L.readiness(snap, { founding: !!d.artist.founding, programme: ag.programme, firstPublication: !lv, licenceOk: licence, imageBlocks: blocked(d.images) });
   if (problems.length) return json({ ok: false, problems }, 422);
   await env.DB.prepare("UPDATE submissions SET status='withdrawn', decided_at=? WHERE artist_id=? AND status='pending'").bind(now(), artist.id).run();
   const id = rid('s');
@@ -643,10 +662,10 @@ async function agreementGate(env, q, req) {
   const a = await one(env, 'SELECT * FROM artists WHERE id=?', q.artist_id);
   const ag = await agreementState(env, a);
   const first = !a.first_published_at && !(await one(env, "SELECT id FROM publish_queue WHERE artist_id=? AND status IN ('published','superseded') AND kind<>'remove' LIMIT 1", a.id));
-  if (!ag.accepted && first) throw new Bad(`${a.display_name} has not accepted the ${a.founding ? 'Founding Artist Agreement' : 'Gallery Publication and Image Licence'} yet, so their gallery can’t be published for the first time. They accept it in PlotArt Studio.`, 409);
+  if (!ag.accepted && first) throw new Bad(`${a.display_name} has not accepted the ${AG.PROGRAMME_NAME[ag.programme]} yet, so their gallery can’t be published for the first time. They accept it in PlotArt Studio.`, 409);
   if (ag.accepted) return { warned: false };
   const b = await req.json().catch(() => ({}));
-  if (b.confirm_without_agreement !== true) return { response: json({ ok: false, needs_confirmation: true, error: `${a.display_name} is already published but hasn’t accepted the ${a.founding ? 'Founding Artist Agreement' : 'current licence'} yet. Their existing licence (${ag.licence ? ag.licence.version : 'none'}) still applies. Publish anyway?` }, 409) };
+  if (b.confirm_without_agreement !== true) return { response: json({ ok: false, needs_confirmation: true, error: `${a.display_name} is already published but hasn’t accepted the ${ag.programme === 'licence_only' ? 'current licence' : AG.PROGRAMME_NAME[ag.programme]} yet. Their existing licence (${ag.licence ? ag.licence.version : 'none'}) still applies. Publish anyway?` }, 409) };
   return { warned: true };
 }
 
@@ -738,7 +757,7 @@ async function overview(env) {
   for (const a of artists) {
     const st = await status(env, a);
     const pt = await participation(env, a);
-    out.push({ ...a, state: st.state, works: st.counts.works, problems: st.problems.length, live_version: st.live_version, latest_version: st.latest_version, agreement: st.agreement,
+    out.push({ ...a, programme: AG.programmeOf(a, await termsFor(env, a.id)), state: st.state, works: st.counts.works, problems: st.problems.length, live_version: st.live_version, latest_version: st.latest_version, agreement: st.agreement,
       leave_requested_at: pt.request ? pt.request.at : null, ended_at: pt.ended ? pt.ended.at : null });
   }
   const subs = await all(env, `SELECT s.id, s.artist_id, s.created_at, s.tier, s.note, a.display_name FROM submissions s JOIN artists a ON a.id = s.artist_id
@@ -749,7 +768,7 @@ async function overview(env) {
     OR (q.status = 'failed' AND NOT EXISTS (SELECT 1 FROM publish_queue n WHERE n.artist_id = q.artist_id AND n.version > q.version AND n.status <> 'superseded'))) ORDER BY q.created_at`);
   const flags = await all(env, `SELECT i.id, i.artist_id, a.display_name, i.sha256 FROM images i JOIN artists a ON a.id=i.artist_id WHERE i.deleted_at IS NULL AND i.checks LIKE '%DUPLICATE_OF_OTHER_ARTIST%'`);
   return { artists: out, submissions: subs, queue, flags, agreement_installed: !!(await agreementDocs(env)), f25: { selected_with_studio: artists.filter(a => a.founding).length, target: 25 },
-    instant_autopublish: env.INSTANT_AUTOPUBLISH === 'true' };
+    instant_autopublish: env.INSTANT_AUTOPUBLISH === 'true', terms_installed: await termsInstalled(env) };
 }
 async function decide(env, founder, id, body) {
   const s = await one(env, "SELECT * FROM submissions WHERE id = ? AND status = 'pending'", id);
@@ -1219,9 +1238,15 @@ async function route(req, env) {
   }
 
   /* ---- agreement texts: the exact fingerprinted files, to any signed-in artist or the founder (read and download) */
-  if ((mm0 = p.match(/^\/agreements\/(PA-(?:FAA|GPIL)-\d{4}-\d{2}(?:-\d{2})?)\.(html|pdf)$/)) && m === 'GET') {
+  if ((mm0 = p.match(/^\/agreements\/(PA-(?:FAA|GPIL|GAA)-\d{4}-\d{2}(?:-\d{2})?)\.(html|pdf)$/)) && m === 'GET') {
     const d = AG.doc(mm0[1]);
     if (!d) return html('Not found', 404);
+    // the Gallery Artist Agreement is served to artists only once its approved text is installed (0013); the founder can
+    // read the bundled text before that, to review exactly what will be installed
+    if (mm0[1].startsWith('PA-GAA-') && me.role !== 'founder') {
+      const inst = ((await agreementDocs(env)) || []).find(x => x.doc_id === mm0[1]);
+      if (!inst || inst.html_sha256 !== d.html_sha256 || inst.pdf_sha256 !== d.pdf_sha256) return html('Not found', 404);
+    }
     if (mm0[2] === 'html') return res(d.html, 'text/html; charset=utf-8', 200, { 'X-Document-SHA256': d.html_sha256 });
     return new Response(Uint8Array.from(atob(d.pdf_b64), c => c.charCodeAt(0)), { headers: { ...SEC, 'Content-Type': 'application/pdf',
       'Content-Disposition': `attachment; filename="PlotArt-${mm0[1]}.pdf"`, 'X-Document-SHA256': d.pdf_sha256 } });
@@ -1311,7 +1336,26 @@ async function route(req, env) {
       const log = (await agreementDocs(env)) ? await all(env, 'SELECT reference, route, introduced_at, founding, founding_year_end, late_entry, corrects, logged_at FROM enquiry_log WHERE artist_id=? ORDER BY introduced_at DESC', a.id) : [];
       return json({ ok: true, artist: { id: a.id, display_name: a.display_name, founding: !!a.founding, founding_number: a.founding_number, first_published_at: a.first_published_at, account_status: a.account_status },
         agreement: { ...agreementSummary(ag), history: effectiveRows(ag.history, await corrections(env, a.id)) }, documents: (await agreementDocs(env)) || [], enquiries: log,
-        participation: await participation(env, a) });
+        participation: await participation(env, a), terms: await termsFor(env, a.id), terms_installed: await termsInstalled(env) });
+    }
+    /* Gallery Artist terms (Phase 2, 13 Nov 2026; agreement clause 13). Founder only. The rate is 15% unless a written
+       individual variation says otherwise (never higher); the date of that written variation is recorded; the note is
+       private to the founder and never shown to the artist, published or exported. Every change is audited. */
+    if ((mm = p.match(/^\/api\/admin\/artists\/(a[0-9a-z]+)\/terms$/)) && m === 'PUT') {
+      const t = await termsFor(env, mm[1]);
+      if (!t) throw new Bad('Only an artist invited as a Gallery Artist has Gallery Artist terms', 404);
+      const b = await req.json();
+      const bp = Number(b.commission_bp);
+      if (!Number.isInteger(bp) || bp < 0 || bp > 1500) throw new Bad('The commission rate is a whole number of basis points from 0 to 1500 (15%)');
+      const day = b.variation_agreed_on === null || b.variation_agreed_on === '' || b.variation_agreed_on === undefined ? null : String(b.variation_agreed_on);
+      if (day !== null && (!/^\d{4}-\d{2}-\d{2}$/.test(day) || AG.addDays(day, 0) !== day || day > AG.dublinToday())) throw new Bad('Enter the date the variation was agreed in writing (not in the future)');
+      if (bp !== 1500 && !day) throw new Bad('A rate other than 15% needs the date of the written variation (agreement clause 13)');
+      const note = b.variation_note === null || b.variation_note === undefined || String(b.variation_note).trim() === '' ? null : String(b.variation_note).trim();
+      if (note && note.length > 1000) throw new Bad('Keep the private note to 1,000 characters');
+      await env.DB.prepare('UPDATE artist_terms SET commission_bp=?, variation_agreed_on=?, variation_note=?, set_by=?, updated_at=? WHERE artist_id=?')
+        .bind(bp, day, note, me.email, now(), mm[1]).run();
+      await audit(env, me.email, 'founder', 'terms_changed', mm[1], { from_bp: t.commission_bp, to_bp: bp, variation_agreed_on: day, note_changed: (t.variation_note || null) !== note });
+      return json({ ok: true, terms: await termsFor(env, mm[1]) });
     }
     if (p === '/api/admin/enquiry-log' && m === 'GET') return json({ ok: true, ...(await enquiryLog(env)) });
     if (p === '/api/admin/participation' && m === 'GET') return json({ ok: true, ...(await participationAdmin(env)) });
@@ -1336,10 +1380,20 @@ async function route(req, env) {
       if (!L.SLUG.test(slug)) throw new Bad('Gallery address: lower-case words joined by hyphens');
       if (b.application_ref && !/^F25-\d{6}-[0-9A-F]{6}$/.test(b.application_ref)) throw new Bad('Application reference looks like F25-YYMMDD-XXXXXX');
       if (await one(env, 'SELECT id FROM artists WHERE email=? OR slug=?', email, slug)) throw new Bad('An artist with that email or gallery address already exists', 409);
-      const id = rid('a');
-      await env.DB.prepare('INSERT INTO artists (id, slug, email, display_name, founding, application_ref, created_at, updated_at) VALUES (?,?,?,?,?,?,?,?)')
-        .bind(id, slug, email, name, b.founding === false ? 0 : 1, b.application_ref || null, now(), now()).run();
-      await audit(env, me.email, 'founder', 'invite', id, { slug, founding: b.founding !== false });
+      /* Phase 2 (13 Nov 2026): the programme is an explicit choice, never a default. "founding" keeps PA-FAA exactly as today;
+         "gallery_artist" invites on the standard 15% commission terms (PA-GAA, artist_terms row, migration 0012). The older
+         explicit founding: true/false is still accepted (false = licence only, as before). Anything else is refused. */
+      const programme = b.programme === 'founding' || b.programme === 'gallery_artist' ? b.programme
+        : b.programme === undefined && b.founding === true ? 'founding' : b.programme === undefined && b.founding === false ? 'licence_only' : null;
+      if (!programme) throw new Bad('Choose the programme for this invitation: Founding Artist or Gallery Artist');
+      if (programme === 'gallery_artist' && !(await termsInstalled(env))) throw new Bad('Gallery Artist invitations become available once the Gallery Artist records are installed (migration 0012).', 503);
+      const id = rid('a'), at = now();
+      await env.DB.batch([
+        env.DB.prepare('INSERT INTO artists (id, slug, email, display_name, founding, application_ref, created_at, updated_at) VALUES (?,?,?,?,?,?,?,?)')
+          .bind(id, slug, email, name, programme === 'founding' ? 1 : 0, b.application_ref || null, at, at),
+        ...(programme === 'gallery_artist' ? [env.DB.prepare(`INSERT INTO artist_terms (artist_id, track, commission_bp, variation_agreed_on, variation_note, set_by, created_at, updated_at)
+          VALUES (?,'gallery_artist',1500,NULL,NULL,?,?,?)`).bind(id, me.email, at, at)] : [])]);
+      await audit(env, me.email, 'founder', 'invite', id, { slug, founding: programme === 'founding', programme });
       // Start the artist's private working profile from their Founding 25 application, where there is one (11 Nov 2026).
       let prefill = { fields: [], skipped: {}, reason: 'no application reference' };
       if (b.application_ref) {
@@ -1354,8 +1408,12 @@ async function route(req, env) {
       const prefillPara = started.length
         ? `To save you time, we've started your profile using the details from your Founding 25 application: your ${startedList}. Please review these when you sign in, and change anything you'd like before you submit your gallery. Your profile stays private until then. Your county is not shown publicly unless you choose to show it, and the images you sent with your application aren't used: you'll add your artworks in the Studio.\n\n`
         : '';
+      // Gallery Artists only (Phase 2): one paragraph naming their agreement. The Founding Artist email is unchanged.
+      const galleryPara = programme === 'gallery_artist'
+        ? `You're joining PlotArt as a Gallery Artist. Before your gallery is first published, the Studio will ask you to read and accept the PlotArt Gallery Artist Agreement, which sets out PlotArt's 15% commission on sales introduced through PlotArt. There are no fees to join or to stay.\n\n`
+        : '';
       const r = await send(env, { to: email, replyTo: 'hello@plotnua.ie', subject: 'Your PlotArt Studio is ready',
-        text: `Hello ${first},\n\nWelcome to PlotArt. Your PlotArt Studio is ready: it's where you build your artist gallery, add your works and keep them up to date.\n\nSign in here: ${studio}\n\nYour PlotArt Studio is registered to:\n\n${email}\n\nPlease use this exact email address when signing in. If you sign in with a different address, even another one of your own, the Studio won't recognise you and you won't be able to reach your gallery. Each time you sign in, you'll be emailed a one-time code; there's no password.\n\n${prefillPara}Your gallery will only be published once you've submitted it and PlotArt has approved it.\n\nIf you have any questions, just reply to this email.\n\nColin\nPlotArt · part of PlotNua` }).catch(() => ({ sent: false }));
+        text: `Hello ${first},\n\nWelcome to PlotArt. Your PlotArt Studio is ready: it's where you build your artist gallery, add your works and keep them up to date.\n\nSign in here: ${studio}\n\nYour PlotArt Studio is registered to:\n\n${email}\n\nPlease use this exact email address when signing in. If you sign in with a different address, even another one of your own, the Studio won't recognise you and you won't be able to reach your gallery. Each time you sign in, you'll be emailed a one-time code; there's no password.\n\n${prefillPara}${galleryPara}Your gallery will only be published once you've submitted it and PlotArt has approved it.\n\nIf you have any questions, just reply to this email.\n\nColin\nPlotArt · part of PlotNua` }).catch(() => ({ sent: false }));
       await audit(env, me.email, 'founder', r.sent ? 'invitation_sent' : 'invitation_not_sent', id, {});
       return json({ ok: true, id, slug, invitation_sent: !!r.sent, prefill: { fields: prefill.fields, skipped: prefill.skipped, reason: prefill.reason || null } });
     }
@@ -1486,7 +1544,10 @@ async function route(req, env) {
   if (p === '/api/me' && m === 'GET') {
     const d = await load(env, artist.id);
     const { email, ...a } = d.artist;
-    return json({ ok: true, artist: { ...a, email }, status: await status(env, d.artist), opportunities: await O.status(env, artist), commissions_available: await commissionsInstalled(env), media: L.MEDIA, counties: L.COUNTIES, min_long_edge: minLong(env),
+    // the artist's own commercial terms (Phase 2): programme, rate and the date of any written variation; never the founder's note
+    const tm = await termsFor(env, artist.id);
+    const myTerms = { programme: AG.programmeOf(d.artist, tm), ...(tm ? { commission_bp: tm.commission_bp, variation_agreed_on: tm.variation_agreed_on || null } : {}) };
+    return json({ ok: true, artist: { ...a, email }, terms: myTerms, status: await status(env, d.artist), opportunities: await O.status(env, artist), commissions_available: await commissionsInstalled(env), media: L.MEDIA, counties: L.COUNTIES, min_long_edge: minLong(env),
       portrait: (({ checks, ...i }) => i)(d.images.find(i => i.id === d.artist.portrait_image_id) || { checks: null }) });
   }
   if (p === '/api/me/profile' && m === 'PUT') {

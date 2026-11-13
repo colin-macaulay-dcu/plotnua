@@ -10,6 +10,11 @@
       "title": "PlotArt Gallery Publication and Image Licence",
       "html_sha256": "f4a2c72e8068a267afac87a7555ac509fb64d9b9a9385f389a855d5ba8408f92",
       "pdf_sha256": "aa3c27423f21877006bac7bd5e3132111dea5e2914617cf30826b4203637ba17"
+    },
+    "PA-GAA-2026-11": {
+      "title": "PlotArt Gallery Artist Agreement",
+      "html_sha256": "b8b4be1e7a1cd7b1853cb4fd1f8d542667aad3e795151199bfff4d7f163d5cb0",
+      "pdf_sha256": "78ea8bb098a93dea1ab3475fc50ed577d52266facd02e36e751894b6a63d9adf"
     }
   }
 }

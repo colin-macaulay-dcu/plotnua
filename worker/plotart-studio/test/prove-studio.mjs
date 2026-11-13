@@ -60,7 +60,7 @@ r = await call('GET', '/api/me', null, undefined, { 'Cf-Access-Jwt-Assertion': t
 check('S5 an expired token is refused', r.s === 401);
 r = await call('GET', '/api/me', 'stranger@example.test');
 check('S6 a signed-in person who is not an invited artist gets no access (403)', r.s === 403 && /couldn't find an active PlotArt Studio account/.test(r.j.error) && !r.j.artist);   // wording changed by PLOTART-STUDIO-ACCESS-002 (founder brief, 5 Nov 2026); still 403, still no data
-r = await call('POST', '/api/admin/artists', FOUNDER, { display_name: 'Aoife Test', email: A, application_ref: 'F25-261029-0A1B2C' });
+r = await call('POST', '/api/admin/artists', FOUNDER, { display_name: 'Aoife Test', email: A, application_ref: 'F25-261029-0A1B2C', founding: true });   // the programme is an explicit choice since Gallery Artist Phase 2 (13 Nov 2026)
 const r2 = await call('POST', '/api/admin/artists', FOUNDER, { display_name: 'Brian Test', email: B, founding: false });
 check('S7 the founder creates Studio accounts for selected artists', r.s === 200 && r2.s === 200 && r.j.slug === 'aoife-test');
 const aid = r.j.id, bid = r2.j.id;

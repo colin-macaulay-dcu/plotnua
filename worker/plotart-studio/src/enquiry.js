@@ -28,9 +28,18 @@ const reply = (env, origin, status, body) => new Response(JSON.stringify(body), 
 /* The closing line of the artist's enquiry email, in ONE place so the Gallery Artist Programme (Phase 2) changes it once.
    Open for Commissions (13 Nov 2026): a commission enquiry is about a NEW, bespoke work, so it never carries the
    founding-year sentence (whose "commission" means PlotArt's fee on a sale); every other enquiry is unchanged. */
-const closingLine = commission => commission
+// Gallery Artist Phase 2 (13 Nov 2026): a Gallery Artist (a row in artist_terms, migration 0012) is told that the
+// enquiry is a PlotArt introduction under their Gallery Artist Agreement. Founding Artists' wording is unchanged.
+const closingLine = (commission, gallery = false) => commission
   ? 'Any commission for new work is agreed directly between you and the client.'
-  : 'PlotArt takes no commission on enquiries from your founding year. Any sale is agreed directly between you and the buyer.';
+  : gallery
+    ? 'This enquiry is an introduction through PlotArt. If it leads to a sale, PlotArt’s commission applies as set out in your Gallery Artist Agreement. Any sale is agreed directly between you and the buyer, who pays you directly.'
+    : 'PlotArt takes no commission on enquiries from your founding year. Any sale is agreed directly between you and the buyer.';
+async function isGalleryArtist(env, artist) {
+  if (artist.founding) return false;
+  try { return !!(await env.DB.prepare("SELECT 1 AS x FROM artist_terms WHERE artist_id = ? AND track = 'gallery_artist'").bind(artist.id).first()); }
+  catch { return false; } // 0012 not run: no Gallery Artists exist
+}
 
 async function live(env, slug) {
   const a = await env.DB.prepare("SELECT * FROM artists WHERE slug = ? AND account_status IN ('invited','active')").bind(slug).first();
@@ -161,7 +170,7 @@ export default {
           : `${name} has sent an enquiry about ${about} through your PlotArt gallery.\n\n`) +
         `"${message}"\n\nReply to this email to answer ${name} directly (your reply goes to ${email}).\n\n` +
         `Reference: ${ref}${work ? `\nArtwork: https://plotnua.ie/plotart/artists/${g.artist.slug}/${work.slug}.html` : ''}\n\n` +
-        `${closingLine(commission)}\n\nPlotArt · part of PlotNua` });
+        `${closingLine(commission, !commission && await isGalleryArtist(env, g.artist))}\n\nPlotArt · part of PlotNua` });
     await send(env, { to: email, replyTo: env.REPLY_TO || 'hello@plotnua.ie', subject: commission ? `Your PlotArt commission enquiry · ${ref}` : `Your PlotArt enquiry · ${ref}`,
       text: `Hello ${name},\n\nThank you. Your enquiry about ${commission ? `a commission from ${g.artist.display_name}` : work ? `“${work.title}”` : `work by ${g.artist.display_name}`} has been passed to ${g.artist.display_name}, who will reply to you by email.\n\n` +
         `Reference: ${ref}\n\nHow we handle enquiries: https://plotnua.ie/privacy.html#plotart-enquiries\n\nPlotArt · part of PlotNua` });

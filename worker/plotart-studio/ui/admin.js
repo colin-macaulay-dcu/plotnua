@@ -157,7 +157,7 @@
       <section class="st-card"><h2>Enquiries</h2><p class="st-muted">Buyer enquiries go straight to the artist (Reply-To the buyer). This is the record of founding-period enquiries.</p>
         <div id="enq"><p class="st-muted">Loading…</p></div></section>
       <section class="st-card"><h2>Artists</h2><div class="st-scroll"><table class="st-table"><thead><tr><th>Artist</th><th>Status</th><th>Agreement</th><th>Works</th><th>To do</th><th></th></tr></thead><tbody>
-        ${o.artists.map(a => `<tr><td><b style="color:var(--ivory)">${E(a.display_name)}</b>${a.founding ? ' <span class="pa-gcard-badge" style="display:inline-block">Founding</span>' : ''}<br><span class="st-muted">${E(a.email)}${a.application_ref ? ' · ' + E(a.application_ref) : ''}</span></td>
+        ${o.artists.map(a => `<tr><td><b style="color:var(--ivory)">${E(a.display_name)}</b>${a.founding ? ' <span class="pa-gcard-badge" style="display:inline-block">Founding</span>' : a.programme === 'gallery_artist' ? ' <span class="pa-gcard-badge" style="display:inline-block">Gallery Artist</span>' : ''}<br><span class="st-muted">${E(a.email)}${a.application_ref ? ' · ' + E(a.application_ref) : ''}</span></td>
           <td>${a.account_status === 'suspended' ? '<span class="st-flag">Suspended</span>' : E(STATE[a.state])}${a.account_status === 'invited' ? '<br><span class="st-muted">Not signed in yet</span>' : ''}</td>
           <td>${agrCell(a)}</td><td>${a.works}</td><td>${a.problems ? `<button class="st-btn st-btn--small st-todo-btn" data-ck="${a.id}" aria-expanded="false" aria-controls="ck-${a.id}">${a.problems} item${a.problems > 1 ? 's' : ''}</button>` : '✓'}</td>
           <td class="st-row">${a.account_status === 'suspended' ? `<button class="st-btn st-btn--small" data-act="reactivate" data-id="${a.id}">Reactivate</button>` : `<button class="st-btn st-btn--small" data-act="suspend" data-id="${a.id}">Suspend</button>`}
@@ -181,12 +181,15 @@
             <div class="st-row"><button type="submit" class="st-btn st-btn--solid st-btn--small">Save new email</button><button type="button" class="st-btn st-btn--small" data-emcancel="${a.id}">Cancel</button></div>
             <p class="st-err" role="alert" data-emerr></p></form></td></tr>`).join('') || '<tr><td colspan="6" class="st-muted">No artists yet.</td></tr>'}
       </tbody></table></div></section>
-      <section class="st-card"><h2>Invite a selected artist</h2><p class="st-muted">After they accept the Founding Artist Agreement (terms_accepted_at in Airtable), copy their name, email and reference from the application. The invitation email goes automatically when email is switched on.</p>
+      <section class="st-card"><h2>Invite a selected artist</h2><p class="st-muted">Choose the programme they are joining. Founding Artists keep the Founding Artist Agreement; Gallery Artists join on the standard 15% commission terms. Each accepts their own agreement in Studio before their gallery is first published. Copy their name, email and any application reference. The invitation email goes automatically when email is switched on.</p>
         <div class="st-two"><div>
         <div class="st-f"><label for="i-name">Artist name</label><input id="i-name" type="text"></div>
         <div class="st-f"><label for="i-email">Email they applied with</label><input id="i-email" type="email"></div></div><div>
         <div class="st-f"><label for="i-ref">Application reference</label><input id="i-ref" type="text" placeholder="F25-YYMMDD-XXXXXX"></div>
-        <label class="st-check" style="margin:4px 0 14px"><input id="i-f" type="checkbox" checked style="accent-color:var(--terra);width:20px;height:20px"> Founding Artist</label>
+        <fieldset class="st-f" style="border:0;margin:4px 0 14px;padding:0"><legend style="padding:0;margin:0 0 6px">Programme <span class="st-req">Required</span></legend>
+          <label class="st-check"><input type="radio" name="i-prog" value="founding" style="accent-color:var(--terra);width:20px;height:20px"> <span>Founding Artist <span class="st-muted">· Founding Artist Agreement, free founding year</span></span></label>
+          <label class="st-check"><input type="radio" name="i-prog" value="gallery_artist"${o.terms_installed ? '' : ' disabled'} style="accent-color:var(--terra);width:20px;height:20px"> <span>Gallery Artist <span class="st-muted">· Gallery Artist Agreement, 15% commission${o.terms_installed ? '' : ' (available once migration 0012 has run)'}</span></span></label>
+        </fieldset>
         <button class="st-btn st-btn--solid" id="inv">Create Studio account</button><p class="st-err" id="ierr"></p></div></div></section>
       <section class="st-card"><h2>System check</h2><p class="st-muted">Writes, reads back and removes a test record in the database and a test file in image storage.</p>
         <button class="st-btn" id="sys">Run system check</button><ul class="st-list" id="sysout"></ul></section>`;
@@ -285,7 +288,9 @@
     }));
     $('#inv').addEventListener('click', async () => {
       try {
-        const r = await api('POST', '/api/admin/artists', { display_name: $('#i-name').value, email: $('#i-email').value, application_ref: $('#i-ref').value || null, founding: $('#i-f').checked });
+        const prog = document.querySelector('input[name=i-prog]:checked');
+        if (!prog) { $('#ierr').textContent = 'Choose the programme: Founding Artist or Gallery Artist.'; return; }
+        const r = await api('POST', '/api/admin/artists', { display_name: $('#i-name').value, email: $('#i-email').value, application_ref: $('#i-ref').value || null, programme: prog.value });
         const pf = r.prefill || {};
         const pfNote = pf.fields && pf.fields.length ? ` · profile started from the application (${pf.fields.length} of 5 fields)`
           : ($('#i-ref').value ? ` · profile not pre-filled: ${pf.reason || 'nothing usable in the application'}` : '');
@@ -426,7 +431,7 @@
   }
 
   /* ---- Founding Artist Agreement (development 6 Nov 2026): status, acceptance history, founding years, enquiry log */
-  const DOCNAME = { 'PA-FAA-2026-11': 'Founding Artist Agreement', 'PA-GPIL-2026-11': 'Image Licence', 'PA-GPIL-2026-10-29': 'Image Licence (earlier label)' };
+  const DOCNAME = { 'PA-GAA-2026-11': 'Gallery Artist Agreement', 'PA-FAA-2026-11': 'Founding Artist Agreement', 'PA-GPIL-2026-11': 'Image Licence', 'PA-GPIL-2026-10-29': 'Image Licence (earlier label)' };
   const irishDay = d => d ? new Date(d + 'T12:00:00Z').toLocaleDateString('en-IE', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'Europe/Dublin' }) : '';
   const irish = t => t ? new Date(t).toLocaleString('en-IE', { dateStyle: 'medium', timeStyle: 'short', timeZone: 'Europe/Dublin' }) : '';
   function agrCell(a) {
@@ -467,7 +472,7 @@
       ${!o.agreement_installed ? '<div class="st-card" role="alert"><p style="margin:0"><b>Not installed yet.</b> Artists can accept once migration 0005 has been run. Everything else in Studio works as before.</p></div>' : ''}
       ${waiting.length ? `<div class="st-card st-agr-warn"><p style="margin:0"><b>${waiting.length} artist${waiting.length === 1 ? ' hasn’t' : 's haven’t'} accepted yet.</b> Their galleries stay live and they can keep editing. A first publication is blocked until the artist accepts; for an artist who is already published, Publish asks you to confirm.</p></div>` : ''}
       <section class="st-card"><h2>Artists</h2><div class="st-scroll"><table class="st-table"><thead><tr><th>Artist</th><th>Agreement</th><th>Founding year</th><th></th></tr></thead><tbody>
-        ${o.artists.map(a => `<tr><td><b style="color:var(--ivory)">${E(a.display_name)}</b>${a.founding ? ' <span class="pa-gcard-badge" style="display:inline-block">Founding</span>' : ''}${a.founding_number ? `<br><span class="st-muted">No. ${a.founding_number}</span>` : ''}</td>
+        ${o.artists.map(a => `<tr><td><b style="color:var(--ivory)">${E(a.display_name)}</b>${a.founding ? ' <span class="pa-gcard-badge" style="display:inline-block">Founding</span>' : a.programme === 'gallery_artist' ? ' <span class="pa-gcard-badge" style="display:inline-block">Gallery Artist</span>' : ''}${a.founding_number ? `<br><span class="st-muted">No. ${a.founding_number}</span>` : ''}</td>
           <td>${agrCell(a)}</td><td>${E(fy(a.agreement))}</td><td><button class="st-btn st-btn--small" data-hist="${a.id}" aria-expanded="false" aria-controls="hi-${a.id}">History</button></td></tr>
           <tr id="hi-${a.id}" class="st-em-row" hidden><td colspan="4"><div data-hibox="${a.id}"><p class="st-muted">Loading…</p></div></td></tr>`).join('') || '<tr><td colspan="4" class="st-muted">No artists yet.</td></tr>'}
       </tbody></table></div></section>
@@ -534,7 +539,21 @@
           <label class="st-check"><input type="checkbox" data-k="ok" style="accent-color:var(--terra);width:20px;height:20px"> I’ve checked this correction.</label>
           <div class="st-row"><button type="submit" class="st-btn st-btn--solid st-btn--small">Save correction</button></div><p class="st-err" role="alert" data-corrERR></p></form></div>`; }).join('')
         : '<p class="st-muted">No acceptance recorded.</p>'}
-      <p class="st-muted" style="margin:10px 0 0">${r.enquiries.length} logged enquir${r.enquiries.length === 1 ? 'y' : 'ies'}, ${r.enquiries.filter(e => e.founding).length} Founding.</p>`;
+      <p class="st-muted" style="margin:10px 0 0">${r.enquiries.length} logged enquir${r.enquiries.length === 1 ? 'y' : 'ies'}, ${r.enquiries.filter(e => e.founding).length} Founding.</p>
+      ${r.terms ? `<form class="st-em" data-terms novalidate>
+        <p class="st-em-h">Gallery Artist terms <span class="st-muted">· private to you; the artist sees only their rate</span></p>
+        <p class="st-muted">The standard commission is 15%. A different rate needs an individual variation agreed in writing (agreement clause 13), and never more than 15%. Last set ${E(irish(r.terms.updated_at))}.</p>
+        <div class="st-two"><div class="st-f"><label for="tm-rate">Commission rate (%)</label><input id="tm-rate" type="number" min="0" max="15" step="0.01" inputmode="decimal" value="${(r.terms.commission_bp / 100).toFixed(2).replace(/\.00$/, '')}"></div>
+        <div class="st-f"><label for="tm-day">Date the written variation was agreed</label><input id="tm-day" type="date" value="${E(r.terms.variation_agreed_on || '')}"><p class="st-hint">Required for any rate other than 15%.</p></div></div>
+        <div class="st-f"><label for="tm-note">Private note</label><textarea id="tm-note" maxlength="1000" style="min-height:70px" placeholder="e.g. Agreed by email on this date; reference to the written variation">${E(r.terms.variation_note || '')}</textarea></div>
+        <div class="st-row"><button type="submit" class="st-btn st-btn--solid st-btn--small">Save terms</button></div><p class="st-err" role="alert" data-termserr></p></form>` : ''}`;
+    const tf = box.querySelector('[data-terms]');
+    if (tf) tf.addEventListener('submit', async ev => {
+      ev.preventDefault(); const err = tf.querySelector('[data-termserr]'); err.textContent = '';
+      const bp = Math.round(Number(tf.querySelector('#tm-rate').value) * 100);
+      try { await api('PUT', `/api/admin/artists/${id}/terms`, { commission_bp: bp, variation_agreed_on: tf.querySelector('#tm-day').value || null, variation_note: tf.querySelector('#tm-note').value });
+        err.textContent = 'Saved.'; } catch (e) { err.textContent = e.message; }
+    });
     box.querySelectorAll('[data-corr]').forEach(btn => btn.addEventListener('click', () => {
       const f = box.querySelector(`[data-corrform="${btn.dataset.corr}"]`); f.hidden = !f.hidden; btn.setAttribute('aria-expanded', String(!f.hidden));
     }));

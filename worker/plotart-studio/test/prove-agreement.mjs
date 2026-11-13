@@ -249,7 +249,7 @@ const pdb = pre.db;
 const MIGSQL = readFileSync(HERE + 'migrations/0005_agreements_and_enquiry_log.sql', 'utf8');
 for (const st of statements(rollbackOf(MIGSQL))) await pdb.prepare(st).run();
 const pcall = async (method, path, email, body) => { const x = await pre.mf.dispatchFetch(pre.url + path, { method, headers: H(email), body: body === undefined ? undefined : JSON.stringify(body) }); return { s: x.status, j: await x.json().catch(() => null) }; };
-await pcall('POST', '/api/admin/artists', FOUNDER, { display_name: 'Pre Artist', email: 'pre@example.test' });
+await pcall('POST', '/api/admin/artists', FOUNDER, { display_name: 'Pre Artist', email: 'pre@example.test', founding: true });
 const pme = await pcall('GET', '/api/me', 'pre@example.test'), pov = await pcall('GET', '/api/admin/overview', FOUNDER), pac = await pcall('GET', '/api/agreement', 'pre@example.test');
 const pacc2 = await pcall('POST', '/api/agreement/accept', 'pre@example.test', { accept: true, documents: {}, statement: 'x' });
 const plog = await pcall('GET', '/api/admin/enquiry-log', FOUNDER);

@@ -149,7 +149,7 @@ check('P1 a replaced photograph that is still shown is kept until the version sh
   kept === 1 && await objects('originals/arep/1.jpg') === 0 && await objects('originals/arep/2.jpg') === 1);
 
 console.log('— a new artist who never published');
-await call('POST', '/api/admin/artists', FOUNDER, { display_name: 'New Leaver', email: NEW });
+await call('POST', '/api/admin/artists', FOUNDER, { display_name: 'New Leaver', email: NEW, founding: true });
 await call('GET', '/api/me', NEW);
 const nid = (await db.prepare('SELECT id FROM artists WHERE email=?').bind(NEW).first()).id;
 r = await call('POST', `/api/admin/artists/${nid}/end`, FOUNDER, { confirm_name: 'New Leaver', source: 'founder', reason: 'Did not go ahead with the programme' });

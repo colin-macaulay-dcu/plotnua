@@ -611,7 +611,7 @@
   /* ------------------------------------------------------------- Founding Artist Agreement (development 6 Nov 2026)
      One page with both documents in full, a PDF of each, an optional legal name and ONE tick for both. The page sends
      the fingerprint of the exact text it displayed; the server refuses anything that is not the current text. */
-  const DOCNAME = { 'PA-FAA-2026-11': 'Founding Artist Agreement', 'PA-GPIL-2026-11': 'Gallery Publication and Image Licence', 'PA-GPIL-2026-10-29': 'Gallery Publication and Image Licence' };
+  const DOCNAME = { 'PA-GAA-2026-11': 'Gallery Artist Agreement', 'PA-FAA-2026-11': 'Founding Artist Agreement', 'PA-GPIL-2026-11': 'Gallery Publication and Image Licence', 'PA-GPIL-2026-10-29': 'Gallery Publication and Image Licence' };
   const day = d => d ? new Date(d + 'T12:00:00Z').toLocaleDateString('en-IE', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'Europe/Dublin' }) : '';
   const irish = t => t ? new Date(t).toLocaleString('en-IE', { dateStyle: 'long', timeStyle: 'short', timeZone: 'Europe/Dublin' }) : '';
   function agreementCard(s) {
@@ -642,11 +642,15 @@
         <dt>Studio account</dt><dd>${E(mine[mine.length - 1].account_email)}</dd>
         ${g.founding ? `<dt>Founding year</dt><dd>${fy ? `${E(day(fy.start))} to ${E(day(fy.end))}` : 'Starts on the day your gallery is first published'}</dd>` : ''}
       </dl></section>` : '';
-    const docs = g.documents;
+    const gallery = g.programme === 'gallery_artist';
+    const tm = ME.terms || {};
+    const pct = bp => `${(bp / 100).toLocaleString('en-IE', { maximumFractionDigits: 2 })}%`;
+    // Gallery Artists (Phase 2): until the approved agreement is installed there is nothing to read or accept yet
+    const docs = gallery && !g.installed ? [] : g.documents;
     app.innerHTML = `
       <p><a href="#/" style="color:var(--stone);text-decoration:none">← Your gallery</a></p>
-      <h1 class="st-h1">${g.founding ? 'Founding Artist Agreement' : 'Image licence'}</h1>
-      <p class="st-sub">${g.accepted ? 'You have accepted these documents. You can read or download them at any time.' : `Please read ${docs.length > 1 ? 'both documents' : 'the document'} below. ${g.founding ? 'The agreement includes the image licence, so one tick accepts both.' : ''} You can download a PDF of each to keep.`}</p>
+      <h1 class="st-h1">${gallery ? 'Gallery Artist Agreement' : g.founding ? 'Founding Artist Agreement' : 'Image licence'}</h1>
+      <p class="st-sub">${gallery && !g.installed ? 'Your agreement isn’t ready to read yet. Everything else in your Studio works in the meantime.' : g.accepted ? 'You have accepted these documents. You can read or download them at any time.' : `Please read ${docs.length > 1 ? 'both documents' : 'the document'} below. ${g.founding || gallery ? 'The agreement includes the image licence, so one tick accepts both.' : ''} You can download a PDF of each to keep.`}</p>
       ${record}
       ${g.founding && !g.accepted ? `<section class="st-card"><h3>In short</h3><ul class="st-list">
         <li>No membership, subscription or listing fees, ever.</li>
@@ -654,11 +658,20 @@
         <li>Nothing changes automatically afterwards: any commission would apply only if you choose to accept new terms.</li>
         <li>You keep your copyright and handle your own sales. You can withdraw any work at any time.</li>
       </ul><p class="st-muted" style="margin:10px 0 0">This summary isn’t part of the agreement: the full text below is what you accept.</p></section>` : ''}
+      ${gallery && !g.accepted && g.installed ? `<section class="st-card"><h3>In short</h3><ul class="st-list">
+        <li>${tm.commission_bp !== undefined && tm.commission_bp !== 1500 ? `Commission of ${E(pct(tm.commission_bp))}, as individually agreed with you in writing${tm.variation_agreed_on ? ` on ${E(day(tm.variation_agreed_on))}` : ''}, on` : '15% commission on'} sales to collectors PlotArt introduces to you, agreed within 24 months of the introduction. You keep at least 85%.</li>
+        <li>No upfront, joining, membership, subscription or listing fees.</li>
+        <li>No exclusivity: you remain free to sell your work anywhere.</li>
+        <li>Collectors pay you directly. You report each sale and PlotArt invoices you for its commission.</li>
+        <li>Newly commissioned artwork is not covered unless you and PlotArt agree it separately in writing.</li>
+        <li>You keep your copyright. You can withdraw any work, or leave, at any time.</li>
+      </ul><p class="st-muted" style="margin:10px 0 0">This summary isn’t part of the agreement: the full text below is what you accept.</p></section>` : ''}
+      ${gallery && !g.installed ? `<section class="st-card"><h3>Your agreement</h3><p style="margin:0">Your Gallery Artist Agreement will appear here for you to read and accept before your gallery is first published. You can build your profile and add your works in the meantime.</p></section>` : ''}
       ${docs.map(d => `<section class="st-card st-docwrap" aria-labelledby="h-${E(d.id)}">
         <div class="st-doc-top"><h2 id="h-${E(d.id)}">${E(DOCNAME[d.id] || d.title)}</h2><span class="st-muted">${E(d.id)}</span></div>
         <div class="st-doc" tabindex="0" role="region" aria-label="${E(DOCNAME[d.id] || d.title)}, full text" data-doc="${E(d.id)}"><p class="st-muted">Loading…</p></div>
         <div class="st-actions"><a class="st-btn st-btn--small" href="/agreements/${E(d.id)}.pdf" download>Download PDF</a><a class="st-btn st-btn--small" href="/agreements/${E(d.id)}.html" target="_blank" rel="noopener">Open in a new tab ↗</a></div></section>`).join('')}
-      ${!g.accepted ? `<section class="st-card st-accept" aria-labelledby="acc-h"><h2 id="acc-h">Accept</h2>
+      ${!g.accepted && docs.length ? `<section class="st-card st-accept" aria-labelledby="acc-h"><h2 id="acc-h">Accept</h2>
         <div class="st-f"><label for="legal">Legal name (optional)</label><input id="legal" type="text" autocomplete="name" maxlength="120">
           <p class="st-hint">Only if it differs from the name you work under (${E(ME.artist.display_name)}). It’s kept with your acceptance record and never published.</p></div>
         <label class="st-check st-accept-box"><input type="checkbox" id="agree" style="accent-color:var(--terra);width:22px;height:22px;margin-top:2px"> <span>${E(g.statement)}</span></label>
