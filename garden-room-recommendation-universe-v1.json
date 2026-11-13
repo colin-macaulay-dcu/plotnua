@@ -7,8 +7,8 @@
  "dryRun": false,
  "sourceGardenRoomCount": 592,
  "eligibleCount": 580,
- "highConfidenceCount": 164,
- "withCaveatCount": 416,
+ "highConfidenceCount": 168,
+ "withCaveatCount": 412,
  "limitedEvidenceCount": 0,
  "excludedCount": 12,
  "exclusionSummaryByReason": {
@@ -24,17 +24,17 @@
  "noPublishedIrishRouteCount": 43,
  "missingPriceCount": 222,
  "priceEvidenceSummary": {
-  "verified": 280,
+  "verified": 284,
   "present-unverified": 59,
-  "quote-only": 19,
+  "quote-only": 15,
   "missing": 222
  },
- "quoteOnlyPriceCount": 19,
+ "quoteOnlyPriceCount": 15,
  "organisationCount": 65,
  "governedPriceContractVersion": "garden-room-price-contract-v1",
- "governedDigest": "e4773d7d74b4d48428ad20a0ae8ad9e53ce317f01a2f54195e1a5bf2cbd6ab7f",
+ "governedDigest": "5f82258c1c4d5b1f15d2e7529cb9d88d026688dfe204ec220a0239c38d94a9a3",
  "sourceKind": "airtable-live",
- "missingProductUrlCount": 168,
+ "missingProductUrlCount": 163,
  "products": [
   {
    "id": "recLcmGihJ0mrfdwV",
@@ -56431,52 +56431,57 @@
      "name": "Modern Garden Rooms"
     }
    ],
-   "productUrl": null,
+   "productUrl": "https://moderngardenrooms.ie/garden-guest-rooms/",
    "verificationStatus": "Partially Verified",
    "qualification": {
-    "status": "ELIGIBLE — WITH CAVEAT",
-    "confidenceTier": "WITH_CAVEAT",
-    "priceEvidence": "quote-only",
+    "status": "ELIGIBLE — HIGH CONFIDENCE",
+    "confidenceTier": "HIGH_CONFIDENCE",
+    "priceEvidence": "verified",
     "reasons": [
      "Irish availability is confirmed by recorded evidence.",
-     "This product is priced by quotation, as the supplier publishes.",
+     "A verified price is recorded.",
+     "A product-level source is recorded.",
      "Supplier attribution is confirmed: Modern Garden Rooms."
     ],
-    "caveats": [
-     "Evidence reaches supplier-level rather than this exact product.",
-     "Product URL is missing; product identity is established by other evidence."
-    ],
+    "caveats": [],
     "hardBlockers": [],
     "evidenceSignals": {
      "irishAvailability": "confirmed",
-     "irishAvailabilityBasis": "AVAILABLE IN REPUBLIC OF IRELAND. Irish company, Dublin 9, D09 RR2R. Nothing inferred. RETRIEVAL LIMITATION: client-rendered site; coverage unverifiable. HOMEOWNER IMPLICATION: confirm coverage for yo",
+     "irishAvailabilityBasis": "AVAILABLE IN REPUBLIC OF IRELAND: DUBLIN AND LEINSTER. Supplier's named county pages: Dublin, Wicklow, Kildare, Meath, Louth; contact page: 'Dublin, Wicklow, Kildare, Meath and the wider Leinster regi",
      "irishAvailabilityScope": "Organisation-Wide",
      "irishAvailabilityClassified": true,
      "noPublishedIrishRoute": false,
-     "price": "quote-only",
-     "source": "supplier-level",
+     "price": "verified",
+     "source": "product-level",
      "supplierAttribution": "confirmed",
      "manufacturerAttribution": "unknown",
-     "productUrl": "missing",
+     "productUrl": "present",
      "contradiction": "none",
-     "productEvidenceCompleteness": "Blocked — Core Attribution or Evidence Missing",
+     "productEvidenceCompleteness": "Product Evidence Complete — Organisation Gate Required",
      "featureValueCount": 1,
      "pricingRecordCount": 1,
      "availabilityRecordCount": 1
     }
    },
    "priceEvidence": {
-    "base": 0,
-    "from": null,
+    "base": 32000,
+    "from": 32000,
     "to": null,
     "currency": "EUR",
-    "priceType": "Custom Quote",
-    "status": "Draft",
-    "includesVat": "Unknown",
-    "evidenceScope": null,
-    "adjudication": "missing",
-    "quoteOnly": true,
-    "candidateCount": 1
+    "priceType": "Starting From",
+    "status": "Verified",
+    "includesVat": "No",
+    "evidenceScope": "Product-Specific",
+    "adjudication": "adjudicated",
+    "quoteOnly": false,
+    "candidateCount": 1,
+    "presentationHold": {
+     "qualification": "Turnkey starting price for a finished, insulated room, en-suite or kitchenette extra; the supplier states no VAT rate. Final price by written quote after a free site visit.",
+     "matching": "excluded",
+     "label": "Price excludes VAT",
+     "reason": "This starting price excludes VAT, so PlotNua does not compare it with your budget or with prices that include VAT.",
+     "vatBasis": "excluded"
+    }
    },
    "features": {
     "foundationBaseRequirement": {
@@ -56524,7 +56529,7 @@
      ]
     },
     "warranty": {
-     "text": "WARRANTY UNKNOWN. DURATION: none published. No warranty term, scope or conditions located; durability language only. Nothing inferred. HOMEOWNER IMPLICATION: a guest room is heated and occupied overnight, so the insulation and the heating installation are the elements most worth having covered — and neither has a published guarantee.",
+     "text": "WARRANTY UNKNOWN. DURATION: none published. No warranty term, scope or conditions located; durability language only. Nothing inferred. HOMEOWNER IMPLICATION: a guest room is heated and occupied overnight, so the insulation and the heating installation are the elements most worth having covered — and neither has a published guarantee. Rechecked 13 Nov 2026: still none published (home, cost, specifications, quality, room-type, county and contact pages read directly).",
      "number": null,
      "unit": null,
      "evidenceScope": "Organisation-Wide"
@@ -56536,13 +56541,13 @@
      "evidenceScope": "Organisation-Wide"
     },
     "floorArea": {
-     "text": "NO AREA PUBLISHED. No floor area, dimensions or derivable footprint held. Nothing estimated. NOTE: 'Guest Room' implies sleeping use, which is excluded from the Class 3 exemption regardless of size. PLANNING: area test cannot be run and the non-habitation condition may exclude this product from the garden-structure route entirely.",
+     "text": "TYPICAL SIZE BAND, NOT A FIXED AREA: 15–25 m² as published by the supplier for this room type (moderngardenrooms.ie/garden-room-cost/ and /garden-guest-rooms/, read 13 Nov 2026). Bespoke; DO NOT RANK on area.",
      "number": null,
      "unit": null,
      "evidenceScope": "Product-Specific"
     },
     "irishAvailability": {
-     "text": "AVAILABLE IN REPUBLIC OF IRELAND. Irish company, Dublin 9, D09 RR2R. Nothing inferred. RETRIEVAL LIMITATION: client-rendered site; coverage unverifiable. HOMEOWNER IMPLICATION: confirm coverage for your county.",
+     "text": "AVAILABLE IN REPUBLIC OF IRELAND: DUBLIN AND LEINSTER. Supplier's named county pages: Dublin, Wicklow, Kildare, Meath, Louth; contact page: 'Dublin, Wicklow, Kildare, Meath and the wider Leinster region' (read 13 Nov 2026). Homeowners outside these counties should confirm coverage.",
      "number": null,
      "unit": null,
      "evidenceScope": "Organisation-Wide"
@@ -56554,9 +56559,9 @@
      "evidenceScope": "Organisation-Wide"
     }
    },
-   "price": null,
+   "price": 32000,
    "currency": "EUR",
-   "priceBasis": "Draft",
+   "priceBasis": "Verified",
    "floorAreaM2": null,
    "glazing": null,
    "insulation": "Fully insulated: 100mm stud-wall thermal/sound insulation plus 50mm additional rigid insulation in walls and roof; 100mm Kingspan rigid floor insulation; radon barrier and DPC in floor build-up",
@@ -56566,20 +56571,17 @@
    "irishAvailability": true,
    "availabilityStatus": "Available to Order",
    "noPublishedIrishRoute": false,
-   "qualificationTier": "WITH_CAVEAT",
-   "priceEvidenceState": "quote-only",
-   "qualificationCaveats": [
-    "Evidence reaches supplier-level rather than this exact product.",
-    "Product URL is missing; product identity is established by other evidence."
-   ],
+   "qualificationTier": "HIGH_CONFIDENCE",
+   "priceEvidenceState": "verified",
+   "qualificationCaveats": [],
    "priceRecordIds": [
     "rec85cWCBYI5ORJQB"
    ],
    "priceRecordIdsAvailable": 1,
-   "priceStatus": "Draft",
-   "priceType": "Custom Quote",
-   "priceScope": null,
-   "vatStatus": "Unknown",
+   "priceStatus": "Verified",
+   "priceType": "Starting From",
+   "priceScope": "Product-Specific",
+   "vatStatus": "No",
    "vatRate": null,
    "priceBasisAxes": {
     "erection": "INCLUDED",
@@ -56587,24 +56589,24 @@
     "delivery": "UNKNOWN"
    },
    "priceBasisClass": "ERECTED_SERVICES_UNKNOWN",
-   "priceBasisConfidence": "NO_PRICE",
-   "priceIsRangeFloor": false,
+   "priceBasisConfidence": "UNSAFE",
+   "priceIsRangeFloor": true,
    "priceSafeForMatching": false,
    "priceFreshUntil": null,
    "priceEvidenceRef": {
     "recordIds": [
      "rec85cWCBYI5ORJQB"
     ],
-    "adjudication": "missing",
+    "adjudication": "adjudicated",
     "candidateCount": 1,
-    "status": "Draft",
-    "priceType": "Custom Quote",
-    "evidenceScope": null,
-    "lastPriceCheck": "2026-08-08",
+    "status": "Verified",
+    "priceType": "Starting From",
+    "evidenceScope": "Product-Specific",
+    "lastPriceCheck": "2026-11-13",
     "basisSource": "installationModel.leadPhrase",
     "basisLeadPhrase": "TURNKEY INSTALLATION INCLUDED"
    },
-   "priceState": "on-request"
+   "priceState": "held"
   },
   {
    "id": "recQhafVxkW46trn6",
@@ -56621,56 +56623,61 @@
      "name": "Modern Garden Rooms"
     }
    ],
-   "productUrl": null,
+   "productUrl": "https://moderngardenrooms.ie/garden-gym-rooms/",
    "verificationStatus": "Partially Verified",
    "qualification": {
-    "status": "ELIGIBLE — WITH CAVEAT",
-    "confidenceTier": "WITH_CAVEAT",
-    "priceEvidence": "quote-only",
+    "status": "ELIGIBLE — HIGH CONFIDENCE",
+    "confidenceTier": "HIGH_CONFIDENCE",
+    "priceEvidence": "verified",
     "reasons": [
      "Irish availability is confirmed by recorded evidence.",
-     "This product is priced by quotation, as the supplier publishes.",
+     "A verified price is recorded.",
+     "A product-level source is recorded.",
      "Supplier attribution is confirmed: Modern Garden Rooms."
     ],
-    "caveats": [
-     "Evidence reaches supplier-level rather than this exact product.",
-     "Product URL is missing; product identity is established by other evidence."
-    ],
+    "caveats": [],
     "hardBlockers": [],
     "evidenceSignals": {
      "irishAvailability": "confirmed",
-     "irishAvailabilityBasis": "AVAILABLE IN REPUBLIC OF IRELAND. Modern Garden Rooms is an Irish company at 190A Iveragh Road, Whitehall, Dublin 9, D09 RR2R. Nothing inferred. RETRIEVAL LIMITATION: moderngardenrooms.ie is client-re",
+     "irishAvailabilityBasis": "AVAILABLE IN REPUBLIC OF IRELAND: DUBLIN AND LEINSTER. Supplier's named county pages: Dublin, Wicklow, Kildare, Meath, Louth; contact page: 'Dublin, Wicklow, Kildare, Meath and the wider Leinster regi",
      "irishAvailabilityScope": "Organisation-Wide",
      "irishAvailabilityClassified": true,
      "noPublishedIrishRoute": false,
-     "price": "quote-only",
-     "source": "supplier-level",
+     "price": "verified",
+     "source": "product-level",
      "supplierAttribution": "confirmed",
      "manufacturerAttribution": "unknown",
-     "productUrl": "missing",
+     "productUrl": "present",
      "contradiction": "none",
-     "productEvidenceCompleteness": "Blocked — Core Attribution or Evidence Missing",
+     "productEvidenceCompleteness": "Product Evidence Complete — Organisation Gate Required",
      "featureValueCount": 1,
      "pricingRecordCount": 1,
      "availabilityRecordCount": 1
     }
    },
    "priceEvidence": {
-    "base": 0,
-    "from": null,
+    "base": 32000,
+    "from": 32000,
     "to": null,
     "currency": "EUR",
-    "priceType": "Custom Quote",
-    "status": "Draft",
-    "includesVat": "Unknown",
-    "evidenceScope": null,
-    "adjudication": "missing",
-    "quoteOnly": true,
-    "candidateCount": 1
+    "priceType": "Starting From",
+    "status": "Verified",
+    "includesVat": "No",
+    "evidenceScope": "Product-Specific",
+    "adjudication": "adjudicated",
+    "quoteOnly": false,
+    "candidateCount": 1,
+    "presentationHold": {
+     "qualification": "Turnkey starting price for a finished, insulated room; the supplier states no VAT rate. Final price by written quote after a free site visit.",
+     "matching": "excluded",
+     "label": "Price excludes VAT",
+     "reason": "This starting price excludes VAT, so PlotNua does not compare it with your budget or with prices that include VAT.",
+     "vatBasis": "excluded"
+    }
    },
    "features": {
     "irishAvailability": {
-     "text": "AVAILABLE IN REPUBLIC OF IRELAND. Modern Garden Rooms is an Irish company at 190A Iveragh Road, Whitehall, Dublin 9, D09 RR2R. Nothing inferred. RETRIEVAL LIMITATION: moderngardenrooms.ie is client-rendered and returned an empty body to direct fetch, so delivery and installation coverage could not be verified. HOMEOWNER IMPLICATION: a Dublin-based Irish supplier with a full published address — confirm coverage for your county.",
+     "text": "AVAILABLE IN REPUBLIC OF IRELAND: DUBLIN AND LEINSTER. Supplier's named county pages: Dublin, Wicklow, Kildare, Meath, Louth; contact page: 'Dublin, Wicklow, Kildare, Meath and the wider Leinster region' (read 13 Nov 2026). Homeowners outside these counties should confirm coverage.",
      "number": null,
      "unit": null,
      "evidenceScope": "Organisation-Wide"
@@ -56733,7 +56740,7 @@
      ]
     },
     "warranty": {
-     "text": "WARRANTY UNKNOWN. DURATION: none published. No warranty term, scope or conditions located across the supplier's published pages; durability language only. Nothing inferred. HOMEOWNER IMPLICATION: a gym puts sustained load on the floor structure, and there is no published guarantee covering it. Raise it at the free site visit.",
+     "text": "WARRANTY UNKNOWN. DURATION: none published. No warranty term, scope or conditions located across the supplier's published pages; durability language only. Nothing inferred. HOMEOWNER IMPLICATION: a gym puts sustained load on the floor structure, and there is no published guarantee covering it. Raise it at the free site visit. Rechecked 13 Nov 2026: still none published (home, cost, specifications, quality, room-type, county and contact pages read directly).",
      "number": null,
      "unit": null,
      "evidenceScope": "Organisation-Wide"
@@ -56745,15 +56752,15 @@
      "evidenceScope": "Range-Level"
     },
     "floorArea": {
-     "text": "NO AREA PUBLISHED. No floor area, dimensions or derivable footprint held; nothing estimated. RETRIEVAL LIMITATION: moderngardenrooms.ie is client-rendered and returned an empty body to direct fetch. PLANNING: area test cannot be run. Gym use additionally makes internal clear height decision-critical and no height is held. MEASUREMENT BASIS COMPLETE (EVIDENCE UNAVAILABLE).",
+     "text": "TYPICAL SIZE BAND, NOT A FIXED AREA: 15–25 m² as published by the supplier for this room type (moderngardenrooms.ie/garden-room-cost/ and /garden-gym-rooms/, read 13 Nov 2026). Bespoke; DO NOT RANK on area.",
      "number": null,
      "unit": null,
      "evidenceScope": "Organisation-Wide"
     }
    },
-   "price": null,
+   "price": 32000,
    "currency": "EUR",
-   "priceBasis": "Draft",
+   "priceBasis": "Verified",
    "floorAreaM2": null,
    "glazing": null,
    "insulation": "FULLY INSULATED. Walls: 50mm foil-faced rigid plus 100mm high-density Earthwool = 150mm total. Ceiling: 150mm Earthwool plus 62mm rigid insulated plasterboard. Framed construction, solid Cedar cladding. No U-values published. HOMEOWNER IMPLICATION: the Earthwool layers are specified by the supplier as acoustically effective as well as thermal, which is directly relevant to gym use — dropped weights and machine noise are a common neighbour complaint. Among the better-suited gym specifications in Atlas on that basis.",
@@ -56763,20 +56770,17 @@
    "irishAvailability": true,
    "availabilityStatus": "Available to Order",
    "noPublishedIrishRoute": false,
-   "qualificationTier": "WITH_CAVEAT",
-   "priceEvidenceState": "quote-only",
-   "qualificationCaveats": [
-    "Evidence reaches supplier-level rather than this exact product.",
-    "Product URL is missing; product identity is established by other evidence."
-   ],
+   "qualificationTier": "HIGH_CONFIDENCE",
+   "priceEvidenceState": "verified",
+   "qualificationCaveats": [],
    "priceRecordIds": [
     "recX6ml5XiSotruuO"
    ],
    "priceRecordIdsAvailable": 1,
-   "priceStatus": "Draft",
-   "priceType": "Custom Quote",
-   "priceScope": null,
-   "vatStatus": "Unknown",
+   "priceStatus": "Verified",
+   "priceType": "Starting From",
+   "priceScope": "Product-Specific",
+   "vatStatus": "No",
    "vatRate": null,
    "priceBasisAxes": {
     "erection": "INCLUDED",
@@ -56784,24 +56788,24 @@
     "delivery": "UNKNOWN"
    },
    "priceBasisClass": "ERECTED_SERVICES_UNKNOWN",
-   "priceBasisConfidence": "NO_PRICE",
-   "priceIsRangeFloor": false,
+   "priceBasisConfidence": "UNSAFE",
+   "priceIsRangeFloor": true,
    "priceSafeForMatching": false,
    "priceFreshUntil": null,
    "priceEvidenceRef": {
     "recordIds": [
      "recX6ml5XiSotruuO"
     ],
-    "adjudication": "missing",
+    "adjudication": "adjudicated",
     "candidateCount": 1,
-    "status": "Draft",
-    "priceType": "Custom Quote",
-    "evidenceScope": null,
-    "lastPriceCheck": "2026-08-08",
+    "status": "Verified",
+    "priceType": "Starting From",
+    "evidenceScope": "Product-Specific",
+    "lastPriceCheck": "2026-11-13",
     "basisSource": "installationModel.leadPhrase",
     "basisLeadPhrase": "TURNKEY INSTALLATION INCLUDED"
    },
-   "priceState": "on-request"
+   "priceState": "held"
   },
   {
    "id": "recPf1sgAK27FBATY",
@@ -57076,56 +57080,61 @@
      "name": "Modern Garden Rooms"
     }
    ],
-   "productUrl": null,
+   "productUrl": "https://moderngardenrooms.ie/garden-office/",
    "verificationStatus": "Partially Verified",
    "qualification": {
-    "status": "ELIGIBLE — WITH CAVEAT",
-    "confidenceTier": "WITH_CAVEAT",
-    "priceEvidence": "quote-only",
+    "status": "ELIGIBLE — HIGH CONFIDENCE",
+    "confidenceTier": "HIGH_CONFIDENCE",
+    "priceEvidence": "verified",
     "reasons": [
      "Irish availability is confirmed by recorded evidence.",
-     "This product is priced by quotation, as the supplier publishes.",
+     "A verified price is recorded.",
+     "A product-level source is recorded.",
      "Supplier attribution is confirmed: Modern Garden Rooms."
     ],
-    "caveats": [
-     "Evidence reaches supplier-level rather than this exact product.",
-     "Product URL is missing; product identity is established by other evidence."
-    ],
+    "caveats": [],
     "hardBlockers": [],
     "evidenceSignals": {
      "irishAvailability": "confirmed",
-     "irishAvailabilityBasis": "AVAILABLE IN REPUBLIC OF IRELAND. Irish company, Dublin 9, D09 RR2R. Nothing inferred. RETRIEVAL LIMITATION: client-rendered site; coverage unverifiable. HOMEOWNER IMPLICATION: confirm coverage for yo",
+     "irishAvailabilityBasis": "AVAILABLE IN REPUBLIC OF IRELAND: DUBLIN AND LEINSTER. Supplier's named county pages: Dublin, Wicklow, Kildare, Meath, Louth; contact page: 'Dublin, Wicklow, Kildare, Meath and the wider Leinster regi",
      "irishAvailabilityScope": "Organisation-Wide",
      "irishAvailabilityClassified": true,
      "noPublishedIrishRoute": false,
-     "price": "quote-only",
-     "source": "supplier-level",
+     "price": "verified",
+     "source": "product-level",
      "supplierAttribution": "confirmed",
      "manufacturerAttribution": "unknown",
-     "productUrl": "missing",
+     "productUrl": "present",
      "contradiction": "none",
-     "productEvidenceCompleteness": "Blocked — Core Attribution or Evidence Missing",
+     "productEvidenceCompleteness": "Product Evidence Complete — Organisation Gate Required",
      "featureValueCount": 1,
      "pricingRecordCount": 1,
      "availabilityRecordCount": 1
     }
    },
    "priceEvidence": {
-    "base": 0,
-    "from": null,
+    "base": 24000,
+    "from": 24000,
     "to": null,
     "currency": "EUR",
-    "priceType": "Custom Quote",
-    "status": "Draft",
-    "includesVat": "Unknown",
-    "evidenceScope": null,
-    "adjudication": "missing",
-    "quoteOnly": true,
-    "candidateCount": 1
+    "priceType": "Starting From",
+    "status": "Verified",
+    "includesVat": "No",
+    "evidenceScope": "Product-Specific",
+    "adjudication": "adjudicated",
+    "quoteOnly": false,
+    "candidateCount": 1,
+    "presentationHold": {
+     "qualification": "Turnkey starting price for a finished, insulated room; the supplier states no VAT rate. Final price by written quote after a free site visit.",
+     "matching": "excluded",
+     "label": "Price excludes VAT",
+     "reason": "This starting price excludes VAT, so PlotNua does not compare it with your budget or with prices that include VAT.",
+     "vatBasis": "excluded"
+    }
    },
    "features": {
     "warranty": {
-     "text": "WARRANTY UNKNOWN. DURATION: none published. A domain-restricted search of moderngardenrooms.ie across the home, about, quality, cost and product pages located NO warranty term, no scope of cover, no conditions and no claims procedure. What the supplier does publish is durability language rather than warranty: rooms are built on a steel-reinforced timber frame so they 'stay solid for decades', with over 20 years of experience and structures described as designed for durability, insulation and long-term performance. A general statement that customers will be satisfied is published, which is not a warranty. Nothing inferred. WHY THE DISTINCTION IS RECORDED EXPLICITLY: durability claims and satisfaction statements are not enforceable cover. Atlas does not convert marketing longevity language into a warranty classification. HOMEOWNER IMPLICATION: this supplier's Installation-layer position is the widest turnkey scope in the catalogue — design, foundations, build, insulation, electrics and interior finish in one price. None of that scope has a published warranty attached. Ask, at the free site visit, exactly what is guaranteed and for how long.",
+     "text": "WARRANTY UNKNOWN. DURATION: none published. A domain-restricted search of moderngardenrooms.ie across the home, about, quality, cost and product pages located NO warranty term, no scope of cover, no conditions and no claims procedure. What the supplier does publish is durability language rather than warranty: rooms are built on a steel-reinforced timber frame so they 'stay solid for decades', with over 20 years of experience and structures described as designed for durability, insulation and long-term performance. A general statement that customers will be satisfied is published, which is not a warranty. Nothing inferred. WHY THE DISTINCTION IS RECORDED EXPLICITLY: durability claims and satisfaction statements are not enforceable cover. Atlas does not convert marketing longevity language into a warranty classification. HOMEOWNER IMPLICATION: this supplier's Installation-layer position is the widest turnkey scope in the catalogue — design, foundations, build, insulation, electrics and interior finish in one price. None of that scope has a published warranty attached. Ask, at the free site visit, exactly what is guaranteed and for how long. Rechecked 13 Nov 2026: still none published (home, cost, specifications, quality, room-type, county and contact pages read directly).",
      "number": null,
      "unit": null,
      "evidenceScope": "Organisation-Wide"
@@ -57145,7 +57154,7 @@
      "evidenceScope": "Organisation-Wide"
     },
     "irishAvailability": {
-     "text": "AVAILABLE IN REPUBLIC OF IRELAND. Irish company, Dublin 9, D09 RR2R. Nothing inferred. RETRIEVAL LIMITATION: client-rendered site; coverage unverifiable. HOMEOWNER IMPLICATION: confirm coverage for your county.",
+     "text": "AVAILABLE IN REPUBLIC OF IRELAND: DUBLIN AND LEINSTER. Supplier's named county pages: Dublin, Wicklow, Kildare, Meath, Louth; contact page: 'Dublin, Wicklow, Kildare, Meath and the wider Leinster region' (read 13 Nov 2026). Homeowners outside these counties should confirm coverage.",
      "number": null,
      "unit": null,
      "evidenceScope": "Organisation-Wide"
@@ -57194,21 +57203,21 @@
      "evidenceScope": "Range-Level"
     },
     "installationModel": {
-     "text": "TURNKEY INSTALLATION INCLUDED. Recorded as published: the supplier quotes a turnkey price covering design, foundations, the build, insulation, electrics and the interior finish — the quoted figure is the finished room rather than a starting shell. Sockets, LED lighting, heating and the interior finish are named as included in a turnkey build. Every room is bespoke, so no fixed price is published; the supplier offers a free site visit followed by a written quotation with no obligation. Pricing is stated to depend on footprint, whether the room is fully insulated for year-round use, glazing choices, and ground conditions and access affecting base preparation. Nothing inferred. WHY THIS IS THE MOST COMPLETE SCOPE RECORDED IN THE LAYER SO FAR: foundations, insulation, electrics AND interior finish inside one price. Green Retreats includes base and installation; Cabin Master includes foundations, build, insulation and electrics; My Garden Room excludes base, insulation and electrics. Modern Garden Rooms carries all of it and finishes the interior as well. HOMEOWNER IMPLICATION: there is no headline figure to compare, and that is the trade-off — the quotation is complete but only obtainable by site visit. When comparing against a supplier who publishes a low 'from' price, ask that supplier to add foundations, insulation, electrics and interior finish before treating the two numbers as equivalent.",
+     "text": "TURNKEY INSTALLATION INCLUDED. Recorded as published: the supplier quotes a turnkey price covering design, foundations, the build, insulation, electrics and the interior finish — the quoted figure is the finished room rather than a starting shell. Sockets, LED lighting, heating and the interior finish are named as included in a turnkey build. Every room is bespoke: the supplier publishes starting prices by size band, plus VAT, and states that the written quote after a free site visit is the final figure; the supplier offers a free site visit followed by a written quotation with no obligation. Pricing is stated to depend on footprint, whether the room is fully insulated for year-round use, glazing choices, and ground conditions and access affecting base preparation. Nothing inferred. WHY THIS IS THE MOST COMPLETE SCOPE RECORDED IN THE LAYER SO FAR: foundations, insulation, electrics AND interior finish inside one price. Green Retreats includes base and installation; Cabin Master includes foundations, build, insulation and electrics; My Garden Room excludes base, insulation and electrics. Modern Garden Rooms carries all of it and finishes the interior as well. HOMEOWNER IMPLICATION: there is no headline figure to compare, and that is the trade-off — the quotation is complete but only obtainable by site visit. When comparing against a supplier who publishes a low 'from' price, ask that supplier to add foundations, insulation, electrics and interior finish before treating the two numbers as equivalent. 13 Nov 2026 (founder-approved correction): the supplier's published turnkey scope (moderngardenrooms.ie/garden-room-cost/, read 13 Nov 2026) also names heating, and guttering, drainage and external finishing, as included.",
      "number": null,
      "unit": null,
      "evidenceScope": "Organisation-Wide"
     },
     "floorArea": {
-     "text": "NO AREA PUBLISHED. No floor area, dimensions or derivable footprint held; nothing estimated, no wall thickness subtracted. RETRIEVAL LIMITATION: moderngardenrooms.ie is client-rendered and returned an empty body to direct fetch, so no supplier-side area could be obtained. PLANNING: the area test cannot be run; the 30 m2 combined back-garden allowance (raised from 25 m2 on 27 July 2026) and all other Class 3 conditions still require checking. NOTE: this is an Irish supplier (190A Iveragh Road, Whitehall, Dublin 9, D09 RR2R), so the gap blocks a directly purchasable product.",
+     "text": "TYPICAL SIZE BAND, NOT A FIXED AREA: 10–15 m² as published by the supplier for this room type (moderngardenrooms.ie/garden-room-cost/ and /garden-office/, read 13 Nov 2026). Bespoke; DO NOT RANK on area.",
      "number": null,
      "unit": null,
      "evidenceScope": "Product-Specific"
     }
    },
-   "price": null,
+   "price": 24000,
    "currency": "EUR",
-   "priceBasis": "Draft",
+   "priceBasis": "Verified",
    "floorAreaM2": null,
    "glazing": null,
    "insulation": "FULLY INSULATED — HIGHEST SPECIFICATION IN ATLAS TO DATE. Walls: 50mm foil-faced rigid insulation plus 100mm high-density Earthwool = 150mm total. Ceiling: 150mm Earthwool plus 62mm rigid insulated plasterboard. Framed construction, solid Cedar cladding, aluminium roof-level trim. No U-values published, but the named materials have published conductivities, which makes this more independently checkable than most thermal claims in Atlas. HOMEOWNER IMPLICATION: genuinely suitable for year-round daily office use in an Irish winter. At 150mm wall insulation this exceeds every other Garden Room specification currently held — six times Quick-Garden's insulated Twin Skin and above Loghouse ECO and Concept Modular. The Earthwool layer is also specified as acoustically effective, which matters for a room used for calls.",
@@ -57218,20 +57227,17 @@
    "irishAvailability": true,
    "availabilityStatus": "Available to Order",
    "noPublishedIrishRoute": false,
-   "qualificationTier": "WITH_CAVEAT",
-   "priceEvidenceState": "quote-only",
-   "qualificationCaveats": [
-    "Evidence reaches supplier-level rather than this exact product.",
-    "Product URL is missing; product identity is established by other evidence."
-   ],
+   "qualificationTier": "HIGH_CONFIDENCE",
+   "priceEvidenceState": "verified",
+   "qualificationCaveats": [],
    "priceRecordIds": [
     "recbzeelEGjCJ3ld5"
    ],
    "priceRecordIdsAvailable": 1,
-   "priceStatus": "Draft",
-   "priceType": "Custom Quote",
-   "priceScope": null,
-   "vatStatus": "Unknown",
+   "priceStatus": "Verified",
+   "priceType": "Starting From",
+   "priceScope": "Product-Specific",
+   "vatStatus": "No",
    "vatRate": null,
    "priceBasisAxes": {
     "erection": "INCLUDED",
@@ -57239,24 +57245,24 @@
     "delivery": "UNKNOWN"
    },
    "priceBasisClass": "ERECTED_SERVICES_UNKNOWN",
-   "priceBasisConfidence": "NO_PRICE",
-   "priceIsRangeFloor": false,
+   "priceBasisConfidence": "UNSAFE",
+   "priceIsRangeFloor": true,
    "priceSafeForMatching": false,
    "priceFreshUntil": null,
    "priceEvidenceRef": {
     "recordIds": [
      "recbzeelEGjCJ3ld5"
     ],
-    "adjudication": "missing",
+    "adjudication": "adjudicated",
     "candidateCount": 1,
-    "status": "Draft",
-    "priceType": "Custom Quote",
-    "evidenceScope": null,
-    "lastPriceCheck": "2026-08-08",
+    "status": "Verified",
+    "priceType": "Starting From",
+    "evidenceScope": "Product-Specific",
+    "lastPriceCheck": "2026-11-13",
     "basisSource": "installationModel.leadPhrase",
     "basisLeadPhrase": "TURNKEY INSTALLATION INCLUDED"
    },
-   "priceState": "on-request"
+   "priceState": "held"
   },
   {
    "id": "recBJkV2lgaMdBYAj",
@@ -58119,52 +58125,57 @@
      "name": "Modern Garden Rooms"
     }
    ],
-   "productUrl": null,
+   "productUrl": "https://moderngardenrooms.ie/golf-simulator-rooms/",
    "verificationStatus": "Partially Verified",
    "qualification": {
-    "status": "ELIGIBLE — WITH CAVEAT",
-    "confidenceTier": "WITH_CAVEAT",
-    "priceEvidence": "quote-only",
+    "status": "ELIGIBLE — HIGH CONFIDENCE",
+    "confidenceTier": "HIGH_CONFIDENCE",
+    "priceEvidence": "verified",
     "reasons": [
      "Irish availability is confirmed by recorded evidence.",
-     "This product is priced by quotation, as the supplier publishes.",
+     "A verified price is recorded.",
+     "A product-level source is recorded.",
      "Supplier attribution is confirmed: Modern Garden Rooms."
     ],
-    "caveats": [
-     "Evidence reaches supplier-level rather than this exact product.",
-     "Product URL is missing; product identity is established by other evidence."
-    ],
+    "caveats": [],
     "hardBlockers": [],
     "evidenceSignals": {
      "irishAvailability": "confirmed",
-     "irishAvailabilityBasis": "AVAILABLE IN REPUBLIC OF IRELAND. Irish company, Dublin 9, D09 RR2R. Nothing inferred. RETRIEVAL LIMITATION: client-rendered site; coverage unverifiable. HOMEOWNER IMPLICATION: confirm coverage for yo",
+     "irishAvailabilityBasis": "AVAILABLE IN REPUBLIC OF IRELAND: DUBLIN AND LEINSTER. Supplier's named county pages: Dublin, Wicklow, Kildare, Meath, Louth; contact page: 'Dublin, Wicklow, Kildare, Meath and the wider Leinster regi",
      "irishAvailabilityScope": "Organisation-Wide",
      "irishAvailabilityClassified": true,
      "noPublishedIrishRoute": false,
-     "price": "quote-only",
-     "source": "supplier-level",
+     "price": "verified",
+     "source": "product-level",
      "supplierAttribution": "confirmed",
      "manufacturerAttribution": "unknown",
-     "productUrl": "missing",
+     "productUrl": "present",
      "contradiction": "none",
-     "productEvidenceCompleteness": "Blocked — Core Attribution or Evidence Missing",
+     "productEvidenceCompleteness": "Product Evidence Complete — Organisation Gate Required",
      "featureValueCount": 1,
      "pricingRecordCount": 1,
      "availabilityRecordCount": 1
     }
    },
    "priceEvidence": {
-    "base": 0,
-    "from": null,
+    "base": 50000,
+    "from": 50000,
     "to": null,
     "currency": "EUR",
-    "priceType": "Custom Quote",
-    "status": "Draft",
-    "includesVat": "Unknown",
-    "evidenceScope": null,
-    "adjudication": "missing",
-    "quoteOnly": true,
-    "candidateCount": 1
+    "priceType": "Starting From",
+    "status": "Verified",
+    "includesVat": "No",
+    "evidenceScope": "Product-Specific",
+    "adjudication": "adjudicated",
+    "quoteOnly": false,
+    "candidateCount": 1,
+    "presentationHold": {
+     "qualification": "Turnkey starting price for a finished, insulated room, simulator not included; the supplier states no VAT rate. Final price by written quote after a free site visit.",
+     "matching": "excluded",
+     "label": "Price excludes VAT",
+     "reason": "This starting price excludes VAT, so PlotNua does not compare it with your budget or with prices that include VAT.",
+     "vatBasis": "excluded"
+    }
    },
    "features": {
     "insulation": {
@@ -58199,7 +58210,7 @@
      ]
     },
     "warranty": {
-     "text": "WARRANTY UNKNOWN. DURATION: none published. No warranty term, scope or conditions located; durability language only. Nothing inferred. HOMEOWNER IMPLICATION: no published cover on a room whose value depends on internal height, wall integrity and a bespoke electrical layout.",
+     "text": "WARRANTY UNKNOWN. DURATION: none published. No warranty term, scope or conditions located; durability language only. Nothing inferred. HOMEOWNER IMPLICATION: no published cover on a room whose value depends on internal height, wall integrity and a bespoke electrical layout. Rechecked 13 Nov 2026: still none published (home, cost, specifications, quality, room-type, county and contact pages read directly).",
      "number": null,
      "unit": null,
      "evidenceScope": "Organisation-Wide"
@@ -58223,13 +58234,13 @@
      "evidenceScope": "Organisation-Wide"
     },
     "floorArea": {
-     "text": "NO AREA PUBLISHED. No floor area, dimensions or derivable footprint held. Nothing estimated. NOTE: a golf simulator imposes a minimum ceiling height and swing length, so height and footprint are decision-critical for this use and their absence is material. PLANNING: area test cannot be run, and the 3 m / 4 m height limits are likely to be the binding constraint for this product type.",
+     "text": "TYPICAL SIZE BAND, NOT A FIXED AREA: 25–30 m² as published by the supplier for this room type (moderngardenrooms.ie/garden-room-cost/ and /golf-simulator-rooms/, read 13 Nov 2026). Bespoke; DO NOT RANK on area.",
      "number": null,
      "unit": null,
      "evidenceScope": "Product-Specific"
     },
     "irishAvailability": {
-     "text": "AVAILABLE IN REPUBLIC OF IRELAND. Irish company, Dublin 9, D09 RR2R. Nothing inferred. RETRIEVAL LIMITATION: client-rendered site; coverage unverifiable. HOMEOWNER IMPLICATION: confirm coverage for your county.",
+     "text": "AVAILABLE IN REPUBLIC OF IRELAND: DUBLIN AND LEINSTER. Supplier's named county pages: Dublin, Wicklow, Kildare, Meath, Louth; contact page: 'Dublin, Wicklow, Kildare, Meath and the wider Leinster region' (read 13 Nov 2026). Homeowners outside these counties should confirm coverage. (The golf-simulator page says 'Built across Ireland'; recorded as the supplier's wording, not as nationwide coverage.)",
      "number": null,
      "unit": null,
      "evidenceScope": "Organisation-Wide"
@@ -58241,9 +58252,9 @@
      "evidenceScope": "Organisation-Wide"
     }
    },
-   "price": null,
+   "price": 50000,
    "currency": "EUR",
-   "priceBasis": "Draft",
+   "priceBasis": "Verified",
    "floorAreaM2": null,
    "glazing": null,
    "insulation": "FULLY INSULATED. Walls: 50mm foil-faced rigid plus 100mm high-density Earthwool = 150mm total. Ceiling: 150mm Earthwool plus 62mm rigid insulated plasterboard. Framed construction, solid Cedar cladding. No U-values published. NOTE: no internal ceiling height is held in Atlas for this product, which is the binding constraint for a golf simulator regardless of insulation. Recorded as a gap. HOMEOWNER IMPLICATION: well insulated and acoustically specified, but confirm internal height before purchase — a full swing typically needs more headroom than a standard garden room provides.",
@@ -58253,20 +58264,17 @@
    "irishAvailability": true,
    "availabilityStatus": "Available to Order",
    "noPublishedIrishRoute": false,
-   "qualificationTier": "WITH_CAVEAT",
-   "priceEvidenceState": "quote-only",
-   "qualificationCaveats": [
-    "Evidence reaches supplier-level rather than this exact product.",
-    "Product URL is missing; product identity is established by other evidence."
-   ],
+   "qualificationTier": "HIGH_CONFIDENCE",
+   "priceEvidenceState": "verified",
+   "qualificationCaveats": [],
    "priceRecordIds": [
     "recuWJyLIJiqepkNe"
    ],
    "priceRecordIdsAvailable": 1,
-   "priceStatus": "Draft",
-   "priceType": "Custom Quote",
-   "priceScope": null,
-   "vatStatus": "Unknown",
+   "priceStatus": "Verified",
+   "priceType": "Starting From",
+   "priceScope": "Product-Specific",
+   "vatStatus": "No",
    "vatRate": null,
    "priceBasisAxes": {
     "erection": "INCLUDED",
@@ -58274,24 +58282,24 @@
     "delivery": "UNKNOWN"
    },
    "priceBasisClass": "ERECTED_SERVICES_UNKNOWN",
-   "priceBasisConfidence": "NO_PRICE",
-   "priceIsRangeFloor": false,
+   "priceBasisConfidence": "UNSAFE",
+   "priceIsRangeFloor": true,
    "priceSafeForMatching": false,
    "priceFreshUntil": null,
    "priceEvidenceRef": {
     "recordIds": [
      "recuWJyLIJiqepkNe"
     ],
-    "adjudication": "missing",
+    "adjudication": "adjudicated",
     "candidateCount": 1,
-    "status": "Draft",
-    "priceType": "Custom Quote",
-    "evidenceScope": null,
-    "lastPriceCheck": "2026-08-08",
+    "status": "Verified",
+    "priceType": "Starting From",
+    "evidenceScope": "Product-Specific",
+    "lastPriceCheck": "2026-11-13",
     "basisSource": "installationModel.leadPhrase",
     "basisLeadPhrase": "TURNKEY INSTALLATION INCLUDED"
    },
-   "priceState": "on-request"
+   "priceState": "held"
   },
   {
    "id": "recGMPCzZKWL0MO10",
@@ -58308,7 +58316,7 @@
      "name": "Modern Garden Rooms"
     }
    ],
-   "productUrl": null,
+   "productUrl": "https://moderngardenrooms.ie/modular-garden-rooms/",
    "verificationStatus": "Partially Verified",
    "qualification": {
     "status": "ELIGIBLE — WITH CAVEAT",
@@ -58317,26 +58325,24 @@
     "reasons": [
      "Irish availability is confirmed by recorded evidence.",
      "This product is priced by quotation, as the supplier publishes.",
+     "A product-level source is recorded.",
      "Supplier attribution is confirmed: Modern Garden Rooms."
     ],
-    "caveats": [
-     "Evidence reaches supplier-level rather than this exact product.",
-     "Product URL is missing; product identity is established by other evidence."
-    ],
+    "caveats": [],
     "hardBlockers": [],
     "evidenceSignals": {
      "irishAvailability": "confirmed",
-     "irishAvailabilityBasis": "AVAILABLE IN REPUBLIC OF IRELAND. Nothing inferred. SUPPLIER STATUS — MODERN GARDEN ROOMS, 5 Garden-Room products, IRISH AVAILABILITY LAYER COMPLETE. All 5 AVAILABLE IN REPUBLIC OF IRELAND, all Tier B",
+     "irishAvailabilityBasis": "AVAILABLE IN REPUBLIC OF IRELAND: DUBLIN AND LEINSTER. Supplier's named county pages: Dublin, Wicklow, Kildare, Meath, Louth; contact page: 'Dublin, Wicklow, Kildare, Meath and the wider Leinster regi",
      "irishAvailabilityScope": "Organisation-Wide",
      "irishAvailabilityClassified": true,
      "noPublishedIrishRoute": false,
      "price": "quote-only",
-     "source": "supplier-level",
+     "source": "product-level",
      "supplierAttribution": "confirmed",
      "manufacturerAttribution": "unknown",
-     "productUrl": "missing",
+     "productUrl": "present",
      "contradiction": "none",
-     "productEvidenceCompleteness": "Blocked — Core Attribution or Evidence Missing",
+     "productEvidenceCompleteness": "Product Evidence Complete — Organisation Gate Required",
      "featureValueCount": 1,
      "pricingRecordCount": 1,
      "availabilityRecordCount": 1
@@ -58369,7 +58375,7 @@
      "evidenceScope": "Range-Level"
     },
     "warranty": {
-     "text": "WARRANTY UNKNOWN. DURATION: none published. Nothing inferred. All 5 WARRANTY UNKNOWN, all Tier B as an evidenced absence. THE FINDING: a domain-restricted search across the home, about, quality, cost, modular, gym and guest-room pages located no warranty term, no scope of cover, no conditions and no claims procedure. WHAT IS PUBLISHED INSTEAD, and why it is not a warranty: rooms are built on a steel-reinforced timber frame and stated to 'stay solid for decades'; the supplier publishes over 20 years of experience and describes its structures as designed for durability, insulation and long-term performance; and a general guarantee of customer satisfaction with price and product appears on the site. Durability claims describe an expectation. A warranty is an enforceable promise with a term. Atlas does not convert the first into the second, and the distinction is recorded here once for the whole supplier. THE CONTRAST WITH THE INSTALLATION LAYER IS THE POINT: this supplier holds the widest turnkey scope recorded anywhere in the Installation layer — design, foundations, the build, insulation, electrics and the interior finish, all inside one quoted price, with sockets, LED lighting and heating named. Every one of those elements is delivered by the supplier and none of them carries a published guarantee. That is not evidence of a poor warranty; it is evidence of an undocumented one. HOMEOWNER IMPLICATION AT SUPPLIER LEVEL: the free site visit produces a written, no-obligation quotation. Ask for the warranty to be written into it — term, scope, whether foundations and electrics are included, and whether it transfers on sale. STATUS FOR CHANGE CONTROL: if the supplier publishes warranty terms, these five records qualify for update under the factual-evidence-update route.",
+     "text": "WARRANTY UNKNOWN. DURATION: none published. Nothing inferred. All 5 WARRANTY UNKNOWN, all Tier B as an evidenced absence. THE FINDING: a domain-restricted search across the home, about, quality, cost, modular, gym and guest-room pages located no warranty term, no scope of cover, no conditions and no claims procedure. WHAT IS PUBLISHED INSTEAD, and why it is not a warranty: rooms are built on a steel-reinforced timber frame and stated to 'stay solid for decades'; the supplier publishes over 20 years of experience and describes its structures as designed for durability, insulation and long-term performance; and a general guarantee of customer satisfaction with price and product appears on the site. Durability claims describe an expectation. A warranty is an enforceable promise with a term. Atlas does not convert the first into the second, and the distinction is recorded here once for the whole supplier. THE CONTRAST WITH THE INSTALLATION LAYER IS THE POINT: this supplier holds the widest turnkey scope recorded anywhere in the Installation layer — design, foundations, the build, insulation, electrics and the interior finish, all inside one quoted price, with sockets, LED lighting and heating named. Every one of those elements is delivered by the supplier and none of them carries a published guarantee. That is not evidence of a poor warranty; it is evidence of an undocumented one. HOMEOWNER IMPLICATION AT SUPPLIER LEVEL: the free site visit produces a written, no-obligation quotation. Ask for the warranty to be written into it — term, scope, whether foundations and electrics are included, and whether it transfers on sale. STATUS FOR CHANGE CONTROL: if the supplier publishes warranty terms, these five records qualify for update under the factual-evidence-update route. Rechecked 13 Nov 2026: still none published (home, cost, specifications, quality, room-type, county and contact pages read directly).",
      "number": null,
      "unit": null,
      "evidenceScope": "Organisation-Wide"
@@ -58412,19 +58418,19 @@
      "evidenceScope": "Organisation-Wide"
     },
     "installationModel": {
-     "text": "TURNKEY INSTALLATION INCLUDED. Turnkey price covers design, foundations, build, insulation, electrics and interior finish; bespoke, priced after a free site visit. Nothing inferred. All 5 TURNKEY INSTALLATION INCLUDED, all Tier B, recorded organisation-wide because a single turnkey scope is published for the whole range. THE SUPPLIER-LEVEL FINDING: this is the widest turnkey scope recorded in the Installation layer to date. The quoted figure covers design, foundations, the build, insulation, electrics and the interior finish, with sockets, LED lighting and heating named specifically. The supplier's own framing is that the figure is the finished room, not a starting shell. Set against the rest of the catalogue: My Garden Room excludes base, insulation and electrics; Concept Modular excludes base, installation, craneage and haulage; Adman excludes the base; Cabin Master covers foundations through to electrics but stops short of publishing interior finish. Modern Garden Rooms carries the lot. THE COST OF THAT COMPLETENESS: no published price. Every room is bespoke, so there is no figure to compare and no way to shortlist this supplier on price without a site visit. The supplier publishes the pricing DRIVERS instead — footprint, whether the room is fully insulated for year-round use, glazing, and ground conditions and access affecting base preparation — which is a more useful disclosure than a meaningless 'from' price, but it does not let a buyer compare on paper. THE FREE SITE VISIT IS THEREFORE THE PRODUCT: a written, no-obligation quotation is the only way to obtain a number, and because the scope is complete, that number is directly comparable to nothing else in this catalogue without adding the competitors' exclusions back in. HOMEOWNER IMPLICATION AT SUPPLIER LEVEL: when placing this quotation beside a cheaper published figure, add foundations, insulation, electrics and interior finish to the competitor before deciding which is dearer. That single adjustment reverses the apparent ranking more often than not.",
+     "text": "TURNKEY INSTALLATION INCLUDED. Turnkey price covers design, foundations, build, insulation, electrics and interior finish; bespoke, priced after a free site visit. Nothing inferred. All 5 TURNKEY INSTALLATION INCLUDED, all Tier B, recorded organisation-wide because a single turnkey scope is published for the whole range. THE SUPPLIER-LEVEL FINDING: this is the widest turnkey scope recorded in the Installation layer to date. The quoted figure covers design, foundations, the build, insulation, electrics and the interior finish, with sockets, LED lighting and heating named specifically. The supplier's own framing is that the figure is the finished room, not a starting shell. Set against the rest of the catalogue: My Garden Room excludes base, insulation and electrics; Concept Modular excludes base, installation, craneage and haulage; Adman excludes the base; Cabin Master covers foundations through to electrics but stops short of publishing interior finish. Modern Garden Rooms carries the lot. THE COST OF THAT COMPLETENESS: no published price. Every room is bespoke, so there is no figure to compare and no way to shortlist this supplier on price without a site visit. The supplier publishes the pricing DRIVERS instead — footprint, whether the room is fully insulated for year-round use, glazing, and ground conditions and access affecting base preparation — which is a more useful disclosure than a meaningless 'from' price, but it does not let a buyer compare on paper. THE FREE SITE VISIT IS THEREFORE THE PRODUCT: a written, no-obligation quotation is the only way to obtain a number, and because the scope is complete, that number is directly comparable to nothing else in this catalogue without adding the competitors' exclusions back in. HOMEOWNER IMPLICATION AT SUPPLIER LEVEL: when placing this quotation beside a cheaper published figure, add foundations, insulation, electrics and interior finish to the competitor before deciding which is dearer. That single adjustment reverses the apparent ranking more often than not. UPDATE 13 Nov 2026 (founder-approved correction; supersedes 'no published price' at supplier level): the supplier now publishes turnkey starting prices by size band, all plus VAT (rate not stated), on moderngardenrooms.ie/garden-room-cost/: 10–15 m² from €24,000, 15–25 m² from €32,000, 25–30 m² from €50,000. Its published turnkey scope also names heating, and guttering, drainage and external finishing. The modular page itself still publishes no price: this product remains price on request.",
      "number": null,
      "unit": null,
      "evidenceScope": "Organisation-Wide"
     },
     "irishAvailability": {
-     "text": "AVAILABLE IN REPUBLIC OF IRELAND. Nothing inferred. All 5 AVAILABLE IN REPUBLIC OF IRELAND, all Tier B, recorded organisation-wide. THE SUPPLIER-LEVEL FINDING: an Irish company with a full published street address and Eircode at 190A Iveragh Road, Whitehall, Dublin 9, D09 RR2R. An Irish address with an Eircode is stronger identity evidence than most suppliers in this catalogue provide. RETRIEVAL LIMITATION RECORDED ONCE: moderngardenrooms.ie is client-rendered and returned an empty body to direct fetch. Delivery coverage, installation coverage and collection could not be verified for any of the five products, and none has been inferred. This is a retrieval failure, not an evidenced absence — the information may well be published and simply unreadable. READ ALONGSIDE THE CERTIFIED WARRANTY LAYER: the same retrieval barrier produced WARRANTY UNKNOWN for this supplier. Two decision layers are therefore both limited by one technical obstacle, which is worth knowing when ranking this supplier against others whose sites read cleanly. HOMEOWNER IMPLICATION AT SUPPLIER LEVEL: a real Dublin company at a verifiable address. Phone them — the website will not tell you what you need, and Atlas cannot read it either.",
+     "text": "AVAILABLE IN REPUBLIC OF IRELAND: DUBLIN AND LEINSTER. Supplier's named county pages: Dublin, Wicklow, Kildare, Meath, Louth; contact page: 'Dublin, Wicklow, Kildare, Meath and the wider Leinster region' (read 13 Nov 2026). Homeowners outside these counties should confirm coverage.",
      "number": null,
      "unit": null,
      "evidenceScope": "Organisation-Wide"
     },
     "floorArea": {
-     "text": "NO AREA PUBLISHED. No floor area or dimensions held; nothing estimated. PLANNING: area test cannot be run.",
+     "text": "No size band published for this page (moderngardenrooms.ie/modular-garden-rooms/, read 13 Nov 2026); bespoke; DO NOT RANK.",
      "number": null,
      "unit": null,
      "evidenceScope": "Product-Specific"
@@ -58444,10 +58450,7 @@
    "noPublishedIrishRoute": false,
    "qualificationTier": "WITH_CAVEAT",
    "priceEvidenceState": "quote-only",
-   "qualificationCaveats": [
-    "Evidence reaches supplier-level rather than this exact product.",
-    "Product URL is missing; product identity is established by other evidence."
-   ],
+   "qualificationCaveats": [],
    "priceRecordIds": [
     "recOQtUxmz5ICyvso"
    ],
@@ -58476,7 +58479,7 @@
     "status": "Draft",
     "priceType": "Custom Quote",
     "evidenceScope": null,
-    "lastPriceCheck": "2026-08-08",
+    "lastPriceCheck": "2026-11-13",
     "basisSource": "installationModel.leadPhrase",
     "basisLeadPhrase": "TURNKEY INSTALLATION INCLUDED"
    },

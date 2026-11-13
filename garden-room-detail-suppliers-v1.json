@@ -535,9 +535,9 @@
     "recZcfloN72CBES6I": {
       "name": "Modern Garden Rooms",
       "locality": {
-        "installationModel": "Not stated",
+        "installationModel": "Dublin and Leinster; named county pages: Dublin, Wicklow, Kildare, Meath, Louth (read 13 Nov 2026)",
         "irishPresence": "Yes \u2014 Irish-headquartered with a full published Dublin address and Eircode",
-        "deliveryCoverage": "Not stated",
+        "deliveryCoverage": "Dublin and Leinster; named county pages: Dublin, Wicklow, Kildare, Meath, Louth (read 13 Nov 2026)",
         "manufacturingLocation": "Not stated",
         "jurisdiction": "Republic of Ireland",
         "evidenceTier": "Tier B",
@@ -549,7 +549,7 @@
         "deliveryStatus": "UNKNOWN"
       },
       "organisationType": "Bespoke Builder",
-      "lastReviewed": "2026-08-28",
+      "lastReviewed": "2026-11-13",
       "googleIdentity": {
         "state": "verified",
         "placeId": "ChIJh_woWH1LZ0gRFhvXEPyKrts",
