@@ -407,8 +407,8 @@ async function deleteRecords(env, artistId) {
   if (!ev.some(e => e.kind === 'originals_deleted')) await eraseOriginals(env, artistId, 'scheduler', 'with the six-year deletion');
   // Art for Hire records (migration 0007) go BEFORE record_retention: their append-only guards allow deletion only while
   // the artist's retention row still shows the period has ended (Stage 3B-1 finding). Absent tables are skipped.
-  const t = ['acceptance_corrections', 'agreement_acceptances', 'enquiry_log', 'enquiries', 'versions', 'publish_queue', 'gallery_positions', 'participation_events',
-    ...(await H.recordTables(env)), ...(await O.recordTables(env)), 'record_retention'];
+  const t = [...(await O.recordTables(env)), 'acceptance_corrections', 'agreement_acceptances', 'enquiry_log', 'enquiries', 'versions', 'publish_queue', 'gallery_positions', 'participation_events',
+    ...(await H.recordTables(env)), 'record_retention'];
   await env.DB.batch([...t.map(x => env.DB.prepare(`DELETE FROM ${x} WHERE artist_id = ?`).bind(artistId)), env.DB.prepare("DELETE FROM artists WHERE id = ? AND account_status = 'ended'").bind(artistId),
     env.DB.prepare('DELETE FROM audit WHERE artist_id = ?').bind(artistId)]);   // the artist's audit trail goes with their records
   await audit(env, 'scheduler', 'system', 'records_deleted', artistId, { tables: t.length + 1 });
