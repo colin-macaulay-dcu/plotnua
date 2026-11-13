@@ -59,9 +59,10 @@ once the launch pages are released). Prints "PLOTART LAUNCH · OK" only when:
       Founding 25 application page and links to A Home for Art; the Founding 25 page says
       the founding year begins when the gallery is first published.
   L18 Join PlotArt (Gallery Artist Programme Phase 3, 13 Nov 2026): gallery_application_state is one of four
-      states and is never inferred from the endpoint; join.html, curatorial-policy.html, the homepage band and the
-      Founding 25 pointer are exactly the build for that state (build-plotart-join.py); only "open" has a form, posting
-      only to the approved route, with the Worker's own confirmations; the only percentage is the approved 15% wording
+      states and is never inferred from the endpoint. Nothing of the recruitment is published unless it is "open"
+      (founder decision 13 Nov 2026): no join.html, curatorial-policy.html, pa-apply.js, homepage artist band or
+      Founding 25 pointer. When open, they are exactly the build (build-plotart-join.py), with one form posting only
+      to the approved route and the Worker's own confirmations; the only percentage is the approved 15% wording
       and the only price the approved worked example; no discount, waiver or individual-terms wording.
   L16 Mobile Gallery (3 Nov 2026): no provider marked participating; the published provider data holds no internal
       notes, contacts, terms or prices; the unconfirmed-participation wording stays; nothing collects or sends
@@ -87,7 +88,7 @@ SWITCHES = sys.argv[sys.argv.index("--switches") + 1] if "--switches" in sys.arg
 launch = json.load(open(SWITCHES, encoding="utf-8"))
 ENDPOINT = launch.get("f25_form_endpoint")
 PAGES = ["index.html", "founding-25.html", "living-gallery.html", "gallery/index.html", "invitation.html", "about.html",
-         "mobile-gallery/index.html", "mobile-gallery/gallery.html", "join.html", "curatorial-policy.html"] + list(SEO.GENERATED_PATHS) + list(SEO.EDITORIAL_PATHS) + list(SEO.TOOL_PATHS)  # invitation.html: private Founding Artist invitation (noindex, mailto only, no form)
+         "mobile-gallery/index.html", "mobile-gallery/gallery.html"] + (["join.html", "curatorial-policy.html"] if launch.get("gallery_application_state") == "open" else []) + list(SEO.GENERATED_PATHS) + list(SEO.EDITORIAL_PATHS) + list(SEO.TOOL_PATHS)  # invitation.html: private Founding Artist invitation (noindex, mailto only, no form)
 # Mobile Gallery (founder release authorisation, 3 Nov 2026): a public work-in-progress page (indexable only by its own
 # switch) and an illustrative gallery profile that is never indexed while participation is unconfirmed.
 MG_FILES = {"mobile-gallery/mobile-gallery.css", "mobile-gallery/mobile-gallery.js", "mobile-gallery/mobile-gallery-data.js",
@@ -162,9 +163,9 @@ def visible_text(s):
 AP_FILE = '<input id="ap-images" type="file" accept="image/jpeg,image/png,image/webp" multiple hidden data-ap-file>'
 JOIN_EXAMPLE = '<tbody><tr><th scope="row">Artwork sold for</th><td>€1,000</td></tr><tr class="is-you"><th scope="row">You receive</th><td>€850</td></tr><tr><th scope="row">PlotArt invoices you</th><td>€150</td></tr></tbody>'
 APPROVED_15_MARKUP = ['<span class="num" aria-hidden="true">15%</span>',
-                      '<p class="big" aria-hidden="true">15%<small>commission on sales through PlotArt · no upfront fees · no exclusivity</small></p>']
-APPROVED_15_TEXT = ["15% commission on sales through PlotArt.", "15% commission on sales through PlotArt",
-                    "15% commission, only when PlotArt introduces a sale.", "15% on sales through PlotArt."]
+                      '<p class="big" aria-hidden="true">15%<small>only on sales to collectors PlotArt introduces · no upfront fees · no exclusivity</small></p>']
+APPROVED_15_TEXT = ["15% commission only on sales to collectors PlotArt introduces", "15% commission, only when PlotArt introduces the collector.",
+                    "15% on sales PlotArt introduces."]
 
 # demonstration names, from the prototype data when present (it is never published)
 demo_names = set()
@@ -328,7 +329,7 @@ need(m is not None and html.unescape(m.group(1)) == DESC, "L8 the Founding 25 de
 _badge = re.findall(r'<span class="pa-open-badge[^"]*">([^<]*)</span>', home)
 # Since Join PlotArt (13 Nov 2026) the homepage band is the artist-application band and its badge follows
 # gallery_application_state (L18); the Founding 25 state is then shown only on the Founding 25 page.
-_HOME_STATE = GA_STATE if GA_STATE else STATE
+_HOME_STATE = "open" if GA_OPEN else STATE        # closed recruitment: the homepage keeps the closed Founding 25 band
 _HOME_LINE = {"open": "Applications are open.", "paused": "Applications are paused at the moment.", "closed": "Applications have closed."}.get(_HOME_STATE, "Applications are not yet open.")
 need(len(_badge) == 1 and html.unescape(_badge[0]) == ("Applications open" if _HOME_STATE == "open" else _HOME_LINE), "L8 the homepage badge is not the %s wording" % _HOME_STATE)
 for other in {"Applications are open.", "Applications are paused at the moment.", "Applications have closed.", "Applications are not yet open."} - {_HOME_LINE}:
@@ -685,36 +686,48 @@ _jp, _cp = os.path.join(PA, "join.html"), os.path.join(PA, "curatorial-policy.ht
 _join = open(_jp, encoding="utf-8").read() if os.path.exists(_jp) else ""
 _pol = open(_cp, encoding="utf-8").read() if os.path.exists(_cp) else ""
 _jv, _pv = re.sub(r"\s+", " ", visible_text(_join)), re.sub(r"\s+", " ", visible_text(_pol))
-need(bool(_join) and bool(_pol), "L18 join.html and curatorial-policy.html must both be published")
+_jsp = os.path.join(PA, "assets", "pa-apply.js")
+_ptr = re.search(r"<!-- pa-artist-apply-pointer:begin -->(.*?)<!-- pa-artist-apply-pointer:end -->", f25, re.S)
 if os.path.realpath(SITE) == os.path.realpath(ROOT):   # on the development tree, the pages must be exactly the builder's output for this state
     import subprocess
     _chk = subprocess.run([sys.executable, os.path.join(ROOT, "atlas-tools", "build-plotart-join.py"), "--check", "--switches", SWITCHES], capture_output=True, text=True)
     need(_chk.returncode == 0, "L18 the Join PlotArt pages are not the build for this state: " + (_chk.stdout + _chk.stderr).strip()[-200:])
-need(_jv.count(GA_LINE) == (2 if GA_OPEN else 2), "L18 join.html must state '%s' in its hero and its Apply section" % GA_LINE)
-for _o in {"Applications are open.", "Applications are paused at the moment.", "Applications have closed.", "Applications are not yet open."} - {GA_LINE}:
-    need(_o not in _jv, "L18 join.html shows another state's line: %s" % _o)
-for _t in ("15% commission, only when PlotArt introduces a sale.", "No upfront fees.", "No exclusivity.", "agreed within 24 months of that introduction",
-           "Nothing on your own sales.", "A newly commissioned work is agreed directly between you and the collector",
-           "The full terms are in the PlotArt Gallery Artist Agreement, which you read and accept in PlotArt Studio before your gallery is first published."):
-    need(_t in _jv, "L18 join.html lacks the approved terms wording: %s" % _t)
-need('href="curatorial-policy.html"' in _join and 'href="join.html"' in _pol, "L18 the two pages must link to each other")
-for _h in ("Artistic quality", "A distinctive voice", "A developed body of work", "Commitment to your practice", "Contribution to the gallery"):
-    need(_jv.count(_h) == 1 and _pv.count(_h) == 1, "L18 both pages must carry the five criteria once each: %s" % _h)
-need("never influenced by any fee, payment or commission arrangement" in _pv, "L18 the curatorial policy must say gallery order is never influenced by payment")
-for _n, _v in (("join.html", _jv), ("curatorial-policy.html", _pv), ("index.html", re.sub(r"\s+", " ", visible_text(home)))):
-    need(not re.search(r"(?i)discount|waive|waiver|individual terms|variation|selection (?:board|panel|committee)|private invitation|invitation[- ]only|\b\d+ (?:places|artists only)\b|limited (?:places|number)", _v),
-         "L18 %s mentions discounts, waivers, individual terms, a selection board, private invitations or a limit" % _n)
-_band = re.search(r"<!-- pa-artist-apply:begin -->(.*?)<!-- pa-artist-apply:end -->", home, re.S)
-need(_band is not None and home.count("<!-- pa-artist-apply:begin -->") == 1, "L18 the homepage artist band is missing or duplicated")
-if _band:
-    need('href="curatorial-policy.html"' in _band.group(1) and (('href="join.html#apply"' in _band.group(1)) if GA_OPEN else ('href="join.html"' in _band.group(1))),
-         "L18 the homepage band must link to Join PlotArt (the form when open) and the curatorial policy")
-need("f25InviteH" not in home, "L18 the closed Founding 25 band must give way to the artist band")
-_ptr = re.search(r"<!-- pa-artist-apply-pointer:begin -->(.*?)<!-- pa-artist-apply-pointer:end -->", f25, re.S)
-need(_ptr is not None and (bool(_ptr.group(1).strip()) == GA_OPEN), "L18 the Founding 25 page points to Join PlotArt only while applications are open")
-need("<form" not in _pol and "pa-apply.js" not in _pol, "L18 the curatorial policy has no form")
-_jsp = os.path.join(PA, "assets", "pa-apply.js")
-if GA_OPEN:
+if not GA_OPEN:
+    # closed: nothing of the recruitment is published or linked
+    need(not _join and not _pol and not os.path.exists(_jsp), "L18 %s: join.html, curatorial-policy.html and pa-apply.js must not be published" % GA_STATE)
+    need("pa-artist-apply" not in home and _ptr is None and "pa-artist-apply" not in f25, "L18 %s: no homepage artist band and no Founding 25 pointer" % GA_STATE)
+    for _n in PAGES:
+        _pp = os.path.join(PA, _n)
+        if os.path.exists(_pp):
+            _ss = open(_pp, encoding="utf-8").read()
+            need('href="join.html' not in _ss and 'curatorial-policy.html' not in _ss, "L18 %s: %s links to an unpublished recruitment page" % (GA_STATE, _n))
+else:
+    need(bool(_join) and bool(_pol), "L18 open: join.html and curatorial-policy.html must both be published")
+    _priv = os.path.join(SITE, "privacy.html") if os.path.exists(os.path.join(SITE, "privacy.html")) else os.path.join(ROOT, "privacy.html")
+    need("PLOTNUA-PLOTART-ARTIST-APPLICATIONS-PRIVACY-V15" in open(_priv, encoding="utf-8").read(), "L18 open: the privacy notice section for artist applications (V15) must be live")
+    need(_jv.count(GA_LINE) == 2, "L18 join.html must state '%s' in its hero and its Apply section" % GA_LINE)
+    for _o in {"Applications are paused at the moment.", "Applications have closed.", "Applications are not yet open."}:
+        need(_o not in _jv, "L18 join.html shows another state's line: %s" % _o)
+    for _t in ("15% commission, only when PlotArt introduces the collector.", "No upfront fees.", "Your own sales stay yours.",
+               "Collectors who find you independently", "An introduction counts for 24 months.", "applying doesn’t guarantee a place",
+               "A newly commissioned work is agreed directly between you and the collector", "Founding Artists keep their own terms.",
+               "Artists who join now become Gallery Artists",
+               "The full terms are in the PlotArt Gallery Artist Agreement, which you read and accept in PlotArt Studio before your gallery is first published."):
+        need(_t in _jv, "L18 join.html lacks the approved wording: %s" % _t)
+    need('href="curatorial-policy.html"' in _join and 'href="join.html"' in _pol, "L18 the two pages must link to each other")
+    for _h in ("Artistic quality", "A distinctive voice", "A developed body of work", "Commitment to your practice", "Contribution to the gallery"):
+        need(_jv.count(_h) == 1 and _pv.count(_h) == 1, "L18 both pages must carry the five criteria once each: %s" % _h)
+    need("never influenced by any fee, payment or commission arrangement" in _pv, "L18 the curatorial policy must say gallery order is never influenced by payment")
+    for _n, _v in (("join.html", _jv), ("curatorial-policy.html", _pv), ("index.html", re.sub(r"\s+", " ", visible_text(home)))):
+        need(not re.search(r"(?i)discount|waive|waiver|individual terms|variation|selection (?:board|panel|committee)|private invitation|invitation[- ]only|\b\d+ (?:places|artists only)\b|limited (?:places|number)", _v),
+             "L18 %s mentions discounts, waivers, individual terms, a selection board, private invitations or a limit" % _n)
+    _band = re.search(r"<!-- pa-artist-apply:begin -->(.*?)<!-- pa-artist-apply:end -->", home, re.S)
+    need(_band is not None and home.count("<!-- pa-artist-apply:begin -->") == 1 and "f25InviteH" not in home, "L18 open: the homepage carries the artist band once, in place of the closed Founding 25 band")
+    if _band:
+        need('href="curatorial-policy.html"' in _band.group(1) and 'href="join.html#apply"' in _band.group(1) and "your own sales stay yours" in visible_text(_band.group(1)),
+             "L18 the homepage band must link to the form and the curatorial policy, and say the artist's own sales stay theirs")
+    need(_ptr is not None and bool(_ptr.group(1).strip()), "L18 open: the Founding 25 page points to Join PlotArt")
+    need("<form" not in _pol and "pa-apply.js" not in _pol, "L18 the curatorial policy has no form")
     need(_join.count("<form") == 1 and ('data-ap-form data-endpoint="%s" data-image-endpoint="%s/image"' % (GA_EP, GA_EP)) in _join, "L18 open: exactly one form posting only to the approved route")
     need('<script src="assets/pa-apply.js" defer></script>' in _join and os.path.exists(_jsp), "L18 open: the application script must ship with the page")
     _wsrc = open(os.path.join(ROOT, "worker", "art-space-register", "src", "index.js"), encoding="utf-8").read()
@@ -728,9 +741,6 @@ if GA_OPEN:
     _js = open(_jsp, encoding="utf-8").read() if os.path.exists(_jsp) else ""
     need("localStorage" not in _js and "sessionStorage" not in _js and "document.cookie" not in _js and "console." not in _js and "credentials: 'omit'" in _js,
          "L18 the application script must store, log and send no credentials")
-else:
-    need("<form" not in _join and "pa-apply.js" not in _join and not os.path.exists(_jsp), "L18 %s: no form and no application script" % GA_STATE)
-    need("Apply now" not in _jv and 'href="join.html#apply"' not in home, "L18 %s: no call to apply" % GA_STATE)
 
 # L16 · Mobile Gallery (founder release authorisation, 3 Nov 2026): the concept is public, no gallery has joined.
 _mgd = os.path.join(PA, "mobile-gallery", "mobile-gallery-data.js")

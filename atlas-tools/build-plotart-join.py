@@ -3,11 +3,15 @@
 
 Builds the public artist-recruitment pages from the founder-approved copy, in the state the launch switches say:
 
-    plotart/join.html                 the application page (the form exists ONLY in the "open" state)
+    plotart/join.html                 the application page and form
     plotart/curatorial-policy.html    the curatorial policy
-    plotart/assets/pa-apply.js        present ONLY in the "open" state (removed otherwise)
+    plotart/assets/pa-apply.js        the form script
     plotart/index.html                the homepage "For artists" band, between its two markers
-    plotart/founding-25.html          one pointer line to Join PlotArt, in the "open" state only
+    plotart/founding-25.html          one pointer line to Join PlotArt
+
+All of this exists ONLY in the "open" state (founder decision 13 Nov 2026: the recruitment pages are not published
+while applications are closed). In every other state the homepage and the Founding 25 page are exactly as on main
+and the three files above do not exist.
 
 The state is gallery_application_state in the launch switches: not_open | open | paused | closed. It is never
 inferred from the endpoint. The endpoint is gallery_application_endpoint, and the form posts only there.
@@ -191,6 +195,7 @@ def apply_section():
   <div class="pa-apply-intro"><p class="pa-eyebrow">Apply</p><h2 class="pa-apply-title">Apply to join PlotArt.</h2>
   <p class="pa-lede" style="margin-top:0">Tell us about you and your work. It takes about ten minutes, and applying is free. All you need is a few images of your work, or a link to where we can see it.</p>
   <p class="pa-select-note" style="margin-top:18px">{LINE}</p>
+  <p class="pa-muted" style="margin-top:14px">Every application is read individually. Applying doesn’t guarantee a place, and we’ll let you know the outcome either way.</p>
   <p class="pa-note" style="margin-top:18px">Already on PlotNua's <a href="../artist-register.html">Artist Register</a>? That stays a private expression of interest. Applying here is a separate step.</p></div>
 {form()}
 </div></section>"""
@@ -205,7 +210,7 @@ def join_page():
     acts = ('<a class="pa-btn pa-btn--solid" href="#apply" data-pa-track="join_apply_click">Apply now</a><a class="pa-btn pa-btn--ghost" href="#terms">Read the terms</a>' if OPEN
             else '<a class="pa-btn pa-btn--solid" href="#terms">Read the terms</a><a class="pa-btn pa-btn--ghost" href="curatorial-policy.html">Our curatorial policy</a>')
     return head("join.html", "Join PlotArt: Apply to a Curated Gallery of Irish Art | PlotArt",
-                "Apply to join PlotArt, an independently curated online gallery of contemporary Irish art. 15% commission on sales through PlotArt. No upfront fees. No exclusivity.",
+                "Apply to join PlotArt, an independently curated online gallery of contemporary Irish art. 15% commission only on sales to collectors PlotArt introduces. No upfront fees. No exclusivity.",
                 JOIN_STYLE) + HEADER + f"""<main id="main">
 
 <section class="pa-fhero"><div class="pa-wrap">
@@ -213,15 +218,15 @@ def join_page():
     <p class="pa-eyebrow">For artists</p>
     <h1>Join PlotArt.</h1>
     <p class="pa-lede" style="margin-top:26px">PlotArt is an independently curated gallery of contemporary Irish art. If you’re based or working on the island of Ireland and your work has a voice of its own, we’d love to see it.</p>
-    <p class="pa-select-note" style="margin-top:22px">{LINE}</p>
+    <p class="pa-select-note" style="margin-top:22px">{LINE} Every application is read individually, and applying doesn’t guarantee a place.</p>
     <div class="pa-actions" style="margin-top:18px">{acts}</div>
   </div>
-  <p class="big" aria-hidden="true">15%<small>commission on sales through PlotArt · no upfront fees · no exclusivity</small></p>
+  <p class="big" aria-hidden="true">15%<small>only on sales to collectors PlotArt introduces · no upfront fees · no exclusivity</small></p>
 </div></section>
 
 <section class="pa-sec"><div class="pa-wrap">
   <div class="pa-sec-head"><div><p class="pa-eyebrow">What you receive</p><h2>A gallery of<br>your own.</h2></div>
-  <p>Our first artists joined through the Founding 25, our introductory programme. The Artists’ Gallery now grows through individual applications, and every artist who joins receives their own gallery.</p></div>
+  <p>Our first artists joined through the Founding 25, our introductory programme, which has now closed. Founding Artists keep their own terms. Artists who join now become Gallery Artists, on the terms below, and each receives their own gallery.</p></div>
   <ul class="pa-terms" style="list-style:none;margin:0">
     <li><strong>Your own artist gallery.</strong> Your biography and a page for each work, with large images and true dimensions. Start with one artwork and add more whenever you wish.</li>
     <li><strong>Collectors who come to you.</strong> Enquiries go straight to you, or to your gallery if you’re represented. You agree every sale yourself.</li>
@@ -231,15 +236,16 @@ def join_page():
 </div></section>
 
 <section class="pa-sec pa-sec--deep" id="terms"><div class="pa-wrap pa-cols-2" style="align-items:start">
-  <div><p class="pa-eyebrow">The terms, plainly</p><h2 style="font-size:clamp(36px,3.8vw,56px)">15% commission, only when PlotArt introduces a sale.</h2>
-  <table class="pa-join-ex"><caption class="pa-eyebrow" style="text-align:left;caption-side:top;margin:0 0 6px">An example</caption>
+  <div><p class="pa-eyebrow">The terms, plainly</p><h2 style="font-size:clamp(36px,3.8vw,56px)">15% commission, only when PlotArt introduces the collector.</h2>
+  <table class="pa-join-ex"><caption class="pa-eyebrow" style="text-align:left;caption-side:top;margin:0 0 6px">An example: a collector PlotArt introduced buys a work</caption>
     <tbody><tr><th scope="row">Artwork sold for</th><td>€1,000</td></tr><tr class="is-you"><th scope="row">You receive</th><td>€850</td></tr><tr><th scope="row">PlotArt invoices you</th><td>€150</td></tr></tbody></table>
-  <p class="pa-note">The collector pays you directly. Shipping, insurance and handling are never part of the commission.</p></div>
+  <p class="pa-note">The collector pays you directly. Shipping, insurance and handling are never part of the commission. A sale to a collector who found you on their own carries no commission at all.</p></div>
   <ul class="pa-terms" style="list-style:none;margin:0">
     <li><strong>No upfront fees.</strong> Nothing to apply, nothing to join, and no membership, subscription or listing fees.</li>
+    <li><strong>Your own sales stay yours.</strong> Collectors who find you independently, through your website, your studio, an exhibition or another gallery, carry no PlotArt commission.</li>
+    <li><strong>15% on sales PlotArt introduces.</strong> Commission applies when a collector PlotArt has introduced to you buys your original work. That includes collectors who tell you they found you through PlotArt.</li>
+    <li><strong>A clear two-year window.</strong> An introduction counts for 24 months. After that, a sale carries no commission unless it completes a conversation about a particular work that began within those 24 months.</li>
     <li><strong>You’re paid directly.</strong> Collectors pay you, and PlotArt invoices its commission after the sale completes.</li>
-    <li><strong>15% on sales through PlotArt.</strong> Commission applies only to sales to collectors PlotArt introduces to you, agreed within 24 months of that introduction. This includes collectors who tell you they found you through PlotArt.</li>
-    <li><strong>Nothing on your own sales.</strong> Sales that come to you independently carry no commission.</li>
     <li><strong>New commissions are yours.</strong> A newly commissioned work is agreed directly between you and the collector, and isn’t covered by the commission.</li>
     <li><strong>No exclusivity.</strong> Show and sell your work wherever you like, and keep working with other galleries.</li>
     <li>The full terms are in the PlotArt Gallery Artist Agreement, which you read and accept in PlotArt Studio before your gallery is first published.</li>
@@ -258,7 +264,7 @@ def join_page():
   <div class="pa-sec-head"><div><p class="pa-eyebrow">How it works</p><h2>From application<br>to gallery.</h2></div><p>Applying, accepting the agreement and publishing your gallery are three separate steps, and nothing is published without your approval.</p></div>
   <ol class="pa-steps">
     <li><div><h3>You apply</h3><p>Tell us about yourself and share three to five images of your work, or a link to your portfolio.</p></div></li>
-    <li><div><h3>We review</h3><p>We confirm we’ve received your application, then read it individually against our criteria. We may ask to see a little more.</p></div></li>
+    <li><div><h3>We review</h3><p>We confirm we’ve received your application, then read it individually against our criteria. We may ask to see a little more. Applying doesn’t guarantee a place.</p></div></li>
     <li><div><h3>We tell you the outcome</h3><p>By email, courteously and clearly, whatever the decision.</p></div></li>
     <li><div><h3>Your gallery opens</h3><p>If you’re selected, you receive an invitation to PlotArt Studio. Before you first submit your gallery, you read and accept the Gallery Artist Agreement there. Your gallery goes live once you’ve submitted it and we’ve reviewed it.</p></div></li>
   </ol>
@@ -329,7 +335,7 @@ def home_band():
 <section class="pa-sec pa-invite-sec" aria-labelledby="joinInviteH"><div class="pa-wrap">
   <div class="pa-f25 pa-f25--invite">
     <span class="num" aria-hidden="true">15%</span>
-    <span><span class="pa-invite-k"><span class="pa-eyebrow">For artists</span><span class="pa-open-badge{'' if OPEN else ' pa-open-badge--off'}">{BADGE}</span></span><h2 id="joinInviteH">Your art deserves to be discovered.</h2><p>Apply to join PlotArt’s curated Artists’ Gallery. 15% commission on sales through PlotArt. No upfront fees. No exclusivity.</p></span>
+    <span><span class="pa-invite-k"><span class="pa-eyebrow">For artists</span><span class="pa-open-badge{'' if OPEN else ' pa-open-badge--off'}">{BADGE}</span></span><h2 id="joinInviteH">Your art deserves to be discovered.</h2><p>Apply to join PlotArt’s curated Artists’ Gallery. 15% commission only on sales to collectors PlotArt introduces; your own sales stay yours. No upfront fees. No exclusivity.</p></span>
     <span class="pa-invite-cta">{cta}<a class="pa-btn pa-btn--ghost" href="curatorial-policy.html" data-pa-track="home_curatorial_policy">Our curatorial policy</a></span>
   </div>
 </div></section>
@@ -341,39 +347,53 @@ FB, FE = "<!-- pa-artist-apply-pointer:begin -->", "<!-- pa-artist-apply-pointer
 POINTER = '<p class="pa-muted">PlotArt now welcomes applications to the Artists’ Gallery. <a href="join.html">Join PlotArt</a>.</p>'
 
 
+# While applications are not open, NOTHING of the recruitment is published (founder decision 13 Nov 2026): the homepage
+# keeps the closed Founding 25 band exactly as it is on main, the Founding 25 page has no pointer, and join.html,
+# curatorial-policy.html and pa-apply.js do not exist.
+CLOSED_F25_BAND = '<section class="pa-sec pa-invite-sec" aria-labelledby="f25InviteH"><div class="pa-wrap">\n  <div class="pa-f25 pa-f25--invite">\n    <span class="num" aria-hidden="true">25</span>\n    <span><span class="pa-invite-k"><span class="pa-eyebrow">The PlotArt Founding 25</span><span class="pa-open-badge pa-open-badge--off">Applications have closed.</span></span><h2 id="f25InviteH">25 artists. 25 galleries.<br>100% free for the first year.</h2><p>Your art. Your sales. Your earnings. No membership, subscription or listing fees, ever, and keep 100% of your artwork sales — no PlotArt commission on enquiries from your founding year, even if the sale completes later.</p></span>\n    <span class="pa-invite-cta"><a class="pa-btn pa-btn--ghost" href="founding-25.html" data-pa-track="home_f25">About the Founding 25 <span aria-hidden="true">→</span></a></span>\n  </div>\n</div></section>'
+
+
 def homepage(s):
     if HB in s:
         a, b = s.index(HB), s.index(HE) + len(HE)
-        return s[:a] + home_band() + s[b:]
+        return s[:a] + (home_band() if OPEN else CLOSED_F25_BAND) + s[b:]
     m = F25_OLD_BAND.search(s)
     if not m:
         raise SystemExit("homepage: neither the artist band markers nor the closed Founding 25 band found")
-    return s[:m.start()] + home_band() + s[m.end():]
+    return s[:m.start()] + (home_band() if OPEN else CLOSED_F25_BAND) + s[m.end():]
 
 
 def f25_page(s):
     anchor = 'how long it&#x27;s kept are explained in the <a href="../privacy.html#founding-25-applications">privacy notice</a>.</p>'
-    region = FB + (POINTER if OPEN else "") + FE
     if FB in s:
         a, b = s.index(FB), s.index(FE) + len(FE)
-        return s[:a] + region + s[b:]
+        if not OPEN:
+            return s[:a - len("\n  ")] + s[b:] if s[a - len("\n  "):a] == "\n  " else s[:a] + s[b:]
+        return s[:a] + FB + POINTER + FE + s[b:]
+    if not OPEN:
+        return s
     if s.count(anchor) != 1:
         raise SystemExit("founding-25.html: pointer anchor not found exactly once")
-    return s.replace(anchor, anchor + "\n  " + region)
+    return s.replace(anchor, anchor + "\n  " + FB + POINTER + FE)
 
 
 def outputs():
     home = open(os.path.join(PA, "index.html"), encoding="utf-8").read()
     f25 = open(os.path.join(PA, "founding-25.html"), encoding="utf-8").read()
-    return {"join.html": join_page(), "curatorial-policy.html": policy_page(), "index.html": homepage(home), "founding-25.html": f25_page(f25)}
+    out = {"index.html": homepage(home), "founding-25.html": f25_page(f25)}
+    if OPEN:
+        out.update({"join.html": join_page(), "curatorial-policy.html": policy_page()})
+    return out
 
 
+PAGES_ONLY_OPEN = ("join.html", "curatorial-policy.html")
 SRC_JS = os.path.join(ROOT, "atlas-tools", "release", "plotart-apply.js")
 if __name__ == "__main__":
     out = outputs()
     js_path = os.path.join(PA, "assets", "pa-apply.js")
     if "--check" in sys.argv:
         bad = [n for n, t in out.items() if not os.path.exists(os.path.join(PA, n)) or open(os.path.join(PA, n), encoding="utf-8").read() != t]
+        bad += [n for n in PAGES_ONLY_OPEN if not OPEN and os.path.exists(os.path.join(PA, n))]
         js_ok = os.path.exists(js_path) == OPEN and (not OPEN or open(js_path, encoding="utf-8").read() == open(SRC_JS, encoding="utf-8").read())
         if bad or not js_ok:
             sys.exit("JOIN PLOTART · STALE (%s): rebuild with atlas-tools/build-plotart-join.py" % ", ".join(bad + ([] if js_ok else ["assets/pa-apply.js"])))
@@ -381,6 +401,9 @@ if __name__ == "__main__":
         sys.exit(0)
     for n, t in out.items():
         open(os.path.join(PA, n), "w", encoding="utf-8").write(t)
+    for n in PAGES_ONLY_OPEN:
+        if not OPEN and os.path.exists(os.path.join(PA, n)):
+            os.remove(os.path.join(PA, n))
     if OPEN:
         open(js_path, "w", encoding="utf-8").write(open(SRC_JS, encoding="utf-8").read())
     elif os.path.exists(js_path):

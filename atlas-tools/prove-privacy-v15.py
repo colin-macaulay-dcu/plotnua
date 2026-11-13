@@ -12,6 +12,15 @@ import privacy_v15_layer as V  # noqa: E402
 bad = []
 ok = lambda c, m: None if c else bad.append(m)
 priv = (ROOT / "privacy.html").read_text(encoding="utf-8")
+# Founder decision 13 Nov 2026: nothing of the recruitment is published while applications are closed. V15 is therefore
+# PREPARED but not applied until the opening release; then it must be applied exactly once. Unapplied, the proof checks
+# the text it would publish on the live page.
+APPLIED = V.MARKER in priv
+if not APPLIED:
+    try:
+        priv = V.apply_v15(priv)
+    except ValueError as e:
+        bad.append("V0 V15 cannot be applied to the page as it stands: " + str(e))
 ok(priv.count(V.MARKER) == 1, "V1 V15 must be applied exactly once")
 ok("PLOTNUA-PLOTART-GALLERY-ARTIST-PRIVACY-V14" in priv, "V1 V15 sits on top of V14")
 try:
@@ -35,12 +44,13 @@ w = (ROOT / "worker" / "art-space-register" / "src" / "index.js").read_text(enco
 m = re.search(r'const GA_PRIVACY_TEXT =\s*"([^"]+)";', w)
 ok(m is not None and "privacy notice for PlotArt artist applications" in m.group(1), "V3 the route's privacy confirmation names this sub-section")
 ok("'PA-AP-' + f25Ref(now).slice(4)" in w, "V3 the route issues PA-AP references")
-j = (ROOT / "plotart" / "join.html").read_text(encoding="utf-8") if (ROOT / "plotart" / "join.html").exists() else ""
+# the application page exists only while applications are open; its builder carries the link in every build
+j = (ROOT / "atlas-tools" / "build-plotart-join.py").read_text(encoding="utf-8")
 ok('href="../privacy.html#plotart-artist-applications"' in j, "V3 the application page links this sub-section")
 ix = (ROOT / "worker" / "plotart-studio" / "src" / "index.js").read_text(encoding="utf-8")
 ok("PA-AP-" in ix, "V3 PlotArt Studio recognises PA-AP references (pre-fill and review)")
 if bad:
     for x in bad: print("FAIL " + x)
     print("PRIVACY V15 · REFUSED — %d problem(s)" % len(bad)); sys.exit(2)
-print("PRIVACY V15 · OK — applied once on V14, exactly reversible; PlotArt artist applications: human decision, PA-AP reference, no waiting list, "
+print("PRIVACY V15 · OK — " + ("applied" if APPLIED else "prepared (not applied while applications are closed), applies") + " once on V14, exactly reversible; PlotArt artist applications: human decision, PA-AP reference, no waiting list, "
       "agreement accepted in Studio, pre-fill limits, retention; matches the route, the page and Studio")
