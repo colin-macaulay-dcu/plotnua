@@ -77,7 +77,7 @@ need(sec is not None, "N3 the A Home for Art PlotArt section is missing")
 if sec:
     v = re.sub(r"\s+", " ", html.unescape(re.sub(r"<[^>]+>", " ", sec.group(0))))
     need("Artists’ Gallery of original Irish art" in v and "is now online." in v, "N3 the live gallery status is missing")
-    need("accepting applications" in v, "N3 the Founding 25 application status is missing")
+    need("Applications have closed." in v and "accepting applications" not in v, "N3 the Founding 25 status must say applications have closed (Gallery Artist Programme Phase 1, 13 Nov 2026)")
     need("This matching service is not live yet." in v, "N3 home matching must remain described as unavailable")
     need("It isn’t running yet." in v, "N3 Living Gallery must remain described as unavailable")
     need("Any sale is arranged directly with the artist." in v, "N3 artist-direct sale explanation missing")

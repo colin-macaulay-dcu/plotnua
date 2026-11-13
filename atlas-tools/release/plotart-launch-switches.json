@@ -3,7 +3,7 @@
   "status": "Public search visibility authorised by Colin on 7 November 2026: homepage, Virtual Gallery, About and approved published artist/artwork pages. Invitations, applications, Living Gallery and unconfirmed Mobile Gallery profiles remain noindex. Mobile Gallery indexability retains its separate 3 November approval. Draft artists are never published by these switches. Buyer guides authorised 7 November 2026: buying/prices and abstract/contemporary art, using approved public collections only. Living-room editorial guide and printable buying checklist authorised 8 November 2026; no artist input required.",
   "f25_form_endpoint": "https://plotnua-art-space-register.colin-a41.workers.dev/v1/art-space-register/founding-25",
   "f25_form_endpoint_allowed": "https://plotnua-art-space-register.colin-a41.workers.dev/v1/art-space-register/founding-25",
-  "f25_application_state": "open",
+  "f25_application_state": "closed",
   "f25_page_indexable": false,
   "f25_launch_notice": null,
   "home_indexable": true,

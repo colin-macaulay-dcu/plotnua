@@ -2,7 +2,7 @@
 // copy of the PlotArt pages, synthetic FIXTURE artists with generated test images, and a Miniflare relay. Nothing here
 // touches the repository's pages, the live site, Cloudflare or any record.
 //   node test/prove-hire-page.mjs [SHOTS_DIR]
-import { mkdtempSync, readFileSync, writeFileSync, rmSync, mkdirSync, cpSync } from 'node:fs';
+import { mkdtempSync, existsSync, readFileSync, writeFileSync, rmSync, mkdirSync, cpSync } from 'node:fs';
 import { execSync, execFileSync, spawnSync } from 'node:child_process';
 import os from 'node:os';
 import path from 'node:path';
@@ -56,9 +56,13 @@ const strip = s => s.replace(' pa-pills--hire', '').replace(/<a class="pa-pill" 
   const changedFiles = (git('diff origin/main --name-only -- plotart') + git('ls-files --others --exclude-standard -- plotart')).split('\n').filter(Boolean);
   const old = f => { try { return execSync(`git show origin/main:${f}`, { cwd: REPO, stdio: ['ignore', 'pipe', 'ignore'] }).toString(); } catch { return null; } };
   const cssBase = c => c.replace(/\n*\/\* ==== pa-hire-nav:begin[\s\S]*?pa-hire-nav:end ==== \*\/\n?/, '\n').replace(/^\.pa-foot p a\{ text-decoration:underline;[^\n]*\n/m, '').trimEnd();
+  /* Files another separately approved release changes, which are not Art for Hire's to explain. Gallery Artist Programme
+     Phase 1 (13 Nov 2026): Founding 25 public recruitment closed (guarded by prove-plotart-launch.py L8-L9 and the manifest). */
+  const OTHER_RELEASES = new Set(['plotart/founding-25.html', 'plotart/index.html', 'plotart/about.html', 'plotart/assets/f25-apply.js']);
   const wrong = changedFiles.filter(f => {
-    if (f.startsWith('plotart/art-for-hire/')) return false;
+    if (f.startsWith('plotart/art-for-hire/') || OTHER_RELEASES.has(f)) return false;
     const o = old(f); if (o === null) return true;
+    if (!existsSync(path.join(REPO, f))) return true;   // a deleted file is a change to explain, never a crash
     const n = readFileSync(path.join(REPO, f), 'utf8');
     // 11 Nov 2026: the gallery marks add one block to plotart.css and one self-contained block to plotart.js (nothing else in either)
     const marksCss = c => c.replace(/\n\/\* Art for Hire marks, added by plotart\.js[\s\S]*?\.pa-aw-hire\{[^\n]*\}/, '');

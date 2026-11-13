@@ -100,7 +100,8 @@ ADDED_SENTENCES = {
     "Start with the guide to buying original Irish art and artwork prices , explore abstract and contemporary Irish art , or compare proportions with the free art size calculator .": "Contextual links to existing public buyer resources, 8 Nov 2026",
     "Published asking prices describe individual works, rather than market-wide price ranges.": "Scope of existing artist-supplied prices, 8 Nov 2026",
     "Explore PlotArt": "button to the PlotArt homepage (integration, proposed 27 Oct 2026)",
-    "Artists can also find out about the PlotArt Founding 25 , a programme accepting applications from artists based or working in Ireland.": "Founding 25 status matches live application page, 8 Nov 2026",
+    "Artists can also find out about the PlotArt Founding 25 , the founding group of artists based or working in Ireland.": "Founding 25 described as the founding group (Gallery Artist Programme Phase 1, 13 Nov 2026)",
+    "Applications have closed.": "Founding 25 status matches the closed application page (Gallery Artist Programme Phase 1, 13 Nov 2026)",
     "The PlotArt Living Gallery is a separate, proposed programme exploring how original work could be shown in homes like yours.": "Living Gallery pointer: A Home for Art and the Living Gallery linked both ways (PlotArt clarity, founder decision 28 Oct 2026)",
     "It isn’t running yet.": "status beside the Living Gallery pointer (PlotArt clarity, 28 Oct 2026)",
     "When you choose to open: a few people, one evening, the work on your walls.": "caption for the relocated hosting photograph dfb125ba in section 01 (Release 6, founder approval 31 Oct 2026)",
@@ -112,7 +113,7 @@ ADDED_HREFS = {
     "plotart/art-size-calculator.html": "Public wall-size tool, 8 Nov 2026",
     "plotart/": "PlotArt homepage (limited launch)",
     "terms.html#legal-information": "footer Legal information link (legal information, founder decision A1-a, 28 Oct 2026)",
-    "plotart/founding-25.html": "Founding 25 recruitment page (limited launch)",
+    "plotart/founding-25.html": "Founding 25 page: terms and closed status (limited launch; recruitment closed 13 Nov 2026)",
     "plotart/living-gallery.html": "Living Gallery, linked both ways with A Home for Art (PlotArt clarity, founder decision 28 Oct 2026)",
 }
 INTERFACE = [

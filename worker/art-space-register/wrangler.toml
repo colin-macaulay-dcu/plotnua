@@ -41,8 +41,13 @@ ARTIST_WRITES_ENABLED = "true"
 ARTIST_PRIVACY_VERSION = "2026-10-PHASE2-V5"
 
 # ---------------------------------------------------------------------------
-# PLOTART FOUNDING 25 APPLICATIONS · OPEN. Founder activation approval:
-# 28 Oct 2026, 23:07, after Privacy Notice V7 went live (a60dde7) and Cloudflare
+# PLOTART FOUNDING 25 APPLICATIONS · CLOSED (Gallery Artist Programme Phase 1,
+# founder approval of preparation 13 Nov 2026). Public Founding 25 recruitment
+# has ended: the route writes nothing and answers "not open". Existing
+# applications, their images, the Airtable records and the private invitation
+# route (founder-created Studio accounts) are unaffected. Reopening needs a new
+# founder decision, this switch set back to "true" AND a deploy by the founder.
+# History: opened 28 Oct 2026, 23:07, after Privacy Notice V7 went live (a60dde7) and Cloudflare
 # two-factor was confirmed. A separate route
 # (/v1/art-space-register/founding-25), switch and privacy version. It writes
 # nothing until BOTH are set, AND the 'Founding 25 applications' table and the
@@ -54,7 +59,7 @@ ARTIST_PRIVACY_VERSION = "2026-10-PHASE2-V5"
 # Emergency close without a commit:
 #   npx wrangler deploy --var F25_WRITES_ENABLED:false
 # ---------------------------------------------------------------------------
-F25_WRITES_ENABLED = "true"
+F25_WRITES_ENABLED = "false"
 F25_PRIVACY_VERSION = "2026-10-PHASE2-V8"   # V8 adds application images (deployed only after privacy V8 is live)
 # Artwork images with an application (development approved 29 Oct 2026; NOT DEPLOYED). Private, EU-jurisdiction
 # R2 bucket "plotart-applications", separate from published gallery artwork; lifecycle rule deletes pending/ after

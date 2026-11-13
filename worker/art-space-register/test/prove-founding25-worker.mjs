@@ -83,12 +83,17 @@ const noCall = () => atCalls().length === 0;
 const notOpenNoCall = (r) => r.s === 503 && r.j && r.j.state === 'not_open' && noCall();
 
 /* ---- Z · closed in the committed configuration ---- */
-/* Applications opened 28 Oct 2026 (founder approval): the committed config is the live, open one. */
-check('Z1 wrangler.toml: F25_WRITES_ENABLED = "true" (applications open since 28 Oct 2026)', tomlVars.F25_WRITES_ENABLED === 'true');
+/* Applications opened 28 Oct 2026 and closed by the Gallery Artist Programme Phase 1 (founder approval of preparation,
+   13 Nov 2026): the committed config is the closed one, so a plain `wrangler deploy` can never reopen the route. */
+check('Z1 wrangler.toml: F25_WRITES_ENABLED = "false" (public Founding 25 recruitment closed)', tomlVars.F25_WRITES_ENABLED === 'false');
 check('Z2 wrangler.toml: F25_PRIVACY_VERSION names the published notice', /^2026-10-PHASE2-V[78]$/.test(tomlVars.F25_PRIVACY_VERSION));
 check('Z3 wrangler.toml: no secret, token or base set as a variable', !/^\s*(F25_TURNSTILE_SECRET|AIRTABLE_TOKEN|AIRTABLE_BASE)\s*=/m.test(toml));
 let r = await run({ ...COMMITTED, F25_WRITES_ENABLED: 'false' }, req(R, good()));
 check('Z4 a valid application with the switch off -> not_open, no Airtable call', notOpenNoCall(r));
+r = await run(COMMITTED, req(R, good()));
+check('Z4b the committed configuration, exactly as it deploys, refuses a valid application: not_open, no Airtable call', notOpenNoCall(r));
+r = await run(COMMITTED, req(R, good({ email: 'release-check@probe.plotnua.invalid' })));
+check('Z4c the committed configuration answers the release probe not_open, no call', notOpenNoCall(r));
 for (const [k, v] of [['F25_WRITES_ENABLED', 'false'], ['F25_WRITES_ENABLED', 'TRUE'], ['F25_PRIVACY_VERSION', ''], ['AIRTABLE_TOKEN', ''], ['AIRTABLE_BASE', '']]) {
   r = await run({ ...ON, [k]: v }, req(R, good()));
   check(`Z5 ${k}=${JSON.stringify(v)} -> not_open, no call`, notOpenNoCall(r));

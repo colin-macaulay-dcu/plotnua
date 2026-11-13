@@ -243,7 +243,9 @@ need(re.search(r'<a href="\.\./discovery-a-home-for-art\.html"[^>]*><img src="\.
 _hero = re.search(r'<section class="pa-hero">.*?</section>', home, re.S)
 need(_hero is not None and not re.search(r"(?i)AI-generated|conceptual image", visible_text(_hero.group(0))), "L6 the homepage hero still carries an AI-image label (the hero is the founder's painting)")
 need(not re.search(r'pa-vg-card|pa-vg-grid|pa-vg-count|galleries reserved|waiting for their artists', home), "L6 the homepage shows empty gallery slots or counters (removed, 29 Oct 2026)")
-need('href="gallery/"' in home and 'href="founding-25.html#apply"' in home or STATE != "open", "L6 the homepage must link to the Virtual Gallery and the Founding 25 application")
+# The application link is required only while applications are open. The state is read here directly: STATE itself is
+# defined with L8 below, and this line raised a NameError in every state but "open" (found closing Founding 25, 13 Nov 2026).
+need('href="gallery/"' in home and ('href="founding-25.html#apply"' in home or launch.get("f25_application_state") != "open"), "L6 the homepage must link to the Virtual Gallery and, while applications are open, the Founding 25 application")
 OPEN = launch.get("galleries_open") is True     # the gallery opening switch (Phase 3, founder-controlled; L15)
 OPEN_FINE = "Artworks in PlotArt galleries are offered by their artists: PlotArt introduces buyers and doesn't take payment."
 need(("No artwork is currently available through PlotArt." in visible_text(home)) if not OPEN else (OPEN_FINE in visible_text(home)),
@@ -313,7 +315,13 @@ else:
         if os.path.exists(p):
             s = open(p, encoding="utf-8").read()
             vt = visible_text(s) + " " + " ".join(re.findall(r'<meta (?:name|property)="[^"]*" content="([^"]*)"', s))
-            need(not re.search(r"\b(?:open(?:ing)? soon|coming soon|opens? (?:on|in) |from (?:January|February|March|April|May|June|July|August|September|October|November|December))", vt, re.I),
+            # "opens on/in" counts only when a date or a time follows ("opens in March", "opens in a few weeks"): the private
+            # invitation page's "it opens in the PlotArt Artists' Gallery" names a place, not a date (13 Nov 2026).
+            # "New work coming soon" is the approved empty state of a gallery whose artist has withdrawn every work (founder
+            # decision 1 Nov 2026); it is about artwork, not applications, so it is set aside here. Without this, closing
+            # applications would make the content pipeline refuse a live withdrawal (found by the journey proof, 13 Nov 2026).
+            vt = vt.replace("New work coming soon", " ")
+            need(not re.search(r"\b(?:open(?:ing)? soon|coming soon|opens? (?:on|in) (?:the )?(?:\d|early|mid|late|spring|summer|autumn|winter|a few|the (?:coming|next|new) |(?:January|February|March|April|May|June|July|August|September|October|November|December)\b|(?:Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sunday)\b|(?:next|this) )|from (?:January|February|March|April|May|June|July|August|September|October|November|December))", vt, re.I),
                  "L9 %s: %s implies an opening date" % (STATE, name))
             need(not re.search(r"\b(?:are|is) (?:still )?being reviewed\b|already received", vt, re.I), "L9 %s: %s says applications are being reviewed" % (STATE, name))
             need("Applications are open" not in vt, "L9 %s: %s says applications are open" % (STATE, name))
