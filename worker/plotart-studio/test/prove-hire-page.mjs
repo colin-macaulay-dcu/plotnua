@@ -59,7 +59,10 @@ const strip = s => s.replace(' pa-pills--hire', '').replace(/<a class="pa-pill" 
   /* Files another separately approved release changes, which are not Art for Hire's to explain. Gallery Artist Programme
      Phase 1 (13 Nov 2026): Founding 25 public recruitment closed (guarded by prove-plotart-launch.py L8-L9 and the manifest). */
   const OTHER_RELEASES = new Set(['plotart/founding-25.html', 'plotart/index.html', 'plotart/about.html', 'plotart/assets/f25-apply.js',
-    'plotart/assets/pa-enquiry.js']);   // Open for Commissions (13 Nov 2026): sends kind only from a commission form (prove-plotart-commissions.py)
+    'plotart/assets/pa-enquiry.js',     // Open for Commissions (13 Nov 2026): sends kind only from a commission form (prove-plotart-commissions.py)
+    // Gallery Artist Programme Phase 3 (13 Nov 2026): Join PlotArt and the curatorial policy, the script shipped only while
+    // applications are open (guarded by prove-plotart-launch.py L18, the manifest and prove-plotart-join.py)
+    'plotart/join.html', 'plotart/curatorial-policy.html', 'plotart/assets/pa-apply.js']);
   const wrong = changedFiles.filter(f => {
     if (f.startsWith('plotart/art-for-hire/') || OTHER_RELEASES.has(f)) return false;
     const o = old(f); if (o === null) return true;

@@ -1,0 +1,344 @@
+{
+  "schema": "plotnua.art-space-register.gallery-artist-applications.proposed.v1",
+  "status": "PROPOSED v1, 13 Nov 2026 (Gallery Artist Programme Phase 3). NOT CREATED in the live base. Created only in a separate, founder-approved step, with its two automations switched off. The Founding 25 table, its automations and its records are not changed.",
+  "base": "the existing PlotArt base ('PlotNua Art Space Register'), using the existing Worker token, which is already scoped to that base",
+  "new_table": {
+    "name": "Gallery Artist applications",
+    "note": "PRIVATE. Applications to join the PlotArt Artists' Gallery under the standard Gallery Artist terms. Applying (A) is separate from the founder's decision and Studio invitation (B) and from accepting the Gallery Artist Agreement in PlotArt Studio (C), which Studio records. Never exported to any public page.",
+    "fields": [
+      {
+        "name": "application_ref",
+        "type": "singleLineText",
+        "writer": "worker",
+        "note": "F25-YYMMDD-XXXXXX; the reference quoted in every email",
+        "primary": true
+      },
+      {
+        "name": "artist_name",
+        "type": "singleLineText",
+        "writer": "worker",
+        "note": "at most 80 characters"
+      },
+      {
+        "name": "email",
+        "type": "email",
+        "writer": "worker"
+      },
+      {
+        "name": "email_key",
+        "type": "singleLineText",
+        "writer": "worker",
+        "note": "lower-case email; duplicate check within this table only"
+      },
+      {
+        "name": "region",
+        "type": "singleSelect",
+        "writer": "worker",
+        "note": "required; one of the 32 counties (based or working in Ireland)",
+        "options": [
+          "antrim",
+          "armagh",
+          "carlow",
+          "cavan",
+          "clare",
+          "cork",
+          "derry",
+          "donegal",
+          "down",
+          "dublin",
+          "fermanagh",
+          "galway",
+          "kerry",
+          "kildare",
+          "kilkenny",
+          "laois",
+          "leitrim",
+          "limerick",
+          "longford",
+          "louth",
+          "mayo",
+          "meath",
+          "monaghan",
+          "offaly",
+          "roscommon",
+          "sligo",
+          "tipperary",
+          "tyrone",
+          "waterford",
+          "westmeath",
+          "wexford",
+          "wicklow"
+        ]
+      },
+      {
+        "name": "medium",
+        "type": "singleSelect",
+        "writer": "worker",
+        "note": "required; primary medium",
+        "options": [
+          "painting",
+          "drawing",
+          "works_on_paper",
+          "printmaking",
+          "photography",
+          "sculpture",
+          "ceramics_craft",
+          "textiles",
+          "mixed_media",
+          "digital",
+          "other"
+        ]
+      },
+      {
+        "name": "bio",
+        "type": "multilineText",
+        "writer": "worker",
+        "note": "required; 40-1,000 characters; private, never published from here"
+      },
+      {
+        "name": "portfolio",
+        "type": "url",
+        "writer": "worker",
+        "note": "optional since 29 Oct 2026: a portfolio link OR at least three uploaded images; https (a bare address is given https://)"
+      },
+      {
+        "name": "website",
+        "type": "url",
+        "writer": "worker",
+        "note": "optional; https only",
+        "optional": true
+      },
+      {
+        "name": "social_link",
+        "type": "singleLineText",
+        "writer": "worker",
+        "note": "optional; an @handle or an https link",
+        "optional": true
+      },
+      {
+        "name": "additional_info",
+        "type": "multilineText",
+        "writer": "worker",
+        "note": "optional; at most 800 characters",
+        "optional": true
+      },
+      {
+        "name": "artwork_images",
+        "type": "number",
+        "options": {
+          "precision": 0
+        },
+        "writer": "worker",
+        "note": "added 29 Oct 2026; how many artwork images were uploaded (0-5); the images are private in R2 plotart-applications (EU)"
+      },
+      {
+        "name": "artwork_review",
+        "type": "url",
+        "writer": "worker",
+        "note": "added 29 Oct 2026; the founder-only PlotArt Studio page showing the uploaded images (behind Cloudflare Access); never a storage URL"
+      },
+      {
+        "name": "eligibility_confirmed",
+        "type": "checkbox",
+        "writer": "worker",
+        "note": "the applicant ticked: 18 or over, based or working in Ireland"
+      },
+      {
+        "name": "ownership_confirmed",
+        "type": "checkbox",
+        "writer": "worker",
+        "note": "the applicant ticked: own original work, or authorised to represent the artist"
+      },
+      {
+        "name": "privacy_notice_read",
+        "type": "checkbox",
+        "writer": "worker",
+        "note": "the applicant ticked: has read the application privacy notice (transparency, not consent)"
+      },
+      {
+        "name": "status",
+        "type": "singleSelect",
+        "writer": "worker",
+        "note": "the Worker writes 'received' only; every other value is set by the founder",
+        "options": [
+          "received",
+          "under_review",
+          "info_requested",
+          "accepted",
+          "declined",
+          "withdrawn"
+        ]
+      },
+      {
+        "name": "submitted_at",
+        "type": "dateTime",
+        "writer": "worker",
+        "note": "UTC"
+      },
+      {
+        "name": "submission_id",
+        "type": "singleLineText",
+        "writer": "worker",
+        "note": "random id generated by the page per application; retries reuse it (duplicate safeguard)"
+      },
+      {
+        "name": "source",
+        "type": "singleSelect",
+        "writer": "worker",
+        "options": [
+          "plotart_gallery_application_form"
+        ]
+      },
+      {
+        "name": "privacy_version",
+        "type": "singleLineText",
+        "writer": "worker",
+        "note": "the published privacy notice version in force"
+      },
+      {
+        "name": "consent_version",
+        "type": "singleLineText",
+        "writer": "worker",
+        "note": "version of the three confirmation sentences, e.g. F25-APPLICATION-2026-10-28"
+      },
+      {
+        "name": "consent_at",
+        "type": "dateTime",
+        "writer": "worker",
+        "note": "UTC; equals submitted_at"
+      },
+      {
+        "name": "consent_text_hash",
+        "type": "singleLineText",
+        "writer": "worker",
+        "note": "SHA-256 of the three sentences as confirmed"
+      },
+      {
+        "name": "review_notes",
+        "type": "multilineText",
+        "writer": "founder",
+        "note": "factual, relevant notes only; the applicant can ask to see them"
+      },
+      {
+        "name": "status_changed_at",
+        "type": "dateTime",
+        "writer": "founder"
+      },
+      {
+        "name": "acknowledged_at",
+        "type": "dateTime",
+        "writer": "founder",
+        "note": "confirmation email (E-1) sent"
+      },
+      {
+        "name": "decision_emailed_at",
+        "type": "dateTime",
+        "writer": "founder"
+      },
+      {
+        "name": "decided_at",
+        "type": "dateTime",
+        "options": {
+          "timeZone": "Europe/Dublin",
+          "dateFormat": {
+            "name": "iso"
+          },
+          "timeFormat": {
+            "name": "24hour"
+          }
+        }
+      },
+      {
+        "name": "decision_reason",
+        "type": "multilineText",
+        "note": "internal; never sent to the applicant"
+      },
+      {
+        "name": "studio_invited_at",
+        "type": "dateTime",
+        "options": {
+          "timeZone": "Europe/Dublin",
+          "dateFormat": {
+            "name": "iso"
+          },
+          "timeFormat": {
+            "name": "24hour"
+          }
+        },
+        "note": "set by the founder when the Studio invitation is created (as a Gallery Artist, with this application's reference)"
+      },
+      {
+        "name": "agreement_ended_at",
+        "type": "dateTime",
+        "writer": "founder"
+      },
+      {
+        "name": "withdrawn_at",
+        "type": "dateTime",
+        "writer": "founder"
+      },
+      {
+        "name": "erase_after",
+        "type": "formula",
+        "writer": "formula",
+        "formula": "IF(OR({status}='not_selected', {status}='withdrawn'), DATEADD(IF({status_changed_at}, {status_changed_at}, {submitted_at}), 12, 'months'), IF(OR({status}='received', {status}='under_review', {status}='shortlisted'), DATEADD({submitted_at}, 12, 'months'), IF({agreement_ended_at}, DATEADD({agreement_ended_at}, 12, 'months'))))",
+        "note": "FLAG ONLY; deletes nothing. Matches the retention periods in the privacy notice draft",
+        "formula_note": "12 months after decided_at for declined or withdrawn applicants; 12 months after submitted_at while undecided; blank for accepted artists (their record leaves Airtable once PlotArt Studio holds the profile). Matches the privacy notice section for artist applications."
+      }
+    ],
+    "statuses": {
+      "received": "written by the Worker",
+      "under_review": "founder",
+      "info_requested": "founder: further information asked for (email E-I)",
+      "accepted": "founder: selected; the Studio invitation follows, sent by the founder in PlotArt Studio",
+      "declined": "founder (email E-D)",
+      "withdrawn": "founder, at the applicant's request"
+    },
+    "views": [
+      "Received (newest first)",
+      "Under review",
+      "Shortlisted",
+      "Selected, awaiting terms (selected, no terms_accepted_at)",
+      "Founding Artists (counts_toward_25 = 1)",
+      "Waiting list",
+      "Erasure due (erase_after before today)"
+    ]
+  },
+  "changes_to_existing_tables": [
+    {
+      "table": "Status log",
+      "field": "register",
+      "add_choice": "gallery_artist"
+    },
+    {
+      "table": "Consent proofs",
+      "field": "register",
+      "add_choice": "gallery_artist"
+    },
+    {
+      "table": "Deletion log",
+      "field": "register",
+      "add_choice": "gallery_artist"
+    }
+  ],
+  "manual_steps": "Formula fields, views and the three new 'gallery_artist' select choices are created by hand in Airtable (writes use typecast:false, so the choices must exist before the route is opened).",
+  "deletion": [
+    "delete the application row",
+    "delete its Status log rows (record_ref = the row id) and its Consent proofs row (matched by given_at = consent_at and register gallery_artist)",
+    "add one anonymous Deletion log row (register gallery_artist)"
+  ],
+  "automations": [
+    {
+      "name": "PlotArt application · new-application alert",
+      "trigger": "record created in 'Gallery Artist applications'",
+      "action": "email hello@plotnua.ie: reference, artist name, medium, county, record link (no biography, no images)",
+      "state": "created OFF"
+    },
+    {
+      "name": "PlotArt application · acknowledgement (E-1)",
+      "trigger": "record created in 'Gallery Artist applications'",
+      "action": "Gmail from hello@plotnua.ie to the applicant: 'Your PlotArt application · <reference>' (approved E-1 wording), then set acknowledged_at",
+      "state": "created OFF"
+    }
+  ]
+}

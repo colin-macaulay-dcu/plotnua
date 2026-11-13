@@ -6,6 +6,8 @@
   "scripts": {
     "prove": "node test/prove-art-worker.mjs",
     "prove:artist": "node test/prove-artist-worker.mjs",
-    "prove:f25": "node test/prove-founding25-worker.mjs"
+    "prove:f25": "node test/prove-founding25-worker.mjs",
+    "prove:gallery": "node test/prove-gallery-application-worker.mjs",
+    "prove:f25-images": "node test/prove-f25-images.mjs"
   }
 }

@@ -302,7 +302,12 @@ check('I3 no mail adapter', !/sendgrid|resend|smtp|mailchannels|sendEmail|send_e
 check('I4 the router has no GET branch', !/request\.method === 'GET'/.test(code));
 check('I5 request logging (observability) stays disabled', /\[observability\]\s*\nenabled = false/.test(toml));
 const f25code = code.slice(code.indexOf("const T_F25"), code.indexOf('export default'));
-check('I6 the Founding 25 code writes only the status constant received', (f25code.match(/[^_]status: /g) || []).length === 1 && /[^_]status: F25_STATUS/.test(f25code) && /to_status: F25_STATUS/.test(f25code) && T.F25_STATUS === 'received');
+/* Since the Gallery Artist route (Phase 3, 13 Nov 2026) the Founding 25 handler is one shared function run with a
+   configuration: the handler writes only the configuration's status, and every configuration's status is F25_STATUS. */
+const handler = code.slice(code.indexOf('async function handleApplication('), code.indexOf('export default'));
+const progs = code.slice(code.indexOf('const PROG_F25'), code.indexOf('const handleFounding25'));
+check('I6 the Founding 25 code writes only the status constant received', (handler.match(/[^_]status: /g) || []).length === 1 && /[^_]status: P\.status,/.test(handler) && /to_status: P\.status,/.test(handler)
+  && (progs.match(/[^_]status: /g) || []).length === 2 && (progs.match(/[^_]status: F25_STATUS,/g) || []).length === 2 && T.F25_STATUS === 'received');
 
 console.log('PLOTART FOUNDING 25 · WORKER PROOF v2');
 console.log(out.join('\n'));

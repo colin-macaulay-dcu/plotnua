@@ -165,8 +165,8 @@
           <button class="st-btn st-btn--small" data-email="${a.id}" aria-expanded="false" aria-controls="em-${a.id}">Change email</button>
           ${a.account_status !== 'ended' ? `<button class="st-btn st-btn--small" data-pf="${a.id}" aria-expanded="false" aria-controls="pf-${a.id}">Start profile from application</button>` : ''}</td></tr>
           <tr id="pf-${a.id}" class="st-em-row" hidden><td colspan="6"><form class="st-em" data-pfform="${a.id}" novalidate>
-            <p class="st-em-h">Start the profile of <b>${E(a.display_name)}</b> from their Founding 25 application</p>
-            <div class="st-f"><label for="pf-r-${a.id}">Application reference</label><input id="pf-r-${a.id}" type="text" autocomplete="off" spellcheck="false" placeholder="F25-YYMMDD-XXXXXX" value="${E(a.application_ref || '')}"></div>
+            <p class="st-em-h">Start the profile of <b>${E(a.display_name)}</b> from their application</p>
+            <div class="st-f"><label for="pf-r-${a.id}">Application reference</label><input id="pf-r-${a.id}" type="text" autocomplete="off" spellcheck="false" placeholder="F25-… or PA-AP-…" value="${E(a.application_ref || '')}"></div>
             <p class="st-muted st-em-note">Fills only the empty biography, medium, county, website and Instagram fields, using the Studio’s normal checks. Nothing already written is replaced. The county stays hidden from the public, application images and additional information are never copied, and no email is sent: let the artist know yourself.</p>
             <div class="st-row"><button type="submit" class="st-btn st-btn--solid st-btn--small">Start profile</button><button type="button" class="st-btn st-btn--small" data-pfcancel="${a.id}">Cancel</button></div>
             <p class="st-err" role="alert" data-pferr></p></form></td></tr>
@@ -185,7 +185,7 @@
         <div class="st-two"><div>
         <div class="st-f"><label for="i-name">Artist name</label><input id="i-name" type="text"></div>
         <div class="st-f"><label for="i-email">Email they applied with</label><input id="i-email" type="email"></div></div><div>
-        <div class="st-f"><label for="i-ref">Application reference</label><input id="i-ref" type="text" placeholder="F25-YYMMDD-XXXXXX"></div>
+        <div class="st-f"><label for="i-ref">Application reference</label><input id="i-ref" type="text" placeholder="F25-… or PA-AP-…"></div>
         <fieldset class="st-f" style="border:0;margin:4px 0 14px;padding:0"><legend style="padding:0;margin:0 0 6px">Programme <span class="st-req">Required</span></legend>
           <label class="st-check"><input type="radio" name="i-prog" value="founding" style="accent-color:var(--terra);width:20px;height:20px"> <span>Founding Artist <span class="st-muted">· Founding Artist Agreement, free founding year</span></span></label>
           <label class="st-check"><input type="radio" name="i-prog" value="gallery_artist"${o.terms_installed ? '' : ' disabled'} style="accent-color:var(--terra);width:20px;height:20px"> <span>Gallery Artist <span class="st-muted">· Gallery Artist Agreement, 15% commission${o.terms_installed ? '' : ' (available once migration 0012 has run)'}</span></span></label>
@@ -327,17 +327,17 @@
     }));
   }
 
-  /* ---- Founding 25 applications with artwork images (private; founder only). Decisions stay in Airtable. */
+  /* ---- Applications with artwork images (private; founder only): Founding 25 (F25-…) and PlotArt (PA-AP-…, Phase 3). Decisions stay in Airtable. */
   const MED = { painting: 'Painting', drawing: 'Drawing', works_on_paper: 'Works on paper', printmaking: 'Printmaking', photography: 'Photography', sculpture: 'Sculpture',
     ceramics_craft: 'Ceramics and craft', textiles: 'Textiles', mixed_media: 'Mixed media', digital: 'Digital', other: 'Other' };
   const county = c => c ? c.split('_').map(w => w[0].toUpperCase() + w.slice(1)).join(' ') : '';
   const ext = (u, label) => u ? `<a class="st-btn st-btn--small" href="${E(u)}" target="_blank" rel="noopener noreferrer nofollow">${E(label)} ↗</a>` : '';
   async function apps() {
     const r = await api('GET', '/api/admin/applications');
-    app.innerHTML = `<h1 class="st-h1">Applications</h1><p class="st-sub">Founding 25 applications that came with images of the artist's work. Private: only you can see them. Shortlist and select in Airtable.</p>
+    app.innerHTML = `<h1 class="st-h1">Applications</h1><p class="st-sub">Applications that came with images of the artist's work: PlotArt applications (PA-AP) and earlier Founding 25 applications (F25). Private: only you can see them. Review and decide in Airtable.</p>
       ${!r.connected ? '<section class="st-card"><p class="st-muted">Application image storage isn’t connected yet.</p></section>' : r.items.length ? `<ul class="st-works">${r.items.map(a => `<li class="st-work" style="grid-template-columns:minmax(0,1fr) auto">
         <div><p class="st-work-t"><a href="/admin/applications/${E(a.ref)}" style="color:inherit">${E(a.artist_name)}</a></p>
-        <p class="st-work-s">${E(a.ref)} · ${E(MED[a.medium] || a.medium)}${a.region ? ' · ' + E(county(a.region)) : ''} · ${when(a.submitted_at)}</p>
+        <p class="st-work-s">${a.ref.startsWith('PA-AP-') ? 'PlotArt application' : 'Founding 25'} · ${E(a.ref)} · ${E(MED[a.medium] || a.medium)}${a.region ? ' · ' + E(county(a.region)) : ''} · ${when(a.submitted_at)}</p>
         <div class="st-appthumbs">${a.images.map(i => `<img src="${E(i.src)}" alt="" loading="lazy">`).join('')}</div></div>
         <div class="st-row"><a class="st-btn st-btn--solid st-btn--small" href="/admin/applications/${E(a.ref)}">Open</a></div></li>`).join('')}</ul>` : '<section class="st-card"><p class="st-muted">No applications with images yet.</p></section>'}`;
   }
@@ -349,7 +349,7 @@
       <div class="st-two" style="margin-top:18px"><section class="st-card"><h2>Artist statement</h2><p style="white-space:pre-line">${E(a.bio)}</p>
         ${a.additional_info ? `<h2 style="margin-top:18px">Anything else</h2><p style="white-space:pre-line">${E(a.additional_info)}</p>` : ''}</section>
       <section class="st-card"><h2>Links</h2><div class="st-row" style="flex-wrap:wrap;gap:8px">${ext(a.portfolio, 'Portfolio')}${ext(a.website, 'Website')}${a.social_link ? (a.social_link.startsWith('@') ? ext('https://www.instagram.com/' + a.social_link.slice(1) + '/', a.social_link) : ext(a.social_link, 'Profile')) : ''}${!a.portfolio && !a.website && !a.social_link ? '<p class="st-muted" style="margin:0">No links: the images are the portfolio.</p>' : ''}</div>
-        <h2 style="margin-top:18px">Decision</h2><p class="st-muted">Shortlist, select or decline in Airtable, where the application's status and emails are recorded.</p>
+        <h2 style="margin-top:18px">Decision</h2><p class="st-muted">${a.ref.startsWith('PA-AP-') ? 'Accept, ask for more or decline in Airtable, where the status and emails are recorded. Applying never creates an account: once you accept, invite the artist from the Review desk as a <b>Gallery Artist</b>, with this reference, and their profile starts from this application.' : 'Shortlist, select or decline in Airtable, where the application\'s status and emails are recorded.'}</p>
         ${a.airtable ? `<a class="st-btn st-btn--solid" href="${E(a.airtable)}" target="_blank" rel="noopener noreferrer">Open in Airtable ↗</a>` : '<p class="st-muted">Find it in Airtable by its reference.</p>'}
         <h2 style="margin-top:22px">When the application is closed</h2><p class="st-muted">Erase these images when the application is deleted under the retention rules.</p>
         <button class="st-btn st-btn--small st-btn--danger" id="erase">Erase these images</button><p class="st-err" id="eerr"></p></section></div>`;
@@ -793,7 +793,7 @@
 
   async function render() {
     const h = location.hash || '#/', path = location.pathname.replace(/\/$/, '');
-    const am = path.match(/^\/admin\/applications\/(F25-\d{6}-[0-9A-F]{6})$/);
+    const am = path.match(/^\/admin\/applications\/((?:F25|PA-AP)-\d{6}-[0-9A-F]{6})$/);
     document.querySelectorAll('.st-tabs a').forEach(a => a.toggleAttribute('aria-current', a.dataset.t === (path.startsWith('/admin/applications') ? 'apps' : path === '/admin/gallery' ? 'order' : path === '/admin/ideas' ? 'ideas' : path === '/admin/garden' ? 'garden' : path === '/admin/agreements' ? 'agree' : path === '/admin/leaving' ? 'leave' : path === '/admin/hire' ? 'hire' : path === '/admin/opportunities' ? 'opps' : 'desk')));
     document.querySelectorAll('.st-tabs a[aria-current]').forEach(a => a.setAttribute('aria-current', 'page'));
     try { if (am) await appView(am[1]); else if (path === '/admin/gallery') await order(); else if (path === '/admin/ideas') await ideas(); else if (path === '/admin/garden') await garden(); else if (path === '/admin/agreements') await agreements(); else if (path === '/admin/leaving') await leaving(); else if (path === '/admin/hire') await hire(); else if (path === '/admin/opportunities') await opportunities(); else if (path === '/admin/applications') await apps(); else if (h.startsWith('#/review/')) await review(h.slice(9)); else await home(); window.scrollTo(0, 0); }

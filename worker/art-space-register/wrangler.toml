@@ -67,6 +67,11 @@ F25_PRIVACY_VERSION = "2026-10-PHASE2-V8"   # V8 adds application images (deploy
 # F25_PRIVACY_VERSION moves to the notice that describes the images (V8) in the same release.
 F25_REVIEW_BASE = "https://plotart-studio.colin-a41.workers.dev"
 
+# PlotArt Gallery Artist applications (Phase 3, development 13 Nov 2026). Built closed: the route refuses
+# everything until the founder approves opening, the notice covering it is live and both values below are set.
+APP_WRITES_ENABLED = "false"
+APP_PRIVACY_VERSION = ""
+
 # AIRTABLE_BASE and AIRTABLE_TOKEN are NOT set here and are NOT the garden ones.
 # BOTH ARE PERSISTENT SECRETS (corrected 13 Oct 2026, activation preparation):
 #   AIRTABLE_BASE  -> wrangler secret put AIRTABLE_BASE

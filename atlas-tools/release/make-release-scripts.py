@@ -90,6 +90,8 @@ STANDARD = [
     ("python3 atlas-tools/prove-privacy-v12.py", "PRIVACY V12 · OK", "privacy V12 proof (PlotArt Studio Opportunities & delivery)"),
     ("python3 atlas-tools/prove-privacy-v13.py", "PRIVACY V13 · OK", "privacy V13 proof (Opportunities & delivery: care, handling and insurance)"),
     ("python3 atlas-tools/prove-privacy-v14.py", "PRIVACY V14 · OK", "privacy V14 proof (Gallery Artist sale reports and commission records)"),
+    ("python3 atlas-tools/prove-privacy-v15.py", "PRIVACY V15 · OK", "privacy V15 proof (PlotArt artist applications)"),
+    ("python3 atlas-tools/prove-plotart-join.py", "0 failed", "Join PlotArt: pages, states and guard L18"),
     ("python3 atlas-tools/prove-legal-information.py", "LEGAL INFORMATION · OK", "legal information G1-G6"),
     # PlotArt limited launch (27 Oct 2026): the published pages are exactly the verified
     # build (manifest), noindex, follow, and applications are not open. Changing the state is a new release.

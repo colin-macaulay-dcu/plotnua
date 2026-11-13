@@ -326,7 +326,7 @@ async function participation(env, a) {
     { key: 'history', what: 'Web versions of published photographs in the private website repository history', rule: 'Kept, not public and not used (licence 6.6); removing them would need a history rewrite your release rules forbid', due: null, state: 'manual',
       branches: `content/plotart-${a.id}-v*` },
     { key: 'others', what: 'Copies made by others (search engine caches, screenshots, shares)', rule: 'Outside PlotArt’s control (licence 6.8): ask search engines to refresh', due: null, state: 'manual' },
-    ...(a.application_ref ? [{ key: 'application', what: `Founding 25 application images (${a.application_ref})`, rule: 'Erase from Applications when no longer needed', due: null, state: 'manual' }] : []),
+    ...(a.application_ref ? [{ key: 'application', what: `${a.application_ref.startsWith('PA-AP-') ? 'PlotArt' : 'Founding 25'} application images (${a.application_ref})`, rule: 'Erase from Applications when no longer needed', due: null, state: 'manual' }] : []),
   ] };
   return out;
 }
@@ -1044,8 +1044,12 @@ export default {
   },
 };
 
-/* Founding 25 applications that came with artwork images (the review copy the application route writes). */
-const airtableLink = (env, rec) => env.F25_AIRTABLE_TABLE_URL && /^rec[A-Za-z0-9]{14}$/.test(rec || '') ? `${env.F25_AIRTABLE_TABLE_URL.replace(/\/$/, '')}/${rec}` : null;
+/* Founding 25 (F25-…) and PlotArt (PA-AP-…, Phase 3) applications that came with artwork images (the review copy the application route writes). */
+const APP_REF = /^(?:F25|PA-AP)-\d{6}-[0-9A-F]{6}$/;
+// The Airtable table address is a secret per table: F25_AIRTABLE_TABLE_URL (Founding 25) and, optionally, APP_AIRTABLE_TABLE_URL
+// (PlotArt applications). Without it, the review page says to find the application in Airtable by its reference.
+const airtableLink = (env, rec, ref = '') => { const t = String(ref).startsWith('PA-AP-') ? env.APP_AIRTABLE_TABLE_URL : env.F25_AIRTABLE_TABLE_URL;
+  return t && /^rec[A-Za-z0-9]{14}$/.test(rec || '') ? `${t.replace(/\/$/, '')}/${rec}` : null; };
 async function application(env, ref) {
   if (!env.APPLICATIONS) return null;
   const o = await env.APPLICATIONS.get(`applications/${ref}/application.json`);
@@ -1056,7 +1060,7 @@ async function application(env, ref) {
   return { ref, artist_name: pick('artist_name'), medium: pick('medium'), region: pick('region'), bio: pick('bio'), additional_info: pick('additional_info'),
     portfolio: link(a.portfolio), website: link(a.website), social_link: pick('social_link'), submitted_at: pick('submitted_at'),
     images: (a.images || []).filter(i => /^[1-5]\.(jpg|png|webp)$/.test(i.file)).map(i => ({ src: `/admin/applications/${ref}/img/${i.file}`, w: i.w, h: i.h })),
-    airtable: airtableLink(env, a.airtable_record) };
+    airtable: airtableLink(env, a.airtable_record, ref) };
 }
 async function applications(env) {
   if (!env.APPLICATIONS) return { connected: false, items: [] };
@@ -1066,7 +1070,7 @@ async function applications(env) {
     const l = await env.APPLICATIONS.list({ prefix: 'applications/', delimiter: '/', cursor });
     for (const pre of l.delimitedPrefixes || []) {
       const ref = pre.split('/')[1];
-      if (!/^F25-\d{6}-[0-9A-F]{6}$/.test(ref)) continue;
+      if (!APP_REF.test(ref)) continue;
       const a = await application(env, ref);
       if (a) items.push({ ref, artist_name: a.artist_name, medium: a.medium, region: a.region, submitted_at: a.submitted_at, images: a.images.slice(0, 5) });
     }
@@ -1292,8 +1296,8 @@ async function route(req, env) {
       return json({ ok: true, founding_number: n });
     }
     /* ---- Founding 25 applications with artwork images (private bucket plotart-applications; founder only) */
-    if (p === '/admin/applications' || /^\/admin\/applications\/F25-\d{6}-[0-9A-F]{6}$/.test(p)) return html(A.ADMIN_HTML);
-    if ((mm = p.match(/^\/admin\/applications\/(F25-\d{6}-[0-9A-F]{6})\/img\/([1-5]\.(?:jpg|png|webp))$/)) && m === 'GET') {
+    if (p === '/admin/applications' || /^\/admin\/applications\/(?:F25|PA-AP)-\d{6}-[0-9A-F]{6}$/.test(p)) return html(A.ADMIN_HTML);
+    if ((mm = p.match(/^\/admin\/applications\/((?:F25|PA-AP)-\d{6}-[0-9A-F]{6})\/img\/([1-5]\.(?:jpg|png|webp))$/)) && m === 'GET') {
       if (!env.APPLICATIONS) return html('Not found', 404);
       const o = await env.APPLICATIONS.get(`applications/${mm[1]}/${mm[2]}`);
       if (!o) return html('Not found', 404);
@@ -1301,11 +1305,11 @@ async function route(req, env) {
         'Content-Disposition': 'inline', 'X-Content-Type-Options': 'nosniff', 'Cross-Origin-Resource-Policy': 'same-origin' } });
     }
     if (p === '/api/admin/applications' && m === 'GET') return json({ ok: true, ...(await applications(env)) });
-    if ((mm = p.match(/^\/api\/admin\/applications\/(F25-\d{6}-[0-9A-F]{6})$/)) && m === 'GET') {
+    if ((mm = p.match(/^\/api\/admin\/applications\/((?:F25|PA-AP)-\d{6}-[0-9A-F]{6})$/)) && m === 'GET') {
       const a = await application(env, mm[1]);
       return a ? json({ ok: true, application: a }) : json({ ok: false, error: 'Not found' }, 404);
     }
-    if ((mm = p.match(/^\/api\/admin\/applications\/(F25-\d{6}-[0-9A-F]{6})\/erase$/)) && m === 'POST') {
+    if ((mm = p.match(/^\/api\/admin\/applications\/((?:F25|PA-AP)-\d{6}-[0-9A-F]{6})\/erase$/)) && m === 'POST') {
       if (!env.APPLICATIONS) throw new Bad('Image storage is not connected', 500);
       const l = await env.APPLICATIONS.list({ prefix: `applications/${mm[1]}/` });
       await Promise.all(l.objects.map(o => env.APPLICATIONS.delete(o.key)));
@@ -1378,7 +1382,7 @@ async function route(req, env) {
       const name = L.text(b.display_name, 2, 80, 'Name');
       const slug = String(b.slug || L.slugify(name));
       if (!L.SLUG.test(slug)) throw new Bad('Gallery address: lower-case words joined by hyphens');
-      if (b.application_ref && !/^F25-\d{6}-[0-9A-F]{6}$/.test(b.application_ref)) throw new Bad('Application reference looks like F25-YYMMDD-XXXXXX');
+      if (b.application_ref && !APP_REF.test(b.application_ref)) throw new Bad('Application reference looks like F25-YYMMDD-XXXXXX or PA-AP-YYMMDD-XXXXXX');
       if (await one(env, 'SELECT id FROM artists WHERE email=? OR slug=?', email, slug)) throw new Bad('An artist with that email or gallery address already exists', 409);
       /* Phase 2 (13 Nov 2026): the programme is an explicit choice, never a default. "founding" keeps PA-FAA exactly as today;
          "gallery_artist" invites on the standard 15% commission terms (PA-GAA, artist_terms row, migration 0012). The older
@@ -1386,6 +1390,10 @@ async function route(req, env) {
       const programme = b.programme === 'founding' || b.programme === 'gallery_artist' ? b.programme
         : b.programme === undefined && b.founding === true ? 'founding' : b.programme === undefined && b.founding === false ? 'licence_only' : null;
       if (!programme) throw new Bad('Choose the programme for this invitation: Founding Artist or Gallery Artist');
+      // A PlotArt application (PA-AP-…, Phase 3) is an application to join on the Gallery Artist terms: it can only lead to
+      // a Gallery Artist invitation. A Founding 25 reference (F25-…) may lead to either, as the founder decides.
+      if (b.application_ref && String(b.application_ref).startsWith('PA-AP-') && programme !== 'gallery_artist')
+        throw new Bad('A PlotArt application (PA-AP-…) leads to a Gallery Artist invitation. Choose Gallery Artist, or leave the reference out.', 409);
       if (programme === 'gallery_artist' && !(await termsInstalled(env))) throw new Bad('Gallery Artist invitations become available once the Gallery Artist records are installed (migration 0012).', 503);
       const id = rid('a'), at = now();
       await env.DB.batch([
@@ -1406,7 +1414,7 @@ async function route(req, env) {
       const started = prefill.fields.map(k => PREFILL_LABEL[k]);
       const startedList = started.length > 1 ? `${started.slice(0, -1).join(', ')} and ${started[started.length - 1]}` : started[0];
       const prefillPara = started.length
-        ? `To save you time, we've started your profile using the details from your Founding 25 application: your ${startedList}. Please review these when you sign in, and change anything you'd like before you submit your gallery. Your profile stays private until then. Your county is not shown publicly unless you choose to show it, and the images you sent with your application aren't used: you'll add your artworks in the Studio.\n\n`
+        ? `To save you time, we've started your profile using the details from your ${String(b.application_ref).startsWith('PA-AP-') ? 'PlotArt' : 'Founding 25'} application: your ${startedList}. Please review these when you sign in, and change anything you'd like before you submit your gallery. Your profile stays private until then. Your county is not shown publicly unless you choose to show it, and the images you sent with your application aren't used: you'll add your artworks in the Studio.\n\n`
         : '';
       // Gallery Artists only (Phase 2): one paragraph naming their agreement. The Founding Artist email is unchanged.
       const galleryPara = programme === 'gallery_artist'
@@ -1424,13 +1432,15 @@ async function route(req, env) {
       // five empty profile fields and (when it was empty) the application reference.
       const b = await req.json();
       const ref = String(b.application_ref || '').trim();
-      if (!/^F25-\d{6}-[0-9A-F]{6}$/.test(ref)) throw new Bad('Application reference looks like F25-YYMMDD-XXXXXX');
-      const a = await one(env, 'SELECT id, display_name, account_status, application_ref FROM artists WHERE id=?', mm[1]);
+      if (!APP_REF.test(ref)) throw new Bad('Application reference looks like F25-YYMMDD-XXXXXX or PA-AP-YYMMDD-XXXXXX');
+      const a = await one(env, 'SELECT id, display_name, account_status, application_ref, founding FROM artists WHERE id=?', mm[1]);
       if (!a) throw new Bad('Artist not found', 404);
       const refuse = async (msg, reason) => {
         await audit(env, me.email, 'founder', 'profile_prefill_not_applied', a.id, { ref, via: 'existing_account', reason });
         throw new Bad(msg, 409);
       };
+      if (ref.startsWith('PA-AP-') && AG.programmeOf(a, await termsFor(env, a.id)) !== 'gallery_artist')
+        await refuse('A PlotArt application (PA-AP-…) can only start the profile of a Gallery Artist account.', 'application is for the Gallery Artist programme');
       if (a.account_status === 'ended') await refuse('This account has ended, so its profile can’t be started from an application.', 'account ended');
       if (a.application_ref && a.application_ref !== ref) await refuse(`This account is already linked to application ${a.application_ref}. A different application can’t be used.`, 'account linked to a different application');
       const r = await prefillFromApplication(env, a.id, ref, a.display_name);

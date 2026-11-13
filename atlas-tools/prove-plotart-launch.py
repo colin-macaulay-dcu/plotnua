@@ -58,6 +58,11 @@ once the launch pages are released). Prints "PLOTART LAUNCH · OK" only when:
       Living Gallery priority or place; the Living Gallery page never links to the
       Founding 25 application page and links to A Home for Art; the Founding 25 page says
       the founding year begins when the gallery is first published.
+  L18 Join PlotArt (Gallery Artist Programme Phase 3, 13 Nov 2026): gallery_application_state is one of four
+      states and is never inferred from the endpoint; join.html, curatorial-policy.html, the homepage band and the
+      Founding 25 pointer are exactly the build for that state (build-plotart-join.py); only "open" has a form, posting
+      only to the approved route, with the Worker's own confirmations; the only percentage is the approved 15% wording
+      and the only price the approved worked example; no discount, waiver or individual-terms wording.
   L16 Mobile Gallery (3 Nov 2026): no provider marked participating; the published provider data holds no internal
       notes, contacts, terms or prices; the unconfirmed-participation wording stays; nothing collects or sends
       homeowner information; no structured data. The page alone may be indexed and listed in the sitemap.
@@ -82,7 +87,7 @@ SWITCHES = sys.argv[sys.argv.index("--switches") + 1] if "--switches" in sys.arg
 launch = json.load(open(SWITCHES, encoding="utf-8"))
 ENDPOINT = launch.get("f25_form_endpoint")
 PAGES = ["index.html", "founding-25.html", "living-gallery.html", "gallery/index.html", "invitation.html", "about.html",
-         "mobile-gallery/index.html", "mobile-gallery/gallery.html"] + list(SEO.GENERATED_PATHS) + list(SEO.EDITORIAL_PATHS) + list(SEO.TOOL_PATHS)  # invitation.html: private Founding Artist invitation (noindex, mailto only, no form)
+         "mobile-gallery/index.html", "mobile-gallery/gallery.html", "join.html", "curatorial-policy.html"] + list(SEO.GENERATED_PATHS) + list(SEO.EDITORIAL_PATHS) + list(SEO.TOOL_PATHS)  # invitation.html: private Founding Artist invitation (noindex, mailto only, no form)
 # Mobile Gallery (founder release authorisation, 3 Nov 2026): a public work-in-progress page (indexable only by its own
 # switch) and an illustrative gallery profile that is never indexed while participation is unconfirmed.
 MG_FILES = {"mobile-gallery/mobile-gallery.css", "mobile-gallery/mobile-gallery.js", "mobile-gallery/mobile-gallery-data.js",
@@ -96,7 +101,11 @@ HERO_IMAGES = {"assets/hero/founder-01-abstract.webp"}
 # The Living Gallery image (consolidated brief, 29 Oct 2026): the founder's painting in an AI-generated interior visualisation.
 LG_IMAGE = "assets/living/plotart-living-gallery-colin-macaulay-artwork.webp"
 CAMPAIGN_IMAGES = {"assets/campaigns/one-painting-three-rooms-840.webp", "assets/campaigns/one-painting-three-rooms-1672.webp"}
-ALLOWED = {"downloads/plotart-art-buying-checklist.pdf"} | set(PAGES) | MG_FILES | {"assets/plotart.css", "assets/plotart-guides.css", "assets/plotart-artworks.css", "assets/plotart-wall-size.css", "assets/plotart-wall-size.js", "assets/plotart.js", "assets/pa-enquiry.js", LG_IMAGE} | HERO_IMAGES | CAMPAIGN_IMAGES | ({"assets/f25-apply.js"} if launch.get("f25_application_state") == "open" else set())
+ALLOWED = {"downloads/plotart-art-buying-checklist.pdf"} | set(PAGES) | MG_FILES | {"assets/plotart.css", "assets/plotart-guides.css", "assets/plotart-artworks.css", "assets/plotart-wall-size.css", "assets/plotart-wall-size.js", "assets/plotart.js", "assets/pa-enquiry.js", LG_IMAGE} | HERO_IMAGES | CAMPAIGN_IMAGES | ({"assets/f25-apply.js"} if launch.get("f25_application_state") == "open" else set()) | ({"assets/pa-apply.js"} if launch.get("gallery_application_state") == "open" else set())
+# Join PlotArt (Phase 3, 13 Nov 2026): the application page and the curatorial policy; the script ships only in "open".
+GA_STATE = launch.get("gallery_application_state")
+GA_EP = launch.get("gallery_application_endpoint")
+GA_OPEN = GA_STATE == "open"
 # Published artist galleries (Phase 1, 29 Oct 2026; checked in full by L14). Only these shapes are allowed:
 #   artists/<slug>/index.html · artists/<slug>/<artwork-slug>.html · artists/<slug>/img/<name>.webp
 ART_FILE = re.compile(r"^artists/([a-z0-9]+(?:-[a-z0-9]+){0,6})/(?:[a-z0-9]+(?:-[a-z0-9]+){0,6}\.html|gallery\.json|img/[a-z0-9-]+-\d{2,5}\.webp)$")
@@ -150,6 +159,13 @@ def visible_text(s):
     s = re.sub(r"<script.*?</script>|<style.*?</style>|<!--.*?-->|<svg.*?</svg>", " ", s, flags=re.S)
     return html.unescape(re.sub(r"<[^>]+>", " ", s))
 
+AP_FILE = '<input id="ap-images" type="file" accept="image/jpeg,image/png,image/webp" multiple hidden data-ap-file>'
+JOIN_EXAMPLE = '<tbody><tr><th scope="row">Artwork sold for</th><td>€1,000</td></tr><tr class="is-you"><th scope="row">You receive</th><td>€850</td></tr><tr><th scope="row">PlotArt invoices you</th><td>€150</td></tr></tbody>'
+APPROVED_15_MARKUP = ['<span class="num" aria-hidden="true">15%</span>',
+                      '<p class="big" aria-hidden="true">15%<small>commission on sales through PlotArt · no upfront fees · no exclusivity</small></p>']
+APPROVED_15_TEXT = ["15% commission on sales through PlotArt.", "15% commission on sales through PlotArt",
+                    "15% commission, only when PlotArt introduces a sale.", "15% on sales through PlotArt."]
+
 # demonstration names, from the prototype data when present (it is never published)
 demo_names = set()
 cat_path = os.path.join(ROOT, "plotart", "data", "catalogue.demo.json")
@@ -189,7 +205,9 @@ for name in PAGES:
     for n in demo_names:
         need(not re.search(r"\b%s\b" % re.escape(n), vt) and not re.search(r"\b%s\b" % re.escape(html.escape(n)), s),
              "L3 %s carries demonstration content (text or markup): %s" % (name, n))
-    if name not in SEO.GENERATED_PATHS:
+    if name == "join.html":   # the approved worked example of the commission, and nothing else (L18)
+        need("€" not in visible_text(s.replace(JOIN_EXAMPLE, "", 1)) and s.count(JOIN_EXAMPLE) == 1, "L3 join.html shows a euro amount outside the approved example")
+    elif name not in SEO.GENERATED_PATHS:
         need("€" not in vt and "&euro;" not in s, "L3 %s shows a euro price" % name)
     else:
         try:
@@ -200,8 +218,16 @@ for name in PAGES:
     need(not re.search(r"example price|demonstration|fictional", vt, re.I), "L3 %s uses demonstration wording" % name)
     # L4
     vt4 = re.sub(r"\b100% (?:free\b|of your artwork sales\b)", " ", vt, flags=re.I)
+    s4 = s
+    if name in ("index.html", "join.html"):   # the standard Gallery Artist terms, in the approved wording only (founder, 13 Nov 2026)
+        for _m in APPROVED_15_MARKUP:
+            s4 = s4.replace(_m, " ")
+        vt4 = visible_text(s4)
+        vt4 = re.sub(r"\b100% (?:free\b|of your artwork sales\b)", " ", vt4, flags=re.I)
+        for _t in APPROVED_15_TEXT:
+            vt4 = vt4.replace(_t, " ")
     need(not re.search(r"\d+(?:\.\d+)?\s?(?:%|per\s?cent)", vt4, re.I), "L4 %s shows a percentage" % name)
-    need(not re.search(r"commission (?:rate )?of|\d+\s?(?:%|per\s?cent)\s+commission", vt, re.I), "L4 %s states a commission rate" % name)
+    need(not re.search(r"commission (?:rate )?of|\d+\s?(?:%|per\s?cent)\s+commission", vt4, re.I), "L4 %s states a commission rate" % name)
     # L5
     indexable = SEO.indexable(name, launch)
     if indexable:
@@ -219,9 +245,11 @@ for name in PAGES:
     # The ONE permitted upload (founder approval of development, 29 Oct 2026): artwork images on the Founding 25 form,
     # JPG/PNG/WebP only, sent only to the approved route's /image address.
     F25_FILE = '<input id="f25-images" type="file" accept="image/jpeg,image/png,image/webp" multiple hidden data-f25-file>'
-    s7 = s.replace(F25_FILE, "", 1) if name == "founding-25.html" else s
+    s7 = s.replace(F25_FILE, "", 1) if name == "founding-25.html" else s.replace(AP_FILE, "", 1) if (name == "join.html" and GA_OPEN) else s
     need(not re.search(r'type="file"|name="(?:address|eircode|phone|dob|date_of_birth)"', s7), "L7 %s asks for an upload (other than artwork images), address, phone or date of birth" % name)
     ep_ok = s.replace('data-endpoint="%s"' % ENDPOINT, "").replace('data-image-endpoint="%s/image"' % ENDPOINT, "") if ENDPOINT else s
+    if name == "join.html" and GA_OPEN and GA_EP:
+        ep_ok = ep_ok.replace('data-endpoint="%s"' % GA_EP, "", 1).replace('data-image-endpoint="%s/image"' % GA_EP, "", 1)
     need(not re.search(r"workers\.dev|airtable", ep_ok), "L7 %s references a live endpoint outside the approved form" % name)
 
 home = open(os.path.join(PA, "index.html"), encoding="utf-8").read() if os.path.exists(os.path.join(PA, "index.html")) else ""
@@ -297,9 +325,13 @@ f25 = open(f25p, encoding="utf-8").read() if os.path.exists(f25p) else ""
 f25v = visible_text(f25)
 m = re.search(r'<meta name="description" content="([^"]*)">', f25)
 need(m is not None and html.unescape(m.group(1)) == DESC, "L8 the Founding 25 description is not the %s wording" % STATE)
-_badge = re.search(r'<span class="pa-open-badge[^"]*">([^<]*)</span>', home)
-need(_badge is not None and html.unescape(_badge.group(1)) == ("Applications open" if STATE == "open" else LINE), "L8 the homepage Founding 25 badge is not the %s wording" % STATE)
-for other in {"Applications are open.", "Applications are paused at the moment.", "Applications have closed.", "Applications are not yet open."} - {LINE}:
+_badge = re.findall(r'<span class="pa-open-badge[^"]*">([^<]*)</span>', home)
+# Since Join PlotArt (13 Nov 2026) the homepage band is the artist-application band and its badge follows
+# gallery_application_state (L18); the Founding 25 state is then shown only on the Founding 25 page.
+_HOME_STATE = GA_STATE if GA_STATE else STATE
+_HOME_LINE = {"open": "Applications are open.", "paused": "Applications are paused at the moment.", "closed": "Applications have closed."}.get(_HOME_STATE, "Applications are not yet open.")
+need(len(_badge) == 1 and html.unescape(_badge[0]) == ("Applications open" if _HOME_STATE == "open" else _HOME_LINE), "L8 the homepage badge is not the %s wording" % _HOME_STATE)
+for other in {"Applications are open.", "Applications are paused at the moment.", "Applications have closed.", "Applications are not yet open."} - {_HOME_LINE}:
     need(other not in visible_text(home), "L8 the homepage shows another state's line: %s" % other)
 if STATE == "open":
     need(ENDPOINT is not None and f25.count("<form") == 1 and ('data-f25-form data-endpoint="%s"' % ENDPOINT) in f25, "L9 open: exactly one live form posting to the approved route")
@@ -307,7 +339,7 @@ else:
     need("<form" not in f25, "L9 %s: the Founding 25 page must have no form" % STATE)
     need("f25-apply.js" not in f25 and not os.path.exists(os.path.join(PA, "assets", "f25-apply.js")), "L9 %s: no application script" % STATE)
     need("Apply to become a Founding Artist" not in f25v, "L9 %s: no 'Apply to become a Founding Artist' call to action" % STATE)
-    need("Applications are open" not in f25v + visible_text(home), "L9 %s: nothing may say applications are open" % STATE)
+    need("Applications are open" not in f25v + visible_text(home), "L9 %s: nothing may say applications are open" % STATE)   # the homepage badge reads "Applications open"
     if STATE in ("not_open", "configured_closed"):
         need("Applications are not yet open." in f25v, "L9 %s: the Founding 25 page must say 'Applications are not yet open.'" % STATE)
     for name in PAGES:
@@ -324,7 +356,8 @@ else:
             need(not re.search(r"\b(?:open(?:ing)? soon|coming soon|opens? (?:on|in) (?:the )?(?:\d|early|mid|late|spring|summer|autumn|winter|a few|the (?:coming|next|new) |(?:January|February|March|April|May|June|July|August|September|October|November|December)\b|(?:Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sunday)\b|(?:next|this) )|from (?:January|February|March|April|May|June|July|August|September|October|November|December))", vt, re.I),
                  "L9 %s: %s implies an opening date" % (STATE, name))
             need(not re.search(r"\b(?:are|is) (?:still )?being reviewed\b|already received", vt, re.I), "L9 %s: %s says applications are being reviewed" % (STATE, name))
-            need("Applications are open" not in vt, "L9 %s: %s says applications are open" % (STATE, name))
+            if not (name == "join.html" and GA_OPEN):   # Join PlotArt has its own state (L18)
+                need("Applications are open" not in vt, "L9 %s: %s says applications are open" % (STATE, name))
 for name in PAGES:
     p = os.path.join(PA, name)
     if not os.path.exists(p):
@@ -460,6 +493,7 @@ if HIRE_ON:
 NAV_CURRENT = {"index.html": "Discover PlotArt", "gallery/index.html": "Artists’ Gallery", "living-gallery.html": "Living Gallery", "founding-25.html": None, "invitation.html": None, "about.html": None,
                "mobile-gallery/index.html": "Mobile Gallery", "mobile-gallery/gallery.html": "Mobile Gallery"}
 NAV_CURRENT.update({p: None for p in SEO.GENERATED_PATHS + SEO.EDITORIAL_PATHS + SEO.TOOL_PATHS})
+NAV_CURRENT.update({"join.html": None, "curatorial-policy.html": None})
 NAV_CURRENT[HIRE_PAGE] = "Art for Hire"
 for name in PAGES + ([HIRE_PAGE] if HIRE_ON else []):
     p = os.path.join(PA, name)
@@ -642,6 +676,62 @@ if HIRE_ON:
             _sr = posixpath.join(_sr, "index.html")
         need(os.path.exists(os.path.join(ROOT, _sr)) and (not _sr.startswith("plotart/") or _sr[len("plotart/"):] in ALLOWED), "L17 the Art for Hire page has a broken or unpublished link: %s" % _ref)
 
+# L18 · Join PlotArt (Gallery Artist Programme Phase 3, 13 Nov 2026)
+GA_STATES = ("not_open", "open", "paused", "closed")
+need(GA_STATE in GA_STATES, "L18 gallery_application_state is missing or not one of %s" % ", ".join(GA_STATES))
+need(GA_EP == "https://plotnua-art-space-register.colin-a41.workers.dev/v1/art-space-register/gallery-application", "L18 gallery_application_endpoint is not the approved route")
+GA_LINE = {"open": "Applications are open.", "paused": "Applications are paused at the moment.", "closed": "Applications have closed."}.get(GA_STATE, "Applications are not yet open.")
+_jp, _cp = os.path.join(PA, "join.html"), os.path.join(PA, "curatorial-policy.html")
+_join = open(_jp, encoding="utf-8").read() if os.path.exists(_jp) else ""
+_pol = open(_cp, encoding="utf-8").read() if os.path.exists(_cp) else ""
+_jv, _pv = re.sub(r"\s+", " ", visible_text(_join)), re.sub(r"\s+", " ", visible_text(_pol))
+need(bool(_join) and bool(_pol), "L18 join.html and curatorial-policy.html must both be published")
+if os.path.realpath(SITE) == os.path.realpath(ROOT):   # on the development tree, the pages must be exactly the builder's output for this state
+    import subprocess
+    _chk = subprocess.run([sys.executable, os.path.join(ROOT, "atlas-tools", "build-plotart-join.py"), "--check", "--switches", SWITCHES], capture_output=True, text=True)
+    need(_chk.returncode == 0, "L18 the Join PlotArt pages are not the build for this state: " + (_chk.stdout + _chk.stderr).strip()[-200:])
+need(_jv.count(GA_LINE) == (2 if GA_OPEN else 2), "L18 join.html must state '%s' in its hero and its Apply section" % GA_LINE)
+for _o in {"Applications are open.", "Applications are paused at the moment.", "Applications have closed.", "Applications are not yet open."} - {GA_LINE}:
+    need(_o not in _jv, "L18 join.html shows another state's line: %s" % _o)
+for _t in ("15% commission, only when PlotArt introduces a sale.", "No upfront fees.", "No exclusivity.", "agreed within 24 months of that introduction",
+           "Nothing on your own sales.", "A newly commissioned work is agreed directly between you and the collector",
+           "The full terms are in the PlotArt Gallery Artist Agreement, which you read and accept in PlotArt Studio before your gallery is first published."):
+    need(_t in _jv, "L18 join.html lacks the approved terms wording: %s" % _t)
+need('href="curatorial-policy.html"' in _join and 'href="join.html"' in _pol, "L18 the two pages must link to each other")
+for _h in ("Artistic quality", "A distinctive voice", "A developed body of work", "Commitment to your practice", "Contribution to the gallery"):
+    need(_jv.count(_h) == 1 and _pv.count(_h) == 1, "L18 both pages must carry the five criteria once each: %s" % _h)
+need("never influenced by any fee, payment or commission arrangement" in _pv, "L18 the curatorial policy must say gallery order is never influenced by payment")
+for _n, _v in (("join.html", _jv), ("curatorial-policy.html", _pv), ("index.html", re.sub(r"\s+", " ", visible_text(home)))):
+    need(not re.search(r"(?i)discount|waive|waiver|individual terms|variation|selection (?:board|panel|committee)|private invitation|invitation[- ]only|\b\d+ (?:places|artists only)\b|limited (?:places|number)", _v),
+         "L18 %s mentions discounts, waivers, individual terms, a selection board, private invitations or a limit" % _n)
+_band = re.search(r"<!-- pa-artist-apply:begin -->(.*?)<!-- pa-artist-apply:end -->", home, re.S)
+need(_band is not None and home.count("<!-- pa-artist-apply:begin -->") == 1, "L18 the homepage artist band is missing or duplicated")
+if _band:
+    need('href="curatorial-policy.html"' in _band.group(1) and (('href="join.html#apply"' in _band.group(1)) if GA_OPEN else ('href="join.html"' in _band.group(1))),
+         "L18 the homepage band must link to Join PlotArt (the form when open) and the curatorial policy")
+need("f25InviteH" not in home, "L18 the closed Founding 25 band must give way to the artist band")
+_ptr = re.search(r"<!-- pa-artist-apply-pointer:begin -->(.*?)<!-- pa-artist-apply-pointer:end -->", f25, re.S)
+need(_ptr is not None and (bool(_ptr.group(1).strip()) == GA_OPEN), "L18 the Founding 25 page points to Join PlotArt only while applications are open")
+need("<form" not in _pol and "pa-apply.js" not in _pol, "L18 the curatorial policy has no form")
+_jsp = os.path.join(PA, "assets", "pa-apply.js")
+if GA_OPEN:
+    need(_join.count("<form") == 1 and ('data-ap-form data-endpoint="%s" data-image-endpoint="%s/image"' % (GA_EP, GA_EP)) in _join, "L18 open: exactly one form posting only to the approved route")
+    need('<script src="assets/pa-apply.js" defer></script>' in _join and os.path.exists(_jsp), "L18 open: the application script must ship with the page")
+    _wsrc = open(os.path.join(ROOT, "worker", "art-space-register", "src", "index.js"), encoding="utf-8").read()
+    for _const, _key in (("F25_ELIGIBILITY_TEXT", "eligibility"), ("F25_OWNERSHIP_TEXT", "ownership"), ("GA_PRIVACY_TEXT", "privacy")):
+        _m = re.search(r'const %s =\s*"([^"]+)";' % _const, _wsrc)
+        _p = re.search(r'data-ap-sentence="%s">([^<]*)<' % _key, _join)
+        need(_m is not None and _p is not None and html.unescape(_p.group(1)) == _m.group(1), "L18 the %s confirmation differs from the Worker's %s" % (_key, _const))
+    need('href="../privacy.html#plotart-artist-applications"' in _join, "L18 the form must link the privacy notice's artist applications section")
+    need(not re.search(r'name="(?:living_gallery|location_public|address|eircode|phone|dob|date_of_birth|terms)"', _join), "L18 the application asks for something outside the approved form")
+    need("nothing is published without your approval" in _jv, "L18 the confirmation must say nothing is published without the artist's approval")
+    _js = open(_jsp, encoding="utf-8").read() if os.path.exists(_jsp) else ""
+    need("localStorage" not in _js and "sessionStorage" not in _js and "document.cookie" not in _js and "console." not in _js and "credentials: 'omit'" in _js,
+         "L18 the application script must store, log and send no credentials")
+else:
+    need("<form" not in _join and "pa-apply.js" not in _join and not os.path.exists(_jsp), "L18 %s: no form and no application script" % GA_STATE)
+    need("Apply now" not in _jv and 'href="join.html#apply"' not in home, "L18 %s: no call to apply" % GA_STATE)
+
 # L16 · Mobile Gallery (founder release authorisation, 3 Nov 2026): the concept is public, no gallery has joined.
 _mgd = os.path.join(PA, "mobile-gallery", "mobile-gallery-data.js")
 if os.path.exists(_mgd):
@@ -663,4 +753,4 @@ if problems:
     for x in problems:
         print("  " + x)
     sys.exit(1)
-print("PLOTART LAUNCH · OK — L1-L17 on %d pages · applications %s · Art for Hire %s (%d demonstration names checked absent)" % (len(PAGES), STATE, ("ON" + (", enquiry form on" if HIRE_FORM else "")) if HIRE_ON else "off", len(demo_names)))
+print("PLOTART LAUNCH · OK — L1-L18 on %d pages · applications %s · artist applications %s · Art for Hire %s (%d demonstration names checked absent)" % (len(PAGES), STATE, GA_STATE, ("ON" + (", enquiry form on" if HIRE_FORM else "")) if HIRE_ON else "off", len(demo_names)))

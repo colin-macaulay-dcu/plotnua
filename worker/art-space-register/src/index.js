@@ -590,9 +590,9 @@ function sniffImage(b) {
 }
 function hexId() { const b = new Uint8Array(8); crypto.getRandomValues(b); return [...b].map(x => x.toString(16).padStart(2, '0')).join(''); }
 
-async function handleF25Image(env, request, url, cors) {
-  if (tooMany('f25img', Date.now(), F25_IMAGE_BURST_PER_MINUTE, 60_000)) return SLOW_DOWN(cors);
-  if (!f25WritesEnabled(env) || !env.F25_IMAGES) return NOT_OPEN(cors);
+async function handleApplicationImage(P, env, request, url, cors) {
+  if (tooMany(P.burstKey + 'img', Date.now(), F25_IMAGE_BURST_PER_MINUTE, 60_000)) return SLOW_DOWN(cors);
+  if (!P.writesEnabled(env) || !env.F25_IMAGES) return NOT_OPEN(cors);
   const sid = url.searchParams.get('s') || '';
   if (!UUID_RE.test(sid)) return REFUSED(cors, 'submission_id');
   const declared = (request.headers.get('content-type') || '').split(';')[0].trim().toLowerCase();
@@ -619,6 +619,8 @@ async function handleF25Image(env, request, url, cors) {
     return UNAVAILABLE(cors);
   }
 }
+
+const handleF25Image = (env, request, url, cors) => handleApplicationImage(PROG_F25, env, request, url, cors);
 
 /* A website address typed without https:// is accepted: "example.ie/work" -> "https://example.ie/work". */
 function f25Url(v) {
@@ -708,19 +710,18 @@ function cleanSocial(v) {
 }
 const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/;
 
-async function f25Exists(env, emailKey, submissionId) {
+async function f25Exists(env, emailKey, submissionId, table = T_F25) {
   const q = (s) => "'" + s.replace(/\\/g, '\\\\').replace(/'/g, "\\'") + "'";
   const f = encodeURIComponent('OR({email_key}=' + q(emailKey) + ',{submission_id}=' + q(submissionId) + ')');
   const out = await atRequest(env, 'GET',
-    '/' + encodeURIComponent(T_F25) + '?filterByFormula=' + f + '&maxRecords=1&fields%5B%5D=email_key');
+    '/' + encodeURIComponent(table) + '?filterByFormula=' + f + '&maxRecords=1&fields%5B%5D=email_key');
   return Array.isArray(out.records) && out.records.length > 0;
 }
 
-async function f25CapReached(env) {
-  const cap = f25DailyCap(env);
+async function f25CapReached(env, table = T_F25, cap = f25DailyCap(env)) {
   const f = encodeURIComponent("IS_AFTER({submitted_at}, DATEADD(NOW(), -1, 'days'))");
   const out = await atRequest(env, 'GET',
-    '/' + encodeURIComponent(T_F25) + '?filterByFormula=' + f + '&maxRecords=' + cap +
+    '/' + encodeURIComponent(table) + '?filterByFormula=' + f + '&maxRecords=' + cap +
     '&fields%5B%5D=submitted_at');
   return !Array.isArray(out.records) || out.records.length >= cap;
 }
@@ -748,9 +749,64 @@ async function sentenceMatches(expected, sent) {
   return sameString(await sha256Hex(expected), await sha256Hex(cleanText(sent, 1000) || ''));
 }
 
-async function handleFounding25(env, body, now, cors) {
+/* =========================================================================
+ * PLOTART GALLERY ARTIST APPLICATIONS (Gallery Artist Programme Phase 3, development 13 Nov 2026). BUILT CLOSED;
+ * NOT DEPLOYED. A FOURTH route, /v1/art-space-register/gallery-application (and its /image address), takes
+ * applications to join the PlotArt Artists' Gallery under the standard Gallery Artist terms. It is the Founding 25
+ * route's code, run with its own configuration: its own Airtable table ('Gallery Artist applications'), its own
+ * reference (PA-AP-YYMMDD-XXXXXX), its own switch (APP_WRITES_ENABLED, committed "false"), its own privacy version
+ * (APP_PRIVACY_VERSION, empty until the notice covering it is live), its own burst limit and daily cap, its own
+ * privacy confirmation, source and register. Neither route reads, writes or counts the other's table. Images go to
+ * the same private EU bucket, under applications/<PA-AP reference>/, for the founder's review in PlotArt Studio.
+ * Applying never creates a Studio account: the founder reviews every application and alone decides whether to
+ * invite the artist (Studio, founder only). The status ceiling is 'received'.
+ * ========================================================================= */
+const T_GA = 'Gallery Artist applications';
+const GA_ROUTE = '/v1/art-space-register/gallery-application';
+const GA_IMAGE_ROUTE = '/v1/art-space-register/gallery-application/image';
+const GA_REGISTER = 'gallery_artist';
+const GA_SOURCE = 'plotart_gallery_application_form';
+const GA_CONSENT_VERSION = 'PA-AP-APPLICATION-2026-11-R1';
+const GA_DEFAULT_DAILY_CAP = 50;
+const GA_ELIGIBILITY_TEXT = F25_ELIGIBILITY_TEXT;
+const GA_OWNERSHIP_TEXT = F25_OWNERSHIP_TEXT;
+const GA_PRIVACY_TEXT =
+  "I've read the privacy notice for PlotArt artist applications, which explains how my application is used, who can see it and how long it's kept.";
+function gaWritesEnabled(env) {
+  return env.APP_WRITES_ENABLED === 'true' && !!env.APP_PRIVACY_VERSION &&
+    !!env.AIRTABLE_TOKEN && !!env.AIRTABLE_BASE;
+}
+function gaDailyCap(env) {
+  const n = Number.parseInt(env.APP_DAILY_CAP, 10);
+  return Number.isInteger(n) && n >= 1 && n <= 500 ? n : GA_DEFAULT_DAILY_CAP;
+}
+/* A private reference for the artist's emails: PA-AP-YYMMDD-XXXXXX. */
+function gaRef(now) {
+  return 'PA-AP-' + f25Ref(now).slice(4);
+}
+
+/* One handler, two configurations. The Founding 25 configuration reproduces the route exactly as it was. */
+const PROG_F25 = {
+  burstKey: 'f25', table: T_F25, ref: f25Ref, status: F25_STATUS, source: F25_SOURCE, register: F25_REGISTER,
+  receivedReason: 'f25_application_received', writesEnabled: f25WritesEnabled, dailyCap: f25DailyCap,
+  privacyVersion: (env) => env.F25_PRIVACY_VERSION,
+  eligibility: F25_ELIGIBILITY_TEXT, ownership: F25_OWNERSHIP_TEXT, ownershipLegacy: F25_OWNERSHIP_TEXT_R2, privacy: F25_PRIVACY_TEXT,
+  consentVersion: F25_CONSENT_VERSION, consentVersionLegacy: F25_CONSENT_VERSION_R2
+};
+const PROG_GA = {
+  burstKey: 'gaa', table: T_GA, ref: gaRef, status: F25_STATUS, source: GA_SOURCE, register: GA_REGISTER,
+  receivedReason: 'gallery_application_received', writesEnabled: gaWritesEnabled, dailyCap: gaDailyCap,
+  privacyVersion: (env) => env.APP_PRIVACY_VERSION,
+  eligibility: GA_ELIGIBILITY_TEXT, ownership: GA_OWNERSHIP_TEXT, ownershipLegacy: null, privacy: GA_PRIVACY_TEXT,
+  consentVersion: GA_CONSENT_VERSION, consentVersionLegacy: null
+};
+const handleFounding25 = (env, body, now, cors) => handleApplication(PROG_F25, env, body, now, cors);
+const handleGalleryApplication = (env, body, now, cors) => handleApplication(PROG_GA, env, body, now, cors);
+const handleGalleryImage = (env, request, url, cors) => handleApplicationImage(PROG_GA, env, request, url, cors);
+
+async function handleApplication(P, env, body, now, cors) {
   /* Per-route burst limit first, so even malformed floods are slowed. */
-  if (tooMany('f25', Date.now(), F25_BURST_PER_MINUTE, 60_000)) return SLOW_DOWN(cors);
+  if (tooMany(P.burstKey, Date.now(), F25_BURST_PER_MINUTE, 60_000)) return SLOW_DOWN(cors);
   for (const k of Object.keys(body)) {
     if (!F25_KEYS.has(k)) return REFUSED(cors, 'unexpected_field');
   }
@@ -785,36 +841,36 @@ async function handleFounding25(env, body, now, cors) {
   if (additional_info === null) return REFUSED(cors, 'additional_info');
   if (!submission_id) return REFUSED(cors, 'submission_id');
 
-  if (!(await sentenceMatches(F25_ELIGIBILITY_TEXT, body.eligibility_text))) return REFUSED(cors, 'eligibility_text');
-  const ownR3 = await sentenceMatches(F25_OWNERSHIP_TEXT, body.ownership_text);
-  if (!ownR3 && !(await sentenceMatches(F25_OWNERSHIP_TEXT_R2, body.ownership_text))) return REFUSED(cors, 'ownership_text');
-  if (!(await sentenceMatches(F25_PRIVACY_TEXT, body.privacy_text))) return REFUSED(cors, 'privacy_text');
+  if (!(await sentenceMatches(P.eligibility, body.eligibility_text))) return REFUSED(cors, 'eligibility_text');
+  const ownR3 = await sentenceMatches(P.ownership, body.ownership_text);
+  if (!ownR3 && !(P.ownershipLegacy && await sentenceMatches(P.ownershipLegacy, body.ownership_text))) return REFUSED(cors, 'ownership_text');
+  if (!(await sentenceMatches(P.privacy, body.privacy_text))) return REFUSED(cors, 'privacy_text');
 
   /* Configuration probe (founder decision H-5): an address at
      probe.plotnua.invalid is NEVER written. It reports only whether the
      route WOULD accept; it is never evidence that an application was stored. */
   const probe = email.toLowerCase().endsWith(F25_PROBE_DOMAIN);
 
-  if (!f25WritesEnabled(env)) return NOT_OPEN(cors);
+  if (!P.writesEnabled(env)) return NOT_OPEN(cors);
   if (probe) return json(200, { ok: true, state: 'probe_open' }, cors);
   if (!(await f25ChallengeOk(env, body.challenge_token))) return REFUSED(cors, 'challenge');
 
   const emailKey = email.toLowerCase();
   const stamp = utcStamp(now);
-  const confirmations = [F25_ELIGIBILITY_TEXT, ownR3 ? F25_OWNERSHIP_TEXT : F25_OWNERSHIP_TEXT_R2, F25_PRIVACY_TEXT].join('\n');
+  const confirmations = [P.eligibility, ownR3 ? P.ownership : P.ownershipLegacy, P.privacy].join('\n');
   const consentHash = await sha256Hex(confirmations);
   const application = {
-    application_ref: f25Ref(now),
+    application_ref: P.ref(now),
     artist_name, email, email_key: emailKey, region, medium, bio,
     eligibility_confirmed: true,
     ownership_confirmed: true,
     privacy_notice_read: true,
-    status: F25_STATUS,
+    status: P.status,
     submitted_at: stamp,
     submission_id,
-    source: F25_SOURCE,
-    privacy_version: env.F25_PRIVACY_VERSION,
-    consent_version: ownR3 ? F25_CONSENT_VERSION : F25_CONSENT_VERSION_R2,
+    source: P.source,
+    privacy_version: P.privacyVersion(env),
+    consent_version: ownR3 ? P.consentVersion : P.consentVersionLegacy,
     consent_at: stamp,
     consent_text_hash: consentHash
   };
@@ -830,8 +886,8 @@ async function handleFounding25(env, body, now, cors) {
 
   let recId, moved = [];
   try {
-    if (await f25Exists(env, emailKey, submission_id)) return RECEIVED(cors);
-    if (await f25CapReached(env)) return SLOW_DOWN(cors);
+    if (await f25Exists(env, emailKey, submission_id, P.table)) return RECEIVED(cors);
+    if (await f25CapReached(env, P.table, P.dailyCap(env))) return SLOW_DOWN(cors);
     /* The images first: each must be one this application uploaded. They are copied to the application's private
        folder BEFORE the record exists, so a received application always has its images; if anything fails the copies
        are removed and the applicant can simply send again (the holding copies are untouched until success). */
@@ -846,7 +902,7 @@ async function handleFounding25(env, body, now, cors) {
       moved.push(key);
       kept.push({ file: key.slice(prefix.length), type, w: Number((src.customMetadata || {}).w) || null, h: Number((src.customMetadata || {}).h) || null, bytes: src.size });
     }
-    const created = await atCreate(env, T_F25, application);
+    const created = await atCreate(env, P.table, application);
     recId = created && created.records && created.records[0] && created.records[0].id;
     if (!recId) throw new Error('airtable_502');
     if (images.length) {
@@ -867,15 +923,15 @@ async function handleFounding25(env, body, now, cors) {
      refuses them, the applicant is still told the truth (received). */
   try {
     await atCreate(env, T_STATUS_LOG, {
-      record_ref: recId, from_status: '', to_status: F25_STATUS,
-      at: stamp, actor: 'system', reason: 'f25_application_received', register: F25_REGISTER
+      record_ref: recId, from_status: '', to_status: P.status,
+      at: stamp, actor: 'system', reason: P.receivedReason, register: P.register
     });
     await atCreate(env, T_CONSENT, {
       email_hash: await sha256Hex(emailKey),
-      privacy_version: env.F25_PRIVACY_VERSION,
+      privacy_version: P.privacyVersion(env),
       consent_text_hash: consentHash,
       given_at: stamp,
-      register: F25_REGISTER
+      register: P.register
     });
   } catch { /* the application row is the authoritative record */ }
   return RECEIVED(cors);
@@ -904,11 +960,12 @@ export default {
     if (request.method !== 'POST') return json(405, { ok: false, state: 'refused' }, cors);
 
     if (url.pathname === F25_IMAGE_ROUTE) return handleF25Image(env, request, url, cors);
+    if (url.pathname === GA_IMAGE_ROUTE) return handleGalleryImage(env, request, url, cors);
 
     if (tooMany('post', Date.now(), 30, 60_000)) return SLOW_DOWN(cors);
 
     const raw = await request.text();
-    if (raw.length > (url.pathname === F25_ROUTE ? F25_MAX_BODY : MAX_BODY_BYTES)) return REFUSED(cors, 'body');
+    if (raw.length > (url.pathname === F25_ROUTE || url.pathname === GA_ROUTE ? F25_MAX_BODY : MAX_BODY_BYTES)) return REFUSED(cors, 'body');
     let body;
     try { body = JSON.parse(raw); } catch { return REFUSED(cors, 'body'); }
     if (!body || typeof body !== 'object' || Array.isArray(body)) return REFUSED(cors, 'body');
@@ -916,6 +973,7 @@ export default {
     if (url.pathname === ROUTE) return handleHost(env, body, now, cors);
     if (url.pathname === ARTIST_ROUTE) return handleArtist(env, body, now, cors);
     if (url.pathname === F25_ROUTE) return handleFounding25(env, body, now, cors);
+    if (url.pathname === GA_ROUTE) return handleGalleryApplication(env, body, now, cors);
     return NOT_FOUND(cors);
   }
 };
@@ -930,5 +988,7 @@ export const __test = {
   VF, F25_KEYS, F25_REQUIRED, F25_ROUTE, F25_STATUS, F25_CONSENT_VERSION, F25_MAX_BODY, F25_DEFAULT_DAILY_CAP, F25_BURST_PER_MINUTE,
   F25_ELIGIBILITY_TEXT, F25_OWNERSHIP_TEXT, F25_OWNERSHIP_TEXT_R2, F25_CONSENT_VERSION_R2, F25_PRIVACY_TEXT, F25_PROBE_DOMAIN, f25WritesEnabled, f25DailyCap,
   F25_IMAGE_ROUTE, F25_MAX_IMAGES, F25_MIN_IMAGES, F25_MAX_IMAGE_BYTES, sniffImage, f25Url,
+  T_GA, GA_ROUTE, GA_IMAGE_ROUTE, GA_REGISTER, GA_SOURCE, GA_CONSENT_VERSION, GA_DEFAULT_DAILY_CAP, GA_ELIGIBILITY_TEXT, GA_OWNERSHIP_TEXT, GA_PRIVACY_TEXT,
+  gaWritesEnabled, gaDailyCap, gaRef,
   resetRateLimit: () => hits.clear()
 };
