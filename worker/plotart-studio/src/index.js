@@ -1478,7 +1478,7 @@ async function route(req, env) {
   if (p === '/api/me' && m === 'GET') {
     const d = await load(env, artist.id);
     const { email, ...a } = d.artist;
-    return json({ ok: true, artist: { ...a, email }, status: await status(env, d.artist), media: L.MEDIA, counties: L.COUNTIES, min_long_edge: minLong(env),
+    return json({ ok: true, artist: { ...a, email }, status: await status(env, d.artist), opportunities: await O.status(env, artist), media: L.MEDIA, counties: L.COUNTIES, min_long_edge: minLong(env),
       portrait: (({ checks, ...i }) => i)(d.images.find(i => i.id === d.artist.portrait_image_id) || { checks: null }) });
   }
   if (p === '/api/me/profile' && m === 'PUT') {

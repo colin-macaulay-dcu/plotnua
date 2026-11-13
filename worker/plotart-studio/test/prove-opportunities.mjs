@@ -241,11 +241,49 @@ check('U15 the founder page fits a phone', await p.evaluate(() => document.docum
 await shot(p, 'founder-390.png');
 await p.ctx.close();
 
+console.log('— the dashboard prompt and the founder view after saves and edits');
+await db.prepare("DELETE FROM artist_opportunities WHERE artist_id = 'aben'").run();
+p = await page(BEN);
+await p.goto(S.url + '/#/', { waitUntil: 'load' }); await p.waitForTimeout(700);
+const dash = await p.locator('#app').innerText(), mailsBefore = (await db.prepare('SELECT COUNT(*) AS n FROM mail_capture').first()).n;
+check('U16 an artist who has not answered sees a discreet dashboard prompt below the gallery tasks, which blocks nothing',
+  await p.locator('.st-opp-ask').count() === 1 && /Add your preferences/.test(dash) && /doesn’t commit you to anything/.test(dash)
+  && await p.locator('.st-opp-ask').evaluate(n => !!n.previousElementSibling && n === n.parentElement.lastElementChild)
+  && await p.locator('[data-act=add]').isEnabled() && await p.locator('.st-card').first().locator('.st-opp-ask').count() === 0 && p.errs.length === 0, dash.slice(-400));
+await shot(p, 'artist-dashboard-prompt-1280.png');
+await p.click('.st-opp-ask a'); await p.waitForTimeout(600);
+check('U17 the prompt opens the Opportunities form', /#\/opportunities$/.test(p.url()) && await p.locator('#oform').count() === 1);
+const mob = await p.locator('[data-k="mobile_gallery"]').innerText();
+check('U18 the Mobile Gallery choice describes the existing service (home viewings through participating galleries)', mob === 'Mobile Gallery — home viewings through participating galleries', mob);
+await p.click('[data-k="living_gallery"]'); await p.click('[data-k="deliver"]'); await p.click('[data-k="Dublin"]'); await p.click('#o-save'); await p.waitForTimeout(500);
+let f = await page(FOUNDER);
+await f.goto(S.url + '/admin/opportunities', { waitUntil: 'load' }); await f.waitForTimeout(800);
+const benRow1 = await f.locator('#of-list > li', { hasText: 'Ben Test' }).innerText(), kp1 = await f.locator('.st-kpis').innerText();
+await f.ctx.close();
+await p.goto(S.url + '/#/', { waitUntil: 'load' }); await p.waitForTimeout(600);
+const goneAfter = await p.locator('.st-opp-ask').count();
+await p.goto(S.url + '/#/opportunities', { waitUntil: 'load' }); await p.waitForTimeout(600);
+await p.click('[data-k="online_only"]'); await p.click('#o-save'); await p.waitForTimeout(500);
+f = await page(FOUNDER);
+await f.goto(S.url + '/admin/opportunities', { waitUntil: 'load' }); await f.waitForTimeout(800);
+const benRow2 = await f.locator('#of-list > li', { hasText: 'Ben Test' }).innerText();
+await f.selectOption('#of-status', 'online'); const onl = await f.locator('#of-list').innerText();
+await f.selectOption('#of-status', 'unanswered'); const una = await f.locator('#of-list').innerText();
+await f.selectOption('#of-status', ''); await f.selectOption('#of-reach', 'Dublin'); const dub = await f.locator('#of-list').innerText();
+await f.ctx.close(); await p.ctx.close();
+check('U19 once saved, the prompt is gone; the founder sees the saved answers (Living Gallery, delivers, Dublin)',
+  goneAfter === 0 && /Living Gallery/.test(benRow1) && /Delivers · Dublin/.test(benRow1) && !/Not answered yet/.test(benRow1), JSON.stringify([goneAfter, benRow1, kp1]));
+check('U20 after the artist edits to "Online gallery only for now", the founder sees Online only (not unanswered) and the old delivery answers are gone',
+  /Online only for now/.test(benRow2) && !/Delivers/.test(benRow2) && onl.includes('Ben Test') && !una.includes('Ben Test') && !dub.includes('Ben Test')
+  && (await db.prepare('SELECT COUNT(*) AS n FROM mail_capture').first()).n === mailsBefore, JSON.stringify([benRow2, onl.slice(0, 120), una.slice(0, 200)]));
+const me = await call('GET', '/api/me', BEN);
+check('U21 /api/me reports the artist\'s own state for the prompt only ("answered"), and nothing about other artists', me.j.opportunities === 'answered' && !('items' in me.j));
+
 console.log('— before migration 0009 runs');
 await db.prepare('DROP TABLE artist_opportunities').run();
 const ni = [await call('GET', '/api/opportunities', BEN), await call('PUT', '/api/opportunities', BEN, { interests: ['talks'] }), await call('GET', '/api/admin/opportunities', FOUNDER), await call('GET', '/api/me', BEN)];
 check('M1 without the new table the Studio carries on: the section says it is not available, saving is refused (409), the founder sees "not installed"',
-  ni[0].j.installed === false && ni[1].s === 409 && ni[2].j.installed === false && ni[3].s === 200, JSON.stringify(ni.map(x => x.s)));
+  ni[0].j.installed === false && ni[1].s === 409 && ni[2].j.installed === false && ni[3].s === 200 && ni[3].j.opportunities === null, JSON.stringify(ni.map(x => x.s)));
 } catch (e) { console.error(e); results.push(false); }
 finally {
   if (browser) await browser.close();

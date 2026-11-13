@@ -78,6 +78,8 @@ def apply_v11(text: str) -> str:
 def without_v11(text: str) -> str:
     """The exact page beneath V11. A page without V11 passes through untouched; a page that carries the V11 marker but
     not exactly the governed V11 text raises."""
+    from privacy_v12_layer import without_v12       # V12 (Opportunities & delivery, prepared 13 Nov 2026) sits on top of V11: take it off first
+    text = without_v12(text)
     if MARKER not in text:
         return text
     for _, new in PAIRS:

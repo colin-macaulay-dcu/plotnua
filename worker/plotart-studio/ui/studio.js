@@ -106,7 +106,10 @@
         ${left ? `<p class="st-muted st-ck-intro">Complete these to submit your gallery. Each one opens the right place.</p>${checklistHTML(s.checklist)}`
           : `<ul class="st-list ok"><li>Everything needed is in place${s.unsubmitted.length ? `: submit your changes for ${pendingTier}` : ''}.</li></ul>`}
         ${canSubmit ? `<div class="st-actions"><a class="st-btn st-btn--solid" href="#/submit">Review and submit</a></div>` : ''}
-      </section>`;
+      </section>
+      ${ME.opportunities === 'unanswered' ? `<section class="st-card st-opp-ask" aria-labelledby="opp-ask-h"><h3 id="opp-ask-h">Opportunities &amp; delivery</h3>
+        <p class="st-muted" style="margin:0">Let us know which future opportunities you’d like to hear about and how your work could travel. It takes a couple of minutes and doesn’t commit you to anything.</p>
+        <div class="st-actions"><a class="st-btn st-btn--small" href="#/opportunities">Add your preferences</a></div></section>` : ''}`;
     $('[data-act=add]', app)?.addEventListener('click', addWork);
   }
 
@@ -738,6 +741,7 @@
       <div class="st-opp-save">
         <button class="st-btn st-btn--solid" id="o-save" type="submit">Save preferences</button>
         <span class="st-muted" id="o-dirty" aria-live="polite"></span>
+        <p class="st-hint st-opp-priv">Your answers are never published. <a href="https://plotnua.ie/privacy.html#plotart-opportunities" target="_blank" rel="noopener">How we use them</a></p>
         <p class="st-err" id="o-err" role="alert"></p>
       </div>
       </form>`;
@@ -818,7 +822,7 @@
         const s = r.saved;
         Object.assign(st, { interests: [...s.interests], county: s.artwork_county || '', transport: [...s.transport], mode: s.coverage_mode, counties: [...s.coverage_counties], note: s.note || '' });
         $('#o-note').value = st.note; last = JSON.stringify(st); savedAt = s.updated_at;
-        say('Preferences saved'); paint();
+        ME.opportunities = 'answered'; say('Preferences saved'); paint();
       } catch (err) { $('#o-err').textContent = err.message; }
       finally { b.disabled = false; }
     });

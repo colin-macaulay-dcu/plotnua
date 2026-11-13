@@ -11,7 +11,7 @@ export const INTERESTS = {
   exhibitions: 'Physical gallery exhibitions',
   living_gallery: 'Living Gallery — displaying work in someone’s home',
   art_for_hire: 'Art for Hire — renting work',
-  mobile_gallery: 'Mobile Gallery — temporary displays in different locations',
+  mobile_gallery: 'Mobile Gallery — home viewings through participating galleries',   // as on plotart/mobile-gallery/ (13 Nov 2026 wording review)
   venues: 'Hotel and workplace displays',
   commissions: 'Commissions',
   talks: 'Artist talks or events',

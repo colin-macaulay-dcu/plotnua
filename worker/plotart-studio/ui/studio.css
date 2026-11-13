@@ -304,6 +304,7 @@ body.st{ background:var(--anth); min-height:100vh; }
 .st-opp-save{ position:sticky; bottom:0; z-index:5; display:flex; flex-wrap:wrap; align-items:center; gap:8px 14px; padding:14px 0 18px;
   background:linear-gradient(to top, var(--anth) 70%, rgba(27,28,30,0)); }
 .st-opp-save .st-err{ flex-basis:100%; margin:0; }
+.st-opp-priv{ flex-basis:100%; margin:0; order:3; } .st-opp-priv a{ color:var(--stone); }
 .st-opp-save .st-err:empty{ display:none; }
 .st-opp-filters{ display:grid; grid-template-columns:1fr; gap:0 14px; margin-top:16px; }
 @media (min-width:760px){ .st-opp-filters{ grid-template-columns:repeat(4, minmax(0,1fr)); } }

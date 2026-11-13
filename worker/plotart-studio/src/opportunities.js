@@ -23,6 +23,11 @@ const OPTIONS = { interests: R.INTERESTS, transport: R.TRANSPORT, transport_clas
 
 /* The artist's own record only. "suggested_county" is the county on their own profile, offered as a starting point for
    "Where is your artwork based?" until they first save: it is never stored unless they save it. */
+/* For the Studio dashboard's discreet prompt: 'unanswered', 'answered', or null before migration 0009 has run. */
+export async function status(env, artist) {
+  if (!(await installed(env))) return null;
+  return (await one(env, 'SELECT 1 AS x FROM artist_opportunities WHERE artist_id = ?', artist.id)) ? 'answered' : 'unanswered';
+}
 export async function artistView(env, artist) {
   if (!(await installed(env))) return { installed: false };
   const row = parse(await one(env, 'SELECT * FROM artist_opportunities WHERE artist_id = ?', artist.id));
