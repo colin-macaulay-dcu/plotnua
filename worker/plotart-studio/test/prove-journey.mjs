@@ -114,7 +114,7 @@ const BEFORE = gridItems();
 const NP = BEFORE.indexOf('space') + 1;                    // the lowest open position: where a first publication goes
 const T7 = BEFORE.indexOf('space', NP) + 1;                // another open position, for the founder's move
 const same = (gi, except) => gi.length === BEFORE.length && gi.every((x, i) => except[i + 1] !== undefined ? x === except[i + 1] : x === BEFORE[i]);
-const GENERATED = JSON.parse(spawnSync('python3', ['-c', 'import sys,json;sys.path.insert(0,"atlas-tools");import plotart_seo as S;print(json.dumps(["plotart/"+p for p in S.GUIDE_PATHS]))'], { cwd: SITE, encoding: 'utf8' }).stdout);
+const GENERATED = JSON.parse(spawnSync('python3', ['-c', 'import sys,json;sys.path.insert(0,"atlas-tools");import plotart_seo as S;print(json.dumps(["plotart/"+p for p in S.GENERATED_PATHS]))'], { cwd: SITE, encoding: 'utf8' }).stdout);
 
 console.log('PROVE · the complete artist journey\n— selection to first publication');
 let r = await call('POST', '/api/admin/artists', FOUNDER, { display_name: 'Niamh Synthetic', email: A, application_ref: 'F25-261029-1A2B3C' });

@@ -1,0 +1,34 @@
+/* PlotArt artwork collection (plotart/artworks/, 13 Nov 2026): a gallery wall, not a catalogue.
+   Every work hangs uncropped on a shared line; the label sits beneath it. The art carries the colour. */
+.pa-coll-hero{padding:clamp(56px,7vw,104px) 0 clamp(36px,4.5vw,60px);border-bottom:1px solid var(--line)}
+.pa-coll-hero h1{font-size:clamp(44px,6vw,84px);line-height:1.02;letter-spacing:-.025em;margin:0 0 26px;max-width:15ch}
+.pa-coll-hero .pa-lede{max-width:62ch}
+.pa-coll-how{max-width:62ch;font-size:15.5px;line-height:1.7;color:var(--stone);margin:22px 0 0}
+.pa-coll-actions{display:flex;flex-wrap:wrap;gap:12px 14px;margin-top:30px}
+.pa-coll-wall{padding:clamp(40px,5vw,72px) 0 clamp(56px,7vw,104px)}
+.pa-coll-count{font-size:12.5px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--bronze-text);margin:0 0 clamp(28px,3.5vw,48px)}
+.pa-coll-grid{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(56px,6vw,96px) clamp(28px,3.4vw,56px)}
+.pa-coll-work{min-width:0;display:flex;flex-direction:column}
+.pa-coll-art{display:flex;align-items:flex-end;justify-content:center;height:clamp(260px,26vw,400px);text-decoration:none}
+.pa-coll-art img{width:auto;height:auto;max-width:100%;max-height:100%;box-shadow:var(--shadow-art);transition:transform .45s ease,box-shadow .45s ease}
+.pa-coll-art:hover img{transform:translateY(-3px);box-shadow:0 4px 6px rgba(0,0,0,.3),0 20px 38px rgba(0,0,0,.34),0 44px 74px rgba(0,0,0,.24)}
+.pa-coll-label{padding-top:26px;border-top:1px solid var(--line);margin-top:28px}
+.pa-coll-title{font-size:clamp(23px,1.9vw,28px);line-height:1.15;margin:0 0 6px}
+.pa-coll-title a{color:var(--ivory);text-decoration:none}
+.pa-coll-title a:hover{color:var(--terra-hover)}
+.pa-coll-label p{margin:0}
+.pa-coll-artist{font-size:15.5px;margin-bottom:10px!important}
+.pa-coll-artist a{color:var(--lime);text-decoration-color:var(--line-2)}
+.pa-coll-meta{font-size:14px;line-height:1.55;color:var(--stone)}
+.pa-coll-size{white-space:nowrap}
+.pa-coll-price{font-size:15px;color:var(--ivory);margin-top:10px!important;letter-spacing:.01em}
+.pa-coll-credit{font-size:12.5px;color:var(--mute);margin-top:6px!important}
+.pa-coll-empty{color:var(--stone)}
+.pa-coll-more{padding:clamp(44px,5vw,76px) 0;border-top:1px solid var(--line)}
+.pa-coll-more h2{font-size:clamp(30px,3.4vw,44px);line-height:1.12;margin:0 0 16px}
+.pa-coll-more p{max-width:62ch}
+.pa-coll-links{display:flex;flex-wrap:wrap;gap:12px 14px;margin-top:26px}
+@media (prefers-reduced-motion:reduce){.pa-coll-art img{transition:none}.pa-coll-art:hover img{transform:none}}
+@media (max-width:1099px){.pa-coll-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.pa-coll-art{height:clamp(240px,38vw,380px)}}
+@media (max-width:639px){.pa-coll-grid{grid-template-columns:1fr;gap:64px}.pa-coll-art{height:auto;max-height:none}.pa-coll-art img{max-height:72vh}
+.pa-coll-label{margin-top:22px;padding-top:20px}.pa-coll-actions .pa-btn,.pa-coll-links .pa-btn{max-width:100%;white-space:normal;text-align:center}}

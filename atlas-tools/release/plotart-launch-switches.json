@@ -1,6 +1,6 @@
 {
   "schema": "plotnua.plotart.launch.v1",
-  "status": "Public search visibility authorised by Colin on 7 November 2026: homepage, Virtual Gallery, About and approved published artist/artwork pages. Invitations, applications, Living Gallery and unconfirmed Mobile Gallery profiles remain noindex. Mobile Gallery indexability retains its separate 3 November approval. Draft artists are never published by these switches. Buyer guides authorised 7 November 2026: buying/prices and abstract/contemporary art, using approved public collections only. Living-room editorial guide and printable buying checklist authorised 8 November 2026; no artist input required.",
+  "status": "Public search visibility authorised by Colin on 7 November 2026: homepage, Virtual Gallery, About and approved published artist/artwork pages. Invitations, applications, Living Gallery and unconfirmed Mobile Gallery profiles remain noindex. Mobile Gallery indexability retains its separate 3 November approval. Draft artists are never published by these switches. Buyer guides authorised 7 November 2026: buying/prices and abstract/contemporary art, using approved public collections only. Living-room editorial guide and printable buying checklist authorised 8 November 2026; no artist input required. Artwork collection /plotart/artworks/ (development branch, 13 Nov 2026, not released): artworks_indexable prepared on; artworks_in_sitemap stays off until the founder approves the sitemap entry.",
   "f25_form_endpoint": "https://plotnua-art-space-register.colin-a41.workers.dev/v1/art-space-register/founding-25",
   "f25_form_endpoint_allowed": "https://plotnua-art-space-register.colin-a41.workers.dev/v1/art-space-register/founding-25",
   "f25_application_state": "closed",
@@ -14,6 +14,8 @@
   "about_indexable": true,
   "artist_pages_indexable": true,
   "buyer_guides_indexable": true,
+  "artworks_indexable": true,
+  "artworks_in_sitemap": false,
   "wall_size_indexable": true,
   "art_for_hire_page": true,
   "art_for_hire_enquiry_form": false

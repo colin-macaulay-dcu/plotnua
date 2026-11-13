@@ -10,6 +10,8 @@ admin "Publish" button (or, with --instant, the automatic availability/removal p
   plotart/artists/<slug>/index.html | <artwork>.html | img/<name>-<size>.webp   (added, changed or removed)
   plotart/gallery/index.html            only inside the generated collection region
                                         (<!-- pa-vg-collection:begin --> ... <!-- pa-vg-collection:end -->)
+  plotart/<buyer guide or artworks/index.html>   only inside its generated collection region, and exactly the
+                                        region the approved public exports produce (plotart_search_content)
   image-provenance-records.json         only ARTIST_SUPPLIED_ARTWORK records; every other record and
                                         every other top-level field byte-for-byte unchanged
 
@@ -127,7 +129,7 @@ def main(base, rel, instant):
             if GRID.sub(b"<grid/>", a) != GRID.sub(b"<grid/>", b):
                 refused.append("%s: changed outside the collection region" % path)
             continue
-        if path in {"plotart/" + p for p in SEO.GUIDE_PATHS} and st == "M":
+        if path in {"plotart/" + p for p in SEO.GENERATED_PATHS} and st == "M":
             try:
                 a, b = show(base, path).decode(), show(rel, path).decode()
                 names = git("ls-tree", "-r", "--name-only", rel, "plotart/artists").splitlines()

@@ -231,7 +231,7 @@ check('E2E-5 the full provenance and image-rights checks pass on the published r
   && spawnSync('node', ['atlas-tools/validate-image-rights.js', '--scan-html', '.', '--permissions', 'image-rights-manifest.json', '--max-age-days', '30'], { cwd: S, encoding: 'utf8' }).status === 0);
 // Since 7 Nov 2026 (founder-authorised search visibility) a publication also refreshes the GENERATED regions of sitemap.xml and the
 // buyer guides. They are allowed here only because the content boundary, run on exactly this release, verifies them byte-for-byte.
-const GENERATED = JSON.parse(execSync('python3 -c \'import sys,json;sys.path.insert(0,"atlas-tools");import plotart_seo as S;print(json.dumps(["plotart/"+p for p in S.GUIDE_PATHS]))\'', { cwd: S, encoding: 'utf8' }));
+const GENERATED = JSON.parse(execSync('python3 -c \'import sys,json;sys.path.insert(0,"atlas-tools");import plotart_seo as S;print(json.dumps(["plotart/"+p for p in S.GENERATED_PATHS]))\'', { cwd: S, encoding: 'utf8' }));
 const e2e6 = G(ORIGIN, 'diff', '--name-only', mL, 'main').split('\n');
 const e2e6b = spawnSync('python3', ['atlas-tools/release/plotart-content-boundary.py', mL, 'main'], { cwd: S, encoding: 'utf8' });
 check('E2E-6 no other content changed in that release: only the artist’s folder, the Artists’ Gallery grid, image records and the generated sitemap and buyer-guide regions (the content boundary accepts exactly this release)',

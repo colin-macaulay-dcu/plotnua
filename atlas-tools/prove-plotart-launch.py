@@ -82,7 +82,7 @@ SWITCHES = sys.argv[sys.argv.index("--switches") + 1] if "--switches" in sys.arg
 launch = json.load(open(SWITCHES, encoding="utf-8"))
 ENDPOINT = launch.get("f25_form_endpoint")
 PAGES = ["index.html", "founding-25.html", "living-gallery.html", "gallery/index.html", "invitation.html", "about.html",
-         "mobile-gallery/index.html", "mobile-gallery/gallery.html"] + list(SEO.GUIDE_PATHS) + list(SEO.EDITORIAL_PATHS) + list(SEO.TOOL_PATHS)  # invitation.html: private Founding Artist invitation (noindex, mailto only, no form)
+         "mobile-gallery/index.html", "mobile-gallery/gallery.html"] + list(SEO.GENERATED_PATHS) + list(SEO.EDITORIAL_PATHS) + list(SEO.TOOL_PATHS)  # invitation.html: private Founding Artist invitation (noindex, mailto only, no form)
 # Mobile Gallery (founder release authorisation, 3 Nov 2026): a public work-in-progress page (indexable only by its own
 # switch) and an illustrative gallery profile that is never indexed while participation is unconfirmed.
 MG_FILES = {"mobile-gallery/mobile-gallery.css", "mobile-gallery/mobile-gallery.js", "mobile-gallery/mobile-gallery-data.js",
@@ -96,7 +96,7 @@ HERO_IMAGES = {"assets/hero/founder-01-abstract.webp"}
 # The Living Gallery image (consolidated brief, 29 Oct 2026): the founder's painting in an AI-generated interior visualisation.
 LG_IMAGE = "assets/living/plotart-living-gallery-colin-macaulay-artwork.webp"
 CAMPAIGN_IMAGES = {"assets/campaigns/one-painting-three-rooms-840.webp", "assets/campaigns/one-painting-three-rooms-1672.webp"}
-ALLOWED = {"downloads/plotart-art-buying-checklist.pdf"} | set(PAGES) | MG_FILES | {"assets/plotart.css", "assets/plotart-guides.css", "assets/plotart-wall-size.css", "assets/plotart-wall-size.js", "assets/plotart.js", "assets/pa-enquiry.js", LG_IMAGE} | HERO_IMAGES | CAMPAIGN_IMAGES | ({"assets/f25-apply.js"} if launch.get("f25_application_state") == "open" else set())
+ALLOWED = {"downloads/plotart-art-buying-checklist.pdf"} | set(PAGES) | MG_FILES | {"assets/plotart.css", "assets/plotart-guides.css", "assets/plotart-artworks.css", "assets/plotart-wall-size.css", "assets/plotart-wall-size.js", "assets/plotart.js", "assets/pa-enquiry.js", LG_IMAGE} | HERO_IMAGES | CAMPAIGN_IMAGES | ({"assets/f25-apply.js"} if launch.get("f25_application_state") == "open" else set())
 # Published artist galleries (Phase 1, 29 Oct 2026; checked in full by L14). Only these shapes are allowed:
 #   artists/<slug>/index.html · artists/<slug>/<artwork-slug>.html · artists/<slug>/img/<name>.webp
 ART_FILE = re.compile(r"^artists/([a-z0-9]+(?:-[a-z0-9]+){0,6})/(?:[a-z0-9]+(?:-[a-z0-9]+){0,6}\.html|gallery\.json|img/[a-z0-9-]+-\d{2,5}\.webp)$")
@@ -189,7 +189,7 @@ for name in PAGES:
     for n in demo_names:
         need(not re.search(r"\b%s\b" % re.escape(n), vt) and not re.search(r"\b%s\b" % re.escape(html.escape(n)), s),
              "L3 %s carries demonstration content (text or markup): %s" % (name, n))
-    if name not in SEO.GUIDE_PATHS:
+    if name not in SEO.GENERATED_PATHS:
         need("€" not in vt and "&euro;" not in s, "L3 %s shows a euro price" % name)
     else:
         try:
@@ -274,7 +274,7 @@ if "--manifest" in sys.argv:
         oh = man.get("outside_hire_catalogue", {}).get(rel)
         guide_pin = man.get("outside_search_content", {}).get(rel)
         guide_ok = False
-        if guide_pin is not None and raw is not None and rel in SEO.GUIDE_PATHS:
+        if guide_pin is not None and raw is not None and rel in SEO.GENERATED_PATHS:
             try:
                 guide_ok = hashlib.sha256(C.outside(raw.decode()).encode()).hexdigest() == guide_pin
             except ValueError:
@@ -459,7 +459,7 @@ if HIRE_ON:
     NAV_WANT.insert(4, "Art for Hire")                                                    # the fourth gallery tab (3B-6)
 NAV_CURRENT = {"index.html": "Discover PlotArt", "gallery/index.html": "Artists’ Gallery", "living-gallery.html": "Living Gallery", "founding-25.html": None, "invitation.html": None, "about.html": None,
                "mobile-gallery/index.html": "Mobile Gallery", "mobile-gallery/gallery.html": "Mobile Gallery"}
-NAV_CURRENT.update({p: None for p in SEO.GUIDE_PATHS + SEO.EDITORIAL_PATHS + SEO.TOOL_PATHS})
+NAV_CURRENT.update({p: None for p in SEO.GENERATED_PATHS + SEO.EDITORIAL_PATHS + SEO.TOOL_PATHS})
 NAV_CURRENT[HIRE_PAGE] = "Art for Hire"
 for name in PAGES + ([HIRE_PAGE] if HIRE_ON else []):
     p = os.path.join(PA, name)
