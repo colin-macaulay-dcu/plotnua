@@ -10,16 +10,19 @@ ENQUIRY_ADDRESS = "hello@plotnua.ie"     # interim pilot route (founder decision
 ENQUIRY_NOTICE = "PA-ENQ-2026-11"        # version of the enquiry notice shown under the form (privacy V11; the relay also accepts PA-ENQ-2026-10-29 on pages published earlier)
 
 
-def enquiry_form(pkg, w, endpoint):
+def enquiry_form(pkg, w, endpoint, commission=False):
     """The buyer-to-artist enquiry form (Phase 3). Rendered only when the relay is switched on (an endpoint is given);
-    the mailto link stays as the no-JavaScript fallback. pa-enquiry.js reveals and sends it."""
+    the mailto link stays as the no-JavaScript fallback. pa-enquiry.js reveals and sends it.
+    commission=True (Open for Commissions, 13 Nov 2026): the same form about the artist, marked data-kind="commission";
+    the relay accepts it only while the artist's published gallery is open for commissions."""
     if not endpoint:
         return ""
     a = pkg["artist"]
     ref = "PA-%s-%s" % (a["slug"], w["id"]) if w else "PA-%s" % a["slug"]
     about = ("“%s”" % E(w["title"])) if w else ("%s's work" % E(a["display_name"]))
-    return ('<form class="pa-enq" hidden data-endpoint="%s" data-ref="%s" data-notice="%s" novalidate>'
-            '<p class="pa-enq-h">Enquire about %s</p>'
+    head = "Ask %s about a commission" % E(a["display_name"]) if commission else "Enquire about %s" % about
+    return ('<form class="pa-enq" hidden data-endpoint="%s" data-ref="%s" data-notice="%s"%s novalidate>'
+            '<p class="pa-enq-h">%s</p>'
             '<label class="pa-enq-f">Your name<input name="name" required maxlength="80" autocomplete="name"></label>'
             '<label class="pa-enq-f">Your email<input name="email" type="email" required maxlength="254" autocomplete="email"></label>'
             '<label class="pa-enq-f">Your message<textarea name="message" required minlength="10" maxlength="1500" rows="5"></textarea></label>'
@@ -28,7 +31,7 @@ def enquiry_form(pkg, w, endpoint):
             '<label class="pa-hp" aria-hidden="true">Leave blank<input name="website" tabindex="-1" autocomplete="off"></label>'
             '<button class="pa-btn pa-btn--solid" type="submit">Send enquiry</button>'
             '<p class="pa-enq-status" role="status" aria-live="polite"></p></form>') % (
-        E(endpoint), E(ref), ENQUIRY_NOTICE, about, E(a["display_name"]), "../../../")
+        E(endpoint), E(ref), ENQUIRY_NOTICE, ' data-kind="commission"' if commission else "", head, E(a["display_name"]), "../../../")
 STATUS = {"available": "Available", "reserved": "Reserved", "sold": "Sold", "not_for_sale": "Not for sale"}
 SHOWN = ("available", "reserved", "sold", "not_for_sale")
 
@@ -85,6 +88,24 @@ def card_image(pkg):
     """The Virtual Gallery card shows the artist's first (artist-ordered) shown work; (None, None) if none are on show."""
     ws = shown(pkg)
     return (ws[0], main_image(ws[0])) if ws else (None, None)
+
+
+def commission_href(pkg):
+    """The no-JavaScript fallback for "Enquire about a commission": an email to PlotArt naming the artist."""
+    a = pkg["artist"]
+    subj = "PlotArt commission enquiry: %s [PA-%s]" % (a["display_name"], a["slug"])
+    body = "Hello,\n\nI'd like to ask %s about commissioning a new work.\n\n" % a["display_name"]
+    return "mailto:%s?subject=%s&body=%s" % (ENQUIRY_ADDRESS, quote(subj), quote(body))
+
+
+def commission_block(pkg, enquiry_endpoint):
+    """Open for Commissions (13 Nov 2026): only when the artist has switched it on. Its own wrapper, so pa-enquiry.js pairs
+    this button with this form; nothing else on the page changes."""
+    if pkg["artist"].get("open_for_commissions") is not True:
+        return ""
+    return ('\n  <div class="pa-ag-enq-c" style="margin-top:14px"><a class="pa-btn pa-btn--ghost" href="%s" data-pa-track="artist_commission_enquiry"%s>'
+            'Enquire about a commission</a>%s</div>') % (
+        E(commission_href(pkg)), " data-pa-enquire" if enquiry_endpoint else "", enquiry_form(pkg, None, enquiry_endpoint, commission=True))
 
 
 def enquiry_href(pkg, w=None):
@@ -176,18 +197,20 @@ def artist_body(pkg, blocks=None, preview=False, enquiry_endpoint=None):
 <section class="pa-ag-enq"><div class="pa-wrap pa-ag-enq-in">
   <p class="pa-ag-enq-t">Interested in %s's work?</p>
   <p class="pa-ag-enq-l">Send an enquiry through PlotArt and we'll put you in touch with the artist.</p>
-  <a class="pa-btn pa-btn--solid" href="%s" data-pa-track="artist_enquiry"%s>Enquire through PlotArt</a>%s
+  <a class="pa-btn pa-btn--solid" href="%s" data-pa-track="artist_enquiry"%s>Enquire through PlotArt</a>%s%s
 </div></section>
 """ % (checks_panel(pkg, blocks) if preview else "",
        " has-portrait" if portrait else "", E(name), portrait,
        '<span class="pa-gcard-badge">Founding Artist</span>' if a.get("founding") else "",
-       E(name), ('<p class="pa-ag-meta">%s</p>' % E(meta_line(a))) if meta_line(a) else "",
+       E(name), (('<p class="pa-ag-meta">%s</p>' % E(meta_line(a))) if meta_line(a) else "")
+       + ('<p class="pa-ag-meta pa-ag-ofc">Open for commissions</p>' if a.get("open_for_commissions") is True else ""),
        ('<p class="pa-ag-statement">%s</p>' % E(a["statement"])) if a.get("statement") else "",
        ("%d %s" % (len(works), "artwork" if len(works) == 1 else "artworks")) if works else "None on show right now",
        ('<ol class="pa-ag-grid">%s\n  </ol>' % "".join(tiles)) if works else empty_works(a),
        E(name.split(" ")[0] if " " in name else name), bio,
        ('<p class="pa-ag-links">%s</p>' % "".join(links)) if links else "",
-       E(name), E(enquiry_href(pkg)), " data-pa-enquire" if enquiry_endpoint else "", enquiry_form(pkg, None, enquiry_endpoint))
+       E(name), E(enquiry_href(pkg)), " data-pa-enquire" if enquiry_endpoint else "", enquiry_form(pkg, None, enquiry_endpoint),
+       commission_block(pkg, enquiry_endpoint))
 
 
 def artwork_body(pkg, w, prev_w, next_w, preview=False, enquiry_endpoint=None):

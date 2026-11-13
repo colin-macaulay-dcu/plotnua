@@ -51,6 +51,11 @@ async function load(env, artistId) {
   const images = await all(env, 'SELECT * FROM images WHERE artist_id = ? AND deleted_at IS NULL ORDER BY ord', artistId);
   return { artist, works, images };
 }
+/* Open for Commissions (founder approval 13 Nov 2026). Migration 0011 adds artists.open_for_commissions. Until it has run,
+   Studio keeps working exactly as before and the switch is reported as not available yet. */
+async function commissionsInstalled(env) {
+  try { await env.DB.prepare('SELECT open_for_commissions FROM artists LIMIT 1').all(); return true; } catch { return false; }
+}
 async function latestVersion(env, artistId) {
   const v = await one(env, 'SELECT * FROM versions WHERE artist_id = ? ORDER BY version DESC LIMIT 1', artistId);
   return v ? { ...v, snap: JSON.parse(v.snapshot) } : null;
@@ -385,12 +390,15 @@ async function eraseOriginals(env, artistId, actor, why) {
     if (i.preview_key) { await env.IMAGES.delete(i.preview_key); objects++; }
   }
   const works = (await one(env, 'SELECT COUNT(*) AS n FROM artworks WHERE artist_id = ?', artistId)).n;
+  const ofc = await commissionsInstalled(env);
   await env.DB.batch([
     env.DB.prepare('DELETE FROM images WHERE artist_id = ?').bind(artistId),
     env.DB.prepare('DELETE FROM artworks WHERE artist_id = ?').bind(artistId),
     env.DB.prepare('DELETE FROM submissions WHERE artist_id = ?').bind(artistId),
     env.DB.prepare(`UPDATE artists SET email=?, practice=NULL, medium=NULL, county=NULL, county_public=0, statement=NULL, bio=NULL, website=NULL, instagram=NULL,
       portrait_image_id=NULL, below_min_since=NULL, application_ref=NULL, updated_at=? WHERE id=? AND account_status='ended'`).bind(`ended-${artistId}@deleted.invalid`, now(), artistId),
+    // Open for Commissions resets with the other profile details (only once migration 0011 has added the column)
+    ...(ofc ? [env.DB.prepare("UPDATE artists SET open_for_commissions=0 WHERE id=? AND account_status='ended'").bind(artistId)] : []),
     env.DB.prepare('INSERT INTO participation_events (id, artist_id, kind, at, actor, reason, detail) VALUES (?,?,?,?,?,?,?)')
       .bind(rid('pe'), artistId, 'originals_deleted', now(), actor, why, JSON.stringify({ images: imgs.length, storage_objects: objects, works })),
   ]);
@@ -1478,7 +1486,7 @@ async function route(req, env) {
   if (p === '/api/me' && m === 'GET') {
     const d = await load(env, artist.id);
     const { email, ...a } = d.artist;
-    return json({ ok: true, artist: { ...a, email }, status: await status(env, d.artist), opportunities: await O.status(env, artist), media: L.MEDIA, counties: L.COUNTIES, min_long_edge: minLong(env),
+    return json({ ok: true, artist: { ...a, email }, status: await status(env, d.artist), opportunities: await O.status(env, artist), commissions_available: await commissionsInstalled(env), media: L.MEDIA, counties: L.COUNTIES, min_long_edge: minLong(env),
       portrait: (({ checks, ...i }) => i)(d.images.find(i => i.id === d.artist.portrait_image_id) || { checks: null }) });
   }
   if (p === '/api/me/profile' && m === 'PUT') {
@@ -1487,6 +1495,21 @@ async function route(req, env) {
     await env.DB.prepare(`UPDATE artists SET ${Object.keys(f).map(k => `${k}=?`).join(', ')}, updated_at=? WHERE id=?`).bind(...Object.values(f), now(), artist.id).run();
     await audit(env, artist.email, 'artist', 'profile', artist.id, { fields: Object.keys(f) });
     return json({ ok: true, saved_at: now() });
+  }
+  /* Open for Commissions: the artist's own switch. It changes only this one field, is audited, and reaches a live gallery
+     as an instant update (the founder's one-click Publish while automatic updates are off), never as content review.
+     It changes no agreement and applies no PlotArt commission: bespoke work is agreed directly with the client. */
+  if (p === '/api/me/commissions' && m === 'PUT') {
+    if (!(await commissionsInstalled(env))) throw new Bad('Open for commissions isn’t available just yet. Please try again later.', 503);
+    const b = await req.json().catch(() => null);
+    if (!b || typeof b.open !== 'boolean' || Object.keys(b).length !== 1) throw new Bad('Refused');
+    const want = b.open ? 1 : 0;
+    const cur = await one(env, 'SELECT open_for_commissions FROM artists WHERE id = ?', artist.id);
+    if (cur && cur.open_for_commissions === want) return json({ ok: true, open: !!want, changed: false });
+    await env.DB.prepare('UPDATE artists SET open_for_commissions=?, updated_at=? WHERE id=?').bind(want, now(), artist.id).run();
+    await audit(env, artist.email, 'artist', want ? 'commissions_on' : 'commissions_off', artist.id, {});
+    const v = await instant(env, artist, artist.email, want ? 'commissions_on' : 'commissions_off');
+    return json({ ok: true, open: !!want, changed: true, instant_version: v });
   }
   if (p === '/api/me/portrait' && m === 'PUT') return upload(req, env, artist, { role: 'portrait' });
   if (p === '/api/me/portrait' && m === 'DELETE') {

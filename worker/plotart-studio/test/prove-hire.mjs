@@ -184,7 +184,9 @@ check('E2 no hire action created a submission, version or publish job', qn === 2
 check('E3 the purchase enquiry route works as before for both galleries', await enquire('leah-like') === 200 && await enquire('bea-other') === 200
   && (await db.prepare("SELECT COUNT(*) n FROM enquiries WHERE artist_id='aleah'").first()).n === 1);
 const relayDiff = (await import('node:child_process')).execSync('git diff origin/main -- src/enquiry.js', { cwd: HERE }).toString().split('\n');
-check('E4 the purchase relay code is unchanged from main (Stage 3B-3 only adds the hire paths beside it)', !relayDiff.some(l => /^-[^-]/.test(l)) && relayDiff.filter(l => /^\+[^+]/.test(l)).every(l => /hire/.test(l)));
+// Art for Hire is released (11 Nov 2026). On a later branch the relay may change for another approved release (Open for
+// Commissions, 13 Nov 2026), so this now checks what Art for Hire owns: no hire line of the relay is added, removed or changed.
+check('E4 no Art for Hire line of the relay is changed by this branch (the hire paths stay exactly as released)', !relayDiff.filter(l => /^[-+][^-+]/.test(l)).some(l => /hire/i.test(l)));
 
 console.log('— C · withdrawn and sold works are never eligible');
 r = await call('POST', '/api/artworks/waleah2/availability', LEAH, { availability: 'sold' });

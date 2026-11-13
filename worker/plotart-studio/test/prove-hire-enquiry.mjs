@@ -189,7 +189,9 @@ console.log('— purchase enquiries unchanged (E)');
    that added src/hire-enquiry.js; on a development branch where it is not committed yet, with main as before. */
 const addedIn = execSync('git log --diff-filter=A --format=%H -- src/hire-enquiry.js', { cwd: HERE }).toString().trim().split('\n').filter(Boolean).pop();
 const PRE = addedIn ? addedIn + '^' : 'origin/main';
-const diff = execSync(`git diff ${PRE} -- src/enquiry.js`, { cwd: HERE }).toString();
+// Released (11 Nov 2026): the Art for Hire change is checked as it reached production main. Later approved changes to the
+// relay on a branch (Open for Commissions, 13 Nov 2026) are not Art for Hire's; prove-hire.mjs E4 checks they touch no hire line.
+const diff = execSync(addedIn ? `git diff ${PRE} origin/main -- src/enquiry.js` : `git diff ${PRE} -- src/enquiry.js`, { cwd: HERE }).toString();
 const added = diff.split('\n').filter(l => /^\+[^+]/.test(l)), removed = diff.split('\n').filter(l => /^-[^-]/.test(l));
 check('P1 the purchase relay file differs from before Art for Hire only by three added lines (the import and the two new paths); nothing removed or changed',
   removed.length === 0 && added.length === 3 && added.every(l => /hire-enquiry\.js|\/v1\/hire-enquiry|\/v1\/hire-listed/.test(l)), added.join(' | '));

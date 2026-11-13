@@ -136,7 +136,12 @@
       <section class="st-card"><h3>Links (optional)</h3>
         ${f('website', 'Website', a.website, { type: 'url', hint: 'A full link starting https://' })}
         ${f('instagram', 'Instagram name', a.instagram, { hint: 'Without the @' })}
-      </section></div></div>`;
+      </section>
+      ${ME.commissions_available ? `<section class="st-card"><h3>Commissions</h3>
+        <label class="st-check"><input type="checkbox" id="f-ofc"${a.open_for_commissions ? ' checked' : ''} aria-describedby="f-ofc-h" style="accent-color:var(--terra);width:20px;height:20px"> Open for commissions</label>
+        <small class="st-muted" id="f-ofc-h" style="display:block;margin-top:8px">Shows “Open for commissions” on your gallery and lets collectors ask you about a new, bespoke work. You agree any commission directly with them. You can switch this off at any time.</small>
+        <span class="st-err" id="f-ofc-e" aria-live="polite"></span>
+      </section>` : ''}</div></div>`;
     for (const el of app.querySelectorAll('[name]')) {
       if (el.name === 'palt') continue;
       el.addEventListener('change', async () => {
@@ -145,6 +150,20 @@
         catch (e) { fieldErr(el, e.message); say('Not saved: ' + e.message, true); }
       });
     }
+    // Open for Commissions (no name attribute: it has its own route, never the profile autosave above)
+    $('#f-ofc', app)?.addEventListener('change', async e => {
+      const box = e.target, err = $('#f-ofc-e', app);
+      box.disabled = true; if (err) err.textContent = '';
+      try {
+        const r = await api('PUT', '/api/me/commissions', { open: box.checked });
+        const live = !!r.instant_version;
+        // the change is saved now and reaches the public gallery only when it is published (founder approval, 13 Nov 2026)
+        say(live ? (box.checked ? 'Saved · “Open for commissions” will appear on your gallery once it’s published' : 'Saved · “Open for commissions” will be removed from your gallery once the change is published')
+          : (box.checked ? 'Saved · it will appear on your gallery when your gallery is published' : 'Saved'));
+        await refresh();
+      } catch (x) { box.checked = !box.checked; if (err) err.textContent = x.message; say('Not saved: ' + x.message, true); }
+      finally { box.disabled = false; }
+    });
     $('#pdrop input').addEventListener('change', e => uploadFlow(e.target.files[0], '/api/me/portrait', $('#pdrop'), { portrait: true, done: async () => { await refresh(); profile(); } }));
     $('[data-act=rmp]', app)?.addEventListener('click', async () => { await api('DELETE', '/api/me/portrait'); await refresh(); profile(); say('Portrait removed'); });
     $('[name=palt]', app)?.addEventListener('change', async e => { try { await api('PATCH', `/api/images/${p.id}`, { alt: e.target.value, photographer: 'self' }); say('Saved'); } catch (x) { say(x.message, true); } });

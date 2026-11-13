@@ -12,6 +12,8 @@
       var first = form.querySelector('input[name=name]'); if (first) first.focus();
     });
     var status = form.querySelector('.pa-enq-status'), send = form.querySelector('button[type=submit]');
+    // Open for Commissions (13 Nov 2026): only a form marked data-kind="commission" adds kind; every other form is unchanged
+    var withKind = function (o) { if (form.getAttribute('data-kind') === 'commission') o.kind = 'commission'; return o; };
     form.addEventListener('submit', function (e) {
       e.preventDefault();
       var f = form.elements, msg = '';
@@ -22,8 +24,8 @@
       send.disabled = true; send.setAttribute('aria-busy', 'true'); status.textContent = 'Sending…'; status.removeAttribute('data-state');
       fetch(form.getAttribute('data-endpoint'), {
         method: 'POST', mode: 'cors', credentials: 'omit', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ref: form.getAttribute('data-ref'), notice: form.getAttribute('data-notice'), name: f.name.value.trim(),
-          email: f.email.value.trim(), message: f.message.value.trim(), website: f.website.value })
+        body: JSON.stringify(withKind({ ref: form.getAttribute('data-ref'), notice: form.getAttribute('data-notice'), name: f.name.value.trim(),
+          email: f.email.value.trim(), message: f.message.value.trim(), website: f.website.value }))
       }).then(function (r) { return r.json().catch(function () { return {}; }).then(function (j) { return { ok: r.ok && j.ok, j: j }; }); })
         .then(function (r) {
           if (r.ok) {

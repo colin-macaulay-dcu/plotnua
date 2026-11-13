@@ -45,7 +45,8 @@ MEDIA = ("painting", "drawing", "works_on_paper", "printmaking", "photography", 
 # The ONLY keys a gallery export may carry. Anything else (an email, a phone number, an address,
 # an application reference, review notes ...) is refused: the repository is public.
 ARTIST_KEYS = {"slug", "display_name", "founding", "practice", "medium", "county", "county_public",
-               "statement", "bio", "website", "instagram", "portrait"}
+               "statement", "bio", "website", "instagram", "portrait",
+               "open_for_commissions"}   # optional (Open for Commissions, 13 Nov 2026): present only as true; absent = off
 WORK_KEYS = {"id", "slug", "title", "year", "medium", "materials", "h_cm", "w_cm", "d_cm", "price_eur",
              "price_on_request", "availability", "description", "order", "ai_involvement", "ai_note",
              "ai_founder_decision", "images"}
@@ -125,6 +126,8 @@ def validate_export(g):
         raise Refused("county must be one of the 32 counties")
     if not isinstance(a.get("founding"), bool) or not isinstance(a.get("county_public"), bool):
         raise Refused("founding and county_public must be true or false")
+    if "open_for_commissions" in a and a["open_for_commissions"] is not True:
+        raise Refused("open_for_commissions is carried only as true (absent means off)")
     for k in ("website",):
         if a.get(k) is not None and not re.match(r"^https://[^\s<>\"']{4,200}$", a[k]):
             raise Refused("website must be an https link")

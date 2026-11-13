@@ -25,6 +25,13 @@ function cors(env, origin) {
 }
 const reply = (env, origin, status, body) => new Response(JSON.stringify(body), { status, headers: { 'Content-Type': 'application/json', ...cors(env, origin) } });
 
+/* The closing line of the artist's enquiry email, in ONE place so the Gallery Artist Programme (Phase 2) changes it once.
+   Open for Commissions (13 Nov 2026): a commission enquiry is about a NEW, bespoke work, so it never carries the
+   founding-year sentence (whose "commission" means PlotArt's fee on a sale); every other enquiry is unchanged. */
+const closingLine = commission => commission
+  ? 'Any commission for new work is agreed directly between you and the client.'
+  : 'PlotArt takes no commission on enquiries from your founding year. Any sale is agreed directly between you and the buyer.';
+
 async function live(env, slug) {
   const a = await env.DB.prepare("SELECT * FROM artists WHERE slug = ? AND account_status IN ('invited','active')").bind(slug).first();
   if (!a) return null;
@@ -99,8 +106,11 @@ export default {
     const raw = await req.text();
     if (raw.length > 8000) return reply(env, origin, 413, { ok: false, error: 'That message is too long.' });
     let b; try { b = JSON.parse(raw); } catch { return reply(env, origin, 400, { ok: false, error: 'Refused' }); }
-    const keys = ['ref', 'notice', 'name', 'email', 'message', 'website'];
+    const keys = ['ref', 'notice', 'name', 'email', 'message', 'website', 'kind'];
     if (!b || typeof b !== 'object' || Object.keys(b).some(k => !keys.includes(k))) return reply(env, origin, 400, { ok: false, error: 'Refused' });
+    // Open for Commissions (13 Nov 2026): the only kind there is. Absent = an ordinary enquiry, exactly as before.
+    if ('kind' in b && b.kind !== 'commission') return reply(env, origin, 400, { ok: false, error: 'Refused' });
+    const commission = b.kind === 'commission';
     if (b.website) return reply(env, origin, 200, { ok: true, reference: 'PA-E-000000-0000' });       // honeypot: silently dropped
     if (!NOTICES.includes(b.notice)) return reply(env, origin, 400, { ok: false, error: 'Please reload the page and try again.' });
     const name = String(b.name || '').trim(), email = String(b.email || '').trim(), message = String(b.message || '').trim();
@@ -112,6 +122,12 @@ export default {
     const g = await live(env, m[1]);
     if (!g) return reply(env, origin, 404, { ok: false, error: 'This gallery isn’t taking enquiries. Please email hello@plotnua.ie.' });
     let work = null;
+    if (commission) {
+      // about the artist, never a particular artwork; and only while their PUBLISHED gallery says they are open for it
+      if (m[2]) return reply(env, origin, 400, { ok: false, error: 'Refused' });
+      if (!(g.snap.artist && g.snap.artist.open_for_commissions === true))
+        return reply(env, origin, 409, { ok: false, error: 'This artist isn’t taking commission enquiries at the moment. You can still ask about their work.' });
+    }
     if (m[2]) {
       work = g.snap.works.find(w => w.id === m[2]);
       if (!work || !['available', 'reserved'].includes(work.availability)) return reply(env, origin, 409, { ok: false, error: 'This work isn’t available. You can still ask about the artist’s other work.' });
@@ -132,21 +148,25 @@ export default {
     let logged = 'logged';
     try {
       const f = foundingAt(g.artist, now());
-      await env.DB.prepare(`INSERT INTO enquiry_log (id, reference, artist_id, artwork_id, route, introduced_at, founding, founding_year_end, logged_by, logged_at, late_entry)
+      if (commission) await env.DB.prepare(`INSERT INTO enquiry_log (id, reference, artist_id, artwork_id, route, introduced_at, founding, founding_year_end, logged_by, logged_at, late_entry, note)
+        VALUES (?,?,?,?,?,?,?,?,?,?,0,?)`).bind('l' + id.slice(1), ref, g.artist.id, null, 'relay', now(), f.founding, f.year_end, 'relay', now(), 'commission enquiry').run();
+      else await env.DB.prepare(`INSERT INTO enquiry_log (id, reference, artist_id, artwork_id, route, introduced_at, founding, founding_year_end, logged_by, logged_at, late_entry)
         VALUES (?,?,?,?,?,?,?,?,?,?,0)`).bind('l' + id.slice(1), ref, g.artist.id, work ? work.id : null, 'relay', now(), f.founding, f.year_end, 'relay', now()).run();
     } catch (e) { logged = 'not logged: ' + String(e.message || e).slice(0, 80); }
     const about = work ? `“${work.title}”` : 'your work';
     const r1 = await send(env, { to: g.artist.email, replyTo: email,
-      subject: `PlotArt enquiry about ${work ? work.title : 'your work'} · ${ref}`,
-      text: `Hello ${g.artist.display_name.split(' ')[0]},\n\n${name} has sent an enquiry about ${about} through your PlotArt gallery.\n\n` +
+      subject: commission ? `PlotArt commission enquiry · ${ref}` : `PlotArt enquiry about ${work ? work.title : 'your work'} · ${ref}`,
+      text: `Hello ${g.artist.display_name.split(' ')[0]},\n\n` +
+        (commission ? `${name} has asked through your PlotArt gallery about commissioning a new work from you.\n\n`
+          : `${name} has sent an enquiry about ${about} through your PlotArt gallery.\n\n`) +
         `"${message}"\n\nReply to this email to answer ${name} directly (your reply goes to ${email}).\n\n` +
         `Reference: ${ref}${work ? `\nArtwork: https://plotnua.ie/plotart/artists/${g.artist.slug}/${work.slug}.html` : ''}\n\n` +
-        `PlotArt takes no commission on enquiries from your founding year. Any sale is agreed directly between you and the buyer.\n\nPlotArt · part of PlotNua` });
-    await send(env, { to: email, replyTo: env.REPLY_TO || 'hello@plotnua.ie', subject: `Your PlotArt enquiry · ${ref}`,
-      text: `Hello ${name},\n\nThank you. Your enquiry about ${work ? `“${work.title}”` : `work by ${g.artist.display_name}`} has been passed to ${g.artist.display_name}, who will reply to you by email.\n\n` +
+        `${closingLine(commission)}\n\nPlotArt · part of PlotNua` });
+    await send(env, { to: email, replyTo: env.REPLY_TO || 'hello@plotnua.ie', subject: commission ? `Your PlotArt commission enquiry · ${ref}` : `Your PlotArt enquiry · ${ref}`,
+      text: `Hello ${name},\n\nThank you. Your enquiry about ${commission ? `a commission from ${g.artist.display_name}` : work ? `“${work.title}”` : `work by ${g.artist.display_name}`} has been passed to ${g.artist.display_name}, who will reply to you by email.\n\n` +
         `Reference: ${ref}\n\nHow we handle enquiries: https://plotnua.ie/privacy.html#plotart-enquiries\n\nPlotArt · part of PlotNua` });
     await env.DB.prepare('UPDATE enquiries SET status=?, sent_at=?, detail=? WHERE id=?').bind(r1.sent ? 'sent' : 'received', r1.sent ? now() : null, r1.detail, id).run();
-    await env.DB.prepare('INSERT INTO audit (at, actor, role, action, artist_id, detail) VALUES (?,?,?,?,?,?)').bind(now(), 'buyer', 'public', 'enquiry', g.artist.id, JSON.stringify({ ref, work: work ? work.id : null, mail: r1.detail, log: logged })).run();
+    await env.DB.prepare('INSERT INTO audit (at, actor, role, action, artist_id, detail) VALUES (?,?,?,?,?,?)').bind(now(), 'buyer', 'public', 'enquiry', g.artist.id, JSON.stringify({ ref, work: work ? work.id : null, ...(commission ? { kind: 'commission' } : {}), mail: r1.detail, log: logged })).run();
     return reply(env, origin, 200, { ok: true, reference: ref });
   },
 };
