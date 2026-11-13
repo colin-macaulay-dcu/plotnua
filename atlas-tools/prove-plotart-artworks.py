@@ -11,13 +11,15 @@ A4  every card links to its existing canonical artwork page and artist gallery; 
 A5  structured data: CollectionPage + ItemList + BreadcrumbList, parses, numberOfItems = cards, item URLs = the
     artwork pages' own canonicals, and no Offer, price or availability claim
 A6  head: title, one H1, index/follow + canonical exactly when its switch is on (noindex and no canonical otherwise)
-A7  sitemap: unchanged while artworks_in_sitemap is off; exactly one entry, the canonical URL, when it is on
+A7  sitemap: exactly the generated region for the switches; one entry (the canonical URL) only while artworks_in_sitemap
+    and artworks_indexable are on
 A8  synchronisation through the content pipeline's own functions: a sale, a withdrawal, a price change and a new
     gallery each change the region accordingly and nothing outside it
 A9  the content-only boundary accepts exactly the regenerated region and refuses an edited intro, an injected work
     and a price that differs from the export
 A10 fairness: works alternate between artists (no artist twice in a row while another still has works to show)
-A11 no artist gallery, artwork page or Artists' Gallery page differs from main
+A11 (--against MAIN) no artist page differs from main; the homepage, Artists' Gallery and buying guide differ only by
+    their one added link; the Artists' Gallery collection region is unchanged
 """
 import copy, html, json, os, re, subprocess, sys, tempfile
 from pathlib import Path
@@ -144,12 +146,14 @@ check("A6 with the switch off the page is noindex (indexable() honours artworks_
 # A7
 sm = (ROOT / "sitemap.xml").read_text()
 on = dict(launch, artworks_indexable=True, artworks_in_sitemap=True)
-check("A7 sitemap byte-identical while artworks_in_sitemap is off", SEO.update_sitemap(sm, packages, dict(launch, artworks_in_sitemap=False)) == sm)
-added = SEO.update_sitemap(sm, packages, on)
-check("A7 switched on: exactly one entry, the canonical collection URL", added.count("<loc>https://plotnua.ie/plotart/artworks/</loc>") == 1
-      and len(added.splitlines()) == len(sm.splitlines()) + (0 if launch.get("artworks_in_sitemap") else 1))
+check("A7 sitemap.xml is exactly the generated PlotArt region for the current switches", SEO.update_sitemap(sm, packages, launch) == sm)
+want_listed = SEO.indexable(PATH, launch) and launch.get("artworks_in_sitemap") is True
+check("A7 the collection is listed exactly %s, by its canonical URL" % ("once" if want_listed else "never"),
+      sm.count("<loc>https://plotnua.ie/plotart/artworks/</loc>") == (1 if want_listed else 0))
+check("A7 switching the entry off removes exactly that one line and nothing else",
+      SEO.update_sitemap(sm, packages, dict(launch, artworks_in_sitemap=False)) ==
+      SEO.update_sitemap(sm, packages, on).replace("  <url><loc>https://plotnua.ie/plotart/artworks/</loc></url>\n", ""))
 check("A7 never listed while the page itself is not indexable", "plotart/artworks/" not in SEO.update_sitemap(sm, packages, dict(on, artworks_indexable=False)))
-
 
 # A8 / A9: a temporary copy of the repository, changed only through the pipeline's own functions
 def git(cwd, *a):
@@ -233,12 +237,19 @@ for i in range(len(order) - 1):
 check("A10 works alternate between artists (no artist twice in a row while another still has works)", fair, order)
 
 # A11 (development review only: needs the main commit to compare with, so it runs only when given one)
+LINKS = {"plotart/index.html": '\n  <p style="font-size:15px;margin:0">Or <a href="artworks/" data-pa-track="home_artworks">browse all available artworks <span aria-hidden="true">→</span></a></p>',
+         "plotart/gallery/index.html": '<a href="../artworks/" data-pa-track="vg_artworks">All available artworks →</a>',
+         "plotart/buy-original-art-ireland.html": ' To see every work currently on offer in one place, browse <a href="artworks/">all available artworks</a>.'}
 if "--against" in sys.argv:
     ref = sys.argv[sys.argv.index("--against") + 1]
-    r = subprocess.run(["git", "diff", "--name-only", ref, "HEAD", "--", "plotart/artists", "plotart/gallery", "plotart/index.html"],
-                       cwd=ROOT, capture_output=True, text=True)
-    check("A11 no artist gallery, artwork page, Artists' Gallery or PlotArt homepage file differs from %s" % ref,
-          r.returncode == 0 and r.stdout.strip() == "", r.stdout + r.stderr)
+    show = lambda f: subprocess.run(["git", "show", "%s:%s" % (ref, f)], cwd=ROOT, capture_output=True, text=True).stdout
+    r = subprocess.run(["git", "diff", "--name-only", ref, "HEAD", "--", "plotart/artists"], cwd=ROOT, capture_output=True, text=True)
+    check("A11 no artist gallery or artwork page differs from %s" % ref, r.returncode == 0 and r.stdout.strip() == "", r.stdout + r.stderr)
+    for f, link in LINKS.items():
+        new = (ROOT / f).read_text()
+        check("A11 %s differs from %s only by the one added collection link" % (f, ref), new.count(link) == 1 and new.replace(link, "", 1) == show(f))
+    old, new = show("plotart/gallery/index.html"), (ROOT / "plotart/gallery/index.html").read_text()
+    check("A11 the Artists' Gallery collection region is unchanged", old[slice(*P.vg_region(old))] == new[slice(*P.vg_region(new))])
 else:
     print("  ----  A11 not run (pass --against <main commit> to compare the galleries with main)")
 

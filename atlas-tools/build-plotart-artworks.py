@@ -58,8 +58,8 @@ CSS = '''/* PlotArt artwork collection (plotart/artworks/, 13 Nov 2026): a galle
 .pa-coll-links{display:flex;flex-wrap:wrap;gap:12px 14px;margin-top:26px}
 @media (prefers-reduced-motion:reduce){.pa-coll-art img{transition:none}.pa-coll-art:hover img{transform:none}}
 @media (max-width:1099px){.pa-coll-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.pa-coll-art{height:clamp(240px,38vw,380px)}}
-@media (max-width:639px){.pa-coll-grid{grid-template-columns:1fr;gap:64px}.pa-coll-art{height:auto;max-height:none}.pa-coll-art img{max-height:72vh}
-.pa-coll-label{margin-top:22px;padding-top:20px}.pa-coll-actions .pa-btn,.pa-coll-links .pa-btn{max-width:100%;white-space:normal;text-align:center}}
+@media (max-width:639px){.pa-coll-grid{grid-template-columns:1fr;gap:44px}.pa-coll-art{height:auto;max-height:none}.pa-coll-art img{max-height:72vh}
+.pa-coll-label{margin-top:20px;padding-top:18px}.pa-coll-actions .pa-btn,.pa-coll-links .pa-btn{max-width:100%;white-space:normal;text-align:center}}
 '''
 
 BODY = '''
