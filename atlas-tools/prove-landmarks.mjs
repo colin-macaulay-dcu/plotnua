@@ -102,7 +102,14 @@ const SEARCH_FROZEN = {
   // reads "From €X" where the index marks the price "pf" (Atlas "Starting From");
   // nothing else in search.js changed. Same assertion, same strictness. Previous value:
   // abda3b569739a15be08ad3c6707b2d92adb31d2c78ac7817e8ddca2ad769430e.
-  "search.js":  "f5112ccaa76d67eb9b87e35f90b6e4e1137c70c88a63ccfb95e6fe1422271a92",
+  // Re-stamped 12 November 2026 for amendment A6 (supplier recognition): accent
+  // folding, the product-gated plural rule, web-address and trading-name
+  // recognition from index.aliases, per-record cached normalised text and (A6 r2)
+  // the exact-supplier-name rule. The renderer, ranking rules and privacy
+  // statics are unchanged. Same assertion,
+  // same strictness. Previous value:
+  // f5112ccaa76d67eb9b87e35f90b6e4e1137c70c88a63ccfb95e6fe1422271a92.
+  "search.js":  "ea42b6da0439e77d625e2d3229e19a03da661b136dccbcef6487670211cff1bd",
   // Re-stamped 22 October 2026 for the founder-approved Architectural
   // Anthracite Batch 2: one appended, scoped section gives the pill (identity
   // pages) and the overlay (homepage and identity pages) the anthracite

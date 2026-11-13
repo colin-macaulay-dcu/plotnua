@@ -90,8 +90,17 @@
 
   /* ---------------------------------------------------------------- matching */
 
+  /* A6 (12 Nov 2026): ACCENT FOLDING, on both sides. The character class below
+     used to DELETE accented letters, so "ÖÖD" became "d" and matched almost the
+     whole corpus (713 products), and "Sláinte" became "sl inte". Folding first
+     makes them "ood" and "slainte". */
+  function fold(s) {
+    var t = String(s == null ? '' : s);
+    return t.normalize ? t.normalize('NFD').replace(/[\u0300-\u036f]/g, '') : t;
+  }
+
   function normalise(s) {
-    return String(s == null ? '' : s)
+    return fold(s)
       .toLowerCase()
       .replace(/[‘’‚‛]/g, "'")
       .replace(/[“”]/g, '"')
@@ -149,23 +158,100 @@
      partial every time, because that is what the homeowner asked for. */
   var EXACT = 1000, PREFIX = 800, ORG = 600, TYPE = 400, OTHER = 200;
 
+  /* A6: each record's normalised text is computed ONCE per loaded index and kept
+     on the record as a non-enumerable property, so it never reaches JSON, the
+     renderer or any test that serialises a record. Same values as before. */
+  function textOf(rec) {
+    if (rec.__pnText) { return rec.__pnText; }
+    var t = {
+      name: normalise(rec.name || rec.title || ''),
+      org: normalise(rec.organisation || ''),
+      ptype: normalise(rec.productType || '')
+    };
+    t.all = [t.name, t.org, t.ptype, normalise(rec.standfirst || ''),
+             normalise((rec.topics || []).join(' '))].join(' ');
+    try { Object.defineProperty(rec, '__pnText', { value: t, enumerable: false }); } catch (e) { /* frozen record: recompute */ }
+    return t;
+  }
+
+  /* A6: ONE PLURAL RULE. No stemming library, no fuzzy matching, no edit
+     distance. A term of four or more letters ending in a single "s" may also
+     match its singular ("saunas" -> "sauna", "tubs" -> "tub"); -ss, -us and -is
+     endings are left alone. The singular already matched the plural through
+     substring matching, so this only closes the reverse direction.
+     PRODUCT-GATED: search() tries it only when ordinary matching found NO
+     product and NO supplier, and then adds products and suppliers only. Any
+     query that already finds a product or supplier is answered as before. */
+  var pluralPass = false;
+  function singular(t) {
+    if (!pluralPass || t.length < 4 || t.charAt(t.length - 1) !== 's') { return null; }
+    if (/(ss|us|is)$/.test(t)) { return null; }
+    return t.slice(0, -1);
+  }
+
+  /* A6 r2: START-OF-WORD TEST, used ONLY by the exact-supplier-name rule in
+     search(). True when w begins a word somewhere in text. Ordinary matching
+     is still substring matching and is not changed by this. */
+  function wordStartHit(text, w) {
+    var i = text.indexOf(w);
+    while (i !== -1) {
+      if (i === 0 || !/[a-z0-9]/.test(text.charAt(i - 1))) { return true; }
+      i = text.indexOf(w, i + 1);
+    }
+    return false;
+  }
+
   function scoreRecord(rec, terms, qnorm) {
     if (!terms.length) { return 0; }
-    var name = normalise(rec.name || rec.title || '');
-    var org = normalise(rec.organisation || '');
-    var ptype = normalise(rec.productType || '');
-    var stand = normalise(rec.standfirst || '');
-    var topics = normalise((rec.topics || []).join(' '));
-    var all = [name, org, ptype, stand, topics].join(' ');
+    var tx = textOf(rec);
+    var name = tx.name, org = tx.org, ptype = tx.ptype, all = tx.all;
 
     for (var i = 0; i < terms.length; i++) {
-      if (all.indexOf(terms[i]) === -1) { return 0; }   /* every term must hit */
+      if (all.indexOf(terms[i]) === -1) {
+        var st = singular(terms[i]);
+        if (!st || all.indexOf(st) === -1) { return 0; }  /* every term must hit */
+      }
     }
     if (name === qnorm) { return EXACT; }
     if (name.indexOf(qnorm) === 0) { return PREFIX; }
     if (org && (org === qnorm || org.indexOf(qnorm) === 0)) { return ORG; }
     if (ptype && ptype.indexOf(qnorm) !== -1) { return TYPE; }
     return OTHER;
+  }
+
+  /* A6: SUPPLIER RECOGNITION (SEARCH-V1 amendment A6). index.aliases maps a host
+     ("sproutpod.ie") or a compact trading name ("sproutpod") to an organisation
+     that ALREADY has records in this index. It is generated from Atlas by
+     build-search-index.py; nothing here names a supplier. It never creates a
+     record or a card: it only says which existing records answer. */
+  var HOSTLIKE = /^[a-z0-9-]+(\.[a-z0-9-]+)*\.[a-z]{2,24}([\/?#:].*)?$/;
+  function canonicalHost(q) {
+    var t = fold(q).toLowerCase().trim();
+    if (!/^(https?:\/\/|www\.)/.test(t) && !HOSTLIKE.test(t)) { return null; }
+    var m = t.match(/^(?:[a-z][a-z0-9+.-]*:\/\/)?(?:www\.)?([^\/?#:\s]+)/);
+    return m ? m[1].replace(/\.$/, '') : null;
+  }
+  function aliasTarget(index, query) {
+    var A = index && index.aliases, has = Object.prototype.hasOwnProperty;
+    if (!A || !A.k || !A.t) { return { kind: 'none' }; }
+    var h = canonicalHost(query);
+    if (h !== null) {
+      var labels = h.split('.');
+      while (labels.length >= 2) {              /* shop.sproutpod.ie -> sproutpod.ie */
+        var k = labels.join('.');
+        if (has.call(A.k, k)) { return { kind: 'host', t: A.t[A.k[k]] }; }
+        labels.shift();
+      }
+      return { kind: 'host-miss' };             /* an unknown address answers nothing */
+    }
+    var c = normalise(query).replace(/[^a-z0-9]/g, '');
+    if (c.length >= 4 && has.call(A.k, c)) { return { kind: 'name', t: A.t[A.k[c]] }; }
+    return { kind: 'none' };
+  }
+  function belongsTo(r, t) {
+    return (r.type === 'product' && r.organisation === t.o) ||
+           (r.type === 'supplier' && r.name === t.o) ||
+           (r.type === 'possibility' && !!t.p && t.p.indexOf(r.id) !== -1);
   }
 
   /* The governed topic map is carried in the index's possibility topics, so no
@@ -252,6 +338,83 @@
       if (cap != null && /^suppliers\//.test(r.route || '')) { return; }
       scored.push({ r: r, s: s });
     });
+
+    /* A6: the product-gated plural pass (see singular()). */
+    if (!scored.some(function (x) { return x.r.type === 'product' || x.r.type === 'supplier'; })) {
+      pluralPass = true;
+      try {
+        records.forEach(function (r) {
+          if (r.type !== 'product' && r.type !== 'supplier') { return; }
+          var s2 = scoreRecord(r, terms, qnorm);
+          if (!s2) { return; }
+          if (cap != null && r.type === 'product') {
+            var rp2 = pnsPrice(r);
+            if (rp2 == null || rp2 > cap) { return; }
+          }
+          if (cap != null && r.type === 'supplier') {
+            var rr2 = pnsRange(r);
+            if (!rr2 || rr2[0] > cap) { return; }
+          }
+          scored.push({ r: r, s: s2 });
+        });
+      } finally { pluralPass = false; }
+    }
+
+    /* A6: a recognised web address or trading name. A host answers with that
+       organisation's own existing records only, and an unknown host answers
+       nothing (so "timberin.com" can no longer match "com" inside
+       "combination"). A compact trading name only ADDS its organisation when
+       ordinary matching missed it, so a query that already found its supplier
+       is untouched. The relevance rules below are unchanged. */
+    var al = aliasTarget(index, query);
+    if (al.kind === 'host-miss') { scored = []; }
+    if (al.kind === 'host' || al.kind === 'name') {
+      var found = scored.some(function (x) { return belongsTo(x.r, al.t); });
+      if (al.kind === 'host' || !found) {
+        var own = records.filter(function (r) { return belongsTo(r, al.t); })
+                         .map(function (r) { return { r: r, s: EXACT + 2 }; });
+        scored = al.kind === 'host' ? own
+               : own.concat(scored.filter(function (x) { return !belongsTo(x.r, al.t); }));
+      }
+    }
+
+    /* A6 r2: AN EXACT SUPPLIER NAME. When the query is a published supplier's
+       name, or the whole leading word(s) of it ("ÖÖD" for "ÖÖD House"), or a
+       recognised trading name, AND that name is distinctive (no other
+       supplier's product or supplier record matches it at the start of a word,
+       so ordinary words such as "home" or "all" never qualify), a Possibility
+       that matches the query only INSIDE another word is not shown ("ood"
+       inside "flood", "food", "wood"). The supplier's own records, its own
+       pages, governed topic-map entries and any Possibility matching at the
+       start of a word are untouched. No score changes, no new signal, no fuzzy
+       matching; products and suppliers are never removed by this rule. */
+    var namedOrgs = {};
+    if (qnorm) {
+      records.forEach(function (r) {
+        var n = r.type === 'supplier' ? textOf(r).name : r.type === 'product' ? textOf(r).org : '';
+        if (n && (n === qnorm || n.indexOf(qnorm + ' ') === 0)) {
+          namedOrgs[r.type === 'supplier' ? r.name : r.organisation] = true;
+        }
+      });
+    }
+    if (al.kind === 'name') { namedOrgs[al.t.o] = true; }
+    var distinctive = Object.keys(namedOrgs).length > 0 && scored.every(function (x) {
+      if (x.r.type !== 'product' && x.r.type !== 'supplier') { return true; }
+      if (namedOrgs[x.r.type === 'supplier' ? x.r.name : x.r.organisation]) { return true; }
+      var all = textOf(x.r).all;
+      return !terms.every(function (t) { return wordStartHit(all, t); });
+    });
+    if (distinctive) {
+      var ownPages = {}, AT = (index.aliases && index.aliases.t) || [];
+      AT.forEach(function (t) {
+        if (namedOrgs[t.o]) { (t.p || []).forEach(function (id) { ownPages[id] = true; }); }
+      });
+      scored = scored.filter(function (x) {
+        if (x.r.type !== 'possibility' || mappedIds[x.r.id] || ownPages[x.r.id]) { return true; }
+        var all = textOf(x.r).all;
+        return terms.every(function (t) { return wordStartHit(all, t); });
+      });
+    }
 
     scored.sort(function (a, b) {
       if (b.s !== a.s) { return b.s - a.s; }
@@ -899,6 +1062,7 @@
 
   return {
     boot: boot, search: search, normalise: normalise, tokens: tokens,
+    canonicalHost: canonicalHost, aliasTarget: aliasTarget,
     priceIntent: priceIntent, coreTerms: coreTerms, renderResults: renderResults,
     pnsToday: pnsToday, pnsPrice: pnsPrice, pnsRange: pnsRange, pnsUnverified: pnsUnverified,
     groupProducts: groupProducts, INDEX_URL: INDEX_URL

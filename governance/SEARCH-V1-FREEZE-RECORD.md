@@ -373,3 +373,21 @@ There is no change to `search.js`, the index format or any record. The full text
 
 Same assertion, same strictness (`atlas-tools/prove-landmarks.mjs`). The full text is in `governance/SEARCH-V1-CONTRACT.md`, Amendment A5.
 
+### 12 November 2026 — AMENDMENT A6 · SUPPLIER RECOGNITION (founder approval for implementation and local testing; NOT RELEASED)
+
+**What changed.**
+- A pasted web address (bare domain, `www.` or full `https://` URL) or a compact trading name ("SproutPod") reaches the records Search already publishes for that supplier. Unknown addresses return nothing.
+- Accents fold on both sides ("ÖÖD" → "ood", "Sláinte" → "slainte").
+- One product-gated plural rule: tried only when a query finds no product and no supplier.
+- (A6 r2, same day, before any release) An exact, distinctive supplier name ("ÖÖD") no longer shows guides that contain it only inside another word ("flood", "food", "wood").
+- The index gains one envelope block, `aliases`, generated from Atlas (Organisations.Website and founder-confirmed Permitted Domains) by `atlas-tools/build-search-aliases.py`. Every record is byte-identical.
+
+**Re-stamped:**
+
+| Asset | Before | After |
+|---|---|---|
+| `search.js` | `f5112ccaa76d67eb` | **`ea42b6da0439e77d`** (A6 r2; the unreleased r1 stamp `965282633d05370c` is superseded) |
+| `search.css` | unchanged | unchanged |
+
+Same assertion, same strictness (`atlas-tools/prove-landmarks.mjs`). The full text is in `governance/SEARCH-V1-CONTRACT.md`, Amendment A6.
+

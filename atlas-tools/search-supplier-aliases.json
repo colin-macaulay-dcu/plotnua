@@ -1,0 +1,1910 @@
+{
+ "schema": "plotnua.search.aliases",
+ "version": "1",
+ "generated": "2026-11-12",
+ "source": "Atlas Core (appoLZFWesvoPhZGR) read-only export, 12 Nov 2026 ~12:40 Europe/Dublin: Organisations (Organisation Name, Organisation Code, Website); Image Permission Outreach rows with a Permitted Domain (Outreach Ref, Organisation, Permitted Domain, Permission Outcome)",
+ "rule": "Hosts come only from Organisations.Website and from founder-confirmed granted Image Permission Outreach Permitted Domains. build-search-index.py emits an alias only for an organisation that already has published records. Retail-channel aliases are deferred (founder decision, 12 Nov 2026).",
+ "organisations": [
+  {
+   "atlasRecord": "recjyQJVpbhrblxf5",
+   "atlasCode": "ORG-000220",
+   "name": "A Room Outside",
+   "website": "https://aroomoutside.ie/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "reczZB80I56NpfNSa",
+   "atlasCode": "ORG-000115",
+   "name": "A1 Sheds",
+   "website": "https://www.a1sheds.ie/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "recQc1qQ3cZKfG3Cp",
+   "atlasCode": "ORG-000251",
+   "name": "Abbeylawn Products Ltd / Garden Sheds Dublin",
+   "website": "https://www.gardensheds-dublin.com/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "recSTpGSBskJMIDwq",
+   "atlasCode": "ORG-000250",
+   "name": "Activ8 Solar Energies",
+   "website": "https://activ8energies.com/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "recOjnbeotdf0jnqH",
+   "atlasCode": "ORG-000017",
+   "name": "Adman Steel Sheds",
+   "website": "https://admansteelsheds.com/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "reccM9Gg66ZuZC0m3",
+   "atlasCode": "ORG-000101",
+   "name": "All About Outdoors",
+   "website": "https://allaboutoutdoors.ie/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "rec7q7WitcIuY3phT",
+   "atlasCode": "ORG-000104",
+   "name": "All In One Cabins",
+   "website": "https://allinonecabins.ie/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "recf1N5IsxgsSGM6K",
+   "atlasCode": "ORG-000236",
+   "name": "Alternative Energy Ireland",
+   "website": "https://alternativeenergy.ie/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "rec5C2SJDV2gZOgib",
+   "atlasCode": "ORG-000237",
+   "name": "AOS Energy",
+   "website": "https://www.aosenergy.ie/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "recKMhWoAkRhm81yq",
+   "atlasCode": "ORG-000211",
+   "name": "Apple Cabins",
+   "website": "https://applecabins.com/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "recUVAub7g9esU8QV",
+   "atlasCode": "ORG-000217",
+   "name": "Aquasun Wellness Ireland",
+   "website": "https://www.aquasun.ie/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "recPy0NyMdqGfEeyG",
+   "atlasCode": "ORG-000253",
+   "name": "Arctic Wellness",
+   "website": "https://www.arcticwellness.ie/",
+   "permittedDomains": [
+    {
+     "domain": "arcticwellness.ie",
+     "ref": "OUTREACH-ARCTIC-WELLNESS-20261109",
+     "outcome": "Granted with Conditions — Founder Confirmed"
+    }
+   ]
+  },
+  {
+   "atlasRecord": "recTVHk6cPJEzCHch",
+   "atlasCode": "ORG-000252",
+   "name": "Artworld",
+   "website": "https://artworld.ie",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "recT4H1YfWh16PY02",
+   "atlasCode": "ORG-000181",
+   "name": "Astel Garden",
+   "website": "https://astelgarden.com/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "recZVKy9FPReF7I9H",
+   "atlasCode": "ORG-000152",
+   "name": "Auroom Wellness",
+   "website": "https://auroomwellness.com/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "recVckuYztPIJQSzr",
+   "atlasCode": "ORG-000196",
+   "name": "Avrame Ireland",
+   "website": "https://www.avrame.ie/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "rec0GDENyFL39D6TG",
+   "atlasCode": "ORG-000060",
+   "name": "Bakers Garden Buildings",
+   "website": "https://www.bakersgardenbuildings.co.uk/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "rec66sNzKArqeOU23",
+   "atlasCode": "ORG-000121",
+   "name": "Ballyfree Garden Sheds",
+   "website": "https://ballyfreegardensheds.ie/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "recKNhkzqSMkh30Oe",
+   "atlasCode": "ORG-000184",
+   "name": "Baltic Log Houses",
+   "website": "https://www.balticloghouses.ee/en/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "recVDKgnHNuBCME9I",
+   "atlasCode": "ORG-000168",
+   "name": "Baumbaron",
+   "website": "https://www.baumbaron.de/en",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "rec7dG4sHJtzstIHo",
+   "atlasCode": "ORG-000109",
+   "name": "Berko Pod Systems Ltd",
+   "website": "https://berkopodsystems.com/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "recsDmxfYLRJiaFmG",
+   "atlasCode": "ORG-000026",
+   "name": "Bertilo",
+   "website": "https://bertilo.com/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "recWb9TosmC8rNMsv",
+   "atlasCode": "ORG-000031",
+   "name": "Bertsch Holzbau",
+   "website": "https://bertsch-holzbau.eu/en/garden-rooms/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "recAjPcU1q0M8HhAm",
+   "atlasCode": "ORG-000117",
+   "name": "Bespoke Garden Rooms NI",
+   "website": "https://www.bespokegardenroomsni.co.uk/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "recnvHCjmfim16w3q",
+   "atlasCode": "ORG-000112",
+   "name": "Big Man Tiny Homes",
+   "website": "https://bigmantinyhomes.ie/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "recsSDONQgjuktGn1",
+   "atlasCode": "ORG-000064",
+   "name": "BillyOh",
+   "website": "https://www.billyoh.com/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "recjNpnrIr2KT5BWh",
+   "atlasCode": "ORG-000153",
+   "name": "BIOBUILDS",
+   "website": "https://www.biobuilds.com/",
+   "permittedDomains": [
+    {
+     "domain": "biobuilds.com",
+     "ref": "C2-GRANT-BIOBUILDS-20261002",
+     "outcome": "Granted with Conditions — Founder Confirmed"
+    }
+   ]
+  },
+  {
+   "atlasRecord": "reclCNqekU666UWJA",
+   "atlasCode": "ORG-000044",
+   "name": "Booths Garden Studios",
+   "website": "https://boothsgardenstudios.co.uk/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "recE9KotC2NT4GgCd",
+   "atlasCode": "ORG-ESUP-BGE",
+   "name": "Bord Gáis Energy",
+   "website": "https://www.bordgaisenergy.ie/home/microgeneration",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "reccTCSlLz19nlGYO",
+   "atlasCode": "ORG-000247",
+   "name": "Bright Star Electric",
+   "website": "https://brightstarelectric.ie/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "recPlRc8oVs1T2bio",
+   "atlasCode": "ORG-000248",
+   "name": "BYD Ireland Energy",
+   "website": "https://www.bydenergy.ie/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "recwnfOU0A473780x",
+   "atlasCode": "ORG-000221",
+   "name": "C11 Recovery",
+   "website": "https://c11recovery.com/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "recontC2BSomwggsc",
+   "atlasCode": "ORG-000210",
+   "name": "Cabin Master",
+   "website": "https://www.cabinmaster.co.uk/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "recfAI2Dkp0LXAEIr",
+   "atlasCode": "ORG-000061",
+   "name": "Cabins Unlimited",
+   "website": "https://www.cabinsunlimited.co.uk/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "recKZh9tyJE4dfOs4",
+   "atlasCode": "ORG-000198",
+   "name": "Capsule Castle",
+   "website": "https://capsulecastle.com/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "recoTIcyqh8XiJbxs",
+   "atlasCode": "ORG-000222",
+   "name": "Castle Swimming Pools",
+   "website": "https://www.castlepools.ie/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "recRP8o1hHl9JI2FE",
+   "atlasCode": "ORG-000090",
+   "name": "Cedar Garden Rooms",
+   "website": "https://cedargardenrooms.com/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "recxdr0chc5ljRqfR",
+   "atlasCode": "ORG-000102",
+   "name": "CG Garden Rooms (CG Joinery)",
+   "website": "https://cggardenrooms.com/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "recdlkofVYSOtexJK",
+   "atlasCode": "ORG-000169",
+   "name": "Cheeky Monkey Treehouses",
+   "website": "https://www.cheekymonkeytreehouses.com/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "recBrgWKYsrxMfGrE",
+   "atlasCode": "ORG-000223",
+   "name": "Coldplunge.ie",
+   "website": "https://coldplunge.ie/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "recjAV6RKIhEjMzzd",
+   "atlasCode": "ORG-000202",
+   "name": "Community Roots",
+   "website": "https://www.communityroots.ie/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "recfV4V49BHoMsYBA",
+   "atlasCode": "ORG-000014",
+   "name": "Concept Modular",
+   "website": "https://www.conceptmodular.ie/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "recxzs6QrQ1DYVuMG",
+   "atlasCode": "ORG-000233",
+   "name": "Cosy Cabins",
+   "website": "https://www.cosycabins.ie/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "recBqK4kMGIgCRwqk",
+   "atlasCode": "ORG-000136",
+   "name": "Craft Garden Sheds",
+   "website": "https://craftgardensheds.ie",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "recwi7ZYxO3ZIfDaP",
+   "atlasCode": "ORG-000045",
+   "name": "Crane Garden Buildings",
+   "website": "https://www.cranegardenbuildings.co.uk/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "recoKgwT1LgTedE9b",
+   "atlasCode": "ORG-000056",
+   "name": "Crown Pavilions",
+   "website": "https://www.crownpavilions.com/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "recVZuGOLB8fqzsxw",
+   "atlasCode": "ORG-000094",
+   "name": "Custom Garden Spaces",
+   "website": "https://customgardenspaces.co.uk/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "rec1ZsXRkJhENt3wE",
+   "atlasCode": "ORG-000145",
+   "name": "D & G Woodcraft",
+   "website": "https://www.dandgwoodcraft.co.uk",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "recOLYgRSUdzU8zwI",
+   "atlasCode": "ORG-000214",
+   "name": "Don Modular Homes",
+   "website": "https://donmodularhomes.ie/",
+   "permittedDomains": [
+    {
+     "domain": "donmodularhomes.ie",
+     "ref": "C2-FIRST-DON-MODULAR-20261002",
+     "outcome": "Granted — Founder Confirmed"
+    }
+   ]
+  },
+  {
+   "atlasRecord": "recY9h82QghJ1oB4a",
+   "atlasCode": "ORG-000204",
+   "name": "Dublin City Council",
+   "website": "https://www.dublincity.ie/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "rec5Dwr8vYDDkHEeW",
+   "atlasCode": "ORG-000028",
+   "name": "Dunster House",
+   "website": "https://dunsterhouse.co.uk/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "recSbjcpAu8SmOoFa",
+   "atlasCode": "ORG-000206",
+   "name": "Dún Laoghaire-Rathdown County Council",
+   "website": "https://www.dlrcoco.ie/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "recHiORGS5aWoY6Pm",
+   "atlasCode": "ORG-000224",
+   "name": "EA Modular Houses",
+   "website": "https://www.eamodularhouses.ie/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "reczQAlAQhP3hs9qN",
+   "atlasCode": "",
+   "name": "East Coast Carpentry",
+   "website": "https://eastcoastcarpentry.ie/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "recQ90NkugO5hH196",
+   "atlasCode": "ORG-000140",
+   "name": "EcoEden Garden Rooms",
+   "website": "https://thegardenfurnitureshop.ie",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "recSHdooA7E4GL35R",
+   "atlasCode": "ORG-000234",
+   "name": "EcoHome Log Cabins Ireland",
+   "website": "https://www.eco-home.ie/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "recUnzSlV4tszVzg6",
+   "atlasCode": "ORG-000180",
+   "name": "Ecohouse Building Systems",
+   "website": "https://ecohouse.ie/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "recCwzTJjR6y9h7xA",
+   "atlasCode": "ORG-000039",
+   "name": "EcoPods Ireland",
+   "website": "https://ecopods.ie/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "rec7or5nAX2Z57tiN",
+   "atlasCode": "ORG-000218",
+   "name": "EcoSauna Ireland",
+   "website": "https://www.ecosauna.ie/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "recIAkwuNtKRrv69S",
+   "atlasCode": "ORG-ESUP-EI",
+   "name": "Electric Ireland",
+   "website": "https://www.electricireland.ie/residential/products/microgeneration",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "recdkZXPh12FyiCRr",
+   "atlasCode": "ORG-000105",
+   "name": "Elevate Modular",
+   "website": "https://elevatemodular.com/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "recyCu5OjHlUObM8f",
+   "atlasCode": "ORG-000148",
+   "name": "Elm Landscaping (Garden Rooms)",
+   "website": "https://elmlandscaping.ie",
+   "permittedDomains": [
+    {
+     "domain": "elmlandscaping.ie",
+     "ref": "IPO-046",
+     "outcome": "Granted with Conditions — Founder Confirmed"
+    }
+   ]
+  },
+  {
+   "atlasRecord": "recsxu7iXjf3DZiT1",
+   "atlasCode": "ORG-ESUP-ENERGIA",
+   "name": "Energia",
+   "website": "https://www.energia.ie/home-upgrades/energia-and-the-microgeneration-scheme",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "recLXzBoVQCcU8G6i",
+   "atlasCode": "ORG-000238",
+   "name": "EnergyServ",
+   "website": "https://energyserv.ie/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "recDYO9vzIG2CFcMQ",
+   "atlasCode": "ORG-000239",
+   "name": "EnergySmart Renewables",
+   "website": "https://energysmart.ie/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "recixjRpanFDd0O4l",
+   "atlasCode": "ORG-000240",
+   "name": "Energywise Ireland",
+   "website": "https://energywiseireland.ie/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "recuCIpa2AqQVvP7b",
+   "atlasCode": "ORG-000113",
+   "name": "Escapod",
+   "website": "https://www.escapod.net/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "rechsPFUooApigybT",
+   "atlasCode": "ORG-000173",
+   "name": "Essex Garden Studios",
+   "website": "https://essexgardenstudios.co.uk/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "recLaFAO4fKHUnWb9",
+   "atlasCode": "ORG-000082",
+   "name": "Eurovudas",
+   "website": "https://eurovudas.com/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "recNLaX3SvRCpGOwc",
+   "atlasCode": "ORG-000144",
+   "name": "Fernagh Sheds",
+   "website": "https://www.fernaghsheds.co.uk",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "recfdDnGD3G3iblUc",
+   "atlasCode": "ORG-000205",
+   "name": "Fingal County Council",
+   "website": "https://www.fingal.ie/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "recoOHQ2mLbrZsU7S",
+   "atlasCode": "ORG-000078",
+   "name": "Finnlife",
+   "website": "https://www.finnlife.co.uk/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "rec2uTMwlEltje8jz",
+   "atlasCode": "ORG-000185",
+   "name": "Flexanex ApS",
+   "website": "https://www.flexanex.dk/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "rec5Z9QFVJGxMomjX",
+   "atlasCode": "ORG-ESUP-FLOGAS",
+   "name": "Flogas",
+   "website": "https://www.flogas.ie/help-centre/flogas-micro-generation/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "reczmuJsbEsjOUCb0",
+   "atlasCode": "ORG-000081",
+   "name": "Foldaco",
+   "website": "https://foldaco.com/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "recaWRmVmEMPjVsXx",
+   "atlasCode": "ORG-000069",
+   "name": "Forest Garden",
+   "website": "https://www.forestgarden.co.uk/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "recGQLsvkitmrRmxf",
+   "atlasCode": "ORG-PLANEDEN",
+   "name": "Forest Wild / Plan Eden",
+   "website": "https://www.forestwildtreehouses.ie/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "recZ5AKrlTKmd6NJv",
+   "atlasCode": "ORG-000215",
+   "name": "Future Gaff",
+   "website": "https://futuregaff.ie/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "recbdE03f9kXWV7bT",
+   "atlasCode": "ORG-000033",
+   "name": "Future Rooms",
+   "website": "https://www.futurerooms.co.uk/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "recfDRnovjNjpZzfV",
+   "atlasCode": "ORG-000225",
+   "name": "G O'Neill Fabrication",
+   "website": "https://www.goneillfabrication.ie/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "recrGx13OIXO7xrFl",
+   "atlasCode": "ORG-000122",
+   "name": "Galway Garden Rooms",
+   "website": "https://galwaygardenrooms.com/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "recIgwRGldxfpX2CS",
+   "atlasCode": "ORG-000124",
+   "name": "Gar-den",
+   "website": "https://www.gar-den.co.uk/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "recd3iLH8rKjjct9y",
+   "atlasCode": "ORG-000047",
+   "name": "Garden Affairs",
+   "website": "https://www.gardenaffairs.co.uk/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "recqNUJtLlRnaZY2M",
+   "atlasCode": "ORG-000062",
+   "name": "Garden Buildings Direct",
+   "website": "https://www.gardenbuildingsdirect.co.uk/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "recCd9ohsh8LQtqSJ",
+   "atlasCode": "ORG-000054",
+   "name": "Garden Hideouts",
+   "website": "https://www.gardenhideouts.co.uk/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "recd6De9n3c4jUADU",
+   "atlasCode": "ORG-000219",
+   "name": "Garden Living Solutions",
+   "website": "https://www.gardenlivingsolutions.ie/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "recuCWhMIEWD1X1yE",
+   "atlasCode": "ORG-000164",
+   "name": "Garden Office Buildings",
+   "website": "https://gardenofficebuildings.co.uk/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "rec0zLenIbn3nsvjh",
+   "atlasCode": "ORG-000015",
+   "name": "Garden Office Solutions",
+   "website": "https://gardenofficesolutions.ie/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "rec1Gr7MYitQWwXmI",
+   "atlasCode": "ORG-000100",
+   "name": "Garden Room Finder",
+   "website": "https://www.gardenroomfinder.co.uk/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "recUrpkOqKbynjQP0",
+   "atlasCode": "ORG-000012",
+   "name": "Garden Room Ireland",
+   "website": "https://www.gardenroomireland.ie/",
+   "permittedDomains": [
+    {
+     "domain": "gardenroomireland.ie",
+     "ref": "IPO-049",
+     "outcome": "Granted — Founder Confirmed"
+    }
+   ]
+  },
+  {
+   "atlasRecord": "recwDJ7tzv9q4fOSj",
+   "atlasCode": "ORG-000089",
+   "name": "Garden Room Living",
+   "website": "https://gardenroomliving.co.uk/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "recuHql015ALSjMWd",
+   "atlasCode": "ORG-000098",
+   "name": "Garden Room Sanctuary",
+   "website": "https://gardenroomsanctuary.co.uk/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "rechco59Sn6wp3Aiq",
+   "atlasCode": "ORG-000001",
+   "name": "Garden Rooms",
+   "website": "https://www.gardenrooms.ie/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "recDMOKuD120cSrSp",
+   "atlasCode": "ORG-000141",
+   "name": "Garden Rooms Cork",
+   "website": "https://gardenroomscork.com",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "recBSHTtUF9C7OdJU",
+   "atlasCode": "ORG-000126",
+   "name": "Garden Rooms Dublin",
+   "website": "https://www.gardenroomdublin.com/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "recd4Fg8MsDyvsu09",
+   "atlasCode": "ORG-000032",
+   "name": "Garden Rooms NI",
+   "website": "https://www.gardenroomsni.com/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "recmW0HlJFr9GvLEj",
+   "atlasCode": "ORG-000128",
+   "name": "Garden Solutions 4U",
+   "website": "https://gardensolutions4u.com/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "recdK7xhEvNae5vQZ",
+   "atlasCode": "ORG-000041",
+   "name": "Garden Spaces",
+   "website": "https://www.gardenspaces.co.uk/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "recUQ4IudorCy9fel",
+   "atlasCode": "ORG-000091",
+   "name": "Garden2Office",
+   "website": "https://garden2office.co.uk/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "recimksQIUyfMHPmL",
+   "atlasCode": "ORG-000176",
+   "name": "GardenDreams",
+   "website": "https://www.gardendreams.de/en/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "reck8qDwmDCjo3hp1",
+   "atlasCode": "ORG-000087",
+   "name": "Gardenhouse24",
+   "website": "https://gardenhouse24.co.uk/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "reclA5R4kPCCwc8Pc",
+   "atlasCode": "ORG-000010",
+   "name": "Gardenhouse24 Ireland",
+   "website": "https://gardenhouse24.ie/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "rec83Ys1J7TFQE4eR",
+   "atlasCode": "ORG-000084",
+   "name": "Gardenis",
+   "website": "https://gardenis.eu/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "recmbOKQC5CUbjlFE",
+   "atlasCode": "ORG-000013",
+   "name": "Go Modular",
+   "website": "https://gomodular.ie/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "recweAltNaRhUBEjh",
+   "atlasCode": "ORG-000135",
+   "name": "Gorestown Garden Products",
+   "website": "https://gorestowngardenproducts.co.uk",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "recEmme0qTgHMYHVN",
+   "atlasCode": "ORG-000241",
+   "name": "Gorman Electrical Services",
+   "website": "https://www.ges.ie/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "reczne3oE3EHQyp7L",
+   "atlasCode": "ORG-000177",
+   "name": "Granny Flats Dublin",
+   "website": "https://grannyflats.ie/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "recJJ4jFPAMxw6IkY",
+   "atlasCode": "ORG-000030",
+   "name": "Green Retreats",
+   "website": "https://www.greenretreats.co.uk/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "recJQqzjPFHK9DBXW",
+   "atlasCode": "ORG-000093",
+   "name": "Green Studios",
+   "website": "https://green-studios.co.uk/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "rec804O4lMQVUqM6H",
+   "atlasCode": "ORG-000242",
+   "name": "Green-house Solar Energy",
+   "website": "https://green-house.ie/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "receufKmrd8c4QgMv",
+   "atlasCode": "ORG-000025",
+   "name": "Hansa24 Group",
+   "website": "https://hansa24.com/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "recfpcUL7s03Es3lV",
+   "atlasCode": "ORG-000107",
+   "name": "Home Modular",
+   "website": "https://homemodular.ie/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "recmsuYqFwv29IsW1",
+   "atlasCode": "ORG-000203",
+   "name": "Homegrown.ie",
+   "website": "https://homegrown.ie/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "recsAZ82jAMKkFeSf",
+   "atlasCode": "ORG-000096",
+   "name": "Homestead Timber Buildings",
+   "website": "https://www.homesteadtimberbuildings.co.uk/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "recOVQGMI3kVAJKkn",
+   "atlasCode": "ORG-000216",
+   "name": "HomeZone Garden",
+   "website": "https://homezonegarden.ie/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "recANOviLsqTTwlOi",
+   "atlasCode": "ORG-000077",
+   "name": "Honka",
+   "website": "https://honka.com/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "recTq78jSQNOluU8c",
+   "atlasCode": "ORG-000174",
+   "name": "Hutsmith",
+   "website": "https://hutsmith.com/",
+   "permittedDomains": [
+    {
+     "domain": "hutsmith.com",
+     "ref": "IPO-HUTSMITH-20261001",
+     "outcome": "Granted — Founder Confirmed"
+    }
+   ]
+  },
+  {
+   "atlasRecord": "rec7wp2vzUC3dxcYr",
+   "atlasCode": "ORG-000108",
+   "name": "Iglucraft",
+   "website": "https://iglucraft.com/en/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "recGmX0c2Wx4Fc76T",
+   "atlasCode": "ORG-000052",
+   "name": "Into the Garden Room",
+   "website": "https://intothegardenroom.com/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "recFjDMndB3sXWvIg",
+   "atlasCode": "ORG-000192",
+   "name": "INTUMODULAR",
+   "website": "https://www.intumodular.co.uk/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "rec5bVSreujLg6BsH",
+   "atlasCode": "ORG-000131",
+   "name": "Irish Log Cabins",
+   "website": "https://www.irishlogcabins.ie/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "recLW0vZbkBGPRkZ9",
+   "atlasCode": "ORG-000226",
+   "name": "Irish Sauna Company",
+   "website": "https://irishsaunacompany.com/",
+   "permittedDomains": [
+    {
+     "domain": "irishsaunacompany.com",
+     "ref": "WELLNESS-FIRST-IRISH-SAUNA-COMPANY-20261002",
+     "outcome": "Granted — Founder Confirmed"
+    }
+   ]
+  },
+  {
+   "atlasRecord": "recgsaDsSVCCad0q4",
+   "atlasCode": "ORG-000162",
+   "name": "KC Modular Buildings",
+   "website": "https://kcmodularbuildings.co.uk/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "rec3qaOK5hAHkWfcR",
+   "atlasCode": "ORG-000037",
+   "name": "Kilkenny Garden Sheds",
+   "website": "https://kilkennygardensheds.ie/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "recTpUn4CBFfgpGcj",
+   "atlasCode": "ORG-000116",
+   "name": "Killylea Woodcraft",
+   "website": "https://killyleawoodcraft.com/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "recaPxHLIBiq21HSi",
+   "atlasCode": "ORG-000151",
+   "name": "Kodasema",
+   "website": "https://kodasema.com/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "recrB2iU5vT0nNWwz",
+   "atlasCode": "ORG-000170",
+   "name": "Konga Cabins",
+   "website": "https://www.kongacabins.com/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "recBqmxqEcALqdahe",
+   "atlasCode": "ORG-000076",
+   "name": "Kontio",
+   "website": "https://www.kontio.com/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "recEMNNtEYy59gmbt",
+   "atlasCode": "ORG-000150",
+   "name": "Koto",
+   "website": "https://koto.co.uk/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "rec0E8ongSL0hZnZR",
+   "atlasCode": "ORG-000023",
+   "name": "Lasita Maja",
+   "website": "https://www.lasita.com/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "recJeIlEZnKm2zedA",
+   "atlasCode": "ORG-000212",
+   "name": "LGS Modular",
+   "website": "https://lgsmodular.com/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "rec7j3kWGGjPAjwVV",
+   "atlasCode": "ORG-000075",
+   "name": "Lillevilla",
+   "website": "https://www.lillevilla.com/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "reczankduIWGWwXKR",
+   "atlasCode": "ORG-000137",
+   "name": "Live in Garden Pods",
+   "website": "https://liveingardenpods.ie",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "recOB3GUT7mrZR0r2",
+   "atlasCode": "ORG-000191",
+   "name": "Log House NI",
+   "website": "",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "recefOJGKHPwabRhV",
+   "atlasCode": "ORG-000005",
+   "name": "Loghouse",
+   "website": "https://www.loghouse.ie/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "recSDXX7gK0FT7g8G",
+   "atlasCode": "ORG-000024",
+   "name": "Lugarde",
+   "website": "https://lugarde.com/en",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "recQECqmQ2wTgWRNU",
+   "atlasCode": "ORG-000193",
+   "name": "Luka Nest",
+   "website": "https://lukanest.ie/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "recBxEY9sf24TLRxY",
+   "atlasCode": "ORG-000074",
+   "name": "Luoman",
+   "website": "https://www.luoman.fi/en/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "recJwB6aXMbElG2Fm",
+   "atlasCode": "ORG-000114",
+   "name": "Luxury Garden Studios",
+   "website": "https://luxurygardenstudios.co.uk/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "recExaEx7i1hqG6CD",
+   "atlasCode": "ORG-000134",
+   "name": "MCD Garden Sheds",
+   "website": "https://mcdgardensheds.ie/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "recMCpoKfIzqaTdAP",
+   "atlasCode": "ORG-000067",
+   "name": "Mercia Garden Products",
+   "website": "https://www.merciagardenproducts.co.uk/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "reca2dUJIEaJiGfNH",
+   "atlasCode": "ORG-000059",
+   "name": "Miniature Manors",
+   "website": "https://www.miniaturemanors.co.uk/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "recS5VTZCaNtUIKVS",
+   "atlasCode": "ORG-000058",
+   "name": "ModBox Spaces",
+   "website": "https://modboxspaces.com/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "recuAqx24myoQVBtF",
+   "atlasCode": "ORG-000175",
+   "name": "Modeco Ltd",
+   "website": "https://www.modeco.ie/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "recZcfloN72CBES6I",
+   "atlasCode": "ORG-000004",
+   "name": "Modern Garden Rooms",
+   "website": "https://moderngardenrooms.ie/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "recOcA8KL5tzngxwG",
+   "atlasCode": "ORG-000189",
+   "name": "Modular House",
+   "website": "https://modularhouse.ie/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "recrtMY2s1Tabf06e",
+   "atlasCode": "ORG-000156",
+   "name": "Modular Innovations",
+   "website": "https://modularinnovations.ie/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "reczIVnJujZd8a2CK",
+   "atlasCode": "ORG-000103",
+   "name": "Modular Outlook Ireland",
+   "website": "https://modularoutlookireland.com/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "recn1YpcIma52K9cB",
+   "atlasCode": "ORG-000040",
+   "name": "Modular Spaces Ireland",
+   "website": "https://modularspaces.ie/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "recm0PqcxhxFXegKB",
+   "atlasCode": "ORG-000213",
+   "name": "ModularHousing.ie",
+   "website": "https://modularhousing.ie/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "recuXGDUvOrQvcaMZ",
+   "atlasCode": "ORG-000130",
+   "name": "Munster Garden Rooms",
+   "website": "https://www.munstergardenrooms.ie/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "rec3D8DwczjRzOqiR",
+   "atlasCode": "ORG-000038",
+   "name": "Murray Timber Products",
+   "website": "https://www.mtg.ie/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "rec6BhWYST8Yp1DrY",
+   "atlasCode": "ORG-000057",
+   "name": "My Eco Space",
+   "website": "https://myecospace.co.uk/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "rectRQUdpY3t4ukdP",
+   "atlasCode": "ORG-000208",
+   "name": "My Garden Room (Barna Buildings)",
+   "website": "https://www.mygardenroom.ie/garden-rooms",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "recv6T9JI9T8aqcRO",
+   "atlasCode": "ORG-000106",
+   "name": "MyCabin.ie",
+   "website": "https://mycabin.ie/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "recWNQbBkCD6fMPy8",
+   "atlasCode": "ORG-000046",
+   "name": "Noah Garden Rooms",
+   "website": "https://www.noahgardenrooms.co.uk/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "recCCtBiLoaKHIYjp",
+   "atlasCode": "ORG-000161",
+   "name": "Nokken",
+   "website": "https://nokken.com",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "recmBdXALBPGk5wSI",
+   "atlasCode": "ORG-000209",
+   "name": "NOOK Prefab (espacio NOOK)",
+   "website": "https://nookprefab.com/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "recRN0QhrYMzGbHpO",
+   "atlasCode": "ORG-000092",
+   "name": "Nordic Room",
+   "website": "https://nordicroom.co.uk/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "recVtFO7FzzfjCo5P",
+   "atlasCode": "ORG-000085",
+   "name": "Nordic Timber Buildings",
+   "website": "https://www.nordictimberbuildings.com/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "recezBsO2Wt8rylpm",
+   "atlasCode": "ORG-000083",
+   "name": "Nordlog",
+   "website": "https://nordlog.eu/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "rec3XIIaRlwWSnZdf",
+   "atlasCode": "ORG-000243",
+   "name": "NRG Panel",
+   "website": "https://nrgpanel.ie/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "recuvqPv7XW0b0PFJ",
+   "atlasCode": "ORG-000194",
+   "name": "Nua Modular",
+   "website": "https://www.nuamodular.com/",
+   "permittedDomains": [
+    {
+     "domain": "nuamodular.com",
+     "ref": "PREVIEW-NUA-MODULAR-20261027",
+     "outcome": "Granted — Founder Confirmed"
+    }
+   ]
+  },
+  {
+   "atlasRecord": "recQNJ2aD9y6SP2tf",
+   "atlasCode": "ORG-000036",
+   "name": "O'Brien Timber Products",
+   "website": "https://obrientimberproducts.com/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "rec8j9KTIVfQAVMzg",
+   "atlasCode": "ORG-000042",
+   "name": "Oeco Garden Rooms",
+   "website": "https://www.oecogardenrooms.co.uk/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "recGxi1agXCBR1FLt",
+   "atlasCode": "ORG-000207",
+   "name": "OGNYX",
+   "website": "https://www.ognyx.com/",
+   "permittedDomains": [
+    {
+     "domain": "ognyx.com",
+     "ref": "WELLNESS-FIRST-OGNYX-20261002",
+     "outcome": "Granted with Conditions — Founder Confirmed"
+    }
+   ]
+  },
+  {
+   "atlasRecord": "rec0sxZTmx6QJ1OTo",
+   "atlasCode": "ORG-000143",
+   "name": "Orchard Modular Homes",
+   "website": "https://www.orchardmodularhomes.co.uk",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "recfPplFHskGdzpOR",
+   "atlasCode": "ORG-000190",
+   "name": "Osses Group",
+   "website": "https://ossesgroup.eu/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "reckO0CGdpKxvSCQr",
+   "atlasCode": "ORG-000129",
+   "name": "Outdoor Design",
+   "website": "https://www.outdoordesign.ie/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "rec0StavMAYVDIZei",
+   "atlasCode": "ORG-000079",
+   "name": "Outdoor Life Group",
+   "website": "https://outdoorlifegroup.com/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "recn9B3Qn43VUXxAg",
+   "atlasCode": "ORG-000133",
+   "name": "Outdoor Living (ModPod)",
+   "website": "https://outdoorliving.ie",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "rec3h960Z11UVIleJ",
+   "atlasCode": "ORG-000111",
+   "name": "Outer Space Pods",
+   "website": "https://www.outerspacepods.com/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "recaPQyTRej6aaLYs",
+   "atlasCode": "ORG-000022",
+   "name": "Palmako",
+   "website": "https://www.palmako.com/en",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "recAbCMI3LkwWO3Z6",
+   "atlasCode": "ORG-000019",
+   "name": "Pineca Ireland",
+   "website": "https://www.pineca.ie/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "recEEktxcmddVdjdA",
+   "atlasCode": "ORG-000244",
+   "name": "Pinergy SolarElectric",
+   "website": "https://www.solarelectric.ie/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "reciNx9NFXDVPjIvl",
+   "atlasCode": "ORG-000055",
+   "name": "Pod Space",
+   "website": "https://pod-space.co.uk/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "recHLS66OybZ2AeJv",
+   "atlasCode": "ORG-000138",
+   "name": "Pods4U Ireland",
+   "website": "https://www.pods4u.ie",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "recimEazcddGRzmxk",
+   "atlasCode": "ORG-000199",
+   "name": "Polaris Sauna",
+   "website": "https://polaris-sauna.ie/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "recR60CZ7wRhly1P9",
+   "atlasCode": "ORG-000073",
+   "name": "Polhus",
+   "website": "https://www.polhus.co.uk/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "recLbjZ8FRPHZAVEF",
+   "atlasCode": "ORG-000007",
+   "name": "PortAMod",
+   "website": "https://portamod.ie/modular-buildings/garden-rooms/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "recpfrJz05SIq8vxW",
+   "atlasCode": "ORG-000125",
+   "name": "Posh Sheds NI",
+   "website": "https://www.poshshedsni.com/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "recZyvRt8pDg5spUU",
+   "atlasCode": "ORG-000065",
+   "name": "Powersheds",
+   "website": "https://www.powersheds.com/",
+   "permittedDomains": [
+    {
+     "domain": "powersheds.com",
+     "ref": "IPO-POWERSHEDS-0001",
+     "outcome": "Granted with Conditions — Founder Confirmed"
+    }
+   ]
+  },
+  {
+   "atlasRecord": "rec7cESgGLy0tQkTt",
+   "atlasCode": "ORG-000249",
+   "name": "PowerSolar.ie",
+   "website": "https://powersolar.ie/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "reckLvsQzrYqKN0l5",
+   "atlasCode": "ORG-000123",
+   "name": "Premium Log House",
+   "website": "https://premiumloghouse.ie/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "recVU1QQho8rMJl4G",
+   "atlasCode": "ORG-000227",
+   "name": "Primal Saunas",
+   "website": "https://primalsaunas.ie/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "recLQOPHHfSrfs3xA",
+   "atlasCode": "ORG-000070",
+   "name": "Quick-Garden",
+   "website": "https://www.quick-garden.co.uk/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "recDRvQusj5KgRU2s",
+   "atlasCode": "ORG-000146",
+   "name": "Quinn Offsite Ltd",
+   "website": "https://www.quinnoffsite.com/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "recIFIi1fxjwc1g1C",
+   "atlasCode": "ORG-000163",
+   "name": "Rayco Modular Homes",
+   "website": "https://raycomodularhomes.ie/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "recxcodvVZCGRfXfa",
+   "atlasCode": "ORG-000118",
+   "name": "RB Garden Rooms",
+   "website": "https://rbgardenrooms.com/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "recNDk9O49fY1xUf1",
+   "atlasCode": "ORG-000245",
+   "name": "Renewables Ireland",
+   "website": "https://renewables-ireland.ie/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "recomHpEc0AZvfvvF",
+   "atlasCode": "ORG-000228",
+   "name": "Revival Health Labs",
+   "website": "https://revivalhealthlabs.ie/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "recvarxWglda3ZJSi",
+   "atlasCode": "ORG-000188",
+   "name": "Ritsu",
+   "website": "https://ritsu.ee/en/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "recnjh9QP3ItK0y52",
+   "atlasCode": "ORG-000009",
+   "name": "RoomOutdoors",
+   "website": "https://www.roomoutdoors.ie/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "recnenQSWlTUizN2v",
+   "atlasCode": "ORG-000097",
+   "name": "Rooms Outdoor",
+   "website": "https://roomsoutdoor.co.uk/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "recpeJejfCMcvCBIg",
+   "atlasCode": "ORG-000095",
+   "name": "Roomworks",
+   "website": "https://roomworks.co.uk/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "recEbL5qq6TDNzPZZ",
+   "atlasCode": "ORG-000053",
+   "name": "Rubicon Garden Rooms",
+   "website": "https://www.rubicongardenrooms.co.uk/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "recKazlmd4FCnanxR",
+   "atlasCode": "ORG-000049",
+   "name": "Sanctum Garden Studios",
+   "website": "https://www.sanctumgardenstudios.com/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "recZL9Ixx9LSw9wkh",
+   "atlasCode": "ORG-000072",
+   "name": "Satus Baltic",
+   "website": "https://www.satusbaltic.com/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "reccKhRUu7vXdvkOI",
+   "atlasCode": "ORG-000229",
+   "name": "Sauna Experts",
+   "website": "https://saunaexperts.ie/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "recUWeluAXDYp4CtK",
+   "atlasCode": "ORG-000230",
+   "name": "Sauna Ireland",
+   "website": "https://www.saunaireland.ie/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "recNLcfbaWUPUESOY",
+   "atlasCode": "ORG-000201",
+   "name": "SelfContained.ie",
+   "website": "https://selfcontained.ie/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "recePJOyXsH8LXtwf",
+   "atlasCode": "ORG-000016",
+   "name": "Shanette Sheds",
+   "website": "https://shanettesheds.ie/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "recWTBgvGmEYZiOqp",
+   "atlasCode": "ORG-000006",
+   "name": "Shed Factory Ireland",
+   "website": "https://www.shedfactoryireland.ie/garden-rooms.html",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "recANn7EkCQtE65T6",
+   "atlasCode": "ORG-000066",
+   "name": "Shire Garden Buildings",
+   "website": "https://www.shiregb.co.uk/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "recw124UIanKV5Ath",
+   "atlasCode": "ORG-000002",
+   "name": "Shomera",
+   "website": "https://www.shomera.ie/garden-rooms/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "rec65z0jC3QGkRlX8",
+   "atlasCode": "ORG-000159",
+   "name": "Simple House Ireland",
+   "website": "https://simplehouse.ie/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "rec9V5UjNjmnPj7aJ",
+   "atlasCode": "ORG-000021",
+   "name": "SipHouse Ireland",
+   "website": "https://siphouse.ie/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "rec17SIbblmee8Vs3",
+   "atlasCode": "ORG-000147",
+   "name": "SIPS-House",
+   "website": "https://sips-house.com",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "receB6Bx0BeLrAxQ9",
+   "atlasCode": "ORG-000043",
+   "name": "Smart Garden Offices",
+   "website": "https://www.smartgardenoffices.co.uk/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "recLVafp5Tqo5LLt0",
+   "atlasCode": "ORG-000167",
+   "name": "Sommarnöjen",
+   "website": "https://sommarnojen.se/en/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "recbZVOTUMCmMphuj",
+   "atlasCode": "ORG-000178",
+   "name": "Sonic Box Studios",
+   "website": "https://www.sonicboxstudios.co.uk/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "recFQ1GyK0fq2fK4I",
+   "atlasCode": "ORG-000003",
+   "name": "Sprout Pod",
+   "website": "https://sproutpod.ie/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "recgiDJsKoWt1mDNO",
+   "atlasCode": "ORG-000035",
+   "name": "Steeltech Sheds",
+   "website": "https://www.steeltechsheds.ie/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "recagiq6JEsWL7s50",
+   "atlasCode": "ORG-000171",
+   "name": "Studio Puisto",
+   "website": "https://www.studiopuisto.fi/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "rec8KvKnvPMh03lji",
+   "atlasCode": "ORG-000088",
+   "name": "Summerhouse24",
+   "website": "https://summerhouse24.co.uk/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "reciVSSXE2LrVK0gs",
+   "atlasCode": "ORG-000020",
+   "name": "Summerhouse24 Ireland",
+   "website": "https://summerhouse24.ie/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "recEitQxMaz9SyDzX",
+   "atlasCode": "ORG-000200",
+   "name": "Superior Pergola Ireland",
+   "website": "https://www.superiorpergola.ie/",
+   "permittedDomains": [
+    {
+     "domain": "superiorpergola.ie",
+     "ref": "IPO-SUPERIORPERGOLA-20260929",
+     "outcome": "Granted — Founder Confirmed"
+    }
+   ]
+  },
+  {
+   "atlasRecord": "recA0m5iR3iBT9knZ",
+   "atlasCode": "ORG-000050",
+   "name": "Swift Garden Rooms",
+   "website": "https://www.swiftorg.co.uk/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "recYb0znkHXR7B6Fq",
+   "atlasCode": "ORG-000246",
+   "name": "Switch Electrical",
+   "website": "https://switchelectrical.ie/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "reclPfKiOQHdGJNGK",
+   "atlasCode": "ORG-000231",
+   "name": "Tanktribe",
+   "website": "https://www.tanktribe.ie/",
+   "permittedDomains": [
+    {
+     "domain": "tanktribe.ie",
+     "ref": "WELLNESS-FIRST-TANKTRIBE-20261002",
+     "outcome": "Granted — Founder Confirmed"
+    }
+   ]
+  },
+  {
+   "atlasRecord": "recyvk5qXIB0aIzYR",
+   "atlasCode": "ORG-000142",
+   "name": "TeachNua Modular Living",
+   "website": "https://infoteachnua.com",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "rec5ggluclaAEKhN4",
+   "atlasCode": "ORG-000051",
+   "name": "The Garden Office",
+   "website": "https://www.thegardenoffice.co.uk/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "recPLsSQkzWAZ23rD",
+   "atlasCode": "ORG-000139",
+   "name": "The Garden Pod",
+   "website": "https://www.thegardenpod.ie",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "recsGh2SeIh7ETLXV",
+   "atlasCode": "ORG-000099",
+   "name": "The Garden Room Guide",
+   "website": "https://www.thegardenroomguide.co.uk/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "rec32DvHTiz5LZLA9",
+   "atlasCode": "ORG-000235",
+   "name": "The Mobile Pods",
+   "website": "https://themobilepods.ie/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "recaVJQjZD9UV8JSs",
+   "atlasCode": "ORG-000008",
+   "name": "The Pod Factory",
+   "website": "https://www.thepodfactory.ie/",
+   "permittedDomains": [
+    {
+     "domain": "thepodfactory.ie",
+     "ref": "IPO-050",
+     "outcome": "Granted with Conditions — Founder Confirmed"
+    }
+   ]
+  },
+  {
+   "atlasRecord": "recyhMCE8UIKdvd8E",
+   "atlasCode": "ORG-000182",
+   "name": "TICRA Outdoor",
+   "website": "https://www.ticraoutdoor.com/en/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "recRfAhGEaTHdLhi0",
+   "atlasCode": "",
+   "name": "TICRA Outdoor B.V.",
+   "website": "https://www.ticraoutdoor.com/en/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "recPDyEB9uNu9BdWu",
+   "atlasCode": "ORG-000068",
+   "name": "Tiger Sheds",
+   "website": "https://www.tigersheds.com/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "recXdPg7qgw4psIYp",
+   "atlasCode": "ORG-000071",
+   "name": "Timbela",
+   "website": "https://timbela.com/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "recUAfyZbOtugjUFA",
+   "atlasCode": "",
+   "name": "Timber Kit Buildings Ireland Ltd",
+   "website": "https://www.timberkitbuildings.ie/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "rec4VIYIbk68JihtK",
+   "atlasCode": "ORG-000018",
+   "name": "Timber Living",
+   "website": "https://timberliving.ie/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "recP4lqMNuNceOyNh",
+   "atlasCode": "ORG-000179",
+   "name": "TimberIN",
+   "website": "https://www.woodenhottubsale.co.uk/",
+   "permittedDomains": [
+    {
+     "domain": "timberin.com",
+     "ref": "L6-TIMBERIN-TWO-PHOTOS-20261019",
+     "outcome": "Granted with Conditions — Founder Confirmed"
+    }
+   ]
+  },
+  {
+   "atlasRecord": "recJsrjiBA3kGncsJ",
+   "atlasCode": "ORG-000132",
+   "name": "TimberLodge365 (logcabinsforsale.ie)",
+   "website": "https://logcabinsforsale.ie/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "rec8IJ7GwTKZxvMHH",
+   "atlasCode": "ORG-000232",
+   "name": "Timbertrove",
+   "website": "https://timbertrove.com/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "reczsOB6zm2fOWtCA",
+   "atlasCode": "ORG-000155",
+   "name": "Tiny House Heavens",
+   "website": "https://tinyhouseheavens.com/en",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "recFRxlGBm60QvoNN",
+   "atlasCode": "ORG-000165",
+   "name": "Tiny Wunder House",
+   "website": "https://www.tinywunderhouse.com/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "recZsdhQM53LBVyyg",
+   "atlasCode": "ORG-000119",
+   "name": "Total Garden Rooms",
+   "website": "https://www.totalgardenrooms.com/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "recztK0C8LeTavhVJ",
+   "atlasCode": "ORG-000195",
+   "name": "TRIQBRIQ AG",
+   "website": "https://triqbriq.de/",
+   "permittedDomains": [
+    {
+     "domain": "triqbriq.de",
+     "ref": "IPO-TRIQBRIQ-20260922",
+     "outcome": "Granted — Founder Confirmed"
+    }
+   ]
+  },
+  {
+   "atlasRecord": "recDvCDZgYCqT2rby",
+   "atlasCode": "ORG-000029",
+   "name": "Tuin",
+   "website": "https://www.tuin.co.uk/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "recoeqOGNIZGraQgS",
+   "atlasCode": "ORG-000160",
+   "name": "Tutum House (Premium Modular Living)",
+   "website": "https://tutumhouse.ie/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "recVU6l8aoVMLBXck",
+   "atlasCode": "ORG-000110",
+   "name": "Ultratherm",
+   "website": "https://ultratherm.com/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "recO1DnyP74wfz9Wv",
+   "atlasCode": "ORG-000127",
+   "name": "Unique Garden Rooms",
+   "website": "https://uniquegardenrooms.co.uk/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "recLW3xFoSutJk6i8",
+   "atlasCode": "ORG-000120",
+   "name": "Urban Garden Sheds",
+   "website": "https://urbangardensheds.ie/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "recGJAGoG6XN6MBYU",
+   "atlasCode": "ORG-000183",
+   "name": "Viking Industrier UAB",
+   "website": "https://vikingindustrier.com/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "reczQn59haPghHYmT",
+   "atlasCode": "ORG-000154",
+   "name": "Vilarte",
+   "website": "https://vilarte.be/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "recXGziDNcDnpz0iN",
+   "atlasCode": "ORG-000063",
+   "name": "Waltons",
+   "website": "https://www.waltons.co.uk/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "recbsxHyozZLxNl2L",
+   "atlasCode": "ORG-000048",
+   "name": "Warwick Buildings",
+   "website": "https://www.warwickbuildings.co.uk/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "recmZhtj3d1RyMzOt",
+   "atlasCode": "ORG-000080",
+   "name": "Woodcab",
+   "website": "https://woodcab.eu/en/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "recKF1ShRupNFNGAi",
+   "atlasCode": "ORG-000027",
+   "name": "Woodpro",
+   "website": "https://www.woodpro.co.uk/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "rectTyBhqejHG4GQG",
+   "atlasCode": "ORG-000158",
+   "name": "X-Gen Homes",
+   "website": "https://www.x-genhomes.com/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "recyfWvDVODL06P8l",
+   "atlasCode": "ORG-000157",
+   "name": "Yardbox",
+   "website": "https://www.yardbox.co.uk/",
+   "permittedDomains": [
+    {
+     "domain": "weareyardbox.com",
+     "ref": "IPO-032",
+     "outcome": "Granted with Conditions — Founder Confirmed"
+    }
+   ]
+  },
+  {
+   "atlasRecord": "recl6ldLEXNGbZsPL",
+   "atlasCode": "ORG-YPS-IE",
+   "name": "YourParkingSpace (Ireland) Limited",
+   "website": "https://www.yourparkingspace.ie/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "rec1cpArsWf7WzOzp",
+   "atlasCode": "ORG-000197",
+   "name": "Zomes",
+   "website": "https://www.zomes.com/",
+   "permittedDomains": []
+  },
+  {
+   "atlasRecord": "rec2URqKyVwlhHSBw",
+   "atlasCode": "ORG-000149",
+   "name": "ÖÖD House",
+   "website": "https://oodhouse.com/en",
+   "permittedDomains": [
+    {
+     "domain": "oodhouse.com",
+     "ref": "IPO-007",
+     "outcome": "Granted with Conditions — Founder Confirmed"
+    }
+   ]
+  }
+ ],
+ "tradingNames": [
+  {
+   "organisation": "Garden Rooms",
+   "name": "GardenRooms.ie",
+   "evidence": "ORG-000001 Website https://www.gardenrooms.ie/; the supplier trades as GardenRooms.ie (garden-room supplier audit, 12 Nov 2026)"
+  }
+ ],
+ "excludedNames": [
+  {
+   "organisation": "Elm Landscaping (Garden Rooms)",
+   "name": "Garden Rooms",
+   "reason": "A product-category description inside the Atlas record name, not a trading name. It collides with GardenRooms.ie (ORG-000001); refused by A6b on 12 Nov 2026."
+  }
+ ]
+}

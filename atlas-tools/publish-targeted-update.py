@@ -91,6 +91,11 @@ DETAIL_EVIDENCE = "garden-room-detail-evidence-v1.json"
 SEARCH = "search-index-v1.json"
 SEARCH_BUILDER = "atlas-tools/build-search-index.py"
 SEARCH_CONTRACT = "governance/SEARCH-V1-CONTRACT.md"
+# A6 (12 Nov 2026): the supplier-recognition alias input. A targeted update
+# refreshes the updated organisation's entry from the same Atlas read, so a
+# supplier's web address stays current in Search; no other entry may move.
+ALIASES = "atlas-tools/search-supplier-aliases.json"
+ALIAS_TOOL = "atlas-tools/build-search-aliases.py"
 EXPLORER = "atlas-tools/build-maker-explorer.py"
 IMAGERY = ".github/scripts/apply_authorised_imagery.py"
 ASSETS = "atlas-tools/approved-image-assets-v1.json"
@@ -388,7 +393,7 @@ def detail_files(root):
 
 def managed_files(root):
     m = {GARDEN, WELLNESS, DETAIL_INDEX, DETAIL_EVIDENCE, SEARCH, SEARCH_BUILDER,
-         SEARCH_CONTRACT, ASSETS}
+         SEARCH_CONTRACT, ASSETS, ALIASES}
     m.update(detail_files(root))
     m.update(explorer_pages(root))
     return m
@@ -755,6 +760,16 @@ def refreeze_search(wt, report_name, rep):
     rep["search_pin"] = (m.group(1), new_sha)
 
 
+def update_aliases(wt, snap_path, org_id, rep):
+    """A6: refresh this organisation's alias entry (name, Website) from the snapshot."""
+    if not (wt / ALIAS_TOOL).exists() or not (wt / ALIASES).exists():
+        return
+    r = sh([sys.executable, ALIAS_TOOL, "--merge-snapshot", str(snap_path), "--organisation", org_id], wt)
+    if r.returncode:
+        refuse("the alias refresh refused:\n" + (r.stdout + r.stderr)[-1500:])
+    rep["aliases_log"] = r.stdout.strip().splitlines()[-1:] if r.stdout.strip() else []
+
+
 def run_imagery(wt, rep):
     if (wt / IMAGERY).exists():
         r = sh([sys.executable, IMAGERY], wt)
@@ -840,6 +855,29 @@ def boundary(root, wt, targets, org_names, rep):
             if jkey(ra.get(k)) != jkey(rb.get(k)):
                 refuse("search record %s outside the scope would change" % (k,))
         rep["search_counts"] = (a.get("counts"), b.get("counts"))
+        # A6: aliases outside the updated organisation must resolve exactly as before.
+        def resolved(doc):
+            al = doc.get("aliases") or {}
+            t = al.get("t") or []
+            return {k: t[i]["o"] for k, i in (al.get("k") or {}).items() if i < len(t)}
+        aa, ab = resolved(a), resolved(b)
+        for k in set(aa) | set(ab):
+            if aa.get(k) in org_names or ab.get(k) in org_names:
+                continue
+            if aa.get(k) != ab.get(k):
+                refuse("search alias %r outside the scope would change" % k)
+    if ALIASES in moved:
+        a, b = json.loads(head(ALIASES)), json.loads((wt / ALIASES).read_text(encoding="utf-8"))
+        for sect in ("tradingNames", "excludedNames", "schema", "version", "rule"):
+            if a.get(sect) != b.get(sect):
+                refuse("alias file section %r would change in a targeted update" % sect)
+        ea = {e["atlasRecord"]: e for e in a["organisations"]}
+        eb = {e["atlasRecord"]: e for e in b["organisations"]}
+        for k in set(ea) | set(eb):
+            if k == rep.get("org_id"):
+                continue
+            if jkey(ea.get(k)) != jkey(eb.get(k)):
+                refuse("alias entry %s outside the scope would change" % k)
     for page in explorer_pages(root):
         if page not in moved:
             continue
@@ -1082,6 +1120,7 @@ def run(a):
         slug = re.sub(r"[^a-z0-9]+", "-", unicodedata.normalize("NFKD", org_name.lower())
                       .encode("ascii", "ignore").decode()).strip("-") or a.organisation.lower()
         report_name = "%s/%s-%s.md" % (REPORT_DIR, stamp, slug)
+        update_aliases(wt, snap_path, a.organisation, rep)
         run_imagery(wt, rep)
         refreeze_search(wt, report_name, rep)
         run_builders(wt, rep)

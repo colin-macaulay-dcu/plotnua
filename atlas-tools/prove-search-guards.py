@@ -62,6 +62,9 @@ def make_tree(tmp):
         shutil.copy2(ROOT / f, tmp / f)
     shutil.copy2(ROOT / "atlas-tools" / "search-topic-map.json",
                  tmp / "atlas-tools" / "search-topic-map.json")
+    # A6 (12 Nov 2026): the governed alias input the builder now reads.
+    shutil.copy2(ROOT / "atlas-tools" / "search-supplier-aliases.json",
+                 tmp / "atlas-tools" / "search-supplier-aliases.json")
     for f in PAGES:
         if (ROOT / f).exists():
             # Sitemap pages may sit in sub-folders (plotart/, suppliers/): create the folder first.
@@ -423,6 +426,49 @@ run_case("C22 A1 the wellness template points somewhere else", "BUILDER",
          "not its own explorer entry", mutate_tree=_with_wellness,
          mutate_builder=lambda b: b.replace('WL_TEMPLATE = WL_PAGE + "#p-{id}"',
                                             'WL_TEMPLATE = "discovery-living-in-the-garden.html#p-{id}"'))
+
+
+# ------------------------------------------------------------------------- A6
+# AMENDMENT A6 (founder approval, 12 Nov 2026): supplier recognition aliases.
+# Each case breaks exactly one A6 rule in the governed alias input (or, for A6e,
+# in the builder) and must be refused by that guard alone.
+def _aliases(fn):
+    def m(tmp):
+        p = tmp / "atlas-tools" / "search-supplier-aliases.json"
+        d = json.loads(p.read_text(encoding="utf-8"))
+        fn(d)
+        p.write_text(json.dumps(d, ensure_ascii=False), encoding="utf-8")
+    return m
+
+
+def _org(d, name):
+    return next(e for e in d["organisations"] if e["name"] == name)
+
+
+run_case("C23 A6b two organisations claim one domain", "INPUT", "A6b DUPLICATE ALIAS",
+         mutate_tree=_aliases(lambda d: _org(d, "Loghouse").__setitem__("website", "https://www.sproutpod.ie/")))
+run_case("C24 A6b a descriptor is read as a trading name", "INPUT", "A6b DUPLICATE ALIAS 'gardenrooms'",
+         mutate_tree=_aliases(lambda d: d.__setitem__("excludedNames", [])))
+run_case("C25 A6a a permitted domain without a confirmed grant", "INPUT", "A6a",
+         mutate_tree=_aliases(lambda d: _org(d, "Shomera")["permittedDomains"].append(
+             {"domain": "shomera.com", "ref": "X", "outcome": "Unknown — Awaiting Reply"})))
+run_case("C26 A6a a permitted domain that is not a hostname", "INPUT", "A6a",
+         mutate_tree=_aliases(lambda d: _org(d, "Shomera")["permittedDomains"].append(
+             {"domain": "https://shomera.ie/garden-rooms", "ref": "X",
+              "outcome": "Granted — Founder Confirmed"})))
+run_case("C27 A6c a trading name for an unpublished organisation", "INPUT", "A6c",
+         mutate_tree=_aliases(lambda d: d["tradingNames"].append(
+             {"organisation": "Shed Factory Ireland", "name": "Shed Factory", "evidence": "test"})))
+run_case("C28 A6 a retail-channel alias (deferred)", "INPUT", "retail-channel aliases are deferred",
+         mutate_tree=_aliases(lambda d: d.__setitem__("channels", [
+             {"alias": "Summerhouse24", "hosts": ["summerhouse24.ie"], "target": "Hansa24 Group"}])))
+run_case("C29 A6d a trading name under four characters", "INPUT", "A6d",
+         mutate_tree=_aliases(lambda d: d["tradingNames"].append(
+             {"organisation": "Shomera", "name": "SH", "evidence": "test"})))
+run_case("C30 A6e an alias names a pool-only organisation", "BUILDER", "A6e",
+         mutate_builder=lambda b: b.replace(
+             "a6_published = a6_emitted | set(PAGE_ORG.values())",
+             "a6_published = a6_emitted | set(PAGE_ORG.values()) | {'Steeltech Sheds'}"))
 
 print()
 print("  %d guards proven capable, %d blind" % (passed, failed))

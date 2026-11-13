@@ -23,6 +23,7 @@ and a preview URL inside it would be discoverable from the index file itself.
 import gzip
 import hashlib
 import json
+import unicodedata
 import pathlib
 import re
 import subprocess
@@ -881,6 +882,150 @@ for jfile, pfile in sorted(JOURNEYS.items()):
 records.extend(jrn)
 print("  journeys          %d" % len(jrn))
 
+
+# ---- A6 · SUPPLIER RECOGNITION ALIASES (founder approval, 12 Nov 2026) --------
+# One envelope block for every category, so a pasted web address ("https://www.
+# sproutpod.ie/"), a bare or www. domain, or a trading name written as one word
+# ("SproutPod") reaches the records Search ALREADY publishes for that supplier.
+#
+#   aliases.k   key -> index into aliases.t
+#   aliases.t   [{"o": organisation name, "p": [published page record ids]?}]
+#
+# It never creates a record, a card or a route, never orders anything by itself,
+# and never decides eligibility: an alias is emitted ONLY for an organisation that
+# already has an emitted product or supplier record, or a published G15/G16 page
+# about it. S1-S5, G15 and G16 decide publication; this block only names who
+# already answers. Sources (governed, atlas-tools/search-supplier-aliases.json,
+# written by build-search-aliases.py from Atlas): Organisations.Website and
+# founder-confirmed Image Permission Outreach Permitted Domains, plus the
+# founder-approved tradingNames / excludedNames lines. Retail-channel aliases are
+# deferred and refused.
+ALIAS_FILE = ROOT / "atlas-tools" / "search-supplier-aliases.json"
+# A published page record -> the Atlas organisation it is about (G15 profiles and
+# information pages, G16 maker guides). Declared here, next to those lists, so a
+# page about one supplier can never answer for another.
+PAGE_ORG = {
+    "info-arctic-wellness": "Arctic Wellness",
+    "info-don-modular-homes": "Don Modular Homes",
+    "info-elm-landscaping": "Elm Landscaping (Garden Rooms)",
+    "info-garden-room-ireland": "Garden Room Ireland",
+    "info-gardenhouse24": "Gardenhouse24 Ireland",
+    "info-superior-pergola-ireland": "Superior Pergola Ireland",
+    "info-the-mobile-pods": "The Mobile Pods",
+    "info-triq-cube": "TRIQBRIQ AG",
+    "poss-all-in-one-cabins-garden-rooms": "All In One Cabins",
+    "poss-concept-modular-garden-offices": "Concept Modular",
+    "poss-shomera-garden-rooms": "Shomera",
+}
+A6_GRANTED = re.compile(r"^Granted( with Conditions)? — Founder Confirmed$")
+A6_HOST = re.compile(r"^[a-z0-9-]+(\.[a-z0-9-]+)*\.[a-z]{2,24}$")
+A6_MIN_KEY = 4
+
+
+def a6_fold(s):
+    return "".join(c for c in unicodedata.normalize("NFD", str(s))
+                   if not unicodedata.combining(c)).lower()
+
+
+def a6_compact(s):
+    return re.sub(r"[^a-z0-9]", "", a6_fold(s))
+
+
+def a6_host(url):
+    m = re.match(r"^\s*(?:[a-z][a-z0-9+.-]*://)?(?:www\.)?([^/?#:\s]+)", a6_fold(url or "").strip())
+    return m.group(1).rstrip(".") if m else None
+
+
+A6 = json.loads(ALIAS_FILE.read_text(encoding="utf-8"))
+if A6.get("schema") != "plotnua.search.aliases":
+    die("A6 %s is not a plotnua.search.aliases file" % ALIAS_FILE.name)
+if A6.get("channels"):
+    die("A6 retail-channel aliases are deferred by founder decision (12 Nov 2026)")
+a6_emitted = ({r["organisation"] for r in records if r["type"] == "product"} |
+              {r["name"] for r in records if r["type"] == "supplier"})
+a6_pages = {r["id"] for r in records if r["type"] == "possibility"}
+for pid, org in PAGE_ORG.items():
+    if pid not in a6_pages:
+        die("A6 PAGE_ORG names %r, which is not a published page record" % pid)
+a6_known = {e["name"] for e in A6["organisations"]}
+for org in sorted(set(PAGE_ORG.values()) - a6_known):
+    die("A6 PAGE_ORG organisation %r is not in the alias file" % org)
+a6_targets, a6_keys, a6_owner = [], {}, {}
+
+
+def a6_target(org):
+    for i, t in enumerate(a6_targets):
+        if t["o"] == org:
+            return i
+    pages = sorted(pid for pid, o in PAGE_ORG.items() if o == org)
+    t = {"o": org}
+    if pages:
+        t["p"] = pages
+    a6_targets.append(t)
+    return len(a6_targets) - 1
+
+
+def a6_add(key, org, why):
+    if key in a6_owner and a6_owner[key] != org:
+        die("A6b DUPLICATE ALIAS %r would answer for both %r and %r (%s). Resolve it in "
+            "search-supplier-aliases.json (excludedNames), never by dropping a record"
+            % (key, a6_owner[key], org, why))
+    a6_owner[key] = org
+    a6_keys[key] = a6_target(org)
+
+
+a6_published = a6_emitted | set(PAGE_ORG.values())
+a6_skipped = 0
+for e in A6["organisations"]:
+    org = e["name"]
+    if org not in a6_published:
+        a6_skipped += 1
+        continue
+    # A6a: every host is re-derived here from the Atlas value itself, never taken on trust.
+    hosts = []
+    h = a6_host(e["website"])
+    if h:
+        if not A6_HOST.match(h):
+            die("A6a %r Website %r does not give a hostname" % (org, e["website"]))
+        hosts.append(h)
+    for d in e["permittedDomains"]:
+        if not A6_GRANTED.match(d.get("outcome") or ""):
+            die("A6a %r permitted domain %r is not a founder-confirmed grant" % (org, d.get("domain")))
+        if not A6_HOST.match(d.get("domain") or "") or a6_host(d["domain"]) != d["domain"]:
+            die("A6a %r permitted domain %r is not a bare hostname" % (org, d.get("domain")))
+        hosts.append(d["domain"])
+    for h in sorted(set(hosts)):
+        a6_add(h, org, "host")
+    excl = {a6_compact(x["name"]) for x in A6.get("excludedNames", []) if x["organisation"] == org}
+    names = {org, re.sub(r"\s*\(.*?\)\s*", " ", org).strip()}
+    names |= set(re.findall(r"\((.*?)\)", org))
+    names |= {re.sub(r"\s+(ltd|limited|ag|group)$", "", n, flags=re.I) for n in list(names)}
+    for n in sorted(names):
+        k = a6_compact(n)
+        if len(k) >= A6_MIN_KEY and k not in excl:       # A6d: no key under 4 characters
+            a6_add(k, org, "name %r" % n)
+for t in A6.get("tradingNames", []):
+    # A6c: a hand-declared alias must answer with published records and carry evidence.
+    if t["organisation"] not in a6_published:
+        die("A6c trading name %r names %r, which has no published record"
+            % (t["name"], t["organisation"]))
+    if not t.get("evidence"):
+        die("A6c trading name %r carries no evidence" % t["name"])
+    k = a6_compact(t["name"])
+    if len(k) < A6_MIN_KEY:
+        die("A6d trading name %r is shorter than %d characters" % (t["name"], A6_MIN_KEY))
+    a6_add(k, t["organisation"], "trading name %r" % t["name"])
+# A6e: nothing private and nothing pool-only may be named by an alias.
+for k, ti in a6_keys.items():
+    o = a6_targets[ti]["o"]
+    if o not in a6_published:
+        die("A6e alias %r names %r, which has no published record" % (k, o))
+    if norm_space(o) in pool_orgs and o not in a6_emitted:
+        die("A6e alias %r names recognition-pool-only organisation %r" % (k, o))
+ALIASES = {"k": dict(sorted(a6_keys.items())), "t": a6_targets}
+print("  aliases           %d keys -> %d organisations (%d Atlas organisations have no published "
+      "record and get none)" % (len(a6_keys), len(a6_targets), a6_skipped))
+
 counts = {k: sum(1 for r in records if r["type"] == k)
           for k in ("possibility", "product", "supplier", "journey")}
 
@@ -900,6 +1045,8 @@ index = {
     # because a supplier has no route at all.
     # Amendment A1 (4 Nov 2026): the wellness destination is the second template.
     "routes": {"product": PRODUCT_ROUTE_FMT.replace("%s", "{id}"), WL_TEMPLATE_KEY: WL_TEMPLATE},
+    # A6 (12 Nov 2026): supplier recognition. Envelope only; no record changes.
+    "aliases": ALIASES,
     "records": records,
 }
 
@@ -1415,7 +1562,7 @@ if set(index.keys()) != {"schema", "version", "generated", "sourceCommit",
                          "sourceAdditionalHomeSha256",
                          "sourceWellnessSha256",
                          "synonymMapVersion", "counts",
-                         "routes", "records"}:
+                         "routes", "aliases", "records"}:
     die("G13 the envelope carries undeclared keys: %r" % sorted(index.keys()))
 print("  G13 catch-all (LAST): nothing outside the four declared types  OK")
 

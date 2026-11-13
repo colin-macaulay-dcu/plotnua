@@ -39,6 +39,7 @@ Envelope:
 ```
 schema version generated sourceCommit sourceUniverseSha256
 counts{possibility,product,supplier,journey} synonymMapVersion records[]
+aliases{k,t}   (amendment A6, 12 Nov 2026)
 ```
 
 Four record types. No field outside these lists may be emitted.
@@ -303,6 +304,7 @@ links to all 13 public Discoveries. Search then enhances it.
 | artist | **0 products** — Hutsmith Type III Cabin, the only product typed "Artist Studio / Writer's Retreat Cabin", was withdrawn by the targeted update of 16 Oct 2026 and must not reappear; returns A Home for Art (DISC-024 was merged into it, 13 Oct 2026); must NOT surface the retired Artist Studio Discovery. Native `productType` matching is proved by the garden office query. *Amended 11 Nov 2026; until then: 1 product, Hutsmith Type III Cabin, plus art possibilities.* |
 | spare garden | The Borrowed Garden; must NOT return open-your-home-to-art or about |
 | parking | Hidden Cars + Driveway Income; must NOT return hidden-bins or your-home-on-screen |
+| https://www.sproutpod.ie/ | *Amendment A6, 12 Nov 2026.* Sprout Pod's supplier summary and its 25 products only. `harvia.com`, or any address without a published supplier, returns nothing. `saunas` returns Garden Retreat first, then the same saunas as `sauna`. |
 | sauna | **Garden Retreat first.** Then only saunas from the governed wellness corpus (wellness-universe-v1.json, published through the supplier publication gate), each routed to its own entry in the Garden Retreat maker explorer (`discovery-garden-retreat.html#p-<record id>`, which the explorer opens; amended 14 Oct 2026, pre-launch corrections). Zero suppliers. Auroom and every other private preview stay invisible; the incidental features mentions still cannot answer. *Amended 14 Oct 2026 by founder decision (OGNYX public integration); until then: Garden Retreat only, zero products.* |
 
 ---
@@ -533,6 +535,79 @@ The source corpora are read directly for this check. Capability cases C9d (a "Fr
 - Index: 187,104 bytes raw, 27.0 KB gzip-9, 831 records (rebuilt on main fbd272b). All are within the A4 guards.
 
 **Shared asset.** `search.js` changes in one expression, `productItem()` ("From" plus a non-breaking space before the figure, so the two never wrap apart). Its frozen hash is re-stamped in `atlas-tools/prove-landmarks.mjs` and in the freeze record. `search.css` is unchanged.
+
+## AMENDMENT A6 · SUPPLIER RECOGNITION (12 November 2026; founder-approved for implementation and local testing only; NOT RELEASED)
+
+**Authority.** Founder decision, 12 Nov 2026: the unified A6 proposal (consolidating the garden-room and garden-sauna supplier audits of the same day) is approved for implementation and local testing. Production publication needs separate approval.
+
+**Defect.** Search could not recognise a supplier from its web address, or from its trading name written as one word, and it mishandled accents and plurals:
+- 0 of 37 garden-room and 0 of every sauna domain/`www.`/`https://` query answered;
+- `timberin.com` matched only through "com" inside "combination";
+- `normalise()` deleted accented letters, so "ÖÖD" returned 713 products and "Möön" 627;
+- `saunas` and `hot tubs` returned no products.
+
+**Rule.**
+1. **Aliases (envelope only).** The index gains `aliases: {k, t}`. `k` maps a key to an index into `t`; each `t` entry is `{o: organisation}` plus, where one exists, `p`: the ids of published G15/G16 page records about that organisation.
+   - Keys are hosts and compact names (letters and digits only, at least 4 characters).
+   - **Sources, and no others:** Atlas `Organisations.Website`; Image Permission Outreach `Permitted Domain` on rows whose outcome is founder-confirmed and granted; the founder-approved `tradingNames` and `excludedNames` lines. All live in `atlas-tools/search-supplier-aliases.json`, written by `atlas-tools/build-search-aliases.py` from a read-only Atlas read.
+   - **Retail-channel aliases are deferred** (Summerhouse24 → Hansa24 Group) and refused by the builder.
+2. **Eligibility is unchanged (§3).** An alias is emitted only for an organisation that already has an emitted product or supplier record, or a published G15/G16 page. No alias creates a record, a supplier card or a route. S1–S5, G15 and G16 still decide publication.
+3. **Prohibited sources (§4).** A private-preview-only or recognition-pool-only organisation has no alias, by host or by name.
+4. **Query recognition (`search.js`).** A query that starts with `http(s)://` or `www.`, or is a bare `label.tld`, is reduced to its host (scheme, `www.`, path, query and port removed; parent domains tried in turn).
+   - A known host answers with that organisation's existing records only.
+   - An unknown host answers nothing.
+   - A compact trading name adds its organisation's records only when ordinary matching did not already find that organisation, so every query that already found its supplier is untouched.
+5. **Normalisation (§6 clarified).** Two deterministic rules are added. Neither is fuzzy matching, edit distance or AI/API expansion; the topic map is unchanged and the founder remains the approval authority for any further rule.
+   - Accent folding in `normalise()` (NFD, combining marks removed), applied to query and record alike.
+   - One plural rule: a term of four or more letters ending in a single `s` (not `-ss`, `-us`, `-is`) may also match its singular. It is **product-gated**: tried only when ordinary matching found no product and no supplier, and it adds products and suppliers only.
+6. **Relevance (§5).** Unchanged. Alias answers carry only the organisation's own records; ordering among them follows §5. No tier, price or Atlas signal participates.
+7. **Performance.** Each record's normalised text is computed once per loaded index and held as a non-enumerable property, so it never reaches JSON, the renderer or any serialised result.
+8. **Exact supplier name (A6 r2, 12 Nov 2026, before release).** When the query is a published supplier's name, the whole leading word(s) of it ("ÖÖD" for "ÖÖD House"), or a recognised trading name, **and** that name is distinctive (no other supplier's product or supplier record matches every query term at the start of a word), a Possibility that matches the query only inside another word is not shown. Example: "ood" inside "flood", "food" and "wood".
+   - Untouched: the supplier's own records; its own G15/G16 pages; governed topic-map entries; any Possibility matching at the start of a word.
+   - Products and suppliers are never removed by this rule. No score changes and no new ranking signal. It is a filter, not fuzzy matching.
+   - Ordinary words do not qualify ("home", "garden" and "car" each appear at the start of words in other suppliers' records).
+   - "All" qualifies, because "All In One Cabins" is the only supplier with a word starting "all". It drops guides that contain "all" only inside "wall", "install" or "small".
+9. **Known limit, left unchanged.** "cars" answers exactly as "car" does in production, because ordinary matching is substring matching and "car" occurs inside Carin, CARLOW, Carroz and Carpentry. A whole-word singular would fix it but removes legitimate plural answers ("pools" → Poolhouse, "gardens" → GardenDreams and Gardenhouse24, "offices" → ZomeOffice). A start-of-word singular does not fix it. The approved plural rule is therefore unchanged.
+
+**Guards (builder; each refuses the build).**
+- **A6a** every host is re-derived from the Atlas value itself and must be a hostname; a permitted domain must be a bare hostname on a founder-confirmed grant.
+- **A6b** no key may resolve to two organisations. A collision is resolved in `excludedNames`, never by dropping a record. (On its first run A6b caught "(Garden Rooms)" in Elm Landscaping's record colliding with GardenRooms.ie.)
+- **A6c** a hand-declared trading name must name an organisation with published records and carry evidence.
+- **A6d** no key under four characters.
+- **A6e** no alias may name an organisation without published records or a recognition-pool-only organisation.
+- The A6 block also refuses a retail-channel section, and a `PAGE_ORG` entry naming a page that is not published.
+- G10a–c are unchanged; no limit is raised. G13 lists `aliases` as a declared envelope key.
+
+**Proved capable.** `prove-search-guards.py` C23–C30, each refused by its own guard (40 of 40 guards capable). `prove-search-acceptance.mjs`:
+- **Part D** D1–D8: garden-room and sauna addresses and trading names; addresses of unpublished suppliers return nothing; unknown and look-alike domains; accents; plurals including the product gate; every alias key in every address form; no alias without published records.
+- **D9–D9d (r2):** "ÖÖD", "OOD" and "ÖÖD House" lead with ÖÖD House and show no unrelated guide; the rule removes no product or supplier; "home" is not treated as a supplier name; Shomera keeps its own guide. Each was shown capable by sabotage: rule removed → D9 fails; distinctiveness removed → D9c fails; rule widened to products → D1, D7 and D9b fail.
+- **H-A6:** 180 addresses of preview-only and pool-only organisations reveal nothing.
+
+**Targeted updates keep aliases current.** `publish-targeted-update.py` refreshes the updated organisation's alias entry (name, Website) from the same Atlas read (`build-search-aliases.py --merge-snapshot`). Its boundary check refuses a change to any other organisation's alias entry, to the hand sections, or to any alias outside the updated organisation.
+
+**Effect at introduction (main a737684).**
+- Records: 833, every one byte-identical to the previous index.
+- Aliases: 169 keys for 76 organisations; 179 Atlas organisations have no published record and get none.
+- Index: 187,427 → 193,121 bytes raw; 27,711 → 29,462 bytes gzip-9. All within the A4 guards.
+- Regression over 2,244 queries: 2,203 identical; 41 changed, all intended (7 accent corrections; 34 plural queries that previously returned no product or supplier).
+
+**Effect after r2 (main 0cc5ed3).**
+- Records: 833, every one byte-identical.
+- Regression over 2,245 queries: 2,202 identical; 43 changed. These are:
+  - the 41 above;
+  - "OOD", which now leads with ÖÖD House;
+  - "All", which loses 7 guides matching only inside words.
+- No query that already returned products or suppliers loses one, except the accent corrections.
+
+**Effect after r3 (main cf5f106, after the Garden Saunas in Ireland release).** A6 was rebuilt, not hand-merged:
+- `search-index-v1.json` and the alias file were regenerated from current governed sources: the Atlas read-only export of 12 Nov 2026 ~12:40, with no material change since r2.
+- Records: 832, every one byte-identical to production.
+- Aliases are unchanged (169 keys → 76 organisations).
+- The withdrawn Irish Sauna Company models are not restored. `irishsaunacompany.com` answers with The Clare and The Inis Mor only.
+- Regression over 2,248 queries: 2,203 identical; 45 changed, all of the kinds listed above. Products or suppliers lost: accent corrections only.
+- Proof D6 was restated: production now ranks the new Garden Saunas in Ireland guide first for "saunas". A6 does not reorder Possibilities, and the A6 promise it tests is unchanged.
+
+**Shared asset.** `search.js` is re-stamped in `atlas-tools/prove-landmarks.mjs` and the freeze record. `search.css` is unchanged.
 
 ## TARGETED-UPDATE RE-FREEZES
 

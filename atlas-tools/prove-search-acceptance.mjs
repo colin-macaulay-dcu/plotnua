@@ -812,6 +812,131 @@ check(`B0 the full preview set is on disk to test against (${previews.length})`,
     !RAW.includes('-preview.html') && !RAW.includes('supplier-preview-system'));
 }
 
+/* H-A6 an address or name of a private-preview-only or pool-only organisation
+   reveals nothing (amendment A6, 12 Nov 2026). The hosts are read from the
+   governed alias input, so every preview organisation Atlas knows a website for
+   is probed by bare domain, www. domain and full https:// URL. */
+{
+  const AL = JSON.parse(fs.readFileSync(path.join(ROOT, 'atlas-tools', 'search-supplier-aliases.json'), 'utf8'));
+  const published = new Set([...INDEX.records.filter((r) => r.type === 'product').map((r) => r.organisation),
+                             ...INDEX.records.filter((r) => r.type === 'supplier').map((r) => r.name),
+                             ...((INDEX.aliases && INDEX.aliases.t) || []).map((t) => t.o)]);
+  const hostOf = (u) => { const m = String(u || '').toLowerCase().match(/^\s*(?:[a-z][a-z0-9+.-]*:\/\/)?(?:www\.)?([^\/?#:\s]+)/); return m ? m[1] : null; };
+  const pool = JSON.parse(fs.readFileSync(path.join(ROOT, 'atlas-recognition-pool.json'), 'utf8'))
+    .map((x) => x && x.organisation).filter(Boolean);
+  const previewOrgs = fs.readdirSync(ROOT).filter((f) => f.endsWith('-preview.html')).map((f) => {
+    const m = fs.readFileSync(path.join(ROOT, f), 'utf8').match(/<title>(.*?)<\/title>/s);
+    return m ? m[1].replace(/&mdash;/g, '—').split('for ').pop().trim() : null; }).filter(Boolean);
+  const hidden = new Set([...previewOrgs, ...pool].map(ident));
+  const probes = [];
+  for (const e of AL.organisations) {
+    if (published.has(e.name) || !hidden.has(ident(e.name))) { continue; }
+    const h = hostOf(e.website);
+    if (h) { probes.push(h, 'www.' + h, 'https://www.' + h + '/'); }
+  }
+  const leaked = probes.filter((x) => { const r = q(x);
+    return r.counts.possibility + r.counts.supplier + r.counts.product + r.counts.journey > 0; });
+  check(`H-A6 ${probes.length} addresses of preview-only or pool-only organisations reveal nothing`,
+    probes.length > 50 && leaked.length === 0, JSON.stringify(leaked.slice(0, 8)));
+}
+
+/* ======================================== PART D · A6 SUPPLIER RECOGNITION */
+console.log('\n  PART D · A6 supplier recognition, accents and plurals (12 Nov 2026)\n');
+{
+  const tot = (r) => r.counts.possibility + r.counts.supplier + r.counts.product + r.counts.journey;
+  const first = (r) => (r.groups.supplier[0] || {}).name || (r.groups.product[0] || {}).organisation || '';
+  const answers = (qq, org, page) => { const r = q(qq);
+    const onlyOrg = r.groups.supplier.every((s) => s.name === org) && r.groups.product.every((p) => p.organisation === org);
+    return tot(r) > 0 && onlyOrg && (first(r) === org || (page && r.groups.possibility.some((p) => p.id === page))); };
+
+  /* D1 garden-room audit: every published supplier by name, domain, www., https:// and category URL */
+  const gr = [
+    ['Garden Rooms', ['GardenRooms.ie', 'gardenrooms.ie', 'www.gardenrooms.ie', 'https://www.gardenrooms.ie/']],
+    ['Shomera', ['shomera.ie', 'www.shomera.ie', 'https://www.shomera.ie/', 'https://www.shomera.ie/garden-rooms']],
+    ['Loghouse', ['loghouse.ie', 'www.loghouse.ie', 'https://www.loghouse.ie/', 'https://www.loghouse.ie/product-category/eco-garden-rooms/']],
+    ['Modern Garden Rooms', ['moderngardenrooms', 'moderngardenrooms.ie', 'www.moderngardenrooms.ie', 'https://moderngardenrooms.ie/']],
+    ['Sprout Pod', ['SproutPod', 'sproutpod', 'sproutpod.ie', 'www.sproutpod.ie', 'https://sproutpod.ie/', 'Sprout Pod']],
+    ['My Garden Room (Barna Buildings)', ['mygardenroom.ie', 'www.mygardenroom.ie', 'https://www.mygardenroom.ie/', 'barnabuildings']],
+    ['MCD Garden Sheds', ['McD Garden Sheds', 'mcdgardensheds', 'mcdgardensheds.ie', 'www.mcdgardensheds.ie', 'https://mcdgardensheds.ie/garden-rooms/']],
+  ];
+  const grBad = []; let grN = 0;
+  for (const [org, qs] of gr) { for (const x of qs) { grN++; if (!answers(x, org)) { grBad.push(x + ' -> ' + first(q(x))); } } }
+  check(`D1 ${grN} garden-room supplier addresses and trading names answer with that supplier`, grBad.length === 0, JSON.stringify(grBad));
+
+  /* D2 garden-sauna audit: published makers answer; unpublished ones return nothing */
+  const sa = [['Irish Sauna Company', 'irishsaunacompany.com'], ['Pineca Ireland', 'pineca.ie'],
+              ['TimberIN', 'timberin.com'], ['TimberIN', 'woodenhottubsale.co.uk'], ['Arctic Wellness', 'arcticwellness.ie']];
+  const saBad = []; let saN = 0;
+  for (const [org, d] of sa) { for (const x of [d, 'www.' + d, 'https://www.' + d + '/', 'https://' + d + '/']) {
+    saN++; if (!answers(x, org, org === 'Arctic Wellness' ? 'info-arctic-wellness' : null)) { saBad.push(x); } } }
+  check(`D2 ${saN} garden-sauna maker addresses answer with that maker (incl. makers with no supplier card)`, saBad.length === 0, JSON.stringify(saBad));
+  const unpub = ['aquasun.ie', 'c11recovery.com', 'harbourwellness.ie', 'eco-hearth.com', 'saunaireland.ie',
+                 'timbertrove.com', 'spasolutionsireland.ie', 'slaintesaunas.ie', 'shedfactoryireland.ie', 'summerhouse24.ie'];
+  const upBad = []; for (const d of unpub) { for (const x of [d, 'www.' + d, 'https://www.' + d + '/']) { if (tot(q(x))) { upBad.push(x); } } }
+  check(`D3 ${unpub.length * 3} addresses of suppliers with no published record return nothing`, upBad.length === 0, JSON.stringify(upBad));
+
+  /* D4 unknown and look-alike addresses return nothing (no substring noise) */
+  const neg = ['harvia.com', 'example.ie', 'plotnua.ie', 'google.com', 'hutsmith.com', 'biobuilds.com',
+               'nuamodular.com', 'summerhouse24.co.uk', 'gardenhouse24.co.uk', 'sproutpod.com', 'xsproutpod.ie',
+               'sproutpod.ie.evil.com', 'https://www.poshshedsni.com/', 'steeltechsheds.ie'];
+  const negBad = neg.filter((x) => tot(q(x)) > 0);
+  check(`D4 ${neg.length} unknown, ineligible and look-alike addresses return nothing`, negBad.length === 0, JSON.stringify(negBad));
+
+  /* D5 accents fold on both sides */
+  const ood = q('ÖÖD');
+  check('D5 "ÖÖD" answers with ÖÖD House only, not the whole corpus',
+    first(ood) === 'ÖÖD House' && ood.counts.supplier === 1 && ood.counts.product < 50, JSON.stringify(ood.counts));
+  check('D5b "OOD House", "ood house" and "oodhouse.com" all answer with ÖÖD House',
+    ['OOD House', 'ood house', 'oodhouse.com', 'https://oodhouse.com/en'].every((x) => first(q(x)) === 'ÖÖD House'));
+  check('D5c an accented name with no published record returns nothing ("Sláinte")', tot(q('Sláinte')) === 0);
+
+  /* D6 plurals, product-gated */
+  const saunas = q('saunas');
+  /* r3 (12 Nov 2026): since the Garden Saunas in Ireland release (cf5f106), production itself ranks that
+     guide first for "saunas" (title-word match). A6 does not reorder Possibilities, so D6 now asserts
+     the A6 promise: the same sauna guides as "sauna", led by a governed sauna page, plus every sauna product. */
+  const sauna1 = q('sauna');
+  check('D6 "saunas" shows the same sauna guides as "sauna", led by a governed sauna page, and now returns saunas',
+    ['poss-garden-saunas-ireland', 'poss-garden-retreat'].includes((saunas.groups.possibility[0] || {}).id) &&
+    JSON.stringify(ids(saunas.groups.possibility).sort()) === JSON.stringify(ids(sauna1.groups.possibility).sort()) &&
+    saunas.counts.product === sauna1.counts.product,
+    JSON.stringify(saunas.counts));
+  check('D6b "hot tubs" returns hot tubs', q('hot tubs').counts.product > 0);
+  const rooms = q('rooms');
+  check('D6c a plural that already finds products is not widened ("rooms": every product says "rooms")',
+    rooms.counts.product > 0 && rooms.groups.product.every((p) => S.normalise(p.name + ' ' + p.organisation + ' ' + p.productType).includes('rooms')),
+    JSON.stringify(rooms.counts));
+
+  /* D7 every alias key resolves to its own organisation, by every address form */
+  const A = INDEX.aliases; const aBad = []; let aN = 0;
+  for (const [k, ti] of Object.entries(A.k)) { const t = A.t[ti];
+    const forms = k.includes('.') ? [k, 'www.' + k, 'https://www.' + k + '/', 'https://' + k + '/x?y=1'] : [k];
+    for (const x of forms) { aN++; if (!answers(x, t.o, (t.p || [])[0])) { aBad.push(x + ' -> ' + t.o); } } }
+  check(`D7 all ${aN} alias forms (${Object.keys(A.k).length} keys, ${A.t.length} organisations) resolve correctly`, aBad.length === 0, JSON.stringify(aBad.slice(0, 8)));
+
+  /* D9 (A6 r2) an exact, distinctive supplier name leads with that supplier: no guide that
+     only contains the name inside another word ("ood" in "flood", "food", "wood") */
+  const ownP = (o) => new Set((A.t.find((t) => t.o === o) || {}).p || []);
+  const oodOwn = ownP('ÖÖD House');
+  const oodBad = ['ÖÖD', 'OOD', 'ÖÖD House', 'ood house'].filter((x) => { const r = q(x);
+    return first(r) !== 'ÖÖD House' || r.groups.possibility.some((p) => !oodOwn.has(p.id)); });
+  check('D9 "ÖÖD", "OOD", "ÖÖD House": ÖÖD House leads; no unrelated guide is shown', oodBad.length === 0, JSON.stringify(oodBad));
+  const blob = (r) => S.normalise([r.name || r.title, r.organisation, r.productType, r.standfirst, (r.topics || []).join(' ')].join(' '));
+  const oodP = INDEX.records.filter((r) => r.type === 'product' && blob(r).includes('ood')).length;
+  check('D9b the rule never removes a product or supplier ("ÖÖD" products = every product containing "ood")',
+    q('ÖÖD').counts.product === oodP, q('ÖÖD').counts.product + ' vs ' + oodP);
+  check('D9c an ordinary word is not a supplier name: "home" still shows guides that contain it inside a word (Shomera)',
+    q('home').groups.possibility.some((p) => /shomera/i.test(p.title || '')));
+  check('D9d a supplier keeps its own guide ("Shomera" -> the Shomera comparison guide)',
+    q('Shomera').groups.possibility.some((p) => /shomera/i.test(p.title || '')) && first(q('Shomera')) === 'Shomera');
+
+  /* D8 aliases add nothing to the corpus: every target already has published records, and no key repeats */
+  const orphan = A.t.filter((t) => !INDEX.records.some((r) => (r.type === 'product' && r.organisation === t.o) ||
+    (r.type === 'supplier' && r.name === t.o) || (t.p || []).includes(r.id)));
+  check('D8 every alias target already has published records (no new card, record or route)',
+    orphan.length === 0 && A.t.every((t) => Object.keys(t).every((k) => k === 'o' || k === 'p')), JSON.stringify(orphan));
+}
+
 /* ===================================================== PART C · PRIVACY */
 console.log('\n  PART C · SEARCH TERMS ARE LOCAL AND EPHEMERAL\n');
 
