@@ -688,12 +688,94 @@
     }));
   }
 
+  /* ---- Opportunities & delivery (development 13 Nov 2026): artists' expressions of interest, read-only here.
+     Nothing on this page enrols an artist, changes an agreement, grants a permission, lists a work for hire or contacts anyone. */
+  async function opportunities() {
+    let d;
+    try { d = await api('GET', '/api/admin/opportunities'); } catch (e) { app.innerHTML = `<div class="st-card"><h1 class="st-h1">Opportunities</h1><p class="st-muted">${E(e.message)}</p></div>`; return; }
+    if (!d.installed) { app.innerHTML = '<h1 class="st-h1">Opportunities &amp; delivery</h1><section class="st-card"><p class="st-muted" style="margin:0">Not installed yet (migration 0009 has not run).</p></section>'; return; }
+    const O = d.options, T = d.totals, f = { status: '', interest: '', county: '', reach: '' };
+    const provOpts = (sel, extra = '') => extra + Object.entries(O.provinces).map(([p, cs]) => `<optgroup label="${p}">${cs.map(c => `<option value="${c}"${c === sel ? ' selected' : ''}>${c}</option>`).join('')}</optgroup>`).join('');
+    const coverage = p => {
+      if (p.coverage_mode === 'anywhere') return 'Anywhere on the island';
+      if (p.coverage_mode === 'ask') return 'Ask about each opportunity';
+      if (p.coverage_mode !== 'counties') return '';
+      const out = [];
+      for (const [pv, cs] of Object.entries(O.provinces)) {
+        const got = cs.filter(c => p.coverage_counties.includes(c));
+        if (got.length === cs.length) out.push(`all ${pv}`); else out.push(...got);
+      }
+      return out.join(', ');
+    };
+    const isOnline = i => i.prefs && i.prefs.interests.includes('online_only');
+    const match = i => {
+      const p = i.prefs;
+      if (f.status === 'answered' && !p) return false;
+      if (f.status === 'unanswered' && p) return false;
+      if (f.status === 'online' && !isOnline(i)) return false;
+      if (f.interest && !(p && p.interests.includes(f.interest))) return false;
+      if (f.county === '_none' ? !(p && !p.artwork_county) : f.county && !(p && p.artwork_county === f.county)) return false;
+      if (f.reach) {
+        if (!p) return false;
+        if (f.reach === 'anywhere' || f.reach === 'ask') { if (p.coverage_mode !== f.reach) return false; }
+        else if (f.reach === 'need_help' || f.reach === 'depends') { if (!p.transport.includes(f.reach)) return false; }
+        else if (!(p.coverage_mode === 'anywhere' || (p.coverage_mode === 'counties' && p.coverage_counties.includes(f.reach)))) return false;
+      }
+      return true;
+    };
+    const row = i => {
+      const p = i.prefs, who = `<b>${E(i.display_name)}</b>${i.founding_number ? ` <span class="st-muted">· F${String(i.founding_number).padStart(2, '0')}</span>` : ''}${i.account_status !== 'active' ? ` <span class="st-muted">· ${E(i.account_status)}</span>` : ''}`;
+      if (!p) return `<li class="st-opp-row is-none"><div>${who}</div><div><span class="st-pill">Not answered yet</span></div></li>`;
+      if (isOnline(i)) return `<li class="st-opp-row"><div>${who}</div><div><span class="st-pill st-pill--warn">Online only for now</span>${p.artwork_county ? `<span class="st-opp-k">Artwork in Co. ${E(p.artwork_county)}</span>` : ''}${p.note ? `<p class="st-opp-note">“${E(p.note)}”</p>` : ''}</div><div class="st-muted st-opp-when">${E(when(p.updated_at))}</div></li>`;
+      return `<li class="st-opp-row"><div>${who}</div>
+        <div><div class="st-chips" style="margin:0 0 6px">${p.interests.map(k => `<span class="st-chip">${E(O.interest_short[k])}</span>`).join('')}</div>
+          <span class="st-opp-k">Artwork: ${p.artwork_county ? `Co. ${E(p.artwork_county)}` : '<i>not given</i>'}</span>
+          <span class="st-opp-k">Transport: ${p.transport.length ? p.transport.map(k => E(O.transport_short[k])).join(', ') : '<i>not given</i>'}${p.coverage_mode ? ` · ${E(coverage(p))}` : ''}</span>
+          ${p.note ? `<p class="st-opp-note">“${E(p.note)}”</p>` : ''}</div>
+        <div class="st-muted st-opp-when">${E(when(p.updated_at))}</div></li>`;
+    };
+    app.innerHTML = `
+      <h1 class="st-h1">Opportunities &amp; delivery</h1>
+      <p class="st-sub">What artists have said they’d be open to, where their work is based and how it could reach a venue. These are expressions of interest only: talk to the artist before arranging anything.</p>
+      <div class="st-kpis">
+        <div class="st-kpi"><b>${T.answered}</b><span>answered</span></div>
+        <div class="st-kpi"><b>${T.unanswered}</b><span>not answered yet</span></div>
+        <div class="st-kpi"><b>${T.online_only}</b><span>online only for now</span></div>
+        <div class="st-kpi"><b>${T.artists}</b><span>artists in Studio</span></div>
+      </div>
+      <section class="st-card">
+        <h3 class="st-opp-h3">Interest by opportunity</h3>
+        <div class="st-opts st-opts--sm" style="margin-top:6px">${Object.keys(O.interests).filter(k => k !== 'online_only').map(k => `<button type="button" class="st-opt st-opt--sm st-opt--count" data-int="${k}" aria-pressed="false">${E(O.interest_short[k])} <b>${T.by_interest[k]}</b></button>`).join('')}</div>
+        <div class="st-opp-filters">
+          <div class="st-f"><label for="of-status">Answers</label><select id="of-status"><option value="">Everyone</option><option value="answered">Answered</option><option value="unanswered">Not answered yet</option><option value="online">Online only for now</option></select></div>
+          <div class="st-f"><label for="of-int">Interested in</label><select id="of-int"><option value="">Any opportunity</option>${Object.keys(O.interests).filter(k => k !== 'online_only').map(k => `<option value="${k}">${E(O.interest_short[k])}</option>`).join('')}</select></div>
+          <div class="st-f"><label for="of-county">Artwork based in</label><select id="of-county">${provOpts('', '<option value="">Any county</option><option value="_none">Not given</option>')}</select></div>
+          <div class="st-f"><label for="of-reach">Can deliver to</label><select id="of-reach"><option value="">Any</option><option value="anywhere">Anywhere on the island</option><option value="ask">Ask about each opportunity</option><option value="need_help">Needs help with transport</option><option value="depends">Depends on the opportunity</option>${provOpts('')}</select></div>
+        </div>
+        <p class="st-muted" style="margin:0" aria-live="polite"><span id="of-n"></span> <button type="button" class="st-linkbtn" id="of-reset" hidden>Clear filters</button></p>
+      </section>
+      <ul class="st-opp-list" id="of-list"></ul>
+      <p class="st-muted">“Can deliver to” a county includes artists who said “Anywhere on the island”. Artists who answered “Ask about each opportunity” or need help with transport appear under those choices.</p>`;
+    const draw = () => {
+      const rows = d.items.filter(match);
+      $('#of-list').innerHTML = rows.length ? rows.map(row).join('') : '<li class="st-opp-row is-none"><div class="st-muted">No artists match these filters.</div></li>';
+      $('#of-n').textContent = `Showing ${rows.length} of ${d.items.length} artists.`;
+      $('#of-reset').hidden = !Object.values(f).some(Boolean);
+      app.querySelectorAll('[data-int]').forEach(b => b.setAttribute('aria-pressed', String(f.interest === b.dataset.int)));
+    };
+    const bind = (id, k) => $(id).addEventListener('change', e => { f[k] = e.target.value; draw(); });
+    bind('#of-status', 'status'); bind('#of-int', 'interest'); bind('#of-county', 'county'); bind('#of-reach', 'reach');
+    app.querySelectorAll('[data-int]').forEach(b => b.addEventListener('click', () => { f.interest = f.interest === b.dataset.int ? '' : b.dataset.int; $('#of-int').value = f.interest; draw(); }));
+    $('#of-reset').addEventListener('click', () => { Object.keys(f).forEach(k => { f[k] = ''; }); ['#of-status', '#of-int', '#of-county', '#of-reach'].forEach(s => { $(s).value = ''; }); draw(); });
+    draw();
+  }
+
   async function render() {
     const h = location.hash || '#/', path = location.pathname.replace(/\/$/, '');
     const am = path.match(/^\/admin\/applications\/(F25-\d{6}-[0-9A-F]{6})$/);
-    document.querySelectorAll('.st-tabs a').forEach(a => a.toggleAttribute('aria-current', a.dataset.t === (path.startsWith('/admin/applications') ? 'apps' : path === '/admin/gallery' ? 'order' : path === '/admin/ideas' ? 'ideas' : path === '/admin/garden' ? 'garden' : path === '/admin/agreements' ? 'agree' : path === '/admin/leaving' ? 'leave' : path === '/admin/hire' ? 'hire' : 'desk')));
+    document.querySelectorAll('.st-tabs a').forEach(a => a.toggleAttribute('aria-current', a.dataset.t === (path.startsWith('/admin/applications') ? 'apps' : path === '/admin/gallery' ? 'order' : path === '/admin/ideas' ? 'ideas' : path === '/admin/garden' ? 'garden' : path === '/admin/agreements' ? 'agree' : path === '/admin/leaving' ? 'leave' : path === '/admin/hire' ? 'hire' : path === '/admin/opportunities' ? 'opps' : 'desk')));
     document.querySelectorAll('.st-tabs a[aria-current]').forEach(a => a.setAttribute('aria-current', 'page'));
-    try { if (am) await appView(am[1]); else if (path === '/admin/gallery') await order(); else if (path === '/admin/ideas') await ideas(); else if (path === '/admin/garden') await garden(); else if (path === '/admin/agreements') await agreements(); else if (path === '/admin/leaving') await leaving(); else if (path === '/admin/hire') await hire(); else if (path === '/admin/applications') await apps(); else if (h.startsWith('#/review/')) await review(h.slice(9)); else await home(); window.scrollTo(0, 0); }
+    try { if (am) await appView(am[1]); else if (path === '/admin/gallery') await order(); else if (path === '/admin/ideas') await ideas(); else if (path === '/admin/garden') await garden(); else if (path === '/admin/agreements') await agreements(); else if (path === '/admin/leaving') await leaving(); else if (path === '/admin/hire') await hire(); else if (path === '/admin/opportunities') await opportunities(); else if (path === '/admin/applications') await apps(); else if (h.startsWith('#/review/')) await review(h.slice(9)); else await home(); window.scrollTo(0, 0); }
     catch (e) { app.innerHTML = `<div class="st-card"><h2>Something went wrong</h2><p class="st-muted">${E(e.message)}</p></div>`; }
   }
   addEventListener('hashchange', render);

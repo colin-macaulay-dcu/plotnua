@@ -682,6 +682,149 @@
     });
   }
 
+  /* ------------------------------------------------------------- Opportunities & delivery (development 13 Nov 2026)
+     The artist's own expression of interest. Saving it enrols them in nothing, changes no agreement, grants no image
+     permission and offers no work for hire: those keep their own consent steps. Nothing is saved until "Save preferences". */
+  async function opportunities() {
+    const d = await api('GET', '/api/opportunities');
+    if (!d.installed) { app.innerHTML = `<h1 class="st-h1">Opportunities &amp; delivery</h1><section class="st-card"><p class="st-muted" style="margin:0">This section isn’t available yet.</p></section>`; return; }
+    const O = d.options, sv = d.saved;
+    const st = sv ? { interests: [...sv.interests], county: sv.artwork_county || '', transport: [...sv.transport], mode: sv.coverage_mode, counties: [...sv.coverage_counties], note: sv.note || '' }
+      : { interests: [], county: d.suggested_county || '', transport: [], mode: null, counties: [], note: '' };
+    let last = JSON.stringify(st), savedAt = sv ? sv.updated_at : null;
+    const on = (a, k) => a.includes(k);
+    const btn = (group, k, label, pressed, cls = '') => `<button type="button" class="st-opt ${cls}" data-g="${group}" data-k="${E(k)}" aria-pressed="${pressed}">${E(label)}</button>`;
+    const showCov = () => st.interests.length && !on(st.interests, 'online_only') && (on(st.transport, 'deliver') || on(st.transport, 'courier'));
+    const when = t => new Date(t).toLocaleString('en-IE', { timeZone: 'Europe/Dublin', day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+    const opts = Object.entries(O.provinces).map(([p, cs]) => `<optgroup label="${p}">${cs.map(c => `<option${c === st.county ? ' selected' : ''}>${c}</option>`).join('')}</optgroup>`).join('');
+    app.innerHTML = `
+      <h1 class="st-h1">Opportunities &amp; delivery</h1>
+      <p class="st-sub">A few quick questions about what you’d be open to and how your work could travel. You can change your answers at any time.</p>
+      <p class="st-opp-state" id="o-state" aria-live="polite"></p>
+      <form id="oform" novalidate>
+      <section class="st-card"><fieldset class="st-opp-fs" aria-describedby="o-int-h">
+        <legend><h2 class="st-opp-q">What would you be interested in exploring?</h2></legend>
+        <p class="st-hint" id="o-int-h" style="margin:0">Expressing interest does not commit you to anything. We’ll discuss each opportunity with you before making arrangements.</p>
+        <div class="st-opts" role="group" aria-label="Opportunities">${Object.entries(O.interests).filter(([k]) => k !== 'online_only').map(([k, v]) => btn('i', k, v, on(st.interests, k))).join('')}</div>
+        <p class="st-opp-or">or</p>
+        <div class="st-opts" style="margin-top:0">${btn('i', 'online_only', O.interests.online_only, on(st.interests, 'online_only'), 'st-opt--alone')}</div>
+        <p class="st-opp-msg" id="o-i-msg" aria-live="polite"></p>
+      </fieldset></section>
+      <section class="st-card"><div class="st-f" style="margin:0">
+        <label for="o-county"><span class="st-opp-q">Where is your artwork based?</span></label>
+        <select id="o-county" aria-describedby="o-county-h"><option value="">Choose a county</option>${opts}</select>
+        <small id="o-county-h">${!sv && d.suggested_county ? 'We’ve started with the county on your profile. Change it if your work is kept somewhere else.' : 'This can be different from where you live.'}</small>
+      </div></section>
+      <section class="st-card" id="o-tr-card"><fieldset class="st-opp-fs">
+        <legend><h2 class="st-opp-q">How could your work reach a venue?</h2></legend>
+        <p class="st-hint" style="margin:0">Choose any that fit.</p>
+        <div class="st-opts">${Object.entries(O.transport).map(([k, v]) => btn('t', k, v, on(st.transport, k))).join('')}</div>
+        <p class="st-opp-msg" id="o-t-msg" aria-live="polite"></p>
+      </fieldset></section>
+      <section class="st-card" id="o-cov-card"><fieldset class="st-opp-fs">
+        <legend><h2 class="st-opp-q">Where could you deliver and collect?</h2></legend>
+        <div class="st-opts" style="margin-top:4px">${btn('c', 'anywhere', O.coverage.anywhere, st.mode === 'anywhere', 'st-opt--alone')}${btn('c', 'ask', O.coverage.ask, st.mode === 'ask', 'st-opt--alone')}</div>
+        <p class="st-opp-or">or choose counties</p>
+        ${Object.entries(O.provinces).map(([p, cs]) => `<div class="st-prov" role="group" aria-labelledby="pv-${p}">
+          <div class="st-prov-top"><h3 id="pv-${p}">${p} <span class="st-muted" data-pn="${p}"></span></h3><button type="button" class="st-btn st-btn--small" data-prov="${p}"></button></div>
+          <div class="st-opts st-opts--sm">${cs.map(c => btn('k', c, c, on(st.counties, c), 'st-opt--sm')).join('')}</div></div>`).join('')}
+        <p class="st-opp-msg" id="o-c-msg" aria-live="polite"></p>
+      </fieldset></section>
+      <section class="st-card"><div class="st-f" style="margin:0">
+        <label for="o-note"><span class="st-opp-q">Anything we should know? <span class="st-muted" style="font-weight:400">(optional)</span></span></label>
+        <textarea id="o-note" maxlength="${O.note_max}" rows="3" aria-describedby="o-note-h" placeholder="For example, transport costs, artwork size limits or availability" style="min-height:88px">${E(st.note)}</textarea>
+        <small id="o-note-h"><span id="o-note-n"></span></small>
+      </div></section>
+      <div class="st-opp-save">
+        <button class="st-btn st-btn--solid" id="o-save" type="submit">Save preferences</button>
+        <span class="st-muted" id="o-dirty" aria-live="polite"></span>
+        <p class="st-err" id="o-err" role="alert"></p>
+      </div>
+      </form>`;
+    const msg = (id, t) => { $(id).textContent = t || ''; };
+    function paint() {
+      app.querySelectorAll('.st-opt').forEach(b => {
+        const g = b.dataset.g, k = b.dataset.k;
+        b.setAttribute('aria-pressed', String(g === 'i' ? on(st.interests, k) : g === 't' ? on(st.transport, k) : g === 'c' ? st.mode === k : on(st.counties, k)));
+      });
+      const online = on(st.interests, 'online_only');
+      $('#o-tr-card').hidden = online;
+      $('#o-cov-card').hidden = !showCov();
+      for (const [p, cs] of Object.entries(O.provinces)) {
+        const n = cs.filter(c => on(st.counties, c)).length, b = app.querySelector(`[data-prov="${p}"]`);
+        b.textContent = n === cs.length ? `Clear ${p}` : `Select all of ${p}`;
+        b.setAttribute('aria-label', n === cs.length ? `Clear all ${cs.length} ${p} counties` : `Select all ${cs.length} ${p} counties`);
+        app.querySelector(`[data-pn="${p}"]`).textContent = n ? `· ${n} of ${cs.length}` : '';
+      }
+      $('#o-note-n').textContent = `${st.note.length} of ${O.note_max} characters`;
+      const dirty = JSON.stringify(st) !== last;
+      $('#o-dirty').textContent = dirty ? (savedAt ? 'You have unsaved changes.' : '') : '';
+      $('#o-state').innerHTML = savedAt ? `<span class="st-pill st-pill--ok">Saved</span> Last saved ${E(when(savedAt))}.`
+        : '<span class="st-pill">Not answered yet</span> Nothing is saved until you choose “Save preferences”.';
+    }
+    const drop = (arr, keys) => keys.filter(k => on(arr, k)).forEach(k => arr.splice(arr.indexOf(k), 1));
+    const name = (map, k) => `“${map[k]}”`;
+    app.querySelectorAll('.st-opt').forEach(b => b.addEventListener('click', () => {
+      const g = b.dataset.g, k = b.dataset.k;
+      $('#o-err').textContent = '';
+      if (g === 'i') {
+        msg('#o-i-msg');
+        if (on(st.interests, k)) drop(st.interests, [k]);
+        else if (k === 'online_only') {
+          if (st.interests.length || st.transport.length || st.mode) msg('#o-i-msg', 'Your other choices have been cleared. Transport questions don’t apply to the online gallery.');
+          st.interests.splice(0); st.transport.splice(0); st.mode = null; st.counties.splice(0); st.interests.push(k);
+        } else {
+          if (on(st.interests, 'online_only')) { drop(st.interests, ['online_only']); msg('#o-i-msg', `${name(O.interests, 'online_only')} has been unselected.`); }
+          st.interests.push(k);
+        }
+      } else if (g === 't') {
+        msg('#o-t-msg');
+        if (on(st.transport, k)) drop(st.transport, [k]);
+        else {
+          const clash = (O.transport_clash[k] || []).filter(o => on(st.transport, o));
+          if (clash.length) { drop(st.transport, clash); msg('#o-t-msg', `${clash.map(c => name(O.transport, c)).join(' and ')} ${clash.length > 1 ? 'have' : 'has'} been unselected: it doesn’t fit with ${name(O.transport, k)}.`); }
+          st.transport.push(k);
+        }
+        if (!showCov()) { st.mode = null; st.counties.splice(0); }
+      } else if (g === 'c') {
+        msg('#o-c-msg');
+        if (st.mode === k) st.mode = null;
+        else { if (st.counties.length) msg('#o-c-msg', 'Your county choices have been cleared.'); st.mode = k; st.counties.splice(0); }
+      } else {
+        msg('#o-c-msg');
+        if (on(st.counties, k)) drop(st.counties, [k]); else { if (st.mode && st.mode !== 'counties') msg('#o-c-msg', `${name(O.coverage, st.mode)} has been unselected.`); st.counties.push(k); }
+        st.mode = st.counties.length ? 'counties' : null;
+      }
+      paint();
+    }));
+    app.querySelectorAll('[data-prov]').forEach(b => b.addEventListener('click', () => {
+      const cs = O.provinces[b.dataset.prov], all = cs.every(c => on(st.counties, c));
+      msg('#o-c-msg');
+      if (all) drop(st.counties, cs);
+      else { if (st.mode && st.mode !== 'counties') msg('#o-c-msg', `${name(O.coverage, st.mode)} has been unselected.`); cs.forEach(c => { if (!on(st.counties, c)) st.counties.push(c); }); }
+      st.mode = st.counties.length ? 'counties' : null;
+      paint();
+    }));
+    $('#o-county').addEventListener('change', e => { st.county = e.target.value; paint(); });
+    $('#o-note').addEventListener('input', e => { st.note = e.target.value; paint(); });
+    $('#oform').addEventListener('submit', async e => {
+      e.preventDefault();
+      $('#o-err').textContent = '';
+      if (!st.interests.length) { $('#o-err').textContent = 'Choose at least one option in “What would you be interested in exploring?”, or choose “Online gallery only for now”.'; app.querySelector('.st-opt').focus(); return; }
+      const b = $('#o-save'); b.disabled = true;
+      try {
+        const cov = showCov() && st.mode ? { mode: st.mode, counties: st.mode === 'counties' ? st.counties : [] } : null;
+        const r = await api('PUT', '/api/opportunities', { interests: st.interests, artwork_county: st.county || null, transport: on(st.interests, 'online_only') ? [] : st.transport, coverage: cov, note: st.note.trim() || null });
+        const s = r.saved;
+        Object.assign(st, { interests: [...s.interests], county: s.artwork_county || '', transport: [...s.transport], mode: s.coverage_mode, counties: [...s.coverage_counties], note: s.note || '' });
+        $('#o-note').value = st.note; last = JSON.stringify(st); savedAt = s.updated_at;
+        say('Preferences saved'); paint();
+      } catch (err) { $('#o-err').textContent = err.message; }
+      finally { b.disabled = false; }
+    });
+    paint();
+  }
+
   /* ------------------------------------------------------------- router */
   async function render() {
     await flushPhotoEdits();
@@ -700,6 +843,7 @@
       else if (h === '#/enquiries') await enquiries();
       else if (h === '#/agreement') await agreementView();
       else if (h === '#/hire') await hireView();
+      else if (h === '#/opportunities') await opportunities();
       else dashboard();
       window.scrollTo(0, 0);
       if (q.get('fix')) requestAnimationFrame(() => focusFix(q.get('fix'), q.get('img')));

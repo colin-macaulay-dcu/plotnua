@@ -545,3 +545,21 @@ CREATE INDEX IF NOT EXISTS hire_report_records_artist ON hire_report_records(art
 CREATE TRIGGER IF NOT EXISTS hire_report_records_no_delete BEFORE DELETE ON hire_report_records
 WHEN NOT EXISTS (SELECT 1 FROM record_retention r WHERE r.artist_id = OLD.artist_id AND julianday(r.delete_after) <= julianday('now'))
 BEGIN SELECT RAISE(ABORT, 'hire_report_records is kept until its retention period has ended'); END;
+
+-- PlotArt Studio · migration 0009 · Opportunities & delivery (development 13 Nov 2026): the artist's own expression of interest.
+CREATE TABLE IF NOT EXISTS artist_opportunities (
+  artist_id         TEXT PRIMARY KEY REFERENCES artists(id) ON DELETE CASCADE,
+  interests         TEXT NOT NULL CHECK (json_valid(interests) AND json_array_length(interests) BETWEEN 1 AND 8),   -- keys, e.g. ["living_gallery","commissions"]
+  artwork_county    TEXT CHECK (artwork_county IS NULL OR length(artwork_county) BETWEEN 3 AND 20),               -- NULL: not answered
+  transport         TEXT NOT NULL DEFAULT '[]' CHECK (json_valid(transport) AND json_array_length(transport) <= 4),
+  coverage_mode     TEXT CHECK (coverage_mode IS NULL OR coverage_mode IN ('counties', 'anywhere', 'ask')),           -- NULL: not asked or not answered
+  coverage_counties TEXT NOT NULL DEFAULT '[]' CHECK (json_valid(coverage_counties) AND json_array_length(coverage_counties) <= 32),
+  note              TEXT CHECK (note IS NULL OR length(note) <= 280),
+  created_at        TEXT NOT NULL,
+  updated_at        TEXT NOT NULL,
+  updated_by        TEXT NOT NULL,                                                                                 -- the artist's Studio address
+  CHECK (NOT (interests LIKE '%"online_only"%' AND json_array_length(interests) > 1)),
+  CHECK (NOT (interests LIKE '%"online_only"%' AND (json_array_length(transport) > 0 OR coverage_mode IS NOT NULL))),
+  CHECK ((COALESCE(coverage_mode, '') = 'counties') = (json_array_length(coverage_counties) > 0))   -- counties only with "selected counties"
+);
+CREATE INDEX IF NOT EXISTS artist_opportunities_county ON artist_opportunities(artwork_county);

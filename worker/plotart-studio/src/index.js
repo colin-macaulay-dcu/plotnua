@@ -12,6 +12,7 @@ import { verifyAccess, who } from './auth.js';
 import * as L from './lib.js';
 import * as AG from './agreement.js';
 import * as H from './hire.js';
+import * as O from './opportunities.js';   // Opportunities & delivery (development 13 Nov 2026): expressions of interest only
 import { artistBody, artworkBody, previewPage, shown } from './render.js';
 import * as A from './assets.js';
 import { send } from './mailer.js';
@@ -393,8 +394,9 @@ async function eraseOriginals(env, artistId, actor, why) {
     env.DB.prepare('INSERT INTO participation_events (id, artist_id, kind, at, actor, reason, detail) VALUES (?,?,?,?,?,?,?)')
       .bind(rid('pe'), artistId, 'originals_deleted', now(), actor, why, JSON.stringify({ images: imgs.length, storage_objects: objects, works })),
   ]);
-  await audit(env, actor, actor === 'scheduler' ? 'system' : 'founder', 'originals_deleted', artistId, { images: imgs.length, storage_objects: objects, works, why });
-  return { images: imgs.length, storage_objects: objects, works };
+  const opportunities = await O.eraseFor(env, artistId);   // the artist's own Opportunities & delivery answers (absent table: skipped)
+  await audit(env, actor, actor === 'scheduler' ? 'system' : 'founder', 'originals_deleted', artistId, { images: imgs.length, storage_objects: objects, works, opportunities, why });
+  return { images: imgs.length, storage_objects: objects, works, opportunities };
 }
 /* Stage 2 (6 years): every remaining record of the artist, then the artist row. The append-only guards allow this only
    once record_retention.delete_after has passed. */
@@ -406,7 +408,7 @@ async function deleteRecords(env, artistId) {
   // Art for Hire records (migration 0007) go BEFORE record_retention: their append-only guards allow deletion only while
   // the artist's retention row still shows the period has ended (Stage 3B-1 finding). Absent tables are skipped.
   const t = ['acceptance_corrections', 'agreement_acceptances', 'enquiry_log', 'enquiries', 'versions', 'publish_queue', 'gallery_positions', 'participation_events',
-    ...(await H.recordTables(env)), 'record_retention'];
+    ...(await H.recordTables(env)), ...(await O.recordTables(env)), 'record_retention'];
   await env.DB.batch([...t.map(x => env.DB.prepare(`DELETE FROM ${x} WHERE artist_id = ?`).bind(artistId)), env.DB.prepare("DELETE FROM artists WHERE id = ? AND account_status = 'ended'").bind(artistId),
     env.DB.prepare('DELETE FROM audit WHERE artist_id = ?').bind(artistId)]);   // the artist's audit trail goes with their records
   await audit(env, 'scheduler', 'system', 'records_deleted', artistId, { tables: t.length + 1 });
@@ -1230,6 +1232,8 @@ async function route(req, env) {
     if (p === '/admin/agreements') return html(A.ADMIN_HTML);
     if (p === '/admin/leaving') return html(A.ADMIN_HTML);
     if (p === '/admin/hire') return html(A.ADMIN_HTML);
+    if (p === '/admin/opportunities') return html(A.ADMIN_HTML);
+    if (p === '/api/admin/opportunities' && m === 'GET') return json({ ok: true, ...(await O.adminView(env)) });   // read-only: the founder never edits an artist's answers
     if (p.startsWith('/api/admin/hire') && !(await H.installed(env))) return json({ ok: false, error: 'Art for Hire is not installed' }, 409);
     if (p === '/api/admin/hire' && m === 'GET') return json({ ok: true, ...(await H.adminView(env)) });
     if ((mm = p.match(/^\/api\/admin\/hire\/artwork\/(w[0-9a-z]+)\/decision$/)) && m === 'POST') return json({ ok: true, ...(await H.decide(env, me.email, mm[1], await req.json())) });
@@ -1468,6 +1472,9 @@ async function route(req, env) {
     if (p === '/api/hire/reports' && m === 'POST') return json({ ok: true, ...(await H.reportHire(env, artist, await req.json())) });
     return json({ ok: false }, 404);
   }
+  /* Opportunities & delivery: the artist's OWN expression of interest. Writes artist_opportunities only. */
+  if (p === '/api/opportunities' && m === 'GET') return json({ ok: true, ...(await O.artistView(env, artist)) });
+  if (p === '/api/opportunities' && m === 'PUT') return json({ ok: true, ...(await O.save(env, artist, await req.json())) });
   if (p === '/api/me' && m === 'GET') {
     const d = await load(env, artist.id);
     const { email, ...a } = d.artist;

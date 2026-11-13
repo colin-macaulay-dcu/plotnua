@@ -273,3 +273,47 @@ body.st{ background:var(--anth); min-height:100vh; }
 .st-view-flag{ position:absolute; left:4px; right:4px; bottom:4px; background:rgba(207,133,102,.92); color:#1a1a1a; font-size:11px; font-weight:600; border-radius:4px; padding:2px 4px; text-align:center; }
 .st-view-flag[hidden]{ display:none; }
 @media (max-width:560px){ .st-view-d{ grid-template-columns:40px 1fr; } .st-view-mini{ width:40px; height:40px; } }
+
+/* Opportunities & delivery (development 13 Nov 2026): multi-select buttons, county groups and the founder's list */
+.st-opp-state{ display:flex; flex-wrap:wrap; align-items:center; gap:8px; margin:-10px 0 18px; color:var(--stone); font-size:14px; }
+.st-opp-fs{ border:0; margin:0; padding:0; min-width:0; }
+.st-opp-fs legend{ padding:0; margin:0 0 4px; }
+.st-opp-q{ font-family:var(--sans) !important; font-size:16.5px !important; font-weight:600; color:var(--ivory); margin:0 !important; line-height:1.35; letter-spacing:0; }
+.st-opts{ display:flex; flex-wrap:wrap; gap:8px; margin:12px 0 0; }
+.st-opt{ display:inline-flex; align-items:center; gap:10px; min-height:44px; padding:9px 15px 9px 12px; border-radius:12px; border:1px solid var(--line-2);
+  background:rgba(242,235,224,.02); color:var(--lime); font:500 14.5px/1.3 var(--sans); text-align:left; cursor:pointer; }
+.st-opt::before{ content:""; flex:none; width:18px; height:18px; border-radius:5px; border:1.5px solid rgba(242,235,224,.4); box-sizing:border-box;
+  display:inline-flex; align-items:center; justify-content:center; font-size:12px; font-weight:700; line-height:1; color:#fff; }
+.st-opt:hover{ border-color:rgba(242,235,224,.45); color:var(--ivory); }
+.st-opt[aria-pressed="true"]{ background:rgba(174,98,69,.20); border-color:var(--terra-text); color:var(--ivory); }
+.st-opt[aria-pressed="true"]::before{ content:"✓"; background:var(--terra); border-color:var(--terra); }
+.st-opt--alone::before{ border-radius:50%; }   /* an exclusive choice: it replaces the others */
+.st-opt:focus-visible{ outline:2px solid var(--terra-text); outline-offset:2px; }
+.st-opts--sm{ gap:6px; }
+.st-opt--sm{ min-height:40px; padding:6px 12px 6px 10px; font-size:14px; border-radius:10px; }
+.st-opt--sm::before{ width:15px; height:15px; font-size:10px; border-radius:4px; }
+.st-opt--count b{ color:var(--ivory); font-weight:700; margin-left:2px; }
+.st-opt--count::before{ display:none; }
+.st-opp-or{ margin:12px 0 0; font-size:12.5px; color:var(--mute); letter-spacing:.04em; }
+.st-opp-msg{ margin:10px 0 0; font-size:13.5px; color:#E8CF9E; min-height:0; }
+.st-opp-msg:empty{ display:none; }
+.st-prov{ padding:12px 0 2px; border-top:1px solid rgba(242,235,224,.07); margin-top:12px; }
+.st-prov-top{ display:flex; align-items:center; justify-content:space-between; gap:10px; }
+.st-prov-top h3, .st-opp-h3{ margin:0 !important; font-family:var(--sans) !important; font-size:14px !important; font-weight:600 !important; color:var(--ivory); letter-spacing:.01em; }
+.st-prov .st-opts{ margin-top:8px; }
+.st-opp-save{ position:sticky; bottom:0; z-index:5; display:flex; flex-wrap:wrap; align-items:center; gap:8px 14px; padding:14px 0 18px;
+  background:linear-gradient(to top, var(--anth) 70%, rgba(27,28,30,0)); }
+.st-opp-save .st-err{ flex-basis:100%; margin:0; }
+.st-opp-save .st-err:empty{ display:none; }
+.st-opp-filters{ display:grid; grid-template-columns:1fr; gap:0 14px; margin-top:16px; }
+@media (min-width:760px){ .st-opp-filters{ grid-template-columns:repeat(4, minmax(0,1fr)); } }
+.st-opp-list{ list-style:none; margin:0 0 14px; padding:0; border-radius:16px; border:1px solid rgba(242,235,224,.09); background:#2A2B2E; }
+.st-opp-row{ display:grid; grid-template-columns:1fr; gap:6px; padding:14px 16px; border-top:1px solid rgba(242,235,224,.07); color:var(--lime); font-size:14px; }
+.st-opp-row:first-child{ border-top:0; }
+@media (min-width:760px){ .st-opp-row{ grid-template-columns:minmax(0,200px) minmax(0,1fr) 150px; gap:16px; align-items:start; } .st-opp-when{ text-align:right; } }
+.st-opp-row b{ color:var(--ivory); font-weight:600; }
+.st-opp-k{ display:block; margin-top:3px; }
+.st-opp-k i{ color:var(--mute); }
+.st-opp-note{ margin:6px 0 0; color:var(--stone); font-size:13.5px; }
+.st-opp-when{ font-size:12.5px; }
+.st-linkbtn{ background:none; border:0; padding:0; color:var(--terra-text); font:inherit; text-decoration:underline; text-underline-offset:3px; cursor:pointer; }
