@@ -692,8 +692,8 @@
     const d = await api('GET', '/api/opportunities');
     if (!d.installed) { app.innerHTML = `<h1 class="st-h1">Opportunities &amp; delivery</h1><section class="st-card"><p class="st-muted" style="margin:0">This section isn’t available yet.</p></section>`; return; }
     const O = d.options, sv = d.saved;
-    const st = sv ? { interests: [...sv.interests], county: sv.artwork_county || '', transport: [...sv.transport], mode: sv.coverage_mode, counties: [...sv.coverage_counties], note: sv.note || '' }
-      : { interests: [], county: d.suggested_county || '', transport: [], mode: null, counties: [], note: '' };
+    const st = sv ? { interests: [...sv.interests], county: sv.artwork_county || '', transport: [...sv.transport], mode: sv.coverage_mode, counties: [...sv.coverage_counties], care: !!sv.care_condition, note: sv.note || '' }
+      : { interests: [], county: d.suggested_county || '', transport: [], mode: null, counties: [], care: false, note: '' };
     let last = JSON.stringify(st), savedAt = sv ? sv.updated_at : null;
     const on = (a, k) => a.includes(k);
     const btn = (group, k, label, pressed, cls = '') => `<button type="button" class="st-opt ${cls}" data-g="${group}" data-k="${E(k)}" aria-pressed="${pressed}">${E(label)}</button>`;
@@ -712,6 +712,8 @@
         <p class="st-opp-or">or</p>
         <div class="st-opts" style="margin-top:0">${btn('i', 'online_only', O.interests.online_only, on(st.interests, 'online_only'), 'st-opt--alone')}</div>
         <p class="st-opp-msg" id="o-i-msg" aria-live="polite"></p>
+        ${O.care ? `<div class="st-opp-care" id="o-care-box"><label class="st-check"><input type="checkbox" id="o-care" aria-describedby="o-care-h"${st.care ? ' checked' : ''}> <span>${E(O.care.label)}</span></label>
+          <p class="st-hint" id="o-care-h">${E(O.care.hint)}</p></div>` : ''}
       </fieldset></section>
       <section class="st-card"><div class="st-f" style="margin:0">
         <label for="o-county"><span class="st-opp-q">Where is your artwork based?</span></label>
@@ -734,8 +736,8 @@
         <p class="st-opp-msg" id="o-c-msg" aria-live="polite"></p>
       </fieldset></section>
       <section class="st-card"><div class="st-f" style="margin:0">
-        <label for="o-note"><span class="st-opp-q">Anything we should know? <span class="st-muted" style="font-weight:400">(optional)</span></span></label>
-        <textarea id="o-note" maxlength="${O.note_max}" rows="3" aria-describedby="o-note-h" placeholder="For example, transport costs, artwork size limits or availability" style="min-height:88px">${E(st.note)}</textarea>
+        <label for="o-note"><span class="st-opp-q">Anything we should know${O.care ? '—for example, care and handling requirements, insurance, transport costs, artwork size limits or availability?' : '? <span class="st-muted" style="font-weight:400">(optional)</span>'}</span>${O.care ? ' <span class="st-muted" style="font-weight:400">(optional)</span>' : ''}</label>
+        <textarea id="o-note" maxlength="${O.note_max}" rows="${O.care ? 6 : 3}" aria-describedby="o-note-h" placeholder="${O.care ? 'Write as much as you need' : 'For example, transport costs, artwork size limits or availability'}" style="min-height:${O.care ? 150 : 88}px">${E(st.note)}</textarea>
         <small id="o-note-h"><span id="o-note-n"></span></small>
       </div></section>
       <div class="st-opp-save">
@@ -760,7 +762,8 @@
         b.setAttribute('aria-label', n === cs.length ? `Clear all ${cs.length} ${p} counties` : `Select all ${cs.length} ${p} counties`);
         app.querySelector(`[data-pn="${p}"]`).textContent = n ? `· ${n} of ${cs.length}` : '';
       }
-      $('#o-note-n').textContent = `${st.note.length} of ${O.note_max} characters`;
+      $('#o-note-n').textContent = `${st.note.length.toLocaleString('en-IE')} of ${O.note_max.toLocaleString('en-IE')} characters`;
+      if ($('#o-care-box')) { $('#o-care-box').hidden = online; $('#o-care').checked = st.care; }
       const dirty = JSON.stringify(st) !== last;
       $('#o-dirty').textContent = dirty ? (savedAt ? 'You have unsaved changes.' : '') : '';
       $('#o-state').innerHTML = savedAt ? `<span class="st-pill st-pill--ok">Saved</span> Last saved ${E(when(savedAt))}.`
@@ -776,7 +779,7 @@
         if (on(st.interests, k)) drop(st.interests, [k]);
         else if (k === 'online_only') {
           if (st.interests.length || st.transport.length || st.mode) msg('#o-i-msg', 'Your other choices have been cleared. Transport questions don’t apply to the online gallery.');
-          st.interests.splice(0); st.transport.splice(0); st.mode = null; st.counties.splice(0); st.interests.push(k);
+          st.interests.splice(0); st.transport.splice(0); st.mode = null; st.counties.splice(0); st.care = false; st.interests.push(k);
         } else {
           if (on(st.interests, 'online_only')) { drop(st.interests, ['online_only']); msg('#o-i-msg', `${name(O.interests, 'online_only')} has been unselected.`); }
           st.interests.push(k);
@@ -811,6 +814,7 @@
     }));
     $('#o-county').addEventListener('change', e => { st.county = e.target.value; paint(); });
     $('#o-note').addEventListener('input', e => { st.note = e.target.value; paint(); });
+    $('#o-care')?.addEventListener('change', e => { st.care = e.target.checked; paint(); });
     $('#oform').addEventListener('submit', async e => {
       e.preventDefault();
       $('#o-err').textContent = '';
@@ -818,9 +822,9 @@
       const b = $('#o-save'); b.disabled = true;
       try {
         const cov = showCov() && st.mode ? { mode: st.mode, counties: st.mode === 'counties' ? st.counties : [] } : null;
-        const r = await api('PUT', '/api/opportunities', { interests: st.interests, artwork_county: st.county || null, transport: on(st.interests, 'online_only') ? [] : st.transport, coverage: cov, note: st.note.trim() || null });
+        const r = await api('PUT', '/api/opportunities', { interests: st.interests, artwork_county: st.county || null, transport: on(st.interests, 'online_only') ? [] : st.transport, coverage: cov, note: st.note.trim() || null, ...(O.care ? { care_condition: !on(st.interests, 'online_only') && st.care } : {}) });
         const s = r.saved;
-        Object.assign(st, { interests: [...s.interests], county: s.artwork_county || '', transport: [...s.transport], mode: s.coverage_mode, counties: [...s.coverage_counties], note: s.note || '' });
+        Object.assign(st, { interests: [...s.interests], county: s.artwork_county || '', transport: [...s.transport], mode: s.coverage_mode, counties: [...s.coverage_counties], care: !!s.care_condition, note: s.note || '' });
         $('#o-note').value = st.note; last = JSON.stringify(st); savedAt = s.updated_at;
         ME.opportunities = 'answered'; say('Preferences saved'); paint();
       } catch (err) { $('#o-err').textContent = err.message; }

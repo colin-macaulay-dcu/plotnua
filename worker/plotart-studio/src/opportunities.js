@@ -16,10 +16,19 @@ async function audit(env, actor, role, action, artistId, detail) {
 export async function installed(env) {
   try { await env.DB.prepare('SELECT 1 FROM artist_opportunities LIMIT 1').all(); return true; } catch { return false; }
 }
+/* Migration 0010 adds care_condition and the 2,000-character practical_note. Until it has run, the Studio keeps working
+   exactly as before (280-character note, no care question). */
+export async function careInstalled(env) {
+  try { await env.DB.prepare('SELECT care_condition, practical_note FROM artist_opportunities LIMIT 1').all(); return true; } catch { return false; }
+}
+// The newest note: a Studio from before 0010 writes "note"; this Studio writes "practical_note" and clears "note". So a
+// note in "note" is either the one 0010 copied (identical) or a newer one written by the older Studio after 0010 ran.
 const parse = r => r ? { interests: JSON.parse(r.interests), artwork_county: r.artwork_county, transport: JSON.parse(r.transport),
-  coverage_mode: r.coverage_mode, coverage_counties: JSON.parse(r.coverage_counties), note: r.note, created_at: r.created_at, updated_at: r.updated_at } : null;
+  coverage_mode: r.coverage_mode, coverage_counties: JSON.parse(r.coverage_counties), care_condition: r.care_condition === 1,
+  note: r.note ?? r.practical_note ?? null, created_at: r.created_at, updated_at: r.updated_at } : null;
 
 const OPTIONS = { interests: R.INTERESTS, transport: R.TRANSPORT, transport_clash: R.TRANSPORT_CLASH, provinces: R.PROVINCES, coverage: R.COVERAGE, note_max: R.NOTE_MAX };
+const options = care => care ? { ...OPTIONS, care: R.CARE } : { ...OPTIONS, note_max: R.NOTE_MAX_BEFORE_0010, care: null };
 
 /* The artist's own record only. "suggested_county" is the county on their own profile, offered as a starting point for
    "Where is your artwork based?" until they first save: it is never stored unless they save it. */
@@ -32,24 +41,25 @@ export async function artistView(env, artist) {
   if (!(await installed(env))) return { installed: false };
   const row = parse(await one(env, 'SELECT * FROM artist_opportunities WHERE artist_id = ?', artist.id));
   const prof = await one(env, 'SELECT county FROM artists WHERE id = ?', artist.id);
-  return { installed: true, saved: row, suggested_county: !row && prof && R.COUNTIES.includes(prof.county) ? prof.county : null, options: OPTIONS };
+  return { installed: true, saved: row, suggested_county: !row && prof && R.COUNTIES.includes(prof.county) ? prof.county : null, options: options(await careInstalled(env)) };
 }
 
 export async function save(env, artist, body) {
   if (!(await installed(env))) throw new Bad('This section isn’t available yet', 409);
-  const v = R.validate(body);
+  const care = await careInstalled(env);
+  const v = R.validate(body, care ? {} : { noteMax: R.NOTE_MAX_BEFORE_0010, care: false });
   if (v.error) throw new Bad(v.error);
   const p = v.prefs, at = now();
   const had = await one(env, 'SELECT created_at FROM artist_opportunities WHERE artist_id = ?', artist.id);
-  await env.DB.prepare(`INSERT INTO artist_opportunities (artist_id, interests, artwork_county, transport, coverage_mode, coverage_counties, note, created_at, updated_at, updated_by)
-      VALUES (?,?,?,?,?,?,?,?,?,?)
-      ON CONFLICT(artist_id) DO UPDATE SET interests=excluded.interests, artwork_county=excluded.artwork_county, transport=excluded.transport,
-        coverage_mode=excluded.coverage_mode, coverage_counties=excluded.coverage_counties, note=excluded.note, updated_at=excluded.updated_at, updated_by=excluded.updated_by`)
-    .bind(artist.id, JSON.stringify(p.interests), p.artwork_county, JSON.stringify(p.transport), p.coverage_mode, JSON.stringify(p.coverage_counties), p.note,
-      had ? had.created_at : at, at, artist.email).run();
+  const cols = ['artist_id', 'interests', 'artwork_county', 'transport', 'coverage_mode', 'coverage_counties', 'note', ...(care ? ['practical_note', 'care_condition'] : []), 'created_at', 'updated_at', 'updated_by'];
+  const vals = [artist.id, JSON.stringify(p.interests), p.artwork_county, JSON.stringify(p.transport), p.coverage_mode, JSON.stringify(p.coverage_counties),
+    care ? null : p.note, ...(care ? [p.note, p.care_condition ? 1 : 0] : []), had ? had.created_at : at, at, artist.email];
+  const upd = cols.filter(c => !['artist_id', 'created_at'].includes(c)).map(c => `${c}=excluded.${c}`).join(', ');
+  await env.DB.prepare(`INSERT INTO artist_opportunities (${cols.join(', ')}) VALUES (${cols.map(() => '?').join(',')}) ON CONFLICT(artist_id) DO UPDATE SET ${upd}`)
+    .bind(...vals).run();
   // The audit trail records that preferences were saved and which options, never the free-text note.
   await audit(env, artist.email, 'artist', had ? 'opportunities_updated' : 'opportunities_saved', artist.id,
-    { interests: p.interests, artwork_county: p.artwork_county, transport: p.transport, coverage: p.coverage_mode, counties: p.coverage_counties.length, note: !!p.note });
+    { interests: p.interests, artwork_county: p.artwork_county, transport: p.transport, coverage: p.coverage_mode, counties: p.coverage_counties.length, care_condition: p.care_condition, note: !!p.note });
   return { saved: parse(await one(env, 'SELECT * FROM artist_opportunities WHERE artist_id = ?', artist.id)) };
 }
 
@@ -65,8 +75,9 @@ export async function adminView(env) {
     prefs: r.artist_id ? parse(r) : null }));
   const answered = items.filter(i => i.prefs), online = answered.filter(i => i.prefs.interests.includes('online_only'));
   const by = Object.fromEntries(Object.keys(R.INTERESTS).map(k => [k, answered.filter(i => i.prefs.interests.includes(k)).length]));
-  return { installed: true, items, totals: { artists: items.length, answered: answered.length, unanswered: items.length - answered.length, online_only: online.length, by_interest: by },
-    options: { ...OPTIONS, interest_short: R.INTEREST_SHORT, transport_short: R.TRANSPORT_SHORT, counties: R.COUNTIES } };
+  return { installed: true, items, totals: { artists: items.length, answered: answered.length, unanswered: items.length - answered.length, online_only: online.length,
+      care_condition: answered.filter(i => i.prefs.care_condition).length, by_interest: by },
+    options: { ...options(await careInstalled(env)), interest_short: R.INTEREST_SHORT, transport_short: R.TRANSPORT_SHORT, counties: R.COUNTIES } };
 }
 
 /* Retention: the answers are the artist's own profile content, so they go with the first-stage deletion (12 months after

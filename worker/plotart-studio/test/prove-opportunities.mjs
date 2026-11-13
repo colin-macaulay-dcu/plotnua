@@ -65,7 +65,9 @@ const bad = [
   ['"anywhere" with counties as well', { ...full, coverage: { mode: 'anywhere', counties: ['Cork'] } }],
   ['an unknown delivery county', { ...full, coverage: { mode: 'counties', counties: ['Cork', 'Atlantis'] } }],
   ['an unknown artwork county', { ...full, artwork_county: 'Co. Dublin' }],
-  ['a note over 280 characters', { ...full, note: 'x'.repeat(281) }],
+  ['a note over 2,000 characters', { ...full, note: 'x'.repeat(2001) }],
+  ['care arrangements with online only', { interests: ['online_only'], care_condition: true }],
+  ['a care answer that is not yes or no', { ...full, care_condition: 'yes' }],
   ['an unexpected field', { ...full, enrol: true }],
   ['interests that are not a list', { ...full, interests: 'commissions' }],
 ];
@@ -78,7 +80,7 @@ const o1 = await row('aorla');
 check('O4 a valid save stores exactly what was chosen (fixed order, note tidied), with the artwork county separate from her profile county',
   r.s === 200 && o1 && JSON.parse(o1.interests).join() === 'living_gallery,art_for_hire,commissions' && o1.artwork_county === 'Clare'
   && JSON.parse(o1.transport).join() === 'deliver,courier' && o1.coverage_mode === 'counties'
-  && JSON.parse(o1.coverage_counties).join() === 'Clare,Galway,Leitrim,Limerick,Mayo,Roscommon,Sligo' && o1.note === 'Large canvases need a van; =SUM(A1) available from March.'
+  && JSON.parse(o1.coverage_counties).join() === 'Clare,Galway,Leitrim,Limerick,Mayo,Roscommon,Sligo' && o1.practical_note === 'Large canvases need a van; =SUM(A1) available from March.' && o1.note === null
   && (await db.prepare("SELECT county FROM artists WHERE id='aorla'").first()).county === 'Galway', JSON.stringify([r.j, o1]));
 r = await call('GET', '/api/opportunities', ORLA);
 check('O5 the artist sees her saved answers when she returns (and no longer a suggested county)', r.j.saved && r.j.saved.artwork_county === 'Clare' && r.j.suggested_county === null);
@@ -134,6 +136,8 @@ const dbBad = [
   `INSERT INTO artist_opportunities (artist_id, interests, transport, coverage_mode, coverage_counties, created_at, updated_at, updated_by) VALUES ('acia', '["talks"]', '["deliver"]', NULL, '["Cork"]', 'x', 'x', 'x')`,
   `INSERT INTO artist_opportunities (artist_id, interests, transport, created_at, updated_at, updated_by) VALUES ('acia', '[]', '[]', 'x', 'x', 'x')`,
   `INSERT INTO artist_opportunities (artist_id, interests, transport, note, created_at, updated_at, updated_by) VALUES ('acia', '["talks"]', '[]', '${'y'.repeat(281)}', 'x', 'x', 'x')`,
+  `INSERT INTO artist_opportunities (artist_id, interests, transport, practical_note, created_at, updated_at, updated_by) VALUES ('acia', '["talks"]', '[]', '${'y'.repeat(2001)}', 'x', 'x', 'x')`,
+  `INSERT INTO artist_opportunities (artist_id, interests, transport, care_condition, created_at, updated_at, updated_by) VALUES ('acia', '["talks"]', '[]', 2, 'x', 'x', 'x')`,
 ];
 const dbRes = [];
 for (const q of dbBad) { try { await db.prepare(q).run(); dbRes.push('stored'); } catch { dbRes.push('refused'); } }
@@ -278,6 +282,70 @@ check('U20 after the artist edits to "Online gallery only for now", the founder 
   && (await db.prepare('SELECT COUNT(*) AS n FROM mail_capture').first()).n === mailsBefore, JSON.stringify([benRow2, onl.slice(0, 120), una.slice(0, 200)]));
 const me = await call('GET', '/api/me', BEN);
 check('U21 /api/me reports the artist\'s own state for the prompt only ("answered"), and nothing about other artists', me.j.opportunities === 'answered' && !('items' in me.j));
+
+console.log('— care, handling and insurance, and the longer note (migration 0010)');
+const long = ('Paintings must be hung away from direct sunlight and radiators.\n\nI would need fine-art insurance for the period of any display. ' + 'Careful handling with gloves, please. ').repeat(20).slice(0, 2000);
+r = await call('PUT', '/api/opportunities', CIA, { interests: ['living_gallery', 'venues'], artwork_county: 'Kerry', transport: ['courier'], coverage: { mode: 'ask', counties: [] }, care_condition: true, note: long });
+let cia = await row('acia');
+check('C1 a 2,000-character note with paragraphs is saved in full (line breaks kept) together with the care condition',
+  r.s === 200 && cia.practical_note.length === long.trim().length && cia.practical_note.includes('\n\n') && cia.care_condition === 1 && cia.note === null
+  && r.j.saved.note === cia.practical_note && r.j.saved.care_condition === true, JSON.stringify([r.s, r.j && r.j.error, cia && cia.practical_note && cia.practical_note.length]));
+r = await call('PUT', '/api/opportunities', CIA, { interests: ['living_gallery'], artwork_county: 'Kerry', transport: ['courier'], coverage: { mode: 'ask', counties: [] }, care_condition: false, note: 'Shorter now.' });
+cia = await row('acia');
+check('C2 editing later can untick the care condition and replace the note', r.s === 200 && cia.care_condition === 0 && cia.practical_note === 'Shorter now.');
+r = await call('PUT', '/api/opportunities', CIA, { interests: ['living_gallery'], artwork_county: 'Kerry', transport: ['courier'], coverage: { mode: 'ask', counties: [] }, note: 'No care answer sent.' });
+check('C3 the care condition is optional and starts unticked when not given', r.s === 200 && (await row('acia')).care_condition === 0);
+const audC = await db.prepare("SELECT detail FROM audit WHERE action LIKE 'opportunities_%' AND artist_id = 'acia' ORDER BY id DESC LIMIT 3").all();
+check('C4 the audit records the care answer but never the note text', audC.results.every(a => /"care_condition":(true|false)/.test(a.detail) && !/sunlight|Shorter|No care/.test(a.detail)));
+// An answer saved BEFORE 0010 (in the 280-character note column) is read and shown unchanged, and kept until the artist saves.
+await db.prepare("DELETE FROM artist_opportunities WHERE artist_id = 'aorla'").run();
+await db.prepare(`INSERT INTO artist_opportunities (artist_id, interests, artwork_county, transport, coverage_mode, coverage_counties, note, created_at, updated_at, updated_by)
+  VALUES ('aorla', '["commissions"]', 'Galway', '[]', NULL, '[]', 'An earlier note.', '2026-11-13T12:00:00Z', '2026-11-13T12:00:00Z', 'orla')`).run();
+r = await call('GET', '/api/opportunities', ORLA);
+const adm = await call('GET', '/api/admin/opportunities', FOUNDER), orlaAdm = adm.j.items.find(i => i.id === 'aorla');
+check('C5 an earlier answer is shown unchanged to the artist and the founder (note kept, care unticked)', r.j.saved.note === 'An earlier note.' && r.j.saved.care_condition === false
+  && orlaAdm.prefs.note === 'An earlier note.' && r.j.options.note_max === 2000 && !!r.j.options.care, JSON.stringify([r.j.saved, orlaAdm.prefs]));
+p = await page(CIA);
+await p.goto(S.url + '/#/opportunities', { waitUntil: 'load' }); await p.waitForTimeout(700);
+const careLbl = await p.locator('label[for], .st-opp-care label').filter({ hasText: 'care, handling and insurance' }).innerText();
+const careHint = await p.locator('#o-care-h').innerText(), noteLbl = await p.locator('label[for="o-note"]').innerText();
+check('U22 the form shows the care checkbox (unticked) with its supporting text, the updated note prompt and a 2,000-character limit',
+  /My interest depends on agreeing suitable care, handling and insurance arrangements\./.test(careLbl) && careHint === 'We’ll discuss these with you before you agree to any opportunity.'
+  && !(await p.isChecked('#o-care')) && /care and handling requirements, insurance, transport costs, artwork size limits or availability\?/.test(noteLbl)
+  && await p.getAttribute('#o-note', 'maxlength') === '2000' && p.errs.length === 0, JSON.stringify([careLbl, careHint, noteLbl]));
+await p.check('#o-care'); await p.fill('#o-note', long);
+const cnt = await p.locator('#o-note-n').innerText();
+await shot(p, 'artist-care-note-1280.png');
+await p.click('#o-save'); await p.waitForTimeout(500);
+cia = await row('acia');
+check('U23 ticking the box and writing a long note in the browser saves both; the counter reads "2,000 of 2,000 characters"',
+  cia.care_condition === 1 && cia.practical_note.length === long.trim().length && /2,000 of 2,000/.test(cnt), JSON.stringify([cnt, cia.care_condition]));
+await p.reload({ waitUntil: 'load' }); await p.waitForTimeout(700);
+check('U24 coming back shows the box ticked and the whole note', await p.isChecked('#o-care') && (await p.inputValue('#o-note')).length === long.trim().length);
+await p.click('[data-k="online_only"]');
+check('U25 choosing "Online gallery only for now" hides and clears the care box', await p.locator('#o-care-box').isHidden() && !(await p.isChecked('#o-care')));
+await p.ctx.close();
+f = await page(FOUNDER);
+await f.goto(S.url + '/admin/opportunities', { waitUntil: 'load' }); await f.waitForTimeout(800);
+const ciaRow = f.locator('#of-list > li', { hasText: 'Cia Test' });
+const ciaTxt = await ciaRow.innerText(), noteBox = ciaRow.locator('.st-opp-note');
+const noteSeen = (await noteBox.evaluate(n => ({ text: n.textContent, clipped: n.scrollHeight > n.clientHeight + 2 || n.scrollWidth > n.clientWidth + 2 })));
+await f.selectOption('#of-status', 'care'); const careList = await f.locator('#of-list').innerText();
+await shot(f, 'founder-care-1280.png');
+await f.ctx.close();
+check('U26 the founder sees the care condition beside the interests, the complete note (not cut off) and can filter by it',
+  /Depends on care, handling and insurance/.test(ciaTxt) && noteSeen.text === long.trim() && !noteSeen.clipped && careList.includes('Cia Test') && !careList.includes('Ben Test'),
+  JSON.stringify([ciaTxt.slice(0, 200), noteSeen.text.length, noteSeen.clipped]));
+
+console.log('— before migration 0010 runs (the Studio keeps working as before)');
+await db.prepare('ALTER TABLE artist_opportunities DROP COLUMN practical_note').run();
+await db.prepare('ALTER TABLE artist_opportunities DROP COLUMN care_condition').run();
+const pre = [await call('GET', '/api/opportunities', BEN), await call('PUT', '/api/opportunities', BEN, { interests: ['talks'], note: 'x'.repeat(280) }),
+  await call('PUT', '/api/opportunities', BEN, { interests: ['talks'], note: 'x'.repeat(281) }), await call('PUT', '/api/opportunities', BEN, { interests: ['talks'], care_condition: true }),
+  await call('GET', '/api/admin/opportunities', FOUNDER)];
+check('M2 without 0010: no care question, the 280-character note still works, longer notes and care answers are refused clearly, the founder view still loads',
+  pre[0].j.options.care === null && pre[0].j.options.note_max === 280 && pre[1].s === 200 && pre[2].s === 400 && pre[3].s === 400 && pre[4].s === 200
+  && (await row('aben')).note === 'x'.repeat(280), JSON.stringify(pre.map(x => [x.s, x.j && x.j.error])));
 
 console.log('— before migration 0009 runs');
 await db.prepare('DROP TABLE artist_opportunities').run();

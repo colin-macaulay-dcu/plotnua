@@ -713,6 +713,7 @@
       if (f.status === 'answered' && !p) return false;
       if (f.status === 'unanswered' && p) return false;
       if (f.status === 'online' && !isOnline(i)) return false;
+      if (f.status === 'care' && !(p && p.care_condition)) return false;
       if (f.interest && !(p && p.interests.includes(f.interest))) return false;
       if (f.county === '_none' ? !(p && !p.artwork_county) : f.county && !(p && p.artwork_county === f.county)) return false;
       if (f.reach) {
@@ -726,28 +727,29 @@
     const row = i => {
       const p = i.prefs, who = `<b>${E(i.display_name)}</b>${i.founding_number ? ` <span class="st-muted">· F${String(i.founding_number).padStart(2, '0')}</span>` : ''}${i.account_status !== 'active' ? ` <span class="st-muted">· ${E(i.account_status)}</span>` : ''}`;
       if (!p) return `<li class="st-opp-row is-none"><div>${who}</div><div><span class="st-pill">Not answered yet</span></div></li>`;
-      if (isOnline(i)) return `<li class="st-opp-row"><div>${who}</div><div><span class="st-pill st-pill--warn">Online only for now</span>${p.artwork_county ? `<span class="st-opp-k">Artwork in Co. ${E(p.artwork_county)}</span>` : ''}${p.note ? `<p class="st-opp-note">“${E(p.note)}”</p>` : ''}</div><div class="st-muted st-opp-when">${E(when(p.updated_at))}</div></li>`;
+      if (isOnline(i)) return `<li class="st-opp-row"><div>${who}</div><div><span class="st-pill st-pill--warn">Online only for now</span>${p.artwork_county ? `<span class="st-opp-k">Artwork in Co. ${E(p.artwork_county)}</span>` : ''}${p.note ? `<p class="st-opp-note">${E(p.note)}</p>` : ''}</div><div class="st-muted st-opp-when">${E(when(p.updated_at))}</div></li>`;
       return `<li class="st-opp-row"><div>${who}</div>
-        <div><div class="st-chips" style="margin:0 0 6px">${p.interests.map(k => `<span class="st-chip">${E(O.interest_short[k])}</span>`).join('')}</div>
+        <div><div class="st-chips" style="margin:0 0 6px">${p.interests.map(k => `<span class="st-chip">${E(O.interest_short[k])}</span>`).join('')}${p.care_condition ? `<span class="st-chip st-chip--care" title="${E(O.care ? O.care.label : '')}">⚑ ${E(O.care ? O.care.short : 'Depends on care, handling and insurance')}</span>` : ''}</div>
           <span class="st-opp-k">Artwork: ${p.artwork_county ? `Co. ${E(p.artwork_county)}` : '<i>not given</i>'}</span>
           <span class="st-opp-k">Transport: ${p.transport.length ? p.transport.map(k => E(O.transport_short[k])).join(', ') : '<i>not given</i>'}${p.coverage_mode ? ` · ${E(coverage(p))}` : ''}</span>
-          ${p.note ? `<p class="st-opp-note">“${E(p.note)}”</p>` : ''}</div>
+          ${p.note ? `<p class="st-opp-note">${E(p.note)}</p>` : ''}</div>
         <div class="st-muted st-opp-when">${E(when(p.updated_at))}</div></li>`;
     };
     app.innerHTML = `
       <h1 class="st-h1">Opportunities &amp; delivery</h1>
       <p class="st-sub">What artists have said they’d be open to, where their work is based and how it could reach a venue. These are expressions of interest only: talk to the artist before arranging anything.</p>
-      <div class="st-kpis">
+      <div class="st-kpis st-kpis--fit">
         <div class="st-kpi"><b>${T.answered}</b><span>answered</span></div>
         <div class="st-kpi"><b>${T.unanswered}</b><span>not answered yet</span></div>
         <div class="st-kpi"><b>${T.online_only}</b><span>online only for now</span></div>
+        ${O.care ? `<div class="st-kpi"><b>${T.care_condition}</b><span>depend on care, handling and insurance</span></div>` : ''}
         <div class="st-kpi"><b>${T.artists}</b><span>artists in Studio</span></div>
       </div>
       <section class="st-card">
         <h3 class="st-opp-h3">Interest by opportunity</h3>
         <div class="st-opts st-opts--sm" style="margin-top:6px">${Object.keys(O.interests).filter(k => k !== 'online_only').map(k => `<button type="button" class="st-opt st-opt--sm st-opt--count" data-int="${k}" aria-pressed="false">${E(O.interest_short[k])} <b>${T.by_interest[k]}</b></button>`).join('')}</div>
         <div class="st-opp-filters">
-          <div class="st-f"><label for="of-status">Answers</label><select id="of-status"><option value="">Everyone</option><option value="answered">Answered</option><option value="unanswered">Not answered yet</option><option value="online">Online only for now</option></select></div>
+          <div class="st-f"><label for="of-status">Answers</label><select id="of-status"><option value="">Everyone</option><option value="answered">Answered</option><option value="unanswered">Not answered yet</option><option value="online">Online only for now</option>${O.care ? '<option value="care">Depends on care, handling and insurance</option>' : ''}</select></div>
           <div class="st-f"><label for="of-int">Interested in</label><select id="of-int"><option value="">Any opportunity</option>${Object.keys(O.interests).filter(k => k !== 'online_only').map(k => `<option value="${k}">${E(O.interest_short[k])}</option>`).join('')}</select></div>
           <div class="st-f"><label for="of-county">Artwork based in</label><select id="of-county">${provOpts('', '<option value="">Any county</option><option value="_none">Not given</option>')}</select></div>
           <div class="st-f"><label for="of-reach">Can deliver to</label><select id="of-reach"><option value="">Any</option><option value="anywhere">Anywhere on the island</option><option value="ask">Ask about each opportunity</option><option value="need_help">Needs help with transport</option><option value="depends">Depends on the opportunity</option>${provOpts('')}</select></div>

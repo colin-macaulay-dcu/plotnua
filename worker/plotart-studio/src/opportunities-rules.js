@@ -40,16 +40,24 @@ export const PROVINCES = {
   Ulster: ['Antrim', 'Armagh', 'Cavan', 'Derry', 'Donegal', 'Down', 'Fermanagh', 'Monaghan', 'Tyrone'],
 };
 export const COVERAGE = { counties: 'Selected counties', anywhere: 'Anywhere on the island of Ireland', ask: 'Ask me about each opportunity' };
-export const NOTE_MAX = 280;
+export const NOTE_MAX = 2000;          // the practical note (migration 0010, 13 Nov 2026, after artist feedback)
+export const NOTE_MAX_BEFORE_0010 = 280;   // until migration 0010 has run, the database still holds the shorter note
+export const CARE = { label: 'My interest depends on agreeing suitable care, handling and insurance arrangements.',
+  hint: 'We’ll discuss these with you before you agree to any opportunity.', short: 'Depends on care, handling and insurance' };
+// Keeps the artist's line breaks (a longer note needs paragraphs); removes other control and invisible characters.
+export function cleanNote(s) {
+  return String(s ?? '').replace(/\r\n?/g, '\n').replace(/[\u200b-\u200f\u2060\ufeff]/g, '').replace(/[\u0000-\u0009\u000b-\u001f\u007f\u2028\u2029]/g, ' ')
+    .replace(/[ \t]+\n/g, '\n').replace(/\n{3,}/g, '\n\n').replace(/[ \t]{2,}/g, ' ').trim();
+}
 
 const list = v => Array.isArray(v) ? v : null;
 const uniq = a => [...new Set(a)];
 
 /* Checks an artist's answers. Returns { prefs } with the normalised record, or { error } in plain words.
    Nothing is guessed or filled in: what is not answered is stored as not answered. */
-export function validate(body) {
+export function validate(body, { noteMax = NOTE_MAX, care = true } = {}) {
   if (!body || typeof body !== 'object' || Array.isArray(body)) return { error: 'Nothing to save.' };
-  const extra = Object.keys(body).filter(k => !['interests', 'artwork_county', 'transport', 'coverage', 'note'].includes(k));
+  const extra = Object.keys(body).filter(k => !['interests', 'artwork_county', 'transport', 'coverage', 'note', ...(care ? ['care_condition'] : [])].includes(k));
   if (extra.length) return { error: 'Unexpected fields: ' + extra.join(', ') };
   const interests = list(body.interests);
   if (!interests || !interests.length) return { error: 'Choose at least one option in “What would you be interested in exploring?”, or choose “Online gallery only for now”.' };
@@ -78,13 +86,17 @@ export function validate(body) {
     counties = COUNTIES.filter(x => cs.includes(x));   // stored in a fixed order
   }
 
+  const careOn = body.care_condition == null ? false : body.care_condition;
+  if (typeof careOn !== 'boolean') return { error: 'Please tick or untick the care, handling and insurance box.' };
+  if (careOn && online) return { error: 'Care, handling and insurance arrangements don’t apply while you’ve chosen “Online gallery only for now”.' };
+
   let note = body.note == null ? '' : body.note;
   if (typeof note !== 'string') return { error: 'The note must be text.' };
-  note = clean(note);
-  if (note.length > NOTE_MAX) return { error: `Please keep the note to ${NOTE_MAX} characters.` };
+  note = cleanNote(note);
+  if (note.length > noteMax) return { error: `Please keep the note to ${noteMax.toLocaleString('en-IE')} characters.` };
 
   return { prefs: { interests: Object.keys(INTERESTS).filter(k => interests.includes(k)), artwork_county: county,
-    transport: Object.keys(TRANSPORT).filter(k => transport.includes(k)), coverage_mode: mode, coverage_counties: counties, note: note || null } };
+    transport: Object.keys(TRANSPORT).filter(k => transport.includes(k)), coverage_mode: mode, coverage_counties: counties, care_condition: careOn, note: note || null } };
 }
 
 /* Founder filter: does this saved record say the artist could reach a venue in the given county? */

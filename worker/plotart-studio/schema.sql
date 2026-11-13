@@ -563,3 +563,8 @@ CREATE TABLE IF NOT EXISTS artist_opportunities (
   CHECK ((COALESCE(coverage_mode, '') = 'counties') = (json_array_length(coverage_counties) > 0))   -- counties only with "selected counties"
 );
 CREATE INDEX IF NOT EXISTS artist_opportunities_county ON artist_opportunities(artwork_county);
+
+-- PlotArt Studio · migration 0010 · Opportunities & delivery: care condition and a 2,000-character practical note (development 13 Nov 2026).
+ALTER TABLE artist_opportunities ADD COLUMN care_condition INTEGER NOT NULL DEFAULT 0 CHECK (care_condition IN (0, 1));
+ALTER TABLE artist_opportunities ADD COLUMN practical_note TEXT CHECK (practical_note IS NULL OR length(practical_note) <= 2000);
+UPDATE artist_opportunities SET practical_note = note WHERE note IS NOT NULL AND practical_note IS NULL;
