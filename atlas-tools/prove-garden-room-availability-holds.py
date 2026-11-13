@@ -36,6 +36,13 @@ SIX = {"recKHXaApIugjOKti": G, "recUs4gexxlfkaiUj": G, "reciolethPMEn50gQ": G, "
 ORGS = {"Garden Office Solutions": "sup-garden-office-solutions", "Lugarde": "sup-lugarde",
         "Outdoor Living (ModPod)": "sup-outdoor-living-modpod"}
 GUIDE_RECORD = "poss-garden-room-prices-ireland"
+# 13 Nov 2026 (founder approval, Modern Garden Rooms Atlas correction, a later release): four
+# ex-VAT holds and the five MGR records it republishes are that release's own change, proved by
+# prove-matching-eligibility.py E4/E8 and prove-pricing-methodology.py M6. They are set aside
+# here so this proof keeps guarding exactly what the 11 Nov release changed.
+MGR_HOLDS_2026_11_13 = {"recSpzyQeSlo8yylE", "recQhafVxkW46trn6", "recBW2vBPcT0kOT1o", "rec8yqq3yj2qFyU7T"}
+MGR_PRODUCTS_2026_11_13 = MGR_HOLDS_2026_11_13 | {"recGMPCzZKWL0MO10"}
+MGR_SEARCH_2026_11_13 = {"prod-" + x for x in MGR_PRODUCTS_2026_11_13} | {"sup-modern-garden-rooms"}
 UNI, IDX, HOLDS, LITG = ("garden-room-recommendation-universe-v1.json", "search-index-v1.json",
                          "atlas-tools/price-presentation-holds.json", "discovery-living-in-the-garden.html")
 
@@ -74,7 +81,7 @@ def check(S):
     R = {r["id"]: r for r in S["idx"]["records"]}
     bR = {r["id"]: r for r in S["b_idx"]["records"]}
     old = {h["productId"] for h in S["b_holds"]["holds"]}
-    new = [h for h in S["holds"]["holds"] if h["productId"] not in old]
+    new = [h for h in S["holds"]["holds"] if h["productId"] not in old and h["productId"] not in MGR_HOLDS_2026_11_13]
     # A1
     if sorted(h["productId"] for h in new) != sorted(SIX):
         bad.append("A1 new holds are %s, not exactly the six" % sorted(h["productId"] for h in new))
@@ -111,12 +118,13 @@ def check(S):
             bad.append("A4 %s range %r is not its matching-safe euro prices %r" % (org, (R.get(rid) or {}).get("priceRange"), want))
     # A5, A6
     for pid, p in U.items():
-        if pid not in SIX and p != bU.get(pid):
+        if pid not in SIX and pid not in MGR_PRODUCTS_2026_11_13 and p != bU.get(pid):
             bad.append("A5 universe record %s changed" % pid)
     if set(U) != set(bU):
         bad.append("A5 universe record set changed")
     for rid, r in R.items():
-        if rid in {"prod-" + x for x in SIX} or rid in ORGS.values() or rid == GUIDE_RECORD:
+        if rid in {"prod-" + x for x in SIX} or rid in ORGS.values() or rid == GUIDE_RECORD \
+                or rid in MGR_SEARCH_2026_11_13:
             continue
         if r != bR.get(rid):
             bad.append("A5 Search record %s changed" % rid)

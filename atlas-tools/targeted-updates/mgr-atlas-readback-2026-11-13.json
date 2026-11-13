@@ -1,0 +1,1836 @@
+{
+ "source": "ATLAS READ-BACK — scoped read of Atlas Core appoLZFWesvoPhZGR, 13 Nov 2026, after the founder-approved Modern Garden Rooms writes. Products, pricing and organisation: fresh Airtable-connector reads (read-only) taken after the writes. Feature values: the 13 Nov pre-write connector backup with the 36 approved updates applied (server-side filter confirmed exactly these 36 now carry the 13 Nov text); availability and feature definitions unchanged since the 11 Oct complete snapshot (availability re-read 13 Nov, identical). Converted to the REST shape by build_mgr_snapshot.py; values copied unaltered.",
+ "products": [
+  {
+   "id": "recSpzyQeSlo8yylE",
+   "createdTime": "2026-08-06T09:58:05.000Z",
+   "fields": {
+    "Brand": [
+     "rec4s9dX942sI1yv1"
+    ],
+    "Verification Status": "Partially Verified",
+    "Product Name": "Modern Garden Office",
+    "    Last Reviewed": "2026-08-04",
+    "Organisation": [
+     "recZcfloN72CBES6I"
+    ],
+    "Atlas Product Certification Audit v1": "Product Evidence Complete — Organisation Gate Required",
+    "Product Code": "PROD-000073",
+    "Product Category": "Garden Rooms",
+    "    Sources": "https://moderngardenrooms.ie/garden-office/",
+    "Results Eligibility v1": "Not Eligible — Gold Standard Not Achieved",
+    "Product Type": "Bespoke turnkey garden office",
+    "Sources": [
+     "rect1OYKPmmGUGhvt"
+    ],
+    "Product URL": "https://moderngardenrooms.ie/garden-office/",
+    "Description": "Bespoke, fully insulated turnkey garden office, typically 10–15 m². Timber frame with 100 mm + 50 mm insulated walls and roof, 100 mm Kingspan floor, concrete base and radon barrier as standard; aluminium doors and windows; electrics, heating and plastered interior included. From €24,000 plus VAT (supplier's published starting price); final price by written quote after a free site visit.",
+    "Last Reviewed": "2026-11-13"
+   }
+  },
+  {
+   "id": "recQhafVxkW46trn6",
+   "createdTime": "2026-08-06T09:58:05.000Z",
+   "fields": {
+    "Brand": [
+     "rec4s9dX942sI1yv1"
+    ],
+    "Verification Status": "Partially Verified",
+    "Product Name": "Modern Garden Gym",
+    "    Last Reviewed": "2026-08-04",
+    "Organisation": [
+     "recZcfloN72CBES6I"
+    ],
+    "Atlas Product Certification Audit v1": "Product Evidence Complete — Organisation Gate Required",
+    "Product Code": "PROD-000074",
+    "Product Category": "Garden Rooms",
+    "    Sources": "https://moderngardenrooms.ie/garden-gym-rooms/",
+    "Results Eligibility v1": "Not Eligible — Gold Standard Not Achieved",
+    "Product Type": "Bespoke turnkey garden gym",
+    "Sources": [
+     "recsVTY3GlTbZJJFF"
+    ],
+    "Product URL": "https://moderngardenrooms.ie/garden-gym-rooms/",
+    "Description": "Bespoke, fully insulated turnkey garden gym, typically 15–25 m², with a reinforced floor and sound-insulated structure. Timber frame with 100 mm + 50 mm insulated walls and roof, 100 mm Kingspan floor, concrete base and radon barrier as standard; aluminium doors and windows; electrics, heating and plastered interior included. From €32,000 plus VAT (supplier's published starting price); final price by written quote after a free site visit.",
+    "Last Reviewed": "2026-11-13"
+   }
+  },
+  {
+   "id": "rec8yqq3yj2qFyU7T",
+   "createdTime": "2026-08-06T09:58:05.000Z",
+   "fields": {
+    "Brand": [
+     "rec4s9dX942sI1yv1"
+    ],
+    "Verification Status": "Partially Verified",
+    "Product Name": "Modern Golf Simulator Room",
+    "    Last Reviewed": "2026-08-04",
+    "Organisation": [
+     "recZcfloN72CBES6I"
+    ],
+    "Atlas Product Certification Audit v1": "Product Evidence Complete — Organisation Gate Required",
+    "Product Code": "PROD-000075",
+    "Product Category": "Garden Rooms",
+    "    Sources": "https://moderngardenrooms.ie/golf-simulator-rooms/",
+    "Results Eligibility v1": "Not Eligible — Gold Standard Not Achieved",
+    "Product Type": "Bespoke specialist golf room",
+    "Sources": [
+     "rec5VcoicNE7I30GE"
+    ],
+    "Product URL": "https://moderngardenrooms.ie/golf-simulator-rooms/",
+    "Description": "Bespoke, fully insulated turnkey garden room for a golf simulator, typically 25–30 m² with extra ceiling height for a simulator bay. Timber frame with 100 mm + 50 mm insulated walls and roof, 100 mm Kingspan floor, concrete base and radon barrier as standard; aluminium doors and windows; electrics, heating and plastered interior included. From €50,000 plus VAT (supplier's published starting price), excluding the simulator; final price by written quote after a free site visit.",
+    "Last Reviewed": "2026-11-13"
+   }
+  },
+  {
+   "id": "recBW2vBPcT0kOT1o",
+   "createdTime": "2026-08-06T09:58:05.000Z",
+   "fields": {
+    "Brand": [
+     "rec4s9dX942sI1yv1"
+    ],
+    "Verification Status": "Partially Verified",
+    "Product Name": "Modern Garden Guest Room",
+    "    Last Reviewed": "2026-08-04",
+    "Organisation": [
+     "recZcfloN72CBES6I"
+    ],
+    "Atlas Product Certification Audit v1": "Product Evidence Complete — Organisation Gate Required",
+    "Product Code": "PROD-000076",
+    "Product Category": "Garden Rooms",
+    "    Sources": "https://moderngardenrooms.ie/garden-guest-rooms/",
+    "Results Eligibility v1": "Not Eligible — Gold Standard Not Achieved",
+    "Product Type": "Bespoke insulated guest room",
+    "Sources": [
+     "rec7Y2dSmfH8sgYXe"
+    ],
+    "Product URL": "https://moderngardenrooms.ie/garden-guest-rooms/",
+    "Description": "Bespoke, fully insulated turnkey garden guest room, typically 15–25 m²; optional en-suite or kitchenette quoted separately. A garden room cannot be a permanent residence (self-contained homes are a separate 32–45 m² product). Timber frame with 100 mm + 50 mm insulated walls and roof, 100 mm Kingspan floor, concrete base and radon barrier as standard; aluminium doors and windows; electrics, heating and plastered interior included. From €32,000 plus VAT (supplier's published starting price); final price by written quote after a free site visit.",
+    "Last Reviewed": "2026-11-13"
+   }
+  },
+  {
+   "id": "recGMPCzZKWL0MO10",
+   "createdTime": "2026-08-06T09:58:05.000Z",
+   "fields": {
+    "Brand": [
+     "rec4s9dX942sI1yv1"
+    ],
+    "Verification Status": "Partially Verified",
+    "Product Name": "Modern Modular Garden Room",
+    "    Last Reviewed": "2026-08-04",
+    "Organisation": [
+     "recZcfloN72CBES6I"
+    ],
+    "Atlas Product Certification Audit v1": "Product Evidence Complete — Organisation Gate Required",
+    "Product Code": "PROD-000077",
+    "Product Category": "Garden Rooms",
+    "    Sources": "https://moderngardenrooms.ie/modular-garden-rooms/",
+    "Results Eligibility v1": "Not Eligible — Gold Standard Not Achieved",
+    "Product Type": "Bespoke modular garden room",
+    "Sources": [
+     "reclzvlkITdNjYfdC"
+    ],
+    "Product URL": "https://moderngardenrooms.ie/modular-garden-rooms/",
+    "Description": "The supplier's timber-frame system described as 'modular speed, bespoke fit': the same specification as its other rooms, built on site to the garden. No price published for this page; price on request.",
+    "Last Reviewed": "2026-11-13"
+   }
+  }
+ ],
+ "pricing": [
+  {
+   "id": "recbzeelEGjCJ3ld5",
+   "createdTime": "2026-08-08T15:31:34.000Z",
+   "fields": {
+    "Price Record Name": "Modern Garden Office — Starting Price (excl. VAT)",
+    "Product": [
+     "recSpzyQeSlo8yylE"
+    ],
+    "Base Price": 24000,
+    "Price From": 24000,
+    "Currency": "EUR",
+    "Price Type": "Starting From",
+    "Price Includes VAT": "No",
+    "Status": "Verified",
+    "Primary Price": true,
+    "Evidence Scope": "Product-Specific",
+    "Configuration": "Turnkey",
+    "Known Exclusions": "VAT (all prices shown exclude VAT; rate not stated). Bathroom/WC/kitchenette plumbing; planning applications where a build is not exempt; furniture and equipment.",
+    "Last Price Check": "2026-11-13",
+    "Sources": [
+     "rectV66a2LgXueGG8"
+    ]
+   }
+  },
+  {
+   "id": "recX6ml5XiSotruuO",
+   "createdTime": "2026-08-08T15:31:34.000Z",
+   "fields": {
+    "Price Record Name": "Modern Garden Gym — Starting Price (excl. VAT)",
+    "Product": [
+     "recQhafVxkW46trn6"
+    ],
+    "Base Price": 32000,
+    "Price From": 32000,
+    "Currency": "EUR",
+    "Price Type": "Starting From",
+    "Price Includes VAT": "No",
+    "Status": "Verified",
+    "Primary Price": true,
+    "Evidence Scope": "Product-Specific",
+    "Configuration": "Turnkey",
+    "Known Exclusions": "VAT (all prices shown exclude VAT; rate not stated). Bathroom/WC/kitchenette plumbing; planning applications where a build is not exempt; furniture and gym equipment.",
+    "Last Price Check": "2026-11-13",
+    "Sources": [
+     "rectV66a2LgXueGG8"
+    ]
+   }
+  },
+  {
+   "id": "rec85cWCBYI5ORJQB",
+   "createdTime": "2026-08-08T15:31:34.000Z",
+   "fields": {
+    "Price Record Name": "Modern Garden Guest Room — Starting Price (excl. VAT)",
+    "Product": [
+     "recBW2vBPcT0kOT1o"
+    ],
+    "Base Price": 32000,
+    "Price From": 32000,
+    "Currency": "EUR",
+    "Price Type": "Starting From",
+    "Price Includes VAT": "No",
+    "Status": "Verified",
+    "Primary Price": true,
+    "Evidence Scope": "Product-Specific",
+    "Configuration": "Turnkey",
+    "Known Exclusions": "VAT (all prices shown exclude VAT; rate not stated). En-suite shower room or kitchenette quoted separately; other bathroom/WC plumbing; planning applications where a build is not exempt; furniture. Not a permanent residence.",
+    "Last Price Check": "2026-11-13",
+    "Sources": [
+     "rectV66a2LgXueGG8"
+    ]
+   }
+  },
+  {
+   "id": "recuWJyLIJiqepkNe",
+   "createdTime": "2026-08-08T15:31:34.000Z",
+   "fields": {
+    "Price Record Name": "Modern Golf Simulator Room — Starting Price (excl. VAT)",
+    "Product": [
+     "rec8yqq3yj2qFyU7T"
+    ],
+    "Base Price": 50000,
+    "Price From": 50000,
+    "Currency": "EUR",
+    "Price Type": "Starting From",
+    "Price Includes VAT": "No",
+    "Status": "Verified",
+    "Primary Price": true,
+    "Evidence Scope": "Product-Specific",
+    "Configuration": "Turnkey",
+    "Known Exclusions": "VAT (all prices shown exclude VAT; rate not stated). The golf simulator itself; AV; bathroom/WC/kitchenette plumbing; planning applications where a build is not exempt; furniture.",
+    "Last Price Check": "2026-11-13",
+    "Sources": [
+     "rectV66a2LgXueGG8"
+    ]
+   }
+  },
+  {
+   "id": "recOQtUxmz5ICyvso",
+   "createdTime": "2026-08-08T15:31:34.000Z",
+   "fields": {
+    "Price Record Name": "Modern Modular Garden Room — Price",
+    "Product": [
+     "recGMPCzZKWL0MO10"
+    ],
+    "Base Price": 0,
+    "Currency": "EUR",
+    "Price Type": "Custom Quote",
+    "Price Includes VAT": "Unknown",
+    "Status": "Draft",
+    "Last Price Check": "2026-11-13",
+    "Sources": [
+     "rectV66a2LgXueGG8"
+    ]
+   }
+  }
+ ],
+ "availability": [
+  {
+   "id": "recSnAvanAB49sfs1",
+   "createdTime": "2026-08-08T15:31:19.000Z",
+   "fields": {
+    "Availability URL": "https://moderngardenrooms.ie/contact/",
+    "Availability": "Available to Order ",
+    "Product": [
+     "recSpzyQeSlo8yylE"
+    ],
+    "Status": "Verified"
+   }
+  },
+  {
+   "id": "recU3UseraD4TpXiJ",
+   "createdTime": "2026-08-08T15:31:19.000Z",
+   "fields": {
+    "Availability URL": "https://moderngardenrooms.ie/contact/",
+    "Availability": "Available to Order ",
+    "Product": [
+     "recQhafVxkW46trn6"
+    ],
+    "Status": "Verified"
+   }
+  },
+  {
+   "id": "recesm9StTWXCKuzM",
+   "createdTime": "2026-08-08T15:31:19.000Z",
+   "fields": {
+    "Availability URL": "https://moderngardenrooms.ie/contact/",
+    "Availability": "Available to Order ",
+    "Product": [
+     "recGMPCzZKWL0MO10"
+    ],
+    "Status": "Verified"
+   }
+  },
+  {
+   "id": "rectHyqY2E5ugxYHo",
+   "createdTime": "2026-08-08T15:31:19.000Z",
+   "fields": {
+    "Availability URL": "https://moderngardenrooms.ie/contact/",
+    "Availability": "Available to Order ",
+    "Product": [
+     "recBW2vBPcT0kOT1o"
+    ],
+    "Status": "Verified"
+   }
+  },
+  {
+   "id": "recwVGqThXYfknmpg",
+   "createdTime": "2026-08-08T15:31:19.000Z",
+   "fields": {
+    "Availability URL": "https://moderngardenrooms.ie/contact/",
+    "Availability": "Available to Order ",
+    "Product": [
+     "rec8yqq3yj2qFyU7T"
+    ],
+    "Status": "Verified"
+   }
+  }
+ ],
+ "featureValues": [
+  {
+   "id": "rec1HXtQSo5x3qkc7",
+   "createdTime": "2026-08-29T08:30:57.000Z",
+   "fields": {
+    "Product Feature Value Name": "Modern Garden Guest Room — Typical Homeowner",
+    "Product": [
+     "recBW2vBPcT0kOT1o"
+    ],
+    "Evidence Scope": "Product-Specific",
+    "Feature": [
+     "recCbRB0fbtOi1gci"
+    ],
+    "Source Notes": "Derived from the certified AM-006 use finding rec9l1tbG1bmPxKf9 and the certified Insulation records recSupAsDeRgqFGpd and recFUQ3eDOhevytU7 for Modern Garden Rooms.",
+    "Value Text": "A HOUSEHOLD WITH VISITING FAMILY AND NO SPARE BEDROOM, WHO UNDERSTAND THIS IS A CONSENT PROJECT. The fabric specification — 150 mm walls, insulated ceiling, Kingspan floor, radon barrier and DPC — is built for people sleeping in it, and that is the right specification for the brief. WHAT THEY MUST DO FIRST IS ESTABLISH THE ROUTE: Class 3 is unavailable on use, and Class 3A carries a 32 m2 minimum. NOT FOR: anyone assuming a garden building can simply become a bedroom; nor for a buyer who needs the planning answer from a website."
+   }
+  },
+  {
+   "id": "rec2Oua7ZQ64k3YKB",
+   "createdTime": "2026-08-27T02:32:13.000Z",
+   "fields": {
+    "Product": [
+     "recGMPCzZKWL0MO10"
+    ],
+    "Evidence Scope": "Organisation-Wide",
+    "Feature": [
+     "recDTjWCAdLitcbaX"
+    ],
+    "Value Text": "Timber-framed construction: 100x45mm studded walls with 100mm thermal/sound insulation plus 50mm additional rigid insulation; cedar/pressure-treated larch/shiplap cladding options. Roof: 150x45mm rafters, 100mm + 50mm rigid insulation, fully sealed fibreglass (OWL) roof finish over 18mm OSB. A-rated BER achieved as standard.",
+    "Sources": [
+     "recikVPAUY4ZhAlBn"
+    ]
+   }
+  },
+  {
+   "id": "rec36T8M8kdFxDblV",
+   "createdTime": "2026-08-28T12:12:18.000Z",
+   "fields": {
+    "Product Feature Value Name": "Modern Garden Rooms Modern Modular Garden Room — Thermal Usability",
+    "Product": [
+     "recGMPCzZKWL0MO10"
+    ],
+    "Evidence Scope": "Range-Level",
+    "Feature": [
+     "rec10Lz687SU1gSnQ"
+    ],
+    "Source Notes": "https://moderngardenrooms.ie/modular-garden-rooms/ — not read directly; specification attributed to moderngardenrooms.ie via search index, 2026-08-28. Tier B.",
+    "Value Text": "YEAR-ROUND INSULATED. Modern Garden Rooms modular specification: 100 mm insulated walls, insulated roof and Kingspan floor as standard; cedar, larch or shiplap cladding with breather membrane; handed over plastered, wired, lit and ready to furnish; fully insulated for year-round use. Nothing inferred. Site access limitation: moderngardenrooms.ie not read directly; indexed evidence — Tier B. LIMITATIONS: no U-value published; wall insulation material not named. HOMEOWNER IMPLICATION: winter-capable and finished as delivered, with plastering, wiring and lighting included — a delivered-room price rather than a kit price."
+   }
+  },
+  {
+   "id": "rec3vOwITmw5zLi9J",
+   "createdTime": "2026-08-28T18:08:26.000Z",
+   "fields": {
+    "Product Feature Value Name": "Modern Modular Garden Room — Planning Considerations",
+    "Product": [
+     "recGMPCzZKWL0MO10"
+    ],
+    "Evidence Scope": "Product-Specific",
+    "Feature": [
+     "rec1dPnBk2TccKO20"
+    ],
+    "Source Notes": "https://www.gov.ie/en/department-of-housing-local-government-and-heritage/publications/planning-and-development-exempted-development-act-of-2000-regulations-2026-si-338-of-2026/ — S.I. 338 of 2026. Tier A. Plus the certified AM-001 Measurement Basis record for this product.",
+    "Value Text": "REQUIRES PRODUCT-SPECIFIC VERIFICATION ON FLOOR AREA. 30 m2 combined back-garden allowance (raised from 25 m2 on 27 July 2026); behind the front wall, 25 m2 private open space retained, 3 m / 4 m height limits, incidental use, NO HUMAN HABITATION. The certified AM-001 layer holds no area and no dimensions; nothing estimated. RETRIEVAL LIMITATION: moderngardenrooms.ie is client-rendered and returned an empty body to direct fetch. A MODULAR product may also be configurable, in which case the footprint is set per commission rather than fixed — nothing has been assumed either way. HOMEOWNER IMPLICATION: ask whether the module count is fixed and what the resulting external footprint is.\n\nUPDATE 13 Nov 2026 (founder-approved correction; supersedes the retrieval-limitation statements above): the supplier's site is now read directly. This page publishes no price and no size band (price on request); the supplier's size-band starting prices belong to its room types. Coverage Dublin and Leinster (named county pages: Dublin, Wicklow, Kildare, Meath, Louth). Warranty: still none published. PLANNING: the 30 m² rear-garden exemption (S.I. No. 338 of 2026) still cannot be tested for this page; confirm the floor area in the written quote."
+   }
+  },
+  {
+   "id": "rec3zlbAkgqwmPxZJ",
+   "createdTime": "2026-08-27T02:32:13.000Z",
+   "fields": {
+    "Product": [
+     "recBW2vBPcT0kOT1o"
+    ],
+    "Evidence Scope": "Organisation-Wide",
+    "Feature": [
+     "recFUIfZaPwsAVmD5"
+    ],
+    "Value Text": "Concrete base and radon barrier are provided as standard as part of Modern Garden Rooms' own on-site build process (bespoke builder, not a self-assembly kit) — divergent from the foundation-excluded-by-default pattern seen at most other Atlas suppliers.",
+    "Sources": [
+     "recikVPAUY4ZhAlBn"
+    ]
+   }
+  },
+  {
+   "id": "rec4gT3WhDEyjsti2",
+   "createdTime": "2026-08-28T13:44:12.000Z",
+   "fields": {
+    "Product Feature Value Name": "Modern Modular Garden Room — Warranty (Supplier Status)",
+    "Product": [
+     "recGMPCzZKWL0MO10"
+    ],
+    "Evidence Scope": "Organisation-Wide",
+    "Feature": [
+     "recUnkwdqsry8Qpwn"
+    ],
+    "Source Notes": "https://moderngardenrooms.ie/, https://moderngardenrooms.ie/about-garden-rooms/, https://moderngardenrooms.ie/quality/, https://moderngardenrooms.ie/garden-room-cost/ and https://moderngardenrooms.ie/modular-garden-rooms/ — domain-restricted search 2026-08-28 returned durability, experience and satisfaction statements but no warranty term, scope, conditions or claims procedure. Recorded as an evidenced absence. EVIDENCE TIER: Tier B for the absence; no warranty source URL exists to cite.",
+    "Value Text": "WARRANTY UNKNOWN. DURATION: none published. Nothing inferred. SUPPLIER STATUS — MODERN GARDEN ROOMS, 5 Garden-Room products, WARRANTY LAYER COMPLETE (EVIDENCE UNAVAILABLE). All 5 WARRANTY UNKNOWN, all Tier B as an evidenced absence. THE FINDING: a domain-restricted search across the home, about, quality, cost, modular, gym and guest-room pages located no warranty term, no scope of cover, no conditions and no claims procedure. WHAT IS PUBLISHED INSTEAD, and why it is not a warranty: rooms are built on a steel-reinforced timber frame and stated to 'stay solid for decades'; the supplier publishes over 20 years of experience and describes its structures as designed for durability, insulation and long-term performance; and a general guarantee of customer satisfaction with price and product appears on the site. Durability claims describe an expectation. A warranty is an enforceable promise with a term. Atlas does not convert the first into the second, and the distinction is recorded here once for the whole supplier. THE CONTRAST WITH THE INSTALLATION LAYER IS THE POINT: this supplier holds the widest turnkey scope recorded anywhere in the Installation layer — design, foundations, the build, insulation, electrics and the interior finish, all inside one quoted price, with sockets, LED lighting and heating named. Every one of those elements is delivered by the supplier and none of them carries a published guarantee. That is not evidence of a poor warranty; it is evidence of an undocumented one. HOMEOWNER IMPLICATION AT SUPPLIER LEVEL: the free site visit produces a written, no-obligation quotation. Ask for the warranty to be written into it — term, scope, whether foundations and electrics are included, and whether it transfers on sale. STATUS FOR CHANGE CONTROL: if the supplier publishes warranty terms, these five records qualify for update under the factual-evidence-update route.\n\nRechecked 13 Nov 2026: still none published (home, cost, specifications, quality, room-type, county and contact pages read directly)."
+   }
+  },
+  {
+   "id": "rec6O79sjA32rvH8j",
+   "createdTime": "2026-08-28T13:44:12.000Z",
+   "fields": {
+    "Product Feature Value Name": "Modern Garden Office — Warranty",
+    "Product": [
+     "recSpzyQeSlo8yylE"
+    ],
+    "Evidence Scope": "Organisation-Wide",
+    "Feature": [
+     "recUnkwdqsry8Qpwn"
+    ],
+    "Source Notes": "https://moderngardenrooms.ie/, https://moderngardenrooms.ie/about-garden-rooms/, https://moderngardenrooms.ie/quality/ and https://moderngardenrooms.ie/garden-room-cost/ — domain-restricted search 2026-08-28 returned durability and quality statements (steel-reinforced timber frame, 20+ years experience, designed for long-term performance) but no warranty term, scope or conditions. Recorded as an evidenced absence. EVIDENCE TIER: Tier B for the absence; no warranty source URL exists to cite.",
+    "Value Text": "WARRANTY UNKNOWN. DURATION: none published. A domain-restricted search of moderngardenrooms.ie across the home, about, quality, cost and product pages located NO warranty term, no scope of cover, no conditions and no claims procedure. What the supplier does publish is durability language rather than warranty: rooms are built on a steel-reinforced timber frame so they 'stay solid for decades', with over 20 years of experience and structures described as designed for durability, insulation and long-term performance. A general statement that customers will be satisfied is published, which is not a warranty. Nothing inferred. WHY THE DISTINCTION IS RECORDED EXPLICITLY: durability claims and satisfaction statements are not enforceable cover. Atlas does not convert marketing longevity language into a warranty classification. HOMEOWNER IMPLICATION: this supplier's Installation-layer position is the widest turnkey scope in the catalogue — design, foundations, build, insulation, electrics and interior finish in one price. None of that scope has a published warranty attached. Ask, at the free site visit, exactly what is guaranteed and for how long.\n\nRechecked 13 Nov 2026: still none published (home, cost, specifications, quality, room-type, county and contact pages read directly)."
+   }
+  },
+  {
+   "id": "rec6oi5ORZUUvXbsi",
+   "createdTime": "2026-08-27T22:58:04.000Z",
+   "fields": {
+    "Product Feature Value Name": "Modern Golf Simulator Room — Insulation",
+    "Product": [
+     "rec8yqq3yj2qFyU7T"
+    ],
+    "Evidence Scope": "Organisation-Wide",
+    "Feature": [
+     "recBk7kjkYkVgvq5V"
+    ],
+    "Source Notes": "https://moderngardenrooms.ie/quality/ via search index, 2026-08-27 (Tier B). Ceiling height absence confirmed against Atlas.",
+    "Value Text": "FULLY INSULATED. Walls: 50mm foil-faced rigid plus 100mm high-density Earthwool = 150mm total. Ceiling: 150mm Earthwool plus 62mm rigid insulated plasterboard. Framed construction, solid Cedar cladding.\n\nNo U-values published. NOTE: no internal ceiling height is held in Atlas for this product, which is the binding constraint for a golf simulator regardless of insulation. Recorded as a gap.\n\nHOMEOWNER IMPLICATION: well insulated and acoustically specified, but confirm internal height before purchase — a full swing typically needs more headroom than a standard garden room provides."
+   }
+  },
+  {
+   "id": "rec7NUe3N27vQwdUu",
+   "createdTime": "2026-08-28T12:12:18.000Z",
+   "fields": {
+    "Product Feature Value Name": "Modern Garden Rooms Modern Garden Guest Room — Thermal Usability",
+    "Product": [
+     "recBW2vBPcT0kOT1o"
+    ],
+    "Evidence Scope": "Range-Level",
+    "Feature": [
+     "rec10Lz687SU1gSnQ"
+    ],
+    "Source Notes": "https://moderngardenrooms.ie/ — not read directly; range specification attributed to moderngardenrooms.ie via search index, 2026-08-28. Tier B.",
+    "Value Text": "YEAR-ROUND INSULATED. Modern Garden Rooms range specification: 100 mm insulated walls, insulated roof and Kingspan floor as standard; breather membrane; plastered, wired and lit on handover; fully insulated for year-round use. Nothing inferred. Site access limitation: indexed evidence — Tier B. LIMITATIONS: no U-value published; wall insulation material not named. CATEGORY AND PLANNING NOTE recorded as intelligence: a GUEST ROOM is sleeping accommodation, which is not incidental garden use. Neither the floor area nor the planning route is established for this record and no determination is made here."
+   }
+  },
+  {
+   "id": "rec7ZFXXaUR9Dsczq",
+   "createdTime": "2026-08-29T08:30:57.000Z",
+   "fields": {
+    "Product Feature Value Name": "Modern Golf Simulator Room — Strengths",
+    "Product": [
+     "rec8yqq3yj2qFyU7T"
+    ],
+    "Evidence Scope": "Product-Specific",
+    "Feature": [
+     "rec2maLGgEgaQJ2AM"
+    ],
+    "Source Notes": "Certified Thermal Usability recAzFWVjigk5xFdx; certified Installation Model recJsOkxzGfOVGYqH; certified Irish Availability recEgpxiQ5PwKlSvE.",
+    "Value Text": "A PURPOSE-DESIGNED SIMULATOR ROOM FROM A BUILDER WHO NAMES THE CONSTRUCTION SYSTEM IS A NARROW AND USEFUL OFFER — very little else in this catalogue is designed around a specific sporting use at all. SIP PANELS ARE A GENUINELY DIFFERENT SPECIFICATION from the range's insulated timber frame, published for this model rather than inferred. THE TURNKEY SCOPE APPLIES IN FULL: design, foundations, build, insulation, electrics and interior finish in one price, with sockets, LED lighting and heating included and a free site visit — and because FOUNDATIONS ARE INSIDE THE SCOPE the supplier absorbs the base risk. NOT ESTABLISHED: no internal or external height, no area, no dimensions, no U-value, no published warranty.\n\nUPDATE 13 Nov 2026 (founder-approved correction; supersedes the retrieval-limitation and no-area statements above): the supplier's site is now read directly. It publishes a typical size band of 25–30 m² for this room type and a turnkey starting price of €50,000 plus VAT (VAT rate not stated); coverage Dublin and Leinster (named county pages: Dublin, Wicklow, Kildare, Meath, Louth). Warranty: still none published."
+   }
+  },
+  {
+   "id": "rec8QT17N43yOk4kN",
+   "createdTime": "2026-08-27T02:32:13.000Z",
+   "fields": {
+    "Product": [
+     "recGMPCzZKWL0MO10"
+    ],
+    "Evidence Scope": "Organisation-Wide",
+    "Feature": [
+     "recg0JcV50OWdCi0Q"
+    ],
+    "Value Text": "Fully insulated for year-round use: 100mm thermal/sound insulation + 50mm rigid insulation in both walls and roof, plus 100mm Kingspan rigid floor insulation over treated joists. A-rated BER achieved as standard.",
+    "Sources": [
+     "recikVPAUY4ZhAlBn"
+    ]
+   }
+  },
+  {
+   "id": "rec913DRKTODUNVWC",
+   "createdTime": "2026-08-28T18:08:26.000Z",
+   "fields": {
+    "Product Feature Value Name": "Modern Garden Gym — Planning Considerations (Supplier Status)",
+    "Product": [
+     "recQhafVxkW46trn6"
+    ],
+    "Evidence Scope": "Product-Specific",
+    "Feature": [
+     "rec1dPnBk2TccKO20"
+    ],
+    "Source Notes": "https://www.gov.ie/en/department-of-housing-local-government-and-heritage/publications/planning-and-development-exempted-development-act-of-2000-regulations-2026-si-338-of-2026/ — S.I. 338 of 2026, Planning and Development (Exempted Development) Regulations 2026, in force 27 July 2026. Tier A for the regulation. Plus the certified AM-001 Measurement Basis records for all 5 Modern Garden Rooms products. Retrieval limitation: https://moderngardenrooms.ie/ is client-rendered and returns an empty body to direct fetch.",
+    "Value Text": "REQUIRES PRODUCT-SPECIFIC VERIFICATION ON FLOOR AREA. 30 m2 combined back-garden allowance (raised from 25 m2 on 27 July 2026); behind the front wall, 25 m2 private open space retained, 3 m / 4 m height limits, incidental use, NO HUMAN HABITATION. The certified AM-001 layer holds no area and no dimensions; nothing estimated. Gym use makes internal clear height decision-critical and no height is held. SUPPLIER STATUS — MODERN GARDEN ROOMS, 5 Garden-Room products, PLANNING LAYER COMPLETE (EVIDENCE UNAVAILABLE). All 5 REQUIRES PRODUCT-SPECIFIC VERIFICATION ON FLOOR AREA, all Tier B given the retrieval barrier, recorded product-specific. THE SUPPLIER-LEVEL FINDING: NOT ONE of the five products carries a published area, dimension or height, and the cause is a standing retrieval failure — moderngardenrooms.ie is client-rendered and has returned an empty body to direct fetch across multiple sessions and multiple layers. The same barrier produced WARRANTY UNKNOWN in the certified AM-004 layer and unverifiable coverage in AM-005 and AM-S01. Four certified layers are now limited by one technical obstacle at this supplier. WHY THAT IS MORE SERIOUS HERE THAN ELSEWHERE: the certified AM-S01 layer places this supplier at 190A Iveragh Road, Whitehall, Dublin 9, D09 RR2R, and AM-005 records it AVAILABLE IN REPUBLIC OF IRELAND. This is a real Irish company selling real products to Irish buyers, and Atlas can read almost nothing about them. TWO PRODUCTS TURN ON SOMETHING OTHER THAN AREA: the Guest Room is excluded on habitation whatever its size, and the Golf Simulator Room is constrained by the external height cap rather than the footprint. SUPPLIER OMISSION, recorded once: no readable dimensions, areas or heights are published for any product. HOMEOWNER IMPLICATION AT SUPPLIER LEVEL: telephone the supplier — the website will not tell you what you need, and neither can Atlas.\n\nUPDATE 13 Nov 2026 (founder-approved correction; supersedes the retrieval-limitation and no-area statements above): the supplier's site is now read directly. It publishes a typical size band of 15–25 m² for this room type and a turnkey starting price of €32,000 plus VAT (VAT rate not stated); coverage Dublin and Leinster (named county pages: Dublin, Wicklow, Kildare, Meath, Louth). Warranty: still none published. PLANNING: on the published band (15–25 m²) the room falls within the 30 m² rear-garden exemption (S.I. No. 338 of 2026), subject to the combined-structures total and the usual height, siting and open-space conditions; not a permanent residence."
+   }
+  },
+  {
+   "id": "rec9l1tbG1bmPxKf9",
+   "createdTime": "2026-08-28T18:08:26.000Z",
+   "fields": {
+    "Product Feature Value Name": "Modern Garden Guest Room — Planning Considerations",
+    "Product": [
+     "recBW2vBPcT0kOT1o"
+    ],
+    "Evidence Scope": "Product-Specific",
+    "Feature": [
+     "rec1dPnBk2TccKO20"
+    ],
+    "Source Notes": "https://www.gov.ie/en/department-of-housing-local-government-and-heritage/publications/planning-and-development-exempted-development-act-of-2000-regulations-2026-si-338-of-2026/ — S.I. 338 of 2026. Tier A. Plus the certified AM-001 Measurement Basis record for this product.",
+    "Value Text": "REQUIRES PRODUCT-SPECIFIC VERIFICATION ON FLOOR AREA — AND THE AREA TEST IS NOT THE DECISIVE ONE. The certified AM-001 layer holds no area, no dimensions and no derivable footprint; nothing estimated. THE PRODUCT NAME IS THE PLANNING ISSUE: a GUEST ROOM implies sleeping use, and the Class 3 garden-structure exemption requires incidental use with NO HUMAN HABITATION. Sleeping accommodation is excluded regardless of size, so obtaining the area would not by itself resolve this product's position. The Class 3A auxiliary-dwelling route (32-45 m2, to the rear, linked services, 14 days' notice, expiring 31 December 2030) may be the applicable route, but qualification is undetermined and its 32 m2 floor means a smaller unit falls between both routes. RETRIEVAL LIMITATION: moderngardenrooms.ie is client-rendered. HOMEOWNER IMPLICATION: if guests will sleep in it, this is not an exempt garden room — establish the consent route first.\n\nUPDATE 13 Nov 2026 (founder-approved correction; supersedes the retrieval-limitation and no-area statements above): the supplier's site is now read directly. It publishes a typical size band of 15–25 m² for this room type and a turnkey starting price of €32,000 plus VAT (VAT rate not stated); coverage Dublin and Leinster (named county pages: Dublin, Wicklow, Kildare, Meath, Louth). Warranty: still none published. PLANNING: on the published band (15–25 m²) the room falls within the 30 m² rear-garden exemption (S.I. No. 338 of 2026), subject to the combined-structures total and the usual height, siting and open-space conditions; not a permanent residence."
+   }
+  },
+  {
+   "id": "rec9rirk5g5enDN7M",
+   "createdTime": "2026-08-29T08:30:57.000Z",
+   "fields": {
+    "Product Feature Value Name": "Modern Golf Simulator Room — Best For",
+    "Product": [
+     "rec8yqq3yj2qFyU7T"
+    ],
+    "Evidence Scope": "Product-Specific",
+    "Feature": [
+     "rec4qUjgmhMIJHnPW"
+    ],
+    "Source Notes": "Certified Thermal Usability record recAzFWVjigk5xFdx (SIP panel system published for this model; height note) and the certified AM-006 supplier-status record rec913DRKTODUNVWC. S.I. 338 of 2026 height conditions (Tier A).",
+    "Value Text": "THE ONE PRODUCT IN THIS RANGE BUILT ON A DIFFERENT CONSTRUCTION SYSTEM — the supplier publishes that its golf simulator rooms 'are constructed using advanced SIP panel systems that provide excellent insulation, strength, and long-term durability', rather than the 100 mm insulated timber frame used across the rest of the range. A SIP PANEL HAS NO REPEATING STUD to carry heat around the insulation, which is a meaningful internal difference. THE CONSTRAINT HERE IS HEIGHT, NOT AREA: a golf simulator needs internal clear height for a full swing, and no height is published — while the external cap is 3 m for a flat or non-tiled roof. HOMEOWNER IMPLICATION: internal clear height is the figure that decides this purchase, and it is not published."
+   }
+  },
+  {
+   "id": "rec9whuADsiro8dNk",
+   "createdTime": "2026-08-28T13:44:12.000Z",
+   "fields": {
+    "Product Feature Value Name": "Modern Golf Simulator Room — Warranty",
+    "Product": [
+     "rec8yqq3yj2qFyU7T"
+    ],
+    "Evidence Scope": "Organisation-Wide",
+    "Feature": [
+     "recUnkwdqsry8Qpwn"
+    ],
+    "Source Notes": "https://moderngardenrooms.ie/ — domain-restricted search 2026-08-28 returned no warranty terms. Evidenced absence. EVIDENCE TIER: Tier B for the absence.",
+    "Value Text": "WARRANTY UNKNOWN. DURATION: none published. No warranty term, scope or conditions located; durability language only. Nothing inferred. HOMEOWNER IMPLICATION: no published cover on a room whose value depends on internal height, wall integrity and a bespoke electrical layout.\n\nRechecked 13 Nov 2026: still none published (home, cost, specifications, quality, room-type, county and contact pages read directly)."
+   }
+  },
+  {
+   "id": "recAzFWVjigk5xFdx",
+   "createdTime": "2026-08-28T12:12:18.000Z",
+   "fields": {
+    "Product Feature Value Name": "Modern Garden Rooms Modern Golf Simulator Room — Thermal Usability (Supplier Status)",
+    "Product": [
+     "rec8yqq3yj2qFyU7T"
+    ],
+    "Evidence Scope": "Organisation-Wide",
+    "Feature": [
+     "rec10Lz687SU1gSnQ"
+    ],
+    "Source Notes": "https://moderngardenrooms.ie/, https://moderngardenrooms.ie/modular-garden-rooms/ and https://www.moderngardenrooms.com/golf-simulator-garden-room/ — none read directly this session; the 100 mm insulated wall, insulated roof and Kingspan floor specification, cladding and breather membrane, handover scope, year-round claim, SIP panel construction for golf rooms and the company's operating area and history all attributed to moderngardenrooms.ie via search index, 2026-08-28. Tier B throughout.",
+    "Value Text": "YEAR-ROUND INSULATED. Published specifically for this model: the supplier's golf simulator rooms 'are constructed using advanced SIP panel systems that provide excellent insulation, strength, and long-term durability' — a different and generally stronger construction than the 100 mm insulated timber-frame walls used across the rest of the range. Nothing inferred. NOTE ON USE: a golf simulator needs internal height for a full swing, which is not published for this record and should be confirmed separately from the thermal question. SUPPLIER STATUS — MODERN GARDEN ROOMS, 5 Garden-Room products, THERMAL LAYER COMPLETE (EVIDENCE UNAVAILABLE). All 5 are YEAR-ROUND INSULATED. None is Tier A: moderngardenrooms.ie was not read directly this session. THE SUPPLIER-LEVEL FINDING: the standard specification is '100mm insulated walls, insulated roof and Kingspan floor as standard', with cedar, larch or shiplap cladding over a breather membrane, and the building handed over 'plastered, wired, lit and ready to furnish'. Two things in that are worth drawing out. The FLOOR is named by brand — Kingspan, a rigid PIR board, the higher-performing insulation class in this catalogue — while most competitors leave the floor unstated or unspecified entirely. And the HANDOVER SCOPE means the quoted figure is a finished room, not a shell: plastering, wiring and lighting are included, which very few suppliers in this layer include. A SECOND CONSTRUCTION SYSTEM sits alongside the first: the golf simulator rooms use SIP panels rather than insulated timber frame. That is a meaningful internal difference — SIP has no repeating stud to carry heat around the insulation — and it means this supplier's range is not thermally uniform. LIMITATIONS: no U-value is published for any element; the roof insulation thickness is not stated; and the wall insulation material is not named, only its 100 mm thickness. Irish builder operating across Dublin and Leinster since 2008."
+   }
+  },
+  {
+   "id": "recCym8OvBFzau5fg",
+   "createdTime": "2026-08-29T08:32:26.000Z",
+   "fields": {
+    "Product Feature Value Name": "Modern Modular Garden Room — Typical Homeowner",
+    "Product": [
+     "recGMPCzZKWL0MO10"
+    ],
+    "Evidence Scope": "Product-Specific",
+    "Feature": [
+     "recCbRB0fbtOi1gci"
+    ],
+    "Source Notes": "Derived from the certified Thermal Usability record rec36T8M8kdFxDblV, the certified Installation Model record recJsOkxzGfOVGYqH and the certified Irish Availability record recEgpxiQ5PwKlSvE for Modern Garden Rooms.",
+    "Value Text": "A HOUSEHOLD THAT WANTS A ROOM DELIVERED FINISHED AND IS HAPPY TO START WITH A SITE VISIT RATHER THAN A CATALOGUE. Modular configuration plus a plastered, wired and lit handover means the buyer describes what they need and receives something usable — which suits people who do not want to manage trades. THEY ARE IN DUBLIN OR LEINSTER, where this supplier operates. NOT FOR: a buyer who wants to compare specifications and sizes online first, since none is readable; nor for anyone who needs a written warranty before committing."
+   }
+  },
+  {
+   "id": "recDi39ENZQYedtaH",
+   "createdTime": "2026-08-27T02:32:13.000Z",
+   "fields": {
+    "Product": [
+     "rec8yqq3yj2qFyU7T"
+    ],
+    "Evidence Scope": "Organisation-Wide",
+    "Feature": [
+     "recDTjWCAdLitcbaX"
+    ],
+    "Value Text": "Timber-framed construction: 100x45mm studded walls with 100mm thermal/sound insulation plus 50mm additional rigid insulation; cedar/pressure-treated larch/shiplap cladding options. Roof: 150x45mm rafters, 100mm + 50mm rigid insulation, fully sealed fibreglass (OWL) roof finish over 18mm OSB. A-rated BER achieved as standard.",
+    "Sources": [
+     "recikVPAUY4ZhAlBn"
+    ]
+   }
+  },
+  {
+   "id": "recEN8ElYmzmZNR1O",
+   "createdTime": "2026-08-28T12:40:04.000Z",
+   "fields": {
+    "Product Feature Value Name": "Modern Golf Simulator Room — Installation Model",
+    "Product": [
+     "rec8yqq3yj2qFyU7T"
+    ],
+    "Evidence Scope": "Organisation-Wide",
+    "Feature": [
+     "rec9qV0dfO5jgZ6KP"
+    ],
+    "Source Notes": "https://moderngardenrooms.ie/garden-room-cost/ — published turnkey scope, attributed via search index 2026-08-28, Tier B.",
+    "Value Text": "TURNKEY INSTALLATION INCLUDED. Turnkey price covers design, foundations, build, insulation, electrics and interior finish; bespoke, priced after a free site visit; footprint and glazing named as pricing factors. Nothing inferred. HOMEOWNER IMPLICATION: a simulator room is defined by its internal height and its power and lighting layout, all of which sit inside the supplier's design-and-electrics scope. Specify ceiling height and socket positions at the site visit rather than after the quotation."
+   }
+  },
+  {
+   "id": "recEgpxiQ5PwKlSvE",
+   "createdTime": "2026-08-28T16:34:22.000Z",
+   "fields": {
+    "Product Feature Value Name": "Modern Garden Gym — Irish Availability",
+    "Product": [
+     "recQhafVxkW46trn6"
+    ],
+    "Evidence Scope": "Organisation-Wide",
+    "Feature": [
+     "reca3fzZcpdCqLXUv"
+    ],
+    "Source Notes": "https://moderngardenrooms.ie/garden-rooms-dublin/, /garden-rooms-wicklow/, /garden-rooms-kildare/, /garden-rooms-meath/, /garden-rooms-louth/ and /contact/, read directly in a browser, 13 Nov 2026. Tier A.",
+    "Value Text": "AVAILABLE IN REPUBLIC OF IRELAND: DUBLIN AND LEINSTER. Supplier's named county pages: Dublin, Wicklow, Kildare, Meath, Louth; contact page: 'Dublin, Wicklow, Kildare, Meath and the wider Leinster region' (read 13 Nov 2026). Homeowners outside these counties should confirm coverage."
+   }
+  },
+  {
+   "id": "recFUQ3eDOhevytU7",
+   "createdTime": "2026-08-08T15:31:04.000Z",
+   "fields": {
+    "Product Feature Value Name": "Modern Garden Guest Room — Insulation Status",
+    "Product": [
+     "recBW2vBPcT0kOT1o"
+    ],
+    "Feature": [
+     "recg0JcV50OWdCi0Q"
+    ],
+    "Value Text": "Fully insulated: 100mm stud-wall thermal/sound insulation plus 50mm additional rigid insulation in walls and roof; 100mm Kingspan rigid floor insulation; radon barrier and DPC in floor build-up",
+    "Status": "Verified",
+    "Sources": [
+     "rectV66a2LgXueGG8"
+    ]
+   }
+  },
+  {
+   "id": "recGrPLWSsoEolFPs",
+   "createdTime": "2026-08-28T08:18:25.000Z",
+   "fields": {
+    "Product Feature Value Name": "Modern Golf Simulator Room — Measurement Basis",
+    "Product": [
+     "rec8yqq3yj2qFyU7T"
+    ],
+    "Evidence Scope": "Product-Specific",
+    "Feature": [
+     "rechP7fg3NRe4bWXD"
+    ],
+    "Source Notes": "moderngardenrooms.ie, read directly in a browser, 13 Nov 2026. Tier A.",
+    "Value Text": "TYPICAL SIZE BAND, NOT A FIXED AREA: 25–30 m² as published by the supplier for this room type (moderngardenrooms.ie/garden-room-cost/ and /golf-simulator-rooms/, read 13 Nov 2026). Bespoke; DO NOT RANK on area."
+   }
+  },
+  {
+   "id": "recHjbdEmulhzbffE",
+   "createdTime": "2026-08-27T02:32:13.000Z",
+   "fields": {
+    "Product": [
+     "recGMPCzZKWL0MO10"
+    ],
+    "Evidence Scope": "Organisation-Wide",
+    "Feature": [
+     "recFUIfZaPwsAVmD5"
+    ],
+    "Value Text": "Concrete base and radon barrier are provided as standard as part of Modern Garden Rooms' own on-site build process (bespoke builder, not a self-assembly kit) — divergent from the foundation-excluded-by-default pattern seen at most other Atlas suppliers.",
+    "Sources": [
+     "recikVPAUY4ZhAlBn"
+    ]
+   }
+  },
+  {
+   "id": "recHrXMIfBGEmHcBb",
+   "createdTime": "2026-08-08T15:31:04.000Z",
+   "fields": {
+    "Product Feature Value Name": "Modern Garden Gym — Electrical Included",
+    "Product": [
+     "recQhafVxkW46trn6"
+    ],
+    "Feature": [
+     "receDsnod5L7tgPE1"
+    ],
+    "Value Text": "Turnkey quoted price includes electrics per manufacturer FAQ",
+    "Status": "Verified",
+    "Confirmation State": "Yes",
+    "Sources": [
+     "rectV66a2LgXueGG8"
+    ]
+   }
+  },
+  {
+   "id": "recJsOkxzGfOVGYqH",
+   "createdTime": "2026-08-28T12:40:04.000Z",
+   "fields": {
+    "Product Feature Value Name": "Modern Garden Gym — Installation Model",
+    "Product": [
+     "recQhafVxkW46trn6"
+    ],
+    "Evidence Scope": "Organisation-Wide",
+    "Feature": [
+     "rec9qV0dfO5jgZ6KP"
+    ],
+    "Source Notes": "https://moderngardenrooms.ie/garden-room-cost/ — published turnkey scope, attributed via search index 2026-08-28, Tier B.",
+    "Value Text": "TURNKEY INSTALLATION INCLUDED. Turnkey price covers design, foundations, build, insulation, electrics and interior finish; sockets, LED lighting and heating included; bespoke, priced after a free site visit. Nothing inferred. HOMEOWNER IMPLICATION: because foundations are inside the scope and ground conditions are named as a pricing factor, the supplier absorbs the base risk that most competitors pass to the buyer — which matters for a gym, where floor loading is real."
+   }
+  },
+  {
+   "id": "recN0YDEaUBLMntSL",
+   "createdTime": "2026-08-08T15:31:04.000Z",
+   "fields": {
+    "Product Feature Value Name": "Modern Garden Office — Electrical Included",
+    "Product": [
+     "recSpzyQeSlo8yylE"
+    ],
+    "Feature": [
+     "receDsnod5L7tgPE1"
+    ],
+    "Value Text": "Turnkey quoted price includes electrics per manufacturer FAQ",
+    "Status": "Verified",
+    "Confirmation State": "Yes",
+    "Sources": [
+     "rectV66a2LgXueGG8"
+    ]
+   }
+  },
+  {
+   "id": "recO9V36jgXqQWsg0",
+   "createdTime": "2026-08-28T12:40:04.000Z",
+   "fields": {
+    "Product Feature Value Name": "Modern Modular Garden Room — Installation Model (Supplier Status)",
+    "Product": [
+     "recGMPCzZKWL0MO10"
+    ],
+    "Evidence Scope": "Organisation-Wide",
+    "Feature": [
+     "rec9qV0dfO5jgZ6KP"
+    ],
+    "Source Notes": "https://moderngardenrooms.ie/garden-room-cost/ — supplier's published turnkey scope, named inclusions, bespoke-pricing statement, published pricing drivers and free site visit offer; attributed via search index 2026-08-28, Tier B (page body not read this run).",
+    "Value Text": "TURNKEY INSTALLATION INCLUDED. Turnkey price covers design, foundations, build, insulation, electrics and interior finish; bespoke, priced after a free site visit. Nothing inferred. SUPPLIER STATUS — MODERN GARDEN ROOMS, 5 Garden-Room products, INSTALLATION LAYER COMPLETE. All 5 TURNKEY INSTALLATION INCLUDED, all Tier B, recorded organisation-wide because a single turnkey scope is published for the whole range. THE SUPPLIER-LEVEL FINDING: this is the widest turnkey scope recorded in the Installation layer to date. The quoted figure covers design, foundations, the build, insulation, electrics and the interior finish, with sockets, LED lighting and heating named specifically. The supplier's own framing is that the figure is the finished room, not a starting shell. Set against the rest of the catalogue: My Garden Room excludes base, insulation and electrics; Concept Modular excludes base, installation, craneage and haulage; Adman excludes the base; Cabin Master covers foundations through to electrics but stops short of publishing interior finish. Modern Garden Rooms carries the lot. THE COST OF THAT COMPLETENESS: no published price. Every room is bespoke, so there is no figure to compare and no way to shortlist this supplier on price without a site visit. The supplier publishes the pricing DRIVERS instead — footprint, whether the room is fully insulated for year-round use, glazing, and ground conditions and access affecting base preparation — which is a more useful disclosure than a meaningless 'from' price, but it does not let a buyer compare on paper. THE FREE SITE VISIT IS THEREFORE THE PRODUCT: a written, no-obligation quotation is the only way to obtain a number, and because the scope is complete, that number is directly comparable to nothing else in this catalogue without adding the competitors' exclusions back in. HOMEOWNER IMPLICATION AT SUPPLIER LEVEL: when placing this quotation beside a cheaper published figure, add foundations, insulation, electrics and interior finish to the competitor before deciding which is dearer. That single adjustment reverses the apparent ranking more often than not.\n\nUPDATE 13 Nov 2026 (founder-approved correction; supersedes 'no published price' at supplier level): the supplier now publishes turnkey starting prices by size band, all plus VAT (rate not stated), on moderngardenrooms.ie/garden-room-cost/: 10–15 m² from €24,000, 15–25 m² from €32,000, 25–30 m² from €50,000. Its published turnkey scope also names heating, and guttering, drainage and external finishing. The modular page itself still publishes no price: this product remains price on request."
+   }
+  },
+  {
+   "id": "recPgtB4cUohKIarN",
+   "createdTime": "2026-08-28T13:44:12.000Z",
+   "fields": {
+    "Product Feature Value Name": "Modern Garden Guest Room — Warranty",
+    "Product": [
+     "recBW2vBPcT0kOT1o"
+    ],
+    "Evidence Scope": "Organisation-Wide",
+    "Feature": [
+     "recUnkwdqsry8Qpwn"
+    ],
+    "Source Notes": "https://moderngardenrooms.ie/garden-guest-rooms/ and https://moderngardenrooms.ie/quality/ — domain-restricted search 2026-08-28 returned no warranty terms. Evidenced absence. EVIDENCE TIER: Tier B for the absence.",
+    "Value Text": "WARRANTY UNKNOWN. DURATION: none published. No warranty term, scope or conditions located; durability language only. Nothing inferred. HOMEOWNER IMPLICATION: a guest room is heated and occupied overnight, so the insulation and the heating installation are the elements most worth having covered — and neither has a published guarantee.\n\nRechecked 13 Nov 2026: still none published (home, cost, specifications, quality, room-type, county and contact pages read directly)."
+   }
+  },
+  {
+   "id": "recPqGp91g4gnYnYC",
+   "createdTime": "2026-08-28T18:08:26.000Z",
+   "fields": {
+    "Product Feature Value Name": "Modern Garden Office — Planning Considerations",
+    "Product": [
+     "recSpzyQeSlo8yylE"
+    ],
+    "Evidence Scope": "Product-Specific",
+    "Feature": [
+     "rec1dPnBk2TccKO20"
+    ],
+    "Source Notes": "https://www.gov.ie/en/department-of-housing-local-government-and-heritage/publications/planning-and-development-exempted-development-act-of-2000-regulations-2026-si-338-of-2026/ — S.I. 338 of 2026, in force 27 July 2026. Tier A. Plus the certified AM-001 Measurement Basis record for this product. Blocked-site limitation: moderngardenrooms.ie is client-rendered.",
+    "Value Text": "REQUIRES PRODUCT-SPECIFIC VERIFICATION ON FLOOR AREA. The 30 m2 combined back-garden allowance applies (raised from 25 m2 on 27 July 2026), with conditions: behind the front wall, 25 m2 private open space retained, 3 m height for a flat or non-tiled roof and 4 m for a tiled or slated pitched roof, incidental use, NO HUMAN HABITATION. The certified AM-001 layer holds NO area, NO dimensions and no derivable footprint; nothing estimated and no wall thickness subtracted. RETRIEVAL LIMITATION: moderngardenrooms.ie is client-rendered and returned an empty body to direct fetch, so no supplier-side area could be obtained. This is a retrieval failure, not an evidenced absence. SUPPLIER OMISSION, recorded: no readable dimensions or areas are published. HOMEOWNER IMPLICATION: this is a Dublin supplier selling directly into the Republic, so the gap blocks a genuinely purchasable product — phone them for the external footprint.\n\nUPDATE 13 Nov 2026 (founder-approved correction; supersedes the retrieval-limitation and no-area statements above): the supplier's site is now read directly. It publishes a typical size band of 10–15 m² for this room type and a turnkey starting price of €24,000 plus VAT (VAT rate not stated); coverage Dublin and Leinster (named county pages: Dublin, Wicklow, Kildare, Meath, Louth). Warranty: still none published. PLANNING: on the published band (10–15 m²) the room falls within the 30 m² rear-garden exemption (S.I. No. 338 of 2026), subject to the combined-structures total and the usual height, siting and open-space conditions; not a permanent residence."
+   }
+  },
+  {
+   "id": "recRQEjX0S7A7zBXl",
+   "createdTime": "2026-08-29T08:32:26.000Z",
+   "fields": {
+    "Product Feature Value Name": "Modern Garden Gym — Strengths",
+    "Product": [
+     "recQhafVxkW46trn6"
+    ],
+    "Evidence Scope": "Product-Specific",
+    "Feature": [
+     "rec2maLGgEgaQJ2AM"
+    ],
+    "Source Notes": "Certified Installation Model recJsOkxzGfOVGYqH; certified Electrical Included record recHrXMIfBGEmHcBb; certified Thermal Usability rec36T8M8kdFxDblV; certified Irish Availability recEgpxiQ5PwKlSvE.",
+    "Value Text": "FOUNDATIONS, ELECTRICS AND INTERIOR FINISH ARE ALL INSIDE THE TURNKEY PRICE — sockets, LED lighting and heating included, bespoke and priced after a free site visit. FOR A GYM THAT IS THE RIGHT SHAPE OF CONTRACT: the two things that most often go wrong on a garden gym are the base and the power, and both sit with the supplier here. THE INSULATED ROOF AND KINGSPAN FLOOR ARE PUBLISHED AS STANDARD, and the room is handed over finished. IT IS AN IRISH COMPANY at 190A Iveragh Road, Dublin 9. NOT ESTABLISHED: no area, dimensions or internal height, no U-value, no published warranty.\n\nUPDATE 13 Nov 2026 (founder-approved correction; supersedes the retrieval-limitation and no-area statements above): the supplier's site is now read directly. It publishes a typical size band of 15–25 m² for this room type and a turnkey starting price of €32,000 plus VAT (VAT rate not stated); coverage Dublin and Leinster (named county pages: Dublin, Wicklow, Kildare, Meath, Louth). Warranty: still none published."
+   }
+  },
+  {
+   "id": "recRe3jiilRG2EFG1",
+   "createdTime": "2026-08-28T16:34:22.000Z",
+   "fields": {
+    "Product Feature Value Name": "Modern Golf Simulator Room — Irish Availability",
+    "Product": [
+     "rec8yqq3yj2qFyU7T"
+    ],
+    "Evidence Scope": "Organisation-Wide",
+    "Feature": [
+     "reca3fzZcpdCqLXUv"
+    ],
+    "Source Notes": "https://moderngardenrooms.ie/garden-rooms-dublin/, /garden-rooms-wicklow/, /garden-rooms-kildare/, /garden-rooms-meath/, /garden-rooms-louth/ and /contact/, read directly in a browser, 13 Nov 2026. Tier A. Golf wording: https://moderngardenrooms.ie/golf-simulator-rooms/.",
+    "Value Text": "AVAILABLE IN REPUBLIC OF IRELAND: DUBLIN AND LEINSTER. Supplier's named county pages: Dublin, Wicklow, Kildare, Meath, Louth; contact page: 'Dublin, Wicklow, Kildare, Meath and the wider Leinster region' (read 13 Nov 2026). Homeowners outside these counties should confirm coverage. (The golf-simulator page says 'Built across Ireland'; recorded as the supplier's wording, not as nationwide coverage.)"
+   }
+  },
+  {
+   "id": "recRsJ1H7HzFtZHz2",
+   "createdTime": "2026-08-27T02:32:13.000Z",
+   "fields": {
+    "Product": [
+     "rec8yqq3yj2qFyU7T"
+    ],
+    "Evidence Scope": "Organisation-Wide",
+    "Feature": [
+     "recg0JcV50OWdCi0Q"
+    ],
+    "Value Text": "Fully insulated for year-round use: 100mm thermal/sound insulation + 50mm rigid insulation in both walls and roof, plus 100mm Kingspan rigid floor insulation over treated joists. A-rated BER achieved as standard.",
+    "Sources": [
+     "recikVPAUY4ZhAlBn"
+    ]
+   }
+  },
+  {
+   "id": "recSupAsDeRgqFGpd",
+   "createdTime": "2026-08-27T22:58:04.000Z",
+   "fields": {
+    "Product Feature Value Name": "Modern Garden Guest Room — Insulation",
+    "Product": [
+     "recBW2vBPcT0kOT1o"
+    ],
+    "Evidence Scope": "Organisation-Wide",
+    "Feature": [
+     "recBk7kjkYkVgvq5V"
+    ],
+    "Source Notes": "https://moderngardenrooms.ie/quality/ and /garden-guest-rooms/ via search index, 2026-08-27 (Tier B).",
+    "Value Text": "FULLY INSULATED. Walls: 50mm foil-faced rigid plus 100mm high-density Earthwool = 150mm total. Ceiling: 150mm Earthwool plus 62mm rigid insulated plasterboard. Framed construction, solid Cedar cladding.\n\nNo U-values published.\n\nHOMEOWNER IMPLICATION: the insulation specification supports overnight guest use in winter. IMPORTANT SEPARATE POINT: overnight sleeping accommodation in a garden building carries planning and regulatory implications in Ireland that are distinct from thermal performance. Atlas holds no Irish planning guidance for this supplier — do not treat 'guest room' as confirmation that overnight use is permitted."
+   }
+  },
+  {
+   "id": "recSxa6gqdRgc6HxC",
+   "createdTime": "2026-08-27T02:32:13.000Z",
+   "fields": {
+    "Product": [
+     "recBW2vBPcT0kOT1o"
+    ],
+    "Evidence Scope": "Organisation-Wide",
+    "Feature": [
+     "recDTjWCAdLitcbaX"
+    ],
+    "Value Text": "Timber-framed construction: 100x45mm studded walls with 100mm thermal/sound insulation plus 50mm additional rigid insulation; cedar/pressure-treated larch/shiplap cladding options. Roof: 150x45mm rafters, 100mm + 50mm rigid insulation, fully sealed fibreglass (OWL) roof finish over 18mm OSB. A-rated BER achieved as standard.",
+    "Sources": [
+     "recikVPAUY4ZhAlBn"
+    ]
+   }
+  },
+  {
+   "id": "recTj4ghvMzBUcy1F",
+   "createdTime": "2026-08-27T02:32:13.000Z",
+   "fields": {
+    "Product": [
+     "recQhafVxkW46trn6"
+    ],
+    "Evidence Scope": "Organisation-Wide",
+    "Feature": [
+     "recDTjWCAdLitcbaX"
+    ],
+    "Value Text": "Timber-framed construction: 100x45mm studded walls with 100mm thermal/sound insulation plus 50mm additional rigid insulation; cedar/pressure-treated larch/shiplap cladding options. Roof: 150x45mm rafters, 100mm + 50mm rigid insulation, fully sealed fibreglass (OWL) roof finish over 18mm OSB. A-rated BER achieved as standard.",
+    "Sources": [
+     "recikVPAUY4ZhAlBn"
+    ]
+   }
+  },
+  {
+   "id": "recTmZcZ3zRYgIF4J",
+   "createdTime": "2026-08-27T02:32:13.000Z",
+   "fields": {
+    "Product": [
+     "recSpzyQeSlo8yylE"
+    ],
+    "Evidence Scope": "Organisation-Wide",
+    "Feature": [
+     "recDTjWCAdLitcbaX"
+    ],
+    "Value Text": "Timber-framed construction: 100x45mm studded walls with 100mm thermal/sound insulation plus 50mm additional rigid insulation; cedar/pressure-treated larch/shiplap cladding options. Roof: 150x45mm rafters, 100mm + 50mm rigid insulation, fully sealed fibreglass (OWL) roof finish over 18mm OSB. A-rated BER achieved as standard.",
+    "Sources": [
+     "recikVPAUY4ZhAlBn"
+    ]
+   }
+  },
+  {
+   "id": "recUJmnWfuaTnuDQ6",
+   "createdTime": "2026-08-28T16:34:22.000Z",
+   "fields": {
+    "Product Feature Value Name": "Modern Garden Office — Irish Availability",
+    "Product": [
+     "recSpzyQeSlo8yylE"
+    ],
+    "Evidence Scope": "Organisation-Wide",
+    "Feature": [
+     "reca3fzZcpdCqLXUv"
+    ],
+    "Source Notes": "https://moderngardenrooms.ie/garden-rooms-dublin/, /garden-rooms-wicklow/, /garden-rooms-kildare/, /garden-rooms-meath/, /garden-rooms-louth/ and /contact/, read directly in a browser, 13 Nov 2026. Tier A.",
+    "Value Text": "AVAILABLE IN REPUBLIC OF IRELAND: DUBLIN AND LEINSTER. Supplier's named county pages: Dublin, Wicklow, Kildare, Meath, Louth; contact page: 'Dublin, Wicklow, Kildare, Meath and the wider Leinster region' (read 13 Nov 2026). Homeowners outside these counties should confirm coverage."
+   }
+  },
+  {
+   "id": "recUj8b7VUCdbuwht",
+   "createdTime": "2026-08-27T22:58:04.000Z",
+   "fields": {
+    "Product Feature Value Name": "Modern Modular Garden Room — Insulation",
+    "Product": [
+     "recGMPCzZKWL0MO10"
+    ],
+    "Evidence Scope": "Organisation-Wide",
+    "Feature": [
+     "recBk7kjkYkVgvq5V"
+    ],
+    "Source Notes": "https://moderngardenrooms.ie/quality/ via search index, 2026-08-27 (Tier B).",
+    "Value Text": "FULLY INSULATED. Walls: 50mm foil-faced rigid plus 100mm high-density Earthwool = 150mm total. Ceiling: 150mm Earthwool plus 62mm rigid insulated plasterboard. Framed construction, solid Cedar cladding with aluminium roof-level trim.\n\nNo U-values published.\n\nNOTE ON NAMING: the supplier describes its work as bespoke design-and-build rather than modular. The Atlas product name 'Modern Modular Garden Room' may not correspond to a distinct supplier product line. Recorded, not corrected.\n\nHOMEOWNER IMPLICATION: suitable for year-round use on the stated specification."
+   }
+  },
+  {
+   "id": "recVoPAU1dxrmuv7D",
+   "createdTime": "2026-08-27T02:32:13.000Z",
+   "fields": {
+    "Product": [
+     "recQhafVxkW46trn6"
+    ],
+    "Evidence Scope": "Organisation-Wide",
+    "Feature": [
+     "recFUIfZaPwsAVmD5"
+    ],
+    "Value Text": "Concrete base and radon barrier are provided as standard as part of Modern Garden Rooms' own on-site build process (bespoke builder, not a self-assembly kit) — divergent from the foundation-excluded-by-default pattern seen at most other Atlas suppliers.",
+    "Sources": [
+     "recikVPAUY4ZhAlBn"
+    ]
+   }
+  },
+  {
+   "id": "recW4eesqTCZJHcC8",
+   "createdTime": "2026-08-29T08:32:26.000Z",
+   "fields": {
+    "Product Feature Value Name": "Modern Modular Garden Room — Best For",
+    "Product": [
+     "recGMPCzZKWL0MO10"
+    ],
+    "Evidence Scope": "Product-Specific",
+    "Feature": [
+     "rec4qUjgmhMIJHnPW"
+    ],
+    "Source Notes": "Certified Thermal Usability record rec36T8M8kdFxDblV (YEAR-ROUND INSULATED; handover scope recorded) and the certified AM-006 supplier-status record rec913DRKTODUNVWC. S.I. 338 of 2026 (Tier A).",
+    "Value Text": "THE RANGE'S STANDARD SPECIFICATION, STATED PLAINLY: 100 mm insulated walls, an insulated roof and a KINGSPAN FLOOR AS STANDARD, cedar, larch or shiplap cladding over a breather membrane, and the building HANDED OVER PLASTERED, WIRED, LIT AND READY TO FURNISH. That last point is the product — the quoted figure is a finished room, not a shell. THE PLANNING POSITION CANNOT BE TESTED: no area, no dimensions and no height are held for any product in this range, and nothing has been estimated, because the supplier's site is client-rendered and returns an empty body to direct fetch. HOMEOWNER IMPLICATION: winter-capable and finished as delivered — telephone for the footprint.\n\nUPDATE 13 Nov 2026 (founder-approved correction; supersedes the retrieval-limitation statements above): the supplier's site is now read directly. This page publishes no price and no size band (price on request); the supplier's size-band starting prices belong to its room types. Coverage Dublin and Leinster (named county pages: Dublin, Wicklow, Kildare, Meath, Louth). Warranty: still none published."
+   }
+  },
+  {
+   "id": "recWOttoU6YPuVN6x",
+   "createdTime": "2026-08-29T08:32:26.000Z",
+   "fields": {
+    "Product Feature Value Name": "Modern Modular Garden Room — Considerations",
+    "Product": [
+     "recGMPCzZKWL0MO10"
+    ],
+    "Evidence Scope": "Product-Specific",
+    "Feature": [
+     "recLqiSNjhe7rt42A"
+    ],
+    "Source Notes": "Certified Thermal Usability rec36T8M8kdFxDblV (limitations recorded) and recAzFWVjigk5xFdx; certified Warranty rec6O79sjA32rvH8j; certified AM-006 supplier-status rec913DRKTODUNVWC.",
+    "Value Text": "A MODULAR PRODUCT WITH NO PUBLISHED DIMENSIONS IS THE HARDEST KIND TO ASSESS, because the size is both variable AND unrecorded — so the 30 m2 combined allowance cannot be tested even in principle from the catalogue. SECOND, THE THERMAL SPECIFICATION IS STATED BUT NOT QUANTIFIED: no U-value for any element, the roof insulation thickness is not given, and the wall insulation material is not named — only its 100 mm thickness. THIRD, WARRANTY UNKNOWN: none is published for any part of the widest turnkey scope in the catalogue. FOURTH, all of this rests on indexed evidence because the supplier's site cannot be read directly — a retrieval failure now limiting four certified Atlas layers. HOMEOWNER IMPLICATION: everything here is a phone call, and the free site visit is that phone call.\n\nUPDATE 13 Nov 2026 (founder-approved correction; supersedes the retrieval-limitation statements above): the supplier's site is now read directly. This page publishes no price and no size band (price on request); the supplier's size-band starting prices belong to its room types. Coverage Dublin and Leinster (named county pages: Dublin, Wicklow, Kildare, Meath, Louth). Warranty: still none published."
+   }
+  },
+  {
+   "id": "recX23Rp0osbq4qHI",
+   "createdTime": "2026-08-29T08:30:57.000Z",
+   "fields": {
+    "Product Feature Value Name": "Modern Garden Office — Considerations",
+    "Product": [
+     "recSpzyQeSlo8yylE"
+    ],
+    "Evidence Scope": "Product-Specific",
+    "Feature": [
+     "recLqiSNjhe7rt42A"
+    ],
+    "Source Notes": "Certified Warranty record rec6O79sjA32rvH8j (WARRANTY UNKNOWN; distinction between durability language and enforceable cover recorded explicitly); certified AM-006 recPqGp91g4gnYnYC.",
+    "Value Text": "WARRANTY UNKNOWN — NONE IS PUBLISHED. A domain-restricted search across the home, about, quality, cost and product pages located NO warranty term, no scope, no conditions and no claims procedure. What the supplier publishes is DURABILITY LANGUAGE rather than warranty — a steel-reinforced timber frame that will 'stay solid for decades', twenty years of experience, a general satisfaction statement. ATLAS DOES NOT CONVERT MARKETING LONGEVITY INTO A WARRANTY CLASSIFICATION. The widest turnkey scope in the catalogue has no published guarantee attached to any part of it. SECOND, NO AREA, DIMENSION OR HEIGHT is readable for any product in this range, so the exemption cannot be tested. HOMEOWNER IMPLICATION: at the free site visit, ask exactly what is guaranteed and for how long — and get the external footprint.\n\nUPDATE 13 Nov 2026 (founder-approved correction; supersedes the retrieval-limitation and no-area statements above): the supplier's site is now read directly. It publishes a typical size band of 10–15 m² for this room type and a turnkey starting price of €24,000 plus VAT (VAT rate not stated); coverage Dublin and Leinster (named county pages: Dublin, Wicklow, Kildare, Meath, Louth). Warranty: still none published."
+   }
+  },
+  {
+   "id": "recXe2z5O02lquFXY",
+   "createdTime": "2026-08-29T08:30:57.000Z",
+   "fields": {
+    "Product Feature Value Name": "Modern Garden Office — Best For",
+    "Product": [
+     "recSpzyQeSlo8yylE"
+    ],
+    "Evidence Scope": "Product-Specific",
+    "Feature": [
+     "rec4qUjgmhMIJHnPW"
+    ],
+    "Source Notes": "Certified Insulation record recYvqfYsPvPFVLm1 (HIGHEST SPECIFICATION IN ATLAS TO DATE) and certified AM-006 Planning record recPqGp91g4gnYnYC (retrieval failure, not evidenced absence). S.I. 338 of 2026 (Tier A).",
+    "Value Text": "THE HIGHEST INSULATION SPECIFICATION HELD ANYWHERE IN ATLAS — 150 mm of total wall insulation: 50 mm foil-faced rigid board plus 100 mm high-density Earthwool, with a ceiling of 150 mm Earthwool plus 62 mm rigid insulated plasterboard, framed construction and solid cedar cladding. THAT EXCEEDS EVERY OTHER GARDEN ROOM SPECIFICATION CURRENTLY HELD: six times Quick-Garden's insulated Twin Skin, and above Loghouse ECO and Concept Modular. THE PLANNING POSITION CANNOT BE TESTED — no area, no dimensions and no derivable footprint are held, and nothing has been estimated, because moderngardenrooms.ie is client-rendered and returns an empty body to direct fetch. HOMEOWNER IMPLICATION: genuinely suitable for year-round daily office use in an Irish winter — telephone them for the footprint.\n\nUPDATE 13 Nov 2026 (founder-approved correction; supersedes the retrieval-limitation and no-area statements above): the supplier's site is now read directly. It publishes a typical size band of 10–15 m² for this room type and a turnkey starting price of €24,000 plus VAT (VAT rate not stated); coverage Dublin and Leinster (named county pages: Dublin, Wicklow, Kildare, Meath, Louth). Warranty: still none published."
+   }
+  },
+  {
+   "id": "recXkfIPCQHmZhxYA",
+   "createdTime": "2026-08-27T02:32:13.000Z",
+   "fields": {
+    "Product": [
+     "recBW2vBPcT0kOT1o"
+    ],
+    "Evidence Scope": "Organisation-Wide",
+    "Feature": [
+     "recg0JcV50OWdCi0Q"
+    ],
+    "Value Text": "Fully insulated for year-round use: 100mm thermal/sound insulation + 50mm rigid insulation in both walls and roof, plus 100mm Kingspan rigid floor insulation over treated joists. A-rated BER achieved as standard.",
+    "Sources": [
+     "recikVPAUY4ZhAlBn"
+    ]
+   }
+  },
+  {
+   "id": "recYKbpMW3OjzKDm9",
+   "createdTime": "2026-08-08T15:31:04.000Z",
+   "fields": {
+    "Product Feature Value Name": "Modern Modular Garden Room — Insulation Status",
+    "Product": [
+     "recGMPCzZKWL0MO10"
+    ],
+    "Feature": [
+     "recg0JcV50OWdCi0Q"
+    ],
+    "Value Text": "Fully insulated: 100mm stud-wall thermal/sound insulation plus 50mm additional rigid insulation in walls and roof; 100mm Kingspan rigid floor insulation; radon barrier and DPC in floor build-up",
+    "Status": "Verified",
+    "Sources": [
+     "rectV66a2LgXueGG8"
+    ]
+   }
+  },
+  {
+   "id": "recYvqfYsPvPFVLm1",
+   "createdTime": "2026-08-27T22:58:04.000Z",
+   "fields": {
+    "Product Feature Value Name": "Modern Garden Office — Insulation",
+    "Product": [
+     "recSpzyQeSlo8yylE"
+    ],
+    "Evidence Scope": "Organisation-Wide",
+    "Feature": [
+     "recBk7kjkYkVgvq5V"
+    ],
+    "Source Notes": "https://moderngardenrooms.ie/quality/ via search index, 2026-08-27 (Tier B — page body not directly fetched).",
+    "Value Text": "FULLY INSULATED — HIGHEST SPECIFICATION IN ATLAS TO DATE. Walls: 50mm foil-faced rigid insulation plus 100mm high-density Earthwool = 150mm total. Ceiling: 150mm Earthwool plus 62mm rigid insulated plasterboard. Framed construction, solid Cedar cladding, aluminium roof-level trim.\n\nNo U-values published, but the named materials have published conductivities, which makes this more independently checkable than most thermal claims in Atlas.\n\nHOMEOWNER IMPLICATION: genuinely suitable for year-round daily office use in an Irish winter. At 150mm wall insulation this exceeds every other Garden Room specification currently held — six times Quick-Garden's insulated Twin Skin and above Loghouse ECO and Concept Modular. The Earthwool layer is also specified as acoustically effective, which matters for a room used for calls."
+   }
+  },
+  {
+   "id": "recaFMtkcswRgUKkA",
+   "createdTime": "2026-08-29T08:30:57.000Z",
+   "fields": {
+    "Product Feature Value Name": "Modern Golf Simulator Room — Typical Homeowner",
+    "Product": [
+     "rec8yqq3yj2qFyU7T"
+    ],
+    "Evidence Scope": "Product-Specific",
+    "Feature": [
+     "recCbRB0fbtOi1gci"
+    ],
+    "Source Notes": "Derived from the SIP construction and height findings recorded in certified Thermal Usability recAzFWVjigk5xFdx and the certified Installation Model record recJsOkxzGfOVGYqH for Modern Garden Rooms.",
+    "Value Text": "A GOLFER WITH A GARDEN AND A SPECIFIC, MEASURABLE REQUIREMENT. This is not a garden room that happens to fit a simulator — it is designed around one, in a different panel system from the rest of the range, and that focus is the reason to choose it. THEY WILL BE MEASURING SWING CLEARANCE BEFORE ANYTHING ELSE, and the free site visit is where that gets settled. NOT FOR: a general workspace buyer, where the Office and Modular records are the intended products; nor for anyone who cannot get the internal height confirmed in writing."
+   }
+  },
+  {
+   "id": "recawkHC8RMhKQngM",
+   "createdTime": "2026-08-28T16:34:22.000Z",
+   "fields": {
+    "Product Feature Value Name": "Modern Modular Garden Room — Irish Availability (Supplier Status)",
+    "Product": [
+     "recGMPCzZKWL0MO10"
+    ],
+    "Evidence Scope": "Organisation-Wide",
+    "Feature": [
+     "reca3fzZcpdCqLXUv"
+    ],
+    "Source Notes": "https://moderngardenrooms.ie/garden-rooms-dublin/, /garden-rooms-wicklow/, /garden-rooms-kildare/, /garden-rooms-meath/, /garden-rooms-louth/ and /contact/, read directly in a browser, 13 Nov 2026. Tier A.",
+    "Value Text": "AVAILABLE IN REPUBLIC OF IRELAND: DUBLIN AND LEINSTER. Supplier's named county pages: Dublin, Wicklow, Kildare, Meath, Louth; contact page: 'Dublin, Wicklow, Kildare, Meath and the wider Leinster region' (read 13 Nov 2026). Homeowners outside these counties should confirm coverage."
+   }
+  },
+  {
+   "id": "reccWpwHOXOk4jB3A",
+   "createdTime": "2026-08-29T08:32:26.000Z",
+   "fields": {
+    "Product Feature Value Name": "Modern Garden Gym — Alternatives (Supplier Status)",
+    "Product": [
+     "recQhafVxkW46trn6"
+    ],
+    "Evidence Scope": "Product-Specific",
+    "Feature": [
+     "receJRZpSYorV3aYE"
+    ],
+    "Source Notes": "Comparators from live Atlas records: Cabin Master product records recvwcsiEDuC4FwYx, recCYqVXnF0MSxB8f and recapo48Ejtu6CnKk; Timber Living certified AM-006 recRmjImX8PyVn5Z8; certified Thermal Usability recAzFWVjigk5xFdx. Supplier status derived from the certified AM-006, Thermal Usability, Insulation, Installation Model, Warranty and Irish Availability layers for Modern Garden Rooms (rec913DRKTODUNVWC, recAzFWVjigk5xFdx, recYvqfYsPvPFVLm1, recSupAsDeRgqFGpd, recJsOkxzGfOVGYqH, rec6O79sjA32rvH8j, recEgpxiQ5PwKlSvE).",
+    "Value Text": "CABIN MASTER PUBLISHES DEDICATED GARDEN GYMS AT 4m × 3m, 5m × 3m AND 6m × 3m with real dimensions, and Timber Living's Laura publishes an eaves height of roughly 2.08 m with a 15-degree pitch — both let a buyer check clearance before contact. WITHIN THIS RANGE the Golf Simulator Room raises the same height question in SIP panels. HOMEOWNER IMPLICATION: for a gym, a published height beats an included foundation — unless you can get both. ——— SUPPLIER STATUS: MODERN GARDEN ROOMS — 5 Garden Room products — DECISION INTELLIGENCE LAYER COMPLETE. THE DEFINING FACT ABOUT THIS SUPPLIER IS A TECHNICAL ONE WITH REAL CONSEQUENCES: moderngardenrooms.ie IS CLIENT-RENDERED AND HAS RETURNED AN EMPTY BODY TO DIRECT FETCH ACROSS MULTIPLE SESSIONS AND MULTIPLE LAYERS. That single barrier now limits FOUR CERTIFIED ATLAS LAYERS at this supplier — it produced REQUIRES PRODUCT-SPECIFIC VERIFICATION on all five planning records, WARRANTY UNKNOWN in AM-004, and unverifiable coverage in AM-005 and AM-S01. NOT ONE OF THE FIVE PRODUCTS CARRIES A PUBLISHED AREA, DIMENSION OR HEIGHT, and nothing has been estimated. WHY THAT MATTERS MORE HERE THAN ELSEWHERE: this is a REAL IRISH COMPANY selling real products to Irish buyers — 190A Iveragh Road, Whitehall, Dublin 9, D09 RR2R, operating across Dublin and Leinster since 2008 — and Atlas can read almost nothing about it. AGAINST THAT, THE TWO POSITIVE POSITIONS ARE AMONG THE STRONGEST IN THE CATALOGUE. THERMALLY ALL FIVE ARE YEAR-ROUND INSULATED. The range standard is 100 mm insulated walls, insulated roof and a KINGSPAN floor as standard — the floor named by brand, which most competitors leave unstated — with cedar, larch or shiplap cladding over a breather membrane and the building handed over PLASTERED, WIRED, LIT AND READY TO FURNISH. Two products go further: the MODERN GARDEN OFFICE and MODERN GARDEN GUEST ROOM carry a recorded 150 mm total wall build-up (50 mm foil-faced rigid plus 100 mm high-density Earthwool) with a 150 mm Earthwool ceiling plus 62 mm rigid insulated plasterboard — THE HIGHEST INSULATION SPECIFICATION HELD ANYWHERE IN ATLAS, above Loghouse ECO and Concept Modular and roughly six times Quick-Garden's insulated Twin Skin — and the Guest Room adds 100 mm Kingspan floor insulation with a RADON BARRIER AND DPC. THE RANGE IS NOT THERMALLY UNIFORM: the GOLF SIMULATOR ROOM uses SIP PANELS rather than insulated timber frame, a meaningful internal difference since SIP has no repeating stud. INSTALLATION IS THE WIDEST TURNKEY SCOPE IN THE CATALOGUE: design, foundations, build, insulation, electrics and interior finish in one bespoke price, with sockets, LED lighting and heating included, quoted after a free site visit — and because FOUNDATIONS SIT INSIDE THE SCOPE the supplier absorbs the base risk most competitors pass to the buyer. THE COUNTERWEIGHT IS WARRANTY UNKNOWN: no term, scope, condition or claims procedure is published anywhere. The supplier offers DURABILITY LANGUAGE instead — a steel-reinforced timber frame that will 'stay solid for decades', twenty years of experience, a satisfaction statement — and ATLAS DOES NOT CONVERT MARKETING LONGEVITY INTO A WARRANTY CLASSIFICATION. The widest scope in the catalogue carries no published guarantee. TWO PRODUCTS TURN ON SOMETHING OTHER THAN AREA: the GUEST ROOM is excluded from Class 3 on HABITATION whatever its size, with Class 3A (32–45 m2) the only possible route and its 32 m2 floor meaning a smaller unit falls between both; and the GOLF SIMULATOR ROOM and GYM are constrained by INTERNAL CLEAR HEIGHT against a 3 m external cap, neither figure published. NO U-VALUE IS PUBLISHED FOR ANY ELEMENT OR ANY PRODUCT. NOTHING WAS ESTIMATED AND NO RANKING WAS CREATED WHERE THE EVIDENCE CANNOT DISTINGUISH. NO NEW OUTSTANDING INTEGRITY ISSUE RAISED.\n\nUPDATE 13 Nov 2026 (founder-approved correction; supersedes the retrieval-limitation and no-area statements above): the supplier's site is now read directly. It publishes a typical size band of 15–25 m² for this room type and a turnkey starting price of €32,000 plus VAT (VAT rate not stated); coverage Dublin and Leinster (named county pages: Dublin, Wicklow, Kildare, Meath, Louth). Warranty: still none published."
+   }
+  },
+  {
+   "id": "recczCtwKpQO7wSGq",
+   "createdTime": "2026-08-27T02:32:13.000Z",
+   "fields": {
+    "Product": [
+     "rec8yqq3yj2qFyU7T"
+    ],
+    "Evidence Scope": "Organisation-Wide",
+    "Feature": [
+     "recFUIfZaPwsAVmD5"
+    ],
+    "Value Text": "Concrete base and radon barrier are provided as standard as part of Modern Garden Rooms' own on-site build process (bespoke builder, not a self-assembly kit) — divergent from the foundation-excluded-by-default pattern seen at most other Atlas suppliers.",
+    "Sources": [
+     "recikVPAUY4ZhAlBn"
+    ]
+   }
+  },
+  {
+   "id": "receANYSCnklezR14",
+   "createdTime": "2026-08-29T08:30:57.000Z",
+   "fields": {
+    "Product Feature Value Name": "Modern Garden Guest Room — Considerations",
+    "Product": [
+     "recBW2vBPcT0kOT1o"
+    ],
+    "Evidence Scope": "Product-Specific",
+    "Feature": [
+     "recLqiSNjhe7rt42A"
+    ],
+    "Source Notes": "Certified AM-006 rec9l1tbG1bmPxKf9; certified Insulation recSupAsDeRgqFGpd (explicit caution recorded); certified Warranty recPgtB4cUohKIarN; certified AM-006 supplier-status record rec913DRKTODUNVWC (four layers limited by one retrieval barrier).",
+    "Value Text": "DO NOT TREAT 'GUEST ROOM' AS CONFIRMATION THAT OVERNIGHT USE IS PERMITTED. The certified layers say it directly: overnight sleeping accommodation in a garden building carries planning and regulatory implications in Ireland that are DISTINCT FROM THERMAL PERFORMANCE, and a good insulation specification is not consent. SECOND, WARRANTY UNKNOWN — none published; and on a building that is heated and occupied overnight, the insulation and the heating installation are exactly the elements most worth having covered. THIRD, NO AREA, DIMENSION OR HEIGHT is readable, so even the Class 3A band cannot be tested. FOURTH, the retrieval failure at moderngardenrooms.ie now limits four certified Atlas layers at this supplier. HOMEOWNER IMPLICATION: this is a consent conversation with your local authority before it is a purchase.\n\nUPDATE 13 Nov 2026 (founder-approved correction; supersedes the retrieval-limitation and no-area statements above): the supplier's site is now read directly. It publishes a typical size band of 15–25 m² for this room type and a turnkey starting price of €32,000 plus VAT (VAT rate not stated); coverage Dublin and Leinster (named county pages: Dublin, Wicklow, Kildare, Meath, Louth). Warranty: still none published."
+   }
+  },
+  {
+   "id": "recfr226kqSpt4jwC",
+   "createdTime": "2026-08-29T08:30:57.000Z",
+   "fields": {
+    "Product Feature Value Name": "Modern Garden Guest Room — Strengths",
+    "Product": [
+     "recBW2vBPcT0kOT1o"
+    ],
+    "Evidence Scope": "Product-Specific",
+    "Feature": [
+     "rec2maLGgEgaQJ2AM"
+    ],
+    "Source Notes": "Certified Insulation record recSupAsDeRgqFGpd and Insulation Status record recFUQ3eDOhevytU7 (radon barrier and DPC recorded); certified Installation Model recJsOkxzGfOVGYqH; certified Thermal Usability rec7NUe3N27vQwdUu.",
+    "Value Text": "THE FABRIC IS SPECIFIED TO A STANDARD THAT ACTUALLY SUPPORTS OVERNIGHT USE IN AN IRISH WINTER: walls of 50 mm foil-faced rigid plus 100 mm high-density Earthwool, 150 mm in total; a ceiling of 150 mm Earthwool plus 62 mm rigid insulated plasterboard; 100 mm Kingspan rigid floor insulation; AND A RADON BARRIER AND DPC IN THE FLOOR BUILD-UP — details that belong to habitable construction rather than a garden shell, and that almost nothing else in this catalogue records. SOLID CEDAR CLADDING ON A FRAMED BUILD. THE TURNKEY SCOPE covers design, foundations, build, insulation, electrics and interior finish. NOT ESTABLISHED: no area, no dimensions, no height, no U-value, no published warranty, and no confirmed planning route.\n\nUPDATE 13 Nov 2026 (founder-approved correction; supersedes the retrieval-limitation and no-area statements above): the supplier's site is now read directly. It publishes a typical size band of 15–25 m² for this room type and a turnkey starting price of €32,000 plus VAT (VAT rate not stated); coverage Dublin and Leinster (named county pages: Dublin, Wicklow, Kildare, Meath, Louth). Warranty: still none published."
+   }
+  },
+  {
+   "id": "recg3gzJprmD5c6E2",
+   "createdTime": "2026-08-28T08:18:25.000Z",
+   "fields": {
+    "Product Feature Value Name": "Modern Garden Guest Room — Measurement Basis",
+    "Product": [
+     "recBW2vBPcT0kOT1o"
+    ],
+    "Evidence Scope": "Product-Specific",
+    "Feature": [
+     "rechP7fg3NRe4bWXD"
+    ],
+    "Source Notes": "moderngardenrooms.ie, read directly in a browser, 13 Nov 2026. Tier A.",
+    "Value Text": "TYPICAL SIZE BAND, NOT A FIXED AREA: 15–25 m² as published by the supplier for this room type (moderngardenrooms.ie/garden-room-cost/ and /garden-guest-rooms/, read 13 Nov 2026). Bespoke; DO NOT RANK on area."
+   }
+  },
+  {
+   "id": "rechP0yG96tXT65xE",
+   "createdTime": "2026-08-29T08:32:26.000Z",
+   "fields": {
+    "Product Feature Value Name": "Modern Garden Gym — Best For",
+    "Product": [
+     "recQhafVxkW46trn6"
+    ],
+    "Evidence Scope": "Product-Specific",
+    "Feature": [
+     "rec4qUjgmhMIJHnPW"
+    ],
+    "Source Notes": "Certified Installation Model record recJsOkxzGfOVGYqH (foundations inside scope; floor loading noted) and certified AM-006 supplier-status record rec913DRKTODUNVWC. S.I. 338 of 2026 (Tier A).",
+    "Value Text": "A GARDEN GYM FROM A BUILDER WHO PUTS THE FOUNDATIONS INSIDE THE PRICE — which matters more for this use than any other, because FLOOR LOADING IS REAL in a room holding weights and machines, and the supplier names ground conditions as a pricing factor rather than passing the base risk to the buyer. THE ROOM IS YEAR-ROUND INSULATED to the range standard: 100 mm insulated walls, insulated roof, Kingspan floor, handed over plastered, wired and lit. THE PLANNING POSITION CANNOT BE TESTED — no area, no dimensions and no height are held, and GYM USE MAKES INTERNAL CLEAR HEIGHT DECISION-CRITICAL. HOMEOWNER IMPLICATION: the base is handled; the height and the footprint are not published.\n\nUPDATE 13 Nov 2026 (founder-approved correction; supersedes the retrieval-limitation and no-area statements above): the supplier's site is now read directly. It publishes a typical size band of 15–25 m² for this room type and a turnkey starting price of €32,000 plus VAT (VAT rate not stated); coverage Dublin and Leinster (named county pages: Dublin, Wicklow, Kildare, Meath, Louth). Warranty: still none published."
+   }
+  },
+  {
+   "id": "rechXiAe7YuSVKl1p",
+   "createdTime": "2026-08-27T22:58:04.000Z",
+   "fields": {
+    "Product Feature Value Name": "Modern Garden Gym — Insulation",
+    "Product": [
+     "recQhafVxkW46trn6"
+    ],
+    "Evidence Scope": "Organisation-Wide",
+    "Feature": [
+     "recBk7kjkYkVgvq5V"
+    ],
+    "Source Notes": "https://moderngardenrooms.ie/quality/ via search index, 2026-08-27 (Tier B).",
+    "Value Text": "FULLY INSULATED. Walls: 50mm foil-faced rigid plus 100mm high-density Earthwool = 150mm total. Ceiling: 150mm Earthwool plus 62mm rigid insulated plasterboard. Framed construction, solid Cedar cladding.\n\nNo U-values published.\n\nHOMEOWNER IMPLICATION: the Earthwool layers are specified by the supplier as acoustically effective as well as thermal, which is directly relevant to gym use — dropped weights and machine noise are a common neighbour complaint. Among the better-suited gym specifications in Atlas on that basis."
+   }
+  },
+  {
+   "id": "rechZHblz8nNtFIyO",
+   "createdTime": "2026-08-27T02:32:13.000Z",
+   "fields": {
+    "Product": [
+     "recSpzyQeSlo8yylE"
+    ],
+    "Evidence Scope": "Organisation-Wide",
+    "Feature": [
+     "recFUIfZaPwsAVmD5"
+    ],
+    "Value Text": "Concrete base and radon barrier are provided as standard as part of Modern Garden Rooms' own on-site build process (bespoke builder, not a self-assembly kit) — divergent from the foundation-excluded-by-default pattern seen at most other Atlas suppliers.",
+    "Sources": [
+     "recikVPAUY4ZhAlBn"
+    ]
+   }
+  },
+  {
+   "id": "rechcHYM5Th1yGkog",
+   "createdTime": "2026-08-29T08:32:26.000Z",
+   "fields": {
+    "Product Feature Value Name": "Modern Modular Garden Room — Strengths",
+    "Product": [
+     "recGMPCzZKWL0MO10"
+    ],
+    "Evidence Scope": "Product-Specific",
+    "Feature": [
+     "rec2maLGgEgaQJ2AM"
+    ],
+    "Source Notes": "Certified Thermal Usability rec36T8M8kdFxDblV and the supplier-status record recAzFWVjigk5xFdx (Kingspan floor and handover scope drawn out); certified Installation Model recJsOkxzGfOVGYqH.",
+    "Value Text": "TWO THINGS IN THE STANDARD SPECIFICATION ARE WORTH DRAWING OUT. THE FLOOR IS NAMED BY BRAND — KINGSPAN, a rigid PIR board and the higher-performing insulation class in this catalogue — while most competitors leave the floor unstated or unspecified entirely. AND THE HANDOVER SCOPE MEANS PLASTERING, WIRING AND LIGHTING ARE INCLUDED, which very few suppliers include at all. A MODULAR APPROACH ALSO MEANS THE ROOM IS CONFIGURED TO THE BRIEF rather than picked from a fixed list. THE TURNKEY PRICE COVERS design, foundations, build, insulation, electrics and interior finish, priced after a free site visit. NOT ESTABLISHED: no area, dimensions or height, no U-value, roof insulation thickness not stated, wall insulation material not named, no published warranty.\n\nUPDATE 13 Nov 2026 (founder-approved correction; supersedes the retrieval-limitation statements above): the supplier's site is now read directly. This page publishes no price and no size band (price on request); the supplier's size-band starting prices belong to its room types. Coverage Dublin and Leinster (named county pages: Dublin, Wicklow, Kildare, Meath, Louth). Warranty: still none published."
+   }
+  },
+  {
+   "id": "recilE4Up09p6LjUY",
+   "createdTime": "2026-08-27T02:32:13.000Z",
+   "fields": {
+    "Product": [
+     "recSpzyQeSlo8yylE"
+    ],
+    "Evidence Scope": "Organisation-Wide",
+    "Feature": [
+     "recg0JcV50OWdCi0Q"
+    ],
+    "Value Text": "Fully insulated for year-round use: 100mm thermal/sound insulation + 50mm rigid insulation in both walls and roof, plus 100mm Kingspan rigid floor insulation over treated joists. A-rated BER achieved as standard.",
+    "Sources": [
+     "recikVPAUY4ZhAlBn"
+    ]
+   }
+  },
+  {
+   "id": "recimxVZZfgMShjRr",
+   "createdTime": "2026-08-29T08:32:26.000Z",
+   "fields": {
+    "Product Feature Value Name": "Modern Modular Garden Room — Alternatives",
+    "Product": [
+     "recGMPCzZKWL0MO10"
+    ],
+    "Evidence Scope": "Product-Specific",
+    "Feature": [
+     "receJRZpSYorV3aYE"
+    ],
+    "Source Notes": "Comparators from live Atlas records: certified Insulation recYvqfYsPvPFVLm1; Sprout Pod certified Installation Model recT98q23rGIXNh7K; Timber Living certified Installation Model recBO0w60PqKQNw9x and certified Warranty recnzgaVbhWb0XhED.",
+    "Value Text": "THE MODERN GARDEN OFFICE IN THE SAME RANGE CARRIES A HIGHER RECORDED WALL SPECIFICATION — 150 mm total against this record's 100 mm — so within one supplier the specification is not uniform and it is worth asking which applies. FOR A FINISHED ROOM WITH PUBLISHED FIGURES AND AN IRISH ROUTE, Sprout Pod delivers built, wired and heated with free island-wide installation, and Timber Living builds on site in two visits with delivery and VAT included and a 10-year guarantee. HOMEOWNER IMPLICATION: several Irish suppliers now hand over a finished room — compare on what is published, not only on what is included."
+   }
+  },
+  {
+   "id": "recjL4had5UnXmWHC",
+   "createdTime": "2026-08-28T12:12:18.000Z",
+   "fields": {
+    "Product Feature Value Name": "Modern Garden Rooms Modern Garden Office — Thermal Usability",
+    "Product": [
+     "recSpzyQeSlo8yylE"
+    ],
+    "Evidence Scope": "Range-Level",
+    "Feature": [
+     "rec10Lz687SU1gSnQ"
+    ],
+    "Source Notes": "https://moderngardenrooms.ie/ and https://moderngardenrooms.ie/modular-garden-rooms/ — not read directly this session; the 100 mm insulated walls, insulated roof, Kingspan floor, cladding options, breather membrane, handover scope and year-round claim attributed to moderngardenrooms.ie via search index, 2026-08-28. Tier B.",
+    "Value Text": "YEAR-ROUND INSULATED. Published for the Modern Garden Rooms range: '100mm insulated walls, insulated roof and Kingspan floor as standard', with cedar, larch or shiplap cladding over a breather membrane, and the building 'handed over plastered, wired, lit and ready to furnish'. The supplier states its rooms are 'fully insulated for year-round use' and that it has built bespoke garden rooms, offices, gyms and golf rooms across Dublin and Leinster since 2008. Timber-frame system erected on site in weeks. Nothing inferred. SITE ACCESS LIMITATION: moderngardenrooms.ie was not read directly this session; the specification is attributed to moderngardenrooms.ie via search index — Tier B. WHAT IS WELL DISCLOSED: the wall thickness is stated at 100 mm, the floor insulation is named by brand (Kingspan, a rigid PIR board — the higher-performing class in this catalogue), a breather membrane is specified, and the handover includes plastering, wiring and lighting, so the quoted building is a finished room rather than a shell. LIMITATIONS: no U-value is published for any element, no roof insulation thickness is given, and the wall insulation material is not named — only the Kingspan floor is. HOMEOWNER IMPLICATION: winter-capable and finished as delivered. Ask for the wall insulation material and the U-values."
+   }
+  },
+  {
+   "id": "recjRISfB0mzIV7Wt",
+   "createdTime": "2026-08-29T08:30:57.000Z",
+   "fields": {
+    "Product Feature Value Name": "Modern Garden Guest Room — Best For",
+    "Product": [
+     "recBW2vBPcT0kOT1o"
+    ],
+    "Evidence Scope": "Product-Specific",
+    "Feature": [
+     "rec4qUjgmhMIJHnPW"
+    ],
+    "Source Notes": "Certified AM-006 Planning record rec9l1tbG1bmPxKf9 (use decisive, not area) and the certified Thermal Usability record rec7NUe3N27vQwdUu. S.I. 338 of 2026 and Class 3A provisions (Tier A).",
+    "Value Text": "THE AREA TEST IS NOT THE DECISIVE ONE HERE — THE USE IS. A GUEST ROOM implies sleeping accommodation, and the Class 3 garden-structure exemption requires INCIDENTAL USE WITH NO HUMAN HABITATION: sleeping accommodation is excluded REGARDLESS OF SIZE, so obtaining the footprint would not by itself resolve this product's position. THE CLASS 3A AUXILIARY-DWELLING ROUTE may be the applicable one — 32 to 45 m2, to the rear, linked services, 14 days' notice, expiring 31 December 2030 — but qualification is undetermined, and its 32 m2 FLOOR means a smaller unit falls between both routes with neither available. HOMEOWNER IMPLICATION: if guests will sleep in it, this is not an exempt garden room — establish the consent route first."
+   }
+  },
+  {
+   "id": "reckgXruC5WgazdtQ",
+   "createdTime": "2026-08-29T08:30:57.000Z",
+   "fields": {
+    "Product Feature Value Name": "Modern Garden Guest Room — Alternatives",
+    "Product": [
+     "recBW2vBPcT0kOT1o"
+    ],
+    "Evidence Scope": "Product-Specific",
+    "Feature": [
+     "receJRZpSYorV3aYE"
+    ],
+    "Source Notes": "Comparators from live Atlas records: certified Insulation recYvqfYsPvPFVLm1 (Modern Garden Office); Granny Flats Dublin certified AM-006 layer; Big Man Tiny Homes product records recZ6pZ6RaNh7obdA and rec4OC6kubh7Nu0zy.",
+    "Value Text": "FOR AN INCIDENTAL ROOM RATHER THAN SLEEPING ACCOMMODATION, the Modern Garden Office in the same range carries the identical 150 mm wall specification and raises no habitation question. FOR ACCOMMODATION PROPERLY ADDRESSED, Granny Flats Dublin works the Class 3A route directly across three distinct positions, and Big Man Tiny Homes offers office units with bathroom and kitchenette. HOMEOWNER IMPLICATION: the two planning routes are different products, not different sizes — decide which one you are on before choosing a supplier."
+   }
+  },
+  {
+   "id": "reclUq9jInsjOraES",
+   "createdTime": "2026-08-29T08:30:57.000Z",
+   "fields": {
+    "Product Feature Value Name": "Modern Garden Office — Typical Homeowner",
+    "Product": [
+     "recSpzyQeSlo8yylE"
+    ],
+    "Evidence Scope": "Product-Specific",
+    "Feature": [
+     "recCbRB0fbtOi1gci"
+    ],
+    "Source Notes": "Derived from the certified Insulation record recYvqfYsPvPFVLm1, the certified Installation Model record recJsOkxzGfOVGYqH and the certified Warranty record rec6O79sjA32rvH8j for Modern Garden Rooms.",
+    "Value Text": "SOMEONE WHOSE WORK DEPENDS ON THE ROOM AND WHO WANTS ONE CONTRACTOR TO DELIVER ALL OF IT. A Dublin household replacing a spare bedroom with a properly insulated, plastered, wired and heated office — and who values acoustic performance because they are on calls all day. THEY WILL HAVE A FREE SITE VISIT and should use it to settle the two things the website cannot: the footprint and the guarantee. NOT FOR: a buyer who needs to compare specifications online before making contact, since nothing measurable is readable; nor for anyone who requires a written warranty before committing."
+   }
+  },
+  {
+   "id": "recmEnhiiZniCXJkn",
+   "createdTime": "2026-08-28T18:08:26.000Z",
+   "fields": {
+    "Product Feature Value Name": "Modern Golf Simulator Room — Planning Considerations",
+    "Product": [
+     "rec8yqq3yj2qFyU7T"
+    ],
+    "Evidence Scope": "Product-Specific",
+    "Feature": [
+     "rec1dPnBk2TccKO20"
+    ],
+    "Source Notes": "https://www.gov.ie/en/department-of-housing-local-government-and-heritage/publications/planning-and-development-exempted-development-act-of-2000-regulations-2026-si-338-of-2026/ — S.I. 338 of 2026. Tier A. Plus the certified AM-001 Measurement Basis record for this product.",
+    "Value Text": "REQUIRES PRODUCT-SPECIFIC VERIFICATION ON FLOOR AREA. 30 m2 combined back-garden allowance (raised from 25 m2 on 27 July 2026); behind the front wall, 25 m2 private open space retained, incidental use, NO HUMAN HABITATION. The certified AM-001 layer holds no area and no dimensions; nothing estimated. RETRIEVAL LIMITATION: moderngardenrooms.ie is client-rendered and returned an empty body to direct fetch. HEIGHT IS THE BINDING CONDITION FOR THIS PRODUCT TYPE: a golf simulator needs substantial internal clear height for a full swing and ball flight, and the exemption caps EXTERNAL height at 3 m for a flat or non-tiled roof, 4 m for a tiled or slated pitched roof. No height is held. HOMEOWNER IMPLICATION: get the internal clear height AND the external ridge height before anything else — on this product height is more likely than area to decide the planning route.\n\nUPDATE 13 Nov 2026 (founder-approved correction; supersedes the retrieval-limitation and no-area statements above): the supplier's site is now read directly. It publishes a typical size band of 25–30 m² for this room type and a turnkey starting price of €50,000 plus VAT (VAT rate not stated); coverage Dublin and Leinster (named county pages: Dublin, Wicklow, Kildare, Meath, Louth). Warranty: still none published. PLANNING: on the published band (25–30 m²) the room falls within the 30 m² rear-garden exemption (S.I. No. 338 of 2026), subject to the combined-structures total and the usual height, siting and open-space conditions; not a permanent residence."
+   }
+  },
+  {
+   "id": "recn0ARgfocvqoXTJ",
+   "createdTime": "2026-08-29T08:30:57.000Z",
+   "fields": {
+    "Product Feature Value Name": "Modern Garden Office — Alternatives",
+    "Product": [
+     "recSpzyQeSlo8yylE"
+    ],
+    "Evidence Scope": "Product-Specific",
+    "Feature": [
+     "receJRZpSYorV3aYE"
+    ],
+    "Source Notes": "Comparators from live Atlas records: certified Thermal Usability rec36T8M8kdFxDblV and recAzFWVjigk5xFdx; Pineca certified Thermal Usability recssFUUHGGnuU25p; Timber Living certified AM-001 recgxJpzJpcpaUeiT and certified Warranty recnzgaVbhWb0XhED.",
+    "Value Text": "WITHIN THIS RANGE THE MODULAR GARDEN ROOM SHARES THE 100 mm INSULATED STANDARD and the Golf Simulator Room uses SIP panels, so the range is not thermally uniform. FOR A PUBLISHED U-VALUE AND A TESTABLE AREA, Pineca's High-Quality Insulation Office states 0.156 W/(m2K) with a 15 m2 nominal size, and Timber Living's Sunny publishes four sizes with a 93 mm insulated frame and a 10-year guarantee from practical completion. HOMEOWNER IMPLICATION: this specification is probably the best in the Atlas — but Pineca lets you prove it and this supplier does not."
+   }
+  },
+  {
+   "id": "recnAm2a9WoLPwkOA",
+   "createdTime": "2026-08-29T08:32:26.000Z",
+   "fields": {
+    "Product Feature Value Name": "Modern Garden Gym — Typical Homeowner",
+    "Product": [
+     "recQhafVxkW46trn6"
+    ],
+    "Evidence Scope": "Product-Specific",
+    "Feature": [
+     "recCbRB0fbtOi1gci"
+    ],
+    "Source Notes": "Derived from the certified Installation Model record recJsOkxzGfOVGYqH (foundations inside scope, floor loading) and the certified AM-006 height finding rec913DRKTODUNVWC for Modern Garden Rooms.",
+    "Value Text": "SOMEONE TRAINING SERIOUSLY ENOUGH THAT THE FLOOR AND THE CEILING BOTH MATTER. A Dublin or Leinster household putting real equipment into a garden building, who wants the foundations designed rather than guessed and the power installed rather than added later — and who will use the free site visit to settle the clear height. NOT FOR: a buyer who needs the specification and dimensions from a website; nor for anyone whose training needs a published ceiling height before they will commit."
+   }
+  },
+  {
+   "id": "recnBSPA3PFBXw7bY",
+   "createdTime": "2026-08-27T02:32:13.000Z",
+   "fields": {
+    "Product": [
+     "recQhafVxkW46trn6"
+    ],
+    "Evidence Scope": "Organisation-Wide",
+    "Feature": [
+     "recg0JcV50OWdCi0Q"
+    ],
+    "Value Text": "Fully insulated for year-round use: 100mm thermal/sound insulation + 50mm rigid insulation in both walls and roof, plus 100mm Kingspan rigid floor insulation over treated joists. A-rated BER achieved as standard.",
+    "Sources": [
+     "recikVPAUY4ZhAlBn"
+    ]
+   }
+  },
+  {
+   "id": "recoNXvoa7qrFQXTW",
+   "createdTime": "2026-08-28T13:44:12.000Z",
+   "fields": {
+    "Product Feature Value Name": "Modern Garden Gym — Warranty",
+    "Product": [
+     "recQhafVxkW46trn6"
+    ],
+    "Evidence Scope": "Organisation-Wide",
+    "Feature": [
+     "recUnkwdqsry8Qpwn"
+    ],
+    "Source Notes": "https://moderngardenrooms.ie/ and https://moderngardenrooms.ie/quality/ — domain-restricted search 2026-08-28 returned no warranty terms. Evidenced absence. EVIDENCE TIER: Tier B for the absence; no warranty source URL exists.",
+    "Value Text": "WARRANTY UNKNOWN. DURATION: none published. No warranty term, scope or conditions located across the supplier's published pages; durability language only. Nothing inferred. HOMEOWNER IMPLICATION: a gym puts sustained load on the floor structure, and there is no published guarantee covering it. Raise it at the free site visit.\n\nRechecked 13 Nov 2026: still none published (home, cost, specifications, quality, room-type, county and contact pages read directly)."
+   }
+  },
+  {
+   "id": "recoelE9flUpigOE1",
+   "createdTime": "2026-08-08T15:31:04.000Z",
+   "fields": {
+    "Product Feature Value Name": "Modern Garden Gym — Insulation Status",
+    "Product": [
+     "recQhafVxkW46trn6"
+    ],
+    "Feature": [
+     "recg0JcV50OWdCi0Q"
+    ],
+    "Value Text": "Fully insulated: 100mm stud-wall thermal/sound insulation plus 50mm additional rigid insulation in walls and roof; 100mm Kingspan rigid floor insulation; radon barrier and DPC in floor build-up",
+    "Status": "Verified",
+    "Sources": [
+     "rectV66a2LgXueGG8"
+    ]
+   }
+  },
+  {
+   "id": "recok50jZbpqzCI9W",
+   "createdTime": "2026-08-28T16:34:22.000Z",
+   "fields": {
+    "Product Feature Value Name": "Modern Garden Guest Room — Irish Availability",
+    "Product": [
+     "recBW2vBPcT0kOT1o"
+    ],
+    "Evidence Scope": "Organisation-Wide",
+    "Feature": [
+     "reca3fzZcpdCqLXUv"
+    ],
+    "Source Notes": "https://moderngardenrooms.ie/garden-rooms-dublin/, /garden-rooms-wicklow/, /garden-rooms-kildare/, /garden-rooms-meath/, /garden-rooms-louth/ and /contact/, read directly in a browser, 13 Nov 2026. Tier A.",
+    "Value Text": "AVAILABLE IN REPUBLIC OF IRELAND: DUBLIN AND LEINSTER. Supplier's named county pages: Dublin, Wicklow, Kildare, Meath, Louth; contact page: 'Dublin, Wicklow, Kildare, Meath and the wider Leinster region' (read 13 Nov 2026). Homeowners outside these counties should confirm coverage."
+   }
+  },
+  {
+   "id": "recp7XTUb2KIWhwsH",
+   "createdTime": "2026-08-28T12:12:18.000Z",
+   "fields": {
+    "Product Feature Value Name": "Modern Garden Rooms Modern Garden Gym — Thermal Usability",
+    "Product": [
+     "recQhafVxkW46trn6"
+    ],
+    "Evidence Scope": "Range-Level",
+    "Feature": [
+     "rec10Lz687SU1gSnQ"
+    ],
+    "Source Notes": "https://moderngardenrooms.ie/ — not read directly; range specification attributed to moderngardenrooms.ie via search index, 2026-08-28. Tier B.",
+    "Value Text": "YEAR-ROUND INSULATED. Modern Garden Rooms range specification: 100 mm insulated walls, insulated roof and Kingspan floor as standard; breather membrane; plastered, wired and lit on handover; fully insulated for year-round use. Nothing inferred. Site access limitation: indexed evidence — Tier B. LIMITATIONS: no U-value published; wall insulation material not named. NOTE FOR GYM USE: the Kingspan floor matters here — a rigid insulated floor is stiffer underfoot than an insulated void and better suited to weights and machines. Ventilation and moisture control are not addressed in the published specification and should be raised, since exercise puts a heavy moisture load into a small sealed room."
+   }
+  },
+  {
+   "id": "recr9EA6xBrll678N",
+   "createdTime": "2026-08-08T15:31:04.000Z",
+   "fields": {
+    "Product Feature Value Name": "Modern Garden Office — Insulation Status",
+    "Product": [
+     "recSpzyQeSlo8yylE"
+    ],
+    "Feature": [
+     "recg0JcV50OWdCi0Q"
+    ],
+    "Value Text": "Fully insulated: 100mm stud-wall thermal/sound insulation plus 50mm additional rigid insulation in walls and roof; 100mm Kingspan rigid floor insulation; radon barrier and DPC in floor build-up",
+    "Status": "Verified",
+    "Sources": [
+     "rectV66a2LgXueGG8"
+    ]
+   }
+  },
+  {
+   "id": "recuEkKiu86v3GYMa",
+   "createdTime": "2026-08-28T12:40:04.000Z",
+   "fields": {
+    "Product Feature Value Name": "Modern Garden Office — Installation Model",
+    "Product": [
+     "recSpzyQeSlo8yylE"
+    ],
+    "Evidence Scope": "Organisation-Wide",
+    "Feature": [
+     "rec9qV0dfO5jgZ6KP"
+    ],
+    "Source Notes": "https://moderngardenrooms.ie/garden-room-cost/ — supplier's published turnkey scope covering design, foundations, build, insulation, electrics and interior finish, the named inclusions of sockets, LED lighting and heating, the bespoke-pricing statement and the free site visit; attributed via search index 2026-08-28, Tier B (page body not read this run).",
+    "Value Text": "TURNKEY INSTALLATION INCLUDED. Recorded as published: the supplier quotes a turnkey price covering design, foundations, the build, insulation, electrics and the interior finish — the quoted figure is the finished room rather than a starting shell. Sockets, LED lighting, heating and the interior finish are named as included in a turnkey build. Every room is bespoke: the supplier publishes starting prices by size band, plus VAT, and states that the written quote after a free site visit is the final figure; the supplier offers a free site visit followed by a written quotation with no obligation. Pricing is stated to depend on footprint, whether the room is fully insulated for year-round use, glazing choices, and ground conditions and access affecting base preparation. Nothing inferred. WHY THIS IS THE MOST COMPLETE SCOPE RECORDED IN THE LAYER SO FAR: foundations, insulation, electrics AND interior finish inside one price. Green Retreats includes base and installation; Cabin Master includes foundations, build, insulation and electrics; My Garden Room excludes base, insulation and electrics. Modern Garden Rooms carries all of it and finishes the interior as well. HOMEOWNER IMPLICATION: there is no headline figure to compare, and that is the trade-off — the quotation is complete but only obtainable by site visit. When comparing against a supplier who publishes a low 'from' price, ask that supplier to add foundations, insulation, electrics and interior finish before treating the two numbers as equivalent.\n\n13 Nov 2026 (founder-approved correction): the supplier's published turnkey scope (moderngardenrooms.ie/garden-room-cost/, read 13 Nov 2026) also names heating, and guttering, drainage and external finishing, as included."
+   }
+  },
+  {
+   "id": "recwZZhnHYie1NV73",
+   "createdTime": "2026-08-28T08:21:30.000Z",
+   "fields": {
+    "Product Feature Value Name": "Modern Modular Garden Room — Measurement Basis",
+    "Product": [
+     "recGMPCzZKWL0MO10"
+    ],
+    "Evidence Scope": "Product-Specific",
+    "Feature": [
+     "rechP7fg3NRe4bWXD"
+    ],
+    "Source Notes": "moderngardenrooms.ie, read directly in a browser, 13 Nov 2026. Tier A.",
+    "Value Text": "No size band published for this page (moderngardenrooms.ie/modular-garden-rooms/, read 13 Nov 2026); bespoke; DO NOT RANK."
+   }
+  },
+  {
+   "id": "recwd1KOf8Y0yChiY",
+   "createdTime": "2026-08-29T08:30:57.000Z",
+   "fields": {
+    "Product Feature Value Name": "Modern Golf Simulator Room — Alternatives",
+    "Product": [
+     "rec8yqq3yj2qFyU7T"
+    ],
+    "Evidence Scope": "Product-Specific",
+    "Feature": [
+     "receJRZpSYorV3aYE"
+    ],
+    "Source Notes": "Comparators from live Atlas records: certified AM-006 rec913DRKTODUNVWC; Cabin Master product records recvwcsiEDuC4FwYx, recCYqVXnF0MSxB8f and recapo48Ejtu6CnKk; Timber Living certified AM-006 recRmjImX8PyVn5Z8.",
+    "Value Text": "WITHIN THE RANGE, THE MODERN GARDEN GYM IS THE OTHER SPORTING-USE RECORD and carries the same unresolved internal-height question. OUTSIDE IT, Cabin Master publishes Garden Gyms at 4m × 3m, 5m × 3m and 6m × 3m with real dimensions, and Timber Living's Laura publishes an eaves height of approximately 2.08 m with a roughly 15-degree pitch — which is exactly the kind of figure a simulator buyer needs. HOMEOWNER IMPLICATION: for any swing-clearance use, a supplier who publishes heights is worth more than one who publishes a panel system."
+   }
+  },
+  {
+   "id": "recwfBa0SlaWaeKNK",
+   "createdTime": "2026-08-28T08:55:18.000Z",
+   "fields": {
+    "Product Feature Value Name": "Modern Garden Office — Measurement Basis",
+    "Product": [
+     "recSpzyQeSlo8yylE"
+    ],
+    "Evidence Scope": "Product-Specific",
+    "Feature": [
+     "rechP7fg3NRe4bWXD"
+    ],
+    "Source Notes": "moderngardenrooms.ie, read directly in a browser, 13 Nov 2026. Tier A.",
+    "Value Text": "TYPICAL SIZE BAND, NOT A FIXED AREA: 10–15 m² as published by the supplier for this room type (moderngardenrooms.ie/garden-room-cost/ and /garden-office/, read 13 Nov 2026). Bespoke; DO NOT RANK on area."
+   }
+  },
+  {
+   "id": "recwo8ZVIjM5LzU3K",
+   "createdTime": "2026-08-29T08:30:57.000Z",
+   "fields": {
+    "Product Feature Value Name": "Modern Golf Simulator Room — Considerations",
+    "Product": [
+     "rec8yqq3yj2qFyU7T"
+    ],
+    "Evidence Scope": "Product-Specific",
+    "Feature": [
+     "recLqiSNjhe7rt42A"
+    ],
+    "Source Notes": "Certified Thermal Usability recAzFWVjigk5xFdx (height must be confirmed separately from the thermal question); certified AM-006 supplier-status rec913DRKTODUNVWC; certified Warranty rec6O79sjA32rvH8j.",
+    "Value Text": "THE EXTERNAL HEIGHT CAP AND THE INTERNAL SWING CLEARANCE PULL IN OPPOSITE DIRECTIONS, AND NEITHER FIGURE IS PUBLISHED. A flat or non-tiled roof is limited to 3 m externally; a full driver swing needs a real internal clear height; and the floor, ceiling and roof build-up sit between the two. THAT IS THE WHOLE PROBLEM WITH THIS PRODUCT AND ATLAS CANNOT RESOLVE IT — nothing has been estimated. SECOND, NO AREA OR DIMENSIONS are readable for any product in this range. THIRD, WARRANTY UNKNOWN — none published for any part of the turnkey scope. FOURTH, no U-value is published for the SIP system. HOMEOWNER IMPLICATION: ask for the internal clear height AND the external ridge height in the same sentence.\n\nUPDATE 13 Nov 2026 (founder-approved correction; supersedes the retrieval-limitation and no-area statements above): the supplier's site is now read directly. It publishes a typical size band of 25–30 m² for this room type and a turnkey starting price of €50,000 plus VAT (VAT rate not stated); coverage Dublin and Leinster (named county pages: Dublin, Wicklow, Kildare, Meath, Louth). Warranty: still none published."
+   }
+  },
+  {
+   "id": "recx6mq5LQTXTWtuT",
+   "createdTime": "2026-08-28T12:40:04.000Z",
+   "fields": {
+    "Product Feature Value Name": "Modern Garden Guest Room — Installation Model",
+    "Product": [
+     "recBW2vBPcT0kOT1o"
+    ],
+    "Evidence Scope": "Organisation-Wide",
+    "Feature": [
+     "rec9qV0dfO5jgZ6KP"
+    ],
+    "Source Notes": "https://moderngardenrooms.ie/garden-room-cost/ — published turnkey scope, attributed via search index 2026-08-28, Tier B.",
+    "Value Text": "TURNKEY INSTALLATION INCLUDED. Turnkey price covers design, foundations, build, insulation, electrics and interior finish; bespoke, priced after a free site visit. Nothing inferred. HOMEOWNER IMPLICATION: a guest room is used overnight, so the insulation and heating inside the turnkey scope are the difference between a usable room and a cold one. Confirm at quotation whether any water or drainage connection is within scope, since the published scope names electrics but not plumbing."
+   }
+  },
+  {
+   "id": "recxh3307eq5gXqMe",
+   "createdTime": "2026-08-08T15:31:04.000Z",
+   "fields": {
+    "Product Feature Value Name": "Modern Golf Simulator Room — Insulation Status",
+    "Product": [
+     "rec8yqq3yj2qFyU7T"
+    ],
+    "Feature": [
+     "recg0JcV50OWdCi0Q"
+    ],
+    "Value Text": "Fully insulated: 100mm stud-wall thermal/sound insulation plus 50mm additional rigid insulation in walls and roof; 100mm Kingspan rigid floor insulation; radon barrier and DPC in floor build-up",
+    "Status": "Verified",
+    "Sources": [
+     "rectV66a2LgXueGG8"
+    ]
+   }
+  },
+  {
+   "id": "recyfag9Yh260Fhms",
+   "createdTime": "2026-08-29T08:32:26.000Z",
+   "fields": {
+    "Product Feature Value Name": "Modern Garden Gym — Considerations",
+    "Product": [
+     "recQhafVxkW46trn6"
+    ],
+    "Evidence Scope": "Product-Specific",
+    "Feature": [
+     "recLqiSNjhe7rt42A"
+    ],
+    "Source Notes": "Certified AM-006 supplier-status record rec913DRKTODUNVWC (gym height decision-critical; retrieval failure recorded); certified Warranty rec6O79sjA32rvH8j; certified Irish Availability recEgpxiQ5PwKlSvE.",
+    "Value Text": "GYM USE MAKES INTERNAL CLEAR HEIGHT DECISION-CRITICAL AND NO HEIGHT IS HELD — not internal, not external. Overhead presses, a rack, a rowing machine on a raised floor: all of them turn on a figure this supplier does not publish, and the external cap is 3 m for a flat or non-tiled roof. SECOND, NO AREA OR DIMENSIONS are readable for any product in the range. THIRD, WARRANTY UNKNOWN — none published, on a room whose electrics and heating are inside the supplier's own scope. FOURTH, the underlying cause is a standing retrieval failure: moderngardenrooms.ie is client-rendered and has returned an empty body across multiple sessions, now limiting four certified layers. HOMEOWNER IMPLICATION: measure your tallest lift, then ask for the internal height.\n\nUPDATE 13 Nov 2026 (founder-approved correction; supersedes the retrieval-limitation and no-area statements above): the supplier's site is now read directly. It publishes a typical size band of 15–25 m² for this room type and a turnkey starting price of €32,000 plus VAT (VAT rate not stated); coverage Dublin and Leinster (named county pages: Dublin, Wicklow, Kildare, Meath, Louth). Warranty: still none published."
+   }
+  },
+  {
+   "id": "recymW7E9Y6bItC2I",
+   "createdTime": "2026-08-28T08:55:18.000Z",
+   "fields": {
+    "Product Feature Value Name": "Modern Garden Gym — Measurement Basis",
+    "Product": [
+     "recQhafVxkW46trn6"
+    ],
+    "Evidence Scope": "Organisation-Wide",
+    "Feature": [
+     "rechP7fg3NRe4bWXD"
+    ],
+    "Source Notes": "moderngardenrooms.ie, read directly in a browser, 13 Nov 2026. Tier A.",
+    "Value Text": "TYPICAL SIZE BAND, NOT A FIXED AREA: 15–25 m² as published by the supplier for this room type (moderngardenrooms.ie/garden-room-cost/ and /garden-gym-rooms/, read 13 Nov 2026). Bespoke; DO NOT RANK on area."
+   }
+  },
+  {
+   "id": "reczXJx1AYxr7paZm",
+   "createdTime": "2026-08-29T08:30:57.000Z",
+   "fields": {
+    "Product Feature Value Name": "Modern Garden Office — Strengths",
+    "Product": [
+     "recSpzyQeSlo8yylE"
+    ],
+    "Evidence Scope": "Product-Specific",
+    "Feature": [
+     "rec2maLGgEgaQJ2AM"
+    ],
+    "Source Notes": "Certified Insulation recYvqfYsPvPFVLm1; certified Installation Model recJsOkxzGfOVGYqH (turnkey scope; foundations inside scope); certified Irish Availability recUJmnWfuaTnuDQ6; certified Electrical Included record recN0YDEaUBLMntSL.",
+    "Value Text": "NO U-VALUES ARE PUBLISHED, BUT THE NAMED MATERIALS HAVE PUBLISHED CONDUCTIVITIES — WHICH MAKES THIS MORE INDEPENDENTLY CHECKABLE THAN MOST THERMAL CLAIMS IN ATLAS. The Earthwool layer is also specified as acoustically effective, which matters for a room used for calls. THE TURNKEY SCOPE IS THE WIDEST IN THE CATALOGUE: design, foundations, build, insulation, electrics and interior finish in one price, with sockets, LED lighting and heating included, priced after a free site visit — so the supplier absorbs the base risk most competitors pass to the buyer. IT IS AN IRISH COMPANY at 190A Iveragh Road, Dublin 9, operating across Dublin and Leinster since 2008. NOT ESTABLISHED: no area, no dimensions, no height, no U-value, no published warranty.\n\nUPDATE 13 Nov 2026 (founder-approved correction; supersedes the retrieval-limitation and no-area statements above): the supplier's site is now read directly. It publishes a typical size band of 10–15 m² for this room type and a turnkey starting price of €24,000 plus VAT (VAT rate not stated); coverage Dublin and Leinster (named county pages: Dublin, Wicklow, Kildare, Meath, Louth). Warranty: still none published."
+   }
+  }
+ ],
+ "features": [
+  {
+   "id": "rec10Lz687SU1gSnQ",
+   "createdTime": "2026-08-06T10:36:56.000Z",
+   "fields": {
+    "Feature Name": "Year-round insulation",
+    "Data Type": "Number",
+    "Feature Group": "Comfort",
+    "Feature Code": "FEAT-0001"
+   }
+  },
+  {
+   "id": "rec1dPnBk2TccKO20",
+   "createdTime": "2026-08-16T22:37:58.000Z",
+   "fields": {
+    "Feature Name": "Planning Considerations"
+   }
+  },
+  {
+   "id": "rec2maLGgEgaQJ2AM",
+   "createdTime": "2026-08-27T20:39:36.000Z",
+   "fields": {
+    "Feature Name": "Strengths",
+    "Data Type": "Text",
+    "Feature Code": "DI-STRENGTHS"
+   }
+  },
+  {
+   "id": "rec4qUjgmhMIJHnPW",
+   "createdTime": "2026-08-27T20:39:36.000Z",
+   "fields": {
+    "Feature Name": "Best For",
+    "Data Type": "Text",
+    "Feature Code": "DI-BEST-FOR"
+   }
+  },
+  {
+   "id": "rec9qV0dfO5jgZ6KP",
+   "createdTime": "2026-08-06T11:01:26.000Z",
+   "fields": {
+    "Feature Name": "Installation Model",
+    "Data Type": "Text",
+    "Feature Group": "Installation",
+    "Feature Code": "FEA-022"
+   }
+  },
+  {
+   "id": "recBk7kjkYkVgvq5V",
+   "createdTime": "2026-08-12T22:33:41.000Z",
+   "fields": {
+    "Feature Name": "Insulation"
+   }
+  },
+  {
+   "id": "recCbRB0fbtOi1gci",
+   "createdTime": "2026-08-27T20:39:36.000Z",
+   "fields": {
+    "Feature Name": "Typical Homeowner",
+    "Data Type": "Text",
+    "Feature Code": "DI-TYPICAL-HOMEOWNER"
+   }
+  },
+  {
+   "id": "recDTjWCAdLitcbaX",
+   "createdTime": "2026-08-06T11:01:26.000Z",
+   "fields": {
+    "Feature Name": "Construction System",
+    "Data Type": "Text",
+    "Feature Group": "Structure",
+    "Feature Code": "FEA-016"
+   }
+  },
+  {
+   "id": "recFUIfZaPwsAVmD5",
+   "createdTime": "2026-08-12T06:48:11.000Z",
+   "fields": {
+    "Feature Name": "Foundation / Base Requirement",
+    "Data Type": "Text",
+    "Feature Group": "Structure",
+    "Feature Code": "FEA-026"
+   }
+  },
+  {
+   "id": "recLqiSNjhe7rt42A",
+   "createdTime": "2026-08-27T20:39:36.000Z",
+   "fields": {
+    "Feature Name": "Considerations",
+    "Data Type": "Text",
+    "Feature Code": "DI-CONSIDERATIONS"
+   }
+  },
+  {
+   "id": "recUnkwdqsry8Qpwn",
+   "createdTime": "2026-08-12T22:38:40.000Z",
+   "fields": {
+    "Feature Name": "Warranty"
+   }
+  },
+  {
+   "id": "reca3fzZcpdCqLXUv",
+   "createdTime": "2026-08-06T11:01:26.000Z",
+   "fields": {
+    "Feature Name": "Irish Availability",
+    "Data Type": "Boolean",
+    "Feature Group": "Commercial",
+    "Feature Code": "FEA-025"
+   }
+  },
+  {
+   "id": "receDsnod5L7tgPE1",
+   "createdTime": "2026-08-05T21:41:47.000Z",
+   "fields": {
+    "Feature Name": "Electrical Included",
+    "Data Type": "Boolean",
+    "Feature Group": "Electrical",
+    "Feature Code": "FEA-014"
+   }
+  },
+  {
+   "id": "receJRZpSYorV3aYE",
+   "createdTime": "2026-08-27T20:54:30.000Z",
+   "fields": {
+    "Feature Name": "Alternatives",
+    "Data Type": "Text",
+    "Feature Code": "DI-ALTERNATIVES"
+   }
+  },
+  {
+   "id": "recg0JcV50OWdCi0Q",
+   "createdTime": "2026-08-06T11:01:26.000Z",
+   "fields": {
+    "Feature Name": "Insulation Status",
+    "Data Type": "Text",
+    "Feature Group": "Insulation",
+    "Feature Code": "FEA-017"
+   }
+  },
+  {
+   "id": "rechP7fg3NRe4bWXD",
+   "createdTime": "2026-08-05T21:41:40.000Z",
+   "fields": {
+    "Feature Name": "Internal Floor Area",
+    "Data Type": "Number",
+    "Feature Group": "Dimensions",
+    "Feature Code": "FEA-004"
+   }
+  }
+ ],
+ "organisations": [
+  {
+   "id": "recZcfloN72CBES6I",
+   "createdTime": "2026-08-06T09:02:52.000Z",
+   "fields": {
+    "Sources": [
+     "recSDkXK9Zzg2IjMy",
+     "rectV66a2LgXueGG8",
+     "recikVPAUY4ZhAlBn"
+    ],
+    "Organisation Name": "Modern Garden Rooms",
+    "Last Reviewed ": "2026-11-13",
+    "Headquarters": "HEADQUARTERS: 190A Iveragh Road, Whitehall, Dublin 9, Ireland | EIRCODE: D09 RR2R | COUNTY: Dublin | PROVINCE / REGION: Leinster | JURISDICTION: Republic of Ireland | GPS COORDINATES: Not published by supplier; not derived | MANUFACTURING LOCATION: Not stated | SHOWROOM LOCATION(S): Not published | COLLECTION AVAILABLE: Not stated | DELIVERY COVERAGE: Dublin and Leinster; named county pages: Dublin, Wicklow, Kildare, Meath, Louth (read 13 Nov 2026) | INSTALLATION COVERAGE: Dublin and Leinster; named county pages: Dublin, Wicklow, Kildare, Meath, Louth (read 13 Nov 2026) | IRISH PRESENCE: Yes — Irish-headquartered with a full published Dublin address and Eircode | Site read directly in a browser, 13 Nov 2026 | EVIDENCE TIER: Tier B | EVIDENCE SCOPE: Organisation-Wide | SOURCE: https://moderngardenrooms.ie/ | SUPPLIER LOCALITY STATUS: Supplier Locality Complete",
+    "Website": "https://moderngardenrooms.ie/",
+    "Organisation Type": "Bespoke Builder",
+    "Organisation Code": "ORG-000004",
+    "Status": "Partially Verified",
+    "Google Place ID": "ChIJh_woWH1LZ0gRFhvXEPyKrts",
+    "Google Identity State": "verified",
+    "Google Identity Verified On": "2026-10-06",
+    "Google Identity Revalidate By": "2027-10-06"
+   }
+  }
+ ]
+}

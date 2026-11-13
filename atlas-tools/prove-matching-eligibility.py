@@ -42,6 +42,13 @@ UNVERIFIED = "Price not currently verified"
 HOLDS_2026_11_11 = {"recKHXaApIugjOKti": "Not currently taking orders", "recUs4gexxlfkaiUj": "Not currently taking orders",
                     "reciolethPMEn50gQ": "Not currently taking orders", "recUnUAWq0TWkNO5C": "Not currently taking orders",
                     "recBVDyal8VGGVEZM": "Out of stock", "reczxM0lggLXTBCdU": "Price requires verification"}
+# 13 Nov 2026 (founder approval, Modern Garden Rooms Atlas correction): exactly these four
+# ex-VAT holds are added after the 11 Nov holds. Each shows its verified figure in the Maker
+# Explorer as "From €X excluding VAT. <qualification>", is never matchable, and carries the
+# label that replaces the NOOK default on Your Plot.
+HOLDS_2026_11_13 = {"recSpzyQeSlo8yylE": 24000, "recQhafVxkW46trn6": 32000,
+                    "recBW2vBPcT0kOT1o": 32000, "rec8yqq3yj2qFyU7T": 50000}
+HOLD_LABEL_2026_11_13 = "Price excludes VAT"
 WINDOW = 180
 TYPES = {"Standard Price", "Starting From", "Sale Price", "Sale"}
 BAD_SCOPES = {"Range-Level", "Organisation-Wide"}
@@ -186,6 +193,10 @@ def check_tree(S, tmp):
         if st == "held" and pid in HOLDS_2026_11_11:
             if not lab.startswith(HOLDS_2026_11_11[pid] + ".") or re.search(r"[\d€£$]", lab):
                 fail("E4 held %s Explorer does not show its approved label without a figure: %r" % (pid, lab))
+        elif st == "held" and pid in HOLDS_2026_11_13:
+            q = ((p.get("priceEvidence") or {}).get("presentationHold") or {}).get("qualification") or ""
+            if not q or lab != "From €{:,} excluding VAT. ".format(HOLDS_2026_11_13[pid]) + q:
+                fail("E4 held %s Explorer does not show its ex-VAT figure with its qualification: %r" % (pid, lab))
         elif st == "held" and lab != base_ex.get(pid, ("", {}))[0]:
             fail("E4 held %s Explorer label changed" % pid)
         if st == "eligible" and "incl. VAT (supplier’s terms)" in base_ex.get(pid, ("", {}))[0] \
@@ -280,11 +291,22 @@ def check_tree(S, tmp):
     if fresh(g) != fresh(S["base_guide"]):
         fail("E7 the guide's freshness statement changed")
     # E8 holds and VAT
-    cur_h = json.loads(S["holds"]); cur_h.pop("decision_2026_11_11", None)
+    cur_h = json.loads(S["holds"]); cur_h.pop("decision_2026_11_11", None); cur_h.pop("decision_2026_11_13", None)
     added = [h for h in cur_h["holds"] if h["productId"] in HOLDS_2026_11_11]
-    cur_h["holds"] = [h for h in cur_h["holds"] if h["productId"] not in HOLDS_2026_11_11]
+    added13 = [h for h in cur_h["holds"] if h["productId"] in HOLDS_2026_11_13]
+    cur_h["holds"] = [h for h in cur_h["holds"] if h["productId"] not in HOLDS_2026_11_11
+                      and h["productId"] not in HOLDS_2026_11_13]
     if cur_h != json.loads(S["base_holds"]):
-        fail("E8 the hold register changed beyond the six approved 11 Nov 2026 holds")
+        fail("E8 the hold register changed beyond the six approved 11 Nov 2026 holds and the four approved 13 Nov 2026 holds")
+    if sorted((h["productId"], h.get("label"), h.get("vatBasis"), h.get("figure")) for h in added13) != \
+            sorted((k, HOLD_LABEL_2026_11_13, "excluded", None) for k in HOLDS_2026_11_13) \
+            or any(re.search(r"\d", h.get("qualification") or "x") or not h.get("qualification") for h in added13):
+        fail("E8 the 13 Nov 2026 holds are not exactly the four approved: ex-VAT, figure shown, digit-free qualification")
+    for pid, amt in HOLDS_2026_11_13.items():
+        r = U.get(pid) or {}
+        if r.get("priceState") != "held" or r.get("priceSafeForMatching") is not False or r.get("price") != amt \
+                or ((r.get("priceEvidence") or {}).get("presentationHold") or {}).get("matching") != "excluded":
+            fail("E8 13 Nov 2026 hold %s is not held at its verified figure and excluded from matching" % pid)
     if sorted((h["productId"], h["label"], h.get("figure")) for h in added) != \
             sorted((k, v, "withheld") for k, v in HOLDS_2026_11_11.items()):
         fail("E8 the 11 Nov 2026 holds are not exactly the six approved, figure withheld")

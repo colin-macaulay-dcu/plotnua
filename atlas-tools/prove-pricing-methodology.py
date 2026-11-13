@@ -163,12 +163,22 @@ def at(rev, f):
 # note; every earlier hold and every other byte of the register's content is unchanged.
 SIX_2026_11_11 = {"recKHXaApIugjOKti", "recUs4gexxlfkaiUj", "reciolethPMEn50gQ", "recUnUAWq0TWkNO5C",
                   "recBVDyal8VGGVEZM", "reczxM0lggLXTBCdU"}
+# 13 Nov 2026 (founder approval, Modern Garden Rooms): four ex-VAT holds, figure shown with its
+# qualification, never matchable.
+FOUR_2026_11_13 = {"recSpzyQeSlo8yylE", "recQhafVxkW46trn6", "recBW2vBPcT0kOT1o", "rec8yqq3yj2qFyU7T"}
 _hc = json.loads((ROOT / "atlas-tools/price-presentation-holds.json").read_text(encoding="utf-8"))
 _new = [h for h in _hc["holds"] if h["productId"] in SIX_2026_11_11]
-_hc["holds"] = [h for h in _hc["holds"] if h["productId"] not in SIX_2026_11_11]
+_new13 = [h for h in _hc["holds"] if h["productId"] in FOUR_2026_11_13]
+_hc["holds"] = [h for h in _hc["holds"] if h["productId"] not in SIX_2026_11_11 | FOUR_2026_11_13]
 _hc.pop("decision_2026_11_11", None)
+_hc.pop("decision_2026_11_13", None)
 ok(json.loads(at(BASE, "atlas-tools/price-presentation-holds.json")) == _hc,
-   "M6 price-presentation holds identical to %s apart from the six approved 11 Nov 2026 holds" % BASE)
+   "M6 price-presentation holds identical to %s apart from the six approved 11 Nov 2026 holds and the four approved 13 Nov 2026 holds" % BASE)
+ok(sorted(h["productId"] for h in _new13) == sorted(FOUR_2026_11_13)
+   and all(h.get("vatBasis") == "excluded" and "figure" not in h for h in _new13)
+   and all(U[pid].get("priceState") == "held" and not U[pid].get("priceFreshUntil") and U[pid].get("priceSafeForMatching") is False
+           for pid in FOUR_2026_11_13),
+   "M6 the four 13 Nov 2026 holds are present, ex-VAT, held and out of matching")
 ok(sorted(h["productId"] for h in _new) == sorted(SIX_2026_11_11) and all(h.get("figure") == "withheld" for h in _new)
    and all(U[pid].get("priceState") == "held" and not U[pid].get("priceFreshUntil") and U[pid].get("priceSafeForMatching") is False
            for pid in SIX_2026_11_11),
