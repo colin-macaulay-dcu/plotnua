@@ -35,7 +35,28 @@ def work_url(pkg, work):
     return "artists/%s/%s.html" % (pkg["artist"]["slug"], work["slug"])
 
 
-def collection_order(packages):
+LARGE_CM = 100   # Large artworks (SEO buyer-intent Phase 2, 13 Nov 2026): at least this on the longest side
+
+
+def is_large(w):
+    """Computed from the artist's published height and width only (depth is not a side of the picture plane)."""
+    return max(float(w.get("h_cm") or 0), float(w.get("w_cm") or 0)) >= LARGE_CM
+
+
+# One spec per generated collection page. Each lists only published, available works that pass its test; everything
+# else (cards, order, structured data) is shared, so both pages stay one system.
+COLLECTIONS = {
+    "artworks/index.html": {"keep": lambda w: True, "name": "Original Irish art for sale",
+                            "crumbs": [("Artworks", "artworks/index.html")], "label": "Available artworks",
+                            "count": "original %s", "empty": "No artworks are available just now."},
+    "large-artworks/index.html": {"keep": is_large, "name": "Large original artworks for sale in Ireland",
+                                  "crumbs": [("Artworks", "artworks/index.html"), ("Large artworks", "large-artworks/index.html")],
+                                  "label": "Available large artworks", "count": "original %s of 100 cm or more",
+                                  "empty": "No large artworks are available just now."},
+}
+
+
+def collection_order(packages, keep=lambda w: True):
     """Every published, available work for the artwork collection, in a fair, stable order: the artists' galleries in
     publication order, then one work from each artist in turn (each artist's own work order kept), so no single gallery
     fills the top of the page. Reserved, sold, not-for-sale and withdrawn works never appear."""
@@ -43,7 +64,7 @@ def collection_order(packages):
     for pkg in P.gallery_order(list(packages)):
         if pkg["publication"].get("state") != "approved":
             raise ValueError("Collection input is not an approved public gallery")
-        ws = [w for w in pkg["works"] if w["availability"] == "available"]
+        ws = [w for w in pkg["works"] if w["availability"] == "available" and keep(w)]
         if ws:
             queues.append([(pkg, w) for w in ws])
     out = []
@@ -74,40 +95,42 @@ def collection_card(pkg, w, n):
         E(url), E(w["title"]), E(a["slug"]), E(a["display_name"]), E(w["medium"]), E(P.size_line(w)[0]), E(P.price_line(w)), credit)
 
 
-def collection_data(rows):
+def collection_data(rows, path="artworks/index.html"):
     """CollectionPage + ItemList (each item: the canonical artwork page) + BreadcrumbList. Describes the collection;
     makes no merchant, offer or availability claim."""
-    url = SEO.canonical("artworks/index.html")
-    graph = [{"@type": "CollectionPage", "@id": url + "#page", "url": url, "name": "Original Irish art for sale",
+    spec = COLLECTIONS[path]
+    url = SEO.canonical(path)
+    crumbs = [("PlotArt", SEO.ORIGIN)] + [(n, SEO.canonical(p)) for n, p in spec["crumbs"]]
+    graph = [{"@type": "CollectionPage", "@id": url + "#page", "url": url, "name": spec["name"],
               "isPartOf": {"@type": "WebSite", "name": "PlotArt", "url": SEO.ORIGIN},
               "breadcrumb": {"@id": url + "#breadcrumbs"},
               "mainEntity": {"@type": "ItemList", "numberOfItems": len(rows), "itemListElement": [
                   {"@type": "ListItem", "position": n, "url": SEO.canonical(work_url(pkg, w)),
                    "name": "%s by %s" % (w["title"], pkg["artist"]["display_name"])} for n, (pkg, w) in enumerate(rows, 1)]}},
              {"@type": "BreadcrumbList", "@id": url + "#breadcrumbs", "itemListElement": [
-                 {"@type": "ListItem", "position": 1, "name": "PlotArt", "item": SEO.ORIGIN},
-                 {"@type": "ListItem", "position": 2, "name": "Artworks", "item": url}]}]
+                 {"@type": "ListItem", "position": n, "name": name, "item": href} for n, (name, href) in enumerate(crumbs, 1)]}]
     data = json.dumps({"@context": "https://schema.org", "@graph": graph}, ensure_ascii=False, separators=(",", ":"))
     data = data.replace("<", "\\u003c").replace(">", "\\u003e").replace("&", "\\u0026")
     return '<script type="application/ld+json">%s</script>' % data
 
 
-def collection(packages):
-    rows = collection_order(packages)
+def collection(packages, path="artworks/index.html"):
+    spec = COLLECTIONS[path]
+    rows = collection_order(packages, spec["keep"])
     if not rows:
-        return ('<p class="pa-coll-count">No artworks are available just now.</p>'
+        return ('<p class="pa-coll-count">%s</p>'
                 '<p class="pa-coll-empty">New work is published as artists add it. <a href="../gallery/">Meet the artists in the Artists’ Gallery</a>.</p>'
-                + collection_data(rows))
+                % spec["empty"] + collection_data(rows, path))
     artists = len({pkg["artist"]["slug"] for pkg, _ in rows})
-    return ('<p class="pa-coll-count">%d original %s by %d %s</p>'
-            '\n  <ol class="pa-coll-grid" aria-label="Available artworks">%s\n  </ol>\n  %s') % (
-        len(rows), "work" if len(rows) == 1 else "works", artists, "artist" if artists == 1 else "artists",
-        "".join(collection_card(pkg, w, n) for n, (pkg, w) in enumerate(rows, 1)), collection_data(rows))
+    return ('<p class="pa-coll-count">%d %s by %d %s</p>'
+            '\n  <ol class="pa-coll-grid" aria-label="%s">%s\n  </ol>\n  %s') % (
+        len(rows), spec["count"] % ("work" if len(rows) == 1 else "works"), artists, "artist" if artists == 1 else "artists",
+        spec["label"], "".join(collection_card(pkg, w, n) for n, (pkg, w) in enumerate(rows, 1)), collection_data(rows, path))
 
 
 def content(path, packages):
-    if path == "artworks/index.html":
-        return collection(packages)
+    if path in COLLECTIONS:
+        return collection(packages, path)
     if path == "buy-original-art-ireland.html":
         rows = available(packages)
         if not rows:

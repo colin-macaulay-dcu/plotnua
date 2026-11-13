@@ -15,7 +15,10 @@ REGION = re.compile(re.escape(BEGIN) + r".*?" + re.escape(END), re.S)
 GUIDE_PATHS = ("buy-original-art-ireland.html", "abstract-contemporary-art-ireland.html")
 # The artwork collection (SEO buyer-intent Phase 1, 13 Nov 2026): every published, available work on one indexable
 # page. Like the guides, only its generated collection region changes when galleries are published.
-COLLECTION_PATHS = ("artworks/index.html",)
+COLLECTION_PATHS = ("artworks/index.html", "large-artworks/index.html")
+# each collection has its own indexing and sitemap switches (prepared separately, released separately)
+COLLECTION_SWITCHES = {"artworks/index.html": ("artworks_indexable", "artworks_in_sitemap"),
+                       "large-artworks/index.html": ("large_artworks_indexable", "large_artworks_in_sitemap")}
 GENERATED_PATHS = GUIDE_PATHS + COLLECTION_PATHS
 EDITORIAL_PATHS = ("choose-art-for-living-room.html",)
 TOOL_PATHS = ("art-size-calculator.html",)
@@ -36,7 +39,7 @@ def indexable(path, launch):
     if path in GUIDE_PATHS + EDITORIAL_PATHS:
         return launch.get("buyer_guides_indexable") is True
     if path in COLLECTION_PATHS:
-        return launch.get("artworks_indexable") is True
+        return launch.get(COLLECTION_SWITCHES[path][0]) is True
     key = {"index.html": "home_indexable", "gallery/index.html": "gallery_indexable",
            "about.html": "about_indexable", "founding-25.html": "f25_page_indexable",
            "mobile-gallery/index.html": "mobile_gallery_indexable"}.get(path)
@@ -65,7 +68,7 @@ def head(path, title, description, launch=None):
 def sitemap_paths(packages, launch):
     paths = [p for p in ("index.html", "gallery/index.html", "about.html", "founding-25.html") + GUIDE_PATHS + EDITORIAL_PATHS + TOOL_PATHS if indexable(p, launch)]
     # The collection is listed only by its own sitemap switch (prepared 13 Nov 2026; off until the founder approves).
-    paths += [p for p in COLLECTION_PATHS if indexable(p, launch) and launch.get("artworks_in_sitemap") is True]
+    paths += [p for p in COLLECTION_PATHS if indexable(p, launch) and launch.get(COLLECTION_SWITCHES[p][1]) is True]
     for pkg in sorted(packages, key=lambda p: p["artist"]["slug"]):
         # Only the already-approved public export is an input. Never read Studio drafts.
         if pkg["publication"].get("state") != "approved":

@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
-"""Build/check the PlotArt artwork collection, plotart/artworks/ (SEO buyer-intent Phase 1, 13 Nov 2026).
+"""Build/check the PlotArt artwork collections (SEO buyer-intent Phase 1 and 2, 13 Nov 2026):
+plotart/artworks/ (every published, available work) and plotart/large-artworks/ (those of 100 cm or more on the
+longest side, computed from the artist's published dimensions). One shell, one stylesheet, one collection system.
 
     python3 atlas-tools/build-plotart-artworks.py           # write the page and its stylesheet
     python3 atlas-tools/build-plotart-artworks.py --check   # verify both match this source and the public collection
@@ -82,46 +84,78 @@ COLLECTION
 '''
 
 
+LARGE_PATH = "large-artworks/index.html"
+LARGE_TITLE = "Large Original Paintings & Artworks for Sale in Ireland | PlotArt"
+LARGE_DESCRIPTION = ("Large original paintings and artworks for sale, each 100 cm or more, by artists based or working in "
+                     "Ireland. See sizes and prices, and enquire with the artist.")
+LARGE_BODY = '''
+<section class="pa-coll-hero"><div class="pa-wrap">
+<p class="pa-eyebrow">PlotArt · Large artworks</p>
+<h1>Large original artworks for sale in Ireland.</h1>
+<p class="pa-lede">Original paintings and works of 100 cm or more on their longest side, by artists based or working in Ireland. A large work can hold a whole wall: above a sofa, at the end of a hallway, in a reception area or a meeting room. It is seen from across the room and changes the space around it.</p>
+<p class="pa-coll-how">Every work is shown whole, with the artist’s own dimensions and asking price. PlotArt introduces you to the artist. It doesn’t take payment, deliver or install artwork: the artist arranges any sale with you directly.</p>
+<div class="pa-coll-actions"><a class="pa-btn pa-btn--ghost" href="../art-size-calculator.html">What size art fits your wall? →</a><a class="pa-btn pa-btn--ghost" href="../artworks/">All available artworks →</a></div>
+</div></section>
+<section class="pa-coll-wall" aria-labelledby="collH"><div class="pa-wrap">
+<h2 id="collH" class="pa-sr">Available large original artworks</h2>
+COLLECTION
+</div></section>
+<section class="pa-coll-more"><div class="pa-wrap">
+<h2>Before you choose a large work.</h2>
+<p><strong>Measure the wall and the room.</strong> Check the work’s stated dimensions against the wall you have in mind, and the distance it will usually be seen from. The free <a href="../art-size-calculator.html">PlotArt art size calculator</a> compares a work’s size with your wall or furniture.</p>
+<p><strong>Check the way in.</strong> Measure doors, stairs and lifts along the route, especially for a large canvas or panel that can’t be rolled.</p>
+<p><strong>Ask about weight and hanging.</strong> Ask the artist whether the work is framed, how much it weighs and what fixings it needs, and make sure the wall can take it.</p>
+<p><strong>Agree delivery with the artist.</strong> Collection, delivery, any installation and the total price are arranged directly between you and the artist. Ask for them in writing before you pay.</p>
+<p><strong>For a workplace or commercial interior,</strong> consider light, heat and where people will see the work, and ask the artist how it should be cared for.</p>
+<div class="pa-coll-links"><a class="pa-btn pa-btn--ghost" href="../buy-original-art-ireland.html">Buying art &amp; prices →</a><a class="pa-btn pa-btn--ghost" href="../gallery/">Meet the artists →</a></div>
+</div></section>
+'''
+PAGES = {PATH: (TITLE, DESCRIPTION, BODY), LARGE_PATH: (LARGE_TITLE, LARGE_DESCRIPTION, LARGE_BODY)}
+
+
 def relink(fragment):
     """The shell is taken from plotart/index.html, whose links are relative to plotart/. This page sits one folder
     deeper (plotart/artworks/), so every relative href/src gains '../'. Absolute, root, mailto and fragment links stay."""
     return re.sub(r'(href|src|srcset)="(?!https?:|mailto:|tel:|#|/|data:)([^"]*)"', lambda m: '%s="../%s"' % (m.group(1), m.group(2)), fragment)
 
 
-def render(packages):
+def render(packages, path=PATH):
+    title, description, body_copy = PAGES[path]
     home = (ROOT / "plotart/index.html").read_text()
     header = re.search(r'<header class="pa-head.*?</header>', home, re.S).group(0).replace(' aria-current="page"', "")
     footer = re.search(r'<footer class="pa-foot">.*?</footer>', home, re.S).group(0)
     head = home.split("<head>", 1)[1].split("</head>", 1)[0]
-    head = re.sub(r"<title>.*?</title>", "<title>" + html.escape(TITLE) + "</title>", head)
-    for kind, key, value in [("name", "description", DESCRIPTION), ("property", "og:title", TITLE), ("property", "og:description", DESCRIPTION),
-                             ("name", "twitter:title", TITLE), ("name", "twitter:description", DESCRIPTION), ("property", "og:url", SEO.canonical(PATH))]:
+    head = re.sub(r"<title>.*?</title>", "<title>" + html.escape(title) + "</title>", head)
+    for kind, key, value in [("name", "description", description), ("property", "og:title", title), ("property", "og:description", description),
+                             ("name", "twitter:title", title), ("name", "twitter:description", description), ("property", "og:url", SEO.canonical(path))]:
         head = re.sub(r'<meta ' + kind + '="' + key + '" content="[^"]*">', '<meta ' + kind + '="' + key + '" content="' + html.escape(value, quote=True) + '">', head)
-    head = re.sub(r'<link rel="canonical" href="[^"]+">', '<link rel="canonical" href="' + SEO.canonical(PATH) + '">', head)
-    if not SEO.indexable(PATH, SEO.switches()):
+    head = re.sub(r'<link rel="canonical" href="[^"]+">', '<link rel="canonical" href="' + SEO.canonical(path) + '">', head)
+    if not SEO.indexable(path, SEO.switches()):
         head = head.replace('<meta name="robots" content="index, follow">', '<meta name="robots" content="noindex, follow">')
         head = re.sub(r'<link rel="canonical" href="[^"]+">\n?', "", head)
     # the homepage's own structured data describes the homepage; this page's data lives in its collection region
     head = re.sub(r'\s*<script type="application/ld\+json">.*?</script>', "", head, flags=re.S)
     head = relink(head) + '<link rel="stylesheet" href="../' + CSS_PATH + '">\n'
-    body = BODY.replace("COLLECTION", C.BEGIN + "\n" + C.content(PATH, packages) + "\n" + C.END)
+    body = body_copy.replace("COLLECTION", C.BEGIN + "\n" + C.content(path, packages) + "\n" + C.END)
     return ('<!DOCTYPE html>\n<html lang="en-IE" class="no-js">\n<head>' + head + '</head>\n<body class="pa">\n'
             '<a class="pa-skip" href="#main">Skip to content</a>\n' + relink(header) + '\n<main id="main" class="pa-coll">' + body + '</main>\n'
             + relink(footer) + '\n<script src="../assets/plotart.js" defer></script>\n<script src="/assets/identity/pn-menu.js?v=1" defer></script>\n</body>\n</html>\n')
 
 
 def main():
-    expected = {ROOT / "plotart" / PATH: render(SEO.public_packages(ROOT)), ROOT / "plotart" / CSS_PATH: CSS}
+    packages = SEO.public_packages(ROOT)
+    expected = {ROOT / "plotart" / p: render(packages, p) for p in PAGES}
+    expected[ROOT / "plotart" / CSS_PATH] = CSS
     if "--check" in sys.argv:
         bad = [str(p.relative_to(ROOT)) for p, t in expected.items() if not p.exists() or p.read_text() != t]
         if bad:
             raise SystemExit("ARTWORK COLLECTION · differs from reviewed source: " + ", ".join(bad))
-        print("ARTWORK COLLECTION · OK — page and styles match reviewed copy and the public collection; nothing written")
+        print("ARTWORK COLLECTIONS · OK — %d pages and styles match reviewed copy and the public collection; nothing written" % len(PAGES))
         return
     for p, t in expected.items():
         p.parent.mkdir(parents=True, exist_ok=True)
         p.write_text(t)
-    print("ARTWORK COLLECTION · built plotart/%s and plotart/%s" % (PATH, CSS_PATH))
+    print("ARTWORK COLLECTIONS · built %s and plotart/%s" % (", ".join("plotart/" + p for p in PAGES), CSS_PATH))
 
 
 if __name__ == "__main__":
