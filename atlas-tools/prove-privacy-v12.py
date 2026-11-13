@@ -8,6 +8,7 @@ import pathlib, re, sys
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "atlas-tools"))
 import privacy_v12_layer as V  # noqa: E402
+import privacy_v13_layer as V13  # noqa: E402  (V13, 13 Nov 2026, may sit on top of V12: V12 is checked beneath it)
 
 bad = []
 ok = lambda c, m: None if c else bad.append(m)
@@ -16,7 +17,7 @@ ok(priv.count(V.MARKER) == 1, "V1 V12 must be applied exactly once")
 ok("PLOTNUA-PLOTART-AGREEMENT-PRIVACY-V11" in priv, "V1 V12 sits on top of V11")
 try:
     beneath = V.without_v12(priv)
-    ok(V.apply_v12(beneath) == priv, "V1 V12 is not exactly reversible")
+    ok(V.apply_v12(beneath) == V13.without_v13(priv), "V1 V12 is not exactly reversible")
     ok(V.MARKER not in beneath and all(beneath.count(o) == 1 for o, _ in V.PAIRS), "V1 the page beneath V12 must be the V11 page exactly")
 except ValueError as e:
     bad.append("V1 " + str(e))

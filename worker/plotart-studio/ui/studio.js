@@ -713,7 +713,7 @@
         <div class="st-opts" style="margin-top:0">${btn('i', 'online_only', O.interests.online_only, on(st.interests, 'online_only'), 'st-opt--alone')}</div>
         <p class="st-opp-msg" id="o-i-msg" aria-live="polite"></p>
         ${O.care ? `<div class="st-opp-care" id="o-care-box"><label class="st-check"><input type="checkbox" id="o-care" aria-describedby="o-care-h"${st.care ? ' checked' : ''}> <span>${E(O.care.label)}</span></label>
-          <p class="st-hint" id="o-care-h">${E(O.care.hint)}</p></div>` : ''}
+          <p class="st-hint" id="o-care-h">${E(O.care.hint)}<br>${E(O.care.always)}</p></div>` : ''}
       </fieldset></section>
       <section class="st-card"><div class="st-f" style="margin:0">
         <label for="o-county"><span class="st-opp-q">Where is your artwork based?</span></label>

@@ -43,7 +43,11 @@ export const COVERAGE = { counties: 'Selected counties', anywhere: 'Anywhere on 
 export const NOTE_MAX = 2000;          // the practical note (migration 0010, 13 Nov 2026, after artist feedback)
 export const NOTE_MAX_BEFORE_0010 = 280;   // until migration 0010 has run, the database still holds the shorter note
 export const CARE = { label: 'My interest depends on agreeing suitable care, handling and insurance arrangements.',
-  hint: 'We’ll discuss these with you before you agree to any opportunity.', short: 'Depends on care, handling and insurance' };
+  hint: 'We’ll discuss these with you before you agree to any opportunity.',
+  always: 'Care, handling and insurance arrangements will be discussed for every placement, whether or not you tick this box.',
+  short: 'Depends on care, handling and insurance' };
+// An UNTICKED box is not an answer that care, handling or insurance doesn't matter: every placement includes that
+// discussion (founder instruction, 13 Nov 2026). The box only records that the artist wants it stated up front.
 // Keeps the artist's line breaks (a longer note needs paragraphs); removes other control and invisible characters.
 export function cleanNote(s) {
   return String(s ?? '').replace(/\r\n?/g, '\n').replace(/[\u200b-\u200f\u2060\ufeff]/g, '').replace(/[\u0000-\u0009\u000b-\u001f\u007f\u2028\u2029]/g, ' ')

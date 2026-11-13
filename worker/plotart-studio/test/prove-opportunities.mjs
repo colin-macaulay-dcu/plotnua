@@ -310,7 +310,7 @@ await p.goto(S.url + '/#/opportunities', { waitUntil: 'load' }); await p.waitFor
 const careLbl = await p.locator('label[for], .st-opp-care label').filter({ hasText: 'care, handling and insurance' }).innerText();
 const careHint = await p.locator('#o-care-h').innerText(), noteLbl = await p.locator('label[for="o-note"]').innerText();
 check('U22 the form shows the care checkbox (unticked) with its supporting text, the updated note prompt and a 2,000-character limit',
-  /My interest depends on agreeing suitable care, handling and insurance arrangements\./.test(careLbl) && careHint === 'We’ll discuss these with you before you agree to any opportunity.'
+  /My interest depends on agreeing suitable care, handling and insurance arrangements\./.test(careLbl) && careHint === 'We’ll discuss these with you before you agree to any opportunity.\nCare, handling and insurance arrangements will be discussed for every placement, whether or not you tick this box.'
   && !(await p.isChecked('#o-care')) && /care and handling requirements, insurance, transport costs, artwork size limits or availability\?/.test(noteLbl)
   && await p.getAttribute('#o-note', 'maxlength') === '2000' && p.errs.length === 0, JSON.stringify([careLbl, careHint, noteLbl]));
 await p.check('#o-care'); await p.fill('#o-note', long);
@@ -330,11 +330,12 @@ await f.goto(S.url + '/admin/opportunities', { waitUntil: 'load' }); await f.wai
 const ciaRow = f.locator('#of-list > li', { hasText: 'Cia Test' });
 const ciaTxt = await ciaRow.innerText(), noteBox = ciaRow.locator('.st-opp-note');
 const noteSeen = (await noteBox.evaluate(n => ({ text: n.textContent, clipped: n.scrollHeight > n.clientHeight + 2 || n.scrollWidth > n.clientWidth + 2 })));
+const footTxt = await f.locator('#app').innerText();
 await f.selectOption('#of-status', 'care'); const careList = await f.locator('#of-list').innerText();
 await shot(f, 'founder-care-1280.png');
 await f.ctx.close();
 check('U26 the founder sees the care condition beside the interests, the complete note (not cut off) and can filter by it',
-  /Depends on care, handling and insurance/.test(ciaTxt) && noteSeen.text === long.trim() && !noteSeen.clipped && careList.includes('Cia Test') && !careList.includes('Ben Test'),
+  /Depends on care, handling and insurance/.test(ciaTxt) && !/⚑/.test(ciaTxt) && /an artist who left that box unticked has not waived them/.test(footTxt) && noteSeen.text === long.trim() && !noteSeen.clipped && careList.includes('Cia Test') && !careList.includes('Ben Test'),
   JSON.stringify([ciaTxt.slice(0, 200), noteSeen.text.length, noteSeen.clipped]));
 
 console.log('— before migration 0010 runs (the Studio keeps working as before)');
