@@ -1,10 +1,10 @@
-// PlotArt Gallery Artist Agreement PA-GAA-2026-11 · final draft r4 for founder review (13 Nov 2026). NOT ISSUED:
+// PlotArt Gallery Artist Agreement PA-GAA-2026-11 · final text r5 for founder approval (decisions R1–R11) (13 Nov 2026). NOT ISSUED:
 // Studio shows it to artists only once an approved, fingerprinted copy is installed by its own approved migration step.
 module.exports = {
  "id": "PA-GAA-2026-11",
  "date": "13 November 2026",
  "title": "Gallery Artist Agreement",
- "sub": "Identifier PA-GAA-2026-11  ·  Final draft r4  ·  13 November 2026",
+ "sub": "Identifier PA-GAA-2026-11  ·  Final text r5  ·  13 November 2026",
  "status": "FINAL DRAFT FOR FOUNDER APPROVAL. NOT YET ISSUED.",
  "footer": "PlotArt Gallery Artist Agreement  ·  PA-GAA-2026-11",
  "blocks": [
@@ -39,7 +39,7 @@ module.exports = {
   [
    "c",
    "2.1",
-   "PlotArt is an independently curated online gallery of contemporary Irish art. The Artist has been selected by PlotArt and receives a dedicated online gallery and biography page in the PlotArt **Artists’ Gallery**, the online gallery the Licence calls the Virtual Gallery. PlotArt sets the order in which galleries appear."
+   "PlotArt is an independently curated online gallery of contemporary Irish art. The Artist has been selected by PlotArt and receives a dedicated online gallery and biography page in the PlotArt **Artists’ Gallery**, the online gallery the Licence calls the Virtual Gallery. PlotArt sets the order in which galleries appear by hand, for curatorial reasons. The order is not influenced by any fee, payment, commission rate or individual variation."
   ],
   [
    "c",
@@ -121,7 +121,7 @@ module.exports = {
   [
    "c",
    "5.2",
-   "**VAT.** The 15% commission includes any VAT that applies to it. The Artist pays no more than 15% in total. If PlotArt is registered for VAT, its invoice shows the VAT included within the 15%."
+   "**VAT.** The 15% commission includes any VAT that applies to it. The Artist pays no more than 15% of the Commission Base in total. If PlotArt is registered for VAT, its invoice shows the VAT included within the 15%."
   ],
   [
    "c",
@@ -147,12 +147,12 @@ module.exports = {
   [
    "c",
    "5.4",
-   "**Introduction Date.** The Introduction Date is the date PlotArt introduced the collector, as shown by its reference, or, for a Direct Approach, the date the collector told the Artist they found the Artist through PlotArt."
+   "**Introduction Date.** The Introduction Date is the date PlotArt introduced the collector, as shown by its reference, or, for a Direct Approach, the date the collector told the Artist they found the Artist through PlotArt. If PlotArt introduces the same collector again, a new Introduction Date applies only if the earlier Attribution Period has ended; a further enquiry during a running period does not extend it."
   ],
   [
    "c",
    "5.5",
-   "**Qualifying Sale and the Attribution Period.** A Qualifying Sale is a sale of any original artwork by the Artist to a collector from a Qualifying Introduction (or to someone buying on that collector’s behalf) where either:"
+   "**Qualifying Sale and the Attribution Period.** A Qualifying Sale is a sale of any Original Artwork by the Artist, whether or not it is shown on PlotArt, to a collector from a Qualifying Introduction (or to someone buying on that collector’s behalf) where either:"
   ],
   [
    "b",
@@ -167,9 +167,13 @@ module.exports = {
    "**Documented Negotiations** are written exchanges between the Artist (or the Artist’s representative) and the collector about the purchase of a particular, identified artwork. Under (b), only the sale of that artwork, resulting from those negotiations, is a Qualifying Sale. Any other later purchase by the same collector is not."
   ],
   [
+   "p",
+   "**Original Artwork** means an original work made by the Artist, together with any frame or mount sold with it, and a signed, limited-edition fine-art print of the Artist’s work. It does not include open-edition reproductions or merchandise (for example posters, cards or products bearing images of the Artist’s work)."
+  ],
+  [
    "c",
    "5.6",
-   "**Commission Base.** The Commission Base is the price agreed between the Artist and the collector for the artwork itself, before any PlotArt-Funded Discount. It excludes shipping, insurance, handling, installation and any VAT the Artist charges on the sale. For a sale through a representing gallery or agent, the Commission Base is set by clause 12.2."
+   "**Commission Base.** The Commission Base is the price agreed between the Artist and the collector for the artwork itself, before any PlotArt-Funded Discount. It includes any frame or mount sold with the artwork. It excludes shipping, insurance, handling, installation and any VAT the Artist charges on the sale. For a sale through a representing gallery or agent, the Commission Base is set by clause 12.2."
   ],
   [
    "c",
@@ -195,6 +199,10 @@ module.exports = {
   [
    "b",
    "(e) newly commissioned artwork, including a commission agreed after a collector uses the “Enquire about a commission” option on the Artist’s gallery, unless PlotArt and the Artist have separately agreed commission terms for it in writing."
+  ],
+  [
+   "p",
+   "**Newly commissioned artwork** is a work the collector asks the Artist to create, to the collector’s request (for example its subject, size or setting), that did not exist and was not in progress when the commission was agreed. A work the Artist made independently, including one finished after the Introduction Date, is not newly commissioned, and minor changes to an existing work (such as reframing) do not make it so. If a collector introduced through the “Enquire about a commission” option buys an existing work, that sale is treated like any other sale."
   ],
   [
    "c",
@@ -249,7 +257,7 @@ module.exports = {
   ],
   [
    "b",
-   "(a) bought from, commissioned, or was in documented contact with the Artist before the Introduction Date;"
+   "(a) bought from, commissioned, or was in documented contact with the Artist before the Introduction Date, other than through an earlier Qualifying Introduction;"
   ],
   [
    "b",
@@ -367,7 +375,7 @@ module.exports = {
   [
    "c",
    "11.2",
-   "When this agreement ends, for any reason, commission remains payable on Qualifying Sales arising from Qualifying Introductions whose Introduction Date fell before the end, within the Attribution Period or under clause 5.5(b). No commission arises from collectors first introduced after the agreement ends."
+   "When this agreement ends, for any reason, commission remains payable on Qualifying Sales to collectors whose Introduction Date fell before the end, where the sale is agreed within the Attribution Period or under clause 5.5(b). No commission arises from collectors first introduced after the agreement ends."
   ],
   [
    "h",
@@ -541,7 +549,7 @@ module.exports = {
   [
    "c",
    "17.5",
-   "**Breach and unlawful content.** PlotArt may end this agreement for another serious or repeated breach after giving the Artist a reasonable opportunity to put it right. It may promptly suspend or remove unlawful or materially infringing content, giving an explanation where appropriate."
+   "**Breach and unlawful content.** PlotArt may end this agreement for another serious or repeated breach after giving the Artist a reasonable opportunity to put it right. It may promptly suspend or remove unlawful or materially infringing content, giving its reasons, unless the law prevents it."
   ],
   [
    "c",
@@ -581,7 +589,7 @@ module.exports = {
   [
    "c",
    "18.3",
-   "**Commission records.** PlotArt keeps acceptance records, sale reports, commission invoices and payment records for as long as this agreement lasts and for six years after it ends, then deletes them unless the law requires otherwise. These are records PlotArt needs to meet its legal and accounting obligations and to establish or defend legal claims, within clause 6.6 of the Licence. The 12-month deletion of account and gallery records in clause 6.5 of the Licence does not apply to them."
+   "**Commission records.** PlotArt keeps acceptance records, sale reports, commission invoices and payment records for as long as this agreement lasts and for six years after it ends or, if later, six years after the last commission invoice or payment under it, then deletes them unless the law requires otherwise. These are records PlotArt needs to meet its legal and accounting obligations and to establish or defend legal claims, within clause 6.6 of the Licence. The 12-month deletion of account and gallery records in clause 6.5 of the Licence does not apply to them."
   ],
   [
    "c",

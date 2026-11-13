@@ -27,15 +27,16 @@ art = flat(priv[a:b])
 for need, why in [("the sales you report to us under it", "what is held"), ("but never a collector's contact details", "no collector contact details"),
                   ("the commission invoices and payment records", "invoices and payments"), ("to perform that agreement", "contract basis"),
                   ("to keep accounts as the law requires", "legal obligation"), ("legitimate interest in being able to establish or defend a claim", "legitimate interest"),
-                  ("for six years after it ends", "retention"), ("are never published", "never published"),
+                  ("for six years after it ends or, if later, six years after the last commission invoice or payment under it", "retention, including the 24-month tail"), ("are never published", "never published"),
                   ("not deleted with your other Studio details 12 months after you leave", "separate from the 12-month deletion")]:
     ok(need in art, "V2 the artists' text must cover " + why)
-ok("and Gallery Artists' sale reports and commission records, for six years after an artist leaves" in flat(priv), "V2 Section 12 names the records")
+ok("and Gallery Artists' sale reports and commission records, for six years after an artist leaves (for commission records, or six years after the last commission invoice or payment, if later)" in flat(priv), "V2 Section 12 names the records and the later end date")
+ok("the amount you received" in art, "V2 a sale through a representing gallery reports the amount received (agreement 12.3)")
 studio = ROOT / "worker" / "plotart-studio"
 mig = (studio / "migrations" / "0013_gallery_artist_agreement_text.sql").read_text(encoding="utf-8")
 ok("privacy" in mig.lower() and "V14" in mig, "V3 the agreement-text migration (0013) names privacy V14 as its precondition")
 src = (studio / "agreements" / "source" / "PA-GAA-2026-11.cjs").read_text(encoding="utf-8")
-ok("six years" in src, "V3 the agreement's record-keeping clause matches the six-year period")
+ok("six years after the last commission invoice or payment under it" in src, "V3 the agreement's record-keeping clause (18.3) matches the notice")
 if bad:
     for x in bad: print("FAIL " + x)
     print("PRIVACY V14 · REFUSED — %d problem(s)" % len(bad)); sys.exit(2)

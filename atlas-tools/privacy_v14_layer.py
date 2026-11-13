@@ -1,5 +1,5 @@
 """PlotNua · Privacy Notice V14 layer (2026-11-PLOTART-GALLERY-ARTIST-V14): Gallery Artists' sale reports, commission
-invoices and payment records under the Gallery Artist Agreement (PA-GAA-2026-11; development 13 Nov 2026).
+invoices and payment records under the Gallery Artist Agreement (PA-GAA-2026-11; development 13 Nov 2026; revised with agreement r5, founder decisions R11 and P1 of 13 Nov 2026).
 
 PREPARED FOR RELEASE. NOT PUBLISHED until the founder authorises it, and published BEFORE the first artist can accept the
 Gallery Artist Agreement (migration 0013). Like V7-V13, V14 is a set of EXACT, REVERSIBLE replacements on top of the
@@ -21,7 +21,7 @@ P1_OLD = "and any practical note you add; and</li>\n"
 P1_NEW = ("and any practical note you add;</li>\n"
           "      <li>if you join PlotArt under the Gallery Artist Agreement, the sales you report to us under it (the PlotArt reference or the "
           "date a collector told you they found you through PlotArt, the artwork, the dates of the sale and of any negotiations relied on, "
-          "the price and any discount, and instalment details, but never a collector's contact details), and the commission invoices and "
+          "the price (or, for a sale through a gallery or agent that represents you, the amount you received) and any discount, and instalment details, but never a collector's contact details), and the commission invoices and "
           "payment records that follow; and</li>\n")
 P2_OLD = "being able to show what was agreed.</p>\n"
 P2_NEW = ("being able to show what was agreed.</p>\n"
@@ -29,12 +29,13 @@ P2_NEW = ("being able to show what was agreed.</p>\n"
           "    <p id=\"plotart-commission\">If you are a Gallery Artist, we use your sale reports, commission invoices and payment records to "
           "calculate, invoice and collect our commission under your agreement, because we need them to perform that agreement, to keep accounts "
           "as the law requires, and because we have a legitimate interest in being able to establish or defend a claim. We keep them for as long "
-          "as your agreement lasts and for six years after it ends, and then delete them, unless the law requires us to keep them longer. They are "
+          "as your agreement lasts and for six years after it ends or, if later, six years after the last commission invoice or payment under it, and "
+          "then delete them, unless the law requires us to keep them longer. They are "
           "kept separately from your gallery, are never published, and are not deleted with your other Studio details 12 months after you leave.</p>\n")
 P3_OLD = ("the record of what was published and accepted, and a minimal record of enquiries without buyers' details, for six years after an "
           "artist leaves;")
 P3_NEW = ("the record of what was published and accepted, a minimal record of enquiries without buyers' details, and Gallery Artists' sale "
-          "reports and commission records, for six years after an artist leaves;")
+          "reports and commission records, for six years after an artist leaves (for commission records, or six years after the last commission invoice or payment, if later);")
 PAIRS = [(P1_OLD, P1_NEW), (P2_OLD, P2_NEW), (P3_OLD, P3_NEW)]
 
 

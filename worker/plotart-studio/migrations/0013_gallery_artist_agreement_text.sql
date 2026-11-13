@@ -12,5 +12,5 @@
 
 INSERT INTO gallery_agreement_documents (doc_id, kind, title, text_status, html_sha256, pdf_sha256, effective_at, created_at) VALUES
  ('PA-GAA-2026-11', 'gallery_artist_agreement', 'PlotArt Gallery Artist Agreement', 'fixed',
-  'b8b4be1e7a1cd7b1853cb4fd1f8d542667aad3e795151199bfff4d7f163d5cb0', '78ea8bb098a93dea1ab3475fc50ed577d52266facd02e36e751894b6a63d9adf',
+  '60bab19a949add256b53162b2819c610985e02c878eadd45f274a1e1fb39d038', 'a7f943f391674f8df1f430be4ae575c531c6752c75c44f186950934389f51781',
   strftime('%Y-%m-%dT%H:%M:%SZ','now'), strftime('%Y-%m-%dT%H:%M:%SZ','now'));

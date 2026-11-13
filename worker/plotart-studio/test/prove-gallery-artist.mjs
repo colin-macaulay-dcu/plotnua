@@ -97,7 +97,8 @@ check('G3 the Gallery Artist now sees their agreement installed, with the exact 
   r.j.installed === true && r.j.statement === 'I have read and accept the PlotArt Gallery Artist Agreement PA-GAA-2026-11, including the Gallery Publication and Image Licence PA-GPIL-2026-11.');
 const page = await call('GET', `/agreements/${GAA}.html`, GAIL);
 check('G4 the installed text is served to the artist and carries the commercial terms (15%, no fees, no exclusivity, direct payment, commissioned work excluded)',
-  page.s === 200 && /15%/.test(page.t) && /exclusiv/i.test(page.t) && /commission/i.test(page.t) && !/DRAFT|drafting note/i.test(page.t), page.s);
+  page.s === 200 && /15%/.test(page.t) && /exclusiv/i.test(page.t) && /commission/i.test(page.t) && !/DRAFT|drafting note|NOT YET ISSUED|r5|⚖/i.test(page.t)
+  && /Original Artwork/.test(page.t) && /Newly commissioned artwork/.test(page.t) && /whether or not it is shown on PlotArt/.test(page.t), page.s);
 const bad = await acceptAgreement(S.mf, S.url, GAIL, { tamper: true });
 check('G5 a tampered fingerprint is refused (409) and nothing is recorded', bad.s === 409 && (await qa('SELECT * FROM gallery_agreement_acceptances')).length === 0);
 const okA = await acceptAgreement(S.mf, S.url, GAIL, { legal_name: 'Gail Gallery' });
