@@ -15,10 +15,11 @@ REGION = re.compile(re.escape(BEGIN) + r".*?" + re.escape(END), re.S)
 GUIDE_PATHS = ("buy-original-art-ireland.html", "abstract-contemporary-art-ireland.html")
 # The artwork collection (SEO buyer-intent Phase 1, 13 Nov 2026): every published, available work on one indexable
 # page. Like the guides, only its generated collection region changes when galleries are published.
-COLLECTION_PATHS = ("artworks/index.html", "large-artworks/index.html")
+COLLECTION_PATHS = ("artworks/index.html", "large-artworks/index.html", "art-for-business/index.html")
 # each collection has its own indexing and sitemap switches (prepared separately, released separately)
 COLLECTION_SWITCHES = {"artworks/index.html": ("artworks_indexable", "artworks_in_sitemap"),
-                       "large-artworks/index.html": ("large_artworks_indexable", "large_artworks_in_sitemap")}
+                       "large-artworks/index.html": ("large_artworks_indexable", "large_artworks_in_sitemap"),
+                       "art-for-business/index.html": ("art_for_business_indexable", "art_for_business_in_sitemap")}
 GENERATED_PATHS = GUIDE_PATHS + COLLECTION_PATHS
 EDITORIAL_PATHS = ("choose-art-for-living-room.html",)
 TOOL_PATHS = ("art-size-calculator.html",)

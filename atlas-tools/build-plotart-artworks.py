@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
 """Build/check the PlotArt artwork collections (SEO buyer-intent Phase 1 and 2, 13 Nov 2026):
 plotart/artworks/ (every published, available work) and plotart/large-artworks/ (those of 100 cm or more on the
-longest side, computed from the artist's published dimensions). One shell, one stylesheet, one collection system.
+longest side, computed from the artist's published dimensions), and plotart/art-for-business/ (SEO commercial Phase 3,
+14 Nov 2026: practical buying information for workplaces with a short generated selection of eight large works).
+One shell, one stylesheet, one collection system.
 
     python3 atlas-tools/build-plotart-artworks.py           # write the page and its stylesheet
     python3 atlas-tools/build-plotart-artworks.py --check   # verify both match this source and the public collection
@@ -58,10 +60,19 @@ CSS = '''/* PlotArt artwork collection (plotart/artworks/, 13 Nov 2026): a galle
 .pa-coll-more h2{font-size:clamp(30px,3.4vw,44px);line-height:1.12;margin:0 0 16px}
 .pa-coll-more p{max-width:62ch}
 .pa-coll-links{display:flex;flex-wrap:wrap;gap:12px 14px;margin-top:26px}
+.pa-biz-sel{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:10px 28px;margin:0 0 clamp(18px,2vw,26px)}
+.pa-biz-sel h2{font-size:clamp(30px,3.4vw,44px);line-height:1.12;margin:0}
+.pa-biz-sel a{color:var(--lime);text-decoration-color:var(--line-2);font-size:15.5px}
+.pa-biz-spaces{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(30px,3.6vw,52px) clamp(32px,4.5vw,72px);margin-top:clamp(26px,3vw,40px)}
+.pa-biz-spaces h3{font-size:clamp(22px,1.8vw,26px);line-height:1.2;margin:0 0 10px;padding-top:20px;border-top:1px solid var(--line)}
+.pa-biz-spaces p{margin:0;max-width:52ch}
+.pa-biz-ask{list-style:none;margin:26px 0 0;padding:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px clamp(32px,4.5vw,72px);max-width:1080px}
+.pa-biz-ask li{padding-left:18px;border-left:1px solid var(--line-2);max-width:52ch}
+.pa-biz-ask strong{color:var(--ivory);font-weight:600}
 @media (prefers-reduced-motion:reduce){.pa-coll-art img{transition:none}.pa-coll-art:hover img{transform:none}}
 @media (max-width:1099px){.pa-coll-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.pa-coll-art{height:clamp(240px,38vw,380px)}}
 @media (max-width:639px){.pa-coll-grid{grid-template-columns:1fr;gap:44px}.pa-coll-art{height:auto;max-height:none}.pa-coll-art img{max-height:72vh}
-.pa-coll-label{margin-top:20px;padding-top:18px}.pa-coll-actions .pa-btn,.pa-coll-links .pa-btn{max-width:100%;white-space:normal;text-align:center}}
+.pa-biz-spaces,.pa-biz-ask{grid-template-columns:1fr}.pa-coll-label{margin-top:20px;padding-top:18px}.pa-coll-actions .pa-btn,.pa-coll-links .pa-btn{max-width:100%;white-space:normal;text-align:center}}
 '''
 
 BODY = '''
@@ -78,7 +89,7 @@ COLLECTION
 </div></section>
 <section class="pa-coll-more"><div class="pa-wrap">
 <h2>Before you choose.</h2>
-<p>Measure the wall you have in mind, read the medium and dimensions, and ask the artist about framing, delivery and the total price. Each artist’s gallery tells you more about their practice and the rest of their work.</p>
+<p>Measure the wall you have in mind, read the medium and dimensions, and ask the artist about framing, delivery and the total price. Each artist’s gallery tells you more about their practice and the rest of their work. Buying for an office, hotel or other workplace? Read <a href="../art-for-business/">art for business</a>.</p>
 <div class="pa-coll-links"><a class="pa-btn pa-btn--ghost" href="../art-size-calculator.html">What size art fits your wall? →</a><a class="pa-btn pa-btn--ghost" href="../choose-art-for-living-room.html">Choosing art for your living room →</a><a class="pa-btn pa-btn--ghost" href="../abstract-contemporary-art-ireland.html">Abstract &amp; contemporary art →</a><a class="pa-btn pa-btn--ghost" href="../large-artworks/">Large artworks, 100 cm or more →</a></div>
 </div></section>
 '''
@@ -106,11 +117,54 @@ COLLECTION
 <p><strong>Check the way in.</strong> Measure doors, stairs and lifts along the route, especially for a large canvas or panel that can’t be rolled.</p>
 <p><strong>Ask about weight and hanging.</strong> Ask the artist whether the work is framed, how much it weighs and what fixings it needs, and make sure the wall can take it.</p>
 <p><strong>Agree delivery with the artist.</strong> Collection, delivery, any installation and the total price are arranged directly between you and the artist. Ask for them in writing before you pay.</p>
-<p><strong>For a workplace or commercial interior,</strong> consider light, heat and where people will see the work, and ask the artist how it should be cared for.</p>
+<p><strong>For a workplace or commercial interior,</strong> consider light, heat and where people will see the work, and ask the artist how it should be cared for. <a href="../art-for-business/">Art for business</a> has more on buying for a workplace.</p>
 <div class="pa-coll-links"><a class="pa-btn pa-btn--ghost" href="../buy-original-art-ireland.html">Buying art &amp; prices →</a><a class="pa-btn pa-btn--ghost" href="../gallery/">Meet the artists →</a></div>
 </div></section>
 '''
-PAGES = {PATH: (TITLE, DESCRIPTION, BODY), LARGE_PATH: (LARGE_TITLE, LARGE_DESCRIPTION, LARGE_BODY)}
+
+BIZ_PATH = "art-for-business/index.html"
+BIZ_TITLE = "Original Art for Offices & Businesses in Ireland | PlotArt"
+BIZ_DESCRIPTION = ("Original paintings and artworks for offices, receptions, hotels and restaurants, by artists based or "
+                   "working in Ireland. See sizes and prices.")
+BIZ_BODY = '''
+<section class="pa-coll-hero"><div class="pa-wrap">
+<p class="pa-eyebrow">PlotArt · Art for business</p>
+<h1>Original art for workplaces in Ireland.</h1>
+<p class="pa-lede">Original paintings and works for offices, reception areas, meeting rooms, hotels and restaurants, by artists based or working in Ireland. Each work is shown whole, with the artist’s own dimensions and asking price, and you deal with the artist directly.</p>
+<p class="pa-coll-how">PlotArt introduces you to the artist. It doesn’t take payment, source, deliver or install artwork, and it doesn’t offer art consultancy: the artist arranges any sale with you directly.</p>
+<div class="pa-coll-actions"><a class="pa-btn pa-btn--ghost" href="../large-artworks/">Large artworks →</a><a class="pa-btn pa-btn--ghost" href="../artworks/">All available artworks →</a></div>
+</div></section>
+<section class="pa-coll-wall" aria-labelledby="collH"><div class="pa-wrap">
+<div class="pa-biz-sel"><h2 id="collH">Large works, available now.</h2><a href="../large-artworks/">See every available large artwork →</a></div>
+COLLECTION
+</div></section>
+<section class="pa-coll-more"><div class="pa-wrap">
+<h2>Choosing for the space.</h2>
+<p>A workplace is seen differently from a home: by more people, often in passing, and under office lighting. A few things to weigh before you shortlist a work.</p>
+<div class="pa-biz-spaces">
+<div><h3>Reception and entrance areas</h3><p>Work here is usually seen from across the room and on the way past, so scale matters. Works of 100 cm or more tend to hold a wall like this. Compare a work’s size with your wall in the <a href="../art-size-calculator.html">art size calculator</a>.</p></div>
+<div><h3>Meeting rooms and boardrooms</h3><p>Here a work is seen from a seat, close up and for an hour at a time. A medium-sized piece hung at seated eye level can suit a room better than the largest canvas. Browse <a href="../artworks/">all available artworks</a>.</p></div>
+<div><h3>Hotels, restaurants and cafés</h3><p>Think about daylight, heat, steam and how close guests will be. Ask the artist whether the work is framed or glazed and how it should be cared for in a busy room.</p></div>
+<div><h3>Interior designers and architects</h3><p>Every work page gives the artist’s medium, materials and dimensions. Whether a work can be held while a scheme is approved is the artist’s decision: ask them directly.</p></div>
+</div>
+</div></section>
+<section class="pa-coll-more"><div class="pa-wrap">
+<h2>What to ask the artist.</h2>
+<p>Every enquiry goes to the artist, who replies to you directly. Agree these points with them in writing before you pay.</p>
+<ul class="pa-biz-ask">
+<li><strong>The total price.</strong> What the asking price includes: framing, VAT where it applies, and delivery.</li>
+<li><strong>An invoice.</strong> Whether the artist can invoice your business by name.</li>
+<li><strong>Weight and hanging.</strong> Whether the work is framed, what it weighs, and what fixings it needs. Check that the wall can take it.</li>
+<li><strong>Delivery and access.</strong> Collection or delivery, who hangs the work, and whether it fits through doors, stairs and lifts on the way in.</li>
+<li><strong>Care.</strong> How to look after the work in your space: light, heat, humidity and cleaning.</li>
+<li><strong>Timing.</strong> When the work can be collected or delivered.</li>
+</ul>
+<p style="margin-top:26px">To ask about a particular work, open it and use <em>Enquire about this work</em>. To ask an artist about their wider practice, use the enquiry on their gallery page. If you are considering works by more than one artist, contact each artist separately: each handles their own sales.</p>
+<div class="pa-coll-links"><a class="pa-btn pa-btn--ghost" href="../gallery/">Meet the artists →</a><a class="pa-btn pa-btn--ghost" href="../buy-original-art-ireland.html">Buying art &amp; prices →</a><a class="pa-btn pa-btn--ghost" href="../art-size-calculator.html">What size art fits your wall? →</a></div>
+</div></section>
+'''
+PAGES = {PATH: (TITLE, DESCRIPTION, BODY), LARGE_PATH: (LARGE_TITLE, LARGE_DESCRIPTION, LARGE_BODY),
+         BIZ_PATH: (BIZ_TITLE, BIZ_DESCRIPTION, BIZ_BODY)}
 
 
 def relink(fragment):

@@ -53,6 +53,13 @@ COLLECTIONS = {
                                   "crumbs": [("Artworks", "artworks/index.html"), ("Large artworks", "large-artworks/index.html")],
                                   "label": "Available large artworks", "count": "original %s of 100 cm or more",
                                   "empty": "No large artworks are available just now."},
+    # Art for business (SEO commercial Phase 3, 14 Nov 2026): a short selection, not a third full collection. The
+    # first works of the same fair rotation as the large collection, so each artist is represented before any twice.
+    "art-for-business/index.html": {"keep": is_large, "limit": 8, "name": "Original art for business in Ireland",
+                                    "crumbs": [("Art for business", "art-for-business/index.html")],
+                                    "label": "A selection of available large artworks",
+                                    "count": "A selection of %d large %s by %d %s, from %d available",
+                                    "empty": "No large artworks are available just now."},
 }
 
 
@@ -117,14 +124,20 @@ def collection_data(rows, path="artworks/index.html"):
 def collection(packages, path="artworks/index.html"):
     spec = COLLECTIONS[path]
     rows = collection_order(packages, spec["keep"])
+    total = len(rows)
+    rows = rows[:spec["limit"]] if spec.get("limit") else rows
     if not rows:
         return ('<p class="pa-coll-count">%s</p>'
                 '<p class="pa-coll-empty">New work is published as artists add it. <a href="../gallery/">Meet the artists in the Artists’ Gallery</a>.</p>'
                 % spec["empty"] + collection_data(rows, path))
     artists = len({pkg["artist"]["slug"] for pkg, _ in rows})
-    return ('<p class="pa-coll-count">%d %s by %d %s</p>'
+    if spec.get("limit"):
+        count = spec["count"] % (len(rows), "work" if len(rows) == 1 else "works", artists, "artist" if artists == 1 else "artists", total)
+    else:
+        count = "%d %s by %d %s" % (len(rows), spec["count"] % ("work" if len(rows) == 1 else "works"), artists, "artist" if artists == 1 else "artists")
+    return ('<p class="pa-coll-count">%s</p>'
             '\n  <ol class="pa-coll-grid" aria-label="%s">%s\n  </ol>\n  %s') % (
-        len(rows), spec["count"] % ("work" if len(rows) == 1 else "works"), artists, "artist" if artists == 1 else "artists",
+        count,
         spec["label"], "".join(collection_card(pkg, w, n) for n, (pkg, w) in enumerate(rows, 1)), collection_data(rows, path))
 
 
