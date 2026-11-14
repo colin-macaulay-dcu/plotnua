@@ -77,6 +77,46 @@ BASE = subprocess.run(["git", "-C", ROOT, "merge-base", "HEAD", "origin/main"], 
 main = lambda f: subprocess.run(["git", "-C", ROOT, "show", BASE + ":plotart/" + f], capture_output=True, text=True).stdout
 same = lambda root, f: open(os.path.join(root, "plotart", f), encoding="utf-8").read() == main(f)
 absent = lambda root: not any(os.path.exists(os.path.join(root, "plotart", f)) for f in ("join.html", "curatorial-policy.html", "assets/pa-apply.js", "assets/plotart-join.css"))
+# Closed-state baseline (14 Nov 2026, founder approval 18:11). The baseline is the committed page. While the committed state
+# is closed, J1 already requires the committed pages to equal main, and a closed build must equal them exactly (as before).
+# Since the opening release the committed state is OPEN, so a correct closed build cannot equal it: the closed build must
+# then equal the committed page with ONLY the builder-owned recruitment removed (the Join stylesheet link, the Artists'
+# Gallery invitation, the Founding 25 pointer), and on the homepage the artist band replaced by the Founding 25 band exactly
+# as it was in the last production commit built closed. Any other difference, anywhere on these pages, still fails.
+LAST_CLOSED = "2673e5f"   # Phase 3 website release, built closed (released 14 Nov 2026)
+_last_closed_home = subprocess.run(["git", "-C", ROOT, "show", LAST_CLOSED + ":plotart/index.html"], capture_output=True, text=True).stdout
+def _cut(t, a, b, before="", after=""):
+    """t with exactly one marked region (and exactly the given surrounding whitespace) removed; None otherwise."""
+    if t is None or t.count(a) != 1 or t.count(b) != 1:
+        return None
+    i, k = t.index(a), t.index(b) + len(b)
+    if i > k or t[i - len(before):i] != before or t[k:k + len(after)] != after:
+        return None
+    return t[:i - len(before)] + t[k + len(after):]
+def _unlink(t, link):
+    return t.replace(link, "", 1) if t.count(link) == 1 else None
+def closed_matches(built, f, m):
+    """True when the closed build `built` of page f is exactly what closing must leave of the committed page m."""
+    if not COMMITTED_OPEN:
+        return built == m
+    if f == "founding-25.html":
+        return built == _cut(m, "<!-- pa-artist-apply-pointer:begin -->", "<!-- pa-artist-apply-pointer:end -->", before="\n  ")
+    if f == "gallery/index.html":
+        return built == _cut(_unlink(m, '\n<link rel="stylesheet" href="../assets/plotart-join.css">'),
+                             "<!-- pa-artist-apply-gallery:begin -->", "<!-- pa-artist-apply-gallery:end -->", after="\n\n")
+    if f == "index.html":
+        m = _unlink(m, '\n<link rel="stylesheet" href="assets/plotart-join.css">')
+        HB, HE = "<!-- pa-artist-apply:begin -->", "<!-- pa-artist-apply:end -->"
+        if m is None or m.count(HB) != 1 or m.count(HE) != 1:
+            return False
+        head, tail = m[:m.index(HB)], m[m.index(HE) + len(HE):]
+        if not (built.startswith(head) and built.endswith(tail)) or len(built) <= len(head) + len(tail):
+            return False
+        band = built[len(head):len(built) - len(tail)]
+        return 'aria-labelledby="f25InviteH"' in band and band in _last_closed_home
+    return built == m
+committed = lambda f: open(os.path.join(ROOT, "plotart", f), encoding="utf-8").read()
+closed_same = lambda root, f: closed_matches(open(os.path.join(root, "plotart", f), encoding="utf-8").read(), f, committed(f))
 if COMMITTED_OPEN:
     check("J1 committed (open): the pages are exactly the builder's open build", r.returncode == 0 and "open build" in r.stdout, r.stdout + r.stderr)
 else:
@@ -100,8 +140,17 @@ try:
     body = lambda t: t[t.index("(function () {"):]
     check("O3 open: the script is the Founding 25 script with only its page hooks renamed", body(js) == body(f25js).replace("data-f25-", "data-ap-").replace("'f25-", "'ap-"))
     for st in ("not_open", "paused", "closed"):
-        check("N %s: nothing published: homepage and Founding 25 page as on main, no recruitment page or script" % st,
-              same(S[st][0], "index.html") and same(S[st][0], "founding-25.html") and same(S[st][0], "gallery/index.html") and absent(S[st][0]))
+        check("N %s: nothing published: homepage, Founding 25 page and Artists' Gallery as committed less only the recruitment (exactly as committed, and so as main, while closed), no recruitment page or script" % st,
+              closed_same(S[st][0], "index.html") and closed_same(S[st][0], "founding-25.html") and closed_same(S[st][0], "gallery/index.html") and absent(S[st][0]))
+    # the closed-state comparison itself refuses a closed build that differs from main anywhere outside the recruitment
+    _c = open(os.path.join(S["closed"][0], "plotart", "index.html"), encoding="utf-8").read()
+    _g = open(os.path.join(S["closed"][0], "plotart", "gallery", "index.html"), encoding="utf-8").read()
+    _f = open(os.path.join(S["closed"][0], "plotart", "founding-25.html"), encoding="utf-8").read()
+    check("N4 the closed-state comparison refuses any other change: a word changed on the closed homepage, Artists' Gallery or Founding 25 page, or the open band left in place, all fail",
+          not closed_matches(_c.replace("</main>", "x</main>", 1) if "</main>" in _c else _c + "x", "index.html", committed("index.html"))
+          and not closed_matches(_g.replace("<h1", "<h1 data-x", 1), "gallery/index.html", committed("gallery/index.html"))
+          and not closed_matches(_f.replace("<h1", "<h1 data-x", 1), "founding-25.html", committed("founding-25.html"))
+          and not closed_matches(committed("index.html"), "index.html", committed("index.html")) == COMMITTED_OPEN)
     jv = re.sub(r"\s+", " ", re.sub(r"<[^>]+>", " ", j))
     home_o = open(os.path.join(site, "plotart", "index.html"), encoding="utf-8").read()
     band = home_o[home_o.index("<!-- pa-artist-apply:begin -->"):home_o.index("<!-- pa-artist-apply:end -->")]
@@ -121,7 +170,9 @@ try:
                       "An invitation to join PlotArt." in bv and not re.search(r"\d|%|commission|fee|exclusiv", bv, re.I) and 'href="join.html"' in band and 'href="gallery/"' in band),
                      ("W9 the Artists' Gallery carries the compact invitation after the collection: no figures or commercial terms, linking to Join PlotArt",
                       gal_ok(open(os.path.join(site, "plotart", "gallery", "index.html"), encoding="utf-8").read())),
-                     ("W8 the scoped stylesheet is linked by the homepage only while open", 'href="assets/plotart-join.css"' in home_o and 'plotart-join.css' not in main("index.html"))):
+                     ("W8 the scoped stylesheet is linked by the homepage only while open (and by no page of the not_open, paused or closed builds)",
+                      'href="assets/plotart-join.css"' in home_o and not any('plotart-join.css' in open(os.path.join(S[st][0], "plotart", f), encoding="utf-8").read()
+                                                                              for st in ("not_open", "paused", "closed") for f in ("index.html", "gallery/index.html", "founding-25.html")))):
         check(name, ok)
     breaks = [
         ("B1 the join page published while applications are not open", "not_open", None, None, None),
