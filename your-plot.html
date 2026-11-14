@@ -8430,6 +8430,17 @@ html.pn-myplot-view:not(.pn-myplot-open) body::after{content:"Opening My Plot\20
       max-height:calc(100dvh - 28px);
     }
   }
+  /* LOGO CLEARANCE (14 Nov 2026). The fixed PlotNua mark (.brand-mark,
+     top-left, up to 68px deep) sat over the first line of the Additional
+     Home panel up to ~940px wide, and over the Results property label up
+     to ~1080px. Top clearance only; the mark itself is unchanged. */
+  @media (max-width:940px){
+    #screen-home-journey{ padding-top:76px; }
+    #screen-home-journey .match-panel{ max-height:calc(100dvh - 90px); }
+  }
+  @media (max-width:1080px){
+    #screen-match-results .prop-confirm{ margin-top:62px; }
+  }
 
   /* ---- buildings worth exploring: a filtered evidence set, not a ranking.
      LAUNCH V3 — the bespoke card is retired. These now use the shared result
