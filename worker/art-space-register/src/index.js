@@ -237,7 +237,10 @@ async function dailyCapReached(env) {
 const utcStamp = (d) => d.toISOString().replace(/\.\d{3}Z$/, 'Z');
 
 /* ---------------------------------------------------------- validation ---- */
-const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+/* 14 Nov 2026: the domain is one or more non-empty labels and a final label of two or more characters, so an
+   address ending in a full stop ("name@example.ie.") or with an empty label ("name@example..ie") is refused.
+   The part before @ is unchanged, so plus-addressing (name+tag@example.ie) and dotted names stay valid. */
+const EMAIL_RE = /^[^\s@]+@(?:[^\s@.]+\.)+[^\s@.]{2,}$/;
 function pickEnum(list, v) { return list.includes(v) ? v : null; }
 function cleanText(v, max) {
   if (typeof v !== 'string') return null;
@@ -980,6 +983,7 @@ export default {
 
 /* EXPORTED FOR TESTS ONLY. Nothing here reaches the network. */
 export const __test = {
+  EMAIL_RE,
   V, ALLOWED_KEYS, CONSENT_TEXT, SUBMIT_STATUS, ROUTE, writesEnabled,
   allowedOrigin, fetchMetadataOk, sha256Hex, pickWays, cleanText,
   MAX_BODY_BYTES, MAX_NOTE_CHARS, DAILY_CAP,
