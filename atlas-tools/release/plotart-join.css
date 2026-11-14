@@ -77,6 +77,7 @@ body.pa .pa-jn-band--compact .pa-jn-acts{ margin-top:clamp(20px, 2vw, 26px); }
 @media (max-width:860px){
   body.pa .pa-jn-grid, body.pa .pa-jn-band-grid{ grid-template-columns:1fr; }
   body.pa .pa-jn-band-grid{ align-items:start; }
+  body.pa .pa-jn-band:not(.pa-jn-band--compact){ padding-bottom:28px; }
   body.pa .pa-jn-hero-foot > div{ order:1; }
   body.pa .pa-jn-hero-foot .pa-jn-status{ order:2; padding-top:0; }
   body.pa .pa-jn-three{ grid-template-columns:1fr; gap:26px; }

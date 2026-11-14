@@ -142,7 +142,7 @@ try:
         ("B16 the programme distinction removed", "open", "join.html", " Founding Artists keep their own agreement; artists joining now become Gallery Artists.", ""),
         ("B17 opening without the privacy section for artist applications (V15)", "open", "../privacy.html", "PLOTNUA-PLOTART-ARTIST-APPLICATIONS-PRIVACY-V15", "NO-V15"),
         ("B18 the 15% made bold", "open", "join.html", "PlotArt’s commission is 15% of", "PlotArt’s commission is <strong>15%</strong> of"),
-        ("B23 commercial terms on the Artists' Gallery invitation", "open", "gallery/index.html", "We welcome applications from artists based or working on the island of Ireland.", "15% commission. No fees."),
+        ("B23 commercial terms on the Artists' Gallery invitation", "open", "gallery/index.html", "Independent artists, distinctive work and new connections with collectors.</p>\n  <div class=\"pa-jn-acts\"><a class=\"pa-jn-btn\" href=\"../join.html\"", "15% commission. No fees.</p>\n  <div class=\"pa-jn-acts\"><a class=\"pa-jn-btn\" href=\"../join.html\""),
         ("B24 the Artists' Gallery invitation published while applications are closed", "closed", "gallery/index.html", '<section class="pa-vg2-close">', '<!-- pa-artist-apply-gallery:begin --><a href="../join.html">Apply</a><!-- pa-artist-apply-gallery:end -->\n\n<section class="pa-vg2-close">'),
         ("B19 a Direct Approach no longer needs to come before the sale is agreed", "open", "join.html", " before the sale is agreed that they found you", " that they found you"),
         ("B20 commission widened from original work to any work", "open", "join.html", "an original work or signed limited-edition print sold", "any work or product sold"),
