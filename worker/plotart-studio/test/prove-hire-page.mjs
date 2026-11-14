@@ -5,6 +5,7 @@
 import { mkdtempSync, existsSync, readFileSync, writeFileSync, rmSync, mkdirSync, cpSync } from 'node:fs';
 import { execSync, execFileSync, spawnSync } from 'node:child_process';
 import os from 'node:os';
+import { createHash } from 'node:crypto';
 import path from 'node:path';
 import { buildPreview, relay, open, chromium } from './hire-page-harness.mjs';
 
@@ -63,11 +64,36 @@ const strip = s => s.replace(' pa-pills--hire', '').replace(/<a class="pa-pill" 
     // Gallery Artist Programme Phase 3 (13 Nov 2026): Join PlotArt and the curatorial policy, the script shipped only while
     // applications are open (guarded by prove-plotart-launch.py L18, the manifest and prove-plotart-join.py)
     'plotart/join.html', 'plotart/curatorial-policy.html', 'plotart/assets/pa-apply.js', 'plotart/assets/plotart-join.css']);
+  /* Neutral colour system (founder approval 14 Nov 2026, 18:11): these files may differ from main ONLY as the approved colour
+     release, byte for byte (SHA-256 pinned here; the launch manifest pins them too). In plotart.css, Art for Hire's own blocks
+     stay protected: the scoped nav block and the footer rule must be byte-identical to main's, and the gallery-marks block may
+     differ only in colour values, each new one a neutral grey or off-white (no warm accent). */
+  const COLOUR_RELEASE = {
+    'plotart/assets/plotart-guides.css': 'da9048a79d53b067cd6d480b074bfac90c9e1c3f192ffc4101030a37daed4cd1',
+    'plotart/assets/plotart.css': '59daa2a69fff62ea0d174520f7cefbd0457487f22526428fab1b59df277ccf16',
+    'plotart/invitation.html': '921cac745553c97c606bda34ce01e12ce36afce4b90c3ac103dbe3b56855b844',
+    'plotart/mobile-gallery/mobile-gallery.css': '68c1ddd32ed10386fcdb566454d0e5e66b1a576ecf397f7d28ae39f034ab0f5b',
+    'plotart/mobile-gallery/mobile-gallery.js': '5bf253084527425c061902751aaae1e0f625691d12e5f1e8462896cf55608152'
+  };
+  const sha = t => createHash('sha256').update(t).digest('hex');
+  const navBlock = c => (c.match(/\n*\/\* ==== pa-hire-nav:begin[\s\S]*?pa-hire-nav:end ==== \*\/\n?/) || [''])[0];
+  const footRule = c => (c.match(/^\.pa-foot p a\{ text-decoration:underline;[^\n]*\n/m) || [''])[0];
+  const marksBlock = c => (c.match(/\n\/\* Art for Hire marks, added by plotart\.js[\s\S]*?\.pa-aw-hire\{[^\n]*\}/) || [''])[0];
+  const COLOUR_RE = /#[0-9A-Fa-f]{6}\b|#[0-9A-Fa-f]{3}\b|rgba?\(\s*\d+\s*,\s*\d+\s*,\s*\d+/g;
+  const rgbOf = lit => { if (lit[0] === '#') { const h = lit.length === 4 ? lit.slice(1).split('').map(x => x + x).join('') : lit.slice(1);
+    return [0, 2, 4].map(i => parseInt(h.slice(i, i + 2), 16)); } return lit.replace(/rgba?\(/, '').split(',').map(Number); };
+  const neutral = lit => { const [r, g, b] = rgbOf(lit); return Math.max(r, g, b) - Math.min(r, g, b) <= 6 && r - b <= 6; };
+  const onlyNeutralColourChange = (o, n) => o !== '' && o.replace(COLOUR_RE, '#') === n.replace(COLOUR_RE, '#')
+    && (n.match(COLOUR_RE) || []).every((lit, i) => lit === (o.match(COLOUR_RE) || [])[i] || neutral(lit));
+  const colourReleaseOk = (f, n, o) => COLOUR_RELEASE[f] === sha(n) && (f !== 'plotart/assets/plotart.css'
+    || (navBlock(n) !== '' && navBlock(n) === navBlock(o) && footRule(n) === footRule(o)
+        && (marksBlock(n) === marksBlock(o) || onlyNeutralColourChange(marksBlock(o), marksBlock(n)))));
   const wrong = changedFiles.filter(f => {
     if (f.startsWith('plotart/art-for-hire/') || OTHER_RELEASES.has(f)) return false;
     const o = old(f); if (o === null) return true;
     if (!existsSync(path.join(REPO, f))) return true;   // a deleted file is a change to explain, never a crash
     const n = readFileSync(path.join(REPO, f), 'utf8');
+    if (f in COLOUR_RELEASE) return !colourReleaseOk(f, n, o);
     // 11 Nov 2026: the gallery marks add one block to plotart.css and one self-contained block to plotart.js (nothing else in either)
     const marksCss = c => c.replace(/\n\/\* Art for Hire marks, added by plotart\.js[\s\S]*?\.pa-aw-hire\{[^\n]*\}/, '');
     const marksJs = c => c.replace(/\n\n\/\* ---- Art for Hire marks in an artist's gallery[\s\S]*$/, '\n');
