@@ -741,12 +741,12 @@ else:
         need('href="join.html"' in _band.group(1) and 'href="gallery/"' in _band.group(1) and "An invitation to join PlotArt." in _bv,
              "L18 the homepage band must be the invitation, linking to Join PlotArt and the gallery")
         need(not re.search(r"\d|%|€|commission|fee|exclusiv|deserves", _bv, re.I), "L18 the homepage band carries figures, commercial terms or promotional wording")
-    # the Artists' Gallery invitation (founder decision 14 Nov 2026): once, outside the collection region, the same rules as the homepage band
+    # the Artists' Gallery invitation (founder decisions 14 Nov 2026): once, above and outside the collection region, the same rules as the homepage band
     need(_gband is not None and _gal.count("<!-- pa-artist-apply-gallery:begin -->") == 1
-         and _gal.index("<!-- pa-artist-apply-gallery:begin -->") > _gal.index("<!-- pa-vg-collection:end -->"), "L18 open: the Artists' Gallery carries the invitation once, after the collection")
+         and _gal.index("<!-- pa-artist-apply-gallery:end -->") < _gal.index("<!-- pa-vg-collection:begin -->"), "L18 open: the Artists' Gallery carries the invitation once, before the collection")
     if _gband:
         _gv = re.sub(r"\s+", " ", visible_text(_gband.group(1)))
-        need('href="../join.html"' in _gband.group(1) and "An invitation to join PlotArt." in _gv, "L18 the Artists' Gallery invitation must link to Join PlotArt")
+        need('href="../join.html"' in _gband.group(1) and "Interested in joining PlotArt?" in _gv, "L18 the Artists' Gallery invitation must link to Join PlotArt")
         need(not re.search(r"\d|%|€|commission|fee|exclusiv|deserves", _gv, re.I), "L18 the Artists' Gallery invitation carries figures, commercial terms or promotional wording")
     need(_ptr is not None and bool(_ptr.group(1).strip()), "L18 open: the Founding 25 page points to Join PlotArt")
     need("<form" not in _pol and "pa-apply.js" not in _pol, "L18 the curatorial policy has no form")

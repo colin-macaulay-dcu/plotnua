@@ -363,19 +363,17 @@ def f25_page(s):
 GB, GE = "<!-- pa-artist-apply-gallery:begin -->", "<!-- pa-artist-apply-gallery:end -->"
 G_CSS_LINK = '<link rel="stylesheet" href="../assets/plotart.css">'
 G_JOIN_CSS_LINK = '\n<link rel="stylesheet" href="../assets/plotart-join.css">'
-G_ANCHOR = '<section class="pa-vg2-close">'
+G_ANCHOR = '<section class="pa-vg2-collection pa-vgc"'
 
 
 def gallery_band():
-    # The Artists' Gallery invitation (founder decision 14 Nov 2026): the homepage invitation in a compact form,
-    # between the collection and the closing links. Built only in the "open" state; no figures, terms or selling points.
+    # The Artists' Gallery invitation (founder decisions 14 Nov 2026): one restrained row directly below the gallery
+    # introduction and above the collection. Built only in the "open" state; no figures, terms or selling points.
     return f"""{GB}
-<section class="pa-jn-band pa-jn-band--compact" aria-labelledby="joinGalleryH"><div class="pa-wrap pa-jn-band-grid">
-  <div class="pa-jn-band-head"><p class="pa-jn-k">For artists</p>
-  <h2 id="joinGalleryH">An invitation to join PlotArt.</h2></div>
-  <div class="pa-jn-band-body"><p class="pa-jn-lede">A curated space for contemporary Irish art. Independent artists, distinctive work and new connections with collectors.</p>
-  <div class="pa-jn-acts"><a class="pa-jn-btn" href="../join.html" data-pa-track="gallery_join">Apply to join</a></div>
-  <p class="pa-jn-status"><span class="pa-open-badge">{BADGE}</span></p></div>
+<section class="pa-jn-invite" aria-labelledby="joinGalleryH"><div class="pa-wrap pa-jn-invite-row">
+  <div class="pa-jn-invite-text"><h2 id="joinGalleryH">Interested in joining PlotArt?</h2>
+  <p>We’re welcoming applications from independent artists based or working on the island of Ireland. Discover how the gallery works and apply to be considered.</p></div>
+  <p class="pa-jn-invite-act"><a class="pa-jn-link" href="../join.html" data-pa-track="gallery_join">Apply to join →</a></p>
 </div></section>
 {GE}
 """
@@ -392,7 +390,7 @@ def gallery_page(s):
     if not OPEN:
         return s
     if s.count(G_CSS_LINK) != 1 or s.count(G_ANCHOR) != 1:
-        raise SystemExit("gallery/index.html: stylesheet link or closing section not found exactly once")
+        raise SystemExit("gallery/index.html: stylesheet link or collection section not found exactly once")
     return s.replace(G_CSS_LINK, G_CSS_LINK + G_JOIN_CSS_LINK).replace(G_ANCHOR, gallery_band() + "\n" + G_ANCHOR)
 
 

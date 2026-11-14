@@ -52,11 +52,11 @@ def guard(site, swp, mp, repin=()):
     return r.returncode == 0 and "PLOTART LAUNCH · OK" in r.stdout, r.stdout + r.stderr
 
 def gal_ok(g):
-    if g.count("pa-artist-apply-gallery:begin") != 1 or g.index("pa-artist-apply-gallery:begin") < g.index("pa-vg-collection:end"):
+    if g.count("pa-artist-apply-gallery:begin") != 1 or g.index("pa-artist-apply-gallery:end") > g.index("pa-vg-collection:begin"):
         return False
     seg = g[g.index("pa-artist-apply-gallery:begin"):g.index("pa-artist-apply-gallery:end")]
     txt = re.sub(r"\s+", " ", re.sub(r"<[^>]+>", " ", seg))
-    return 'href="../join.html"' in seg and "pa-jn-band--compact" in seg and not re.search(r"\d|%|commission|fee|exclusiv", txt, re.I)
+    return 'href="../join.html"' in seg and "pa-jn-invite" in seg and not re.search(r"\d|%|commission|fee|exclusiv", txt, re.I)
 
 def edit(site, f, old, new, count=1):
     p = os.path.join(site, "plotart", f); s = open(p, encoding="utf-8").read()
@@ -168,7 +168,7 @@ try:
                       "€" not in jv and 'class="big"' not in j and "deserves" not in jv + bv and "€" not in bv),
                      ("W7 the homepage band is an invitation: no figures or commercial terms, links to Join PlotArt and the gallery",
                       "An invitation to join PlotArt." in bv and not re.search(r"\d|%|commission|fee|exclusiv", bv, re.I) and 'href="join.html"' in band and 'href="gallery/"' in band),
-                     ("W9 the Artists' Gallery carries the compact invitation after the collection: no figures or commercial terms, linking to Join PlotArt",
+                     ("W9 the Artists' Gallery carries the invitation above the collection: no figures or commercial terms, linking to Join PlotArt",
                       gal_ok(open(os.path.join(site, "plotart", "gallery", "index.html"), encoding="utf-8").read())),
                      ("W8 the scoped stylesheet is linked by the homepage only while open (and by no page of the not_open, paused or closed builds)",
                       'href="assets/plotart-join.css"' in home_o and not any('plotart-join.css' in open(os.path.join(S[st][0], "plotart", f), encoding="utf-8").read()
@@ -193,7 +193,7 @@ try:
         ("B16 the programme distinction removed", "open", "join.html", " Founding Artists keep their own agreement; artists joining now become Gallery Artists.", ""),
         ("B17 opening without the privacy section for artist applications (V15)", "open", "../privacy.html", "PLOTNUA-PLOTART-ARTIST-APPLICATIONS-PRIVACY-V15", "NO-V15"),
         ("B18 the 15% made bold", "open", "join.html", "PlotArt’s commission is 15% of", "PlotArt’s commission is <strong>15%</strong> of"),
-        ("B23 commercial terms on the Artists' Gallery invitation", "open", "gallery/index.html", "Independent artists, distinctive work and new connections with collectors.</p>\n  <div class=\"pa-jn-acts\"><a class=\"pa-jn-btn\" href=\"../join.html\"", "15% commission. No fees.</p>\n  <div class=\"pa-jn-acts\"><a class=\"pa-jn-btn\" href=\"../join.html\""),
+        ("B23 commercial terms on the Artists' Gallery invitation", "open", "gallery/index.html", "Discover how the gallery works and apply to be considered.", "15% commission. No fees."),
         ("B24 the Artists' Gallery invitation published while applications are closed", "closed", "gallery/index.html", '<section class="pa-vg2-close">', '<!-- pa-artist-apply-gallery:begin --><a href="../join.html">Apply</a><!-- pa-artist-apply-gallery:end -->\n\n<section class="pa-vg2-close">'),
         ("B19 a Direct Approach no longer needs to come before the sale is agreed", "open", "join.html", " before the sale is agreed that they found you", " that they found you"),
         ("B20 commission widened from original work to any work", "open", "join.html", "an original work or signed limited-edition print sold", "any work or product sold"),
