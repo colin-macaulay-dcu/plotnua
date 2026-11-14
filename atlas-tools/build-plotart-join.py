@@ -188,12 +188,14 @@ def join_page():
                 "An invitation to join PlotArt, a curated online gallery of contemporary Irish art. Applications from artists based or working on the island of Ireland.",
                 JOIN_STYLE) + HEADER + f"""<main id="main">
 
-<section class="pa-jn-hero"><div class="pa-wrap">
+<section class="pa-jn-hero pa-jn-hero--join"><div class="pa-wrap">
   <p class="pa-jn-k">For artists</p>
   <h1>An invitation to join PlotArt.</h1>
-  <p class="pa-jn-lede">A curated space for contemporary Irish art. We welcome applications from artists based or working on the island of Ireland.</p>
-  <div class="pa-jn-acts"><a class="pa-jn-btn" href="#apply" data-pa-track="join_apply_click">Apply</a><a class="pa-jn-link" href="curatorial-policy.html">Curatorial policy</a></div>
-  <p class="pa-jn-status">{LINE}</p>
+  <div class="pa-jn-grid pa-jn-hero-foot">
+    <p class="pa-jn-status">{LINE}</p>
+    <div><p class="pa-jn-lede">A curated space for contemporary Irish art. We welcome applications from artists based or working on the island of Ireland.</p>
+    <div class="pa-jn-acts"><a class="pa-jn-btn" href="#apply" data-pa-track="join_apply_click">Apply</a><a class="pa-jn-link" href="curatorial-policy.html">Curatorial policy</a></div></div>
+  </div>
 </div></section>
 
 <section class="pa-jn-sec"><div class="pa-wrap pa-jn-grid">
@@ -231,10 +233,11 @@ def join_page():
   <div><h2 class="pa-jn-h-sm">The practical details</h2>
   <dl class="pa-jn-terms">
     <dt>Fees</dt><dd>There are no fees to apply, to join or to remain.</dd>
-    <dt>Commission</dt><dd>PlotArt’s commission is 15% of the price of a work sold to a collector PlotArt introduced to you, including a collector who tells you they found you through PlotArt. It doesn’t apply to your independent sales.</dd>
-    <dt>Introductions</dt><dd>An introduction counts for 24 months. After that, a sale carries commission only if it completes a conversation about a particular work that began within those 24 months.</dd>
+    <dt>Commission</dt><dd>PlotArt’s commission is 15% of the price of an original work or signed limited-edition print sold to a collector PlotArt introduced to you, once the sale is complete. It doesn’t apply to your independent sales.</dd>
+    <dt>Introductions</dt><dd>A collector is introduced by PlotArt when they reach you through an enquiry carrying a PlotArt reference, or tell you before the sale is agreed that they found you through PlotArt. Collectors you already knew, or who found you another way, are independent.</dd>
+    <dt>Duration</dt><dd>An introduction counts for 24 months. After that, only the sale of a particular work you were already discussing in writing within those 24 months carries commission.</dd>
     <dt>Commissioned work</dt><dd>Newly commissioned work is agreed between you and the collector and isn’t subject to the commission.</dd>
-    <dt>Payment</dt><dd>Collectors pay you directly, and PlotArt invoices its commission once a sale is complete. The commission is calculated on the price of the work, excluding delivery, insurance and installation.</dd>
+    <dt>Payment</dt><dd>Collectors pay you directly. PlotArt invoices its commission after a completed sale, on the price of the work including any frame, and excluding delivery, insurance, installation and any VAT you charge.</dd>
     <dt>Independence</dt><dd>There is no exclusivity, and you keep your copyright.</dd>
     <dt>Agreement</dt><dd>The full terms are in the PlotArt Gallery Artist Agreement, which you read and accept in PlotArt Studio before your gallery is first published. Founding Artists keep their own agreement; artists joining now become Gallery Artists.</dd>
   </dl></div>
@@ -303,10 +306,10 @@ HB, HE = "<!-- pa-artist-apply:begin -->", "<!-- pa-artist-apply:end -->"
 def home_band():
     # Built only in the "open" state. An invitation, not an advertisement: no figures, no terms, no selling points.
     return f"""{HB}
-<section class="pa-jn-band" aria-labelledby="joinInviteH"><div class="pa-wrap pa-jn-grid">
-  <p class="pa-jn-k">For artists</p>
-  <div><h2 id="joinInviteH">An invitation to join PlotArt.</h2>
-  <p class="pa-jn-lede">A curated space for contemporary Irish art. Independent artists, distinctive work and new connections with collectors.</p>
+<section class="pa-jn-band" aria-labelledby="joinInviteH"><div class="pa-wrap pa-jn-band-grid">
+  <div class="pa-jn-band-head"><p class="pa-jn-k">For artists</p>
+  <h2 id="joinInviteH">An invitation to join PlotArt.</h2></div>
+  <div class="pa-jn-band-body"><p class="pa-jn-lede">A curated space for contemporary Irish art. Independent artists, distinctive work and new connections with collectors.</p>
   <div class="pa-jn-acts"><a class="pa-jn-btn" href="join.html" data-pa-track="home_join">Apply to join</a><a class="pa-jn-link" href="gallery/" data-pa-track="home_join_gallery">Explore the gallery</a></div>
   <p class="pa-jn-status"><span class="pa-open-badge">{BADGE}</span></p></div>
 </div></section>

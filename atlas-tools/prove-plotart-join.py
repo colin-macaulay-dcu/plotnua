@@ -90,7 +90,9 @@ try:
                       j.count("15%") == 1 and "The practical details" in jv and not re.search(r"<(?:h\d|strong|b)[^>]*>[^<]*15%", j)),
                      ("W2 commission is described as applying only to sales to collectors PlotArt introduced, and not to independent sales",
                       "sold to a collector PlotArt introduced to you" in jv and "It doesn’t apply to your independent sales." in jv),
-                     ("W3 the 24-month principle in one plain sentence", "An introduction counts for 24 months." in jv),
+                     ("W3 the 24-month principle in one plain sentence, with the particular-work rule", "An introduction counts for 24 months." in jv and "only the sale of a particular work you were already discussing in writing within those 24 months carries commission." in jv),
+                     ("W3b introductions are defined as in PA-GAA r5 5.3 and 7.1: a PlotArt reference, or told before the sale is agreed; collectors already known are independent; original work or signed limited-edition print only",
+                      "through an enquiry carrying a PlotArt reference, or tell you before the sale is agreed that they found you through PlotArt." in jv and "Collectors you already knew, or who found you another way, are independent." in jv and "an original work or signed limited-edition print" in jv),
                      ("W4 applying doesn't guarantee a place", jv.count("applying doesn’t guarantee a place") + jv.count("Applying doesn’t guarantee a place") >= 2),
                      ("W5 Founding Artists keep their own agreement; new artists join as Gallery Artists", "Founding Artists keep their own agreement; artists joining now become Gallery Artists." in jv),
                      ("W6 no worked calculation, euro amount, large figure or 'deserves to be discovered' anywhere in the recruitment",
@@ -118,6 +120,10 @@ try:
         ("B16 the programme distinction removed", "open", "join.html", " Founding Artists keep their own agreement; artists joining now become Gallery Artists.", ""),
         ("B17 opening without the privacy section for artist applications (V15)", "open", "../privacy.html", "PLOTNUA-PLOTART-ARTIST-APPLICATIONS-PRIVACY-V15", "NO-V15"),
         ("B18 the 15% made bold", "open", "join.html", "PlotArt’s commission is 15% of", "PlotArt’s commission is <strong>15%</strong> of"),
+        ("B19 a Direct Approach no longer needs to come before the sale is agreed", "open", "join.html", " before the sale is agreed that they found you", " that they found you"),
+        ("B20 commission widened from original work to any work", "open", "join.html", "an original work or signed limited-edition print sold", "any work or product sold"),
+        ("B21 collectors already known no longer independent", "open", "join.html", " Collectors you already knew, or who found you another way, are independent.", ""),
+        ("B22 delivery, insurance, installation and VAT brought into the commission", "open", "join.html", ", and excluding delivery, insurance, installation and any VAT you charge.", ", including delivery and insurance."),
     ]
     for b in breaks:
         name, st, f, old, new = b[:5]

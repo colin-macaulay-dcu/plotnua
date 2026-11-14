@@ -6,6 +6,13 @@
 body.pa .pa-jn-hero{ background:var(--wall); }
 body.pa .pa-jn-hero .pa-wrap{ padding-top:clamp(72px, 11vw, 168px); padding-bottom:clamp(64px, 8vw, 120px); }
 body.pa .pa-jn-hero h1{ font-size:clamp(44px, 5.4vw, 84px); line-height:1; letter-spacing:-.015em; max-width:13ch; }
+/* Join hero: the headline spans the wall; beneath a hairline, the status sits in the same margin column as the section
+   labels below, and the welcome and actions sit in the content column. The space is held by the grid, not left over. */
+body.pa .pa-jn-hero--join .pa-wrap{ padding-top:clamp(72px, 10vw, 152px); }
+body.pa .pa-jn-hero--join h1{ font-size:clamp(48px, 7.4vw, 116px); line-height:.98; letter-spacing:-.02em; max-width:15ch; margin:0; }
+body.pa .pa-jn-hero-foot{ margin-top:clamp(44px, 5.4vw, 80px); padding-top:clamp(22px, 2.2vw, 30px); border-top:1px solid var(--line); align-items:start; }
+body.pa .pa-jn-hero-foot .pa-jn-status{ margin:0; padding-top:.45em; }
+body.pa .pa-jn-hero-foot .pa-jn-lede{ margin:0; max-width:40ch; }
 body.pa .pa-jn-lede{ margin:clamp(24px, 2.6vw, 36px) 0 0; max-width:36ch; font-size:clamp(19px, 1.55vw, 23px); line-height:1.5; color:var(--lime); }
 body.pa .pa-jn-k{ font-size:13.5px; font-weight:500; letter-spacing:.04em; color:var(--stone); margin:0 0 22px; }
 body.pa .pa-jn-acts{ display:flex; flex-wrap:wrap; align-items:center; gap:16px 30px; margin-top:clamp(30px, 3.2vw, 44px); }
@@ -43,7 +50,7 @@ body.pa .pa-jn-terms{ margin:6px 0 0; display:grid; grid-template-columns:minmax
 body.pa .pa-jn-terms dt, body.pa .pa-jn-terms dd{ margin:0; padding:14px 0; border-bottom:1px solid var(--line); font-weight:400; }
 body.pa .pa-jn-terms dt{ color:var(--mute); padding-right:24px; }
 body.pa .pa-jn-terms dd{ color:var(--lime); }
-body.pa .pa-jn-terms{ max-width:52rem; }
+body.pa .pa-jn-terms{ max-width:46rem; }
 body.pa .pa-jn-sec h2.pa-jn-h-sm{ font-size:clamp(24px, 2.2vw, 30px); }
 
 body.pa .pa-jn-apply .pa-apply-title{ font-size:clamp(36px, 3.6vw, 52px); margin:0 0 18px; }
@@ -51,14 +58,22 @@ body.pa .pa-jn-apply .pa-jn-note{ font-size:14.5px; color:var(--stone); margin:1
 
 /* The homepage band (open state only): an invitation, not an advertisement. */
 body.pa .pa-jn-band{ padding:clamp(64px, 8vw, 120px) 0; border-top:1px solid var(--line); }
-body.pa .pa-jn-band h2{ font-size:clamp(34px, 3.6vw, 54px); line-height:1.04; max-width:16ch; margin:0; }
-body.pa .pa-jn-band .pa-jn-lede{ margin-top:22px; }
+/* Label and heading read as one unit on the left; the welcome, actions and status answer it on the right, set to the
+   heading's lower edge so the two halves meet on one line. */
+body.pa .pa-jn-band-grid{ display:grid; grid-template-columns:minmax(0, 7fr) minmax(0, 5fr); gap:28px clamp(40px, 5vw, 88px); align-items:end; }
+body.pa .pa-jn-band .pa-jn-band-head .pa-jn-k{ padding-top:0; margin:0 0 18px; }
+body.pa .pa-jn-band h2{ font-size:clamp(36px, 4.8vw, 72px); line-height:1; max-width:15ch; margin:0; }
+body.pa .pa-jn-band .pa-jn-lede{ margin-top:0; }
+body.pa .pa-jn-band .pa-jn-acts{ margin-top:clamp(24px, 2.4vw, 32px); }
 body.pa .pa-jn-band .pa-jn-status{ margin-top:22px; }
 body.pa .pa-jn-band .pa-open-badge{ display:inline; font-size:14px; font-weight:400; letter-spacing:0; text-transform:none; color:var(--stone); background:none; border:0; padding:0; border-radius:0; }
 body.pa .pa-jn-band .pa-open-badge::before{ display:none; }
 
 @media (max-width:860px){
-  body.pa .pa-jn-grid{ grid-template-columns:1fr; }
+  body.pa .pa-jn-grid, body.pa .pa-jn-band-grid{ grid-template-columns:1fr; }
+  body.pa .pa-jn-band-grid{ align-items:start; }
+  body.pa .pa-jn-hero-foot > div{ order:1; }
+  body.pa .pa-jn-hero-foot .pa-jn-status{ order:2; padding-top:0; }
   body.pa .pa-jn-three{ grid-template-columns:1fr; gap:26px; }
   body.pa .pa-jn-list li{ grid-template-columns:1fr; }
   body.pa .pa-jn-steps li{ grid-template-columns:2rem minmax(0, 1fr); }

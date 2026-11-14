@@ -164,7 +164,7 @@ AP_FILE = '<input id="ap-images" type="file" accept="image/jpeg,image/png,image/
 # Design refinement (founder direction 14 Nov 2026): the 15% appears ONLY once, in plain type, in "The practical details" on
 # join.html. No figure, no emphasis, nothing on the homepage.
 APPROVED_15_MARKUP = []
-APPROVED_15_TEXT = ["PlotArt’s commission is 15% of the price of a work sold to a collector PlotArt introduced to you"]
+APPROVED_15_TEXT = ["PlotArt’s commission is 15% of the price of an original work or signed limited-edition print sold to a collector PlotArt introduced to you"]
 
 # demonstration names, from the prototype data when present (it is never published)
 demo_names = set()
@@ -706,7 +706,10 @@ else:
     for _o in {"Applications are paused at the moment.", "Applications have closed.", "Applications are not yet open."}:
         need(_o not in _jv, "L18 join.html shows another state's line: %s" % _o)
     for _t in ("The practical details", "There are no fees to apply, to join or to remain.",
-               "PlotArt’s commission is 15% of the price of a work sold to a collector PlotArt introduced to you, including a collector who tells you they found you through PlotArt. It doesn’t apply to your independent sales.",
+               "PlotArt’s commission is 15% of the price of an original work or signed limited-edition print sold to a collector PlotArt introduced to you, once the sale is complete. It doesn’t apply to your independent sales.",
+               "A collector is introduced by PlotArt when they reach you through an enquiry carrying a PlotArt reference, or tell you before the sale is agreed that they found you through PlotArt. Collectors you already knew, or who found you another way, are independent.",
+               "only the sale of a particular work you were already discussing in writing within those 24 months carries commission.",
+               "on the price of the work including any frame, and excluding delivery, insurance, installation and any VAT you charge.",
                "An introduction counts for 24 months.", "Newly commissioned work is agreed between you and the collector and isn’t subject to the commission.",
                "Collectors pay you directly", "There is no exclusivity", "applying doesn’t guarantee a place",
                "Founding Artists keep their own agreement; artists joining now become Gallery Artists.",
