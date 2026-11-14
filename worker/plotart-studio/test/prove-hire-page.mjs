@@ -73,6 +73,12 @@ const strip = s => s.replace(' pa-pills--hire', '').replace(/<a class="pa-pill" 
     const marksJs = c => c.replace(/\n\n\/\* ---- Art for Hire marks in an artist's gallery[\s\S]*$/, '\n');
     if (f === 'plotart/assets/plotart.css') return cssBase(marksCss(n)) !== cssBase(marksCss(o));
     if (f === 'plotart/assets/plotart.js') return marksJs(n) !== marksJs(o);
+    // 14 Nov 2026: the Artists' Gallery carries the Gallery Artist invitation while applications are open (its own release,
+    // guarded by prove-plotart-launch.py L18 and prove-plotart-join.py); nothing else on the page may differ
+    if (f === 'plotart/gallery/index.html') {
+      const noInvite = c => c.replace('\n<link rel="stylesheet" href="../assets/plotart-join.css">', '').replace(/<!-- pa-artist-apply-gallery:begin -->[\s\S]*?<!-- pa-artist-apply-gallery:end -->\n\n/, '');
+      return strip(noInvite(n)) !== strip(noInvite(o));
+    }
     return !f.endsWith('.html') || strip(n) !== strip(o);
   });
   check(`G1 against main, Art for Hire changes PlotArt only by the tab, the footer rule, the scoped nav block, the gallery-marks blocks in plotart.css and plotart.js, and its own folder (${changedFiles.length} file(s) differ); no gallery, gallery.json, image or other content changed`,
