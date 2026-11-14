@@ -17,9 +17,9 @@ body.pa .pa-jn-lede{ margin:clamp(24px, 2.6vw, 36px) 0 0; max-width:36ch; font-s
 body.pa .pa-jn-k{ font-size:13.5px; font-weight:500; letter-spacing:.04em; color:var(--stone); margin:0 0 22px; }
 body.pa .pa-jn-acts{ display:flex; flex-wrap:wrap; align-items:center; gap:16px 30px; margin-top:clamp(30px, 3.2vw, 44px); }
 body.pa .pa-jn-btn{ display:inline-flex; align-items:center; font-family:var(--sans); font-size:15px; font-weight:500; letter-spacing:.02em; color:var(--ivory);
-  text-decoration:none; border:1px solid rgba(242,235,224,.55); border-radius:999px; padding:13px 26px; transition:border-color .2s, color .2s; }
+  text-decoration:none; border:1px solid rgba(237,235,231,.55); border-radius:999px; padding:13px 26px; transition:border-color .2s, color .2s; }
 body.pa .pa-jn-btn:hover{ border-color:var(--terra-text); color:var(--ivory); }
-body.pa .pa-jn-link{ font-size:15px; font-weight:500; letter-spacing:.02em; color:var(--ivory); text-decoration:underline; text-decoration-color:rgba(242,235,224,.35);
+body.pa .pa-jn-link{ font-size:15px; font-weight:500; letter-spacing:.02em; color:var(--ivory); text-decoration:underline; text-decoration-color:rgba(237,235,231,.35);
   text-underline-offset:6px; transition:text-decoration-color .2s; }
 body.pa .pa-jn-link:hover{ color:var(--ivory); text-decoration-color:var(--terra-text); }
 body.pa .pa-jn-status{ margin:clamp(26px, 2.8vw, 36px) 0 0; font-size:14px; color:var(--stone); }

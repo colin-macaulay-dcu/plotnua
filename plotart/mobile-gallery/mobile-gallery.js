@@ -105,7 +105,7 @@
       var ask = [f.style, f.budget && (window.MG_BUDGETS.filter(function (b) { return b.id === f.budget; })[0] || {}).label, f.service && svcLabel(f.service)].filter(Boolean);
       out.innerHTML =
         '<div class="mg-empty">' +
-          '<svg viewBox="0 0 120 120" fill="none" aria-hidden="true"><rect x="22" y="18" width="76" height="92" stroke="#C2BDB5" stroke-opacity=".55"/><rect x="31" y="27" width="58" height="74" stroke="#C2BDB5" stroke-opacity=".25"/><path d="M60 4v14" stroke="#C2BDB5" stroke-opacity=".4"/></svg>' +
+          '<svg viewBox="0 0 120 120" fill="none" aria-hidden="true"><rect x="22" y="18" width="76" height="92" stroke="#B8B6B2" stroke-opacity=".55"/><rect x="31" y="27" width="58" height="74" stroke="#B8B6B2" stroke-opacity=".25"/><path d="M60 4v14" stroke="#B8B6B2" stroke-opacity=".4"/></svg>' +
           '<div><h4>No galleries have joined yet.</h4>' +
           '<p>Mobile Gallery is being prepared with independent Irish galleries. When a gallery confirms its services, coverage and prices, it will appear here for homes that match.</p>' +
           (ask.length ? '<p>Your choices so far: ' + E(ask.join(' · ')) + '. They will be matched only against details the galleries confirm themselves.</p>' : '') +

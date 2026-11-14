@@ -7,12 +7,12 @@
    will fill the frames once permission exists; until then the empty
    frame is the honest image.
    ===================================================================== */
-body.pa.mg{ --light:#D9B07A; --light-soft:rgba(217,176,122,.16); }
+body.pa.mg{ --light:#D9D7D3; --light-soft:rgba(217,215,211,.16); }
 
 /* ---- private concept ribbon ---------------------------------------- */
-.mg-ribbon{ background:#33261F; color:#E9C9B5; font-size:13px; line-height:1.45; padding:9px 0; }
+.mg-ribbon{ background:#28282A; color:#D9D7D3; font-size:13px; line-height:1.45; padding:9px 0; }
 .mg-ribbon .pa-wrap{ display:flex; flex-wrap:wrap; gap:4px 14px; align-items:baseline; justify-content:center; text-align:center; }
-.mg-ribbon strong{ color:#F6DCCB; font-weight:600; letter-spacing:.14em; text-transform:uppercase; font-size:11.5px; }
+.mg-ribbon strong{ color:#EDEBE7; font-weight:600; letter-spacing:.14em; text-transform:uppercase; font-size:11.5px; }
 
 
 /* ---- hero ------------------------------------------------------------ */
@@ -29,7 +29,7 @@ body.pa.mg{ --light:#D9B07A; --light-soft:rgba(217,176,122,.16); }
 @keyframes mgSettle{ from{ transform:scale(1.07); } to{ transform:scale(1.035); } }
 @media (prefers-reduced-motion:reduce){ .mg-hero-img img{ animation:none; } }
 /* a gallery wall label, the small card that sits beside a work in a gallery */
-.mg-label{ position:absolute; right:clamp(12px, 2vw, 22px); bottom:clamp(12px, 2vw, 22px); display:grid; gap:1px; padding:11px 15px 12px; background:rgba(242,235,224,.94); color:#27282A; border-radius:3px; box-shadow:0 6px 18px rgba(0,0,0,.25); min-width:150px; }
+.mg-label{ position:absolute; right:clamp(12px, 2vw, 22px); bottom:clamp(12px, 2vw, 22px); display:grid; gap:1px; padding:11px 15px 12px; background:rgba(237,235,231,.94); color:#27282A; border-radius:3px; box-shadow:0 6px 18px rgba(0,0,0,.25); min-width:150px; }
 .mg-label-a{ font-family:var(--sans); font-size:12.5px; font-weight:600; letter-spacing:.02em; }
 .mg-label-t{ font-family:var(--serif); font-style:italic; font-size:17px; line-height:1.2; }
 .mg-label-m{ font-family:var(--sans); font-size:11.5px; color:#5B5751; }
@@ -73,7 +73,7 @@ body.pa.mg{ --light:#D9B07A; --light-soft:rgba(217,176,122,.16); }
 .mg-chip{ position:relative; }
 .mg-chip input{ position:absolute; opacity:0; inset:0; margin:0; cursor:pointer; }
 .mg-chip span{ display:inline-flex; align-items:center; min-height:40px; padding:0 14px; border-radius:999px; border:1px solid var(--line-2); font-size:14px; color:var(--lime); transition:background .2s, border-color .2s, color .2s; }
-.mg-chip input:checked + span{ background:rgba(217,176,122,.14); border-color:var(--light); color:var(--ivory); }
+.mg-chip input:checked + span{ background:rgba(217,215,211,.14); border-color:var(--light); color:var(--ivory); }
 .mg-chip input:focus-visible + span{ outline:2px solid var(--terra-text); outline-offset:2px; }
 .mg-form-note{ margin:0; font-size:13px; color:var(--mute); line-height:1.5; }
 .mg-results{ min-width:0; }
@@ -100,19 +100,19 @@ body.pa.mg{ --light:#D9B07A; --light-soft:rgba(217,176,122,.16); }
 @media (max-width:640px){ .mg-cards{ grid-template-columns:1fr; } }
 .mg-card{ display:flex; flex-direction:column; min-width:0; background:var(--wall-2); border:1px solid var(--line); border-radius:var(--r); overflow:hidden; }
 .mg-card-wall{ position:relative; aspect-ratio:16 / 10; max-width:100%; display:grid; place-items:center; padding:52px 22px 26px; border-bottom:1px solid var(--line);
-  background:radial-gradient(130% 100% at 85% -20%, rgba(255,236,206,.20), transparent 55%), radial-gradient(90% 60% at 50% 120%, rgba(0,0,0,.28), transparent 70%), var(--wall-tone, #334036); overflow:hidden; }
+  background:radial-gradient(130% 100% at 85% -20%, rgba(255,255,255,.20), transparent 55%), radial-gradient(90% 60% at 50% 120%, rgba(0,0,0,.28), transparent 70%), var(--wall-tone, #334036); overflow:hidden; }
 .mg-card-wall img{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; }
 .mg-tone-moss{ --wall-tone:#334036; } .mg-tone-oxblood{ --wall-tone:#4A2E2B; } .mg-tone-slate{ --wall-tone:#2E3846; }
 .mg-tone-umber{ --wall-tone:#4B3E30; } .mg-tone-ink{ --wall-tone:#262B33; } .mg-tone-plaster{ --wall-tone:#4A4640; }
 .mg-card-top{ position:absolute; top:14px; left:16px; right:14px; display:flex; justify-content:space-between; align-items:center; gap:10px; z-index:1; }
-.mg-card-n{ font-family:var(--serif); font-size:20px; color:rgba(242,235,224,.72); }
-.mg-card-status{ font-size:10.5px; font-weight:600; letter-spacing:.16em; text-transform:uppercase; color:#F2EBE0; border:1px solid rgba(242,235,224,.38); border-radius:999px; padding:5px 10px; background:rgba(0,0,0,.18); white-space:nowrap; }
+.mg-card-n{ font-family:var(--serif); font-size:20px; color:rgba(237,235,231,.72); }
+.mg-card-status{ font-size:10.5px; font-weight:600; letter-spacing:.16em; text-transform:uppercase; color:#EDEBE7; border:1px solid rgba(237,235,231,.38); border-radius:999px; padding:5px 10px; background:rgba(0,0,0,.18); white-space:nowrap; }
 /* the plaque: name and verified address, set like lettering on a painted gallery wall */
 .mg-plaque{ display:grid; justify-items:center; text-align:center; gap:8px; max-width:92%; }
-.mg-plaque-name{ font-family:var(--serif); font-size:clamp(30px, 2.8vw, 42px); line-height:1; color:#F6F0E6; letter-spacing:.005em; text-wrap:balance; text-shadow:0 1px 0 rgba(0,0,0,.25); }
-.mg-plaque-st{ font-family:var(--sans); font-size:11px; font-weight:600; letter-spacing:.26em; text-transform:uppercase; color:rgba(242,235,224,.72); }
-.mg-plaque-town{ font-family:var(--serif); font-style:italic; font-size:18px; color:rgba(242,235,224,.86); }
-.mg-plaque-town::before{ content:""; display:block; width:28px; height:1px; margin:2px auto 10px; background:rgba(242,235,224,.42); }
+.mg-plaque-name{ font-family:var(--serif); font-size:clamp(30px, 2.8vw, 42px); line-height:1; color:#EDEBE7; letter-spacing:.005em; text-wrap:balance; text-shadow:0 1px 0 rgba(0,0,0,.25); }
+.mg-plaque-st{ font-family:var(--sans); font-size:11px; font-weight:600; letter-spacing:.26em; text-transform:uppercase; color:rgba(237,235,231,.72); }
+.mg-plaque-town{ font-family:var(--serif); font-style:italic; font-size:18px; color:rgba(237,235,231,.86); }
+.mg-plaque-town::before{ content:""; display:block; width:28px; height:1px; margin:2px auto 10px; background:rgba(237,235,231,.42); }
 .mg-pending{ margin:0; padding:12px 0 0; border-top:1px solid var(--line); font-size:14px; color:var(--stone); line-height:1.5; }
 .mg-pending-k{ display:block; font-family:var(--serif); font-style:italic; font-size:17px; color:var(--light); margin-bottom:2px; }
 .mg-card-body{ display:flex; flex-direction:column; gap:14px; padding:22px 22px 24px; flex:1; }
@@ -127,7 +127,7 @@ body.pa.mg{ --light:#D9B07A; --light-soft:rgba(217,176,122,.16); }
 .mg-src{ display:block; font-size:12px; color:var(--mute); font-style:normal; margin-top:2px; }
 .mg-card-act{ margin-top:auto; display:flex; flex-wrap:wrap; gap:10px; padding-top:8px; }
 .mg-card-act .pa-btn{ padding:11px 18px; font-size:14.5px; }
-.pa-chip.mg-chip-prosp{ border-color:rgba(217,176,122,.5); color:var(--light); background:rgba(27,28,30,.7); }
+.pa-chip.mg-chip-prosp{ border-color:rgba(217,215,211,.5); color:var(--light); background:rgba(27,28,30,.7); }
 @media (max-width:420px){ .mg-card-dl > div{ grid-template-columns:1fr; gap:2px; } }
 
 /* ---- three experiences ---------------------------------------------- */
@@ -173,8 +173,8 @@ body.pa.mg{ --light:#D9B07A; --light-soft:rgba(217,176,122,.16); }
 .mg-sub{ color:var(--stone); margin:0; max-width:56ch; }
 
 /* ---- Phase 1B profile polish ----------------------------------------- */
-.mg-demo{ background:#2E3846; color:#E8E4DC; font-size:13.5px; line-height:1.45; padding:10px max(16px, var(--gut)); display:flex; flex-wrap:wrap; gap:4px 14px; justify-content:center; text-align:center; border-bottom:1px solid rgba(242,235,224,.12); }
-.mg-demo-k{ font-size:11.5px; font-weight:600; letter-spacing:.16em; text-transform:uppercase; color:#F6F0E6; }
+.mg-demo{ background:#2E3846; color:#E3E1DD; font-size:13.5px; line-height:1.45; padding:10px max(16px, var(--gut)); display:flex; flex-wrap:wrap; gap:4px 14px; justify-content:center; text-align:center; border-bottom:1px solid rgba(237,235,231,.12); }
+.mg-demo-k{ font-size:11.5px; font-weight:600; letter-spacing:.16em; text-transform:uppercase; color:#EDEBE7; }
 .mg-prof-hero .mg-card-wall{ aspect-ratio:4 / 3; padding:40px 24px; }
 .mg-prof-hero .mg-plaque-name{ font-size:clamp(40px, 4.6vw, 64px); }
 .mg-prof-by{ margin:16px 0 0; font-size:15px; letter-spacing:.04em; color:var(--stone); }
@@ -187,7 +187,7 @@ body.pa.mg{ --light:#D9B07A; --light-soft:rgba(217,176,122,.16); }
 .mg-mini li::before{ content:counter(mm); font-family:var(--serif); font-size:20px; color:var(--terra-text); line-height:1.1; }
 .mg-slots{ margin:0; padding:0; list-style:none; display:grid !important; grid-template-columns:repeat(3, minmax(0, 1fr)); gap:14px !important; }
 .mg-slots li{ display:grid !important; gap:6px; border:0 !important; padding:0 !important; border-radius:0 !important; }
-.mg-slot-f{ aspect-ratio:4 / 5; max-width:100%; border:1px dashed rgba(242,235,224,.28); border-radius:6px; background:repeating-linear-gradient(135deg, rgba(242,235,224,.025) 0 10px, transparent 10px 20px); }
+.mg-slot-f{ aspect-ratio:4 / 5; max-width:100%; border:1px dashed rgba(237,235,231,.28); border-radius:6px; background:repeating-linear-gradient(135deg, rgba(237,235,231,.025) 0 10px, transparent 10px 20px); }
 .mg-slot-t{ font-family:var(--serif); font-size:18px; color:var(--ivory); }
 .mg-slot-s{ font-size:12px; color:var(--mute); line-height:1.4; }
 .mg-notes{ padding:28px 0 0; border-top:1px solid var(--line); }
@@ -222,8 +222,8 @@ body.pa .mg-notice-t{ margin:0; flex:1 1 420px; min-width:0; font-size:14.5px; l
 .mg-recruit-act{ margin-top:26px; display:flex; flex-wrap:wrap; gap:12px; }
 .mg-recruit .mg-recruit-addr{ margin:14px 0 0; font-size:13.5px; color:var(--mute); }
 .mg-recruit-addr span{ color:var(--lime); user-select:all; }
-.mg-card--invite .mg-card-wall{ background:repeating-linear-gradient(135deg, rgba(242,235,224,.03) 0 12px, transparent 12px 24px), var(--wall-tone, #334036); }
-.mg-card--invite .mg-plaque-name{ font-style:italic; color:rgba(246,240,230,.82); }
+.mg-card--invite .mg-card-wall{ background:repeating-linear-gradient(135deg, rgba(237,235,231,.03) 0 12px, transparent 12px 24px), var(--wall-tone, #334036); }
+.mg-card--invite .mg-plaque-name{ font-style:italic; color:rgba(237,235,231,.82); }
 /* the participation status sits on its own line, in full, at the top of every gallery card */
 body.pa .mg-card-flag{ margin:0; align-self:flex-start; font-size:10.5px; font-weight:600; letter-spacing:.14em; text-transform:uppercase; line-height:1.4;
-  color:var(--light); border:1px solid rgba(217,176,122,.42); border-radius:999px; padding:5px 11px; }
+  color:var(--light); border:1px solid rgba(217,215,211,.42); border-radius:999px; padding:5px 11px; }
