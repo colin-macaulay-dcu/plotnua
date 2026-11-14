@@ -8,13 +8,13 @@
     "founding-25.html": "44e4db50fdaaa2d1122aa1c6b0b4b08d5698ac133633216323f94c49381a76cf",
     "living-gallery.html": "7551e4abbd525a666e0851d94b237c4ebb5388e33f2def5dd054654ae5263aa2",
     "index.html": "189262b7fcceade5243974597073de0b857e825126aa27ca80fae3e18afad09b",
-    "assets/plotart.css": "15a36bd72a1834ad34ee5665585bbc80db5f8450bcafaca750df126fff6ab584",
+    "assets/plotart.css": "59daa2a69fff62ea0d174520f7cefbd0457487f22526428fab1b59df277ccf16",
     "assets/plotart.js": "73f21dcb8982664e6e1bbdde1eb0e18c20a4aefe4bd603bf0339f17bae180e77",
     "assets/pa-enquiry.js": "ba34ff7937b515bb0f6b47aa6e150cfffe82590e770c488bfc56bf03af62a026",
     "assets/hero/founder-01-abstract.webp": "7812df17f3651108820ed79dfe69aa1fdaa27640d5aa1d5464c3b08007b802b1",
     "assets/living/plotart-living-gallery-colin-macaulay-artwork.webp": "f4861333a80fda7f704fd3c57d0a2b8f18db589b8505eb11192ac05c08d8d0f9",
     "mobile-gallery/gallery.html": "e4cc42d73cb6e873c603e0e2e2c5946e5c876b63aec4dc2bbaf27ff673f220ee",
-    "mobile-gallery/mobile-gallery.css": "0abec6f9f355e6d82d8c1864e538519b0844977425a050b908b571278db8cfa1",
+    "mobile-gallery/mobile-gallery.css": "68c1ddd32ed10386fcdb566454d0e5e66b1a576ecf397f7d28ae39f034ab0f5b",
     "mobile-gallery/mobile-gallery.js": "5bf253084527425c061902751aaae1e0f625691d12e5f1e8462896cf55608152",
     "mobile-gallery/index.html": "66a41d5bf8bc0641c18c033ccca7030a28847e0363ce735e5f8fc38efc97f815",
     "mobile-gallery/mobile-gallery-data.js": "2752e0065d6d903d7b02f6abe653e684cecd7fe4b6f7e125587aed2cda511833",
@@ -40,7 +40,7 @@
     "join.html": "7264490e5345c98d6c7e2631fbee0dea1c0f9b90fd7d5447fbc809f40400f0bd",
     "curatorial-policy.html": "5c10cb7ec18ec0ea01687948ec693e17b2839ddc9792a12d1e854f0fab00445c",
     "assets/pa-apply.js": "1c12cce1252824836963e4906d251abc9e2438ad27db98b724de0bcac527c0ff",
-    "assets/plotart-join.css": "868c00d37c470845fb5c4380017a4cbd0b9d8e7a548d0dfb0ce936a7f593ac14"
+    "assets/plotart-join.css": "2810f81ce6e87bd5e6fdbd06491f20206c07c0635840e8b705048f1efe0c3b1e"
   },
   "outside_grid": {
     "gallery/index.html": "dd86686eaee2e5f4863c804407798061d5d40f1deed89e1793f80af56441481d"

@@ -16,9 +16,9 @@ body.pa .pa-jn-hero-foot .pa-jn-lede{ margin:0; max-width:40ch; }
 body.pa .pa-jn-lede{ margin:clamp(24px, 2.6vw, 36px) 0 0; max-width:36ch; font-size:clamp(19px, 1.55vw, 23px); line-height:1.5; color:var(--lime); }
 body.pa .pa-jn-k{ font-size:13.5px; font-weight:500; letter-spacing:.04em; color:var(--stone); margin:0 0 22px; }
 body.pa .pa-jn-acts{ display:flex; flex-wrap:wrap; align-items:center; gap:16px 30px; margin-top:clamp(30px, 3.2vw, 44px); }
-body.pa .pa-jn-btn{ display:inline-flex; align-items:center; font-family:var(--sans); font-size:15px; font-weight:500; letter-spacing:.02em; color:var(--ivory);
-  text-decoration:none; border:1px solid rgba(237,235,231,.55); border-radius:999px; padding:13px 26px; transition:border-color .2s, color .2s; }
-body.pa .pa-jn-btn:hover{ border-color:var(--terra-text); color:var(--ivory); }
+body.pa .pa-jn-btn{ display:inline-flex; align-items:center; font-family:var(--sans); font-size:15px; font-weight:600; letter-spacing:.02em; color:var(--anth);
+  text-decoration:none; background:var(--ivory); border:1px solid var(--ivory); border-radius:999px; padding:13px 26px; transition:background .2s, border-color .2s; }   /* primary: filled off-white */
+body.pa .pa-jn-btn:hover{ background:#FFFFFF; border-color:#FFFFFF; color:var(--anth); }
 body.pa .pa-jn-link{ font-size:15px; font-weight:500; letter-spacing:.02em; color:var(--ivory); text-decoration:underline; text-decoration-color:rgba(237,235,231,.35);
   text-underline-offset:6px; transition:text-decoration-color .2s; }
 body.pa .pa-jn-link:hover{ color:var(--ivory); text-decoration-color:var(--terra-text); }
