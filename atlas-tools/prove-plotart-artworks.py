@@ -240,6 +240,7 @@ check("A10 works alternate between artists (no artist twice in a row while anoth
 LINKS = {"plotart/index.html": '\n  <p style="font-size:15px;margin:0">Or <a href="artworks/" data-pa-track="home_artworks">browse all available artworks <span aria-hidden="true">→</span></a></p>',
          "plotart/gallery/index.html": '<a href="../artworks/" data-pa-track="vg_artworks">All available artworks →</a>',
          "plotart/buy-original-art-ireland.html": ' To see every work currently on offer in one place, browse <a href="artworks/">all available artworks</a>.'}
+LATER = {"plotart/buy-original-art-ireland.html": ['\n<p>Looking for a statement piece? Browse <a href="large-artworks/">large original artworks</a> of 100 cm or more.</p>']}
 if "--against" in sys.argv:
     ref = sys.argv[sys.argv.index("--against") + 1]
     show = lambda f: subprocess.run(["git", "show", "%s:%s" % (ref, f)], cwd=ROOT, capture_output=True, text=True).stdout
@@ -247,6 +248,8 @@ if "--against" in sys.argv:
     check("A11 no artist gallery or artwork page differs from %s" % ref, r.returncode == 0 and r.stdout.strip() == "", r.stdout + r.stderr)
     for f, link in LINKS.items():
         new = (ROOT / f).read_text()
+        for later in LATER.get(f, ()):            # links added by later approved phases, proved by their own proofs
+            new = new.replace(later, "", 1)
         check("A11 %s differs from %s only by the one added collection link" % (f, ref), new.count(link) == 1 and new.replace(link, "", 1) == show(f))
     old, new = show("plotart/gallery/index.html"), (ROOT / "plotart/gallery/index.html").read_text()
     check("A11 the Artists' Gallery collection region is unchanged", old[slice(*P.vg_region(old))] == new[slice(*P.vg_region(new))])

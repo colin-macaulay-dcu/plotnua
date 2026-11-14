@@ -20,8 +20,8 @@ B9  no style classification by PlotArt: the page adds no "abstract" (or other st
 B10 no service claims: the page says PlotArt doesn't take payment, deliver or install, and never offers delivery,
     installation, consultancy or purchasing services; it links to the art size calculator
 B11 fairness: works alternate between artists while more than one artist still has works to show
-B12 (--against MAIN) the All Available Artworks page, its stylesheet, every artist page and every other PlotArt page are
-    byte-identical to main
+B12 All Available Artworks, the buying guide and the art size calculator each link to the large collection once;
+    (--against MAIN) they differ from main only by that link, and every other PlotArt file is byte-identical
 """
 import copy, html, json, re, subprocess, sys, tempfile
 from pathlib import Path
@@ -245,14 +245,22 @@ for i in range(len(order) - 1):
 check("B11 works alternate between artists", fair, order)
 
 # B12
+LINKS = {"plotart/artworks/index.html": '<a class="pa-btn pa-btn--ghost" href="../large-artworks/">Large artworks, 100 cm or more →</a>',
+         "plotart/buy-original-art-ireland.html": '\n<p>Looking for a statement piece? Browse <a href="large-artworks/">large original artworks</a> of 100 cm or more.</p>',
+         "plotart/art-size-calculator.html": '<a class="pa-btn pa-btn--ghost" href="large-artworks/">Large artworks →</a>'}
+for f, link in LINKS.items():
+    check("B12 %s links to the large collection exactly once" % f, (ROOT / f).read_text().count(link) == 1)
 if "--against" in sys.argv:
     ref = sys.argv[sys.argv.index("--against") + 1]
     r = subprocess.run(["git", "diff", "--name-only", ref, "HEAD", "--", "plotart"], cwd=ROOT, capture_output=True, text=True)
-    changed = [x for x in r.stdout.split() if x]
-    check("B12 only plotart/large-artworks/index.html is new under plotart/; All Available Artworks, its stylesheet, artist pages "
-          "and every other PlotArt page are byte-identical to %s" % ref, r.returncode == 0 and changed == ["plotart/large-artworks/index.html"], changed)
+    changed = sorted(x for x in r.stdout.split() if x)
+    check("B12 under plotart/ only the large page is new and only the three linked pages changed (vs %s)" % ref,
+          r.returncode == 0 and changed == sorted(["plotart/large-artworks/index.html"] + list(LINKS)), changed)
+    for f, link in LINKS.items():
+        old = subprocess.run(["git", "show", "%s:%s" % (ref, f)], cwd=ROOT, capture_output=True, text=True).stdout
+        check("B12 %s differs from %s only by its one added link" % (f, ref), (ROOT / f).read_text().replace(link, "", 1) == old)
 else:
-    print("  ----  B12 not run (pass --against <main commit>)")
+    print("  ----  B12 comparison with main not run (pass --against <main commit>)")
 
 print("PLOTART LARGE ARTWORKS · %d checks, %d passed, %d failed" % (len(results), sum(results), len(results) - sum(results)))
 sys.exit(0 if all(results) else 1)
