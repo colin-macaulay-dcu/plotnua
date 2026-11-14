@@ -22,5 +22,5 @@
   "art_for_hire_page": true,
   "art_for_hire_enquiry_form": false,
   "gallery_application_endpoint": "https://plotnua-art-space-register.colin-a41.workers.dev/v1/art-space-register/gallery-application",
-  "gallery_application_state": "not_open"
+  "gallery_application_state": "open"
 }
