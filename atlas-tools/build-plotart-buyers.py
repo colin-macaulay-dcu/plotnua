@@ -119,7 +119,7 @@ def render(path, packages):
     header = re.search(r'<header class="pa-head.*?</header>', home, re.S).group(0)
     header = header.replace(' aria-current="page"', '')
     footer = re.search(r'<footer class="pa-foot">.*?</footer>', home, re.S).group(0)
-    head = home.split('<head>', 1)[1].split('</head>', 1)[0]
+    head = home.split('<head>', 1)[1].split('</head>', 1)[0].replace('\n<link rel="stylesheet" href="assets/plotart-join.css">', '')  # the Join styles belong to the homepage invitation only (14 Nov 2026)
     head = re.sub(r'<title>.*?</title>', '<title>'+html.escape(title)+'</title>', head)
     for kind, key, value in [('name','description',desc),('property','og:title',title),('property','og:description',desc),('name','twitter:title',title),('name','twitter:description',desc),('property','og:url',SEO.canonical(path))]:
         head = re.sub(r'<meta '+kind+'="'+key+'" content="[^"]*">', '<meta '+kind+'="'+key+'" content="'+html.escape(value,quote=True)+'">', head)

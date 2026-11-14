@@ -685,6 +685,9 @@ _pol = open(_cp, encoding="utf-8").read() if os.path.exists(_cp) else ""
 _jv, _pv = re.sub(r"\s+", " ", visible_text(_join)), re.sub(r"\s+", " ", visible_text(_pol))
 _jsp = os.path.join(PA, "assets", "pa-apply.js")
 _ptr = re.search(r"<!-- pa-artist-apply-pointer:begin -->(.*?)<!-- pa-artist-apply-pointer:end -->", f25, re.S)
+_galp = os.path.join(PA, "gallery", "index.html")
+_gal = open(_galp, encoding="utf-8").read() if os.path.exists(_galp) else ""
+_gband = re.search(r"<!-- pa-artist-apply-gallery:begin -->(.*?)<!-- pa-artist-apply-gallery:end -->", _gal, re.S)
 if os.path.realpath(SITE) == os.path.realpath(ROOT):   # on the development tree, the pages must be exactly the builder's output for this state
     import subprocess
     _chk = subprocess.run([sys.executable, os.path.join(ROOT, "atlas-tools", "build-plotart-join.py"), "--check", "--switches", SWITCHES], capture_output=True, text=True)
@@ -693,6 +696,7 @@ if not GA_OPEN:
     # closed: nothing of the recruitment is published or linked
     need(not _join and not _pol and not os.path.exists(_jsp), "L18 %s: join.html, curatorial-policy.html and pa-apply.js must not be published" % GA_STATE)
     need("pa-artist-apply" not in home and _ptr is None and "pa-artist-apply" not in f25, "L18 %s: no homepage artist band and no Founding 25 pointer" % GA_STATE)
+    need("pa-artist-apply" not in _gal and "join.html" not in _gal and "plotart-join.css" not in _gal, "L18 %s: no Artists' Gallery invitation" % GA_STATE)
     for _n in PAGES:
         _pp = os.path.join(PA, _n)
         if os.path.exists(_pp):
@@ -737,6 +741,13 @@ else:
         need('href="join.html"' in _band.group(1) and 'href="gallery/"' in _band.group(1) and "An invitation to join PlotArt." in _bv,
              "L18 the homepage band must be the invitation, linking to Join PlotArt and the gallery")
         need(not re.search(r"\d|%|€|commission|fee|exclusiv|deserves", _bv, re.I), "L18 the homepage band carries figures, commercial terms or promotional wording")
+    # the Artists' Gallery invitation (founder decision 14 Nov 2026): once, outside the collection region, the same rules as the homepage band
+    need(_gband is not None and _gal.count("<!-- pa-artist-apply-gallery:begin -->") == 1
+         and _gal.index("<!-- pa-artist-apply-gallery:begin -->") > _gal.index("<!-- pa-vg-collection:end -->"), "L18 open: the Artists' Gallery carries the invitation once, after the collection")
+    if _gband:
+        _gv = re.sub(r"\s+", " ", visible_text(_gband.group(1)))
+        need('href="../join.html"' in _gband.group(1) and "An invitation to join PlotArt." in _gv, "L18 the Artists' Gallery invitation must link to Join PlotArt")
+        need(not re.search(r"\d|%|€|commission|fee|exclusiv|deserves", _gv, re.I), "L18 the Artists' Gallery invitation carries figures, commercial terms or promotional wording")
     need(_ptr is not None and bool(_ptr.group(1).strip()), "L18 open: the Founding 25 page points to Join PlotArt")
     need("<form" not in _pol and "pa-apply.js" not in _pol, "L18 the curatorial policy has no form")
     need(_join.count("<form") == 1 and ('data-ap-form data-endpoint="%s" data-image-endpoint="%s/image"' % (GA_EP, GA_EP)) in _join, "L18 open: exactly one form posting only to the approved route")

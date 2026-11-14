@@ -69,6 +69,11 @@ body.pa .pa-jn-band .pa-jn-status{ margin-top:22px; }
 body.pa .pa-jn-band .pa-open-badge{ display:inline; font-size:14px; font-weight:400; letter-spacing:0; text-transform:none; color:var(--stone); background:none; border:0; padding:0; border-radius:0; }
 body.pa .pa-jn-band .pa-open-badge::before{ display:none; }
 
+/* The Artists' Gallery invitation: the same composition, more compact. */
+body.pa .pa-jn-band--compact{ padding:clamp(48px, 5.5vw, 84px) 0; }
+body.pa .pa-jn-band--compact h2{ font-size:clamp(30px, 3.4vw, 50px); }
+body.pa .pa-jn-band--compact .pa-jn-acts{ margin-top:clamp(20px, 2vw, 26px); }
+
 @media (max-width:860px){
   body.pa .pa-jn-grid, body.pa .pa-jn-band-grid{ grid-template-columns:1fr; }
   body.pa .pa-jn-band-grid{ align-items:start; }

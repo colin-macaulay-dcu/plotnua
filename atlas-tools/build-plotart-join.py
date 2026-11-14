@@ -360,10 +360,47 @@ def f25_page(s):
     return s.replace(anchor, anchor + "\n  " + FB + POINTER + FE)
 
 
+GB, GE = "<!-- pa-artist-apply-gallery:begin -->", "<!-- pa-artist-apply-gallery:end -->"
+G_CSS_LINK = '<link rel="stylesheet" href="../assets/plotart.css">'
+G_JOIN_CSS_LINK = '\n<link rel="stylesheet" href="../assets/plotart-join.css">'
+G_ANCHOR = '<section class="pa-vg2-close">'
+
+
+def gallery_band():
+    # The Artists' Gallery invitation (founder decision 14 Nov 2026): the homepage invitation in a compact form,
+    # between the collection and the closing links. Built only in the "open" state; no figures, terms or selling points.
+    return f"""{GB}
+<section class="pa-jn-band pa-jn-band--compact" aria-labelledby="joinGalleryH"><div class="pa-wrap pa-jn-band-grid">
+  <div class="pa-jn-band-head"><p class="pa-jn-k">For artists</p>
+  <h2 id="joinGalleryH">An invitation to join PlotArt.</h2></div>
+  <div class="pa-jn-band-body"><p class="pa-jn-lede">We welcome applications from artists based or working on the island of Ireland.</p>
+  <div class="pa-jn-acts"><a class="pa-jn-btn" href="../join.html" data-pa-track="gallery_join">Apply to join</a></div>
+  <p class="pa-jn-status"><span class="pa-open-badge">{BADGE}</span></p></div>
+</div></section>
+{GE}
+"""
+
+
+def gallery_page(s):
+    # The collection region (pa-vg-collection markers) is never touched.
+    s = s.replace(G_CSS_LINK + G_JOIN_CSS_LINK, G_CSS_LINK)
+    if GB in s:
+        a, b = s.index(GB), s.index(GE) + len(GE)
+        if s[b:b + 2] != "\n\n":
+            raise SystemExit("gallery/index.html: unexpected text after the invitation markers")
+        s = s[:a] + s[b + 2:]
+    if not OPEN:
+        return s
+    if s.count(G_CSS_LINK) != 1 or s.count(G_ANCHOR) != 1:
+        raise SystemExit("gallery/index.html: stylesheet link or closing section not found exactly once")
+    return s.replace(G_CSS_LINK, G_CSS_LINK + G_JOIN_CSS_LINK).replace(G_ANCHOR, gallery_band() + "\n" + G_ANCHOR)
+
+
 def outputs():
     home = open(os.path.join(PA, "index.html"), encoding="utf-8").read()
     f25 = open(os.path.join(PA, "founding-25.html"), encoding="utf-8").read()
-    out = {"index.html": homepage(home), "founding-25.html": f25_page(f25)}
+    gal = open(os.path.join(PA, "gallery", "index.html"), encoding="utf-8").read()
+    out = {"index.html": homepage(home), "founding-25.html": f25_page(f25), "gallery/index.html": gallery_page(gal)}
     if OPEN:
         out.update({"join.html": join_page(), "curatorial-policy.html": policy_page()})
     return out

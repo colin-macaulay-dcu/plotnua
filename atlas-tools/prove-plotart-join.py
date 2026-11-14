@@ -30,9 +30,15 @@ def build(tmp, state):
     man = json.load(open(MAN, encoding="utf-8"))
     if state == "open":   # the opening release also applies privacy V15 (prepared, not applied while closed)
         sys.path.insert(0, os.path.join(ROOT, "atlas-tools")); import privacy_v15_layer as V15
-        open(os.path.join(site, "privacy.html"), "w", encoding="utf-8").write(V15.apply_v15(open(os.path.join(ROOT, "privacy.html"), encoding="utf-8").read()))
-        for f in ("index.html", "founding-25.html", "join.html", "curatorial-policy.html", "assets/pa-apply.js", "assets/plotart-join.css"):
+        _p = open(os.path.join(ROOT, "privacy.html"), encoding="utf-8").read()
+        open(os.path.join(site, "privacy.html"), "w", encoding="utf-8").write(_p if V15.MARKER in _p else V15.apply_v15(_p))
+        for f in ("index.html", "founding-25.html", "join.html", "curatorial-policy.html", "assets/pa-apply.js", "assets/plotart-join.css", "gallery/index.html"):
             man["files"][f] = hashlib.sha256(open(os.path.join(site, "plotart", f), "rb").read()).hexdigest()
+    else:   # a closed state: pinned to that state's build (as a closing release would re-pin it); no recruitment file is pinned
+        for f in ("index.html", "founding-25.html", "gallery/index.html"):
+            man["files"][f] = hashlib.sha256(open(os.path.join(site, "plotart", f), "rb").read()).hexdigest()
+        for f in ("join.html", "curatorial-policy.html", "assets/pa-apply.js", "assets/plotart-join.css"):
+            man["files"].pop(f, None)
     mp = os.path.join(site, "manifest.json"); json.dump(man, open(mp, "w"))
     return site, swp, mp
 
@@ -45,14 +51,25 @@ def guard(site, swp, mp, repin=()):
     r = subprocess.run([sys.executable, os.path.join(ROOT, "atlas-tools", "prove-plotart-launch.py"), site, "--switches", swp, "--manifest", mp], capture_output=True, text=True)
     return r.returncode == 0 and "PLOTART LAUNCH · OK" in r.stdout, r.stdout + r.stderr
 
+def gal_ok(g):
+    if g.count("pa-artist-apply-gallery:begin") != 1 or g.index("pa-artist-apply-gallery:begin") < g.index("pa-vg-collection:end"):
+        return False
+    seg = g[g.index("pa-artist-apply-gallery:begin"):g.index("pa-artist-apply-gallery:end")]
+    txt = re.sub(r"\s+", " ", re.sub(r"<[^>]+>", " ", seg))
+    return 'href="../join.html"' in seg and "pa-jn-band--compact" in seg and not re.search(r"\d|%|commission|fee|exclusiv", txt, re.I)
+
 def edit(site, f, old, new, count=1):
     p = os.path.join(site, "plotart", f); s = open(p, encoding="utf-8").read()
     assert s.count(old) >= 1, (f, old[:60]); open(p, "w", encoding="utf-8").write(s.replace(old, new, count))
 
 print("PROVE · Join PlotArt (artist applications)")
 sw = json.load(open(SW, encoding="utf-8"))
-check("J0 committed: gallery_application_state is not_open, the endpoint is the approved route, and the Founding 25 stays closed",
-      sw.get("gallery_application_state") == "not_open" and sw.get("f25_application_state") == "closed"
+# The committed state is not_open, or "open" in the founder-approved opening release, which must carry privacy V15 (14 Nov 2026).
+_priv_root = open(os.path.join(ROOT, "privacy.html"), encoding="utf-8").read()
+COMMITTED_OPEN = sw.get("gallery_application_state") == "open"
+check("J0 committed: gallery_application_state is not_open (or open with privacy V15 applied), the endpoint is the approved route, and the Founding 25 stays closed",
+      (sw.get("gallery_application_state") == "not_open" or (COMMITTED_OPEN and "PLOTNUA-PLOTART-ARTIST-APPLICATIONS-PRIVACY-V15" in _priv_root))
+      and sw.get("f25_application_state") == "closed"
       and sw.get("gallery_application_endpoint") == "https://plotnua-art-space-register.colin-a41.workers.dev/v1/art-space-register/gallery-application")
 r = subprocess.run([sys.executable, os.path.join(ROOT, "atlas-tools", "build-plotart-join.py"), "--check"], capture_output=True, text=True)
 # "production" = the main commit this branch is built on (its merge base), so the proof stays true when main moves on
@@ -60,8 +77,11 @@ BASE = subprocess.run(["git", "-C", ROOT, "merge-base", "HEAD", "origin/main"], 
 main = lambda f: subprocess.run(["git", "-C", ROOT, "show", BASE + ":plotart/" + f], capture_output=True, text=True).stdout
 same = lambda root, f: open(os.path.join(root, "plotart", f), encoding="utf-8").read() == main(f)
 absent = lambda root: not any(os.path.exists(os.path.join(root, "plotart", f)) for f in ("join.html", "curatorial-policy.html", "assets/pa-apply.js", "assets/plotart-join.css"))
-check("J1 committed (closed): nothing of the recruitment is published: the homepage and Founding 25 page are exactly main's, and no join page, policy page or script exists",
-      r.returncode == 0 and same(ROOT, "index.html") and same(ROOT, "founding-25.html") and absent(ROOT), r.stdout + r.stderr)
+if COMMITTED_OPEN:
+    check("J1 committed (open): the pages are exactly the builder's open build", r.returncode == 0 and "open build" in r.stdout, r.stdout + r.stderr)
+else:
+    check("J1 committed (closed): nothing of the recruitment is published: the homepage, Artists' Gallery and Founding 25 page are exactly main's, and no join page, policy page or script exists",
+          r.returncode == 0 and same(ROOT, "index.html") and same(ROOT, "founding-25.html") and same(ROOT, "gallery/index.html") and absent(ROOT), r.stdout + r.stderr)
 
 tmp = tempfile.mkdtemp(prefix="pa-join-")
 try:
@@ -81,7 +101,7 @@ try:
     check("O3 open: the script is the Founding 25 script with only its page hooks renamed", body(js) == body(f25js).replace("data-f25-", "data-ap-").replace("'f25-", "'ap-"))
     for st in ("not_open", "paused", "closed"):
         check("N %s: nothing published: homepage and Founding 25 page as on main, no recruitment page or script" % st,
-              same(S[st][0], "index.html") and same(S[st][0], "founding-25.html") and absent(S[st][0]))
+              same(S[st][0], "index.html") and same(S[st][0], "founding-25.html") and same(S[st][0], "gallery/index.html") and absent(S[st][0]))
     jv = re.sub(r"\s+", " ", re.sub(r"<[^>]+>", " ", j))
     home_o = open(os.path.join(site, "plotart", "index.html"), encoding="utf-8").read()
     band = home_o[home_o.index("<!-- pa-artist-apply:begin -->"):home_o.index("<!-- pa-artist-apply:end -->")]
@@ -99,6 +119,8 @@ try:
                       "€" not in jv and 'class="big"' not in j and "deserves" not in jv + bv and "€" not in bv),
                      ("W7 the homepage band is an invitation: no figures or commercial terms, links to Join PlotArt and the gallery",
                       "An invitation to join PlotArt." in bv and not re.search(r"\d|%|commission|fee|exclusiv", bv, re.I) and 'href="join.html"' in band and 'href="gallery/"' in band),
+                     ("W9 the Artists' Gallery carries the compact invitation after the collection: no figures or commercial terms, linking to Join PlotArt",
+                      gal_ok(open(os.path.join(site, "plotart", "gallery", "index.html"), encoding="utf-8").read())),
                      ("W8 the scoped stylesheet is linked by the homepage only while open", 'href="assets/plotart-join.css"' in home_o and 'plotart-join.css' not in main("index.html"))):
         check(name, ok)
     breaks = [
@@ -120,6 +142,8 @@ try:
         ("B16 the programme distinction removed", "open", "join.html", " Founding Artists keep their own agreement; artists joining now become Gallery Artists.", ""),
         ("B17 opening without the privacy section for artist applications (V15)", "open", "../privacy.html", "PLOTNUA-PLOTART-ARTIST-APPLICATIONS-PRIVACY-V15", "NO-V15"),
         ("B18 the 15% made bold", "open", "join.html", "PlotArt’s commission is 15% of", "PlotArt’s commission is <strong>15%</strong> of"),
+        ("B23 commercial terms on the Artists' Gallery invitation", "open", "gallery/index.html", "We welcome applications from artists based or working on the island of Ireland.", "15% commission. No fees."),
+        ("B24 the Artists' Gallery invitation published while applications are closed", "closed", "gallery/index.html", '<section class="pa-vg2-close">', '<!-- pa-artist-apply-gallery:begin --><a href="../join.html">Apply</a><!-- pa-artist-apply-gallery:end -->\n\n<section class="pa-vg2-close">'),
         ("B19 a Direct Approach no longer needs to come before the sale is agreed", "open", "join.html", " before the sale is agreed that they found you", " that they found you"),
         ("B20 commission widened from original work to any work", "open", "join.html", "an original work or signed limited-edition print sold", "any work or product sold"),
         ("B21 collectors already known no longer independent", "open", "join.html", " Collectors you already knew, or who found you another way, are independent.", ""),
