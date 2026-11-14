@@ -62,7 +62,7 @@ const strip = s => s.replace(' pa-pills--hire', '').replace(/<a class="pa-pill" 
     'plotart/assets/pa-enquiry.js',     // Open for Commissions (13 Nov 2026): sends kind only from a commission form (prove-plotart-commissions.py)
     // Gallery Artist Programme Phase 3 (13 Nov 2026): Join PlotArt and the curatorial policy, the script shipped only while
     // applications are open (guarded by prove-plotart-launch.py L18, the manifest and prove-plotart-join.py)
-    'plotart/join.html', 'plotart/curatorial-policy.html', 'plotart/assets/pa-apply.js']);
+    'plotart/join.html', 'plotart/curatorial-policy.html', 'plotart/assets/pa-apply.js', 'plotart/assets/plotart-join.css']);
   const wrong = changedFiles.filter(f => {
     if (f.startsWith('plotart/art-for-hire/') || OTHER_RELEASES.has(f)) return false;
     const o = old(f); if (o === null) return true;

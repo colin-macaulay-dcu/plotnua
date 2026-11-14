@@ -31,7 +31,7 @@ def build(tmp, state):
     if state == "open":   # the opening release also applies privacy V15 (prepared, not applied while closed)
         sys.path.insert(0, os.path.join(ROOT, "atlas-tools")); import privacy_v15_layer as V15
         open(os.path.join(site, "privacy.html"), "w", encoding="utf-8").write(V15.apply_v15(open(os.path.join(ROOT, "privacy.html"), encoding="utf-8").read()))
-        for f in ("index.html", "founding-25.html", "join.html", "curatorial-policy.html", "assets/pa-apply.js"):
+        for f in ("index.html", "founding-25.html", "join.html", "curatorial-policy.html", "assets/pa-apply.js", "assets/plotart-join.css"):
             man["files"][f] = hashlib.sha256(open(os.path.join(site, "plotart", f), "rb").read()).hexdigest()
     mp = os.path.join(site, "manifest.json"); json.dump(man, open(mp, "w"))
     return site, swp, mp
@@ -55,9 +55,11 @@ check("J0 committed: gallery_application_state is not_open, the endpoint is the 
       sw.get("gallery_application_state") == "not_open" and sw.get("f25_application_state") == "closed"
       and sw.get("gallery_application_endpoint") == "https://plotnua-art-space-register.colin-a41.workers.dev/v1/art-space-register/gallery-application")
 r = subprocess.run([sys.executable, os.path.join(ROOT, "atlas-tools", "build-plotart-join.py"), "--check"], capture_output=True, text=True)
-main = lambda f: subprocess.run(["git", "-C", ROOT, "show", "origin/main:plotart/" + f], capture_output=True, text=True).stdout
+# "production" = the main commit this branch is built on (its merge base), so the proof stays true when main moves on
+BASE = subprocess.run(["git", "-C", ROOT, "merge-base", "HEAD", "origin/main"], capture_output=True, text=True).stdout.strip()
+main = lambda f: subprocess.run(["git", "-C", ROOT, "show", BASE + ":plotart/" + f], capture_output=True, text=True).stdout
 same = lambda root, f: open(os.path.join(root, "plotart", f), encoding="utf-8").read() == main(f)
-absent = lambda root: not any(os.path.exists(os.path.join(root, "plotart", f)) for f in ("join.html", "curatorial-policy.html", "assets/pa-apply.js"))
+absent = lambda root: not any(os.path.exists(os.path.join(root, "plotart", f)) for f in ("join.html", "curatorial-policy.html", "assets/pa-apply.js", "assets/plotart-join.css"))
 check("J1 committed (closed): nothing of the recruitment is published: the homepage and Founding 25 page are exactly main's, and no join page, policy page or script exists",
       r.returncode == 0 and same(ROOT, "index.html") and same(ROOT, "founding-25.html") and absent(ROOT), r.stdout + r.stderr)
 
@@ -81,33 +83,41 @@ try:
         check("N %s: nothing published: homepage and Founding 25 page as on main, no recruitment page or script" % st,
               same(S[st][0], "index.html") and same(S[st][0], "founding-25.html") and absent(S[st][0]))
     jv = re.sub(r"\s+", " ", re.sub(r"<[^>]+>", " ", j))
-    for name, t in (("W1 commission only on introduced sales (hero, terms, homepage)", "only on sales to collectors PlotArt introduces"),
-                    ("W2 independent sales stay the artist's own", "Your own sales stay yours."),
-                    ("W3 the 24-month principle in plain words", "An introduction counts for 24 months."),
-                    ("W4 applying doesn't guarantee a place", "applying doesn’t guarantee a place"),
-                    ("W5 Founding Artists keep their own terms; new artists join as Gallery Artists", "Founding Artists keep their own terms. Artists who join now become Gallery Artists")):
-        check(name, t in jv, t)
-    check("W6 no line implies every sale through the artist's gallery attracts commission", "commission on sales through PlotArt" not in jv and "15% on sales through PlotArt" not in jv)
-
-    # breaks: each must be refused by the guard's content rules (the edited file is re-pinned first)
+    home_o = open(os.path.join(site, "plotart", "index.html"), encoding="utf-8").read()
+    band = home_o[home_o.index("<!-- pa-artist-apply:begin -->"):home_o.index("<!-- pa-artist-apply:end -->")]
+    bv = re.sub(r"\s+", " ", re.sub(r"<[^>]+>", " ", band))
+    for name, ok in (("W1 the 15% appears once, only in The practical details, in plain regular type",
+                      j.count("15%") == 1 and "The practical details" in jv and not re.search(r"<(?:h\d|strong|b)[^>]*>[^<]*15%", j)),
+                     ("W2 commission is described as applying only to sales to collectors PlotArt introduced, and not to independent sales",
+                      "sold to a collector PlotArt introduced to you" in jv and "It doesn’t apply to your independent sales." in jv),
+                     ("W3 the 24-month principle in one plain sentence", "An introduction counts for 24 months." in jv),
+                     ("W4 applying doesn't guarantee a place", jv.count("applying doesn’t guarantee a place") + jv.count("Applying doesn’t guarantee a place") >= 2),
+                     ("W5 Founding Artists keep their own agreement; new artists join as Gallery Artists", "Founding Artists keep their own agreement; artists joining now become Gallery Artists." in jv),
+                     ("W6 no worked calculation, euro amount, large figure or 'deserves to be discovered' anywhere in the recruitment",
+                      "€" not in jv and 'class="big"' not in j and "deserves" not in jv + bv and "€" not in bv),
+                     ("W7 the homepage band is an invitation: no figures or commercial terms, links to Join PlotArt and the gallery",
+                      "An invitation to join PlotArt." in bv and not re.search(r"\d|%|commission|fee|exclusiv", bv, re.I) and 'href="join.html"' in band and 'href="gallery/"' in band),
+                     ("W8 the scoped stylesheet is linked by the homepage only while open", 'href="assets/plotart-join.css"' in home_o and 'plotart-join.css' not in main("index.html"))):
+        check(name, ok)
     breaks = [
         ("B1 the join page published while applications are not open", "not_open", None, None, None),
         ("B2 the homepage artist band published while applications are paused", "paused", "index.html", None, None),
         ("B3 a different endpoint", "open", "join.html", "/v1/art-space-register/gallery-application\" data-image", "/v1/art-space-register/founding-25\" data-image"),
         ("B4 a changed privacy confirmation", "open", "join.html", "privacy notice for PlotArt artist applications", "privacy notice"),
-        ("B5 a discount line", "open", "join.html", "<li><strong>No upfront fees.</strong>", "<li>Collectors may receive a discount.</li><li><strong>No upfront fees.</strong>"),
-        ("B6 individual terms advertised", "open", "curatorial-policy.html", "<li><strong>Applying costs nothing,</strong>", "<li>Individual terms may be agreed.</li><li><strong>Applying costs nothing,</strong>"),
-        ("B7 another percentage", "open", "join.html", "No upfront fees.</strong>", "No upfront fees, and a 10% bonus.</strong>"),
-        ("B8 a price outside the worked example", "open", "join.html", "Shipping, insurance and handling", "Prices from €200. Shipping, insurance and handling"),
-        ("B9 commission on every sale through the gallery", "open", "join.html", "15% on sales PlotArt introduces.", "15% on every sale through your gallery."),
-        ("B10 the independent-sales line removed", "open", "join.html", "<strong>Your own sales stay yours.</strong>", "<strong>Sales.</strong>"),
+        ("B5 a discount line", "open", "join.html", "<dt>Fees</dt>", "<dt>Discounts</dt><dd>Collectors may receive a discount.</dd><dt>Fees</dt>"),
+        ("B6 individual terms advertised", "open", "curatorial-policy.html", "<li><h3>Without cost</h3>", "<li><h3>Individual terms may be agreed</h3><p>x</p></li><li><h3>Without cost</h3>"),
+        ("B7 a large 15% figure brought back", "open", "join.html", "<h1>An invitation to join PlotArt.</h1>", "<h1>An invitation to join PlotArt.</h1><p class=\"big\">15%</p>"),
+        ("B8 a worked price example brought back", "open", "join.html", "<dt>Fees</dt>", "<dt>Example</dt><dd>Sold for €1,000, you receive €850.</dd><dt>Fees</dt>"),
+        ("B9 commission on every sale through the gallery", "open", "join.html", "sold to a collector PlotArt introduced to you", "sold through your PlotArt gallery"),
+        ("B10 the independent-sales sentence removed", "open", "join.html", " It doesn’t apply to your independent sales.", ""),
         ("B11 the 24-month explanation removed", "open", "join.html", "An introduction counts for 24 months.", "Introductions count."),
-        ("B12 a selection board mentioned", "open", "join.html", "We confirm we’ve received your application, then read it", "Our selection board reads it"),
-        ("B13 the homepage band lost its curatorial-policy link", "open", "index.html", 'href="curatorial-policy.html" data-pa-track="home_curatorial_policy"', 'href="about.html" data-pa-track="home_curatorial_policy"'),
+        ("B12 a selection board mentioned", "open", "join.html", "We read every application and may ask to see a little more.", "Our selection board reads every application."),
+        ("B13 commercial terms on the homepage band", "open", "index.html", "Independent artists, distinctive work and new connections with collectors.", "15% commission. No fees. No exclusivity."),
         ("B14 a criterion dropped from the policy", "open", "curatorial-policy.html", "<h3>Contribution to the gallery</h3>", "<h3>Fit</h3>"),
-        ("B15 the homepage band no longer says the artist's own sales stay theirs", "open", "index.html", "; your own sales stay yours.", "."),
-        ("B16 the programme distinction removed", "open", "join.html", " Founding Artists keep their own terms.", ""),
+        ("B15 'deserves to be discovered' brought back", "open", "join.html", "<h2>A gallery of your own.</h2>", "<h2>Your art deserves to be discovered.</h2>"),
+        ("B16 the programme distinction removed", "open", "join.html", " Founding Artists keep their own agreement; artists joining now become Gallery Artists.", ""),
         ("B17 opening without the privacy section for artist applications (V15)", "open", "../privacy.html", "PLOTNUA-PLOTART-ARTIST-APPLICATIONS-PRIVACY-V15", "NO-V15"),
+        ("B18 the 15% made bold", "open", "join.html", "PlotArt’s commission is 15% of", "PlotArt’s commission is <strong>15%</strong> of"),
     ]
     for b in breaks:
         name, st, f, old, new = b[:5]

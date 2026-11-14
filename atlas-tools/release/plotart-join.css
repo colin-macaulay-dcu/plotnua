@@ -1,0 +1,70 @@
+/* PlotArt · Join PlotArt · scoped styles (Gallery Artist Programme Phase 3, design refinement 14 Nov 2026).
+   Loaded only by join.html, curatorial-policy.html and, while applications are open, the PlotArt homepage.
+   Published only in the "open" state (build-plotart-join.py). Every rule is scoped to .pa-jn-*, so no other PlotArt
+   page or component is affected. The idea: a gallery wall after dark. Type, hairlines and space carry the page;
+   no figures, badges, gradients or cards. Copper appears only as the hover and focus colour. */
+body.pa .pa-jn-hero{ background:var(--wall); }
+body.pa .pa-jn-hero .pa-wrap{ padding-top:clamp(72px, 11vw, 168px); padding-bottom:clamp(64px, 8vw, 120px); }
+body.pa .pa-jn-hero h1{ font-size:clamp(44px, 5.4vw, 84px); line-height:1; letter-spacing:-.015em; max-width:13ch; }
+body.pa .pa-jn-lede{ margin:clamp(24px, 2.6vw, 36px) 0 0; max-width:36ch; font-size:clamp(19px, 1.55vw, 23px); line-height:1.5; color:var(--lime); }
+body.pa .pa-jn-k{ font-size:13.5px; font-weight:500; letter-spacing:.04em; color:var(--stone); margin:0 0 22px; }
+body.pa .pa-jn-acts{ display:flex; flex-wrap:wrap; align-items:center; gap:16px 30px; margin-top:clamp(30px, 3.2vw, 44px); }
+body.pa .pa-jn-btn{ display:inline-flex; align-items:center; font-family:var(--sans); font-size:15px; font-weight:500; letter-spacing:.02em; color:var(--ivory);
+  text-decoration:none; border:1px solid rgba(242,235,224,.55); border-radius:999px; padding:13px 26px; transition:border-color .2s, color .2s; }
+body.pa .pa-jn-btn:hover{ border-color:var(--terra-text); color:var(--ivory); }
+body.pa .pa-jn-link{ font-size:15px; font-weight:500; letter-spacing:.02em; color:var(--ivory); text-decoration:underline; text-decoration-color:rgba(242,235,224,.35);
+  text-underline-offset:6px; transition:text-decoration-color .2s; }
+body.pa .pa-jn-link:hover{ color:var(--ivory); text-decoration-color:var(--terra-text); }
+body.pa .pa-jn-status{ margin:clamp(26px, 2.8vw, 36px) 0 0; font-size:14px; color:var(--stone); }
+
+body.pa .pa-jn-sec{ padding:clamp(52px, 6vw, 92px) 0; border-top:1px solid var(--line); }
+body.pa .pa-jn-grid{ display:grid; grid-template-columns:minmax(0, 4fr) minmax(0, 8fr); gap:20px clamp(32px, 5vw, 96px); }
+body.pa .pa-jn-sec h2{ font-size:clamp(30px, 3vw, 44px); line-height:1.06; max-width:18ch; margin:0 0 22px; }
+body.pa .pa-jn-sec p{ max-width:58ch; line-height:1.65; color:var(--lime); }
+body.pa .pa-jn-sec .pa-jn-k, body.pa .pa-jn-band .pa-jn-k{ padding-top:.5em; color:var(--stone); font-size:13.5px; line-height:1.6; }
+
+body.pa .pa-jn-three{ list-style:none; margin:clamp(8px, 1vw, 16px) 0 0; padding:0; display:grid; grid-template-columns:repeat(3, minmax(0, 1fr)); gap:28px clamp(24px, 3vw, 48px); }
+body.pa .pa-jn-three h3{ font-size:clamp(21px, 1.7vw, 25px); line-height:1.15; margin:0 0 10px; }
+body.pa .pa-jn-three p{ margin:0; font-size:16px; line-height:1.6; color:var(--stone); }
+
+body.pa .pa-jn-list{ list-style:none; margin:28px 0 0; padding:0; border-top:1px solid var(--line); }
+body.pa .pa-jn-list li{ display:grid; grid-template-columns:minmax(0, 15rem) minmax(0, 1fr); gap:6px 32px; padding:18px 0; border-bottom:1px solid var(--line); }
+body.pa .pa-jn-list h3{ font-size:20px; line-height:1.25; margin:0; }
+body.pa .pa-jn-list p{ margin:0; font-size:16px; line-height:1.6; color:var(--stone); max-width:60ch; }
+
+body.pa .pa-jn-steps{ list-style:none; margin:28px 0 0; padding:0; counter-reset:jn; border-top:1px solid var(--line); }
+body.pa .pa-jn-steps li{ counter-increment:jn; display:grid; grid-template-columns:3rem minmax(0, 13rem) minmax(0, 1fr); gap:6px 24px; padding:18px 0; border-bottom:1px solid var(--line); }
+body.pa .pa-jn-steps li::before{ content:counter(jn); font-size:14px; color:var(--mute); font-variant-numeric:tabular-nums; padding-top:.2em; }
+body.pa .pa-jn-steps h3{ font-size:20px; line-height:1.25; margin:0; }
+body.pa .pa-jn-steps p{ margin:0; font-size:16px; line-height:1.6; color:var(--stone); max-width:60ch; }
+
+/* The practical details: small, regular weight, unambiguous. No emphasis on figures. */
+body.pa .pa-jn-terms{ margin:6px 0 0; display:grid; grid-template-columns:minmax(0, 10rem) minmax(0, 1fr); border-top:1px solid var(--line); font-size:15px; line-height:1.65; }
+body.pa .pa-jn-terms dt, body.pa .pa-jn-terms dd{ margin:0; padding:14px 0; border-bottom:1px solid var(--line); font-weight:400; }
+body.pa .pa-jn-terms dt{ color:var(--mute); padding-right:24px; }
+body.pa .pa-jn-terms dd{ color:var(--lime); }
+body.pa .pa-jn-terms{ max-width:52rem; }
+body.pa .pa-jn-sec h2.pa-jn-h-sm{ font-size:clamp(24px, 2.2vw, 30px); }
+
+body.pa .pa-jn-apply .pa-apply-title{ font-size:clamp(36px, 3.6vw, 52px); margin:0 0 18px; }
+body.pa .pa-jn-apply .pa-jn-note{ font-size:14.5px; color:var(--stone); margin:14px 0 0; max-width:44ch; }
+
+/* The homepage band (open state only): an invitation, not an advertisement. */
+body.pa .pa-jn-band{ padding:clamp(64px, 8vw, 120px) 0; border-top:1px solid var(--line); }
+body.pa .pa-jn-band h2{ font-size:clamp(34px, 3.6vw, 54px); line-height:1.04; max-width:16ch; margin:0; }
+body.pa .pa-jn-band .pa-jn-lede{ margin-top:22px; }
+body.pa .pa-jn-band .pa-jn-status{ margin-top:22px; }
+body.pa .pa-jn-band .pa-open-badge{ display:inline; font-size:14px; font-weight:400; letter-spacing:0; text-transform:none; color:var(--stone); background:none; border:0; padding:0; border-radius:0; }
+body.pa .pa-jn-band .pa-open-badge::before{ display:none; }
+
+@media (max-width:860px){
+  body.pa .pa-jn-grid{ grid-template-columns:1fr; }
+  body.pa .pa-jn-three{ grid-template-columns:1fr; gap:26px; }
+  body.pa .pa-jn-list li{ grid-template-columns:1fr; }
+  body.pa .pa-jn-steps li{ grid-template-columns:2rem minmax(0, 1fr); }
+  body.pa .pa-jn-steps li p{ grid-column:2; }
+  body.pa .pa-jn-terms{ grid-template-columns:1fr; }
+  body.pa .pa-jn-terms dt{ padding-bottom:0; border-bottom:0; }
+  body.pa .pa-jn-terms dd{ padding-top:4px; }
+}
+@media (prefers-reduced-motion:reduce){ .pa-jn-btn, .pa-jn-link{ transition:none; } }

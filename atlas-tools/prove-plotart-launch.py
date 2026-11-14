@@ -102,7 +102,7 @@ HERO_IMAGES = {"assets/hero/founder-01-abstract.webp"}
 # The Living Gallery image (consolidated brief, 29 Oct 2026): the founder's painting in an AI-generated interior visualisation.
 LG_IMAGE = "assets/living/plotart-living-gallery-colin-macaulay-artwork.webp"
 CAMPAIGN_IMAGES = {"assets/campaigns/one-painting-three-rooms-840.webp", "assets/campaigns/one-painting-three-rooms-1672.webp"}
-ALLOWED = {"downloads/plotart-art-buying-checklist.pdf"} | set(PAGES) | MG_FILES | {"assets/plotart.css", "assets/plotart-guides.css", "assets/plotart-artworks.css", "assets/plotart-wall-size.css", "assets/plotart-wall-size.js", "assets/plotart.js", "assets/pa-enquiry.js", LG_IMAGE} | HERO_IMAGES | CAMPAIGN_IMAGES | ({"assets/f25-apply.js"} if launch.get("f25_application_state") == "open" else set()) | ({"assets/pa-apply.js"} if launch.get("gallery_application_state") == "open" else set())
+ALLOWED = {"downloads/plotart-art-buying-checklist.pdf"} | set(PAGES) | MG_FILES | {"assets/plotart.css", "assets/plotart-guides.css", "assets/plotart-artworks.css", "assets/plotart-wall-size.css", "assets/plotart-wall-size.js", "assets/plotart.js", "assets/pa-enquiry.js", LG_IMAGE} | HERO_IMAGES | CAMPAIGN_IMAGES | ({"assets/f25-apply.js"} if launch.get("f25_application_state") == "open" else set()) | ({"assets/pa-apply.js", "assets/plotart-join.css"} if launch.get("gallery_application_state") == "open" else set())
 # Join PlotArt (Phase 3, 13 Nov 2026): the application page and the curatorial policy; the script ships only in "open".
 GA_STATE = launch.get("gallery_application_state")
 GA_EP = launch.get("gallery_application_endpoint")
@@ -161,11 +161,10 @@ def visible_text(s):
     return html.unescape(re.sub(r"<[^>]+>", " ", s))
 
 AP_FILE = '<input id="ap-images" type="file" accept="image/jpeg,image/png,image/webp" multiple hidden data-ap-file>'
-JOIN_EXAMPLE = '<tbody><tr><th scope="row">Artwork sold for</th><td>€1,000</td></tr><tr class="is-you"><th scope="row">You receive</th><td>€850</td></tr><tr><th scope="row">PlotArt invoices you</th><td>€150</td></tr></tbody>'
-APPROVED_15_MARKUP = ['<span class="num" aria-hidden="true">15%</span>',
-                      '<p class="big" aria-hidden="true">15%<small>only on sales to collectors PlotArt introduces · no upfront fees · no exclusivity</small></p>']
-APPROVED_15_TEXT = ["15% commission only on sales to collectors PlotArt introduces", "15% commission, only when PlotArt introduces the collector.",
-                    "15% on sales PlotArt introduces."]
+# Design refinement (founder direction 14 Nov 2026): the 15% appears ONLY once, in plain type, in "The practical details" on
+# join.html. No figure, no emphasis, nothing on the homepage.
+APPROVED_15_MARKUP = []
+APPROVED_15_TEXT = ["PlotArt’s commission is 15% of the price of a work sold to a collector PlotArt introduced to you"]
 
 # demonstration names, from the prototype data when present (it is never published)
 demo_names = set()
@@ -206,9 +205,7 @@ for name in PAGES:
     for n in demo_names:
         need(not re.search(r"\b%s\b" % re.escape(n), vt) and not re.search(r"\b%s\b" % re.escape(html.escape(n)), s),
              "L3 %s carries demonstration content (text or markup): %s" % (name, n))
-    if name == "join.html":   # the approved worked example of the commission, and nothing else (L18)
-        need("€" not in visible_text(s.replace(JOIN_EXAMPLE, "", 1)) and s.count(JOIN_EXAMPLE) == 1, "L3 join.html shows a euro amount outside the approved example")
-    elif name not in SEO.GENERATED_PATHS:
+    if name not in SEO.GENERATED_PATHS:
         need("€" not in vt and "&euro;" not in s, "L3 %s shows a euro price" % name)
     else:
         try:
@@ -220,7 +217,7 @@ for name in PAGES:
     # L4
     vt4 = re.sub(r"\b100% (?:free\b|of your artwork sales\b)", " ", vt, flags=re.I)
     s4 = s
-    if name in ("index.html", "join.html"):   # the standard Gallery Artist terms, in the approved wording only (founder, 13 Nov 2026)
+    if name == "join.html":   # the standard Gallery Artist terms, in the approved wording only (founder, 13-14 Nov 2026)
         for _m in APPROVED_15_MARKUP:
             s4 = s4.replace(_m, " ")
         vt4 = visible_text(s4)
@@ -708,12 +705,21 @@ else:
     need(_jv.count(GA_LINE) == 2, "L18 join.html must state '%s' in its hero and its Apply section" % GA_LINE)
     for _o in {"Applications are paused at the moment.", "Applications have closed.", "Applications are not yet open."}:
         need(_o not in _jv, "L18 join.html shows another state's line: %s" % _o)
-    for _t in ("15% commission, only when PlotArt introduces the collector.", "No upfront fees.", "Your own sales stay yours.",
-               "Collectors who find you independently", "An introduction counts for 24 months.", "applying doesn’t guarantee a place",
-               "A newly commissioned work is agreed directly between you and the collector", "Founding Artists keep their own terms.",
-               "Artists who join now become Gallery Artists",
+    for _t in ("The practical details", "There are no fees to apply, to join or to remain.",
+               "PlotArt’s commission is 15% of the price of a work sold to a collector PlotArt introduced to you, including a collector who tells you they found you through PlotArt. It doesn’t apply to your independent sales.",
+               "An introduction counts for 24 months.", "Newly commissioned work is agreed between you and the collector and isn’t subject to the commission.",
+               "Collectors pay you directly", "There is no exclusivity", "applying doesn’t guarantee a place",
+               "Founding Artists keep their own agreement; artists joining now become Gallery Artists.",
                "The full terms are in the PlotArt Gallery Artist Agreement, which you read and accept in PlotArt Studio before your gallery is first published."):
         need(_t in _jv, "L18 join.html lacks the approved wording: %s" % _t)
+    # the 15% appears once, inside "The practical details", in plain type: never a heading, figure or emphasis
+    _terms = re.search(r'<section class="pa-jn-sec" id="terms">(.*?)</section>', _join, re.S)
+    need(_join.count("15%") == 1 and _terms is not None and "15%" in _terms.group(1), "L18 the 15% must appear once, only in The practical details")
+    need(not re.search(r"<(?:h1|h2|h3|strong|b|em|big)\b[^>]*>[^<]*\d+\s?%", _join) and 'class="big"' not in _join and 'class="num"' not in _join,
+         "L18 no percentage may be a heading, an emphasis or a large figure")
+    for _n, _v in (("join.html", _jv), ("curatorial-policy.html", _pv)):
+        need(not re.search(r"(?i)deserves? to be (?:discovered|seen)|overlooked|under-?represented|undiscovered|hidden talent|finally get|get noticed", _v),
+             "L18 %s implies artists are overlooked or poorly represented elsewhere" % _n)
     need('href="curatorial-policy.html"' in _join and 'href="join.html"' in _pol, "L18 the two pages must link to each other")
     for _h in ("Artistic quality", "A distinctive voice", "A developed body of work", "Commitment to your practice", "Contribution to the gallery"):
         need(_jv.count(_h) == 1 and _pv.count(_h) == 1, "L18 both pages must carry the five criteria once each: %s" % _h)
@@ -724,8 +730,10 @@ else:
     _band = re.search(r"<!-- pa-artist-apply:begin -->(.*?)<!-- pa-artist-apply:end -->", home, re.S)
     need(_band is not None and home.count("<!-- pa-artist-apply:begin -->") == 1 and "f25InviteH" not in home, "L18 open: the homepage carries the artist band once, in place of the closed Founding 25 band")
     if _band:
-        need('href="curatorial-policy.html"' in _band.group(1) and 'href="join.html#apply"' in _band.group(1) and "your own sales stay yours" in visible_text(_band.group(1)),
-             "L18 the homepage band must link to the form and the curatorial policy, and say the artist's own sales stay theirs")
+        _bv = re.sub(r"\s+", " ", visible_text(_band.group(1)))
+        need('href="join.html"' in _band.group(1) and 'href="gallery/"' in _band.group(1) and "An invitation to join PlotArt." in _bv,
+             "L18 the homepage band must be the invitation, linking to Join PlotArt and the gallery")
+        need(not re.search(r"\d|%|€|commission|fee|exclusiv|deserves", _bv, re.I), "L18 the homepage band carries figures, commercial terms or promotional wording")
     need(_ptr is not None and bool(_ptr.group(1).strip()), "L18 open: the Founding 25 page points to Join PlotArt")
     need("<form" not in _pol and "pa-apply.js" not in _pol, "L18 the curatorial policy has no form")
     need(_join.count("<form") == 1 and ('data-ap-form data-endpoint="%s" data-image-endpoint="%s/image"' % (GA_EP, GA_EP)) in _join, "L18 open: exactly one form posting only to the approved route")

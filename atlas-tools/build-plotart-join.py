@@ -6,6 +6,7 @@ Builds the public artist-recruitment pages from the founder-approved copy, in th
     plotart/join.html                 the application page and form
     plotart/curatorial-policy.html    the curatorial policy
     plotart/assets/pa-apply.js        the form script
+    plotart/assets/plotart-join.css   the scoped Join styles (also linked by the homepage while open)
     plotart/index.html                the homepage "For artists" band, between its two markers
     plotart/founding-25.html          one pointer line to Join PlotArt
 
@@ -21,7 +22,7 @@ inferred from the endpoint. The endpoint is gallery_application_endpoint, and th
     python3 atlas-tools/build-plotart-join.py --out SITE [--switches FILE] build into a copy (SITE/plotart), for previews and proofs
 
 Header, navigation and footer are copied from founding-25.html, so every PlotArt page stays identical in its chrome.
-No new imagery: the pages are type on the existing dark identity.
+No new imagery: the pages are type, hairlines and space on the existing dark identity (design refinement 14 Nov 2026).
 """
 import html, json, os, re, sys
 
@@ -96,42 +97,23 @@ def head(path, title, desc, extra_style=""):
 </head>
 """
 
-JOIN_STYLE = STYLE.replace("</style>", """.pa-join-ex{width:100%;max-width:460px;border-collapse:collapse;margin:26px 0 8px;font-size:16px}
-.pa-join-ex th,.pa-join-ex td{text-align:left;padding:12px 0;border-bottom:1px solid rgba(242,235,224,.14)}
-.pa-join-ex td{text-align:right;font-variant-numeric:tabular-nums;color:var(--ivory)}
-.pa-join-ex th{font-weight:500;color:var(--lime)}
-.pa-join-ex tr.is-you td,.pa-join-ex tr.is-you th{color:var(--ivory);font-weight:600}
-.pa-join-crit{list-style:none;margin:0;padding:0;display:grid;gap:0;border-top:1px solid rgba(242,235,224,.14)}
-.pa-join-crit li{display:grid;grid-template-columns:minmax(0,15rem) minmax(0,1fr);gap:8px 32px;padding:20px 0;border-bottom:1px solid rgba(242,235,224,.14)}
-.pa-join-crit h3{font-size:clamp(22px,2vw,28px);margin:0}
-.pa-join-crit p{margin:0;color:var(--lime);line-height:1.6;max-width:62ch}
-@media (max-width:720px){.pa-join-crit li{grid-template-columns:1fr}}
-.pa-join-status{max-width:760px}
-</style>""") + "\n"
+JOIN_STYLE = STYLE + "\n" + '<link rel="stylesheet" href="assets/plotart-join.css">\n'   # the form styles (as the Founding 25 form) + the scoped Join styles
+POLICY_STYLE = '<link rel="stylesheet" href="assets/plotart-join.css">\n'
 
-POLICY_STYLE = """<style>
-.pa-pol{max-width:760px}
-.pa-pol h2{font-size:clamp(30px,3vw,44px);margin:0 0 18px}
-.pa-pol p{color:var(--lime);line-height:1.7;margin:0 0 16px}
-.pa-pol ul{margin:0 0 16px;padding-left:1.2em;color:var(--lime);line-height:1.7}
-.pa-pol li{margin:0 0 8px}
-.pa-pol strong{color:var(--ivory);font-weight:600}
-.pa-join-crit{list-style:none;margin:0;padding:0;display:grid;gap:0;border-top:1px solid rgba(242,235,224,.14)}
-.pa-join-crit li{display:grid;grid-template-columns:minmax(0,15rem) minmax(0,1fr);gap:8px 32px;padding:20px 0;border-bottom:1px solid rgba(242,235,224,.14)}
-.pa-join-crit h3{font-size:clamp(22px,2vw,28px);margin:0}
-.pa-join-crit p{margin:0;color:var(--lime);line-height:1.6;max-width:62ch}
-@media (max-width:720px){.pa-join-crit li{grid-template-columns:1fr}}
-</style>
-"""
-
-CRITERIA = [
-    ("Artistic quality", "A considered approach to technique, materials, composition, expression or ideas. We look at the work itself, not at how it is described."),
-    ("A distinctive voice", "Originality and individuality: a recognisable direction that is your own, whatever your subject or medium."),
-    ("A developed body of work", "A coherent portfolio that shows your approach, your interests and how your work is developing, rather than a single piece."),
-    ("Commitment to your practice", "Sustained engagement with your work. Qualifications, exhibitions and gallery representation are welcome but never required."),
-    ("Contribution to the gallery", "How your work would complement, strengthen or broaden the PlotArt collection."),
+CRITERIA = [   # (name, short line for Join PlotArt, full line for the curatorial policy)
+    ("Artistic quality", "A considered approach to materials, technique and ideas.",
+     "A considered approach to technique, materials, composition, expression or ideas. We look at the work itself, not at how it is described."),
+    ("A distinctive voice", "A recognisable direction that is your own.",
+     "Originality and individuality: a recognisable direction that is your own, whatever your subject or medium."),
+    ("A developed body of work", "A coherent portfolio rather than a single piece.",
+     "A coherent portfolio that shows your approach, your interests and how your work is developing."),
+    ("Commitment to your practice", "Sustained engagement. Qualifications and representation are welcome, never required.",
+     "Sustained engagement with your work. Qualifications, exhibitions and gallery representation are welcome but never required."),
+    ("Contribution to the gallery", "What your work would bring to the collection.",
+     "How your work would complement, strengthen or broaden the PlotArt collection."),
 ]
-CRIT_HTML = "\n".join(f"    <li><h3>{E(h)}</h3><p>{E(p)}</p></li>" for h, p in CRITERIA)
+CRIT_SHORT = "\n".join(f"    <li><h3>{E(h)}</h3><p>{E(a)}</p></li>" for h, a, _ in CRITERIA)
+CRIT_FULL = "\n".join(f"    <li><h3>{E(h)}</h3><p>{E(b)}</p></li>" for h, _, b in CRITERIA)
 
 COUNTIES = ["antrim", "armagh", "carlow", "cavan", "clare", "cork", "derry", "donegal", "down", "dublin", "fermanagh", "galway", "kerry", "kildare",
             "kilkenny", "laois", "leitrim", "limerick", "longford", "louth", "mayo", "meath", "monaghan", "offaly", "roscommon", "sligo", "tipperary",
@@ -190,137 +172,127 @@ def form():
 
 
 def apply_section():
-    if OPEN:
-        return f"""<section class="pa-sec pa-sec--deep" id="apply"><div class="pa-wrap pa-cols-2" style="align-items:start">
-  <div class="pa-apply-intro"><p class="pa-eyebrow">Apply</p><h2 class="pa-apply-title">Apply to join PlotArt.</h2>
-  <p class="pa-lede" style="margin-top:0">Tell us about you and your work. It takes about ten minutes, and applying is free. All you need is a few images of your work, or a link to where we can see it.</p>
-  <p class="pa-select-note" style="margin-top:18px">{LINE}</p>
-  <p class="pa-muted" style="margin-top:14px">Every application is read individually. Applying doesn’t guarantee a place, and we’ll let you know the outcome either way.</p>
-  <p class="pa-note" style="margin-top:18px">Already on PlotNua's <a href="../artist-register.html">Artist Register</a>? That stays a private expression of interest. Applying here is a separate step.</p></div>
+    # Built only in the "open" state (the page does not exist otherwise).
+    return f"""<section class="pa-sec pa-sec--deep pa-jn-apply" id="apply"><div class="pa-wrap pa-cols-2" style="align-items:start">
+  <div class="pa-apply-intro"><h2 class="pa-apply-title">Apply.</h2>
+  <p>It takes about ten minutes. You’ll need a short biography and three to five images of your work, or a link to your portfolio.</p>
+  <p class="pa-jn-status" style="margin-top:22px">{LINE}</p>
+  <p class="pa-jn-note">Every application is read individually, and applying doesn’t guarantee a place.</p>
+  <p class="pa-jn-note">Already on PlotNua’s <a href="../artist-register.html">Artist Register</a>? That remains a private expression of interest; applying here is a separate step.</p></div>
 {form()}
-</div></section>"""
-    return f"""<section class="pa-sec pa-sec--deep" id="apply"><div class="pa-wrap">
-  <div class="pa-join-status"><p class="pa-eyebrow">Apply</p><h2 class="pa-apply-title">{LINE}</h2>
-  <p class="pa-lede" style="margin-top:16px">In the meantime, you're welcome to read our <a href="curatorial-policy.html">curatorial policy</a>, or to email <a href="mailto:hello@plotnua.ie">hello@plotnua.ie</a> with any questions.</p>
-  <p class="pa-muted">How we handle artist applications is explained in the <a href="../privacy.html#plotart-artist-applications">privacy notice</a>.</p></div>
 </div></section>"""
 
 
 def join_page():
-    acts = ('<a class="pa-btn pa-btn--solid" href="#apply" data-pa-track="join_apply_click">Apply now</a><a class="pa-btn pa-btn--ghost" href="#terms">Read the terms</a>' if OPEN
-            else '<a class="pa-btn pa-btn--solid" href="#terms">Read the terms</a><a class="pa-btn pa-btn--ghost" href="curatorial-policy.html">Our curatorial policy</a>')
-    return head("join.html", "Join PlotArt: Apply to a Curated Gallery of Irish Art | PlotArt",
-                "Apply to join PlotArt, an independently curated online gallery of contemporary Irish art. 15% commission only on sales to collectors PlotArt introduces. No upfront fees. No exclusivity.",
+    return head("join.html", "Join PlotArt | PlotArt",
+                "An invitation to join PlotArt, a curated online gallery of contemporary Irish art. Applications from artists based or working on the island of Ireland.",
                 JOIN_STYLE) + HEADER + f"""<main id="main">
 
-<section class="pa-fhero"><div class="pa-wrap">
-  <div>
-    <p class="pa-eyebrow">For artists</p>
-    <h1>Join PlotArt.</h1>
-    <p class="pa-lede" style="margin-top:26px">PlotArt is an independently curated gallery of contemporary Irish art. If you’re based or working on the island of Ireland and your work has a voice of its own, we’d love to see it.</p>
-    <p class="pa-select-note" style="margin-top:22px">{LINE} Every application is read individually, and applying doesn’t guarantee a place.</p>
-    <div class="pa-actions" style="margin-top:18px">{acts}</div>
-  </div>
-  <p class="big" aria-hidden="true">15%<small>only on sales to collectors PlotArt introduces · no upfront fees · no exclusivity</small></p>
+<section class="pa-jn-hero"><div class="pa-wrap">
+  <p class="pa-jn-k">For artists</p>
+  <h1>An invitation to join PlotArt.</h1>
+  <p class="pa-jn-lede">A curated space for contemporary Irish art. We welcome applications from artists based or working on the island of Ireland.</p>
+  <div class="pa-jn-acts"><a class="pa-jn-btn" href="#apply" data-pa-track="join_apply_click">Apply</a><a class="pa-jn-link" href="curatorial-policy.html">Curatorial policy</a></div>
+  <p class="pa-jn-status">{LINE}</p>
 </div></section>
 
-<section class="pa-sec"><div class="pa-wrap">
-  <div class="pa-sec-head"><div><p class="pa-eyebrow">What you receive</p><h2>A gallery of<br>your own.</h2></div>
-  <p>Our first artists joined through the Founding 25, our introductory programme, which has now closed. Founding Artists keep their own terms. Artists who join now become Gallery Artists, on the terms below, and each receives their own gallery.</p></div>
-  <ul class="pa-terms" style="list-style:none;margin:0">
-    <li><strong>Your own artist gallery.</strong> Your biography and a page for each work, with large images and true dimensions. Start with one artwork and add more whenever you wish.</li>
-    <li><strong>Collectors who come to you.</strong> Enquiries go straight to you, or to your gallery if you’re represented. You agree every sale yourself.</li>
-    <li><strong>Your own Studio.</strong> Add works, set your prices and mark work sold in PlotArt Studio, at your own pace.</li>
-    <li><strong>Your independence.</strong> No exclusivity: keep showing and selling your work wherever you like. You keep your copyright.</li>
-  </ul>
+<section class="pa-jn-sec"><div class="pa-wrap pa-jn-grid">
+  <p class="pa-jn-k">The gallery</p>
+  <div><h2>A gallery of your own.</h2>
+  <ul class="pa-jn-three">
+    <li><h3>Your work, shown properly</h3><p>A biography and a page for each work, shown whole and at its true proportions.</p></li>
+    <li><h3>Introductions to collectors</h3><p>Enquiries come to you, or to the gallery that represents you. Every sale is yours to agree.</p></li>
+    <li><h3>Your own Studio</h3><p>Add work, set prices and update availability at your own pace.</p></li>
+  </ul></div>
 </div></section>
 
-<section class="pa-sec pa-sec--deep" id="terms"><div class="pa-wrap pa-cols-2" style="align-items:start">
-  <div><p class="pa-eyebrow">The terms, plainly</p><h2 style="font-size:clamp(36px,3.8vw,56px)">15% commission, only when PlotArt introduces the collector.</h2>
-  <table class="pa-join-ex"><caption class="pa-eyebrow" style="text-align:left;caption-side:top;margin:0 0 6px">An example: a collector PlotArt introduced buys a work</caption>
-    <tbody><tr><th scope="row">Artwork sold for</th><td>€1,000</td></tr><tr class="is-you"><th scope="row">You receive</th><td>€850</td></tr><tr><th scope="row">PlotArt invoices you</th><td>€150</td></tr></tbody></table>
-  <p class="pa-note">The collector pays you directly. Shipping, insurance and handling are never part of the commission. A sale to a collector who found you on their own carries no commission at all.</p></div>
-  <ul class="pa-terms" style="list-style:none;margin:0">
-    <li><strong>No upfront fees.</strong> Nothing to apply, nothing to join, and no membership, subscription or listing fees.</li>
-    <li><strong>Your own sales stay yours.</strong> Collectors who find you independently, through your website, your studio, an exhibition or another gallery, carry no PlotArt commission.</li>
-    <li><strong>15% on sales PlotArt introduces.</strong> Commission applies when a collector PlotArt has introduced to you buys your original work. That includes collectors who tell you they found you through PlotArt.</li>
-    <li><strong>A clear two-year window.</strong> An introduction counts for 24 months. After that, a sale carries no commission unless it completes a conversation about a particular work that began within those 24 months.</li>
-    <li><strong>You’re paid directly.</strong> Collectors pay you, and PlotArt invoices its commission after the sale completes.</li>
-    <li><strong>New commissions are yours.</strong> A newly commissioned work is agreed directly between you and the collector, and isn’t covered by the commission.</li>
-    <li><strong>No exclusivity.</strong> Show and sell your work wherever you like, and keep working with other galleries.</li>
-    <li>The full terms are in the PlotArt Gallery Artist Agreement, which you read and accept in PlotArt Studio before your gallery is first published.</li>
-  </ul>
+<section class="pa-jn-sec"><div class="pa-wrap pa-jn-grid">
+  <p class="pa-jn-k">Selection</p>
+  <div><h2>How we select.</h2>
+  <p>Every application is read individually. We have no house style and welcome every medium and subject. Applying doesn’t guarantee a place. <a href="curatorial-policy.html">Read the curatorial policy</a>.</p>
+  <ul class="pa-jn-list">
+{CRIT_SHORT}
+  </ul></div>
 </div></section>
 
-<section class="pa-sec"><div class="pa-wrap">
-  <div class="pa-sec-head"><div><p class="pa-eyebrow">What we look for</p><h2>Curated,<br>not catalogued.</h2></div>
-  <p>We have no house style, and we welcome every medium and subject. Each application is considered against five criteria, with no scoring formula. <a href="curatorial-policy.html">Read our curatorial policy</a>.</p></div>
-  <ul class="pa-join-crit">
-{CRIT_HTML}
-  </ul>
+<section class="pa-jn-sec" id="how"><div class="pa-wrap pa-jn-grid">
+  <p class="pa-jn-k">Applying</p>
+  <div><h2>From application to gallery.</h2>
+  <ol class="pa-jn-steps">
+    <li><h3>Apply</h3><p>A short biography and three to five images of your work, or a link to your portfolio.</p></li>
+    <li><h3>Review</h3><p>We read every application and may ask to see a little more.</p></li>
+    <li><h3>Decision</h3><p>We let you know by email, whatever the outcome.</p></li>
+    <li><h3>Your gallery</h3><p>If you’re selected, you’re invited to PlotArt Studio, where you read and accept the Gallery Artist Agreement before your gallery is first published. Nothing goes live without your approval.</p></li>
+  </ol></div>
 </div></section>
 
-<section class="pa-sec" id="how"><div class="pa-wrap">
-  <div class="pa-sec-head"><div><p class="pa-eyebrow">How it works</p><h2>From application<br>to gallery.</h2></div><p>Applying, accepting the agreement and publishing your gallery are three separate steps, and nothing is published without your approval.</p></div>
-  <ol class="pa-steps">
-    <li><div><h3>You apply</h3><p>Tell us about yourself and share three to five images of your work, or a link to your portfolio.</p></div></li>
-    <li><div><h3>We review</h3><p>We confirm we’ve received your application, then read it individually against our criteria. We may ask to see a little more. Applying doesn’t guarantee a place.</p></div></li>
-    <li><div><h3>We tell you the outcome</h3><p>By email, courteously and clearly, whatever the decision.</p></div></li>
-    <li><div><h3>Your gallery opens</h3><p>If you’re selected, you receive an invitation to PlotArt Studio. Before you first submit your gallery, you read and accept the Gallery Artist Agreement there. Your gallery goes live once you’ve submitted it and we’ve reviewed it.</p></div></li>
-  </ol>
+<section class="pa-jn-sec" id="terms"><div class="pa-wrap pa-jn-grid">
+  <p class="pa-jn-k">Terms</p>
+  <div><h2 class="pa-jn-h-sm">The practical details</h2>
+  <dl class="pa-jn-terms">
+    <dt>Fees</dt><dd>There are no fees to apply, to join or to remain.</dd>
+    <dt>Commission</dt><dd>PlotArt’s commission is 15% of the price of a work sold to a collector PlotArt introduced to you, including a collector who tells you they found you through PlotArt. It doesn’t apply to your independent sales.</dd>
+    <dt>Introductions</dt><dd>An introduction counts for 24 months. After that, a sale carries commission only if it completes a conversation about a particular work that began within those 24 months.</dd>
+    <dt>Commissioned work</dt><dd>Newly commissioned work is agreed between you and the collector and isn’t subject to the commission.</dd>
+    <dt>Payment</dt><dd>Collectors pay you directly, and PlotArt invoices its commission once a sale is complete. The commission is calculated on the price of the work, excluding delivery, insurance and installation.</dd>
+    <dt>Independence</dt><dd>There is no exclusivity, and you keep your copyright.</dd>
+    <dt>Agreement</dt><dd>The full terms are in the PlotArt Gallery Artist Agreement, which you read and accept in PlotArt Studio before your gallery is first published. Founding Artists keep their own agreement; artists joining now become Gallery Artists.</dd>
+  </dl></div>
 </div></section>
 
 {apply_section()}
 </main>
-""" + FOOTER.replace('<script src="assets/plotart.js" defer></script>', ('<script src="assets/pa-apply.js" defer></script>\n' if OPEN else "") + '<script src="assets/plotart.js" defer></script>', 1)
+""" + FOOTER.replace('<script src="assets/plotart.js" defer></script>', '<script src="assets/pa-apply.js" defer></script>\n<script src="assets/plotart.js" defer></script>', 1)
 
 
 def policy_page():
-    return head("curatorial-policy.html", "Our Curatorial Policy | PlotArt",
-                "How PlotArt, an independently curated online gallery of contemporary Irish art, considers artist applications: five criteria, no house style, every application read individually.",
+    return head("curatorial-policy.html", "Curatorial Policy | PlotArt",
+                "How PlotArt, a curated online gallery of contemporary Irish art, considers applications from artists.",
                 POLICY_STYLE) + HEADER + f"""<main id="main">
 
-<section class="pa-fhero"><div class="pa-wrap" style="grid-template-columns:1fr">
-  <div class="pa-pol">
-    <p class="pa-eyebrow">Curatorial policy</p>
-    <h1>An independently curated gallery of contemporary Irish art.</h1>
-    <p class="pa-lede" style="margin-top:26px">PlotArt brings together emerging, mid-career and established artists based or working on the island of Ireland, whose work shows quality, originality and a considered approach to their practice.</p>
-  </div>
+<section class="pa-jn-hero"><div class="pa-wrap">
+  <p class="pa-jn-k">Curatorial policy</p>
+  <h1>An independently curated gallery of contemporary Irish art.</h1>
+  <p class="pa-jn-lede">PlotArt brings together emerging, mid-career and established artists based or working on the island of Ireland.</p>
 </div></section>
 
-<section class="pa-sec"><div class="pa-wrap"><div class="pa-pol">
-  <h2>No house style.</h2>
-  <p>We welcome work in every medium, from painting, drawing and printmaking to photography, sculpture, ceramics, textiles, mixed media, digital and interdisciplinary practice, and on any subject. We don’t favour a particular style, subject, medium or way of working. Instead, we look at the strength of each artist’s work and what it would bring to the gallery as a whole.</p>
-  <p>PlotArt is a growing gallery. Our aim is a collection that is diverse, coherent and rewarding to explore, introducing collectors to exceptional Irish artists and creating real opportunities for those artists to be seen and to sell their work. Our first artists joined through the Founding 25, our introductory programme; the gallery continues to grow through individual applications.</p>
-</div></div></section>
-
-<section class="pa-sec pa-sec--deep"><div class="pa-wrap">
-  <div class="pa-sec-head"><div><p class="pa-eyebrow">Selection criteria</p><h2>Five things<br>we look for.</h2></div>
-  <p>No single criterion decides an application, and there is no scoring formula. Selection is a matter of careful curatorial judgement across all five.</p></div>
-  <ul class="pa-join-crit">
-{CRIT_HTML}
-  </ul>
+<section class="pa-jn-sec"><div class="pa-wrap pa-jn-grid">
+  <p class="pa-jn-k">Approach</p>
+  <div><h2>No house style.</h2>
+  <p>We welcome every medium, from painting, drawing and printmaking to photography, sculpture, ceramics, textiles, digital and interdisciplinary practice, and every subject. We look at the strength of each artist’s work and what it would bring to the gallery as a whole.</p>
+  <p>Our first artists joined through the Founding 25, our introductory programme. The gallery continues to grow through individual applications.</p></div>
 </div></section>
 
-<section class="pa-sec"><div class="pa-wrap"><div class="pa-pol">
-  <h2>How applications are considered.</h2>
-  <ul>
-    <li><strong>Every application is read individually,</strong> with its images, statement and any links you provide.</li>
-    <li><strong>We may ask for more,</strong> such as further images, a more focused selection of work or a little more about your practice, before we decide.</li>
-    <li><strong>Submitting an application does not guarantee selection.</strong> We are building a considered collection, and each application is weighed on its own merits.</li>
-    <li><strong>Decisions reflect the gallery’s curatorial direction.</strong> A decision not to include an artist is not a judgement on the value of your practice or on you as an artist.</li>
-    <li><strong>We’ll always tell you the outcome,</strong> courteously and clearly.</li>
-    <li><strong>Applying costs nothing,</strong> and selection is never influenced by payment.</li>
+<section class="pa-jn-sec"><div class="pa-wrap pa-jn-grid">
+  <p class="pa-jn-k">Criteria</p>
+  <div><h2>Five considerations.</h2>
+  <p>No single criterion decides an application, and there is no scoring formula. Selection is a matter of curatorial judgement across all five.</p>
+  <ul class="pa-jn-list">
+{CRIT_FULL}
+  </ul></div>
+</div></section>
+
+<section class="pa-jn-sec"><div class="pa-wrap pa-jn-grid">
+  <p class="pa-jn-k">Process</p>
+  <div><h2>How applications are considered.</h2>
+  <ul class="pa-jn-list">
+    <li><h3>Individually</h3><p>Every application is read with its images, statement and any links you provide.</p></li>
+    <li><h3>With care</h3><p>We may ask for further images or a little more about your practice before we decide.</p></li>
+    <li><h3>Without guarantee</h3><p>Submitting an application doesn’t guarantee selection. Decisions reflect the direction of the collection, not a judgement on the value of your practice.</p></li>
+    <li><h3>Always answered</h3><p>We’ll tell you the outcome, whatever it is.</p></li>
+    <li><h3>Without cost</h3><p>Applying costs nothing, and selection is never influenced by payment.</p></li>
+  </ul></div>
+</div></section>
+
+<section class="pa-jn-sec"><div class="pa-wrap pa-jn-grid">
+  <p class="pa-jn-k">Also</p>
+  <div><ul class="pa-jn-list" style="margin-top:0">
+    <li><h3>Artificial intelligence</h3><p>We welcome original digital work and AI-assisted practice. Artists tell us about any meaningful use of AI in making a work. Images generated entirely from prompts are not automatically eligible as original artist-created work.</p></li>
+    <li><h3>How the gallery is arranged</h3><p>We set the order of galleries in the Artists’ Gallery by hand, for curatorial reasons. It is never influenced by any fee, payment or commission arrangement.</p></li>
+    <li><h3>Independence</h3><p>You keep your copyright, and there is no exclusivity: you remain free to show and sell your work elsewhere and to work with other galleries.</p></li>
   </ul>
-  <h2 style="margin-top:34px">Artificial intelligence.</h2>
-  <p>We welcome original digital work and AI-assisted practice. Artists tell us about any meaningful use of AI in making a work. Images generated entirely from prompts are not automatically eligible as original artist-created work.</p>
-  <h2 style="margin-top:34px">How the gallery is arranged.</h2>
-  <p>We set the order of galleries in the Artists’ Gallery by hand, for curatorial reasons. It is never influenced by any fee, payment or commission arrangement.</p>
-  <h2 style="margin-top:34px">Our commitment to artists.</h2>
-  <p>PlotArt respects your independence, your creative ownership and your existing professional relationships. You keep your copyright. There is no exclusivity: you remain free to show and sell your work elsewhere, and to work with other galleries. We aim to present your work properly, introduce it to new audiences, and treat every artist, and every application, with the same care and respect.</p>
-  <div class="pa-actions" style="margin-top:28px"><a class="pa-btn pa-btn--solid" href="join.html" data-pa-track="policy_join_click">Join PlotArt</a></div>
-  <p class="pa-note" style="margin-top:22px">Questions about applying? Email <a href="mailto:hello@plotnua.ie">hello@plotnua.ie</a>.</p>
-</div></div></section>
+  <div class="pa-jn-acts"><a class="pa-jn-btn" href="join.html" data-pa-track="policy_join_click">Apply to join</a><a class="pa-jn-link" href="mailto:hello@plotnua.ie">hello@plotnua.ie</a></div></div>
+</div></section>
 </main>
 """ + FOOTER
 
@@ -329,15 +301,14 @@ HB, HE = "<!-- pa-artist-apply:begin -->", "<!-- pa-artist-apply:end -->"
 
 
 def home_band():
-    cta = ('<a class="pa-btn pa-btn--solid" href="join.html#apply" data-pa-track="home_join_apply">Apply to PlotArt</a>' if OPEN
-           else '<a class="pa-btn pa-btn--solid" href="join.html" data-pa-track="home_join">Join PlotArt</a>')
+    # Built only in the "open" state. An invitation, not an advertisement: no figures, no terms, no selling points.
     return f"""{HB}
-<section class="pa-sec pa-invite-sec" aria-labelledby="joinInviteH"><div class="pa-wrap">
-  <div class="pa-f25 pa-f25--invite">
-    <span class="num" aria-hidden="true">15%</span>
-    <span><span class="pa-invite-k"><span class="pa-eyebrow">For artists</span><span class="pa-open-badge{'' if OPEN else ' pa-open-badge--off'}">{BADGE}</span></span><h2 id="joinInviteH">Your art deserves to be discovered.</h2><p>Apply to join PlotArt’s curated Artists’ Gallery. 15% commission only on sales to collectors PlotArt introduces; your own sales stay yours. No upfront fees. No exclusivity.</p></span>
-    <span class="pa-invite-cta">{cta}<a class="pa-btn pa-btn--ghost" href="curatorial-policy.html" data-pa-track="home_curatorial_policy">Our curatorial policy</a></span>
-  </div>
+<section class="pa-jn-band" aria-labelledby="joinInviteH"><div class="pa-wrap pa-jn-grid">
+  <p class="pa-jn-k">For artists</p>
+  <div><h2 id="joinInviteH">An invitation to join PlotArt.</h2>
+  <p class="pa-jn-lede">A curated space for contemporary Irish art. Independent artists, distinctive work and new connections with collectors.</p>
+  <div class="pa-jn-acts"><a class="pa-jn-btn" href="join.html" data-pa-track="home_join">Apply to join</a><a class="pa-jn-link" href="gallery/" data-pa-track="home_join_gallery">Explore the gallery</a></div>
+  <p class="pa-jn-status"><span class="pa-open-badge">{BADGE}</span></p></div>
 </div></section>
 {HE}"""
 
@@ -353,7 +324,16 @@ POINTER = '<p class="pa-muted">PlotArt now welcomes applications to the Artists�
 CLOSED_F25_BAND = '<section class="pa-sec pa-invite-sec" aria-labelledby="f25InviteH"><div class="pa-wrap">\n  <div class="pa-f25 pa-f25--invite">\n    <span class="num" aria-hidden="true">25</span>\n    <span><span class="pa-invite-k"><span class="pa-eyebrow">The PlotArt Founding 25</span><span class="pa-open-badge pa-open-badge--off">Applications have closed.</span></span><h2 id="f25InviteH">25 artists. 25 galleries.<br>100% free for the first year.</h2><p>Your art. Your sales. Your earnings. No membership, subscription or listing fees, ever, and keep 100% of your artwork sales — no PlotArt commission on enquiries from your founding year, even if the sale completes later.</p></span>\n    <span class="pa-invite-cta"><a class="pa-btn pa-btn--ghost" href="founding-25.html" data-pa-track="home_f25">About the Founding 25 <span aria-hidden="true">→</span></a></span>\n  </div>\n</div></section>'
 
 
+CSS_LINK = '<link rel="stylesheet" href="assets/plotart.css">'
+JOIN_CSS_LINK = '\n<link rel="stylesheet" href="assets/plotart-join.css">'
+
+
 def homepage(s):
+    s = s.replace(CSS_LINK + JOIN_CSS_LINK, CSS_LINK)
+    if OPEN:
+        if s.count(CSS_LINK) != 1:
+            raise SystemExit("homepage: plotart.css link not found exactly once")
+        s = s.replace(CSS_LINK, CSS_LINK + JOIN_CSS_LINK)
     if HB in s:
         a, b = s.index(HB), s.index(HE) + len(HE)
         return s[:a] + (home_band() if OPEN else CLOSED_F25_BAND) + s[b:]
@@ -388,15 +368,18 @@ def outputs():
 
 PAGES_ONLY_OPEN = ("join.html", "curatorial-policy.html")
 SRC_JS = os.path.join(ROOT, "atlas-tools", "release", "plotart-apply.js")
+SRC_CSS = os.path.join(ROOT, "atlas-tools", "release", "plotart-join.css")
 if __name__ == "__main__":
     out = outputs()
     js_path = os.path.join(PA, "assets", "pa-apply.js")
     if "--check" in sys.argv:
         bad = [n for n, t in out.items() if not os.path.exists(os.path.join(PA, n)) or open(os.path.join(PA, n), encoding="utf-8").read() != t]
         bad += [n for n in PAGES_ONLY_OPEN if not OPEN and os.path.exists(os.path.join(PA, n))]
-        js_ok = os.path.exists(js_path) == OPEN and (not OPEN or open(js_path, encoding="utf-8").read() == open(SRC_JS, encoding="utf-8").read())
+        css_path = os.path.join(PA, "assets", "plotart-join.css")
+        js_ok = all(os.path.exists(pp) == OPEN and (not OPEN or open(pp, encoding="utf-8").read() == open(src, encoding="utf-8").read())
+                    for pp, src in ((js_path, SRC_JS), (css_path, SRC_CSS)))
         if bad or not js_ok:
-            sys.exit("JOIN PLOTART · STALE (%s): rebuild with atlas-tools/build-plotart-join.py" % ", ".join(bad + ([] if js_ok else ["assets/pa-apply.js"])))
+            sys.exit("JOIN PLOTART · STALE (%s): rebuild with atlas-tools/build-plotart-join.py" % ", ".join(bad + ([] if js_ok else ["assets/pa-apply.js or assets/plotart-join.css"])))
         print("JOIN PLOTART · OK — pages match the %s build" % STATE)
         sys.exit(0)
     for n, t in out.items():
@@ -404,8 +387,9 @@ if __name__ == "__main__":
     for n in PAGES_ONLY_OPEN:
         if not OPEN and os.path.exists(os.path.join(PA, n)):
             os.remove(os.path.join(PA, n))
-    if OPEN:
-        open(js_path, "w", encoding="utf-8").write(open(SRC_JS, encoding="utf-8").read())
-    elif os.path.exists(js_path):
-        os.remove(js_path)
+    for pp, src in ((js_path, SRC_JS), (os.path.join(PA, "assets", "plotart-join.css"), SRC_CSS)):
+        if OPEN:
+            open(pp, "w", encoding="utf-8").write(open(src, encoding="utf-8").read())
+        elif os.path.exists(pp):
+            os.remove(pp)
     print("JOIN PLOTART · built for %s" % STATE)
