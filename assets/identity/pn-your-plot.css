@@ -683,8 +683,10 @@ html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .my-plot-access-count
 html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .my-plot-access-chevron{ color:var(--pj-terra-text) !important; }
 html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) .pn-plotpill{ background:var(--pj-card) !important; color:var(--pj-ivory) !important; box-shadow:0 0 0 1px rgba(194,189,181,.14) !important; }
 
-/* full-screen overlays sit on the page ground, not on a card */
-html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) :is(.screen.is-overlay, #screen-match-results){ background:rgba(27,28,30,.985); }
+/* solid full-screen overlays sit on the page ground, not on a card. The
+   map-backed overlays (reveal, plot topic, questionnaire, home journey) stay
+   transparent so the Cesium property view shows through, as before 5C. */
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) :is(#screen-atlas-search, #screen-match-results, #screen-product-detail){ background:rgba(27,28,30,.985); }
 
 /* primary actions: the ivory pill with anthracite text (several rules set their
    text colour separately from their ground, so it is stated once here) */
