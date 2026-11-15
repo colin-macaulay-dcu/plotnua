@@ -13135,8 +13135,14 @@ html.pn-myplot-view:not(.pn-myplot-open) body::after{content:"Opening My Plot\20
     if (!opts || !opts.parentNode || !optsHead) return false;
     const parent = opts.parentNode;
     if (optsHead.parentNode !== parent) return false;
-    const ref = after ? opts.nextSibling : optsHead;
-    ['matchAlternativesHeading', 'altRailNote', 'altRailWrap']
+    /* IDEMPOTENT IN BOTH DIRECTIONS (15 Nov 2026). On a repeat `after` call
+       opts.nextSibling is the rail heading itself, and inserting the note and
+       the rail before it reversed the order (note, rail, heading). The
+       reference now skips the three nodes being moved. */
+    const PN_RAIL = ['matchAlternativesHeading', 'altRailNote', 'altRailWrap'];
+    let ref = after ? opts.nextSibling : optsHead;
+    while (after && ref && PN_RAIL.indexOf(ref.id) !== -1) ref = ref.nextSibling;
+    PN_RAIL
       .forEach(function (id) {
         const n = document.getElementById(id);
         if (n && n.parentNode === parent) parent.insertBefore(n, ref);

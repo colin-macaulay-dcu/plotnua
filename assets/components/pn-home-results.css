@@ -100,11 +100,11 @@ html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-match-results
 }
 html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-match-results[data-pn-home-results] #matchPrimary .pn-hm-key-v{
   margin:0; font-family:var(--hm-serif); font-weight:400;
-  font-size:clamp(36px, 3.4vw, 48px); line-height:1; color:var(--hm-ivory);
-  font-variant-numeric:lining-nums;
+  font-size:clamp(32px, 2.6vw, 42px); line-height:1; color:var(--hm-ivory);
+  font-variant-numeric:lining-nums; white-space:nowrap;
 }
 html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-match-results[data-pn-home-results] #matchPrimary .pn-hm-key.is-text .pn-hm-key-v{
-  font-size:clamp(21px, 1.8vw, 25px); line-height:1.15; text-wrap:balance;
+  font-size:clamp(20px, 1.6vw, 24px); line-height:1.15; text-wrap:balance; white-space:normal;
 }
 html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-match-results[data-pn-home-results] #matchPrimary .pn-hm-key-s{
   margin:10px 0 0; font-family:var(--hm-sans); font-size:13px; line-height:1.45;
