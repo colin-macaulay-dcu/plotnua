@@ -323,3 +323,33 @@ html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-product-detai
 html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-product-detail[data-pn-home-detail] a.pd-home-site{
   display:inline-flex; align-items:center; justify-content:center; text-decoration:none;
 }
+
+/* OPTION DETAIL — "Explore it further" and "What still needs checking"
+   (15 Nov 2026). Garden Home only.
+   1. Both sections take the same 24px inset as the content above them, so
+      their text no longer sits on the card edge. Padding, not margin, keeps
+      each section's hairline running the full width of the card.
+   2. The maker CTA is the only primary action, on its own line. The two
+      navigation links sit together on the line below with clear space
+      between them and the CTA, and a taller tap area that changes nothing
+      visually. Typography, colours, order and behaviour are unchanged. */
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-product-detail[data-pn-home-detail] :is(.pd-next, .pd-checks){
+  padding-left:24px; padding-right:24px;
+}
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-product-detail[data-pn-home-detail] a.pd-home-site{
+  display:flex; width:fit-content; max-width:100%; margin:4px 0 0;
+}
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-product-detail[data-pn-home-detail] .pd-next-back{
+  margin-top:10px; padding:8px 0; line-height:1.4;
+}
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-product-detail[data-pn-home-detail] .pd-next-plot{
+  margin-left:28px;
+}
+@media (max-width:719px){
+  html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-product-detail[data-pn-home-detail] a.pd-home-site{
+    width:100%;
+  }
+  html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-product-detail[data-pn-home-detail] .pd-next-back{
+    margin-top:14px;
+  }
+}
