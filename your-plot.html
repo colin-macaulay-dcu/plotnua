@@ -13241,12 +13241,13 @@ html.pn-myplot-view:not(.pn-myplot-open) body::after{content:"Opening My Plot\20
         const media = card.querySelector('.results-gallery-media');
         const nm = card.querySelector('.results-gallery-name');
         if (!media || !nm || !media.querySelector('img.pn-image-fallback')) return;
-        if (media.hasAttribute('data-pn-area')) return;
+        if (media.querySelector('.pn-hm-plate')) return;
         const p = byName[nm.textContent.trim()];
         if (!p) return;
         if (p.organisation) media.setAttribute('data-pn-org', p.organisation);
         if (typeof p.floorAreaM2 === 'number')
           media.setAttribute('data-pn-area', String(p.floorAreaM2).replace(/\.0+$/, '') + ' m²');
+        if (p.additionalHome) media.appendChild(pnHomePlate(p));
       });
     };
     label();
@@ -31334,6 +31335,60 @@ html.pn-myplot-view:not(.pn-myplot-open) body::after{content:"Opening My Plot\20
     HEATING: 'Heating'
   };
   const PN_PD_DEFAULT = { label: null, more: null };
+
+  /* GARDEN HOME SPECIFICATION PLATE (15 Nov 2026). Where no photograph is
+     authorised, the image area shows what Atlas has verified about the
+     building instead of an empty frame: its published floor area, where
+     that area sits on the 32–45 m² pathway this page assesses against, and
+     the living facilities the maker states. Every value is read from the
+     governed record; nothing is estimated, and the plate still says in
+     words that it is not a photograph. It depicts no building. */
+  const PN_HM_PATHWAY = { min: 32, max: 45 };
+  const PN_HM_FACILITY = [
+    ['SLEEPING_ACCOMMODATION', 'Sleeping'], ['BATHROOM', 'Bathroom'],
+    ['KITCHEN', 'Kitchen'], ['HEATING', 'Heating']
+  ];
+  function pnHomePlate(product){
+    const rec = (product && product.additionalHome) || {};
+    const area = rec.area || {};
+    const n = (product && typeof product.floorAreaM2 === 'number' && isFinite(product.floorAreaM2)) ? product.floorAreaM2 : null;
+    const el = function (tag, cls, txt) { const e = document.createElement(tag); e.className = cls; if (txt != null) e.textContent = txt; return e; };
+    const plate = el('div', 'pn-hm-plate');
+    if (n != null) {
+      const fmt = String(n).replace(/\.0+$/, '');
+      plate.appendChild(el('p', 'pn-hm-plate-k',
+        area.measurementBasis === 'VERIFIED_INTERNAL' ? 'Internal floor area' : 'Floor area, as published'));
+      const a = el('p', 'pn-hm-plate-area', fmt);
+      a.appendChild(el('span', 'pn-hm-plate-unit', 'm²'));
+      plate.appendChild(a);
+      if (n >= PN_HM_PATHWAY.min && n <= PN_HM_PATHWAY.max) {
+        const sc = el('div', 'pn-hm-plate-scale');
+        sc.setAttribute('role', 'img');
+        sc.setAttribute('aria-label', fmt + ' m² on the ' + PN_HM_PATHWAY.min + '–' + PN_HM_PATHWAY.max + ' m² pathway');
+        const track = el('span', 'pn-hm-plate-track');
+        const mark = el('span', 'pn-hm-plate-mark');
+        mark.style.left = (100 * (n - PN_HM_PATHWAY.min) / (PN_HM_PATHWAY.max - PN_HM_PATHWAY.min)).toFixed(1) + '%';
+        track.appendChild(mark);
+        sc.appendChild(track);
+        const ends = el('span', 'pn-hm-plate-ends');
+        ends.appendChild(el('span', '', PN_HM_PATHWAY.min + ' m²'));
+        ends.appendChild(el('span', '', 'The ' + PN_HM_PATHWAY.min + '–' + PN_HM_PATHWAY.max + ' m² pathway'));
+        ends.appendChild(el('span', '', PN_HM_PATHWAY.max + ' m²'));
+        sc.appendChild(ends);
+        plate.appendChild(sc);
+      }
+    }
+    const signals = (rec.habitation && rec.habitation.signals) || [];
+    const fac = PN_HM_FACILITY.filter(function (f) { return signals.indexOf(f[0]) !== -1; });
+    if (fac.length) {
+      const ul = el('ul', 'pn-hm-plate-fac');
+      ul.setAttribute('aria-label', 'Facilities the maker states');
+      fac.forEach(function (f) { ul.appendChild(el('li', '', f[1])); });
+      plate.appendChild(ul);
+    }
+    plate.appendChild(el('p', 'pn-hm-plate-note', 'Photograph not yet authorised for PlotNua'));
+    return plate;
+  }
   function pnHomeDetailReset(){
     const scr = els.productDetailScreen;
     if (!scr || !scr.hasAttribute('data-pn-home-detail')) return;
@@ -31343,7 +31398,11 @@ html.pn-myplot-view:not(.pn-myplot-open) body::after{content:"Opening My Plot\20
     const sum = els.pdMore && els.pdMore.querySelector('summary');
     if (sum && PN_PD_DEFAULT.more != null) sum.textContent = PN_PD_DEFAULT.more;
     const wrap = els.pdImage && els.pdImage.parentNode;
-    if (wrap) { wrap.removeAttribute('data-pn-area'); wrap.removeAttribute('data-pn-org'); }
+    if (wrap) {
+      wrap.removeAttribute('data-pn-area'); wrap.removeAttribute('data-pn-org');
+      const plate = wrap.querySelector('.pn-hm-plate');
+      if (plate) plate.remove();
+    }
   }
   /* The maker's page, only when Atlas recorded it as this product's evidence. */
   function pnHomeVerifiedPage(product){
@@ -31393,6 +31452,8 @@ html.pn-myplot-view:not(.pn-myplot-open) body::after{content:"Opening My Plot\20
     if (wrap) {
       const oldCredit = wrap.querySelector('.pn-image-credit');
       if (oldCredit) oldCredit.remove();
+      const oldPlate = wrap.querySelector('.pn-hm-plate');
+      if (oldPlate) oldPlate.remove();
       wrap.removeAttribute('data-pn-area'); wrap.removeAttribute('data-pn-org');
     }
     const pdImg = pnAuthorisedImage(product);
@@ -31409,6 +31470,7 @@ html.pn-myplot-view:not(.pn-myplot-open) body::after{content:"Opening My Plot\20
       if (wrap && hasValidArea(product.floorAreaM2))
         wrap.setAttribute('data-pn-area', String(product.floorAreaM2).replace(/\.0+$/, '') + ' m²');
       if (wrap && product.organisation) wrap.setAttribute('data-pn-org', product.organisation);
+      if (wrap) wrap.appendChild(pnHomePlate(product));
     }
 
     els.pdRole.textContent = 'An option for an additional home';
@@ -32674,11 +32736,17 @@ html.pn-myplot-view:not(.pn-myplot-open) body::after{content:"Opening My Plot\20
       } else {
         // No approved image yet — a legible branded mark rather than a tiny
         // placeholder icon, so the card still reads as a real product card.
-        const fb = document.createElement('div');
-        fb.className = 'myplot-card-fallback';
-        fb.setAttribute('aria-hidden', 'true');
-        fb.innerHTML = plotIcon(true);
-        media.appendChild(fb);
+        if (product && product.additionalHome) {
+          // A saved Garden Home shows the same specification plate as Results.
+          media.classList.add('has-pn-hm-plate');
+          media.appendChild(pnHomePlate(product));
+        } else {
+          const fb = document.createElement('div');
+          fb.className = 'myplot-card-fallback';
+          fb.setAttribute('aria-hidden', 'true');
+          fb.innerHTML = plotIcon(true);
+          media.appendChild(fb);
+        }
       }
       card.appendChild(media);
 
