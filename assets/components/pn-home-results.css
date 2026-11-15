@@ -587,7 +587,7 @@ html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-product-detai
   html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-match-results[data-pn-home-results] #altResults .results-gallery-card:has(.pn-hm-plate) .results-gallery-name{
     min-height:2.16em;
   }
-  html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-match-results[data-pn-home-results] #altResults .results-gallery-card:has(.pn-hm-plate) .pn-hm-plate{ min-height:196px; }
+  html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-match-results[data-pn-home-results] #altResults .results-gallery-card:has(.pn-hm-plate) .pn-hm-plate{ min-height:216px; }
 }
 /* Phones: a clear break between buildings, and a lighter rhythm. */
 @media (max-width:640px){
