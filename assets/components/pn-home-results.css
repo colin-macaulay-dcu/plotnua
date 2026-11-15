@@ -244,6 +244,7 @@ html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-match-results
 
 /* ---- tablet ------------------------------------------------------------- */
 @media (max-width:1080px){
+  html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-match-results[data-pn-home-results] #matchPrimary .pn-hm-possibility{ font-size:clamp(46px, 7vw, 64px); max-width:14ch; }
   html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-match-results[data-pn-home-results] #matchPrimary .results-hero-inner.pn-hm-hero{ padding:48px 40px 44px; }
   html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-match-results[data-pn-home-results] #matchPrimary .pn-hm-keys{ grid-template-columns:repeat(2, minmax(0, 1fr)); }
   html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-match-results[data-pn-home-results] #matchPrimary .pn-hm-key:nth-child(3){ padding-left:0; border-left:0; }
