@@ -2562,16 +2562,22 @@ html.pn-myplot-view:not(.pn-myplot-open) body::after{content:"Opening My Plot\20
   /* MY PLOT PILL — tucked while the homeowner scrolls down (see
      pnFixedNavHeadroom); no taps reach it while it is away. */
   .my-plot-access-wrap{ transition:transform .28s cubic-bezier(.2,.8,.2,1), opacity .2s ease; }
-  .my-plot-access-wrap.is-tucked{ transform:translateY(calc(-100% - 28px)); opacity:0; pointer-events:none; }
-  .my-plot-access-wrap.is-tucked:focus-within{ transform:none; opacity:1; pointer-events:auto; }
+  .my-plot-access-wrap.is-tucked,
+  .my-plot-access-wrap.is-blocked{ transform:translateY(calc(-100% - 28px)); opacity:0; pointer-events:none; }
+  .my-plot-access-wrap.is-tucked:focus-within,
+  .my-plot-access-wrap.is-blocked:focus-within{ transform:none; opacity:1; pointer-events:auto; }
   /* FIXED NAVIGATION — the PlotNua mark and "Back to your answers" tuck with
      the pill (see pnFixedNavHeadroom). Same look; only position and opacity
      move, and focus always brings a control back. */
   html.pn-nav-ready .brand-mark.in{ transition:opacity .2s ease, transform .28s cubic-bezier(.2,.8,.2,1), box-shadow .4s ease; }
-  html.pn-nav-tucked .brand-mark.in{ transform:translateY(calc(-100% - 24px)); opacity:0; pointer-events:none; }
-  html.pn-nav-tucked .pn-return{ transform:translateY(calc(100% + 24px)); opacity:0; pointer-events:none; }
+  html.pn-nav-tucked .brand-mark.in,
+  html.pn-mark-blocked .brand-mark.in{ transform:translateY(calc(-100% - 24px)); opacity:0; pointer-events:none; }
+  html.pn-nav-tucked .pn-return,
+  html.pn-return-blocked .pn-return{ transform:translateY(calc(100% + 24px)); opacity:0; pointer-events:none; }
   html.pn-nav-tucked .brand-mark.in:focus-visible,
-  html.pn-nav-tucked .pn-return:focus-visible{ transform:none; opacity:1; pointer-events:auto; }
+  html.pn-nav-tucked .pn-return:focus-visible,
+  html.pn-mark-blocked .brand-mark.in:focus-visible,
+  html.pn-return-blocked .pn-return:focus-visible{ transform:none; opacity:1; pointer-events:auto; }
   .pn-return{ transition:border-color .18s ease, box-shadow .18s ease, color .18s ease, transform .28s cubic-bezier(.2,.8,.2,1), opacity .2s ease; }
   @media (prefers-reduced-motion:reduce){
     .pn-return, .brand-mark{ transition:opacity .01s linear !important; }
@@ -32538,8 +32544,14 @@ html.pn-myplot-view:not(.pn-myplot-open) body::after{content:"Opening My Plot\20
      :focus-visible / :focus-within). Wider screens, where all three sit
      outside the column, are unchanged. Each control's markup, label,
      handler and own show/hide rules are untouched.
+     Even at the top or end of a screen, a control that would land on a
+     link, button, field or line of text stays away (checked each time the
+     controls return and as the page settles); "Back to your answers" is
+     still always reachable from the keyboard, and each results screen has
+     its own in-page way back.
      State: html.pn-nav-tucked (all three) and, for the pill as before,
-     .my-plot-access-wrap.is-tucked. */
+     .my-plot-access-wrap.is-tucked; per control when blocked:
+     html.pn-mark-blocked, html.pn-return-blocked, .my-plot-access-wrap.is-blocked. */
   (function pnFixedNavHeadroom(){
     const wrap = els.myPlotAccessWrap;
     const root = document.documentElement;
@@ -32553,6 +32565,66 @@ html.pn-myplot-view:not(.pn-myplot-open) body::after{content:"Opening My Plot\20
     const engaged = function () {
       return navEls().some(function (n) { return n.matches(':hover') || n.contains(document.activeElement); });
     };
+    /* Would this control, in its resting place, sit over something the
+       homeowner reads or presses? Samples a 5 x 3 grid across the control's
+       untransformed box and asks what lies beneath (the three controls
+       themselves, hidden screens and the consent widget are looked through).
+       A hit is a link, button or field, or a run of text under the point. */
+    const isNav = function (e) { return navEls().some(function (n) { return n.contains(e); }); };
+    const over = function (x, y) {
+      const stack = document.elementsFromPoint(x, y);
+      for (let k = 0; k < stack.length; k++) {
+        const e = stack[k];
+        if (e === root || e === document.body) return null;
+        if (isNav(e) || /^CybotCookiebot/.test(e.id || '') || e.closest('.screen.is-hidden')) continue;
+        if (getComputedStyle(e).visibility === 'hidden') continue;
+        return e;
+      }
+      return null;
+    };
+    const textUnder = function (e, x, y) {
+      for (let k = 0; k < e.childNodes.length; k++) {
+        const n = e.childNodes[k];
+        if (n.nodeType !== 3 || !n.textContent.trim()) continue;
+        const r = document.createRange();
+        r.selectNodeContents(n);
+        const rects = r.getClientRects();
+        for (let q = 0; q < rects.length; q++) {
+          const b = rects[q];
+          if (x >= b.left && x <= b.right && y >= b.top && y <= b.bottom) return true;
+        }
+      }
+      return false;
+    };
+    const blocks = function (el) {
+      if (!el || !el.offsetWidth || !el.offsetHeight) return false;
+      const L = el.offsetLeft, T = el.offsetTop, W = el.offsetWidth, H = el.offsetHeight;
+      for (let i = 0; i < 5; i++) {
+        for (let j = 0; j < 3; j++) {
+          const x = L + 4 + (W - 8) * i / 4, y = T + 4 + (H - 8) * j / 2;
+          const e = over(x, y);
+          if (!e) continue;
+          if (e.closest('a,button,input,select,textarea,label,[role="button"]')) return true;
+          if (textUnder(e, x, y)) return true;
+        }
+      }
+      return false;
+    };
+    let lastCheck = 0, checkTimer = null;
+    const checkClear = function (force) {
+      const now = Date.now();
+      if (!force && now - lastCheck < 120) {
+        clearTimeout(checkTimer);
+        checkTimer = setTimeout(function () { checkClear(true); }, 140);
+        return;
+      }
+      lastCheck = now;
+      const on = narrow.matches;
+      root.classList.toggle('pn-mark-blocked', on && blocks(document.querySelector('.brand-mark')));
+      root.classList.toggle('pn-return-blocked', on && blocks(document.getElementById('pnReturn')));
+      if (wrap) wrap.classList.toggle('is-blocked', on && blocks(wrap));
+      if (on) root.classList.add('pn-nav-ready');
+    };
     const tuck = function () {
       clearTimeout(idle);
       root.classList.add('pn-nav-tucked', 'pn-nav-ready');
@@ -32560,6 +32632,7 @@ html.pn-myplot-view:not(.pn-myplot-open) body::after{content:"Opening My Plot\20
     };
     const show = function () {
       clearTimeout(idle);
+      checkClear(root.classList.contains('pn-nav-tucked'));
       root.classList.remove('pn-nav-tucked');
       if (wrap) wrap.classList.remove('is-tucked');
     };
@@ -32605,6 +32678,7 @@ html.pn-myplot-view:not(.pn-myplot-open) body::after{content:"Opening My Plot\20
       if (navEls().some(function (n) { return n.contains(e.target); })) show();
     });
     if (narrow.addEventListener) narrow.addEventListener('change', show);
+    window.addEventListener('resize', function () { checkClear(false); }, { passive: true });
   })();
 
   // PATCH Q — SCREEN 2 FINAL POLISH: repointed from els.localityLabel's
