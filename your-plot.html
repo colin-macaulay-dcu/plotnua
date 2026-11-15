@@ -706,6 +706,11 @@ html.pn-myplot-view:not(.pn-myplot-open) body::after{content:"Opening My Plot\20
     .pn-return{ left:14px; bottom:14px; padding:10px 15px 10px 12px; font-size:13.5px; }
   }
   @media (prefers-reduced-motion:reduce){ .pn-return{ transition:none; } }
+  /* COOKIEBOT ICON (15 Nov 2026). Cookiebot places its settings icon
+     bottom-left, where Your Plot's fixed "Back to your answers" control
+     and the map's required Cesium/Google credits sit. On this page only,
+     it moves to the bottom-right corner. Same size, behaviour and panel. */
+  html[data-pn-skin="your-plot"] #CookiebotWidget:not(.CookiebotWidget-inactive){ left:auto; right:10px; }
 
   .pn-page-title{
     position:absolute; width:1px; height:1px; margin:-1px; padding:0;
