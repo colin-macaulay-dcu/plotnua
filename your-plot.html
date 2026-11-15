@@ -39008,8 +39008,8 @@ html.pn-myplot-view:not(.pn-myplot-open) body::after{content:"Opening My Plot\20
       });
     });
   }
-  // The floor: whenever the tiles finish loading, the camera must be above
-  // the photographic surface beneath it. It only ever acts in the state
+  // The floor: the camera must be above the photographic surface beneath
+  // it. It only ever acts in the state
   // that renders as the black grid, so it never moves a correct view.
   function pnKeepCameraAboveSurface(){
     if (!viewer || !tileset || !viewer.scene.sampleHeightSupported) return;
@@ -39024,6 +39024,9 @@ html.pn-myplot-view:not(.pn-myplot-open) body::after{content:"Opening My Plot\20
         if (pnPlausibleHeight(ground) && c.height < ground + 2) pnLiftCamera(ground + 40 - c.height, 0.8);
       } catch (e) { /* the floor is a safeguard; it never interrupts the journey */ }
     }
+    // Checked whenever the camera comes to rest (after every flight, and
+    // after the homeowner zooms or drags) and whenever tiles finish loading.
+    viewer.camera.moveEnd.addEventListener(check);
     tileset.allTilesLoaded.addEventListener(function () { pnWhenCameraSettled(check); });
   }
 
