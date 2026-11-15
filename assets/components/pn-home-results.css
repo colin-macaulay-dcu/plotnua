@@ -238,6 +238,9 @@ html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-match-results
 html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-match-results[data-pn-home-results] #altResults .results-gallery-body .match-card-actions{
   order:6; margin-top:auto; display:flex; flex-wrap:wrap; gap:10px; align-items:center;
 }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-match-results[data-pn-home-results] #altResults .results-gallery-body .match-card-open-myplot-link{
+  order:7; align-self:flex-start; margin:12px 0 0;
+}
 
 /* ---- tablet ------------------------------------------------------------- */
 @media (max-width:1080px){
