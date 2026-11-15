@@ -32687,6 +32687,14 @@ html.pn-myplot-view:not(.pn-myplot-open) body::after{content:"Opening My Plot\20
       }).observe(document.getElementById('pn-main') || document.body,
                  { subtree: true, childList: true, attributes: true, attributeFilter: ['class', 'hidden'] });
     }
+    /* cards that ease into place as they arrive: look again once they land */
+    ['transitionend', 'animationend'].forEach(function (type) {
+      document.addEventListener(type, function (e) {
+        if (!narrow.matches || root.classList.contains('pn-nav-tucked')) return;
+        if (e.target && e.target.nodeType === 1 && isNav(e.target)) return;
+        checkClear(false);
+      }, true);
+    });
   })();
 
   // PATCH Q — SCREEN 2 FINAL POLISH: repointed from els.localityLabel's
