@@ -32518,7 +32518,7 @@ html.pn-myplot-view:not(.pn-myplot-open) body::after{content:"Opening My Plot\20
      sits over the content column, so every heading and control scrolled
      beneath it (measured at 375px: 267 x 72px, 71% of the width). It now
      tucks away while the homeowner scrolls down and returns as soon as they
-     scroll up, reach the top of a screen, or tap anything. While tucked it
+     scroll up or reach the top of a screen. While tucked it
      takes no taps. Wider screens, where it sits outside the column, are
      unchanged. The count, the click handler and the hidden rule in
      updateMyPlotAccess() are untouched. */
@@ -32542,7 +32542,19 @@ html.pn-myplot-view:not(.pn-myplot-open) body::after{content:"Opening My Plot\20
       else if (y - prev > 4) wrap.classList.add('is-tucked');
       else if (prev - y > 4) show();
     }, { capture: true, passive: true });
-    document.addEventListener('click', show, true);
+    /* After a tap (which may change screen), show the pill only if the
+       screen now on view is at its top; mid-page it stays out of the way
+       until the homeowner scrolls up. */
+    document.addEventListener('click', function () {
+      setTimeout(function () {
+        let a = document.elementFromPoint(window.innerWidth / 2, window.innerHeight / 2);
+        while (a && a !== document.body && a !== document.documentElement &&
+               !(a.scrollHeight > a.clientHeight + 10 && /(auto|scroll)/.test(getComputedStyle(a).overflowY))) a = a.parentElement;
+        const y = (a && a !== document.body && a !== document.documentElement) ? a.scrollTop
+          : (window.scrollY || document.documentElement.scrollTop || 0);
+        if (y < 64) show();
+      }, 450);
+    }, true);
     if (narrow.addEventListener) narrow.addEventListener('change', show);
   })();
 
