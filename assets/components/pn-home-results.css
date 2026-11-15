@@ -519,3 +519,80 @@ html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-product-detai
 @media (max-width:640px){
   html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-product-detail[data-pn-home-detail] #pdName{ font-size:30px; }
 }
+
+/* ==========================================================================
+   CARD COMPOSITION (15 Nov 2026, refinement). Three plates in a row read as
+   the same card three times. On phones and in the three-column desktop grid
+   a card WITH a specification plate now leads with what tells the buildings
+   apart — maker, name and price — and the plate follows as a framed panel
+   inside the card rather than a full-bleed frame. The plate's facts, the
+   floor-area scale and every word of the card are unchanged; only order,
+   framing and emphasis move. Cards with an authorised photograph, and the
+   tablet row layout, are untouched.
+   The card body becomes display:contents so its children can be ordered
+   around the plate; each child carries the body's former side padding.
+   ========================================================================== */
+@media (max-width:640px), (min-width:1081px){
+  html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-match-results[data-pn-home-results] #altResults .results-gallery-card:has(.pn-hm-plate){
+    padding:0 0 22px;
+  }
+  html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-match-results[data-pn-home-results] #altResults .results-gallery-card:has(.pn-hm-plate) .results-gallery-body{
+    display:contents;
+  }
+  html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-match-results[data-pn-home-results] #altResults .results-gallery-card:has(.pn-hm-plate) .results-gallery-body > *{
+    margin-left:22px; margin-right:22px;
+  }
+  /* 1 maker, 2 name, 3 price */
+  html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-match-results[data-pn-home-results] #altResults .results-gallery-card:has(.pn-hm-plate) .results-gallery-org{
+    order:1; margin-top:22px; margin-bottom:8px;
+  }
+  html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-match-results[data-pn-home-results] #altResults .results-gallery-card:has(.pn-hm-plate) .results-gallery-name{
+    order:2; margin-top:0; margin-bottom:8px; font-size:clamp(27px, 2.2vw, 31px); line-height:1.08;
+  }
+  html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-match-results[data-pn-home-results] #altResults .results-gallery-card:has(.pn-hm-plate) .results-gallery-price-row{
+    order:3; margin-top:0; margin-bottom:18px; padding-bottom:0; border-bottom:0;
+    font-size:17px; font-weight:600; color:#F2EBE0;
+  }
+  /* 4 the specification panel, framed inside the card */
+  html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-match-results[data-pn-home-results] #altResults .results-gallery-card:has(.pn-hm-plate) .results-gallery-media{
+    order:4; margin:0 22px; width:auto; flex:0 0 auto; border-radius:6px; overflow:hidden;
+    box-shadow:inset 0 0 0 1px rgba(194,189,181,.16) !important;
+  }
+  html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-match-results[data-pn-home-results] #altResults .results-gallery-card:has(.pn-hm-plate) .pn-hm-plate{
+    min-height:0; padding:18px 18px 14px;
+    background:
+      radial-gradient(120% 90% at 100% 0%, rgba(179,146,114,.10) 0%, rgba(179,146,114,0) 60%),
+      linear-gradient(170deg, #26272A 0%, #1E1F21 100%);
+  }
+  html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-match-results[data-pn-home-results] #altResults .results-gallery-card:has(.pn-hm-plate) .pn-hm-plate-area{ font-size:46px; }
+  html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-match-results[data-pn-home-results] #altResults .results-gallery-card:has(.pn-hm-plate) .pn-hm-plate-scale{ margin-top:14px; }
+  html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-match-results[data-pn-home-results] #altResults .results-gallery-card:has(.pn-hm-plate) .pn-hm-plate-fac{ margin-top:14px; }
+  html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-match-results[data-pn-home-results] #altResults .results-gallery-card:has(.pn-hm-plate) .pn-hm-plate-note{ padding-top:12px; }
+  /* 5 why Atlas included it, quieter; 6 actions; 7 the My Plot link */
+  html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-match-results[data-pn-home-results] #altResults .results-gallery-card:has(.pn-hm-plate) .results-gallery-role{
+    order:5; margin-top:16px; margin-bottom:20px; font-size:13.5px; line-height:1.55; color:#ABA59C;
+  }
+  html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-match-results[data-pn-home-results] #altResults .results-gallery-card:has(.pn-hm-plate) .results-gallery-role::before{
+    margin-bottom:4px; font-size:10px;
+  }
+  html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-match-results[data-pn-home-results] #altResults .results-gallery-card:has(.pn-hm-plate) .match-card-actions{
+    order:6; margin-top:auto;
+  }
+  html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-match-results[data-pn-home-results] #altResults .results-gallery-card:has(.pn-hm-plate) .match-card-open-myplot-link{
+    order:7; margin-top:12px; align-self:flex-start;
+  }
+}
+/* Desktop three columns: names of one or two lines keep the panels level. */
+@media (min-width:1081px){
+  html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-match-results[data-pn-home-results] #altResults .results-gallery-card:has(.pn-hm-plate) .results-gallery-name{
+    min-height:2.16em;
+  }
+  html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-match-results[data-pn-home-results] #altResults .results-gallery-card:has(.pn-hm-plate) .pn-hm-plate{ min-height:196px; }
+}
+/* Phones: a clear break between buildings, and a lighter rhythm. */
+@media (max-width:640px){
+  html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-match-results[data-pn-home-results] #altResults.results-gallery{ gap:22px; }
+  html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-match-results[data-pn-home-results] #altResults .results-gallery-card:has(.pn-hm-plate) .results-gallery-body > *{ margin-left:20px; margin-right:20px; }
+  html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-match-results[data-pn-home-results] #altResults .results-gallery-card:has(.pn-hm-plate) .results-gallery-media{ margin:0 20px; }
+  html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-match-results[data-pn-home-results] #altResults .results-gallery-card:has(.pn-hm-plate) .pn-hm-plate-area{ font-size:42px; }
+}

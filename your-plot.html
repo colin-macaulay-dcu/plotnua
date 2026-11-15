@@ -2559,6 +2559,21 @@ html.pn-myplot-view:not(.pn-myplot-open) body::after{content:"Opening My Plot\20
     display:flex; align-items:center; gap:12px;
   }
   .my-plot-access-wrap[hidden]{ display:none; }
+  /* MY PLOT PILL — tucked while the homeowner scrolls down (see
+     pnMyPlotPillHeadroom); no taps reach it while it is away. */
+  .my-plot-access-wrap{ transition:transform .28s cubic-bezier(.2,.8,.2,1), opacity .2s ease; }
+  .my-plot-access-wrap.is-tucked{ transform:translateY(calc(-100% - 28px)); opacity:0; pointer-events:none; }
+  @media (prefers-reduced-motion:reduce){ .my-plot-access-wrap{ transition:opacity .01s linear; } }
+  /* On phones the pill is a size smaller, so even at the top of a screen it
+     covers less: 72px tall -> 56px. */
+  @media (max-width:560px){
+    html .my-plot-access-wrap{ top:14px; right:14px; gap:8px; }
+    html .my-plot-access{ padding:6px 16px 6px 6px !important; }
+    html .my-plot-access .pn-mark-heart{ width:44px !important; height:44px !important; margin-right:10px !important; padding:5px !important; border-radius:15px !important; }
+    html .my-plot-access-title{ font-size:15px !important; }
+    html .my-plot-access-count{ font-size:10px !important; }
+    html .my-plot-access-chevron{ margin-left:10px !important; font-size:15px !important; }
+  }
   /* PB-021 — PREMIUM MY PLOT PILL. Restores the substantial proportions of the
      original Results control: a real medallion, a two-line label with genuine
      hierarchy, and a deliberate chevron — so it reads as "this is MY Plot",
@@ -32497,6 +32512,39 @@ html.pn-myplot-view:not(.pn-myplot-open) body::after{content:"Opening My Plot\20
       + '</span>'
       + '<span class="my-plot-access-chevron" aria-hidden="true">\u2192</span>';
   }
+
+  /* MY PLOT PILL — OUT OF THE WAY WHILE READING (15 Nov 2026).
+     The pill is position:fixed at the top right and, below ~1100px wide,
+     sits over the content column, so every heading and control scrolled
+     beneath it (measured at 375px: 267 x 72px, 71% of the width). It now
+     tucks away while the homeowner scrolls down and returns as soon as they
+     scroll up, reach the top of a screen, or tap anything. While tucked it
+     takes no taps. Wider screens, where it sits outside the column, are
+     unchanged. The count, the click handler and the hidden rule in
+     updateMyPlotAccess() are untouched. */
+  (function pnMyPlotPillHeadroom(){
+    const wrap = els.myPlotAccessWrap;
+    if (!wrap || typeof window.matchMedia !== 'function') return;
+    const narrow = window.matchMedia('(max-width: 1099px)');
+    const lastY = new WeakMap();
+    const show = function () { wrap.classList.remove('is-tucked'); };
+    const posOf = function (t) {
+      return (t === document || t === document.documentElement || t === document.body || !t || t.scrollTop == null)
+        ? (window.scrollY || document.documentElement.scrollTop || 0) : t.scrollTop;
+    };
+    document.addEventListener('scroll', function (e) {
+      if (!narrow.matches) { show(); return; }
+      const t = (e.target && e.target.nodeType === 1) ? e.target : document;
+      const y = posOf(t);
+      const prev = lastY.has(t) ? lastY.get(t) : y;
+      lastY.set(t, y);
+      if (y < 64) show();
+      else if (y - prev > 4) wrap.classList.add('is-tucked');
+      else if (prev - y > 4) show();
+    }, { capture: true, passive: true });
+    document.addEventListener('click', show, true);
+    if (narrow.addEventListener) narrow.addEventListener('change', show);
+  })();
 
   // PATCH Q — SCREEN 2 FINAL POLISH: repointed from els.localityLabel's
   // text (now the simplified Reveal-card display) to
