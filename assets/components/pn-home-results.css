@@ -201,7 +201,7 @@ html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-match-results
   color:var(--hm-ivory);
 }
 html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-match-results[data-pn-home-results] #altResults .results-gallery-media:has(img.pn-image-fallback)::after{
-  content:'Photograph not yet authorised for PlotNua \2014  see it on the maker\2019s site';
+  content:'Photograph not yet authorised for PlotNua';
   position:absolute; left:24px; right:24px; bottom:20px; top:auto; padding:12px 0 0;
   border-top:1px solid var(--hm-hair);
   font-family:var(--hm-sans); font-size:11px; font-weight:500; line-height:1.45;
