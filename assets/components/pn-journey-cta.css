@@ -6,7 +6,7 @@
    URL the page's own closing section uses. Self-contained: literal PlotNua
    palette values, so it renders identically on every Discovery template.
    ========================================================================== */
-.pn-jcta{
+body aside.pn-jcta{
   --jc-anth:#1B1C1E; --jc-earth:#27282A; --jc-ivory:#F2EBE0; --jc-lime:#E7DED0;
   --jc-stone:#C2BDB5; --jc-bronze:#B39272; --jc-terra:#CF8566;
   --jc-line:rgba(194,189,181,.18); --jc-edge:rgba(242,235,224,.42);
@@ -16,26 +16,26 @@
   color:var(--jc-lime);
   font-family:'Hanken Grotesk',system-ui,-apple-system,sans-serif;
 }
-.pn-jcta-in{
+body aside.pn-jcta .pn-jcta-in{
   display:flex; align-items:center; justify-content:space-between; gap:40px;
   max-width:1248px; margin:0 auto;
   padding:34px max(24px, calc((100vw - 1248px) / 2)) 34px;
   box-sizing:content-box;
 }
-.pn-jcta-copy{ min-width:0; flex:1 1 auto; border-left:2px solid var(--jc-terra); padding-left:20px; }
-.pn-jcta .pn-jcta-k{
+body aside.pn-jcta .pn-jcta-copy{ min-width:0; flex:1 1 auto; border-left:2px solid var(--jc-terra); padding-left:20px; }
+body aside.pn-jcta p.pn-jcta-k{
   margin:0 0 8px; padding:0;
   font-size:11px; font-weight:600; letter-spacing:.22em; text-transform:uppercase;
   color:var(--jc-bronze);
 }
-.pn-jcta .pn-jcta-t{
+body aside.pn-jcta p.pn-jcta-t{
   margin:0; padding:0; max-width:34ch;
   font-family:'Instrument Serif',Georgia,serif; font-weight:400; font-style:normal;
   font-size:clamp(23px, 2.3vw, 31px); line-height:1.15; letter-spacing:0;
   color:var(--jc-ivory); text-wrap:balance;
 }
-.pn-jcta-acts{ display:flex; flex-wrap:wrap; gap:12px; flex:0 0 auto; justify-content:flex-end; }
-.pn-jcta .pn-jcta-btn{
+body aside.pn-jcta .pn-jcta-acts{ display:flex; flex-wrap:wrap; gap:12px; flex:0 0 auto; justify-content:flex-end; }
+body aside.pn-jcta a.pn-jcta-btn{
   display:inline-flex; align-items:center; justify-content:center; gap:10px;
   min-height:50px; padding:0 26px; box-sizing:border-box;
   border:1px solid var(--jc-ivory); border-radius:999px;
@@ -45,18 +45,18 @@
   text-decoration:none; white-space:nowrap;
   transition:background-color .2s ease, color .2s ease, border-color .2s ease;
 }
-.pn-jcta .pn-jcta-btn:hover{ background:#FFFFFF; border-color:#FFFFFF; color:var(--jc-anth); text-decoration:none; }
-.pn-jcta .pn-jcta-btn.is-alt{ background:transparent; color:var(--jc-ivory); border-color:var(--jc-edge); }
-.pn-jcta .pn-jcta-btn.is-alt:hover{ background:rgba(242,235,224,.08); border-color:var(--jc-ivory); color:var(--jc-ivory); }
-.pn-jcta .pn-jcta-btn:focus-visible{ outline:2px solid var(--jc-terra); outline-offset:3px; }
+body aside.pn-jcta a.pn-jcta-btn:hover{ background:#FFFFFF; border-color:#FFFFFF; color:var(--jc-anth); text-decoration:none; }
+body aside.pn-jcta a.pn-jcta-btn.is-alt{ background:transparent; color:var(--jc-ivory); border-color:var(--jc-edge); }
+body aside.pn-jcta a.pn-jcta-btn.is-alt:hover{ background:rgba(242,235,224,.08); border-color:var(--jc-ivory); color:var(--jc-ivory); }
+body aside.pn-jcta a.pn-jcta-btn:focus-visible{ outline:2px solid var(--jc-terra); outline-offset:3px; }
 
 @media (max-width:900px){
-  .pn-jcta-in{ flex-direction:column; align-items:stretch; gap:22px; padding:28px 22px 30px; }
-  .pn-jcta-acts{ justify-content:flex-start; }
+  body aside.pn-jcta .pn-jcta-in{ flex-direction:column; align-items:stretch; gap:22px; padding:28px 22px 30px; }
+  body aside.pn-jcta .pn-jcta-acts{ justify-content:flex-start; }
 }
 @media (max-width:560px){
-  .pn-jcta-acts{ flex-direction:column; align-items:stretch; gap:10px; }
-  .pn-jcta .pn-jcta-btn{ width:100%; white-space:normal; text-align:center; }
-  .pn-jcta .pn-jcta-t{ font-size:24px; }
+  body aside.pn-jcta .pn-jcta-acts{ flex-direction:column; align-items:stretch; gap:10px; }
+  body aside.pn-jcta a.pn-jcta-btn{ width:100%; white-space:normal; text-align:center; }
+  body aside.pn-jcta p.pn-jcta-t{ font-size:24px; }
 }
 @media (prefers-reduced-motion:reduce){ .pn-jcta .pn-jcta-btn{ transition:none; } }
