@@ -13166,6 +13166,7 @@ html.pn-myplot-view:not(.pn-myplot-open) body::after{content:"Opening My Plot\20
     const fitSec = document.getElementById('hmrPropertyFit');
     const dossier = document.getElementById('aboutSupplier');
     const optsHead = document.getElementById('altResultsHeading');
+    if (pnHomeResultsChrome.obs) { pnHomeResultsChrome.obs.disconnect(); pnHomeResultsChrome.obs = null; }
     ['pnHmStep2', 'pnHmStep3'].forEach(function (id) {
       const n = document.getElementById(id);
       if (n && n.parentNode) n.parentNode.removeChild(n);
@@ -13203,22 +13204,34 @@ html.pn-myplot-view:not(.pn-myplot-open) body::after{content:"Opening My Plot\20
         step('pnHmStep3', '03', 'What you could explore next'), optsHead);
     }
     /* The plate's label. Matched by the card's own rendered name, so a card
-       can only ever be labelled with its own product's supplier and area. */
+       can only ever be labelled with its own product's supplier and area.
+       renderAltResults() paints the cards twice (first paint, then again
+       once supplier evidence lands), so an observer on #altResults
+       re-applies the label for as long as this presentation is on. */
     const byName = {};
     (results || []).forEach(function (r) {
       const p = r && r.product;
       if (p && p.name) byName[p.name] = p;
     });
-    document.querySelectorAll('#altResults .results-gallery-card').forEach(function (card) {
-      const media = card.querySelector('.results-gallery-media');
-      const nm = card.querySelector('.results-gallery-name');
-      if (!media || !nm || !media.querySelector('img.pn-image-fallback')) return;
-      const p = byName[nm.textContent.trim()];
-      if (!p) return;
-      if (p.organisation) media.setAttribute('data-pn-org', p.organisation);
-      if (typeof p.floorAreaM2 === 'number')
-        media.setAttribute('data-pn-area', String(p.floorAreaM2).replace(/\.0+$/, '') + ' m²');
-    });
+    const label = function () {
+      document.querySelectorAll('#altResults .results-gallery-card').forEach(function (card) {
+        const media = card.querySelector('.results-gallery-media');
+        const nm = card.querySelector('.results-gallery-name');
+        if (!media || !nm || !media.querySelector('img.pn-image-fallback')) return;
+        if (media.hasAttribute('data-pn-area')) return;
+        const p = byName[nm.textContent.trim()];
+        if (!p) return;
+        if (p.organisation) media.setAttribute('data-pn-org', p.organisation);
+        if (typeof p.floorAreaM2 === 'number')
+          media.setAttribute('data-pn-area', String(p.floorAreaM2).replace(/\.0+$/, '') + ' m²');
+      });
+    };
+    label();
+    const altHost = document.getElementById('altResults');
+    if (altHost && typeof MutationObserver === 'function') {
+      pnHomeResultsChrome.obs = new MutationObserver(label);
+      pnHomeResultsChrome.obs.observe(altHost, { childList: true });
+    }
     return true;
   }
 

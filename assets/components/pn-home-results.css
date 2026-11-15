@@ -245,7 +245,11 @@ html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-match-results
   html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-match-results[data-pn-home-results] #matchPrimary .pn-hm-keys{ grid-template-columns:repeat(2, minmax(0, 1fr)); }
   html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-match-results[data-pn-home-results] #matchPrimary .pn-hm-key:nth-child(3){ padding-left:0; border-left:0; }
   html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-match-results[data-pn-home-results] #matchPrimary .pn-hm-key:nth-child(n+3){ border-top:1px solid var(--hm-hair); margin-top:18px; }
-  html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-match-results[data-pn-home-results] #altResults.results-gallery{ grid-template-columns:repeat(2, minmax(0, 1fr)); }
+  html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-match-results[data-pn-home-results] #altResults.results-gallery{ grid-template-columns:minmax(0, 1fr); gap:20px; }
+  /* one building per row, photograph or plate on the left: a third card never sits alone */
+  html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-match-results[data-pn-home-results] #altResults .results-gallery-card{ flex-direction:row; align-items:stretch; }
+  html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-match-results[data-pn-home-results] #altResults .results-gallery-media{ width:42%; flex:0 0 42%; aspect-ratio:auto; min-height:260px; }
+  html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-match-results[data-pn-home-results] #altResults .results-gallery-media:has(img.pn-image-fallback){ aspect-ratio:auto; box-shadow:inset -1px 0 0 var(--hm-hair); }
 }
 @media (max-width:820px){
   html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-match-results[data-pn-home-results] #matchPrimary .pn-hm-hero .results-hero-body{
@@ -270,4 +274,7 @@ html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-match-results
   html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-match-results[data-pn-home-results] .pn-hm-step--section{ margin:64px 0 18px; }
   html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-match-results[data-pn-home-results] #altResults.results-gallery{ grid-template-columns:minmax(0, 1fr); gap:18px; }
   html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-match-results[data-pn-home-results] #altResults .results-gallery-body{ padding:20px; }
+  html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-match-results[data-pn-home-results] #altResults .results-gallery-card{ flex-direction:column; }
+  html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-match-results[data-pn-home-results] #altResults .results-gallery-media{ width:100%; flex:0 0 auto; min-height:0; aspect-ratio:4/3; }
+  html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-match-results[data-pn-home-results] #altResults .results-gallery-media:has(img.pn-image-fallback){ aspect-ratio:16/10; box-shadow:inset 0 -1px 0 var(--hm-hair); }
 }
