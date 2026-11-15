@@ -38680,6 +38680,7 @@ html.pn-myplot-view:not(.pn-myplot-open) body::after{content:"Opening My Plot\20
     if (viewer) clearMarkerEntities(); // remove the persistent marker on Try another location
     geocodedResult = null;
     lastResolvedTarget = null;
+    pnHeightSeq++; pnHeightPending = false; // a late height for the old property is ignored
     els.eircodeInput.value = '';
     els.eircodeStatus.textContent = '';
     els.findBtn.disabled = false;
@@ -38890,6 +38891,7 @@ html.pn-myplot-view:not(.pn-myplot-open) body::after{content:"Opening My Plot\20
         tileset = await Cesium.createGooglePhotorealistic3DTileset();
         viewer.scene.primitives.add(tileset);
         tilesetLoaded = true;
+        pnKeepCameraAboveSurface();
       } catch (tileErr) {
         console.warn('Google Photorealistic 3D Tiles failed to load:', tileErr);
         tilesetLoaded = false;
@@ -38922,7 +38924,7 @@ html.pn-myplot-view:not(.pn-myplot-open) body::after{content:"Opening My Plot\20
     try {
       const cartographic = Cesium.Cartographic.fromDegrees(lon, lat);
       const sampled = viewer.scene.sampleHeight(cartographic);
-      if (typeof sampled === 'number' && !isNaN(sampled)) {
+      if (pnPlausibleHeight(sampled)) {
         return { height: sampled, resolved: true };
       }
       return { height: 0, resolved: false };
@@ -38932,11 +38934,108 @@ html.pn-myplot-view:not(.pn-myplot-open) body::after{content:"Opening My Plot\20
     }
   }
 
+  /* MAP SURFACE HEIGHT (15 Nov 2026) — the black screen with white grid
+     lines. Measured on production: the arrival took ONE instant
+     sampleHeight() at the property, straight after a fixed-length flight.
+     Whenever the detailed Google tiles under the property had not arrived
+     by then, the sample hit coarse placeholder geometry instead: 0 m on
+     every reduced-motion arrival (sampled before any flight at all), and
+     -46,468 m on a slow connection, where the planet-scale root tile sits
+     46 km below the real ground. Every later framing — the arrival, the
+     closer plot view (190 m) and the Results view (95 m) — is measured
+     from that height, so the camera ended up underneath the photographic
+     surface, which from below renders as black with white tile seams.
+
+     The fix keeps the same flights and framings and only makes the height
+     trustworthy:
+       - a height is accepted only if it is a plausible ground height;
+       - the detailed height is requested as the flight starts (Cesium's
+         sampleHeightMostDetailed loads only the tiles under that one
+         point, which the view needs anyway) and used when it is ready;
+       - if it arrives after the camera has settled, the target and the
+         marker are corrected and the camera is lifted by the difference,
+         keeping the homeowner's framing;
+       - and the camera is never left beneath the photographic surface. */
+  let pnHeightSeq = 0;
+  let pnHeightPending = false;   // a detailed height is still on its way
+  function pnPlausibleHeight(h){
+    return typeof h === 'number' && isFinite(h) && h > -100 && h < 9000;
+  }
+  function pnDetailedSurfaceHeight(lat, lon){
+    // Never rejects: null means "not known (yet)".
+    if (!viewer || !tilesetLoaded || !viewer.scene.sampleHeightSupported) return Promise.resolve(null);
+    try {
+      return viewer.scene.sampleHeightMostDetailed([Cesium.Cartographic.fromDegrees(lon, lat)])
+        .then(function (r) { const h = r && r[0] ? r[0].height : null; return pnPlausibleHeight(h) ? h : null; },
+              function () { return null; });
+    } catch (e) { return Promise.resolve(null); }
+  }
+  function pnWithin(promise, ms){
+    return Promise.race([promise, new Promise(function (r) { setTimeout(function () { r(null); }, ms); })]);
+  }
+  function pnLiftCamera(dh, duration){
+    if (!viewer || !dh) return;
+    const cam = viewer.camera;
+    const up = Cesium.Ellipsoid.WGS84.geodeticSurfaceNormal(cam.positionWC, new Cesium.Cartesian3());
+    const dest = Cesium.Cartesian3.add(cam.positionWC, Cesium.Cartesian3.multiplyByScalar(up, dh, up), new Cesium.Cartesian3());
+    cam.flyTo({ destination: dest, orientation: { heading: cam.heading, pitch: cam.pitch, roll: cam.roll }, duration: duration });
+  }
+  // Runs fn once the camera is not in the middle of a flight, so a
+  // correction is never overwritten by a flight aimed at the old height.
+  function pnWhenCameraSettled(fn){
+    const cam = viewer.camera;
+    const p0 = Cesium.Cartesian3.clone(cam.positionWC);
+    setTimeout(function () {
+      if (Cesium.Cartesian3.equalsEpsilon(p0, cam.positionWC, 0, 0.01)) { fn(); return; }
+      const off = cam.moveEnd.addEventListener(function () { off(); fn(); });
+    }, 150);
+  }
+  // The detailed height arrived after the arrival used a provisional one.
+  // resolvedC is the object the journey keeps as lastResolvedTarget, so
+  // correcting it in place corrects every later framing as well.
+  function pnCorrectHeightLater(detailed, seq, resolvedC){
+    pnHeightPending = true;
+    detailed.then(function (h) {
+      if (seq !== pnHeightSeq || !viewer) return;
+      if (h == null || Math.abs(h - resolvedC.height) < 1) { pnHeightPending = false; return; }
+      pnWhenCameraSettled(function () {
+        pnHeightPending = false;
+        if (seq !== pnHeightSeq) return;
+        const before = resolvedC.height;
+        resolvedC.height = h;
+        if (markerEntities.length) showLocationMarker(resolvedC);
+        pnLiftCamera(h - before, 1.2);
+      });
+    });
+  }
+  // The floor: whenever the tiles finish loading, the camera must be above
+  // the photographic surface beneath it. It only ever acts in the state
+  // that renders as the black grid, so it never moves a correct view.
+  function pnKeepCameraAboveSurface(){
+    if (!viewer || !tileset || !viewer.scene.sampleHeightSupported) return;
+    // A pending height correction repairs the framing itself, so the floor
+    // waits for it rather than lifting twice; it also waits for any flight
+    // to finish so it never cancels one.
+    function check(){
+      if (pnHeightPending) return;
+      try {
+        const c = Cesium.Cartographic.fromCartesian(viewer.camera.positionWC);
+        const ground = viewer.scene.sampleHeight(c);
+        if (pnPlausibleHeight(ground) && c.height < ground + 2) pnLiftCamera(ground + 40 - c.height, 0.8);
+      } catch (e) { /* the floor is a safeguard; it never interrupts the journey */ }
+    }
+    tileset.allTilesLoaded.addEventListener(function () { pnWhenCameraSettled(check); });
+  }
+
   // ---------------------------------------------------------------------
-  // Staged cinematic sequence — the APPROVED v6 arrival camera. UNCHANGED.
+  // Staged cinematic sequence — the APPROVED v6 arrival camera. Flights and
+  // framings unchanged; only the surface height they are measured from is
+  // now verified (see MAP SURFACE HEIGHT above).
   // ---------------------------------------------------------------------
   async function flyToLocation(baseLat, baseLon, reduced){
     if (!viewer) return { resolvedC: null, heightResolved: false };
+    const seq = ++pnHeightSeq;
+    const detailed = pnDetailedSurfaceHeight(baseLat, baseLon);
 
     const target = { lat: baseLat, lon: baseLon };
     const finalHeading = Cesium.Math.toRadians(20);
@@ -38955,14 +39054,17 @@ html.pn-myplot-view:not(.pn-myplot-open) body::after{content:"Opening My Plot\20
     }
 
     if (reduced) {
-      const heightResult = tryResolveSurfaceHeight(target.lat, target.lon);
+      const hd = await pnWithin(detailed, 5000);
+      const heightResult = (hd != null) ? { height: hd, resolved: true } : tryResolveSurfaceHeight(target.lat, target.lon);
       const lookAtTarget = Cesium.Cartesian3.fromDegrees(target.lon, target.lat, heightResult.height);
       viewer.camera.flyToBoundingSphere(new Cesium.BoundingSphere(lookAtTarget, 1), {
         offset: new Cesium.HeadingPitchRange(finalHeading, finalPitch, finalRange),
         duration: 0,
       });
       viewer.camera.lookDown(Cesium.Math.toRadians(4));
-      return { resolvedC: { lat: target.lat, lon: target.lon, height: heightResult.height }, heightResolved: heightResult.resolved };
+      const resolvedC = { lat: target.lat, lon: target.lon, height: heightResult.height };
+      if (hd == null) pnCorrectHeightLater(detailed, seq, resolvedC);
+      return { resolvedC: resolvedC, heightResolved: heightResult.resolved };
     }
 
     viewer.camera.setView({
@@ -38984,12 +39086,15 @@ html.pn-myplot-view:not(.pn-myplot-open) body::after{content:"Opening My Plot\20
       Cesium.EasingFunction.QUADRATIC_IN_OUT
     );
 
-    const heightResult = tryResolveSurfaceHeight(target.lat, target.lon);
+    const hd = await pnWithin(detailed, 2500);
+    const heightResult = (hd != null) ? { height: hd, resolved: true } : tryResolveSurfaceHeight(target.lat, target.lon);
     const lookAtTarget = Cesium.Cartesian3.fromDegrees(target.lon, target.lat, heightResult.height);
+    const resolvedC = { lat: target.lat, lon: target.lon, height: heightResult.height };
+    if (hd == null) pnCorrectHeightLater(detailed, seq, resolvedC);
 
     await settleOnTarget(lookAtTarget, 2.6, Cesium.EasingFunction.QUADRATIC_OUT);
 
-    return { resolvedC: { lat: target.lat, lon: target.lon, height: heightResult.height }, heightResolved: heightResult.resolved };
+    return { resolvedC: resolvedC, heightResolved: heightResult.resolved };
   }
 
   // NEW in the Sun & Light POC, carried forward unchanged: a SEPARATE
