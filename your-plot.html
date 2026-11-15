@@ -31426,11 +31426,11 @@ html.pn-myplot-view:not(.pn-myplot-open) body::after{content:"Opening My Plot\20
        Atlas recorded that page as this product's evidence. The plate (and
        so this note) is drawn only where no authorised photograph exists, so
        it disappears by itself once one is granted. */
-    plate.appendChild(el('p', 'pn-hm-plate-note',
-      'Photographs of this building aren’t shown here yet. ' +
-      (pnHomeVerifiedPage(product)
-        ? 'Explore the specifications, or visit the maker’s website.'
-        : 'Explore the published specifications.')));
+    const note = el('p', 'pn-hm-plate-note', 'Photographs of this building aren’t shown here yet. ');
+    note.appendChild(el('span', 'pn-hm-plate-note-more', pnHomeVerifiedPage(product)
+      ? 'Explore the specifications, or visit the maker’s website.'
+      : 'Explore the published specifications.'));
+    plate.appendChild(note);
     return plate;
   }
   function pnHomeDetailReset(){

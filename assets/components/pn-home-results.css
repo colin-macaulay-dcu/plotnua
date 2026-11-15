@@ -588,6 +588,9 @@ html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-product-detai
     min-height:2.16em;
   }
   html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-match-results[data-pn-home-results] #altResults .results-gallery-card:has(.pn-hm-plate) .pn-hm-plate{ min-height:216px; }
+  /* Narrow columns: the first sentence only; "View option" and the maker's
+     link sit beside it, and the panels stay level. */
+  html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-match-results[data-pn-home-results] #altResults .results-gallery-card:has(.pn-hm-plate) .pn-hm-plate-note-more{ display:none; }
 }
 /* Phones: a clear break between buildings, and a lighter rhythm. */
 @media (max-width:640px){
