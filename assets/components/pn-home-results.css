@@ -196,14 +196,14 @@ html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-match-results
 html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-match-results[data-pn-home-results] #altResults .results-gallery-media:has(img.pn-image-fallback)::before{
   content:attr(data-pn-area);
   position:absolute; left:24px; top:22px; right:24px; width:auto; height:auto;
-  margin:0; background:none; opacity:1;
+  margin:0; background:none; opacity:1; box-shadow:none; border:0;
   font-family:var(--hm-serif); font-size:clamp(44px, 4vw, 60px); line-height:1;
   color:var(--hm-ivory);
 }
 html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-match-results[data-pn-home-results] #altResults .results-gallery-media:has(img.pn-image-fallback)::after{
   content:'Photograph not yet authorised for PlotNua';
-  position:absolute; left:24px; right:24px; bottom:20px; top:auto; padding:12px 0 0;
-  border-top:1px solid var(--hm-hair);
+  position:absolute; left:24px; right:24px; bottom:20px; top:auto; padding:12px 0 0; margin:0;
+  border:0; border-top:1px solid var(--hm-hair); background:none; box-shadow:none; border-radius:0;
   font-family:var(--hm-sans); font-size:11px; font-weight:500; line-height:1.45;
   letter-spacing:.06em; text-transform:uppercase; color:var(--hm-meta);
 }
