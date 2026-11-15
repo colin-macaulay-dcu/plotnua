@@ -10,7 +10,7 @@ body aside.pn-jcta{
   --jc-anth:#1B1C1E; --jc-earth:#27282A; --jc-ivory:#F2EBE0; --jc-lime:#E7DED0;
   --jc-stone:#C2BDB5; --jc-bronze:#B39272; --jc-terra:#CF8566;
   --jc-line:rgba(194,189,181,.18); --jc-edge:rgba(242,235,224,.42);
-  display:block; position:relative; margin:0; padding:0;
+  display:block; position:relative; margin:0 0 clamp(24px, 3vw, 40px); padding:0;
   background:var(--jc-earth);
   border-top:1px solid var(--jc-line); border-bottom:1px solid var(--jc-line);
   color:var(--jc-lime);
