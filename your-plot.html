@@ -9222,8 +9222,6 @@ html.pn-myplot-view:not(.pn-myplot-open) body::after{content:"Opening My Plot\20
     padding:10px 20px; font-size:13px;
   }
 
-  /* ---- OPTION DETAIL: the two new sections ------------------------- */
-  #screen-product-detail .pd-checks,
   /* ---- P0 JOURNEY RESTORE ------------------------------------------- */
   /* V2 — THE SAVED STATE. A confirmation, not a second primary.
 
@@ -9780,6 +9778,14 @@ html.pn-myplot-view:not(.pn-myplot-open) body::after{content:"Opening My Plot\20
   }
   .prg-supplier-cta:focus-visible{ outline:2px solid var(--accent); outline-offset:3px; }
 
+  /* ---- OPTION DETAIL: the two new sections ------------------------- */
+  /* CHECKLIST SELECTOR (15 Nov 2026). ".pd-checks" was originally grouped
+     with ".pd-next" here (29 Sep 2026). A later insertion left its selector
+     stranded above the P0 JOURNEY RESTORE block, where it joined the
+     .match-card-save-state pill rule and gave the checklist that pill's
+     inline-flex row and 12.5px text at every width. It is restored to its
+     intended rule. */
+  #screen-product-detail .pd-checks,
   #screen-product-detail .pd-next{
     margin-top:32px; padding-top:24px; border-top:1px solid var(--pn-hair);
   }
@@ -9809,27 +9815,16 @@ html.pn-myplot-view:not(.pn-myplot-open) body::after{content:"Opening My Plot\20
     width:6px; height:6px; border-radius:50%;
     border:1px solid var(--pn-stone);
   }
-  /* MOBILE CHECKLIST (15 Nov 2026). On phones "What still needs checking"
-     rendered as a narrow heading column squeezed beside the list. Cause: a
-     dangling "#screen-product-detail .pd-checks," selector further up the
-     file is joined onto the .match-card-save-state rule, so the section
-     inherits that pill's inline-flex row, 12.5px semibold text and
-     centring. Below 768px the section is restored to a plain single column
-     here; content, wording and behaviour are unchanged, and tablet and
-     desktop are left exactly as they were (see the report). */
+  /* MOBILE CHECKLIST (15 Nov 2026). The approved phone presentation of
+     "What still needs checking": one readable column, slightly tighter
+     spacing above, a 20px heading and 15px items. Content, wording and
+     behaviour are unchanged. */
   @media (max-width:767px){
-    #screen-product-detail .pd-checks{
-      display:block; width:auto; flex:none; gap:0; transform:none; cursor:auto;
-      margin:28px 0 0; padding:22px 0 0; border:0; border-top:1px solid var(--pn-hair);
-      background:none; box-shadow:none;
-      font-size:inherit; font-weight:inherit; color:inherit; text-align:left;
-    }
+    #screen-product-detail .pd-checks{ margin-top:28px; padding-top:22px; }
     #screen-product-detail .pd-checks-head{ margin:0 0 8px; font-size:20px; line-height:1.25; }
-    #screen-product-detail .pd-checks-intro{ margin:0 0 14px; max-width:none; font-weight:400; }
-    #screen-product-detail .pd-checks-list{ display:grid; gap:12px; margin:0; }
-    #screen-product-detail .pd-checks-list li{
-      font-size:15px; line-height:1.55; font-weight:400; padding-left:20px;
-    }
+    #screen-product-detail .pd-checks-intro{ margin:0 0 14px; max-width:none; }
+    #screen-product-detail .pd-checks-list{ gap:12px; }
+    #screen-product-detail .pd-checks-list li{ font-size:15px; }
   }
   #screen-product-detail .pd-next-cta{
     display:inline-flex; align-items:center; justify-content:center;
