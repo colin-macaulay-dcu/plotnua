@@ -32536,7 +32536,7 @@ html.pn-myplot-view:not(.pn-myplot-open) body::after{content:"Opening My Plot\20
       if (!narrow.matches) { show(); return; }
       const t = (e.target && e.target.nodeType === 1) ? e.target : document;
       const y = posOf(t);
-      const prev = lastY.has(t) ? lastY.get(t) : y;
+      const prev = lastY.has(t) ? lastY.get(t) : 0;
       lastY.set(t, y);
       if (y < 64) show();
       else if (y - prev > 4) wrap.classList.add('is-tucked');
