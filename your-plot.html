@@ -31420,7 +31420,17 @@ html.pn-myplot-view:not(.pn-myplot-open) body::after{content:"Opening My Plot\20
       fac.forEach(function (f) { ul.appendChild(el('li', '', f[1])); });
       plate.appendChild(ul);
     }
-    plate.appendChild(el('p', 'pn-hm-plate-note', 'Photograph not yet authorised for PlotNua'));
+    /* The note under the specifications (15 Nov 2026). Neutral by design: it
+       says what is true for every product without a photograph and claims no
+       request, grant or date. The maker's website is mentioned only when
+       Atlas recorded that page as this product's evidence. The plate (and
+       so this note) is drawn only where no authorised photograph exists, so
+       it disappears by itself once one is granted. */
+    plate.appendChild(el('p', 'pn-hm-plate-note',
+      'Photographs of this building aren’t shown here yet. ' +
+      (pnHomeVerifiedPage(product)
+        ? 'Explore the specifications, or visit the maker’s website.'
+        : 'Explore the published specifications.')));
     return plate;
   }
   function pnHomeDetailReset(){
