@@ -31288,8 +31288,13 @@ html.pn-myplot-view:not(.pn-myplot-open) body::after{content:"Opening My Plot\20
   const pnAhStore = { byId: new Map(), views: new Map(), loading: null, loaded: false };
   function pnAhEnsure(){
     if (pnAhStore.loading) return pnAhStore.loading;
-    pnAhStore.loading = fetch('additional-home-universe-v1.json', { cache: 'no-store' })
-      .then(function (r) { return r.ok ? r.json() : null; })
+    /* On the residential route the page has already requested the artefact
+       (additionalHomePoolReady); reuse that rather than asking twice. */
+    const pnSrc = (intendedUse === 'residential')
+      ? additionalHomePoolReady.then(function () { return { products: additionalHomePool }; })
+      : fetch('additional-home-universe-v1.json', { cache: 'no-store' })
+          .then(function (r) { return r.ok ? r.json() : null; });
+    pnAhStore.loading = pnSrc
       .then(function (d) {
         ((d && d.products) || []).forEach(function (p) {
           if (p && p.id && p.publicVisibility === 'PUBLISHABLE'
