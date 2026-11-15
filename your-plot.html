@@ -32679,6 +32679,14 @@ html.pn-myplot-view:not(.pn-myplot-open) body::after{content:"Opening My Plot\20
     });
     if (narrow.addEventListener) narrow.addEventListener('change', show);
     window.addEventListener('resize', function () { checkClear(false); }, { passive: true });
+    /* a screen opening or results arriving moves content under a control
+       that is already showing; look again once it settles */
+    if (typeof MutationObserver === 'function') {
+      new MutationObserver(function () {
+        if (narrow.matches && !root.classList.contains('pn-nav-tucked')) checkClear(false);
+      }).observe(document.getElementById('pn-main') || document.body,
+                 { subtree: true, childList: true, attributes: true, attributeFilter: ['class', 'hidden'] });
+    }
   })();
 
   // PATCH Q — SCREEN 2 FINAL POLISH: repointed from els.localityLabel's
