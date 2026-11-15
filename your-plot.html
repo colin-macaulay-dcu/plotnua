@@ -9868,6 +9868,8 @@ html.pn-myplot-view:not(.pn-myplot-open) body::after{content:"Opening My Plot\20
 }
 /* PLOTNUA A11Y VISUAL v1 · END */
 </style>
+<!-- Garden Home results (15 Nov 2026): residential verdict only; scoped by #screen-match-results[data-pn-home-results]. -->
+<link rel="stylesheet" href="assets/components/pn-home-results.css?v=1">
 </head>
 <body>
 <a class="pn-skip" href="#pn-main">Skip to main content</a>
@@ -12880,6 +12882,102 @@ html.pn-myplot-view:not(.pn-myplot-open) body::after{content:"Opening My Plot\20
     meta.appendChild(band);
     identity.appendChild(meta);
 
+    /* GARDEN HOME RESULTS (15 Nov 2026) — THE POSSIBILITY, THEN THE FINDINGS.
+
+       Presentation only, and only where the live journey passed its state
+       (fit.verdictState). The fixture path passes none, so it renders exactly
+       as before. The governed headline (parts[0]) is still the h2 and still
+       states the outcome in its own words; the line added above it is a
+       possibility ("could"), shown only for the two states in which Atlas
+       found nothing that rules the garden out. Nothing here says permission
+       exists or eligibility is settled. The boundary sentence (parts[3]) is
+       rendered below, unchanged.
+
+       The four key findings are read from what the assessment ALREADY
+       computed: verdictFacts (the same `c` figures as the dossier),
+       COPY's own state, and verdictToVerify (the same list as #dhCheck). */
+    const pnSt = fit && fit.verdictState;
+    let pnKeys = null, pnVerify = null;
+    if (pnSt) {
+      wrap.classList.add('pn-hm-hero');
+      const kick = document.createElement('p');
+      kick.className = 'pn-hm-step';
+      const kn = document.createElement('span');
+      kn.className = 'pn-hm-step-n';
+      kn.textContent = '01';
+      kick.appendChild(kn);
+      kick.appendChild(document.createTextNode(
+        (pnSt === 1 || pnSt === 2) ? 'The possibility' : 'The assessment'));
+      identity.insertBefore(kick, name);
+      if (pnSt === 1 || pnSt === 2) {
+        const poss = document.createElement('p');
+        poss.className = 'pn-hm-possibility';
+        poss.textContent = 'Your garden could have room for something extraordinary.';
+        identity.insertBefore(poss, name);
+      }
+      name.classList.add('pn-hm-outcome');
+
+      const factBy = function (prefix) {
+        const f = (fit.verdictFacts || []).filter(function (x) {
+          return x && x.k && x.k.indexOf(prefix) === 0; })[0];
+        return f ? f.v : null;
+      };
+      const OUTCOME = {
+        1: 'Meets the initial criteria',
+        2: 'Meets the initial criteria, with points to confirm',
+        3: 'Below the minimum size',
+        4: 'One condition not met'
+      };
+      const toVerify = (fit.verdictToVerify || []).filter(Boolean);
+      const cells = [
+        { k: 'Potential available area',
+          v: factBy('Potential area') || 'Not measured',
+          s: 'From the measurements you gave' },
+        { k: 'Size limits',
+          v: factBy('The range these regulations allow') || '32–45 m²',
+          s: 'The floor area these regulations allow' },
+        { k: 'Initial assessment',
+          v: OUTCOME[pnSt] || parts[0],
+          s: 'Atlas’s assessment, not a planning decision', text: true },
+        { k: 'Conditions to verify',
+          v: String(toVerify.length),
+          s: toVerify.length === 1 ? 'Point to confirm before going further'
+                                   : 'Points to confirm before going further' }
+      ];
+      pnKeys = document.createElement('div');
+      pnKeys.className = 'pn-hm-keys';
+      pnKeys.setAttribute('role', 'list');
+      pnKeys.setAttribute('aria-label', 'Key findings');
+      cells.forEach(function (c) {
+        const cell = document.createElement('div');
+        cell.className = 'pn-hm-key' + (c.text ? ' is-text' : '');
+        cell.setAttribute('role', 'listitem');
+        const k = document.createElement('p');
+        k.className = 'pn-hm-key-k'; k.textContent = c.k;
+        const v = document.createElement('p');
+        v.className = 'pn-hm-key-v'; v.textContent = c.v;
+        const s = document.createElement('p');
+        s.className = 'pn-hm-key-s'; s.textContent = c.s;
+        cell.appendChild(k); cell.appendChild(v); cell.appendChild(s);
+        pnKeys.appendChild(cell);
+      });
+      if (toVerify.length) {
+        pnVerify = document.createElement('div');
+        pnVerify.className = 'pn-hm-verify';
+        const vt = document.createElement('p');
+        vt.className = 'pn-hm-verify-t';
+        vt.textContent = 'Important conditions to verify';
+        pnVerify.appendChild(vt);
+        const ul = document.createElement('ul');
+        toVerify.forEach(function (t) {
+          const li = document.createElement('li');
+          li.textContent = t;
+          ul.appendChild(li);
+        });
+        pnVerify.appendChild(ul);
+      }
+    }
+
     const split = document.createElement('div');
     split.className = 'rh-split';
 
@@ -12989,6 +13087,7 @@ html.pn-myplot-view:not(.pn-myplot-open) body::after{content:"Opening My Plot\20
       ed.textContent = parts[1];
       body.appendChild(ed);
     }
+    if (pnVerify) body.appendChild(pnVerify);
     /* THE BOUNDARY. Its own note, in the shipped note class, so it reads as
        a condition on the finding and never as part of it. */
     if (parts[3]) {
@@ -13008,6 +13107,7 @@ html.pn-myplot-view:not(.pn-myplot-open) body::after{content:"Opening My Plot\20
     body.appendChild(secondary);
     split.appendChild(body);
     wrap.appendChild(identity);
+    if (pnKeys) wrap.appendChild(pnKeys);
     wrap.appendChild(split);
     host.appendChild(wrap);
     /* THE ZERO-RESULT ANSWER, WITHOUT RECLASSIFYING THE CONTAINER.
@@ -13041,6 +13141,84 @@ html.pn-myplot-view:not(.pn-myplot-open) body::after{content:"Opening My Plot\20
         const n = document.getElementById(id);
         if (n && n.parentNode === parent) parent.insertBefore(n, ref);
       });
+    return true;
+  }
+
+  /* GARDEN HOME RESULTS (15 Nov 2026) — THE PAGE IN THREE MOVES.
+
+     THE POSSIBILITY (the verdict hero), WHAT ATLAS HAS ESTABLISHED (the
+     assessment dossier, then the property check) and WHAT YOU COULD EXPLORE
+     NEXT (the buildings). Presentation only:
+       * one attribute on #screen-match-results scopes the stylesheet
+         assets/components/pn-home-results.css, so Garden Room is untouched;
+       * two step labels are inserted, and removed again when off;
+       * #hmrPropertyFit (residential-only, hidden on Garden Room) moves
+         after the dossier, and goes back when off;
+       * each card WITHOUT an authorised photograph gets its own supplier and
+         area as data attributes, for the plate's typographic label. A card
+         with an authorised photograph is not touched.
+     Called with `on` false at the start of every renderMatchResults(), so a
+     Garden Room search later in the same session renders exactly as it
+     ships. Calling it twice in one direction changes nothing. */
+  function pnHomeResultsChrome(on, results){
+    const screen = document.getElementById('screen-match-results');
+    if (!screen) return false;
+    const fitSec = document.getElementById('hmrPropertyFit');
+    const dossier = document.getElementById('aboutSupplier');
+    const optsHead = document.getElementById('altResultsHeading');
+    ['pnHmStep2', 'pnHmStep3'].forEach(function (id) {
+      const n = document.getElementById(id);
+      if (n && n.parentNode) n.parentNode.removeChild(n);
+    });
+    if (!on) {
+      if (screen.hasAttribute('data-pn-home-results')) {
+        screen.removeAttribute('data-pn-home-results');
+        /* Back to the shipped order: the property check before the dossier. */
+        if (fitSec && dossier && dossier.parentNode === fitSec.parentNode)
+          dossier.parentNode.insertBefore(fitSec, dossier);
+      }
+      return true;
+    }
+    screen.setAttribute('data-pn-home-results', '1');
+    const step = function (id, n, label) {
+      const p = document.createElement('p');
+      p.id = id;
+      p.className = 'pn-hm-step pn-hm-step--section';
+      const s = document.createElement('span');
+      s.className = 'pn-hm-step-n';
+      s.textContent = n;
+      p.appendChild(s);
+      p.appendChild(document.createTextNode(label));
+      return p;
+    };
+    if (dossier && dossier.parentNode && !dossier.hidden) {
+      dossier.parentNode.insertBefore(
+        step('pnHmStep2', '02', 'What Atlas has established'), dossier);
+      if (fitSec && fitSec.parentNode === dossier.parentNode)
+        dossier.parentNode.insertBefore(fitSec, dossier.nextSibling);
+    }
+    if (optsHead && optsHead.parentNode && !optsHead.hidden
+        && results && results.length) {
+      optsHead.parentNode.insertBefore(
+        step('pnHmStep3', '03', 'What you could explore next'), optsHead);
+    }
+    /* The plate's label. Matched by the card's own rendered name, so a card
+       can only ever be labelled with its own product's supplier and area. */
+    const byName = {};
+    (results || []).forEach(function (r) {
+      const p = r && r.product;
+      if (p && p.name) byName[p.name] = p;
+    });
+    document.querySelectorAll('#altResults .results-gallery-card').forEach(function (card) {
+      const media = card.querySelector('.results-gallery-media');
+      const nm = card.querySelector('.results-gallery-name');
+      if (!media || !nm || !media.querySelector('img.pn-image-fallback')) return;
+      const p = byName[nm.textContent.trim()];
+      if (!p) return;
+      if (p.organisation) media.setAttribute('data-pn-org', p.organisation);
+      if (typeof p.floorAreaM2 === 'number')
+        media.setAttribute('data-pn-area', String(p.floorAreaM2).replace(/\.0+$/, '') + ' m²');
+    });
     return true;
   }
 
@@ -13290,6 +13468,9 @@ html.pn-myplot-view:not(.pn-myplot-open) body::after{content:"Opening My Plot\20
          property's own three topics. Rendered after the product branch,
          which hides the section when there is no product. */
       if (pnVerdictShown) pnRenderResidentialDecide(fit);
+      /* GARDEN HOME RESULTS (15 Nov 2026): the three-move presentation,
+         only where the property verdict is the main result. */
+      if (pnVerdictShown && fit && fit.verdictState) pnHomeResultsChrome(true, results);
     } catch (e) { /* the concatenated verdict below stands on its own */ }
     showScreen(els.matchResultsScreen);
     window.scrollTo({ top: 0, behavior: 'auto' });
@@ -30513,6 +30694,9 @@ html.pn-myplot-view:not(.pn-myplot-open) body::after{content:"Opening My Plot\20
   function renderMatchResults(results, use){
     pnResultUse = (use === 'residential') ? 'residential' : 'garden-room';
     const pnResidential = pnResultUse === 'residential';
+    /* GARDEN HOME RESULTS (15 Nov 2026): every render starts from the
+       shipped presentation; the residential bridge re-applies its own. */
+    try { pnHomeResultsChrome(false); } catch (e) {}
     els.matchPrimary.innerHTML = '';
     els.matchAlternatives.innerHTML = '';
 
@@ -39605,6 +39789,13 @@ html.pn-myplot-view:not(.pn-myplot-open) body::after{content:"Opening My Plot\20
         verdictKnown: why.filter(function(w){ return w[0] === 'hm-yes'; })
                          .map(function(w){ return w[2]; }),
         verdictOpenCount: why.filter(function(w){ return w[0] !== 'hm-yes'; }).length,
+        /* GARDEN HOME RESULTS (15 Nov 2026). The state and the checklist the
+           page has ALREADY computed, passed by reference so the redesigned
+           introduction can show them. d.st is the same verdict that chose
+           COPY above; ck is the same list written into #dhCheck. Nothing is
+           recomputed, reworded or rounded here. */
+        verdictState: d.st,
+        verdictToVerify: ck.slice(),
         whyHtml: $('dhWhy') ? $('dhWhy').innerHTML : '',
         calcHtml: $('dhCalc') ? $('dhCalc').innerHTML : '',
         checkHtml: $('dhCheck') ? $('dhCheck').innerHTML : '',

@@ -40,6 +40,9 @@ Mutation proof: atlas-tools/prove-premium-discovery-capability.py
 """
 import hashlib, html as H, json, re, subprocess, sys, pathlib
 from collections import Counter
+import sys as _jc_sys, os as _jc_os
+_jc_sys.path.insert(0, _jc_os.path.dirname(_jc_os.path.abspath(__file__)))
+from journey_cta_exemption import strip_journey_cta  # the one permitted addition (15 Nov 2026)
 
 TOOLS = pathlib.Path(__file__).resolve().parent
 ROOT = pathlib.Path(sys.argv[sys.argv.index("--dir") + 1]).resolve() if "--dir" in sys.argv else TOOLS.parent
@@ -300,7 +303,7 @@ def main():
         print("snapshot written; BASE_SNAPSHOT_SHA256 = %s" % snap_sha(s)); return 0
     try:
         base, how = load_base()
-        new = (ROOT / PAGE).read_text(encoding="utf-8")
+        new = strip_journey_cta((ROOT / PAGE).read_text(encoding="utf-8"))
         recorded, os_, ns_ = check(new, base)
     except Refused as e:
         print("PREMIUM-HFA · REFUSED: %s" % e); return 2

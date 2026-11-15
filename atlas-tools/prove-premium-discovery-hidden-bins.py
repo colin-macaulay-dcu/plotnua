@@ -23,6 +23,9 @@ Allowed, and nothing else:
 """
 import hashlib, json, os, re, subprocess, sys
 from html.parser import HTMLParser
+import sys as _jc_sys, os as _jc_os
+_jc_sys.path.insert(0, _jc_os.path.dirname(_jc_os.path.abspath(__file__)))
+from journey_cta_exemption import strip_journey_cta  # the one permitted addition (15 Nov 2026)
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PAGE = "discovery-hidden-bins.html"
@@ -98,7 +101,7 @@ def main():
         f["ref"] = sys.argv[2]
         os.makedirs(os.path.dirname(BASE), exist_ok=True)
         json.dump(f, open(BASE, "w"), indent=1, ensure_ascii=False); print("base written from", sys.argv[2]); return
-    base = json.load(open(BASE)); now = facts(open(os.path.join(ROOT, PAGE), encoding="utf-8").read())
+    base = json.load(open(BASE)); now = facts(strip_journey_cta(open(os.path.join(ROOT, PAGE), encoding="utf-8").read()))
     bad = []; ok = 0
     def check(name, cond, why=""):
         nonlocal ok
@@ -125,7 +128,7 @@ def main():
     FIGS = ("3.5 m\u00b2 maximum area 1.4 m maximum height 0.6 m setback from the front wall "
             "\u00bd no reduction of the open front garden by more than half")
     check("D2 hidden additions carry no words but the Class 62 figures already stated beneath them", now["hidden_text"] == FIGS, repr(now["hidden_text"][:120]))
-    html = open(os.path.join(ROOT, PAGE), encoding="utf-8").read()
+    html = strip_journey_cta(open(os.path.join(ROOT, PAGE), encoding="utf-8").read())
     qs = html[html.index('id="practical-questions"'):]; qs = qs[:qs.index("</section>")]
     check("D5 nine question cards, every one open in the markup (all answers on view without scripting)",
           qs.count('<details class="faq-item hb-qa" open>') == 9 and qs.count("<details") == 9)

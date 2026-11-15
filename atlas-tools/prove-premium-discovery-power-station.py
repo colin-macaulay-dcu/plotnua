@@ -26,6 +26,9 @@ Against a pinned snapshot of the production page (atlas-tools/premium-discovery/
 import hashlib, html as H, json, os, re, subprocess, sys
 from collections import Counter
 from html.parser import HTMLParser
+import sys as _jc_sys, os as _jc_os
+_jc_sys.path.insert(0, _jc_os.path.dirname(_jc_os.path.abspath(__file__)))
+from journey_cta_exemption import strip_journey_cta  # the one permitted addition (15 Nov 2026)
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PAGE = "discovery-house-as-power-station.html"
@@ -143,7 +146,7 @@ def main():
         page = subprocess.check_output(["git", "show", sys.argv[2] + ":" + PAGE], cwd=ROOT).decode("utf-8")
         f = facts(page); f.pop("main"); f["ref"] = sys.argv[2]
         json.dump(f, open(BASE, "w"), indent=1, ensure_ascii=False); print("base written from", sys.argv[2]); return
-    base = json.load(open(BASE)); page = open(os.path.join(ROOT, PAGE), encoding="utf-8").read()
+    base = json.load(open(BASE)); page = strip_journey_cta(open(os.path.join(ROOT, PAGE), encoding="utf-8").read())
     if sys.argv[1:2] == ["--diff"]:
         now = facts(page); want, used = expected_blocks(base); have = Counter(now["blocks"])
         print(json.dumps(list((have - want).elements()), ensure_ascii=False, indent=1))

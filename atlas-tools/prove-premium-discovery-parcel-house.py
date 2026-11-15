@@ -20,6 +20,9 @@ Against a pinned snapshot of the production page (atlas-tools/premium-discovery/
 import hashlib, json, os, re, subprocess, sys
 from collections import Counter
 from html.parser import HTMLParser
+import sys as _jc_sys, os as _jc_os
+_jc_sys.path.insert(0, _jc_os.path.dirname(_jc_os.path.abspath(__file__)))
+from journey_cta_exemption import strip_journey_cta  # the one permitted addition (15 Nov 2026)
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PAGE = "discovery-neighbourhood-parcel-house.html"
@@ -129,7 +132,7 @@ def main():
         for k in ("hidden_roots", "hidden_text", "main", "post_raw"): f.pop(k)
         f["ref"] = sys.argv[2]
         json.dump(f, open(BASE, "w"), indent=1, ensure_ascii=False); print("base written from", sys.argv[2]); return
-    base = json.load(open(BASE)); now = facts(open(os.path.join(ROOT, PAGE), encoding="utf-8").read())
+    base = json.load(open(BASE)); now = facts(strip_journey_cta(open(os.path.join(ROOT, PAGE), encoding="utf-8").read()))
     bad = []; ok = 0
     def check(name, cond, why=""):
         nonlocal ok

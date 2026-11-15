@@ -32,6 +32,9 @@ a fetch, a register endpoint or a new link to a check or register page; the Prov
 import html as H, json, os, re, subprocess, sys
 from collections import Counter
 from html.parser import HTMLParser
+import sys as _jc_sys, os as _jc_os
+_jc_sys.path.insert(0, _jc_os.path.dirname(_jc_os.path.abspath(__file__)))
+from journey_cta_exemption import strip_journey_cta  # the one permitted addition (15 Nov 2026)
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PAGE = "discovery-the-borrowed-garden.html"
@@ -298,7 +301,7 @@ def main():
     if "--snapshot" in sys.argv:
         return snapshot(sys.argv[sys.argv.index("--snapshot") + 1])
     base = json.load(open(BASE, encoding="utf-8"))
-    src = open(os.path.join(ROOT, PAGE), encoding="utf-8").read()
+    src = strip_journey_cta(open(os.path.join(ROOT, PAGE), encoding="utf-8").read())
     if "--faults" in sys.argv:
         if check(src, base):
             print("FAULTS · the real page must pass first"); return 1

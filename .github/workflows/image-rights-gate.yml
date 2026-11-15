@@ -385,6 +385,10 @@ jobs:
           set -euo pipefail
           python3 atlas-tools/prove-premium-discovery-a-home-for-art.py
           python3 atlas-tools/prove-premium-discovery-capability.py
+          # The journey CTA band below the hero (15 Nov 2026) is the one permitted addition to these pinned
+          # pages: built form only, directly below the hero, repeating a journey link the page already has.
+          python3 atlas-tools/build-discovery-journey-cta.py --check
+          python3 atlas-tools/prove-journey-cta-exemption.py
           # The Hidden Bins editorial redesign (founder approval, 3 Nov 2026): wording, links, images,
           # head, JSON-LD, slider and property check unchanged against the pinned 202d292 snapshot.
           python3 atlas-tools/prove-premium-discovery-hidden-bins.py
