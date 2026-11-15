@@ -507,7 +507,7 @@ html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-match-results
 
 /* Option Detail hierarchy: the building's name leads, then maker, then price. */
 html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-product-detail[data-pn-home-detail] #pdName{
-  margin:6px 0 6px; font-family:'Instrument Serif',Georgia,serif; font-weight:400;
+  margin-top:6px; margin-bottom:6px; font-family:'Instrument Serif',Georgia,serif; font-weight:400;
   font-size:clamp(30px, 3vw, 38px); line-height:1.08; letter-spacing:-.005em; color:#F2EBE0; text-wrap:balance;
 }
 html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-product-detail[data-pn-home-detail] #pdOrg{
