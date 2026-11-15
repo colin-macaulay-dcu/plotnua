@@ -2560,9 +2560,22 @@ html.pn-myplot-view:not(.pn-myplot-open) body::after{content:"Opening My Plot\20
   }
   .my-plot-access-wrap[hidden]{ display:none; }
   /* MY PLOT PILL — tucked while the homeowner scrolls down (see
-     pnMyPlotPillHeadroom); no taps reach it while it is away. */
+     pnFixedNavHeadroom); no taps reach it while it is away. */
   .my-plot-access-wrap{ transition:transform .28s cubic-bezier(.2,.8,.2,1), opacity .2s ease; }
   .my-plot-access-wrap.is-tucked{ transform:translateY(calc(-100% - 28px)); opacity:0; pointer-events:none; }
+  .my-plot-access-wrap.is-tucked:focus-within{ transform:none; opacity:1; pointer-events:auto; }
+  /* FIXED NAVIGATION — the PlotNua mark and "Back to your answers" tuck with
+     the pill (see pnFixedNavHeadroom). Same look; only position and opacity
+     move, and focus always brings a control back. */
+  html.pn-nav-ready .brand-mark.in{ transition:opacity .2s ease, transform .28s cubic-bezier(.2,.8,.2,1), box-shadow .4s ease; }
+  html.pn-nav-tucked .brand-mark.in{ transform:translateY(calc(-100% - 24px)); opacity:0; pointer-events:none; }
+  html.pn-nav-tucked .pn-return{ transform:translateY(calc(100% + 24px)); opacity:0; pointer-events:none; }
+  html.pn-nav-tucked .brand-mark.in:focus-visible,
+  html.pn-nav-tucked .pn-return:focus-visible{ transform:none; opacity:1; pointer-events:auto; }
+  .pn-return{ transition:border-color .18s ease, box-shadow .18s ease, color .18s ease, transform .28s cubic-bezier(.2,.8,.2,1), opacity .2s ease; }
+  @media (prefers-reduced-motion:reduce){
+    .pn-return, .brand-mark{ transition:opacity .01s linear !important; }
+  }
   @media (prefers-reduced-motion:reduce){ .my-plot-access-wrap{ transition:opacity .01s linear; } }
   /* On phones the pill is a size smaller, so even at the top of a screen it
      covers less: 72px tall -> 56px. */
@@ -32513,48 +32526,84 @@ html.pn-myplot-view:not(.pn-myplot-open) body::after{content:"Opening My Plot\20
       + '<span class="my-plot-access-chevron" aria-hidden="true">\u2192</span>';
   }
 
-  /* MY PLOT PILL — OUT OF THE WAY WHILE READING (15 Nov 2026).
-     The pill is position:fixed at the top right and, below ~1100px wide,
-     sits over the content column, so every heading and control scrolled
-     beneath it (measured at 375px: 267 x 72px, 71% of the width). It now
-     tucks away while the homeowner scrolls down and returns as soon as they
-     scroll up or reach the top of a screen. While tucked it
-     takes no taps. Wider screens, where it sits outside the column, are
-     unchanged. The count, the click handler and the hidden rule in
-     updateMyPlotAccess() are untouched. */
-  (function pnMyPlotPillHeadroom(){
+  /* FIXED NAVIGATION — OUT OF THE WAY WHILE READING (15 Nov 2026).
+     Three controls are position:fixed over the content column below
+     ~1100px wide: the My Plot pill (top right), the PlotNua mark (top left)
+     and "Back to your answers" (bottom left). Content scrolled beneath them.
+     They now tuck away together while the homeowner scrolls down, and return
+     when they scroll up, reach the top of a screen or reach its end. Brought
+     back mid-page, they tuck again after a short pause so they do not sit
+     over a name, a price or a button. While tucked they take no taps; a
+     keyboard user who tabs to any of them sees it at once (CSS
+     :focus-visible / :focus-within). Wider screens, where all three sit
+     outside the column, are unchanged. Each control's markup, label,
+     handler and own show/hide rules are untouched.
+     State: html.pn-nav-tucked (all three) and, for the pill as before,
+     .my-plot-access-wrap.is-tucked. */
+  (function pnFixedNavHeadroom(){
     const wrap = els.myPlotAccessWrap;
-    if (!wrap || typeof window.matchMedia !== 'function') return;
+    const root = document.documentElement;
+    if (typeof window.matchMedia !== 'function') return;
     const narrow = window.matchMedia('(max-width: 1099px)');
     const lastY = new WeakMap();
-    const show = function () { wrap.classList.remove('is-tucked'); };
-    const posOf = function (t) {
-      return (t === document || t === document.documentElement || t === document.body || !t || t.scrollTop == null)
-        ? (window.scrollY || document.documentElement.scrollTop || 0) : t.scrollTop;
+    let idle = null;
+    const navEls = function () {
+      return [wrap, document.getElementById('pnReturn'), document.querySelector('.brand-mark')].filter(Boolean);
+    };
+    const engaged = function () {
+      return navEls().some(function (n) { return n.matches(':hover') || n.contains(document.activeElement); });
+    };
+    const tuck = function () {
+      clearTimeout(idle);
+      root.classList.add('pn-nav-tucked', 'pn-nav-ready');
+      if (wrap) wrap.classList.add('is-tucked');
+    };
+    const show = function () {
+      clearTimeout(idle);
+      root.classList.remove('pn-nav-tucked');
+      if (wrap) wrap.classList.remove('is-tucked');
+    };
+    /* shown mid-page: tuck again after a pause, unless in use */
+    const showBriefly = function () {
+      show();
+      idle = setTimeout(function () { if (narrow.matches && !engaged()) tuck(); }, 2800);
+    };
+    const metrics = function (t) {
+      const doc = (t === document || t === root || t === document.body || !t || t.scrollTop == null);
+      const el = doc ? root : t;
+      return { y: doc ? (window.scrollY || root.scrollTop || 0) : t.scrollTop,
+               room: el.scrollHeight - el.clientHeight };
+    };
+    const settle = function (y, room, prev) {
+      if (y < 64) { show(); return; }
+      if (room - y < 80) { show(); return; }          /* the end of the screen */
+      if (y - prev > 4) tuck();
+      else if (prev - y > 4) showBriefly();
     };
     document.addEventListener('scroll', function (e) {
       if (!narrow.matches) { show(); return; }
       const t = (e.target && e.target.nodeType === 1) ? e.target : document;
-      const y = posOf(t);
+      const m = metrics(t);
       const prev = lastY.has(t) ? lastY.get(t) : 0;
-      lastY.set(t, y);
-      if (y < 64) show();
-      else if (y - prev > 4) wrap.classList.add('is-tucked');
-      else if (prev - y > 4) show();
+      lastY.set(t, m.y);
+      settle(m.y, m.room, prev);
     }, { capture: true, passive: true });
-    /* After a tap (which may change screen), show the pill only if the
-       screen now on view is at its top; mid-page it stays out of the way
-       until the homeowner scrolls up. */
+    /* After a tap (which may change screen): shown at the top or end of the
+       screen now on view, otherwise left out of the way. */
     document.addEventListener('click', function () {
       setTimeout(function () {
+        if (!narrow.matches) return;
         let a = document.elementFromPoint(window.innerWidth / 2, window.innerHeight / 2);
-        while (a && a !== document.body && a !== document.documentElement &&
+        while (a && a !== document.body && a !== root &&
                !(a.scrollHeight > a.clientHeight + 10 && /(auto|scroll)/.test(getComputedStyle(a).overflowY))) a = a.parentElement;
-        const y = (a && a !== document.body && a !== document.documentElement) ? a.scrollTop
-          : (window.scrollY || document.documentElement.scrollTop || 0);
-        if (y < 64) show();
+        const m = metrics((a && a !== document.body && a !== root) ? a : document);
+        if (m.y < 64 || m.room - m.y < 80) show();
       }, 450);
     }, true);
+    /* keyboard: focusing a tucked control brings the row back */
+    document.addEventListener('focusin', function (e) {
+      if (navEls().some(function (n) { return n.contains(e.target); })) show();
+    });
     if (narrow.addEventListener) narrow.addEventListener('change', show);
   })();
 
