@@ -282,3 +282,44 @@ html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-match-results
   html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-match-results[data-pn-home-results] #altResults .results-gallery-media{ width:100%; flex:0 0 auto; min-height:0; aspect-ratio:4/3; }
   html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-match-results[data-pn-home-results] #altResults .results-gallery-media:has(img.pn-image-fallback){ aspect-ratio:16/10; box-shadow:inset 0 -1px 0 var(--hm-hair); }
 }
+
+/* ==========================================================================
+   Additional Home Option Detail (15 Nov 2026). Scoped to
+   #screen-product-detail[data-pn-home-detail], which only
+   pnOpenAdditionalHomeDetail() sets and every Garden Room open clears.
+   The same plate as the cards when no photograph is authorised.
+   ========================================================================== */
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-product-detail[data-pn-home-detail] .pd-image-wrap:has(img.pn-image-fallback){
+  position:relative; display:block; aspect-ratio:16/9; overflow:hidden;
+  background:
+    radial-gradient(90% 70% at 0% 100%, rgba(179,146,114,.12) 0%, rgba(179,146,114,0) 60%),
+    linear-gradient(160deg, #313336 0%, #232426 100%);
+  box-shadow:inset 0 -1px 0 rgba(194,189,181,.16);
+}
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-product-detail[data-pn-home-detail] .pd-image-wrap > img.pn-image-fallback{ display:none; }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-product-detail[data-pn-home-detail] .pd-image-wrap:has(img.pn-image-fallback)::before{
+  content:attr(data-pn-area); position:absolute; left:28px; top:24px; right:28px;
+  font-family:'Instrument Serif',Georgia,serif; font-size:clamp(48px, 6vw, 72px); line-height:1;
+  color:#F2EBE0;
+}
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-product-detail[data-pn-home-detail] .pd-image-wrap:has(img.pn-image-fallback)::after{
+  content:'Photograph not yet authorised for PlotNua';
+  position:absolute; left:28px; right:28px; bottom:20px; padding:12px 0 0;
+  border-top:1px solid rgba(194,189,181,.16);
+  font-family:'Hanken Grotesk',system-ui,sans-serif; font-size:11px; font-weight:500;
+  letter-spacing:.06em; text-transform:uppercase; color:#ABA59C;
+}
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-product-detail[data-pn-home-detail] .pd-home-intel{ padding:4px 0 8px; }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-product-detail[data-pn-home-detail] .pd-home-h{
+  margin:18px 0 8px; font-family:'Hanken Grotesk',system-ui,sans-serif; font-size:11px; font-weight:600;
+  letter-spacing:.16em; text-transform:uppercase; color:#B39272;
+}
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-product-detail[data-pn-home-detail] .pd-home-spec{
+  margin:0; font-size:15px; line-height:1.6; color:#E7DED0;
+}
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-product-detail[data-pn-home-detail] :is(.pd-home-src, .pd-home-bound){
+  margin:8px 0 0; font-size:13px; line-height:1.55; color:#ABA59C;
+}
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-product-detail[data-pn-home-detail] a.pd-home-site{
+  display:inline-flex; align-items:center; justify-content:center; text-decoration:none;
+}

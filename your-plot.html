@@ -13372,6 +13372,15 @@ html.pn-myplot-view:not(.pn-myplot-open) body::after{content:"Opening My Plot\20
   }
 
   window.__PN_RENDER_RESIDENTIAL__ = function (results, fit) {
+    /* ADDITIONAL HOME OPTION DETAIL (15 Nov 2026): the rows the cards are
+       drawn from, kept so "View option" opens the same product. */
+    try {
+      pnHomeDetail.byId = new Map();
+      (results || []).forEach(function (r) {
+        if (r && r.product && r.product.id) pnHomeDetail.byId.set(r.product.id, r);
+      });
+      pnHomeDetail.boundary = (fit && fit.verdictParts && fit.verdictParts[3]) || null;
+    } catch (e) {}
     const fitEl = document.getElementById('hmrPropertyFit');
     if (fitEl && fit) {
       fitEl.hidden = false;
@@ -31198,9 +31207,294 @@ html.pn-myplot-view:not(.pn-myplot-open) body::after{content:"Opening My Plot\20
     },
   });
 
+  /* =====================================================================
+     ADDITIONAL HOME — OPTION DETAIL (15 Nov 2026).
+
+     WHY THIS EXISTS. "View option" on a Garden Home card called
+     openProductDetail(), which looks the id up in the Garden Room pool only,
+     so every Additional Home product returned silently and the button did
+     nothing. The same Option Detail screen and its elements are reused here;
+     only what is specific to a Garden Room product (its decision profile,
+     Atlas detail partitions, Resolve registry and the Result → Resolve →
+     Progress cue) is not called, because none of it exists for these
+     records and calling it would put Garden Room claims on a home.
+
+     WHERE THE DATA COMES FROM. pnHomeDetail is filled by
+     __PN_RENDER_RESIDENTIAL__ with the exact {role, product, ctx} rows the
+     cards were drawn from, so the card and its detail cannot disagree. Every
+     line shown is one the page already governs: the price through
+     pnPriceDisplay(), the image through pnAuthorisedImage(), the findings
+     and open questions from ctx.residentialKnown / residentialOpen, and the
+     planning boundary from the verdict's own fourth string.
+
+     THE ONE OUTBOUND LINK. A plain link to the maker's own product page,
+     shown only when that URL is https AND is one of the pages Atlas itself
+     recorded as evidence for this product. It is an <a>, not a second
+     window.open door; the single outbound door for Garden Room
+     (pnSupplierHandover) is untouched. Founder instruction, 15 Nov 2026.
+     ===================================================================== */
+  const pnHomeDetail = { byId: new Map(), boundary: null };
+  function pnHomeDetailProduct(id){
+    const e = pnHomeDetail.byId.get(id);
+    return e ? e.product : null;
+  }
+  const PN_HOME_SIGNAL_LABEL = {
+    SLEEPING_ACCOMMODATION: 'Sleeping accommodation',
+    BATHROOM: 'Bathroom',
+    KITCHEN: 'Kitchen',
+    HEATING: 'Heating'
+  };
+  const PN_PD_DEFAULT = { label: null, more: null };
+  function pnHomeDetailReset(){
+    const scr = els.productDetailScreen;
+    if (!scr || !scr.hasAttribute('data-pn-home-detail')) return;
+    scr.removeAttribute('data-pn-home-detail');
+    const lab = scr.querySelector('.pd-explain-label');
+    if (lab && PN_PD_DEFAULT.label != null) lab.textContent = PN_PD_DEFAULT.label;
+    const sum = els.pdMore && els.pdMore.querySelector('summary');
+    if (sum && PN_PD_DEFAULT.more != null) sum.textContent = PN_PD_DEFAULT.more;
+    const wrap = els.pdImage && els.pdImage.parentNode;
+    if (wrap) { wrap.removeAttribute('data-pn-area'); wrap.removeAttribute('data-pn-org'); }
+  }
+  /* The maker's page, only when Atlas recorded it as this product's evidence. */
+  function pnHomeVerifiedPage(product){
+    const rec = (product && product.additionalHome) || {};
+    const url = typeof product.productUrl === 'string' ? product.productUrl.trim() : '';
+    if (!/^https:\/\//i.test(url)) return null;
+    const src = (rec.sources || []).filter(function (s) { return s && s.url === url; })[0];
+    if (!src) return null;
+    let host = '';
+    try { host = new URL(url).hostname.replace(/^www\./, ''); } catch (e) { return null; }
+    return { url: url, host: host, accessed: src.accessed || null };
+  }
+  function pnHomeDate(iso){
+    const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(String(iso || ''));
+    if (!m) return null;
+    const MONTHS = ['January','February','March','April','May','June','July',
+                    'August','September','October','November','December'];
+    return (+m[3]) + ' ' + MONTHS[(+m[2]) - 1] + ' ' + m[1];
+  }
+  function pnOpenAdditionalHomeDetail(productId, returnScreen){
+    const entry = pnHomeDetail.byId.get(productId);
+    if (!entry || !entry.product) return false;
+    const product = entry.product;
+    const ctx = entry.ctx || {};
+    const rec = product.additionalHome || {};
+    const scr = els.productDetailScreen;
+
+    productDetailReturn.remember(returnScreen);
+    if (els.productDetailCloseBtn) {
+      els.productDetailCloseBtn.textContent =
+        (productDetailReturn.returnTarget() === els.myPlotScreen)
+          ? '← Back to My Plot' : '← Back to Results';
+    }
+    const lab = scr.querySelector('.pd-explain-label');
+    const sum = els.pdMore && els.pdMore.querySelector('summary');
+    if (!scr.hasAttribute('data-pn-home-detail')) {
+      if (lab) PN_PD_DEFAULT.label = lab.textContent;
+      if (sum) PN_PD_DEFAULT.more = sum.textContent;
+    }
+    scr.setAttribute('data-pn-home-detail', '1');
+
+    /* PHOTOGRAPH — the same governed re-check as every other surface. */
+    delete els.pdImage.dataset.pnFallback;
+    els.pdImage.classList.remove('pn-image-fallback');
+    attachImageFallback(els.pdImage);
+    const wrap = els.pdImage.parentNode;
+    if (wrap) {
+      const oldCredit = wrap.querySelector('.pn-image-credit');
+      if (oldCredit) oldCredit.remove();
+      wrap.removeAttribute('data-pn-area'); wrap.removeAttribute('data-pn-org');
+    }
+    const pdImg = pnAuthorisedImage(product);
+    if (pdImg) {
+      els.pdImage.src = pdImg.url;
+      els.pdImage.alt = pdImg.alt || product.name;
+      pnAttachImageCredit(wrap, pdImg);
+    } else {
+      els.pdImage.dataset.pnFallback = '1';
+      els.pdImage.classList.add('pn-image-fallback');
+      els.pdImage.src = PN_IMAGE_FALLBACK_SRC;
+      els.pdImage.alt = product.name;
+      /* The approved plate: the building's own published area, in words. */
+      if (wrap && hasValidArea(product.floorAreaM2))
+        wrap.setAttribute('data-pn-area', String(product.floorAreaM2).replace(/\.0+$/, '') + ' m²');
+      if (wrap && product.organisation) wrap.setAttribute('data-pn-org', product.organisation);
+    }
+
+    els.pdRole.textContent = 'An option for an additional home';
+    if (els.pdDiscoveryTag) els.pdDiscoveryTag.hidden = true;
+    els.pdName.textContent = product.name;
+    els.pdOrg.textContent = product.organisation || '';
+    els.pdPrice.textContent = pnPriceDisplay(product);
+    if (hasValidArea(product.floorAreaM2)) {
+      els.pdArea.textContent = product.floorAreaM2 + 'm²';
+      els.pdArea.hidden = false;
+    } else { els.pdArea.textContent = ''; els.pdArea.hidden = true; }
+
+    /* SPECIFICATION CHIPS — each one a field on the governed record. */
+    els.pdSpecs.innerHTML = '';
+    const chips = [];
+    if (rec.habitation && /CONFIRMED/.test(String(rec.habitation.state || '')))
+      chips.push(['Sold as living accommodation', 'confirmed']);
+    (rec.habitation && rec.habitation.signals || []).forEach(function (s) {
+      if (PN_HOME_SIGNAL_LABEL[s]) chips.push([PN_HOME_SIGNAL_LABEL[s], 'confirmed']);
+    });
+    if (rec.area && rec.area.measurementBasis === 'VERIFIED_INTERNAL' && hasValidArea(product.floorAreaM2))
+      chips.push(['Published internal floor area', 'confirmed']);
+    if (product.irishAvailability) chips.push(['Available in Ireland', 'confirmed']);
+    const basis = rec.price && rec.price.state === 'VERIFIED_NUMERIC_PRICE' ? rec.price.basis : null;
+    if (basis === 'EXCLUDES_VAT') chips.push(['Price excludes VAT', 'caution']);
+    else if (basis === 'VAT_UNKNOWN') chips.push(['VAT position not confirmed', 'caution']);
+    chips.forEach(function (c) { els.pdSpecs.appendChild(atlasChip(c[0], c[1])); });
+
+    /* WHY IT IS HERE, AND WHAT ATLAS HAS ESTABLISHED — the card's own lines. */
+    if (lab) lab.textContent = 'Why Atlas included it';
+    els.pdReasons.innerHTML = '';
+    els.pdReasonsFull.innerHTML = '';
+    [ctx.leadReason].concat(ctx.residentialKnown || []).filter(Boolean)
+      .forEach(function (r, i) {
+        if (i === 1 && /^Sold in Ireland as living accommodation$/.test(r)) return;
+        const li = document.createElement('li');
+        li.textContent = r;
+        els.pdReasons.appendChild(li);
+      });
+    if (els.pdReasonsToggle) els.pdReasonsToggle.hidden = true;
+
+    /* MORE DETAIL — the maker's published specification as Atlas recorded
+       it (only the part before Atlas's own research notes), its source, and
+       the planning boundary, unchanged. */
+    if (sum) sum.textContent = 'More detail — published specification and planning position';
+    els.pdIntelligence.innerHTML = '';
+    const intel = document.createElement('div');
+    intel.className = 'pd-home-intel';
+    const spec = String(rec.description || '').split(/\s*===/)[0].trim();
+    const page = pnHomeVerifiedPage(product);
+    const firstSrc = (rec.sources || [])[0] || null;
+    if (spec) {
+      const h = document.createElement('h3'); h.className = 'pd-home-h';
+      h.textContent = 'Published specification';
+      const p = document.createElement('p'); p.className = 'pd-home-spec'; p.textContent = spec;
+      intel.appendChild(h); intel.appendChild(p);
+      const srcRef = page || (firstSrc ? { accessed: firstSrc.accessed } : null);
+      const when = srcRef && pnHomeDate(srcRef.accessed);
+      const s = document.createElement('p'); s.className = 'pd-home-src';
+      s.textContent = 'As published by ' + (product.organisation || 'the maker')
+        + (when ? ', recorded by Atlas on ' + when : ', as recorded by Atlas')
+        + '. The maker may have changed it since.';
+      intel.appendChild(s);
+    }
+    const ph = document.createElement('h3'); ph.className = 'pd-home-h';
+    ph.textContent = 'Planning position';
+    intel.appendChild(ph);
+    if (pnHomeDetail.boundary) {
+      const b = document.createElement('p'); b.className = 'pd-home-bound';
+      b.textContent = pnHomeDetail.boundary;
+      intel.appendChild(b);
+    }
+    const nr = document.createElement('p'); nr.className = 'pd-home-bound';
+    nr.textContent = 'Atlas has not placed it ahead of the other options.';
+    intel.appendChild(nr);
+    els.pdIntelligence.appendChild(intel);
+    if (els.pdMore) els.pdMore.open = false;
+
+    /* SAVE — the same Set, provenance and My Plot access as everywhere else. */
+    els.pdActions.innerHTML = '';
+    const saveBtn = document.createElement('button');
+    saveBtn.type = 'button';
+    saveBtn.className = 'match-card-save-btn';
+    const syncSaveBtn = function () {
+      const isSavedNow = savedProductIds.has(product.id);
+      saveBtn.setAttribute('aria-pressed', isSavedNow ? 'true' : 'false');
+      saveBtn.innerHTML = plotIcon(isSavedNow)
+        + (isSavedNow ? ' ✓ Saved to My Plot' : ' Save to My Plot');
+      saveBtn.classList.toggle('is-saved', isSavedNow);
+    };
+    syncSaveBtn();
+    saveBtn.addEventListener('click', function () {
+      if (!savedProductIds.has(product.id)) { savedProductIds.add(product.id); recordSaveProvenance(product); }
+      else { savedProductIds.delete(product.id); savedMeta.delete(product.id); }
+      syncSaveBtn();
+      updateMyPlotAccess();
+    });
+    els.pdActions.appendChild(saveBtn);
+
+    const pdHost = els.pdActions.parentNode;
+    let checks = document.getElementById('pdChecks');
+    if (!checks) {
+      checks = document.createElement('section');
+      checks.id = 'pdChecks';
+      checks.className = 'pd-checks';
+      pdHost.appendChild(checks);
+    }
+    checks.innerHTML = '';
+    const openQs = ctx.residentialOpen || [];
+    if (openQs.length) {
+      const ch = document.createElement('h3');
+      ch.className = 'pd-checks-head';
+      ch.textContent = 'What still needs checking';
+      checks.appendChild(ch);
+      const ul = document.createElement('ul');
+      ul.className = 'pd-checks-list';
+      openQs.forEach(function (q) {
+        const li = document.createElement('li'); li.textContent = q; ul.appendChild(li);
+      });
+      checks.appendChild(ul);
+      checks.hidden = false;
+    } else { checks.hidden = true; }
+
+    let nextWrap = document.getElementById('pdNext');
+    if (!nextWrap) {
+      nextWrap = document.createElement('section');
+      nextWrap.id = 'pdNext';
+      nextWrap.className = 'pd-next';
+      pdHost.insertBefore(nextWrap, els.pdActions.nextSibling);
+    }
+    nextWrap.innerHTML = '';
+    const nh = document.createElement('h3');
+    nh.className = 'pd-next-head';
+    nh.textContent = 'Explore it further';
+    nextWrap.appendChild(nh);
+    if (page) {
+      const np = document.createElement('p');
+      np.className = 'pd-next-note';
+      np.textContent = 'See it on ' + (product.organisation || 'the maker') + '’s own page. '
+        + 'You will leave PlotNua, and prices or details may have changed since Atlas recorded them.';
+      nextWrap.appendChild(np);
+      const a = document.createElement('a');
+      a.className = 'pd-next-cta pd-home-site';
+      a.href = page.url;
+      a.target = '_blank';
+      a.rel = 'noopener noreferrer';
+      a.textContent = 'View on ' + page.host + ' ↗';
+      a.setAttribute('aria-label', 'View ' + product.name + ' on ' + page.host + ' (opens in a new tab)');
+      nextWrap.appendChild(a);
+    }
+    const backLink = document.createElement('button');
+    backLink.type = 'button';
+    backLink.className = 'pd-next-back';
+    backLink.textContent = (productDetailReturn.returnTarget() === els.myPlotScreen)
+      ? 'Back to My Plot' : 'Back to results';
+    backLink.addEventListener('click', function () { productDetailReturn.close(); });
+    nextWrap.appendChild(backLink);
+    const plotLink = document.createElement('button');
+    plotLink.type = 'button';
+    plotLink.className = 'pd-next-back pd-next-plot';
+    plotLink.textContent = 'Open My Plot →';
+    plotLink.addEventListener('click', function () {
+      myPlotReturn.remember(els.productDetailScreen);
+      openMyPlot();
+    });
+    nextWrap.appendChild(plotLink);
+
+    showScreen(els.productDetailScreen);
+    return true;
+  }
+
   function openProductDetail(productId, returnScreen){
     const product = getActiveAtlasPool().find(p => p.id === productId);
-    if (!product) return;
+    if (!product) { pnOpenAdditionalHomeDetail(productId, returnScreen); return; }
+    pnHomeDetailReset();
     productDetailReturn.remember(returnScreen);
     // PB043B FIX 1 — the SAME control, relabelled to name its destination.
     // No second close icon and no duplicate navigation were added: the panel
@@ -32236,7 +32530,7 @@ html.pn-myplot-view:not(.pn-myplot-open) body::after{content:"Opening My Plot\20
     const grid = document.createElement('div');
     grid.className = 'myplot-saved-grid';
     ids.forEach(id => {
-      const live = getActiveAtlasPool().find(p => p.id === id);
+      const live = getActiveAtlasPool().find(p => p.id === id) || pnHomeDetailProduct(id);
       const meta0 = savedMeta.get(id) || {};
       // SPRINT 1.5 — a saved option whose product has left the Recommendation
       // Universe used to disappear silently. It now keeps its card. The
