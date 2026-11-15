@@ -31415,6 +31415,21 @@ html.pn-myplot-view:not(.pn-myplot-open) body::after{content:"Opening My Plot\20
       if (!savedProductIds.has(product.id)) { savedProductIds.add(product.id); recordSaveProvenance(product); }
       else { savedProductIds.delete(product.id); savedMeta.delete(product.id); }
       syncSaveBtn();
+      /* The card this was opened from shows the same state on return, in
+         the card's own wording (buildSaveActions). */
+      const isSaved = savedProductIds.has(product.id);
+      document.querySelectorAll('#altResults .results-gallery-card').forEach(function (card) {
+        const nm = card.querySelector('.results-gallery-name');
+        if (!nm || nm.textContent.trim() !== product.name) return;
+        const b = card.querySelector('.match-card-save-primary');
+        if (b) {
+          b.setAttribute('aria-pressed', isSaved ? 'true' : 'false');
+          b.innerHTML = plotIcon(isSaved) + (isSaved ? ' Saved to My Plot ✓' : ' Save to My Plot');
+          b.classList.toggle('is-saved', isSaved);
+        }
+        const l = card.querySelector('.match-card-open-myplot-link');
+        if (l) l.hidden = !isSaved;
+      });
       updateMyPlotAccess();
     });
     els.pdActions.appendChild(saveBtn);
