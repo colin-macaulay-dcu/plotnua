@@ -19648,7 +19648,7 @@ html.pn-myplot-view:not(.pn-myplot-open) body::after{content:"Opening My Plot\20
     const dp = lastDecisionProfile;
     const saved = [];
     savedProductIds.forEach(function(id){
-      const p = pool.find(function(x){ return x.id === id; }) || null;
+      const p = pool.find(function(x){ return x.id === id; }) || pnHomeDetailProduct(id) || null;
       const meta = savedMeta.get(id) || {};
       saved.push({
         productId: id,
@@ -19681,6 +19681,10 @@ html.pn-myplot-view:not(.pn-myplot-open) body::after{content:"Opening My Plot\20
            option invisible to an earlier build. An unknown extra field costs
            an earlier build nothing. Absence reads as "no positions". */
         resolve: resolvePositions.get(id) || null,
+        /* MY PLOT PERSISTENCE — additive, Garden Home only, absent otherwise;
+           an unknown extra field costs an earlier build nothing (RS-2b). */
+        ...(Array.isArray(meta.open) ? { open: meta.open } : {}),
+        ...(meta.ahReason ? { ahReason: meta.ahReason } : {}),
       });
     });
     return {
@@ -19868,6 +19872,8 @@ html.pn-myplot-view:not(.pn-myplot-open) body::after{content:"Opening My Plot\20
         name: r.name || null,
         supplier: r.supplier || null,
         price: (r.price != null) ? r.price : null,
+        open: Array.isArray(r.open) ? r.open : undefined,
+        ahReason: r.ahReason || undefined,
         restored: true,
         orphaned: !live,
       });
@@ -20558,6 +20564,21 @@ html.pn-myplot-view:not(.pn-myplot-open) body::after{content:"Opening My Plot\20
         : 'You saved this from the options Atlas put forward.',
       savedAt: new Date().toISOString(),
     });
+    /* MY PLOT PERSISTENCE (15 Nov 2026). A Garden Home product carries the
+       governed lines it was shown with, so its detail reads the same after a
+       reload, when the property assessment is no longer in the page. Name,
+       supplier, price and area are recorded by myPlotSnapshot() as for any
+       product. Garden Room saves are untouched. */
+    if (product && product.additionalHome) {
+      const row = pnHomeDetail.byId.get(product.id);
+      const ctx = (row && row.ctx) || {};
+      const m = savedMeta.get(product.id);
+      m.name = product.name || null;
+      m.supplier = product.organisation || null;
+      m.ahReason = ctx.leadReason || null;
+      m.evidence = Array.isArray(ctx.residentialKnown) ? ctx.residentialKnown.slice() : [];
+      m.open = Array.isArray(ctx.residentialOpen) ? ctx.residentialOpen.slice() : [];
+    }
   }
   const productDetailContext = new Map();
 
@@ -31234,9 +31255,55 @@ html.pn-myplot-view:not(.pn-myplot-open) body::after{content:"Opening My Plot\20
      (pnSupplierHandover) is untouched. Founder instruction, 15 Nov 2026.
      ===================================================================== */
   const pnHomeDetail = { byId: new Map(), boundary: null };
+  /* MY PLOT PERSISTENCE (15 Nov 2026). A saved Garden Home product is not in
+     the Garden Room pool, so after a reload My Plot could not find it. The
+     governed Additional Home artefact is read once, ONLY when My Plot holds a
+     saved id it cannot otherwise resolve (a Garden Room-only visitor makes no
+     extra request), and only PUBLISHABLE + ELIGIBLE records are recognised,
+     so a product that has since gone on HOLD or been excluded is treated as
+     withdrawn exactly as a Garden Room product would be. The view is built by
+     the residential module's own pnAdditionalHomeView(), never re-derived. */
+  const pnAhStore = { byId: new Map(), views: new Map(), loading: null, loaded: false };
+  function pnAhEnsure(){
+    if (pnAhStore.loading) return pnAhStore.loading;
+    pnAhStore.loading = fetch('additional-home-universe-v1.json', { cache: 'no-store' })
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (d) {
+        ((d && d.products) || []).forEach(function (p) {
+          if (p && p.id && p.publicVisibility === 'PUBLISHABLE'
+              && p.qualification && p.qualification.state === 'ELIGIBLE')
+            pnAhStore.byId.set(p.id, p);
+        });
+      })
+      .catch(function (e) { console.warn('[My Plot] Additional Home records not loaded', e); })
+      .then(function () { pnAhStore.loaded = true; });
+    return pnAhStore.loading;
+  }
+  function pnAhRestoredProduct(id){
+    if (pnAhStore.views.has(id)) return pnAhStore.views.get(id);
+    const rec = pnAhStore.byId.get(id);
+    if (!rec || typeof window.__PN_AH_VIEW__ !== 'function') return null;
+    const v = window.__PN_AH_VIEW__(rec);
+    pnAhStore.views.set(id, v);
+    return v;
+  }
   function pnHomeDetailProduct(id){
     const e = pnHomeDetail.byId.get(id);
-    return e ? e.product : null;
+    return e ? e.product : pnAhRestoredProduct(id);
+  }
+  /* The detail row for a saved product with no row in this visit: the
+     governed lines recorded when it was saved, nothing recomputed. */
+  function pnHomeDetailEntry(id){
+    const e = pnHomeDetail.byId.get(id);
+    if (e) return e;
+    const product = pnAhRestoredProduct(id);
+    if (!product) return null;
+    const m = savedMeta.get(id) || {};
+    return { role: 'residential', product: product, ctx: {
+      leadReason: m.ahReason || null,
+      residentialKnown: Array.isArray(m.evidence) ? m.evidence : [],
+      residentialOpen: Array.isArray(m.open) ? m.open : []
+    } };
   }
   const PN_HOME_SIGNAL_LABEL = {
     SLEEPING_ACCOMMODATION: 'Sleeping accommodation',
@@ -31275,7 +31342,7 @@ html.pn-myplot-view:not(.pn-myplot-open) body::after{content:"Opening My Plot\20
     return (+m[3]) + ' ' + MONTHS[(+m[2]) - 1] + ' ' + m[1];
   }
   function pnOpenAdditionalHomeDetail(productId, returnScreen){
-    const entry = pnHomeDetail.byId.get(productId);
+    const entry = pnHomeDetailEntry(productId);
     if (!entry || !entry.product) return false;
     const product = entry.product;
     const ctx = entry.ctx || {};
@@ -32542,10 +32609,21 @@ html.pn-myplot-view:not(.pn-myplot-open) body::after{content:"Opening My Plot\20
       updateCompareVisibility();
       return;
     }
+    /* MY PLOT PERSISTENCE. A saved id that is neither Garden Room nor a
+       Garden Home product from this visit may be a Garden Home product saved
+       earlier: read the governed artefact once, then render again, rather
+       than calling it withdrawn before we know. */
+    const pnUnresolved = ids.some(function (id) {
+      return !getActiveAtlasPool().find(p => p.id === id) && !pnHomeDetailProduct(id);
+    });
+    if (pnUnresolved && !pnAhStore.loaded) {
+      pnAhEnsure().then(function () { renderMyPlotSavedList(); });
+    }
     const grid = document.createElement('div');
     grid.className = 'myplot-saved-grid';
     ids.forEach(id => {
       const live = getActiveAtlasPool().find(p => p.id === id) || pnHomeDetailProduct(id);
+      if (!live && pnUnresolved && !pnAhStore.loaded) return;
       const meta0 = savedMeta.get(id) || {};
       // SPRINT 1.5 — a saved option whose product has left the Recommendation
       // Universe used to disappear silently. It now keeps its card. The
@@ -39656,6 +39734,12 @@ html.pn-myplot-view:not(.pn-myplot-open) body::after{content:"Opening My Plot\20
      "harmless" is not the same as "isolated", and a Garden Room homeowner
      should carry no HOME listeners at all. Gated on the value the branch
      itself uses, published once by the main script. */
+  /* MY PLOT PERSISTENCE (15 Nov 2026). The ONE governed view builder for an
+     Additional Home record, published before the residential-only return so
+     My Plot can rebuild a saved Garden Home product after a reload, on any
+     route, from the governed artefact. A function declaration, so it is
+     hoisted: nothing else in this module runs on other routes. */
+  window.__PN_AH_VIEW__ = pnAdditionalHomeView;
   if (window.__PN_INTENDED_USE__ !== 'residential') return;
   var root = document.getElementById('homeJourney');
   if (!root) return;
