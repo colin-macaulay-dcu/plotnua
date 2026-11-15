@@ -421,7 +421,9 @@ html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-match-results
   content:none; display:none;
 }
 html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-match-results[data-pn-home-results] #altResults .results-gallery-media:has(.pn-hm-plate) > :not(.pn-hm-plate){ display:none !important; }
-html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-match-results[data-pn-home-results] #altResults .results-gallery-media .pn-hm-plate{ min-height:248px; }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-match-results[data-pn-home-results] #altResults .results-gallery-media .pn-hm-plate{ min-height:272px; padding:24px 22px 18px; }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-match-results[data-pn-home-results] #altResults .pn-hm-plate-fac li{ font-size:12px; }
+html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-match-results[data-pn-home-results] #altResults .pn-hm-plate-fac li + li::before{ margin:0 7px; }
 
 /* Option Detail: the same plate, a little larger. */
 html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-product-detail[data-pn-home-detail] .pd-image-wrap:has(.pn-hm-plate){
