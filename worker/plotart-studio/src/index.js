@@ -12,6 +12,7 @@ import { verifyAccess, who } from './auth.js';
 import * as L from './lib.js';
 import * as AG from './agreement.js';
 import * as GAR from './gallery-application-review.js';
+import { REVIEW_JS } from './application-review-ui.js';
 import * as H from './hire.js';
 import * as O from './opportunities.js';   // Opportunities & delivery (development 13 Nov 2026): expressions of interest only
 import { artistBody, artworkBody, previewPage, shown } from './render.js';
@@ -1297,7 +1298,8 @@ async function route(req, env) {
       return json({ ok: true, founding_number: n });
     }
     /* ---- Founding 25 applications with artwork images (private bucket plotart-applications; founder only) */
-    if (p === '/admin/applications' || /^\/admin\/applications\/(?:F25|PA-AP)-\d{6}-[0-9A-F]{6}$/.test(p)) return html(A.ADMIN_HTML);
+    if (p === '/admin/application-review.js' && m === 'GET') return new Response(REVIEW_JS, { headers: { 'Content-Type': 'application/javascript; charset=utf-8', 'Cache-Control': 'private, no-store', 'X-Content-Type-Options': 'nosniff' } });
+    if (p === '/admin/applications' || /^\/admin\/applications\/(?:F25|PA-AP)-\d{6}-[0-9A-F]{6}$/.test(p)) return html(A.ADMIN_HTML.replace('</body>', '<script src="/admin/application-review.js" defer></script></body>'));
     if ((mm = p.match(/^\/admin\/applications\/((?:F25|PA-AP)-\d{6}-[0-9A-F]{6})\/img\/([1-5]\.(?:jpg|png|webp))$/)) && m === 'GET') {
       if (!env.APPLICATIONS) return html('Not found', 404);
       const o = await env.APPLICATIONS.get(`applications/${mm[1]}/${mm[2]}`);
