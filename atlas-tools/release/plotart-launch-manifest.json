@@ -32,8 +32,8 @@
     "choose-art-for-living-room.html": "c4694e7b44d1783907ef65d3ee5d5c574d4821b591b33246d52882ab9298dd08",
     "downloads/plotart-art-buying-checklist.pdf": "d7c8329122a20f316e84a7b5b8deb84c9b4612a1c16c94732bd7e322c19b34a6",
     "art-for-hire/hire-live.js": "f2c6e10854841ddd99810ef2260b64c01a369f676ab591d201c0ed55137f2715",
-    "art-for-hire/index.html": "d63e977f8e4b175c9ccc7db96d66cde9f4592bf3084272ca8c76769e7ee57ad7",
-    "art-for-hire/art-for-hire.css": "9be0c45b064b8a3c1191fda38080b45ce536966352ac2e089e7e6d8c894c278b",
+    "art-for-hire/index.html": "be32894dd58d60b975decb340113dccd827393264e4dd9277d6a94a2cfe3e247",
+    "art-for-hire/art-for-hire.css": "8ca4631252e4b896083d2b4496aa5d6f4778e00cedde5d1276168b30d9ceb8ef",
     "artworks/index.html": "830393436c6c69795c1ccf85fc2ce72ff5923725825feba3e5f1cb74346cb282",
     "assets/plotart-artworks.css": "4aec032f9b736c0961cced18224c67809fe6da29e97db3b1c4a2665cb2113367",
     "large-artworks/index.html": "b7d4cbff4a8172874fd64d880e05604151dd4130f77fa3fbf3508b50210bdadb",
@@ -53,6 +53,6 @@
     "large-artworks/index.html": "f99ebdce408de54073837216dedc7af495cd3203cc8d6b9e2bde63f3186d44c8"
   },
   "outside_hire_catalogue": {
-    "art-for-hire/index.html": "fa3cdaa22f3624be0b8caef66ca1d6a25f1fb2d501b778d102115e064f891fdf"
+    "art-for-hire/index.html": "e47e92f3333e506c0e6ed94436de2048faa33ecb1c64ba175f67e8c13b1042d9"
   }
 }

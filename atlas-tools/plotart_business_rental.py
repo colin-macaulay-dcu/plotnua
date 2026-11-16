@@ -18,6 +18,11 @@ REGION = BEGIN + """
 <div><h3>Six months, with replacements</h3><p>The initial arrangement is six months. If a painting sells, we follow the agreed notice and changeover procedure and seek a suitable replacement approved by the business and its owner. A replacement does not restart the six months. If none is agreed, charges for the affected work stop and unused prepaid fees are refunded.</p></div>
 <div><h3>The business funds the practical costs</h3><p>The renting business pays approved packing, delivery, hanging, removal, return and the required artwork insurance. This includes specialist handling where needed. Sale-changeover costs and limits are agreed upfront. Neither artist nor PlotArt is expected to front these costs.</p></div>
 </div>
+<div class="afh-business-price" id="rental-delivery">
+<h3>Delivery, collection and installation</h3>
+<p>We are investigating delivery partners and aim to share useful contacts as these are confirmed. Businesses and artists may already have their own couriers or art handlers; either can propose a provider. The artist must approve the packing, handling and transport arrangements, and suitable artwork insurance must be confirmed before any work moves. Large, fragile or high-value works may require specialist art handlers.</p>
+<p>The renting business pays the approved packing, outward delivery, installation, collection and return costs, including agreed sale changeovers. These costs are quoted separately from the monthly rental and approved in writing before booking. Artists and PlotArt are not expected to advance these costs. Any contacts we share are introductions; you agree the transport service directly with the provider.</p>
+</div>
 <div class="afh-business-price">
 <h3>What the rental costs</h3>
 <p>Calculations below illustrate the standard rate; they are not available artwork listings. Transport, insurance, any deposit and any separately applicable VAT are not included. Your written proposal must show the actual total and tax treatment before you commit.</p>
@@ -34,7 +39,7 @@ REGION = BEGIN + """
 </div>
 <div class="afh-business-grid afh-business-details">
 <div><h3>Sale comes first</h3><p>The standard sale-recall notice is 30 calendar days, with a shorter period possible by agreement. A buyer must be told the release timetable. Replacements and their costs need approval. If none is agreed within seven days after removal, the affected placement can end without penalty; unused prepaid charges are refunded within 14 days. No rent is charged for an uncovered gap.</p></div>
-<div><h3>Care and cover before movement</h3><p>The business funds suitable artwork cover for the agreed value throughout packing, transport, installation, display, removal and return. Existing business cover is not assumed sufficient: evidence and each handler’s cover must be confirmed. PlotArt does not provide insurance. Buying insurance does not remove anyone’s responsibility for their own negligence.</p></div>
+<div><h3>Insurance: paid for by the business</h3><p>The renting business funds suitable artwork insurance for loss or damage at the agreed value, covering packing, collection, transport, installation, display, removal and return. Its existing policy may be used if suitable cover is confirmed; ordinary business cover or a courier’s cover is not automatically sufficient. Evidence of cover, limits, exclusions and excesses must be agreed before movement, with no gaps between the business’s and handlers’ policies.</p><p>PlotArt does not provide or guarantee insurance, and the artist is not expected to purchase placement cover. Each party remains responsible for its own acts and negligence.</p></div>
 <div><h3>Direct arrangements</h3><p>You hire directly from the artist and pay the artist and approved service providers directly. PlotArt’s fee is separately agreed and invoiced. Delivery onward to a purchaser is a separate sale arrangement. Existing artist gallery and founding terms are unchanged; general Studio preferences alone never authorise a placement.</p></div>
 </div>
 <div class="afh-business-download" id="artist-rental-download">
