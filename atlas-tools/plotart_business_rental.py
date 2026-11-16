@@ -53,7 +53,7 @@ REGION = BEGIN + """
 <div class="afh-business-download" id="artist-rental-download">
 <h3>For artists: read the terms first.</h3>
 <p>Download the artist guide, blank business hire agreement, placement schedules and separate PlotArt fee and participation agreement. It is a template to complete and agree before signing, not an executed contract, an insurance policy or an enrolment. It has not been independently reviewed by a solicitor or insurer.</p>
-<p><a class="afh3-btn" href="../downloads/plotart-business-rental-artist-guide-and-agreement.pdf" download>Download artist guide and agreement (PDF)</a></p>
+<p><a class="afh3-btn" href="../downloads/plotart-business-rental-artist-guide-and-agreement.pdf?v=1.1" download>Download artist guide and agreement (PDF)</a></p>
 <p class="afh-business-version">PA-BHR-2026-11 · Version 1.1 · 16 November 2026</p>
 </div>
 <div class="afh-business-contact">
