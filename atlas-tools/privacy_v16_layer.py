@@ -5,6 +5,8 @@ chooses in PlotArt Studio can be shown publicly beside their published gallery a
 PREPARED FOR RELEASE. NOT PUBLISHED until the founder authorises it, and published BEFORE migration 0015 runs and before
 PlotArt Studio offers the choice: the Studio records PA-OPP-PUBLIC-2026-11, the wording this version describes. Like V7-V15,
 V16 is an EXACT, REVERSIBLE edit on top of the published page:
+  P2  Section 8 (V11): the website's version history is described accurately (it is kept on GitHub and can be viewed
+      publicly), correcting "private ... not public"; no right or retention period changes.
   P1  Section 8, #plotart-opportunities (V12/V13): "Your answers are never published." becomes the precise rule: the
       practical answers stay private; the kinds of opportunity chosen may be shown, by default for answers saved once the
       choice exists (legitimate interests, explained before saving, one-click opt-out), and only after the artist's own
@@ -33,14 +35,26 @@ P1_NEW = (f"<!-- {MARKER} · opportunities shown publicly, privacy notice {VERSI
           "PlotArt Studio explains this before you save, and you can keep them private with one click, before saving or at any "
           "time afterwards. If you saved your answers before this choice was offered, nothing is shown unless you confirm it in "
           "PlotArt Studio. They are shown only while your gallery is published; if you keep them private, deselect an opportunity "
-          "or your gallery is removed, they are taken off plotnua.ie at the next website update. "
+          "or your gallery is removed, they are taken off plotnua.ie at the next website update (earlier versions remain in our "
+          "website’s version history, described below). "
           "You can change them at any time in PlotArt Studio")
-PAIRS = [(P1_OLD, P1_NEW)]
+# P2 (16 Nov 2026, release-readiness review): the V11 sentence called the website's version history private and not public.
+# The repository that publishes plotnua.ie is public on GitHub, so that history can be viewed publicly. This corrects the
+# statement of fact only; it changes no right and no retention period, and nothing is used for any other purpose.
+P2_OLD = ("The web versions of published photographs also remain in the private version history of our website, which is not "
+          "public and is not used for anything else.")
+P2_NEW = ("<!-- PLOTNUA-PLOTART-VERSION-HISTORY-PRIVACY-V16 · version history described accurately -->"
+          "The web versions of published photographs, like earlier versions of all our web pages, also remain in the version "
+          "history of our website’s source code. That history is kept on GitHub, where it can be viewed publicly. We do not use "
+          "it for anything else, and removing a gallery or a listing from plotnua.ie does not remove these earlier copies.")
+PAIRS = [(P1_OLD, P1_NEW), (P2_OLD, P2_NEW)]
 
 
 def apply_v16(text: str) -> str:
     if MARKER in text:
         raise ValueError("V16 already applied")
+    if "PLOTNUA-PLOTART-AGREEMENT-PRIVACY-V11" not in text:
+        raise ValueError("V16 applies on top of V11 (the version-history sentence) only")
     if "PLOTNUA-PLOTART-OPPORTUNITIES-CARE-PRIVACY-V13" not in text:
         raise ValueError("V16 applies on top of V13 (the Opportunities wording) only")
     for old, _ in PAIRS:
@@ -62,7 +76,7 @@ def without_v16(text: str) -> str:
     out = text
     for old, new in PAIRS:
         out = out.replace(new, old)
-    if MARKER in out or apply_v16(out) != text:
+    if out.count(MARKER) or apply_v16(out) != text:
         raise ValueError("privacy.html V16 layer is not an exact, reversible edit")
     return out
 

@@ -19,6 +19,7 @@ ROOT = pathlib.Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "atlas-tools"))
 import privacy_v11_layer as V  # noqa: E402
 import privacy_v12_layer as V12  # noqa: E402  (V12, 13 Nov 2026, may sit on top of V11: V11 is checked beneath it)
+import privacy_v16_layer as V16  # noqa: E402  (V16 corrects one V11 sentence: V11 wording is checked beneath V16)
 
 bad = []
 ok = lambda c, m: None if c else bad.append(m)
@@ -33,7 +34,8 @@ except ValueError as e:
     bad.append("V1 " + str(e))
 ok(priv.count('id="plotart-galleries"') == 1 and priv.count('id="plotart-enquiries"') == 1 and priv.count('id="plotart-leaving"') == 1,
    "V1 the PlotArt anchors (galleries, enquiries, leaving) must each exist once")
-text = lambda a, b: re.sub(r"\s+", " ", re.sub(r"<[^>]+>", " ", priv[priv.find(a):priv.find(b, priv.find(a))]))
+_pv = V16.without_v16(priv)   # V11's own governed wording, beneath V16's correction of the version-history sentence
+text = lambda a, b: re.sub(r"\s+", " ", re.sub(r"<[^>]+>", " ", _pv[_pv.find(a):_pv.find(b, _pv.find(a))]))
 art, buy = text('id="plotart-galleries"', 'id="plotart-enquiries"'), text('id="plotart-enquiries"', "</section>")
 for need, why in [("a fingerprint of the exact text", "the acceptance record"), ("if you choose to give it, your legal name", "the optional legal name"),
                   ("any correction we make to that record", "corrections"), ("to perform your artist agreement", "the lawful basis"),

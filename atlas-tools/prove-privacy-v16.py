@@ -35,10 +35,12 @@ for need, why in [("Your practical answers are never published", "the practical 
                   ("we have a legitimate interest", "the lawful basis (not consent)"), ("you can keep them private with one click, before saving or at any time afterwards", "the opt-out"),
                   ("If you saved your answers before this choice was offered, nothing is shown unless you confirm it", "earlier answers need confirmation"),
                   ("only while your gallery is published", "only published artists"),
-                  ("deselect an opportunity or your gallery is removed, they are taken off plotnua.ie at the next website update", "removal"),
+                  ("deselect an opportunity or your gallery is removed, they are taken off plotnua.ie at the next website update", "removal"), ("earlier versions remain in our website’s version history", "history of the lists"),
                   ("change them at any time in PlotArt Studio", "editable (V12 wording kept)")]:
     ok(need in sec, "V2 the sub-section must cover " + why)
 ok(not re.search(r"\bconsent\b", sec, re.I), "V2 the wording must not present a preselected box as consent")
+ok(V.P2_NEW in priv and "private version history" not in flat(priv) and "can be viewed publicly" in flat(priv),
+   "V2 the version-history sentence must say the history is kept on GitHub and can be viewed publicly (no 'private version history')")
 studio = ROOT / "worker" / "plotart-studio"
 rules = (studio / "src" / "opportunities-rules.js").read_text(encoding="utf-8")
 ok("export const PUBLIC_NOTICE = '%s'" % V.STUDIO_NOTICE in rules, "V3 the Studio records the notice version this text describes")
