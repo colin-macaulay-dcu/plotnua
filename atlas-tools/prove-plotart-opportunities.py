@@ -136,8 +136,11 @@ for f in pkgs:
             else:
                 diffs.append("%s/%s" % (pkg["artist"]["slug"], k))
 published = [json.load(open(f)) for f in pkgs]
-check("O3a all %d published galleries: %d gallery and artwork pages byte-identical to main (nobody shows anything yet)" % (len(pkgs), same),
-      len(pkgs) >= 5 and not diffs and not any(p["artist"].get("open_to") for p in published), diffs[:5])
+shown_now = [p for p in published if p["artist"].get("open_to")]
+lines_ok = all(OPP.check_open_to(p["artist"]["open_to"]) and OPP.artist_line(p) in open(os.path.join(ROOT, "plotart", "artists", p["artist"]["slug"], "index.html"), encoding="utf-8").read()
+               for p in shown_now)
+check("O3a all %d published galleries: %d gallery and artwork pages byte-identical to main's renderer; the %d artists showing opportunities carry a valid open_to and exactly its \"Open to\" line"
+      % (len(pkgs), same, len(shown_now)), len(pkgs) >= 5 and not diffs and lines_ok, diffs[:5])
 base = json.load(open(os.path.join(ROOT, "plotart", "artists", "leah-hewson", "gallery.json")))
 withp = copy.deepcopy(base)
 withp["artist"]["open_to"] = ["exhibitions", "living_gallery", "commissions"]
@@ -179,9 +182,33 @@ for d in ("assets",):
 for fn in ("index.html", "privacy.html"):
     shutil.copyfile(os.path.join(ROOT, fn), os.path.join(site, fn))
 before = {p: open(os.path.join(site, "plotart", p), encoding="utf-8").read() for p in OPP.PAGES}
-check("O4f today (nobody shows anything): the three programme pages carry an EMPTY region; the opportunities page says each list is empty",
-      all(OPP.REGION.search(before[p]).group(0) == OPP.BEGIN + OPP.END for p in OPP.PAGES if p != OPP.HUB)
-      and before[OPP.HUB].count("No artists are listed here yet.") == 7)
+def _thumbs_ok(doc, path):
+    """Every listed row: a listed artist (open_to carries the key), linked as one row to their gallery, with an 80x80
+    lazy-loaded thumbnail that is the smallest published derivative of a MAIN image of one of their own published works
+    (never the portrait), with that image's approved alt text, and the file present."""
+    base = "../" * path.count("/")
+    rows = re.findall(r'<li><a class="pa-opp-row" href="([^"]+)" data-pa-track="opportunity_artist">(.*?)</a></li>', doc, re.S)
+    if not rows:
+        return False
+    by = {p["artist"]["slug"]: p for p in published}
+    for href, inner in rows:
+        m = re.fullmatch(re.escape(base) + r"artists/([a-z0-9-]+)/", href)
+        pk = m and by.get(m.group(1))
+        img = re.search(r'<img class="pa-opp-thumb" src="([^"]+)" alt="([^"]+)" width="80" height="80" loading="lazy" decoding="async">', inner)
+        if not pk or not img or not OPP.open_to(pk) or "portrait" in img.group(1):
+            return False
+        mains = {base + "artists/%s/img/%s" % (pk["artist"]["slug"], min(i["derivatives"], key=lambda d: d["long_edge"])["file"]): i.get("alt")
+                 for w in pk["works"] for i in w.get("images", []) if i.get("role") == "main" and i.get("derivatives")}
+        if img.group(1) not in mains or html.unescape(img.group(2)) != (mains[img.group(1)] or "").strip() \
+                or not os.path.isfile(os.path.join(ROOT, "plotart", os.path.normpath(os.path.join(os.path.dirname(path), img.group(1))))):
+            return False
+    return True
+live_ok = all(OPP.REGION.search(before[p]).group(0) == (OPP.BEGIN + ("\n" + OPP.content(p, published) + "\n" if OPP.content(p, published) else "") + OPP.END)
+              for p in OPP.PAGES)
+listed_keys = sum(1 for k in OPP.KEYS if OPP.listed(published, k))
+check("O4f today: the four pages carry exactly the lists the published galleries produce (%d artists showing); every row is one link to the gallery with an approved artwork thumbnail (80x80, lazy, approved alt, never the portrait); unlisted kinds say so"
+      % len(shown_now), live_ok and all(_thumbs_ok(before[p], p) for p in OPP.PAGES if OPP.content(p, published))
+      and before[OPP.HUB].count("No artists are listed here yet.") == len(OPP.KEYS) - listed_keys)
 for p in pk4:
     d = os.path.join(site, "plotart", "artists", p["artist"]["slug"])
     os.makedirs(d, exist_ok=True)
