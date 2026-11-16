@@ -535,12 +535,17 @@ for name, m in (("founding-25.html", f25mv), ("living-gallery.html", re.sub(r"\s
          "L12 %s offers Founding Artists Living Gallery priority" % name)
 need('href="founding-25.html"' not in lgm and 'href="founding-25.html#apply"' not in lgm, "L12 the Living Gallery page links its artists to the Founding 25")
 need('href="../discovery-a-home-for-art.html" data-pa-track="cross_home_for_art_living"' in lgm, "L12 the Living Gallery page must link to A Home for Art")
-# the artist-facing Living Gallery section in the founder's wording (28 Oct 2026): warm, never a priority or a service
+# the artist-facing Living Gallery section in the founder's wording (revised 16 Nov 2026: artists can register interest in
+# their Studio's Opportunities section): warm and optional, never a priority, a guarantee, a confirmed placement or a
+# public Studio address
 art = re.search(r'<section class="pa-sec pa-sec--deep" id="artists">.*?</section>', lgm, re.S)
 artv = re.sub(r"\s+", " ", visible_text(art.group(0))) if art else ""
-need("Your art. In someone's home." in artv and "We're not inviting artists to take part just yet" in artv,
-     "L12 the Living Gallery artist section is not the approved wording")
-need(art is not None and 'href="../discovery-a-home-for-art.html"' in art.group(0), "L12 the Living Gallery artist section must link to A Home for Art")
+for _lg_need in ("Your art. In someone’s home.", "Imagine your work becoming part of someone’s everyday life.",
+                 "Taking part is entirely optional.", "agreed before anything proceeds.",
+                 "If you’re already a PlotArt artist, you can register your interest through the Opportunities section of your Artist Studio."):
+    need(_lg_need in artv, "L12 the Living Gallery artist section is not the approved wording (missing: %s)" % _lg_need)
+need(art is not None and not re.search(r'href="https?://|workers\.dev|<form\b', art.group(0)), "L12 the Living Gallery artist section must not link out, expose a Studio address or carry a form")
+need(not re.search(r"confirmed placement|placement is confirmed|will be placed|we will place", artv, re.I), "L12 the Living Gallery artist section implies a confirmed placement")
 need(not re.search(r"priority|guarantee|apply now|applications are open|book|sign up", artv, re.I), "L12 the Living Gallery artist section implies priority, a guarantee or an operational service")
 need("25 artists. A new home for Irish art." in f25mv, "L12 the Founding 25 programme headline is not the approved wording")
 
