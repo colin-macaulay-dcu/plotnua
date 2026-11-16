@@ -599,3 +599,14 @@ html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-product-detai
   html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-match-results[data-pn-home-results] #altResults .results-gallery-card:has(.pn-hm-plate) .results-gallery-media{ margin:0 20px; }
   html[data-pn-skin="your-plot"]:not(#pn-yp-a):not(#pn-yp-b) #screen-match-results[data-pn-home-results] #altResults .results-gallery-card:has(.pn-hm-plate) .pn-hm-plate-area{ font-size:42px; }
 }
+
+/* Garden Home (16 Nov 2026): the photograph credit links back to the maker,
+   as the grants require. Same chip as before; it becomes tappable, gains a
+   quiet arrow, and shows a clear focus ring for keyboard users. Only
+   pnHomeCreditLink() creates this element, so Garden Room is unaffected. */
+a.pn-image-credit.is-link{
+  pointer-events:auto; cursor:pointer; text-decoration:none;
+  min-height:24px; display:inline-flex; align-items:flex-end;
+}
+a.pn-image-credit.is-link:hover{ text-decoration:underline; text-underline-offset:2px; }
+a.pn-image-credit.is-link:focus-visible{ outline:2px solid #EDE6DA; outline-offset:-2px; }
