@@ -322,3 +322,7 @@ body.st{ background:var(--anth); min-height:100vh; }
 .st-chip--care{ color:#E8CF9E; border-color:rgba(217,180,94,.5); letter-spacing:.02em; }
 .st-opp-when{ font-size:12.5px; }
 .st-linkbtn{ background:none; border:0; padding:0; color:var(--terra-text); font:inherit; text-decoration:underline; text-underline-offset:3px; cursor:pointer; }
+
+/* Opportunities shown publicly (migration 0015, 16 Nov 2026) */
+.st-opp-confirm h3{ margin:0 0 8px; }
+.st-opp-chosen{ margin:0; font-size:14.5px; line-height:1.6; color:var(--ivory); }

@@ -662,3 +662,8 @@ CREATE TABLE IF NOT EXISTS application_review_actions (
   FOREIGN KEY(ref) REFERENCES application_review(ref) ON DELETE CASCADE
 );
 CREATE INDEX IF NOT EXISTS application_review_actions_ref ON application_review_actions(ref,created_at);
+
+-- PlotArt Studio · migration 0015 · Opportunities shown publicly: the artist's own choice (development 16 Nov 2026).
+ALTER TABLE artist_opportunities ADD COLUMN public_display INTEGER CHECK (public_display IS NULL OR public_display IN (0, 1));
+ALTER TABLE artist_opportunities ADD COLUMN public_decided_at TEXT CHECK (public_decided_at IS NULL OR length(public_decided_at) BETWEEN 20 AND 30);
+ALTER TABLE artist_opportunities ADD COLUMN public_notice TEXT CHECK (public_notice IS NULL OR length(public_notice) BETWEEN 8 AND 40);
