@@ -160,10 +160,11 @@ export async function submitRevision(env,ref,token,b) {
   const {s,a,row}=await authoriseRevision(env,ref,token);
   if(b.revision!==s.revision)throw fail('Application changed; reload the editing page');
   const values={};
-  const limits={artist_name:120,bio:6000,additional_info:4000,portfolio:1000,website:1000,social_link:1000};
+  const limits={artist_name:80,bio:1000,additional_info:800,portfolio:1000,website:1000,social_link:120};
   for(const [k,max] of Object.entries(limits))values[k]=text(b[k]??a[k]??'',max,k,['artist_name','bio'].includes(k));
-  for(const k of ['portfolio','website'])if(values[k]&&!/^https?:\/\/[^\s]+$/i.test(values[k]))throw fail('Invalid '+k,400);
-  if(values.social_link&&!/^(@[a-zA-Z0-9_.]+|https?:\/\/[^\s]+)$/.test(values.social_link))throw fail('Invalid social link',400);
+  if(values.bio.length<40)throw fail('Biography must contain at least 40 characters',400);
+  for(const k of ['portfolio','website'])if(values[k]&&!/^https:\/\/[^\s]+$/i.test(values[k]))throw fail('Invalid '+k,400);
+  if(values.social_link&&!/^(@[a-zA-Z0-9_.]+|https:\/\/[^\s]+)$/.test(values.social_link))throw fail('Invalid social link',400);
   const id=crypto.randomUUID();
   await lock(env,ref,id);
   try {
@@ -180,10 +181,10 @@ export async function submitRevision(env,ref,token,b) {
       clean.push({file:im.file,type:o.httpMetadata.contentType,bytes:o.size});
     }
     if(!values.portfolio&&clean.length<3)throw fail('Provide a portfolio link or at least three photographs',400);
-    const revised={...a,...values,images:clean,revised_at:stamp()};
+    const revised={...a,...values,images:clean,artwork_images:clean.length,revised_at:stamp()};
     // Write a recoverable revision artifact BEFORE changing either authoritative view.
     await env.APPLICATIONS.put(root(ref)+`review/history/${s.revision+1}.json`,JSON.stringify(revised));
-    const payload={...values,status:'under_review',revision:s.revision+1};
+    const payload={...values,status:'under_review',artwork_images:clean.length,revision:s.revision+1};
     await sql(env,'INSERT INTO application_review_actions(id,ref,kind,actor,payload,created_at) VALUES (?,?,?,?,?,?)',id,ref,'revision','applicant',JSON.stringify(payload),stamp()).run();
     return finishRevision(env,await one(env,'SELECT * FROM application_review_actions WHERE id=?',id));
   }catch(e){

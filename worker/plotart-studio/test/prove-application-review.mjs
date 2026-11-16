@@ -52,11 +52,14 @@ try{
  const preview=await pub.fetch('https://review.test/v1/application-revision/'+ref+'/image?file='+uploaded.image.file,{headers:{Authorization:'Bearer '+token}});
  check('token permits private image preview',preview.status===200&&preview.headers.get('Content-Type')==='image/png');
  check('image is inaccessible without token',(await pub.fetch('https://review.test/v1/application-revision/'+ref+'/image?file='+uploaded.image.file)).status===403);
- const revisionBody={revision:0,bio:'Revised biography',portfolio:'https://example.invalid/updated',images:[uploaded.image]};
+ const revisionBody={revision:0,bio:'Revised biography describing the synthetic artist and their practice.',portfolio:'https://example.invalid/updated',images:[uploaded.image]};
+ check('insecure links refused',!(await publicCall('/submit',token,{...revisionBody,website:'http://example.invalid'})).ok);
+ check('short biography refused',!(await publicCall('/submit',token,{...revisionBody,bio:'Too short'})).ok);
  check('unsafe links refused',!(await publicCall('/submit',token,{...revisionBody,website:'javascript:alert(1)'})).ok);
  rejectPatch=true;r=await publicCall('/submit',token,revisionBody);check('revision write failure remains pending',!r.ok&&!!(await call({op:'get'})).value.pending_action);
  rejectPatch=false;r=await call({op:'retry',id:(await call({op:'get'})).value.pending_action});
- check('resubmission returns to review',r.ok&&fields.status==='under_review'&&fields.bio==='Revised biography');
+ check('resubmission returns to review',r.ok&&fields.status==='under_review'&&fields.bio==='Revised biography describing the synthetic artist and their practice.');
+ check('replacement image count updates Airtable',fields.artwork_images===1);
  check('resubmission revokes token',(await publicCall('',token)).status===403);
  check('original remains available',JSON.parse(await(await bucket.get(`applications/${ref}/review/history/0.json`)).text()).bio==='Original biography');
  r=await call({op:'get'});check('revision and correspondence visible',r.value.revision===1&&r.value.history.length===2);

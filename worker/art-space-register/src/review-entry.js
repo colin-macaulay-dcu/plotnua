@@ -3,7 +3,7 @@
 import { WorkerEntrypoint } from 'cloudflare:workers';
 export { default } from './index.js';
 const BASE='appS4gWOxuZqJyWvU',TABLE='tblEQ8CiXFWMlWqsE';
-const FIELDS=new Set(['status','review_notes','status_changed_at','decided_at','decision_reason','decision_emailed_at','artist_name','bio','additional_info','portfolio','website','social_link']);
+const FIELDS=new Set(['status','review_notes','status_changed_at','decided_at','decision_reason','decision_emailed_at','artist_name','bio','additional_info','portfolio','website','social_link','artwork_images']);
 export class GalleryApplicationRegister extends WorkerEntrypoint {
  async fetch(req){
   const path=new URL(req.url).pathname;
