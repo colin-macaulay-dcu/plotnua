@@ -94,13 +94,48 @@ body.pa main a:focus-visible, .afh3-btn:focus-visible{ outline:2px solid var(--t
   @keyframes afh3-settle{ from{ transform:scale(1.07); filter:brightness(.6); } to{ transform:scale(1); filter:none; } }
 }
 
+/* =====================================================================================================================
+   Premium redesign (founder brief, 16 Nov 2026): one calm editorial page. A steady vertical rhythm, hairline dividers
+   instead of boxes, two-column editorial rows (heading left, content right), detail behind native disclosures.
+   Neutral only: near-black, anthracite, charcoal, off-white. The artwork carries the colour.
+   ===================================================================================================================== */
+body.pa{ --afh-pad:clamp(72px, 9vw, 136px); --afh-col:minmax(0, 5fr) minmax(0, 7fr); --afh-gap:clamp(24px, 5vw, 96px); }
+.afh-row{ display:grid; grid-template-columns:var(--afh-col); gap:18px var(--afh-gap); align-items:start; }
+body.pa main .pa-eyebrow{ margin:0 0 14px; }
+body.pa main section p a:not(.afh3-btn):not(.afh3-link){ color:var(--ivory); text-decoration:underline; text-underline-offset:.22em; text-decoration-thickness:1px; text-decoration-color:rgba(237,235,231,.45); }
+body.pa main section p a:not(.afh3-btn):not(.afh3-link):hover{ text-decoration-color:var(--ivory); }
+
+/* ---------- Who it is for: two clear paths straight after the hero ---------- */
+.afh-paths{ padding:clamp(40px, 5vw, 64px) 0; border-bottom:1px solid var(--line); }
+.afh-paths-grid{ display:grid; grid-template-columns:repeat(2, minmax(0, 1fr)); gap:28px var(--afh-gap); }
+.afh-path h2{ font-size:clamp(28px, 2.6vw, 38px); line-height:1.05; margin:0 0 14px; }
+.afh-path p{ margin:0 0 12px; max-width:52ch; color:var(--stone); font-size:16.5px; line-height:1.6; }
+.afh-path p a{ white-space:nowrap; font-weight:500; }
+.afh-path p a::after{ content:" ↓"; }
+
+/* ---------- How a hire works: heading left, the three steps as editorial rows right ---------- */
+.afh3-how{ padding:var(--afh-pad) 0; }
+#afh3-how, #afh3-works, #for-artists, #business-rentals{ scroll-margin-top:72px; }
+.afh3-how .pa-wrap{ display:grid; grid-template-columns:var(--afh-col); gap:0 var(--afh-gap); }
+.afh3-how h2, .afh3-scenes-h h2, .afh-business h2, .afh-artists h2, .afh-close h2, .afh3-artists h2{ font-size:clamp(40px, 4.6vw, 68px); line-height:1; letter-spacing:-.015em; margin:0; }
+.afh3-how h2{ grid-row:1 / span 2; align-self:start; position:sticky; top:96px; }
+.afh3-steps{ list-style:none; margin:0; padding:0; counter-reset:s; border-top:1px solid var(--line-2); }
+.afh3-steps li{ counter-increment:s; display:grid; grid-template-columns:56px minmax(0, 1fr); gap:4px 20px; padding:24px 0; border-bottom:1px solid var(--line); }
+.afh3-steps li::before{ content:counter(s, decimal-leading-zero); grid-row:1 / span 2; font-family:var(--serif); font-size:28px; line-height:1.1; color:var(--mute); }
+.afh3-steps h3{ font-size:clamp(24px, 2vw, 30px); line-height:1.1; margin:0; }
+.afh3-steps p{ margin:0; color:var(--stone); line-height:1.6; max-width:56ch; }
+.afh3-know{ list-style:none; margin:clamp(36px, 4vw, 56px) 0 0; padding:0; display:grid; grid-template-columns:repeat(2, minmax(0, 1fr)); gap:0 clamp(24px, 3vw, 44px); }
+.afh3-know li{ padding:14px 0; border-top:1px solid var(--line); color:var(--stone); line-height:1.55; font-size:15px; }
+.afh3-know strong{ display:block; color:var(--ivory); font-weight:600; margin-bottom:2px; }
+
+/* ---------- Where a hired work goes: three illustrated settings side by side ---------- */
+.afh3-scenes{ padding:var(--afh-pad) 0; border-top:1px solid var(--line); }
+.afh3-scenes-h{ display:grid; grid-template-columns:var(--afh-col); gap:14px var(--afh-gap); align-items:end; margin-bottom:clamp(32px, 4vw, 56px); }
+.afh3-scenes-h p{ margin:0; color:var(--stone); max-width:44ch; }
+.afh3-scene-row{ max-width:var(--max); margin:0 auto; padding:0 var(--gut); display:grid; grid-template-columns:repeat(3, minmax(0, 1fr)); gap:clamp(18px, 2.4vw, 36px); }
+.afh3-scene{ margin:0; min-width:0; }
 /* ---------- Scenes: rendered environments, the real painting hung in each ---------- */
-.afh3-scenes{ padding:clamp(64px, 8vw, 120px) 0 0; }
-.afh3-scenes-h{ display:flex; flex-wrap:wrap; align-items:flex-end; justify-content:space-between; gap:10px 40px; margin-bottom:clamp(28px, 3.6vw, 52px); }
-.afh3-scenes-h h2{ font-size:clamp(42px, 5vw, 76px); line-height:1; margin:0; letter-spacing:-.015em; }
-.afh3-scenes-h p{ margin:0 0 8px; color:var(--stone); max-width:42ch; }
-.afh3-scene{ margin:0 0 clamp(56px, 7vw, 112px); }
-.afh3-view{ position:relative; aspect-ratio:16/9; overflow:hidden; background:#0f1012; }
+.afh3-view{ position:relative; aspect-ratio:4/3; overflow:hidden; background:#0f1012; border-radius:2px; }
 .afh3-stage{ position:absolute; top:0; left:50%; height:100%; aspect-ratio:16/9; transform:translateX(-50%); }
 .afh3-env{ position:absolute; inset:0; width:100%; height:100%; }
 .afh3-tex{ position:absolute; inset:0; pointer-events:none; opacity:.2; mix-blend-mode:overlay;
@@ -117,7 +152,7 @@ body.pa main a:focus-visible, .afh3-btn:focus-visible{ outline:2px solid var(--t
 .afh3-sunlight{ position:absolute; inset:0; pointer-events:none; mix-blend-mode:soft-light; filter:blur(14px);
   background:linear-gradient(118deg, transparent 30%, rgba(255,248,234,.75) 38%, transparent 46%, transparent 52%, rgba(255,248,234,.55) 57%, transparent 63%); }
 /* film: monitor read-out (letterbox, record, timecode) */
-.afh3-hud{ position:absolute; inset:0; pointer-events:none; font:600 clamp(9px, .9vw, 13px)/1 var(--sans); letter-spacing:.08em; color:rgba(255,255,255,.86); }
+.afh3-hud{ position:absolute; inset:0; pointer-events:none; font:600 clamp(8px, .62vw, 10px)/1 var(--sans); letter-spacing:.08em; color:rgba(255,255,255,.86); }
 .afh3-hud::before, .afh3-hud::after{ content:""; position:absolute; left:0; right:0; height:12.8%; background:rgba(0,0,0,.92); }
 .afh3-hud::before{ top:0; } .afh3-hud::after{ bottom:0; }
 .afh3-hud span{ position:absolute; z-index:1; }
@@ -127,48 +162,88 @@ body.pa main a:focus-visible, .afh3-btn:focus-visible{ outline:2px solid var(--t
 .afh3-c{ position:absolute; width:3.4%; aspect-ratio:1; border:0 solid rgba(255,255,255,.9); }
 .afh3-c1{ top:16%; left:7%; border-top-width:2px; border-left-width:2px; } .afh3-c2{ top:16%; right:7%; border-top-width:2px; border-right-width:2px; }
 .afh3-c3{ bottom:16%; left:7%; border-bottom-width:2px; border-left-width:2px; } .afh3-c4{ bottom:16%; right:7%; border-bottom-width:2px; border-right-width:2px; }
-/* caption: editorial row under each scene */
-.afh3-scene figcaption{ max-width:var(--max); margin:0 auto; padding:clamp(18px, 2vw, 28px) var(--gut) 0; display:grid; grid-template-columns:minmax(0, 5fr) minmax(0, 7fr); gap:6px clamp(20px, 4vw, 64px); align-items:start; }
-.afh3-tag{ grid-column:1 / -1; justify-self:start; margin:0 0 4px; padding:6px 11px; border:1px solid var(--line-2); border-radius:999px; font-size:12.5px; line-height:1; color:var(--stone); }
-.afh3-scene h3{ font-size:clamp(32px, 3.4vw, 52px); line-height:1.02; margin:0; }
-.afh3-scene figcaption > p:not(.afh3-tag):not(.afh3-credit){ margin:6px 0 0; color:var(--stone); font-size:17px; line-height:1.6; max-width:52ch; }
-.afh3-credit{ grid-column:2; margin:4px 0 0; font-size:13px; color:var(--mute); }
+.afh3-scene figcaption{ padding:18px 0 0; }
+.afh3-tag{ display:inline-block; margin:0 0 10px; padding:5px 10px; border:1px solid var(--line-2); border-radius:999px; font-size:12px; line-height:1; color:var(--stone); }
+.afh3-scene h3{ font-size:clamp(24px, 2vw, 30px); line-height:1.08; margin:0 0 8px; }
+.afh3-scene figcaption > p:not(.afh3-tag):not(.afh3-credit){ margin:0; color:var(--stone); font-size:15.5px; line-height:1.6; }
+.afh3-credit{ margin:10px 0 0; font-size:12.5px; color:var(--mute); }
 
-/* ---------- Available to hire: present, but quiet until there are works ---------- */
-.afh3-works{ padding:clamp(48px, 6vw, 80px) 0; background:var(--anth); border-top:1px solid var(--line); border-bottom:1px solid var(--line); }
-.afh3-works-h{ display:flex; flex-wrap:wrap; align-items:baseline; justify-content:space-between; gap:6px 32px; margin-bottom:18px; }
-.afh3-works-h h2{ font-size:clamp(32px, 3.2vw, 44px); margin:0; }
+/* ---------- Available to hire: present, quiet until there are works ---------- */
+.afh3-works{ padding:clamp(56px, 6vw, 88px) 0; background:var(--anth); border-top:1px solid var(--line); border-bottom:1px solid var(--line); }
+.afh3-works-h{ display:grid; grid-template-columns:var(--afh-col); gap:10px var(--afh-gap); align-items:baseline; margin-bottom:22px; }
+.afh3-works-h h2{ font-size:clamp(32px, 3.2vw, 46px); margin:0; }
 .afh3-works-h p{ margin:0; color:var(--stone); }
-.pa-hire-empty.afh3-empty{ display:flex; flex-wrap:wrap; gap:6px 40px; justify-content:space-between; padding-top:16px; border-top:1px solid var(--line); color:var(--stone); font-size:15.5px; line-height:1.6; }
-.pa-hire-empty.afh3-empty p{ margin:0; max-width:70ch; }
-.pa-hire-empty.afh3-empty strong{ color:var(--ivory); font-weight:600; }
-.pa-hire-empty.afh3-empty a{ color:var(--terra-text); text-decoration:underline; text-underline-offset:3px; }
+.pa-hire-empty.afh3-empty{ display:grid; grid-template-columns:var(--afh-col); gap:8px var(--afh-gap); padding-top:18px; border-top:1px solid var(--line); color:var(--stone); font-size:15.5px; line-height:1.6; }
+.pa-hire-empty.afh3-empty p{ margin:0; max-width:62ch; }
+.pa-hire-empty.afh3-empty strong{ display:block; color:var(--ivory); font-weight:600; }
+.pa-hire-empty.afh3-empty a{ color:var(--ivory); text-decoration:underline; text-underline-offset:3px; }
 
-/* ---------- How a hire works ---------- */
-.afh3-how{ padding:clamp(64px, 8vw, 112px) 0; }
-#afh3-how, #afh3-works{ scroll-margin-top:64px; }   /* the hero action lands below the sticky header */
-.afh3-how h2, .afh3-artists h2{ font-size:clamp(40px, 4.4vw, 64px); line-height:1.02; margin:0 0 clamp(28px, 3.4vw, 48px); letter-spacing:-.01em; }
-.afh3-steps{ list-style:none; margin:0 0 clamp(36px, 5vw, 64px); padding:0; display:grid; grid-template-columns:repeat(3, minmax(0, 1fr)); gap:clamp(20px, 3vw, 44px); counter-reset:s; }
-.afh3-steps li{ counter-increment:s; padding-top:22px; border-top:1px solid var(--line-2); }
-.afh3-steps li::before{ content:counter(s); display:block; font-family:var(--serif); font-size:52px; line-height:1; color:var(--terra-text); margin-bottom:14px; }
-.afh3-steps h3{ font-size:28px; margin:0 0 8px; }
-.afh3-steps p{ margin:0; color:var(--stone); line-height:1.6; max-width:34ch; }
-.afh3-know{ list-style:none; margin:0; padding:0; display:grid; grid-template-columns:repeat(2, minmax(0, 1fr)); gap:0 clamp(24px, 4vw, 56px); }
-.afh3-know li{ padding:16px 0; border-bottom:1px solid var(--line); color:var(--stone); line-height:1.55; font-size:15.5px; }
-.afh3-know strong{ color:var(--ivory); font-weight:600; }
+/* ---------- For businesses (bounded, founder-approved terms) ---------- */
+.afh-business{ padding:var(--afh-pad) 0; background:var(--wall); }
+.afh-b-head{ display:grid; grid-template-columns:var(--afh-col); gap:18px var(--afh-gap); align-items:end; }
+.afh-business h3{ font-size:clamp(24px, 2.2vw, 30px); line-height:1.12; margin:0 0 12px; }
+.afh-business p, .afh-artists p, .afh-close p{ line-height:1.65; color:var(--stone); }
+.afh-business strong{ color:var(--ivory); font-weight:600; }
+.afh-business-intro{ margin:0 0 14px; font-size:clamp(18px, 1.6vw, 21px); color:#E3E1DD !important; max-width:52ch; }
+.afh-business-status{ margin:0; font-size:14.5px; max-width:64ch; padding-left:16px; border-left:1px solid var(--line-2); }
+.afh-terms{ margin:clamp(48px, 6vw, 80px) 0 0; display:grid; grid-template-columns:repeat(3, minmax(0, 1fr)); gap:28px clamp(24px, 3vw, 48px); }
+.afh-terms > div{ padding-top:20px; border-top:1px solid var(--line-2); }
+.afh-terms dt{ font-family:var(--serif); font-size:clamp(24px, 2.1vw, 30px); line-height:1.1; color:var(--ivory); margin:0 0 12px; }
+.afh-terms dd{ margin:0; color:var(--stone); line-height:1.62; font-size:15.5px; }
+.afh-business-price{ display:grid; grid-template-columns:var(--afh-col); gap:18px var(--afh-gap); margin-top:clamp(56px, 7vw, 96px); padding-top:clamp(28px, 3vw, 40px); border-top:1px solid var(--line-2); }
+.afh-business-price-head p{ margin:0; font-size:15px; max-width:44ch; }
+.afh-business-table{ overflow-x:auto; }
+.afh-business table{ border-collapse:collapse; width:100%; font-size:16px; text-align:left; color:var(--ivory); font-variant-numeric:tabular-nums; }
+.afh-business caption{ text-align:left; color:var(--mute); padding:0 0 10px; font-size:14px; }
+.afh-business th, .afh-business td{ padding:14px 12px; border-bottom:1px solid var(--line); font-weight:400; }
+.afh-business thead th{ font-weight:600; vertical-align:bottom; color:var(--stone); font-size:14px; }
+.afh-business th:first-child{ padding-left:0; }
+.afh-business-note{ margin:14px 0 0; font-size:14.5px; }
+.afh-more{ display:grid; grid-template-columns:var(--afh-col); gap:0 var(--afh-gap); margin-top:clamp(56px, 7vw, 96px); }
+.afh-more-h{ grid-row:1 / span 4; font-size:clamp(24px, 2.2vw, 30px) !important; }
+.afh-more details{ grid-column:2; border-top:1px solid var(--line-2); }
+.afh-more details:last-child{ border-bottom:1px solid var(--line-2); }
+.afh-more summary{ list-style:none; cursor:pointer; display:flex; justify-content:space-between; align-items:center; gap:20px; min-height:64px; padding:12px 0; font-family:var(--serif); font-size:clamp(21px, 1.8vw, 26px); color:var(--ivory); }
+.afh-more summary::-webkit-details-marker{ display:none; }
+.afh-more summary::after{ content:""; flex:none; width:14px; height:14px; background:linear-gradient(var(--stone), var(--stone)) center / 14px 1px no-repeat, linear-gradient(var(--stone), var(--stone)) center / 1px 14px no-repeat; transition:transform .2s; }
+.afh-more details[open] summary::after{ background:linear-gradient(var(--ivory), var(--ivory)) center / 14px 1px no-repeat; }
+.afh-more summary:hover{ color:#fff; }
+.afh-more summary:focus-visible{ outline:2px solid var(--ivory); outline-offset:4px; }
+.afh-more details > div{ padding:0 0 22px; max-width:68ch; }
+.afh-more details p{ margin:0 0 12px; font-size:15.5px; }
 
-/* ---------- Artists ---------- */
-.afh3-artists{ padding:clamp(56px, 7vw, 96px) 0; background:var(--wall-2); }
-.afh3-artists .pa-wrap{ display:grid; grid-template-columns:minmax(0, 5fr) minmax(0, 6fr); gap:clamp(20px, 4vw, 64px); align-items:end; }
-.afh3-artists h2{ margin:0; }
-.afh3-artists p{ margin:0; color:var(--stone); line-height:1.65; font-size:17px; max-width:52ch; }
+/* ---------- For artists ---------- */
+.afh-artists, .afh3-artists{ padding:var(--afh-pad) 0; border-top:1px solid var(--line); }
+.afh-artists-grid, .afh3-artists .pa-wrap{ display:grid; grid-template-columns:var(--afh-col); gap:18px var(--afh-gap); align-items:start; }
+.afh-artists p, .afh3-artists p{ margin:0 0 14px; max-width:60ch; font-size:16.5px; color:var(--stone); line-height:1.65; }
+.afh-business-download{ margin-top:clamp(28px, 3vw, 40px); padding-top:clamp(24px, 3vw, 32px); border-top:1px solid var(--line); }
+.afh-business-download h3{ font-size:clamp(22px, 2vw, 28px); margin:0 0 10px; }
+.afh-business-download p{ font-size:15px; }
+.afh-business-download .afh3-btn{ white-space:normal; text-align:center; max-width:100%; line-height:1.4; padding-block:14px; }
+.afh-business-version{ font-size:13px !important; color:var(--mute) !important; }
+
+/* ---------- Closing invitation ---------- */
+.afh-close{ padding:var(--afh-pad) 0; background:var(--anth); border-top:1px solid var(--line); }
+.afh-close-grid{ display:grid; grid-template-columns:var(--afh-col); gap:18px var(--afh-gap); align-items:end; }
+.afh-close p{ margin:0 0 22px; max-width:56ch; font-size:16.5px; }
+.afh-close-acts{ display:flex; flex-wrap:wrap; align-items:center; gap:14px 28px; margin:0 !important; }
 
 /* ---------- Tablet and phone ---------- */
+@media (max-width:1100px){
+  .afh3-scene-row{ grid-template-columns:1fr; max-width:760px; }
+  .afh3-view{ aspect-ratio:16/9; }
+  .afh3-hud{ font-size:clamp(8px, 1.3vw, 12px); }
+}
 @media (max-width:980px){
-  .afh3-scene figcaption{ grid-template-columns:1fr; }
-  .afh3-credit{ grid-column:1; }
-  .afh3-steps, .afh3-know{ grid-template-columns:1fr; }
-  .afh3-artists .pa-wrap{ grid-template-columns:1fr; }
+  .afh-row, .afh3-how .pa-wrap, .afh3-scenes-h, .afh3-works-h, .pa-hire-empty.afh3-empty, .afh-b-head, .afh-business-price, .afh-more, .afh-artists-grid, .afh3-artists .pa-wrap, .afh-close-grid{ grid-template-columns:1fr; }
+  .afh3-how h2{ position:static; grid-row:auto; margin-bottom:24px; }
+  .afh-more-h{ grid-row:auto; margin-bottom:14px !important; }
+  .afh-more details{ grid-column:1; }
+  .afh-terms{ grid-template-columns:1fr; }
+  .afh3-know{ grid-template-columns:1fr; }
+}
+@media (max-width:720px){
+  .afh-paths-grid{ grid-template-columns:1fr; }
 }
 @media (max-width:640px){
   .afh3-hero{ min-height:calc(100svh - 64px); }
@@ -178,37 +253,13 @@ body.pa main a:focus-visible, .afh3-btn:focus-visible{ outline:2px solid var(--t
   .afh3-hero-credit-m{ display:block; margin:0; padding:14px var(--gut) 0; font-size:13.5px; line-height:1.5; color:var(--stone); background:var(--anth); }
   .afh3-cta{ width:100%; }
   .afh3-btn{ width:100%; }
-  .afh3-view{ aspect-ratio:4/5; }
-  .afh3-hud{ font-size:9px; }
-  .afh3-c{ width:7%; }
+  .afh-close-acts .afh3-btn{ width:100%; }
+  .afh3-view{ aspect-ratio:4/3; }
+  .afh3-hud{ font-size:8px; }
+  .afh3-c{ width:6%; }
   .afh3-c1, .afh3-c3{ left:5%; } .afh3-c2, .afh3-c4{ right:5%; }
+  .afh3-steps li{ grid-template-columns:40px minmax(0, 1fr); }
+  .afh3-steps li::before{ font-size:22px; }
+  .afh-business table{ font-size:14px; }
+  .afh-business th, .afh-business td{ padding:12px 7px; }
 }
-
-
-/* Business rental information and artist download, 16 November 2026. */
-.afh-business{padding:clamp(48px,7vw,96px) 0;border-block:1px solid var(--line);background:var(--wall);scroll-margin-top:85px}
-.afh-business h2{font-size:clamp(48px,6vw,88px);line-height:1.02;margin:0 0 24px}
-.afh-business h3{font-size:clamp(26px,2.6vw,34px);line-height:1.12;margin:0 0 14px}
-.afh-business p{line-height:1.65;color:var(--stone)}
-.afh-business strong{color:var(--ivory)}
-.afh-business-intro{font-size:clamp(18px,1.8vw,23px);max-width:820px}
-.afh-business-status{font-size:15px;max-width:850px}
-.afh-business-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:32px;margin:40px 0}
-.afh-business-price,.afh-business-download,.afh-business-contact{padding-top:32px;margin-top:32px;border-top:1px solid var(--line-2)}
-.afh-business-table{overflow-x:auto}
-.afh-business table{border-collapse:collapse;width:100%;font-size:16px;text-align:left;color:var(--ivory)}
-.afh-business caption{text-align:left;color:var(--stone);padding:12px 0}
-.afh-business th,.afh-business td{padding:14px 12px;border-bottom:1px solid var(--line);font-weight:400}
-.afh-business thead th{font-weight:600;vertical-align:bottom}
-.afh-business th:first-child{padding-left:0}
-.afh-business-download .afh3-btn{color:var(--anth);white-space:normal;text-align:center;max-width:100%;line-height:1.4;padding-block:14px}
-#rental-delivery{scroll-margin-top:85px}
-.afh-business-version{font-size:13px}
-.afh-business-contact .afh3-link{display:inline-block;margin-right:24px;margin-bottom:12px}
-@media(max-width:800px){.afh-business-grid{grid-template-columns:1fr;gap:24px}.afh-business table{font-size:14px}.afh-business th,.afh-business td{padding:12px 7px}}
-
-/* Installation responsibilities: native expandable disclosure. */
-.afh-business-installation{border-block:1px solid var(--line-2);margin-top:32px;padding:20px 0}
-.afh-business-installation summary{cursor:pointer;color:var(--ivory);font-size:20px;font-weight:600;padding:6px 0;min-height:44px}
-.afh-business-installation summary:focus-visible{outline:2px solid var(--ivory);outline-offset:4px}
-.afh-business-installation>div{padding-top:16px;max-width:78ch}
