@@ -16976,6 +16976,192 @@
       "source_sha256": "65bdc3e3060f6f288639cbfddc31a76d163e3eab97413ed64f0cc8139d31749f",
       "subject": "artwork",
       "work_slug": "sweat-from-the-sun-tears-from"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "mark-kavanagh-rasher",
+      "asset": "plotart/artists/mark-kavanagh-rasher/img/vr-vacation-1-600.webp",
+      "bytes": 63904,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (sRGB IEC61966-2.1)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-avhiqiv1u1c",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        600,
+        423
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "5ac61d415440f7570be2f518a49715e35de3c5be9996dc2c485a1c4368e99347",
+      "source_sha256": "00218caa1291a3395753c0305a066e6a2cfac407b17579c477578025c1119eaa",
+      "subject": "artwork",
+      "work_slug": "vr-vacation"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "mark-kavanagh-rasher",
+      "asset": "plotart/artists/mark-kavanagh-rasher/img/vr-vacation-1-1200.webp",
+      "bytes": 197802,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (sRGB IEC61966-2.1)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-avhiqiv1u1c",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        1200,
+        846
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "cf0f9e263cbbf2000cf586e4f6f8d8258f9bb16992b3cf176818f78df98c3873",
+      "source_sha256": "00218caa1291a3395753c0305a066e6a2cfac407b17579c477578025c1119eaa",
+      "subject": "artwork",
+      "work_slug": "vr-vacation"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "mark-kavanagh-rasher",
+      "asset": "plotart/artists/mark-kavanagh-rasher/img/vr-vacation-1-2000.webp",
+      "bytes": 463654,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (sRGB IEC61966-2.1)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-avhiqiv1u1c",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        2000,
+        1410
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "ffea9f06bad9823478018154f54c22682b335309b39f010a10e8f179227eaddf",
+      "source_sha256": "00218caa1291a3395753c0305a066e6a2cfac407b17579c477578025c1119eaa",
+      "subject": "artwork",
+      "work_slug": "vr-vacation"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "mark-kavanagh-rasher",
+      "asset": "plotart/artists/mark-kavanagh-rasher/img/the-universe-is-in-me-1-600.webp",
+      "bytes": 23574,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (sRGB IEC61966-2.1)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-avhiqiv1u1c",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        448,
+        600
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "514ff8b4d9ecfc017c9e59cb676ee6c1bb78373dd6306c8dbc3bbacee520a6f4",
+      "source_sha256": "f769261519fd8a1bda36504c698aa6eac1c087ff285360f1085e7023df24e976",
+      "subject": "artwork",
+      "work_slug": "the-universe-is-in-me"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "mark-kavanagh-rasher",
+      "asset": "plotart/artists/mark-kavanagh-rasher/img/the-universe-is-in-me-1-1200.webp",
+      "bytes": 88458,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (sRGB IEC61966-2.1)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-avhiqiv1u1c",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        895,
+        1200
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "49bfa0f18271e30346bcb7b5a259350bb3ed30b38ad4dcb73120dccbb1d04551",
+      "source_sha256": "f769261519fd8a1bda36504c698aa6eac1c087ff285360f1085e7023df24e976",
+      "subject": "artwork",
+      "work_slug": "the-universe-is-in-me"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "mark-kavanagh-rasher",
+      "asset": "plotart/artists/mark-kavanagh-rasher/img/the-universe-is-in-me-1-2000.webp",
+      "bytes": 259112,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (sRGB IEC61966-2.1)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-avhiqiv1u1c",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        1492,
+        2000
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "27621119a8c2e5306a86860e1c6b354124a24e5a53d0711c28fcfec0f340251e",
+      "source_sha256": "f769261519fd8a1bda36504c698aa6eac1c087ff285360f1085e7023df24e976",
+      "subject": "artwork",
+      "work_slug": "the-universe-is-in-me"
     }
   ],
   "legacy_undeclared": [
