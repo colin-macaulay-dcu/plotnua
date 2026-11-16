@@ -1,12 +1,12 @@
 {
   "schema": "plotnua.plotart.launch-manifest.v1",
   "note": "SHA-256 of every published PlotArt file, from the launch build that passed prove-plotart-launch.py L1-L12 with the demonstration names (development branch founder/plotart-prototype). Any change to a published PlotArt file must come from a new verified build. Rebuilt 28 Oct 2026 (the legal-information release 2c89865 had changed the footers without updating this manifest). Rebuilt 29 Oct 2026 for the navigation and homepage refinement. Rebuilt 29 Oct 2026 for artist galleries Phase 1: artist gallery files are verified by L14 (provenance fingerprints), not pinned here. Rebuilt 3 Nov 2026 for the Mobile Gallery public work-in-progress release (five-pill navigation on every PlotArt page; plotart/mobile-gallery/ added; founder release authorisation). Search release 7 Nov 2026: homepage, About, Virtual Gallery search metadata, public artist A-Z and its styles verified; all image and unrelated page pins retained. Buyer search release 7 Nov 2026: two guides, their scoped stylesheet and the home/gallery entry links. Generated guide excerpts are checked against approved public exports; all other pins retained. Wall-size release 8 Nov 2026: reviewed calculator, scoped assets, home/buyer entry links and public sitemap. Homepage campaign release 8 Nov 2026: full three-room image beside calculator invitation, responsive layout, artwork credit and visible illustration disclosure. Living-room guide release 8 Nov 2026: public editorial guide, printable checklist, homepage and buyer-guide links. No new artist inventory. Art for Hire 3B-5 (development branch, 10 Nov 2026): one footer rule in plotart.css underlines links inside footer sentences (WCAG 1.4.1); plotart.css pin only, all other pins retained. Art for Hire release candidate (Stage 3B-6): fourth gallery tab on every PlotArt page, the six-pill style block, and plotart/art-for-hire/ (page pinned outside its catalogue region, its stylesheet and script); all other pins retained. Art for Hire Version 3 redesign (development branch, 11 Nov 2026): plotart/art-for-hire/ page (outside its catalogue region), stylesheet and script re-pinned; all other pins retained. Art for Hire links and gallery marks (development, 11 Nov 2026): art-for-hire.css, plotart.css and plotart.js re-pinned; all other pins retained. Gallery Artist Programme Phase 1 (development branch, 13 Nov 2026): public Founding 25 recruitment closed; founding-25.html (form removed, closed wording, terms kept), index.html (closed badge, Apply removed, one sentence) and about.html (two sentences) re-pinned; assets/f25-apply.js removed (guard L9 closed state); all other pins retained. Open for Commissions (development branch, 13 Nov 2026): assets/pa-enquiry.js re-pinned (sends kind only from a form marked data-kind=\"commission\"); all other pins retained. Artwork collection (development branch seo/plotart-artworks-collection, 13 Nov 2026): plotart/artworks/ added (pinned outside its generated collection region, which is re-derived from approved public exports) and its stylesheet assets/plotart-artworks.css; all other pins retained. Artwork collection refinements (same branch, 13 Nov 2026): discreet links to artworks/ from index.html, gallery/index.html (closing links, outside its region) and buy-original-art-ireland.html re-pinned; artworks mobile spacing (plotart-artworks.css) re-pinned; all other pins retained. Large artworks (development branch seo/plotart-large-artworks, 13 Nov 2026): plotart/large-artworks/ added (pinned outside its generated collection region; reuses assets/plotart-artworks.css unchanged); all other pins retained. Large artworks release preparation (same branch, 13 Nov 2026): links to large-artworks/ from artworks/index.html, buy-original-art-ireland.html and art-size-calculator.html re-pinned; all other pins retained. Gallery Artist applications opening (founder approval pending, 14 Nov 2026): gallery_application_state open; join.html, curatorial-policy.html, assets/pa-apply.js and assets/plotart-join.css added; index.html (artist band) and founding-25.html (pointer) re-pinned; privacy V15 applied; all other pins retained. Artists' Gallery invitation (founder decision 14 Nov 2026): gallery/index.html outside its collection region and assets/plotart-join.css re-pinned. Neutral colour system (founder decision 14 Nov 2026, Option A): warm browns, copper and bronze/gold replaced by near-black, anthracite, charcoal, neutral grey and soft off-white in plotart.css, plotart-guides.css, plotart-join.css, art-for-hire.css, Mobile Gallery styles and inline page styles (about, invitation, founding-25, join); illustration colours, frame styles, Mobile Gallery wall tones and the sold mark kept; all other pins retained. Business rental information and artist download (founder approval 16 Nov 2026): one exact bounded commercial section, independently controlled indexing, homepage link and PDF template; rental catalogue and enquiry switches remain closed. Only these four public files re-pinned. Art for Hire premium redesign (founder brief, 16 Nov 2026; pending founder approval of the preview): page structure, presentation and the bounded business section re-pinned; every term, figure and statement kept. Living Gallery 'For artists' section revised to the founder's wording of 16 Nov 2026 (artists register interest in their Studio's Opportunities section); living-gallery.html re-pinned.",
-  "built_from": "Production b7cb4dd plus PlotArt search visibility release, 7 November 2026",
+  "built_from": "Production b7cb4dd plus PlotArt search visibility release, 7 November 2026; artist opportunity lists (development branch founder/plotart-opportunity-listings, 16 November 2026)",
   "files": {
     "invitation.html": "921cac745553c97c606bda34ce01e12ce36afce4b90c3ac103dbe3b56855b844",
     "about.html": "94c02175cc8b8f52445596dc040c0b32a4d26b5352c33681b077604d228af8a6",
     "founding-25.html": "44e4db50fdaaa2d1122aa1c6b0b4b08d5698ac133633216323f94c49381a76cf",
-    "living-gallery.html": "908c2a79923b35de383a1820c1cb14e5ec43c5d03c04364d3031a3ca076be6a5",
+    "living-gallery.html": "3342eea3b925d81ffec9b3e3615266912d20148c2a6369925138224710f32d94",
     "index.html": "4719f4090e393b745c617131b2fea3c370443c6481937cfc0db71e00760ee6f5",
     "assets/plotart.css": "59daa2a69fff62ea0d174520f7cefbd0457487f22526428fab1b59df277ccf16",
     "assets/plotart.js": "73f21dcb8982664e6e1bbdde1eb0e18c20a4aefe4bd603bf0339f17bae180e77",
@@ -16,7 +16,7 @@
     "mobile-gallery/gallery.html": "e4cc42d73cb6e873c603e0e2e2c5946e5c876b63aec4dc2bbaf27ff673f220ee",
     "mobile-gallery/mobile-gallery.css": "68c1ddd32ed10386fcdb566454d0e5e66b1a576ecf397f7d28ae39f034ab0f5b",
     "mobile-gallery/mobile-gallery.js": "5bf253084527425c061902751aaae1e0f625691d12e5f1e8462896cf55608152",
-    "mobile-gallery/index.html": "66a41d5bf8bc0641c18c033ccca7030a28847e0363ce735e5f8fc38efc97f815",
+    "mobile-gallery/index.html": "1f6040fbd6a8c2b0f850406ee50266a5d0aba5d164ab0181eb9d013f338fa111",
     "mobile-gallery/mobile-gallery-data.js": "2752e0065d6d903d7b02f6abe653e684cecd7fe4b6f7e125587aed2cda511833",
     "mobile-gallery/img/mg-hero-colin-macaulay-600.webp": "8092b99a0b4953e570e8f3a54483beae50a58049cae4bc404149c019cf1f5cd2",
     "mobile-gallery/img/mg-hero-colin-macaulay-880.webp": "2a14fdba5c714429e48308aaaa8d550ae4b388e43a0edd08c2f3853e05801b38",
@@ -32,7 +32,7 @@
     "choose-art-for-living-room.html": "c4694e7b44d1783907ef65d3ee5d5c574d4821b591b33246d52882ab9298dd08",
     "downloads/plotart-art-buying-checklist.pdf": "d7c8329122a20f316e84a7b5b8deb84c9b4612a1c16c94732bd7e322c19b34a6",
     "art-for-hire/hire-live.js": "f2c6e10854841ddd99810ef2260b64c01a369f676ab591d201c0ed55137f2715",
-    "art-for-hire/index.html": "0e89f8d8bf787503f97c24c232b88bc2664f239e154e2ec5e0f8f4eda97faf64",
+    "art-for-hire/index.html": "ff2452f5dd8fdee2af7e77e68b29f957fad7807a9f7e14ff1d685f6c6baa646e",
     "art-for-hire/art-for-hire.css": "a038031c8c59cb2f98045bc88449490a3136599a0085e18ad37fbc299f548d15",
     "artworks/index.html": "830393436c6c69795c1ccf85fc2ce72ff5923725825feba3e5f1cb74346cb282",
     "assets/plotart-artworks.css": "4aec032f9b736c0961cced18224c67809fe6da29e97db3b1c4a2665cb2113367",
@@ -41,7 +41,9 @@
     "curatorial-policy.html": "5c10cb7ec18ec0ea01687948ec693e17b2839ddc9792a12d1e854f0fab00445c",
     "assets/pa-apply.js": "1c12cce1252824836963e4906d251abc9e2438ad27db98b724de0bcac527c0ff",
     "assets/plotart-join.css": "1847ace6761910925d8d76141a1dbf9d0befe6dec96f9f18b9cb2e3bb4a31b95",
-    "downloads/plotart-business-rental-artist-guide-and-agreement.pdf": "7244266bce1375772fa079106be99ca1513d9dfe2ca8e9678a0b4e8ac226b526"
+    "downloads/plotart-business-rental-artist-guide-and-agreement.pdf": "7244266bce1375772fa079106be99ca1513d9dfe2ca8e9678a0b4e8ac226b526",
+    "opportunities/index.html": "742c42538bdaa0eb113d26e93d10b4142bb437d02dd8f6388cea51b868334d7a",
+    "assets/plotart-opportunities.css": "63eca86a2af047a72f1fd41c003c713605fa4e85b1e64fb70a8ce2ca5bacbcfd"
   },
   "outside_grid": {
     "gallery/index.html": "65f4d52858afba9894596e0e2c3d08d5f3740b58351ba4bdc3788ab15970a6f4"
@@ -53,6 +55,12 @@
     "large-artworks/index.html": "f99ebdce408de54073837216dedc7af495cd3203cc8d6b9e2bde63f3186d44c8"
   },
   "outside_hire_catalogue": {
-    "art-for-hire/index.html": "fc11358361b4906d022487474fe97bbaaac93ff567ac71514bb50a04255b0b96"
+    "art-for-hire/index.html": "cf0b26bec152fff251a68dbdaf8e149adcc7dc377ba6135838939c7d4ac31aef"
+  },
+  "outside_opportunity_lists": {
+    "living-gallery.html": "647abe84eedd4280e9bc7bf1915d10aa98f37c3a0dc8cc6703a35e3197656031",
+    "art-for-hire/index.html": "e478ae81bd4b4cfdce3b591bbae210c37b502f3ef50551ef5e3c94f536569e88",
+    "mobile-gallery/index.html": "8a8e6256106df3ebd732d98a3490ad745e37e0db1b360133fa3783d8b1eb4385",
+    "opportunities/index.html": "b37211994ba6066030381b721be7b3772e727ee1192eccfc158ed075b0a1dab1"
   }
 }
