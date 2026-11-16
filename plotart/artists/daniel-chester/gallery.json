@@ -6,6 +6,12 @@
   "founding": true,
   "instagram": "danielchesterartist",
   "medium": "painting",
+  "open_to": [
+   "exhibitions",
+   "living_gallery",
+   "mobile_gallery",
+   "talks"
+  ],
   "portrait": {
    "alt": "Artist in studio, working on large painting",
    "aspect": 1.32369,
@@ -54,14 +60,14 @@
   }
  ],
  "publication": {
-  "approved_at": "2026-11-11T19:54:16.639Z",
+  "approved_at": "2026-11-16T21:58:48.797Z",
   "approved_by": "founder",
   "licence_accepted_at": "2026-11-10T21:22:55.611Z",
   "licence_version": "PA-GPIL-2026-11",
   "permission_ref": "PA-PERM-ax2ah6xhpmx",
   "state": "approved",
   "test_note": null,
-  "version": "v1"
+  "version": "v2"
  },
  "schema": "plotnua.plotart.gallery-package.v1",
  "works": [
