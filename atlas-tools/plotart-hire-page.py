@@ -13,6 +13,7 @@ available there, or carries any private field. Every card is written HIDDEN: the
 live check confirms it (fails closed). With no listed works the page shows its empty state and nothing else.
 --enquiries-form is for the founder's release after legal and privacy approval; without it no enquiry form exists."""
 import argparse
+import hashlib
 import html
 import json
 import os
@@ -184,8 +185,9 @@ def build(root, catalogue, api, form=False, update=False):
         a, b = page.index(BEGIN), page.index(END) + len(END)
         open(ip, "w", encoding="utf-8").write(page[:a] + region(cards) + page[b:])
         return len(cards)
+    css_name = "art-for-hire.css?v=" + hashlib.sha256(open(os.path.join(PUBLIC_HIRE, "art-for-hire.css"), "rb").read()).hexdigest()[:12]
     path, page = SHELL.artist_page("art-for-hire/index.html", TITLE, DESC, body(cards, api, form), scripts=("plotart.js",),
-                                   current="hire", hire_nav=True, fine=FINE, styles=("art-for-hire.css",))
+                                   current="hire", hire_nav=True, fine=FINE, styles=(css_name,))
     out = os.path.join(root, "plotart", "art-for-hire")
     os.makedirs(out, exist_ok=True)
     open(os.path.join(out, "index.html"), "w", encoding="utf-8").write(page)

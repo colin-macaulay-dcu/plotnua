@@ -13,6 +13,8 @@ def check(name,ok):
     checks.append(bool(ok));print(("PASS " if ok else "FAIL ")+name)
 page=(ROOT/"plotart/art-for-hire/index.html").read_text()
 outside=B.outside(page)
+css_version=hashlib.sha256((ROOT/"plotart/art-for-hire/art-for-hire.css").read_bytes()).hexdigest()[:12]
+check("stylesheet cache key matches the current CSS",'href="art-for-hire.css?v='+css_version+'"' in page)
 check("one exact approved business section",page.count(B.BEGIN)==1 and page.count(B.END)==1)
 check("business link independent of the live catalogue CTA",'href="#business-rentals">Business rentals' in page and 'href="#afh3-how" data-hire-cta' in page)
 check("closed enquiry form unchanged",'data-enquiries="off"' in page and '<form' not in page)
