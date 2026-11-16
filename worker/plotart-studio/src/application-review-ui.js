@@ -1,4 +1,4 @@
-/* Founder-only application review enhancement; injected into the existing authenticated Review Desk.
+export const REVIEW_JS = String.raw`/* Founder-only application review enhancement; injected into the existing authenticated Review Desk.
    No automatic emails or invitations. Pending change-request/resubmission workflow is not enabled. */
 (() => {
   const ref=(location.pathname.match(/^\/admin\/applications\/(PA-AP-\d{6}-[0-9A-F]{6})$/)||[])[1];
@@ -35,4 +35,4 @@
   }
   const observer=new MutationObserver(()=>{if(!installed)mount();});
   observer.observe(document.documentElement,{childList:true,subtree:true});mount();
-})();
+})();`;
