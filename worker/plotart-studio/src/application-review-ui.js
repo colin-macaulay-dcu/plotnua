@@ -1,38 +1,22 @@
-export const REVIEW_JS = String.raw`/* Founder-only application review enhancement; injected into the existing authenticated Review Desk.
-   No automatic emails or invitations. Pending change-request/resubmission workflow is not enabled. */
-(() => {
-  const ref=(location.pathname.match(/^\/admin\/applications\/(PA-AP-\d{6}-[0-9A-F]{6})$/)||[])[1];
-  if(!ref)return;
-  const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-  const endpoint='/api/admin/applications/'+ref+'/review';
-  let installed=false;
-  async function api(method,body){
-    const r=await fetch(endpoint,{method,credentials:'same-origin',headers:{'X-Studio':'1',...(body?{'Content-Type':'application/json'}:{})},body:body?JSON.stringify(body):undefined});
-    const d=await r.json();if(!r.ok||!d.ok)throw Error(d.error||'Request failed');return d.review;
-  }
-  async function mount(){
-    if(installed)return;
-    const decision=[...document.querySelectorAll('h2')].find(h=>h.textContent.trim()==='Decision');
-    if(!decision)return;
-    installed=true;
-    const box=document.createElement('section');box.className='st-card';box.style.marginTop='18px';
-    box.innerHTML='<h2>Application review</h2><p id="gar-status" class="st-muted">Loading application status…</p><label for="gar-notes">Private review notes</label><textarea id="gar-notes" rows="4" maxlength="4000" style="width:100%;box-sizing:border-box"></textarea><label for="gar-reason">Internal decision reason (optional)</label><textarea id="gar-reason" rows="2" maxlength="2000" style="width:100%;box-sizing:border-box"></textarea><div class="st-row" style="margin-top:12px;flex-wrap:wrap"><button type="button" class="st-btn" data-gar="under_review">Save review</button><button type="button" class="st-btn st-btn--solid" data-gar="accepted">Accept</button><button type="button" class="st-btn" data-gar="declined">Decline</button></div><p class="st-muted">Contact Artist and secure resubmission will appear here once email delivery and update access are configured. Accepting does not invite the artist or send an email.</p><p id="gar-error" role="alert"></p>';
-    decision.parentElement.appendChild(box);
-    try{
-      let current=await api('GET');
-      const status=box.querySelector('#gar-status'),notes=box.querySelector('#gar-notes'),reason=box.querySelector('#gar-reason'),error=box.querySelector('#gar-error');
-      notes.value=current.review_notes||'';reason.value=current.decision_reason||'';
-      const render=()=>{status.textContent='Current status: '+current.status;const final=['accepted','declined','withdrawn'].includes(current.status);box.querySelectorAll('[data-gar]').forEach(b=>b.disabled=final);};
-      render();
-      box.querySelectorAll('[data-gar]').forEach(btn=>btn.addEventListener('click',async()=>{
-        const next=btn.dataset.gar;
-        if(next!=='under_review'&&!confirm('Record '+next+' for '+current.artist_name+'? No email will be sent.'))return;
-        error.textContent='';box.querySelectorAll('[data-gar]').forEach(b=>b.disabled=true);
-        try{await api('POST',{expected_status:current.status,status:next,notes:notes.value,reason:reason.value});current=await api('GET');render();}
-        catch(e){error.textContent=e.message;render();}
-      }));
-    }catch(e){box.querySelector('#gar-status').textContent='Review unavailable: '+e.message;box.querySelectorAll('button').forEach(b=>b.disabled=true);}
-  }
-  const observer=new MutationObserver(()=>{if(!installed)mount();});
-  observer.observe(document.documentElement,{childList:true,subtree:true});mount();
+export const REVIEW_JS = String.raw`
+(()=>{
+ const ref=(location.pathname.match(/^\/admin\/applications\/(PA-AP-\d{6}-[0-9A-F]{6})$/)||[])[1];if(!ref)return;
+ const endpoint='/api/admin/applications/'+ref+'/review';let mounted=false,current;
+ async function api(method,body,suffix=''){const r=await fetch(endpoint+suffix,{method,credentials:'same-origin',headers:{'X-Studio':'1',...(body?{'Content-Type':'application/json'}:{})},body:body?JSON.stringify(body):undefined});const d=await r.json();if(!r.ok||!d.ok)throw Error(d.error||'Request failed');return d.review||d.application;}
+ async function mount(){
+  if(mounted)return;const h=[...document.querySelectorAll('h2')].find(h=>h.textContent.trim()==='Decision');if(!h)return;mounted=true;
+  const box=document.createElement('section');box.className='st-card';box.style.marginTop='18px';
+  box.innerHTML='<h2>Application review</h2><p id="gar-status" role="status">Loading…</p><p id="gar-email"></p><label for="gar-notes">Private review notes</label><textarea id="gar-notes" rows="3" maxlength="4000" style="width:100%;box-sizing:border-box"></textarea><label for="gar-reason">Private decision reason</label><textarea id="gar-reason" rows="2" maxlength="2000" style="width:100%;box-sizing:border-box"></textarea><label for="gar-message">Message to the artist</label><textarea id="gar-message" rows="5" maxlength="6000" style="width:100%;box-sizing:border-box"></textarea><p class="st-muted">Contact Artist emails your message with a secure editing link valid for seven days. Accept and Decline email your message. Acceptance does not create a Studio account or publish artwork.</p><div class="st-row" style="flex-wrap:wrap"><button class="st-btn" data-action="info_requested">Contact Artist / Request Changes</button><button class="st-btn st-btn--solid" data-action="accepted">Accept</button><button class="st-btn" data-action="declined">Decline</button><button class="st-btn" id="gar-retry" hidden>Retry pending change</button></div><p id="gar-error" role="alert"></p><h2>Correspondence and revision history</h2><div id="gar-history"></div>';
+  h.parentElement.appendChild(box);const el=id=>box.querySelector('#gar-'+id),busy=v=>box.querySelectorAll('button').forEach(b=>b.disabled=v);
+  async function reload(){current=await api('GET');el('status').textContent='Status: '+current.status+(current.revised_at&&current.status==='under_review'?' · Revised information ready for review':'')+(current.protected?' · Protected existing application':'');el('email').textContent=current.email;el('notes').value=current.review_notes||'';el('reason').value=current.decision_reason||'';const final=current.protected||['accepted','declined','withdrawn'].includes(current.status);busy(final||!!current.pending_action);el('retry').hidden=!current.pending_action;el('retry').disabled=final;el('history').replaceChildren();for(const x of current.history){const p=document.createElement('p');p.style.whiteSpace='pre-wrap';p.textContent=x.created_at+' · '+x.kind+' · '+x.phase+(x.sent_at?' · email sent':'')+'\n'+(x.message||'')+(x.error?'\n'+x.error:'');el('history').appendChild(p);}for(const version of current.snapshots||[]){const d=document.createElement('details'),summary=document.createElement('summary');summary.textContent=version===0?'Original application':'Revision '+version;d.appendChild(summary);d.addEventListener('toggle',async()=>{if(!d.open||d.dataset.loaded)return;try{const a=await api('GET',null,'/history/'+version);const p=document.createElement('p');p.style.whiteSpace='pre-wrap';p.textContent=[a.artist_name,a.bio,a.additional_info,a.portfolio,a.website,a.social_link].filter(Boolean).join('\n\n');d.appendChild(p);for(const im of a.images||[]){if(!/^(?:[1-5]|review\/uploads\/[0-9a-f-]{36})\.(jpg|png|webp)$/.test(im.file))continue;const link=document.createElement('a');link.href='/admin/applications/'+ref+'/img/'+im.file;link.target='_blank';link.rel='noopener';link.textContent='View photograph';link.style.display='block';d.appendChild(link);}d.dataset.loaded='1';}catch(e){const p=document.createElement('p');p.textContent=e.message;d.appendChild(p);d.dataset.loaded='1';}});el('history').appendChild(d);}}
+  box.querySelectorAll('[data-action]').forEach(btn=>btn.addEventListener('click',async()=>{
+   const status=btn.dataset.action,message=status==='under_review'?'':el('message').value.trim();if(status!=='under_review'&&!message){el('error').textContent='Enter the message you want to email to the artist.';return;}
+   if(status!=='under_review'&&!confirm('Send this message to '+current.artist_name+' and record '+status.replaceAll('_',' ')+'?'))return;
+   const body={action_id:crypto.randomUUID(),expected_status:current.status,expected_revision:current.revision,status,notes:el('notes').value,reason:el('reason').value,message};busy(true);el('error').textContent='';
+   try{await api('POST',body);el('message').value='';await reload();}catch(e){el('error').textContent=e.message;try{await reload();}catch{busy(false);}}
+  }));
+  el('retry').onclick=async()=>{busy(true);el('error').textContent='';try{await api('POST',{action_id:current.pending_action},'/retry');await reload();}catch(e){el('error').textContent=e.message;await reload();}};
+  try{await reload();}catch(e){el('status').textContent='Review unavailable: '+e.message;busy(true);}
+ }
+ new MutationObserver(mount).observe(document.documentElement,{childList:true,subtree:true});mount();
 })();`;

@@ -1,4 +1,8 @@
 {
   "_note": "Production behaviour switches for the Studio Worker (founder decisions). Identifiers are GitHub environment variables, not here.",
-  "vars": { "INSTANT_AUTOPUBLISH": "true", "MAILER": "resend" }
+  "vars": {
+    "INSTANT_AUTOPUBLISH": "true",
+    "MAILER": "resend",
+    "APPLICATION_REVIEW_PUBLIC_URL": "https://plotart-application-review.colin-a41.workers.dev"
+  }
 }

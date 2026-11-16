@@ -1,5 +1,5 @@
 name = "plotnua-art-space-register"
-main = "src/index.js"
+main = "src/review-entry.js"
 compatibility_date = "2026-10-07"
 
 workers_dev = true      # plotnua.ie is not on Cloudflare; the page calls this

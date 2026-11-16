@@ -1,0 +1,12 @@
+# Public gateway. No secrets, database or public artwork storage are attached here.
+name = "plotart-application-review"
+main = "src/application-revision-gateway.js"
+compatibility_date = "2026-08-01"
+workers_dev = true
+preview_urls = false
+[[services]]
+binding = "APPLICATION_REVIEW"
+service = "plotart-studio"
+entrypoint = "ApplicationRevision"
+[observability]
+enabled = false

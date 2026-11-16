@@ -334,12 +334,12 @@
   const ext = (u, label) => u ? `<a class="st-btn st-btn--small" href="${E(u)}" target="_blank" rel="noopener noreferrer nofollow">${E(label)} ↗</a>` : '';
   async function apps() {
     const r = await api('GET', '/api/admin/applications');
-    app.innerHTML = `<h1 class="st-h1">Applications</h1><p class="st-sub">Applications that came with images of the artist's work: PlotArt applications (PA-AP) and earlier Founding 25 applications (F25). Private: only you can see them. Review and decide in Airtable.</p>
+    app.innerHTML = `<h1 class="st-h1">Applications</h1><p class="st-sub">Gallery Artist applications and earlier Founding 25 applications. Private: only you can see them.</p>
       ${!r.connected ? '<section class="st-card"><p class="st-muted">Application image storage isn’t connected yet.</p></section>' : r.items.length ? `<ul class="st-works">${r.items.map(a => `<li class="st-work" style="grid-template-columns:minmax(0,1fr) auto">
         <div><p class="st-work-t"><a href="/admin/applications/${E(a.ref)}" style="color:inherit">${E(a.artist_name)}</a></p>
-        <p class="st-work-s">${a.ref.startsWith('PA-AP-') ? 'PlotArt application' : 'Founding 25'} · ${E(a.ref)} · ${E(MED[a.medium] || a.medium)}${a.region ? ' · ' + E(county(a.region)) : ''} · ${when(a.submitted_at)}</p>
+        <p class="st-work-s">${a.ref.startsWith('PA-AP-') ? 'PlotArt application' : 'Founding 25'} · ${E(a.ref)} · ${E(MED[a.medium] || a.medium)}${a.region ? ' · ' + E(county(a.region)) : ''} · ${when(a.submitted_at)}${a.status ? ' · ' + E(a.status) : ''}${a.revised_at && a.status === 'under_review' ? ' · Revised information ready for review' : ''}</p>
         <div class="st-appthumbs">${a.images.map(i => `<img src="${E(i.src)}" alt="" loading="lazy">`).join('')}</div></div>
-        <div class="st-row"><a class="st-btn st-btn--solid st-btn--small" href="/admin/applications/${E(a.ref)}">Open</a></div></li>`).join('')}</ul>` : '<section class="st-card"><p class="st-muted">No applications with images yet.</p></section>'}`;
+        <div class="st-row"><a class="st-btn st-btn--solid st-btn--small" href="/admin/applications/${E(a.ref)}">Open</a></div></li>`).join('')}</ul>` : '<section class="st-card"><p class="st-muted">No applications yet.</p></section>'}`;
   }
   async function appView(ref) {
     const a = (await api('GET', '/api/admin/applications/' + ref)).application;
@@ -349,8 +349,8 @@
       <div class="st-two" style="margin-top:18px"><section class="st-card"><h2>Artist statement</h2><p style="white-space:pre-line">${E(a.bio)}</p>
         ${a.additional_info ? `<h2 style="margin-top:18px">Anything else</h2><p style="white-space:pre-line">${E(a.additional_info)}</p>` : ''}</section>
       <section class="st-card"><h2>Links</h2><div class="st-row" style="flex-wrap:wrap;gap:8px">${ext(a.portfolio, 'Portfolio')}${ext(a.website, 'Website')}${a.social_link ? (a.social_link.startsWith('@') ? ext('https://www.instagram.com/' + a.social_link.slice(1) + '/', a.social_link) : ext(a.social_link, 'Profile')) : ''}${!a.portfolio && !a.website && !a.social_link ? '<p class="st-muted" style="margin:0">No links: the images are the portfolio.</p>' : ''}</div>
-        <h2 style="margin-top:18px">Decision</h2><p class="st-muted">${a.ref.startsWith('PA-AP-') ? 'Accept, ask for more or decline in Airtable, where the status and emails are recorded. Applying never creates an account: once you accept, invite the artist from the Review desk as a <b>Gallery Artist</b>, with this reference, and their profile starts from this application.' : 'Shortlist, select or decline in Airtable, where the application\'s status and emails are recorded.'}</p>
-        ${a.airtable ? `<a class="st-btn st-btn--solid" href="${E(a.airtable)}" target="_blank" rel="noopener noreferrer">Open in Airtable ↗</a>` : '<p class="st-muted">Find it in Airtable by its reference.</p>'}
+        <h2 style="margin-top:18px">Decision</h2><p class="st-muted">${a.ref.startsWith('PA-AP-') ? 'Review this application using the controls below. After acceptance, invite the artist separately from the Review Desk as a Gallery Artist.' : 'Shortlist, select or decline in Airtable, where the application\'s status and emails are recorded.'}</p>
+        ${!a.ref.startsWith('PA-AP-') && a.airtable ? `<a class="st-btn st-btn--solid" href="${E(a.airtable)}" target="_blank" rel="noopener noreferrer">Open in Airtable ↗</a>` : ''}
         <h2 style="margin-top:22px">When the application is closed</h2><p class="st-muted">Erase these images when the application is deleted under the retention rules.</p>
         <button class="st-btn st-btn--small st-btn--danger" id="erase">Erase these images</button><p class="st-err" id="eerr"></p></section></div>`;
     $('#erase').addEventListener('click', async e => {

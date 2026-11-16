@@ -6,12 +6,13 @@
 #      the founder + each invited artist's email. Copy the Access AUD tag and team domain into [vars].
 #   4. Secrets PIPELINE_TOKEN (the same value as the GitHub secret STUDIO_PIPELINE_TOKEN) and FOUNDER_EMAILS.
 name = "plotart-studio"
-main = "src/index.js"
+main = "src/studio-entry.js"
 compatibility_date = "2026-08-01"
 workers_dev = true
 preview_urls = false
 
 [vars]
+APPLICATION_REVIEW_PUBLIC_URL = "" # Public token-only editing Worker; set in production.json after deployment
 ENVIRONMENT = "production"
 ACCESS_TEAM_DOMAIN = ""          # e.g. https://plotnua.cloudflareaccess.com  (empty = every request refused)
 ACCESS_AUD = ""                  # the Access application's AUD tag            (empty = every request refused)
@@ -45,3 +46,9 @@ crons = ["23 3 * * *"]           # daily clean-up: enquiries past 24 months; rem
 
 [observability]
 enabled = false
+
+# Private service entrypoint reuses the existing application register credentials.
+[[services]]
+binding = "APPLICATION_REGISTER"
+service = "plotnua-art-space-register"
+entrypoint = "GalleryApplicationRegister"

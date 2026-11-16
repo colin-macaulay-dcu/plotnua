@@ -908,7 +908,7 @@ async function handleApplication(P, env, body, now, cors) {
     const created = await atCreate(env, P.table, application);
     recId = created && created.records && created.records[0] && created.records[0].id;
     if (!recId) throw new Error('airtable_502');
-    if (images.length) {
+    if (env.F25_IMAGES && (images.length || P === PROG_GA)) {
       /* The review copy for PlotArt Studio (founder only): what the founder needs beside the images. Private, EU. */
       const { email: _e, email_key: _k, ...review } = application;
       await env.F25_IMAGES.put(prefix + 'application.json', JSON.stringify({ ...review, airtable_record: recId, images: kept }), { httpMetadata: { contentType: 'application/json' } });
