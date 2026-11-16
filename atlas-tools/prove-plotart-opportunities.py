@@ -234,7 +234,8 @@ try:
     good = run(["git", "rev-parse", "HEAD"], cwd=wt)[1].strip()
     lgp = os.path.join(wt, "plotart", "living-gallery.html")
     doc = open(lgp, encoding="utf-8").read()
-    open(lgp, "w", encoding="utf-8").write(doc.replace("Your art. In someone's home.", "Your art. In anyone's home.", 1))
+    assert '<p class="pa-eyebrow">For artists</p>' in doc
+    open(lgp, "w", encoding="utf-8").write(doc.replace('<p class="pa-eyebrow">For artists</p>', '<p class="pa-eyebrow">For all artists</p>', 1))
     gitc("commit", "-qam", "tamper outside")
     c2, o2 = bnd(base_sha, "HEAD")
     gitc("reset", "-q", "--hard", good)
