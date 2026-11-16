@@ -75,6 +75,10 @@ const strip = s => s.replace(' pa-pills--hire', '').replace(/<a class="pa-pill" 
     'plotart/mobile-gallery/mobile-gallery.css': '68c1ddd32ed10386fcdb566454d0e5e66b1a576ecf397f7d28ae39f034ab0f5b',
     'plotart/mobile-gallery/mobile-gallery.js': '5bf253084527425c061902751aaae1e0f625691d12e5f1e8462896cf55608152'
   };
+  /* Later approved releases that change a colour-release file, each pinned the same way (Art for Hire's own blocks are still
+     checked below). Artists' Gallery artwork-led introduction (founder decisions 16 Nov 2026): only the gallery introduction
+     and collection-count spacing rules in plotart.css differ (guarded by the launch manifest). */
+  const LATER_PINS = { 'plotart/assets/plotart.css': ['b2148663b7c08592f682e3f18e7ea7837cf91729764ecd2478e8cdad9785f01c'] };
   const sha = t => createHash('sha256').update(t).digest('hex');
   const navBlock = c => (c.match(/\n*\/\* ==== pa-hire-nav:begin[\s\S]*?pa-hire-nav:end ==== \*\/\n?/) || [''])[0];
   const footRule = c => (c.match(/^\.pa-foot p a\{ text-decoration:underline;[^\n]*\n/m) || [''])[0];
@@ -85,7 +89,7 @@ const strip = s => s.replace(' pa-pills--hire', '').replace(/<a class="pa-pill" 
   const neutral = lit => { const [r, g, b] = rgbOf(lit); return Math.max(r, g, b) - Math.min(r, g, b) <= 6 && r - b <= 6; };
   const onlyNeutralColourChange = (o, n) => o !== '' && o.replace(COLOUR_RE, '#') === n.replace(COLOUR_RE, '#')
     && (n.match(COLOUR_RE) || []).every((lit, i) => lit === (o.match(COLOUR_RE) || [])[i] || neutral(lit));
-  const colourReleaseOk = (f, n, o) => COLOUR_RELEASE[f] === sha(n) && (f !== 'plotart/assets/plotart.css'
+  const colourReleaseOk = (f, n, o) => [COLOUR_RELEASE[f], ...(LATER_PINS[f] || [])].includes(sha(n)) && (f !== 'plotart/assets/plotart.css'
     || (navBlock(n) !== '' && navBlock(n) === navBlock(o) && footRule(n) === footRule(o)
         && (marksBlock(n) === marksBlock(o) || onlyNeutralColourChange(marksBlock(o), marksBlock(n)))));
   const wrong = changedFiles.filter(f => {
@@ -102,8 +106,15 @@ const strip = s => s.replace(' pa-pills--hire', '').replace(/<a class="pa-pill" 
     // 14 Nov 2026: the Artists' Gallery carries the Gallery Artist invitation while applications are open (its own release,
     // guarded by prove-plotart-launch.py L18 and prove-plotart-join.py); nothing else on the page may differ
     if (f === 'plotart/gallery/index.html') {
-      const noInvite = c => c.replace('\n<link rel="stylesheet" href="../assets/plotart-join.css">', '').replace(/<!-- pa-artist-apply-gallery:begin -->[\s\S]*?<!-- pa-artist-apply-gallery:end -->\n\n/, '');
+      // 16 Nov 2026: the compact introduction (pa-vg2-hero) carries the application button; it is its own release
+      const noInvite = c => c.replace('\n<link rel="stylesheet" href="../assets/plotart-join.css">', '').replace(/<!-- pa-artist-apply-gallery:begin -->[\s\S]*?<!-- pa-artist-apply-gallery:end -->\n\n/, '')
+        .replace(/<section class="pa-vg2-hero">[\s\S]*?<\/section>\n\n/, '');
       return strip(noInvite(n)) !== strip(noInvite(o));
+    }
+    // 16 Nov 2026: the Living Gallery application link is written by the Join PlotArt builder (prove-plotart-join.py W10)
+    if (f === 'plotart/living-gallery.html') {
+      const noApply = c => c.replace(/<!-- pa-artist-apply-living:begin -->[\s\S]*?<!-- pa-artist-apply-living:end -->/, '');
+      return strip(noApply(n)) !== strip(noApply(o));
     }
     return !f.endsWith('.html') || strip(n) !== strip(o);
   });

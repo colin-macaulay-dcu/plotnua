@@ -198,7 +198,7 @@ def join_page():
   </div>
 </div></section>
 
-<section class="pa-jn-sec"><div class="pa-wrap pa-jn-grid">
+<section class="pa-jn-sec" id="your-gallery"><div class="pa-wrap pa-jn-grid">
   <p class="pa-jn-k">The gallery</p>
   <div><h2>A gallery of your own.</h2>
   <ul class="pa-jn-three">
@@ -361,42 +361,36 @@ def f25_page(s):
 
 
 GB, GE = "<!-- pa-artist-apply-gallery:begin -->", "<!-- pa-artist-apply-gallery:end -->"
-G_CSS_LINK = '<link rel="stylesheet" href="../assets/plotart.css">'
-G_JOIN_CSS_LINK = '\n<link rel="stylesheet" href="../assets/plotart-join.css">'
-G_ANCHOR = '<section class="pa-vg2-collection pa-vgc"'
+G_JOIN_CSS_LINK = '\n<link rel="stylesheet" href="../assets/plotart-join.css">'   # earlier releases linked it; never now
+G_ANCHOR = '<p class="pa-vg2-sub">Discover original Irish art and the artists behind it.</p></div>'
+JOIN_ANCHOR = "your-gallery"   # Join PlotArt: the "A gallery of your own." section (founder decision 16 Nov 2026)
 
 
 def gallery_band():
-    # The Artists' Gallery invitation (founder decisions 14 Nov 2026): one restrained row directly below the gallery
-    # introduction and above the collection. Built only in the "open" state; no figures, terms or selling points.
-    return f"""{GB}
-<section class="pa-jn-invite" aria-labelledby="joinGalleryH"><div class="pa-wrap pa-jn-invite-row">
-  <div class="pa-jn-invite-text"><h2 id="joinGalleryH">Interested in joining PlotArt?</h2>
-  <p>We’re welcoming applications from independent artists based or working on the island of Ireland. Discover how the gallery works and apply to be considered.</p></div>
-  <p class="pa-jn-invite-act"><a class="pa-jn-btn" href="../join.html" data-pa-track="gallery_join">Apply to join →</a></p>
-</div></section>
-{GE}
-"""
+    # The Artists' Gallery application button (founder decisions 16 Nov 2026): one discreet button inside the compact
+    # introduction, beside the heading, so the artwork stays above the fold. Built only in the "open" state.
+    return (GB + '\n  <p class="pa-vg2-act"><a class="pa-btn pa-btn--ghost" href="../join.html#%s" data-pa-track="gallery_join">'
+            'Apply to join →</a></p>\n' + GE) % JOIN_ANCHOR
 
 
 def gallery_page(s):
     # The collection region (pa-vg-collection markers) is never touched.
-    s = s.replace(G_CSS_LINK + G_JOIN_CSS_LINK, G_CSS_LINK)
+    s = s.replace(G_JOIN_CSS_LINK, "")
     if GB in s:
         a, b = s.index(GB), s.index(GE) + len(GE)
-        if s[b:b + 2] != "\n\n":
-            raise SystemExit("gallery/index.html: unexpected text after the invitation markers")
-        s = s[:a] + s[b + 2:]
+        if s[a - 1:a] != "\n":
+            raise SystemExit("gallery/index.html: unexpected text before the application markers")
+        s = s[:a - 1] + s[b:]
     if not OPEN:
         return s
-    if s.count(G_CSS_LINK) != 1 or s.count(G_ANCHOR) != 1:
-        raise SystemExit("gallery/index.html: stylesheet link or collection section not found exactly once")
-    return s.replace(G_CSS_LINK, G_CSS_LINK + G_JOIN_CSS_LINK).replace(G_ANCHOR, gallery_band() + "\n" + G_ANCHOR)
+    if s.count(G_ANCHOR) != 1:
+        raise SystemExit("gallery/index.html: the introduction sentence not found exactly once")
+    return s.replace(G_ANCHOR, G_ANCHOR + "\n" + gallery_band())
 
 
 LB, LE = "<!-- pa-artist-apply-living:begin -->", "<!-- pa-artist-apply-living:end -->"
 L_ANCHOR = '<a href="gallery/" data-pa-track="living_artists_gallery">Explore the Artists’ Gallery →</a>'
-L_LINK = '<a href="join.html" data-pa-track="living_artists_join">Apply to join PlotArt →</a>'
+L_LINK = '<a href="join.html#your-gallery" data-pa-track="living_artists_join">Apply to join PlotArt →</a>'
 
 
 def living_page(s):

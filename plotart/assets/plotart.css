@@ -564,11 +564,13 @@ body.pa .pa-free-lines{ margin:0; }
 
 /* Virtual Gallery: warm, artwork-led */
 .pa-vg2-hero{ background:linear-gradient(180deg, #29292B 0%, #272729 100%); }
-.pa-vg2-hero .pa-wrap{ padding-top:clamp(56px, 7vw, 104px); padding-bottom:clamp(36px, 4.5vw, 64px); }
-.pa-vg2-hero h1{ font-size:clamp(56px, 8vw, 132px); line-height:.94; letter-spacing:-.02em; margin:0; }
-.pa-vg2-sub{ font-family:var(--serif); font-size:clamp(22px, 2.3vw, 32px); color:var(--lime); line-height:1.25; margin:22px 0 0; max-width:30ch; }
+.pa-vg2-hero .pa-wrap{ padding-top:clamp(28px, 3.2vw, 48px); padding-bottom:clamp(20px, 2.2vw, 30px); }   /* compact, artwork-led introduction (16 Nov 2026) */
+.pa-vg2-hero-row{ display:flex; flex-wrap:wrap; align-items:flex-end; justify-content:space-between; gap:14px 40px; }
+.pa-vg2-act{ margin:0 0 4px; }
+.pa-vg2-hero h1{ font-size:clamp(38px, 4.4vw, 68px); line-height:1; letter-spacing:-.015em; margin:0; }
+.pa-vg2-sub{ font-family:var(--serif); font-size:clamp(19px, 1.6vw, 24px); color:var(--lime); line-height:1.3; margin:8px 0 0; max-width:none; }
 .pa-vg2-collection{ background:linear-gradient(180deg, #313133 0%, #2C2C2E 100%); border-top:1px solid rgba(237,235,231,.06); }
-.pa-vg2-collection .pa-wrap{ padding-top:clamp(44px, 5vw, 80px); padding-bottom:clamp(56px, 7vw, 110px); }
+.pa-vg2-collection .pa-wrap{ padding-top:clamp(26px, 3vw, 44px); padding-bottom:clamp(56px, 7vw, 110px); }
 .pa-vg2-head{ display:flex; justify-content:space-between; align-items:flex-end; gap:24px 48px; flex-wrap:wrap; margin-bottom:clamp(26px, 3vw, 40px); }
 .pa-vg2-head h2{ font-size:clamp(32px, 3.4vw, 50px); margin:0; }
 .pa-vg2-collection{ background:linear-gradient(180deg, #29292B 0%, #262628 100%); }
@@ -578,7 +580,7 @@ body.pa .pa-free-lines{ margin:0; }
    position numeral beside the artist's name; then the twenty-five founding positions as an architectural index.
    No cards, badges, prices or crops. The artwork provides the colour. */
 .pa-vgc .pa-vg2-head{ margin-bottom:0; }
-body.pa .pa-vgc-count{ margin:10px 0 clamp(44px, 6vw, 92px); font-size:15px; color:var(--stone); font-variant-numeric:tabular-nums; }
+body.pa .pa-vgc-count{ margin:10px 0 clamp(28px, 3.2vw, 48px); font-size:15px; color:var(--stone); font-variant-numeric:tabular-nums; }
 .pa-vgc-hang{ list-style:none; margin:0; padding:0; display:grid; grid-template-columns:repeat(3, minmax(0, 1fr)); column-gap:clamp(36px, 5vw, 88px); row-gap:clamp(64px, 7vw, 120px); }
 .pa-vgc-hang.n-1{ grid-template-columns:auto; justify-content:center; }
 .pa-vgc-hang.n-2{ grid-template-columns:repeat(2, minmax(0, 460px)); justify-content:center; }
@@ -645,7 +647,7 @@ body.pa .pa-vgc-pos > a:focus-visible{ outline-offset:-3px; border-radius:0; }
   .pa-vgc-hang.n-1 .pa-vgc-art{ height:clamp(420px, 62vw, 600px); }
 }
 @media (max-width:639px){
-  body.pa .pa-vgc-count{ margin-bottom:36px; }
+  body.pa .pa-vgc-count{ margin-bottom:24px; }
   .pa-vgc-hang, .pa-vgc-hang.n-1, .pa-vgc-hang.n-2{ grid-template-columns:minmax(0, 1fr); row-gap:56px; }
   .pa-vgc-hang.n-1 > .pa-vgc-work{ max-width:none; }
   .pa-vgc-art, .pa-vgc-hang.n-1 .pa-vgc-art{ height:auto; justify-content:center; }
