@@ -32,8 +32,8 @@
     "choose-art-for-living-room.html": "c4694e7b44d1783907ef65d3ee5d5c574d4821b591b33246d52882ab9298dd08",
     "downloads/plotart-art-buying-checklist.pdf": "d7c8329122a20f316e84a7b5b8deb84c9b4612a1c16c94732bd7e322c19b34a6",
     "art-for-hire/hire-live.js": "f2c6e10854841ddd99810ef2260b64c01a369f676ab591d201c0ed55137f2715",
-    "art-for-hire/index.html": "be32894dd58d60b975decb340113dccd827393264e4dd9277d6a94a2cfe3e247",
-    "art-for-hire/art-for-hire.css": "8ca4631252e4b896083d2b4496aa5d6f4778e00cedde5d1276168b30d9ceb8ef",
+    "art-for-hire/index.html": "b642aa827266141212203aac64778afae7c7bd070ec50337e993f4788a27c727",
+    "art-for-hire/art-for-hire.css": "d4d3f42f048a2445fe3acb746bccf639fc1aa82fb6147738f5e5940830c9881b",
     "artworks/index.html": "830393436c6c69795c1ccf85fc2ce72ff5923725825feba3e5f1cb74346cb282",
     "assets/plotart-artworks.css": "4aec032f9b736c0961cced18224c67809fe6da29e97db3b1c4a2665cb2113367",
     "large-artworks/index.html": "b7d4cbff4a8172874fd64d880e05604151dd4130f77fa3fbf3508b50210bdadb",
@@ -41,7 +41,7 @@
     "curatorial-policy.html": "5c10cb7ec18ec0ea01687948ec693e17b2839ddc9792a12d1e854f0fab00445c",
     "assets/pa-apply.js": "1c12cce1252824836963e4906d251abc9e2438ad27db98b724de0bcac527c0ff",
     "assets/plotart-join.css": "1847ace6761910925d8d76141a1dbf9d0befe6dec96f9f18b9cb2e3bb4a31b95",
-    "downloads/plotart-business-rental-artist-guide-and-agreement.pdf": "6c1fa87074726f3bccd3189f5f18bcd03e49c3b711eb1bf23eb2db129cbb62b0"
+    "downloads/plotart-business-rental-artist-guide-and-agreement.pdf": "7244266bce1375772fa079106be99ca1513d9dfe2ca8e9678a0b4e8ac226b526"
   },
   "outside_grid": {
     "gallery/index.html": "65f4d52858afba9894596e0e2c3d08d5f3740b58351ba4bdc3788ab15970a6f4"
@@ -53,6 +53,6 @@
     "large-artworks/index.html": "f99ebdce408de54073837216dedc7af495cd3203cc8d6b9e2bde63f3186d44c8"
   },
   "outside_hire_catalogue": {
-    "art-for-hire/index.html": "e47e92f3333e506c0e6ed94436de2048faa33ecb1c64ba175f67e8c13b1042d9"
+    "art-for-hire/index.html": "c750ea214b32c039ecfcd5b80835907b6139ef11e869d1c374d69589a5bba2c8"
   }
 }

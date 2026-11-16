@@ -23,6 +23,14 @@ REGION = BEGIN + """
 <p>We are investigating delivery partners and aim to share useful contacts as these are confirmed. Businesses and artists may already have their own couriers or art handlers; either can propose a provider. The artist must approve the packing, handling and transport arrangements, and suitable artwork insurance must be confirmed before any work moves. Large, fragile or high-value works may require specialist art handlers.</p>
 <p>The renting business pays the approved packing, outward delivery, installation, collection and return costs, including agreed sale changeovers. These costs are quoted separately from the monthly rental and approved in writing before booking. Artists and PlotArt are not expected to advance these costs. Any contacts we share are introductions; you agree the transport service directly with the provider.</p>
 </div>
+<details class="afh-business-installation">
+<summary>Who handles installation?</summary>
+<div>
+<p>The artist does not need to attend installation unless their involvement is specifically agreed. Before collection, the business appoints a receiving contact and a competent installer approved by the artist. Delivery includes unpacking or hanging only when those services are expressly booked.</p>
+<p>The artist supplies handling, hanging and care instructions and arranges collection handover personally or through an authorised representative. Packing, loading, unloading and installation are carried out by the people agreed in the booking; the artist is not automatically expected to lift or load the work.</p>
+<p>The business ensures condition records and dated photographs are made on arrival and after installation, including a photograph of the final position, and shared with the artist. Any required artist attendance, travel and fee must be approved in writing beforehand and paid by the business. PlotArt provides contacts and introductions; the parties agree the services directly.</p>
+</div>
+</details>
 <div class="afh-business-price">
 <h3>What the rental costs</h3>
 <p>Calculations below illustrate the standard rate; they are not available artwork listings. Transport, insurance, any deposit and any separately applicable VAT are not included. Your written proposal must show the actual total and tax treatment before you commit.</p>
@@ -46,7 +54,7 @@ REGION = BEGIN + """
 <h3>For artists: read the terms first.</h3>
 <p>Download the artist guide, blank business hire agreement, placement schedules and separate PlotArt fee and participation agreement. It is a template to complete and agree before signing, not an executed contract, an insurance policy or an enrolment. It has not been independently reviewed by a solicitor or insurer.</p>
 <p><a class="afh3-btn" href="../downloads/plotart-business-rental-artist-guide-and-agreement.pdf" download>Download artist guide and agreement (PDF)</a></p>
-<p class="afh-business-version">PA-BHR-2026-11 · Version 1.0 · 16 November 2026</p>
+<p class="afh-business-version">PA-BHR-2026-11 · Version 1.1 · 16 November 2026</p>
 </div>
 <div class="afh-business-contact">
 <h3>Buying or renting for your business?</h3>
@@ -74,7 +82,7 @@ def verify_document(site, tools_root):
     record = json.loads((Path(tools_root) / "atlas-tools/plotart-business-rental-document.json").read_text())
     source = (Path(tools_root) / "atlas-tools/plotart-business-rental-terms.md").read_bytes()
     pdf = (Path(site) / "plotart" / PDF).read_bytes()
-    if record.get("version") != "PA-BHR-2026-11-v1.0":
+    if record.get("version") != "PA-BHR-2026-11-v1.1":
         raise ValueError("unexpected business rental document version")
     if hashlib.sha256(source).hexdigest() != record.get("source_sha256"):
         raise ValueError("rental template source differs from its verified document record")

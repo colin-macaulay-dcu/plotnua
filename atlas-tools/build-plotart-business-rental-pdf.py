@@ -40,11 +40,11 @@ for block in re.split(r'\n\s*\n',text):
 def footer(canvas,doc):
  canvas.setStrokeColor(colors.HexColor('#cccccc'));canvas.line(48,38,547,38)
  canvas.setFont('OpenSans',7.5);canvas.setFillColor(colors.HexColor('#555555'))
- canvas.drawString(48,26,'PlotArt | PA-BHR-2026-11 v1.0 | Template: complete and agree before signing')
+ canvas.drawString(48,26,'PlotArt | PA-BHR-2026-11 v1.1 | Template: complete and agree before signing')
  canvas.drawRightString(547,26,str(doc.page))
 target.parent.mkdir(parents=True,exist_ok=True)
 doc.build(story,onFirstPage=footer,onLaterPages=footer)
-record={'version':'PA-BHR-2026-11-v1.0','source_sha256':hashlib.sha256(source.read_bytes()).hexdigest(),'pdf_sha256':hashlib.sha256(target.read_bytes()).hexdigest()}
+record={'version':'PA-BHR-2026-11-v1.1','source_sha256':hashlib.sha256(source.read_bytes()).hexdigest(),'pdf_sha256':hashlib.sha256(target.read_bytes()).hexdigest()}
 (ROOT/'atlas-tools/plotart-business-rental-document.json').write_text(json.dumps(record,indent=2)+'\n')
 print(target)
 

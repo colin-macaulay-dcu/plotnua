@@ -1,6 +1,6 @@
 # PlotArt business rentals
 Artist guide and agreement template
-PA-BHR-2026-11 · Version 1.0 · 16 November 2026
+PA-BHR-2026-11 · Version 1.1 · 16 November 2026
 
 For rent. Still for sale.
 
@@ -18,6 +18,8 @@ The standard sale-recall notice is 30 calendar days, with a shorter period possi
 A €2,000 agreed price basis gives a combined charge of €80 per month: €60 to the artist and €20 to PlotArt. Six months gives €480 in combined rental and platform charges, before any separately applicable VAT and transport/insurance costs. A written quotation must state the actual total, deposit, tax treatment and payment dates. Rental does not automatically count toward a purchase.
 
 No artist’s existing gallery agreement, founding benefits, sales commission or image permissions are changed by downloading this document. General Opportunities preferences are not permission to list or place an individual painting.
+
+The artist does not need to attend installation unless this is expressly agreed. Before collection, the business appoints a receiving contact and a competent installer approved by the artist. A delivery-only service does not include unpacking or hanging. Any required artist attendance, travel and fee are approved in writing beforehand and funded by the business. The artist receives the agreed condition records and dated photographs, including the installed position.
 
 The following template is intended for business hirers in the Republic of Ireland. Complete all schedules and sign the hire and any applicable fee agreement before acceptance. No signature or payment is taken by this download.
 
@@ -72,6 +74,14 @@ Hirer pays the approved, itemised cost of packing, collection, outbound transpor
 Before dispatch, obtain and approve a written quote covering actual dimensions/weight, value, fragility, locations, wall fixings, stairs/lifts, access, packing and both journeys. A six-foot painting may require a specialist art handler. No artist is required to deliver personally.
 
 Use Owner-approved competent handlers. Hirer obtains landlord/building permissions and agrees wall suitability with the installer. Specialist fixings, equipment, storage and wall reinstatement must be stated separately.
+
+Before collection, Schedule C must name the Hirer’s receiving contact and the competent installer approved by Owner, and record the agreed location, access, timing and handling/hanging instructions. The Hirer obtains the required venue permissions. Unpacking, hanging and removal are included in a courier’s service only when expressly accepted in its written booking; a delivery-only booking does not appoint the driver as installer.
+
+Owner supplies relevant written handling, fixing, placement and care instructions. Owner or its authorised representative makes the work available for the agreed collection handover. Responsibility for packing, lifting, loading, unloading, unpacking and installation is allocated by stage to the named competent people before booking. No duty for Owner to lift, load or install the work is implied by making it available for collection.
+
+Owner is not required to attend installation unless its involvement is expressly agreed in writing. Owner may attend by arrangement. Where attendance is required, its scope, timing, travel expenses and any attendance/installation fee must be approved by Hirer in writing beforehand and funded by Hirer; no undisclosed attendance charge is created.
+
+Hirer ensures that the named recipient/installer records the work’s condition on arrival and after installation, with dated photographs including its final position. These records and the delivery/installation acknowledgment are shared with Owner promptly, normally within two business days. Any loss, damage or discrepancy is reported immediately; taking or sharing photographs does not delay notification. Owner’s remote review of a photograph does not certify structural fixing safety or waive rights concerning damage. Private records do not grant promotional image permissions.
 
 The party arranging each stage and the applicable insurance must be recorded. No work moves before suitable cover and agreed payments are confirmed. No unattended drop-off or unapproved relocation is allowed.
 
@@ -145,7 +155,7 @@ Parties first discuss disputes, then consider mediation by agreement. Irish law 
 
 **B — Term and money:** exact six-month start/end; monthly total and 3%/1% components; VAT treatment and final invoice totals by payee; payment dates; rental commitment subject to sale fallback; itemised initial/return transport/installation; deposit holder/amount/deductions/refund date; cancellation; ordinary early return; long-stop date. No blank essential cost or fee fields.
 
-**C — Handling and insurance:** arranger, performer, payer and insured party for every stage; approved handlers; policy evidence/dates/limits/excess/exclusions; claim contacts; authorised signoffs at each custody transfer; wall/access permissions and reinstatement.
+**C — Handling and insurance:** named collection representative, receiving contact and approved installer; written handling/fixing/care instructions and approved final location; scope of the courier’s booked services; agreed artist attendance and Hirer-approved fee/travel costs, if any; arrival and post-installation condition reports, dated photographs and acknowledgment to Owner; arranger, performer, payer and insured party for every stage; approved handlers; policy evidence/dates/limits/excess/exclusions; claim contacts; authorised signoffs at each custody transfer; wall/access permissions and reinstatement.
 
 **D — Sale and changeovers:** sale notice [30 days unless varied in writing]; replacement deadline [seven days unless varied in writing]; per-change quote/maximum, number of changes and total cost cap [complete]; cost allocation at venue/return/buyer handover; replacement suitability and approval; per-work gap credit; 14-day unused-fee refund; whether loss of the affected work permits ending any expressly essential minimum collection [complete]. No buyer can be promised faster release than this schedule permits.
 
