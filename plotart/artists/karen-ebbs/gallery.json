@@ -129,14 +129,14 @@
   }
  ],
  "publication": {
-  "approved_at": "2026-11-15T21:31:34.994Z",
+  "approved_at": "2026-11-15T21:31:45.552Z",
   "approved_by": "founder",
   "licence_accepted_at": "2026-11-10T11:56:59.861Z",
   "licence_version": "PA-GPIL-2026-11",
   "permission_ref": "PA-PERM-ahbfq0jgav5",
   "state": "approved",
   "test_note": null,
-  "version": "v2"
+  "version": "v3"
  },
  "schema": "plotnua.plotart.gallery-package.v1",
  "works": [
