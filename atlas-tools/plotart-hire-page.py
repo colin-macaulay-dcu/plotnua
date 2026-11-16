@@ -26,6 +26,8 @@ sys.path.insert(0, HERE)
 import plotart_shell as SHELL  # noqa: E402
 import plotart_business_rental as BUSINESS
 import plotart_hire_scenes as SCENES  # noqa: E402
+import plotart_opportunities as OPP  # noqa: E402  (artist opportunity lists, 16 Nov 2026)
+import plotart_seo as SEO  # noqa: E402
 
 E = lambda s: html.escape(str(s), quote=True)
 PUBLIC_HIRE = os.path.join(HERE, "..", "worker", "plotart-studio", "public-hire")
@@ -161,10 +163,11 @@ def body(cards, api, form):
   <p class="pa-hire-note" id="pa-hire-closed" data-hire-closed tabindex="-1" hidden>Hire enquiries are not yet open.</p>
   %(region)s
 </div></section>
+%(opportunities)s
 
 %(after)s
 <script src="hire-live.js" data-api="%(api)s" data-enquiries="%(enq)s" defer></script>
-""" % {"art": SCENES.ART, "alt": SCENES.HERO_ALT, "credit": SCENES.CREDIT, "scenes": SCENES.SCENES, "region": region(cards),
+""" % {"art": SCENES.ART, "alt": SCENES.HERO_ALT, "credit": SCENES.CREDIT, "scenes": SCENES.SCENES, "region": region(cards), "opportunities": OPP.BEGIN + OPP.END,
        "api": E(api), "enq": "on" if form else "off",
        "business_line": " Or rent it for your workplace while it remains for sale." if business_on else "",
        "business_cta": ('<a class="afh3-btn" href="mailto:hello@plotnua.ie?subject=Business%20art%20purchase%20or%20rental">Discuss hiring art for your space</a>'
@@ -210,7 +213,9 @@ def build(root, catalogue, api, form=False, update=False):
         return len(cards)
     css_name = "art-for-hire.css?v=" + hashlib.sha256(open(os.path.join(PUBLIC_HIRE, "art-for-hire.css"), "rb").read()).hexdigest()[:12]
     path, page = SHELL.artist_page("art-for-hire/index.html", TITLE, DESC, body(cards, api, form), scripts=("plotart.js",),
-                                   current="hire", hire_nav=True, fine=FINE, styles=(css_name,))
+                                   current="hire", hire_nav=True, fine=FINE, styles=(css_name, "../assets/plotart-opportunities.css"))
+    # the artist opportunity list (16 Nov 2026): its own region, separate from the works catalogue; published artists only
+    page = OPP.update(page, "art-for-hire/index.html", SEO.public_packages(root))
     out = os.path.join(root, "plotart", "art-for-hire")
     os.makedirs(out, exist_ok=True)
     open(os.path.join(out, "index.html"), "w", encoding="utf-8").write(page)

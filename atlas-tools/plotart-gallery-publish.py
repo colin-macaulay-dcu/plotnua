@@ -8,8 +8,9 @@ For each queue item the founder has published (or, once authorised, an automatic
   1. takes the approved export from PlotArt Studio and downloads the original photographs (SHA-256 checked);
   2. runs the Phase 1 ingest (checks, sRGB, metadata removed, never cropped) in a trial copy;
   3. refuses unless every publication safeguard passes;
-  4. writes ONLY plotart/artists/<slug>/ (pages, images, gallery.json), the Virtual Gallery grid and the artist's
-     ARTIST_SUPPLIED_ARTWORK provenance records; commits that on top of main;
+  4. writes ONLY plotart/artists/<slug>/ (pages, images, gallery.json), the Virtual Gallery grid, the artist opportunity
+     lists (the generated region of four pages, plotart_opportunities) and the artist's ARTIST_SUPPLIED_ARTWORK provenance
+     records; commits that on top of main;
      (the Virtual Gallery collection is the region between P.VG_BEGIN and P.VG_END: Direction C2, 5 Nov 2026)
   5. runs the content-only boundary (with --instant for automatic updates), the PlotArt launch guard L1-L14, the
      image provenance guard and the image-rights scan;
@@ -27,6 +28,7 @@ import plotart_gallery_pages as P  # noqa: E402
 import plotart_shell as S  # noqa: E402
 import plotart_seo as SEO  # noqa: E402
 import plotart_search_content as C  # noqa: E402
+import plotart_opportunities as OPP  # noqa: E402  (artist opportunity lists, 16 Nov 2026)
 
 arg = lambda k: sys.argv[sys.argv.index(k) + 1] if k in sys.argv else None
 STUDIO, TOKEN = arg("--studio"), arg("--token")
@@ -229,10 +231,12 @@ def main():
                 sm = Path(ROOT) / "sitemap.xml"
                 sm.write_text(SEO.update_sitemap(sm.read_text(), published(), SEO.switches()))
                 C.refresh(ROOT, published())
+                OPP.refresh(ROOT, published())     # the opportunity lists: only published artists, only what they chose to show
         except Exception as e:                       # noqa: BLE001 - any failure refuses this item, never a half-publish
             why = "refused: %s: %s" % (type(e).__name__, e)
         if why is None:
-            git("add", "-A", "plotart/artists", "plotart/gallery/index.html", "image-provenance-records.json", "sitemap.xml", *["plotart/" + p for p in SEO.GENERATED_PATHS])
+            git("add", "-A", "plotart/artists", "plotart/gallery/index.html", "image-provenance-records.json", "sitemap.xml", *["plotart/" + p for p in SEO.GENERATED_PATHS],
+                *["plotart/" + p for p in OPP.PAGES if os.path.exists(os.path.join(ROOT, "plotart", p))])
             git("-c", "user.name=PlotArt content pipeline", "-c", "user.email=hello@plotnua.ie", "commit", "-q", "-m",
                 "PlotArt content: %s · version %d · %s (Studio queue %s)" % (q["artist_id"], q["version"], q["kind"], q["id"]))
             why = guards(base, q["kind"] == "instant")

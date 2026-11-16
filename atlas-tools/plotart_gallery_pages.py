@@ -2,6 +2,7 @@
 packages (see plotart_gallery.py). Public fields only; the whole artwork image is always shown
 (object-fit: contain), never cropped."""
 import html
+import plotart_opportunities as OPP  # noqa: E402  (opportunities shown publicly, 16 Nov 2026)
 import plotart_seo as SEO
 from urllib.parse import quote
 
@@ -203,7 +204,8 @@ def artist_body(pkg, blocks=None, preview=False, enquiry_endpoint=None):
        " has-portrait" if portrait else "", E(name), portrait,
        '<span class="pa-gcard-badge">Founding Artist</span>' if a.get("founding") else "",
        E(name), (('<p class="pa-ag-meta">%s</p>' % E(meta_line(a))) if meta_line(a) else "")
-       + ('<p class="pa-ag-meta pa-ag-ofc">Open for commissions</p>' if a.get("open_for_commissions") is True else ""),
+       + ('<p class="pa-ag-meta pa-ag-ofc">Open for commissions</p>' if a.get("open_for_commissions") is True else "")
+       + OPP.artist_line(pkg),
        ('<p class="pa-ag-statement">%s</p>' % E(a["statement"])) if a.get("statement") else "",
        ("%d %s" % (len(works), "artwork" if len(works) == 1 else "artworks")) if works else "None on show right now",
        ('<ol class="pa-ag-grid">%s\n  </ol>' % "".join(tiles)) if works else empty_works(a),

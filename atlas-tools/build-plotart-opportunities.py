@@ -1,0 +1,100 @@
+#!/usr/bin/env python3
+"""Build/check the PlotArt artist opportunities page (plotart/opportunities/index.html, 16 Nov 2026).
+
+One page for all seven opportunities an artist can choose in PlotArt Studio, each with the published artists who chose to
+show it (plotart_opportunities). It is reached from artists' galleries and the Living Gallery, Art for Hire and Mobile
+Gallery lists; it is NOT in the main navigation, and it stays noindex until the SEO workstream decides (plotart_seo).
+The page shell is the PlotArt homepage's own header and footer (as the buyer guides), with no navigation pill current.
+
+    python3 atlas-tools/build-plotart-opportunities.py [--check]
+"""
+import html
+import re
+import sys
+from pathlib import Path
+
+import plotart_opportunities as OPP
+import plotart_seo as SEO
+
+ROOT = Path(__file__).resolve().parent.parent
+PATH = OPP.HUB
+TITLE = "Artist Opportunities | PlotArt"
+DESC = ("Irish artists open to exhibitions, the Living Gallery, Art for Hire, home viewings, hotel and workplace displays, "
+        "commissions and talks. Every opportunity is agreed individually with the artist.")
+E = lambda s: html.escape(str(s), quote=True)
+
+BODY = """
+<section class="pa-opp-hero"><div class="pa-wrap">
+<p class="pa-eyebrow">PlotArt · Artist opportunities</p>
+<h1>Work with our artists.</h1>
+<p class="pa-lede">PlotArt artists tell us which opportunities they’d welcome a conversation about. Each list below links to their galleries. Being listed shows interest, not a booking: every opportunity is discussed and agreed individually with the artist.</p>
+<ul class="pa-opp-jumps" aria-label="Opportunities">%(jumps)s</ul>
+</div></section>
+%(region)s
+<section class="pa-opp-contact"><div class="pa-wrap">
+<p>To talk to an artist about an opportunity, open their gallery and send an enquiry through PlotArt. For anything else, email <a href="mailto:hello@plotnua.ie">hello@plotnua.ie</a>.</p>
+</div></section>
+"""
+
+
+def render(packages):
+    home = (ROOT / "plotart/index.html").read_text(encoding="utf-8")
+    header = re.search(r'<header class="pa-head.*?</header>', home, re.S).group(0).replace(' aria-current="page"', "")
+    footer = re.search(r'<footer class="pa-foot">.*?</footer>', home, re.S).group(0)
+    # one level down: every relative link in the shared header and footer gains ../
+    fix = lambda s: re.sub(r'(href|src|srcset)="(?!https?:|/|#|mailto:)([^"]+)"', lambda m: '%s="../%s"' % (m.group(1), m.group(2)), s)
+    header, footer = fix(header), fix(footer)
+    jumps = "".join('<li><a href="#%s">%s</a></li>' % (OPP.OPPORTUNITIES[k][4], E(OPP.OPPORTUNITIES[k][0])) for k in OPP.KEYS)
+    region = OPP.BEGIN + "\n" + OPP.content(PATH, packages) + "\n" + OPP.END
+    robots = SEO.head(PATH, TITLE, DESC)
+    return """<!DOCTYPE html>
+<html lang="en-IE" class="no-js">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>%s</title>
+<meta name="description" content="%s">
+%s
+<meta name="theme-color" content="#27282A">
+<link rel="icon" href="/assets/brand/plotart-favicon-32.png" type="image/png" sizes="32x32">
+<link rel="apple-touch-icon" href="/assets/brand/plotart-apple-touch-180.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Hanken+Grotesk:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="../assets/plotart.css">
+<link rel="stylesheet" href="../assets/plotart-opportunities.css">
+<link rel="stylesheet" href="/assets/identity/pn-section-menu.css?v=1">
+<script>document.documentElement.classList.remove('no-js');</script>
+</head>
+<body class="pa">
+<a class="pa-skip" href="#main">Skip to content</a>
+%s
+<main id="main">%s</main>
+%s
+<script src="../assets/plotart.js" defer></script>
+<script src="/assets/identity/pn-menu.js?v=1" defer></script>
+</body>
+</html>
+""" % (E(TITLE), E(DESC), robots, header, BODY % {"jumps": jumps, "region": region}, footer)
+
+
+def main():
+    page = ROOT / "plotart" / PATH
+    want = render(SEO.public_packages(ROOT))
+    if "--check" in sys.argv:
+        if not page.exists():
+            raise SystemExit("ARTIST OPPORTUNITIES · plotart/%s is missing" % PATH)
+        got = page.read_text(encoding="utf-8")
+        if OPP.outside(got) != OPP.outside(want):
+            raise SystemExit("ARTIST OPPORTUNITIES · the page differs from its reviewed source outside the generated lists")
+        if got != OPP.update(got, PATH, SEO.public_packages(ROOT)):
+            raise SystemExit("ARTIST OPPORTUNITIES · the lists differ from what the published galleries produce")
+        print("ARTIST OPPORTUNITIES · OK — page matches its source; lists match the published galleries; nothing written")
+        return
+    page.parent.mkdir(parents=True, exist_ok=True)
+    page.write_text(want, encoding="utf-8")
+    print("ARTIST OPPORTUNITIES · built plotart/%s" % PATH)
+
+
+if __name__ == "__main__":
+    main()
