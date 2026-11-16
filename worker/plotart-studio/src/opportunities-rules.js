@@ -111,6 +111,12 @@ export function validate(body, { noteMax = NOTE_MAX, care = true, publicOn = fal
    ONLY the kinds of opportunity can ever be shown, never "online_only", the county, transport, coverage, the care box or
    the note. The order here is the order shown publicly. public_display: null = not decided (every answer saved before
    0015: those were given under "never published", so nothing shows until the artist confirms), 1 = shown, 0 = private. */
+/* Founder confirmation (17 Nov 2026 correction): for an artist who answered BEFORE the public choice existed (public_display
+   NULL), the founder may record that he obtained that artist's agreement in person to show the opportunities they chose.
+   Recorded under its own notice id and audit action, never as the artist's own click; it cannot override a decision the
+   artist made (0 or 1), and it shows only the answers saved at that moment. */
+export const FOUNDER_NOTICE = 'PA-OPP-FOUNDER-CONFIRMED-2026-11';
+export const founderStatement = name => `I personally obtained ${name}’s agreement to show the opportunities they chose on their public PlotArt gallery and PlotArt’s opportunity pages.`;
 export const PUBLIC_KEYS = ['exhibitions', 'living_gallery', 'art_for_hire', 'mobile_gallery', 'venues', 'commissions', 'talks'];
 export const PUBLIC_NOTICE = 'PA-OPP-PUBLIC-2026-11-R2';   // the wording below (shown only by the artist's own choice); privacy notice V17 describes it
 export const PUBLIC = {

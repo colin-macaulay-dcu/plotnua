@@ -231,6 +231,49 @@ await f.goto(S.url + '/admin/opportunities', { waitUntil: 'load' }); await f.wai
 const ft = await f.locator('#app').innerText();
 check('U7 the Review Desk shows "shown publicly" and "not confirmed yet" counts and each artist’s public status', /shown publicly/.test(ft) && /not confirmed yet/.test(ft) && /Public gallery: shown/.test(ft) && f.errs.length === 0, ft.slice(0, 400));
 await shot(f, 'review-desk-opportunities-1280.png');
+
+/* ---- founder confirmation of an agreement obtained in person (17 Nov 2026 correction) */
+console.log('— founder confirmation');
+await seedPublished(db, { id: 'afc', slug: 'fc-test', email: 'fc-test@example.test', name: 'Fay Confirm', works: 2, number: 7 });
+await seedPublished(db, { id: 'afd', slug: 'fd-test', email: 'fd-test@example.test', name: 'Fred Decided', works: 1, number: 8 });
+await answer(db, 'afc', ['exhibitions', 'living_gallery', 'art_for_hire', 'commissions']);   // saved before 0015: NULL
+await answer(db, 'afd', ['living_gallery']);
+await db.prepare("UPDATE artist_opportunities SET public_display=0, public_decided_at=?, public_notice=? WHERE artist_id='afd'").bind('2026-11-16T21:00:00.000Z', R.PUBLIC_NOTICE).run();
+const fcBefore = await row('afc'), fcVers = (await versions('afc')).length;
+const FC = { artist_id: 'afc', interests: ['exhibitions', 'living_gallery', 'art_for_hire', 'commissions'], confirm: true };
+r = await call('POST', '/api/admin/opportunities/confirm', 'fc-test@example.test', FC);
+const r2 = await call('POST', '/api/admin/opportunities/confirm', null, FC);
+check('F1 only the founder can record it: the artist (403) and a signed-out caller are refused; nothing changes',
+  r.s === 403 && r2.s !== 200 && (await row('afc')).public_display === null);
+r = await call('POST', '/api/admin/opportunities/confirm', FOUNDER, { ...FC, interests: ['exhibitions'] });
+const r3 = await call('POST', '/api/admin/opportunities/confirm', FOUNDER, { ...FC, confirm: 'yes' });
+const r4 = await call('POST', '/api/admin/opportunities/confirm', FOUNDER, { ...FC, public_display: true });
+check('F2 refused without the explicit confirmation, with stale answers, or with any extra field; nothing changes',
+  r.s === 409 && r3.s === 400 && r4.s === 400 && (await row('afc')).public_display === null && (await versions('afc')).length === fcVers, JSON.stringify([r.s, r3.s, r4.s]));
+r = await call('POST', '/api/admin/opportunities/confirm', FOUNDER, { artist_id: 'afd', interests: ['living_gallery'], confirm: true });
+check('F3 it can never override the artist’s own choice ("kept private" stays private)', r.s === 409 && (await row('afd')).public_display === 0);
+r = await call('POST', '/api/admin/opportunities/confirm', FOUNDER, FC);
+const fc = await row('afc'), fcSnap = await lastSnap('afc');
+const fcAud = await db.prepare("SELECT * FROM audit WHERE action='opportunities_shown_founder_confirmed' AND artist_id='afc'").first();
+check('F4 confirmed: shown under the founder’s own notice id, answers and every other column unchanged, audited with the statement',
+  r.s === 200 && fc.public_display === 1 && fc.public_notice === R.FOUNDER_NOTICE && fc.interests === fcBefore.interests && fc.practical_note === fcBefore.practical_note
+  && fc.artwork_county === fcBefore.artwork_county && fc.transport === fcBefore.transport && fcAud && fcAud.actor === FOUNDER && /personally obtained Fay Confirm/.test(fcAud.detail), JSON.stringify(r.j));
+check('F5 the live gallery gets an instant update carrying ONLY the public kinds (open_to), nothing private; works unchanged',
+  JSON.stringify(fcSnap.artist.open_to) === '["exhibitions","living_gallery","art_for_hire","commissions"]' && !SECRET.test(JSON.stringify(fcSnap))
+  && fcSnap.works.length === 2 && (await versions('afc')).length === fcVers + 1, JSON.stringify(fcSnap.artist));
+r = await call('POST', '/api/admin/opportunities/confirm', FOUNDER, FC);
+check('F6 a second confirmation is refused (already decided); the artist can still keep them private with one click',
+  r.s === 409 && (await call('PUT', '/api/opportunities/visibility', 'fc-test@example.test', { show: false })).s === 200 && (await row('afc')).public_display === 0);
+// the Review Desk control
+await db.prepare("UPDATE artist_opportunities SET public_display=NULL, public_decided_at=NULL, public_notice=NULL WHERE artist_id='afc'").run();
+await f.goto(S.url + '/admin/opportunities', { waitUntil: 'load' }); await f.waitForTimeout(900);
+const box = f.locator('[data-fc="afc"]'), go = f.locator('[data-fcgo="afc"]');
+const shownBefore = await box.count() === 1 && await go.isDisabled() && /I personally obtained Fay Confirm’s agreement to show these publicly: Exhibitions, Living Gallery, Art for Hire, Commissions/.test(await f.locator('#app').innerText());
+const noneForDecided = await f.locator('[data-fc="afd"]').count() === 0 && await f.locator('[data-fc="aorla"]').count() === 0;
+await box.check(); await go.click(); await f.waitForTimeout(900);
+check('F7 Review Desk: only "not confirmed yet" answers offer it; the button stays disabled until the statement is ticked; one click shows them',
+  shownBefore && noneForDecided && (await row('afc')).public_display === 1 && /agreement obtained by the founder/.test(await f.locator('#app').innerText()));
+await shot(f, 'review-desk-founder-confirm-1280.png');
 } catch (e) { console.error(e); results.push(false); }
 finally { if (browser) await browser.close(); if (S) await S.mf.dispose(); if (P) await P.mf.dispose(); }
 const fail = results.filter(x => !x).length;

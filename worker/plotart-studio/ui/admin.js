@@ -727,6 +727,8 @@
       return out.join(', ');
     };
     const isOnline = i => i.prefs && i.prefs.interests.includes('online_only');
+    const PUBK = ['exhibitions', 'living_gallery', 'art_for_hire', 'mobile_gallery', 'venues', 'commissions', 'talks'];
+    const pub = p => PUBK.filter(k => p.interests.includes(k));
     const match = i => {
       const p = i.prefs;
       if (f.status === 'answered' && !p) return false;
@@ -749,7 +751,9 @@
       if (isOnline(i)) return `<li class="st-opp-row"><div>${who}</div><div><span class="st-pill st-pill--warn">Online only for now</span>${p.artwork_county ? `<span class="st-opp-k">Artwork in Co. ${E(p.artwork_county)}</span>` : ''}${p.note ? `<p class="st-opp-note">${E(p.note)}</p>` : ''}</div><div class="st-muted st-opp-when">${E(when(p.updated_at))}</div></li>`;
       return `<li class="st-opp-row"><div>${who}</div>
         <div><div class="st-chips" style="margin:0 0 6px">${p.interests.map(k => `<span class="st-chip">${E(O.interest_short[k])}</span>`).join('')}${p.care_condition ? `<span class="st-chip st-chip--care" title="${E(O.care ? O.care.label : '')}">${E(O.care ? O.care.short : 'Depends on care, handling and insurance')}</span>` : ''}</div>
-          ${O.public ? `<span class="st-opp-k">Public gallery: ${p.public_display === true ? 'shown (only while the gallery is published)' : p.public_display === false ? 'kept private' : '<i>not confirmed yet: not shown</i>'}</span>` : ''}
+          ${O.public ? `<span class="st-opp-k">Public gallery: ${p.public_display === true ? (p.public_notice === 'PA-OPP-FOUNDER-CONFIRMED-2026-11' ? 'shown (agreement obtained by the founder; only while the gallery is published)' : 'shown (only while the gallery is published)') : p.public_display === false ? 'kept private' : '<i>not confirmed yet: not shown</i>'}</span>` : ''}
+          ${O.public && p.public_display === null && pub(p).length ? `<div class="st-opp-fc" style="margin:8px 0"><label class="st-check"><input type="checkbox" data-fc="${E(i.id)}"> <span>I personally obtained ${E(i.display_name)}’s agreement to show these publicly: ${pub(p).map(k => E(O.interest_short[k])).join(', ')}</span></label>
+            <button type="button" class="st-btn st-btn--small" data-fcgo="${E(i.id)}" disabled style="margin-top:6px">Show these publicly</button></div>` : ''}
           <span class="st-opp-k">Artwork: ${p.artwork_county ? `Co. ${E(p.artwork_county)}` : '<i>not given</i>'}</span>
           <span class="st-opp-k">Transport: ${p.transport.length ? p.transport.map(k => E(O.transport_short[k])).join(', ') : '<i>not given</i>'}${p.coverage_mode ? ` · ${E(coverage(p))}` : ''}</span>
           ${p.note ? `<p class="st-opp-note">${E(p.note)}</p>` : ''}</div>
@@ -786,6 +790,13 @@
       $('#of-reset').hidden = !Object.values(f).some(Boolean);
       app.querySelectorAll('[data-int]').forEach(b => b.setAttribute('aria-pressed', String(f.interest === b.dataset.int)));
     };
+    $('#of-list').addEventListener('change', e => { const c = e.target.closest('[data-fc]'); if (c) app.querySelector(`[data-fcgo="${c.dataset.fc}"]`).disabled = !c.checked; });
+    $('#of-list').addEventListener('click', async e => {
+      const b = e.target.closest('[data-fcgo]'); if (!b || b.disabled) return;
+      const it = d.items.find(x => x.id === b.dataset.fcgo); b.disabled = true;
+      try { await api('POST', '/api/admin/opportunities/confirm', { artist_id: it.id, interests: it.prefs.interests, confirm: true }); await opportunities(); }
+      catch (err) { b.disabled = false; b.insertAdjacentHTML('afterend', `<p class="st-err" role="alert">${E(err.message)}</p>`); }
+    });
     const bind = (id, k) => $(id).addEventListener('change', e => { f[k] = e.target.value; draw(); });
     bind('#of-status', 'status'); bind('#of-int', 'interest'); bind('#of-county', 'county'); bind('#of-reach', 'reach');
     app.querySelectorAll('[data-int]').forEach(b => b.addEventListener('click', () => { f.interest = f.interest === b.dataset.int ? '' : b.dataset.int; $('#of-int').value = f.interest; draw(); }));

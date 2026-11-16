@@ -27,7 +27,7 @@ const parse = r => r ? { interests: JSON.parse(r.interests), artwork_county: r.a
   coverage_mode: r.coverage_mode, coverage_counties: JSON.parse(r.coverage_counties), care_condition: r.care_condition === 1,
   note: r.note ?? r.practical_note ?? null, created_at: r.created_at, updated_at: r.updated_at,
   // shown publicly (0015): null = not decided, true = shown, false = private; absent columns (before 0015) read as not decided
-  public_display: r.public_display === 1 ? true : r.public_display === 0 ? false : null, public_decided_at: r.public_decided_at ?? null } : null;
+  public_display: r.public_display === 1 ? true : r.public_display === 0 ? false : null, public_decided_at: r.public_decided_at ?? null, public_notice: r.public_notice ?? null } : null;
 
 /* Migration 0015 adds public_display, public_decided_at and public_notice. Until it has run, nothing can be shown publicly
    and the Studio works exactly as before. */
@@ -102,6 +102,28 @@ export async function setVisibility(env, artist, show) {
   await audit(env, artist.email, 'artist', show ? 'opportunities_shown' : 'opportunities_kept_private', artist.id, { notice: R.PUBLIC_NOTICE, before: row.public_display });
   const saved = parse(await one(env, 'SELECT * FROM artist_opportunities WHERE artist_id = ?', artist.id));
   return { saved, shown: R.publicKeys(saved), changed: row.public_display !== (show ? 1 : 0) };
+}
+
+/* The founder confirms an agreement obtained in person (see R.FOUNDER_NOTICE). Only for answers still "not confirmed"
+   (NULL); only the visibility columns change; the interests sent must equal the saved ones, so nothing stale is shown. */
+export async function founderConfirm(env, founder, b) {
+  if (!(await installed(env)) || !(await publicInstalled(env))) throw new Bad('This choice isn’t available yet', 409);
+  if (!b || typeof b !== 'object' || Object.keys(b).sort().join() !== 'artist_id,confirm,interests' || b.confirm !== true
+    || typeof b.artist_id !== 'string' || !Array.isArray(b.interests)) throw new Bad('Refused');
+  const a = await one(env, 'SELECT id, display_name FROM artists WHERE id = ?', b.artist_id);
+  const row = await one(env, 'SELECT * FROM artist_opportunities WHERE artist_id = ?', b.artist_id);
+  if (!a || !row) throw new Bad('No saved answers for this artist', 404);
+  if (row.public_display !== null) throw new Bad('The artist has already made this choice themselves', 409);
+  const saved = parse(row);
+  if (JSON.stringify(saved.interests) !== JSON.stringify(b.interests)) throw new Bad('Their answers have changed since this page loaded. Reload and check again.', 409);
+  const keys = R.publicKeys({ ...saved, public_display: true });
+  if (!keys.length) throw new Bad('Nothing they chose can be shown publicly', 409);
+  const at = now();
+  const r = await env.DB.prepare('UPDATE artist_opportunities SET public_display=1, public_decided_at=?, public_notice=? WHERE artist_id=? AND public_display IS NULL')
+    .bind(at, R.FOUNDER_NOTICE, a.id).run();
+  if (!r.meta || r.meta.changes !== 1) throw new Bad('The artist has already made this choice themselves', 409);
+  await audit(env, founder, 'founder', 'opportunities_shown_founder_confirmed', a.id, { notice: R.FOUNDER_NOTICE, statement: R.founderStatement(a.display_name), shown: keys, interests: saved.interests });
+  return { artist_id: a.id, shown: keys };
 }
 
 /* The founder's read-only view: every invited or active artist, answered or not, plus any ended artist whose answers are

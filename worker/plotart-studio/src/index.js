@@ -1275,6 +1275,12 @@ async function route(req, env) {
     if (p === '/admin/hire') return html(A.ADMIN_HTML);
     if (p === '/admin/opportunities') return html(A.ADMIN_HTML);
     if (p === '/api/admin/opportunities' && m === 'GET') return json({ ok: true, ...(await O.adminView(env)) });   // read-only: the founder never edits an artist's answers
+    // the founder records an agreement obtained in person (visibility only; answers untouched); a live gallery gets an instant update
+    if (p === '/api/admin/opportunities/confirm' && m === 'POST') {
+      const r = await O.founderConfirm(env, me.email, await req.json().catch(() => null));
+      const artist = await one(env, 'SELECT * FROM artists WHERE id = ?', r.artist_id);
+      return json({ ok: true, ...r, instant_version: await instant(env, artist, me.email, 'opportunities_shown_founder_confirmed') });
+    }
     if (p.startsWith('/api/admin/hire') && !(await H.installed(env))) return json({ ok: false, error: 'Art for Hire is not installed' }, 409);
     if (p === '/api/admin/hire' && m === 'GET') return json({ ok: true, ...(await H.adminView(env)) });
     if ((mm = p.match(/^\/api\/admin\/hire\/artwork\/(w[0-9a-z]+)\/decision$/)) && m === 'POST') return json({ ok: true, ...(await H.decide(env, me.email, mm[1], await req.json())) });
