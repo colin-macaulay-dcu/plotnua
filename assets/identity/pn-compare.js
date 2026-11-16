@@ -30,6 +30,14 @@
     var stage = box.querySelector('.pn-compare__stage');
     var range = box.querySelector('.pn-compare__range');
     if (!stage || !range) return;
+    /* Keep the interaction discoverable even when the desktop help bar is hidden. */
+    if (box.classList.contains('pn-compare--hero')){
+      var cue = document.createElement('span');
+      cue.className = 'pn-compare__cue';
+      cue.textContent = 'Slide to reveal the possibility';
+      cue.setAttribute('aria-hidden', 'true');
+      stage.appendChild(cue);
+    }
     var jumps = [].slice.call(box.querySelectorAll('.pn-compare__jump [data-to]'));
     var subject = box.getAttribute('data-subject') || 'the property';
     var start = parseFloat(box.getAttribute('data-start'));

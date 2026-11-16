@@ -249,6 +249,20 @@ body:has(> .pn-return) .d-hero.pn-hero-compare{ height:min(92svh, calc(100svh - 
 }
 .pn-compare.is-live .pn-compare__knob{ left:clamp(30px, var(--pos), calc(100% - 30px)); }
 
+/* Hero instruction follows the divider, staying inside the image at both ends.
+   Above the handle keeps it clear of the hero title; pointer events pass through. */
+.pn-compare--hero.is-live .pn-compare__cue{
+  position:absolute; z-index:3; pointer-events:none;
+  top:calc(var(--pnc-knob-y,38%) - 68px);
+  left:clamp(140px, var(--pos), calc(100% - 140px));
+  transform:translateX(-50%); box-sizing:border-box;
+  width:max-content; max-width:calc(100% - 24px); margin:0; padding:8px 12px;
+  border:1px solid rgba(242,235,224,.3); border-radius:999px;
+  background:rgba(27,28,30,.88); color:var(--pnc-ivory);
+  font-family:var(--pnc-sans); font-size:13px; font-weight:500;
+  line-height:1.4; text-align:center;
+}
+
 /* =====================================================================
    v1.4 · AI DISCLOSURE BENEATH THE COMPARISON (founder review, 31 Oct 2026; opt-in)
    A hero may carry its AI disclosure as a quiet line BENEATH the comparison instead of the
