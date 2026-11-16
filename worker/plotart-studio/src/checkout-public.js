@@ -4,6 +4,7 @@
      POST /q/<token>/pay            opens Stripe-hosted checkout on the ARTIST's account (server-side amounts only)
      GET  /q/<token>/return         what PlotArt has verified so far (a return from Stripe is never proof of payment)
      GET  /terms/<doc>.html         the installed, fingerprinted buyer purchase terms
+     GET  /v1/status                whether the pilot is installed and switched on (nothing else)
      POST /v1/stripe/webhook        signed Stripe events (Connect endpoint), idempotent
    The token in the link is the only key to a quote; it is stored hashed. No other order, artist address or note is ever
    reachable from here. Nothing on plotnua.ie links to this Worker. */
@@ -25,8 +26,7 @@ const TEST_BANNER = '<p class="note test"><strong>Test mode.</strong> This is a 
 
 function quoteHtml(q, token, error = null) {
   const d = q.delivery, a = q.artwork || {}, s = q.seller || {};
-  const cover = d.cover_type === 'none' ? 'No insurance cover is included for this shipment.' :
-    `${d.cover_type === 'transit_insurance' ? 'Transit insurance' : 'Carrier’s limited liability'} with ${esc(d.cover_provider)}, up to ${eur(d.covered_value_cents)} (${esc(d.valuation_basis)})${d.excess_cents ? `, excess ${eur(d.excess_cents)}` : ''}. Period: ${esc(d.cover_period)}.${d.exclusions ? ` Exclusions: ${esc(d.exclusions)}.` : ''} Claims: ${esc(d.claims_contact)}.`;
+  const cover = `Transit insurance with ${esc(d.cover_provider)}, held by ${esc(PARTY[d.insured_party])}, up to ${eur(d.covered_value_cents)} (${esc(d.valuation_basis)})${d.excess_cents ? `, excess ${eur(d.excess_cents)}` : ''}. Period: ${esc(d.cover_period)}.${d.exclusions ? ` Exclusions: ${esc(d.exclusions)}.` : ''} Claims: ${esc(d.claims_contact)}. Confirmed for this shipment (ref. ${esc(d.cover_confirmation_ref)}).`;
   const payable = ['quoted', 'checkout_open', 'payment_failed'].includes(q.status) && !q.expired;
   return `${TEST_BANNER}<h1>${esc(a.title || 'Original artwork')}</h1>
 <p>Sold by <strong>${esc(s.name)}</strong>${s.legal_name ? ` (${esc(s.legal_name)})` : ''}, the artist. ${esc(s.platform)}</p>
@@ -60,6 +60,9 @@ export default {
         const out = await C.webhook(env, raw, req.headers.get('Stripe-Signature'));
         return new Response(JSON.stringify(out.body), { status: out.status, headers: { 'Content-Type': 'application/json' } });
       }
+      // switch state only (no counts, no identifiers): lets the deploy workflow verify from outside that the pilot is on or off
+      if (p === '/v1/status' && m === 'GET') return new Response(JSON.stringify({ installed: await C.installed(env), pilot_enabled: C.switches(env).enabled, mode: 'test' }),
+        { headers: { 'Content-Type': 'application/json', ...SEC } });
       let mm;
       if ((mm = p.match(/^\/terms\/(PA-BPT-[0-9A-Z-]{4,20})\.html$/)) && m === 'GET') {
         const t = await C.currentTerms(env, 'buyer_purchase_terms');

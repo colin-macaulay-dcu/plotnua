@@ -16,8 +16,8 @@
   const act = fn => async ev => { ev.preventDefault(); try { await fn(ev); } catch (e) { alert(e.message); } };
   const TEMPLATE = { collection_county: '', destination: '', unpacked_cm: '', packed_cm: '', weight_kg: 0, medium: '', framing: '', glazing: '', condition: '', access_notes: null,
     organiser: 'artist', packer: 'artist', transport_booker: 'artist', transport_contracting_party: 'artist', transport_payer: 'artist', transporter_name: '',
-    installation: 'not_applicable', import_costs: 'not_applicable', cover_type: 'none', cover_provider: null, covered_value_cents: 0, valuation_basis: null,
-    excess_cents: null, exclusions: null, cover_period: null, claims_contact: null, delivery_window: '', tracking: '', signed_receipt: true, condition_photos: true,
+    installation: 'not_applicable', import_costs: 'not_applicable', cover_type: 'transit_insurance', cover_provider: '', covered_value_cents: 0, valuation_basis: '',
+    excess_cents: null, exclusions: null, cover_period: '', claims_contact: '', insured_party: 'transporter', cover_confirmation_ref: '', cover_confirmed_by: '', cover_confirmed_on: new Date().toISOString().slice(0, 10), delivery_window: '', tracking: '', signed_receipt: true, condition_photos: true,
     return_route: '', shipment_confirmation_ref: '', shipment_confirmed_by: '', shipment_confirmed_on: new Date().toISOString().slice(0, 10) };
 
   function orderCard(o) {
@@ -50,7 +50,7 @@
           .map(([k, t]) => `<label><input type="checkbox" name="${k}"> ${t}</label>`).join('')}
         <label>Note (optional) <input name="note" maxlength="500"></label><button>Approve this quote (version ${o.quote_version})</button> <button data-a="decline" type="button">Ask for changes</button></form>`;
     }
-    if (['paid', 'dispatched', 'delivered', 'disputed'].includes(o.status)) h += `<form data-f="fulfil"><label>Record <select name="kind"><option>dispatched</option><option>tracking</option><option>condition_photos</option><option>delivered</option><option>signed_receipt</option><option>note</option></select></label>
+    if (['paid', 'dispatched', 'delivered', 'disputed'].includes(o.status)) h += `<form data-f="fulfil"><label>Record <select name="kind"><option>insurance</option><option>dispatched</option><option>tracking</option><option>condition_photos</option><option>delivered</option><option>signed_receipt</option><option>note</option></select></label>
       <label>Evidence <input name="evidence" maxlength="2000" required placeholder="tracking number, receipt or photo reference"></label><button>Record</button></form>`;
     return h + '</section>';
   }
@@ -92,7 +92,8 @@
       say('Saved as a new quote version'); load(); });
     on('button[data-a]', 'click', async e => {
       const id = idOf(e.target), a = e.target.dataset.a;
-      if (a === 'issue') { const r = await api('POST', `${base}/orders/${id}/issue`, { days: Number(prompt('Quote valid for how many days (1–7)?', '3')) }); prompt('Buyer link (shown once). Copy it now and send it to the buyer yourself:', r.buyer_link); }
+      if (a === 'issue') { const r = await api('POST', `${base}/orders/${id}/issue`, { days: Number(prompt('Quote valid for how many days (1–7)?', '3')),
+          linked_check_confirmed: confirm('Linked purchases: as far as you know, is this purchase NOT linked to other purchases by this buyer or anyone acting with them (other email addresses, household, business, agents, staged payments)? OK = not linked.') }); prompt('Buyer link (shown once). Copy it now and send it to the buyer yourself:', r.buyer_link); }
       else if (a === 'refund') { const art = Number(prompt('Artwork amount to refund (cents)', '0')), del = Number(prompt('Delivery amount to refund (cents)', '0')), reason = prompt('Reason');
         await api('POST', `${base}/orders/${id}/refund`, { artwork_cents: art, delivery_cents: del, reason }); }
       else if (a === 'cancel') await api('POST', `${base}/orders/${id}/cancel`, { reason: prompt('Reason') || '' });

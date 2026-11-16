@@ -44,10 +44,17 @@ out.HIRE_TERMS = HIRE_TERMS;
 // Managed checkout pilot (development 16 Nov 2026): the payment addendum (PA-PAY) and buyer purchase terms (PA-BPT), once
 // issued, live in agreements/payment-issued with the same fingerprint rule. Until then no text is bundled, so no artist can
 // opt in and no quote can be issued. Written to its own small module so the public checkout Worker carries nothing else.
+// TEST ENVIRONMENT ONLY: PAYMENT_TERMS_DIR=agreements/payment-test with CHECKOUT_TARGET=test bundles clearly labelled placeholder
+// texts so plotart-checkout-test can be exercised; any other combination is refused, so they can never reach production.
+const PT_DIR = process.env.PAYMENT_TERMS_DIR || 'agreements/payment-issued';
+if (PT_DIR !== 'agreements/payment-issued' && !(PT_DIR === 'agreements/payment-test' && process.env.CHECKOUT_TARGET === 'test'))
+  throw new Error('PAYMENT_TERMS_DIR other than agreements/payment-issued is allowed only as agreements/payment-test with CHECKOUT_TARGET=test');
 const PAYMENT_TERMS = {};
-const pf = here + 'agreements/payment-issued/fingerprints.json';
+const pf = here + PT_DIR + '/fingerprints.json';
 if (existsSync(pf)) for (const [id, d] of Object.entries(JSON.parse(readFileSync(pf, 'utf8')).documents)) {
-  const h = readFileSync(here + `agreements/payment-issued/${id}.html`);
+  const h = readFileSync(here + `${PT_DIR}/${id}.html`);
+  if (PT_DIR === 'agreements/payment-test' && !(id.includes('-TEST-') && h.toString('utf8').includes('TEST ONLY'))) throw new Error(`Payment terms ${id}: a test placeholder must be named -TEST- and say TEST ONLY`);
+  if (PT_DIR === 'agreements/payment-issued' && (id.includes('TEST') || h.toString('utf8').includes('TEST ONLY'))) throw new Error(`Payment terms ${id}: a test placeholder cannot be issued`);
   if (createHash('sha256').update(h).digest('hex') !== d.html_sha256) throw new Error(`Payment terms ${id}: the served file does not match its recorded fingerprint. Refusing to build.`);
   PAYMENT_TERMS[id] = { title: d.title, kind: d.kind, html: h.toString('utf8'), html_sha256: d.html_sha256 };
 }

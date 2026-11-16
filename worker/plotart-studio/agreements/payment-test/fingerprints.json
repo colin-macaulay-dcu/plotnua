@@ -1,0 +1,15 @@
+{
+ "_note": "TEST ENVIRONMENT ONLY. Built only when CHECKOUT_TARGET=test (build-assets.mjs refuses otherwise).",
+ "documents": {
+  "PA-PAY-TEST-01": {
+   "title": "TEST ONLY \u00b7 payment addendum placeholder",
+   "kind": "artist_payment_addendum",
+   "html_sha256": "ae27e81cd21743e2698a6a267f59f19df21b22d227a70136d01d3fb681d6303c"
+  },
+  "PA-BPT-TEST-01": {
+   "title": "TEST ONLY \u00b7 buyer terms placeholder",
+   "kind": "buyer_purchase_terms",
+   "html_sha256": "5a45517f2c2083ef336d3a963ca2eab4524bf56bd6e95e194ca1e5f004adbd07"
+  }
+ }
+}

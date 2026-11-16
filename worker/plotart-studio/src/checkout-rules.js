@@ -17,7 +17,11 @@ import { Bad } from './lib.js';
 
 export const PILOT_ID = 'plotart-managed-checkout-pilot-1';
 export const CURRENCY = 'eur';
-export const MAX_ARTWORK_CENTS = 999_999;        // pilot ceiling: EUR 9,999.99 (stays below the EUR 10,000 AML art-trader threshold; see spec)
+export const MAX_ARTWORK_CENTS = 999_999;        // pilot SCOPE limit per artwork (EUR 9,999.99). It does NOT determine or resolve any
+                                                 // anti-money-laundering obligation: value alone OR with linked transactions counts (see linkedCheck)
+export const LINKED_THRESHOLD_CENTS = 1_000_000; // EUR 10,000: total of this order and apparently linked orders that the pilot refuses to quote
+export const LINKED_WINDOW_DAYS = 365;            // how far back the pilot looks for linked orders (a pilot rule, not a legal definition)
+export const REQUIRE_TRANSIT_INSURANCE = true;    // initial pilot: every real shipment needs confirmed transit insurance for at least the artwork price
 export const MAX_DELIVERY_CENTS = 200_000;
 export const MAX_QUOTE_DAYS = 7;
 export const SESSION_MINUTES = 30;               // Stripe's minimum hosted-checkout lifetime; the reservation follows it
@@ -134,8 +138,9 @@ export const DELIVERY_FIELDS = {
   condition: 's', access_notes: 's?',
   organiser: 'p', packer: 'p', transport_booker: 'p', transport_contracting_party: 'p', transport_payer: 'p', transporter_name: 's',
   installation: 'p', import_costs: 'p',
-  cover_type: ['transit_insurance', 'carrier_limited_liability', 'none'], cover_provider: 's?', covered_value_cents: 'n', valuation_basis: 's?',
-  excess_cents: 'n?', exclusions: 's?', cover_period: 's?', claims_contact: 's?',
+  cover_type: ['transit_insurance'], cover_provider: 's', covered_value_cents: 'n', valuation_basis: 's',
+  excess_cents: 'n?', exclusions: 's?', cover_period: 's', claims_contact: 's', insured_party: 'p',
+  cover_confirmation_ref: 's', cover_confirmed_by: 's', cover_confirmed_on: 'd',
   delivery_window: 's', tracking: 's', signed_receipt: 'b', condition_photos: 'b', return_route: 's',
   shipment_confirmation_ref: 's', shipment_confirmed_by: 's', shipment_confirmed_on: 'd',
 };
@@ -155,12 +160,19 @@ export function cleanDelivery(o) {
     else if (ty === 'd') { if (!/^\d{4}-\d{2}-\d{2}$/.test(v)) throw new RuleError(`Delivery: ${k.replace(/_/g, ' ')} must be YYYY-MM-DD`); }
     out[k] = v;
   }
-  if (out.cover_type !== 'none' && (!out.cover_provider || !out.claims_contact || !out.cover_period || !out.valuation_basis))
-    throw new RuleError('Delivery: cover needs its provider, valuation basis, period and claims contact');
-  if (out.cover_type === 'none' && out.covered_value_cents !== 0) throw new RuleError('Delivery: with no cover, the covered value must be 0');
   const extra = Object.keys(o).filter(k => !(k in DELIVERY_FIELDS));
   if (extra.length) throw new RuleError('Delivery: unknown field ' + extra[0]);
   return out;
+}
+/* Initial pilot (founder decision 16 Nov 2026): a real shipment needs CONFIRMED transit insurance for this shipment, covering
+   at least the artwork price, from collection to signed delivery. Carrier's limited liability or no cover is refused. Test
+   fixtures use simulated cover; nothing here can tell simulated from real, which is why the cover confirmation reference,
+   who confirmed it and when are required and shown to the artist and buyer. */
+export function checkCover(delivery, artworkCents) {
+  if (!REQUIRE_TRANSIT_INSURANCE) return;
+  if (!delivery || delivery.cover_type !== 'transit_insurance') throw new RuleError('The pilot requires confirmed transit insurance for every shipment');
+  if (!(delivery.covered_value_cents >= artworkCents)) throw new RuleError('Transit insurance must cover at least the artwork price');
+  if (['not_applicable', 'plotart'].includes(delivery.insured_party)) throw new RuleError('Name who holds the transit insurance (artist, buyer or transporter)');
 }
 export const quoteExpiry = (fromIso, days) => {
   if (!Number.isInteger(days) || days < 1 || days > MAX_QUOTE_DAYS) throw new RuleError(`A quote lasts 1–${MAX_QUOTE_DAYS} days`);

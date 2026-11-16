@@ -42,8 +42,12 @@ WHEN NEW.kind = 'opted_in' AND NOT EXISTS (SELECT 1 FROM payment_terms t WHERE t
 BEGIN SELECT RAISE(ABORT, 'opt-in refused: not an installed addendum, wrong fingerprint, or dated before it took effect'); END;
 CREATE TRIGGER IF NOT EXISTS payment_pilot_events_no_update BEFORE UPDATE ON payment_pilot_events
 BEGIN SELECT RAISE(ABORT, 'payment_pilot_events is append-only'); END;
+-- deletable only six years after the artist LEFT the pilot, and only once none of their orders is still kept
 CREATE TRIGGER IF NOT EXISTS payment_pilot_events_no_delete BEFORE DELETE ON payment_pilot_events
-BEGIN SELECT RAISE(ABORT, 'payment_pilot_events is append-only'); END;
+WHEN EXISTS (SELECT 1 FROM checkout_orders o WHERE o.artist_id = OLD.artist_id)
+  OR NOT EXISTS (SELECT 1 FROM payment_pilot_events e WHERE e.artist_id = OLD.artist_id AND e.kind = 'left' AND julianday(e.at) <= julianday('now', '-6 years')
+    AND e.at = (SELECT MAX(x.at) FROM payment_pilot_events x WHERE x.artist_id = OLD.artist_id))
+BEGIN SELECT RAISE(ABORT, 'payment_pilot_events is kept until six years after the artist left and their orders are gone'); END;
 
 -- 3 · The artist's own Stripe account (identity documents stay with Stripe's hosted onboarding; none are stored here).
 CREATE TABLE IF NOT EXISTS payment_accounts (
@@ -103,6 +107,8 @@ CREATE TABLE IF NOT EXISTS checkout_orders (
   application_fee_id TEXT,
   amount_received_cents INTEGER,
   paid_at            TEXT,
+  aml_check          TEXT,                                   -- JSON: linked-transaction total, linked orders, founder's confirmation
+  retain_until       TEXT,                                   -- set when the order ends: +6 years if money moved, +2 years if not
   livemode           INTEGER NOT NULL DEFAULT 0 CHECK (livemode = 0),
   created_by         TEXT NOT NULL,
   created_at         TEXT NOT NULL,
@@ -111,6 +117,13 @@ CREATE TABLE IF NOT EXISTS checkout_orders (
 );
 CREATE INDEX IF NOT EXISTS checkout_orders_artist ON checkout_orders(artist_id, created_at);
 CREATE INDEX IF NOT EXISTS checkout_orders_artwork ON checkout_orders(artwork_id);
+CREATE INDEX IF NOT EXISTS checkout_orders_buyer ON checkout_orders(buyer_email COLLATE NOCASE, created_at);
+CREATE TRIGGER IF NOT EXISTS checkout_orders_no_delete BEFORE DELETE ON checkout_orders
+WHEN OLD.retain_until IS NULL OR julianday(OLD.retain_until) > julianday('now')
+BEGIN SELECT RAISE(ABORT, 'an order is kept until its retention period has ended'); END;
+CREATE TRIGGER IF NOT EXISTS checkout_orders_retention_fixed BEFORE UPDATE OF retain_until ON checkout_orders
+WHEN OLD.retain_until IS NOT NULL AND (NEW.retain_until IS NULL OR julianday(NEW.retain_until) < julianday(OLD.retain_until))
+BEGIN SELECT RAISE(ABORT, 'a retention date can only be extended'); END;
 
 -- 5 · One reservation per original, with an explicit expiry. The PRIMARY KEY is what stops two checkouts at once.
 CREATE TABLE IF NOT EXISTS artwork_reservations (
@@ -131,7 +144,8 @@ CREATE TABLE IF NOT EXISTS artwork_sales (
 );
 CREATE UNIQUE INDEX IF NOT EXISTS artwork_sales_one_active ON artwork_sales(artwork_id) WHERE released_at IS NULL;
 CREATE TRIGGER IF NOT EXISTS artwork_sales_no_delete BEFORE DELETE ON artwork_sales
-BEGIN SELECT RAISE(ABORT, 'artwork_sales rows are never removed; release them with a reason'); END;
+WHEN NOT EXISTS (SELECT 1 FROM checkout_orders o WHERE o.id = OLD.order_id AND o.retain_until IS NOT NULL AND julianday(o.retain_until) <= julianday('now'))
+BEGIN SELECT RAISE(ABORT, 'artwork_sales rows are kept with their order; release them with a reason'); END;
 
 -- 7 · Hosted checkout sessions. At most one open session per order; a revised quote supersedes it first.
 CREATE TABLE IF NOT EXISTS checkout_sessions (
@@ -181,7 +195,8 @@ CREATE INDEX IF NOT EXISTS order_ledger_order ON order_ledger(order_id, at);
 CREATE TRIGGER IF NOT EXISTS order_ledger_no_update BEFORE UPDATE ON order_ledger
 BEGIN SELECT RAISE(ABORT, 'order_ledger is append-only; add an adjustment'); END;
 CREATE TRIGGER IF NOT EXISTS order_ledger_no_delete BEFORE DELETE ON order_ledger
-BEGIN SELECT RAISE(ABORT, 'order_ledger is append-only'); END;
+WHEN NOT EXISTS (SELECT 1 FROM checkout_orders o WHERE o.id = OLD.order_id AND o.retain_until IS NOT NULL AND julianday(o.retain_until) <= julianday('now'))
+BEGIN SELECT RAISE(ABORT, 'order_ledger is append-only until its order''s retention period has ended'); END;
 
 -- 10 · Refunds requested by the founder (the artist, as seller, can also refund in their own Stripe Dashboard: those
 --      arrive as provider events and are booked as external_refund for founder review).
@@ -206,7 +221,7 @@ CREATE TABLE IF NOT EXISTS order_refunds (
 CREATE TABLE IF NOT EXISTS order_fulfilment_events (
   id        TEXT PRIMARY KEY,
   order_id  TEXT NOT NULL REFERENCES checkout_orders(id),
-  kind      TEXT NOT NULL CHECK (kind IN ('dispatched','delivered','signed_receipt','condition_photos','tracking','note')),
+  kind      TEXT NOT NULL CHECK (kind IN ('dispatched','delivered','signed_receipt','condition_photos','tracking','insurance','note')),
   actor     TEXT NOT NULL,
   at        TEXT NOT NULL,
   evidence  TEXT NOT NULL CHECK (length(evidence) BETWEEN 2 AND 2000)
@@ -214,7 +229,8 @@ CREATE TABLE IF NOT EXISTS order_fulfilment_events (
 CREATE TRIGGER IF NOT EXISTS order_fulfilment_events_no_update BEFORE UPDATE ON order_fulfilment_events
 BEGIN SELECT RAISE(ABORT, 'order_fulfilment_events is append-only'); END;
 CREATE TRIGGER IF NOT EXISTS order_fulfilment_events_no_delete BEFORE DELETE ON order_fulfilment_events
-BEGIN SELECT RAISE(ABORT, 'order_fulfilment_events is append-only'); END;
+WHEN NOT EXISTS (SELECT 1 FROM checkout_orders o WHERE o.id = OLD.order_id AND o.retain_until IS NOT NULL AND julianday(o.retain_until) <= julianday('now'))
+BEGIN SELECT RAISE(ABORT, 'order_fulfilment_events is append-only until its order''s retention period has ended'); END;
 
 -- 12 · Order audit: actor, action, time, prior and new status. Append-only.
 CREATE TABLE IF NOT EXISTS order_events (
@@ -231,7 +247,8 @@ CREATE INDEX IF NOT EXISTS order_events_order ON order_events(order_id, id);
 CREATE TRIGGER IF NOT EXISTS order_events_no_update BEFORE UPDATE ON order_events
 BEGIN SELECT RAISE(ABORT, 'order_events is append-only'); END;
 CREATE TRIGGER IF NOT EXISTS order_events_no_delete BEFORE DELETE ON order_events
-BEGIN SELECT RAISE(ABORT, 'order_events is append-only'); END;
+WHEN NOT EXISTS (SELECT 1 FROM checkout_orders o WHERE o.id = OLD.order_id AND o.retain_until IS NOT NULL AND julianday(o.retain_until) <= julianday('now'))
+BEGIN SELECT RAISE(ABORT, 'order_events is append-only until its order''s retention period has ended'); END;
 
 -- Rollback (only before any pilot data exists):
 -- DROP TABLE IF EXISTS order_events;

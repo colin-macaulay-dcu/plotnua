@@ -88,6 +88,8 @@ Each quote identifies:
 
 For large, fragile or valuable originals, obtain a specialist quotation. Tracking alone is not full-value cover. Do not publish blanket insurance promises. Buyer remedies must not be made conditional on a completed carrier/insurance claim.
 
+In the initial pilot every real shipment needs confirmed transit insurance for that shipment (see Implementation).
+
 Candidate providers from research: Maurice Ward Art Handling, Irish Art Services and Mail Boxes Etc. No partnership, pricing or cover has been agreed.
 
 ## Proposed records
@@ -166,131 +168,234 @@ Deliver the first implementation with payments disabled by default. Review the t
 - https://www.revenue.ie/en/companies-and-charities/international-tax/aeoi/dac7/reporting.aspx
 - https://www.amlcompliance.ie/art-trader-intermediary/
 
-## Implementation (16 November 2026)
+## Implementation (16 November 2026, revision 2)
 
-Everything below is on branch `plotart/managed-checkout-pilot` only. Nothing is merged, deployed, migrated, issued or enrolled.
+Everything below is on branch `plotart/managed-checkout-pilot` only. Nothing is merged, deployed, migrated, issued or
+enrolled, and payments are not activated.
 
 ### What was built
 
 | Part | Files |
 |---|---|
-| Commission entitlement, amounts, statuses, delivery/cover validation (pure rules) | `src/checkout-rules.js` |
+| Commission entitlement, amounts, statuses, delivery and insurance validation (pure rules) | `src/checkout-rules.js` |
 | Stripe Connect adapter (test keys only), webhook signature check | `src/stripe.js` |
-| Orders, reservations, sales, sessions, verified events, ledger, refunds, disputes, fulfilment, sweep | `src/checkout.js` |
-| Public buyer Worker `plotart-checkout`: quote page, hosted-checkout start, return page, terms, webhook | `src/checkout-public.js`, `wrangler.checkout.toml` |
+| Orders, reservations, sales, sessions, verified events, ledger, refunds (incl. pending/failed), disputes, fulfilment, linked-purchase check, retention | `src/checkout.js` |
+| Public buyer Worker `plotart-checkout`: quote page, hosted-checkout start, return page, terms, status, webhook | `src/checkout-public.js`, `wrangler.checkout.toml` |
 | Studio routes: founder desk `/admin/checkout`, artist page `/checkout-pilot` (not linked from the Studio tabs) | `src/index.js`, `ui/checkout-pilot.js`, `build-assets.mjs` |
-| Database: 12 new tables, refusal-only triggers on new tables only, no FKs into artists/artworks | `migrations/0016_managed_checkout_pilot.sql` (also appended to `schema.sql`) |
-| Draft texts for review (not issued) | `agreements/payment-drafts/PA-PAY-2026-11-DRAFT.md`, `PA-BPT-2026-11-DRAFT.md` |
-| Proofs | `test/prove-checkout-pilot.mjs` (81 checks), `test/prove-migration-0016.mjs` (9 checks) |
+| Database: 12 new tables, refusal-only triggers on new tables only, no foreign keys into artists/artworks | `migrations/0016_managed_checkout_pilot.sql` (also appended to `schema.sql`) |
+| Draft texts for review (not issued) | `agreements/payment-drafts/PA-PAY-2026-11-DRAFT.md`, `PA-BPT-2026-11-DRAFT.md` (r2) |
+| TEST ONLY placeholder texts (test environment only; refused in any other build) | `agreements/payment-test/` |
+| Deployment workflow (prepared, never run) and its tools | `.github/workflows/plotart-checkout-deploy.yml`, `atlas-tools/release/studio/render-checkout-config.py`, `check-stripe-test-secrets.sh`, `checkout-outside-check.sh`, `test/checkout-test-env-seed.mjs` |
+| Proofs | `test/prove-checkout-pilot.mjs` (107 checks), `test/prove-migration-0016.mjs` (9), `test/prove-checkout-deploy.mjs` (26) |
 
-Switches: `CHECKOUT_PILOT_ENABLED` defaults to `"false"` in both `wrangler.toml` and `wrangler.checkout.toml`. Even when
-on, the code refuses any key that is not `sk_test_`/`rk_test_`, any live-mode object returned by Stripe and any
-live-mode event; the database refuses live accounts (`livemode = 0` CHECK) and any session id not beginning `cs_test_`.
+`CHECKOUT_PILOT_ENABLED` defaults to `"false"` in `wrangler.toml` and `wrangler.checkout.toml` (`production.json` does not
+set it). Even when on, the code refuses any key that is not `sk_test_`/`rk_test_`, any live-mode object returned by
+Stripe and any live-mode event; the database refuses live accounts and any session id not beginning `cs_test_`.
 Moving to live therefore needs a code change, not a setting.
 
-### Provider configuration chosen
+### Stripe Connect configuration — checked against Stripe's documentation (16 Nov 2026)
 
-**Stripe Connect, direct charges on the artist's own Stripe account, Stripe-hosted onboarding and Stripe-hosted
-Checkout, with PlotArt's commission taken as an `application_fee_amount`.** Each artist's account is created with
-controller properties equivalent to a Standard account: `fees.payer = account`, `losses.payments = stripe`,
-`requirement_collection = stripe`, `stripe_dashboard.type = full`.
+**Chosen:** direct charges on each opted-in artist's own Stripe account; Stripe-hosted onboarding and Checkout;
+PlotArt's commission as `application_fee_amount`; accounts created with `controller.fees.payer = account`,
+`controller.losses.payments = stripe`, `controller.requirement_collection = stripe`, `controller.stripe_dashboard.type = full`.
 
-Why this and not the alternatives:
-- Direct charges make the connected account the business the buyer pays, debit refunds and disputes from that account,
-  and let the platform take an optional application fee. That matches "the artist is the seller and collects payment"
-  in PA-FAA cl. 3 and PA-GAA cl. 4, so the pilot does not silently change PlotArt into the seller.
-- Destination charges and separate charges-and-transfers put the payment, Stripe's fees, refunds and chargebacks on
-  PlotArt's own balance, and PlotArt would then be paying the artist out. The spec rules out "platform collection then
-  transfers"; destination charges have the same economic effect and were rejected for the same reason.
-- `losses.payments = stripe` means Stripe, not PlotArt, is liable for an artist's negative balance (after refunds or
-  lost disputes) and recovers it from the artist under Stripe's own agreement.
+What Stripe documents for this configuration:
+- With direct charges the payment is made on the connected account, so refunds, disputes and other negative transactions
+  affect the **connected account's** balance; transaction risk falls mainly on connected accounts rather than the platform
+  (docs.stripe.com/connect/manage-risk; docs.stripe.com/connect/saas/tasks/refunds-disputes).
+- `controller.losses.payments` decides who is ultimately responsible for a connected account's negative balance
+  (docs.stripe.com/connect/account-balances). With `stripe`, Stripe assumes the risk of losses from **unrecoverable**
+  negative balances (Stripe "Managed Risk" / negative balance liability). Stripe recommends assigning negative-balance
+  responsibility to Stripe for direct-charge integrations; when the platform is responsible instead, Stripe holds a
+  reserve on the platform's balance (docs.stripe.com/connect/integration-recommendations).
+- With `losses.payments = stripe` and `fees.payer = account`, dispute fees are charged to the connected account and
+  Stripe covers the loss if the amount cannot be debited (docs.stripe.com/disputes/connect). Accounts where the platform
+  is not liable for negative balances handle their own disputes.
+- Application fees are **not** refunded automatically with a refund; the platform must refund them explicitly or the
+  connected account loses that amount (Connect refunds-and-disputes guide). Stripe adds no fee on the application fee.
+- Stripe does not return its processing fees from the original charge when a payment is refunded
+  (support.stripe.com, "Understanding fees for refunded payments").
 
-### Decisions documented (founder confirmation marked ⚑)
+Still unverified against the live API (only against documentation and a mock): that Stripe accepts this exact
+controller combination for Irish and Northern Irish individual artists selling original art on PlotNua's platform
+account, and the exact `account.updated` requirement fields during onboarding. Those are the first real test-mode checks.
 
-| Question | Implemented position |
+### Refund after the artist has been paid out
+
+Stripe uses the **available** balance for refunds. If it does not cover a card refund, Stripe holds the refund as
+**pending** until the balance is sufficient (refunds for other payment methods fail); Stripe may debit the account's bank
+account to recover a negative balance where applicable; and Stripe automatically fails a pending refund after 45 days.
+If the cardholder disputes the charge while the refund is pending, the refund fails and a dispute is created
+(docs.stripe.com/refunds; Stripe support "Fix your pending refund").
+
+The pilot now handles this explicitly:
+- a refund Stripe returns as `pending` books **nothing** and returns **no** commission; the order is flagged ("pending at
+  Stripe … ask the artist to top up; fails after 45 days"); amounts still pending count against what can be refunded again;
+- `refund.updated` / `charge.refund.updated` / `charge.refunded` with `succeeded` then books the refund and returns
+  PlotArt's commission share once (idempotent);
+- `refund.failed` (e.g. `insufficient_funds` after 45 days, or a cancelled card) marks it failed and flags the order:
+  the buyer has **not** been repaid and the artist, as seller, must repay them another way. No commission is returned.
+
+### Who carries what — kept separate
+
+| Layer | Who | Basis |
+|---|---|---|
+| **Provider loss allocation** (between Stripe, PlotNua's platform account and the artist's account) | Refunds, disputes and dispute fees are debited from the artist's Stripe balance; an *unrecoverable* negative balance is Stripe's loss, which Stripe pursues against the artist under Stripe's own agreement. PlotArt's platform balance is not used. | Stripe configuration above |
+| **Contract between artist and PlotArt** | The artist, as seller, repays buyers and bears Stripe fees (decision D1); PlotArt returns its commission per GAA 9 only once a refund succeeds. | PA-PAY draft cl. 3, 7; PA-GAA cl. 9 |
+| **Consumer law towards the buyer** | The seller (artist) owes the buyer the statutory remedies, including cancellation refunds, whatever happens in Stripe. PlotArt, as the platform that introduced the sale and prepared the quote, remains responsible for its own information duties (seller identity, charges, terms) and for what its own terms promise; Stripe's loss allocation does not remove either party's obligations to the consumer. | PA-BPT draft cl. 6–7; professional advice outstanding |
+
+### Artist deductions — worked examples
+
+EUR 1,000 artwork + EUR 75 delivery and transit insurance = EUR 1,075 paid. Stripe fees from Stripe's published
+standard EEA pricing (standard EEA cards 1.5% + €0.25; premium EEA 1.9% + €0.25; UK 2.5% + €0.25; international
+3.25% + €0.25) — to be re-checked on Stripe's Irish pricing page before any text is issued.
+
+| | Founding Artist, commission-free | Gallery Artist, 15% (VAT-inclusive) |
+|---|---|---|
+| Buyer pays | €1,075.00 | €1,075.00 |
+| PlotArt commission (Stripe application fee), on the artwork only | €0.00 | €150.00 — if PlotArt is VAT-registered at 23%, €121.95 + €28.05 VAT inside the €150 |
+| Stripe processing fee (separate; Stripe's, not PlotArt's), standard EEA card | €16.38 | €16.38 |
+| Net into the artist's Stripe balance | €1,058.62 | €908.62 |
+| Transport and insurance, paid on by the artist as quoted | €75.00 | €75.00 |
+| Left for the artwork | €983.62 | €833.62 |
+| Stripe fee with premium EEA / UK / international card | €20.68 / €27.13 / €35.19 | same |
+
+Notes: Stripe's fee is on the whole €1,075, including the delivery portion; the 15% is not. A full refund returns PlotArt's
+€150 but not Stripe's €16.38. A partial artwork refund of €500 returns €75 of commission (GAA 9.2). A lost dispute adds
+Stripe's dispute fee (€20 on Stripe's EEA pricing pages at the time of writing). **Review point:** PA-GAA cl. 5.2 says
+the artist keeps at least 85% of the Commission Base; that is true of PlotArt's commission, but with Stripe's fee the
+artist's cash is below 85% (here €833.62 of €1,000). The addendum says so expressly (cl. 3.3) so it is accepted knowingly.
+
+### Anti-money-laundering
+
+The EUR 9,999.99 per-artwork limit is a **pilot scope limit only. It does not resolve or settle any AML obligation**,
+and it will not be raised merely to enable live transactions. Irish law (Criminal Justice (Money Laundering and
+Terrorist Financing) Act 2010, as amended) brings in persons trading in or acting as intermediaries in works of art where
+the value of the transaction, **alone or with transactions that are or appear to be linked**, is at least EUR 10,000;
+the Department of Justice's Anti-Money Laundering Compliance Unit supervises that sector. Whether PlotArt's role in a
+managed checkout makes it such an intermediary is one of the open professional-advice questions.
+
+What the pilot does about linked transactions (`linkedCheck`, enforced when a quote is issued and again when checkout
+opens): it totals this order with the same buyer's other pilot orders (email address compared case-insensitively, any
+artist, last 12 months, every order paid, refunded, or quoted and payable) and refuses at EUR 10,000 or more; and the
+founder must confirm, for each quote, that he knows of no other link (other email addresses, household, business,
+agents, staged payments). Both are recorded on the order (`aml_check`). Limits: it cannot see purchases outside the pilot
+or connections the founder does not know of; it is a refusal rule, not an AML programme.
+
+Higher-value works would be supported only after professional advice confirms PlotArt's position and, if it is within
+scope, after PlotArt has what a designated person needs: registration/notification with the competent authority as
+required, a written business risk assessment and policies, customer due diligence on buyers (and sellers where required)
+including identity verification, beneficial-ownership, PEP and sanctions screening, record keeping, suspicious-transaction
+reporting, and training. Stripe's own identity checks on artists do not discharge PlotArt's obligations. Technically that
+would be a separate, switched-off "verified purchase" path (a due-diligence record that must be completed and approved
+before a quote at or above the threshold can be issued); it is not built.
+
+### Transit insurance (initial pilot)
+
+Every real shipment must have **confirmed transit insurance for that shipment**: cover type `transit_insurance` only
+(carrier's limited liability or no cover are refused), covered value at least the artwork price, insurer, who holds the
+cover, valuation basis, period, claims contact and a cover confirmation reference (who confirmed it and when). The
+quote cannot be sent to the artist without it, and **dispatch cannot be recorded until an `insurance` evidence entry
+(policy or certificate reference for this shipment) is recorded**. Test fixtures use clearly labelled simulated cover
+("SIMULATED test cover", `SIM-COVER-0001`).
+
+### Records after an artist or artwork is deleted; retention
+
+Order records do not depend on the artist's or artwork's rows: no foreign keys, and the order snapshots the seller,
+the artwork as quoted, the amounts, the commission entitlement evidence, the linked-purchase check, and the Stripe
+account, payment intent, charge and application fee ids. Tested with the **real** six-year deletion schedule: after the
+artist's records and artworks are deleted, the founder still sees the full order and ledger, a full refund still works
+on the artist's Stripe account, and the buyer's link still works.
+
+Retention (implemented in the sweep; triggers enforce it): an order that moved money is kept with its ledger, refunds,
+sessions, fulfilment and events for **6 years** after it ends (closed or refunded, nothing outstanding); an order that
+never moved money for **2 years**; then everything for that order is deleted. A retention date can be extended but never
+shortened, nothing is deletable before it, and orders with an open issue or a pending refund are never scheduled. Opt-in
+records are kept until six years after the artist leaves and none of their orders remain. Provider event ids are kept
+six years. (D3: confirm periods with the accountant.)
+
+### Test environment (prepared, not created)
+
+Test and production share code only. Test uses its own Workers (`plotart-studio-test`, `plotart-checkout-test`), its own
+D1 database `plotart-checkout-test`, its own R2 buckets, its own Cloudflare Access application, its own Cloudflare token
+and Stripe TEST credentials, all in the GitHub environment `checkout-test`. Production (`studio-production.`) can only
+deploy `plotart-checkout` with the pilot off and no Stripe secret. The renderer refuses the production database for test.
+
+Exact setup (each step on Colin's approval; nothing here has been run):
+1. **Stripe (Colin's login), test mode.** Activate Connect for the PlotNua platform account. Create a restricted test
+   key (`rk_test_…`) with write access to Accounts, Account Links, Checkout Sessions, Refunds and Application Fees and read
+   access to PaymentIntents (or use the `sk_test_…` key). Add a webhook endpoint listening to **events on connected
+   accounts** at `https://plotart-checkout-test.<subdomain>.workers.dev/v1/stripe/webhook` with: `checkout.session.completed`,
+   `checkout.session.async_payment_succeeded`, `checkout.session.async_payment_failed`, `checkout.session.expired`,
+   `charge.refunded`, `refund.updated`, `refund.failed`, `charge.dispute.created`, `charge.dispute.updated`,
+   `charge.dispute.closed`, `account.updated`. Note its `whsec_…` secret.
+2. **Cloudflare test resources** (EU):
+   `npx wrangler d1 create plotart-checkout-test --location weur`
+   `npx wrangler r2 bucket create plotart-studio-test-images --jurisdiction eu`
+   `npx wrangler r2 bucket create plotart-studio-test-applications --jurisdiction eu`
+   An Access application for `plotart-studio-test.<subdomain>.workers.dev` allowing Colin's own test addresses; a Cloudflare
+   API token limited to those two Workers and the test database and buckets.
+3. **Test database schema and synthetic data** (TEST database only):
+   `npx wrangler d1 execute plotart-checkout-test --remote --file worker/plotart-studio/schema.sql`
+   `npx wrangler d1 execute plotart-checkout-test --remote --file worker/plotart-studio/migrations/0013_gallery_artist_agreement_text.sql`
+   `node worker/plotart-studio/test/checkout-test-env-seed.mjs --target plotart-checkout-test --founding <colin+f1@…> --gallery <colin+g1@…> > seed.sql`
+   `npx wrangler d1 execute plotart-checkout-test --remote --file seed.sql`
+4. **GitHub environment `checkout-test`** (required reviewer: Colin). Variables: `CHECKOUT_TEST_D1_DATABASE_ID`,
+   `CHECKOUT_TEST_ACCESS_AUD`, `CHECKOUT_TEST_ACCESS_TEAM`, `CHECKOUT_TEST_ORIGIN`, `CLOUDFLARE_ACCOUNT_ID`. Secrets:
+   `CHECKOUT_TEST_CF_TOKEN`, `CHECKOUT_TEST_STRIPE_SECRET_KEY`, `CHECKOUT_TEST_STRIPE_WEBHOOK_SECRET`,
+   `CHECKOUT_TEST_FOUNDER_EMAILS`. (Values entered by Colin directly in GitHub; never in chat or files.)
+5. **Merge to main** (Colin's approval) — the workflow only deploys commits on main.
+6. Run **PlotArt checkout pilot deploy** with `target = test`, `dry_run = true`; then `dry_run = false`,
+   `enable_test_pilot = true`. The workflow builds with the TEST ONLY texts, renders the test configs, refuses non-test
+   Stripe credentials, deploys both test Workers, writes their secrets and checks them from outside (`/v1/status`).
+7. Run the Stripe test-API checks below.
+
+Production stays untouched by all of this. Production pilot activation additionally needs: migration 0016 (and 0017
+for issued texts) through `studio-d1-migration.yml`, issued texts, a code change to accept live keys, and Colin's approval.
+
+### What is tested, mocked or unverified
+
+| Area | Status |
 |---|---|
-| Who pays processing fees? | ⚑ Stripe deducts its processing fees from the **artist's** Stripe balance (`fees.payer = account`), on every order including commission-free ones. Disclosed in the addendum before opt-in; never presented as PlotArt commission; quotes never show a guaranteed net. Alternative for Colin: PlotArt bears fees (`fees.payer = application`), which costs PlotArt money on 0% orders. |
-| Does 15% include VAT? | Yes, as PA-GAA-2026-11 cl. 5.2 already says: the 15% includes any VAT applicable to the commission, on the Commission Base only. The application fee equals the full commission. Professional confirmation of the VAT treatment remains outstanding (as recorded on 13 Nov). |
-| Commission rules | Founding Enquiry (fixed in `enquiry_log` at introduction) → 0% permanently, whenever completed. Founding Artist without separately accepted commission terms in effect at introduction → 0% (FAA cl. 5–6); **15% is never inferred**. Gallery Artist → the rate in `artist_terms` (≤15%) only with an accepted PA-GAA dated on/before the introduction and inside the 24-month attribution period. Anything else → **blocked**. Delivery never carries commission. Commission rounds down (in the artist's favour). The founder can only lower to 0 with a recorded GAA 5.7 exclusion, never raise. |
-| Refunds | The artist, as seller, is responsible to the buyer. The founder can refund from the order (artwork and delivery amounts separately). Stripe debits the artist's balance. PlotArt refunds its application fee by the **exact** GAA 9.2 amount (full on full refund; Full Commission × kept ÷ due on partial; nothing for delivery refunds) using `refund_application_fee = false` plus an explicit fee refund — not Stripe's proportional default, which would wrongly include delivery. Refunds the artist makes in their own Stripe Dashboard arrive as events, are booked as `external_refund` and flagged for commission settlement. |
-| Disputes | Debited from the artist's Stripe balance by Stripe; the artist responds in their Stripe Dashboard with PlotArt's order, quote, terms-acceptance and delivery records. A lost dispute flags the order and the founder's "commission only" refund returns PlotArt's fee (GAA 9). A dispute arriving before its payment completion is deferred (HTTP 500, Stripe retries), not lost. |
-| When are artists paid? | On the artist's own Stripe payout schedule. PlotArt does not hold funds, does not delay payouts to delivery and does not describe anything as escrow. Chargebacks remain possible after payout. |
-| Delivery and cover | Kept entirely separate from commission. Every quote must name packer, organiser, booker, contracting party, payer, installation and import-cost parties; the cover type actually arranged (transit insurance, carrier's limited liability, or **none** — shown as such); covered value, valuation basis, excess, exclusions, period and claims contact; delivery window, tracking, signed receipt, condition photographs, return route; and a **shipment-specific confirmation reference, who confirmed it and when**. The artist confirms each item before the buyer can pay. No blanket insurance promise exists anywhere. |
-| Order ceiling | EUR 9,999.99 per artwork in the pilot (below the EUR 10,000 art-trader AML threshold). Linked transactions still need watching; professional advice outstanding. |
+| Commission rules, Founding protections, consent gates, reservations, duplicate prevention, event idempotency and ordering, refunds incl. pending/failed, disputes, linked-purchase refusal, transit-insurance rules, access control, retention, records surviving the real deletion schedule | **Tested locally** against the real Workers and D1 (Miniflare); **Stripe mocked** (107 checks) |
+| Migration 0016 on the pre-change schema | **Tested** (9 checks) |
+| Deployment configs, guards, TEST ONLY build guard, seed, outside check | **Tested locally**; `wrangler deploy --dry-run` **builds all three configurations** (26 checks). Workflow never run in GitHub. |
+| Stripe API behaviour (request shapes accepted, controller combination, onboarding requirements, event payloads, timing) | **Unverified** — mock only |
+| Cloudflare deployment, Access, real webhook delivery, secrets | **Unverified** |
+| Stripe fees, dispute fee amount | From Stripe's published pages via search; Irish pricing page not directly retrieved — re-check before issuing texts |
+| Legal effect of texts, VAT, DAC7, AML position | **Not assessed** — professional advice outstanding |
 
-### How the requirements are met
+### Stripe test-API checks still needed (test environment)
 
-1. One artist, one original per order: an order holds one `artwork_id`; `artwork_reservations` (PK artwork) and a
-   partial unique index on `artwork_sales` (one active sale per artwork) enforce it in the database.
-2. Availability and delivery agreed before checkout: draft → founder enters price, delivery and cover → artist confirms
-   six shipment items and approves that exact quote version → founder issues a time-limited quote (1–7 days) → buyer
-   accepts the terms → hosted checkout. Any revision expires the open Stripe session first, bumps the version, clears
-   the approval and the buyer link.
-3–5. Commission and Founding 25 protections: see the table above. No existing agreement, acceptance or term is changed;
-   the pilot only reads `enquiry_log`, `artist_terms` and the acceptance tables.
-6. Explicit opt-in: append-only `payment_pilot_events`; a trigger accepts an opt-in only against an installed addendum
-   with the matching fingerprint. Leaving cancels unpaid quotes; paid orders complete.
-7. Records: orders, expiring reservations, sessions, verified events (`payment_events`, unique by Stripe event id),
-   append-only ledger, refunds, append-only fulfilment evidence, append-only order audit (actor, prior/new status).
-8. No duplicate purchases; idempotent, order-independent events: unique event ids, `UNIQUE(kind, provider_ref)` on the
-   ledger, the sale/reservation constraints, out-of-order handling (late expiry ignored, late completion of an already
-   sold work flagged for refund, charge events before completion deferred). A Stripe redirect is never proof of payment.
-9. Direct enquiries unchanged: `src/enquiry.js` is untouched; the Studio enquiries view is re-tested.
-10. Off by default, test mode only (above).
-11. No change to public pages, terms, acceptances, gallery order, publishing or permissions. The only existing row the
-   pilot writes is the artwork's working-copy availability (`sold`) after a verified sale; it reaches the public site
-   only through the normal Studio publishing path (nothing is dispatched).
-
-### Test results (local, 16 November 2026)
-
-- `node test/prove-checkout-pilot.mjs` — **81 / 81 passed**. Covers all 15 "Required verification" items against the
-  real Studio and public Workers in Miniflare with a mock Stripe API: commission cases (15% / founding enquiry 0% /
-  founding artist never inferred / unknown blocked), consent and onboarding gates, stale/expired/revised quotes, two
-  simultaneous buyers, forged/tampered/replayed/duplicate/out-of-order/live-mode events, failure and abandonment,
-  partial/delivery/full/external refunds with exact commission reversal, disputes (deferred, opened, lost, close
-  blocked), cross-artist and cross-buyer access, gallery/publishing/positions/agreements/enquiry-log unchanged, test-mode
-  refusal of live keys and objects, and a default-configuration instance proving the pilot is off.
-- `node test/prove-migration-0016.mjs <schema-before.sql>` — **9 / 9 passed** (new tables only, existing objects and rows
-  unchanged, refusal-only triggers on new tables, idempotent, rollback exact, artwork deletion unaffected).
-- Existing regression suites: see the PR description for the run and the baseline comparison.
-
-### Exact setup for a first test-mode transaction (each step needs Colin's approval)
-
-1. **Stripe (Colin's login).** In the PlotNua Stripe account, stay in *test mode*; activate Connect for a platform;
-   confirm with Stripe that original-art sales by Irish/NI individual artists are eligible; note the test secret key.
-   (A restricted key `rk_test_` needs: Connect accounts + account links write, Checkout Sessions write, Refunds write,
-   Application fee refunds write, PaymentIntents read.)
-2. **Texts.** Approve PA-PAY and PA-BPT (drafts in `agreements/payment-drafts/`); issue each as HTML in
-   `agreements/payment-issued/` with `fingerprints.json` (`{"documents": {"PA-PAY-2026-11": {"title", "kind":
-   "artist_payment_addendum", "html_sha256"}, …}}`); run `node build-assets.mjs`; prepare migration 0017 inserting the two
-   `payment_terms` rows with those fingerprints.
-3. **Database.** Apply migrations 0016 and 0017 through the approved D1 migration workflow (both backups; exact SQL
-   approved).
-4. **Public Worker.** Create `plotart-checkout` from `wrangler.checkout.toml` (set the D1 `database_id` and
-   `CHECKOUT_ORIGIN` to the Worker's own origin), then
-   `npx wrangler secret put STRIPE_SECRET_KEY -c wrangler.checkout.toml` and the same for `STRIPE_WEBHOOK_SECRET`.
-5. **Stripe webhook (test mode).** Add an endpoint for *events on connected accounts* at
-   `<CHECKOUT_ORIGIN>/v1/stripe/webhook` with: `checkout.session.completed`, `checkout.session.async_payment_succeeded`,
-   `checkout.session.async_payment_failed`, `checkout.session.expired`, `charge.refunded`, `charge.dispute.created`,
-   `charge.dispute.updated`, `charge.dispute.closed`, `account.updated`. Its `whsec_…` secret is step 4's
-   `STRIPE_WEBHOOK_SECRET`.
-6. **Studio Worker.** `npx wrangler secret put STRIPE_SECRET_KEY` (same test key); set `CHECKOUT_ORIGIN` as in step 4;
-   deploy. Then set `CHECKOUT_PILOT_ENABLED = "true"` on both Workers.
-7. **Willing artist (their decision).** The artist opens `/checkout-pilot` in Studio, reads and accepts the addendum,
-   completes Stripe test onboarding.
-8. **First test order.** Founder at `/admin/checkout`: create from a logged enquiry → enter price, delivery and cover
-   (with the transporter's quote reference) → send to artist → artist approves → issue quote → open the buyer link →
-   pay with Stripe test card 4242 4242 4242 4242 → confirm the order shows *paid* only after the webhook → record
-   dispatch/delivery → try a partial refund.
+1. **Onboarding:** account created with the controller settings (read back `controller`); Account Link completes with
+   Stripe's test data; `account.updated` arrives and sets `charges_enabled`/`details_submitted`; an incomplete account is
+   refused a quote. Also a GB (Northern Ireland) account.
+2. **Payment:** Checkout Session created on the connected account with the exact line items, `application_fee_amount`
+   and `expires_at`; pay with `4242 4242 4242 4242`; `checkout.session.completed` delivered to the Connect endpoint with
+   the right `account`; order paid only then; application fee visible on the platform; 0% order creates no fee.
+3. **Webhook delivery:** signature verified with the real secret; Stripe retries after a deliberate 500 (deferred
+   event); resend from the Dashboard is recognised as duplicate; events for the artist's own non-PlotArt payments ignored.
+4. **Expiry and abandonment:** a session left to expire produces `checkout.session.expired` and releases the work.
+5. **Full refund:** succeeded; ledger and application-fee refund (full commission) match; order refunded.
+6. **Partial refund:** e.g. €500 of €1,000 artwork → fee refund €75; then a delivery-only refund → no fee refund.
+7. **Refund with insufficient balance:** pay with a normal card (funds pending), refund immediately → expect `pending`;
+   confirm nothing booked; top up or wait; confirm `refund.updated` succeeded → booked once. With `4000000000005126`
+   (refund fails asynchronously) → `refund.failed` flags the order and returns no commission. Use `4000000000000077`
+   where funds must be available immediately.
+8. **Commission refunds:** application fee refunds created with the exact amounts and idempotency keys; repeated
+   events do not double-refund.
+9. **Disputes:** test dispute cards (e.g. `4000000000000259`) → `charge.dispute.created`; respond with Stripe's
+   winning/losing test evidence → `charge.dispute.closed` won/lost; lost → founder "commission only" refund works; check
+   the dispute fee lands on the connected account.
+10. **Reconciliation:** interrupt a webhook (endpoint disabled), complete a payment, then "Reconcile with Stripe".
+11. **Live refusal:** confirm a live key in the test Worker is refused before any request.
 
 ### Remaining before a real (live) pilot transaction
 
-- Colin's decisions: D1 processing-fee bearer; approval of PA-PAY and PA-BPT texts; whether to proceed to live.
-- Professional advice (spec "Agreement and policy work"): marketplace/consumer responsibilities, commission VAT
-  treatment, DAC7, AML art-trader/intermediary obligations.
-- Stripe: platform activation, eligibility confirmation for art sales, live keys (a code change is required to accept
-  them, by design).
-- Privacy notice update covering buyer checkout data and Stripe as a recipient (not drafted here).
-- A willing artist, a real artwork and a confirmed transport and cover quotation for that shipment.
-- Not built in this pilot: automatic emails (the founder sends the buyer link; Stripe sends receipts), PlotArt
-  commission invoices (still manual under GAA 8), CSV export of the ledger.
+- Colin's decisions: D1 processing-fee bearer; D3 retention; approval of PA-PAY and PA-BPT; each setup step.
+- The Stripe test-API checks above, in the separate test environment.
+- Professional advice: marketplace and consumer responsibilities, commission VAT, DAC7, and PlotArt's AML position.
+- Privacy notice update for buyer checkout data and Stripe as recipient.
+- A willing artist, a real artwork, a transporter quote and **confirmed transit insurance** for that shipment.
+- Production: migrations 0016/0017, issued texts, a deliberate code change to accept live keys, and explicit approval.
+- Not built: automatic emails, PlotArt commission invoices (manual under GAA 8), ledger CSV export, AML "verified purchase" path.

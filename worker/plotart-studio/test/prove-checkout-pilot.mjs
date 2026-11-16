@@ -26,7 +26,7 @@ writeFileSync(HERE + FIX + 'src/payment-terms.js', `export const PAYMENT_TERMS =
 
 /* ---------------------------------------------------------------- mock Stripe (test mode objects only) */
 const WHSEC = 'whsec_test_' + 'x'.repeat(24);
-const M = { accounts: {}, sessions: {}, pis: {}, refunds: [], feeRefunds: [], calls: [], idem: {}, n: 0, failNextExpire: false };
+const M = { accounts: {}, sessions: {}, pis: {}, refunds: [], feeRefunds: [], calls: [], idem: {}, n: 0, failNextExpire: false, nextRefundStatus: null };
 const nid = p => `${p}_test_${(++M.n).toString(36).padStart(6, '0')}`;
 const flat = body => Object.fromEntries(new URLSearchParams(body || ''));
 const ok = o => new Response(JSON.stringify(o), { status: 200, headers: { 'Content-Type': 'application/json' } });
@@ -58,7 +58,8 @@ async function stripe(req) {
   }
   if ((mm = u.pathname.match(/^\/v1\/checkout\/sessions\/(cs_test_\w+)$/))) return M.sessions[mm[1]] ? ok(M.sessions[mm[1]]) : err('no such session', 404);
   if ((mm = u.pathname.match(/^\/v1\/payment_intents\/(pi_test_\w+)$/))) { const p = M.pis[mm[1]]; return p ? ok({ ...p, latest_charge: { id: p.charge, application_fee: p.fee } }) : err('no such pi', 404); }
-  if (u.pathname === '/v1/refunds') { const r = { id: nid('re'), object: 'refund', status: 'succeeded', amount: Number(f.amount), payment_intent: f.payment_intent, livemode: false, _f: f, _acct: acct }; M.refunds.push(r); return remember(r); }
+  if (u.pathname === '/v1/refunds') { const st = M.nextRefundStatus || 'succeeded'; M.nextRefundStatus = null;
+    const r = { id: nid('re'), object: 'refund', status: st, amount: Number(f.amount), payment_intent: f.payment_intent, livemode: false, metadata: { plotart_refund: f['metadata[plotart_refund]'], plotart_order: f['metadata[plotart_order]'] }, _f: f, _acct: acct }; M.refunds.push(r); return remember(r); }
   if ((mm = u.pathname.match(/^\/v1\/application_fees\/(fee_test_\w+)\/refunds$/))) { const r = { id: nid('fr'), object: 'fee_refund', amount: Number(f.amount), fee: mm[1], livemode: false }; M.feeRefunds.push(r); return remember(r); }
   return err('mock: unhandled ' + req.method + ' ' + u.pathname, 404);
 }
@@ -77,7 +78,7 @@ let S;
 try {
 console.log('PROVE · managed checkout pilot');
 const ORIGIN = 'https://checkout.local';
-const ENVV = { CHECKOUT_PILOT_ENABLED: 'true', STRIPE_SECRET_KEY: 'sk_test_mockkey123', STRIPE_WEBHOOK_SECRET: WHSEC, STRIPE_API_BASE: 'https://stripe.mock', CHECKOUT_ORIGIN: ORIGIN };
+const ENVV = { PARTICIPATION_DELETION: 'on', CHECKOUT_PILOT_ENABLED: 'true', STRIPE_SECRET_KEY: 'sk_test_mockkey123', STRIPE_WEBHOOK_SECRET: WHSEC, STRIPE_API_BASE: 'https://stripe.mock', CHECKOUT_ORIGIN: ORIGIN };
 S = await start({ port: 8871, env: ENVV, script: FIX + 'src/index.js', checkout: { script: FIX + 'src/checkout-public.js', env: ENVV }, outbound: stripe });
 const { db } = S, CW = S.checkoutWorker;
 const call = async (method, path, email, body) => { const r = await S.mf.dispatchFetch(S.url + path, { method, headers: { ...(email ? { 'Cf-Access-Jwt-Assertion': token(email) } : {}), 'X-Studio': '1', 'Content-Type': 'application/json' }, body: body === undefined ? undefined : JSON.stringify(body) });
@@ -91,9 +92,9 @@ const q = async (sql, ...b) => (await db.prepare(sql).bind(...b).all()).results;
 
 // ---- synthetic world
 const GAL = 'gal@example.test', FND = 'fnd@example.test', OLD = 'old@example.test', UNK = 'unk@example.test', NOP = 'nop@example.test';
-await seedPublished(db, { id: 'agal', slug: 'gal', email: GAL, name: 'Gale Gallery', works: 4, publishedAt: ago(30) });
+await seedPublished(db, { id: 'agal', slug: 'gal', email: GAL, name: 'Gale Gallery', works: 7, publishedAt: ago(30) });
 await seedPublished(db, { id: 'afnd', slug: 'fnd', email: FND, name: 'Fia Founding', works: 2, number: 3, publishedAt: ago(500) });
-await seedPublished(db, { id: 'aold', slug: 'old', email: OLD, name: 'Oisin Older', works: 2, number: 4, publishedAt: ago(500) });
+await seedPublished(db, { id: 'aold', slug: 'old', email: OLD, name: 'Oisin Older', works: 3, number: 4, publishedAt: ago(500) });
 await seedPublished(db, { id: 'aunk', slug: 'unk', email: UNK, name: 'Una Unknown', works: 2, publishedAt: ago(30) });
 await seedPublished(db, { id: 'anop', slug: 'nop', email: NOP, name: 'Nuala NotIn', works: 1, publishedAt: ago(30) });
 await db.prepare("UPDATE artists SET founding = 0 WHERE id IN ('agal','aunk','anop')").run();
@@ -143,14 +144,15 @@ for (const [aid, e] of [['afnd', FND], ['aold', OLD], ['aunk', UNK]]) await call
 console.log('— commission entitlement (tests 1–4)');
 const DELIVERY = { collection_county: 'Dublin', destination: 'Cork, Ireland', unpacked_cm: '60 × 50 × 3', packed_cm: '75 × 65 × 12', weight_kg: 6, medium: 'Oil on board', framing: 'Framed, oak', glazing: 'None',
   condition: 'Excellent; small studio mark on reverse', access_notes: null, organiser: 'artist', packer: 'artist', transport_booker: 'artist', transport_contracting_party: 'artist', transport_payer: 'artist',
-  transporter_name: 'Synthetic Art Couriers', installation: 'not_applicable', import_costs: 'not_applicable', cover_type: 'transit_insurance', cover_provider: 'Synthetic Underwriting', covered_value_cents: 100000,
+  transporter_name: 'Synthetic Art Couriers', installation: 'not_applicable', import_costs: 'not_applicable', cover_type: 'transit_insurance', cover_provider: 'Synthetic Underwriting (SIMULATED test cover)', covered_value_cents: 100000,
+  insured_party: 'transporter', cover_confirmation_ref: 'SIM-COVER-0001', cover_confirmed_by: 'Synthetic Underwriting', cover_confirmed_on: '2026-11-16',
   valuation_basis: 'Agreed sale price', excess_cents: 5000, exclusions: 'Inherent vice', cover_period: 'Collection to signed delivery', claims_contact: 'claims@example.test', delivery_window: '5–8 working days',
   tracking: 'Tracked, signature on delivery', signed_receipt: true, condition_photos: true, return_route: 'Same courier; return cost quoted on request', shipment_confirmation_ref: 'SAC-Q-1001', shipment_confirmed_by: 'Synthetic Art Couriers', shipment_confirmed_on: '2026-11-16' };
-async function makeOrder(artist_id, artwork_id, enquiry_ref, artwork_cents = 100000, delivery_cents = 7500, buyer = 'buyer@example.test') {
+async function makeOrder(artist_id, artwork_id, enquiry_ref, artwork_cents = 100000, delivery_cents = 7500, buyer = 'buyer@example.test', delivery = DELIVERY) {
   const c = await call('POST', '/api/admin/checkout/orders', FOUNDER, { artist_id, artwork_id, enquiry_ref, buyer_email: buyer });
   if (c.s !== 200) return c;
   const id = c.j.order.id;
-  const u = await call('PUT', `/api/admin/checkout/orders/${id}`, FOUNDER, { artwork_cents, delivery_cents, delivery: DELIVERY });
+  const u = await call('PUT', `/api/admin/checkout/orders/${id}`, FOUNDER, { artwork_cents, delivery_cents, delivery });
   return u.s === 200 ? { s: 200, id } : u;
 }
 const o1 = await makeOrder('agal', 'wagal1', 'PA-E-261101-AAAAAA');
@@ -169,8 +171,22 @@ check('T4a a non-founding artist without accepted commission terms: entitlement 
 r = await call('POST', '/api/admin/checkout/orders', FOUNDER, { artist_id: 'agal', artwork_id: 'wagal1', enquiry_ref: 'PA-E-999999-ZZZZZZ', buyer_email: 'b@example.test' });
 check('T4b no logged introduction for the reference: blocked', r.s === 409 && /logged/.test(r.j.error), r.j);
 
+console.log('— transit insurance required (initial pilot)');
+r = await call('PUT', `/api/admin/checkout/orders/${o1.id}`, FOUNDER, { delivery: { ...DELIVERY, cover_type: 'carrier_limited_liability' } });
+check('V1 carrier’s limited liability is refused as cover', r.s === 409 && /cover type/.test(r.j.error), r.j);
+r = await call('PUT', `/api/admin/checkout/orders/${o1.id}`, FOUNDER, { delivery: { ...DELIVERY, cover_type: 'none', covered_value_cents: 0 } });
+check('V2 no cover is refused', r.s === 409, r.j);
+const { cover_confirmation_ref: _cr, ...noRef } = DELIVERY;
+r = await call('PUT', `/api/admin/checkout/orders/${o1.id}`, FOUNDER, { delivery: noRef });
+check('V3 cover without a shipment-specific confirmation reference is refused', r.s === 409 && /confirmation ref/.test(r.j.error), r.j);
+const ov = await makeOrder('agal', 'wagal7', 'PA-E-261101-AAAAAA', 120000, 7500, 'v@example.test');
+r = await call('POST', `/api/admin/checkout/orders/${ov.id}/send`, FOUNDER, {});
+check('V4 cover below the artwork price is refused before the artist is asked', r.s === 409 && /at least the artwork price/.test(r.j.error), r.j);
+await call('POST', `/api/admin/checkout/orders/${ov.id}/cancel`, FOUNDER, { reason: 'test' });
+check('V5 the earlier valid quote is untouched by refused edits', (await order(o1.id)).status === 'awaiting_artist' && JSON.parse((await order(o1.id)).delivery).cover_type === 'transit_insurance');
+
 console.log('— artist approval and quote');
-r = await call('POST', `/api/admin/checkout/orders/${o1.id}/issue`, FOUNDER, { days: 3 });
+r = await call('POST', `/api/admin/checkout/orders/${o1.id}/issue`, FOUNDER, { days: 3, linked_check_confirmed: true });
 check('T4c the quote cannot be issued before the artist approves it', r.s === 409 && /approved/.test(r.j.error), r.j);
 r = await call('POST', `/api/checkout/orders/${o1.id}/approve`, FND, { quote_version: 2, confirm: {} });
 check('T12a an artist cannot see or approve another artist’s order', r.s === 404);
@@ -186,12 +202,14 @@ r = await call('POST', `/api/checkout/orders/${o1.id}/approve`, GAL, { quote_ver
 check('A2 approving a stale quote version is refused', r.s === 409);
 r = await call('POST', `/api/checkout/orders/${o1.id}/approve`, GAL, { quote_version: v1, confirm: ALL });
 check('A3 the artist approves the exact quote version', r.s === 200 && r.j.order.artist_approved_version === v1, r.j);
-r = await call('POST', `/api/admin/checkout/orders/${o1.id}/issue`, FOUNDER, { days: 3 });
+r = await call('POST', `/api/admin/checkout/orders/${o1.id}/issue`, FOUNDER, { days: 3, linked_check_confirmed: true });
 check('T4d an artist whose Stripe onboarding is incomplete cannot be quoted', r.s === 409 && /onboarding/.test(r.j.error), r.j);
 // Stripe tells us (signed account.updated) that onboarding is complete
 for (const a of Object.values(M.accounts)) { a.charges_enabled = true; a.payouts_enabled = true; a.details_submitted = true; a.requirements = { currently_due: [] }; }
 for (const a of Object.values(M.accounts)) await hook(evt('account.updated', a, a.id));
 r = await call('POST', `/api/admin/checkout/orders/${o1.id}/issue`, FOUNDER, { days: 3 });
+check('K1 a quote needs the founder’s linked-purchases confirmation', r.s === 400 && /linked/.test(r.j.error), r.j);
+r = await call('POST', `/api/admin/checkout/orders/${o1.id}/issue`, FOUNDER, { days: 3, linked_check_confirmed: true });
 const LINK1 = r.j && r.j.buyer_link, T1 = LINK1 && LINK1.split('/q/')[1];
 check('Q1 quote issued with a one-time buyer link (token stored hashed only)', r.s === 200 && /^https:\/\/checkout\.local\/q\/[0-9a-z]{48}$/.test(LINK1)
   && (await order(o1.id)).buyer_token_hash === sha(T1) && !JSON.stringify(await order(o1.id)).includes(T1), r.j);
@@ -250,10 +268,25 @@ check('B9 the return page reports payment only once the verified event has arriv
 pg = await pub('POST', `/q/${T1}/pay`, { form: { accept_terms: 'PA-BPT-TEST-01' } });
 check('B10 a paid quote cannot be paid again', pg.s === 409);
 
+console.log('— linked purchases (EUR 10,000 is not avoided by splitting)');
+const ok1 = await makeOrder('agal', 'wagal5', 'PA-E-261102-BBBBBB', 600000, 0, 'big@example.test', { ...DELIVERY, covered_value_cents: 600000 });
+const ok2 = await makeOrder('agal', 'wagal6', 'PA-E-261105-FFFFFF', 450000, 0, 'BIG@Example.test', { ...DELIVERY, covered_value_cents: 450000 });
+for (const x of [ok1, ok2]) { await call('POST', `/api/admin/checkout/orders/${x.id}/send`, FOUNDER, {}); await call('POST', `/api/checkout/orders/${x.id}/approve`, GAL, { quote_version: (await order(x.id)).quote_version, confirm: ALL }); }
+r = await call('POST', `/api/admin/checkout/orders/${ok1.id}/issue`, FOUNDER, { days: 2, linked_check_confirmed: true });
+check('K2 a single EUR 6,000 order is quoted, with the linked-purchase check recorded', r.s === 200 && JSON.parse((await order(ok1.id)).aml_check).founder_confirmed_no_other_link === true, r.j);
+const TK1 = r.j.buyer_link.split('/q/')[1];
+r = await call('POST', `/api/admin/checkout/orders/${ok2.id}/issue`, FOUNDER, { days: 2, linked_check_confirmed: true });
+check('K3 a second order by the same buyer (any letter case) taking the total to EUR 10,500 is refused', r.s === 409 && /10,000/.test(r.j.error) && /10500\.00/.test(r.j.error), r.j);
+await call('POST', `/api/admin/checkout/orders/${ok1.id}/cancel`, FOUNDER, { reason: 'test' });
+r = await call('POST', `/api/admin/checkout/orders/${ok2.id}/issue`, FOUNDER, { days: 2, linked_check_confirmed: true });
+check('K4 an unpaid, cancelled order no longer counts', r.s === 200, r.j);
+await call('POST', `/api/admin/checkout/orders/${ok2.id}/cancel`, FOUNDER, { reason: 'test' });
+check('K5 the cancelled quote cannot be paid', (await pub('POST', `/q/${TK1}/pay`, { form: { accept_terms: 'PA-BPT-TEST-01' } })).s === 409);
+
 console.log('— two buyers, one original (test 6)');
 const oa = await makeOrder('agal', 'wagal2', 'PA-E-261102-BBBBBB', 50000, 0, 'a@example.test'), ob = await makeOrder('agal', 'wagal2', 'PA-E-261105-FFFFFF', 50000, 0, 'b@example.test');
 const prep = async id => { await call('POST', `/api/admin/checkout/orders/${id}/send`, FOUNDER, {}); await call('POST', `/api/checkout/orders/${id}/approve`, GAL, { quote_version: (await order(id)).quote_version, confirm: ALL });
-  const x = await call('POST', `/api/admin/checkout/orders/${id}/issue`, FOUNDER, { days: 2 }); return x.j.buyer_link.split('/q/')[1]; };
+  const x = await call('POST', `/api/admin/checkout/orders/${id}/issue`, FOUNDER, { days: 2, linked_check_confirmed: true }); return x.j.buyer_link.split('/q/')[1]; };
 const TA = await prep(oa.id), TB = await prep(ob.id);
 const [pa, pb] = await Promise.all([pub('POST', `/q/${TA}/pay`, { form: { accept_terms: 'PA-BPT-TEST-01' } }), pub('POST', `/q/${TB}/pay`, { form: { accept_terms: 'PA-BPT-TEST-01' } })]);
 check('T6a two buyers at the same moment: exactly one checkout opens', [pa.s, pb.s].sort().join() === '303,409', [pa.s, pb.s]);
@@ -298,7 +331,7 @@ check('T5d an expired quote cannot be paid', pg.s === 410 && (await order(od.id)
 r = await call('PUT', `/api/admin/checkout/orders/${od.id}`, FOUNDER, { delivery_cents: 0 });
 await call('POST', `/api/admin/checkout/orders/${od.id}/send`, FOUNDER, {});
 await call('POST', `/api/checkout/orders/${od.id}/approve`, GAL, { quote_version: (await order(od.id)).quote_version, confirm: ALL });
-const TD2 = (await call('POST', `/api/admin/checkout/orders/${od.id}/issue`, FOUNDER, { days: 1 })).j.buyer_link.split('/q/')[1];
+const TD2 = (await call('POST', `/api/admin/checkout/orders/${od.id}/issue`, FOUNDER, { days: 1, linked_check_confirmed: true })).j.buyer_link.split('/q/')[1];
 await pub('POST', `/q/${TD2}/pay`, { form: { accept_terms: 'PA-BPT-TEST-01' } });
 const sD = (await q("SELECT * FROM checkout_sessions WHERE order_id = ? AND status='open'", od.id))[0];
 h = await hook(evt('checkout.session.async_payment_failed', { ...M.sessions[sD.id], payment_status: 'unpaid' }, ACCT));
@@ -310,13 +343,23 @@ pg = await pub('POST', `/q/${TD2}/pay`, { form: { accept_terms: 'PA-BPT-TEST-01'
 check('T14c a work the artist has marked sold elsewhere cannot be checked out', pg.s === 409 && /no longer available/.test(pg.t));
 await db.prepare("UPDATE artworks SET availability = 'available' WHERE id = 'wagal4'").run();
 
-console.log('— refunds (test 9)');
+console.log('— refunds (test 9), including a refund held at Stripe for want of balance');
 let fees = M.feeRefunds.length;
+M.nextRefundStatus = 'pending';   // as Stripe does when the artist's AVAILABLE balance cannot cover a card refund (e.g. after payout)
 r = await call('POST', `/api/admin/checkout/orders/${o1.id}/refund`, FOUNDER, { artwork_cents: 50000, delivery_cents: 0, reason: 'Agreed partial refund for a frame mark' });
 const rf1 = M.refunds.at(-1);
-check('T9a partial artwork refund: buyer refund on the artist’s account, application fee NOT refunded by Stripe’s proportional rule',
+check('T9a partial artwork refund: created on the artist’s account, application fee NOT refunded by Stripe’s proportional rule',
   r.s === 200 && rf1._acct === ACCT && rf1.amount === 50000 && rf1._f.refund_application_fee === 'false', rf1);
-check('T9b PlotArt refunds exactly the commission the agreement requires (GAA 9.2: €150 × €500 kept / €1,000 → refund €75)', M.feeRefunds.length === fees + 1 && M.feeRefunds.at(-1).amount === 7500, M.feeRefunds.at(-1));
+check('R1 a refund pending at Stripe books nothing and returns no commission yet, and is flagged',
+  !(await q("SELECT * FROM order_ledger WHERE order_id = ? AND kind = 'artwork_refund'", o1.id)).length && M.feeRefunds.length === fees && /pending at Stripe/.test((await order(o1.id)).needs_resolution));
+r = await call('POST', `/api/admin/checkout/orders/${o1.id}/refund`, FOUNDER, { artwork_cents: 50001, delivery_cents: 0, reason: 'too much' });
+check('R2 a pending refund counts against what can still be refunded', r.s === 409);
+h = await hook(evt('refund.updated', { ...rf1, status: 'succeeded' }, ACCT));
+check('R3 when Stripe confirms the refund, it is booked and PlotArt returns exactly GAA 9.2 commission (€150 × €500 kept / €1,000 → €75)',
+  h.s === 200 && M.feeRefunds.length === fees + 1 && M.feeRefunds.at(-1).amount === 7500 && (await q("SELECT * FROM order_ledger WHERE order_id = ? AND kind = 'artwork_refund'", o1.id)).length === 1 && !(await order(o1.id)).needs_resolution, h);
+h = await hook(evt('refund.updated', { ...rf1, status: 'succeeded' }, ACCT));
+check('R4 the same confirmation again returns nothing twice', M.feeRefunds.length === fees + 1 && (await q("SELECT * FROM order_ledger WHERE order_id = ? AND kind = 'commission_refund'", o1.id)).length === 1);
+check('T9b order back to paid, partially refunded', (await order(o1.id)).status === 'paid' && (await order(o1.id)).payment_status === 'partially_refunded');
 r = await call('POST', `/api/admin/checkout/orders/${o1.id}/refund`, FOUNDER, { artwork_cents: 0, delivery_cents: 7500, reason: 'Delivery not used: buyer collected' });
 check('T9c a delivery refund moves no commission', r.s === 200 && M.feeRefunds.length === fees + 1);
 r = await call('POST', `/api/admin/checkout/orders/${o1.id}/refund`, FOUNDER, { artwork_cents: 60000, delivery_cents: 0, reason: 'too much' });
@@ -343,7 +386,7 @@ const oe = await makeOrder('aold', 'waold2', 'PA-E-261103-DDDDDD', 40000, 2500, 
 r = await call('POST', `/api/admin/checkout/orders/${oe.id}/send`, FOUNDER, {});
 await call('POST', `/api/checkout/orders/${oe.id}/approve`, OLD, { quote_version: (await order(oe.id)).quote_version, confirm: ALL });
 const ACCT_OLD = (await db.prepare("SELECT account_id FROM payment_accounts WHERE artist_id='aold'").first()).account_id;
-const TE = (await call('POST', `/api/admin/checkout/orders/${oe.id}/issue`, FOUNDER, { days: 1 })).j.buyer_link.split('/q/')[1];
+const TE = (await call('POST', `/api/admin/checkout/orders/${oe.id}/issue`, FOUNDER, { days: 1, linked_check_confirmed: true })).j.buyer_link.split('/q/')[1];
 await pub('POST', `/q/${TE}/pay`, { form: { accept_terms: 'PA-BPT-TEST-01' } });
 const sE = Object.values(M.sessions).at(-1);
 check('T3b no application fee at all is requested when the commission is 0', sE._fee === null && sE._acct === ACCT_OLD);
@@ -356,6 +399,7 @@ h = await hook(evt('charge.dispute.created', dispute, ACCT_OLD));
 let OE = await order(oe.id);
 check('T10a once paid, the dispute is recorded (debited from the seller’s Stripe balance by Stripe)', OE.status === 'disputed' && OE.dispute_status === 'open'
   && (await q("SELECT * FROM order_ledger WHERE kind='dispute' AND order_id = ?", oe.id))[0].amount_cents === -42500, OE);
+await call('POST', `/api/admin/checkout/orders/${oe.id}/fulfilment`, FOUNDER, { kind: 'insurance', evidence: 'SIMULATED cover SIM-COVER-0001' });
 await call('POST', `/api/admin/checkout/orders/${oe.id}/fulfilment`, FOUNDER, { kind: 'dispatched', evidence: 'SAC tracking 1Z999' });
 h = await hook(evt('charge.dispute.closed', { ...dispute, status: 'lost' }, ACCT_OLD));
 OE = await order(oe.id);
@@ -368,11 +412,22 @@ const SB2 = await order(second.id);
 r = await call('POST', `/api/checkout/orders/${second.id}/fulfilment`, GAL, { kind: 'delivered', evidence: 'Signed for' });
 check('F1 delivery cannot be recorded before dispatch', r.s === 409, [r.s, r.j]);
 r = await call('POST', `/api/checkout/orders/${second.id}/fulfilment`, GAL, { kind: 'dispatched', evidence: 'Synthetic Art Couriers, tracking SAC-778; packed photos ref P-12' });
+check('F1b no dispatch without the shipment’s transit insurance confirmation', r.s === 409 && /insurance/.test(r.j.error), r.j);
+await call('POST', `/api/checkout/orders/${second.id}/fulfilment`, GAL, { kind: 'insurance', evidence: 'SIMULATED certificate SIM-COVER-0001, Synthetic Underwriting, €1,000 collection to signed delivery' });
+r = await call('POST', `/api/checkout/orders/${second.id}/fulfilment`, GAL, { kind: 'dispatched', evidence: 'Synthetic Art Couriers, tracking SAC-778; packed photos ref P-12' });
 r = await call('POST', `/api/checkout/orders/${second.id}/fulfilment`, GAL, { kind: 'delivered', evidence: 'Signed for by buyer 18 Nov; arrival photos ref P-13' });
 check('F2 the artist records dispatch and delivery evidence (append-only)', r.s === 200 && (await order(second.id)).status === 'delivered' && (await order(second.id)).fulfilment_status === 'delivered'
   && !!(await db.prepare('DELETE FROM order_fulfilment_events').run().catch(e => e)).message, r.j);
 check('F3 every status change is audited with actor, prior and new status', (await q('SELECT * FROM order_events WHERE order_id = ? ORDER BY id', second.id)).map(e => `${e.prior_status}>${e.new_status}`).includes('dispatched>delivered')
   && (await q('SELECT * FROM order_events WHERE order_id = ?', second.id)).every(e => e.actor && e.at && e.action));
+M.nextRefundStatus = 'pending';
+r = await call('POST', `/api/admin/checkout/orders/${second.id}/refund`, FOUNDER, { artwork_cents: 5000, delivery_cents: 0, reason: 'Goodwill for late delivery' });
+const rfx = M.refunds.at(-1); fees = M.feeRefunds.length;
+h = await hook(evt('refund.failed', { ...rfx, id: rfx.id, status: 'failed', failure_reason: 'insufficient_funds' }, ACCT));
+const SX = await order(second.id);
+check('R5 a refund Stripe fails (e.g. still unfunded after 45 days) is flagged: buyer NOT repaid, nothing booked, no commission returned',
+  h.s === 200 && /failed \(insufficient_funds\)/.test(SX.needs_resolution) && (await db.prepare('SELECT status FROM order_refunds WHERE provider_refund_id = ?').bind(rfx.id).first()).status === 'failed'
+  && !(await q("SELECT * FROM order_ledger WHERE provider_ref = ?", rfx.id)).length && M.feeRefunds.length === fees, SX);
 check('F4 the ledger cannot be edited', !!(await db.prepare('UPDATE order_ledger SET amount_cents = 0').run().catch(e => e)).message);
 void SB2;
 
@@ -388,6 +443,45 @@ check('T11 gallery publication, versions, publish queue, gallery positions, foun
   ['v', 'pq', 'gp', 'ar', 'aa', 'gaa', 'at', 'el', 'en', 'works'].every(k => JSON.stringify(AFTER[k]) === JSON.stringify(B[k])),
   ['v', 'pq', 'gp', 'ar', 'aa', 'gaa', 'at', 'el', 'en', 'works'].filter(k => JSON.stringify(AFTER[k]) !== JSON.stringify(B[k])));
 check('T11b the only artwork change is the sold mark on works sold through verified payments', (await q("SELECT id FROM artworks WHERE availability='sold' ORDER BY id")).map(x => x.id).join() === 'waold2,wagal1,wagal2'.split(',').sort().join());
+console.log('— records outlive the artist’s own records; retention (item 8)');
+const ox = await makeOrder('aold', 'waold3', 'PA-E-261103-DDDDDD', 30000, 2000, 'x@example.test', { ...DELIVERY, covered_value_cents: 30000 });
+await call('POST', `/api/admin/checkout/orders/${ox.id}/send`, FOUNDER, {});
+await call('POST', `/api/checkout/orders/${ox.id}/approve`, OLD, { quote_version: (await order(ox.id)).quote_version, confirm: ALL });
+const TX = (await call('POST', `/api/admin/checkout/orders/${ox.id}/issue`, FOUNDER, { days: 1, linked_check_confirmed: true })).j.buyer_link.split('/q/')[1];
+await pub('POST', `/q/${TX}/pay`, { form: { accept_terms: 'PA-BPT-TEST-01' } });
+const sX = Object.values(M.sessions).at(-1); pay(sX.id); await hook(evt('checkout.session.completed', M.sessions[sX.id], ACCT_OLD));
+check('D0 a paid order exists for the artist', (await order(ox.id)).status === 'paid');
+// the artist's participation ended long ago and their six-year record retention has passed: the REAL deletion schedule runs
+await db.prepare("UPDATE artists SET account_status = 'ended' WHERE id = 'aold'").run();
+await db.prepare("INSERT INTO participation_events (id, artist_id, kind, at, actor, reason, detail) VALUES ('peold', 'aold', 'ended', '2019-01-01T00:00:00Z', ?, 'test', '{}')").bind(FOUNDER).run();
+await db.prepare("INSERT INTO record_retention (artist_id, ended_at, delete_after, recorded_by, recorded_at) VALUES ('aold', '2019-01-01T00:00:00Z', '2025-01-02T00:00:00Z', ?, ?)").bind(FOUNDER, ago(0)).run();
+const del = await S.mf.getWorker('studio').then(w => w.scheduled({ cron: '0 3 * * *' })).catch(e => e);
+const goneArtist = !(await db.prepare("SELECT 1 FROM artists WHERE id='aold'").first());
+check('D1 the existing deletion schedule deletes the artist’s records; the pilot tables never block it', goneArtist, [del, await q("SELECT action, detail FROM audit WHERE action LIKE '%delet%' OR action = 'cleanup' ORDER BY id DESC LIMIT 2")]);
+r = await call('GET', `/api/admin/checkout/orders/${ox.id}`, FOUNDER);
+check('D2 the order still shows seller, artwork, amounts, entitlement and ledger from its own snapshots', r.s === 200 && r.j.order.seller.name === 'Oisin Older' && r.j.order.artwork.title === 'Work 3'
+  && r.j.order.commission_basis === 'founding_artist_no_commission_terms' && r.j.ledger.some(l => l.kind === 'charge' && l.amount_cents === 32000), r.j);
+r = await call('POST', `/api/admin/checkout/orders/${ox.id}/refund`, FOUNDER, { artwork_cents: 30000, delivery_cents: 2000, reason: 'Returned after the artist left' });
+check('D3 a full refund still works after the artist’s and artwork’s rows are gone', r.s === 200 && r.j.order.status === 'refunded' && M.refunds.at(-1)._acct === ACCT_OLD, r.j);
+check('D4 the buyer’s link still reads correctly', (await pub('GET', `/q/${TX}/return?result=success`)).t.includes('has been confirmed') || (await pub('GET', `/q/${TX}/return`)).s === 200);
+await S.checkoutWorker.scheduled({ cron: '*/15 * * * *' });
+const RX = await order(ox.id);
+check('D5 an ended order with money movement is scheduled for deletion six years on, and not before', RX.retain_until && RX.retain_until.slice(0, 4) === String(new Date().getUTCFullYear() + 6)
+  && /retention/.test((await db.prepare('DELETE FROM checkout_orders WHERE id = ?').bind(ox.id).run().catch(e => e)).message)
+  && /retention/.test((await db.prepare('DELETE FROM order_ledger WHERE order_id = ?').bind(ox.id).run().catch(e => e)).message), RX);
+check('D6 a retention date can be extended but never shortened', /extended/.test((await db.prepare("UPDATE checkout_orders SET retain_until = '2027-01-01T00:00:00Z' WHERE id = ?").bind(ox.id).run().catch(e => e)).message));
+const OG = await order(og.id);
+check('D7 an unpaid cancelled order is kept two years', OG.retain_until && OG.retain_until.slice(0, 4) === String(new Date().getUTCFullYear() + 2), OG);
+// an old order whose retention has passed is deleted with its ledger, events and sessions
+await db.prepare(`INSERT INTO checkout_orders (id, reference, artist_id, artwork_id, enquiry_ref, status, payment_status, buyer_email, created_by, created_at, updated_at, retain_until)
+  VALUES ('oold1', 'PA-O-190101-OLD001', 'aold', 'waold9', 'PA-E-190101-AAAAAA', 'closed', 'paid', 'old@example.test', 'test', '2019-01-01T00:00:00Z', '2019-02-01T00:00:00Z', '2025-02-01T00:00:00Z')`).run();
+await db.prepare("INSERT INTO order_ledger (id, order_id, kind, amount_cents, provider_ref, at) VALUES ('lold1', 'oold1', 'charge', 1000, 'pi_old', '2019-01-01T00:00:00Z')").run();
+await db.prepare("INSERT INTO order_events (order_id, at, actor, action) VALUES ('oold1', '2019-01-01T00:00:00Z', 'test', 'created')").run();
+await S.checkoutWorker.scheduled({ cron: '*/15 * * * *' });
+check('D8 after its retention period an order is deleted with all its records', !(await db.prepare("SELECT 1 FROM checkout_orders WHERE id='oold1'").first())
+  && !(await q("SELECT * FROM order_ledger WHERE order_id='oold1'")).length && !(await q("SELECT * FROM order_events WHERE order_id='oold1'")).length);
+check('D9 opt-in records stay while the artist’s orders are kept', /kept/.test((await db.prepare("DELETE FROM payment_pilot_events WHERE artist_id='aold'").run().catch(e => e)).message));
+
 const S1 = await import(HERE + FIX + 'src/stripe.js');
 check('T15b a live secret key is refused before any request', !S1.testKey({ STRIPE_SECRET_KEY: 'sk_live_abc' }).ok && !S1.testKey({}).ok && S1.testKey({ STRIPE_SECRET_KEY: 'rk_test_abc' }).ok);
 check('T15c test-mode only in the database: live accounts and live sessions cannot be stored',
