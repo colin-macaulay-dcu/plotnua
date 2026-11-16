@@ -13274,6 +13274,11 @@ html.pn-myplot-view:not(.pn-myplot-open) body::after{content:"Opening My Plot\20
       document.querySelectorAll('#altResults .results-gallery-card').forEach(function (card) {
         const media = card.querySelector('.results-gallery-media');
         const nm = card.querySelector('.results-gallery-name');
+        if (media && nm && !media.querySelector('img.pn-image-fallback')) {
+          const pi = byName[nm.textContent.trim()];
+          if (pi && pi.additionalHome) pnHomeCreditLink(media, pnAuthorisedImage(pi));
+          return;
+        }
         if (!media || !nm || !media.querySelector('img.pn-image-fallback')) return;
         if (media.querySelector('.pn-hm-plate')) return;
         const p = byName[nm.textContent.trim()];
@@ -31382,6 +31387,32 @@ html.pn-myplot-view:not(.pn-myplot-open) body::after{content:"Opening My Plot\20
     ['SLEEPING_ACCOMMODATION', 'Sleeping'], ['BATHROOM', 'Bathroom'],
     ['KITCHEN', 'Kitchen'], ['HEATING', 'Heating']
   ];
+  /* GARDEN HOME: THE CREDIT LINKS BACK TO THE MAKER (16 Nov 2026).
+     Every current grant that names a link back ("link back to us wherever
+     the imagery appears") is met by turning the governed credit chip into
+     a link to that supplier's own site -- the linkBack apply_authorised_
+     imagery.py writes from the canonical rights record. Garden Home
+     surfaces only (results cards, Option Detail, My Plot); Garden Room
+     keeps its shipped chip. No linkBack, or not https: the chip stays as
+     plain text, exactly as before. Called only after pnAttachImageCredit()
+     has painted a gated image, so it can never add a link to an image the
+     gate refused. */
+  function pnHomeCreditLink(container, im){
+    if (!container || !im || !im.linkBack) return;
+    if (String(im.linkBack).slice(0, 8) !== 'https://') return;
+    const c = container.querySelector('span.pn-image-credit');
+    if (!c) return;
+    const a = document.createElement('a');
+    a.className = 'pn-image-credit is-link';
+    a.href = im.linkBack;
+    a.target = '_blank';
+    a.rel = 'noopener';
+    a.textContent = c.textContent + ' ↗';
+    a.setAttribute('aria-label', c.textContent + ' — opens the maker’s website in a new tab');
+    a.addEventListener('click', function (e) { e.stopPropagation(); });
+    c.parentNode.replaceChild(a, c);
+  }
+
   function pnHomePlate(product){
     const rec = (product && product.additionalHome) || {};
     const area = rec.area || {};
@@ -31505,6 +31536,7 @@ html.pn-myplot-view:not(.pn-myplot-open) body::after{content:"Opening My Plot\20
       els.pdImage.src = pdImg.url;
       els.pdImage.alt = pdImg.alt || product.name;
       pnAttachImageCredit(wrap, pdImg);
+      pnHomeCreditLink(wrap, pdImg);
     } else {
       els.pdImage.dataset.pnFallback = '1';
       els.pdImage.classList.add('pn-image-fallback');
@@ -32942,6 +32974,7 @@ html.pn-myplot-view:not(.pn-myplot-open) body::after{content:"Opening My Plot\20
         img.alt = pnImg.alt || product.name;
         media.appendChild(img);
         pnAttachImageCredit(media, pnImg);
+        if (product && product.additionalHome) pnHomeCreditLink(media, pnImg);
       } else {
         // No approved image yet — a legible branded mark rather than a tiny
         // placeholder icon, so the card still reads as a real product card.
