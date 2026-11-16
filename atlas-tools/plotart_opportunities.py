@@ -99,12 +99,27 @@ def listed(packages, key):
     return sorted(out, key=_surname)
 
 
+def thumb(pkg):
+    """The listing thumbnail (founder decision 16 Nov 2026): the main photograph of the FIRST work in the artist's own
+    published gallery order, at its smallest published size. Only an approved package's own artwork is ever used: never
+    the portrait, never anything generated or unpublished. None when the gallery has no such photograph."""
+    for w in pkg.get("works") or []:
+        for im in w.get("images") or []:
+            if im.get("role") == "main" and im.get("derivatives"):
+                d = min(im["derivatives"], key=lambda x: x["long_edge"])
+                return d["file"], (im.get("alt") or w.get("title") or "").strip(), w.get("title") or ""
+    return None
+
+
 def _rows(pkgs, base):
     def line(p):
         a = p["artist"]
         what = a.get("practice") or MEDIUM.get(a.get("medium"), "")
-        return ('<li><a href="%sartists/%s/" data-pa-track="opportunity_artist">%s</a>%s</li>'
-                % (base, E(a["slug"]), E(a["display_name"]), ('<span>%s</span>' % E(what)) if what else ""))
+        t = thumb(p)
+        img = ('<img class="pa-opp-thumb" src="%sartists/%s/img/%s" alt="%s" width="80" height="80" loading="lazy" decoding="async">'
+               % (base, E(a["slug"]), E(t[0]), E(t[1] or ("Artwork by " + a["display_name"])))) if t else '<span class="pa-opp-thumb" aria-hidden="true"></span>'
+        return ('<li><a class="pa-opp-row" href="%sartists/%s/" data-pa-track="opportunity_artist">%s<span class="pa-opp-name">%s</span>%s</a></li>'
+                % (base, E(a["slug"]), img, E(a["display_name"]), ('<span class="pa-opp-what">%s</span>' % E(what)) if what else ""))
     return '<ul class="pa-opp-list">%s</ul>' % "".join(line(p) for p in pkgs)
 
 
