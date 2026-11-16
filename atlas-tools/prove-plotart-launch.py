@@ -322,6 +322,11 @@ if "--manifest" in sys.argv:
                 opp_ok = hashlib.sha256(outside_hire(blank) if rel == HIRE_PAGE else blank).hexdigest() == oo
             except ValueError:
                 pass
+        # a page that matches its full pin must also match its outside-the-lists pin, so a re-pin of the page can never
+        # leave the lists pin stale (found 16 Nov 2026: 43930cd re-pinned living-gallery.html only, which would have
+        # refused the first Living Gallery listing at publish time)
+        need(oo is None or raw is None or got != sha or opp_ok,
+             "L3 %s: its outside_opportunity_lists pin is stale (re-pin it with the page)" % rel)
         need(got == sha or guide_ok or opp_ok or (og is not None and raw is not None and hashlib.sha256(outside_grid(raw)).hexdigest() == og)
              or (oh is not None and raw is not None and hashlib.sha256(outside_hire(raw)).hexdigest() == oh),
              "L3 %s differs from the verified build (manifest)" % rel)
