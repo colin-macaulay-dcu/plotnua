@@ -23,16 +23,16 @@ import sys
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
 import plotart_shell as SHELL  # noqa: E402
+import plotart_business_rental as BUSINESS
 import plotart_hire_scenes as SCENES  # noqa: E402
 
 E = lambda s: html.escape(str(s), quote=True)
 PUBLIC_HIRE = os.path.join(HERE, "..", "worker", "plotart-studio", "public-hire")
 FORBIDDEN = {"handling_note", "artist_email", "email", "replacement_value", "price_eur", "fee", "private"}
-TITLE = "Art for Hire: Original Irish Art for Productions, Shoots and Spaces | PlotArt"
-DESC = ("Hire original work by Irish artists for productions, photography, property staging and interiors. "
-        "PlotArt introduces you to the artist; you agree the hire directly with them.")
+TITLE = "Art Rental for Offices & Businesses in Ireland | PlotArt"
+DESC = ("Explore business art rentals: monthly pricing, six-month terms, sale priority and business-funded transport and insurance. Download the artist guide and agreement template.")
 FINE = ("Works offered for hire are listed by their artists and checked by PlotArt. PlotArt introduces hirers to artists: it doesn't take "
-        "payment, arrange transport or insure work. Photographs of artworks are supplied by the artist and credited where taken by someone else.")
+        "artwork rent or deposits, arrange transport or insure work. Any PlotArt fee is separately agreed and invoiced. Photographs of artworks are supplied by the artist and credited where taken by someone else.")
 
 
 class Refused(Exception):
@@ -108,12 +108,14 @@ def body(cards, api, form):
     <h1 id="afh3-h">Original art,<br>on hire.</h1>
     <div class="afh3-hero-row">
       <p class="afh3-sub">Irish artists’ original work for film and television, interiors and staged homes. You agree each hire directly with the artist.</p>
-      <p class="afh3-cta"><a class="afh3-btn" href="#afh3-how" data-hire-cta>How it works</a><a class="afh3-link" href="mailto:hello@plotnua.ie?subject=Art%%20for%%20Hire%%20brief">Send a brief</a></p>
+      <p class="afh3-cta"><a class="afh3-btn" href="#afh3-how" data-hire-cta>How it works</a>%(business_link)s<a class="afh3-link" href="mailto:hello@plotnua.ie?subject=Art%%20for%%20Hire%%20brief">Send a brief</a></p>
     </div>
   </div>
   <p class="afh3-hero-credit">%(credit)s</p>
 </section>
 <p class="afh3-hero-credit-m">%(credit)s</p>
+
+%(business)s
 
 <section class="afh3-scenes" aria-labelledby="afh3-scenes-h">
   <div class="pa-wrap afh3-scenes-h"><h2 id="afh3-scenes-h">Where a hired work goes</h2><p>One painting, three settings. The settings are illustrations; the painting is real.</p></div>
@@ -136,7 +138,7 @@ def body(cards, api, form):
     <li><h3>Agree it with the artist</h3><p>The fee, dates, insurance, transport, installation and return are agreed directly between you and the artist, in writing.</p></li>
   </ol>
   <ul class="afh3-know">
-    <li><strong>PlotArt introduces you to the artist.</strong> We’re not a party to the hire and we don’t take payment.</li>
+    <li><strong>PlotArt introduces you to the artist.</strong> We’re not a party to the artwork hire and we don’t collect artwork rent or deposits. Any PlotArt fee requires a separate agreement.</li>
     <li><strong>Hire prices are agreed directly with the artist.</strong> Every work is price on request.</li>
     <li><strong>Transport and insurance are arranged between you and the artist.</strong></li>
     <li><strong>Photography and screen use are not automatically included.</strong> Any permission must be agreed in writing with the artist.</li>
@@ -150,7 +152,9 @@ def body(cards, api, form):
 </div></section>
 <script src="hire-live.js" data-api="%(api)s" data-enquiries="%(enq)s" defer></script>
 """ % {"art": SCENES.ART, "alt": SCENES.HERO_ALT, "credit": SCENES.CREDIT, "scenes": SCENES.SCENES, "region": region(cards),
-       "api": E(api), "enq": "on" if form else "off"}
+       "api": E(api), "enq": "on" if form else "off",
+       "business_link": '<a class="afh3-link" href="#business-rentals">Business rentals and artist download</a>' if SHELL.SEO.switches().get("business_rental_information") is True else "",
+       "business": BUSINESS.REGION if SHELL.SEO.switches().get("business_rental_information") is True else ""}
 
 
 # The generated catalogue region (Stage 3B-6). Everything outside it is fixed by the page's code release and pinned in

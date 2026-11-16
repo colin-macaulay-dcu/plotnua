@@ -183,3 +183,25 @@ body.pa main a:focus-visible, .afh3-btn:focus-visible{ outline:2px solid var(--t
   .afh3-c{ width:7%; }
   .afh3-c1, .afh3-c3{ left:5%; } .afh3-c2, .afh3-c4{ right:5%; }
 }
+
+
+/* Business rental information and artist download, 16 November 2026. */
+.afh-business{padding:clamp(48px,7vw,96px) 0;border-block:1px solid var(--line);background:var(--wall);scroll-margin-top:85px}
+.afh-business h2{font-size:clamp(48px,6vw,88px);line-height:1.02;margin:0 0 24px}
+.afh-business h3{font-size:clamp(26px,2.6vw,34px);line-height:1.12;margin:0 0 14px}
+.afh-business p{line-height:1.65;color:var(--stone)}
+.afh-business strong{color:var(--ivory)}
+.afh-business-intro{font-size:clamp(18px,1.8vw,23px);max-width:820px}
+.afh-business-status{font-size:15px;max-width:850px}
+.afh-business-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:32px;margin:40px 0}
+.afh-business-price,.afh-business-download,.afh-business-contact{padding-top:32px;margin-top:32px;border-top:1px solid var(--line-2)}
+.afh-business-table{overflow-x:auto}
+.afh-business table{border-collapse:collapse;width:100%;font-size:16px;text-align:left;color:var(--ivory)}
+.afh-business caption{text-align:left;color:var(--stone);padding:12px 0}
+.afh-business th,.afh-business td{padding:14px 12px;border-bottom:1px solid var(--line);font-weight:400}
+.afh-business thead th{font-weight:600;vertical-align:bottom}
+.afh-business th:first-child{padding-left:0}
+.afh-business-download .afh3-btn{white-space:normal;text-align:center;max-width:100%;line-height:1.4;padding-block:14px}
+.afh-business-version{font-size:13px}
+.afh-business-contact .afh3-link{display:inline-block;margin-right:24px;margin-bottom:12px}
+@media(max-width:800px){.afh-business-grid{grid-template-columns:1fr;gap:24px}.afh-business table{font-size:14px}.afh-business th,.afh-business td{padding:12px 7px}}

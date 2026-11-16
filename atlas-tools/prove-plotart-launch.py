@@ -69,6 +69,7 @@ once the launch pages are released). Prints "PLOTART LAUNCH · OK" only when:
       homeowner information; no structured data. The page alone may be indexed and listed in the sitemap.
 """
 import html, json, os, posixpath, re, sys
+import plotart_business_rental as BUSINESS
 import plotart_seo as SEO
 import plotart_search_content as C
 
@@ -121,6 +122,9 @@ ALLOWED |= ARTIST_FILES
 # Art for Hire (Stage 3B-6): the page, its two assets and the fourth gallery tab exist ONLY when the founder switches
 # art_for_hire_page on (release approval). Off (or absent): no hire file may exist and no page may link to it or carry the tab.
 HIRE_ON = launch.get("art_for_hire_page") is True
+BUSINESS_ON = HIRE_ON and launch.get("business_rental_information") is True
+if BUSINESS_ON:
+    ALLOWED.add(BUSINESS.PDF)
 HIRE_FORM = launch.get("art_for_hire_enquiry_form") is True
 HIRE_PAGE = "art-for-hire/index.html"
 HIRE_FILES = {HIRE_PAGE, "art-for-hire/art-for-hire.css", "art-for-hire/hire-live.js"}
@@ -628,7 +632,7 @@ need(("pa-hire-nav:begin" in _css) == HIRE_ON, "L17 plotart.css %s the six-pill 
 if HIRE_ON:
     _hp = open(os.path.join(PA, HIRE_PAGE), encoding="utf-8").read() if os.path.exists(os.path.join(PA, HIRE_PAGE)) else ""
     _hv = re.sub(r"\s+", " ", visible_text(_hp))
-    need('<meta name="robots" content="noindex, follow">' in _hp and 'rel="canonical"' not in _hp, "L17 the Art for Hire page must stay noindex, follow with no canonical")
+    need(('<meta name="robots" content="index, follow">' in _hp and 'href="https://plotnua.ie/plotart/art-for-hire/"' in _hp) if BUSINESS_ON else ('<meta name="robots" content="noindex, follow">' in _hp and 'rel="canonical"' not in _hp), "L17 the Art for Hire indexing must match the business information switch")
     need(_hp.count(HIRE_BEGIN.decode()) == 1 and _hp.count(HIRE_END.decode()) == 1, "L17 the Art for Hire page needs exactly one catalogue region")
     need("Original art," in _hv and "on hire." in _hv, "L17 the approved headline is missing")
     for _st in ("PlotArt introduces you to the artist.", "Hire prices are agreed directly with the artist.", "Transport and insurance are arranged between you and the artist.",
@@ -658,7 +662,19 @@ if HIRE_ON:
     for _src in re.findall(r'<img\b[^>]*\bsrc="([^"]+)"', _main.replace(_inside, "")):
         need((_src.startswith("../artists/") and _src[3:] in ARTIST_FILES) or (_src == "../" + _FOUNDER and _founder_ok),
              "L17 the Art for Hire page shows an image that is neither a published artist image nor the founder painting registered for Art for Hire: %s" % _src)
-    need("€" not in _hv and "%" not in _hv and not re.search(r"<form\b", _hp), "L17 the Art for Hire page shows a price, a percentage or a form")
+    _outside_business = _hp
+    if BUSINESS_ON:
+        try:
+            _outside_business = BUSINESS.outside(_hp)
+        except ValueError as e:
+            need(False, "L19 " + str(e))
+    if BUSINESS_ON:
+        try:
+            need(BUSINESS.verify_document(SITE, ROOT), "L19 rental PDF verification failed")
+        except (ValueError, OSError, KeyError) as e:
+            need(False, "L19 " + str(e))
+    _outside_business_text = visible_text(_outside_business)
+    need("€" not in _outside_business_text and "%" not in _outside_business_text and not re.search(r"<form\b", _hp), "L17 the Art for Hire page shows an unapproved price, percentage or form")
     need(all(m == "hello@plotnua.ie" for m in re.findall(r"mailto:([^?\"]+)", _hp)) and not re.search(r"[A-Za-z0-9._%+-]+@(?!plotnua\.ie)[A-Za-z0-9-]+\.[A-Za-z]", _hv),
          "L17 the Art for Hire page exposes an address other than hello@plotnua.ie")
     need(('data-enquiries="on"' in _hp) == HIRE_FORM and ('data-enquiries="off"' in _hp) != HIRE_FORM, "L17 the enquiry form state does not match art_for_hire_enquiry_form")

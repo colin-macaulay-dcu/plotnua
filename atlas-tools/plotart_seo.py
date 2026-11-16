@@ -34,6 +34,8 @@ def canonical(path):
 
 
 def indexable(path, launch):
+    if path == "art-for-hire/index.html":
+        return launch.get("art_for_hire_page") is True and launch.get("business_rental_information") is True
     if path in TOOL_PATHS:
         return launch.get("wall_size_indexable") is True
     if path in GUIDE_PATHS + EDITORIAL_PATHS:
@@ -69,6 +71,8 @@ def sitemap_paths(packages, launch):
     paths = [p for p in ("index.html", "gallery/index.html", "about.html", "founding-25.html") + GUIDE_PATHS + EDITORIAL_PATHS + TOOL_PATHS if indexable(p, launch)]
     # The collection is listed only by its own sitemap switch (prepared 13 Nov 2026; off until the founder approves).
     paths += [p for p in COLLECTION_PATHS if indexable(p, launch) and launch.get(COLLECTION_SWITCHES[p][1]) is True]
+    if indexable("art-for-hire/index.html", launch):
+        paths.append("art-for-hire/index.html")
     for pkg in sorted(packages, key=lambda p: p["artist"]["slug"]):
         # Only the already-approved public export is an input. Never read Studio drafts.
         if pkg["publication"].get("state") != "approved":
