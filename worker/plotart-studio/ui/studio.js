@@ -107,10 +107,42 @@
           : `<ul class="st-list ok"><li>Everything needed is in place${s.unsubmitted.length ? `: submit your changes for ${pendingTier}` : ''}.</li></ul>`}
         ${canSubmit ? `<div class="st-actions"><a class="st-btn st-btn--solid" href="#/submit">Review and submit</a></div>` : ''}
       </section>
+      ${ME.opportunities === 'confirm' ? `<section class="st-card st-opp-ask" id="opp-confirm-home" aria-labelledby="opp-cf-h"><p class="st-muted" style="margin:0">Loading…</p></section>` : ''}
       ${ME.opportunities === 'unanswered' ? `<section class="st-card st-opp-ask" aria-labelledby="opp-ask-h"><h3 id="opp-ask-h">Opportunities &amp; delivery</h3>
         <p class="st-muted" style="margin:0">Let us know which future opportunities you’d like to hear about and how your work could travel. It takes a couple of minutes and doesn’t commit you to anything.</p>
         <div class="st-actions"><a class="st-btn st-btn--small" href="#/opportunities">Add your preferences</a></div></section>` : ''}`;
     $('[data-act=add]', app)?.addEventListener('click', addWork);
+    const cf = $('#opp-confirm-home', app);
+    if (cf) api('GET', '/api/opportunities').then(d => oppConfirm(cf, d, () => dashboard())).catch(() => { cf.remove(); });
+  }
+
+  /* ------------------------------------------------------------- opportunities shown publicly (migration 0015)
+     For answers saved before the choice existed: nothing is shown until the artist chooses here, in one click. The
+     commissions box is optional, unticked, and offered only to an artist who chose Commissions and hasn't switched on
+     "Open for commissions" already. */
+  function oppConfirm(box, d, done) {
+    const P = d.options && d.options.public, sv = d.saved;
+    if (!P || !sv || sv.public_display !== null) { box.remove(); return; }
+    const chosen = P.keys.filter(k => sv.interests.includes(k));
+    if (!chosen.length) { box.remove(); return; }
+    const offerC = chosen.includes('commissions') && ME.commissions_available && !ME.artist.open_for_commissions;
+    box.classList.add('st-opp-confirm');
+    box.setAttribute('aria-labelledby', 'opp-cf-h');
+    box.innerHTML = `<h3 id="opp-cf-h">${E(P.confirm_h)}</h3>
+      <p class="st-muted" style="margin:0 0 12px">${E(P.confirm)}</p>
+      <p class="st-opp-chosen"><span class="st-muted">Your choices:</span> ${chosen.map(k => E(d.options.interests[k].split(' — ')[0])).join(' · ')}</p>
+      ${offerC ? `<label class="st-check" style="margin:12px 0 0"><input type="checkbox" data-cf-c style="accent-color:var(--terra);width:20px;height:20px"> <span>${E(P.commissions)}</span></label>` : ''}
+      <div class="st-actions"><button class="st-btn st-btn--solid st-btn--small" data-cf="1">${E(P.yes)}</button><button class="st-btn st-btn--small" data-cf="0">${E(P.no)}</button></div>
+      <p class="st-err" role="alert" data-cf-err></p>`;
+    box.querySelectorAll('[data-cf]').forEach(b => b.addEventListener('click', async () => {
+      const show = b.dataset.cf === '1', c = box.querySelector('[data-cf-c]');
+      box.querySelectorAll('button').forEach(x => { x.disabled = true; });
+      try {
+        const r = await api('PUT', '/api/opportunities/visibility', { show, ...(show && c && c.checked ? { commissions: true } : {}) });
+        say(show ? (r.instant_version ? 'Saved · your opportunities will appear on your gallery after the next website update' : 'Saved · they’ll appear once your gallery is published') : 'Saved · your opportunities stay private');
+        await refresh(); done();
+      } catch (e) { box.querySelector('[data-cf-err]').textContent = e.message; box.querySelectorAll('button').forEach(x => { x.disabled = false; }); }
+    }));
   }
 
   function profile() {
@@ -724,8 +756,12 @@
     const d = await api('GET', '/api/opportunities');
     if (!d.installed) { app.innerHTML = `<h1 class="st-h1">Opportunities &amp; delivery</h1><section class="st-card"><p class="st-muted" style="margin:0">This section isn’t available yet.</p></section>`; return; }
     const O = d.options, sv = d.saved;
-    const st = sv ? { interests: [...sv.interests], county: sv.artwork_county || '', transport: [...sv.transport], mode: sv.coverage_mode, counties: [...sv.coverage_counties], care: !!sv.care_condition, note: sv.note || '' }
-      : { interests: [], county: d.suggested_county || '', transport: [], mode: null, counties: [], care: false, note: '' };
+    const P = O.public;   // shown publicly (migration 0015); null until it has run
+    // new answers: shown by default, as explained beside the box; answers saved before the choice existed stay "not decided"
+    // (null) until the artist confirms in the panel at the top, so saving the form never changes that by itself
+    const st = sv ? { interests: [...sv.interests], county: sv.artwork_county || '', transport: [...sv.transport], mode: sv.coverage_mode, counties: [...sv.coverage_counties], care: !!sv.care_condition, note: sv.note || '', pub: sv.public_display ?? null }
+      : { interests: [], county: d.suggested_county || '', transport: [], mode: null, counties: [], care: false, note: '', pub: true };
+    let offerC = false;
     let last = JSON.stringify(st), savedAt = sv ? sv.updated_at : null;
     const on = (a, k) => a.includes(k);
     const btn = (group, k, label, pressed, cls = '') => `<button type="button" class="st-opt ${cls}" data-g="${group}" data-k="${E(k)}" aria-pressed="${pressed}">${E(label)}</button>`;
@@ -736,6 +772,7 @@
       <h1 class="st-h1">Opportunities &amp; delivery</h1>
       <p class="st-sub">A few quick questions about what you’d be open to and how your work could travel. You can change your answers at any time.</p>
       <p class="st-opp-state" id="o-state" aria-live="polite"></p>
+      ${P && sv && sv.public_display === null ? '<section class="st-card st-opp-ask" id="o-confirm"></section>' : ''}
       <form id="oform" novalidate>
       <section class="st-card"><fieldset class="st-opp-fs" aria-describedby="o-int-h">
         <legend><h2 class="st-opp-q">What would you be interested in exploring?</h2></legend>
@@ -772,10 +809,16 @@
         <textarea id="o-note" maxlength="${O.note_max}" rows="${O.care ? 6 : 3}" aria-describedby="o-note-h" placeholder="${O.care ? 'Write as much as you need' : 'For example, transport costs, artwork size limits or availability'}" style="min-height:${O.care ? 150 : 88}px">${E(st.note)}</textarea>
         <small id="o-note-h"><span id="o-note-n"></span></small>
       </div></section>
+      ${P && st.pub !== null ? `<section class="st-card" id="o-pub-card"><h2 class="st-opp-q" style="margin:0 0 10px">On your public gallery</h2>
+        <label class="st-check"><input type="checkbox" id="o-pub" aria-describedby="o-pub-h"${st.pub ? ' checked' : ''} style="accent-color:var(--terra);width:20px;height:20px"> <span>${E(P.label)}</span></label>
+        <p class="st-hint" id="o-pub-h" style="margin:8px 0 0 34px">${E(P.explain)}</p>
+        <div id="o-ofc-box" hidden><label class="st-check" style="margin:14px 0 0"><input type="checkbox" id="o-ofc" style="accent-color:var(--terra);width:20px;height:20px"> <span>${E(P.commissions)}</span></label>
+          <p class="st-hint" style="margin:6px 0 0 34px">Optional. You agree any commission directly with the client, and you can switch this off on your profile at any time.</p></div>
+      </section>` : ''}
       <div class="st-opp-save">
         <button class="st-btn st-btn--solid" id="o-save" type="submit">Save preferences</button>
         <span class="st-muted" id="o-dirty" aria-live="polite"></span>
-        <p class="st-hint st-opp-priv">Your answers are never published. <a href="https://plotnua.ie/privacy.html#plotart-opportunities" target="_blank" rel="noopener">How we use them</a></p>
+        <p class="st-hint st-opp-priv">${P ? 'Your county, transport, delivery area, care box and note are never published.' : 'Your answers are never published.'} <a href="https://plotnua.ie/privacy.html#plotart-opportunities" target="_blank" rel="noopener">How we use them</a></p>
         <p class="st-err" id="o-err" role="alert"></p>
       </div>
       </form>`;
@@ -796,6 +839,11 @@
       }
       $('#o-note-n').textContent = `${st.note.length.toLocaleString('en-IE')} of ${O.note_max.toLocaleString('en-IE')} characters`;
       if ($('#o-care-box')) { $('#o-care-box').hidden = online; $('#o-care').checked = st.care; }
+      if ($('#o-pub-card')) {
+        $('#o-pub-card').hidden = online; $('#o-pub').checked = !!st.pub;
+        offerC = !!st.pub && on(st.interests, 'commissions') && ME.commissions_available && !ME.artist.open_for_commissions;
+        $('#o-ofc-box').hidden = !offerC;
+      }
       const dirty = JSON.stringify(st) !== last;
       $('#o-dirty').textContent = dirty ? (savedAt ? 'You have unsaved changes.' : '') : '';
       $('#o-state').innerHTML = savedAt ? `<span class="st-pill st-pill--ok">Saved</span> Last saved ${E(when(savedAt))}.`
@@ -847,6 +895,8 @@
     $('#o-county').addEventListener('change', e => { st.county = e.target.value; paint(); });
     $('#o-note').addEventListener('input', e => { st.note = e.target.value; paint(); });
     $('#o-care')?.addEventListener('change', e => { st.care = e.target.checked; paint(); });
+    $('#o-pub')?.addEventListener('change', e => { st.pub = e.target.checked; paint(); });
+    if ($('#o-confirm')) oppConfirm($('#o-confirm'), d, () => opportunities());
     $('#oform').addEventListener('submit', async e => {
       e.preventDefault();
       $('#o-err').textContent = '';
@@ -854,11 +904,17 @@
       const b = $('#o-save'); b.disabled = true;
       try {
         const cov = showCov() && st.mode ? { mode: st.mode, counties: st.mode === 'counties' ? st.counties : [] } : null;
-        const r = await api('PUT', '/api/opportunities', { interests: st.interests, artwork_county: st.county || null, transport: on(st.interests, 'online_only') ? [] : st.transport, coverage: cov, note: st.note.trim() || null, ...(O.care ? { care_condition: !on(st.interests, 'online_only') && st.care } : {}) });
+        const wantC = offerC && $('#o-ofc') && $('#o-ofc').checked;
+        const r = await api('PUT', '/api/opportunities', { interests: st.interests, artwork_county: st.county || null, transport: on(st.interests, 'online_only') ? [] : st.transport, coverage: cov, note: st.note.trim() || null, ...(O.care ? { care_condition: !on(st.interests, 'online_only') && st.care } : {}),
+          ...(P && st.pub !== null ? { public_display: !!st.pub } : {}) });
+        if (wantC) await api('PUT', '/api/me/commissions', { open: true });
         const s = r.saved;
-        Object.assign(st, { interests: [...s.interests], county: s.artwork_county || '', transport: [...s.transport], mode: s.coverage_mode, counties: [...s.coverage_counties], care: !!s.care_condition, note: s.note || '' });
+        Object.assign(st, { interests: [...s.interests], county: s.artwork_county || '', transport: [...s.transport], mode: s.coverage_mode, counties: [...s.coverage_counties], care: !!s.care_condition, note: s.note || '', pub: s.public_display ?? null });
         $('#o-note').value = st.note; last = JSON.stringify(st); savedAt = s.updated_at;
-        ME.opportunities = 'answered'; say('Preferences saved'); paint();
+        await refresh();
+        say(r.shown && r.shown.length ? (r.instant_version ? 'Preferences saved · your public gallery updates after the next website update' : 'Preferences saved · shown once your gallery is published')
+          : r.instant_version ? 'Preferences saved · removed from your public gallery at the next website update' : 'Preferences saved');
+        paint();
       } catch (err) { $('#o-err').textContent = err.message; }
       finally { b.disabled = false; }
     });

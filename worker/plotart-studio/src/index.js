@@ -51,6 +51,8 @@ async function load(env, artistId) {
   const artist = await one(env, 'SELECT * FROM artists WHERE id = ?', artistId);
   const works = await all(env, 'SELECT * FROM artworks WHERE artist_id = ? ORDER BY ord', artistId);
   const images = await all(env, 'SELECT * FROM images WHERE artist_id = ? AND deleted_at IS NULL ORDER BY ord', artistId);
+  // the kinds of opportunity the artist has chosen to show (migration 0015): the only Opportunities data a snapshot carries
+  if (artist) artist.open_to = await O.publicFor(env, artistId);
   return { artist, works, images };
 }
 /* Open for Commissions (founder approval 13 Nov 2026). Migration 0011 adds artists.open_for_commissions. Until it has run,
@@ -1576,7 +1578,38 @@ async function route(req, env) {
   }
   /* Opportunities & delivery: the artist's OWN expression of interest. Writes artist_opportunities only. */
   if (p === '/api/opportunities' && m === 'GET') return json({ ok: true, ...(await O.artistView(env, artist)) });
-  if (p === '/api/opportunities' && m === 'PUT') return json({ ok: true, ...(await O.save(env, artist, await req.json())) });
+  // Saving can change what is shown publicly (migration 0015): that reaches a live gallery as an instant update, exactly
+  // like the commissions switch, never as content review. Nothing changes publicly unless the artist chose to show it.
+  if (p === '/api/opportunities' && m === 'PUT') {
+    const r = await O.save(env, artist, await req.json());
+    return json({ ok: true, ...r, instant_version: await instant(env, artist, artist.email, 'opportunities_shown_publicly') });
+  }
+  /* The one-click choice: show the chosen opportunities publicly or keep them private. An artist who answered before this
+     choice existed must confirm before anything is shown. "commissions": true (only with show, only when they chose
+     Commissions) also switches on the existing "Open for commissions" setting, as their explicit choice in the same click;
+     it never switches it off and is never set silently. */
+  if (p === '/api/opportunities/visibility' && m === 'PUT') {
+    const b = await req.json().catch(() => null);
+    if (!b || typeof b.show !== 'boolean' || Object.keys(b).some(k => !['show', 'commissions'].includes(k)) || (b.commissions !== undefined && typeof b.commissions !== 'boolean'))
+      throw new Bad('Refused');
+    if (b.commissions === true && !b.show) throw new Bad('“Open for commissions” can only be added when you show your opportunities');
+    if (b.commissions === true) {   // checked BEFORE anything is saved, so a refused request changes nothing
+      if (!(await commissionsInstalled(env))) throw new Bad('Open for commissions isn’t available just yet. Please try again later.', 503);
+      const cur = await one(env, 'SELECT interests FROM artist_opportunities WHERE artist_id = ?', artist.id).catch(() => null);
+      if (!cur || !JSON.parse(cur.interests).includes('commissions')) throw new Bad('Choose Commissions in your opportunities first');
+    }
+    const r = await O.setVisibility(env, artist, b.show);
+    let commissions = false;
+    if (b.commissions === true) {
+      const cur = await one(env, 'SELECT open_for_commissions FROM artists WHERE id = ?', artist.id);
+      if (cur && cur.open_for_commissions !== 1) {
+        await env.DB.prepare('UPDATE artists SET open_for_commissions=1, updated_at=? WHERE id=?').bind(now(), artist.id).run();
+        await audit(env, artist.email, 'artist', 'commissions_on', artist.id, { via: 'opportunities confirmation' });
+        commissions = true;
+      }
+    }
+    return json({ ok: true, ...r, commissions_switched_on: commissions, instant_version: await instant(env, artist, artist.email, b.show ? 'opportunities_shown_publicly' : 'opportunities_kept_private') });
+  }
   if (p === '/api/me' && m === 'GET') {
     const d = await load(env, artist.id);
     const { email, ...a } = d.artist;

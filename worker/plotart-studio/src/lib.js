@@ -125,6 +125,9 @@ export function snapshot(artist, works, images) {
       portrait: imgRef(portrait),
       // Open for Commissions (13 Nov 2026): the artist's own on/off choice. A snapshot made before it existed has no key: off.
       open_for_commissions: artist.open_for_commissions === 1 || artist.open_for_commissions === true,
+      // Opportunities shown publicly (migration 0015, 16 Nov 2026): only the kinds of opportunity the artist chose to show,
+      // in the fixed public order. Absent when there are none, so every snapshot made before stays byte-for-byte the same.
+      ...(openTo(artist).length ? { open_to: openTo(artist) } : {}),
     },
     works: works.filter(w => !w.archived).sort((a, b) => a.ord - b.ord).map(w => ({
       id: w.id, slug: w.slug, title: w.title || null, year: w.year ?? null, medium: w.medium || null, materials: w.materials || null,
@@ -168,6 +171,8 @@ export function changes(live, work) {
   for (const o of live.works) if (!W[o.id]) out.push({ tier: 'instant', what: `Removed: ${o.title}`, work: o.id });
   // Open for Commissions: the artist's own switch, published like availability (instant tier, never content review).
   if (commissionsOpen(live.artist) !== commissionsOpen(work.artist)) out.push({ tier: 'instant', what: `Open for commissions: ${commissionsOpen(work.artist) ? 'on' : 'off'}` });
+  // Opportunities shown publicly: the artist's own choice, published like the commissions switch (instant tier).
+  if (!eq(openTo(live.artist), openTo(work.artist))) out.push({ tier: 'instant', what: openTo(work.artist).length ? `Opportunities shown: ${openTo(work.artist).join(', ')}` : 'Opportunities no longer shown' });
   const lo = live.works.map(w => w.id).filter(id => W[id]), wo = work.works.map(w => w.id).filter(id => L[id]);
   if (!eq(lo, wo)) out.push({ tier: 'instant', what: 'Order of works' });
   return out;
@@ -175,6 +180,10 @@ export function changes(live, work) {
 /* Open for Commissions (13 Nov 2026): true only when the artist has switched it on. A snapshot or export made before the
    feature existed carries no key and counts as off. */
 export const commissionsOpen = a => !!(a && a.open_for_commissions === true);
+/* The kinds of opportunity shown publicly (migration 0015). Only these keys, in this order, can ever travel; anything else
+   (online_only, county, transport, coverage, care, note) never does. Absent or empty: none. */
+export const OPEN_TO = ['exhibitions', 'living_gallery', 'art_for_hire', 'mobile_gallery', 'venues', 'commissions', 'talks'];
+export const openTo = a => (a && Array.isArray(a.open_to) ? OPEN_TO.filter(k => a.open_to.includes(k)) : []);
 export const tierOf = cs => cs.some(c => c.tier === 'full') ? 'full' : cs.some(c => c.tier === 'light') ? 'light' : null;
 
 /* Apply ONLY instant fields (availability, removal, order) from the working copy onto a version snapshot. */
@@ -185,7 +194,10 @@ export function applyInstant(base, work) {
   kept.sort((a, b) => pos[a.id] - pos[b.id]);
   // the switch travels only when it differs, so an older version (no key) is never rewritten by an unrelated instant change
   const open = commissionsOpen(work.artist);
-  const artist = commissionsOpen(base.artist) === open ? base.artist : { ...base.artist, open_for_commissions: open };
+  let artist = commissionsOpen(base.artist) === open ? base.artist : { ...base.artist, open_for_commissions: open };
+  // the same for the opportunities shown publicly: carried only when they differ; none means the key is removed
+  const ot = openTo(work.artist);
+  if (!eq(openTo(base.artist), ot)) { const { open_to, ...rest } = artist; artist = ot.length ? { ...rest, open_to: ot } : rest; }
   return { ...base, artist, works: kept };
 }
 
@@ -244,7 +256,7 @@ export function exportGallery(snap, { version, approvedAt, licenceVersion, licen
     artist: { slug: a.slug, display_name: a.display_name, founding: a.founding, practice: a.practice, medium: a.medium,
       county: a.county, county_public: a.county_public, statement: a.statement, bio: a.bio, website: a.website,
       instagram: a.instagram, portrait: a.portrait ? img(a.portrait, 'portrait') : null,
-      ...(commissionsOpen(a) ? { open_for_commissions: true } : {}) },
+      ...(commissionsOpen(a) ? { open_for_commissions: true } : {}), ...(openTo(a).length ? { open_to: openTo(a) } : {}) },
     works: snap.works.map((w, i) => ({
       id: w.id, slug: w.slug, title: w.title, year: w.year, medium: w.medium, materials: w.materials, h_cm: w.h_cm, w_cm: w.w_cm,
       d_cm: w.d_cm, price_eur: w.price_eur, price_on_request: w.price_on_request, availability: w.availability,

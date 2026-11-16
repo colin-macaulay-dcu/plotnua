@@ -25,42 +25,83 @@ export async function careInstalled(env) {
 // note in "note" is either the one 0010 copied (identical) or a newer one written by the older Studio after 0010 ran.
 const parse = r => r ? { interests: JSON.parse(r.interests), artwork_county: r.artwork_county, transport: JSON.parse(r.transport),
   coverage_mode: r.coverage_mode, coverage_counties: JSON.parse(r.coverage_counties), care_condition: r.care_condition === 1,
-  note: r.note ?? r.practical_note ?? null, created_at: r.created_at, updated_at: r.updated_at } : null;
+  note: r.note ?? r.practical_note ?? null, created_at: r.created_at, updated_at: r.updated_at,
+  // shown publicly (0015): null = not decided, true = shown, false = private; absent columns (before 0015) read as not decided
+  public_display: r.public_display === 1 ? true : r.public_display === 0 ? false : null, public_decided_at: r.public_decided_at ?? null } : null;
+
+/* Migration 0015 adds public_display, public_decided_at and public_notice. Until it has run, nothing can be shown publicly
+   and the Studio works exactly as before. */
+export async function publicInstalled(env) {
+  try { await env.DB.prepare('SELECT public_display, public_decided_at, public_notice FROM artist_opportunities LIMIT 1').all(); return true; } catch { return false; }
+}
+/* The kinds of opportunity this artist has chosen to show (empty unless they chose to show them). The ONLY part of their
+   answers that ever leaves the Studio, and only inside their approved gallery. */
+export async function publicFor(env, artistId) {
+  if (!(await installed(env)) || !(await publicInstalled(env))) return [];
+  return R.publicKeys(parse(await one(env, 'SELECT * FROM artist_opportunities WHERE artist_id = ?', artistId)));
+}
 
 const OPTIONS = { interests: R.INTERESTS, transport: R.TRANSPORT, transport_clash: R.TRANSPORT_CLASH, provinces: R.PROVINCES, coverage: R.COVERAGE, note_max: R.NOTE_MAX };
-const options = care => care ? { ...OPTIONS, care: R.CARE } : { ...OPTIONS, note_max: R.NOTE_MAX_BEFORE_0010, care: null };
+const options = (care, pub) => ({ ...(care ? { ...OPTIONS, care: R.CARE } : { ...OPTIONS, note_max: R.NOTE_MAX_BEFORE_0010, care: null }),
+  public: pub ? { ...R.PUBLIC, keys: R.PUBLIC_KEYS, notice: R.PUBLIC_NOTICE } : null });
 
 /* The artist's own record only. "suggested_county" is the county on their own profile, offered as a starting point for
    "Where is your artwork based?" until they first save: it is never stored unless they save it. */
 /* For the Studio dashboard's discreet prompt: 'unanswered', 'answered', or null before migration 0009 has run. */
 export async function status(env, artist) {
   if (!(await installed(env))) return null;
-  return (await one(env, 'SELECT 1 AS x FROM artist_opportunities WHERE artist_id = ?', artist.id)) ? 'answered' : 'unanswered';
+  const row = parse(await one(env, 'SELECT * FROM artist_opportunities WHERE artist_id = ?', artist.id));
+  if (!row) return 'unanswered';
+  // 'confirm': answers saved before 0015 that include something that could be shown, and no choice made yet
+  if ((await publicInstalled(env)) && row.public_display === null && R.PUBLIC_KEYS.some(k => row.interests.includes(k))) return 'confirm';
+  return 'answered';
 }
 export async function artistView(env, artist) {
   if (!(await installed(env))) return { installed: false };
   const row = parse(await one(env, 'SELECT * FROM artist_opportunities WHERE artist_id = ?', artist.id));
   const prof = await one(env, 'SELECT county FROM artists WHERE id = ?', artist.id);
-  return { installed: true, saved: row, suggested_county: !row && prof && R.COUNTIES.includes(prof.county) ? prof.county : null, options: options(await careInstalled(env)) };
+  return { installed: true, saved: row, suggested_county: !row && prof && R.COUNTIES.includes(prof.county) ? prof.county : null,
+    options: options(await careInstalled(env), await publicInstalled(env)), shown: R.publicKeys(row) };
 }
 
 export async function save(env, artist, body) {
   if (!(await installed(env))) throw new Bad('This section isn’t available yet', 409);
-  const care = await careInstalled(env);
-  const v = R.validate(body, care ? {} : { noteMax: R.NOTE_MAX_BEFORE_0010, care: false });
+  const care = await careInstalled(env), pub = await publicInstalled(env);
+  const v = R.validate(body, { ...(care ? {} : { noteMax: R.NOTE_MAX_BEFORE_0010, care: false }), publicOn: pub });
   if (v.error) throw new Bad(v.error);
   const p = v.prefs, at = now();
-  const had = await one(env, 'SELECT created_at FROM artist_opportunities WHERE artist_id = ?', artist.id);
-  const cols = ['artist_id', 'interests', 'artwork_county', 'transport', 'coverage_mode', 'coverage_counties', 'note', ...(care ? ['practical_note', 'care_condition'] : []), 'created_at', 'updated_at', 'updated_by'];
+  const had = await one(env, 'SELECT * FROM artist_opportunities WHERE artist_id = ?', artist.id);
+  // Shown publicly: only an explicit true/false from the form that explained it changes the choice. Absent keeps what is
+  // there (a new answer without it stays "not decided", so nothing is ever shown that the artist wasn't told about).
+  const chose = pub && p.public_display !== undefined;
+  const cols = ['artist_id', 'interests', 'artwork_county', 'transport', 'coverage_mode', 'coverage_counties', 'note', ...(care ? ['practical_note', 'care_condition'] : []),
+    ...(chose ? ['public_display', 'public_decided_at', 'public_notice'] : []), 'created_at', 'updated_at', 'updated_by'];
   const vals = [artist.id, JSON.stringify(p.interests), p.artwork_county, JSON.stringify(p.transport), p.coverage_mode, JSON.stringify(p.coverage_counties),
-    care ? null : p.note, ...(care ? [p.note, p.care_condition ? 1 : 0] : []), had ? had.created_at : at, at, artist.email];
+    care ? null : p.note, ...(care ? [p.note, p.care_condition ? 1 : 0] : []), ...(chose ? [p.public_display ? 1 : 0, at, R.PUBLIC_NOTICE] : []),
+    had ? had.created_at : at, at, artist.email];
   const upd = cols.filter(c => !['artist_id', 'created_at'].includes(c)).map(c => `${c}=excluded.${c}`).join(', ');
   await env.DB.prepare(`INSERT INTO artist_opportunities (${cols.join(', ')}) VALUES (${cols.map(() => '?').join(',')}) ON CONFLICT(artist_id) DO UPDATE SET ${upd}`)
     .bind(...vals).run();
   // The audit trail records that preferences were saved and which options, never the free-text note.
   await audit(env, artist.email, 'artist', had ? 'opportunities_updated' : 'opportunities_saved', artist.id,
-    { interests: p.interests, artwork_county: p.artwork_county, transport: p.transport, coverage: p.coverage_mode, counties: p.coverage_counties.length, care_condition: p.care_condition, note: !!p.note });
-  return { saved: parse(await one(env, 'SELECT * FROM artist_opportunities WHERE artist_id = ?', artist.id)) };
+    { interests: p.interests, artwork_county: p.artwork_county, transport: p.transport, coverage: p.coverage_mode, counties: p.coverage_counties.length, care_condition: p.care_condition, note: !!p.note,
+      ...(chose ? { public_display: p.public_display, notice: R.PUBLIC_NOTICE } : {}) });
+  const saved = parse(await one(env, 'SELECT * FROM artist_opportunities WHERE artist_id = ?', artist.id));
+  return { saved, shown: R.publicKeys(saved) };
+}
+
+/* The one-click choice (an artist who answered before 0015, or anyone changing their mind later): show or keep private.
+   Changes public_display only; every answer is kept exactly as it is. */
+export async function setVisibility(env, artist, show) {
+  if (!(await installed(env)) || !(await publicInstalled(env))) throw new Bad('This choice isn’t available yet', 409);
+  if (typeof show !== 'boolean') throw new Bad('Choose to show your opportunities or keep them private');
+  const row = await one(env, 'SELECT public_display FROM artist_opportunities WHERE artist_id = ?', artist.id);
+  if (!row) throw new Bad('Save your opportunities first', 409);
+  const at = now();
+  await env.DB.prepare('UPDATE artist_opportunities SET public_display=?, public_decided_at=?, public_notice=? WHERE artist_id=?').bind(show ? 1 : 0, at, R.PUBLIC_NOTICE, artist.id).run();
+  await audit(env, artist.email, 'artist', show ? 'opportunities_shown' : 'opportunities_kept_private', artist.id, { notice: R.PUBLIC_NOTICE, before: row.public_display });
+  const saved = parse(await one(env, 'SELECT * FROM artist_opportunities WHERE artist_id = ?', artist.id));
+  return { saved, shown: R.publicKeys(saved), changed: row.public_display !== (show ? 1 : 0) };
 }
 
 /* The founder's read-only view: every invited or active artist, answered or not, plus any ended artist whose answers are
@@ -75,9 +116,12 @@ export async function adminView(env) {
     prefs: r.artist_id ? parse(r) : null }));
   const answered = items.filter(i => i.prefs), online = answered.filter(i => i.prefs.interests.includes('online_only'));
   const by = Object.fromEntries(Object.keys(R.INTERESTS).map(k => [k, answered.filter(i => i.prefs.interests.includes(k)).length]));
+  const pub = await publicInstalled(env);
   return { installed: true, items, totals: { artists: items.length, answered: answered.length, unanswered: items.length - answered.length, online_only: online.length,
-      care_condition: answered.filter(i => i.prefs.care_condition).length, by_interest: by },
-    options: { ...options(await careInstalled(env)), interest_short: R.INTEREST_SHORT, transport_short: R.TRANSPORT_SHORT, counties: R.COUNTIES } };
+      care_condition: answered.filter(i => i.prefs.care_condition).length, by_interest: by,
+      ...(pub ? { shown: answered.filter(i => i.prefs.public_display === true).length, kept_private: answered.filter(i => i.prefs.public_display === false).length,
+        undecided: answered.filter(i => i.prefs.public_display === null).length } : {}) },
+    options: { ...options(await careInstalled(env), pub), interest_short: R.INTEREST_SHORT, transport_short: R.TRANSPORT_SHORT, counties: R.COUNTIES } };
 }
 
 /* Retention: the answers are the artist's own profile content, so they go with the first-stage deletion (12 months after

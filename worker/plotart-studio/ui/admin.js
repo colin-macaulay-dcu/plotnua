@@ -749,6 +749,7 @@
       if (isOnline(i)) return `<li class="st-opp-row"><div>${who}</div><div><span class="st-pill st-pill--warn">Online only for now</span>${p.artwork_county ? `<span class="st-opp-k">Artwork in Co. ${E(p.artwork_county)}</span>` : ''}${p.note ? `<p class="st-opp-note">${E(p.note)}</p>` : ''}</div><div class="st-muted st-opp-when">${E(when(p.updated_at))}</div></li>`;
       return `<li class="st-opp-row"><div>${who}</div>
         <div><div class="st-chips" style="margin:0 0 6px">${p.interests.map(k => `<span class="st-chip">${E(O.interest_short[k])}</span>`).join('')}${p.care_condition ? `<span class="st-chip st-chip--care" title="${E(O.care ? O.care.label : '')}">${E(O.care ? O.care.short : 'Depends on care, handling and insurance')}</span>` : ''}</div>
+          ${O.public ? `<span class="st-opp-k">Public gallery: ${p.public_display === true ? 'shown (only while the gallery is published)' : p.public_display === false ? 'kept private' : '<i>not confirmed yet: not shown</i>'}</span>` : ''}
           <span class="st-opp-k">Artwork: ${p.artwork_county ? `Co. ${E(p.artwork_county)}` : '<i>not given</i>'}</span>
           <span class="st-opp-k">Transport: ${p.transport.length ? p.transport.map(k => E(O.transport_short[k])).join(', ') : '<i>not given</i>'}${p.coverage_mode ? ` · ${E(coverage(p))}` : ''}</span>
           ${p.note ? `<p class="st-opp-note">${E(p.note)}</p>` : ''}</div>
@@ -762,6 +763,7 @@
         <div class="st-kpi"><b>${T.unanswered}</b><span>not answered yet</span></div>
         <div class="st-kpi"><b>${T.online_only}</b><span>online only for now</span></div>
         ${O.care ? `<div class="st-kpi"><b>${T.care_condition}</b><span>depend on care, handling and insurance</span></div>` : ''}
+        ${O.public ? `<div class="st-kpi"><b>${T.shown}</b><span>shown publicly</span></div><div class="st-kpi"><b>${T.undecided}</b><span>not confirmed yet</span></div>` : ''}
         <div class="st-kpi"><b>${T.artists}</b><span>artists in Studio</span></div>
       </div>
       <section class="st-card">
