@@ -6,6 +6,15 @@
   "founding": true,
   "instagram": "rashermarkkavanagh",
   "medium": "painting",
+  "open_to": [
+   "exhibitions",
+   "living_gallery",
+   "art_for_hire",
+   "mobile_gallery",
+   "venues",
+   "commissions",
+   "talks"
+  ],
   "portrait": {
    "alt": "The Artist in front of the painting  called The Muse",
    "aspect": 1.42942,
@@ -44,14 +53,14 @@
   }
  ],
  "publication": {
-  "approved_at": "2026-11-10T22:17:30.131Z",
+  "approved_at": "2026-11-16T21:59:02.798Z",
   "approved_by": "founder",
   "licence_accepted_at": "2026-11-10T20:53:57.148Z",
   "licence_version": "PA-GPIL-2026-11",
   "permission_ref": "PA-PERM-avhiqiv1u1c",
   "state": "approved",
   "test_note": null,
-  "version": "v1"
+  "version": "v2"
  },
  "schema": "plotnua.plotart.gallery-package.v1",
  "works": [
