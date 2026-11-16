@@ -543,3 +543,31 @@ for issued texts) through `studio-d1-migration.yml`, issued texts, a code change
 - A willing artist, a real artwork, a transporter quote and **confirmed transit insurance** for that shipment.
 - Production: migrations 0016/0017, issued texts, a deliberate code change to accept live keys, and explicit approval.
 - Not built: automatic emails, PlotArt commission invoices (manual under GAA 8), ledger CSV export, AML "verified purchase" path.
+
+#### Real-Stripe test stage: key permissions and how runs start (16 Nov 2026)
+
+Model A (the artist bears Stripe's fees) is used **for technical testing only**. This is not approval of the production
+fee model, the draft terms or the retention periods.
+
+**Use a restricted test key in a dedicated Stripe sandbox.** Every other resource stays at *None*. The key needs:
+- **Permissions column** (PlotNua's own platform account):
+  - *Connect → Accounts*: Write (create the test connected account and read it).
+  - *Connect → Account Links*: Write (the onboarding link).
+  - *Connect → Application Fees*: Write (read fees and refund commission).
+  - *Stripe CLI permissions*: Write, so that `stripe listen` can relay signed webhook events to the job.
+- **Connect Permissions column** (calls made on the artist's test account):
+  - Checkout Sessions: Write.
+  - Payment Intents: Write (the harness makes test payments).
+  - Charges and Refunds: Write.
+  - Payment Disputes: Write (to submit Stripe's test evidence).
+  - Payment Methods: Read.
+  - Balance: Read.
+
+If Stripe refuses a call, the run records Stripe's permission error and that check fails; nothing else is affected.
+Specifically, if Stripe does not allow `stripe listen` with a restricted key, the signed-webhook checks are reported as
+untested. The fallback is that sandbox's own secret test key, whose reach is limited to that sandbox.
+
+**How runs start without merging.** GitHub only offers "Run workflow" (`workflow_dispatch`) for workflows on the default
+branch, so the runner is started by a **push** to the pilot branch that changes `test/stripe-test-run.json`. That works
+from the unmerged branch. Each run then waits for Colin's approval on `checkout-test`. The environment must exist before
+the first run, because GitHub creates a missing environment automatically with no protection rules.
