@@ -13,6 +13,7 @@
 import * as R from './checkout-rules.js';
 import * as S from './stripe.js';
 import { PAYMENT_TERMS } from './payment-terms.js';
+import { send } from './mailer.js';
 
 import { Bad } from './lib.js';
 export { Bad };
@@ -27,6 +28,13 @@ const sha256 = async s => [...new Uint8Array(await crypto.subtle.digest('SHA-256
 const addMin = (iso, m) => new Date(Date.parse(iso) + m * 60_000).toISOString();
 
 export const STATEMENT = doc => `I have read and accept the PlotArt Payment Pilot Addendum ${doc}. I understand that taking part is optional, that I remain the seller of my artwork, that payments are made to my own Stripe account, that Stripe deducts its processing fees from my Stripe balance, that PlotArt's commission (if any) applies only as my existing agreement provides and never to delivery charges, and that I can leave the pilot at any time.`;
+
+/* Separate, explicit consent to the processing charge (founder decision 16 Nov 2026). On an order where PlotArt takes no
+   commission (every Founding Enquiry, and Founding Artists without commission terms), Stripe's processing fees would be
+   the only deduction and would fall on the artist. Direct payment, with no deduction at all, stays the artist's normal
+   route; the pilot can be used for such an order only after this separate, withdrawable consent. It is never implied by
+   joining the pilot, and never part of any agreement acceptance. */
+export const PROCESSING_STATEMENT = `I agree that, on payment-pilot orders where PlotArt takes no commission, Stripe deducts its card processing fees from my Stripe balance (for example about 1.5% + €0.25 of the amount paid for a standard EEA card, more for premium, UK and international cards). I understand this is optional: I can always sell directly instead, with no deduction at all, and I can withdraw this consent at any time.`;
 
 /* ---------------------------------------------------------------- switches */
 export async function installed(env) { try { await env.DB.prepare('SELECT 1 FROM checkout_orders LIMIT 1').all(); return true; } catch { return false; } }
@@ -71,11 +79,13 @@ export const getOrder = (env, id) => one(env, 'SELECT * FROM checkout_orders WHE
 
 /* ---------------------------------------------------------------- artist pilot membership */
 export async function membership(env, artistId) {
-  const ev = await one(env, 'SELECT * FROM payment_pilot_events WHERE artist_id = ? ORDER BY at DESC, rowid DESC LIMIT 1', artistId);
+  const ev = await one(env, "SELECT * FROM payment_pilot_events WHERE artist_id = ? AND kind IN ('opted_in', 'left') ORDER BY at DESC, rowid DESC LIMIT 1", artistId);
+  const pc = await one(env, "SELECT * FROM payment_pilot_events WHERE artist_id = ? AND kind IN ('processing_consent', 'processing_consent_withdrawn') ORDER BY at DESC, rowid DESC LIMIT 1", artistId);
   const acct = await one(env, 'SELECT * FROM payment_accounts WHERE artist_id = ?', artistId);
   const opted = !!ev && ev.kind === 'opted_in';
   const ready = !!acct && acct.charges_enabled === 1 && acct.details_submitted === 1;
-  return { opted_in: opted, addendum: opted ? ev.doc_id : null, opted_in_at: opted ? ev.at : null, account: acct ? { id: acct.account_id, country: acct.country,
+  return { opted_in: opted, addendum: opted ? ev.doc_id : null, opted_in_at: opted ? ev.at : null,
+    processing_consent: opted && !!pc && pc.kind === 'processing_consent', processing_consent_at: pc && pc.kind === 'processing_consent' ? pc.at : null, account: acct ? { id: acct.account_id, country: acct.country,
     charges_enabled: !!acct.charges_enabled, payouts_enabled: !!acct.payouts_enabled, details_submitted: !!acct.details_submitted,
     requirements_due: J(acct.requirements_due) || [], checked_at: acct.checked_at } : null, ready: opted && ready };
 }
@@ -85,6 +95,8 @@ export async function artistView(env, artist) {
   const sw = switches(env), add = await currentTerms(env, 'artist_payment_addendum');
   return { installed: true, switches: { enabled: sw.enabled, mode: 'test' }, membership: await membership(env, artist.id),
     addendum: add ? { doc_id: add.doc_id, title: add.title, html_sha256: add.html_sha256, statement: STATEMENT(add.doc_id) } : null,
+    processing_statement: PROCESSING_STATEMENT, direct_payment_note: 'Selling directly, with the buyer paying you, remains your normal route. The payment pilot is optional for every sale.',
+    pending_refunds: (await pendingRefunds(env, artist.id)).map(r => ({ ...r, what_to_do: REFUND_FUNDING_STEPS })),
     orders: (await all(env, 'SELECT * FROM checkout_orders WHERE artist_id = ? ORDER BY created_at DESC LIMIT 100', artist.id)).map(o => orderView(o, 'artist')) };
 }
 
@@ -99,6 +111,31 @@ export async function optIn(env, artist, body) {
   await run(env, `INSERT INTO payment_pilot_events (id, artist_id, kind, doc_id, doc_sha256, account_email, display_name, statement, at) VALUES (?,?, 'opted_in', ?,?,?,?,?,?)`,
     rid('pe'), artist.id, add.doc_id, add.html_sha256, artist.email, artist.display_name, STATEMENT(add.doc_id), now());
   return { membership: await membership(env, artist.id) };
+}
+
+export async function processingConsent(env, artist, body) {
+  await requireInstalled(env); requireOn(env);
+  const m = await membership(env, artist.id);
+  if (!m.opted_in) throw new Bad('Join the payment pilot first', 409);
+  if (!body || body.accept !== true || body.statement !== PROCESSING_STATEMENT) throw new Bad('Tick the box beside the statement shown to give this separate consent', 400);
+  if (m.processing_consent) return { already: true, membership: m };
+  await run(env, `INSERT INTO payment_pilot_events (id, artist_id, kind, account_email, display_name, statement, at) VALUES (?,?, 'processing_consent', ?,?,?,?)`,
+    rid('pe'), artist.id, artist.email, artist.display_name, PROCESSING_STATEMENT, now());
+  return { membership: await membership(env, artist.id) };
+}
+/* Withdrawing stops any commission-free order from being paid through the pilot: unpaid ones are cancelled (paid ones finish). */
+export async function withdrawProcessingConsent(env, artist) {
+  await requireInstalled(env);
+  const m = await membership(env, artist.id);
+  if (!m.processing_consent) return { membership: m };
+  const open = await all(env, `SELECT * FROM checkout_orders WHERE artist_id = ? AND commission_bp = 0 AND status IN ('awaiting_artist','quoted','checkout_open','payment_failed')`, artist.id);
+  for (const o of open) await cancelOrder(env, o, 'artist:' + artist.email, 'Artist withdrew consent to the processing charge');
+  await run(env, `INSERT INTO payment_pilot_events (id, artist_id, kind, account_email, display_name, at) VALUES (?,?, 'processing_consent_withdrawn', ?,?,?)`, rid('pe'), artist.id, artist.email, artist.display_name, now());
+  return { membership: await membership(env, artist.id), cancelled: open.map(o => o.reference) };
+}
+function requireProcessingConsent(mem, commissionBp) {
+  if (commissionBp === 0 && !mem.processing_consent)
+    throw new Bad('PlotArt takes no commission on this order, so Stripe’s processing fees would be the artist’s only deduction. That needs the artist’s separate consent (Payment pilot page); otherwise the artist sells directly, with no deduction.', 409);
 }
 
 export async function leave(env, artist) {
@@ -169,7 +206,87 @@ export async function adminView(env) {
   return { installed: true, switches: switches(env), addendum: await currentTerms(env, 'artist_payment_addendum').then(d => d && d.doc_id),
     buyer_terms: await currentTerms(env, 'buyer_purchase_terms').then(d => d && d.doc_id), artists,
     orders: (await all(env, 'SELECT * FROM checkout_orders ORDER BY created_at DESC LIMIT 200')).map(o => orderView(o, 'founder')),
-    unprocessed_events: await all(env, "SELECT event_id, type, status, attempts, detail, received_at FROM payment_events WHERE status IN ('deferred','failed','received') ORDER BY received_at LIMIT 50") };
+    unprocessed_events: await all(env, "SELECT event_id, type, status, attempts, detail, received_at FROM payment_events WHERE status IN ('deferred','failed','received') ORDER BY received_at LIMIT 50"),
+    pending_refunds: await pendingRefunds(env), holds: await holdsView(env), refund_funding_steps: REFUND_FUNDING_STEPS };
+}
+
+/* ---------------------------------------------------------------- refunds waiting for the artist's Stripe balance
+   Stripe holds a card refund as pending while the artist's AVAILABLE Stripe balance cannot cover it (typically after a
+   payout) and fails it after 45 days. PlotArt flags it at once, tells the artist and the founder, re-checks it with Stripe
+   on every sweep (so a missed webhook cannot leave it stale), and escalates as the deadline approaches. */
+export const REFUND_PENDING_DAYS = 45;
+export const REFUND_FUNDING_STEPS = [
+  'Stripe will complete the refund by itself as soon as your Stripe balance can cover it (for example from your next sale), and may debit the bank account linked to your Stripe account to bring a negative balance back up.',
+  'To complete it now, add funds to your Stripe balance: Stripe Dashboard → Balances → Add to balance (bank transfer). The refund is released when the funds arrive.',
+  'If the refund cannot be funded before Stripe’s 45-day limit, Stripe cancels it. You then repay the buyer directly (for example by bank transfer) and send PlotArt the confirmation, so the order can be settled. Do not repay the buyer outside Stripe while a Stripe refund is still pending: they could be repaid twice.',
+  'PlotArt returns its share of commission only after the buyer has actually been repaid.',
+];
+async function pendingRefunds(env, artistId = null) {
+  const rows = await all(env, `SELECT r.id, r.order_id, o.reference, o.artist_id, r.artwork_cents + r.delivery_cents AS amount_cents, r.provider_refund_id, r.created_at
+    FROM order_refunds r JOIN checkout_orders o ON o.id = r.order_id WHERE r.status = 'pending' AND (? IS NULL OR o.artist_id = ?) ORDER BY r.created_at`, artistId, artistId);
+  return rows.map(r => { const age = Math.floor((Date.now() - Date.parse(r.created_at)) / 86400_000);
+    return { ...r, days_pending: age, stripe_fails_it_by: new Date(Date.parse(r.created_at) + REFUND_PENDING_DAYS * 86400_000).toISOString().slice(0, 10),
+      urgency: age >= 30 ? 'urgent' : age >= 7 ? 'overdue' : 'new' }; });
+}
+async function notify(env, o, kind, text) {
+  const artist = await one(env, 'SELECT email, display_name FROM artists WHERE id = ?', o.artist_id);
+  const to = [artist && artist.email, env.CHECKOUT_NOTIFY_EMAIL].filter(Boolean);
+  const out = [];
+  for (const addr of to) {
+    try { out.push((await send(env, { to: addr, subject: `PlotArt payment pilot · ${o.reference} · ${kind}`, text, idempotencyKey: `${o.id}-${kind}-${addr}` })).detail); }
+    catch (e) { out.push('error'); }
+  }
+  await event(env, o.id, 'system', 'notified_' + kind, o.status, o.status, { recipients: to.length, result: out });
+}
+/* Re-check every pending refund with Stripe (sweep). */
+export async function pollPendingRefunds(env) {
+  let checked = 0, completed = 0, failed = 0, escalated = 0;
+  for (const p of await pendingRefunds(env)) {
+    const rr = await one(env, 'SELECT * FROM order_refunds WHERE id = ?', p.id), o = await getOrder(env, p.order_id);
+    if (rr.provider_refund_id) {
+      try {
+        const re = await S.getRefund(env, { account: o.provider_account, id: rr.provider_refund_id }); checked++;
+        if (re.status === 'succeeded') { await completeRefund(env, 'sweep', rr); completed++; continue; }
+        if (['failed', 'canceled'].includes(re.status)) { await failRefund(env, rr, re); failed++; continue; }
+      } catch { /* Stripe unreachable: try again next sweep */ }
+    }
+    for (const [days, level] of [[7, 'overdue'], [30, 'urgent']]) {
+      if (p.days_pending >= days && !(await one(env, "SELECT 1 AS x FROM order_events WHERE order_id = ? AND action = ?", o.id, `notified_refund_pending_${level}`))) {
+        await notify(env, o, `refund_pending_${level}`, `A refund of EUR ${(p.amount_cents / 100).toFixed(2)} on PlotArt order ${o.reference} has been waiting ${p.days_pending} days for the seller's Stripe balance. Stripe will cancel it on ${p.stripe_fails_it_by} if it is still unfunded.\n\n${REFUND_FUNDING_STEPS.join('\n')}`);
+        await run(env, 'UPDATE checkout_orders SET needs_resolution = ?, updated_at = ? WHERE id = ?',
+          `${level.toUpperCase()}: refund ${rr.provider_refund_id} pending ${p.days_pending} days; Stripe cancels it on ${p.stripe_fails_it_by}. Contact the artist about adding funds.`, now(), o.id);
+        escalated++;
+      }
+    }
+  }
+  return { refunds_checked: checked, refunds_completed: completed, refunds_failed: failed, refunds_escalated: escalated };
+}
+/* After a Stripe refund has FAILED (or was never possible), the artist may repay the buyer directly. The founder records it
+   with evidence; it is booked as an external repayment and PlotArt returns its commission share exactly as for a refund. */
+export async function recordExternalRepayment(env, founder, id, b) {
+  await requireInstalled(env);
+  const o = await getOrder(env, id);
+  if (!o || !o.payment_intent) throw new Bad('Not found', 404);
+  if (await one(env, "SELECT 1 AS x FROM order_refunds WHERE order_id = ? AND status = 'pending'", o.id))
+    throw new Bad('A Stripe refund is still pending on this order. Wait until it succeeds or fails, so the buyer is never repaid twice.', 409);
+  const art = b.artwork_cents ?? 0, del = b.delivery_cents ?? 0, evidence = String(b.evidence || '').trim();
+  if (!Number.isInteger(art) || !Number.isInteger(del) || art < 0 || del < 0 || art + del === 0) throw new Bad('Give the amounts in whole cents');
+  if (evidence.length < 10) throw new Bad('Describe the evidence (bank transfer reference, date, and the buyer’s confirmation)');
+  const tot = await refundTotals(env, o.id);
+  if (tot.art + art > o.artwork_cents || tot.del + del > o.delivery_cents) throw new Bad('That is more than remains unrefunded', 409);
+  const fee = R.commissionRefund({ artwork_cents: o.artwork_cents, commission_cents: o.commission_cents, artwork_refunded_before: tot.art, artwork_refund_now: art, commission_refunded_before: tot.fee });
+  const ref = 'ext_' + rid('', 10);
+  await env.DB.batch([
+    st(env, `INSERT INTO order_refunds (id, order_id, artwork_cents, delivery_cents, commission_refund_cents, reason, status, provider_refund_id, requested_by, created_at, updated_at) VALUES (?,?,?,?,?,?, 'succeeded', ?, ?,?,?)`,
+      rid('rf'), o.id, art, del, fee, ('Repaid by the artist outside Stripe: ' + evidence).slice(0, 500), ref, founder, now(), now()),
+    ...(art ? [ledgerSt(env, o.id, 'artwork_refund', -art, ref, 'repaid by the artist outside Stripe')] : []),
+    ...(del ? [ledgerSt(env, o.id, 'delivery_refund', -del, ref, 'repaid by the artist outside Stripe')] : []),
+    st(env, "UPDATE checkout_orders SET needs_resolution = NULL, updated_at = ? WHERE id = ? AND (needs_resolution LIKE '%failed%' OR needs_resolution LIKE '%pending%')", now(), o.id),
+    evSt(env, o.id, founder, 'external_repayment_recorded', o.status, o.status, { art, del, evidence: evidence.slice(0, 300) }),
+  ]);
+  const row = await one(env, 'SELECT * FROM order_refunds WHERE provider_refund_id = ?', ref);
+  if (fee > 0) await feeRefund(env, founder, await getOrder(env, o.id), { fee, reason: 'commission share on an external repayment', refundId: row.id, providerRefund: ref });
+  return settleAfterRefund(env, founder, o.id);
 }
 
 /* ---------------------------------------------------------------- founder: create and edit */
@@ -286,7 +403,9 @@ export async function approveQuote(env, artist, id, b) {
   const c = b.confirm || {};
   const missing = CONFIRM.filter(k => c[k] !== true);
   if (missing.length) throw new Bad(`Please confirm: ${missing.join(', ').replace(/_/g, ' ')}`, 400);
-  if (!(await membership(env, artist.id)).opted_in) throw new Bad('You are no longer in the payment pilot', 409);
+  const memA = await membership(env, artist.id);
+  if (!memA.opted_in) throw new Bad('You are no longer in the payment pilot', 409);
+  requireProcessingConsent(memA, o.commission_bp);
   await workAvailable(env, artist.id, o.artwork_id);
   const conf = JSON.stringify({ ...Object.fromEntries(CONFIRM.map(k => [k, true])), note: String(b.note || '').slice(0, 500) || null });
   const r = await run(env, `UPDATE checkout_orders SET artist_approved_version = ?, artist_approved_at = ?, artist_confirmations = ?, updated_at = ? WHERE id = ? AND status = 'awaiting_artist' AND quote_version = ?`,
@@ -302,7 +421,9 @@ export async function approveQuote(env, artist, id, b) {
    the procedures of a designated person, the pilot refuses any quote that would take this buyer's apparently linked
    orders (same email address, any artist, last 12 months, every order that was paid, refunded or is quoted and payable) to EUR 10,000
    or more, and the founder must confirm before each quote that he knows of no other link (other addresses, household,
-   business, agents, staged payments). That is a refusal rule, not an AML programme. */
+   business, agents, staged payments). This is a LIMITED OPERATIONAL SAFEGUARD: matching on email addresses cannot detect a
+   buyer using other addresses or acting through others, 12 months is a pilot rule rather than a legal definition, and a
+   pass is never confirmation of anti-money-laundering compliance or evidence that no obligation applies. */
 export async function linkedCheck(env, o) {
   const since = new Date(Date.now() - R.LINKED_WINDOW_DAYS * 86400_000).toISOString();
   const rows = await all(env, `SELECT reference, artwork_cents + COALESCE(delivery_cents, 0) AS total FROM checkout_orders
@@ -310,7 +431,7 @@ export async function linkedCheck(env, o) {
       AND (payment_status <> 'none' OR status IN ('quoted', 'checkout_open', 'payment_failed'))`, o.buyer_email, o.id, since);
   const others = rows.reduce((a, r) => a + r.total, 0), total = others + o.artwork_cents + (o.delivery_cents || 0);
   return { ok: total < R.LINKED_THRESHOLD_CENTS, total_cents: total, linked: rows.map(r => r.reference), window_days: R.LINKED_WINDOW_DAYS,
-    reason: total < R.LINKED_THRESHOLD_CENTS ? null : `This buyer's apparently linked purchases reach EUR ${(total / 100).toFixed(2)} (EUR 10,000 or more). That is outside the pilot until PlotArt's anti-money-laundering position is settled.` };
+    reason: total < R.LINKED_THRESHOLD_CENTS ? null : `This buyer's apparently linked purchases reach EUR ${(total / 100).toFixed(2)} (EUR 10,000 or more). That is outside the pilot until PlotArt's anti-money-laundering position is settled by professional advice.` };
 }
 
 /* ---------------------------------------------------------------- founder: issue the buyer's quote */
@@ -323,6 +444,7 @@ export async function issueQuote(env, founder, id, b = {}) {
   const mem = await membership(env, o.artist_id);
   if (!mem.opted_in) throw new Bad('The artist is no longer in the payment pilot', 409);
   if (!mem.ready) throw new Bad('The artist’s Stripe account is not ready to take payments (onboarding incomplete)', 409);
+  requireProcessingConsent(mem, o.commission_bp);
   const add = await currentTerms(env, 'artist_payment_addendum'), bt = await currentTerms(env, 'buyer_purchase_terms');
   if (!bt) throw new Bad('The buyer purchase terms have not been issued yet', 409);
   if (!add || add.doc_id !== mem.addendum) throw new Bad('The artist’s accepted addendum is not the current one: ask them to review the current text', 409);
@@ -344,7 +466,7 @@ export async function issueQuote(env, founder, id, b = {}) {
   const expires = R.quoteExpiry(t, Number.isInteger(b.days) ? b.days : 3);
   await move(env, o, 'quoted', founder, 'quote_issued', { quote_issued_at: t, quote_expires_at: expires, buyer_token_hash: await sha256(token), seller: JSON.stringify(seller),
     addendum_doc_id: add.doc_id, buyer_terms_doc_id: bt.doc_id, provider_account: mem.account.id, entitlement: JSON.stringify(e.evidence),
-    aml_check: JSON.stringify({ at: t, by: founder, founder_confirmed_no_other_link: true, ...lc }) },
+    linked_order_check: JSON.stringify({ at: t, by: founder, founder_confirmed_no_other_link: true, ...lc, note: 'Operational safeguard only. Not an AML assessment and not evidence of AML compliance.' }) },
     { quote_version: o.quote_version, expires, total_cents: money.total_cents, commission_cents: money.commission_cents });
   return { ...(await orderDetail(env, await getOrder(env, id), 'founder')), buyer_link: `${env.CHECKOUT_ORIGIN}/q/${token}`,
     note: 'Send this link to the buyer yourself. It is shown once and is the only way to open this quote.' };
@@ -390,6 +512,7 @@ export async function startCheckout(env, token, b) {
   if (!mem.ready || mem.account.id !== o.provider_account) throw new Bad('The seller cannot take payments at the moment. Please contact hello@plotnua.ie.', 409);
   const add = await currentTerms(env, 'artist_payment_addendum');
   if (!mem.opted_in || !add || add.doc_id !== o.addendum_doc_id) throw new Bad('The seller cannot take payments at the moment. Please contact hello@plotnua.ie.', 409);
+  if (o.commission_bp === 0 && !mem.processing_consent) throw new Bad('The seller cannot take payments through PlotArt at the moment. Please contact hello@plotnua.ie.', 409);
   await workAvailable(env, o.artist_id, o.artwork_id).catch(() => { throw new Bad('Sorry, this artwork is no longer available.', 409); });
   if (!(await linkedCheck(env, o)).ok) throw new Bad('This purchase cannot be completed through the pilot. Please contact hello@plotnua.ie.', 409);
   // an open session for this quote version that still has time left is reused (a double click opens the same checkout)
@@ -713,6 +836,7 @@ export async function refund(env, founder, id, b) {
   // pending: for a card refund Stripe holds it when the artist's AVAILABLE Stripe balance cannot cover it (for example after
   // the payout), until the balance recovers; Stripe fails a pending refund after 45 days. Nothing is booked until it succeeds.
   await event(env, o.id, founder, 'refund_pending_at_provider', 'refund_pending', 'refund_pending', { refund: rr.id, provider_refund: re.id });
+  await notify(env, o, 'refund_pending', `A refund of EUR ${((art + del) / 100).toFixed(2)} on PlotArt order ${o.reference} is waiting because the seller's Stripe balance cannot cover it yet. Stripe cancels it after 45 days if it is still unfunded.\n\n${REFUND_FUNDING_STEPS.join('\n')}`);
   await run(env, 'UPDATE checkout_orders SET needs_resolution = ?, updated_at = ? WHERE id = ?',
     `refund ${re.id} is pending at Stripe (usually the artist's available Stripe balance is too low, e.g. after payout). Ask the artist to top up their Stripe balance; Stripe fails pending refunds after 45 days.`, now(), o.id);
   return orderDetail(env, await getOrder(env, o.id), 'founder');
@@ -736,6 +860,7 @@ async function failRefund(env, rr, re) {
   await run(env, 'UPDATE checkout_orders SET needs_resolution = ?, updated_at = ? WHERE id = ?',
     `refund ${re.id} failed (${re.failure_reason || re.status}): the buyer has NOT been repaid; the artist, as seller, must repay them another way. No commission was returned.`, now(), rr.order_id);
   await event(env, rr.order_id, 'provider', 'refund_failed', null, null, { refund: rr.id, provider_refund: re.id, reason: re.failure_reason || re.status });
+  await notify(env, await getOrder(env, rr.order_id), 'refund_failed', `Stripe could not complete a refund on PlotArt order ${(await getOrder(env, rr.order_id)).reference} (${re.failure_reason || re.status}). The buyer has NOT been repaid. The seller now repays the buyer directly and sends PlotArt the confirmation.`);
 }
 async function feeRefund(env, founder, o, { fee, reason, refundId = null, providerRefund = null }) {
   let feeId = o.application_fee_id;
@@ -832,30 +957,103 @@ export async function sweep(env) {
   for (const o of await all(env, `SELECT * FROM checkout_orders WHERE status IN ('quoted','payment_failed') AND quote_expires_at <= ?`, t)) {
     try { await move(env, o, 'expired', 'scheduler', 'quote_expired'); expired++; } catch { /* moved meanwhile */ }
   }
-  return { reservations_released: released.meta.changes, quotes_expired: expired, ...(await retention(env)) };
+  let refunds = null;
+  try { refunds = await pollPendingRefunds(env); } catch (e) { refunds = { error: String(e.message || e).slice(0, 120) }; }
+  return { reservations_released: released.meta.changes, quotes_expired: expired, ...refunds, ...(await retention(env)) };
 }
 
-/* Retention (spec "Order records"). Order, ledger, refund, session, event and fulfilment records are kept for SIX years
-   after an order that moved money ends (closed or fully refunded, nothing outstanding), for accounting and to establish or
-   defend claims; an order that never moved money (cancelled or expired, unpaid) for TWO years. They do not depend on the
-   artist's or artwork's rows: amounts, the seller and artwork as quoted, the entitlement evidence and the Stripe ids are
-   all snapshotted on the order, so refunds and reconciliation keep working after the artist's own records are deleted. */
-export const RETAIN_PAID_YEARS = 6, RETAIN_UNPAID_YEARS = 2;
+/* Retention (spec "Records and retention"). Each period has a stated basis and a fixed start; nothing is ever deleted
+   while a legal hold is active, and holds — not retention dates — are how records are kept longer for a specific reason.
+     · An order that moved money (paid, refunded, disputed): kept until 31 December of the SIXTH year after the year of its
+       last money movement (payment, refund, commission refund, dispute). Basis: Irish tax record-keeping (records kept six
+       years; PA-GAA cl. 18.3 makes the same commitment for commission records) and the six-year limitation period for
+       contract claims. Starting from the end of the year covers both "six years from the transaction" and "six years after
+       the end of the period" readings.
+     · An order that never moved money (draft, cancelled, expired): two years after it ended, for questions and
+       complaints about the quote — the same as PlotArt enquiry records (24 months, privacy notice).
+     · Provider events linked to an order go with that order; events linked to no order: 90 days (operations only).
+   The date is fixed once set: it cannot be shortened or extended. Deletion is done by the sweep, order by order, in one
+   transaction, and only for orders with no open issue, no pending refund and no active hold. Database backups follow
+   their own (shorter) rotation, so deleted rows leave the backups as they age out. */
+export const RETAIN_PAID_YEARS = 6, RETAIN_UNPAID_YEARS = 2, RETAIN_UNLINKED_EVENT_DAYS = 90;
 const plusYears = (iso, y) => { const d = new Date(iso); d.setUTCFullYear(d.getUTCFullYear() + y); return d.toISOString(); };
+export function retentionDate({ moneyMoved, lastMoneyAt, endedAt }) {
+  if (moneyMoved) return `${new Date(lastMoneyAt).getUTCFullYear() + RETAIN_PAID_YEARS}-12-31T23:59:59.000Z`;
+  return plusYears(endedAt, RETAIN_UNPAID_YEARS);
+}
 export async function retention(env, at = now()) {
-  let scheduled = 0, purged = 0;
+  let scheduled = 0, purged = 0, held = 0;
   for (const o of await all(env, `SELECT id, status, payment_status, updated_at FROM checkout_orders WHERE retain_until IS NULL AND needs_resolution IS NULL
       AND (status IN ('closed', 'refunded') OR (status IN ('cancelled', 'expired') AND payment_status = 'none'))
       AND NOT EXISTS (SELECT 1 FROM order_refunds r WHERE r.order_id = checkout_orders.id AND r.status = 'pending')`)) {
-    await run(env, 'UPDATE checkout_orders SET retain_until = ? WHERE id = ? AND retain_until IS NULL', plusYears(o.updated_at, o.payment_status === 'none' ? RETAIN_UNPAID_YEARS : RETAIN_PAID_YEARS), o.id);
+    const last = await one(env, 'SELECT MAX(at) AS at FROM order_ledger WHERE order_id = ?', o.id);
+    const moneyMoved = !!(last && last.at);
+    await run(env, 'UPDATE checkout_orders SET retain_until = ? WHERE id = ? AND retain_until IS NULL',
+      retentionDate({ moneyMoved, lastMoneyAt: moneyMoved ? (last.at > o.updated_at ? last.at : o.updated_at) : null, endedAt: o.updated_at }), o.id);
     scheduled++;
   }
   for (const o of await all(env, 'SELECT id FROM checkout_orders WHERE retain_until IS NOT NULL AND retain_until <= ?', at)) {
-    await env.DB.batch(['order_events', 'order_fulfilment_events', 'order_refunds', 'order_ledger', 'checkout_sessions', 'artwork_reservations', 'artwork_sales']
-      .map(t => st(env, `DELETE FROM ${t} WHERE order_id = ?`, o.id)).concat([st(env, 'UPDATE payment_events SET order_id = NULL WHERE order_id = ?', o.id), st(env, 'DELETE FROM checkout_orders WHERE id = ?', o.id)]));
+    if (await one(env, 'SELECT 1 AS x FROM checkout_holds WHERE order_id = ? AND released_at IS NULL', o.id)) { held++; continue; }
+    await env.DB.batch(['order_events', 'order_fulfilment_events', 'order_refunds', 'order_ledger', 'checkout_sessions', 'artwork_reservations', 'artwork_sales', 'payment_events', 'checkout_hold_events', 'checkout_holds']
+      .map(t => st(env, `DELETE FROM ${t} WHERE order_id = ?`, o.id)).concat([st(env, 'DELETE FROM checkout_orders WHERE id = ?', o.id)]));
     purged++;
   }
-  // provider event log: ids and types only, kept 6 years
-  await run(env, 'DELETE FROM payment_events WHERE order_id IS NULL AND received_at <= ?', plusYears(at, -RETAIN_PAID_YEARS));
-  return { orders_scheduled_for_deletion: scheduled, orders_deleted: purged };
+  await run(env, 'DELETE FROM payment_events WHERE order_id IS NULL AND received_at <= ?', new Date(Date.parse(at) - RETAIN_UNLINKED_EVENT_DAYS * 86400_000).toISOString());
+  // an artist's opt-in/consent records and Stripe account link: six years after they left the pilot, once none of their orders is kept
+  let artists = 0;
+  for (const a of await all(env, `SELECT e.artist_id FROM payment_pilot_events e WHERE e.kind = 'left' AND e.at <= ?
+      AND e.at = (SELECT MAX(x.at) FROM payment_pilot_events x WHERE x.artist_id = e.artist_id AND x.kind IN ('opted_in', 'left'))
+      AND NOT EXISTS (SELECT 1 FROM checkout_orders o WHERE o.artist_id = e.artist_id)`, plusYears(at, -RETAIN_PAID_YEARS))) {
+    await env.DB.batch([st(env, 'DELETE FROM payment_pilot_events WHERE artist_id = ?', a.artist_id), st(env, 'DELETE FROM payment_accounts WHERE artist_id = ?', a.artist_id)]);
+    artists++;
+  }
+  return { orders_scheduled_for_deletion: scheduled, orders_deleted: purged, deletion_held: held, artist_pilot_records_deleted: artists };
+}
+
+/* ---------------------------------------------------------------- legal holds
+   A hold keeps one order's records past its retention date for a stated reason (dispute, claim, Revenue enquiry or
+   investigation, litigation, a data-subject request being handled). Every hold has a review date no more than 12 months
+   ahead. At review the founder either releases it (with a reason) or renews it to a new review date (with a reason);
+   overdue reviews are flagged and nothing is renewed or released automatically. Once released, the ordinary retention
+   date applies again, so records past it are deleted at the next sweep. Every placement, review and release is recorded. */
+export const HOLD_BASES = ['dispute', 'claim', 'revenue_enquiry', 'investigation', 'litigation', 'data_subject_request', 'other'];
+const MAX_REVIEW_DAYS = 366;
+function reviewDate(v) {
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(String(v || ''))) throw new Bad('Give a review date (YYYY-MM-DD)');
+  const t = Date.parse(v + 'T00:00:00Z');
+  if (t <= Date.now() || t > Date.now() + MAX_REVIEW_DAYS * 86400_000) throw new Bad('A review date must be in the next 12 months');
+  return v;
+}
+export async function placeHold(env, founder, orderId, b) {
+  await requireInstalled(env);
+  if (!(await getOrder(env, orderId))) throw new Bad('Not found', 404);
+  if (!HOLD_BASES.includes(b.basis)) throw new Bad('Choose the basis for the hold');
+  const reason = String(b.reason || '').trim();
+  if (reason.length < 10 || reason.length > 1000) throw new Bad('Give the specific reason for the hold (10–1,000 characters)');
+  const id = rid('h'), t = now(), rv = reviewDate(b.review_by);
+  await env.DB.batch([
+    st(env, 'INSERT INTO checkout_holds (id, order_id, basis, reason, placed_by, placed_at, review_by) VALUES (?,?,?,?,?,?,?)', id, orderId, b.basis, reason, founder, t, rv),
+    st(env, "INSERT INTO checkout_hold_events (id, hold_id, order_id, kind, actor, at, note, review_by) VALUES (?,?,?, 'placed', ?,?,?,?)", rid('he'), id, orderId, founder, t, reason, rv)]);
+  return { hold: await one(env, 'SELECT * FROM checkout_holds WHERE id = ?', id) };
+}
+export async function reviewHold(env, founder, holdId, b) {
+  await requireInstalled(env);
+  const h = await one(env, 'SELECT * FROM checkout_holds WHERE id = ? AND released_at IS NULL', holdId);
+  if (!h) throw new Bad('No active hold', 404);
+  const note = String(b.note || '').trim(), t = now();
+  if (note.length < 10) throw new Bad('Record why (10 characters or more)');
+  if (b.decision === 'release') {
+    await env.DB.batch([st(env, 'UPDATE checkout_holds SET released_at = ?, released_by = ?, release_reason = ? WHERE id = ? AND released_at IS NULL', t, founder, note, holdId),
+      st(env, "INSERT INTO checkout_hold_events (id, hold_id, order_id, kind, actor, at, note) VALUES (?,?,?, 'released', ?,?,?)", rid('he'), holdId, h.order_id, founder, t, note)]);
+  } else if (b.decision === 'renew') {
+    const rv = reviewDate(b.review_by);
+    await env.DB.batch([st(env, 'UPDATE checkout_holds SET review_by = ? WHERE id = ? AND released_at IS NULL', rv, holdId),
+      st(env, "INSERT INTO checkout_hold_events (id, hold_id, order_id, kind, actor, at, note, review_by) VALUES (?,?,?, 'renewed', ?,?,?,?)", rid('he'), holdId, h.order_id, founder, t, note, rv)]);
+  } else throw new Bad('Choose release or renew');
+  return { hold: await one(env, 'SELECT * FROM checkout_holds WHERE id = ?', holdId), history: await all(env, 'SELECT kind, actor, at, note, review_by FROM checkout_hold_events WHERE hold_id = ? ORDER BY at, rowid', holdId) };
+}
+async function holdsView(env) {
+  const today = now().slice(0, 10);
+  return (await all(env, `SELECT h.*, o.reference, o.retain_until FROM checkout_holds h JOIN checkout_orders o ON o.id = h.order_id WHERE h.released_at IS NULL ORDER BY h.review_by`))
+    .map(h => ({ ...h, review_overdue: h.review_by < today, past_retention: !!h.retain_until && h.retain_until <= now() }));
 }

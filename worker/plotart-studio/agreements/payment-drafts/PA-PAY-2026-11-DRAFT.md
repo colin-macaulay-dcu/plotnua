@@ -1,10 +1,12 @@
-# PlotArt Payment Pilot Addendum — PA-PAY-2026-11 (DRAFT r2, 16 November 2026)
+# PlotArt Payment Pilot Addendum — PA-PAY-2026-11 (DRAFT r3, 16 November 2026)
 
 **Status: draft for founder review. Not issued. Not accepted by any artist. Not installed in PlotArt Studio.**
 It can be accepted only after Colin approves the text, it is issued as fingerprinted HTML in
 `agreements/payment-issued/`, and an approved migration installs it in `payment_terms`.
 
-r2 changes: card-fee examples and refund/dispute costs added (cl. 3, 7); confirmed transit insurance required for every
+r3 changes: separate consent for the processing charge on commission-free orders, with direct payment kept as the
+normal route (cl. 3.6); how to fund a refund after payout and the escalation timeline (cl. 7.3); retention periods with
+their start dates and legal holds (cl. 8.1). r2 changes: card-fee examples and refund/dispute costs added (cl. 3, 7); confirmed transit insurance required for every
 shipment (cl. 6); refunds when the Stripe balance is too low (cl. 7.3); who carries which loss separated from what the
 artist owes the buyer (cl. 7.6–7.7); value limit and linked purchases explained without any claim about legal effect (cl. 1.4).
 
@@ -46,8 +48,9 @@ Stripe application fee.
 3.3 **Stripe's processing fees are separate from PlotArt's commission.** Stripe charges them to the artist's Stripe
 account on every payment, including commission-free ones, on the whole amount the buyer pays (artwork and delivery).
 They are Stripe's fees, not PlotArt's, so they are not part of the 15% and do not count towards the "at least 85%" in
-PA-GAA cl. 5.2, which concerns PlotArt's commission only. [Founder decision D1: confirm the artist bears these fees;
-alternative — PlotArt bears them, at least on commission-free orders.]
+PA-GAA cl. 5.2, which concerns PlotArt's commission only. [Founder decision D1: confirm the artist bears these fees, or
+adopt the assessed alternative in which an accepted commission is the artist's total deduction and PlotArt absorbs
+Stripe's fee out of that commission (spec, "Fee model assessment"). Not adopted.]
 3.4 **Examples** (illustration only; EUR 1,000 artwork + EUR 75 delivery and insurance = EUR 1,075; Stripe's published
 standard pricing for EEA businesses at the time of writing — standard EEA cards 1.5% + €0.25, premium EEA cards
 1.9% + €0.25, UK cards 2.5% + €0.25, international cards 3.25% + €0.25 — to be re-checked when issued):
@@ -64,6 +67,12 @@ standard pricing for EEA businesses at the time of writing — standard EEA card
 With a premium EEA card the Stripe fee is €20.68; a UK card €27.13; an international card €35.19.
 3.5 The artist remains responsible for any VAT or other tax on the sale of the artwork, and for their own invoice or
 receipt to the buyer where required.
+3.6 **Commission-free orders and direct payment.** Where PlotArt takes no commission on an order (every Founding
+Enquiry, and Founding Artists without separately accepted commission terms), Stripe's processing fees would be the only
+deduction. Selling directly, with the buyer paying the artist and no deduction at all, remains the artist's normal route.
+Such an order can be paid through the pilot only if the artist has given a separate, explicit consent to the processing
+charge in PlotArt Studio. That consent is not part of accepting this addendum, can be withdrawn at any time, and
+withdrawing it cancels any unpaid commission-free quote.
 
 ## 4. Quotes, approval and reservation
 4.1 PlotArt prepares a quote showing the seller, the artwork, its price, every delivery charge, the delivery and
@@ -101,9 +110,13 @@ processing fee on the original payment when a payment is refunded. A dispute (ch
 fee (published at €20 per dispute on Stripe's EEA pricing pages at the time of writing), charged to the artist's Stripe
 account.
 7.3 **If the artist has already been paid out and their Stripe balance is too low**, Stripe holds a card refund as
-pending until the balance can cover it, may debit the artist's bank account where Stripe's terms allow, and fails the
-refund if it is still pending after 45 days. PlotArt will tell the artist and the buyer. The artist remains responsible
-for repaying the buyer, by topping up their Stripe balance or otherwise.
+pending until the balance can cover it, may debit the artist's bank account where Stripe's terms allow, and cancels the
+refund if it is still pending after 45 days. PlotArt tells the artist and the buyer the same day. The artist funds the
+refund in one of these ways: (a) let Stripe complete it from new sales or by debiting the linked bank account; (b) add
+funds to their Stripe balance (Stripe Dashboard → Balances → Add to balance, by bank transfer), which releases the refund
+when the funds arrive; or (c) only after Stripe has cancelled the refund, repay the buyer directly and send PlotArt the
+confirmation. The artist must not repay the buyer outside Stripe while a Stripe refund is still pending. PlotArt
+reminds the artist after 7 days and escalates after 30 days. The artist remains responsible for repaying the buyer.
 7.4 PlotArt returns its commission exactly as the artist's agreement requires, once the buyer's refund has actually
 succeeded: in full for a full refund or a lost dispute, and in proportion to the artwork amount kept for a partial
 refund (PA-GAA-2026-11 cl. 9). Refunds of delivery charges do not change commission.
@@ -118,9 +131,12 @@ the platform that introduced the sale and prepared the quote (for example, givin
 seller and the charges); they are not the seller's.
 
 ## 8. Records and data
-8.1 PlotArt keeps the order record, quote versions, approvals, payment events, ledger, refunds and delivery evidence for
-six years after an order that moved money ends (two years for an order that was never paid), for its accounting and
-legal obligations, then deletes them. These records are kept separately from the artist's gallery records, so they
+8.1 PlotArt keeps the order record, quote versions, approvals, payment events, ledger, refunds and delivery evidence of
+an order that moved money until 31 December of the sixth year after its last payment or refund (tax record-keeping and
+the limitation period for contract claims), and those of an order that was never paid for two years after it ended;
+then deletes them. Opt-in and consent records are kept for six years after the artist leaves the pilot. Records are kept
+longer only under a legal hold for a stated reason (for example a dispute, claim or Revenue enquiry), reviewed at least
+every 12 months and released when no longer needed. These records are kept separately from the artist's gallery records, so they
 remain available for refunds and reconciliation even after the artist leaves PlotArt.
 8.2 PlotArt shares with Stripe only what is needed to create the artist's account and the checkout (the artist's
 Studio email address and country; the buyer's email address). The buyer's details are shared with the artist only as

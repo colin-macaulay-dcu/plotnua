@@ -76,6 +76,7 @@ export const getSession = (env, { account, id }) => call(env, 'GET', `/v1/checko
 export const getPaymentIntent = (env, { account, id }) => call(env, 'GET', `/v1/payment_intents/${encodeURIComponent(id)}`, { account, query: '?expand[]=latest_charge' });
 export const refund = (env, { account, paymentIntent, amount, idem, metadata }) =>
   call(env, 'POST', '/v1/refunds', { account, idem, body: { payment_intent: paymentIntent, amount, refund_application_fee: 'false', metadata } });
+export const getRefund = (env, { account, id }) => call(env, 'GET', `/v1/refunds/${encodeURIComponent(id)}`, { account });
 export const refundFee = (env, { fee, amount, idem, metadata }) => call(env, 'POST', `/v1/application_fees/${encodeURIComponent(fee)}/refunds`, { idem, body: { amount, metadata } });
 
 /* Webhook signature (Stripe-Signature: t=..., v1=...). HMAC-SHA256 over `${t}.${rawBody}` with the endpoint secret;

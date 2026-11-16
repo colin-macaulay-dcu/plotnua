@@ -39,7 +39,7 @@ export async function start({ port, env = {}, enquiry = null, ideas = null, gard
     bindings: { ENVIRONMENT: 'local', ORIGIN: 'https://plotnua.ie', IDEAS_ENABLED: 'true', ...ideas } });   // Idea Board intake (1 Nov 2026)
   if (garden) workers.push({ name: 'garden', routes: ['garden.local/*', '*/v1/garden-listings'], ...common, scriptPath: HERE + 'src/garden.js', d1Databases: { DB: 'plotart-studio-local' },
     bindings: { ENVIRONMENT: 'local', ORIGIN: 'https://plotnua.ie', GARDEN_ENABLED: 'true', ...garden } });   // Borrowed Garden noticeboard intake (4 Nov 2026)
-  if (checkout) workers.push({ name: 'checkout', routes: ['checkout.local/*'], ...common, scriptPath: HERE + (checkout.script || 'src/checkout-public.js'), d1Databases: { DB: 'plotart-studio-local' },
+  if (checkout) workers.push({ name: 'checkout', routes: ['checkout.local/*', '*/v1/stripe/webhook', '*/v1/status'], ...common, scriptPath: HERE + (checkout.script || 'src/checkout-public.js'), d1Databases: { DB: 'plotart-studio-local' },
     bindings: { ENVIRONMENT: 'local', ...checkout.env }, ...(outbound ? { outboundService: outbound } : {}) });   // managed checkout pilot (16 Nov 2026)
   const mf = new Miniflare({ workers, ...(port ? { port, host: '127.0.0.1' } : {}), ...(persist ? { d1Persist: persist } : {}) });
   const db = await mf.getD1Database('DB', 'studio');

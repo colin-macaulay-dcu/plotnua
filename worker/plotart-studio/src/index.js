@@ -1290,6 +1290,7 @@ async function route(req, env) {
       if (p === '/api/admin/checkout' && m === 'GET') return json({ ok: true, ...(await CO.adminView(env)) });
       if (!(await CO.installed(env))) return json({ ok: false, error: 'The payment pilot is not installed' }, 409);
       if (p === '/api/admin/checkout/orders' && m === 'POST') return json({ ok: true, ...(await CO.createOrder(env, me.email, await req.json())) });
+      if ((mm = p.match(/^\/api\/admin\/checkout\/holds\/(h[0-9a-z]+)$/)) && m === 'POST') return json({ ok: true, ...(await CO.reviewHold(env, me.email, mm[1], await req.json())) });
       if ((mm = p.match(/^\/api\/admin\/checkout\/accounts\/([0-9a-z]+)\/refresh$/)) && m === 'POST') return json({ ok: true, ...(await CO.refreshAccount(env, mm[1])) });
       if ((mm = p.match(/^\/api\/admin\/checkout\/orders\/(o[0-9a-z]+)(?:\/([a-z]+))?$/))) {
         const o = await CO.getOrder(env, mm[1]);
@@ -1305,6 +1306,8 @@ async function route(req, env) {
           case 'reconcile': return json({ ok: true, ...(await CO.reconcile(env, me.email, o.id)) });
           case 'fulfilment': return json({ ok: true, ...(await CO.fulfilment(env, me.email, 'founder', o, b)) });
           case 'close': return json({ ok: true, ...(await CO.closeOrder(env, me.email, o.id)) });
+          case 'hold': return json({ ok: true, ...(await CO.placeHold(env, me.email, o.id, b)) });
+          case 'repaid': return json({ ok: true, ...(await CO.recordExternalRepayment(env, me.email, o.id, b)) });
         }
       }
       return json({ ok: false }, 404);
@@ -1613,6 +1616,8 @@ async function route(req, env) {
     const b = m === 'GET' ? null : await req.json().catch(() => ({}));
     if (p === '/api/checkout/opt-in' && m === 'POST') return json({ ok: true, ...(await CO.optIn(env, artist, b)) });
     if (p === '/api/checkout/leave' && m === 'POST') return json({ ok: true, ...(await CO.leave(env, artist)) });
+    if (p === '/api/checkout/processing-consent' && m === 'POST') return json({ ok: true, ...(await CO.processingConsent(env, artist, b)) });
+    if (p === '/api/checkout/processing-consent/withdraw' && m === 'POST') return json({ ok: true, ...(await CO.withdrawProcessingConsent(env, artist)) });
     if (p === '/api/checkout/onboarding' && m === 'POST') return json({ ok: true, ...(await CO.onboarding(env, artist, url.origin, b)) });
     if (p === '/api/checkout/account/refresh' && m === 'POST') return json({ ok: true, ...(await CO.refreshAccount(env, artist.id)) });
     if ((mm = p.match(/^\/api\/checkout\/orders\/(o[0-9a-z]+)(?:\/([a-z]+))?$/))) {

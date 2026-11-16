@@ -1,0 +1,89 @@
+# PlotArt · managed checkout pilot · REAL Stripe TEST-MODE checks (prepared 16 Nov 2026).
+# Runs the documented checks against Stripe's test API from GitHub's runner, so the Stripe test key stays in GitHub (the
+# "checkout-test" environment) and never passes through chat or files. Nothing is deployed and no production system,
+# database or secret is touched: the pilot's Workers run inside the job (Miniflare, throwaway local database).
+#
+# Triggered by a change to worker/plotart-studio/test/stripe-test-run.json on the pilot branch (or manually once the
+# workflow exists on main). Every run waits for the founder's Approve on the checkout-test environment.
+# Evidence (JSON + Markdown, no secrets) is uploaded as an artifact and shown in the run summary.
+name: PlotArt checkout pilot Stripe test-mode checks
+run-name: "Stripe test-mode checks (${{ github.ref_name }})"
+
+on:
+  push:
+    branches: [plotart/managed-checkout-pilot]
+    paths: [worker/plotart-studio/test/stripe-test-run.json]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: plotart-checkout-stripe-test
+  cancel-in-progress: false
+
+jobs:
+  stripe-test:
+    runs-on: ubuntu-latest
+    environment: checkout-test
+    timeout-minutes: 40
+    env:
+      MINIFLARE_FROM: /tmp/claude-0/studio-tools/package.json
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Stripe credential is a TEST key (value never printed)
+        env:
+          STRIPE_SECRET_KEY: ${{ secrets.CHECKOUT_TEST_STRIPE_SECRET_KEY }}
+        run: |
+          [[ "${STRIPE_SECRET_KEY:-}" =~ ^(sk|rk)_test_[A-Za-z0-9]+$ ]] && echo "PASS  Stripe TEST key present" || { echo "FAIL  CHECKOUT_TEST_STRIPE_SECRET_KEY missing or not a TEST key"; exit 1; }
+      - name: Tools (Miniflare, Playwright Chromium, Stripe CLI)
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/claude-0/studio-tools && cd /tmp/claude-0/studio-tools && npm init -y > /dev/null && npm i --silent miniflare@3 playwright@1 > /dev/null
+          npx --prefix /tmp/claude-0/studio-tools playwright install --with-deps chromium > /dev/null
+          gh release download --repo stripe/stripe-cli --pattern '*linux_x86_64.tar.gz' -D /tmp/stripe-cli
+          tar -xzf /tmp/stripe-cli/*.tar.gz -C /tmp/stripe-cli && /tmp/stripe-cli/stripe version
+      - name: Build the Workers with the TEST ONLY texts
+        working-directory: worker/plotart-studio
+        env:
+          CHECKOUT_TARGET: test
+          PAYMENT_TERMS_DIR: agreements/payment-test
+        run: node build-assets.mjs
+      - name: Run the checks (provider, then end-to-end with real signed webhooks)
+        working-directory: worker/plotart-studio
+        env:
+          STRIPE_SECRET_KEY: ${{ secrets.CHECKOUT_TEST_STRIPE_SECRET_KEY }}
+          CHECKOUT_TEST_ACCOUNT: ${{ vars.CHECKOUT_TEST_CONNECTED_ACCOUNT }}
+          CHECKOUT_E2E_PORT: "8899"
+        run: |
+          set -uo pipefail
+          PHASES=$(node -e 'console.log((JSON.parse(require("fs").readFileSync("test/stripe-test-run.json","utf8")).phases||["provider"]).join(" "))')
+          if [ -n "${CHECKOUT_TEST_ACCOUNT:-}" ] && [[ " $PHASES " == *" e2e "* ]]; then
+            WHSEC=$(/tmp/stripe-cli/stripe listen --api-key "$STRIPE_SECRET_KEY" --print-secret 2>/dev/null)
+            echo "::add-mask::$WHSEC"
+            /tmp/stripe-cli/stripe listen --api-key "$STRIPE_SECRET_KEY" --skip-verify \
+              --forward-connect-to "http://127.0.0.1:${CHECKOUT_E2E_PORT}/v1/stripe/webhook" \
+              --events checkout.session.completed,checkout.session.async_payment_succeeded,checkout.session.async_payment_failed,checkout.session.expired,charge.refunded,refund.updated,refund.failed,charge.dispute.created,charge.dispute.updated,charge.dispute.closed,account.updated \
+              > "$RUNNER_TEMP/listen.log" 2>&1 &
+            sleep 8
+            export STRIPE_WEBHOOK_SECRET="$WHSEC"
+          fi
+          node test/stripe-testmode-checks.mjs $PHASES; code=$?
+          cat stripe-test-evidence/evidence.md >> "$GITHUB_STEP_SUMMARY"
+          if [ -f stripe-test-evidence/onboarding-link.txt ]; then { echo; echo '### Next step'; echo '```'; cat stripe-test-evidence/onboarding-link.txt; echo '```'; } >> "$GITHUB_STEP_SUMMARY"; fi
+          [ -f "$RUNNER_TEMP/listen.log" ] && grep -oE "(-->|<--) [a-z._]+ \[evt_[A-Za-z0-9]+\]|\[[0-9]{3}\]" "$RUNNER_TEMP/listen.log" | tail -60 > stripe-test-evidence/webhook-deliveries.txt || true
+          exit $code
+      - name: Evidence artifact (no secrets)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: stripe-test-evidence
+          path: worker/plotart-studio/stripe-test-evidence/
+          retention-days: 30

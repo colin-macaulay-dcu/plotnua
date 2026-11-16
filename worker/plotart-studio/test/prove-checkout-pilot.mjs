@@ -58,6 +58,7 @@ async function stripe(req) {
   }
   if ((mm = u.pathname.match(/^\/v1\/checkout\/sessions\/(cs_test_\w+)$/))) return M.sessions[mm[1]] ? ok(M.sessions[mm[1]]) : err('no such session', 404);
   if ((mm = u.pathname.match(/^\/v1\/payment_intents\/(pi_test_\w+)$/))) { const p = M.pis[mm[1]]; return p ? ok({ ...p, latest_charge: { id: p.charge, application_fee: p.fee } }) : err('no such pi', 404); }
+  if ((mm = u.pathname.match(/^\/v1\/refunds\/(re_test_\w+)$/)) && req.method === 'GET') { const r = M.refunds.find(x => x.id === mm[1]); return r ? ok(r) : err('no such refund', 404); }
   if (u.pathname === '/v1/refunds') { const st = M.nextRefundStatus || 'succeeded'; M.nextRefundStatus = null;
     const r = { id: nid('re'), object: 'refund', status: st, amount: Number(f.amount), payment_intent: f.payment_intent, livemode: false, metadata: { plotart_refund: f['metadata[plotart_refund]'], plotart_order: f['metadata[plotart_order]'] }, _f: f, _acct: acct }; M.refunds.push(r); return remember(r); }
   if ((mm = u.pathname.match(/^\/v1\/application_fees\/(fee_test_\w+)\/refunds$/))) { const r = { id: nid('fr'), object: 'fee_refund', amount: Number(f.amount), fee: mm[1], livemode: false }; M.feeRefunds.push(r); return remember(r); }
@@ -78,7 +79,7 @@ let S;
 try {
 console.log('PROVE · managed checkout pilot');
 const ORIGIN = 'https://checkout.local';
-const ENVV = { PARTICIPATION_DELETION: 'on', CHECKOUT_PILOT_ENABLED: 'true', STRIPE_SECRET_KEY: 'sk_test_mockkey123', STRIPE_WEBHOOK_SECRET: WHSEC, STRIPE_API_BASE: 'https://stripe.mock', CHECKOUT_ORIGIN: ORIGIN };
+const ENVV = { CHECKOUT_NOTIFY_EMAIL: 'founder-notify@plotnua.invalid', PARTICIPATION_DELETION: 'on', CHECKOUT_PILOT_ENABLED: 'true', STRIPE_SECRET_KEY: 'sk_test_mockkey123', STRIPE_WEBHOOK_SECRET: WHSEC, STRIPE_API_BASE: 'https://stripe.mock', CHECKOUT_ORIGIN: ORIGIN };
 S = await start({ port: 8871, env: ENVV, script: FIX + 'src/index.js', checkout: { script: FIX + 'src/checkout-public.js', env: ENVV }, outbound: stripe });
 const { db } = S, CW = S.checkoutWorker;
 const call = async (method, path, email, body) => { const r = await S.mf.dispatchFetch(S.url + path, { method, headers: { ...(email ? { 'Cf-Access-Jwt-Assertion': token(email) } : {}), 'X-Studio': '1', 'Content-Type': 'application/json' }, body: body === undefined ? undefined : JSON.stringify(body) });
@@ -165,6 +166,23 @@ check('T2 an enquiry from the founding year, completed 400 days later: 0% commis
 const oo = await makeOrder('aold', 'waold1', 'PA-E-261103-DDDDDD');
 r = await call('POST', `/api/admin/checkout/orders/${oo.id}/send`, FOUNDER, {});
 check('T3 a Founding Artist after the founding year with no accepted commission terms: 15% is NEVER inferred (0%)', r.s === 200 && r.j.order.commission_bp === 0 && r.j.order.commission_basis === 'founding_artist_no_commission_terms', r.j);
+console.log('— separate consent to the processing charge on commission-free orders (Founding Artists keep direct payment)');
+let rpc = await call('GET', '/api/checkout', FND);
+check('PC0 a Founding Artist is told direct payment stays their normal route, and is not asked to consent by joining', /normal route/.test(rpc.j.direct_payment_note) && rpc.j.membership.processing_consent === false);
+rpc = await call('POST', `/api/checkout/orders/${of.id}/approve`, FND, { quote_version: (await order(of.id)).quote_version, confirm: { available: true, location: true, condition: true, framing: true, dimensions: true, packing_and_handover: true } });
+check('PC1 a commission-free order cannot be approved without the separate processing-charge consent', rpc.s === 409 && /separate consent/.test(rpc.j.error), rpc.j);
+rpc = await call('POST', '/api/checkout/processing-consent', FND, { accept: true, statement: 'something else' });
+check('PC2 the consent must be to the exact statement shown', rpc.s === 400);
+const PSTAT = (await call('GET', '/api/checkout', FND)).j.processing_statement;
+for (const e of [FND, OLD]) rpc = await call('POST', '/api/checkout/processing-consent', e, { accept: true, statement: PSTAT });
+check('PC3 consent is recorded separately from the addendum acceptance, with its statement', rpc.s === 200 && rpc.j.membership.processing_consent === true
+  && (await q("SELECT * FROM payment_pilot_events WHERE kind='processing_consent'")).length === 2 && (await q("SELECT * FROM payment_pilot_events WHERE kind='processing_consent' AND doc_id IS NOT NULL")).length === 0);
+const ALLC = { available: true, location: true, condition: true, framing: true, dimensions: true, packing_and_handover: true };
+rpc = await call('POST', `/api/checkout/orders/${of.id}/approve`, FND, { quote_version: (await order(of.id)).quote_version, confirm: ALLC });
+check('PC4 with consent the commission-free order can be approved', rpc.s === 200, rpc.j);
+rpc = await call('POST', '/api/checkout/processing-consent/withdraw', FND, {});
+check('PC5 withdrawing consent cancels the artist’s unpaid commission-free quotes', rpc.s === 200 && rpc.j.cancelled.includes((await order(of.id)).reference) && (await order(of.id)).status === 'cancelled' && !rpc.j.membership.processing_consent);
+check('PC6 a Gallery Artist on 15% is never asked for this consent', !(await q("SELECT * FROM payment_pilot_events WHERE artist_id='agal' AND kind LIKE 'processing%'")).length);
 const ou = await makeOrder('aunk', 'waunk1', 'PA-E-261104-EEEEEE');
 r = await call('POST', `/api/admin/checkout/orders/${ou.id}/send`, FOUNDER, {});
 check('T4a a non-founding artist without accepted commission terms: entitlement unknown, blocked', r.s === 409 && /unknown/i.test(r.j.error), r.j);
@@ -273,7 +291,7 @@ const ok1 = await makeOrder('agal', 'wagal5', 'PA-E-261102-BBBBBB', 600000, 0, '
 const ok2 = await makeOrder('agal', 'wagal6', 'PA-E-261105-FFFFFF', 450000, 0, 'BIG@Example.test', { ...DELIVERY, covered_value_cents: 450000 });
 for (const x of [ok1, ok2]) { await call('POST', `/api/admin/checkout/orders/${x.id}/send`, FOUNDER, {}); await call('POST', `/api/checkout/orders/${x.id}/approve`, GAL, { quote_version: (await order(x.id)).quote_version, confirm: ALL }); }
 r = await call('POST', `/api/admin/checkout/orders/${ok1.id}/issue`, FOUNDER, { days: 2, linked_check_confirmed: true });
-check('K2 a single EUR 6,000 order is quoted, with the linked-purchase check recorded', r.s === 200 && JSON.parse((await order(ok1.id)).aml_check).founder_confirmed_no_other_link === true, r.j);
+check('K2 a single EUR 6,000 order is quoted, with the linked-purchase check recorded', r.s === 200 && JSON.parse((await order(ok1.id)).linked_order_check).founder_confirmed_no_other_link === true && /not an AML assessment/i.test((await order(ok1.id)).linked_order_check), r.j);
 const TK1 = r.j.buyer_link.split('/q/')[1];
 r = await call('POST', `/api/admin/checkout/orders/${ok2.id}/issue`, FOUNDER, { days: 2, linked_check_confirmed: true });
 check('K3 a second order by the same buyer (any letter case) taking the total to EUR 10,500 is refused', r.s === 409 && /10,000/.test(r.j.error) && /10500\.00/.test(r.j.error), r.j);
@@ -354,6 +372,11 @@ check('R1 a refund pending at Stripe books nothing and returns no commission yet
   !(await q("SELECT * FROM order_ledger WHERE order_id = ? AND kind = 'artwork_refund'", o1.id)).length && M.feeRefunds.length === fees && /pending at Stripe/.test((await order(o1.id)).needs_resolution));
 r = await call('POST', `/api/admin/checkout/orders/${o1.id}/refund`, FOUNDER, { artwork_cents: 50001, delivery_cents: 0, reason: 'too much' });
 check('R2 a pending refund counts against what can still be refunded', r.s === 409);
+check('R1b the artist and the founder are told at once, with the funding steps', (await q("SELECT * FROM order_events WHERE order_id = ? AND action = 'notified_refund_pending'", o1.id)).length === 1
+  && (await q("SELECT * FROM mail_capture WHERE subject LIKE '%refund_pending%' AND (to_addr = ? OR to_addr = 'founder-notify@plotnua.invalid')", GAL)).length === 2
+  && (await q("SELECT body FROM mail_capture WHERE to_addr = ?", GAL))[0].body.includes('Add to balance'));
+check('R1c the founder desk lists the pending refund with its days and Stripe’s 45-day date', (await call('GET', '/api/admin/checkout', FOUNDER)).j.pending_refunds.some(x => x.order_id === o1.id && x.days_pending === 0 && x.stripe_fails_it_by));
+check('R1d the artist sees it with what to do', (await call('GET', '/api/checkout', GAL)).j.pending_refunds[0].what_to_do.length === 4);
 h = await hook(evt('refund.updated', { ...rf1, status: 'succeeded' }, ACCT));
 check('R3 when Stripe confirms the refund, it is booked and PlotArt returns exactly GAA 9.2 commission (€150 × €500 kept / €1,000 → €75)',
   h.s === 200 && M.feeRefunds.length === fees + 1 && M.feeRefunds.at(-1).amount === 7500 && (await q("SELECT * FROM order_ledger WHERE order_id = ? AND kind = 'artwork_refund'", o1.id)).length === 1 && !(await order(o1.id)).needs_resolution, h);
@@ -428,6 +451,31 @@ const SX = await order(second.id);
 check('R5 a refund Stripe fails (e.g. still unfunded after 45 days) is flagged: buyer NOT repaid, nothing booked, no commission returned',
   h.s === 200 && /failed \(insufficient_funds\)/.test(SX.needs_resolution) && (await db.prepare('SELECT status FROM order_refunds WHERE provider_refund_id = ?').bind(rfx.id).first()).status === 'failed'
   && !(await q("SELECT * FROM order_ledger WHERE provider_ref = ?", rfx.id)).length && M.feeRefunds.length === fees, SX);
+M.nextRefundStatus = 'pending';
+r = await call('POST', `/api/admin/checkout/orders/${second.id}/refund`, FOUNDER, { artwork_cents: 2000, delivery_cents: 0, reason: 'Second goodwill refund' });
+const rfy = M.refunds.at(-1); rfy.status = 'succeeded';   // the artist's balance recovered; the webhook is lost
+await S.checkoutWorker.scheduled({ cron: '*/15 * * * *' });
+check('R6 the sweep re-checks pending refunds with Stripe, so a missed webhook cannot leave one stale', (await db.prepare('SELECT status FROM order_refunds WHERE provider_refund_id = ?').bind(rfy.id).first()).status === 'succeeded'
+  && (await q("SELECT * FROM order_ledger WHERE provider_ref = ? AND kind = 'artwork_refund'", rfy.id)).length === 1);
+M.nextRefundStatus = 'pending';
+r = await call('POST', `/api/admin/checkout/orders/${second.id}/refund`, FOUNDER, { artwork_cents: 5000, delivery_cents: 0, reason: 'Third refund, unfunded' });
+const rfz = M.refunds.at(-1);
+await db.prepare('UPDATE order_refunds SET created_at = ? WHERE provider_refund_id = ?').bind(ago(8), rfz.id).run();
+await S.checkoutWorker.scheduled({ cron: '*/15 * * * *' });
+check('R7 after 7 days unfunded it is escalated (notification + flag), once', /^OVERDUE/.test((await order(second.id)).needs_resolution)
+  && (await q("SELECT * FROM order_events WHERE order_id = ? AND action = 'notified_refund_pending_overdue'", second.id)).length === 1);
+await db.prepare('UPDATE order_refunds SET created_at = ? WHERE provider_refund_id = ?').bind(ago(31), rfz.id).run();
+await S.checkoutWorker.scheduled({ cron: '*/15 * * * *' }); await S.checkoutWorker.scheduled({ cron: '*/15 * * * *' });
+check('R7b after 30 days it is marked urgent, once', /^URGENT/.test((await order(second.id)).needs_resolution) && (await q("SELECT * FROM order_events WHERE order_id = ? AND action = 'notified_refund_pending_urgent'", second.id)).length === 1);
+r = await call('POST', `/api/admin/checkout/orders/${second.id}/repaid`, FOUNDER, { artwork_cents: 5000, delivery_cents: 0, evidence: 'Bank transfer BT-123 on 18 Nov, buyer confirmed by email' });
+check('R8 repaying the buyer outside Stripe is refused while the Stripe refund is still pending (no double repayment)', r.s === 409 && /still pending/.test(r.j.error), r.j);
+rfz.status = 'failed'; rfz.failure_reason = 'insufficient_funds';
+await S.checkoutWorker.scheduled({ cron: '*/15 * * * *' });
+fees = M.feeRefunds.length;
+r = await call('POST', `/api/admin/checkout/orders/${second.id}/repaid`, FOUNDER, { artwork_cents: 5000, delivery_cents: 0, evidence: 'Bank transfer BT-123 on 18 Nov, buyer confirmed by email' });
+check('R9 after Stripe cancels it, the artist’s direct repayment is recorded and PlotArt returns its commission share (GAA 9.2: €7,500c × kept €430 / €500 → €0.75 of €75 already partly returned)', r.s === 200
+  && (await q("SELECT * FROM order_ledger WHERE order_id = ? AND kind = 'artwork_refund' AND provider_ref LIKE 'ext_%'", second.id)).length === 1
+  && M.feeRefunds.length === fees + 1 && M.feeRefunds.at(-1).amount === 750, [r.j, M.feeRefunds.at(-1)]);
 check('F4 the ledger cannot be edited', !!(await db.prepare('UPDATE order_ledger SET amount_cents = 0').run().catch(e => e)).message);
 void SB2;
 
@@ -466,10 +514,11 @@ check('D3 a full refund still works after the artist’s and artwork’s rows ar
 check('D4 the buyer’s link still reads correctly', (await pub('GET', `/q/${TX}/return?result=success`)).t.includes('has been confirmed') || (await pub('GET', `/q/${TX}/return`)).s === 200);
 await S.checkoutWorker.scheduled({ cron: '*/15 * * * *' });
 const RX = await order(ox.id);
-check('D5 an ended order with money movement is scheduled for deletion six years on, and not before', RX.retain_until && RX.retain_until.slice(0, 4) === String(new Date().getUTCFullYear() + 6)
+check('D5 an order that moved money is kept until 31 December of the sixth year after its last money movement, and not deleted before', RX.retain_until === `${new Date().getUTCFullYear() + 6}-12-31T23:59:59.000Z`
   && /retention/.test((await db.prepare('DELETE FROM checkout_orders WHERE id = ?').bind(ox.id).run().catch(e => e)).message)
   && /retention/.test((await db.prepare('DELETE FROM order_ledger WHERE order_id = ?').bind(ox.id).run().catch(e => e)).message), RX);
-check('D6 a retention date can be extended but never shortened', /extended/.test((await db.prepare("UPDATE checkout_orders SET retain_until = '2027-01-01T00:00:00Z' WHERE id = ?").bind(ox.id).run().catch(e => e)).message));
+check('D6 a retention date is fixed once set: neither shortened nor extended', /fixed once set/.test((await db.prepare("UPDATE checkout_orders SET retain_until = '2027-01-01T00:00:00Z' WHERE id = ?").bind(ox.id).run().catch(e => e)).message)
+  && /fixed once set/.test((await db.prepare("UPDATE checkout_orders SET retain_until = '2099-01-01T00:00:00Z' WHERE id = ?").bind(ox.id).run().catch(e => e)).message));
 const OG = await order(og.id);
 check('D7 an unpaid cancelled order is kept two years', OG.retain_until && OG.retain_until.slice(0, 4) === String(new Date().getUTCFullYear() + 2), OG);
 // an old order whose retention has passed is deleted with its ledger, events and sessions
@@ -480,6 +529,37 @@ await db.prepare("INSERT INTO order_events (order_id, at, actor, action) VALUES 
 await S.checkoutWorker.scheduled({ cron: '*/15 * * * *' });
 check('D8 after its retention period an order is deleted with all its records', !(await db.prepare("SELECT 1 FROM checkout_orders WHERE id='oold1'").first())
   && !(await q("SELECT * FROM order_ledger WHERE order_id='oold1'")).length && !(await q("SELECT * FROM order_events WHERE order_id='oold1'")).length);
+// legal holds: a reviewed, releasable exception — not an extension of the retention date
+await db.prepare(`INSERT INTO checkout_orders (id, reference, artist_id, artwork_id, enquiry_ref, status, payment_status, buyer_email, created_by, created_at, updated_at, retain_until)
+  VALUES ('oold2', 'PA-O-190101-OLD002', 'aold', 'waold9', 'PA-E-190101-AAAAAA', 'closed', 'paid', 'old2@example.test', 'test', '2019-01-01T00:00:00Z', '2019-02-01T00:00:00Z', '2025-12-31T23:59:59.000Z')`).run();
+await db.prepare("INSERT INTO order_ledger (id, order_id, kind, amount_cents, provider_ref, at) VALUES ('lold2', 'oold2', 'charge', 1000, 'pi_old2', '2019-01-01T00:00:00Z')").run();
+r = await call('POST', '/api/admin/checkout/orders/oold2/hold', FOUNDER, { basis: 'claim', reason: 'Buyer solicitor letter of 1 Nov about this sale', review_by: '2099-01-01' });
+check('H1 a hold needs a review date within 12 months', r.s === 400 && /12 months/.test(r.j.error));
+const rv1 = new Date(Date.now() + 30 * 86400_000).toISOString().slice(0, 10);
+r = await call('POST', '/api/admin/checkout/orders/oold2/hold', FOUNDER, { basis: 'claim', reason: 'Buyer solicitor letter of 1 Nov about this sale', review_by: rv1 });
+const HID = r.j.hold.id;
+await S.checkoutWorker.scheduled({ cron: '*/15 * * * *' });
+check('H2 an order under an active hold is not deleted after its retention date, and its records cannot be deleted directly', !!(await order('oold2'))
+  && /hold/.test((await db.prepare("DELETE FROM order_ledger WHERE order_id = 'oold2'").run().catch(e => e)).message) && /hold/.test((await db.prepare("DELETE FROM checkout_orders WHERE id = 'oold2'").run().catch(e => e)).message));
+check('H3 a hold’s reason and basis cannot be rewritten', /renewed|released/.test((await db.prepare("UPDATE checkout_holds SET reason = 'changed reason here' WHERE id = ?").bind(HID).run().catch(e => e)).message));
+await db.prepare("UPDATE checkout_holds SET review_by = ? WHERE id = ?").bind(ago(2).slice(0, 10), HID).run();
+check('H4 an overdue review is flagged, and nothing is renewed or released automatically', (await call('GET', '/api/admin/checkout', FOUNDER)).j.holds.find(x => x.id === HID).review_overdue === true && !(await db.prepare('SELECT released_at FROM checkout_holds WHERE id = ?').bind(HID).first()).released_at);
+r = await call('POST', `/api/admin/checkout/holds/${HID}`, FOUNDER, { decision: 'renew', review_by: rv1, note: 'Claim still open; solicitor replied 20 Nov' });
+check('H5 a review renews the hold to a new date, with the reason recorded', r.s === 200 && r.j.hold.review_by === rv1 && r.j.history.map(x => x.kind).join() === 'placed,renewed', r.j);
+r = await call('POST', `/api/admin/checkout/holds/${HID}`, FOUNDER, { decision: 'release', note: 'Claim withdrawn in writing on 1 Dec' });
+check('H6 release is recorded once and cannot be undone', r.s === 200 && !!r.j.hold.released_at && /renewed|released/.test((await db.prepare("UPDATE checkout_holds SET released_at = NULL, released_by = NULL, release_reason = NULL WHERE id = ?").bind(HID).run().catch(e => e)).message));
+await S.checkoutWorker.scheduled({ cron: '*/15 * * * *' });
+check('H7 once released, the past-retention order is deleted at the next sweep, with its hold history', !(await order('oold2')) && !(await q("SELECT * FROM checkout_holds WHERE order_id = 'oold2'")).length
+  && !(await q("SELECT * FROM checkout_hold_events WHERE order_id = 'oold2'")).length && !(await q("SELECT * FROM order_ledger WHERE order_id = 'oold2'")).length);
+await db.prepare("INSERT INTO payment_pilot_events (id, artist_id, kind, doc_id, doc_sha256, account_email, display_name, statement, at) VALUES ('peoldin', 'aunk', 'opted_in', 'PA-PAY-TEST-01', ?, 'x@example.test', 'X', 'test', '2019-01-01T00:00:00Z')").bind(sha(ADD)).run().catch(() => {});
+const OLDLEFT = 'apast';
+await db.prepare("INSERT INTO payment_pilot_events (id, artist_id, kind, doc_id, doc_sha256, account_email, display_name, statement, at) VALUES ('pep1', ?, 'opted_in', 'PA-PAY-TEST-01', ?, 'p@example.test', 'Past', 'test', '2019-01-01T00:00:00Z')").bind(OLDLEFT, sha(ADD)).run();
+await db.prepare("INSERT INTO payment_pilot_events (id, artist_id, kind, account_email, at) VALUES ('pep2', ?, 'left', 'p@example.test', '2019-06-01T00:00:00Z')").bind(OLDLEFT).run();
+await db.prepare("INSERT INTO payment_accounts (artist_id, account_id, country, created_at, updated_at) VALUES (?, 'acct_pastartist', 'IE', '2019-01-01T00:00:00Z', '2019-01-01T00:00:00Z')").bind(OLDLEFT).run();
+await S.checkoutWorker.scheduled({ cron: '*/15 * * * *' });
+check('D10 an artist’s opt-in, consent and Stripe-account records are deleted six years after leaving once no order is kept; recent leavers are kept',
+  !(await q('SELECT * FROM payment_pilot_events WHERE artist_id = ?', OLDLEFT)).length && !(await q('SELECT * FROM payment_accounts WHERE artist_id = ?', OLDLEFT)).length
+  && (await q("SELECT * FROM payment_pilot_events WHERE artist_id = 'afnd'")).length > 0);
 check('D9 opt-in records stay while the artist’s orders are kept', /kept/.test((await db.prepare("DELETE FROM payment_pilot_events WHERE artist_id='aold'").run().catch(e => e)).message));
 
 const S1 = await import(HERE + FIX + 'src/stripe.js');

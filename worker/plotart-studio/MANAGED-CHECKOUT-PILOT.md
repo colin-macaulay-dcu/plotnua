@@ -173,6 +173,150 @@ Deliver the first implementation with payments disabled by default. Review the t
 Everything below is on branch `plotart/managed-checkout-pilot` only. Nothing is merged, deployed, migrated, issued or
 enrolled, and payments are not activated.
 
+### Revision 3 (16 November 2026, founder review 2)
+
+Production, agreements and live settings are unchanged. Nothing merged, deployed, migrated, issued or enrolled.
+
+#### Fee model assessment — "15% is the artist's total deduction; PlotArt absorbs Stripe's fee" (assessed, NOT adopted)
+
+Today (model A) the artist bears Stripe's processing fee on top of any commission. Model B makes an accepted commission
+the artist's only deduction. Two ways Stripe could support it:
+
+- **B1 — Stripe bills PlotArt for fees** (`controller.fees.payer = application`). PlotArt then "handles pricing" in
+  Stripe's terms: Stripe's Connect pricing for that option adds per-active-account and per-payout charges (published
+  for the US as $2 per monthly active account and 0.25% + 25¢ per payout; the EUR figures must be confirmed). It changes
+  the account configuration already verified.
+- **B2 — application-fee offset** (configuration unchanged). After each payment PlotArt reads Stripe's actual fee from
+  the charge's balance transaction and refunds that amount of its application fee, so the artist's net is exactly the
+  amount less the commission. No Connect platform fees. PlotArt's cost per order can never exceed its commission. The
+  actual fee is available from the balance transaction (real-API check P7 records it).
+
+Effect on PlotArt (per order, Gallery Artist at 15%, EUR 1,000 artwork + EUR 75 delivery, Stripe's published EEA rates):
+
+| Card | Stripe fee | PlotArt keeps, model A | PlotArt keeps, model B | Margin reduction |
+|---|---|---|---|---|
+| Standard EEA (1.5% + €0.25) | €16.38 | €150.00 | €133.62 | 10.9% |
+| Premium EEA (1.9% + €0.25) | €20.68 | €150.00 | €129.32 | 13.8% |
+| UK (2.5% + €0.25) | €27.13 | €150.00 | €122.87 | 18.1% |
+| International (3.25% + €0.25) | €35.19 | €150.00 | €114.81 | 23.5% |
+| Small order: €300 + €40, standard card | €5.35 | €45.00 | €39.65 | 11.9% |
+
+- If PlotArt is VAT-registered, the €150 includes €28.05 VAT, so net commission revenue is €121.95 under A. Under B2 the
+  commission actually charged becomes €133.62 (€108.63 net of VAT); under B1 it stays €150 with the €16.38 as PlotArt's
+  expense (€105.57 after the fee). VAT treatment needs the accountant.
+- Fee on delivery: Stripe charges on the whole €1,075, so under B PlotArt also pays the fee on the delivery portion
+  (about €1.13 of the €16.38 here).
+- Refunds: Stripe keeps its fee when a payment is refunded. Under B1 PlotArt bears that loss; under B2 PlotArt returns
+  its remaining commission and the lost fee falls back on the artist unless PlotArt pays it by a separate transfer. This
+  needs a decision.
+- Commission-free orders: there is no commission to offset, so under B PlotArt would have to pay the whole fee
+  (€16.38 per standard €1,075 order) by transfer. That is why the separate consent below exists instead.
+- Illustration: 20 Gallery Artist sales a year of €1,075, all standard cards: €3,000 commission under A against about
+  €2,672 under B, so €328 less.
+- Requirements if adopted: Colin's decision; new addendum wording (more favourable to artists, so PA-GAA is not
+  changed); code for B2 (fee read after payment, offset refund, idempotent); a refund rule; real-API verification.
+  Nothing is changed automatically.
+
+#### Founding Artists keep direct payment; the processing charge needs separate consent
+
+Direct payment (the buyer pays the artist; no deduction) stays every artist's normal route; the pilot is optional per
+sale. On any commission-free order (all Founding Enquiries and Founding Artists without commission terms) Stripe's fee
+would be the only deduction, so the pilot now requires a **separate, explicit, withdrawable consent** to that
+processing charge (`PROCESSING_STATEMENT`). It is not part of opting in, it is recorded separately with its exact
+statement, and the artist approval, quote and checkout all refuse such an order without it. Withdrawing cancels unpaid
+commission-free quotes. Gallery Artists on 15% are never asked.
+
+#### Funding a refund after payout
+
+Under the pilot configuration the connected account is responsible for its own negative balance; Stripe debits the
+account's bank account where it can and, as a last resort, Stripe (not PlotArt) carries an unrecoverable loss.
+
+| When | What happens | Who acts |
+|---|---|---|
+| Day 0 | The refund comes back `pending` (the available balance is too low). The pilot books nothing and returns no commission. The order is flagged; the artist and the founder are emailed (where email is on) with the steps; it is listed on the founder desk with its days pending and Stripe's 45-day date, and on the artist's page. | system |
+| Days 0–45 | The artist funds it: (a) Stripe completes it from new sales or by debiting the linked bank account; or (b) the artist adds funds (Stripe Dashboard → Balances → Add to balance, bank transfer), which releases the refund when the funds arrive. Each sweep re-checks the refund with Stripe, so a missed webhook cannot leave it stale. | artist / Stripe |
+| Day 7 | Reminder to the artist and founder; flag "OVERDUE" (once). | system |
+| Day 30 | Flag "URGENT" (once); the founder contacts the artist and keeps the buyer informed. | founder |
+| Day 45 | Stripe cancels the refund (`refund.failed`). Order flagged: the buyer has NOT been repaid. | Stripe |
+| After cancellation | The artist repays the buyer directly; the founder records it with evidence ("Record repayment outside Stripe"). PlotArt then returns its commission share (GAA 9.2). This is refused while a Stripe refund is still pending, so the buyer can never be repaid twice. | artist, founder |
+
+PlotArt does not advance money to buyers. Doing so would be a separate founder decision.
+
+#### Retention, start dates, deletion and legal holds
+
+| Records | Kept until | Start | Why |
+|---|---|---|---|
+| An order that moved money (paid, refunded or disputed), with its ledger, refunds, sessions, provider events, fulfilment evidence and audit | 31 December of the 6th year after its last money movement | The year of the last payment, refund, commission refund or dispute movement, fixed when the order ends (closed or refunded, nothing outstanding) | Irish tax record-keeping keeps records for six years from the transaction (Revenue); PA-GAA cl. 18.3 already commits to six years for commission records; six-year limitation period for contract claims. Counting from year-end satisfies both the "from the transaction" and "after the period" readings. |
+| An order that never moved money (draft, cancelled, expired) | 2 years after it ended | The day it was cancelled or expired | Questions and complaints about a quote; the same 24 months used for PlotArt enquiries in the privacy notice. Holds the buyer's email, so kept short. |
+| Opt-in, consent and Stripe-account link records | 6 years after the artist left the pilot, once none of their orders is kept | The artist's last "left" event | Evidence of what the artist agreed, for the contract limitation period. |
+| Provider events not linked to any order | 90 days | Receipt | Operations only. |
+
+- **How deletion happens:** the checkout Worker's scheduled sweep (every 15 minutes) fixes `retain_until` when an order
+  ends. Once the date passes, it deletes each order and every record belonging to it in one transaction. It skips any
+  order with an open issue, a pending refund or an active hold.
+- **Enforced in the database:** triggers refuse earlier deletion, and refuse any change to a retention date once set
+  (it can be neither shortened nor extended).
+- **Backups:** the database backups follow their own rotation, so deleted rows disappear from backups as those age out.
+  The backup retention period should be stated in the privacy notice.
+- **Legal holds** (instead of irreversible extension): the founder places a hold on an order with a basis (dispute,
+  claim, Revenue enquiry, investigation, litigation, data-subject request, other), a specific reason and a review date
+  no more than 12 months ahead.
+  - At review he either renews it (new date and reason) or releases it (reason). Both are recorded in an append-only
+    history.
+  - Overdue reviews are flagged; nothing renews or releases automatically.
+  - The hold never changes the retention date. While it is active nothing is deleted; once it is released, a
+    past-retention order is deleted at the next sweep, together with its hold history.
+  - This matches Revenue's position that records connected with a claim, appeal or investigation are kept until the
+    matter is finalised.
+
+#### Linked-order safeguard (wording corrected)
+
+The EUR 9,999.99 per-artwork limit and the 12-month linked-order check (same email address, any artist) are **limited
+operational safeguards**:
+- email matching cannot detect other addresses, household members, businesses or agents;
+- 12 months is a pilot rule, not a legal definition;
+- passing the check is **never** confirmation of anti-money-laundering compliance, nor evidence that no obligation applies.
+
+The stored record is named `linked_order_check` and says so. PlotArt's actual AML position awaits professional advice.
+
+#### Real Stripe test-mode checks: how they run and what is still needed
+
+- `test/stripe-testmode-checks.mjs` (provider phase) runs against the real Stripe **test** API:
+  - account configuration and onboarding link;
+  - Checkout Session shape, idempotency and expiry;
+  - direct charges with application fees and Stripe's actual fee;
+  - full and partial refunds, exact and idempotent commission refunds;
+  - a refund larger than the available balance (pending);
+  - a refund that fails asynchronously;
+  - disputes, both won and lost.
+- `test/stripe-testmode-e2e.mjs` (e2e phase) runs the pilot's own Workers against the real test API:
+  - real **signed** webhook deliveries forwarded by the Stripe CLI;
+  - the buyer paying on Stripe's hosted Checkout in headless Chromium;
+  - covering payment, ledger against Stripe's charge, partial refund with commission return, expiry, and a dispute.
+- `.github/workflows/plotart-checkout-stripe-test.yml` runs both in GitHub's runner using the **checkout-test**
+  environment:
+  - the Stripe test key stays in GitHub, never in chat or files;
+  - each run waits for Colin's approval;
+  - nothing is deployed; the evidence is uploaded with every result labelled `stripe-test-api` (Stripe's own response),
+    `stripe-test-api+pilot` (Stripe's events processed by the pilot) or `local`.
+- It runs from the pilot branch when `worker/plotart-studio/test/stripe-test-run.json` changes, so no merge is needed.
+
+Colin's steps (his logins; never share keys in chat):
+1. **Stripe Dashboard → switch to test mode (sandbox).** Open Connect and complete the platform setup for PlotNua in
+   test mode, choosing that Stripe sets and collects processing fees from connected accounts. Then Developers → API keys:
+   reveal the **test** secret key, or create a restricted test key with write access to Connect accounts, Account Links,
+   Checkout Sessions, PaymentIntents, Refunds, Application fees and Disputes, and read access to Balance and Events.
+2. **GitHub → plotnua → Settings → Environments → New environment `checkout-test`.**
+   - Required reviewers: Colin.
+   - Deployment branches: selected branches, add `plotart/managed-checkout-pilot`.
+   - Add the environment secret `CHECKOUT_TEST_STRIPE_SECRET_KEY`: paste the test key there and only there.
+3. Tell Claude "checkout-test is ready". Claude pushes the run request; Colin approves the waiting run (Actions → the run
+   → Review deployments → Approve).
+4. The first run creates a test connected account and puts its **test onboarding link** in the run summary.
+   - Colin opens it and completes onboarding with Stripe's test data only (no real personal or bank details).
+   - Then add the environment **variable** `CHECKOUT_TEST_CONNECTED_ACCOUNT` = the `acct_…` shown.
+5. Claude requests the full run (provider + e2e) and reports the evidence.
+
 ### What was built
 
 | Part | Files |
@@ -182,11 +326,12 @@ enrolled, and payments are not activated.
 | Orders, reservations, sales, sessions, verified events, ledger, refunds (incl. pending/failed), disputes, fulfilment, linked-purchase check, retention | `src/checkout.js` |
 | Public buyer Worker `plotart-checkout`: quote page, hosted-checkout start, return page, terms, status, webhook | `src/checkout-public.js`, `wrangler.checkout.toml` |
 | Studio routes: founder desk `/admin/checkout`, artist page `/checkout-pilot` (not linked from the Studio tabs) | `src/index.js`, `ui/checkout-pilot.js`, `build-assets.mjs` |
-| Database: 12 new tables, refusal-only triggers on new tables only, no foreign keys into artists/artworks | `migrations/0016_managed_checkout_pilot.sql` (also appended to `schema.sql`) |
+| Database: 14 new tables (incl. legal holds), refusal-only triggers on new tables only, no foreign keys into artists/artworks | `migrations/0016_managed_checkout_pilot.sql` (also appended to `schema.sql`) |
 | Draft texts for review (not issued) | `agreements/payment-drafts/PA-PAY-2026-11-DRAFT.md`, `PA-BPT-2026-11-DRAFT.md` (r2) |
 | TEST ONLY placeholder texts (test environment only; refused in any other build) | `agreements/payment-test/` |
 | Deployment workflow (prepared, never run) and its tools | `.github/workflows/plotart-checkout-deploy.yml`, `atlas-tools/release/studio/render-checkout-config.py`, `check-stripe-test-secrets.sh`, `checkout-outside-check.sh`, `test/checkout-test-env-seed.mjs` |
-| Proofs | `test/prove-checkout-pilot.mjs` (107 checks), `test/prove-migration-0016.mjs` (9), `test/prove-checkout-deploy.mjs` (26) |
+| Proofs | `test/prove-checkout-pilot.mjs` (130 checks), `test/prove-migration-0016.mjs` (9), `test/prove-checkout-deploy.mjs` (26) |
+| Real Stripe test-mode harness and its GitHub runner (prepared; not yet run with a key) | `test/stripe-testmode-checks.mjs`, `test/stripe-testmode-e2e.mjs`, `.github/workflows/plotart-checkout-stripe-test.yml` |
 
 `CHECKOUT_PILOT_ENABLED` defaults to `"false"` in `wrangler.toml` and `wrangler.checkout.toml` (`production.json` does not
 set it). Even when on, the code refuses any key that is not `sk_test_`/`rk_test_`, any live-mode object returned by
@@ -275,11 +420,11 @@ the value of the transaction, **alone or with transactions that are or appear to
 the Department of Justice's Anti-Money Laundering Compliance Unit supervises that sector. Whether PlotArt's role in a
 managed checkout makes it such an intermediary is one of the open professional-advice questions.
 
-What the pilot does about linked transactions (`linkedCheck`, enforced when a quote is issued and again when checkout
+What the pilot does about linked transactions — a limited operational safeguard, never confirmation of AML compliance (`linkedCheck`, enforced when a quote is issued and again when checkout
 opens): it totals this order with the same buyer's other pilot orders (email address compared case-insensitively, any
 artist, last 12 months, every order paid, refunded, or quoted and payable) and refuses at EUR 10,000 or more; and the
 founder must confirm, for each quote, that he knows of no other link (other email addresses, household, business,
-agents, staged payments). Both are recorded on the order (`aml_check`). Limits: it cannot see purchases outside the pilot
+agents, staged payments). Both are recorded on the order (`linked_order_check`). Limits: it cannot see purchases outside the pilot
 or connections the founder does not know of; it is a refusal rule, not an AML programme.
 
 Higher-value works would be supported only after professional advice confirms PlotArt's position and, if it is within
@@ -309,10 +454,9 @@ on the artist's Stripe account, and the buyer's link still works.
 
 Retention (implemented in the sweep; triggers enforce it): an order that moved money is kept with its ledger, refunds,
 sessions, fulfilment and events for **6 years** after it ends (closed or refunded, nothing outstanding); an order that
-never moved money for **2 years**; then everything for that order is deleted. A retention date can be extended but never
-shortened, nothing is deletable before it, and orders with an open issue or a pending refund are never scheduled. Opt-in
-records are kept until six years after the artist leaves and none of their orders remain. Provider event ids are kept
-six years. (D3: confirm periods with the accountant.)
+never moved money for **2 years**; then everything for that order is deleted. A retention date is fixed once set (revision 3; longer retention only by a reviewed legal hold), nothing is deletable before it, and orders with an open issue or a pending refund are never scheduled. Opt-in
+records are kept until six years after the artist leaves and none of their orders remain. (Superseded in detail by
+revision 3: start dates, fixed retention dates and legal holds. D3: confirm periods with the accountant.)
 
 ### Test environment (prepared, not created)
 
