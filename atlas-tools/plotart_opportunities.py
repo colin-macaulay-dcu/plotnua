@@ -114,7 +114,7 @@ def section(key, packages, base, hub):
     if not pkgs and not hub:
         return ""          # a programme page shows nothing until someone is listed (the region stays, empty)
     sid = anchor if hub else "open-artists"
-    more = ('<p class="pa-opp-more"><a href="%s">About the %s →</a></p>' % (E(base + page), E(label))) if hub and page else \
+    more = ('<p class="pa-opp-more"><a href="%s">About %s%s →</a></p>' % (E(base + page), "" if key == "art_for_hire" else "the ", E(label))) if hub and page else \
            ('<p class="pa-opp-more"><a href="%sopportunities/">Every artist opportunity →</a></p>' % E(base)) if not hub else ""
     body = _rows(pkgs, base) if pkgs else '<p class="pa-opp-none">No artists are listed here yet.</p>'
     return ('<section class="pa-opp" id="%s" aria-labelledby="opp-%s-h"><div class="pa-wrap pa-opp-in">\n'
@@ -159,5 +159,7 @@ def artist_line(pkg, base="../../"):
         keys = [k for k in keys if k != "commissions"]
     if not keys:
         return ""
-    return '<p class="pa-ag-meta pa-ag-open">Open to: %s</p>' % " · ".join(
+    # quieter than the name line above it (inline, so artist pages need no new stylesheet and stay byte-identical without it)
+    return ('<p class="pa-ag-meta pa-ag-open" style="margin-top:14px;font-size:14px;letter-spacing:.02em;text-transform:none;color:var(--stone)">'
+            'Open to: %s</p>') % " · ".join(
         '<a href="%s" data-pa-track="artist_opportunity_link">%s</a>' % (E(href(k, base)), E(OPPORTUNITIES[k][0])) for k in keys)
