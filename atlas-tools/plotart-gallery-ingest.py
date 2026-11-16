@@ -114,6 +114,12 @@ def main(export_dir, root):
     art = {k: a.get(k) for k in ("slug", "display_name", "founding", "practice", "medium", "statement", "bio", "website", "instagram")}
     art["county"] = a.get("county") if a.get("county_public") else None
     art["portrait"] = portrait
+    # the artist's own public switches travel only when on (absent = off): "Open for commissions" (13 Nov 2026; it was
+    # validated but not carried into the package until 16 Nov 2026) and the opportunities they chose to show (0015)
+    if a.get("open_for_commissions") is True:
+        art["open_for_commissions"] = True
+    if a.get("open_to"):
+        art["open_to"] = list(a["open_to"])
     pkg = {"schema": G.PACKAGE_SCHEMA, "artist": art, "works": works,
            "publication": {k: pub.get(k) for k in sorted(G.PUB_KEYS)},
            "checks": {"blocks": blocks, "warns": warns},

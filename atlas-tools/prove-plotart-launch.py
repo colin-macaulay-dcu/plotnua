@@ -72,6 +72,7 @@ import html, json, os, posixpath, re, sys
 import plotart_business_rental as BUSINESS
 import plotart_seo as SEO
 import plotart_search_content as C
+import plotart_opportunities as OPP
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 if len(sys.argv) < 2:
@@ -119,6 +120,9 @@ for _d, _, _fs in os.walk(os.path.join(PA, "artists")):
             ARTIST_FILES.add(_r)
 GALLERY_SLUGS = sorted({ART_FILE.match(f).group(1) for f in ARTIST_FILES if f.endswith("/index.html")})
 ALLOWED |= ARTIST_FILES
+# Artist opportunity lists (16 Nov 2026): the opportunities page and the lists' stylesheet (plotart_opportunities)
+OPP_FILES = {"opportunities/index.html", "assets/plotart-opportunities.css"}
+ALLOWED |= OPP_FILES
 # Art for Hire (Stage 3B-6): the page, its two assets and the fourth gallery tab exist ONLY when the founder switches
 # art_for_hire_page on (release approval). Off (or absent): no hire file may exist and no page may link to it or carry the tab.
 HIRE_ON = launch.get("art_for_hire_page") is True
@@ -309,7 +313,16 @@ if "--manifest" in sys.argv:
                 guide_ok = hashlib.sha256(C.outside(raw.decode()).encode()).hexdigest() == guide_pin
             except ValueError:
                 pass
-        need(got == sha or guide_ok or (og is not None and raw is not None and hashlib.sha256(outside_grid(raw)).hexdigest() == og)
+        # the artist opportunity lists (16 Nov 2026): outside their generated region (and, on the Art for Hire page, outside
+        # the works catalogue too) the four pages are pinned by "outside_opportunity_lists"; the lists are checked by L19
+        oo, opp_ok = man.get("outside_opportunity_lists", {}).get(rel), False
+        if oo is not None and raw is not None and rel in OPP.PAGES:
+            try:
+                blank = OPP.outside(raw.decode()).encode()
+                opp_ok = hashlib.sha256(outside_hire(blank) if rel == HIRE_PAGE else blank).hexdigest() == oo
+            except ValueError:
+                pass
+        need(got == sha or guide_ok or opp_ok or (og is not None and raw is not None and hashlib.sha256(outside_grid(raw)).hexdigest() == og)
              or (oh is not None and raw is not None and hashlib.sha256(outside_hire(raw)).hexdigest() == oh),
              "L3 %s differs from the verified build (manifest)" % rel)
 elif not os.path.exists(cat_path):
@@ -802,9 +815,39 @@ if os.path.exists(_mgd):
     need("Developing Our Gallery Network" in _mgi and "appointments can’t yet be arranged through PlotArt" in _mgi, "L16 the Mobile Gallery page must say the network is developing and appointments can't yet be arranged")
     need("application/ld+json" not in _mgi + open(os.path.join(PA, "mobile-gallery", "gallery.html"), encoding="utf-8").read(), "L16 Mobile Gallery carries structured data")
 
+# L19 · artist opportunity lists (16 Nov 2026): every list is exactly what the published galleries produce; only published
+# artists appear; each artist page's "Open to" line matches its package; no private Opportunities answer appears anywhere.
+_pk = SEO.public_packages(os.path.dirname(PA))
+for _rel in OPP.PAGES:
+    _fp = os.path.join(PA, _rel)
+    if not os.path.exists(_fp):
+        need(_rel != OPP.HUB, "L19 the artist opportunities page plotart/%s is missing" % _rel)
+        continue
+    _doc = open(_fp, encoding="utf-8").read()
+    try:
+        need(_doc == OPP.update(_doc, _rel, _pk), "L19 %s: the opportunity list differs from the published galleries" % _rel)
+    except ValueError as _e:
+        need(False, "L19 %s: %s" % (_rel, _e))
+    need(not re.search(r"(?i)\b(?:participating artists?|confirmed (?:artists?|placements?)|now booking|book now|available now)\b", visible_text(OPP.REGION.search(_doc).group(0) if OPP.REGION.search(_doc) else "")),
+         "L19 %s: the list presents interest as participation or a booking" % _rel)
+_slugs = {p["artist"]["slug"] for p in _pk}
+for _p in _pk:
+    _a = _p["artist"]
+    need(set(_a) <= {"slug", "display_name", "founding", "practice", "medium", "statement", "bio", "website", "instagram", "county", "portrait", "open_for_commissions", "open_to"}, "L19 %s: a published package carries an unexpected artist field" % _a["slug"])
+    _ip = os.path.join(PA, "artists", _a["slug"], "index.html")
+    if os.path.exists(_ip):
+        _line = OPP.artist_line(_p)
+        _h = open(_ip, encoding="utf-8").read()
+        need((_line in _h) if _line else ("pa-ag-open" not in _h), "L19 artists/%s: the 'Open to' line does not match the published package" % _a["slug"])
+for _rel in OPP.PAGES:
+    _fp = os.path.join(PA, _rel)
+    if os.path.exists(_fp) and OPP.REGION.search(open(_fp, encoding="utf-8").read()):
+        for _s in re.findall(r'href="(?:\.\./)*artists/([a-z0-9-]+)/"', OPP.REGION.search(open(_fp, encoding="utf-8").read()).group(0)):
+            need(_s in _slugs, "L19 %s lists an artist whose gallery is not published: %s" % (_rel, _s))
+
 if problems:
     print("PLOTART LAUNCH · FAILED (%d)" % len(problems))
     for x in problems:
         print("  " + x)
     sys.exit(1)
-print("PLOTART LAUNCH · OK — L1-L18 on %d pages · applications %s · artist applications %s · Art for Hire %s (%d demonstration names checked absent)" % (len(PAGES), STATE, GA_STATE, ("ON" + (", enquiry form on" if HIRE_FORM else "")) if HIRE_ON else "off", len(demo_names)))
+print("PLOTART LAUNCH · OK — L1-L19 on %d pages · applications %s · artist applications %s · Art for Hire %s (%d demonstration names checked absent)" % (len(PAGES), STATE, GA_STATE, ("ON" + (", enquiry form on" if HIRE_FORM else "")) if HIRE_ON else "off", len(demo_names)))

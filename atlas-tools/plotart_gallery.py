@@ -46,7 +46,8 @@ MEDIA = ("painting", "drawing", "works_on_paper", "printmaking", "photography", 
 # an application reference, review notes ...) is refused: the repository is public.
 ARTIST_KEYS = {"slug", "display_name", "founding", "practice", "medium", "county", "county_public",
                "statement", "bio", "website", "instagram", "portrait",
-               "open_for_commissions"}   # optional (Open for Commissions, 13 Nov 2026): present only as true; absent = off
+               "open_for_commissions",   # optional (Open for Commissions, 13 Nov 2026): present only as true; absent = off
+               "open_to"}                # optional (opportunities shown publicly, 16 Nov 2026): known keys only; absent = none
 WORK_KEYS = {"id", "slug", "title", "year", "medium", "materials", "h_cm", "w_cm", "d_cm", "price_eur",
              "price_on_request", "availability", "description", "order", "ai_involvement", "ai_note",
              "ai_founder_decision", "images"}
@@ -128,6 +129,12 @@ def validate_export(g):
         raise Refused("founding and county_public must be true or false")
     if "open_for_commissions" in a and a["open_for_commissions"] is not True:
         raise Refused("open_for_commissions is carried only as true (absent means off)")
+    if "open_to" in a:
+        import plotart_opportunities as OPP
+        try:
+            OPP.check_open_to(a["open_to"])
+        except OPP.Refused as e:
+            raise Refused(str(e))
     for k in ("website",):
         if a.get(k) is not None and not re.match(r"^https://[^\s<>\"']{4,200}$", a[k]):
             raise Refused("website must be an https link")

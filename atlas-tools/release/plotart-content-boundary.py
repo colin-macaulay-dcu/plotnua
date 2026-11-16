@@ -12,6 +12,9 @@ admin "Publish" button (or, with --instant, the automatic availability/removal p
                                         (<!-- pa-vg-collection:begin --> ... <!-- pa-vg-collection:end -->)
   plotart/<buyer guide or artworks/index.html>   only inside its generated collection region, and exactly the
                                         region the approved public exports produce (plotart_search_content)
+  plotart/<opportunity page>            only inside its generated opportunity region, and exactly the region the
+                                        published packages produce (plotart_opportunities: living-gallery.html,
+                                        art-for-hire/index.html, mobile-gallery/index.html, opportunities/index.html)
   image-provenance-records.json         only ARTIST_SUPPLIED_ARTWORK records; every other record and
                                         every other top-level field byte-for-byte unchanged
 
@@ -39,6 +42,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 import plotart_seo as SEO
 import plotart_search_content as C
+import plotart_opportunities as OPP
 
 ART = re.compile(r"^plotart/artists/([a-z0-9]+(?:-[a-z0-9]+){0,6})/(?:[a-z0-9]+(?:-[a-z0-9]+){0,6}\.html|gallery\.json|img/[a-z0-9-]+-\d{2,5}\.webp)$")
 # the generated collection region (Direction C2, 5 Nov 2026): the open galleries and the twenty-five positions
@@ -111,6 +115,19 @@ def main(base, rel, instant):
         refused.append("nothing changed")
     for row in rows:
         st, path = row[0], row[-1]
+        if path in {"plotart/" + p for p in OPP.PAGES} and st == "M":
+            # the artist opportunity lists (16 Nov 2026): the page may change ONLY inside its opportunity region, and only to
+            # exactly what the published packages produce. This is the one part of the Art for Hire page a gallery
+            # release may touch; its works catalogue and everything else stay out of reach.
+            try:
+                a, b = show(base, path).decode(), show(rel, path).decode()
+                names = git("ls-tree", "-r", "--name-only", rel, "plotart/artists").splitlines()
+                packages = [json.loads(show(rel, n)) for n in names if re.fullmatch(r"plotart/artists/[a-z0-9-]+/gallery.json", n)]
+                if b != OPP.update(a, path.removeprefix("plotart/"), packages):
+                    refused.append(path + ": differs from the exact opportunity lists the published galleries produce")
+            except (ValueError, TypeError) as e:
+                refused.append(path + ": " + str(e))
+            continue
         if path.startswith("plotart/art-for-hire/"):          # Art for Hire: never through the gallery release (3B-6)
             refused.append("%s (%s): the Art for Hire page is never published by a gallery release (use --hire)" % (path, st))
             continue
