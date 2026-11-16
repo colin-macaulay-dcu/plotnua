@@ -1,0 +1,87 @@
+name: PlotArt application review services deploy
+run-name: "Application review ${{ inputs.service }} ${{ inputs.commit }}${{ inputs.dry_run && ' (dry run)' || '' }}"
+on:
+  workflow_dispatch:
+    inputs:
+      commit:
+        description: Full approved commit on main
+        required: true
+        type: string
+      service:
+        description: Deploy register first; deploy Studio through studio-deploy; deploy gateway last
+        required: true
+        type: choice
+        options: [register, gateway]
+      dry_run:
+        description: Build only; no production changes
+        required: true
+        type: boolean
+        default: true
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: plotart-application-review-services
+  cancel-in-progress: false
+jobs:
+  deploy:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    environment: "studio-production."
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.commit }}
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Verify approved commit on main
+        env:
+          COMMIT: ${{ inputs.commit }}
+        run: |
+          [[ "$COMMIT" =~ ^[0-9a-f]{40}$ ]] || exit 1
+          git fetch -q origin main
+          git merge-base --is-ancestor "$COMMIT" origin/main
+          test "$(git rev-parse HEAD)" = "$COMMIT"
+      - name: Build production config preserving live application switches
+        env:
+          SERVICE: ${{ inputs.service }}
+        run: |
+          python3 - <<'PY'
+          import pathlib, os, re
+          if os.environ['SERVICE']=='register':
+              p=pathlib.Path('worker/art-space-register/wrangler.toml')
+              s=p.read_text().split('[env.test]')[0]
+              # The live Gallery application switch differs from the deliberately closed repository default.
+              # Omit ALL source vars; --keep-vars retains the current production vars and all existing secrets.
+              s=re.sub(r'(?ms)^\[vars\]\n.*?(?=^\[)', '', s)
+              assert '[vars]' not in s and 'review-entry.js' in s
+              p.with_name('wrangler.review-production.toml').write_text(s)
+          PY
+      - name: Build or deploy the selected service
+        env:
+          SERVICE: ${{ inputs.service }}
+          DRY: ${{ inputs.dry_run }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.STUDIO_CF_DEPLOY_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          set -euo pipefail
+          if [ "$SERVICE" = register ]; then
+            CONFIG=worker/art-space-register/wrangler.review-production.toml
+          else
+            CONFIG=worker/plotart-studio/wrangler.application-review.toml
+          fi
+          ARGS=(deploy --config "$CONFIG" --keep-vars)
+          if [ "$DRY" = true ]; then ARGS+=(--dry-run --outdir "$RUNNER_TEMP/build"); fi
+          npx --yes wrangler@4.150.0 "${ARGS[@]}" > "$RUNNER_TEMP/deploy.log" 2>&1 \
+            || { echo 'Deployment did not complete'; grep -iE 'error|permission|authentication' "$RUNNER_TEMP/deploy.log" | grep -viE 'token|https?://' | head -5; exit 1; }
+          if [ "$DRY" = true ]; then echo 'Build passed; no production changes'; else grep -E '^Uploaded |^Current Version ID' "$RUNNER_TEMP/deploy.log"; fi
+      - name: Public gateway health and token boundary
+        if: ${{ !inputs.dry_run && inputs.service == 'gateway' }}
+        run: |
+          curl --fail --silent https://plotart-application-review.colin-a41.workers.dev/application/edit | grep -q 'Update your application'
+          CODE=$(curl --silent -o /dev/null -w '%{http_code}' https://plotart-application-review.colin-a41.workers.dev/v1/application-revision/PA-AP-261116-ABCDEF)
+          test "$CODE" = 403
+          echo 'Public editing page responds; application reference alone is refused'

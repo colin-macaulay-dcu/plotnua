@@ -11,6 +11,8 @@
 import { verifyAccess, who } from './auth.js';
 import * as L from './lib.js';
 import * as AG from './agreement.js';
+import * as GAR from './gallery-application-review.js';
+import { REVIEW_JS } from './application-review-ui.js';
 import * as H from './hire.js';
 import * as O from './opportunities.js';   // Opportunities & delivery (development 13 Nov 2026): expressions of interest only
 import { artistBody, artworkBody, previewPage, shown } from './render.js';
@@ -1059,7 +1061,7 @@ async function application(env, ref) {
   const link = u => (typeof u === 'string' && /^https:\/\//.test(u) ? u : null);
   return { ref, artist_name: pick('artist_name'), medium: pick('medium'), region: pick('region'), bio: pick('bio'), additional_info: pick('additional_info'),
     portfolio: link(a.portfolio), website: link(a.website), social_link: pick('social_link'), submitted_at: pick('submitted_at'),
-    images: (a.images || []).filter(i => /^[1-5]\.(jpg|png|webp)$/.test(i.file)).map(i => ({ src: `/admin/applications/${ref}/img/${i.file}`, w: i.w, h: i.h })),
+    images: (a.images || []).filter(i => /^(?:[1-5]|review\/uploads\/[0-9a-f-]{36})\.(jpg|png|webp)$/.test(i.file)).map(i => ({ src: `/admin/applications/${ref}/img/${i.file}`, w: i.w, h: i.h })),
     airtable: airtableLink(env, a.airtable_record, ref) };
 }
 async function applications(env) {
@@ -1072,7 +1074,7 @@ async function applications(env) {
       const ref = pre.split('/')[1];
       if (!APP_REF.test(ref)) continue;
       const a = await application(env, ref);
-      if (a) items.push({ ref, artist_name: a.artist_name, medium: a.medium, region: a.region, submitted_at: a.submitted_at, images: a.images.slice(0, 5) });
+      if (a) items.push({ ref, artist_name: a.artist_name, medium: a.medium, region: a.region, submitted_at: a.submitted_at, images: a.images.slice(0, 5), ...(ref.startsWith('PA-AP-') && GAR.reviewConfigured(env) ? await GAR.getReview(env,ref).then(v=>({status:v.status,revised_at:v.revised_at})).catch(()=>({review_unavailable:true})) : {}) });
     }
     cursor = l.truncated ? l.cursor : null;
   } while (cursor);
@@ -1296,13 +1298,36 @@ async function route(req, env) {
       return json({ ok: true, founding_number: n });
     }
     /* ---- Founding 25 applications with artwork images (private bucket plotart-applications; founder only) */
-    if (p === '/admin/applications' || /^\/admin\/applications\/(?:F25|PA-AP)-\d{6}-[0-9A-F]{6}$/.test(p)) return html(A.ADMIN_HTML);
-    if ((mm = p.match(/^\/admin\/applications\/((?:F25|PA-AP)-\d{6}-[0-9A-F]{6})\/img\/([1-5]\.(?:jpg|png|webp))$/)) && m === 'GET') {
+    if (p === '/admin/application-review.js' && m === 'GET') return new Response(REVIEW_JS, { headers: { 'Content-Type': 'application/javascript; charset=utf-8', 'Cache-Control': 'private, no-store', 'X-Content-Type-Options': 'nosniff' } });
+    if (p === '/admin/applications' || /^\/admin\/applications\/(?:F25|PA-AP)-\d{6}-[0-9A-F]{6}$/.test(p)) return html(A.ADMIN_HTML.replace('</body>', '<script src="/admin/application-review.js" defer></script></body>'));
+    if ((mm = p.match(/^\/admin\/applications\/((?:F25|PA-AP)-\d{6}-[0-9A-F]{6})\/img\/((?:[1-5]|review\/uploads\/[0-9a-f-]{36})\.(?:jpg|png|webp))$/)) && m === 'GET') {
       if (!env.APPLICATIONS) return html('Not found', 404);
       const o = await env.APPLICATIONS.get(`applications/${mm[1]}/${mm[2]}`);
       if (!o) return html('Not found', 404);
       return new Response(o.body, { headers: { 'Content-Type': (o.httpMetadata && o.httpMetadata.contentType) || 'image/jpeg', 'Cache-Control': 'private, no-store',
         'Content-Disposition': 'inline', 'X-Content-Type-Options': 'nosniff', 'Cross-Origin-Resource-Policy': 'same-origin' } });
+    }
+    if ((mm = p.match(/^\/api\/admin\/applications\/(PA-AP-\d{6}-[0-9A-F]{6})\/review$/)) && m === 'GET') {
+      if (!GAR.reviewConfigured(env)) return json({ ok:false,error:'Review service not configured' },503);
+      try { return json({ok:true,review:await GAR.getReview(env,mm[1])}); }
+      catch(e) { return json({ok:false,error:e.message},409); }
+    }
+    if ((mm = p.match(/^\/api\/admin\/applications\/(PA-AP-\d{6}-[0-9A-F]{6})\/review$/)) && m === 'POST') {
+      if (!GAR.reviewConfigured(env)) return json({ok:false,error:'Review service not configured'},503);
+      const raw=await req.text(); if(raw.length>16000)throw new Bad('Request too large',413);
+      const b=JSON.parse(raw);
+      if (!b || !['under_review','info_requested','accepted','declined'].includes(b.status)) throw new Bad('Invalid review action');
+      try {
+        const result=await GAR.saveReview(env,mm[1],b,me.email);
+        await audit(env,me.email,'founder','gallery_application_review',null,{ref:mm[1],status:b.status});
+        return json({ok:true,review:result,email_sent:!!b.message});
+      } catch(e) { return json({ok:false,error:e.message},409); }
+    }
+    if ((mm = p.match(/^\/api\/admin\/applications\/(PA-AP-\d{6}-[0-9A-F]{6})\/review\/retry$/)) && m === 'POST') {
+      const b=await req.json(); try { return json({ok:true,review:await GAR.retryReview(env,mm[1],b.action_id)}); } catch(e){return json({ok:false,error:e.message},e.status||409);}
+    }
+    if ((mm = p.match(/^\/api\/admin\/applications\/(PA-AP-\d{6}-[0-9A-F]{6})\/review\/history\/(\d+)$/)) && m === 'GET') {
+      try{return json({ok:true,application:await GAR.reviewSnapshot(env,mm[1],mm[2])});}catch(e){return json({ok:false,error:e.message},e.status||409);}
     }
     if (p === '/api/admin/applications' && m === 'GET') return json({ ok: true, ...(await applications(env)) });
     if ((mm = p.match(/^\/api\/admin\/applications\/((?:F25|PA-AP)-\d{6}-[0-9A-F]{6})$/)) && m === 'GET') {
@@ -1311,10 +1336,11 @@ async function route(req, env) {
     }
     if ((mm = p.match(/^\/api\/admin\/applications\/((?:F25|PA-AP)-\d{6}-[0-9A-F]{6})\/erase$/)) && m === 'POST') {
       if (!env.APPLICATIONS) throw new Bad('Image storage is not connected', 500);
-      const l = await env.APPLICATIONS.list({ prefix: `applications/${mm[1]}/` });
-      await Promise.all(l.objects.map(o => env.APPLICATIONS.delete(o.key)));
-      await audit(env, me.email, 'founder', 'application_images_erased', null, { ref: mm[1], objects: l.objects.length });
-      return json({ ok: true, erased: l.objects.length });
+      if(mm[1]==='PA-AP-261116-7C1EB4')throw new Bad('This existing application is protected',409);
+      if(mm[1].startsWith('PA-AP-') && GAR.reviewConfigured(env))await GAR.eraseReview(env,mm[1]);
+      let cursor,erased=0; do { const l=await env.APPLICATIONS.list({prefix:`applications/${mm[1]}/`,cursor}); await Promise.all(l.objects.map(o=>env.APPLICATIONS.delete(o.key))); erased+=l.objects.length; cursor=l.truncated?l.cursor:null; }while(cursor);
+      await audit(env, me.email, 'founder', 'application_images_erased', null, { ref: mm[1], objects: erased });
+      return json({ ok: true, erased });
     }
     if ((mm = p.match(/^\/admin\/preview\/(s[0-9a-z]+|v-([0-9a-z]+)-(\d+))\/(.*)$/))) {
       let snap, artistId;
