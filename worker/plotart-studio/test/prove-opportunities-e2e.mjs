@@ -4,7 +4,8 @@
 // (atlas-tools/plotart-gallery-publish.py --simulate) against a temporary git copy of RELEASE_TREE standing in for main.
 // Every guard runs exactly as in production (content boundary, launch guard with manifest, provenance, image rights);
 // nothing is pushed. Journey: an existing artist's earlier answers stay private → the gallery is published → the artist
-// confirms → listed → withdraws one interest → keeps everything private → unpublished.
+// confirms → listed → withdraws one interest → keeps everything private → unpublished; and a brand-new artist whose
+// box starts unticked is listed only after ticking it.
 import { start, token, FOUNDER, PIPELINE_TOKEN } from './local.mjs';
 import { seedPublished } from './seed.mjs';
 import { execFileSync, spawnSync, execSync } from 'node:child_process';
@@ -53,19 +54,22 @@ const call = async (method, path, email, body) => {
 const publish = () => spawnSync('python3', [join(SITE, 'atlas-tools/plotart-gallery-publish.py'), '--studio', url, '--token', PIPELINE_TOKEN, '--simulate'], { cwd: SITE, encoding: 'utf8' });
 
 // a published-in-Studio artist whose gallery is about to go out for the first time, with real photographs
-await seedPublished(db, { id: 'aorla', slug: SLUG, email: EMAIL, name: NAME, works: 2, number: 1, licence: 'PA-GPIL-2026-11' });
-for (const i of [1, 2]) {
-  const buf = readFileSync(join(TMP, `w${i}.jpg`)), sha = createHash('sha256').update(buf).digest('hex');
-  const img = await db.prepare('SELECT r2_key, preview_key FROM images WHERE id=?').bind(`iaorla${i}`).first();
-  const u8 = new Uint8Array(buf); await R2.put(img.r2_key, u8, { httpMetadata: { contentType: "image/jpeg" } }); await R2.put(img.preview_key, u8, { httpMetadata: { contentType: "image/jpeg" } });
-  await db.prepare('UPDATE images SET sha256=?, bytes=?, width=2400, height=1800 WHERE id=?').bind(sha, buf.length, `iaorla${i}`).run();
-}
-// the version-1 snapshot must carry the real fingerprints too: rebuild it from the records
 const { snapshot } = await import('../src/lib.js');
-const A0 = await db.prepare('SELECT * FROM artists WHERE id=?').bind('aorla').first();
-const W0 = (await db.prepare('SELECT * FROM artworks WHERE artist_id=?').bind('aorla').all()).results, I0 = (await db.prepare('SELECT * FROM images WHERE artist_id=?').bind('aorla').all()).results;
-await db.prepare('UPDATE versions SET snapshot=? WHERE artist_id=? AND version=1').bind(JSON.stringify(snapshot(A0, W0, I0)), 'aorla').run();
-await db.prepare("UPDATE publish_queue SET status='ready' WHERE artist_id='aorla' AND version=1").run();
+async function seedGallery(id, slug, email, name, number) {
+  await seedPublished(db, { id, slug, email, name, works: 2, number, licence: 'PA-GPIL-2026-11' });
+  for (const i of [1, 2]) {
+    const buf = readFileSync(join(TMP, `w${i}.jpg`)), sha = createHash('sha256').update(buf).digest('hex');
+    const img = await db.prepare('SELECT r2_key, preview_key FROM images WHERE id=?').bind(`i${id}${i}`).first();
+    const u8 = new Uint8Array(buf); await R2.put(img.r2_key, u8, { httpMetadata: { contentType: "image/jpeg" } }); await R2.put(img.preview_key, u8, { httpMetadata: { contentType: "image/jpeg" } });
+    await db.prepare('UPDATE images SET sha256=?, bytes=?, width=2400, height=1800 WHERE id=?').bind(sha, buf.length, `i${id}${i}`).run();
+  }
+  // the version-1 snapshot must carry the real fingerprints too: rebuild it from the records
+  const A0 = await db.prepare('SELECT * FROM artists WHERE id=?').bind(id).first();
+  const W0 = (await db.prepare('SELECT * FROM artworks WHERE artist_id=?').bind(id).all()).results, I0 = (await db.prepare('SELECT * FROM images WHERE artist_id=?').bind(id).all()).results;
+  await db.prepare('UPDATE versions SET snapshot=? WHERE artist_id=? AND version=1').bind(JSON.stringify(snapshot(A0, W0, I0)), id).run();
+  await db.prepare("UPDATE publish_queue SET status='ready' WHERE artist_id=? AND version=1").bind(id).run();
+}
+await seedGallery('aorla', SLUG, EMAIL, NAME, 1);
 // answers saved BEFORE 0015 (production today): no public choice recorded
 await db.prepare(`INSERT INTO artist_opportunities (artist_id, interests, artwork_county, transport, coverage_mode, coverage_counties, practical_note, care_condition, created_at, updated_at, updated_by)
   VALUES ('aorla','["exhibitions","living_gallery","art_for_hire","commissions"]','Kilkenny','["courier"]','anywhere','[]','Private practical note: large canvases, phone 087 000 0000.',1,?,?,?)`)
@@ -126,6 +130,25 @@ check('E13 unpublishing the gallery removes the artist from every list automatic
   r.s === 200 && p.status === 0 && !existsSync(join(SITE, `plotart/artists/${SLUG}/index.html`)) && PAGES.every(x => !region(x).includes(SLUG)),
   JSON.stringify(r) + p.stdout.slice(-400));
 const commits = git('log', '--format=%s', '-8');
+
+console.log('— 6 · a brand-new artist (answers saved after this release): the box starts unticked');
+const NIA = 'nia-e2e@example.test';
+await seedGallery('ania', 'nia-e2e', NIA, 'Nia Optin', 2);
+publish();
+const form = { interests: ['living_gallery', 'mobile_gallery'], artwork_county: 'Galway', transport: ['deliver'], coverage: { mode: 'anywhere' }, note: '', care_condition: false };
+r = await call('PUT', '/api/opportunities', NIA, { ...form, public_display: false });   // exactly what the form sends when the box is left unticked
+p = publish();
+check('E15 saved with the box left unticked (the default): nothing is listed and no "Open to" line, even after the next run',
+  r.s === 200 && p.status === 0 && existsSync(join(SITE, 'plotart/artists/nia-e2e/index.html')) && PAGES.every(x => !region(x).includes('nia-e2e'))
+  && !/pa-ag-open/.test(read('plotart/artists/nia-e2e/index.html')), JSON.stringify(r.j) + p.stdout.slice(-300));
+r = await call('PUT', '/api/opportunities', NIA, form);   // an older page that never showed the box: nothing can be shown
+p = publish();
+check('E16 a save that never showed the box cannot publish anything', p.status === 0 && PAGES.every(x => !region(x).includes('nia-e2e')));
+r = await call('PUT', '/api/opportunities', NIA, { ...form, public_display: true });    // the artist ticks the box
+p = publish();
+check('E17 only after the artist ticks it: listed on Living Gallery and Mobile Gallery at the next run, nothing private shown',
+  p.status === 0 && region(PAGES[0]).includes('nia-e2e') && region(PAGES[2]).includes('nia-e2e') && !region(PAGES[1]).includes('nia-e2e')
+  && !/Galway/.test(PAGES.map(region).join('') + read('plotart/artists/nia-e2e/index.html')), p.stdout.slice(-300));
 check('E14 every step was its own guarded content commit (no manual founder step after the first publication)', (commits.match(/PlotArt content: aorla/g) || []).length >= 6, commits);
 } catch (e) { console.error(e); results.push(false); }
 finally { if (S) await S.mf.dispose(); }

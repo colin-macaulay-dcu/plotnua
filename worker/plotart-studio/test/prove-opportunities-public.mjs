@@ -133,7 +133,7 @@ r = await call('PUT', '/api/opportunities', BEN, { interests: ['online_only'] })
 check('S16 choosing "Online gallery only for now" shows nothing, even when showing is on', !('open_to' in (await lastSnap('aben')).artist) && (await row('aben')).public_display === 1);
 r = await call('PUT', '/api/opportunities', NEW, { interests: ['venues', 'art_for_hire'], public_display: true });
 const sN = await lastSnap('anew');
-check('S17 a new answer with the explained box left ticked is shown, with the notice recorded', JSON.stringify(sN.artist.open_to) === '["art_for_hire","venues"]' && (await row('anew')).public_notice === R.PUBLIC_NOTICE, JSON.stringify(sN.artist));
+check('S17 a new answer where the artist ticked the box is shown, with the notice recorded', JSON.stringify(sN.artist.open_to) === '["art_for_hire","venues"]' && (await row('anew')).public_notice === R.PUBLIC_NOTICE, JSON.stringify(sN.artist));
 await db.prepare("DELETE FROM artist_opportunities WHERE artist_id='anew'").run();
 r = await call('PUT', '/api/opportunities', NEW, { interests: ['venues'], public_display: false });
 check('S18 a new answer with the box unticked is kept private', (await row('anew')).public_display === 0 && !('open_to' in (await lastSnap('anew')).artist));
@@ -177,7 +177,7 @@ console.log('— the founder’s view and the audit trail');
 r = await call('GET', '/api/admin/opportunities', FOUNDER);
 check('S25 the Review Desk shows who is shown, kept private or not confirmed (read-only)', r.s === 200 && r.j.totals.shown >= 2 && 'undecided' in r.j.totals && r.j.options.public && r.j.items.find(i => i.id === 'aorla').prefs.public_display === true, JSON.stringify(r.j.totals));
 const audits = (await db.prepare("SELECT detail FROM audit WHERE action LIKE 'opportunities_%'").all()).results.map(a => a.detail || '').join(' ');
-check('S26 the audit records each choice and the notice version, never the note text', /PA-OPP-PUBLIC-2026-11/.test(audits) && !/Private practical note/.test(audits));
+check('S26 the audit records each choice and the notice version, never the note text', /PA-OPP-PUBLIC-2026-11-R2/.test(audits) && !/Private practical note/.test(audits));
 
 /* ---------------------------------------------------------------- browser */
 console.log('— in the browser');
@@ -209,16 +209,23 @@ check('U3 the form now shows the public choice (ticked) with its explanation, an
   await p.isChecked('#o-pub') && /never means anything has been arranged/.test(pubTxt) && /county, transport, delivery area, care box and note are never published/.test(await p.locator('.st-opp-priv').innerText()));
 await p.uncheck('#o-pub'); await p.click('#o-save'); await p.waitForTimeout(700);
 check('U4 unticking and saving keeps them private in one step', (await row('acia')).public_display === 0 && !('open_to' in (await lastSnap('acia')).artist));
-// a brand-new artist: the box starts ticked, and the explanation sits beside it before saving
+// a brand-new artist: the box starts UNTICKED (showing is always the artist's active choice), explanation beside it
 await db.prepare(`INSERT INTO artists (id, slug, email, display_name, founding, account_status, created_at, updated_at) VALUES ('adan','dan-test','dan-test@example.test','Dan Test',0,'active',?,?)`).bind(T0, T0).run();
 p = await page('dan-test@example.test');
 await p.goto(S.url + '/#/opportunities', { waitUntil: 'load' }); await p.waitForTimeout(800);
 await p.click('[data-k="exhibitions"]'); await p.click('[data-k="commissions"]'); await p.waitForTimeout(150);
-check('U5 a new artist sees the box ticked by default with the explanation and an easy untick, and the optional commissions box UNTICKED', await p.isChecked('#o-pub')
-  && await p.locator('#o-ofc-box').isVisible() && !(await p.isChecked('#o-ofc')) && p.errs.length === 0);
+check('U5 a new artist sees the box UNTICKED by default, with the explanation beside it, and no commissions offer until they tick it',
+  !(await p.isChecked('#o-pub')) && /If you tick this/.test(await p.locator('#o-pub-card').innerText()) && /Leave it unticked to keep everything private/.test(await p.locator('#o-pub-card').innerText())
+  && !(await p.locator('#o-ofc-box').isVisible()) && p.errs.length === 0);
 await shot(p, 'studio-opportunities-new-artist-1280.png');
 await p.click('#o-save'); await p.waitForTimeout(700);
-check('U6 saving records it as shown with the notice version', (await row('adan')).public_display === 1 && (await row('adan')).public_notice === R.PUBLIC_NOTICE);
+check('U6 saving without ticking keeps everything private: recorded as private, nothing shown, nothing published', (await row('adan')).public_display === 0
+  && (await call('GET', '/api/opportunities', 'dan-test@example.test')).j.shown.length === 0);
+await p.check('#o-pub'); await p.waitForTimeout(150);
+check('U6b ticking it is the active choice: the optional commissions box then appears, UNTICKED', await p.locator('#o-ofc-box').isVisible() && !(await p.isChecked('#o-ofc')));
+await shot(p, 'studio-opportunities-new-artist-ticked-1280.png');
+await p.click('#o-save'); await p.waitForTimeout(700);
+check('U6c saving after ticking records it as shown with the notice version', (await row('adan')).public_display === 1 && (await row('adan')).public_notice === R.PUBLIC_NOTICE);
 const f = await page(FOUNDER);
 await f.goto(S.url + '/admin/opportunities', { waitUntil: 'load' }); await f.waitForTimeout(900);
 const ft = await f.locator('#app').innerText();

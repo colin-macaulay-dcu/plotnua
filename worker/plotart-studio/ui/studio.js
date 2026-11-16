@@ -757,10 +757,11 @@
     if (!d.installed) { app.innerHTML = `<h1 class="st-h1">Opportunities &amp; delivery</h1><section class="st-card"><p class="st-muted" style="margin:0">This section isn’t available yet.</p></section>`; return; }
     const O = d.options, sv = d.saved;
     const P = O.public;   // shown publicly (migration 0015); null until it has run
-    // new answers: shown by default, as explained beside the box; answers saved before the choice existed stay "not decided"
-    // (null) until the artist confirms in the panel at the top, so saving the form never changes that by itself
+    // new answers: the box starts UNTICKED (founder decision 16 Nov 2026: showing is always the artist's active choice);
+    // answers saved before the choice existed stay "not decided" (null) until the artist confirms in the panel at the top,
+    // so saving the form never changes that by itself
     const st = sv ? { interests: [...sv.interests], county: sv.artwork_county || '', transport: [...sv.transport], mode: sv.coverage_mode, counties: [...sv.coverage_counties], care: !!sv.care_condition, note: sv.note || '', pub: sv.public_display ?? null }
-      : { interests: [], county: d.suggested_county || '', transport: [], mode: null, counties: [], care: false, note: '', pub: true };
+      : { interests: [], county: d.suggested_county || '', transport: [], mode: null, counties: [], care: false, note: '', pub: false };
     let offerC = false;
     let last = JSON.stringify(st), savedAt = sv ? sv.updated_at : null;
     const on = (a, k) => a.includes(k);

@@ -68,6 +68,8 @@ def apply_v16(text: str) -> str:
 def without_v16(text: str) -> str:
     """The exact page beneath V16. A page without V16 passes through untouched; a page that carries the V16 marker but
     not exactly the governed V16 text raises."""
+    from privacy_v17_layer import without_v17       # V17 (shown only by the artist's choice, 16 Nov 2026) sits on top: take it off first
+    text = without_v17(text)
     if MARKER not in text:
         return text
     for _, new in PAIRS:

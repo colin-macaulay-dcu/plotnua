@@ -8,10 +8,11 @@ import pathlib, re, sys
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "atlas-tools"))
 import privacy_v16_layer as V  # noqa: E402
+import privacy_v17_layer as V17  # noqa: E402  (V17 changes one V16 passage: V16's own wording is checked beneath it)
 
 bad = []
 ok = lambda c, m: None if c else bad.append(m)
-priv = (ROOT / "privacy.html").read_text(encoding="utf-8")
+priv = V17.without_v17((ROOT / "privacy.html").read_text(encoding="utf-8"))
 APPLIED = V.MARKER in priv
 if not APPLIED:
     try:
@@ -43,7 +44,8 @@ ok(V.P2_NEW in priv and "private version history" not in flat(priv) and "can be 
    "V2 the version-history sentence must say the history is kept on GitHub and can be viewed publicly (no 'private version history')")
 studio = ROOT / "worker" / "plotart-studio"
 rules = (studio / "src" / "opportunities-rules.js").read_text(encoding="utf-8")
-ok("export const PUBLIC_NOTICE = '%s'" % V.STUDIO_NOTICE in rules, "V3 the Studio records the notice version this text describes")
+ok(("export const PUBLIC_NOTICE = '%s'" % V.STUDIO_NOTICE in rules) or ("export const PUBLIC_NOTICE = '%s'" % V17.STUDIO_NOTICE in rules),
+   "V3 the Studio records the notice version this text (or V17 on top of it) describes")
 keys = re.search(r"export const PUBLIC_KEYS = \[([^\]]+)\]", rules)
 ok(keys and "online_only" not in keys.group(1) and len(re.findall(r"'[a-z_]+'", keys.group(1))) == 7, "V3 the Studio can show exactly the seven opportunities, never online_only")
 mig = (studio / "migrations" / "0015_opportunities_public.sql").read_text(encoding="utf-8")

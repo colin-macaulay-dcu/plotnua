@@ -107,15 +107,15 @@ export function validate(body, { noteMax = NOTE_MAX, care = true, publicOn = fal
     transport: Object.keys(TRANSPORT).filter(k => transport.includes(k)), coverage_mode: mode, coverage_counties: counties, care_condition: careOn, note: note || null } };
 }
 
-/* ---- Shown publicly (migration 0015, development 16 Nov 2026; privacy notice V16) ----
+/* ---- Shown publicly (migration 0015, development 16 Nov 2026; privacy notice V16, opt-in from V17) ----
    ONLY the kinds of opportunity can ever be shown, never "online_only", the county, transport, coverage, the care box or
    the note. The order here is the order shown publicly. public_display: null = not decided (every answer saved before
    0015: those were given under "never published", so nothing shows until the artist confirms), 1 = shown, 0 = private. */
 export const PUBLIC_KEYS = ['exhibitions', 'living_gallery', 'art_for_hire', 'mobile_gallery', 'venues', 'commissions', 'talks'];
-export const PUBLIC_NOTICE = 'PA-OPP-PUBLIC-2026-11';   // the wording below; privacy notice V16 describes it
+export const PUBLIC_NOTICE = 'PA-OPP-PUBLIC-2026-11-R2';   // the wording below (shown only by the artist's own choice); privacy notice V17 describes it
 export const PUBLIC = {
   label: 'Show the opportunities I’ve chosen on my public PlotArt gallery',
-  explain: 'If you leave this ticked, the opportunities you choose are listed beside your gallery and on PlotArt’s matching opportunity pages, with a link to your gallery, once your gallery is published. It tells visitors you’d welcome a conversation; it never means anything has been arranged. Your county, transport, delivery area, care box and note are never shown. Untick it to keep everything private. You can change this at any time.',
+  explain: 'If you tick this, the opportunities you choose are listed beside your gallery and on PlotArt’s matching opportunity pages, with a link to your gallery, once your gallery is published. It tells visitors you’d welcome a conversation; it never means anything has been arranged. Your county, transport, delivery area, care box and note are never shown. Leave it unticked to keep everything private. You can change this at any time.',
   confirm_h: 'Show your opportunities on your gallery?',
   confirm: 'PlotArt can now list the opportunities you’ve chosen beside your published gallery and on PlotArt’s opportunity pages, with a link to your gallery. When you first answered, we said your answers wouldn’t be published, so nothing is shown unless you say so. Your county, transport, delivery area, care box and note always stay private.',
   yes: 'Yes, show them', no: 'Keep them private',
