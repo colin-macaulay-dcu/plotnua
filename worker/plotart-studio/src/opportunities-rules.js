@@ -59,9 +59,9 @@ const uniq = a => [...new Set(a)];
 
 /* Checks an artist's answers. Returns { prefs } with the normalised record, or { error } in plain words.
    Nothing is guessed or filled in: what is not answered is stored as not answered. */
-export function validate(body, { noteMax = NOTE_MAX, care = true } = {}) {
+export function validate(body, { noteMax = NOTE_MAX, care = true, publicOn = false } = {}) {
   if (!body || typeof body !== 'object' || Array.isArray(body)) return { error: 'Nothing to save.' };
-  const extra = Object.keys(body).filter(k => !['interests', 'artwork_county', 'transport', 'coverage', 'note', ...(care ? ['care_condition'] : [])].includes(k));
+  const extra = Object.keys(body).filter(k => !['interests', 'artwork_county', 'transport', 'coverage', 'note', ...(care ? ['care_condition'] : []), ...(publicOn ? ['public_display'] : [])].includes(k));
   if (extra.length) return { error: 'Unexpected fields: ' + extra.join(', ') };
   const interests = list(body.interests);
   if (!interests || !interests.length) return { error: 'Choose at least one option in “What would you be interested in exploring?”, or choose “Online gallery only for now”.' };
@@ -99,9 +99,32 @@ export function validate(body, { noteMax = NOTE_MAX, care = true } = {}) {
   note = cleanNote(note);
   if (note.length > noteMax) return { error: `Please keep the note to ${noteMax.toLocaleString('en-IE')} characters.` };
 
-  return { prefs: { interests: Object.keys(INTERESTS).filter(k => interests.includes(k)), artwork_county: county,
+  // Shown publicly (0015): true or false when the artist chose in this form; absent means "leave the current choice as it is".
+  const pub = body.public_display;
+  if (pub !== undefined && typeof pub !== 'boolean') return { error: 'Please tick or untick “Show the opportunities I’ve chosen on my public PlotArt gallery”.' };
+
+  return { prefs: { interests: Object.keys(INTERESTS).filter(k => interests.includes(k)), artwork_county: county, ...(pub === undefined ? {} : { public_display: pub }),
     transport: Object.keys(TRANSPORT).filter(k => transport.includes(k)), coverage_mode: mode, coverage_counties: counties, care_condition: careOn, note: note || null } };
 }
+
+/* ---- Shown publicly (migration 0015, development 16 Nov 2026; privacy notice V16) ----
+   ONLY the kinds of opportunity can ever be shown, never "online_only", the county, transport, coverage, the care box or
+   the note. The order here is the order shown publicly. public_display: null = not decided (every answer saved before
+   0015: those were given under "never published", so nothing shows until the artist confirms), 1 = shown, 0 = private. */
+export const PUBLIC_KEYS = ['exhibitions', 'living_gallery', 'art_for_hire', 'mobile_gallery', 'venues', 'commissions', 'talks'];
+export const PUBLIC_NOTICE = 'PA-OPP-PUBLIC-2026-11';   // the wording below; privacy notice V16 describes it
+export const PUBLIC = {
+  label: 'Show the opportunities I’ve chosen on my public PlotArt gallery',
+  explain: 'If you leave this ticked, the opportunities you choose are listed beside your gallery and on PlotArt’s matching opportunity pages, with a link to your gallery, once your gallery is published. It tells visitors you’d welcome a conversation; it never means anything has been arranged. Your county, transport, delivery area, care box and note are never shown. Untick it to keep everything private. You can change this at any time.',
+  confirm_h: 'Show your opportunities on your gallery?',
+  confirm: 'PlotArt can now list the opportunities you’ve chosen beside your published gallery and on PlotArt’s opportunity pages, with a link to your gallery. When you first answered, we said your answers wouldn’t be published, so nothing is shown unless you say so. Your county, transport, delivery area, care box and note always stay private.',
+  yes: 'Yes, show them', no: 'Keep them private',
+  commissions: 'Also show “Open for commissions” and an “Enquire about a commission” button on my gallery',
+};
+export function publicKeys(p) {
+  return p && p.public_display === true ? PUBLIC_KEYS.filter(k => p.interests.includes(k)) : [];
+}
+export const publicState = p => !p ? 'unanswered' : p.public_display === true ? 'shown' : p.public_display === false ? 'private' : 'undecided';
 
 /* Founder filter: does this saved record say the artist could reach a venue in the given county? */
 export function covers(p, county) {
