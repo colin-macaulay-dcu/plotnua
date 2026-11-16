@@ -11,6 +11,7 @@
 import { verifyAccess, who } from './auth.js';
 import * as L from './lib.js';
 import * as AG from './agreement.js';
+import * as GAR from './gallery-application-review.js';
 import * as H from './hire.js';
 import * as O from './opportunities.js';   // Opportunities & delivery (development 13 Nov 2026): expressions of interest only
 import { artistBody, artworkBody, previewPage, shown } from './render.js';
@@ -1303,6 +1304,21 @@ async function route(req, env) {
       if (!o) return html('Not found', 404);
       return new Response(o.body, { headers: { 'Content-Type': (o.httpMetadata && o.httpMetadata.contentType) || 'image/jpeg', 'Cache-Control': 'private, no-store',
         'Content-Disposition': 'inline', 'X-Content-Type-Options': 'nosniff', 'Cross-Origin-Resource-Policy': 'same-origin' } });
+    }
+    if ((mm = p.match(/^\/api\/admin\/applications\/(PA-AP-\d{6}-[0-9A-F]{6})\/review$/)) && m === 'GET') {
+      if (!GAR.reviewConfigured(env)) return json({ ok:false,error:'Review service not configured' },503);
+      try { return json({ok:true,review:await GAR.getReview(env,mm[1])}); }
+      catch(e) { return json({ok:false,error:e.message},409); }
+    }
+    if ((mm = p.match(/^\/api\/admin\/applications\/(PA-AP-\d{6}-[0-9A-F]{6})\/review$/)) && m === 'POST') {
+      if (!GAR.reviewConfigured(env)) return json({ok:false,error:'Review service not configured'},503);
+      const b=await req.json();
+      if (!b || !['under_review','accepted','declined'].includes(b.status)) throw new Bad('Invalid review action');
+      try {
+        const result=await GAR.saveReview(env,mm[1],{expectedStatus:b.expected_status,status:b.status,notes:b.notes||'',reason:b.reason||''});
+        await audit(env,me.email,'founder','gallery_application_review',null,{ref:mm[1],status:b.status});
+        return json({ok:true,review:result,email_sent:false});
+      } catch(e) { return json({ok:false,error:e.message},409); }
     }
     if (p === '/api/admin/applications' && m === 'GET') return json({ ok: true, ...(await applications(env)) });
     if ((mm = p.match(/^\/api\/admin\/applications\/((?:F25|PA-AP)-\d{6}-[0-9A-F]{6})$/)) && m === 'GET') {
