@@ -6,6 +6,13 @@
   "founding": true,
   "instagram": "anna_marie_savage",
   "medium": "painting",
+  "open_to": [
+   "exhibitions",
+   "art_for_hire",
+   "mobile_gallery",
+   "commissions",
+   "talks"
+  ],
   "portrait": {
    "alt": "The artist with her painting at the opening of OXO 2026.",
    "aspect": 0.7756,
@@ -64,14 +71,14 @@
   }
  ],
  "publication": {
-  "approved_at": "2026-11-12T17:44:04.396Z",
+  "approved_at": "2026-11-16T21:58:32.986Z",
   "approved_by": "founder",
   "licence_accepted_at": "2026-11-12T15:59:17.560Z",
   "licence_version": "PA-GPIL-2026-11",
   "permission_ref": "PA-PERM-aw9ehfcs0ct",
   "state": "approved",
   "test_note": null,
-  "version": "v1"
+  "version": "v2"
  },
  "schema": "plotnua.plotart.gallery-package.v1",
  "works": [
