@@ -667,3 +667,238 @@ CREATE INDEX IF NOT EXISTS application_review_actions_ref ON application_review_
 ALTER TABLE artist_opportunities ADD COLUMN public_display INTEGER CHECK (public_display IS NULL OR public_display IN (0, 1));
 ALTER TABLE artist_opportunities ADD COLUMN public_decided_at TEXT CHECK (public_decided_at IS NULL OR length(public_decided_at) BETWEEN 20 AND 30);
 ALTER TABLE artist_opportunities ADD COLUMN public_notice TEXT CHECK (public_notice IS NULL OR length(public_notice) BETWEEN 8 AND 40);
+
+-- PlotArt Studio · migration 0016 · Managed checkout pilot (development 16 Nov 2026). NOT APPLIED IN PRODUCTION.
+-- New tables only. No existing table, row, agreement, acceptance, gallery position or publishing record is changed.
+-- Triggers are refusal-only BEFORE triggers on these NEW tables (migration-check policy, 6 Nov 2026): this migration
+-- needs the founder's explicit approval of this exact file, and both production backups, before it runs.
+-- Test mode only: every provider-facing table carries livemode = 0 by CHECK.
+-- No foreign keys to artists/artworks: order and accounting records follow their own retention, and never block the
+-- existing participation-deletion schedule.
+
+-- 1 · Installed pilot texts: the artist payment addendum and the buyer purchase terms. A text is accepted only when the
+--     same fingerprint is bundled with the Workers (src/payment-terms.js). Rows never change: a new text gets a new id.
+CREATE TABLE IF NOT EXISTS payment_terms (
+  doc_id       TEXT PRIMARY KEY,
+  kind         TEXT NOT NULL CHECK (kind IN ('artist_payment_addendum', 'buyer_purchase_terms')),
+  title        TEXT NOT NULL,
+  html_sha256  TEXT NOT NULL CHECK (length(html_sha256) = 64),
+  effective_at TEXT NOT NULL,
+  created_at   TEXT NOT NULL
+);
+CREATE TRIGGER IF NOT EXISTS payment_terms_no_update BEFORE UPDATE ON payment_terms
+BEGIN SELECT RAISE(ABORT, 'payment_terms rows never change: install a new identifier'); END;
+CREATE TRIGGER IF NOT EXISTS payment_terms_no_delete BEFORE DELETE ON payment_terms
+BEGIN SELECT RAISE(ABORT, 'payment_terms rows are never removed'); END;
+
+-- 2 · Explicit artist opt-in and opt-out, append-only. The latest row decides. Joining needs the artist's own tick on
+--     the installed addendum; nobody is enrolled by the founder or by default.
+CREATE TABLE IF NOT EXISTS payment_pilot_events (
+  id            TEXT PRIMARY KEY,
+  artist_id     TEXT NOT NULL,
+  kind          TEXT NOT NULL CHECK (kind IN ('opted_in', 'left')),
+  doc_id        TEXT REFERENCES payment_terms(doc_id),
+  doc_sha256    TEXT,
+  account_email TEXT NOT NULL,
+  display_name  TEXT,
+  statement     TEXT,
+  at            TEXT NOT NULL,
+  CHECK (kind = 'left' OR (doc_id IS NOT NULL AND length(doc_sha256) = 64 AND statement IS NOT NULL AND display_name IS NOT NULL))
+);
+CREATE INDEX IF NOT EXISTS payment_pilot_events_artist ON payment_pilot_events(artist_id, at);
+CREATE TRIGGER IF NOT EXISTS payment_pilot_events_valid BEFORE INSERT ON payment_pilot_events
+WHEN NEW.kind = 'opted_in' AND NOT EXISTS (SELECT 1 FROM payment_terms t WHERE t.doc_id = NEW.doc_id AND t.kind = 'artist_payment_addendum'
+  AND t.html_sha256 = NEW.doc_sha256 AND julianday(NEW.at) >= julianday(t.effective_at))
+BEGIN SELECT RAISE(ABORT, 'opt-in refused: not an installed addendum, wrong fingerprint, or dated before it took effect'); END;
+CREATE TRIGGER IF NOT EXISTS payment_pilot_events_no_update BEFORE UPDATE ON payment_pilot_events
+BEGIN SELECT RAISE(ABORT, 'payment_pilot_events is append-only'); END;
+CREATE TRIGGER IF NOT EXISTS payment_pilot_events_no_delete BEFORE DELETE ON payment_pilot_events
+BEGIN SELECT RAISE(ABORT, 'payment_pilot_events is append-only'); END;
+
+-- 3 · The artist's own Stripe account (identity documents stay with Stripe's hosted onboarding; none are stored here).
+CREATE TABLE IF NOT EXISTS payment_accounts (
+  artist_id         TEXT PRIMARY KEY,
+  provider          TEXT NOT NULL DEFAULT 'stripe' CHECK (provider = 'stripe'),
+  account_id        TEXT NOT NULL UNIQUE CHECK (account_id GLOB 'acct_*'),
+  country           TEXT NOT NULL CHECK (country IN ('IE', 'GB')),
+  livemode          INTEGER NOT NULL DEFAULT 0 CHECK (livemode = 0),
+  charges_enabled   INTEGER NOT NULL DEFAULT 0 CHECK (charges_enabled IN (0, 1)),
+  payouts_enabled   INTEGER NOT NULL DEFAULT 0 CHECK (payouts_enabled IN (0, 1)),
+  details_submitted INTEGER NOT NULL DEFAULT 0 CHECK (details_submitted IN (0, 1)),
+  requirements_due  TEXT,
+  checked_at        TEXT,
+  created_at        TEXT NOT NULL,
+  updated_at        TEXT NOT NULL
+);
+
+-- 4 · Orders: one artist, one unique original, EUR, integer cents. Money and entitlement are snapshotted when quoted.
+CREATE TABLE IF NOT EXISTS checkout_orders (
+  id                 TEXT PRIMARY KEY,
+  reference          TEXT NOT NULL UNIQUE CHECK (reference GLOB 'PA-O-*'),
+  artist_id          TEXT NOT NULL,
+  artwork_id         TEXT NOT NULL,
+  enquiry_ref        TEXT NOT NULL,
+  status             TEXT NOT NULL CHECK (status IN ('draft','awaiting_artist','quoted','checkout_open','paid','dispatched','delivered','closed',
+                                                      'expired','cancelled','payment_failed','refund_pending','refunded','disputed')),
+  payment_status     TEXT NOT NULL DEFAULT 'none' CHECK (payment_status IN ('none','open','paid','failed','partially_refunded','refunded')),
+  fulfilment_status  TEXT NOT NULL DEFAULT 'none' CHECK (fulfilment_status IN ('none','dispatched','delivered')),
+  dispute_status     TEXT NOT NULL DEFAULT 'none' CHECK (dispute_status IN ('none','open','won','lost')),
+  needs_resolution   TEXT,                                   -- set when a payment arrives that cannot complete a sale (e.g. already sold)
+  currency           TEXT NOT NULL DEFAULT 'eur' CHECK (currency = 'eur'),
+  artwork_cents      INTEGER CHECK (artwork_cents IS NULL OR artwork_cents BETWEEN 100 AND 999999),
+  delivery_cents     INTEGER CHECK (delivery_cents IS NULL OR delivery_cents BETWEEN 0 AND 200000),
+  commission_bp      INTEGER CHECK (commission_bp IS NULL OR commission_bp BETWEEN 0 AND 1500),
+  commission_cents   INTEGER,
+  commission_basis   TEXT,
+  entitlement        TEXT,                                   -- JSON evidence for the commission decision
+  exclusion          TEXT,
+  negotiation_note   TEXT CHECK (negotiation_note IS NULL OR length(negotiation_note) <= 1000),
+  delivery           TEXT,                                   -- JSON: packing, transport, cover, receipt, returns (rules.cleanDelivery)
+  artwork_snapshot   TEXT,                                   -- JSON: title, dimensions, medium as quoted
+  seller             TEXT,                                   -- JSON: the seller's identity as shown to the buyer
+  quote_version      INTEGER NOT NULL DEFAULT 1,
+  artist_approved_version INTEGER,
+  artist_approved_at TEXT,
+  artist_confirmations TEXT,                                 -- JSON: availability, location, condition, framing, dimensions, packing
+  quote_issued_at    TEXT,
+  quote_expires_at   TEXT,
+  addendum_doc_id    TEXT,
+  buyer_terms_doc_id TEXT,
+  buyer_terms_accepted_at TEXT,
+  buyer_token_hash   TEXT UNIQUE,
+  buyer_email        TEXT,
+  provider_account   TEXT,
+  payment_intent     TEXT UNIQUE,
+  charge_id          TEXT UNIQUE,
+  application_fee_id TEXT,
+  amount_received_cents INTEGER,
+  paid_at            TEXT,
+  livemode           INTEGER NOT NULL DEFAULT 0 CHECK (livemode = 0),
+  created_by         TEXT NOT NULL,
+  created_at         TEXT NOT NULL,
+  updated_at         TEXT NOT NULL,
+  CHECK (commission_cents IS NULL OR (commission_cents >= 0 AND commission_cents <= artwork_cents))
+);
+CREATE INDEX IF NOT EXISTS checkout_orders_artist ON checkout_orders(artist_id, created_at);
+CREATE INDEX IF NOT EXISTS checkout_orders_artwork ON checkout_orders(artwork_id);
+
+-- 5 · One reservation per original, with an explicit expiry. The PRIMARY KEY is what stops two checkouts at once.
+CREATE TABLE IF NOT EXISTS artwork_reservations (
+  artwork_id    TEXT PRIMARY KEY,
+  order_id      TEXT NOT NULL UNIQUE REFERENCES checkout_orders(id),
+  quote_version INTEGER NOT NULL,
+  expires_at    TEXT NOT NULL,
+  created_at    TEXT NOT NULL
+);
+
+-- 6 · One sale per original. The partial unique index makes a second concurrent sale impossible at the database.
+CREATE TABLE IF NOT EXISTS artwork_sales (
+  order_id    TEXT PRIMARY KEY REFERENCES checkout_orders(id),
+  artwork_id  TEXT NOT NULL,
+  sold_at     TEXT NOT NULL,
+  released_at TEXT,
+  released_reason TEXT
+);
+CREATE UNIQUE INDEX IF NOT EXISTS artwork_sales_one_active ON artwork_sales(artwork_id) WHERE released_at IS NULL;
+CREATE TRIGGER IF NOT EXISTS artwork_sales_no_delete BEFORE DELETE ON artwork_sales
+BEGIN SELECT RAISE(ABORT, 'artwork_sales rows are never removed; release them with a reason'); END;
+
+-- 7 · Hosted checkout sessions. At most one open session per order; a revised quote supersedes it first.
+CREATE TABLE IF NOT EXISTS checkout_sessions (
+  id              TEXT PRIMARY KEY CHECK (id GLOB 'cs_test_*'),
+  order_id        TEXT NOT NULL REFERENCES checkout_orders(id),
+  quote_version   INTEGER NOT NULL,
+  amount_total    INTEGER NOT NULL,
+  application_fee_cents INTEGER NOT NULL,
+  status          TEXT NOT NULL CHECK (status IN ('open','complete','expired','superseded')),
+  url             TEXT,
+  expires_at      TEXT NOT NULL,
+  created_at      TEXT NOT NULL,
+  updated_at      TEXT NOT NULL
+);
+CREATE UNIQUE INDEX IF NOT EXISTS checkout_sessions_one_open ON checkout_sessions(order_id) WHERE status = 'open';
+
+-- 8 · Verified provider events. The provider's event id is unique: a repeated delivery is recognised, never re-applied.
+CREATE TABLE IF NOT EXISTS payment_events (
+  event_id     TEXT PRIMARY KEY CHECK (event_id GLOB 'evt_*'),
+  type         TEXT NOT NULL,
+  account      TEXT,
+  livemode     INTEGER NOT NULL CHECK (livemode = 0),
+  created      INTEGER NOT NULL,
+  object_id    TEXT,
+  order_id     TEXT,
+  status       TEXT NOT NULL CHECK (status IN ('received','processed','ignored','deferred','failed')),
+  attempts     INTEGER NOT NULL DEFAULT 1,
+  detail       TEXT,
+  received_at  TEXT NOT NULL,
+  processed_at TEXT
+);
+
+-- 9 · The money ledger, append-only. Positive = towards the party named by kind; refunds and disputes are negative.
+--     (kind, provider_ref) is unique so a repeated event can never book the same movement twice.
+CREATE TABLE IF NOT EXISTS order_ledger (
+  id           TEXT PRIMARY KEY,
+  order_id     TEXT NOT NULL REFERENCES checkout_orders(id),
+  kind         TEXT NOT NULL CHECK (kind IN ('charge','commission','artist_artwork','delivery_allocation',
+                 'artwork_refund','delivery_refund','commission_refund','dispute','dispute_reinstated','external_refund','adjustment')),
+  amount_cents INTEGER NOT NULL,
+  provider_ref TEXT,
+  at           TEXT NOT NULL,
+  note         TEXT,
+  UNIQUE (kind, provider_ref)
+);
+CREATE INDEX IF NOT EXISTS order_ledger_order ON order_ledger(order_id, at);
+CREATE TRIGGER IF NOT EXISTS order_ledger_no_update BEFORE UPDATE ON order_ledger
+BEGIN SELECT RAISE(ABORT, 'order_ledger is append-only; add an adjustment'); END;
+CREATE TRIGGER IF NOT EXISTS order_ledger_no_delete BEFORE DELETE ON order_ledger
+BEGIN SELECT RAISE(ABORT, 'order_ledger is append-only'); END;
+
+-- 10 · Refunds requested by the founder (the artist, as seller, can also refund in their own Stripe Dashboard: those
+--      arrive as provider events and are booked as external_refund for founder review).
+CREATE TABLE IF NOT EXISTS order_refunds (
+  id                  TEXT PRIMARY KEY,
+  order_id            TEXT NOT NULL REFERENCES checkout_orders(id),
+  artwork_cents       INTEGER NOT NULL CHECK (artwork_cents >= 0),
+  delivery_cents      INTEGER NOT NULL CHECK (delivery_cents >= 0),
+  commission_refund_cents INTEGER NOT NULL CHECK (commission_refund_cents >= 0),
+  reason              TEXT NOT NULL CHECK (length(reason) BETWEEN 3 AND 500),
+  status              TEXT NOT NULL CHECK (status IN ('pending','succeeded','failed')),
+  provider_refund_id  TEXT UNIQUE,
+  fee_refund_id       TEXT UNIQUE,
+  error               TEXT,
+  requested_by        TEXT NOT NULL,
+  created_at          TEXT NOT NULL,
+  updated_at          TEXT NOT NULL,
+  CHECK (artwork_cents + delivery_cents > 0)
+);
+
+-- 11 · Fulfilment evidence, append-only: confirmations, dispatch, delivery, signed receipt, condition photographs.
+CREATE TABLE IF NOT EXISTS order_fulfilment_events (
+  id        TEXT PRIMARY KEY,
+  order_id  TEXT NOT NULL REFERENCES checkout_orders(id),
+  kind      TEXT NOT NULL CHECK (kind IN ('dispatched','delivered','signed_receipt','condition_photos','tracking','note')),
+  actor     TEXT NOT NULL,
+  at        TEXT NOT NULL,
+  evidence  TEXT NOT NULL CHECK (length(evidence) BETWEEN 2 AND 2000)
+);
+CREATE TRIGGER IF NOT EXISTS order_fulfilment_events_no_update BEFORE UPDATE ON order_fulfilment_events
+BEGIN SELECT RAISE(ABORT, 'order_fulfilment_events is append-only'); END;
+CREATE TRIGGER IF NOT EXISTS order_fulfilment_events_no_delete BEFORE DELETE ON order_fulfilment_events
+BEGIN SELECT RAISE(ABORT, 'order_fulfilment_events is append-only'); END;
+
+-- 12 · Order audit: actor, action, time, prior and new status. Append-only.
+CREATE TABLE IF NOT EXISTS order_events (
+  id          INTEGER PRIMARY KEY AUTOINCREMENT,
+  order_id    TEXT NOT NULL REFERENCES checkout_orders(id),
+  at          TEXT NOT NULL,
+  actor       TEXT NOT NULL,
+  action      TEXT NOT NULL,
+  prior_status TEXT,
+  new_status  TEXT,
+  detail      TEXT
+);
+CREATE INDEX IF NOT EXISTS order_events_order ON order_events(order_id, id);
+CREATE TRIGGER IF NOT EXISTS order_events_no_update BEFORE UPDATE ON order_events
+BEGIN SELECT RAISE(ABORT, 'order_events is append-only'); END;
+CREATE TRIGGER IF NOT EXISTS order_events_no_delete BEFORE DELETE ON order_events
+BEGIN SELECT RAISE(ABORT, 'order_events is append-only'); END;

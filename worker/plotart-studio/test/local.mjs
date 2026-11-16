@@ -26,24 +26,26 @@ export function token(email, { aud = AUD, iss = TEAM, exp = 3600, kid = KID, key
 }
 export const otherKey = generateKeyPairSync('rsa', { modulusLength: 2048 }).privateKey;
 
-export async function start({ port, env = {}, enquiry = null, ideas = null, garden = null, script = null, persist = null, schemaSql = undefined } = {}) {
+export async function start({ port, env = {}, enquiry = null, ideas = null, garden = null, checkout = null, outbound = null, script = null, persist = null, schemaSql = undefined } = {}) {
   // persist: keep the local D1 in this folder (to run two Studio versions in turn on one database); schemaSql: the schema
   // to install instead of schema.sql, or null to install none (an existing persisted database).
   const common = { modules: true, modulesRoot: HERE, modulesRules: [{ type: 'ESModule', include: ['**/*.js'] }], compatibilityDate: '2026-08-01' };
   const workers = [{ name: 'studio', ...common, scriptPath: HERE + (script || 'src/index.js'), d1Databases: { DB: 'plotart-studio-local' }, r2Buckets: ['IMAGES', 'APPLICATIONS'],
     bindings: { ENVIRONMENT: 'local', MAILER: 'capture', ACCESS_TEAM_DOMAIN: TEAM, ACCESS_AUD: AUD, ACCESS_JWKS_JSON: JSON.stringify({ keys: [jwk] }),
-      FOUNDER_EMAILS: FOUNDER, PIPELINE_TOKEN, INSTANT_AUTOPUBLISH: 'false', ...env } }];
+      FOUNDER_EMAILS: FOUNDER, PIPELINE_TOKEN, INSTANT_AUTOPUBLISH: 'false', ...env }, ...(outbound ? { outboundService: outbound } : {}) }];
   if (enquiry) workers.push({ name: 'enquiry', routes: ['enquiry.local/*', '*/v1/enquiry', '*/v1/hire-enquiry', '*/v1/hire-listed'], ...common, scriptPath: HERE + 'src/enquiry.js', d1Databases: { DB: 'plotart-studio-local' },
     bindings: { ENVIRONMENT: 'local', ORIGIN: 'https://plotnua.ie', ENQUIRIES_ENABLED: 'true', MAILER: 'capture', REPLY_TO: 'hello@plotnua.ie', ...enquiry } });
   if (ideas) workers.push({ name: 'ideas', routes: ['ideas.local/*', '*/v1/ideas'], ...common, scriptPath: HERE + 'src/ideas.js', d1Databases: { DB: 'plotart-studio-local' },
     bindings: { ENVIRONMENT: 'local', ORIGIN: 'https://plotnua.ie', IDEAS_ENABLED: 'true', ...ideas } });   // Idea Board intake (1 Nov 2026)
   if (garden) workers.push({ name: 'garden', routes: ['garden.local/*', '*/v1/garden-listings'], ...common, scriptPath: HERE + 'src/garden.js', d1Databases: { DB: 'plotart-studio-local' },
     bindings: { ENVIRONMENT: 'local', ORIGIN: 'https://plotnua.ie', GARDEN_ENABLED: 'true', ...garden } });   // Borrowed Garden noticeboard intake (4 Nov 2026)
+  if (checkout) workers.push({ name: 'checkout', routes: ['checkout.local/*'], ...common, scriptPath: HERE + (checkout.script || 'src/checkout-public.js'), d1Databases: { DB: 'plotart-studio-local' },
+    bindings: { ENVIRONMENT: 'local', ...checkout.env }, ...(outbound ? { outboundService: outbound } : {}) });   // managed checkout pilot (16 Nov 2026)
   const mf = new Miniflare({ workers, ...(port ? { port, host: '127.0.0.1' } : {}), ...(persist ? { d1Persist: persist } : {}) });
   const db = await mf.getD1Database('DB', 'studio');
   for (const stmt of statements(schemaSql === undefined ? readFileSync(HERE + 'schema.sql', 'utf8') : schemaSql || '')) await db.prepare(stmt).run();   // triggers kept whole (migration 0005)
   if (schemaSql !== null) await db.prepare('CREATE TABLE IF NOT EXISTS mail_capture (id INTEGER PRIMARY KEY AUTOINCREMENT, at TEXT, to_addr TEXT, reply_to TEXT, subject TEXT, body TEXT)').run();   // tests only
-  return { mf, db, url: (await mf.ready).toString().replace(/\/$/, ''), enquiryWorker: enquiry ? await mf.getWorker('enquiry') : null, ideasWorker: ideas ? await mf.getWorker('ideas') : null, gardenWorker: garden ? await mf.getWorker('garden') : null };
+  return { mf, db, url: (await mf.ready).toString().replace(/\/$/, ''), enquiryWorker: enquiry ? await mf.getWorker('enquiry') : null, ideasWorker: ideas ? await mf.getWorker('ideas') : null, gardenWorker: garden ? await mf.getWorker('garden') : null, checkoutWorker: checkout ? await mf.getWorker('checkout') : null };
 }
 
 if (process.argv.includes('--serve')) {
