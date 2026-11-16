@@ -35,7 +35,7 @@ def build(tmp, state):
         for f in ("index.html", "founding-25.html", "join.html", "curatorial-policy.html", "assets/pa-apply.js", "assets/plotart-join.css", "gallery/index.html"):
             man["files"][f] = hashlib.sha256(open(os.path.join(site, "plotart", f), "rb").read()).hexdigest()
     else:   # a closed state: pinned to that state's build (as a closing release would re-pin it); no recruitment file is pinned
-        for f in ("index.html", "founding-25.html", "gallery/index.html"):
+        for f in ("index.html", "founding-25.html", "gallery/index.html", "living-gallery.html"):
             man["files"][f] = hashlib.sha256(open(os.path.join(site, "plotart", f), "rb").read()).hexdigest()
         for f in ("join.html", "curatorial-policy.html", "assets/pa-apply.js", "assets/plotart-join.css"):
             man["files"].pop(f, None)
@@ -101,6 +101,8 @@ def closed_matches(built, f, m):
         return built == m
     if f == "founding-25.html":
         return built == _cut(m, "<!-- pa-artist-apply-pointer:begin -->", "<!-- pa-artist-apply-pointer:end -->", before="\n  ")
+    if f == "living-gallery.html":   # the For artists "Apply to join PlotArt" link (16 Nov 2026); the gallery link stays
+        return built == _cut(m, "<!-- pa-artist-apply-living:begin -->", "<!-- pa-artist-apply-living:end -->")
     if f == "gallery/index.html":
         return built == _cut(_unlink(m, '\n<link rel="stylesheet" href="../assets/plotart-join.css">'),
                              "<!-- pa-artist-apply-gallery:begin -->", "<!-- pa-artist-apply-gallery:end -->", after="\n\n")
@@ -141,7 +143,7 @@ try:
     check("O3 open: the script is the Founding 25 script with only its page hooks renamed", body(js) == body(f25js).replace("data-f25-", "data-ap-").replace("'f25-", "'ap-"))
     for st in ("not_open", "paused", "closed"):
         check("N %s: nothing published: homepage, Founding 25 page and Artists' Gallery as committed less only the recruitment (exactly as committed, and so as main, while closed), no recruitment page or script" % st,
-              closed_same(S[st][0], "index.html") and closed_same(S[st][0], "founding-25.html") and closed_same(S[st][0], "gallery/index.html") and absent(S[st][0]))
+              closed_same(S[st][0], "index.html") and closed_same(S[st][0], "founding-25.html") and closed_same(S[st][0], "gallery/index.html") and closed_same(S[st][0], "living-gallery.html") and absent(S[st][0]))
     # the closed-state comparison itself refuses a closed build that differs from main anywhere outside the recruitment
     _c = open(os.path.join(S["closed"][0], "plotart", "index.html"), encoding="utf-8").read()
     _g = open(os.path.join(S["closed"][0], "plotart", "gallery", "index.html"), encoding="utf-8").read()
@@ -170,6 +172,12 @@ try:
                       "An invitation to join PlotArt." in bv and not re.search(r"\d|%|commission|fee|exclusiv", bv, re.I) and 'href="join.html"' in band and 'href="gallery/"' in band),
                      ("W9 the Artists' Gallery carries the invitation above the collection: no figures or commercial terms, linking to Join PlotArt",
                       gal_ok(open(os.path.join(site, "plotart", "gallery", "index.html"), encoding="utf-8").read())),
+                     ("W10 the Living Gallery For artists section keeps its Artists' Gallery link and, only while open, the one Apply to join PlotArt link",
+                      (lambda lgo: lgo.count("pa-artist-apply-living:begin") == 1 and 'href="gallery/" data-pa-track="living_artists_gallery"' in lgo
+                       and '<!-- pa-artist-apply-living:begin --><a href="join.html" data-pa-track="living_artists_join">Apply to join PlotArt →</a><!-- pa-artist-apply-living:end -->' in lgo)(open(os.path.join(site, "plotart", "living-gallery.html"), encoding="utf-8").read())
+                      and all('join.html' not in open(os.path.join(S[st][0], "plotart", "living-gallery.html"), encoding="utf-8").read()
+                              and 'href="gallery/" data-pa-track="living_artists_gallery"' in open(os.path.join(S[st][0], "plotart", "living-gallery.html"), encoding="utf-8").read()
+                              for st in ("not_open", "paused", "closed"))),
                      ("W8 the scoped stylesheet is linked by the homepage only while open (and by no page of the not_open, paused or closed builds)",
                       'href="assets/plotart-join.css"' in home_o and not any('plotart-join.css' in open(os.path.join(S[st][0], "plotart", f), encoding="utf-8").read()
                                                                               for st in ("not_open", "paused", "closed") for f in ("index.html", "gallery/index.html", "founding-25.html")))):

@@ -394,11 +394,31 @@ def gallery_page(s):
     return s.replace(G_CSS_LINK, G_CSS_LINK + G_JOIN_CSS_LINK).replace(G_ANCHOR, gallery_band() + "\n" + G_ANCHOR)
 
 
+LB, LE = "<!-- pa-artist-apply-living:begin -->", "<!-- pa-artist-apply-living:end -->"
+L_ANCHOR = '<a href="gallery/" data-pa-track="living_artists_gallery">Explore the Artists’ Gallery →</a>'
+L_LINK = '<a href="join.html" data-pa-track="living_artists_join">Apply to join PlotArt →</a>'
+
+
+def living_page(s):
+    # The Living Gallery "For artists" links (founder decision 16 Nov 2026): the Artists' Gallery link is fixed; the
+    # application link exists only while applications are open, directly after it, and disappears in every other state.
+    if LB in s:
+        a, b = s.index(LB), s.index(LE) + len(LE)
+        s = s[:a] + s[b:]
+    if not OPEN:
+        return s
+    if s.count(L_ANCHOR) != 1:
+        raise SystemExit("living-gallery.html: the Artists' Gallery link in the For artists section not found exactly once")
+    return s.replace(L_ANCHOR, L_ANCHOR + LB + L_LINK + LE)
+
+
 def outputs():
     home = open(os.path.join(PA, "index.html"), encoding="utf-8").read()
     f25 = open(os.path.join(PA, "founding-25.html"), encoding="utf-8").read()
     gal = open(os.path.join(PA, "gallery", "index.html"), encoding="utf-8").read()
-    out = {"index.html": homepage(home), "founding-25.html": f25_page(f25), "gallery/index.html": gallery_page(gal)}
+    lg = open(os.path.join(PA, "living-gallery.html"), encoding="utf-8").read()
+    out = {"index.html": homepage(home), "founding-25.html": f25_page(f25), "gallery/index.html": gallery_page(gal),
+           "living-gallery.html": living_page(lg)}
     if OPEN:
         out.update({"join.html": join_page(), "curatorial-policy.html": policy_page()})
     return out

@@ -545,6 +545,7 @@ for _lg_need in ("Your art. In someone’s home.", "Imagine your work becoming p
                  "If you’re already a PlotArt artist, you can register your interest through the Opportunities section of your Artist Studio."):
     need(_lg_need in artv, "L12 the Living Gallery artist section is not the approved wording (missing: %s)" % _lg_need)
 need(art is not None and not re.search(r'href="https?://|workers\.dev|<form\b', art.group(0)), "L12 the Living Gallery artist section must not link out, expose a Studio address or carry a form")
+need(art is not None and 'href="gallery/" data-pa-track="living_artists_gallery">Explore the Artists’ Gallery →</a>' in art.group(0), "L12 the Living Gallery artist section must link to the Artists' Gallery")
 need(not re.search(r"confirmed placement|placement is confirmed|will be placed|we will place", artv, re.I), "L12 the Living Gallery artist section implies a confirmed placement")
 need(not re.search(r"priority|guarantee|apply now|applications are open|book|sign up", artv, re.I), "L12 the Living Gallery artist section implies priority, a guarantee or an operational service")
 need("25 artists. A new home for Irish art." in f25mv, "L12 the Founding 25 programme headline is not the approved wording")
