@@ -42,6 +42,9 @@
     var subject = box.getAttribute('data-subject') || 'the property';
     var start = parseFloat(box.getAttribute('data-start'));
     if (isNaN(start)) start = 35;
+    /* Founder update, 16 Nov 2026: legacy full-before heroes now open one
+       fifth in from the right. Explicit intermediate starts stay configurable. */
+    if (box.classList.contains('pn-compare--hero') && start === 100) start = 80;
 
     var pos = start, queued = false, anim = null;
 

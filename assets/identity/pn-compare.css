@@ -245,6 +245,8 @@ body:has(> .pn-return) .d-hero.pn-hero-compare{ height:min(92svh, calc(100svh - 
 .pn-compare__before{ background:var(--pnc-anth); }
 @media (scripting:enabled){
   .pn-compare[data-start="100"]:not(.is-live){ --pos:100%; }
+  /* Match the updated hero opening before JavaScript initialises, avoiding a jump. */
+  .pn-compare--hero[data-start="100"]:not(.is-live){ --pos:80%; }
   .pn-compare[data-start="100"]:not(.is-live) .pn-compare__before{ display:block; }
 }
 .pn-compare.is-live .pn-compare__knob{ left:clamp(30px, var(--pos), calc(100% - 30px)); }
