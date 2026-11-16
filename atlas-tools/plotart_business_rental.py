@@ -20,16 +20,16 @@ REGION = BEGIN + """
 <p class="afh-business-status">The rental programme is being prepared. These are the standard terms proposed for participating works, subject to each artist and business signing the completed agreements. No works are currently listed for rental, and an enquiry does not make a booking.</p>
 </div>
 </div>
-<dl class="afh-terms">
-<div><dt>A clear monthly charge</dt><dd>The standard monthly charge is <strong>4% of the agreed artwork sale-price basis: 3% to the artist and 1% to PlotArt</strong>, a 75% / 25% split of the combined charge. Each artist approves the work, price basis and actual amounts before listing.</dd></div>
-<div><dt>Six months, with replacements</dt><dd>The initial arrangement is six months. If a painting sells, we seek a suitable replacement. A replacement does not restart the six months.</dd></div>
-<div><dt>The business funds the practical costs</dt><dd>The renting business pays approved packing, delivery, hanging, removal, return and the required artwork insurance. Neither artist nor PlotArt is expected to front these costs.</dd></div>
-</dl>
-<div class="afh-business-price">
-<div class="afh-business-price-head">
-<h3>What the rental costs</h3>
-<p>Calculations illustrate the standard rate; they are not available artwork listings. Transport, insurance, any deposit and any separately applicable VAT are not included. Your written proposal must show the actual total and tax treatment before you commit.</p>
+<div class="afh-brow">
+<h3 class="afh-brow-h">How it works</h3>
+<div class="afh-brow-c">
+<p><strong>Six months, with replacements.</strong> The initial arrangement is six months. If a painting sells, we seek a suitable replacement. A replacement does not restart the six months.</p>
 </div>
+</div>
+<div class="afh-brow">
+<h3 class="afh-brow-h">What it costs</h3>
+<div class="afh-brow-c">
+<p><strong>A clear monthly charge.</strong> The standard monthly charge is <strong>4% of the agreed artwork sale-price basis: 3% to the artist and 1% to PlotArt</strong>, a 75% / 25% split of the combined charge. Each artist approves the work, price basis and actual amounts before listing.</p>
 <div class="afh-business-table"><table>
 <caption>Monthly rental and platform charges</caption>
 <thead><tr><th scope="col">Agreed price basis</th><th scope="col">Business pays monthly</th><th scope="col">Artist receives</th><th scope="col">PlotArt receives</th></tr></thead>
@@ -38,11 +38,16 @@ REGION = BEGIN + """
 <tr><th scope="row">€2,000</th><td>€80</td><td>€60</td><td>€20</td></tr>
 <tr><th scope="row">€3,000</th><td>€120</td><td>€90</td><td>€30</td></tr>
 <tr><th scope="row">€5,000</th><td>€200</td><td>€150</td><td>€50</td></tr>
-</tbody></table>
-<p class="afh-business-note">For a €2,000 price basis, six months is €480 in rental and platform charges: €360 to the artist and €120 to PlotArt. Rent is not automatically credited towards buying the painting.</p></div>
+</tbody></table></div>
+<p class="afh-business-note">For a €2,000 price basis, six months is €480 in rental and platform charges: €360 to the artist and €120 to PlotArt. Rent is not automatically credited towards buying the painting.</p>
+<p class="afh-business-note">Calculations illustrate the standard rate; they are not available artwork listings. Transport, insurance, any deposit and any separately applicable VAT are not included. Your written proposal must show the actual total and tax treatment before you commit.</p>
 </div>
+</div>
+<div class="afh-brow">
+<h3 class="afh-brow-h">Who pays for what</h3>
+<div class="afh-brow-c">
+<p><strong>The business funds the practical costs.</strong> The renting business pays approved packing, delivery, hanging, removal, return and the required artwork insurance. Neither artist nor PlotArt is expected to front these costs.</p>
 <div class="afh-more">
-<h3 class="afh-more-h">The details</h3>
 <details id="sale-first">
 <summary>If the work sells</summary>
 <div><p>If a painting sells, we follow the agreed notice and changeover procedure and seek a suitable replacement approved by the business and its owner. If none is agreed, charges for the affected work stop and unused prepaid fees are refunded.</p>
@@ -67,6 +72,15 @@ REGION = BEGIN + """
 </details>
 </div>
 </div>
+</div>
+<div class="afh-brow afh-brow--enquire" id="business-enquire">
+<h3 class="afh-brow-h">How to enquire</h3>
+<div class="afh-brow-c">
+<p>Start with your location, wall sizes, approximate number of works, budget and preferred dates. We can begin by email or phone. Artwork, terms, care and costs are confirmed individually.</p>
+<p class="afh-close-acts"><a class="afh3-btn" href="mailto:hello@plotnua.ie?subject=Business%20art%20purchase%20or%20rental">Discuss hiring art for your space</a> <a class="afh3-link" href="../gallery/">Browse art to buy</a></p>
+</div>
+</div>
+</div>
 </section>
 
 <section class="afh-artists" id="for-artists" aria-labelledby="afh3-artists-h">
@@ -83,16 +97,6 @@ REGION = BEGIN + """
 <p><a class="afh3-btn" href="../downloads/plotart-business-rental-artist-guide-and-agreement.pdf?v=1.1" download>Download artist guide and agreement (PDF)</a></p>
 <p class="afh-business-version">PA-BHR-2026-11 · Version 1.1 · 16 November 2026</p>
 </div>
-</div>
-</div>
-</section>
-
-<section class="afh-close" aria-labelledby="afh-close-h">
-<div class="pa-wrap afh-close-grid">
-<h2 id="afh-close-h">Buying or renting for your business?</h2>
-<div>
-<p>Start with your location, wall sizes, approximate number of works, budget and preferred dates. We can begin by email or phone. Artwork, terms, care and costs are confirmed individually.</p>
-<p class="afh-close-acts"><a class="afh3-btn" href="mailto:hello@plotnua.ie?subject=Business%20art%20purchase%20or%20rental">Discuss your space</a> <a class="afh3-link" href="../gallery/">Browse art to buy</a></p>
 </div>
 </div>
 </section>

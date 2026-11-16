@@ -123,11 +123,13 @@ def body(cards, api, form):
 <section class="afh-paths" aria-label="Who Art for Hire is for"><div class="pa-wrap afh-paths-grid">
   <div class="afh-path">
     <h2>For businesses</h2>
-    <p>Hire a work for a production, an interior or a staged home, on dates and terms you agree with the artist. <a href="#afh3-how">How a hire works</a></p>%(business_path)s
+    <p>Hire original work for a set, an interior or a staged home.%(business_line)s</p>
+    <p class="afh-path-act">%(business_cta)s</p>
   </div>
   <div class="afh-path">
     <h2>For artists</h2>
-    <p>Offer selected works for hire from your PlotArt Studio account once Art for Hire opens to artists. Taking part is optional. <a href="#for-artists">Taking part</a></p>
+    <p>Offer selected works on your own terms from your PlotArt Studio, once Art for Hire opens to artists.</p>
+    <p class="afh-path-act"><a class="afh3-link" href="#for-artists">Read the artist terms</a></p>
   </div>
 </div></section>
 
@@ -149,7 +151,7 @@ def body(cards, api, form):
 
 <section class="afh3-scenes" aria-labelledby="afh3-scenes-h">
   <div class="pa-wrap afh3-scenes-h"><h2 id="afh3-scenes-h">Where a hired work goes</h2><p>One painting, three settings. The settings are illustrations; the painting is real.</p></div>
-  <div class="afh3-scene-row">%(scenes)s</div>
+  <div class="afh3-scene-row" role="region" aria-label="Three illustrated settings" tabindex="0">%(scenes)s</div>
 </section>
 
 <section class="pa-hire-gal afh3-works" id="afh3-works" aria-labelledby="pa-hire-gal-h"><div class="pa-wrap">
@@ -164,8 +166,11 @@ def body(cards, api, form):
 <script src="hire-live.js" data-api="%(api)s" data-enquiries="%(enq)s" defer></script>
 """ % {"art": SCENES.ART, "alt": SCENES.HERO_ALT, "credit": SCENES.CREDIT, "scenes": SCENES.SCENES, "region": region(cards),
        "api": E(api), "enq": "on" if form else "off",
-       "business_path": ('\n    <p>Rent original art for an office, hotel or shared workspace for an initial six months, while it remains for sale. '
-                         '<a href="#business-rentals">Business rentals</a></p>') if business_on else "",
+       "business_line": " Or rent it for your workplace while it remains for sale." if business_on else "",
+       "business_cta": ('<a class="afh3-btn" href="mailto:hello@plotnua.ie?subject=Business%20art%20purchase%20or%20rental">Discuss hiring art for your space</a>'
+                        '<span class="afh-path-more"><a href="#afh3-how">How a hire works</a><a href="#business-rentals">Business rentals</a></span>') if business_on
+                       else ('<a class="afh3-btn" href="mailto:hello@plotnua.ie?subject=Art%20for%20Hire%20brief">Discuss hiring art for your space</a>'
+                             '<span class="afh-path-more"><a href="#afh3-how">How a hire works</a></span>'),
        "after": BUSINESS.REGION if business_on else ARTISTS_ONLY}
 
 
