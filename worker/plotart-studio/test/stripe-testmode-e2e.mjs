@@ -62,12 +62,12 @@ export async function e2e({ rec, KEY, ACCOUNT, RUN, port, whsec, stripe, sleep }
     // screenshots and redacted from accessibility snapshots; URLs are reduced to origin + path (no query, no fragment).
     const DIAG = (tag, name) => `${HERE}stripe-test-evidence/checkout-${tag}-${name}`;
     const safeUrl = u => { try { const x = new URL(u); return x.origin + x.pathname.replace(/cs_(test|live)_[A-Za-z0-9]+/, 'cs_…'); } catch { return String(u).slice(0, 60); } };
-    const redact = t => String(t || '').replace(/^(\s*- (?:textbox|combobox|spinbutton|searchbox)[^:\n]*):.*$/gm, '$1: [redacted]').replace(/[\w.+-]+@[\w-]+\.[\w.]+/g, '[email]');
+    const redact = t => String(t || '').replace(/^\s*- option .*\n?/gm, '').replace(/^(\s*- (?:textbox|combobox|spinbutton|searchbox)[^:\n]*):.*$/gm, '$1: [redacted]').replace(/[\w.+-]+@[\w-]+\.[\w.]+/g, '[email]');
     async function snapshot(page, tag, stage) {
       const out = { stage, url: safeUrl(page.url()), title: await page.title().catch(() => ''), frames: [] };
       for (const f of page.frames()) {
         let aria = ''; try { aria = await f.locator('body').ariaSnapshot({ timeout: 5000 }); } catch (e) { aria = 'unavailable: ' + String(e.message).split('\n')[0]; }
-        out.frames.push({ url: safeUrl(f.url()), aria: redact(aria).slice(0, 6000) });
+        out.frames.push({ url: safeUrl(f.url()), aria: redact(aria).slice(0, 8000) });
       }
       const masks = page.frames().map(f => f.locator('input'));
       await page.screenshot({ path: DIAG(tag, stage + '.png'), fullPage: true, mask: masks }).catch(() => {});
@@ -105,14 +105,21 @@ export async function e2e({ rec, KEY, ACCOUNT, RUN, port, whsec, stripe, sleep }
         await fillIf(f => f.getByRole('textbox', { name: /expir|mm \/ yy/i }).or(f.locator('#cardExpiry, input[autocomplete="cc-exp"]')), '12 / 34');
         await fillIf(f => f.getByRole('textbox', { name: /cvc|security code/i }).or(f.locator('#cardCvc, input[autocomplete="cc-csc"]')), '123');
         await fillIf(f => f.getByRole('textbox', { name: /name on card|cardholder/i }).or(f.locator('#billingName, input[autocomplete="cc-name"]')), 'E2E Test Buyer', 2_000);
-        const ctry = await anyFrame(page, f => f.locator('#billingCountry, select[autocomplete="country"]'), 2_000); if (ctry) await ctry.selectOption('IE').catch(() => {});
+        const ctry = await anyFrame(page, f => f.getByRole('combobox', { name: /^country/i }).or(f.locator('#billingCountry, select[autocomplete="country"]')), 3_000);
+        if (ctry) { await ctry.selectOption('IE').catch(() => ctry.selectOption({ label: 'Ireland' })).catch(() => {}); step('billing country: ' + (await ctry.inputValue().catch(() => '?'))); }
         await fillIf(f => f.getByRole('textbox', { name: /postal|eircode|zip/i }).or(f.locator('#billingPostalCode, input[autocomplete="postal-code"]')), 'D02 X285', 2_000);
         step('card details entered (values not recorded)');
-        const pay = await anyFrame(page, f => f.getByTestId('hosted-payment-submit-button').or(f.getByRole('button', { name: /^(pay|complete|buy)\b/i })).or(f.locator('.SubmitButton')), 30_000);
+        // the main Pay button only: an exact "Pay" / "Pay €…" name. Run 13 matched "Pay securely with Link" (Stripe's Link
+        // wallet), which opened a Link window instead of paying.
+        const pay = await anyFrame(page, f => f.getByTestId('hosted-payment-submit-button').or(f.getByRole('button', { name: /^pay(\s+€\s?[\d.,]+)?$/i })).or(f.locator('button.SubmitButton')), 30_000);
         if (!pay) throw new Error('Pay button not visible in the page or any frame');
         step('pay button visible: ' + ((await pay.getAttribute('data-testid').catch(() => null)) || (await pay.innerText().catch(() => '')).slice(0, 30)));
         await pay.click();
-        await page.waitForURL(/plotart-checkout-test\.invalid/, { timeout: 90_000 }); step('returned to success_url');
+        const back = page.waitForURL(/plotart-checkout-test\.invalid/, { timeout: 90_000 }).then(() => 'returned');
+        const linkWin = page.getByText(/complete your payment in the open link window/i).waitFor({ state: 'visible', timeout: 90_000 }).then(() => 'link');
+        const how = await Promise.race([back, linkWin]).catch(e => { throw e; });
+        if (how === 'link') throw new Error('a Link wallet window opened instead of the card payment');
+        step('returned to success_url');
         return { ok: true, diag };
       } catch (e) {
         step('ERROR ' + String(e.message).split('\n')[0].slice(0, 200));

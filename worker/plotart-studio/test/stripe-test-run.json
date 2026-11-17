@@ -1,10 +1,10 @@
 {
   "_note": "Changing this file on the pilot branch requests a run of .github/workflows/plotart-checkout-stripe-test.yml (Stripe TEST mode only; waits for the founder's approval on the checkout-test environment). Nothing is deployed.",
-  "requested": "2026-11-17T16:05:00Z",
+  "requested": "2026-11-17T16:35:00Z",
   "phases": [
     "provider",
     "e2e"
   ],
-  "reason": "Run 13 (replaces cancelled run 12): real hosted Checkout payment with full browser diagnostics (final URL, page errors, failed requests, redacted accessibility snapshot, masked screenshots); card form and Pay button searched across frames; E3/E7 marked blocked when payment did not happen; E8 requires the expected signed events; Adaptive Pricing off; Irish-card fee check.",
+  "reason": "Run 14: rerun the real signed-webhook tests. Run 13 diagnostics showed the browser clicked \"Pay securely with Link\" (Link wallet) instead of the main Pay button; now only an exact \"Pay\"/\"Pay €…\" button is clicked, a Link window is detected as an error, and the billing country is set to Ireland.",
   "reuse_account": "acct_1UclJXHx1Olx8cdw"
 }
