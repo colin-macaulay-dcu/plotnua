@@ -128,7 +128,7 @@
   async function home() {
     const o = await api('GET', '/api/admin/overview');
     const ready = o.queue.filter(q => q.status === 'awaiting_founder');
-    const live = o.artists.filter(a => a.state === 'live').length;
+    const live = o.artists.filter(a => a.gallery_live).length;  // galleries on plotnua.ie, even with an update queued
     app.innerHTML = `
       <h1 class="st-h1" style="margin-bottom:1.75rem">Review desk</h1>
       <div class="st-kpis">

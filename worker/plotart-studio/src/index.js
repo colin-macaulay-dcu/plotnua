@@ -757,11 +757,13 @@ async function saveGalleryOrder(env, founder, body) {
 
 async function overview(env) {
   const artists = await all(env, 'SELECT id, slug, email, display_name, founding, founding_number, account_status, licence_version, licence_accepted_at, first_published_at, application_ref, created_at FROM artists ORDER BY created_at');
+  // a gallery is live while its newest released job is not a removal (VISIBLE_SQL), whatever is queued behind it (17 Nov 2026)
+  const visible = new Set((await all(env, VISIBLE_SQL)).map(r => r.artist_id));
   const out = [];
   for (const a of artists) {
     const st = await status(env, a);
     const pt = await participation(env, a);
-    out.push({ ...a, programme: AG.programmeOf(a, await termsFor(env, a.id)), state: st.state, works: st.counts.works, problems: st.problems.length, live_version: st.live_version, latest_version: st.latest_version, agreement: st.agreement,
+    out.push({ ...a, programme: AG.programmeOf(a, await termsFor(env, a.id)), state: st.state, works: st.counts.works, problems: st.problems.length, live_version: st.live_version, gallery_live: visible.has(a.id), latest_version: st.latest_version, agreement: st.agreement,
       leave_requested_at: pt.request ? pt.request.at : null, ended_at: pt.ended ? pt.ended.at : null });
   }
   const subs = await all(env, `SELECT s.id, s.artist_id, s.created_at, s.tier, s.note, a.display_name FROM submissions s JOIN artists a ON a.id = s.artist_id
