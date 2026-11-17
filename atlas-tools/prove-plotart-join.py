@@ -170,12 +170,12 @@ try:
                      ("W6 no worked calculation, euro amount, large figure or 'deserves to be discovered' anywhere in the recruitment",
                       "€" not in jv and 'class="big"' not in j and "deserves" not in jv + bv and "€" not in bv),
                      ("W7 the homepage band is an invitation: no figures or commercial terms, links to Join PlotArt and the gallery",
-                      "An invitation to join PlotArt." in bv and not re.search(r"\d|%|commission|fee|exclusiv", bv, re.I) and 'href="join.html"' in band and 'href="gallery/"' in band),
+                      "An invitation to join PlotArt." in bv and not re.search(r"\d|%|commission|fee|exclusiv", bv, re.I) and 'href="join.html#apply"' in band and 'href="gallery/"' in band),
                      ("W9 the Artists' Gallery carries one 'Apply to join →' button in its introduction, above the collection, linking to Join PlotArt's gallery section",
                       gal_ok(open(os.path.join(site, "plotart", "gallery", "index.html"), encoding="utf-8").read())),
                      ("W10 the Living Gallery For artists section keeps its Artists' Gallery link and, only while open, the one Apply to join PlotArt link",
                       (lambda lgo: lgo.count("pa-artist-apply-living:begin") == 1 and 'href="gallery/" data-pa-track="living_artists_gallery"' in lgo
-                       and '<!-- pa-artist-apply-living:begin --><a href="join.html#your-gallery" data-pa-track="living_artists_join">Apply to join PlotArt →</a><!-- pa-artist-apply-living:end -->' in lgo)(open(os.path.join(site, "plotart", "living-gallery.html"), encoding="utf-8").read())
+                       and '<!-- pa-artist-apply-living:begin --><a class="pa-btn pa-btn--solid" href="join.html#your-gallery" data-pa-track="living_artists_join">Apply to join PlotArt</a><!-- pa-artist-apply-living:end -->' in lgo)(open(os.path.join(site, "plotart", "living-gallery.html"), encoding="utf-8").read())
                       and all('join.html' not in open(os.path.join(S[st][0], "plotart", "living-gallery.html"), encoding="utf-8").read()
                               and 'href="gallery/" data-pa-track="living_artists_gallery"' in open(os.path.join(S[st][0], "plotart", "living-gallery.html"), encoding="utf-8").read()
                               for st in ("not_open", "paused", "closed"))),

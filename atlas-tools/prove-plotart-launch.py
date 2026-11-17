@@ -123,6 +123,7 @@ ALLOWED |= ARTIST_FILES
 # Artist opportunity lists (16 Nov 2026): the opportunities page and the lists' stylesheet (plotart_opportunities)
 OPP_FILES = {"opportunities/index.html", "assets/plotart-opportunities.css"}
 ALLOWED |= OPP_FILES
+ALLOWED |= {"assets/plotart-living.css"}   # the Living Gallery page refinement (17 Nov 2026)
 # Art for Hire (Stage 3B-6): the page, its two assets and the fourth gallery tab exist ONLY when the founder switches
 # art_for_hire_page on (release approval). Off (or absent): no hire file may exist and no page may link to it or carry the tab.
 HIRE_ON = launch.get("art_for_hire_page") is True
@@ -563,7 +564,7 @@ for _lg_need in ("Your art. In someone’s home.", "Imagine your work becoming p
                  "If you’re already a PlotArt artist, you can register your interest through the Opportunities section of your Artist Studio."):
     need(_lg_need in artv, "L12 the Living Gallery artist section is not the approved wording (missing: %s)" % _lg_need)
 need(art is not None and not re.search(r'href="https?://|workers\.dev|<form\b', art.group(0)), "L12 the Living Gallery artist section must not link out, expose a Studio address or carry a form")
-need(art is not None and 'href="gallery/" data-pa-track="living_artists_gallery">Explore the Artists’ Gallery →</a>' in art.group(0), "L12 the Living Gallery artist section must link to the Artists' Gallery")
+need(art is not None and 'href="gallery/" data-pa-track="living_artists_gallery">Explore the Artists’ Gallery</a>' in art.group(0), "L12 the Living Gallery artist section must link to the Artists' Gallery")
 need(not re.search(r"confirmed placement|placement is confirmed|will be placed|we will place", artv, re.I), "L12 the Living Gallery artist section implies a confirmed placement")
 need(not re.search(r"priority|guarantee|apply now|applications are open|book|sign up", artv, re.I), "L12 the Living Gallery artist section implies priority, a guarantee or an operational service")
 need("25 artists. A new home for Irish art." in f25mv, "L12 the Founding 25 programme headline is not the approved wording")
@@ -778,7 +779,7 @@ else:
     need(_band is not None and home.count("<!-- pa-artist-apply:begin -->") == 1 and "f25InviteH" not in home, "L18 open: the homepage carries the artist band once, in place of the closed Founding 25 band")
     if _band:
         _bv = re.sub(r"\s+", " ", visible_text(_band.group(1)))
-        need('href="join.html"' in _band.group(1) and 'href="gallery/"' in _band.group(1) and "An invitation to join PlotArt." in _bv,
+        need('href="join.html#apply"' in _band.group(1) and 'href="gallery/"' in _band.group(1) and "An invitation to join PlotArt." in _bv,
              "L18 the homepage band must be the invitation, linking to Join PlotArt and the gallery")
         need(not re.search(r"\d|%|€|commission|fee|exclusiv|deserves", _bv, re.I), "L18 the homepage band carries figures, commercial terms or promotional wording")
     # the Artists' Gallery application button (founder decisions 16 Nov 2026): once, inside the compact introduction, above

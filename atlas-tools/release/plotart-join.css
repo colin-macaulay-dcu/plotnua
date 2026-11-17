@@ -99,5 +99,5 @@ body.pa .pa-jn-invite-act{ margin:0; flex:0 0 auto; }
 @media (prefers-reduced-motion:reduce){ .pa-jn-btn, .pa-jn-link{ transition:none; } }
 
 /* Join PlotArt: links from the Living Gallery and the Artists’ Gallery land on "A gallery of your own." below the sticky header */
-body.pa #your-gallery{ scroll-margin-top:84px; }
-@media (max-width:860px){ body.pa #your-gallery{ scroll-margin-top:72px; } }
+body.pa #your-gallery, body.pa #apply{ scroll-margin-top:84px; }
+@media (max-width:860px){ body.pa #your-gallery, body.pa #apply{ scroll-margin-top:72px; } }
