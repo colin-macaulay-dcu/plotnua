@@ -142,6 +142,11 @@ lines_ok = all((not p["artist"].get("open_to") or OPP.check_open_to(p["artist"][
 check("O3a all %d published galleries: %d gallery and artwork pages byte-identical to main's renderer; the %d artists showing opportunities carry a valid open_to and exactly its \"Open to\" line"
       % (len(pkgs), same, len(shown_now)), len(pkgs) >= 5 and not diffs and lines_ok, diffs[:5])
 base = json.load(open(os.path.join(ROOT, "plotart", "artists", "leah-hewson", "gallery.json")))
+# A stable fixture (17 Nov 2026): a real published gallery, with the two settings this test turns on removed, so it is
+# always "an artist who shows no opportunities and is not open for commissions", whatever that artist later chooses in
+# PlotArt Studio. The live gallery is never touched.
+base["artist"].pop("open_to", None)
+base["artist"]["open_for_commissions"] = False
 withp = copy.deepcopy(base)
 withp["artist"]["open_to"] = ["exhibitions", "living_gallery", "commissions"]
 A, B = pages(P, base, ENDPOINT), pages(P, withp, ENDPOINT)

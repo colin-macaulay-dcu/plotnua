@@ -73,6 +73,7 @@ import plotart_business_rental as BUSINESS
 import plotart_seo as SEO
 import plotart_search_content as C
 import plotart_opportunities as OPP
+import plotart_homepage as HOME
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 if len(sys.argv) < 2:
@@ -124,7 +125,8 @@ ALLOWED |= ARTIST_FILES
 OPP_FILES = {"opportunities/index.html", "commissions/index.html", "assets/plotart-opportunities.css"}
 ALLOWED |= OPP_FILES
 ALLOWED |= {"assets/plotart-living.css"}
-ALLOWED |= {"for-artists.html", "assets/plotart-for-artists.css"}   # the For artists page (17 Nov 2026)   # the Living Gallery page refinement (17 Nov 2026)
+ALLOWED |= {"for-artists.html", "assets/plotart-for-artists.css"}   # the For artists page (17 Nov 2026)
+ALLOWED |= {"assets/plotart-home.css"}   # the homepage featured artworks (17 Nov 2026)   # the Living Gallery page refinement (17 Nov 2026)
 # Art for Hire (Stage 3B-6): the page, its two assets and the fourth gallery tab exist ONLY when the founder switches
 # art_for_hire_page on (release approval). Off (or absent): no hire file may exist and no page may link to it or carry the tab.
 HIRE_ON = launch.get("art_for_hire_page") is True
@@ -265,8 +267,9 @@ for name in PAGES:
 
 home = open(os.path.join(PA, "index.html"), encoding="utf-8").read() if os.path.exists(os.path.join(PA, "index.html")) else ""
 need(all(('src="%s"' % x) in home for x in HERO_IMAGES) and "Original artwork by Colin MacAulay, founder of PlotArt." in visible_text(home)
-     and len(re.findall(r'<img [^>]*alt="Painting by Colin MacAulay', home)) == 1 and len(re.findall(r"<img\b", home)) == 4 + home.count("plotnua-mark-master.svg") + home.count('<img class="pa-logo" '),   # + the PlotArt logo in the header (31 Oct 2026)
-     "L6 the homepage images must be exactly the founder's credited painting, the Living Gallery visualisation, the three-room calculator invitation and the A Home for Art image")
+     and len(re.findall(r'<img [^>]*alt="Painting by Colin MacAulay', home)) == 1 and len(re.findall(r"<img\b", HOME.outside(home) if HOME.REGION.search(home) else home)) == 4 + home.count("plotnua-mark-master.svg") + home.count('<img class="pa-logo" '),   # + the PlotArt logo in the header (31 Oct 2026)
+     "L6 the homepage images must be exactly the founder's credited painting, the Living Gallery visualisation, the three-room calculator invitation and the A Home for Art image"
+     " (the featured artworks region is checked by L20)")
 need(all(x in home for x in CAMPAIGN_IMAGES) and 'aria-labelledby="sizePromoH"' in home
      and 'href="art-size-calculator.html" aria-label="Try the PlotArt art size calculator"' in home
      and 'These are illustrative rooms, not photographs of real homes. The painting is not offered for sale.' in visible_text(home),
@@ -320,6 +323,15 @@ if "--manifest" in sys.argv:
                 pass
         # the artist opportunity lists (16 Nov 2026): outside their generated region (and, on the Art for Hire page, outside
         # the works catalogue too) the four pages are pinned by "outside_opportunity_lists"; the lists are checked by L19
+        # the homepage featured artworks (17 Nov 2026): outside its generated region the homepage is pinned by
+        # "outside_home_featured"; the region itself is checked by L20
+        ohf, home_ok = man.get("outside_home_featured", {}).get(rel), False
+        if ohf is not None and raw is not None and rel == "index.html":
+            try:
+                home_ok = hashlib.sha256(HOME.outside(raw.decode()).encode()).hexdigest() == ohf
+            except ValueError:
+                pass
+        need(ohf is None or raw is None or got != sha or home_ok, "L3 %s: its outside_home_featured pin is stale (re-pin it with the page)" % rel)
         oo, opp_ok = man.get("outside_opportunity_lists", {}).get(rel), False
         if oo is not None and raw is not None and rel in OPP.PAGES:
             try:
@@ -332,7 +344,7 @@ if "--manifest" in sys.argv:
         # refused the first Living Gallery listing at publish time)
         need(oo is None or raw is None or got != sha or opp_ok,
              "L3 %s: its outside_opportunity_lists pin is stale (re-pin it with the page)" % rel)
-        need(got == sha or guide_ok or opp_ok or (og is not None and raw is not None and hashlib.sha256(outside_grid(raw)).hexdigest() == og)
+        need(got == sha or guide_ok or opp_ok or home_ok or (og is not None and raw is not None and hashlib.sha256(outside_grid(raw)).hexdigest() == og)
              or (oh is not None and raw is not None and hashlib.sha256(outside_hire(raw)).hexdigest() == oh),
              "L3 %s differs from the verified build (manifest)" % rel)
 elif not os.path.exists(cat_path):
@@ -859,9 +871,27 @@ for _rel in OPP.PAGES:
         for _s in re.findall(r'href="(?:\.\./)*artists/([a-z0-9-]+)/"', OPP.REGION.search(open(_fp, encoding="utf-8").read()).group(0)):
             need(_s in _slugs, "L19 %s lists an artist whose gallery is not published: %s" % (_rel, _s))
 
+# L20 · homepage featured artworks (17 Nov 2026): the region is exactly what its own selection renders from the published
+# galleries (at most six; every image is a published derivative of a main photograph shown in that artist's gallery), and
+# every link goes to a published gallery or artwork page.
+_hp = os.path.join(PA, "index.html")
+if os.path.exists(_hp):
+    _doc = open(_hp, encoding="utf-8").read()
+    try:
+        _sel = HOME.selection_in(_doc)
+        need(_doc == HOME.update(_doc, _sel, _pk), "L20 index.html: the featured artworks differ from what their selection renders from the published galleries")
+        _reg = HOME.region(_doc)
+        for _s, _f in re.findall(r'src="artists/([a-z0-9-]+)/img/([a-z0-9-]+\.webp)"', _reg):
+            need(os.path.exists(os.path.join(PA, "artists", _s, "img", _f)), "L20 index.html: a featured image is not a published file: %s/%s" % (_s, _f))
+        for _h in re.findall(r'href="(artists/[^"]+)"', _reg):
+            need(os.path.exists(os.path.join(PA, _h + ("index.html" if _h.endswith("/") else ""))), "L20 index.html: a featured link goes nowhere: " + _h)
+        need(len(re.findall(r'class="pa-hf-item"', _reg)) <= HOME.MAX, "L20 index.html: more than %d featured items" % HOME.MAX)
+    except ValueError as _e:
+        need(False, "L20 index.html: %s" % _e)
+
 if problems:
     print("PLOTART LAUNCH · FAILED (%d)" % len(problems))
     for x in problems:
         print("  " + x)
     sys.exit(1)
-print("PLOTART LAUNCH · OK — L1-L19 on %d pages · applications %s · artist applications %s · Art for Hire %s (%d demonstration names checked absent)" % (len(PAGES), STATE, GA_STATE, ("ON" + (", enquiry form on" if HIRE_FORM else "")) if HIRE_ON else "off", len(demo_names)))
+print("PLOTART LAUNCH · OK — L1-L20 on %d pages · applications %s · artist applications %s · Art for Hire %s (%d demonstration names checked absent)" % (len(PAGES), STATE, GA_STATE, ("ON" + (", enquiry form on" if HIRE_FORM else "")) if HIRE_ON else "off", len(demo_names)))

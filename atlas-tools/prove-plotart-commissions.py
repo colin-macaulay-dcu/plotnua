@@ -103,6 +103,11 @@ check("C2 all %d published galleries: every artwork page byte-identical to main'
 
 print("— switched on")
 base = json.load(open(os.path.join(ROOT, "plotart", "artists", "leah-hewson", "gallery.json")))
+# A stable fixture (17 Nov 2026): a real published gallery, with the two settings this test turns on removed, so it is
+# always "an artist who shows no opportunities and is not open for commissions", whatever that artist later chooses in
+# PlotArt Studio. The live gallery is never touched.
+base["artist"].pop("open_to", None)
+base["artist"]["open_for_commissions"] = False
 onp = copy.deepcopy(base)
 onp["artist"]["open_for_commissions"] = True
 A, B = pages(P, base, ENDPOINT), pages(P, onp, ENDPOINT)

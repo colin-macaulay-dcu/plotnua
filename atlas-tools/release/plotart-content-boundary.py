@@ -43,6 +43,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 import plotart_seo as SEO
 import plotart_search_content as C
 import plotart_opportunities as OPP
+import plotart_homepage as HOME
 
 ART = re.compile(r"^plotart/artists/([a-z0-9]+(?:-[a-z0-9]+){0,6})/(?:[a-z0-9]+(?:-[a-z0-9]+){0,6}\.html|gallery\.json|img/[a-z0-9-]+-\d{2,5}\.webp)$")
 # the generated collection region (Direction C2, 5 Nov 2026): the open galleries and the twenty-five positions
@@ -140,6 +141,20 @@ def main(base, rel, instant):
                     refused.append("%s: artwork details changed; only availability, removal or order are instant" % path)
             if instant and path.endswith(".html") and st == "A":
                 refused.append("%s: a new page is not an instant change (needs review)" % path)
+            continue
+        if path == "plotart/index.html" and st == "M":
+            # the homepage featured artworks (17 Nov 2026): ONLY inside its region, and only exactly what the selection the
+            # page declares renders from the published galleries (so nothing unpublished can appear)
+            try:
+                a, b = show(base, path).decode(), show(rel, path).decode()
+                names = git("ls-tree", "-r", "--name-only", rel, "plotart/artists").splitlines()
+                packages = [json.loads(show(rel, n)) for n in names if re.fullmatch(r"plotart/artists/[a-z0-9-]+/gallery.json", n)]
+                if HOME.outside(a) != HOME.outside(b):
+                    refused.append(path + ": changed outside the homepage featured region")
+                elif b != HOME.update(a, HOME.selection_in(b), packages):
+                    refused.append(path + ": the featured region differs from what its selection renders from the published galleries")
+            except (ValueError, TypeError) as e:
+                refused.append(path + ": " + str(e))
             continue
         if path == "plotart/gallery/index.html" and st == "M":
             a, b = show(base, path), show(rel, path)
