@@ -357,6 +357,19 @@ if (PHASES.includes('unfunded')) {
   } catch (e) { rec('U9', 'unfunded refund test', 'stripe-test-api', 'FAIL', { error: e.message, code: e.code }); }
 }
 
+if (PHASES.includes('unfunded_ledger')) {
+  // Read-only: the second account's recent balance transactions, so the unfunded-refund balances reconcile line by line.
+  // Records type, amounts, fee, net, status and dates only (no personal data).
+  let UA = ''; try { UA = String(JSON.parse(readFileSync(HERE + 'test/stripe-test-run.json', 'utf8')).unfunded_account || ''); } catch {}
+  try {
+    const r = await stripe('GET', '/v1/balance_transactions?limit=20', null, UA);
+    const rows = (r.j.data || []).map(t => ({ id: t.id, type: t.type, reporting_category: t.reporting_category, amount: t.amount, fee: t.fee, net: t.net, status: t.status,
+      created: new Date(t.created * 1000).toISOString(), available_on: new Date(t.available_on * 1000).toISOString().slice(0, 10), source_prefix: String(t.source || '').slice(0, 3) })).reverse();
+    let run = 0; for (const x of rows) { run += x.net; x.running_net = run; }
+    rec('U8', 'second account: balance transactions in order, with running net (reconciles the U5–U7 balances)', 'stripe-test-api', r.ok ? 'INFO' : 'FAIL', { http: r.status, transactions: rows });
+  } catch (e) { rec('U8', 'second account balance transactions', 'stripe-test-api', 'FAIL', { error: e.message }); }
+}
+
 if (PHASES.includes('e2e')) {
   console.log('— e2e: the pilot’s Workers with real Stripe test API and real signed webhooks');
   if (!ACCOUNT || !process.env.STRIPE_WEBHOOK_SECRET || !process.env.CHECKOUT_E2E_PORT) {

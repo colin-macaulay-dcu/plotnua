@@ -36,21 +36,38 @@
 
 These are listed in the consolidated report's decision table: F2, F5–F15, email approval, and the runtime key.
 
-## 4. Fully unfunded refund: real Stripe result (run 28, 17 Nov 2026, sandbox)
+## 4. Fully unfunded refund: real Stripe result (run 28, 17 Nov 2026, sandbox): CLOSED AS PASSED
 
 Account `acct_1Uct3vHx1OnYJa8H`, onboarded by the founder with test data (U3 PASS: charges enabled, nothing due, pilot configuration).
 
-| Step | Balance (available / pending) | Stripe result |
-|---|---|---|
-| Before | €0.00 / €0.00 | — |
-| €100 sale (€15 application fee) | €0.00 / €80.82 | Payment succeeded; net €80.82 after commission, Stripe's fee and VAT |
-| €100 refund (€19.18 more than the account held) | €0.00 / **−€19.18** | Refund **succeeded immediately** (`succeeded`; never pending in 31 seconds) |
-| A further €20 refund while already negative | €0.00 / **−€23.26** | Also **succeeded immediately** |
+| Step | Available | Pending | Stripe refund status | Source |
+|---|---|---|---|---|
+| Before | €0.00 | €0.00 | — | U4 (observed) |
+| €100 sale (€15 application fee) | €0.00 | €80.82 | — | U5 (observed): net €80.82 after commission, Stripe's fee and VAT |
+| €100 refund (€19.18 more than the account held) | €0.00 | **−€19.18** | **succeeded** at creation; still succeeded after 31 s | U6 (observed) |
+| €20 sale (€3 application fee) | — | — | — | **Inferred net €15.92** (= €20.00 − €3.00 commission − €1.08 Stripe fee and VAT). U7's "balance before refund" (−€19.18) was read immediately after this sale, before Stripe had recorded its balance transaction. |
+| €20 refund | €0.00 | **−€23.26** | **succeeded** at creation | U7 (observed) |
+| Reconciliation | | −€19.18 + €15.92 − €20.00 = **−€23.26** | | The €15.92 is inferred; the next run reads the actual balance transactions (U8) to confirm it line by line. |
 
-**Conclusion.** In this case Stripe did not hold the refund as pending. It completed it and let the artist's balance go negative. Because the account is configured with Stripe as losses collector, Stripe recovers the negative balance from the artist, not from PlotArt.
+**"Succeeded" is not "credited".**
+- Stripe's status "succeeded" means the refund was sent. Stripe states that the refund has been successfully initiated, but this doesn't guarantee that it has landed on the customer's side ([Stripe: Understanding refund statuses](https://support.stripe.com/questions/understanding-refund-statuses)).
+- Stripe states that the customer sees the credit approximately 5–10 business days later, depending on their bank ([Stripe: Refund and cancel payments](https://docs.stripe.com/docs/refunds)).
+- In test mode no card is credited. The test shows Stripe's status and balances only.
 
-**Pilot handling.** A succeeded refund is booked as usual: refund lines, commission refund (capped by Model B), and settlement. The buyer is repaid, so no buyer notice is needed.
+**Who carries a negative balance (documented, not observed).**
+- The pilot's accounts use `losses_collector = stripe`. Stripe's documentation says that with this setting, Stripe is liable for the connected account's negative balances, while the platform remains liable for negative balances on its own platform account ([Stripe: Connected account configuration](https://edge-docs.stripe.com/connect/accounts-v2/connected-account-configuration)).
+- Stripe also says it assumes losses from **unrecoverable** negative balances on such accounts ([Stripe: Managed Risk](https://docs.stripe.com/connect/risk-management/connected-accounts-with-managed-risk)).
+- Stripe documents that while an account's balance is negative, Stripe does not send payouts to the account's bank until the balance is positive again ([Stripe: Connect account balances](https://docs.stripe.com/connect/account-balances?locale=en-GB)).
+- Stripe attempts to debit the account's external bank account if `debit_negative_balances` is set to true ([Stripe: Connect disputes](https://docs.stripe.com/connect/disputes.md)). **Not checked for the pilot accounts.**
+- **For review before issue:**
+  - what the artist owes Stripe, and how Stripe recovers it, under the Stripe Connected Account Agreement;
+  - whether `debit_negative_balances` applies to these accounts.
 
-**Gap.** The pilot does not alert anyone that the artist's balance is now negative (optional O5 in the r5 notes). It would need `balance_read` for connected accounts on the Studio key only.
+  PA-PAY 7.5 marks both points for review rather than stating them.
 
-**Drafts.** PA-PAY 7.5 is updated: the bracket is removed, (a) states that refunds can complete into a negative balance, and (b) keeps the pending case. Pending refunds were not observed in this run but remain possible under Stripe's terms.
+**Pilot handling.**
+- A succeeded refund is booked as usual: refund lines, then the commission refund. Under Model B the commission refund is capped by what is left of the application fee, and any remainder is owed directly (cl. 3.5).
+- The negative balance changes none of PlotArt's obligations to the artist under cl. 3.3–3.5 and 7.7. PA-PAY 7.5 now says so.
+- No buyer notice is needed for a succeeded refund.
+
+**Deferred (founder, 22:15).** An alert for a negative artist balance.

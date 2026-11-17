@@ -100,11 +100,19 @@ None of these is taken as approved. Each recommendation is mine.
 4. **Email:** only if you want to test it now, the four set-up items in section 4.
 
 
-## Addendum (22:15): run 28, fully unfunded refund
+## Addendum (22:15): run 28, fully unfunded refund. CLOSED AS PASSED
 
-- U3 PASS: the account is onboarded.
-- U5: balance after a €100 sale was €0 available / €80.82 pending.
-- U6: a €100 refund **succeeded immediately**; balance €0 / −€19.18.
-- U7: a further refund also succeeded; balance €0 / −€23.26.
+| Step | Available | Pending | Refund status (Stripe) |
+|---|---|---|---|
+| Before (U4) | €0.00 | €0.00 | — |
+| €100 sale, €15 fee (U5) | €0.00 | €80.82 | — |
+| €100 refund (U6) | €0.00 | **−€19.18** | **succeeded** at creation |
+| €20 sale, €3 fee | — | — | inferred net **€15.92** (read before Stripe recorded it) |
+| €20 refund (U7) | €0.00 | **−€23.26** | **succeeded** at creation |
 
-PA-PAY 7.5 is updated to match. See the r8 notes, section 4.
+−€19.18 + €15.92 − €20.00 = −€23.26. The €15.92 is inferred; the next run's U8 lists the actual balance transactions to confirm it.
+
+- **What "succeeded" means.** Stripe sent the refund. It does not mean the buyer has been credited: Stripe says the credit usually appears 5–10 business days later, depending on the bank. In test mode no card is credited.
+- **Who carries the negative balance.** Under `losses_collector = stripe`, Stripe's documentation says Stripe carries unrecoverable negative balances. How Stripe recovers the balance from the artist, and what the artist owes Stripe, are **marked for review** against the Stripe Connected Account Agreement. See r8 notes §4 for the sources.
+- **PlotArt's Model B obligations are separate and unchanged.** PlotArt still reimburses the processing fee, returns the commission, and pays any shortfall directly.
+- **Deferred:** an alert when an artist's balance goes negative.

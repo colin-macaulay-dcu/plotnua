@@ -52,18 +52,23 @@ What key A **cannot** do (proposed): create PaymentIntents or charges directly, 
 
 **Optional later narrowing (code change, not made).** The Studio could take charge and payout status from Accounts v2 alone and drop `connected_account_read`. That needs the v2 merchant status fields confirmed in the sandbox first.
 
-## 3. Proposed versus verified
+## 3. Proposed versus verified (what the next run checks)
 
-Nothing in §2.1 is verified yet. The test runner gives key A to the public checkout Worker only, once the secret `CHECKOUT_TEST_STRIPE_RUNTIME_KEY` exists.
+Nothing in §2.1 is verified yet. The next run gives key A to the public checkout Worker only; the Studio Worker and the harness keep the existing key.
 
-| Restriction or capability | How it is verified | Status |
+| Permission or restriction | Checked by | What counts as verified |
 |---|---|---|
-| Key A is used by the public Worker (and the Studio and harness keep the main key) | E17a records which key was used | proposed (not yet run) |
-| Refused: v1 artist account, artist bank accounts, v2 account with identity | E17b: HTTP 401/403 required; status codes only recorded | proposed (not yet run) |
-| Refused: creating a PaymentIntent directly, creating a refund, reading the artist's balance or payouts, creating an account | E17c: each request is deliberately invalid (zero amount, unknown object), so nothing can happen even if a permission were wrongly granted; 401/403 required | proposed (not yet run) |
-| Everything the public Worker needs still works: Checkout creation, completion, expiry, reimbursement at payment, sweep refund polling, dispute fees | the existing e2e checks E2, E3, E6, E13, E14, E16 and E18, run with key A on the public side | proposed (not yet run) |
-| Studio key B | not tested separately (the Studio keeps the current key in tests) | proposal only |
-| Anything not listed above | not tested | not verified |
+| Key A is the one the public Worker uses | **E17a** | Records "separate restricted TEST key" |
+| Accounts / Accounts v2 = None (identity and bank data refused) | **E17b** | v1 account, v1 bank accounts and v2 account with identity all return 401/403 |
+| No direct PaymentIntents, refunds, balance, payouts or account creation | **E17c** | Deliberately invalid requests all return 401/403 |
+| Checkout Sessions: Write, in connected accounts | **E2, E3** | The public Worker opens real hosted Checkout and the payment completes |
+| PaymentIntents: Read, in connected accounts | **E3, E13** | The completion is recorded; the charge is found from the PaymentIntent |
+| Charges: Read, in connected accounts | **E13** | The public Worker reads the balance transaction and records the actual fee and VAT. If this fails with a permission error, Balance: Read (connected accounts) is the named fallback |
+| Application Fees: Write, in your account | **E13, E13b** | The reimbursement is made by the public Worker at payment, once |
+| Disputes: Read, in connected accounts | E14 and E16 **only partly** | The public Worker reads a dispute through the API only if Stripe's event lacks the fee lines; usually it does not need to. **Not verified** unless the run shows the API path was used |
+| Sweep refund polling (Charges: Read) | E5 | **Not verified** if the refund completes by webhook before the sweep polls |
+| Expiring a session from the public Worker (Checkout Sessions: Write) | — | **Not verified**: E6 expires the session with the harness key |
+| Studio key B | — | Not tested (the Studio keeps the existing key) |
 
 ## 4. Steps for you (sandbox only)
 
@@ -74,6 +79,6 @@ Your current key is not changed by these steps. Do them one at a time.
 3. Set each permission exactly as in the §2.1 table, both "In your account" and "In connected accounts". Leave everything else None.
 4. Create the key and copy it. **Do not paste it into chat.**
 5. In GitHub, go to **colin-macaulay-dcu/plotnua → Settings → Environments → checkout-test → Add secret**. Name it `CHECKOUT_TEST_STRIPE_RUNTIME_KEY` and paste the key as its value.
-6. Tell me it is done. I will request a run, which waits for your approval as usual, and report E17a–c and the e2e results, keeping proposed and verified apart.
+6. Tell me it is saved. I will queue the run (phases `e2e` and `unfunded_ledger`), send you the approval link, and report each check, including any skipped.
 
 For live use, the same split would be created as separate live keys and stored as Cloudflare secrets of the two Workers, with your approval. That is not part of this pilot.
