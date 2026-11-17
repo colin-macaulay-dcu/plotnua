@@ -233,6 +233,63 @@ if (PHASES.includes('provider')) {
   }
 }
 
+if (PHASES.includes('unfunded')) {
+  // A SECOND test connected account, used only here, so the shared account used by every other check is never drained.
+  // Same key, same permissions. Fully unfunded = a refund larger than the account's available + incoming balance.
+  console.log('— unfunded refund on a dedicated second test account');
+  let UA = '';
+  try { UA = String(JSON.parse(readFileSync(HERE + 'test/stripe-test-run.json', 'utf8')).unfunded_account || ''); } catch {}
+  const bal = async a => { const b = (await stripe('GET', '/v1/balance', null, a)).j; const g = k => ((b[k] || []).find(x => x.currency === 'eur') || { amount: 0 }).amount; return { available: g('available'), pending: g('pending') }; };
+  const link = async a => {
+    const l = await S.accountLink(env, { account: a, refreshUrl: 'https://plotart-checkout-test.invalid/refresh', returnUrl: 'https://plotart-checkout-test.invalid/return' });
+    writeFileSync(OUT + 'onboarding-link-unfunded.txt', `SECOND test account ${a} (unfunded-refund test only)\nComplete Stripe's TEST onboarding (test data only) at:\n${l.url}\nSingle-use; expires at ${l.expires_at}.\n`);
+    return l;
+  };
+  try {
+    if (!UA) {
+      const a = await S.createAccount(env, { email: `pilot-unfunded+${RUN}@plotnua.invalid`, country: 'IE', artistId: 'unfunded-test-' + RUN });
+      rec('U1', 'second test account created with the pilot configuration (artist pays fees, Stripe carries losses, full Dashboard)', 'stripe-test-api',
+        S.accountConfigProblems(a).length === 0 ? 'PASS' : 'FAIL', { account: a.id, dashboard: a.dashboard, responsibilities: a.defaults && a.defaults.responsibilities, livemode: a.livemode });
+      const l = await link(a.id);
+      rec('U2', 'onboarding link for the second account', 'stripe-test-api', /stripe\.com$/.test(new URL(l.url).host) ? 'PASS' : 'FAIL', { account: a.id, expires_at: l.expires_at });
+    } else {
+      const v1 = await S.getAccount(env, UA), v2 = await S.getAccountV2(env, UA);
+      const ready = v1.charges_enabled && v1.details_submitted && !((v1.requirements || {}).currently_due || []).length;
+      rec('U3', 'second account: pilot configuration and onboarding complete', 'stripe-test-api', ready && !S.accountConfigProblems(v2).length ? 'PASS' : 'FAIL',
+        { account: UA, charges_enabled: v1.charges_enabled, details_submitted: v1.details_submitted, currently_due: (v1.requirements || {}).currently_due, problems: S.accountConfigProblems(v2) });
+      if (!ready) { const l = await link(UA); rec('U3b', 'a fresh onboarding link was written (onboarding not complete)', 'stripe-test-api', 'INFO', { expires_at: l.expires_at }); }
+      else {
+        const b0 = await bal(UA);
+        rec('U4', 'balance on the second account before the test', 'stripe-test-api', 'INFO', b0);
+        // a €100 sale with PlotArt's €15 commission: after commission, Stripe's fee and VAT the account holds less than €100
+        const pi = (await stripe('POST', '/v1/payment_intents', { amount: 10000, currency: 'eur', payment_method: 'pm_card_visa', confirm: 'true', allowed_payment_method_types: ['card'],
+          application_fee_amount: 1500, metadata: { plotart_order: 'harness-unfunded', run: RUN } }, UA, `harness-${RUN}-unf-pi`)).j;
+        let ch = pi.latest_charge && (await stripe('GET', `/v1/charges/${typeof pi.latest_charge === 'string' ? pi.latest_charge : pi.latest_charge.id}?expand[]=balance_transaction`, null, UA)).j;
+        for (let i = 0; i < 20 && ch && !ch.balance_transaction; i++) { await sleep(1500); ch = (await stripe('GET', `/v1/charges/${ch.id}?expand[]=balance_transaction`, null, UA)).j; }
+        const b1 = await bal(UA);
+        rec('U5', 'after a €100 sale with €15 commission the account holds less than the sale amount', 'stripe-test-api', pi.status === 'succeeded' && b1.available + b1.pending - (b0.available + b0.pending) < 10000 ? 'PASS' : 'FAIL',
+          { payment_intent: pi.id, status: pi.status, net_cents: ch && ch.balance_transaction && ch.balance_transaction.net, balance_after_sale: b1 });
+        // full refund of the €100 to the buyer, commission NOT refunded (as the pilot does): larger than everything the account holds
+        const shortfall = 10000 - (b1.available + b1.pending);
+        const rf = (await stripe('POST', '/v1/refunds', { payment_intent: pi.id, amount: 10000, refund_application_fee: 'false', metadata: { plotart_refund: 'harness-unfunded' } }, UA, `harness-${RUN}-unf-rf`)).j;
+        const t0 = Date.now(); let cur = rf; const seen = [rf.status];
+        for (let i = 0; i < 24 && !['failed', 'canceled'].includes(cur.status) && (cur.status === 'pending' || i < 6); i++) { await sleep(5000); cur = (await stripe('GET', `/v1/refunds/${rf.id}`, null, UA)).j; if (seen.at(-1) !== cur.status) seen.push(cur.status); }
+        const b2 = await bal(UA);
+        rec('U6', 'FULLY UNFUNDED refund: €100 refund when the account holds less than €100 in total (available + incoming) — what Stripe does', 'stripe-test-api', rf.id ? 'INFO' : 'FAIL',
+          { refund: rf.id, error: rf.error && rf.error.message, shortfall_cents: shortfall, status_at_creation: rf.status, pending_reason: rf.pending_reason, statuses_seen: seen, final_status: cur.status, final_pending_reason: cur.pending_reason, failure_reason: cur.failure_reason, waited_s: Math.round((Date.now() - t0) / 1000), balance_before_refund: b1, balance_after_refund: b2 });
+        // a second refund attempt while the balance is already short: the most a buyer could be owed again in practice
+        const pi2 = (await stripe('POST', '/v1/payment_intents', { amount: 2000, currency: 'eur', payment_method: 'pm_card_visa', confirm: 'true', allowed_payment_method_types: ['card'],
+          application_fee_amount: 300, metadata: { plotart_order: 'harness-unfunded-2', run: RUN } }, UA, `harness-${RUN}-unf-pi2`)).j;
+        const b3 = await bal(UA);
+        const rf2 = (await stripe('POST', '/v1/refunds', { payment_intent: pi2.id, amount: 2000, refund_application_fee: 'false', metadata: { plotart_refund: 'harness-unfunded-2' } }, UA, `harness-${RUN}-unf-rf2`)).j;
+        let cur2 = rf2; for (let i = 0; i < 12 && cur2.status === 'pending'; i++) { await sleep(5000); cur2 = (await stripe('GET', `/v1/refunds/${rf2.id}`, null, UA)).j; }
+        rec('U7', 'a further refund while the balance is already short or negative', 'stripe-test-api', rf2.id ? 'INFO' : 'FAIL',
+          { refund: rf2.id, error: rf2.error && rf2.error.message, balance_before_refund: b3, status_at_creation: rf2.status, pending_reason: rf2.pending_reason, final_status: cur2.status, balance_after_refund: await bal(UA) });
+      }
+    }
+  } catch (e) { rec('U9', 'unfunded refund test', 'stripe-test-api', 'FAIL', { error: e.message, code: e.code }); }
+}
+
 if (PHASES.includes('e2e')) {
   console.log('— e2e: the pilot’s Workers with real Stripe test API and real signed webhooks');
   if (!ACCOUNT || !process.env.STRIPE_WEBHOOK_SECRET || !process.env.CHECKOUT_E2E_PORT) {
