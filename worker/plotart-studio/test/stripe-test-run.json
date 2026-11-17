@@ -1,8 +1,8 @@
 {
   "_note": "Changing this file on the pilot branch requests a run of .github/workflows/plotart-checkout-stripe-test.yml (Stripe TEST mode only; waits for the founder's approval on the checkout-test environment). Nothing is deployed.",
-  "requested": "2026-11-17T11:40:00Z",
+  "requested": "2026-11-17T11:25:00Z",
   "phases": [
     "provider"
   ],
-  "reason": "Run 2: Accounts v2 account creation and Account Links v2; verify configuration (fees_collector=stripe, losses_collector=stripe, dashboard=full) and key permissions; create the test onboarding link."
+  "reason": "Run 3: repeat run 2 after the restricted key is given Accounts v2 Write (run 2 P1: \"This key lacks access to Accounts v2\")."
 }
