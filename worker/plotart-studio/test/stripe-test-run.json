@@ -1,10 +1,12 @@
 {
   "_note": "Changing this file on the pilot branch requests a run of .github/workflows/plotart-checkout-stripe-test.yml (Stripe TEST mode only; waits for the founder's approval on the checkout-test environment). Nothing is deployed.",
-  "requested": "2026-11-17T20:05:00Z",
+  "requested": "2026-11-17T21:30:00Z",
   "phases": [
     "provider",
-    "e2e"
+    "privacy",
+    "e2e",
+    "unfunded"
   ],
-  "reason": "Run 19: fee model B (PlotArt reimburses Stripe's actual processing fee + VAT on it via a partial application-fee refund). New: P16a-d (real reimbursement mechanics, cap, full-refund shortfall), E13/E13b/E13c (reimbursement after a real payment, idempotency, statement), E14 (dispute fees not absorbed), E12a/E12d (full refund shortfall, reversal, direct shortfall payment recorded once).",
+  "reason": "Run 20: operational essentials. Seller information and structured returns on quotes; buyer confirmation (test sink only, E15); dispute fees from Stripe's balance transactions in ledger/statements (E14); lost-dispute commission queue returned through Stripe (E16); privacy access probe V1-V5 (field names only); creates the SECOND sandbox account for the unfunded-refund test WITHOUT an onboarding link (link only when the founder is ready).",
   "reuse_account": "acct_1UclJXHx1Olx8cdw"
 }

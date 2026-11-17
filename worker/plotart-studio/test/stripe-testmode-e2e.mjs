@@ -48,9 +48,11 @@ export async function e2e({ rec, KEY, ACCOUNT, RUN, port, whsec, stripe, sleep }
       condition: 'Excellent', access_notes: null, organiser: 'artist', packer: 'artist', transport_booker: 'artist', transport_contracting_party: 'artist', transport_payer: 'artist', transporter_name: 'SIMULATED courier',
       installation: 'not_applicable', import_costs: 'not_applicable', cover_type: 'transit_insurance', cover_provider: 'SIMULATED test cover', covered_value_cents: 100000, valuation_basis: 'Agreed price', insured_party: 'transporter',
       excess_cents: null, exclusions: null, cover_period: 'Collection to signed delivery', claims_contact: 'claims@example.invalid', delivery_window: '5–8 working days', tracking: 'Tracked', signed_receipt: true,
-      condition_photos: true, return_route: 'Same courier', shipment_confirmation_ref: 'SIM-1', shipment_confirmed_by: 'SIMULATED', shipment_confirmed_on: new Date().toISOString().slice(0, 10),
+      condition_photos: true, return_method: 'SIMULATED courier collection', return_address: 'SIMULATED studio address, Dublin', return_cost_cents: 9500, return_cost_basis: 'estimated_maximum', return_arranged_by: 'buyer', shipment_confirmation_ref: 'SIM-1', shipment_confirmed_by: 'SIMULATED', shipment_confirmed_on: new Date().toISOString().slice(0, 10),
       cover_confirmation_ref: 'SIM-COVER-1', cover_confirmed_by: 'SIMULATED', cover_confirmed_on: new Date().toISOString().slice(0, 10) };
-    const ALL = { available: true, location: true, condition: true, framing: true, dimensions: true, packing_and_handover: true };
+    const ALL = { available: true, location: true, condition: true, framing: true, dimensions: true, packing_and_handover: true, returns: true, seller_information: true };
+    const sp = await call('PUT', '/api/checkout/seller-profile', GAL, { legal_name: 'E2E Test Seller (SIMULATED)', address: 'SIMULATED address, Dublin, Ireland', email: 'seller@plotnua.invalid', phone: '+353 1 000 0000', trader_status: 'trader', confirm: true });
+    if (sp.s !== 200) throw new Error('test setup: seller information not saved ' + JSON.stringify(sp.j).slice(0, 200));
     async function quote(work, ref, artwork = 100000, delivery = 7500) {
       const c = await call('POST', '/api/admin/checkout/orders', FOUNDER, { artist_id: 'agal', artwork_id: work, enquiry_ref: ref, buyer_email: `buyer+${RUN}@plotnua.invalid` });
       if (c.s !== 200 || !c.j.order) throw new Error(`test setup: order for ${work} / ${ref} not created (${c.s} ${JSON.stringify(c.j).slice(0, 200)})`);
@@ -168,6 +170,17 @@ export async function e2e({ rec, KEY, ACCOUNT, RUN, port, whsec, stripe, sleep }
         own.length === 1 && !stray.length && sess1 && sess1.client_reference_id === o1.id && sess1.payment_status === 'paid' && sess1.payment_intent === (paid && paid.payment_intent) ? 'PASS' : paidOk ? 'FAIL' : 'SKIP',
         { events: own.map(e => e.event_id), stray, stripe_session: sess1 && { client_reference_id_matches: sess1.client_reference_id === o1.id, payment_status: sess1.payment_status, payment_intent_matches: sess1.payment_intent === (paid && paid.payment_intent) } });
     }
+    if (paid) {   // E15 · the buyer's confirmation after a REAL verified payment: prepared once, exact text kept, test sink only
+      const m = await db.prepare("SELECT * FROM order_messages WHERE order_id = ? AND kind = 'buyer_confirmation'").bind(o1.id).first();
+      const dl = m ? await q('SELECT channel, status FROM order_message_deliveries WHERE message_id = ?', m.id) : [];
+      const sink = await q("SELECT to_role, to_sha256 FROM checkout_mail_sink WHERE order_id = ? AND kind = 'buyer_confirmation'", o1.id);
+      const web = await CW.fetch(`http://checkout.local/q/${o1.tok}/confirmation`);
+      const wt = await web.text();
+      rec('E15', 'after the REAL signed completion, the buyer confirmation is prepared once with seller, amounts, delivery, returns, accepted terms and cancellation form; held in the test sink only; the buyer link serves the identical text', SRC,
+        m && /MODEL CANCELLATION FORM/.test(m.body) && m.body.includes('E2E Test Seller') && m.body.includes('EUR 1075.00') && m.body.includes('PA-BPT-TEST-01') && dl.length === 1 && dl[0].status === 'held_in_test_sink'
+        && sink.length === 1 && sink[0].to_role === 'buyer' && !JSON.stringify(sink).includes('@') && web.status === 200 && wt === m.body ? 'PASS' : 'FAIL',
+        { prepared: !!m, sha256: m && m.sha256, chars: m && m.body.length, deliveries: dl, sink_rows: sink.length, buyer_link_http: web.status, identical: m ? wt === m.body : false });
+    }
     if (paid) {
       const pi = (await stripe('GET', `/v1/payment_intents/${paid.payment_intent}?expand[]=latest_charge.balance_transaction`, null, ACCOUNT)).j;
       let ch = pi.latest_charge;   // the fee and balance transaction are created asynchronously: wait for them
@@ -242,8 +255,9 @@ export async function e2e({ rec, KEY, ACCOUNT, RUN, port, whsec, stripe, sleep }
       const d3 = (await stripe('GET', `/v1/disputes?payment_intent=${encodeURIComponent(O3.payment_intent)}&limit=1&expand[]=data.balance_transactions`, null, ACCOUNT)).j.data[0];
       const dfee = d3 ? d3.balance_transactions.reduce((a, b) => a + b.fee, 0) : null;
       const st3 = (await call('GET', `/api/checkout/orders/${o3.id}`, GAL)).j.statement;
-      rec('E14', 'model B with a dispute: the only reimbursement is the processing fee + VAT; Stripe’s dispute fee is not reimbursed and the statement says so', SRC,
-        P3 && P3.status === 'reimbursed' && frs3.length === 1 && frs3[0].amount === P3.cost && st3 && /dispute fees/.test(st3.not_included) ? 'PASS' : 'FAIL',
+      rec('E14', 'model B with a dispute: the only reimbursement is the processing fee + VAT; Stripe’s ACTUAL dispute fees (and any it returned) are in the ledger and statement, not reimbursed', SRC,
+        P3 && P3.status === 'reimbursed' && frs3.length === 1 && frs3[0].amount === P3.cost && st3 && dfee !== null
+        && st3.dispute_fees_charged_by_stripe - st3.dispute_fees_returned_by_stripe === dfee && st3.dispute_fees_status === 'recorded from Stripe' ? 'PASS' : 'FAIL',
         { processing: P3 && { stripe_fee: P3.stripe_fee, vat: P3.vat, cost: P3.cost }, fee_refunds: frs3.map(f => f.amount), dispute_fees_charged_by_stripe_cents: dfee, statement: st3 });
     }
     const o4 = await quote('wagal4', 'PA-E-261116-E2E004', 5000, 0);
@@ -258,6 +272,18 @@ export async function e2e({ rec, KEY, ACCOUNT, RUN, port, whsec, stripe, sleep }
       rec('E11', 'a REAL signed charge.dispute.closed (lost) marks the order refunded and flags PlotArt’s commission for return (GAA 9)', SRC,
         lost && O.status === 'refunded' && /dispute lost/.test(O.needs_resolution || '') && ev.length === 1 ? 'PASS' : 'FAIL',
         { dispute: dId, status: O.status, dispute_status: O.dispute_status, closed_events: ev.map(e => e.event_id), flag: O.needs_resolution });
+      // E16 · the commission to return after the lost dispute: queued with the PA-GAA 9.1 deadline, then returned through REAL Stripe
+      await reimbursedFor(o4.id);
+      const LW = await db.prepare("SELECT * FROM checkout_owed WHERE order_id = ? AND kind = 'lost_dispute_commission'").bind(o4.id).first();
+      const O4 = await order(o4.id), P4 = JSON.parse(O4.processing || '{}');
+      const c4 = (await stripe('GET', `/v1/payment_intents/${O4.payment_intent}?expand[]=latest_charge`, null, ACCOUNT)).j.latest_charge;
+      const ret = await call('POST', `/api/admin/checkout/orders/${o4.id}/refund`, FOUNDER, { commission_only: true, reason: 'E2E: dispute lost, commission returned under PA-GAA 9.1' });
+      const f4 = (await stripe('GET', `/v1/application_fees/${c4.application_fee}`)).j, LW2 = LW && await db.prepare('SELECT * FROM checkout_owed WHERE id = ?').bind(LW.id).first();
+      const SH4 = await db.prepare("SELECT * FROM checkout_owed WHERE order_id = ? AND kind = 'commission_shortfall'").bind(o4.id).first(), st4 = (await call('GET', `/api/checkout/orders/${o4.id}`, GAL)).j.statement;
+      rec('E16', 'lost dispute: the €7.50 commission is queued (due 30 days, PA-GAA 9.1) and returned — what is left of the fee through REAL Stripe, the processing already reimbursed as a direct-payment item; dispute fees recorded', SRC,
+        LW && LW.cents === 750 && !LW.due_provisional && ret.s === 200 && LW2.settled_cents === 750 && f4.amount_refunded === 750 && SH4 && SH4.cents === P4.cost && st4.dispute_fees_status === 'recorded from Stripe' ? 'PASS' : 'FAIL',
+        { owed: LW && { cents: LW.cents, due_rule: LW.due_rule }, return_http: ret.s, fee_amount_refunded: f4.amount_refunded, processing_reimbursed: P4.cost, direct_payment_item: SH4 && SH4.cents, settled: LW2 && LW2.settled_cents,
+          statement: st4 && { dispute_fees_charged: st4.dispute_fees_charged_by_stripe, returned: st4.dispute_fees_returned_by_stripe, net: st4.net_proceeds, owed: st4.owed_by_plotart_not_yet_paid } });
     } else rec('E11', 'dispute closed as lost through the pilot', SRC, lostPaid ? 'FAIL' : 'SKIP', lostPaid ? { reason: 'the dispute never opened on the order' } : { blocked_by: 'E11a' });
 
     // 6 · a refund that SUCCEEDS and later FAILS (Stripe test card 4000 0000 0000 5126), reconciled from REAL signed events
@@ -272,7 +298,7 @@ export async function e2e({ rec, KEY, ACCOUNT, RUN, port, whsec, stripe, sleep }
       let ch = (await stripe('GET', `/v1/payment_intents/${paid5.payment_intent}?expand[]=latest_charge`, null, ACCOUNT)).j.latest_charge;
       for (let i = 0; i < 20 && ch && !ch.application_fee; i++) { await sleep(1500); ch = (await stripe('GET', `/v1/charges/${ch.id}`, null, ACCOUNT)).j; }
       const fee1 = (await stripe('GET', `/v1/application_fees/${ch.application_fee}`)).j;
-      const P5 = JSON.parse((await order(o5.id)).processing || '{}');
+      const P5 = JSON.parse((await order(o5.id)).processing || '{}'); P5.shortfall_cents = (await db.prepare('SELECT COALESCE(SUM(cents), 0) AS c FROM checkout_owed WHERE order_id = ?').bind(o5.id).first()).c;
       rec('E12a', 'the full refund first SUCCEEDS on Stripe; the €60 commission is settled once: (€60 − processing already reimbursed) back through Stripe, the processing amount flagged as a shortfall PlotArt pays directly', SRC,
         r.s === 200 && rr && rr.status === 'succeeded' && fee1.amount_refunded === 6000 && (await order(o5.id)).status === 'refunded' && P5.cost > 0 && P5.shortfall_cents === P5.cost
         && /PlotArt owes the artist/.test((await order(o5.id)).needs_resolution || '') ? 'PASS' : 'FAIL',
@@ -293,9 +319,9 @@ export async function e2e({ rec, KEY, ACCOUNT, RUN, port, whsec, stripe, sleep }
         rec('E12c', 'the artist’s direct repayment is recorded once with NO second commission refund; a further Stripe refund is refused and none is created', SRC,
           rep.s === 200 && again.s === 409 && after === before && fee2.amount_refunded === 6000 && (await order(o5.id)).status === 'refunded' ? 'PASS' : 'FAIL',
           { repaid_http: rep.s, second_refund_http: again.s, stripe_refunds_before: before, stripe_refunds_after: after, fee_amount_refunded: fee2.amount_refunded });
-        const P5b = JSON.parse((await order(o5.id)).processing || '{}');
-        const sp = await call('POST', `/api/admin/checkout/orders/${o5.id}/shortfallpaid`, FOUNDER, { amount_cents: P5b.shortfall_cents, evidence: 'E2E: PlotArt paid the artist by bank transfer BT-SF-E2E' });
-        const sp2 = await call('POST', `/api/admin/checkout/orders/${o5.id}/shortfallpaid`, FOUNDER, { amount_cents: 1, evidence: 'E2E: second payment attempt' });
+        const P5b = JSON.parse((await order(o5.id)).processing || '{}'); P5b.shortfall_cents = (await db.prepare('SELECT COALESCE(SUM(cents - settled_cents), 0) AS c FROM checkout_owed WHERE order_id = ?').bind(o5.id).first()).c;
+        const sp = await call('POST', `/api/admin/checkout/orders/${o5.id}/shortfallpaid`, FOUNDER, { amount_cents: P5b.shortfall_cents, reference: 'E2E bank transfer BT-SF-E2E on 17 Nov' });
+        const sp2 = await call('POST', `/api/admin/checkout/orders/${o5.id}/shortfallpaid`, FOUNDER, { amount_cents: 1, reference: 'E2E second attempt BT-SF-E2E-2' });
         const fee3 = (await stripe('GET', `/v1/application_fees/${ch.application_fee}`)).j, st5 = (await call('GET', `/api/checkout/orders/${o5.id}`, GAL)).j.statement;
         rec('E12d', 'model B after the reversal: the shortfall is still owed once (not doubled); PlotArt records paying it directly; a second record is refused; nothing more moves on Stripe', SRC,
           P5b.shortfall_cents === P5.cost && sp.s === 200 && sp2.s === 409 && fee3.amount_refunded === 6000 && st5.shortfall_still_owed_by_plotart === 0 && st5.shortfall_paid_by_plotart === P5.cost ? 'PASS' : 'FAIL',

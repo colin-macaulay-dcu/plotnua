@@ -141,7 +141,9 @@ export const DELIVERY_FIELDS = {
   cover_type: ['transit_insurance'], cover_provider: 's', covered_value_cents: 'n', valuation_basis: 's',
   excess_cents: 'n?', exclusions: 's?', cover_period: 's', claims_contact: 's', insured_party: 'p',
   cover_confirmation_ref: 's', cover_confirmed_by: 's', cover_confirmed_on: 'd',
-  delivery_window: 's', tracking: 's', signed_receipt: 'b', condition_photos: 'b', return_route: 's',
+  delivery_window: 's', tracking: 's', signed_receipt: 'b', condition_photos: 'b',
+  // structured return arrangements (PA-PAY 7.2; CRA 2022 Sch. 3(n): the cost of returning goods that cannot normally be posted)
+  return_method: 's', return_address: 's', return_cost_cents: 'n', return_cost_basis: ['fixed', 'estimated_maximum'], return_arranged_by: 'p',
   shipment_confirmation_ref: 's', shipment_confirmed_by: 's', shipment_confirmed_on: 'd',
 };
 export function cleanDelivery(o) {
@@ -173,6 +175,14 @@ export function checkCover(delivery, artworkCents) {
   if (!delivery || delivery.cover_type !== 'transit_insurance') throw new RuleError('The pilot requires confirmed transit insurance for every shipment');
   if (!(delivery.covered_value_cents >= artworkCents)) throw new RuleError('Transit insurance must cover at least the artwork price');
   if (['not_applicable', 'plotart'].includes(delivery.insured_party)) throw new RuleError('Name who holds the transit insurance (artist, buyer or transporter)');
+}
+export function returnProblems(d) {
+  const out = [];
+  if (!d) return ['no delivery details'];
+  for (const k of ['return_method', 'return_address', 'return_cost_basis']) if (!d[k]) out.push(k.replace(/_/g, ' '));
+  if (!(typeof d.return_cost_cents === 'number' && d.return_cost_cents >= 0)) out.push('return cost (or estimated maximum) in cents');
+  if (!['buyer', 'artist', 'transporter'].includes(d.return_arranged_by)) out.push('who arranges the return (buyer, artist or transporter)');
+  return out;
 }
 export const quoteExpiry = (fromIso, days) => {
   if (!Number.isInteger(days) || days < 1 || days > MAX_QUOTE_DAYS) throw new RuleError(`A quote lasts 1–${MAX_QUOTE_DAYS} days`);

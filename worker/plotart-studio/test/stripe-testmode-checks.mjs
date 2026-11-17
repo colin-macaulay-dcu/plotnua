@@ -277,10 +277,10 @@ if (PHASES.includes('privacy')) {
         external_accounts_returned: !!(a.external_accounts), external_account_fields_present: keys(ext).filter(k => has(ext, k)),
         bank_last4_readable: !!(ext && ext.last4), bank_name_readable: !!(ext && ext.bank_name), full_account_number_readable: !!(ext && (ext.account_number || ext.iban)) });
       const ea = await stripe('GET', `/v1/accounts/${ACCOUNT}/external_accounts?limit=1`);
-      rec('V2', 'artist bank accounts endpoint', 'stripe-test-api', 'INFO', { http: ea.s, error: ea.j.error && ea.j.error.message, fields_present: keys(ea.j.data && ea.j.data[0]).filter(k => has(ea.j.data[0], k)) });
+      rec('V2', 'artist bank accounts endpoint', 'stripe-test-api', 'INFO', { http: ea.status, error: ea.j.error && ea.j.error.message, fields_present: keys(ea.j.data && ea.j.data[0]).filter(k => has(ea.j.data[0], k)) });
       const v2 = await stripe('GET', `/v2/core/accounts/${ACCOUNT}?include[0]=identity`);
       const id = v2.j.identity || {};
-      rec('V3', 'artist identity (v2, include=identity — the pilot no longer requests this)', 'stripe-test-api', 'INFO', { http: v2.s, error: v2.j.error && v2.j.error.message,
+      rec('V3', 'artist identity (v2, include=identity — the pilot no longer requests this)', 'stripe-test-api', 'INFO', { http: v2.status, error: v2.j.error && v2.j.error.message,
         identity_fields_present: keys(id).filter(k => has(id, k)), individual_fields_present: keys(id.individual).filter(k => has(id.individual, k)) });
       const ss = (await stripe('GET', '/v1/checkout/sessions?limit=1&status=complete', null, ACCOUNT)).j;
       const cs = ss.data && ss.data[0];
@@ -300,7 +300,8 @@ if (PHASES.includes('unfunded')) {
   // Same key, same permissions. Fully unfunded = a refund larger than the account's available + incoming balance.
   console.log('— unfunded refund on a dedicated second test account');
   let UA = '';
-  try { UA = String(JSON.parse(readFileSync(HERE + 'test/stripe-test-run.json', 'utf8')).unfunded_account || ''); } catch {}
+  let WANT_LINK = false;   // the short-lived onboarding link is generated only when the founder says he is ready
+  try { const rq = JSON.parse(readFileSync(HERE + 'test/stripe-test-run.json', 'utf8')); UA = String(rq.unfunded_account || ''); WANT_LINK = rq.unfunded_link === true; } catch {}
   const bal = async a => { const b = (await stripe('GET', '/v1/balance', null, a)).j; const g = k => ((b[k] || []).find(x => x.currency === 'eur') || { amount: 0 }).amount; return { available: g('available'), pending: g('pending') }; };
   const link = async a => {
     const l = await S.accountLink(env, { account: a, refreshUrl: 'https://plotart-checkout-test.invalid/refresh', returnUrl: 'https://plotart-checkout-test.invalid/return' });
@@ -312,14 +313,18 @@ if (PHASES.includes('unfunded')) {
       const a = await S.createAccount(env, { email: `pilot-unfunded+${RUN}@plotnua.invalid`, country: 'IE', artistId: 'unfunded-test-' + RUN });
       rec('U1', 'second test account created with the pilot configuration (artist pays fees, Stripe carries losses, full Dashboard)', 'stripe-test-api',
         S.accountConfigProblems(a).length === 0 ? 'PASS' : 'FAIL', { account: a.id, dashboard: a.dashboard, responsibilities: a.defaults && a.defaults.responsibilities, livemode: a.livemode });
-      const l = await link(a.id);
-      rec('U2', 'onboarding link for the second account', 'stripe-test-api', /stripe\.com$/.test(new URL(l.url).host) ? 'PASS' : 'FAIL', { account: a.id, expires_at: l.expires_at });
+      writeFileSync(OUT + 'unfunded-account.txt', `SECOND test account (unfunded-refund test only): ${a.id}\nNo onboarding link was generated. Add "unfunded_account" and, when the founder is ready, "unfunded_link": true to stripe-test-run.json.\n`);
+      if (WANT_LINK) { const l = await link(a.id); rec('U2', 'onboarding link for the second account', 'stripe-test-api', /stripe\.com$/.test(new URL(l.url).host) ? 'PASS' : 'FAIL', { account: a.id, expires_at: l.expires_at }); }
+      else rec('U2', 'onboarding link NOT generated yet (only when the founder is ready: unfunded_link = true)', 'stripe-test-api', 'INFO', { account: a.id });
     } else {
       const v1 = await S.getAccount(env, UA), v2 = await S.getAccountV2(env, UA);
       const ready = v1.charges_enabled && v1.details_submitted && !((v1.requirements || {}).currently_due || []).length;
       rec('U3', 'second account: pilot configuration and onboarding complete', 'stripe-test-api', ready && !S.accountConfigProblems(v2).length ? 'PASS' : 'FAIL',
         { account: UA, charges_enabled: v1.charges_enabled, details_submitted: v1.details_submitted, currently_due: (v1.requirements || {}).currently_due, problems: S.accountConfigProblems(v2) });
-      if (!ready) { const l = await link(UA); rec('U3b', 'a fresh onboarding link was written (onboarding not complete)', 'stripe-test-api', 'INFO', { expires_at: l.expires_at }); }
+      if (!ready) {
+        if (WANT_LINK) { const l = await link(UA); rec('U3b', 'a fresh onboarding link was written (onboarding not complete)', 'stripe-test-api', 'INFO', { expires_at: l.expires_at }); }
+        else rec('U3b', 'onboarding not complete; no link generated (set unfunded_link = true when the founder is ready)', 'stripe-test-api', 'INFO', { account: UA });
+      }
       else {
         const b0 = await bal(UA);
         rec('U4', 'balance on the second account before the test', 'stripe-test-api', 'INFO', b0);

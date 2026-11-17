@@ -752,6 +752,8 @@ CREATE TABLE IF NOT EXISTS checkout_orders (
   dispute_status     TEXT NOT NULL DEFAULT 'none' CHECK (dispute_status IN ('none','open','won','lost')),
   needs_resolution   TEXT,                                   -- set when a payment arrives that cannot complete a sale (e.g. already sold)
   processing         TEXT,                                   -- JSON (Model B): Stripe's actual processing fee + VAT on it, what PlotArt reimbursed, any shortfall owed outside Stripe
+  dispute_fees       TEXT,                                   -- JSON: per dispute, whether Stripe supplied its fee lines ('recorded') or not ('unavailable')
+  quote_sha256       TEXT,                                   -- fingerprint of the issued quote snapshot (quote_snapshots)
   currency           TEXT NOT NULL DEFAULT 'eur' CHECK (currency = 'eur'),
   artwork_cents      INTEGER CHECK (artwork_cents IS NULL OR artwork_cents BETWEEN 100 AND 999999),
   delivery_cents     INTEGER CHECK (delivery_cents IS NULL OR delivery_cents BETWEEN 0 AND 200000),
@@ -795,7 +797,8 @@ CREATE INDEX IF NOT EXISTS checkout_orders_buyer ON checkout_orders(buyer_email 
 CREATE TRIGGER IF NOT EXISTS checkout_orders_no_delete BEFORE DELETE ON checkout_orders
 WHEN OLD.retain_until IS NULL OR julianday(OLD.retain_until) > julianday('now')
   OR EXISTS (SELECT 1 FROM checkout_holds h WHERE h.order_id = OLD.id AND h.released_at IS NULL)
-BEGIN SELECT RAISE(ABORT, 'an order is kept until its retention period has ended and no legal hold is active'); END;
+  OR OLD.dispute_status = 'open'
+BEGIN SELECT RAISE(ABORT, 'an order is kept until its retention period has ended, no legal hold is active and no dispute is open'); END;
 -- a retention date is fixed once set: never shortened, never extended (keeping records longer is done by a reviewed hold)
 CREATE TRIGGER IF NOT EXISTS checkout_orders_retention_fixed BEFORE UPDATE OF retain_until ON checkout_orders
 WHEN OLD.retain_until IS NOT NULL AND (NEW.retain_until IS NULL OR NEW.retain_until <> OLD.retain_until)
@@ -861,7 +864,7 @@ CREATE TABLE IF NOT EXISTS order_ledger (
   id           TEXT PRIMARY KEY,
   order_id     TEXT NOT NULL REFERENCES checkout_orders(id),
   kind         TEXT NOT NULL CHECK (kind IN ('charge','commission','artist_artwork','delivery_allocation',
-                 'artwork_refund','delivery_refund','artwork_refund_reversed','delivery_refund_reversed','commission_refund','processing_fee','processing_reimbursement','processing_shortfall_paid','dispute','dispute_reinstated','external_refund','adjustment')),
+                 'artwork_refund','delivery_refund','artwork_refund_reversed','delivery_refund_reversed','commission_refund','processing_fee','processing_reimbursement','processing_shortfall_paid','dispute','dispute_reinstated','dispute_fee','dispute_fee_returned','external_refund','adjustment')),
   amount_cents INTEGER NOT NULL,
   provider_ref TEXT,
   at           TEXT NOT NULL,
@@ -969,3 +972,110 @@ CREATE TRIGGER IF NOT EXISTS checkout_hold_events_no_delete BEFORE DELETE ON che
 WHEN EXISTS (SELECT 1 FROM checkout_holds h WHERE h.id = OLD.hold_id AND h.released_at IS NULL)
   OR NOT EXISTS (SELECT 1 FROM checkout_orders o WHERE o.id = OLD.order_id AND o.retain_until IS NOT NULL AND julianday(o.retain_until) <= julianday('now'))
 BEGIN SELECT RAISE(ABORT, 'hold history is kept with its order'); END;
+
+-- 13 · Seller information a buyer must have before paying (CRA 2022 Sch. 3; s.107). Kept by the artist in Studio while they
+--      are in the pilot; each issued quote keeps its own copy (quote_snapshots), so later edits never change a quote.
+CREATE TABLE IF NOT EXISTS seller_profiles (
+  artist_id       TEXT PRIMARY KEY,
+  legal_name      TEXT NOT NULL,
+  trading_name    TEXT,
+  address         TEXT NOT NULL,              -- geographical address at which the seller is established
+  returns_address TEXT,                       -- if different: where returns and complaints go
+  email           TEXT NOT NULL,
+  phone           TEXT NOT NULL,
+  trader_status   TEXT NOT NULL CHECK (trader_status IN ('trader','not_trader')),
+  vat_number      TEXT,
+  declared_at     TEXT NOT NULL,
+  declared_by     TEXT NOT NULL,
+  updated_at      TEXT NOT NULL
+);
+
+-- 14 · The exact quote the buyer was shown, per issued version: append-only, fingerprinted, kept with its order.
+CREATE TABLE IF NOT EXISTS quote_snapshots (
+  order_id      TEXT NOT NULL REFERENCES checkout_orders(id),
+  quote_version INTEGER NOT NULL,
+  snapshot      TEXT NOT NULL,
+  sha256        TEXT NOT NULL,
+  issued_at     TEXT NOT NULL,
+  PRIMARY KEY (order_id, quote_version)
+);
+CREATE TRIGGER IF NOT EXISTS quote_snapshots_no_update BEFORE UPDATE ON quote_snapshots
+BEGIN SELECT RAISE(ABORT, 'quote_snapshots is append-only'); END;
+CREATE TRIGGER IF NOT EXISTS quote_snapshots_no_delete BEFORE DELETE ON quote_snapshots
+WHEN NOT (EXISTS (SELECT 1 FROM checkout_orders o WHERE o.id = OLD.order_id AND o.retain_until IS NOT NULL AND julianday(o.retain_until) <= julianday('now'))
+  AND NOT EXISTS (SELECT 1 FROM checkout_holds h WHERE h.order_id = OLD.order_id AND h.released_at IS NULL))
+BEGIN SELECT RAISE(ABORT, 'quote_snapshots are kept with their order'); END;
+
+-- 15 · Messages PlotArt prepares for an order (the buyer's purchase confirmation): the exact text, fingerprinted, once
+--      per order and kind; every delivery attempt is recorded separately. In test mode nothing leaves PlotArt: messages
+--      go only to checkout_mail_sink.
+CREATE TABLE IF NOT EXISTS order_messages (
+  id             TEXT PRIMARY KEY,
+  order_id       TEXT NOT NULL REFERENCES checkout_orders(id),
+  kind           TEXT NOT NULL CHECK (kind IN ('buyer_confirmation')),
+  recipient_role TEXT NOT NULL CHECK (recipient_role IN ('buyer','artist','founder')),
+  subject        TEXT NOT NULL,
+  body           TEXT NOT NULL,
+  sha256         TEXT NOT NULL,
+  created_at     TEXT NOT NULL,
+  UNIQUE (order_id, kind)
+);
+CREATE TRIGGER IF NOT EXISTS order_messages_no_update BEFORE UPDATE ON order_messages
+BEGIN SELECT RAISE(ABORT, 'order_messages is append-only'); END;
+CREATE TABLE IF NOT EXISTS order_message_deliveries (
+  id         INTEGER PRIMARY KEY AUTOINCREMENT,
+  message_id TEXT NOT NULL REFERENCES order_messages(id),
+  order_id   TEXT NOT NULL,
+  at         TEXT NOT NULL,
+  channel    TEXT NOT NULL CHECK (channel IN ('test_sink','none','provider')),
+  status     TEXT NOT NULL CHECK (status IN ('held_in_test_sink','not_sent_no_provider','sent','failed')),
+  detail     TEXT
+);
+CREATE TRIGGER IF NOT EXISTS order_message_deliveries_no_update BEFORE UPDATE ON order_message_deliveries
+BEGIN SELECT RAISE(ABORT, 'order_message_deliveries is append-only'); END;
+CREATE TABLE IF NOT EXISTS checkout_mail_sink (
+  id         INTEGER PRIMARY KEY AUTOINCREMENT,
+  at         TEXT NOT NULL,
+  order_id   TEXT,
+  kind       TEXT NOT NULL,
+  to_role    TEXT NOT NULL,
+  to_sha256  TEXT NOT NULL,                   -- the intended address is never stored here, only its fingerprint
+  subject    TEXT NOT NULL,
+  body       TEXT NOT NULL
+);
+
+-- 16 · Amounts PlotArt owes artists (fee model B shortfalls; commission to return after a lost dispute, PA-GAA 9).
+--      One row per item; the amount, rule and due date never change; settlement is recorded payment by payment.
+CREATE TABLE IF NOT EXISTS checkout_owed (
+  id              TEXT PRIMARY KEY,
+  order_id        TEXT NOT NULL REFERENCES checkout_orders(id),
+  kind            TEXT NOT NULL CHECK (kind IN ('processing_shortfall','commission_shortfall','lost_dispute_commission')),
+  item_key        TEXT NOT NULL,
+  cents           INTEGER NOT NULL CHECK (cents > 0),
+  reason          TEXT NOT NULL,
+  arisen_at       TEXT NOT NULL,
+  due_at          TEXT NOT NULL,
+  due_rule        TEXT NOT NULL,
+  due_provisional INTEGER NOT NULL CHECK (due_provisional IN (0,1)),
+  settled_cents   INTEGER NOT NULL DEFAULT 0 CHECK (settled_cents >= 0),
+  reminders       TEXT,                       -- JSON: reminder stages already sent
+  UNIQUE (order_id, item_key),
+  CHECK (settled_cents <= cents)
+);
+CREATE INDEX IF NOT EXISTS checkout_owed_open ON checkout_owed(due_at) WHERE settled_cents < cents;
+CREATE TRIGGER IF NOT EXISTS checkout_owed_fixed BEFORE UPDATE ON checkout_owed
+WHEN NEW.cents <> OLD.cents OR NEW.kind <> OLD.kind OR NEW.due_at <> OLD.due_at OR NEW.order_id <> OLD.order_id OR NEW.settled_cents < OLD.settled_cents
+BEGIN SELECT RAISE(ABORT, 'an owed amount, its rule and due date are fixed; settlement only increases'); END;
+CREATE TABLE IF NOT EXISTS checkout_owed_payments (
+  id          TEXT PRIMARY KEY,
+  owed_id     TEXT NOT NULL REFERENCES checkout_owed(id),
+  order_id    TEXT NOT NULL,
+  cents       INTEGER NOT NULL CHECK (cents > 0),
+  method      TEXT NOT NULL CHECK (method IN ('bank_transfer','stripe_application_fee_refund','moved_to_direct_payment')),
+  reference   TEXT NOT NULL,                  -- transfer reference / fee refund id: never bank details
+  recorded_by TEXT NOT NULL,
+  at          TEXT NOT NULL,
+  UNIQUE (owed_id, reference)
+);
+CREATE TRIGGER IF NOT EXISTS checkout_owed_payments_no_update BEFORE UPDATE ON checkout_owed_payments
+BEGIN SELECT RAISE(ABORT, 'checkout_owed_payments is append-only'); END;

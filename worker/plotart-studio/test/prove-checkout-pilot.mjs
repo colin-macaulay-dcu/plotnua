@@ -128,7 +128,7 @@ const q = async (sql, ...b) => (await db.prepare(sql).bind(...b).all()).results;
 
 // ---- synthetic world
 const GAL = 'gal@example.test', FND = 'fnd@example.test', OLD = 'old@example.test', UNK = 'unk@example.test', NOP = 'nop@example.test';
-await seedPublished(db, { id: 'agal', slug: 'gal', email: GAL, name: 'Gale Gallery', works: 7, publishedAt: ago(30) });
+await seedPublished(db, { id: 'agal', slug: 'gal', email: GAL, name: 'Gale Gallery', works: 9, publishedAt: ago(30) });
 await seedPublished(db, { id: 'afnd', slug: 'fnd', email: FND, name: 'Fia Founding', works: 2, number: 3, publishedAt: ago(500) });
 await seedPublished(db, { id: 'aold', slug: 'old', email: OLD, name: 'Oisin Older', works: 3, number: 4, publishedAt: ago(500) });
 await seedPublished(db, { id: 'aunk', slug: 'unk', email: UNK, name: 'Una Unknown', works: 2, publishedAt: ago(30) });
@@ -203,7 +203,7 @@ const DELIVERY = { collection_county: 'Dublin', destination: 'Cork, Ireland', un
   transporter_name: 'Synthetic Art Couriers', installation: 'not_applicable', import_costs: 'not_applicable', cover_type: 'transit_insurance', cover_provider: 'Synthetic Underwriting (SIMULATED test cover)', covered_value_cents: 100000,
   insured_party: 'transporter', cover_confirmation_ref: 'SIM-COVER-0001', cover_confirmed_by: 'Synthetic Underwriting', cover_confirmed_on: '2026-11-16',
   valuation_basis: 'Agreed sale price', excess_cents: 5000, exclusions: 'Inherent vice', cover_period: 'Collection to signed delivery', claims_contact: 'claims@example.test', delivery_window: '5–8 working days',
-  tracking: 'Tracked, signature on delivery', signed_receipt: true, condition_photos: true, return_route: 'Same courier; return cost quoted on request', shipment_confirmation_ref: 'SAC-Q-1001', shipment_confirmed_by: 'Synthetic Art Couriers', shipment_confirmed_on: '2026-11-16' };
+  tracking: 'Tracked, signature on delivery', signed_receipt: true, condition_photos: true, return_method: 'Same courier, packed as delivered, insured', return_address: '12 Studio Lane, Dublin 8', return_cost_cents: 9500, return_cost_basis: 'estimated_maximum', return_arranged_by: 'buyer', shipment_confirmation_ref: 'SAC-Q-1001', shipment_confirmed_by: 'Synthetic Art Couriers', shipment_confirmed_on: '2026-11-16' };
 async function makeOrder(artist_id, artwork_id, enquiry_ref, artwork_cents = 100000, delivery_cents = 7500, buyer = 'buyer@example.test', delivery = DELIVERY) {
   const c = await call('POST', '/api/admin/checkout/orders', FOUNDER, { artist_id, artwork_id, enquiry_ref, buyer_email: buyer });
   if (c.s !== 200) return c;
@@ -224,7 +224,7 @@ check('T3 a Founding Artist after the founding year with no accepted commission 
 console.log('— separate consent to the processing charge on commission-free orders (Founding Artists keep direct payment)');
 let rpc = await call('GET', '/api/checkout', FND);
 check('PC0 a Founding Artist is told direct payment stays their normal route, and is not asked to consent by joining', /normal route/.test(rpc.j.direct_payment_note) && rpc.j.membership.processing_consent === false);
-rpc = await call('POST', `/api/checkout/orders/${of.id}/approve`, FND, { quote_version: (await order(of.id)).quote_version, confirm: { available: true, location: true, condition: true, framing: true, dimensions: true, packing_and_handover: true } });
+rpc = await call('POST', `/api/checkout/orders/${of.id}/approve`, FND, { quote_version: (await order(of.id)).quote_version, confirm: { available: true, location: true, condition: true, framing: true, dimensions: true, packing_and_handover: true, returns: true, seller_information: true } });
 check('PC1 Model B: a commission-free order (Founding Enquiry) is not taken through the pilot; it stays on direct payment', rpc.s === 409 && /stay on direct payment/.test(rpc.j.error), rpc.j);
 rpc = await call('POST', '/api/checkout/processing-consent', FND, { accept: true, statement: 'something else' });
 check('PC2 the consent must be to the exact statement shown', rpc.s === 400);
@@ -232,7 +232,7 @@ const PSTAT = (await call('GET', '/api/checkout', FND)).j.processing_statement;
 for (const e of [FND, OLD]) rpc = await call('POST', '/api/checkout/processing-consent', e, { accept: true, statement: PSTAT });
 check('PC3 consent is recorded separately from the addendum acceptance, with its statement', rpc.s === 200 && rpc.j.membership.processing_consent === true
   && (await q("SELECT * FROM payment_pilot_events WHERE kind='processing_consent'")).length === 2 && (await q("SELECT * FROM payment_pilot_events WHERE kind='processing_consent' AND doc_id IS NOT NULL")).length === 0);
-const ALLC = { available: true, location: true, condition: true, framing: true, dimensions: true, packing_and_handover: true };
+const ALLC = { available: true, location: true, condition: true, framing: true, dimensions: true, packing_and_handover: true, returns: true, seller_information: true };
 rpc = await call('POST', `/api/checkout/orders/${of.id}/approve`, FND, { quote_version: (await order(of.id)).quote_version, confirm: ALLC });
 check('PC4 Model B: even with the artist’s consent, a commission-free order is not enrolled automatically (direct payment)', rpc.s === 409 && /stay on direct payment/.test(rpc.j.error), rpc.j);
 rpc = await call('POST', '/api/checkout/processing-consent/withdraw', FND, {});
@@ -270,7 +270,18 @@ check('T12c the founder desk is refused to artists', r.s === 403);
 const v1 = (await order(o1.id)).quote_version;
 r = await call('POST', `/api/checkout/orders/${o1.id}/approve`, GAL, { quote_version: v1, confirm: { available: true, location: true } });
 check('A1 approval needs every shipment confirmation (availability, location, condition, framing, dimensions, packing)', r.s === 400 && /condition/.test(r.j.error), r.j);
-const ALL = { available: true, location: true, condition: true, framing: true, dimensions: true, packing_and_handover: true };
+const ALL = { available: true, location: true, condition: true, framing: true, dimensions: true, packing_and_handover: true, returns: true, seller_information: true };
+console.log('— seller information and returns on the quote');
+r = await call('POST', `/api/checkout/orders/${o1.id}/approve`, GAL, { quote_version: v1, confirm: ALL });
+check('SP1 an artist cannot approve a quote before giving the seller information buyers must see', r.s === 409 && /seller information/.test(r.j.error), r.j);
+const SELLER = { legal_name: 'Gale Gallagher', trading_name: 'Gale Gallery', address: '12 Studio Lane, Dublin 8, Ireland', email: 'sales@galegallery.example', phone: '+353 1 555 0100', vat_number: '', trader_status: 'trader' };
+r = await call('PUT', '/api/checkout/seller-profile', GAL, { ...SELLER, phone: 'call me' , confirm: true });
+const r2sp = await call('PUT', '/api/checkout/seller-profile', GAL, { ...SELLER, trader_status: undefined, confirm: true });
+const r3sp = await call('PUT', '/api/checkout/seller-profile', GAL, { ...SELLER });
+check('SP2 seller information needs a valid phone, a trader declaration and the artist’s confirmation', r.s === 400 && r2sp.s === 400 && /trader/.test(r2sp.j.error) && r3sp.s === 400, [r.j, r2sp.j, r3sp.j]);
+r = await call('PUT', '/api/checkout/seller-profile', GAL, { ...SELLER, confirm: true });
+await call('PUT', '/api/checkout/seller-profile', OLD, { ...SELLER, legal_name: 'Oisin Older', trading_name: '', email: 'oisin@older.example', confirm: true });
+check('SP3 the artist saves their seller information', r.s === 200 && r.j.seller_profile.legal_name === 'Gale Gallagher' && r.j.seller_profile.trader_status === 'trader', r.j);
 r = await call('POST', `/api/checkout/orders/${o1.id}/approve`, GAL, { quote_version: v1 - 1, confirm: ALL });
 check('A2 approving a stale quote version is refused', r.s === 409);
 r = await call('POST', `/api/checkout/orders/${o1.id}/approve`, GAL, { quote_version: v1, confirm: ALL });
@@ -287,12 +298,23 @@ const LINK1 = r.j && r.j.buyer_link, T1 = LINK1 && LINK1.split('/q/')[1];
 check('Q1 quote issued with a one-time buyer link (token stored hashed only)', r.s === 200 && /^https:\/\/checkout\.local\/q\/[0-9a-z]{48}$/.test(LINK1)
   && (await order(o1.id)).buyer_token_hash === sha(T1) && !JSON.stringify(await order(o1.id)).includes(T1), r.j);
 check('Q2 the seller snapshot names the artist as seller and PlotArt as introducer', /Seller \(the artist\)/.test(r.j.order.seller.role) && /not the seller/.test(r.j.order.seller.platform));
+{ const snap = await db.prepare('SELECT * FROM quote_snapshots WHERE order_id = ?').bind(o1.id).first(), Q1 = await order(o1.id);
+  const sj = JSON.parse(snap.snapshot);
+  check('QS1 the exact issued quote is kept: seller identity, address, contact, trader status, amounts, delivery, returns and terms, fingerprinted', snap.sha256 === sha(snap.snapshot) && Q1.quote_sha256 === snap.sha256
+    && sj.seller.legal_name === 'Gale Gallagher' && sj.seller.address && sj.seller.phone && sj.seller.trader_status === 'trader' && sj.delivery.return_cost_cents === 9500 && sj.delivery.return_arranged_by === 'buyer'
+    && sj.amounts.total_cents === 107500 && sj.terms.doc_id === 'PA-BPT-TEST-01' && !('cover_confirmed_by' in sj.delivery), sj);
+  check('QS2 an issued quote snapshot cannot be changed', /append-only/.test((await db.prepare("UPDATE quote_snapshots SET snapshot = '{}' WHERE order_id = ?").bind(o1.id).run().catch(e => e)).message)); }
 
 console.log('— buyer page and hosted checkout (test 13)');
 let pg = await pub('GET', `/q/${T1}`);
+check('B1a the buyer sees the seller’s legal name, address, email, phone and trader status, and the return method, address, cost and who arranges it',
+  pg.t.includes('Gale Gallagher') && pg.t.includes('12 Studio Lane') && pg.t.includes('sales@galegallery.example') && pg.t.includes('+353 1 555 0100') && /Sells as a trader/.test(pg.t)
+  && pg.t.includes('Up to about €95.00') && /Arranged by<\/dt><dd>you \(the buyer\)/.test(pg.t));
+await call('PUT', '/api/checkout/seller-profile', GAL, { ...SELLER, phone: '+353 1 555 0199', confirm: true });
+check('QS3 editing seller information later never changes an issued quote', (await pub('GET', `/q/${T1}`)).t.includes('+353 1 555 0100') && !(await pub('GET', `/q/${T1}`)).t.includes('0199'));
 check('B1 the buyer sees seller, artwork, delivery, cover and total before paying', pg.s === 200 && pg.t.includes('Gale Gallery') && pg.t.includes('€1,000.00') && pg.t.includes('€75.00') && pg.t.includes('€1,075.00')
   && pg.t.includes('Synthetic Underwriting') && pg.t.includes('not escrow') && pg.t.includes('Test mode') && !pg.t.includes(GAL), pg.t.slice(0, 300));
-check('B2 the buyer page never shows the commission or the artist’s address', !/15%|150\.00|commission/i.test(pg.t) && !pg.t.includes(GAL), (pg.t.match(/.{60}(15%|150\.00|commission).{60}/i) || [])[0]);
+check('B2 the buyer page never shows the commission or the artist’s Studio login email', !/15%|150\.00|commission/i.test(pg.t) && !pg.t.includes(GAL), (pg.t.match(/.{60}(15%|150\.00|commission).{60}/i) || [])[0]);
 check('B3 another token reaches nothing', (await pub('GET', '/q/' + 'z'.repeat(48))).s === 404);
 pg = await pub('POST', `/q/${T1}/pay`, { form: {} });
 check('B4 paying needs the purchase terms accepted', pg.s === 400 && /purchase terms/.test(pg.t));
@@ -336,12 +358,27 @@ console.log('— fee model B: PlotArt reimburses Stripe’s actual processing fe
   const st1 = (await call('GET', `/api/checkout/orders/${o1.id}`, GAL)).j.statement;
   check('MB3 the artist statement separates gross, delivery, commission, processing fee, VAT, reimbursement and net (combined deduction = commission)', st1 && st1.gross_payment === 107500 && st1.of_which_delivery === 7500
     && st1.plotart_commission === 15000 && st1.stripe_processing_fee === 1638 && st1.vat_on_processing_fee === 377 && st1.processing_reimbursed_by_plotart === 2015 && st1.net_proceeds === 92500
-    && st1.gross_payment - st1.net_proceeds === 15000 && /dispute fees/.test(st1.not_included), st1);
+    && st1.gross_payment - st1.net_proceeds === 15000 && st1.dispute_fees_status === 'no dispute' && /payout fees/.test(st1.not_included), st1);
   await S.checkoutWorker.scheduled({ cron: '*/15 * * * *' });
   r = await call('POST', `/api/admin/checkout/orders/${o1.id}/processing`, FOUNDER, {});
   check('MB4 reconciling again (sweep, founder button) never reimburses twice', r.s === 200 && M.feeRefunds.filter(x => x.fee === M.pis[O1.payment_intent].fee).length === 1
     && (await q("SELECT * FROM order_ledger WHERE order_id = ? AND kind LIKE 'processing%'", o1.id)).length === 2, r.j); }
 h = await hook(done1);
+console.log('— buyer purchase confirmation (test sink only)');
+{ const m = await db.prepare("SELECT * FROM order_messages WHERE order_id = ? AND kind = 'buyer_confirmation'").bind(o1.id).first();
+  check('BC1 after Stripe confirms the sale, the buyer’s confirmation is prepared and kept: artwork, seller identity and contact, amounts, delivery, returns, accepted terms (id, fingerprint, full text) and the model cancellation form',
+    !!m && m.sha256 === sha(m.body) && m.body.includes('Gale Gallagher') && m.body.includes('12 Studio Lane') && m.body.includes('Total paid by card through Stripe to the seller\'s own Stripe account: EUR 1075.00')
+    && m.body.includes('EUR 75.00') && m.body.includes('Synthetic Underwriting') && m.body.includes('PA-BPT-TEST-01') && m.body.includes('MODEL CANCELLATION FORM') && m.body.includes('YOUR RIGHT TO CANCEL')
+    && m.body.includes('up to about EUR 95.00') && m.body.includes((await order(o1.id)).quote_sha256) && /TEST MODE/.test(m.body) && m.body.length > 2000, m && m.body.slice(0, 600));
+  const sink = await q("SELECT * FROM checkout_mail_sink WHERE kind = 'buyer_confirmation' AND order_id = ?", o1.id), dl = await q('SELECT * FROM order_message_deliveries WHERE message_id = ?', m.id);
+  check('BC2 it goes only to the test sink: the intended address is kept as a fingerprint, nothing is sent anywhere', sink.length === 1 && sink[0].to_sha256 === sha('buyer@example.test') && !JSON.stringify(sink).includes('buyer@example.test')
+    && sink[0].body === m.body && dl.length === 1 && dl[0].status === 'held_in_test_sink' && dl[0].channel === 'test_sink' && !(await q('SELECT * FROM mail_capture')).length, { sink: sink.length, dl });
+  const pgc = await pub('GET', `/q/${T1}/confirmation`), ret = await pub('GET', `/q/${T1}/return`);
+  check('BC3 the buyer can open the exact stored confirmation from their quote link (the return page links it)', pgc.s === 200 && pgc.t === m.body && pgc.h.get('X-Document-SHA256') === m.sha256 && ret.t.includes('/confirmation'));
+  r = await call('POST', `/api/admin/checkout/orders/${o1.id}/confirmation`, FOUNDER, {});
+  check('BC4 re-delivery uses the same stored text: one message, two delivery records, identical bodies', r.s === 200 && (await q('SELECT * FROM order_messages WHERE order_id = ?', o1.id)).length === 1
+    && (await q('SELECT * FROM order_message_deliveries WHERE message_id = ?', m.id)).length === 2 && (await q("SELECT * FROM checkout_mail_sink WHERE kind = 'buyer_confirmation' AND order_id = ?", o1.id)).every(x => x.body === m.body), r.j && r.j.error);
+  check('BC5 a stored confirmation cannot be edited', /append-only/.test((await db.prepare("UPDATE order_messages SET body = 'x' WHERE id = ?").bind(m.id).run().catch(e => e)).message)); }
 check('T7f the same event delivered again is recognised and not re-applied', h.s === 200 && h.j.duplicate && (await q('SELECT * FROM order_ledger WHERE order_id = ?', o1.id)).length === 6);
 const dup2 = { ...done1, id: `evt_test_${++EV}` };   // a different event id carrying the same completion (provider retry semantics differ)
 h = await hook(dup2);
@@ -370,6 +407,29 @@ check('K4 an unpaid, cancelled order no longer counts', r.s === 200, r.j);
 await call('POST', `/api/admin/checkout/orders/${ok2.id}/cancel`, FOUNDER, { reason: 'test' });
 check('K5 the cancelled quote cannot be paid', (await pub('POST', `/q/${TK1}/pay`, { form: { accept_terms: 'PA-BPT-TEST-01' } })).s === 409);
 
+console.log('— a quote needs current seller information and complete return arrangements');
+{ const os = await makeOrder('agal', 'wagal8', 'PA-E-261101-AAAAAA', 20000, 2000, 's@example.test');
+  const { return_address: _ra, ...noRA } = DELIVERY;
+  r = await call('PUT', `/api/admin/checkout/orders/${os.id}`, FOUNDER, { delivery: noRA });
+  check('RT1 delivery details without the return address (or method, cost, basis, who arranges it) are refused', r.s >= 400 && /return address/.test(r.j.error), r.j);
+  await call('PUT', `/api/admin/checkout/orders/${os.id}`, FOUNDER, { delivery: { ...DELIVERY, return_arranged_by: 'not_applicable' } });
+  const prepOS = async () => { await call('POST', `/api/admin/checkout/orders/${os.id}/send`, FOUNDER, {}); return call('POST', `/api/checkout/orders/${os.id}/approve`, GAL, { quote_version: (await order(os.id)).quote_version, confirm: ALL }); };
+  await prepOS();
+  r = await call('POST', `/api/admin/checkout/orders/${os.id}/issue`, FOUNDER, { days: 2, linked_check_confirmed: true });
+  check('RT2 a quote is not issued unless it says who arranges the return (buyer, artist or transporter)', r.s === 409 && /who arranges the return/.test(r.j.error), r.j);
+  await call('PUT', `/api/admin/checkout/orders/${os.id}`, FOUNDER, { delivery: DELIVERY });
+  await prepOS();
+  await call('PUT', '/api/checkout/seller-profile', GAL, { ...SELLER, phone: '+353 1 555 0177', confirm: true });
+  r = await call('POST', `/api/admin/checkout/orders/${os.id}/issue`, FOUNDER, { days: 2, linked_check_confirmed: true });
+  check('SP4 if the seller information changes after the artist approved, the quote is not issued (the artist must approve again)', r.s === 409 && /changed after/.test(r.j.error), r.j);
+  await call('PUT', '/api/checkout/seller-profile', GAL, { ...SELLER, phone: '+353 1 555 0199', trader_status: 'not_trader', confirm: true });
+  r = await call('POST', `/api/admin/checkout/orders/${os.id}/issue`, FOUNDER, { days: 2, linked_check_confirmed: true });
+  check('SP5 a seller who declares they are not a trader is not quoted while decision F2 stands (default: traders only)', r.s === 409 && /not sell as a trader/.test(r.j.error), r.j);
+  await call('PUT', '/api/checkout/seller-profile', GAL, { ...SELLER, phone: '+353 1 555 0199', confirm: true });
+  r = await call('POST', `/api/admin/checkout/orders/${os.id}/issue`, FOUNDER, { days: 2, linked_check_confirmed: true });
+  check('SP6 with the approved seller information restored, the quote is issued', r.s === 200 && !!r.j.buyer_link, r.j);
+  await call('POST', `/api/admin/checkout/orders/${os.id}/cancel`, FOUNDER, { reason: 'test complete' }); }
+
 console.log('— two buyers, one original (test 6)');
 const oa = await makeOrder('agal', 'wagal2', 'PA-E-261102-BBBBBB', 50000, 0, 'a@example.test'), ob = await makeOrder('agal', 'wagal2', 'PA-E-261105-FFFFFF', 50000, 0, 'b@example.test');
 const prep = async id => { await call('POST', `/api/admin/checkout/orders/${id}/send`, FOUNDER, {}); await call('POST', `/api/checkout/orders/${id}/approve`, GAL, { quote_version: (await order(id)).quote_version, confirm: ALL });
@@ -395,6 +455,7 @@ h = await hook(evt('checkout.session.completed', M.sessions[sA.id], ACCT));
 const FA = await order(first.id);
 check('T6c a delayed payment for an already-sold original is never a second sale: flagged for refund', h.s === 200 && FA.status === 'refund_pending' && /already sold/.test(FA.needs_resolution)
   && (await q("SELECT * FROM artwork_sales WHERE artwork_id='wagal2' AND released_at IS NULL")).length === 1 && (await order(second.id)).status === 'paid', FA);
+check('BC6 a payment that could not complete a sale gets no purchase confirmation', !(await q('SELECT * FROM order_messages WHERE order_id = ?', first.id)).length);
 check('T6d the database itself refuses a second active sale of one original', /UNIQUE/.test((await db.prepare("INSERT INTO artwork_sales (order_id, artwork_id, sold_at) VALUES (?, 'wagal2', ?)").bind(first.id, ago(0)).run().catch(e => e)).message));
 pg = await pub('POST', `/q/${TF}/pay`, { form: { accept_terms: 'PA-BPT-TEST-01' } });
 check('T6e and the sold work cannot be checked out again', pg.s === 409, [pg.s, pg.t.slice(-600)]);
@@ -447,8 +508,9 @@ check('R1 a refund pending at Stripe books nothing and returns no commission yet
 r = await call('POST', `/api/admin/checkout/orders/${o1.id}/refund`, FOUNDER, { artwork_cents: 50001, delivery_cents: 0, reason: 'too much' });
 check('R2 a pending refund counts against what can still be refunded', r.s === 409);
 check('R1b the artist and the founder are told at once, with the funding steps', (await q("SELECT * FROM order_events WHERE order_id = ? AND action = 'notified_refund_pending'", o1.id)).length === 1
-  && (await q("SELECT * FROM mail_capture WHERE subject LIKE '%refund_pending%' AND (to_addr = ? OR to_addr = 'founder-notify@plotnua.invalid')", GAL)).length === 2
-  && (await q("SELECT body FROM mail_capture WHERE to_addr = ?", GAL))[0].body.includes('Add to balance'));
+  && (await q("SELECT * FROM checkout_mail_sink WHERE subject LIKE '%refund_pending%' AND to_role IN ('artist','founder') AND order_id = ?", o1.id)).length === 2
+  && (await q("SELECT body FROM checkout_mail_sink WHERE to_sha256 = ? AND kind = 'refund_pending'", sha(GAL)))[0].body.includes('Add to balance')
+  && !(await q('SELECT * FROM mail_capture')).length);
 check('R1c the founder desk lists the pending refund with its days and Stripe’s 45-day date', (await call('GET', '/api/admin/checkout', FOUNDER)).j.pending_refunds.some(x => x.order_id === o1.id && x.days_pending === 0 && x.stripe_fails_it_by));
 check('R1d the artist sees it with what to do', (await call('GET', '/api/checkout', GAL)).j.pending_refunds[0].what_to_do.length === 4);
 h = await hook(evt('refund.updated', { ...rf1, status: 'succeeded' }, ACCT));
@@ -473,7 +535,13 @@ check('T9e full refund reconciles: buyer net 0; commission kept by PlotArt = pro
 check('MB5 full refund: the commission refund owed (EUR 75) exceeds what is left of the application fee after the reimbursement (EUR 54.85): only EUR 54.85 goes back through Stripe',
   M.feeRefunds.filter(x => x.fee === M.pis[O1.payment_intent].fee).map(x => x.amount).join() === '2015,7500,5485', M.feeRefunds);
 check('MB6 the EUR 20.15 difference is flagged as a shortfall PlotArt must pay the artist directly (not silently left with the artist, not paid twice)',
-  P1.shortfall_cents === 2015 && /PlotArt owes the artist EUR 20.15/.test(O1.needs_resolution) && (await call('GET', `/api/checkout/orders/${o1.id}`, GAL)).j.statement.shortfall_still_owed_by_plotart === 2015, { P1, nr: O1.needs_resolution });
+  (await db.prepare("SELECT SUM(cents) AS c FROM checkout_owed WHERE order_id = ?").bind(o1.id).first()).c === 2015 && /PlotArt owes the artist EUR 20.15/.test(O1.needs_resolution) && (await call('GET', `/api/checkout/orders/${o1.id}`, GAL)).j.statement.shortfall_still_owed_by_plotart === 2015, { P1, nr: O1.needs_resolution });
+{ const Qd = (await call('GET', '/api/admin/checkout', FOUNDER)).j, w1 = Qd.owed.find(w => w.order_id === o1.id);
+  check('OQ1 the founder queue lists what PlotArt owes: amount, paid, outstanding, age, due date (marked provisional) and the rule', !!w1 && w1.cents === 2015 && w1.settled_cents === 0 && w1.outstanding_cents === 2015
+    && w1.age_days === 0 && w1.due_provisional === true && /PROVISIONAL/.test(w1.due_rule) && Date.parse(w1.due_at) - Date.parse(w1.arisen_at) === 30 * 86400_000
+    && Qd.deadlines.provisional === true && Qd.deadlines.shortfall_days === 30 && Qd.bank_details_process.length >= 4, { w1, d: Qd.deadlines }); }
+r = await call('POST', `/api/admin/checkout/orders/${o1.id}/shortfallpaid`, FOUNDER, { amount_cents: 2015, reference: 'Paid to IE29 AIBK 9311 5212 3456 78 on 18 Nov' });
+check('OQ2 a payment record that looks like bank details is refused, so none is stored', r.s === 400 && /bank details/.test(r.j.error) && !(await q("SELECT * FROM checkout_owed_payments WHERE reference LIKE '%AIBK%'")).length, r.j);
 r = await call('POST', `/api/admin/checkout/orders/${o1.id}/shortfallpaid`, FOUNDER, { amount_cents: 2016, evidence: 'Bank transfer BT-SF1 on 18 Nov' });
 const r2sf = await call('POST', `/api/admin/checkout/orders/${o1.id}/shortfallpaid`, FOUNDER, { amount_cents: 2015, evidence: 'Bank transfer BT-SF1 on 18 Nov' });
 const r3sf = await call('POST', `/api/admin/checkout/orders/${o1.id}/shortfallpaid`, FOUNDER, { amount_cents: 1, evidence: 'Bank transfer BT-SF2 on 18 Nov' });
@@ -481,6 +549,13 @@ const st9 = (await call('GET', `/api/checkout/orders/${o1.id}`, GAL)).j.statemen
 check('MB7 the founder records the direct payment once; more than owed, or paying again, is refused; the statement then shows the artist whole on fees',
   r.s === 400 && r2sf.s === 200 && r3sf.s === 409 && !(await order(o1.id)).needs_resolution && st9.shortfall_paid_by_plotart === 2015 && st9.shortfall_still_owed_by_plotart === 0
   && st9.net_proceeds === 0, { st9, r: r.j, r3: r3sf.j });
+{ const w = await db.prepare('SELECT * FROM checkout_owed WHERE order_id = ?').bind(o1.id).first(), pays = await q('SELECT * FROM checkout_owed_payments WHERE owed_id = ?', w.id);
+  check('OQ3 the queue item is settled with its payment evidence (transfer reference only); owed and paid are separate in the statement',
+    w.settled_cents === 2015 && pays.length === 1 && pays[0].method === 'bank_transfer' && pays[0].reference === 'Bank transfer BT-SF1 on 18 Nov' && st9.owed_by_plotart_not_yet_paid.shortfall === 0 && st9.shortfall_paid_by_plotart === 2015
+    && !(await call('GET', '/api/admin/checkout', FOUNDER)).j.owed.some(x => x.order_id === o1.id), { w, pays });
+  check('OQ4 an owed amount and its due date cannot be changed, and settlement can never exceed it', /fixed/.test((await db.prepare('UPDATE checkout_owed SET cents = 1 WHERE id = ?').bind(w.id).run().catch(e => e)).message)
+    && /fixed/.test((await db.prepare("UPDATE checkout_owed SET due_at = '2099-01-01T00:00:00Z' WHERE id = ?").bind(w.id).run().catch(e => e)).message)
+    && /CHECK/.test((await db.prepare('UPDATE checkout_owed SET settled_cents = cents + 1 WHERE id = ?').bind(w.id).run().catch(e => e)).message)); }
 const ch1 = { id: M.pis[O1.payment_intent].charge, object: 'charge', payment_intent: O1.payment_intent, refunds: { data: M.refunds.filter(x => x.payment_intent === O1.payment_intent).map(x => ({ id: x.id, amount: x.amount, status: 'succeeded' })) } };
 h = await hook(evt('charge.refunded', ch1, ACCT));
 check('T9f the provider’s refund events confirm the same refunds without booking them twice', h.s === 200 && (await q("SELECT * FROM order_refunds WHERE order_id = ? AND status='succeeded'", o1.id)).length === 3
@@ -505,7 +580,8 @@ const sE = Object.values(M.sessions).at(-1);
 check('T3b the application fee requested is exactly the 15% commission on the artwork (EUR 60 on EUR 400), never on delivery', sE._fee === 6000 && sE._acct === ACCT_OLD);
 M.btPendingNext = true; M.nextExtraFee = 200;   // Stripe has not yet recorded the fee; and this payment carries a non-processing add-on fee
 pay(sE.id);
-const dispute = { id: 'dp_test_1', object: 'dispute', payment_intent: sE.payment_intent, charge: M.pis[sE.payment_intent].charge, amount: 42500, reason: 'product_not_received', status: 'needs_response' };
+const dispute = { id: 'dp_test_1', object: 'dispute', payment_intent: sE.payment_intent, charge: M.pis[sE.payment_intent].charge, amount: 42500, reason: 'product_not_received', status: 'needs_response',
+  balance_transactions: [{ id: 'txn_test_dp1', object: 'balance_transaction', amount: -42500, fee: 2460, fee_details: [{ type: 'stripe_fee', amount: 2000, description: 'Dispute fee' }, { type: 'tax', amount: 460, description: 'VAT' }] }] };
 h = await hook(evt('charge.dispute.created', dispute, ACCT_OLD));
 check('T7i a dispute arriving BEFORE its payment completion is deferred (noting its payment), not lost', h.s === 500 && (await db.prepare('SELECT status, detail FROM payment_events WHERE object_id = ?').bind('dp_test_1').first()).detail === `awaiting order for ${sE.payment_intent}`);
 M.disputes.dp_test_1 = { ...dispute, _acct: ACCT_OLD };   // what Stripe returns when the pilot re-reads the dispute
@@ -531,10 +607,21 @@ h = await hook(evt('charge.dispute.closed', { ...dispute, status: 'lost' }, ACCT
 OE = await order(oe.id);
 { const stE = (await call('GET', `/api/checkout/orders/${oe.id}`, OLD)).j.statement;
   check('MB10 disputes are NOT absorbed: no reimbursement for the dispute, the statement shows the dispute separately and says dispute fees stay with the seller',
-    M.feeRefunds.filter(x => x.fee === M.pis[sE.payment_intent].fee).length === 1 && stE.disputes_net === -42500 && stE.processing_reimbursed_by_plotart === 815 && stE.other_stripe_fees_not_reimbursed === 246 && stE.net_proceeds === -6246 && /dispute fees/.test(stE.not_included), stE); }
+    M.feeRefunds.filter(x => x.fee === M.pis[sE.payment_intent].fee).length === 1 && stE.disputes_net === -42500 && stE.processing_reimbursed_by_plotart === 815 && stE.other_stripe_fees_not_reimbursed === 246 && stE.dispute_fees_charged_by_stripe === 2460 && stE.dispute_fees_status === 'recorded from Stripe' && stE.net_proceeds === -8706 && stE.commission_refund_owed === 6000 && (await q("SELECT * FROM order_ledger WHERE kind = 'dispute_fee' AND order_id = ?", oe.id)).length === 1, stE); }
 check('T10b a lost dispute is flagged with the documented recovery route (commission settlement; seller carries the loss with Stripe)', OE.dispute_status === 'lost' && OE.status === 'refunded' && /dispute lost/.test(OE.needs_resolution), OE);
 r = await call('POST', `/api/admin/checkout/orders/${oe.id}/close`, FOUNDER, {});
 check('T10c an order with an unresolved flag cannot be closed', r.s === 409);
+{ const LW = await db.prepare("SELECT * FROM checkout_owed WHERE order_id = ? AND kind = 'lost_dispute_commission'").bind(oe.id).first();
+  check('LD1 a lost dispute puts the commission to return in the queue, due under PA-GAA 9.1 (30 days; the agreement’s period, not provisional)', !!LW && LW.cents === 6000 && LW.due_provisional === 0
+    && /PA-GAA cl\. 9\.1/.test(LW.due_rule) && Date.parse(LW.due_at) - Date.parse(LW.arisen_at) === 30 * 86400_000, LW);
+  const feeE = M.pis[sE.payment_intent].fee, before = M.feeRefunds.filter(x => x.fee === feeE).length;
+  r = await call('POST', `/api/admin/checkout/orders/${oe.id}/refund`, FOUNDER, { commission_only: true, reason: 'Dispute lost: commission returned under PA-GAA 9.1' });
+  const LW2 = await db.prepare('SELECT * FROM checkout_owed WHERE id = ?').bind(LW.id).first(), SH = await db.prepare("SELECT * FROM checkout_owed WHERE order_id = ? AND kind = 'commission_shortfall'").bind(oe.id).first();
+  const frE = M.feeRefunds.filter(x => x.fee === feeE), OE2 = await order(oe.id);
+  check('LD2 returning it sends what is left of the application fee through Stripe (€60 − €8.15 reimbursed) and moves the €8.15 to a direct-payment item; the lost-dispute item is settled and its flag cleared',
+    r.s === 200 && frE.length === before + 1 && frE.at(-1).amount === 6000 - 815 && LW2.settled_cents === 6000 && SH && SH.cents === 815 && !/dispute lost/.test(OE2.needs_resolution || '') && /PlotArt owes the artist EUR 8\.15/.test(OE2.needs_resolution || ''), { r: r.j && r.j.error, LW2, SH, nr: OE2.needs_resolution });
+  r = await call('POST', `/api/admin/checkout/orders/${oe.id}/refund`, FOUNDER, { commission_only: true, reason: 'Second attempt' });
+  check('LD3 asking again returns nothing more', r.s === 200 && M.feeRefunds.filter(x => x.fee === feeE).length === before + 1, r.j); }
 
 console.log('— fulfilment and close');
 const SB2 = await order(second.id);
@@ -612,7 +699,7 @@ console.log('— a refund that succeeds and later FAILS (reversal, commission al
   const rv = M.refunds.at(-1);
   const PRV = JSON.parse((await order(orv.id)).processing);
   check('RV0 the full refund first SUCCEEDS: the €120 commission is settled — €120 less the processing already reimbursed back through Stripe, the rest flagged for PlotArt to pay directly',
-    r.s === 200 && (await order(orv.id)).status === 'refunded' && M.feeRefunds.length === feesBefore + 1 && M.feeRefunds.at(-1).amount === 12000 - PRV.cost && PRV.shortfall_cents === PRV.cost, { s: (await order(orv.id)).status, fee: M.feeRefunds.at(-1), PRV });
+    r.s === 200 && (await order(orv.id)).status === 'refunded' && M.feeRefunds.length === feesBefore + 1 && M.feeRefunds.at(-1).amount === 12000 - PRV.cost && (await db.prepare("SELECT SUM(cents) AS c FROM checkout_owed WHERE order_id = ?").bind(orv.id).first()).c === PRV.cost, { s: (await order(orv.id)).status, fee: M.feeRefunds.at(-1), PRV });
   // Stripe later reports the same refund as FAILED (as in real test P12: succeeded → failed, expired_or_canceled_card)
   h = await hook(evt('refund.updated', { ...rv, status: 'failed', failure_reason: 'expired_or_canceled_card' }, ACCT));
   let OV = await order(orv.id);
@@ -665,7 +752,7 @@ check('D2 the order still shows seller, artwork, amounts, entitlement and ledger
 r = await call('POST', `/api/admin/checkout/orders/${ox.id}/refund`, FOUNDER, { artwork_cents: 30000, delivery_cents: 2000, reason: 'Returned after the artist left' });
 check('D3 a full refund still works after the artist’s and artwork’s rows are gone', r.s === 200 && r.j.order.status === 'refunded' && M.refunds.at(-1)._acct === ACCT_OLD, r.j);
 { const PX = JSON.parse((await order(ox.id)).processing);
-  r = await call('POST', `/api/admin/checkout/orders/${ox.id}/shortfallpaid`, FOUNDER, { amount_cents: PX.shortfall_cents, evidence: 'Bank transfer BT-SFX on 18 Nov' });
+  r = await call('POST', `/api/admin/checkout/orders/${ox.id}/shortfallpaid`, FOUNDER, { amount_cents: (await db.prepare("SELECT SUM(cents - settled_cents) AS c FROM checkout_owed WHERE order_id = ?").bind(ox.id).first()).c, evidence: 'Bank transfer BT-SFX on 18 Nov' });
   check('D3b retention waits while PlotArt still owes a shortfall; recording the direct payment settles it', r.s === 200 && !(await order(ox.id)).needs_resolution, r.j); }
 check('D4 the buyer’s link still reads correctly', (await pub('GET', `/q/${TX}/return?result=success`)).t.includes('has been confirmed') || (await pub('GET', `/q/${TX}/return`)).s === 200);
 await S.checkoutWorker.scheduled({ cron: '*/15 * * * *' });
@@ -717,6 +804,43 @@ check('D10 an artist’s opt-in, consent and Stripe-account records are deleted 
   !(await q('SELECT * FROM payment_pilot_events WHERE artist_id = ?', OLDLEFT)).length && !(await q('SELECT * FROM payment_accounts WHERE artist_id = ?', OLDLEFT)).length
   && (await q("SELECT * FROM payment_pilot_events WHERE artist_id = 'afnd'")).length > 0);
 check('D9 opt-in records stay while the artist’s orders are kept', /kept/.test((await db.prepare("DELETE FROM payment_pilot_events WHERE artist_id='aold'").run().catch(e => e)).message));
+
+console.log('— reminders, dispute fees and late disputes');
+{ const tnow = new Date().toISOString(), past = new Date(Date.now() - 2 * 86400_000).toISOString(), soon = new Date(Date.now() + 3 * 86400_000).toISOString();
+  await db.prepare(`INSERT INTO checkout_orders (id, reference, artist_id, artwork_id, enquiry_ref, status, payment_status, buyer_email, created_by, created_at, updated_at)
+    VALUES ('oq1', 'PA-O-261117-OQ0001', 'agal', 'wagal9', 'PA-E-261101-AAAAAA', 'closed', 'paid', 'oq@example.test', 'test', ?, ?)`).bind(tnow, tnow).run();
+  await db.prepare(`INSERT INTO checkout_owed (id, order_id, kind, item_key, cents, reason, arisen_at, due_at, due_rule, due_provisional) VALUES
+    ('owq1', 'oq1', 'processing_shortfall', 'processing', 500, 'test overdue', ?, ?, 'test rule', 1), ('owq2', 'oq1', 'commission_shortfall', 'commission:x', 300, 'test due soon', ?, ?, 'test rule', 1)`).bind(past, past, tnow, soon).run();
+  await S.checkoutWorker.scheduled({ cron: '*/15 * * * *' }); await S.checkoutWorker.scheduled({ cron: '*/15 * * * *' });
+  const rem = await q("SELECT kind, to_role FROM checkout_mail_sink WHERE order_id = 'oq1'");
+  check('OQ5 reminders go to the founder only (test sink): once when due soon, once when overdue, never repeated', rem.length === 2 && rem.every(x => x.to_role === 'founder')
+    && rem.some(x => x.kind === 'owed_overdue') && rem.some(x => x.kind === 'owed_due_soon')
+    && (await call('GET', '/api/admin/checkout', FOUNDER)).j.owed.find(w => w.id === 'owq1').status === 'overdue', rem);
+  r = await call('POST', '/api/admin/checkout/orders/oq1/shortfallpaid', FOUNDER, { amount_cents: 800, reference: 'Bank transfer BT-OQ1 on 18 Nov' });
+  const ws = await q("SELECT settled_cents FROM checkout_owed WHERE order_id = 'oq1' ORDER BY id");
+  check('OQ6 one direct payment settles the order’s items oldest first, with the same reference recorded on each', r.s === 200 && ws.map(x => x.settled_cents).join() === '500,300', [r.j && r.j.error, ws]); }
+{ const C1 = await import(HERE + FIX + 'src/checkout.js');
+  const base = { currency: 'eur', paid_at: ago(1), amount_received_cents: 10000, artwork_cents: 10000, delivery_cents: 0, commission_cents: 1500, processing: null };
+  const sw = C1.statement({ ...base, dispute_status: 'won', dispute_fees: JSON.stringify({ dp_w: { status: 'recorded' } }) },
+    [{ kind: 'dispute', amount_cents: -10000 }, { kind: 'dispute_reinstated', amount_cents: 10000 }, { kind: 'dispute_fee', amount_cents: -2460 }, { kind: 'dispute_fee_returned', amount_cents: 2000 }], []);
+  check('DF1 dispute fees and fees Stripe returns are separate statement lines and both count in net proceeds', sw.dispute_fees_charged_by_stripe === 2460 && sw.dispute_fees_returned_by_stripe === 2000 && sw.net_proceeds === 10000 - 1500 - 460, sw);
+  const su = C1.statement({ ...base, dispute_status: 'open', dispute_fees: JSON.stringify({ dp_u: { status: 'unavailable' } }) }, [{ kind: 'dispute', amount_cents: -10000 }], []);
+  check('DF2 if Stripe has not supplied a dispute’s fee lines, the statement says so and does not guess', /unavailable/.test(su.dispute_fees_status) && /dp_u/.test(su.not_included) && su.dispute_fees_charged_by_stripe === 0, su); }
+{ const OX = await order(ox.id);
+  const dx = { id: 'dp_test_late', object: 'dispute', payment_intent: OX.payment_intent, charge: M.pis[OX.payment_intent].charge, amount: 32000, reason: 'fraudulent', status: 'needs_response',
+    balance_transactions: [{ id: 'txn_test_dplate', object: 'balance_transaction', amount: -32000, fee: 2460, fee_details: [{ type: 'stripe_fee', amount: 2000 }, { type: 'tax', amount: 460 }] }] };
+  h = await hook(evt('charge.dispute.created', dx, ACCT_OLD));
+  const hx = await q("SELECT * FROM checkout_holds WHERE order_id = ? AND released_at IS NULL", ox.id);
+  check('RH1 a dispute arriving after the retention date was fixed places a reviewed legal hold automatically, and its fee is booked', h.s === 200 && hx.length === 1 && hx[0].basis === 'dispute' && hx[0].placed_by === 'system'
+    && (await q("SELECT * FROM order_ledger WHERE kind = 'dispute_fee' AND provider_ref = 'txn_test_dplate'")).length === 1 && (await order(ox.id)).dispute_status === 'open', { h, hx }); }
+await db.prepare(`INSERT INTO checkout_orders (id, reference, artist_id, artwork_id, enquiry_ref, status, payment_status, dispute_status, buyer_email, created_by, created_at, updated_at, retain_until)
+  VALUES ('oold3', 'PA-O-190101-OLD003', 'aold', 'waold9', 'PA-E-190101-AAAAAA', 'closed', 'paid', 'open', 'old3@example.test', 'test', '2019-01-01T00:00:00Z', '2019-02-01T00:00:00Z', '2025-02-01T00:00:00Z')`).run();
+await S.checkoutWorker.scheduled({ cron: '*/15 * * * *' });
+check('RH2 an order past its retention date is never deleted while a dispute on it is open (sweep and database both refuse)', !!(await order('oold3'))
+  && /no dispute is open/.test((await db.prepare("DELETE FROM checkout_orders WHERE id = 'oold3'").run().catch(e => e)).message));
+await db.prepare("UPDATE checkout_orders SET dispute_status = 'lost' WHERE id = 'oold3'").run();
+await S.checkoutWorker.scheduled({ cron: '*/15 * * * *' });
+check('RH3 once the dispute is resolved, the past-retention order is deleted at the next sweep', !(await order('oold3')));
 
 const S1 = await import(HERE + FIX + 'src/stripe.js');
 check('T15b a live secret key is refused before any request', !S1.testKey({ STRIPE_SECRET_KEY: 'sk_live_abc' }).ok && !S1.testKey({}).ok && S1.testKey({ STRIPE_SECRET_KEY: 'rk_test_abc' }).ok);

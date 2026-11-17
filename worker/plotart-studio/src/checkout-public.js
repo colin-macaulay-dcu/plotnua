@@ -3,6 +3,7 @@
      GET  /q/<token>                the buyer's quote: seller, artwork, every charge, delivery and cover, purchase terms
      POST /q/<token>/pay            opens Stripe-hosted checkout on the ARTIST's account (server-side amounts only)
      GET  /q/<token>/return         what PlotArt has verified so far (a return from Stripe is never proof of payment)
+     GET  /q/<token>/confirmation   the buyer's stored purchase confirmation (exact text kept by PlotArt), once the sale is complete
      GET  /terms/<doc>.html         the installed, fingerprinted buyer purchase terms
      GET  /v1/status                whether the pilot is installed and switched on (nothing else)
      POST /v1/stripe/webhook        signed Stripe events (Connect endpoint), idempotent
@@ -29,8 +30,12 @@ function quoteHtml(q, token, error = null) {
   const cover = `Transit insurance with ${esc(d.cover_provider)}, held by ${esc(PARTY[d.insured_party])}, up to ${eur(d.covered_value_cents)} (${esc(d.valuation_basis)})${d.excess_cents ? `, excess ${eur(d.excess_cents)}` : ''}. Period: ${esc(d.cover_period)}.${d.exclusions ? ` Exclusions: ${esc(d.exclusions)}.` : ''} Claims: ${esc(d.claims_contact)}. Confirmed for this shipment (ref. ${esc(d.cover_confirmation_ref)}).`;
   const payable = ['quoted', 'checkout_open', 'payment_failed'].includes(q.status) && !q.expired;
   return `${TEST_BANNER}<h1>${esc(a.title || 'Original artwork')}</h1>
-<p>Sold by <strong>${esc(s.name)}</strong>${s.legal_name ? ` (${esc(s.legal_name)})` : ''}, the artist. ${esc(s.platform)}</p>
+<p>Sold by <strong>${esc(s.name)}</strong>, the artist. ${esc(s.platform)}</p>
 <p class="k">Quote ${esc(q.reference)} · valid until ${esc(new Date(q.quote_expires_at).toLocaleString('en-IE', { timeZone: 'Europe/Dublin', dateStyle: 'medium', timeStyle: 'short' }))} (Irish time)</p>
+<h2>The seller</h2><dl>
+<dt>Legal name</dt><dd>${esc(s.legal_name)}${s.trading_name ? ` trading as ${esc(s.trading_name)}` : ''}</dd><dt>Address</dt><dd>${esc(s.address)}</dd>
+${s.returns_address && s.returns_address !== s.address ? `<dt>Returns and complaints</dt><dd>${esc(s.returns_address)}</dd>` : ''}<dt>Email</dt><dd>${esc(s.email)}</dd><dt>Telephone</dt><dd>${esc(s.phone)}</dd>
+${s.vat_number ? `<dt>VAT number</dt><dd>${esc(s.vat_number)}</dd>` : ''}<dt>Sells as a trader</dt><dd>${s.trader_status === 'trader' ? 'Yes: your consumer rights, including the right to cancel, apply.' : 'No: the seller has declared they do not sell as a trader, so the consumer right to cancel does not apply.'}</dd></dl>
 <h2>What you pay</h2><table><tr><td>Original artwork${a.medium ? ` · ${esc(a.medium)}` : ''}${a.h_cm ? ` · ${esc(a.h_cm)} × ${esc(a.w_cm)}${a.d_cm ? ' × ' + esc(a.d_cm) : ''} cm` : ''}</td><td>${eur(q.artwork_cents)}</td></tr>
 <tr><td>Packing, transport and cover as set out below</td><td>${eur(q.delivery_cents)}</td></tr><tr class="tot"><td>Total (EUR)</td><td>${eur(q.total_cents)}</td></tr></table>
 <p class="note">You pay the artist through Stripe. PlotArt does not hold your payment; it is not escrow. The delivery charge pays for the delivery described below and is kept separate from the artwork price.</p>
@@ -40,7 +45,9 @@ function quoteHtml(q, token, error = null) {
 <dt>Packed by</dt><dd>${esc(PARTY[d.packer])}</dd><dt>Transport contracted by</dt><dd>${esc(PARTY[d.transport_contracting_party])}${d.transporter_name ? ` (${esc(d.transporter_name)})` : ''}</dd>
 <dt>Arranged by</dt><dd>${esc(PARTY[d.organiser])}</dd><dt>Installation</dt><dd>${esc(PARTY[d.installation])}</dd><dt>Import costs</dt><dd>${esc(PARTY[d.import_costs])}</dd>
 <dt>Cover</dt><dd>${cover}</dd><dt>Delivery window</dt><dd>${esc(d.delivery_window)}</dd><dt>Tracking</dt><dd>${esc(d.tracking)}</dd>
-<dt>On delivery</dt><dd>${d.signed_receipt ? 'Signed receipt' : 'No signed receipt'}${d.condition_photos ? '; condition photographs before dispatch and on arrival' : ''}</dd><dt>Returns</dt><dd>${esc(d.return_route)}</dd></dl>
+<dt>On delivery</dt><dd>${d.signed_receipt ? 'Signed receipt' : 'No signed receipt'}${d.condition_photos ? '; condition photographs before dispatch and on arrival' : ''}</dd></dl>
+<h2>Returns</h2><dl><dt>Method</dt><dd>${esc(d.return_method)}</dd><dt>Return address</dt><dd>${esc(d.return_address)}</dd><dt>Arranged by</dt><dd>${esc(PARTY[d.return_arranged_by])}</dd>
+<dt>Cost if you cancel for a change of mind</dt><dd>${d.return_cost_basis === 'fixed' ? eur(d.return_cost_cents) : `Up to about ${eur(d.return_cost_cents)} (estimated maximum)`}. You bear this cost if you cancel for a change of mind. If the artwork is damaged, faulty or not as described, the seller bears it.</dd></dl>
 <p class="note">Your rights as a buyer do not depend on any carrier or insurance claim being made or completed.</p>
 ${payable ? `<form method="post" action="/q/${esc(token)}/pay">${error ? `<p class="note">${esc(error)}</p>` : ''}
 <label><input type="checkbox" name="accept_terms" value="${esc(q.terms && q.terms.doc_id)}" required> I have read the <a href="/terms/${esc(q.terms && q.terms.doc_id)}.html" target="_blank" rel="noopener">purchase terms (${esc(q.terms && q.terms.doc_id)})</a>, and I understand that I am buying from ${esc(s.name)}.</label>
@@ -69,6 +76,12 @@ export default {
         if (!t || t.doc_id !== mm[1] || !PAYMENT_TERMS[mm[1]]) return page('Not found', '<h1>Not found</h1>', 404);
         return new Response(t.html, { headers: { 'Content-Type': 'text/html; charset=utf-8', ...SEC, 'X-Document-SHA256': t.html_sha256 } });
       }
+      if ((mm = p.match(/^\/q\/([0-9a-z]{48})\/confirmation$/)) && m === 'GET') {
+        if (!(await C.installed(env))) return page('Not available', '<h1>This page is not available.</h1>', 404);
+        const c = await C.buyerConfirmation(env, mm[1]);
+        if (!c) return page('Not found', '<h1>No confirmation is available for this quote.</h1>', 404);
+        return new Response(c.body, { headers: { 'Content-Type': 'text/plain; charset=utf-8', 'Content-Disposition': `inline; filename="plotart-confirmation.txt"`, 'X-Document-SHA256': c.sha256, ...SEC } });
+      }
       if ((mm = p.match(/^\/q\/([0-9a-z]{48})(\/pay|\/return)?$/))) {
         if (!(await C.installed(env))) return page('Not available', '<h1>This page is not available.</h1>', 404);
         const token = mm[1];
@@ -93,7 +106,7 @@ export default {
           const q = await C.buyerQuote(env, token);
           if (!q) return page('Not found', '<h1>This quote is not available.</h1>', 404);
           const paid = q.payment_status === 'paid';
-          const msg = paid ? `<h1>Thank you</h1><p>Your payment for quote ${esc(q.reference)} has been confirmed. ${esc(q.seller && q.seller.name)} and PlotArt will be in touch about delivery.</p>`
+          const msg = paid ? `<h1>Thank you</h1><p>Your payment for quote ${esc(q.reference)} has been confirmed. ${esc(q.seller && q.seller.name)} and PlotArt will be in touch about delivery.</p>${q.confirmation_ready ? `<p><a href="/q/${esc(token)}/confirmation">Your purchase confirmation</a>, with the purchase terms and the cancellation form. Please save or print it.</p>` : '<p>Your purchase confirmation is being prepared. Refresh this page shortly.</p>'}`
             : url.searchParams.get('result') === 'success' ? `<h1>We’re confirming your payment</h1><p>Stripe has returned you to PlotArt. Your payment is confirmed only once Stripe notifies us directly, usually within a minute. Refresh this page shortly; you will also receive Stripe’s receipt by email.</p>`
             : `<h1>Payment not completed</h1><p>No payment was taken. <a href="/q/${esc(token)}">Return to your quote</a>.</p>`;
           return page('Payment', TEST_BANNER + msg);

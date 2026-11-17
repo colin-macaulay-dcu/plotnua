@@ -1310,6 +1310,7 @@ async function route(req, env) {
           case 'repaid': return json({ ok: true, ...(await CO.recordExternalRepayment(env, me.email, o.id, b)) });
           case 'processing': await CO.reconcileProcessing(env, o, me.email); return json({ ok: true, ...(await CO.orderDetail(env, await CO.getOrder(env, o.id), 'founder')) });
           case 'shortfallpaid': return json({ ok: true, ...(await CO.recordShortfallPaid(env, me.email, o.id, b)) });
+          case 'confirmation': return json({ ok: true, ...(await CO.resendConfirmation(env, me.email, o.id)) });
         }
       }
       return json({ ok: false }, 404);
@@ -1620,6 +1621,7 @@ async function route(req, env) {
     if (p === '/api/checkout/leave' && m === 'POST') return json({ ok: true, ...(await CO.leave(env, artist)) });
     if (p === '/api/checkout/processing-consent' && m === 'POST') return json({ ok: true, ...(await CO.processingConsent(env, artist, b)) });
     if (p === '/api/checkout/processing-consent/withdraw' && m === 'POST') return json({ ok: true, ...(await CO.withdrawProcessingConsent(env, artist)) });
+    if (p === '/api/checkout/seller-profile' && m === 'PUT') return json({ ok: true, ...(await CO.saveSellerProfile(env, artist, b)) });
     if (p === '/api/checkout/onboarding' && m === 'POST') return json({ ok: true, ...(await CO.onboarding(env, artist, url.origin, b)) });
     if (p === '/api/checkout/account/refresh' && m === 'POST') return json({ ok: true, ...(await CO.refreshAccount(env, artist.id)) });
     if ((mm = p.match(/^\/api\/checkout\/orders\/(o[0-9a-z]+)(?:\/([a-z]+))?$/))) {
