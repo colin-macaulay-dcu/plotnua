@@ -199,9 +199,9 @@ If the buyer cancels for a change of mind and this information was given, the bu
 7.4 **How refunds are made.** Refunds are made to the buyer's card through Stripe, from the artist's Stripe balance. PlotArt makes a refund from the order on the artist's instruction or with the artist's agreement. Stripe does not return its processing fee on the original payment when a payment is refunded. PlotArt's reimbursement of that fee (clause 3.3) is not reversed.
 
 7.5 **If the artist's Stripe balance is too low.** Depending on the balance, Stripe may:
-  (a) complete the refund at once by drawing on payments not yet available to the artist, which can leave the artist's Stripe balance negative; or
-  (b) hold the refund as pending until the balance can cover it, debit the artist's bank account where Stripe's terms allow, and cancel the refund if it is still pending after 45 days.
-[To be confirmed before issue from the pilot's unfunded-refund test.]
+  (a) complete the refund at once, even if this leaves the artist's Stripe balance negative. Stripe then recovers the negative balance from the artist's future payments or by debiting the bank account linked to the artist's Stripe account, under Stripe's terms; or
+  (b) hold the refund as pending until the balance can cover it, and cancel the refund if it is still pending after 45 days.
+A negative Stripe balance is a debt the artist owes Stripe, not PlotArt. It does not change what the artist owes the buyer.
 A pending refund has not been completed: the buyer has not been repaid until Stripe completes it. PlotArt tells the artist and the buyer when it becomes aware that a refund is pending, has failed (clause 7.5) or has been reversed (clause 7.6) [by email, once PlotArt's email sending is in place; until then, the artist in PlotArt Studio and the buyer on their quote page]. The artist funds the refund in one of these ways:
   (i) let Stripe complete it from new sales or by debiting the linked bank account;
   (ii) add funds to their Stripe balance;

@@ -35,3 +35,22 @@
 ## 3. Still open
 
 These are listed in the consolidated report's decision table: F2, F5–F15, email approval, and the runtime key.
+
+## 4. Fully unfunded refund: real Stripe result (run 28, 17 Nov 2026, sandbox)
+
+Account `acct_1Uct3vHx1OnYJa8H`, onboarded by the founder with test data (U3 PASS: charges enabled, nothing due, pilot configuration).
+
+| Step | Balance (available / pending) | Stripe result |
+|---|---|---|
+| Before | €0.00 / €0.00 | — |
+| €100 sale (€15 application fee) | €0.00 / €80.82 | Payment succeeded; net €80.82 after commission, Stripe's fee and VAT |
+| €100 refund (€19.18 more than the account held) | €0.00 / **−€19.18** | Refund **succeeded immediately** (`succeeded`; never pending in 31 seconds) |
+| A further €20 refund while already negative | €0.00 / **−€23.26** | Also **succeeded immediately** |
+
+**Conclusion.** In this case Stripe did not hold the refund as pending. It completed it and let the artist's balance go negative. Because the account is configured with Stripe as losses collector, Stripe recovers the negative balance from the artist, not from PlotArt.
+
+**Pilot handling.** A succeeded refund is booked as usual: refund lines, commission refund (capped by Model B), and settlement. The buyer is repaid, so no buyer notice is needed.
+
+**Gap.** The pilot does not alert anyone that the artist's balance is now negative (optional O5 in the r5 notes). It would need `balance_read` for connected accounts on the Studio key only.
+
+**Drafts.** PA-PAY 7.5 is updated: the bracket is removed, (a) states that refunds can complete into a negative balance, and (b) keeps the pending case. Pending refunds were not observed in this run but remain possible under Stripe's terms.

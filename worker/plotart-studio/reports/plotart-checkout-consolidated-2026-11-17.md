@@ -49,7 +49,7 @@ The buyer-notice failure and retry paths (BN3–BN5), and the email on/off rules
 
 | # | Gap |
 |---|---|
-| T1 | **Fully unfunded refund not yet observed.** It needs the second account onboarded, then a run. The pilot's handling of pending, failed and reversed refunds is proven locally (R1–R8, BN1–BN6) and, for the reversed case, with real Stripe (E12, E18). |
+| T1 | ~~Fully unfunded refund not yet observed~~ **Done in run 28:** the refund succeeded immediately and the balance went to −€19.18, then −€23.26 after a further refund. Remaining: no alert for negative artist balances (optional; needs Balance Read on the Studio key). Original note: It needs the second account onboarded, then a run. The pilot's handling of pending, failed and reversed refunds is proven locally (R1–R8, BN1–BN6) and, for the reversed case, with real Stripe (E12, E18). |
 | T2 | **Runtime key not yet verified.** It needs the new restricted key as a GitHub secret. If a reimbursement check fails with that key, Balance Read may also be needed. |
 | T3 | **No email is sent.** The Resend set-up and your approval are needed (section 4). Until then the confirmation is reachable only through the quote link, which may not count as a durable medium: a legal-review point. |
 | T4 | The Studio key still needs account reads that can expose identity details; Stripe has no narrower permission for these. Dropping the v1 account read would need a code change and sandbox check (optional). |
@@ -98,3 +98,13 @@ None of these is taken as approved. Each recommendation is mine.
 2. **Optional, runtime key:** create the restricted key and add the GitHub secret, as in `STRIPE-ACCESS-PROPOSAL.md` §4. Then tell me, and I'll request the verification run.
 3. **Decisions:** answer the table in section 5 as you see fit; anything you don't decide stays provisional or open.
 4. **Email:** only if you want to test it now, the four set-up items in section 4.
+
+
+## Addendum (22:15): run 28, fully unfunded refund
+
+- U3 PASS: the account is onboarded.
+- U5: balance after a €100 sale was €0 available / €80.82 pending.
+- U6: a €100 refund **succeeded immediately**; balance €0 / −€19.18.
+- U7: a further refund also succeeded; balance €0 / −€23.26.
+
+PA-PAY 7.5 is updated to match. See the r8 notes, section 4.
