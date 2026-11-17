@@ -21,8 +21,20 @@ export async function e2e({ rec, KEY, ACCOUNT, RUN, port, whsec, stripe, sleep }
   const RUNTIME = process.env.STRIPE_RUNTIME_KEY || '';
   const runtimeOk = /^rk_test_[A-Za-z0-9]+$/.test(RUNTIME);
   const ENVC = runtimeOk ? { ...ENVV, STRIPE_SECRET_KEY: RUNTIME } : ENVV;
-  const S = await start({ port, env: ENVV, checkout: { env: ENVC } });
-  rec('E17a', 'which key the public checkout Worker used', 'local', 'INFO', { public_worker_key: runtimeOk ? 'separate restricted TEST key (CHECKOUT_TEST_STRIPE_RUNTIME_KEY)' : RUNTIME ? 'runtime secret present but not an rk_test_ key: NOT used' : 'same key as the harness (no runtime key supplied)' });
+  // Every outbound request from the public checkout Worker is observed: which key it carried (never the key itself), the
+  // endpoint and the HTTP status; Stripe's error message is kept for any permission failure.
+  const CW_CALLS = [];
+  const keyName = auth => { const k = String(auth || '').replace(/^Bearer\s+/, ''); return !k ? 'none' : k === RUNTIME ? 'runtime' : k === KEY ? 'RUNNER (fallback!)' : 'other'; };
+  const cwOutbound = async req => {
+    const u = new URL(req.url), item = { method: req.method, path: u.pathname.replace(/(acct|cs|pi|ch|fee|re|dp|txn|py|po)_(test_)?[A-Za-z0-9]+/g, '$1_…'), host: u.host, key: u.host === 'api.stripe.com' ? keyName(req.headers.get('Authorization')) : 'n/a', connected: !!req.headers.get('Stripe-Account') };
+    const res = await fetch(req);
+    item.status = res.status;
+    if (u.host === 'api.stripe.com' && res.status >= 400) { try { const j = await res.clone().json(); item.stripe_error = j.error && { type: j.error.type, code: j.error.code, message: String(j.error.message || '').slice(0, 300) }; } catch { /* */ } }
+    CW_CALLS.push(item); return res;
+  };
+  const S = await start({ port, env: ENVV, checkout: { env: ENVC, outbound: cwOutbound } });
+  rec('E17a', 'which key the public checkout Worker is configured with', 'local', 'INFO', { public_worker_key: runtimeOk ? 'separate restricted TEST key (CHECKOUT_TEST_STRIPE_RUNTIME_KEY)' : RUNTIME ? 'runtime secret present but not an rk_test_ key: NOT used' : 'same key as the harness (no runtime key supplied)',
+    worker_env_has_runner_key: Object.values(ENVC).includes(KEY) && runtimeOk });
   if (runtimeOk) {   // the runtime key must NOT be able to read artist identity or bank details
     const h = { Authorization: `Bearer ${RUNTIME}`, 'Stripe-Version': '2026-10-28.endive' };
     const st = async u => (await fetch('https://api.stripe.com' + u, { headers: h })).status;
@@ -359,6 +371,13 @@ export async function e2e({ rec, KEY, ACCOUNT, RUN, port, whsec, stripe, sleep }
       } else rec('E12c', 'no double repayment after the reversal', SRC, 'SKIP', { blocked_by: 'E12b' });
     } else rec('E12b', 'refund reversal reconciliation', SRC, 'SKIP', { blocked_by: 'E12a — payment not completed' });
 
+    // E17d · every Stripe call the public Worker made, by key: proves no fallback to the runner key
+    { const st = CW_CALLS.filter(c => c.host === 'api.stripe.com');
+      const byKey = st.reduce((a, c) => (a[c.key] = (a[c.key] || 0) + 1, a), {});
+      const endpoints = Object.values(st.reduce((a, c) => { const k = `${c.method} ${c.path}${c.connected ? ' [connected]' : ' [platform]'}`; (a[k] = a[k] || { endpoint: k, calls: 0, statuses: {} }).calls++; a[k].statuses[c.status] = (a[k].statuses[c.status] || 0) + 1; return a; }, {}));
+      const permissionErrors = st.filter(c => c.status === 401 || c.status === 403).map(c => ({ endpoint: `${c.method} ${c.path}`, connected: c.connected, status: c.status, stripe_error: c.stripe_error }));
+      rec('E17d', 'every Stripe API call made by the public checkout Worker used the runtime key (no fallback to the runner key); endpoints and statuses listed; permission errors shown with Stripe’s message', 'stripe-test-api+pilot',
+        !runtimeOk ? 'SKIP' : st.length > 0 && st.every(c => c.key === 'runtime') && !permissionErrors.length ? 'PASS' : 'FAIL', { calls: st.length, by_key: byKey, endpoints, permission_errors: permissionErrors }); }
     // E8 only counts if the events this run depends on actually arrived and were processed
     const all = await q('SELECT type, status FROM payment_events');
     const bad = all.filter(e => e.status === 'failed');

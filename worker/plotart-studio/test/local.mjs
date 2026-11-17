@@ -40,7 +40,7 @@ export async function start({ port, env = {}, enquiry = null, ideas = null, gard
   if (garden) workers.push({ name: 'garden', routes: ['garden.local/*', '*/v1/garden-listings'], ...common, scriptPath: HERE + 'src/garden.js', d1Databases: { DB: 'plotart-studio-local' },
     bindings: { ENVIRONMENT: 'local', ORIGIN: 'https://plotnua.ie', GARDEN_ENABLED: 'true', ...garden } });   // Borrowed Garden noticeboard intake (4 Nov 2026)
   if (checkout) workers.push({ name: 'checkout', routes: ['checkout.local/*', '*/v1/stripe/webhook', '*/v1/status'], ...common, scriptPath: HERE + (checkout.script || 'src/checkout-public.js'), d1Databases: { DB: 'plotart-studio-local' },
-    bindings: { ENVIRONMENT: 'local', ...checkout.env }, ...(outbound ? { outboundService: outbound } : {}) });   // managed checkout pilot (16 Nov 2026)
+    bindings: { ENVIRONMENT: 'local', ...checkout.env }, ...((checkout.outbound || outbound) ? { outboundService: checkout.outbound || outbound } : {}) });   // managed checkout pilot (16 Nov 2026)
   const mf = new Miniflare({ workers, ...(port ? { port, host: '127.0.0.1' } : {}), ...(persist ? { d1Persist: persist } : {}) });
   const db = await mf.getD1Database('DB', 'studio');
   for (const stmt of statements(schemaSql === undefined ? readFileSync(HERE + 'schema.sql', 'utf8') : schemaSql || '')) await db.prepare(stmt).run();   // triggers kept whole (migration 0005)
