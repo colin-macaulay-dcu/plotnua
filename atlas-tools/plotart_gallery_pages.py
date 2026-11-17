@@ -387,7 +387,7 @@ def vg_collection(pkgs, spaces=25, layout=None):
   %s
   <div class="pa-vgc-index" role="region" aria-labelledby="vgIdxH">
     <h3 id="vgIdxH">Founding positions</h3>
-    <p class="pa-vgc-note">Twenty-five numbered positions, one for each Founding Artist. A gallery opens here when the artist&rsquo;s work is published.</p>
+    <p class="pa-vgc-note">A record of PlotArt&rsquo;s founding programme: twenty-five numbered positions, one for each Founding Artist. It is not a limit on the gallery: every published artist appears in All Artists above.</p>
     <ol class="pa-vgc-line" aria-hidden="true">%s</ol>
     <ul class="pa-vgc-key" aria-label="Summary of the twenty-five positions">%s</ul>
     <ol class="pa-vgc-plan" aria-label="The twenty-five positions">%s
