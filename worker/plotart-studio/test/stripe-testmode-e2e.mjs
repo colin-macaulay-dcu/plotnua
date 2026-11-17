@@ -58,49 +58,85 @@ export async function e2e({ rec, KEY, ACCOUNT, RUN, port, whsec, stripe, sleep }
       const r = await CW.fetch(`http://checkout.local/q/${tok}/pay`, { method: 'POST', redirect: 'manual', headers: { 'Content-Type': 'application/x-www-form-urlencoded', Origin: ORIGIN }, body: 'accept_terms=PA-BPT-TEST-01' });
       return { id, tok, status: r.status, url: r.headers.get('Location') };
     }
+    // Pays on the REAL hosted Checkout page. Diagnostics never include payment details: input values are masked in
+    // screenshots and redacted from accessibility snapshots; URLs are reduced to origin + path (no query, no fragment).
+    const DIAG = (tag, name) => `${HERE}stripe-test-evidence/checkout-${tag}-${name}`;
+    const safeUrl = u => { try { const x = new URL(u); return x.origin + x.pathname.replace(/cs_(test|live)_[A-Za-z0-9]+/, 'cs_…'); } catch { return String(u).slice(0, 60); } };
+    const redact = t => String(t || '').replace(/^(\s*- (?:textbox|combobox|spinbutton|searchbox)[^:\n]*):.*$/gm, '$1: [redacted]').replace(/[\w.+-]+@[\w-]+\.[\w.]+/g, '[email]');
+    async function snapshot(page, tag, stage) {
+      const out = { stage, url: safeUrl(page.url()), title: await page.title().catch(() => ''), frames: [] };
+      for (const f of page.frames()) {
+        let aria = ''; try { aria = await f.locator('body').ariaSnapshot({ timeout: 5000 }); } catch (e) { aria = 'unavailable: ' + String(e.message).split('\n')[0]; }
+        out.frames.push({ url: safeUrl(f.url()), aria: redact(aria).slice(0, 6000) });
+      }
+      const masks = page.frames().map(f => f.locator('input'));
+      await page.screenshot({ path: DIAG(tag, stage + '.png'), fullPage: true, mask: masks }).catch(() => {});
+      return out;
+    }
+    // first VISIBLE match in the page or any of its frames (role lookups do not cross iframes; CSS does cross open shadow roots)
+    async function anyFrame(page, build, timeout = 30_000) {
+      const t0 = Date.now();
+      do {
+        for (const f of page.frames()) { const l = build(f).first(); if (await l.isVisible().catch(() => false)) return l; }
+        await page.waitForTimeout(500);
+      } while (Date.now() - t0 < timeout);
+      return null;
+    }
     async function payInBrowser(url, card, tag) {
       if (!browser) { const req = createRequire(process.env.MINIFLARE_FROM || '/tmp/claude-0/studio-tools/package.json'); browser = await req('playwright').chromium.launch(); }
       const page = await browser.newPage({ locale: 'en-IE', timezoneId: 'Europe/Dublin', viewport: { width: 1280, height: 1000 } });
+      const diag = { pageErrors: [], consoleErrors: [], failedRequests: [], httpErrors: [], snapshots: [], steps: [] };
+      page.on('pageerror', e => diag.pageErrors.push(String(e.message).slice(0, 300)));
+      page.on('console', m => { if (m.type() === 'error') diag.consoleErrors.push(redact(m.text()).slice(0, 300)); });
+      page.on('requestfailed', r => diag.failedRequests.push(`${r.method()} ${safeUrl(r.url())} ${r.failure() && r.failure().errorText}`));
+      page.on('response', r => { if (r.status() >= 400) diag.httpErrors.push(`${r.status()} ${r.request().method()} ${safeUrl(r.url())}`); });
+      const step = s => diag.steps.push(`${new Date().toISOString().slice(11, 19)} ${s}`);
       try {
-        await page.goto(url, { waitUntil: 'networkidle', timeout: 60_000 }).catch(() => page.waitForLoadState('domcontentloaded'));
-        // Checkout may show payment methods as an accordion; open the card option if it is collapsed
-        for (const sel of ['[data-testid="card-accordion-item-button"]', '#payment-method-accordion-item-title-card', 'button:has-text("Card")', '[aria-label="Pay with card"]'])
-          if (await page.locator(sel).count()) { await page.locator(sel).first().click().catch(() => {}); break; }
-        // the card number field, on the page or inside a payment frame
-        const find = async (sels) => { for (const f of [page.mainFrame(), ...page.frames()]) for (const sl of sels) { const l = f.locator(sl); if (await l.count().catch(() => 0)) return l.first(); } return null; };
-        let num = null; for (let i = 0; i < 30 && !num; i++) { num = await find(['#cardNumber', 'input[name="cardnumber"]', 'input[name="cardNumber"]', 'input[autocomplete="cc-number"]']); if (!num) await page.waitForTimeout(1000); }
-        if (!num) throw new Error('card number field not found');
-        await num.fill(card);
-        const exp = await find(['#cardExpiry', 'input[name="exp-date"]', 'input[autocomplete="cc-exp"]']); if (exp) await exp.fill('12 / 34');
-        const cvc = await find(['#cardCvc', 'input[name="cvc"]', 'input[autocomplete="cc-csc"]']); if (cvc) await cvc.fill('123');
-        const name = await find(['#billingName', 'input[autocomplete="cc-name"]']); if (name) await name.fill('E2E Test Buyer');
-        if (await page.locator('#billingCountry').count()) await page.locator('#billingCountry').selectOption('IE').catch(() => {});
-        const pc = await find(['#billingPostalCode', 'input[autocomplete="postal-code"]']); if (pc) await pc.fill('D02 X285').catch(() => {});
-        // the Pay button (Playwright locators reach into Checkout's shadow DOM; plain querySelector does not)
-        let pay = null;
-        for (const l of [page.getByTestId('hosted-payment-submit-button'), page.locator('.SubmitButton'), page.getByRole('button', { name: /^(pay|complete)/i }), page.locator('button[type="submit"]')])
-          if (await l.count().catch(() => 0)) { pay = l.first(); break; }
-        if (!pay) throw new Error('Pay button not found');
-        await page.screenshot({ path: `${HERE}stripe-test-evidence/checkout-${tag}-filled.png`, fullPage: true }).catch(() => {});
-        await pay.click({ timeout: 30_000 });
-        await page.waitForURL(/plotart-checkout-test\.invalid/, { timeout: 60_000 }).catch(() => {});
+        await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 60_000 }); step('loaded ' + safeUrl(page.url()));
+        // wait for the hosted page to show its card form, or a collapsed card option, before doing anything
+        const cardBoxIn = f => f.getByRole('textbox', { name: /card number/i }).or(f.locator('#cardNumber, input[autocomplete="cc-number"], input[name="cardnumber"]'));
+        const cardOptIn = f => f.getByTestId('card-accordion-item-button').or(f.getByRole('button', { name: /^card$/i })).or(f.getByRole('radio', { name: /^card$/i }));
+        let box = await anyFrame(page, cardBoxIn, 20_000);
+        diag.snapshots.push(await snapshot(page, tag, 'loaded'));
+        if (!box) { const opt = await anyFrame(page, cardOptIn, 5_000); if (opt) { await opt.click(); step('opened the card option'); box = await anyFrame(page, cardBoxIn, 30_000); } }
+        if (!box) throw new Error('card number field not visible in the page or any frame');
+        step('card form visible'); await box.fill(card);
+        const fillIf = async (build, v, t = 5_000) => { const l = await anyFrame(page, build, t); if (l) await l.fill(v).catch(() => {}); return !!l; };
+        await fillIf(f => f.getByRole('textbox', { name: /expir|mm \/ yy/i }).or(f.locator('#cardExpiry, input[autocomplete="cc-exp"]')), '12 / 34');
+        await fillIf(f => f.getByRole('textbox', { name: /cvc|security code/i }).or(f.locator('#cardCvc, input[autocomplete="cc-csc"]')), '123');
+        await fillIf(f => f.getByRole('textbox', { name: /name on card|cardholder/i }).or(f.locator('#billingName, input[autocomplete="cc-name"]')), 'E2E Test Buyer', 2_000);
+        const ctry = await anyFrame(page, f => f.locator('#billingCountry, select[autocomplete="country"]'), 2_000); if (ctry) await ctry.selectOption('IE').catch(() => {});
+        await fillIf(f => f.getByRole('textbox', { name: /postal|eircode|zip/i }).or(f.locator('#billingPostalCode, input[autocomplete="postal-code"]')), 'D02 X285', 2_000);
+        step('card details entered (values not recorded)');
+        const pay = await anyFrame(page, f => f.getByTestId('hosted-payment-submit-button').or(f.getByRole('button', { name: /^(pay|complete|buy)\b/i })).or(f.locator('.SubmitButton')), 30_000);
+        if (!pay) throw new Error('Pay button not visible in the page or any frame');
+        step('pay button visible: ' + ((await pay.getAttribute('data-testid').catch(() => null)) || (await pay.innerText().catch(() => '')).slice(0, 30)));
+        await pay.click();
+        await page.waitForURL(/plotart-checkout-test\.invalid/, { timeout: 90_000 }); step('returned to success_url');
+        return { ok: true, diag };
       } catch (e) {
-        // diagnostics for the evidence artifact: a screenshot and the visible form controls (no secrets on a test Checkout page)
-        try { await page.screenshot({ path: `${HERE}stripe-test-evidence/checkout-${tag}.png`, fullPage: true }); } catch {}
-        try { const ctl = await page.evaluate(() => [...document.querySelectorAll('input,button,select,iframe')].slice(0, 60).map(x => [x.tagName, x.id, x.name, x.getAttribute('autocomplete'), x.getAttribute('data-testid'), (x.innerText || '').slice(0, 40), x.src ? new URL(x.src).host : ''].join('|')));
-          writeFileSync(`${HERE}stripe-test-evidence/checkout-${tag}-controls.txt`, ctl.join('\n') + '\nframes: ' + page.frames().map(f => f.url().slice(0, 80)).join(' , ') + '\n'); } catch {}
-        throw e;
-      } finally { await page.close(); }
+        step('ERROR ' + String(e.message).split('\n')[0].slice(0, 200));
+        diag.snapshots.push(await snapshot(page, tag, 'failed').catch(() => ({ stage: 'failed', error: 'snapshot unavailable' })));
+        diag.finalUrl = safeUrl(page.url());
+        throw Object.assign(e, { diag });
+      } finally {
+        diag.finalUrl = diag.finalUrl || safeUrl(page.url());
+        writeFileSync(DIAG(tag, 'diagnostics.json'), JSON.stringify(diag, null, 2));
+        await page.close();
+      }
     }
 
     // 1 · payment, verified only by Stripe's signed event
     const o1 = await quote('wagal1', 'PA-E-261116-E2E001');
     rec('E2', 'the pilot opens real hosted checkout on the artist’s account for the approved quote', SRC, o1.status === 303 && /checkout\.stripe\.com/.test(o1.url || '') ? 'PASS' : 'FAIL', { status: o1.status, host: o1.url && new URL(o1.url).host });
-    try { await payInBrowser(o1.url, '4242424242424242', 'pay'); } catch (e) { rec('E3a', 'buyer pays on Stripe Checkout (headless browser)', SRC, 'FAIL', { error: String(e.message).slice(0, 300) }); }
-    const paid = await waitFor(async () => { const o = await order(o1.id); return o.payment_status === 'paid' ? o : null; });
+    let paidOk = false;
+    try { const r = await payInBrowser(o1.url, '4242424242424242', 'pay'); paidOk = true; rec('E3a', 'buyer pays on the real hosted Stripe Checkout page (headless browser) and returns to the success page', SRC, 'PASS', { final_url: r.diag.finalUrl, steps: r.diag.steps }); }
+    catch (e) { rec('E3a', 'buyer pays on the real hosted Stripe Checkout page (headless browser)', SRC, 'FAIL', { error: String(e.message).split('\n')[0].slice(0, 300), final_url: e.diag && e.diag.finalUrl, steps: e.diag && e.diag.steps, page_errors: e.diag && e.diag.pageErrors, http_errors: e.diag && e.diag.httpErrors.slice(0, 10) }); }
+    const paid = await waitFor(async () => { const o = await order(o1.id); return o.payment_status === 'paid' ? o : null; }, paidOk ? 90_000 : 20_000);
     const evs = await q("SELECT event_id, type, status FROM payment_events WHERE order_id = ?", o1.id);
-    rec('E3', 'a REAL signed checkout.session.completed marks the order paid (and the work sold)', SRC, paid && evs.some(e => e.type === 'checkout.session.completed' && e.status === 'processed')
-      && (await db.prepare("SELECT availability FROM artworks WHERE id='wagal1'").first()).availability === 'sold' ? 'PASS' : 'FAIL', { payment_status: paid && paid.payment_status, events: evs });
+    const e3ok = paid && evs.some(e => e.type === 'checkout.session.completed' && e.status === 'processed') && (await db.prepare("SELECT availability FROM artworks WHERE id='wagal1'").first()).availability === 'sold';
+    rec('E3', 'a REAL signed checkout.session.completed marks the order paid (and the work sold)', SRC, e3ok ? 'PASS' : paidOk ? 'FAIL' : 'SKIP',
+      { ...(paidOk || e3ok ? {} : { blocked_by: 'E3a — no payment was made, so no completion event could arrive; webhook handling NOT exercised' }), payment_status: paid && paid.payment_status, events: evs });
     if (paid) {
       const pi = (await stripe('GET', `/v1/payment_intents/${paid.payment_intent}?expand[]=latest_charge.balance_transaction`, null, ACCOUNT)).j;
       let ch = pi.latest_charge;   // the fee and balance transaction are created asynchronously: wait for them
@@ -124,12 +160,19 @@ export async function e2e({ rec, KEY, ACCOUNT, RUN, port, whsec, stripe, sleep }
     rec('E6', 'a REAL checkout.session.expired event releases the reservation and returns the quote to payable', SRC, released ? 'PASS' : 'FAIL', { status: (await order(o2.id)).status });
     // 4 · dispute delivered as a real event
     const o3 = await quote('wagal3', 'PA-E-261116-E2E003', 5000, 0);
-    try { await payInBrowser(o3.url, '4000000000000259', 'dispute'); } catch (e) { rec('E7a', 'buyer pays with the dispute test card', SRC, 'FAIL', { error: String(e.message).slice(0, 300) }); }
-    const disputed = await waitFor(async () => (await order(o3.id)).dispute_status === 'open', 150_000);
-    rec('E7', 'a REAL charge.dispute.created (arriving after or before the payment event) marks the order disputed', SRC, disputed ? 'PASS' : 'FAIL',
-      { status: (await order(o3.id)).status, dispute_status: (await order(o3.id)).dispute_status, events: await q("SELECT type, status FROM payment_events WHERE object_id LIKE 'dp_%' OR order_id = ?", o3.id) });
-    const bad = await q("SELECT type, status, detail FROM payment_events WHERE status IN ('failed')");
-    rec('E8', 'no real event failed processing', SRC, bad.length ? 'FAIL' : 'PASS', { failed: bad, total: (await q('SELECT COUNT(*) AS n FROM payment_events'))[0].n });
+    let dispPaid = false;
+    try { const r = await payInBrowser(o3.url, '4000000000000259', 'dispute'); dispPaid = true; rec('E7a', 'buyer pays with the dispute test card on the real hosted Checkout page', SRC, 'PASS', { final_url: r.diag.finalUrl }); }
+    catch (e) { rec('E7a', 'buyer pays with the dispute test card on the real hosted Checkout page', SRC, 'FAIL', { error: String(e.message).split('\n')[0].slice(0, 300), final_url: e.diag && e.diag.finalUrl, steps: e.diag && e.diag.steps, page_errors: e.diag && e.diag.pageErrors }); }
+    const disputed = dispPaid ? await waitFor(async () => (await order(o3.id)).dispute_status === 'open', 150_000) : null;
+    rec('E7', 'a REAL charge.dispute.created (arriving after or before the payment event) marks the order disputed', SRC, disputed ? 'PASS' : dispPaid ? 'FAIL' : 'SKIP',
+      { ...(dispPaid ? {} : { blocked_by: 'E7a — no payment was made, so no dispute could open; webhook handling NOT exercised' }), status: (await order(o3.id)).status, dispute_status: (await order(o3.id)).dispute_status, events: await q("SELECT type, status FROM payment_events WHERE object_id LIKE 'dp_%' OR order_id = ?", o3.id) });
+    // E8 only counts if the events this run depends on actually arrived and were processed
+    const all = await q('SELECT type, status FROM payment_events');
+    const bad = all.filter(e => e.status === 'failed');
+    const expected = ['checkout.session.completed', 'checkout.session.expired', 'charge.dispute.created'];
+    const missing = expected.filter(t => !all.some(e => e.type === t && e.status === 'processed'));
+    rec('E8', 'every expected real signed event (payment completed, session expired, dispute created) arrived and processed, and none failed', SRC,
+      bad.length ? 'FAIL' : missing.length ? 'SKIP' : 'PASS', { failed: bad, missing_expected: missing, received: all.map(e => `${e.type}:${e.status}`), ...(missing.length && !bad.length ? { note: 'not a success: expected events never arrived' } : {}) });
   } catch (e) { rec('E9', 'end-to-end run', SRC, 'FAIL', { error: String(e.stack || e.message).slice(0, 500) }); }
   finally { if (browser) await browser.close(); await S.mf.dispose(); }
 }
