@@ -64,13 +64,21 @@ if (PHASES.includes('provider')) {
   let acct;
   try {
     acct = await S.createAccount(env, { email: `pilot-test+${RUN}@plotnua.invalid`, country: 'IE', artistId: 'harness-' + RUN });
-    const c = acct.controller || {};
-    rec('P1', 'Stripe accepts the pilot’s account configuration (artist pays fees, Stripe carries losses, Stripe-hosted requirements, full Dashboard)', 'stripe-test-api',
-      c.fees && c.fees.payer === 'account' && c.losses && c.losses.payments === 'stripe' && c.requirement_collection === 'stripe' && c.stripe_dashboard && c.stripe_dashboard.type === 'full' ? 'PASS' : 'FAIL',
-      { account: acct.id, type: acct.type, controller: c, livemode: acct.livemode });
-    rec('P1b', 'requested capabilities as returned', 'stripe-test-api', 'INFO', { capabilities: acct.capabilities, requirements_due: acct.requirements && acct.requirements.currently_due });
+    const r = (acct.defaults && acct.defaults.responsibilities) || {};
+    rec('P1', 'Stripe accepts the pilot’s Accounts v2 configuration (artist pays fees, Stripe carries losses, Stripe-collected requirements, full Dashboard)', 'stripe-test-api',
+      acct.object === 'v2.core.account' && S.accountConfigProblems(acct).length === 0 && r.requirements_collector === 'stripe' ? 'PASS' : 'FAIL',
+      { account: acct.id, object: acct.object, dashboard: acct.dashboard, responsibilities: r, problems: S.accountConfigProblems(acct), livemode: acct.livemode, api_version: S.V2_API_VERSION });
+    rec('P1b', 'merchant capabilities and requirements as returned', 'stripe-test-api', 'INFO',
+      { merchant_capabilities: acct.configuration && acct.configuration.merchant && acct.configuration.merchant.capabilities, requirements: acct.requirements && (acct.requirements.summary || (acct.requirements.entries || []).length) });
+    const again = await S.getAccountV2(env, acct.id);
+    rec('P1c', 'reading the account back (v2) shows the same configuration', 'stripe-test-api', S.accountConfigProblems(again).length === 0 ? 'PASS' : 'FAIL',
+      { dashboard: again.dashboard, responsibilities: again.defaults && again.defaults.responsibilities });
+    const v1 = await S.getAccount(env, acct.id);
+    rec('P1d', 'the v1 view of the same account (used for charge status and account.updated) is readable', 'stripe-test-api', v1.id === acct.id && typeof v1.charges_enabled === 'boolean' ? 'PASS' : 'FAIL',
+      { charges_enabled: v1.charges_enabled, payouts_enabled: v1.payouts_enabled, details_submitted: v1.details_submitted, controller: v1.controller, country: v1.country });
     const link = await S.accountLink(env, { account: acct.id, refreshUrl: 'https://plotart-checkout-test.invalid/refresh', returnUrl: 'https://plotart-checkout-test.invalid/return' });
-    rec('P2', 'Stripe-hosted onboarding link is created', 'stripe-test-api', /^https:\/\/connect\.stripe\.com\//.test(link.url) ? 'PASS' : 'FAIL', { host: new URL(link.url).host, expires_at: link.expires_at });
+    const host = new URL(link.url).host;
+    rec('P2', 'Stripe-hosted onboarding link (Account Links v2, merchant configuration) is created', 'stripe-test-api', /(^|\.)stripe\.com$/.test(host) ? 'PASS' : 'FAIL', { host, expires_at: link.expires_at, use_case: link.use_case && link.use_case.type });
     writeFileSync(OUT + 'onboarding-link.txt', `Test account ${acct.id}\nComplete Stripe's TEST onboarding (test data only) at:\n${link.url}\nThen set the GitHub variable CHECKOUT_TEST_ACCOUNT=${acct.id} in the checkout-test environment.\n`);
   } catch (e) { rec('P1', 'Stripe accepts the pilot’s account configuration', 'stripe-test-api', 'FAIL', { error: e.message, code: e.code }); }
 
@@ -79,9 +87,10 @@ if (PHASES.includes('provider')) {
   } else {
     console.log('— provider: onboarded test account ' + ACCOUNT);
     const a = (await stripe('GET', `/v1/accounts/${ACCOUNT}`)).j;
+    let a2 = null; try { a2 = await S.getAccountV2(env, ACCOUNT); } catch (e) { a2 = { error: e.message }; }
     rec('P3', 'the onboarded test account can take charges and has the pilot configuration', 'stripe-test-api',
-      a.charges_enabled && a.details_submitted && a.controller && a.controller.fees && a.controller.fees.payer === 'account' && a.controller.losses.payments === 'stripe' ? 'PASS' : 'FAIL',
-      { charges_enabled: a.charges_enabled, payouts_enabled: a.payouts_enabled, details_submitted: a.details_submitted, controller: a.controller, country: a.country, default_currency: a.default_currency });
+      a.charges_enabled && a.details_submitted && a2 && !a2.error && S.accountConfigProblems(a2).length === 0 ? 'PASS' : 'FAIL',
+      { charges_enabled: a.charges_enabled, payouts_enabled: a.payouts_enabled, details_submitted: a.details_submitted, dashboard: a2 && a2.dashboard, responsibilities: a2 && a2.defaults && a2.defaults.responsibilities, problems: a2 && !a2.error ? S.accountConfigProblems(a2) : a2, country: a.country, default_currency: a.default_currency });
     // Checkout Session exactly as the pilot creates it, then expired as a revision would
     try {
       const order = { id: 'o' + RUN, reference: 'PA-O-TEST-' + RUN.toUpperCase(), quote_version: 1 };

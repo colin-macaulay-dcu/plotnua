@@ -26,7 +26,7 @@ writeFileSync(HERE + FIX + 'src/payment-terms.js', `export const PAYMENT_TERMS =
 
 /* ---------------------------------------------------------------- mock Stripe (test mode objects only) */
 const WHSEC = 'whsec_test_' + 'x'.repeat(24);
-const M = { accounts: {}, sessions: {}, pis: {}, refunds: [], feeRefunds: [], calls: [], idem: {}, n: 0, failNextExpire: false, nextRefundStatus: null };
+const M = { accounts: {}, v2accounts: {}, nextAccountResponsibilities: null, sessions: {}, pis: {}, refunds: [], feeRefunds: [], calls: [], idem: {}, n: 0, failNextExpire: false, nextRefundStatus: null };
 const nid = p => `${p}_test_${(++M.n).toString(36).padStart(6, '0')}`;
 const flat = body => Object.fromEntries(new URLSearchParams(body || ''));
 const ok = o => new Response(JSON.stringify(o), { status: 200, headers: { 'Content-Type': 'application/json' } });
@@ -35,13 +35,28 @@ async function stripe(req) {
   const u = new URL(req.url);
   if (u.hostname !== 'stripe.mock') return err('unexpected outbound host ' + u.hostname, 599);
   const body = req.method === 'POST' ? await req.text() : '';
-  const f = flat(body), acct = req.headers.get('Stripe-Account'), idem = req.headers.get('Idempotency-Key');
-  M.calls.push({ method: req.method, path: u.pathname, f, acct, idem, auth: req.headers.get('Authorization') });
+  const v2 = u.pathname.startsWith('/v2/');
+  let jb = null; if (v2 && body) { try { jb = JSON.parse(body); } catch { return err('v2 expects JSON', 400); } }
+  const f = v2 ? {} : flat(body), acct = req.headers.get('Stripe-Account'), idem = req.headers.get('Idempotency-Key');
+  M.calls.push({ method: req.method, path: u.pathname, f, jb, acct, idem, auth: req.headers.get('Authorization'), version: req.headers.get('Stripe-Version'), ctype: req.headers.get('Content-Type'), query: u.search });
+  if (v2 && !req.headers.get('Stripe-Version')) return err('v2 requests must include Stripe-Version', 400);
   if (idem && M.idem[idem]) return ok(M.idem[idem]);
   const remember = o => { if (idem) M.idem[idem] = o; return ok(o); };
   let mm;
-  if (u.pathname === '/v1/accounts' && req.method === 'POST') { const a = { id: nid('acct').replace('_test', ''), object: 'account', livemode: false, charges_enabled: false, payouts_enabled: false, details_submitted: false, country: f.country, email: f.email, controller: f, requirements: { currently_due: ['individual.verification.document'] } }; M.accounts[a.id] = a; return remember(a); }
-  if (u.pathname === '/v1/account_links') return ok({ object: 'account_link', url: `https://connect.stripe.test/setup/${f.account}`, livemode: false });
+  // As real Stripe now does for new Connect platforms: v1 account creation is refused (the v1 support setting is off).
+  if (u.pathname === '/v1/accounts' && req.method === 'POST') return err('Stripe no longer recommends Accounts v1 for new Connect integrations.', 400);
+  if (u.pathname === '/v2/core/accounts' && req.method === 'POST') {
+    const id = nid('acct').replace('_test', '');
+    const resp = M.nextAccountResponsibilities || jb.defaults.responsibilities; M.nextAccountResponsibilities = null;
+    const v2a = { id, object: 'v2.core.account', livemode: false, contact_email: jb.contact_email, dashboard: jb.dashboard, identity: { country: String(jb.identity.country).toUpperCase() },
+      defaults: { responsibilities: { ...resp, requirements_collector: 'stripe' } }, configuration: { merchant: { capabilities: { card_payments: { status: 'restricted', status_details: [] } } } },
+      requirements: { entries: [{ description: 'individual.verification.document' }] }, metadata: jb.metadata };
+    M.v2accounts[id] = v2a;
+    M.accounts[id] = { id, object: 'account', livemode: false, charges_enabled: false, payouts_enabled: false, details_submitted: false, country: v2a.identity.country, email: jb.contact_email, requirements: { currently_due: ['individual.verification.document'] } };
+    return remember(v2a);
+  }
+  if (u.pathname === '/v2/core/account_links' && req.method === 'POST') return ok({ object: 'v2.core.account_link', account: jb.account, url: `https://accounts.stripe.test/r/${jb.account}`, use_case: jb.use_case, livemode: false });
+  if ((mm = u.pathname.match(/^\/v2\/core\/accounts\/(acct_[\w]+)$/)) && req.method === 'GET') return M.v2accounts[mm[1]] ? ok(M.v2accounts[mm[1]]) : err('no such account', 404);
   if ((mm = u.pathname.match(/^\/v1\/accounts\/(acct_[\w]+)$/))) return M.accounts[mm[1]] ? ok(M.accounts[mm[1]]) : err('no such account', 404);
   if (u.pathname === '/v1/checkout/sessions' && req.method === 'POST') {
     if (!acct) return err('direct charge expected');
@@ -135,12 +150,32 @@ check('C5 artists opt in themselves (append-only record with statement, version 
 check('C6 opt-in records cannot be edited or deleted', !!(await db.prepare("UPDATE payment_pilot_events SET kind='left'").run().catch(e => e)).message && !!(await db.prepare('DELETE FROM payment_pilot_events').run().catch(e => e)).message);
 r = await call('POST', '/api/checkout/onboarding', GAL, { country: 'IE' });
 const ACCT = (await db.prepare("SELECT account_id FROM payment_accounts WHERE artist_id='agal'").first()).account_id;
-const accCall = M.calls.find(c => c.path === '/v1/accounts');
-check('C7 Stripe-hosted onboarding: the artist’s own account, artist pays fees, Stripe carries losses, full Dashboard',
-  r.s === 200 && /connect\.stripe\.test/.test(r.j.url) && accCall.f['controller[fees][payer]'] === 'account' && accCall.f['controller[losses][payments]'] === 'stripe'
-  && accCall.f['controller[stripe_dashboard][type]'] === 'full' && accCall.f['controller[requirement_collection]'] === 'stripe', accCall);
+const accCall = M.calls.find(c => c.path === '/v2/core/accounts');
+const linkCall = M.calls.find(c => c.path === '/v2/core/account_links');
+check('C7 Stripe-hosted onboarding (Accounts v2): the artist’s own account, artist pays fees, Stripe carries losses, full Dashboard',
+  r.s === 200 && /accounts\.stripe\.test/.test(r.j.url) && accCall && accCall.jb.defaults.responsibilities.fees_collector === 'stripe' && accCall.jb.defaults.responsibilities.losses_collector === 'stripe'
+  && accCall.jb.dashboard === 'full' && accCall.jb.configuration.merchant.capabilities.card_payments.requested === true && accCall.ctype === 'application/json' && /^\d{4}-\d{2}-\d{2}\.\w+$/.test(accCall.version || ''), accCall);
+check('C7a onboarding link is an Account Link v2 for the merchant configuration; no v1 account creation is attempted',
+  linkCall && linkCall.jb.use_case.type === 'account_onboarding' && JSON.stringify(linkCall.jb.use_case.account_onboarding.configurations) === '["merchant"]' && !M.calls.some(c => c.path === '/v1/accounts' && c.method === 'POST'), linkCall);
+check('C7b only v2 requests carry the pinned Stripe-Version; v1 requests keep the account default', M.calls.filter(c => c.path.startsWith('/v1/')).every(c => !c.version));
 check('C8 only a TEST secret key was presented to the provider', M.calls.every(c => c.auth === 'Bearer sk_test_mockkey123'));
 for (const [aid, e] of [['afnd', FND], ['aold', OLD], ['aunk', UNK]]) await call('POST', '/api/checkout/onboarding', e, { country: 'IE' });
+r = await call('POST', '/api/admin/checkout/accounts/agal/refresh', FOUNDER, {});
+const refreshCalls = M.calls.slice(-2).map(c => c.method + ' ' + c.path);
+check('C7c a refresh re-reads the configuration (v2) and the charge status (v1) from Stripe', r.s === 200 && refreshCalls[0] === `GET /v2/core/accounts/${ACCT}` && refreshCalls[1] === `GET /v1/accounts/${ACCT}`
+  && /include%5B0%5D|include\[0\]/.test(M.calls.at(-2).query), { status: r.s, refreshCalls });
+M.v2accounts[ACCT].defaults.responsibilities.losses_collector = 'application';
+r = await call('POST', '/api/admin/checkout/accounts/agal/refresh', FOUNDER, {});
+check('C7d an account Stripe reports with a different configuration is refused on refresh', r.s === 409 && /losses_collector/.test(JSON.stringify(r.j)), r);
+M.v2accounts[ACCT].defaults.responsibilities.losses_collector = 'stripe';
+// a new account that Stripe returns with the platform liable for losses is never stored
+const AUNK_ACCT = (await db.prepare("SELECT account_id FROM payment_accounts WHERE artist_id='aunk'").first()).account_id;
+await db.prepare("DELETE FROM payment_accounts WHERE artist_id='aunk'").run();
+for (const k of Object.keys(M.idem)) if (k.startsWith('plotart-acct-v2-aunk')) delete M.idem[k];
+M.nextAccountResponsibilities = { fees_collector: 'application', losses_collector: 'application' };
+r = await call('POST', '/api/checkout/onboarding', UNK, { country: 'IE' });
+check('C7e a newly created account with the wrong configuration is refused and not recorded', r.s === 502 && !(await db.prepare("SELECT 1 FROM payment_accounts WHERE artist_id='aunk'").first()), r);
+await db.prepare("INSERT INTO payment_accounts (artist_id, account_id, country, created_at, updated_at) VALUES ('aunk', ?, 'IE', ?, ?)").bind(AUNK_ACCT, new Date().toISOString(), new Date().toISOString()).run();
 
 console.log('— commission entitlement (tests 1–4)');
 const DELIVERY = { collection_county: 'Dublin', destination: 'Cork, Ireland', unpacked_cm: '60 × 50 × 3', packed_cm: '75 × 65 × 12', weight_kg: 6, medium: 'Oil on board', framing: 'Framed, oak', glazing: 'None',

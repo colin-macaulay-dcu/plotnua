@@ -1,10 +1,16 @@
 /* PlotArt · managed checkout pilot · Stripe Connect adapter (development 16 Nov 2026). NOT DEPLOYED. TEST MODE ONLY.
 
    Configuration chosen (see MANAGED-CHECKOUT-PILOT.md "Implementation"):
-     · Each opted-in artist has their OWN Stripe account, created with controller properties equivalent to a Standard
-       account: Stripe collects requirements (hosted onboarding), the artist has the full Stripe Dashboard, the ARTIST pays
-       Stripe's processing fees (fees.payer = account) and Stripe — not PlotArt — carries negative-balance losses
-       (losses.payments = stripe).
+     · Each opted-in artist has their OWN Stripe account, created with the Accounts v2 API (POST /v2/core/accounts —
+       Stripe no longer accepts POST /v1/accounts from new Connect platforms unless a compatibility setting is switched
+       on). Configuration: dashboard = full (the artist's own full Stripe Dashboard), defaults.responsibilities.
+       fees_collector = stripe (Stripe charges its processing fees to the ARTIST), losses_collector = stripe (Stripe —
+       not PlotArt — carries unrecoverable negative balances); Stripe then collects requirements itself (read-only
+       requirements_collector = stripe). These are the v2 equivalents of the v1 controller properties fees.payer =
+       account, losses.payments = stripe, requirement_collection = stripe, stripe_dashboard.type = full. Stripe does
+       not allow them to be changed once the merchant configuration is added, and the pilot re-checks them on every
+       refresh. Onboarding uses Account Links v2. Everything else (status reads, Checkout, PaymentIntents, refunds,
+       application fees, account.updated events) stays on v1, which Stripe documents as working with v2 accounts.
      · Every payment is a DIRECT CHARGE on the artist's account (Stripe-Account header), via Stripe-hosted Checkout. The
        artist is the merchant of record; PlotArt's commission is an application_fee_amount on the artwork only.
      · Refunds and disputes are debited from the artist's Stripe balance by Stripe. PlotArt refunds its application fee
@@ -33,17 +39,23 @@ export function form(obj, prefix = '', out = []) {
   return out.join('&');
 }
 
+/* API v2 requests are JSON and must name an API version. Pinned here (override with STRIPE_V2_API_VERSION) and sent on
+   /v2 requests only, so v1 calls keep the platform account's pinned version. */
+export const V2_API_VERSION = '2026-10-28.endive';
+
 async function call(env, method, path, { body = null, account = null, idem = null, query = '' } = {}) {
   const k = testKey(env);
   if (!k.ok) throw new StripeError(k.reason, 503, 'not_configured');
   const base = env.STRIPE_API_BASE || 'https://api.stripe.com';
   if (env.STRIPE_API_BASE && env.ENVIRONMENT !== 'local') throw new StripeError('STRIPE_API_BASE is for local tests only', 500);
+  const v2 = path.startsWith('/v2/');
   const headers = { Authorization: `Bearer ${env.STRIPE_SECRET_KEY}` };
-  if (env.STRIPE_API_VERSION) headers['Stripe-Version'] = env.STRIPE_API_VERSION;   // otherwise the platform account's pinned version
+  if (v2) headers['Stripe-Version'] = env.STRIPE_V2_API_VERSION || V2_API_VERSION;
+  else if (env.STRIPE_API_VERSION) headers['Stripe-Version'] = env.STRIPE_API_VERSION;   // otherwise the platform account's pinned version
   if (account) headers['Stripe-Account'] = account;
   if (idem) headers['Idempotency-Key'] = idem;
-  if (body) headers['Content-Type'] = 'application/x-www-form-urlencoded';
-  const r = await fetch(`${base}${path}${query}`, { method, headers, body: body ? form(body) : undefined });
+  if (body) headers['Content-Type'] = v2 ? 'application/json' : 'application/x-www-form-urlencoded';
+  const r = await fetch(`${base}${path}${query}`, { method, headers, body: body ? (v2 ? JSON.stringify(body) : form(body)) : undefined });
   const t = await r.text();
   let j; try { j = JSON.parse(t); } catch { throw new StripeError('Payment provider returned an unreadable response'); }
   if (!r.ok) throw new StripeError((j.error && j.error.message) || 'Payment provider error', r.status >= 500 ? 502 : 409, j.error && j.error.code);
@@ -51,12 +63,32 @@ async function call(env, method, path, { body = null, account = null, idem = nul
   return j;
 }
 
-export const createAccount = (env, { email, country, artistId }) => call(env, 'POST', '/v1/accounts', { idem: `plotart-acct-${artistId}`, body: {
-  country, email,
-  controller: { fees: { payer: 'account' }, losses: { payments: 'stripe' }, requirement_collection: 'stripe', stripe_dashboard: { type: 'full' } },
-  capabilities: { card_payments: { requested: true }, transfers: { requested: true } },
-  metadata: { plotart_artist: artistId, plotart_pilot: 'managed-checkout-1' } } });
-export const accountLink = (env, { account, refreshUrl, returnUrl }) => call(env, 'POST', '/v1/account_links', { body: { account, refresh_url: refreshUrl, return_url: returnUrl, type: 'account_onboarding' } });
+/* The configuration every pilot account must have. Checked on the object Stripe returns, not assumed. */
+export function accountConfigProblems(a) {
+  const r = (a && a.defaults && a.defaults.responsibilities) || {};
+  const p = [];
+  if (r.fees_collector !== 'stripe') p.push(`fees_collector is ${r.fees_collector} (must be stripe: the artist pays Stripe's fees)`);
+  if (r.losses_collector !== 'stripe') p.push(`losses_collector is ${r.losses_collector} (must be stripe: Stripe carries negative balances)`);
+  if (r.requirements_collector && r.requirements_collector !== 'stripe') p.push(`requirements_collector is ${r.requirements_collector} (must be stripe)`);
+  if (a && a.dashboard !== 'full') p.push(`dashboard is ${a && a.dashboard} (must be full)`);
+  return p;
+}
+const V2_INCLUDE = ['configuration.merchant', 'defaults', 'identity', 'requirements'];
+
+export const createAccount = (env, { email, country, artistId }) => call(env, 'POST', '/v2/core/accounts', { idem: `plotart-acct-v2-${artistId}`, body: {
+  contact_email: email,
+  dashboard: 'full',
+  identity: { country: String(country).toLowerCase() },
+  defaults: { responsibilities: { fees_collector: 'stripe', losses_collector: 'stripe' } },
+  configuration: { merchant: { capabilities: { card_payments: { requested: true } } } },
+  metadata: { plotart_artist: artistId, plotart_pilot: 'managed-checkout-1' },
+  include: V2_INCLUDE } });
+export const accountLink = (env, { account, refreshUrl, returnUrl }) => call(env, 'POST', '/v2/core/account_links', { body: {
+  account, use_case: { type: 'account_onboarding', account_onboarding: { configurations: ['merchant'], refresh_url: refreshUrl, return_url: returnUrl } } } });
+/* v2 view: configuration (responsibilities, dashboard, merchant capability status). */
+export const getAccountV2 = (env, account) => call(env, 'GET', `/v2/core/accounts/${encodeURIComponent(account)}`, { query: '?' + V2_INCLUDE.map((x, i) => `include[${i}]=${encodeURIComponent(x)}`).join('&') });
+/* v1 view of the same account: charges_enabled / payouts_enabled / details_submitted / requirements — the same shape the
+   account.updated webhook delivers, so one mapping serves both. */
 export const getAccount = (env, account) => call(env, 'GET', `/v1/accounts/${encodeURIComponent(account)}`);
 
 export const createSession = (env, { account, idem, order, title, artworkCents, deliveryCents, feeCents, expiresAt, buyerEmail, successUrl, cancelUrl, statement }) =>

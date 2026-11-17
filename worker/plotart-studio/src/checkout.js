@@ -158,6 +158,8 @@ export async function onboarding(env, artist, origin, body = {}) {
     const country = (body.country || 'IE').toUpperCase();
     if (!['IE', 'GB'].includes(country)) throw new Bad('The pilot supports artists in Ireland and Northern Ireland', 400);
     const a = await S.createAccount(env, { email: artist.email, country, artistId: artist.id });
+    const bad = S.accountConfigProblems(a);
+    if (bad.length) throw new Bad('Stripe created the account with a configuration the pilot does not allow: ' + bad.join('; '), 502);
     await run(env, 'INSERT INTO payment_accounts (artist_id, account_id, country, created_at, updated_at) VALUES (?,?,?,?,?)', artist.id, a.id, country, now(), now());
     acct = await one(env, 'SELECT * FROM payment_accounts WHERE artist_id = ?', artist.id);
   }
@@ -173,6 +175,8 @@ export async function refreshAccount(env, artistId) {
   await requireInstalled(env);
   const acct = await one(env, 'SELECT * FROM payment_accounts WHERE artist_id = ?', artistId);
   if (!acct) throw new Bad('No payment account yet', 404);
+  const bad = S.accountConfigProblems(await S.getAccountV2(env, acct.account_id));
+  if (bad.length) throw new Bad('This Stripe account does not have the pilot configuration: ' + bad.join('; '), 409);
   await applyAccount(env, await S.getAccount(env, acct.account_id));
   return { membership: await membership(env, artistId) };
 }

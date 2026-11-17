@@ -571,3 +571,48 @@ untested. The fallback is that sandbox's own secret test key, whose reach is lim
 branch, so the runner is started by a **push** to the pilot branch that changes `test/stripe-test-run.json`. That works
 from the unmerged branch. Each run then waits for Colin's approval on `checkout-test`. The environment must exist before
 the first run, because GitHub creates a missing environment automatically with no protection rules.
+
+#### Accounts v2 change after run 1 (17 Nov 2026)
+
+**What happened.** Run 1 stopped at P1: Stripe refused `POST /v1/accounts` with *"Stripe no longer recommends Accounts v1
+for new Connect integrations. Create connected accounts with POST /v2/core/accounts instead"*, and offered a Dashboard
+setting ("Accounts v1 support") for integrations that need v1 creation for a supported compatibility scenario. L1 and L2
+in that run were local safeguards only; no payment, refund, dispute or webhook behaviour was verified.
+
+**Choice: move account creation and onboarding to Accounts v2; leave everything else on v1.** Reasons, from Stripe's
+current documentation:
+- Stripe tells new integrations to use `/v2/core/accounts` unless explicitly instructed to use v1. The listed cases that
+  still need v1 (OAuth, recipient service agreements, Treasury, Issuing, deprecated capabilities, some preview payment
+  methods) do not apply to the pilot, so enabling v1 support would be a workaround, not a supported scenario.
+- The intended configuration maps one-to-one: `controller.fees.payer = account` → `defaults.responsibilities.
+  fees_collector = stripe`; `controller.losses.payments = stripe` → `losses_collector = stripe`;
+  `controller.stripe_dashboard.type = full` → `dashboard = full`; `requirement_collection = stripe` becomes read-only
+  and is derived (it is `stripe` for this combination). Stripe requires both collectors to be `stripe` when the
+  dashboard is `full`, and states that `losses_collector = stripe` with a full Dashboard limits the account to
+  **direct charges** — which is what the pilot uses. With `fees_collector = stripe`, the application fee is only
+  PlotArt's commission and Stripe deducts its own fee from the artist separately, exactly as before.
+- The v1 support setting only governs `POST /v1/accounts`. v2 accounts work with v1 endpoints (returned in v1 shape)
+  and still send v1 `account.updated` events, so Checkout, PaymentIntents, refunds, application-fee refunds, the
+  webhook handling and the v1 status read are unchanged.
+- Implications of the choice: responsibilities cannot be changed once the merchant configuration exists (a production
+  change of fee model means new accounts, not an edit); v2 requests are JSON and must name an API version (pinned in
+  the adapter to `2026-10-28.endive`, sent on `/v2` requests only); onboarding links now come from
+  `accounts.stripe.com` rather than `connect.stripe.com`. Stripe also emits v2 "thin" events; the pilot does not
+  subscribe to them.
+
+**Code changes.** `src/stripe.js`: `createAccount` → `POST /v2/core/accounts` (`dashboard: full`, both collectors
+`stripe`, merchant configuration with `card_payments` requested); `accountLink` → `POST /v2/core/account_links`
+(`account_onboarding`, configuration `merchant`); new `getAccountV2` and `accountConfigProblems`. `src/checkout.js`: an
+account Stripe returns with any other configuration is refused and not recorded; every refresh re-reads the
+configuration (v2) before the charge status (v1). The local mock now refuses v1 account creation as Stripe does; new
+local checks C7–C7e cover the request shape, version header, Account Link v2, refresh and refusal paths.
+
+**Restricted-key change (precise; no full access).** Names below are Stripe's permission identifiers from the API
+permissions reference, which the restricted-key editor groups by resource:
+- **Add** (Permissions column): the Accounts v2 permission `v2_account_storer_write` — Write. It covers
+  `POST /v2/core/accounts` and `POST /v2/core/account_links`. Write includes `v2_account_read` for
+  `GET /v2/core/accounts/{id}`.
+- **May reduce** (optional tightening): *Connect → Accounts* from Write to **Read** (only `GET /v1/accounts/{id}` is
+  still called, permission `connected_account_read`), and *Connect → Account Links* (v1) to **None**.
+- Everything else is unchanged. If any permission is still missing, the run records Stripe's permission error against
+  the failing check.
