@@ -602,7 +602,7 @@ current documentation:
 
 **Code changes.** `src/stripe.js`: `createAccount` → `POST /v2/core/accounts` (`dashboard: full`, both collectors
 `stripe`, merchant configuration with `card_payments` requested); `accountLink` → `POST /v2/core/account_links`
-(`account_onboarding`, configuration `merchant`); new `getAccountV2` and `accountConfigProblems`. `src/checkout.js`: an
+(`account_onboarding`; no `configurations` field — see run 3 below); new `getAccountV2` and `accountConfigProblems`. `src/checkout.js`: an
 account Stripe returns with any other configuration is refused and not recorded; every refresh re-reads the
 configuration (v2) before the charge status (v1). The local mock now refuses v1 account creation as Stripe does; new
 local checks C7–C7e cover the request shape, version header, Account Link v2, refresh and refusal paths.
@@ -616,3 +616,24 @@ permissions reference, which the restricted-key editor groups by resource:
   still called, permission `connected_account_read`), and *Connect → Account Links* (v1) to **None**.
 - Everything else is unchanged. If any permission is still missing, the run records Stripe's permission error against
   the failing check.
+
+#### Run 3 result and Account Links fix (17 Nov 2026)
+
+- **Key permissions (Permissions column) that run 3 used:** Accounts v2: Read; Merchant Configuration: Write;
+  Customer Configuration: None; Recipient Configuration: None; heading not set to Write. With these, Stripe created
+  the v2 account and returned it for reading, so that combination is enough for creation and read-back. Run 4 uses the
+  key unchanged.
+- **Real Stripe, run 3:**
+  - P1 PASS: account `acct_1UclJXHx1Olx8cdw` created with `fees_collector`, `losses_collector` and
+    `requirements_collector` all `stripe`, `dashboard` `full`, `livemode` false.
+  - P1c PASS: the configuration reads back the same.
+  - P1d PASS: the v1 view shows `fees.payer = account`, `losses.payments = stripe`,
+    `requirement_collection = stripe`, Dashboard `full`.
+  - The onboarding link then failed: `use_case.account_onboarding.configurations: Unknown field` (`invalid_fields`).
+- **Cause:** API version 2026-09-30.endive removed `configurations` from Account Links v2, and Stripe now decides
+  which configurations need onboarding. The pilot sends 2026-10-28.endive. The field is removed from the pilot and the
+  harness, and the local mock now rejects it as Stripe does.
+- **Reporting fix:** account creation (P1), read-back (P1c/P1d) and the onboarding link (P2) now each record their own
+  result. Before, an onboarding-link error was filed under P1.
+- **Reuse:** `reuse_account` in `test/stripe-test-run.json` makes a run reuse an account created earlier instead of
+  creating a new one. P1 is then recorded as SKIP, and the configuration is still re-verified by P1c.

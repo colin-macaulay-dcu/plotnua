@@ -61,26 +61,45 @@ const expectedFee = (cents, pct) => Math.round(cents * pct / 100 + 25);
 
 if (PHASES.includes('provider')) {
   console.log('— provider: account configuration');
-  let acct;
-  try {
-    acct = await S.createAccount(env, { email: `pilot-test+${RUN}@plotnua.invalid`, country: 'IE', artistId: 'harness-' + RUN });
-    const r = (acct.defaults && acct.defaults.responsibilities) || {};
-    rec('P1', 'Stripe accepts the pilot’s Accounts v2 configuration (artist pays fees, Stripe carries losses, Stripe-collected requirements, full Dashboard)', 'stripe-test-api',
-      acct.object === 'v2.core.account' && S.accountConfigProblems(acct).length === 0 && r.requirements_collector === 'stripe' ? 'PASS' : 'FAIL',
-      { account: acct.id, object: acct.object, dashboard: acct.dashboard, responsibilities: r, problems: S.accountConfigProblems(acct), livemode: acct.livemode, api_version: S.V2_API_VERSION });
-    rec('P1b', 'merchant capabilities and requirements as returned', 'stripe-test-api', 'INFO',
-      { merchant_capabilities: acct.configuration && acct.configuration.merchant && acct.configuration.merchant.capabilities, requirements: acct.requirements && (acct.requirements.summary || (acct.requirements.entries || []).length) });
-    const again = await S.getAccountV2(env, acct.id);
-    rec('P1c', 'reading the account back (v2) shows the same configuration', 'stripe-test-api', S.accountConfigProblems(again).length === 0 ? 'PASS' : 'FAIL',
-      { dashboard: again.dashboard, responsibilities: again.defaults && again.defaults.responsibilities });
-    const v1 = await S.getAccount(env, acct.id);
-    rec('P1d', 'the v1 view of the same account (used for charge status and account.updated) is readable', 'stripe-test-api', v1.id === acct.id && typeof v1.charges_enabled === 'boolean' ? 'PASS' : 'FAIL',
-      { charges_enabled: v1.charges_enabled, payouts_enabled: v1.payouts_enabled, details_submitted: v1.details_submitted, controller: v1.controller, country: v1.country });
-    const link = await S.accountLink(env, { account: acct.id, refreshUrl: 'https://plotart-checkout-test.invalid/refresh', returnUrl: 'https://plotart-checkout-test.invalid/return' });
-    const host = new URL(link.url).host;
-    rec('P2', 'Stripe-hosted onboarding link (Account Links v2, merchant configuration) is created', 'stripe-test-api', /(^|\.)stripe\.com$/.test(host) ? 'PASS' : 'FAIL', { host, expires_at: link.expires_at, use_case: link.use_case && link.use_case.type });
-    writeFileSync(OUT + 'onboarding-link.txt', `Test account ${acct.id}\nComplete Stripe's TEST onboarding (test data only) at:\n${link.url}\nThen set the GitHub variable CHECKOUT_TEST_ACCOUNT=${acct.id} in the checkout-test environment.\n`);
-  } catch (e) { rec('P1', 'Stripe accepts the pilot’s account configuration', 'stripe-test-api', 'FAIL', { error: e.message, code: e.code }); }
+  // Reuse an account an earlier run created (named in stripe-test-run.json) instead of creating a new one each run.
+  let REUSE = '';
+  try { REUSE = String(JSON.parse(readFileSync(HERE + 'test/stripe-test-run.json', 'utf8')).reuse_account || ''); } catch {}
+  if (REUSE && !/^acct_[A-Za-z0-9]+$/.test(REUSE)) { rec('P0', 'reuse_account in stripe-test-run.json is an account id', 'local', 'FAIL', { reuse_account: REUSE }); REUSE = ''; }
+  let acctId = null;
+  if (REUSE) {
+    rec('P1', 'account creation: not repeated — reusing the test account created and verified in an earlier run', 'stripe-test-api', 'SKIP', { reuse_account: REUSE });
+    acctId = REUSE;
+  } else {
+    try {
+      const acct = await S.createAccount(env, { email: `pilot-test+${RUN}@plotnua.invalid`, country: 'IE', artistId: 'harness-' + RUN });
+      const r = (acct.defaults && acct.defaults.responsibilities) || {};
+      rec('P1', 'account creation: Stripe accepts the pilot’s Accounts v2 configuration (artist pays fees, Stripe carries losses, Stripe-collected requirements, full Dashboard)', 'stripe-test-api',
+        acct.object === 'v2.core.account' && S.accountConfigProblems(acct).length === 0 && r.requirements_collector === 'stripe' ? 'PASS' : 'FAIL',
+        { account: acct.id, object: acct.object, dashboard: acct.dashboard, responsibilities: r, problems: S.accountConfigProblems(acct), livemode: acct.livemode, api_version: S.V2_API_VERSION });
+      rec('P1b', 'merchant capabilities and requirements as returned', 'stripe-test-api', 'INFO',
+        { card_payments: acct.configuration && acct.configuration.merchant && acct.configuration.merchant.capabilities && acct.configuration.merchant.capabilities.card_payments });
+      acctId = acct.id;
+    } catch (e) { rec('P1', 'account creation (Accounts v2)', 'stripe-test-api', 'FAIL', { error: e.message, code: e.code }); }
+  }
+  if (acctId) {
+    try {
+      const again = await S.getAccountV2(env, acctId);
+      rec('P1c', 'configuration read back (v2): fees_collector, losses_collector and requirements_collector are stripe; dashboard is full', 'stripe-test-api', S.accountConfigProblems(again).length === 0 ? 'PASS' : 'FAIL',
+        { account: acctId, dashboard: again.dashboard, responsibilities: again.defaults && again.defaults.responsibilities, card_payments: again.configuration && again.configuration.merchant && again.configuration.merchant.capabilities && again.configuration.merchant.capabilities.card_payments });
+    } catch (e) { rec('P1c', 'configuration read back (v2)', 'stripe-test-api', 'FAIL', { error: e.message, code: e.code }); }
+    try {
+      const v1 = await S.getAccount(env, acctId);
+      rec('P1d', 'the v1 view of the same account (used for charge status and account.updated) is readable', 'stripe-test-api', v1.id === acctId && typeof v1.charges_enabled === 'boolean' ? 'PASS' : 'FAIL',
+        { charges_enabled: v1.charges_enabled, payouts_enabled: v1.payouts_enabled, details_submitted: v1.details_submitted, controller: v1.controller, country: v1.country });
+    } catch (e) { rec('P1d', 'v1 view of the account', 'stripe-test-api', 'FAIL', { error: e.message, code: e.code }); }
+    try {
+      const link = await S.accountLink(env, { account: acctId, refreshUrl: 'https://plotart-checkout-test.invalid/refresh', returnUrl: 'https://plotart-checkout-test.invalid/return' });
+      const host = new URL(link.url).host;
+      rec('P2', 'onboarding link: Stripe-hosted Account Link v2 is created', 'stripe-test-api', /(^|\.)stripe\.com$/.test(host) ? 'PASS' : 'FAIL',
+        { host, expires_at: link.expires_at, use_case: link.use_case && link.use_case.type, configurations_chosen_by_stripe: link.use_case && link.use_case.account_onboarding && link.use_case.account_onboarding.configurations });
+      writeFileSync(OUT + 'onboarding-link.txt', `Test account ${acctId}\nComplete Stripe's TEST onboarding (test data only) at:\n${link.url}\nThe link is single-use and expires at ${link.expires_at}.\nThen set the GitHub variable CHECKOUT_TEST_CONNECTED_ACCOUNT=${acctId} in the checkout-test environment.\n`);
+    } catch (e) { rec('P2', 'onboarding link (Account Links v2)', 'stripe-test-api', 'FAIL', { error: e.message, code: e.code }); }
+  }
 
   if (!ACCOUNT) {
     rec('P3', 'payments, refunds and disputes on an onboarded test account', 'stripe-test-api', 'SKIP', { reason: 'CHECKOUT_TEST_ACCOUNT not set yet: complete the onboarding link from P2 once, then set the variable' });

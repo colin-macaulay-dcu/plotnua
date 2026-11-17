@@ -83,8 +83,11 @@ export const createAccount = (env, { email, country, artistId }) => call(env, 'P
   configuration: { merchant: { capabilities: { card_payments: { requested: true } } } },
   metadata: { plotart_artist: artistId, plotart_pilot: 'managed-checkout-1' },
   include: V2_INCLUDE } });
+/* No `configurations` field: API 2026-09-30.endive removed it from Account Links v2 (Stripe now works out which of the
+   account's configurations need onboarding — here the merchant configuration set at creation). Sending it is rejected
+   as "Unknown field". */
 export const accountLink = (env, { account, refreshUrl, returnUrl }) => call(env, 'POST', '/v2/core/account_links', { body: {
-  account, use_case: { type: 'account_onboarding', account_onboarding: { configurations: ['merchant'], refresh_url: refreshUrl, return_url: returnUrl } } } });
+  account, use_case: { type: 'account_onboarding', account_onboarding: { refresh_url: refreshUrl, return_url: returnUrl } } } });
 /* v2 view: configuration (responsibilities, dashboard, merchant capability status). */
 export const getAccountV2 = (env, account) => call(env, 'GET', `/v2/core/accounts/${encodeURIComponent(account)}`, { query: '?' + V2_INCLUDE.map((x, i) => `include[${i}]=${encodeURIComponent(x)}`).join('&') });
 /* v1 view of the same account: charges_enabled / payouts_enabled / details_submitted / requirements — the same shape the

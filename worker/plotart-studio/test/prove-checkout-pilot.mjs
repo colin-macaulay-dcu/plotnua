@@ -55,6 +55,8 @@ async function stripe(req) {
     M.accounts[id] = { id, object: 'account', livemode: false, charges_enabled: false, payouts_enabled: false, details_submitted: false, country: v2a.identity.country, email: jb.contact_email, requirements: { currently_due: ['individual.verification.document'] } };
     return remember(v2a);
   }
+  if (u.pathname === '/v2/core/account_links' && req.method === 'POST' && jb.use_case && jb.use_case.account_onboarding && 'configurations' in jb.use_case.account_onboarding)
+    return new Response(JSON.stringify({ error: { type: 'invalid_request_error', code: 'invalid_fields', message: "Some fields in the request were invalid: 'use_case.account_onboarding.configurations: Unknown field.'" } }), { status: 400, headers: { 'Content-Type': 'application/json' } });   // as Stripe answers on 2026-09-30.endive and later
   if (u.pathname === '/v2/core/account_links' && req.method === 'POST') return ok({ object: 'v2.core.account_link', account: jb.account, url: `https://accounts.stripe.test/r/${jb.account}`, use_case: jb.use_case, livemode: false });
   if ((mm = u.pathname.match(/^\/v2\/core\/accounts\/(acct_[\w]+)$/)) && req.method === 'GET') return M.v2accounts[mm[1]] ? ok(M.v2accounts[mm[1]]) : err('no such account', 404);
   if ((mm = u.pathname.match(/^\/v1\/accounts\/(acct_[\w]+)$/))) return M.accounts[mm[1]] ? ok(M.accounts[mm[1]]) : err('no such account', 404);
@@ -155,8 +157,8 @@ const linkCall = M.calls.find(c => c.path === '/v2/core/account_links');
 check('C7 Stripe-hosted onboarding (Accounts v2): the artist’s own account, artist pays fees, Stripe carries losses, full Dashboard',
   r.s === 200 && /accounts\.stripe\.test/.test(r.j.url) && accCall && accCall.jb.defaults.responsibilities.fees_collector === 'stripe' && accCall.jb.defaults.responsibilities.losses_collector === 'stripe'
   && accCall.jb.dashboard === 'full' && accCall.jb.configuration.merchant.capabilities.card_payments.requested === true && accCall.ctype === 'application/json' && /^\d{4}-\d{2}-\d{2}\.\w+$/.test(accCall.version || ''), accCall);
-check('C7a onboarding link is an Account Link v2 for the merchant configuration; no v1 account creation is attempted',
-  linkCall && linkCall.jb.use_case.type === 'account_onboarding' && JSON.stringify(linkCall.jb.use_case.account_onboarding.configurations) === '["merchant"]' && !M.calls.some(c => c.path === '/v1/accounts' && c.method === 'POST'), linkCall);
+check('C7a onboarding link is an Account Link v2 in the endive shape (no configurations field); no v1 account creation is attempted',
+  linkCall && linkCall.jb.use_case.type === 'account_onboarding' && !('configurations' in linkCall.jb.use_case.account_onboarding) && linkCall.jb.use_case.account_onboarding.return_url && linkCall.jb.use_case.account_onboarding.refresh_url && !M.calls.some(c => c.path === '/v1/accounts' && c.method === 'POST'), linkCall);
 check('C7b only v2 requests carry the pinned Stripe-Version; v1 requests keep the account default', M.calls.filter(c => c.path.startsWith('/v1/')).every(c => !c.version));
 check('C8 only a TEST secret key was presented to the provider', M.calls.every(c => c.auth === 'Bearer sk_test_mockkey123'));
 for (const [aid, e] of [['afnd', FND], ['aold', OLD], ['aunk', UNK]]) await call('POST', '/api/checkout/onboarding', e, { country: 'IE' });
