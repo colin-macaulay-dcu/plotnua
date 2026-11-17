@@ -2,7 +2,7 @@
 // deliveries forwarded by `stripe listen --forward-connect-to http://127.0.0.1:<port>/v1/stripe/webhook`, and the buyer
 // paying on Stripe's hosted Checkout in headless Chromium (Playwright). Called by stripe-testmode-checks.mjs (phase e2e).
 // Results are labelled source "stripe-test-api+pilot": Stripe's real responses and events, processed by the pilot's code.
-import { readFileSync } from 'node:fs';
+import { readFileSync, writeFileSync } from 'node:fs';
 import { createRequire } from 'node:module';
 import { start, token, FOUNDER } from './local.mjs';
 import { seedPublished } from './seed.mjs';
@@ -58,32 +58,47 @@ export async function e2e({ rec, KEY, ACCOUNT, RUN, port, whsec, stripe, sleep }
       const r = await CW.fetch(`http://checkout.local/q/${tok}/pay`, { method: 'POST', redirect: 'manual', headers: { 'Content-Type': 'application/x-www-form-urlencoded', Origin: ORIGIN }, body: 'accept_terms=PA-BPT-TEST-01' });
       return { id, tok, status: r.status, url: r.headers.get('Location') };
     }
-    async function payInBrowser(url, card) {
+    async function payInBrowser(url, card, tag) {
       if (!browser) { const req = createRequire(process.env.MINIFLARE_FROM || '/tmp/claude-0/studio-tools/package.json'); browser = await req('playwright').chromium.launch(); }
-      const page = await browser.newPage();
-      await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 60_000 });
-      const acc = page.locator('[data-testid="card-accordion-item-button"]'); if (await acc.count()) await acc.first().click().catch(() => {});
-      await page.locator('#cardNumber').fill(card, { timeout: 30_000 });
-      await page.locator('#cardExpiry').fill('12 / 34'); await page.locator('#cardCvc').fill('123');
-      if (await page.locator('#billingName').count()) await page.locator('#billingName').fill('E2E Test Buyer');
-      if (await page.locator('#billingCountry').count()) await page.locator('#billingCountry').selectOption('IE').catch(() => {});
-      if (await page.locator('#billingPostalCode').count()) await page.locator('#billingPostalCode').fill('D02 X285').catch(() => {});
-      await page.locator('button[type="submit"]').first().click();
-      await page.waitForURL(/plotart-checkout-test\.invalid/, { timeout: 60_000 }).catch(() => {});
-      await page.close();
+      const page = await browser.newPage({ locale: 'en-IE' });
+      try {
+        await page.goto(url, { waitUntil: 'networkidle', timeout: 60_000 }).catch(() => page.waitForLoadState('domcontentloaded'));
+        // Checkout may show payment methods as an accordion; open the card option if it is collapsed
+        for (const sel of ['[data-testid="card-accordion-item-button"]', '#payment-method-accordion-item-title-card', 'button:has-text("Card")', '[aria-label="Pay with card"]'])
+          if (await page.locator(sel).count()) { await page.locator(sel).first().click().catch(() => {}); break; }
+        // the card number field, on the page or inside a payment frame
+        const find = async (sels) => { for (const f of [page.mainFrame(), ...page.frames()]) for (const sl of sels) { const l = f.locator(sl); if (await l.count().catch(() => 0)) return l.first(); } return null; };
+        let num = null; for (let i = 0; i < 30 && !num; i++) { num = await find(['#cardNumber', 'input[name="cardnumber"]', 'input[name="cardNumber"]', 'input[autocomplete="cc-number"]']); if (!num) await page.waitForTimeout(1000); }
+        if (!num) throw new Error('card number field not found');
+        await num.fill(card);
+        const exp = await find(['#cardExpiry', 'input[name="exp-date"]', 'input[autocomplete="cc-exp"]']); if (exp) await exp.fill('12 / 34');
+        const cvc = await find(['#cardCvc', 'input[name="cvc"]', 'input[autocomplete="cc-csc"]']); if (cvc) await cvc.fill('123');
+        const name = await find(['#billingName', 'input[autocomplete="cc-name"]']); if (name) await name.fill('E2E Test Buyer');
+        if (await page.locator('#billingCountry').count()) await page.locator('#billingCountry').selectOption('IE').catch(() => {});
+        const pc = await find(['#billingPostalCode', 'input[autocomplete="postal-code"]']); if (pc) await pc.fill('D02 X285').catch(() => {});
+        await page.locator('button[type="submit"], [data-testid="hosted-payment-submit-button"]').first().click();
+        await page.waitForURL(/plotart-checkout-test\.invalid/, { timeout: 60_000 }).catch(() => {});
+      } catch (e) {
+        // diagnostics for the evidence artifact: a screenshot and the visible form controls (no secrets on a test Checkout page)
+        try { await page.screenshot({ path: `${HERE}stripe-test-evidence/checkout-${tag}.png`, fullPage: true }); } catch {}
+        try { const ctl = await page.evaluate(() => [...document.querySelectorAll('input,button,select,iframe')].slice(0, 60).map(x => [x.tagName, x.id, x.name, x.getAttribute('autocomplete'), x.getAttribute('data-testid'), (x.innerText || '').slice(0, 40), x.src ? new URL(x.src).host : ''].join('|')));
+          writeFileSync(`${HERE}stripe-test-evidence/checkout-${tag}-controls.txt`, ctl.join('\n') + '\nframes: ' + page.frames().map(f => f.url().slice(0, 80)).join(' , ') + '\n'); } catch {}
+        throw e;
+      } finally { await page.close(); }
     }
 
     // 1 · payment, verified only by Stripe's signed event
     const o1 = await quote('wagal1', 'PA-E-261116-E2E001');
     rec('E2', 'the pilot opens real hosted checkout on the artist’s account for the approved quote', SRC, o1.status === 303 && /checkout\.stripe\.com/.test(o1.url || '') ? 'PASS' : 'FAIL', { status: o1.status, host: o1.url && new URL(o1.url).host });
-    try { await payInBrowser(o1.url, '4242424242424242'); } catch (e) { rec('E3a', 'buyer pays on Stripe Checkout (headless browser)', SRC, 'FAIL', { error: String(e.message).slice(0, 300) }); }
+    try { await payInBrowser(o1.url, '4242424242424242', 'pay'); } catch (e) { rec('E3a', 'buyer pays on Stripe Checkout (headless browser)', SRC, 'FAIL', { error: String(e.message).slice(0, 300) }); }
     const paid = await waitFor(async () => { const o = await order(o1.id); return o.payment_status === 'paid' ? o : null; });
     const evs = await q("SELECT event_id, type, status FROM payment_events WHERE order_id = ?", o1.id);
     rec('E3', 'a REAL signed checkout.session.completed marks the order paid (and the work sold)', SRC, paid && evs.some(e => e.type === 'checkout.session.completed' && e.status === 'processed')
       && (await db.prepare("SELECT availability FROM artworks WHERE id='wagal1'").first()).availability === 'sold' ? 'PASS' : 'FAIL', { payment_status: paid && paid.payment_status, events: evs });
     if (paid) {
       const pi = (await stripe('GET', `/v1/payment_intents/${paid.payment_intent}?expand[]=latest_charge.balance_transaction`, null, ACCOUNT)).j;
-      const ch = pi.latest_charge;
+      let ch = pi.latest_charge;   // the fee and balance transaction are created asynchronously: wait for them
+      for (let i = 0; i < 20 && ch && (!ch.application_fee || !ch.balance_transaction); i++) { await sleep(1500); ch = (await stripe('GET', `/v1/charges/${ch.id}?expand[]=balance_transaction`, null, ACCOUNT)).j; }
       const led = await q('SELECT kind, amount_cents FROM order_ledger WHERE order_id = ? ORDER BY kind', o1.id);
       rec('E4', 'Stripe’s charge matches the pilot ledger: €1,075 charged, €150 application fee, delivery outside commission', SRC,
         ch.amount === 107500 && ch.application_fee_amount === 15000 && led.find(l => l.kind === 'commission').amount_cents === 15000 && led.find(l => l.kind === 'delivery_allocation').amount_cents === 7500 ? 'PASS' : 'FAIL',
@@ -103,7 +118,7 @@ export async function e2e({ rec, KEY, ACCOUNT, RUN, port, whsec, stripe, sleep }
     rec('E6', 'a REAL checkout.session.expired event releases the reservation and returns the quote to payable', SRC, released ? 'PASS' : 'FAIL', { status: (await order(o2.id)).status });
     // 4 · dispute delivered as a real event
     const o3 = await quote('wagal3', 'PA-E-261116-E2E003', 5000, 0);
-    try { await payInBrowser(o3.url, '4000000000000259'); } catch (e) { rec('E7a', 'buyer pays with the dispute test card', SRC, 'FAIL', { error: String(e.message).slice(0, 300) }); }
+    try { await payInBrowser(o3.url, '4000000000000259', 'dispute'); } catch (e) { rec('E7a', 'buyer pays with the dispute test card', SRC, 'FAIL', { error: String(e.message).slice(0, 300) }); }
     const disputed = await waitFor(async () => (await order(o3.id)).dispute_status === 'open', 150_000);
     rec('E7', 'a REAL charge.dispute.created (arriving after or before the payment event) marks the order disputed', SRC, disputed ? 'PASS' : 'FAIL',
       { status: (await order(o3.id)).status, dispute_status: (await order(o3.id)).dispute_status, events: await q("SELECT type, status FROM payment_events WHERE object_id LIKE 'dp_%' OR order_id = ?", o3.id) });

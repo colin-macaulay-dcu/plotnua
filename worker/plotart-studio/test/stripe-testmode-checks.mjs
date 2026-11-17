@@ -137,26 +137,37 @@ if (PHASES.includes('provider')) {
       const r = await stripe('POST', '/v1/payment_intents', { amount, currency: 'eur', payment_method: pm, confirm: 'true', allowed_payment_method_types: ['card'],
         ...(fee ? { application_fee_amount: fee } : {}), metadata: { plotart_order: 'harness-' + tag, run: RUN }, expand: ['latest_charge.balance_transaction'] }, ACCOUNT, `harness-${RUN}-${tag}`);
       if (!r.ok) throw Object.assign(new Error(r.j.error && r.j.error.message), { code: r.j.error && r.j.error.code });
-      return r.j;
+      // Stripe creates the application fee and the balance transaction of a direct charge ASYNCHRONOUSLY: right after the
+      // payment both can still be null. Wait for them (as the pilot does at refund time) and record how long it took.
+      const pi = r.j; const t0 = Date.now();
+      let ch = pi.latest_charge;
+      for (let i = 0; i < 20 && ch && ch.status === 'succeeded' && (!ch.balance_transaction || (fee && !ch.application_fee)); i++) {
+        await sleep(1500);
+        ch = (await stripe('GET', `/v1/charges/${ch.id}?expand[]=balance_transaction`, null, ACCOUNT)).j;
+      }
+      pi.latest_charge = ch; pi._async = { fee_present_at_creation: !!(r.j.latest_charge && r.j.latest_charge.application_fee), waited_ms: Date.now() - t0 };
+      return pi;
     }
     const pctFor = { standard: 1.5 };
     try {
       const pi = await charge(107500, 15000, 'pm_card_bypassPending', 'full');
       const ch = pi.latest_charge, bt = ch.balance_transaction;
       rec('P6', 'a direct charge of €1,075 with a €150 application fee succeeds on the artist’s account', 'stripe-test-api',
-        pi.status === 'succeeded' && ch.application_fee_amount === 15000 ? 'PASS' : 'FAIL', { payment_intent: pi.id, charge: ch.id, application_fee: ch.application_fee, status: pi.status });
+        pi.status === 'succeeded' && ch.application_fee_amount === 15000 ? 'PASS' : 'FAIL', { payment_intent: pi.id, charge: ch.id, application_fee: ch.application_fee, status: pi.status, async: pi._async });
+      rec('P6b', 'the application fee and balance transaction appear asynchronously after the payment (Stripe default for direct charges)', 'stripe-test-api',
+        ch.application_fee && ch.balance_transaction ? 'PASS' : 'FAIL', { application_fee: ch.application_fee, balance_transaction: !!ch.balance_transaction, ...pi._async });
       rec('P7', 'Stripe’s actual processing fee on €1,075 (charged to the artist’s balance; compare the documented 1.5% + €0.25 ≈ €16.38)', 'stripe-test-api', 'INFO',
         { stripe_fee_cents: bt && bt.fee, fee_details: bt && bt.fee_details, net_cents: bt && bt.net, card_country: ch.payment_method_details && ch.payment_method_details.card && ch.payment_method_details.card.country, expected_standard_eea_cents: expectedFee(107500, pctFor.standard) });
       const rf = await S.refund(env, { account: ACCOUNT, paymentIntent: pi.id, amount: 107500, idem: `harness-${RUN}-rf-full`, metadata: { plotart_refund: 'harness-full' } });
       rec('P8', 'full refund on the artist’s account, application fee NOT refunded automatically', 'stripe-test-api', rf.status === 'succeeded' ? 'PASS' : 'FAIL', { refund: rf.id, status: rf.status });
       const feeAfterRefund = (await stripe('GET', `/v1/application_fees/${ch.application_fee}`)).j;
-      rec('P8b', 'after the buyer refund, the application fee is still un-refunded until PlotArt refunds it', 'stripe-test-api', feeAfterRefund.amount_refunded === 0 ? 'PASS' : 'FAIL', { amount_refunded: feeAfterRefund.amount_refunded });
+      rec('P8b', 'after the buyer refund, the application fee is still un-refunded until PlotArt refunds it', 'stripe-test-api', feeAfterRefund.amount_refunded === 0 ? 'PASS' : 'FAIL', { fee: ch.application_fee, amount_refunded: feeAfterRefund.amount_refunded, error: feeAfterRefund.error && feeAfterRefund.error.message });
       const fr1 = await S.refundFee(env, { fee: ch.application_fee, amount: 15000, idem: `harness-${RUN}-fr-full`, metadata: { plotart_order: 'harness-full' } });
       const fr1b = await S.refundFee(env, { fee: ch.application_fee, amount: 15000, idem: `harness-${RUN}-fr-full`, metadata: { plotart_order: 'harness-full' } });
       const feeObj = (await stripe('GET', `/v1/application_fees/${ch.application_fee}`)).j;
       rec('P9', 'PlotArt refunds the full €150 commission; repeating the request with the same key refunds nothing more', 'stripe-test-api',
         fr1.id === fr1b.id && feeObj.amount_refunded === 15000 && feeObj.refunded === true ? 'PASS' : 'FAIL', { fee_refund: fr1.id, repeat: fr1b.id, amount_refunded: feeObj.amount_refunded });
-    } catch (e) { rec('P6', 'direct charge, full refund and commission refund', 'stripe-test-api', 'FAIL', { error: e.message, code: e.code }); }
+    } catch (e) { rec('P9', 'direct charge, full refund and commission refund', 'stripe-test-api', 'FAIL', { error: e.message, code: e.code }); }
 
     try {
       const pi = await charge(107500, 15000, 'pm_card_bypassPending', 'partial');
@@ -174,19 +185,22 @@ if (PHASES.includes('provider')) {
       const avail = (bal.available.find(x => x.currency === 'eur') || { amount: 0 }).amount;
       const amount = Math.max(avail + 50000, 60000);
       const pi = await charge(amount, 0, 'pm_card_visa', 'unfunded');   // funds go to the PENDING balance
+      const sum = b => Object.fromEntries(['available', 'pending'].map(k => [k, ((b[k] || []).find(x => x.currency === 'eur') || { amount: 0 }).amount]));
+      const before = sum((await stripe('GET', '/v1/balance', null, ACCOUNT)).j);
       const rf = await S.refund(env, { account: ACCOUNT, paymentIntent: pi.id, amount, idem: `harness-${RUN}-rf-unfunded`, metadata: { plotart_refund: 'harness-unfunded' } });
       let cur = rf; for (let i = 0; i < 6 && cur.status === 'pending'; i++) { await sleep(5000); cur = await S.getRefund(env, { account: ACCOUNT, id: rf.id }); }
-      rec('P11', 'a card refund larger than the AVAILABLE balance (e.g. after payout) is held by Stripe as pending, not failed', 'stripe-test-api',
-        rf.status === 'pending' ? 'PASS' : 'INFO', { available_before_cents: avail, refund_cents: amount, status_at_creation: rf.status, status_after_30s: cur.status, refund: rf.id,
-          note: rf.status === 'pending' ? 'matches Stripe documentation; the pilot books nothing until it succeeds' : 'Stripe did not hold it pending in test mode: record and review' });
+      const after = sum((await stripe('GET', '/v1/balance', null, ACCOUNT)).j);
+      rec('P11', 'a card refund larger than the AVAILABLE balance: what Stripe does (pending vs. funded from the pending balance)', 'stripe-test-api',
+        rf.status === 'pending' ? 'PASS' : 'INFO', { available_before_cents: avail, balance_before: before, balance_after: after, refund_cents: amount, status_at_creation: rf.status, status_after_30s: cur.status, refund: rf.id,
+          note: rf.status === 'pending' ? 'held pending; the pilot books nothing until it succeeds' : 'Stripe completed it at once, funding it from the incoming (pending) balance; a refund larger than available + pending is not covered by this check' });
       rec('P11b', 'S.getRefund reads the refund state the sweep relies on', 'stripe-test-api', cur && cur.id === rf.id ? 'PASS' : 'FAIL', { status: cur.status });
     } catch (e) { rec('P11', 'refund that cannot be funded from the available balance', 'stripe-test-api', 'FAIL', { error: e.message, code: e.code }); }
 
     try {
       const pi = await charge(1000, 0, 'pm_card_refundFail', 'refundfail');
       const rf = await S.refund(env, { account: ACCOUNT, paymentIntent: pi.id, amount: 1000, idem: `harness-${RUN}-rf-fail`, metadata: { plotart_refund: 'harness-fail' } });
-      let cur = rf; for (let i = 0; i < 12 && cur.status !== 'failed'; i++) { await sleep(5000); cur = await S.getRefund(env, { account: ACCOUNT, id: rf.id }); }
-      rec('P12', 'a refund that fails asynchronously reaches status "failed" with a reason', 'stripe-test-api', cur.status === 'failed' ? 'PASS' : 'FAIL', { status: cur.status, failure_reason: cur.failure_reason });
+      const t0 = Date.now(); let cur = rf; for (let i = 0; i < 36 && cur.status !== 'failed'; i++) { await sleep(5000); cur = await S.getRefund(env, { account: ACCOUNT, id: rf.id }); }
+      rec('P12', 'a refund that fails asynchronously reaches status "failed" with a reason (waits up to 3 minutes)', 'stripe-test-api', cur.status === 'failed' ? 'PASS' : 'FAIL', { status_at_creation: rf.status, status: cur.status, failure_reason: cur.failure_reason, waited_s: Math.round((Date.now() - t0) / 1000) });
     } catch (e) { rec('P12', 'asynchronously failing refund', 'stripe-test-api', e.code === 'resource_missing' ? 'SKIP' : 'FAIL', { error: e.message, code: e.code }); }
 
     for (const [tag, evidence, want] of [['dispute-lost', 'losing_evidence', 'lost'], ['dispute-won', 'winning_evidence', 'won']]) {

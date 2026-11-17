@@ -1,10 +1,10 @@
 {
   "_note": "Changing this file on the pilot branch requests a run of .github/workflows/plotart-checkout-stripe-test.yml (Stripe TEST mode only; waits for the founder's approval on the checkout-test environment). Nothing is deployed.",
-  "requested": "2026-11-17T13:55:00Z",
+  "requested": "2026-11-17T14:05:00Z",
   "phases": [
     "provider",
     "e2e"
   ],
-  "reason": "Run 10: payments with commission, actual Stripe fees, full/partial refunds, commission refunds, unfunded refund, disputes won/lost (provider), then end-to-end checkout with real Stripe-signed webhooks (e2e), on the onboarded test account acct_1UclJXHx1Olx8cdw.",
+  "reason": "Run 11: repeat provider + e2e after harness fixes (wait for asynchronously created application fees and balance transactions; 3-minute wait for the failing refund; balance before/after the unfunded refund; Checkout card form located in frames, with screenshot diagnostics).",
   "reuse_account": "acct_1UclJXHx1Olx8cdw"
 }
