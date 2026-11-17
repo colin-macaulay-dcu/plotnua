@@ -1,11 +1,10 @@
 {
   "_note": "Changing this file on the pilot branch requests a run of .github/workflows/plotart-checkout-stripe-test.yml (Stripe TEST mode only; waits for the founder's approval on the checkout-test environment). Nothing is deployed.",
-  "requested": "2026-11-17T23:00:00Z",
+  "requested": "2026-11-17T23:25:00Z",
   "phases": [
-    "e2e",
-    "unfunded_ledger"
+    "e2e"
   ],
-  "reason": "Run 29: verify the restricted runtime key (CHECKOUT_TEST_STRIPE_RUNTIME_KEY) on the public checkout Worker: E17a-d (key used for every call, denials), checkout and Model B reimbursement with that key; plus U8 read-only ledger of the second account to confirm the inferred EUR 15.92 net. Sandbox only.",
+  "reason": "Run 30: repeat the runtime-key verification after fixing the harness's call observer (run 29: the observer passed Miniflare's Request object to Node's fetch, which failed, so the public Worker's first Stripe call returned 502 before reaching Stripe). E17c probes now record Stripe's error and use unambiguous requests. Sandbox only.",
   "reuse_account": "acct_1UclJXHx1Olx8cdw",
   "unfunded_account": "acct_1Uct3vHx1OnYJa8H",
   "unfunded_link": false

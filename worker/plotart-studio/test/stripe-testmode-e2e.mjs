@@ -27,10 +27,15 @@ export async function e2e({ rec, KEY, ACCOUNT, RUN, port, whsec, stripe, sleep }
   const keyName = auth => { const k = String(auth || '').replace(/^Bearer\s+/, ''); return !k ? 'none' : k === RUNTIME ? 'runtime' : k === KEY ? 'RUNNER (fallback!)' : 'other'; };
   const cwOutbound = async req => {
     const u = new URL(req.url), item = { method: req.method, path: u.pathname.replace(/(acct|cs|pi|ch|fee|re|dp|txn|py|po)_(test_)?[A-Za-z0-9]+/g, '$1_…'), host: u.host, key: u.host === 'api.stripe.com' ? keyName(req.headers.get('Authorization')) : 'n/a', connected: !!req.headers.get('Stripe-Account') };
-    const res = await fetch(req);
+    CW_CALLS.push(item);   // recorded before the call, so a failed call is still visible
+    let res;
+    try {   // re-issue with Node's own fetch (Miniflare's Request object is not passed through as is)
+      res = await fetch(req.url, { method: req.method, headers: Object.fromEntries(req.headers), body: ['GET', 'HEAD'].includes(req.method) ? undefined : await req.arrayBuffer(), redirect: 'manual' });
+    } catch (e) { item.status = 'network_error'; item.error = String(e.message).slice(0, 200); throw e; }
+    const buf = await res.arrayBuffer();
     item.status = res.status;
-    if (u.host === 'api.stripe.com' && res.status >= 400) { try { const j = await res.clone().json(); item.stripe_error = j.error && { type: j.error.type, code: j.error.code, message: String(j.error.message || '').slice(0, 300) }; } catch { /* */ } }
-    CW_CALLS.push(item); return res;
+    if (u.host === 'api.stripe.com' && res.status >= 400) { try { const j = JSON.parse(new TextDecoder().decode(buf)); item.stripe_error = j.error && { type: j.error.type, code: j.error.code, message: String(j.error.message || '').slice(0, 300) }; } catch { /* */ } }
+    return new Response(buf, { status: res.status, headers: res.headers });
   };
   const S = await start({ port, env: ENVV, checkout: { env: ENVC, outbound: cwOutbound } });
   rec('E17a', 'which key the public checkout Worker is configured with', 'local', 'INFO', { public_worker_key: runtimeOk ? 'separate restricted TEST key (CHECKOUT_TEST_STRIPE_RUNTIME_KEY)' : RUNTIME ? 'runtime secret present but not an rk_test_ key: NOT used' : 'same key as the harness (no runtime key supplied)',
@@ -42,16 +47,22 @@ export async function e2e({ rec, KEY, ACCOUNT, RUN, port, whsec, stripe, sleep }
     rec('E17b', 'the runtime key is refused artist account, identity and bank data (HTTP status only recorded)', 'stripe-test-api', Object.values(probes).every(x => x === 401 || x === 403) ? 'PASS' : 'FAIL', probes);
     // E17c · actions the runtime key should NOT be able to take. Each request is deliberately invalid (zero amount, unknown
     // object), so even if a permission were wrongly granted nothing could happen: Stripe would answer 400/404 instead of 401/403.
-    const post = async (u, body, acct) => { const r = await fetch('https://api.stripe.com' + u, { method: 'POST', headers: { ...h, 'Content-Type': 'application/x-www-form-urlencoded', ...(acct ? { 'Stripe-Account': acct } : {}) }, body: new URLSearchParams(body) }); return r.status; };
-    const get = async (u, acct) => (await fetch('https://api.stripe.com' + u, { headers: { ...h, ...(acct ? { 'Stripe-Account': acct } : {}) } })).status;
+    // each probe is deliberately incomplete or invalid, so nothing can be created even if a permission were wrongly granted;
+    // Stripe's error type, code and message are recorded so a 400/404 (permission granted) is distinguishable from 401/403
+    const probe = async (method, u, { form = null, json = null, acct = null } = {}) => {
+      const r = await fetch('https://api.stripe.com' + u, { method, headers: { ...h, ...(acct ? { 'Stripe-Account': acct } : {}), ...(form ? { 'Content-Type': 'application/x-www-form-urlencoded' } : {}), ...(json ? { 'Content-Type': 'application/json' } : {}) },
+        body: form ? new URLSearchParams(form) : json ? JSON.stringify(json) : undefined });
+      let e = null; try { const j = await r.json(); e = j.error && { type: j.error.type, code: j.error.code || null, message: String(j.error.message || '').slice(0, 200) }; } catch { /* */ }
+      return { status: r.status, denied: r.status === 401 || r.status === 403, stripe_error: e };
+    };
     const denied = {
-      create_payment_intent_on_artist_account: await post('/v1/payment_intents', { amount: '0', currency: 'eur' }, ACCOUNT),
-      create_refund_on_artist_account: await post('/v1/refunds', { payment_intent: 'pi_doesnotexist000' }, ACCOUNT),
-      read_artist_balance: await get('/v1/balance', ACCOUNT),
-      list_artist_payouts: await get('/v1/payouts?limit=1', ACCOUNT),
-      create_v2_account: await post('/v2/core/accounts', {}, null) };
-    rec('E17c', 'the runtime key cannot create PaymentIntents directly, refund, read balances or payouts, or create accounts (deliberately invalid requests; HTTP status only)', 'stripe-test-api',
-      Object.values(denied).every(x => x === 401 || x === 403) ? 'PASS' : 'FAIL', denied);
+      create_payment_intent_on_artist_account: await probe('POST', '/v1/payment_intents', { form: { amount: '0', currency: 'eur' }, acct: ACCOUNT }),
+      create_refund_on_artist_account: await probe('POST', '/v1/refunds', { form: {}, acct: ACCOUNT }),   // no parameters: 400 if permitted, 403 if not
+      read_artist_balance: await probe('GET', '/v1/balance', { acct: ACCOUNT }),
+      list_artist_payouts: await probe('GET', '/v1/payouts?limit=1', { acct: ACCOUNT }),
+      create_v2_account: await probe('POST', '/v2/core/accounts', { json: {} }) };
+    rec('E17c', 'the runtime key cannot create PaymentIntents directly, refund, read balances or payouts, or create accounts (incomplete or invalid requests; status and Stripe error recorded)', 'stripe-test-api',
+      Object.values(denied).every(x => x.denied) ? 'PASS' : 'FAIL', denied);
   } else rec('E17b', 'narrower runtime key not supplied: access separation not verified', 'local', 'SKIP', { needed: 'secret CHECKOUT_TEST_STRIPE_RUNTIME_KEY in the checkout-test environment' });
   const { db } = S, CW = S.checkoutWorker;
   const q = async (sql, ...b) => (await db.prepare(sql).bind(...b).all()).results;
