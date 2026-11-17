@@ -10,7 +10,7 @@ Permission names are Stripe's restricted-key permissions, from https://docs.stri
 |---|---|---|
 | **Public checkout Worker** (internet-facing: buyer pages, webhooks, 15-minute sweep, processing reimbursement at payment) | create, read and expire Checkout Sessions (on the artist's account) | `checkout_session_write` |
 | | read PaymentIntent | `payment_intent_read` |
-| | read Charge with its balance transaction (Model B fee lines) | `charge_read` (plus `balance_read` **if** Stripe refuses the expansion without it; run 23 will show) |
+| | read Charge with its balance transaction (Model B fee lines) | `charge_read` (plus `balance_read` **if** Stripe refuses the expansion without it; the verification run will show) |
 | | read Refund (sweep) | `charge_read` |
 | | partial application-fee refund (reimbursement) | `application_fee_write` (Direct) |
 | | read Dispute (fee lines) | `dispute_read` |
@@ -41,7 +41,7 @@ Set each permission separately. "In your account" means the platform account (Pl
 | Charges (includes refunds) | None | **Read** | Read the charge and its balance transaction (Model B fee lines); read refund status in the sweep (`charge_read`) |
 | Disputes | None | **Read** | Read a dispute's fee lines (`dispute_read`) |
 | Application Fees | **Write** | None | Partial application-fee refund for the processing reimbursement. Application fees are platform objects; Stripe marks this permission "(Direct)" (`application_fee_write`) |
-| Balance | None | None | Not needed. **Fallback:** if run 23 shows that reading the charge's balance transaction is refused, set "In connected accounts" to Read, and nothing else |
+| Balance | None | None | Not needed. **Fallback:** if the verification run shows that reading the charge's balance transaction is refused, set "In connected accounts" to Read, and nothing else |
 | All other resources, including Accounts, Accounts v2, Account Links, Payouts, Transfers, Customers, Payment Methods, Webhook Endpoints | None | None | — |
 
 What key A **can** do: create Checkout Sessions on artist accounts (start payments that a buyer completes on Stripe's page); read those payments, charges, refunds and disputes; and refund part of PlotArt's own application fees.
