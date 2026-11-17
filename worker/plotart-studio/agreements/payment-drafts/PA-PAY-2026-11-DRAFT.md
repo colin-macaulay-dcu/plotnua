@@ -131,7 +131,7 @@ fees, charged to the artist's Stripe account (Stripe's published EEA pricing at 
 when issued, before any VAT under 3.4A): a **dispute received fee** of €20 for each dispute, which is not returned even
 if the dispute is won; and, if the dispute is responded to with evidence, a **dispute countered fee** of €20, which
 Stripe returns if the dispute is won. For an Irish-based Stripe account VAT is added to these fees (test mode showed
-€24.60 for the received fee: €20 + 23%). [Founder decision D-disp: whether artists respond to disputes themselves only
+€24.60 for the received fee: €20 + 23%). [Founder decision D4: whether artists respond to disputes themselves only
 (cl. 7.5) or PlotArt may submit evidence for them, given the countered fee.]
 7.3 **If the artist has already been paid out and their Stripe balance is too low**, Stripe may complete the refund at
 once by drawing on payments not yet available to the artist, which can leave the artist's Stripe balance negative (seen
@@ -180,6 +180,7 @@ or a written confirmation, and the artist's express acceptance.
 
 ---
 Founder decisions open: D1 (who bears Stripe processing fees, including on the delivery portion); D2 (whether PlotArt
-issues any receipt to buyers); D3 (retention periods, with the accountant). Professional advice outstanding: marketplace
+issues any receipt to buyers); D3 (retention periods, with the accountant); D4 (who responds to disputes, given the
+countered fee); D5 (whether PlotArt's commission refund after a lost dispute is automatic or a founder action). Professional advice outstanding: marketplace
 and consumer responsibilities, commission VAT treatment, DAC7 applicability, anti-money-laundering position (see the
 spec, "Anti-money-laundering").
