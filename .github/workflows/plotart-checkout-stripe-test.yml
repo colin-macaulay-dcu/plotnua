@@ -26,7 +26,7 @@ jobs:
   stripe-test:
     runs-on: ubuntu-latest
     environment: checkout-test
-    timeout-minutes: 40
+    timeout-minutes: 75   # the coverage run waits for Stripe to expire a session (30+ min)
     env:
       MINIFLARE_FROM: /tmp/claude-0/studio-tools/package.json
     steps:

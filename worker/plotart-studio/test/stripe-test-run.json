@@ -1,11 +1,12 @@
 {
   "_note": "Changing this file on the pilot branch requests a run of .github/workflows/plotart-checkout-stripe-test.yml (Stripe TEST mode only; waits for the founder's approval on the checkout-test environment). Nothing is deployed.",
-  "requested": "2026-11-17T23:55:00Z",
+  "requested": "2026-11-18T00:05:00Z",
   "phases": [
-    "runtime_refund_probe"
+    "e2e"
   ],
-  "reason": "Run 31: focused E17e. Runner key prepares a fresh paid EUR 10 test charge (no application fee) on the pilot artist's sandbox account; ONLY the runtime key submits one valid EUR 1.00 partial refund with an idempotency key; runner key lists refunds. Sandbox only.",
+  "reason": "Run 32: runtime-key coverage. E19: a checkout opened by the public Worker is left to expire at its expires_at (Stripe's own expiry, ~31 min) and the Worker releases the reservation. E20: real sandbox dispute; a locally signed event carrying that real dispute WITHOUT its fee lines makes the Worker read the dispute from Stripe (runtime key). E17d: every Worker call on the runtime key. Takes ~40 minutes. Sandbox only.",
   "reuse_account": "acct_1UclJXHx1Olx8cdw",
   "unfunded_account": "acct_1Uct3vHx1OnYJa8H",
-  "unfunded_link": false
+  "unfunded_link": false,
+  "coverage_only": true
 }

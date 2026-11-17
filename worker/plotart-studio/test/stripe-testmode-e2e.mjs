@@ -4,6 +4,7 @@
 // Results are labelled source "stripe-test-api+pilot": Stripe's real responses and events, processed by the pilot's code.
 import { readFileSync, writeFileSync } from 'node:fs';
 import { createRequire } from 'node:module';
+import { createHmac } from 'node:crypto';
 import { start, token, FOUNDER } from './local.mjs';
 import { seedPublished } from './seed.mjs';
 
@@ -198,6 +199,62 @@ export async function e2e({ rec, KEY, ACCOUNT, RUN, port, whsec, stripe, sleep }
     }
 
     // 1 · payment, verified only by Stripe's signed event
+    // ---- coverage-only run (request file: "coverage_only": true): the two runtime-key paths not yet exercised
+    let COVERAGE = false; try { COVERAGE = JSON.parse(readFileSync(HERE + 'test/stripe-test-run.json', 'utf8')).coverage_only === true; } catch { /* */ }
+    if (COVERAGE) {
+      const callsFrom = i => CW_CALLS.slice(i).filter(c => c.host === 'api.stripe.com');
+      const summary = cs => ({ calls: cs.length, by_key: cs.reduce((a, c) => (a[c.key] = (a[c.key] || 0) + 1, a), {}), list: cs.map(c => `${c.method} ${c.path}${c.connected ? ' [connected]' : ' [platform]'} → ${c.status}${c.stripe_error ? ' ' + c.stripe_error.code : ''}`) });
+      // E19 · part 1: open a checkout through the Worker; Stripe will expire it at its expires_at (the Worker's normal path)
+      const i19 = CW_CALLS.length;
+      const ox = await quote('wagal1', 'PA-E-261116-E2E001');
+      const sx = (await q("SELECT id, expires_at FROM checkout_sessions WHERE order_id = ? AND status = 'open'", ox.id))[0];
+      const resvAtOpen = (await q("SELECT expires_at FROM artwork_reservations WHERE artwork_id = 'wagal1'"))[0];
+      // E20 · a REAL sandbox dispute, then the fee-read fallback
+      const od = await quote('wagal3', 'PA-E-261116-E2E003', 5000, 0);
+      let dPaid = false; try { await payInBrowser(od.url, '4000000000000259', 'coverage-dispute'); dPaid = true; } catch (e) { rec('E20a', 'buyer pays with the dispute test card', SRC, 'FAIL', { error: String(e.message).split('\n')[0].slice(0, 300) }); }
+      const opened = dPaid ? await waitFor(async () => (await order(od.id)).dispute_status === 'open', 180_000) : null;
+      if (opened) {
+        const O = await order(od.id);
+        const d = (await stripe('GET', `/v1/disputes?payment_intent=${encodeURIComponent(O.payment_intent)}&limit=1`, null, ACCOUNT)).j.data[0];   // runner key: the real dispute
+        const before = (JSON.parse(O.dispute_fees || '{}')[d.id] || {}).checked_at || null;
+        const { balance_transactions: _omit, ...withoutFees } = d;   // SIMULATED INPUT: the same real dispute, with its fee lines removed
+        const ev = { id: `evt_coverage_${RUN}`, object: 'event', type: 'charge.dispute.updated', livemode: false, created: Math.floor(Date.now() / 1000), account: ACCOUNT, api_version: '2026-10-28.endive', data: { object: withoutFees } };
+        const raw = JSON.stringify(ev), t = Math.floor(Date.now() / 1000), sig = `t=${t},v1=${createHmac('sha256', whsec).update(`${t}.${raw}`).digest('hex')}`;
+        const i20 = CW_CALLS.length;
+        const wh = await CW.fetch('http://checkout.local/v1/stripe/webhook', { method: 'POST', headers: { 'Content-Type': 'application/json', 'Stripe-Signature': sig }, body: raw });
+        const whBody = await wh.text();
+        const reads = callsFrom(i20).filter(c => c.method === 'GET' && /^\/v1\/disputes\//.test(c.path));
+        const O2 = await order(od.id), info = JSON.parse(O2.dispute_fees || '{}')[d.id] || {};
+        const fees = await q("SELECT amount_cents, provider_ref FROM order_ledger WHERE order_id = ? AND kind = 'dispute_fee'", od.id);
+        rec('E20', 'dispute-fee fallback: an event WITHOUT fee lines (simulated input, signed locally) makes the Worker read the REAL dispute from Stripe with the runtime key; fees recorded from Stripe’s response', SRC,
+          wh.status === 200 && reads.length >= 1 && reads.every(c => c.key === 'runtime' && c.status === 200 && c.connected) && info.status === 'recorded' && info.checked_at !== before && fees.length >= 1 ? 'PASS' : 'FAIL',
+          { simulated: 'event envelope signed locally with the run’s webhook secret; data.object = the real dispute object fetched from Stripe with balance_transactions REMOVED',
+            from_stripe: 'the Worker’s GET of the dispute (status and key below) and the fee lines it booked', webhook_http: wh.status, webhook_response: whBody.slice(0, 200),
+            dispute_reads: reads.map(c => ({ path: c.path, key: c.key, status: c.status, connected: c.connected })), dispute_fees_status: info, dispute_fee_lines: fees, calls: summary(callsFrom(i20)) });
+      } else rec('E20', 'dispute-fee fallback', SRC, 'SKIP', { blocked_by: dPaid ? 'the sandbox dispute did not open within 3 minutes' : 'E20a payment failed' });
+      // E19 · part 2: wait for Stripe's own expiry of the open session (expires_at), the signed event, and the Worker's release
+      if (sx) {
+        const until = Date.parse(sx.expires_at) + 25 * 60_000;
+        let st = null, released = false;
+        while (Date.now() < until) {
+          st = (await stripe('GET', `/v1/checkout/sessions/${sx.id}`, null, ACCOUNT)).j.status;   // runner key: Stripe's view
+          released = (await order(ox.id)).status === 'quoted' && !(await q("SELECT 1 FROM artwork_reservations WHERE artwork_id = 'wagal1'")).length;
+          if (st === 'expired' && released) break;
+          await sleep(30_000);
+        }
+        const evs = await q("SELECT type, status FROM payment_events WHERE type = 'checkout.session.expired' AND object_id = ?", sx.id);
+        const cs = callsFrom(i19).filter(c => /checkout\/sessions/.test(c.path));
+        rec('E19', 'normal expiry path: Stripe expires the open session at its expires_at; the signed checkout.session.expired event reaches the Worker, which releases the reservation and returns the quote to payable', SRC,
+          st === 'expired' && released && evs.some(e => e.status === 'processed') ? 'PASS' : 'FAIL',
+          { session_expires_at: sx.expires_at, reservation_at_open: resvAtOpen, stripe_session_status: st, worker_released: released, expired_event: evs,
+            worker_checkout_session_calls: cs.map(c => `${c.method} ${c.path} → ${c.status} (${c.key})`),
+            note: 'The public Worker never calls Stripe’s expire endpoint in normal operation: expiry is done by Stripe at expires_at, or by the Studio Worker (existing key) when a quote is revised or cancelled.' });
+      } else rec('E19', 'normal expiry path', SRC, 'FAIL', { reason: 'no open session was created' });
+      const all = callsFrom(0);
+      rec('E17d', 'coverage run: every Stripe API call made by the public checkout Worker used the runtime key', 'stripe-test-api+pilot',
+        !runtimeOk ? 'SKIP' : all.length && all.every(c => c.key === 'runtime') && !all.some(c => c.status === 401 || c.status === 403) ? 'PASS' : 'FAIL', summary(all));
+      return;
+    }
     const o1 = await quote('wagal1', 'PA-E-261116-E2E001');
     rec('E2', 'the pilot opens real hosted checkout on the artist’s account for the approved quote', SRC, o1.status === 303 && /checkout\.stripe\.com/.test(o1.url || '') ? 'PASS' : 'FAIL', { status: o1.status, host: o1.url && new URL(o1.url).host });
     let paidOk = false;
