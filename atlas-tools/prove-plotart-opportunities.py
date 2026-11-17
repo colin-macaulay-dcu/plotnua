@@ -131,13 +131,13 @@ for f in pkgs:
     for ep in (None, ENDPOINT):
         a, b = pages(M, pkg, ep), pages(P, pkg, ep)
         for k in a:
-            if a[k] == b.get(k):
+            if a[k] == b.get(k) or (k == "index" and OPP.open_to(pkg)):   # 17 Nov 2026: pills change the gallery page of an artist who shows something
                 same += 1
             else:
                 diffs.append("%s/%s" % (pkg["artist"]["slug"], k))
 published = [json.load(open(f)) for f in pkgs]
-shown_now = [p for p in published if p["artist"].get("open_to")]
-lines_ok = all(OPP.check_open_to(p["artist"]["open_to"]) and OPP.artist_line(p) in open(os.path.join(ROOT, "plotart", "artists", p["artist"]["slug"], "index.html"), encoding="utf-8").read()
+shown_now = [p for p in published if OPP.open_to(p)]
+lines_ok = all((not p["artist"].get("open_to") or OPP.check_open_to(p["artist"]["open_to"])) and OPP.artist_line(p) in open(os.path.join(ROOT, "plotart", "artists", p["artist"]["slug"], "index.html"), encoding="utf-8").read()
                for p in shown_now)
 check("O3a all %d published galleries: %d gallery and artwork pages byte-identical to main's renderer; the %d artists showing opportunities carry a valid open_to and exactly its \"Open to\" line"
       % (len(pkgs), same, len(shown_now)), len(pkgs) >= 5 and not diffs and lines_ok, diffs[:5])
@@ -145,13 +145,16 @@ base = json.load(open(os.path.join(ROOT, "plotart", "artists", "leah-hewson", "g
 withp = copy.deepcopy(base)
 withp["artist"]["open_to"] = ["exhibitions", "living_gallery", "commissions"]
 A, B = pages(P, base, ENDPOINT), pages(P, withp, ENDPOINT)
-line = '<p class="pa-ag-meta pa-ag-open" style="margin-top:14px;font-size:14px;letter-spacing:.02em;text-transform:none;color:var(--stone)">Open to: <a href="../../opportunities/#exhibitions" data-pa-track="artist_opportunity_link">Exhibitions</a> · <a href="../../living-gallery.html#open-artists" data-pa-track="artist_opportunity_link">Living Gallery</a> · <a href="../../opportunities/#commissions" data-pa-track="artist_opportunity_link">Commissions</a></p>'
-check("O3b with open_to the gallery page gains exactly one \"Open to\" line, linking each opportunity to its list", B["index"].count(line) == 1, B["index"][:0])
-check("O3c removing that line gives back exactly today's page; artwork pages are unchanged", B["index"].replace(line, "") == A["index"] and all(A[k] == B[k] for k in A if k != "index") and len(A) > 1)
+line = ('<div class="pa-ag-opps"><p class="pa-ag-opps-h" id="agOppsH">Open to</p><ul class="pa-ag-pills" aria-labelledby="agOppsH">'
+        '<li><a class="pa-ag-pill" href="../../opportunities/#exhibitions" data-pa-track="artist_opportunity_link">Exhibitions</a></li>'
+        '<li><a class="pa-ag-pill" href="../../living-gallery.html#open-artists" data-pa-track="artist_opportunity_link">Living Gallery</a></li>'
+        '<li><a class="pa-ag-pill" href="../../commissions/" data-pa-track="artist_opportunity_link">Commissions</a></li></ul></div>')
+check("O3b with open_to the gallery page gains exactly one row of \"Open to\" pills, each linking to its list (Commissions to the Commissions page)", B["index"].count(line) == 1, B["index"][:0])
+check("O3c removing the pills gives back exactly today's page; artwork pages are unchanged", B["index"].replace(line, "") == A["index"] and all(A[k] == B[k] for k in A if k != "index") and len(A) > 1)
 both = copy.deepcopy(withp)
 both["artist"]["open_for_commissions"] = True
 bi = pages(P, both, ENDPOINT)["index"]
-check("O3d with \"Open for commissions\" on, Commissions is said once (the existing line), never twice", bi.count("Open for commissions") == 1 and ">Commissions</a>" not in bi and "Living Gallery</a>" in bi)
+check("O3d with \"Open for commissions\" on, the Commissions pill appears once and the commission section once (never twice)", bi.count('href="../../commissions/" data-pa-track="artist_opportunity_link"') == 1 and bi.count(">Open for commissions</h2>") == 1 and "Living Gallery</a>" in bi)
 
 print("— O4 the lists")
 aoife = sample("aoife-sample", "Aoife Sample", "Painter", ["exhibitions", "living_gallery", "talks"])
@@ -192,7 +195,9 @@ def _thumbs_ok(doc, path):
         return False
     by = {p["artist"]["slug"]: p for p in published}
     for href, inner in rows:
-        m = re.fullmatch(re.escape(base) + r"artists/([a-z0-9-]+)/", href)
+        m = re.fullmatch(re.escape(base) + r"artists/([a-z0-9-]+)/(#commission)?", href)
+        if m and m.group(2) and (path != OPP.COMMISSIONS or by.get(m.group(1), {}).get("artist", {}).get("open_for_commissions") is not True):
+            return False   # only the Commissions page, and only for an artist whose Open for commissions is on, links to the commission enquiry
         pk = m and by.get(m.group(1))
         img = re.search(r'<img class="pa-opp-thumb" src="([^"]+)" alt="([^"]+)" width="80" height="80" loading="lazy" decoding="async">', inner)
         if not pk or not img or not OPP.open_to(pk) or "portrait" in img.group(1):

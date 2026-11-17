@@ -21,6 +21,7 @@ ROOT = os.path.dirname(HERE)
 sys.path.insert(0, HERE)
 import plotart_gallery as G          # noqa: E402
 import plotart_gallery_pages as P    # noqa: E402
+import plotart_opportunities as OPP  # noqa: E402
 
 ARGS = sys.argv[1:]
 EXPORTS = ARGS[ARGS.index("--exports") + 1] if "--exports" in ARGS else None
@@ -76,21 +77,29 @@ if EXPORTS:
 else:
     check("C1 (skipped: run with --exports)", True)
 
-print("— every published gallery renders exactly as today")
+print("— every published gallery: artwork pages as today; gallery pages only where the artist shows something")
 M = main_module()
 pkgs = sorted(glob.glob(os.path.join(ROOT, "plotart", "artists", "*", "gallery.json")))
 same, diffs = 0, []
 for f in pkgs:
     pkg = json.load(open(f))
+    shows = bool(OPP.open_to(pkg))
     for ep in (None, ENDPOINT):
         a, b = pages(M, pkg, ep), pages(P, pkg, ep)
         for k in a:
-            if a[k] == b.get(k):
+            if a[k] == b.get(k) or (k == "index" and shows):
                 same += 1
             else:
                 diffs.append("%s/%s (%s)" % (pkg["artist"]["slug"], k, "relay" if ep else "email"))
-check("C2 all %d published galleries: %d gallery and artwork pages byte-identical to main, with and without the relay" % (len(pkgs), same),
-      len(pkgs) >= 5 and not diffs and same > 0 and not any(json.load(open(f))["artist"].get("open_for_commissions") for f in pkgs), diffs[:5])
+    disk = open(os.path.join(os.path.dirname(f), "index.html"), encoding="utf-8").read()
+    if shows and P.artist_body(pkg, enquiry_endpoint=ENDPOINT) not in disk:   # the pages this release rewrote
+        diffs.append("%s/index.html on disk is not the current renderer's gallery body" % pkg["artist"]["slug"])
+    ofc = pkg["artist"].get("open_for_commissions") is True
+    if (disk.count('id="commission"') == 1) != ofc or (disk.count('data-kind="commission"') == 1) != ofc:
+        diffs.append("%s: the commission section must appear exactly when Open for commissions is on" % pkg["artist"]["slug"])
+check("C2 all %d published galleries: every artwork page byte-identical to main's renderer (%d pages); gallery pages change only for "
+      "artists who show opportunities, carry the current renderer's body, and have the commission section exactly when it is switched on" % (len(pkgs), same),
+      len(pkgs) >= 5 and not diffs and same > 0, diffs[:5])
 
 print("— switched on")
 base = json.load(open(os.path.join(ROOT, "plotart", "artists", "leah-hewson", "gallery.json")))
@@ -98,20 +107,28 @@ onp = copy.deepcopy(base)
 onp["artist"]["open_for_commissions"] = True
 A, B = pages(P, base, ENDPOINT), pages(P, onp, ENDPOINT)
 g = B["index"]
-check("C3a the gallery page gains exactly one \"Open for commissions\" line (the meta style, no new CSS)",
-      g.count("Open for commissions") == 1 and g.count('<p class="pa-ag-meta pa-ag-ofc">Open for commissions</p>') == 1)
-check("C3b …one \"Enquire about a commission\" button (ghost, its own wrapper) and one commission form about the artist",
+sec = re.search(r'\n<section class="pa-ag-com" id="commission" aria-labelledby="agComH">.*?</section>\n', g, re.S)
+pills = re.search(r'<div class="pa-ag-opps">.*?</ul></div>', g, re.S)
+check("C3a the gallery page gains one \"Open for commissions\" section (heading, the artist named, a link to the Commissions page) and a Commissions pill",
+      sec is not None and g.count('id="commission"') == 1 and g.count(">Open for commissions</h2>") == 1 and "Leah Hewson welcomes enquiries" in sec.group(0)
+      and 'href="../../commissions/"' in sec.group(0) and pills is not None and pills.group(0).count('href="../../commissions/"') == 1)
+check("C3b …one \"Enquire about a commission\" button (solid, sharing its wrapper with the form) and one commission form about the artist",
       g.count(">Enquire about a commission</a>") == 1 and g.count('data-kind="commission"') == 1
-      and re.search(r'<div class="pa-ag-enq-c"[^>]*><a class="pa-btn pa-btn--ghost" href="mailto:[^"]+" data-pa-track="artist_commission_enquiry" data-pa-enquire>Enquire about a commission</a><form class="pa-enq" hidden data-endpoint="%s" data-ref="PA-leah-hewson" data-notice="[^"]+" data-kind="commission" novalidate>' % re.escape(ENDPOINT), g) is not None)
-check("C3c the ordinary enquiry button and form are unchanged and come first", A["index"].split('<section class="pa-ag-enq">')[1].split("</a>")[0] == g.split('<section class="pa-ag-enq">')[1].split("</a>")[0])
-check("C3d removing the label and the commission block gives back exactly today's page (nothing else moved)",
-      re.sub(r'\n  <div class="pa-ag-enq-c".*?</form></div>', "", g, flags=re.S).replace('<p class="pa-ag-meta pa-ag-ofc">Open for commissions</p>', "") == A["index"])
+      and re.search(r'<div class="pa-ag-enq-c"><a class="pa-btn pa-btn--solid" href="mailto:[^"]+" data-pa-track="artist_commission_enquiry" data-pa-enquire>Enquire about a commission</a><form class="pa-enq" hidden data-endpoint="%s" data-ref="PA-leah-hewson" data-notice="[^"]+" data-kind="commission" novalidate><p class="pa-enq-h">Ask Leah Hewson about a commission</p>' % re.escape(ENDPOINT), sec.group(0) if sec else "") is not None)
+check("C3c the ordinary enquiry button and form are unchanged", A["index"].split('<section class="pa-ag-enq">')[1] == g.split('<section class="pa-ag-enq">')[1])
+check("C3d removing the commission section and the pills gives back exactly today's page (nothing else moved)",
+      sec is not None and pills is not None and g.replace(sec.group(0), "").replace(pills.group(0), "") == A["index"])
 check("C3e artwork pages are unchanged when switched on (gallery page only)", all(A[k] == B[k] for k in A if k != "index") and len(A) > 1)
-vis = re.sub(r"\s+", " ", html.unescape(re.sub(r"<[^>]+>", " ", re.search(r'<div class="pa-ag-enq-c".*?</div>', g, re.S).group(0))))
+vis = re.sub(r"\s+", " ", html.unescape(re.sub(r"<[^>]+>", " ", sec.group(0) if sec else "")))
 check("C4 the commission wording never mentions hire, the Living Gallery, availability, opportunities or a PlotArt fee",
-      not re.search(r"hire|living gallery|availab|opportunit|fee|percent|%|PlotArt takes", vis, re.I), vis)
+      sec is not None and not re.search(r"hire|living gallery|availab|opportunit|fee|percent|%|PlotArt takes", vis, re.I), vis)
+offp = copy.deepcopy(base)
+offp["artist"]["open_to"] = ["commissions"]
+off_i = pages(P, offp, ENDPOINT)["index"]
+check("C4b Commissions chosen as an opportunity but Open for commissions OFF: the pill only, never the section, button or form",
+      off_i.count('href="../../commissions/"') == 1 and 'id="commission"' not in off_i and "Enquire about a commission" not in off_i and 'data-kind' not in off_i)
 noep = pages(P, onp, None)["index"]
-mail = re.search(r'<a class="pa-btn pa-btn--ghost" href="([^"]+)" data-pa-track="artist_commission_enquiry">Enquire about a commission</a></div>', noep)
+mail = re.search(r'<a class="pa-btn pa-btn--solid" href="([^"]+)" data-pa-track="artist_commission_enquiry">Enquire about a commission</a></div>', noep)
 check("C5 without the relay: a plain email link with a commission subject naming the artist, and no form",
       mail is not None and "PlotArt%20commission%20enquiry%3A%20Leah%20Hewson%20%5BPA-leah-hewson%5D" in html.unescape(mail.group(1)) and 'data-kind' not in noep, mail and mail.group(1)[:120])
 
