@@ -91,6 +91,12 @@ if (PHASES.includes('provider')) {
       const v1 = await S.getAccount(env, acctId);
       rec('P1d', 'the v1 view of the same account (used for charge status and account.updated) is readable', 'stripe-test-api', v1.id === acctId && typeof v1.charges_enabled === 'boolean' ? 'PASS' : 'FAIL',
         { charges_enabled: v1.charges_enabled, payouts_enabled: v1.payouts_enabled, details_submitted: v1.details_submitted, controller: v1.controller, country: v1.country });
+      if (REUSE) {
+        const req = v1.requirements || {};
+        rec('P1e', 'onboarding status (reused account): details submitted, charges enabled, nothing currently or past due', 'stripe-test-api',
+          v1.details_submitted && v1.charges_enabled && !(req.currently_due || []).length && !(req.past_due || []).length ? 'PASS' : 'FAIL',
+          { details_submitted: v1.details_submitted, charges_enabled: v1.charges_enabled, payouts_enabled: v1.payouts_enabled, currently_due: req.currently_due, past_due: req.past_due, eventually_due: req.eventually_due, disabled_reason: req.disabled_reason });
+      }
     } catch (e) { rec('P1d', 'v1 view of the account', 'stripe-test-api', 'FAIL', { error: e.message, code: e.code }); }
     try {
       const link = await S.accountLink(env, { account: acctId, refreshUrl: 'https://plotart-checkout-test.invalid/refresh', returnUrl: 'https://plotart-checkout-test.invalid/return' });
