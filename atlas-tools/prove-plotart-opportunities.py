@@ -164,7 +164,7 @@ pk4 = [cara, dan, brian, aoife]
 lg = [p["artist"]["slug"] for p in OPP.listed(pk4, "living_gallery")]
 cm = [p["artist"]["slug"] for p in OPP.listed(pk4, "commissions")]
 check("O4a Living Gallery lists exactly the artists who chose it, by surname (Preview before Sample)", lg == ["cara-preview", "aoife-sample"], lg)
-check("O4b Commissions lists those who chose it AND those with the existing \"Open for commissions\" switch on (Brian)", cm == ["brian-example", "cara-preview"], cm)
+check("O4b Commissions lists ONLY artists whose explicit \"Open for commissions\" switch is on (Brian), never one who only chose it (Cara)", cm == ["brian-example"], cm)
 check("O4c an artist who shows nothing is in no list", all(dan not in OPP.listed(pk4, k) for k in OPP.KEYS))
 try:
     OPP.listed(pk4 + [sample("eve-draft", "Eve Draft", "Painter", ["talks"], state="draft")], "talks")
