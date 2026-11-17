@@ -17162,6 +17162,130 @@
       "source_sha256": "f769261519fd8a1bda36504c698aa6eac1c087ff285360f1085e7023df24e976",
       "subject": "artwork",
       "work_slug": "the-universe-is-in-me"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "lena-fawaz",
+      "asset": "plotart/artists/lena-fawaz/img/portrait-600.webp",
+      "bytes": 66460,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (Display P3)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-at5xkpjluff",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        450,
+        600
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "3846929ee6e984bf7f860e37e1e94fcb00175131f064bd11599c78d9a4070be0",
+      "source_sha256": "5811174d4e9f6f24d83d9593c4a0386acaadd81a6787a705fea57cabbbcc2024",
+      "subject": "portrait",
+      "work_slug": null
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "lena-fawaz",
+      "asset": "plotart/artists/lena-fawaz/img/what-we-carry-1-600.webp",
+      "bytes": 80762,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (Display P3)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-at5xkpjluff",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        600,
+        585
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "c23d7a8f0384d067e7a2818f77a69a958b6c0db57b64c03608b709fdeb1e9b8b",
+      "source_sha256": "17c6aa96dba43663daf4cf1fe0657ea8c0534315b9dcd892efd7d536f985652a",
+      "subject": "artwork",
+      "work_slug": "what-we-carry"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "lena-fawaz",
+      "asset": "plotart/artists/lena-fawaz/img/what-we-carry-1-1200.webp",
+      "bytes": 290588,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (Display P3)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-at5xkpjluff",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        1200,
+        1170
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "ca0aeeb61203e6ee4498f47971936563bb9b1da4cecbb91b371ede45c025632e",
+      "source_sha256": "17c6aa96dba43663daf4cf1fe0657ea8c0534315b9dcd892efd7d536f985652a",
+      "subject": "artwork",
+      "work_slug": "what-we-carry"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "lena-fawaz",
+      "asset": "plotart/artists/lena-fawaz/img/what-we-carry-1-2000.webp",
+      "bytes": 641064,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (Display P3)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-at5xkpjluff",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        2000,
+        1950
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "cca698123a7431e36231bcd16c341019105a9363c0d81e5d7514d5112b770268",
+      "source_sha256": "17c6aa96dba43663daf4cf1fe0657ea8c0534315b9dcd892efd7d536f985652a",
+      "subject": "artwork",
+      "work_slug": "what-we-carry"
     }
   ],
   "legacy_undeclared": [
