@@ -1,10 +1,10 @@
 {
   "_note": "Changing this file on the pilot branch requests a run of .github/workflows/plotart-checkout-stripe-test.yml (Stripe TEST mode only; waits for the founder's approval on the checkout-test environment). Nothing is deployed.",
-  "requested": "2026-11-17T17:35:00Z",
+  "requested": "2026-11-17T20:05:00Z",
   "phases": [
     "provider",
     "e2e"
   ],
-  "reason": "Run 18: repeat run 17 after fixing e2e setup (enquiry records for the lost-dispute and refund-reversal orders were not seeded, which stopped the run after E10 passed).",
+  "reason": "Run 19: fee model B (PlotArt reimburses Stripe's actual processing fee + VAT on it via a partial application-fee refund). New: P16a-d (real reimbursement mechanics, cap, full-refund shortfall), E13/E13b/E13c (reimbursement after a real payment, idempotency, statement), E14 (dispute fees not absorbed), E12a/E12d (full refund shortfall, reversal, direct shortfall payment recorded once).",
   "reuse_account": "acct_1UclJXHx1Olx8cdw"
 }

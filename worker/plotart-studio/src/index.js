@@ -1308,6 +1308,8 @@ async function route(req, env) {
           case 'close': return json({ ok: true, ...(await CO.closeOrder(env, me.email, o.id)) });
           case 'hold': return json({ ok: true, ...(await CO.placeHold(env, me.email, o.id, b)) });
           case 'repaid': return json({ ok: true, ...(await CO.recordExternalRepayment(env, me.email, o.id, b)) });
+          case 'processing': await CO.reconcileProcessing(env, o, me.email); return json({ ok: true, ...(await CO.orderDetail(env, await CO.getOrder(env, o.id), 'founder')) });
+          case 'shortfallpaid': return json({ ok: true, ...(await CO.recordShortfallPaid(env, me.email, o.id, b)) });
         }
       }
       return json({ ok: false }, 404);

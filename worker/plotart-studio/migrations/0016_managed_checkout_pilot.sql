@@ -81,6 +81,7 @@ CREATE TABLE IF NOT EXISTS checkout_orders (
   fulfilment_status  TEXT NOT NULL DEFAULT 'none' CHECK (fulfilment_status IN ('none','dispatched','delivered')),
   dispute_status     TEXT NOT NULL DEFAULT 'none' CHECK (dispute_status IN ('none','open','won','lost')),
   needs_resolution   TEXT,                                   -- set when a payment arrives that cannot complete a sale (e.g. already sold)
+  processing         TEXT,                                   -- JSON (Model B): Stripe's actual processing fee + VAT on it, what PlotArt reimbursed, any shortfall owed outside Stripe
   currency           TEXT NOT NULL DEFAULT 'eur' CHECK (currency = 'eur'),
   artwork_cents      INTEGER CHECK (artwork_cents IS NULL OR artwork_cents BETWEEN 100 AND 999999),
   delivery_cents     INTEGER CHECK (delivery_cents IS NULL OR delivery_cents BETWEEN 0 AND 200000),
@@ -190,7 +191,7 @@ CREATE TABLE IF NOT EXISTS order_ledger (
   id           TEXT PRIMARY KEY,
   order_id     TEXT NOT NULL REFERENCES checkout_orders(id),
   kind         TEXT NOT NULL CHECK (kind IN ('charge','commission','artist_artwork','delivery_allocation',
-                 'artwork_refund','delivery_refund','artwork_refund_reversed','delivery_refund_reversed','commission_refund','dispute','dispute_reinstated','external_refund','adjustment')),
+                 'artwork_refund','delivery_refund','artwork_refund_reversed','delivery_refund_reversed','commission_refund','processing_fee','processing_reimbursement','processing_shortfall_paid','dispute','dispute_reinstated','external_refund','adjustment')),
   amount_cents INTEGER NOT NULL,
   provider_ref TEXT,
   at           TEXT NOT NULL,

@@ -26,7 +26,7 @@ writeFileSync(HERE + FIX + 'src/payment-terms.js', `export const PAYMENT_TERMS =
 
 /* ---------------------------------------------------------------- mock Stripe (test mode objects only) */
 const WHSEC = 'whsec_test_' + 'x'.repeat(24);
-const M = { disputes: {}, accounts: {}, v2accounts: {}, nextAccountResponsibilities: null, sessions: {}, pis: {}, refunds: [], feeRefunds: [], calls: [], idem: {}, n: 0, failNextExpire: false, nextRefundStatus: null };
+const M = { disputes: {}, accounts: {}, v2accounts: {}, nextAccountResponsibilities: null, sessions: {}, pis: {}, refunds: [], feeRefunds: [], charges: {}, feeAmounts: {}, calls: [], idem: {}, n: 0, failNextExpire: false, nextRefundStatus: null };
 const nid = p => `${p}_test_${(++M.n).toString(36).padStart(6, '0')}`;
 const flat = body => Object.fromEntries(new URLSearchParams(body || ''));
 const ok = o => new Response(JSON.stringify(o), { status: 200, headers: { 'Content-Type': 'application/json' } });
@@ -80,7 +80,16 @@ async function stripe(req) {
   if ((mm = u.pathname.match(/^\/v1\/refunds\/(re_test_\w+)$/)) && req.method === 'GET') { const r = M.refunds.find(x => x.id === mm[1]); return r ? ok(r) : err('no such refund', 404); }
   if (u.pathname === '/v1/refunds') { const st = M.nextRefundStatus || 'succeeded'; M.nextRefundStatus = null;
     const r = { id: nid('re'), object: 'refund', status: st, amount: Number(f.amount), payment_intent: f.payment_intent, livemode: false, metadata: { plotart_refund: f['metadata[plotart_refund]'], plotart_order: f['metadata[plotart_order]'] }, _f: f, _acct: acct }; M.refunds.push(r); return remember(r); }
-  if ((mm = u.pathname.match(/^\/v1\/application_fees\/(fee_test_\w+)\/refunds$/))) { const r = { id: nid('fr'), object: 'fee_refund', amount: Number(f.amount), fee: mm[1], livemode: false }; M.feeRefunds.push(r); return remember(r); }
+  if ((mm = u.pathname.match(/^\/v1\/application_fees\/(fee_test_\w+)\/refunds$/))) {
+    // like Stripe: an application fee cannot be refunded beyond its amount
+    const feeAmt = M.feeAmounts[mm[1]], done = M.feeRefunds.filter(x => x.fee === mm[1]).reduce((a, x) => a + x.amount, 0);
+    if (feeAmt !== undefined && done + Number(f.amount) > feeAmt) return err(`Refund amount (${f.amount}) is greater than unrefunded amount on fee (${feeAmt - done})`, 400);
+    const r = { id: nid('fr'), object: 'fee_refund', amount: Number(f.amount), fee: mm[1], livemode: false, metadata: { plotart_kind: f['metadata[plotart_kind]'] } }; M.feeRefunds.push(r); return remember(r); }
+  if ((mm = u.pathname.match(/^\/v1\/charges\/(ch_test_\w+)$/)) && req.method === 'GET') {
+    const c = M.charges[mm[1]]; if (!c) return err('no such charge', 404);
+    if (c.btPending) return ok({ id: c.id, object: 'charge', balance_transaction: null });
+    return ok({ id: c.id, object: 'charge', application_fee: c.fee, balance_transaction: u.search.includes('balance_transaction') ? c.bt : c.bt.id });
+  }
   return err('mock: unhandled ' + req.method + ' ' + u.pathname, 404);
 }
 /* The buyer pays at Stripe (mock): the session completes, a payment intent, charge and application fee exist. */
@@ -88,6 +97,13 @@ function pay(sid) {
   const s = M.sessions[sid]; s.status = 'complete'; s.payment_status = 'paid';
   const pi = nid('pi'); s.payment_intent = pi;
   M.pis[pi] = { id: pi, object: 'payment_intent', livemode: false, amount: s.amount_total, charge: nid('ch'), fee: s._fee ? nid('fee') : null, metadata: s.metadata };
+  // Stripe's processing fee, as an Irish sandbox account showed it: 1.5% + EUR 0.25 for an EEA card, VAT 23% on the fee, recorded as separate lines
+  const sf = M.nextStripeFee ?? Math.round(s.amount_total * 0.015) + 25, vat = Math.round(sf * 0.23), extra = M.nextExtraFee || 0; M.nextStripeFee = null; M.nextExtraFee = 0;
+  const fd = [{ type: 'stripe_fee', amount: sf, description: 'Stripe processing fees' }, { type: 'tax', amount: vat + Math.round(extra * 0.23), description: 'VAT' },
+    ...(s._fee ? [{ type: 'application_fee', amount: s._fee, description: 'Application fee' }] : []), ...(extra ? [{ type: 'stripe_fee', amount: extra, description: 'Radar for Fraud Teams' }] : [])];
+  M.charges[M.pis[pi].charge] = { id: M.pis[pi].charge, fee: M.pis[pi].fee, btPending: !!M.btPendingNext, bt: { id: nid('txn'), object: 'balance_transaction', currency: s.currency, amount: s.amount_total, fee: fd.reduce((a, x) => a + x.amount, 0), fee_details: fd } };
+  M.btPendingNext = false;
+  if (M.pis[pi].fee) M.feeAmounts[M.pis[pi].fee] = s._fee;
   return s;
 }
 const sign = (raw, t = Math.floor(Date.now() / 1000), secret = WHSEC) => `t=${t},v1=${createHmac('sha256', secret).update(`${t}.${raw}`).digest('hex')}`;
@@ -209,7 +225,7 @@ console.log('— separate consent to the processing charge on commission-free or
 let rpc = await call('GET', '/api/checkout', FND);
 check('PC0 a Founding Artist is told direct payment stays their normal route, and is not asked to consent by joining', /normal route/.test(rpc.j.direct_payment_note) && rpc.j.membership.processing_consent === false);
 rpc = await call('POST', `/api/checkout/orders/${of.id}/approve`, FND, { quote_version: (await order(of.id)).quote_version, confirm: { available: true, location: true, condition: true, framing: true, dimensions: true, packing_and_handover: true } });
-check('PC1 a commission-free order cannot be approved without the separate processing-charge consent', rpc.s === 409 && /separate consent/.test(rpc.j.error), rpc.j);
+check('PC1 Model B: a commission-free order (Founding Enquiry) is not taken through the pilot; it stays on direct payment', rpc.s === 409 && /stay on direct payment/.test(rpc.j.error), rpc.j);
 rpc = await call('POST', '/api/checkout/processing-consent', FND, { accept: true, statement: 'something else' });
 check('PC2 the consent must be to the exact statement shown', rpc.s === 400);
 const PSTAT = (await call('GET', '/api/checkout', FND)).j.processing_statement;
@@ -218,7 +234,7 @@ check('PC3 consent is recorded separately from the addendum acceptance, with its
   && (await q("SELECT * FROM payment_pilot_events WHERE kind='processing_consent'")).length === 2 && (await q("SELECT * FROM payment_pilot_events WHERE kind='processing_consent' AND doc_id IS NOT NULL")).length === 0);
 const ALLC = { available: true, location: true, condition: true, framing: true, dimensions: true, packing_and_handover: true };
 rpc = await call('POST', `/api/checkout/orders/${of.id}/approve`, FND, { quote_version: (await order(of.id)).quote_version, confirm: ALLC });
-check('PC4 with consent the commission-free order can be approved', rpc.s === 200, rpc.j);
+check('PC4 Model B: even with the artist’s consent, a commission-free order is not enrolled automatically (direct payment)', rpc.s === 409 && /stay on direct payment/.test(rpc.j.error), rpc.j);
 rpc = await call('POST', '/api/checkout/processing-consent/withdraw', FND, {});
 check('PC5 withdrawing consent cancels the artist’s unpaid commission-free quotes', rpc.s === 200 && rpc.j.cancelled.includes((await order(of.id)).reference) && (await order(of.id)).status === 'cancelled' && !rpc.j.membership.processing_consent);
 check('PC6 a Gallery Artist on 15% is never asked for this consent', !(await q("SELECT * FROM payment_pilot_events WHERE artist_id='agal' AND kind LIKE 'processing%'")).length);
@@ -310,12 +326,26 @@ check('T7d a signed completion marks the order paid and the work sold, atomicall
   && !(await q("SELECT * FROM artwork_reservations WHERE artwork_id='wagal1'")).length, { h, O1 });
 const L1 = await q('SELECT kind, amount_cents FROM order_ledger WHERE order_id = ? ORDER BY kind', o1.id);
 check('T7e the ledger books charge 1,075, commission 150, artist artwork 850, delivery allocation 75',
-  JSON.stringify(L1) === JSON.stringify([{ kind: 'artist_artwork', amount_cents: 85000 }, { kind: 'charge', amount_cents: 107500 }, { kind: 'commission', amount_cents: 15000 }, { kind: 'delivery_allocation', amount_cents: 7500 }]), L1);
+  JSON.stringify(L1.filter(l => !/^processing/.test(l.kind))) === JSON.stringify([{ kind: 'artist_artwork', amount_cents: 85000 }, { kind: 'charge', amount_cents: 107500 }, { kind: 'commission', amount_cents: 15000 }, { kind: 'delivery_allocation', amount_cents: 7500 }]), L1);
+console.log('— fee model B: PlotArt reimburses Stripe’s actual processing fee + VAT on it, from the application fee');
+{ const bt = M.charges[M.pis[O1.payment_intent].charge].bt, sf = bt.fee_details.find(x => x.type === 'stripe_fee').amount, vt = bt.fee_details.find(x => x.type === 'tax').amount;
+  const P = JSON.parse((await order(o1.id)).processing), frs = M.feeRefunds.filter(x => x.fee === M.pis[O1.payment_intent].fee);
+  check('MB1 the actual fee is read from Stripe’s balance transaction (whole payment incl. delivery): EUR 16.38 + VAT EUR 3.77 = EUR 20.15', sf === 1638 && vt === 377 && P.stripe_fee === 1638 && P.vat === 377 && P.cost === 2015 && P.balance_transaction === bt.id, P);
+  check('MB2 reimbursed once by a partial application-fee refund of exactly that amount; commission booked in full, separately', frs.length === 1 && frs[0].amount === 2015 && P.status === 'reimbursed'
+    && L1.some(l => l.kind === 'commission' && l.amount_cents === 15000) && L1.some(l => l.kind === 'processing_reimbursement' && l.amount_cents === 2015) && L1.some(l => l.kind === 'processing_fee' && l.amount_cents === 2015), { P, frs, L1 });
+  const st1 = (await call('GET', `/api/checkout/orders/${o1.id}`, GAL)).j.statement;
+  check('MB3 the artist statement separates gross, delivery, commission, processing fee, VAT, reimbursement and net (combined deduction = commission)', st1 && st1.gross_payment === 107500 && st1.of_which_delivery === 7500
+    && st1.plotart_commission === 15000 && st1.stripe_processing_fee === 1638 && st1.vat_on_processing_fee === 377 && st1.processing_reimbursed_by_plotart === 2015 && st1.net_proceeds === 92500
+    && st1.gross_payment - st1.net_proceeds === 15000 && /dispute fees/.test(st1.not_included), st1);
+  await S.checkoutWorker.scheduled({ cron: '*/15 * * * *' });
+  r = await call('POST', `/api/admin/checkout/orders/${o1.id}/processing`, FOUNDER, {});
+  check('MB4 reconciling again (sweep, founder button) never reimburses twice', r.s === 200 && M.feeRefunds.filter(x => x.fee === M.pis[O1.payment_intent].fee).length === 1
+    && (await q("SELECT * FROM order_ledger WHERE order_id = ? AND kind LIKE 'processing%'", o1.id)).length === 2, r.j); }
 h = await hook(done1);
-check('T7f the same event delivered again is recognised and not re-applied', h.s === 200 && h.j.duplicate && (await q('SELECT * FROM order_ledger WHERE order_id = ?', o1.id)).length === 4);
+check('T7f the same event delivered again is recognised and not re-applied', h.s === 200 && h.j.duplicate && (await q('SELECT * FROM order_ledger WHERE order_id = ?', o1.id)).length === 6);
 const dup2 = { ...done1, id: `evt_test_${++EV}` };   // a different event id carrying the same completion (provider retry semantics differ)
 h = await hook(dup2);
-check('T7g a second event for the same payment books nothing twice', h.s === 200 && (await q('SELECT * FROM order_ledger WHERE order_id = ?', o1.id)).length === 4 && (await q("SELECT * FROM artwork_sales WHERE artwork_id='wagal1'")).length === 1);
+check('T7g a second event for the same payment books nothing twice', h.s === 200 && (await q('SELECT * FROM order_ledger WHERE order_id = ?', o1.id)).length === 6 && (await q("SELECT * FROM artwork_sales WHERE artwork_id='wagal1'")).length === 1);
 h = await hook(evt('checkout.session.expired', { ...M.sessions[sess1.id], status: 'expired' }, ACCT));
 check('T7h an expiry arriving after the completion (out of order) is ignored', h.s === 200 && (await order(o1.id)).status === 'paid');
 h = await hook(evt('checkout.session.completed', { ...M.sessions[sess1.id] }, ACCT, { livemode: true }));
@@ -344,13 +374,18 @@ console.log('— two buyers, one original (test 6)');
 const oa = await makeOrder('agal', 'wagal2', 'PA-E-261102-BBBBBB', 50000, 0, 'a@example.test'), ob = await makeOrder('agal', 'wagal2', 'PA-E-261105-FFFFFF', 50000, 0, 'b@example.test');
 const prep = async id => { await call('POST', `/api/admin/checkout/orders/${id}/send`, FOUNDER, {}); await call('POST', `/api/checkout/orders/${id}/approve`, GAL, { quote_version: (await order(id)).quote_version, confirm: ALL });
   const x = await call('POST', `/api/admin/checkout/orders/${id}/issue`, FOUNDER, { days: 2, linked_check_confirmed: true }); return x.j.buyer_link.split('/q/')[1]; };
-const TA = await prep(oa.id), TB = await prep(ob.id);
-const [pa, pb] = await Promise.all([pub('POST', `/q/${TA}/pay`, { form: { accept_terms: 'PA-BPT-TEST-01' } }), pub('POST', `/q/${TB}/pay`, { form: { accept_terms: 'PA-BPT-TEST-01' } })]);
-check('T6a two buyers at the same moment: exactly one checkout opens', [pa.s, pb.s].sort().join() === '303,409', [pa.s, pb.s]);
-const [first, second, TF, TS] = pa.s === 303 ? [oa, ob, TA, TB] : [ob, oa, TB, TA];
+const TA = await prep(oa.id);
+await call('POST', `/api/admin/checkout/orders/${ob.id}/send`, FOUNDER, {}); await call('POST', `/api/checkout/orders/${ob.id}/approve`, GAL, { quote_version: (await order(ob.id)).quote_version, confirm: ALL });
+r = await call('POST', `/api/admin/checkout/orders/${ob.id}/issue`, FOUNDER, { days: 2, linked_check_confirmed: true });
+check('T6a one open quote per original: a second buyer cannot be quoted for a work that already has a live quote', r.s === 409 && /is still open/.test(r.j.error), r.j);
+const [pa, pa2] = await Promise.all([pub('POST', `/q/${TA}/pay`, { form: { accept_terms: 'PA-BPT-TEST-01' } }), pub('POST', `/q/${TA}/pay`, { form: { accept_terms: 'PA-BPT-TEST-01' } })]);
+const [first, second, TF] = [oa, ob, TA];
 const sA = (await q("SELECT * FROM checkout_sessions WHERE order_id = ? AND status='open'", first.id))[0];
+check('T6a2 two simultaneous checkout attempts on the one quote open a single checkout', !!sA && (await q("SELECT * FROM checkout_sessions WHERE order_id = ?", first.id)).length === 1, [pa.s, pa2.s]);
 h = await hook(evt('checkout.session.expired', { ...M.sessions[sA.id], status: 'expired' }, ACCT));
 check('T8a an abandoned checkout releases the reservation and returns the quote to payable', (await order(first.id)).status === 'quoted' && !(await q("SELECT * FROM artwork_reservations WHERE artwork_id='wagal2'")).length);
+await call('POST', `/api/admin/checkout/orders/${first.id}/cancel`, FOUNDER, { reason: 'Buyer A withdrew' });
+const TS = (await call('POST', `/api/admin/checkout/orders/${second.id}/issue`, FOUNDER, { days: 2, linked_check_confirmed: true })).j.buyer_link.split('/q/')[1];
 pg = await pub('POST', `/q/${TS}/pay`, { form: { accept_terms: 'PA-BPT-TEST-01' } });
 const sB = (await q("SELECT * FROM checkout_sessions WHERE order_id = ? AND status='open'", second.id))[0];
 check('T6b the other buyer can then open checkout', pg.s === 303 && !!sB);
@@ -430,9 +465,22 @@ r = await call('POST', `/api/admin/checkout/orders/${o1.id}/refund`, FOUNDER, { 
 O1 = await order(o1.id);
 const fin = await db.prepare(`SELECT SUM(CASE WHEN kind='commission' THEN amount_cents END) + SUM(CASE WHEN kind='commission_refund' THEN amount_cents ELSE 0 END) AS netfee,
   SUM(CASE WHEN kind IN ('charge','artwork_refund','delivery_refund') THEN amount_cents ELSE 0 END) AS netpaid FROM order_ledger WHERE order_id = ?`).bind(o1.id).first();
-check('T9e full refund reconciles: buyer net 0, PlotArt commission net 0, order refunded, original released (artist decides on relisting)',
-  O1.status === 'refunded' && O1.payment_status === 'refunded' && fin.netfee === 0 && fin.netpaid === 0 && (await q("SELECT * FROM artwork_sales WHERE artwork_id='wagal1' AND released_at IS NOT NULL")).length === 1
+const reimb1 = (await db.prepare("SELECT SUM(amount_cents) AS x FROM order_ledger WHERE order_id = ? AND kind = 'processing_reimbursement'").bind(o1.id).first()).x;
+const P1 = JSON.parse(O1.processing);
+check('T9e full refund reconciles: buyer net 0; commission kept by PlotArt = processing reimbursed (EUR 20.15), so PlotArt keeps net 0; order refunded, original released',
+  O1.status === 'refunded' && O1.payment_status === 'refunded' && fin.netfee === reimb1 && reimb1 === 2015 && fin.netpaid === 0 && (await q("SELECT * FROM artwork_sales WHERE artwork_id='wagal1' AND released_at IS NOT NULL")).length === 1
   && (await db.prepare("SELECT availability FROM artworks WHERE id='wagal1'").first()).availability === 'sold', { O1, fin });
+check('MB5 full refund: the commission refund owed (EUR 75) exceeds what is left of the application fee after the reimbursement (EUR 54.85): only EUR 54.85 goes back through Stripe',
+  M.feeRefunds.filter(x => x.fee === M.pis[O1.payment_intent].fee).map(x => x.amount).join() === '2015,7500,5485', M.feeRefunds);
+check('MB6 the EUR 20.15 difference is flagged as a shortfall PlotArt must pay the artist directly (not silently left with the artist, not paid twice)',
+  P1.shortfall_cents === 2015 && /PlotArt owes the artist EUR 20.15/.test(O1.needs_resolution) && (await call('GET', `/api/checkout/orders/${o1.id}`, GAL)).j.statement.shortfall_still_owed_by_plotart === 2015, { P1, nr: O1.needs_resolution });
+r = await call('POST', `/api/admin/checkout/orders/${o1.id}/shortfallpaid`, FOUNDER, { amount_cents: 2016, evidence: 'Bank transfer BT-SF1 on 18 Nov' });
+const r2sf = await call('POST', `/api/admin/checkout/orders/${o1.id}/shortfallpaid`, FOUNDER, { amount_cents: 2015, evidence: 'Bank transfer BT-SF1 on 18 Nov' });
+const r3sf = await call('POST', `/api/admin/checkout/orders/${o1.id}/shortfallpaid`, FOUNDER, { amount_cents: 1, evidence: 'Bank transfer BT-SF2 on 18 Nov' });
+const st9 = (await call('GET', `/api/checkout/orders/${o1.id}`, GAL)).j.statement;
+check('MB7 the founder records the direct payment once; more than owed, or paying again, is refused; the statement then shows the artist whole on fees',
+  r.s === 400 && r2sf.s === 200 && r3sf.s === 409 && !(await order(o1.id)).needs_resolution && st9.shortfall_paid_by_plotart === 2015 && st9.shortfall_still_owed_by_plotart === 0
+  && st9.net_proceeds === 0, { st9, r: r.j, r3: r3sf.j });
 const ch1 = { id: M.pis[O1.payment_intent].charge, object: 'charge', payment_intent: O1.payment_intent, refunds: { data: M.refunds.filter(x => x.payment_intent === O1.payment_intent).map(x => ({ id: x.id, amount: x.amount, status: 'succeeded' })) } };
 h = await hook(evt('charge.refunded', ch1, ACCT));
 check('T9f the provider’s refund events confirm the same refunds without booking them twice', h.s === 200 && (await q("SELECT * FROM order_refunds WHERE order_id = ? AND status='succeeded'", o1.id)).length === 3
@@ -444,6 +492,9 @@ check('T9g a refund the artist makes in their own Stripe Dashboard is booked and
   && (await q("SELECT * FROM order_ledger WHERE kind='external_refund' AND order_id = ?", second.id)).length === 1);
 
 console.log('— disputes (test 10) and out-of-order charge events');
+// Model B covers commission-bearing orders only: this artist now has accepted 15% commission terms
+await db.prepare(`INSERT INTO gallery_agreement_acceptances (id, event_id, artist_id, doc_id, doc_sha256, pdf_sha256, accepted_at, account_email, display_name, method, statement, created_at) VALUES ('gaa2','ev2','aold','PA-GAA-2026-11',?,?,?,?, 'Oisin Older','studio_checkbox','test',?)`).bind(FAKE, FAKE, ago(6), OLD, ago(6)).run();
+await db.prepare("INSERT INTO artist_terms (artist_id, track, commission_bp, set_by, created_at, updated_at) VALUES ('aold','gallery_artist',1500,?,?,?)").bind(FOUNDER, ago(6), ago(6)).run();
 const oe = await makeOrder('aold', 'waold2', 'PA-E-261103-DDDDDD', 40000, 2500, 'e@example.test');
 r = await call('POST', `/api/admin/checkout/orders/${oe.id}/send`, FOUNDER, {});
 await call('POST', `/api/checkout/orders/${oe.id}/approve`, OLD, { quote_version: (await order(oe.id)).quote_version, confirm: ALL });
@@ -451,7 +502,8 @@ const ACCT_OLD = (await db.prepare("SELECT account_id FROM payment_accounts WHER
 const TE = (await call('POST', `/api/admin/checkout/orders/${oe.id}/issue`, FOUNDER, { days: 1, linked_check_confirmed: true })).j.buyer_link.split('/q/')[1];
 await pub('POST', `/q/${TE}/pay`, { form: { accept_terms: 'PA-BPT-TEST-01' } });
 const sE = Object.values(M.sessions).at(-1);
-check('T3b no application fee at all is requested when the commission is 0', sE._fee === null && sE._acct === ACCT_OLD);
+check('T3b the application fee requested is exactly the 15% commission on the artwork (EUR 60 on EUR 400), never on delivery', sE._fee === 6000 && sE._acct === ACCT_OLD);
+M.btPendingNext = true; M.nextExtraFee = 200;   // Stripe has not yet recorded the fee; and this payment carries a non-processing add-on fee
 pay(sE.id);
 const dispute = { id: 'dp_test_1', object: 'dispute', payment_intent: sE.payment_intent, charge: M.pis[sE.payment_intent].charge, amount: 42500, reason: 'product_not_received', status: 'needs_response' };
 h = await hook(evt('charge.dispute.created', dispute, ACCT_OLD));
@@ -463,12 +515,23 @@ const dpRow = await db.prepare('SELECT status, order_id, detail FROM payment_eve
 check('T10a the completion replays the earlier dispute WITHOUT any redelivery: recorded on the right order (debited from the seller’s Stripe balance by Stripe)', OE.status === 'disputed' && OE.dispute_status === 'open'
   && dpRow.status === 'processed' && dpRow.order_id === oe.id && /replayed/.test(dpRow.detail)
   && (await q("SELECT * FROM order_ledger WHERE kind='dispute' AND order_id = ?", oe.id))[0].amount_cents === -42500, { OE, dpRow });
+{ const PE = JSON.parse((await order(oe.id)).processing || '{}'), feeE = M.pis[sE.payment_intent].fee;
+  check('MB8 before Stripe records the fee nothing is estimated or reimbursed: the order waits (awaiting_fee)', PE.status === 'awaiting_fee' && !M.feeRefunds.some(x => x.fee === feeE), PE);
+  M.charges[M.pis[sE.payment_intent].charge].btPending = false;
+  await S.checkoutWorker.scheduled({ cron: '*/15 * * * *' });
+  const PE2 = JSON.parse((await order(oe.id)).processing), frE = M.feeRefunds.filter(x => x.fee === feeE);
+  check('MB9 the sweep then reimburses the ACTUAL processing fee + its VAT once; the add-on fee (and its VAT) is excluded and recorded, not absorbed',
+    PE2.status === 'reimbursed' && PE2.stripe_fee === 663 && PE2.vat === 152 && PE2.excluded_fees === 200 && PE2.excluded_vat === 46 && frE.length === 1 && frE[0].amount === 815
+    && (await q("SELECT * FROM order_events WHERE order_id = ? AND action = 'processing_excluded_fees'", oe.id)).length === 1, { PE2, frE }); }
 h = await hook(evt('charge.dispute.created', dispute, ACCT_OLD));
 check('T10a2 a later redelivery of the same dispute event changes nothing (already processed)', h.s === 200 && (await q("SELECT * FROM order_ledger WHERE kind='dispute' AND order_id = ?", oe.id)).length === 1);
 await call('POST', `/api/admin/checkout/orders/${oe.id}/fulfilment`, FOUNDER, { kind: 'insurance', evidence: 'SIMULATED cover SIM-COVER-0001' });
 await call('POST', `/api/admin/checkout/orders/${oe.id}/fulfilment`, FOUNDER, { kind: 'dispatched', evidence: 'SAC tracking 1Z999' });
 h = await hook(evt('charge.dispute.closed', { ...dispute, status: 'lost' }, ACCT_OLD));
 OE = await order(oe.id);
+{ const stE = (await call('GET', `/api/checkout/orders/${oe.id}`, OLD)).j.statement;
+  check('MB10 disputes are NOT absorbed: no reimbursement for the dispute, the statement shows the dispute separately and says dispute fees stay with the seller',
+    M.feeRefunds.filter(x => x.fee === M.pis[sE.payment_intent].fee).length === 1 && stE.disputes_net === -42500 && stE.processing_reimbursed_by_plotart === 815 && stE.other_stripe_fees_not_reimbursed === 246 && stE.net_proceeds === -6246 && /dispute fees/.test(stE.not_included), stE); }
 check('T10b a lost dispute is flagged with the documented recovery route (commission settlement; seller carries the loss with Stripe)', OE.dispute_status === 'lost' && OE.status === 'refunded' && /dispute lost/.test(OE.needs_resolution), OE);
 r = await call('POST', `/api/admin/checkout/orders/${oe.id}/close`, FOUNDER, {});
 check('T10c an order with an unresolved flag cannot be closed', r.s === 409);
@@ -530,6 +593,8 @@ await db.prepare("INSERT INTO artwork_reservations (artwork_id, order_id, quote_
 const sw = await S.mf.getWorker('checkout').then(w => w.scheduled({ cron: '*/15 * * * *' })).catch(e => e);
 check('L2 the scheduled sweep releases lapsed reservations', !(await q("SELECT * FROM artwork_reservations WHERE artwork_id='waunk2'")).length, sw);
 const AFTER = JSON.parse(await snapshotOf()), B = JSON.parse(BEFORE);
+// the test itself gave artist aold accepted 15% terms (Model B covers commission-bearing orders only); the pilot changed nothing
+AFTER.gaa = AFTER.gaa.filter(x => x.id !== 'gaa2'); AFTER.at = AFTER.at.filter(x => x.artist_id !== 'aold');
 check('T11 gallery publication, versions, publish queue, gallery positions, founding numbers, artist records, agreements, terms, enquiry log and enquiries are unchanged',
   ['v', 'pq', 'gp', 'ar', 'aa', 'gaa', 'at', 'el', 'en', 'works'].every(k => JSON.stringify(AFTER[k]) === JSON.stringify(B[k])),
   ['v', 'pq', 'gp', 'ar', 'aa', 'gaa', 'at', 'el', 'en', 'works'].filter(k => JSON.stringify(AFTER[k]) !== JSON.stringify(B[k])));
@@ -545,8 +610,9 @@ console.log('— a refund that succeeds and later FAILS (reversal, commission al
   const feesBefore = M.feeRefunds.length;
   r = await call('POST', `/api/admin/checkout/orders/${orv.id}/refund`, FOUNDER, { artwork_cents: 80000, delivery_cents: 5000, reason: 'Full refund: work returned' });
   const rv = M.refunds.at(-1);
-  check('RV0 the full refund first SUCCEEDS: buyer booked as repaid, PlotArt returns its full €120 commission, order refunded',
-    r.s === 200 && (await order(orv.id)).status === 'refunded' && M.feeRefunds.length === feesBefore + 1 && M.feeRefunds.at(-1).amount === 12000, { s: (await order(orv.id)).status, fee: M.feeRefunds.at(-1) });
+  const PRV = JSON.parse((await order(orv.id)).processing);
+  check('RV0 the full refund first SUCCEEDS: the €120 commission is settled — €120 less the processing already reimbursed back through Stripe, the rest flagged for PlotArt to pay directly',
+    r.s === 200 && (await order(orv.id)).status === 'refunded' && M.feeRefunds.length === feesBefore + 1 && M.feeRefunds.at(-1).amount === 12000 - PRV.cost && PRV.shortfall_cents === PRV.cost, { s: (await order(orv.id)).status, fee: M.feeRefunds.at(-1), PRV });
   // Stripe later reports the same refund as FAILED (as in real test P12: succeeded → failed, expired_or_canceled_card)
   h = await hook(evt('refund.updated', { ...rv, status: 'failed', failure_reason: 'expired_or_canceled_card' }, ACCT));
   let OV = await order(orv.id);
@@ -556,7 +622,7 @@ console.log('— a refund that succeeds and later FAILS (reversal, commission al
     h.s === 200 && rvRow.status === 'failed' && /after succeeding/.test(rvRow.error) && OV.status === 'paid' && OV.payment_status === 'paid'
     && led.some(l => l.kind === 'artwork_refund' && l.amount_cents === -80000) && led.some(l => l.kind === 'artwork_refund_reversed' && l.amount_cents === 80000) && led.some(l => l.kind === 'delivery_refund_reversed' && l.amount_cents === 5000), { OV, rvRow, led });
   check('RV2 the flag is accurate: buyer NOT repaid, the €120 commission already returned stays returned, repay by ONE route only',
-    /SUCCEEDED and then FAILED/.test(OV.needs_resolution) && /NOT been repaid/.test(OV.needs_resolution) && /EUR 120\.00 commission/.test(OV.needs_resolution) && /ONE route/.test(OV.needs_resolution), OV.needs_resolution);
+    /SUCCEEDED and then FAILED/.test(OV.needs_resolution) && /NOT been repaid/.test(OV.needs_resolution) && /settled EUR 120\.00 commission/.test(OV.needs_resolution) && /PlotArt owes the artist/.test(OV.needs_resolution) && /ONE route/.test(OV.needs_resolution), OV.needs_resolution);
   h = await hook(evt('refund.updated', { ...rv, status: 'failed', failure_reason: 'expired_or_canceled_card' }, ACCT));
   check('RV3 a repeated failure event (or another event id for the same failure) changes nothing', h.s === 200 && (await q("SELECT * FROM order_ledger WHERE order_id = ? AND kind LIKE '%_reversed'", orv.id)).length === 2
     && (await q("SELECT * FROM order_events WHERE order_id = ? AND action = 'refund_reversed'", orv.id)).length === 1);
@@ -595,9 +661,12 @@ const goneArtist = !(await db.prepare("SELECT 1 FROM artists WHERE id='aold'").f
 check('D1 the existing deletion schedule deletes the artist’s records; the pilot tables never block it', goneArtist, [del, await q("SELECT action, detail FROM audit WHERE action LIKE '%delet%' OR action = 'cleanup' ORDER BY id DESC LIMIT 2")]);
 r = await call('GET', `/api/admin/checkout/orders/${ox.id}`, FOUNDER);
 check('D2 the order still shows seller, artwork, amounts, entitlement and ledger from its own snapshots', r.s === 200 && r.j.order.seller.name === 'Oisin Older' && r.j.order.artwork.title === 'Work 3'
-  && r.j.order.commission_basis === 'founding_artist_no_commission_terms' && r.j.ledger.some(l => l.kind === 'charge' && l.amount_cents === 32000), r.j);
+  && r.j.order.commission_bp === 1500 && r.j.ledger.some(l => l.kind === 'charge' && l.amount_cents === 32000), r.j);
 r = await call('POST', `/api/admin/checkout/orders/${ox.id}/refund`, FOUNDER, { artwork_cents: 30000, delivery_cents: 2000, reason: 'Returned after the artist left' });
 check('D3 a full refund still works after the artist’s and artwork’s rows are gone', r.s === 200 && r.j.order.status === 'refunded' && M.refunds.at(-1)._acct === ACCT_OLD, r.j);
+{ const PX = JSON.parse((await order(ox.id)).processing);
+  r = await call('POST', `/api/admin/checkout/orders/${ox.id}/shortfallpaid`, FOUNDER, { amount_cents: PX.shortfall_cents, evidence: 'Bank transfer BT-SFX on 18 Nov' });
+  check('D3b retention waits while PlotArt still owes a shortfall; recording the direct payment settles it', r.s === 200 && !(await order(ox.id)).needs_resolution, r.j); }
 check('D4 the buyer’s link still reads correctly', (await pub('GET', `/q/${TX}/return?result=success`)).t.includes('has been confirmed') || (await pub('GET', `/q/${TX}/return`)).s === 200);
 await S.checkoutWorker.scheduled({ cron: '*/15 * * * *' });
 const RX = await order(ox.id);

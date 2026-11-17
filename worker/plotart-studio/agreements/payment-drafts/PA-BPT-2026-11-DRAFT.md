@@ -1,6 +1,6 @@
-# PlotArt Buyer Purchase Terms — PA-BPT-2026-11 (DRAFT r5, 17 November 2026)
+# PlotArt Buyer Purchase Terms — PA-BPT-2026-11 (DRAFT r6, 17 November 2026)
 
-**Status: unissued draft for founder and professional review. Not shown to any buyer.** It will be issued only as fingerprinted HTML and installed by an approved migration. Text in {braces} is filled in from each quote. Review notes are kept separately in `PA-PAY-PA-BPT-r5-REVIEW-NOTES.md`.
+**Status: unissued draft for founder and professional review. Not shown to any buyer.** It will be issued only as fingerprinted HTML and installed by an approved migration. Text in {braces} is filled in from each quote. Review notes are kept separately in `PA-PAY-PA-BPT-r6-REVIEW-NOTES.md`.
 
 ## 1. Who you are buying from
 
@@ -35,9 +35,9 @@ Nothing else is added at checkout.
 
 ## 4. One original; holding the artwork; purchase limits
 
-4.1 Each original can be sold only once. Your quote does not reserve the artwork.
+4.1 Each original can be sold only once. While your quote is open, PlotArt does not issue a quote for the same artwork to anyone else, and the seller has agreed not to sell or promise it elsewhere.
 
-4.2 The artwork is held for you only once you open Stripe checkout. The hold lasts for the checkout period, currently 31 minutes, plus a short time for confirmation. If someone else completes a purchase first, you will not be able to pay.
+4.2 Your quote is not a guarantee that the artwork stays available. If, exceptionally, the seller sells it another way before you pay, PlotArt cancels your quote and you will not be able to pay. Once you open Stripe checkout, the artwork is also blocked from any other sale for the checkout period, currently 31 minutes, plus a short time for confirmation.
 
 4.3 If, exceptionally, your payment completes for a work that has already been sold, you will be refunded in full.
 
@@ -86,13 +86,15 @@ This section applies if you are a consumer buying from a seller who is a trader 
 
 8.1 Refunds are made to your original card through Stripe. Your right to be repaid does not depend on how the seller's Stripe account is funded.
 
-8.2 If a refund is delayed on the seller's side, or Stripe cannot complete it, the seller repays you directly and PlotArt confirms it with you.
+8.2 **If a refund is pending.** Stripe may hold a refund as pending until the seller's Stripe account can fund it. A pending refund is still on its way to your card, so the seller does not repay you another way at the same time; that would repay you twice. The seller must make sure you are repaid within the time limits in sections 6 and 7.
 
-8.3 If a refund that was confirmed is later reversed, for example because your card was closed, you have not been repaid. The seller then repays you once, either by a new refund or directly. PlotArt tells you when it becomes aware of a delayed or reversed refund.
+8.3 **If Stripe cannot complete a refund,** or reverses one it first confirmed (for example because your card was closed), you have not been repaid. The seller then repays you once, either by a new refund through Stripe or directly, for example by bank transfer, and PlotArt confirms it with you.
+
+8.4 PlotArt tells you when it becomes aware that a refund is pending, has failed or has been reversed.
 
 ## 9. Your data
 
-9.1 **What PlotArt receives and keeps.** PlotArt receives your email address with your quote. It keeps your email address and the order record until the end of the sixth year after your last payment or refund, for accounting and legal reasons. If you never paid, it keeps them until two years after the quote ended. It keeps them longer only while a specific dispute or claim about the order is open.
+9.1 **What PlotArt receives and keeps.** PlotArt receives your email address with your quote. If you paid, it keeps your email address and the order record until 31 December of the sixth year after the order is settled (completed or fully refunded, with nothing outstanding), for accounting and legal reasons. If you never paid, it keeps them until two years after the quote ended. It keeps them longer only under a legal hold for a specific reason, such as a dispute, claim or tax enquiry about the order, reviewed at least every 12 months. The order record is separate from any enquiry you sent through PlotArt, which follows its own retention period.
 
 9.2 **Stripe.** Stripe processes your payment details under its own privacy policy.
   (a) Your card number is entered only on Stripe's page and is never seen by PlotArt or the seller.
@@ -130,4 +132,4 @@ Date
 [*] Delete as appropriate.
 
 ---
-DRAFT r5, not issued.
+DRAFT r6, not issued.

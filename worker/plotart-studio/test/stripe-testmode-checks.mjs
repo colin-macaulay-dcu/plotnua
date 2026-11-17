@@ -189,6 +189,33 @@ if (PHASES.includes('provider')) {
         r1.status === 'succeeded' && r2.status === 'succeeded' && f1.amount === 7500 && fo.amount_refunded === 7500 ? 'PASS' : 'FAIL', { refunds: [r1.status, r2.status], fee_amount_refunded: fo.amount_refunded });
     } catch (e) { rec('P10', 'partial refunds and proportional commission refund', 'stripe-test-api', 'FAIL', { error: e.message, code: e.code }); }
 
+    // P16 · fee model B on a real direct charge: PlotArt reimburses Stripe's ACTUAL processing fee + VAT on it by a partial
+    // application-fee refund, computed by the pilot's own function from the real balance transaction (no estimates)
+    try {
+      const { processingFromBalance } = await import(HERE + 'src/checkout.js');
+      const pi = await charge(107500, 15000, 'pm_card_ie', 'modelb'), ch = pi.latest_charge, bt = ch.balance_transaction, fee = ch.application_fee;
+      const P = processingFromBalance(bt);
+      const lines = t => (bt.fee_details || []).filter(d => d.type === t).reduce((a, d) => a + d.amount, 0);
+      rec('P16a', 'model B: the pilot reads the actual processing fee and VAT on it from Stripe’s balance transaction (whole €1,075 payment incl. delivery)', 'stripe-test-api',
+        bt && P.stripe_fee === lines('stripe_fee') - P.excluded_fees && P.vat + P.excluded_vat === lines('tax') && P.cost > 0 ? 'PASS' : 'FAIL',
+        { card_country: ch.payment_method_details && ch.payment_method_details.card && ch.payment_method_details.card.country, fee_details: bt && bt.fee_details, computed: P });
+      const fr = await S.refundFee(env, { fee, amount: P.cost, idem: `harness-${RUN}-proc`, metadata: { plotart_order: 'harness-modelb', plotart_kind: 'processing_reimbursement' } });
+      const frAgain = await S.refundFee(env, { fee, amount: P.cost, idem: `harness-${RUN}-proc`, metadata: { plotart_order: 'harness-modelb', plotart_kind: 'processing_reimbursement' } });
+      const f1 = (await stripe('GET', `/v1/application_fees/${fee}`)).j;
+      rec('P16b', 'model B: a partial application-fee refund of exactly that amount succeeds; the same key cannot reimburse twice', 'stripe-test-api',
+        fr.amount === P.cost && frAgain.id === fr.id && f1.amount_refunded === P.cost ? 'PASS' : 'FAIL', { fee_refund: fr.id, repeat: frAgain.id, amount: fr.amount, fee_amount_refunded: f1.amount_refunded });
+      const over = await stripe('POST', `/v1/application_fees/${fee}/refunds`, { amount: 15000 }, null, `harness-${RUN}-proc-over`);
+      rec('P16c', 'Stripe refuses an application-fee refund above what is left of the fee (so a commission refund after a reimbursement must be capped)', 'stripe-test-api',
+        !over.ok ? 'PASS' : 'FAIL', { http_ok: over.ok, error: over.j.error && over.j.error.message });
+      const rfb = await S.refund(env, { account: ACCOUNT, paymentIntent: pi.id, amount: 107500, idem: `harness-${RUN}-rf-modelb`, metadata: { plotart_refund: 'harness-modelb' } });
+      const left = 15000 - P.cost;
+      const fr2 = await S.refundFee(env, { fee, amount: left, idem: `harness-${RUN}-proc-commission`, metadata: { plotart_order: 'harness-modelb', plotart_kind: 'commission_refund' } });
+      const f2 = (await stripe('GET', `/v1/application_fees/${fee}`)).j;
+      rec('P16d', 'model B full refund: only what is left of the fee (€150 − processing) can be returned through Stripe; the processing amount is a shortfall PlotArt must pay directly', 'stripe-test-api',
+        rfb.status === 'succeeded' && fr2.amount === left && f2.amount_refunded === 15000 && f2.refunded === true ? 'PASS' : 'FAIL',
+        { buyer_refund: rfb.status, returned_through_stripe: fr2.amount, fee_amount_refunded: f2.amount_refunded, shortfall_owed_outside_stripe: P.cost });
+    } catch (e) { rec('P16', 'model B processing reimbursement mechanics', 'stripe-test-api', 'FAIL', { error: e.message, code: e.code }); }
+
     try {
       const bal = (await stripe('GET', '/v1/balance', null, ACCOUNT)).j;
       const avail = (bal.available.find(x => x.currency === 'eur') || { amount: 0 }).amount;

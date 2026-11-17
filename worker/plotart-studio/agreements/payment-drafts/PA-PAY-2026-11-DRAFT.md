@@ -1,14 +1,14 @@
-# PlotArt Payment Pilot Addendum — PA-PAY-2026-11 (DRAFT r5, 17 November 2026)
+# PlotArt Payment Pilot Addendum — PA-PAY-2026-11 (DRAFT r6, 17 November 2026)
 
-**Status: unissued draft for founder and professional review.** It has not been accepted by any artist and is not installed in PlotArt Studio. It may be offered to artists only after it has been approved, issued as fingerprinted HTML, and installed by an approved migration. Bracketed text marks drafting alternatives or details to be completed before issue. Review notes, founder decisions and evidence are kept in `PA-PAY-PA-BPT-r5-REVIEW-NOTES.md`, not in this text.
+**Status: unissued draft for founder and professional review.** It has not been accepted by any artist and is not installed in PlotArt Studio. It may be offered to artists only after it has been approved, issued as fingerprinted HTML, and installed by an approved migration. Bracketed text marks drafting alternatives or details to be completed before issue. Review notes, founder decisions and evidence are kept in `PA-PAY-PA-BPT-r6-REVIEW-NOTES.md`, not in this text.
 
 ## 0. How this addendum relates to the artist's agreement
 
 0.1 This addendum is optional. It applies only to orders paid through the PlotArt payment pilot. It sits beside the artist's PlotArt agreement (PA-FAA-2026-11 Founding Artist Agreement or PA-GAA-2026-11 Gallery Artist Agreement) and the Gallery Publication and Image Licence PA-GPIL-2026-11.
 
 0.2 **Nothing in this addendum reduces any right the artist has under their agreement.** In particular:
-  (a) the protections of a Founding Artist are unaffected. Every Founding Enquiry stays commission-free permanently, and commission can arise only under separate commission terms that the artist has expressly accepted (PA-FAA cl. 3, 5 and 6). This addendum is not such terms;
-  (b) for a Gallery Artist, the commission rate, Commission Base and refund rules remain those of PA-GAA cl. 5 and 9, including that the artist keeps at least 85% of the Commission Base;
+  (a) the protections of a Founding Artist are unaffected. Every Founding Enquiry stays commission-free permanently, and commission can arise only under separate commission terms that the artist has expressly accepted (PA-FAA cl. 3, 5 and 6). This addendum is not such terms. Orders that carry no PlotArt commission, including every Founding Enquiry, are not taken through the pilot (clause 1.3), so no pilot charge or fee of any kind applies to them;
+  (b) for a Gallery Artist, the commission rate, Commission Base and refund rules remain those of PA-GAA cl. 5 and 9, including that the artist keeps at least 85% of the Commission Base. On a pilot order, the artist's combined deduction for PlotArt commission and Stripe's payment processing is never more than that commission (clause 3.3);
   (c) if any part of this addendum could be read as reducing such a right, the artist's agreement prevails on that point.
 
 0.3 This addendum adds pilot conditions that apply only to pilot orders. These cover the quote process, transit insurance, how payment is taken, and how commission on a pilot order is collected and returned. By accepting this addendum, the artist agrees to them for those orders only.
@@ -19,7 +19,9 @@
 
 1.2 Taking part is optional. Direct enquiries and direct sales continue as before. The artist can leave the pilot at any time in PlotArt Studio. Unpaid quotes are then cancelled, and orders already paid are completed under this addendum.
 
-1.3 The pilot covers one existing original artwork by one artist per order, in euro. It does not cover prints, commissions of new work, hire, multi-artwork orders, discounts, gift cards or instalments.
+1.3 The pilot covers one existing original artwork by one artist per order, in euro, where the sale carries PlotArt commission under the artist's agreement. It does not cover:
+  (a) sales that carry no PlotArt commission, including every sale arising from a Founding Enquiry. These continue as direct sales between the artist and the buyer;
+  (b) prints, commissions of new work, hire, multi-artwork orders, discounts, gift cards or instalments.
 
 1.4 During the pilot, PlotArt quotes artworks priced up to EUR 9,999.99. It will not quote a purchase that would bring a buyer's apparently linked purchases through the pilot to EUR 10,000 or more in twelve months. Linked purchases are those by the same buyer, or by anyone PlotArt knows to be acting with them. These are limits on the scope of the pilot, not a statement about anyone's legal obligations.
 
@@ -53,34 +55,72 @@ PlotArt shows this information on the buyer's quote. [Pilot eligibility to be co
 
 Commission is never charged on delivery, packing, transport, insurance, installation or import costs.
 
-3.2 **How commission is collected on a pilot order.** Instead of invoicing under PA-GAA cl. 8, PlotArt receives its commission from the buyer's payment as a Stripe application fee, for the amount shown on the quote that the artist approved. Commission on sales outside the pilot continues to be invoiced as before.
+3.2 **How commission is collected on a pilot order.** Instead of invoicing under PA-GAA cl. 8, PlotArt receives its commission from the buyer's payment as a Stripe application fee, for the amount shown on the quote that the artist approved. Commission is recorded at its full amount; the processing reimbursement in clause 3.3 is recorded separately and does not reduce the commission. PlotArt gives the artist a statement for each pilot order (clause 3.8) [and, where the law requires, an invoice for the commission]. Commission on sales outside the pilot continues to be invoiced as before.
 
-3.3 **Stripe processing fees.** Stripe charges a processing fee on each card payment, on the whole amount the buyer pays, including delivery. Stripe deducts it from the balance of the artist's Stripe account.
-[ALTERNATIVE A — artist bears Stripe's fee: The processing fee is Stripe's charge to the artist as the holder of the Stripe account, under Stripe's terms. PlotArt does not receive any part of it.]
-[ALTERNATIVE B — PlotArt bears Stripe's fee on commission-bearing orders: On an order that carries PlotArt commission, PlotArt returns to the artist, from its commission, the amount of Stripe's processing fee [and any VAT on it] on that payment, once Stripe has recorded it. The artist's total deduction for PlotArt and Stripe together is then no more than the commission.]
-In either case, the artist is told before accepting each quote what Stripe's fee is expected to be.
+3.3 **Stripe processing fees: PlotArt reimburses them.** Stripe charges a processing fee on each card payment, on the whole amount the buyer pays, including delivery. Stripe deducts it, and any VAT Stripe charges on it, from the balance of the artist's Stripe account. On every pilot order:
+  (a) PlotArt reimburses the artist the actual processing fee Stripe charged on that payment, and the VAT Stripe charged on that fee, if any;
+  (b) the amounts are those Stripe records for the payment, not estimates. PlotArt reimburses them after Stripe has recorded them, normally within minutes of the payment, and in any case within [7] days;
+  (c) the reimbursement is paid into the artist's Stripe balance by returning part of PlotArt's application fee;
+  (d) as a result, the artist's combined deduction for PlotArt commission and Stripe's processing of the payment is no more than the commission.
 
-3.4 **Example** (illustration only). EUR 1,000 artwork plus EUR 75 delivery and insurance, so the buyer pays EUR 1,075. The figures use Stripe's published standard pricing for EEA businesses at the time of drafting, which will be re-checked when this addendum is issued: standard EEA cards 1.5% + €0.25; premium EEA cards 1.9% + €0.25; UK cards 2.5% + €0.25; international cards 3.25% + €0.25. Stripe's fee is shown before VAT, because VAT on it depends on the artist (clause 3.5).
+3.4 **What the reimbursement does not cover.** It covers Stripe's processing fee on the buyer's payment and the VAT Stripe charges on that fee, and nothing else. In particular, it does not cover:
+  (a) Stripe's dispute fees (clause 7.8);
+  (b) fees for optional Stripe services or features the artist uses on their account, and currency-conversion or payout fees;
+  (c) any VAT the artist accounts for themselves under the reverse charge (clause 3.6(b));
+  (d) a negative Stripe balance, or anything Stripe recovers from the artist under its own terms.
+Where Stripe charges such a fee on the same payment, the artist's statement shows it separately as not reimbursed.
 
-| | Founding Enquiry (no commission) | Gallery Artist, 15% |
-|---|---|---|
-| Buyer pays | €1,075.00 | €1,075.00 |
-| PlotArt commission | €0.00 | €150.00 (including any VAT) |
-| Stripe processing fee, standard EEA card, before any VAT | €16.38 | €16.38 |
-| VAT on Stripe's fee, if it applies (clause 3.5) | Irish-based Stripe account: €3.77 | Irish-based Stripe account: €3.77 |
-| Borne by the artist under Alternative A | Stripe's fee and any VAT | Commission plus Stripe's fee and any VAT |
-| Borne by the artist under Alternative B | Stripe's fee and any VAT (clause 3.6) | Commission only |
+3.5 **If the commission is not enough.** The reimbursement and any commission returned on a refund (clause 7.7) are both paid out of the application fee for that order, so together they cannot exceed it. Where what PlotArt owes the artist under clause 3.3 or 7.7 is more than what is left of the application fee, PlotArt pays the difference to the artist directly, by bank transfer, within [30] days of it arising, and records the payment. This can happen, for example, when the buyer is refunded in full (example 3 in clause 3.7), or when a small artwork has a large delivery charge and is paid with an international card. The artist's statement shows any amount PlotArt still owes.
 
-Other cards (Stripe's fee before VAT; for an Irish-based Stripe account, VAT at 23% in brackets): premium EEA card €20.68 (€4.76); UK card €27.13 (€6.24); international card €35.19 (€8.09).
-
-3.5 **VAT on Stripe's fees** is a matter between Stripe and the artist, and depends on the artist:
-  (a) for Stripe account holders based in Ireland, Stripe states that VAT applies to all its fees at the standard rate, added on top of the fees, and Stripe issues a monthly tax invoice;
-  (b) for Stripe account holders elsewhere in Europe, Stripe states that it supplies its services from Ireland without charging VAT on its fees, and the account holder may need to account for VAT under the reverse charge;
+3.6 **VAT on Stripe's fees** is a matter between Stripe and the artist, and depends on the artist:
+  (a) for Stripe account holders based in Ireland, Stripe states that VAT applies to all its fees at the standard rate, added on top of the fees, and Stripe issues a monthly tax invoice. PlotArt reimburses the VAT Stripe charges on the processing fee for a pilot payment;
+  (b) for Stripe account holders elsewhere in Europe, Stripe states that it supplies its services from Ireland without charging VAT on its fees, and the account holder may need to account for VAT under the reverse charge. Stripe charges no VAT on the fee, so there is no VAT for PlotArt to reimburse;
   (c) whether any VAT on Stripe's fees is a final cost depends on the artist's own VAT position. PlotArt does not give tax advice.
 
-3.6 **Orders with no commission.** On an order that carries no PlotArt commission (for example, every Founding Enquiry), Stripe's processing fee is the only deduction, and selling directly remains the artist's normal route. Such an order can be paid through the pilot only if the artist has given a separate, explicit consent in PlotArt Studio to Stripe's processing fee applying. That consent is separate from accepting this addendum. It applies to the version of this addendum in force when it is given, and it can be withdrawn at any time; withdrawing it cancels any unpaid quote with no commission.
+3.7 **Examples** (illustration only). A Gallery Artist on 15% commission sells a EUR 1,000 artwork, plus EUR 75 delivery and insurance; the buyer pays EUR 1,075. The fees use Stripe's published standard pricing for EEA businesses at the time of drafting (standard EEA cards 1.5% + €0.25; premium EEA cards 1.9% + €0.25; UK cards 2.5% + €0.25; international cards 3.25% + €0.25), which will be re-checked when this addendum is issued. VAT on Stripe's fee is shown for a Stripe account based in Ireland (clause 3.6).
 
-3.7 The artist remains responsible for any VAT or other tax on the sale of the artwork, and for any invoice or receipt the law requires the artist to give the buyer.
+Example 1: the sale completes, paid with a standard EEA card.
+
+| | |
+|---|---|
+| Buyer pays | €1,075.00 |
+| of which artwork / delivery | €1,000.00 / €75.00 |
+| PlotArt commission (15% of the artwork only) | − €150.00 |
+| Stripe processing fee on €1,075 | − €16.38 |
+| VAT charged by Stripe on that fee | − €3.77 |
+| Reimbursed by PlotArt (fee and VAT) | + €20.15 |
+| **Artist's net proceeds** | **€925.00** |
+| Artist's combined deduction for commission and processing | €150.00, the commission |
+
+With other cards, the fee and VAT reimbursed would be (fee + VAT): premium EEA €20.68 + €4.76; UK €27.13 + €6.24; international €35.19 + €8.09. The artist's net proceeds stay €925.00. For a Stripe account outside Ireland, Stripe charges no VAT on the fee, so PlotArt reimburses €16.38 and the net proceeds are again €925.00.
+
+Example 2: as example 1, then the buyer returns part of the value and is refunded €500 of the artwork price.
+
+| | |
+|---|---|
+| Net proceeds before the refund | €925.00 |
+| Refunded to the buyer | − €500.00 |
+| Commission returned by PlotArt (15% of €500) | + €75.00 |
+| **Artist's net proceeds** | **€500.00** |
+| Combined deduction for commission and processing | €75.00, the commission on the artwork the buyer kept |
+
+Example 3: as example 1, then the buyer cancels and is refunded €1,075 in full.
+
+| | |
+|---|---|
+| Net proceeds before the refund | €925.00 |
+| Refunded to the buyer | − €1,075.00 |
+| Commission returned through Stripe: €150.00 less the €20.15 already returned as the reimbursement | + €129.85 |
+| Paid by PlotArt directly (clause 3.5) | + €20.15 |
+| **Artist's net proceeds** | **€0.00** |
+
+Stripe does not return its processing fee when a payment is refunded; under this addendum PlotArt bears it. The return cost the buyer pays on cancellation (clause 7.2) is not shown.
+
+Example 4: a EUR 100 artwork with EUR 400 delivery, paid with an international card. Commission is €15.00. Stripe's fee on €500 is €16.50, with €3.80 VAT: €20.30 in all. PlotArt returns its €15.00 application fee in full and pays the remaining €5.30 directly (clause 3.5). The artist's net proceeds are €485.00.
+
+3.8 **The artist's statement.** For each pilot order, PlotArt Studio shows the artist, as separate lines: the gross payment; the artwork and delivery amounts within it; PlotArt's commission; commission returned; Stripe's processing fee; the VAT Stripe charged on it; the reimbursement; any amount PlotArt paid or still owes directly; other Stripe fees on the payment that are not reimbursed; refunds to the buyer; disputes; and the artist's net proceeds. Stripe's dispute and payout fees are charged by Stripe separately and appear in the artist's own Stripe Dashboard.
+
+3.9 The artist remains responsible for any VAT or other tax on the sale of the artwork, and for any invoice or receipt the law requires the artist to give the buyer.
 
 ## 4. Quotes, approval and holding the work
 
@@ -90,7 +130,7 @@ Other cards (Stripe's fee before VAT; for an Irish-based Stripe account, VAT at 
   (c) every delivery charge;
   (d) the delivery, insurance and installation arrangements and the delivery window;
   (e) the return arrangements in clause 7.2, including the estimated cost of returning the artwork if the buyer cancels;
-  (f) the commission, if any, and the basis for it;
+  (f) the commission and the basis for it;
   (g) the date and time until which the quote can be paid.
 
 4.2 Before any buyer can pay, the artist:
@@ -100,10 +140,11 @@ Other cards (Stripe's fee before VAT; for an Irish-based Stripe account, VAT at 
   (d) approves that exact quote version.
 Any later change creates a new version, which the artist must approve again.
 
-4.3 **Holding the work.** A quote does not by itself hold the artwork in PlotArt's systems:
-  (a) the work is held for one buyer only from the moment that buyer opens Stripe checkout. The hold lasts for the checkout period, currently 31 minutes, plus 15 minutes for Stripe's confirmation to arrive;
-  (b) while a quote is open, the artist will not sell or promise the work elsewhere, and will record any outside sale in PlotArt Studio straight away;
-  (c) if more than one quote is open for the same work, the first confirmed payment completes the sale. PlotArt then cancels the other quotes, and those buyers cannot pay.
+4.3 **Holding the work.**
+  (a) PlotArt issues only one open quote for a work at a time. It does not issue a second quote for the same work until the first has been paid, cancelled or has expired;
+  (b) while a quote is open, the artist will not sell or promise the work elsewhere, and will record any outside sale in PlotArt Studio straight away. PlotArt then cancels the quote, and the buyer cannot pay;
+  (c) once the buyer opens Stripe checkout, PlotArt's systems also block the work from any other sale for the checkout period, currently 31 minutes, plus 15 minutes for Stripe's confirmation to arrive;
+  (d) a quote can be paid for up to 7 days, as shown on it.
 
 ## 5. Payment and payout
 
@@ -146,7 +187,7 @@ If the buyer cancels for a change of mind and this information was given, the bu
 
 7.3 **Refund timing.** When a buyer cancels within the cancellation period, the artist refunds the price and the delivery charge shown on the quote within 14 days of being told of the cancellation. Where the artist has not offered to collect the artwork, the artist may withhold the refund until it has received the artwork back, or until the buyer has supplied evidence of having sent it back, whichever is earlier. The artist may deduct an amount for any loss in value caused by handling beyond what was needed to establish the artwork's nature and characteristics, where the law allows.
 
-7.4 **How refunds are made.** Refunds are made to the buyer's card through Stripe, from the artist's Stripe balance. PlotArt makes a refund from the order on the artist's instruction or with the artist's agreement. Stripe does not return its processing fee on the original payment when a payment is refunded.
+7.4 **How refunds are made.** Refunds are made to the buyer's card through Stripe, from the artist's Stripe balance. PlotArt makes a refund from the order on the artist's instruction or with the artist's agreement. Stripe does not return its processing fee on the original payment when a payment is refunded. PlotArt's reimbursement of that fee (clause 3.3) is not reversed.
 
 7.5 **If the artist's Stripe balance is too low.** Depending on the balance, Stripe may:
   (a) complete the refund at once by drawing on payments not yet available to the artist, which can leave the artist's Stripe balance negative; or
@@ -156,7 +197,7 @@ PlotArt tells the artist and the buyer when it becomes aware that a refund is pe
   (i) let Stripe complete it from new sales or by debiting the linked bank account;
   (ii) add funds to their Stripe balance;
   (iii) only after Stripe has cancelled the refund, repay the buyer directly and send PlotArt the confirmation.
-The artist must not repay the buyer outside Stripe while a Stripe refund is still pending.
+The artist must not repay the buyer outside Stripe while a Stripe refund is still pending, because the buyer would then be repaid twice. The artist remains responsible for the buyer being repaid within the legal time limit (clause 7.3), so should fund a pending refund promptly.
 
 7.6 **A refund Stripe reverses after confirming it.** Rarely, a refund that Stripe first confirmed fails later, for example because the buyer's card was closed. The money then returns to the artist's Stripe balance and the buyer has not been repaid. PlotArt tells the artist and the buyer. The artist repays the buyer once, by one route only: a new refund through PlotArt, or a direct repayment confirmed to PlotArt with evidence.
 
@@ -164,22 +205,22 @@ The artist must not repay the buyer outside Stripe while a Stripe refund is stil
   (a) in full for a full refund;
   (b) in proportion to the artwork amount kept for a partial refund;
   (c) in full where a dispute is decided against the artist and the buyer keeps the refunded amount.
-On a pilot order, PlotArt returns commission through Stripe once Stripe confirms that the buyer's refund has succeeded, and in any case within the period in PA-GAA cl. 9. Commission already returned for a refund that Stripe later reverses (clause 7.6) is not returned a second time when the buyer is repaid. Refunds of delivery charges do not change commission.
+On a pilot order, PlotArt returns commission through Stripe once Stripe confirms that the buyer's refund has succeeded, and in any case within the period in PA-GAA cl. 9. The amount already returned as the processing reimbursement is taken into account, so that the same money is not returned twice. Any part of the commission that cannot be returned through Stripe for that reason is paid directly under clause 3.5. Commission already returned for a refund that Stripe later reverses (clause 7.6) is not returned a second time when the buyer is repaid. Refunds of delivery charges do not change commission.
 
-7.8 **Disputes (chargebacks).** A buyer's card issuer may reverse a payment. Stripe then debits the disputed amount and Stripe's dispute fees from the artist's Stripe account. Stripe's published EEA pricing at the time of drafting, before any VAT under clause 3.5, which will be re-checked when this addendum is issued:
+7.8 **Disputes (chargebacks).** A buyer's card issuer may reverse a payment. Stripe then debits the disputed amount and Stripe's dispute fees from the artist's Stripe account. Stripe's published EEA pricing at the time of drafting, before any VAT under clause 3.6, which will be re-checked when this addendum is issued:
   (a) a dispute received fee of €20 for each dispute, which is not returned even if the dispute is won;
   (b) a dispute countered fee of €20 if the dispute is responded to with evidence, which Stripe returns if the dispute is won.
-The artist responds to any dispute in their own Stripe Dashboard. PlotArt provides the order record, quote, terms acceptance and delivery evidence it holds.
+Dispute fees, and any VAT Stripe charges on them, are not reimbursed by PlotArt (clause 3.4). The processing reimbursement already made for the payment is not reversed. The artist responds to any dispute in their own Stripe Dashboard. PlotArt provides the order record, quote, terms acceptance and delivery evidence it holds.
 
 7.9 **Losses with Stripe.** Under the account configuration, Stripe, not PlotArt, is responsible for any negative balance on the artist's Stripe account that cannot be recovered. Stripe recovers such a balance from the artist under Stripe's own terms. This does not affect what the artist owes the buyer as seller.
 
 ## 8. Records
 
-8.1 PlotArt keeps the records of a pilot order: the order record, quote versions, approvals, payment events, ledger, refunds and delivery evidence.
-  (a) For an order that moved money, they are kept until 31 December of the sixth year after its last payment, refund or dispute, for tax record-keeping and the limitation period for contract claims.
-  (b) For an order that was never paid, they are kept for two years after it ended.
-  (c) Opt-in and consent records are kept for six years after the artist leaves the pilot.
-Records are kept longer only under a legal hold for a stated reason, such as a dispute, claim or Revenue enquiry. A hold is reviewed at least every 12 months and released when no longer needed. These records are kept separately from the artist's gallery records, so they remain available for refunds and reconciliation even after the artist leaves PlotArt.
+8.1 PlotArt keeps the records of a pilot order: the order record, quote versions, approvals, payment events, ledger, refunds, reimbursements, statements and delivery evidence.
+  (a) For an order that was paid, they are kept until 31 December of the sixth year after the order is settled. An order is settled when it is closed or fully refunded and nothing is outstanding: no refund pending, and no amount owed under clause 3.5 or 7.7. The date is fixed when the order is settled;
+  (b) for an order that was never paid, they are kept for two years after it ended;
+  (c) the artist's opt-in record and Stripe account link are kept for six years after the artist leaves the pilot, or for as long as any of the artist's pilot orders is kept, whichever is later.
+Records are kept longer only under a legal hold for a stated reason, such as a dispute, claim or Revenue enquiry, including one that arises after the order is settled. A hold is reviewed at least every 12 months and released when no longer needed. These records are kept separately from the artist's gallery records, so they remain available for refunds and reconciliation even after the artist leaves PlotArt. They are also separate from enquiry messages, which follow the artist's agreement (for example, PA-FAA cl. 5.5).
 
 ## 9. Information shared, and what each party can see
 
@@ -205,9 +246,8 @@ PlotArt stores the buyer's email address with the order. [To be confirmed before
 
 10.2 **Live payments need fresh acceptance.** Accepting this addendum in test mode, or any test version of it, does not authorise live payments. Before any live payment, the artist must:
   (a) accept the issued live version of this addendum, identified by its own version, after it has been shown to them;
-  (b) give any consent under clause 3.6 again, for that version;
-  (c) complete Stripe's live onboarding for a live Stripe account.
-No test-mode acceptance, consent or account becomes a live one.
+  (b) complete Stripe's live onboarding for a live Stripe account.
+No test-mode acceptance or account becomes a live one.
 
 ---
-PlotArt · PlotNua, operated by Colin Macaulay (CRO business name no. 794392) · hello@plotnua.ie · DRAFT r5, not issued.
+PlotArt · PlotNua, operated by Colin Macaulay (CRO business name no. 794392) · hello@plotnua.ie · DRAFT r6, not issued.

@@ -97,7 +97,7 @@ export async function artistView(env, artist) {
     addendum: add ? { doc_id: add.doc_id, title: add.title, html_sha256: add.html_sha256, statement: STATEMENT(add.doc_id) } : null,
     processing_statement: PROCESSING_STATEMENT, direct_payment_note: 'Selling directly, with the buyer paying you, remains your normal route. The payment pilot is optional for every sale.',
     pending_refunds: (await pendingRefunds(env, artist.id)).map(r => ({ ...r, what_to_do: REFUND_FUNDING_STEPS })),
-    orders: (await all(env, 'SELECT * FROM checkout_orders WHERE artist_id = ? ORDER BY created_at DESC LIMIT 100', artist.id)).map(o => orderView(o, 'artist')) };
+    orders: await withStatements(env, await all(env, 'SELECT * FROM checkout_orders WHERE artist_id = ? ORDER BY created_at DESC LIMIT 100', artist.id), 'artist') };
 }
 
 export async function optIn(env, artist, body) {
@@ -133,7 +133,13 @@ export async function withdrawProcessingConsent(env, artist) {
   await run(env, `INSERT INTO payment_pilot_events (id, artist_id, kind, account_email, display_name, at) VALUES (?,?, 'processing_consent_withdrawn', ?,?,?)`, rid('pe'), artist.id, artist.email, artist.display_name, now());
   return { membership: await membership(env, artist.id), cancelled: open.map(o => o.reference) };
 }
+/* Fee Model B (founder decision, 17 Nov 2026): orders with no PlotArt commission — including every Founding Enquiry —
+   stay on direct payment. They are not taken through the managed checkout in this implementation. */
+function requireCommissionBearing(commissionBp) {
+  if (!(commissionBp > 0)) throw new Bad('Orders with no PlotArt commission (including every Founding Enquiry) stay on direct payment between the artist and the buyer; they are not taken through the payment pilot.', 409);
+}
 function requireProcessingConsent(mem, commissionBp) {
+  requireCommissionBearing(commissionBp);
   if (commissionBp === 0 && !mem.processing_consent)
     throw new Bad('PlotArt takes no commission on this order, so Stripe’s processing fees would be the artist’s only deduction. That needs the artist’s separate consent (Payment pilot page); otherwise the artist sells directly, with no deduction.', 409);
 }
@@ -190,14 +196,24 @@ export function orderView(o, role) {
     artist_artwork_cents: o.commission_cents == null ? null : o.artwork_cents - o.commission_cents,
     delivery: J(o.delivery), artwork: J(o.artwork_snapshot), seller: J(o.seller), quote_version: o.quote_version,
     artist_approved_version: o.artist_approved_version, artist_approved_at: o.artist_approved_at, quote_expires_at: o.quote_expires_at,
-    paid_at: o.paid_at, created_at: o.created_at, updated_at: o.updated_at, processing_fees: 'Deducted by Stripe from the seller’s Stripe balance; not PlotArt commission; not included above.' };
+    paid_at: o.paid_at, created_at: o.created_at, updated_at: o.updated_at,
+    processing_fees: 'Deducted by Stripe from the seller’s Stripe balance. On an order with PlotArt commission, PlotArt reimburses Stripe’s actual processing fee and the VAT on it from its commission (see statement).',
+    processing: (({ stripe_fee, vat, cost, reimbursed_cents, shortfall_cents, shortfall_paid_cents, status, excluded_fees, excluded_vat, descriptions } = J(o.processing) || {}) =>
+      ({ stripe_fee, vat, cost, reimbursed_cents, shortfall_cents, shortfall_paid_cents, status, excluded_fees, excluded_vat, descriptions }))() };
   if (role === 'founder') Object.assign(v, { artist_id: o.artist_id, entitlement: J(o.entitlement), exclusion: o.exclusion, negotiation_note: o.negotiation_note,
     buyer_email: o.buyer_email, provider_account: o.provider_account, payment_intent: o.payment_intent, charge_id: o.charge_id, application_fee_id: o.application_fee_id });
   return v;
 }
+/* Order list with each paid order's statement (one ledger query for the whole list). */
+async function withStatements(env, rows, role) {
+  const paid = rows.filter(o => o.payment_intent).map(o => o.id), by = {};
+  if (paid.length) for (const l of await all(env, `SELECT order_id, kind, amount_cents FROM order_ledger WHERE order_id IN (${paid.map(() => '?').join(',')})`, ...paid)) (by[l.order_id] = by[l.order_id] || []).push(l);
+  return rows.map(o => ({ ...orderView(o, role), statement: o.payment_intent ? statement(o, by[o.id] || []) : null }));
+}
 export async function orderDetail(env, o, role) {
   return { order: orderView(o, role), events: await all(env, 'SELECT at, actor, action, prior_status, new_status, detail FROM order_events WHERE order_id = ? ORDER BY id', o.id),
     ledger: await all(env, 'SELECT kind, amount_cents, provider_ref, at, note FROM order_ledger WHERE order_id = ? ORDER BY at, rowid', o.id),
+    statement: statement(o, await all(env, 'SELECT kind, amount_cents FROM order_ledger WHERE order_id = ?', o.id)),
     fulfilment: await all(env, 'SELECT kind, actor, at, evidence FROM order_fulfilment_events WHERE order_id = ? ORDER BY at, rowid', o.id),
     refunds: await all(env, 'SELECT id, artwork_cents, delivery_cents, commission_refund_cents, reason, status, error, created_at FROM order_refunds WHERE order_id = ? ORDER BY created_at', o.id),
     sessions: role === 'founder' ? await all(env, 'SELECT id, quote_version, amount_total, application_fee_cents, status, expires_at, created_at FROM checkout_sessions WHERE order_id = ? ORDER BY created_at', o.id) : undefined };
@@ -209,7 +225,7 @@ export async function adminView(env) {
   for (const a of artists) a.membership = await membership(env, a.id);
   return { installed: true, switches: switches(env), addendum: await currentTerms(env, 'artist_payment_addendum').then(d => d && d.doc_id),
     buyer_terms: await currentTerms(env, 'buyer_purchase_terms').then(d => d && d.doc_id), artists,
-    orders: (await all(env, 'SELECT * FROM checkout_orders ORDER BY created_at DESC LIMIT 200')).map(o => orderView(o, 'founder')),
+    orders: await withStatements(env, await all(env, 'SELECT * FROM checkout_orders ORDER BY created_at DESC LIMIT 200'), 'founder'),
     unprocessed_events: await all(env, "SELECT event_id, type, status, attempts, detail, received_at FROM payment_events WHERE status IN ('deferred','failed','received') ORDER BY received_at LIMIT 50"),
     pending_refunds: await pendingRefunds(env), holds: await holdsView(env), refund_funding_steps: REFUND_FUNDING_STEPS };
 }
@@ -439,6 +455,12 @@ export async function linkedCheck(env, o) {
 }
 
 /* ---------------------------------------------------------------- founder: issue the buyer's quote */
+/* A quote is the only open quote for its work: PlotArt does not issue a second one while it can still be paid, so the
+   buyer who holds it cannot lose the work to another pilot buyer (the artist separately agrees not to sell it elsewhere). */
+async function requireNoOtherOpenQuote(env, o) {
+  const other = await one(env, `SELECT reference FROM checkout_orders WHERE artwork_id = ? AND id <> ? AND status IN ('quoted','checkout_open','payment_failed') AND quote_expires_at > ?`, o.artwork_id, o.id, now());
+  if (other) throw new Bad(`Another quote for this artwork (${other.reference}) is still open. Cancel it or let it expire first.`, 409);
+}
 export async function issueQuote(env, founder, id, b = {}) {
   await requireInstalled(env); requireOn(env);
   const o = await getOrder(env, id);
@@ -453,6 +475,7 @@ export async function issueQuote(env, founder, id, b = {}) {
   if (!bt) throw new Bad('The buyer purchase terms have not been issued yet', 409);
   if (!add || add.doc_id !== mem.addendum) throw new Bad('The artist’s accepted addendum is not the current one: ask them to review the current text', 409);
   await workAvailable(env, o.artist_id, o.artwork_id);
+  await requireNoOtherOpenQuote(env, o);
   const lc = await linkedCheck(env, o);
   if (!lc.ok) throw new Bad(lc.reason, 409);
   if (b.linked_check_confirmed !== true) throw new Bad('Confirm that, as far as you know, this purchase is not linked to other purchases by this buyer or anyone acting with them (other email addresses, household, business, agents, staged payments)', 400);
@@ -516,7 +539,7 @@ export async function startCheckout(env, token, b) {
   if (!mem.ready || mem.account.id !== o.provider_account) throw new Bad('The seller cannot take payments at the moment. Please contact hello@plotnua.ie.', 409);
   const add = await currentTerms(env, 'artist_payment_addendum');
   if (!mem.opted_in || !add || add.doc_id !== o.addendum_doc_id) throw new Bad('The seller cannot take payments at the moment. Please contact hello@plotnua.ie.', 409);
-  if (o.commission_bp === 0 && !mem.processing_consent) throw new Bad('The seller cannot take payments through PlotArt at the moment. Please contact hello@plotnua.ie.', 409);
+  if (!(o.commission_bp > 0)) throw new Bad('The seller cannot take payments through PlotArt for this order. Please contact hello@plotnua.ie.', 409);
   await workAvailable(env, o.artist_id, o.artwork_id).catch(() => { throw new Bad('Sorry, this artwork is no longer available.', 409); });
   if (!(await linkedCheck(env, o)).ok) throw new Bad('This purchase cannot be completed through the pilot. Please contact hello@plotnua.ie.', 409);
   // an open session for this quote version that still has time left is reused (a double click opens the same checkout)
@@ -763,6 +786,8 @@ async function recordPaid(env, o, s, eventId) {
     if (ch) await run(env, 'UPDATE checkout_orders SET charge_id = COALESCE(charge_id, ?), application_fee_id = COALESCE(application_fee_id, ?), updated_at = ? WHERE id = ?',
       ch.id, typeof ch.application_fee === 'string' ? ch.application_fee : ch.application_fee && ch.application_fee.id || null, now(), o.id);
   } catch { /* fetched again at refund time */ }
+  // Model B: reimburse Stripe's processing cost as soon as Stripe has recorded it (usually seconds later: the sweep retries)
+  try { await reconcileProcessing(env, await getOrder(env, o.id)); } catch { /* the sweep retries */ }
   // events for this payment that arrived before this completion (e.g. a dispute) are applied now, not left waiting
   let replayed = 0; try { replayed = await replayDeferred(env, pi); } catch { /* the sweep retries */ }
   return (late ? 'paid (late)' : 'paid') + (replayed ? `; ${replayed} earlier event(s) replayed` : '');
@@ -772,6 +797,11 @@ async function refundTotals(env, orderId) {
   // a refund Stripe reversed (succeeded, then failed) is booked as a positive *_reversed line and no longer counts as repaid
   const r = await one(env, `SELECT COALESCE(SUM(CASE WHEN kind IN ('artwork_refund','artwork_refund_reversed') THEN -amount_cents END), 0) AS art, COALESCE(SUM(CASE WHEN kind IN ('delivery_refund','delivery_refund_reversed') THEN -amount_cents END), 0) AS del,
     COALESCE(SUM(CASE WHEN kind = 'commission_refund' THEN -amount_cents END), 0) AS fee, COALESCE(SUM(CASE WHEN kind = 'external_refund' THEN -amount_cents END), 0) AS ext FROM order_ledger WHERE order_id = ?`, orderId);
+  // Model B: a commission refund that could not go back through Stripe (the application fee had already reimbursed processing)
+  // is owed by PlotArt directly as a shortfall. It counts as settled commission here, so it is never owed (or paid) twice.
+  const p = J((await one(env, 'SELECT processing FROM checkout_orders WHERE id = ?', orderId) || {}).processing) || {};
+  r.fee_shortfall = Object.entries(p.shortfall_items || {}).filter(([k]) => k.startsWith('commission:')).reduce((a, [, x]) => a + x.cents, 0);
+  r.fee += r.fee_shortfall;
   return r;
 }
 
@@ -918,15 +948,16 @@ async function reverseRefund(env, rr, re) {
   ]);
   const tot = await refundTotals(env, o.id), repaid = tot.art + tot.del + tot.ext;
   const feeBack = rr.fee_refund_id ? rr.commission_refund_cents : 0;
-  const eur = c => `EUR ${(c / 100).toFixed(2)}`;
+  const owedDirect = ((J(o.processing) || {}).shortfall_items || {})[`commission:${rr.id}`]?.cents || 0;
   const flag = `refund ${ref} of ${eur(rr.artwork_cents + rr.delivery_cents)} SUCCEEDED and then FAILED (${re.failure_reason || re.status}): Stripe returned the money to the artist's balance and the buyer has NOT been repaid. `
-    + (feeBack ? `PlotArt had already returned ${eur(feeBack)} commission for it; that stays returned, so repaying this amount again returns no further commission. ` : '')
+    + (feeBack ? `PlotArt had already settled ${eur(feeBack)} commission for it${owedDirect ? ` (${eur(feeBack - owedDirect)} through Stripe; ${eur(owedDirect)} owed by PlotArt directly because the application fee had reimbursed processing)` : ''}; that stays settled, so repaying this amount again returns no further commission. ` : '')
     + 'Repay the buyer by ONE route only: a new refund through the pilot, OR the artist repays directly and the founder records it with evidence.';
   const back = o.fulfilment_status === 'delivered' ? 'delivered' : o.fulfilment_status === 'dispatched' ? 'dispatched' : 'paid';
   const sets = { payment_status: repaid > 0 ? 'partially_refunded' : 'paid', needs_resolution: flag };
   if (['refunded', 'refund_pending'].includes(o.status) && R.canMove(o.status, back)) await move(env, o, back, 'provider', 'refund_reversed', sets, { refund: rr.id, provider_refund: ref, reason: re.failure_reason || re.status });
   else { await run(env, 'UPDATE checkout_orders SET payment_status = ?, needs_resolution = ?, updated_at = ? WHERE id = ?', sets.payment_status, flag, now(), o.id); await event(env, o.id, 'provider', 'refund_reversed', o.status, o.status, { refund: rr.id, provider_refund: ref }); }
   await run(env, "UPDATE artwork_sales SET released_at = NULL, released_reason = NULL WHERE order_id = ? AND released_reason = 'fully refunded'", o.id);   // the buyer still holds the sale
+  await reflagShortfall(env, o.id);
   await notify(env, await getOrder(env, o.id), 'refund_reversed', `Stripe reversed a refund on PlotArt order ${o.reference} after first confirming it (${re.failure_reason || re.status}). The money is back in the seller's Stripe balance and the buyer has NOT been repaid. Repay the buyer by one route only: a new refund through PlotArt, or a direct repayment by the seller that PlotArt records with evidence.`);
 }
 /* Backstop for missed events: a refund can fail days after succeeding, so recently succeeded refunds are re-read. */
@@ -938,6 +969,130 @@ async function recheckSucceededRefunds(env) {
     try { const re = await S.getRefund(env, { account: rr.provider_account, id: rr.provider_refund_id }); if (['failed', 'canceled'].includes(re.status)) { await reverseRefund(env, rr, re); reversed++; } } catch { /* next sweep */ }
   }
   return reversed;
+}
+/* ---------------------------------------------------------------- Fee Model B: PlotArt absorbs Stripe's processing cost
+   Founder decision (17 Nov 2026). On an order that carries PlotArt commission, the artist's combined deduction for PlotArt
+   commission and Stripe payment processing must not exceed the commission. PlotArt therefore reimburses Stripe's ACTUAL
+   processing fee and the VAT Stripe charges on it — on the whole payment, delivery included — by a partial refund of its
+   own application fee, once Stripe has recorded the fee (it does so asynchronously). Commission stays calculated on the
+   artwork only and is booked in full; the reimbursement is a separate ledger line, so commission records are unchanged.
+   One pot: commission refunds owed under PA-GAA 9 and processing reimbursements are both paid from the application fee,
+   so together they can never exceed it, and each is computed against what has already been returned (no double return).
+   If what PlotArt owes the artist exceeds what is left of the application fee, the difference is a SHORTFALL: it cannot be
+   paid through Stripe from this order, is flagged, and must be paid by PlotArt directly (e.g. bank transfer) and recorded.
+   Not covered: Stripe's dispute fees, add-on fees (e.g. paid Radar plans, currency conversion) and any other charge. */
+const NOT_PROCESSING = /radar|currency|conversion|billing|invoic|tax calculation|identity|instant payout/i;
+export function processingFromBalance(bt) {
+  const lines = (bt && bt.fee_details) || [];
+  const fees = lines.filter(l => l.type === 'stripe_fee');
+  const proc = fees.filter(l => !NOT_PROCESSING.test(l.description || '')).reduce((a, l) => a + l.amount, 0);
+  const other = fees.filter(l => NOT_PROCESSING.test(l.description || '')).reduce((a, l) => a + l.amount, 0);
+  const vatAll = lines.filter(l => l.type === 'tax').reduce((a, l) => a + l.amount, 0);
+  const vat = other ? Math.round(vatAll * proc / (proc + other || 1)) : vatAll;   // VAT apportioned only if non-processing fees are present
+  return { balance_transaction: bt.id, currency: bt.currency, stripe_fee: proc, vat, cost: proc + vat, excluded_fees: other, excluded_vat: vatAll - vat,
+    descriptions: lines.map(l => `${l.type}: ${l.description || ''}`.slice(0, 80)) };
+}
+async function feePot(env, o) {
+  const r = await one(env, `SELECT COALESCE(SUM(CASE WHEN kind = 'commission_refund' THEN -amount_cents END), 0) AS commission_refunded,
+    COALESCE(SUM(CASE WHEN kind = 'processing_reimbursement' THEN amount_cents END), 0) AS reimbursed,
+    COALESCE(SUM(CASE WHEN kind = 'processing_shortfall_paid' THEN amount_cents END), 0) AS shortfall_paid FROM order_ledger WHERE order_id = ?`, o.id);
+  return { ...r, left: Math.max(0, (o.commission_cents || 0) - r.commission_refunded - r.reimbursed) };
+}
+const eur = c => `EUR ${(c / 100).toFixed(2)}`;
+async function reflagShortfall(env, id) {
+  const o = await getOrder(env, id), p = J(o.processing) || {}, owed = (p.shortfall_cents || 0) - (p.shortfall_paid_cents || 0);
+  if (owed > 0 && !(o.needs_resolution || '').includes('PlotArt owes the artist'))
+    await run(env, 'UPDATE checkout_orders SET needs_resolution = ?, updated_at = ? WHERE id = ?', `PlotArt owes the artist ${eur(owed)} that cannot be paid from this order's application fee. PlotArt must pay it directly (for example by bank transfer) and record it with "Record shortfall paid".` + (o.needs_resolution ? ` | ${o.needs_resolution}` : ''), now(), id);
+}
+/* Records an amount PlotArt owes the artist that cannot be paid from the application fee. Idempotent per key. */
+async function addShortfall(env, o, key, cents, why) {
+  if (!(cents > 0)) return;
+  const cur = await getOrder(env, o.id), p = J(cur.processing) || {};
+  p.shortfall_items = p.shortfall_items || {};
+  if (p.shortfall_items[key]) return;
+  p.shortfall_items[key] = { cents, why, at: now() };
+  p.shortfall_cents = Object.values(p.shortfall_items).reduce((a, x) => a + x.cents, 0);
+  const owed = p.shortfall_cents - (p.shortfall_paid_cents || 0);
+  const flag = `PlotArt owes the artist ${eur(owed)} that cannot be paid from this order's application fee (${why}). PlotArt must pay it directly (for example by bank transfer) and record it with "Record shortfall paid". Stripe cannot pay it from this order.`;
+  await env.DB.batch([st(env, 'UPDATE checkout_orders SET processing = ?, needs_resolution = ?, updated_at = ? WHERE id = ?', JSON.stringify(p), flag, now(), o.id),
+    evSt(env, o.id, 'system', 'processing_shortfall', cur.status, cur.status, { key, cents, why })]);
+}
+async function ensureCharge(env, o) {
+  if (o.charge_id && o.application_fee_id) return o;
+  const p = await S.getPaymentIntent(env, { account: o.provider_account, id: o.payment_intent });
+  const ch = p.latest_charge && typeof p.latest_charge === 'object' ? p.latest_charge : null;
+  if (ch) await run(env, 'UPDATE checkout_orders SET charge_id = COALESCE(charge_id, ?), application_fee_id = COALESCE(application_fee_id, ?), updated_at = ? WHERE id = ?',
+    ch.id, typeof ch.application_fee === 'string' ? ch.application_fee : ch.application_fee && ch.application_fee.id || null, now(), o.id);
+  return getOrder(env, o.id);
+}
+/* Reimburses Stripe's actual processing cost for a paid, commission-bearing order. Safe to call any number of times. */
+export async function reconcileProcessing(env, o, actor = 'system') {
+  if (!o || !o.payment_intent || !(o.commission_cents > 0)) return { status: 'not_applicable' };
+  o = await ensureCharge(env, o);
+  const p0 = J(o.processing) || {};
+  if (!o.charge_id || !o.application_fee_id) { await run(env, 'UPDATE checkout_orders SET processing = ?, updated_at = ? WHERE id = ?', JSON.stringify({ ...p0, status: 'awaiting_fee' }), now(), o.id); return { status: 'awaiting_fee' }; }
+  let p = p0;
+  if (!p.balance_transaction) {
+    const ch = await S.getCharge(env, { account: o.provider_account, id: o.charge_id, expandBalance: true });
+    const bt = ch.balance_transaction && typeof ch.balance_transaction === 'object' ? ch.balance_transaction : null;
+    if (!bt) { await run(env, 'UPDATE checkout_orders SET processing = ?, updated_at = ? WHERE id = ?', JSON.stringify({ ...p0, status: 'awaiting_fee' }), now(), o.id); return { status: 'awaiting_fee' }; }
+    p = { ...p0, ...processingFromBalance(bt), recorded_at: now() };
+    await env.DB.batch([st(env, 'UPDATE checkout_orders SET processing = ?, updated_at = ? WHERE id = ?', JSON.stringify(p), now(), o.id),
+      ledgerSt(env, o.id, 'processing_fee', p.cost, p.balance_transaction, `Stripe processing fee ${eur(p.stripe_fee)} + VAT on it ${eur(p.vat)}, charged by Stripe to the seller's balance`)]);
+    if (p.excluded_fees) await event(env, o.id, 'system', 'processing_excluded_fees', o.status, o.status, { excluded_fees: p.excluded_fees, excluded_vat: p.excluded_vat, descriptions: p.descriptions });
+  }
+  const pot = await feePot(env, o), due = Math.max(0, p.cost - pot.reimbursed);
+  const pay = Math.min(due, pot.left);
+  if (pay > 0) {
+    const fr = await S.refundFee(env, { fee: o.application_fee_id, amount: pay, idem: `plotart-proc-${o.id}-${p.cost}-${pot.reimbursed}`, metadata: { plotart_order: o.id, plotart_kind: 'processing_reimbursement' } });
+    await env.DB.batch([ledgerSt(env, o.id, 'processing_reimbursement', pay, fr.id, `PlotArt reimburses Stripe's processing fee and VAT on it (fee model B)`),
+      evSt(env, o.id, actor, 'processing_reimbursed', o.status, o.status, { amount: pay, fee_refund: fr.id, cost: p.cost })]);
+  }
+  if (due - pay > 0) await addShortfall(env, o, 'processing', due - pay, `Stripe's processing cost ${eur(p.cost)} exceeds what is left of the commission`);
+  const after = await feePot(env, o), cur = J((await getOrder(env, o.id)).processing) || p;
+  const status = after.reimbursed >= p.cost ? 'reimbursed' : 'shortfall';
+  await run(env, 'UPDATE checkout_orders SET processing = ?, updated_at = ? WHERE id = ?', JSON.stringify({ ...cur, ...p, shortfall_items: cur.shortfall_items, shortfall_cents: cur.shortfall_cents, shortfall_paid_cents: cur.shortfall_paid_cents, reimbursed_cents: after.reimbursed, status }), now(), o.id);
+  return { status, cost: p.cost, reimbursed: after.reimbursed };
+}
+/* The founder records a shortfall PlotArt paid the artist outside Stripe. */
+export async function recordShortfallPaid(env, founder, id, b) {
+  await requireInstalled(env);
+  const o = await getOrder(env, id);
+  if (!o) throw new Bad('Not found', 404);
+  const p = J(o.processing) || {}, owed = (p.shortfall_cents || 0) - (p.shortfall_paid_cents || 0);
+  const amt = Number(b && b.amount_cents), evidence = String((b && b.evidence) || '').trim();
+  if (!(owed > 0)) throw new Bad('PlotArt owes nothing outside Stripe on this order', 409);
+  if (!Number.isInteger(amt) || amt <= 0 || amt > owed) throw new Bad(`Enter the amount paid, up to ${eur(owed)}`, 400);
+  if (evidence.length < 10) throw new Bad('Describe the payment (method, date, reference)', 400);
+  p.shortfall_paid_cents = (p.shortfall_paid_cents || 0) + amt;
+  const left = p.shortfall_cents - p.shortfall_paid_cents;
+  await env.DB.batch([ledgerSt(env, o.id, 'processing_shortfall_paid', amt, rid('sp'), evidence.slice(0, 300)),
+    st(env, 'UPDATE checkout_orders SET processing = ?, needs_resolution = ?, updated_at = ? WHERE id = ?', JSON.stringify(p),
+      left > 0 ? `PlotArt still owes the artist ${eur(left)} outside Stripe on this order` : null, now(), o.id),
+    evSt(env, o.id, founder, 'shortfall_paid', o.status, o.status, { amount: amt, evidence: evidence.slice(0, 300) })]);
+  return orderDetail(env, await getOrder(env, o.id), 'founder');
+}
+/* The artist's statement for one order: every amount separated, nothing netted silently. All cents. */
+export function statement(o, ledger) {
+  const sum = (...k) => ledger.filter(l => k.includes(l.kind)).reduce((a, l) => a + l.amount_cents, 0);
+  const p = J(o.processing) || {};
+  const gross = o.amount_received_cents ?? (o.paid_at ? (o.artwork_cents || 0) + (o.delivery_cents || 0) : 0);
+  if (!gross) return null;
+  const commission = o.commission_cents || 0, commission_refunded = -sum('commission_refund');
+  const processing_fee = p.stripe_fee || 0, processing_vat = p.vat || 0;
+  const reimbursed = sum('processing_reimbursement'), shortfall_paid = sum('processing_shortfall_paid');
+  const shortfall_owed = Math.max(0, (p.shortfall_cents || 0) - shortfall_paid);
+  const refunded_to_buyer = -sum('artwork_refund', 'artwork_refund_reversed', 'delivery_refund', 'delivery_refund_reversed', 'external_refund');
+  const disputes = sum('dispute', 'dispute_reinstated');
+  const other_fees = p.excluded_fees ? p.excluded_fees + (p.excluded_vat || 0) : 0;   // e.g. add-on fees on the same payment: charged by Stripe, not reimbursed
+  const net = gross - commission + commission_refunded - processing_fee - processing_vat + reimbursed + shortfall_paid - refunded_to_buyer + disputes - other_fees;
+  return { currency: o.currency || 'eur', gross_payment: gross, of_which_artwork: o.artwork_cents, of_which_delivery: o.delivery_cents || 0,
+    plotart_commission: commission, commission_refunded, stripe_processing_fee: processing_fee, vat_on_processing_fee: processing_vat,
+    processing_reimbursed_by_plotart: reimbursed, shortfall_paid_by_plotart: shortfall_paid, shortfall_still_owed_by_plotart: shortfall_owed,
+    refunded_to_buyer, disputes_net: disputes, net_proceeds: net, net_proceeds_after_shortfall_owed: net + shortfall_owed,
+    processing_status: o.commission_cents > 0 ? (p.status || 'awaiting_fee') : 'not_applicable',
+    other_stripe_fees_not_reimbursed: other_fees,
+    not_included: 'Stripe dispute fees and payout fees are charged by Stripe to the seller separately and are not shown or reimbursed here; other Stripe fees on the payment (shown above) are not reimbursed by PlotArt.' };
 }
 async function feeRefund(env, founder, o, { fee, reason, refundId = null, providerRefund = null }) {
   let feeId = o.application_fee_id;
@@ -951,11 +1106,20 @@ async function feeRefund(env, founder, o, { fee, reason, refundId = null, provid
     await run(env, 'UPDATE checkout_orders SET needs_resolution = ?, updated_at = ? WHERE id = ?', `commission refund of ${fee} cents still due (application fee not yet available)`, now(), o.id);
     return orderDetail(env, await getOrder(env, o.id), 'founder');
   }
-  const idem = `plotart-feerefund-${refundId || o.id + '-commission-' + fee}`;
-  const fr = await S.refundFee(env, { fee: feeId, amount: fee, idem, metadata: { plotart_order: o.id, reason: reason.slice(0, 200) } });
-  await env.DB.batch([ledgerSt(env, o.id, 'commission_refund', -fee, fr.id, reason),
+  // Model B: the processing reimbursement and commission refunds share the application fee. What cannot be returned
+  // from it any more becomes a shortfall PlotArt pays directly (never silently left with the artist, never paid twice).
+  const pot = await feePot(env, o), pay = Math.min(fee, pot.left), key = refundId || `commission-${fee}-${pot.commission_refunded}`;
+  if (fee - pay > 0) await addShortfall(env, o, `commission:${key}`, fee - pay, `commission refund of ${eur(fee)} owed under the artist's agreement exceeds what is left of the application fee after the processing reimbursement`);
+  if (pay <= 0) {
+    await env.DB.batch([...(refundId ? [st(env, "UPDATE order_refunds SET fee_refund_id = ?, updated_at = ? WHERE id = ?", `none:shortfall:${refundId}`, now(), refundId)] : []),
+      evSt(env, o.id, founder, 'commission_refund_shortfall', o.status, o.status, { amount: fee, refund: providerRefund })]);
+    return orderDetail(env, await getOrder(env, o.id), 'founder');
+  }
+  const idem = `plotart-feerefund-${refundId || o.id + '-commission-' + fee}-${pay}`;
+  const fr = await S.refundFee(env, { fee: feeId, amount: pay, idem, metadata: { plotart_order: o.id, plotart_kind: 'commission_refund', reason: reason.slice(0, 200) } });
+  await env.DB.batch([ledgerSt(env, o.id, 'commission_refund', -pay, fr.id, reason),
     ...(refundId ? [st(env, 'UPDATE order_refunds SET fee_refund_id = ?, updated_at = ? WHERE id = ?', fr.id, now(), refundId)] : []),
-    evSt(env, o.id, founder, 'commission_refunded', o.status, o.status, { amount: fee, fee_refund: fr.id, refund: providerRefund })]);
+    evSt(env, o.id, founder, 'commission_refunded', o.status, o.status, { amount: pay, owed: fee, fee_refund: fr.id, refund: providerRefund })]);
   if (!refundId) await run(env, "UPDATE checkout_orders SET needs_resolution = NULL, updated_at = ? WHERE id = ? AND needs_resolution LIKE 'dispute lost%'", now(), o.id);
   return orderDetail(env, await getOrder(env, o.id), 'founder');
 }
@@ -967,6 +1131,7 @@ async function settleAfterRefund(env, founder, id) {
     if (R.canMove(o.status, 'refunded')) await move(env, o, 'refunded', founder, 'refunded', { payment_status: 'refunded', needs_resolution: null });
     // a fully refunded sale no longer holds the original; the artist decides when (and whether) to offer it again
     await run(env, "UPDATE artwork_sales SET released_at = ?, released_reason = 'fully refunded' WHERE order_id = ? AND released_at IS NULL", now(), id);
+    await reflagShortfall(env, id);   // settling the refund never hides money PlotArt still owes the artist
   } else {
     await run(env, "UPDATE checkout_orders SET payment_status = 'partially_refunded', updated_at = ? WHERE id = ?", now(), id);
     if (o.status === 'refund_pending') {
@@ -1036,11 +1201,16 @@ export async function sweep(env) {
   }
   let deferred_replayed = 0;
   try { deferred_replayed = await replayDeferred(env); } catch { /* next sweep */ }
+  let processing_reconciled = 0;
+  for (const o of await all(env, `SELECT * FROM checkout_orders WHERE payment_intent IS NOT NULL AND commission_cents > 0
+      AND (processing IS NULL OR json_extract(processing, '$.status') = 'awaiting_fee') ORDER BY paid_at LIMIT 25`)) {
+    try { const r = await reconcileProcessing(env, o); if (r.status !== 'awaiting_fee') processing_reconciled++; } catch { /* next sweep */ }
+  }
   let refunds_reversed = 0;
   try { refunds_reversed = await recheckSucceededRefunds(env); } catch { /* next sweep */ }
   let refunds = null;
   try { refunds = await pollPendingRefunds(env); } catch (e) { refunds = { error: String(e.message || e).slice(0, 120) }; }
-  return { reservations_released: released.meta.changes, quotes_expired: expired, deferred_replayed, refunds_reversed, ...refunds, ...(await retention(env)) };
+  return { reservations_released: released.meta.changes, quotes_expired: expired, deferred_replayed, refunds_reversed, processing_reconciled, ...refunds, ...(await retention(env)) };
 }
 
 /* Retention (spec "Records and retention"). Each period has a stated basis and a fixed start; nothing is ever deleted

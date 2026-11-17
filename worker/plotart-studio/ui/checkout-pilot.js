@@ -20,12 +20,32 @@
     excess_cents: null, exclusions: null, cover_period: '', claims_contact: '', insured_party: 'transporter', cover_confirmation_ref: '', cover_confirmed_by: '', cover_confirmed_on: new Date().toISOString().slice(0, 10), delivery_window: '', tracking: '', signed_receipt: true, condition_photos: true,
     return_route: '', shipment_confirmation_ref: '', shipment_confirmed_by: '', shipment_confirmed_on: new Date().toISOString().slice(0, 10) };
 
+  /* The artist's statement: every amount on its own line, nothing netted silently (fee model B). */
+  function statementTable(st) {
+    const row = (label, c, sign = '', strong = false) => c || strong ? `<tr><td>${strong ? '<strong>' : ''}${label}${strong ? '</strong>' : ''}</td><td style="text-align:right">${sign}${eur(Math.abs(c))}</td></tr>` : '';
+    return `<details open><summary>Statement</summary><table class="st-table" style="max-width:34rem">
+      ${row('Gross payment from the buyer', st.gross_payment, '', true)}
+      ${row('of which artwork', st.of_which_artwork)}${row('of which delivery', st.of_which_delivery)}
+      ${row('PlotArt commission (on the artwork only)', st.plotart_commission, '− ')}
+      ${row('Commission refunded by PlotArt', st.commission_refunded, '+ ')}
+      ${row('Stripe processing fee (whole payment)', st.stripe_processing_fee, '− ')}
+      ${row('VAT charged by Stripe on that fee', st.vat_on_processing_fee, '− ')}
+      ${row('Processing fee and VAT reimbursed by PlotArt', st.processing_reimbursed_by_plotart, '+ ')}
+      ${row('Paid directly by PlotArt (shortfall)', st.shortfall_paid_by_plotart, '+ ')}
+      ${row('Other Stripe fees on this payment (not reimbursed)', st.other_stripe_fees_not_reimbursed, '− ')}
+      ${row('Refunded to the buyer', st.refunded_to_buyer, '− ')}
+      ${row('Disputes (net)', st.disputes_net, st.disputes_net < 0 ? '− ' : '+ ')}
+      ${row('Net proceeds', st.net_proceeds, st.net_proceeds < 0 ? '− ' : '', true)}
+      ${st.shortfall_still_owed_by_plotart ? row('Still owed by PlotArt directly', st.shortfall_still_owed_by_plotart, '+ ', true) : ''}
+      </table><small class="st-muted">Processing: ${esc(String(st.processing_status).replace(/_/g, ' '))}. ${esc(st.not_included)}</small></details>`;
+  }
   function orderCard(o) {
     const d = o.delivery;
     let h = `<section class="st-card" data-id="${esc(o.id)}"><h3>${esc(o.reference)} · ${esc(o.artwork && o.artwork.title)} <small class="st-muted">${esc(o.status.replace(/_/g, ' '))}</small></h3>
       <p>Artwork ${eur(o.artwork_cents)} · delivery ${eur(o.delivery_cents)} · total ${eur(o.total_cents)} · PlotArt commission ${o.commission_bp == null ? '—' : (o.commission_bp / 100).toFixed(2) + '% = ' + eur(o.commission_cents)}
       ${o.commission_basis ? `<br><small class="st-muted">Basis: ${esc(o.commission_basis.replace(/_/g, ' '))}. ${esc(o.processing_fees)}</small>` : ''}</p>
       ${o.needs_resolution ? `<p class="st-warn"><strong>Needs resolution:</strong> ${esc(o.needs_resolution)}</p>` : ''}
+      ${o.statement ? statementTable(o.statement) : ''}
       <p class="st-muted">Quote version ${o.quote_version}${o.artist_approved_version === o.quote_version ? ' · approved by the artist' : ''}${o.quote_expires_at ? ' · expires ' + esc(o.quote_expires_at) : ''} · payment ${esc(o.payment_status)} · fulfilment ${esc(o.fulfilment_status)} · dispute ${esc(o.dispute_status)}</p>`;
     if (d) h += `<details><summary>Delivery and cover</summary><pre style="white-space:pre-wrap">${esc(JSON.stringify(d, null, 2))}</pre></details>`;
     if (founder) {
@@ -43,6 +63,8 @@
       if (o.payment_intent) b.push(['refund', 'Refund…']);
       if (['delivered', 'refunded'].includes(o.status)) b.push(['close', 'Close']);
       if (o.payment_intent) b.push(['hold', 'Legal hold…'], ['repaid', 'Record repayment outside Stripe…']);
+      if (o.payment_intent && o.commission_cents > 0) b.push(['processing', 'Reconcile processing fee']);
+      if (o.statement && o.statement.shortfall_still_owed_by_plotart) b.push(['shortfallpaid', 'Record shortfall paid…']);
       h += `<p>${b.map(([k, t]) => `<button data-a="${k}">${t}</button>`).join(' ')}</p>`;
     } else if (o.status === 'awaiting_artist' && o.artist_approved_version !== o.quote_version) {
       h += `<form data-f="approve"><p>Please check this quote carefully. Approving confirms each of the following for <em>this shipment</em>:</p>
@@ -107,6 +129,7 @@
         await api('POST', `${base}/orders/${id}/refund`, { artwork_cents: art, delivery_cents: del, reason }); }
       else if (a === 'hold') await api('POST', `${base}/orders/${id}/hold`, { basis: prompt('Basis: dispute, claim, revenue_enquiry, investigation, litigation, data_subject_request or other'), reason: prompt('Specific reason'), review_by: prompt('Review by (YYYY-MM-DD, within 12 months)') });
       else if (a === 'repaid') await api('POST', `${base}/orders/${id}/repaid`, { artwork_cents: Number(prompt('Artwork amount repaid (cents)', '0')), delivery_cents: Number(prompt('Delivery amount repaid (cents)', '0')), evidence: prompt('Evidence: transfer reference, date, buyer confirmation') });
+      else if (a === 'shortfallpaid') await api('POST', `${base}/orders/${id}/shortfallpaid`, { amount_cents: Number(prompt('Amount PlotArt paid the artist directly (cents)', '0')), evidence: prompt('Evidence: method, date, reference') });
       else if (a === 'cancel') await api('POST', `${base}/orders/${id}/cancel`, { reason: prompt('Reason') || '' });
       else if (a === 'decline') await api('POST', `${base}/orders/${id}/approve`, { decision: 'decline', quote_version: j.orders.find(o => o.id === id).quote_version, note: prompt('What should change?') || '' });
       else await api('POST', `${base}/orders/${id}/${a}`, {});
