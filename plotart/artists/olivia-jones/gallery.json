@@ -1,0 +1,821 @@
+{
+ "artist": {
+  "bio": "Olivia Jones is an Irish artist, living along the west coast of Ireland in Co. Sligo.  From an early age Olivia was influenced by form and structure as she explored materials in her father’s wood workshop. This inspired her to follow a career in design, and after graduating with a BA(Hons) in Interior Architecture & Design from Sligo ATU, she worked for several years in design offices in Ireland, Europe and Australia, including the stage design department in the Théâtre Royal de la Monnaie, Brussels.\n\nFollowing a career in architecture, Olivia pivoted to a role in environmental engagement.  This unique combination of experiences can be seen in her work, often showing natural and organic shapes restrained with architectural elements.\n\nOlivia’s work has been exhibited nationally in exhibitions such as, the Ballinglen Biennial International Exhibition, the Hunt Museum Open Submission Exhibition and Outset's OXO winter show.  Internationally, she has exhibited in the & Gallery, Edinburgh and the Lido Stores Gallery, Margate.  Her paintings are held in both private and corporate collections.",
+  "county": "Sligo",
+  "display_name": "Olivia Jones",
+  "founding": true,
+  "instagram": null,
+  "medium": "painting",
+  "open_for_commissions": true,
+  "open_to": [
+   "exhibitions",
+   "living_gallery",
+   "art_for_hire",
+   "mobile_gallery",
+   "venues",
+   "commissions",
+   "talks"
+  ],
+  "portrait": {
+   "alt": "The artist and recent artworks.",
+   "aspect": 1.5,
+   "derivatives": [
+    {
+     "file": "portrait-600.webp",
+     "long_edge": 600,
+     "pixels": [
+      600,
+      400
+     ]
+    }
+   ],
+   "photo_credit": null,
+   "pixels": [
+    5760,
+    3840
+   ],
+   "role": "portrait"
+  },
+  "practice": "Visual Artist",
+  "slug": "olivia-jones",
+  "statement": "Olivia Jones’ practice pairs hard-edge geometric abstraction with linear perspective. Using sharp, converging lines and vanishing points, she constructs passages, thresholds, and otherworldly spaces that create tension between rigid, calculated geometry and organic, gestural underlayers.",
+  "website": "https://www.oliviajonesart.com/"
+ },
+ "provenance_sources": [
+  {
+   "dhash": "91313331310d0d8d",
+   "source_sha256": "a034e50954742c44bd9a84540ac1bb3684bf6c4e7585fdbec35eecbc3d580dcb",
+   "stem": "portrait"
+  },
+  {
+   "dhash": "33f0aea8e8793357",
+   "source_sha256": "0701fcf79bb29d91b916359026e258943244ae3964ed5ed306b39f85e074e6fb",
+   "stem": "modern-love-3-1"
+  },
+  {
+   "dhash": "fffef0f0e0e4fc7c",
+   "source_sha256": "3943835f6845ee0fb52f9126a525ec6bbe02a2cdd4316b18a8881043241ad47b",
+   "stem": "modern-love-3-2"
+  },
+  {
+   "dhash": "a0c88989c9c9c860",
+   "source_sha256": "67b01aac5230dde7cba3a888cbb921b90e8eaa2a1b6c450e25e1424a337e86f2",
+   "stem": "candy-flippin-1"
+  },
+  {
+   "dhash": "8080a4e4e4a48080",
+   "source_sha256": "ce74f743b429a24a51ea87522c01372d2e026fb02e3e1d35df743822a5a000e9",
+   "stem": "candy-flippin-2"
+  },
+  {
+   "dhash": "087981a9a9a9c139",
+   "source_sha256": "02a72deb31ec099bd7cc482a01ebf2d8a32dfc74d11c1497677b60e6543e915b",
+   "stem": "candy-flippin-3"
+  },
+  {
+   "dhash": "89a1a3a39d1d0608",
+   "source_sha256": "0637877ace04cc58df25b020a4478ca6100141163c5f5e13d1a4d0701d1fb15d",
+   "stem": "out-of-reach-1"
+  },
+  {
+   "dhash": "0000404008848000",
+   "source_sha256": "63cbddeb8cc08f73c6b1a2db8a126d7df36d4160532d8813639e534c270d21f8",
+   "stem": "out-of-reach-2"
+  },
+  {
+   "dhash": "0f073012000080c0",
+   "source_sha256": "69448ce49bda0a5667fbae1cbfd7e90a4129a7a810f147c74b682000b8a27cc0",
+   "stem": "out-of-reach-3"
+  },
+  {
+   "dhash": "9094989890f0ec72",
+   "source_sha256": "fbc9fa61345d0218e9f1a2bba853d6c907f21ff761b41fbedd2c2ce658d0fea6",
+   "stem": "mmm-skyscraper-i-love-you-1"
+  },
+  {
+   "dhash": "6f8e868e9ccc68a4",
+   "source_sha256": "7897920668201ff06e56585d9f11e124b668ccc347a2895d9eb25c5f942799f6",
+   "stem": "mmm-skyscraper-i-love-you-2"
+  },
+  {
+   "dhash": "00607c1711595b7f",
+   "source_sha256": "eeafea2bb54606a944ae0178252eb6a853a8956cd5d6f9a0ab2e0adf964c7c0b",
+   "stem": "narnia-1"
+  },
+  {
+   "dhash": "70f2f2f2d2f2f2f0",
+   "source_sha256": "2d9c1164bd8aeceb572ba38e5089658ee6a5c177d63c2022e72326846666b9ef",
+   "stem": "narnia-2"
+  },
+  {
+   "dhash": "e0f4e0fccf8cace0",
+   "source_sha256": "907d2e4d1b7a2804d59ab773be2f998235c4cdc82bfc7bd7d89eda65c5c20fa0",
+   "stem": "past-tense-1"
+  },
+  {
+   "dhash": "f391480727271f3e",
+   "source_sha256": "c573ee628f8960e378a48360a61bd973deecf109be37156b961b098e7917bb71",
+   "stem": "past-tense-2"
+  },
+  {
+   "dhash": "00081c60b2d2c03d",
+   "source_sha256": "87b593c03a6ece35fe4fc4594207da07a6da6ee1a028678c15de9219b3ba2fc9",
+   "stem": "streaming-pink-1"
+  },
+  {
+   "dhash": "fccc2c4cccccccfc",
+   "source_sha256": "73ca1a1a01b03d53bf48af1005f2ef7ad9aec285165be5763a12fb2631435bfc",
+   "stem": "streaming-pink-2"
+  },
+  {
+   "dhash": "1c1c1c1c1cbcf080",
+   "source_sha256": "5cd5099e302e88844780ae084cfd95f7760eda29b107b70be25d288b15270198",
+   "stem": "streaming-pink-3"
+  }
+ ],
+ "publication": {
+  "approved_at": "2026-11-17T22:09:36.034Z",
+  "approved_by": "founder",
+  "licence_accepted_at": "2026-11-17T19:20:21.556Z",
+  "licence_version": "PA-GPIL-2026-11",
+  "permission_ref": "PA-PERM-aaxjweseh6t",
+  "state": "approved",
+  "test_note": null,
+  "version": "v1"
+ },
+ "schema": "plotnua.plotart.gallery-package.v1",
+ "works": [
+  {
+   "ai_founder_decision": null,
+   "ai_involvement": "none",
+   "ai_note": null,
+   "availability": "available",
+   "d_cm": 4,
+   "description": null,
+   "h_cm": 50,
+   "id": "w4xytln2tm7",
+   "images": [
+    {
+     "alt": "Pink, burgundy and gold abstract architectural painting",
+     "aspect": 0.99463,
+     "derivatives": [
+      {
+       "file": "modern-love-3-1-600.webp",
+       "long_edge": 600,
+       "pixels": [
+        597,
+        600
+       ]
+      },
+      {
+       "file": "modern-love-3-1-1200.webp",
+       "long_edge": 1200,
+       "pixels": [
+        1194,
+        1200
+       ]
+      },
+      {
+       "file": "modern-love-3-1-2000.webp",
+       "long_edge": 2000,
+       "pixels": [
+        1989,
+        2000
+       ]
+      }
+     ],
+     "photo_credit": null,
+     "pixels": [
+      2962,
+      2978
+     ],
+     "role": "main"
+    },
+    {
+     "alt": "Side view of Pink, burgundy and gold abstract architectural painting",
+     "aspect": 0.68706,
+     "derivatives": [
+      {
+       "file": "modern-love-3-2-600.webp",
+       "long_edge": 600,
+       "pixels": [
+        412,
+        600
+       ]
+      },
+      {
+       "file": "modern-love-3-2-2000.webp",
+       "long_edge": 2000,
+       "pixels": [
+        1374,
+        2000
+       ]
+      }
+     ],
+     "photo_credit": null,
+     "pixels": [
+      2268,
+      3301
+     ],
+     "role": "view"
+    }
+   ],
+   "materials": null,
+   "medium": "Acrylic on canvas",
+   "price_eur": 650,
+   "price_on_request": false,
+   "slug": "modern-love-3",
+   "title": "Modern Love 3",
+   "w_cm": 50,
+   "year": 2026
+  },
+  {
+   "ai_founder_decision": null,
+   "ai_involvement": "none",
+   "ai_note": null,
+   "availability": "available",
+   "d_cm": 4,
+   "description": null,
+   "h_cm": 50,
+   "id": "woct8wt0zk6",
+   "images": [
+    {
+     "alt": "Pink and green abstract architectural acrylic painting",
+     "aspect": 1.21011,
+     "derivatives": [
+      {
+       "file": "candy-flippin-1-600.webp",
+       "long_edge": 600,
+       "pixels": [
+        600,
+        496
+       ]
+      },
+      {
+       "file": "candy-flippin-1-1200.webp",
+       "long_edge": 1200,
+       "pixels": [
+        1200,
+        992
+       ]
+      },
+      {
+       "file": "candy-flippin-1-2000.webp",
+       "long_edge": 2000,
+       "pixels": [
+        2000,
+        1653
+       ]
+      }
+     ],
+     "photo_credit": null,
+     "pixels": [
+      4285,
+      3541
+     ],
+     "role": "main"
+    },
+    {
+     "alt": "Side view of pink and green abstract architectural acrylic painting",
+     "aspect": 0.77933,
+     "derivatives": [
+      {
+       "file": "candy-flippin-2-600.webp",
+       "long_edge": 600,
+       "pixels": [
+        468,
+        600
+       ]
+      },
+      {
+       "file": "candy-flippin-2-2000.webp",
+       "long_edge": 2000,
+       "pixels": [
+        1559,
+        2000
+       ]
+      }
+     ],
+     "photo_credit": null,
+     "pixels": [
+      2797,
+      3589
+     ],
+     "role": "view"
+    },
+    {
+     "alt": "Pink and green abstract architectural acrylic painting",
+     "aspect": 0.82025,
+     "derivatives": [
+      {
+       "file": "candy-flippin-3-600.webp",
+       "long_edge": 600,
+       "pixels": [
+        492,
+        600
+       ]
+      },
+      {
+       "file": "candy-flippin-3-2000.webp",
+       "long_edge": 2000,
+       "pixels": [
+        1640,
+        2000
+       ]
+      }
+     ],
+     "photo_credit": null,
+     "pixels": [
+      2957,
+      3605
+     ],
+     "role": "view"
+    }
+   ],
+   "materials": null,
+   "medium": "Acrylic on canvas",
+   "price_eur": 700,
+   "price_on_request": false,
+   "slug": "candy-flippin",
+   "title": "Candy Flippin'",
+   "w_cm": 60,
+   "year": 2025
+  },
+  {
+   "ai_founder_decision": null,
+   "ai_involvement": "none",
+   "ai_note": null,
+   "availability": "available",
+   "d_cm": 4,
+   "description": null,
+   "h_cm": 50,
+   "id": "wjji05wjns5",
+   "images": [
+    {
+     "alt": "Green and violet abstract architectural painting",
+     "aspect": 0.9978,
+     "derivatives": [
+      {
+       "file": "out-of-reach-1-600.webp",
+       "long_edge": 600,
+       "pixels": [
+        599,
+        600
+       ]
+      },
+      {
+       "file": "out-of-reach-1-1200.webp",
+       "long_edge": 1200,
+       "pixels": [
+        1197,
+        1200
+       ]
+      },
+      {
+       "file": "out-of-reach-1-2000.webp",
+       "long_edge": 2000,
+       "pixels": [
+        1996,
+        2000
+       ]
+      }
+     ],
+     "photo_credit": null,
+     "pixels": [
+      3636,
+      3644
+     ],
+     "role": "main"
+    },
+    {
+     "alt": "Green and indigo blue abstract architectural painting",
+     "aspect": 0.66452,
+     "derivatives": [
+      {
+       "file": "out-of-reach-2-600.webp",
+       "long_edge": 600,
+       "pixels": [
+        399,
+        600
+       ]
+      },
+      {
+       "file": "out-of-reach-2-2000.webp",
+       "long_edge": 2000,
+       "pixels": [
+        1329,
+        2000
+       ]
+      }
+     ],
+     "photo_credit": null,
+     "pixels": [
+      2268,
+      3413
+     ],
+     "role": "view"
+    },
+    {
+     "alt": "Green and indigo blue abstract architectural painting",
+     "aspect": 0.88211,
+     "derivatives": [
+      {
+       "file": "out-of-reach-3-600.webp",
+       "long_edge": 600,
+       "pixels": [
+        529,
+        600
+       ]
+      },
+      {
+       "file": "out-of-reach-3-2000.webp",
+       "long_edge": 2000,
+       "pixels": [
+        1764,
+        2000
+       ]
+      }
+     ],
+     "photo_credit": null,
+     "pixels": [
+      3472,
+      3936
+     ],
+     "role": "view"
+    }
+   ],
+   "materials": null,
+   "medium": "Acrylic on canvas",
+   "price_eur": 650,
+   "price_on_request": false,
+   "slug": "out-of-reach",
+   "title": "'Out of Reach'",
+   "w_cm": 50,
+   "year": 2025
+  },
+  {
+   "ai_founder_decision": null,
+   "ai_involvement": "none",
+   "ai_note": null,
+   "availability": "available",
+   "d_cm": 4,
+   "description": null,
+   "h_cm": 50,
+   "id": "wjf9fu1ck2h",
+   "images": [
+    {
+     "alt": "Blue abstract architectural painting",
+     "aspect": 1.00399,
+     "derivatives": [
+      {
+       "file": "mmm-skyscraper-i-love-you-1-600.webp",
+       "long_edge": 600,
+       "pixels": [
+        600,
+        598
+       ]
+      },
+      {
+       "file": "mmm-skyscraper-i-love-you-1-1200.webp",
+       "long_edge": 1200,
+       "pixels": [
+        1200,
+        1195
+       ]
+      },
+      {
+       "file": "mmm-skyscraper-i-love-you-1-2000.webp",
+       "long_edge": 2000,
+       "pixels": [
+        2000,
+        1992
+       ]
+      }
+     ],
+     "photo_credit": null,
+     "pixels": [
+      3522,
+      3508
+     ],
+     "role": "main"
+    },
+    {
+     "alt": "Blue abstract architectural painting",
+     "aspect": 1.32656,
+     "derivatives": [
+      {
+       "file": "mmm-skyscraper-i-love-you-2-600.webp",
+       "long_edge": 600,
+       "pixels": [
+        600,
+        452
+       ]
+      },
+      {
+       "file": "mmm-skyscraper-i-love-you-2-2000.webp",
+       "long_edge": 2000,
+       "pixels": [
+        2000,
+        1508
+       ]
+      }
+     ],
+     "photo_credit": null,
+     "pixels": [
+      3262,
+      2459
+     ],
+     "role": "view"
+    }
+   ],
+   "materials": null,
+   "medium": "Acrylic on canvas",
+   "price_eur": 650,
+   "price_on_request": false,
+   "slug": "mmm-skyscraper-i-love-you",
+   "title": "'Mmm...Skyscraper I Love You'",
+   "w_cm": 50,
+   "year": 2024
+  },
+  {
+   "ai_founder_decision": null,
+   "ai_involvement": "none",
+   "ai_note": null,
+   "availability": "available",
+   "d_cm": 2,
+   "description": "I love giving old materials new life, especially wood. I grew up helping out in my dad's workshop and studied furniture design, so to be able to use my skills to breathe life into something that may have gone to landfill is really satisfying. The plywood from this piece was salvaged 7 years ago from the wardrobes in our house, whilst renovating.\nThe wood has lots of character from its time as a storage space, hence the name, Narnia.",
+   "h_cm": 105,
+   "id": "wj6yomr5pvb",
+   "images": [
+    {
+     "alt": "Burgundy and pink spray painted architectural composition on reclaimed plywood",
+     "aspect": 0.57815,
+     "derivatives": [
+      {
+       "file": "narnia-1-600.webp",
+       "long_edge": 600,
+       "pixels": [
+        347,
+        600
+       ]
+      },
+      {
+       "file": "narnia-1-1200.webp",
+       "long_edge": 1200,
+       "pixels": [
+        694,
+        1200
+       ]
+      },
+      {
+       "file": "narnia-1-2000.webp",
+       "long_edge": 2000,
+       "pixels": [
+        1156,
+        2000
+       ]
+      }
+     ],
+     "photo_credit": null,
+     "pixels": [
+      1879,
+      3250
+     ],
+     "role": "main"
+    },
+    {
+     "alt": "Burgundy and pink spray painted architectural composition on reclaimed plywood",
+     "aspect": 0.5625,
+     "derivatives": [
+      {
+       "file": "narnia-2-600.webp",
+       "long_edge": 600,
+       "pixels": [
+        338,
+        600
+       ]
+      },
+      {
+       "file": "narnia-2-2000.webp",
+       "long_edge": 2000,
+       "pixels": [
+        1125,
+        2000
+       ]
+      }
+     ],
+     "photo_credit": null,
+     "pixels": [
+      2268,
+      4032
+     ],
+     "role": "view"
+    }
+   ],
+   "materials": "105 x  60cm",
+   "medium": "Spray paint on reclaimed plywood",
+   "price_eur": 1200,
+   "price_on_request": false,
+   "slug": "narnia",
+   "title": "'Narnia",
+   "w_cm": 660,
+   "year": 2026
+  },
+  {
+   "ai_founder_decision": null,
+   "ai_involvement": "none",
+   "ai_note": null,
+   "availability": "available",
+   "d_cm": 4,
+   "description": null,
+   "h_cm": 80,
+   "id": "wideawx1i8r",
+   "images": [
+    {
+     "alt": "Pink and green abstract architectural painting.",
+     "aspect": 0.99716,
+     "derivatives": [
+      {
+       "file": "past-tense-1-600.webp",
+       "long_edge": 600,
+       "pixels": [
+        598,
+        600
+       ]
+      },
+      {
+       "file": "past-tense-1-1200.webp",
+       "long_edge": 1200,
+       "pixels": [
+        1197,
+        1200
+       ]
+      },
+      {
+       "file": "past-tense-1-2000.webp",
+       "long_edge": 2000,
+       "pixels": [
+        1994,
+        2000
+       ]
+      }
+     ],
+     "photo_credit": null,
+     "pixels": [
+      3514,
+      3524
+     ],
+     "role": "main"
+    },
+    {
+     "alt": "Pink and green abstract architectural acrylic painting.",
+     "aspect": 0.5625,
+     "derivatives": [
+      {
+       "file": "past-tense-2-600.webp",
+       "long_edge": 600,
+       "pixels": [
+        338,
+        600
+       ]
+      },
+      {
+       "file": "past-tense-2-2000.webp",
+       "long_edge": 2000,
+       "pixels": [
+        1125,
+        2000
+       ]
+      }
+     ],
+     "photo_credit": null,
+     "pixels": [
+      1134,
+      2016
+     ],
+     "role": "view"
+    }
+   ],
+   "materials": null,
+   "medium": "Acrylic on canvas",
+   "price_eur": 1000,
+   "price_on_request": false,
+   "slug": "past-tense",
+   "title": "'Past Tense'",
+   "w_cm": 80,
+   "year": 2025
+  },
+  {
+   "ai_founder_decision": null,
+   "ai_involvement": "none",
+   "ai_note": null,
+   "availability": "available",
+   "d_cm": 4,
+   "description": "Framed in solid poplar, with a pink line detail on frame edge.",
+   "h_cm": 50,
+   "id": "wneb5uxcw1b",
+   "images": [
+    {
+     "alt": "Pink and green fluid abstract architectural acrylic painting",
+     "aspect": 1.00737,
+     "derivatives": [
+      {
+       "file": "streaming-pink-1-600.webp",
+       "long_edge": 600,
+       "pixels": [
+        600,
+        596
+       ]
+      },
+      {
+       "file": "streaming-pink-1-1200.webp",
+       "long_edge": 1200,
+       "pixels": [
+        1200,
+        1191
+       ]
+      },
+      {
+       "file": "streaming-pink-1-2000.webp",
+       "long_edge": 2000,
+       "pixels": [
+        2000,
+        1985
+       ]
+      }
+     ],
+     "photo_credit": null,
+     "pixels": [
+      3415,
+      3390
+     ],
+     "role": "main"
+    },
+    {
+     "alt": "Pink and green fluid abstract architectural acrylic painting",
+     "aspect": 0.70092,
+     "derivatives": [
+      {
+       "file": "streaming-pink-2-600.webp",
+       "long_edge": 600,
+       "pixels": [
+        421,
+        600
+       ]
+      },
+      {
+       "file": "streaming-pink-2-2000.webp",
+       "long_edge": 2000,
+       "pixels": [
+        1402,
+        2000
+       ]
+      }
+     ],
+     "photo_credit": null,
+     "pixels": [
+      2142,
+      3056
+     ],
+     "role": "view"
+    },
+    {
+     "alt": "Pink and green fluid abstract architectural acrylic painting",
+     "aspect": 1.0,
+     "derivatives": [
+      {
+       "file": "streaming-pink-3-600.webp",
+       "long_edge": 600,
+       "pixels": [
+        600,
+        600
+       ]
+      },
+      {
+       "file": "streaming-pink-3-2000.webp",
+       "long_edge": 2000,
+       "pixels": [
+        2000,
+        2000
+       ]
+      }
+     ],
+     "photo_credit": null,
+     "pixels": [
+      3056,
+      3056
+     ],
+     "role": "view"
+    }
+   ],
+   "materials": null,
+   "medium": "Acrylic on canvas",
+   "price_eur": 750,
+   "price_on_request": false,
+   "slug": "streaming-pink",
+   "title": "'Streaming Pink'",
+   "w_cm": 50,
+   "year": 2024
+  }
+ ]
+}

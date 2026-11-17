@@ -19084,6 +19084,1308 @@
       "source_sha256": "12ff0d2a118489cfd5d34faba04c580284ecac1c984d824e0081555a9f38bbce",
       "subject": "artwork",
       "work_slug": "blowout-series-ii-19"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "olivia-jones",
+      "asset": "plotart/artists/olivia-jones/img/portrait-600.webp",
+      "bytes": 14098,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "sRGB (no embedded profile; treated as sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aaxjweseh6t",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        600,
+        400
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "a706e9dd44c9e41518409429a81614d9460355c92cca02a2c8159996c588da1b",
+      "source_sha256": "a034e50954742c44bd9a84540ac1bb3684bf6c4e7585fdbec35eecbc3d580dcb",
+      "subject": "portrait",
+      "work_slug": null
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "olivia-jones",
+      "asset": "plotart/artists/olivia-jones/img/modern-love-3-1-600.webp",
+      "bytes": 47290,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "sRGB (no embedded profile; treated as sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aaxjweseh6t",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        597,
+        600
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "29f5196249e3be35fa8645bb492248ea28ac8cf88305fa6199c0609225ee48e0",
+      "source_sha256": "0701fcf79bb29d91b916359026e258943244ae3964ed5ed306b39f85e074e6fb",
+      "subject": "artwork",
+      "work_slug": "modern-love-3"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "olivia-jones",
+      "asset": "plotart/artists/olivia-jones/img/modern-love-3-1-1200.webp",
+      "bytes": 247940,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "sRGB (no embedded profile; treated as sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aaxjweseh6t",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        1194,
+        1200
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "82aae380c602e8e7655ec4d078f8df84e970fb74235117b4dd8cff66b81d2575",
+      "source_sha256": "0701fcf79bb29d91b916359026e258943244ae3964ed5ed306b39f85e074e6fb",
+      "subject": "artwork",
+      "work_slug": "modern-love-3"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "olivia-jones",
+      "asset": "plotart/artists/olivia-jones/img/modern-love-3-1-2000.webp",
+      "bytes": 574366,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "sRGB (no embedded profile; treated as sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aaxjweseh6t",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        1989,
+        2000
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "301821122871dda2621749373ac26e9281155e7c2b34869489a6311da6826bdf",
+      "source_sha256": "0701fcf79bb29d91b916359026e258943244ae3964ed5ed306b39f85e074e6fb",
+      "subject": "artwork",
+      "work_slug": "modern-love-3"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "olivia-jones",
+      "asset": "plotart/artists/olivia-jones/img/modern-love-3-2-600.webp",
+      "bytes": 13688,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aaxjweseh6t",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        412,
+        600
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "a5de9133b3a4d5686481f201cc9970d7a841ef3833ee59208c724f3ce5434c92",
+      "source_sha256": "3943835f6845ee0fb52f9126a525ec6bbe02a2cdd4316b18a8881043241ad47b",
+      "subject": "artwork",
+      "work_slug": "modern-love-3"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "olivia-jones",
+      "asset": "plotart/artists/olivia-jones/img/modern-love-3-2-2000.webp",
+      "bytes": 181812,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aaxjweseh6t",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        1374,
+        2000
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "24de8cda3482ba5f7f4b74d9b56af23c860e61daf53efacc5e5d5f40eb9ca35b",
+      "source_sha256": "3943835f6845ee0fb52f9126a525ec6bbe02a2cdd4316b18a8881043241ad47b",
+      "subject": "artwork",
+      "work_slug": "modern-love-3"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "olivia-jones",
+      "asset": "plotart/artists/olivia-jones/img/candy-flippin-1-600.webp",
+      "bytes": 16100,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "sRGB (no embedded profile; treated as sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aaxjweseh6t",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        600,
+        496
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "fac6d489af186cea691a4d3395a69a2db799900d30ed9921f7583d6b5dd1a71c",
+      "source_sha256": "67b01aac5230dde7cba3a888cbb921b90e8eaa2a1b6c450e25e1424a337e86f2",
+      "subject": "artwork",
+      "work_slug": "candy-flippin"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "olivia-jones",
+      "asset": "plotart/artists/olivia-jones/img/candy-flippin-1-1200.webp",
+      "bytes": 78572,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "sRGB (no embedded profile; treated as sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aaxjweseh6t",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        1200,
+        992
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "dd0f3fe145033e7e5d846e7573b7316481c9e603e462c708c53f4ba1b8d24eac",
+      "source_sha256": "67b01aac5230dde7cba3a888cbb921b90e8eaa2a1b6c450e25e1424a337e86f2",
+      "subject": "artwork",
+      "work_slug": "candy-flippin"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "olivia-jones",
+      "asset": "plotart/artists/olivia-jones/img/candy-flippin-1-2000.webp",
+      "bytes": 256366,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "sRGB (no embedded profile; treated as sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aaxjweseh6t",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        2000,
+        1653
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "b30c11f93d849549be6f833d335800f1db90c25fbfbc59975f7ce7929d0c459d",
+      "source_sha256": "67b01aac5230dde7cba3a888cbb921b90e8eaa2a1b6c450e25e1424a337e86f2",
+      "subject": "artwork",
+      "work_slug": "candy-flippin"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "olivia-jones",
+      "asset": "plotart/artists/olivia-jones/img/candy-flippin-2-600.webp",
+      "bytes": 11360,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "sRGB (no embedded profile; treated as sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aaxjweseh6t",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        468,
+        600
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "f762c1612521a533651c131a59512be39170622c6ce88c2e306db2f363f10baa",
+      "source_sha256": "ce74f743b429a24a51ea87522c01372d2e026fb02e3e1d35df743822a5a000e9",
+      "subject": "artwork",
+      "work_slug": "candy-flippin"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "olivia-jones",
+      "asset": "plotart/artists/olivia-jones/img/candy-flippin-2-2000.webp",
+      "bytes": 182278,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "sRGB (no embedded profile; treated as sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aaxjweseh6t",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        1559,
+        2000
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "7a9e0c14fc69119a02c147b7cebbace795c670a1e31b626d65a186b738d34b4f",
+      "source_sha256": "ce74f743b429a24a51ea87522c01372d2e026fb02e3e1d35df743822a5a000e9",
+      "subject": "artwork",
+      "work_slug": "candy-flippin"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "olivia-jones",
+      "asset": "plotart/artists/olivia-jones/img/candy-flippin-3-600.webp",
+      "bytes": 7644,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "sRGB (no embedded profile; treated as sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aaxjweseh6t",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        492,
+        600
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "0e823837a0fe8c3bf1e0dfa7f770602389f51c20e543b8810f29231de63d480d",
+      "source_sha256": "02a72deb31ec099bd7cc482a01ebf2d8a32dfc74d11c1497677b60e6543e915b",
+      "subject": "artwork",
+      "work_slug": "candy-flippin"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "olivia-jones",
+      "asset": "plotart/artists/olivia-jones/img/candy-flippin-3-2000.webp",
+      "bytes": 54280,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "sRGB (no embedded profile; treated as sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aaxjweseh6t",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        1640,
+        2000
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "965a42125b9267fd939383cebf4acae2fb3d73f0b2e5618dd83356638e8f66b7",
+      "source_sha256": "02a72deb31ec099bd7cc482a01ebf2d8a32dfc74d11c1497677b60e6543e915b",
+      "subject": "artwork",
+      "work_slug": "candy-flippin"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "olivia-jones",
+      "asset": "plotart/artists/olivia-jones/img/out-of-reach-1-600.webp",
+      "bytes": 21584,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "sRGB (no embedded profile; treated as sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aaxjweseh6t",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        599,
+        600
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "e68fac59badd0a37be4b15c8922105ba0f7fcc66bf2e82172b60d2ea162871a0",
+      "source_sha256": "0637877ace04cc58df25b020a4478ca6100141163c5f5e13d1a4d0701d1fb15d",
+      "subject": "artwork",
+      "work_slug": "out-of-reach"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "olivia-jones",
+      "asset": "plotart/artists/olivia-jones/img/out-of-reach-1-1200.webp",
+      "bytes": 134278,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "sRGB (no embedded profile; treated as sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aaxjweseh6t",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        1197,
+        1200
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "fb61fb67890cb1b824e8c1ca9b2aeed0b7bd7278d1708371fead78d79226ffc6",
+      "source_sha256": "0637877ace04cc58df25b020a4478ca6100141163c5f5e13d1a4d0701d1fb15d",
+      "subject": "artwork",
+      "work_slug": "out-of-reach"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "olivia-jones",
+      "asset": "plotart/artists/olivia-jones/img/out-of-reach-1-2000.webp",
+      "bytes": 328720,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "sRGB (no embedded profile; treated as sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aaxjweseh6t",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        1996,
+        2000
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "34917d5be4ef3a70b63b2dfdcf7cb167e18e366a612f8d1364a8568f0a4c01f3",
+      "source_sha256": "0637877ace04cc58df25b020a4478ca6100141163c5f5e13d1a4d0701d1fb15d",
+      "subject": "artwork",
+      "work_slug": "out-of-reach"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "olivia-jones",
+      "asset": "plotart/artists/olivia-jones/img/out-of-reach-2-600.webp",
+      "bytes": 9374,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aaxjweseh6t",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        399,
+        600
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "73360f04bd43c0e5713a29c40c3c6a819b8a683dda1bdd319b68fc39fcd340f4",
+      "source_sha256": "63cbddeb8cc08f73c6b1a2db8a126d7df36d4160532d8813639e534c270d21f8",
+      "subject": "artwork",
+      "work_slug": "out-of-reach"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "olivia-jones",
+      "asset": "plotart/artists/olivia-jones/img/out-of-reach-2-2000.webp",
+      "bytes": 203582,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aaxjweseh6t",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        1329,
+        2000
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "54e81cee6a0ad709052916a5edf09bd49bf6765e567b48d74812f4a5a4225df2",
+      "source_sha256": "63cbddeb8cc08f73c6b1a2db8a126d7df36d4160532d8813639e534c270d21f8",
+      "subject": "artwork",
+      "work_slug": "out-of-reach"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "olivia-jones",
+      "asset": "plotart/artists/olivia-jones/img/out-of-reach-3-600.webp",
+      "bytes": 45560,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "sRGB (no embedded profile; treated as sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aaxjweseh6t",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        529,
+        600
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "6885809e550290703a0e2c9bdc83e28907325908ba8888336a960ccd044971d7",
+      "source_sha256": "69448ce49bda0a5667fbae1cbfd7e90a4129a7a810f147c74b682000b8a27cc0",
+      "subject": "artwork",
+      "work_slug": "out-of-reach"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "olivia-jones",
+      "asset": "plotart/artists/olivia-jones/img/out-of-reach-3-2000.webp",
+      "bytes": 330178,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "sRGB (no embedded profile; treated as sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aaxjweseh6t",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        1764,
+        2000
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "fff3c0b570c78997228e4fe0838847f8eb534fa81cd8ea9884cbf9ebbb7a399d",
+      "source_sha256": "69448ce49bda0a5667fbae1cbfd7e90a4129a7a810f147c74b682000b8a27cc0",
+      "subject": "artwork",
+      "work_slug": "out-of-reach"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "olivia-jones",
+      "asset": "plotart/artists/olivia-jones/img/mmm-skyscraper-i-love-you-1-600.webp",
+      "bytes": 34866,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "sRGB (no embedded profile; treated as sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aaxjweseh6t",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        600,
+        598
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "7f6f69bd2fba8e07d6eb519e68c45ab183f62bc9b415f2e5b2581fccf4d05614",
+      "source_sha256": "fbc9fa61345d0218e9f1a2bba853d6c907f21ff761b41fbedd2c2ce658d0fea6",
+      "subject": "artwork",
+      "work_slug": "mmm-skyscraper-i-love-you"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "olivia-jones",
+      "asset": "plotart/artists/olivia-jones/img/mmm-skyscraper-i-love-you-1-1200.webp",
+      "bytes": 175744,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "sRGB (no embedded profile; treated as sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aaxjweseh6t",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        1200,
+        1195
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "aa5ec1abf865e64320229665c157ccb2f00f6b09f876e82fb4272213a298623d",
+      "source_sha256": "fbc9fa61345d0218e9f1a2bba853d6c907f21ff761b41fbedd2c2ce658d0fea6",
+      "subject": "artwork",
+      "work_slug": "mmm-skyscraper-i-love-you"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "olivia-jones",
+      "asset": "plotart/artists/olivia-jones/img/mmm-skyscraper-i-love-you-1-2000.webp",
+      "bytes": 522702,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "sRGB (no embedded profile; treated as sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aaxjweseh6t",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        2000,
+        1992
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "ee0619a6dc73485d5ba1f2c7494f4176db4a17a236f2d49556f8a26014008a1e",
+      "source_sha256": "fbc9fa61345d0218e9f1a2bba853d6c907f21ff761b41fbedd2c2ce658d0fea6",
+      "subject": "artwork",
+      "work_slug": "mmm-skyscraper-i-love-you"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "olivia-jones",
+      "asset": "plotart/artists/olivia-jones/img/mmm-skyscraper-i-love-you-2-600.webp",
+      "bytes": 71314,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aaxjweseh6t",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        600,
+        452
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "c40fd5d9700d980d01f2059fed7f478f9ce4386d72d1976de52463a7d14fa112",
+      "source_sha256": "7897920668201ff06e56585d9f11e124b668ccc347a2895d9eb25c5f942799f6",
+      "subject": "artwork",
+      "work_slug": "mmm-skyscraper-i-love-you"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "olivia-jones",
+      "asset": "plotart/artists/olivia-jones/img/mmm-skyscraper-i-love-you-2-2000.webp",
+      "bytes": 808794,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aaxjweseh6t",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        2000,
+        1508
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "ec374020629f57533bab44327a5ff383c7b063e6d4b0b57833d4c41f92ed01db",
+      "source_sha256": "7897920668201ff06e56585d9f11e124b668ccc347a2895d9eb25c5f942799f6",
+      "subject": "artwork",
+      "work_slug": "mmm-skyscraper-i-love-you"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "olivia-jones",
+      "asset": "plotart/artists/olivia-jones/img/narnia-1-600.webp",
+      "bytes": 19462,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aaxjweseh6t",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        347,
+        600
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "3e1254dd90a702955c4154820222e1626c5aaae49489c1f51d5dc9a5fe991750",
+      "source_sha256": "eeafea2bb54606a944ae0178252eb6a853a8956cd5d6f9a0ab2e0adf964c7c0b",
+      "subject": "artwork",
+      "work_slug": "narnia"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "olivia-jones",
+      "asset": "plotart/artists/olivia-jones/img/narnia-1-1200.webp",
+      "bytes": 73734,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aaxjweseh6t",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        694,
+        1200
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "c32e0281ad9f9dbd162306ef69b90c0c8ca27059a10946c3a7f5d8bbd348777d",
+      "source_sha256": "eeafea2bb54606a944ae0178252eb6a853a8956cd5d6f9a0ab2e0adf964c7c0b",
+      "subject": "artwork",
+      "work_slug": "narnia"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "olivia-jones",
+      "asset": "plotart/artists/olivia-jones/img/narnia-1-2000.webp",
+      "bytes": 192010,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aaxjweseh6t",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        1156,
+        2000
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "4c57ce31be1676fd722f78379e43e706855033f97da7e16b6a37ef6131001c57",
+      "source_sha256": "eeafea2bb54606a944ae0178252eb6a853a8956cd5d6f9a0ab2e0adf964c7c0b",
+      "subject": "artwork",
+      "work_slug": "narnia"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "olivia-jones",
+      "asset": "plotart/artists/olivia-jones/img/narnia-2-600.webp",
+      "bytes": 10392,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aaxjweseh6t",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        338,
+        600
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "37593055999f433418576e7a234b22ed46a90d988bbcebd3e9083596fb4cd3c8",
+      "source_sha256": "2d9c1164bd8aeceb572ba38e5089658ee6a5c177d63c2022e72326846666b9ef",
+      "subject": "artwork",
+      "work_slug": "narnia"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "olivia-jones",
+      "asset": "plotart/artists/olivia-jones/img/narnia-2-2000.webp",
+      "bytes": 71514,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aaxjweseh6t",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        1125,
+        2000
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "c64147327387ba3858632dd9854aa324408e374c2e874439ec1c126f4a4a985d",
+      "source_sha256": "2d9c1164bd8aeceb572ba38e5089658ee6a5c177d63c2022e72326846666b9ef",
+      "subject": "artwork",
+      "work_slug": "narnia"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "olivia-jones",
+      "asset": "plotart/artists/olivia-jones/img/past-tense-1-600.webp",
+      "bytes": 11686,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "sRGB (no embedded profile; treated as sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aaxjweseh6t",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        598,
+        600
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "e665c3f14860b884dd4681521ca564fc028354adce94b8bcd3640faa0c2e240e",
+      "source_sha256": "907d2e4d1b7a2804d59ab773be2f998235c4cdc82bfc7bd7d89eda65c5c20fa0",
+      "subject": "artwork",
+      "work_slug": "past-tense"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "olivia-jones",
+      "asset": "plotart/artists/olivia-jones/img/past-tense-1-1200.webp",
+      "bytes": 37508,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "sRGB (no embedded profile; treated as sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aaxjweseh6t",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        1197,
+        1200
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "895ed4ae5980e5b667176993e2adb6918f11d8e9a626f745072da1f90d057158",
+      "source_sha256": "907d2e4d1b7a2804d59ab773be2f998235c4cdc82bfc7bd7d89eda65c5c20fa0",
+      "subject": "artwork",
+      "work_slug": "past-tense"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "olivia-jones",
+      "asset": "plotart/artists/olivia-jones/img/past-tense-1-2000.webp",
+      "bytes": 155970,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "sRGB (no embedded profile; treated as sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aaxjweseh6t",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        1994,
+        2000
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "d8f3d5a2c0b767b83be858b6a826a7329ea64a5907dabd298facf783ff40f2c4",
+      "source_sha256": "907d2e4d1b7a2804d59ab773be2f998235c4cdc82bfc7bd7d89eda65c5c20fa0",
+      "subject": "artwork",
+      "work_slug": "past-tense"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "olivia-jones",
+      "asset": "plotart/artists/olivia-jones/img/past-tense-2-600.webp",
+      "bytes": 28630,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "sRGB (no embedded profile; treated as sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aaxjweseh6t",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        338,
+        600
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "f2d899050b862d385c4e43fd2f8b88844fd19ba83a5f8699ac168af4447366ba",
+      "source_sha256": "c573ee628f8960e378a48360a61bd973deecf109be37156b961b098e7917bb71",
+      "subject": "artwork",
+      "work_slug": "past-tense"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "olivia-jones",
+      "asset": "plotart/artists/olivia-jones/img/past-tense-2-2000.webp",
+      "bytes": 199684,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "sRGB (no embedded profile; treated as sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aaxjweseh6t",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        1125,
+        2000
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "b7490af9be2fae355736305833902f387cca5c0e39018d9f035e335e3520b574",
+      "source_sha256": "c573ee628f8960e378a48360a61bd973deecf109be37156b961b098e7917bb71",
+      "subject": "artwork",
+      "work_slug": "past-tense"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "olivia-jones",
+      "asset": "plotart/artists/olivia-jones/img/streaming-pink-1-600.webp",
+      "bytes": 26036,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "sRGB (no embedded profile; treated as sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aaxjweseh6t",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        600,
+        596
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "9313100297165bdd62e323fb601a16924392f525fd271e8e54c6c5a40bfd4f3b",
+      "source_sha256": "87b593c03a6ece35fe4fc4594207da07a6da6ee1a028678c15de9219b3ba2fc9",
+      "subject": "artwork",
+      "work_slug": "streaming-pink"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "olivia-jones",
+      "asset": "plotart/artists/olivia-jones/img/streaming-pink-1-1200.webp",
+      "bytes": 118952,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "sRGB (no embedded profile; treated as sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aaxjweseh6t",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        1200,
+        1191
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "79056b4244faf63878f98237359afbc3882a5b034bd11ea5e9b32e46143c8b58",
+      "source_sha256": "87b593c03a6ece35fe4fc4594207da07a6da6ee1a028678c15de9219b3ba2fc9",
+      "subject": "artwork",
+      "work_slug": "streaming-pink"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "olivia-jones",
+      "asset": "plotart/artists/olivia-jones/img/streaming-pink-1-2000.webp",
+      "bytes": 342094,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "sRGB (no embedded profile; treated as sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aaxjweseh6t",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        2000,
+        1985
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "b79b3414532cad1ae451d0e22e5872f04e906169ce154dd8a6bc86f362bd5546",
+      "source_sha256": "87b593c03a6ece35fe4fc4594207da07a6da6ee1a028678c15de9219b3ba2fc9",
+      "subject": "artwork",
+      "work_slug": "streaming-pink"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "olivia-jones",
+      "asset": "plotart/artists/olivia-jones/img/streaming-pink-2-600.webp",
+      "bytes": 11922,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aaxjweseh6t",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        421,
+        600
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "0cb216606a18d1bad24069802afb0bf7def35b95e01b69f6ab7b208e57b2202e",
+      "source_sha256": "73ca1a1a01b03d53bf48af1005f2ef7ad9aec285165be5763a12fb2631435bfc",
+      "subject": "artwork",
+      "work_slug": "streaming-pink"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "olivia-jones",
+      "asset": "plotart/artists/olivia-jones/img/streaming-pink-2-2000.webp",
+      "bytes": 96622,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aaxjweseh6t",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        1402,
+        2000
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "8a441b842ac005487dc7ff6d8e57049b777dab0959b9c549f2c5b51a516af8ec",
+      "source_sha256": "73ca1a1a01b03d53bf48af1005f2ef7ad9aec285165be5763a12fb2631435bfc",
+      "subject": "artwork",
+      "work_slug": "streaming-pink"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "olivia-jones",
+      "asset": "plotart/artists/olivia-jones/img/streaming-pink-3-600.webp",
+      "bytes": 15910,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aaxjweseh6t",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        600,
+        600
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "4e9f0f62547b5320366353ee4f1006032a5bddcac3b0002aaa58c02d13ffd8c1",
+      "source_sha256": "5cd5099e302e88844780ae084cfd95f7760eda29b107b70be25d288b15270198",
+      "subject": "artwork",
+      "work_slug": "streaming-pink"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "olivia-jones",
+      "asset": "plotart/artists/olivia-jones/img/streaming-pink-3-2000.webp",
+      "bytes": 133388,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aaxjweseh6t",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        2000,
+        2000
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "1dac4b479984dac7feb5686c22e1e20d7dbf68aa3faa5a05480e78a015ff271d",
+      "source_sha256": "5cd5099e302e88844780ae084cfd95f7760eda29b107b70be25d288b15270198",
+      "subject": "artwork",
+      "work_slug": "streaming-pink"
     }
   ],
   "legacy_undeclared": [
