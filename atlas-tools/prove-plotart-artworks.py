@@ -276,7 +276,14 @@ for p in COLLS:
     doc = (ROOT / "plotart" / p).read_text()
     on_page = list(dict.fromkeys(re.findall(r'class="pa-coll-artist"><a href="\.\./artists/([^/]+)/', doc)))
     want = [a for a in FIRST_PUBLISHED if a in on_page]
-    check("A12 %s lists artists in first-publication order" % p, on_page == want and set(on_page) <= set(FIRST_PUBLISHED), on_page)
+    # Artists published after this fixture was written are not refused: they must all FOLLOW every recorded artist,
+    # in the order they accepted the gallery licence (then slug) - read from the exports, not from
+    # C.COLLECTION_ARTIST_ORDER - so a first publication never moves an existing artist (17 Nov 2026: the stricter
+    # "only recorded artists" form refused every new artist's first publication).
+    acc = {x["artist"]["slug"]: (x["publication"].get("licence_accepted_at") or "9999", x["artist"]["slug"]) for x in packages}
+    newer = sorted((a for a in on_page if a not in FIRST_PUBLISHED), key=lambda a: acc.get(a, ("9999", a)))
+    check("A12 %s lists artists in first-publication order (newly published artists after them)" % p,
+          on_page == want + newer, on_page)
     check("A12 %s order does not depend on the order the exports are read" % p,
           order_of(list(reversed(packages)), p) == baseline[p])
 
