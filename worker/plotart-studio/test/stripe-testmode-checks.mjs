@@ -357,6 +357,40 @@ if (PHASES.includes('unfunded')) {
   } catch (e) { rec('U9', 'unfunded refund test', 'stripe-test-api', 'FAIL', { error: e.message, code: e.code }); }
 }
 
+if (PHASES.includes('runtime_refund_probe')) {
+  // E17e · Can the RUNTIME key create a buyer refund on the artist's account? The runner key prepares a fresh, paid, refundable
+  // test charge (no application fee: separate from Model B); then ONLY the runtime key submits one valid €1.00 partial refund
+  // with an idempotency key (a retry with the same key cannot create a second refund). The runner key then lists the refunds.
+  const RT = process.env.STRIPE_RUNTIME_KEY || '';
+  if (!/^rk_test_[A-Za-z0-9]+$/.test(RT) || !ACCOUNT) rec('E17e', 'runtime-key refund probe', 'local', 'SKIP', { runtime_key: !!RT, account: !!ACCOUNT });
+  else {
+    try {
+      const pi = (await stripe('POST', '/v1/payment_intents', { amount: 1000, currency: 'eur', payment_method: 'pm_card_visa', confirm: 'true', allowed_payment_method_types: ['card'],
+        metadata: { plotart_order: 'runtime-refund-probe', run: RUN } }, ACCOUNT, `probe-${RUN}-pi`)).j;
+      const prepared = pi.status === 'succeeded';
+      const idem = `probe-${RUN}-runtime-refund`;
+      const attempt = async () => {
+        const r = await fetch('https://api.stripe.com/v1/refunds', { method: 'POST', headers: { Authorization: `Bearer ${RT}`, 'Stripe-Version': S.V1_API_VERSION, 'Stripe-Account': ACCOUNT,
+          'Idempotency-Key': idem, 'Content-Type': 'application/x-www-form-urlencoded' }, body: new URLSearchParams({ payment_intent: pi.id, amount: '100', 'metadata[plotart_probe]': 'runtime-key' }) });
+        const j = await r.json().catch(() => ({}));
+        return { http: r.status, refund_id: j.object === 'refund' ? j.id : null, refund_status: j.object === 'refund' ? j.status : null,
+          error_code: j.error ? j.error.code || null : null, error_type: j.error ? j.error.type : null, error_message: j.error ? String(j.error.message || '').slice(0, 300) : null };
+      };
+      const first = await attempt(), retry = await attempt();
+      const list = (await stripe('GET', `/v1/refunds?payment_intent=${pi.id}&limit=10`, null, ACCOUNT)).j.data || [];
+      const created = list.length > 0;
+      const permDenied = (first.http === 401 || first.http === 403) && /permission/i.test(first.error_message || '') && !created;
+      const verdict = permDenied ? 'RESTRICTION CONFIRMED: Stripe denied the runtime key permission to create a refund'
+        : created ? 'CAPABILITY CONFIRMED: the runtime key created a buyer refund' : 'INCONCLUSIVE';
+      rec('E17e', 'runtime key submits ONE valid €1.00 partial refund of a fresh paid €10 test charge on the artist’s account (idempotency key; runner key prepared the charge and lists the refunds)', 'stripe-test-api',
+        !prepared ? 'FAIL' : permDenied ? 'PASS' : created ? 'FAIL' : 'INFO',
+        { prepared_charge: { payment_intent: pi.id, status: pi.status, amount: pi.amount, application_fee: pi.application_fee_amount || null },
+          runtime_attempt: first, runtime_retry_same_idempotency_key: retry, refunds_on_charge_seen_by_runner: list.map(r => ({ id: r.id, amount: r.amount, status: r.status })),
+          refund_created: created, duplicate_created: list.length > 1, verdict });
+    } catch (e) { rec('E17e', 'runtime-key refund probe', 'stripe-test-api', 'FAIL', { error: e.message }); }
+  }
+}
+
 if (PHASES.includes('unfunded_ledger')) {
   // Read-only: the second account's recent balance transactions, so the unfunded-refund balances reconcile line by line.
   // Records type, amounts, fee, net, status and dates only (no personal data).
