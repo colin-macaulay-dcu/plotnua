@@ -637,7 +637,7 @@ async function apply(env, ev, obj) {
     }
     case 'charge.refunded': {
       const o = await orderForPI(env, ev, obj.payment_intent);
-      if (!o) return obj.payment_intent && await knownPI(env, ev, obj) ? { status: 'deferred' } : { status: 'ignored' };
+      if (!o) return obj.payment_intent && await knownPI(env, ev, obj) ? deferFor(obj.payment_intent) : { status: 'ignored' };
       return { status: 'processed', order: o.id, detail: await recordRefunds(env, o, obj) };
     }
     case 'refund.updated':
@@ -659,14 +659,39 @@ async function apply(env, ev, obj) {
     case 'charge.dispute.updated':
     case 'charge.dispute.closed': {
       const o = await orderForPI(env, ev, obj.payment_intent);
-      if (!o) return obj.payment_intent && await knownPI(env, ev, obj) ? { status: 'deferred' } : { status: 'ignored' };
+      if (!o) return obj.payment_intent && await knownPI(env, ev, obj) ? deferFor(obj.payment_intent) : { status: 'ignored' };
       return { status: 'processed', order: o.id, detail: await recordDispute(env, o, ev.type, obj) };
     }
     default: return { status: 'ignored', detail: 'event type not used by the pilot' };
   }
 }
 /* A charge event can arrive BEFORE the checkout completion that links its payment to an order (out of order). If the
-   payment belongs to one of our sessions' accounts, it is deferred (the provider retries) rather than dropped. */
+   payment belongs to one of our sessions' accounts, it is deferred rather than dropped, and the PaymentIntent is noted.
+   It is then REPLAYED by the pilot itself as soon as the completion links that PaymentIntent to an order, and by the
+   sweep as a backstop — not left to the provider's redelivery alone (run 15: a dispute created seconds after payment
+   arrived before the completion; the Stripe CLI forwarder never redelivers, and live redelivery can take hours).
+   Replay re-reads the CURRENT object from Stripe by id, so a stale payload is never applied. */
+const deferFor = pi => ({ status: 'deferred', detail: `awaiting order for ${pi}` });
+const REFETCH = { 'charge.dispute.': S.getDispute, 'charge.': S.getCharge, 'refund.': S.getRefund };
+export async function replayDeferred(env, pi = null) {
+  const rows = pi
+    ? await all(env, "SELECT * FROM payment_events WHERE status = 'deferred' AND detail = ? ORDER BY created, received_at", `awaiting order for ${pi}`)
+    : await all(env, "SELECT * FROM payment_events WHERE status = 'deferred' AND detail LIKE 'awaiting order for %' ORDER BY created, received_at LIMIT 50");
+  let done = 0;
+  for (const row of rows) {
+    const pfx = Object.keys(REFETCH).find(k => row.type.startsWith(k));
+    if (!pfx || !row.object_id || !row.account) continue;
+    try {
+      const obj = await REFETCH[pfx](env, { account: row.account, id: row.object_id });
+      const out = await apply(env, { id: row.event_id, type: row.type, account: row.account }, obj);
+      if (out.status === 'deferred') continue;   // still no order: left for a later replay or redelivery
+      await run(env, "UPDATE payment_events SET status = ?, order_id = ?, detail = ?, attempts = attempts + 1, processed_at = ? WHERE event_id = ? AND status = 'deferred'",
+        out.status, out.order || null, ('replayed after the payment was linked; ' + (out.detail || '')).slice(0, 500), now(), row.event_id);
+      done++;
+    } catch (e) { await run(env, "UPDATE payment_events SET attempts = attempts + 1 WHERE event_id = ?", row.event_id); }
+  }
+  return done;
+}
 async function knownPI(env, ev, obj) {
   if (obj.metadata && obj.metadata.plotart_order) return !!(await getOrder(env, obj.metadata.plotart_order));
   if (!ev.account || !(await one(env, 'SELECT 1 AS x FROM payment_accounts WHERE account_id = ?', ev.account))) return false;
@@ -738,7 +763,9 @@ async function recordPaid(env, o, s, eventId) {
     if (ch) await run(env, 'UPDATE checkout_orders SET charge_id = COALESCE(charge_id, ?), application_fee_id = COALESCE(application_fee_id, ?), updated_at = ? WHERE id = ?',
       ch.id, typeof ch.application_fee === 'string' ? ch.application_fee : ch.application_fee && ch.application_fee.id || null, now(), o.id);
   } catch { /* fetched again at refund time */ }
-  return late ? 'paid (late)' : 'paid';
+  // events for this payment that arrived before this completion (e.g. a dispute) are applied now, not left waiting
+  let replayed = 0; try { replayed = await replayDeferred(env, pi); } catch { /* the sweep retries */ }
+  return (late ? 'paid (late)' : 'paid') + (replayed ? `; ${replayed} earlier event(s) replayed` : '');
 }
 
 async function refundTotals(env, orderId) {
@@ -961,9 +988,11 @@ export async function sweep(env) {
   for (const o of await all(env, `SELECT * FROM checkout_orders WHERE status IN ('quoted','payment_failed') AND quote_expires_at <= ?`, t)) {
     try { await move(env, o, 'expired', 'scheduler', 'quote_expired'); expired++; } catch { /* moved meanwhile */ }
   }
+  let deferred_replayed = 0;
+  try { deferred_replayed = await replayDeferred(env); } catch { /* next sweep */ }
   let refunds = null;
   try { refunds = await pollPendingRefunds(env); } catch (e) { refunds = { error: String(e.message || e).slice(0, 120) }; }
-  return { reservations_released: released.meta.changes, quotes_expired: expired, ...refunds, ...(await retention(env)) };
+  return { reservations_released: released.meta.changes, quotes_expired: expired, deferred_replayed, ...refunds, ...(await retention(env)) };
 }
 
 /* Retention (spec "Records and retention"). Each period has a stated basis and a fixed start; nothing is ever deleted

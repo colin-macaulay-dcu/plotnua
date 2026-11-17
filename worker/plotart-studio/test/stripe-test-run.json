@@ -1,10 +1,10 @@
 {
   "_note": "Changing this file on the pilot branch requests a run of .github/workflows/plotart-checkout-stripe-test.yml (Stripe TEST mode only; waits for the founder's approval on the checkout-test environment). Nothing is deployed.",
-  "requested": "2026-11-17T16:45:00Z",
+  "requested": "2026-11-17T17:05:00Z",
   "phases": [
     "provider",
     "e2e"
   ],
-  "reason": "Run 15: run 14 hosted payments SUCCEEDED (E3, E4, E5 passed; dispute event applied) but the browser could not resolve the test return origin, so E3a/E7a were recorded as failures and E7 as blocked. The test origin is now served from the local pilot Worker; new E3c/E7c confirm each signed event matches the right order on Stripe.",
+  "reason": "Run 16: run 15 passed E3a/E3/E3c/E7a; the dispute event arrived BEFORE the payment completion and stayed deferred because the pilot relied on provider redelivery (the Stripe CLI never redelivers). The pilot now replays deferred events itself when the completion links the PaymentIntent (and in the sweep). Rerun to confirm E7/E7c/E8 with real signed events.",
   "reuse_account": "acct_1UclJXHx1Olx8cdw"
 }

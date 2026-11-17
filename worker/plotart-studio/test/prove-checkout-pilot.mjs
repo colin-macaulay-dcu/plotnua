@@ -26,7 +26,7 @@ writeFileSync(HERE + FIX + 'src/payment-terms.js', `export const PAYMENT_TERMS =
 
 /* ---------------------------------------------------------------- mock Stripe (test mode objects only) */
 const WHSEC = 'whsec_test_' + 'x'.repeat(24);
-const M = { accounts: {}, v2accounts: {}, nextAccountResponsibilities: null, sessions: {}, pis: {}, refunds: [], feeRefunds: [], calls: [], idem: {}, n: 0, failNextExpire: false, nextRefundStatus: null };
+const M = { disputes: {}, accounts: {}, v2accounts: {}, nextAccountResponsibilities: null, sessions: {}, pis: {}, refunds: [], feeRefunds: [], calls: [], idem: {}, n: 0, failNextExpire: false, nextRefundStatus: null };
 const nid = p => `${p}_test_${(++M.n).toString(36).padStart(6, '0')}`;
 const flat = body => Object.fromEntries(new URLSearchParams(body || ''));
 const ok = o => new Response(JSON.stringify(o), { status: 200, headers: { 'Content-Type': 'application/json' } });
@@ -59,6 +59,7 @@ async function stripe(req) {
     return new Response(JSON.stringify({ error: { type: 'invalid_request_error', code: 'invalid_fields', message: "Some fields in the request were invalid: 'use_case.account_onboarding.configurations: Unknown field.'" } }), { status: 400, headers: { 'Content-Type': 'application/json' } });   // as Stripe answers on 2026-09-30.endive and later
   if (u.pathname === '/v2/core/account_links' && req.method === 'POST') return ok({ object: 'v2.core.account_link', account: jb.account, url: `https://accounts.stripe.test/r/${jb.account}`, use_case: jb.use_case, livemode: false });
   if ((mm = u.pathname.match(/^\/v2\/core\/accounts\/(acct_[\w]+)$/)) && req.method === 'GET') return M.v2accounts[mm[1]] ? ok(M.v2accounts[mm[1]]) : err('no such account', 404);
+  if ((mm = u.pathname.match(/^\/v1\/disputes\/(dp_[\w]+)$/)) && req.method === 'GET') return M.disputes[mm[1]] && M.disputes[mm[1]]._acct === acct ? ok(M.disputes[mm[1]]) : err('no such dispute', 404);
   if ((mm = u.pathname.match(/^\/v1\/accounts\/(acct_[\w]+)$/))) return M.accounts[mm[1]] ? ok(M.accounts[mm[1]]) : err('no such account', 404);
   if (u.pathname === '/v1/checkout/sessions' && req.method === 'POST' && Object.keys(f).some(k => k.startsWith('payment_method_types'))) return err('Received unknown parameter: payment_method_types', 400);
   if (u.pathname === '/v1/checkout/sessions' && req.method === 'POST') {
@@ -454,12 +455,16 @@ check('T3b no application fee at all is requested when the commission is 0', sE.
 pay(sE.id);
 const dispute = { id: 'dp_test_1', object: 'dispute', payment_intent: sE.payment_intent, charge: M.pis[sE.payment_intent].charge, amount: 42500, reason: 'product_not_received', status: 'needs_response' };
 h = await hook(evt('charge.dispute.created', dispute, ACCT_OLD));
-check('T7i a dispute arriving BEFORE its payment completion is deferred (the provider retries), not lost', h.s === 500 && (await db.prepare('SELECT status FROM payment_events WHERE object_id = ?').bind('dp_test_1').first()).status === 'deferred');
-await hook(evt('checkout.session.completed', M.sessions[sE.id], ACCT_OLD));
-h = await hook(evt('charge.dispute.created', dispute, ACCT_OLD));
+check('T7i a dispute arriving BEFORE its payment completion is deferred (noting its payment), not lost', h.s === 500 && (await db.prepare('SELECT status, detail FROM payment_events WHERE object_id = ?').bind('dp_test_1').first()).detail === `awaiting order for ${sE.payment_intent}`);
+M.disputes.dp_test_1 = { ...dispute, _acct: ACCT_OLD };   // what Stripe returns when the pilot re-reads the dispute
+await hook(evt('checkout.session.completed', M.sessions[sE.id], ACCT_OLD));   // NO redelivery of the dispute event follows
 let OE = await order(oe.id);
-check('T10a once paid, the dispute is recorded (debited from the seller’s Stripe balance by Stripe)', OE.status === 'disputed' && OE.dispute_status === 'open'
-  && (await q("SELECT * FROM order_ledger WHERE kind='dispute' AND order_id = ?", oe.id))[0].amount_cents === -42500, OE);
+const dpRow = await db.prepare('SELECT status, order_id, detail FROM payment_events WHERE object_id = ?').bind('dp_test_1').first();
+check('T10a the completion replays the earlier dispute WITHOUT any redelivery: recorded on the right order (debited from the seller’s Stripe balance by Stripe)', OE.status === 'disputed' && OE.dispute_status === 'open'
+  && dpRow.status === 'processed' && dpRow.order_id === oe.id && /replayed/.test(dpRow.detail)
+  && (await q("SELECT * FROM order_ledger WHERE kind='dispute' AND order_id = ?", oe.id))[0].amount_cents === -42500, { OE, dpRow });
+h = await hook(evt('charge.dispute.created', dispute, ACCT_OLD));
+check('T10a2 a later redelivery of the same dispute event changes nothing (already processed)', h.s === 200 && (await q("SELECT * FROM order_ledger WHERE kind='dispute' AND order_id = ?", oe.id)).length === 1);
 await call('POST', `/api/admin/checkout/orders/${oe.id}/fulfilment`, FOUNDER, { kind: 'insurance', evidence: 'SIMULATED cover SIM-COVER-0001' });
 await call('POST', `/api/admin/checkout/orders/${oe.id}/fulfilment`, FOUNDER, { kind: 'dispatched', evidence: 'SAC tracking 1Z999' });
 h = await hook(evt('charge.dispute.closed', { ...dispute, status: 'lost' }, ACCT_OLD));
