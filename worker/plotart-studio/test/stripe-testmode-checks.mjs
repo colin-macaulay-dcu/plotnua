@@ -233,6 +233,41 @@ if (PHASES.includes('provider')) {
   }
 }
 
+if (PHASES.includes('privacy')) {
+  // What the pilot's restricted key CAN read (whether or not the pilot stores it). Records field NAMES and yes/no flags only,
+  // never values, so no personal or bank data enters the evidence.
+  console.log('— privacy: what the existing key can read');
+  const keys = o => (o && typeof o === 'object' ? Object.keys(o).sort() : []);
+  const has = (o, k) => !!(o && o[k] !== undefined && o[k] !== null && !(typeof o[k] === 'object' && !Array.isArray(o[k]) && !Object.keys(o[k]).length));
+  try {
+    if (!ACCOUNT) rec('V0', 'privacy probe needs the onboarded test account', 'local', 'SKIP');
+    else {
+      const a = (await stripe('GET', `/v1/accounts/${ACCOUNT}`)).j;
+      const ext = a.external_accounts && a.external_accounts.data && a.external_accounts.data[0];
+      rec('V1', 'artist account (v1 view): which artist details the key can read', 'stripe-test-api', 'INFO', {
+        top_level_fields: keys(a), email_present: has(a, 'email'), business_profile_fields_present: keys(a.business_profile).filter(k => has(a.business_profile, k)),
+        individual_present: has(a, 'individual'), individual_fields: keys(a.individual).filter(k => has(a.individual, k)),
+        external_accounts_returned: !!(a.external_accounts), external_account_fields_present: keys(ext).filter(k => has(ext, k)),
+        bank_last4_readable: !!(ext && ext.last4), bank_name_readable: !!(ext && ext.bank_name), full_account_number_readable: !!(ext && (ext.account_number || ext.iban)) });
+      const ea = await stripe('GET', `/v1/accounts/${ACCOUNT}/external_accounts?limit=1`);
+      rec('V2', 'artist bank accounts endpoint', 'stripe-test-api', 'INFO', { http: ea.s, error: ea.j.error && ea.j.error.message, fields_present: keys(ea.j.data && ea.j.data[0]).filter(k => has(ea.j.data[0], k)) });
+      const v2 = await stripe('GET', `/v2/core/accounts/${ACCOUNT}?include[0]=identity`);
+      const id = v2.j.identity || {};
+      rec('V3', 'artist identity (v2, include=identity — the pilot no longer requests this)', 'stripe-test-api', 'INFO', { http: v2.s, error: v2.j.error && v2.j.error.message,
+        identity_fields_present: keys(id).filter(k => has(id, k)), individual_fields_present: keys(id.individual).filter(k => has(id.individual, k)) });
+      const ss = (await stripe('GET', '/v1/checkout/sessions?limit=1&status=complete', null, ACCOUNT)).j;
+      const cs = ss.data && ss.data[0];
+      rec('V4', 'buyer data on a completed Checkout Session the key can read', 'stripe-test-api', 'INFO', cs ? {
+        customer_details_fields_present: keys(cs.customer_details).filter(k => has(cs.customer_details, k)), address_fields_present: keys(cs.customer_details && cs.customer_details.address).filter(k => has(cs.customer_details.address, k)) } : { none: true });
+      const chs = (await stripe('GET', '/v1/charges?limit=1', null, ACCOUNT)).j; const ch = chs.data && chs.data[0];
+      const card = ch && ch.payment_method_details && ch.payment_method_details.card;
+      rec('V5', 'buyer payment data on a charge the key can read', 'stripe-test-api', 'INFO', ch ? {
+        billing_details_fields_present: keys(ch.billing_details).filter(k => has(ch.billing_details, k)), card_fields_present: keys(card).filter(k => has(card, k)),
+        full_card_number_readable: !!(card && card.number), receipt_email_present: has(ch, 'receipt_email'), receipt_url_present: has(ch, 'receipt_url') } : { none: true });
+    }
+  } catch (e) { rec('V9', 'privacy probe', 'stripe-test-api', 'FAIL', { error: e.message }); }
+}
+
 if (PHASES.includes('unfunded')) {
   // A SECOND test connected account, used only here, so the shared account used by every other check is never drained.
   // Same key, same permissions. Fully unfunded = a refund larger than the account's available + incoming balance.

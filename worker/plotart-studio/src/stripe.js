@@ -77,7 +77,7 @@ export function accountConfigProblems(a) {
   if (a && a.dashboard !== 'full') p.push(`dashboard is ${a && a.dashboard} (must be full)`);
   return p;
 }
-const V2_INCLUDE = ['configuration.merchant', 'defaults', 'identity', 'requirements'];
+const V2_INCLUDE = ['configuration.merchant', 'defaults', 'requirements'];   // not 'identity': the pilot never needs the artist's personal details
 
 export const createAccount = (env, { email, country, artistId }) => call(env, 'POST', '/v2/core/accounts', { idem: `plotart-acct-v2-${artistId}`, body: {
   contact_email: email,
