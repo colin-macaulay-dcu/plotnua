@@ -121,7 +121,7 @@ for _d, _, _fs in os.walk(os.path.join(PA, "artists")):
 GALLERY_SLUGS = sorted({ART_FILE.match(f).group(1) for f in ARTIST_FILES if f.endswith("/index.html")})
 ALLOWED |= ARTIST_FILES
 # Artist opportunity lists (16 Nov 2026): the opportunities page and the lists' stylesheet (plotart_opportunities)
-OPP_FILES = {"opportunities/index.html", "assets/plotart-opportunities.css"}
+OPP_FILES = {"opportunities/index.html", "commissions/index.html", "assets/plotart-opportunities.css"}
 ALLOWED |= OPP_FILES
 ALLOWED |= {"assets/plotart-living.css"}   # the Living Gallery page refinement (17 Nov 2026)
 # Art for Hire (Stage 3B-6): the page, its two assets and the fourth gallery tab exist ONLY when the founder switches

@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
-"""Build/check the PlotArt artist opportunities page (plotart/opportunities/index.html, 16 Nov 2026).
+"""Build/check the PlotArt artist opportunities page (plotart/opportunities/index.html, 16 Nov 2026) and the Commissions
+page (plotart/commissions/index.html, 17 Nov 2026).
 
 One page for all seven opportunities an artist can choose in PlotArt Studio, each with the published artists who chose to
 show it (plotart_opportunities). It is reached from artists' galleries and the Living Gallery, Art for Hire and Mobile
@@ -37,16 +38,46 @@ BODY = """
 """
 
 
-def render(packages):
+COM_TITLE = "Commission an Original Artwork | PlotArt"
+COM_DESC = ("Commission a new, original work from an Irish artist through PlotArt. Send an enquiry through the artist’s gallery; "
+            "the artist decides whether to take it on and agrees the price, timescale and details with you directly.")
+COM_BODY = """
+<div class="pa-com-page">
+<section class="pa-opp-hero pa-com-hero"><div class="pa-wrap">
+<p class="pa-eyebrow">PlotArt · Commissions</p>
+<h1>Commission an original work.</h1>
+<p class="pa-lede">Some PlotArt artists welcome enquiries about new work made for you: a painting for a particular wall, a piece for a home or a workplace, or a gift. Choose an artist below and send an enquiry through their gallery.</p>
+</div></section>
+<section class="pa-com-how" aria-labelledby="com-how-h"><div class="pa-wrap pa-com-how-in">
+<h2 id="com-how-h">How a commission works</h2>
+<ol class="pa-steps">
+<li><div><h3>Choose an artist</h3><p>Look through the galleries of the artists listed below and find work that speaks to you.</p></div></li>
+<li><div><h3>Send an enquiry through PlotArt</h3><p>On the artist’s gallery, use “Enquire about a commission”, or “Enquire through PlotArt”. PlotArt passes your name, email address and message to the artist, who replies to you directly.</p></div></li>
+<li><div><h3>Agree it with the artist</h3><p>The artist decides whether to take the commission on. The size, subject, price, timescale, payment and delivery are agreed between you and the artist. PlotArt doesn’t take payment.</p></div></li>
+</ol>
+</div></section>
+%(region)s
+<section class="pa-opp-contact pa-com-control"><div class="pa-wrap">
+<p>Artists stay in control of their commissions: each artist chooses whether to be listed here, whether to accept a commission, and their own prices, timescales and arrangements. An enquiry isn’t a booking, and nothing is agreed until you and the artist agree it.</p>
+<p>Other ways to work with our artists are on <a href="../opportunities/">Artist opportunities</a>. For anything else, email <a href="mailto:hello@plotnua.ie">hello@plotnua.ie</a>.</p>
+</div></section>
+</div>
+"""
+PAGES = {OPP.HUB: (TITLE, DESC, lambda region: BODY % {"jumps": "".join('<li><a href="#%s">%s</a></li>' % (OPP.OPPORTUNITIES[k][4], E(OPP.OPPORTUNITIES[k][0])) for k in OPP.KEYS), "region": region}),
+         OPP.COMMISSIONS: (COM_TITLE, COM_DESC, lambda region: COM_BODY % {"region": region})}
+
+
+def render(packages, path=PATH):
+    title, desc, body = PAGES[path]
     home = (ROOT / "plotart/index.html").read_text(encoding="utf-8")
     header = re.search(r'<header class="pa-head.*?</header>', home, re.S).group(0).replace(' aria-current="page"', "")
     footer = re.search(r'<footer class="pa-foot">.*?</footer>', home, re.S).group(0)
     # one level down: every relative link in the shared header and footer gains ../
     fix = lambda s: re.sub(r'(href|src|srcset)="(?!https?:|/|#|mailto:)([^"]+)"', lambda m: '%s="../%s"' % (m.group(1), m.group(2)), s)
     header, footer = fix(header), fix(footer)
-    jumps = "".join('<li><a href="#%s">%s</a></li>' % (OPP.OPPORTUNITIES[k][4], E(OPP.OPPORTUNITIES[k][0])) for k in OPP.KEYS)
-    region = OPP.BEGIN + "\n" + OPP.content(PATH, packages) + "\n" + OPP.END
-    robots = SEO.head(PATH, TITLE, DESC)
+    inner = OPP.content(path, packages)
+    region = OPP.BEGIN + ("\n" + inner + "\n" if inner else "") + OPP.END
+    robots = SEO.head(path, title, desc)
     return """<!DOCTYPE html>
 <html lang="en-IE" class="no-js">
 <head>
@@ -75,25 +106,28 @@ def render(packages):
 <script src="/assets/identity/pn-menu.js?v=1" defer></script>
 </body>
 </html>
-""" % (E(TITLE), E(DESC), robots, header, BODY % {"jumps": jumps, "region": region}, footer)
+""" % (E(title), E(desc), robots, header, body(region), footer)
 
 
 def main():
-    page = ROOT / "plotart" / PATH
-    want = render(SEO.public_packages(ROOT))
+    packages = SEO.public_packages(ROOT)
+    for path in PAGES:
+        page = ROOT / "plotart" / path
+        want = render(packages, path)
+        if "--check" in sys.argv:
+            if not page.exists():
+                raise SystemExit("ARTIST OPPORTUNITIES · plotart/%s is missing" % path)
+            got = page.read_text(encoding="utf-8")
+            if OPP.outside(got) != OPP.outside(want):
+                raise SystemExit("ARTIST OPPORTUNITIES · plotart/%s differs from its reviewed source outside the generated lists" % path)
+            if got != OPP.update(got, path, packages):
+                raise SystemExit("ARTIST OPPORTUNITIES · the lists on plotart/%s differ from what the published galleries produce" % path)
+            continue
+        page.parent.mkdir(parents=True, exist_ok=True)
+        page.write_text(want, encoding="utf-8")
+        print("ARTIST OPPORTUNITIES · built plotart/%s" % path)
     if "--check" in sys.argv:
-        if not page.exists():
-            raise SystemExit("ARTIST OPPORTUNITIES · plotart/%s is missing" % PATH)
-        got = page.read_text(encoding="utf-8")
-        if OPP.outside(got) != OPP.outside(want):
-            raise SystemExit("ARTIST OPPORTUNITIES · the page differs from its reviewed source outside the generated lists")
-        if got != OPP.update(got, PATH, SEO.public_packages(ROOT)):
-            raise SystemExit("ARTIST OPPORTUNITIES · the lists differ from what the published galleries produce")
-        print("ARTIST OPPORTUNITIES · OK — page matches its source; lists match the published galleries; nothing written")
-        return
-    page.parent.mkdir(parents=True, exist_ok=True)
-    page.write_text(want, encoding="utf-8")
-    print("ARTIST OPPORTUNITIES · built plotart/%s" % PATH)
+        print("ARTIST OPPORTUNITIES · OK — pages match their source; lists match the published galleries; nothing written")
 
 
 if __name__ == "__main__":

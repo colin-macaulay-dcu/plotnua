@@ -20,3 +20,20 @@
 .pa-opp-contact{ padding:clamp(48px,6vw,80px) 0; border-top:1px solid var(--line); }
 .pa-opp-contact p{ max-width:720px; color:var(--stone); line-height:1.7; margin:0; }
 @media (max-width:640px){ .pa-opp-row{ display:grid; grid-template-columns:72px 1fr; column-gap:16px; row-gap:2px; padding:12px 0; } .pa-opp-thumb{ grid-row:1 / span 2; width:72px; height:72px; } .pa-opp-name{ font-size:20px; align-self:end; } .pa-opp-what{ text-align:left; font-size:12px; align-self:start; } }
+/* Commissions page (17 Nov 2026): the steps beside their heading, then the list on the same two-column grid */
+.pa-com-how{ padding:clamp(48px,6vw,88px) 0; border-top:1px solid var(--line); background:#2C2C2E; }
+.pa-com-how-in{ display:grid; grid-template-columns:repeat(2, minmax(0,1fr)); gap:28px clamp(20px,3vw,40px); align-items:start; }
+.pa-com-how h2{ font-size:clamp(36px,4vw,56px); max-width:12ch; margin:0; }
+.pa-com-how .pa-steps h3{ font-size:24px; }
+.pa-com-control p + p{ margin-top:14px; }
+body.pa .pa-com-page #open-artists .pa-opp-in{ max-width:var(--max); display:grid; grid-template-columns:repeat(2, minmax(0,1fr)); grid-template-rows:auto auto 1fr; column-gap:clamp(20px,3vw,40px); align-items:start; }
+body.pa .pa-com-page #open-artists h2{ grid-column:1; grid-row:1; margin:0 0 20px; max-width:13ch; }
+body.pa .pa-com-page #open-artists .pa-opp-said{ grid-column:1; grid-row:2; font-size:15.5px; max-width:44ch; margin:0; }
+body.pa .pa-com-page #open-artists .pa-opp-list{ grid-column:2; grid-row:1 / span 3; }
+body.pa .pa-com-page #open-artists .pa-opp-more{ grid-column:1; grid-row:3; margin-top:26px; }
+@media (min-width:641px){ body.pa .pa-com-page .pa-opp-name{ flex:1 0 auto; } body.pa .pa-com-page .pa-opp-what{ max-width:52%; } }
+@media (max-width:900px){
+  .pa-com-how-in{ grid-template-columns:1fr; }
+  body.pa .pa-com-page #open-artists .pa-opp-in{ display:block; }
+  body.pa .pa-com-page #open-artists .pa-opp-list{ margin-top:26px; }
+}

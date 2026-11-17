@@ -791,6 +791,26 @@ body.pa .pa-vgc-pos > a:focus-visible{ outline-offset:-3px; border-radius:0; }
 .pa-enq-notice{ margin:0; font-size:13px; color:var(--mute); line-height:1.55; }
 .pa-enq-status{ margin:0; font-size:14px; color:var(--lime); }
 .pa-enq-status[data-state="error"]{ color:#F5C6C6; }
+/* artist gallery: "Open to" pills and the Open for commissions section (17 Nov 2026) */
+.pa-ag-opps{ margin-top:26px; }
+.pa-ag-opps-h{ margin:0 0 10px; font-size:13px; letter-spacing:.14em; text-transform:uppercase; color:var(--mute); }
+.pa-ag-pills{ display:flex; flex-wrap:wrap; gap:8px; margin:0; padding:0; list-style:none; }
+.pa-ag-pill{ display:inline-flex; align-items:center; min-height:38px; padding:8px 16px; border:1px solid var(--line-2); border-radius:999px; font-size:14.5px; font-weight:500; color:var(--ivory); text-decoration:none; transition:background-color .2s, border-color .2s, color .2s; }
+.pa-ag-pill:hover{ background:var(--ivory); border-color:var(--ivory); color:var(--anth); }
+.pa-ag-pill:focus-visible{ outline:2px solid var(--ivory); outline-offset:3px; }
+.pa-ag-com{ border-top:1px solid var(--line); background:#232426; }
+.pa-ag-com .pa-wrap{ padding-top:clamp(36px, 4.5vw, 64px); padding-bottom:clamp(36px, 4.5vw, 64px); }
+.pa-ag-com-in{ display:grid; grid-template-columns:minmax(0, 60ch) auto; justify-content:start; gap:clamp(20px, 4vw, 72px); align-items:center; }
+.pa-ag-com h2{ font-size:clamp(32px, 3.6vw, 48px); margin:0 0 12px; }
+.pa-ag-com-t p{ margin:0; max-width:56ch; color:var(--stone); line-height:1.65; }
+.pa-ag-com-t .pa-ag-com-more{ margin-top:14px; font-size:15px; }
+.pa-ag-com-t .pa-ag-com-more a{ color:var(--ivory); }
+.pa-ag-com .pa-enq{ width:min(460px, 100%); }
+@media (max-width:760px){
+  .pa-ag-com-in{ grid-template-columns:1fr; }
+  .pa-ag-com .pa-ag-enq-c .pa-btn{ width:100%; justify-content:center; }
+  .pa-ag-pill{ font-size:14px; padding:7px 14px; min-height:36px; }
+}
 .pa-hp{ position:absolute !important; left:-9999px !important; width:1px; height:1px; overflow:hidden; }
 [data-pa-enquire][hidden]{ display:none !important; }
 
