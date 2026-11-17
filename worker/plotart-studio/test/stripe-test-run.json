@@ -1,9 +1,9 @@
 {
   "_note": "Changing this file on the pilot branch requests a run of .github/workflows/plotart-checkout-stripe-test.yml (Stripe TEST mode only; waits for the founder's approval on the checkout-test environment). Nothing is deployed.",
-  "requested": "2026-11-17T13:23:00Z",
+  "requested": "2026-11-17T13:40:00Z",
   "phases": [
     "provider"
   ],
-  "reason": "Run 8: fresh onboarding link for acct_1UclJXHx1Olx8cdw (run 7 onboarding session timed out mid-form). Also reports onboarding status (P1e).",
+  "reason": "Run 9: verify with Stripe that acct_1UclJXHx1Olx8cdw completed test onboarding (P1e: details submitted, charges enabled, nothing currently/past due) before CHECKOUT_TEST_CONNECTED_ACCOUNT is set.",
   "reuse_account": "acct_1UclJXHx1Olx8cdw"
 }
