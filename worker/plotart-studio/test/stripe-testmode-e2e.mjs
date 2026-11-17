@@ -28,6 +28,18 @@ export async function e2e({ rec, KEY, ACCOUNT, RUN, port, whsec, stripe, sleep }
     const st = async u => (await fetch('https://api.stripe.com' + u, { headers: h })).status;
     const probes = { v1_account: await st(`/v1/accounts/${ACCOUNT}`), v1_external_accounts: await st(`/v1/accounts/${ACCOUNT}/external_accounts?limit=1`), v2_account_identity: await st(`/v2/core/accounts/${ACCOUNT}?include[0]=identity`) };
     rec('E17b', 'the runtime key is refused artist account, identity and bank data (HTTP status only recorded)', 'stripe-test-api', Object.values(probes).every(x => x === 401 || x === 403) ? 'PASS' : 'FAIL', probes);
+    // E17c · actions the runtime key should NOT be able to take. Each request is deliberately invalid (zero amount, unknown
+    // object), so even if a permission were wrongly granted nothing could happen: Stripe would answer 400/404 instead of 401/403.
+    const post = async (u, body, acct) => { const r = await fetch('https://api.stripe.com' + u, { method: 'POST', headers: { ...h, 'Content-Type': 'application/x-www-form-urlencoded', ...(acct ? { 'Stripe-Account': acct } : {}) }, body: new URLSearchParams(body) }); return r.status; };
+    const get = async (u, acct) => (await fetch('https://api.stripe.com' + u, { headers: { ...h, ...(acct ? { 'Stripe-Account': acct } : {}) } })).status;
+    const denied = {
+      create_payment_intent_on_artist_account: await post('/v1/payment_intents', { amount: '0', currency: 'eur' }, ACCOUNT),
+      create_refund_on_artist_account: await post('/v1/refunds', { payment_intent: 'pi_doesnotexist000' }, ACCOUNT),
+      read_artist_balance: await get('/v1/balance', ACCOUNT),
+      list_artist_payouts: await get('/v1/payouts?limit=1', ACCOUNT),
+      create_v2_account: await post('/v2/core/accounts', {}, null) };
+    rec('E17c', 'the runtime key cannot create PaymentIntents directly, refund, read balances or payouts, or create accounts (deliberately invalid requests; HTTP status only)', 'stripe-test-api',
+      Object.values(denied).every(x => x === 401 || x === 403) ? 'PASS' : 'FAIL', denied);
   } else rec('E17b', 'narrower runtime key not supplied: access separation not verified', 'local', 'SKIP', { needed: 'secret CHECKOUT_TEST_STRIPE_RUNTIME_KEY in the checkout-test environment' });
   const { db } = S, CW = S.checkoutWorker;
   const q = async (sql, ...b) => (await db.prepare(sql).bind(...b).all()).results;

@@ -10,7 +10,7 @@ Permission names are Stripe's restricted-key permissions, from https://docs.stri
 |---|---|---|
 | **Public checkout Worker** (internet-facing: buyer pages, webhooks, 15-minute sweep, processing reimbursement at payment) | create, read and expire Checkout Sessions (on the artist's account) | `checkout_session_write` |
 | | read PaymentIntent | `payment_intent_read` |
-| | read Charge with its balance transaction (Model B fee lines) | `charge_read` (plus `balance_read` **if** Stripe refuses the expansion without it; run 22 will show) |
+| | read Charge with its balance transaction (Model B fee lines) | `charge_read` (plus `balance_read` **if** Stripe refuses the expansion without it; run 23 will show) |
 | | read Refund (sweep) | `charge_read` |
 | | partial application-fee refund (reimbursement) | `application_fee_write` (Direct) |
 | | read Dispute (fee lines) | `dispute_read` |
@@ -24,30 +24,46 @@ Permission names are Stripe's restricted-key permissions, from https://docs.stri
 
 ## 2. Proposal
 
-| Key | Used by | Permissions | Effect |
-|---|---|---|---|
-| **A. Runtime key** (new) | the public checkout Worker only | Checkout Sessions: **Write**; PaymentIntents: **Read**; Charges (and refunds): **Read**; Application fees: **Write**; Disputes: **Read**; everything else **None** (no Accounts v1 or v2, no Balance unless run 22 shows it is needed) | The internet-facing Worker can no longer read any artist identity or bank detail. If its key leaked, it could not create payments, pay out, or read artist accounts. |
-| **B. Studio key** | the Studio Worker | today's runtime permissions **minus** the test-runner extras | Founder-only (Cloudflare Access). Still needs account reads for onboarding status; those can also expose identity details, because Stripe's account read permissions offer nothing narrower. |
-| **C. Test-runner key** | GitHub Actions only | today's key, unchanged | Never deployed to any Worker. |
+| Key | Used by | Effect |
+|---|---|---|
+| **A. Runtime key** (new; exact permissions in §2.1) | the public checkout Worker only | The internet-facing Worker cannot read artist accounts, identity or bank details. It **can** create Checkout Sessions on artist accounts, so it can start payment flows that buyers complete. |
+| **B. Studio key** | the Studio Worker | Today's runtime permissions minus the test-runner extras. Founder-only (Cloudflare Access). Still needs account reads for onboarding status, and these can expose identity details: Stripe offers no narrower permission for those endpoints. |
+| **C. Test-runner key** | GitHub Actions only | Today's key, unchanged. Never deployed to any Worker. |
 
-**Not possible today.** Onboarding-status reads cannot be narrowed further. `v2_account_read` returns identity details when they are requested, and `connected_account_read` returns individual and bank summaries. Stripe's permission list has nothing finer for these endpoints. What the pilot can do is never request or store them: it already does not request `identity`.
+### 2.1 Key A: exact permissions (proposed)
+
+Set each permission separately. "In your account" means the platform account (PlotNua). "In connected accounts" means calls made on an artist's account with the `Stripe-Account` header.
+
+| Resource (Dashboard) | In your account | In connected accounts | What the Worker uses it for |
+|---|---|---|---|
+| Checkout Sessions | None | **Write** | Create, read and expire the buyer's Checkout Session on the artist's account (`checkout_session_write`) |
+| PaymentIntents | None | **Read** | Read the payment after the signed completion (`payment_intent_read`) |
+| Charges (includes refunds) | None | **Read** | Read the charge and its balance transaction (Model B fee lines); read refund status in the sweep (`charge_read`) |
+| Disputes | None | **Read** | Read a dispute's fee lines (`dispute_read`) |
+| Application Fees | **Write** | None | Partial application-fee refund for the processing reimbursement. Application fees are platform objects; Stripe marks this permission "(Direct)" (`application_fee_write`) |
+| Balance | None | None | Not needed. **Fallback:** if run 23 shows that reading the charge's balance transaction is refused, set "In connected accounts" to Read, and nothing else |
+| All other resources, including Accounts, Accounts v2, Account Links, Payouts, Transfers, Customers, Payment Methods, Webhook Endpoints | None | None | — |
+
+What key A **can** do: create Checkout Sessions on artist accounts (start payments that a buyer completes on Stripe's page); read those payments, charges, refunds and disputes; and refund part of PlotArt's own application fees.
+
+What key A **cannot** do (proposed): create PaymentIntents or charges directly, create refunds to buyers, read balances or payouts, create or read artist accounts, or read identity or bank details.
+
+**Not possible today.** Onboarding-status reads (key B) cannot be narrowed further. `v2_account_read` returns identity details when they are requested, and `connected_account_read` returns individual and bank summaries; Stripe's permission list has nothing finer for these endpoints. The pilot never requests or stores those details.
 
 **Optional later narrowing (code change, not made).** The Studio could take charge and payout status from Accounts v2 alone and drop `connected_account_read`. That needs the v2 merchant status fields confirmed in the sandbox first.
 
-## 3. Verification
+## 3. Proposed versus verified
 
-The test runner already supports key A. When the secret `CHECKOUT_TEST_STRIPE_RUNTIME_KEY` exists, the end-to-end test gives it to the public checkout Worker only, and adds:
-- **E17a:** records which key that Worker used;
-- **E17b:** checks that the runtime key is refused the artist's v1 account, its bank accounts, and the v2 account with identity. Only the HTTP status codes are recorded.
+Nothing in §2.1 is verified yet. The test runner gives key A to the public checkout Worker only, once the secret `CHECKOUT_TEST_STRIPE_RUNTIME_KEY` exists.
 
-Every existing end-to-end check then runs with key A on the public side:
-- E2/E3: hosted Checkout and the completion;
-- E13: the reimbursement at payment;
-- E14/E16: dispute fees;
-- E6: expiry;
-- the sweep's reimbursement and refund polling.
-
-If any of these fails with a permission error, the report names the missing permission. Key B is not tested separately: the Studio side keeps the current key in the test run.
+| Restriction or capability | How it is verified | Status |
+|---|---|---|
+| Key A is used by the public Worker (and the Studio and harness keep the main key) | E17a records which key was used | proposed (not yet run) |
+| Refused: v1 artist account, artist bank accounts, v2 account with identity | E17b: HTTP 401/403 required; status codes only recorded | proposed (not yet run) |
+| Refused: creating a PaymentIntent directly, creating a refund, reading the artist's balance or payouts, creating an account | E17c: each request is deliberately invalid (zero amount, unknown object), so nothing can happen even if a permission were wrongly granted; 401/403 required | proposed (not yet run) |
+| Everything the public Worker needs still works: Checkout creation, completion, expiry, reimbursement at payment, sweep refund polling, dispute fees | the existing e2e checks E2, E3, E6, E13, E14, E16 and E18, run with key A on the public side | proposed (not yet run) |
+| Studio key B | not tested separately (the Studio keeps the current key in tests) | proposal only |
+| Anything not listed above | not tested | not verified |
 
 ## 4. Steps for you (sandbox only)
 
@@ -55,10 +71,9 @@ Your current key is not changed by these steps. Do them one at a time.
 
 1. In the Stripe Dashboard, open the **sandbox** you use for the pilot. Go to **Developers → API keys → Create restricted key**, and choose to build it yourself.
 2. Name it **"PlotArt checkout runtime (test)"**.
-3. Set **Checkout Sessions = Write**, **PaymentIntents = Read**, **Charges = Read**, **Application Fees = Write**, **Disputes = Read**. Leave every other resource **None**; in particular, Accounts, Accounts v2, Balance, Customers and Payouts.
-4. If the form shows a separate **Connect** column, allow the same permissions for connected accounts. The pilot creates Checkout Sessions on the artist's account.
-5. Create the key and copy it. **Do not paste it into chat.**
-6. In GitHub, go to **colin-macaulay-dcu/plotnua → Settings → Environments → checkout-test → Add secret**. Name it `CHECKOUT_TEST_STRIPE_RUNTIME_KEY` and paste the key as its value.
-7. Tell me it is done. I will then request a run, which waits for your approval as usual, and report E17 and the e2e results.
+3. Set each permission exactly as in the §2.1 table, both "In your account" and "In connected accounts". Leave everything else None.
+4. Create the key and copy it. **Do not paste it into chat.**
+5. In GitHub, go to **colin-macaulay-dcu/plotnua → Settings → Environments → checkout-test → Add secret**. Name it `CHECKOUT_TEST_STRIPE_RUNTIME_KEY` and paste the key as its value.
+6. Tell me it is done. I will request a run, which waits for your approval as usual, and report E17a–c and the e2e results, keeping proposed and verified apart.
 
 For live use, the same split would be created as separate live keys and stored as Cloudflare secrets of the two Workers, with your approval. That is not part of this pilot.
