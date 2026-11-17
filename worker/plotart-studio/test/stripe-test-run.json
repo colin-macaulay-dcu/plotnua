@@ -1,11 +1,11 @@
 {
   "_note": "Changing this file on the pilot branch requests a run of .github/workflows/plotart-checkout-stripe-test.yml (Stripe TEST mode only; waits for the founder's approval on the checkout-test environment). Nothing is deployed.",
-  "requested": "2026-11-17T21:42:00Z",
+  "requested": "2026-11-17T21:59:00Z",
   "phases": [
     "unfunded"
   ],
-  "reason": "Run 26: after the founder completes onboarding, verify acct_1Uct3vHx1OnYJa8H with Stripe (U3) and run the FULLY UNFUNDED refund test (U4-U7). No link generated. Approve only after onboarding is done.",
+  "reason": "Run 27: fresh onboarding link for acct_1Uct3vHx1OnYJa8H (founder said ready at 21:58).",
   "reuse_account": "acct_1UclJXHx1Olx8cdw",
   "unfunded_account": "acct_1Uct3vHx1OnYJa8H",
-  "unfunded_link": false
+  "unfunded_link": true
 }
