@@ -1,9 +1,9 @@
 {
   "_note": "Changing this file on the pilot branch requests a run of .github/workflows/plotart-checkout-stripe-test.yml (Stripe TEST mode only; waits for the founder's approval on the checkout-test environment). Nothing is deployed.",
-  "requested": "2026-11-17T13:02:00Z",
+  "requested": "2026-11-17T13:07:00Z",
   "phases": [
     "provider"
   ],
-  "reason": "Run 6: fresh onboarding link for acct_1UclJXHx1Olx8cdw; founder ready to complete test onboarding now.",
+  "reason": "Run 7: fresh onboarding link for acct_1UclJXHx1Olx8cdw (run 6 link consumed in the wrong browser).",
   "reuse_account": "acct_1UclJXHx1Olx8cdw"
 }
