@@ -4,8 +4,8 @@
   "phases": [
     "unfunded"
   ],
-  "reason": "Run 23: generate a fresh short-lived Stripe TEST onboarding link for the second sandbox account acct_1Uct3vHx1OnYJa8H. APPROVE ONLY WHEN THE FOUNDER SAYS READY: the link is created at approval and expires within minutes. No other checks.",
+  "reason": "Run 24: after the founder completes onboarding, verify acct_1Uct3vHx1OnYJa8H with Stripe (U3) and run the FULLY UNFUNDED refund test (U4-U7: balances and refund statuses). No onboarding link is generated. Approve only after onboarding is done.",
   "reuse_account": "acct_1UclJXHx1Olx8cdw",
   "unfunded_account": "acct_1Uct3vHx1OnYJa8H",
-  "unfunded_link": true
+  "unfunded_link": false
 }
