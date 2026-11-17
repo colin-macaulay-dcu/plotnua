@@ -92,8 +92,10 @@ check('T11b an artist cannot change even their OWN email (founder-only)', a4.s =
 
 // give the active artist real content: profile, two works, Founding status, so T18 can prove nothing is reset
 await call('PUT', '/api/me/profile', ACT, { practice: 'Painter', county: 'Clare' });
-const w1 = (await call('POST', '/api/artworks', ACT)).j.id, w2 = (await call('POST', '/api/artworks', ACT)).j.id;
+// (17 Nov 2026: "Add an artwork" now reopens an empty draft, so the first work gets its details before the second is added)
+const w1 = (await call('POST', '/api/artworks', ACT)).j.id;
 await call('PUT', `/api/artworks/${w1}`, ACT, { title: 'Burren Light', year: 2026, medium: 'Oil on linen', h_cm: 50, w_cm: 70, price_eur: 900, ai_involvement: 'none' });
+const w2 = (await call('POST', '/api/artworks', ACT)).j.id;
 const snap = async id => ({ a: await row(id), works: (await db.prepare('SELECT id, title FROM artworks WHERE artist_id=? ORDER BY id').bind(id).all()).results });
 const pre = await snap(ids.act), others = { inv: await row(ids.inv), lara: await row(ids.lara), sus: await row(ids.sus), end: await row(ids.end) };
 

@@ -121,7 +121,9 @@ def main(export_dir, root):
     if a.get("open_to"):
         art["open_to"] = list(a["open_to"])
     pkg = {"schema": G.PACKAGE_SCHEMA, "artist": art, "works": works,
-           "publication": {k: pub.get(k) for k in sorted(G.PUB_KEYS)},
+           # first_approved_at travels only when the Studio sent it (A12 correction, 17 Nov 2026): galleries exported
+           # before it existed keep exactly the publication record they had
+           "publication": {k: pub.get(k) for k in sorted(G.PUB_KEYS) if k != "first_approved_at" or pub.get(k)},
            "checks": {"blocks": blocks, "warns": warns},
            "provenance": prov, "provenance_sources": sources}
     pkg["checks"]["publication_blocks"] = G.publication_blocks(pkg)

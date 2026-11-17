@@ -816,8 +816,10 @@ async function exportFor(env, q) {
   const v = await one(env, 'SELECT * FROM versions WHERE artist_id = ? AND version = ?', q.artist_id, q.version);
   const snap = JSON.parse(v.snapshot);
   const lic = (await agreementState(env, artist)).licence || {};   // the most recent licence acceptance (new record first, then the legacy label)
+  const first = await one(env, 'SELECT created_at FROM versions WHERE artist_id = ? ORDER BY version ASC LIMIT 1', q.artist_id);   // first approval: never changes
   const g = L.exportGallery(snap, { version: q.version, approvedAt: v.created_at, licenceVersion: lic.version || null,
-    licenceAcceptedAt: lic.accepted_at || null, artistId: artist.id, aiDecisions: v.ai_decisions ? JSON.parse(v.ai_decisions) : {} });
+    licenceAcceptedAt: lic.accepted_at || null, artistId: artist.id, aiDecisions: v.ai_decisions ? JSON.parse(v.ai_decisions) : {},
+    firstApprovedAt: first ? first.created_at : null });
   const ids = [...snap.works.flatMap(w => w.images.map(i => i.id)), ...(snap.artist.portrait ? [snap.artist.portrait.id] : [])];
   return { gallery: g, images: ids, kind: q.kind };
 }
@@ -1676,10 +1678,15 @@ async function route(req, env) {
     const lv = await latestVersion(env, artist.id);
     const liveIds = new Set(lv ? lv.snap.works.map(w => w.id) : []);
     const blk = blocked(d.images);
-    return json({ ok: true, works: d.works.map(w => ({ ...w, in_version: liveIds.has(w.id),
+    return json({ ok: true, works: d.works.map(w => ({ ...w, in_version: liveIds.has(w.id), empty_draft: L.isEmptyDraft(w, d.images),
       images: d.images.filter(i => i.artwork_id === w.id).map(i => { const c = JSON.parse(i.checks); return { ...i, checks: { blocks: c.blocks, warns: c.warns } }; }), blocked: d.images.some(i => i.artwork_id === w.id && blk.has(i.id)) })) });
   }
   if (p === '/api/artworks' && m === 'POST') {
+    // "Add an artwork" reopens an empty draft the artist already has instead of making another (17 Nov 2026): a photo the
+    // browser refuses leaves the draft empty, and every retry used to add one more empty record that blocked submission
+    const d0 = await load(env, artist.id);
+    const spare = d0.works.find(w => !w.archived && L.isEmptyDraft(w, d0.images));
+    if (spare) return json({ ok: true, id: spare.id, reused: true });
     const max = await one(env, 'SELECT COALESCE(MAX(ord),0) AS m FROM artworks WHERE artist_id=?', artist.id);
     const taken = new Set((await all(env, 'SELECT slug FROM artworks WHERE artist_id=?', artist.id)).map(r => r.slug));
     const id = rid('w');

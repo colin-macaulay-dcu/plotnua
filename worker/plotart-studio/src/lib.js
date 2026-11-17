@@ -113,6 +113,16 @@ export async function sha256(buf) {
 /* ---- snapshots, changes and tiers ---- */
 const imgRef = i => i && ({ id: i.id, sha256: i.sha256, role: i.role, alt: i.alt || null, photographer: i.photographer || null,
   photo_credit: i.photographer === 'other_with_permission' ? (i.photo_credit || null) : null, width: i.width, height: i.height, format: i.format });
+/* An EMPTY DRAFT (17 Nov 2026, Olivia Jones): an artwork record that "Add an artwork" created but nothing was ever saved
+   to: no title, year, medium, materials, size, price, description, AI answer or photograph. It holds no content, so it is
+   left out of the snapshot: it is never counted as a new artwork, never blocks a submission and is never published. A
+   work that was ever published always has a main photograph (it can be replaced, never deleted), so a published work is
+   never an empty draft. The record itself is kept; the artist can fill it in or discard it. */
+export function isEmptyDraft(w, images) {
+  return !w.title && w.year == null && !w.medium && !w.materials && w.h_cm == null && w.w_cm == null && w.d_cm == null &&
+    w.price_eur == null && !w.price_on_request && !w.description && !w.ai_involvement && !w.ai_note &&
+    !images.some(i => i.artwork_id === w.id && !i.deleted_at);
+}
 export function snapshot(artist, works, images) {
   const byWork = {};
   for (const i of images) if (i.artwork_id && !i.deleted_at) (byWork[i.artwork_id] ||= []).push(i);
@@ -129,7 +139,7 @@ export function snapshot(artist, works, images) {
       // in the fixed public order. Absent when there are none, so every snapshot made before stays byte-for-byte the same.
       ...(openTo(artist).length ? { open_to: openTo(artist) } : {}),
     },
-    works: works.filter(w => !w.archived).sort((a, b) => a.ord - b.ord).map(w => ({
+    works: works.filter(w => !w.archived && !isEmptyDraft(w, images)).sort((a, b) => a.ord - b.ord).map(w => ({
       id: w.id, slug: w.slug, title: w.title || null, year: w.year ?? null, medium: w.medium || null, materials: w.materials || null,
       h_cm: w.h_cm ?? null, w_cm: w.w_cm ?? null, d_cm: w.d_cm ?? null, price_eur: w.price_eur ?? null,
       price_on_request: !!w.price_on_request, availability: w.availability, description: w.description || null,
@@ -246,7 +256,7 @@ export function checklist(snap, { founding, programme = null, firstPublication =
 export function readiness(snap, opts) { return checklist(snap, opts).map(i => i.text); }
 
 /* The gallery export the publishing pipeline ingests (schema plotnua.plotart.gallery.v1, see plotart_gallery.py). */
-export function exportGallery(snap, { version, approvedAt, licenceVersion, licenceAcceptedAt, artistId, aiDecisions = {} }) {
+export function exportGallery(snap, { version, approvedAt, licenceVersion, licenceAcceptedAt, artistId, aiDecisions = {}, firstApprovedAt = null }) {
   const ext = f => ({ jpeg: 'jpg', png: 'png', webp: 'webp' }[f]);
   const img = (i, role) => ({ file: `${i.id}.${ext(i.format)}`, role, alt: i.alt, photographer: i.photographer,
     photo_credit: i.photographer === 'other_with_permission' ? i.photo_credit : null });
@@ -264,7 +274,10 @@ export function exportGallery(snap, { version, approvedAt, licenceVersion, licen
       ai_founder_decision: aiDecisions[w.id] || null,
       images: w.images.map(m => img(m, m.role)) })),
     publication: { state: 'approved', version: `v${version}`, approved_by: 'founder', approved_at: approvedAt,
-      licence_version: licenceVersion, licence_accepted_at: licenceAcceptedAt, permission_ref: `PA-PERM-${artistId}`, test_note: null },
+      licence_version: licenceVersion, licence_accepted_at: licenceAcceptedAt, permission_ref: `PA-PERM-${artistId}`, test_note: null,
+      // when the founder first approved this gallery (version 1): never changes, so the website's collections can order
+      // newly published artists by it (A12 correction, 17 Nov 2026)
+      ...(firstApprovedAt ? { first_approved_at: firstApprovedAt } : {}) },
   };
 }
 

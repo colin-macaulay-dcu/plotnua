@@ -362,3 +362,9 @@ body.st{ background:var(--anth); min-height:100vh; }
 .st-fa-ctl{ margin-top:auto; flex-wrap:wrap; gap:6px; }
 .st-fa-notice{ border-color:var(--stone, #b9b6ae); margin:0 0 14px; }
 .st-fa-card .st-hp-frame img{ width:88%; height:88%; aspect-ratio:auto; object-fit:contain; background:none; }   /* never cropped or stretched */
+
+/* Empty drafts and refused photos (17 Nov 2026): say plainly what was and wasn't saved */
+.st-draft-note{ margin:0 0 16px; }
+.st-draft-note .st-linkbtn{ margin-left:6px; }
+.st-upfail{ display:block; color:#F2A3A3; margin-bottom:6px; }
+.st-views-first{ grid-column:1 / -1; }

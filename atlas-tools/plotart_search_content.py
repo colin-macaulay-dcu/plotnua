@@ -74,20 +74,28 @@ COLLECTION_ARTIST_ORDER = (
     "fintan-whelan",         # 12 Nov 2026
     "nessa-mccormack",       # 12 Nov 2026
     "karen-ebbs",            # 12 Nov 2026
+    "lena-fawaz",            # 17 Nov 2026 (recorded in the order both collections already show)
+    "sarah-fitzgibbon",      # 17 Nov 2026
 )
 
 
 def collection_artists(packages):
     """Artists in stable collection order. Recorded artists first, in COLLECTION_ARTIST_ORDER. Any artist not yet
-    recorded follows them, by the date they accepted the gallery licence (set once at onboarding, unchanged by
-    republishing), then by slug, so a new artist has a predictable place before anyone records it."""
+    recorded follows them, by when the founder FIRST approved their gallery (publication.first_approved_at: the Studio's
+    version 1, which never changes), then by slug, so a new artist has a predictable place that nothing routine moves.
+
+    A12 correction (17 Nov 2026): this used to be licence_accepted_at, but the Studio exports the artist's NEWEST licence
+    acceptance, so any re-acceptance (a new licence version, or the Gallery Artist agreement) could move a new artist
+    among the others. It passed for Lena Fawaz and Sarah Fitzgibbon only because their alphabetical order matched their
+    acceptance order; Olivia Jones's first publication was the first case where it did not, and the gate refused it.
+    Galleries exported before first_approved_at existed fall back to licence_accepted_at until they are next published."""
     rank = {s: i for i, s in enumerate(COLLECTION_ARTIST_ORDER)}
 
     def key(p):
-        slug = p["artist"]["slug"]
+        slug, pub = p["artist"]["slug"], p["publication"]
         if slug in rank:
             return (0, rank[slug], "", slug)
-        return (1, 0, p["publication"].get("licence_accepted_at") or "9999", slug)
+        return (1, 0, pub.get("first_approved_at") or pub.get("licence_accepted_at") or "9999", slug)
     return sorted(packages, key=key)
 
 

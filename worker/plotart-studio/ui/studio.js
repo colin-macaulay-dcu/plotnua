@@ -233,10 +233,10 @@
     }));
     app.querySelectorAll('[data-archive]').forEach(b => b.addEventListener('click', async () => {
       const w = WORKS.find(x => x.id === b.dataset.archive);
-      if (!confirmInline(b, live(w) ? 'Remove from your live gallery?' : 'Remove this work?')) return;
+      if (!confirmInline(b, live(w) ? 'Remove from your live gallery?' : w.empty_draft ? 'Discard this empty draft?' : 'Remove this work?')) return;
       if (!live(w) && !w.images.length && !w.title) await api('DELETE', `/api/artworks/${w.id}`);
       else await api('POST', `/api/artworks/${w.id}/archive`, { archived: true });
-      say('Removed'); await refresh(); works();
+      say(w.empty_draft ? 'Empty draft discarded' : 'Removed'); await refresh(); works();
     }));
     app.querySelectorAll('[data-restore]').forEach(b => b.addEventListener('click', async () => { await api('POST', `/api/artworks/${b.dataset.restore}/archive`, { archived: false }); say('Back in your gallery (needs review)'); await refresh(); works(); }));
   }
@@ -253,12 +253,19 @@
     const q = needs(w), sub = [w.year, w.medium, w.h_cm && w.w_cm ? `${+w.h_cm} × ${+w.w_cm} cm` : null].filter(Boolean).join(' · ');
     return `<li class="st-work"><a class="st-thumb" href="#/work/${w.id}" style="${thumb(w)}" aria-label="Edit ${E(w.title || 'untitled work')}">${w.images.length ? '' : 'Add photo'}</a>
       <div><p class="st-work-t"><a href="#/work/${w.id}" style="color:inherit;text-decoration:none">${E(w.title || 'Untitled')}</a></p><p class="st-work-s">${E(sub || 'Details to add')}${w.price_eur && w.availability === 'available' ? ` · €${Number(w.price_eur).toLocaleString('en-IE')}` : ''}</p>
-      <div class="st-chips">${live(w) ? '<span class="st-chip st-chip--live">In your gallery</span>' : '<span class="st-chip">Not yet submitted</span>'}${q.length ? `<span class="st-chip st-chip--todo">Needs ${E(q.join(', '))}</span>` : ''}</div>
+      <div class="st-chips">${live(w) ? '<span class="st-chip st-chip--live">In your gallery</span>' : w.empty_draft ? '<span class="st-chip">Empty draft · nothing saved yet</span>' : '<span class="st-chip">Not yet submitted</span>'}${q.length && !w.empty_draft ? `<span class="st-chip st-chip--todo">Needs ${E(q.join(', '))}</span>` : ''}</div>
       <div class="st-row"><label class="st-lab" for="av-${w.id}" style="position:absolute;left:-999px">Availability</label><select id="av-${w.id}" data-av="${w.id}" style="width:auto">${Object.entries(AV).map(([k, v]) => `<option value="${k}"${w.availability === k ? ' selected' : ''}>${v}</option>`).join('')}</select>
       <a class="st-btn st-btn--small" href="#/work/${w.id}">Edit</a></div></div>
       <div class="st-row" style="justify-content:flex-end"><button class="st-btn st-btn--small" data-move="${w.id}:-1" ${i ? '' : 'disabled'} aria-label="Move earlier">↑</button><button class="st-btn st-btn--small" data-move="${w.id}:1" ${i < n - 1 ? '' : 'disabled'} aria-label="Move later">↓</button><button class="st-btn st-btn--small st-btn--danger" data-archive="${w.id}">Remove</button></div></li>`;
   }
-  async function addWork() { const r = await api('POST', '/api/artworks'); await refresh(); location.hash = '#/work/' + r.id; }
+  async function addWork() {
+    if (addWork.busy) return;   // a second tap while the first is saving made a second empty record (17 Nov 2026)
+    addWork.busy = true;
+    let r;
+    try { r = await api('POST', '/api/artworks'); } finally { addWork.busy = false; }
+    await refresh(); location.hash = '#/work/' + r.id;
+    if (r.reused) say('You already had an empty draft: continue with it here');   // never a pile of empty records (17 Nov 2026)
+  }
 
   function work(id) {
     const w = WORKS.find(x => x.id === id);
@@ -270,6 +277,7 @@
       <h1 class="st-h1">${E(w.title || 'New artwork')}</h1>
       <p class="st-sub">${live(w) ? 'In your live gallery. Price and detail changes go to us for a quick check; new photographs are reviewed.' : 'Everything saves as you go. Submit when you’re ready.'}</p>
       <p class="st-needs" id="wneeds" aria-live="polite"></p>
+      ${w.empty_draft ? `<p class="st-msg st-draft-note" id="draft-note">Nothing is saved for this artwork yet. It becomes part of your gallery when you add a photograph or details, and it won’t hold up your submission until then. <button class="st-linkbtn" data-act="discard">Discard this empty draft</button></p>` : ''}
       <div class="st-two"><div>
       <section class="st-card"><h3>Main photograph</h3>
         <div class="st-drop" id="mdrop">${main ? `<img src="/api/images/${main.id}/view" alt="">` : '<strong style="color:var(--ivory)">Add the main photograph</strong><span>Tap to choose a photo · JPEG, PNG or WebP · at least 2,000 px · up to 30 MB</span>'}<input type="file" accept="image/jpeg,image/png,image/webp" aria-label="Upload the main photograph"></div>
@@ -278,7 +286,8 @@
       </section>
       <section class="st-card"><h3>More views (optional, up to 3)</h3><p class="st-muted" style="margin:0 0 10px">A detail, the side of a sculpture, or the work installed.${views.length ? ' <strong style="color:var(--ivory)">Each view needs its own description and photographer</strong>, just like the main photograph.' : ''}</p>
         <div class="st-views">${views.map((v, n) => `<div class="st-view" style="background-image:url(/api/images/${v.id}/view)">${photoComplete(v) ? '' : `<span class="st-view-flag" data-flag="${v.id}">View ${n + 1}: details needed</span>`}<button data-rmv="${v.id}" aria-label="Remove view ${n + 1}">✕</button></div>`).join('')}
-        ${views.length < 3 ? `<label class="st-view st-drop" style="min-height:0;padding:0"><span style="font-size:28px">+</span><input type="file" accept="image/jpeg,image/png,image/webp" id="vadd" aria-label="Add a view"></label>` : ''}</div>
+        ${!main ? '<p class="st-muted st-views-first" style="margin:0">Add the main photograph above first; extra views come after it.</p>'
+          : views.length < 3 ? `<label class="st-view st-drop" style="min-height:0;padding:0"><span style="font-size:28px">+</span><input type="file" accept="image/jpeg,image/png,image/webp" id="vadd" aria-label="Add a view"></label>` : ''}</div>
         ${views.map((v, n) => `<div class="st-view-d"><span class="st-view-mini" style="background-image:url(/api/images/${v.id}/view)" aria-hidden="true"></span>${imageFields(v, `View ${n + 1}`)}</div>`).join('')}
       </section></div><div>
       <section class="st-card"><h3>About the work</h3>
@@ -316,7 +325,13 @@
     const needsLine = () => { const el = $('#wneeds'); if (!el) return;
       el.innerHTML = photoNeeds(WORKS.find(x => x.id === w.id) || w, ME.status.checklist.find(i => i.area === 'work' && i.work_id === w.id));
       el.hidden = !el.innerHTML; };
-    needsLine(); afterRefresh = needsLine;
+    // the empty-draft note goes as soon as anything for this artwork is saved; discarding deletes only an empty draft
+    const draftLine = () => { const x = WORKS.find(v => v.id === w.id); if (!x || !x.empty_draft) $('#draft-note')?.remove(); };
+    needsLine(); afterRefresh = () => { needsLine(); draftLine(); };
+    $('[data-act=discard]', app)?.addEventListener('click', async () => {
+      try { await api('DELETE', `/api/artworks/${w.id}`); say('Empty draft discarded'); await refresh(); location.hash = '#/works'; }
+      catch (e) { say(e.message, true); }
+    });
     $('#mdrop input').addEventListener('change', e => uploadFlow(e.target.files[0], `/api/artworks/${w.id}/images?role=main`, $('#mdrop'), { done: async () => { await flushPhotoEdits(); await refresh(); work(w.id); } }));
     $('#vadd')?.addEventListener('change', e => uploadFlow(e.target.files[0], `/api/artworks/${w.id}/images?role=view`, $('#vadd').parentElement, { done: async () => { await flushPhotoEdits(); await refresh(); work(w.id); } }));
     app.querySelectorAll('[data-rmv]').forEach(b => b.addEventListener('click', async () => { await flushPhotoEdits(); await api('DELETE', `/api/images/${b.dataset.rmv}`); await refresh(); work(w.id); say('View removed'); }));
@@ -572,7 +587,7 @@
   async function uploadFlow(file, url, drop, { portrait = false, done }) {
     if (!file) return;
     const show = (html) => { drop.querySelectorAll(':scope > :not(input)').forEach(n => n.remove()); drop.insertAdjacentHTML('afterbegin', html); };
-    const fail = msgs => { show(`<ul class="st-checks">${msgs.map(m => `<li class="b">${E(m)}</li>`).join('')}</ul><span class="st-muted">Tap to choose another photo</span>`); say('Photo not added', true); };
+    const fail = msgs => { show(`<strong class="st-upfail">This photo was not uploaded.</strong><ul class="st-checks">${msgs.map(m => `<li class="b">${E(m)}</li>`).join('')}</ul><span class="st-muted">Tap to choose another photo. Anything else you entered here is kept.</span>`); say('Photo not uploaded', true); };
     if (file.size > 30 * 1048576) return fail([`This file is ${(file.size / 1048576).toFixed(1)} MB; the limit is 30 MB.`]);
     const head = new Uint8Array(await file.slice(0, 12).arrayBuffer());
     const fmt = head[0] === 0xFF && head[1] === 0xD8 ? 'jpeg' : head[0] === 0x89 && head[1] === 0x50 ? 'png' : (String.fromCharCode(...head.slice(8, 12)) === 'WEBP' ? 'webp' : null);
