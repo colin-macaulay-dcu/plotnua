@@ -20,6 +20,10 @@ HIRE_PILL = ("hire", "art-for-hire/", "Art for Hire", "nav_art_for_hire")
 # The existing PlotArt Studio (Cloudflare Access one-time code sign-in). Linked from the footer and the For artists page
 # (founder decision 17 Nov 2026); the address itself is public, the Studio stays behind its sign-in.
 STUDIO = "https://plotart-studio.colin-a41.workers.dev/"
+# Artist Login (founder brief 17 Nov 2026): one off-white pill at the right-hand end of every PlotArt header, outside the
+# gallery pills and outside the phone Menu (so it stays visible on phones and is never listed twice). It only links to the
+# existing Studio; signing in stays with the Studio's Cloudflare Access one-time code.
+LOGIN = '<a class="pa-login" href="%s" data-pa-track="nav_artist_login">Artist Login</a>' % STUDIO
 FOOT_ARTISTS = '<li><a href="%s" data-pa-track="footer_artist_studio">Artist Studio</a></li><li><a href="{R}for-artists.html" data-pa-track="footer_for_artists">For artists</a></li>' % STUDIO
 
 
@@ -49,7 +53,7 @@ def artist_page(path, title, desc, body, scripts=("plotart.js",), current="vg", 
              'stroke-width="1.6" stroke-linecap="round" aria-hidden="true" focusable="false"><path class="pn-menu-l1" d="M3.5 6h13"/>'
              '<path class="pn-menu-l2" d="M3.5 10h13"/><path class="pn-menu-l3" d="M3.5 14h13"/></svg><span>Menu</span></summary>'
              '<div class="pn-sm-panel">%s</div></details>') % "".join(_items)
-    header = header.replace('</nav>\n  </div>\n</header>', '</nav>\n    ' + _menu + '\n  </div>\n</header>', 1)
+    header = header.replace('</nav>\n  </div>\n</header>', '</nav>\n    ' + LOGIN + '\n    ' + _menu + '\n  </div>\n</header>', 1)
     sc = "".join('<script src="%sassets/%s" defer></script>' % (R, s) for s in scripts)
     footlinks = ('<li><a href="{R}gallery/">Artists’ Gallery</a></li><li><a href="{R}mobile-gallery/">Mobile Gallery</a></li><li><a href="{R}living-gallery.html">Living Gallery</a></li>'
                  + ('<li><a href="{R}art-for-hire/">Art for Hire</a></li>' if hire_nav else '') +
