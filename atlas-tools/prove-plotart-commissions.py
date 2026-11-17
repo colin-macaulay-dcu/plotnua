@@ -125,8 +125,8 @@ check("C4 the commission wording never mentions hire, the Living Gallery, availa
 offp = copy.deepcopy(base)
 offp["artist"]["open_to"] = ["commissions"]
 off_i = pages(P, offp, ENDPOINT)["index"]
-check("C4b Commissions chosen as an opportunity but Open for commissions OFF: the pill only, never the section, button or form",
-      off_i.count('href="../../commissions/"') == 1 and 'id="commission"' not in off_i and "Enquire about a commission" not in off_i and 'data-kind' not in off_i)
+check("C4b Commissions chosen as an opportunity but Open for commissions OFF: nothing about commissions at all (no pill, section, button or form)",
+      'commissions/' not in off_i and ">Commissions<" not in off_i and 'id="commission"' not in off_i and "Enquire about a commission" not in off_i and 'data-kind' not in off_i)
 noep = pages(P, onp, None)["index"]
 mail = re.search(r'<a class="pa-btn pa-btn--solid" href="([^"]+)" data-pa-track="artist_commission_enquiry">Enquire about a commission</a></div>', noep)
 check("C5 without the relay: a plain email link with a commission subject naming the artist, and no form",

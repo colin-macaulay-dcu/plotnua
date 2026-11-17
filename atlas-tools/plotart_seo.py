@@ -44,7 +44,8 @@ def indexable(path, launch):
         return launch.get(COLLECTION_SWITCHES[path][0]) is True
     key = {"index.html": "home_indexable", "gallery/index.html": "gallery_indexable",
            "about.html": "about_indexable", "founding-25.html": "f25_page_indexable",
-           "mobile-gallery/index.html": "mobile_gallery_indexable"}.get(path)
+           "mobile-gallery/index.html": "mobile_gallery_indexable",
+           "commissions/index.html": "commissions_indexable"}.get(path)
     if key:
         return launch.get(key) is True
     if re.fullmatch(r"artists/[a-z0-9]+(?:-[a-z0-9]+){0,6}/[a-z0-9]+(?:-[a-z0-9]+){0,6}\.html", path):
@@ -73,6 +74,8 @@ def sitemap_paths(packages, launch):
     paths += [p for p in COLLECTION_PATHS if indexable(p, launch) and launch.get(COLLECTION_SWITCHES[p][1]) is True]
     if indexable("art-for-hire/index.html", launch):
         paths.append("art-for-hire/index.html")
+    if indexable("commissions/index.html", launch):      # founder decision 17 Nov 2026: indexed and in the sitemap
+        paths.append("commissions/index.html")
     for pkg in sorted(packages, key=lambda p: p["artist"]["slug"]):
         # Only the already-approved public export is an input. Never read Studio drafts.
         if pkg["publication"].get("state") != "approved":

@@ -147,9 +147,8 @@ withp["artist"]["open_to"] = ["exhibitions", "living_gallery", "commissions"]
 A, B = pages(P, base, ENDPOINT), pages(P, withp, ENDPOINT)
 line = ('<div class="pa-ag-opps"><p class="pa-ag-opps-h" id="agOppsH">Open to</p><ul class="pa-ag-pills" aria-labelledby="agOppsH">'
         '<li><a class="pa-ag-pill" href="../../opportunities/#exhibitions" data-pa-track="artist_opportunity_link">Exhibitions</a></li>'
-        '<li><a class="pa-ag-pill" href="../../living-gallery.html#open-artists" data-pa-track="artist_opportunity_link">Living Gallery</a></li>'
-        '<li><a class="pa-ag-pill" href="../../commissions/" data-pa-track="artist_opportunity_link">Commissions</a></li></ul></div>')
-check("O3b with open_to the gallery page gains exactly one row of \"Open to\" pills, each linking to its list (Commissions to the Commissions page)", B["index"].count(line) == 1, B["index"][:0])
+        '<li><a class="pa-ag-pill" href="../../living-gallery.html#open-artists" data-pa-track="artist_opportunity_link">Living Gallery</a></li></ul></div>')
+check("O3b with open_to the gallery page gains exactly one row of \"Open to\" pills, each linking to its list; Commissions chosen without \"Open for commissions\" is never shown", B["index"].count(line) == 1 and "Commissions" not in B["index"], B["index"][:0])
 check("O3c removing the pills gives back exactly today's page; artwork pages are unchanged", B["index"].replace(line, "") == A["index"] and all(A[k] == B[k] for k in A if k != "index") and len(A) > 1)
 both = copy.deepcopy(withp)
 both["artist"]["open_for_commissions"] = True

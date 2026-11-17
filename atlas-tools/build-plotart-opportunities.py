@@ -38,9 +38,22 @@ BODY = """
 """
 
 
-COM_TITLE = "Commission an Original Artwork | PlotArt"
-COM_DESC = ("Commission a new, original work from an Irish artist through PlotArt. Send an enquiry through the artist’s gallery; "
-            "the artist decides whether to take it on and agrees the price, timescale and details with you directly.")
+COM_TITLE = "Commission Original Art from Irish Artists | PlotArt"
+COM_DESC = ("Commission an original artwork from an Irish artist. Enquire through the artist’s PlotArt gallery; "
+            "the artist agrees the price, timescale and details with you.")
+
+
+def com_jsonld():
+    """Static structured data for the Commissions page (indexable, 17 Nov 2026): the page, its place in PlotArt and its
+    breadcrumb. The artist list is NOT repeated here: it changes with publication and lives only in the generated region."""
+    import json as _json
+    url = SEO.canonical(OPP.COMMISSIONS)
+    data = {"@context": "https://schema.org", "@type": "WebPage", "name": "Commission an original work", "description": COM_DESC, "url": url,
+            "inLanguage": "en-IE", "isPartOf": {"@type": "WebSite", "name": "PlotArt", "url": SEO.canonical("index.html")},
+            "breadcrumb": {"@type": "BreadcrumbList", "itemListElement": [
+                {"@type": "ListItem", "position": 1, "name": "PlotArt", "item": SEO.canonical("index.html")},
+                {"@type": "ListItem", "position": 2, "name": "Commissions", "item": url}]}}
+    return '<script type="application/ld+json">%s</script>' % _json.dumps(data, ensure_ascii=False, separators=(",", ":"))
 COM_BODY = """
 <div class="pa-com-page">
 <section class="pa-opp-hero pa-com-hero"><div class="pa-wrap">
@@ -77,7 +90,7 @@ def render(packages, path=PATH):
     header, footer = fix(header), fix(footer)
     inner = OPP.content(path, packages)
     region = OPP.BEGIN + ("\n" + inner + "\n" if inner else "") + OPP.END
-    robots = SEO.head(path, title, desc)
+    robots = SEO.head(path, title, desc) + ("\n" + com_jsonld() if path == OPP.COMMISSIONS else "")
     return """<!DOCTYPE html>
 <html lang="en-IE" class="no-js">
 <head>

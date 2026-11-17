@@ -5,7 +5,9 @@ each name linking to that artist's existing gallery. The ONLY input is the set o
 (plotart/artists/<slug>/gallery.json), written by the content pipeline from founder-approved Studio exports:
   - an artist appears only while their gallery is published (no package, no listing);
   - an artist appears under an opportunity only while their package carries it in "open_to" (the artist's own choice,
-    published as an instant update), or, for Commissions, while their existing "Open for commissions" setting is on;
+    published as an instant update); EXCEPT Commissions (founder decision 17 Nov 2026), which is shown ONLY while the
+    artist's explicit "Open for commissions" setting is on (the setting the enquiry relay checks), whatever open_to says:
+    no artist is publicly described as open to commissions unless commission enquiries can actually reach them;
   - nothing else about an artist's Opportunities answers ever reaches the website (the Studio never exports it).
 
 Destinations (founder approval, 16 Nov 2026):
@@ -45,7 +47,7 @@ OPPORTUNITIES = {
     "venues": ("Hotels and workplaces", "Artists open to hotel and workplace displays",
                "These artists have said they’d welcome conversations about showing their work in hotels, offices and other workplaces.", None, "hotels-and-workplaces"),
     "commissions": ("Commissions", "Artists open to commissions",
-                    "These artists have said they’d welcome enquiries about a new, commissioned work. Any commission is agreed directly between the artist and the client.", "commissions/", "commissions"),
+                    "These artists are currently open to commission enquiries about a new work. Any commission is agreed directly between the artist and the client.", "commissions/", "commissions"),
     "talks": ("Talks and events", "Artists open to talks and events",
               "These artists have said they’d welcome conversations about artist talks and events.", None, "talks-and-events"),
 }
@@ -72,9 +74,10 @@ def check_open_to(v):
 
 
 def open_to(pkg):
-    """The opportunities this published artist is listed under (Commissions also while "Open for commissions" is on)."""
+    """The opportunities this published artist is listed under. Commissions follows ONLY the explicit "Open for
+    commissions" setting (17 Nov 2026): choosing Commissions among the opportunities without it shows nothing publicly."""
     a = pkg["artist"]
-    keys = set(a.get("open_to") or [])
+    keys = set(a.get("open_to") or []) - {"commissions"}
     if a.get("open_for_commissions") is True:
         keys.add("commissions")
     return [k for k in KEYS if k in keys]
