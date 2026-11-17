@@ -300,6 +300,10 @@ export async function adminView(env) {
     unprocessed_events: await all(env, "SELECT event_id, type, status, attempts, detail, received_at FROM payment_events WHERE status IN ('deferred','failed','received') ORDER BY received_at LIMIT 50"),
     pending_refunds: await pendingRefunds(env), holds: await holdsView(env), refund_funding_steps: REFUND_FUNDING_STEPS,
     owed: await owedRows(env, 'w.settled_cents < w.cents'), owed_settled_recently: await owedRows(env, "w.settled_cents = w.cents AND w.arisen_at >= ?", plusDays(now(), -90)),
+    reimbursements_waiting: (await all(env, `SELECT id AS order_id, reference, paid_at, processing FROM checkout_orders WHERE payment_intent IS NOT NULL AND commission_cents > 0
+      AND (processing IS NULL OR json_extract(processing, '$.status') = 'awaiting_fee') ORDER BY paid_at`)).map(o => ({ order_id: o.order_id, reference: o.reference, paid_at: o.paid_at,
+      age_days: Math.floor((Date.now() - Date.parse(o.paid_at || now())) / 86400_000), due_date: plusDays(o.paid_at || now(), deadlines(env).reimburse_days).slice(0, 10), due_provisional: deadlines(env).provisional,
+      note: 'Stripe has not yet recorded the processing fee; the sweep retries every 15 minutes. Nothing is estimated.' })),
     deadlines: deadlines(env), bank_details_process: BANK_DETAILS_PROCESS };
 }
 

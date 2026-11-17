@@ -1,6 +1,6 @@
-# PlotArt Buyer Purchase Terms — PA-BPT-2026-11 (DRAFT r6, 17 November 2026)
+# PlotArt Buyer Purchase Terms — PA-BPT-2026-11 (DRAFT r7, 17 November 2026)
 
-**Status: unissued draft for founder and professional review. Not shown to any buyer.** It will be issued only as fingerprinted HTML and installed by an approved migration. Text in {braces} is filled in from each quote. Review notes are kept separately in `PA-PAY-PA-BPT-r6-REVIEW-NOTES.md`.
+**Status: unissued draft for founder and professional review. Not shown to any buyer.** It will be issued only as fingerprinted HTML and installed by an approved migration. Text in {braces} is filled in from each quote. Review notes are kept separately in `PA-PAY-PA-BPT-r7-REVIEW-NOTES.md`.
 
 ## 1. Who you are buying from
 
@@ -10,7 +10,7 @@
   (c) the seller's email {seller email} and telephone number {seller phone};
   (d) the seller's VAT number, if they are registered {VAT number}.
 
-1.2 **Whether the seller is a trader.** The seller has declared to PlotArt that they {sell as a trader, in the course of their business, craft or profession} / {do not sell as a trader}. If the seller is not a trader, the consumer rights that arise from EU consumer protection law, including the right to cancel described in section 6, do not apply to your purchase. [Drafting note: delete the second option if the pilot is limited to sellers who declare they are traders.]
+1.2 **Whether the seller is a trader.** The seller has declared to PlotArt that they {sell as a trader, in the course of their business, craft or profession} / {do not sell as a trader}. If the seller is not a trader, the consumer rights that arise from EU consumer protection law, including the right to cancel described in section 6, do not apply to your purchase. [Drafting note, founder decision F2: the pilot currently quotes only sellers who declare they are traders; if that stands, delete the second option.]
 
 1.3 **PlotArt's role.** PlotArt (PlotNua, operated by Colin Macaulay, CRO business name no. 794392, hello@plotnua.ie) introduced you to the seller. It prepares the quote and provides the checkout. PlotArt is not the seller.
   (a) The seller is responsible for the artwork, its delivery, cancellations, returns and refunds, and for the artwork matching its description.
@@ -31,7 +31,9 @@ Nothing else is added at checkout.
 
 3.1 You pay by card on Stripe's secure checkout page. Your payment goes to the seller's own Stripe account. PlotArt does not hold your payment, and it is not an escrow arrangement.
 
-3.2 Your purchase is confirmed when Stripe confirms the payment. The page you return to shows whether payment has been confirmed. [Before live payments: the confirmation you will receive on a durable medium, such as email, with these terms and the cancellation form, and how it is sent.]
+3.2 Your purchase is confirmed when Stripe confirms the payment. The page you return to shows whether payment has been confirmed.
+
+3.3 **Your purchase confirmation.** Once your payment is confirmed, PlotArt prepares your purchase confirmation. It sets out the artwork, the seller and their contact details, what you paid, the delivery and return arrangements, these terms in full and the model cancellation form. You can open it from your quote link, and PlotArt keeps an exact copy. [Before live payments: PlotArt also emails it to you; confirm the sending service and wording.]
 
 ## 4. One original; holding the artwork; purchase limits
 
@@ -86,20 +88,20 @@ This section applies if you are a consumer buying from a seller who is a trader 
 
 8.1 Refunds are made to your original card through Stripe. Your right to be repaid does not depend on how the seller's Stripe account is funded.
 
-8.2 **If a refund is pending.** Stripe may hold a refund as pending until the seller's Stripe account can fund it. A pending refund is still on its way to your card, so the seller does not repay you another way at the same time; that would repay you twice. The seller must make sure you are repaid within the time limits in sections 6 and 7.
+8.2 **If a refund is pending.** Stripe may hold a refund as pending until the seller's Stripe account can fund it. A pending refund has not been completed: you have not been repaid until Stripe completes it. While it is pending, the seller does not repay you another way as well, because you would then be repaid twice. The seller must make sure you are repaid within the time limits in sections 6 and 7.
 
 8.3 **If Stripe cannot complete a refund,** or reverses one it first confirmed (for example because your card was closed), you have not been repaid. The seller then repays you once, either by a new refund through Stripe or directly, for example by bank transfer, and PlotArt confirms it with you.
 
-8.4 PlotArt tells you when it becomes aware that a refund is pending, has failed or has been reversed.
+8.4 [Once buyer notifications are in place:] PlotArt tells you when it becomes aware that a refund is pending, has failed or has been reversed.
 
 ## 9. Your data
 
-9.1 **What PlotArt receives and keeps.** PlotArt receives your email address with your quote. If you paid, it keeps your email address and the order record until 31 December of the sixth year after the order is settled (completed or fully refunded, with nothing outstanding), for accounting and legal reasons. If you never paid, it keeps them until two years after the quote ended. It keeps them longer only under a legal hold for a specific reason, such as a dispute, claim or tax enquiry about the order, reviewed at least every 12 months. The order record is separate from any enquiry you sent through PlotArt, which follows its own retention period.
+9.1 **What PlotArt receives and keeps.** PlotArt receives your email address with your quote. If you paid, it keeps your email address and the order record until 31 December of the sixth year after the order is settled (completed or fully refunded, with nothing outstanding), for accounting and legal reasons. If you never paid, it keeps them until two years after the quote ended. They are never deleted while a payment dispute about the order is open. PlotArt keeps them longer only under a legal hold for a specific reason, such as a dispute, claim or tax enquiry about the order, reviewed at least every 12 months. The record includes the exact quote you were shown and your purchase confirmation. The order record is separate from any enquiry you sent through PlotArt, which follows its own retention period.
 
 9.2 **Stripe.** Stripe processes your payment details under its own privacy policy.
   (a) Your card number is entered only on Stripe's page and is never seen by PlotArt or the seller.
-  (b) Payment details Stripe records, such as your name, billing country and postcode, email, and card brand and last four digits, are visible to the seller in their Stripe account.
-  (c) [To be confirmed before issue: whether they are visible to PlotArt through its access to Stripe.]
+  (b) Payment details Stripe records, such as your name, email address, billing country, and card brand and last four digits, are visible to the seller in their Stripe account.
+  (c) PlotArt's access to Stripe also lets it view these details: your name, email address and billing country, and your card's brand, country, type, expiry date and last four digits. PlotArt does not copy them into its own records, and looks at them only when needed for your order, for example to resolve a refund or a payment dispute. PlotArt sends your email address to Stripe at checkout.
 
 9.3 **The seller.** PlotArt shares with the seller what the seller needs to deliver the artwork and handle any return.
 
@@ -132,4 +134,4 @@ Date
 [*] Delete as appropriate.
 
 ---
-DRAFT r6, not issued.
+DRAFT r7, not issued.

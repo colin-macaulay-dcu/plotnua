@@ -593,6 +593,8 @@ check('T10a the completion replays the earlier dispute WITHOUT any redelivery: r
   && (await q("SELECT * FROM order_ledger WHERE kind='dispute' AND order_id = ?", oe.id))[0].amount_cents === -42500, { OE, dpRow });
 { const PE = JSON.parse((await order(oe.id)).processing || '{}'), feeE = M.pis[sE.payment_intent].fee;
   check('MB8 before Stripe records the fee nothing is estimated or reimbursed: the order waits (awaiting_fee)', PE.status === 'awaiting_fee' && !M.feeRefunds.some(x => x.fee === feeE), PE);
+  { const wq = (await call('GET', '/api/admin/checkout', FOUNDER)).j.reimbursements_waiting.find(x => x.order_id === oe.id);
+    check('MB8b the founder desk lists the reimbursement waiting for Stripe, with its age and provisional due date', !!wq && wq.age_days === 0 && wq.due_provisional === true && /^\d{4}-\d{2}-\d{2}$/.test(wq.due_date), wq); }
   M.charges[M.pis[sE.payment_intent].charge].btPending = false;
   await S.checkoutWorker.scheduled({ cron: '*/15 * * * *' });
   const PE2 = JSON.parse((await order(oe.id)).processing), frE = M.feeRefunds.filter(x => x.fee === feeE);
