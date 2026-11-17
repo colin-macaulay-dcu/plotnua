@@ -16,7 +16,19 @@ export async function e2e({ rec, KEY, ACCOUNT, RUN, port, whsec, stripe, sleep }
   const terms = JSON.parse(readFileSync(HERE + 'agreements/payment-test/fingerprints.json', 'utf8')).documents;
   const built = readFileSync(HERE + 'src/payment-terms.js', 'utf8');
   if (!built.includes('PA-PAY-TEST-01')) { rec('E0', 'the Workers were built with the TEST ONLY texts (CHECKOUT_TARGET=test)', 'local', 'FAIL'); return; }
-  const S = await start({ port, env: ENVV, checkout: { env: ENVV } });
+  // Runtime key test: if a narrower restricted TEST key is supplied, the PUBLIC checkout Worker (checkout, webhooks, sweep,
+  // reimbursements) uses it, while the Studio Worker (onboarding, refunds, founder actions) and this harness keep the main key.
+  const RUNTIME = process.env.STRIPE_RUNTIME_KEY || '';
+  const runtimeOk = /^rk_test_[A-Za-z0-9]+$/.test(RUNTIME);
+  const ENVC = runtimeOk ? { ...ENVV, STRIPE_SECRET_KEY: RUNTIME } : ENVV;
+  const S = await start({ port, env: ENVV, checkout: { env: ENVC } });
+  rec('E17a', 'which key the public checkout Worker used', 'local', 'INFO', { public_worker_key: runtimeOk ? 'separate restricted TEST key (CHECKOUT_TEST_STRIPE_RUNTIME_KEY)' : RUNTIME ? 'runtime secret present but not an rk_test_ key: NOT used' : 'same key as the harness (no runtime key supplied)' });
+  if (runtimeOk) {   // the runtime key must NOT be able to read artist identity or bank details
+    const h = { Authorization: `Bearer ${RUNTIME}`, 'Stripe-Version': '2026-10-28.endive' };
+    const st = async u => (await fetch('https://api.stripe.com' + u, { headers: h })).status;
+    const probes = { v1_account: await st(`/v1/accounts/${ACCOUNT}`), v1_external_accounts: await st(`/v1/accounts/${ACCOUNT}/external_accounts?limit=1`), v2_account_identity: await st(`/v2/core/accounts/${ACCOUNT}?include[0]=identity`) };
+    rec('E17b', 'the runtime key is refused artist account, identity and bank data (HTTP status only recorded)', 'stripe-test-api', Object.values(probes).every(x => x === 401 || x === 403) ? 'PASS' : 'FAIL', probes);
+  } else rec('E17b', 'narrower runtime key not supplied: access separation not verified', 'local', 'SKIP', { needed: 'secret CHECKOUT_TEST_STRIPE_RUNTIME_KEY in the checkout-test environment' });
   const { db } = S, CW = S.checkoutWorker;
   const q = async (sql, ...b) => (await db.prepare(sql).bind(...b).all()).results;
   const call = async (method, path, email, body) => { const r = await S.mf.dispatchFetch(S.url + path, { method, headers: { 'Cf-Access-Jwt-Assertion': token(email), 'X-Studio': '1', 'Content-Type': 'application/json' }, body: body === undefined ? undefined : JSON.stringify(body) });
@@ -310,7 +322,13 @@ export async function e2e({ rec, KEY, ACCOUNT, RUN, port, whsec, stripe, sleep }
       rec('E12b', 'Stripe later FAILS it and a REAL signed refund event reconciles the order: back to paid, reversal lines booked, buyer flagged as NOT repaid', SRC,
         reversed && re.status === 'failed' && O.status === 'paid' && L.some(l => l.kind === 'artwork_refund_reversed' && l.amount_cents === 40000) && /SUCCEEDED and then FAILED/.test(O.needs_resolution || '') ? 'PASS' : 'FAIL',
         { stripe_refund_status: re.status, failure_reason: re.failure_reason, order_status: O.status, payment_status: O.payment_status, ledger: L, events: evs, flag: O.needs_resolution });
-      if (reversed) {
+      if (reversed) {   // E18 · the buyer's notice for a REAL reversed refund: kept once, test sink only, shown on the quote page
+        const bm = await q("SELECT id, body FROM order_messages WHERE order_id = ? AND kind = 'buyer_refund_reversed'", o5.id);
+        const bd = bm[0] ? await q('SELECT channel, status, detail FROM order_message_deliveries WHERE message_id = ?', bm[0].id) : [];
+        const qp = await (await CW.fetch(`http://checkout.local/q/${o5.tok}`)).text();
+        rec('E18', 'after the REAL refund reversal the buyer gets one notice that they have NOT been repaid: kept, held in the test sink (not emailed), shown on their quote page', SRC,
+          bm.length === 1 && /NOT been repaid/.test(bm[0].body) && bd.length === 1 && bd[0].status === 'held_in_test_sink' && qp.includes('was reversed') ? 'PASS' : 'FAIL',
+          { notices: bm.length, deliveries: bd, shown_on_quote_page: qp.includes('was reversed') });
         const before = (await stripe('GET', `/v1/refunds?payment_intent=${paid5.payment_intent}&limit=10`, null, ACCOUNT)).j.data.length;
         const rep = await call('POST', `/api/admin/checkout/orders/${o5.id}/repaid`, FOUNDER, { artwork_cents: 40000, delivery_cents: 2000, evidence: 'E2E: artist repaid the buyer by bank transfer BT-E2E-1, buyer confirmed' });
         const again = await call('POST', `/api/admin/checkout/orders/${o5.id}/refund`, FOUNDER, { artwork_cents: 40000, delivery_cents: 2000, reason: 'E2E duplicate repayment attempt' });

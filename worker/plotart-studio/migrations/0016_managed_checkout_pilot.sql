@@ -342,13 +342,14 @@ BEGIN SELECT RAISE(ABORT, 'quote_snapshots are kept with their order'); END;
 CREATE TABLE IF NOT EXISTS order_messages (
   id             TEXT PRIMARY KEY,
   order_id       TEXT NOT NULL REFERENCES checkout_orders(id),
-  kind           TEXT NOT NULL CHECK (kind IN ('buyer_confirmation')),
+  kind           TEXT NOT NULL CHECK (kind IN ('buyer_confirmation','buyer_refund_pending','buyer_refund_failed','buyer_refund_reversed')),
+  item_key       TEXT NOT NULL DEFAULT '',          -- e.g. the refund a notice is about: one notice per order, kind and refund
   recipient_role TEXT NOT NULL CHECK (recipient_role IN ('buyer','artist','founder')),
   subject        TEXT NOT NULL,
   body           TEXT NOT NULL,
   sha256         TEXT NOT NULL,
   created_at     TEXT NOT NULL,
-  UNIQUE (order_id, kind)
+  UNIQUE (order_id, kind, item_key)
 );
 CREATE TRIGGER IF NOT EXISTS order_messages_no_update BEFORE UPDATE ON order_messages
 BEGIN SELECT RAISE(ABORT, 'order_messages is append-only'); END;
@@ -358,7 +359,7 @@ CREATE TABLE IF NOT EXISTS order_message_deliveries (
   order_id   TEXT NOT NULL,
   at         TEXT NOT NULL,
   channel    TEXT NOT NULL CHECK (channel IN ('test_sink','none','provider')),
-  status     TEXT NOT NULL CHECK (status IN ('held_in_test_sink','not_sent_no_provider','sent','failed')),
+  status     TEXT NOT NULL CHECK (status IN ('held_in_test_sink','not_sent_no_provider','accepted_by_provider','failed')),   -- 'accepted_by_provider' is not proof of inbox delivery
   detail     TEXT
 );
 CREATE TRIGGER IF NOT EXISTS order_message_deliveries_no_update BEFORE UPDATE ON order_message_deliveries

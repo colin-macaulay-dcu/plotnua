@@ -52,6 +52,7 @@ ${s.vat_number ? `<dt>VAT number</dt><dd>${esc(s.vat_number)}</dd>` : ''}<dt>Sel
 ${payable ? `<form method="post" action="/q/${esc(token)}/pay">${error ? `<p class="note">${esc(error)}</p>` : ''}
 <label><input type="checkbox" name="accept_terms" value="${esc(q.terms && q.terms.doc_id)}" required> I have read the <a href="/terms/${esc(q.terms && q.terms.doc_id)}.html" target="_blank" rel="noopener">purchase terms (${esc(q.terms && q.terms.doc_id)})</a>, and I understand that I am buying from ${esc(s.name)}.</label>
 <button type="submit">Continue to secure payment</button></form>` : `<p class="note">${q.payment_status === 'paid' ? 'Payment has been confirmed for this order.' : q.expired || q.status === 'expired' ? 'This quote has expired. Please contact hello@plotnua.ie.' : 'This quote cannot be paid at the moment. Please contact hello@plotnua.ie.'}</p>`}
+${(q.notices || []).length ? `<h2>Updates about your order</h2>${q.notices.map(n => `<div class="note"><strong>${esc(n.subject)}</strong> <span class="k">${esc(new Date(n.created_at).toLocaleString('en-IE', { timeZone: 'Europe/Dublin', dateStyle: 'medium', timeStyle: 'short' }))}</span><p style="white-space:pre-wrap">${esc(n.body)}</p></div>`).join('')}` : ''}
 <p style="font-size:14px;color:#9c9893">Questions: <a href="mailto:hello@plotnua.ie">hello@plotnua.ie</a> · quote ${esc(q.reference)}</p>`;
 }
 
@@ -109,7 +110,8 @@ export default {
           const msg = paid ? `<h1>Thank you</h1><p>Your payment for quote ${esc(q.reference)} has been confirmed. ${esc(q.seller && q.seller.name)} and PlotArt will be in touch about delivery.</p>${q.confirmation_ready ? `<p><a href="/q/${esc(token)}/confirmation">Your purchase confirmation</a>, with the purchase terms and the cancellation form. Please save or print it.</p>` : '<p>Your purchase confirmation is being prepared. Refresh this page shortly.</p>'}`
             : url.searchParams.get('result') === 'success' ? `<h1>We’re confirming your payment</h1><p>Stripe has returned you to PlotArt. Your payment is confirmed only once Stripe notifies us directly, usually within a minute. Refresh this page shortly; you will also receive Stripe’s receipt by email.</p>`
             : `<h1>Payment not completed</h1><p>No payment was taken. <a href="/q/${esc(token)}">Return to your quote</a>.</p>`;
-          return page('Payment', TEST_BANNER + msg);
+          const upd = (q.notices || []).length ? `<h2>Updates about your order</h2>${q.notices.map(n => `<div class="note"><strong>${esc(n.subject)}</strong><p style="white-space:pre-wrap">${esc(n.body)}</p></div>`).join('')}` : '';
+          return page('Payment', TEST_BANNER + msg + upd);
         }
       }
       return page('Not found', '<h1>Not found</h1>', 404);

@@ -1310,7 +1310,7 @@ async function route(req, env) {
           case 'repaid': return json({ ok: true, ...(await CO.recordExternalRepayment(env, me.email, o.id, b)) });
           case 'processing': await CO.reconcileProcessing(env, o, me.email); return json({ ok: true, ...(await CO.orderDetail(env, await CO.getOrder(env, o.id), 'founder')) });
           case 'shortfallpaid': return json({ ok: true, ...(await CO.recordShortfallPaid(env, me.email, o.id, b)) });
-          case 'confirmation': return json({ ok: true, ...(await CO.resendConfirmation(env, me.email, o.id)) });
+          case 'confirmation': return json({ ok: true, ...(await CO.resendConfirmation(env, me.email, o.id, b || {})) });
         }
       }
       return json({ ok: false }, 404);

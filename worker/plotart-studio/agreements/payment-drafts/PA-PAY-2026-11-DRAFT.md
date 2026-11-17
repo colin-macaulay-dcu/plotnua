@@ -71,7 +71,7 @@ Commission is never charged on delivery, packing, transport, insurance, installa
   (d) a negative Stripe balance, or anything Stripe recovers from the artist under its own terms.
 Where Stripe charges such a fee on the same payment, the artist's statement shows it separately as not reimbursed.
 
-3.5 **If the commission is not enough.** The reimbursement and any commission returned on a refund (clause 7.7) are both paid out of the application fee for that order, so together they cannot exceed it. Where what PlotArt owes the artist under clause 3.3 or 7.7 is more than what is left of the application fee, PlotArt pays the difference to the artist directly, by bank transfer, within [30] days of it arising [provisional period, awaiting founder approval], and records the payment. To make that payment, PlotArt asks the artist for their bank details by telephone, never by email, and does not keep them in PlotArt's systems. This can happen, for example, when the buyer is refunded in full (example 3 in clause 3.7), or when a small artwork has a large delivery charge and is paid with an international card. The artist's statement shows any amount PlotArt still owes.
+3.5 **If the commission is not enough.** The reimbursement and any commission returned on a refund (clause 7.7) are both paid out of the application fee for that order, so together they cannot exceed it. Where what PlotArt owes the artist under clause 3.3 or 7.7 is more than what is left of the application fee, PlotArt pays the difference to the artist directly, by bank transfer, within [30] days of it arising [provisional period, awaiting founder approval], and records the payment. To make that payment, PlotArt asks the artist for their bank details by telephone, never by email, and enters them only in its business online banking. They are not recorded in PlotArt Studio, the payment pilot, PlotArt's application logs or its ordinary correspondence. PlotArt's bank keeps them as part of the payee entry, unless PlotArt deletes it, and in its record of the transfer, which forms part of PlotArt's accounting records (clause 9.8). This can happen, for example, when the buyer is refunded in full (example 3 in clause 3.7), or when a small artwork has a large delivery charge and is paid with an international card. The artist's statement shows any amount PlotArt still owes.
 
 3.6 **VAT on Stripe's fees** is a matter between Stripe and the artist, and depends on the artist:
   (a) for Stripe account holders based in Ireland, Stripe states that VAT applies to all its fees at the standard rate, added on top of the fees, and Stripe issues a monthly tax invoice. PlotArt reimburses the VAT Stripe charges on the processing fee for a pilot payment;
@@ -253,9 +253,14 @@ PlotArt looks at these details only when it needs to for a specific order, for e
 
 9.6 **The artist, as holder of the Stripe account, sees in their own Stripe Dashboard** the payment details Stripe records for each buyer payment. These can include the buyer's name, email address, billing country, and card brand and last four digits. PlotArt shows the artist the order but not the buyer's email address, unless the artist needs it to arrange delivery or a return.
 
-9.7 Full card numbers are entered only on Stripe's page and never reach PlotArt or the artist. PlotArt does not store or email bank details. It asks for them only when it must pay the artist directly (clause 3.5), by telephone, and enters them only with its bank.
+9.7 Full card numbers are entered only on Stripe's page and never reach PlotArt or the artist.
 
-9.8 PlotArt processes this information as described in its privacy notice, which will be updated before the pilot takes live payments.
+9.8 **Bank details for direct payments.** PlotArt needs an artist's bank details only to pay an amount under clause 3.5 directly. It asks for them by telephone and enters them only in its business online banking, which the founder alone can access. They are never entered in PlotArt Studio, the payment pilot, PlotArt's application logs or emails. PlotArt's bank holds them:
+  (a) as a saved payee, which PlotArt deletes once no further payment to the artist is expected; and
+  (b) in the bank's record of each transfer (the account name and IBAN), which PlotArt keeps as part of its accounting records for six years after the end of the year of the payment, and which cannot be deleted from the bank's own records.
+The bank processes them under its own terms and privacy notice. PlotArt's own pilot records keep only the amount, date and transfer reference.
+
+9.9 PlotArt processes this information as described in its privacy notice, which will be updated before the pilot takes live payments.
 
 ## 10. Test mode and live payments
 

@@ -61,6 +61,8 @@ jobs:
         env:
           STRIPE_SECRET_KEY: ${{ secrets.CHECKOUT_TEST_STRIPE_SECRET_KEY }}
           CHECKOUT_TEST_ACCOUNT: ${{ vars.CHECKOUT_TEST_CONNECTED_ACCOUNT }}
+          # optional: a NARROWER restricted TEST key used only by the public checkout Worker (runtime), to verify the proposal
+          STRIPE_RUNTIME_KEY: ${{ secrets.CHECKOUT_TEST_STRIPE_RUNTIME_KEY }}
           CHECKOUT_E2E_PORT: "8899"
         run: |
           set -uo pipefail

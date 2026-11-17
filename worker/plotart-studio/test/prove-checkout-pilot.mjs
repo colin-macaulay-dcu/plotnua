@@ -114,7 +114,7 @@ let S;
 try {
 console.log('PROVE · managed checkout pilot');
 const ORIGIN = 'https://checkout.local';
-const ENVV = { CHECKOUT_NOTIFY_EMAIL: 'founder-notify@plotnua.invalid', PARTICIPATION_DELETION: 'on', CHECKOUT_PILOT_ENABLED: 'true', STRIPE_SECRET_KEY: 'sk_test_mockkey123', STRIPE_WEBHOOK_SECRET: WHSEC, STRIPE_API_BASE: 'https://stripe.mock', CHECKOUT_ORIGIN: ORIGIN };
+const ENVV = { CHECKOUT_MESSAGE_RETRY_MINUTES: '0', CHECKOUT_NOTIFY_EMAIL: 'founder-notify@plotnua.invalid', PARTICIPATION_DELETION: 'on', CHECKOUT_PILOT_ENABLED: 'true', STRIPE_SECRET_KEY: 'sk_test_mockkey123', STRIPE_WEBHOOK_SECRET: WHSEC, STRIPE_API_BASE: 'https://stripe.mock', CHECKOUT_ORIGIN: ORIGIN };
 S = await start({ port: 8871, env: ENVV, script: FIX + 'src/index.js', checkout: { script: FIX + 'src/checkout-public.js', env: ENVV }, outbound: stripe });
 const { db } = S, CW = S.checkoutWorker;
 const call = async (method, path, email, body) => { const r = await S.mf.dispatchFetch(S.url + path, { method, headers: { ...(email ? { 'Cf-Access-Jwt-Assertion': token(email) } : {}), 'X-Studio': '1', 'Content-Type': 'application/json' }, body: body === undefined ? undefined : JSON.stringify(body) });
@@ -511,6 +511,12 @@ check('R1b the artist and the founder are told at once, with the funding steps',
   && (await q("SELECT * FROM checkout_mail_sink WHERE subject LIKE '%refund_pending%' AND to_role IN ('artist','founder') AND order_id = ?", o1.id)).length === 2
   && (await q("SELECT body FROM checkout_mail_sink WHERE to_sha256 = ? AND kind = 'refund_pending'", sha(GAL)))[0].body.includes('Add to balance')
   && !(await q('SELECT * FROM mail_capture')).length);
+{ const bn = await q("SELECT * FROM order_messages WHERE order_id = ? AND kind = 'buyer_refund_pending'", o1.id), sk = await q("SELECT * FROM checkout_mail_sink WHERE order_id = ? AND kind = 'buyer_refund_pending'", o1.id);
+  check('BN1 the buyer gets a notice that the refund is pending and NOT yet completed: kept with its fingerprint, test sink only (address fingerprint, not delivered by email)', bn.length === 1 && bn[0].item_key === rf1.metadata.plotart_refund
+    && /NOT been completed/.test(bn[0].body) && bn[0].sha256 === sha(bn[0].body) && sk.length === 1 && sk[0].to_role === 'buyer' && sk[0].to_sha256 === sha('buyer@example.test')
+    && (await q('SELECT status, detail FROM order_message_deliveries WHERE message_id = ?', bn[0].id))[0].status === 'held_in_test_sink'
+    && /NOT delivered by email/.test((await q('SELECT detail FROM order_message_deliveries WHERE message_id = ?', bn[0].id))[0].detail), bn[0] && bn[0].body);
+  check('BN1b the buyer’s quote page shows the update', (await pub('GET', `/q/${T1}`)).t.includes('Your refund for')); }
 check('R1c the founder desk lists the pending refund with its days and Stripe’s 45-day date', (await call('GET', '/api/admin/checkout', FOUNDER)).j.pending_refunds.some(x => x.order_id === o1.id && x.days_pending === 0 && x.stripe_fails_it_by));
 check('R1d the artist sees it with what to do', (await call('GET', '/api/checkout', GAL)).j.pending_refunds[0].what_to_do.length === 4);
 h = await hook(evt('refund.updated', { ...rf1, status: 'succeeded' }, ACCT));
@@ -518,6 +524,7 @@ check('R3 when Stripe confirms the refund, it is booked and PlotArt returns exac
   h.s === 200 && M.feeRefunds.length === fees + 1 && M.feeRefunds.at(-1).amount === 7500 && (await q("SELECT * FROM order_ledger WHERE order_id = ? AND kind = 'artwork_refund'", o1.id)).length === 1 && !(await order(o1.id)).needs_resolution, h);
 h = await hook(evt('refund.updated', { ...rf1, status: 'succeeded' }, ACCT));
 check('R4 the same confirmation again returns nothing twice', M.feeRefunds.length === fees + 1 && (await q("SELECT * FROM order_ledger WHERE order_id = ? AND kind = 'commission_refund'", o1.id)).length === 1);
+check('BN2 repeated provider events never duplicate a buyer notice', (await q("SELECT * FROM order_messages WHERE order_id = ? AND kind LIKE 'buyer_refund_%'", o1.id)).length === 1);
 check('T9b order back to paid, partially refunded', (await order(o1.id)).status === 'paid' && (await order(o1.id)).payment_status === 'partially_refunded');
 r = await call('POST', `/api/admin/checkout/orders/${o1.id}/refund`, FOUNDER, { artwork_cents: 0, delivery_cents: 7500, reason: 'Delivery not used: buyer collected' });
 check('T9c a delivery refund moves no commission', r.s === 200 && M.feeRefunds.length === fees + 1);
@@ -641,11 +648,25 @@ check('F3 every status change is audited with actor, prior and new status', (awa
 M.nextRefundStatus = 'pending';
 r = await call('POST', `/api/admin/checkout/orders/${second.id}/refund`, FOUNDER, { artwork_cents: 5000, delivery_cents: 0, reason: 'Goodwill for late delivery' });
 const rfx = M.refunds.at(-1); fees = M.feeRefunds.length;
+await db.prepare("CREATE TRIGGER test_sink_down BEFORE INSERT ON checkout_mail_sink WHEN NEW.kind = 'buyer_refund_failed' BEGIN SELECT RAISE(ABORT, 'sink down (test)'); END").run();
 h = await hook(evt('refund.failed', { ...rfx, id: rfx.id, status: 'failed', failure_reason: 'insufficient_funds' }, ACCT));
 const SX = await order(second.id);
 check('R5 a refund Stripe fails (e.g. still unfunded after 45 days) is flagged: buyer NOT repaid, nothing booked, no commission returned',
   h.s === 200 && /failed \(insufficient_funds\)/.test(SX.needs_resolution) && (await db.prepare('SELECT status FROM order_refunds WHERE provider_refund_id = ?').bind(rfx.id).first()).status === 'failed'
   && !(await q("SELECT * FROM order_ledger WHERE provider_ref = ?", rfx.id)).length && M.feeRefunds.length === fees, SX);
+{ const fm = await db.prepare("SELECT * FROM order_messages WHERE order_id = ? AND kind = 'buyer_refund_failed'").bind(second.id).first();
+  const d1 = await q('SELECT status FROM order_message_deliveries WHERE message_id = ?', fm.id);
+  check('BN3 if delivery fails, the notice is still kept and the failure is recorded (never reported as delivered)', /NOT been repaid/.test(fm.body) && d1.length === 1 && d1[0].status === 'failed');
+  for (let i = 0; i < 7; i++) await S.checkoutWorker.scheduled({ cron: '*/15 * * * *' });
+  const d2 = await q('SELECT status FROM order_message_deliveries WHERE message_id = ?', fm.id);
+  check('BN4 the sweep retries a failed delivery, at most 6 attempts in all, then flags it for the founder', d2.length === 6 && d2.every(x => x.status === 'failed')
+    && new RegExp(`message ${fm.id}`).test((await order(second.id)).needs_resolution), { attempts: d2.length, nr: (await order(second.id)).needs_resolution });
+  await db.prepare('DROP TRIGGER test_sink_down').run();
+  r = await call('POST', `/api/admin/checkout/orders/${second.id}/confirmation`, FOUNDER, { message_id: fm.id });
+  const d3 = await q('SELECT status FROM order_message_deliveries WHERE message_id = ?', fm.id);
+  check('BN5 once the problem is fixed the founder re-delivers the same stored text; the flag is cleared; one message, never a duplicate', r.s === 200 && d3.at(-1).status === 'held_in_test_sink'
+    && (await q("SELECT * FROM checkout_mail_sink WHERE order_id = ? AND kind = 'buyer_refund_failed'", second.id)).length === 1
+    && !new RegExp(`message ${fm.id}`).test((await order(second.id)).needs_resolution || '') && (await q("SELECT * FROM order_messages WHERE order_id = ? AND kind = 'buyer_refund_failed'", second.id)).length === 1, [r.j && r.j.error, d3]); }
 M.nextRefundStatus = 'pending';
 r = await call('POST', `/api/admin/checkout/orders/${second.id}/refund`, FOUNDER, { artwork_cents: 2000, delivery_cents: 0, reason: 'Second goodwill refund' });
 const rfy = M.refunds.at(-1); rfy.status = 'succeeded';   // the artist's balance recovered; the webhook is lost
@@ -715,6 +736,8 @@ console.log('— a refund that succeeds and later FAILS (reversal, commission al
   h = await hook(evt('refund.updated', { ...rv, status: 'failed', failure_reason: 'expired_or_canceled_card' }, ACCT));
   check('RV3 a repeated failure event (or another event id for the same failure) changes nothing', h.s === 200 && (await q("SELECT * FROM order_ledger WHERE order_id = ? AND kind LIKE '%_reversed'", orv.id)).length === 2
     && (await q("SELECT * FROM order_events WHERE order_id = ? AND action = 'refund_reversed'", orv.id)).length === 1);
+  check('BN6 a reversed refund sends the buyer one notice that they have NOT been repaid, even when the failure event is repeated', (await q("SELECT * FROM order_messages WHERE order_id = ? AND kind = 'buyer_refund_reversed'", orv.id)).length === 1
+    && /NOT been repaid/.test((await q("SELECT body FROM order_messages WHERE order_id = ? AND kind = 'buyer_refund_reversed'", orv.id))[0].body));
   const feesMid = M.feeRefunds.length, refundsMid = M.refunds.length;
   r = await call('POST', `/api/admin/checkout/orders/${orv.id}/refund`, FOUNDER, { artwork_cents: 80000, delivery_cents: 5000, reason: 'Retry after reversal' });
   OV = await order(orv.id);
@@ -823,6 +846,13 @@ console.log('— reminders, dispute fees and late disputes');
   check('OQ6 one direct payment settles the order’s items oldest first, with the same reference recorded on each', r.s === 200 && ws.map(x => x.settled_cents).join() === '500,300', [r.j && r.j.error, ws]); }
 { const C1 = await import(HERE + FIX + 'src/checkout.js');
   const base = { currency: 'eur', paid_at: ago(1), amount_received_cents: 10000, artwork_cents: 10000, delivery_cents: 0, commission_cents: 1500, processing: null };
+  const K = 'rk_test_x';
+  const mm1 = C1.mailMode({ STRIPE_SECRET_KEY: K }), mm2 = C1.mailMode({ STRIPE_SECRET_KEY: K, CHECKOUT_MAIL: 'resend', RESEND_API_KEY: 're_x', CHECKOUT_MAIL_FROM: 'PlotArt <orders@plotnua.ie>' });
+  const mm3 = C1.mailMode({ STRIPE_SECRET_KEY: K, CHECKOUT_MAIL: 'resend', RESEND_API_KEY: 're_x', CHECKOUT_MAIL_FROM: 'x', CHECKOUT_MAIL_APPROVED: 'true', CHECKOUT_MAIL_TEST_RECIPIENTS: 'founder-test@plotnua.ie' });
+  const mm4 = C1.mailMode({ STRIPE_SECRET_KEY: 'sk_live_x', CHECKOUT_MAIL: 'resend', RESEND_API_KEY: 're_x', CHECKOUT_MAIL_FROM: 'x', CHECKOUT_MAIL_APPROVED: 'true', CHECKOUT_MAIL_TEST_RECIPIENTS: 'a@b.c' });
+  const mm5 = C1.mailMode({ STRIPE_SECRET_KEY: K, CHECKOUT_MAIL: 'resend', RESEND_API_KEY: 're_x', CHECKOUT_MAIL_FROM: 'x', CHECKOUT_MAIL_APPROVED: 'true' });
+  check('MM1 external email stays off unless configured AND approved, only to listed test inboxes in test mode, and never with a live key', !mm1.external_sending && /no email provider/.test(mm1.summary)
+    && !mm2.external_sending && /not approved/.test(mm2.summary) && mm3.external_sending && !mm4.external_sending && /not part of this pilot/.test(mm4.summary) && !mm5.external_sending, [mm1, mm2, mm3, mm4, mm5].map(x => x.summary));
   const sw = C1.statement({ ...base, dispute_status: 'won', dispute_fees: JSON.stringify({ dp_w: { status: 'recorded' } }) },
     [{ kind: 'dispute', amount_cents: -10000 }, { kind: 'dispute_reinstated', amount_cents: 10000 }, { kind: 'dispute_fee', amount_cents: -2460 }, { kind: 'dispute_fee_returned', amount_cents: 2000 }], []);
   check('DF1 dispute fees and fees Stripe returns are separate statement lines and both count in net proceeds', sw.dispute_fees_charged_by_stripe === 2460 && sw.dispute_fees_returned_by_stripe === 2000 && sw.net_proceeds === 10000 - 1500 - 460, sw);

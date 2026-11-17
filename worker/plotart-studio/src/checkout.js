@@ -15,6 +15,7 @@ import * as S from './stripe.js';
 import { PAYMENT_TERMS } from './payment-terms.js';
 
 import { Bad } from './lib.js';
+import { send } from './mailer.js';
 export { Bad };
 const now = () => new Date().toISOString();
 const rid = (p = '', n = 12) => p + [...crypto.getRandomValues(new Uint8Array(n))].map(b => (b % 36).toString(36)).join('');
@@ -45,16 +46,38 @@ export function deadlines(env) {
     note: 'Reimbursement and shortfall deadlines are provisional until the founder approves them (CHECKOUT_DEADLINES_APPROVED). The lost-dispute commission deadline is the existing PA-GAA cl. 9.1 period (30 days).' };
 }
 
-/* ---------------------------------------------------------------- messages: test-mode sink only
-   The pilot never emails anyone while it runs in Stripe test mode. Every message (buyer confirmations, artist and founder
-   notices) is written to checkout_mail_sink with only a fingerprint of the intended address. CHECKOUT_MAIL = 'none'
-   records that nothing was sent; any other value still goes to the sink: live sending is not part of this pilot. */
-async function deliver(env, { orderId = null, kind, toRole, to, subject, body }) {
+/* ---------------------------------------------------------------- messages: test sink unless sending is configured AND approved
+   Default: every message (buyer confirmations and notices, artist and founder notices) goes to checkout_mail_sink, which
+   keeps only a fingerprint of the intended address. A sink entry is NOT an email delivery and is never reported as one.
+   External sending uses the project's existing Resend integration (mailer.js) and happens only when ALL of these hold:
+     CHECKOUT_MAIL = 'resend', CHECKOUT_MAIL_APPROVED = 'true', RESEND_API_KEY and CHECKOUT_MAIL_FROM are set, and
+     while the pilot uses a Stripe TEST key the recipient is on CHECKOUT_MAIL_TEST_RECIPIENTS (the founder's own test
+     inboxes). With a live key nothing is sent externally: live sending is not part of this pilot.
+   'accepted_by_provider' means Resend accepted the message; it is not proof that it reached the inbox.
+   CHECKOUT_MAIL = 'none' records that nothing was sent. */
+export function mailMode(env) {
   const mode = env.CHECKOUT_MAIL || 'sink';
-  if (mode === 'none') return { channel: 'none', status: 'not_sent_no_provider', detail: 'no mail provider configured' };
+  const configured = mode === 'resend' && !!env.RESEND_API_KEY && !!env.CHECKOUT_MAIL_FROM;
+  const approved = configured && env.CHECKOUT_MAIL_APPROVED === 'true';
+  const testKey = /^(sk|rk)_test_/.test(env.STRIPE_SECRET_KEY || '');
+  const allow = String(env.CHECKOUT_MAIL_TEST_RECIPIENTS || '').split(',').map(x => x.trim().toLowerCase()).filter(Boolean);
+  return { mode, configured, approved, test_key: testKey, test_recipients: allow.length, external_sending: approved && testKey && allow.length > 0,
+    summary: !configured ? (mode === 'none' ? 'Nothing is sent (CHECKOUT_MAIL = none).' : 'Test sink only: no email provider is configured for the pilot.')
+      : !approved ? 'Resend is configured but sending is not approved (CHECKOUT_MAIL_APPROVED): test sink only.'
+      : !testKey ? 'Live key detected: live sending is not part of this pilot; test sink only.'
+      : `Sending only to ${allow.length} approved test address(es); everything else goes to the test sink.`, _allow: allow };
+}
+async function deliver(env, { orderId = null, kind, toRole, to, subject, body, idempotencyKey = null }) {
+  const m = mailMode(env), addr = String(to || '').trim().toLowerCase();
+  if (m.mode === 'none') return { channel: 'none', status: 'not_sent_no_provider', detail: 'no mail provider configured' };
+  if (m.external_sending && m._allow.includes(addr)) {
+    const r = await send({ ...env, MAILER: 'resend', MAIL_FROM: env.CHECKOUT_MAIL_FROM }, { to: addr, replyTo: 'hello@plotnua.ie', subject, text: body, idempotencyKey });
+    return r.sent ? { channel: 'provider', status: 'accepted_by_provider', detail: 'accepted by Resend (not proof of inbox delivery)' } : { channel: 'provider', status: 'failed', detail: String(r.detail).slice(0, 200) };
+  }
+  if (env.CHECKOUT_MAIL_SINK_BROKEN === 'true' && env.ENVIRONMENT === 'local') throw new Error('test sink unavailable (local failure test)');
   await run(env, 'INSERT INTO checkout_mail_sink (at, order_id, kind, to_role, to_sha256, subject, body) VALUES (?,?,?,?,?,?,?)',
-    now(), orderId, kind, toRole, await sha256(String(to || '').trim().toLowerCase()), subject, body);
-  return { channel: 'test_sink', status: 'held_in_test_sink', detail: mode === 'sink' ? 'test sink (test mode: nothing is sent)' : `CHECKOUT_MAIL=${mode} ignored: the test-mode pilot sends nothing` };
+    now(), orderId, kind, toRole, await sha256(addr), subject, body);
+  return { channel: 'test_sink', status: 'held_in_test_sink', detail: `test sink only, NOT delivered by email (${m.summary})` };
 }
 
 /* ---------------------------------------------------------------- seller information (artist-maintained; snapshotted into each quote) */
@@ -281,8 +304,8 @@ export async function orderDetail(env, o, role) {
     ledger: await all(env, 'SELECT kind, amount_cents, provider_ref, at, note FROM order_ledger WHERE order_id = ? ORDER BY at, rowid', o.id),
     statement: statement(o, await all(env, 'SELECT kind, amount_cents FROM order_ledger WHERE order_id = ?', o.id), await all(env, 'SELECT kind, cents, settled_cents FROM checkout_owed WHERE order_id = ?', o.id)),
     owed: await owedRows(env, 'o.id = ?', o.id),
-    messages: (await all(env, 'SELECT id, kind, recipient_role, subject, sha256, created_at FROM order_messages WHERE order_id = ?', o.id))
-      .map(m => ({ ...m })),
+    messages: await all(env, 'SELECT id, kind, item_key, recipient_role, subject, sha256, created_at FROM order_messages WHERE order_id = ? ORDER BY created_at', o.id),
+    mail: (({ summary, external_sending }) => ({ summary, external_sending }))(mailMode(env)),
     message_deliveries: await all(env, 'SELECT message_id, at, channel, status, detail FROM order_message_deliveries WHERE order_id = ? ORDER BY id', o.id),
     quote_snapshot: await quoteSnapshot(env, o),
     fulfilment: await all(env, 'SELECT kind, actor, at, evidence FROM order_fulfilment_events WHERE order_id = ? ORDER BY at, rowid', o.id),
@@ -620,16 +643,17 @@ export async function buyerQuote(env, token) {
   const q = await quoteSnapshot(env, o);
   if (!q) return null;
   const bt = o.buyer_terms_doc_id ? await one(env, 'SELECT doc_id, title FROM payment_terms WHERE doc_id = ?', o.buyer_terms_doc_id) : null;
-  const conf = await one(env, "SELECT sha256 FROM order_messages WHERE order_id = ? AND kind = 'buyer_confirmation'", o.id);
+  const conf = await one(env, "SELECT sha256 FROM order_messages WHERE order_id = ? AND kind = 'buyer_confirmation' AND item_key = ''", o.id);
+  const notices = await all(env, "SELECT kind, subject, body, created_at FROM order_messages WHERE order_id = ? AND kind <> 'buyer_confirmation' ORDER BY created_at", o.id);
   return { reference: o.reference, status: o.status, payment_status: o.payment_status, fulfilment_status: o.fulfilment_status,
     expired: !!o.quote_expires_at && o.quote_expires_at <= now(), quote_expires_at: o.quote_expires_at, seller: q.seller, artwork: q.artwork,
     currency: 'EUR', artwork_cents: q.amounts.artwork_cents, delivery_cents: q.amounts.delivery_cents, total_cents: q.amounts.total_cents,
-    delivery: q.delivery, terms: bt, quote_sha256: q.sha256, confirmation_ready: !!conf };
+    delivery: q.delivery, terms: bt, quote_sha256: q.sha256, confirmation_ready: !!conf, notices };
 }
 export async function buyerConfirmation(env, token) {
   const o = await byToken(env, token);
   if (!o) return null;
-  return one(env, "SELECT subject, body, sha256, created_at FROM order_messages WHERE order_id = ? AND kind = 'buyer_confirmation'", o.id);
+  return one(env, "SELECT subject, body, sha256, created_at FROM order_messages WHERE order_id = ? AND kind = 'buyer_confirmation' AND item_key = ''", o.id);
 }
 
 export async function startCheckout(env, token, b) {
@@ -1042,6 +1066,7 @@ export async function refund(env, founder, id, b) {
   // pending: for a card refund Stripe holds it when the artist's AVAILABLE Stripe balance cannot cover it (for example after
   // the payout), until the balance recovers; Stripe fails a pending refund after 45 days. Nothing is booked until it succeeds.
   await event(env, o.id, founder, 'refund_pending_at_provider', 'refund_pending', 'refund_pending', { refund: rr.id, provider_refund: re.id });
+  await buyerRefundNotice(env, o, 'buyer_refund_pending', { id: rr.id, artwork_cents: art, delivery_cents: del });
   await notify(env, o, 'refund_pending', `A refund of EUR ${((art + del) / 100).toFixed(2)} on PlotArt order ${o.reference} is waiting because the seller's Stripe balance cannot cover it yet. Stripe cancels it after 45 days if it is still unfunded.\n\n${REFUND_FUNDING_STEPS.join('\n')}`);
   await run(env, 'UPDATE checkout_orders SET needs_resolution = ?, updated_at = ? WHERE id = ?',
     `refund ${re.id} is pending at Stripe (usually the artist's available Stripe balance is too low, e.g. after payout). Ask the artist to top up their Stripe balance; Stripe fails pending refunds after 45 days.`, now(), o.id);
@@ -1069,6 +1094,7 @@ async function failRefund(env, rr, re) {
   await run(env, 'UPDATE checkout_orders SET needs_resolution = ?, updated_at = ? WHERE id = ?',
     `refund ${re.id} failed (${re.failure_reason || re.status}): the buyer has NOT been repaid; the artist, as seller, must repay them another way. No commission was returned.`, now(), rr.order_id);
   await event(env, rr.order_id, 'provider', 'refund_failed', null, null, { refund: rr.id, provider_refund: re.id, reason: re.failure_reason || re.status });
+  await buyerRefundNotice(env, await getOrder(env, rr.order_id), 'buyer_refund_failed', cur || rr, re.failure_reason || re.status);
   await notify(env, await getOrder(env, rr.order_id), 'refund_failed', `Stripe could not complete a refund on PlotArt order ${(await getOrder(env, rr.order_id)).reference} (${re.failure_reason || re.status}). The buyer has NOT been repaid. The seller now repays the buyer directly and sends PlotArt the confirmation.`);
 }
 /* A refund that Stripe first reported SUCCEEDED and later FAILED (e.g. the card was closed): Stripe returns the money to
@@ -1102,6 +1128,7 @@ async function reverseRefund(env, rr, re) {
   else { await run(env, 'UPDATE checkout_orders SET payment_status = ?, needs_resolution = ?, updated_at = ? WHERE id = ?', sets.payment_status, flag, now(), o.id); await event(env, o.id, 'provider', 'refund_reversed', o.status, o.status, { refund: rr.id, provider_refund: ref }); }
   await run(env, "UPDATE artwork_sales SET released_at = NULL, released_reason = NULL WHERE order_id = ? AND released_reason = 'fully refunded'", o.id);   // the buyer still holds the sale
   await setOwedFlag(env, o.id);
+  await buyerRefundNotice(env, await getOrder(env, o.id), 'buyer_refund_reversed', rr, re.failure_reason || re.status);
   await notify(env, await getOrder(env, o.id), 'refund_reversed', `Stripe reversed a refund on PlotArt order ${o.reference} after first confirming it (${re.failure_reason || re.status}). The money is back in the seller's Stripe balance and the buyer has NOT been repaid. Repay the buyer by one route only: a new refund through PlotArt, or a direct repayment by the seller that PlotArt records with evidence.`);
 }
 /* Backstop for missed events: a refund can fail days after succeeding, so recently succeeded refunds are re-read. */
@@ -1213,11 +1240,12 @@ async function remindOwed(env) {
   return sent;
 }
 export const BANK_DETAILS_PROCESS = [
-  'PlotArt never asks for, stores or emails bank details in PlotArt Studio, the payment pilot, its logs or its emails.',
+  'Bank details are never entered in PlotArt Studio, the payment pilot, its logs or its emails.',
   'Ask the artist, by phone on the number in their seller information or in person, for the account name and IBAN, and enter them directly into PlotArt’s bank as a new payee. Do not accept them by email, chat or a form in PlotArt.',
   'Use the bank’s payee name check (Verification of Payee) and do not pay if it reports a mismatch until the artist confirms by phone.',
   'If the artist later asks to change the account, confirm the change by calling the artist on the number already held; never act on an emailed change of bank details.',
   'Record the payment here with the bank’s transfer reference and date only (no IBAN, account number or sort code). The pilot refuses references that look like bank details.',
+  'PlotArt’s bank keeps the details as a saved payee (delete it once no further payment to the artist is expected) and in its record of the transfer, which is part of PlotArt’s accounting records for six years and cannot be deleted. Never say PlotArt holds no bank details.',
 ];
 async function ensureCharge(env, o) {
   if (o.charge_id && o.application_fee_id) return o;
@@ -1452,8 +1480,48 @@ export function confirmationText(q, o, terms, origin) {
   L.push(`Questions: the seller (${s.email}, ${s.phone}) or PlotArt (hello@plotnua.ie), quoting ${o.reference}.`);
   return L.join('\n');
 }
+/* One stored message per order, kind and item (e.g. per refund): the text is fixed when prepared and never re-rendered. */
+async function prepareMessage(env, o, { kind, key = '', subject, body }) {
+  const id = rid('m');
+  const r = await run(env, `INSERT INTO order_messages (id, order_id, kind, item_key, recipient_role, subject, body, sha256, created_at) VALUES (?,?,?,?, 'buyer', ?,?,?,?)
+    ON CONFLICT(order_id, kind, item_key) DO NOTHING`, id, o.id, kind, key, subject, body, await sha256(body), now());
+  const m = await one(env, 'SELECT * FROM order_messages WHERE order_id = ? AND kind = ? AND item_key = ?', o.id, kind, key);
+  if (r.meta.changes) await deliverMessage(env, o, m);   // a duplicate request never sends again
+  return m;
+}
+export const MAX_MESSAGE_ATTEMPTS = 6;
+async function deliverMessage(env, o, m) {
+  let r;
+  try { r = await deliver(env, { orderId: o.id, kind: m.kind, toRole: 'buyer', to: o.buyer_email, subject: m.subject, body: m.body, idempotencyKey: `plotart-msg-${m.id}` }); }
+  catch (e) { r = { channel: 'test_sink', status: 'failed', detail: String(e.message || e).slice(0, 200) }; }
+  await run(env, 'INSERT INTO order_message_deliveries (message_id, order_id, at, channel, status, detail) VALUES (?,?,?,?,?,?)', m.id, o.id, now(), r.channel, r.status, r.detail);
+  await event(env, o.id, 'system', `${m.kind}_${r.status}`, o.status, o.status, { message: m.id, sha256: m.sha256 });
+  return r;
+}
+/* Retries: a message whose last attempt failed (or that was never attempted) is tried again with growing gaps
+   (at the next sweep, then 5, 20, 45, 80 minutes), at most MAX_MESSAGE_ATTEMPTS times; then it is flagged for the founder. */
+async function retryMessages(env) {
+  let retried = 0;
+  const rows = await all(env, `SELECT m.*, (SELECT COUNT(*) FROM order_message_deliveries d WHERE d.message_id = m.id) AS attempts,
+      (SELECT status FROM order_message_deliveries d WHERE d.message_id = m.id ORDER BY d.id DESC LIMIT 1) AS last_status,
+      (SELECT at FROM order_message_deliveries d WHERE d.message_id = m.id ORDER BY d.id DESC LIMIT 1) AS last_at
+    FROM order_messages m WHERE NOT EXISTS (SELECT 1 FROM order_message_deliveries d WHERE d.message_id = m.id AND d.status <> 'failed') LIMIT 50`);
+  for (const m of rows) {
+    const o = await getOrder(env, m.order_id);
+    if (!o) continue;
+    if (m.attempts >= MAX_MESSAGE_ATTEMPTS) {
+      if (!(o.needs_resolution || '').includes(`message ${m.id}`)) await run(env, 'UPDATE checkout_orders SET needs_resolution = ?, updated_at = ? WHERE id = ?',
+        [o.needs_resolution, `message ${m.id} (${m.kind}) could not be delivered after ${m.attempts} attempts: check the mail set-up, then re-deliver`].filter(Boolean).join(' | '), now(), o.id);
+      continue;
+    }
+    const gap = Number.isFinite(Number(env.CHECKOUT_MESSAGE_RETRY_MINUTES)) && env.CHECKOUT_MESSAGE_RETRY_MINUTES !== undefined ? Number(env.CHECKOUT_MESSAGE_RETRY_MINUTES) : 5;
+    if (m.last_at && Date.now() - Date.parse(m.last_at) < gap * (m.attempts - 1) * (m.attempts - 1) * 60_000) continue;
+    await deliverMessage(env, o, m); retried++;
+  }
+  return retried;
+}
 export async function prepareConfirmation(env, o) {
-  const have = await one(env, "SELECT * FROM order_messages WHERE order_id = ? AND kind = 'buyer_confirmation'", o.id);
+  const have = await one(env, "SELECT * FROM order_messages WHERE order_id = ? AND kind = 'buyer_confirmation' AND item_key = ''", o.id);
   if (have) return have;
   if (!(await one(env, 'SELECT 1 AS x FROM artwork_sales WHERE order_id = ?', o.id))) return null;   // only a completed sale is confirmed
   const q = await quoteSnapshot(env, o);
@@ -1461,28 +1529,28 @@ export async function prepareConfirmation(env, o) {
   const full = terms && PAYMENT_TERMS[terms.doc_id];
   if (!q || !terms || !full) { await event(env, o.id, 'system', 'confirmation_not_prepared', o.status, o.status, { reason: !q ? 'no quote snapshot' : 'terms text unavailable' }); return null; }
   const body = confirmationText(q, o, { ...terms, html: full.html }, env.CHECKOUT_ORIGIN || '');
-  const subject = `Purchase confirmation · ${(q.artwork && q.artwork.title) || 'Original artwork'} · ${o.reference}`;
-  const id = rid('m');
-  await run(env, `INSERT INTO order_messages (id, order_id, kind, recipient_role, subject, body, sha256, created_at) VALUES (?,?, 'buyer_confirmation', 'buyer', ?,?,?,?) ON CONFLICT(order_id, kind) DO NOTHING`,
-    id, o.id, subject, body, await sha256(body), now());
-  const m = await one(env, "SELECT * FROM order_messages WHERE order_id = ? AND kind = 'buyer_confirmation'", o.id);
-  await deliverConfirmation(env, o, m);
-  return m;
+  return prepareMessage(env, o, { kind: 'buyer_confirmation', subject: `Purchase confirmation · ${(q.artwork && q.artwork.title) || 'Original artwork'} · ${o.reference}`, body });
 }
-export async function deliverConfirmation(env, o, m) {
-  let r;
-  try { r = await deliver(env, { orderId: o.id, kind: m.kind, toRole: 'buyer', to: o.buyer_email, subject: m.subject, body: m.body }); }
-  catch (e) { r = { channel: 'test_sink', status: 'failed', detail: String(e.message || e).slice(0, 200) }; }
-  await run(env, 'INSERT INTO order_message_deliveries (message_id, order_id, at, channel, status, detail) VALUES (?,?,?,?,?,?)', m.id, o.id, now(), r.channel, r.status, r.detail);
-  await event(env, o.id, 'system', 'confirmation_' + r.status, o.status, o.status, { message: m.id, sha256: m.sha256 });
-  return r;
+/* Buyer notices about refunds (PA-BPT 8.2–8.4): one per refund and kind, kept and delivered like the confirmation. */
+async function buyerRefundNotice(env, o, kind, rr, extra = '') {
+  const amount = money((rr.artwork_cents || 0) + (rr.delivery_cents || 0)), seller = (J(o.seller) || {});
+  const contact = `Questions: ${seller.legal_name || seller.name || 'the seller'}${seller.email ? ` (${seller.email})` : ''} or PlotArt (hello@plotnua.ie), quoting ${o.reference}.`;
+  const T = { buyer_refund_pending: [`Your refund for ${o.reference} is pending`, `Your refund of ${amount} for order ${o.reference} has been requested through Stripe and is pending. It has NOT been completed yet: you have not been repaid until Stripe completes it. The seller is arranging for it to be completed and must make sure you are repaid within your legal time limits. While it is pending, the seller will not repay you another way as well. We will tell you if anything changes.`],
+    buyer_refund_failed: [`Your refund for ${o.reference} could not be completed`, `Stripe could not complete your refund of ${amount} for order ${o.reference}${extra ? ` (${extra})` : ''}. You have NOT been repaid. The seller will repay you once, either by a new refund through Stripe or directly, for example by bank transfer, and PlotArt will confirm it with you.`],
+    buyer_refund_reversed: [`Your refund for ${o.reference} was reversed`, `A refund of ${amount} for order ${o.reference} that Stripe first confirmed was later reversed by Stripe${extra ? ` (${extra})` : ''}, for example because the card was closed. You have NOT been repaid. The seller will repay you once, either by a new refund through Stripe or directly, and PlotArt will confirm it with you.`] }[kind];
+  const body = ['TEST MODE: this is a PlotArt payment-pilot test message. No real payment or refund took place.', '', T[1], '', contact].join('\n');
+  try { return await prepareMessage(env, o, { kind, key: rr.id, subject: T[0], body }); } catch (e) { await event(env, o.id, 'system', `${kind}_not_prepared`, o.status, o.status, { error: String(e.message).slice(0, 200) }); return null; }
 }
-export async function resendConfirmation(env, founder, id) {
+export async function resendConfirmation(env, founder, id, b = {}) {
   const o = await getOrder(env, id);
   if (!o) throw new Bad('Not found', 404);
-  const m = await one(env, "SELECT * FROM order_messages WHERE order_id = ? AND kind = 'buyer_confirmation'", o.id) || await prepareConfirmation(env, o);
-  if (!m) throw new Bad('No confirmation: the order has not completed a sale', 409);
-  if (await one(env, 'SELECT 1 AS x FROM order_message_deliveries WHERE message_id = ?', m.id)) await deliverConfirmation(env, o, m);   // the same stored text, never re-rendered
+  const m = b.message_id ? await one(env, 'SELECT * FROM order_messages WHERE id = ? AND order_id = ?', b.message_id, o.id)
+    : await one(env, "SELECT * FROM order_messages WHERE order_id = ? AND kind = 'buyer_confirmation' AND item_key = ''", o.id) || await prepareConfirmation(env, o);
+  if (!m) throw new Bad('No such message for this order', 409);
+  if (await one(env, 'SELECT 1 AS x FROM order_message_deliveries WHERE message_id = ?', m.id)) {
+    const r = await deliverMessage(env, o, m);   // the same stored text, never re-rendered
+    if (r.status !== 'failed') await dropFlag(env, o.id, `message ${m.id}`);
+  }
   return orderDetail(env, await getOrder(env, o.id), 'founder');
 }
 
@@ -1510,13 +1578,15 @@ export async function sweep(env) {
   for (const o of await all(env, `SELECT * FROM checkout_orders WHERE dispute_fees LIKE '%"unavailable"%' AND updated_at >= ? LIMIT 10`, plusDays(t, -30))) {
     for (const [did, v] of Object.entries(J(o.dispute_fees) || {})) if (v.status === 'unavailable') { try { await recordDisputeFees(env, o, { id: did }); dispute_fees_rechecked++; } catch { /* next sweep */ } }
   }
+  let messages_retried = 0;
+  try { messages_retried = await retryMessages(env); } catch { /* next sweep */ }
   let owed_reminders = 0;
   try { owed_reminders = await remindOwed(env); } catch { /* next sweep */ }
   let refunds_reversed = 0;
   try { refunds_reversed = await recheckSucceededRefunds(env); } catch { /* next sweep */ }
   let refunds = null;
   try { refunds = await pollPendingRefunds(env); } catch (e) { refunds = { error: String(e.message || e).slice(0, 120) }; }
-  return { reservations_released: released.meta.changes, quotes_expired: expired, deferred_replayed, refunds_reversed, processing_reconciled, confirmations, dispute_fees_rechecked, owed_reminders, ...refunds, ...(await retention(env)) };
+  return { reservations_released: released.meta.changes, quotes_expired: expired, deferred_replayed, refunds_reversed, processing_reconciled, confirmations, messages_retried, dispute_fees_rechecked, owed_reminders, ...refunds, ...(await retention(env)) };
 }
 
 /* Retention (spec "Records and retention"). Each period has a stated basis and a fixed start; nothing is ever deleted
