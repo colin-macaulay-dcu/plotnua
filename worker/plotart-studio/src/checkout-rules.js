@@ -43,7 +43,7 @@ export const MOVES = {
   dispatched: ['delivered', 'refund_pending', 'refunded', 'disputed'],
   delivered: ['closed', 'refund_pending', 'refunded', 'disputed'],
   refund_pending: ['refunded', 'paid', 'dispatched', 'delivered', 'disputed'],
-  refunded: ['closed'],
+  refunded: ['closed', 'paid', 'dispatched', 'delivered'],   // back only when Stripe reverses a refund that had succeeded (failed later)
   disputed: ['paid', 'dispatched', 'delivered', 'refunded', 'closed'],
   closed: [],
 };

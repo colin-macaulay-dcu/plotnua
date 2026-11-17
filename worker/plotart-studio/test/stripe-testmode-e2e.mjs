@@ -26,7 +26,7 @@ export async function e2e({ rec, KEY, ACCOUNT, RUN, port, whsec, stripe, sleep }
   let browser = null;
   try {
     const GAL = `gal+${RUN}@plotnua.invalid`, ago = d => new Date(Date.now() - d * 86400_000).toISOString(), FAKE = 'a'.repeat(64);
-    await seedPublished(db, { id: 'agal', slug: 'gal', email: GAL, name: 'E2E Test Gallery Artist', works: 3, publishedAt: ago(30) });
+    await seedPublished(db, { id: 'agal', slug: 'gal', email: GAL, name: 'E2E Test Gallery Artist', works: 5, publishedAt: ago(30) });
     await db.prepare("UPDATE artists SET founding = 0 WHERE id = 'agal'").run();
     await db.prepare("INSERT INTO gallery_agreement_documents (doc_id, kind, title, text_status, html_sha256, pdf_sha256, effective_at, created_at) VALUES ('PA-GAA-2026-11','gallery_artist_agreement','t','fixed',?,?,'2018-01-01T00:00:00Z',?)").bind(FAKE, FAKE, ago(0)).run();
     await db.prepare(`INSERT INTO gallery_agreement_acceptances (id, event_id, artist_id, doc_id, doc_sha256, pdf_sha256, accepted_at, account_email, display_name, method, statement, created_at) VALUES ('gaa1','ev1','agal','PA-GAA-2026-11',?,?,?,?, 'E2E','studio_checkbox','test',?)`).bind(FAKE, FAKE, ago(20), GAL, ago(20)).run();
@@ -201,12 +201,75 @@ export async function e2e({ rec, KEY, ACCOUNT, RUN, port, whsec, stripe, sleep }
         dEv.length === 1 && dsp && dsp.payment_intent === o.payment_intent && !others.length ? 'PASS' : dispPaid ? 'FAIL' : 'SKIP',
         { events: dEv.map(e => e.event_id), payment_intent_matches: !!dsp && dsp.payment_intent === o.payment_intent, dispute_amount: dsp && dsp.amount, dispute_reason: dsp && dsp.reason, other_orders: others });
     }
+    // 5 · dispute CLOSED through the pilot by genuine signed charge.dispute.closed events: won (o3) and lost (o4)
+    const closeDispute = async (o, evidence) => {
+      const d = (await stripe('GET', `/v1/disputes?payment_intent=${encodeURIComponent(o.payment_intent)}&limit=1`, null, ACCOUNT)).j.data[0];
+      if (!d) return null;
+      await stripe('POST', `/v1/disputes/${d.id}`, { evidence: { uncategorized_text: evidence }, submit: 'true' }, ACCOUNT);
+      return d.id;
+    };
+    if (disputed) {
+      const dId = await closeDispute(await order(o3.id), 'winning_evidence');
+      const won = await waitFor(async () => (await order(o3.id)).dispute_status === 'won', 240_000);
+      const O = await order(o3.id), L = await q("SELECT kind, amount_cents FROM order_ledger WHERE order_id = ? AND kind IN ('dispute','dispute_reinstated')", o3.id);
+      const ev = await q("SELECT event_id FROM payment_events WHERE type = 'charge.dispute.closed' AND status = 'processed' AND order_id = ? AND object_id = ?", o3.id, dId);
+      rec('E10', 'a REAL signed charge.dispute.closed (won) returns the order to paid and reinstates the disputed amount in the ledger', SRC,
+        won && O.status === 'paid' && L.some(l => l.kind === 'dispute_reinstated' && l.amount_cents === 5000) && ev.length === 1 ? 'PASS' : 'FAIL',
+        { dispute: dId, status: O.status, dispute_status: O.dispute_status, ledger: L, closed_events: ev.map(e => e.event_id), flag: O.needs_resolution });
+    } else rec('E10', 'dispute closed as won through the pilot', SRC, 'SKIP', { blocked_by: 'E7 — no open dispute' });
+    const o4 = await quote('wagal4', 'PA-E-261116-E2E004', 5000, 0);
+    let lostPaid = false;
+    try { await payInBrowser(o4.url, '4000000000000259', 'dispute-lost'); lostPaid = true; } catch (e) { rec('E11a', 'buyer pays with the dispute test card (lost case)', SRC, 'FAIL', { error: String(e.message).split('\n')[0].slice(0, 300) }); }
+    const opened4 = lostPaid ? await waitFor(async () => (await order(o4.id)).dispute_status === 'open', 150_000) : null;
+    if (opened4) {
+      const dId = await closeDispute(await order(o4.id), 'losing_evidence');
+      const lost = await waitFor(async () => (await order(o4.id)).dispute_status === 'lost', 240_000);
+      const O = await order(o4.id);
+      const ev = await q("SELECT event_id FROM payment_events WHERE type = 'charge.dispute.closed' AND status = 'processed' AND order_id = ? AND object_id = ?", o4.id, dId);
+      rec('E11', 'a REAL signed charge.dispute.closed (lost) marks the order refunded and flags PlotArt’s commission for return (GAA 9)', SRC,
+        lost && O.status === 'refunded' && /dispute lost/.test(O.needs_resolution || '') && ev.length === 1 ? 'PASS' : 'FAIL',
+        { dispute: dId, status: O.status, dispute_status: O.dispute_status, closed_events: ev.map(e => e.event_id), flag: O.needs_resolution });
+    } else rec('E11', 'dispute closed as lost through the pilot', SRC, lostPaid ? 'FAIL' : 'SKIP', lostPaid ? { reason: 'the dispute never opened on the order' } : { blocked_by: 'E11a' });
+
+    // 6 · a refund that SUCCEEDS and later FAILS (Stripe test card 4000 0000 0000 5126), reconciled from REAL signed events
+    const o5 = await quote('wagal5', 'PA-E-261116-E2E005', 40000, 2000);
+    let rfPaid = false;
+    try { await payInBrowser(o5.url, '4000000000005126', 'refund-fail'); rfPaid = true; } catch (e) { rec('E12a', 'buyer pays with the refund-fails test card', SRC, 'FAIL', { error: String(e.message).split('\n')[0].slice(0, 300) }); }
+    const paid5 = rfPaid ? await waitFor(async () => { const o = await order(o5.id); return o.payment_status === 'paid' ? o : null; }) : null;
+    if (paid5) {
+      const r = await call('POST', `/api/admin/checkout/orders/${o5.id}/refund`, FOUNDER, { artwork_cents: 40000, delivery_cents: 2000, reason: 'E2E refund that Stripe later fails' });
+      const rr = await db.prepare('SELECT * FROM order_refunds WHERE order_id = ?').bind(o5.id).first();
+      let ch = (await stripe('GET', `/v1/payment_intents/${paid5.payment_intent}?expand[]=latest_charge`, null, ACCOUNT)).j.latest_charge;
+      for (let i = 0; i < 20 && ch && !ch.application_fee; i++) { await sleep(1500); ch = (await stripe('GET', `/v1/charges/${ch.id}`, null, ACCOUNT)).j; }
+      const fee1 = (await stripe('GET', `/v1/application_fees/${ch.application_fee}`)).j;
+      rec('E12a', 'the refund first SUCCEEDS on Stripe; the pilot books it and returns PlotArt’s €60 commission once', SRC,
+        r.s === 200 && rr && rr.status === 'succeeded' && fee1.amount_refunded === 6000 && (await order(o5.id)).status === 'refunded' ? 'PASS' : 'FAIL',
+        { http: r.s, refund_status: rr && rr.status, fee_amount_refunded: fee1.amount_refunded, order_status: (await order(o5.id)).status });
+      const reversed = await waitFor(async () => (await db.prepare('SELECT status FROM order_refunds WHERE id = ?').bind(rr.id).first()).status === 'failed', 300_000);
+      const O = await order(o5.id), re = (await stripe('GET', `/v1/refunds/${rr.provider_refund_id}`, null, ACCOUNT)).j;
+      const L = await q("SELECT kind, amount_cents FROM order_ledger WHERE order_id = ? AND kind LIKE '%refund%' ORDER BY kind", o5.id);
+      const evs = await q("SELECT type, status FROM payment_events WHERE order_id = ? AND type IN ('refund.updated','refund.failed','charge.refund.updated')", o5.id);
+      rec('E12b', 'Stripe later FAILS it and a REAL signed refund event reconciles the order: back to paid, reversal lines booked, buyer flagged as NOT repaid', SRC,
+        reversed && re.status === 'failed' && O.status === 'paid' && L.some(l => l.kind === 'artwork_refund_reversed' && l.amount_cents === 40000) && /SUCCEEDED and then FAILED/.test(O.needs_resolution || '') ? 'PASS' : 'FAIL',
+        { stripe_refund_status: re.status, failure_reason: re.failure_reason, order_status: O.status, payment_status: O.payment_status, ledger: L, events: evs, flag: O.needs_resolution });
+      if (reversed) {
+        const before = (await stripe('GET', `/v1/refunds?payment_intent=${paid5.payment_intent}&limit=10`, null, ACCOUNT)).j.data.length;
+        const rep = await call('POST', `/api/admin/checkout/orders/${o5.id}/repaid`, FOUNDER, { artwork_cents: 40000, delivery_cents: 2000, evidence: 'E2E: artist repaid the buyer by bank transfer BT-E2E-1, buyer confirmed' });
+        const again = await call('POST', `/api/admin/checkout/orders/${o5.id}/refund`, FOUNDER, { artwork_cents: 40000, delivery_cents: 2000, reason: 'E2E duplicate repayment attempt' });
+        const after = (await stripe('GET', `/v1/refunds?payment_intent=${paid5.payment_intent}&limit=10`, null, ACCOUNT)).j.data.length;
+        const fee2 = (await stripe('GET', `/v1/application_fees/${ch.application_fee}`)).j;
+        rec('E12c', 'the artist’s direct repayment is recorded once with NO second commission refund; a further Stripe refund is refused and none is created', SRC,
+          rep.s === 200 && again.s === 409 && after === before && fee2.amount_refunded === 6000 && (await order(o5.id)).status === 'refunded' ? 'PASS' : 'FAIL',
+          { repaid_http: rep.s, second_refund_http: again.s, stripe_refunds_before: before, stripe_refunds_after: after, fee_amount_refunded: fee2.amount_refunded });
+      } else rec('E12c', 'no double repayment after the reversal', SRC, 'SKIP', { blocked_by: 'E12b' });
+    } else rec('E12b', 'refund reversal reconciliation', SRC, 'SKIP', { blocked_by: 'E12a — payment not completed' });
+
     // E8 only counts if the events this run depends on actually arrived and were processed
     const all = await q('SELECT type, status FROM payment_events');
     const bad = all.filter(e => e.status === 'failed');
-    const expected = ['checkout.session.completed', 'checkout.session.expired', 'charge.dispute.created'];
+    const expected = ['checkout.session.completed', 'checkout.session.expired', 'charge.dispute.created', 'charge.dispute.closed'];
     const missing = expected.filter(t => !all.some(e => e.type === t && e.status === 'processed'));
-    rec('E8', 'every expected real signed event (payment completed, session expired, dispute created) arrived and processed, and none failed', SRC,
+    rec('E8', 'every expected real signed event (payment completed, session expired, dispute created, dispute closed) arrived and processed, and none failed', SRC,
       bad.length ? 'FAIL' : missing.length ? 'SKIP' : 'PASS', { failed: bad, missing_expected: missing, received: all.map(e => `${e.type}:${e.status}`), ...(missing.length && !bad.length ? { note: 'not a success: expected events never arrived' } : {}) });
   } catch (e) { rec('E9', 'end-to-end run', SRC, 'FAIL', { error: String(e.stack || e.message).slice(0, 500) }); }
   finally { if (browser) await browser.close(); await S.mf.dispose(); }

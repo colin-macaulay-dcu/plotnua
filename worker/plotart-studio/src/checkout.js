@@ -769,7 +769,8 @@ async function recordPaid(env, o, s, eventId) {
 }
 
 async function refundTotals(env, orderId) {
-  const r = await one(env, `SELECT COALESCE(SUM(CASE WHEN kind = 'artwork_refund' THEN -amount_cents END), 0) AS art, COALESCE(SUM(CASE WHEN kind = 'delivery_refund' THEN -amount_cents END), 0) AS del,
+  // a refund Stripe reversed (succeeded, then failed) is booked as a positive *_reversed line and no longer counts as repaid
+  const r = await one(env, `SELECT COALESCE(SUM(CASE WHEN kind IN ('artwork_refund','artwork_refund_reversed') THEN -amount_cents END), 0) AS art, COALESCE(SUM(CASE WHEN kind IN ('delivery_refund','delivery_refund_reversed') THEN -amount_cents END), 0) AS del,
     COALESCE(SUM(CASE WHEN kind = 'commission_refund' THEN -amount_cents END), 0) AS fee, COALESCE(SUM(CASE WHEN kind = 'external_refund' THEN -amount_cents END), 0) AS ext FROM order_ledger WHERE order_id = ?`, orderId);
   return r;
 }
@@ -887,11 +888,56 @@ async function completeRefund(env, actor, rr) {
   return settleAfterRefund(env, actor, o.id);
 }
 async function failRefund(env, rr, re) {
+  const cur = await one(env, 'SELECT * FROM order_refunds WHERE id = ?', rr.id);
+  if (cur && cur.status === 'succeeded') return reverseRefund(env, cur, re);
+  if (cur && cur.status === 'failed') return;   // already recorded
   await run(env, "UPDATE order_refunds SET status = 'failed', error = ?, updated_at = ? WHERE id = ? AND status <> 'succeeded'", String(re.failure_reason || re.status).slice(0, 200), now(), rr.id);
   await run(env, 'UPDATE checkout_orders SET needs_resolution = ?, updated_at = ? WHERE id = ?',
     `refund ${re.id} failed (${re.failure_reason || re.status}): the buyer has NOT been repaid; the artist, as seller, must repay them another way. No commission was returned.`, now(), rr.order_id);
   await event(env, rr.order_id, 'provider', 'refund_failed', null, null, { refund: rr.id, provider_refund: re.id, reason: re.failure_reason || re.status });
   await notify(env, await getOrder(env, rr.order_id), 'refund_failed', `Stripe could not complete a refund on PlotArt order ${(await getOrder(env, rr.order_id)).reference} (${re.failure_reason || re.status}). The buyer has NOT been repaid. The seller now repays the buyer directly and sends PlotArt the confirmation.`);
+}
+/* A refund that Stripe first reported SUCCEEDED and later FAILED (e.g. the card was closed): Stripe returns the money to
+   the artist's balance and the buyer has NOT been repaid. Reconciliation, idempotent per refund:
+     · the refund request becomes failed; the ledger keeps the original refund lines and adds positive *_reversed lines,
+       so the amount counts as unrefunded again (nothing is deleted);
+     · PlotArt's commission share returned for that refund is NOT taken back automatically (an application-fee refund
+       cannot be undone through Stripe). Because it stays booked, a later refund or recorded repayment of the same amount
+       returns no further commission;
+     · the order goes back to its paid state with a flag naming the ONE route to repay the buyer: a new refund through the
+       pilot, or the artist's direct repayment recorded with evidence. Whichever happens first uses up the amount, so the
+       other is refused ("more than remains unrefunded"): the buyer cannot be repaid twice through the pilot. */
+async function reverseRefund(env, rr, re) {
+  const flip = await run(env, "UPDATE order_refunds SET status = 'failed', error = ?, updated_at = ? WHERE id = ? AND status = 'succeeded'",
+    ('reversed by Stripe after succeeding: ' + (re.failure_reason || re.status)).slice(0, 200), now(), rr.id);
+  if (!flip.meta.changes) return;   // another delivery already reversed it
+  const o = await getOrder(env, rr.order_id), ref = rr.provider_refund_id || re.id;
+  await env.DB.batch([
+    ...(rr.artwork_cents ? [ledgerSt(env, o.id, 'artwork_refund_reversed', rr.artwork_cents, ref, `refund failed after succeeding (${re.failure_reason || re.status}): returned to the seller's Stripe balance`)] : []),
+    ...(rr.delivery_cents ? [ledgerSt(env, o.id, 'delivery_refund_reversed', rr.delivery_cents, ref, `refund failed after succeeding (${re.failure_reason || re.status})`)] : []),
+  ]);
+  const tot = await refundTotals(env, o.id), repaid = tot.art + tot.del + tot.ext;
+  const feeBack = rr.fee_refund_id ? rr.commission_refund_cents : 0;
+  const eur = c => `EUR ${(c / 100).toFixed(2)}`;
+  const flag = `refund ${ref} of ${eur(rr.artwork_cents + rr.delivery_cents)} SUCCEEDED and then FAILED (${re.failure_reason || re.status}): Stripe returned the money to the artist's balance and the buyer has NOT been repaid. `
+    + (feeBack ? `PlotArt had already returned ${eur(feeBack)} commission for it; that stays returned, so repaying this amount again returns no further commission. ` : '')
+    + 'Repay the buyer by ONE route only: a new refund through the pilot, OR the artist repays directly and the founder records it with evidence.';
+  const back = o.fulfilment_status === 'delivered' ? 'delivered' : o.fulfilment_status === 'dispatched' ? 'dispatched' : 'paid';
+  const sets = { payment_status: repaid > 0 ? 'partially_refunded' : 'paid', needs_resolution: flag };
+  if (['refunded', 'refund_pending'].includes(o.status) && R.canMove(o.status, back)) await move(env, o, back, 'provider', 'refund_reversed', sets, { refund: rr.id, provider_refund: ref, reason: re.failure_reason || re.status });
+  else { await run(env, 'UPDATE checkout_orders SET payment_status = ?, needs_resolution = ?, updated_at = ? WHERE id = ?', sets.payment_status, flag, now(), o.id); await event(env, o.id, 'provider', 'refund_reversed', o.status, o.status, { refund: rr.id, provider_refund: ref }); }
+  await run(env, "UPDATE artwork_sales SET released_at = NULL, released_reason = NULL WHERE order_id = ? AND released_reason = 'fully refunded'", o.id);   // the buyer still holds the sale
+  await notify(env, await getOrder(env, o.id), 'refund_reversed', `Stripe reversed a refund on PlotArt order ${o.reference} after first confirming it (${re.failure_reason || re.status}). The money is back in the seller's Stripe balance and the buyer has NOT been repaid. Repay the buyer by one route only: a new refund through PlotArt, or a direct repayment by the seller that PlotArt records with evidence.`);
+}
+/* Backstop for missed events: a refund can fail days after succeeding, so recently succeeded refunds are re-read. */
+export const RECHECK_SUCCEEDED_REFUND_DAYS = 14;
+async function recheckSucceededRefunds(env) {
+  const since = new Date(Date.now() - RECHECK_SUCCEEDED_REFUND_DAYS * 864e5).toISOString();
+  let reversed = 0;
+  for (const rr of await all(env, "SELECT r.*, o.provider_account FROM order_refunds r JOIN checkout_orders o ON o.id = r.order_id WHERE r.status = 'succeeded' AND r.provider_refund_id LIKE 're_%' AND r.updated_at >= ? ORDER BY r.updated_at DESC LIMIT 25", since)) {
+    try { const re = await S.getRefund(env, { account: rr.provider_account, id: rr.provider_refund_id }); if (['failed', 'canceled'].includes(re.status)) { await reverseRefund(env, rr, re); reversed++; } } catch { /* next sweep */ }
+  }
+  return reversed;
 }
 async function feeRefund(env, founder, o, { fee, reason, refundId = null, providerRefund = null }) {
   let feeId = o.application_fee_id;
@@ -990,9 +1036,11 @@ export async function sweep(env) {
   }
   let deferred_replayed = 0;
   try { deferred_replayed = await replayDeferred(env); } catch { /* next sweep */ }
+  let refunds_reversed = 0;
+  try { refunds_reversed = await recheckSucceededRefunds(env); } catch { /* next sweep */ }
   let refunds = null;
   try { refunds = await pollPendingRefunds(env); } catch (e) { refunds = { error: String(e.message || e).slice(0, 120) }; }
-  return { reservations_released: released.meta.changes, quotes_expired: expired, deferred_replayed, ...refunds, ...(await retention(env)) };
+  return { reservations_released: released.meta.changes, quotes_expired: expired, deferred_replayed, refunds_reversed, ...refunds, ...(await retention(env)) };
 }
 
 /* Retention (spec "Records and retention"). Each period has a stated basis and a fixed start; nothing is ever deleted

@@ -190,7 +190,7 @@ CREATE TABLE IF NOT EXISTS order_ledger (
   id           TEXT PRIMARY KEY,
   order_id     TEXT NOT NULL REFERENCES checkout_orders(id),
   kind         TEXT NOT NULL CHECK (kind IN ('charge','commission','artist_artwork','delivery_allocation',
-                 'artwork_refund','delivery_refund','commission_refund','dispute','dispute_reinstated','external_refund','adjustment')),
+                 'artwork_refund','delivery_refund','artwork_refund_reversed','delivery_refund_reversed','commission_refund','dispute','dispute_reinstated','external_refund','adjustment')),
   amount_cents INTEGER NOT NULL,
   provider_ref TEXT,
   at           TEXT NOT NULL,

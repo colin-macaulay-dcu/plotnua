@@ -1,8 +1,9 @@
-# PlotArt Buyer Purchase Terms — PA-BPT-2026-11 (DRAFT r3, 16 November 2026)
+# PlotArt Buyer Purchase Terms — PA-BPT-2026-11 (DRAFT r4, 17 November 2026)
 
 **Status: draft for founder review. Not issued. Not shown to any buyer.** Issued only as fingerprinted HTML in
 `agreements/payment-issued/` and installed by an approved migration.
 
+r4 changes (17 Nov 2026): what happens if a confirmed refund is later reversed by Stripe or your card issuer (cl. 7).
 r2 changes: transit insurance stated as included for every pilot shipment (cl. 5); refund timing and what happens if
 a refund is delayed (cl. 7); linked-purchase limit (cl. 4).
 
@@ -30,7 +31,9 @@ a refund is delayed (cl. 7); linked-purchase limit (cl. 4).
 7. **Refunds.** The seller is responsible for refunds; PlotArt will help. Refunds are made to your original card through
    Stripe. If a refund is delayed on the seller's side, we will tell you and keep you informed; your right to be repaid
    does not depend on how the seller's Stripe account is funded. If Stripe cannot complete the refund, the seller repays
-   you directly and we confirm it with you.
+   you directly and we confirm it with you. If a refund we confirmed is later reversed (for example because your card
+   was closed), we tell you; you have not been repaid, and the seller repays you once, either by a new refund or
+   directly, and we confirm it with you.
 8. **Questions and complaints.** hello@plotnua.ie, quoting your order reference. We reply within 14 days.
 9. **Your data.** PlotArt keeps your email address and the order record until the end of the sixth year after your last
    payment or refund (two years after the quote ended if you never paid) for accounting and legal reasons, or longer only

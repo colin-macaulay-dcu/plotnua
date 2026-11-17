@@ -534,6 +534,50 @@ check('T11 gallery publication, versions, publish queue, gallery positions, foun
   ['v', 'pq', 'gp', 'ar', 'aa', 'gaa', 'at', 'el', 'en', 'works'].every(k => JSON.stringify(AFTER[k]) === JSON.stringify(B[k])),
   ['v', 'pq', 'gp', 'ar', 'aa', 'gaa', 'at', 'el', 'en', 'works'].filter(k => JSON.stringify(AFTER[k]) !== JSON.stringify(B[k])));
 check('T11b the only artwork change is the sold mark on works sold through verified payments', (await q("SELECT id FROM artworks WHERE availability='sold' ORDER BY id")).map(x => x.id).join() === 'waold2,wagal1,wagal2'.split(',').sort().join());
+console.log('— a refund that succeeds and later FAILS (reversal, commission already returned, no double repayment)');
+{
+  const orv = await makeOrder('agal', 'wagal3', 'PA-E-261106-GGGGGG', 80000, 5000, 'rv@example.test');
+  await call('POST', `/api/admin/checkout/orders/${orv.id}/send`, FOUNDER, {});
+  await call('POST', `/api/checkout/orders/${orv.id}/approve`, GAL, { quote_version: (await order(orv.id)).quote_version, confirm: ALL });
+  const TV = (await call('POST', `/api/admin/checkout/orders/${orv.id}/issue`, FOUNDER, { days: 1, linked_check_confirmed: true })).j.buyer_link.split('/q/')[1];
+  await pub('POST', `/q/${TV}/pay`, { form: { accept_terms: 'PA-BPT-TEST-01' } });
+  const sV = Object.values(M.sessions).at(-1); pay(sV.id); await hook(evt('checkout.session.completed', M.sessions[sV.id], ACCT));
+  const feesBefore = M.feeRefunds.length;
+  r = await call('POST', `/api/admin/checkout/orders/${orv.id}/refund`, FOUNDER, { artwork_cents: 80000, delivery_cents: 5000, reason: 'Full refund: work returned' });
+  const rv = M.refunds.at(-1);
+  check('RV0 the full refund first SUCCEEDS: buyer booked as repaid, PlotArt returns its full €120 commission, order refunded',
+    r.s === 200 && (await order(orv.id)).status === 'refunded' && M.feeRefunds.length === feesBefore + 1 && M.feeRefunds.at(-1).amount === 12000, { s: (await order(orv.id)).status, fee: M.feeRefunds.at(-1) });
+  // Stripe later reports the same refund as FAILED (as in real test P12: succeeded → failed, expired_or_canceled_card)
+  h = await hook(evt('refund.updated', { ...rv, status: 'failed', failure_reason: 'expired_or_canceled_card' }, ACCT));
+  let OV = await order(orv.id);
+  const rvRow = await db.prepare('SELECT status, error FROM order_refunds WHERE provider_refund_id = ?').bind(rv.id).first();
+  const led = await q('SELECT kind, amount_cents FROM order_ledger WHERE order_id = ? ORDER BY kind', orv.id);
+  check('RV1 the later failure is reconciled: refund failed, ledger keeps the refund and adds reversal lines (+€800, +€50), order back to paid with nothing refunded',
+    h.s === 200 && rvRow.status === 'failed' && /after succeeding/.test(rvRow.error) && OV.status === 'paid' && OV.payment_status === 'paid'
+    && led.some(l => l.kind === 'artwork_refund' && l.amount_cents === -80000) && led.some(l => l.kind === 'artwork_refund_reversed' && l.amount_cents === 80000) && led.some(l => l.kind === 'delivery_refund_reversed' && l.amount_cents === 5000), { OV, rvRow, led });
+  check('RV2 the flag is accurate: buyer NOT repaid, the €120 commission already returned stays returned, repay by ONE route only',
+    /SUCCEEDED and then FAILED/.test(OV.needs_resolution) && /NOT been repaid/.test(OV.needs_resolution) && /EUR 120\.00 commission/.test(OV.needs_resolution) && /ONE route/.test(OV.needs_resolution), OV.needs_resolution);
+  h = await hook(evt('refund.updated', { ...rv, status: 'failed', failure_reason: 'expired_or_canceled_card' }, ACCT));
+  check('RV3 a repeated failure event (or another event id for the same failure) changes nothing', h.s === 200 && (await q("SELECT * FROM order_ledger WHERE order_id = ? AND kind LIKE '%_reversed'", orv.id)).length === 2
+    && (await q("SELECT * FROM order_events WHERE order_id = ? AND action = 'refund_reversed'", orv.id)).length === 1);
+  const feesMid = M.feeRefunds.length, refundsMid = M.refunds.length;
+  r = await call('POST', `/api/admin/checkout/orders/${orv.id}/refund`, FOUNDER, { artwork_cents: 80000, delivery_cents: 5000, reason: 'Retry after reversal' });
+  OV = await order(orv.id);
+  check('RV4 repaying through a NEW Stripe refund works once, and returns NO further commission (it was already returned)',
+    r.s === 200 && M.refunds.length === refundsMid + 1 && M.feeRefunds.length === feesMid && OV.status === 'refunded'
+    && (await db.prepare('SELECT commission_refund_cents FROM order_refunds WHERE provider_refund_id = ?').bind(M.refunds.at(-1).id).first()).commission_refund_cents === 0, { s: r.s, j: r.j && r.j.error, OV: OV.status });
+  r = await call('POST', `/api/admin/checkout/orders/${orv.id}/repaid`, FOUNDER, { artwork_cents: 80000, delivery_cents: 5000, evidence: 'Bank transfer BT-999 on 18 Nov, buyer confirmed by email' });
+  const r2 = await call('POST', `/api/admin/checkout/orders/${orv.id}/refund`, FOUNDER, { artwork_cents: 1, delivery_cents: 0, reason: 'Attempt a third repayment' });
+  check('RV5 after the buyer is repaid, recording a direct repayment or another refund of the same money is refused (no double repayment)',
+    r.s === 409 && /more than remains unrefunded/.test(r.j.error) && r2.s === 409 && M.refunds.length === refundsMid + 1, [r.j, r2.j]);
+  // backstop: the failure event is never delivered; the sweep finds it by re-reading recently succeeded refunds
+  const lastRv = M.refunds.at(-1); lastRv.status = 'failed'; lastRv.failure_reason = 'lost_or_stolen_card';
+  await S.checkoutWorker.scheduled({ cron: '*/15 * * * *' });
+  check('RV6 if the failure event is lost, the sweep re-reads recently succeeded refunds and reconciles the reversal', (await db.prepare('SELECT status FROM order_refunds WHERE provider_refund_id = ?').bind(lastRv.id).first()).status === 'failed'
+    && (await order(orv.id)).status === 'paid' && /SUCCEEDED and then FAILED/.test((await order(orv.id)).needs_resolution));
+  r = await call('POST', `/api/admin/checkout/orders/${orv.id}/repaid`, FOUNDER, { artwork_cents: 80000, delivery_cents: 5000, evidence: 'Bank transfer BT-999 on 18 Nov, buyer confirmed by email' });
+  check('RV7 the artist’s direct repayment can then be recorded once, again with no further commission', r.s === 200 && M.feeRefunds.length === feesMid && (await order(orv.id)).status === 'refunded', r.j && r.j.error);
+}
 console.log('— records outlive the artist’s own records; retention (item 8)');
 const ox = await makeOrder('aold', 'waold3', 'PA-E-261103-DDDDDD', 30000, 2000, 'x@example.test', { ...DELIVERY, covered_value_cents: 30000 });
 await call('POST', `/api/admin/checkout/orders/${ox.id}/send`, FOUNDER, {});

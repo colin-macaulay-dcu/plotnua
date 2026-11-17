@@ -222,7 +222,12 @@ if (PHASES.includes('provider')) {
           { dispute: d.id, amount: d.amount, reason: d.reason, balance_transactions: (full.balance_transactions || []).map(b => ({ amount: b.amount, fee: b.fee })) });
         await stripe('POST', `/v1/disputes/${d.id}`, { evidence: { uncategorized_text: evidence }, submit: 'true' }, ACCOUNT);
         let st = d.status; for (let i = 0; i < 24 && !['won', 'lost'].includes(st); i++) { await sleep(5000); st = (await stripe('GET', `/v1/disputes/${d.id}`, null, ACCOUNT)).j.status; }
+        const closed = (await stripe('GET', `/v1/disputes/${d.id}?expand[]=balance_transactions`, null, ACCOUNT)).j;
         rec('P14-' + want, `dispute closes as ${want} with Stripe’s test evidence`, 'stripe-test-api', st === want ? 'PASS' : 'FAIL', { status: st });
+        // every balance movement on the dispute after closing: received fee, countered fee (submitting evidence counters it) and any reinstatement
+        const bts = (closed.balance_transactions || []).map(b => ({ type: b.type, reporting_category: b.reporting_category, amount: b.amount, fee: b.fee, fee_details: (b.fee_details || []).map(f => ({ type: f.type, description: f.description, amount: f.amount })) }));
+        rec('P15-' + want, `dispute fees actually charged and returned once the dispute closed as ${want} (sandbox measurement, not live pricing)`, 'stripe-test-api', 'INFO',
+          { balance_transactions: bts, net_effect_cents: bts.reduce((a, b) => a + b.amount - b.fee, 0) });
       } catch (e) { rec('P13-' + want, `dispute (${want})`, 'stripe-test-api', 'FAIL', { error: e.message, code: e.code }); }
     }
   }
