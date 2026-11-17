@@ -123,7 +123,8 @@ ALLOWED |= ARTIST_FILES
 # Artist opportunity lists (16 Nov 2026): the opportunities page and the lists' stylesheet (plotart_opportunities)
 OPP_FILES = {"opportunities/index.html", "commissions/index.html", "assets/plotart-opportunities.css"}
 ALLOWED |= OPP_FILES
-ALLOWED |= {"assets/plotart-living.css"}   # the Living Gallery page refinement (17 Nov 2026)
+ALLOWED |= {"assets/plotart-living.css"}
+ALLOWED |= {"for-artists.html", "assets/plotart-for-artists.css"}   # the For artists page (17 Nov 2026)   # the Living Gallery page refinement (17 Nov 2026)
 # Art for Hire (Stage 3B-6): the page, its two assets and the fourth gallery tab exist ONLY when the founder switches
 # art_for_hire_page on (release approval). Off (or absent): no hire file may exist and no page may link to it or carry the tab.
 HIRE_ON = launch.get("art_for_hire_page") is True
@@ -257,6 +258,9 @@ for name in PAGES:
     ep_ok = s.replace('data-endpoint="%s"' % ENDPOINT, "").replace('data-image-endpoint="%s/image"' % ENDPOINT, "") if ENDPOINT else s
     if name == "join.html" and GA_OPEN and GA_EP:
         ep_ok = ep_ok.replace('data-endpoint="%s"' % GA_EP, "", 1).replace('data-image-endpoint="%s/image"' % GA_EP, "", 1)
+    # The one approved plain LINK to a workers.dev address (founder decision 17 Nov 2026): the PlotArt Studio, behind its own
+    # sign-in, from the footer and the For artists page. Exactly this href, never a form or data endpoint.
+    ep_ok = ep_ok.replace('href="https://plotart-studio.colin-a41.workers.dev/"', "")
     need(not re.search(r"workers\.dev|airtable", ep_ok), "L7 %s references a live endpoint outside the approved form" % name)
 
 home = open(os.path.join(PA, "index.html"), encoding="utf-8").read() if os.path.exists(os.path.join(PA, "index.html")) else ""

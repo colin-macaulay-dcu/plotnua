@@ -17,6 +17,12 @@ HIRE_NAV = False
 HIRE_PILL = ("hire", "art-for-hire/", "Art for Hire", "nav_art_for_hire")
 
 
+# The existing PlotArt Studio (Cloudflare Access one-time code sign-in). Linked from the footer and the For artists page
+# (founder decision 17 Nov 2026); the address itself is public, the Studio stays behind its sign-in.
+STUDIO = "https://plotart-studio.colin-a41.workers.dev/"
+FOOT_ARTISTS = '<li><a href="%s" data-pa-track="footer_artist_studio">Artist Studio</a></li><li><a href="{R}for-artists.html" data-pa-track="footer_for_artists">For artists</a></li>' % STUDIO
+
+
 def artist_page(path, title, desc, body, scripts=("plotart.js",), current="vg", hire_nav=None, fine=ARTIST_FINE, styles=()):
     hire_nav = HIRE_NAV if hire_nav is None else hire_nav
     depth = path.count("/")
@@ -47,7 +53,7 @@ def artist_page(path, title, desc, body, scripts=("plotart.js",), current="vg", 
     sc = "".join('<script src="%sassets/%s" defer></script>' % (R, s) for s in scripts)
     footlinks = ('<li><a href="{R}gallery/">Artists’ Gallery</a></li><li><a href="{R}mobile-gallery/">Mobile Gallery</a></li><li><a href="{R}living-gallery.html">Living Gallery</a></li>'
                  + ('<li><a href="{R}art-for-hire/">Art for Hire</a></li>' if hire_nav else '') +
-                 '<li><a href="{R}about.html">About PlotArt</a></li><li><a href="{R}founding-25.html">The Founding 25</a></li>').format(R=R)
+                 '<li><a href="{R}about.html">About PlotArt</a></li><li><a href="{R}founding-25.html">The Founding 25</a></li>' + FOOT_ARTISTS).format(R=R)
     robots = SEO.head(path, title, desc)
     return path, """<!DOCTYPE html>
 <html lang="en-IE" class="no-js">
