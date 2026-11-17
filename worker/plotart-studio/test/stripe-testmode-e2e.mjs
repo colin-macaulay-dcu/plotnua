@@ -31,7 +31,7 @@ export async function e2e({ rec, KEY, ACCOUNT, RUN, port, whsec, stripe, sleep }
     await db.prepare("INSERT INTO gallery_agreement_documents (doc_id, kind, title, text_status, html_sha256, pdf_sha256, effective_at, created_at) VALUES ('PA-GAA-2026-11','gallery_artist_agreement','t','fixed',?,?,'2018-01-01T00:00:00Z',?)").bind(FAKE, FAKE, ago(0)).run();
     await db.prepare(`INSERT INTO gallery_agreement_acceptances (id, event_id, artist_id, doc_id, doc_sha256, pdf_sha256, accepted_at, account_email, display_name, method, statement, created_at) VALUES ('gaa1','ev1','agal','PA-GAA-2026-11',?,?,?,?, 'E2E','studio_checkbox','test',?)`).bind(FAKE, FAKE, ago(20), GAL, ago(20)).run();
     await db.prepare("INSERT INTO artist_terms (artist_id, track, commission_bp, set_by, created_at, updated_at) VALUES ('agal','gallery_artist',1500,?,?,?)").bind(FOUNDER, ago(20), ago(20)).run();
-    for (const [id, ref] of [['l1', 'PA-E-261116-E2E001'], ['l2', 'PA-E-261116-E2E002'], ['l3', 'PA-E-261116-E2E003']])
+    for (const [id, ref] of [['l1', 'PA-E-261116-E2E001'], ['l2', 'PA-E-261116-E2E002'], ['l3', 'PA-E-261116-E2E003'], ['l4', 'PA-E-261116-E2E004'], ['l5', 'PA-E-261116-E2E005']])
       await db.prepare(`INSERT INTO enquiry_log (id, reference, artist_id, route, introduced_at, founding, logged_by, logged_at) VALUES (?,?, 'agal', 'relay', ?, 0, 'relay', ?)`).bind(id, ref, ago(5), ago(5)).run();
     for (const [id, t] of Object.entries(terms)) await db.prepare('INSERT INTO payment_terms (doc_id, kind, title, html_sha256, effective_at, created_at) VALUES (?,?,?,?,?,?)').bind(id, t.kind, t.title, t.html_sha256, '2018-01-01T00:00:00Z', ago(0)).run();
     const add = (await call('GET', '/api/checkout', GAL)).j.addendum;
@@ -49,6 +49,7 @@ export async function e2e({ rec, KEY, ACCOUNT, RUN, port, whsec, stripe, sleep }
     const ALL = { available: true, location: true, condition: true, framing: true, dimensions: true, packing_and_handover: true };
     async function quote(work, ref, artwork = 100000, delivery = 7500) {
       const c = await call('POST', '/api/admin/checkout/orders', FOUNDER, { artist_id: 'agal', artwork_id: work, enquiry_ref: ref, buyer_email: `buyer+${RUN}@plotnua.invalid` });
+      if (c.s !== 200 || !c.j.order) throw new Error(`test setup: order for ${work} / ${ref} not created (${c.s} ${JSON.stringify(c.j).slice(0, 200)})`);
       const id = c.j.order.id;
       await call('PUT', `/api/admin/checkout/orders/${id}`, FOUNDER, { artwork_cents: artwork, delivery_cents: delivery, delivery: { ...DELIVERY, covered_value_cents: artwork } });
       await call('POST', `/api/admin/checkout/orders/${id}/send`, FOUNDER, {});
