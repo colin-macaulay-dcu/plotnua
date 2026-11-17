@@ -644,3 +644,18 @@ permissions reference, which the restricted-key editor groups by resource:
 - **A refund that succeeds and later fails** (`reverseRefund`). The refund request becomes failed. The ledger keeps the refund lines and adds positive `artwork_refund_reversed` / `delivery_refund_reversed` lines, so the amount counts as unrefunded again. The order returns to its paid state, with a flag saying the buyer was not repaid and that they must be repaid by ONE route only. PlotArt's commission share already returned stays returned, so the second repayment returns no further commission. A later Stripe refund or a recorded direct repayment is accepted once; the other is refused ("more than remains unrefunded"). The sweep re-reads refunds that succeeded in the last 14 days in case the failure event is missed.
 - **Ledger kinds.** Migration 0016 (not applied anywhere) gains `artwork_refund_reversed` and `delivery_refund_reversed`. `refunded → paid/dispatched/delivered` is allowed only for this reversal.
 - **Fully unfunded refunds** (the available and incoming balance together are below the refund). Not reproduced in test mode: draining the test account would need a payout, and the key has no payout permission (by design). Refunding every earlier test charge would corrupt the shared test account used by the other checks. What is verified: Stripe completed refunds above the available balance at once, funding them from incoming payments, and once took the pending balance negative (−€73.83).
+
+## Fee model B (founder decision, 17 November 2026)
+
+- **Scope.** Only commission-bearing orders go through the pilot. Orders with no commission, including every Founding Enquiry, are refused at artist approval, issue and checkout, and stay on direct payment.
+- **What PlotArt reimburses.** On each pilot payment, PlotArt reimburses Stripe's actual processing fee and the VAT Stripe charged on it, for the whole payment including delivery. The amounts are read from the charge's balance transaction (`fee_details`: `stripe_fee` and `tax`). They are paid as a partial application-fee refund (`POST /v1/application_fees/{id}/refunds`, metadata `plotart_kind=processing_reimbursement`).
+- **When it runs.** Reconciliation runs at payment completion, on every sweep, and from the founder route `POST /api/admin/checkout/orders/:id/processing`.
+- **Idempotency.** The ledger is unique on `(kind, provider_ref)`. The idempotency key is `plotart-proc-{order}-{cost}-{already reimbursed}`.
+- **One pot.** The reimbursement and commission refunds (PA-GAA 9) come from the same application fee. Each is capped at what is left of it, and any excess is a shortfall.
+- **Shortfalls.** A shortfall is recorded per item in `checkout_orders.processing` and flagged in `needs_resolution`. PlotArt pays it directly and records it with `POST …/shortfallpaid`, which books `processing_shortfall_paid`.
+- **Commission refunds.** Commission shortfalls count as settled in `refundTotals`, so they are never owed twice.
+- **Not absorbed:** dispute fees, add-on fees (flagged as excluded), payout fees.
+- **Statements.** `statement` is returned on every order view and shown in Studio.
+- **Ledger kinds added:** `processing_fee`, `processing_reimbursement`, `processing_shortfall_paid`.
+- **Column added:** `checkout_orders.processing` (JSON).
+- **One open quote per work.** `requireNoOtherOpenQuote` refuses a second quote while another for the same work is quoted, open at checkout or failed and unexpired.
