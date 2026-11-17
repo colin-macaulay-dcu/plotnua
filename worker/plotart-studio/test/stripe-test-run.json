@@ -1,11 +1,12 @@
 {
   "_note": "Changing this file on the pilot branch requests a run of .github/workflows/plotart-checkout-stripe-test.yml (Stripe TEST mode only; waits for the founder's approval on the checkout-test environment). Nothing is deployed.",
-  "requested": "2026-11-17T21:00:00Z",
+  "requested": "2026-11-17T21:15:00Z",
   "phases": [
-    "unfunded"
+    "unfunded",
+    "e2e"
   ],
-  "reason": "Run 21: generate the short-lived Stripe TEST onboarding link for the SECOND sandbox account acct_1Uct3vHx1OnYJa8H (unfunded-refund test only). Approve only when the founder is ready to complete onboarding at once. No other checks.",
+  "reason": "Run 22: (1) verify the second sandbox account acct_1Uct3vHx1OnYJa8H with Stripe after the founder's onboarding and run the FULLY UNFUNDED refund test (balances, refund status); no new onboarding link is generated. (2) e2e including buyer refund notices (E18) and, if the secret CHECKOUT_TEST_STRIPE_RUNTIME_KEY exists, the narrower runtime key on the public Worker (E17). Approve only after onboarding is complete.",
   "reuse_account": "acct_1UclJXHx1Olx8cdw",
   "unfunded_account": "acct_1Uct3vHx1OnYJa8H",
-  "unfunded_link": true
+  "unfunded_link": false
 }
