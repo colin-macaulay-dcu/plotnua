@@ -128,3 +128,5 @@ None of these is taken as approved. Each recommendation is mine.
   - **E17c FAIL:** creating a refund on a connected account was not denied (400 missing parameter). The key may hold a refund-write permission in connected accounts; this is for the founder to check.
   - Not exercised: Disputes Read, and session expiry from the public Worker.
 - Details: `STRIPE-ACCESS-PROPOSAL.md` §5.
+
+- **Run 31 (E17e) closes E17c.** Only the runtime key tried a valid €1.00 refund of a fresh paid charge → **403 `more_permissions_required`** ("Enabling Charges and Refunds Write ('charge_write')…"). The retry was also 403. No refund exists on the charge. **Restriction confirmed.** The run 30 400 was Stripe checking the parameters before permissions.
