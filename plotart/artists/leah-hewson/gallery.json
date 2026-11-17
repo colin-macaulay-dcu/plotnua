@@ -6,6 +6,10 @@
   "founding": true,
   "instagram": "leahhewson",
   "medium": "painting",
+  "open_to": [
+   "exhibitions",
+   "commissions"
+  ],
   "portrait": {
    "alt": "Leah Hewson sitting on a chair in front of some of her paintings",
    "aspect": 0.78351,
@@ -94,14 +98,14 @@
   }
  ],
  "publication": {
-  "approved_at": "2026-11-05T15:02:57.256Z",
+  "approved_at": "2026-11-17T15:09:52.776Z",
   "approved_by": "founder",
   "licence_accepted_at": "2026-11-05T14:24:00.541Z",
   "licence_version": "PA-GPIL-2026-10-29",
   "permission_ref": "PA-PERM-ad22762hgg2",
   "state": "approved",
   "test_note": null,
-  "version": "v2"
+  "version": "v3"
  },
  "schema": "plotnua.plotart.gallery-package.v1",
  "works": [
