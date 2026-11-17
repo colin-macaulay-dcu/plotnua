@@ -391,7 +391,7 @@ def gallery_page(s):
 LB, LE = "<!-- pa-artist-apply-living:begin -->", "<!-- pa-artist-apply-living:end -->"
 # 17 Nov 2026 (founder decision): the two links became the PlotArt buttons: outlined secondary, off-white primary.
 L_ANCHOR = '<a class="pa-btn pa-btn--ghost" href="gallery/" data-pa-track="living_artists_gallery">Explore the Artists’ Gallery</a>'
-L_LINK = '<a class="pa-btn pa-btn--solid" href="join.html#your-gallery" data-pa-track="living_artists_join">Apply to join PlotArt</a>'
+L_LINK = '<a class="pa-btn pa-btn--solid" href="join.html#apply" data-pa-track="living_artists_join">Apply to join PlotArt</a>'   # straight to the form (17 Nov 2026)
 
 
 def living_page(s):
