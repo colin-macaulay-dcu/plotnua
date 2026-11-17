@@ -1,6 +1,6 @@
-# PlotArt Payment Pilot Addendum — PA-PAY-2026-11 (DRAFT r7, 17 November 2026)
+# PlotArt Payment Pilot Addendum — PA-PAY-2026-11 (DRAFT r8, 17 November 2026)
 
-**Status: unissued draft for founder and professional review.** It has not been accepted by any artist and is not installed in PlotArt Studio. It may be offered to artists only after it has been approved, issued as fingerprinted HTML, and installed by an approved migration. Bracketed text marks drafting alternatives or details to be completed before issue. Review notes, founder decisions and evidence are kept in `PA-PAY-PA-BPT-r7-REVIEW-NOTES.md`, not in this text.
+**Status: unissued draft for founder and professional review.** It has not been accepted by any artist and is not installed in PlotArt Studio. It may be offered to artists only after it has been approved, issued as fingerprinted HTML, and installed by an approved migration. Bracketed text marks drafting alternatives or details to be completed before issue. Review notes, founder decisions and evidence are kept in `PA-PAY-PA-BPT-r8-REVIEW-NOTES.md`, not in this text.
 
 ## 0. How this addendum relates to the artist's agreement
 
@@ -202,13 +202,13 @@ If the buyer cancels for a change of mind and this information was given, the bu
   (a) complete the refund at once by drawing on payments not yet available to the artist, which can leave the artist's Stripe balance negative; or
   (b) hold the refund as pending until the balance can cover it, debit the artist's bank account where Stripe's terms allow, and cancel the refund if it is still pending after 45 days.
 [To be confirmed before issue from the pilot's unfunded-refund test.]
-A pending refund has not been completed: the buyer has not been repaid until Stripe completes it. PlotArt tells the artist when it becomes aware that a refund is pending [and tells the buyer, once buyer notifications are in place]. The artist funds the refund in one of these ways:
+A pending refund has not been completed: the buyer has not been repaid until Stripe completes it. PlotArt tells the artist and the buyer when it becomes aware that a refund is pending, has failed (clause 7.5) or has been reversed (clause 7.6) [by email, once PlotArt's email sending is in place; until then, the artist in PlotArt Studio and the buyer on their quote page]. The artist funds the refund in one of these ways:
   (i) let Stripe complete it from new sales or by debiting the linked bank account;
   (ii) add funds to their Stripe balance;
   (iii) only after Stripe has cancelled the refund, repay the buyer directly and send PlotArt the confirmation.
 The artist must not repay the buyer outside Stripe while a Stripe refund is still pending, because the buyer would then be repaid twice. The artist remains responsible for the buyer being repaid within the legal time limit (clause 7.3), so should fund a pending refund promptly.
 
-7.6 **A refund Stripe reverses after confirming it.** Rarely, a refund that Stripe first confirmed fails later, for example because the buyer's card was closed. The money then returns to the artist's Stripe balance and the buyer has not been repaid. PlotArt tells the artist and the buyer. The artist repays the buyer once, by one route only: a new refund through PlotArt, or a direct repayment confirmed to PlotArt with evidence.
+7.6 **A refund Stripe reverses after confirming it.** Rarely, a refund that Stripe first confirmed fails later, for example because the buyer's card was closed. The money then returns to the artist's Stripe balance and the buyer has not been repaid. PlotArt tells the artist and the buyer, as in clause 7.5. The artist repays the buyer once, by one route only: a new refund through PlotArt, or a direct repayment confirmed to PlotArt with evidence.
 
 7.7 **Commission when a buyer is refunded.** PlotArt returns commission as the artist's agreement requires (PA-GAA cl. 9):
   (a) in full for a full refund;
@@ -272,4 +272,4 @@ The bank processes them under its own terms and privacy notice. PlotArt's own pi
 No test-mode acceptance or account becomes a live one.
 
 ---
-PlotArt · PlotNua, operated by Colin Macaulay (CRO business name no. 794392) · hello@plotnua.ie · DRAFT r7, not issued.
+PlotArt · PlotNua, operated by Colin Macaulay (CRO business name no. 794392) · hello@plotnua.ie · DRAFT r8, not issued.

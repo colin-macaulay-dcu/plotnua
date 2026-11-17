@@ -1,6 +1,6 @@
-# PlotArt Buyer Purchase Terms — PA-BPT-2026-11 (DRAFT r7, 17 November 2026)
+# PlotArt Buyer Purchase Terms — PA-BPT-2026-11 (DRAFT r8, 17 November 2026)
 
-**Status: unissued draft for founder and professional review. Not shown to any buyer.** It will be issued only as fingerprinted HTML and installed by an approved migration. Text in {braces} is filled in from each quote. Review notes are kept separately in `PA-PAY-PA-BPT-r7-REVIEW-NOTES.md`.
+**Status: unissued draft for founder and professional review. Not shown to any buyer.** It will be issued only as fingerprinted HTML and installed by an approved migration. Text in {braces} is filled in from each quote. Review notes are kept separately in `PA-PAY-PA-BPT-r8-REVIEW-NOTES.md`.
 
 ## 1. Who you are buying from
 
@@ -92,7 +92,7 @@ This section applies if you are a consumer buying from a seller who is a trader 
 
 8.3 **If Stripe cannot complete a refund,** or reverses one it first confirmed (for example because your card was closed), you have not been repaid. The seller then repays you once, either by a new refund through Stripe or directly, for example by bank transfer, and PlotArt confirms it with you.
 
-8.4 [Once buyer notifications are in place:] PlotArt tells you when it becomes aware that a refund is pending, has failed or has been reversed.
+8.4 PlotArt tells you when it becomes aware that a refund is pending, has failed or has been reversed. The notice appears on your quote page [and is emailed to you, once PlotArt's email sending is in place].
 
 ## 9. Your data
 
@@ -134,4 +134,4 @@ Date
 [*] Delete as appropriate.
 
 ---
-DRAFT r7, not issued.
+DRAFT r8, not issued.
