@@ -18,7 +18,7 @@ MAN = os.path.join(ROOT, "atlas-tools", "release", "plotart-launch-manifest.json
 results = []
 sys.path.insert(0, os.path.join(ROOT, "atlas-tools"))
 import plotart_opportunities as OPP   # noqa: E402
-import plotart_homepage as HOME   # noqa: E402
+import plotart_featured as FEAT   # noqa: E402
 
 
 def pin(man, site, f):
@@ -29,8 +29,11 @@ def pin(man, site, f):
     man["files"][f] = hashlib.sha256(open(p, "rb").read()).hexdigest()
     if f in man.get("outside_opportunity_lists", {}) and f != "art-for-hire/index.html":
         man["outside_opportunity_lists"][f] = hashlib.sha256(OPP.outside(open(p, encoding="utf-8").read()).encode()).hexdigest()
-    if f in man.get("outside_home_featured", {}):        # the homepage featured artworks region (17 Nov 2026)
-        man["outside_home_featured"][f] = hashlib.sha256(HOME.outside(open(p, encoding="utf-8").read()).encode()).hexdigest()
+    if f in man.get("outside_grid", {}):                 # the Artists' Gallery: outside its collection AND Featured Artists regions
+        raw = open(p, "rb").read()
+        a, b = raw.find(b"<!-- pa-vg-collection:begin -->"), raw.find(b"<!-- pa-vg-collection:end -->")
+        raw = raw[:a] + b"<!-- pa-vg-collection:begin --><!-- collection -->" + raw[b:]
+        man["outside_grid"][f] = hashlib.sha256(FEAT.outside(raw.decode()).encode()).hexdigest()
 
 
 def check(name, ok, detail=""):

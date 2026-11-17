@@ -15,7 +15,7 @@ import * as GAR from './gallery-application-review.js';
 import { REVIEW_JS } from './application-review-ui.js';
 import * as H from './hire.js';
 import * as O from './opportunities.js';   // Opportunities & delivery (development 13 Nov 2026): expressions of interest only
-import * as HP from './homepage.js';   // Homepage curation (development 17 Nov 2026; migration 0016): founder-only
+import * as HP from './featured.js';   // Featured Artists in the Artists' Gallery (17 Nov 2026; was Homepage curation; migration 0016 unchanged): founder-only
 import { artistBody, artworkBody, previewPage, shown } from './render.js';
 import * as A from './assets.js';
 import { send } from './mailer.js';
@@ -1187,7 +1187,9 @@ async function route(req, env) {
     if (!env.PIPELINE_TOKEN || req.headers.get('Authorization') !== `Bearer ${env.PIPELINE_TOKEN}`) return json({ ok: false }, 401);
     if (p === '/api/pipeline/queue' && m === 'GET') return json({ ok: true, items: await all(env, "SELECT * FROM publish_queue WHERE status='ready' ORDER BY created_at") });
     if (p === '/api/pipeline/gallery-order' && m === 'GET') return json({ ok: true, ...(await pipelineOrder(env)) });
-    if (p === '/api/pipeline/homepage' && m === 'GET') return json({ ok: true, ...(await HP.pipeline(env, VISIBLE_SQL)) });   // gallery address + artwork id only
+    if (p === '/api/pipeline/featured-artists' && m === 'GET') return json({ ok: true, ...(await HP.pipeline(env, VISIBLE_SQL)) });   // gallery address + artwork id only
+    // the earlier homepage route, kept only so a publisher from before this release keeps working (it now receives artists only)
+    if (p === '/api/pipeline/homepage' && m === 'GET') { const r = await HP.pipeline(env, VISIBLE_SQL); return json({ ok: true, ...r, items: r.items.map(i => ({ kind: 'artist', ...i })) }); }
     if (p === '/api/pipeline/ideas' && m === 'GET') return json({ ok: true, ...(await pipelineIdeas(env)) });   // Idea Board: approved, public fields only
     if (p === '/api/pipeline/garden' && m === 'GET') return json({ ok: true, ...(await pipelineGarden(env)) });   // Borrowed Garden noticeboard: approved, public fields only
     if (p === '/api/pipeline/hire-catalogue' && m === 'GET') {   // Art for Hire: separate from the gallery export; listed works only
@@ -1278,14 +1280,15 @@ async function route(req, env) {
     if (p === '/admin/leaving') return html(A.ADMIN_HTML);
     if (p === '/admin/hire') return html(A.ADMIN_HTML);
     if (p === '/admin/opportunities') return html(A.ADMIN_HTML);
-    if (p === '/admin/homepage') return html(A.ADMIN_HTML);
-    // Homepage curation: founder-only; writes homepage_features and the audit only; saving starts the publisher when allowed
-    if (p === '/api/admin/homepage' && m === 'GET') return json({ ok: true, ...(await HP.view(env, VISIBLE_SQL)) });
-    if (p === '/api/admin/homepage' && m === 'PUT') {
+    if (p === '/admin/featured') return html(A.ADMIN_HTML);
+    if (p === '/admin/homepage') return Response.redirect(new URL('/admin/featured', req.url).toString(), 302);   // the tab's earlier address
+    // Featured Artists: founder-only; writes homepage_features and the audit only; saving starts the publisher when allowed
+    if (p === '/api/admin/featured' && m === 'GET') return json({ ok: true, ...(await HP.view(env, VISIBLE_SQL)) });
+    if (p === '/api/admin/featured' && m === 'PUT') {
       const r = await HP.save(env, me.email, await req.json().catch(() => null), VISIBLE_SQL);
       return json({ ok: true, ...r, publish: r.changed ? await requestGalleryPublish(env) : 'none', ...(await HP.view(env, VISIBLE_SQL)) });
     }
-    if ((mm = p.match(/^\/api\/admin\/homepage\/image\/(i[0-9a-z]+)$/)) && m === 'GET') {
+    if ((mm = p.match(/^\/api\/admin\/featured\/image\/(i[0-9a-z]+)$/)) && m === 'GET') {
       const img = await HP.previewable(env, mm[1], VISIBLE_SQL);
       return img ? previewImage(env, img) : res('Not found', 'text/plain', 404);
     }

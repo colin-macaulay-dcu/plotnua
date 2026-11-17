@@ -1,6 +1,6 @@
-// LOCAL PREVIEW ONLY · the Review Desk Homepage view, filled with the PUBLISHED PlotArt galleries (public data read from
+// LOCAL PREVIEW ONLY · the Review Desk Featured Artists view, filled with the PUBLISHED PlotArt galleries (public data read from
 // plotart/artists/*/gallery.json and their published 600px images). Runs the Studio locally (Miniflare); touches nothing live.
-//   node test/preview-homepage-desk.mjs OUT.png
+//   node test/preview-featured-desk.mjs OUT.png
 import { readFileSync, readdirSync } from 'node:fs';
 import { start, token, FOUNDER } from './local.mjs';
 import { snapshot } from '../src/lib.js';
@@ -11,8 +11,8 @@ const ids = {};
 for (const slug of readdirSync(SITE).sort()) {
   let p; try { p = JSON.parse(readFileSync(SITE + slug + '/gallery.json', 'utf8')); } catch { continue; }
   const aid = 'a' + slug.replace(/-/g, '').slice(0, 20); ids[slug] = aid;
-  await db.prepare(`INSERT INTO artists (id, slug, email, display_name, founding, practice, account_status, first_published_at, created_at, updated_at)
-    VALUES (?,?,?,?,1,?,'active',?,?,?)`).bind(aid, slug, slug + '@preview.invalid', p.artist.display_name, p.artist.practice || null, T, T, T).run();
+  await db.prepare(`INSERT INTO artists (id, slug, email, display_name, founding, practice, bio, account_status, first_published_at, created_at, updated_at)
+    VALUES (?,?,?,?,1,?,?,'active',?,?,?)`).bind(aid, slug, slug + '@preview.invalid', p.artist.display_name, p.artist.practice || null, p.artist.bio || null, T, T, T).run();
   let n = 0;
   for (const w of p.works) {
     n++; const im = (w.images || []).find(i => i.role === 'main'); if (!im) continue;
@@ -28,10 +28,13 @@ for (const slug of readdirSync(SITE).sort()) {
   await db.prepare("INSERT INTO versions (artist_id, version, snapshot, source, created_at) VALUES (?,1,?,'preview',?)").bind(aid, JSON.stringify(snapshot(a, ws, is)), T).run();
   await db.prepare("INSERT INTO publish_queue (id, artist_id, version, kind, status, created_at, updated_at) VALUES (?,?,1,'reviewed','published',?,?)").bind('q' + aid, aid, T, T).run();
 }
-const SEL = [['karen-ebbs', 'wxurdauu8yk'], ['ciaran-mccoy', 'w1yt3pkcsxk'], ['leah-hewson', 'w45csc49r34'], ['daniel-chester', 'wychp9cm2em'], ['anna-marie-savage', 'wx8gh81e5bu'],
-  ['nessa-mccormack', 'w6stt966ksq', 'artist']];   // the last: Nessa McCormack featured as an artist, shown with the work chosen for her
-const r = await mf.dispatchFetch(url + '/api/admin/homepage', { method: 'PUT', headers: { 'X-Studio': '1', 'Content-Type': 'application/json', 'Cf-Access-Jwt-Assertion': token(FOUNDER) },
-  body: JSON.stringify({ items: SEL.map(([s, w, k]) => ({ kind: k || 'artwork', artist_id: ids[s], artwork_id: w })) }) });
+// the founder's current homepage choices (as plotart/index.html showed them before this change), stored as migration 0016
+// holds them: four artists and two single artworks (kind 'artwork'), which the Featured Artists tab reads as their artists
+const SEL = [['leah-hewson', 'wxcp1v5y210', 'artist'], ['ciaran-mccoy', 'w2j298wac6v', 'artist'], ['mark-kavanagh-rasher', 'wxf94pphfgy', 'artist'],
+  ['fintan-whelan', 'wi2ggh2x2rt', 'artwork'], ['anna-marie-savage', 'wx8gh81e5bu', 'artwork'], ['daniel-chester', 'wfhtcyurvgf', 'artist']];
+let n0 = 0;
+for (const [s, w, k] of SEL) await db.prepare('INSERT INTO homepage_features (position, kind, artist_id, artwork_id, updated_at) VALUES (?,?,?,?,?)').bind(++n0, k, ids[s], w, T).run();
+const r = { status: 'seeded' };
 console.log('saved', r.status);
 const { chromium } = await import('playwright');
 const b = await chromium.launch();
@@ -39,16 +42,16 @@ const OUT = process.argv[2].replace(/\.png$/, '');
 const overflow = [];
 for (const [w, h, tag] of [[1360, 900, 'desktop'], [820, 1180, 'tablet'], [390, 844, 'mobile']]) {
   const ctx = await b.newContext({ viewport: { width: w, height: h }, deviceScaleFactor: 2, extraHTTPHeaders: { 'Cf-Access-Jwt-Assertion': token(FOUNDER, { exp: 3600 }) } });
-  const pg = await ctx.newPage(); await pg.goto(url + '/admin/homepage');
-  await pg.waitForSelector('.st-hp-card'); await pg.waitForTimeout(1500);
+  const pg = await ctx.newPage(); await pg.goto(url + '/admin/featured');
+  await pg.waitForSelector('.st-fa-card'); await pg.waitForTimeout(1500);
   await pg.evaluate(() => document.querySelectorAll('.st-top, header, .st-go-bar').forEach(n => { n.style.position = 'static'; }));
   const o = await pg.evaluate(() => { const g = document.querySelector('.st-hp-grid'); return { page: document.documentElement.scrollWidth - document.documentElement.clientWidth, grid: g.scrollWidth - g.clientWidth,
     cols: getComputedStyle(g).gridTemplateColumns.split(' ').length, cards: g.children.length }; });
   overflow.push({ tag, ...o });
-  const sec = pg.locator('.st-card').first();
+  const sec = pg.locator('.st-card:has(.st-fa-grid)');
   const box = await sec.boundingBox();
   await pg.screenshot({ path: `${OUT}-${tag}.png`, fullPage: true, clip: { x: 0, y: 0, width: w, height: box.y + box.height + 24 } });
-  if (tag === 'desktop') {   // the artwork chooser, opened from the featured artist's "Change artwork"
+  if (tag === 'desktop') {   // the artwork chooser, opened from a featured artist's "Change artwork"
     await pg.click('[data-change="5"]'); await pg.waitForTimeout(900);
     await pg.evaluate(() => document.querySelectorAll('.st-go-bar').forEach(n => { n.style.position = 'static'; }));
     const gb = await pg.evaluate(() => { const r = document.querySelector('.st-hp-gal--choosing').getBoundingClientRect(); return { y: r.top + scrollY, h: r.height }; });

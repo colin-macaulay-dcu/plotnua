@@ -369,7 +369,7 @@ def artist_index(pkgs):
 
 
 def vg_collection(pkgs, spaces=25, layout=None):
-    """Everything between VG_BEGIN and VG_END on the Virtual Gallery page: the open-count line, the wall of open
+    """Everything between VG_BEGIN and VG_END on the Virtual Gallery page: the wall of open
     galleries (in position order, then any without a position) and the index of the twenty-five positions.
     Shared by the production content pipeline (plotart-gallery-publish.py)."""
     positions, extra = vg_positions(pkgs, spaces, layout)
@@ -380,8 +380,10 @@ def vg_collection(pkgs, spaces=25, layout=None):
     line = "".join('<li class="is-%s"></li>' % st for _, st, _ in positions)
     opened = len(works)
     hang = ('\n  <ol class="pa-vgc-hang n-%s" aria-label="Open galleries">%s\n  </ol>' % (min(opened, 3), "".join(works))) if works else ""
-    return """%s
-  <p class="pa-vgc-count">%d of %d galleries open</p>%s
+    # The "N of 25 galleries open" counter was removed with the twenty-five-gallery framing (founder brief 17 Nov 2026,
+    # Featured Artists in the Artists' Gallery): every published artist is in the collection; the index below still
+    # records the twenty-five founding positions.
+    return """%s%s
   %s
   <div class="pa-vgc-index" role="region" aria-labelledby="vgIdxH">
     <h3 id="vgIdxH">Founding positions</h3>
@@ -391,7 +393,7 @@ def vg_collection(pkgs, spaces=25, layout=None):
     <ol class="pa-vgc-plan" aria-label="The twenty-five positions">%s
     </ol>
   </div>
-  %s""" % (VG_BEGIN, opened, spaces, hang, artist_index(pkgs), line, key, "".join(_vg_pos(n, st, p) for n, st, p in positions), VG_END)
+  %s""" % (VG_BEGIN, hang, artist_index(pkgs), line, key, "".join(_vg_pos(n, st, p) for n, st, p in positions), VG_END)
 
 
 def vg_region(html_text):

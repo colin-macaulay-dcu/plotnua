@@ -29,7 +29,7 @@ import plotart_shell as S  # noqa: E402
 import plotart_seo as SEO  # noqa: E402
 import plotart_search_content as C  # noqa: E402
 import plotart_opportunities as OPP  # noqa: E402  (artist opportunity lists, 16 Nov 2026)
-import plotart_homepage as HOME  # noqa: E402  (homepage featured artworks, 17 Nov 2026)
+import plotart_featured as FEAT  # noqa: E402  (Featured Artists in the Artists' Gallery, 17 Nov 2026; was the homepage)
 
 arg = lambda k: sys.argv[sys.argv.index(k) + 1] if k in sys.argv else None
 STUDIO, TOKEN = arg("--studio"), arg("--token")
@@ -233,12 +233,12 @@ def main():
                 sm.write_text(SEO.update_sitemap(sm.read_text(), published(), SEO.switches()))
                 C.refresh(ROOT, published())
                 OPP.refresh(ROOT, published())     # the opportunity lists: only published artists, only what they chose to show
-                HOME.refresh(ROOT, published())    # the homepage features: the founder's current choice, published work only
+                FEAT.refresh(ROOT, published())    # Featured Artists: the founder's current choice, published work only
         except Exception as e:                       # noqa: BLE001 - any failure refuses this item, never a half-publish
             why = "refused: %s: %s" % (type(e).__name__, e)
         if why is None:
             git("add", "-A", "plotart/artists", "plotart/gallery/index.html", "image-provenance-records.json", "sitemap.xml", *["plotart/" + p for p in SEO.GENERATED_PATHS],
-                *["plotart/" + p for p in OPP.PAGES if os.path.exists(os.path.join(ROOT, "plotart", p))], "plotart/index.html")
+                *["plotart/" + p for p in OPP.PAGES if os.path.exists(os.path.join(ROOT, "plotart", p))])
             git("-c", "user.name=PlotArt content pipeline", "-c", "user.email=hello@plotnua.ie", "commit", "-q", "-m",
                 "PlotArt content: %s · version %d · %s (Studio queue %s)" % (q["artist_id"], q["version"], q["kind"], q["id"]))
             why = guards(base, q["kind"] == "instant")
@@ -261,7 +261,7 @@ def main():
             call("POST", "/api/pipeline/result/" + q["id"], {"status": "published", "detail": "commit %s%s" % (sha[:12], " (simulated)" if SIMULATE else "")})
             print("PLOTART CONTENT · %s v%d · %s · %s" % (q["artist_id"], q["version"], q["kind"], "published " + sha[:12] if PUSH else "verified (simulated) " + sha[:12]))
     failed += order_sync()
-    failed += home_sync()
+    failed += featured_sync()
     if not items:
         print("PLOTART CONTENT · nothing to publish")
     return 1 if failed else 0
@@ -309,24 +309,27 @@ def order_sync():
     return 1 if why else 0
 
 
-def home_selection():
-    """The founder's homepage selection from PlotArt Studio (Homepage, migration 0016): gallery addresses and artwork ids
-    only. A Studio without the route (404), or without the table yet, means nothing to change."""
+def featured_selection():
+    """The founder's Featured Artists selection from PlotArt Studio (Review Desk "Featured Artists"; migration 0016's
+    table, unchanged): gallery addresses and artwork ids only. A Studio without the route (404), or without the table
+    yet, means nothing to change."""
     try:
-        r = call("GET", "/api/pipeline/homepage")
+        r = call("GET", "/api/pipeline/featured-artists")
     except urllib.error.HTTPError as e:
         if e.code == 404:
             return None
         raise
     if not r.get("installed"):
         return None
-    return HOME.check_selection(r.get("items", []))
+    return FEAT.check_selection(r.get("items", []))
 
 
-def home_sync():
-    """Homepage features (17 Nov 2026): after the queue and the gallery order, re-render the homepage region from the
-    founder's selection and the published galleries. Only that region can change (content boundary, launch guard); it is
+def featured_sync():
+    """Featured Artists (17 Nov 2026; moved from the homepage): after the queue and the gallery order, re-render the
+    Featured Artists region of the Artists' Gallery from the founder's selection and the published galleries. Only that
+    region can change (content boundary, launch guard L20); the complete collection below is not touched. It is
     committed, guarded and released exactly like the gallery order. Nothing happens when nothing changed."""
+    page = "plotart/" + FEAT.PAGE
     if git("status", "--porcelain"):
         return 0
     if PUSH:
@@ -334,29 +337,35 @@ def home_sync():
         git("reset", "-q", "--hard", "origin/main")
     base = git("rev-parse", "HEAD")
     try:
-        sel = home_selection()
+        sel = featured_selection()
         if sel is None:
             return 0
-        HOME.refresh(ROOT, published(), sel)
+        before = open(os.path.join(ROOT, page), encoding="utf-8").read()
+        FEAT.refresh(ROOT, published(), sel)
+        after = open(os.path.join(ROOT, page), encoding="utf-8").read()
+        # a Featured Artists change can never alter the complete collection below it (or anything else on the page)
+        if P.vg_region(before) is None or before[slice(*P.vg_region(before))] != after[slice(*P.vg_region(after))] \
+                or FEAT.outside(before) != FEAT.outside(after):
+            raise ValueError("the Featured Artists update would change the page outside its own region")
     except Exception as e:                           # noqa: BLE001
-        subprocess.run(["git", "checkout", "-q", "--", "plotart/index.html"], cwd=ROOT)
-        print("PLOTART CONTENT · homepage · FAILED · %s" % e)
+        subprocess.run(["git", "checkout", "-q", "--", page], cwd=ROOT)
+        print("PLOTART CONTENT · featured artists · FAILED · %s" % e)
         return 1
     if not git("status", "--porcelain"):
         return 0
-    git("add", "plotart/index.html")
+    git("add", page)
     git("-c", "user.name=PlotArt content pipeline", "-c", "user.email=hello@plotnua.ie", "commit", "-q", "-m",
-        "PlotArt content: homepage featured artworks (founder's Homepage selection in PlotArt Studio)")
+        "PlotArt content: Featured Artists (founder's selection in PlotArt Studio)")
     why = guards(base, False)
     if why is None and PUSH:
-        ok1, o1 = run("git push origin HEAD:refs/heads/content/plotart-homepage-%s" % git("rev-parse", "--short", "HEAD"))
-        ok2, o2 = release("plotart-homepage") if ok1 else (False, "")
+        ok1, o1 = run("git push origin HEAD:refs/heads/content/plotart-featured-%s" % git("rev-parse", "--short", "HEAD"))
+        ok2, o2 = release("plotart-featured") if ok1 else (False, "")
         if not (ok1 and ok2):
             why = "not released (gate, main moved, live check or permission): " + (o1 + " " + o2)[-300:]
     sha = git("rev-parse", "HEAD")
     if why:
         subprocess.run(["git", "reset", "-q", "--hard", base], cwd=ROOT)
-    print("PLOTART CONTENT · homepage · %s" % ("FAILED · " + why[:300] if why else ("published " if PUSH else "verified (simulated) ") + sha[:12]))
+    print("PLOTART CONTENT · featured artists · %s" % ("FAILED · " + why[:300] if why else ("published " if PUSH else "verified (simulated) ") + sha[:12]))
     return 1 if why else 0
 
 

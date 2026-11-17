@@ -336,7 +336,7 @@ body.st{ background:var(--anth); min-height:100vh; }
 .st-hp-gal--choosing{ outline:1px solid var(--stone, #b9b6ae); outline-offset:8px; border-radius:4px; }
 .st-hp-note{ margin:10px 0 0; color:var(--stone, #b9b6ae); font-size:14px; max-width:70ch; }
 .st-linkbtn{ background:none; border:0; padding:0; color:inherit; text-decoration:underline; font:inherit; cursor:pointer; }
-.st-hp-pick img{ display:block; width:100%; aspect-ratio:1; object-fit:cover; background:var(--line, #3a3b3e); }
+.st-hp-pick img{ display:block; width:100%; aspect-ratio:1; object-fit:contain; background:var(--line, #3a3b3e); }   /* never cropped (17 Nov 2026) */
 .st-hp-card{ display:flex; flex-direction:column; }
 .st-hp-card .st-row{ margin-top:auto; }
 .st-hp-card .st-hp-t{ margin:10px 0 2px; font-weight:600; }
@@ -345,3 +345,20 @@ body.st{ background:var(--anth); min-height:100vh; }
 .st-hp-pick{ display:grid; grid-template-columns:repeat(auto-fill, minmax(130px, 1fr)); gap:12px; list-style:none; margin:12px 0 0; padding:0; }
 .st-hp-pick li{ display:flex; flex-direction:column; gap:6px; font-size:14px; }
 .st-hp-pick li > button{ margin-top:auto; }
+
+/* Featured Artists (17 Nov 2026; was the Homepage tab): the preview mirrors the Artists' Gallery section */
+.st-fa-head{ display:flex; flex-direction:column; gap:2px; margin:6px 0 4px; }
+.st-fa-head .st-fa-eyebrow{ font-size:11px; letter-spacing:.18em; text-transform:uppercase; color:var(--stone, #b9b6ae); }
+.st-fa-head b{ font-family:var(--serif); font-weight:400; font-size:30px; color:var(--ivory, #EDEBE7); }
+.st-fa-head span:last-child{ color:var(--stone, #b9b6ae); font-size:14px; }
+.st-fa-grid .st-hp-frame{ aspect-ratio:4 / 5; }
+.st-fa-card{ display:flex; flex-direction:column; }
+.st-fa-card--replacing{ outline:1px dashed var(--stone, #b9b6ae); outline-offset:6px; border-radius:6px; }
+.st-fa-credit{ margin:8px 0 0; color:var(--mute, #A09F9B); font-size:12.5px; }
+.st-fa-card .st-hp-t{ margin:10px 0 0; font-family:var(--serif); font-weight:400; font-size:22px; }
+.st-fa-prac{ margin:2px 0 0; color:var(--stone, #b9b6ae); font-size:13.5px; }
+.st-fa-intro{ margin:8px 0 0; font-size:14px; line-height:1.5; }
+.st-fa-view{ margin:8px 0 12px; font-size:14px; font-weight:600; color:var(--ivory, #EDEBE7); }
+.st-fa-ctl{ margin-top:auto; flex-wrap:wrap; gap:6px; }
+.st-fa-notice{ border-color:var(--stone, #b9b6ae); margin:0 0 14px; }
+.st-fa-card .st-hp-frame img{ width:88%; height:88%; aspect-ratio:auto; object-fit:contain; background:none; }   /* never cropped or stretched */

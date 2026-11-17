@@ -804,59 +804,73 @@
     draw();
   }
 
-  /* Homepage curation (17 Nov 2026): up to six featured artworks or artists, in order. Arrange, preview, then save; saved
-     changes reach plotnua.ie on the next publishing run. Only published work can be chosen. */
-  async function homepage() {
-    let d = await api('GET', '/api/admin/homepage');
-    if (!d.installed) { app.innerHTML = '<h1 class="st-h1">Homepage</h1><section class="st-card"><p class="st-muted">Homepage curation isn’t set up yet (migration 0016).</p></section>'; return; }
-    const key = it => it.kind + ':' + it.artist_id + ':' + (it.artwork_id || '');
-    let sel = d.items.filter(i => i.shown).map(i => ({ kind: i.kind, artist_id: i.artist_id, artwork_id: i.artwork_id })), dirty = false, msg = '';
-    let choosing = null;   // { artist_id, index }: the founder is choosing the artwork that represents a featured artist
-    const dropped = d.items.filter(i => !i.shown).length;
+  /* Featured Artists (founder brief 17 Nov 2026; was the Homepage tab): up to six published artists for the top of the
+     Artists' Gallery, each shown with the published artwork the founder chooses, in her order. Arrange, preview, then save;
+     saving publishes through the usual protected route. Only published work can be chosen, and each artist appears once.
+     The complete collection below the section is never changed from here. */
+  async function featured() {
+    let d = await api('GET', '/api/admin/featured');
+    if (!d.installed) { app.innerHTML = '<h1 class="st-h1">Featured Artists</h1><section class="st-card"><p class="st-muted">Featured Artists isn’t set up yet (migration 0016).</p></section>'; return; }
+    let sel = d.items.filter(i => i.shown).map(i => ({ artist_id: i.artist_id, artwork_id: i.artwork_id })), msg = '';
+    // earlier homepage choices (single artworks, or an artist listed twice) are shown as artists and need one save to confirm
+    const earlier = d.items.some(i => i.earlier_kind !== 'artist' || i.repeat);
+    let dirty = earlier;
+    const dropped = d.items.filter(i => !i.shown && !i.repeat).length;
+    let choosing = null;   // { artist_id, index, replace, scroll }: choosing the artwork that represents an artist (index: an existing card)
+    let replacing = null;  // index of the card whose artist is being replaced
     const gal = id => d.galleries.find(g => g.artist_id === id);
     const info = it => { const g = gal(it.artist_id); const w = g && g.works.find(x => x.id === it.artwork_id); return w ? { g, w } : null; };
-    const artistAt = id => sel.findIndex(s => s.kind === 'artist' && s.artist_id === id);
-    const img = w => `<img src="/api/admin/homepage/image/${E(w.image.id)}" alt="" loading="lazy">`;
-    const card = (it, i) => { const x = info(it); if (!x) return ''; return `<li class="st-hp-card"><span class="st-hp-frame">${img(x.w)}</span>
-        <p class="st-hp-t">${it.kind === 'artist' ? E(x.g.display_name) : E(x.w.title)}</p><p class="st-hp-s">${it.kind === 'artist' ? `Featured artist · links to their gallery<br>Shown with “${E(x.w.title)}” <button class="st-linkbtn" data-change="${i}">Change artwork</button>` : E(x.g.display_name)}</p>
-        <div class="st-row"><button class="st-btn st-btn--small" data-up="${i}" aria-label="Move up"${i === 0 ? ' disabled' : ''}>↑</button><button class="st-btn st-btn--small" data-down="${i}" aria-label="Move down"${i === sel.length - 1 ? ' disabled' : ''}>↓</button><button class="st-btn st-btn--small" data-rm="${i}">Remove</button></div></li>`; };
-    const has = it => it.kind === 'artist' ? artistAt(it.artist_id) >= 0 : sel.some(s => key(s) === key(it));
+    const at = id => sel.findIndex(s => s.artist_id === id);
+    const img = w => `<img src="/api/admin/featured/image/${E(w.image.id)}" alt="${E(w.image.alt)}" loading="lazy">`;
+    const card = (it, i) => { const x = info(it); if (!x) return ''; return `<li class="st-fa-card${replacing === i ? ' st-fa-card--replacing' : ''}">
+        <span class="st-hp-frame">${img(x.w)}</span>
+        <p class="st-fa-credit"><i>${E(x.w.title)}</i>${x.w.year ? ', ' + E(x.w.year) : ''} · ${E(x.g.display_name)}</p>
+        <p class="st-hp-t">${E(x.g.display_name)}</p>${x.g.practice ? `<p class="st-fa-prac">${E(x.g.practice)}</p>` : ''}
+        ${x.g.intro ? `<p class="st-fa-intro">${E(x.g.intro)}</p>` : '<p class="st-fa-intro st-muted">No biography published: no introduction is shown.</p>'}
+        <p class="st-fa-view">View Gallery →</p>
+        <div class="st-row st-fa-ctl"><button class="st-btn st-btn--small" data-up="${i}" aria-label="Move ${E(x.g.display_name)} earlier"${i === 0 ? ' disabled' : ''}>↑</button><button class="st-btn st-btn--small" data-down="${i}" aria-label="Move ${E(x.g.display_name)} later"${i === sel.length - 1 ? ' disabled' : ''}>↓</button>
+        <button class="st-btn st-btn--small" data-change="${i}">Change artwork</button><button class="st-btn st-btn--small" data-replace="${i}"${replacing === i ? ' aria-pressed="true"' : ''}>${replacing === i ? 'Choosing…' : 'Replace'}</button><button class="st-btn st-btn--small" data-rm="${i}">Remove</button></div></li>`; };
     function draw() {
       const full = sel.length >= d.max;
-      app.innerHTML = `<h1 class="st-h1">Homepage</h1>
-        <p class="st-sub">Choose up to ${d.max} artworks or artists to feature on the PlotArt homepage, and their order. A featured artist is shown with one of their published artworks that you choose. Only work already published can be chosen; anything withdrawn or unpublished drops out by itself. Saving changes nothing in any artist’s gallery. Saved changes reach plotnua.ie on the next publishing run.</p>
+      const rname = replacing !== null && info(sel[replacing]) ? info(sel[replacing]).g.display_name : '';
+      app.innerHTML = `<h1 class="st-h1">Featured Artists</h1>
+        <p class="st-sub">Choose up to ${d.max} published artists to feature at the top of the Artists’ Gallery, the artwork that represents each, and their order. Each artist appears once and stays in the complete collection below. The introduction is the start of the artist’s own published biography. Only published work can be chosen; anything withdrawn or unpublished drops out by itself. Saving changes nothing in any artist’s gallery or in the collection, and publishes through the usual protected route.</p>
+        ${earlier ? '<p class="st-card st-fa-notice">Your earlier homepage choices are listed here as featured artists, each shown with the artwork you chose for them. Review them, then save to confirm the selection for the Artists’ Gallery.</p>' : ''}
         ${dropped ? `<p class="st-muted">${dropped} earlier choice${dropped > 1 ? 's are' : ' is'} no longer published and won’t be shown.</p>` : ''}
-        <div class="st-go-bar"><span class="st-muted" id="hp-state">${msg || (dirty ? 'Unsaved changes' : 'Saved')}</span><button class="st-btn st-btn--solid" id="hp-save"${dirty ? '' : ' disabled'}>Save homepage</button></div>
-        <section class="st-card"><h2>Preview · featured on the homepage (${sel.length} of ${d.max})</h2>
-          ${sel.length ? `<ol class="st-hp-grid">${sel.map(card).join('')}</ol>` : '<p class="st-muted">Nothing featured. The homepage section stays hidden until you choose something.</p>'}</section>
-        <section class="st-card" style="margin-top:18px"><h2>Published work you can feature</h2>
-          ${d.galleries.map(g => { const ai = artistAt(g.artist_id), ch = choosing && choosing.artist_id === g.artist_id, rep = ai >= 0 ? sel[ai].artwork_id : null;
-            return `<div class="st-hp-gal${ch ? ' st-hp-gal--choosing' : ''}"><div class="st-row" style="justify-content:space-between"><p class="st-work-t" style="margin:0">${E(g.display_name)}</p>
-            ${ch ? `<button class="st-btn st-btn--small" data-cancel="1">Cancel</button>` : `<button class="st-btn st-btn--small" data-artist="${E(g.artist_id)}"${ai >= 0 || full ? ' disabled' : ''}>${ai >= 0 ? 'Featured artist' : 'Feature artist'}</button>`}</div>
-            ${ch ? `<p class="st-hp-note">Choose the published artwork that represents ${E(g.display_name)} on the homepage. The card links to their gallery; their own gallery and order don’t change.</p>` : ''}
-            <ul class="st-hp-pick">${g.works.map(w => { const it = { kind: 'artwork', artist_id: g.artist_id, artwork_id: w.id }; return `<li>${img(w)}<span>${E(w.title)}${rep === w.id ? '<br><span class="st-muted">Represents the artist</span>' : ''}</span>
-              ${ch ? `<button class="st-btn st-btn--small" data-rep="${E(w.id)}"${rep === w.id ? ' disabled' : ''}>${rep === w.id ? 'Chosen' : 'Use this artwork'}</button>`
-                : `<button class="st-btn st-btn--small" data-work="${E(g.artist_id)}|${E(w.id)}"${has(it) || full ? ' disabled' : ''}>${has(it) ? 'Featured' : 'Feature'}</button>`}</li>`; }).join('')}</ul></div>`; }).join('') || '<p class="st-muted">No published galleries yet.</p>'}</section>`;
-      if (choosing) { const el = app.querySelector('.st-hp-gal--choosing'); if (el && choosing.scroll) { el.scrollIntoView({ block: 'start', behavior: 'smooth' }); choosing.scroll = false; } }
+        <div class="st-go-bar"><span class="st-muted" id="hp-state">${msg || (dirty ? 'Unsaved changes' : 'Saved')}</span><button class="st-btn st-btn--solid" id="hp-save"${dirty ? '' : ' disabled'}>Save and publish</button></div>
+        <section class="st-card"><h2>Preview · Featured Artists in the Artists’ Gallery (${sel.length} of ${d.max})</h2>
+          <p class="st-fa-head"><span class="st-fa-eyebrow">Selected by PlotArt</span><b>Featured Artists</b><span>A changing selection of artists and their work.</span></p>
+          ${sel.length ? `<ol class="st-hp-grid st-fa-grid">${sel.map(card).join('')}</ol>` : '<p class="st-muted">No artists featured. The Artists’ Gallery shows the complete collection only until you choose someone.</p>'}</section>
+        <section class="st-card" style="margin-top:18px"><h2>${replacing !== null ? `Choose the artist to feature in place of ${E(rname)} <button class="st-btn st-btn--small" data-cancel-replace="1">Cancel</button>` : 'Published artists you can feature'}</h2>
+          ${d.galleries.map(g => { const ai = at(g.artist_id), ch = choosing && choosing.artist_id === g.artist_id, rep = ai >= 0 ? sel[ai].artwork_id : null;
+            const can = ai < 0 && (!full || replacing !== null);
+            return `<div class="st-hp-gal${ch ? ' st-hp-gal--choosing' : ''}"><div class="st-row" style="justify-content:space-between"><div><p class="st-work-t" style="margin:0">${E(g.display_name)}</p>${g.practice ? `<p class="st-muted" style="margin:2px 0 0">${E(g.practice)}</p>` : ''}</div>
+            ${ch ? `<button class="st-btn st-btn--small" data-cancel="1">Cancel</button>` : `<button class="st-btn st-btn--small" data-artist="${E(g.artist_id)}"${can ? '' : ' disabled'}>${ai >= 0 ? 'Featured' : replacing !== null ? 'Feature instead' : 'Feature artist'}</button>`}</div>
+            ${ch ? `<p class="st-hp-note">Choose the published artwork that represents ${E(g.display_name)}. The card links to their gallery; their own gallery and order of works don’t change.</p>
+            <ul class="st-hp-pick">${g.works.map(w => `<li>${img(w)}<span>${E(w.title)}${rep === w.id ? '<br><span class="st-muted">Represents the artist</span>' : ''}</span>
+              <button class="st-btn st-btn--small" data-rep="${E(w.id)}"${rep === w.id ? ' disabled' : ''}>${rep === w.id ? 'Chosen' : 'Use this artwork'}</button></li>`).join('')}</ul>` : ''}</div>`; }).join('') || '<p class="st-muted">No published galleries yet.</p>'}</section>`;
+      if (choosing && choosing.scroll) { const el = app.querySelector('.st-hp-gal--choosing'); if (el) el.scrollIntoView({ block: 'start', behavior: 'smooth' }); choosing.scroll = false; }
     }
     const change = f => { f(); dirty = true; msg = ''; draw(); };
     app.addEventListener('click', async function onClick(e) {
-      if (location.pathname.replace(/\/$/, '') !== '/admin/homepage') { app.removeEventListener('click', onClick); return; }
+      if (location.pathname.replace(/\/$/, '') !== '/admin/featured') { app.removeEventListener('click', onClick); return; }
       const b = e.target.closest('button'); if (!b || b.disabled) return;
       if (b.dataset.up) change(() => { const i = +b.dataset.up; [sel[i - 1], sel[i]] = [sel[i], sel[i - 1]]; });
       else if (b.dataset.down) change(() => { const i = +b.dataset.down; [sel[i + 1], sel[i]] = [sel[i], sel[i + 1]]; });
-      else if (b.dataset.rm) change(() => { sel.splice(+b.dataset.rm, 1); choosing = null; });
-      else if (b.dataset.artist) { choosing = { artist_id: b.dataset.artist, index: null, scroll: false }; draw(); }
-      else if (b.dataset.change) { const i = +b.dataset.change; choosing = { artist_id: sel[i].artist_id, index: i, scroll: true }; draw(); }
+      else if (b.dataset.rm) change(() => { sel.splice(+b.dataset.rm, 1); choosing = null; replacing = null; });
+      else if (b.dataset.replace) { replacing = replacing === +b.dataset.replace ? null : +b.dataset.replace; choosing = null; draw(); }
+      else if (b.dataset.cancelReplace) { replacing = null; choosing = null; draw(); }
+      else if (b.dataset.artist) { choosing = { artist_id: b.dataset.artist, index: replacing, replace: replacing !== null, scroll: true }; draw(); }
+      else if (b.dataset.change) { const i = +b.dataset.change; replacing = null; choosing = { artist_id: sel[i].artist_id, index: i, replace: false, scroll: true }; draw(); }
       else if (b.dataset.cancel) { choosing = null; draw(); }
-      else if (b.dataset.rep && choosing) change(() => { const c = choosing; choosing = null;
-        if (c.index === null) sel.push({ kind: 'artist', artist_id: c.artist_id, artwork_id: b.dataset.rep }); else sel[c.index] = { ...sel[c.index], artwork_id: b.dataset.rep }; });
-      else if (b.dataset.work) change(() => { const [a, w] = b.dataset.work.split('|'); sel.push({ kind: 'artwork', artist_id: a, artwork_id: w }); });
+      else if (b.dataset.rep && choosing) change(() => { const c = choosing; choosing = null; replacing = null;
+        const item = { artist_id: c.artist_id, artwork_id: b.dataset.rep };
+        if (c.index === null) sel.push(item); else sel[c.index] = item; });
       else if (b.id === 'hp-save') {
         b.disabled = true;
         try {
-          const r = await api('PUT', '/api/admin/homepage', { items: sel.map(s => ({ kind: s.kind, artist_id: s.artist_id, artwork_id: s.artwork_id })) });
-          d = r; dirty = false; msg = r.changed ? (r.publish === 'requested' ? 'Saved · publishing has started' : 'Saved · it will go live on the next publishing run') : 'Saved · nothing changed';
+          const r = await api('PUT', '/api/admin/featured', { items: sel.map(s => ({ artist_id: s.artist_id, artwork_id: s.artwork_id })) });
+          d = r; dirty = false; msg = r.changed ? (r.publish === 'requested' ? 'Saved · publishing to the Artists’ Gallery has started' : 'Saved · it will go live on the next publishing run') : 'Saved · nothing changed';
         } catch (err) { msg = err.message; }
         draw();
       }
@@ -864,12 +878,13 @@
     draw();
   }
 
+
   async function render() {
     const h = location.hash || '#/', path = location.pathname.replace(/\/$/, '');
     const am = path.match(/^\/admin\/applications\/((?:F25|PA-AP)-\d{6}-[0-9A-F]{6})$/);
-    document.querySelectorAll('.st-tabs a').forEach(a => a.toggleAttribute('aria-current', a.dataset.t === (path.startsWith('/admin/applications') ? 'apps' : path === '/admin/gallery' ? 'order' : path === '/admin/ideas' ? 'ideas' : path === '/admin/garden' ? 'garden' : path === '/admin/agreements' ? 'agree' : path === '/admin/leaving' ? 'leave' : path === '/admin/hire' ? 'hire' : path === '/admin/opportunities' ? 'opps' : path === '/admin/homepage' ? 'home' : 'desk')));
+    document.querySelectorAll('.st-tabs a').forEach(a => a.toggleAttribute('aria-current', a.dataset.t === (path.startsWith('/admin/applications') ? 'apps' : path === '/admin/gallery' ? 'order' : path === '/admin/ideas' ? 'ideas' : path === '/admin/garden' ? 'garden' : path === '/admin/agreements' ? 'agree' : path === '/admin/leaving' ? 'leave' : path === '/admin/hire' ? 'hire' : path === '/admin/opportunities' ? 'opps' : path === '/admin/featured' ? 'feat' : 'desk')));
     document.querySelectorAll('.st-tabs a[aria-current]').forEach(a => a.setAttribute('aria-current', 'page'));
-    try { if (am) await appView(am[1]); else if (path === '/admin/gallery') await order(); else if (path === '/admin/ideas') await ideas(); else if (path === '/admin/garden') await garden(); else if (path === '/admin/agreements') await agreements(); else if (path === '/admin/leaving') await leaving(); else if (path === '/admin/hire') await hire(); else if (path === '/admin/opportunities') await opportunities(); else if (path === '/admin/homepage') await homepage(); else if (path === '/admin/applications') await apps(); else if (h.startsWith('#/review/')) await review(h.slice(9)); else await home(); window.scrollTo(0, 0); }
+    try { if (am) await appView(am[1]); else if (path === '/admin/gallery') await order(); else if (path === '/admin/ideas') await ideas(); else if (path === '/admin/garden') await garden(); else if (path === '/admin/agreements') await agreements(); else if (path === '/admin/leaving') await leaving(); else if (path === '/admin/hire') await hire(); else if (path === '/admin/opportunities') await opportunities(); else if (path === '/admin/featured') await featured(); else if (path === '/admin/applications') await apps(); else if (h.startsWith('#/review/')) await review(h.slice(9)); else await home(); window.scrollTo(0, 0); }
     catch (e) { app.innerHTML = `<div class="st-card"><h2>Something went wrong</h2><p class="st-muted">${E(e.message)}</p></div>`; }
   }
   addEventListener('hashchange', render);
