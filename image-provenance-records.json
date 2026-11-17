@@ -17162,6 +17162,1804 @@
       "source_sha256": "f769261519fd8a1bda36504c698aa6eac1c087ff285360f1085e7023df24e976",
       "subject": "artwork",
       "work_slug": "the-universe-is-in-me"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "sarah-fitzgibbon",
+      "asset": "plotart/artists/sarah-fitzgibbon/img/portrait-600.webp",
+      "bytes": 55860,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "sRGB (no embedded profile; treated as sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aex8rq3x86c",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        600,
+        600
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "9207517652627290ac673d460535cebd005aa575fb7a14d94b0affab793e10e0",
+      "source_sha256": "c41093bda6870d0b35b4156fbcbb7ebde96d62a15836960d2481bfc5f83114eb",
+      "subject": "portrait",
+      "work_slug": null
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "sarah-fitzgibbon",
+      "asset": "plotart/artists/sarah-fitzgibbon/img/disco-ball-1-600.webp",
+      "bytes": 47540,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (sRGB IEC61966-2.1)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aex8rq3x86c",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        600,
+        600
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "0c5e08174c31dd71d1895224774c7e115e105b33d5f5f3a312c4a0b01e4d3f23",
+      "source_sha256": "90606ce7533658e3621751472628b4bd2cc6c373d7e10ba2fc59fa2b518a8681",
+      "subject": "artwork",
+      "work_slug": "disco-ball"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "sarah-fitzgibbon",
+      "asset": "plotart/artists/sarah-fitzgibbon/img/disco-ball-1-1200.webp",
+      "bytes": 172298,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (sRGB IEC61966-2.1)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aex8rq3x86c",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        1200,
+        1200
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "0afaffcf931b6fbafd210bc1dc0caf1937cdda460fa0f039450d2c75695f82b0",
+      "source_sha256": "90606ce7533658e3621751472628b4bd2cc6c373d7e10ba2fc59fa2b518a8681",
+      "subject": "artwork",
+      "work_slug": "disco-ball"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "sarah-fitzgibbon",
+      "asset": "plotart/artists/sarah-fitzgibbon/img/disco-ball-1-2000.webp",
+      "bytes": 470230,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (sRGB IEC61966-2.1)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aex8rq3x86c",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        2000,
+        2000
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "996d5889f06fd18d520e713a19bac18bff7f8b901c0d7b19325b382cfc9f46ef",
+      "source_sha256": "90606ce7533658e3621751472628b4bd2cc6c373d7e10ba2fc59fa2b518a8681",
+      "subject": "artwork",
+      "work_slug": "disco-ball"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "sarah-fitzgibbon",
+      "asset": "plotart/artists/sarah-fitzgibbon/img/disco-ball-2-600.webp",
+      "bytes": 55942,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (Display P3)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aex8rq3x86c",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        450,
+        600
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "045ca9cc7a99888abd5992ccb17bdccd176fb5426a0cc996e8847bec32673038",
+      "source_sha256": "4be3197e1fe47e27023a56baaa9900ba148296ed0fff1a03f82fc88917dbb01a",
+      "subject": "artwork",
+      "work_slug": "disco-ball"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "sarah-fitzgibbon",
+      "asset": "plotart/artists/sarah-fitzgibbon/img/disco-ball-2-2000.webp",
+      "bytes": 453380,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (Display P3)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aex8rq3x86c",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        1500,
+        2000
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "e47d4a2de021434b8c6a7959acadc0fb3b7f0c1dcad153df7bf7be9a2e99ff03",
+      "source_sha256": "4be3197e1fe47e27023a56baaa9900ba148296ed0fff1a03f82fc88917dbb01a",
+      "subject": "artwork",
+      "work_slug": "disco-ball"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "sarah-fitzgibbon",
+      "asset": "plotart/artists/sarah-fitzgibbon/img/disco-ball-3-600.webp",
+      "bytes": 50840,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (Display P3)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aex8rq3x86c",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        450,
+        600
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "70e9034209b08d1cfc158f39447d05338c42f7ef372cafbd465e982968d1490c",
+      "source_sha256": "aa4d620967dacd3acc18ef8f9f6844cfe868533f0a33a0cad6d93ab7d579c643",
+      "subject": "artwork",
+      "work_slug": "disco-ball"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "sarah-fitzgibbon",
+      "asset": "plotart/artists/sarah-fitzgibbon/img/disco-ball-3-2000.webp",
+      "bytes": 412662,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (Display P3)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aex8rq3x86c",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        1500,
+        2000
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "0891ea302fc358456727ef49b986c5b7aa04feb26afe92a27e31c70103c0dc0c",
+      "source_sha256": "aa4d620967dacd3acc18ef8f9f6844cfe868533f0a33a0cad6d93ab7d579c643",
+      "subject": "artwork",
+      "work_slug": "disco-ball"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "sarah-fitzgibbon",
+      "asset": "plotart/artists/sarah-fitzgibbon/img/disco-ball-4-600.webp",
+      "bytes": 96734,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (Display P3)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aex8rq3x86c",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        450,
+        600
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "5857d37107ede67fc11dd28bc357c4ad8d7b0cb27125243d5fd466b04862339b",
+      "source_sha256": "325b364c4cf8fb3e38d182a7847a7298099ebf0d738c3ad4f8b7d7e24f17841f",
+      "subject": "artwork",
+      "work_slug": "disco-ball"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "sarah-fitzgibbon",
+      "asset": "plotart/artists/sarah-fitzgibbon/img/disco-ball-4-2000.webp",
+      "bytes": 868974,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (Display P3)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aex8rq3x86c",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        1500,
+        2000
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "1169166b843917f29e6330db40f06676cf4a9cf170716d690fb5434a5267e740",
+      "source_sha256": "325b364c4cf8fb3e38d182a7847a7298099ebf0d738c3ad4f8b7d7e24f17841f",
+      "subject": "artwork",
+      "work_slug": "disco-ball"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "sarah-fitzgibbon",
+      "asset": "plotart/artists/sarah-fitzgibbon/img/figure-8-1-600.webp",
+      "bytes": 59484,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (sRGB IEC61966-2.1)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aex8rq3x86c",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        600,
+        600
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "c9f894548ae593bc8d846479d23731a5124bb627e825f5f99e30113ab798397b",
+      "source_sha256": "36ab985f1d14052ad968b078a0ecdce87a667f5c0d2a89124afdd0fb721b7912",
+      "subject": "artwork",
+      "work_slug": "figure-8"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "sarah-fitzgibbon",
+      "asset": "plotart/artists/sarah-fitzgibbon/img/figure-8-1-1200.webp",
+      "bytes": 213968,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (sRGB IEC61966-2.1)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aex8rq3x86c",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        1200,
+        1200
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "b07338f1f2fce21fc17c24a14fbbc6ae9c8c9ca00cb060796c44e3271cf67185",
+      "source_sha256": "36ab985f1d14052ad968b078a0ecdce87a667f5c0d2a89124afdd0fb721b7912",
+      "subject": "artwork",
+      "work_slug": "figure-8"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "sarah-fitzgibbon",
+      "asset": "plotart/artists/sarah-fitzgibbon/img/figure-8-1-2000.webp",
+      "bytes": 499126,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (sRGB IEC61966-2.1)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aex8rq3x86c",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        2000,
+        2000
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "61c2d2647ad95f764a37240c419b13c8a38290023177c19475b03d48c6ec73af",
+      "source_sha256": "36ab985f1d14052ad968b078a0ecdce87a667f5c0d2a89124afdd0fb721b7912",
+      "subject": "artwork",
+      "work_slug": "figure-8"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "sarah-fitzgibbon",
+      "asset": "plotart/artists/sarah-fitzgibbon/img/figure-8-2-600.webp",
+      "bytes": 51476,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (Display P3)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aex8rq3x86c",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        450,
+        600
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "32ebbc41f2d5a61ea58717664c4e352bc4a52e859cc0e1c39cbfc093fb064aef",
+      "source_sha256": "0d29d2eb24a573759fedcaa3a9f063e1758c86fc0355c173f213383226319c44",
+      "subject": "artwork",
+      "work_slug": "figure-8"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "sarah-fitzgibbon",
+      "asset": "plotart/artists/sarah-fitzgibbon/img/figure-8-2-2000.webp",
+      "bytes": 305918,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (Display P3)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aex8rq3x86c",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        1500,
+        2000
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "81addeb1ebcd7c1688ca729ab8443f827b19a7e445faad3054fbaf8e7cce05c2",
+      "source_sha256": "0d29d2eb24a573759fedcaa3a9f063e1758c86fc0355c173f213383226319c44",
+      "subject": "artwork",
+      "work_slug": "figure-8"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "sarah-fitzgibbon",
+      "asset": "plotart/artists/sarah-fitzgibbon/img/figure-8-3-600.webp",
+      "bytes": 53032,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (Display P3)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aex8rq3x86c",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        450,
+        600
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "77a2e0cce03497b6e5275db30b75fe540463b59f35e29ca5d4a22155cca8ba37",
+      "source_sha256": "85aea99adb11e9443d6bfe1cd97a50d6c73f4884ce6dc76a978d10a4dc4988f2",
+      "subject": "artwork",
+      "work_slug": "figure-8"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "sarah-fitzgibbon",
+      "asset": "plotart/artists/sarah-fitzgibbon/img/figure-8-3-2000.webp",
+      "bytes": 386518,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (Display P3)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aex8rq3x86c",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        1500,
+        2000
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "c77ce3252e432998f4f194a5e76990d36deab7278ae70ad4aa8168b89215910b",
+      "source_sha256": "85aea99adb11e9443d6bfe1cd97a50d6c73f4884ce6dc76a978d10a4dc4988f2",
+      "subject": "artwork",
+      "work_slug": "figure-8"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "sarah-fitzgibbon",
+      "asset": "plotart/artists/sarah-fitzgibbon/img/stratify-1-600.webp",
+      "bytes": 40042,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (sRGB IEC61966-2.1)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aex8rq3x86c",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        600,
+        600
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "b3378957b5741d4c0369fd195ef97fc5834d20abd238b8af7f0508be20c4163f",
+      "source_sha256": "79d86304c5e15ef3ab6a2df720b3e1d4cb70112bfcef4b9d4c1c1b262f8cdc64",
+      "subject": "artwork",
+      "work_slug": "stratify"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "sarah-fitzgibbon",
+      "asset": "plotart/artists/sarah-fitzgibbon/img/stratify-1-1200.webp",
+      "bytes": 136912,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (sRGB IEC61966-2.1)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aex8rq3x86c",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        1200,
+        1200
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "3eea944db2b47d306eefde36a4460677b3456f5bd1057167d005a9c224680e7e",
+      "source_sha256": "79d86304c5e15ef3ab6a2df720b3e1d4cb70112bfcef4b9d4c1c1b262f8cdc64",
+      "subject": "artwork",
+      "work_slug": "stratify"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "sarah-fitzgibbon",
+      "asset": "plotart/artists/sarah-fitzgibbon/img/stratify-1-2000.webp",
+      "bytes": 312074,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (sRGB IEC61966-2.1)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aex8rq3x86c",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        2000,
+        2000
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "4e54e9a009e1e4c9c095c2ec58cc8e0a41cabfe9c08998b02f22121d1d9e04ba",
+      "source_sha256": "79d86304c5e15ef3ab6a2df720b3e1d4cb70112bfcef4b9d4c1c1b262f8cdc64",
+      "subject": "artwork",
+      "work_slug": "stratify"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "sarah-fitzgibbon",
+      "asset": "plotart/artists/sarah-fitzgibbon/img/stratify-2-600.webp",
+      "bytes": 42130,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (Display P3)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aex8rq3x86c",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        450,
+        600
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "57cd89043e908a5979ad86099d7e90467da92435113e385f165332e57aea587b",
+      "source_sha256": "7424814a73bc0096367637d60c5e13142e420a460ecd9e42640aee8829a660c2",
+      "subject": "artwork",
+      "work_slug": "stratify"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "sarah-fitzgibbon",
+      "asset": "plotart/artists/sarah-fitzgibbon/img/stratify-2-2000.webp",
+      "bytes": 281540,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (Display P3)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aex8rq3x86c",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        1500,
+        2000
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "bf6b32c27d0e263dab0e2b27661e91db45559b45e5de6d3edf3d3bf3cf247fea",
+      "source_sha256": "7424814a73bc0096367637d60c5e13142e420a460ecd9e42640aee8829a660c2",
+      "subject": "artwork",
+      "work_slug": "stratify"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "sarah-fitzgibbon",
+      "asset": "plotart/artists/sarah-fitzgibbon/img/stratify-3-600.webp",
+      "bytes": 48056,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (Display P3)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aex8rq3x86c",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        450,
+        600
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "cf61e26c4a9f61431db0361f2207c1bd2d0b971fde19c91e78f8301713ffbf12",
+      "source_sha256": "6a57ee9c290b3d5ff76277502a9ba2c9338d3f08fc7b579eba723f90780382be",
+      "subject": "artwork",
+      "work_slug": "stratify"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "sarah-fitzgibbon",
+      "asset": "plotart/artists/sarah-fitzgibbon/img/stratify-3-2000.webp",
+      "bytes": 324542,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (Display P3)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aex8rq3x86c",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        1500,
+        2000
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "7a9b4339ff97740b3c5fb50157bad3e2fed79fe455786c923ede57e7422af89c",
+      "source_sha256": "6a57ee9c290b3d5ff76277502a9ba2c9338d3f08fc7b579eba723f90780382be",
+      "subject": "artwork",
+      "work_slug": "stratify"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "sarah-fitzgibbon",
+      "asset": "plotart/artists/sarah-fitzgibbon/img/stratify-4-600.webp",
+      "bytes": 76060,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (Display P3)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aex8rq3x86c",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        450,
+        600
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "53d392b82640f2b8a6fdb100e561881f3cf0e36c32b5756d3dc2488a693612f8",
+      "source_sha256": "7977f67f3fa1363caca58d11a32a9d25f758fac9e51d92b81082ea495f7f4ee3",
+      "subject": "artwork",
+      "work_slug": "stratify"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "sarah-fitzgibbon",
+      "asset": "plotart/artists/sarah-fitzgibbon/img/stratify-4-2000.webp",
+      "bytes": 342396,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (Display P3)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aex8rq3x86c",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        1500,
+        2000
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "af98ed0d3a1c15e14ad3df7d34dd28192d43d8a83234b4f8d67273c5fe266d07",
+      "source_sha256": "7977f67f3fa1363caca58d11a32a9d25f758fac9e51d92b81082ea495f7f4ee3",
+      "subject": "artwork",
+      "work_slug": "stratify"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "sarah-fitzgibbon",
+      "asset": "plotart/artists/sarah-fitzgibbon/img/circuit-ii-1-600.webp",
+      "bytes": 49484,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (sRGB IEC61966-2.1)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aex8rq3x86c",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        600,
+        600
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "e4465f5050ccf107ddc163323f8a41cfcb139e5d9e086671f241e853acc40376",
+      "source_sha256": "c99c5e43d84fc5a37d3e7bb0eff5d996eeb77a0cb72d08f0745f5d08f35ff87f",
+      "subject": "artwork",
+      "work_slug": "circuit-ii"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "sarah-fitzgibbon",
+      "asset": "plotart/artists/sarah-fitzgibbon/img/circuit-ii-1-1200.webp",
+      "bytes": 168464,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (sRGB IEC61966-2.1)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aex8rq3x86c",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        1200,
+        1200
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "5570b2a3fb5717318f29b433527ba8173648a74e3a392de523adf0ad7ba70e1e",
+      "source_sha256": "c99c5e43d84fc5a37d3e7bb0eff5d996eeb77a0cb72d08f0745f5d08f35ff87f",
+      "subject": "artwork",
+      "work_slug": "circuit-ii"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "sarah-fitzgibbon",
+      "asset": "plotart/artists/sarah-fitzgibbon/img/circuit-ii-1-2000.webp",
+      "bytes": 399730,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (sRGB IEC61966-2.1)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aex8rq3x86c",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        2000,
+        2000
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "d549de04823e5417dda9eff08388983804c8e60f1ddd5fd758fd75c0a2184d4f",
+      "source_sha256": "c99c5e43d84fc5a37d3e7bb0eff5d996eeb77a0cb72d08f0745f5d08f35ff87f",
+      "subject": "artwork",
+      "work_slug": "circuit-ii"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "sarah-fitzgibbon",
+      "asset": "plotart/artists/sarah-fitzgibbon/img/circuit-ii-2-600.webp",
+      "bytes": 41064,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "sRGB (no embedded profile; treated as sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aex8rq3x86c",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        600,
+        600
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "03fdfb64888528525e663a4a8080463f43b2669b042a6b58ff93742e7497ce50",
+      "source_sha256": "760e19c626b3990499b7b75f4b634bd3717baf535650d91d0ef54b14751822b3",
+      "subject": "artwork",
+      "work_slug": "circuit-ii"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "sarah-fitzgibbon",
+      "asset": "plotart/artists/sarah-fitzgibbon/img/circuit-ii-2-2000.webp",
+      "bytes": 188474,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "sRGB (no embedded profile; treated as sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aex8rq3x86c",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        2000,
+        2000
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "3575ddbe2cbc340db9bc30c58a739ab37eb76279daf04db87f3c29300c6f0434",
+      "source_sha256": "760e19c626b3990499b7b75f4b634bd3717baf535650d91d0ef54b14751822b3",
+      "subject": "artwork",
+      "work_slug": "circuit-ii"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "sarah-fitzgibbon",
+      "asset": "plotart/artists/sarah-fitzgibbon/img/circuit-ii-3-600.webp",
+      "bytes": 54160,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (sRGB IEC61966-2.1)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aex8rq3x86c",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        600,
+        600
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "4108b41979d3b030c2f01781d471176a6a07f531bddf65780d2be29066184779",
+      "source_sha256": "8a365997b96045b8c37800a05d4ce570fc5c7668c7f0e426429c4467c450cc20",
+      "subject": "artwork",
+      "work_slug": "circuit-ii"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "sarah-fitzgibbon",
+      "asset": "plotart/artists/sarah-fitzgibbon/img/circuit-ii-3-2000.webp",
+      "bytes": 232954,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (sRGB IEC61966-2.1)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aex8rq3x86c",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        2000,
+        2000
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "c4d9abcc707818e44dfff2e705655e7022d8df4fc842535547435888569ad0c7",
+      "source_sha256": "8a365997b96045b8c37800a05d4ce570fc5c7668c7f0e426429c4467c450cc20",
+      "subject": "artwork",
+      "work_slug": "circuit-ii"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "sarah-fitzgibbon",
+      "asset": "plotart/artists/sarah-fitzgibbon/img/chromatic-construction-i-1-600.webp",
+      "bytes": 32858,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "sRGB (no embedded profile; treated as sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aex8rq3x86c",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        600,
+        600
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "5b4882003241ec99313ec1d9bdd2893514c6eab05bce5194260247185952a987",
+      "source_sha256": "ff89824e8d313a017d3e17221cf756cbe89386169f7abe48264f335374123e2c",
+      "subject": "artwork",
+      "work_slug": "chromatic-construction-i"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "sarah-fitzgibbon",
+      "asset": "plotart/artists/sarah-fitzgibbon/img/chromatic-construction-i-1-1200.webp",
+      "bytes": 189274,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "sRGB (no embedded profile; treated as sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aex8rq3x86c",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        1200,
+        1200
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "b16e95265b9ce3aeff1b48bbcc6943cf69a93dc7029f9b2f35a3d91f557e80da",
+      "source_sha256": "ff89824e8d313a017d3e17221cf756cbe89386169f7abe48264f335374123e2c",
+      "subject": "artwork",
+      "work_slug": "chromatic-construction-i"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "sarah-fitzgibbon",
+      "asset": "plotart/artists/sarah-fitzgibbon/img/chromatic-construction-i-1-2000.webp",
+      "bytes": 552072,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "sRGB (no embedded profile; treated as sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aex8rq3x86c",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        2000,
+        2000
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "30d40e9fae91cd0f7490ecfd72f51554834f339f2ca60eadbd7748d49f3dd4df",
+      "source_sha256": "ff89824e8d313a017d3e17221cf756cbe89386169f7abe48264f335374123e2c",
+      "subject": "artwork",
+      "work_slug": "chromatic-construction-i"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "sarah-fitzgibbon",
+      "asset": "plotart/artists/sarah-fitzgibbon/img/chromatic-construction-i-2-600.webp",
+      "bytes": 172606,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (Display P3)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aex8rq3x86c",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        450,
+        600
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "02d0a7715a3106dcee822d1313b3b474c8e1122738bd5cf5c5e753b7b7c7db9c",
+      "source_sha256": "bce09c615cb2176149fce79b36babd054f0fc3f9c897501a790a3658075fcb42",
+      "subject": "artwork",
+      "work_slug": "chromatic-construction-i"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "sarah-fitzgibbon",
+      "asset": "plotart/artists/sarah-fitzgibbon/img/chromatic-construction-i-2-2000.webp",
+      "bytes": 1359158,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (Display P3)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aex8rq3x86c",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        1500,
+        2000
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "2f79b04dda81899b71edb11583a8592263ff7f07117b0fc95d0d37b35ec4538a",
+      "source_sha256": "bce09c615cb2176149fce79b36babd054f0fc3f9c897501a790a3658075fcb42",
+      "subject": "artwork",
+      "work_slug": "chromatic-construction-i"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "sarah-fitzgibbon",
+      "asset": "plotart/artists/sarah-fitzgibbon/img/chromatic-construction-i-3-600.webp",
+      "bytes": 44138,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (Display P3)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aex8rq3x86c",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        450,
+        600
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "e715fc21426ebd10c33e161e1f935c4f4b6e17eb0c806a7255c17fb7ce59c088",
+      "source_sha256": "6ac40d72e4511293ff5169de508a04023a03f4a1a117349feefc18b37af7cd07",
+      "subject": "artwork",
+      "work_slug": "chromatic-construction-i"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "sarah-fitzgibbon",
+      "asset": "plotart/artists/sarah-fitzgibbon/img/chromatic-construction-i-3-2000.webp",
+      "bytes": 507726,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (Display P3)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aex8rq3x86c",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        1500,
+        2000
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "bb47383466fd0b16ea6a29e201aa6364df7f65ee1ed8ff557c7c079b248e4072",
+      "source_sha256": "6ac40d72e4511293ff5169de508a04023a03f4a1a117349feefc18b37af7cd07",
+      "subject": "artwork",
+      "work_slug": "chromatic-construction-i"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "sarah-fitzgibbon",
+      "asset": "plotart/artists/sarah-fitzgibbon/img/chromatic-construction-i-4-600.webp",
+      "bytes": 35564,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (Display P3)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aex8rq3x86c",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        450,
+        600
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "1273e87f1905c75ed33646a0d7147fbe39e094453198d0d28762161c20525594",
+      "source_sha256": "ebaf3cd1c9ea61557b6c8da1aefa5dccec320e2aac8e0414712d54d6937bc7d1",
+      "subject": "artwork",
+      "work_slug": "chromatic-construction-i"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "sarah-fitzgibbon",
+      "asset": "plotart/artists/sarah-fitzgibbon/img/chromatic-construction-i-4-2000.webp",
+      "bytes": 476282,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (Display P3)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aex8rq3x86c",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        1500,
+        2000
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "d78fa9c36aee9bd9646bd8e36e8ba00f2cbaec3588fe6206292e804582a40b60",
+      "source_sha256": "ebaf3cd1c9ea61557b6c8da1aefa5dccec320e2aac8e0414712d54d6937bc7d1",
+      "subject": "artwork",
+      "work_slug": "chromatic-construction-i"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "sarah-fitzgibbon",
+      "asset": "plotart/artists/sarah-fitzgibbon/img/boxed-in-1-600.webp",
+      "bytes": 91500,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "sRGB (no embedded profile; treated as sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aex8rq3x86c",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        600,
+        600
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "20100409f3827b1c6d720956dafba910e5fee8deddb500174f3a78b02a75da21",
+      "source_sha256": "29a49900cd947cfdea66effcef3bf2924939d02a4e8deafac84ae167e7b8795f",
+      "subject": "artwork",
+      "work_slug": "boxed-in"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "sarah-fitzgibbon",
+      "asset": "plotart/artists/sarah-fitzgibbon/img/boxed-in-1-1200.webp",
+      "bytes": 395942,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "sRGB (no embedded profile; treated as sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aex8rq3x86c",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        1200,
+        1200
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "2d2254d0c0a404506081638514d66bbf67c0d32accd7dd0b19d785900f3c60a6",
+      "source_sha256": "29a49900cd947cfdea66effcef3bf2924939d02a4e8deafac84ae167e7b8795f",
+      "subject": "artwork",
+      "work_slug": "boxed-in"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "sarah-fitzgibbon",
+      "asset": "plotart/artists/sarah-fitzgibbon/img/boxed-in-1-2000.webp",
+      "bytes": 854714,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "sRGB (no embedded profile; treated as sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aex8rq3x86c",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        2000,
+        2000
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "c57afe14ae1b32345d5988833c269f29449420b69ca54a1896703a7d3365348c",
+      "source_sha256": "29a49900cd947cfdea66effcef3bf2924939d02a4e8deafac84ae167e7b8795f",
+      "subject": "artwork",
+      "work_slug": "boxed-in"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "sarah-fitzgibbon",
+      "asset": "plotart/artists/sarah-fitzgibbon/img/boxed-in-2-600.webp",
+      "bytes": 83978,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (Display P3)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aex8rq3x86c",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        450,
+        600
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "9fee60ba02a89fedee22f371c4ad451c1691b7811b5e4902af3a6d239dfd14cf",
+      "source_sha256": "48dbd1bb8a2b24be80103d00882b38e7a6b903aab16feaaaa746fab9f56c7762",
+      "subject": "artwork",
+      "work_slug": "boxed-in"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "sarah-fitzgibbon",
+      "asset": "plotart/artists/sarah-fitzgibbon/img/boxed-in-2-2000.webp",
+      "bytes": 885982,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (Display P3)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aex8rq3x86c",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        1500,
+        2000
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "0c4fd5128bd76583b2156a07df8a05ef2386211681b6cfb94e5685ffe3ddd3ad",
+      "source_sha256": "48dbd1bb8a2b24be80103d00882b38e7a6b903aab16feaaaa746fab9f56c7762",
+      "subject": "artwork",
+      "work_slug": "boxed-in"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "sarah-fitzgibbon",
+      "asset": "plotart/artists/sarah-fitzgibbon/img/boxed-in-3-600.webp",
+      "bytes": 63426,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (Display P3)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aex8rq3x86c",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        450,
+        600
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "ace585cd81b63e2cc42e9b363c0e1817fe5d661a408a79911d47e4b8d6911818",
+      "source_sha256": "daacfbc88bc249cd54d0b0e6a2fd5333cdf62fad27cefea284ea53d2d6642286",
+      "subject": "artwork",
+      "work_slug": "boxed-in"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "sarah-fitzgibbon",
+      "asset": "plotart/artists/sarah-fitzgibbon/img/boxed-in-3-2000.webp",
+      "bytes": 756890,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (Display P3)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aex8rq3x86c",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        1500,
+        2000
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "44d212aa9edd0b51d62fde2a027a27456369e2a021e513d213ef6871361c61d0",
+      "source_sha256": "daacfbc88bc249cd54d0b0e6a2fd5333cdf62fad27cefea284ea53d2d6642286",
+      "subject": "artwork",
+      "work_slug": "boxed-in"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "sarah-fitzgibbon",
+      "asset": "plotart/artists/sarah-fitzgibbon/img/boxed-in-4-600.webp",
+      "bytes": 108496,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (Display P3)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aex8rq3x86c",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        450,
+        600
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "9ef09b2544a22748f0af2b721db579aa14d49abd6a73e5e6a5518e0d0c1483e1",
+      "source_sha256": "697c0fc600e364ae3022ea586286fecee6c3b6bb3f154fa0774a9906b81adb71",
+      "subject": "artwork",
+      "work_slug": "boxed-in"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "sarah-fitzgibbon",
+      "asset": "plotart/artists/sarah-fitzgibbon/img/boxed-in-4-2000.webp",
+      "bytes": 847548,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (Display P3)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aex8rq3x86c",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        1500,
+        2000
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "28c295a2169c450c20506d6c9ec4fd6b1768142251febe25582055a2d81835c6",
+      "source_sha256": "697c0fc600e364ae3022ea586286fecee6c3b6bb3f154fa0774a9906b81adb71",
+      "subject": "artwork",
+      "work_slug": "boxed-in"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "sarah-fitzgibbon",
+      "asset": "plotart/artists/sarah-fitzgibbon/img/chromatic-construction-ii-1-600.webp",
+      "bytes": 26646,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "sRGB (no embedded profile; treated as sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aex8rq3x86c",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        600,
+        600
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "92c7c5feac3405392138e1f2cd73a6017f06af0016c4aa78c663fa6d482c5d24",
+      "source_sha256": "77f351ad10bb1f1369bed61c73bc7bab3687a6d8187e201a472d68fcdb540110",
+      "subject": "artwork",
+      "work_slug": "chromatic-construction-ii"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "sarah-fitzgibbon",
+      "asset": "plotart/artists/sarah-fitzgibbon/img/chromatic-construction-ii-1-1200.webp",
+      "bytes": 169774,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "sRGB (no embedded profile; treated as sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aex8rq3x86c",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        1200,
+        1200
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "53e06c13a216df8870d7c45dba945a109685b14b439f6aafe4c7959f9ac8d3ea",
+      "source_sha256": "77f351ad10bb1f1369bed61c73bc7bab3687a6d8187e201a472d68fcdb540110",
+      "subject": "artwork",
+      "work_slug": "chromatic-construction-ii"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "sarah-fitzgibbon",
+      "asset": "plotart/artists/sarah-fitzgibbon/img/chromatic-construction-ii-1-2000.webp",
+      "bytes": 482904,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "sRGB (no embedded profile; treated as sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aex8rq3x86c",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        2000,
+        2000
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "cb34f0309881ed31a2505c214490080e61f8374f710d40983d1d85ab780b2607",
+      "source_sha256": "77f351ad10bb1f1369bed61c73bc7bab3687a6d8187e201a472d68fcdb540110",
+      "subject": "artwork",
+      "work_slug": "chromatic-construction-ii"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "sarah-fitzgibbon",
+      "asset": "plotart/artists/sarah-fitzgibbon/img/chromatic-construction-ii-2-600.webp",
+      "bytes": 104754,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (Display P3)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aex8rq3x86c",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        450,
+        600
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "8c3831020c683aec28b15d81726c49584805c3277e02a46e24554ada8bba49a7",
+      "source_sha256": "138059dd9e7bfbfdd5f5583fc00fc9304e15aa53ae7ab36d76b5c855e85eef80",
+      "subject": "artwork",
+      "work_slug": "chromatic-construction-ii"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "sarah-fitzgibbon",
+      "asset": "plotart/artists/sarah-fitzgibbon/img/chromatic-construction-ii-2-2000.webp",
+      "bytes": 677894,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (Display P3)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aex8rq3x86c",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        1500,
+        2000
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "3a14591036219d17dca2e5f05fd29672e7a2f0052189cfc27b16af79164597af",
+      "source_sha256": "138059dd9e7bfbfdd5f5583fc00fc9304e15aa53ae7ab36d76b5c855e85eef80",
+      "subject": "artwork",
+      "work_slug": "chromatic-construction-ii"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "sarah-fitzgibbon",
+      "asset": "plotart/artists/sarah-fitzgibbon/img/chromatic-construction-ii-3-600.webp",
+      "bytes": 42396,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (Display P3)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aex8rq3x86c",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        450,
+        600
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "50ed88bc6abd169f48b97b96135b076f3ce2fe727ff4d4dcc17708f7b39a4d5b",
+      "source_sha256": "48c0fbef46d0c4ab247f3e91700b85444abcf3e4fe57c1e56aa35d235cb1f365",
+      "subject": "artwork",
+      "work_slug": "chromatic-construction-ii"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "sarah-fitzgibbon",
+      "asset": "plotart/artists/sarah-fitzgibbon/img/chromatic-construction-ii-3-2000.webp",
+      "bytes": 459408,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (Display P3)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-aex8rq3x86c",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        1500,
+        2000
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "a25801e30b766ea269a733e471a1ee7b77351dcad3b28a92831db8a0c281be5a",
+      "source_sha256": "48c0fbef46d0c4ab247f3e91700b85444abcf3e4fe57c1e56aa35d235cb1f365",
+      "subject": "artwork",
+      "work_slug": "chromatic-construction-ii"
     }
   ],
   "legacy_undeclared": [
