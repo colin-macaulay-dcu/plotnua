@@ -48,7 +48,7 @@ rec('L2', 'a Stripe TEST key is configured', 'local', 'PASS');
 
 // raw calls for objects the pilot never creates itself (direct test payments, disputes, balances)
 async function stripe(method, path, body = null, account = null, idem = null) {
-  const h = { Authorization: `Bearer ${KEY}` };
+  const h = { Authorization: `Bearer ${KEY}`, 'Stripe-Version': S.V1_API_VERSION };
   if (account) h['Stripe-Account'] = account;
   if (idem) h['Idempotency-Key'] = idem;
   if (body) h['Content-Type'] = 'application/x-www-form-urlencoded';
@@ -134,7 +134,7 @@ if (PHASES.includes('provider')) {
 
     // a direct charge with the same parameters Checkout uses (payment_intent_data), paid with a test payment method
     async function charge(amount, fee, pm, tag) {
-      const r = await stripe('POST', '/v1/payment_intents', { amount, currency: 'eur', payment_method: pm, confirm: 'true', payment_method_types: ['card'],
+      const r = await stripe('POST', '/v1/payment_intents', { amount, currency: 'eur', payment_method: pm, confirm: 'true', allowed_payment_method_types: ['card'],
         ...(fee ? { application_fee_amount: fee } : {}), metadata: { plotart_order: 'harness-' + tag, run: RUN }, expand: ['latest_charge.balance_transaction'] }, ACCOUNT, `harness-${RUN}-${tag}`);
       if (!r.ok) throw Object.assign(new Error(r.j.error && r.j.error.message), { code: r.j.error && r.j.error.code });
       return r.j;

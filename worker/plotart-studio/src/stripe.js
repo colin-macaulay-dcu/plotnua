@@ -42,6 +42,10 @@ export function form(obj, prefix = '', out = []) {
 /* API v2 requests are JSON and must name an API version. Pinned here (override with STRIPE_V2_API_VERSION) and sent on
    /v2 requests only, so v1 calls keep the platform account's pinned version. */
 export const V2_API_VERSION = '2026-10-28.endive';
+/* v1 requests are pinned too (override with STRIPE_API_VERSION), so the pilot does not change behaviour when a Stripe
+   account's default version differs. Endive (2026-09-30) removed payment_method_types from Checkout Sessions and
+   PaymentIntents; the pilot uses allowed_payment_method_types instead. */
+export const V1_API_VERSION = '2026-10-28.endive';
 
 async function call(env, method, path, { body = null, account = null, idem = null, query = '' } = {}) {
   const k = testKey(env);
@@ -51,7 +55,7 @@ async function call(env, method, path, { body = null, account = null, idem = nul
   const v2 = path.startsWith('/v2/');
   const headers = { Authorization: `Bearer ${env.STRIPE_SECRET_KEY}` };
   if (v2) headers['Stripe-Version'] = env.STRIPE_V2_API_VERSION || V2_API_VERSION;
-  else if (env.STRIPE_API_VERSION) headers['Stripe-Version'] = env.STRIPE_API_VERSION;   // otherwise the platform account's pinned version
+  else headers['Stripe-Version'] = env.STRIPE_API_VERSION || V1_API_VERSION;
   if (account) headers['Stripe-Account'] = account;
   if (idem) headers['Idempotency-Key'] = idem;
   if (body) headers['Content-Type'] = v2 ? 'application/json' : 'application/x-www-form-urlencoded';
@@ -96,7 +100,7 @@ export const getAccount = (env, account) => call(env, 'GET', `/v1/accounts/${enc
 
 export const createSession = (env, { account, idem, order, title, artworkCents, deliveryCents, feeCents, expiresAt, buyerEmail, successUrl, cancelUrl, statement }) =>
   call(env, 'POST', '/v1/checkout/sessions', { account, idem, body: {
-    mode: 'payment', currency: 'eur', payment_method_types: ['card'], customer_email: buyerEmail || undefined,
+    mode: 'payment', currency: 'eur', allowed_payment_method_types: ['card'], customer_email: buyerEmail || undefined,
     client_reference_id: order.id, expires_at: Math.floor(Date.parse(expiresAt) / 1000),
     success_url: successUrl, cancel_url: cancelUrl,
     line_items: [

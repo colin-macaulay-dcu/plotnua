@@ -60,6 +60,7 @@ async function stripe(req) {
   if (u.pathname === '/v2/core/account_links' && req.method === 'POST') return ok({ object: 'v2.core.account_link', account: jb.account, url: `https://accounts.stripe.test/r/${jb.account}`, use_case: jb.use_case, livemode: false });
   if ((mm = u.pathname.match(/^\/v2\/core\/accounts\/(acct_[\w]+)$/)) && req.method === 'GET') return M.v2accounts[mm[1]] ? ok(M.v2accounts[mm[1]]) : err('no such account', 404);
   if ((mm = u.pathname.match(/^\/v1\/accounts\/(acct_[\w]+)$/))) return M.accounts[mm[1]] ? ok(M.accounts[mm[1]]) : err('no such account', 404);
+  if (u.pathname === '/v1/checkout/sessions' && req.method === 'POST' && Object.keys(f).some(k => k.startsWith('payment_method_types'))) return err('Received unknown parameter: payment_method_types', 400);
   if (u.pathname === '/v1/checkout/sessions' && req.method === 'POST') {
     if (!acct) return err('direct charge expected');
     const items = [0, 1].filter(i => f[`line_items[${i}][price_data][unit_amount]`]).map(i => Number(f[`line_items[${i}][price_data][unit_amount]`]));
@@ -159,7 +160,7 @@ check('C7 Stripe-hosted onboarding (Accounts v2): the artist’s own account, ar
   && accCall.jb.dashboard === 'full' && accCall.jb.configuration.merchant.capabilities.card_payments.requested === true && accCall.ctype === 'application/json' && /^\d{4}-\d{2}-\d{2}\.\w+$/.test(accCall.version || ''), accCall);
 check('C7a onboarding link is an Account Link v2 in the endive shape (no configurations field); no v1 account creation is attempted',
   linkCall && linkCall.jb.use_case.type === 'account_onboarding' && !('configurations' in linkCall.jb.use_case.account_onboarding) && linkCall.jb.use_case.account_onboarding.return_url && linkCall.jb.use_case.account_onboarding.refresh_url && !M.calls.some(c => c.path === '/v1/accounts' && c.method === 'POST'), linkCall);
-check('C7b only v2 requests carry the pinned Stripe-Version; v1 requests keep the account default', M.calls.filter(c => c.path.startsWith('/v1/')).every(c => !c.version));
+check('C7b every request names its API version (v2 and v1 both pinned, independent of the account default)', M.calls.every(c => /^\d{4}-\d{2}-\d{2}\.\w+$/.test(c.version || '')));
 check('C8 only a TEST secret key was presented to the provider', M.calls.every(c => c.auth === 'Bearer sk_test_mockkey123'));
 for (const [aid, e] of [['afnd', FND], ['aold', OLD], ['aunk', UNK]]) await call('POST', '/api/checkout/onboarding', e, { country: 'IE' });
 r = await call('POST', '/api/admin/checkout/accounts/agal/refresh', FOUNDER, {});
