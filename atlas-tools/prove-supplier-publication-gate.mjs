@@ -358,7 +358,8 @@ rows = rec["records"] if isinstance(rec, dict) else rec
 d = copy.deepcopy(rec)
 tgt = [r for r in (d["records"] if isinstance(d, dict) else d)
        if r.get("organisation_code") == "ORG-000153"][0]
-tgt.pop("founder_exception", None)
+tgt["listing_review"]["state"] = "AWAITING_CONFIRMATION"
+tgt["listing_review"]["confirmed_at"] = None
 P.Path("/tmp/pg11-no-exception.json").write_text(json.dumps(d))
 m.RIGHTS = P.Path("/tmp/pg11-no-exception.json"); m._GATE = None
 print(repr(m.publication_hold("BIOBUILDS")))
@@ -395,8 +396,14 @@ print(repr(m.publication_hold("BIOBUILDS")))
      HOLD BIOBUILDS on the real records -- and still hold it with the key
      stripped. The variable keeps its name so the capability mutations that
      target this check still bite. */
-  const freedByDecision =
-    (lines[0] || '').includes('listing-review-awaiting-confirmation');
+  /* RE-AIMED 17 November 2026: BIOBUILDS CONFIRMED the corrected preview in
+     writing and approved publication (PN-EVID-BIOBUILDS-20261117; founder
+     approval 'PlotNua — BioBuilds publication approval', 17 Nov 2026). The
+     record now carries listing_review.state CONFIRMED, so the generator must
+     FREE BIOBUILDS on the real records -- and must hold it again when the
+     probe puts the review back to AWAITING_CONFIRMATION, which proves the
+     supplier's confirmation (not a loosened gate) is what releases it. */
+  const freedByDecision = (lines[0] || '').trim() === 'None';
   /* RE-AIMED 14 October 2026 (fail-closed correction). This line used to
      assert that an organisation with NO rights record is free -- the
      fail-open, written down as a requirement. It now asserts the opposite:
@@ -411,7 +418,7 @@ print(repr(m.publication_hold("BIOBUILDS")))
   const heldWithoutIt =
     (lines[3] || '').includes('listing-review-awaiting-confirmation');
   (freedByDecision && ungatedFree && mirrorsAgree && heldWithoutIt)
-    ? ok('PG11 the generator holds BIOBUILDS now the founder exception is revoked, holds '
+    ? ok('PG11 the generator frees BIOBUILDS on its own confirmation, holds '
          + 'it again without one, and shares the unwaivable list',
          `biobuilds=${lines[0]} ungated=${lines[1]} without=${(lines[3] || '').slice(0, 42)}`)
     : bad('PG11 the generator agrees with the decision and with the JS gate',

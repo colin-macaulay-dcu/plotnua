@@ -876,11 +876,15 @@ console.log('\n  PART D · A6 supplier recognition, accents and plurals (12 Nov 
   check(`D3 ${unpub.length * 3} addresses of suppliers with no published record return nothing`, upBad.length === 0, JSON.stringify(upBad));
 
   /* D4 unknown and look-alike addresses return nothing (no substring noise) */
-  const neg = ['harvia.com', 'example.ie', 'plotnua.ie', 'google.com', 'hutsmith.com', 'biobuilds.com',
+  /* 17 Nov 2026: 'biobuilds.com' left this list -- BIOBUILDS confirmed its
+     preview and is now published, so its address correctly finds it (D4b). */
+  const neg = ['harvia.com', 'example.ie', 'plotnua.ie', 'google.com', 'hutsmith.com',
                'nuamodular.com', 'summerhouse24.co.uk', 'gardenhouse24.co.uk', 'sproutpod.com', 'xsproutpod.ie',
                'sproutpod.ie.evil.com', 'https://www.poshshedsni.com/', 'steeltechsheds.ie'];
   const negBad = neg.filter((x) => tot(q(x)) > 0);
   check(`D4 ${neg.length} unknown, ineligible and look-alike addresses return nothing`, negBad.length === 0, JSON.stringify(negBad));
+  /* D4b a supplier released by the publication gate is found by its own address */
+  check('D4b "biobuilds.com" answers once BIOBUILDS is published', tot(q('biobuilds.com')) > 0, String(tot(q('biobuilds.com'))));
 
   /* D5 accents fold on both sides */
   const ood = q('ÖÖD');

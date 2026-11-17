@@ -49,8 +49,11 @@ const CASES = [
     /* RE-AIMED 16 October 2026: FX-BIOBUILDS-PUBLISH-20261011 is revoked and
        the record derives HOLD, so the contradiction worth planting is now a
        hand-set PUBLISHABLE -- the state a careless re-publish leaves. */
-    t => t.record(r => { r.public_visibility = 'PUBLISHABLE';
-                         r.hold_reason = null; })],
+    /* RE-AIMED 17 November 2026: BIOBUILDS confirmed the preview and the
+       record derives PUBLISHABLE again, so the contradiction worth planting
+       is a hand-set HOLD left behind by a stale record. */
+    t => t.record(r => { r.public_visibility = 'HOLD';
+                         r.hold_reason = 'listing-review-awaiting-confirmation'; })],
 
   /* RE-AIMED 11 October 2026. This case used to flip class3a to CANDIDATE.
      Under the corrected architecture that is no longer a defect -- a held
@@ -65,7 +68,11 @@ const CASES = [
      published -- which is precisely the state a half-finished revert leaves
      behind. */
   ['C-PG2', 'PG2', 'a product stays published after the founder decision is removed',
-    t => { t.record(r => { delete r.founder_exception; });
+    /* RE-AIMED 17 November 2026: publication now rests on the supplier's
+       confirmation, so the half-finished revert worth planting is the review
+       put back to AWAITING_CONFIRMATION with the product left published. */
+    t => { t.record(r => { r.listing_review.state = 'AWAITING_CONFIRMATION';
+                           r.listing_review.confirmed_at = null; });
            t.universe(d => {
       d.publicationGate = { version: 'supplier-publication-gate-v1',
                             heldOrganisations: ['BIOBUILDS'] };
@@ -87,11 +94,14 @@ const CASES = [
       "gateEnforced ? p.publicVisibility !== 'PUBLISHABLE'",
       "false ? p.publicVisibility !== 'PUBLISHABLE'"))],
 
-  ['C-PG3', 'PG3', 'the review state is quietly flipped to CONFIRMED',
+  /* RE-AIMED 17 November 2026: BIOBUILDS' review is now genuinely CONFIRMED
+     (17 Nov 2026), so flipping it to CONFIRMED is a no-op. The defect PG3
+     owns is a CONFIRMED that was not earned -- no confirmation date -- so the
+     mutation now strips the date and leaves the state claiming a yes. */
+  ['C-PG3', 'PG3', 'a CONFIRMED review loses the date that earned it',
     t => t.record(r => {
       r.listing_review.state = 'CONFIRMED';
-      r.public_visibility = 'HOLD';          // left stale on purpose
-      r.hold_reason = 'listing-review-awaiting-confirmation';
+      r.listing_review.confirmed_at = null;
     })],
 
   ['C-PG4', 'PG4', 'a pre-live-review grant is marked NOT_REQUIRED',
