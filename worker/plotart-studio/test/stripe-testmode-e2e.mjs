@@ -91,6 +91,15 @@ export async function e2e({ rec, KEY, ACCOUNT, RUN, port, whsec, stripe, sleep }
       page.on('requestfailed', r => diag.failedRequests.push(`${r.method()} ${safeUrl(r.url())} ${r.failure() && r.failure().errorText}`));
       page.on('response', r => { if (r.status() >= 400) diag.httpErrors.push(`${r.status()} ${r.request().method()} ${safeUrl(r.url())}`); });
       const step = s => diag.steps.push(`${new Date().toISOString().slice(11, 19)} ${s}`);
+      // The pilot's success_url/cancel_url use the test origin ${ORIGIN}, which deliberately does not resolve. Serve it in
+      // this browser from the locally running pilot checkout Worker, so Stripe's redirect lands on the pilot's REAL return
+      // page (run 14: both payments succeeded but the redirect failed with ERR_NAME_NOT_RESOLVED).
+      await page.route(ORIGIN + '/**', async rt => {
+        const u = new URL(rt.request().url());
+        const r = await CW.fetch(`http://checkout.local${u.pathname}${u.search}`, { method: rt.request().method() });
+        diag.returnPage = { path: u.pathname.replace(/\/q\/[^/]+/, '/q/…'), result: u.searchParams.get('result'), status: r.status };
+        await rt.fulfill({ status: r.status, headers: { 'content-type': r.headers.get('content-type') || 'text/html' }, body: await r.text() });
+      });
       try {
         await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 60_000 }); step('loaded ' + safeUrl(page.url()));
         // wait for the hosted page to show its card form, or a collapsed card option, before doing anything
@@ -119,7 +128,8 @@ export async function e2e({ rec, KEY, ACCOUNT, RUN, port, whsec, stripe, sleep }
         const linkWin = page.getByText(/complete your payment in the open link window/i).waitFor({ state: 'visible', timeout: 90_000 }).then(() => 'link');
         const how = await Promise.race([back, linkWin]).catch(e => { throw e; });
         if (how === 'link') throw new Error('a Link wallet window opened instead of the card payment');
-        step('returned to success_url');
+        step(`returned to the pilot's return page (result=${diag.returnPage && diag.returnPage.result}, HTTP ${diag.returnPage && diag.returnPage.status})`);
+        if (!diag.returnPage || diag.returnPage.result !== 'success') throw new Error('Checkout did not return with result=success');
         return { ok: true, diag };
       } catch (e) {
         step('ERROR ' + String(e.message).split('\n')[0].slice(0, 200));
@@ -137,13 +147,22 @@ export async function e2e({ rec, KEY, ACCOUNT, RUN, port, whsec, stripe, sleep }
     const o1 = await quote('wagal1', 'PA-E-261116-E2E001');
     rec('E2', 'the pilot opens real hosted checkout on the artist’s account for the approved quote', SRC, o1.status === 303 && /checkout\.stripe\.com/.test(o1.url || '') ? 'PASS' : 'FAIL', { status: o1.status, host: o1.url && new URL(o1.url).host });
     let paidOk = false;
-    try { const r = await payInBrowser(o1.url, '4242424242424242', 'pay'); paidOk = true; rec('E3a', 'buyer pays on the real hosted Stripe Checkout page (headless browser) and returns to the success page', SRC, 'PASS', { final_url: r.diag.finalUrl, steps: r.diag.steps }); }
+    try { const r = await payInBrowser(o1.url, '4242424242424242', 'pay'); paidOk = true; rec('E3a', 'buyer pays on the real hosted Stripe Checkout page (headless browser) and Stripe returns them to the pilot with result=success', SRC, 'PASS', { final_url: r.diag.finalUrl, return_page: r.diag.returnPage, steps: r.diag.steps }); }
     catch (e) { rec('E3a', 'buyer pays on the real hosted Stripe Checkout page (headless browser)', SRC, 'FAIL', { error: String(e.message).split('\n')[0].slice(0, 300), final_url: e.diag && e.diag.finalUrl, steps: e.diag && e.diag.steps, page_errors: e.diag && e.diag.pageErrors, http_errors: e.diag && e.diag.httpErrors.slice(0, 10) }); }
     const paid = await waitFor(async () => { const o = await order(o1.id); return o.payment_status === 'paid' ? o : null; }, paidOk ? 90_000 : 20_000);
     const evs = await q("SELECT event_id, type, status FROM payment_events WHERE order_id = ?", o1.id);
     const e3ok = paid && evs.some(e => e.type === 'checkout.session.completed' && e.status === 'processed') && (await db.prepare("SELECT availability FROM artworks WHERE id='wagal1'").first()).availability === 'sold';
     rec('E3', 'a REAL signed checkout.session.completed marks the order paid (and the work sold)', SRC, e3ok ? 'PASS' : paidOk ? 'FAIL' : 'SKIP',
       { ...(paidOk || e3ok ? {} : { blocked_by: 'E3a — no payment was made, so no completion event could arrive; webhook handling NOT exercised' }), payment_status: paid && paid.payment_status, events: evs });
+    { // E3c · the signed completion event belongs to THIS order's own Checkout Session, and no other order was touched
+      const own = await q(`SELECT pe.event_id, pe.object_id FROM payment_events pe JOIN checkout_sessions cs ON cs.id = pe.object_id
+        WHERE pe.type = 'checkout.session.completed' AND pe.status = 'processed' AND pe.order_id = ? AND cs.order_id = ?`, o1.id, o1.id);
+      const stray = await q(`SELECT event_id, order_id FROM payment_events WHERE type = 'checkout.session.completed' AND object_id IN (SELECT id FROM checkout_sessions WHERE order_id = ?) AND (order_id IS NULL OR order_id <> ?)`, o1.id, o1.id);
+      const sess1 = own[0] && (await stripe('GET', `/v1/checkout/sessions/${own[0].object_id}`, null, ACCOUNT)).j;
+      rec('E3c', 'the completion event is for this order’s own Checkout Session (matching client_reference_id, paid on Stripe) and was applied to no other order', SRC,
+        own.length === 1 && !stray.length && sess1 && sess1.client_reference_id === o1.id && sess1.payment_status === 'paid' && sess1.payment_intent === (paid && paid.payment_intent) ? 'PASS' : paidOk ? 'FAIL' : 'SKIP',
+        { events: own.map(e => e.event_id), stray, stripe_session: sess1 && { client_reference_id_matches: sess1.client_reference_id === o1.id, payment_status: sess1.payment_status, payment_intent_matches: sess1.payment_intent === (paid && paid.payment_intent) } });
+    }
     if (paid) {
       const pi = (await stripe('GET', `/v1/payment_intents/${paid.payment_intent}?expand[]=latest_charge.balance_transaction`, null, ACCOUNT)).j;
       let ch = pi.latest_charge;   // the fee and balance transaction are created asynchronously: wait for them
@@ -168,11 +187,20 @@ export async function e2e({ rec, KEY, ACCOUNT, RUN, port, whsec, stripe, sleep }
     // 4 · dispute delivered as a real event
     const o3 = await quote('wagal3', 'PA-E-261116-E2E003', 5000, 0);
     let dispPaid = false;
-    try { const r = await payInBrowser(o3.url, '4000000000000259', 'dispute'); dispPaid = true; rec('E7a', 'buyer pays with the dispute test card on the real hosted Checkout page', SRC, 'PASS', { final_url: r.diag.finalUrl }); }
+    try { const r = await payInBrowser(o3.url, '4000000000000259', 'dispute'); dispPaid = true; rec('E7a', 'buyer pays with the dispute test card on the real hosted Checkout page and returns with result=success', SRC, 'PASS', { final_url: r.diag.finalUrl, return_page: r.diag.returnPage }); }
     catch (e) { rec('E7a', 'buyer pays with the dispute test card on the real hosted Checkout page', SRC, 'FAIL', { error: String(e.message).split('\n')[0].slice(0, 300), final_url: e.diag && e.diag.finalUrl, steps: e.diag && e.diag.steps, page_errors: e.diag && e.diag.pageErrors }); }
     const disputed = dispPaid ? await waitFor(async () => (await order(o3.id)).dispute_status === 'open', 150_000) : null;
     rec('E7', 'a REAL charge.dispute.created (arriving after or before the payment event) marks the order disputed', SRC, disputed ? 'PASS' : dispPaid ? 'FAIL' : 'SKIP',
       { ...(dispPaid ? {} : { blocked_by: 'E7a — no payment was made, so no dispute could open; webhook handling NOT exercised' }), status: (await order(o3.id)).status, dispute_status: (await order(o3.id)).dispute_status, events: await q("SELECT type, status FROM payment_events WHERE object_id LIKE 'dp_%' OR order_id = ?", o3.id) });
+    { // E7c · the dispute event was applied to the order whose payment Stripe says was disputed
+      const o = await order(o3.id);
+      const dEv = await q("SELECT event_id, object_id FROM payment_events WHERE type = 'charge.dispute.created' AND status = 'processed' AND order_id = ?", o3.id);
+      const dsp = dEv[0] && (await stripe('GET', `/v1/disputes/${dEv[0].object_id}`, null, ACCOUNT)).j;
+      const others = await q("SELECT order_id FROM payment_events WHERE type = 'charge.dispute.created' AND (order_id IS NULL OR order_id <> ?)", o3.id);
+      rec('E7c', 'the dispute event was applied to the order whose PaymentIntent Stripe disputed, and to no other order', SRC,
+        dEv.length === 1 && dsp && dsp.payment_intent === o.payment_intent && !others.length ? 'PASS' : dispPaid ? 'FAIL' : 'SKIP',
+        { events: dEv.map(e => e.event_id), payment_intent_matches: !!dsp && dsp.payment_intent === o.payment_intent, dispute_amount: dsp && dsp.amount, dispute_reason: dsp && dsp.reason, other_orders: others });
+    }
     // E8 only counts if the events this run depends on actually arrived and were processed
     const all = await q('SELECT type, status FROM payment_events');
     const bad = all.filter(e => e.status === 'failed');
