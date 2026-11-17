@@ -60,7 +60,7 @@ export async function e2e({ rec, KEY, ACCOUNT, RUN, port, whsec, stripe, sleep }
     }
     async function payInBrowser(url, card, tag) {
       if (!browser) { const req = createRequire(process.env.MINIFLARE_FROM || '/tmp/claude-0/studio-tools/package.json'); browser = await req('playwright').chromium.launch(); }
-      const page = await browser.newPage({ locale: 'en-IE' });
+      const page = await browser.newPage({ locale: 'en-IE', timezoneId: 'Europe/Dublin', viewport: { width: 1280, height: 1000 } });
       try {
         await page.goto(url, { waitUntil: 'networkidle', timeout: 60_000 }).catch(() => page.waitForLoadState('domcontentloaded'));
         // Checkout may show payment methods as an accordion; open the card option if it is collapsed
@@ -76,7 +76,13 @@ export async function e2e({ rec, KEY, ACCOUNT, RUN, port, whsec, stripe, sleep }
         const name = await find(['#billingName', 'input[autocomplete="cc-name"]']); if (name) await name.fill('E2E Test Buyer');
         if (await page.locator('#billingCountry').count()) await page.locator('#billingCountry').selectOption('IE').catch(() => {});
         const pc = await find(['#billingPostalCode', 'input[autocomplete="postal-code"]']); if (pc) await pc.fill('D02 X285').catch(() => {});
-        await page.locator('button[type="submit"], [data-testid="hosted-payment-submit-button"]').first().click();
+        // the Pay button (Playwright locators reach into Checkout's shadow DOM; plain querySelector does not)
+        let pay = null;
+        for (const l of [page.getByTestId('hosted-payment-submit-button'), page.locator('.SubmitButton'), page.getByRole('button', { name: /^(pay|complete)/i }), page.locator('button[type="submit"]')])
+          if (await l.count().catch(() => 0)) { pay = l.first(); break; }
+        if (!pay) throw new Error('Pay button not found');
+        await page.screenshot({ path: `${HERE}stripe-test-evidence/checkout-${tag}-filled.png`, fullPage: true }).catch(() => {});
+        await pay.click({ timeout: 30_000 });
         await page.waitForURL(/plotart-checkout-test\.invalid/, { timeout: 60_000 }).catch(() => {});
       } catch (e) {
         // diagnostics for the evidence artifact: a screenshot and the visible form controls (no secrets on a test Checkout page)

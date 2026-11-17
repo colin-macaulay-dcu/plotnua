@@ -123,8 +123,9 @@ if (PHASES.includes('provider')) {
       const s = await S.createSession(env, { account: ACCOUNT, idem: `harness-${RUN}-s1`, order, title: 'Harness test artwork by Test Artist', artworkCents: 100000, deliveryCents: 7500, feeCents: 15000, expiresAt,
         buyerEmail: `buyer+${RUN}@plotnua.invalid`, successUrl: 'https://plotart-checkout-test.invalid/ok', cancelUrl: 'https://plotart-checkout-test.invalid/cancel', statement: 'PlotArt harness test' });
       rec('P4', 'Checkout Session on the artist’s account: €1,075 total, EUR, hosted on checkout.stripe.com, expiry as requested', 'stripe-test-api',
-        s.amount_total === 107500 && s.currency === 'eur' && /checkout\.stripe\.com/.test(s.url) && Math.abs(s.expires_at - Math.floor(Date.parse(expiresAt) / 1000)) <= 1 ? 'PASS' : 'FAIL',
-        { session: s.id, amount_total: s.amount_total, currency: s.currency, status: s.status, expires_at: s.expires_at });
+        s.amount_total === 107500 && s.currency === 'eur' && /checkout\.stripe\.com/.test(s.url) && Math.abs(s.expires_at - Math.floor(Date.parse(expiresAt) / 1000)) <= 1
+          && !(s.adaptive_pricing && s.adaptive_pricing.enabled) ? 'PASS' : 'FAIL',
+        { session: s.id, adaptive_pricing: s.adaptive_pricing, amount_total: s.amount_total, currency: s.currency, status: s.status, expires_at: s.expires_at });
       const again = await S.createSession(env, { account: ACCOUNT, idem: `harness-${RUN}-s1`, order, title: 'Harness test artwork by Test Artist', artworkCents: 100000, deliveryCents: 7500, feeCents: 15000, expiresAt,
         buyerEmail: `buyer+${RUN}@plotnua.invalid`, successUrl: 'https://plotart-checkout-test.invalid/ok', cancelUrl: 'https://plotart-checkout-test.invalid/cancel', statement: 'PlotArt harness test' });
       rec('P4b', 'the same idempotency key returns the same session (a retried request cannot open a second checkout)', 'stripe-test-api', again.id === s.id ? 'PASS' : 'FAIL', { first: s.id, second: again.id });
@@ -156,8 +157,16 @@ if (PHASES.includes('provider')) {
         pi.status === 'succeeded' && ch.application_fee_amount === 15000 ? 'PASS' : 'FAIL', { payment_intent: pi.id, charge: ch.id, application_fee: ch.application_fee, status: pi.status, async: pi._async });
       rec('P6b', 'the application fee and balance transaction appear asynchronously after the payment (Stripe default for direct charges)', 'stripe-test-api',
         ch.application_fee && ch.balance_transaction ? 'PASS' : 'FAIL', { application_fee: ch.application_fee, balance_transaction: !!ch.balance_transaction, ...pi._async });
-      rec('P7', 'Stripe’s actual processing fee on €1,075 (charged to the artist’s balance; compare the documented 1.5% + €0.25 ≈ €16.38)', 'stripe-test-api', 'INFO',
+      rec('P7', 'Stripe’s actual fee on €1,075 with the US test card (non-EEA pricing; charged to the artist’s balance)', 'stripe-test-api', 'INFO',
         { stripe_fee_cents: bt && bt.fee, fee_details: bt && bt.fee_details, net_cents: bt && bt.net, card_country: ch.payment_method_details && ch.payment_method_details.card && ch.payment_method_details.card.country, expected_standard_eea_cents: expectedFee(107500, pctFor.standard) });
+      // the same sale paid with an Irish (EEA) test card: the fee most PlotArt buyers would attract
+      try {
+        const ie = await charge(107500, 15000, 'pm_card_ie', 'fee-ie'), ich = ie.latest_charge, ibt = ich.balance_transaction;
+        const part = t => ((ibt && ibt.fee_details) || []).filter(d => d.type === t).reduce((a, d) => a + d.amount, 0);
+        rec('P7b', 'Stripe’s actual fee with an IRISH test card on the same €1,075 sale, split into processing fee, VAT on the fee and PlotArt commission', 'stripe-test-api', ibt ? 'INFO' : 'FAIL',
+          { card_country: ich.payment_method_details && ich.payment_method_details.card && ich.payment_method_details.card.country, stripe_fee_cents: part('stripe_fee'), vat_on_fee_cents: part('tax'), application_fee_cents: part('application_fee'), net_to_artist_cents: ibt && ibt.net, available_on: ibt && ibt.available_on });
+        await S.refund(env, { account: ACCOUNT, paymentIntent: ie.id, amount: 107500, idem: `harness-${RUN}-rf-fee-ie`, metadata: { plotart_refund: 'harness-fee-ie' } }).catch(() => {});
+      } catch (e) { rec('P7b', 'Irish card fee measurement', 'stripe-test-api', 'FAIL', { error: e.message, code: e.code }); }
       const rf = await S.refund(env, { account: ACCOUNT, paymentIntent: pi.id, amount: 107500, idem: `harness-${RUN}-rf-full`, metadata: { plotart_refund: 'harness-full' } });
       rec('P8', 'full refund on the artist’s account, application fee NOT refunded automatically', 'stripe-test-api', rf.status === 'succeeded' ? 'PASS' : 'FAIL', { refund: rf.id, status: rf.status });
       const feeAfterRefund = (await stripe('GET', `/v1/application_fees/${ch.application_fee}`)).j;

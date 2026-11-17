@@ -1,10 +1,10 @@
 {
   "_note": "Changing this file on the pilot branch requests a run of .github/workflows/plotart-checkout-stripe-test.yml (Stripe TEST mode only; waits for the founder's approval on the checkout-test environment). Nothing is deployed.",
-  "requested": "2026-11-17T14:05:00Z",
+  "requested": "2026-11-17T16:00:00Z",
   "phases": [
     "provider",
     "e2e"
   ],
-  "reason": "Run 11: repeat provider + e2e after harness fixes (wait for asynchronously created application fees and balance transactions; 3-minute wait for the failing refund; balance before/after the unfunded refund; Checkout card form located in frames, with screenshot diagnostics).",
+  "reason": "Run 12: Adaptive Pricing off (buyer pays the quoted euro figure); Irish-card fee measurement (P7b); Checkout Pay button located via test id/role; repeat provider + e2e.",
   "reuse_account": "acct_1UclJXHx1Olx8cdw"
 }

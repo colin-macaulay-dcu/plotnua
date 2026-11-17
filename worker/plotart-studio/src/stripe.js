@@ -101,6 +101,9 @@ export const getAccount = (env, account) => call(env, 'GET', `/v1/accounts/${enc
 export const createSession = (env, { account, idem, order, title, artworkCents, deliveryCents, feeCents, expiresAt, buyerEmail, successUrl, cancelUrl, statement }) =>
   call(env, 'POST', '/v1/checkout/sessions', { account, idem, body: {
     mode: 'payment', currency: 'eur', allowed_payment_method_types: ['card'], customer_email: buyerEmail || undefined,
+    // The quote is in euro. Adaptive Pricing would show and charge a converted local-currency price (seen in run 11: US$
+    // prices and a currency chooser for a buyer outside the euro area), so the buyer would not pay the quoted figure.
+    adaptive_pricing: { enabled: false },
     client_reference_id: order.id, expires_at: Math.floor(Date.parse(expiresAt) / 1000),
     success_url: successUrl, cancel_url: cancelUrl,
     line_items: [

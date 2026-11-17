@@ -625,6 +625,9 @@ try {
   check('OFF2 the existing Studio enquiries view still works', enq.status === 200 && (await enq.json()).ok === true);
 } finally { if (OFF) await OFF.mf.dispose(); rmSync(HERE + FIX, { recursive: true, force: true }); }
 
+{ const sc = M.calls.filter(c => c.path === '/v1/checkout/sessions' && c.method === 'POST');
+  check('C24 every Checkout Session is created in euro with Adaptive Pricing off (the buyer pays the quoted euro figure)', sc.length > 0 && sc.every(c => c.f['adaptive_pricing[enabled]'] === 'false' && c.f.currency === 'eur'), { sessions: sc.length }); }
+
 const passed = results.filter(Boolean).length;
 console.log(`\nMANAGED CHECKOUT PILOT · ${results.length} checks, ${passed} passed, ${results.length - passed} failed`);
 process.exit(passed === results.length ? 0 : 1);
