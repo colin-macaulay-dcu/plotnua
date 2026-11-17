@@ -116,3 +116,15 @@ None of these is taken as approved. Each recommendation is mine.
 - **Who carries the negative balance.** Under `losses_collector = stripe`, Stripe's documentation says Stripe carries unrecoverable negative balances. How Stripe recovers the balance from the artist, and what the artist owes Stripe, are **marked for review** against the Stripe Connected Account Agreement. See r8 notes §4 for the sources.
 - **PlotArt's Model B obligations are separate and unchanged.** PlotArt still reimburses the processing fee, returns the commission, and pays any shortfall directly.
 - **Deferred:** an alert when an artist's balance goes negative.
+
+
+## Addendum (23:40): runtime key, runs 29–30
+
+- **Run 29:** a harness bug, fixed. U8 confirmed the €15.92 net: the €20 sale had €4.08 in fees (€3.00 commission plus €1.08 Stripe fee and VAT). Running net: €80.82 → −€19.18 → −€3.26 → −€23.26.
+- **Run 30:** 27 pass, 1 fail.
+  - The public Worker ran entirely on the runtime key (30/30 calls, no fallback, no permission errors).
+  - Checkout, Model B reimbursement (€41.96, once), refunds, disputes, confirmations and buyer notices all passed.
+  - Identity, bank, balance, payout, PaymentIntent and account requests were all denied (403).
+  - **E17c FAIL:** creating a refund on a connected account was not denied (400 missing parameter). The key may hold a refund-write permission in connected accounts; this is for the founder to check.
+  - Not exercised: Disputes Read, and session expiry from the public Worker.
+- Details: `STRIPE-ACCESS-PROPOSAL.md` §5.

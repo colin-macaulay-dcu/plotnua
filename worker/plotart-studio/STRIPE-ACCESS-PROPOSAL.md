@@ -82,3 +82,27 @@ Your current key is not changed by these steps. Do them one at a time.
 6. Tell me it is saved. I will queue the run (phases `e2e` and `unfunded_ledger`), send you the approval link, and report each check, including any skipped.
 
 For live use, the same split would be created as separate live keys and stored as Cloudflare secrets of the two Workers, with your approval. That is not part of this pilot.
+
+
+## 5. Results: run 30 (17 Nov 2026, sandbox, Actions 44196705014)
+
+**Run 29** did not exercise the key's checkout permissions. A bug in the harness's call observer stopped checkout with a 502 before any request reached Stripe; it was fixed for run 30. Run 29 still confirmed E17b (403 ×3).
+
+| Check | Result | Evidence |
+|---|---|---|
+| E17a: key in the public Worker | **Verified** | Separate restricted TEST key; the runner key is absent from the Worker's settings |
+| E17d: no fallback to the runner key | **Verified** | All 30 Stripe calls from the public Worker carried the runtime key; 0 permission errors |
+| Checkout Sessions: Write, connected | **Verified** | `POST /v1/checkout/sessions` [connected] 200 ×5; E2/E3 PASS |
+| PaymentIntents: Read, connected | **Verified** | `GET /v1/payment_intents/…` [connected] 200 ×13 |
+| Charges: Read, connected (incl. balance transaction) | **Verified** | `GET /v1/charges/…` [connected] 200 ×4; E13 read the actual €34.11 + €7.85. **Balance: Read is not needed.** |
+| Refund status reads (Charges: Read, connected) | **Verified** | `GET /v1/refunds/…` [connected] 200 ×4 |
+| Application Fees: Write, platform | **Verified** | `POST /v1/application_fees/…/refunds` [platform] 200 ×4; E13/E13b reimbursed €41.96 once |
+| Disputes: Read, connected | **Not exercised** | No dispute read was needed: Stripe's events carried the fee lines. Dispute fees were still recorded (E14, E16) |
+| Expire a session from the public Worker | **Not exercised** | — |
+| Refused: v1 account, bank accounts, v2 identity | **Verified** | 403 ×3 (E17b) |
+| Refused: create PaymentIntent | **Verified** | 403 `more_permissions_required` ("Enabling Payment Intents Write…") |
+| Refused: read balance | **Verified** | 403 `more_permissions_required` ("Enabling Balance Read…") |
+| Refused: list payouts | **Verified** | 403 `more_permissions_required` ("Enabling Payouts Read…") |
+| Refused: create v2 account | **Verified** | 403 forbidden ("This key lacks access to Accounts v2") |
+| **Refused: create refund** | **NOT verified: E17c FAIL** | `POST /v1/refunds` [connected] with no parameters → **400** `invalid_request_error` "One of the following params should be provided for this request: payment_intent or charge." The other endpoints returned 403 before validating their (equally invalid) parameters. This suggests the key **is permitted** to create refunds on connected accounts, but it does not prove it. **Next step (founder):** check the key's Refunds or Charges setting under "In connected accounts". No change has been made. |
+| Studio key B | Not tested | — |
