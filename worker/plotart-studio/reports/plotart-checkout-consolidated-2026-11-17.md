@@ -136,3 +136,9 @@ None of these is taken as approved. Each recommendation is mine.
   - **E20 PASS:** dispute-fee fallback on a real dispute. The simulated input (the dispute event with its fee lines removed) is identified in the evidence, alongside Stripe's response.
   - **E17d PASS:** 7/7 calls on the runtime key.
   - The runtime-key coverage gaps are closed.
+
+## 18 Nov 2026: runtime key adopted for the sandbox pilot; permission testing closed
+
+- **Founder decision:** the separate restricted runtime key is adopted for the sandbox pilot. This round of permission testing is closed on runs 30–32.
+- **Recorded statuses:** run 32 concluded *failure* (E17c, the no-parameters refund probe). The valid buyer-refund denial is evidenced by run 31 (E17e).
+- **Live keys:** not covered; they need separate approval.

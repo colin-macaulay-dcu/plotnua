@@ -1,6 +1,13 @@
-# PlotArt payment pilot: narrower Stripe access (proposal, 17 November 2026)
+# PlotArt payment pilot: narrower Stripe access (17 November 2026; status updated 18 November 2026)
 
-**Status: proposal. Nothing has been changed.** Today a single restricted TEST key (`CHECKOUT_TEST_STRIPE_SECRET_KEY`) is used by both pilot Workers and by the test runner. Run 20's access check showed that this key can read artist identity details (date of birth, address, identity-number fields) and bank branch details, which the public checkout never needs.
+**Status (18 Nov 2026): ADOPTED FOR THE SANDBOX PILOT by founder decision.** The public checkout Worker uses the separate restricted runtime key (`CHECKOUT_TEST_STRIPE_RUNTIME_KEY`, five permissions as configured). The Studio Worker and the test runner keep the existing key. **This round of permission testing is closed** on the evidence of runs 30–32 (§5):
+- run 30: Actions 44196705014, concluded *failure* (E17c);
+- run 31: Actions 44202490979, success (E17e: valid buyer refund denied);
+- run 32: Actions 44203490460, concluded **failure**. Its E17c refund probe sent no parameters, so Stripe returned 400 rather than 403. That check is superseded by run 31's E17e and was made informational afterwards. E19, E20, E17b and E17d passed.
+
+Adoption covers the sandbox only. Live keys need a separate approval.
+
+Previously: today a single restricted TEST key (`CHECKOUT_TEST_STRIPE_SECRET_KEY`) is used by both pilot Workers and by the test runner. Run 20's access check showed that this key can read artist identity details (date of birth, address, identity-number fields) and bank branch details, which the public checkout never needs.
 
 Permission names are Stripe's restricted-key permissions, from https://docs.stripe.com/keys/permissions-reference. Permissions marked "(Direct)" cannot be used with the `Stripe-Account` header; application fees are platform objects, so the pilot calls them directly anyway.
 
