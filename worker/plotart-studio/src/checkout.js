@@ -1385,7 +1385,7 @@ export function owedReturnedText(o, w, p, returnedOn, reason, stillOwed) {
   const dueDay = w.due_basis_date ? dublinDate(Date.parse(w.due_at) - 1) : w.due_at.slice(0, 10), late = Date.parse(w.due_at) <= Date.now();
   return [`Order ${o.reference}`, '',
     `Correction: a bank transfer that PlotArt recorded as sent to you has been returned to PlotArt by the bank.`, '',
-    `Returned payment: ${eur(p.cents)}, sent by bank transfer on ${longDate(p.executed_on)} (PlotArt’s transfer reference: ${p.reference}), returned on ${longDate(returnedOn)}. The bank gave this reason: ${reason}`, '',
+    `Returned payment: ${eur(p.cents)}, sent by bank transfer on ${longDate(p.executed_on)} (PlotArt’s transfer reference: ${p.reference}), returned on ${longDate(returnedOn)}. The bank gave this reason: ${String(reason).replace(/[.\s]+$/, '')}.`, '',
     `PlotArt still owes you ${eur(stillOwed)} on this order. The date it is due is unchanged: the end of ${longDate(dueDay)} (Irish time)${late ? ', so it is now overdue. We are sorry for the delay' : ''}.`, '',
     'PlotArt will phone you to check the account details before sending it again. PlotArt will never ask for your bank details by email.', '',
     'This message comes from the PlotArt payment pilot (test mode).'].join('\n');
