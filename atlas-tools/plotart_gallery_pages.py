@@ -368,12 +368,17 @@ def artist_index(pkgs):
             '<ul>%s</ul></nav>') % links
 
 
-def vg_collection(pkgs, spaces=25, layout=None):
+def vg_collection(pkgs, spaces=25, layout=None, featured=()):
     """Everything between VG_BEGIN and VG_END on the Virtual Gallery page: the wall of open
     galleries (in position order, then any without a position) and the index of the twenty-five positions.
     Shared by the production content pipeline (plotart-gallery-publish.py)."""
     positions, extra = vg_positions(pkgs, spaces, layout)
-    works = [_vg_work(p, n) for n, st, p in positions if st == "pub"] + [_vg_work(p, None) for p in extra]
+    # Explore More Artists (founder decision 17 Nov 2026): the wall leaves out the artists featured above it (their gallery
+    # addresses, read from the page's Featured Artists region), so nobody appears twice. Everyone else keeps their place
+    # and numeral; the twenty-five positions index and the A-Z list below still name every published artist.
+    hide = set(featured)
+    works = [_vg_work(p, n) for n, st, p in positions if st == "pub" and p["artist"]["slug"] not in hide] + \
+        [_vg_work(p, None) for p in extra if p["artist"]["slug"] not in hide]
     count = {k: sum(1 for _, st, _ in positions if st == k) for k, _ in VG_STATES}
     key = "".join('<li><span class="pa-vgc-k is-%s" aria-hidden="true"></span><b>%d</b> %s</li>' % (k, count[k], w.lower())
                   for k, w in VG_STATES if count[k])
@@ -387,7 +392,7 @@ def vg_collection(pkgs, spaces=25, layout=None):
   %s
   <div class="pa-vgc-index" role="region" aria-labelledby="vgIdxH">
     <h3 id="vgIdxH">Founding positions</h3>
-    <p class="pa-vgc-note">A record of PlotArt&rsquo;s founding programme: twenty-five numbered positions, one for each Founding Artist. It is not a limit on the gallery: every published artist appears in All Artists above.</p>
+    <p class="pa-vgc-note">A record of PlotArt&rsquo;s founding programme: twenty-five numbered positions, one for each Founding Artist. It is not a limit on the gallery: every published artist appears in the Artists&rsquo; Gallery above.</p>
     <ol class="pa-vgc-line" aria-hidden="true">%s</ol>
     <ul class="pa-vgc-key" aria-label="Summary of the twenty-five positions">%s</ul>
     <ol class="pa-vgc-plan" aria-label="The twenty-five positions">%s

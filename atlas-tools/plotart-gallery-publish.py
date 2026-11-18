@@ -123,14 +123,19 @@ def layout():
     return {"positions": r.get("positions", []), "extra": r.get("extra", [])}
 
 
-def regrid(lay=None):
+def regrid(lay=None, selection=None):
+    """Rebuild the Artists' Gallery from the published galleries: Featured Artists first (the founder's selection, or the
+    page's current one), then Explore More Artists, which leaves out whoever is featured (17 Nov 2026), so an artist who
+    is featured, unfeatured, withdrawn or newly published is always shown exactly once."""
     pkgs = P.gallery_order(published())
+    FEAT.refresh(ROOT, pkgs, selection)
     html = open(VG, encoding="utf-8").read()
     span = P.vg_region(html)
     if not span:
         raise RuntimeError("the Virtual Gallery collection region was not found")
     lay = layout() if lay is None else lay
-    open(VG, "w", encoding="utf-8").write(html[:span[0]] + P.vg_collection(pkgs, layout=lay) + html[span[1]:])
+    shown = [x["artist"] for x in FEAT.selection_in(html)]
+    open(VG, "w", encoding="utf-8").write(html[:span[0]] + P.vg_collection(pkgs, layout=lay, featured=shown) + html[span[1]:])
 
 
 def records(slug, new):
@@ -341,12 +346,16 @@ def featured_sync():
         if sel is None:
             return 0
         before = open(os.path.join(ROOT, page), encoding="utf-8").read()
-        FEAT.refresh(ROOT, published(), sel)
+        lay = layout()
+        if lay is None:                    # no Gallery order from the Studio: the page cannot be rebuilt safely
+            return 0
+        regrid(lay, sel)                   # Featured Artists, then Explore More Artists without them (17 Nov 2026)
         after = open(os.path.join(ROOT, page), encoding="utf-8").read()
-        # a Featured Artists change can never alter the complete collection below it (or anything else on the page)
-        if P.vg_region(before) is None or before[slice(*P.vg_region(before))] != after[slice(*P.vg_region(after))] \
-                or FEAT.outside(before) != FEAT.outside(after):
-            raise ValueError("the Featured Artists update would change the page outside its own region")
+        # only the two generated regions may change: nothing else on the page, and never the twenty-five positions
+        blank = lambda d: FEAT.outside(d[:P.vg_region(d)[0]] + P.VG_BEGIN + P.VG_END + d[P.vg_region(d)[1]:])
+        idx = lambda d: re.findall(r'<li class="pa-vgc-pos is-[a-z]+">.*?</li>', d[slice(*P.vg_region(d))])
+        if P.vg_region(before) is None or blank(before) != blank(after) or idx(before) != idx(after):
+            raise ValueError("the Featured Artists update would change the page outside its two regions or the positions")
     except Exception as e:                           # noqa: BLE001
         subprocess.run(["git", "checkout", "-q", "--", page], cwd=ROOT)
         print("PLOTART CONTENT · featured artists · FAILED · %s" % e)

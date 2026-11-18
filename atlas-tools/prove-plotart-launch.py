@@ -488,7 +488,11 @@ if vg:
             _bad_pos.append(_i)
     need(not _bad_pos, "L11 a founding position is out of place, names or links an unpublished artist, or carries more than its number and state (positions %s)" % _bad_pos)
     _numbered = [(n, s) for n, s in zip(_wnums, _cards) if n is not None]
-    need(_numbered == sorted(_pub_pos.items()) and all(n is None for n in _wnums[len(_numbered):]),
+    try:   # the featured artists are named in the index but not hung on the wall (Explore More Artists, 17 Nov 2026)
+        _feat_wall = {x["artist"] for x in FEAT.selection_in(vg)}
+    except ValueError:
+        _feat_wall = set()
+    need(_numbered == sorted((n, s) for n, s in _pub_pos.items() if s not in _feat_wall) and all(n is None for n in _wnums[len(_numbered):]),
          "L11 the wall and the index disagree: each numbered open gallery must be the published artist at that position, in order, then any without a position")
     _seg = re.search(r'<ol class="pa-vgc-line" aria-hidden="true">((?:<li class="is-(?:pub|res|prep|av)"></li>){25})</ol>', _region)
     need(bool(_seg) and re.findall(r'is-(\w+)', _seg.group(1)) == [st for st, _ in _pos], "L11 the occupancy line does not match the twenty-five positions")
@@ -498,8 +502,14 @@ if vg:
     _want = {k: sum(1 for st, _ in _pos if st == c) for c, k in (("pub", "published"), ("res", "reserved"), ("prep", "in preparation"), ("av", "available"))}
     need(_keyc == {k: v for k, v in _want.items() if v}, "L11 the index summary does not match the twenty-five positions")
     need(OPEN or not _cards, "L15 an artist gallery is published but the gallery opening switch is off")
-    need(sorted(_cards) == GALLERY_SLUGS and len(set(_cards)) == len(_cards),
-         "L11 the open galleries on the wall must match the published artist galleries exactly (wall %s, galleries %s)" % (_cards, GALLERY_SLUGS))
+    # Explore More Artists (17 Nov 2026): the wall is every published gallery EXCEPT the artists featured above it, so the
+    # two sections together show each published artist exactly once
+    try:
+        _featured = sorted({x["artist"] for x in FEAT.selection_in(vg)})
+    except ValueError:
+        _featured = []
+    need(sorted(_cards) == sorted(set(GALLERY_SLUGS) - set(_featured)) and len(set(_cards)) == len(_cards),
+         "L11 the wall must show every published artist gallery except the featured artists (wall %s, galleries %s, featured %s)" % (_cards, GALLERY_SLUGS, _featured))
     # the collection checks below look at the page without the Featured Artists region above it (checked by L20)
     try:
         _vg_nf = FEAT.outside(vg)
@@ -508,8 +518,8 @@ if vg:
         need(False, "L11 the Artists' Gallery Featured Artists region (pa-featured-artists markers) is missing or duplicated")
     _vgm = _vg_nf.split("<main", 1)[-1].split("</main>")[0]; _vgmv = re.sub(r"\s+", " ", visible_text(_vgm))
     need("founding-25.html" not in _vgm and "Founding 25" not in _vgmv and "Artist first" not in _vgmv, "L11 the Virtual Gallery carries Founding 25 promotion or an 'Artist first' section")
-    need('<p class="pa-eyebrow">Explore the collection</p><h2 id="vgColH">All Artists</h2>' in vg and "twenty-five galleries" not in vgv,
-         "L11 the Artists' Gallery collection heading is not the approved wording (Explore the collection / All Artists, 17 Nov 2026)")
+    need('<p class="pa-eyebrow">Explore the collection</p><h2 id="vgColH">Explore More Artists</h2>' in vg and "twenty-five galleries" not in vgv,
+         "L11 the Artists' Gallery collection heading is not the approved wording (Explore the collection / Explore More Artists, 17 Nov 2026)")
     _vgimgs = re.findall(r"<img\b[^>]*>", _vgm)
     # A published gallery with no works on show keeps its place with the empty state and no picture (founder decision
     # 1 Nov 2026): one picture per open gallery, except those. Every picture is a published artist's own work image.
@@ -904,8 +914,10 @@ if os.path.exists(_gp):
         _fs = [x["artist"] for x in _sel]
         need(len(_fs) == len(set(_fs)), "L20 gallery/index.html: an artist is featured more than once")
         _col = _doc[_doc.index(VG_BEGIN.decode()):_doc.index(VG_END.decode())]
-        need(all('href="../artists/%s/" data-pa-track="vg_artist"' % x in _col for x in _fs),
-             "L20 gallery/index.html: a featured artist is missing from the complete collection")
+        _wall = re.findall(r'href="\.\./artists/([a-z0-9-]+)/" data-pa-track="vg_artist"', _col)
+        need(not set(_fs) & set(_wall), "L20 gallery/index.html: a featured artist is repeated in Explore More Artists")
+        need(sorted(set(_fs) | set(_wall)) == GALLERY_SLUGS or not os.path.isdir(os.path.join(PA, "artists")),
+             "L20 gallery/index.html: Featured Artists and Explore More Artists together must show every published artist exactly once")
     except ValueError as _e:
         need(False, "L20 gallery/index.html: %s" % _e)
 

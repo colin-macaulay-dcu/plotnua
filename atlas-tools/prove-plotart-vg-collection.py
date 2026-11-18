@@ -83,7 +83,15 @@ orig = open(vgp, encoding="utf-8").read()
 # the faults below are planted in the collection: run them with Featured Artists empty (that region has its own proof,
 # prove-plotart-featured.py), so a first-occurrence fault cannot land in the featured region above the collection
 import plotart_featured as FEAT  # noqa: E402
-orig = FEAT.update(orig, [], [json.load(open(f, encoding="utf-8")) for f in glob.glob(os.path.join(site, "plotart", "artists", "*", "gallery.json"))])
+_pk = [json.load(open(f, encoding="utf-8")) for f in glob.glob(os.path.join(site, "plotart", "artists", "*", "gallery.json"))]
+_reg = orig[slice(*P.vg_region(orig))]
+_pos = [{"position": n, "slug": (re.search(r'artists/([a-z0-9-]+)/', b).group(1) if st == "pub" else None), "reserved": st == "res", "assigned": st == "prep"}
+        for n, (st, b) in enumerate(re.findall(r'<li class="pa-vgc-pos is-(pub|res|prep|av)">(.*?)</li>', _reg), 1)]
+_extra = [x for x in re.findall(r'href="\.\./artists/([a-z0-9-]+)/" data-pa-track="vg_artist"', _reg) if x not in {e["slug"] for e in _pos}]
+orig = FEAT.update(orig, [], _pk)
+# with nobody featured the wall hangs every published gallery again (Explore More Artists, 17 Nov 2026)
+_a, _b = P.vg_region(orig)
+orig = orig[:_a] + P.vg_collection(P.gallery_order(_pk), layout={"positions": _pos, "extra": _extra}) + orig[_b:]
 open(vgp, "w", encoding="utf-8").write(orig)
 rc, out = guard(site)
 check("G0 the unchanged copy passes the launch guard", rc == 0 and "PLOTART LAUNCH · OK" in out, out[-400:])
@@ -100,7 +108,7 @@ FAULTS = [
     ("G8 the removed 25-gallery counter comes back", lambda s: s.replace('\n  <ol class="pa-vgc-hang', '\n  <p class="pa-vgc-count">9 of 25 galleries open</p>\n  <ol class="pa-vgc-hang', 1), "L11"),
     ("G9 the summary is wrong", lambda s: re.sub(r"<b>(\d+)</b> available", "<b>99</b> available", s), "L11"),
     ("G10 the markers are removed", lambda s: s.replace(P.VG_BEGIN, "").replace(P.VG_END, ""), "L11"),
-    ("G11 a change outside the generated region", lambda s: s.replace("<h2 id=\"vgColH\">All Artists</h2>", "<h2 id=\"vgColH\">Some Artists</h2>", 1), "L"),
+    ("G11 a change outside the generated region", lambda s: s.replace("<h2 id=\"vgColH\">Explore More Artists</h2>", "<h2 id=\"vgColH\">Some Artists</h2>", 1), "L"),
     ("G12 a mock placeholder image on the wall", lambda s: s.replace('src="../artists/%s/img/' % slug, 'src="../gallery-design-c/mock/', 1), "L11"),
 ]
 for label, f, code in FAULTS:
