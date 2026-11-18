@@ -1372,8 +1372,11 @@ export function reimbursementWording(p) {
     p.status === 'shortfall' ? 'The rest is owed by PlotArt directly and is shown under amounts owed.' : '',
     'When it reaches your bank account depends on your Stripe payout schedule.'].filter(Boolean).join(' ');
 }
-/* EVIDENCE PENDING (run 33): what Stripe shows on the artist's own balance for an application-fee refund. */
-export const REIMBURSEMENT_CREDIT_WORDING = 'Stripe returns it to your Stripe balance.';
+/* Run 33 (18 Nov 2026, real sandbox): when Stripe accepted the application-fee refund it added the same amount to the
+   artist's Stripe balance at the same second, as a balance transaction of type 'adjustment' on that payment's charge,
+   status 'pending'. The pilot's runtime key cannot read the artist's balance (balance_read refused), so the pilot records
+   Stripe's acceptance; the credit itself is seen in the artist's Stripe Dashboard. */
+export const REIMBURSEMENT_CREDIT_WORDING = 'Stripe adds it to your Stripe balance as an adjustment on this payment; it shows as pending until Stripe makes it available.';
 export function delayNoticeText(o, s, days = 7, today = dublinDate(Date.now())) {
   const n = days === 7 ? 'seven' : String(days), nth = days === 7 ? 'seventh' : days + 'th', ex = addDate(today, 1);
   return [`Order ${o.reference}`, '',

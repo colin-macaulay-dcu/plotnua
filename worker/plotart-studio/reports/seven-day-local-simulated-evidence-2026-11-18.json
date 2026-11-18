@@ -97,13 +97,13 @@
     "completed_at": null,
     "completed_late": false,
     "alerts": {
-      "day5": "2026-11-18T07:47:12.064Z",
-      "deadline": "2026-11-18T07:47:12.257Z"
+      "day5": "2026-11-18T07:50:44.111Z",
+      "deadline": "2026-11-18T07:50:44.302Z"
     },
     "delay_notice_at": null,
     "attempts": 6,
     "last_error": "SIMULATED: Stripe temporarily unavailable",
-    "last_attempt_at": "2026-11-18T07:47:12.269Z",
+    "last_attempt_at": "2026-11-18T07:50:44.314Z",
     "failing": true,
     "fee_refund": null,
     "flags": [],
@@ -131,7 +131,7 @@
     "completed_at": null,
     "completed_late": false,
     "alerts": {},
-    "delay_notice_at": "2026-11-18T07:47:12.461Z",
+    "delay_notice_at": "2026-11-18T07:50:44.487Z",
     "attempts": 0,
     "last_error": null,
     "last_attempt_at": null,
@@ -159,10 +159,10 @@
     "due_provisional": true,
     "due_label": "Extended: Stripe recorded the fee on Tuesday 17 November 2026. Due by the end of Tuesday 24 November 2026 (Irish time) · provisional",
     "overdue": false,
-    "completed_at": "2026-11-18T07:47:12.000Z",
+    "completed_at": "2026-11-18T07:50:44.000Z",
     "completed_late": false,
     "alerts": {},
-    "delay_notice_at": "2026-11-18T07:47:12.461Z",
+    "delay_notice_at": "2026-11-18T07:50:44.487Z",
     "attempts": 0,
     "last_error": null,
     "last_attempt_at": null,
@@ -170,7 +170,7 @@
     "fee_refund": {
       "id": "fr_test_00001m",
       "amount": 2183,
-      "accepted_at": "2026-11-18T07:47:12.000Z",
+      "accepted_at": "2026-11-18T07:50:44.000Z",
       "accepted_basis": "stripe_fee_refund_created",
       "platform_balance_transaction": "txn_test_00001n"
     },
@@ -196,7 +196,7 @@
     "due_provisional": true,
     "due_label": "Due by the end of Monday 16 November 2026 (Irish time) · provisional",
     "overdue": false,
-    "completed_at": "2026-11-18T07:47:12.000Z",
+    "completed_at": "2026-11-18T07:50:44.000Z",
     "completed_late": true,
     "alerts": {},
     "delay_notice_at": null,
@@ -207,7 +207,7 @@
     "fee_refund": {
       "id": "fr_test_00001q",
       "amount": 2183,
-      "accepted_at": "2026-11-18T07:47:12.000Z",
+      "accepted_at": "2026-11-18T07:50:44.000Z",
       "accepted_basis": "stripe_fee_refund_created",
       "platform_balance_transaction": "txn_test_00001r"
     },
@@ -233,7 +233,7 @@
     "due_provisional": true,
     "due_label": "Due by the end of Wednesday 25 November 2026 (Irish time) · provisional",
     "overdue": false,
-    "completed_at": "2026-11-18T07:47:12.000Z",
+    "completed_at": "2026-11-18T07:50:44.000Z",
     "completed_late": false,
     "alerts": {},
     "delay_notice_at": null,
@@ -244,7 +244,7 @@
     "fee_refund": {
       "id": "fr_test_00001s",
       "amount": 2183,
-      "accepted_at": "2026-11-18T07:47:12.000Z",
+      "accepted_at": "2026-11-18T07:50:44.000Z",
       "accepted_basis": "stripe_fee_refund_created",
       "platform_balance_transaction": "txn_test_00001t"
     },

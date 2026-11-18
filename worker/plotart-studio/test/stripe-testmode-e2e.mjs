@@ -290,7 +290,9 @@ export async function e2e({ rec, KEY, ACCOUNT, RUN, port, whsec, stripe, sleep }
       const findCredit = async () => {
         const bySource = fr ? await stripe('GET', `/v1/balance_transactions?source=${encodeURIComponent(fr.id)}&limit=5`, null, ACCOUNT) : null;
         const recent = await stripe('GET', '/v1/balance_transactions?limit=25', null, ACCOUNT);
-        const hit = ((recent.j.data) || []).filter(b => fr && (b.source === fr.id || (typeof b.source === 'object' && b.source && b.source.id === fr.id)));
+        // run 33 showed the artist-side credit is an 'adjustment' whose source is the payment's CHARGE (not the fee refund),
+        // created in the same second as the fee refund, for the same amount
+        const hit = ((recent.j.data) || []).filter(b => fr && (b.source === fr.id || (b.type === 'adjustment' && b.source === O2.charge_id && b.amount === fr.amount && Math.abs(b.created - fr.created) <= 60)));
         return { bySource, recent, hit };
       };
       let cr = await findCredit(); for (let i = 0; i < 10 && !cr.hit.length && !((cr.bySource && cr.bySource.j.data) || []).length; i++) { await sleep(3000); cr = await findCredit(); }
