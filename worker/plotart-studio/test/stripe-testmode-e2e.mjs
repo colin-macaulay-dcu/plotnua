@@ -256,6 +256,61 @@ export async function e2e({ rec, KEY, ACCOUNT, RUN, port, whsec, stripe, sleep }
         !runtimeOk ? 'SKIP' : all.length && all.every(c => c.key === 'runtime') && !all.some(c => c.status === 401 || c.status === 403) ? 'PASS' : 'FAIL', summary(all));
       return;
     }
+    // ---- reimbursement-evidence run (request file: "reimbursement_evidence": true): what Stripe returns when it accepts a
+    // processing reimbursement (an application-fee refund) and whether the credit to the artist's Stripe balance can be seen
+    let EVID = false; try { EVID = JSON.parse(readFileSync(HERE + 'test/stripe-test-run.json', 'utf8')).reimbursement_evidence === true; } catch { /* */ }
+    if (EVID) {
+      const callsFrom = i => CW_CALLS.slice(i).filter(c => c.host === 'api.stripe.com');
+      const rkGet = async (path, account = null) => {   // read-only probe with the runtime key (the key itself is never printed)
+        const h = { Authorization: `Bearer ${RUNTIME}`, 'Stripe-Version': '2026-10-28.endive' }; if (account) h['Stripe-Account'] = account;
+        const r = await fetch('https://api.stripe.com' + path, { headers: h }); const j = await r.json().catch(() => ({}));
+        return { status: r.status, error: j.error ? { type: j.error.type, code: j.error.code, message: String(j.error.message || '').slice(0, 300) } : null, j };
+      };
+      const ov = await quote('wagal2', 'PA-E-261116-E2E002', 20000, 0);
+      let paid = false; try { await payInBrowser(ov.url, '4242424242424242', 'evidence'); paid = true; } catch (e) { rec('E21a', 'buyer pays €200 on the real hosted Checkout page', SRC, 'FAIL', { error: String(e.message).split('\n')[0].slice(0, 300) }); }
+      const O = paid ? await waitFor(async () => { const o = await order(ov.id); return o.payment_status === 'paid' ? o : null; }, 90_000) : null;
+      if (!O) { rec('E21', 'reimbursement evidence', SRC, 'SKIP', { blocked_by: paid ? 'the signed completion did not arrive within 90 s' : 'E21a payment failed' }); return; }
+      const P = await reimbursedFor(ov.id), O2 = await order(ov.id);
+      const fee = O2.application_fee_id;
+      const ch = (await stripe('GET', `/v1/charges/${O2.charge_id}?expand[]=balance_transaction`, null, ACCOUNT)).j;
+      rec('E21a', 'a real €200 sandbox payment (15% commission = €30 application fee); the Worker reads Stripe’s actual processing fee and VAT and reimburses it through an application-fee refund, on the runtime key', SRC,
+        P && P.status === 'reimbursed' && P.cost === sumType(ch.balance_transaction, 'stripe_fee') + sumType(ch.balance_transaction, 'tax') ? 'PASS' : 'FAIL',
+        { pilot_processing: P, charge_created: ch.created && new Date(ch.created * 1000).toISOString(), balance_transaction_created: ch.balance_transaction && ch.balance_transaction.created && new Date(ch.balance_transaction.created * 1000).toISOString(),
+          fee_lines: ch.balance_transaction && ch.balance_transaction.fee_details, worker_calls: callsFrom(0).map(c => `${c.method} ${c.path}${c.connected ? ' [connected]' : ''} → ${c.status} (${c.key})`) });
+      // what Stripe returned when it accepted the refund (as the pilot stored it) and the same object read back from Stripe
+      const frs = await feeRefundsOf(fee), fr = frs.find(x => x.metadata && x.metadata.plotart_kind === 'processing_reimbursement') || null;
+      const feeObj = (await stripe('GET', `/v1/application_fees/${fee}`)).j;
+      const pbt = fr && typeof fr.balance_transaction === 'string' ? (await stripe('GET', `/v1/balance_transactions/${fr.balance_transaction}`)).j : null;
+      rec('E21b', 'Stripe’s acceptance of the application-fee refund: a fee_refund object (id, amount, created time, platform balance transaction) and the application fee’s amount_refunded', SRC,
+        fr && fr.object === 'fee_refund' && fr.amount === P.cost && fr.created && feeObj.amount_refunded === P.cost && P.fee_refund && P.fee_refund.id === fr.id ? 'PASS' : 'FAIL',
+        { fee_refund: fr && { id: fr.id, object: fr.object, amount: fr.amount, currency: fr.currency, created: fr.created && new Date(fr.created * 1000).toISOString(), fee: fr.fee, balance_transaction: fr.balance_transaction, metadata: fr.metadata },
+          stored_by_pilot: P && P.fee_refund, application_fee: { amount: feeObj.amount, amount_refunded: feeObj.amount_refunded, refunded: feeObj.refunded, account: feeObj.account },
+          platform_balance_transaction: pbt && { id: pbt.id, type: pbt.type, amount: pbt.amount, net: pbt.net, status: pbt.status, created: pbt.created && new Date(pbt.created * 1000).toISOString(), available_on: pbt.available_on && new Date(pbt.available_on * 1000).toISOString(), source: pbt.source, reporting_category: pbt.reporting_category } });
+      // the artist's side: a balance transaction on the connected account for that fee refund (runner key: the harness, not the Worker)
+      const findCredit = async () => {
+        const bySource = fr ? await stripe('GET', `/v1/balance_transactions?source=${encodeURIComponent(fr.id)}&limit=5`, null, ACCOUNT) : null;
+        const recent = await stripe('GET', '/v1/balance_transactions?limit=25', null, ACCOUNT);
+        const hit = ((recent.j.data) || []).filter(b => fr && (b.source === fr.id || (typeof b.source === 'object' && b.source && b.source.id === fr.id)));
+        return { bySource, recent, hit };
+      };
+      let cr = await findCredit(); for (let i = 0; i < 10 && !cr.hit.length && !((cr.bySource && cr.bySource.j.data) || []).length; i++) { await sleep(3000); cr = await findCredit(); }
+      const credit = cr.hit[0] || ((cr.bySource && cr.bySource.j.data) || [])[0] || null;
+      const typesNear = ((cr.recent.j.data) || []).slice(0, 12).map(b => ({ type: b.type, amount: b.amount, status: b.status, source: typeof b.source === 'string' ? b.source.replace(/^(\w+?)_.*/, '$1_…') : null, created: new Date(b.created * 1000).toISOString() }));
+      rec('E21c', 'the artist’s side: a balance transaction on the connected account crediting the reimbursed amount (read with the harness key)', SRC,
+        credit && credit.amount === P.cost ? 'PASS' : credit ? 'INFO' : 'FAIL',
+        { credit: credit && { id: credit.id, type: credit.type, amount: credit.amount, net: credit.net, fee: credit.fee, status: credit.status, created: new Date(credit.created * 1000).toISOString(), available_on: credit.available_on && new Date(credit.available_on * 1000).toISOString(), source: credit.source, description: credit.description, reporting_category: credit.reporting_category },
+          by_source_query: cr.bySource && { status: cr.bySource.status, count: ((cr.bySource.j.data) || []).length, error: cr.bySource.j.error && cr.bySource.j.error.message }, recent_connected_types: typesNear });
+      // what the pilot itself can read on the runtime key (read-only probes)
+      const p1 = await rkGet(`/v1/application_fees/${fee}/refunds?limit=5`), p2 = await rkGet('/v1/balance_transactions?limit=1', ACCOUNT), p3 = await rkGet('/v1/balance', ACCOUNT);
+      rec('E21d', 'runtime key, read-only: the Worker CAN read the fee’s refunds (Stripe’s acceptance) but CANNOT read the artist’s balance or balance transactions with the five adopted permissions', SRC,
+        p1.status === 200 && p2.status >= 400 && p3.status >= 400 ? 'PASS' : 'INFO',
+        { fee_refunds: { status: p1.status, count: ((p1.j && p1.j.data) || []).length, error: p1.error }, connected_balance_transactions: { status: p2.status, error: p2.error }, connected_balance: { status: p3.status, error: p3.error } });
+      const all = callsFrom(0);
+      rec('E17d', 'evidence run: every Stripe API call made by the public checkout Worker used the runtime key', SRC,
+        !runtimeOk ? 'SKIP' : all.length && all.every(c => c.key === 'runtime') && !all.some(c => c.status === 401 || c.status === 403) ? 'PASS' : 'FAIL',
+        { calls: all.length, list: all.map(c => `${c.method} ${c.path}${c.connected ? ' [connected]' : ''} → ${c.status}${c.stripe_error ? ' ' + c.stripe_error.code : ''} (${c.key})`) });
+      return;
+    }
     const o1 = await quote('wagal1', 'PA-E-261116-E2E001');
     rec('E2', 'the pilot opens real hosted checkout on the artist’s account for the approved quote', SRC, o1.status === 303 && /checkout\.stripe\.com/.test(o1.url || '') ? 'PASS' : 'FAIL', { status: o1.status, host: o1.url && new URL(o1.url).host });
     let paidOk = false;

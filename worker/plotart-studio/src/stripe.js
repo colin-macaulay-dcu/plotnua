@@ -121,6 +121,7 @@ export const refund = (env, { account, paymentIntent, amount, idem, metadata }) 
 export const getDispute = (env, { account, id }) => call(env, 'GET', `/v1/disputes/${encodeURIComponent(id)}`, { account });
 export const getCharge = (env, { account, id, expandBalance = false }) => call(env, 'GET', `/v1/charges/${encodeURIComponent(id)}`, { account, query: expandBalance ? '?expand[]=balance_transaction' : '' });
 export const getRefund = (env, { account, id }) => call(env, 'GET', `/v1/refunds/${encodeURIComponent(id)}`, { account });
+export const listFeeRefunds = (env, { fee }) => call(env, 'GET', `/v1/application_fees/${encodeURIComponent(fee)}/refunds`, { query: '?limit=100' });
 export const refundFee = (env, { fee, amount, idem, metadata }) => call(env, 'POST', `/v1/application_fees/${encodeURIComponent(fee)}/refunds`, { idem, body: { amount, metadata } });
 
 /* Webhook signature (Stripe-Signature: t=..., v1=...). HMAC-SHA256 over `${t}.${rawBody}` with the endpoint secret;

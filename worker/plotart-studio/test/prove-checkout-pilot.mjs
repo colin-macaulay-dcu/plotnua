@@ -84,11 +84,16 @@ async function stripe(req) {
     // like Stripe: an application fee cannot be refunded beyond its amount
     const feeAmt = M.feeAmounts[mm[1]], done = M.feeRefunds.filter(x => x.fee === mm[1]).reduce((a, x) => a + x.amount, 0);
     if (feeAmt !== undefined && done + Number(f.amount) > feeAmt) return err(`Refund amount (${f.amount}) is greater than unrefunded amount on fee (${feeAmt - done})`, 400);
-    const r = { id: nid('fr'), object: 'fee_refund', amount: Number(f.amount), fee: mm[1], livemode: false, metadata: { plotart_kind: f['metadata[plotart_kind]'] } }; M.feeRefunds.push(r); return remember(r); }
+    if (req.method === 'GET') return ok({ object: 'list', data: M.feeRefunds.filter(x => x.fee === mm[1]).slice().reverse(), has_more: false });
+    if (M.failFeeRefunds > 0) { M.failFeeRefunds--; return err(M.failFeeRefundMessage || 'SIMULATED: temporary Stripe error', 500); }   // SIMULATED failure: nothing is created
+    const r = { id: nid('fr'), object: 'fee_refund', amount: Number(f.amount), fee: mm[1], livemode: false, created: Math.floor(Date.now() / 1000), balance_transaction: nid('txn'), metadata: { plotart_kind: f['metadata[plotart_kind]'], plotart_order: f['metadata[plotart_order]'] } }; M.feeRefunds.push(r);
+    if (M.loseFeeRefundAnswer) { M.loseFeeRefundAnswer = false; return err('SIMULATED: connection lost after Stripe accepted the refund', 502); }   // SIMULATED: Stripe made it, the answer is lost (and the idempotency entry with it)
+    return remember(r); }
   if ((mm = u.pathname.match(/^\/v1\/charges\/(ch_test_\w+)$/)) && req.method === 'GET') {
     const c = M.charges[mm[1]]; if (!c) return err('no such charge', 404);
-    if (c.btPending) return ok({ id: c.id, object: 'charge', balance_transaction: null });
-    return ok({ id: c.id, object: 'charge', application_fee: c.fee, balance_transaction: u.search.includes('balance_transaction') ? c.bt : c.bt.id });
+    const created = c.noCreated ? {} : { created: c.created };
+    if (c.btPending) return ok({ id: c.id, object: 'charge', ...created, balance_transaction: null });
+    return ok({ id: c.id, object: 'charge', ...created, application_fee: c.fee, balance_transaction: u.search.includes('balance_transaction') ? c.bt : c.bt.id });
   }
   return err('mock: unhandled ' + req.method + ' ' + u.pathname, 404);
 }
@@ -101,7 +106,7 @@ function pay(sid) {
   const sf = M.nextStripeFee ?? Math.round(s.amount_total * 0.015) + 25, vat = Math.round(sf * 0.23), extra = M.nextExtraFee || 0; M.nextStripeFee = null; M.nextExtraFee = 0;
   const fd = [{ type: 'stripe_fee', amount: sf, description: 'Stripe processing fees' }, { type: 'tax', amount: vat + Math.round(extra * 0.23), description: 'VAT' },
     ...(s._fee ? [{ type: 'application_fee', amount: s._fee, description: 'Application fee' }] : []), ...(extra ? [{ type: 'stripe_fee', amount: extra, description: 'Radar for Fraud Teams' }] : [])];
-  M.charges[M.pis[pi].charge] = { id: M.pis[pi].charge, fee: M.pis[pi].fee, btPending: !!M.btPendingNext, bt: { id: nid('txn'), object: 'balance_transaction', currency: s.currency, amount: s.amount_total, fee: fd.reduce((a, x) => a + x.amount, 0), fee_details: fd } };
+  M.charges[M.pis[pi].charge] = { id: M.pis[pi].charge, fee: M.pis[pi].fee, created: Math.floor(Date.now() / 1000), btPending: !!M.btPendingNext, bt: { id: nid('txn'), object: 'balance_transaction', created: Math.floor(Date.now() / 1000), currency: s.currency, amount: s.amount_total, fee: fd.reduce((a, x) => a + x.amount, 0), fee_details: fd } };
   M.btPendingNext = false;
   if (M.pis[pi].fee) M.feeAmounts[M.pis[pi].fee] = s._fee;
   return s;
@@ -600,8 +605,10 @@ check('T10a the completion replays the earlier dispute WITHOUT any redelivery: r
   && (await q("SELECT * FROM order_ledger WHERE kind='dispute' AND order_id = ?", oe.id))[0].amount_cents === -42500, { OE, dpRow });
 { const PE = JSON.parse((await order(oe.id)).processing || '{}'), feeE = M.pis[sE.payment_intent].fee;
   check('MB8 before Stripe records the fee nothing is estimated or reimbursed: the order waits (awaiting_fee)', PE.status === 'awaiting_fee' && !M.feeRefunds.some(x => x.fee === feeE), PE);
-  { const wq = (await call('GET', '/api/admin/checkout', FOUNDER)).j.reimbursements_waiting.find(x => x.order_id === oe.id);
-    check('MB8b the founder desk lists the reimbursement waiting for Stripe, with its age and provisional due date', !!wq && wq.age_days === 0 && wq.due_provisional === true && /^\d{4}-\d{2}-\d{2}$/.test(wq.due_date), wq); }
+  { const wq = (await call('GET', '/api/admin/checkout', FOUNDER)).j.reimbursements.find(x => x.order_id === oe.id);
+    check('MB8b the founder desk lists the reimbursement as waiting for Stripe to record the fee: no amount, day 0, provisional due date 7 Irish days after Stripe’s payment time',
+      !!wq && wq.status === 'awaiting_fee' && wq.status_label === 'Waiting for Stripe to record the fee' && wq.amount_cents === null && /Not yet known/.test(wq.amount_label) && wq.day === 0 && wq.due_provisional === true
+      && wq.payment_confirmed_basis === 'stripe_charge_created' && /^\d{4}-\d{2}-\d{2}$/.test(wq.due_date) && /Due by the end of .* \(Irish time\) · provisional/.test(wq.due_label), wq); }
   M.charges[M.pis[sE.payment_intent].charge].btPending = false;
   await S.checkoutWorker.scheduled({ cron: '*/15 * * * *' });
   const PE2 = JSON.parse((await order(oe.id)).processing), frE = M.feeRefunds.filter(x => x.fee === feeE);
@@ -694,6 +701,114 @@ check('R9 after Stripe cancels it, the artist’s direct repayment is recorded a
   && M.feeRefunds.length === fees + 1 && M.feeRefunds.at(-1).amount === 750, [r.j, M.feeRefunds.at(-1)]);
 check('F4 the ledger cannot be edited', !!(await db.prepare('UPDATE order_ledger SET amount_cents = 0').run().catch(e => e)).message);
 void SB2;
+
+console.log('— seven-day reimbursement rule (PA-PAY §3.3(b), provisional) · SIMULATED dates and failures');
+{ const CO = await import(HERE + FIX + 'src/checkout.js');
+  const SCH = CO.reimbursementSchedule, at = s => Date.parse(s);
+  // SIMULATED dates (pure schedule, no Stripe)
+  const a = SCH({ confirmed_at: '2026-12-01T10:00:00Z', at: at('2026-12-08T23:59:00Z') }), a2 = SCH({ confirmed_at: '2026-12-01T10:00:00Z', at: at('2026-12-09T00:00:00Z') });
+  check('SD1 SIMULATED: payment confirmed Tuesday 1 December 2026 → day one is 2 December; due by the end of Tuesday 8 December (Irish time); 23:59 on 8 December is still in time',
+    a.confirmed_date === '2026-12-01' && a.due === '2026-12-08' && a.day === 7 && !a.overdue && a2.extended && CO.longDate(a.due) === 'Tuesday 8 December 2026', { a, a2 });
+  const s = SCH({ confirmed_at: '2026-07-01T23:30:00Z', at: at('2026-07-09T22:59:00Z') }), s2 = SCH({ confirmed_at: '2026-07-01T23:30:00Z', fee_recorded_at: '2026-07-01T23:30:05Z', at: at('2026-07-09T23:00:00Z') });
+  const w = SCH({ confirmed_at: '2026-12-01T23:30:00Z', at: at('2026-12-08T23:59:00Z') });
+  check('SD2 SIMULATED near midnight: Stripe confirms at 23:30 UTC on 1 July 2026 = 00:30 on 2 July in Dublin (IST) → Irish date 2 July, due by the end of 9 July (23:00 UTC); a UTC-date rule would have given 8 July. In winter (GMT) 23:30 UTC on 1 December stays 1 December → due 8 December',
+    s.confirmed_date === '2026-07-02' && s.due === '2026-07-09' && !s.overdue && s2.overdue && CO.dublinDayEnd('2026-07-09') === at('2026-07-09T23:00:00Z') && w.confirmed_date === '2026-12-01' && w.due === '2026-12-08', { s, s2, w });
+  const e1 = SCH({ confirmed_at: '2026-12-01T10:00:00Z', at: at('2026-12-09T09:00:00Z') }), e2 = SCH({ confirmed_at: '2026-12-01T10:00:00Z', fee_recorded_at: '2026-12-10T09:00:00Z', at: at('2026-12-10T09:15:00Z') });
+  check('SD3 SIMULATED extension: Stripe has not recorded the fee by the end of 8 December → the period runs from the day Stripe records it; recorded on 10 December → latest date 17 December',
+    e1.extended && e1.due === null && e1.waiting_for_fee_date && e2.extended && e2.extended_due === '2026-12-17' && e2.due === '2026-12-17' && !e2.overdue, { e1, e2 });
+  const l = SCH({ confirmed_at: '2026-12-01T10:00:00Z', fee_recorded_at: '2026-12-08T22:00:00Z', at: at('2026-12-10T09:00:00Z') });
+  check('SD3b SIMULATED late check: Stripe recorded the fee on 8 December but PlotArt first checks on 10 December → no extension, due stays 8 December, now overdue (a delay in checking starts no new period)',
+    !l.extended && l.due === '2026-12-08' && l.overdue, l);
+  // SIMULATED orders against the mock Stripe (real pilot code; timestamps set in the mock)
+  const DAY = 86400, nowS = () => Math.floor(Date.now() / 1000);
+  async function sdOrder(tag, { chargeAgeDays, btPending = false, btAgeDays = chargeAgeDays, noCreated = false, noBtCreated = false }) {
+    const id = 'osd' + tag.toLowerCase(), ch = 'ch_test_sd' + tag, fee = 'fee_test_sd' + tag, t = new Date().toISOString();
+    await db.prepare(`INSERT INTO checkout_orders (id, reference, artist_id, artwork_id, enquiry_ref, status, payment_status, artwork_cents, delivery_cents, commission_bp, commission_cents, provider_account, payment_intent, charge_id, application_fee_id, amount_received_cents, paid_at, buyer_email, created_by, created_at, updated_at)
+      VALUES (?, ?, 'agal', 'wagal9', 'PA-E-261101-AAAAAA', 'paid', 'paid', 100000, 0, 1500, 15000, ?, ?, ?, ?, 100000, ?, 'sd@example.test', 'test', ?, ?)`).bind(id, 'PA-O-261118-SD000' + tag, ACCT, 'pi_test_sd' + tag, ch, fee, t, t, t).run();
+    M.feeAmounts[fee] = 15000;
+    M.charges[ch] = { id: ch, fee, created: nowS() - chargeAgeDays * DAY, noCreated, btPending, bt: { id: 'txn_test_sd' + tag, object: 'balance_transaction', ...(noBtCreated ? {} : { created: nowS() - btAgeDays * DAY }), currency: 'eur', amount: 100000, fee: 1500 + 1775 + 408,
+      fee_details: [{ type: 'stripe_fee', amount: 1775, description: 'Stripe processing fees' }, { type: 'tax', amount: 408, description: 'VAT' }, { type: 'application_fee', amount: 15000, description: 'Application fee' }] } };
+    return { id, ch, fee };
+  }
+  const sweep = () => S.checkoutWorker.scheduled({ cron: '*/15 * * * *' });
+  const desk = async () => (await call('GET', '/api/admin/checkout', FOUNDER)).j;
+  const sink = (id, kind, role) => q('SELECT to_role FROM checkout_mail_sink WHERE order_id = ? AND kind = ?' + (role ? ' AND to_role = ?' : ''), ...[id, kind, ...(role ? [role] : [])]);
+  const P = async id => JSON.parse((await order(id)).processing || '{}');
+  // A · fee known, reimbursement failing (SIMULATED Stripe errors), day 5
+  const A = await sdOrder('A', { chargeAgeDays: 5 });
+  M.failFeeRefunds = 99; M.failFeeRefundMessage = 'SIMULATED: Stripe temporarily unavailable';
+  await sweep();
+  let PA = await P(A.id), dA = (await desk()).reimbursements.find(x => x.order_id === A.id);
+  const dueA = dA && dA.due_date;
+  check('SD4 fee known, reimbursement outstanding: the desk shows that status, the exact amount (EUR 21.83) and the due date; day-5 alert to the founder (test sink), once',
+    PA.status === 'outstanding' && dA.status_label === 'Fee known · reimbursement outstanding' && dA.amount_cents === 2183 && dA.amount_label === 'EUR 21.83' && dA.day === 5
+    && dA.payment_confirmed_basis === 'stripe_charge_created' && dA.fee_recorded_basis === 'stripe_balance_transaction_created' && !!dA.alerts.day5
+    && (await sink(A.id, 'reimbursement_day5', 'founder')).length === 1 && !(await sink(A.id, 'reimbursement_day5', 'artist')).length, { PA, dA });
+  await sweep(); await sweep(); await sweep();
+  PA = await P(A.id); dA = (await desk()).reimbursements.find(x => x.order_id === A.id);
+  const idems = [...new Set(M.calls.filter(c => c.method === 'POST' && c.path === `/v1/application_fees/${A.fee}/refunds`).map(c => c.idem))];
+  check('SD5 repeated failures are surfaced with Stripe’s reason and the manual action; the due date is unchanged; every retry uses the same idempotency key; no reimbursement exists',
+    PA.attempts === 4 && /SIMULATED: Stripe temporarily unavailable/.test(PA.last_error) && dA.failing && dA.due_date === dueA && /Reconcile processing fee/.test(dA.action)
+    && /^Processing reimbursement failing \(4 attempts\): .*SIMULATED.* due date is unchanged/.test((await order(A.id)).needs_resolution) && idems.length === 1
+    && !M.feeRefunds.some(x => x.fee === A.fee) && (await sink(A.id, 'reimbursement_day5')).length === 1, { PA, dA, idems, nr: (await order(A.id)).needs_resolution });
+  // SIMULATED passage of time: the stored Stripe times are moved 3 days earlier (as if the clock had moved on to day 8)
+  await db.prepare('UPDATE checkout_orders SET processing = ? WHERE id = ?').bind(JSON.stringify({ ...PA, confirmed_at: new Date(Date.now() - 8 * DAY * 1000).toISOString(), fee_recorded_at: new Date(Date.now() - 8 * DAY * 1000).toISOString() }), A.id).run();
+  await sweep(); await sweep();
+  dA = (await desk()).reimbursements.find(x => x.order_id === A.id);
+  check('SD6 SIMULATED day 8: still outstanding at the deadline → deadline alert to the founder, once; the desk marks it OVERDUE; still no extension (the fee was recorded in time) and no delay notice',
+    dA.overdue && !dA.extended && !!dA.alerts.deadline && (await sink(A.id, 'reimbursement_deadline', 'founder')).length === 1 && !(await sink(A.id, 'reimbursement_delayed')).length, dA);
+  // SIMULATED lost answer: Stripe accepts the refund but the answer never arrives
+  M.failFeeRefunds = 0; M.loseFeeRefundAnswer = true;
+  r = await call('POST', `/api/admin/checkout/orders/${A.id}/processing`, FOUNDER, {});
+  const afterLost = M.feeRefunds.filter(x => x.fee === A.fee).length;
+  await sweep(); await sweep();
+  PA = await P(A.id);
+  check('SD7 SIMULATED lost answer: Stripe made the refund but the pilot never got the answer; the next pass reads Stripe’s list of the fee’s refunds and records it: exactly ONE reimbursement, no duplicate, flag cleared, marked late',
+    r.s === 200 && afterLost === 1 && M.feeRefunds.filter(x => x.fee === A.fee).length === 1 && PA.status === 'reimbursed' && PA.reimbursed_cents === 2183 && PA.completed_late === true
+    && (await q("SELECT * FROM order_ledger WHERE order_id = ? AND kind = 'processing_reimbursement'", A.id)).length === 1
+    && (await q("SELECT * FROM order_events WHERE order_id = ? AND action = 'processing_reimbursement_adopted'", A.id)).length === 1 && !/Processing reimbursement failing/.test((await order(A.id)).needs_resolution || ''), { PA, nr: (await order(A.id)).needs_resolution });
+  // B · Stripe has not recorded the fee by the original deadline (SIMULATED: payment 8 days ago, fee still pending)
+  const B = await sdOrder('B', { chargeAgeDays: 10, btPending: true });   // SIMULATED: payment 10 days ago, original date passed 3 days ago
+  await sweep();
+  let dB = (await desk()).reimbursements.find(x => x.order_id === B.id);
+  check('SD8 waiting for Stripe to record the fee past the original deadline: the extension applies; ONE delay notice to the artist (test sink) and a note to the founder; no amount is estimated',
+    dB.status === 'awaiting_fee' && dB.status_label === 'Waiting for Stripe to record the fee' && dB.amount_cents === null && dB.extended && dB.due_date === null && /passed before Stripe recorded the fee/.test(dB.due_label)
+    && (await sink(B.id, 'reimbursement_delayed', 'artist')).length === 1 && !(await sink(B.id, 'reimbursement_delayed', 'founder')).length && (await sink(B.id, 'reimbursement_extended', 'founder')).length === 1 && !dB.overdue, dB);
+  const notice = (await q("SELECT subject, body FROM checkout_mail_sink WHERE order_id = ? AND kind = 'reimbursement_delayed'", B.id))[0];
+  await sweep(); await sweep();
+  check('SD8b later sweeps send no second delay notice', (await sink(B.id, 'reimbursement_delayed')).length === 1 && (await sink(B.id, 'reimbursement_extended')).length === 1);
+  M.charges[B.ch].btPending = false; M.charges[B.ch].bt.created = nowS() - DAY;   // SIMULATED: Stripe recorded the fee yesterday
+  await sweep();
+  const PB = await P(B.id), dB2 = (await desk()).reimbursements_recent.find(x => x.order_id === B.id);
+  const expB = CO.dublinDate(Date.now() - DAY * 1000);
+  check('SD9 once Stripe records the fee the next sweep reimburses it promptly, once; the latest date shown is 7 Irish days after the day Stripe recorded it; still one delay notice',
+    PB.status === 'reimbursed' && M.feeRefunds.filter(x => x.fee === B.fee).length === 1 && dB2.extended && dB2.fee_recorded === expB && dB2.extended_due === new Date(Date.parse(expB + 'T12:00:00Z') + 7 * DAY * 1000).toISOString().slice(0, 10)
+    && !dB2.completed_late && (await sink(B.id, 'reimbursement_delayed')).length === 1, { PB, dB2 });
+  // B2 · the pilot saw no fee at the deadline and sent the notice, but Stripe's own time later shows the fee was recorded before it
+  const B2 = await sdOrder('E', { chargeAgeDays: 8, btPending: true });
+  await sweep();
+  M.charges[B2.ch].btPending = false; M.charges[B2.ch].bt.created = nowS() - 2 * DAY;   // SIMULATED: Stripe's record time is inside the original period
+  await sweep();
+  const dE = (await desk()).reimbursements_recent.find(x => x.order_id === B2.id);
+  check('SD9b if Stripe’s own record time shows the fee was recorded before the original deadline although the pilot could not see it then, no extension is claimed: the original date stands, it is marked late, and the desk flags that a delay notice went out',
+    !dE.extended && dE.due_date === dE.original_due && dE.completed_late && (await sink(B2.id, 'reimbursement_delayed')).length === 1 && dE.flags.some(x => /delay notice was sent/.test(x)), dE);
+  // C · late check: Stripe recorded the fee 9 days ago (in time) but the pilot had not checked
+  const C = await sdOrder('C', { chargeAgeDays: 9 });
+  await sweep();
+  const dC = (await desk()).reimbursements_recent.find(x => x.order_id === C.id);
+  check('SD10 a delay in PlotArt checking Stripe starts no new period: fee recorded in time → no extension, no delay notice, reimbursement marked late against the original date',
+    dC.status === 'reimbursed' && !dC.extended && dC.due_date === dC.original_due && dC.completed_late && !(await sink(C.id, 'reimbursement_delayed')).length, dC);
+  // D · Stripe gives no times: the pilot says it can show only when it first saw the records
+  const D = await sdOrder('D', { chargeAgeDays: 2, noCreated: true, noBtCreated: true });
+  await sweep();
+  const dD = (await desk()).reimbursements_recent.find(x => x.order_id === D.id);
+  check('SD11 where Stripe’s times are not available the desk flags it: payment date from the pilot’s own record; fee date only when the pilot first saw it',
+    dD.payment_confirmed_basis === 'pilot_verified_payment' && dD.fee_recorded_basis === 'first_seen_by_pilot' && dD.flags.length === 2, dD);
+  check('SD12 the artist’s delay notice states the confirmation date, the original date, that the amount is not estimated, the 7-day rule from Stripe’s record with a worked example, and that the bank payout is separate (no “by 14:15” promise)',
+    !!notice && /Stripe confirmed your buyer’s payment on \w+day \d+ \w+ \d{4}/.test(notice.body) && /does not estimate/.test(notice.body) && /seventh calendar day after the day Stripe records it/.test(notice.body)
+    && /payout from Stripe to your bank is separate/.test(notice.body) && !/14:15/.test(notice.body) && /test mode/.test(notice.body), notice);
+  writeFileSync(HERE + 'test/.sd-evidence.json', JSON.stringify({ SD1: a, SD2: { summer: s, winter: w }, SD3: { before: e1, after: e2 }, SD3b: l, desk_A_outstanding: dA, desk_B_waiting: dB, desk_B_done: dB2, desk_C_late: dC, desk_D_flags: dD, delay_notice: notice }, null, 2));
+}
 
 console.log('— leaving, scheduled sweep, isolation (tests 11, 15)');
 const og = await makeOrder('afnd', 'wafnd2', 'PA-E-251101-CCCCCC', 30000, 0, 'g@example.test');

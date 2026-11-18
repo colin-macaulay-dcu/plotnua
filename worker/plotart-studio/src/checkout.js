@@ -323,11 +323,45 @@ export async function adminView(env) {
     unprocessed_events: await all(env, "SELECT event_id, type, status, attempts, detail, received_at FROM payment_events WHERE status IN ('deferred','failed','received') ORDER BY received_at LIMIT 50"),
     pending_refunds: await pendingRefunds(env), holds: await holdsView(env), refund_funding_steps: REFUND_FUNDING_STEPS,
     owed: await owedRows(env, 'w.settled_cents < w.cents'), owed_settled_recently: await owedRows(env, "w.settled_cents = w.cents AND w.arisen_at >= ?", plusDays(now(), -90)),
-    reimbursements_waiting: (await all(env, `SELECT id AS order_id, reference, paid_at, processing FROM checkout_orders WHERE payment_intent IS NOT NULL AND commission_cents > 0
-      AND (processing IS NULL OR json_extract(processing, '$.status') = 'awaiting_fee') ORDER BY paid_at`)).map(o => ({ order_id: o.order_id, reference: o.reference, paid_at: o.paid_at,
-      age_days: Math.floor((Date.now() - Date.parse(o.paid_at || now())) / 86400_000), due_date: plusDays(o.paid_at || now(), deadlines(env).reimburse_days).slice(0, 10), due_provisional: deadlines(env).provisional,
-      note: 'Stripe has not yet recorded the processing fee; the sweep retries every 15 minutes. Nothing is estimated.' })),
+    reimbursements: await reimbursementsView(env, "(processing IS NULL OR json_extract(processing, '$.status') IN ('awaiting_fee','outstanding'))"),
+    reimbursements_recent: await reimbursementsView(env, "json_extract(processing, '$.status') IN ('reimbursed','shortfall') AND updated_at >= ?", plusDays(now(), -30)),
     deadlines: deadlines(env), bank_details_process: BANK_DETAILS_PROCESS };
+}
+
+/* Founder desk: processing reimbursements (status, amount when known, due date, alerts, failures, evidence basis). */
+export const REIMBURSEMENT_STATUS = {
+  awaiting_fee: 'Waiting for Stripe to record the fee',
+  outstanding: 'Fee known · reimbursement outstanding',
+  reimbursed: 'Reimbursed · Stripe accepted the application-fee refund',
+  shortfall: 'Reimbursed in part · the rest is in Amounts owed (bank transfer)',
+};
+async function reimbursementsView(env, where, ...b) {
+  const days = deadlines(env).reimburse_days, prov = deadlines(env).provisional;
+  const rows = await all(env, `SELECT id, reference, paid_at, processing FROM checkout_orders WHERE payment_intent IS NOT NULL AND commission_cents > 0 AND ${where} ORDER BY paid_at LIMIT 100`, ...b);
+  return rows.map(o => {
+    const p = J(o.processing) || {}, status = p.status || 'awaiting_fee', conf = p.confirmed_at || o.paid_at || now();
+    const s = reimbursementSchedule({ confirmed_at: conf, fee_recorded_at: p.fee_recorded_at, reimbursed_at: p.completed_at || null, days });
+    const amount = p.cost !== undefined ? Math.max(0, p.cost - (['awaiting_fee', 'outstanding'].includes(status) ? (p.reimbursed_cents || 0) : 0)) : null;
+    const flags = [];
+    if (!p.confirmed_basis || p.confirmed_basis !== 'stripe_charge_created') flags.push('Payment date taken from the pilot’s own record of the verified payment: Stripe’s confirmation time has not been read.');
+    if (p.fee_recorded_basis === 'first_seen_by_pilot') flags.push('Stripe did not give the time it recorded the fee: the pilot can show only when it first saw the record.');
+    if (p.delay_notice_at && !s.extended) flags.push('A delay notice was sent because Stripe showed no fee at the original date, but Stripe’s own record time is earlier: the original date stands. Check in the Stripe Dashboard and tell the artist if needed.');
+    if (s.extended && p.fee_recorded_at && s.fee_recorded_date && p.fee_recorded_basis === 'first_seen_by_pilot') flags.push('Extension worked out from the pilot’s first sight of the fee, not Stripe’s own time: check in the Stripe Dashboard.');
+    return { order_id: o.id, reference: o.reference, status, status_label: REIMBURSEMENT_STATUS[status] || status,
+      amount_cents: amount, amount_label: amount === null ? 'Not yet known: Stripe has not recorded the fee (nothing is estimated)' : eur(amount),
+      payment_confirmed: s.confirmed_date, payment_confirmed_basis: p.confirmed_basis || 'pilot_verified_payment', day: s.day,
+      fee_recorded: s.fee_recorded_date, fee_recorded_basis: p.fee_recorded_basis || null,
+      original_due: s.original_due, extended: s.extended, extended_due: s.extended_due, due_date: s.due, due_provisional: prov,
+      due_label: !s.extended ? `Due by the end of ${longDate(s.original_due)} (Irish time)${prov ? ' · provisional' : ''}`
+        : s.extended_due ? `Extended: Stripe recorded the fee on ${longDate(s.fee_recorded_date)}. Due by the end of ${longDate(s.extended_due)} (Irish time)${prov ? ' · provisional' : ''}`
+        : `Original date (${longDate(s.original_due)}) passed before Stripe recorded the fee. Due by the end of the ${days === 7 ? 'seventh' : days + 'th'} day after Stripe records it${prov ? ' · provisional' : ''}`,
+      overdue: s.overdue && ['awaiting_fee', 'outstanding'].includes(status), completed_at: p.completed_at || null, completed_late: !!p.completed_late,
+      alerts: p.alerts || {}, delay_notice_at: p.delay_notice_at || null,
+      attempts: p.attempts || 0, last_error: p.last_error || null, last_attempt_at: p.last_attempt_at || null,
+      failing: (p.attempts || 0) >= REIMB_FAIL_THRESHOLD && status === 'outstanding',
+      fee_refund: p.fee_refund || null, flags,
+      action: ['awaiting_fee', 'outstanding'].includes(status) ? 'Reconcile processing fee (re-reads Stripe, records any reimbursement Stripe already made, then retries; never pays twice)' : null };
+  });
 }
 
 /* ---------------------------------------------------------------- refunds waiting for the artist's Stripe balance
@@ -348,12 +382,12 @@ async function pendingRefunds(env, artistId = null) {
     return { ...r, days_pending: age, stripe_fails_it_by: new Date(Date.parse(r.created_at) + REFUND_PENDING_DAYS * 86400_000).toISOString().slice(0, 10),
       urgency: age >= 30 ? 'urgent' : age >= 7 ? 'overdue' : 'new' }; });
 }
-async function notify(env, o, kind, text, { founderOnly = false } = {}) {
+async function notify(env, o, kind, text, { founderOnly = false, artistOnly = false, subject = null } = {}) {
   const artist = founderOnly ? null : await one(env, 'SELECT email, display_name FROM artists WHERE id = ?', o.artist_id);
-  const to = [...(artist && artist.email ? [['artist', artist.email]] : []), ...(env.CHECKOUT_NOTIFY_EMAIL ? [['founder', env.CHECKOUT_NOTIFY_EMAIL]] : [])];
+  const to = [...(artist && artist.email ? [['artist', artist.email]] : []), ...(env.CHECKOUT_NOTIFY_EMAIL && !artistOnly ? [['founder', env.CHECKOUT_NOTIFY_EMAIL]] : [])];
   const out = [];
   for (const [role, addr] of to) {
-    try { out.push((await deliver(env, { orderId: o.id, kind, toRole: role, to: addr, subject: `PlotArt payment pilot · ${o.reference} · ${kind}`, body: text })).status); }
+    try { out.push((await deliver(env, { orderId: o.id, kind, toRole: role, to: addr, subject: subject || `PlotArt payment pilot · ${o.reference} · ${kind}`, body: text })).status); }
     catch (e) { out.push('error'); }
   }
   await event(env, o.id, 'system', 'notified_' + kind, o.status, o.status, { recipients: to.map(x => x[0]), result: out });
@@ -1255,33 +1289,149 @@ async function ensureCharge(env, o) {
     ch.id, typeof ch.application_fee === 'string' ? ch.application_fee : ch.application_fee && ch.application_fee.id || null, now(), o.id);
   return getOrder(env, o.id);
 }
-/* Reimburses Stripe's actual processing cost for a paid, commission-bearing order. Safe to call any number of times. */
+/* ---------------------------------------------------------------- processing reimbursement: the seven-day rule (PA-PAY §3.3(b), PROVISIONAL)
+   Dates are Irish calendar dates (Europe/Dublin). The day after the Dublin date of Stripe's payment confirmation is day 1;
+   the reimbursement is due by the end of day 7 (CHECKOUT_REIMBURSE_DAYS). Only if Stripe has NOT recorded the fee by that
+   original deadline does the period run instead to the end of the seventh day after the Dublin date on which Stripe recorded
+   it. Evidence: payment confirmation = the charge's `created` time at Stripe; fee recorded = the `created` time of the
+   charge's balance transaction at Stripe. Where Stripe's time cannot be read the pilot uses its own first record and says so.
+   A failed reimbursement attempt, or a delay in the pilot checking Stripe, never starts a new period. */
+const DUB = new Intl.DateTimeFormat('en-GB', { timeZone: 'Europe/Dublin', year: 'numeric', month: '2-digit', day: '2-digit' });
+export const dublinDate = t => { const x = Object.fromEntries(DUB.formatToParts(new Date(typeof t === 'number' ? t : Date.parse(t))).map(p => [p.type, p.value])); return `${x.year}-${x.month}-${x.day}`; };
+const addDate = (d, n) => new Date(Date.parse(d + 'T12:00:00Z') + n * 86400_000).toISOString().slice(0, 10);
+const dateDiff = (a, b) => Math.round((Date.parse(b + 'T12:00:00Z') - Date.parse(a + 'T12:00:00Z')) / 86400_000);
+/* The first instant after the Dublin calendar day d (Irish midnight, 00:00 IST = 23:00 UTC in summer, 00:00 GMT in winter). */
+export function dublinDayEnd(d) {
+  const next = addDate(d, 1);
+  for (const h of [-1, 0]) { const t = Date.parse(next + 'T00:00:00Z') + h * 3600_000; if (dublinDate(t) === next) return t; }
+  return Date.parse(next + 'T00:00:00Z');
+}
+export const longDate = d => new Date(d + 'T12:00:00Z').toLocaleDateString('en-IE', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' });
+/* Pure: the schedule for one order, at time `at` (ms). Used by the pilot and by the tests with simulated dates. */
+export function reimbursementSchedule({ confirmed_at, fee_recorded_at = null, reimbursed_at = null, days = 7, at = Date.now() }) {
+  const confirmed_date = dublinDate(confirmed_at), original_due = addDate(confirmed_date, days), originalEnd = dublinDayEnd(original_due);
+  const rec = fee_recorded_at ? Date.parse(fee_recorded_at) : null, done = reimbursed_at ? Date.parse(reimbursed_at) : null, ref = done ?? at;
+  const extended = rec !== null ? rec >= originalEnd : ref >= originalEnd;   // the fee was not recorded by the end of the original deadline
+  const fee_recorded_date = rec !== null ? dublinDate(rec) : null;
+  const extended_due = extended && fee_recorded_date ? addDate(fee_recorded_date, days) : null;
+  const due = extended ? extended_due : original_due, dueEnd = due ? dublinDayEnd(due) : null;
+  return { confirmed_date, day: dateDiff(confirmed_date, dublinDate(ref)), original_due, fee_recorded_date, extended, extended_due, due,
+    waiting_for_fee_date: extended && !extended_due, overdue: dueEnd !== null && ref >= dueEnd, completed_late: done !== null && dueEnd !== null && done >= dueEnd };
+}
+const REIMB_FAIL_FLAG = 'Processing reimbursement failing';
+const REIMB_FAIL_THRESHOLD = 3;
+const iso = s => new Date(s * 1000).toISOString();
+async function saveProcessing(env, id, p) { await run(env, 'UPDATE checkout_orders SET processing = ?, updated_at = ? WHERE id = ?', JSON.stringify(p), now(), id); }
+/* Records any processing reimbursement Stripe already made for this order but the pilot did not record (for example when
+   Stripe accepted the refund but its answer was lost). Read from Stripe's own list of the fee's refunds; never creates one. */
+async function adoptFeeRefunds(env, o) {
+  const list = await S.listFeeRefunds(env, { fee: o.application_fee_id });
+  let n = 0;
+  for (const fr of (list && list.data) || []) {
+    const md = fr.metadata || {};
+    if (md.plotart_kind !== 'processing_reimbursement' || md.plotart_order !== o.id) continue;
+    if (await one(env, "SELECT 1 AS x FROM order_ledger WHERE kind = 'processing_reimbursement' AND provider_ref = ?", fr.id)) continue;
+    await env.DB.batch([ledgerSt(env, o.id, 'processing_reimbursement', fr.amount, fr.id, 'PlotArt reimburses Stripe’s processing fee and VAT on it (fee model B) · recorded from Stripe’s list of the fee’s refunds'),
+      evSt(env, o.id, 'system', 'processing_reimbursement_adopted', o.status, o.status, { fee_refund: fr.id, amount: fr.amount, created: fr.created ? iso(fr.created) : null })]);
+    n++;
+  }
+  return n;
+}
+/* Alerts (test sink only): founder at day 5 and at the deadline; one delay notice to the artist when the extension applies. */
+async function reimbursementAlerts(env, o, p) {
+  if (!['awaiting_fee', 'outstanding'].includes(p.status)) return p;
+  const days = deadlines(env).reimburse_days, s = reimbursementSchedule({ confirmed_at: p.confirmed_at, fee_recorded_at: p.fee_recorded_at, days });
+  const al = { ...(p.alerts || {}) }, prov = deadlines(env).provisional ? ' (provisional deadline)' : '';
+  const amount = p.status === 'outstanding' ? eur(Math.max(0, p.cost - (p.reimbursed_cents || 0))) : 'not yet known (Stripe has not recorded the fee; nothing is estimated)';
+  if (s.extended && !p.delay_notice_at) {
+    await notify(env, o, 'reimbursement_delayed', delayNoticeText(o, s, days), { artistOnly: true, subject: `PlotArt payment pilot · ${o.reference} · processing fee reimbursement: Stripe has not yet recorded the fee` });
+    await notify(env, o, 'reimbursement_extended', `Order ${o.reference}: the original reimbursement date (end of ${longDate(s.original_due)}) passed before Stripe recorded the processing fee. The extension applies: the reimbursement is now due by the end of the seventh day after the day Stripe records the fee${s.extended_due ? ` (${longDate(s.extended_due)})` : ''}${prov}. One delay notice has gone to the artist. Founder desk: Processing reimbursements.`, { founderOnly: true });
+    p = { ...p, delay_notice_at: now() };
+  }
+  if (!s.extended && s.day >= 5 && !s.overdue && !al.day5) {
+    await notify(env, o, 'reimbursement_day5', `Day ${s.day}: order ${o.reference} — processing reimbursement still outstanding. Status: ${p.status === 'outstanding' ? 'fee known, reimbursement outstanding' : 'waiting for Stripe to record the fee'}. Amount: ${amount}. Due by the end of ${longDate(s.due)} (Irish time)${prov}.${p.last_error ? ` Last attempt failed: ${p.last_error}` : ''} Founder desk: Processing reimbursements.`, { founderOnly: true });
+    al.day5 = now();
+  }
+  const dk = s.extended ? 'extended_deadline' : 'deadline';
+  if (s.overdue && !al[dk]) {
+    await notify(env, o, 'reimbursement_' + dk, `OVERDUE: order ${o.reference} — the processing reimbursement was due by the end of ${longDate(s.due)} (Irish time)${prov} and is still outstanding. Status: ${p.status === 'outstanding' ? 'fee known, reimbursement outstanding' : 'waiting for Stripe to record the fee'}. Amount: ${amount}.${p.last_error ? ` Last attempt failed: ${p.last_error}` : ''} Founder desk: Processing reimbursements → Reconcile processing fee.`, { founderOnly: true });
+    al[dk] = now();
+  }
+  return { ...p, alerts: al };
+}
+export function delayNoticeText(o, s, days = 7) {
+  return [`Order ${o.reference}`, '',
+    `Stripe confirmed your buyer’s payment on ${longDate(s.confirmed_date)}. PlotArt reimburses Stripe’s processing fee, and the VAT Stripe charges on it, within ${days} calendar days of the payment: for this order, by the end of ${longDate(s.original_due)} (Irish time).`, '',
+    `Stripe has not yet recorded the processing fee for this payment, so the exact amount is not yet known. PlotArt does not estimate it.`, '',
+    `PlotArt will reimburse the fee as soon as Stripe records it, and at the latest by the end of the ${days === 7 ? 'seventh' : days + 'th'} calendar day after the day Stripe records it (Irish time). For example, if Stripe records the fee on ${longDate(addDate(s.original_due, 2))}, the latest date is ${longDate(addDate(s.original_due, 2 + days))}.`, '',
+    `We will tell you the amount when the reimbursement is made. Your payout from Stripe to your bank is separate and follows your usual Stripe payout schedule.`, '',
+    `This message comes from the PlotArt payment pilot (test mode).`].join('\n');
+}
+/* Reimburses Stripe's actual processing cost for a paid, commission-bearing order. Safe to call any number of times: the
+   amount still due is worked out from the ledger, the idempotency key is fixed for that state, and after any failed attempt
+   (or on the founder's "Reconcile processing fee") the pilot first reads Stripe's list of the fee's refunds and records any
+   reimbursement Stripe already made, so a lost answer cannot lead to a second one. */
 export async function reconcileProcessing(env, o, actor = 'system') {
   if (!o || !o.payment_intent || !(o.commission_cents > 0)) return { status: 'not_applicable' };
   o = await ensureCharge(env, o);
-  const p0 = J(o.processing) || {};
-  if (!o.charge_id || !o.application_fee_id) { await run(env, 'UPDATE checkout_orders SET processing = ?, updated_at = ? WHERE id = ?', JSON.stringify({ ...p0, status: 'awaiting_fee' }), now(), o.id); return { status: 'awaiting_fee' }; }
-  let p = p0;
-  if (!p.balance_transaction) {
-    const ch = await S.getCharge(env, { account: o.provider_account, id: o.charge_id, expandBalance: true });
-    const bt = ch.balance_transaction && typeof ch.balance_transaction === 'object' ? ch.balance_transaction : null;
-    if (!bt) { await run(env, 'UPDATE checkout_orders SET processing = ?, updated_at = ? WHERE id = ?', JSON.stringify({ ...p0, status: 'awaiting_fee' }), now(), o.id); return { status: 'awaiting_fee' }; }
-    p = { ...p0, ...processingFromBalance(bt), recorded_at: now() };
-    await env.DB.batch([st(env, 'UPDATE checkout_orders SET processing = ?, updated_at = ? WHERE id = ?', JSON.stringify(p), now(), o.id),
-      ledgerSt(env, o.id, 'processing_fee', p.cost, p.balance_transaction, `Stripe processing fee ${eur(p.stripe_fee)} + VAT on it ${eur(p.vat)}, charged by Stripe to the seller's balance`)]);
-    if (p.excluded_fees) await event(env, o.id, 'system', 'processing_excluded_fees', o.status, o.status, { excluded_fees: p.excluded_fees, excluded_vat: p.excluded_vat, descriptions: p.descriptions });
+  const t = now();
+  let p = J(o.processing) || {};
+  if (!p.confirmed_at) p = { ...p, confirmed_at: o.paid_at || t, confirmed_basis: 'pilot_verified_payment' };
+  let ch = null;
+  if (o.charge_id && (p.confirmed_basis !== 'stripe_charge_created' || !p.balance_transaction)) {
+    ch = await S.getCharge(env, { account: o.provider_account, id: o.charge_id, expandBalance: !p.balance_transaction });
+    if (ch && ch.created && p.confirmed_basis !== 'stripe_charge_created') p = { ...p, confirmed_at: iso(ch.created), confirmed_basis: 'stripe_charge_created' };
   }
+  if (o.charge_id && o.application_fee_id && !p.balance_transaction) {
+    const bt = ch && ch.balance_transaction && typeof ch.balance_transaction === 'object' ? ch.balance_transaction : null;
+    if (bt) {
+      const when = bt.created ? { fee_recorded_at: iso(bt.created), fee_recorded_basis: 'stripe_balance_transaction_created' } : { fee_recorded_at: t, fee_recorded_basis: 'first_seen_by_pilot' };
+      p = { ...p, ...processingFromBalance(bt), recorded_at: t, ...when };
+      await env.DB.batch([st(env, 'UPDATE checkout_orders SET processing = ?, updated_at = ? WHERE id = ?', JSON.stringify(p), t, o.id),
+        ledgerSt(env, o.id, 'processing_fee', p.cost, p.balance_transaction, `Stripe processing fee ${eur(p.stripe_fee)} + VAT on it ${eur(p.vat)}, charged by Stripe to the seller's balance`)]);
+      if (p.excluded_fees) await event(env, o.id, 'system', 'processing_excluded_fees', o.status, o.status, { excluded_fees: p.excluded_fees, excluded_vat: p.excluded_vat, descriptions: p.descriptions });
+    }
+  }
+  if (!p.balance_transaction) {
+    p = await reimbursementAlerts(env, o, { ...p, status: 'awaiting_fee' });
+    await saveProcessing(env, o.id, p);
+    return { status: 'awaiting_fee' };
+  }
+  if ((p.attempts || 0) > 0 || actor !== 'system') { try { await adoptFeeRefunds(env, o); } catch (e) { if ((p.attempts || 0) > 0) { p = { ...p, last_error: `could not read the fee’s refunds at Stripe: ${String(e.message).slice(0, 200)}`, last_attempt_at: t, status: 'outstanding' }; p = await reimbursementAlerts(env, o, p); await saveProcessing(env, o.id, p); return { status: 'outstanding', error: p.last_error }; } } }
   const pot = await feePot(env, o), due = Math.max(0, p.cost - pot.reimbursed);
   const pay = Math.min(due, pot.left);
   if (pay > 0) {
-    const fr = await S.refundFee(env, { fee: o.application_fee_id, amount: pay, idem: `plotart-proc-${o.id}-${p.cost}-${pot.reimbursed}`, metadata: { plotart_order: o.id, plotart_kind: 'processing_reimbursement' } });
+    let fr;
+    try { fr = await S.refundFee(env, { fee: o.application_fee_id, amount: pay, idem: `plotart-proc-${o.id}-${p.cost}-${pot.reimbursed}`, metadata: { plotart_order: o.id, plotart_kind: 'processing_reimbursement' } }); }
+    catch (e) {
+      const attempts = (p.attempts || 0) + 1, reason = String(e.message || e).slice(0, 300);
+      p = { ...p, attempts, last_error: reason, last_attempt_at: t, reimbursed_cents: pot.reimbursed, status: 'outstanding' };
+      await event(env, o.id, actor, 'processing_reimbursement_failed', o.status, o.status, { attempt: attempts, amount: pay, error: reason });
+      if (attempts >= REIMB_FAIL_THRESHOLD) {
+        const cur = await getOrder(env, o.id), rest = (cur.needs_resolution || '').split(' | ').filter(x => x && !x.startsWith(REIMB_FAIL_FLAG)).join(' | ');
+        const s = reimbursementSchedule({ confirmed_at: p.confirmed_at, fee_recorded_at: p.fee_recorded_at, days: deadlines(env).reimburse_days });
+        await run(env, 'UPDATE checkout_orders SET needs_resolution = ?, updated_at = ? WHERE id = ?', [`${REIMB_FAIL_FLAG} (${attempts} attempts): ${reason}. The due date is unchanged (${s.due ? 'end of ' + s.due : 'pending'}). Check the reason, then use "Reconcile processing fee": it re-reads Stripe, records any reimbursement Stripe already made, and retries without creating a second one.`, rest].filter(Boolean).join(' | '), now(), o.id);
+      }
+      p = await reimbursementAlerts(env, o, p);
+      await saveProcessing(env, o.id, p);
+      return { status: 'outstanding', error: reason, attempts };
+    }
     await env.DB.batch([ledgerSt(env, o.id, 'processing_reimbursement', pay, fr.id, `PlotArt reimburses Stripe's processing fee and VAT on it (fee model B)`),
-      evSt(env, o.id, actor, 'processing_reimbursed', o.status, o.status, { amount: pay, fee_refund: fr.id, cost: p.cost })]);
+      evSt(env, o.id, actor, 'processing_reimbursed', o.status, o.status, { amount: pay, fee_refund: fr.id, cost: p.cost, stripe_created: fr.created ? iso(fr.created) : null, platform_balance_transaction: typeof fr.balance_transaction === 'string' ? fr.balance_transaction : fr.balance_transaction && fr.balance_transaction.id || null })]);
+    p = { ...p, fee_refund: { id: fr.id, amount: fr.amount, accepted_at: fr.created ? iso(fr.created) : t, accepted_basis: fr.created ? 'stripe_fee_refund_created' : 'pilot_time_of_answer',
+      platform_balance_transaction: typeof fr.balance_transaction === 'string' ? fr.balance_transaction : fr.balance_transaction && fr.balance_transaction.id || null } };
   }
   if (due - pay > 0) await addShortfall(env, o, 'processing', due - pay, `Stripe's processing cost ${eur(p.cost)} exceeds what is left of the commission`);
-  const after = await feePot(env, o), cur = J((await getOrder(env, o.id)).processing) || p;
+  const after = await feePot(env, o), cur = J((await getOrder(env, o.id)).processing) || {};
   const status = after.reimbursed >= p.cost ? 'reimbursed' : 'shortfall';
-  await run(env, 'UPDATE checkout_orders SET processing = ?, updated_at = ? WHERE id = ?', JSON.stringify({ ...cur, ...p, reimbursed_cents: after.reimbursed, status }), now(), o.id);
+  p = { ...cur, ...p, reimbursed_cents: after.reimbursed, status, last_error: null };
+  if (status !== 'awaiting_fee' && !p.completed_at) {
+    p.completed_at = (p.fee_refund && p.fee_refund.accepted_at) || t;
+    const s = reimbursementSchedule({ confirmed_at: p.confirmed_at, fee_recorded_at: p.fee_recorded_at, reimbursed_at: p.completed_at, days: deadlines(env).reimburse_days });
+    p.completed_late = s.completed_late;
+  }
+  await saveProcessing(env, o.id, p);
+  await dropFlag(env, o.id, REIMB_FAIL_FLAG);
   return { status, cost: p.cost, reimbursed: after.reimbursed };
 }
 /* The founder records a shortfall PlotArt paid the artist outside Stripe. */
@@ -1566,8 +1716,8 @@ export async function sweep(env) {
   try { deferred_replayed = await replayDeferred(env); } catch { /* next sweep */ }
   let processing_reconciled = 0;
   for (const o of await all(env, `SELECT * FROM checkout_orders WHERE payment_intent IS NOT NULL AND commission_cents > 0
-      AND (processing IS NULL OR json_extract(processing, '$.status') = 'awaiting_fee') ORDER BY paid_at LIMIT 25`)) {
-    try { const r = await reconcileProcessing(env, o); if (r.status !== 'awaiting_fee') processing_reconciled++; } catch { /* next sweep */ }
+      AND (processing IS NULL OR json_extract(processing, '$.status') IN ('awaiting_fee','outstanding')) ORDER BY paid_at LIMIT 25`)) {
+    try { const r = await reconcileProcessing(env, o); if (!['awaiting_fee', 'outstanding'].includes(r.status)) processing_reconciled++; } catch { /* next sweep */ }
   }
   let confirmations = 0;
   for (const o of await all(env, `SELECT o.* FROM checkout_orders o JOIN artwork_sales s ON s.order_id = o.id
