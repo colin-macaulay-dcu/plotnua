@@ -75,18 +75,34 @@ export function dimensions(u8, fmt) {
     return null;
   }
   if (fmt === 'jpeg') {
-    let i = 2;
+    // Phones store most portrait photographs as landscape pixels with an EXIF "rotate" tag; browsers and the publisher show
+    // them upright, so the size recorded here is the upright one (18 Nov 2026: a portrait read "4032 × 3024 px").
+    let i = 2, turned = false;
     while (i + 9 < u8.length) {
       if (u8[i] !== 0xFF) { i++; continue; }
       const m = u8[i + 1];
       if (m === 0xD8 || m === 0x01 || (m >= 0xD0 && m <= 0xD7)) { i += 2; continue; }
       const len = dv.getUint16(i + 2);
-      if (m >= 0xC0 && m <= 0xCF && ![0xC4, 0xC8, 0xCC].includes(m)) return { h: dv.getUint16(i + 5), w: dv.getUint16(i + 7) };
+      if (m === 0xE1 && !turned) turned = [5, 6, 7, 8].includes(exifOrientation(dv, i + 4, len - 2));
+      if (m >= 0xC0 && m <= 0xCF && ![0xC4, 0xC8, 0xCC].includes(m)) {
+        const h = dv.getUint16(i + 5), w = dv.getUint16(i + 7);
+        return turned ? { w: h, h: w } : { w, h };
+      }
       i += 2 + len;
     }
     return null;
   }
   return null;
+}
+/* the EXIF Orientation tag (1–8) of a JPEG APP1 segment starting at `at`, or 0 when there is none */
+function exifOrientation(dv, at, len) {
+  try {
+    if (len < 14 || dv.getUint32(at) !== 0x45786966 || dv.getUint16(at + 4) !== 0) return 0;   // "Exif\0\0"
+    const t = at + 6, le = dv.getUint16(t) === 0x4949, u16 = o => dv.getUint16(o, le), u32 = o => dv.getUint32(o, le);
+    const ifd = t + u32(t + 4), n = u16(ifd);
+    for (let k = 0; k < n; k++) { const e = ifd + 2 + k * 12; if (e + 12 > at + len) return 0; if (u16(e) === 0x0112) return u16(e + 8); }
+  } catch { /* a damaged EXIF block: treat as upright */ }
+  return 0;
 }
 /* Server-side checks (the browser runs the same rules first, for instant feedback). BLOCK = cannot be used. */
 export function checkImage(u8, { portrait = false, minLong = MIN_LONG_EDGE } = {}) {

@@ -4,7 +4,10 @@
   const $ = (s, el = document) => el.querySelector(s);
   const E = s => String(s ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
   const app = $('#app'), toast = $('#saved');
-  const STATE = { draft: 'Setting up', in_review: 'Waiting for you', changes_requested: 'Changes requested', approved: 'Approved', publishing: 'Publishing', live: 'Live' };
+  // what the founder needs to know at a glance (18 Nov 2026): a draft with nothing outstanding is "Ready to submit", not
+  // "Setting up"; a pending submission reads as submitted
+  const STATE = { draft: 'Setting up', ready: 'Ready to submit (not submitted yet)', in_review: 'Submitted for review', changes_requested: 'Changes requested', approved: 'Approved', publishing: 'Approved: publishing', live: 'Published' };
+  const stateOf = a => a.state === 'draft' && !a.problems && a.works ? 'ready' : a.state;
   const when = t => t ? new Date(t).toLocaleString('en-IE', { dateStyle: 'medium', timeStyle: 'short' }) : '';
   function say(m, bad) { toast.textContent = m; toast.classList.toggle('bad', !!bad); toast.classList.add('on'); clearTimeout(say.t); say.t = setTimeout(() => toast.classList.remove('on'), 2400); }
   async function api(method, path, body) {
@@ -158,9 +161,10 @@
         <div id="enq"><p class="st-muted">Loading…</p></div></section>
       <section class="st-card"><h2>Artists</h2><div class="st-scroll"><table class="st-table"><thead><tr><th>Artist</th><th>Status</th><th>Agreement</th><th>Works</th><th>To do</th><th></th></tr></thead><tbody>
         ${o.artists.map(a => `<tr><td><b style="color:var(--ivory)">${E(a.display_name)}</b>${a.founding ? ' <span class="pa-gcard-badge" style="display:inline-block">Founding</span>' : a.programme === 'gallery_artist' ? ' <span class="pa-gcard-badge" style="display:inline-block">Gallery Artist</span>' : ''}<br><span class="st-muted">${E(a.email)}${a.application_ref ? ' · ' + E(a.application_ref) : ''}</span></td>
-          <td>${a.account_status === 'suspended' ? '<span class="st-flag">Suspended</span>' : E(STATE[a.state])}${a.account_status === 'invited' ? '<br><span class="st-muted">Not signed in yet</span>' : ''}</td>
+          <td>${a.account_status === 'suspended' ? '<span class="st-flag">Suspended</span>' : E(STATE[stateOf(a)])}${a.account_status === 'invited' ? '<br><span class="st-muted">Not signed in yet</span>' : ''}</td>
           <td>${agrCell(a)}</td><td>${a.works}</td><td>${a.problems ? `<button class="st-btn st-btn--small st-todo-btn" data-ck="${a.id}" aria-expanded="false" aria-controls="ck-${a.id}">${a.problems} item${a.problems > 1 ? 's' : ''}</button>` : '✓'}</td>
-          <td class="st-row">${a.account_status === 'suspended' ? `<button class="st-btn st-btn--small" data-act="reactivate" data-id="${a.id}">Reactivate</button>` : `<button class="st-btn st-btn--small" data-act="suspend" data-id="${a.id}">Suspend</button>`}
+          <td class="st-row"><a class="st-btn st-btn--small" href="/admin/preview/d-${a.id}/index.html" target="_blank" rel="noopener" title="The artist’s saved draft, unpublished, read-only">Preview draft</a>
+          ${a.account_status === 'suspended' ? `<button class="st-btn st-btn--small" data-act="reactivate" data-id="${a.id}">Reactivate</button>` : `<button class="st-btn st-btn--small" data-act="suspend" data-id="${a.id}">Suspend</button>`}
           ${a.live_version ? `<button class="st-btn st-btn--small st-btn--danger" data-act="unpublish" data-id="${a.id}">Unpublish</button>` : ''}
           <button class="st-btn st-btn--small" data-email="${a.id}" aria-expanded="false" aria-controls="em-${a.id}">Change email</button>
           ${a.account_status !== 'ended' ? `<button class="st-btn st-btn--small" data-pf="${a.id}" aria-expanded="false" aria-controls="pf-${a.id}">Start profile from application</button>` : ''}</td></tr>
@@ -306,7 +310,7 @@
     app.innerHTML = `
       <p><a href="#/" style="color:var(--stone);text-decoration:none">← Review desk</a></p>
       <h1 class="st-h1">${E(r.artist.display_name)}</h1>
-      <p class="st-sub"><span class="st-tier ${s.tier}">${tiers[s.tier]}</span>Submitted ${when(s.created_at)} · ${s.status === 'pending' ? 'waiting for you' : E(s.status)}${r.artist.founding ? ' · Founding Artist' : ''} · licence ${E(r.artist.licence_version || 'not accepted')}</p>
+      <p class="st-sub"><span class="st-tier ${s.tier}">${tiers[s.tier]}</span>Submitted ${when(s.created_at)} · ${s.status === 'pending' ? 'waiting for you' : E(s.status)}${r.artist.founding ? ' · Founding Artist' : ''} · ${agrLine(r.agreement, r.artist)}</p>
       ${s.note ? `<p class="st-msg">${E(s.note)}</p>` : ''}
       <div class="st-two"><div>
       <section class="st-card"><h2>What changes</h2><ul class="st-list">${s.changes.map(c => `<li><span><span class="st-tier ${c.tier}">${tiers[c.tier]}</span>${E(c.what)}${PAChanges.detail(c)}</span></li>`).join('')}</ul>
@@ -434,6 +438,13 @@
   const DOCNAME = { 'PA-GAA-2026-11': 'Gallery Artist Agreement', 'PA-FAA-2026-11': 'Founding Artist Agreement', 'PA-GPIL-2026-11': 'Image Licence', 'PA-GPIL-2026-10-29': 'Image Licence (earlier label)' };
   const irishDay = d => d ? new Date(d + 'T12:00:00Z').toLocaleDateString('en-IE', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'Europe/Dublin' }) : '';
   const irish = t => t ? new Date(t).toLocaleString('en-IE', { dateStyle: 'medium', timeStyle: 'short', timeZone: 'Europe/Dublin' }) : '';
+  /* one line for a submission: the agreement status the publishing gate uses (never the pre-agreement licence label alone) */
+  function agrLine(g, a) {
+    if (g && g.accepted) return `agreement accepted ${E(irish(g.accepted_at))}`;
+    if (g && g.installed === false) return 'agreement not installed';
+    if (a && a.licence_version) return `<span style="color:#CF8566">agreement not accepted (earlier licence ${E(a.licence_version)} only)</span>`;
+    return '<span style="color:#CF8566">agreement not accepted</span>';
+  }
   function agrCell(a) {
     const g = a.agreement;
     if (!g || !g.installed) return '<span class="st-muted">Not installed</span>';

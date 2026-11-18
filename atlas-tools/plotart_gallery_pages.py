@@ -2,6 +2,7 @@
 packages (see plotart_gallery.py). Public fields only; the whole artwork image is always shown
 (object-fit: contain), never cropped."""
 import html
+import re
 import plotart_opportunities as OPP  # noqa: E402  (opportunities shown publicly, 16 Nov 2026)
 import plotart_seo as SEO
 from urllib.parse import quote
@@ -155,6 +156,29 @@ def empty_works(a):
             '<p class="pa-ag-empty-l">%s isn&#x27;t showing any works at the moment. You can still get in touch through PlotArt.</p></div>') % E(first)
 
 
+
+_SENTENCE_END = re.compile(r"[.!?…:;\"”’')\]]\s*$")
+
+
+def paragraphs(text):
+    """A biography's paragraphs (founder brief 18 Nov 2026): a blank line always starts a paragraph, and so does a single
+    line break after the end of a sentence (artists press Enter once and expect a new paragraph). A line break in the
+    middle of a sentence (text pasted from a document with fixed-width lines) is read as a space, as before.
+    Same rule in the Studio preview (worker/plotart-studio/src/render.js)."""
+    out = []
+    for block in re.split(r"\n\s*\n", str(text or "").replace("\r\n", "\n")):
+        cur = ""
+        for line in block.split("\n"):
+            line = line.strip()
+            if not line:
+                continue
+            cur = (cur + " " + line) if cur else line
+            if _SENTENCE_END.search(line):
+                out.append(cur); cur = ""
+        if cur:
+            out.append(cur)
+    return out
+
 def artist_body(pkg, blocks=None, preview=False, enquiry_endpoint=None):
     a = pkg["artist"]
     works = shown(pkg)
@@ -185,7 +209,7 @@ def artist_body(pkg, blocks=None, preview=False, enquiry_endpoint=None):
         links.append('<a href="%s" rel="noopener nofollow" data-pa-track="artist_website">Website <span aria-hidden="true">↗</span></a>' % E(a["website"]))
     if a.get("instagram"):
         links.append('<a href="https://www.instagram.com/%s/" rel="noopener nofollow" data-pa-track="artist_instagram">Instagram <span aria-hidden="true">↗</span></a>' % E(a["instagram"]))
-    bio = "".join("<p>%s</p>" % E(p.strip()) for p in a["bio"].split("\n\n") if p.strip())
+    bio = "".join("<p>%s</p>" % E(p) for p in paragraphs(a["bio"]))
     return """%s
 <section class="pa-ag-hero%s"><div class="pa-wrap">
   <nav class="pa-crumb" aria-label="Breadcrumb"><a href="../../gallery/">Artists’ Gallery</a><span aria-hidden="true">/</span><span aria-current="page">%s</span></nav>

@@ -30,8 +30,20 @@ window.PAChanges = (() => {
   }
   function textDiff(from, to) {
     const o = ops(tokens(from), tokens(to));
-    return o.map(([k, t], n) => k === 'del' ? `<del>${E(t)}</del>` : k === 'ins' ? `<ins>${E(t)}</ins>`
-      : trim(t, n === 0 ? 'before' : n === o.length - 1 ? 'after' : 'between')).join('');
+    // A paragraph break added or removed is only white space: name it, or the change would be invisible. Same rule as the
+    // gallery: a blank line, or a line break after the end of a sentence, starts a paragraph; any other break is joined.
+    const before = n => { while (--n >= 0) if (o[n][0] === 'eq') return o[n][1]; return ''; };
+    const space = t => !t.trim();
+    const para = (t, n) => /\n/.test(t) && space(t) && (/\n\s*\n/.test(t) || /[.!?…:;"”’')\]]$/.test(before(n)));
+    // white space replaced by white space: only a paragraph starting or ending is shown (a joined line break, or a
+    // paragraph break re-typed, changes nothing on the page)
+    const pair = n => { const [k, t] = o[n], m = k === 'del' ? n + 1 : n - 1, x = o[m];
+      return space(t) && x && x[0] === (k === 'del' ? 'ins' : 'del') && space(x[1]) ? para(x[1], m) : null; };
+    return o.map(([k, t], n) => {
+      const p = pair(n), mine = para(t, n);
+      if (k === 'del') return p !== null ? (mine && !p ? '<del class="st-brk">paragraph break</del>' : '') : mine ? '<del class="st-brk">paragraph break</del>' : `<del>${E(t)}</del>`;
+      if (k === 'ins') return p !== null ? (mine && !p ? '<ins class="st-brk">new paragraph</ins>' : ' ') : mine ? '<ins class="st-brk">new paragraph</ins>' : `<ins>${E(t)}</ins>`;
+      return trim(t, n === 0 ? 'before' : n === o.length - 1 ? 'after' : 'between'); }).join('');
   }
   const long = v => typeof v === 'string' && (v.length > 60 || /\n/.test(v));
   const show = v => v === null || v === undefined || v === '' ? '—' : v === true ? 'yes' : v === false ? 'no' : String(v);

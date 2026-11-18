@@ -584,14 +584,16 @@ async function submit(env, artist, body) {
   const snap = L.snapshot(d.artist, d.works, d.images);
   const lv = await latestVersion(env, artist.id);
   const cs = L.changes(lv && lv.snap, snap).filter(c => c.tier !== 'instant');
-  if (!cs.length) throw new Bad('There are no changes to submit');
+  // A refused attempt is recorded too (18 Nov 2026: an artist believed she had submitted; nothing showed whether she had
+  // tried), so the founder can see an attempt and why it did not go through. Nothing else changes.
+  if (!cs.length) { await audit(env, artist.email, 'artist', 'submit_refused', artist.id, { reason: 'no_changes' }); throw new Bad('There are no changes to submit'); }
   // Founding Artist Agreement (development 6 Nov 2026): a FULL submission (always the case for a first publication) needs
   // the current texts accepted in Studio first (POST /api/agreement/accept). A quick-check submission from an artist who
   // already holds a licence the publishing pipeline accepts is never blocked. Nothing is accepted on submission any more.
   const ag = await agreementState(env, d.artist);
   const licence = ag.accepted || (L.tierOf(cs) !== 'full' && !!ag.licence && AG.PUBLISHABLE_LICENCES.includes(ag.licence.version));
   const problems = L.readiness(snap, { founding: !!d.artist.founding, programme: ag.programme, firstPublication: !lv, licenceOk: licence, imageBlocks: blocked(d.images) });
-  if (problems.length) return json({ ok: false, problems }, 422);
+  if (problems.length) { await audit(env, artist.email, 'artist', 'submit_refused', artist.id, { reason: 'not_ready', problems }); return json({ ok: false, problems }, 422); }
   await env.DB.prepare("UPDATE submissions SET status='withdrawn', decided_at=? WHERE artist_id=? AND status='pending'").bind(now(), artist.id).run();
   const id = rid('s');
   const note = L.text(body.note, 2, 600, 'Your note', { optional: true });
@@ -1380,6 +1382,21 @@ async function route(req, env) {
       await audit(env, me.email, 'founder', 'application_images_erased', null, { ref: mm[1], objects: erased });
       return json({ ok: true, erased });
     }
+    // Founder preview of an artist's saved, unpublished draft (18 Nov 2026): read-only (GET only, the same renderer as
+    // the artist's own preview), behind the founder sign-in like the rest of /admin, never cached, never indexed.
+    if ((mm = p.match(/^\/admin\/preview\/d-(a[0-9a-z]+)\/(.*)$/))) {
+      if (m !== 'GET') return html('Not found', 404);
+      const a = await one(env, 'SELECT id FROM artists WHERE id=?', mm[1]);
+      if (!a) return html('Not found', 404);
+      const rest = mm[2];
+      if (rest.startsWith('img/')) { const img = await one(env, 'SELECT * FROM images WHERE id=? AND artist_id=? AND deleted_at IS NULL', rest.slice(4), a.id); return img ? previewImage(env, img) : html('Not found', 404); }
+      const d = await load(env, a.id);
+      await audit(env, me.email, 'founder', 'draft_preview_viewed', a.id, { page: rest || 'index.html' });
+      const r = previewRoute(rest, previewPkg(L.snapshot(d.artist, d.works, d.images), d.images),
+        `Unpublished draft · ${String(d.artist.display_name).replace(/[&<>"']/g, c => `&#${c.charCodeAt(0)};`)}’s saved Studio as it is now, including changes not yet submitted · not live · read-only, founder only · <a href="/admin">Back to the review desk</a>`);
+      r.headers.set('Cache-Control', 'no-store');
+      return r;
+    }
     if ((mm = p.match(/^\/admin\/preview\/(s[0-9a-z]+|v-([0-9a-z]+)-(\d+))\/(.*)$/))) {
       let snap, artistId;
       if (mm[1].startsWith('s')) { const s = await one(env, 'SELECT * FROM submissions WHERE id=?', mm[1]); if (!s) return html('Not found', 404); snap = JSON.parse(s.snapshot); artistId = s.artist_id; }
@@ -1387,7 +1404,7 @@ async function route(req, env) {
       const rest = mm[4];
       if (rest.startsWith('img/')) { const img = await one(env, 'SELECT * FROM images WHERE id=? AND artist_id=?', rest.slice(4), artistId); return img ? previewImage(env, img) : html('Not found', 404); }
       const images = await all(env, 'SELECT * FROM images WHERE artist_id=?', artistId);
-      return previewRoute(rest, previewPkg(snap, images), 'Founder review preview · <a href="/admin">Back to the review desk</a>');
+      return previewRoute(rest, previewPkg(snap, images), `Unpublished ${mm[1].startsWith('s') ? 'submission' : 'version waiting to publish'} · not live · founder only · <a href="/admin">Back to the review desk</a>`);
     }
     if ((mm = p.match(/^\/api\/admin\/artists\/(a[0-9a-z]+)\/checklist$/)) && m === 'GET') {
       // PLOTART-STUDIO-SUBMISSION-002: the founder's read-only view of one artist's submission checklist. Same rules
@@ -1561,7 +1578,10 @@ async function route(req, env) {
       const snap = JSON.parse(s.snapshot);
       const ids = snap.works.flatMap(w => w.images.map(i => i.id)).concat(snap.artist.portrait ? [snap.artist.portrait.id] : []);
       const imgs = ids.length ? await all(env, `SELECT id, width, height, bytes, format, checks, sha256 FROM images WHERE id IN (${ids.map(() => '?').join(',')})`, ...ids) : [];
-      return json({ ok: true, submission: { ...s, snapshot: undefined, changes: JSON.parse(s.changes) }, artist: a, works: snap.works.map(w => ({ id: w.id, title: w.title, ai_involvement: w.ai_involvement, ai_note: w.ai_note })),
+      // the agreement as the Studio and the publishing gate see it (18 Nov 2026: this line read the pre-agreement licence
+      // column only, so artists who accepted the current agreement showed "licence not accepted")
+      const ag = agreementSummary(await agreementState(env, await one(env, 'SELECT * FROM artists WHERE id=?', s.artist_id)));
+      return json({ ok: true, submission: { ...s, snapshot: undefined, changes: JSON.parse(s.changes) }, artist: a, agreement: ag, works: snap.works.map(w => ({ id: w.id, title: w.title, ai_involvement: w.ai_involvement, ai_note: w.ai_note })),
         images: imgs.map(i => ({ ...i, checks: JSON.parse(i.checks) })) });
     }
     if ((mm = p.match(/^\/api\/admin\/submissions\/(s[0-9a-z]+)\/decision$/)) && m === 'POST') return decide(env, me.email, mm[1], await req.json());

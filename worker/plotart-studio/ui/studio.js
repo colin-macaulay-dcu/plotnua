@@ -82,7 +82,6 @@
   function dashboard() {
     const s = ME.status, a = ME.artist, [title, text] = STATE[s.state];
     const n = s.counts.works;
-    const canSubmit = s.unsubmitted.length && !s.problems.length && s.state !== 'in_review';
     const left = s.checklist.length;
     const pendingTier = s.tier === 'light' ? 'a quick check' : 'a review';
     app.innerHTML = `
@@ -108,7 +107,6 @@
       <section class="st-card" aria-labelledby="ck-h"><div class="st-ck-top"><h3 id="ck-h">Your gallery checklist</h3>${left ? `<span class="st-ck-count">${plural(left, 'detail', 'details')} to complete</span>` : ''}</div>
         ${left ? `<p class="st-muted st-ck-intro">Complete these to submit your gallery. Each one opens the right place.</p>${checklistHTML(s.checklist)}`
           : `<ul class="st-list ok"><li>Everything needed is in place${s.unsubmitted.length ? `: submit your changes for ${pendingTier}` : ''}.</li></ul>`}
-        ${canSubmit ? `<div class="st-actions"><a class="st-btn st-btn--solid" href="#/submit">Review and submit</a></div>` : ''}
       </section>
       ${ME.opportunities === 'confirm' ? `<section class="st-card st-opp-ask" id="opp-confirm-home" aria-labelledby="opp-cf-h"><p class="st-muted" style="margin:0">Loading…</p></section>` : ''}
       ${ME.opportunities === 'unanswered' ? `<section class="st-card st-opp-ask" aria-labelledby="opp-ask-h"><h3 id="opp-ask-h">Opportunities &amp; delivery</h3>
@@ -158,7 +156,7 @@
         ${f('practice', 'Your practice', a.practice, { hint: 'For example: Painter, Ceramicist, Printmaker' })}
         <div class="st-f"><label for="f-medium">Main medium</label><select id="f-medium" name="medium">${['', ...ME.media].map(m => `<option value="${m}"${a.medium === m ? ' selected' : ''}>${m ? E(MEDIUM[m]) : 'Choose…'}</option>`).join('')}</select></div>
         ${f('statement', 'A one-line statement (optional)', a.statement, { area: 1, hint: 'Shown large under your name. Up to 400 characters.' })}
-        ${f('bio', 'Your biography', a.bio, { area: 1, hint: 'In your own words: who you are and how you work. 40–2,400 characters. A blank line starts a new paragraph.' })}
+        ${f('bio', 'Your biography', a.bio, { area: 1, hint: 'In your own words: who you are and how you work. 40–2,400 characters. Press Enter at the end of a paragraph to start a new one; your paragraphs appear as you write them.' })}
       </section></div><div>
       <section class="st-card"><h3>Portrait (optional)</h3>
         <div class="st-drop" id="pdrop">${p ? `<img src="/api/images/${p.id}/view" alt="">` : '<span>Add a portrait photograph</span><small class="st-muted">JPEG, PNG or WebP · at least 800 px</small>'}<input type="file" accept="image/jpeg,image/png,image/webp" aria-label="Upload a portrait"></div>
@@ -282,7 +280,7 @@
     const n = shown.length;
     app.innerHTML = `
       <h1 class="st-h1">Your works</h1>
-      <p class="st-sub">${n} in your gallery. Add more whenever you wish. Changing availability, removing a work or changing the order updates your live gallery straight away.</p>
+      <p class="st-sub">${n} in your gallery. Availability, order and removals update your live gallery straight away.</p>
       <div class="st-actions" style="margin:-6px 0 16px"><button class="st-btn st-btn--solid" data-act="add">Add an artwork</button></div>
       ${n ? `<ol class="st-works">${shown.map((w, i) => workRow(w, i, n)).join('')}</ol>` : `<div class="st-card st-empty">No works yet. Add your first artwork to begin.</div>`}
       ${arch.length ? `<h2 class="st-card" style="background:none;border:0;box-shadow:none;padding:24px 0 6px;font-family:var(--serif);font-size:26px;color:var(--ivory);margin:0">Removed from your gallery</h2>
@@ -344,7 +342,7 @@
     app.innerHTML = `
       <p><a href="#/works" style="color:var(--stone);text-decoration:none">← Your works</a></p>
       <h1 class="st-h1">${E(w.title || 'New artwork')}</h1>
-      <p class="st-sub">${live(w) ? 'In your live gallery. Changes save automatically; price and detail changes reach your public gallery after you submit them and PlotArt checks them. New photographs are reviewed.' : 'Everything saves automatically as you type. Submit when you’re ready.'}</p>
+      ${live(w) ? '<p class="st-sub">In your live gallery. Availability changes show straight away; other changes after you submit them.</p>' : ''}
       <p class="st-needs" id="wneeds" aria-live="polite"></p>
       ${w.empty_draft ? `<p class="st-msg st-draft-note" id="draft-note">Nothing is saved for this artwork yet. It becomes part of your gallery when you add a photograph or details, and it won’t hold up your submission until then. <button class="st-linkbtn" data-act="discard">Discard this empty draft</button></p>` : ''}
       <div class="st-two"><div>
@@ -714,7 +712,9 @@
       $('#go').disabled = true;
       if (!(await flushPhotoEdits()) | !(await flushEdits())) { $('#serr').textContent = 'A change hasn’t saved yet. Go back and check it, then submit.'; $('#go').disabled = false; return; }
       try { await api('POST', '/api/submit', { note: $('#note').value || null }); say('Submitted for review'); await refresh(); location.hash = '#/'; }
-      catch (e) { $('#serr').textContent = e.message; $('#go').disabled = false; }
+      catch (e) {   // never silent: say plainly that nothing was submitted, and what to do
+        $('#serr').innerHTML = `<b>Not submitted.</b> Nothing has been sent to PlotArt yet. ${e.data?.problems ? `Still needed: ${e.data.problems.map(E).join(' · ')}. <a href="#/">See your checklist</a>.` : E(e.message)}`;
+        $('#serr').scrollIntoView({ block: 'center' }); $('#go').disabled = false; }
     });
   }
 
@@ -1019,6 +1019,7 @@
     afterRefresh = null;
     document.querySelectorAll('.st-tabs a').forEach(a => a.toggleAttribute('aria-current', h === a.getAttribute('href') || (a.getAttribute('href') === '#/works' && h.startsWith('#/work/'))));
     document.querySelectorAll('.st-tabs a[aria-current]').forEach(a => a.setAttribute('aria-current', 'page'));
+    document.querySelector('.st-tabs a[aria-current]')?.scrollIntoView({ block: 'nearest', inline: 'center' });
     try {
       if (!ME || h === '#/submit' || h === '#/' || h === '') await refresh();   // the submit page and gallery page always show the latest saved state
       $('#who').innerHTML = `${E(ME.artist.display_name)}<br><a href="/cdn-cgi/access/logout">Sign out</a>`;
