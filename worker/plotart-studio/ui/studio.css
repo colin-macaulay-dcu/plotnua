@@ -31,8 +31,10 @@ body.st{ background:var(--anth); min-height:100vh; }
 .st-btn{ display:inline-flex; align-items:center; justify-content:center; gap:8px; min-height:46px; padding:0 20px; border-radius:999px; font:600 15px var(--sans);
   border:1px solid var(--line-2); background:transparent; color:var(--ivory); cursor:pointer; text-decoration:none; }
 .st-btn:hover{ border-color:var(--ivory); color:var(--ivory); }
-.st-btn--solid{ background:var(--terra); border-color:var(--terra); color:#fff; }
-.st-btn--solid:hover{ background:var(--terra-hover); border-color:var(--terra-hover); color:#fff; }
+/* dark text on the off-white accent (18 Nov 2026): PlotArt's --terra became off-white with the anthracite identity, which
+   left white labels on solid buttons ("Review and submit", "Submit for review", "Read and accept") almost unreadable */
+.st-btn--solid{ background:var(--terra); border-color:var(--terra); color:#1B1C1E; }
+.st-btn--solid:hover{ background:var(--terra-hover); border-color:var(--terra-hover); color:#1B1C1E; }
 .st-btn[disabled]{ opacity:.45; cursor:not-allowed; }
 .st-btn--small{ min-height:38px; padding:0 14px; font-size:13.5px; }
 .st-btn--danger{ color:#F2B8A6; border-color:rgba(242,184,166,.35); }
@@ -368,3 +370,16 @@ body.st{ background:var(--anth); min-height:100vh; }
 .st-draft-note .st-linkbtn{ margin-left:6px; }
 .st-upfail{ display:block; color:#F2A3A3; margin-bottom:6px; }
 .st-views-first{ grid-column:1 / -1; }
+/* save bar (18 Nov 2026): Profile and artwork pages, always at the foot of the screen */
+.st-savebar{ position:sticky; bottom:0; z-index:30; margin:18px -16px 0; padding:12px 16px calc(12px + env(safe-area-inset-bottom)); background:#232427; border-top:1px solid var(--line-2);
+  display:flex; flex-wrap:wrap; gap:10px 16px; align-items:center; justify-content:space-between; box-shadow:0 -10px 24px rgba(0,0,0,.35); }
+.st-savebar-t{ display:grid; gap:2px; min-width:0; flex:1 1 280px; font-size:14px; }
+.st-savebar-t strong{ color:#D3E8C9; font-weight:600; } .st-savebar-t strong.bad{ color:#F5B7A3; }
+.st-savebar-t span{ color:var(--stone); }
+.st-savebar-a{ display:flex; flex-wrap:wrap; gap:8px; }
+.st-savebar-a .st-btn{ flex:0 0 auto; }
+.st-savebar #sb-save[disabled]{ opacity:1; color:#C9C6BF; border-color:rgba(242,235,224,.28); background:transparent; cursor:default; }   /* "Saved": readable, clearly inactive */
+.st-sb-short{ display:none; }
+@media (max-width:759px){ .st-sb-long{ display:none; } .st-sb-short{ display:inline; } }
+@media (min-width:760px){ .st-savebar{ margin:22px 0 0; border-radius:14px; border:1px solid var(--line-2); } }
+@media (max-width:759px){ .st-savebar-a .st-btn{ flex:1 1 auto; } .st-saved{ bottom:150px; } }

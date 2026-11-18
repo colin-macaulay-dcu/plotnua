@@ -148,7 +148,7 @@
   function profile() {
     const a = ME.artist, p = ME.portrait && ME.portrait.id ? ME.portrait : null;
     app.innerHTML = `
-      <h1 class="st-h1">Your profile</h1><p class="st-sub">This is how visitors meet you. Changes save as you go.</p>
+      <h1 class="st-h1">Your profile</h1><p class="st-sub">This is how visitors meet you. Changes save automatically as you type; the bar at the foot of the page shows when they’re saved and what happens next.</p>
       <div class="st-two"><div>
       <section class="st-card">
         ${f('display_name', 'The name you work under', a.display_name, { req: 1 })}
@@ -173,15 +173,13 @@
         <label class="st-check"><input type="checkbox" id="f-ofc"${a.open_for_commissions ? ' checked' : ''} aria-describedby="f-ofc-h" style="accent-color:var(--terra);width:20px;height:20px"> Open for commissions</label>
         <small class="st-muted" id="f-ofc-h" style="display:block;margin-top:8px">Shows “Open for commissions” on your gallery and lets collectors ask you about a new, bespoke work. You agree any commission directly with them. You can switch this off at any time.</small>
         <span class="st-err" id="f-ofc-e" aria-live="polite"></span>
-      </section>` : ''}</div></div>`;
+      </section>` : ''}</div></div>
+      ${saveBar('<a class="st-btn" href="/preview/" target="_blank" rel="noopener">Preview</a>')}`;
     for (const el of app.querySelectorAll('[name]')) {
       if (el.name === 'palt') continue;
-      el.addEventListener('change', async () => {
-        const v = el.type === 'checkbox' ? el.checked : el.value;
-        try { await api('PUT', '/api/me/profile', { [el.name]: v }); fieldErr(el, ''); say('Saved'); await refresh(); }
-        catch (e) { fieldErr(el, e.message); say('Not saved: ' + e.message, true); }
-      });
+      track(el, async el => { await api('PUT', '/api/me/profile', { [el.name]: valOf(el) }); await refresh(); });
     }
+    bindBar();
     // Open for Commissions (no name attribute: it has its own route, never the profile autosave above)
     $('#f-ofc', app)?.addEventListener('change', async e => {
       const box = e.target, err = $('#f-ofc-e', app);
@@ -207,6 +205,73 @@
     return `<div class="st-f"><label for="${id}">${E(label)}${o.req ? ' <span class="st-req">Required</span>' : ''}</label>${input}${o.hint ? `<small>${E(o.hint)}</small>` : ''}<span class="st-err" aria-live="polite"></span></div>`;
   }
   const fieldErr = (el, msg) => { const e = el.closest('.st-f')?.querySelector('.st-err'); if (e) e.textContent = msg; };
+
+  /* Saving, made visible (18 Nov 2026, after an artist could not find a way to save). Profile and artwork details save
+     themselves a moment after you stop typing and when you leave a field, as before; nothing is published by saving.
+     The bar at the foot of those pages says whether everything is saved, offers "Save changes" for anything typed but
+     not yet saved, and says what happens next: saved changes to a published gallery reach plotnua.ie only after
+     "Review and submit" and PlotArt's check (availability and order still update straight away). */
+  const EDITS = { dirty: new Map(), busy: 0, err: '', at: null };
+  const valOf = el => el.type === 'checkbox' ? el.checked : el.type === 'radio' ? (el.form ? el.value : el.value) : el.value;
+  function track(el, save) {
+    let t = null;
+    const run = async loud => {
+      clearTimeout(t);
+      if (!EDITS.dirty.has(el)) return true;
+      const v = valOf(el);
+      EDITS.busy++; paintBar();
+      try {
+        await save(el);
+        if (valOf(el) === v) EDITS.dirty.delete(el);
+        EDITS.err = ''; EDITS.at = new Date(); fieldErr(el, '');
+        return true;
+      } catch (e) {
+        EDITS.err = e.message;
+        if (loud) { fieldErr(el, e.message); say('Not saved: ' + e.message, true); }
+        return false;
+      } finally { EDITS.busy--; paintBar(); }
+    };
+    if (el.type !== 'checkbox' && el.type !== 'radio' && el.tagName !== 'SELECT') {
+      el.addEventListener('input', () => { EDITS.dirty.set(el, run); EDITS.err = ''; paintBar(); clearTimeout(t); t = setTimeout(() => run(false), 1500); });
+    }
+    el.addEventListener('change', () => { EDITS.dirty.set(el, run); run(true); });
+  }
+  async function flushEdits() {
+    let ok = true;
+    for (const run of [...EDITS.dirty.values()]) ok = (await run(true)) && ok;
+    return ok;
+  }
+  addEventListener('beforeunload', e => { if (EDITS.dirty.size || EDITS.busy) { e.preventDefault(); e.returnValue = ''; } });
+  function saveBar(extra = '') {
+    EDITS.dirty.clear(); EDITS.err = ''; EDITS.at = null;
+    return `<div class="st-savebar" role="region" aria-label="Saving"><div class="st-savebar-t"><strong id="sb-state" aria-live="polite"></strong><span id="sb-next"></span></div>
+      <div class="st-savebar-a"><button class="st-btn" id="sb-save" type="button">Save changes</button><a class="st-btn st-btn--solid" id="sb-submit" href="#/submit" hidden></a>${extra}</div></div>`;
+  }
+  function paintBar() {
+    const st = $('#sb-state'), nx = $('#sb-next'), btn = $('#sb-save'), sub = $('#sb-submit');
+    if (!st) return;
+    const s = ME.status, n = s.unsubmitted.length, isLive = !!s.live_version;
+    st.className = '';
+    if (EDITS.busy) st.textContent = 'Saving…';
+    else if (EDITS.err) { st.textContent = 'Not saved: ' + EDITS.err; st.className = 'bad'; }
+    else if (EDITS.dirty.size) st.textContent = 'Unsaved changes';
+    else st.textContent = 'All changes saved' + (EDITS.at ? ' · ' + EDITS.at.toLocaleTimeString('en-IE', { hour: '2-digit', minute: '2-digit' }) : '');
+    btn.disabled = !EDITS.dirty.size || !!EDITS.busy;
+    btn.textContent = EDITS.dirty.size ? 'Save changes' : 'Saved';
+    nx.innerHTML = s.state === 'in_review'
+      ? `Submitted ${new Date(s.pending.created_at).toLocaleDateString('en-IE', { day: 'numeric', month: 'short' })}: PlotArt is checking it, and it goes live once approved.${n ? ' Submitting again replaces that submission with everything as it is now.' : ''}`
+      : n ? (isLive ? '<span class="st-sb-long">Your changes are saved in your Studio but are not yet visible on your public gallery. Select Review and submit when you’re ready for PlotArt to approve and publish them.</span><span class="st-sb-short">Saved in your Studio, not yet on your public gallery. Select Review and submit for PlotArt to approve and publish them.</span>'
+        : 'Saved privately in your Studio. Submit your gallery when it’s ready: PlotArt reviews it before it goes live.')
+      : isLive ? 'Your public gallery is up to date.' : 'Saved privately in your Studio.';
+    sub.hidden = !n || s.state === 'in_review' && !n;
+    sub.textContent = s.state === 'in_review' ? `Submit again (${n})` : `Review and submit (${n})`;
+  }
+  function bindBar() {
+    $('#sb-save')?.addEventListener('click', async () => { if (await flushEdits()) { say('Saved'); paintBar(); } });
+    $('#sb-submit')?.addEventListener('click', async e => { e.preventDefault(); if (await flushEdits()) location.hash = '#/submit'; });
+    afterRefresh = (prev => () => { prev && prev(); paintBar(); })(afterRefresh);
+    paintBar();
+  }
 
   function works() {
     const shown = WORKS.filter(w => !w.archived), arch = WORKS.filter(w => w.archived);
@@ -275,7 +340,7 @@
     app.innerHTML = `
       <p><a href="#/works" style="color:var(--stone);text-decoration:none">← Your works</a></p>
       <h1 class="st-h1">${E(w.title || 'New artwork')}</h1>
-      <p class="st-sub">${live(w) ? 'In your live gallery. Price and detail changes go to us for a quick check; new photographs are reviewed.' : 'Everything saves as you go. Submit when you’re ready.'}</p>
+      <p class="st-sub">${live(w) ? 'In your live gallery. Changes save automatically; price and detail changes reach your public gallery after you submit them and PlotArt checks them. New photographs are reviewed.' : 'Everything saves automatically as you type. Submit when you’re ready.'}</p>
       <p class="st-needs" id="wneeds" aria-live="polite"></p>
       ${w.empty_draft ? `<p class="st-msg st-draft-note" id="draft-note">Nothing is saved for this artwork yet. It becomes part of your gallery when you add a photograph or details, and it won’t hold up your submission until then. <button class="st-linkbtn" data-act="discard">Discard this empty draft</button></p>` : ''}
       <div class="st-two"><div>
@@ -308,14 +373,14 @@
         <div id="ainote" ${w.ai_involvement && w.ai_involvement !== 'none' ? '' : 'hidden'}>${f('ai_note', 'Say briefly how (shown on the work’s page)', w.ai_note, { area: 1 })}</div>
         <p class="st-muted" style="margin:6px 0 0">PlotArt welcomes digital and AI-assisted practice. Entirely prompt-generated images are reviewed for eligibility.</p>
       </section><div id="hirepanel"></div></div></div>
-      <div class="st-sticky"><a class="st-btn" href="/preview/${E(w.slug)}.html" target="_blank" rel="noopener">Preview</a><a class="st-btn st-btn--solid" href="#/works">Done</a></div>`;
+      ${saveBar(`<a class="st-btn" href="/preview/${E(w.slug)}.html" target="_blank" rel="noopener">Preview</a><a class="st-btn" href="#/works">Done</a>`)}`;
     app.querySelectorAll('[name]').forEach(el => {
       if (el.closest('[data-img]')) return;
-      el.addEventListener('change', async () => {
+      if (el.name === 'ai_involvement') el.addEventListener('change', () => { $('#ainote').hidden = el.value === 'none'; });
+      track(el, async el => {
         const v = el.type === 'checkbox' ? el.checked : el.type === 'radio' ? el.value : (el.value === '' ? null : el.value);
-        if (el.name === 'ai_involvement') $('#ainote').hidden = v === 'none';
-        try { await api('PUT', `/api/artworks/${w.id}`, { [el.name]: v }); fieldErr(el, ''); say('Saved'); await refresh(); if (el.name === 'title') $('.st-h1').textContent = el.value || 'New artwork'; }
-        catch (e) { fieldErr(el, e.message); say('Not saved: ' + e.message, true); }
+        await api('PUT', `/api/artworks/${w.id}`, { [el.name]: v }); await refresh();
+        if (el.name === 'title') $('.st-h1').textContent = el.value || 'New artwork';
       });
     });
     $('[data-avail]').addEventListener('change', async e => { await api('POST', `/api/artworks/${w.id}/availability`, { availability: e.target.value }); say(live(w) ? 'Updated · your live gallery is updating' : 'Saved'); await refresh(); });
@@ -328,6 +393,7 @@
     // the empty-draft note goes as soon as anything for this artwork is saved; discarding deletes only an empty draft
     const draftLine = () => { const x = WORKS.find(v => v.id === w.id); if (!x || !x.empty_draft) $('#draft-note')?.remove(); };
     needsLine(); afterRefresh = () => { needsLine(); draftLine(); };
+    bindBar();
     $('[data-act=discard]', app)?.addEventListener('click', async () => {
       try { await api('DELETE', `/api/artworks/${w.id}`); say('Empty draft discarded'); await refresh(); location.hash = '#/works'; }
       catch (e) { say(e.message, true); }
@@ -939,7 +1005,7 @@
 
   /* ------------------------------------------------------------- router */
   async function render() {
-    await flushPhotoEdits();
+    await flushPhotoEdits(); await flushEdits();
     const full = location.hash || '#/', [h, qs] = full.split('?'), q = new URLSearchParams(qs || '');
     afterRefresh = null;
     document.querySelectorAll('.st-tabs a').forEach(a => a.toggleAttribute('aria-current', h === a.getAttribute('href') || (a.getAttribute('href') === '#/works' && h.startsWith('#/work/'))));
