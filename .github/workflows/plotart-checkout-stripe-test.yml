@@ -64,6 +64,10 @@ jobs:
           # optional: a NARROWER restricted TEST key used only by the public checkout Worker (runtime), to verify the proposal
           STRIPE_RUNTIME_KEY: ${{ secrets.CHECKOUT_TEST_STRIPE_RUNTIME_KEY }}
           CHECKOUT_E2E_PORT: "8899"
+          # founder email test only (phase founder_email; approved 18 Nov 2026): read by test/stripe-testmode-founder-email.mjs and
+          # nowhere else. Sending exists only inside that test process and is switched off when it ends.
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          CHECKOUT_TEST_FOUNDER_EMAIL: ${{ vars.CHECKOUT_TEST_FOUNDER_EMAIL }}
         run: |
           set -uo pipefail
           PHASES=$(node -e 'console.log((JSON.parse(require("fs").readFileSync("test/stripe-test-run.json","utf8")).phases||["provider"]).join(" "))')

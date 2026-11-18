@@ -1290,6 +1290,7 @@ async function route(req, env) {
       if (p === '/api/admin/checkout' && m === 'GET') return json({ ok: true, ...(await CO.adminView(env)) });
       if (!(await CO.installed(env))) return json({ ok: false, error: 'The payment pilot is not installed' }, 409);
       if (p === '/api/admin/checkout/orders' && m === 'POST') return json({ ok: true, ...(await CO.createOrder(env, me.email, await req.json())) });
+      if (p === '/api/admin/checkout/digest/send' && m === 'POST') return json({ ok: true, ...(await CO.sendFounderDigest(env, me.email)) });
       if (p === '/api/admin/checkout/pause' && m === 'POST') return json({ ok: true, ...(await CO.setPause(env, me.email, await req.json().catch(() => ({})))) });
       if ((mm = p.match(/^\/api\/admin\/checkout\/alerts\/(\d+)$/)) && m === 'POST') return json({ ok: true, founder_alerts: await CO.setFounderAlert(env, me.email, mm[1], await req.json().catch(() => ({}))) });
       if ((mm = p.match(/^\/api\/admin\/checkout\/holds\/(h[0-9a-z]+)$/)) && m === 'POST') return json({ ok: true, ...(await CO.reviewHold(env, me.email, mm[1], await req.json())) });

@@ -413,4 +413,9 @@ if (PHASES.includes('e2e')) {
     await e2e({ rec, KEY, ACCOUNT, RUN, port: Number(process.env.CHECKOUT_E2E_PORT), whsec: process.env.STRIPE_WEBHOOK_SECRET, stripe, sleep });
   }
 }
+if (PHASES.includes('founder_email')) {
+  console.log('— founder email: ONE approved sandbox test send (Resend), synthetic data, sending switched off at the end');
+  const { founderEmail } = await import(HERE + 'test/stripe-testmode-founder-email.mjs');
+  await founderEmail({ rec, KEY, RUN });
+}
 finish();

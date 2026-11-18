@@ -78,8 +78,10 @@ export function mailMode(env) {
       : !testKey ? 'Live key detected: live sending is not part of this pilot; test sink only.'
       : `Sending only to ${allow.length} approved test address(es); everything else goes to the test sink.`, _allow: allow };
 }
+export const SANDBOX_TEST_NOTE = 'SANDBOX TEST: simulated data. The amounts are simulated and no bank transfer is due. No action is needed.';
 export async function deliver(env, { orderId = null, kind, toRole, to, subject, body, idempotencyKey = null }) {
   const m = mailMode(env), addr = String(to || '').trim().toLowerCase();
+  if (env.CHECKOUT_MAIL_SANDBOX_TEST === 'true') { subject = `SANDBOX TEST · ${subject}`; body = `${SANDBOX_TEST_NOTE}\n\n${body}`; }
   if (m.mode === 'none') return { channel: 'none', status: 'not_sent_no_provider', detail: 'no mail provider configured' };
   if (m.external_sending && m._allow.includes(addr)) {
     let r; try { r = await send({ ...env, MAILER: 'resend', MAIL_FROM: env.CHECKOUT_MAIL_FROM }, { to: addr, replyTo: 'hello@plotnua.ie', subject, text: body, idempotencyKey }); } catch (e) { r = { sent: false, detail: String(e.message || e) }; }
@@ -198,7 +200,7 @@ export async function setPause(env, founder, b) {
    action it needs while the founder is unavailable: pay it now, set a follow-up, or arrange agreed cover. */
 const irishTime = t => `${new Date(t).toLocaleString('en-IE', { timeZone: 'Europe/Dublin', day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' })} (Irish time)`;
 export async function absenceChecklist(env, returnOn = null) {
-  const st = await pauseState(env), back = returnOn || st.return_on || addDate(dublinDate(Date.now()), 3), horizon = workingDaysAfter(back, 2), t = now();
+  const st = await pauseState(env), assumed = !returnOn && !st.return_on, back = returnOn || st.return_on || addDate(dublinDate(Date.now()), 3), horizon = workingDaysAfter(back, 2), t = now();
   const sessions = await all(env, `SELECT s.id, s.order_id, s.expires_at, o.reference FROM checkout_sessions s JOIN checkout_orders o ON o.id = s.order_id WHERE s.status = 'open' AND s.expires_at > ? ORDER BY s.expires_at`, t);
   const quotes = await all(env, `SELECT id, reference, quote_expires_at FROM checkout_orders WHERE status IN ('quoted','checkout_open','payment_failed') AND quote_expires_at > ? ORDER BY quote_expires_at`, t);
   const items = [];
@@ -218,12 +220,14 @@ export async function absenceChecklist(env, returnOn = null) {
     if (rest && !items.some(i => i.order_id === o.id)) items.push({ order_id: o.id, reference: o.reference, what: 'Flagged order', amount: '—', due: null, due_label: '—', note: rest.slice(0, 200), action: 'Resolve before you leave, or arrange agreed cover' });
   }
   items.sort((a, b) => (a.due || '9999') < (b.due || '9999') ? -1 : 1);
-  return { return_on: back, horizon, horizon_note: `Covers anything due by ${longDate(horizon)} (your return date plus two working days).`,
+  return { return_on: back, assumed_return: assumed, horizon,
+    horizon_note: assumed ? `Preview: no return date entered yet. Assumed return date for this preview: ${longDate(back)} (three days from today). Covers anything due by ${longDate(horizon)} (the assumed return date plus two working days).`
+      : `Covers anything due by ${longDate(horizon)} (your return date plus two working days).`,
     open_sessions: sessions,
     // one line per quote, with one payment status: a Stripe page already open, or payment not started
     quotes_awaiting_payment: quotes.map(x => { const sx = sessions.find(y => y.order_id === x.id);
       return { ...x, payment: sx ? 'stripe_page_open' : 'not_started', session_expires_at: sx ? sx.expires_at : null,
-        payment_status: sx ? `The buyer can still pay on the Stripe page already opened until ${irishTime(sx.expires_at)}.` : 'The buyer cannot start payment while paused.',
+        payment_status: sx ? `The buyer can still pay on the Stripe page already opened until ${irishTime(sx.expires_at)}.` : st.paused ? 'The buyer cannot start payment while paused.' : 'The buyer can start payment using this quote link.',
         quote_expiry: `Quote expires ${irishTime(x.quote_expires_at)} (original expiry, unchanged).` }; }), items };
 }
 async function requireInstalled(env) { if (!(await installed(env))) throw new Bad('The payment pilot is not installed (migration 0016)', 409); }
@@ -447,9 +451,10 @@ const ALERT_REASON = {
   reimbursement_fee_time_unknown: 'For review: Stripe gave no time for recording the fee', owed_due_soon: 'Amount owed to the artist due within 7 days',
   owed_overdue: 'Amount owed to the artist is overdue', owed_start_for_review: 'For review: start date of an amount owed rests on the pilot’s own record',
   refund_pending: 'Buyer refund waiting for the artist’s Stripe balance', refund_pending_overdue: 'Buyer refund still unfunded after 7 days',
-  refund_pending_urgent: 'Buyer refund still unfunded after 30 days (Stripe cancels at 45)', refund_failed: 'Buyer refund failed at Stripe',
+  refund_pending_urgent: 'Buyer refund still unfunded after 30 days (Stripe cancels at 45)', refund_failed: 'Buyer refund failed at Stripe', founder_digest: 'Daily digest (sent manually)',
 };
 async function alertItem(env, o, kind) {
+  if (kind === 'founder_digest') return { state: 'resolved', amount_cents: null, amount_label: '—', due_date: null, due_label: '—', note: 'digest' };
   if (!o) return { state: 'resolved', amount_cents: null, amount_label: '—', due_date: null, due_label: '—', note: 'order no longer held' };
   if (kind.startsWith('reimbursement_')) {
     const r = (await reimbursementsView(env, 'id = ?', o.id))[0];
@@ -506,6 +511,16 @@ export async function founderDigest(env) {
       `Open items (${open.length}):`, ...(lines.length ? lines : ['• none']), '',
       `Quotes awaiting payment: ${ab.quotes_awaiting_payment.length} (${ab.open_sessions.length} with a Stripe page open).`, '',
       'Founder desk: /admin/checkout. This digest never contains bank details or buyer contact details.'].join('\n') };
+}
+/* Manually triggered digest (the digest is not scheduled): one email to the founder address, through the normal mail rules. */
+export async function sendFounderDigest(env, founder) {
+  await requireInstalled(env);
+  const dg = await founderDigest(env);
+  if (!dg) return { sent: false, detail: 'nothing open: no digest' };
+  if (!env.CHECKOUT_NOTIFY_EMAIL) throw new Bad('No founder notification address is configured', 409);
+  const r = await deliver(env, { orderId: null, kind: 'founder_digest', toRole: 'founder', to: env.CHECKOUT_NOTIFY_EMAIL, subject: dg.subject, body: dg.body,
+    idempotencyKey: 'plotart-digest-' + (await sha256(dg.body)).slice(0, 40) });
+  return { sent: r.status === 'accepted_by_provider', status: r.status, detail: r.detail, requested_by: founder };
 }
 export async function setFounderAlert(env, founder, id, b) {
   await requireInstalled(env);

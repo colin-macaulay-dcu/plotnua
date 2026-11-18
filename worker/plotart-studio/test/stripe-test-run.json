@@ -1,14 +1,14 @@
 {
   "_note": "Changing this file on the pilot branch requests a run of .github/workflows/plotart-checkout-stripe-test.yml (Stripe TEST mode only; waits for the founder's approval on the checkout-test environment). Nothing is deployed.",
-  "requested": "2026-11-18T11:10:00Z",
+  "requested": "2026-11-18T11:45:00Z",
   "phases": [
-    "e2e"
+    "founder_email"
   ],
-  "reason": "Run 36: founder pause 'Pause new quotes and payments'. E23: a real Checkout Session opened before the pause is paid during it on the hosted page; the signed event records the payment once and the processing reimbursement proceeds. E23a: during the pause, another buyer link cannot open a Stripe session. Runtime key keeps its five permissions. ~5-10 minutes. Sandbox only.",
+  "reason": "Run 37: ONE approved sandbox email test (founder, 18 Nov 2026 11:30). Synthetic orders; exactly two emails to the founder's single inbox (one urgent alert, one manually triggered digest), both marked SANDBOX TEST; artist and buyer messages stay in the test inbox; repeated checks send nothing more; the founder desk records the outcome. Sending exists only inside the test process and is switched off at the end. Needs secret RESEND_API_KEY and variable CHECKOUT_TEST_FOUNDER_EMAIL in the checkout-test environment. ~3 minutes.",
   "reuse_account": "acct_1UclJXHx1Olx8cdw",
   "unfunded_account": "acct_1Uct3vHx1OnYJa8H",
   "unfunded_link": false,
   "coverage_only": false,
   "reimbursement_evidence": false,
-  "pause_evidence": true
+  "pause_evidence": false
 }

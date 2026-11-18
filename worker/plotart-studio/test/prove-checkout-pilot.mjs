@@ -1018,6 +1018,10 @@ console.log('— seven-day reimbursement rule (PA-PAY §3.3(b), provisional) · 
     await pub('POST', `/q/${TX}/pay`, { form: { accept_terms: 'PA-BPT-TEST-01' } }); const sX = Object.values(M.sessions).at(-1);
     await pub('POST', `/q/${TZ}/pay`, { form: { accept_terms: 'PA-BPT-TEST-01' } }); const sZ = Object.values(M.sessions).at(-1);
     const expBefore = { Y: (await order(Y)).quote_expires_at, Z: (await order(Z)).quote_expires_at };
+    { const a0 = (await call('GET', '/api/admin/checkout', FOUNDER)).j, q0 = a0.absence.quotes_awaiting_payment, y0 = q0.find(x => x.id === Y), x0 = q0.find(x => x.id === X);
+      check('PZ0 not paused: an eligible unpaid quote says “The buyer can start payment using this quote link.”; an open Stripe page keeps its own line; the checklist preview labels its assumed return date because none has been entered',
+        !a0.pause.paused && y0 && y0.payment_status === 'The buyer can start payment using this quote link.' && x0 && /^The buyer can still pay on the Stripe page already opened until/.test(x0.payment_status)
+        && a0.absence.assumed_return === true && /^Preview: no return date entered yet\. Assumed return date for this preview: \w+day \d+ \w+ \d{4} \(three days from today\)\./.test(a0.absence.horizon_note), { y0, note: a0.absence.horizon_note }); }
     const back = new Date(Date.now() + 5 * 86400_000).toLocaleDateString('en-CA', { timeZone: 'Europe/Dublin' });
     if (process.env.SCREENSHOT) { try {
       const { createRequire } = await import('node:module'); const pw = createRequire('/tmp/claude-0/studio-tools/package.json')('playwright');
@@ -1037,7 +1041,8 @@ console.log('— seven-day reimbursement rule (PA-PAY §3.3(b), provisional) · 
       ab.open_sessions.some(x => x.id === sX.id) && ab.open_sessions.some(x => x.id === sZ.id) && ab.quotes_awaiting_payment.some(x => x.id === Y) && ab.horizon > back
       && ab.items.every(x => /before you leave|follow-up|agreed cover|Automatic/.test(x.action)), { sessions: ab.open_sessions.length, quotes: ab.quotes_awaiting_payment.map(x => x.reference), items: ab.items.length });
     writeFileSync('/tmp/plotart-absence.json', JSON.stringify(ab, null, 1));
-    { const qx = ab.quotes_awaiting_payment.find(x => x.id === X), qy = ab.quotes_awaiting_payment.find(x => x.id === Y), ids = ab.quotes_awaiting_payment.map(x => x.id);
+    { if (ab.assumed_return !== false) results.push(false);
+      const qx = ab.quotes_awaiting_payment.find(x => x.id === X), qy = ab.quotes_awaiting_payment.find(x => x.id === Y), ids = ab.quotes_awaiting_payment.map(x => x.id);
       check('PZ2b each quote appears once with one payment status: an open Stripe page says the buyer can still pay on it until the session expiry; otherwise the buyer cannot start payment while paused; both show the original quote expiry',
         qx && qx.payment === 'stripe_page_open' && /^The buyer can still pay on the Stripe page already opened until \d+ \w+ \d{4}, \d\d:\d\d \(Irish time\)\.$/.test(qx.payment_status)
         && qy && qy.payment === 'not_started' && qy.payment_status === 'The buyer cannot start payment while paused.' && /^Quote expires .* \(original expiry, unchanged\)\.$/.test(qy.quote_expiry) && /^Quote expires/.test(qx.quote_expiry)
