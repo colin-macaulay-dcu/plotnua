@@ -1,5 +1,7 @@
 # Run 40 · low-platform-balance reimbursement · evidence
 
+**Recorded as: failed balance read; reimbursement test skipped.**
+
 - Actions run: https://github.com/colin-macaulay-dcu/plotnua/actions/runs/44394666891 (commit 336ce47); approved by the founder; conclusion: failure.
 - Summary: PASS 5 · FAIL 1 · SKIP 1 · INFO 1 · INCONCLUSIVE 0
 
@@ -11,4 +13,4 @@
 
 **Nothing was created at Stripe in the balance part of this run.** No €1.00 probe, no order, no payment, no fee refund and no payout. Nothing needs restoring.
 
-Next: the harness needs Balance Read on PlotArt's own account (and, depending on the balance, a way to lower it). Founder decision required before any key change. See the chat for the options.
+Follow-up: on 18 Nov 2026 20:51 the founder granted Balance → Read ("In your account") on the sandbox test-runner key. Run 41 is a read-only balance check.

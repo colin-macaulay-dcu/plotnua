@@ -413,6 +413,16 @@ if (PHASES.includes('e2e')) {
     await e2e({ rec, KEY, ACCOUNT, RUN, port: Number(process.env.CHECKOUT_E2E_PORT), whsec: process.env.STRIPE_WEBHOOK_SECRET, stripe, sleep });
   }
 }
+if (PHASES.includes('platform_balance')) {   // READ ONLY: one GET /v1/balance on PlotArt's own account; nothing is created
+  console.log('— platform balance: read only');
+  const r = await stripe('GET', '/v1/balance');
+  const pick = k => ((r.j && r.j[k]) || []).filter(x => x.currency === 'eur').map(x => ({ amount: x.amount, source_types: x.source_types || null }));
+  const sum = k => pick(k).reduce((a, x) => a + x.amount, 0);
+  rec('B0', 'PlotArt’s own (platform) Stripe balance in EUR, read only with the harness key: available and pending', 'stripe-test-api', r.status === 200 ? 'INFO' : 'FAIL',
+    r.status === 200 ? { eur_available: sum('available'), eur_pending: sum('pending'), available_detail: pick('available'), pending_detail: pick('pending'), other_currencies: [...new Set([...(r.j.available || []), ...(r.j.pending || [])].map(x => x.currency).filter(c => c !== 'eur'))],
+      intended_test_refund_cents: 806, intended_basis: 'the pilot’s processing reimbursement on a EUR 200 sale in runs 33–35 (Stripe’s fee + VAT); the exact amount is read at the request', read_at: new Date().toISOString() }
+      : { http: r.status, error: r.j && r.j.error && { code: r.j.error.code, message: String(r.j.error.message || '').slice(0, 200) } });
+}
 if (PHASES.includes('founder_email')) {
   console.log('— founder email: ONE approved sandbox test send (Resend), synthetic data, sending switched off at the end');
   const { founderEmail } = await import(HERE + 'test/stripe-testmode-founder-email.mjs');
