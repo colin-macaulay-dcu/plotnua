@@ -17,7 +17,7 @@ For each queue item the founder has published (or, once authorised, an automatic
   6. --push: pushes an audit branch content/plotart-<artist>-v<n>-<commit> (one per attempt) and fast-forwards main (never forced; refused if main
      moved). --simulate (tests): stops before pushing. Any failure: the commit is dropped and the Studio is told why.
 """
-import glob, hashlib, json, os, re, shutil, subprocess, sys, tempfile, urllib.error, urllib.request
+import glob, hashlib, http.client, json, os, re, shutil, subprocess, sys, tempfile, time, urllib.error, urllib.request
 from pathlib import Path
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -178,6 +178,21 @@ def guards(base, instant):
 
 
 
+def fetch_image(qid, iid, tries=3):
+    """One photograph from the Studio export. A download cut off part-way (18 Nov 2026: Carmel Marrinan's first
+    publication failed with "IncompleteRead(71654 bytes read, 1366688 more expected)") is fetched again, up to three
+    times in all, a few seconds apart. Nothing is relaxed: every copy must still match the Studio's SHA-256 fingerprint,
+    and a third failure refuses the publication exactly as before."""
+    for n in range(1, tries + 1):
+        try:
+            return call("GET", "/api/pipeline/image/%s/%s" % (qid, iid), raw=True)
+        except (http.client.IncompleteRead, ConnectionError, TimeoutError) as e:
+            if n == tries:
+                raise
+            print("image %s: download interrupted (%s); trying again (%d of %d)" % (iid, type(e).__name__, n + 1, tries), flush=True)
+            time.sleep(5 * n)
+
+
 def one(q):
     ex = call("POST", "/api/pipeline/export/" + q["id"])
     g, slug = ex["gallery"], ex["gallery"]["artist"]["slug"]
@@ -196,7 +211,7 @@ def one(q):
         if g["artist"].get("portrait"):
             names[g["artist"]["portrait"]["file"].split(".")[0]] = g["artist"]["portrait"]["file"]
         for iid in ex["images"]:
-            body, headers = call("GET", "/api/pipeline/image/%s/%s" % (q["id"], iid), raw=True)
+            body, headers = fetch_image(q["id"], iid)
             if hashlib.sha256(body).hexdigest() != headers.get("X-Sha256"):
                 return "refused: image %s changed in transit" % iid
             open(os.path.join(exp, names[iid]), "wb").write(body)
