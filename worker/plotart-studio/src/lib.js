@@ -153,7 +153,7 @@ const FULL_ARTIST = ['display_name', 'statement', 'bio', 'practice', 'medium'];
 const LIGHT_ARTIST = ['county', 'county_public', 'website', 'instagram'];
 const LIGHT_WORK = ['title', 'year', 'medium', 'materials', 'h_cm', 'w_cm', 'd_cm', 'description', 'price_eur', 'price_on_request'];
 const FULL_WORK = ['ai_involvement', 'ai_note'];
-const LABEL = { display_name: 'name', h_cm: 'height', w_cm: 'width', d_cm: 'depth', price_eur: 'price', price_on_request: 'price on request',
+const LABEL = { display_name: 'name', bio: 'biography', h_cm: 'height', w_cm: 'width', d_cm: 'depth', price_eur: 'price', price_on_request: 'price on request',
   county_public: 'show county', open_for_commissions: 'open for commissions', ai_involvement: 'AI declaration', ai_note: 'AI disclosure' };
 const lab = f => LABEL[f] || f.replace(/_/g, ' ');
 const eq = (a, b) => JSON.stringify(a ?? null) === JSON.stringify(b ?? null);

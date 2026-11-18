@@ -33,7 +33,12 @@ const LOGO = { '/assets/brand/plotart-p-48.webp': [bin(A.LOGO_48_B64), 'image/we
   '/assets/brand/plotart-favicon-32.png': [bin(A.FAVICON_32_B64), 'image/png'], '/assets/brand/plotart-apple-touch-180.png': [bin(A.TOUCH_180_B64), 'image/png'] };
 const res = (body, type, status = 200, extra = {}) => new Response(body, { status, headers: { 'Content-Type': type, ...SEC, ...extra } });
 const json = (o, status = 200) => res(JSON.stringify(o), 'application/json; charset=utf-8', status);
-const html = (h, status = 200) => res(h, 'text/html; charset=utf-8', status);
+/* Sandbox (founder testing, 18 Nov 2026): a separate Worker with its own empty database and image store
+   (wrangler.sandbox.toml, SANDBOX = "true"). Every page says so; it never starts publishing, never sends email and
+   has no publishing pipeline; "Publish" only simulates the result so the founder can see the whole artist journey. */
+let SANDBOX = false;
+const SANDBOX_BANNER = '<div role="note" style="position:sticky;top:0;z-index:99;background:#F2E2A8;color:#1B1C1E;font:600 14px/1.4 system-ui,sans-serif;padding:8px 16px;text-align:center">PlotArt Studio SANDBOX · test data only · nothing here is published or emailed · not the real Studio</div>';
+const html = (h, status = 200) => res(SANDBOX ? String(h).replace(/<body([^>]*)>/i, m => m + SANDBOX_BANNER) : h, 'text/html; charset=utf-8', status);
 
 const escHtml = s => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
 const founderEmails = env => String(env.FOUNDER_EMAILS || '').toLowerCase().split(',').map(s => s.trim()).filter(Boolean);
@@ -84,6 +89,9 @@ async function status(env, artist) {
   const lv = await latestVersion(env, artist.id);
   const cs = L.changes(lv && lv.snap, snap);
   const pending = await one(env, "SELECT id, created_at, tier, note FROM submissions WHERE artist_id = ? AND status = 'pending' ORDER BY created_at DESC LIMIT 1", artist.id);
+  // what has been saved since that submission (18 Nov 2026): so the Studio can say whether anything is NOT in it
+  const pendingSnap = pending && await one(env, 'SELECT snapshot FROM submissions WHERE id = ?', pending.id);
+  const sinceSubmission = pendingSnap ? L.changes(JSON.parse(pendingSnap.snapshot), snap).filter(c => c.tier !== 'instant') : null;
   const last = await one(env, "SELECT id, status, founder_message, decided_at FROM submissions WHERE artist_id = ? AND status IN ('changes_requested','declined','approved') ORDER BY decided_at DESC LIMIT 1", artist.id);
   const queue = await all(env, "SELECT id, version, kind, status, updated_at FROM publish_queue WHERE artist_id = ? AND status IN ('awaiting_founder','ready','exporting') ORDER BY version", artist.id);
   const live = await liveVersion(env, artist.id);
@@ -102,7 +110,7 @@ async function status(env, artist) {
   else state = 'draft';
   return {
     state, live_version: live, latest_version: lv ? lv.version : 0, pending, last_decision: last, queue,
-    changes: cs, unsubmitted: cs.filter(c => c.tier !== 'instant'), tier: L.tierOf(cs.filter(c => c.tier !== 'instant')),
+    changes: cs, unsubmitted: cs.filter(c => c.tier !== 'instant'), tier: L.tierOf(cs.filter(c => c.tier !== 'instant')), since_submission: sinceSubmission,
     problems, checklist: list, licence_ok: ag.accepted, licence_version: ag.licence ? ag.licence.version : null,
     agreement: agreementSummary(ag),
     counts: { works: snap.works.length, archived: d.works.filter(w => w.archived).length },
@@ -903,7 +911,7 @@ async function decideIdea(env, actor, id, b) {
 // Returns 'requested', 'scheduled' (no token configured: the scheduled run publishes later) or 'failed' (the decision
 // is saved either way; the schedule remains the fallback). Never logs or returns the token.
 async function requestIdeasPublish(env, workflow = 'plotnua-ideas-publish.yml') {
-  if (!env.GITHUB_DISPATCH_TOKEN) return 'scheduled';
+  if (!env.GITHUB_DISPATCH_TOKEN || env.SANDBOX === 'true') return 'scheduled';
   const api = (env.GITHUB_API || 'https://api.github.com').replace(/\/$/, '');
   try {
     const r = await fetch(api + '/repos/' + (env.GITHUB_REPO || 'colin-macaulay-dcu/plotnua') + '/actions/workflows/' + workflow + '/dispatches', {
@@ -1177,6 +1185,7 @@ async function selftest(env, me) {
 
 async function route(req, env) {
   const url = new URL(req.url), p = url.pathname, m = req.method;
+  SANDBOX = env.SANDBOX === 'true';
   // static assets (public, no data)
   const asset = { '/assets/studio.css': [A.STUDIO_CSS, 'text/css'], '/assets/plotart.css': [A.PLOTART_CSS, 'text/css'],
     '/assets/studio.js': [A.STUDIO_JS, 'text/javascript'], '/assets/admin.js': [A.ADMIN_JS, 'text/javascript'],
@@ -1185,6 +1194,7 @@ async function route(req, env) {
   if (LOGO[p] && m === 'GET') return res(LOGO[p][0], LOGO[p][1], 200, { 'Cache-Control': 'public, max-age=86400' });
 
   // the publishing pipeline: bearer token, never a browser
+  if (p.startsWith('/api/pipeline/') && SANDBOX) return json({ ok: false, error: 'No publishing in the sandbox' }, 404);
   if (p.startsWith('/api/pipeline/')) {
     if (!env.PIPELINE_TOKEN || req.headers.get('Authorization') !== `Bearer ${env.PIPELINE_TOKEN}`) return json({ ok: false }, 401);
     if (p === '/api/pipeline/queue' && m === 'GET') return json({ ok: true, items: await all(env, "SELECT * FROM publish_queue WHERE status='ready' ORDER BY created_at") });
@@ -1563,6 +1573,14 @@ async function route(req, env) {
       if (gate.response) return gate.response;
       const warned = gate.warned;
       await env.DB.prepare("UPDATE publish_queue SET status='ready', updated_at=? WHERE id=?").bind(now(), q.id).run();
+      if (SANDBOX) {   // the sandbox has no website to publish to: record the result the pipeline would, so the journey completes
+        if (q.kind !== 'remove') await placeOnFirstPublication(env, q.artist_id);
+        await env.DB.prepare("UPDATE publish_queue SET status='published', detail='sandbox: simulated, nothing published', updated_at=? WHERE id=?").bind(now(), q.id).run();
+        await env.DB.prepare("UPDATE publish_queue SET status='superseded', updated_at=? WHERE artist_id=? AND status IN ('published','failed') AND version<?").bind(now(), q.artist_id, q.version).run();
+        await env.DB.prepare('UPDATE artists SET first_published_at=COALESCE(first_published_at, ?), updated_at=? WHERE id=?').bind(now(), now(), q.artist_id).run();
+        await audit(env, me.email, 'founder', 'publish', q.artist_id, { queue: q.id, version: q.version, publish: 'sandbox-simulated' });
+        return json({ ok: true, publish: 'sandbox' });
+      }
       const publish = await requestGalleryPublish(env);
       await audit(env, me.email, 'founder', 'publish', q.artist_id, { queue: q.id, version: q.version, publish, ...(warned ? { without_current_agreement: true } : {}) });
       return json({ ok: true, publish });
@@ -1582,7 +1600,7 @@ async function route(req, env) {
     const rest = p.slice('/preview/'.length);
     if (rest.startsWith('img/')) return previewImage(env, await ownImage(env, artist, rest.slice(4)));
     const d = await load(env, artist.id);
-    return previewRoute(rest, previewPkg(L.snapshot(d.artist, d.works, d.images), d.images), 'Your private preview · only you can see this · <a href="/">Back to Studio</a>');
+    return previewRoute(rest, previewPkg(L.snapshot(d.artist, d.works, d.images), d.images), 'Your private preview, with your saved changes (including any not yet submitted) · not your live gallery · only you can see this · <a href="/">Back to Studio</a>');
   }
   let mm;
   if ((mm = p.match(/^\/hire-terms\/(PA-AFH-[0-9]{4}-[0-9]{2})\.(pdf|html)$/)) && m === 'GET') {   // the issued PA-AFH text, only once installed

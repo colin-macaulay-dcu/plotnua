@@ -383,3 +383,13 @@ body.st{ background:var(--anth); min-height:100vh; }
 @media (max-width:759px){ .st-sb-long{ display:none; } .st-sb-short{ display:inline; } }
 @media (min-width:760px){ .st-savebar{ margin:22px 0 0; border-radius:14px; border:1px solid var(--line-2); } }
 @media (max-width:759px){ .st-savebar-a .st-btn{ flex:1 1 auto; } .st-saved{ bottom:150px; } }
+/* what changes (18 Nov 2026): only the changed words of a long text, removed struck through, added marked */
+.st-list.st-changes li{ display:block; } .st-list.st-changes li::before{ content:none; }
+.st-changes li > b{ font-weight:600; display:block; }
+.st-changes .st-diff{ margin-top:4px; }
+.st-diff{ display:block; color:var(--stone); line-height:1.55; white-space:pre-wrap; overflow-wrap:anywhere; }
+.st-diff del{ color:#F5B7A3; text-decoration:line-through; text-decoration-thickness:1px; background:rgba(245,183,163,.10); }
+.st-diff ins{ color:#D3E8C9; text-decoration:none; background:rgba(211,232,201,.14); border-radius:3px; padding:0 2px; }
+.st-diff-key{ font-size:13px; margin:12px 0 0; } .st-diff-key del, .st-diff-key ins{ margin:0 4px; }
+.st-diff-key del{ color:#F5B7A3; } .st-diff-key ins{ color:#D3E8C9; text-decoration:none; }
+.st-pending{ color:var(--stone); font-size:14.5px; } .st-pending b{ color:#F2EBE0; }

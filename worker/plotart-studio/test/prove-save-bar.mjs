@@ -42,9 +42,9 @@ async function scenario(label, opts) {
 
 // S1 as released (main's UI bundle)
 {
-  // the Worker exactly as on main: the same server code with main's UI bundle (only src/assets.js differs)
+  // the Studio as it was before the save bar (84b025f, live until 18 Nov 2026): that UI bundle with today's server code
   rmSync(HERE + '.oldsrc', { recursive: true, force: true }); cpSync(HERE + 'src', HERE + '.oldsrc', { recursive: true });
-  writeFileSync(HERE + '.oldsrc/assets.js', execFileSync('git', ['show', 'origin/main:worker/plotart-studio/src/assets.js'], { cwd: HERE }));
+  writeFileSync(HERE + '.oldsrc/assets.js', execFileSync('git', ['show', '84b025f:worker/plotart-studio/src/assets.js'], { cwd: HERE }));
   const S = await scenario('released', { port: 8821, script: '.oldsrc/index.js' });
   const pg = await S.page(LIVE);
   await pg.goto(S.url + '/#/profile'); await pg.waitForSelector('#f-bio');

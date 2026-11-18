@@ -15,7 +15,7 @@ const REFUSED_HTML = `<!DOCTYPE html><html lang="en-IE"><head><meta charset="utf
 const SIGNED_OUT_HTML = `<!DOCTYPE html><html lang="en-IE"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>PlotArt Studio</title><meta name="robots" content="noindex, nofollow"><link rel="icon" href="/assets/brand/plotart-favicon-32.png" type="image/png" sizes="32x32"><link rel="apple-touch-icon" href="/assets/brand/plotart-apple-touch-180.png"><link rel="stylesheet" href="/assets/plotart.css"><link rel="stylesheet" href="/assets/studio.css"></head><body class="pa st"><div class="st-signedout"><img class="st-so-logo" src="/assets/brand/plotart-p-96.webp" width="64" height="64" alt=""><h1>PlotArt</h1><p>{msg}</p></div></body></html>`;
 // The approved PlotArt logo (founder approval 31 Oct 2026): the same web files the public site serves, carried as base64.
 const b64 = p => readFileSync(root + p).toString('base64');
-const out = { STUDIO_HTML, ADMIN_HTML, SIGNED_OUT_HTML, REFUSED_HTML, STUDIO_JS: r('ui/studio.js'), ADMIN_JS: r('ui/admin.js'), STUDIO_CSS: r('ui/studio.css'),
+const out = { STUDIO_HTML, ADMIN_HTML, SIGNED_OUT_HTML, REFUSED_HTML, STUDIO_JS: r('ui/changes.js') + r('ui/studio.js'), ADMIN_JS: r('ui/changes.js') + r('ui/admin.js'), STUDIO_CSS: r('ui/studio.css'),
   PLOTART_CSS: readFileSync(root + 'plotart/assets/plotart.css', 'utf8'), MARK_SVG: readFileSync(root + 'assets/brand/plotnua-mark-master.svg', 'utf8'),
   LOGO_48_B64: b64('assets/brand/plotart-p-48.webp'), LOGO_96_B64: b64('assets/brand/plotart-p-96.webp'),
   FAVICON_32_B64: b64('assets/brand/plotart-favicon-32.png'), TOUCH_180_B64: b64('assets/brand/plotart-apple-touch-180.png') };
