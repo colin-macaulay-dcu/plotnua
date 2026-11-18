@@ -97,8 +97,8 @@ For live use, the same split would be created as separate live keys and stored a
 | Charges: Read, connected (incl. balance transaction) | **Verified** | `GET /v1/charges/…` [connected] 200 ×4; E13 read the actual €34.11 + €7.85. **Balance: Read is not needed.** |
 | Refund status reads (Charges: Read, connected) | **Verified** | `GET /v1/refunds/…` [connected] 200 ×4 |
 | Application Fees: Write, platform | **Verified** | `POST /v1/application_fees/…/refunds` [platform] 200 ×4; E13/E13b reimbursed €41.96 once |
-| Disputes: Read, connected | **Not exercised** | No dispute read was needed: Stripe's events carried the fee lines. Dispute fees were still recorded (E14, E16) |
-| Expire a session from the public Worker | **Not exercised** | — |
+| Disputes: Read, connected | **Verified in run 32 (E20, Actions 44203490460)** | Real sandbox dispute `du_1UcwLnHx1Olx8cdwcb2mbTBm`. Simulated input: a locally signed event carrying that real dispute with its fee lines removed. From Stripe: the Worker's `GET /v1/disputes/du_…` [connected] → 200 on the runtime key, and the €24.60 fee line (`txn_1UcwLnHx1Olx8cdww4eRBrz2`) booked from Stripe's response. The Worker also made one other dispute read during the run, before the simulated event; this read was on the runtime key too |
+| Session expiry through the public Worker's normal path | **Verified in run 32 (E19)** | The Worker opened the checkout (`POST /v1/checkout/sessions` → 200, runtime key). Stripe expired it at 00:34:34 (status `expired`); the signed `checkout.session.expired` event was processed; the reservation was released and the quote returned to payable. The Worker makes no expire API call in normal operation, so Checkout Sessions Write is used only to create sessions. **Not exercised:** an explicit expire API call with the runtime key (only the Studio, on the existing key, does that) |
 | Refused: v1 account, bank accounts, v2 identity | **Verified** | 403 ×3 (E17b) |
 | Refused: create PaymentIntent | **Verified** | 403 `more_permissions_required` ("Enabling Payment Intents Write…") |
 | Refused: read balance | **Verified** | 403 `more_permissions_required` ("Enabling Balance Read…") |
@@ -108,3 +108,5 @@ For live use, the same split would be created as separate live keys and stored a
 | Studio key B | Not tested | — |
 
 **Conclusion (runs 30–31).** Key A, as configured (the five permissions; "Charges and Refunds" = Read in connected accounts), runs checkout and the Model B reimbursement entirely on its own. Stripe denies it every tested action outside that scope, including creating a buyer refund. Not exercised: Disputes Read, and session expiry from the public Worker.
+
+**Run 32 (coverage) summary.** E19 PASS, E20 PASS, E17d PASS (7/7 calls on the runtime key, no permission errors), E17b PASS. E17c "FAIL" was again the no-parameters refund probe, which is superseded by E17e (run 31); the harness now treats it as informational. All five permissions have now been exercised successfully, and every tested out-of-scope action is denied.

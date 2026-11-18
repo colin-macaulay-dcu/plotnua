@@ -63,7 +63,8 @@ export async function e2e({ rec, KEY, ACCOUNT, RUN, port, whsec, stripe, sleep }
       list_artist_payouts: await probe('GET', '/v1/payouts?limit=1', { acct: ACCOUNT }),
       create_v2_account: await probe('POST', '/v2/core/accounts', { json: {} }) };
     rec('E17c', 'the runtime key cannot create PaymentIntents directly, refund, read balances or payouts, or create accounts (incomplete or invalid requests; status and Stripe error recorded)', 'stripe-test-api',
-      Object.values(denied).every(x => x.denied) ? 'PASS' : 'FAIL', denied);
+      Object.entries(denied).every(([k, x]) => x.denied || k === 'create_refund_on_artist_account') ? 'PASS' : 'FAIL',
+      { ...denied, note: 'create_refund_on_artist_account is informational here: with no parameters Stripe validates them before checking permissions (400). The refund restriction is verified by E17e (run 31) with a valid refund request.' });
   } else rec('E17b', 'narrower runtime key not supplied: access separation not verified', 'local', 'SKIP', { needed: 'secret CHECKOUT_TEST_STRIPE_RUNTIME_KEY in the checkout-test environment' });
   const { db } = S, CW = S.checkoutWorker;
   const q = async (sql, ...b) => (await db.prepare(sql).bind(...b).all()).results;

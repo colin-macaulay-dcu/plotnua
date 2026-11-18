@@ -130,3 +130,9 @@ None of these is taken as approved. Each recommendation is mine.
 - Details: `STRIPE-ACCESS-PROPOSAL.md` §5.
 
 - **Run 31 (E17e) closes E17c.** Only the runtime key tried a valid €1.00 refund of a fresh paid charge → **403 `more_permissions_required`** ("Enabling Charges and Refunds Write ('charge_write')…"). The retry was also 403. No refund exists on the charge. **Restriction confirmed.** The run 30 400 was Stripe checking the parameters before permissions.
+
+- **Run 32 (coverage):**
+  - **E19 PASS:** natural expiry through the Worker's normal path; reservation released.
+  - **E20 PASS:** dispute-fee fallback on a real dispute. The simulated input (the dispute event with its fee lines removed) is identified in the evidence, alongside Stripe's response.
+  - **E17d PASS:** 7/7 calls on the runtime key.
+  - The runtime-key coverage gaps are closed.
