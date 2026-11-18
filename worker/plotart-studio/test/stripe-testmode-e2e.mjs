@@ -286,22 +286,47 @@ export async function e2e({ rec, KEY, ACCOUNT, RUN, port, whsec, stripe, sleep }
         { fee_refund: fr && { id: fr.id, object: fr.object, amount: fr.amount, currency: fr.currency, created: fr.created && new Date(fr.created * 1000).toISOString(), fee: fr.fee, balance_transaction: fr.balance_transaction, metadata: fr.metadata },
           stored_by_pilot: P && P.fee_refund, application_fee: { amount: feeObj.amount, amount_refunded: feeObj.amount_refunded, refunded: feeObj.refunded, account: feeObj.account },
           platform_balance_transaction: pbt && { id: pbt.id, type: pbt.type, amount: pbt.amount, net: pbt.net, status: pbt.status, created: pbt.created && new Date(pbt.created * 1000).toISOString(), available_on: pbt.available_on && new Date(pbt.available_on * 1000).toISOString(), source: pbt.source, reporting_category: pbt.reporting_category } });
-      // the artist's side: a balance transaction on the connected account for that fee refund (runner key: the harness, not the Worker)
-      const findCredit = async () => {
-        const bySource = fr ? await stripe('GET', `/v1/balance_transactions?source=${encodeURIComponent(fr.id)}&limit=5`, null, ACCOUNT) : null;
-        const recent = await stripe('GET', '/v1/balance_transactions?limit=25', null, ACCOUNT);
-        // run 33 showed the artist-side credit is an 'adjustment' whose source is the payment's CHARGE (not the fee refund),
-        // created in the same second as the fee refund, for the same amount
-        const hit = ((recent.j.data) || []).filter(b => fr && (b.source === fr.id || (b.type === 'adjustment' && b.source === O2.charge_id && b.amount === fr.amount && Math.abs(b.created - fr.created) <= 60)));
-        return { bySource, recent, hit };
+      // the artist's side (harness key, read-only): a balance transaction on the connected account matching the CHARGE,
+      // the AMOUNT and the CURRENCY of the fee refund. Run 33 showed it as type 'adjustment' with source = the charge.
+      // Exactly one match = PASS; none after waiting = FAIL; several, or a near match = INCONCLUSIVE.
+      const verifyCredit = async (chargeId, frx, label) => {
+        const list = async () => {
+          const bySource = await stripe('GET', `/v1/balance_transactions?source=${encodeURIComponent(chargeId)}&limit=100`, null, ACCOUNT);
+          const recent = await stripe('GET', '/v1/balance_transactions?limit=100', null, ACCOUNT);
+          const seen = new Map(); for (const b of [...((bySource.j && bySource.j.data) || []), ...((recent.j && recent.j.data) || [])]) seen.set(b.id, b);
+          return { all: [...seen.values()], by_source: { status: bySource.status, count: ((bySource.j && bySource.j.data) || []).length, error: bySource.j && bySource.j.error && bySource.j.error.message } };
+        };
+        let L = await list(), onCharge = [], exact = [];
+        for (let i = 0; i < 12; i++) {
+          onCharge = L.all.filter(b => (typeof b.source === 'string' ? b.source : b.source && b.source.id) === chargeId && b.type !== 'charge' && b.type !== 'payment');
+          exact = onCharge.filter(b => b.amount === frx.amount && String(b.currency).toLowerCase() === String(frx.currency).toLowerCase());
+          if (exact.length) break; await sleep(5000); L = await list();
+        }
+        const fmt = b => ({ id: b.id, type: b.type, amount: b.amount, currency: b.currency, net: b.net, fee: b.fee, status: b.status, source: typeof b.source === 'string' ? b.source : b.source && b.source.id,
+          created: new Date(b.created * 1000).toISOString(), seconds_after_fee_refund: frx.created ? b.created - frx.created : null, available_on: b.available_on && new Date(b.available_on * 1000).toISOString(), reporting_category: b.reporting_category, description: b.description });
+        const verdict = exact.length === 1 && onCharge.length === 1 ? 'PASS' : exact.length === 0 && onCharge.length === 0 ? 'FAIL' : 'INCONCLUSIVE';
+        return { verdict, detail: { label, match_rule: 'connected-account balance transaction whose source is the payment’s charge, other than the charge itself, with the fee refund’s amount and currency', charge: chargeId,
+          fee_refund: { id: frx.id, amount: frx.amount, currency: frx.currency, created: frx.created && new Date(frx.created * 1000).toISOString() },
+          exact_matches: exact.map(fmt), other_entries_on_the_charge: onCharge.filter(b => !exact.includes(b)).map(fmt), lookup: L.by_source,
+          reason: verdict === 'PASS' ? 'exactly one entry on the charge, matching amount and currency' : verdict === 'FAIL' ? 'no entry on the charge other than the charge itself' : `${exact.length} exact match(es) and ${onCharge.length} entr(ies) on the charge: not unambiguous` } };
       };
-      let cr = await findCredit(); for (let i = 0; i < 10 && !cr.hit.length && !((cr.bySource && cr.bySource.j.data) || []).length; i++) { await sleep(3000); cr = await findCredit(); }
-      const credit = cr.hit[0] || ((cr.bySource && cr.bySource.j.data) || [])[0] || null;
-      const typesNear = ((cr.recent.j.data) || []).slice(0, 12).map(b => ({ type: b.type, amount: b.amount, status: b.status, source: typeof b.source === 'string' ? b.source.replace(/^(\w+?)_.*/, '$1_…') : null, created: new Date(b.created * 1000).toISOString() }));
-      rec('E21c', 'the artist’s side: a balance transaction on the connected account crediting the reimbursed amount (read with the harness key)', SRC,
-        credit && credit.amount === P.cost ? 'PASS' : credit ? 'INFO' : 'FAIL',
-        { credit: credit && { id: credit.id, type: credit.type, amount: credit.amount, net: credit.net, fee: credit.fee, status: credit.status, created: new Date(credit.created * 1000).toISOString(), available_on: credit.available_on && new Date(credit.available_on * 1000).toISOString(), source: credit.source, description: credit.description, reporting_category: credit.reporting_category },
-          by_source_query: cr.bySource && { status: cr.bySource.status, count: ((cr.bySource.j.data) || []).length, error: cr.bySource.j.error && cr.bySource.j.error.message }, recent_connected_types: typesNear });
+      const vc = fr ? await verifyCredit(O2.charge_id, fr, 'this run') : { verdict: 'FAIL', detail: { reason: 'no processing fee refund found' } };
+      rec('E21c', 'the artist’s side: the credit for the reimbursement on the artist’s Stripe balance, matched by charge, amount and currency (harness key; ambiguous = INCONCLUSIVE)', SRC, vc.verdict, vc.detail);
+      { // E21f · the same check on run 33's reimbursement (objects left in the sandbox by run 33)
+        const fr33 = (await stripe('GET', '/v1/application_fees/fee_1Ud3cCHx1Olx8cdwGCXMG8fR/refunds/fr_1Ud3cFHx1Olx8cdwLON6LFjc')).j;
+        const fee33 = (await stripe('GET', '/v1/application_fees/fee_1Ud3cCHx1Olx8cdwGCXMG8fR')).j;
+        const ch33 = typeof fee33.charge === 'string' ? fee33.charge : fee33.charge && fee33.charge.id;
+        if (fr33 && fr33.id && ch33) { const v33 = await verifyCredit(ch33, fr33, 'run 33'); rec('E21f', 'run 33’s reimbursement (€8.06): the same match on the artist’s balance, re-read', SRC, v33.verdict, v33.detail); }
+        else rec('E21f', 'run 33’s reimbursement re-read', SRC, 'INCONCLUSIVE', { fee_refund: fr33 && (fr33.error || fr33.id), fee_charge: ch33 || null });
+      }
+      { // E21e · which timestamp starts the clock: Stripe's signed success event vs the charge's created time
+        const evs = await q("SELECT event_id, type, created FROM payment_events WHERE order_id = ? AND type IN ('checkout.session.completed','checkout.session.async_payment_succeeded') ORDER BY created", ov.id);
+        rec('E21e', 'clock start: the pilot uses the created time of Stripe’s signed success event; the card charge’s created time is kept as evidence (both real, this payment)', SRC,
+          P.confirmed_basis === 'stripe_success_event_created' && evs.length >= 1 && P.confirmed_at === new Date(evs[0].created * 1000).toISOString() ? 'PASS' : 'FAIL',
+          { pilot_confirmed_at: P.confirmed_at, basis: P.confirmed_basis, success_event: evs.map(e => ({ type: e.type, created: new Date(e.created * 1000).toISOString() })), charge_created: ch.created && new Date(ch.created * 1000).toISOString(),
+            seconds_between: evs[0] && ch.created ? evs[0].created - ch.created : null, charge_status: ch.status, payment_method_type: ch.payment_method_details && ch.payment_method_details.type, captured: ch.captured,
+            irish_dates: { event: evs[0] && new Date(evs[0].created * 1000).toLocaleDateString('en-CA', { timeZone: 'Europe/Dublin' }), charge: ch.created && new Date(ch.created * 1000).toLocaleDateString('en-CA', { timeZone: 'Europe/Dublin' }) } });
+      }
       // what the pilot itself can read on the runtime key (read-only probes)
       const p1 = await rkGet(`/v1/application_fees/${fee}/refunds?limit=5`), p2 = await rkGet('/v1/balance_transactions?limit=1', ACCOUNT), p3 = await rkGet('/v1/balance', ACCOUNT);
       rec('E21d', 'runtime key, read-only: the Worker CAN read the fee’s refunds (Stripe’s acceptance) but CANNOT read the artist’s balance or balance transactions with the five adopted permissions', SRC,

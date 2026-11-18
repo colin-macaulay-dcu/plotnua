@@ -32,10 +32,10 @@ function finish() {
   writeFileSync(OUT + 'evidence.json', JSON.stringify(ev, null, 1));
   const n = s => results.filter(r => r.status === s).length;
   const md = [`# Stripe test-mode evidence · ${ev.at}`, '', `Run ${RUN}; phases ${PHASES.join(', ')}; connected test account ${ACCOUNT || '(none yet)'}.`, '',
-    `PASS ${n('PASS')} · FAIL ${n('FAIL')} · SKIP ${n('SKIP')} · INFO ${n('INFO')}`, '', '| id | check | source | result | observed |', '|---|---|---|---|---|',
+    `PASS ${n('PASS')} · FAIL ${n('FAIL')} · SKIP ${n('SKIP')} · INFO ${n('INFO')} · INCONCLUSIVE ${n('INCONCLUSIVE')}`, '', '| id | check | source | result | observed |', '|---|---|---|---|---|',
     ...results.map(r => `| ${r.id} | ${r.name} | ${r.source} | ${r.status} | ${JSON.stringify(r.detail).replace(/\|/g, '/').slice(0, 300)} |`)].join('\n');
   writeFileSync(OUT + 'evidence.md', md + '\n');
-  console.log(`\nSTRIPE TEST MODE · PASS ${n('PASS')} · FAIL ${n('FAIL')} · SKIP ${n('SKIP')} · INFO ${n('INFO')}`);
+  console.log(`\nSTRIPE TEST MODE · PASS ${n('PASS')} · FAIL ${n('FAIL')} · SKIP ${n('SKIP')} · INFO ${n('INFO')} · INCONCLUSIVE ${n('INCONCLUSIVE')}`);
   process.exit(n('FAIL') ? 1 : 0);
 }
 
