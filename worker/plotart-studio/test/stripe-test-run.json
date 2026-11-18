@@ -1,15 +1,15 @@
 {
   "_note": "Changing this file on the pilot branch requests a run of .github/workflows/plotart-checkout-stripe-test.yml (Stripe TEST mode only; waits for the founder's approval on the checkout-test environment). Nothing is deployed.",
-  "requested": "2026-11-18T22:23:00Z",
+  "requested": "2026-11-18T22:34:54.605Z",
   "phases": [
-    "balance_readiness"
+    "e2e"
   ],
-  "reason": "Read-only sandbox balance readiness check after the founder saved the temporary balance key.",
+  "reason": "Founder-approved sandbox low-balance reimbursement test, including a temporary transfer to the verified test artist, full reversal and final balance reads.",
   "reuse_account": "acct_1UclJXHx1Olx8cdw",
   "unfunded_account": "acct_1Uct3vHx1OnYJa8H",
   "unfunded_link": false,
   "coverage_only": false,
   "reimbursement_evidence": false,
   "pause_evidence": false,
-  "balance_evidence": false
+  "balance_evidence": true
 }
