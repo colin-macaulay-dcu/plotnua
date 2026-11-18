@@ -1,6 +1,6 @@
 {
  "artist": {
-  "bio": "Lena is an emerging abstract artist based in Dublin. As a recently divorced and busy mother of two she cherishes her art practice as a healing opportunity to reflect on life and let her inner child take the stage. \nWith a love for bold colours, shapes and marks , she likes to layer her paints and use various scratching techniques to create unique textures. \nLena says: “I never know where a panting is going to take me. I feel as though the canvas has its very own mind and letting go of the need for control is something I find to be a very useful practice. To be in that playful flow state while painting is the only thing that helps me switch off my busy mind and I think that is priceless.\nSeeing my work resonating with people is truly special for me and I hope to be in the industry for the long haul.”",
+  "bio": "Lena is an emerging abstract artist based in Dublin. As a recently divorced and busy mother of two she cherishes her art practice as a healing opportunity to reflect on life where she lets her inner child take the stage. \nWith a love for bold colours, shapes and marks , she likes to layer her paints and uses various scratching techniques to create unique textures. \nLena says: “I never know where a panting is going to take me. I feel as though the canvas has its very own mind and letting go of the need for control is something I find to be a very useful practice. To be in that playful flow state while painting is the only thing that helps me switch off my busy mind and I think that is priceless.\nSeeing my work resonating with people is truly special for me and I hope to be in the industry for the long haul.”",
   "county": "Dublin",
   "display_name": "Lena Fawaz",
   "founding": false,
@@ -45,14 +45,15 @@
   }
  ],
  "publication": {
-  "approved_at": "2026-11-17T12:29:38.785Z",
+  "approved_at": "2026-11-18T11:09:57.627Z",
   "approved_by": "founder",
+  "first_approved_at": "2026-11-17T12:29:38.785Z",
   "licence_accepted_at": "2026-11-17T11:37:43.820Z",
   "licence_version": "PA-GPIL-2026-11",
   "permission_ref": "PA-PERM-at5xkpjluff",
   "state": "approved",
   "test_note": null,
-  "version": "v1"
+  "version": "v2"
  },
  "schema": "plotnua.plotart.gallery-package.v1",
  "works": [
