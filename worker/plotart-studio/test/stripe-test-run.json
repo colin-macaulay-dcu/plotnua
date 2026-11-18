@@ -1,10 +1,10 @@
 {
   "_note": "Changing this file on the pilot branch requests a run of .github/workflows/plotart-checkout-stripe-test.yml (Stripe TEST mode only; waits for the founder's approval on the checkout-test environment). Nothing is deployed.",
-  "requested": "2026-11-18T11:50:00Z",
+  "requested": "2026-11-18T20:14:00Z",
   "phases": [
     "founder_email"
   ],
-  "reason": "Run 38: repeat of the one approved sandbox email test. Run 37 sent nothing: the secret RESEND_API_KEY and the variable CHECKOUT_TEST_FOUNDER_EMAIL were not available to the job (check M0). Set both in the checkout-test environment before approving.",
+  "reason": "Run 39: the one approved founder-only sandbox email test (one urgent alert plus one manual digest to CHECKOUT_TEST_FOUNDER_EMAIL, then sending switched off). Runs 37 and 38 sent nothing (M0). Founder confirmed at 20:13 that RESEND_API_KEY and CHECKOUT_TEST_FOUNDER_EMAIL are saved in the checkout-test environment.",
   "reuse_account": "acct_1UclJXHx1Olx8cdw",
   "unfunded_account": "acct_1Uct3vHx1OnYJa8H",
   "unfunded_link": false,
