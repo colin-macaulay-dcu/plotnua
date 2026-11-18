@@ -551,7 +551,7 @@ check('MB6 the EUR 20.15 difference is flagged as a shortfall PlotArt must pay t
 { const Qd = (await call('GET', '/api/admin/checkout', FOUNDER)).j, w1 = Qd.owed.find(w => w.order_id === o1.id);
   check('OQ1 the founder queue lists what PlotArt owes: amount, paid, outstanding, age, due date (marked provisional) and the rule', !!w1 && w1.cents === 2015 && w1.settled_cents === 0 && w1.outstanding_cents === 2015
     && w1.age_days === 0 && w1.due_provisional === true && /PROVISIONAL/.test(w1.due_rule) && Date.parse(w1.due_at) - Date.parse(w1.arisen_at) === 30 * 86400_000
-    && Qd.deadlines.provisional === true && Qd.deadlines.shortfall_days === 30 && Qd.bank_details_process.length >= 4, { w1, d: Qd.deadlines }); }
+    && Qd.deadlines.provisional === true && Qd.deadlines.shortfall_provisional === true && Qd.deadlines.reimburse_provisional === false && Qd.deadlines.decisions.reimburse_days.status === 'approved_for_sandbox_pilot' && Qd.deadlines.decisions.shortfall_days.status === 'provisional' && Qd.deadlines.shortfall_days === 30 && Qd.bank_details_process.length >= 4, { w1, d: Qd.deadlines }); }
 r = await call('POST', `/api/admin/checkout/orders/${o1.id}/shortfallpaid`, FOUNDER, { amount_cents: 2015, reference: 'Paid to IE29 AIBK 9311 5212 3456 78 on 18 Nov' });
 check('OQ2 a payment record that looks like bank details is refused, so none is stored', r.s === 400 && /bank details/.test(r.j.error) && !(await q("SELECT * FROM checkout_owed_payments WHERE reference LIKE '%AIBK%'")).length, r.j);
 r = await call('POST', `/api/admin/checkout/orders/${o1.id}/shortfallpaid`, FOUNDER, { amount_cents: 2016, evidence: 'Bank transfer BT-SF1 on 18 Nov' });
@@ -606,9 +606,9 @@ check('T10a the completion replays the earlier dispute WITHOUT any redelivery: r
 { const PE = JSON.parse((await order(oe.id)).processing || '{}'), feeE = M.pis[sE.payment_intent].fee;
   check('MB8 before Stripe records the fee nothing is estimated or reimbursed: the order waits (awaiting_fee)', PE.status === 'awaiting_fee' && !M.feeRefunds.some(x => x.fee === feeE), PE);
   { const wq = (await call('GET', '/api/admin/checkout', FOUNDER)).j.reimbursements.find(x => x.order_id === oe.id);
-    check('MB8b the founder desk lists the reimbursement as waiting for Stripe to record the fee: no amount, day 0, provisional due date 7 Irish days after Stripe’s payment time',
-      !!wq && wq.status === 'awaiting_fee' && wq.status_label === 'Waiting for Stripe to record the fee' && wq.amount_cents === null && /Not yet known/.test(wq.amount_label) && wq.day === 0 && wq.due_provisional === true
-      && wq.payment_confirmed_basis === 'stripe_success_event_created' && /^\d{4}-\d{2}-\d{2}$/.test(wq.due_date) && /Due by the end of .* \(Irish time\) · provisional/.test(wq.due_label), wq); }
+    check('MB8b the founder desk lists the reimbursement as waiting for Stripe to record the fee: no amount, day 0, due 7 Irish days after Stripe’s payment time (sandbox rule approved 18 Nov; not marked provisional)',
+      !!wq && wq.status === 'awaiting_fee' && wq.status_label === 'Waiting for Stripe to record the fee' && wq.amount_cents === null && /Not yet known/.test(wq.amount_label) && wq.day === 0 && wq.due_provisional === false
+      && wq.payment_confirmed_basis === 'stripe_success_event_created' && /^\d{4}-\d{2}-\d{2}$/.test(wq.due_date) && /Due by the end of .* \(Irish time\)$/.test(wq.due_label), wq); }
   M.charges[M.pis[sE.payment_intent].charge].btPending = false;
   await S.checkoutWorker.scheduled({ cron: '*/15 * * * *' });
   const PE2 = JSON.parse((await order(oe.id)).processing), frE = M.feeRefunds.filter(x => x.fee === feeE);
@@ -825,6 +825,20 @@ console.log('— seven-day reimbursement rule (PA-PAY §3.3(b), provisional) · 
     && /PlotArt reimbursed EUR 15\.00 of the EUR 21\.83 processing fee and VAT through Stripe/.test(stG.processing_reimbursement)
     && /The remaining EUR 6\.83 could not be reimbursed through Stripe.*clause 3\.5\)\. Still owed to you by PlotArt: EUR 6\.83\. Your statement shows it under “Owed by PlotArt, not yet paid”/.test(stG.processing_reimbursement), { dG, st: stG && stG.processing_reimbursement, owG });
   writeFileSync('/tmp/plotart-sd-partial.txt', stG.processing_reimbursement || '');
+  // §3.5 · a partial bank payment of the EUR 6.83 shortfall, then the rest (records only the transfer reference and date)
+  { const owRow = (await q("SELECT arisen_at, due_at, due_rule FROM checkout_owed WHERE order_id = ? AND kind = 'processing_shortfall'", G.id))[0];
+    const r1 = await call('POST', `/api/admin/checkout/orders/${G.id}/shortfallpaid`, FOUNDER, { amount_cents: 300, reference: 'SIMULATED transfer ref PA-SF-0001 on 2026-12-03' });
+    const st1 = (await call('GET', `/api/checkout/orders/${G.id}`, GAL)).j.statement, ow1 = (await desk()).owed.find(w => w.order_id === G.id);
+    const rBad = await call('POST', `/api/admin/checkout/orders/${G.id}/shortfallpaid`, FOUNDER, { amount_cents: 383, reference: 'IE29AIBK93115212345678 paid 2026-12-04' });
+    const rDup = await call('POST', `/api/admin/checkout/orders/${G.id}/shortfallpaid`, FOUNDER, { amount_cents: 383, reference: 'SIMULATED transfer ref PA-SF-0001 on 2026-12-03' });
+    const r2 = await call('POST', `/api/admin/checkout/orders/${G.id}/shortfallpaid`, FOUNDER, { amount_cents: 383, reference: 'SIMULATED transfer ref PA-SF-0002 on 2026-12-05' });
+    const st2 = (await call('GET', `/api/checkout/orders/${G.id}`, GAL)).j.statement, OG = await order(G.id);
+    check('SD16 §3.5 SIMULATED partial bank payment: after EUR 3.00 the artist sees EUR 3.00 paid by transfer and EUR 3.83 still owed, the founder desk shows the same; a reference that looks like bank details and a repeated reference are refused; after the rest nothing is owed and the order flag clears',
+      r1.s === 200 && /Paid to you by bank transfer so far: EUR 3\.00\. Still owed to you by PlotArt: EUR 3\.83\./.test(st1.processing_reimbursement) && st1.processing_still_owed_by_bank_transfer === 383
+      && ow1.settled_cents === 300 && ow1.outstanding_cents === 383 && ow1.payments.length === 1 && rBad.s === 400 && /bank details/.test(rBad.j.error) && rDup.s === 409
+      && r2.s === 200 && /Paid to you by bank transfer so far: EUR 6\.83\. Nothing is still owed\./.test(st2.processing_reimbursement) && st2.processing_still_owed_by_bank_transfer === 0 && !/PlotArt owes the artist/.test(OG.needs_resolution || ''),
+      { r1: r1.j && r1.j.error, st1: st1.processing_reimbursement, ow1, rBad: rBad.j, rDup: rDup.j, st2: st2.processing_reimbursement, nr: OG.needs_resolution });
+    writeFileSync('/tmp/plotart-sd-shortfall.json', JSON.stringify({ owed_row: owRow, desk_after_partial: ow1, statement_after_partial: st1.processing_reimbursement, statement_after_full: st2.processing_reimbursement, refused_bank_details: rBad.j && rBad.j.error, refused_duplicate: rDup.j && rDup.j.error }, null, 2)); }
   // H · clock start: Stripe's charge and its success event fall on different Irish dates (SIMULATED times, real webhook path)
   { const work = (await q("SELECT id FROM artworks WHERE artist_id = 'agal' AND availability = 'available' AND id NOT IN (SELECT artwork_id FROM artwork_sales) AND id NOT IN (SELECT artwork_id FROM artwork_reservations) ORDER BY id DESC LIMIT 1"))[0];
     globalThis.SD15_WORK = work.id;   // sold through SD15's verified (signed) payment; T11b expects it

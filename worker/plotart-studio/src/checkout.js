@@ -39,11 +39,22 @@ export const PROCESSING_STATEMENT = `I agree that, on payment-pilot orders where
 
 /* ---------------------------------------------------------------- deadlines (configurable; provisional until the founder approves them) */
 const intEnv = (env, k, d) => { const n = Number(env[k]); return Number.isInteger(n) && n > 0 && n <= 365 ? n : d; };
+/* Founder decisions on the two deadlines, recorded separately (18 Nov 2026). CHECKOUT_DEADLINES_APPROVED covered both at
+   once and is left unset and no longer read: each deadline is approved only by its own entry here. */
+export const DEADLINE_DECISIONS = {
+  reimburse_days: { clause: 'PA-PAY 3.3', value: 7, unit: 'Irish calendar days', status: 'approved_for_sandbox_pilot', decided_by: 'founder', decided_at: '2026-11-18T09:30:00Z',
+    scope: 'Sandbox pilot rule for the processing-fee reimbursement only. Artist terms remain draft and unissued.' },
+  shortfall_days: { clause: 'PA-PAY 3.5', value: 30, status: 'provisional', decided_by: null, decided_at: null,
+    scope: 'Bank-transfer payment of any amount the application fee cannot cover. Awaiting the founder’s decision.' },
+};
+const approved = (k, v) => DEADLINE_DECISIONS[k].status === 'approved_for_sandbox_pilot' && DEADLINE_DECISIONS[k].value === v;
 export function deadlines(env) {
-  return { reimburse_days: intEnv(env, 'CHECKOUT_REIMBURSE_DAYS', 7), shortfall_days: intEnv(env, 'CHECKOUT_SHORTFALL_DAYS', 30),
-    reminder_days_before: intEnv(env, 'CHECKOUT_OWED_REMINDER_DAYS', 7), lost_dispute_commission_days: 30,
-    provisional: env.CHECKOUT_DEADLINES_APPROVED !== 'true',
-    note: 'Reimbursement and shortfall deadlines are provisional until the founder approves them (CHECKOUT_DEADLINES_APPROVED). The lost-dispute commission deadline is the existing PA-GAA cl. 9.1 period (30 days).' };
+  const reimburse_days = intEnv(env, 'CHECKOUT_REIMBURSE_DAYS', 7), shortfall_days = intEnv(env, 'CHECKOUT_SHORTFALL_DAYS', 30);
+  const reimburse_provisional = !approved('reimburse_days', reimburse_days), shortfall_provisional = !approved('shortfall_days', shortfall_days);
+  return { reimburse_days, shortfall_days, reimburse_provisional, shortfall_provisional,
+    provisional: shortfall_provisional,   // the bank-transfer (shortfall) deadline; kept under this name for the owed queue
+    reminder_days_before: intEnv(env, 'CHECKOUT_OWED_REMINDER_DAYS', 7), lost_dispute_commission_days: 30, decisions: DEADLINE_DECISIONS,
+    note: `Processing reimbursement (PA-PAY 3.3): ${reimburse_days} Irish calendar days${reimburse_provisional ? ', provisional' : ', approved by the founder as the sandbox pilot rule on 18 Nov 2026'}. Bank-transfer shortfall (PA-PAY 3.5): ${shortfall_days} days${shortfall_provisional ? ', provisional, awaiting the founder’s decision' : ', approved'}. Lost-dispute commission: the existing PA-GAA cl. 9.1 period (30 days).` };
 }
 
 /* ---------------------------------------------------------------- messages: test sink unless sending is configured AND approved
@@ -336,7 +347,7 @@ export const REIMBURSEMENT_STATUS = {
   shortfall: 'Reimbursed in part through Stripe · the rest is owed by bank transfer (Amounts owed)',
 };
 async function reimbursementsView(env, where, ...b) {
-  const days = deadlines(env).reimburse_days, prov = deadlines(env).provisional;
+  const days = deadlines(env).reimburse_days, prov = deadlines(env).reimburse_provisional;
   const rows = await all(env, `SELECT id, reference, paid_at, processing FROM checkout_orders WHERE payment_intent IS NOT NULL AND commission_cents > 0 AND ${where} ORDER BY paid_at LIMIT 100`, ...b);
   const out = [];
   for (const o of rows) {
@@ -1370,7 +1381,7 @@ async function adoptFeeRefunds(env, o) {
 async function reimbursementAlerts(env, o, p) {
   if (!['awaiting_fee', 'outstanding'].includes(p.status)) return p;
   const days = deadlines(env).reimburse_days, s = reimbursementSchedule({ confirmed_at: p.confirmed_at, fee_recorded_at: p.fee_recorded_at, fee_time_known: p.fee_recorded_basis !== 'first_seen_by_pilot', days });
-  const al = { ...(p.alerts || {}) }, prov = deadlines(env).provisional ? ' (provisional deadline)' : '';
+  const al = { ...(p.alerts || {}) }, prov = deadlines(env).reimburse_provisional ? ' (provisional deadline)' : '';
   const amount = p.status === 'outstanding' ? eur(Math.max(0, p.cost - (p.reimbursed_cents || 0))) : 'not yet known (Stripe has not recorded the fee; nothing is estimated)';
   if (s.extended && !p.delay_notice_at) {
     await notify(env, o, 'reimbursement_delayed', delayNoticeText(o, s, days), { artistOnly: true, subject: `PlotArt payment pilot · ${o.reference} · processing fee reimbursement: Stripe has not yet recorded the fee` });

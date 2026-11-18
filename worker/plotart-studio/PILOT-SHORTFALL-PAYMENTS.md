@@ -14,7 +14,7 @@ The founder desk (`/admin/checkout`) has an **Amounts owed to artists** section.
 
 Each item shows:
 - the amount, how much has been paid, and what is outstanding;
-- its age and due date. Provisional dates are marked **(provisional)** until `CHECKOUT_DEADLINES_APPROVED = "true"`;
+- its age and due date. Provisional dates are marked **(provisional)** until the founder's decision on the 30-day period is recorded in `DEADLINE_DECISIONS.shortfall_days` (`src/checkout.js`);
 - the rule the date comes from;
 - reminders already sent;
 - every payment recorded against it.
@@ -54,5 +54,5 @@ None of these contain bank details: those exist only at PlotArt's bank (section 
 
 ## 4. Open decisions
 
-- **F11 / F12.** The 30-day shortfall period and the 7-day reimbursement period are provisional. The founder approves them by setting `CHECKOUT_DEADLINES_APPROVED = "true"`, or sets other periods. This applies before any live use.
+- **F11 / F12.** The 7-day reimbursement period (PA-PAY 3.3) was approved by the founder as the sandbox pilot rule on 18 November 2026. The 30-day shortfall period (PA-PAY 3.5) remains provisional. Decisions are recorded per deadline in `DEADLINE_DECISIONS`; `CHECKOUT_DEADLINES_APPROVED` is no longer read.
 - **Who monitors the queue, and how often.** For example, a weekly check of the founder desk, plus the reminders.

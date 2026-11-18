@@ -4,7 +4,7 @@
 
 This round follows `plotart-seven-day-reimbursement-2026-11-18.md`.
 
-**Status: seven Irish calendar days is the provisional sandbox rule.**
+**Status: the founder approved seven Irish calendar days as the sandbox pilot rule for PA-PAY §3.3 on 18 November 2026, 09:30.** This approval covers the sandbox rule only; the artist terms remain an unissued draft.
 - The 30-day shortfall period (clause 3.5) remains a separate provisional proposal.
 - Email stays in the test sink.
 - Nothing has been merged, deployed or issued, and no migration has been applied.
@@ -23,7 +23,7 @@ Two other changes to the clause:
 - **3.3(b)** now starts the period from "the day Stripe confirmed that the payment succeeded" (see section 3).
 - **3.3(c)** ends: "Where Stripe's records do not show the day on which it recorded the amounts, the date in (b) applies;"
 
-Clause 3.5 is unchanged: "[30] days … [provisional period, awaiting founder approval]".
+Clause 3.5 is unchanged: "[30] days … [provisional period, awaiting founder approval]". It is the next decision (`plotart-shortfall-30-day-decision-2026-11-18.md`).
 
 **Artist's statement line for a partial reimbursement** (generated, check SD14):
 
@@ -98,7 +98,7 @@ The charge time is always stored as evidence (`charge_created_at`).
 - **SD15** (local, SIMULATED times, real webhook path): the card charge is created at 23:59:58 on 15 November and Stripe's signed success event at 00:00:03 on 16 November (Irish winter time = UTC). The clock starts on 16 November, so the reimbursement is due by the end of 23 November. The charge time is kept.
 - **MB8b:** the normal paid order now shows basis `stripe_success_event_created`.
 - **SD4:** the fallback path (no event) shows basis `stripe_charge_created` and is flagged.
-- **E21e (run 34, real):** records both real timestamps for one payment and checks that the pilot used the event's. Pending your approval of run 34.
+- **E21e (run 34, real): PASS.** Signed `checkout.session.completed` created 09:13:58Z; the pilot's clock started there. The charge was created 09:13:56Z (2 s earlier), succeeded, card, captured. Both fall on 18 November 2026 in Ireland. See section 5.
 
 ## 4. Artist-side credit check (E21c corrected)
 
@@ -116,17 +116,17 @@ The runtime key keeps its five permissions. The harness only reads.
 
 ## 5. Real sandbox results
 
-- **Run 33** (reported earlier): Stripe accepted the application-fee refund `fr_1Ud3cFHx1Olx8cdwLON6LFjc` (€8.06). The artist's balance showed an `adjustment` of +806, pending, on the charge, in the same second. The pilot cannot read the artist's balance with the runtime key.
-- **Run 34:** [44264008409](https://github.com/colin-macaulay-dcu/plotnua/actions/runs/44264008409), approved 09:23, **conclusion: success**. Every check passed, and no check was inconclusive.
+- **Run 33** (reported earlier): Stripe accepted the application-fee refund `fr_1Ud3cFHx1Olx8cdwLON6LFjc` (€8.06). The artist's balance showed an `adjustment` of +€8.06 (806 cents), pending, on the charge, in the same second. The pilot cannot read the artist's balance with the runtime key.
+- **Run 34:** [44264008409](https://github.com/colin-macaulay-dcu/plotnua/actions/runs/44264008409), approved in `checkout-test` by `colin-macaulay-dcu`, **conclusion: success**. Timing from the run record (all UTC, which is Irish time in November): run created 08:05:25; job started 09:12:51; evidence written 09:14:05.631; job completed 09:14:10. GitHub's approval record gives no time, so the approval is known only to have been at or before 09:12:51, when the job started. The 09:23 previously shown here was the time of your message reporting the approval, not the approval itself, and has been removed. All Stripe times below (09:13:56–09:14:02) fall between the job start and the evidence time, so they are consistent with the run record. Every check passed, and no check was inconclusive.
 
 | Check | Result | Amounts and timestamps (real Stripe) |
 |---|---|---|
-| E21c (fresh €200 payment) | **PASS** | **Fee refund:** `fr_1Ud4wIHx1Olx8cdw8oZs3KKh`, €8.06 EUR, accepted 09:14:02Z.<br>**Exactly one match on the artist's balance:** `txn_1Ud4wIHx1Olx8cdwgqiFJwEy`, type `adjustment`, +806 EUR, net 806, fee 0, status `pending`, source = charge `ch_3Ud4wCHx1Olx8cdw0xU9NhZl`, created 09:14:02Z (0 s after the fee refund), available on 25 Nov 2026. Stripe's description: "Application fee refund for ch_…". Reporting category `fee`.<br>No other entries on the charge. |
+| E21c (fresh €200 payment) | **PASS** | **Fee refund:** `fr_1Ud4wIHx1Olx8cdw8oZs3KKh`, €8.06 (806 cents), EUR, accepted 09:14:02Z.<br>**Exactly one match on the artist's balance:** `txn_1Ud4wIHx1Olx8cdwgqiFJwEy`, type `adjustment`, +€8.06 (806 cents), EUR, net €8.06, fee €0, status `pending`, source = charge `ch_3Ud4wCHx1Olx8cdw0xU9NhZl`, created 09:14:02Z (0 s after the fee refund), available on 25 Nov 2026. Stripe's description: "Application fee refund for ch_…". Reporting category `fee`.<br>No other entries on the charge. |
 | E21e (clock start) | **PASS** | **Signed `checkout.session.completed`:** created 09:13:58Z. The pilot's clock started here (basis `stripe_success_event_created`).<br>**Charge:** created 09:13:56Z, 2 s earlier; status `succeeded`, card, captured.<br>**Irish dates:** both 18 Nov 2026.<br>**Fee:** recorded 09:13:56Z; reimbursed 09:14:02Z, not late. |
-| E21f (run 33's reimbursement re-read) | **PASS** | **Fee refund:** `fr_1Ud3cFHx1Olx8cdwLON6LFjc`, €8.06 EUR, accepted 07:49:15Z.<br>**Exactly one match:** `txn_1Ud3cFHx1Olx8cdwX9Y2UYbR`, `adjustment` +806 EUR, `pending`, source = charge `ch_3Ud3c9Hx1Olx8cdw0Ah0fyIj`, created 07:49:15Z (0 s after), available on 25 Nov 2026. |
+| E21f (run 33's reimbursement re-read) | **PASS** | **Fee refund:** `fr_1Ud3cFHx1Olx8cdwLON6LFjc`, €8.06 (806 cents), EUR, accepted 07:49:15Z.<br>**Exactly one match:** `txn_1Ud3cFHx1Olx8cdwX9Y2UYbR`, `adjustment` +€8.06 (806 cents), EUR, `pending`, source = charge `ch_3Ud3c9Hx1Olx8cdw0Ah0fyIj`, created 07:49:15Z (0 s after), available on 25 Nov 2026. |
 
 **Unchanged in run 34:**
-- E21a/E21b PASS: Stripe fee €6.55 + VAT €1.51 = €8.06 reimbursed through the runtime key; the application fee shows `amount_refunded` 806 of 3000.
+- E21a/E21b PASS: Stripe fee €6.55 + VAT €1.51 = €8.06 reimbursed through the runtime key; the application fee shows `amount_refunded` €8.06 of €30.00 (806 of 3000 cents).
 - E21d PASS: the runtime key can read the fee's refunds, but not the artist's balance (`balance_read` refused).
 - E17d PASS: all 9 Worker calls used the runtime key.
 
