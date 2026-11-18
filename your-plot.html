@@ -31595,7 +31595,15 @@ html.pn-myplot-view:not(.pn-myplot-open) body::after{content:"Opening My Plot\20
     els.pdIntelligence.innerHTML = '';
     const intel = document.createElement('div');
     intel.className = 'pd-home-intel';
-    const spec = String(rec.description || '').split(/\s*===/)[0].trim();
+    /* PUBLIC/PRIVATE BOUNDARY (18 Nov 2026). rec.description is Atlas's
+       research record: a maker's research notes can sit inline before any
+       "===", and BIOBUILDS' did, so the split alone was never a boundary.
+       Where Atlas holds a Public Specification -- supplier-published or
+       supplier-confirmed facts only -- that is shown INSTEAD, and the research
+       prose is not read at all. Products without one are unchanged. */
+    const spec = rec.publicSpecification
+      ? String(rec.publicSpecification).trim()
+      : String(rec.description || '').split(/\s*===/)[0].trim();
     const page = pnHomeVerifiedPage(product);
     const firstSrc = (rec.sources || [])[0] || null;
     if (spec) {

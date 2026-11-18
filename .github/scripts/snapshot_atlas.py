@@ -71,6 +71,9 @@ PRODUCT_FIELDS = [
     "Habitation Classification", "Habitation Classification Basis",
     # evidence sufficiency — Brief §6.2 layer 4
     "Product URL", "    Sources", "Sources", "Description", "Notes",
+    # homeowner-facing specification, kept apart from the research prose in
+    # Description (BIOBUILDS post-publication correction, 18 Nov 2026)
+    "Public Specification",
     # provenance freshness — S3 "provenance coverage"
     "    Last Reviewed",
     # carried so the independence tests can PROVE these were available and

@@ -592,6 +592,42 @@ print(json.dumps({n: m.publication_hold(n) for n in json.loads(sys.stdin.read())
          + `${rows.length} records agree`);
 }
 
+/* PG17 THE PUBLIC/PRIVATE SPECIFICATION BOUNDARY (18 November 2026).
+   The published BIOBUILDS listing showed Atlas research notes under "Published
+   specification", because the runtime displayed the raw Description field.
+   Atlas now holds a separate Public Specification and the runtime shows it
+   instead. This proves, independently of the generator:
+     (a) the runtime prefers publicSpecification over the research prose;
+     (b) every published BIOBUILDS product carries one;
+     (c) no publicSpecification carries research vocabulary;
+     (d) Wanderlust states one or two bedrooms and Serenity the supplier-
+         confirmed 77.06-78.21 m2 range (the two facts the founder named). */
+{
+  const problems = [];
+  const plot = readFileSync(PLOT, 'utf8');
+  if (!/const spec = rec\.publicSpecification\s*\?\s*String\(rec\.publicSpecification\)/.test(plot))
+    problems.push('runtime does not prefer rec.publicSpecification');
+  const U = JSON.parse(readFileSync(UNIVERSE, 'utf8'));
+  const RESEARCH = /(must not|NOT VERIFIED|AWAITING|RE-VERIFICATION|never separately|configurator key|SQF_TYPE|Atlas|read \d{1,2} \w+ 20\d\d|\brec[A-Za-z0-9]{14}\b|PN-EVID|SRC-|===|Tier [AB]\b|inferred|deliberately)/i;
+  const bb = U.products.filter(r => r.organisation === 'BIOBUILDS' &&
+    r.publicVisibility === 'PUBLISHABLE' && r.qualification.state === 'ELIGIBLE');
+  if (bb.length !== 5) problems.push(`expected 5 published BIOBUILDS products, found ${bb.length}`);
+  for (const r of bb) if (!r.publicSpecification) problems.push(`${r.productName} has no publicSpecification`);
+  for (const r of U.products) {
+    if (r.publicSpecification && RESEARCH.test(r.publicSpecification))
+      problems.push(`${r.productName}: research vocabulary in publicSpecification (${r.publicSpecification.match(RESEARCH)[0]})`);
+  }
+  const w = bb.find(r => r.productName === 'BIOBUILDS Wanderlust');
+  if (!w || !/one or two bedrooms/.test(w.publicSpecification || '')) problems.push('Wanderlust does not state one or two bedrooms');
+  const se = bb.find(r => r.productName === 'BIOBUILDS Serenity');
+  if (!se || !/77\.06–78\.21 m²/.test(se.publicSpecification || '') || /95 m²/.test(se.publicSpecification || ''))
+    problems.push('Serenity does not state the supplier-confirmed 77.06–78.21 m²');
+  problems.length
+    ? bad('PG17 published BIOBUILDS products show only their public specification', problems.join(' | '))
+    : ok('PG17 published BIOBUILDS products show only their public specification',
+         `${bb.length} BIOBUILDS products, runtime boundary in place`);
+}
+
 console.log('\n' + '='.repeat(74));
 console.log(`${pass + fail} checks, ${pass} passed, ${fail} failed\n`);
 process.exit(fail ? 1 : 0);
