@@ -35,7 +35,7 @@ function quoteHtml(q, token, error = null) {
 <h2>The seller</h2><dl>
 <dt>Legal name</dt><dd>${esc(s.legal_name)}${s.trading_name ? ` trading as ${esc(s.trading_name)}` : ''}</dd><dt>Address</dt><dd>${esc(s.address)}</dd>
 ${s.returns_address && s.returns_address !== s.address ? `<dt>Returns and complaints</dt><dd>${esc(s.returns_address)}</dd>` : ''}<dt>Email</dt><dd>${esc(s.email)}</dd><dt>Telephone</dt><dd>${esc(s.phone)}</dd>
-${s.vat_number ? `<dt>VAT number</dt><dd>${esc(s.vat_number)}</dd>` : ''}<dt>Sells as a trader</dt><dd>${s.trader_status === 'trader' ? 'Yes: your consumer rights, including the right to cancel, apply.' : 'No: the seller has declared they do not sell as a trader, so the consumer right to cancel does not apply.'}</dd></dl>
+${s.vat_number ? `<dt>VAT number</dt><dd>${esc(s.vat_number)}</dd>` : ''}<dt>Sells as a trader</dt><dd>${s.trader_status === 'trader' ? 'Yes. The seller has declared to PlotArt that they sell as a trader, so your consumer rights, including the right to cancel, apply.' : 'Not confirmed. This quote cannot be paid.'}</dd></dl>
 <h2>What you pay</h2><table><tr><td>Original artwork${a.medium ? ` · ${esc(a.medium)}` : ''}${a.h_cm ? ` · ${esc(a.h_cm)} × ${esc(a.w_cm)}${a.d_cm ? ' × ' + esc(a.d_cm) : ''} cm` : ''}</td><td>${eur(q.artwork_cents)}</td></tr>
 <tr><td>Packing, transport and cover as set out below</td><td>${eur(q.delivery_cents)}</td></tr><tr class="tot"><td>Total (EUR)</td><td>${eur(q.total_cents)}</td></tr></table>
 <p class="note">You pay the artist through Stripe. PlotArt does not hold your payment; it is not escrow. The delivery charge pays for the delivery described below and is kept separate from the artwork price.</p>

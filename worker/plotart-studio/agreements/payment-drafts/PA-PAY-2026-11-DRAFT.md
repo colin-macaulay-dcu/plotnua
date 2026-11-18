@@ -33,19 +33,20 @@
   (a) legal name and any trading name;
   (b) the geographical address at which the artist is established, and any different address for returns and complaints;
   (c) an email address and a telephone number at which the buyer can contact the artist;
-  (d) whether the artist sells as a trader (in the course of their business, craft or profession);
+  (d) confirmation that the artist sells as a trader, that is, in the course of their business, craft or profession (clause 2.3);
   (e) VAT registration and number, if registered.
 The artist enters this information in PlotArt Studio and confirms that it is accurate. A quote cannot be approved or issued without it. PlotArt shows it on the buyer's quote and in the buyer's purchase confirmation. Each issued quote keeps its own copy; if the artist changes the information after approving a quote, that quote must be approved again before it is issued.
-[Pilot eligibility, founder decision F2: the pilot is open only to artists who declare that they sell as traders. Alternative: also allow artists who declare they do not, with PA-BPT 1.2 telling buyers that consumer cancellation rights do not apply.]
 
-2.3 Payment is made to the artist's own Stripe account, which the artist opens through Stripe's hosted onboarding. Stripe's own terms, including the Stripe Connected Account Agreement, apply between the artist and Stripe. Identity documents and bank details are given by the artist directly to Stripe, not to PlotArt. What PlotArt can see is described in clause 9.
+2.3 **Managed checkout is for artists who sell as traders.** PlotArt-managed checkout is available only to an artist who confirms to PlotArt that they sell their artwork as a trader. The artist gives that confirmation, and keeps it up to date, in PlotArt Studio. PlotArt does not decide whether the artist is a trader and relies on the artist's confirmation. An artist who does not sell as a trader, or is not sure, cannot use managed checkout, but this does not affect their gallery listing, enquiries, direct sales or any Founding 25 arrangement, and they may continue to sell directly. When an artist sells through managed checkout as a trader, the buyer has the consumer rights set out in the buyer purchase terms (PA-BPT), including the right to cancel, and the artist as seller is responsible for honouring them. [For professional review before live use: the definition of trader, reliance on the artist's confirmation, and the marketplace information duty under the Consumer Rights Act 2022, s.107.]
 
-2.4 The artist authorises PlotArt, for each order the artist has approved:
+2.4 Payment is made to the artist's own Stripe account, which the artist opens through Stripe's hosted onboarding. Stripe's own terms, including the Stripe Connected Account Agreement, apply between the artist and Stripe. Identity documents and bank details are given by the artist directly to Stripe, not to PlotArt. What PlotArt can see is described in clause 9.
+
+2.5 The artist authorises PlotArt, for each order the artist has approved:
   (a) to create a Stripe-hosted checkout on the artist's Stripe account, for exactly the approved amounts;
   (b) to receive PlotArt's commission, if any, from that payment as a Stripe application fee;
   (c) to issue refunds from that payment on the artist's instruction or with the artist's agreement (clause 7).
 
-2.5 The artist authorises PlotArt to receive, on the artist's behalf, a buyer's cancellation notice, complaint or damage report sent to hello@plotnua.ie. PlotArt passes it on to the artist promptly, and the artist deals with it.
+2.6 The artist authorises PlotArt to receive, on the artist's behalf, a buyer's cancellation notice, complaint or damage report sent to hello@plotnua.ie. PlotArt passes it on to the artist promptly, and the artist deals with it.
 
 ## 3. Commission, processing fees and tax
 

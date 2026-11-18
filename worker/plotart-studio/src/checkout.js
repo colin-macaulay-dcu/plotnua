@@ -108,7 +108,7 @@ export async function saveSellerProfile(env, artist, b) {
   }
   if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(v.email)) throw new Bad('Seller information: give a valid email address', 400);
   if (!/^[+0-9 ()-]{6,40}$/.test(v.phone)) throw new Bad('Seller information: give a valid telephone number', 400);
-  if (!['trader', 'not_trader'].includes(b && b.trader_status)) throw new Bad('Seller information: say whether you sell as a trader (in the course of your business, craft or profession)', 400);
+  if (!['trader', 'not_trader', 'unsure'].includes(b && b.trader_status)) throw new Bad('Seller information: choose one answer to the question about selling as a trader', 400);
   if (!b || b.confirm !== true) throw new Bad(SELLER_DECLARATION, 400);
   const t = now();
   await run(env, `INSERT INTO seller_profiles (artist_id, legal_name, trading_name, address, returns_address, email, phone, trader_status, vat_number, declared_at, declared_by, updated_at)
@@ -118,12 +118,29 @@ export async function saveSellerProfile(env, artist, b) {
     artist.id, v.legal_name, v.trading_name, v.address, v.returns_address, v.email, v.phone, b.trader_status, v.vat_number, t, artist.email, t);
   return { seller_profile: await sellerProfile(env, artist.id) };
 }
-/* F2 (open founder decision): by default only sellers who declare they sell as traders can be quoted, because buyers from a
-   non-trader lose EU consumer rights. CHECKOUT_ALLOW_NON_TRADER_SELLERS = 'true' would allow them (PA-BPT 1.2 alternative). */
+/* Founder decision F2, Option A (18 Nov 2026, sandbox pilot): PlotArt-managed checkout is open only to artists who confirm
+   they sell as traders. The question is asked only of artists who have joined the payment pilot, and only checkout depends
+   on it: gallery access, enquiries, direct sales and the Founding 25 arrangements are untouched. There is no switch to
+   allow other sellers. [Legal wording for professional review before live use.] */
+export const TRADER_CHOICES = [
+  { value: 'trader', label: 'I sell as a trader',
+    meaning: 'Managed checkout is available for your sales. Your buyers have EU consumer rights against you as the seller, including the right to cancel within 14 days of receiving the artwork and return it, and your seller information is shown to them as a trader.' },
+  { value: 'not_trader', label: 'I do not sell as a trader',
+    meaning: 'Managed checkout is not available for your sales. You can keep selling directly, as now: buyers pay you and nothing else changes.' },
+  { value: 'unsure', label: 'I’m not sure',
+    meaning: 'Managed checkout stays unavailable until you confirm. You can keep selling directly, as now, and come back to this question at any time.' },
+];
+export const TRADER_QUESTION = {
+  question: 'Do you sell your artwork as a trader?',
+  intro: 'This question is only about PlotArt’s managed checkout, where the buyer pays through Stripe. It does not affect your gallery listing, enquiries, direct sales, or any Founding 25 arrangement.',
+  explain: 'Selling as a trader means selling in the course of your business, craft or profession. PlotArt cannot decide this for you. If you are unsure, you may wish to take advice; meanwhile you can keep selling directly.',
+  direct: 'Not sure? You do not need to complete this form. Leave it, and keep selling directly as now. You can come back to it at any time, or leave the payment pilot.',
+  unavailable: 'Managed checkout is not available for your sales, because you have not confirmed that you sell as a trader. Your gallery listing, enquiries and direct sales continue as before. You can change your answer at any time.',
+};
 function sellerProblems(env, p) {
   if (!p) return ['the artist has not given their seller information (Payment pilot page)'];
   const out = Object.entries(SELLER_FIELDS).filter(([k, [, , req]]) => req && !p[k]).map(([k]) => k.replace(/_/g, ' '));
-  if (p.trader_status === 'not_trader' && env.CHECKOUT_ALLOW_NON_TRADER_SELLERS !== 'true') out.push('the artist declared they do not sell as a trader, and the pilot currently quotes only sellers who do (founder decision F2)');
+  if (p.trader_status !== 'trader') out.push(p.trader_status === 'unsure' ? 'the artist has not confirmed that they sell as a trader (answered “not sure”); managed checkout is open only to artists who do (founder decision F2)' : 'the artist declared they do not sell as a trader; managed checkout is open only to artists who do (founder decision F2)');
   return out;
 }
 const profileHash = p => sha256(JSON.stringify(['legal_name', 'trading_name', 'address', 'returns_address', 'email', 'phone', 'trader_status', 'vat_number'].map(k => p[k] ?? null)));
@@ -188,7 +205,8 @@ export async function artistView(env, artist) {
   const sw = switches(env), add = await currentTerms(env, 'artist_payment_addendum');
   return { installed: true, switches: { enabled: sw.enabled, mode: 'test' }, membership: await membership(env, artist.id),
     addendum: add ? { doc_id: add.doc_id, title: add.title, html_sha256: add.html_sha256, statement: STATEMENT(add.doc_id) } : null,
-    seller_profile: await sellerProfile(env, artist.id), seller_declaration: SELLER_DECLARATION, seller_problems: sellerProblems(env, await sellerProfile(env, artist.id)),
+    seller_profile: await sellerProfile(env, artist.id), seller_declaration: SELLER_DECLARATION, seller_problems: sellerProblems(env, await sellerProfile(env, artist.id)), trader_question: TRADER_QUESTION, trader_choices: TRADER_CHOICES,
+    checkout_available: ((sp0) => !!sp0 && sp0.trader_status === 'trader')(await sellerProfile(env, artist.id)),
     processing_statement: PROCESSING_STATEMENT, direct_payment_note: 'Selling directly, with the buyer paying you, remains your normal route. The payment pilot is optional for every sale.',
     pending_refunds: (await pendingRefunds(env, artist.id)).map(r => ({ ...r, what_to_do: REFUND_FUNDING_STEPS })),
     orders: await withStatements(env, await all(env, 'SELECT * FROM checkout_orders WHERE artist_id = ? ORDER BY created_at DESC LIMIT 100', artist.id), 'artist') };
@@ -589,6 +607,7 @@ export async function approveQuote(env, artist, id, b) {
   requireProcessingConsent(memA, o.commission_bp);
   await workAvailable(env, artist.id, o.artwork_id);
   const prof = await sellerProfile(env, artist.id), probs = sellerProblems(env, prof);
+  if (prof && prof.trader_status !== 'trader') throw new Bad(`${TRADER_QUESTION.unavailable} This quote cannot be approved for managed checkout; you can still sell this work directly.`, 409);
   if (probs.length) throw new Bad(`Before approving, complete your seller information: ${probs.join('; ')}`, 409);
   const conf = JSON.stringify({ ...Object.fromEntries(CONFIRM.map(k => [k, true])), seller_profile_sha256: await profileHash(prof), note: String(b.note || '').slice(0, 500) || null });
   const r = await run(env, `UPDATE checkout_orders SET artist_approved_version = ?, artist_approved_at = ?, artist_confirmations = ?, updated_at = ? WHERE id = ? AND status = 'awaiting_artist' AND quote_version = ?`,
@@ -1362,6 +1381,15 @@ export function owedOverdueText(o, w, out, dueDay) {
     `PlotArt will contact you to arrange the bank transfer. PlotArt will never ask for your bank details by email. Your statement shows the amount still owed.`, '',
     'This message comes from the PlotArt payment pilot (test mode).'].join('\n');
 }
+export function owedReturnedText(o, w, p, returnedOn, reason, stillOwed) {
+  const dueDay = w.due_basis_date ? dublinDate(Date.parse(w.due_at) - 1) : w.due_at.slice(0, 10), late = Date.parse(w.due_at) <= Date.now();
+  return [`Order ${o.reference}`, '',
+    `Correction: a bank transfer that PlotArt recorded as sent to you has been returned to PlotArt by the bank.`, '',
+    `Returned payment: ${eur(p.cents)}, sent by bank transfer on ${longDate(p.executed_on)} (PlotArt’s transfer reference: ${p.reference}), returned on ${longDate(returnedOn)}. The bank gave this reason: ${reason}`, '',
+    `PlotArt still owes you ${eur(stillOwed)} on this order. The date it is due is unchanged: the end of ${longDate(dueDay)} (Irish time)${late ? ', so it is now overdue. We are sorry for the delay' : ''}.`, '',
+    'PlotArt will phone you to check the account details before sending it again. PlotArt will never ask for your bank details by email.', '',
+    'This message comes from the PlotArt payment pilot (test mode).'].join('\n');
+}
 export function owedPaymentText(o, w, cents, executedOn, reference, stillOwed, dueDay) {
   return [`Order ${o.reference}`, '',
     `PlotArt sent you ${eur(cents)} by bank transfer on ${longDate(executedOn)} (PlotArt’s transfer reference: ${reference}). This is ${w.kind === 'commission_shortfall' ? 'commission PlotArt returns to you' : 'part of Stripe’s processing fee and VAT that PlotArt reimburses'} and could not be paid through Stripe.`, '',
@@ -1649,6 +1677,10 @@ export async function recordShortfallReturned(env, founder, id, b) {
     ledgerSt(env, o.id, 'processing_shortfall_paid', -p.cents, rr, `bank transfer ${p.reference} returned ${on}: ${why}`.slice(0, 200)),
     evSt(env, o.id, founder, 'shortfall_transfer_returned', o.status, o.status, { payment: p.id, amount: p.cents, returned_on: on, reason: why })]);
   await setOwedFlag(env, o.id);
+  // one correction notice per returned transfer (the return can be recorded only once: UNIQUE payment_id), test sink unless sending is approved
+  const w = await one(env, 'SELECT * FROM checkout_owed WHERE id = ?', p.owed_id);
+  const rest = await one(env, "SELECT COALESCE(SUM(cents - settled_cents), 0) AS c FROM checkout_owed WHERE order_id = ? AND kind IN ('processing_shortfall','commission_shortfall')", o.id);
+  await notify(env, o, 'owed_transfer_returned', owedReturnedText(o, w, p, on, why, rest.c), { artistOnly: true, subject: `PlotArt payment pilot · ${o.reference} · correction: a bank transfer to you was returned` });
   return orderDetail(env, await getOrder(env, o.id), 'founder');
 }
 /* The artist's statement for one order: every amount separated, nothing netted silently. All cents. "Paid" amounts are in

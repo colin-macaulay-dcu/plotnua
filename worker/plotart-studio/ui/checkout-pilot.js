@@ -114,11 +114,13 @@
         <form data-f="optin"><label><input type="checkbox" name="accept" required> ${esc(j.addendum.statement)}</label><button>Join the pilot</button></form>` : '<p>The payment addendum has not been issued yet.</p>';
       else {
         h += `<p class="st-muted">${esc(j.direct_payment_note)}</p>`;
+        if (j.seller_profile && !j.checkout_available) h += `<p class="st-warn">${esc(j.trader_question.unavailable)}</p>`;
         const sp = j.seller_profile || {};
-        h += `<details ${j.seller_problems.length ? 'open' : ''}><summary>Seller information shown to buyers${j.seller_problems.length ? ' — needed before any quote' : ''}</summary><form data-f="seller">
+        h += `<details ${j.seller_problems.length ? 'open' : ''}><summary>Seller information for managed checkout${j.seller_problems.length ? ' — needed before any managed-checkout quote' : ''}</summary><p>${esc(j.trader_question.direct)}</p><form data-f="seller">
           ${[['legal_name', 'Legal name'], ['trading_name', 'Trading name (optional)'], ['address', 'Address where you are established'], ['returns_address', 'Returns and complaints address, if different (optional)'], ['email', 'Email for buyers'], ['phone', 'Telephone for buyers'], ['vat_number', 'VAT number, if registered (optional)']]
             .map(([k, t]) => `<label>${t} <input name="${k}" value="${esc(sp[k] || '')}"></label>`).join('')}
-          <label>Do you sell as a trader (in the course of your business, craft or profession)? <select name="trader_status"><option value="">choose</option><option value="trader" ${sp.trader_status === 'trader' ? 'selected' : ''}>Yes, as a trader</option><option value="not_trader" ${sp.trader_status === 'not_trader' ? 'selected' : ''}>No</option></select></label>
+          <fieldset><legend>${esc(j.trader_question.question)}</legend><p class="st-muted">${esc(j.trader_question.intro)}</p><p class="st-muted">${esc(j.trader_question.explain)}</p>
+          ${j.trader_choices.map(c => `<label><input type="radio" name="trader_status" value="${esc(c.value)}" required ${sp.trader_status === c.value ? 'checked' : ''}> <strong>${esc(c.label)}</strong><br><small>${esc(c.meaning)}</small></label>`).join('')}</fieldset>
           <label><input type="checkbox" name="confirm" required> ${esc(j.seller_declaration)}</label><button>Save seller information</button></form></details>`;
         if (j.pending_refunds.length) h += `<h2>A refund is waiting for your Stripe balance</h2>${j.pending_refunds.map(r => `<p class="st-warn">${esc(r.reference)}: ${eur(r.amount_cents)}, waiting ${r.days_pending} days. Stripe cancels it on ${esc(r.stripe_fails_it_by)} if still unfunded.</p>`).join('')}<ol>${j.pending_refunds[0].what_to_do.map(x => `<li>${esc(x)}</li>`).join('')}</ol>`;
         h += m.processing_consent ? `<p>You have agreed that Stripe’s processing fees may be deducted on commission-free pilot orders (${esc(m.processing_consent_at)}). <button data-a2="withdraw-processing">Withdraw this consent</button></p>`

@@ -313,7 +313,7 @@ CREATE TABLE IF NOT EXISTS seller_profiles (
   returns_address TEXT,                       -- if different: where returns and complaints go
   email           TEXT NOT NULL,
   phone           TEXT NOT NULL,
-  trader_status   TEXT NOT NULL CHECK (trader_status IN ('trader','not_trader')),
+  trader_status   TEXT NOT NULL CHECK (trader_status IN ('trader','not_trader','unsure')),   -- managed checkout is open only to 'trader' (founder decision F2, Option A, 18 Nov 2026)
   vat_number      TEXT,
   declared_at     TEXT NOT NULL,
   declared_by     TEXT NOT NULL,

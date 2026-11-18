@@ -266,6 +266,27 @@ export async function e2e({ rec, KEY, ACCOUNT, RUN, port, whsec, stripe, sleep }
         const r = await fetch('https://api.stripe.com' + path, { headers: h }); const j = await r.json().catch(() => ({}));
         return { status: r.status, error: j.error ? { type: j.error.type, code: j.error.code, message: String(j.error.message || '').slice(0, 300) } : null, j };
       };
+      { // E22 · managed checkout is for traders only (decision F2, Option A): an artist who answers "not sure" cannot be quoted, and no Stripe call is made
+        const SELL = { legal_name: 'E2E Test Seller (SIMULATED)', address: 'SIMULATED address, Dublin, Ireland', email: 'seller@plotnua.invalid', phone: '+353 1 000 0000', confirm: true };
+        const i22 = CW_CALLS.length;
+        const c = await call('POST', '/api/admin/checkout/orders', FOUNDER, { artist_id: 'agal', artwork_id: 'wagal3', enquiry_ref: 'PA-E-261116-E2E003', buyer_email: `buyer+${RUN}@plotnua.invalid` });
+        const id = c.j && c.j.order && c.j.order.id;
+        await call('PUT', '/api/checkout/seller-profile', GAL, { ...SELL, trader_status: 'unsure' });
+        const v = (await call('GET', '/api/checkout', GAL)).j;
+        let issue = { s: 0 }, approve = { s: 0 };
+        if (id) {
+          await call('PUT', `/api/admin/checkout/orders/${id}`, FOUNDER, { artwork_cents: 5000, delivery_cents: 0, delivery: { ...DELIVERY, covered_value_cents: 5000 } });
+          await call('POST', `/api/admin/checkout/orders/${id}/send`, FOUNDER, {});
+          approve = await call('POST', `/api/checkout/orders/${id}/approve`, GAL, { quote_version: (await order(id)).quote_version, confirm: ALL });
+          issue = await call('POST', `/api/admin/checkout/orders/${id}/issue`, FOUNDER, { days: 1, linked_check_confirmed: true });
+        }
+        const sess = id ? await q('SELECT id FROM checkout_sessions WHERE order_id = ?', id) : [];
+        rec('E22', 'traders only: with the artist’s answer “not sure”, the artist cannot approve and the pilot refuses to issue a managed-checkout quote; no checkout session exists and the checkout Worker made no Stripe call', SRC,
+          id && approve.s === 409 && /not confirmed that you sell as a trader/.test(approve.j && approve.j.error) && issue.s === 409 && v.checkout_available === false && !sess.length && CW_CALLS.length === i22 ? 'PASS' : 'FAIL',
+          { order_created: !!id, approve_http: approve.s, approve_error: approve.j && approve.j.error, issue_http: issue.s, issue_error: issue.j && issue.j.error, checkout_available: v.checkout_available, sessions: sess.length, worker_stripe_calls: CW_CALLS.length - i22 });
+        if (id) await call('POST', `/api/admin/checkout/orders/${id}/cancel`, FOUNDER, { reason: 'E22 complete' });
+        await call('PUT', '/api/checkout/seller-profile', GAL, { ...SELL, trader_status: 'trader' });
+      }
       const ov = await quote('wagal2', 'PA-E-261116-E2E002', 20000, 0);
       let paid = false; try { await payInBrowser(ov.url, '4242424242424242', 'evidence'); paid = true; } catch (e) { rec('E21a', 'buyer pays €200 on the real hosted Checkout page', SRC, 'FAIL', { error: String(e.message).split('\n')[0].slice(0, 300) }); }
       const O = paid ? await waitFor(async () => { const o = await order(ov.id); return o.payment_status === 'paid' ? o : null; }, 90_000) : null;

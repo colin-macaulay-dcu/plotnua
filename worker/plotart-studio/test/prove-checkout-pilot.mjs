@@ -430,10 +430,18 @@ console.log('— a quote needs current seller information and complete return ar
   check('SP4 if the seller information changes after the artist approved, the quote is not issued (the artist must approve again)', r.s === 409 && /changed after/.test(r.j.error), r.j);
   await call('PUT', '/api/checkout/seller-profile', GAL, { ...SELLER, phone: '+353 1 555 0199', trader_status: 'not_trader', confirm: true });
   r = await call('POST', `/api/admin/checkout/orders/${os.id}/issue`, FOUNDER, { days: 2, linked_check_confirmed: true });
-  check('SP5 a seller who declares they are not a trader is not quoted while decision F2 stands (default: traders only)', r.s === 409 && /not sell as a trader/.test(r.j.error), r.j);
+  check('SP5 a seller who declares they are not a trader is not quoted: managed checkout is for traders only (decision F2, Option A)', r.s === 409 && /not sell as a trader/.test(r.j.error), r.j);
+  const vNot = (await call('GET', '/api/checkout', GAL)).j;
+  await call('PUT', '/api/checkout/seller-profile', GAL, { ...SELLER, phone: '+353 1 555 0199', trader_status: 'unsure', confirm: true });
+  const rU = await call('POST', `/api/admin/checkout/orders/${os.id}/issue`, FOUNDER, { days: 2, linked_check_confirmed: true }), vU = (await call('GET', '/api/checkout', GAL)).j;
+  const rBadT = await call('PUT', '/api/checkout/seller-profile', GAL, { ...SELLER, trader_status: 'maybe', confirm: true });
+  check('SP5b “I’m not sure” is accepted as an answer but keeps managed checkout unavailable; the artist sees three neutral choices, what each means, that only checkout is affected, and how to keep selling directly; an unknown answer is refused',
+    rU.s === 409 && /not confirmed that they sell as a trader/.test(rU.j.error) && vNot.checkout_available === false && vU.checkout_available === false && rBadT.s === 400
+    && vU.trader_choices.map(c => c.value).join() === 'trader,not_trader,unsure' && /does not affect your gallery listing, enquiries, direct sales, or any Founding 25 arrangement/.test(vU.trader_question.intro)
+    && /keep selling directly/.test(vU.trader_question.direct) && /continue as before/.test(vU.trader_question.unavailable), { rU: rU.j, q: vU.trader_question });
   await call('PUT', '/api/checkout/seller-profile', GAL, { ...SELLER, phone: '+353 1 555 0199', confirm: true });
   r = await call('POST', `/api/admin/checkout/orders/${os.id}/issue`, FOUNDER, { days: 2, linked_check_confirmed: true });
-  check('SP6 with the approved seller information restored, the quote is issued', r.s === 200 && !!r.j.buyer_link, r.j);
+  check('SP6 with the approved seller information restored, the quote is issued', r.s === 200 && !!r.j.buyer_link && (await call('GET', '/api/checkout', GAL)).j.checkout_available === true, r.j);
   await call('POST', `/api/admin/checkout/orders/${os.id}/cancel`, FOUNDER, { reason: 'test complete' }); }
 
 console.log('— two buyers, one original (test 6)');
@@ -865,6 +873,14 @@ console.log('— seven-day reimbursement rule (PA-PAY §3.3(b), provisional) · 
     const tamper = await db.prepare('UPDATE checkout_owed SET settled_cents = 300 WHERE id = ?').bind(owRow.id).run().catch(e => e);
     const ret = await call('POST', `/api/admin/checkout/orders/${G.id}/shortfallreturned`, FOUNDER, { payment_id: p2.id, returned_on: TODAY_IE, reason: 'SIMULATED: beneficiary account closed' });
     const ret2 = await call('POST', `/api/admin/checkout/orders/${G.id}/shortfallreturned`, FOUNDER, { payment_id: p2.id, returned_on: TODAY_IE, reason: 'SIMULATED: beneficiary account closed' });
+    await sweep(); await sweep();
+    const corr = await q("SELECT to_role, subject, body FROM checkout_mail_sink WHERE order_id = ? AND kind = 'owed_transfer_returned'", G.id);
+    const corrEv = await q("SELECT detail FROM order_events WHERE order_id = ? AND action = 'notified_owed_transfer_returned'", G.id);
+    check('SD19b ONE correction notice to the artist for the returned transfer (repeat request refused, two later sweeps add nothing), held in the test sink with outbound artist email off: it names the returned payment, its amount, execution and return dates and reference, the EUR 3.83 still owed and the unchanged due date',
+      corr.length === 1 && corr[0].to_role === 'artist' && corrEv.length === 1 && JSON.parse(corrEv[0].detail).result.join() === 'held_in_test_sink'
+      && /Returned payment: EUR 3\.83, sent by bank transfer on \w+day \d+ \w+ \d{4} \(PlotArt’s transfer reference: SIM-TRF-0002\), returned on/.test(corr[0].body)
+      && /PlotArt still owes you EUR 3\.83 on this order\. The date it is due is unchanged: the end of Thursday 17 December 2026 \(Irish time\)\./.test(corr[0].body), { corr, corrEv });
+    writeFileSync('/tmp/plotart-sd-returned.txt', corr[0] ? corr[0].subject + '\n\n' + corr[0].body : '');
     const st3 = (await call('GET', `/api/checkout/orders/${G.id}`, GAL)).j.statement, ow3 = (await call('GET', `/api/admin/checkout/orders/${G.id}`, FOUNDER)).j.owed.find(w => w.kind === 'processing_shortfall'), OG3 = await order(G.id);
     check('SD19 SIMULATED returned transfer: EUR 3.83 is owed again, the due date is unchanged, the payment history keeps both transfers with the return marked; the statement says the transfer was returned; the order is flagged again; the database refuses any other reduction, and a transfer can be returned only once',
       !!tamper.message && ret.s === 200 && ret2.s === 409 && ow3.settled_cents === 300 && ow3.cents - ow3.settled_cents === 383 && ow3.due_at === owRow.due_at
@@ -906,6 +922,15 @@ console.log('— seven-day reimbursement rule (PA-PAY §3.3(b), provisional) · 
       deskK.status === 'overdue' && founderK.length === 1 && /OVERDUE — follow up promptly/.test(founderK[0].body) && /Internal resolution target: Friday 20 November 2026/.test(founderK[0].body) && /The artist’s deadline still applies/.test(founderK[0].body)
       && /OVERDUE: was due by the end of Sunday 15 November 2026/.test(OK2.needs_resolution || '') && artistK.length === 1 && (await q("SELECT 1 FROM checkout_mail_sink WHERE order_id = ? AND kind = 'owed_overdue_artist'", K.id)).length === 1
       && /It was due by the end of Sunday 15 November 2026 \(Irish time\)/.test(artistK[0].body) && /never ask for your bank details by email/.test(artistK[0].body), { founderK, artistK, nr: OK2.needs_resolution });
+    const pk = await call('POST', `/api/admin/checkout/orders/${K.id}/shortfallpaid`, FOUNDER, { amount_cents: 683, reference: 'SIM-TRF-K001', executed_on: TODAY_IE });
+    const pkId = (await q("SELECT id FROM checkout_owed_payments WHERE order_id = ? AND reference = 'SIM-TRF-K001'", K.id))[0].id;
+    const rk = await call('POST', `/api/admin/checkout/orders/${K.id}/shortfallreturned`, FOUNDER, { payment_id: pkId, returned_on: TODAY_IE, reason: 'SIMULATED: name does not match account' });
+    await sweep(); await sweep();
+    const corrK = await q("SELECT body FROM checkout_mail_sink WHERE order_id = ? AND kind = 'owed_transfer_returned'", K.id), wK2 = (await q("SELECT due_at FROM checkout_owed WHERE id = ?", wK.id))[0];
+    check('SD24 SIMULATED return after the deadline: one correction notice says the EUR 6.83 is owed again, the original due date (end of Sunday 15 November 2026) is unchanged and it is now overdue; no second overdue notice; the due date in the record is unchanged',
+      pk.s === 200 && rk.s === 200 && corrK.length === 1 && /PlotArt still owes you EUR 6\.83 on this order\. The date it is due is unchanged: the end of Sunday 15 November 2026 \(Irish time\), so it is now overdue\./.test(corrK[0].body)
+      && (await q("SELECT 1 FROM checkout_mail_sink WHERE order_id = ? AND kind = 'owed_overdue_artist'", K.id)).length === 1 && wK2.due_at === wK.due_at, { corrK, pk: pk.j && pk.j.error, rk: rk.j && rk.j.error });
+    writeFileSync('/tmp/plotart-sd-returned-late.txt', corrK[0] ? corrK[0].body : '');
     writeFileSync('/tmp/plotart-sd-dst.json', JSON.stringify({ owed: wK, desk: deskK, founder_overdue: founderK[0] && founderK[0].body, artist_overdue: artistK[0] && artistK[0].body, flag: OK2.needs_resolution, spring }, null, 2)); }
   // H · clock start: Stripe's charge and its success event fall on different Irish dates (SIMULATED times, real webhook path)
   { const work = (await q("SELECT id FROM artworks WHERE artist_id = 'agal' AND availability = 'available' AND id NOT IN (SELECT artwork_id FROM artwork_sales) AND id NOT IN (SELECT artwork_id FROM artwork_reservations) ORDER BY id DESC LIMIT 1"))[0];
