@@ -1,10 +1,10 @@
 {
   "_note": "Changing this file on the pilot branch requests a run of .github/workflows/plotart-checkout-stripe-test.yml (Stripe TEST mode only; waits for the founder's approval on the checkout-test environment). Nothing is deployed.",
-  "requested": "2026-11-18T20:53:00Z",
+  "requested": "2026-11-18T22:23:00Z",
   "phases": [
-    "platform_balance"
+    "balance_readiness"
   ],
-  "reason": "Run 41: READ-ONLY. One GET /v1/balance on PlotArt's own account with the harness key (Balance Read granted by the founder 18 Nov 2026 20:51). Reports available and pending EUR against the intended EUR 8.06 test refund. Creates nothing. Runtime key unchanged (five permissions).",
+  "reason": "Read-only sandbox balance readiness check after the founder saved the temporary balance key.",
   "reuse_account": "acct_1UclJXHx1Olx8cdw",
   "unfunded_account": "acct_1Uct3vHx1OnYJa8H",
   "unfunded_link": false,
