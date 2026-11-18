@@ -97,13 +97,13 @@
     "completed_at": null,
     "completed_late": false,
     "alerts": {
-      "day5": "2026-11-18T07:30:40.303Z",
-      "deadline": "2026-11-18T07:30:40.490Z"
+      "day5": "2026-11-18T07:47:12.064Z",
+      "deadline": "2026-11-18T07:47:12.257Z"
     },
     "delay_notice_at": null,
     "attempts": 6,
     "last_error": "SIMULATED: Stripe temporarily unavailable",
-    "last_attempt_at": "2026-11-18T07:30:40.505Z",
+    "last_attempt_at": "2026-11-18T07:47:12.269Z",
     "failing": true,
     "fee_refund": null,
     "flags": [],
@@ -131,7 +131,7 @@
     "completed_at": null,
     "completed_late": false,
     "alerts": {},
-    "delay_notice_at": "2026-11-18T07:30:40.669Z",
+    "delay_notice_at": "2026-11-18T07:47:12.461Z",
     "attempts": 0,
     "last_error": null,
     "last_attempt_at": null,
@@ -159,10 +159,10 @@
     "due_provisional": true,
     "due_label": "Extended: Stripe recorded the fee on Tuesday 17 November 2026. Due by the end of Tuesday 24 November 2026 (Irish time) · provisional",
     "overdue": false,
-    "completed_at": "2026-11-18T07:30:40.000Z",
+    "completed_at": "2026-11-18T07:47:12.000Z",
     "completed_late": false,
     "alerts": {},
-    "delay_notice_at": "2026-11-18T07:30:40.669Z",
+    "delay_notice_at": "2026-11-18T07:47:12.461Z",
     "attempts": 0,
     "last_error": null,
     "last_attempt_at": null,
@@ -170,7 +170,7 @@
     "fee_refund": {
       "id": "fr_test_00001m",
       "amount": 2183,
-      "accepted_at": "2026-11-18T07:30:40.000Z",
+      "accepted_at": "2026-11-18T07:47:12.000Z",
       "accepted_basis": "stripe_fee_refund_created",
       "platform_balance_transaction": "txn_test_00001n"
     },
@@ -196,7 +196,7 @@
     "due_provisional": true,
     "due_label": "Due by the end of Monday 16 November 2026 (Irish time) · provisional",
     "overdue": false,
-    "completed_at": "2026-11-18T07:30:40.000Z",
+    "completed_at": "2026-11-18T07:47:12.000Z",
     "completed_late": true,
     "alerts": {},
     "delay_notice_at": null,
@@ -207,7 +207,7 @@
     "fee_refund": {
       "id": "fr_test_00001q",
       "amount": 2183,
-      "accepted_at": "2026-11-18T07:30:40.000Z",
+      "accepted_at": "2026-11-18T07:47:12.000Z",
       "accepted_basis": "stripe_fee_refund_created",
       "platform_balance_transaction": "txn_test_00001r"
     },
@@ -233,7 +233,7 @@
     "due_provisional": true,
     "due_label": "Due by the end of Wednesday 25 November 2026 (Irish time) · provisional",
     "overdue": false,
-    "completed_at": "2026-11-18T07:30:40.000Z",
+    "completed_at": "2026-11-18T07:47:12.000Z",
     "completed_late": false,
     "alerts": {},
     "delay_notice_at": null,
@@ -244,7 +244,7 @@
     "fee_refund": {
       "id": "fr_test_00001s",
       "amount": 2183,
-      "accepted_at": "2026-11-18T07:30:40.000Z",
+      "accepted_at": "2026-11-18T07:47:12.000Z",
       "accepted_basis": "stripe_fee_refund_created",
       "platform_balance_transaction": "txn_test_00001t"
     },
@@ -256,6 +256,6 @@
   },
   "delay_notice": {
     "subject": "PlotArt payment pilot · PA-O-261118-SD000B · processing fee reimbursement: Stripe has not yet recorded the fee",
-    "body": "Order PA-O-261118-SD000B\n\nStripe confirmed your buyer’s payment on Sunday 8 November 2026. PlotArt reimburses Stripe’s processing fee, and the VAT Stripe charges on it, within 7 calendar days of the payment: for this order, by the end of Sunday 15 November 2026 (Irish time).\n\nStripe has not yet recorded the processing fee for this payment, so the exact amount is not yet known. PlotArt does not estimate it.\n\nPlotArt will reimburse the fee as soon as Stripe records it, and at the latest by the end of the seventh calendar day after the day Stripe records it (Irish time). For example, if Stripe records the fee on Tuesday 17 November 2026, the latest date is Tuesday 24 November 2026.\n\nWe will tell you the amount when the reimbursement is made. Your payout from Stripe to your bank is separate and follows your usual Stripe payout schedule.\n\nThis message comes from the PlotArt payment pilot (test mode)."
+    "body": "Order PA-O-261118-SD000B\n\nStripe confirmed your buyer’s payment on Sunday 8 November 2026. PlotArt reimburses Stripe’s processing fee, and the VAT Stripe charges on it, within seven calendar days of the payment: for this order, by the end of Sunday 15 November 2026 (Irish time).\n\nStripe has not yet recorded the processing fee for this payment, so the exact amount is not yet known. PlotArt does not estimate it.\n\nPlotArt will reimburse the fee as soon as Stripe records it, and at the latest by the end of the seventh calendar day after the day Stripe records it (Irish time). For example, if Stripe records the fee on Thursday 19 November 2026, the latest date is Thursday 26 November 2026.\n\nWe will tell you the amount when the reimbursement is made. Your payout from Stripe to your bank is separate and follows your usual Stripe payout schedule.\n\nThis message comes from the PlotArt payment pilot (test mode)."
   }
 }

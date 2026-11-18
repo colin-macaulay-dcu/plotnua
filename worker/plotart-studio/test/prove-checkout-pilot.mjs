@@ -789,7 +789,7 @@ console.log('— seven-day reimbursement rule (PA-PAY §3.3(b), provisional) · 
   check('SD9c after a delay notice, ONE closing message to the artist (test sink) states the amount, that Stripe accepted the application-fee refund, its date and Stripe reference, and that the bank payout is separate; the statement carries the same wording',
     done.length === 1 && done[0].to_role === 'artist' && /PlotArt reimbursed EUR 21\.83: Stripe accepted PlotArt’s refund of that amount of its application fee on \w+day \d+ \w+ \d{4} \(Stripe reference fr_test_\w+\)/.test(done[0].body)
     && /depends on your Stripe payout schedule/.test(done[0].body) && stB.statement && stB.statement.processing_reimbursement === done[0].body.split('\n')[3], { done, st: stB.statement && stB.statement.processing_reimbursement });
-  writeFileSync(HERE + 'test/.sd-completion.txt', done[0] ? done[0].body : '');
+  writeFileSync('/tmp/plotart-sd-completion.txt', done[0] ? done[0].body : '');
   // B2 · the pilot saw no fee at the deadline and sent the notice, but Stripe's own time later shows the fee was recorded before it
   const B2 = await sdOrder('E', { chargeAgeDays: 8, btPending: true });
   await sweep();
@@ -813,7 +813,7 @@ console.log('— seven-day reimbursement rule (PA-PAY §3.3(b), provisional) · 
   check('SD12 the artist’s delay notice states the confirmation date, the original date, that the amount is not estimated, the 7-day rule from Stripe’s record with a worked example, and that the bank payout is separate (no “by 14:15” promise)',
     !!notice && /Stripe confirmed your buyer’s payment on \w+day \d+ \w+ \d{4}/.test(notice.body) && /does not estimate/.test(notice.body) && /seventh calendar day after the day Stripe records it/.test(notice.body)
     && /payout from Stripe to your bank is separate/.test(notice.body) && !/14:15/.test(notice.body) && /test mode/.test(notice.body), notice);
-  writeFileSync(HERE + 'test/.sd-evidence.json', JSON.stringify({ SD1: a, SD2: { summer: s, winter: w }, SD3: { before: e1, after: e2 }, SD3b: l, desk_A_outstanding: dA, desk_B_waiting: dB, desk_B_done: dB2, desk_C_late: dC, desk_D_flags: dD, delay_notice: notice }, null, 2));
+  writeFileSync('/tmp/plotart-sd-evidence.json', JSON.stringify({ SD1: a, SD2: { summer: s, winter: w }, SD3: { before: e1, after: e2 }, SD3b: l, desk_A_outstanding: dA, desk_B_waiting: dB, desk_B_done: dB2, desk_C_late: dC, desk_D_flags: dD, delay_notice: notice }, null, 2));
 }
 
 console.log('— leaving, scheduled sweep, isolation (tests 11, 15)');
