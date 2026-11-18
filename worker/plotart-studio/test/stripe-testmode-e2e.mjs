@@ -25,16 +25,22 @@ export async function e2e({ rec, KEY, ACCOUNT, RUN, port, whsec, stripe, sleep }
   // Every outbound request from the public checkout Worker is observed: which key it carried (never the key itself), the
   // endpoint and the HTTP status; Stripe's error message is kept for any permission failure.
   const CW_CALLS = [];
+  let FEE_HOOK = null;   // set only by the balance run ("balance_evidence": true)
   const keyName = auth => { const k = String(auth || '').replace(/^Bearer\s+/, ''); return !k ? 'none' : k === RUNTIME ? 'runtime' : k === KEY ? 'RUNNER (fallback!)' : 'other'; };
   const cwOutbound = async req => {
     const u = new URL(req.url), item = { method: req.method, path: u.pathname.replace(/(acct|cs|pi|ch|fee|re|dp|txn|py|po)_(test_)?[A-Za-z0-9]+/g, '$1_…'), host: u.host, key: u.host === 'api.stripe.com' ? keyName(req.headers.get('Authorization')) : 'n/a', connected: !!req.headers.get('Stripe-Account') };
     CW_CALLS.push(item);   // recorded before the call, so a failed call is still visible
     let res;
+    const reqBody = ['GET', 'HEAD'].includes(req.method) ? undefined : await req.arrayBuffer();
+    // balance run only: the platform balance is read immediately before (and after) the pilot's application-fee refund request
+    const hookCtx = FEE_HOOK && req.method === 'POST' && u.host === 'api.stripe.com' && /^\/v1\/application_fees\/[^/]+\/refunds$/.test(u.pathname)
+      ? await FEE_HOOK.before({ path: u.pathname, idem: req.headers.get('Idempotency-Key'), body: reqBody ? new TextDecoder().decode(reqBody) : '', key: item.key }) : null;
     try {   // re-issue with Node's own fetch (Miniflare's Request object is not passed through as is)
-      res = await fetch(req.url, { method: req.method, headers: Object.fromEntries(req.headers), body: ['GET', 'HEAD'].includes(req.method) ? undefined : await req.arrayBuffer(), redirect: 'manual' });
-    } catch (e) { item.status = 'network_error'; item.error = String(e.message).slice(0, 200); throw e; }
+      res = await fetch(req.url, { method: req.method, headers: Object.fromEntries(req.headers), body: reqBody, redirect: 'manual' });
+    } catch (e) { item.status = 'network_error'; item.error = String(e.message).slice(0, 200); if (hookCtx) await FEE_HOOK.after(hookCtx, { network_error: item.error }); throw e; }
     const buf = await res.arrayBuffer();
     item.status = res.status;
+    if (hookCtx) await FEE_HOOK.after(hookCtx, { status: res.status, body: new TextDecoder().decode(buf), request_id: res.headers.get('request-id'), idempotent_replayed: res.headers.get('idempotent-replayed') });
     if (u.host === 'api.stripe.com' && res.status >= 400) { try { const j = JSON.parse(new TextDecoder().decode(buf)); item.stripe_error = j.error && { type: j.error.type, code: j.error.code, message: String(j.error.message || '').slice(0, 300) }; } catch { /* */ } }
     return new Response(buf, { status: res.status, headers: res.headers });
   };
@@ -254,6 +260,134 @@ export async function e2e({ rec, KEY, ACCOUNT, RUN, port, whsec, stripe, sleep }
       const all = callsFrom(0);
       rec('E17d', 'coverage run: every Stripe API call made by the public checkout Worker used the runtime key', 'stripe-test-api+pilot',
         !runtimeOk ? 'SKIP' : all.length && all.every(c => c.key === 'runtime') && !all.some(c => c.status === 401 || c.status === 403) ? 'PASS' : 'FAIL', summary(all));
+      return;
+    }
+    // ---- low-platform-balance run (request file: "balance_evidence": true; founder approval 18 Nov 2026 20:39, Option 1).
+    // What Stripe does with the pilot's application-fee refund when PlotArt's AVAILABLE EUR balance is below the amount.
+    // No payout is made and no permission is changed: the run proceeds only if the available EUR balance is ALREADY below
+    // the reimbursement (read-only check first; otherwise it stops before any write and reports what would be needed).
+    let BALRUN = false; try { BALRUN = JSON.parse(readFileSync(HERE + 'test/stripe-test-run.json', 'utf8')).balance_evidence === true; } catch { /* */ }
+    if (BALRUN) {
+      const R_EXPECTED = 806;   // the pilot's reimbursement on a €200 sale in runs 33–35 (Stripe's processing fee + VAT); the actual amount is checked at the request
+      const t = () => new Date().toISOString();
+      const pbal = async () => {   // PlotArt's own (platform) balance, harness key, read-only
+        const r = await stripe('GET', '/v1/balance');
+        const g = k => ((r.j && r.j[k]) || []).filter(x => x.currency === 'eur').reduce((a, x) => a + x.amount, 0);
+        return { http: r.status, error: r.j && r.j.error ? { code: r.j.error.code, message: String(r.j.error.message || '').slice(0, 200) } : null, eur_available: g('available'), eur_pending: g('pending'), read_at: t() };
+      };
+      const B0 = await pbal();
+      rec('E24-0', 'PlotArt’s platform EUR balance before anything is created (harness key, read-only)', 'stripe-test-api', B0.http === 200 ? 'INFO' : 'FAIL', B0);
+      if (B0.http !== 200) { rec('E24', 'low-balance reimbursement', SRC, 'SKIP', { blocked_by: 'the harness key cannot read PlotArt’s platform balance', needed: 'Balance: Read on the harness key (CHECKOUT_TEST_STRIPE_SECRET_KEY)', nothing_created: true }); return; }
+      if (B0.eur_available >= R_EXPECTED) {
+        rec('E24', 'low-balance reimbursement', SRC, 'INCONCLUSIVE', { precondition: `available EUR ${B0.eur_available} cents is not below the expected reimbursement (${R_EXPECTED} cents)`,
+          nothing_created: true, no_payout_made: true, needed_to_proceed: 'a payout from PlotArt’s test balance (the harness key has no payout permission): founder decision required before any change' });
+        return;
+      }
+      // the restoration path is proven BEFORE the test (a €1.00 test payment to PlotArt's own account, funds available at once):
+      // if it is refused, the test stops here and nothing needs restoring
+      const restorePay = async (cents, tag) => {
+        const r = await stripe('POST', '/v1/payment_intents', { amount: cents, currency: 'eur', payment_method: 'pm_card_bypassPending', confirm: 'true', allowed_payment_method_types: ['card'],
+          description: 'PlotArt pilot SANDBOX balance restoration (test card, no real money)', metadata: { plotart_purpose: 'sandbox_balance_restore', plotart_run: RUN } }, null, `plotart-balrestore-${RUN}-${tag}`);
+        return { http: r.status, id: r.j && r.j.id, status: r.j && r.j.status, amount: r.j && r.j.amount, error: r.j && r.j.error ? { code: r.j.error.code, message: String(r.j.error.message || '').slice(0, 200) } : null };
+      };
+      const probe = await restorePay(100, 'probe');
+      const B1 = await pbal();
+      rec('E24r0', 'restoration path checked before the test: a €1.00 sandbox payment to PlotArt’s own account with Stripe’s bypass-pending test card (funds available at once)', 'stripe-test-api',
+        probe.http === 200 && probe.status === 'succeeded' ? 'PASS' : 'FAIL', { payment: probe, balance_after: B1 });
+      if (!(probe.http === 200 && probe.status === 'succeeded')) { rec('E24', 'low-balance reimbursement', SRC, 'SKIP', { blocked_by: 'restoration path refused: the test was not started, nothing needs restoring', needed: 'PaymentIntents: Write on PlotArt’s own account for the harness key' }); return; }
+      if (B1.eur_available >= R_EXPECTED) { rec('E24', 'low-balance reimbursement', SRC, 'INCONCLUSIVE', { precondition: `available EUR ${B1.eur_available} cents after the €1.00 probe is not below ${R_EXPECTED} cents`, nothing_else_created: true }); }
+      else {
+        const CAP = { first: null, later: [] };
+        FEE_HOOK = {
+          before: async ctx => { const c = { request: { path: ctx.path.replace(/fee_[A-Za-z0-9]+/, 'fee_…'), idempotency_key: ctx.idem, body: ctx.body, key: ctx.key, sent_at: null } };
+            if (!CAP.first) { c.balance_before = await pbal(); CAP.first = c; } else CAP.later.push(c); c.request.sent_at = t(); return c; },
+          after: async (c, r) => { let body = null; try { body = r.body ? JSON.parse(r.body) : null; } catch { body = { unreadable: String(r.body).slice(0, 300) }; }
+            c.response = { received_at: t(), status: r.status ?? null, network_error: r.network_error || null, request_id: r.request_id || null, idempotent_replayed: r.idempotent_replayed || null,
+              body: body && (body.error ? { error: body.error } : { id: body.id, object: body.object, amount: body.amount, currency: body.currency, created: body.created, fee: body.fee, balance_transaction: body.balance_transaction, metadata: body.metadata }) };
+            if (c === CAP.first) c.balance_after = await pbal(); }
+        };
+        let order0 = null, finalP = null;
+        try {
+          const ov = await quote('wagal2', 'PA-E-261118-E2E024', 20000, 0);
+          let paid = false; try { await payInBrowser(ov.url, '4242424242424242', 'balance'); paid = true; } catch (e) { rec('E24a', 'buyer pays €200 on the real hosted Checkout page', SRC, 'FAIL', { error: String(e.message).split('\n')[0].slice(0, 300) }); }
+          order0 = paid ? await waitFor(async () => { const o = await order(ov.id); return o.payment_status === 'paid' ? o : null; }, 90_000) : null;
+          if (!order0) throw new Error(paid ? 'the signed completion did not arrive within 90 s' : 'payment failed');
+          await waitFor(async () => { if (!CAP.first || !CAP.first.response) await CW.scheduled({ cron: '*/15 * * * *' }).catch(() => {}); return CAP.first && CAP.first.response ? true : null; }, 120_000);
+          const F = CAP.first, O1 = await order(ov.id), P1 = O1.processing && JSON.parse(O1.processing);
+          const amount = F ? Number(new URLSearchParams(F.request.body).get('amount')) : null;
+          const precondition = F && F.balance_before && F.balance_before.eur_available < amount;
+          rec('E24a', 'immediately before the pilot’s reimbursement request: PlotArt’s available and pending EUR balance, the amount and the idempotency key (runtime key)', SRC,
+            !F ? 'FAIL' : precondition ? 'PASS' : 'INCONCLUSIVE', F ? { balance_before: F.balance_before, request: F.request, amount_cents: amount, precondition_available_below_amount: precondition, pilot_cost_cents: P1 && P1.cost } : { reason: 'the pilot made no application-fee refund request', pilot_processing: P1 });
+          if (!F) throw new Error('no request');
+          const R = F.response, ok = R.status === 200 && R.body && R.body.object === 'fee_refund', refused = R.status >= 400 && R.status < 500, unknown = !!R.network_error || R.status >= 500;
+          rec('E24b', 'Stripe’s exact response to the reimbursement request (status, Stripe request id, object or error)', SRC, ok || refused || unknown ? 'INFO' : 'INCONCLUSIVE', { response: R, balance_after: F.balance_after });
+          // platform debit and the artist's credit
+          const fee = O1.application_fee_id;
+          let outcome = unknown ? 'outcome_unknown' : refused ? 'refused_by_stripe' : 'unexplained', pbt = null, credit = null;
+          if (ok) {
+            const btId = typeof R.body.balance_transaction === 'string' ? R.body.balance_transaction : null;
+            pbt = btId ? (await stripe('GET', `/v1/balance_transactions/${btId}`)).j : null;
+            const dA = F.balance_after.eur_available - F.balance_before.eur_available, dP = F.balance_after.eur_pending - F.balance_before.eur_pending;
+            rec('E24c', 'PlotArt’s side: the platform balance transaction for the refund and the change in available / pending EUR across the request', SRC,
+              pbt && pbt.amount === -amount && dA + dP === -amount ? 'PASS' : 'INCONCLUSIVE',
+              { platform_balance_transaction: pbt && { id: pbt.id, type: pbt.type, amount: pbt.amount, net: pbt.net, status: pbt.status, created: pbt.created && new Date(pbt.created * 1000).toISOString(), available_on: pbt.available_on && new Date(pbt.available_on * 1000).toISOString(), reporting_category: pbt.reporting_category },
+                change_available: dA, change_pending: dP, debited_from: dA === -amount ? 'available (balance now ' + F.balance_after.eur_available + ')' : dP === -amount ? 'pending' : 'split or other movement: see figures' });
+            let match = [];
+            for (let i = 0; i < 12 && !match.length; i++) {
+              const L = (await stripe('GET', `/v1/balance_transactions?source=${encodeURIComponent(O1.charge_id)}&limit=100`, null, ACCOUNT)).j;
+              match = ((L && L.data) || []).filter(b => b.type !== 'charge' && b.type !== 'payment' && b.amount === amount && b.currency === 'eur');
+              if (!match.length) await sleep(5000);
+            }
+            credit = match.map(b => ({ id: b.id, type: b.type, amount: b.amount, status: b.status, created: new Date(b.created * 1000).toISOString(), seconds_after_fee_refund: R.body.created ? b.created - R.body.created : null, available_on: b.available_on && new Date(b.available_on * 1000).toISOString() }));
+            outcome = match.length !== 1 ? 'accepted_artist_credit_not_seen' : match[0].status === 'pending' ? 'accepted_artist_credit_pending_availability' : match[0].status === 'available' ? 'accepted_artist_credit_available' : 'accepted_artist_credit_' + match[0].status;
+            rec('E24d', 'the artist’s side: the matching credit on the artist’s Stripe balance (charge, amount, currency); a credit PENDING AVAILABILITY is distinguished from an outcome NOT KNOWN', SRC,
+              match.length === 1 ? 'PASS' : 'INCONCLUSIVE', { outcome, artist_credit: credit });
+          } else rec('E24c', 'PlotArt’s side after a refused or unknown request', SRC, 'INFO', { outcome, change_available: F.balance_after && F.balance_after.eur_available - F.balance_before.eur_available, change_pending: F.balance_after && F.balance_after.eur_pending - F.balance_before.eur_pending,
+            fee_refunds_at_stripe: (await feeRefundsOf(fee)).map(x => ({ id: x.id, amount: x.amount, created: new Date(x.created * 1000).toISOString() })) });
+          // retries: the same request replayed with the same idempotency key, the founder's Reconcile (twice) and a sweep
+          const viewDue = async () => { const v = (await call('GET', '/api/admin/checkout', FOUNDER)).j || {}; return [...(v.reimbursements || []), ...(v.reimbursements_recent || [])].find(r => r.order_id === ov.id) || null; };
+          const due0 = await viewDue();
+          const rp = await fetch('https://api.stripe.com/v1/application_fees/' + fee + '/refunds', { method: 'POST', headers: { Authorization: `Bearer ${RUNTIME || KEY}`, 'Stripe-Version': '2026-10-28.endive', 'Content-Type': 'application/x-www-form-urlencoded', 'Idempotency-Key': F.request.idempotency_key }, body: F.request.body });
+          const rpj = await rp.json().catch(() => ({}));
+          for (let i = 0; i < 2; i++) await call('POST', `/api/admin/checkout/orders/${ov.id}/processing`, FOUNDER, {});
+          await CW.scheduled({ cron: '*/15 * * * *' }).catch(() => {});
+          const frs = (await feeRefundsOf(fee)).filter(x => x.metadata && x.metadata.plotart_kind === 'processing_reimbursement');
+          const led = await q("SELECT COUNT(*) AS n, COALESCE(SUM(amount_cents),0) AS c FROM order_ledger WHERE order_id = ? AND kind = 'processing_reimbursement'", ov.id);
+          const due1 = await viewDue();
+          rec('E24e', 'retries cannot reimburse twice and the deadline is preserved: the same request replayed with the same idempotency key, two founder “Reconcile processing fee” actions and a sweep', SRC,
+            frs.length === (ok ? 1 : 0) && led[0].n === (ok ? 1 : 0) && (!ok || rpj.id === R.body.id) && due0 && due1 && due0.original_due === due1.original_due && due0.due_date === due1.due_date ? 'PASS' : 'FAIL',
+            { replay: { status: rp.status, idempotent_replayed: rp.headers.get('idempotent-replayed'), id: rpj.id || null, error: rpj.error ? { code: rpj.error.code, type: rpj.error.type, message: String(rpj.error.message || '').slice(0, 200) } : null },
+              later_pilot_requests: CAP.later.map(c => ({ idempotency_key: c.request.idempotency_key, status: c.response && c.response.status, idempotent_replayed: c.response && c.response.idempotent_replayed, id: c.response && c.response.body && c.response.body.id, error: c.response && c.response.body && c.response.body.error && c.response.body.error.code })),
+              fee_refunds_at_stripe: frs.map(x => x.id), pilot_ledger_reimbursements: led[0], due_before: due0 && { original_due: due0.original_due, due_date: due0.due_date }, due_after: due1 && { original_due: due1.original_due, due_date: due1.due_date } });
+          // §3.5: no bank payment can be recorded for an amount reimbursed (or being reimbursed) through Stripe
+          const sp = await call('POST', `/api/admin/checkout/orders/${ov.id}/shortfallpaid`, FOUNDER, { amount_cents: amount, reference: 'SANDBOX-E24-NOT-A-REAL-TRANSFER', executed_on: new Date().toISOString().slice(0, 10) });
+          const owedRows = await q("SELECT COUNT(*) AS n FROM checkout_owed WHERE order_id = ? AND kind = 'processing_shortfall'", ov.id);
+          rec('E24g', '§3.5: no bank-transfer amount exists for this reimbursement, so a bank payment cannot be recorded against it (a later Stripe credit cannot duplicate a §3.5 payment)', SRC,
+            sp.s === 409 && owedRows[0].n === 0 ? 'PASS' : 'FAIL', { record_bank_payment_http: sp.s, error: sp.j && sp.j.error, processing_shortfall_rows: owedRows[0].n });
+          // what the founder desk and the artist's statement show
+          const O2 = await order(ov.id); finalP = O2.processing && JSON.parse(O2.processing);
+          const art = (await call('GET', '/api/checkout', GAL)).j || {}, ao = (art.orders || []).find(x => x.id === ov.id) || {};
+          rec('E24f', 'what the founder desk and the artist’s statement show for the observed result', SRC, 'INFO',
+            { outcome, desk: due1 && { status: due1.status, status_label: due1.status_label, amount_label: due1.amount_label, due_label: due1.due_label, overdue: due1.overdue, completed_at: due1.completed_at },
+              order_flag: O2.needs_resolution || null, pilot_processing: finalP && { status: finalP.status, attempts: finalP.attempts || 0, last_error: finalP.last_error || null, fee_refund: finalP.fee_refund || null },
+              artist_statement: ao.statement || null });
+        } catch (e) { rec('E24', 'low-balance reimbursement', SRC, 'FAIL', { error: String(e.message).slice(0, 300), captured: CAP.first }); }
+        finally { FEE_HOOK = null; }
+      }
+      // restoration: PlotArt's available EUR is brought back to at least its level before the run; verified by re-reading
+      let Bend = await pbal(); const restores = [];
+      for (let i = 0; i < 2 && Bend.http === 200 && Bend.eur_available < B0.eur_available; i++) {
+        const short = B0.eur_available - Bend.eur_available, gross = Math.ceil((short + 25) / 0.94) + 50;
+        restores.push({ shortfall_cents: short, payment: await restorePay(gross, 'r' + i) });
+        await sleep(3000); Bend = await pbal();
+      }
+      rec('E24r', 'sandbox restored: PlotArt’s available EUR balance is at least what it was before the run (pending also reported), checked by re-reading after any restoration payment', 'stripe-test-api',
+        Bend.http === 200 && Bend.eur_available >= B0.eur_available ? 'PASS' : 'FAIL',
+        { before: B0, after: Bend, restoration_payments: restores, note: 'pending EUR rises by this run’s €30 application fee (Stripe makes it available on its own schedule); the €1.00 probe and any restoration payment are sandbox test-card payments to PlotArt’s own account' });
+      const all = CW_CALLS.filter(c => c.host === 'api.stripe.com');
+      rec('E17d', 'balance run: every Stripe API call made by the public checkout Worker used the runtime key', SRC,
+        !runtimeOk ? 'SKIP' : all.length && all.every(c => c.key === 'runtime') && !all.some(c => c.status === 401 || c.status === 403) ? 'PASS' : 'FAIL',
+        { calls: all.length, list: all.map(c => `${c.method} ${c.path}${c.connected ? ' [connected]' : ''} → ${c.status}${c.stripe_error ? ' ' + c.stripe_error.code : ''} (${c.key})`) });
       return;
     }
     // ---- pause run (request file: "pause_evidence": true): a Checkout Session opened BEFORE the founder pauses new quotes

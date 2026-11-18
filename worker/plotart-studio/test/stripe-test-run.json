@@ -1,14 +1,15 @@
 {
   "_note": "Changing this file on the pilot branch requests a run of .github/workflows/plotart-checkout-stripe-test.yml (Stripe TEST mode only; waits for the founder's approval on the checkout-test environment). Nothing is deployed.",
-  "requested": "2026-11-18T20:14:00Z",
+  "requested": "2026-11-18T21:20:00Z",
   "phases": [
-    "founder_email"
+    "e2e"
   ],
-  "reason": "Run 39: the one approved founder-only sandbox email test (one urgent alert plus one manual digest to CHECKOUT_TEST_FOUNDER_EMAIL, then sending switched off). Runs 37 and 38 sent nothing (M0). Founder confirmed at 20:13 that RESEND_API_KEY and CHECKOUT_TEST_FOUNDER_EMAIL are saved in the checkout-test environment.",
+  "reason": "Run 40 (founder approval 18 Nov 2026 20:39, Option 1): the pilot's application-fee refund when PlotArt's AVAILABLE EUR balance is below the reimbursement. Read-only check first: proceeds only if the available EUR balance is already below the expected EUR 8.06; otherwise stops before any write (no payout is made; the harness key has no payout permission). Restoration path proven first with a EUR 1.00 sandbox test-card payment to PlotArt's own account; afterwards the available EUR balance is restored to at least its starting level and re-read. E24-0..E24r. Runtime key unchanged (five permissions). Sandbox only.",
   "reuse_account": "acct_1UclJXHx1Olx8cdw",
   "unfunded_account": "acct_1Uct3vHx1OnYJa8H",
   "unfunded_link": false,
   "coverage_only": false,
   "reimbursement_evidence": false,
-  "pause_evidence": false
+  "pause_evidence": false,
+  "balance_evidence": true
 }

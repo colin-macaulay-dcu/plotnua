@@ -777,6 +777,11 @@ console.log('— seven-day reimbursement rule (PA-PAY §3.3(b), provisional) · 
   dA = (await desk()).reimbursements.find(x => x.order_id === A.id);
   check('SD6 SIMULATED day 8: still outstanding at the deadline → deadline alert to the founder, once; the desk marks it OVERDUE; still no extension (the fee was recorded in time) and no delay notice',
     dA.overdue && !dA.extended && !!dA.alerts.deadline && (await sink(A.id, 'reimbursement_deadline', 'founder')).length === 1 && !(await sink(A.id, 'reimbursement_delayed')).length, dA);
+  { // LB1 · while the Stripe reimbursement is failing (e.g. PlotArt's balance too low), no bank-transfer amount exists: the founder cannot record a §3.5 payment for it
+    const sp = await call('POST', `/api/admin/checkout/orders/${A.id}/shortfallpaid`, FOUNDER, { amount_cents: 2183, reference: 'SIMULATED-LB1-REF', executed_on: CO.dublinDate(Date.now()) });
+    check('LB1 SIMULATED failing reimbursement (low platform balance): no amount is owed by bank transfer, so a §3.5 bank payment cannot be recorded (409) and no owed item exists; the due date is still the original date (no extension)',
+      sp.s === 409 && /owes nothing outside Stripe/.test(sp.j && sp.j.error) && !(await q("SELECT 1 FROM checkout_owed WHERE order_id = ?", A.id)).length && dA.due_date === dA.original_due && !dA.extended, { sp: sp.j, s: sp.s, due: dA.due_date, original_due: dA.original_due });
+  }
   // SIMULATED lost answer: Stripe accepts the refund but the answer never arrives
   M.failFeeRefunds = 0; M.loseFeeRefundAnswer = true;
   r = await call('POST', `/api/admin/checkout/orders/${A.id}/processing`, FOUNDER, {});
@@ -787,6 +792,10 @@ console.log('— seven-day reimbursement rule (PA-PAY §3.3(b), provisional) · 
     r.s === 200 && afterLost === 1 && M.feeRefunds.filter(x => x.fee === A.fee).length === 1 && PA.status === 'reimbursed' && PA.reimbursed_cents === 2183 && PA.completed_late === true
     && (await q("SELECT * FROM order_ledger WHERE order_id = ? AND kind = 'processing_reimbursement'", A.id)).length === 1
     && (await q("SELECT * FROM order_events WHERE order_id = ? AND action = 'processing_reimbursement_adopted'", A.id)).length === 1 && !/Processing reimbursement failing/.test((await order(A.id)).needs_resolution || ''), { PA, nr: (await order(A.id)).needs_resolution });
+  check('LB2 SIMULATED late Stripe credit: once Stripe’s refund is recorded the artist is reimbursed exactly once through Stripe (EUR 21.83); nothing is owed or payable by bank transfer, so the late credit cannot duplicate a §3.5 payment',
+    (await q("SELECT COALESCE(SUM(amount_cents),0) AS c FROM order_ledger WHERE order_id = ? AND kind = 'processing_reimbursement'", A.id))[0].c === 2183
+    && !(await q("SELECT 1 FROM checkout_owed WHERE order_id = ?", A.id)).length && !(await q("SELECT 1 FROM order_ledger WHERE order_id = ? AND kind = 'processing_shortfall_paid'", A.id)).length
+    && (await call('POST', `/api/admin/checkout/orders/${A.id}/shortfallpaid`, FOUNDER, { amount_cents: 1, reference: 'SIMULATED-LB2-REF', executed_on: CO.dublinDate(Date.now()) })).s === 409);
   // B · Stripe has not recorded the fee by the original deadline (SIMULATED: payment 8 days ago, fee still pending)
   const B = await sdOrder('B', { chargeAgeDays: 10, btPending: true });   // SIMULATED: payment 10 days ago, original date passed 3 days ago
   await sweep();
