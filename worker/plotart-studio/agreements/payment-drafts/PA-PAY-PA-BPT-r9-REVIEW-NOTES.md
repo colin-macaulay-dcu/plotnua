@@ -30,3 +30,9 @@ Internal notes for founder and professional review; not customer-facing. r8 note
 
 ## §3.5 returned-transfer notice (18 November 2026)
 - One correction notice to the artist per returned transfer, naming the returned payment, the amount still owed and the unchanged due date. Test sink only.
+
+## Founder decision — monitoring, Option B (18 November 2026, 10:29; sandbox)
+- The founder reviews `/admin/checkout` every Monday and Thursday: founder alerts, processing reimbursements, amounts owed, flagged orders, pending refunds. For anything approaching its deadline the founder records the next action and a follow-up date (founder alerts panel) and follows it up when due, even before the next review.
+- Founder alerts panel added (sandbox; alerts recorded in the test inbox only, not emailed).
+- `CHECKOUT_PILOT_ENABLED` blocks founder refunds, commission returns after a lost dispute and checkout reconciliation, so it is not recommended for absences; a narrower "pause new quotes" control is proposed for decision. Details: `reports/plotart-monitoring-alerts-absence-2026-11-18.md`.
+- Same-day founder email alerts and a weekly bank reconciliation are proposed for separate approval before live use. Outbound email remains off.

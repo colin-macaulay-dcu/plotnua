@@ -365,9 +365,79 @@ export async function adminView(env) {
     unprocessed_events: await all(env, "SELECT event_id, type, status, attempts, detail, received_at FROM payment_events WHERE status IN ('deferred','failed','received') ORDER BY received_at LIMIT 50"),
     pending_refunds: await pendingRefunds(env), holds: await holdsView(env), refund_funding_steps: REFUND_FUNDING_STEPS,
     owed: await owedRows(env, 'w.settled_cents < w.cents'), owed_settled_recently: await owedRows(env, "w.settled_cents = w.cents AND w.arisen_at >= ?", plusDays(now(), -90)),
+    founder_alerts: await founderAlerts(env),
     reimbursements: await reimbursementsView(env, "(processing IS NULL OR json_extract(processing, '$.status') IN ('awaiting_fee','outstanding'))"),
     reimbursements_recent: await reimbursementsView(env, "json_extract(processing, '$.status') IN ('reimbursed','shortfall') AND updated_at >= ?", plusDays(now(), -30)),
     deadlines: deadlines(env), bank_details_process: BANK_DETAILS_PROCESS };
+}
+
+/* ---------------------------------------------------------------- founder alerts panel (sandbox decision, 18 Nov 2026)
+   Built from the existing alert records: the founder's copies in checkout_mail_sink. With outbound email off these are
+   recorded in the test inbox only and never emailed, and the panel says so. Each alert shows the CURRENT state of the
+   item behind it (amount outstanding, Irish due date, open or resolved), worked out afresh on every view: marking an alert
+   read changes only its read state, never the item. */
+const ALERT_REASON = {
+  reimbursement_day5: 'Processing reimbursement still outstanding on day 5', reimbursement_deadline: 'Processing reimbursement overdue',
+  reimbursement_extended_deadline: 'Processing reimbursement overdue (extended date)', reimbursement_extended: 'Stripe had not recorded the fee by the original date: extension applied',
+  reimbursement_fee_time_unknown: 'For review: Stripe gave no time for recording the fee', owed_due_soon: 'Amount owed to the artist due within 7 days',
+  owed_overdue: 'Amount owed to the artist is overdue', owed_start_for_review: 'For review: start date of an amount owed rests on the pilot’s own record',
+  refund_pending: 'Buyer refund waiting for the artist’s Stripe balance', refund_pending_overdue: 'Buyer refund still unfunded after 7 days',
+  refund_pending_urgent: 'Buyer refund still unfunded after 30 days (Stripe cancels at 45)', refund_failed: 'Buyer refund failed at Stripe',
+};
+async function alertItem(env, o, kind) {
+  if (!o) return { state: 'resolved', amount_cents: null, amount_label: '—', due_date: null, due_label: '—', note: 'order no longer held' };
+  if (kind.startsWith('reimbursement_')) {
+    const r = (await reimbursementsView(env, 'id = ?', o.id))[0];
+    const open = r && ['awaiting_fee', 'outstanding'].includes(r.status);
+    return { state: open ? 'open' : 'resolved', amount_cents: open ? r.amount_cents : 0, amount_label: open ? r.amount_label : 'Nothing outstanding: reimbursed',
+      due_date: r ? r.due_date : null, due_label: r ? r.due_label : '—' };
+  }
+  if (kind.startsWith('owed_')) {
+    const rows = await all(env, "SELECT * FROM checkout_owed WHERE order_id = ? AND settled_cents < cents ORDER BY due_at", o.id);
+    const out = rows.reduce((a, w) => a + w.cents - w.settled_cents, 0), w = rows[0];
+    const due = w ? (w.due_basis_date ? dublinDate(Date.parse(w.due_at) - 1) : w.due_at.slice(0, 10)) : null;
+    return { state: out > 0 ? 'open' : 'resolved', amount_cents: out, amount_label: out > 0 ? `${eur(out)} still owed to the artist` : 'Nothing outstanding: paid',
+      due_date: due, due_label: due ? `by the end of ${longDate(due)} (Irish time)${Date.parse(w.due_at) <= Date.now() ? ' · OVERDUE' : ''}` : '—' };
+  }
+  if (kind.startsWith('refund_pending')) {
+    const p = (await pendingRefunds(env)).filter(x => x.order_id === o.id), amt = p.reduce((a, x) => a + x.amount_cents, 0);
+    return { state: p.length ? 'open' : 'resolved', amount_cents: amt, amount_label: p.length ? `${eur(amt)} refund still pending at Stripe` : 'Nothing pending: the refund completed or failed',
+      due_date: p[0] ? p[0].stripe_fails_it_by : null, due_label: p[0] ? `Stripe cancels it on ${longDate(p[0].stripe_fails_it_by)}` : '—' };
+  }
+  const open = !!o.needs_resolution;
+  return { state: open ? 'open' : 'resolved', amount_cents: null, amount_label: '—', due_date: null, due_label: '—', note: open ? o.needs_resolution : null };
+}
+export async function founderAlerts(env) {
+  const rows = await all(env, `SELECT s.id, s.at, s.order_id, s.kind, s.subject, s.body, r.read_at, r.read_by, r.next_action, r.follow_up_on FROM checkout_mail_sink s
+    LEFT JOIN checkout_founder_alert_reads r ON r.alert_id = s.id WHERE s.to_role = 'founder' ORDER BY s.id DESC LIMIT 200`);
+  const today = dublinDate(Date.now()), items = [];
+  for (const a of rows) {
+    const o = a.order_id ? await getOrder(env, a.order_id) : null, it = await alertItem(env, o, a.kind);
+    items.push({ id: a.id, recorded_at: a.at, recorded_irish: `${longDate(dublinDate(a.at))}, ${new Date(a.at).toLocaleTimeString('en-IE', { timeZone: 'Europe/Dublin', hour: '2-digit', minute: '2-digit' })}`,
+      kind: a.kind, reason: ALERT_REASON[a.kind] || a.subject, detail: a.body.split('\n').find(x => x.trim()) || '',
+      order_id: a.order_id, reference: o ? o.reference : null, link: a.order_id ? `/admin/checkout#order-${a.order_id}` : null, ...it,
+      delivery: 'Sandbox: recorded in the test inbox only. Not emailed to you (outbound email is off).',
+      read: !!a.read_at, read_at: a.read_at, read_by: a.read_by, next_action: a.next_action, follow_up_on: a.follow_up_on,
+      follow_up_due: !!a.follow_up_on && a.follow_up_on <= today && it.state === 'open' });
+  }
+  return { unread: items.filter(x => !x.read).length, open: items.filter(x => x.state === 'open').length, follow_ups_due: items.filter(x => x.follow_up_due).length,
+    note: 'Sandbox: these alerts were recorded in the test inbox only and were not emailed to you. Review them at the Monday and Thursday checks. Marking an alert read does not resolve the item behind it.', items };
+}
+export async function setFounderAlert(env, founder, id, b) {
+  await requireInstalled(env);
+  const a = await one(env, "SELECT id, order_id FROM checkout_mail_sink WHERE id = ? AND to_role = 'founder'", Number(id));
+  if (!a) throw new Bad('Not found', 404);
+  const cur = await one(env, 'SELECT * FROM checkout_founder_alert_reads WHERE alert_id = ?', a.id) || {};
+  const read = b && 'read' in b ? !!b.read : !!cur.read_at;
+  let next = b && 'next_action' in b ? String(b.next_action || '').trim() || null : cur.next_action || null;
+  let fu = b && 'follow_up_on' in b ? String(b.follow_up_on || '').trim() || null : cur.follow_up_on || null;
+  if (next && (next.length > 300 || looksLikeBankDetails(next))) throw new Bad('Next action: up to 300 characters, and never bank details', 400);
+  if (fu && (!/^\d{4}-\d{2}-\d{2}$/.test(fu) || dublinDate(Date.parse(fu + 'T12:00:00Z')) !== fu)) throw new Bad('Follow-up date: YYYY-MM-DD', 400);
+  const t = now();
+  await run(env, `INSERT INTO checkout_founder_alert_reads (alert_id, order_id, read_at, read_by, next_action, follow_up_on, updated_at) VALUES (?,?,?,?,?,?,?)
+    ON CONFLICT(alert_id) DO UPDATE SET read_at = excluded.read_at, read_by = excluded.read_by, next_action = excluded.next_action, follow_up_on = excluded.follow_up_on, updated_at = excluded.updated_at`,
+    a.id, a.order_id, read ? (cur.read_at || t) : null, read ? (cur.read_by || founder) : null, next, fu, t);
+  return founderAlerts(env);
 }
 
 /* Founder desk: processing reimbursements (status, amount when known, due date, alerts, failures, evidence basis). */
@@ -2012,7 +2082,7 @@ export async function retention(env, at = now()) {
         OR EXISTS (SELECT 1 FROM checkout_owed w WHERE w.order_id = c.id AND w.settled_cents < w.cents)
         OR EXISTS (SELECT 1 FROM order_refunds r WHERE r.order_id = c.id AND r.status = 'pending'))`, o.id)) { held++; continue; }
     await env.DB.batch(['order_events', 'order_fulfilment_events', 'order_refunds', 'order_ledger', 'checkout_sessions', 'artwork_reservations', 'artwork_sales', 'payment_events', 'checkout_hold_events', 'checkout_holds',
-      'quote_snapshots', 'order_message_deliveries', 'order_messages', 'checkout_mail_sink', 'checkout_owed_payment_returns', 'checkout_owed_payments', 'checkout_owed']
+      'quote_snapshots', 'order_message_deliveries', 'order_messages', 'checkout_founder_alert_reads', 'checkout_mail_sink', 'checkout_owed_payment_returns', 'checkout_owed_payments', 'checkout_owed']
       .map(t => st(env, `DELETE FROM ${t} WHERE order_id = ?`, o.id)).concat([st(env, 'DELETE FROM checkout_orders WHERE id = ?', o.id)]));
     purged++;
   }

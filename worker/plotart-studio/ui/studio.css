@@ -326,3 +326,10 @@ body.st{ background:var(--anth); min-height:100vh; }
 /* Opportunities shown publicly (migration 0015, 16 Nov 2026) */
 .st-opp-confirm h3{ margin:0 0 8px; }
 .st-opp-chosen{ margin:0; font-size:14.5px; line-height:1.6; color:var(--ivory); }
+/* payment pilot · founder alerts panel (sandbox, 18 Nov 2026) */
+.st-badge{ display:inline-block; font:600 13px/1 var(--sans, inherit); background:#C9A86A; color:#1B1C1E; border-radius:999px; padding:5px 10px; vertical-align:middle; }
+.st-table tr.st-unread td{ background:rgba(201,168,106,.07); }
+.st-table tr.st-warn td:first-child{ box-shadow:inset 3px 0 0 #D98C6B; }
+.st-warn{ color:#E6B39E; }
+#founder-alerts input{ min-height:32px; border-radius:8px; border:1px solid rgba(242,235,224,.16); background:#232427; color:var(--ivory); padding:0 8px; font:inherit; font-size:13px; max-width:180px; }
+#founder-alerts button{ font-size:13px; }

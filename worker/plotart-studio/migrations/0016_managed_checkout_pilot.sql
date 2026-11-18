@@ -422,6 +422,17 @@ CREATE TABLE IF NOT EXISTS checkout_owed_payments (
 CREATE TRIGGER IF NOT EXISTS checkout_owed_payments_no_update BEFORE UPDATE ON checkout_owed_payments
 BEGIN SELECT RAISE(ABORT, 'checkout_owed_payments is append-only'); END;
 -- A bank transfer that came back: the outstanding amount is restored; the payment itself stays in the history.
+-- Founder alerts panel (18 Nov 2026): read state and the founder's next action for each founder alert in checkout_mail_sink.
+-- Reading an alert never changes the underlying item: amounts stay outstanding until the issue itself is resolved.
+CREATE TABLE IF NOT EXISTS checkout_founder_alert_reads (
+  alert_id     INTEGER PRIMARY KEY REFERENCES checkout_mail_sink(id),
+  order_id     TEXT,
+  read_at      TEXT,
+  read_by      TEXT,
+  next_action  TEXT CHECK (next_action IS NULL OR length(next_action) <= 300),
+  follow_up_on TEXT CHECK (follow_up_on IS NULL OR follow_up_on GLOB '[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]'),
+  updated_at   TEXT NOT NULL
+);
 CREATE TABLE IF NOT EXISTS checkout_owed_payment_returns (
   id          TEXT PRIMARY KEY,
   payment_id  TEXT NOT NULL UNIQUE REFERENCES checkout_owed_payments(id),
@@ -437,6 +448,7 @@ CREATE TRIGGER IF NOT EXISTS checkout_owed_payment_returns_no_update BEFORE UPDA
 BEGIN SELECT RAISE(ABORT, 'checkout_owed_payment_returns is append-only'); END;
 
 -- Rollback (only before any pilot data exists):
+-- DROP TABLE IF EXISTS checkout_founder_alert_reads;
 -- DROP TABLE IF EXISTS checkout_owed_payment_returns;
 -- DROP TABLE IF EXISTS checkout_owed_payments;
 -- DROP TABLE IF EXISTS checkout_owed;

@@ -936,6 +936,41 @@ console.log('— seven-day reimbursement rule (PA-PAY §3.3(b), provisional) · 
       pk.s === 200 && rk.s === 200 && corrK.length === 1 && /PlotArt still owes you EUR 6\.83 on this order\. The date it is due is unchanged: the end of Sunday 15 November 2026 \(Irish time\), so it is now overdue\./.test(corrK[0].body) && !/name does not match|reason/i.test(corrK[0].body) && (await q("SELECT reason FROM checkout_owed_payment_returns WHERE order_id = ?", K.id))[0].reason === 'SIMULATED: name does not match account'
       && (await q("SELECT 1 FROM checkout_mail_sink WHERE order_id = ? AND kind = 'owed_overdue_artist'", K.id)).length === 1 && wK2.due_at === wK.due_at, { corrK, pk: pk.j && pk.j.error, rk: rk.j && rk.j.error });
     writeFileSync('/tmp/plotart-sd-returned-late.txt', corrK[0] ? corrK[0].body : '');
+    // ---- founder alerts panel (sandbox, 18 Nov 2026)
+    { const A = async () => (await call('GET', '/api/admin/checkout', FOUNDER)).j.founder_alerts;
+      const sinkBefore = (await q("SELECT COUNT(*) AS c FROM checkout_mail_sink WHERE to_role = 'founder'"))[0].c;
+      const a1 = await A(), a2 = await A();
+      await sweep(); await sweep();
+      const a3 = await A(), sinkAfter = (await q("SELECT COUNT(*) AS c FROM checkout_mail_sink WHERE to_role = 'founder'"))[0].c;
+      const kOver = a3.items.find(x => x.order_id === K.id && x.kind === 'owed_overdue');
+      check('AP1 the founder alerts panel lists the founder’s alert records with an unread count; each shows the reason, the amount outstanding NOW, the Irish due date, a link to the order and that it was recorded in the sandbox test inbox only (not emailed)',
+        a1.unread > 0 && a1.unread === a1.items.filter(x => !x.read).length && !!kOver && kOver.state === 'open' && kOver.amount_label === 'EUR 6.83 still owed to the artist'
+        && /by the end of Sunday 15 November 2026 \(Irish time\) · OVERDUE/.test(kOver.due_label) && kOver.link === `/admin/checkout#order-${K.id}` && kOver.reference === 'PA-O-261118-SD000K'
+        && a1.items.every(x => /recorded in the test inbox only\. Not emailed to you \(outbound email is off\)/.test(x.delivery)) && /were not emailed to you/.test(a1.note), { kOver, unread: a1.unread });
+      check('AP2 repeated checks: viewing the panel twice and running two more sweeps creates no new alert and leaves the counts unchanged',
+        JSON.stringify(a1.items.map(x => [x.id, x.read, x.state])) === JSON.stringify(a2.items.map(x => [x.id, x.read, x.state])) && sinkAfter === sinkBefore && a3.unread === a1.unread && a3.items.length === a1.items.length, { sinkBefore, sinkAfter });
+      const rd = await call('POST', `/api/admin/checkout/alerts/${kOver.id}`, FOUNDER, { read: true, next_action: 'Phone the artist to confirm the account name; resend €6.83', follow_up_on: TODAY_IE });
+      const a4 = rd.j.founder_alerts, k4 = a4.items.find(x => x.id === kOver.id);
+      const bad = await call('POST', `/api/admin/checkout/alerts/${kOver.id}`, FOUNDER, { next_action: 'IBAN IE29AIBK93115212345678' });
+      const artist = await call('POST', `/api/admin/checkout/alerts/${kOver.id}`, GAL, { read: true });
+      check('AP3 marking an alert read lowers the unread count by one but leaves the item open with EUR 6.83 still outstanding; the next action and follow-up date are recorded and the follow-up shows as due; bank details are refused; an artist cannot use the panel',
+        rd.s === 200 && a4.unread === a3.unread - 1 && k4.read && k4.state === 'open' && k4.amount_label === 'EUR 6.83 still owed to the artist' && k4.next_action.startsWith('Phone the artist') && k4.follow_up_on === TODAY_IE && k4.follow_up_due
+        && (await q("SELECT cents - settled_cents AS o FROM checkout_owed WHERE id = ?", wK.id))[0].o === 683 && bad.s === 400 && artist.s >= 400, { k4, bad: bad.j, artist: artist.s });
+      writeFileSync('/tmp/plotart-alerts-open.json', JSON.stringify(k4, null, 1));
+      globalThis.SCREEN_ORDER = K.id;
+      if (process.env.SCREENSHOT) { try {
+        const { createRequire } = await import('node:module'); const pw = createRequire('/tmp/claude-0/studio-tools/package.json')('playwright');
+        const br = await pw.chromium.launch({ executablePath: '/usr/bin/google-chrome' }), pg = await br.newPage({ viewport: { width: 1500, height: 1100 }, locale: 'en-IE', timezoneId: 'Europe/Dublin' });
+        await pg.setExtraHTTPHeaders({ 'Cf-Access-Jwt-Assertion': token(FOUNDER) });
+        await pg.goto(S.url + '/admin/checkout', { waitUntil: 'load' }); await pg.waitForSelector('#founder-alerts table', { timeout: 20000 }); await pg.addStyleTag({ content: '.st-top{position:static !important}' });
+        await (await pg.$('#founder-alerts')).screenshot({ path: '/tmp/founder-alerts-panel.png' }); await br.close();
+      } catch (e) { console.log('  (screenshot not taken: ' + String(e.message).split('\n')[0] + ')'); } }
+      const pay = await call('POST', `/api/admin/checkout/orders/${K.id}/shortfallpaid`, FOUNDER, { amount_cents: 683, reference: 'SIM-TRF-K002', executed_on: TODAY_IE });
+      const a5 = await A(), k5 = a5.items.find(x => x.id === kOver.id);
+      const un = await call('POST', `/api/admin/checkout/alerts/${kOver.id}`, FOUNDER, { read: false });
+      check('AP4 once the underlying amount is paid the same alert shows Resolved and nothing outstanding, keeps its read state and next action, and the follow-up is no longer due; it can be marked unread again',
+        pay.s === 200 && k5.state === 'resolved' && k5.amount_label === 'Nothing outstanding: paid' && k5.read && k5.next_action.startsWith('Phone the artist') && !k5.follow_up_due && a5.open < a4.open
+        && un.s === 200 && un.j.founder_alerts.items.find(x => x.id === kOver.id).read === false, { k5 }); }
     writeFileSync('/tmp/plotart-sd-dst.json', JSON.stringify({ owed: wK, desk: deskK, founder_overdue: founderK[0] && founderK[0].body, artist_overdue: artistK[0] && artistK[0].body, flag: OK2.needs_resolution, spring }, null, 2)); }
   // H · clock start: Stripe's charge and its success event fall on different Irish dates (SIMULATED times, real webhook path)
   { const work = (await q("SELECT id FROM artworks WHERE artist_id = 'agal' AND availability = 'available' AND id NOT IN (SELECT artwork_id FROM artwork_sales) AND id NOT IN (SELECT artwork_id FROM artwork_reservations) ORDER BY id DESC LIMIT 1"))[0];

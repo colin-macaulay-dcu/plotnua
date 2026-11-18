@@ -43,7 +43,7 @@
   }
   function orderCard(o) {
     const d = o.delivery;
-    let h = `<section class="st-card" data-id="${esc(o.id)}"><h3>${esc(o.reference)} · ${esc(o.artwork && o.artwork.title)} <small class="st-muted">${esc(o.status.replace(/_/g, ' '))}</small></h3>
+    let h = `<section class="st-card" id="order-${esc(o.id)}" data-id="${esc(o.id)}"><h3>${esc(o.reference)} · ${esc(o.artwork && o.artwork.title)} <small class="st-muted">${esc(o.status.replace(/_/g, ' '))}</small></h3>
       <p>Artwork ${eur(o.artwork_cents)} · delivery ${eur(o.delivery_cents)} · total ${eur(o.total_cents)} · PlotArt commission ${o.commission_bp == null ? '—' : (o.commission_bp / 100).toFixed(2) + '% = ' + eur(o.commission_cents)}
       ${o.commission_basis ? `<br><small class="st-muted">Basis: ${esc(o.commission_basis.replace(/_/g, ' '))}. ${esc(o.processing_fees)}</small>` : ''}</p>
       ${o.needs_resolution ? `<p class="st-warn"><strong>Needs resolution:</strong> ${esc(o.needs_resolution)}</p>` : ''}
@@ -90,6 +90,21 @@
     const sw = j.switches;
     h += `<p class="st-muted">Pilot ${sw.enabled ? 'switched ON (test mode)' : 'switched OFF'}${founder && sw.key_problem ? ' · ' + esc(sw.key_problem) : ''}. No live payment can be taken.</p>`;
     if (founder) {
+      const fa = j.founder_alerts || { items: [], unread: 0, open: 0, follow_ups_due: 0, note: '' };
+      h += `<section id="founder-alerts" class="st-card"><h2>Founder alerts <span class="st-badge">${fa.unread} unread</span> <small class="st-muted">${fa.open} open · ${fa.follow_ups_due} follow-up${fa.follow_ups_due === 1 ? '' : 's'} due</small></h2>
+        <p class="st-muted">${esc(fa.note)}</p>`;
+      const short = t => t.length > 180 ? t.slice(0, 177) + '…' : t;
+      const rowA = x => `<tr data-alert="${x.id}" class="${x.read ? '' : 'st-unread'} ${x.follow_up_due || (x.state === 'open' && /OVERDUE/.test(x.due_label)) ? 'st-warn' : ''}">
+          <td>${x.read ? 'Read' : '<strong>Unread</strong>'}<br><small>${x.state === 'open' ? 'Open' : 'Resolved'}</small></td><td><small>${esc(x.recorded_irish)}<br>${esc(x.delivery)}</small></td>
+          <td>${esc(x.reason)}<br><small class="st-muted" title="${esc(x.detail)}">${esc(short(x.detail))}</small></td><td>${x.link ? `<a href="${esc(x.link)}">${esc(x.reference || x.order_id)}</a>` : '—'}</td>
+          <td>${esc(x.amount_label)}</td><td>${esc(x.due_label)}</td>
+          <td><input data-next="${x.id}" maxlength="300" placeholder="Next action" value="${esc(x.next_action || '')}"> <input data-fu="${x.id}" type="date" value="${esc(x.follow_up_on || '')}">${x.follow_up_due ? '<br><strong>Follow-up due</strong>' : ''}</td>
+          <td><button data-alert-save="${x.id}">Save</button> <button data-alert-read="${x.id}" data-v="${x.read ? '0' : '1'}">${x.read ? 'Mark unread' : 'Mark read'}</button></td></tr>`;
+      const head = '<tr><th></th><th>Recorded</th><th>Reason</th><th>Order</th><th>Outstanding now</th><th>Due (Irish date)</th><th>Next action</th><th></th></tr>';
+      const openA = fa.items.filter(x => x.state === 'open').sort((p, q) => (q.follow_up_due - p.follow_up_due) || (p.read - q.read)), doneA = fa.items.filter(x => x.state !== 'open');
+      h += openA.length ? `<table class="st-table">${head}${openA.map(rowA).join('')}</table>` : '<p class="st-muted">Nothing open.</p>';
+      if (doneA.length) h += `<details><summary>Resolved items (${doneA.length}${doneA.some(x => !x.read) ? `, ${doneA.filter(x => !x.read).length} unread` : ''})</summary><table class="st-table">${head}${doneA.map(rowA).join('')}</table></details>`;
+      h += `</section>`;
       h += `<p>Addendum: ${esc(j.addendum || 'not issued')} · Buyer terms: ${esc(j.buyer_terms || 'not issued')}</p><h2>Artists who opted in</h2>`;
       h += j.artists.length ? `<ul>${j.artists.map(a => `<li>${esc(a.display_name)} — ${a.membership.opted_in ? 'opted in' : 'left'} · Stripe ${a.membership.account ? (a.membership.ready ? 'ready' : 'onboarding incomplete') : 'not connected'}
         ${a.membership.account ? `<button data-refresh="${esc(a.id)}">Refresh</button>` : ''}</li>`).join('')}</ul>` : '<p class="st-muted">Nobody yet. Artists opt in themselves at /checkout-pilot.</p>';
@@ -141,6 +156,9 @@
     on('form[data-f="edit"]', 'submit', async e => { const f = new FormData(e.target);
       await api('PUT', `${base}/orders/${idOf(e.target)}`, { artwork_cents: Number(f.get('artwork_cents')), delivery_cents: Number(f.get('delivery_cents')), delivery: JSON.parse(f.get('delivery')), exclusion: f.get('exclusion') || null });
       say('Saved as a new quote version'); load(); });
+    on('button[data-alert-read]', 'click', async e => { await api('POST', `${base}/alerts/${e.target.dataset.alertRead}`, { read: e.target.dataset.v === '1' }); load(); });
+    on('button[data-alert-save]', 'click', async e => { const id = e.target.dataset.alertSave;
+      await api('POST', `${base}/alerts/${id}`, { next_action: app.querySelector(`[data-next="${id}"]`).value, follow_up_on: app.querySelector(`[data-fu="${id}"]`).value }); say('Next action saved'); load(); });
     on('button[data-a]', 'click', async e => {
       const id = idOf(e.target), a = e.target.dataset.a;
       if (a === 'issue') { const r = await api('POST', `${base}/orders/${id}/issue`, { days: Number(prompt('Quote valid for how many days (1–7)?', '3')),
