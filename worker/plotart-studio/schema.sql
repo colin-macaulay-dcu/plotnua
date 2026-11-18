@@ -1092,6 +1092,17 @@ CREATE TABLE IF NOT EXISTS checkout_owed_payments (
 CREATE TRIGGER IF NOT EXISTS checkout_owed_payments_no_update BEFORE UPDATE ON checkout_owed_payments
 BEGIN SELECT RAISE(ABORT, 'checkout_owed_payments is append-only'); END;
 -- A bank transfer that came back: the outstanding amount is restored; the payment itself stays in the history.
+-- Founder pause (18 Nov 2026): "Pause new quotes and payments" for absences. Append-only; the latest row is the current state.
+CREATE TABLE IF NOT EXISTS checkout_pause_events (
+  id          INTEGER PRIMARY KEY AUTOINCREMENT,
+  paused      INTEGER NOT NULL CHECK (paused IN (0,1)),
+  return_on   TEXT CHECK (return_on IS NULL OR return_on GLOB '[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]'),
+  note        TEXT CHECK (note IS NULL OR length(note) <= 300),
+  by          TEXT NOT NULL,
+  at          TEXT NOT NULL
+);
+CREATE TRIGGER IF NOT EXISTS checkout_pause_events_no_update BEFORE UPDATE ON checkout_pause_events
+BEGIN SELECT RAISE(ABORT, 'checkout_pause_events is append-only'); END;
 -- Founder alerts panel (18 Nov 2026): read state and the founder's next action for each founder alert in checkout_mail_sink.
 -- Reading an alert never changes the underlying item: amounts stay outstanding until the issue itself is resolved.
 CREATE TABLE IF NOT EXISTS checkout_founder_alert_reads (

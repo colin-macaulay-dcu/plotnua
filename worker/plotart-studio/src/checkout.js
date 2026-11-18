@@ -163,6 +163,60 @@ function requireOn(env) {
   if (!s.test_key) throw new Bad(`The payment pilot is not configured: ${s.key_problem}`, 503);
   if (!env.CHECKOUT_ORIGIN) throw new Bad('The payment pilot is not configured: CHECKOUT_ORIGIN', 503);
 }
+/* ---------------------------------------------------------------- founder pause: "Pause new quotes and payments" (18 Nov 2026)
+   For absences. While paused the server refuses exactly three things: creating a new managed-checkout order, issuing a
+   quote, and opening a Stripe Checkout Session from an unpaid quote (including an existing buyer link). Nothing else
+   stops: signed Stripe events, the sweep (reimbursements, reminders, alerts, pending refunds), refunds, commission
+   returns, reconciliation, bank-transfer records and corrections all continue, and every deadline keeps running. Quote
+   expiry dates are not changed. A Checkout Session opened before the pause can still be completed at Stripe and is
+   recorded from its signed event. */
+export const PAUSE_LABEL = 'Pause new quotes and payments';
+export const PAUSE_NOTE = 'While paused, PlotArt refuses new managed-checkout orders, issuing quotes, and starting payment from an unpaid quote, including existing buyer links. A Stripe payment page that a buyer already has open may still complete (for up to about 30 minutes) and is recorded as normal. Existing deadlines continue: reimbursements, amounts owed to artists, refunds and disputes stay due on their dates. Quote expiry dates do not change.';
+export const BUYER_PAUSED = 'Payments are temporarily paused. Your quote stays valid until the expiry time shown above; you can pay once payments resume. Questions: hello@plotnua.ie.';
+export async function pauseState(env) {
+  let r = null; try { r = await one(env, 'SELECT * FROM checkout_pause_events ORDER BY id DESC LIMIT 1'); } catch { /* not installed */ }
+  return { paused: !!(r && r.paused), since: r && r.paused ? r.at : null, by: r ? r.by : null, return_on: r && r.paused ? r.return_on : null, note: r && r.paused ? r.note : null, label: PAUSE_LABEL, explanation: PAUSE_NOTE };
+}
+async function requireNotPaused(env, who = 'founder') {
+  if ((await pauseState(env)).paused) throw new Bad(who === 'buyer' ? BUYER_PAUSED : 'New quotes and payments are paused (founder absence). Resume them on the checkout desk first.', 409);
+}
+export async function setPause(env, founder, b) {
+  await requireInstalled(env);
+  const paused = !!(b && b.paused), ret = String((b && b.return_on) || '').trim() || null, note = String((b && b.note) || '').trim() || null;
+  if (paused && (!ret || !/^\d{4}-\d{2}-\d{2}$/.test(ret) || ret < dublinDate(Date.now()))) throw new Bad('Give the date you expect to be back (YYYY-MM-DD, not in the past)', 400);
+  if (note && (note.length > 300 || looksLikeBankDetails(note))) throw new Bad('Note: up to 300 characters, never bank details', 400);
+  const cur = await pauseState(env);
+  if (cur.paused === paused && (!paused || cur.return_on === ret)) return { pause: cur, absence: await absenceChecklist(env) };
+  await run(env, 'INSERT INTO checkout_pause_events (paused, return_on, note, by, at) VALUES (?,?,?,?,?)', paused ? 1 : 0, paused ? ret : null, paused ? note : null, founder, now());
+  return { pause: await pauseState(env), absence: await absenceChecklist(env) };
+}
+/* Before leaving: what is open and what falls due before the return date (plus two working days), each with the manual
+   action it needs while the founder is unavailable: pay it now, set a follow-up, or arrange agreed cover. */
+export async function absenceChecklist(env, returnOn = null) {
+  const st = await pauseState(env), back = returnOn || st.return_on || addDate(dublinDate(Date.now()), 3), horizon = workingDaysAfter(back, 2), t = now();
+  const sessions = await all(env, `SELECT s.id, s.order_id, s.expires_at, o.reference FROM checkout_sessions s JOIN checkout_orders o ON o.id = s.order_id WHERE s.status = 'open' AND s.expires_at > ? ORDER BY s.expires_at`, t);
+  const quotes = await all(env, `SELECT id, reference, quote_expires_at FROM checkout_orders WHERE status IN ('quoted','checkout_open','payment_failed') AND quote_expires_at > ? ORDER BY quote_expires_at`, t);
+  const items = [];
+  for (const r of await reimbursementsView(env, "(processing IS NULL OR json_extract(processing, '$.status') IN ('awaiting_fee','outstanding'))"))
+    if (!r.due_date || r.due_date <= horizon) items.push({ order_id: r.order_id, reference: r.reference, what: `Processing reimbursement: ${r.status_label}`, amount: r.amount_label, due: r.due_date, due_label: r.due_label,
+      action: r.status === 'outstanding' ? 'Follow up before you leave: reconcile it, or arrange agreed cover' : 'Automatic once Stripe records the fee; set a follow-up or arrange agreed cover if it falls due while you are away' });
+  for (const w of await all(env, 'SELECT w.*, o.reference FROM checkout_owed w JOIN checkout_orders o ON o.id = w.order_id WHERE w.settled_cents < w.cents ORDER BY w.due_at')) {
+    const due = w.due_basis_date ? dublinDate(Date.parse(w.due_at) - 1) : w.due_at.slice(0, 10);
+    if (due <= horizon) items.push({ order_id: w.order_id, reference: w.reference, what: w.kind === 'lost_dispute_commission' ? 'Commission to return after a lost dispute' : 'Amount owed to the artist by bank transfer',
+      amount: eur(w.cents - w.settled_cents), due, due_label: `by the end of ${longDate(due)} (Irish time)`, action: w.kind === 'lost_dispute_commission' ? 'Pay before you leave: Return commission' : 'Pay before you leave (bank transfer), or arrange agreed cover' });
+  }
+  for (const p of await pendingRefunds(env)) items.push({ order_id: p.order_id, reference: p.reference, what: 'Buyer refund waiting for the artist’s Stripe balance', amount: eur(p.amount_cents),
+    due: p.stripe_fails_it_by, due_label: `Stripe cancels it on ${longDate(p.stripe_fails_it_by)}`, action: 'Follow up with the artist before you leave; set a follow-up date' });
+  for (const o of await all(env, "SELECT id, reference, needs_resolution FROM checkout_orders WHERE needs_resolution IS NOT NULL ORDER BY updated_at")) {
+    // the "PlotArt owes the artist" part of a flag is covered above by its own due date; only the rest needs action now
+    const rest = o.needs_resolution.split(' | ').filter(x => x && !x.startsWith('PlotArt owes the artist') && !x.startsWith('Processing reimbursement failing')).join(' | ');
+    if (rest && !items.some(i => i.order_id === o.id)) items.push({ order_id: o.id, reference: o.reference, what: 'Flagged order', amount: '—', due: null, due_label: '—', note: rest.slice(0, 200), action: 'Resolve before you leave, or arrange agreed cover' });
+  }
+  items.sort((a, b) => (a.due || '9999') < (b.due || '9999') ? -1 : 1);
+  return { return_on: back, horizon, horizon_note: `Covers anything due by ${longDate(horizon)} (your return date plus two working days).`,
+    open_sessions: sessions.map(x => ({ ...x, note: 'A Stripe payment page is open: the buyer can still pay until it expires; the payment will be recorded.' })),
+    quotes_awaiting_payment: quotes.map(x => ({ ...x, note: 'Cannot be paid while paused; its expiry date does not change.' })), items };
+}
 async function requireInstalled(env) { if (!(await installed(env))) throw new Bad('The payment pilot is not installed (migration 0016)', 409); }
 
 /* An installed text whose fingerprint matches the text bundled with the Worker. */
@@ -365,6 +419,7 @@ export async function adminView(env) {
     unprocessed_events: await all(env, "SELECT event_id, type, status, attempts, detail, received_at FROM payment_events WHERE status IN ('deferred','failed','received') ORDER BY received_at LIMIT 50"),
     pending_refunds: await pendingRefunds(env), holds: await holdsView(env), refund_funding_steps: REFUND_FUNDING_STEPS,
     owed: await owedRows(env, 'w.settled_cents < w.cents'), owed_settled_recently: await owedRows(env, "w.settled_cents = w.cents AND w.arisen_at >= ?", plusDays(now(), -90)),
+    pause: await pauseState(env), absence: await absenceChecklist(env),
     founder_alerts: await founderAlerts(env),
     reimbursements: await reimbursementsView(env, "(processing IS NULL OR json_extract(processing, '$.status') IN ('awaiting_fee','outstanding'))"),
     reimbursements_recent: await reimbursementsView(env, "json_extract(processing, '$.status') IN ('reimbursed','shortfall') AND updated_at >= ?", plusDays(now(), -30)),
@@ -583,7 +638,7 @@ async function workAvailable(env, artistId, artworkId) {
 }
 
 export async function createOrder(env, founder, b) {
-  await requireInstalled(env); requireOn(env);
+  await requireInstalled(env); requireOn(env); await requireNotPaused(env);
   const artist = await one(env, 'SELECT * FROM artists WHERE id = ?', String(b.artist_id || ''));
   if (!artist || artist.account_status !== 'active') throw new Bad('Choose an active artist', 404);
   if (!(await membership(env, artist.id)).opted_in) throw new Bad('This artist has not opted in to the payment pilot', 409);
@@ -718,7 +773,7 @@ async function requireNoOtherOpenQuote(env, o) {
   if (other) throw new Bad(`Another quote for this artwork (${other.reference}) is still open. Cancel it or let it expire first.`, 409);
 }
 export async function issueQuote(env, founder, id, b = {}) {
-  await requireInstalled(env); requireOn(env);
+  await requireInstalled(env); requireOn(env); await requireNotPaused(env);
   const o = await getOrder(env, id);
   if (!o) throw new Bad('Not found', 404);
   if (o.status !== 'awaiting_artist') throw new Bad('Send the quote to the artist first', 409);
@@ -802,7 +857,7 @@ export async function buyerQuote(env, token) {
   return { reference: o.reference, status: o.status, payment_status: o.payment_status, fulfilment_status: o.fulfilment_status,
     expired: !!o.quote_expires_at && o.quote_expires_at <= now(), quote_expires_at: o.quote_expires_at, seller: q.seller, artwork: q.artwork,
     currency: 'EUR', artwork_cents: q.amounts.artwork_cents, delivery_cents: q.amounts.delivery_cents, total_cents: q.amounts.total_cents,
-    delivery: q.delivery, terms: bt, quote_sha256: q.sha256, confirmation_ready: !!conf, notices };
+    delivery: q.delivery, terms: bt, quote_sha256: q.sha256, confirmation_ready: !!conf, notices, payments_paused: (await pauseState(env)).paused };
 }
 export async function buyerConfirmation(env, token) {
   const o = await byToken(env, token);
@@ -817,6 +872,7 @@ export async function startCheckout(env, token, b) {
   if (!['quoted', 'checkout_open', 'payment_failed'].includes(o.status)) throw new Bad('This quote can no longer be paid', 409);
   const t = now();
   if (!o.quote_expires_at || o.quote_expires_at <= t) { await move(env, o, 'expired', 'buyer', 'quote_expired').catch(() => {}); throw new Bad('This quote has expired. Please contact hello@plotnua.ie.', 410); }
+  await requireNotPaused(env, 'buyer');   // the quote and its expiry are untouched; no reservation and no Stripe session are made
   if (o.artist_approved_version !== o.quote_version) throw new Bad('This quote is being revised', 409);
   if (!b || b.accept_terms !== o.buyer_terms_doc_id) throw new Bad('Please read and accept the purchase terms', 400);
   const mem = await membership(env, o.artist_id);

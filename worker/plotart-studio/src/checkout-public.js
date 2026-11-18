@@ -28,7 +28,7 @@ const TEST_BANNER = '<p class="note test"><strong>Test mode.</strong> This is a 
 function quoteHtml(q, token, error = null) {
   const d = q.delivery, a = q.artwork || {}, s = q.seller || {};
   const cover = `Transit insurance with ${esc(d.cover_provider)}, held by ${esc(PARTY[d.insured_party])}, up to ${eur(d.covered_value_cents)} (${esc(d.valuation_basis)})${d.excess_cents ? `, excess ${eur(d.excess_cents)}` : ''}. Period: ${esc(d.cover_period)}.${d.exclusions ? ` Exclusions: ${esc(d.exclusions)}.` : ''} Claims: ${esc(d.claims_contact)}. Confirmed for this shipment (ref. ${esc(d.cover_confirmation_ref)}).`;
-  const payable = ['quoted', 'checkout_open', 'payment_failed'].includes(q.status) && !q.expired;
+  const payable = ['quoted', 'checkout_open', 'payment_failed'].includes(q.status) && !q.expired && !q.payments_paused;
   return `${TEST_BANNER}<h1>${esc(a.title || 'Original artwork')}</h1>
 <p>Sold by <strong>${esc(s.name)}</strong>, the artist. ${esc(s.platform)}</p>
 <p class="k">Quote ${esc(q.reference)} · valid until ${esc(new Date(q.quote_expires_at).toLocaleString('en-IE', { timeZone: 'Europe/Dublin', dateStyle: 'medium', timeStyle: 'short' }))} (Irish time)</p>
@@ -51,7 +51,7 @@ ${s.vat_number ? `<dt>VAT number</dt><dd>${esc(s.vat_number)}</dd>` : ''}<dt>Sel
 <p class="note">Your rights as a buyer do not depend on any carrier or insurance claim being made or completed.</p>
 ${payable ? `<form method="post" action="/q/${esc(token)}/pay">${error ? `<p class="note">${esc(error)}</p>` : ''}
 <label><input type="checkbox" name="accept_terms" value="${esc(q.terms && q.terms.doc_id)}" required> I have read the <a href="/terms/${esc(q.terms && q.terms.doc_id)}.html" target="_blank" rel="noopener">purchase terms (${esc(q.terms && q.terms.doc_id)})</a>, and I understand that I am buying from ${esc(s.name)}.</label>
-<button type="submit">Continue to secure payment</button></form>` : `<p class="note">${q.payment_status === 'paid' ? 'Payment has been confirmed for this order.' : q.expired || q.status === 'expired' ? 'This quote has expired. Please contact hello@plotnua.ie.' : 'This quote cannot be paid at the moment. Please contact hello@plotnua.ie.'}</p>`}
+<button type="submit">Continue to secure payment</button></form>` : `<p class="note">${q.payment_status === 'paid' ? 'Payment has been confirmed for this order.' : q.expired || q.status === 'expired' ? 'This quote has expired. Please contact hello@plotnua.ie.' : q.payments_paused && ['quoted', 'checkout_open', 'payment_failed'].includes(q.status) ? esc(C.BUYER_PAUSED) : 'This quote cannot be paid at the moment. Please contact hello@plotnua.ie.'}</p>`}
 ${(q.notices || []).length ? `<h2>Updates about your order</h2>${q.notices.map(n => `<div class="note"><strong>${esc(n.subject)}</strong> <span class="k">${esc(new Date(n.created_at).toLocaleString('en-IE', { timeZone: 'Europe/Dublin', dateStyle: 'medium', timeStyle: 'short' }))}</span><p style="white-space:pre-wrap">${esc(n.body)}</p></div>`).join('')}` : ''}
 <p style="font-size:14px;color:#9c9893">Questions: <a href="mailto:hello@plotnua.ie">hello@plotnua.ie</a> · quote ${esc(q.reference)}</p>`;
 }

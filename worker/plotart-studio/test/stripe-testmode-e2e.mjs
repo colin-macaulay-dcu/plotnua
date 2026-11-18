@@ -256,6 +256,54 @@ export async function e2e({ rec, KEY, ACCOUNT, RUN, port, whsec, stripe, sleep }
         !runtimeOk ? 'SKIP' : all.length && all.every(c => c.key === 'runtime') && !all.some(c => c.status === 401 || c.status === 403) ? 'PASS' : 'FAIL', summary(all));
       return;
     }
+    // ---- pause run (request file: "pause_evidence": true): a Checkout Session opened BEFORE the founder pauses new quotes
+    // and payments is completed DURING the pause on the real hosted page; a new payment from another buyer link is refused.
+    let PAUSE = false; try { PAUSE = JSON.parse(readFileSync(HERE + 'test/stripe-test-run.json', 'utf8')).pause_evidence === true; } catch { /* */ }
+    if (PAUSE) {
+      const callsFrom = i => CW_CALLS.slice(i).filter(c => c.host === 'api.stripe.com');
+      const op = await quote('wagal4', 'PA-E-261116-E2E004', 20000, 0);   // buyer link opened: a real Checkout Session exists at Stripe
+      const sOpen = (await q("SELECT id, expires_at FROM checkout_sessions WHERE order_id = ? AND status = 'open'", op.id))[0];
+      // a second quote, issued but not yet opened by its buyer
+      const c2 = await call('POST', '/api/admin/checkout/orders', FOUNDER, { artist_id: 'agal', artwork_id: 'wagal5', enquiry_ref: 'PA-E-261116-E2E005', buyer_email: `buyer2+${RUN}@plotnua.invalid` });
+      const id2 = c2.j.order.id;
+      await call('PUT', `/api/admin/checkout/orders/${id2}`, FOUNDER, { artwork_cents: 5000, delivery_cents: 0, delivery: { ...DELIVERY, covered_value_cents: 5000 } });
+      await call('POST', `/api/admin/checkout/orders/${id2}/send`, FOUNDER, {});
+      await call('POST', `/api/checkout/orders/${id2}/approve`, GAL, { quote_version: (await order(id2)).quote_version, confirm: ALL });
+      const tok2 = (await call('POST', `/api/admin/checkout/orders/${id2}/issue`, FOUNDER, { days: 1, linked_check_confirmed: true })).j.buyer_link.split('/q/')[1];
+      const exp2 = (await order(id2)).quote_expires_at;
+      const back = new Date(Date.now() + 5 * 86400_000).toLocaleDateString('en-CA', { timeZone: 'Europe/Dublin' });
+      const pz = await call('POST', '/api/admin/checkout/pause', FOUNDER, { paused: true, return_on: back, note: 'E23 sandbox pause test' });
+      const ab = pz.j && pz.j.absence;
+      // E23a · during the pause, the second buyer link cannot open a Stripe session
+      const i23 = CW_CALLS.length;
+      const r2 = await CW.fetch(`http://checkout.local/q/${tok2}/pay`, { method: 'POST', redirect: 'manual', headers: { 'Content-Type': 'application/x-www-form-urlencoded', Origin: ORIGIN }, body: 'accept_terms=PA-BPT-TEST-01' });
+      const r2t = await r2.text(), created = callsFrom(i23).filter(c => c.method === 'POST' && /checkout\/sessions/.test(c.path));
+      rec('E23a', 'while paused, an existing buyer link for an unpaid quote cannot open a Stripe Checkout Session: the buyer sees “payments are temporarily paused”, no session is created at Stripe, and the quote’s expiry is unchanged', SRC,
+        pz.s === 200 && r2.status === 409 && r2t.includes('Payments are temporarily paused') && !created.length && (await order(id2)).quote_expires_at === exp2 && ab && ab.open_sessions.some(x => x.id === (sOpen && sOpen.id)) ? 'PASS' : 'FAIL',
+        { pause_http: pz.s, buyer_http: r2.status, buyer_sees: (r2t.match(/Payments are temporarily paused[^<]*/) || [''])[0], stripe_session_creates: created.length, absence_open_sessions: ab && ab.open_sessions.map(x => ({ reference: x.reference, expires_at: x.expires_at })) });
+      // E23 · the session opened BEFORE the pause is paid DURING it, on the real hosted page
+      let paidOk = false, diag = null;
+      try { const r = await payInBrowser(op.url, '4242424242424242', 'pause'); paidOk = true; diag = r.diag; } catch (e) { diag = e.diag; rec('E23', 'payment during the pause', SRC, 'FAIL', { error: String(e.message).split('\n')[0].slice(0, 300) }); }
+      if (paidOk) {
+        const paid = await waitFor(async () => { const o = await order(op.id); return o.payment_status === 'paid' ? o : null; }, 90_000);
+        const P = paid ? await reimbursedFor(op.id) : null, O = await order(op.id);
+        const evs = await q("SELECT event_id, type, status, created FROM payment_events WHERE order_id = ? AND type = 'checkout.session.completed'", op.id);
+        const charges = await q("SELECT amount_cents FROM order_ledger WHERE order_id = ? AND kind = 'charge'", op.id);
+        const frs = O.application_fee_id ? (await feeRefundsOf(O.application_fee_id)).filter(f => f.metadata && f.metadata.plotart_kind === 'processing_reimbursement') : [];
+        const still = (await call('GET', '/api/admin/checkout', FOUNDER)).j.pause;
+        rec('E23', 'a real Checkout Session opened BEFORE the pause, paid DURING it: Stripe’s signed checkout.session.completed is processed once, the charge is booked once, the work is sold, and the processing reimbursement proceeds (one application-fee refund) while the pause stays on', SRC,
+          paid && evs.length === 1 && evs[0].status === 'processed' && charges.length === 1 && charges[0].amount_cents === 20000 && P && P.status === 'reimbursed' && frs.length === 1 && frs[0].amount === P.cost && still.paused ? 'PASS' : 'FAIL',
+          { session_opened_before_pause: sOpen, pause_since: still.since, completion_events: evs.map(e => ({ type: e.type, status: e.status, created: new Date(e.created * 1000).toISOString() })), charges, reimbursement: P && { status: P.status, cost: P.cost, fee_refund: P.fee_refund && P.fee_refund.id, accepted_at: P.fee_refund && P.fee_refund.accepted_at },
+            buyer_return_page: diag && diag.returnPage, founder_sees: { order_status: O.status, payment_status: O.payment_status, paused: still.paused } });
+      }
+      await call('POST', '/api/admin/checkout/pause', FOUNDER, { paused: false });
+      await call('POST', `/api/admin/checkout/orders/${id2}/cancel`, FOUNDER, { reason: 'E23 complete' });
+      const all = callsFrom(0);
+      rec('E17d', 'pause run: every Stripe API call made by the public checkout Worker used the runtime key', SRC,
+        !runtimeOk ? 'SKIP' : all.length && all.every(c => c.key === 'runtime') && !all.some(c => c.status === 401 || c.status === 403) ? 'PASS' : 'FAIL',
+        { calls: all.length, list: all.map(c => `${c.method} ${c.path}${c.connected ? ' [connected]' : ''} → ${c.status} (${c.key})`) });
+      return;
+    }
     // ---- reimbursement-evidence run (request file: "reimbursement_evidence": true): what Stripe returns when it accepts a
     // processing reimbursement (an application-fee refund) and whether the credit to the artist's Stripe balance can be seen
     let EVID = false; try { EVID = JSON.parse(readFileSync(HERE + 'test/stripe-test-run.json', 'utf8')).reimbursement_evidence === true; } catch { /* */ }

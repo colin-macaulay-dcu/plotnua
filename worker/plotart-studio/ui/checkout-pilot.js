@@ -90,6 +90,17 @@
     const sw = j.switches;
     h += `<p class="st-muted">Pilot ${sw.enabled ? 'switched ON (test mode)' : 'switched OFF'}${founder && sw.key_problem ? ' · ' + esc(sw.key_problem) : ''}. No live payment can be taken.</p>`;
     if (founder) {
+      const pz = j.pause || { paused: false }, ab = j.absence || { items: [], open_sessions: [], quotes_awaiting_payment: [] };
+      h += `<section id="pause-control" class="st-card ${pz.paused ? 'st-paused' : ''}"><h2>${esc(pz.label || 'Pause new quotes and payments')} <span class="st-badge">${pz.paused ? 'PAUSED' : 'Not paused'}</span></h2>
+        ${pz.paused ? `<p><strong>Paused since ${esc(new Date(pz.since).toLocaleString('en-IE', { timeZone: 'Europe/Dublin', dateStyle: 'medium', timeStyle: 'short' }))}</strong> · expected back ${esc(pz.return_on)}${pz.note ? ` · ${esc(pz.note)}` : ''}</p><p><button data-pause="0">Resume new quotes and payments</button></p>`
+          : `<form data-f="pause"><label>Back on (Irish date) <input type="date" name="return_on" required></label> <label>Note (optional) <input name="note" maxlength="300"></label> <button>Pause new quotes and payments</button></form>`}
+        <p class="st-muted">${esc(pz.explanation || '')}</p>
+        <details ${pz.paused ? 'open' : ''}><summary>Absence checklist — ${ab.open_sessions.length} open Stripe payment page(s), ${ab.quotes_awaiting_payment.length} quote(s) awaiting payment, ${ab.items.length} item(s) due before ${esc(ab.horizon || '')}</summary>
+          <p class="st-muted">${esc(ab.horizon_note || '')}</p>
+          ${ab.open_sessions.length ? `<h3>Open Stripe payment pages</h3><ul>${ab.open_sessions.map(x => `<li><a href="#order-${esc(x.order_id)}">${esc(x.reference)}</a> · open until ${esc(new Date(x.expires_at).toLocaleString('en-IE', { timeZone: 'Europe/Dublin', timeStyle: 'short', dateStyle: 'medium' }))} · ${esc(x.note)}</li>`).join('')}</ul>` : ''}
+          ${ab.quotes_awaiting_payment.length ? `<h3>Quotes awaiting payment</h3><ul>${ab.quotes_awaiting_payment.map(x => `<li><a href="#order-${esc(x.id)}">${esc(x.reference)}</a> · expires ${esc(new Date(x.quote_expires_at).toLocaleString('en-IE', { timeZone: 'Europe/Dublin', timeStyle: 'short', dateStyle: 'medium' }))} · ${esc(x.note)}</li>`).join('')}</ul>` : ''}
+          ${ab.items.length ? `<h3>Due before you are back — needs action before you leave</h3><table class="st-table"><tr><th>Order</th><th>What</th><th>Amount</th><th>Due</th><th>Action</th></tr>${ab.items.map(x => `<tr><td><a href="#order-${esc(x.order_id)}">${esc(x.reference)}</a></td><td>${esc(x.what)}${x.note ? `<br><small class="st-muted">${esc(x.note)}</small>` : ''}</td><td>${esc(x.amount)}</td><td>${esc(x.due_label)}</td><td><strong>${esc(x.action)}</strong></td></tr>`).join('')}</table>` : '<p class="st-muted">Nothing falls due before you are back.</p>'}
+        </details></section>`;
       const fa = j.founder_alerts || { items: [], unread: 0, open: 0, follow_ups_due: 0, note: '' };
       h += `<section id="founder-alerts" class="st-card"><h2>Founder alerts <span class="st-badge">${fa.unread} unread</span> <small class="st-muted">${fa.open} open · ${fa.follow_ups_due} follow-up${fa.follow_ups_due === 1 ? '' : 's'} due</small></h2>
         <p class="st-muted">${esc(fa.note)}</p>`;
@@ -156,6 +167,8 @@
     on('form[data-f="edit"]', 'submit', async e => { const f = new FormData(e.target);
       await api('PUT', `${base}/orders/${idOf(e.target)}`, { artwork_cents: Number(f.get('artwork_cents')), delivery_cents: Number(f.get('delivery_cents')), delivery: JSON.parse(f.get('delivery')), exclusion: f.get('exclusion') || null });
       say('Saved as a new quote version'); load(); });
+    on('form[data-f="pause"]', 'submit', async e => { const f = new FormData(e.target); await api('POST', base + '/pause', { paused: true, return_on: f.get('return_on'), note: f.get('note') }); say('New quotes and payments paused'); load(); });
+    on('button[data-pause]', 'click', async () => { await api('POST', base + '/pause', { paused: false }); say('New quotes and payments resumed'); load(); });
     on('button[data-alert-read]', 'click', async e => { await api('POST', `${base}/alerts/${e.target.dataset.alertRead}`, { read: e.target.dataset.v === '1' }); load(); });
     on('button[data-alert-save]', 'click', async e => { const id = e.target.dataset.alertSave;
       await api('POST', `${base}/alerts/${id}`, { next_action: app.querySelector(`[data-next="${id}"]`).value, follow_up_on: app.querySelector(`[data-fu="${id}"]`).value }); say('Next action saved'); load(); });

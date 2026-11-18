@@ -1,13 +1,14 @@
 {
   "_note": "Changing this file on the pilot branch requests a run of .github/workflows/plotart-checkout-stripe-test.yml (Stripe TEST mode only; waits for the founder's approval on the checkout-test environment). Nothing is deployed.",
-  "requested": "2026-11-18T10:30:00Z",
+  "requested": "2026-11-18T11:10:00Z",
   "phases": [
     "e2e"
   ],
-  "reason": "Run 35: traders-only managed checkout (decision F2, Option A) and the 30-day shortfall code on the real sandbox. E22: an artist answering 'not sure' cannot be quoted and the checkout Worker makes no Stripe call. E21a-f: the normal paid path still reimburses and the artist credit still matches by charge, amount and currency; E21e clock start. Shortfall bank transfers and returns involve no Stripe call and are covered by local tests. Runtime key keeps its five permissions. ~5-10 minutes. Sandbox only.",
+  "reason": "Run 36: founder pause 'Pause new quotes and payments'. E23: a real Checkout Session opened before the pause is paid during it on the hosted page; the signed event records the payment once and the processing reimbursement proceeds. E23a: during the pause, another buyer link cannot open a Stripe session. Runtime key keeps its five permissions. ~5-10 minutes. Sandbox only.",
   "reuse_account": "acct_1UclJXHx1Olx8cdw",
   "unfunded_account": "acct_1Uct3vHx1OnYJa8H",
   "unfunded_link": false,
   "coverage_only": false,
-  "reimbursement_evidence": true
+  "reimbursement_evidence": false,
+  "pause_evidence": true
 }

@@ -1008,6 +1008,93 @@ console.log('— seven-day reimbursement rule (PA-PAY §3.3(b), provisional) · 
     !!notice && /Stripe confirmed your buyer’s payment on \w+day \d+ \w+ \d{4}/.test(notice.body) && /does not estimate/.test(notice.body) && /seventh calendar day after the day Stripe records it/.test(notice.body)
     && /payout from Stripe to your bank is separate/.test(notice.body) && !/14:15/.test(notice.body) && /test mode/.test(notice.body)
     && notice.body.includes('We have not yet been able to confirm the fee Stripe charged on this payment') && !/Stripe has not yet recorded/.test(notice.body), notice);
+  // ---- "Pause new quotes and payments" (founder pause for absences, 18 Nov 2026). Mock Stripe; SIMULATED expiry times.
+  { const works = (await q("SELECT id FROM artworks WHERE artist_id = 'agal' AND availability = 'available' AND id NOT IN (SELECT artwork_id FROM artwork_sales WHERE released_at IS NULL) AND id NOT IN (SELECT artwork_id FROM artwork_reservations) AND id NOT IN (SELECT artwork_id FROM checkout_orders WHERE status IN ('quoted','checkout_open','payment_failed','awaiting_artist','draft')) ORDER BY id")).map(x => x.id).filter(w => w !== 'wagal3');   // wagal3 is used by a later test
+    console.log('  (pause test works: ' + works.join(', ') + ')');
+    const mk = async (w, cents = 20000) => (await makeOrder('agal', w, 'PA-E-261101-AAAAAA', cents, 0, `pz-${w}@example.test`)).id;
+    const X = await mk(works[0]), Y = await mk(works[1]), Z = await mk(works[2]), D = await mk(works[3]);
+    const TX = await prep(X), TY = await prep(Y), TZ = await prep(Z);
+    await call('POST', `/api/admin/checkout/orders/${D}/send`, FOUNDER, {}); await call('POST', `/api/checkout/orders/${D}/approve`, GAL, { quote_version: (await order(D)).quote_version, confirm: ALL });
+    await pub('POST', `/q/${TX}/pay`, { form: { accept_terms: 'PA-BPT-TEST-01' } }); const sX = Object.values(M.sessions).at(-1);
+    await pub('POST', `/q/${TZ}/pay`, { form: { accept_terms: 'PA-BPT-TEST-01' } }); const sZ = Object.values(M.sessions).at(-1);
+    const expBefore = { Y: (await order(Y)).quote_expires_at, Z: (await order(Z)).quote_expires_at };
+    const back = new Date(Date.now() + 5 * 86400_000).toLocaleDateString('en-CA', { timeZone: 'Europe/Dublin' });
+    const pArt = await call('POST', '/api/admin/checkout/pause', GAL, { paused: true, return_on: back });
+    const pPast = await call('POST', '/api/admin/checkout/pause', FOUNDER, { paused: true, return_on: '2020-01-01' });
+    const pz = await call('POST', '/api/admin/checkout/pause', FOUNDER, { paused: true, return_on: back, note: 'SIMULATED absence' });
+    check('PZ1 only the founder can pause; a return date is required and cannot be in the past; the desk shows the control labelled “Pause new quotes and payments” with its note',
+      pArt.s >= 400 && pPast.s === 400 && pz.s === 200 && pz.j.pause.paused && pz.j.pause.return_on === back && pz.j.pause.label === 'Pause new quotes and payments'
+      && /already has open may still complete/.test(pz.j.pause.explanation) && /Existing deadlines continue/.test(pz.j.pause.explanation), { pArt: pArt.s, pPast: pPast.j, pz: pz.j && pz.j.pause });
+    const ab = pz.j.absence;
+    check('PZ2 the absence checklist lists the open Stripe payment pages and the quotes awaiting payment, and what falls due before the return date (plus two working days) with the action needed before leaving',
+      ab.open_sessions.some(x => x.id === sX.id) && ab.open_sessions.some(x => x.id === sZ.id) && ab.quotes_awaiting_payment.some(x => x.id === Y) && ab.horizon > back
+      && ab.items.every(x => /before you leave|follow-up|agreed cover|Automatic/.test(x.action)), { sessions: ab.open_sessions.length, quotes: ab.quotes_awaiting_payment.map(x => x.reference), items: ab.items.length });
+    writeFileSync('/tmp/plotart-absence.json', JSON.stringify(ab, null, 1));
+    const sessBefore = Object.keys(M.sessions).length;
+    const cNew = await call('POST', '/api/admin/checkout/orders', FOUNDER, { artist_id: 'agal', artwork_id: works[4] || works[3], enquiry_ref: 'PA-E-261101-AAAAAA', buyer_email: 'pz2@example.test' });
+    const iD = await call('POST', `/api/admin/checkout/orders/${D}/issue`, FOUNDER, { days: 2, linked_check_confirmed: true });
+    const gY = await pub('GET', `/q/${TY}`), pY = await pub('POST', `/q/${TY}/pay`, { form: { accept_terms: 'PA-BPT-TEST-01' } });
+    check('PZ3 while paused the server refuses a new order, issuing a quote, and opening payment from an unpaid quote through its existing buyer link; the buyer sees a short “payments are temporarily paused” note and no pay button; no Stripe session or reservation is made; the quote’s expiry is unchanged',
+      cNew.s === 409 && /paused/.test(cNew.j.error) && iD.s === 409 && /paused/.test(iD.j.error) && gY.s === 200 && gY.t.includes('Payments are temporarily paused') && !gY.t.includes('Continue to secure payment')
+      && pY.s === 409 && pY.t.includes('Payments are temporarily paused') && Object.keys(M.sessions).length === sessBefore && !(await q('SELECT 1 FROM artwork_reservations WHERE order_id = ?', Y)).length
+      && (await order(Y)).quote_expires_at === expBefore.Y, { cNew: cNew.j, iD: iD.j, gY: gY.s, pY: pY.s });
+    writeFileSync('/tmp/plotart-buyer-paused.html', gY.t);
+    if (process.env.SCREENSHOT) { try {
+      const { createRequire } = await import('node:module'); const pw = createRequire('/tmp/claude-0/studio-tools/package.json')('playwright');
+      const br2 = await pw.chromium.launch({ executablePath: '/usr/bin/google-chrome' }), pg = await br2.newPage({ viewport: { width: 1300, height: 1000 }, locale: 'en-IE', timezoneId: 'Europe/Dublin' });
+      await pg.setExtraHTTPHeaders({ 'Cf-Access-Jwt-Assertion': token(FOUNDER) });
+      await pg.goto(S.url + '/admin/checkout', { waitUntil: 'load' }); await pg.waitForSelector('#pause-control', { timeout: 20000 }); await pg.addStyleTag({ content: '.st-top{position:static !important}' });
+      await (await pg.$('#pause-control')).screenshot({ path: '/tmp/pause-control-paused.png' });
+      const bpg = await br2.newPage({ viewport: { width: 900, height: 900 } }); await bpg.setContent(gY.t); const nt = bpg.locator('p.note', { hasText: 'temporarily paused' }); await nt.scrollIntoViewIfNeeded(); await bpg.screenshot({ path: '/tmp/buyer-paused.png' });
+      await br2.close();
+    } catch (e) { console.log('  (screenshot not taken: ' + String(e.message).split('\n')[0] + ')'); } }
+
+    // a Checkout Session opened BEFORE the pause is completed DURING it
+    pay(sX.id);
+    const ev1 = evt('checkout.session.completed', M.sessions[sX.id], ACCT), h1 = await hook(ev1), h2 = await hook(ev1), h3 = await hook({ ...ev1, id: ev1.id + 'b' });
+    await sweep();
+    globalThis.PZ_SOLD = (await order(X)).artwork_id;
+    const OX = await order(X), PX = JSON.parse(OX.processing || '{}'), feeX = M.pis[sX.payment_intent].fee;
+    check('PZ4 a payment on a Stripe page opened before the pause, completed during it, is recorded from the signed event exactly once (repeat and duplicate events book nothing twice) and the processing reimbursement proceeds',
+      h1.s === 200 && h2.s === 200 && h3.s === 200 && OX.payment_status === 'paid' && (await q("SELECT 1 FROM order_ledger WHERE order_id = ? AND kind = 'charge'", X)).length === 1
+      && (await q("SELECT 1 FROM artwork_sales WHERE order_id = ?", X)).length === 1 && PX.status === 'reimbursed' && M.feeRefunds.filter(x => x.fee === feeX).length === 1, { OX: OX.status, PX });
+    const rX = await pub('GET', `/q/${TX}/return?result=success`);
+    // a session that expires during the pause
+    const hZ = await hook(evt('checkout.session.expired', { ...M.sessions[sZ.id], status: 'expired' }, ACCT)), gZ = await pub('GET', `/q/${TZ}`);
+    check('PZ5 a Stripe session that expires during the pause releases the reservation and returns the quote to payable later; the buyer sees the paused note; the quote’s own expiry is unchanged',
+      hZ.s === 200 && (await order(Z)).status === 'quoted' && !(await q('SELECT 1 FROM artwork_reservations WHERE order_id = ?', Z)).length && gZ.t.includes('Payments are temporarily paused')
+      && (await order(Z)).quote_expires_at === expBefore.Z, { st: (await order(Z)).status });
+    // a quote that expires before payments resume (SIMULATED: its expiry moved into the past)
+    await db.prepare('UPDATE checkout_orders SET quote_expires_at = ? WHERE id = ?').bind(new Date(Date.now() - 60_000).toISOString(), Y).run();
+    await sweep();
+    const gY2 = await pub('GET', `/q/${TY}`);
+    // serviceability during the pause: refund, lost-dispute commission, reconcile, bank transfers, returned-transfer correction, alerts
+    const rf = await call('POST', `/api/admin/checkout/orders/${X}/refund`, FOUNDER, { artwork_cents: 1000, delivery_cents: 0, reason: 'SIMULATED goodwill refund during pause' });
+    const L = await sdOrder('L', { chargeAgeDays: 1 }); await sweep();
+    await db.prepare("UPDATE checkout_orders SET dispute_status = 'lost' WHERE id = ?").bind(L.id).run();
+    await db.prepare("INSERT INTO checkout_owed (id, order_id, kind, item_key, cents, reason, arisen_at, due_at, due_rule, due_provisional) VALUES ('owlz', ?, 'lost_dispute_commission', 'lost:dp_sim', 15000, 'SIMULATED lost dispute', ?, ?, 'PA-GAA cl. 9.1', 0)")
+      .bind(L.id, new Date().toISOString(), new Date(Date.now() + 30 * 86400_000).toISOString()).run();
+    const rc = await call('POST', `/api/admin/checkout/orders/${L.id}/refund`, FOUNDER, { commission_only: true, reason: 'SIMULATED lost dispute: commission returned during pause' });
+    const rec = await call('POST', `/api/admin/checkout/orders/${Z}/reconcile`, FOUNDER, {});
+    const N = await sdOrder('N', { chargeAgeDays: 1, artwork: 10000, commission: 1500 }); await sweep();
+    const bp = await call('POST', `/api/admin/checkout/orders/${N.id}/shortfallpaid`, FOUNDER, { amount_cents: 683, reference: 'SIM-TRF-PZ01', executed_on: TODAY_IE });
+    const pid = (await q("SELECT id FROM checkout_owed_payments WHERE order_id = ? AND reference = 'SIM-TRF-PZ01'", N.id))[0].id;
+    const br = await call('POST', `/api/admin/checkout/orders/${N.id}/shortfallreturned`, FOUNDER, { payment_id: pid, returned_on: TODAY_IE, reason: 'SIMULATED' });
+    const alertsNow = (await call('GET', '/api/admin/checkout', FOUNDER)).j.founder_alerts;
+    check('PZ6 existing orders stay serviceable while paused: a founder refund to a buyer, a commission return after a lost dispute, reconciling an interrupted checkout, recording a bank transfer and its return (one correction notice), automatic reimbursements, the sweep and the alerts panel all work',
+      rf.s === 200 && rc.s === 200 && M.feeRefunds.some(x => x.fee === L.fee && x.metadata && x.metadata.plotart_kind === 'commission_refund') && rec.s === 200 && bp.s === 200 && br.s === 200
+      && (await q("SELECT 1 FROM checkout_mail_sink WHERE order_id = ? AND kind = 'owed_transfer_returned'", N.id)).length === 1 && JSON.parse((await order(N.id)).processing).status === 'shortfall'
+      && JSON.parse((await order(L.id)).processing).status === 'reimbursed' && Array.isArray(alertsNow.items), { rf: rf.j && rf.j.error, rc: rc.j && rc.j.error, rec: rec.j && rec.j.error, bp: bp.j && bp.j.error, br: br.j && br.j.error });
+    const rs = await call('POST', '/api/admin/checkout/pause', FOUNDER, { paused: false });
+    const iD2 = await call('POST', `/api/admin/checkout/orders/${D}/issue`, FOUNDER, { days: 2, linked_check_confirmed: true });
+    const pY2 = await pub('POST', `/q/${TY}/pay`, { form: { accept_terms: 'PA-BPT-TEST-01' } });
+    const pZ2 = await pub('POST', `/q/${TZ}/pay`, { form: { accept_terms: 'PA-BPT-TEST-01' } });
+    check('PZ7 SIMULATED: the quote that expired during the pause shows “expired” to the buyer and stays expired after resuming; after resuming, quotes can be issued again and an unexpired quote can be paid; the pause history is kept',
+      gY2.t.includes('This quote has expired') && (await order(Y)).status === 'expired' && rs.s === 200 && !rs.j.pause.paused && iD2.s === 200 && pY2.s >= 400 && pY2.t.includes('expired') && pZ2.s === 303
+      && (await q('SELECT paused FROM checkout_pause_events ORDER BY id')).map(x => x.paused).join() === '1,0', { iD2: iD2.j && iD2.j.error, pY2: pY2.s, pZ2: pZ2.s });
+    writeFileSync('/tmp/plotart-pause-views.json', JSON.stringify({ buyer_paused_note: (gY.t.match(/Payments are temporarily paused[^<]*/) || [''])[0], founder_issue_error: iD.j && iD.j.error, founder_create_error: cNew.j && cNew.j.error,
+      buyer_return_after_paying_during_pause: (rX.t.match(/<h1>[^<]*<\/h1><p>[^<]*/) || [''])[0], buyer_expired_note: (gY2.t.match(/This quote has expired[^<]*/) || [''])[0] }, null, 1));
+    await call('POST', `/api/admin/checkout/orders/${D}/cancel`, FOUNDER, { reason: 'test complete' }); await call('POST', `/api/admin/checkout/orders/${Z}/cancel`, FOUNDER, { reason: 'test complete' }); }
   writeFileSync('/tmp/plotart-sd-evidence.json', JSON.stringify({ desk_F_unknown_time: dF, desk_G_partial: dG, statement_G: stG && stG.processing_reimbursement, closing_E_correction: closeE[0] && closeE[0].body, closing_F_review: closeF[0] && closeF[0].body, desk_H_clock: undefined, SD1: a, SD2: { summer: s, winter: w }, SD3: { before: e1, after: e2 }, SD3b: l, desk_A_outstanding: dA, desk_B_waiting: dB, desk_B_done: dB2, desk_C_late: dC, desk_D_flags: dD, delay_notice: notice }, null, 2));
 }
 
@@ -1024,7 +1111,7 @@ AFTER.gaa = AFTER.gaa.filter(x => x.id !== 'gaa2'); AFTER.at = AFTER.at.filter(x
 check('T11 gallery publication, versions, publish queue, gallery positions, founding numbers, artist records, agreements, terms, enquiry log and enquiries are unchanged',
   ['v', 'pq', 'gp', 'ar', 'aa', 'gaa', 'at', 'el', 'en', 'works'].every(k => JSON.stringify(AFTER[k]) === JSON.stringify(B[k])),
   ['v', 'pq', 'gp', 'ar', 'aa', 'gaa', 'at', 'el', 'en', 'works'].filter(k => JSON.stringify(AFTER[k]) !== JSON.stringify(B[k])));
-check('T11b the only artwork change is the sold mark on works sold through verified payments', (await q("SELECT id FROM artworks WHERE availability='sold' ORDER BY id")).map(x => x.id).join() === ['waold2', 'wagal1', 'wagal2', globalThis.SD15_WORK].sort().join());
+check('T11b the only artwork change is the sold mark on works sold through verified payments', (await q("SELECT id FROM artworks WHERE availability='sold' ORDER BY id")).map(x => x.id).join() === ['waold2', 'wagal1', 'wagal2', globalThis.SD15_WORK, globalThis.PZ_SOLD].filter(Boolean).sort().join());
 console.log('— a refund that succeeds and later FAILS (reversal, commission already returned, no double repayment)');
 {
   const orv = await makeOrder('agal', 'wagal3', 'PA-E-261106-GGGGGG', 80000, 5000, 'rv@example.test');

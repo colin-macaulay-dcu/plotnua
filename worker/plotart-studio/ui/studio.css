@@ -333,3 +333,5 @@ body.st{ background:var(--anth); min-height:100vh; }
 .st-warn{ color:#E6B39E; }
 #founder-alerts input{ min-height:32px; border-radius:8px; border:1px solid rgba(242,235,224,.16); background:#232427; color:var(--ivory); padding:0 8px; font:inherit; font-size:13px; max-width:180px; }
 #founder-alerts button{ font-size:13px; }
+#pause-control.st-paused{ border-color:#D98C6B; }
+#pause-control input{ min-height:34px; border-radius:8px; border:1px solid rgba(242,235,224,.16); background:#232427; color:var(--ivory); padding:0 8px; font:inherit; }

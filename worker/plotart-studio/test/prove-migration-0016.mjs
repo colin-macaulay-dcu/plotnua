@@ -28,8 +28,8 @@ check('M0 the base has no pilot tables', !beforeTables.includes('checkout_orders
 await run(MIG);
 const after = await objects();
 const NEW = ['payment_terms', 'payment_pilot_events', 'payment_accounts', 'checkout_orders', 'artwork_reservations', 'artwork_sales', 'checkout_sessions', 'payment_events', 'order_ledger', 'order_refunds', 'order_fulfilment_events', 'order_events', 'checkout_holds', 'checkout_hold_events',
-  'seller_profiles', 'quote_snapshots', 'order_messages', 'order_message_deliveries', 'checkout_mail_sink', 'checkout_owed', 'checkout_owed_payments', 'checkout_owed_payment_returns', 'checkout_founder_alert_reads'];
-check('M1 the migration creates exactly the twenty-three pilot tables', JSON.stringify(after.filter(o => o.type === 'table').map(o => o.name).filter(n => !beforeTables.includes(n)).sort()) === JSON.stringify([...NEW].sort()));
+  'seller_profiles', 'quote_snapshots', 'order_messages', 'order_message_deliveries', 'checkout_mail_sink', 'checkout_owed', 'checkout_owed_payments', 'checkout_owed_payment_returns', 'checkout_founder_alert_reads', 'checkout_pause_events'];
+check('M1 the migration creates exactly the twenty-four pilot tables', JSON.stringify(after.filter(o => o.type === 'table').map(o => o.name).filter(n => !beforeTables.includes(n)).sort()) === JSON.stringify([...NEW].sort()));
 check('M2 every existing table, index and trigger definition is unchanged', beforeObjects.every(o => after.some(a => a.type === o.type && a.name === o.name && a.sql === o.sql)));
 check('M3 every existing row is unchanged', JSON.stringify(await dump(beforeTables)) === JSON.stringify(before));
 check('M4 every new trigger is a refusal-only BEFORE trigger on a new table', after.filter(o => o.type === 'trigger' && !beforeObjects.some(b => b.name === o.name))
