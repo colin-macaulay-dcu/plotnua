@@ -117,7 +117,18 @@ The runtime key keeps its five permissions. The harness only reads.
 ## 5. Real sandbox results
 
 - **Run 33** (reported earlier): Stripe accepted the application-fee refund `fr_1Ud3cFHx1Olx8cdwLON6LFjc` (€8.06). The artist's balance showed an `adjustment` of +806, pending, on the charge, in the same second. The pilot cannot read the artist's balance with the runtime key.
-- **Run 34:** [44264008409](https://github.com/colin-macaulay-dcu/plotnua/actions/runs/44264008409), waiting for approval. **Results are not yet available and are not reported here.**
+- **Run 34:** [44264008409](https://github.com/colin-macaulay-dcu/plotnua/actions/runs/44264008409), approved 09:23, **conclusion: success**. Every check passed, and no check was inconclusive.
+
+| Check | Result | Amounts and timestamps (real Stripe) |
+|---|---|---|
+| E21c (fresh €200 payment) | **PASS** | **Fee refund:** `fr_1Ud4wIHx1Olx8cdw8oZs3KKh`, €8.06 EUR, accepted 09:14:02Z.<br>**Exactly one match on the artist's balance:** `txn_1Ud4wIHx1Olx8cdwgqiFJwEy`, type `adjustment`, +806 EUR, net 806, fee 0, status `pending`, source = charge `ch_3Ud4wCHx1Olx8cdw0xU9NhZl`, created 09:14:02Z (0 s after the fee refund), available on 25 Nov 2026. Stripe's description: "Application fee refund for ch_…". Reporting category `fee`.<br>No other entries on the charge. |
+| E21e (clock start) | **PASS** | **Signed `checkout.session.completed`:** created 09:13:58Z. The pilot's clock started here (basis `stripe_success_event_created`).<br>**Charge:** created 09:13:56Z, 2 s earlier; status `succeeded`, card, captured.<br>**Irish dates:** both 18 Nov 2026.<br>**Fee:** recorded 09:13:56Z; reimbursed 09:14:02Z, not late. |
+| E21f (run 33's reimbursement re-read) | **PASS** | **Fee refund:** `fr_1Ud3cFHx1Olx8cdwLON6LFjc`, €8.06 EUR, accepted 07:49:15Z.<br>**Exactly one match:** `txn_1Ud3cFHx1Olx8cdwX9Y2UYbR`, `adjustment` +806 EUR, `pending`, source = charge `ch_3Ud3c9Hx1Olx8cdw0Ah0fyIj`, created 07:49:15Z (0 s after), available on 25 Nov 2026. |
+
+**Unchanged in run 34:**
+- E21a/E21b PASS: Stripe fee €6.55 + VAT €1.51 = €8.06 reimbursed through the runtime key; the application fee shows `amount_refunded` 806 of 3000.
+- E21d PASS: the runtime key can read the fee's refunds, but not the artist's balance (`balance_read` refused).
+- E17d PASS: all 9 Worker calls used the runtime key.
 
 ## 6. Tests
 
