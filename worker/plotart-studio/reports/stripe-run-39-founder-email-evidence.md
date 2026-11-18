@@ -13,8 +13,10 @@
 | M2 artist and buyer messages held in the test sink; no request to any other address | PASS |
 | M3 repeated checks and the digest produced no additional sends | PASS |
 | M4 founder desk records "Emailed to you: accepted by Resend" with simulated amount and due date | PASS |
-| M5 inbox RECEIPT of both messages | INFO: awaiting founder confirmation |
+| M5 inbox RECEIPT of both messages | CONFIRMED by the founder, 18 Nov 2026 20:35: both the urgent alert and the manual digest received |
 | M6 sending switched off at the end; no deployed configuration changed | PASS |
 
-Resend acceptance (M1) is not inbox receipt. Receipt (M5) is confirmed only by the founder.
+Resend acceptance (M1) is not inbox receipt. Receipt (M5) was confirmed by the founder.
+
+**Status: sandbox email test closed (18 Nov 2026 20:35).** The digest stays unscheduled and outbound email stays off (no deployed setting enables it). Live founder email remains a separate decision.
 Nothing merged or deployed; live email remains off.
