@@ -314,7 +314,7 @@ check('Q2 the seller snapshot names the artist as seller and PlotArt as introduc
 console.log('— buyer page and hosted checkout (test 13)');
 let pg = await pub('GET', `/q/${T1}`);
 check('B1a the buyer sees the seller’s legal name, address, email, phone and trader status, and the return method, address, cost and who arranges it',
-  pg.t.includes('Gale Gallagher') && pg.t.includes('12 Studio Lane') && pg.t.includes('sales@galegallery.example') && pg.t.includes('+353 1 555 0100') && /Sells as a trader/.test(pg.t)
+  pg.t.includes('Gale Gallagher') && pg.t.includes('12 Studio Lane') && pg.t.includes('sales@galegallery.example') && pg.t.includes('+353 1 555 0100') && /Seller’s declaration/.test(pg.t)
   && pg.t.includes('Up to about €95.00') && /Arranged by<\/dt><dd>you \(the buyer\)/.test(pg.t));
 await call('PUT', '/api/checkout/seller-profile', GAL, { ...SELLER, phone: '+353 1 555 0199', confirm: true });
 check('QS3 editing seller information later never changes an issued quote', (await pub('GET', `/q/${T1}`)).t.includes('+353 1 555 0100') && !(await pub('GET', `/q/${T1}`)).t.includes('0199'));
@@ -442,6 +442,11 @@ console.log('— a quote needs current seller information and complete return ar
   await call('PUT', '/api/checkout/seller-profile', GAL, { ...SELLER, phone: '+353 1 555 0199', confirm: true });
   r = await call('POST', `/api/admin/checkout/orders/${os.id}/issue`, FOUNDER, { days: 2, linked_check_confirmed: true });
   check('SP6 with the approved seller information restored, the quote is issued', r.s === 200 && !!r.j.buyer_link && (await call('GET', '/api/checkout', GAL)).j.checkout_available === true, r.j);
+  { const page = await pub('GET', `/q/${r.j.buyer_link.split('/q/')[1]}`);
+    const CO1 = await import(HERE + FIX + 'src/checkout.js');
+    writeFileSync('/tmp/plotart-buyer-trader.txt', CO1.BUYER_TRADER_SENTENCE);
+    check('SP6b the buyer quote records what the seller declared and makes the consumer wording conditional on buying as a consumer, pointing to section 6 of the buyer terms',
+      page.t.includes('Seller’s declaration') && page.t.includes('The seller has declared to PlotArt that they sell as a trader') && page.t.includes('If you are buying as a consumer') && page.t.includes('section 6 of the buyer purchase terms'), page.t.slice(0, 300)); }
   await call('POST', `/api/admin/checkout/orders/${os.id}/cancel`, FOUNDER, { reason: 'test complete' }); }
 
 console.log('— two buyers, one original (test 6)');
@@ -876,9 +881,9 @@ console.log('— seven-day reimbursement rule (PA-PAY §3.3(b), provisional) · 
     await sweep(); await sweep();
     const corr = await q("SELECT to_role, subject, body FROM checkout_mail_sink WHERE order_id = ? AND kind = 'owed_transfer_returned'", G.id);
     const corrEv = await q("SELECT detail FROM order_events WHERE order_id = ? AND action = 'notified_owed_transfer_returned'", G.id);
-    check('SD19b ONE correction notice to the artist for the returned transfer (repeat request refused, two later sweeps add nothing), held in the test sink with outbound artist email off: it names the returned payment, its amount, execution and return dates and reference, the EUR 3.83 still owed and the unchanged due date',
+    check('SD19b ONE correction notice to the artist for the returned transfer (repeat request refused, two later sweeps add nothing), held in the test sink with outbound artist email off: it names the returned payment, its amount, execution and return dates and reference, the EUR 3.83 still owed and the unchanged due date, and does NOT contain the bank’s free-text reason (kept in the founder’s record only)',
       corr.length === 1 && corr[0].to_role === 'artist' && corrEv.length === 1 && JSON.parse(corrEv[0].detail).result.join() === 'held_in_test_sink'
-      && /Returned payment: EUR 3\.83, sent by bank transfer on \w+day \d+ \w+ \d{4} \(PlotArt’s transfer reference: SIM-TRF-0002\), returned on/.test(corr[0].body)
+      && /Returned payment: EUR 3\.83, sent by bank transfer on \w+day \d+ \w+ \d{4} \(PlotArt’s transfer reference: SIM-TRF-0002\), returned to PlotArt on \w+day \d+ \w+ \d{4}\./.test(corr[0].body) && !/beneficiary account closed|reason/i.test(corr[0].body)
       && /PlotArt still owes you EUR 3\.83 on this order\. The date it is due is unchanged: the end of Thursday 17 December 2026 \(Irish time\)\./.test(corr[0].body), { corr, corrEv });
     writeFileSync('/tmp/plotart-sd-returned.txt', corr[0] ? corr[0].subject + '\n\n' + corr[0].body : '');
     const st3 = (await call('GET', `/api/checkout/orders/${G.id}`, GAL)).j.statement, ow3 = (await call('GET', `/api/admin/checkout/orders/${G.id}`, FOUNDER)).j.owed.find(w => w.kind === 'processing_shortfall'), OG3 = await order(G.id);
@@ -927,8 +932,8 @@ console.log('— seven-day reimbursement rule (PA-PAY §3.3(b), provisional) · 
     const rk = await call('POST', `/api/admin/checkout/orders/${K.id}/shortfallreturned`, FOUNDER, { payment_id: pkId, returned_on: TODAY_IE, reason: 'SIMULATED: name does not match account' });
     await sweep(); await sweep();
     const corrK = await q("SELECT body FROM checkout_mail_sink WHERE order_id = ? AND kind = 'owed_transfer_returned'", K.id), wK2 = (await q("SELECT due_at FROM checkout_owed WHERE id = ?", wK.id))[0];
-    check('SD24 SIMULATED return after the deadline: one correction notice says the EUR 6.83 is owed again, the original due date (end of Sunday 15 November 2026) is unchanged and it is now overdue; no second overdue notice; the due date in the record is unchanged',
-      pk.s === 200 && rk.s === 200 && corrK.length === 1 && /PlotArt still owes you EUR 6\.83 on this order\. The date it is due is unchanged: the end of Sunday 15 November 2026 \(Irish time\), so it is now overdue\./.test(corrK[0].body)
+    check('SD24 SIMULATED return after the deadline: one correction notice (without the bank’s reason) says the EUR 6.83 is owed again, the original due date (end of Sunday 15 November 2026) is unchanged and it is now overdue; no second overdue notice; the due date in the record is unchanged',
+      pk.s === 200 && rk.s === 200 && corrK.length === 1 && /PlotArt still owes you EUR 6\.83 on this order\. The date it is due is unchanged: the end of Sunday 15 November 2026 \(Irish time\), so it is now overdue\./.test(corrK[0].body) && !/name does not match|reason/i.test(corrK[0].body) && (await q("SELECT reason FROM checkout_owed_payment_returns WHERE order_id = ?", K.id))[0].reason === 'SIMULATED: name does not match account'
       && (await q("SELECT 1 FROM checkout_mail_sink WHERE order_id = ? AND kind = 'owed_overdue_artist'", K.id)).length === 1 && wK2.due_at === wK.due_at, { corrK, pk: pk.j && pk.j.error, rk: rk.j && rk.j.error });
     writeFileSync('/tmp/plotart-sd-returned-late.txt', corrK[0] ? corrK[0].body : '');
     writeFileSync('/tmp/plotart-sd-dst.json', JSON.stringify({ owed: wK, desk: deskK, founder_overdue: founderK[0] && founderK[0].body, artist_overdue: artistK[0] && artistK[0].body, flag: OK2.needs_resolution, spring }, null, 2)); }

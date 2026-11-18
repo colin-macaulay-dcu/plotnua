@@ -124,17 +124,21 @@ export async function saveSellerProfile(env, artist, b) {
    allow other sellers. [Legal wording for professional review before live use.] */
 export const TRADER_CHOICES = [
   { value: 'trader', label: 'I sell as a trader',
-    meaning: 'Managed checkout is available for your sales. Your buyers have EU consumer rights against you as the seller, including the right to cancel within 14 days of receiving the artwork and return it, and your seller information is shown to them as a trader.' },
+    meaning: 'You declare to PlotArt that you sell as a trader, and buyers are told that you have made this declaration. Managed checkout is available for your sales. A buyer who buys as a consumer then has consumer rights against you as the seller, including the right to cancel set out in section 6 of the buyer purchase terms.' },
   { value: 'not_trader', label: 'I do not sell as a trader',
     meaning: 'Managed checkout is not available for your sales. You can keep selling directly, as now: buyers pay you and nothing else changes.' },
   { value: 'unsure', label: 'I’m not sure',
     meaning: 'Managed checkout stays unavailable until you confirm. You can keep selling directly, as now, and come back to this question at any time.' },
 ];
+/* What the buyer is told about the seller's declaration (quote page and purchase confirmation), aligned with PA-BPT 1.2.
+   [Draft: for professional review before live use.] */
+export const BUYER_TRADER_SENTENCE = 'The seller has declared to PlotArt that they sell as a trader, in the course of their business, craft or profession. If you are buying as a consumer, you have consumer rights under EU consumer protection law, including the right to cancel; section 6 of the buyer purchase terms explains how to cancel.';
 export const TRADER_QUESTION = {
   question: 'Do you sell your artwork as a trader?',
   intro: 'This question is only about PlotArt’s managed checkout, where the buyer pays through Stripe. It does not affect your gallery listing, enquiries, direct sales, or any Founding 25 arrangement.',
   explain: 'Selling as a trader means selling in the course of your business, craft or profession. PlotArt cannot decide this for you. If you are unsure, you may wish to take advice; meanwhile you can keep selling directly.',
   direct: 'Not sure? You do not need to complete this form. Leave it, and keep selling directly as now. You can come back to it at any time, or leave the payment pilot.',
+  review_note: 'Draft wording for the sandbox pilot, to be reviewed professionally before live use.',
   unavailable: 'Managed checkout is not available for your sales, because you have not confirmed that you sell as a trader. Your gallery listing, enquiries and direct sales continue as before. You can change your answer at any time.',
 };
 function sellerProblems(env, p) {
@@ -1381,11 +1385,11 @@ export function owedOverdueText(o, w, out, dueDay) {
     `PlotArt will contact you to arrange the bank transfer. PlotArt will never ask for your bank details by email. Your statement shows the amount still owed.`, '',
     'This message comes from the PlotArt payment pilot (test mode).'].join('\n');
 }
-export function owedReturnedText(o, w, p, returnedOn, reason, stillOwed) {
+export function owedReturnedText(o, w, p, returnedOn, stillOwed) {   // the bank's free-text reason is kept in the founder's record only, never sent to the artist
   const dueDay = w.due_basis_date ? dublinDate(Date.parse(w.due_at) - 1) : w.due_at.slice(0, 10), late = Date.parse(w.due_at) <= Date.now();
   return [`Order ${o.reference}`, '',
     `Correction: a bank transfer that PlotArt recorded as sent to you has been returned to PlotArt by the bank.`, '',
-    `Returned payment: ${eur(p.cents)}, sent by bank transfer on ${longDate(p.executed_on)} (PlotArt’s transfer reference: ${p.reference}), returned on ${longDate(returnedOn)}. The bank gave this reason: ${String(reason).replace(/[.\s]+$/, '')}.`, '',
+    `Returned payment: ${eur(p.cents)}, sent by bank transfer on ${longDate(p.executed_on)} (PlotArt’s transfer reference: ${p.reference}), returned to PlotArt on ${longDate(returnedOn)}.`, '',
     `PlotArt still owes you ${eur(stillOwed)} on this order. The date it is due is unchanged: the end of ${longDate(dueDay)} (Irish time)${late ? ', so it is now overdue. We are sorry for the delay' : ''}.`, '',
     'PlotArt will phone you to check the account details before sending it again. PlotArt will never ask for your bank details by email.', '',
     'This message comes from the PlotArt payment pilot (test mode).'].join('\n');
@@ -1680,7 +1684,7 @@ export async function recordShortfallReturned(env, founder, id, b) {
   // one correction notice per returned transfer (the return can be recorded only once: UNIQUE payment_id), test sink unless sending is approved
   const w = await one(env, 'SELECT * FROM checkout_owed WHERE id = ?', p.owed_id);
   const rest = await one(env, "SELECT COALESCE(SUM(cents - settled_cents), 0) AS c FROM checkout_owed WHERE order_id = ? AND kind IN ('processing_shortfall','commission_shortfall')", o.id);
-  await notify(env, o, 'owed_transfer_returned', owedReturnedText(o, w, p, on, why, rest.c), { artistOnly: true, subject: `PlotArt payment pilot · ${o.reference} · correction: a bank transfer to you was returned` });
+  await notify(env, o, 'owed_transfer_returned', owedReturnedText(o, w, p, on, rest.c), { artistOnly: true, subject: `PlotArt payment pilot · ${o.reference} · correction: a bank transfer to you was returned` });
   return orderDetail(env, await getOrder(env, o.id), 'founder');
 }
 /* The artist's statement for one order: every amount separated, nothing netted silently. All cents. "Paid" amounts are in
@@ -1843,7 +1847,7 @@ export function confirmationText(q, o, terms, origin) {
   L.push(`Order reference: ${o.reference}`, `Payment confirmed by Stripe: ${o.paid_at}`, `Quote version ${q.quote_version}, fingerprint ${o.quote_sha256}`, '');
   L.push('THE SELLER (your contract of sale is with the artist)', `${s.legal_name}${s.trading_name ? ` trading as ${s.trading_name}` : ''} (${s.name})`, `Address: ${s.address}`,
     ...(s.returns_address && s.returns_address !== s.address ? [`Returns and complaints: ${s.returns_address}`] : []), `Email: ${s.email}`, `Telephone: ${s.phone}`,
-    ...(s.vat_number ? [`VAT number: ${s.vat_number}`] : []), `Sells as a trader: ${trader ? 'yes' : 'no'}`,
+    ...(s.vat_number ? [`VAT number: ${s.vat_number}`] : []), trader ? `Seller's declaration: ${BUYER_TRADER_SENTENCE}` : 'Seller’s declaration: the seller has not declared that they sell as a trader.',
     `PlotArt (PlotNua, operated by Colin Macaulay, CRO business name no. 794392, hello@plotnua.ie) introduced you to the seller and provided the checkout. PlotArt is not the seller.`, '');
   L.push('THE ARTWORK', `${a.title || 'Original artwork'}${a.medium ? `, ${a.medium}` : ''}${a.h_cm ? `, ${a.h_cm} × ${a.w_cm}${a.d_cm ? ' × ' + a.d_cm : ''} cm` : ''}${a.year ? `, ${a.year}` : ''}. One original.`, '');
   L.push('WHAT YOU PAID', `Artwork: ${money(q.amounts.artwork_cents)}`, `Packing, transport and transit insurance: ${money(q.amounts.delivery_cents)}`, `Total paid by card through Stripe to the seller's own Stripe account: ${money(q.amounts.total_cents)}`, '');
@@ -1852,7 +1856,7 @@ export function confirmationText(q, o, terms, origin) {
     `Tracking: ${d.tracking}. ${d.signed_receipt ? 'Signed receipt on delivery.' : ''}${d.condition_photos ? ' Condition photographs before dispatch and on arrival.' : ''}`, '');
   L.push('RETURNS', `Method: ${d.return_method}`, `Return address: ${d.return_address}`, `Arranged by: ${PARTY_TXT[d.return_arranged_by]}`,
     `Cost of returning the artwork if you cancel for a change of mind: ${d.return_cost_basis === 'fixed' ? money(d.return_cost_cents) : `up to about ${money(d.return_cost_cents)} (estimated maximum)`}. If the artwork is damaged, faulty or not as described, the seller bears the return cost.`, '');
-  if (trader) L.push('YOUR RIGHT TO CANCEL', 'You may cancel this purchase without giving a reason within 14 days from the day you, or someone you name other than the carrier, receive the artwork. Tell the seller, or PlotArt on the seller\'s behalf (hello@plotnua.ie), clearly that you are cancelling; you may use the model form below. Return the artwork within 14 days of cancelling. The seller refunds everything you paid, including the delivery charge, within 14 days of being told, and may wait until the artwork is back or you show you have sent it. Full details are in the purchase terms below.', '');
+  if (trader) L.push('YOUR RIGHT TO CANCEL', 'If you bought as a consumer, you may cancel this purchase without giving a reason within 14 days from the day you, or someone you name other than the carrier, receive the artwork. Tell the seller, or PlotArt on the seller\'s behalf (hello@plotnua.ie), clearly that you are cancelling; you may use the model form below. Return the artwork within 14 days of cancelling. The seller refunds everything you paid, including the delivery charge, within 14 days of being told, and may wait until the artwork is back or you show you have sent it. Full details are in the purchase terms below.', '');
   else L.push('YOUR RIGHT TO CANCEL', 'The seller has declared that they do not sell as a trader, so the statutory right to cancel does not apply to this purchase. See the purchase terms below.', '');
   L.push(`PURCHASE TERMS YOU ACCEPTED: ${terms.doc_id} (${terms.title})`, `Fingerprint (SHA-256): ${terms.html_sha256}`, `Online: ${origin}/terms/${terms.doc_id}.html`, '', termsText(terms.html), '');
   if (trader) L.push('MODEL CANCELLATION FORM', '(Complete and return this form only if you wish to cancel the contract.)', `To: ${s.legal_name}, ${s.returns_address || s.address}, ${s.email} — or to PlotArt on the seller's behalf, hello@plotnua.ie`,

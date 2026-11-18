@@ -10,7 +10,7 @@
   (c) the seller's email {seller email} and telephone number {seller phone};
   (d) the seller's VAT number, if they are registered {VAT number}.
 
-1.2 **The seller is a trader.** The seller has declared to PlotArt that they sell as a trader, in the course of their business, craft or profession. PlotArt offers its managed checkout only to sellers who have made that declaration. As a consumer buying from a trader, you have the consumer rights that arise from EU consumer protection law, including the right to cancel described in section 6. [For professional review before live use: the s.107 Consumer Rights Act 2022 information and reliance on the seller's declaration.]
+1.2 **The seller's declaration.** The seller has declared to PlotArt that they sell as a trader, in the course of their business, craft or profession. PlotArt offers its managed checkout only to sellers who have made that declaration. If you are buying as a consumer, you have consumer rights under EU consumer protection law, including the right to cancel; section 6 explains how to cancel. [For professional review before live use: the s.107 Consumer Rights Act 2022 information and reliance on the seller's declaration.]
 
 1.3 **PlotArt's role.** PlotArt (PlotNua, operated by Colin Macaulay, CRO business name no. 794392, hello@plotnua.ie) introduced you to the seller. It prepares the quote and provides the checkout. PlotArt is not the seller.
   (a) The seller is responsible for the artwork, its delivery, cancellations, returns and refunds, and for the artwork matching its description.
