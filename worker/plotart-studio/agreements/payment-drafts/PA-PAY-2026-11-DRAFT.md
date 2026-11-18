@@ -1,4 +1,4 @@
-# PlotArt Payment Pilot Addendum — PA-PAY-2026-11 (DRAFT r8, 17 November 2026)
+# PlotArt Payment Pilot Addendum — PA-PAY-2026-11 (DRAFT r9, 18 November 2026)
 
 **Status: unissued draft for founder and professional review.** It has not been accepted by any artist and is not installed in PlotArt Studio. It may be offered to artists only after it has been approved, issued as fingerprinted HTML, and installed by an approved migration. Bracketed text marks drafting alternatives or details to be completed before issue. Review notes, founder decisions and evidence are kept in `PA-PAY-PA-BPT-r8-REVIEW-NOTES.md`, not in this text.
 
@@ -60,9 +60,10 @@ Commission is never charged on delivery, packing, transport, insurance, installa
 
 3.3 **Stripe processing fees: PlotArt reimburses them.** Stripe charges a processing fee on each card payment, on the whole amount the buyer pays, including delivery. Stripe deducts it, and any VAT Stripe charges on it, from the balance of the artist's Stripe account. On every pilot order:
   (a) PlotArt reimburses the artist the actual processing fee Stripe charged on that payment, and the VAT Stripe charged on that fee, if any;
-  (b) the amounts are those Stripe records for the payment, not estimates. PlotArt reimburses them after Stripe has recorded them, normally within minutes of the payment, and in any case within [7] days [provisional period, awaiting founder approval];
-  (c) the reimbursement is paid into the artist's Stripe balance by returning part of PlotArt's application fee;
-  (d) as a result, the artist's combined deduction for PlotArt commission and Stripe's processing of the payment is no more than the commission.
+  (b) the amounts are those Stripe records for the payment, not estimates. PlotArt reimburses them once Stripe has recorded them, and no later than the end of the [seventh] calendar day after the day Stripe confirmed the payment [seven days: provisional, awaiting founder approval]. Days are counted by the date in Ireland, and the day after the payment is day one. For example, for a payment Stripe confirms on Tuesday 1 December 2026, the reimbursement is due by the end of Tuesday 8 December;
+  (c) if Stripe has not recorded the amounts by the end of that [seventh] day, PlotArt tells the artist and reimburses them no later than the end of the [seventh] calendar day after the day Stripe records them, counted in the same way. In the example in (b), if Stripe recorded the fee on Thursday 10 December, the latest date would be Thursday 17 December. This later date applies only where Stripe had not recorded the amounts. It does not apply where PlotArt was late in checking Stripe or an attempt to make the reimbursement failed;
+  (d) PlotArt makes the reimbursement by refunding that amount of its application fee through Stripe. The reimbursement is made when Stripe accepts that refund. Stripe then returns the amount to the artist's Stripe balance [EVIDENCE PENDING, run 33]. PlotArt tells the artist the amount and the date. When the money reaches the artist's bank account depends on the artist's Stripe payout schedule, which this clause does not govern;
+  (e) as a result, the artist's combined deduction for PlotArt commission and Stripe's processing of the payment is no more than the commission.
 
 3.4 **What the reimbursement does not cover.** It covers Stripe's processing fee on the buyer's payment and the VAT Stripe charges on that fee, and nothing else. In particular, it does not cover:
   (a) Stripe's dispute fees (clause 7.8);

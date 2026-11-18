@@ -1359,11 +1359,27 @@ async function reimbursementAlerts(env, o, p) {
   }
   return { ...p, alerts: al };
 }
-export function delayNoticeText(o, s, days = 7) {
+/* What the artist is told about the reimbursement (statement line, and the closing message after a delay notice).
+   It states only what the pilot can show: that Stripe accepted PlotArt's refund of part of its application fee (Stripe's
+   fee_refund object and its time). The artist's bank payout is a separate matter. */
+export function reimbursementWording(p) {
+  if (!p || !p.status || p.status === 'awaiting_fee') return 'Waiting for Stripe to record the processing fee. Nothing is estimated; PlotArt reimburses it once Stripe has recorded it.';
+  if (p.status === 'outstanding') return `Stripe has recorded the processing fee and VAT (${eur(p.cost)}). PlotArt’s reimbursement is outstanding.`;
+  const fr = p.fee_refund, when = fr && fr.accepted_at ? `${longDate(dublinDate(fr.accepted_at))}` : null;
+  const paid = p.reimbursed_cents || 0;
+  return [`PlotArt reimbursed ${eur(paid)}${fr ? `: Stripe accepted PlotArt’s refund of that amount of its application fee${when ? ` on ${when}` : ''} (Stripe reference ${fr.id})` : ''}.`,
+    REIMBURSEMENT_CREDIT_WORDING,
+    p.status === 'shortfall' ? 'The rest is owed by PlotArt directly and is shown under amounts owed.' : '',
+    'When it reaches your bank account depends on your Stripe payout schedule.'].filter(Boolean).join(' ');
+}
+/* EVIDENCE PENDING (run 33): what Stripe shows on the artist's own balance for an application-fee refund. */
+export const REIMBURSEMENT_CREDIT_WORDING = 'Stripe returns it to your Stripe balance.';
+export function delayNoticeText(o, s, days = 7, today = dublinDate(Date.now())) {
+  const n = days === 7 ? 'seven' : String(days), nth = days === 7 ? 'seventh' : days + 'th', ex = addDate(today, 1);
   return [`Order ${o.reference}`, '',
-    `Stripe confirmed your buyer’s payment on ${longDate(s.confirmed_date)}. PlotArt reimburses Stripe’s processing fee, and the VAT Stripe charges on it, within ${days} calendar days of the payment: for this order, by the end of ${longDate(s.original_due)} (Irish time).`, '',
+    `Stripe confirmed your buyer’s payment on ${longDate(s.confirmed_date)}. PlotArt reimburses Stripe’s processing fee, and the VAT Stripe charges on it, within ${n} calendar days of the payment: for this order, by the end of ${longDate(s.original_due)} (Irish time).`, '',
     `Stripe has not yet recorded the processing fee for this payment, so the exact amount is not yet known. PlotArt does not estimate it.`, '',
-    `PlotArt will reimburse the fee as soon as Stripe records it, and at the latest by the end of the ${days === 7 ? 'seventh' : days + 'th'} calendar day after the day Stripe records it (Irish time). For example, if Stripe records the fee on ${longDate(addDate(s.original_due, 2))}, the latest date is ${longDate(addDate(s.original_due, 2 + days))}.`, '',
+    `PlotArt will reimburse the fee as soon as Stripe records it, and at the latest by the end of the ${nth} calendar day after the day Stripe records it (Irish time). For example, if Stripe records the fee on ${longDate(ex)}, the latest date is ${longDate(addDate(ex, days))}.`, '',
     `We will tell you the amount when the reimbursement is made. Your payout from Stripe to your bank is separate and follows your usual Stripe payout schedule.`, '',
     `This message comes from the PlotArt payment pilot (test mode).`].join('\n');
 }
@@ -1430,6 +1446,11 @@ export async function reconcileProcessing(env, o, actor = 'system') {
     const s = reimbursementSchedule({ confirmed_at: p.confirmed_at, fee_recorded_at: p.fee_recorded_at, reimbursed_at: p.completed_at, days: deadlines(env).reimburse_days });
     p.completed_late = s.completed_late;
   }
+  if (p.delay_notice_at && !p.completion_notice_at) {   // closes the loop opened by the delay notice (test sink)
+    await notify(env, o, 'reimbursement_completed', [`Order ${o.reference}`, '', `Stripe has now recorded the processing fee for this payment.`, reimbursementWording(p), '', 'This message comes from the PlotArt payment pilot (test mode).'].join('\n'),
+      { artistOnly: true, subject: `PlotArt payment pilot · ${o.reference} · processing fee reimbursed` });
+    p.completion_notice_at = now();
+  }
   await saveProcessing(env, o.id, p);
   await dropFlag(env, o.id, REIMB_FAIL_FLAG);
   return { status, cost: p.cost, reimbursed: after.reimbursed };
@@ -1488,6 +1509,7 @@ export function statement(o, ledger, owed = []) {
     shortfall_still_owed_by_plotart: shortfall_owed, commission_refund_owed: commission_refund_owed,
     net_proceeds_once_owed_amounts_are_paid: net + shortfall_owed + commission_refund_owed,
     processing_status: o.commission_cents > 0 ? (p.status || 'awaiting_fee') : 'not_applicable',
+    processing_reimbursement: o.commission_cents > 0 ? reimbursementWording(p) : null,
     not_included: notes.join(' ') };
 }
 async function feeRefund(env, founder, o, { fee, reason, refundId = null, providerRefund = null, owed = null }) {

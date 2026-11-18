@@ -784,6 +784,12 @@ console.log('— seven-day reimbursement rule (PA-PAY §3.3(b), provisional) · 
   check('SD9 once Stripe records the fee the next sweep reimburses it promptly, once; the latest date shown is 7 Irish days after the day Stripe recorded it; still one delay notice',
     PB.status === 'reimbursed' && M.feeRefunds.filter(x => x.fee === B.fee).length === 1 && dB2.extended && dB2.fee_recorded === expB && dB2.extended_due === new Date(Date.parse(expB + 'T12:00:00Z') + 7 * DAY * 1000).toISOString().slice(0, 10)
     && !dB2.completed_late && (await sink(B.id, 'reimbursement_delayed')).length === 1, { PB, dB2 });
+  const done = (await q("SELECT to_role, body FROM checkout_mail_sink WHERE order_id = ? AND kind = 'reimbursement_completed'", B.id));
+  const stB = (await call('GET', `/api/checkout/orders/${B.id}`, GAL)).j;
+  check('SD9c after a delay notice, ONE closing message to the artist (test sink) states the amount, that Stripe accepted the application-fee refund, its date and Stripe reference, and that the bank payout is separate; the statement carries the same wording',
+    done.length === 1 && done[0].to_role === 'artist' && /PlotArt reimbursed EUR 21\.83: Stripe accepted PlotArt’s refund of that amount of its application fee on \w+day \d+ \w+ \d{4} \(Stripe reference fr_test_\w+\)/.test(done[0].body)
+    && /depends on your Stripe payout schedule/.test(done[0].body) && stB.statement && stB.statement.processing_reimbursement === done[0].body.split('\n')[3], { done, st: stB.statement && stB.statement.processing_reimbursement });
+  writeFileSync(HERE + 'test/.sd-completion.txt', done[0] ? done[0].body : '');
   // B2 · the pilot saw no fee at the deadline and sent the notice, but Stripe's own time later shows the fee was recorded before it
   const B2 = await sdOrder('E', { chargeAgeDays: 8, btPending: true });
   await sweep();
