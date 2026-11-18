@@ -44,8 +44,8 @@ const intEnv = (env, k, d) => { const n = Number(env[k]); return Number.isIntege
 export const DEADLINE_DECISIONS = {
   reimburse_days: { clause: 'PA-PAY 3.3', value: 7, unit: 'Irish calendar days', status: 'approved_for_sandbox_pilot', decided_by: 'founder', decided_at: '2026-11-18T09:30:00Z',
     scope: 'Sandbox pilot rule for the processing-fee reimbursement only. Artist terms remain draft and unissued.' },
-  shortfall_days: { clause: 'PA-PAY 3.5', value: 30, status: 'provisional', decided_by: null, decided_at: null,
-    scope: 'Bank-transfer payment of any amount the application fee cannot cover. Awaiting the founder’s decision.' },
+  shortfall_days: { clause: 'PA-PAY 3.5', value: 30, unit: 'Irish calendar days', status: 'approved_for_sandbox_pilot', decided_by: 'founder', decided_at: '2026-11-18T09:40:00Z',
+    scope: 'Sandbox pilot rule for bank-transfer payment of processing-fee and commission-return shortfalls: 30 Irish calendar days from the Irish date of the transaction record that first established the amount. Artist terms remain draft and unissued.' },
 };
 const approved = (k, v) => DEADLINE_DECISIONS[k].status === 'approved_for_sandbox_pilot' && DEADLINE_DECISIONS[k].value === v;
 export function deadlines(env) {
@@ -54,7 +54,7 @@ export function deadlines(env) {
   return { reimburse_days, shortfall_days, reimburse_provisional, shortfall_provisional,
     provisional: shortfall_provisional,   // the bank-transfer (shortfall) deadline; kept under this name for the owed queue
     reminder_days_before: intEnv(env, 'CHECKOUT_OWED_REMINDER_DAYS', 7), lost_dispute_commission_days: 30, decisions: DEADLINE_DECISIONS,
-    note: `Processing reimbursement (PA-PAY 3.3): ${reimburse_days} Irish calendar days${reimburse_provisional ? ', provisional' : ', approved by the founder as the sandbox pilot rule on 18 Nov 2026'}. Bank-transfer shortfall (PA-PAY 3.5): ${shortfall_days} days${shortfall_provisional ? ', provisional, awaiting the founder’s decision' : ', approved'}. Lost-dispute commission: the existing PA-GAA cl. 9.1 period (30 days).` };
+    note: `Processing reimbursement (PA-PAY 3.3): ${reimburse_days} Irish calendar days${reimburse_provisional ? ', provisional' : ', approved by the founder as the sandbox pilot rule on 18 Nov 2026'}. Bank-transfer shortfall (PA-PAY 3.5): ${shortfall_days} Irish calendar days${shortfall_provisional ? ', provisional' : ', approved by the founder as the sandbox pilot rule on 18 Nov 2026'}. Lost-dispute commission: the existing PA-GAA cl. 9.1 period (30 days).` };
 }
 
 /* ---------------------------------------------------------------- messages: test sink unless sending is configured AND approved
@@ -301,19 +301,28 @@ export function orderView(o, role) {
   return v;
 }
 /* Order list with each paid order's statement (one ledger query for the whole list). */
+async function owedForStatements(env, ids) {
+  if (!ids.length) return {};
+  const qs = ids.map(() => '?').join(','), by = {};
+  const pays = await all(env, `SELECT p.owed_id, p.cents, p.method, p.reference, p.executed_on, r.returned_on FROM checkout_owed_payments p LEFT JOIN checkout_owed_payment_returns r ON r.payment_id = p.id
+    WHERE p.order_id IN (${qs}) ORDER BY p.at, p.rowid`, ...ids);
+  for (const w of await all(env, `SELECT id, order_id, kind, cents, settled_cents, due_at, due_basis_date FROM checkout_owed WHERE order_id IN (${qs})`, ...ids))
+    (by[w.order_id] = by[w.order_id] || []).push({ ...w, payments: pays.filter(p => p.owed_id === w.id) });
+  return by;
+}
 async function withStatements(env, rows, role) {
   const paid = rows.filter(o => o.payment_intent).map(o => o.id), by = {}, ow = {};
   if (paid.length) {
     const qs = paid.map(() => '?').join(',');
     for (const l of await all(env, `SELECT order_id, kind, amount_cents FROM order_ledger WHERE order_id IN (${qs})`, ...paid)) (by[l.order_id] = by[l.order_id] || []).push(l);
-    for (const w of await all(env, `SELECT order_id, kind, cents, settled_cents FROM checkout_owed WHERE order_id IN (${qs})`, ...paid)) (ow[w.order_id] = ow[w.order_id] || []).push(w);
+    Object.assign(ow, await owedForStatements(env, paid));
   }
   return rows.map(o => ({ ...orderView(o, role), statement: o.payment_intent ? statement(o, by[o.id] || [], ow[o.id] || []) : null }));
 }
 export async function orderDetail(env, o, role) {
   return { order: orderView(o, role), events: await all(env, 'SELECT at, actor, action, prior_status, new_status, detail FROM order_events WHERE order_id = ? ORDER BY id', o.id),
     ledger: await all(env, 'SELECT kind, amount_cents, provider_ref, at, note FROM order_ledger WHERE order_id = ? ORDER BY at, rowid', o.id),
-    statement: statement(o, await all(env, 'SELECT kind, amount_cents FROM order_ledger WHERE order_id = ?', o.id), await all(env, 'SELECT kind, cents, settled_cents FROM checkout_owed WHERE order_id = ?', o.id)),
+    statement: statement(o, await all(env, 'SELECT kind, amount_cents FROM order_ledger WHERE order_id = ?', o.id), (await owedForStatements(env, [o.id]))[o.id] || []),
     owed: await owedRows(env, 'o.id = ?', o.id),
     messages: await all(env, 'SELECT id, kind, item_key, recipient_role, subject, sha256, created_at FROM order_messages WHERE order_id = ? ORDER BY created_at', o.id),
     mail: (({ summary, external_sending }) => ({ summary, external_sending }))(mailMode(env)),
@@ -417,7 +426,7 @@ export async function pollPendingRefunds(env) {
     if (rr.provider_refund_id) {
       try {
         const re = await S.getRefund(env, { account: o.provider_account, id: rr.provider_refund_id }); checked++;
-        if (re.status === 'succeeded') { await completeRefund(env, 'sweep', rr); completed++; continue; }
+        if (re.status === 'succeeded') { await completeRefund(env, 'sweep', rr); completed++; continue; }   // a pending refund that has since succeeded: no Stripe success time (flagged for review)
         if (['failed', 'canceled'].includes(re.status)) { await failRefund(env, rr, re); failed++; continue; }
       } catch { /* Stripe unreachable: try again next sweep */ }
     }
@@ -456,7 +465,8 @@ export async function recordExternalRepayment(env, founder, id, b) {
     evSt(env, o.id, founder, 'external_repayment_recorded', o.status, o.status, { art, del, evidence: evidence.slice(0, 300) }),
   ]);
   const row = await one(env, 'SELECT * FROM order_refunds WHERE provider_refund_id = ?', ref);
-  if (fee > 0) await feeRefund(env, founder, await getOrder(env, o.id), { fee, reason: 'commission share on an external repayment', refundId: row.id, providerRefund: ref });
+  if (fee > 0) await feeRefund(env, founder, await getOrder(env, o.id), { fee, reason: 'commission share on an external repayment', refundId: row.id, providerRefund: ref,
+    basis: { event: 'external_repayment_recorded', at: now(), source: 'pilot', review: 'Started from when the founder recorded the artist’s direct repayment of the buyer: check the date against the repayment evidence.' } });
   return settleAfterRefund(env, founder, o.id);
 }
 
@@ -855,7 +865,7 @@ async function apply(env, ev, obj) {
       if (!mine) return { status: 'ignored', detail: 'not a PlotArt refund (artist refunds arrive as charge.refunded)' };
       const o = await getOrder(env, mine.order_id);
       if (ev.account && o.provider_account !== ev.account) throw new Error('event account does not match the order');
-      if (obj.status === 'succeeded') { await completeRefund(env, 'provider', { ...mine, provider_refund_id: obj.id }); return { status: 'processed', order: o.id, detail: 'refund succeeded' }; }
+      if (obj.status === 'succeeded') { await completeRefund(env, 'provider', { ...mine, provider_refund_id: obj.id }, ev.created ? { event: `stripe_event:${ev.type}`, at: iso(ev.created), source: 'stripe' } : null); return { status: 'processed', order: o.id, detail: 'refund succeeded' }; }
       if (['failed', 'canceled'].includes(obj.status)) { await failRefund(env, mine, obj); return { status: 'processed', order: o.id, detail: 'refund failed' }; }
       return { status: 'processed', order: o.id, detail: 'refund still ' + obj.status };
     }
@@ -1009,7 +1019,7 @@ async function recordRefunds(env, o, ch) {
     const mine = await one(env, 'SELECT * FROM order_refunds WHERE provider_refund_id = ?', r.id)
       || (r.metadata && r.metadata.plotart_refund ? await one(env, 'SELECT * FROM order_refunds WHERE id = ? AND order_id = ?', r.metadata.plotart_refund, o.id) : null);
     if (mine) {
-      if (mine.status !== 'succeeded') await completeRefund(env, 'provider', { ...mine, provider_refund_id: r.id });
+      if (mine.status !== 'succeeded') await completeRefund(env, 'provider', { ...mine, provider_refund_id: r.id }, mine.status !== 'pending' && r.created ? { event: 'stripe_refund_created_succeeded', at: iso(r.created), source: 'stripe' } : null);
       out.push(`${r.id} confirmed`);
       continue;
     } else {
@@ -1102,7 +1112,7 @@ export async function refund(env, founder, id, b) {
     const w = await one(env, "SELECT * FROM checkout_owed WHERE order_id = ? AND kind = 'lost_dispute_commission' AND settled_cents < cents ORDER BY arisen_at LIMIT 1", o.id);
     const fee = w ? w.cents - w.settled_cents : Math.max(0, o.commission_cents - tot.fee);
     if (!fee) return { already: true, ...(await orderDetail(env, o, 'founder')) };
-    return feeRefund(env, founder, o, { fee, reason, owed: w });
+    return feeRefund(env, founder, o, { fee, reason, owed: w, basis: w ? { event: 'dispute_closed_lost', at: w.arisen_at, source: 'pilot', review: 'Started from when the pilot recorded Stripe closing the dispute as lost: check the closing date in the Stripe Dashboard.' } : null });
   }
   const art = b.artwork_cents ?? 0, del = b.delivery_cents ?? 0;
   if (!Number.isInteger(art) || !Number.isInteger(del) || art < 0 || del < 0 || art + del === 0) throw new Bad('Give the refund amounts in whole cents');
@@ -1125,7 +1135,7 @@ export async function refund(env, founder, id, b) {
   }
   await run(env, 'UPDATE order_refunds SET provider_refund_id = COALESCE(provider_refund_id, ?), updated_at = ? WHERE id = ?', re.id, now(), rr.id);
   const row = await one(env, 'SELECT * FROM order_refunds WHERE id = ?', rr.id);
-  if (re.status === 'succeeded') return completeRefund(env, founder, row);
+  if (re.status === 'succeeded') return completeRefund(env, founder, row, re.created ? { event: 'stripe_refund_created_succeeded', at: iso(re.created), source: 'stripe' } : null);
   if (['failed', 'canceled'].includes(re.status)) { await failRefund(env, row, re); return orderDetail(env, await getOrder(env, o.id), 'founder'); }
   // pending: for a card refund Stripe holds it when the artist's AVAILABLE Stripe balance cannot cover it (for example after
   // the payout), until the balance recovers; Stripe fails a pending refund after 45 days. Nothing is booked until it succeeds.
@@ -1138,7 +1148,7 @@ export async function refund(env, founder, id, b) {
 }
 /* A refund confirmed by Stripe: book it, return PlotArt's commission share (GAA 9) and settle the order. Idempotent: the
    ledger is unique per (kind, refund id) and the commission refund uses an idempotency key per refund request. */
-async function completeRefund(env, actor, rr) {
+async function completeRefund(env, actor, rr, basis = null) {
   const o = await getOrder(env, rr.order_id);
   await env.DB.batch([
     st(env, "UPDATE order_refunds SET status = 'succeeded', provider_refund_id = COALESCE(provider_refund_id, ?), updated_at = ? WHERE id = ?", rr.provider_refund_id, now(), rr.id),
@@ -1147,7 +1157,8 @@ async function completeRefund(env, actor, rr) {
   ]);
   if (o.needs_resolution && o.needs_resolution.includes(`refund ${rr.provider_refund_id} is pending`)) await run(env, 'UPDATE checkout_orders SET needs_resolution = NULL, updated_at = ? WHERE id = ?', now(), o.id);
   const cur = await one(env, 'SELECT fee_refund_id FROM order_refunds WHERE id = ?', rr.id);
-  if (rr.commission_refund_cents > 0 && !cur.fee_refund_id) await feeRefund(env, actor, await getOrder(env, o.id), { fee: rr.commission_refund_cents, reason: rr.reason, refundId: rr.id, providerRefund: rr.provider_refund_id });
+  if (rr.commission_refund_cents > 0 && !cur.fee_refund_id) await feeRefund(env, actor, await getOrder(env, o.id), { fee: rr.commission_refund_cents, reason: rr.reason, refundId: rr.id, providerRefund: rr.provider_refund_id,
+    basis: basis || { event: 'refund_success_seen_by_pilot', at: now(), source: 'pilot', review: 'Started from when the pilot found the buyer refund succeeded (Stripe gave no success time): check the refund in the Stripe Dashboard.' } });
   return settleAfterRefund(env, actor, o.id);
 }
 async function failRefund(env, rr, re) {
@@ -1240,25 +1251,50 @@ const eur = c => `EUR ${(c / 100).toFixed(2)}`;
    (PA-GAA 9.1). Each item's amount, rule and due date are fixed when it arises; settlement is recorded payment by payment,
    never above the amount (database CHECK), and a payment reference can be recorded only once per item. */
 const SHORTFALL_KINDS = ['processing_shortfall', 'commission_shortfall'];
-async function owe(env, o, { kind, key, cents, reason }) {
+/* PA-PAY 3.5 (sandbox rule approved by the founder 18 Nov 2026): a bank-transfer amount is due by the end of the 30th Irish
+   calendar day after the Irish date of the transaction record that first established it (the next day is day one). The
+   record used, its time and its Irish date are stored; a start that rests on the pilot's own record rather than Stripe's
+   is flagged for founder review. The due date is fixed once: later reconciliation, retries, partial payments and returned
+   transfers never move it, and items created before this rule keep the date they were given. */
+export function shortfallDue(basisAt, days = 30) {
+  const basis_date = dublinDate(basisAt), due_date = addDate(basis_date, days);
+  return { basis_date, due_date, due_at: new Date(dublinDayEnd(due_date)).toISOString() };
+}
+const BASIS_LABEL = { stripe_fee_recorded: 'Stripe’s record of the processing fee', stripe_refund_created_succeeded: 'Stripe’s record of the buyer refund',
+  refund_success_seen_by_pilot: 'the pilot’s record of the buyer refund succeeding', external_repayment_recorded: 'the founder’s record of the artist repaying the buyer directly',
+  dispute_closed_lost: 'the pilot’s record of Stripe closing the dispute as lost', pilot_computed: 'the pilot’s own calculation' };
+const basisLabel = e => BASIS_LABEL[e] || (String(e).startsWith('stripe_event:') ? 'Stripe’s event for the buyer refund' : e);
+async function owe(env, o, { kind, key, cents, reason, basis = null }) {
   if (!(cents > 0)) return null;
   const d = deadlines(env), t = now(), lost = kind === 'lost_dispute_commission';
-  const days = lost ? d.lost_dispute_commission_days : d.shortfall_days;
-  const rule = lost ? `PA-GAA cl. 9.1: commission returned within ${days} days of notice (here, Stripe closing the dispute as lost)`
-    : `${d.provisional ? 'PROVISIONAL, awaiting founder approval: ' : ''}paid directly within ${days} days of arising (PA-PAY draft cl. 3.5)`;
-  const r = await run(env, `INSERT INTO checkout_owed (id, order_id, kind, item_key, cents, reason, arisen_at, due_at, due_rule, due_provisional) VALUES (?,?,?,?,?,?,?,?,?,?)
-    ON CONFLICT(order_id, item_key) DO NOTHING`, rid('ow'), o.id, kind, key, cents, String(reason).slice(0, 500), t, plusDays(t, days), rule, lost ? 0 : d.provisional ? 1 : 0);
-  if (r.meta.changes) await event(env, o.id, 'system', 'owed_recorded', o.status, o.status, { kind, key, cents, due_in_days: days, provisional: !lost && d.provisional });
+  let r;
+  if (lost) {
+    const days = d.lost_dispute_commission_days;
+    r = await run(env, `INSERT INTO checkout_owed (id, order_id, kind, item_key, cents, reason, arisen_at, due_at, due_rule, due_provisional) VALUES (?,?,?,?,?,?,?,?,?,?)
+      ON CONFLICT(order_id, item_key) DO NOTHING`, rid('ow'), o.id, kind, key, cents, String(reason).slice(0, 500), t, plusDays(t, days),
+      `PA-GAA cl. 9.1: commission returned within ${days} days of notice (here, Stripe closing the dispute as lost)`, 0);
+  } else {
+    const b = basis && basis.at ? basis : { event: 'pilot_computed', at: t, source: 'pilot', review: 'No transaction record time was available: the start date is when the pilot worked out the amount.' };
+    const days = d.shortfall_days, due = shortfallDue(b.at, days);
+    const review = b.review || (b.source !== 'stripe' ? 'The start date rests on the pilot’s own record, not Stripe’s.' : null);
+    const rule = `${d.shortfall_provisional ? 'PROVISIONAL: ' : ''}paid by bank transfer by the end of day ${days} (Irish time) counted from ${longDate(due.basis_date)}, the Irish date of ${basisLabel(b.event)} (day one is the next day; PA-PAY draft cl. 3.5)`;
+    r = await run(env, `INSERT INTO checkout_owed (id, order_id, kind, item_key, cents, reason, arisen_at, due_at, due_rule, due_provisional, due_basis_event, due_basis_at, due_basis_date, due_basis_source, due_review)
+      VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ON CONFLICT(order_id, item_key) DO NOTHING`, rid('ow'), o.id, kind, key, cents, String(reason).slice(0, 500), t, due.due_at, rule,
+      d.shortfall_provisional ? 1 : 0, b.event, b.at, due.basis_date, b.source === 'stripe' ? 'stripe' : 'pilot', review);
+    if (r.meta.changes && review) await notify(env, o, 'owed_start_for_review', `FOR REVIEW: order ${o.reference} — PlotArt owes the artist ${eur(cents)} by bank transfer (${kind.replace(/_/g, ' ')}). The 30 days run from ${longDate(due.basis_date)} (${basisLabel(b.event)}), so it is due by the end of ${longDate(due.due_date)} (Irish time). ${review}`, { founderOnly: true });
+  }
+  if (r.meta.changes) await event(env, o.id, 'system', 'owed_recorded', o.status, o.status, { kind, key, cents, provisional: !lost && d.shortfall_provisional, basis });
   await setOwedFlag(env, o.id);
   return one(env, 'SELECT * FROM checkout_owed WHERE order_id = ? AND item_key = ?', o.id, key);
 }
-const addShortfall = (env, o, key, cents, why) => owe(env, o, { kind: key.startsWith('commission:') ? 'commission_shortfall' : 'processing_shortfall', key, cents, reason: why });
+const addShortfall = (env, o, key, cents, why, basis = null) => owe(env, o, { kind: key.startsWith('commission:') ? 'commission_shortfall' : 'processing_shortfall', key, cents, reason: why, basis });
 /* The order's flag always states the shortfall still owed (never hidden by other flags, never left after payment). */
 async function setOwedFlag(env, id) {
   const o = await getOrder(env, id);
   const owed = (await one(env, `SELECT COALESCE(SUM(cents - settled_cents), 0) AS c, MIN(due_at) AS due FROM checkout_owed WHERE order_id = ? AND kind IN ('processing_shortfall','commission_shortfall') AND settled_cents < cents`, id));
   const rest = (o.needs_resolution || '').split(' | ').filter(x => x && !x.startsWith('PlotArt owes the artist')).join(' | ');
-  const flag = owed.c > 0 ? `PlotArt owes the artist ${eur(owed.c)} that cannot be paid from this order's application fee (due ${owed.due.slice(0, 10)}). PlotArt must pay it directly (for example by bank transfer) and record it with "Record shortfall paid".` : '';
+  const late = owed.c > 0 && Date.parse(owed.due) <= Date.now();
+  const flag = owed.c > 0 ? `PlotArt owes the artist ${eur(owed.c)} that cannot be paid from this order's application fee (${late ? 'OVERDUE: was ' : ''}due by the end of ${longDate(dublinDate(Date.parse(owed.due) - 1))}, Irish time). ${late ? 'Follow up with the artist promptly (internal target: resolved within 5 working days of the deadline; the artist’s deadline still applies). ' : ''}PlotArt must pay it by bank transfer and record it with "Record shortfall paid" once the bank shows it executed.` : '';
   const nr = [flag, rest].filter(Boolean).join(' | ') || null;
   if (nr !== o.needs_resolution) await run(env, 'UPDATE checkout_orders SET needs_resolution = ?, updated_at = ? WHERE id = ?', nr, now(), id);
 }
@@ -1267,10 +1303,10 @@ async function dropFlag(env, id, prefix) {
   const nr = (o.needs_resolution || '').split(' | ').filter(x => x && !x.startsWith(prefix)).join(' | ') || null;
   if (nr !== o.needs_resolution) await run(env, 'UPDATE checkout_orders SET needs_resolution = ?, updated_at = ? WHERE id = ?', nr, now(), id);
 }
-async function settleOwed(env, w, { cents, method, reference, actor }) {
+async function settleOwed(env, w, { cents, method, reference, actor, executedOn = null }) {
   if (!(cents > 0)) return;
   await env.DB.batch([
-    st(env, 'INSERT INTO checkout_owed_payments (id, owed_id, order_id, cents, method, reference, recorded_by, at) VALUES (?,?,?,?,?,?,?,?)', rid('op'), w.id, w.order_id, cents, method, reference, actor, now()),
+    st(env, 'INSERT INTO checkout_owed_payments (id, owed_id, order_id, cents, method, reference, executed_on, recorded_by, at) VALUES (?,?,?,?,?,?,?,?,?)', rid('op'), w.id, w.order_id, cents, method, reference, executedOn, actor, now()),
     st(env, 'UPDATE checkout_owed SET settled_cents = settled_cents + ? WHERE id = ? AND settled_cents + ? <= cents', cents, w.id, cents)]);
 }
 async function owedRows(env, where, ...b) {
@@ -1281,14 +1317,25 @@ async function owedRows(env, where, ...b) {
     w.outstanding_cents = w.cents - w.settled_cents;
     w.age_days = Math.floor((t - Date.parse(w.arisen_at)) / 86400_000);
     w.status = w.outstanding_cents <= 0 ? 'settled' : Date.parse(w.due_at) < t ? 'overdue' : 'open';
-    w.due_date = w.due_at.slice(0, 10);
+    w.due_date = w.due_basis_date ? dublinDate(Date.parse(w.due_at) - 1) : w.due_at.slice(0, 10);   // Irish date for the 3.5 rule; legacy items keep their stored date
+    w.due_label = w.due_basis_date ? `by the end of ${longDate(w.due_date)} (Irish time)` : `${w.due_date} (date assigned before the 18 Nov 2026 rule)`;
+    w.due_review = w.due_review || null;
     w.due_provisional = !!w.due_provisional;
     w.reminders = J(w.reminders) || [];
-    w.payments = await all(env, 'SELECT cents, method, reference, recorded_by, at FROM checkout_owed_payments WHERE owed_id = ? ORDER BY at', w.id);
+    w.payments = await all(env, `SELECT p.id, p.cents, p.method, p.reference, p.executed_on, p.recorded_by, p.at, r.returned_on, r.reason AS returned_reason, r.recorded_by AS return_recorded_by, r.at AS return_recorded_at
+      FROM checkout_owed_payments p LEFT JOIN checkout_owed_payment_returns r ON r.payment_id = p.id WHERE p.owed_id = ? ORDER BY p.at, p.rowid`, w.id);
   }
   return rows;
 }
-/* Reminders to the founder (test sink only): once when an item is due within the reminder period, once when overdue. */
+/* Working days (Monday to Friday; Irish public holidays are not counted out) after an Irish date: the founder's internal
+   target for resolving an overdue amount. It never changes the artist's deadline. */
+export function workingDaysAfter(date, n) {
+  let d = date, k = 0;
+  while (k < n) { d = addDate(d, 1); const wd = new Date(d + 'T12:00:00Z').getUTCDay(); if (wd !== 0 && wd !== 6) k++; }
+  return d;
+}
+/* Reminders (test sink only). Founder: once 7 days before the deadline, and once when it is overdue, with a prompt to follow
+   up. Artist: one notice when a bank-transfer amount becomes overdue (shortfalls only; one per item). */
 async function remindOwed(env) {
   const d = deadlines(env), t = Date.now();
   let sent = 0;
@@ -1296,12 +1343,31 @@ async function remindOwed(env) {
     const due = Date.parse(w.due_at), stage = t >= due ? 'overdue' : due - t <= d.reminder_days_before * 86400_000 ? 'due_soon' : null;
     const done = J(w.reminders) || [];
     if (!stage || done.includes(stage)) continue;
-    const o = await getOrder(env, w.order_id);
-    await notify(env, o, `owed_${stage}`, `PlotArt owes the artist ${eur(w.cents - w.settled_cents)} on order ${o.reference} (${w.kind.replace(/_/g, ' ')}), due ${w.due_at.slice(0, 10)}${w.due_provisional ? ' (provisional deadline)' : ''}. ${stage === 'overdue' ? 'This is now OVERDUE. ' : ''}See the founder desk: Amounts owed. Do not put bank details in email; follow the bank details process.`, { founderOnly: true });
+    const o = await getOrder(env, w.order_id), out = w.cents - w.settled_cents, bank = SHORTFALL_KINDS.includes(w.kind);
+    const dueDay = w.due_basis_date ? dublinDate(due - 1) : w.due_at.slice(0, 10), dueText = w.due_basis_date ? `the end of ${longDate(dueDay)} (Irish time)` : dueDay;
+    const target = w.due_basis_date ? workingDaysAfter(dueDay, 5) : null;
+    await notify(env, o, `owed_${stage}`, stage === 'overdue'
+      ? `OVERDUE — follow up promptly: PlotArt owes the artist ${eur(out)} on order ${o.reference} (${w.kind.replace(/_/g, ' ')}). It was due by ${dueText}${w.due_provisional ? ' (provisional deadline)' : ''}. ${bank ? `Phone the artist on the number in their seller information, pay by bank transfer, and record the payment once the bank shows it executed. Internal resolution target: ${target ? longDate(target) : 'within 5 working days'} (5 working days after the deadline). The artist’s deadline still applies. ` : ''}Founder desk: Amounts owed. Never put bank details in email.`
+      : `Due in 7 days or less: PlotArt owes the artist ${eur(out)} on order ${o.reference} (${w.kind.replace(/_/g, ' ')}), due by ${dueText}${w.due_provisional ? ' (provisional deadline)' : ''}. Founder desk: Amounts owed. Never put bank details in email; follow the bank details process.`, { founderOnly: true });
+    if (stage === 'overdue' && bank) await notify(env, o, 'owed_overdue_artist', owedOverdueText(o, w, out, dueDay), { artistOnly: true, subject: `PlotArt payment pilot · ${o.reference} · amount owed to you is overdue` });
     await run(env, 'UPDATE checkout_owed SET reminders = ? WHERE id = ?', JSON.stringify([...done, stage]), w.id);
+    if (stage === 'overdue') await setOwedFlag(env, o.id);
     sent++;
   }
   return sent;
+}
+export function owedOverdueText(o, w, out, dueDay) {
+  return [`Order ${o.reference}`, '',
+    `PlotArt owes you ${eur(out)} that could not be paid through Stripe (${w.kind === 'commission_shortfall' ? 'commission PlotArt must return to you' : 'part of Stripe’s processing fee and VAT that PlotArt reimburses'}). It was due by the end of ${longDate(dueDay)} (Irish time), and it has not yet been paid in full. We are sorry for the delay.`, '',
+    `PlotArt will contact you to arrange the bank transfer. PlotArt will never ask for your bank details by email. Your statement shows the amount still owed.`, '',
+    'This message comes from the PlotArt payment pilot (test mode).'].join('\n');
+}
+export function owedPaymentText(o, w, cents, executedOn, reference, stillOwed, dueDay) {
+  return [`Order ${o.reference}`, '',
+    `PlotArt sent you ${eur(cents)} by bank transfer on ${longDate(executedOn)} (PlotArt’s transfer reference: ${reference}). This is ${w.kind === 'commission_shortfall' ? 'commission PlotArt returns to you' : 'part of Stripe’s processing fee and VAT that PlotArt reimburses'} and could not be paid through Stripe.`, '',
+    stillOwed > 0 ? `Still owed to you by PlotArt on this order: ${eur(stillOwed)}${dueDay ? `, due by the end of ${longDate(dueDay)} (Irish time)` : ''}.` : 'Nothing more is owed to you by bank transfer on this order.', '',
+    'How long the transfer takes to appear in your account depends on your bank.', '',
+    'This message comes from the PlotArt payment pilot (test mode).'].join('\n');
 }
 export const BANK_DETAILS_PROCESS = [
   'Bank details are never entered in PlotArt Studio, the payment pilot, its logs or its emails.',
@@ -1403,7 +1469,15 @@ async function reimbursementAlerts(env, o, p) {
    It states only what the pilot can show: that Stripe accepted PlotArt's refund of part of its application fee (Stripe's
    fee_refund object and its time). Where the application fee left on the order cannot cover it, the rest is owed by
    PlotArt directly under PA-PAY 3.5 and both amounts are shown. The artist's bank payout is a separate matter. */
-export function reimbursementWording(p, { shortfallOutstanding = 0, shortfallPaid = 0, reimbursed = null } = {}) {
+export function transferLines(items) {
+  const out = [];
+  for (const w of items) for (const p of w.payments || []) if (p.method === 'bank_transfer')
+    out.push(p.returned_on ? `${eur(p.cents)} sent by bank transfer on ${longDate(p.executed_on)} was returned by the bank on ${longDate(p.returned_on)} and is owed again.`
+      : `${eur(p.cents)} sent by bank transfer on ${longDate(p.executed_on)}.`);
+  return out;
+}
+const owedDueDay = w => w.due_basis_date ? dublinDate(Date.parse(w.due_at) - 1) : w.due_at.slice(0, 10);
+export function reimbursementWording(p, { shortfallOutstanding = 0, reimbursed = null, items = [] } = {}) {
   if (!p || !p.status || p.status === 'awaiting_fee') return 'We have not yet been able to confirm the fee Stripe charged on this payment. Nothing is estimated: PlotArt reimburses it once Stripe has recorded it.';
   if (p.status === 'outstanding') return `Stripe charged a processing fee and VAT of ${eur(p.cost)} on this payment. PlotArt’s reimbursement of it is outstanding.`;
   const fr = p.fee_refund, when = fr && fr.accepted_at ? longDate(dublinDate(fr.accepted_at)) : null;
@@ -1412,8 +1486,9 @@ export function reimbursementWording(p, { shortfallOutstanding = 0, shortfallPai
     ? `PlotArt reimbursed ${eur(paid)}${p.status === 'shortfall' ? ` of the ${eur(p.cost)} processing fee and VAT` : ''} through Stripe${fr ? `: Stripe accepted PlotArt’s refund of that amount of its application fee${when ? ` on ${when}` : ''} (Stripe reference ${fr.id})` : ''}. ${REIMBURSEMENT_CREDIT_WORDING}`
     : `Stripe charged a processing fee and VAT of ${eur(p.cost)} on this payment. None of it could be reimbursed through Stripe, because nothing was left of PlotArt’s application fee on this order.`];
   if (p.status === 'shortfall' && rest > 0) {
-    out.push(`The remaining ${eur(rest)} could not be reimbursed through Stripe, because it is more than what was left of PlotArt’s application fee on this order. PlotArt pays it to you directly by bank transfer (clause 3.5).`);
-    if (shortfallPaid > 0) out.push(`Paid to you by bank transfer so far: ${eur(shortfallPaid)}.`);
+    const proc = items.filter(w => w.kind === 'processing_shortfall'), due = proc[0] && proc[0].due_basis_date ? owedDueDay(proc[0]) : null;
+    out.push(`The remaining ${eur(rest)} could not be reimbursed through Stripe, because it is more than what was left of PlotArt’s application fee on this order. PlotArt pays it to you directly by bank transfer (clause 3.5)${due ? `, by the end of ${longDate(due)} (Irish time)` : ''}.`);
+    out.push(...transferLines(proc));
     out.push(shortfallOutstanding > 0 ? `Still owed to you by PlotArt: ${eur(shortfallOutstanding)}. Your statement shows it under “Owed by PlotArt, not yet paid” until it is paid.` : 'Nothing is still owed.');
   }
   if (paid > 0) out.push('When the amount reimbursed through Stripe reaches your bank account depends on your Stripe payout schedule.');
@@ -1505,7 +1580,10 @@ export async function reconcileProcessing(env, o, actor = 'system') {
     p = { ...p, fee_refund: { id: fr.id, amount: fr.amount, accepted_at: fr.created ? iso(fr.created) : t, accepted_basis: fr.created ? 'stripe_fee_refund_created' : 'pilot_time_of_answer',
       platform_balance_transaction: typeof fr.balance_transaction === 'string' ? fr.balance_transaction : fr.balance_transaction && fr.balance_transaction.id || null } };
   }
-  if (due - pay > 0) await addShortfall(env, o, 'processing', due - pay, `Stripe's processing cost ${eur(p.cost)} exceeds what is left of the commission`);
+  if (due - pay > 0) await addShortfall(env, o, 'processing', due - pay, `Stripe's processing cost ${eur(p.cost)} exceeds what is left of the commission`,
+    { event: 'stripe_fee_recorded', at: p.fee_recorded_at || t, source: p.fee_recorded_basis === 'stripe_balance_transaction_created' ? 'stripe' : 'pilot',
+      review: p.fee_recorded_basis === 'stripe_balance_transaction_created' ? (pot.commission_refunded > 0 ? 'Commission was returned on this order before the fee was reimbursed: check whether the amount owed was established later than Stripe’s fee record.' : null)
+        : 'Stripe gave no time for recording the fee: the start date is when the pilot first saw it.' });
   const after = await feePot(env, o), cur = J((await getOrder(env, o.id)).processing) || {};
   const status = after.reimbursed >= p.cost ? 'reimbursed' : 'shortfall';
   p = { ...cur, ...p, reimbursed_cents: after.reimbursed, status, last_error: null };
@@ -1516,7 +1594,7 @@ export async function reconcileProcessing(env, o, actor = 'system') {
   }
   if (p.delay_notice_at && !p.completion_notice_at) {   // closes the loop opened by the delay notice (test sink)
     const sc = reimbursementSchedule({ confirmed_at: p.confirmed_at, fee_recorded_at: p.fee_recorded_at, fee_time_known: p.fee_recorded_basis !== 'first_seen_by_pilot', reimbursed_at: p.completed_at, days: deadlines(env).reimburse_days });
-    await notify(env, o, 'reimbursement_completed', closingNoticeText(o, p, sc, reimbursementWording(p, await shortfallAmounts(env, o.id))),
+    await notify(env, o, 'reimbursement_completed', closingNoticeText(o, p, sc, reimbursementWording(p, { ...(await shortfallAmounts(env, o.id)), items: (await owedForStatements(env, [o.id]))[o.id] || [] })),
       { artistOnly: true, subject: `PlotArt payment pilot · ${o.reference} · processing fee reimbursement` });
     p.completion_notice_at = now();
   }
@@ -1531,18 +1609,45 @@ export async function recordShortfallPaid(env, founder, id, b) {
   await requireInstalled(env);
   const o = await getOrder(env, id);
   if (!o) throw new Bad('Not found', 404);
-  const open = await all(env, `SELECT * FROM checkout_owed WHERE order_id = ? AND kind IN ('processing_shortfall','commission_shortfall') AND settled_cents < cents ORDER BY arisen_at, rowid`, o.id);
+  const open = await all(env, `SELECT * FROM checkout_owed WHERE order_id = ? AND kind IN ('processing_shortfall','commission_shortfall') AND settled_cents < cents ORDER BY due_at, arisen_at, rowid`, o.id);
   const owed = open.reduce((a, w) => a + w.cents - w.settled_cents, 0);
-  const amt = Number(b && b.amount_cents), ref = String((b && (b.reference ?? b.evidence)) || '').trim();
+  const amt = Number(b && b.amount_cents), ref = String((b && (b.reference ?? b.evidence)) || '').trim(), ex = String((b && b.executed_on) || '').trim();
   if (!(owed > 0)) throw new Bad('PlotArt owes nothing outside Stripe on this order', 409);
   if (!Number.isInteger(amt) || amt <= 0 || amt > owed) throw new Bad(`Enter the amount paid, up to ${eur(owed)}`, 400);
-  if (ref.length < 10 || ref.length > 200) throw new Bad('Give the bank transfer reference and date (10–200 characters)', 400);
-  if (looksLikeBankDetails(ref)) throw new Bad('That looks like bank details. Record only the transfer reference and date: bank details are never stored here.', 400);
+  if (ref.length < 6 || ref.length > 200) throw new Bad('Give the bank’s transfer reference (6–200 characters)', 400);
+  if (looksLikeBankDetails(ref)) throw new Bad('That looks like bank details. Record only the transfer reference: bank details are never stored here.', 400);
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(ex) || dublinDate(Date.parse(ex + 'T12:00:00Z')) !== ex) throw new Bad('Give the date PlotArt’s bank shows the transfer as executed (YYYY-MM-DD)', 400);
+  if (ex > dublinDate(Date.now())) throw new Bad('The execution date cannot be in the future: record the payment once the bank shows it executed', 400);
+  if (o.paid_at && ex < dublinDate(o.paid_at)) throw new Bad('The execution date is before the buyer’s payment', 400);
   if (await one(env, 'SELECT 1 AS x FROM checkout_owed_payments WHERE order_id = ? AND reference = ?', o.id, ref)) throw new Bad('A payment with this reference is already recorded for this order', 409);
   let left = amt;
-  for (const w of open) { const part = Math.min(left, w.cents - w.settled_cents); if (part > 0) { await settleOwed(env, w, { cents: part, method: 'bank_transfer', reference: ref, actor: founder }); left -= part; } if (!left) break; }
-  await env.DB.batch([ledgerSt(env, o.id, 'processing_shortfall_paid', amt, rid('sp'), ref.slice(0, 200)),
-    evSt(env, o.id, founder, 'shortfall_paid', o.status, o.status, { amount: amt, reference: ref.slice(0, 200) })]);
+  for (const w of open) { const part = Math.min(left, w.cents - w.settled_cents); if (part > 0) { await settleOwed(env, w, { cents: part, method: 'bank_transfer', reference: ref, actor: founder, executedOn: ex }); left -= part; } if (!left) break; }
+  await env.DB.batch([ledgerSt(env, o.id, 'processing_shortfall_paid', amt, rid('sp'), `sent by bank transfer, executed ${ex}, ref ${ref}`.slice(0, 200)),
+    evSt(env, o.id, founder, 'shortfall_paid', o.status, o.status, { amount: amt, reference: ref.slice(0, 200), executed_on: ex })]);
+  await setOwedFlag(env, o.id);
+  const rest = await one(env, `SELECT COALESCE(SUM(cents - settled_cents), 0) AS c, MIN(CASE WHEN settled_cents < cents THEN due_at END) AS due FROM checkout_owed WHERE order_id = ? AND kind IN ('processing_shortfall','commission_shortfall')`, o.id);
+  await notify(env, o, 'owed_payment_sent', owedPaymentText(o, open[0], amt, ex, ref, rest.c, rest.due ? dublinDate(Date.parse(rest.due) - 1) : null),
+    { artistOnly: true, subject: `PlotArt payment pilot · ${o.reference} · ${eur(amt)} sent to you by bank transfer` });
+  return orderDetail(env, await getOrder(env, o.id), 'founder');
+}
+/* A bank transfer that was returned (for example, rejected by the receiving bank): the outstanding amount is restored and the
+   payment stays in the history, marked returned. The due date does not change. */
+export async function recordShortfallReturned(env, founder, id, b) {
+  await requireInstalled(env);
+  const o = await getOrder(env, id);
+  if (!o) throw new Bad('Not found', 404);
+  const p = await one(env, "SELECT * FROM checkout_owed_payments WHERE id = ? AND order_id = ? AND method = 'bank_transfer'", String((b && b.payment_id) || ''), o.id);
+  if (!p) throw new Bad('Choose a bank transfer recorded on this order', 404);
+  if (await one(env, 'SELECT 1 AS x FROM checkout_owed_payment_returns WHERE payment_id = ?', p.id)) throw new Bad('This transfer is already recorded as returned', 409);
+  const on = String((b && b.returned_on) || '').trim(), why = String((b && b.reason) || '').trim();
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(on) || on > dublinDate(Date.now()) || on < p.executed_on) throw new Bad('Give the date the bank shows the transfer as returned (YYYY-MM-DD, not before it was executed)', 400);
+  if (why.length < 5 || why.length > 300 || looksLikeBankDetails(why)) throw new Bad('Give the reason the bank gave (5–300 characters, no bank details)', 400);
+  const rr = rid('or');
+  await env.DB.batch([
+    st(env, 'INSERT INTO checkout_owed_payment_returns (id, payment_id, owed_id, order_id, cents, returned_on, reason, recorded_by, at) VALUES (?,?,?,?,?,?,?,?,?)', rr, p.id, p.owed_id, o.id, p.cents, on, why, founder, now()),
+    st(env, 'UPDATE checkout_owed SET settled_cents = settled_cents - ?, last_return_id = ? WHERE id = ?', p.cents, rr, p.owed_id),
+    ledgerSt(env, o.id, 'processing_shortfall_paid', -p.cents, rr, `bank transfer ${p.reference} returned ${on}: ${why}`.slice(0, 200)),
+    evSt(env, o.id, founder, 'shortfall_transfer_returned', o.status, o.status, { payment: p.id, amount: p.cents, returned_on: on, reason: why })]);
   await setOwedFlag(env, o.id);
   return orderDetail(env, await getOrder(env, o.id), 'founder');
 }
@@ -1578,11 +1683,13 @@ export function statement(o, ledger, owed = []) {
     shortfall_still_owed_by_plotart: shortfall_owed, commission_refund_owed: commission_refund_owed,
     net_proceeds_once_owed_amounts_are_paid: net + shortfall_owed + commission_refund_owed,
     processing_status: o.commission_cents > 0 ? (p.status || 'awaiting_fee') : 'not_applicable',
-    processing_reimbursement: o.commission_cents > 0 ? reimbursementWording(p, { shortfallOutstanding: out('processing_shortfall'), shortfallPaid: shortfall_paid, reimbursed }) : null,
+    processing_reimbursement: o.commission_cents > 0 ? reimbursementWording(p, { shortfallOutstanding: out('processing_shortfall'), reimbursed, items: owed }) : null,
+    bank_transfers: owed.filter(w => SHORTFALL_KINDS.includes(w.kind)).map(w => ({ what: w.kind === 'commission_shortfall' ? 'Commission PlotArt returns to you' : 'Processing fee and VAT not covered through Stripe',
+      amount_cents: w.cents, still_owed_cents: w.cents - w.settled_cents, due: w.due_basis_date ? `by the end of ${longDate(owedDueDay(w))} (Irish time)` : owedDueDay(w), lines: transferLines([w]) })),
     processing_reimbursed_through_stripe: reimbursed, processing_still_owed_by_bank_transfer: out('processing_shortfall'),
     not_included: notes.join(' ') };
 }
-async function feeRefund(env, founder, o, { fee, reason, refundId = null, providerRefund = null, owed = null }) {
+async function feeRefund(env, founder, o, { fee, reason, refundId = null, providerRefund = null, owed = null, basis = null }) {
   let feeId = o.application_fee_id;
   if (!feeId) {
     const p = await S.getPaymentIntent(env, { account: o.provider_account, id: o.payment_intent });
@@ -1597,7 +1704,7 @@ async function feeRefund(env, founder, o, { fee, reason, refundId = null, provid
   // Model B: the processing reimbursement and commission refunds share the application fee. What cannot be returned
   // from it any more becomes a shortfall PlotArt pays directly (never silently left with the artist, never paid twice).
   const pot = await feePot(env, o), pay = Math.min(fee, pot.left), key = refundId || (owed && owed.item_key) || `commission-${fee}-${pot.commission_refunded}`;
-  if (fee - pay > 0) await addShortfall(env, o, `commission:${key}`, fee - pay, `commission refund of ${eur(fee)} owed under the artist's agreement exceeds what is left of the application fee after the processing reimbursement`);
+  if (fee - pay > 0) await addShortfall(env, o, `commission:${key}`, fee - pay, `commission refund of ${eur(fee)} owed under the artist's agreement exceeds what is left of the application fee after the processing reimbursement`, basis);
   if (pay <= 0) {
     await env.DB.batch([...(refundId ? [st(env, "UPDATE order_refunds SET fee_refund_id = ?, updated_at = ? WHERE id = ?", `none:shortfall:${refundId}`, now(), refundId)] : []),
       evSt(env, o.id, founder, 'commission_refund_shortfall', o.status, o.status, { amount: fee, refund: providerRefund })]);
@@ -1869,7 +1976,7 @@ export async function retention(env, at = now()) {
         OR EXISTS (SELECT 1 FROM checkout_owed w WHERE w.order_id = c.id AND w.settled_cents < w.cents)
         OR EXISTS (SELECT 1 FROM order_refunds r WHERE r.order_id = c.id AND r.status = 'pending'))`, o.id)) { held++; continue; }
     await env.DB.batch(['order_events', 'order_fulfilment_events', 'order_refunds', 'order_ledger', 'checkout_sessions', 'artwork_reservations', 'artwork_sales', 'payment_events', 'checkout_hold_events', 'checkout_holds',
-      'quote_snapshots', 'order_message_deliveries', 'order_messages', 'checkout_mail_sink', 'checkout_owed_payments', 'checkout_owed']
+      'quote_snapshots', 'order_message_deliveries', 'order_messages', 'checkout_mail_sink', 'checkout_owed_payment_returns', 'checkout_owed_payments', 'checkout_owed']
       .map(t => st(env, `DELETE FROM ${t} WHERE order_id = ?`, o.id)).concat([st(env, 'DELETE FROM checkout_orders WHERE id = ?', o.id)]));
     purged++;
   }

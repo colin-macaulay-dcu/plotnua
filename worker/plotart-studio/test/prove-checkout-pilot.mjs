@@ -13,6 +13,7 @@ const results = [];
 const check = (n, ok, d = '') => { results.push(!!ok); console.log(`  ${ok ? 'PASS' : 'FAIL'}  ${n}${!ok && d ? `  [${String(typeof d === 'string' ? d : JSON.stringify(d)).slice(0, 600)}]` : ''}`); };
 const sha = b => createHash('sha256').update(b).digest('hex');
 const ago = days => new Date(Date.now() - days * 86400_000).toISOString();
+const TODAY_IE = new Date().toLocaleDateString('en-CA', { timeZone: 'Europe/Dublin' });
 
 /* A test copy of the Workers carrying SYNTHETIC pilot texts (as prove-hire.mjs does for PA-AFH). */
 const FIX = 'test/.checkout-fixture/';
@@ -79,7 +80,7 @@ async function stripe(req) {
   if ((mm = u.pathname.match(/^\/v1\/payment_intents\/(pi_test_\w+)$/))) { const p = M.pis[mm[1]]; return p ? ok({ ...p, latest_charge: { id: p.charge, application_fee: p.fee } }) : err('no such pi', 404); }
   if ((mm = u.pathname.match(/^\/v1\/refunds\/(re_test_\w+)$/)) && req.method === 'GET') { const r = M.refunds.find(x => x.id === mm[1]); return r ? ok(r) : err('no such refund', 404); }
   if (u.pathname === '/v1/refunds') { const st = M.nextRefundStatus || 'succeeded'; M.nextRefundStatus = null;
-    const r = { id: nid('re'), object: 'refund', status: st, amount: Number(f.amount), payment_intent: f.payment_intent, livemode: false, metadata: { plotart_refund: f['metadata[plotart_refund]'], plotart_order: f['metadata[plotart_order]'] }, _f: f, _acct: acct }; M.refunds.push(r); return remember(r); }
+    const r = { id: nid('re'), object: 'refund', status: st, created: Math.floor(Date.now() / 1000), amount: Number(f.amount), payment_intent: f.payment_intent, livemode: false, metadata: { plotart_refund: f['metadata[plotart_refund]'], plotart_order: f['metadata[plotart_order]'] }, _f: f, _acct: acct }; M.refunds.push(r); return remember(r); }
   if ((mm = u.pathname.match(/^\/v1\/application_fees\/(fee_test_\w+)\/refunds$/))) {
     // like Stripe: an application fee cannot be refunded beyond its amount
     const feeAmt = M.feeAmounts[mm[1]], done = M.feeRefunds.filter(x => x.fee === mm[1]).reduce((a, x) => a + x.amount, 0);
@@ -548,15 +549,17 @@ check('MB5 full refund: the commission refund owed (EUR 75) exceeds what is left
   M.feeRefunds.filter(x => x.fee === M.pis[O1.payment_intent].fee).map(x => x.amount).join() === '2015,7500,5485', M.feeRefunds);
 check('MB6 the EUR 20.15 difference is flagged as a shortfall PlotArt must pay the artist directly (not silently left with the artist, not paid twice)',
   (await db.prepare("SELECT SUM(cents) AS c FROM checkout_owed WHERE order_id = ?").bind(o1.id).first()).c === 2015 && /PlotArt owes the artist EUR 20.15/.test(O1.needs_resolution) && (await call('GET', `/api/checkout/orders/${o1.id}`, GAL)).j.statement.shortfall_still_owed_by_plotart === 2015, { P1, nr: O1.needs_resolution });
-{ const Qd = (await call('GET', '/api/admin/checkout', FOUNDER)).j, w1 = Qd.owed.find(w => w.order_id === o1.id);
-  check('OQ1 the founder queue lists what PlotArt owes: amount, paid, outstanding, age, due date (marked provisional) and the rule', !!w1 && w1.cents === 2015 && w1.settled_cents === 0 && w1.outstanding_cents === 2015
-    && w1.age_days === 0 && w1.due_provisional === true && /PROVISIONAL/.test(w1.due_rule) && Date.parse(w1.due_at) - Date.parse(w1.arisen_at) === 30 * 86400_000
-    && Qd.deadlines.provisional === true && Qd.deadlines.shortfall_provisional === true && Qd.deadlines.reimburse_provisional === false && Qd.deadlines.decisions.reimburse_days.status === 'approved_for_sandbox_pilot' && Qd.deadlines.decisions.shortfall_days.status === 'provisional' && Qd.deadlines.shortfall_days === 30 && Qd.bank_details_process.length >= 4, { w1, d: Qd.deadlines }); }
+{ const CO0 = await import(HERE + FIX + 'src/checkout.js');
+  const Qd = (await call('GET', '/api/admin/checkout', FOUNDER)).j, w1 = Qd.owed.find(w => w.order_id === o1.id);
+  check('OQ1 the founder queue lists what PlotArt owes: amount, paid, outstanding, age, the rule, and a due date 30 Irish days from the Irish date of Stripe’s refund record (commission-return shortfall; start event and date stored)', !!w1 && w1.cents === 2015 && w1.settled_cents === 0 && w1.outstanding_cents === 2015
+    && w1.age_days === 0 && w1.due_provisional === false && !/PROVISIONAL/.test(w1.due_rule) && w1.due_basis_event === 'stripe_refund_created_succeeded' && w1.due_basis_source === 'stripe' && !w1.due_review
+    && w1.due_at === CO0.shortfallDue(w1.due_basis_at).due_at && w1.due_basis_date === TODAY_IE && /by the end of day 30 \(Irish time\)/.test(w1.due_rule)
+    && Qd.deadlines.provisional === false && Qd.deadlines.shortfall_provisional === false && Qd.deadlines.reimburse_provisional === false && Qd.deadlines.decisions.reimburse_days.status === 'approved_for_sandbox_pilot' && Qd.deadlines.decisions.shortfall_days.status === 'approved_for_sandbox_pilot' && Qd.deadlines.shortfall_days === 30 && Qd.bank_details_process.length >= 4, { w1, d: Qd.deadlines }); }
 r = await call('POST', `/api/admin/checkout/orders/${o1.id}/shortfallpaid`, FOUNDER, { amount_cents: 2015, reference: 'Paid to IE29 AIBK 9311 5212 3456 78 on 18 Nov' });
 check('OQ2 a payment record that looks like bank details is refused, so none is stored', r.s === 400 && /bank details/.test(r.j.error) && !(await q("SELECT * FROM checkout_owed_payments WHERE reference LIKE '%AIBK%'")).length, r.j);
-r = await call('POST', `/api/admin/checkout/orders/${o1.id}/shortfallpaid`, FOUNDER, { amount_cents: 2016, evidence: 'Bank transfer BT-SF1 on 18 Nov' });
-const r2sf = await call('POST', `/api/admin/checkout/orders/${o1.id}/shortfallpaid`, FOUNDER, { amount_cents: 2015, evidence: 'Bank transfer BT-SF1 on 18 Nov' });
-const r3sf = await call('POST', `/api/admin/checkout/orders/${o1.id}/shortfallpaid`, FOUNDER, { amount_cents: 1, evidence: 'Bank transfer BT-SF2 on 18 Nov' });
+r = await call('POST', `/api/admin/checkout/orders/${o1.id}/shortfallpaid`, FOUNDER, { amount_cents: 2016, evidence: 'Bank transfer BT-SF1 on 18 Nov', executed_on: TODAY_IE });
+const r2sf = await call('POST', `/api/admin/checkout/orders/${o1.id}/shortfallpaid`, FOUNDER, { amount_cents: 2015, evidence: 'Bank transfer BT-SF1 on 18 Nov', executed_on: TODAY_IE });
+const r3sf = await call('POST', `/api/admin/checkout/orders/${o1.id}/shortfallpaid`, FOUNDER, { amount_cents: 1, evidence: 'Bank transfer BT-SF2 on 18 Nov', executed_on: TODAY_IE });
 const st9 = (await call('GET', `/api/checkout/orders/${o1.id}`, GAL)).j.statement;
 check('MB7 the founder records the direct payment once; more than owed, or paying again, is refused; the statement then shows the artist whole on fees',
   r.s === 400 && r2sf.s === 200 && r3sf.s === 409 && !(await order(o1.id)).needs_resolution && st9.shortfall_paid_by_plotart === 2015 && st9.shortfall_still_owed_by_plotart === 0
@@ -637,7 +640,11 @@ check('T10c an order with an unresolved flag cannot be closed', r.s === 409);
   check('LD2 returning it sends what is left of the application fee through Stripe (€60 − €8.15 reimbursed) and moves the €8.15 to a direct-payment item; the lost-dispute item is settled and its flag cleared',
     r.s === 200 && frE.length === before + 1 && frE.at(-1).amount === 6000 - 815 && LW2.settled_cents === 6000 && SH && SH.cents === 815 && !/dispute lost/.test(OE2.needs_resolution || '') && /PlotArt owes the artist EUR 8\.15/.test(OE2.needs_resolution || ''), { r: r.j && r.j.error, LW2, SH, nr: OE2.needs_resolution });
   r = await call('POST', `/api/admin/checkout/orders/${oe.id}/refund`, FOUNDER, { commission_only: true, reason: 'Second attempt' });
-  check('LD3 asking again returns nothing more', r.s === 200 && M.feeRefunds.filter(x => x.fee === feeE).length === before + 1, r.j); }
+  check('LD3 asking again returns nothing more', r.s === 200 && M.feeRefunds.filter(x => x.fee === feeE).length === before + 1, r.j);
+  const SH2 = await db.prepare("SELECT * FROM checkout_owed WHERE order_id = ? AND kind = 'commission_shortfall'").bind(oe.id).first(), rv = await q("SELECT to_role, body FROM checkout_mail_sink WHERE order_id = ? AND kind = 'owed_start_for_review'", oe.id);
+  check('LD4 an uncertain start date is flagged for founder review: the commission moved to bank transfer after a lost dispute starts from the pilot’s record of the dispute closing (not Stripe’s), stored with a review note and one founder alert',
+    SH2.due_basis_event === 'dispute_closed_lost' && SH2.due_basis_source === 'pilot' && /check the closing date in the Stripe Dashboard/.test(SH2.due_review || '') && SH2.due_basis_at === LW.arisen_at
+    && rv.length === 1 && rv[0].to_role === 'founder' && /^FOR REVIEW/.test(rv[0].body), { SH2, rv }); }
 
 console.log('— fulfilment and close');
 const SB2 = await order(second.id);
@@ -818,27 +825,88 @@ console.log('— seven-day reimbursement rule (PA-PAY §3.3(b), provisional) · 
   await sweep();
   const dG = (await desk()).reimbursements_recent.find(x => x.order_id === G.id), stG = (await call('GET', `/api/checkout/orders/${G.id}`, GAL)).j.statement;
   const owG = await q("SELECT cents, settled_cents, due_provisional FROM checkout_owed WHERE order_id = ? AND kind = 'processing_shortfall'", G.id);
-  check('SD14 partial reimbursement (clause 3.3 → 3.5): EUR 15.00 reimbursed through Stripe (all that was left of the fee) and EUR 6.83 owed by bank transfer; the desk and the artist’s statement show both amounts; the 30-day due date is provisional',
+  check('SD14 partial reimbursement (clause 3.3 → 3.5): EUR 15.00 reimbursed through Stripe (all that was left of the fee) and EUR 6.83 owed by bank transfer; the desk and the artist’s statement show both amounts; the 30-day due date is set (sandbox rule)',
     dG.status === 'shortfall' && dG.reimbursed_through_stripe_cents === 1500 && dG.owed_by_bank_transfer_cents === 683 && /EUR 21\.83 in all: EUR 15\.00 reimbursed through Stripe; EUR 6\.83 still owed by bank transfer/.test(dG.amount_label)
-    && M.feeRefunds.filter(x => x.fee === G.fee).reduce((a, x) => a + x.amount, 0) === 1500 && owG.length === 1 && owG[0].cents === 683 && owG[0].due_provisional
+    && M.feeRefunds.filter(x => x.fee === G.fee).reduce((a, x) => a + x.amount, 0) === 1500 && owG.length === 1 && owG[0].cents === 683 && !owG[0].due_provisional
     && stG.processing_reimbursed_through_stripe === 1500 && stG.processing_still_owed_by_bank_transfer === 683
     && /PlotArt reimbursed EUR 15\.00 of the EUR 21\.83 processing fee and VAT through Stripe/.test(stG.processing_reimbursement)
-    && /The remaining EUR 6\.83 could not be reimbursed through Stripe.*clause 3\.5\)\. Still owed to you by PlotArt: EUR 6\.83\. Your statement shows it under “Owed by PlotArt, not yet paid”/.test(stG.processing_reimbursement), { dG, st: stG && stG.processing_reimbursement, owG });
+    && /The remaining EUR 6\.83 could not be reimbursed through Stripe.*clause 3\.5\), by the end of \w+day \d+ \w+ \d{4} \(Irish time\)\. Still owed to you by PlotArt: EUR 6\.83\. Your statement shows it under “Owed by PlotArt, not yet paid”/.test(stG.processing_reimbursement), { dG, st: stG && stG.processing_reimbursement, owG });
   writeFileSync('/tmp/plotart-sd-partial.txt', stG.processing_reimbursement || '');
-  // §3.5 · a partial bank payment of the EUR 6.83 shortfall, then the rest (records only the transfer reference and date)
-  { const owRow = (await q("SELECT arisen_at, due_at, due_rule FROM checkout_owed WHERE order_id = ? AND kind = 'processing_shortfall'", G.id))[0];
-    const r1 = await call('POST', `/api/admin/checkout/orders/${G.id}/shortfallpaid`, FOUNDER, { amount_cents: 300, reference: 'SIMULATED transfer ref PA-SF-0001 on 2026-12-03' });
+  // §3.5 · SANDBOX RULE (approved 18 Nov 2026): 30 Irish calendar days from the Irish date of the record that first established
+  // the amount owed by bank transfer. The EUR 6.83 example (order G): a EUR 3.00 partial payment, the remaining EUR 3.83, a
+  // duplicate entry, a returned transfer and the re-payment. Mock Stripe; execution dates are SIMULATED entries.
+  { const owRow = (await q("SELECT * FROM checkout_owed WHERE order_id = ? AND kind = 'processing_shortfall'", G.id))[0];
+    const exp = CO.shortfallDue(new Date(M.charges[G.ch].bt.created * 1000).toISOString());
+    r = await call('POST', `/api/admin/checkout/orders/${G.id}/processing`, FOUNDER, {}); await sweep();
+    const owAfter = await q("SELECT id, due_at, due_basis_date FROM checkout_owed WHERE order_id = ?", G.id);
+    check('SD16 the 30 days start from the Irish date of Stripe’s fee record (the record that established the EUR 6.83): event, time and date stored; due by the end of day 30; a later reconciliation and sweep keep the same single item and due date',
+      owRow.due_basis_event === 'stripe_fee_recorded' && owRow.due_basis_source === 'stripe' && !owRow.due_review && owRow.due_basis_at === new Date(M.charges[G.ch].bt.created * 1000).toISOString()
+      && owRow.due_basis_date === exp.basis_date && owRow.due_at === exp.due_at && owAfter.length === 1 && owAfter[0].due_at === owRow.due_at, { owRow, exp, owAfter });
+    const pay = (cents, ref, ex = TODAY_IE) => call('POST', `/api/admin/checkout/orders/${G.id}/shortfallpaid`, FOUNDER, { amount_cents: cents, reference: ref, executed_on: ex });
+    const noDate = await call('POST', `/api/admin/checkout/orders/${G.id}/shortfallpaid`, FOUNDER, { amount_cents: 300, reference: 'SIM-TRF-0001' });
+    const future = await pay(300, 'SIM-TRF-0001', new Date(Date.now() + 2 * 86400_000).toLocaleDateString('en-CA', { timeZone: 'Europe/Dublin' }));
+    const r1 = await pay(300, 'SIM-TRF-0001');
     const st1 = (await call('GET', `/api/checkout/orders/${G.id}`, GAL)).j.statement, ow1 = (await desk()).owed.find(w => w.order_id === G.id);
-    const rBad = await call('POST', `/api/admin/checkout/orders/${G.id}/shortfallpaid`, FOUNDER, { amount_cents: 383, reference: 'IE29AIBK93115212345678 paid 2026-12-04' });
-    const rDup = await call('POST', `/api/admin/checkout/orders/${G.id}/shortfallpaid`, FOUNDER, { amount_cents: 383, reference: 'SIMULATED transfer ref PA-SF-0001 on 2026-12-03' });
-    const r2 = await call('POST', `/api/admin/checkout/orders/${G.id}/shortfallpaid`, FOUNDER, { amount_cents: 383, reference: 'SIMULATED transfer ref PA-SF-0002 on 2026-12-05' });
-    const st2 = (await call('GET', `/api/checkout/orders/${G.id}`, GAL)).j.statement, OG = await order(G.id);
-    check('SD16 §3.5 SIMULATED partial bank payment: after EUR 3.00 the artist sees EUR 3.00 paid by transfer and EUR 3.83 still owed, the founder desk shows the same; a reference that looks like bank details and a repeated reference are refused; after the rest nothing is owed and the order flag clears',
-      r1.s === 200 && /Paid to you by bank transfer so far: EUR 3\.00\. Still owed to you by PlotArt: EUR 3\.83\./.test(st1.processing_reimbursement) && st1.processing_still_owed_by_bank_transfer === 383
-      && ow1.settled_cents === 300 && ow1.outstanding_cents === 383 && ow1.payments.length === 1 && rBad.s === 400 && /bank details/.test(rBad.j.error) && rDup.s === 409
-      && r2.s === 200 && /Paid to you by bank transfer so far: EUR 6\.83\. Nothing is still owed\./.test(st2.processing_reimbursement) && st2.processing_still_owed_by_bank_transfer === 0 && !/PlotArt owes the artist/.test(OG.needs_resolution || ''),
-      { r1: r1.j && r1.j.error, st1: st1.processing_reimbursement, ow1, rBad: rBad.j, rDup: rDup.j, st2: st2.processing_reimbursement, nr: OG.needs_resolution });
-    writeFileSync('/tmp/plotart-sd-shortfall.json', JSON.stringify({ owed_row: owRow, desk_after_partial: ow1, statement_after_partial: st1.processing_reimbursement, statement_after_full: st2.processing_reimbursement, refused_bank_details: rBad.j && rBad.j.error, refused_duplicate: rDup.j && rDup.j.error }, null, 2)); }
+    const n1 = await q("SELECT to_role, body FROM checkout_mail_sink WHERE order_id = ? AND kind = 'owed_payment_sent'", G.id);
+    const dup = await pay(300, 'SIM-TRF-0001');
+    check('SD17 a payment is recorded only with the bank’s execution date (missing or future dates refused); EUR 3.00 executed: the desk records amount, reference, execution date, who and when; the artist’s statement says “sent by bank transfer” with the date and EUR 3.83 still owed; ONE artist notice (test sink); a duplicate entry is refused and sends nothing',
+      noDate.s === 400 && future.s === 400 && r1.s === 200 && ow1.settled_cents === 300 && ow1.outstanding_cents === 383 && ow1.due_at === owRow.due_at
+      && ow1.payments.length === 1 && ow1.payments[0].executed_on === TODAY_IE && ow1.payments[0].reference === 'SIM-TRF-0001' && ow1.payments[0].recorded_by === FOUNDER && !!ow1.payments[0].at
+      && new RegExp(`EUR 3\\.00 sent by bank transfer on ${CO.longDate(TODAY_IE)}\\. Still owed to you by PlotArt: EUR 3\\.83\\.`).test(st1.processing_reimbursement)
+      && n1.length === 1 && n1[0].to_role === 'artist' && /PlotArt sent you EUR 3\.00 by bank transfer on .*Still owed to you by PlotArt on this order: EUR 3\.83, due by the end of/s.test(n1[0].body)
+      && dup.s === 409 && (await q("SELECT 1 FROM checkout_mail_sink WHERE order_id = ? AND kind = 'owed_payment_sent'", G.id)).length === 1,
+      { noDate: noDate.j, future: future.j, st1: st1.processing_reimbursement, ow1, n1, dup: dup.j });
+    const r2 = await pay(383, 'SIM-TRF-0002');
+    const st2 = (await call('GET', `/api/checkout/orders/${G.id}`, GAL)).j.statement, OG2 = await order(G.id);
+    check('SD18 the remaining EUR 3.83 executed: nothing still owed, the order flag clears, a second artist notice says nothing more is owed',
+      r2.s === 200 && st2.processing_still_owed_by_bank_transfer === 0 && /Nothing is still owed\./.test(st2.processing_reimbursement) && !/PlotArt owes the artist/.test(OG2.needs_resolution || '')
+      && (await q("SELECT body FROM checkout_mail_sink WHERE order_id = ? AND kind = 'owed_payment_sent'", G.id)).filter(m => /Nothing more is owed/.test(m.body)).length === 1, { st2: st2.processing_reimbursement, nr: OG2.needs_resolution });
+    const p2 = (await desk()).owed.concat((await call('GET', `/api/admin/checkout/orders/${G.id}`, FOUNDER)).j.owed).flatMap(w => w.payments || []).find(x => x.reference === 'SIM-TRF-0002');
+    const tamper = await db.prepare('UPDATE checkout_owed SET settled_cents = 300 WHERE id = ?').bind(owRow.id).run().catch(e => e);
+    const ret = await call('POST', `/api/admin/checkout/orders/${G.id}/shortfallreturned`, FOUNDER, { payment_id: p2.id, returned_on: TODAY_IE, reason: 'SIMULATED: beneficiary account closed' });
+    const ret2 = await call('POST', `/api/admin/checkout/orders/${G.id}/shortfallreturned`, FOUNDER, { payment_id: p2.id, returned_on: TODAY_IE, reason: 'SIMULATED: beneficiary account closed' });
+    const st3 = (await call('GET', `/api/checkout/orders/${G.id}`, GAL)).j.statement, ow3 = (await call('GET', `/api/admin/checkout/orders/${G.id}`, FOUNDER)).j.owed.find(w => w.kind === 'processing_shortfall'), OG3 = await order(G.id);
+    check('SD19 SIMULATED returned transfer: EUR 3.83 is owed again, the due date is unchanged, the payment history keeps both transfers with the return marked; the statement says the transfer was returned; the order is flagged again; the database refuses any other reduction, and a transfer can be returned only once',
+      !!tamper.message && ret.s === 200 && ret2.s === 409 && ow3.settled_cents === 300 && ow3.cents - ow3.settled_cents === 383 && ow3.due_at === owRow.due_at
+      && ow3.payments.length === 2 && ow3.payments[1].returned_on === TODAY_IE && /beneficiary account closed/.test(ow3.payments[1].returned_reason)
+      && /EUR 3\.83 sent by bank transfer on .* was returned by the bank on .* and is owed again\. Still owed to you by PlotArt: EUR 3\.83\./.test(st3.processing_reimbursement)
+      && /PlotArt owes the artist EUR 3\.83/.test(OG3.needs_resolution || ''), { tamper: tamper.message, ret: ret.j, ret2: ret2.j, ow3, st3: st3.processing_reimbursement });
+    const r3 = await pay(383, 'SIM-TRF-0003');
+    const st4 = (await call('GET', `/api/checkout/orders/${G.id}`, GAL)).j.statement;
+    check('SD20 re-paid after the return: nothing owed; three executed transfers recorded, one returned; one artist notice per executed payment (three)',
+      r3.s === 200 && st4.processing_still_owed_by_bank_transfer === 0 && (await q("SELECT 1 FROM checkout_owed_payments WHERE owed_id = ?", owRow.id)).length === 3
+      && (await q("SELECT 1 FROM checkout_owed_payment_returns WHERE owed_id = ?", owRow.id)).length === 1 && (await q("SELECT 1 FROM checkout_mail_sink WHERE order_id = ? AND kind = 'owed_payment_sent'", G.id)).length === 3, st4);
+    writeFileSync('/tmp/plotart-sd-shortfall.json', JSON.stringify({ owed_row: owRow, statement_after_partial: st1.processing_reimbursement, artist_notice_partial: n1[0] && n1[0].body,
+      statement_after_full: st2.processing_reimbursement, statement_after_return: st3.processing_reimbursement, statement_after_repay: st4.processing_reimbursement, desk_after_return: ow3,
+      notices: await q("SELECT kind, to_role, body FROM checkout_mail_sink WHERE order_id = ? AND kind LIKE 'owed_%' ORDER BY rowid", G.id) }, null, 2)); }
+  // §3.5 · commission-return shortfall: a buyer refund on an order whose application fee was used up by the reimbursement
+  { const J2 = await sdOrder('J', { chargeAgeDays: 1, artwork: 10000, commission: 1500 });
+    await sweep();
+    const rf = await call('POST', `/api/admin/checkout/orders/${J2.id}/refund`, FOUNDER, { artwork_cents: 5000, delivery_cents: 0, reason: 'SIMULATED partial return by the buyer' });
+    const re = M.refunds.at(-1), cs = (await q("SELECT * FROM checkout_owed WHERE order_id = ? AND kind = 'commission_shortfall'", J2.id))[0];
+    const stJ = (await call('GET', `/api/checkout/orders/${J2.id}`, GAL)).j.statement;
+    check('SD21 commission-return shortfall: the EUR 7.50 commission share on a EUR 50 refund cannot go back through Stripe (fee used up); it is owed by bank transfer, due 30 Irish days from the Irish date of Stripe’s refund record; the statement lists it separately',
+      rf.s === 200 && cs && cs.cents === 750 && cs.due_basis_event === 'stripe_refund_created_succeeded' && cs.due_basis_source === 'stripe' && cs.due_basis_at === new Date(re.created * 1000).toISOString()
+      && cs.due_at === CO.shortfallDue(cs.due_basis_at).due_at && stJ.bank_transfers.some(b => b.what === 'Commission PlotArt returns to you' && b.amount_cents === 750 && b.still_owed_cents === 750 && /by the end of/.test(b.due)),
+      { rf: rf.j && rf.j.error, cs, bt: stJ && stJ.bank_transfers }); }
+  // §3.5 · SIMULATED dates across the Irish clock change: Stripe recorded the fee at 23:30 UTC on 15 Oct 2026 = 00:30 on 16 Oct (IST)
+  { const K = await sdOrder('K', { chargeAgeDays: 40, artwork: 10000, commission: 1500 });
+    const t0 = Math.floor(Date.parse('2026-10-15T23:30:00Z') / 1000); M.charges[K.ch].created = t0; M.charges[K.ch].bt.created = t0;
+    await sweep(); await sweep();
+    const wK = (await q("SELECT * FROM checkout_owed WHERE order_id = ? AND kind = 'processing_shortfall'", K.id))[0];
+    const deskK = (await desk()).owed.find(w => w.order_id === K.id), OK2 = await order(K.id);
+    const founderK = await q("SELECT body FROM checkout_mail_sink WHERE order_id = ? AND kind = 'owed_overdue' AND to_role = 'founder'", K.id);
+    const artistK = await q("SELECT body FROM checkout_mail_sink WHERE order_id = ? AND kind = 'owed_overdue_artist' AND to_role = 'artist'", K.id);
+    const spring = CO.shortfallDue('2027-03-10T12:00:00Z'), autumnUtcRule = '2026-11-14';
+    check('SD22 SIMULATED clock change: the start is the IRISH date 16 Oct (a UTC date would give 15 Oct); day 30 is Sunday 15 November, due by its end = 00:00 UTC on 16 Nov (GMT after the 25 Oct change); spring case: 10 Mar 2027 → end of 9 Apr 2027 = 23:00 UTC (IST)',
+      wK.due_basis_date === '2026-10-16' && wK.due_at === '2026-11-16T00:00:00.000Z' && deskK.due_date === '2026-11-15' && /Sunday 15 November 2026/.test(deskK.due_label)
+      && spring.due_date === '2027-04-09' && spring.due_at === '2027-04-09T23:00:00.000Z' && autumnUtcRule !== deskK.due_date, { wK, deskK, spring });
+    await sweep();
+    check('SD23 overdue: the founder is prompted once to follow up (internal target: 5 working days after the deadline = Friday 20 November; the artist’s deadline still applies); the order is flagged OVERDUE; ONE artist overdue notice (test sink); later sweeps send no more',
+      deskK.status === 'overdue' && founderK.length === 1 && /OVERDUE — follow up promptly/.test(founderK[0].body) && /Internal resolution target: Friday 20 November 2026/.test(founderK[0].body) && /The artist’s deadline still applies/.test(founderK[0].body)
+      && /OVERDUE: was due by the end of Sunday 15 November 2026/.test(OK2.needs_resolution || '') && artistK.length === 1 && (await q("SELECT 1 FROM checkout_mail_sink WHERE order_id = ? AND kind = 'owed_overdue_artist'", K.id)).length === 1
+      && /It was due by the end of Sunday 15 November 2026 \(Irish time\)/.test(artistK[0].body) && /never ask for your bank details by email/.test(artistK[0].body), { founderK, artistK, nr: OK2.needs_resolution });
+    writeFileSync('/tmp/plotart-sd-dst.json', JSON.stringify({ owed: wK, desk: deskK, founder_overdue: founderK[0] && founderK[0].body, artist_overdue: artistK[0] && artistK[0].body, flag: OK2.needs_resolution, spring }, null, 2)); }
   // H · clock start: Stripe's charge and its success event fall on different Irish dates (SIMULATED times, real webhook path)
   { const work = (await q("SELECT id FROM artworks WHERE artist_id = 'agal' AND availability = 'available' AND id NOT IN (SELECT artwork_id FROM artwork_sales) AND id NOT IN (SELECT artwork_id FROM artwork_reservations) ORDER BY id DESC LIMIT 1"))[0];
     globalThis.SD15_WORK = work.id;   // sold through SD15's verified (signed) payment; T11b expects it
@@ -960,7 +1028,7 @@ check('D2 the order still shows seller, artwork, amounts, entitlement and ledger
 r = await call('POST', `/api/admin/checkout/orders/${ox.id}/refund`, FOUNDER, { artwork_cents: 30000, delivery_cents: 2000, reason: 'Returned after the artist left' });
 check('D3 a full refund still works after the artist’s and artwork’s rows are gone', r.s === 200 && r.j.order.status === 'refunded' && M.refunds.at(-1)._acct === ACCT_OLD, r.j);
 { const PX = JSON.parse((await order(ox.id)).processing);
-  r = await call('POST', `/api/admin/checkout/orders/${ox.id}/shortfallpaid`, FOUNDER, { amount_cents: (await db.prepare("SELECT SUM(cents - settled_cents) AS c FROM checkout_owed WHERE order_id = ?").bind(ox.id).first()).c, evidence: 'Bank transfer BT-SFX on 18 Nov' });
+  r = await call('POST', `/api/admin/checkout/orders/${ox.id}/shortfallpaid`, FOUNDER, { amount_cents: (await db.prepare("SELECT SUM(cents - settled_cents) AS c FROM checkout_owed WHERE order_id = ?").bind(ox.id).first()).c, evidence: 'Bank transfer BT-SFX on 18 Nov', executed_on: TODAY_IE });
   check('D3b retention waits while PlotArt still owes a shortfall; recording the direct payment settles it', r.s === 200 && !(await order(ox.id)).needs_resolution, r.j); }
 check('D4 the buyer’s link still reads correctly', (await pub('GET', `/q/${TX}/return?result=success`)).t.includes('has been confirmed') || (await pub('GET', `/q/${TX}/return`)).s === 200);
 await S.checkoutWorker.scheduled({ cron: '*/15 * * * *' });
@@ -1021,10 +1089,11 @@ console.log('— reminders, dispute fees and late disputes');
     ('owq1', 'oq1', 'processing_shortfall', 'processing', 500, 'test overdue', ?, ?, 'test rule', 1), ('owq2', 'oq1', 'commission_shortfall', 'commission:x', 300, 'test due soon', ?, ?, 'test rule', 1)`).bind(past, past, tnow, soon).run();
   await S.checkoutWorker.scheduled({ cron: '*/15 * * * *' }); await S.checkoutWorker.scheduled({ cron: '*/15 * * * *' });
   const rem = await q("SELECT kind, to_role FROM checkout_mail_sink WHERE order_id = 'oq1'");
-  check('OQ5 reminders go to the founder only (test sink): once when due soon, once when overdue, never repeated', rem.length === 2 && rem.every(x => x.to_role === 'founder')
-    && rem.some(x => x.kind === 'owed_overdue') && rem.some(x => x.kind === 'owed_due_soon')
+  check('OQ5 reminders (test sink): the founder once when due soon and once when overdue, never repeated; the artist once when a bank-transfer amount becomes overdue; items dated before the 18 Nov rule keep their stored due dates',
+    rem.length === 3 && rem.filter(x => x.to_role === 'founder').length === 2 && rem.some(x => x.kind === 'owed_overdue' && x.to_role === 'founder') && rem.some(x => x.kind === 'owed_due_soon' && x.to_role === 'founder')
+    && rem.some(x => x.kind === 'owed_overdue_artist' && x.to_role === 'artist') && (await q("SELECT due_at FROM checkout_owed WHERE id = 'owq1'"))[0].due_at === past
     && (await call('GET', '/api/admin/checkout', FOUNDER)).j.owed.find(w => w.id === 'owq1').status === 'overdue', rem);
-  r = await call('POST', '/api/admin/checkout/orders/oq1/shortfallpaid', FOUNDER, { amount_cents: 800, reference: 'Bank transfer BT-OQ1 on 18 Nov' });
+  r = await call('POST', '/api/admin/checkout/orders/oq1/shortfallpaid', FOUNDER, { amount_cents: 800, reference: 'Bank transfer BT-OQ1 on 18 Nov', executed_on: TODAY_IE });
   const ws = await q("SELECT settled_cents FROM checkout_owed WHERE order_id = 'oq1' ORDER BY id");
   check('OQ6 one direct payment settles the order’s items oldest first, with the same reference recorded on each', r.s === 200 && ws.map(x => x.settled_cents).join() === '500,300', [r.j && r.j.error, ws]); }
 { const C1 = await import(HERE + FIX + 'src/checkout.js');

@@ -390,13 +390,22 @@ CREATE TABLE IF NOT EXISTS checkout_owed (
   due_provisional INTEGER NOT NULL CHECK (due_provisional IN (0,1)),
   settled_cents   INTEGER NOT NULL DEFAULT 0 CHECK (settled_cents >= 0),
   reminders       TEXT,                       -- JSON: reminder stages already sent
+  due_basis_event TEXT,                       -- PA-PAY 3.5 (sandbox rule, 18 Nov 2026): the record that first established the amount owed by bank transfer
+  due_basis_at    TEXT,                       -- that record's time
+  due_basis_date  TEXT,                       -- its Irish (Europe/Dublin) date; day one is the next day, due by the end of day 30
+  due_basis_source TEXT CHECK (due_basis_source IS NULL OR due_basis_source IN ('stripe','pilot')),
+  due_review      TEXT,                       -- why the founder should review the start date (uncertain time), if so
+  last_return_id  TEXT,                       -- the returned transfer that last reduced settled_cents (see trigger)
   UNIQUE (order_id, item_key),
   CHECK (settled_cents <= cents)
 );
 CREATE INDEX IF NOT EXISTS checkout_owed_open ON checkout_owed(due_at) WHERE settled_cents < cents;
 CREATE TRIGGER IF NOT EXISTS checkout_owed_fixed BEFORE UPDATE ON checkout_owed
-WHEN NEW.cents <> OLD.cents OR NEW.kind <> OLD.kind OR NEW.due_at <> OLD.due_at OR NEW.order_id <> OLD.order_id OR NEW.settled_cents < OLD.settled_cents
-BEGIN SELECT RAISE(ABORT, 'an owed amount, its rule and due date are fixed; settlement only increases'); END;
+WHEN NEW.cents <> OLD.cents OR NEW.kind <> OLD.kind OR NEW.due_at <> OLD.due_at OR NEW.order_id <> OLD.order_id
+  OR NEW.due_basis_date IS NOT OLD.due_basis_date OR NEW.due_basis_at IS NOT OLD.due_basis_at OR NEW.due_basis_event IS NOT OLD.due_basis_event
+  OR (NEW.settled_cents < OLD.settled_cents AND NOT (NEW.last_return_id IS NOT NULL AND NEW.last_return_id IS NOT OLD.last_return_id
+      AND EXISTS (SELECT 1 FROM checkout_owed_payment_returns r WHERE r.id = NEW.last_return_id AND r.owed_id = OLD.id AND r.cents = OLD.settled_cents - NEW.settled_cents)))
+BEGIN SELECT RAISE(ABORT, 'an owed amount, its rule and due date are fixed; settlement only increases, except by a recorded returned transfer'); END;
 CREATE TABLE IF NOT EXISTS checkout_owed_payments (
   id          TEXT PRIMARY KEY,
   owed_id     TEXT NOT NULL REFERENCES checkout_owed(id),
@@ -404,14 +413,31 @@ CREATE TABLE IF NOT EXISTS checkout_owed_payments (
   cents       INTEGER NOT NULL CHECK (cents > 0),
   method      TEXT NOT NULL CHECK (method IN ('bank_transfer','stripe_application_fee_refund','moved_to_direct_payment')),
   reference   TEXT NOT NULL,                  -- transfer reference / fee refund id: never bank details
+  executed_on TEXT,                           -- bank_transfer: the date PlotArt's bank shows the transfer as executed (YYYY-MM-DD)
   recorded_by TEXT NOT NULL,
   at          TEXT NOT NULL,
-  UNIQUE (owed_id, reference)
+  UNIQUE (owed_id, reference),
+  CHECK (method <> 'bank_transfer' OR executed_on GLOB '[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]')
 );
 CREATE TRIGGER IF NOT EXISTS checkout_owed_payments_no_update BEFORE UPDATE ON checkout_owed_payments
 BEGIN SELECT RAISE(ABORT, 'checkout_owed_payments is append-only'); END;
+-- A bank transfer that came back: the outstanding amount is restored; the payment itself stays in the history.
+CREATE TABLE IF NOT EXISTS checkout_owed_payment_returns (
+  id          TEXT PRIMARY KEY,
+  payment_id  TEXT NOT NULL UNIQUE REFERENCES checkout_owed_payments(id),
+  owed_id     TEXT NOT NULL REFERENCES checkout_owed(id),
+  order_id    TEXT NOT NULL,
+  cents       INTEGER NOT NULL CHECK (cents > 0),
+  returned_on TEXT NOT NULL CHECK (returned_on GLOB '[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]'),
+  reason      TEXT NOT NULL,
+  recorded_by TEXT NOT NULL,
+  at          TEXT NOT NULL
+);
+CREATE TRIGGER IF NOT EXISTS checkout_owed_payment_returns_no_update BEFORE UPDATE ON checkout_owed_payment_returns
+BEGIN SELECT RAISE(ABORT, 'checkout_owed_payment_returns is append-only'); END;
 
 -- Rollback (only before any pilot data exists):
+-- DROP TABLE IF EXISTS checkout_owed_payment_returns;
 -- DROP TABLE IF EXISTS checkout_owed_payments;
 -- DROP TABLE IF EXISTS checkout_owed;
 -- DROP TABLE IF EXISTS checkout_mail_sink;

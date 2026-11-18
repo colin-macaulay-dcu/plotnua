@@ -8,8 +8,8 @@ The founder desk (`/admin/checkout`) has an **Amounts owed to artists** section.
 
 | Kind | Arises when | How it is paid | Deadline |
 |---|---|---|---|
-| Processing shortfall | Stripe's processing fee plus VAT is more than the order's commission (fee model B) | Bank transfer from PlotArt | **Provisional:** 30 days (`CHECKOUT_SHORTFALL_DAYS`) |
-| Commission shortfall | A commission refund cannot go back through Stripe, because the application fee already reimbursed processing | Bank transfer from PlotArt | **Provisional:** 30 days |
+| Processing shortfall | Stripe's processing fee plus VAT is more than the order's commission (fee model B) | Bank transfer from PlotArt | 30 Irish calendar days (sandbox rule, 18 Nov 2026): from the Irish date of Stripe's fee record; due by the end of day 30 |
+| Commission shortfall | A commission refund cannot go back through Stripe, because the application fee already reimbursed processing | Bank transfer from PlotArt | 30 Irish calendar days (sandbox rule): from the Irish date of Stripe's refund record (or, flagged for review, the pilot's record of a lost dispute or a direct repayment) |
 | Lost-dispute commission | Stripe closes a dispute as lost (PA-GAA 9.1) | **Return commission** button: through Stripe as far as the fee allows; any remainder becomes a commission shortfall | 30 days from Stripe's notice (PA-GAA 9.1) |
 
 Each item shows:
@@ -54,5 +54,13 @@ None of these contain bank details: those exist only at PlotArt's bank (section 
 
 ## 4. Open decisions
 
-- **F11 / F12.** The 7-day reimbursement period (PA-PAY 3.3) was approved by the founder as the sandbox pilot rule on 18 November 2026. The 30-day shortfall period (PA-PAY 3.5) remains provisional. Decisions are recorded per deadline in `DEADLINE_DECISIONS`; `CHECKOUT_DEADLINES_APPROVED` is no longer read.
+- **F11 / F12.** Both periods are approved by the founder as sandbox pilot rules on 18 November 2026: 7 Irish calendar days for the processing reimbursement (PA-PAY 3.3) and 30 Irish calendar days for bank-transfer shortfalls (PA-PAY 3.5). Decisions are recorded per deadline in `DEADLINE_DECISIONS`; `CHECKOUT_DEADLINES_APPROVED` is no longer read.
 - **Who monitors the queue, and how often.** For example, a weekly check of the founder desk, plus the reminders.
+
+## 5. Recording a bank payment, a returned transfer, and overdue follow-up (sandbox rule, 18 Nov 2026)
+
+1. Record a payment only once PlotArt's bank shows the transfer as **executed**. Enter the amount, the bank's transfer reference and the execution date (YYYY-MM-DD). The pilot stores who recorded it and when. Keep the bank's confirmation and the payee details in the bank and accounting records, never in the pilot.
+2. The artist is sent one notice (test sink in the pilot) for each executed payment: amount, execution date, reference and anything still owed.
+3. If the bank returns a transfer, record it with **Transfer returned…** (date and the bank's reason, no bank details). The amount is owed again, the payment stays in the history marked returned, and the due date does not change.
+4. Seven days before the deadline the founder gets a reminder. If any amount is still owed after the deadline, the founder is prompted to follow up promptly (phone the artist on the number in their seller information), the order is flagged OVERDUE, and the artist is sent one overdue notice. The founder's internal target is to resolve it within 5 working days of the deadline; the artist's deadline still applies.
+5. Where the start date rests on the pilot's own record rather than Stripe's (a lost dispute, a direct repayment, a refund whose success time Stripe did not give, or a fee with no recorded time), the item is marked **For review** and the founder gets one alert.

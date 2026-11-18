@@ -8,7 +8,8 @@ Internal notes for founder and professional review; not customer-facing. r8 note
 
 ## Founder decision status (recorded separately, 18 November 2026)
 - **PA-PAY 3.3, processing-fee reimbursement: seven Irish calendar days — APPROVED by the founder at 09:30 on 18 November 2026 as the sandbox pilot rule.** Scope: the sandbox pilot only. It does not issue the terms, which remain an unissued draft, and does not approve live use. The brackets around "seventh" in 3.3(b) and (c) are removed for that reason only. Recorded in code as `DEADLINE_DECISIONS.reimburse_days` (`src/checkout.js`).
-- **PA-PAY 3.5, bank-transfer shortfall: 30 days — still PROVISIONAL.** Separate decision, next for the founder (`reports/plotart-shortfall-30-day-decision-2026-11-18.md`). Recorded as `DEADLINE_DECISIONS.shortfall_days`, status provisional.
+- **PA-PAY 3.5, bank-transfer shortfall: 30 Irish calendar days — APPROVED by the founder at 09:40 on 18 November 2026 as the sandbox pilot rule**, for both processing-fee and commission-return shortfalls. Start: the Irish date of the transaction record that first established the amount owed by bank transfer; day one is the next day; due by the end of day 30 (Europe/Dublin). Scope: sandbox only; terms remain an unissued draft. Recorded as `DEADLINE_DECISIONS.shortfall_days`. Evidence: `reports/plotart-shortfall-30-day-results-2026-11-18.md`.
+- **Founder follow-up (internal, not in the terms):** the founder owns follow-up; internal target to resolve an overdue amount is 5 working days after the deadline; the artist's deadline still applies.
 - `CHECKOUT_DEADLINES_APPROVED` approved both deadlines at once. It is left unset and is no longer read; each deadline is now approved only by its own entry.
 - Pre-live (open): what Stripe does with an application-fee refund when PlotArt's platform balance cannot cover it.
 
