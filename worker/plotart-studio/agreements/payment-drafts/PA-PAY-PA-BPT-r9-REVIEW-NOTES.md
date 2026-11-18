@@ -39,3 +39,4 @@ Internal notes for founder and professional review; not customer-facing. r8 note
 
 ## Founder decision — absences, Option 1 (18 November 2026, 10:47; sandbox)
 - "Pause new quotes and payments" built for absences of more than three days: blocks new managed-checkout orders, issuing quotes and opening payment from unpaid quotes; everything else continues. Run 36 (E23, E23a) and local PZ1–PZ7. Report: `reports/plotart-pause-new-quotes-2026-11-18.md`.
+- Recorded 18 Nov 11:05: run 36 is the sandbox verification of the pause; expiry and resume checks (PZ5, PZ7) are local simulations.

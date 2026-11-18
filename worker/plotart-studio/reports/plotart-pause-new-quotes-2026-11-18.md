@@ -2,7 +2,16 @@
 
 18 November 2026 · branch `plotart/managed-checkout-pilot` (PR #20) · sandbox only · **for the founder's review**
 
-Built as Option 1. Founder email, production deployment and access for a cover person remain separate decisions. Nothing is merged or deployed.
+Built as Option 1.
+
+**Recorded (founder, 11:05):**
+- **Run 36** is the sandbox verification of “Pause new quotes and payments”: a session opened before the pause and paid during it, and a buyer link refused during the pause.
+- **The expiry and resume checks** (PZ5 and PZ7) are **local simulations**.
+
+**Wording revised (11:05):**
+- **Founder checklist:** shows one payment status per quote, either “The buyer can still pay on the Stripe page already opened until ‹session expiry›.” or “The buyer cannot start payment while paused.”, with the original quote expiry in both cases.
+- **Buyer note:** now reads “Payments are temporarily paused. If payments resume before your quote expires, you can pay using this link.” The expiry stays visible at the top of the page, and the contact address appears once, in the footer.
+- **Expired quotes:** keep their existing message. Founder email, production deployment and access for a cover person remain separate decisions. Nothing is merged or deployed.
 
 ---
 
@@ -12,7 +21,7 @@ Built as Option 1. Founder email, production deployment and access for a cover p
 |---|---|
 | Creating a new managed-checkout order | Founder: "New quotes and payments are paused (founder absence). Resume them on the checkout desk first." |
 | Issuing a quote | Founder: same message |
-| Opening a Stripe Checkout Session from an unpaid quote, including through an existing buyer link | Buyer: the quote is shown without the pay button, with this note: "Payments are temporarily paused. Your quote stays valid until the expiry time shown above; you can pay once payments resume. Questions: hello@plotnua.ie." No Stripe session or reservation is made. |
+| Opening a Stripe Checkout Session from an unpaid quote, including through an existing buyer link | Buyer: the quote is shown without the pay button, with this note: "Payments are temporarily paused. If payments resume before your quote expires, you can pay using this link." No Stripe session or reservation is made. |
 
 **Not changed:**
 - the quote's expiry date;

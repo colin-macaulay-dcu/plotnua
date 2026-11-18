@@ -527,7 +527,7 @@ check('R1 a refund pending at Stripe books nothing and returns no commission yet
 r = await call('POST', `/api/admin/checkout/orders/${o1.id}/refund`, FOUNDER, { artwork_cents: 50001, delivery_cents: 0, reason: 'too much' });
 check('R2 a pending refund counts against what can still be refunded', r.s === 409);
 check('R1b the artist and the founder are told at once, with the funding steps', (await q("SELECT * FROM order_events WHERE order_id = ? AND action = 'notified_refund_pending'", o1.id)).length === 1
-  && (await q("SELECT * FROM checkout_mail_sink WHERE subject LIKE '%refund_pending%' AND to_role IN ('artist','founder') AND order_id = ?", o1.id)).length === 2
+  && (await q("SELECT * FROM checkout_mail_sink WHERE kind = 'refund_pending' AND to_role IN ('artist','founder') AND order_id = ?", o1.id)).length === 2
   && (await q("SELECT body FROM checkout_mail_sink WHERE to_sha256 = ? AND kind = 'refund_pending'", sha(GAL)))[0].body.includes('Add to balance')
   && !(await q('SELECT * FROM mail_capture')).length);
 { const bn = await q("SELECT * FROM order_messages WHERE order_id = ? AND kind = 'buyer_refund_pending'", o1.id), sk = await q("SELECT * FROM checkout_mail_sink WHERE order_id = ? AND kind = 'buyer_refund_pending'", o1.id);
@@ -1019,6 +1019,13 @@ console.log('— seven-day reimbursement rule (PA-PAY §3.3(b), provisional) · 
     await pub('POST', `/q/${TZ}/pay`, { form: { accept_terms: 'PA-BPT-TEST-01' } }); const sZ = Object.values(M.sessions).at(-1);
     const expBefore = { Y: (await order(Y)).quote_expires_at, Z: (await order(Z)).quote_expires_at };
     const back = new Date(Date.now() + 5 * 86400_000).toLocaleDateString('en-CA', { timeZone: 'Europe/Dublin' });
+    if (process.env.SCREENSHOT) { try {
+      const { createRequire } = await import('node:module'); const pw = createRequire('/tmp/claude-0/studio-tools/package.json')('playwright');
+      const b0 = await pw.chromium.launch({ executablePath: '/usr/bin/google-chrome' }), p0 = await b0.newPage({ viewport: { width: 1300, height: 1000 }, locale: 'en-IE', timezoneId: 'Europe/Dublin' });
+      await p0.setExtraHTTPHeaders({ 'Cf-Access-Jwt-Assertion': token(FOUNDER) }); await p0.goto(S.url + '/admin/checkout', { waitUntil: 'load' }); await p0.waitForSelector('#pause-control', { timeout: 20000 });
+      await p0.addStyleTag({ content: '.st-top{position:static !important}' }); await p0.evaluate(() => document.querySelector('#pause-control details').open = true);
+      await (await p0.$('#pause-control')).screenshot({ path: '/tmp/pause-control-not-paused.png' }); await b0.close();
+    } catch (e) { console.log('  (screenshot not taken: ' + String(e.message).split('\n')[0] + ')'); } }
     const pArt = await call('POST', '/api/admin/checkout/pause', GAL, { paused: true, return_on: back });
     const pPast = await call('POST', '/api/admin/checkout/pause', FOUNDER, { paused: true, return_on: '2020-01-01' });
     const pz = await call('POST', '/api/admin/checkout/pause', FOUNDER, { paused: true, return_on: back, note: 'SIMULATED absence' });
@@ -1030,12 +1037,18 @@ console.log('— seven-day reimbursement rule (PA-PAY §3.3(b), provisional) · 
       ab.open_sessions.some(x => x.id === sX.id) && ab.open_sessions.some(x => x.id === sZ.id) && ab.quotes_awaiting_payment.some(x => x.id === Y) && ab.horizon > back
       && ab.items.every(x => /before you leave|follow-up|agreed cover|Automatic/.test(x.action)), { sessions: ab.open_sessions.length, quotes: ab.quotes_awaiting_payment.map(x => x.reference), items: ab.items.length });
     writeFileSync('/tmp/plotart-absence.json', JSON.stringify(ab, null, 1));
+    { const qx = ab.quotes_awaiting_payment.find(x => x.id === X), qy = ab.quotes_awaiting_payment.find(x => x.id === Y), ids = ab.quotes_awaiting_payment.map(x => x.id);
+      check('PZ2b each quote appears once with one payment status: an open Stripe page says the buyer can still pay on it until the session expiry; otherwise the buyer cannot start payment while paused; both show the original quote expiry',
+        qx && qx.payment === 'stripe_page_open' && /^The buyer can still pay on the Stripe page already opened until \d+ \w+ \d{4}, \d\d:\d\d \(Irish time\)\.$/.test(qx.payment_status)
+        && qy && qy.payment === 'not_started' && qy.payment_status === 'The buyer cannot start payment while paused.' && /^Quote expires .* \(original expiry, unchanged\)\.$/.test(qy.quote_expiry) && /^Quote expires/.test(qx.quote_expiry)
+        && new Set(ids).size === ids.length, { qx, qy }); }
     const sessBefore = Object.keys(M.sessions).length;
     const cNew = await call('POST', '/api/admin/checkout/orders', FOUNDER, { artist_id: 'agal', artwork_id: works[4] || works[3], enquiry_ref: 'PA-E-261101-AAAAAA', buyer_email: 'pz2@example.test' });
     const iD = await call('POST', `/api/admin/checkout/orders/${D}/issue`, FOUNDER, { days: 2, linked_check_confirmed: true });
     const gY = await pub('GET', `/q/${TY}`), pY = await pub('POST', `/q/${TY}/pay`, { form: { accept_terms: 'PA-BPT-TEST-01' } });
     check('PZ3 while paused the server refuses a new order, issuing a quote, and opening payment from an unpaid quote through its existing buyer link; the buyer sees a short “payments are temporarily paused” note and no pay button; no Stripe session or reservation is made; the quote’s expiry is unchanged',
-      cNew.s === 409 && /paused/.test(cNew.j.error) && iD.s === 409 && /paused/.test(iD.j.error) && gY.s === 200 && gY.t.includes('Payments are temporarily paused') && !gY.t.includes('Continue to secure payment')
+      cNew.s === 409 && /paused/.test(cNew.j.error) && iD.s === 409 && /paused/.test(iD.j.error) && gY.s === 200 && gY.t.includes('Payments are temporarily paused. If payments resume before your quote expires, you can pay using this link.') && !gY.t.includes('Continue to secure payment')
+      && gY.t.split('hello@plotnua.ie').length - 1 === 2 && /valid until/.test(gY.t)
       && pY.s === 409 && pY.t.includes('Payments are temporarily paused') && Object.keys(M.sessions).length === sessBefore && !(await q('SELECT 1 FROM artwork_reservations WHERE order_id = ?', Y)).length
       && (await order(Y)).quote_expires_at === expBefore.Y, { cNew: cNew.j, iD: iD.j, gY: gY.s, pY: pY.s });
     writeFileSync('/tmp/plotart-buyer-paused.html', gY.t);

@@ -78,12 +78,16 @@ export function mailMode(env) {
       : !testKey ? 'Live key detected: live sending is not part of this pilot; test sink only.'
       : `Sending only to ${allow.length} approved test address(es); everything else goes to the test sink.`, _allow: allow };
 }
-async function deliver(env, { orderId = null, kind, toRole, to, subject, body, idempotencyKey = null }) {
+export async function deliver(env, { orderId = null, kind, toRole, to, subject, body, idempotencyKey = null }) {
   const m = mailMode(env), addr = String(to || '').trim().toLowerCase();
   if (m.mode === 'none') return { channel: 'none', status: 'not_sent_no_provider', detail: 'no mail provider configured' };
   if (m.external_sending && m._allow.includes(addr)) {
-    const r = await send({ ...env, MAILER: 'resend', MAIL_FROM: env.CHECKOUT_MAIL_FROM }, { to: addr, replyTo: 'hello@plotnua.ie', subject, text: body, idempotencyKey });
-    return r.sent ? { channel: 'provider', status: 'accepted_by_provider', detail: 'accepted by Resend (not proof of inbox delivery)' } : { channel: 'provider', status: 'failed', detail: String(r.detail).slice(0, 200) };
+    let r; try { r = await send({ ...env, MAILER: 'resend', MAIL_FROM: env.CHECKOUT_MAIL_FROM }, { to: addr, replyTo: 'hello@plotnua.ie', subject, text: body, idempotencyKey }); } catch (e) { r = { sent: false, detail: String(e.message || e) }; }
+    const out = r.sent ? { channel: 'provider', status: 'accepted_by_provider', detail: 'accepted by Resend (not proof of inbox delivery)' } : { channel: 'provider', status: 'failed', detail: String(r.detail).slice(0, 200) };
+    if (toRole === 'founder')   // the alerts panel keeps every founder alert, emailed or not, with how the email went
+      await run(env, 'INSERT INTO checkout_mail_sink (at, order_id, kind, to_role, to_sha256, subject, body, delivery, delivery_detail) VALUES (?,?,?,?,?,?,?,?,?)',
+        now(), orderId, kind, toRole, await sha256(addr), subject, body, out.status, out.detail);
+    return out;
   }
   if (env.CHECKOUT_MAIL_SINK_BROKEN === 'true' && env.ENVIRONMENT === 'local') throw new Error('test sink unavailable (local failure test)');
   await run(env, 'INSERT INTO checkout_mail_sink (at, order_id, kind, to_role, to_sha256, subject, body) VALUES (?,?,?,?,?,?,?)',
@@ -172,7 +176,7 @@ function requireOn(env) {
    recorded from its signed event. */
 export const PAUSE_LABEL = 'Pause new quotes and payments';
 export const PAUSE_NOTE = 'While paused, PlotArt refuses new managed-checkout orders, issuing quotes, and starting payment from an unpaid quote, including existing buyer links. A Stripe payment page that a buyer already has open may still complete (for up to about 30 minutes) and is recorded as normal. Existing deadlines continue: reimbursements, amounts owed to artists, refunds and disputes stay due on their dates. Quote expiry dates do not change.';
-export const BUYER_PAUSED = 'Payments are temporarily paused. Your quote stays valid until the expiry time shown above; you can pay once payments resume. Questions: hello@plotnua.ie.';
+export const BUYER_PAUSED = 'Payments are temporarily paused. If payments resume before your quote expires, you can pay using this link.';
 export async function pauseState(env) {
   let r = null; try { r = await one(env, 'SELECT * FROM checkout_pause_events ORDER BY id DESC LIMIT 1'); } catch { /* not installed */ }
   return { paused: !!(r && r.paused), since: r && r.paused ? r.at : null, by: r ? r.by : null, return_on: r && r.paused ? r.return_on : null, note: r && r.paused ? r.note : null, label: PAUSE_LABEL, explanation: PAUSE_NOTE };
@@ -192,6 +196,7 @@ export async function setPause(env, founder, b) {
 }
 /* Before leaving: what is open and what falls due before the return date (plus two working days), each with the manual
    action it needs while the founder is unavailable: pay it now, set a follow-up, or arrange agreed cover. */
+const irishTime = t => `${new Date(t).toLocaleString('en-IE', { timeZone: 'Europe/Dublin', day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' })} (Irish time)`;
 export async function absenceChecklist(env, returnOn = null) {
   const st = await pauseState(env), back = returnOn || st.return_on || addDate(dublinDate(Date.now()), 3), horizon = workingDaysAfter(back, 2), t = now();
   const sessions = await all(env, `SELECT s.id, s.order_id, s.expires_at, o.reference FROM checkout_sessions s JOIN checkout_orders o ON o.id = s.order_id WHERE s.status = 'open' AND s.expires_at > ? ORDER BY s.expires_at`, t);
@@ -214,8 +219,12 @@ export async function absenceChecklist(env, returnOn = null) {
   }
   items.sort((a, b) => (a.due || '9999') < (b.due || '9999') ? -1 : 1);
   return { return_on: back, horizon, horizon_note: `Covers anything due by ${longDate(horizon)} (your return date plus two working days).`,
-    open_sessions: sessions.map(x => ({ ...x, note: 'A Stripe payment page is open: the buyer can still pay until it expires; the payment will be recorded.' })),
-    quotes_awaiting_payment: quotes.map(x => ({ ...x, note: 'Cannot be paid while paused; its expiry date does not change.' })), items };
+    open_sessions: sessions,
+    // one line per quote, with one payment status: a Stripe page already open, or payment not started
+    quotes_awaiting_payment: quotes.map(x => { const sx = sessions.find(y => y.order_id === x.id);
+      return { ...x, payment: sx ? 'stripe_page_open' : 'not_started', session_expires_at: sx ? sx.expires_at : null,
+        payment_status: sx ? `The buyer can still pay on the Stripe page already opened until ${irishTime(sx.expires_at)}.` : 'The buyer cannot start payment while paused.',
+        quote_expiry: `Quote expires ${irishTime(x.quote_expires_at)} (original expiry, unchanged).` }; }), items };
 }
 async function requireInstalled(env) { if (!(await installed(env))) throw new Bad('The payment pilot is not installed (migration 0016)', 409); }
 
@@ -431,6 +440,7 @@ export async function adminView(env) {
    recorded in the test inbox only and never emailed, and the panel says so. Each alert shows the CURRENT state of the
    item behind it (amount outstanding, Irish due date, open or resolved), worked out afresh on every view: marking an alert
    read changes only its read state, never the item. */
+const URGENT_KINDS = ['owed_overdue', 'reimbursement_deadline', 'reimbursement_extended_deadline', 'refund_failed', 'refund_pending_urgent'];
 const ALERT_REASON = {
   reimbursement_day5: 'Processing reimbursement still outstanding on day 5', reimbursement_deadline: 'Processing reimbursement overdue',
   reimbursement_extended_deadline: 'Processing reimbursement overdue (extended date)', reimbursement_extended: 'Stripe had not recorded the fee by the original date: extension applied',
@@ -463,7 +473,7 @@ async function alertItem(env, o, kind) {
   return { state: open ? 'open' : 'resolved', amount_cents: null, amount_label: '—', due_date: null, due_label: '—', note: open ? o.needs_resolution : null };
 }
 export async function founderAlerts(env) {
-  const rows = await all(env, `SELECT s.id, s.at, s.order_id, s.kind, s.subject, s.body, r.read_at, r.read_by, r.next_action, r.follow_up_on FROM checkout_mail_sink s
+  const rows = await all(env, `SELECT s.id, s.at, s.order_id, s.kind, s.subject, s.body, s.delivery, s.delivery_detail, r.read_at, r.read_by, r.next_action, r.follow_up_on FROM checkout_mail_sink s
     LEFT JOIN checkout_founder_alert_reads r ON r.alert_id = s.id WHERE s.to_role = 'founder' ORDER BY s.id DESC LIMIT 200`);
   const today = dublinDate(Date.now()), items = [];
   for (const a of rows) {
@@ -471,12 +481,31 @@ export async function founderAlerts(env) {
     items.push({ id: a.id, recorded_at: a.at, recorded_irish: `${longDate(dublinDate(a.at))}, ${new Date(a.at).toLocaleTimeString('en-IE', { timeZone: 'Europe/Dublin', hour: '2-digit', minute: '2-digit' })}`,
       kind: a.kind, reason: ALERT_REASON[a.kind] || a.subject, detail: a.body.split('\n').find(x => x.trim()) || '',
       order_id: a.order_id, reference: o ? o.reference : null, link: a.order_id ? `/admin/checkout#order-${a.order_id}` : null, ...it,
-      delivery: 'Sandbox: recorded in the test inbox only. Not emailed to you (outbound email is off).',
+      delivery: a.delivery === 'accepted_by_provider' ? 'Emailed to you: accepted by Resend (not proof that it reached your inbox).'
+        : a.delivery === 'failed' ? `EMAIL FAILED: ${a.delivery_detail || 'no detail'}. This alert was not delivered to your inbox; it is shown here only. Check the mail set-up.`
+        : 'Sandbox: recorded in the test inbox only. Not emailed to you (outbound email is off).', delivery_status: a.delivery || 'held_in_test_sink',
       read: !!a.read_at, read_at: a.read_at, read_by: a.read_by, next_action: a.next_action, follow_up_on: a.follow_up_on,
       follow_up_due: !!a.follow_up_on && a.follow_up_on <= today && it.state === 'open' });
   }
   return { unread: items.filter(x => !x.read).length, open: items.filter(x => x.state === 'open').length, follow_ups_due: items.filter(x => x.follow_up_due).length,
-    note: 'Sandbox: these alerts were recorded in the test inbox only and were not emailed to you. Review them at the Monday and Thursday checks. Marking an alert read does not resolve the item behind it.', items };
+    note: mailMode(env).external_sending ? 'Founder alerts are emailed to the approved founder address; each alert shows whether the email was accepted or failed. Marking an alert read does not resolve the item behind it.'
+      : 'Sandbox: these alerts were recorded in the test inbox only and were not emailed to you. Review them at the Monday and Thursday checks. Marking an alert read does not resolve the item behind it.', items };
+}
+/* Daily digest for the founder (PROPOSAL: built for the email test; not scheduled and not sent). Lists what is open, what
+   is due soonest, follow-ups due, and the pause state. Returns null when nothing needs attention. */
+export async function founderDigest(env) {
+  const fa = await founderAlerts(env), pz = await pauseState(env), ab = await absenceChecklist(env, addDate(dublinDate(Date.now()), 7));
+  const open = fa.items.filter(x => x.state === 'open');
+  if (!open.length && !fa.follow_ups_due && !ab.items.length) return null;
+  const seen = new Set(), lines = [];
+  for (const x of open) { const k = x.order_id + x.kind; if (seen.has(k)) continue; seen.add(k); lines.push(`• ${x.reference || '—'}: ${x.reason}. ${x.amount_label}. Due: ${x.due_label}.${x.next_action ? ` Next action: ${x.next_action}${x.follow_up_on ? ` (follow up ${x.follow_up_on})` : ''}.` : ''}`); }
+  const today = dublinDate(Date.now());
+  return { subject: `PlotArt payment pilot · daily digest · ${longDate(today)} · ${open.length} open, ${fa.follow_ups_due} follow-up(s) due`,
+    body: [`PlotArt payment pilot · daily digest for ${longDate(today)} (Irish time)`, '',
+      pz.paused ? `New quotes and payments are PAUSED (since ${irishTime(pz.since)}; back ${pz.return_on}).` : 'New quotes and payments are open.', '',
+      `Open items (${open.length}):`, ...(lines.length ? lines : ['• none']), '',
+      `Quotes awaiting payment: ${ab.quotes_awaiting_payment.length} (${ab.open_sessions.length} with a Stripe page open).`, '',
+      'Founder desk: /admin/checkout. This digest never contains bank details or buyer contact details.'].join('\n') };
 }
 export async function setFounderAlert(env, founder, id, b) {
   await requireInstalled(env);
@@ -556,11 +585,12 @@ async function pendingRefunds(env, artistId = null) {
       urgency: age >= 30 ? 'urgent' : age >= 7 ? 'overdue' : 'new' }; });
 }
 async function notify(env, o, kind, text, { founderOnly = false, artistOnly = false, subject = null } = {}) {
+  // one alert = one idempotency key (order, kind, recipient role, exact text): a repeated send of the same alert is not delivered twice by Resend
   const artist = founderOnly ? null : await one(env, 'SELECT email, display_name FROM artists WHERE id = ?', o.artist_id);
   const to = [...(artist && artist.email ? [['artist', artist.email]] : []), ...(env.CHECKOUT_NOTIFY_EMAIL && !artistOnly ? [['founder', env.CHECKOUT_NOTIFY_EMAIL]] : [])];
   const out = [];
   for (const [role, addr] of to) {
-    try { out.push((await deliver(env, { orderId: o.id, kind, toRole: role, to: addr, subject: subject || `PlotArt payment pilot · ${o.reference} · ${kind}`, body: text })).status); }
+    try { out.push((await deliver(env, { orderId: o.id, kind, toRole: role, to: addr, subject: subject || `PlotArt payment pilot · ${URGENT_KINDS.includes(kind) ? 'URGENT · ' : ''}${o.reference} · ${ALERT_REASON[kind] || kind.replace(/_/g, ' ')}`, body: text, idempotencyKey: 'plotart-' + (await sha256([o.id, kind, role, text].join('|'))).slice(0, 40) })).status); }
     catch (e) { out.push('error'); }
   }
   await event(env, o.id, 'system', 'notified_' + kind, o.status, o.status, { recipients: to.map(x => x[0]), result: out });

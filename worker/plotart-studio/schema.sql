@@ -1042,7 +1042,9 @@ CREATE TABLE IF NOT EXISTS checkout_mail_sink (
   to_role    TEXT NOT NULL,
   to_sha256  TEXT NOT NULL,                   -- the intended address is never stored here, only its fingerprint
   subject    TEXT NOT NULL,
-  body       TEXT NOT NULL
+  body       TEXT NOT NULL,
+  delivery   TEXT NOT NULL DEFAULT 'held_in_test_sink' CHECK (delivery IN ('held_in_test_sink','accepted_by_provider','failed')),
+  delivery_detail TEXT                           -- founder alerts are always recorded here (the alerts panel); if one was emailed, how that went
 );
 
 -- 16 · Amounts PlotArt owes artists (fee model B shortfalls; commission to return after a lost dispute, PA-GAA 9).
