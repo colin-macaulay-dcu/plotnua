@@ -262,45 +262,73 @@ export async function e2e({ rec, KEY, ACCOUNT, RUN, port, whsec, stripe, sleep }
         !runtimeOk ? 'SKIP' : all.length && all.every(c => c.key === 'runtime') && !all.some(c => c.status === 401 || c.status === 403) ? 'PASS' : 'FAIL', summary(all));
       return;
     }
-    // ---- low-platform-balance run (request file: "balance_evidence": true; founder approval 18 Nov 2026 20:39, Option 1).
-    // What Stripe does with the pilot's application-fee refund when PlotArt's AVAILABLE EUR balance is below the amount.
-    // No payout is made and no permission is changed: the run proceeds only if the available EUR balance is ALREADY below
-    // the reimbursement (read-only check first; otherwise it stops before any write and reports what would be needed).
+    // Exercise the pilot reimbursement with a temporary, reversible sandbox transfer.
     let BALRUN = false; try { BALRUN = JSON.parse(readFileSync(HERE + 'test/stripe-test-run.json', 'utf8')).balance_evidence === true; } catch { /* */ }
     if (BALRUN) {
       const R_EXPECTED = 806;   // the pilot's reimbursement on a €200 sale in runs 33–35 (Stripe's processing fee + VAT); the actual amount is checked at the request
       const t = () => new Date().toISOString();
-      const pbal = async () => {   // PlotArt's own (platform) balance, harness key, read-only
-        const r = await stripe('GET', '/v1/balance');
-        const g = k => ((r.j && r.j[k]) || []).filter(x => x.currency === 'eur').reduce((a, x) => a + x.amount, 0);
-        return { http: r.status, error: r.j && r.j.error ? { code: r.j.error.code, message: String(r.j.error.message || '').slice(0, 200) } : null, eur_available: g('available'), eur_pending: g('pending'), read_at: t() };
-      };
-      const B0 = await pbal();
-      rec('E24-0', 'PlotArt’s platform EUR balance before anything is created (harness key, read-only)', 'stripe-test-api', B0.http === 200 ? 'INFO' : 'FAIL', B0);
-      if (B0.http !== 200) { rec('E24', 'low-balance reimbursement', SRC, 'SKIP', { blocked_by: 'the harness key cannot read PlotArt’s platform balance', needed: 'Balance: Read on the harness key (CHECKOUT_TEST_STRIPE_SECRET_KEY)', nothing_created: true }); return; }
-      if (B0.eur_available >= R_EXPECTED) {
-        rec('E24', 'low-balance reimbursement', SRC, 'INCONCLUSIVE', { precondition: `available EUR ${B0.eur_available} cents is not below the expected reimbursement (${R_EXPECTED} cents)`,
-          nothing_created: true, no_payout_made: true, needed_to_proceed: 'a payout from PlotArt’s test balance (the harness key has no payout permission): founder decision required before any change' });
-        return;
+      const balanceKey = process.env.STRIPE_BALANCE_KEY || '';
+      if (!runtimeOk || !/^rk_test_[A-Za-z0-9]+$/.test(balanceKey) || ACCOUNT !== 'acct_1UclJXHx1Olx8cdw') {
+        throw new Error('The verified sandbox artist, restricted runtime key and temporary sandbox key are required');
       }
-      // the restoration path is proven BEFORE the test (a €1.00 test payment to PlotArt's own account, funds available at once):
-      // if it is refused, the test stops here and nothing needs restoring
-      const restorePay = async (cents, tag) => {
-        const r = await stripe('POST', '/v1/payment_intents', { amount: cents, currency: 'eur', payment_method: 'pm_card_bypassPending', confirm: 'true', allowed_payment_method_types: ['card'],
-          description: 'PlotArt pilot SANDBOX balance restoration (test card, no real money)', metadata: { plotart_purpose: 'sandbox_balance_restore', plotart_run: RUN } }, null, `plotart-balrestore-${RUN}-${tag}`);
-        return { http: r.status, id: r.j && r.j.id, status: r.j && r.j.status, amount: r.j && r.j.amount, error: r.j && r.j.error ? { code: r.j.error.code, message: String(r.j.error.message || '').slice(0, 200) } : null };
+      async function platformRequest(path, params, idempotencyKey) {
+        const headers = { Authorization: 'Bearer ' + balanceKey, 'Stripe-Version': '2026-10-28.endive' };
+        if (params) headers['Idempotency-Key'] = idempotencyKey;
+        for (let attempt = 1; ; attempt++) {
+          try {
+            const res = await fetch('https://api.stripe.com' + path, {
+              method: params ? 'POST' : 'GET', headers, body: params && new URLSearchParams(params),
+              signal: AbortSignal.timeout(15000)
+            });
+            const obj = await res.json();
+            if (res.status >= 500 || res.status === 429) throw new Error('Temporary Stripe error ' + res.status);
+            if (!res.ok) throw Object.assign(new Error(obj.error?.code || 'Stripe HTTP ' + res.status), { final: true });
+            if (obj.livemode === true) throw Object.assign(new Error('Unexpected live object'), { final: true });
+            return obj;
+          } catch (error) {
+            if (error.final || attempt >= 3) throw error;
+            await sleep(1000 * attempt);
+          }
+        }
+      }
+      function balanceSnapshot(obj) {
+        const eur = entries => entries.filter(x => x.currency === 'eur').reduce((sum, x) => sum + x.amount, 0);
+        return { eur_available: eur(obj.available), eur_pending: eur(obj.pending), read_at: t() };
+      }
+      const pbal = async () => balanceSnapshot(await platformRequest('/v1/balance'));
+      const artistBalance = async () => {
+        const response = await stripe('GET', '/v1/balance', null, ACCOUNT);
+        if (response.status !== 200) throw new Error('Unable to verify sandbox artist balance');
+        return balanceSnapshot(response.j);
       };
-      const probe = await restorePay(100, 'probe');
-      const B1 = await pbal();
-      rec('E24r0', 'restoration path checked before the test: a €1.00 sandbox payment to PlotArt’s own account with Stripe’s bypass-pending test card (funds available at once)', 'stripe-test-api',
-        probe.http === 200 && probe.status === 'succeeded' ? 'PASS' : 'FAIL', { payment: probe, balance_after: B1 });
-      if (!(probe.http === 200 && probe.status === 'succeeded')) { rec('E24', 'low-balance reimbursement', SRC, 'SKIP', { blocked_by: 'restoration path refused: the test was not started, nothing needs restoring', needed: 'PaymentIntents: Write on PlotArt’s own account for the harness key' }); return; }
-      if (B1.eur_available >= R_EXPECTED) { rec('E24', 'low-balance reimbursement', SRC, 'INCONCLUSIVE', { precondition: `available EUR ${B1.eur_available} cents after the €1.00 probe is not below ${R_EXPECTED} cents`, nothing_else_created: true }); }
-      else {
+      const B0 = await pbal(), artistBefore = await artistBalance();
+      const amountToMove = B0.eur_available >= R_EXPECTED ? B0.eur_available - 1 : 0;
+      const transferKey = 'plotart-low-balance-' + (process.env.GITHUB_RUN_ID || RUN);
+      let transfer;
+      rec('E24-0', 'Starting sandbox balances and planned transfer in cents', SRC, 'INFO',
+        { platform: B0, artist: artistBefore, amountToMove, transferKey });
+      try {
+        if (amountToMove) {
+          transfer = await platformRequest('/v1/transfers', {
+            amount: String(amountToMove), currency: 'eur', destination: ACCOUNT, transfer_group: transferKey
+          }, transferKey);
+          console.log('Temporary sandbox transfer', transfer.id, 'amount in cents', transfer.amount);
+          if (transfer.amount !== amountToMove || transfer.destination !== ACCOUNT) throw new Error('Unexpected transfer result');
+        }
+        const lowBalance = await pbal();
+        if (lowBalance.eur_available >= R_EXPECTED) throw new Error('Available balance exceeds the low-balance test limit');
         const CAP = { first: null, later: [] };
         FEE_HOOK = {
           before: async ctx => { const c = { request: { path: ctx.path.replace(/fee_[A-Za-z0-9]+/, 'fee_…'), idempotency_key: ctx.idem, body: ctx.body, key: ctx.key, sent_at: null } };
-            if (!CAP.first) { c.balance_before = await pbal(); CAP.first = c; } else CAP.later.push(c); c.request.sent_at = t(); return c; },
+            if (!CAP.first) {
+              c.balance_before = await pbal();
+              const requested = Number(new URLSearchParams(ctx.body).get('amount'));
+              if (!(requested > c.balance_before.eur_available && requested === R_EXPECTED)) {
+                throw new Error('Reimbursement amount or immediate available balance does not match the test');
+              }
+              CAP.first = c;
+            } else CAP.later.push(c);
+            c.request.sent_at = t(); return c; },
           after: async (c, r) => { let body = null; try { body = r.body ? JSON.parse(r.body) : null; } catch { body = { unreadable: String(r.body).slice(0, 300) }; }
             c.response = { received_at: t(), status: r.status ?? null, network_error: r.network_error || null, request_id: r.request_id || null, idempotent_replayed: r.idempotent_replayed || null,
               body: body && (body.error ? { error: body.error } : { id: body.id, object: body.object, amount: body.amount, currency: body.currency, created: body.created, fee: body.fee, balance_transaction: body.balance_transaction, metadata: body.metadata }) };
@@ -373,17 +401,26 @@ export async function e2e({ rec, KEY, ACCOUNT, RUN, port, whsec, stripe, sleep }
               artist_statement: ao.statement || null });
         } catch (e) { rec('E24', 'low-balance reimbursement', SRC, 'FAIL', { error: String(e.message).slice(0, 300), captured: CAP.first }); }
         finally { FEE_HOOK = null; }
+      } finally {
+        if (amountToMove && !transfer) {
+          // A dropped response can hide a successful write. Recover only this run's transfer.
+          const matches = await platformRequest('/v1/transfers?transfer_group=' + encodeURIComponent(transferKey) + '&limit=2');
+          if (matches.data.length > 1) throw new Error('Multiple transfers found for ' + transferKey);
+          transfer = matches.data[0];
+          if (transfer && (transfer.destination !== ACCOUNT || transfer.amount !== amountToMove)) {
+            throw new Error('Recovery transfer does not match the requested destination and amount');
+          }
+        }
+        if (transfer) {
+          const reversal = await platformRequest('/v1/transfers/' + transfer.id + '/reversals',
+            { amount: String(transfer.amount) }, transferKey + '-reverse');
+          rec('E24r', 'Full temporary sandbox transfer reversed', SRC,
+            reversal.amount === transfer.amount && reversal.transfer === transfer.id ? 'PASS' : 'FAIL',
+            { transfer_id: transfer.id, reversal_id: reversal.id, amount_cents: reversal.amount });
+        }
+        rec('E24r-balances', 'Both sandbox balances after cleanup (including the test sale and any reimbursement)', SRC,
+          'INFO', { platform_before: B0, platform_after: await pbal(), artist_before: artistBefore, artist_after: await artistBalance() });
       }
-      // restoration: PlotArt's available EUR is brought back to at least its level before the run; verified by re-reading
-      let Bend = await pbal(); const restores = [];
-      for (let i = 0; i < 2 && Bend.http === 200 && Bend.eur_available < B0.eur_available; i++) {
-        const short = B0.eur_available - Bend.eur_available, gross = Math.ceil((short + 25) / 0.94) + 50;
-        restores.push({ shortfall_cents: short, payment: await restorePay(gross, 'r' + i) });
-        await sleep(3000); Bend = await pbal();
-      }
-      rec('E24r', 'sandbox restored: PlotArt’s available EUR balance is at least what it was before the run (pending also reported), checked by re-reading after any restoration payment', 'stripe-test-api',
-        Bend.http === 200 && Bend.eur_available >= B0.eur_available ? 'PASS' : 'FAIL',
-        { before: B0, after: Bend, restoration_payments: restores, note: 'pending EUR rises by this run’s €30 application fee (Stripe makes it available on its own schedule); the €1.00 probe and any restoration payment are sandbox test-card payments to PlotArt’s own account' });
       const all = CW_CALLS.filter(c => c.host === 'api.stripe.com');
       rec('E17d', 'balance run: every Stripe API call made by the public checkout Worker used the runtime key', SRC,
         !runtimeOk ? 'SKIP' : all.length && all.every(c => c.key === 'runtime') && !all.some(c => c.status === 401 || c.status === 403) ? 'PASS' : 'FAIL',
