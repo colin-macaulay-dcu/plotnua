@@ -64,6 +64,8 @@ jobs:
           # optional: a NARROWER restricted TEST key used only by the public checkout Worker (runtime), to verify the proposal
           STRIPE_RUNTIME_KEY: ${{ secrets.CHECKOUT_TEST_STRIPE_RUNTIME_KEY }}
           CHECKOUT_E2E_PORT: "8899"
+          # temporary sandbox key (founder approval 18 Nov 2026 21:58): PlotArt's own balance and the test transfer/reversal only
+          STRIPE_BALANCE_KEY: ${{ secrets.CHECKOUT_TEST_STRIPE_BALANCE_KEY }}
           # founder email test only (phase founder_email; approved 18 Nov 2026): read by test/stripe-testmode-founder-email.mjs and
           # nowhere else. Sending exists only inside that test process and is switched off when it ends.
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}

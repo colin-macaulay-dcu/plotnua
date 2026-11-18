@@ -423,6 +423,40 @@ if (PHASES.includes('platform_balance')) {   // READ ONLY: one GET /v1/balance o
       intended_test_refund_cents: 806, intended_basis: 'the pilot’s processing reimbursement on a EUR 200 sale in runs 33–35 (Stripe’s fee + VAT); the exact amount is read at the request', read_at: new Date().toISOString() }
       : { http: r.status, error: r.j && r.j.error && { code: r.j.error.code, message: String(r.j.error.message || '').slice(0, 200) } });
 }
+if (PHASES.includes('balance_readiness')) {   // READ ONLY: nothing is created. Platform with the temporary balance key; artist with the test-runner key.
+  console.log('— balance readiness: read only');
+  const BK = process.env.STRIPE_BALANCE_KEY || '', bkOk = /^rk_test_[A-Za-z0-9]+$/.test(BK);
+  const bget = async (path, acct = null) => { const h = { Authorization: `Bearer ${BK}`, 'Stripe-Version': S.V1_API_VERSION }; if (acct) h['Stripe-Account'] = acct;
+    const r = await fetch('https://api.stripe.com' + path, { headers: h }); const j = await r.json().catch(() => ({})); if (j.livemode === true) throw new Error('live-mode object returned'); return { status: r.status, j }; };
+  const errOf = j => j && j.error ? { code: j.error.code, message: String(j.error.message || '').slice(0, 220) } : null;
+  const eur = (j, k) => ((j && j[k]) || []).filter(x => x.currency === 'eur').reduce((a, x) => a + x.amount, 0);
+  rec('BR0', 'temporary balance key present and a restricted TEST key (value never printed)', 'local', bkOk ? 'PASS' : 'FAIL', { secret: 'CHECKOUT_TEST_STRIPE_BALANCE_KEY', present: !!BK, restricted_test_key: bkOk });
+  if (bkOk) {
+    const pb = await bget('/v1/balance');
+    const acctFromErr = m => (String(m || '').match(/on account '(acct_[A-Za-z0-9]+)'/) || [])[1] || null;
+    const me = await stripe('GET', '/v1/account');   // test-runner key: the platform's own account id, if readable
+    const probe = await bget('/v1/balance', ACCOUNT);   // the temporary key should NOT reach the artist's account
+    rec('BR1', 'PlotArt’s own balance with the temporary key (Balance · Read · In your account): EUR available and pending', 'stripe-test-api', pb.status === 200 ? 'INFO' : 'FAIL',
+      pb.status === 200 ? { eur_available: eur(pb.j, 'available'), eur_pending: eur(pb.j, 'pending'), read_at: new Date().toISOString() } : { http: pb.status, error: errOf(pb.j) });
+    rec('BR2', 'platform account id', 'stripe-test-api', 'INFO', { platform_account: (me.status === 200 && me.j.id) || acctFromErr(me.j && me.j.error && me.j.error.message) || acctFromErr(pb.j && pb.j.error && pb.j.error.message) || '(not readable with these keys)', via: me.status === 200 ? 'GET /v1/account (test-runner key)' : 'Stripe error text' });
+    rec('BR3', 'the temporary key cannot read the artist’s connected account (scope limited to PlotArt’s own account)', 'stripe-test-api', probe.status === 401 || probe.status === 403 ? 'PASS' : 'FAIL', { http: probe.status, error: errOf(probe.j) });
+  }
+  if (ACCOUNT) {   // the artist's side: test-runner key, read only (as in runs 33–35)
+    const ab = await stripe('GET', '/v1/balance', null, ACCOUNT);
+    rec('BR4', 'artist test account balance with the test-runner key: EUR available and pending', 'stripe-test-api', ab.status === 200 ? 'INFO' : 'FAIL',
+      ab.status === 200 ? { account: ACCOUNT, eur_available: eur(ab.j, 'available'), eur_pending: eur(ab.j, 'pending') } : { account: ACCOUNT, http: ab.status, error: ab.j && ab.j.error && ab.j.error.message });
+    const v1 = await stripe('GET', `/v1/accounts/${ACCOUNT}`);
+    const h2 = { Authorization: `Bearer ${KEY}`, 'Stripe-Version': S.V2_API_VERSION };
+    const v2r = await fetch(`https://api.stripe.com/v2/core/accounts/${ACCOUNT}?include[0]=configuration.recipient&include[1]=configuration.merchant`, { headers: h2 }); const v2 = await v2r.json().catch(() => ({}));
+    const v1t = v1.j && v1.j.capabilities ? v1.j.capabilities.transfers || null : null;
+    const rcp = v2 && v2.configuration && v2.configuration.recipient, v2t = rcp && rcp.capabilities && rcp.capabilities.stripe_balance && rcp.capabilities.stripe_balance.stripe_transfers;
+    const eligible = v1t === 'active' || (v2t && v2t.status === 'active');
+    rec('BR5', 'can the existing artist test account receive a transfer from PlotArt with its CURRENT settings? (v1 capabilities.transfers / v2 recipient stripe_transfers; nothing is requested or changed)', 'stripe-test-api',
+      eligible ? 'PASS' : (v1.status === 200 || v2r.status === 200) ? 'FAIL' : 'INCONCLUSIVE',
+      { account: ACCOUNT, v1_http: v1.status, v1_capabilities: v1.j && v1.j.capabilities || null, v2_http: v2r.status, v2_recipient_configuration: rcp ? { capabilities: rcp.capabilities || null } : null,
+        v2_configurations_present: v2 && v2.configuration ? Object.keys(v2.configuration).filter(k => v2.configuration[k]) : null, v2_error: v2 && v2.error ? String(v2.error.message || '').slice(0, 200) : null });
+  }
+}
 if (PHASES.includes('founder_email')) {
   console.log('— founder email: ONE approved sandbox test send (Resend), synthetic data, sending switched off at the end');
   const { founderEmail } = await import(HERE + 'test/stripe-testmode-founder-email.mjs');
