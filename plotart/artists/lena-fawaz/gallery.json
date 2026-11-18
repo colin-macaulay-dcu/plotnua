@@ -45,7 +45,7 @@
   }
  ],
  "publication": {
-  "approved_at": "2026-11-18T11:09:57.627Z",
+  "approved_at": "2026-11-18T15:21:42.635Z",
   "approved_by": "founder",
   "first_approved_at": "2026-11-17T12:29:38.785Z",
   "licence_accepted_at": "2026-11-17T11:37:43.820Z",
@@ -53,7 +53,7 @@
   "permission_ref": "PA-PERM-at5xkpjluff",
   "state": "approved",
   "test_note": null,
-  "version": "v2"
+  "version": "v3"
  },
  "schema": "plotnua.plotart.gallery-package.v1",
  "works": [
@@ -106,7 +106,7 @@
    ],
    "materials": "Acrylic paint and pastels",
    "medium": "Mixed Media",
-   "price_eur": 950,
+   "price_eur": 750,
    "price_on_request": false,
    "slug": "what-we-carry",
    "title": "“What we Carry”",
