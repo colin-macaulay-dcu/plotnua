@@ -36,3 +36,6 @@ Internal notes for founder and professional review; not customer-facing. r8 note
 - Founder alerts panel added (sandbox; alerts recorded in the test inbox only, not emailed).
 - `CHECKOUT_PILOT_ENABLED` blocks founder refunds, commission returns after a lost dispute and checkout reconciliation, so it is not recommended for absences; a narrower "pause new quotes" control is proposed for decision. Details: `reports/plotart-monitoring-alerts-absence-2026-11-18.md`.
 - Same-day founder email alerts and a weekly bank reconciliation are proposed for separate approval before live use. Outbound email remains off.
+
+## Founder decision — absences, Option 1 (18 November 2026, 10:47; sandbox)
+- "Pause new quotes and payments" built for absences of more than three days: blocks new managed-checkout orders, issuing quotes and opening payment from unpaid quotes; everything else continues. Run 36 (E23, E23a) and local PZ1–PZ7. Report: `reports/plotart-pause-new-quotes-2026-11-18.md`.
