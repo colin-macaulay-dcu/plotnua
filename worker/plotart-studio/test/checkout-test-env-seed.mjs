@@ -33,6 +33,9 @@ artist('atestfnd', 'test-founding', F, 'Test Founding Artist', 1, 30);
 artist('atestgal', 'test-gallery', G, 'Test Gallery Artist', 0, 30);
 // introductions: a Founding Enquiry (0% permanently) and a Gallery Artist introduction (15% once the agreement is accepted)
 out.push(`INSERT INTO enquiry_log (id, reference, artist_id, artwork_id, route, introduced_at, founding, founding_year_end, logged_by, logged_at) VALUES ('ltest1', 'PA-E-261116-TEST01', 'atestfnd', NULL, 'relay', ${q(ago(5))}, 1, NULL, 'test-seed', ${q(ago(5))});`);
+// migration 0005 step 6 for the synthetic artists (their legacy licence label), as production artists have it: without it
+// Studio refuses the Gallery Artist Agreement. Same file the workflow mode d1_legacy_licence applies to an existing TEST database.
+out.push(readFileSync(HERE + 'test/checkout-test-legacy-licence.sql', 'utf8').trim());
 out.push(`INSERT INTO artist_terms (artist_id, track, commission_bp, set_by, created_at, updated_at) VALUES ('atestgal', 'gallery_artist', 1500, 'test-seed', ${q(now)}, ${q(now)});`);
 out.push(`-- The Gallery Artist accepts PA-GAA in the test Studio (Agreement tab) BEFORE this second introduction is logged, so 15% applies:`);
 out.push(`-- INSERT INTO enquiry_log (id, reference, artist_id, artwork_id, route, introduced_at, founding, logged_by, logged_at) VALUES ('ltest2', 'PA-E-261116-TEST02', 'atestgal', NULL, 'relay', <now>, 0, 'test-seed', <now>);`);

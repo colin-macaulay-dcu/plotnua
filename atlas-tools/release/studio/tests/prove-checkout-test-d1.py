@@ -143,6 +143,35 @@ case("d1_verify mode (read only) passes on the exact expected state", r.returnco
 reset(); rc, line = gate("check"); case("(f) empty TEST database → check passes", rc == 0 and "EMPTY" in line, line)
 reset(*FILES); rc, line = gate("verify", D1_SEED_FILE=SEED); case("(f) exact expected state → verify passes", rc == 0 and "matches the expected state exactly" in line, line)
 reset(); rc, out = step(); case("(f) workflow step end to end: gate, 3 files, exact verification", rc == 0 and out.count("PASS  applied") == 3 and "matches the expected state exactly" in out, out.strip().splitlines()[-1])
+# d1_legacy_licence (19 Nov 2026): the synthetic artists' migration-0005 licence row, on an existing TEST database
+LEGACY_SQL = os.path.join(WORKER, "test", "checkout-test-legacy-licence.sql")
+OLDSEED = os.path.join(TMP, "oldseed.sql")   # the seed as first applied on 19 Nov (without the migrated rows)
+open(OLDSEED, "w").write(open(SEED).read().replace(open(LEGACY_SQL).read().strip(), ""))
+LSTEP = [s for s in yaml.safe_load(open(os.path.join(REPO, ".github/workflows/plotart-checkout-test-setup.yml")))["jobs"]["setup"]["steps"]
+         if "legacy licence row" in str(s.get("name"))][0]["run"]
+def lstep(**env):
+    ws = os.path.join(TMP, "lws"); rt = os.path.join(TMP, "lrt"); shutil.rmtree(ws, True); shutil.rmtree(rt, True); os.makedirs(rt)
+    os.makedirs(os.path.join(ws, "atlas-tools", "release", "studio"))
+    shutil.copytree(WORKER, os.path.join(ws, "worker", "plotart-studio"), ignore=shutil.ignore_patterns("node_modules", ".wrangler"))
+    for f in (GATE, os.path.join(REPO, "atlas-tools", "release", "studio", "wrangler-error.py")): shutil.copy(f, os.path.join(ws, "atlas-tools", "release", "studio"))
+    e = {**ENV, "GITHUB_WORKSPACE": ws, "RUNNER_TEMP": rt, "GITHUB_STEP_SUMMARY": SUMF, "PATH": BIN + os.pathsep + os.environ["PATH"], **env}
+    r = subprocess.run(["bash", "-c", LSTEP], env=e, capture_output=True, text=True)
+    return r.returncode, r.stdout
+def migrated():
+    c = sqlite3.connect(REMOTE); r = sorted(c.execute("SELECT artist_id, doc_id FROM agreement_acceptances WHERE method = 'migrated_from_artists_table'")); c.close(); return r
+case("new seed carries the migrated licence row for both synthetic artists", (reset(*FILES), migrated())[1] == [("atestfnd", "PA-GPIL-2026-10-29"), ("atestgal", "PA-GPIL-2026-10-29")])
+reset(FILES[0], FILES[1], OLDSEED); rc, line = gate("legacy_check"); case("legacy_check passes on the TEST database as first seeded", rc == 0 and "safe to apply" in line, line)
+rc, line = gate("legacy_verify"); case("legacy_verify refuses before the row exists", rc == 1 and "not exactly one per synthetic artist" in line, line)
+rc, out = lstep(); case("d1_legacy_licence step end to end: gate, one statement, verified", rc == 0 and "PASS  applied checkout-test-legacy-licence.sql" in out and "exactly one migrated licence row" in out and migrated() == [("atestfnd", "PA-GPIL-2026-10-29"), ("atestgal", "PA-GPIL-2026-10-29")], out.strip().splitlines()[-1])
+c = sqlite3.connect(REMOTE); n = c.execute("SELECT COUNT(*) FROM agreement_acceptances").fetchone()[0]; c.close()
+case("it creates no agreement acceptance (two migrated label rows only)", n == 2)
+rc, out = lstep(); case("a second run refuses (row already present) and applies nothing", rc == 1 and "nothing was applied" in out and migrated() == [("atestfnd", "PA-GPIL-2026-10-29"), ("atestgal", "PA-GPIL-2026-10-29")], out.strip().splitlines()[-1])
+reset(FILES[0], FILES[1], OLDSEED); c = sqlite3.connect(REMOTE); c.execute("UPDATE artists SET id = 'arealone' WHERE id = 'atestgal'"); c.commit(); c.close()
+rc, out = lstep(); case("refuses when the artists are not exactly the synthetic two", rc == 1 and "nothing was applied" in out and migrated() == [], out.strip().splitlines()[-1])
+reset(FILES[0], FILES[1], OLDSEED); S.update(name="plotart-studio"); rc, out = lstep(); S.update(name="plotart-checkout-test")
+case("refuses when the ID resolves to another database name (e.g. production)", rc == 1 and "nothing was applied" in out and migrated() == [], out.strip().splitlines()[-1])
+reset(FILES[0], FILES[1], OLDSEED); rc, out = lstep(FAKE_FAIL_ON="checkout-test-legacy-licence.sql")
+case("a failed apply stops loudly, output sanitised", rc == 1 and "was not applied" in out and "AAAAAAAAAAAAAAAAAAAA" not in out, out.strip().splitlines()[-1])
 # secrets never printed
 case("no token value appears in any output", "t" * 40 not in open(SUMF).read() if os.path.exists(SUMF) else True)
 
