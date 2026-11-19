@@ -1,6 +1,7 @@
 # PlotArt · managed checkout pilot · TEST environment audit and TEST Studio Access application (prepared 19 Nov 2026).
 # Started by hand from main (the checkout-test environment admits main only) and runs only after the founder approves the
-# "checkout-test" environment. mode "audit" is read only; mode "create_access"
+# "checkout-test" environment. r2_apply is the only destructive mode: it deletes nothing but an empty, unbound
+# default-jurisdiction copy of the two TEST buckets, after creating their EU copies. mode "audit" is read only; mode "create_access"
 # creates one Access application (and its one allow policy) for the TEST Studio hostname if none exists. Nothing is
 # deployed, no database is changed, no existing Access application or policy is modified. Values are never printed.
 name: PlotArt checkout TEST setup
@@ -9,10 +10,10 @@ on:
   workflow_dispatch:
     inputs:
       mode:
-        description: "audit (read only) or create_access (one TEST Studio Access application, if none exists)"
+        description: "audit / r2_plan (read only) · r2_apply (replace the two unused default-jurisdiction TEST buckets with EU ones) · create_access"
         required: true
         type: choice
-        options: [audit, create_access]
+        options: [audit, r2_plan, r2_apply, create_access]
         default: audit
 permissions:
   contents: read
@@ -43,4 +44,5 @@ jobs:
           CHECKOUT_TEST_STRIPE_SECRET_KEY: ${{ secrets.CHECKOUT_TEST_STRIPE_SECRET_KEY }}
           CHECKOUT_TEST_STRIPE_WEBHOOK_SECRET: ${{ secrets.CHECKOUT_TEST_STRIPE_WEBHOOK_SECRET }}
           CHECKOUT_TEST_FOUNDER_EMAILS: ${{ secrets.CHECKOUT_TEST_FOUNDER_EMAILS }}
+          CHECKOUT_TEST_FOUNDER_EMAIL: ${{ vars.CHECKOUT_TEST_FOUNDER_EMAIL }}
         run: python3 atlas-tools/release/studio/checkout-test-setup.py "${{ inputs.mode }}"
