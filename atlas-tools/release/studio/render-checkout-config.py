@@ -10,7 +10,7 @@ TEST (GitHub environment "checkout-test"):
   Workers plotart-checkout-test and plotart-studio-test; D1 database plotart-checkout-test (CHECKOUT_TEST_D1_DATABASE_ID,
   refused if it equals the production STUDIO_D1_DATABASE_ID when that is visible); R2 buckets plotart-studio-test-images
   and plotart-studio-test-applications; its own Cloudflare Access application (CHECKOUT_TEST_ACCESS_AUD /
-  CHECKOUT_TEST_ACCESS_TEAM); MAILER none, deletion schedule off, instant publishing off; no publishing pipeline token and
+  CHECKOUT_TEST_ACCESS_TEAM); MAILER none, deletion schedule off, instant publishing off; sandbox mode (simulated publication only); no publishing pipeline token and
   no application-register service binding. CHECKOUT_PILOT_ENABLED follows the workflow input ENABLE_TEST_PILOT (default off).
 PRODUCTION (GitHub environment "studio-production."):
   Worker plotart-checkout on the production database; CHECKOUT_PILOT_ENABLED is ALWAYS "false" here, whatever is asked.
@@ -79,10 +79,16 @@ elif TARGET == "test":
     s = setkey(s, "database_id", db, "wrangler.toml")
     s = s.replace('bucket_name = "plotart-studio-images"', 'bucket_name = "plotart-studio-test-images"').replace('bucket_name = "plotart-applications"', 'bucket_name = "plotart-studio-test-applications"')
     s = drop_block(s, "services", "APPLICATION_REGISTER")
+    # Studio TEST runs in sandbox mode (19 Nov 2026): "Publish" is simulated and recorded in the TEST database only, so an
+    # artwork can reach "published" for a TEST quote; no publishing dispatch, no pipeline API, no email, banner on every page.
+    if re.search(r'^SANDBOX\s*=', s, flags=re.M): sys.exit("REFUSED: wrangler.toml already defines SANDBOX")
+    s, n = re.subn(r'^(ENVIRONMENT\s*=\s*"test".*)$', lambda m: m.group(1) + '\nSANDBOX = "true"', s, count=1, flags=re.M)
+    if n != 1: sys.exit("REFUSED: could not place SANDBOX in the Studio TEST configuration")
     st = tomllib.loads(s)
     assert st["name"] == "plotart-studio-test" and st["vars"]["ENVIRONMENT"] == "test" and st["vars"]["MAILER"] == "none"
     assert st["d1_databases"][0]["database_name"] == "plotart-checkout-test" and all("-test-" in b["bucket_name"] for b in st["r2_buckets"])
     assert "services" not in st and "PARTICIPATION_DELETION" not in st["vars"]
+    assert st["vars"].get("SANDBOX") == "true" and "SANDBOX" not in cc["vars"]
     open(os.path.join(W, "wrangler.checkout.test.toml"), "w").write(c)
     open(os.path.join(W, "wrangler.studio.test.toml"), "w").write(s)
     print(f"test configurations rendered (plotart-checkout-test, plotart-studio-test, CHECKOUT_PILOT_ENABLED={enable})")
