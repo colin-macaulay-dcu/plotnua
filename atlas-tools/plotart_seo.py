@@ -34,6 +34,8 @@ def canonical(path):
 
 
 def indexable(path, launch):
+    if path == "services.html" and launch.get("services_page") is not True:   # paused 19 Nov 2026: never indexed while withdrawn
+        return False
     if path == "art-for-hire/index.html":
         return launch.get("art_for_hire_page") is True and launch.get("business_rental_information") is True
     if path in TOOL_PATHS:
@@ -44,7 +46,10 @@ def indexable(path, launch):
         return launch.get(COLLECTION_SWITCHES[path][0]) is True
     key = {"index.html": "home_indexable", "gallery/index.html": "gallery_indexable",
            "about.html": "about_indexable", "founding-25.html": "f25_page_indexable",
-           "mobile-gallery/index.html": "mobile_gallery_indexable"}.get(path)
+           "mobile-gallery/index.html": "mobile_gallery_indexable",
+           "commissions/index.html": "commissions_indexable",
+           "for-artists.html": "for_artists_indexable",
+           "services.html": "services_indexable"}.get(path)
     if key:
         return launch.get(key) is True
     if re.fullmatch(r"artists/[a-z0-9]+(?:-[a-z0-9]+){0,6}/[a-z0-9]+(?:-[a-z0-9]+){0,6}\.html", path):
@@ -73,6 +78,12 @@ def sitemap_paths(packages, launch):
     paths += [p for p in COLLECTION_PATHS if indexable(p, launch) and launch.get(COLLECTION_SWITCHES[p][1]) is True]
     if indexable("art-for-hire/index.html", launch):
         paths.append("art-for-hire/index.html")
+    if indexable("commissions/index.html", launch):      # founder decision 17 Nov 2026: indexed and in the sitemap
+        paths.append("commissions/index.html")
+    if indexable("for-artists.html", launch):            # founder brief 17 Nov 2026: artists can find their Studio
+        paths.append("for-artists.html")
+    if indexable("services.html", launch):               # founder brief 19 Nov 2026: Art Services & Providers, indexed and in the sitemap
+        paths.append("services.html")
     for pkg in sorted(packages, key=lambda p: p["artist"]["slug"]):
         # Only the already-approved public export is an input. Never read Studio drafts.
         if pkg["publication"].get("state") != "approved":

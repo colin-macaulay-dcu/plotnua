@@ -1,0 +1,21 @@
+/* PREVIEW ONLY (19 Nov 2026): provider cards with a photograph and brand mark. Not in the repository. */
+body.pa .pa-sv-list{ align-items:stretch; }
+body.pa .pa-sv-card{ padding:0; overflow:hidden; }
+body.pa .pa-sv-media{ position:relative; margin:0; aspect-ratio:16 / 9; background:var(--well); }
+body.pa .pa-sv-media img{ position:absolute; inset:0; display:block; width:100%; height:100%; object-fit:cover; }
+body.pa .pa-sv-card--hi .pa-sv-media img{ object-position:50% 50%; }
+body.pa .pa-sv-media::after{ content:""; position:absolute; inset:auto 0 0 0; height:38%; background:linear-gradient(to top, rgba(27,28,30,.55), transparent); pointer-events:none; }
+body.pa .pa-sv-media figcaption{ position:absolute; right:14px; bottom:10px; z-index:1; font-size:11.5px; letter-spacing:.02em; color:rgba(237,235,231,.82); }
+body.pa .pa-sv-body{ position:relative; display:flex; flex-direction:column; flex:1; padding:0 clamp(24px, 3vw, 40px) clamp(24px, 3vw, 40px); }
+body.pa .pa-sv-logo{ align-self:flex-start; display:inline-flex; align-items:center; margin:-30px 0 22px; padding:10px 14px; border-radius:var(--r-sm); box-shadow:0 6px 18px rgba(0,0,0,.35); position:relative; z-index:2; }
+body.pa .pa-sv-logo img{ display:block; height:36px; width:auto; }
+body.pa .pa-sv-logo--light{ background:#EDEBE7; }
+body.pa .pa-sv-logo--dark{ background:#000; border:1px solid var(--line-2); padding:8px 10px; }
+body.pa .pa-sv-logo--dark img{ height:40px; }
+/* one restrained touch of each provider's own colour: a short rule under the service line */
+body.pa .pa-sv-what{ position:relative; padding-bottom:18px; }
+body.pa .pa-sv-what::after{ content:""; position:absolute; left:0; bottom:0; width:44px; height:3px; border-radius:2px; background:var(--sv-accent, var(--line-2)); }
+body.pa .pa-sv-card--mw{ --sv-accent:#68B0D8; }
+body.pa .pa-sv-card--hi{ --sv-accent:#EDEBE7; }
+body.pa .pa-sv-contact{ margin-top:auto; }
+@media (max-width:560px){ body.pa .pa-sv-media{ aspect-ratio:3 / 2; } body.pa .pa-sv-media figcaption{ top:10px; bottom:auto; padding:2px 8px; border-radius:999px; background:rgba(27,28,30,.62); } body.pa .pa-sv-logo img{ height:30px; } body.pa .pa-sv-logo--dark img{ height:34px; } }

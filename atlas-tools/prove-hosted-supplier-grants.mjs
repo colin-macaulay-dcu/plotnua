@@ -27,6 +27,10 @@
  *   H15 a record with no supplier_label                           -> P4b refuses
  *   H16 grant lacks 'label-visualisations' (11 Nov 2026)          -> P4 refuses the
  *       15 visualisation copies only; the photograph's 3 stay accepted
+ *   H17 a hosted copy labelled 'Logo' (record and page) under a grant
+ *       whose scope lacks 'logo' (19 Nov 2026)                    -> P4 refuses
+ *   H18 the same with 'logo' in the grant's scope                 -> accepted
+ *   H19 a Logo record shown on the page as 'Photograph'           -> P4b refuses
  *
  * C · ONE GRANT RULE (11 Nov 2026). A table of grant states is applied twice:
  * to NOOK's hosted copies through the real guard, and to an externally hosted
@@ -94,6 +98,8 @@ function run(dir) {
 }
 const failed = out => [...out.matchAll(/^ {2}FAIL {2}(P\d+[a-z]?)/gm)].map(m => m[1]);
 
+function asLogo(r) { r.records.filter(x => x.supplier_label === 'Photograph').forEach(x => { x.supplier_label = 'Logo'; }); }
+function pageAsLogo(p) { return p.replace(/data-kind="Photograph"/g, 'data-kind="Logo"'); }
 const CASES = [
   ['H0', 'control: today\'s NOOK records and grant', {}, []],
   ['H1', 'grant withdrawn (outcome)', { rowEdit: w => { w.permission_outcome = 'Withdrawn / Superseded'; } }, ['P4']],
@@ -115,6 +121,11 @@ const CASES = [
   ['H15', 'a record with no supplier_label', { regEdit: r => { delete r.records[1].supplier_label; } }, ['P4b']],
   ['H16', 'grant does not cover visualisations (no label-visualisations)', { rowEdit: w => {
       w.permission.conditions = w.permission.conditions.filter(c => c !== 'label-visualisations'); } }, ['P4'], /^ {2}FAIL {2}P4 .*\b15 refused/m],
+  // 19 Nov 2026: 'Logo' is a supplier label; a hosted logo needs 'logo' in the grant's scope. The photograph's three
+  // copies stand in for a logo (record and page relabelled together), so only the grant decides.
+  ['H17', 'a Logo copy under a grant without logo in scope', { regEdit: asLogo, pageEdit: pageAsLogo }, ['P4'], /^ {2}FAIL {2}P4 .*\b3 refused/m],
+  ['H18', 'a Logo copy under a grant with logo in scope', { regEdit: asLogo, pageEdit: pageAsLogo, rowEdit: w => { w.permission.scope.push('logo'); } }, []],
+  ['H19', 'a Logo record shown on the page as Photograph', { regEdit: asLogo, rowEdit: w => { w.permission.scope.push('logo'); } }, ['P4b']],
 ];
 
 console.log('\nPROOF · HOSTED SUPPLIER IMAGES NEED A LIVE GRANT THAT COVERS HOSTING');

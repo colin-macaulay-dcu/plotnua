@@ -17,7 +17,7 @@ For each queue item the founder has published (or, once authorised, an automatic
   6. --push: pushes an audit branch content/plotart-<artist>-v<n>-<commit> (one per attempt) and fast-forwards main (never forced; refused if main
      moved). --simulate (tests): stops before pushing. Any failure: the commit is dropped and the Studio is told why.
 """
-import glob, hashlib, json, os, re, shutil, subprocess, sys, tempfile, urllib.error, urllib.request
+import glob, hashlib, http.client, json, os, re, shutil, subprocess, sys, tempfile, time, urllib.error, urllib.request
 from pathlib import Path
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -29,6 +29,7 @@ import plotart_shell as S  # noqa: E402
 import plotart_seo as SEO  # noqa: E402
 import plotart_search_content as C  # noqa: E402
 import plotart_opportunities as OPP  # noqa: E402  (artist opportunity lists, 16 Nov 2026)
+import plotart_featured as FEAT  # noqa: E402  (Featured Artists in the Artists' Gallery, 17 Nov 2026; was the homepage)
 
 arg = lambda k: sys.argv[sys.argv.index(k) + 1] if k in sys.argv else None
 STUDIO, TOKEN = arg("--studio"), arg("--token")
@@ -122,14 +123,19 @@ def layout():
     return {"positions": r.get("positions", []), "extra": r.get("extra", [])}
 
 
-def regrid(lay=None):
+def regrid(lay=None, selection=None):
+    """Rebuild the Artists' Gallery from the published galleries: Featured Artists first (the founder's selection, or the
+    page's current one), then Explore More Artists, which leaves out whoever is featured (17 Nov 2026), so an artist who
+    is featured, unfeatured, withdrawn or newly published is always shown exactly once."""
     pkgs = P.gallery_order(published())
+    FEAT.refresh(ROOT, pkgs, selection)
     html = open(VG, encoding="utf-8").read()
     span = P.vg_region(html)
     if not span:
         raise RuntimeError("the Virtual Gallery collection region was not found")
     lay = layout() if lay is None else lay
-    open(VG, "w", encoding="utf-8").write(html[:span[0]] + P.vg_collection(pkgs, layout=lay) + html[span[1]:])
+    shown = [x["artist"] for x in FEAT.selection_in(html)]
+    open(VG, "w", encoding="utf-8").write(html[:span[0]] + P.vg_collection(pkgs, layout=lay, featured=shown) + html[span[1]:])
 
 
 def records(slug, new):
@@ -172,6 +178,21 @@ def guards(base, instant):
 
 
 
+def fetch_image(qid, iid, tries=3):
+    """One photograph from the Studio export. A download cut off part-way (18 Nov 2026: Carmel Marrinan's first
+    publication failed with "IncompleteRead(71654 bytes read, 1366688 more expected)") is fetched again, up to three
+    times in all, a few seconds apart. Nothing is relaxed: every copy must still match the Studio's SHA-256 fingerprint,
+    and a third failure refuses the publication exactly as before."""
+    for n in range(1, tries + 1):
+        try:
+            return call("GET", "/api/pipeline/image/%s/%s" % (qid, iid), raw=True)
+        except (http.client.IncompleteRead, ConnectionError, TimeoutError) as e:
+            if n == tries:
+                raise
+            print("image %s: download interrupted (%s); trying again (%d of %d)" % (iid, type(e).__name__, n + 1, tries), flush=True)
+            time.sleep(5 * n)
+
+
 def one(q):
     ex = call("POST", "/api/pipeline/export/" + q["id"])
     g, slug = ex["gallery"], ex["gallery"]["artist"]["slug"]
@@ -190,7 +211,7 @@ def one(q):
         if g["artist"].get("portrait"):
             names[g["artist"]["portrait"]["file"].split(".")[0]] = g["artist"]["portrait"]["file"]
         for iid in ex["images"]:
-            body, headers = call("GET", "/api/pipeline/image/%s/%s" % (q["id"], iid), raw=True)
+            body, headers = fetch_image(q["id"], iid)
             if hashlib.sha256(body).hexdigest() != headers.get("X-Sha256"):
                 return "refused: image %s changed in transit" % iid
             open(os.path.join(exp, names[iid]), "wb").write(body)
@@ -232,6 +253,7 @@ def main():
                 sm.write_text(SEO.update_sitemap(sm.read_text(), published(), SEO.switches()))
                 C.refresh(ROOT, published())
                 OPP.refresh(ROOT, published())     # the opportunity lists: only published artists, only what they chose to show
+                FEAT.refresh(ROOT, published())    # Featured Artists: the founder's current choice, published work only
         except Exception as e:                       # noqa: BLE001 - any failure refuses this item, never a half-publish
             why = "refused: %s: %s" % (type(e).__name__, e)
         if why is None:
@@ -259,6 +281,7 @@ def main():
             call("POST", "/api/pipeline/result/" + q["id"], {"status": "published", "detail": "commit %s%s" % (sha[:12], " (simulated)" if SIMULATE else "")})
             print("PLOTART CONTENT · %s v%d · %s · %s" % (q["artist_id"], q["version"], q["kind"], "published " + sha[:12] if PUSH else "verified (simulated) " + sha[:12]))
     failed += order_sync()
+    failed += featured_sync()
     if not items:
         print("PLOTART CONTENT · nothing to publish")
     return 1 if failed else 0
@@ -303,6 +326,70 @@ def order_sync():
     except Exception:                                # noqa: BLE001 - the record is best-effort; the commit stands or was dropped
         pass
     print("PLOTART CONTENT · gallery order · %s" % ("FAILED · " + why[:300] if why else ("published " if PUSH else "verified (simulated) ") + sha[:12]))
+    return 1 if why else 0
+
+
+def featured_selection():
+    """The founder's Featured Artists selection from PlotArt Studio (Review Desk "Featured Artists"; migration 0016's
+    table, unchanged): gallery addresses and artwork ids only. A Studio without the route (404), or without the table
+    yet, means nothing to change."""
+    try:
+        r = call("GET", "/api/pipeline/featured-artists")
+    except urllib.error.HTTPError as e:
+        if e.code == 404:
+            return None
+        raise
+    if not r.get("installed"):
+        return None
+    return FEAT.check_selection(r.get("items", []))
+
+
+def featured_sync():
+    """Featured Artists (17 Nov 2026; moved from the homepage): after the queue and the gallery order, re-render the
+    Featured Artists region of the Artists' Gallery from the founder's selection and the published galleries. Only that
+    region can change (content boundary, launch guard L20); the complete collection below is not touched. It is
+    committed, guarded and released exactly like the gallery order. Nothing happens when nothing changed."""
+    page = "plotart/" + FEAT.PAGE
+    if git("status", "--porcelain"):
+        return 0
+    if PUSH:
+        git("fetch", "-q", "origin", "main")
+        git("reset", "-q", "--hard", "origin/main")
+    base = git("rev-parse", "HEAD")
+    try:
+        sel = featured_selection()
+        if sel is None:
+            return 0
+        before = open(os.path.join(ROOT, page), encoding="utf-8").read()
+        lay = layout()
+        if lay is None:                    # no Gallery order from the Studio: the page cannot be rebuilt safely
+            return 0
+        regrid(lay, sel)                   # Featured Artists, then Explore More Artists without them (17 Nov 2026)
+        after = open(os.path.join(ROOT, page), encoding="utf-8").read()
+        # only the two generated regions may change: nothing else on the page, and never the twenty-five positions
+        blank = lambda d: FEAT.outside(d[:P.vg_region(d)[0]] + P.VG_BEGIN + P.VG_END + d[P.vg_region(d)[1]:])
+        idx = lambda d: re.findall(r'<li class="pa-vgc-pos is-[a-z]+">.*?</li>', d[slice(*P.vg_region(d))])
+        if P.vg_region(before) is None or blank(before) != blank(after) or idx(before) != idx(after):
+            raise ValueError("the Featured Artists update would change the page outside its two regions or the positions")
+    except Exception as e:                           # noqa: BLE001
+        subprocess.run(["git", "checkout", "-q", "--", page], cwd=ROOT)
+        print("PLOTART CONTENT · featured artists · FAILED · %s" % e)
+        return 1
+    if not git("status", "--porcelain"):
+        return 0
+    git("add", page)
+    git("-c", "user.name=PlotArt content pipeline", "-c", "user.email=hello@plotnua.ie", "commit", "-q", "-m",
+        "PlotArt content: Featured Artists (founder's selection in PlotArt Studio)")
+    why = guards(base, False)
+    if why is None and PUSH:
+        ok1, o1 = run("git push origin HEAD:refs/heads/content/plotart-featured-%s" % git("rev-parse", "--short", "HEAD"))
+        ok2, o2 = release("plotart-featured") if ok1 else (False, "")
+        if not (ok1 and ok2):
+            why = "not released (gate, main moved, live check or permission): " + (o1 + " " + o2)[-300:]
+    sha = git("rev-parse", "HEAD")
+    if why:
+        subprocess.run(["git", "reset", "-q", "--hard", base], cwd=ROOT)
+    print("PLOTART CONTENT · featured artists · %s" % ("FAILED · " + why[:300] if why else ("published " if PUSH else "verified (simulated) ") + sha[:12]))
     return 1 if why else 0
 
 

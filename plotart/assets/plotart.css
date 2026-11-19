@@ -720,6 +720,18 @@ body.pa .pa-vgc-pos > a:focus-visible{ outline-offset:-3px; border-radius:0; }
 .pa-ag-art{ display:flex; align-items:center; justify-content:center; aspect-ratio:5 / 4; border-radius:9px; background:radial-gradient(120% 90% at 50% 15%, #2C2C2E 0%, #222224 72%); padding:7%; }
 .pa-ag-art img{ display:block; max-width:100%; max-height:100%; width:auto; height:auto; object-fit:contain; box-shadow:0 14px 26px -12px rgba(0,0,0,.65); }
 .pa-ag-cap{ display:grid; gap:4px; padding:16px 6px 0; }
+/* Every frame in a row is the same height, so each artwork sits centred beside its neighbours (18 Nov 2026: an artist
+   reported two works "not centred"; a tall work stretched its own frame and the works beside it sat high, with empty
+   space below). The tile and its caption share the row's two tracks; the frame is square, the shape most PlotArt works
+   are close to, so square works keep their size; artworks stay whole (contain), never cropped. One column on phones
+   needs no alignment and keeps each frame to its own work. */
+@supports (grid-template-rows:subgrid){ @media (min-width:640px){
+  .pa-ag-grid{ row-gap:0; }
+  .pa-ag-work{ grid-row:span 2; display:grid; grid-template-rows:subgrid; padding-bottom:clamp(18px, 2.2vw, 34px); }
+  .pa-ag-tile{ grid-row:span 2; display:grid; grid-template-rows:subgrid; row-gap:0; }
+  .pa-ag-art{ aspect-ratio:1; }
+  .pa-ag-cap{ align-content:start; }
+}}
 .pa-ag-title{ font-family:var(--serif); font-size:24px; line-height:1.15; color:var(--ivory); }
 .pa-ag-sub{ font-size:13.5px; color:var(--mute); line-height:1.45; }
 .pa-ag-status{ margin-top:6px; font-size:14px; font-weight:600; color:var(--lime); letter-spacing:.02em; }
@@ -791,6 +803,34 @@ body.pa .pa-vgc-pos > a:focus-visible{ outline-offset:-3px; border-radius:0; }
 .pa-enq-notice{ margin:0; font-size:13px; color:var(--mute); line-height:1.55; }
 .pa-enq-status{ margin:0; font-size:14px; color:var(--lime); }
 .pa-enq-status[data-state="error"]{ color:#F5C6C6; }
+/* artist gallery: "Open to" pills and the Open for commissions section (17 Nov 2026) */
+.pa-ag-opps{ margin-top:26px; }
+.pa-ag-opps-h{ margin:0 0 10px; font-size:13px; letter-spacing:.14em; text-transform:uppercase; color:var(--mute); }
+.pa-ag-pills{ display:flex; flex-wrap:wrap; gap:8px; margin:0; padding:0; list-style:none; }
+.pa-ag-pill{ display:inline-flex; align-items:center; min-height:38px; padding:8px 16px; border:1px solid var(--line-2); border-radius:999px; font-size:14.5px; font-weight:500; color:var(--ivory); text-decoration:none; transition:background-color .2s, border-color .2s, color .2s; }
+.pa-ag-pill:hover{ background:var(--ivory); border-color:var(--ivory); color:var(--anth); }
+.pa-ag-pill:focus-visible{ outline:2px solid var(--ivory); outline-offset:3px; }
+.pa-ag-com{ border-top:1px solid var(--line); background:#232426; }
+.pa-ag-com .pa-wrap{ padding-top:clamp(36px, 4.5vw, 64px); padding-bottom:clamp(36px, 4.5vw, 64px); }
+.pa-ag-com-in{ display:grid; grid-template-columns:minmax(0, 56ch) auto; grid-template-areas:"h h" "p b" "l ."; justify-content:start; column-gap:clamp(32px, 4vw, 56px); align-items:start; }
+.pa-ag-com-t{ display:contents; }
+.pa-ag-com .pa-ag-com-t h2{ grid-area:h; margin:0 0 12px; }
+.pa-ag-com .pa-ag-com-t > p:not(.pa-ag-com-more){ grid-area:p; margin:0; }
+.pa-ag-com .pa-ag-enq-c{ grid-area:b; margin-top:4px; }
+.pa-ag-com-t p.pa-ag-com-more{ grid-area:l; margin-top:0; padding-top:14px; }
+.pa-ag-com h2{ font-size:clamp(32px, 3.6vw, 48px); margin:0 0 12px; }
+.pa-ag-com-t p{ margin:0; max-width:56ch; color:var(--stone); line-height:1.65; }
+.pa-ag-com-t .pa-ag-com-more{ font-size:15px; }
+.pa-ag-com-t .pa-ag-com-more a{ color:var(--ivory); }
+.pa-ag-com .pa-enq{ width:min(460px, 100%); }
+@media (max-width:760px){
+  .pa-ag-com-in{ display:block; }
+  .pa-ag-com-t{ display:block; }
+  .pa-ag-com-t p.pa-ag-com-more{ padding-top:0; margin-top:14px; }
+  .pa-ag-com .pa-ag-enq-c{ margin-top:26px; }
+  .pa-ag-com .pa-ag-enq-c .pa-btn{ width:100%; justify-content:center; }
+  .pa-ag-pill{ font-size:14px; padding:7px 14px; min-height:36px; }
+}
 .pa-hp{ position:absolute !important; left:-9999px !important; width:1px; height:1px; overflow:hidden; }
 [data-pa-enquire][hidden]{ display:none !important; }
 
@@ -836,7 +876,43 @@ body.pa .pa-vgc-pos > a:focus-visible{ outline-offset:-3px; border-radius:0; }
 
 /* ==== pa-hire-nav:begin · Art for Hire (Stage 3B-4): six pills, the fourth gallery tab. Scoped to .pa-pills--hire, so a page
    without the tab is unaffected. Desktop: one row. Tablets: one row of six, then two rows of three. Phones: the shared Menu. ==== */
-@media (min-width:1181px) and (max-width:1420px){ .pa-head--pills .pa-pills--hire{ gap:6px; } :where(body.pa) .pa-pills--hire a.pa-pill{ padding:0 12px; font-size:14px; } .pa-head--pills:has(.pa-pills--hire) .pa-part{ display:none; } }
-@media (max-width:1180px){ .pa-pills.pa-pills--hire{ grid-template-columns:repeat(6, minmax(0, 1fr)); } }
-@media (max-width:980px){ .pa-pills.pa-pills--hire{ grid-template-columns:repeat(3, minmax(0, 1fr)); } :where(body.pa) .pa-pills--hire a.pa-pill{ font-size:13.5px; } }
+@media (min-width:1181px) and (max-width:1500px){ .pa-head--pills .pa-pills--hire{ gap:6px; } :where(body.pa) .pa-pills--hire a.pa-pill{ padding:0 12px; font-size:14px; } .pa-head--pills:has(.pa-pills--hire) .pa-part{ display:none; } }
+@media (max-width:1180px){ .pa-pills.pa-pills--hire{ grid-template-columns:repeat(7, minmax(0, 1fr)); } }
+@media (max-width:980px){ .pa-pills.pa-pills--hire{ grid-template-columns:repeat(4, minmax(0, 1fr)); } :where(body.pa) .pa-pills--hire a.pa-pill{ font-size:13.5px; } }
 /* ==== pa-hire-nav:end ==== */
+/* artwork image viewer (17 Nov 2026): plotart.js opens it from the artwork image and its "More views" */
+.pa-lb-zoom, .pa-aw-views a{ cursor:zoom-in; }
+.pa-lb-zoom:focus-visible, .pa-aw-views a:focus-visible{ outline:2px solid var(--ivory); outline-offset:4px; }
+html.pa-lb-on{ overflow:hidden; }
+.pa-lb{ position:fixed; inset:0; width:100%; height:100%; max-width:none; max-height:none; margin:0; box-sizing:border-box;
+  padding:clamp(64px, 8vw, 88px) clamp(12px, 4vw, 56px) clamp(24px, 5vw, 56px); border:0; background:var(--anth); color:var(--ivory); overscroll-behavior:contain; }
+.pa-lb[open]{ display:flex; align-items:center; justify-content:center; }
+.pa-lb::backdrop{ background:var(--anth); }
+.pa-lb-img{ display:block; max-width:100%; max-height:100%; width:auto; height:auto; object-fit:contain; box-shadow:var(--shadow-art); }
+.pa-lb-x{ position:absolute; top:max(14px, env(safe-area-inset-top)); right:max(14px, env(safe-area-inset-right)); width:48px; height:48px; padding:0;
+  display:grid; place-items:center; border-radius:50%; border:1px solid rgba(237,235,231,.5); background:rgba(39,40,42,.9); color:var(--ivory);
+  font:300 32px/1 var(--sans); cursor:pointer; }
+.pa-lb-x:hover{ background:var(--ivory); color:var(--anth); }
+.pa-lb-x:focus-visible{ outline:2px solid var(--ivory); outline-offset:3px; }
+
+/* ==== Artist Login (founder brief 17 Nov 2026): one off-white pill at the right-hand end of the header, set apart from the
+   gallery pills; links to the existing PlotArt Studio. Tablets: beside the wordmark, the pills on their own row below.
+   Phones: beside the Menu button, always visible (it is not repeated inside the Menu). ==== */
+:where(body.pa) .pa-head a.pa-login{ display:inline-flex; align-items:center; justify-content:center; flex:none; min-height:42px; padding:0 20px; margin-left:-8px;
+  border-radius:999px; border:1px solid var(--ivory); background:var(--ivory); color:#1B1C1E; font-family:var(--sans); font-size:14.5px; font-weight:600;
+  letter-spacing:.01em; line-height:1; text-decoration:none; white-space:nowrap; transition:background .2s, border-color .2s; }
+:where(body.pa) .pa-head a.pa-login:hover{ background:#FFFFFF; border-color:#FFFFFF; color:#1B1C1E; }
+:where(body.pa) .pa-head a.pa-login:focus-visible{ outline:2px solid var(--ivory); outline-offset:3px; }
+@media (max-width:1180px){
+  .pa-head--pills .pa-pills{ order:3; }
+  :where(body.pa) .pa-head a.pa-login{ margin-left:auto; min-height:44px; }
+}
+@media (max-width:720px){
+  :where(body.pa) .pa-head a.pa-login{ min-height:44px; padding:0 16px; font-size:14px; }
+  .pa-head--pills .pn-sm{ margin-left:0; }
+}
+@media (max-width:400px){
+  :where(body.pa) .pa-head a.pa-login{ padding:0 12px; font-size:13.5px; }
+  .pa-head--pills .pa-wrap{ gap:8px; }
+}
+@media (max-width:359px){ .pa-head--pills .pa-part{ display:none; } :where(body.pa) .pa-head a.pa-login{ padding:0 10px; font-size:13px; } }   /* the narrowest phones only: room for Artist Login and Menu */

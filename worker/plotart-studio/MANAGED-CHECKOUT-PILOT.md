@@ -2,6 +2,7 @@
 
 Date: 16 November 2026
 Status: Specification, plus a working TEST-MODE implementation (see "Implementation (16 November 2026)" at the end). Off by default. Not deployed, no migration applied, no artist enrolled, no live payments, no public terms changed.
+Migration numbering (19 Nov 2026): the pilot migration is now **0017** (`migrations/0017_managed_checkout_pilot.sql`), because main's 0016 is `homepage_features`. A future migration for issued texts, previously called 0017, would be **0018**. Earlier reports refer to the pilot migration as 0016.
 Authorisation: Founder agreed to try the managed-purchase approach following competitor research.
 
 ## Purpose
@@ -326,11 +327,11 @@ Colin's steps (his logins; never share keys in chat):
 | Orders, reservations, sales, sessions, verified events, ledger, refunds (incl. pending/failed), disputes, fulfilment, linked-purchase check, retention | `src/checkout.js` |
 | Public buyer Worker `plotart-checkout`: quote page, hosted-checkout start, return page, terms, status, webhook | `src/checkout-public.js`, `wrangler.checkout.toml` |
 | Studio routes: founder desk `/admin/checkout`, artist page `/checkout-pilot` (not linked from the Studio tabs) | `src/index.js`, `ui/checkout-pilot.js`, `build-assets.mjs` |
-| Database: 14 new tables (incl. legal holds), refusal-only triggers on new tables only, no foreign keys into artists/artworks | `migrations/0016_managed_checkout_pilot.sql` (also appended to `schema.sql`) |
+| Database: 14 new tables (incl. legal holds), refusal-only triggers on new tables only, no foreign keys into artists/artworks | `migrations/0017_managed_checkout_pilot.sql` (also appended to `schema.sql`) |
 | Draft texts for review (not issued) | `agreements/payment-drafts/PA-PAY-2026-11-DRAFT.md`, `PA-BPT-2026-11-DRAFT.md` (r2) |
 | TEST ONLY placeholder texts (test environment only; refused in any other build) | `agreements/payment-test/` |
 | Deployment workflow (prepared, never run) and its tools | `.github/workflows/plotart-checkout-deploy.yml`, `atlas-tools/release/studio/render-checkout-config.py`, `check-stripe-test-secrets.sh`, `checkout-outside-check.sh`, `test/checkout-test-env-seed.mjs` |
-| Proofs | `test/prove-checkout-pilot.mjs` (130 checks), `test/prove-migration-0016.mjs` (9), `test/prove-checkout-deploy.mjs` (26) |
+| Proofs | `test/prove-checkout-pilot.mjs` (130 checks), `test/prove-migration-0017.mjs` (9), `test/prove-checkout-deploy.mjs` (26) |
 | Real Stripe test-mode harness and its GitHub runner (prepared; not yet run with a key) | `test/stripe-testmode-checks.mjs`, `test/stripe-testmode-e2e.mjs`, `.github/workflows/plotart-checkout-stripe-test.yml` |
 
 `CHECKOUT_PILOT_ENABLED` defaults to `"false"` in `wrangler.toml` and `wrangler.checkout.toml` (`production.json` does not
@@ -494,7 +495,7 @@ Exact setup (each step on Colin's approval; nothing here has been run):
    Stripe credentials, deploys both test Workers, writes their secrets and checks them from outside (`/v1/status`).
 7. Run the Stripe test-API checks below.
 
-Production stays untouched by all of this. Production pilot activation additionally needs: migration 0016 (and 0017
+Production stays untouched by all of this. Production pilot activation additionally needs: migration 0017 (and 0018
 for issued texts) through `studio-d1-migration.yml`, issued texts, a code change to accept live keys, and Colin's approval.
 
 ### What is tested, mocked or unverified
@@ -502,7 +503,7 @@ for issued texts) through `studio-d1-migration.yml`, issued texts, a code change
 | Area | Status |
 |---|---|
 | Commission rules, Founding protections, consent gates, reservations, duplicate prevention, event idempotency and ordering, refunds incl. pending/failed, disputes, linked-purchase refusal, transit-insurance rules, access control, retention, records surviving the real deletion schedule | **Tested locally** against the real Workers and D1 (Miniflare); **Stripe mocked** (107 checks) |
-| Migration 0016 on the pre-change schema | **Tested** (9 checks) |
+| Migration 0017 (pilot) on the pre-change schema | **Tested** (9 checks) |
 | Deployment configs, guards, TEST ONLY build guard, seed, outside check | **Tested locally**; `wrangler deploy --dry-run` **builds all three configurations** (26 checks). Workflow never run in GitHub. |
 | Stripe API behaviour (request shapes accepted, controller combination, onboarding requirements, event payloads, timing) | **Unverified** — mock only |
 | Cloudflare deployment, Access, real webhook delivery, secrets | **Unverified** |
@@ -541,7 +542,7 @@ for issued texts) through `studio-d1-migration.yml`, issued texts, a code change
 - Professional advice: marketplace and consumer responsibilities, commission VAT, DAC7, and PlotArt's AML position.
 - Privacy notice update for buyer checkout data and Stripe as recipient.
 - A willing artist, a real artwork, a transporter quote and **confirmed transit insurance** for that shipment.
-- Production: migrations 0016/0017, issued texts, a deliberate code change to accept live keys, and explicit approval.
+- Production: migrations 0017/0018 (pilot and issued texts), issued texts, a deliberate code change to accept live keys, and explicit approval.
 - Not built: automatic emails, PlotArt commission invoices (manual under GAA 8), ledger CSV export, AML "verified purchase" path.
 
 #### Real-Stripe test stage: key permissions and how runs start (16 Nov 2026)
@@ -642,7 +643,7 @@ permissions reference, which the restricted-key editor groups by resource:
 
 - **Early events.** An event that arrives before its payment completion is deferred, with a note of its PaymentIntent. It is replayed by the pilot as soon as the completion links that PaymentIntent to an order, re-reading the current object from Stripe. The sweep repeats this as a backstop. Provider redelivery is no longer relied on: the Stripe CLI never redelivers, and live Stripe retries with backoff.
 - **A refund that succeeds and later fails** (`reverseRefund`). The refund request becomes failed. The ledger keeps the refund lines and adds positive `artwork_refund_reversed` / `delivery_refund_reversed` lines, so the amount counts as unrefunded again. The order returns to its paid state, with a flag saying the buyer was not repaid and that they must be repaid by ONE route only. PlotArt's commission share already returned stays returned, so the second repayment returns no further commission. A later Stripe refund or a recorded direct repayment is accepted once; the other is refused ("more than remains unrefunded"). The sweep re-reads refunds that succeeded in the last 14 days in case the failure event is missed.
-- **Ledger kinds.** Migration 0016 (not applied anywhere) gains `artwork_refund_reversed` and `delivery_refund_reversed`. `refunded → paid/dispatched/delivered` is allowed only for this reversal.
+- **Ledger kinds.** Migration 0017 (formerly 0016; not applied anywhere) gains `artwork_refund_reversed` and `delivery_refund_reversed`. `refunded → paid/dispatched/delivered` is allowed only for this reversal.
 - **Fully unfunded refunds** (the available and incoming balance together are below the refund). Not reproduced in test mode: draining the test account would need a payout, and the key has no payout permission (by design). Refunding every earlier test charge would corrupt the shared test account used by the other checks. What is verified: Stripe completed refunds above the available balance at once, funding them from incoming payments, and once took the pending balance negative (−€73.83).
 
 ## Fee model B (founder decision, 17 November 2026)

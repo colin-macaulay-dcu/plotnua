@@ -69,18 +69,19 @@
   const live = w => w.in_version;
 
   /* ------------------------------------------------------------- views */
+  // saved changes that are in no submission: while a submission is pending, only what changed since it
+  const notSubmitted = s => s.state === 'in_review' && s.since_submission ? s.since_submission.length : s.unsubmitted.length;
   const STATE = {
     draft: ['Not published yet', 'Add your profile and your works, preview your gallery, then submit it. Nothing is public until we have reviewed it together.'],
-    in_review: ['Submitted for review', 'Thank you. We review every gallery and change ourselves, and we’ll email you. You can keep working: anything you change now can be submitted again.'],
+    in_review: ['Submitted for review', 'Thank you. PlotArt checks every gallery and change before it goes live; until it’s approved your public gallery stays as it is, and then it’s published automatically. There’s nothing else you need to do. You can keep editing, and submit again to include anything new.'],
     changes_requested: ['A few changes, please', 'We’ve looked at your submission. Make the changes below, then submit again.'],
     approved: ['Approved', 'Your gallery is approved and is being published.'],
     publishing: ['Approved: publishing', 'Your approved changes are being published to plotnua.ie.'],
-    live: ['Live on plotnua.ie', 'Your gallery is public. Sold, reserved and removed works update straight away; other changes go to us for a quick check first.'],
+    live: ['Live on plotnua.ie', 'Your gallery is public. Availability (sold, reserved) and the order of your works update straight away. Other changes are saved here and reach your gallery after you submit them and PlotArt approves.'],
   };
   function dashboard() {
     const s = ME.status, a = ME.artist, [title, text] = STATE[s.state];
     const n = s.counts.works;
-    const canSubmit = s.unsubmitted.length && !s.problems.length && s.state !== 'in_review';
     const left = s.checklist.length;
     const pendingTier = s.tier === 'light' ? 'a quick check' : 'a review';
     app.innerHTML = `
@@ -92,10 +93,11 @@
         ${s.state === 'changes_requested' && s.last_decision?.founder_message ? `<p class="st-msg">${E(s.last_decision.founder_message)}</p>` : ''}
         ${s.state === 'live' ? `<p class="st-muted" style="margin:10px 0 0">Address: <a href="${LIVE_DOMAIN}${E(a.slug)}/" rel="noopener">plotnua.ie/plotart/artists/${E(a.slug)}/</a></p>` : ''}
         ${s.queue.some(q => q.kind === 'instant') ? `<p class="st-muted" style="margin:10px 0 0">Availability and order updates are on their way to your live gallery.</p>` : ''}
+        ${notSubmitted(s) && (s.live_version || s.state === 'in_review') ? `<p class="st-pending" style="margin:10px 0 0"><b>${plural(notSubmitted(s), 'saved change', 'saved changes')} not submitted yet.</b> ${s.state === 'in_review' ? 'Made since your submission, so not part of what PlotArt is checking. Submit again to include them.' : 'They’re saved in your Studio but aren’t on your public gallery until you submit them and PlotArt approves.'}</p>` : ''}
       </div></div>
       <div class="st-actions">
-        <a class="st-btn" href="/preview/" target="_blank" rel="noopener">Preview your gallery</a>
-        ${s.unsubmitted.length ? `<a class="st-btn st-btn--solid" href="#/submit">Review and submit (${s.unsubmitted.length})</a>` : ''}
+        <a class="st-btn" href="/preview/" target="_blank" rel="noopener">Preview with saved changes</a>
+        ${notSubmitted(s) ? `<a class="st-btn st-btn--solid" href="#/submit">${s.state === 'in_review' ? 'Submit again' : 'Review and submit'} (${notSubmitted(s)})</a>` : ''}
       </div></section>
 
       <section class="st-card"><h3>Your works</h3>
@@ -105,7 +107,6 @@
       <section class="st-card" aria-labelledby="ck-h"><div class="st-ck-top"><h3 id="ck-h">Your gallery checklist</h3>${left ? `<span class="st-ck-count">${plural(left, 'detail', 'details')} to complete</span>` : ''}</div>
         ${left ? `<p class="st-muted st-ck-intro">Complete these to submit your gallery. Each one opens the right place.</p>${checklistHTML(s.checklist)}`
           : `<ul class="st-list ok"><li>Everything needed is in place${s.unsubmitted.length ? `: submit your changes for ${pendingTier}` : ''}.</li></ul>`}
-        ${canSubmit ? `<div class="st-actions"><a class="st-btn st-btn--solid" href="#/submit">Review and submit</a></div>` : ''}
       </section>
       ${ME.opportunities === 'confirm' ? `<section class="st-card st-opp-ask" id="opp-confirm-home" aria-labelledby="opp-cf-h"><p class="st-muted" style="margin:0">Loading…</p></section>` : ''}
       ${ME.opportunities === 'unanswered' ? `<section class="st-card st-opp-ask" aria-labelledby="opp-ask-h"><h3 id="opp-ask-h">Opportunities &amp; delivery</h3>
@@ -148,14 +149,14 @@
   function profile() {
     const a = ME.artist, p = ME.portrait && ME.portrait.id ? ME.portrait : null;
     app.innerHTML = `
-      <h1 class="st-h1">Your profile</h1><p class="st-sub">This is how visitors meet you. Changes save as you go.</p>
+      <h1 class="st-h1">Your profile</h1><p class="st-sub">This is how visitors meet you. Changes save automatically as you type; the bar at the foot of the page shows when they’re saved and what happens next.</p>
       <div class="st-two"><div>
       <section class="st-card">
         ${f('display_name', 'The name you work under', a.display_name, { req: 1 })}
         ${f('practice', 'Your practice', a.practice, { hint: 'For example: Painter, Ceramicist, Printmaker' })}
         <div class="st-f"><label for="f-medium">Main medium</label><select id="f-medium" name="medium">${['', ...ME.media].map(m => `<option value="${m}"${a.medium === m ? ' selected' : ''}>${m ? E(MEDIUM[m]) : 'Choose…'}</option>`).join('')}</select></div>
         ${f('statement', 'A one-line statement (optional)', a.statement, { area: 1, hint: 'Shown large under your name. Up to 400 characters.' })}
-        ${f('bio', 'Your biography', a.bio, { area: 1, hint: 'In your own words: who you are and how you work. 40–2,400 characters. A blank line starts a new paragraph.' })}
+        ${f('bio', 'Your biography', a.bio, { area: 1, hint: 'In your own words: who you are and how you work. 40–2,400 characters. Press Enter at the end of a paragraph to start a new one; your paragraphs appear as you write them.' })}
       </section></div><div>
       <section class="st-card"><h3>Portrait (optional)</h3>
         <div class="st-drop" id="pdrop">${p ? `<img src="/api/images/${p.id}/view" alt="">` : '<span>Add a portrait photograph</span><small class="st-muted">JPEG, PNG or WebP · at least 800 px</small>'}<input type="file" accept="image/jpeg,image/png,image/webp" aria-label="Upload a portrait"></div>
@@ -173,15 +174,13 @@
         <label class="st-check"><input type="checkbox" id="f-ofc"${a.open_for_commissions ? ' checked' : ''} aria-describedby="f-ofc-h" style="accent-color:var(--terra);width:20px;height:20px"> Open for commissions</label>
         <small class="st-muted" id="f-ofc-h" style="display:block;margin-top:8px">Shows “Open for commissions” on your gallery and lets collectors ask you about a new, bespoke work. You agree any commission directly with them. You can switch this off at any time.</small>
         <span class="st-err" id="f-ofc-e" aria-live="polite"></span>
-      </section>` : ''}</div></div>`;
+      </section>` : ''}</div></div>
+      ${saveBar('<a class="st-btn" href="/preview/" target="_blank" rel="noopener">Preview</a>')}`;
     for (const el of app.querySelectorAll('[name]')) {
       if (el.name === 'palt') continue;
-      el.addEventListener('change', async () => {
-        const v = el.type === 'checkbox' ? el.checked : el.value;
-        try { await api('PUT', '/api/me/profile', { [el.name]: v }); fieldErr(el, ''); say('Saved'); await refresh(); }
-        catch (e) { fieldErr(el, e.message); say('Not saved: ' + e.message, true); }
-      });
+      track(el, async el => { await api('PUT', '/api/me/profile', { [el.name]: valOf(el) }); await refresh(); });
     }
+    bindBar();
     // Open for Commissions (no name attribute: it has its own route, never the profile autosave above)
     $('#f-ofc', app)?.addEventListener('change', async e => {
       const box = e.target, err = $('#f-ofc-e', app);
@@ -208,12 +207,80 @@
   }
   const fieldErr = (el, msg) => { const e = el.closest('.st-f')?.querySelector('.st-err'); if (e) e.textContent = msg; };
 
+  /* Saving, made visible (18 Nov 2026, after an artist could not find a way to save). Profile and artwork details save
+     themselves a moment after you stop typing and when you leave a field, as before; nothing is published by saving.
+     The bar at the foot of those pages says whether everything is saved, offers "Save changes" for anything typed but
+     not yet saved, and says what happens next: saved changes to a published gallery reach plotnua.ie only after
+     "Review and submit" and PlotArt's check (availability and order still update straight away). */
+  const EDITS = { dirty: new Map(), busy: 0, err: '', at: null };
+  const valOf = el => el.type === 'checkbox' ? el.checked : el.type === 'radio' ? (el.form ? el.value : el.value) : el.value;
+  function track(el, save) {
+    let t = null;
+    const run = async loud => {
+      clearTimeout(t);
+      if (!EDITS.dirty.has(el)) return true;
+      const v = valOf(el);
+      EDITS.busy++; paintBar();
+      try {
+        await save(el);
+        if (valOf(el) === v) EDITS.dirty.delete(el);
+        EDITS.err = ''; EDITS.at = new Date(); fieldErr(el, '');
+        return true;
+      } catch (e) {
+        EDITS.err = e.message;
+        if (loud) { fieldErr(el, e.message); say('Not saved: ' + e.message, true); }
+        return false;
+      } finally { EDITS.busy--; paintBar(); }
+    };
+    if (el.type !== 'checkbox' && el.type !== 'radio' && el.tagName !== 'SELECT') {
+      el.addEventListener('input', () => { EDITS.dirty.set(el, run); EDITS.err = ''; paintBar(); clearTimeout(t); t = setTimeout(() => run(false), 1500); });
+    }
+    el.addEventListener('change', () => { EDITS.dirty.set(el, run); run(true); });
+  }
+  async function flushEdits() {
+    let ok = true;
+    for (const run of [...EDITS.dirty.values()]) ok = (await run(true)) && ok;
+    return ok;
+  }
+  addEventListener('beforeunload', e => { if (EDITS.dirty.size || EDITS.busy) { e.preventDefault(); e.returnValue = ''; } });
+  document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'hidden' && EDITS.dirty.size) flushEdits(); });   // phones: switching apps
+  function saveBar(extra = '') {
+    EDITS.dirty.clear(); EDITS.err = ''; EDITS.at = null;
+    return `<div class="st-savebar" role="region" aria-label="Saving"><div class="st-savebar-t"><strong id="sb-state" aria-live="polite"></strong><span id="sb-next"></span></div>
+      <div class="st-savebar-a"><button class="st-btn" id="sb-save" type="button">Save changes</button><a class="st-btn st-btn--solid" id="sb-submit" href="#/submit" hidden></a>${extra}</div></div>`;
+  }
+  function paintBar() {
+    const st = $('#sb-state'), nx = $('#sb-next'), btn = $('#sb-save'), sub = $('#sb-submit');
+    if (!st) return;
+    const s = ME.status, n = notSubmitted(s), isLive = !!s.live_version;
+    st.className = '';
+    if (EDITS.busy) st.textContent = 'Saving…';
+    else if (EDITS.err) { st.textContent = 'Not saved: ' + EDITS.err; st.className = 'bad'; }
+    else if (EDITS.dirty.size || (typeof PENDING !== 'undefined' && PENDING.size)) st.textContent = 'Unsaved changes';
+    else st.textContent = 'All changes saved' + (EDITS.at ? ' · ' + EDITS.at.toLocaleTimeString('en-IE', { hour: '2-digit', minute: '2-digit' }) : '');
+    btn.disabled = !(EDITS.dirty.size || (typeof PENDING !== "undefined" && PENDING.size)) || !!EDITS.busy;
+    btn.textContent = EDITS.dirty.size ? 'Save changes' : 'Saved';
+    nx.innerHTML = s.state === 'in_review'
+      ? `Submitted ${new Date(s.pending.created_at).toLocaleDateString('en-IE', { day: 'numeric', month: 'short' })}: PlotArt is checking it, and it goes live once approved.${n ? ` ${n === 1 ? '1 change' : n + ' changes'} saved since then ${n === 1 ? 'isn’t' : 'aren’t'} included: submit again to add ${n === 1 ? 'it' : 'them'}.` : ''}`
+      : n ? (isLive ? '<span class="st-sb-long">Your changes are saved in your Studio but are not yet visible on your public gallery. Select Review and submit when you’re ready for PlotArt to approve and publish them.</span><span class="st-sb-short">Saved in your Studio, not yet on your public gallery. Select Review and submit for PlotArt to approve and publish them.</span>'
+        : 'Saved privately in your Studio. Submit your gallery when it’s ready: PlotArt reviews it before it goes live.')
+      : isLive ? 'Your public gallery is up to date.' : 'Saved privately in your Studio.';
+    sub.hidden = !n;
+    sub.textContent = s.state === 'in_review' ? `Submit again (${n})` : `Review and submit (${n})`;
+  }
+  function bindBar() {
+    $('#sb-save')?.addEventListener('click', async () => { const a = await flushPhotoEdits(), b = await flushEdits(); if (a && b) { say('Saved'); paintBar(); } });
+    $('#sb-submit')?.addEventListener('click', async e => { e.preventDefault(); const a = await flushPhotoEdits(), b = await flushEdits(); if (a && b) location.hash = '#/submit'; });
+    afterRefresh = (prev => () => { prev && prev(); paintBar(); })(afterRefresh);
+    paintBar();
+  }
+
   function works() {
     const shown = WORKS.filter(w => !w.archived), arch = WORKS.filter(w => w.archived);
     const n = shown.length;
     app.innerHTML = `
       <h1 class="st-h1">Your works</h1>
-      <p class="st-sub">${n} in your gallery. Add more whenever you wish. Changing availability, removing a work or changing the order updates your live gallery straight away.</p>
+      <p class="st-sub">${n} in your gallery. Availability, order and removals update your live gallery straight away.</p>
       <div class="st-actions" style="margin:-6px 0 16px"><button class="st-btn st-btn--solid" data-act="add">Add an artwork</button></div>
       ${n ? `<ol class="st-works">${shown.map((w, i) => workRow(w, i, n)).join('')}</ol>` : `<div class="st-card st-empty">No works yet. Add your first artwork to begin.</div>`}
       ${arch.length ? `<h2 class="st-card" style="background:none;border:0;box-shadow:none;padding:24px 0 6px;font-family:var(--serif);font-size:26px;color:var(--ivory);margin:0">Removed from your gallery</h2>
@@ -233,10 +300,10 @@
     }));
     app.querySelectorAll('[data-archive]').forEach(b => b.addEventListener('click', async () => {
       const w = WORKS.find(x => x.id === b.dataset.archive);
-      if (!confirmInline(b, live(w) ? 'Remove from your live gallery?' : 'Remove this work?')) return;
+      if (!confirmInline(b, live(w) ? 'Remove from your live gallery?' : w.empty_draft ? 'Discard this empty draft?' : 'Remove this work?')) return;
       if (!live(w) && !w.images.length && !w.title) await api('DELETE', `/api/artworks/${w.id}`);
       else await api('POST', `/api/artworks/${w.id}/archive`, { archived: true });
-      say('Removed'); await refresh(); works();
+      say(w.empty_draft ? 'Empty draft discarded' : 'Removed'); await refresh(); works();
     }));
     app.querySelectorAll('[data-restore]').forEach(b => b.addEventListener('click', async () => { await api('POST', `/api/artworks/${b.dataset.restore}/archive`, { archived: false }); say('Back in your gallery (needs review)'); await refresh(); works(); }));
   }
@@ -253,12 +320,19 @@
     const q = needs(w), sub = [w.year, w.medium, w.h_cm && w.w_cm ? `${+w.h_cm} × ${+w.w_cm} cm` : null].filter(Boolean).join(' · ');
     return `<li class="st-work"><a class="st-thumb" href="#/work/${w.id}" style="${thumb(w)}" aria-label="Edit ${E(w.title || 'untitled work')}">${w.images.length ? '' : 'Add photo'}</a>
       <div><p class="st-work-t"><a href="#/work/${w.id}" style="color:inherit;text-decoration:none">${E(w.title || 'Untitled')}</a></p><p class="st-work-s">${E(sub || 'Details to add')}${w.price_eur && w.availability === 'available' ? ` · €${Number(w.price_eur).toLocaleString('en-IE')}` : ''}</p>
-      <div class="st-chips">${live(w) ? '<span class="st-chip st-chip--live">In your gallery</span>' : '<span class="st-chip">Not yet submitted</span>'}${q.length ? `<span class="st-chip st-chip--todo">Needs ${E(q.join(', '))}</span>` : ''}</div>
+      <div class="st-chips">${live(w) ? '<span class="st-chip st-chip--live">In your gallery</span>' : w.empty_draft ? '<span class="st-chip">Empty draft · nothing saved yet</span>' : '<span class="st-chip">Not yet submitted</span>'}${q.length && !w.empty_draft ? `<span class="st-chip st-chip--todo">Needs ${E(q.join(', '))}</span>` : ''}</div>
       <div class="st-row"><label class="st-lab" for="av-${w.id}" style="position:absolute;left:-999px">Availability</label><select id="av-${w.id}" data-av="${w.id}" style="width:auto">${Object.entries(AV).map(([k, v]) => `<option value="${k}"${w.availability === k ? ' selected' : ''}>${v}</option>`).join('')}</select>
       <a class="st-btn st-btn--small" href="#/work/${w.id}">Edit</a></div></div>
       <div class="st-row" style="justify-content:flex-end"><button class="st-btn st-btn--small" data-move="${w.id}:-1" ${i ? '' : 'disabled'} aria-label="Move earlier">↑</button><button class="st-btn st-btn--small" data-move="${w.id}:1" ${i < n - 1 ? '' : 'disabled'} aria-label="Move later">↓</button><button class="st-btn st-btn--small st-btn--danger" data-archive="${w.id}">Remove</button></div></li>`;
   }
-  async function addWork() { const r = await api('POST', '/api/artworks'); await refresh(); location.hash = '#/work/' + r.id; }
+  async function addWork() {
+    if (addWork.busy) return;   // a second tap while the first is saving made a second empty record (17 Nov 2026)
+    addWork.busy = true;
+    let r;
+    try { r = await api('POST', '/api/artworks'); } finally { addWork.busy = false; }
+    await refresh(); location.hash = '#/work/' + r.id;
+    if (r.reused) say('You already had an empty draft: continue with it here');   // never a pile of empty records (17 Nov 2026)
+  }
 
   function work(id) {
     const w = WORKS.find(x => x.id === id);
@@ -268,8 +342,9 @@
     app.innerHTML = `
       <p><a href="#/works" style="color:var(--stone);text-decoration:none">← Your works</a></p>
       <h1 class="st-h1">${E(w.title || 'New artwork')}</h1>
-      <p class="st-sub">${live(w) ? 'In your live gallery. Price and detail changes go to us for a quick check; new photographs are reviewed.' : 'Everything saves as you go. Submit when you’re ready.'}</p>
+      ${live(w) ? '<p class="st-sub">In your live gallery. Availability changes show straight away; other changes after you submit them.</p>' : ''}
       <p class="st-needs" id="wneeds" aria-live="polite"></p>
+      ${w.empty_draft ? `<p class="st-msg st-draft-note" id="draft-note">Nothing is saved for this artwork yet. It becomes part of your gallery when you add a photograph or details, and it won’t hold up your submission until then. <button class="st-linkbtn" data-act="discard">Discard this empty draft</button></p>` : ''}
       <div class="st-two"><div>
       <section class="st-card"><h3>Main photograph</h3>
         <div class="st-drop" id="mdrop">${main ? `<img src="/api/images/${main.id}/view" alt="">` : '<strong style="color:var(--ivory)">Add the main photograph</strong><span>Tap to choose a photo · JPEG, PNG or WebP · at least 2,000 px · up to 30 MB</span>'}<input type="file" accept="image/jpeg,image/png,image/webp" aria-label="Upload the main photograph"></div>
@@ -278,7 +353,8 @@
       </section>
       <section class="st-card"><h3>More views (optional, up to 3)</h3><p class="st-muted" style="margin:0 0 10px">A detail, the side of a sculpture, or the work installed.${views.length ? ' <strong style="color:var(--ivory)">Each view needs its own description and photographer</strong>, just like the main photograph.' : ''}</p>
         <div class="st-views">${views.map((v, n) => `<div class="st-view" style="background-image:url(/api/images/${v.id}/view)">${photoComplete(v) ? '' : `<span class="st-view-flag" data-flag="${v.id}">View ${n + 1}: details needed</span>`}<button data-rmv="${v.id}" aria-label="Remove view ${n + 1}">✕</button></div>`).join('')}
-        ${views.length < 3 ? `<label class="st-view st-drop" style="min-height:0;padding:0"><span style="font-size:28px">+</span><input type="file" accept="image/jpeg,image/png,image/webp" id="vadd" aria-label="Add a view"></label>` : ''}</div>
+        ${!main ? '<p class="st-muted st-views-first" style="margin:0">Add the main photograph above first; extra views come after it.</p>'
+          : views.length < 3 ? `<label class="st-view st-drop" style="min-height:0;padding:0"><span style="font-size:28px">+</span><input type="file" accept="image/jpeg,image/png,image/webp" id="vadd" aria-label="Add a view"></label>` : ''}</div>
         ${views.map((v, n) => `<div class="st-view-d"><span class="st-view-mini" style="background-image:url(/api/images/${v.id}/view)" aria-hidden="true"></span>${imageFields(v, `View ${n + 1}`)}</div>`).join('')}
       </section></div><div>
       <section class="st-card"><h3>About the work</h3>
@@ -299,14 +375,14 @@
         <div id="ainote" ${w.ai_involvement && w.ai_involvement !== 'none' ? '' : 'hidden'}>${f('ai_note', 'Say briefly how (shown on the work’s page)', w.ai_note, { area: 1 })}</div>
         <p class="st-muted" style="margin:6px 0 0">PlotArt welcomes digital and AI-assisted practice. Entirely prompt-generated images are reviewed for eligibility.</p>
       </section><div id="hirepanel"></div></div></div>
-      <div class="st-sticky"><a class="st-btn" href="/preview/${E(w.slug)}.html" target="_blank" rel="noopener">Preview</a><a class="st-btn st-btn--solid" href="#/works">Done</a></div>`;
+      ${saveBar(`<a class="st-btn" href="/preview/${E(w.slug)}.html" target="_blank" rel="noopener">Preview</a><a class="st-btn" href="#/works">Done</a>`)}`;
     app.querySelectorAll('[name]').forEach(el => {
       if (el.closest('[data-img]')) return;
-      el.addEventListener('change', async () => {
+      if (el.name === 'ai_involvement') el.addEventListener('change', () => { $('#ainote').hidden = el.value === 'none'; });
+      track(el, async el => {
         const v = el.type === 'checkbox' ? el.checked : el.type === 'radio' ? el.value : (el.value === '' ? null : el.value);
-        if (el.name === 'ai_involvement') $('#ainote').hidden = v === 'none';
-        try { await api('PUT', `/api/artworks/${w.id}`, { [el.name]: v }); fieldErr(el, ''); say('Saved'); await refresh(); if (el.name === 'title') $('.st-h1').textContent = el.value || 'New artwork'; }
-        catch (e) { fieldErr(el, e.message); say('Not saved: ' + e.message, true); }
+        await api('PUT', `/api/artworks/${w.id}`, { [el.name]: v }); await refresh();
+        if (el.name === 'title') $('.st-h1').textContent = el.value || 'New artwork';
       });
     });
     $('[data-avail]').addEventListener('change', async e => { await api('POST', `/api/artworks/${w.id}/availability`, { availability: e.target.value }); say(live(w) ? 'Updated · your live gallery is updating' : 'Saved'); await refresh(); });
@@ -316,7 +392,14 @@
     const needsLine = () => { const el = $('#wneeds'); if (!el) return;
       el.innerHTML = photoNeeds(WORKS.find(x => x.id === w.id) || w, ME.status.checklist.find(i => i.area === 'work' && i.work_id === w.id));
       el.hidden = !el.innerHTML; };
-    needsLine(); afterRefresh = needsLine;
+    // the empty-draft note goes as soon as anything for this artwork is saved; discarding deletes only an empty draft
+    const draftLine = () => { const x = WORKS.find(v => v.id === w.id); if (!x || !x.empty_draft) $('#draft-note')?.remove(); };
+    needsLine(); afterRefresh = () => { needsLine(); draftLine(); };
+    bindBar();
+    $('[data-act=discard]', app)?.addEventListener('click', async () => {
+      try { await api('DELETE', `/api/artworks/${w.id}`); say('Empty draft discarded'); await refresh(); location.hash = '#/works'; }
+      catch (e) { say(e.message, true); }
+    });
     $('#mdrop input').addEventListener('change', e => uploadFlow(e.target.files[0], `/api/artworks/${w.id}/images?role=main`, $('#mdrop'), { done: async () => { await flushPhotoEdits(); await refresh(); work(w.id); } }));
     $('#vadd')?.addEventListener('change', e => uploadFlow(e.target.files[0], `/api/artworks/${w.id}/images?role=view`, $('#vadd').parentElement, { done: async () => { await flushPhotoEdits(); await refresh(); work(w.id); } }));
     app.querySelectorAll('[data-rmv]').forEach(b => b.addEventListener('click', async () => { await flushPhotoEdits(); await api('DELETE', `/api/images/${b.dataset.rmv}`); await refresh(); work(w.id); say('View removed'); }));
@@ -572,7 +655,7 @@
   async function uploadFlow(file, url, drop, { portrait = false, done }) {
     if (!file) return;
     const show = (html) => { drop.querySelectorAll(':scope > :not(input)').forEach(n => n.remove()); drop.insertAdjacentHTML('afterbegin', html); };
-    const fail = msgs => { show(`<ul class="st-checks">${msgs.map(m => `<li class="b">${E(m)}</li>`).join('')}</ul><span class="st-muted">Tap to choose another photo</span>`); say('Photo not added', true); };
+    const fail = msgs => { show(`<strong class="st-upfail">This photo was not uploaded.</strong><ul class="st-checks">${msgs.map(m => `<li class="b">${E(m)}</li>`).join('')}</ul><span class="st-muted">Tap to choose another photo. Anything else you entered here is kept.</span>`); say('Photo not uploaded', true); };
     if (file.size > 30 * 1048576) return fail([`This file is ${(file.size / 1048576).toFixed(1)} MB; the limit is 30 MB.`]);
     const head = new Uint8Array(await file.slice(0, 12).arrayBuffer());
     const fmt = head[0] === 0xFF && head[1] === 0xD8 ? 'jpeg' : head[0] === 0x89 && head[1] === 0x50 ? 'png' : (String.fromCharCode(...head.slice(8, 12)) === 'WEBP' ? 'webp' : null);
@@ -603,28 +686,35 @@
     const s = ME.status, groups = { full: [], light: [], instant: [] };
     for (const c of s.changes) groups[c.tier].push(c);
     const label = { full: 'Reviewed by PlotArt', light: 'Quick check', instant: 'Already live (no review needed)' };
+    const what = c => E(c.what.replace(/^Profile: /, 'Profile · ').replace(/: (?=[a-z])/, ' · '));
     app.innerHTML = `
       <p><a href="#/" style="color:var(--stone);text-decoration:none">← Your gallery</a></p>
       <h1 class="st-h1">Review and submit</h1>
       ${s.state === 'in_review' ? `<p class="st-msg">You submitted on ${new Date(s.pending.created_at).toLocaleString('en-IE', { dateStyle: 'medium', timeStyle: 'short' })}. Submitting again replaces that submission with everything as it is now.</p>` : ''}
       <section class="st-card"><h3>What changes</h3>
         ${['full', 'light', 'instant'].filter(t => groups[t].length).map(t => `<p class="st-muted" style="margin:12px 0 4px"><span class="st-tier ${t}">${t === 'full' ? 'Review' : t === 'light' ? 'Quick check' : 'Live'}</span>${label[t]}</p>
-          <ul class="st-list">${groups[t].map(c => `<li>${E(c.what)}${c.from !== undefined && c.to !== undefined && typeof c.to !== 'object' ? ` <span class="st-muted">(${E(c.from ?? '—')} → ${E(c.to ?? '—')})</span>` : ''}</li>`).join('')}</ul>`).join('') || '<p class="st-muted">Nothing new to submit.</p>'}
+          <ul class="st-list st-changes">${groups[t].map(c => `<li><b>${what(c)}</b>${t === 'instant' ? '' : PAChanges.detail(c)}</li>`).join('')}</ul>`).join('') || '<p class="st-muted">Nothing new to submit.</p>'}
+        ${s.changes.some(c => c.from !== undefined) ? '<p class="st-muted st-diff-key">Shown against your live gallery: <del>removed</del> <ins>added</ins>.</p>' : ''}
       </section>
       ${s.checklist.length ? `<section class="st-card" aria-labelledby="todo-h"><div class="st-ck-top"><h3 id="todo-h">Still to do</h3><span class="st-ck-count">${plural(s.checklist.length, 'detail', 'details')}</span></div>${checklistHTML(s.checklist, { openWorks: true })}</section>` : ''}
       ${s.agreement && s.agreement.installed && !s.agreement.accepted && s.tier === 'full' ? `<section class="st-card st-agr-ask"><h3>${s.agreement.founding ? 'Founding Artist Agreement' : 'Gallery Publication and Image Licence'}</h3>
         <p class="st-muted" style="margin:0">Changes that we review need ${s.agreement.founding ? 'the Founding Artist Agreement' : 'the current licence'} accepted first. It takes a few minutes and you can download a copy.</p>
         <div class="st-actions"><a class="st-btn st-btn--solid st-btn--small" href="#/agreement">Read and accept</a></div></section>` : ''}
-      <section class="st-card"><div class="st-f"><label for="note">A note for us (optional)</label><textarea id="note" placeholder="Anything we should know"></textarea></div>
-        <div class="st-actions st-submit-row"><a class="st-btn" href="/preview/" target="_blank" rel="noopener">Preview first</a><button class="st-btn st-btn--solid" id="go" ${s.unsubmitted.length && !s.problems.length ? '' : 'disabled aria-describedby="why"'}>Submit for review</button></div>
+      <section class="st-card"><h3>What happens next</h3>
+        <p class="st-muted" style="margin:0">PlotArt checks what you submit${s.live_version ? '; until then your public gallery stays exactly as it is' : ''}. Once it’s approved it’s published to plotnua.ie automatically. You can keep editing meanwhile${s.state === 'in_review' ? ', and submitting again replaces your earlier submission' : ''}.</p>
+        <div class="st-f" style="margin-top:16px"><label for="note">A note for us (optional)</label><textarea id="note" placeholder="Anything we should know"></textarea></div>
+        <div class="st-actions st-submit-row"><a class="st-btn" href="/preview/" target="_blank" rel="noopener">Preview with these changes</a><button class="st-btn st-btn--solid" id="go" ${notSubmitted(s) && !s.problems.length ? '' : 'disabled aria-describedby="why"'}>${s.state === 'in_review' ? 'Submit again' : 'Submit for review'}</button></div>
         ${s.problems.length ? `<p class="st-why" id="why"><span class="st-needs-dot" aria-hidden="true"></span><span><b>${plural(s.problems.length, 'detail still needs', 'details still need')} your attention</b> before you can submit your gallery. <a href="#todo-h" data-jump>See the list</a></span></p>`
-          : !s.unsubmitted.length ? '<p class="st-why" id="why">There’s nothing new to submit.</p>' : ''}
+          : !notSubmitted(s) ? `<p class="st-why" id="why">${s.state === 'in_review' ? 'Everything you’ve saved is already in your submission. There’s nothing more to do.' : 'There’s nothing new to submit.'}</p>` : ''}
         <p class="st-err" id="serr"></p></section>`;
     $('[data-jump]', app)?.addEventListener('click', e => { e.preventDefault(); const h = $('#todo-h'); h.setAttribute('tabindex', '-1'); h.scrollIntoView({ block: 'start' }); h.focus({ preventScroll: true }); });
     $('#go').addEventListener('click', async () => {
       $('#go').disabled = true;
-      try { await api('POST', '/api/submit', { note: $('#note').value || null }); say('Submitted'); await refresh(); location.hash = '#/'; }
-      catch (e) { $('#serr').textContent = e.message; $('#go').disabled = false; }
+      if (!(await flushPhotoEdits()) | !(await flushEdits())) { $('#serr').textContent = 'A change hasn’t saved yet. Go back and check it, then submit.'; $('#go').disabled = false; return; }
+      try { await api('POST', '/api/submit', { note: $('#note').value || null }); say('Submitted for review'); await refresh(); location.hash = '#/'; }
+      catch (e) {   // never silent: say plainly that nothing was submitted, and what to do
+        $('#serr').innerHTML = `<b>Not submitted.</b> Nothing has been sent to PlotArt yet. ${e.data?.problems ? `Still needed: ${e.data.problems.map(E).join(' · ')}. <a href="#/">See your checklist</a>.` : E(e.message)}`;
+        $('#serr').scrollIntoView({ block: 'center' }); $('#go').disabled = false; }
     });
   }
 
@@ -924,13 +1014,14 @@
 
   /* ------------------------------------------------------------- router */
   async function render() {
-    await flushPhotoEdits();
+    await flushPhotoEdits(); await flushEdits();
     const full = location.hash || '#/', [h, qs] = full.split('?'), q = new URLSearchParams(qs || '');
     afterRefresh = null;
     document.querySelectorAll('.st-tabs a').forEach(a => a.toggleAttribute('aria-current', h === a.getAttribute('href') || (a.getAttribute('href') === '#/works' && h.startsWith('#/work/'))));
     document.querySelectorAll('.st-tabs a[aria-current]').forEach(a => a.setAttribute('aria-current', 'page'));
+    document.querySelector('.st-tabs a[aria-current]')?.scrollIntoView({ block: 'nearest', inline: 'center' });
     try {
-      if (!ME) await refresh();
+      if (!ME || h === '#/submit' || h === '#/' || h === '') await refresh();   // the submit page and gallery page always show the latest saved state
       $('#who').innerHTML = `${E(ME.artist.display_name)}<br><a href="/cdn-cgi/access/logout">Sign out</a>`;
       if (h === '#/') dashboard();
       else if (h === '#/profile') profile();

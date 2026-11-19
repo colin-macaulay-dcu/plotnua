@@ -10,6 +10,10 @@ admin "Publish" button (or, with --instant, the automatic availability/removal p
   plotart/artists/<slug>/index.html | <artwork>.html | img/<name>-<size>.webp   (added, changed or removed)
   plotart/gallery/index.html            only inside the generated collection region
                                         (<!-- pa-vg-collection:begin --> ... <!-- pa-vg-collection:end -->)
+                                        and the Featured Artists region (17 Nov 2026, moved from the homepage;
+                                        <!-- pa-featured-artists:begin --> ... end), the latter exactly as its selection
+                                        renders from the published galleries (plotart_featured). The PlotArt homepage
+                                        (plotart/index.html) is no longer generated and is refused like any other page.
   plotart/<buyer guide or artworks/index.html>   only inside its generated collection region, and exactly the
                                         region the approved public exports produce (plotart_search_content)
   plotart/<opportunity page>            only inside its generated opportunity region, and exactly the region the
@@ -43,6 +47,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 import plotart_seo as SEO
 import plotart_search_content as C
 import plotart_opportunities as OPP
+import plotart_featured as FEAT
 
 ART = re.compile(r"^plotart/artists/([a-z0-9]+(?:-[a-z0-9]+){0,6})/(?:[a-z0-9]+(?:-[a-z0-9]+){0,6}\.html|gallery\.json|img/[a-z0-9-]+-\d{2,5}\.webp)$")
 # the generated collection region (Direction C2, 5 Nov 2026): the open galleries and the twenty-five positions
@@ -142,9 +147,21 @@ def main(base, rel, instant):
                 refused.append("%s: a new page is not an instant change (needs review)" % path)
             continue
         if path == "plotart/gallery/index.html" and st == "M":
-            a, b = show(base, path), show(rel, path)
-            if GRID.sub(b"<grid/>", a) != GRID.sub(b"<grid/>", b):
-                refused.append("%s: changed outside the collection region" % path)
+            # Outside its two generated regions the Artists' Gallery page never changes: the complete collection
+            # (pa-vg-collection) and, above it, Featured Artists (17 Nov 2026; moved from the homepage). The featured
+            # region must be exactly what the selection it declares renders from the published galleries, so nothing
+            # unpublished can appear and a featured change can never alter the collection (checked by L11/L20 as well).
+            try:
+                a, b = show(base, path).decode(), show(rel, path).decode()
+                if GRID.sub(b"<grid/>", FEAT.outside(a).encode()) != GRID.sub(b"<grid/>", FEAT.outside(b).encode()):
+                    refused.append("%s: changed outside the collection and Featured Artists regions" % path)
+                else:
+                    names = git("ls-tree", "-r", "--name-only", rel, "plotart/artists").splitlines()
+                    packages = [json.loads(show(rel, n)) for n in names if re.fullmatch(r"plotart/artists/[a-z0-9-]+/gallery.json", n)]
+                    if b != FEAT.update(b, FEAT.selection_in(b), packages):
+                        refused.append(path + ": the Featured Artists region differs from what its selection renders from the published galleries")
+            except (ValueError, TypeError) as e:
+                refused.append(path + ": " + str(e))
             continue
         if path in {"plotart/" + p for p in SEO.GENERATED_PATHS} and st == "M":
             try:

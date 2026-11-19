@@ -7,7 +7,6 @@
     "version": "supplier-publication-gate-v1",
     "rule": "public visibility is derived from permission state, listing-review state and asset approval. It never reads a measurement, and it never alters the Class 3A technical assessment.",
     "heldOrganisations": [
-      "BIOBUILDS",
       "Nua Modular"
     ]
   },
@@ -111,8 +110,8 @@
     "PROD-000967",
     "PROD-001081"
   ],
-  "eligibleCount": 28,
-  "heldCount": 112,
+  "eligibleCount": 29,
+  "heldCount": 111,
   "excludedCount": 0,
   "class3aCandidateCount": 4,
   "class3aBand": {
@@ -1526,6 +1525,7 @@
         }
       ],
       "description": "BIOBUILDS' smallest catalogued 'Homes' model: a 1-2 bedroom modular home with 35.54 m² / 383 ft² of interior floor area as published by BIOBUILDS. The \"48\" in the model name is the supplier's own naming and configurator key (SQF_TYPE=wanderlust-48); it is NOT a published floor area and must not be recorded as one. Sold in two configurations, both Irish prices including 23% VAT: Exterior Finished €105,000 and Turnkey €163,000. Transport to Ireland and assembly on prepared ground screws are included; foundations, utility connections and site works are quoted per project; kitchen furniture and appliances are not included. Ground-screw foundation, no cement. Ireland is a selectable delivery country on the order configurator. CLAIMS AWAITING RE-VERIFICATION, carried over from an August 2026 catalogue read and NOT re-checked on 11 October 2026: Passivhaus Institut certification, ≤0.4 ACH@50 airtightness, ~15 kWh/m²/year energy demand, carbon-negative EPD, and ~3-week move-in. Treat these as unverified until re-sourced. Wanderlust's own configurator detail (floorplan layout, cladding and window choices) was never separately verified. Source for prices, area and inclusions: biobuilds.com/ie/wanderlust and biobuilds.com/ie/turnkey, read 11 October 2026.",
+      "publicSpecification": "BIOBUILDS Wanderlust 48. A modular home with 35.54 m² of interior floor area, offered with one or two bedrooms. Exterior Finished €105,000; Turnkey €163,000. Prices are as published by BIOBUILDS for Ireland and include 23% VAT and transport to Ireland. Installation on prepared ground screws is included. Foundations, utility connections and site works are quoted per project. Turnkey is finished inside and out, including interior finishes and bathroom fixtures; kitchen connections are prepared, and kitchen furniture and appliances are not included. Delivery to the Republic of Ireland is confirmed by BIOBUILDS. The 48 in the model name is BIOBUILDS' own model name, not its floor area.",
       "qualification": {
         "rule": "additional-home-qualification-v1.1",
         "state": "ELIGIBLE",
@@ -1543,10 +1543,54 @@
         "reason": null,
         "caveats": []
       },
-      "publicVisibility": "HOLD",
-      "holdReason": "listing-review-awaiting-confirmation",
-      "imagery": null,
-      "imagerySet": null
+      "publicVisibility": "PUBLISHABLE",
+      "holdReason": null,
+      "imagery": {
+        "url": "https://www.biobuilds.com/_next/static/immutable/media/wanderlust-catalog.3-furbv0o-vtc.jpg",
+        "alt": "The BIOBUILDS Wanderlust 48 seen from outside, a timber-clad single-storey building with full-height glazing.",
+        "credit": "© BIOBUILDS",
+        "supplier": "BIOBUILDS",
+        "rightsRecord": "C2-GRANT-BIOBUILDS-20261002",
+        "permittedPrefix": "https://www.biobuilds.com/_next/static/immutable/media/",
+        "linkBack": "https://www.biobuilds.com/",
+        "presentationTier": "A",
+        "caption": "BIOBUILDS model imagery"
+      },
+      "imagerySet": [
+        {
+          "url": "https://www.biobuilds.com/_next/static/immutable/media/wanderlust-catalog.3-furbv0o-vtc.jpg",
+          "alt": "The BIOBUILDS Wanderlust 48 seen from outside, a timber-clad single-storey building with full-height glazing.",
+          "credit": "© BIOBUILDS",
+          "supplier": "BIOBUILDS",
+          "rightsRecord": "C2-GRANT-BIOBUILDS-20261002",
+          "permittedPrefix": "https://www.biobuilds.com/_next/static/immutable/media/",
+          "linkBack": "https://www.biobuilds.com/",
+          "presentationTier": "A",
+          "caption": "BIOBUILDS model imagery"
+        },
+        {
+          "url": "https://www.biobuilds.com/_next/static/immutable/media/wanderlust-48-int-catalog.0d9n8s-fzmg7q.jpg",
+          "alt": "Inside the BIOBUILDS Wanderlust 48, an open living space with timber finishes and glazing to the garden.",
+          "credit": "© BIOBUILDS",
+          "supplier": "BIOBUILDS",
+          "rightsRecord": "C2-GRANT-BIOBUILDS-20261002",
+          "permittedPrefix": "https://www.biobuilds.com/_next/static/immutable/media/",
+          "linkBack": "https://www.biobuilds.com/",
+          "presentationTier": "A",
+          "caption": "BIOBUILDS model imagery"
+        },
+        {
+          "url": "https://www.biobuilds.com/_next/static/immutable/media/wanderlust-48-bedroom.02gun-re0wb_5.jpg",
+          "alt": "A bedroom in the BIOBUILDS Wanderlust 48, with timber walls and a window to the garden.",
+          "credit": "© BIOBUILDS",
+          "supplier": "BIOBUILDS",
+          "rightsRecord": "C2-GRANT-BIOBUILDS-20261002",
+          "permittedPrefix": "https://www.biobuilds.com/_next/static/immutable/media/",
+          "linkBack": "https://www.biobuilds.com/",
+          "presentationTier": "A",
+          "caption": "BIOBUILDS model imagery"
+        }
+      ]
     },
     {
       "id": "reczLG8Iw4k7TY2Nq",
@@ -1631,6 +1675,7 @@
         }
       ],
       "description": "A 3-bedroom modular home, BIOBUILDS' second-smallest catalogued 'Homes' model, catalogued at 95 m². THE MEASUREMENT BASIS OF THAT 95 m² IS NOT VERIFIED -- it is a catalogue figure and it is not known whether it describes interior or external area, so it is deliberately NOT recorded as a verified floor area. Sold in two configurations, both Irish prices including 23% VAT: Exterior Finished €191,000 and Turnkey €306,000. Transport to Ireland and assembly on prepared ground screws are included; foundations, utility connections and site works are quoted per project; kitchen furniture and appliances are not included. Ground-screw foundation, no cement. Ireland is a selectable delivery country on the order configurator. CLAIMS AWAITING RE-VERIFICATION, carried over from an August 2026 catalogue read and NOT re-checked on 11 October 2026: Passivhaus Institut certification, ≤0.4 ACH@50 airtightness, ~15 kWh/m²/year energy demand, carbon-negative EPD, and ~3-week move-in. Treat these as unverified until re-sourced. Serenity's own configurator detail was never separately verified. Source for prices and inclusions: biobuilds.com/ie/turnkey, read 11 October 2026.",
+      "publicSpecification": "BIOBUILDS Serenity 95. A modular home with 77.06–78.21 m² of interior floor area, depending on the floorplan. Exterior Finished €191,000; Turnkey €306,000. Prices are as published by BIOBUILDS for Ireland and include 23% VAT and transport to Ireland. Installation on prepared ground screws is included. Foundations, utility connections and site works are quoted per project. Turnkey is finished inside and out, including interior finishes and bathroom fixtures; kitchen connections are prepared, and kitchen furniture and appliances are not included. Delivery to the Republic of Ireland is confirmed by BIOBUILDS. The 95 in the model name is BIOBUILDS' own model name, not its floor area.",
       "qualification": {
         "rule": "additional-home-qualification-v1.1",
         "state": "ELIGIBLE",
@@ -1648,10 +1693,54 @@
         "reason": "outside-pathway-band",
         "caveats": []
       },
-      "publicVisibility": "HOLD",
-      "holdReason": "listing-review-awaiting-confirmation",
-      "imagery": null,
-      "imagerySet": null
+      "publicVisibility": "PUBLISHABLE",
+      "holdReason": null,
+      "imagery": {
+        "url": "https://www.biobuilds.com/_next/static/immutable/media/serenity-catalog.2xcd8x45pacpa.jpg",
+        "alt": "The BIOBUILDS Serenity 95 seen from outside, a larger timber-clad house with extensive glazing.",
+        "credit": "© BIOBUILDS",
+        "supplier": "BIOBUILDS",
+        "rightsRecord": "C2-GRANT-BIOBUILDS-20261002",
+        "permittedPrefix": "https://www.biobuilds.com/_next/static/immutable/media/",
+        "linkBack": "https://www.biobuilds.com/",
+        "presentationTier": "A",
+        "caption": "BIOBUILDS model imagery"
+      },
+      "imagerySet": [
+        {
+          "url": "https://www.biobuilds.com/_next/static/immutable/media/serenity-catalog.2xcd8x45pacpa.jpg",
+          "alt": "The BIOBUILDS Serenity 95 seen from outside, a larger timber-clad house with extensive glazing.",
+          "credit": "© BIOBUILDS",
+          "supplier": "BIOBUILDS",
+          "rightsRecord": "C2-GRANT-BIOBUILDS-20261002",
+          "permittedPrefix": "https://www.biobuilds.com/_next/static/immutable/media/",
+          "linkBack": "https://www.biobuilds.com/",
+          "presentationTier": "A",
+          "caption": "BIOBUILDS model imagery"
+        },
+        {
+          "url": "https://www.biobuilds.com/_next/static/immutable/media/serenity-95-int-catalog.0uuneoqa7y-h8.jpg",
+          "alt": "Inside the BIOBUILDS Serenity 95, an open-plan living and dining space with timber finishes.",
+          "credit": "© BIOBUILDS",
+          "supplier": "BIOBUILDS",
+          "rightsRecord": "C2-GRANT-BIOBUILDS-20261002",
+          "permittedPrefix": "https://www.biobuilds.com/_next/static/immutable/media/",
+          "linkBack": "https://www.biobuilds.com/",
+          "presentationTier": "A",
+          "caption": "BIOBUILDS model imagery"
+        },
+        {
+          "url": "https://www.biobuilds.com/_next/static/immutable/media/serenity-95-bathroom.1nmu58m7tl0_u.jpg",
+          "alt": "A bathroom in the BIOBUILDS Serenity 95, with tiled surfaces and fixed sanitaryware.",
+          "credit": "© BIOBUILDS",
+          "supplier": "BIOBUILDS",
+          "rightsRecord": "C2-GRANT-BIOBUILDS-20261002",
+          "permittedPrefix": "https://www.biobuilds.com/_next/static/immutable/media/",
+          "linkBack": "https://www.biobuilds.com/",
+          "presentationTier": "A",
+          "caption": "BIOBUILDS model imagery"
+        }
+      ]
     },
     {
       "id": "recQB8wHENrR3rKK4",
@@ -8198,9 +8287,9 @@
         "signals": []
       },
       "irish": {
-        "state": "UNKNOWN",
-        "basis": "no irish-availability evidence recorded",
-        "scope": null,
+        "state": "CONFIRMED",
+        "basis": "Confirmation State: Yes",
+        "scope": "Product-Specific",
         "noPublishedRoute": false
       },
       "area": {
@@ -8247,27 +8336,26 @@
         }
       ],
       "description": "BIOBUILDS' smallest model. Verified live on the DEDICATED IRISH LOCALE configurator 2026-09-28. Headline: \"Nest — 24m2, Passivhaus, built in EU\". BIOBUILDS publishes no conventional per-model URLs; model identity is exposed through the configurator anchor, which is how Atlas already keys Wanderlust and Serenity. === DIMENSIONS AND AREA — BOTH BASES PUBLISHED SEPARATELY ===\nEXTERIOR 6.35 m x 3.84 m x 3.30 m\nINTERIOR 5.59 m x 3.08 m x 2.50 m\nTOTAL EXTERIOR AREA 24.38 m2\nTOTAL INTERIOR AREA 16.84 m2 THE CATALOGUE HEADLINE \"24m2\" IS THE EXTERIOR FIGURE. The interior area is 16.84 m2 — materially smaller. The two must not be substituted for one another. ROOM SCHEDULE: Bedroom 13.3 m2; Bathroom 3.54 m2. These sum to exactly 16.84 m2, matching the published interior total, so the interior comprises a bedroom and a bathroom and NOTHING ELSE. There is NO separately scheduled living room and NO separately scheduled kitchen. === BEDROOMS ===\n1 bedroom. Two published floorplan layouts: \"1 Bedroom\" and \"1 bedroom mirrored\" — MIRROR LAYOUTS OF ONE MODEL, not separate products. === TWO PUBLISHED PRICE SCOPES — ONE PRODUCT ===\nEXTERIOR FINISHED EUR 74,300 incl. VAT (shell; \"be your own interior designer\")\nTURNKEY EUR 101,100 incl. VAT (\"finished inside and out\")\nThese are SCOPES OF ONE MODEL, not two products. See the two Pricing records. === STRUCTURE AND ENVELOPE (both scopes) ===\nMODULAR structure, stated by the supplier as certified by the Passive House Institute, Darmstadt, and by EPD Hub. C24 timber frame, FSC/PEFC. STEICO wood fibre insulation to walls, roof and floor, lambda approx 0.036 W/m.K, CE certified. OSB 3 ECO (Germany), low VOC, approved by the Passive House Institute. DWD board (Germany), vapour permeable. Smart membrane, airtight, certified by the Passive House Institute. WINDOWS/DOORS: Genesis 90 aluminium frame, Uf = 0.76-0.78 W/m2K, certified by the Passive House Institute; laminated triple glazing, Ug = 0.50 W/m2K. EXTERIOR: Yakisugi ventilated cladding (included as configured) or Lunawood cladding; ventilated roof; EPDM membrane with 20+ year manufacturer warranty, load capacity over 300 kg/m2; rainwater collection gutter integrated into the cladding. INSTALLATIONS (both scopes): electrical cables and conduits fully installed; plumbing pipes and fittings (PPR/PEX). === EXTERIOR FINISHED scope adds ===\nFloor OSB. Bathroom: complete plumbing ROUGH-IN, waterproofed walls and floor, READY FOR TILES AND FIXTURES — i.e. NO sanitaryware fitted in this scope. === TURNKEY scope adds ===\nInterior: wood slat ceiling with felt; vegan felt or wood veneer wall finish; triple-layered natural wood parquet 9-14 mm (configured as Cashmere parquet); Schneider outlets; S10 interior doors. BATHROOM FULLY FITTED: stone composite tiles (configured as Calacatta marble composite); Italian design sink; GROHE wall-hung toilet; ARISTON water heater; walk-in shower. SMART SYSTEMS: lighting track; smart lighting (Philips HUE or IKEA TRADFRI); smart exterior blinds (certified by the Passive House Institute); ZEHNDER EVO VENTILATION with up to 96% heat recovery plus a Samsung Wind-free or Panasonic compact heat pump, with sound absorber, insulation and silver-ion lining. === NO KITCHEN IS SUPPLIED IN EITHER SCOPE ===\nThe supplier states explicitly, within the Turnkey inclusion list: \"FURNITURE, APPLIANCES, AND KITCHEN LAYOUT ARE YOUR PERSONAL DESIGN CHOICES. The images shown are for illustrative purposes only.\" No kitchen units, no appliances and no kitchen room are supplied or scheduled in either scope. Electrical and plumbing installations are present; the kitchen fit-out is not. === OPTIONAL UPGRADES (Exterior Finished prices; included in Turnkey where noted) ===\nSmart blinds EUR 2,500 incl. VAT (INCLUDED in Turnkey). Prosumer solar panels EUR 9,800 incl. VAT, stated to cover 160% of typical energy use (NOT included in Turnkey). Zehnder ventilation system EUR 6,000 incl. VAT (INCLUDED in Turnkey). These are options and are NOT separate products. === WARRANTY ===\n5-year structural warranty plus 24-month legal warranty, or 12 months for commercial use (stated as the Standard EU Warranty). === NOT PUBLISHED ===\nWhole-envelope U-value. Airtightness figure for this model. Energy demand figure for this model. Foundation specification beyond ground screws. Lead time for the Irish market. Ceiling height other than the 2.50 m interior height. Kitchen provision of any kind.",
+      "publicSpecification": "BIOBUILDS Nest 24. A modular home with 16.84 m² of interior floor area. Exterior Finished €74,300; Turnkey €101,100. Prices are as published by BIOBUILDS for Ireland and include 23% VAT and transport to Ireland. Installation on prepared ground screws is included. Foundations, utility connections and site works are quoted per project. Turnkey is finished inside and out, including interior finishes and bathroom fixtures; kitchen connections are prepared, and kitchen furniture and appliances are not included. Delivery to the Republic of Ireland is confirmed by BIOBUILDS. The 24 in the model name is BIOBUILDS' own model name, not its floor area.",
       "qualification": {
         "rule": "additional-home-qualification-v1.1",
-        "state": "HELD",
-        "heldReasons": [
-          "irish-unconfirmed"
-        ],
+        "state": "ELIGIBLE",
+        "heldReasons": [],
         "excludedReasons": [],
         "layers": {
           "membership": true,
           "habitation": true,
-          "irishAvailability": false,
+          "irishAvailability": true,
           "productEvidence": true
         }
       },
       "class3a": {
         "state": "NOT_A_CANDIDATE",
-        "reason": "not-recommendation-eligible",
+        "reason": "no-usable-area",
         "caveats": []
       },
-      "publicVisibility": "HOLD",
-      "holdReason": "listing-review-awaiting-confirmation",
+      "publicVisibility": "PUBLISHABLE",
+      "holdReason": null,
       "imagery": null,
       "imagerySet": null
     },
@@ -9685,6 +9773,7 @@
         }
       ],
       "description": "BIOBUILDS' second-largest catalogued model, published on the Irish configurator: a 4-bedroom modular home with 120.41 m² / 1,296 ft² of interior floor area as published by BIOBUILDS. The supplier's own Irish listing states a range of 120.41–121.54 m² / 1,296–1,308 ft² across floorplan options (4 / 3 / 2 bedrooms). The \"142\" in the model name Sanctuary 142 is BIOBUILDS' own naming and configurator key; it is NOT a published floor area and must not be recorded as one. Sold in two configurations, both Irish prices including VAT as the supplier states them: Exterior Finished €278,000 and Turnkey €444,000. Sea transport and mounting are included in the displayed price, and delivery and installation by BIOBUILDS' partners are included; foundations, utility connections and any required Irish adaptations are quoted separately. Plumbing installation, electrical panel installation and Zehnder ventilation are listed among installations; a fully finished bathroom option covering 2 bathrooms is offered. Passivhaus and built in the EU, per the model panel. NOT VERIFIED AND DELIBERATELY NOT RECORDED: external dimensions, wall and ridge heights, U-values, airtightness, energy demand, lead times, warranty terms and BER. The supplier publishes none of these on the configurator and nothing has been inferred. Source for identity, area, bedroom options, prices and inclusions: biobuilds.com/ie/design and biobuilds.com/ie/design?model=sanctuary-142, read 11 October 2026 (SRC-000677). The international page at biobuilds.com/design states 142 m² and prices excluding VAT; the Irish page is the authority for Ireland and the discrepancy is recorded in the source note.",
+      "publicSpecification": "BIOBUILDS Sanctuary 142. A modular home with 120.41–121.54 m² of interior floor area, depending on the floorplan. Exterior Finished €278,000; Turnkey €444,000. Prices are as published by BIOBUILDS for Ireland and include 23% VAT and transport to Ireland. Installation on prepared ground screws is included. Foundations, utility connections and site works are quoted per project. Turnkey is finished inside and out, including interior finishes and bathroom fixtures; kitchen connections are prepared, and kitchen furniture and appliances are not included. Delivery to the Republic of Ireland is confirmed by BIOBUILDS. The 142 in the model name is BIOBUILDS' own model name, not its floor area.",
       "qualification": {
         "rule": "additional-home-qualification-v1.1",
         "state": "ELIGIBLE",
@@ -9702,10 +9791,43 @@
         "reason": "outside-pathway-band",
         "caveats": []
       },
-      "publicVisibility": "HOLD",
-      "holdReason": "listing-review-awaiting-confirmation",
-      "imagery": null,
-      "imagerySet": null
+      "publicVisibility": "PUBLISHABLE",
+      "holdReason": null,
+      "imagery": {
+        "url": "https://www.biobuilds.com/_next/static/immutable/media/sanctuary-yakisugi.1d2u4sny4bcpk.jpg",
+        "alt": "The BIOBUILDS Sanctuary seen from outside, a timber-clad house in Yakisugi cladding with extensive glazing.",
+        "credit": "© BIOBUILDS",
+        "supplier": "BIOBUILDS",
+        "rightsRecord": "C2-GRANT-BIOBUILDS-20261002",
+        "permittedPrefix": "https://www.biobuilds.com/_next/static/immutable/media/",
+        "linkBack": "https://www.biobuilds.com/",
+        "presentationTier": "A",
+        "caption": "BIOBUILDS model imagery"
+      },
+      "imagerySet": [
+        {
+          "url": "https://www.biobuilds.com/_next/static/immutable/media/sanctuary-yakisugi.1d2u4sny4bcpk.jpg",
+          "alt": "The BIOBUILDS Sanctuary seen from outside, a timber-clad house in Yakisugi cladding with extensive glazing.",
+          "credit": "© BIOBUILDS",
+          "supplier": "BIOBUILDS",
+          "rightsRecord": "C2-GRANT-BIOBUILDS-20261002",
+          "permittedPrefix": "https://www.biobuilds.com/_next/static/immutable/media/",
+          "linkBack": "https://www.biobuilds.com/",
+          "presentationTier": "A",
+          "caption": "BIOBUILDS model imagery"
+        },
+        {
+          "url": "https://www.biobuilds.com/_next/static/immutable/media/142-int-semi.0jp8pj_h42n45.jpg",
+          "alt": "Inside the BIOBUILDS Sanctuary, an open living space with timber finishes and glazing to the garden.",
+          "credit": "© BIOBUILDS",
+          "supplier": "BIOBUILDS",
+          "rightsRecord": "C2-GRANT-BIOBUILDS-20261002",
+          "permittedPrefix": "https://www.biobuilds.com/_next/static/immutable/media/",
+          "linkBack": "https://www.biobuilds.com/",
+          "presentationTier": "A",
+          "caption": "BIOBUILDS model imagery"
+        }
+      ]
     },
     {
       "id": "recjdCtvV26NtbNA0",
@@ -9762,6 +9884,7 @@
         }
       ],
       "description": "BIOBUILDS' largest catalogued model, published on the Irish configurator: a modular home with 162.68 m² / 1,751 ft² of interior floor area as published by BIOBUILDS. The supplier's own Irish listing states a range of 162.68–164.19 m² / 1,751–1,767 ft² across floorplan options. BEDROOM COUNT IS STATED TWO WAYS BY THE SUPPLIER AND BOTH ARE RECORDED RATHER THAN RECONCILED: the model listing card says 4 bedrooms, while the model panel's floorplan selector offers 6 / 5 / 4 bedrooms. The \"190\" in the model name Bloom 190 is BIOBUILDS' own naming and configurator key; it is NOT a published floor area and must not be recorded as one. Sold in two configurations, both Irish prices including VAT as the supplier states them: Exterior Finished €354,000 and Turnkey €572,000. Sea transport and mounting are included in the displayed price, and delivery and installation by BIOBUILDS' partners are included; foundations, utility connections and any required Irish adaptations are quoted separately. Plumbing installation, electrical panel installation and Zehnder ventilation are listed among installations; a fully finished bathroom option covering 2 bathrooms is offered. Passivhaus and built in the EU, per the model panel. NOT VERIFIED AND DELIBERATELY NOT RECORDED: external dimensions, wall and ridge heights, U-values, airtightness, energy demand, lead times, warranty terms and BER. The supplier publishes none of these on the configurator and nothing has been inferred. Source for identity, area, bedroom options, prices and inclusions: biobuilds.com/ie/design and biobuilds.com/ie/design?model=bloom-190, read 11 October 2026 (SRC-000677). The international page at biobuilds.com/design states 190 m² and prices excluding VAT; the Irish page is the authority for Ireland and the discrepancy is recorded in the source note.",
+      "publicSpecification": "BIOBUILDS Bloom 190. A modular home with 162.68–164.19 m² of interior floor area, depending on the floorplan. Exterior Finished €354,000; Turnkey €572,000. Prices are as published by BIOBUILDS for Ireland and include 23% VAT and transport to Ireland. Installation on prepared ground screws is included. Foundations, utility connections and site works are quoted per project. Turnkey is finished inside and out, including interior finishes and bathroom fixtures; kitchen connections are prepared, and kitchen furniture and appliances are not included. Delivery to the Republic of Ireland is confirmed by BIOBUILDS. The 190 in the model name is BIOBUILDS' own model name, not its floor area.",
       "qualification": {
         "rule": "additional-home-qualification-v1.1",
         "state": "ELIGIBLE",
@@ -9779,10 +9902,43 @@
         "reason": "outside-pathway-band",
         "caveats": []
       },
-      "publicVisibility": "HOLD",
-      "holdReason": "listing-review-awaiting-confirmation",
-      "imagery": null,
-      "imagerySet": null
+      "publicVisibility": "PUBLISHABLE",
+      "holdReason": null,
+      "imagery": {
+        "url": "https://www.biobuilds.com/_next/static/immutable/media/bloom-yakisugi.0160b2ky8hgph.jpg",
+        "alt": "The BIOBUILDS Bloom seen from outside, a larger timber-clad house in Yakisugi cladding.",
+        "credit": "© BIOBUILDS",
+        "supplier": "BIOBUILDS",
+        "rightsRecord": "C2-GRANT-BIOBUILDS-20261002",
+        "permittedPrefix": "https://www.biobuilds.com/_next/static/immutable/media/",
+        "linkBack": "https://www.biobuilds.com/",
+        "presentationTier": "A",
+        "caption": "BIOBUILDS model imagery"
+      },
+      "imagerySet": [
+        {
+          "url": "https://www.biobuilds.com/_next/static/immutable/media/bloom-yakisugi.0160b2ky8hgph.jpg",
+          "alt": "The BIOBUILDS Bloom seen from outside, a larger timber-clad house in Yakisugi cladding.",
+          "credit": "© BIOBUILDS",
+          "supplier": "BIOBUILDS",
+          "rightsRecord": "C2-GRANT-BIOBUILDS-20261002",
+          "permittedPrefix": "https://www.biobuilds.com/_next/static/immutable/media/",
+          "linkBack": "https://www.biobuilds.com/",
+          "presentationTier": "A",
+          "caption": "BIOBUILDS model imagery"
+        },
+        {
+          "url": "https://www.biobuilds.com/_next/static/immutable/media/190-int-semi.3vnsegejmoyvy.jpg",
+          "alt": "Inside the BIOBUILDS Bloom, an open-plan living space with timber finishes.",
+          "credit": "© BIOBUILDS",
+          "supplier": "BIOBUILDS",
+          "rightsRecord": "C2-GRANT-BIOBUILDS-20261002",
+          "permittedPrefix": "https://www.biobuilds.com/_next/static/immutable/media/",
+          "linkBack": "https://www.biobuilds.com/",
+          "presentationTier": "A",
+          "caption": "BIOBUILDS model imagery"
+        }
+      ]
     }
   ]
 }

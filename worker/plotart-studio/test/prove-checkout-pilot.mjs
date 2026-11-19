@@ -1,4 +1,4 @@
-// PROVE · managed checkout pilot (migration 0016; MANAGED-CHECKOUT-PILOT.md "Required verification before activation").
+// PROVE · managed checkout pilot (migration 0017; MANAGED-CHECKOUT-PILOT.md "Required verification before activation").
 // Local only: Miniflare D1, the real Studio Worker and the real public checkout Worker, a MOCK Stripe API (every outbound
 // call is intercepted; nothing reaches Stripe), synthetic artists, and SYNTHETIC addendum/buyer-terms texts (the real
 // texts are not issued). Webhooks are signed here with a test secret exactly as Stripe signs them.
@@ -893,7 +893,7 @@ console.log('— seven-day reimbursement rule (PA-PAY §3.3(b), provisional) · 
     check('SD19b ONE correction notice to the artist for the returned transfer (repeat request refused, two later sweeps add nothing), held in the test sink with outbound artist email off: it names the returned payment, its amount, execution and return dates and reference, the EUR 3.83 still owed and the unchanged due date, and does NOT contain the bank’s free-text reason (kept in the founder’s record only)',
       corr.length === 1 && corr[0].to_role === 'artist' && corrEv.length === 1 && JSON.parse(corrEv[0].detail).result.join() === 'held_in_test_sink'
       && /Returned payment: EUR 3\.83, sent by bank transfer on \w+day \d+ \w+ \d{4} \(PlotArt’s transfer reference: SIM-TRF-0002\), returned to PlotArt on \w+day \d+ \w+ \d{4}\./.test(corr[0].body) && !/beneficiary account closed|reason/i.test(corr[0].body)
-      && /PlotArt still owes you EUR 3\.83 on this order\. The date it is due is unchanged: the end of Thursday 17 December 2026 \(Irish time\)\./.test(corr[0].body), { corr, corrEv });
+      && corr[0].body.includes(`PlotArt still owes you EUR 3.83 on this order. The date it is due is unchanged: the end of ${CO.longDate(CO.dublinDate(Date.parse(owRow.due_at) - 1000))} (Irish time).`), { corr, corrEv, due_at: owRow.due_at });
     writeFileSync('/tmp/plotart-sd-returned.txt', corr[0] ? corr[0].subject + '\n\n' + corr[0].body : '');
     const st3 = (await call('GET', `/api/checkout/orders/${G.id}`, GAL)).j.statement, ow3 = (await call('GET', `/api/admin/checkout/orders/${G.id}`, FOUNDER)).j.owed.find(w => w.kind === 'processing_shortfall'), OG3 = await order(G.id);
     check('SD19 SIMULATED returned transfer: EUR 3.83 is owed again, the due date is unchanged, the payment history keeps both transfers with the return marked; the statement says the transfer was returned; the order is flagged again; the database refuses any other reduction, and a transfer can be returned only once',

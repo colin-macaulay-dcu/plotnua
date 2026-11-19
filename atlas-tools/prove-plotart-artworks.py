@@ -20,6 +20,10 @@ A9  the content-only boundary accepts exactly the regenerated region and refuses
 A10 fairness: works alternate between artists (no artist twice in a row while another still has works to show)
 A11 (--against MAIN) no artist page differs from main; the homepage, Artists' Gallery and buying guide differ only by
     their one added link; the Artists' Gallery collection region is unchanged
+A12 stable order (both All Artworks and Large Artworks): artists appear in first-publication order; republishing,
+    new approval dates, opportunity selections, commissions, biography/statement/display-name edits and licence
+    re-acceptance never reorder either collection; each artist's own work order and the membership are kept; an
+    unrecorded new artist is placed after every recorded artist (by licence acceptance, then slug) and stays put
 """
 import copy, html, json, os, re, subprocess, sys, tempfile
 from pathlib import Path
@@ -255,6 +259,147 @@ if "--against" in sys.argv:
     check("A11 the Artists' Gallery collection region is unchanged", old[slice(*P.vg_region(old))] == new[slice(*P.vg_region(new))])
 else:
     print("  ----  A11 not run (pass --against <main commit> to compare the galleries with main)")
+
+# A12 stable collection order (16 Nov 2026 regression: five routine opportunity republishes changed approved_at and
+# reordered both collections). Covers All Artworks AND Large Artworks. Expected values are an independent fixture,
+# not read from C.COLLECTION_ARTIST_ORDER: the order the artists were first published, and the order both pages
+# had before the five updates (commit 6ec021f^).
+FIRST_PUBLISHED = ["leah-hewson", "ciaran-mccoy", "mark-kavanagh-rasher", "daniel-chester", "anna-marie-savage",
+                   "fintan-whelan", "nessa-mccormack", "karen-ebbs",
+                   "lena-fawaz", "sarah-fitzgibbon"]   # 17 Nov 2026, in the order both collections already showed them
+COLLS = ["artworks/index.html", "large-artworks/index.html"]
+slugs_of = lambda rows: [(p["artist"]["slug"], w["slug"]) for p, w in rows]
+order_of = lambda pkgs, path: slugs_of(C.collection_order(pkgs, C.COLLECTIONS[path]["keep"]))
+first_seen = lambda rows: list(dict.fromkeys(a for a, _ in rows))
+baseline = {p: order_of(packages, p) for p in COLLS}
+
+for p in COLLS:
+    doc = (ROOT / "plotart" / p).read_text()
+    on_page = list(dict.fromkeys(re.findall(r'class="pa-coll-artist"><a href="\.\./artists/([^/]+)/', doc)))
+    want = [a for a in FIRST_PUBLISHED if a in on_page]
+    # Artists published after this fixture was written are not refused: they must all FOLLOW every recorded artist,
+    # in the order they accepted the gallery licence (then slug) - read from the exports, not from
+    # C.COLLECTION_ARTIST_ORDER - so a first publication never moves an existing artist (17 Nov 2026: the stricter
+    # "only recorded artists" form refused every new artist's first publication).
+    acc = {x["artist"]["slug"]: (x["publication"].get("first_approved_at") or x["publication"].get("licence_accepted_at") or "9999", x["artist"]["slug"]) for x in packages}
+    newer = sorted((a for a in on_page if a not in FIRST_PUBLISHED), key=lambda a: acc.get(a, ("9999", a)))
+    check("A12 %s lists artists in first-publication order (newly published artists after them)" % p,
+          on_page == want + newer, on_page)
+    check("A12 %s order does not depend on the order the exports are read" % p,
+          order_of(list(reversed(packages)), p) == baseline[p])
+
+
+def mutated(fn):
+    pk = copy.deepcopy(packages)
+    for x in pk:
+        fn(x)
+    return pk
+
+
+ROUTINE = {
+    "every gallery republished with a new version and approval date": lambda x: x["publication"].update(
+        approved_at="2099-01-01T00:00:00.000Z", version="v99"),
+    "approval dates reversed (latest-approved artist first)": lambda x: x["publication"].update(
+        approved_at="2026-%02d-01T00:00:00.000Z" % (12 - FIRST_PUBLISHED.index(x["artist"]["slug"]) if x["artist"]["slug"] in FIRST_PUBLISHED else 1)),
+    "opportunity selections changed": lambda x: x["artist"].update(open_to=["living_gallery", "art_for_hire", "commissions"]),
+    "opportunity selections removed": lambda x: x["artist"].pop("open_to", None),
+    "commissions setting toggled": lambda x: x["artist"].update(open_for_commissions=not x["artist"].get("open_for_commissions")),
+    "biography and statement edited": lambda x: x["artist"].update(bio="Edited.", statement="Edited."),
+    "display name edited": lambda x: x["artist"].update(display_name="Zz " + x["artist"]["display_name"]),
+    "gallery licence re-accepted": lambda x: x["publication"].update(licence_accepted_at="2099-01-01T00:00:00.000Z"),
+}
+for name, fn in ROUTINE.items():
+    pk = mutated(fn)
+    for p in COLLS:
+        check("A12 %s: %s order unchanged" % (name, p), order_of(pk, p) == baseline[p])
+# one artist at a time republished (the 16 Nov 2026 pattern)
+for i in range(len(packages)):
+    pk = copy.deepcopy(packages)
+    pk[i]["publication"].update(approved_at="2099-12-31T23:59:59.999Z", version="v100")
+    if any(order_of(pk, p) != baseline[p] for p in COLLS):
+        check("A12 republishing %s alone leaves both collections in order" % pk[i]["artist"]["slug"], False)
+        break
+else:
+    check("A12 republishing any single artist leaves both collections in order", True)
+
+# each artist's own work order and collection membership are untouched
+for p in COLLS:
+    keep = C.COLLECTIONS[p]["keep"]
+    rows = baseline[p]
+    own = all([w for a, w in rows if a == x["artist"]["slug"]] ==
+              [w["slug"] for w in x["works"] if w["availability"] == "available" and keep(w)] for x in packages)
+    check("A12 %s keeps every artist's own work order and exactly the available works" % p, own)
+
+# a newly published artist not yet recorded: placed after every recorded artist, deterministically, and stays put
+src = next(x for x in packages if any(C.is_large(w) and w["availability"] == "available" for w in x["works"]))
+
+
+def newcomer(slug, accepted, approved, first=None):
+    n = copy.deepcopy(src)
+    n["artist"].update(slug=slug, display_name="Aaa " + slug)
+    n["publication"].update(licence_accepted_at=accepted, approved_at=approved)
+    if first:
+        n["publication"]["first_approved_at"] = first
+    return n
+
+
+pk = packages + [newcomer("test-new-b", "2026-12-02T00:00:00Z", "2026-12-03T00:00:00Z"),
+                 newcomer("test-new-a", "2026-12-01T00:00:00Z", "2026-12-04T00:00:00Z")]
+for p in COLLS:
+    seen = first_seen(order_of(pk, p))
+    recorded = [a for a in seen if not a.startswith("test-new-")]
+    check("A12 %s: unrecorded new artists follow every recorded artist, by licence acceptance" % p,
+          seen[len(recorded):] == ["test-new-a", "test-new-b"] and recorded == first_seen(baseline[p]), seen)
+    check("A12 %s: existing artists' works keep their positions relative to each other when a new artist arrives" % p,
+          [r for r in order_of(pk, p) if not r[0].startswith("test-new-")] == baseline[p])
+    pk2 = copy.deepcopy(pk)
+    pk2[-1]["publication"].update(approved_at="2099-01-01T00:00:00Z", version="v9")
+    check("A12 %s: republishing a new artist does not move it" % p, order_of(pk2, p) == order_of(pk, p))
+# A12 correction (17 Nov 2026, Olivia Jones's first publication): newly published artists whose alphabetical order differs
+# from the order they were first approved. They follow the recorded artists in FIRST-APPROVAL order, and nothing routine
+# moves them: a licence re-acceptance, a republish (new approval date) or an edited name (independent fixture, not read
+# from the code).
+pkn = packages + [newcomer("test-zed", "2026-12-01T09:00:00Z", "2026-12-01T10:00:00.000Z", first="2026-12-01T10:00:00.000Z"),
+                  newcomer("test-amy", "2026-12-02T09:00:00Z", "2026-12-02T10:00:00.000Z", first="2026-12-02T10:00:00.000Z"),
+                  newcomer("test-mid", "2026-12-03T09:00:00Z", "2026-12-03T10:00:00.000Z", first="2026-12-03T10:00:00.000Z")]
+WANT_NEW = ["test-zed", "test-amy", "test-mid"]
+for p in COLLS:
+    base_n = order_of(pkn, p)
+    check("A12 %s: new artists whose names sort differently follow the recorded artists in first-approval order" % p,
+          first_seen(base_n)[-3:] == WANT_NEW and [r for r in base_n if not r[0].startswith("test-")] == baseline[p], first_seen(base_n))
+    for label, fn in (("licence re-accepted by every artist", lambda x: x["publication"].update(licence_accepted_at="2099-01-01T00:00:00Z")),
+                      ("licence re-accepted by the first newcomer only", lambda x: x["artist"]["slug"] == "test-zed" and x["publication"].update(licence_accepted_at="2099-06-01T00:00:00Z")),
+                      ("every gallery republished", lambda x: x["publication"].update(approved_at="2099-01-01T00:00:00.000Z", version="v99")),
+                      ("names edited", lambda x: x["artist"].update(display_name="Zz " + x["artist"]["display_name"]))):
+        pkm = copy.deepcopy(pkn)
+        for x in pkm:
+            fn(x)
+        check("A12 %s: %s: order unchanged with newly published artists present" % (p, label), order_of(pkm, p) == base_n)
+import plotart_gallery as G   # noqa: E402
+
+
+def fa_ok(v):
+    try:
+        G.check_first_approved({} if v is ... else {"first_approved_at": v})
+        return True
+    except G.Refused:
+        return False
+
+
+check("A12 the export check accepts first_approved_at as a UTC timestamp (or absent) and refuses anything else, and only the known publication fields are allowed",
+      fa_ok(...) and fa_ok(None) and fa_ok("2026-11-17T21:59:03.412Z") and not fa_ok("yesterday") and not fa_ok(17) and not fa_ok("2026-11-17")
+      and "first_approved_at" in G.PUB_KEYS and "check_first_approved(pub)" in open(G.__file__, encoding="utf-8").read().split("def validate_export", 1)[1])
+
+reg = list(C.COLLECTION_ARTIST_ORDER)
+_noorder = sorted(x["artist"]["slug"] for x in packages if x["artist"]["slug"] not in reg and not x["publication"].get("first_approved_at"))
+check("A12 every published artist has a fixed collection place: recorded in COLLECTION_ARTIST_ORDER, or published with "
+      "first_approved_at (a gallery exported by a Studio from before 17 Nov 2026 must be published again by the updated Studio)",
+      not _noorder, _noorder)
+check("A12 the collection order register has no duplicates and starts with the artists published so far",
+      len(reg) == len(set(reg)) and reg[:len(FIRST_PUBLISHED)] == FIRST_PUBLISHED, reg)
+unrecorded = sorted({x["artist"]["slug"] for x in packages} - set(reg))
+if unrecorded:
+    print("  NOTE  not yet in COLLECTION_ARTIST_ORDER (placed by licence acceptance; add at the end in a code release): " + ", ".join(unrecorded))
 
 print("PLOTART ARTWORKS · %d checks, %d passed, %d failed" % (len(results), sum(results), len(results) - sum(results)))
 sys.exit(0 if all(results) else 1)

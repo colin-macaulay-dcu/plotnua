@@ -16,6 +16,7 @@ import { REVIEW_JS } from './application-review-ui.js';
 import * as H from './hire.js';
 import * as CO from './checkout.js';   // managed checkout pilot (development 16 Nov 2026): test mode only, off by default
 import * as O from './opportunities.js';   // Opportunities & delivery (development 13 Nov 2026): expressions of interest only
+import * as HP from './featured.js';   // Featured Artists in the Artists' Gallery (17 Nov 2026; was Homepage curation; migration 0016 unchanged): founder-only
 import { artistBody, artworkBody, previewPage, shown } from './render.js';
 import * as A from './assets.js';
 import { send } from './mailer.js';
@@ -33,7 +34,12 @@ const LOGO = { '/assets/brand/plotart-p-48.webp': [bin(A.LOGO_48_B64), 'image/we
   '/assets/brand/plotart-favicon-32.png': [bin(A.FAVICON_32_B64), 'image/png'], '/assets/brand/plotart-apple-touch-180.png': [bin(A.TOUCH_180_B64), 'image/png'] };
 const res = (body, type, status = 200, extra = {}) => new Response(body, { status, headers: { 'Content-Type': type, ...SEC, ...extra } });
 const json = (o, status = 200) => res(JSON.stringify(o), 'application/json; charset=utf-8', status);
-const html = (h, status = 200) => res(h, 'text/html; charset=utf-8', status);
+/* Sandbox (founder testing, 18 Nov 2026): a separate Worker with its own empty database and image store
+   (wrangler.sandbox.toml, SANDBOX = "true"). Every page says so; it never starts publishing, never sends email and
+   has no publishing pipeline; "Publish" only simulates the result so the founder can see the whole artist journey. */
+let SANDBOX = false;
+const SANDBOX_BANNER = '<div role="note" style="position:sticky;top:0;z-index:99;background:#F2E2A8;color:#1B1C1E;font:600 14px/1.4 system-ui,sans-serif;padding:8px 16px;text-align:center">PlotArt Studio SANDBOX · test data only · nothing here is published or emailed · not the real Studio</div>';
+const html = (h, status = 200) => res(SANDBOX ? String(h).replace(/<body([^>]*)>/i, m => m + SANDBOX_BANNER) : h, 'text/html; charset=utf-8', status);
 
 const escHtml = s => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
 const founderEmails = env => String(env.FOUNDER_EMAILS || '').toLowerCase().split(',').map(s => s.trim()).filter(Boolean);
@@ -84,6 +90,9 @@ async function status(env, artist) {
   const lv = await latestVersion(env, artist.id);
   const cs = L.changes(lv && lv.snap, snap);
   const pending = await one(env, "SELECT id, created_at, tier, note FROM submissions WHERE artist_id = ? AND status = 'pending' ORDER BY created_at DESC LIMIT 1", artist.id);
+  // what has been saved since that submission (18 Nov 2026): so the Studio can say whether anything is NOT in it
+  const pendingSnap = pending && await one(env, 'SELECT snapshot FROM submissions WHERE id = ?', pending.id);
+  const sinceSubmission = pendingSnap ? L.changes(JSON.parse(pendingSnap.snapshot), snap).filter(c => c.tier !== 'instant') : null;
   const last = await one(env, "SELECT id, status, founder_message, decided_at FROM submissions WHERE artist_id = ? AND status IN ('changes_requested','declined','approved') ORDER BY decided_at DESC LIMIT 1", artist.id);
   const queue = await all(env, "SELECT id, version, kind, status, updated_at FROM publish_queue WHERE artist_id = ? AND status IN ('awaiting_founder','ready','exporting') ORDER BY version", artist.id);
   const live = await liveVersion(env, artist.id);
@@ -102,7 +111,7 @@ async function status(env, artist) {
   else state = 'draft';
   return {
     state, live_version: live, latest_version: lv ? lv.version : 0, pending, last_decision: last, queue,
-    changes: cs, unsubmitted: cs.filter(c => c.tier !== 'instant'), tier: L.tierOf(cs.filter(c => c.tier !== 'instant')),
+    changes: cs, unsubmitted: cs.filter(c => c.tier !== 'instant'), tier: L.tierOf(cs.filter(c => c.tier !== 'instant')), since_submission: sinceSubmission,
     problems, checklist: list, licence_ok: ag.accepted, licence_version: ag.licence ? ag.licence.version : null,
     agreement: agreementSummary(ag),
     counts: { works: snap.works.length, archived: d.works.filter(w => w.archived).length },
@@ -576,14 +585,16 @@ async function submit(env, artist, body) {
   const snap = L.snapshot(d.artist, d.works, d.images);
   const lv = await latestVersion(env, artist.id);
   const cs = L.changes(lv && lv.snap, snap).filter(c => c.tier !== 'instant');
-  if (!cs.length) throw new Bad('There are no changes to submit');
+  // A refused attempt is recorded too (18 Nov 2026: an artist believed she had submitted; nothing showed whether she had
+  // tried), so the founder can see an attempt and why it did not go through. Nothing else changes.
+  if (!cs.length) { await audit(env, artist.email, 'artist', 'submit_refused', artist.id, { reason: 'no_changes' }); throw new Bad('There are no changes to submit'); }
   // Founding Artist Agreement (development 6 Nov 2026): a FULL submission (always the case for a first publication) needs
   // the current texts accepted in Studio first (POST /api/agreement/accept). A quick-check submission from an artist who
   // already holds a licence the publishing pipeline accepts is never blocked. Nothing is accepted on submission any more.
   const ag = await agreementState(env, d.artist);
   const licence = ag.accepted || (L.tierOf(cs) !== 'full' && !!ag.licence && AG.PUBLISHABLE_LICENCES.includes(ag.licence.version));
   const problems = L.readiness(snap, { founding: !!d.artist.founding, programme: ag.programme, firstPublication: !lv, licenceOk: licence, imageBlocks: blocked(d.images) });
-  if (problems.length) return json({ ok: false, problems }, 422);
+  if (problems.length) { await audit(env, artist.email, 'artist', 'submit_refused', artist.id, { reason: 'not_ready', problems }); return json({ ok: false, problems }, 422); }
   await env.DB.prepare("UPDATE submissions SET status='withdrawn', decided_at=? WHERE artist_id=? AND status='pending'").bind(now(), artist.id).run();
   const id = rid('s');
   const note = L.text(body.note, 2, 600, 'Your note', { optional: true });
@@ -758,11 +769,13 @@ async function saveGalleryOrder(env, founder, body) {
 
 async function overview(env) {
   const artists = await all(env, 'SELECT id, slug, email, display_name, founding, founding_number, account_status, licence_version, licence_accepted_at, first_published_at, application_ref, created_at FROM artists ORDER BY created_at');
+  // a gallery is live while its newest released job is not a removal (VISIBLE_SQL), whatever is queued behind it (17 Nov 2026)
+  const visible = new Set((await all(env, VISIBLE_SQL)).map(r => r.artist_id));
   const out = [];
   for (const a of artists) {
     const st = await status(env, a);
     const pt = await participation(env, a);
-    out.push({ ...a, programme: AG.programmeOf(a, await termsFor(env, a.id)), state: st.state, works: st.counts.works, problems: st.problems.length, live_version: st.live_version, latest_version: st.latest_version, agreement: st.agreement,
+    out.push({ ...a, programme: AG.programmeOf(a, await termsFor(env, a.id)), state: st.state, works: st.counts.works, problems: st.problems.length, live_version: st.live_version, gallery_live: visible.has(a.id), latest_version: st.latest_version, agreement: st.agreement,
       leave_requested_at: pt.request ? pt.request.at : null, ended_at: pt.ended ? pt.ended.at : null });
   }
   const subs = await all(env, `SELECT s.id, s.artist_id, s.created_at, s.tier, s.note, a.display_name FROM submissions s JOIN artists a ON a.id = s.artist_id
@@ -814,8 +827,10 @@ async function exportFor(env, q) {
   const v = await one(env, 'SELECT * FROM versions WHERE artist_id = ? AND version = ?', q.artist_id, q.version);
   const snap = JSON.parse(v.snapshot);
   const lic = (await agreementState(env, artist)).licence || {};   // the most recent licence acceptance (new record first, then the legacy label)
+  const first = await one(env, 'SELECT created_at FROM versions WHERE artist_id = ? ORDER BY version ASC LIMIT 1', q.artist_id);   // first approval: never changes
   const g = L.exportGallery(snap, { version: q.version, approvedAt: v.created_at, licenceVersion: lic.version || null,
-    licenceAcceptedAt: lic.accepted_at || null, artistId: artist.id, aiDecisions: v.ai_decisions ? JSON.parse(v.ai_decisions) : {} });
+    licenceAcceptedAt: lic.accepted_at || null, artistId: artist.id, aiDecisions: v.ai_decisions ? JSON.parse(v.ai_decisions) : {},
+    firstApprovedAt: first ? first.created_at : null });
   const ids = [...snap.works.flatMap(w => w.images.map(i => i.id)), ...(snap.artist.portrait ? [snap.artist.portrait.id] : [])];
   return { gallery: g, images: ids, kind: q.kind };
 }
@@ -899,7 +914,7 @@ async function decideIdea(env, actor, id, b) {
 // Returns 'requested', 'scheduled' (no token configured: the scheduled run publishes later) or 'failed' (the decision
 // is saved either way; the schedule remains the fallback). Never logs or returns the token.
 async function requestIdeasPublish(env, workflow = 'plotnua-ideas-publish.yml') {
-  if (!env.GITHUB_DISPATCH_TOKEN) return 'scheduled';
+  if (!env.GITHUB_DISPATCH_TOKEN || env.SANDBOX === 'true') return 'scheduled';
   const api = (env.GITHUB_API || 'https://api.github.com').replace(/\/$/, '');
   try {
     const r = await fetch(api + '/repos/' + (env.GITHUB_REPO || 'colin-macaulay-dcu/plotnua') + '/actions/workflows/' + workflow + '/dispatches', {
@@ -1175,6 +1190,7 @@ async function selftest(env, me) {
 
 async function route(req, env) {
   const url = new URL(req.url), p = url.pathname, m = req.method;
+  SANDBOX = env.SANDBOX === 'true';
   // static assets (public, no data)
   const asset = { '/assets/studio.css': [A.STUDIO_CSS, 'text/css'], '/assets/plotart.css': [A.PLOTART_CSS, 'text/css'],
     '/assets/studio.js': [A.STUDIO_JS, 'text/javascript'], '/assets/admin.js': [A.ADMIN_JS, 'text/javascript'],
@@ -1183,10 +1199,14 @@ async function route(req, env) {
   if (LOGO[p] && m === 'GET') return res(LOGO[p][0], LOGO[p][1], 200, { 'Cache-Control': 'public, max-age=86400' });
 
   // the publishing pipeline: bearer token, never a browser
+  if (p.startsWith('/api/pipeline/') && SANDBOX) return json({ ok: false, error: 'No publishing in the sandbox' }, 404);
   if (p.startsWith('/api/pipeline/')) {
     if (!env.PIPELINE_TOKEN || req.headers.get('Authorization') !== `Bearer ${env.PIPELINE_TOKEN}`) return json({ ok: false }, 401);
     if (p === '/api/pipeline/queue' && m === 'GET') return json({ ok: true, items: await all(env, "SELECT * FROM publish_queue WHERE status='ready' ORDER BY created_at") });
     if (p === '/api/pipeline/gallery-order' && m === 'GET') return json({ ok: true, ...(await pipelineOrder(env)) });
+    if (p === '/api/pipeline/featured-artists' && m === 'GET') return json({ ok: true, ...(await HP.pipeline(env, VISIBLE_SQL)) });   // gallery address + artwork id only
+    // the earlier homepage route, kept only so a publisher from before this release keeps working (it now receives artists only)
+    if (p === '/api/pipeline/homepage' && m === 'GET') { const r = await HP.pipeline(env, VISIBLE_SQL); return json({ ok: true, ...r, items: r.items.map(i => ({ kind: 'artist', ...i })) }); }
     if (p === '/api/pipeline/ideas' && m === 'GET') return json({ ok: true, ...(await pipelineIdeas(env)) });   // Idea Board: approved, public fields only
     if (p === '/api/pipeline/garden' && m === 'GET') return json({ ok: true, ...(await pipelineGarden(env)) });   // Borrowed Garden noticeboard: approved, public fields only
     if (p === '/api/pipeline/hire-catalogue' && m === 'GET') {   // Art for Hire: separate from the gallery export; listed works only
@@ -1277,6 +1297,18 @@ async function route(req, env) {
     if (p === '/admin/leaving') return html(A.ADMIN_HTML);
     if (p === '/admin/hire') return html(A.ADMIN_HTML);
     if (p === '/admin/opportunities') return html(A.ADMIN_HTML);
+    if (p === '/admin/featured') return html(A.ADMIN_HTML);
+    if (p === '/admin/homepage') return Response.redirect(new URL('/admin/featured', req.url).toString(), 302);   // the tab's earlier address
+    // Featured Artists: founder-only; writes homepage_features and the audit only; saving starts the publisher when allowed
+    if (p === '/api/admin/featured' && m === 'GET') return json({ ok: true, ...(await HP.view(env, VISIBLE_SQL)) });
+    if (p === '/api/admin/featured' && m === 'PUT') {
+      const r = await HP.save(env, me.email, await req.json().catch(() => null), VISIBLE_SQL);
+      return json({ ok: true, ...r, publish: r.changed ? await requestGalleryPublish(env) : 'none', ...(await HP.view(env, VISIBLE_SQL)) });
+    }
+    if ((mm = p.match(/^\/api\/admin\/featured\/image\/(i[0-9a-z]+)$/)) && m === 'GET') {
+      const img = await HP.previewable(env, mm[1], VISIBLE_SQL);
+      return img ? previewImage(env, img) : res('Not found', 'text/plain', 404);
+    }
     if (p === '/api/admin/opportunities' && m === 'GET') return json({ ok: true, ...(await O.adminView(env)) });   // read-only: the founder never edits an artist's answers
     // the founder records an agreement obtained in person (visibility only; answers untouched); a live gallery gets an instant update
     if (p === '/api/admin/opportunities/confirm' && m === 'POST') {
@@ -1388,6 +1420,21 @@ async function route(req, env) {
       await audit(env, me.email, 'founder', 'application_images_erased', null, { ref: mm[1], objects: erased });
       return json({ ok: true, erased });
     }
+    // Founder preview of an artist's saved, unpublished draft (18 Nov 2026): read-only (GET only, the same renderer as
+    // the artist's own preview), behind the founder sign-in like the rest of /admin, never cached, never indexed.
+    if ((mm = p.match(/^\/admin\/preview\/d-(a[0-9a-z]+)\/(.*)$/))) {
+      if (m !== 'GET') return html('Not found', 404);
+      const a = await one(env, 'SELECT id FROM artists WHERE id=?', mm[1]);
+      if (!a) return html('Not found', 404);
+      const rest = mm[2];
+      if (rest.startsWith('img/')) { const img = await one(env, 'SELECT * FROM images WHERE id=? AND artist_id=? AND deleted_at IS NULL', rest.slice(4), a.id); return img ? previewImage(env, img) : html('Not found', 404); }
+      const d = await load(env, a.id);
+      await audit(env, me.email, 'founder', 'draft_preview_viewed', a.id, { page: rest || 'index.html' });
+      const r = previewRoute(rest, previewPkg(L.snapshot(d.artist, d.works, d.images), d.images),
+        `Unpublished draft · ${String(d.artist.display_name).replace(/[&<>"']/g, c => `&#${c.charCodeAt(0)};`)}’s saved Studio as it is now, including changes not yet submitted · not live · read-only, founder only · <a href="/admin">Back to the review desk</a>`);
+      r.headers.set('Cache-Control', 'no-store');
+      return r;
+    }
     if ((mm = p.match(/^\/admin\/preview\/(s[0-9a-z]+|v-([0-9a-z]+)-(\d+))\/(.*)$/))) {
       let snap, artistId;
       if (mm[1].startsWith('s')) { const s = await one(env, 'SELECT * FROM submissions WHERE id=?', mm[1]); if (!s) return html('Not found', 404); snap = JSON.parse(s.snapshot); artistId = s.artist_id; }
@@ -1395,7 +1442,7 @@ async function route(req, env) {
       const rest = mm[4];
       if (rest.startsWith('img/')) { const img = await one(env, 'SELECT * FROM images WHERE id=? AND artist_id=?', rest.slice(4), artistId); return img ? previewImage(env, img) : html('Not found', 404); }
       const images = await all(env, 'SELECT * FROM images WHERE artist_id=?', artistId);
-      return previewRoute(rest, previewPkg(snap, images), 'Founder review preview · <a href="/admin">Back to the review desk</a>');
+      return previewRoute(rest, previewPkg(snap, images), `Unpublished ${mm[1].startsWith('s') ? 'submission' : 'version waiting to publish'} · not live · founder only · <a href="/admin">Back to the review desk</a>`);
     }
     if ((mm = p.match(/^\/api\/admin\/artists\/(a[0-9a-z]+)\/checklist$/)) && m === 'GET') {
       // PLOTART-STUDIO-SUBMISSION-002: the founder's read-only view of one artist's submission checklist. Same rules
@@ -1569,7 +1616,10 @@ async function route(req, env) {
       const snap = JSON.parse(s.snapshot);
       const ids = snap.works.flatMap(w => w.images.map(i => i.id)).concat(snap.artist.portrait ? [snap.artist.portrait.id] : []);
       const imgs = ids.length ? await all(env, `SELECT id, width, height, bytes, format, checks, sha256 FROM images WHERE id IN (${ids.map(() => '?').join(',')})`, ...ids) : [];
-      return json({ ok: true, submission: { ...s, snapshot: undefined, changes: JSON.parse(s.changes) }, artist: a, works: snap.works.map(w => ({ id: w.id, title: w.title, ai_involvement: w.ai_involvement, ai_note: w.ai_note })),
+      // the agreement as the Studio and the publishing gate see it (18 Nov 2026: this line read the pre-agreement licence
+      // column only, so artists who accepted the current agreement showed "licence not accepted")
+      const ag = agreementSummary(await agreementState(env, await one(env, 'SELECT * FROM artists WHERE id=?', s.artist_id)));
+      return json({ ok: true, submission: { ...s, snapshot: undefined, changes: JSON.parse(s.changes) }, artist: a, agreement: ag, works: snap.works.map(w => ({ id: w.id, title: w.title, ai_involvement: w.ai_involvement, ai_note: w.ai_note })),
         images: imgs.map(i => ({ ...i, checks: JSON.parse(i.checks) })) });
     }
     if ((mm = p.match(/^\/api\/admin\/submissions\/(s[0-9a-z]+)\/decision$/)) && m === 'POST') return decide(env, me.email, mm[1], await req.json());
@@ -1581,6 +1631,14 @@ async function route(req, env) {
       if (gate.response) return gate.response;
       const warned = gate.warned;
       await env.DB.prepare("UPDATE publish_queue SET status='ready', updated_at=? WHERE id=?").bind(now(), q.id).run();
+      if (SANDBOX) {   // the sandbox has no website to publish to: record the result the pipeline would, so the journey completes
+        if (q.kind !== 'remove') await placeOnFirstPublication(env, q.artist_id);
+        await env.DB.prepare("UPDATE publish_queue SET status='published', detail='sandbox: simulated, nothing published', updated_at=? WHERE id=?").bind(now(), q.id).run();
+        await env.DB.prepare("UPDATE publish_queue SET status='superseded', updated_at=? WHERE artist_id=? AND status IN ('published','failed') AND version<?").bind(now(), q.artist_id, q.version).run();
+        await env.DB.prepare('UPDATE artists SET first_published_at=COALESCE(first_published_at, ?), updated_at=? WHERE id=?').bind(now(), now(), q.artist_id).run();
+        await audit(env, me.email, 'founder', 'publish', q.artist_id, { queue: q.id, version: q.version, publish: 'sandbox-simulated' });
+        return json({ ok: true, publish: 'sandbox' });
+      }
       const publish = await requestGalleryPublish(env);
       await audit(env, me.email, 'founder', 'publish', q.artist_id, { queue: q.id, version: q.version, publish, ...(warned ? { without_current_agreement: true } : {}) });
       return json({ ok: true, publish });
@@ -1600,7 +1658,7 @@ async function route(req, env) {
     const rest = p.slice('/preview/'.length);
     if (rest.startsWith('img/')) return previewImage(env, await ownImage(env, artist, rest.slice(4)));
     const d = await load(env, artist.id);
-    return previewRoute(rest, previewPkg(L.snapshot(d.artist, d.works, d.images), d.images), 'Your private preview · only you can see this · <a href="/">Back to Studio</a>');
+    return previewRoute(rest, previewPkg(L.snapshot(d.artist, d.works, d.images), d.images), 'Your private preview, with your saved changes (including any not yet submitted) · not your live gallery · only you can see this · <a href="/">Back to Studio</a>');
   }
   let mm;
   if ((mm = p.match(/^\/hire-terms\/(PA-AFH-[0-9]{4}-[0-9]{2})\.(pdf|html)$/)) && m === 'GET') {   // the issued PA-AFH text, only once installed
@@ -1724,10 +1782,15 @@ async function route(req, env) {
     const lv = await latestVersion(env, artist.id);
     const liveIds = new Set(lv ? lv.snap.works.map(w => w.id) : []);
     const blk = blocked(d.images);
-    return json({ ok: true, works: d.works.map(w => ({ ...w, in_version: liveIds.has(w.id),
+    return json({ ok: true, works: d.works.map(w => ({ ...w, in_version: liveIds.has(w.id), empty_draft: L.isEmptyDraft(w, d.images),
       images: d.images.filter(i => i.artwork_id === w.id).map(i => { const c = JSON.parse(i.checks); return { ...i, checks: { blocks: c.blocks, warns: c.warns } }; }), blocked: d.images.some(i => i.artwork_id === w.id && blk.has(i.id)) })) });
   }
   if (p === '/api/artworks' && m === 'POST') {
+    // "Add an artwork" reopens an empty draft the artist already has instead of making another (17 Nov 2026): a photo the
+    // browser refuses leaves the draft empty, and every retry used to add one more empty record that blocked submission
+    const d0 = await load(env, artist.id);
+    const spare = d0.works.find(w => !w.archived && L.isEmptyDraft(w, d0.images));
+    if (spare) return json({ ok: true, id: spare.id, reused: true });
     const max = await one(env, 'SELECT COALESCE(MAX(ord),0) AS m FROM artworks WHERE artist_id=?', artist.id);
     const taken = new Set((await all(env, 'SELECT slug FROM artworks WHERE artist_id=?', artist.id)).map(r => r.slug));
     const id = rid('w');

@@ -310,7 +310,7 @@ def home_band():
   <div class="pa-jn-band-head"><p class="pa-jn-k">For artists</p>
   <h2 id="joinInviteH">An invitation to join PlotArt.</h2></div>
   <div class="pa-jn-band-body"><p class="pa-jn-lede">A curated space for contemporary Irish art. Independent artists, distinctive work and new connections with collectors.</p>
-  <div class="pa-jn-acts"><a class="pa-jn-btn" href="join.html" data-pa-track="home_join">Apply to join</a><a class="pa-jn-link" href="gallery/" data-pa-track="home_join_gallery">Explore the gallery</a></div>
+  <div class="pa-jn-acts"><a class="pa-jn-btn" href="join.html#apply" data-pa-track="home_join">Apply to join</a><a class="pa-jn-link" href="gallery/" data-pa-track="home_join_gallery">Explore the gallery</a></div>
   <p class="pa-jn-status"><span class="pa-open-badge">{BADGE}</span></p></div>
 </div></section>
 {HE}"""
@@ -389,8 +389,9 @@ def gallery_page(s):
 
 
 LB, LE = "<!-- pa-artist-apply-living:begin -->", "<!-- pa-artist-apply-living:end -->"
-L_ANCHOR = '<a href="gallery/" data-pa-track="living_artists_gallery">Explore the Artists’ Gallery →</a>'
-L_LINK = '<a href="join.html#your-gallery" data-pa-track="living_artists_join">Apply to join PlotArt →</a>'
+# 17 Nov 2026 (founder decision): the two links became the PlotArt buttons: outlined secondary, off-white primary.
+L_ANCHOR = '<a class="pa-btn pa-btn--ghost" href="gallery/" data-pa-track="living_artists_gallery">Explore the Artists’ Gallery</a>'
+L_LINK = '<a class="pa-btn pa-btn--solid" href="join.html#apply" data-pa-track="living_artists_join">Apply to join PlotArt</a>'   # straight to the form (17 Nov 2026)
 
 
 def living_page(s):

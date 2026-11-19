@@ -12,7 +12,10 @@ body.st{ background:var(--anth); min-height:100vh; }
 .st-tabs{ max-width:1080px; margin:0 auto; display:flex; gap:4px; padding:0 10px 10px; overflow-x:auto; scrollbar-width:none; }
 .st-tabs a{ flex:0 0 auto; padding:9px 14px; border-radius:999px; font-size:14px; color:var(--stone); text-decoration:none; border:1px solid transparent; }
 .st-tabs a[aria-current="page"]{ color:var(--ivory); background:rgba(242,235,224,.08); border-color:var(--line-2); }
-@media (max-width:479px){ .st-tabs{ flex-wrap:wrap; justify-content:center; overflow-x:visible; gap:4px 2px; padding:0 8px 10px; } .st-tabs a{ padding:8px 11px; font-size:13.5px; } }
+/* Phones: one row that scrolls sideways (it took two rows, 18 Nov 2026); the fade at the edge shows there is more, and the
+   current page is scrolled into view by studio.js */
+@media (max-width:479px){ .st-tabs{ gap:2px; padding:0 8px 8px; -webkit-mask-image:linear-gradient(90deg, #000 88%, transparent); mask-image:linear-gradient(90deg, #000 88%, transparent); }
+  .st-tabs a{ padding:8px 11px; font-size:13.5px; } .st-tabs a:last-child{ margin-right:28px; } }
 .st-main{ max-width:1080px; margin:0 auto; padding:20px 16px 120px; }
 .st-h1{ font-family:var(--serif); font-size:clamp(34px, 6vw, 52px); color:var(--ivory); margin:6px 0 6px; line-height:1.05; }
 .st-sub{ color:var(--stone); margin:0 0 22px; }
@@ -31,8 +34,10 @@ body.st{ background:var(--anth); min-height:100vh; }
 .st-btn{ display:inline-flex; align-items:center; justify-content:center; gap:8px; min-height:46px; padding:0 20px; border-radius:999px; font:600 15px var(--sans);
   border:1px solid var(--line-2); background:transparent; color:var(--ivory); cursor:pointer; text-decoration:none; }
 .st-btn:hover{ border-color:var(--ivory); color:var(--ivory); }
-.st-btn--solid{ background:var(--terra); border-color:var(--terra); color:#fff; }
-.st-btn--solid:hover{ background:var(--terra-hover); border-color:var(--terra-hover); color:#fff; }
+/* dark text on the off-white accent (18 Nov 2026): PlotArt's --terra became off-white with the anthracite identity, which
+   left white labels on solid buttons ("Review and submit", "Submit for review", "Read and accept") almost unreadable */
+.st-btn--solid{ background:var(--terra); border-color:var(--terra); color:#1B1C1E; }
+.st-btn--solid:hover{ background:var(--terra-hover); border-color:var(--terra-hover); color:#1B1C1E; }
 .st-btn[disabled]{ opacity:.45; cursor:not-allowed; }
 .st-btn--small{ min-height:38px; padding:0 14px; font-size:13.5px; }
 .st-btn--danger{ color:#F2B8A6; border-color:rgba(242,184,166,.35); }
@@ -45,7 +50,7 @@ body.st{ background:var(--anth); min-height:100vh; }
 .st-list.ok li::before{ content:"✓"; color:#8DBE7C; }
 /* works */
 .st-works{ list-style:none; margin:0; padding:0; display:grid; gap:12px; }
-.st-work{ display:grid; grid-template-columns:88px minmax(0,1fr); gap:14px; align-items:center; padding:12px; border-radius:14px; background:#2C2D30; border:1px solid rgba(242,235,224,.08); }
+.st-work{ display:grid; grid-template-columns:88px minmax(0,1fr); gap:14px; align-items:start; padding:12px; border-radius:14px; background:#2C2D30; border:1px solid rgba(242,235,224,.08); }
 .st-thumb{ width:88px; height:88px; border-radius:10px; background:#232426 center/contain no-repeat; display:flex; align-items:center; justify-content:center; color:var(--mute); font-size:12px; text-align:center; }
 .st-work-t{ font-family:var(--serif); font-size:21px; color:var(--ivory); line-height:1.15; margin:0 0 2px; }
 .st-work-s{ font-size:13px; color:var(--mute); margin:0 0 8px; }
@@ -56,6 +61,8 @@ body.st{ background:var(--anth); min-height:100vh; }
 .st-chip--light{ color:#E9D7A8; border-color:rgba(217,180,94,.45); }
 .st-row{ display:flex; flex-wrap:wrap; gap:8px; align-items:center; }
 .st-work .st-row select{ min-height:38px; }
+/* the order and Remove buttons sit in their own row under the details, not stacked under the photograph */
+@media (max-width:759px){ .st-work > .st-row:last-child{ grid-column:1 / -1; justify-content:flex-start !important; border-top:1px solid rgba(242,235,224,.06); padding-top:10px; } }
 /* forms */
 .st-f{ display:grid; gap:6px; margin:0 0 16px; }
 .st-f label, .st-lab{ font-size:13.5px; font-weight:600; color:var(--stone); letter-spacing:.02em; }
@@ -64,6 +71,8 @@ body.st{ background:var(--anth); min-height:100vh; }
   width:100%; box-sizing:border-box; min-height:48px; padding:12px 14px; font:16px var(--sans); color:var(--ivory); background:#1F2022;
   border:1px solid var(--line-2); border-radius:12px; }
 .st-f textarea{ min-height:120px; resize:vertical; line-height:1.55; }
+.st-f textarea[name=bio]{ min-height:300px; }   /* room to see several paragraphs at once */
+.st-diff .st-brk{ font-style:italic; font-size:.85em; padding:0 .3em; }
 .st-f input:focus, .st-f select:focus, .st-f textarea:focus{ outline:2px solid var(--terra-text); outline-offset:1px; border-color:transparent; }
 .st-grid3{ display:grid; grid-template-columns:repeat(3, minmax(0,1fr)); gap:10px; }
 .st-grid2{ display:grid; grid-template-columns:repeat(2, minmax(0,1fr)); gap:10px; }
@@ -335,3 +344,68 @@ body.st{ background:var(--anth); min-height:100vh; }
 #founder-alerts button{ font-size:13px; }
 #pause-control.st-paused{ border-color:#D98C6B; }
 #pause-control input{ min-height:34px; border-radius:8px; border:1px solid rgba(242,235,224,.16); background:#232427; color:var(--ivory); padding:0 8px; font:inherit; }
+/* Review Desk · Homepage (17 Nov 2026) */
+/* the selected items: a wrapping grid (never a sideways strip), 3 / 2 / 1 columns, in the saved order */
+.st-hp-grid{ display:grid; grid-template-columns:repeat(3, minmax(0, 1fr)); gap:22px 18px; list-style:none; margin:14px 0 0; padding:0; }
+@media (max-width:900px){ .st-hp-grid{ grid-template-columns:repeat(2, minmax(0, 1fr)); } }
+@media (max-width:480px){ .st-hp-grid{ grid-template-columns:1fr; } }
+.st-hp-frame{ display:flex; align-items:center; justify-content:center; aspect-ratio:4 / 3; background:var(--line, #3a3b3e); border-radius:6px; overflow:hidden; }
+.st-hp-card .st-hp-frame img{ width:88%; height:88%; aspect-ratio:auto; object-fit:contain; background:none; }
+.st-hp-gal--choosing{ outline:1px solid var(--stone, #b9b6ae); outline-offset:8px; border-radius:4px; }
+.st-hp-note{ margin:10px 0 0; color:var(--stone, #b9b6ae); font-size:14px; max-width:70ch; }
+.st-linkbtn{ background:none; border:0; padding:0; color:inherit; text-decoration:underline; font:inherit; cursor:pointer; }
+.st-hp-pick img{ display:block; width:100%; aspect-ratio:1; object-fit:contain; background:var(--line, #3a3b3e); }   /* never cropped (17 Nov 2026) */
+.st-hp-card{ display:flex; flex-direction:column; }
+.st-hp-card .st-row{ margin-top:auto; }
+.st-hp-card .st-hp-t{ margin:10px 0 2px; font-weight:600; }
+.st-hp-card .st-hp-s{ margin:0 0 10px; color:var(--stone, #b9b6ae); font-size:14px; }
+.st-hp-gal{ padding:14px 0; border-top:1px solid var(--line, #3a3b3e); }
+.st-hp-pick{ display:grid; grid-template-columns:repeat(auto-fill, minmax(130px, 1fr)); gap:12px; list-style:none; margin:12px 0 0; padding:0; }
+.st-hp-pick li{ display:flex; flex-direction:column; gap:6px; font-size:14px; }
+.st-hp-pick li > button{ margin-top:auto; }
+
+/* Featured Artists (17 Nov 2026; was the Homepage tab): the preview mirrors the Artists' Gallery section */
+.st-fa-head{ display:flex; flex-direction:column; gap:2px; margin:6px 0 4px; }
+.st-fa-head .st-fa-eyebrow{ font-size:11px; letter-spacing:.18em; text-transform:uppercase; color:var(--stone, #b9b6ae); }
+.st-fa-head b{ font-family:var(--serif); font-weight:400; font-size:30px; color:var(--ivory, #EDEBE7); }
+.st-fa-head span:last-child{ color:var(--stone, #b9b6ae); font-size:14px; }
+.st-fa-grid .st-hp-frame{ aspect-ratio:4 / 5; }
+.st-fa-card{ display:flex; flex-direction:column; }
+.st-fa-card--replacing{ outline:1px dashed var(--stone, #b9b6ae); outline-offset:6px; border-radius:6px; }
+.st-fa-credit{ margin:8px 0 0; color:var(--mute, #A09F9B); font-size:12.5px; }
+.st-fa-card .st-hp-t{ margin:10px 0 0; font-family:var(--serif); font-weight:400; font-size:22px; }
+.st-fa-prac{ margin:2px 0 0; color:var(--stone, #b9b6ae); font-size:13.5px; }
+.st-fa-intro{ margin:8px 0 0; font-size:14px; line-height:1.5; }
+.st-fa-view{ margin:8px 0 12px; font-size:14px; font-weight:600; color:var(--ivory, #EDEBE7); }
+.st-fa-ctl{ margin-top:auto; flex-wrap:wrap; gap:6px; }
+.st-fa-notice{ border-color:var(--stone, #b9b6ae); margin:0 0 14px; }
+.st-fa-card .st-hp-frame img{ width:88%; height:88%; aspect-ratio:auto; object-fit:contain; background:none; }   /* never cropped or stretched */
+
+/* Empty drafts and refused photos (17 Nov 2026): say plainly what was and wasn't saved */
+.st-draft-note{ margin:0 0 16px; }
+.st-draft-note .st-linkbtn{ margin-left:6px; }
+.st-upfail{ display:block; color:#F2A3A3; margin-bottom:6px; }
+.st-views-first{ grid-column:1 / -1; }
+/* save bar (18 Nov 2026): Profile and artwork pages, always at the foot of the screen */
+.st-savebar{ position:sticky; bottom:0; z-index:30; margin:18px -16px 0; padding:12px 16px calc(12px + env(safe-area-inset-bottom)); background:#232427; border-top:1px solid var(--line-2);
+  display:flex; flex-wrap:wrap; gap:10px 16px; align-items:center; justify-content:space-between; box-shadow:0 -10px 24px rgba(0,0,0,.35); }
+.st-savebar-t{ display:grid; gap:2px; min-width:0; flex:1 1 280px; font-size:14px; }
+.st-savebar-t strong{ color:#D3E8C9; font-weight:600; } .st-savebar-t strong.bad{ color:#F5B7A3; }
+.st-savebar-t span{ color:var(--stone); }
+.st-savebar-a{ display:flex; flex-wrap:wrap; gap:8px; }
+.st-savebar-a .st-btn{ flex:0 0 auto; }
+.st-savebar #sb-save[disabled]{ opacity:1; color:#C9C6BF; border-color:rgba(242,235,224,.28); background:transparent; cursor:default; }   /* "Saved": readable, clearly inactive */
+.st-sb-short{ display:none; }
+@media (max-width:759px){ .st-sb-long{ display:none; } .st-sb-short{ display:inline; } }
+@media (min-width:760px){ .st-savebar{ margin:22px 0 0; border-radius:14px; border:1px solid var(--line-2); } }
+@media (max-width:759px){ .st-savebar-a .st-btn{ flex:1 1 auto; } .st-saved{ bottom:150px; } }
+/* what changes (18 Nov 2026): only the changed words of a long text, removed struck through, added marked */
+.st-list.st-changes li{ display:block; } .st-list.st-changes li::before{ content:none; }
+.st-changes li > b{ font-weight:600; display:block; }
+.st-changes .st-diff{ margin-top:4px; }
+.st-diff{ display:block; color:var(--stone); line-height:1.55; white-space:pre-wrap; overflow-wrap:anywhere; }
+.st-diff del{ color:#F5B7A3; text-decoration:line-through; text-decoration-thickness:1px; background:rgba(245,183,163,.10); }
+.st-diff ins{ color:#D3E8C9; text-decoration:none; background:rgba(211,232,201,.14); border-radius:3px; padding:0 2px; }
+.st-diff-key{ font-size:13px; margin:12px 0 0; } .st-diff-key del, .st-diff-key ins{ margin:0 4px; }
+.st-diff-key del{ color:#F5B7A3; } .st-diff-key ins{ color:#D3E8C9; text-decoration:none; }
+.st-pending{ color:var(--stone); font-size:14.5px; } .st-pending b{ color:#F2EBE0; }

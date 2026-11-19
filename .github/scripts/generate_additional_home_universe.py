@@ -461,6 +461,15 @@ def main():
             "productUrl": txt(cell(p, "Product URL")) or None,
             "sources": sources,
             "description": homeowner_text(cell(p, "Description")),
+            # THE PUBLIC/PRIVATE BOUNDARY (18 Nov 2026). "Description" is the
+            # research record and can carry verification notes, instructions and
+            # internal identifiers inline; homeowner_text() only drops sentences
+            # that OPEN with a known internal phrase, so it cannot be the
+            # boundary. "Public Specification" holds only supplier-published or
+            # supplier-confirmed facts and, when present, is the ONLY text the
+            # runtime shows as the published specification. Absent -> None, and
+            # the runtime keeps its existing behaviour for that product.
+            "publicSpecification": homeowner_text(cell(p, "Public Specification")),
             "qualification": {"rule": RULE_VERSION, "state": q["state"],
                               "heldReasons": q["heldReasons"],
                               "excludedReasons": q["excludedReasons"],

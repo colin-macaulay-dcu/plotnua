@@ -1,0 +1,56 @@
+{
+ "what": "Hang-It images for the PlotArt Services listing; copies made 19 Nov 2026 from Hang-It's website (resize and recompress only, metadata stripped; the logo is an unaltered copy).",
+ "rights": "image-rights-records.json ORG-HANGIT / IPO-HANGIT-20261119 (Atlas rech5aeWWGcj0sZVM)",
+ "originals": {
+  "logo": {
+   "url": "https://d2f0ora2gkri0g.cloudfront.net/68/0d/680d0588-5d3b-4ac9-a772-7753f3767293.png",
+   "sha256": "9ae444a9e093585c2bf65bf542e95b32af2f9dddb936a4310bcb0e7442ce99b9",
+   "pixels": [
+    474,
+    130
+   ]
+  },
+  "photograph": {
+   "url": "https://d2f0ora2gkri0g.cloudfront.net/8b/b5/8bb5dc58-076f-466a-9b87-df0aae4fc3ba.jpg",
+   "sha256": "64679b09c9c7902cc74634416e2d3e6171cd26b1f3636e09b2bfca745f368953",
+   "pixels": [
+    4032,
+    2268
+   ]
+  }
+ },
+ "copies": {
+  "hang-it-hung-wall-1600.jpg": {
+   "sha256": "114961862fd2ccdbdcf4ed540944fd7837710a4842d57a94cce806f741632c07",
+   "bytes": 95680,
+   "pixels": [
+    1600,
+    900
+   ]
+  },
+  "hang-it-hung-wall-1600.webp": {
+   "sha256": "7ed670bcb981da3c0b3bdada2bac5c79b516c599e21247151bee9991cf6094ea",
+   "bytes": 41708,
+   "pixels": [
+    1600,
+    900
+   ]
+  },
+  "hang-it-hung-wall-800.webp": {
+   "sha256": "740b94f3a6143c43ef65b63c3fe58d6499ad8ca94a0f35621a2595857928e74f",
+   "bytes": 15436,
+   "pixels": [
+    800,
+    450
+   ]
+  },
+  "hang-it-logo.png": {
+   "sha256": "9ae444a9e093585c2bf65bf542e95b32af2f9dddb936a4310bcb0e7442ce99b9",
+   "bytes": 27675,
+   "pixels": [
+    474,
+    130
+   ]
+  }
+ }
+}

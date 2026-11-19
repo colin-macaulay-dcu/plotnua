@@ -668,7 +668,16 @@ ALTER TABLE artist_opportunities ADD COLUMN public_display INTEGER CHECK (public
 ALTER TABLE artist_opportunities ADD COLUMN public_decided_at TEXT CHECK (public_decided_at IS NULL OR length(public_decided_at) BETWEEN 20 AND 30);
 ALTER TABLE artist_opportunities ADD COLUMN public_notice TEXT CHECK (public_notice IS NULL OR length(public_notice) BETWEEN 8 AND 40);
 
--- PlotArt Studio · migration 0016 · Managed checkout pilot (development 16 Nov 2026). NOT APPLIED IN PRODUCTION.
+-- PlotArt Studio · migration 0016 · Homepage curation: the founder's featured artworks and artists (development 17 Nov 2026).
+CREATE TABLE IF NOT EXISTS homepage_features (
+  position INTEGER PRIMARY KEY CHECK (position BETWEEN 1 AND 6),
+  kind TEXT NOT NULL CHECK (kind IN ('artwork', 'artist')),
+  artist_id TEXT NOT NULL REFERENCES artists(id),
+  artwork_id TEXT NOT NULL REFERENCES artworks(id),
+  updated_at TEXT NOT NULL CHECK (length(updated_at) BETWEEN 20 AND 30)
+);
+
+-- PlotArt Studio · migration 0017 · Managed checkout pilot (development 16 Nov 2026). NOT APPLIED IN PRODUCTION.
 -- New tables only. No existing table, row, agreement, acceptance, gallery position or publishing record is changed.
 -- Triggers are refusal-only BEFORE triggers on these NEW tables (migration-check policy, 6 Nov 2026): this migration
 -- needs the founder's explicit approval of this exact file, and both production backups, before it runs.

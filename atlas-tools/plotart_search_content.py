@@ -56,12 +56,56 @@ COLLECTIONS = {
 }
 
 
+# Collection artist order (16 Nov 2026). The artwork collections list artists in the order their galleries were FIRST
+# published, so routine republishing (opportunity selections, biography edits, new versions of any kind) never moves an
+# artist. publication.approved_at is NOT used: it is the date of the latest approved version and changes on every
+# republish (that is what reordered All Artworks and Large Artworks on 16 Nov 2026). The public export carries no
+# first-publication date, so the order of the artists published so far is recorded here, taken from the repository
+# history (the commit that first added each plotart/artists/<slug>/gallery.json). It is append-only: add each newly
+# published artist at the END, in the position the fallback below already gives them, so adding them moves nothing.
+# This order is used ONLY by the artwork collections; the Artists' Gallery keeps its own order (P.gallery_order and the
+# founder's Studio gallery positions) and is not affected.
+COLLECTION_ARTIST_ORDER = (
+    "leah-hewson",           # first published 5 Nov 2026
+    "ciaran-mccoy",          # 10 Nov 2026
+    "mark-kavanagh-rasher",  # 10 Nov 2026
+    "daniel-chester",        # 11 Nov 2026
+    "anna-marie-savage",     # 12 Nov 2026
+    "fintan-whelan",         # 12 Nov 2026
+    "nessa-mccormack",       # 12 Nov 2026
+    "karen-ebbs",            # 12 Nov 2026
+    "lena-fawaz",            # 17 Nov 2026 (recorded in the order both collections already show)
+    "sarah-fitzgibbon",      # 17 Nov 2026
+)
+
+
+def collection_artists(packages):
+    """Artists in stable collection order. Recorded artists first, in COLLECTION_ARTIST_ORDER. Any artist not yet
+    recorded follows them, by when the founder FIRST approved their gallery (publication.first_approved_at: the Studio's
+    version 1, which never changes), then by slug, so a new artist has a predictable place that nothing routine moves.
+
+    A12 correction (17 Nov 2026): this used to be licence_accepted_at, but the Studio exports the artist's NEWEST licence
+    acceptance, so any re-acceptance (a new licence version, or the Gallery Artist agreement) could move a new artist
+    among the others. It passed for Lena Fawaz and Sarah Fitzgibbon only because their alphabetical order matched their
+    acceptance order; Olivia Jones's first publication was the first case where it did not, and the gate refused it.
+    Galleries exported before first_approved_at existed fall back to licence_accepted_at until they are next published."""
+    rank = {s: i for i, s in enumerate(COLLECTION_ARTIST_ORDER)}
+
+    def key(p):
+        slug, pub = p["artist"]["slug"], p["publication"]
+        if slug in rank:
+            return (0, rank[slug], "", slug)
+        return (1, 0, pub.get("first_approved_at") or pub.get("licence_accepted_at") or "9999", slug)
+    return sorted(packages, key=key)
+
+
 def collection_order(packages, keep=lambda w: True):
-    """Every published, available work for the artwork collection, in a fair, stable order: the artists' galleries in
-    publication order, then one work from each artist in turn (each artist's own work order kept), so no single gallery
-    fills the top of the page. Reserved, sold, not-for-sale and withdrawn works never appear."""
+    """Every published, available work for the artwork collection, in a fair, stable order: the artists in stable
+    collection order (collection_artists: first publication, never the latest approval date), then one work from each
+    artist in turn (each artist's own work order kept), so no single gallery fills the top of the page. Reserved, sold,
+    not-for-sale and withdrawn works never appear."""
     queues = []
-    for pkg in P.gallery_order(list(packages)):
+    for pkg in collection_artists(list(packages)):
         if pkg["publication"].get("state") != "approved":
             raise ValueError("Collection input is not an approved public gallery")
         ws = [w for w in pkg["works"] if w["availability"] == "available" and keep(w)]

@@ -45,7 +45,7 @@ labels = re.findall(r'<div class="pa-vgc-label">.*?</div></div>', h, re.S)
 shape = {re.sub(r"\d\d|[a-z]+-test|[A-Z][a-z]+ Test", "#", l) for l in labels[:2]}
 check("V6 equal treatment: numbered open galleries share one identical label structure; the unplaced one only lacks the numeral",
       len(labels) == 3 and len(shape) == 1 and '<span class="pa-vgc-n" aria-hidden="true"></span>' in labels[2], labels)
-check("V7 the count, the occupancy line and the summary agree", '<p class="pa-vgc-count">3 of 25 galleries open</p>' in h and
+check("V7 the occupancy line and the summary agree, and there is no 'N of 25 galleries open' counter (removed 17 Nov 2026)", 'pa-vgc-count' not in h and "of 25 galleries" not in h and
       "<b>2</b> published" in h and "<b>2</b> reserved" in h and "<b>2</b> in preparation" in h and "<b>19</b> available" in h and h.count('<li class="is-') == 25)
 h0, h25 = P.vg_collection([], layout=None), P.vg_collection([synth("t%02d-test" % i, "T%02d Test" % i) for i in range(1, 26)], layout=None)
 check("V8 0 and 25 open galleries: no wall and 25 available; 25 numbered works and 25 named positions",
@@ -80,6 +80,19 @@ site = os.path.join(tmp, "site")
 shutil.copytree(ROOT, site, symlinks=True, ignore=shutil.ignore_patterns(".git", "node_modules", "__pycache__"))
 vgp = os.path.join(site, "plotart", "gallery", "index.html")
 orig = open(vgp, encoding="utf-8").read()
+# the faults below are planted in the collection: run them with Featured Artists empty (that region has its own proof,
+# prove-plotart-featured.py), so a first-occurrence fault cannot land in the featured region above the collection
+import plotart_featured as FEAT  # noqa: E402
+_pk = [json.load(open(f, encoding="utf-8")) for f in glob.glob(os.path.join(site, "plotart", "artists", "*", "gallery.json"))]
+_reg = orig[slice(*P.vg_region(orig))]
+_pos = [{"position": n, "slug": (re.search(r'artists/([a-z0-9-]+)/', b).group(1) if st == "pub" else None), "reserved": st == "res", "assigned": st == "prep"}
+        for n, (st, b) in enumerate(re.findall(r'<li class="pa-vgc-pos is-(pub|res|prep|av)">(.*?)</li>', _reg), 1)]
+_extra = [x for x in re.findall(r'href="\.\./artists/([a-z0-9-]+)/" data-pa-track="vg_artist"', _reg) if x not in {e["slug"] for e in _pos}]
+orig = FEAT.update(orig, [], _pk)
+# with nobody featured the wall hangs every published gallery again (Explore More Artists, 17 Nov 2026)
+_a, _b = P.vg_region(orig)
+orig = orig[:_a] + P.vg_collection(P.gallery_order(_pk), layout={"positions": _pos, "extra": _extra}) + orig[_b:]
+open(vgp, "w", encoding="utf-8").write(orig)
 rc, out = guard(site)
 check("G0 the unchanged copy passes the launch guard", rc == 0 and "PLOTART LAUNCH · OK" in out, out[-400:])
 slug = base["artist"]["slug"]
@@ -92,10 +105,10 @@ FAULTS = [
     ("G5 a 26th position", lambda s: s.replace("\n    </ol>\n  </div>", '\n      <li class="pa-vgc-pos is-av"><b><span class="pa-vgc-sr">Position </span>26</b><span class="pa-vgc-st"><span class="pa-vgc-sr">: </span>Available</span></li>\n    </ol>\n  </div>', 1), "L11"),
     ("G6 the wall's numeral disagrees with the index", lambda s: re.sub(r'(<span class="pa-vgc-n" aria-hidden="true">)01(</span>.*?Position )01(: )', r'\g<1>09\g<2>09\3', s, count=1, flags=re.S), "L11"),
     ("G7 an open gallery shows another artist's image in its srcset", lambda s: s.replace("../artists/%s/img/" % slug, "../artists/someone-else/img/", 2), "L11"),
-    ("G8 the open-gallery count is wrong", lambda s: re.sub(r'<p class="pa-vgc-count">\d+ of 25', '<p class="pa-vgc-count">9 of 25', s), "L11"),
+    ("G8 the removed 25-gallery counter comes back", lambda s: s.replace('\n  <ol class="pa-vgc-hang', '\n  <p class="pa-vgc-count">9 of 25 galleries open</p>\n  <ol class="pa-vgc-hang', 1), "L11"),
     ("G9 the summary is wrong", lambda s: re.sub(r"<b>(\d+)</b> available", "<b>99</b> available", s), "L11"),
     ("G10 the markers are removed", lambda s: s.replace(P.VG_BEGIN, "").replace(P.VG_END, ""), "L11"),
-    ("G11 a change outside the generated region", lambda s: s.replace("The first twenty-five galleries.", "The first twenty-six galleries.", 1), "L"),
+    ("G11 a change outside the generated region", lambda s: s.replace("<h2 id=\"vgColH\">Explore More Artists</h2>", "<h2 id=\"vgColH\">Some Artists</h2>", 1), "L"),
     ("G12 a mock placeholder image on the wall", lambda s: s.replace('src="../artists/%s/img/' % slug, 'src="../gallery-design-c/mock/', 1), "L11"),
 ]
 for label, f, code in FAULTS:

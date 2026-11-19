@@ -67,7 +67,7 @@ export function artistBody(p) {
   const links = [];
   if (a.website) links.push(`<a href="${E(a.website)}" rel="noopener nofollow" data-pa-track="artist_website">Website <span aria-hidden="true">↗</span></a>`);
   if (a.instagram) links.push(`<a href="https://www.instagram.com/${E(a.instagram)}/" rel="noopener nofollow" data-pa-track="artist_instagram">Instagram <span aria-hidden="true">↗</span></a>`);
-  const bio = (a.bio || '').split('\n\n').filter(x => x.trim()).map(x => `<p>${E(x.trim())}</p>`).join('');
+  const bio = paragraphs(a.bio).map(x => `<p>${E(x)}</p>`).join('');
   const meta = metaLine(a);
   return `
 <section class="pa-ag-hero${portrait ? ' has-portrait' : ''}"><div class="pa-wrap">
@@ -166,4 +166,21 @@ ${body}
 <footer class="pa-foot"><div class="pa-wrap"><p class="fine">${E(FINE)}</p></div></footer>
 </body>
 </html>`;
+}
+
+/* A biography's paragraphs (18 Nov 2026): a blank line always starts a paragraph, and so does a single line break after the
+   end of a sentence; a line break mid-sentence (pasted fixed-width text) reads as a space. Same rule as
+   atlas-tools/plotart_gallery_pages.paragraphs, so the Studio preview matches the published gallery. */
+export function paragraphs(text) {
+  const out = [];
+  for (const block of String(text || '').replace(/\r\n/g, '\n').split(/\n\s*\n/)) {
+    let cur = '';
+    for (const raw of block.split('\n')) {
+      const line = raw.trim(); if (!line) continue;
+      cur = cur ? cur + ' ' + line : line;
+      if (/[.!?…:;"”’')\]]\s*$/.test(line)) { out.push(cur); cur = ''; }
+    }
+    if (cur) out.push(cur);
+  }
+  return out;
 }

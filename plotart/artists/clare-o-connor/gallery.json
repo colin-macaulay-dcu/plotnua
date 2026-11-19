@@ -1,0 +1,737 @@
+{
+ "artist": {
+  "bio": "Clare O'Connor (b. 1977, Dublin, Ireland) is an award winning artist and designer based in Co. Meath with a BDES in Design Communications & a BA in Visual Arts Practice from IADT, Dublin graduating in 2001 and 2009. Clare has exhibited in Ireland, Germany, Italy, the Netherlands, the United States, China & the UK. Her creative path has evolved from graphic design to a deeply intuitive and layered visual arts practice. She has lived and worked in Berlin and Venice working as an artist assistant to artists like Thomas Killper and Anselm Reyle and she was involved in the running of various exhibitions & pavilions in the Venice Biennale. \n\nShe works as an abstract painter and her practice reflects a deepening curiosity about the subconscious mind, neural pathways, energetic expression, movement and flow, how we navigate the many layers of consciousness and how we access and align to our own creative power. Her Intuitive paintings use a dynamic interplay of organic & organised forms, complimentary & contrasting colour, stripes, mark & void. Combining an element of chance, She uses vivid colours, patterns, multiple layers & juxtaposed shapes which create movement & a sense of positive energy creating vibrant visual labyrinths to explore. The resulting works are full of colour and energy. They are tactile, multi-dimensional, energetic and dynamic.  \n\nShe is currently Associate Artist in Visual Arts in Meath for 2025/26 with Meath Arts Office. Meath County Council has bought 6 of my paintings for the MCC Arts Collection and she has received regular Professional Artist Development awards from MCC & the Arts Council.",
+  "county": null,
+  "display_name": "Clare O'Connor",
+  "founding": true,
+  "instagram": "clareoconnor_studio",
+  "medium": "painting",
+  "open_for_commissions": true,
+  "open_to": [
+   "exhibitions",
+   "art_for_hire",
+   "commissions"
+  ],
+  "portrait": {
+   "alt": "Black and white portrait against abstract work",
+   "aspect": 1.23149,
+   "derivatives": [
+    {
+     "file": "portrait-600.webp",
+     "long_edge": 600,
+     "pixels": [
+      600,
+      487
+     ]
+    }
+   ],
+   "photo_credit": null,
+   "pixels": [
+    1181,
+    959
+   ],
+   "role": "portrait"
+  },
+  "practice": "Abstract Painter, Printmaker",
+  "slug": "clare-o-connor",
+  "statement": "Clare O'Connor is an abstract painter who practice explores energy, consciousness and the subconscious mind. Her paintings are full of colour, flow and movement. She creates vibrant visual labyrinths which are tactile, multi-dimensional, energetic and dynamic.",
+  "website": "https://www.clareoconnor.net"
+ },
+ "provenance_sources": [
+  {
+   "dhash": "63c643f7ffdb94d3",
+   "source_sha256": "f823b704472e1020aaa2b496ee4ec946c029d63159aa408b9e64499e1f3e8235",
+   "stem": "portrait"
+  },
+  {
+   "dhash": "6283b799cd8ba063",
+   "source_sha256": "3939f135d8eb99bf6bd5ca0e6fd9dc413aadd748020fa4a10cf63ae620925345",
+   "stem": "navigating-the-labyrinth-no-1-1"
+  },
+  {
+   "dhash": "4d591a3c2c2e5a12",
+   "source_sha256": "043c78d0e654ccb7ee0ac4957e9a70ef55991a4ee3c22eef01d5c0734bcb718a",
+   "stem": "navigating-the-labyrinth-series-1"
+  },
+  {
+   "dhash": "c316163e5c765612",
+   "source_sha256": "cb74a9a817347651df9ecb9a9776f3aa076ca7b7e1f39158cd54a42ffa7e7eae",
+   "stem": "energetic-labyrinths-no-17-1"
+  },
+  {
+   "dhash": "b48181c4cc2c40c0",
+   "source_sha256": "399fe79bb517efdd7351516c3e3237af96127e2ef623bcce4653fc9a1db75d0c",
+   "stem": "energetic-labyrinths-no-18-1"
+  },
+  {
+   "dhash": "ace5e1e6a830a62e",
+   "source_sha256": "0dcf2b369b9cb81965dc708771f299fe4881330d0f737a7b96ef0de3f866b102",
+   "stem": "energetic-labyrinths-no-7-1"
+  },
+  {
+   "dhash": "cde5e0e4f8b0a4ac",
+   "source_sha256": "c014594381e1403fd4493f95b9d7d4690d0c04bd55d0b08c7b41f3b895a5502b",
+   "stem": "energetic-labyrinths-no-7-2"
+  },
+  {
+   "dhash": "c868e2ecf0e0acfc",
+   "source_sha256": "893d462c7b5d09cb18cdae9a42e4aeaee5646fa6aab03e178c2df37fceec5658",
+   "stem": "energetic-labyrinths-no-7-3"
+  },
+  {
+   "dhash": "2de8e0e5ac9c1491",
+   "source_sha256": "981725462380c441c3f8b36ce163cfb598f4e69960bd257df81f4dc82a633ae3",
+   "stem": "energetic-labyrinths-no-8-1"
+  },
+  {
+   "dhash": "6666eb48f0c1db99",
+   "source_sha256": "f6f085ad37ac271d756776e41d0ec034725c99f73b0a60d5e05283eff3b72443",
+   "stem": "perception-no-4-1"
+  },
+  {
+   "dhash": "9296cc8021241683",
+   "source_sha256": "ae1069965f675ac73b94f9cf7328fd373be4a93ab126f44b1b2768a4761ca013",
+   "stem": "energetic-labyrinths-12-1"
+  },
+  {
+   "dhash": "c8f264e6b4e2eaf8",
+   "source_sha256": "f625ff8a335b3f62e867f8acbea181f95b5c04f99a87d627f06d474b46b47656",
+   "stem": "energetic-labyrinths-6-1"
+  },
+  {
+   "dhash": "3696bab892e2c225",
+   "source_sha256": "dbbad35aa14f74c3d01dd3b8fdb50aa81f7b538c406ef2d48968524b36f0eb45",
+   "stem": "energetic-labyrinths-8-1"
+  }
+ ],
+ "publication": {
+  "approved_at": "2026-11-19T07:42:21.882Z",
+  "approved_by": "founder",
+  "first_approved_at": "2026-11-19T07:42:21.882Z",
+  "licence_accepted_at": "2026-11-18T20:15:34.624Z",
+  "licence_version": "PA-GPIL-2026-11",
+  "permission_ref": "PA-PERM-ane34unrj3c",
+  "state": "approved",
+  "test_note": null,
+  "version": "v1"
+ },
+ "schema": "plotnua.plotart.gallery-package.v1",
+ "works": [
+  {
+   "ai_founder_decision": null,
+   "ai_involvement": "none",
+   "ai_note": null,
+   "availability": "available",
+   "d_cm": 1.8,
+   "description": null,
+   "h_cm": 147,
+   "id": "wkgnktbr7ck",
+   "images": [
+    {
+     "alt": "Abstract Painting with Stripes, triangles, collage and drips and splashes of yellow paint",
+     "aspect": 0.67357,
+     "derivatives": [
+      {
+       "file": "navigating-the-labyrinth-no-1-1-600.webp",
+       "long_edge": 600,
+       "pixels": [
+        404,
+        600
+       ]
+      },
+      {
+       "file": "navigating-the-labyrinth-no-1-1-1200.webp",
+       "long_edge": 1200,
+       "pixels": [
+        808,
+        1200
+       ]
+      },
+      {
+       "file": "navigating-the-labyrinth-no-1-1-2000.webp",
+       "long_edge": 2000,
+       "pixels": [
+        1347,
+        2000
+       ]
+      }
+     ],
+     "photo_credit": null,
+     "pixels": [
+      2082,
+      3091
+     ],
+     "role": "main"
+    }
+   ],
+   "materials": "Acrylic, collage & varnish on Canvas",
+   "medium": "Acrylic, collage & varnish on Canvas",
+   "price_eur": 3500,
+   "price_on_request": false,
+   "slug": "navigating-the-labyrinth-no-1",
+   "title": "Navigating The Labyrinth No. 1",
+   "w_cm": 100,
+   "year": 2015
+  },
+  {
+   "ai_founder_decision": null,
+   "ai_involvement": "none",
+   "ai_note": null,
+   "availability": "available",
+   "d_cm": 5,
+   "description": null,
+   "h_cm": 140,
+   "id": "w4vvcooh94g",
+   "images": [
+    {
+     "alt": "Abstract Painting with black and white stripes, grey and red stripes, blue and black stripes, neon yellow and pink splashes with pink splashes and drips and green triangle",
+     "aspect": 0.84187,
+     "derivatives": [
+      {
+       "file": "navigating-the-labyrinth-series-1-600.webp",
+       "long_edge": 600,
+       "pixels": [
+        505,
+        600
+       ]
+      },
+      {
+       "file": "navigating-the-labyrinth-series-1-1200.webp",
+       "long_edge": 1200,
+       "pixels": [
+        1010,
+        1200
+       ]
+      },
+      {
+       "file": "navigating-the-labyrinth-series-1-2000.webp",
+       "long_edge": 2000,
+       "pixels": [
+        1684,
+        2000
+       ]
+      }
+     ],
+     "photo_credit": null,
+     "pixels": [
+      2481,
+      2947
+     ],
+     "role": "main"
+    }
+   ],
+   "materials": "Acrylic & Varnish on Canvas",
+   "medium": "Acrylic & Varnish on Canvas",
+   "price_eur": 4000,
+   "price_on_request": false,
+   "slug": "navigating-the-labyrinth-series",
+   "title": "Navigating the Labyrinth Series",
+   "w_cm": 120,
+   "year": 2013
+  },
+  {
+   "ai_founder_decision": null,
+   "ai_involvement": "none",
+   "ai_note": null,
+   "availability": "available",
+   "d_cm": 5,
+   "description": null,
+   "h_cm": 100,
+   "id": "weywtl3ifjo",
+   "images": [
+    {
+     "alt": "Abstract Painting with black and white stripes, orange and red splashes with pink drips and blue triangles",
+     "aspect": 0.99237,
+     "derivatives": [
+      {
+       "file": "energetic-labyrinths-no-17-1-600.webp",
+       "long_edge": 600,
+       "pixels": [
+        595,
+        600
+       ]
+      },
+      {
+       "file": "energetic-labyrinths-no-17-1-1200.webp",
+       "long_edge": 1200,
+       "pixels": [
+        1191,
+        1200
+       ]
+      },
+      {
+       "file": "energetic-labyrinths-no-17-1-2000.webp",
+       "long_edge": 2000,
+       "pixels": [
+        1985,
+        2000
+       ]
+      }
+     ],
+     "photo_credit": null,
+     "pixels": [
+      2080,
+      2096
+     ],
+     "role": "main"
+    }
+   ],
+   "materials": "Acrylic & Varnish on Canvas",
+   "medium": "Acrylic & Varnish on Canvas",
+   "price_eur": 2500,
+   "price_on_request": false,
+   "slug": "energetic-labyrinths-no-17",
+   "title": "Energetic Labyrinths No. 17",
+   "w_cm": 100,
+   "year": 2026
+  },
+  {
+   "ai_founder_decision": null,
+   "ai_involvement": "none",
+   "ai_note": null,
+   "availability": "available",
+   "d_cm": 5,
+   "description": null,
+   "h_cm": 120,
+   "id": "w4nwwy9tagw",
+   "images": [
+    {
+     "alt": "Abstract Painting with Stripes, triangles, collage and drips and splashes of yellow, red, pink and red paint",
+     "aspect": 0.82305,
+     "derivatives": [
+      {
+       "file": "energetic-labyrinths-no-18-1-600.webp",
+       "long_edge": 600,
+       "pixels": [
+        494,
+        600
+       ]
+      },
+      {
+       "file": "energetic-labyrinths-no-18-1-1200.webp",
+       "long_edge": 1200,
+       "pixels": [
+        988,
+        1200
+       ]
+      },
+      {
+       "file": "energetic-labyrinths-no-18-1-2000.webp",
+       "long_edge": 2000,
+       "pixels": [
+        1646,
+        2000
+       ]
+      }
+     ],
+     "photo_credit": null,
+     "pixels": [
+      2307,
+      2803
+     ],
+     "role": "main"
+    }
+   ],
+   "materials": "Acrylic & Varnish on Canvas",
+   "medium": "Acrylic & Varnish on Canvas",
+   "price_eur": 3000,
+   "price_on_request": false,
+   "slug": "energetic-labyrinths-no-18",
+   "title": "Energetic Labyrinths No.18",
+   "w_cm": 100,
+   "year": 2026
+  },
+  {
+   "ai_founder_decision": null,
+   "ai_involvement": "none",
+   "ai_note": null,
+   "availability": "available",
+   "d_cm": 5,
+   "description": null,
+   "h_cm": 80,
+   "id": "wwjw67uqvzb",
+   "images": [
+    {
+     "alt": "Blue and purple abstract painting with blue and red mark making, gold chevrons, striped triangles and yellow neon drips",
+     "aspect": 0.74902,
+     "derivatives": [
+      {
+       "file": "energetic-labyrinths-no-7-1-600.webp",
+       "long_edge": 600,
+       "pixels": [
+        449,
+        600
+       ]
+      },
+      {
+       "file": "energetic-labyrinths-no-7-1-1200.webp",
+       "long_edge": 1200,
+       "pixels": [
+        899,
+        1200
+       ]
+      },
+      {
+       "file": "energetic-labyrinths-no-7-1-2000.webp",
+       "long_edge": 2000,
+       "pixels": [
+        1498,
+        2000
+       ]
+      }
+     ],
+     "photo_credit": null,
+     "pixels": [
+      2110,
+      2817
+     ],
+     "role": "main"
+    },
+    {
+     "alt": "Purple and Blue Abstract Painting with striped triangles and splashes and drips in yellow",
+     "aspect": 0.82837,
+     "derivatives": [
+      {
+       "file": "energetic-labyrinths-no-7-2-600.webp",
+       "long_edge": 600,
+       "pixels": [
+        497,
+        600
+       ]
+      },
+      {
+       "file": "energetic-labyrinths-no-7-2-2000.webp",
+       "long_edge": 2000,
+       "pixels": [
+        1657,
+        2000
+       ]
+      }
+     ],
+     "photo_credit": null,
+     "pixels": [
+      2505,
+      3024
+     ],
+     "role": "view"
+    },
+    {
+     "alt": "Purple and Blue Abstract Painting with striped triangles and splashes and drips in yellow",
+     "aspect": 0.69501,
+     "derivatives": [
+      {
+       "file": "energetic-labyrinths-no-7-3-600.webp",
+       "long_edge": 600,
+       "pixels": [
+        417,
+        600
+       ]
+      },
+      {
+       "file": "energetic-labyrinths-no-7-3-2000.webp",
+       "long_edge": 2000,
+       "pixels": [
+        1390,
+        2000
+       ]
+      }
+     ],
+     "photo_credit": null,
+     "pixels": [
+      2035,
+      2928
+     ],
+     "role": "view"
+    }
+   ],
+   "materials": "Acrylic, collage & resin on Wooden Panel",
+   "medium": "Acrylic, collage & resin on Wooden Panel",
+   "price_eur": 1200,
+   "price_on_request": false,
+   "slug": "energetic-labyrinths-no-7",
+   "title": "Energetic Labyrinths No. 7",
+   "w_cm": 60,
+   "year": 2025
+  },
+  {
+   "ai_founder_decision": null,
+   "ai_involvement": "none",
+   "ai_note": null,
+   "availability": "available",
+   "d_cm": 5,
+   "description": null,
+   "h_cm": 80,
+   "id": "wtek3sa8bp7",
+   "images": [
+    {
+     "alt": "Magenta and lime green abstract painting with gold chevrons and pink, yellow and metallic teal mark making",
+     "aspect": 0.74807,
+     "derivatives": [
+      {
+       "file": "energetic-labyrinths-no-8-1-600.webp",
+       "long_edge": 600,
+       "pixels": [
+        449,
+        600
+       ]
+      },
+      {
+       "file": "energetic-labyrinths-no-8-1-1200.webp",
+       "long_edge": 1200,
+       "pixels": [
+        898,
+        1200
+       ]
+      },
+      {
+       "file": "energetic-labyrinths-no-8-1-2000.webp",
+       "long_edge": 2000,
+       "pixels": [
+        1496,
+        2000
+       ]
+      }
+     ],
+     "photo_credit": null,
+     "pixels": [
+      2031,
+      2715
+     ],
+     "role": "main"
+    }
+   ],
+   "materials": "Acrylic, collage & resin on Wooden Panel",
+   "medium": "Acrylic, collage & resin on Wooden Panel",
+   "price_eur": 1200,
+   "price_on_request": false,
+   "slug": "energetic-labyrinths-no-8",
+   "title": "Energetic Labyrinths No. 8",
+   "w_cm": 60,
+   "year": 2025
+  },
+  {
+   "ai_founder_decision": null,
+   "ai_involvement": "none",
+   "ai_note": null,
+   "availability": "available",
+   "d_cm": 5,
+   "description": null,
+   "h_cm": 100,
+   "id": "wf5wtel0ipi",
+   "images": [
+    {
+     "alt": "Yellow abstract painting with dots, striped triangles and splashes and drips of red and turquoise",
+     "aspect": 0.69253,
+     "derivatives": [
+      {
+       "file": "perception-no-4-1-600.webp",
+       "long_edge": 600,
+       "pixels": [
+        416,
+        600
+       ]
+      },
+      {
+       "file": "perception-no-4-1-1200.webp",
+       "long_edge": 1200,
+       "pixels": [
+        831,
+        1200
+       ]
+      },
+      {
+       "file": "perception-no-4-1-2000.webp",
+       "long_edge": 2000,
+       "pixels": [
+        1385,
+        2000
+       ]
+      }
+     ],
+     "photo_credit": null,
+     "pixels": [
+      1910,
+      2758
+     ],
+     "role": "main"
+    }
+   ],
+   "materials": "Acrylic, collage & resin on Wooden Panel",
+   "medium": "Acrylic, collage & resin on Wooden Panel",
+   "price_eur": 1500,
+   "price_on_request": false,
+   "slug": "perception-no-4",
+   "title": "Perception No.4",
+   "w_cm": 70,
+   "year": 2025
+  },
+  {
+   "ai_founder_decision": null,
+   "ai_involvement": "none",
+   "ai_note": null,
+   "availability": "available",
+   "d_cm": 5,
+   "description": null,
+   "h_cm": 50,
+   "id": "w226r60hfsh",
+   "images": [
+    {
+     "alt": "Green and red abstract paintings with black and white stripes and striped triangless",
+     "aspect": 0.79519,
+     "derivatives": [
+      {
+       "file": "energetic-labyrinths-12-1-600.webp",
+       "long_edge": 600,
+       "pixels": [
+        477,
+        600
+       ]
+      },
+      {
+       "file": "energetic-labyrinths-12-1-1200.webp",
+       "long_edge": 1200,
+       "pixels": [
+        954,
+        1200
+       ]
+      },
+      {
+       "file": "energetic-labyrinths-12-1-2000.webp",
+       "long_edge": 2000,
+       "pixels": [
+        1590,
+        2000
+       ]
+      }
+     ],
+     "photo_credit": null,
+     "pixels": [
+      2213,
+      2783
+     ],
+     "role": "main"
+    }
+   ],
+   "materials": "Acrylic & Varnish on Wooden Panels",
+   "medium": "Acrylic and varnish on Wooden Panel",
+   "price_eur": 800,
+   "price_on_request": false,
+   "slug": "energetic-labyrinths-12",
+   "title": "Energetic Labyrinths 12",
+   "w_cm": 40,
+   "year": 2026
+  },
+  {
+   "ai_founder_decision": null,
+   "ai_involvement": "none",
+   "ai_note": null,
+   "availability": "available",
+   "d_cm": 5,
+   "description": null,
+   "h_cm": 50,
+   "id": "ww7wndmg7z3",
+   "images": [
+    {
+     "alt": "Abstract Painting with black and white stripes, orange and red splashes with pink and teal mark making",
+     "aspect": 0.79871,
+     "derivatives": [
+      {
+       "file": "energetic-labyrinths-6-1-600.webp",
+       "long_edge": 600,
+       "pixels": [
+        479,
+        600
+       ]
+      },
+      {
+       "file": "energetic-labyrinths-6-1-1200.webp",
+       "long_edge": 1200,
+       "pixels": [
+        958,
+        1200
+       ]
+      },
+      {
+       "file": "energetic-labyrinths-6-1-2000.webp",
+       "long_edge": 2000,
+       "pixels": [
+        1597,
+        2000
+       ]
+      }
+     ],
+     "photo_credit": null,
+     "pixels": [
+      2234,
+      2797
+     ],
+     "role": "main"
+    }
+   ],
+   "materials": "Acrylic & Varnish on Wooden Panels",
+   "medium": "Acrylic and varnish on Wooden Panel",
+   "price_eur": 800,
+   "price_on_request": false,
+   "slug": "energetic-labyrinths-6",
+   "title": "Energetic Labyrinths 6",
+   "w_cm": 40,
+   "year": 2026
+  },
+  {
+   "ai_founder_decision": null,
+   "ai_involvement": "none",
+   "ai_note": null,
+   "availability": "available",
+   "d_cm": 2,
+   "description": null,
+   "h_cm": 50,
+   "id": "wzncukfg1he",
+   "images": [
+    {
+     "alt": "Pink and Green Abstract painting with black and white stripes and border",
+     "aspect": 0.99471,
+     "derivatives": [
+      {
+       "file": "energetic-labyrinths-8-1-600.webp",
+       "long_edge": 600,
+       "pixels": [
+        597,
+        600
+       ]
+      },
+      {
+       "file": "energetic-labyrinths-8-1-1200.webp",
+       "long_edge": 1200,
+       "pixels": [
+        1194,
+        1200
+       ]
+      },
+      {
+       "file": "energetic-labyrinths-8-1-2000.webp",
+       "long_edge": 2000,
+       "pixels": [
+        1989,
+        2000
+       ]
+      }
+     ],
+     "photo_credit": null,
+     "pixels": [
+      2067,
+      2078
+     ],
+     "role": "main"
+    }
+   ],
+   "materials": "Acrylic, collage & resin on canvas",
+   "medium": "Acrylic, collage & resin on Canvas",
+   "price_eur": 650,
+   "price_on_request": false,
+   "slug": "energetic-labyrinths-8",
+   "title": "Energetic Labyrinths 8",
+   "w_cm": 50,
+   "year": 2025
+  }
+ ]
+}

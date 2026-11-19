@@ -73,6 +73,7 @@ import plotart_business_rental as BUSINESS
 import plotart_seo as SEO
 import plotart_search_content as C
 import plotart_opportunities as OPP
+import plotart_featured as FEAT
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 if len(sys.argv) < 2:
@@ -121,8 +122,23 @@ for _d, _, _fs in os.walk(os.path.join(PA, "artists")):
 GALLERY_SLUGS = sorted({ART_FILE.match(f).group(1) for f in ARTIST_FILES if f.endswith("/index.html")})
 ALLOWED |= ARTIST_FILES
 # Artist opportunity lists (16 Nov 2026): the opportunities page and the lists' stylesheet (plotart_opportunities)
-OPP_FILES = {"opportunities/index.html", "assets/plotart-opportunities.css"}
+OPP_FILES = {"opportunities/index.html", "commissions/index.html", "assets/plotart-opportunities.css"}
 ALLOWED |= OPP_FILES
+ALLOWED |= {"assets/plotart-living.css"}
+ALLOWED |= {"for-artists.html", "assets/plotart-for-artists.css"}   # the For artists page (17 Nov 2026)
+# Art Services & Providers (founder brief 19 Nov 2026): the page and its stylesheet, reached by the "Services" tab
+SERVICES_PAGE = "services.html"
+# paused 19 Nov 2026 (founder; both providers asked for changes): the page, its stylesheet and the tab exist ONLY while the
+# launch switch services_page is on. Off: no services file may exist and no page may link to it or carry the tab (L11).
+SERVICES_ON = launch.get("services_page") is True
+if SERVICES_ON:
+    ALLOWED |= {SERVICES_PAGE, "assets/plotart-services.css"}
+    # provider images, each hosted under a recorded written permission (image-rights-records.json; P4 binds every copy)
+    ALLOWED |= {"assets/services/" + f for f in ("hang-it-hung-wall-1600.jpg", "hang-it-hung-wall-1600.webp",
+                                                  "hang-it-hung-wall-800.webp", "hang-it-logo.png")}
+    PAGES.append(SERVICES_PAGE)
+# No prices on the Services page (Hang-It asked for its pricing to be removed, 19 Nov 2026): the ordinary L3 rule applies.
+ALLOWED |= {"assets/plotart-featured.css"}   # Featured Artists in the Artists' Gallery (17 Nov 2026; was plotart-home.css on the homepage)   # the Living Gallery page refinement (17 Nov 2026)
 # Art for Hire (Stage 3B-6): the page, its two assets and the fourth gallery tab exist ONLY when the founder switches
 # art_for_hire_page on (release approval). Off (or absent): no hire file may exist and no page may link to it or carry the tab.
 HIRE_ON = launch.get("art_for_hire_page") is True
@@ -161,7 +177,13 @@ def outside_grid(raw):
     a, b = raw.find(VG_BEGIN), raw.find(VG_END)
     if raw.count(VG_BEGIN) != 1 or raw.count(VG_END) != 1 or not 0 <= a < b:
         return raw
-    return raw[:a] + VG_BEGIN + b"<!-- collection -->" + raw[b:]
+    raw = raw[:a] + VG_BEGIN + b"<!-- collection -->" + raw[b:]
+    # Featured Artists (17 Nov 2026): the founder's selection above the collection is generated too; its content is
+    # checked by L20. Without exactly one pair of its markers the page is returned unchanged (never matches the pin).
+    try:
+        return FEAT.outside(raw.decode()).encode()
+    except ValueError:
+        return raw + b"<!-- no featured region -->"
 
 
 def visible_text(s):
@@ -256,12 +278,18 @@ for name in PAGES:
     ep_ok = s.replace('data-endpoint="%s"' % ENDPOINT, "").replace('data-image-endpoint="%s/image"' % ENDPOINT, "") if ENDPOINT else s
     if name == "join.html" and GA_OPEN and GA_EP:
         ep_ok = ep_ok.replace('data-endpoint="%s"' % GA_EP, "", 1).replace('data-image-endpoint="%s/image"' % GA_EP, "", 1)
+    # The one approved plain LINK to a workers.dev address (founder decision 17 Nov 2026): the PlotArt Studio, behind its own
+    # sign-in, from the footer and the For artists page. Exactly this href, never a form or data endpoint.
+    ep_ok = ep_ok.replace('href="https://plotart-studio.colin-a41.workers.dev/"', "")
     need(not re.search(r"workers\.dev|airtable", ep_ok), "L7 %s references a live endpoint outside the approved form" % name)
 
 home = open(os.path.join(PA, "index.html"), encoding="utf-8").read() if os.path.exists(os.path.join(PA, "index.html")) else ""
 need(all(('src="%s"' % x) in home for x in HERO_IMAGES) and "Original artwork by Colin MacAulay, founder of PlotArt." in visible_text(home)
      and len(re.findall(r'<img [^>]*alt="Painting by Colin MacAulay', home)) == 1 and len(re.findall(r"<img\b", home)) == 4 + home.count("plotnua-mark-master.svg") + home.count('<img class="pa-logo" '),   # + the PlotArt logo in the header (31 Oct 2026)
-     "L6 the homepage images must be exactly the founder's credited painting, the Living Gallery visualisation, the three-room calculator invitation and the A Home for Art image")
+     "L6 the homepage images must be exactly the founder's credited painting, the Living Gallery visualisation, the three-room calculator invitation and the A Home for Art image"
+     " (no featured section: Featured Artists moved to the Artists' Gallery, 17 Nov 2026)")
+need("pa-home-featured" not in home and "pa-home-feat" not in home and "plotart-home.css" not in home and "data-pa-home-item" not in home,
+     "L6 the homepage still carries the featured artworks section (moved to the Artists' Gallery, founder brief 17 Nov 2026)")
 need(all(x in home for x in CAMPAIGN_IMAGES) and 'aria-labelledby="sizePromoH"' in home
      and 'href="art-size-calculator.html" aria-label="Try the PlotArt art size calculator"' in home
      and 'These are illustrative rooms, not photographs of real homes. The painting is not offered for sale.' in visible_text(home),
@@ -315,6 +343,12 @@ if "--manifest" in sys.argv:
                 pass
         # the artist opportunity lists (16 Nov 2026): outside their generated region (and, on the Art for Hire page, outside
         # the works catalogue too) the four pages are pinned by "outside_opportunity_lists"; the lists are checked by L19
+        # Featured Artists (17 Nov 2026): the Artists' Gallery page's "outside_grid" pin covers everything outside BOTH of its
+        # generated regions (the collection and Featured Artists); the homepage has no generated region any more and is
+        # pinned in full. A page that matches its full pin must also match its outside-the-regions pin (no stale pin).
+        need("outside_home_featured" not in man, "L3 the manifest still pins a homepage featured region (moved to the Artists' Gallery)")
+        need(og is None or raw is None or got != sha or hashlib.sha256(outside_grid(raw)).hexdigest() == og,
+             "L3 %s: its outside_grid pin is stale (re-pin it with the page)" % rel)
         oo, opp_ok = man.get("outside_opportunity_lists", {}).get(rel), False
         if oo is not None and raw is not None and rel in OPP.PAGES:
             try:
@@ -466,21 +500,38 @@ if vg:
             _bad_pos.append(_i)
     need(not _bad_pos, "L11 a founding position is out of place, names or links an unpublished artist, or carries more than its number and state (positions %s)" % _bad_pos)
     _numbered = [(n, s) for n, s in zip(_wnums, _cards) if n is not None]
-    need(_numbered == sorted(_pub_pos.items()) and all(n is None for n in _wnums[len(_numbered):]),
+    try:   # the featured artists are named in the index but not hung on the wall (Explore More Artists, 17 Nov 2026)
+        _feat_wall = {x["artist"] for x in FEAT.selection_in(vg)}
+    except ValueError:
+        _feat_wall = set()
+    need(_numbered == sorted((n, s) for n, s in _pub_pos.items() if s not in _feat_wall) and all(n is None for n in _wnums[len(_numbered):]),
          "L11 the wall and the index disagree: each numbered open gallery must be the published artist at that position, in order, then any without a position")
     _seg = re.search(r'<ol class="pa-vgc-line" aria-hidden="true">((?:<li class="is-(?:pub|res|prep|av)"></li>){25})</ol>', _region)
     need(bool(_seg) and re.findall(r'is-(\w+)', _seg.group(1)) == [st for st, _ in _pos], "L11 the occupancy line does not match the twenty-five positions")
-    _cnt = re.search(r'<p class="pa-vgc-count">(\d+) of 25 galleries open</p>', _region)
-    need(bool(_cnt) and int(_cnt.group(1)) == len(_cards), "L11 the open-gallery count does not match the wall")
+    # the "N of 25 galleries open" counter and the twenty-five-gallery heading were removed (founder brief 17 Nov 2026)
+    need("pa-vgc-count" not in vg and not re.search(r"\d+ of 25 galleries", vgv), "L11 the Artists' Gallery still shows the 25-gallery counter")
     _keyc = {k: int(n) for n, k in re.findall(r'<b>(\d+)</b> (published|reserved|in preparation|available)</li>', _region)}
     _want = {k: sum(1 for st, _ in _pos if st == c) for c, k in (("pub", "published"), ("res", "reserved"), ("prep", "in preparation"), ("av", "available"))}
     need(_keyc == {k: v for k, v in _want.items() if v}, "L11 the index summary does not match the twenty-five positions")
     need(OPEN or not _cards, "L15 an artist gallery is published but the gallery opening switch is off")
-    need(sorted(_cards) == GALLERY_SLUGS and len(set(_cards)) == len(_cards),
-         "L11 the open galleries on the wall must match the published artist galleries exactly (wall %s, galleries %s)" % (_cards, GALLERY_SLUGS))
-    _vgm = vg.split("<main", 1)[-1].split("</main>")[0]; _vgmv = re.sub(r"\s+", " ", visible_text(_vgm))
+    # Explore More Artists (17 Nov 2026): the wall is every published gallery EXCEPT the artists featured above it, so the
+    # two sections together show each published artist exactly once
+    try:
+        _featured = sorted({x["artist"] for x in FEAT.selection_in(vg)})
+    except ValueError:
+        _featured = []
+    need(sorted(_cards) == sorted(set(GALLERY_SLUGS) - set(_featured)) and len(set(_cards)) == len(_cards),
+         "L11 the wall must show every published artist gallery except the featured artists (wall %s, galleries %s, featured %s)" % (_cards, GALLERY_SLUGS, _featured))
+    # the collection checks below look at the page without the Featured Artists region above it (checked by L20)
+    try:
+        _vg_nf = FEAT.outside(vg)
+    except ValueError:
+        _vg_nf = vg
+        need(False, "L11 the Artists' Gallery Featured Artists region (pa-featured-artists markers) is missing or duplicated")
+    _vgm = _vg_nf.split("<main", 1)[-1].split("</main>")[0]; _vgmv = re.sub(r"\s+", " ", visible_text(_vgm))
     need("founding-25.html" not in _vgm and "Founding 25" not in _vgmv and "Artist first" not in _vgmv, "L11 the Virtual Gallery carries Founding 25 promotion or an 'Artist first' section")
-    need("The first twenty-five galleries." in vgv, "L11 the Virtual Gallery collection heading is not the approved wording")
+    need('<p class="pa-eyebrow">Explore the collection</p><h2 id="vgColH">Explore More Artists</h2>' in vg and "twenty-five galleries" not in vgv,
+         "L11 the Artists' Gallery collection heading is not the approved wording (Explore the collection / Explore More Artists, 17 Nov 2026)")
     _vgimgs = re.findall(r"<img\b[^>]*>", _vgm)
     # A published gallery with no works on show keeps its place with the empty state and no picture (founder decision
     # 1 Nov 2026): one picture per open gallery, except those. Every picture is a published artist's own work image.
@@ -488,7 +539,7 @@ if vg:
     need(not re.search(r"<picture\b|<svg\b|background-image|url\(", _vgm) and len(_vgimgs) == len(_cards) - _empty_cards and
          all(re.search(r'src="\.\./artists/(%s)/img/[a-z0-9-]+\.webp"' % "|".join(map(re.escape, GALLERY_SLUGS or ["-"])), t) for t in _vgimgs),
          "L11 the Virtual Gallery shows an image other than a published artist's own work image")
-    need(not re.search(r"testimonial|“|”|\bsaid\b", visible_text(vg.split("<main", 1)[-1].split("</main>")[0]), re.I), "L11 the Virtual Gallery carries a quotation or testimonial")
+    need(not re.search(r"testimonial|“|”|\bsaid\b", visible_text(_vgm), re.I), "L11 the Virtual Gallery carries a quotation or testimonial")
     need("<title>Irish Artists &amp; Original Art | Artists’ Gallery | PlotArt</title>" in vg, "L11 the Virtual Gallery title is not the approved search title")
 smp = os.path.join(SITE, "sitemap.xml")
 if os.path.exists(smp):
@@ -510,11 +561,14 @@ if os.path.exists(smp):
 NAV_WANT = ["Discover PlotArt", "Artists’ Gallery", "Mobile Gallery", "Living Gallery", "PlotNua ↗"]  # Mobile Gallery added 3 Nov 2026
 if HIRE_ON:
     NAV_WANT.insert(4, "Art for Hire")                                                    # the fourth gallery tab (3B-6)
+if SERVICES_ON:
+    NAV_WANT.insert(len(NAV_WANT) - 1, "Services")                                        # Art Services & Providers (19 Nov 2026)
 NAV_CURRENT = {"index.html": "Discover PlotArt", "gallery/index.html": "Artists’ Gallery", "living-gallery.html": "Living Gallery", "founding-25.html": None, "invitation.html": None, "about.html": None,
                "mobile-gallery/index.html": "Mobile Gallery", "mobile-gallery/gallery.html": "Mobile Gallery"}
 NAV_CURRENT.update({p: None for p in SEO.GENERATED_PATHS + SEO.EDITORIAL_PATHS + SEO.TOOL_PATHS})
 NAV_CURRENT.update({"join.html": None, "curatorial-policy.html": None})
 NAV_CURRENT[HIRE_PAGE] = "Art for Hire"
+NAV_CURRENT[SERVICES_PAGE] = "Services"
 for name in PAGES + ([HIRE_PAGE] if HIRE_ON else []):
     p = os.path.join(PA, name)
     if os.path.exists(p):
@@ -528,11 +582,19 @@ for name in PAGES + ([HIRE_PAGE] if HIRE_ON else []):
         need(cur == ([NAV_CURRENT[name]] if NAV_CURRENT[name] else []), "L11 %s current pill is %s, not %s" % (name, cur, NAV_CURRENT[name]))
         depth = "../" * name.count("/")
         mg_href = "index.html" if name.startswith("mobile-gallery/") else depth + "mobile-gallery/"
-        want_hrefs = [depth + "index.html", depth + "gallery/", mg_href, depth + "living-gallery.html"] + ([depth + "art-for-hire/"] if HIRE_ON else []) + [depth + "../index.html"]
+        want_hrefs = [depth + "index.html", depth + "gallery/", mg_href, depth + "living-gallery.html"] + ([depth + "art-for-hire/"] if HIRE_ON else []) + ([depth + "services.html"] if SERVICES_ON else []) + [depth + "../index.html"]
         need(len(links) == len(want_hrefs) and [x[0] for x in links] == want_hrefs,
              "L11 %s pills must link to the PlotArt homepage, the Virtual Gallery, the Mobile Gallery, the Living Gallery and the PlotNua homepage" % name)
         hv = visible_text(head.group(1)) if head else ""
         need("Founding 25" not in hv and "About" not in hv, "L11 %s header still offers Founding 25 or About" % name)
+
+if not SERVICES_ON:
+    for _d, _, _fs in os.walk(PA):
+        for _f in _fs:
+            if _f.endswith(".html"):
+                _t = open(os.path.join(_d, _f), encoding="utf-8").read()
+                need("services.html" not in _t and 'data-pa-track="nav_services' not in _t,
+                     "L11 %s links to the paused Services page or carries its tab" % os.path.relpath(os.path.join(_d, _f), PA))
 
 # L12 · the Founding 25 and the Living Gallery are separate programmes (founder decision 28 Oct 2026)
 SEP = "The Founding 25 is the PlotArt Artists’ Gallery. The Living Gallery is a separate, proposed programme. Taking part in it is optional, and it is never a condition of being a Founding Artist."
@@ -563,7 +625,7 @@ for _lg_need in ("Your art. In someone’s home.", "Imagine your work becoming p
                  "If you’re already a PlotArt artist, you can register your interest through the Opportunities section of your Artist Studio."):
     need(_lg_need in artv, "L12 the Living Gallery artist section is not the approved wording (missing: %s)" % _lg_need)
 need(art is not None and not re.search(r'href="https?://|workers\.dev|<form\b', art.group(0)), "L12 the Living Gallery artist section must not link out, expose a Studio address or carry a form")
-need(art is not None and 'href="gallery/" data-pa-track="living_artists_gallery">Explore the Artists’ Gallery →</a>' in art.group(0), "L12 the Living Gallery artist section must link to the Artists' Gallery")
+need(art is not None and 'href="gallery/" data-pa-track="living_artists_gallery">Explore the Artists’ Gallery</a>' in art.group(0), "L12 the Living Gallery artist section must link to the Artists' Gallery")
 need(not re.search(r"confirmed placement|placement is confirmed|will be placed|we will place", artv, re.I), "L12 the Living Gallery artist section implies a confirmed placement")
 need(not re.search(r"priority|guarantee|apply now|applications are open|book|sign up", artv, re.I), "L12 the Living Gallery artist section implies priority, a guarantee or an operational service")
 need("25 artists. A new home for Irish art." in f25mv, "L12 the Founding 25 programme headline is not the approved wording")
@@ -778,7 +840,7 @@ else:
     need(_band is not None and home.count("<!-- pa-artist-apply:begin -->") == 1 and "f25InviteH" not in home, "L18 open: the homepage carries the artist band once, in place of the closed Founding 25 band")
     if _band:
         _bv = re.sub(r"\s+", " ", visible_text(_band.group(1)))
-        need('href="join.html"' in _band.group(1) and 'href="gallery/"' in _band.group(1) and "An invitation to join PlotArt." in _bv,
+        need('href="join.html#apply"' in _band.group(1) and 'href="gallery/"' in _band.group(1) and "An invitation to join PlotArt." in _bv,
              "L18 the homepage band must be the invitation, linking to Join PlotArt and the gallery")
         need(not re.search(r"\d|%|€|commission|fee|exclusiv|deserves", _bv, re.I), "L18 the homepage band carries figures, commercial terms or promotional wording")
     # the Artists' Gallery application button (founder decisions 16 Nov 2026): once, inside the compact introduction, above
@@ -854,9 +916,37 @@ for _rel in OPP.PAGES:
         for _s in re.findall(r'href="(?:\.\./)*artists/([a-z0-9-]+)/"', OPP.REGION.search(open(_fp, encoding="utf-8").read()).group(0)):
             need(_s in _slugs, "L19 %s lists an artist whose gallery is not published: %s" % (_rel, _s))
 
+# L20 · Featured Artists in the Artists' Gallery (founder brief 17 Nov 2026; moved from the homepage): the region is
+# exactly what its own selection renders from the published galleries (at most six, each artist once; every image is a
+# published derivative of a main photograph shown in that artist's gallery; text only from the published package), every
+# link goes to a published gallery or artwork page, and every featured artist is ALSO in the complete collection below.
+_gp = os.path.join(PA, FEAT.PAGE)
+if os.path.exists(_gp):
+    _doc = open(_gp, encoding="utf-8").read()
+    try:
+        _sel = FEAT.selection_in(_doc)
+        need(_doc == FEAT.update(_doc, _sel, _pk), "L20 gallery/index.html: Featured Artists differs from what its selection renders from the published galleries")
+        _reg = FEAT.region(_doc)
+        need(_doc.index(FEAT.FEAT_END) < _doc.index(VG_BEGIN.decode()), "L20 gallery/index.html: Featured Artists must sit above the complete collection")
+        for _s, _f in re.findall(r'src="\.\./artists/([a-z0-9-]+)/img/([a-z0-9-]+\.webp)"', _reg):
+            need(os.path.exists(os.path.join(PA, "artists", _s, "img", _f)), "L20 gallery/index.html: a featured image is not a published file: %s/%s" % (_s, _f))
+        for _h in re.findall(r'href="\.\./(artists/[^"]+)"', _reg):
+            need(os.path.exists(os.path.join(PA, _h + ("index.html" if _h.endswith("/") else ""))), "L20 gallery/index.html: a featured link goes nowhere: " + _h)
+        need(not re.findall(r'href="(?!\.\./artists/)[^"]*"', _reg), "L20 gallery/index.html: Featured Artists links outside the artists' galleries")
+        need(len(re.findall(r'class="pa-fa-item"', _reg)) <= FEAT.MAX, "L20 gallery/index.html: more than %d featured artists" % FEAT.MAX)
+        _fs = [x["artist"] for x in _sel]
+        need(len(_fs) == len(set(_fs)), "L20 gallery/index.html: an artist is featured more than once")
+        _col = _doc[_doc.index(VG_BEGIN.decode()):_doc.index(VG_END.decode())]
+        _wall = re.findall(r'href="\.\./artists/([a-z0-9-]+)/" data-pa-track="vg_artist"', _col)
+        need(not set(_fs) & set(_wall), "L20 gallery/index.html: a featured artist is repeated in Explore More Artists")
+        need(sorted(set(_fs) | set(_wall)) == GALLERY_SLUGS or not os.path.isdir(os.path.join(PA, "artists")),
+             "L20 gallery/index.html: Featured Artists and Explore More Artists together must show every published artist exactly once")
+    except ValueError as _e:
+        need(False, "L20 gallery/index.html: %s" % _e)
+
 if problems:
     print("PLOTART LAUNCH · FAILED (%d)" % len(problems))
     for x in problems:
         print("  " + x)
     sys.exit(1)
-print("PLOTART LAUNCH · OK — L1-L19 on %d pages · applications %s · artist applications %s · Art for Hire %s (%d demonstration names checked absent)" % (len(PAGES), STATE, GA_STATE, ("ON" + (", enquiry form on" if HIRE_FORM else "")) if HIRE_ON else "off", len(demo_names)))
+print("PLOTART LAUNCH · OK — L1-L20 on %d pages · applications %s · artist applications %s · Art for Hire %s (%d demonstration names checked absent)" % (len(PAGES), STATE, GA_STATE, ("ON" + (", enquiry form on" if HIRE_FORM else "")) if HIRE_ON else "off", len(demo_names)))

@@ -75,18 +75,34 @@ export function dimensions(u8, fmt) {
     return null;
   }
   if (fmt === 'jpeg') {
-    let i = 2;
+    // Phones store most portrait photographs as landscape pixels with an EXIF "rotate" tag; browsers and the publisher show
+    // them upright, so the size recorded here is the upright one (18 Nov 2026: a portrait read "4032 × 3024 px").
+    let i = 2, turned = false;
     while (i + 9 < u8.length) {
       if (u8[i] !== 0xFF) { i++; continue; }
       const m = u8[i + 1];
       if (m === 0xD8 || m === 0x01 || (m >= 0xD0 && m <= 0xD7)) { i += 2; continue; }
       const len = dv.getUint16(i + 2);
-      if (m >= 0xC0 && m <= 0xCF && ![0xC4, 0xC8, 0xCC].includes(m)) return { h: dv.getUint16(i + 5), w: dv.getUint16(i + 7) };
+      if (m === 0xE1 && !turned) turned = [5, 6, 7, 8].includes(exifOrientation(dv, i + 4, len - 2));
+      if (m >= 0xC0 && m <= 0xCF && ![0xC4, 0xC8, 0xCC].includes(m)) {
+        const h = dv.getUint16(i + 5), w = dv.getUint16(i + 7);
+        return turned ? { w: h, h: w } : { w, h };
+      }
       i += 2 + len;
     }
     return null;
   }
   return null;
+}
+/* the EXIF Orientation tag (1–8) of a JPEG APP1 segment starting at `at`, or 0 when there is none */
+function exifOrientation(dv, at, len) {
+  try {
+    if (len < 14 || dv.getUint32(at) !== 0x45786966 || dv.getUint16(at + 4) !== 0) return 0;   // "Exif\0\0"
+    const t = at + 6, le = dv.getUint16(t) === 0x4949, u16 = o => dv.getUint16(o, le), u32 = o => dv.getUint32(o, le);
+    const ifd = t + u32(t + 4), n = u16(ifd);
+    for (let k = 0; k < n; k++) { const e = ifd + 2 + k * 12; if (e + 12 > at + len) return 0; if (u16(e) === 0x0112) return u16(e + 8); }
+  } catch { /* a damaged EXIF block: treat as upright */ }
+  return 0;
 }
 /* Server-side checks (the browser runs the same rules first, for instant feedback). BLOCK = cannot be used. */
 export function checkImage(u8, { portrait = false, minLong = MIN_LONG_EDGE } = {}) {
@@ -113,6 +129,16 @@ export async function sha256(buf) {
 /* ---- snapshots, changes and tiers ---- */
 const imgRef = i => i && ({ id: i.id, sha256: i.sha256, role: i.role, alt: i.alt || null, photographer: i.photographer || null,
   photo_credit: i.photographer === 'other_with_permission' ? (i.photo_credit || null) : null, width: i.width, height: i.height, format: i.format });
+/* An EMPTY DRAFT (17 Nov 2026, Olivia Jones): an artwork record that "Add an artwork" created but nothing was ever saved
+   to: no title, year, medium, materials, size, price, description, AI answer or photograph. It holds no content, so it is
+   left out of the snapshot: it is never counted as a new artwork, never blocks a submission and is never published. A
+   work that was ever published always has a main photograph (it can be replaced, never deleted), so a published work is
+   never an empty draft. The record itself is kept; the artist can fill it in or discard it. */
+export function isEmptyDraft(w, images) {
+  return !w.title && w.year == null && !w.medium && !w.materials && w.h_cm == null && w.w_cm == null && w.d_cm == null &&
+    w.price_eur == null && !w.price_on_request && !w.description && !w.ai_involvement && !w.ai_note &&
+    !images.some(i => i.artwork_id === w.id && !i.deleted_at);
+}
 export function snapshot(artist, works, images) {
   const byWork = {};
   for (const i of images) if (i.artwork_id && !i.deleted_at) (byWork[i.artwork_id] ||= []).push(i);
@@ -129,7 +155,7 @@ export function snapshot(artist, works, images) {
       // in the fixed public order. Absent when there are none, so every snapshot made before stays byte-for-byte the same.
       ...(openTo(artist).length ? { open_to: openTo(artist) } : {}),
     },
-    works: works.filter(w => !w.archived).sort((a, b) => a.ord - b.ord).map(w => ({
+    works: works.filter(w => !w.archived && !isEmptyDraft(w, images)).sort((a, b) => a.ord - b.ord).map(w => ({
       id: w.id, slug: w.slug, title: w.title || null, year: w.year ?? null, medium: w.medium || null, materials: w.materials || null,
       h_cm: w.h_cm ?? null, w_cm: w.w_cm ?? null, d_cm: w.d_cm ?? null, price_eur: w.price_eur ?? null,
       price_on_request: !!w.price_on_request, availability: w.availability, description: w.description || null,
@@ -143,7 +169,7 @@ const FULL_ARTIST = ['display_name', 'statement', 'bio', 'practice', 'medium'];
 const LIGHT_ARTIST = ['county', 'county_public', 'website', 'instagram'];
 const LIGHT_WORK = ['title', 'year', 'medium', 'materials', 'h_cm', 'w_cm', 'd_cm', 'description', 'price_eur', 'price_on_request'];
 const FULL_WORK = ['ai_involvement', 'ai_note'];
-const LABEL = { display_name: 'name', h_cm: 'height', w_cm: 'width', d_cm: 'depth', price_eur: 'price', price_on_request: 'price on request',
+const LABEL = { display_name: 'name', bio: 'biography', h_cm: 'height', w_cm: 'width', d_cm: 'depth', price_eur: 'price', price_on_request: 'price on request',
   county_public: 'show county', open_for_commissions: 'open for commissions', ai_involvement: 'AI declaration', ai_note: 'AI disclosure' };
 const lab = f => LABEL[f] || f.replace(/_/g, ' ');
 const eq = (a, b) => JSON.stringify(a ?? null) === JSON.stringify(b ?? null);
@@ -246,7 +272,7 @@ export function checklist(snap, { founding, programme = null, firstPublication =
 export function readiness(snap, opts) { return checklist(snap, opts).map(i => i.text); }
 
 /* The gallery export the publishing pipeline ingests (schema plotnua.plotart.gallery.v1, see plotart_gallery.py). */
-export function exportGallery(snap, { version, approvedAt, licenceVersion, licenceAcceptedAt, artistId, aiDecisions = {} }) {
+export function exportGallery(snap, { version, approvedAt, licenceVersion, licenceAcceptedAt, artistId, aiDecisions = {}, firstApprovedAt = null }) {
   const ext = f => ({ jpeg: 'jpg', png: 'png', webp: 'webp' }[f]);
   const img = (i, role) => ({ file: `${i.id}.${ext(i.format)}`, role, alt: i.alt, photographer: i.photographer,
     photo_credit: i.photographer === 'other_with_permission' ? i.photo_credit : null });
@@ -264,7 +290,10 @@ export function exportGallery(snap, { version, approvedAt, licenceVersion, licen
       ai_founder_decision: aiDecisions[w.id] || null,
       images: w.images.map(m => img(m, m.role)) })),
     publication: { state: 'approved', version: `v${version}`, approved_by: 'founder', approved_at: approvedAt,
-      licence_version: licenceVersion, licence_accepted_at: licenceAcceptedAt, permission_ref: `PA-PERM-${artistId}`, test_note: null },
+      licence_version: licenceVersion, licence_accepted_at: licenceAcceptedAt, permission_ref: `PA-PERM-${artistId}`, test_note: null,
+      // when the founder first approved this gallery (version 1): never changes, so the website's collections can order
+      // newly published artists by it (A12 correction, 17 Nov 2026)
+      ...(firstApprovedAt ? { first_approved_at: firstApprovedAt } : {}) },
   };
 }
 

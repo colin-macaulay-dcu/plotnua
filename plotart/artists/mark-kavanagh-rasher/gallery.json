@@ -1,6 +1,6 @@
 {
  "artist": {
-  "bio": "My Paintings are compositions of visualisations depicting and interrogating unanswered questions that have and continue to pester and agonise humanity.\n\nBy exploring our place within the context of our civilisation and probing our collective consciousness, my paintings urges viewers to form a critical and analytical opinion of humanity's place within the natural world, the universe, and the vast unknown.\n\nThrough an informed presentation of vices and virtues, depictions of greed, shame , and innocence, my work brings viewers on a journey moving through realism, abstraction until surreality frames our experience of the exploration of the existential absurdity of life, and interconnectedness the many facets of our being and the universe we inhabit. My work accuses humanity of being innately sinful and flawed, simultaneously, my work applauds and celebrates creative acts inspired by the natural world, unrestrained by our formal understanding of the universe.\n\nMy work is not expecting viewers to know the answers, but aims to provoke and awaken deep and shared yearning we have to understand the world we share.",
+  "bio": "Rasher, is a self-taught artist based in Wicklow.\nHis emotionally resonating oil paintings have been exhibited and collected from\nDublin London , San Francisco & Los Angeles exhibited at Chateau Marmont in 2006 . Rasher is noted for being an invited artist of the Royal Hibernian Academy Dublin \nand has participated in numerous group and solo exhibitions dating back to 1996 . Notable\ncommissions include 4 paintings for Jameson Whiskey Distillery exhibited at The National Gallery of Ireland in 2006 , \npatrons of his portraiture include the late King Hussein of Jordan.\n\nRasher’s works are consistently admired for their psychological depth and raw\nimmediacy. Having spent thirty years honing his technique, Rasher’s paintings\ndelve into contemporary themes surrounding interpersonal relationships and the\nhuman experience within both familiar and unfamiliar spaces. He lives and\nworks in Wicklow with his wife and children, who share in his creative spirit\nand insatiable curiosity.\n\nRasher is currently working on a  new solo show.",
   "county": "Wicklow",
   "display_name": "Rasher Mark Kavanagh",
   "founding": true,
@@ -50,17 +50,27 @@
    "dhash": "0b4c4633b5a5a5a1",
    "source_sha256": "65bdc3e3060f6f288639cbfddc31a76d163e3eab97413ed64f0cc8139d31749f",
    "stem": "sweat-from-the-sun-tears-from-1"
+  },
+  {
+   "dhash": "23088a2b3b187852",
+   "source_sha256": "00218caa1291a3395753c0305a066e6a2cfac407b17579c477578025c1119eaa",
+   "stem": "vr-vacation-1"
+  },
+  {
+   "dhash": "43918c8d8d33530b",
+   "source_sha256": "f769261519fd8a1bda36504c698aa6eac1c087ff285360f1085e7023df24e976",
+   "stem": "the-universe-is-in-me-1"
   }
  ],
  "publication": {
-  "approved_at": "2026-11-16T21:59:02.798Z",
+  "approved_at": "2026-11-16T23:42:57.873Z",
   "approved_by": "founder",
   "licence_accepted_at": "2026-11-10T20:53:57.148Z",
   "licence_version": "PA-GPIL-2026-11",
   "permission_ref": "PA-PERM-avhiqiv1u1c",
   "state": "approved",
   "test_note": null,
-  "version": "v2"
+  "version": "v3"
  },
  "schema": "plotnua.plotart.gallery-package.v1",
  "works": [
@@ -118,6 +128,118 @@
    "slug": "sweat-from-the-sun-tears-from",
    "title": "Sweat from the Sun , Tears from the Moon",
    "w_cm": 122,
+   "year": 2025
+  },
+  {
+   "ai_founder_decision": null,
+   "ai_involvement": "none",
+   "ai_note": null,
+   "availability": "available",
+   "d_cm": 25,
+   "description": null,
+   "h_cm": 130,
+   "id": "wnzheau9zfe",
+   "images": [
+    {
+     "alt": "Three Girls in abstract summer virtual reality scene",
+     "aspect": 1.41825,
+     "derivatives": [
+      {
+       "file": "vr-vacation-1-600.webp",
+       "long_edge": 600,
+       "pixels": [
+        600,
+        423
+       ]
+      },
+      {
+       "file": "vr-vacation-1-1200.webp",
+       "long_edge": 1200,
+       "pixels": [
+        1200,
+        846
+       ]
+      },
+      {
+       "file": "vr-vacation-1-2000.webp",
+       "long_edge": 2000,
+       "pixels": [
+        2000,
+        1410
+       ]
+      }
+     ],
+     "photo_credit": null,
+     "pixels": [
+      4927,
+      3474
+     ],
+     "role": "main"
+    }
+   ],
+   "materials": "oil paint on fine Linen",
+   "medium": "oil on linen",
+   "price_eur": 20000,
+   "price_on_request": false,
+   "slug": "vr-vacation",
+   "title": "Vr Vacation",
+   "w_cm": 183,
+   "year": 2024
+  },
+  {
+   "ai_founder_decision": null,
+   "ai_involvement": "none",
+   "ai_note": null,
+   "availability": "available",
+   "d_cm": 25,
+   "description": null,
+   "h_cm": 102,
+   "id": "wxf94pphfgy",
+   "images": [
+    {
+     "alt": "Female Portrait with Hole in the centre of the face",
+     "aspect": 0.746,
+     "derivatives": [
+      {
+       "file": "the-universe-is-in-me-1-600.webp",
+       "long_edge": 600,
+       "pixels": [
+        448,
+        600
+       ]
+      },
+      {
+       "file": "the-universe-is-in-me-1-1200.webp",
+       "long_edge": 1200,
+       "pixels": [
+        895,
+        1200
+       ]
+      },
+      {
+       "file": "the-universe-is-in-me-1-2000.webp",
+       "long_edge": 2000,
+       "pixels": [
+        1492,
+        2000
+       ]
+      }
+     ],
+     "photo_credit": null,
+     "pixels": [
+      1865,
+      2500
+     ],
+     "role": "main"
+    }
+   ],
+   "materials": "Oil on panel",
+   "medium": "Oil on Panel",
+   "price_eur": 12000,
+   "price_on_request": false,
+   "slug": "the-universe-is-in-me",
+   "title": "The Universe is in me",
+   "w_cm": 76,
    "year": 2025
   }
  ]

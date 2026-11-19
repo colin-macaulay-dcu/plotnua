@@ -1,0 +1,135 @@
+#!/usr/bin/env python3
+"""PlotArt · Services tab (founder brief 19 Nov 2026, "Art Services & Providers").
+
+Adds "Services" as the last PlotArt tab, after Art for Hire and before PlotNua ↗, to every PlotArt page under ROOT/plotart:
+the header pill, the phone Menu link and the footer link, exactly as atlas-tools/plotart_shell.py writes them for the pages
+it builds. Everything else on each page is left byte-for-byte as it was. The stylesheet's pa-hire-nav block is widened to
+seven pills.
+
+  python3 atlas-tools/plotart-services-nav.py ROOT            apply
+  python3 atlas-tools/plotart-services-nav.py ROOT --check    report what would change; change nothing
+  python3 atlas-tools/plotart-services-nav.py ROOT --remove   withdraw the tab again (paused 19 Nov 2026); --remove --check reports
+
+Follows the launch switch services_page: adding refuses while it is off, removing refuses while it is on.
+
+Strict: a page whose PlotArt navigation does not have exactly one Art for Hire pill and one Menu link stops the run with
+nothing written. Idempotent: a page that already has the tab is left alone."""
+import os
+import re
+import sys
+
+PILL = '<a class="pa-pill" href="{p}services.html"{cur} data-pa-track="nav_services">Services</a>'
+MENU = '<a class="pn-sm-link" href="{p}services.html"{cur} data-pa-track="nav_services_menu">Services</a>'
+FOOT = '<li><a href="{p}services.html">Services</a></li>'
+H_PILL = re.compile(r'<a class="pa-pill" href="([^"]*)art-for-hire/"[^>]*>Art for Hire</a>')
+H_MENU = re.compile(r'<a class="pn-sm-link" href="([^"]*)art-for-hire/"[^>]*>Art for Hire</a>')
+H_FOOT = re.compile(r'<li><a href="([^"]*)art-for-hire/">Art for Hire</a></li>')
+NAV = re.compile(r'<nav class="pa-pills[^"]*" aria-label="PlotArt">(.*?)</nav>', re.S)
+CSS_OLD = ("@media (max-width:1180px){ .pa-pills.pa-pills--hire{ grid-template-columns:repeat(6, minmax(0, 1fr)); } }",
+           "@media (min-width:1181px) and (max-width:1420px){ .pa-head--pills .pa-pills--hire{ gap:6px; } :where(body.pa) .pa-pills--hire a.pa-pill{ padding:0 12px; font-size:14px; } .pa-head--pills:has(.pa-pills--hire) .pa-part{ display:none; } }")
+CSS_NEW = ("@media (max-width:1180px){ .pa-pills.pa-pills--hire{ grid-template-columns:repeat(7, minmax(0, 1fr)); } }",
+           "@media (min-width:1181px) and (max-width:1500px){ .pa-head--pills .pa-pills--hire{ gap:6px; } :where(body.pa) .pa-pills--hire a.pa-pill{ padding:0 12px; font-size:14px; } .pa-head--pills:has(.pa-pills--hire) .pa-part{ display:none; } }")
+CSS_980 = "@media (max-width:980px){ .pa-pills.pa-pills--hire{ grid-template-columns:repeat(3, minmax(0, 1fr)); }"
+CSS_980_NEW = "@media (max-width:980px){ .pa-pills.pa-pills--hire{ grid-template-columns:repeat(4, minmax(0, 1fr)); }"
+
+
+def patch(text, current):
+    if 'data-pa-track="nav_services"' in text:
+        return text, "already"
+    navs = NAV.findall(text)
+    if len(navs) != 1:
+        raise ValueError("expected one PlotArt pill navigation, found %d" % len(navs))
+    if len(H_PILL.findall(navs[0])) != 1 or len(H_MENU.findall(text)) != 1 or len(H_FOOT.findall(text)) > 1:
+        raise ValueError("expected one Art for Hire pill, one Menu link and at most one footer link")
+    cur = ' aria-current="page"' if current else ""
+    out = text
+    for rx, tpl in ((H_PILL, PILL), (H_MENU, MENU), (H_FOOT, FOOT)):
+        m = rx.search(out)
+        if m:
+            out = out[:m.end()] + tpl.format(p=m.group(1), cur=cur) + out[m.end():]
+    return out, "patched"
+
+
+RM = [re.compile(r'<a class="pa-pill" href="[^"]*services\.html"[^>]*data-pa-track="nav_services">Services</a>'),
+      re.compile(r'<a class="pn-sm-link" href="[^"]*services\.html"[^>]*data-pa-track="nav_services_menu">Services</a>'),
+      re.compile(r'<li><a href="[^"]*services\.html">Services</a></li>')]
+
+
+def unpatch(text):
+    if 'data-pa-track="nav_services"' not in text:
+        return text, "absent"
+    out = text
+    for rx in RM:
+        if len(rx.findall(out)) > 1:
+            raise ValueError("more than one Services link of one kind")
+        out = rx.sub("", out, count=1)
+    if "services.html" in out:
+        raise ValueError("a link to services.html remains outside the tab")
+    return out, "removed"
+
+
+def uncss(text):
+    if CSS_OLD[0] in text:
+        return text
+    for a, b in list(zip(CSS_NEW, CSS_OLD)) + [(CSS_980_NEW, CSS_980)]:
+        if text.count(a) != 1:
+            raise ValueError("plotart.css: expected the seven-pill rule once: " + a[:60])
+        text = text.replace(a, b)
+    return text
+
+
+def css(text):
+    if CSS_NEW[0] in text:
+        return text
+    for a, b in list(zip(CSS_OLD, CSS_NEW)) + [(CSS_980, CSS_980_NEW)]:
+        if text.count(a) != 1:
+            raise ValueError("plotart.css: expected the pa-hire-nav rule once: " + a[:60])
+        text = text.replace(a, b)
+    return text
+
+
+def main(root, check=False, remove=False):
+    import json
+    sw = json.load(open(os.path.join(root, "atlas-tools", "release", "plotart-launch-switches.json"), encoding="utf-8")).get("services_page") is True
+    if not check and sw == remove:
+        print("REFUSED (nothing written): services_page is %s" % ("on; the tab stays" if sw else "off; the tab may not be added"))
+        return 2
+    base = os.path.join(root, "plotart")
+    plan, errors = [], []
+    for d, _, files in os.walk(base):
+        for f in sorted(files):
+            if not f.endswith(".html"):
+                continue
+            path = os.path.join(d, f)
+            rel = os.path.relpath(path, base).replace(os.sep, "/")
+            text = open(path, encoding="utf-8").read()
+            if 'class="pa-pills' not in text:
+                continue
+            try:
+                new, state = unpatch(text) if remove else patch(text, rel == "services.html")
+                plan.append((path, rel, text, new, state))
+            except ValueError as e:
+                errors.append("%s: %s" % (rel, e))
+    cpath = os.path.join(base, "assets", "plotart.css")
+    ctext = open(cpath, encoding="utf-8").read()
+    try:
+        cnew = uncss(ctext) if remove else css(ctext)
+    except ValueError as e:
+        errors.append(str(e))
+    if errors:
+        print("REFUSED (nothing written):\n  " + "\n  ".join(errors))
+        return 2
+    for path, rel, text, new, state in plan:
+        if not check and new != text:
+            open(path, "w", encoding="utf-8").write(new)
+    if not check and cnew != ctext:
+        open(cpath, "w", encoding="utf-8").write(cnew)
+    print("%d pages, %d changed; stylesheet %s" % (len(plan), sum(p[4] in ("patched", "removed") for p in plan),
+                                                 "unchanged" if cnew == ctext else ("would change" if check else ("back to six pills" if remove else "widened to seven pills"))))
+    return 0
+
+
+if __name__ == "__main__":
+    if len(sys.argv) < 2:
+        sys.exit(__doc__)
+    sys.exit(main(sys.argv[1], "--check" in sys.argv, "--remove" in sys.argv))

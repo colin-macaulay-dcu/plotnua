@@ -2,6 +2,7 @@
 packages (see plotart_gallery.py). Public fields only; the whole artwork image is always shown
 (object-fit: contain), never cropped."""
 import html
+import re
 import plotart_opportunities as OPP  # noqa: E402  (opportunities shown publicly, 16 Nov 2026)
 import plotart_seo as SEO
 from urllib.parse import quote
@@ -100,13 +101,23 @@ def commission_href(pkg):
 
 
 def commission_block(pkg, enquiry_endpoint):
-    """Open for Commissions (13 Nov 2026): only when the artist has switched it on. Its own wrapper, so pa-enquiry.js pairs
-    this button with this form; nothing else on the page changes."""
-    if pkg["artist"].get("open_for_commissions") is not True:
+    """Open for Commissions (13 Nov 2026; feature section 17 Nov 2026): ONLY when the artist has switched "Open for
+    commissions" on in PlotArt Studio (the setting the enquiry relay itself checks). Choosing Commissions among their
+    opportunities alone shows the Commissions pill, never this. The button and its form share one wrapper, so
+    pa-enquiry.js pairs them; the form is the existing commission enquiry (data-kind="commission")."""
+    a = pkg["artist"]
+    if a.get("open_for_commissions") is not True:
         return ""
-    return ('\n  <div class="pa-ag-enq-c" style="margin-top:14px"><a class="pa-btn pa-btn--ghost" href="%s" data-pa-track="artist_commission_enquiry"%s>'
-            'Enquire about a commission</a>%s</div>') % (
-        E(commission_href(pkg)), " data-pa-enquire" if enquiry_endpoint else "", enquiry_form(pkg, None, enquiry_endpoint, commission=True))
+    name = a["display_name"]
+    return ('\n<section class="pa-ag-com" id="commission" aria-labelledby="agComH"><div class="pa-wrap pa-ag-com-in">'
+            '\n  <div class="pa-ag-com-t"><h2 id="agComH">Open for commissions</h2>'
+            '<p>%s welcomes enquiries about new, commissioned work. Whether to take a commission on, and its size, subject, price and timing, '
+            'are for you and the artist to agree directly.</p>'
+            '<p class="pa-ag-com-more"><a href="../../commissions/" data-pa-track="artist_commissions_page">How commissions work</a></p></div>'
+            '\n  <div class="pa-ag-enq-c"><a class="pa-btn pa-btn--solid" href="%s" data-pa-track="artist_commission_enquiry"%s>'
+            'Enquire about a commission</a>%s</div>'
+            '\n</div></section>\n') % (
+        E(name), E(commission_href(pkg)), " data-pa-enquire" if enquiry_endpoint else "", enquiry_form(pkg, None, enquiry_endpoint, commission=True))
 
 
 def enquiry_href(pkg, w=None):
@@ -145,6 +156,29 @@ def empty_works(a):
             '<p class="pa-ag-empty-l">%s isn&#x27;t showing any works at the moment. You can still get in touch through PlotArt.</p></div>') % E(first)
 
 
+
+_SENTENCE_END = re.compile(r"[.!?…:;\"”’')\]]\s*$")
+
+
+def paragraphs(text):
+    """A biography's paragraphs (founder brief 18 Nov 2026): a blank line always starts a paragraph, and so does a single
+    line break after the end of a sentence (artists press Enter once and expect a new paragraph). A line break in the
+    middle of a sentence (text pasted from a document with fixed-width lines) is read as a space, as before.
+    Same rule in the Studio preview (worker/plotart-studio/src/render.js)."""
+    out = []
+    for block in re.split(r"\n\s*\n", str(text or "").replace("\r\n", "\n")):
+        cur = ""
+        for line in block.split("\n"):
+            line = line.strip()
+            if not line:
+                continue
+            cur = (cur + " " + line) if cur else line
+            if _SENTENCE_END.search(line):
+                out.append(cur); cur = ""
+        if cur:
+            out.append(cur)
+    return out
+
 def artist_body(pkg, blocks=None, preview=False, enquiry_endpoint=None):
     a = pkg["artist"]
     works = shown(pkg)
@@ -175,16 +209,16 @@ def artist_body(pkg, blocks=None, preview=False, enquiry_endpoint=None):
         links.append('<a href="%s" rel="noopener nofollow" data-pa-track="artist_website">Website <span aria-hidden="true">↗</span></a>' % E(a["website"]))
     if a.get("instagram"):
         links.append('<a href="https://www.instagram.com/%s/" rel="noopener nofollow" data-pa-track="artist_instagram">Instagram <span aria-hidden="true">↗</span></a>' % E(a["instagram"]))
-    bio = "".join("<p>%s</p>" % E(p.strip()) for p in a["bio"].split("\n\n") if p.strip())
+    bio = "".join("<p>%s</p>" % E(p) for p in paragraphs(a["bio"]))
     return """%s
 <section class="pa-ag-hero%s"><div class="pa-wrap">
   <nav class="pa-crumb" aria-label="Breadcrumb"><a href="../../gallery/">Artists’ Gallery</a><span aria-hidden="true">/</span><span aria-current="page">%s</span></nav>
   <div class="pa-ag-id">%s<div>
     %s<h1>%s</h1>
-    %s%s
+    %s%s%s
   </div></div>
 </div></section>
-
+%s
 <section class="pa-ag-works" aria-labelledby="agWorksH"><div class="pa-wrap">
   <div class="pa-ag-head"><h2 id="agWorksH">Works</h2><p>%s</p></div>
   %s
@@ -198,21 +232,20 @@ def artist_body(pkg, blocks=None, preview=False, enquiry_endpoint=None):
 <section class="pa-ag-enq"><div class="pa-wrap pa-ag-enq-in">
   <p class="pa-ag-enq-t">Interested in %s's work?</p>
   <p class="pa-ag-enq-l">Send an enquiry through PlotArt and we'll put you in touch with the artist.</p>
-  <a class="pa-btn pa-btn--solid" href="%s" data-pa-track="artist_enquiry"%s>Enquire through PlotArt</a>%s%s
+  <a class="pa-btn pa-btn--solid" href="%s" data-pa-track="artist_enquiry"%s>Enquire through PlotArt</a>%s
 </div></section>
 """ % (checks_panel(pkg, blocks) if preview else "",
        " has-portrait" if portrait else "", E(name), portrait,
        '<span class="pa-gcard-badge">Founding Artist</span>' if a.get("founding") else "",
-       E(name), (('<p class="pa-ag-meta">%s</p>' % E(meta_line(a))) if meta_line(a) else "")
-       + ('<p class="pa-ag-meta pa-ag-ofc">Open for commissions</p>' if a.get("open_for_commissions") is True else "")
-       + OPP.artist_line(pkg),
+       E(name), (('<p class="pa-ag-meta">%s</p>' % E(meta_line(a))) if meta_line(a) else ""),
        ('<p class="pa-ag-statement">%s</p>' % E(a["statement"])) if a.get("statement") else "",
+       OPP.artist_line(pkg),
+       commission_block(pkg, enquiry_endpoint),
        ("%d %s" % (len(works), "artwork" if len(works) == 1 else "artworks")) if works else "None on show right now",
        ('<ol class="pa-ag-grid">%s\n  </ol>' % "".join(tiles)) if works else empty_works(a),
        E(name.split(" ")[0] if " " in name else name), bio,
        ('<p class="pa-ag-links">%s</p>' % "".join(links)) if links else "",
-       E(name), E(enquiry_href(pkg)), " data-pa-enquire" if enquiry_endpoint else "", enquiry_form(pkg, None, enquiry_endpoint),
-       commission_block(pkg, enquiry_endpoint))
+       E(name), E(enquiry_href(pkg)), " data-pa-enquire" if enquiry_endpoint else "", enquiry_form(pkg, None, enquiry_endpoint))
 
 
 def artwork_body(pkg, w, prev_w, next_w, preview=False, enquiry_endpoint=None):
@@ -359,30 +392,37 @@ def artist_index(pkgs):
             '<ul>%s</ul></nav>') % links
 
 
-def vg_collection(pkgs, spaces=25, layout=None):
-    """Everything between VG_BEGIN and VG_END on the Virtual Gallery page: the open-count line, the wall of open
+def vg_collection(pkgs, spaces=25, layout=None, featured=()):
+    """Everything between VG_BEGIN and VG_END on the Virtual Gallery page: the wall of open
     galleries (in position order, then any without a position) and the index of the twenty-five positions.
     Shared by the production content pipeline (plotart-gallery-publish.py)."""
     positions, extra = vg_positions(pkgs, spaces, layout)
-    works = [_vg_work(p, n) for n, st, p in positions if st == "pub"] + [_vg_work(p, None) for p in extra]
+    # Explore More Artists (founder decision 17 Nov 2026): the wall leaves out the artists featured above it (their gallery
+    # addresses, read from the page's Featured Artists region), so nobody appears twice. Everyone else keeps their place
+    # and numeral; the twenty-five positions index and the A-Z list below still name every published artist.
+    hide = set(featured)
+    works = [_vg_work(p, n) for n, st, p in positions if st == "pub" and p["artist"]["slug"] not in hide] + \
+        [_vg_work(p, None) for p in extra if p["artist"]["slug"] not in hide]
     count = {k: sum(1 for _, st, _ in positions if st == k) for k, _ in VG_STATES}
     key = "".join('<li><span class="pa-vgc-k is-%s" aria-hidden="true"></span><b>%d</b> %s</li>' % (k, count[k], w.lower())
                   for k, w in VG_STATES if count[k])
     line = "".join('<li class="is-%s"></li>' % st for _, st, _ in positions)
     opened = len(works)
     hang = ('\n  <ol class="pa-vgc-hang n-%s" aria-label="Open galleries">%s\n  </ol>' % (min(opened, 3), "".join(works))) if works else ""
-    return """%s
-  <p class="pa-vgc-count">%d of %d galleries open</p>%s
+    # The "N of 25 galleries open" counter was removed with the twenty-five-gallery framing (founder brief 17 Nov 2026,
+    # Featured Artists in the Artists' Gallery): every published artist is in the collection; the index below still
+    # records the twenty-five founding positions.
+    return """%s%s
   %s
   <div class="pa-vgc-index" role="region" aria-labelledby="vgIdxH">
     <h3 id="vgIdxH">Founding positions</h3>
-    <p class="pa-vgc-note">Twenty-five numbered positions, one for each Founding Artist. A gallery opens here when the artist&rsquo;s work is published.</p>
+    <p class="pa-vgc-note">A record of PlotArt&rsquo;s founding programme: twenty-five numbered positions, one for each Founding Artist. It is not a limit on the gallery: every published artist appears in the Artists&rsquo; Gallery above.</p>
     <ol class="pa-vgc-line" aria-hidden="true">%s</ol>
     <ul class="pa-vgc-key" aria-label="Summary of the twenty-five positions">%s</ul>
     <ol class="pa-vgc-plan" aria-label="The twenty-five positions">%s
     </ol>
   </div>
-  %s""" % (VG_BEGIN, opened, spaces, hang, artist_index(pkgs), line, key, "".join(_vg_pos(n, st, p) for n, st, p in positions), VG_END)
+  %s""" % (VG_BEGIN, hang, artist_index(pkgs), line, key, "".join(_vg_pos(n, st, p) for n, st, p in positions), VG_END)
 
 
 def vg_region(html_text):

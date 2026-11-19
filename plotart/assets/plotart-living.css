@@ -1,0 +1,59 @@
+/* PlotArt · Living Gallery page refinement (founder brief 17 Nov 2026). Loaded only by living-gallery.html.
+   Spacing and composition only: existing PlotArt tokens, type and buttons; no new colours, icons or motion. */
+
+/* One calmer vertical rhythm: the page's sections were 128px top and bottom whatever they held. */
+body.pa .pa-lg-how, body.pa #host, body.pa #artists{ padding:clamp(56px, 6.5vw, 96px) 0; }
+body.pa .pa-lg-aah{ padding:clamp(48px, 5.5vw, 80px) 0; }
+body.pa .pa-lg-hero .pa-wrap{ padding-bottom:clamp(40px, 5vw, 72px); }
+body.pa .pa-lg-how .pa-sec-head h2, body.pa #host .pa-sec-head h2{ font-size:clamp(40px, 4.4vw, 64px); }
+
+/* How it would work: the heading beside its three steps, not above them. */
+body.pa .pa-lg-how .pa-wrap{ display:grid; grid-template-columns:repeat(2, minmax(0, 1fr)); gap:28px clamp(20px, 3vw, 40px); align-items:start; }
+body.pa .pa-lg-how .pa-sec-head{ display:block; margin:0; }
+body.pa .pa-lg-how .pa-sec-head h2{ max-width:11ch; }
+body.pa .pa-lg-how .pa-steps li{ padding:22px 0; }
+body.pa .pa-lg-how .pa-steps h3{ font-size:24px; }
+
+/* For homeowners: the three roles read as gallery wall labels (hairline rules, no boxes or shadows). */
+body.pa #host .pa-sec-head{ margin-bottom:clamp(28px, 3.5vw, 44px); }
+body.pa #host .pa-tiers{ gap:0; border-top:1px solid var(--line-2); border-bottom:1px solid var(--line-2); }
+body.pa #host .pa-tier{ background:transparent; box-shadow:none; border-radius:0; padding:26px clamp(20px, 2.4vw, 36px) 30px; border-left:1px solid var(--line); }
+body.pa #host .pa-tier:first-child{ border-left:0; padding-left:0; }
+body.pa #host .pa-tier .pa-eyebrow{ margin:0 0 16px; }
+body.pa #host .pa-tier h3{ font-size:clamp(28px, 2.5vw, 34px); line-height:1.1; margin:0 0 10px; }
+body.pa #host .pa-tier p:last-child{ max-width:34ch; }
+body.pa #host .pa-lg-promises{ margin-top:22px; gap:10px 0; }
+body.pa #host .pa-lg-promises li{ padding-right:clamp(20px, 2.4vw, 36px); }
+body.pa #host .pa-lg-promises li + li{ padding-left:clamp(20px, 2.4vw, 36px); }
+body.pa #host .pa-lg-promises li{ border-top:0; padding-top:0; color:var(--stone); font-size:14.5px; }
+body.pa #host .pa-actions{ margin:clamp(28px, 3vw, 36px) 0 0 !important; }
+body.pa #host .pa-note{ margin-top:16px; max-width:88ch; }
+
+/* Artists open to the Living Gallery: on the page's own grid, introduction beside the list. */
+body.pa #open-artists{ padding:clamp(56px, 6.5vw, 96px) 0; }
+body.pa #open-artists .pa-opp-in{ max-width:var(--max); display:grid; grid-template-columns:repeat(2, minmax(0, 1fr)); grid-template-rows:auto auto 1fr; column-gap:clamp(20px, 3vw, 40px); align-items:start; }
+body.pa #open-artists h2{ grid-column:1; grid-row:1; font-size:clamp(34px, 3.6vw, 52px); max-width:13ch; }
+body.pa #open-artists .pa-opp-said{ grid-column:1; grid-row:2; font-size:15.5px; max-width:44ch; margin:0; }
+body.pa #open-artists .pa-opp-more{ grid-column:1; grid-row:3; }
+body.pa #open-artists .pa-opp-list{ grid-column:2; grid-row:1 / span 3; }
+body.pa #open-artists .pa-opp-row{ padding:16px 0; }
+body.pa #open-artists h2{ margin:0 0 20px; }
+body.pa #open-artists .pa-opp-more{ margin-top:26px; }
+@media (min-width:641px){ body.pa #open-artists .pa-opp-name{ flex:1 0 auto; } body.pa #open-artists .pa-opp-what{ max-width:52%; } }
+
+/* For artists: the two PlotArt buttons. */
+body.pa .pa-lg-artist-acts{ margin:30px 0 0; }
+
+@media (max-width:900px){
+  body.pa .pa-lg-how .pa-wrap{ grid-template-columns:1fr; }
+  body.pa .pa-lg-how .pa-sec-head h2{ max-width:none; }
+  body.pa #host .pa-tier, body.pa #host .pa-tier:first-child{ border-left:0; padding:22px 0 24px; }
+  body.pa #host .pa-tier + .pa-tier{ border-top:1px solid var(--line); }
+  body.pa #open-artists .pa-opp-in{ display:block; }
+  body.pa #host .pa-lg-promises li, body.pa #host .pa-lg-promises li + li{ padding:0; }
+  body.pa #open-artists h2{ margin-bottom:14px; }
+  body.pa #open-artists .pa-opp-list{ margin-top:26px; }
+}
+@media (max-width:560px){
+  body.pa #host .pa-actions .pa-btn, body.pa .pa-lg-artist-acts .pa-btn{ width:100%; justify-content:center; }
+}

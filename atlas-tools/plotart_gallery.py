@@ -53,8 +53,18 @@ WORK_KEYS = {"id", "slug", "title", "year", "medium", "materials", "h_cm", "w_cm
              "ai_founder_decision", "images"}
 IMAGE_KEYS = {"file", "role", "alt", "photographer", "photo_credit"}
 PUB_KEYS = {"state", "version", "approved_by", "approved_at", "licence_version", "licence_accepted_at",
-            "permission_ref", "test_note"}
+            "permission_ref", "test_note",
+            "first_approved_at"}         # optional (17 Nov 2026): when the founder first approved this gallery (Studio
+                                         # version 1); never changes, so collections can order newly published artists by it
+_ISO = re.compile(r"^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{1,6})?Z$")
 TOP_KEYS = {"schema", "artist", "works", "publication"}
+
+
+def check_first_approved(pub):
+    """first_approved_at, when present, is a UTC timestamp (A12 correction, 17 Nov 2026)."""
+    v = pub.get("first_approved_at")
+    if v is not None and not (isinstance(v, str) and _ISO.match(v)):
+        raise Refused("first_approved_at must be a UTC timestamp")
 _EMAIL = re.compile(r"[A-Za-z0-9._%+-]+@[A-Za-z0-9-]+\.[A-Za-z]")
 _EIRCODE = re.compile(r"\b[ACDEFHKNPRTVWXY]\d[0-9W]\s?[0-9ACDEFHKNPRTVWXY]{4}\b")      # upper case only
 _DIGITRUN = re.compile(r"\+?\d[\d \-().]{6,}\d")
@@ -195,6 +205,7 @@ def validate_export(g):
             raise Refused("unexpected publication field %r" % k)
     if pub.get("state") not in ("private_preview", "approved"):
         raise Refused("publication state must be private_preview or approved")
+    check_first_approved(pub)
     return g
 
 

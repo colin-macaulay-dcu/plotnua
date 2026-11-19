@@ -1,0 +1,117 @@
+{
+ "artist": {
+  "bio": "Lena is an emerging abstract artist based in Dublin. As a recently divorced and busy mother of two she cherishes her art practice as a healing opportunity to reflect on life where she lets her inner child take the stage. \nWith a love for bold colours, shapes and marks , she likes to layer her paints and uses various scratching techniques to create unique textures. \nLena says: “I never know where a panting is going to take me. I feel as though the canvas has its very own mind and letting go of the need for control is something I find to be a very useful practice. To be in that playful flow state while painting is the only thing that helps me switch off my busy mind and I think that is priceless.\nSeeing my work resonating with people is truly special for me and I hope to be in the industry for the long haul.”",
+  "county": "Dublin",
+  "display_name": "Lena Fawaz",
+  "founding": false,
+  "instagram": "Lenafawazart",
+  "medium": "painting",
+  "open_for_commissions": true,
+  "portrait": {
+   "alt": "Artist at a recent exhibition.",
+   "aspect": 0.75,
+   "derivatives": [
+    {
+     "file": "portrait-600.webp",
+     "long_edge": 600,
+     "pixels": [
+      450,
+      600
+     ]
+    }
+   ],
+   "photo_credit": null,
+   "pixels": [
+    3024,
+    4032
+   ],
+   "role": "portrait"
+  },
+  "practice": "Painter",
+  "slug": "lena-fawaz",
+  "statement": null,
+  "website": null
+ },
+ "provenance_sources": [
+  {
+   "dhash": "c6c64523a4e6e0f8",
+   "source_sha256": "5811174d4e9f6f24d83d9593c4a0386acaadd81a6787a705fea57cabbbcc2024",
+   "stem": "portrait"
+  },
+  {
+   "dhash": "39b29d9616a9285d",
+   "source_sha256": "17c6aa96dba43663daf4cf1fe0657ea8c0534315b9dcd892efd7d536f985652a",
+   "stem": "what-we-carry-1"
+  }
+ ],
+ "publication": {
+  "approved_at": "2026-11-18T15:21:42.635Z",
+  "approved_by": "founder",
+  "first_approved_at": "2026-11-17T12:29:38.785Z",
+  "licence_accepted_at": "2026-11-17T11:37:43.820Z",
+  "licence_version": "PA-GPIL-2026-11",
+  "permission_ref": "PA-PERM-at5xkpjluff",
+  "state": "approved",
+  "test_note": null,
+  "version": "v3"
+ },
+ "schema": "plotnua.plotart.gallery-package.v1",
+ "works": [
+  {
+   "ai_founder_decision": null,
+   "ai_involvement": "none",
+   "ai_note": null,
+   "availability": "available",
+   "d_cm": 3,
+   "description": null,
+   "h_cm": 80,
+   "id": "waczo72tchw",
+   "images": [
+    {
+     "alt": "Soft crème tones contrasting with deep maroon and pops of bright pink. “What we carry” , 80cm x80cm, Mixed Media on Canvas.",
+     "aspect": 1.02554,
+     "derivatives": [
+      {
+       "file": "what-we-carry-1-600.webp",
+       "long_edge": 600,
+       "pixels": [
+        600,
+        585
+       ]
+      },
+      {
+       "file": "what-we-carry-1-1200.webp",
+       "long_edge": 1200,
+       "pixels": [
+        1200,
+        1170
+       ]
+      },
+      {
+       "file": "what-we-carry-1-2000.webp",
+       "long_edge": 2000,
+       "pixels": [
+        2000,
+        1950
+       ]
+      }
+     ],
+     "photo_credit": null,
+     "pixels": [
+      2771,
+      2702
+     ],
+     "role": "main"
+    }
+   ],
+   "materials": "Acrylic paint and pastels",
+   "medium": "Mixed Media",
+   "price_eur": 750,
+   "price_on_request": false,
+   "slug": "what-we-carry",
+   "title": "“What we Carry”",
+   "w_cm": 80,
+   "year": 2026
+  }
+ ]
+}

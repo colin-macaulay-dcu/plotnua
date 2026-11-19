@@ -1,7 +1,7 @@
 /* PlotArt · outgoing email (Phase 3). MAILER = 'resend' (production, once approved: RESEND_API_KEY secret, sending
    domain verified), 'none' (nothing sent; the artist sees enquiries in Studio), or 'capture' (local tests only). */
 export async function send(env, { to, replyTo, subject, text, idempotencyKey }) {
-  const mode = env.MAILER || 'none';
+  const mode = env.SANDBOX === 'true' ? 'none' : env.MAILER || 'none';   // the sandbox never sends email
   if (mode === 'none') return { sent: false, detail: 'no mailer configured' };
   if (mode === 'capture') {
     if (env.ENVIRONMENT !== 'local') throw new Error('mail capture is for local tests only');

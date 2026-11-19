@@ -230,7 +230,7 @@ export async function absenceChecklist(env, returnOn = null) {
         payment_status: sx ? `The buyer can still pay on the Stripe page already opened until ${irishTime(sx.expires_at)}.` : st.paused ? 'The buyer cannot start payment while paused.' : 'The buyer can start payment using this quote link.',
         quote_expiry: `Quote expires ${irishTime(x.quote_expires_at)} (original expiry, unchanged).` }; }), items };
 }
-async function requireInstalled(env) { if (!(await installed(env))) throw new Bad('The payment pilot is not installed (migration 0016)', 409); }
+async function requireInstalled(env) { if (!(await installed(env))) throw new Bad('The payment pilot is not installed (migration 0017)', 409); }
 
 /* An installed text whose fingerprint matches the text bundled with the Worker. */
 export async function currentTerms(env, kind) {

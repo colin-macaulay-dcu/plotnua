@@ -131,24 +131,34 @@ for f in pkgs:
     for ep in (None, ENDPOINT):
         a, b = pages(M, pkg, ep), pages(P, pkg, ep)
         for k in a:
-            if a[k] == b.get(k):
+            if a[k] == b.get(k) or (k == "index" and OPP.open_to(pkg)):   # 17 Nov 2026: pills change the gallery page of an artist who shows something
                 same += 1
             else:
                 diffs.append("%s/%s" % (pkg["artist"]["slug"], k))
 published = [json.load(open(f)) for f in pkgs]
-check("O3a all %d published galleries: %d gallery and artwork pages byte-identical to main (nobody shows anything yet)" % (len(pkgs), same),
-      len(pkgs) >= 5 and not diffs and not any(p["artist"].get("open_to") for p in published), diffs[:5])
+shown_now = [p for p in published if OPP.open_to(p)]
+lines_ok = all((not p["artist"].get("open_to") or OPP.check_open_to(p["artist"]["open_to"])) and OPP.artist_line(p) in open(os.path.join(ROOT, "plotart", "artists", p["artist"]["slug"], "index.html"), encoding="utf-8").read()
+               for p in shown_now)
+check("O3a all %d published galleries: %d gallery and artwork pages byte-identical to main's renderer; the %d artists showing opportunities carry a valid open_to and exactly its \"Open to\" line"
+      % (len(pkgs), same, len(shown_now)), len(pkgs) >= 5 and not diffs and lines_ok, diffs[:5])
 base = json.load(open(os.path.join(ROOT, "plotart", "artists", "leah-hewson", "gallery.json")))
+# A stable fixture (17 Nov 2026): a real published gallery, with the two settings this test turns on removed, so it is
+# always "an artist who shows no opportunities and is not open for commissions", whatever that artist later chooses in
+# PlotArt Studio. The live gallery is never touched.
+base["artist"].pop("open_to", None)
+base["artist"]["open_for_commissions"] = False
 withp = copy.deepcopy(base)
 withp["artist"]["open_to"] = ["exhibitions", "living_gallery", "commissions"]
 A, B = pages(P, base, ENDPOINT), pages(P, withp, ENDPOINT)
-line = '<p class="pa-ag-meta pa-ag-open" style="margin-top:14px;font-size:14px;letter-spacing:.02em;text-transform:none;color:var(--stone)">Open to: <a href="../../opportunities/#exhibitions" data-pa-track="artist_opportunity_link">Exhibitions</a> · <a href="../../living-gallery.html#open-artists" data-pa-track="artist_opportunity_link">Living Gallery</a> · <a href="../../opportunities/#commissions" data-pa-track="artist_opportunity_link">Commissions</a></p>'
-check("O3b with open_to the gallery page gains exactly one \"Open to\" line, linking each opportunity to its list", B["index"].count(line) == 1, B["index"][:0])
-check("O3c removing that line gives back exactly today's page; artwork pages are unchanged", B["index"].replace(line, "") == A["index"] and all(A[k] == B[k] for k in A if k != "index") and len(A) > 1)
+line = ('<div class="pa-ag-opps"><p class="pa-ag-opps-h" id="agOppsH">Open to</p><ul class="pa-ag-pills" aria-labelledby="agOppsH">'
+        '<li><a class="pa-ag-pill" href="../../opportunities/#exhibitions" data-pa-track="artist_opportunity_link">Exhibitions</a></li>'
+        '<li><a class="pa-ag-pill" href="../../living-gallery.html#open-artists" data-pa-track="artist_opportunity_link">Living Gallery</a></li></ul></div>')
+check("O3b with open_to the gallery page gains exactly one row of \"Open to\" pills, each linking to its list; Commissions chosen without \"Open for commissions\" is never shown", B["index"].count(line) == 1 and "Commissions" not in B["index"], B["index"][:0])
+check("O3c removing the pills gives back exactly today's page; artwork pages are unchanged", B["index"].replace(line, "") == A["index"] and all(A[k] == B[k] for k in A if k != "index") and len(A) > 1)
 both = copy.deepcopy(withp)
 both["artist"]["open_for_commissions"] = True
 bi = pages(P, both, ENDPOINT)["index"]
-check("O3d with \"Open for commissions\" on, Commissions is said once (the existing line), never twice", bi.count("Open for commissions") == 1 and ">Commissions</a>" not in bi and "Living Gallery</a>" in bi)
+check("O3d with \"Open for commissions\" on, the Commissions pill appears once and the commission section once (never twice)", bi.count('href="../../commissions/" data-pa-track="artist_opportunity_link"') == 1 and bi.count(">Open for commissions</h2>") == 1 and "Living Gallery</a>" in bi)
 
 print("— O4 the lists")
 aoife = sample("aoife-sample", "Aoife Sample", "Painter", ["exhibitions", "living_gallery", "talks"])
@@ -159,7 +169,7 @@ pk4 = [cara, dan, brian, aoife]
 lg = [p["artist"]["slug"] for p in OPP.listed(pk4, "living_gallery")]
 cm = [p["artist"]["slug"] for p in OPP.listed(pk4, "commissions")]
 check("O4a Living Gallery lists exactly the artists who chose it, by surname (Preview before Sample)", lg == ["cara-preview", "aoife-sample"], lg)
-check("O4b Commissions lists those who chose it AND those with the existing \"Open for commissions\" switch on (Brian)", cm == ["brian-example", "cara-preview"], cm)
+check("O4b Commissions lists ONLY artists whose explicit \"Open for commissions\" switch is on (Brian), never one who only chose it (Cara)", cm == ["brian-example"], cm)
 check("O4c an artist who shows nothing is in no list", all(dan not in OPP.listed(pk4, k) for k in OPP.KEYS))
 try:
     OPP.listed(pk4 + [sample("eve-draft", "Eve Draft", "Painter", ["talks"], state="draft")], "talks")
@@ -179,9 +189,35 @@ for d in ("assets",):
 for fn in ("index.html", "privacy.html"):
     shutil.copyfile(os.path.join(ROOT, fn), os.path.join(site, fn))
 before = {p: open(os.path.join(site, "plotart", p), encoding="utf-8").read() for p in OPP.PAGES}
-check("O4f today (nobody shows anything): the three programme pages carry an EMPTY region; the opportunities page says each list is empty",
-      all(OPP.REGION.search(before[p]).group(0) == OPP.BEGIN + OPP.END for p in OPP.PAGES if p != OPP.HUB)
-      and before[OPP.HUB].count("No artists are listed here yet.") == 7)
+def _thumbs_ok(doc, path):
+    """Every listed row: a listed artist (open_to carries the key), linked as one row to their gallery, with an 80x80
+    lazy-loaded thumbnail that is the smallest published derivative of a MAIN image of one of their own published works
+    (never the portrait), with that image's approved alt text, and the file present."""
+    base = "../" * path.count("/")
+    rows = re.findall(r'<li><a class="pa-opp-row" href="([^"]+)" data-pa-track="opportunity_artist">(.*?)</a></li>', doc, re.S)
+    if not rows:
+        return False
+    by = {p["artist"]["slug"]: p for p in published}
+    for href, inner in rows:
+        m = re.fullmatch(re.escape(base) + r"artists/([a-z0-9-]+)/(#commission)?", href)
+        if m and m.group(2) and (path != OPP.COMMISSIONS or by.get(m.group(1), {}).get("artist", {}).get("open_for_commissions") is not True):
+            return False   # only the Commissions page, and only for an artist whose Open for commissions is on, links to the commission enquiry
+        pk = m and by.get(m.group(1))
+        img = re.search(r'<img class="pa-opp-thumb" src="([^"]+)" alt="([^"]+)" width="80" height="80" loading="lazy" decoding="async">', inner)
+        if not pk or not img or not OPP.open_to(pk) or "portrait" in img.group(1):
+            return False
+        mains = {base + "artists/%s/img/%s" % (pk["artist"]["slug"], min(i["derivatives"], key=lambda d: d["long_edge"])["file"]): i.get("alt")
+                 for w in pk["works"] for i in w.get("images", []) if i.get("role") == "main" and i.get("derivatives")}
+        if img.group(1) not in mains or html.unescape(img.group(2)) != (mains[img.group(1)] or "").strip() \
+                or not os.path.isfile(os.path.join(ROOT, "plotart", os.path.normpath(os.path.join(os.path.dirname(path), img.group(1))))):
+            return False
+    return True
+live_ok = all(OPP.REGION.search(before[p]).group(0) == (OPP.BEGIN + ("\n" + OPP.content(p, published) + "\n" if OPP.content(p, published) else "") + OPP.END)
+              for p in OPP.PAGES)
+listed_keys = sum(1 for k in OPP.KEYS if OPP.listed(published, k))
+check("O4f today: the four pages carry exactly the lists the published galleries produce (%d artists showing); every row is one link to the gallery with an approved artwork thumbnail (80x80, lazy, approved alt, never the portrait); unlisted kinds say so"
+      % len(shown_now), live_ok and all(_thumbs_ok(before[p], p) for p in OPP.PAGES if OPP.content(p, published))
+      and before[OPP.HUB].count("No artists are listed here yet.") == len(OPP.KEYS) - listed_keys)
 for p in pk4:
     d = os.path.join(site, "plotart", "artists", p["artist"]["slug"])
     os.makedirs(d, exist_ok=True)

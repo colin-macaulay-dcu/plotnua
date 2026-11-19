@@ -1,4 +1,4 @@
--- PlotArt Studio · migration 0016 · Managed checkout pilot (development 16 Nov 2026). NOT APPLIED IN PRODUCTION.
+-- PlotArt Studio · migration 0017 · Managed checkout pilot (renumbered from 0016 on 19 Nov 2026: main's 0016 is homepage_features) (development 16 Nov 2026). NOT APPLIED IN PRODUCTION.
 -- New tables only. No existing table, row, agreement, acceptance, gallery position or publishing record is changed.
 -- Triggers are refusal-only BEFORE triggers on these NEW tables (migration-check policy, 6 Nov 2026): this migration
 -- needs the founder's explicit approval of this exact file, and both production backups, before it runs.

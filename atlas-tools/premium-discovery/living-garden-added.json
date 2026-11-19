@@ -255,6 +255,36 @@
    "why": "11 Nov 2026, founder decisions (Garden Office Solutions temporarily unable to take new orders, Outdoor Living Nova out of stock, Lugarde PSML2 awaiting re-verification): the cost-evidence figures follow the registered correction availability-and-reverification-2026-11-11 (six prices withdrawn from current comparisons; the products and their historical prices stay published), written by atlas-tools/refresh-garden-cost-figures.py from cluster1-cost-evidence.json.",
    "from": "Only 38 publish a floor area. Which is the one number the planning rules actually turn on.",
    "to": "Only 35 publish a floor area. Which is the one number the planning rules actually turn on."
+  },
+  {
+   "why": "2026-11-17, founder approval 'PlotNua — BioBuilds publication approval' (17 Nov 2026), on BIOBUILDS' written confirmation of the corrected five-model preview (PN-EVID-BIOBUILDS-20261117): the supplier publication gate releases BIOBUILDS and four qualified garden homes join the Maker Explorer (Nest 24 stays held by the qualification rule); the explorer's own counts follow. Built by atlas-tools/build-maker-explorer.py from the universe.",
+   "from": "24 garden homes",
+   "to": "28 garden homes"
+  },
+  {
+   "why": "2026-11-17, founder approval 'PlotNua — BioBuilds publication approval' (17 Nov 2026), on BIOBUILDS' written confirmation of the corrected five-model preview (PN-EVID-BIOBUILDS-20261117): the supplier publication gate releases BIOBUILDS and four qualified garden homes join the Maker Explorer (Nest 24 stays held by the qualification rule); the explorer's own counts follow. Built by atlas-tools/build-maker-explorer.py from the universe.",
+   "from": "Garden homes 24",
+   "to": "Garden homes 28"
+  },
+  {
+   "why": "2026-11-17, founder approval 'PlotNua — BioBuilds publication approval' (17 Nov 2026), on BIOBUILDS' written confirmation of the corrected five-model preview (PN-EVID-BIOBUILDS-20261117): the supplier publication gate releases BIOBUILDS and four qualified garden homes join the Maker Explorer (Nest 24 stays held by the qualification rule); the explorer's own counts follow. Built by atlas-tools/build-maker-explorer.py from the universe.",
+   "from": "All 65 garden room makers and 9 garden home makers, A to Z",
+   "to": "All 65 garden room makers and 10 garden home makers, A to Z"
+  },
+  {
+   "why": "2026-11-18, founder authorisation 'PLOTNUA — BIOBUILDS POST-PUBLICATION CORRECTIONS' (Task 2): BIOBUILDS Nest 24 qualifies once its model-specific Irish-availability evidence is linked in Atlas (recHQyHGEntYaMpCV), so the Maker Explorer gains one garden home. Built by atlas-tools/build-maker-explorer.py from the universe.",
+   "from": "28 garden homes",
+   "to": "29 garden homes"
+  },
+  {
+   "why": "2026-11-18, founder authorisation 'PLOTNUA — BIOBUILDS POST-PUBLICATION CORRECTIONS' (Task 2): BIOBUILDS Nest 24 qualifies once its model-specific Irish-availability evidence is linked in Atlas (recHQyHGEntYaMpCV), so the Maker Explorer gains one garden home. Built by atlas-tools/build-maker-explorer.py from the universe.",
+   "from": "Garden homes 28",
+   "to": "Garden homes 29"
+  },
+  {
+   "why": "2026-11-18, founder authorisation 'PLOTNUA — BIOBUILDS POST-PUBLICATION CORRECTIONS' (Task 2): BIOBUILDS Nest 24 qualifies once its model-specific Irish-availability evidence is linked in Atlas (recHQyHGEntYaMpCV), so the Maker Explorer gains one garden home. Built by atlas-tools/build-maker-explorer.py from the universe.",
+   "from": "BIOBUILDS 4 garden homes · Irish availability confirmed",
+   "to": "BIOBUILDS 5 garden homes · Irish availability confirmed"
   }
  ],
  "homeownerImprovement": {
@@ -289,6 +319,16 @@
    ],
    "links": [
     "#p-rec45XRwQ4qqGCQbv"
+   ]
+  },
+  {
+   "maker": "BIOBUILDS",
+   "declared": "2026-11-17, founder approval 'PlotNua — BioBuilds publication approval' (17 Nov 2026), on BIOBUILDS' written confirmation of the corrected five-model preview (PN-EVID-BIOBUILDS-20261117): the supplier publication gate releases BIOBUILDS and four qualified garden homes join the Maker Explorer (Nest 24 stays held by the qualification rule); the explorer's own counts follow. Built by atlas-tools/build-maker-explorer.py from the universe.",
+   "blocks": [
+    "BIOBUILDS 4 garden homes · Irish availability confirmed"
+   ],
+   "links": [
+    "#p-recjdCtvV26NtbNA0"
    ]
   }
  ],

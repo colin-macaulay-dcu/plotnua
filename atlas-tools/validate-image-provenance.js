@@ -739,6 +739,11 @@ console.log('-'.repeat(74));
       else if (!scope.includes('imagery') || !scope.includes('hosting')) fail('permission scope does not cover hosting the imagery');
       else if (r.supplier_label === 'Visualisation' && !cond.includes('label-visualisations'))
         fail('the grant does not cover supplier visualisations (no label-visualisations condition)');
+      /* 19 Nov 2026 (founder brief, Hang-It): a supplier's LOGO is its trade mark, a different permission from its
+         photographs. A hosted copy labelled 'Logo' is accepted only when the grant names it: 'logo' in
+         permission.scope. Photographs and visualisations are unaffected. */
+      else if (r.supplier_label === 'Logo' && !scope.includes('logo'))
+        fail("the grant does not cover the supplier's logo (no 'logo' in permission.scope)");
     }
     const broken = [...why.entries()];
     broken.length
@@ -758,7 +763,7 @@ console.log('-'.repeat(74));
      data-kind. A missing or contradicting label fails. (A share-image meta
      tag is not a shown image and is not checked here.) */
   const sup = records.filter(r => r.class === 'SUPPLIER_IMAGE');
-  const LABELS = ['Photograph', 'Visualisation'];
+  const LABELS = ['Photograph', 'Visualisation', 'Logo'];   // 'Logo' added 19 Nov 2026 (P4 requires 'logo' in the grant's scope)
   const problems = [];
   const bodies = new Map();
   const bodyOf = page => {
@@ -773,8 +778,11 @@ console.log('-'.repeat(74));
     if (!LABELS.includes(r.supplier_label)) { problems.push(`${r.asset}: supplier_label ${JSON.stringify(r.supplier_label)}`); continue; }
     for (const page of found.get(r.asset) || []) {
       const body = bodyOf(page);
+      // the page names the file relative to itself (a page in plotart/ writes assets/... for plotart/assets/...)
+      const pdir = page.includes('/') ? page.slice(0, page.lastIndexOf('/') + 1) : '';
+      const rel = pdir && r.asset.startsWith(pdir) ? r.asset.slice(pdir.length) : null;
       const blocks = [...body.matchAll(/<picture\b[\s\S]*?<\/picture>|<img\b[^>]*>/gi)].map(m => m[0])
-        .filter(b => b.includes(r.asset));
+        .filter(b => b.includes(r.asset) || (rel && new RegExp('["\'\\s,]' + rel.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '(["\'\\s,]|$)').test(b)));
       for (const b of blocks) {
         const kinds = [...b.matchAll(/\bdata-kind\s*=\s*["']([^"']+)["']/gi)].map(m => m[1]);
         if (!kinds.length) problems.push(`${r.asset} on ${page}: no data-kind label`);

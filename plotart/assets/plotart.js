@@ -219,3 +219,65 @@
     })
     .catch(function () {});
 })();
+
+/* ---- artwork image viewer (17 Nov 2026) ---------------------------------
+   On an artwork page, the main image and the "More views" thumbnails open the
+   full-size photograph in a modal viewer instead of leaving the page for the bare
+   image file. Close: the × button, Escape, or a click/tap outside the image. The
+   page is never reloaded or scrolled; focus returns to what was clicked. Uses the
+   browser's own <dialog>; where that is missing the links work exactly as before. */
+(function () {
+  'use strict';
+  var fig = document.querySelector('.pa-aw-fig');
+  if (!fig) return;
+  var D = document.createElement('dialog');
+  if (typeof D.showModal !== 'function') return;
+  D.className = 'pa-lb';
+  D.innerHTML = '<button type="button" class="pa-lb-x" aria-label="Close enlarged image"><span aria-hidden="true">×</span></button><img class="pa-lb-img" alt="" decoding="async">';
+  document.body.appendChild(D);
+  var img = D.querySelector('.pa-lb-img'), x = D.querySelector('.pa-lb-x'), opener = null;
+  function largest(el) {
+    var best = el.currentSrc || el.src, w = 0;
+    (el.getAttribute('srcset') || '').split(',').forEach(function (c) {
+      var p = c.trim().split(/\s+/), n = parseInt(p[1], 10) || 0;
+      if (p[0] && n >= w) { w = n; best = new URL(p[0], document.baseURI).href; }
+    });
+    return best;
+  }
+  function open(src, alt, from) {
+    opener = from;
+    img.src = src; img.alt = alt || '';
+    D.setAttribute('aria-label', alt ? 'Enlarged image: ' + alt : 'Enlarged artwork image');
+    document.documentElement.classList.add('pa-lb-on');
+    D.showModal();
+    x.focus();
+  }
+  function close() { if (D.open) D.close(); }
+  D.addEventListener('close', function () {
+    document.documentElement.classList.remove('pa-lb-on');
+    img.removeAttribute('src');
+    if (opener && opener.focus) opener.focus({ preventScroll: true });
+    opener = null;
+  });
+  x.addEventListener('click', close);
+  D.addEventListener('click', function (e) { if (e.target !== img) close(); });
+  fig.querySelectorAll('.pa-aw-views a[href]').forEach(function (a) {
+    a.addEventListener('click', function (e) {
+      if (e.button || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+      e.preventDefault();
+      var t = a.querySelector('img');
+      open(a.href, t && t.alt, a);
+    });
+  });
+  var main = fig.querySelector('.pa-aw-frame img');
+  if (main) {
+    main.tabIndex = 0;
+    main.setAttribute('role', 'button');
+    main.setAttribute('aria-label', 'Enlarge image: ' + (main.alt || 'artwork'));
+    main.classList.add('pa-lb-zoom');
+    main.addEventListener('click', function () { open(largest(main), main.alt, main); });
+    main.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(largest(main), main.alt, main); }
+    });
+  }
+})();

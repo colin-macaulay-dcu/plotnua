@@ -1,6 +1,6 @@
-// PROVE · migration 0016 (managed checkout pilot) on a database built with the schema BEFORE this change (the branch base),
+// PROVE · migration 0017 (managed checkout pilot) on a database built with the schema BEFORE this change (the branch base),
 // holding realistic records. New tables only; nothing existing changes; idempotent; documented rollback. Local only.
-//   node test/prove-migration-0016.mjs /path/to/schema-before.sql
+//   node test/prove-migration-0017.mjs /path/to/schema-before.sql
 import { createRequire } from 'node:module';
 import { readFileSync } from 'node:fs';
 import { statements, rollbackOf } from './sql.mjs';
@@ -8,14 +8,14 @@ import { seedPublished } from './seed.mjs';
 const require = createRequire('/tmp/claude-0/studio-tools/package.json');
 const { Miniflare } = require('miniflare');
 const results = []; const check = (n, ok, d = '') => { results.push(!!ok); console.log(`  ${ok ? 'PASS' : 'FAIL'}  ${n}${!ok && d ? `  [${String(d).slice(0, 400)}]` : ''}`); };
-if (!process.argv[2]) { console.log('usage: node test/prove-migration-0016.mjs SCHEMA_BEFORE.sql'); process.exit(2); }
+if (!process.argv[2]) { console.log('usage: node test/prove-migration-0017.mjs SCHEMA_BEFORE.sql'); process.exit(2); }
 const HERE = new URL('..', import.meta.url).pathname;
-const MIG = readFileSync(HERE + 'migrations/0016_managed_checkout_pilot.sql', 'utf8');
+const MIG = readFileSync(HERE + 'migrations/0017_managed_checkout_pilot.sql', 'utf8');
 const mf = new Miniflare({ modules: true, script: 'export default { fetch() { return new Response("") } }', d1Databases: { DB: 'mig16-test' } });
 const db = await mf.getD1Database('DB');
 const run = async sql => { for (const st of statements(sql)) await db.prepare(st).run(); };
 await run(readFileSync(process.argv[2], 'utf8'));
-console.log('PROVE · migration 0016 (managed checkout pilot) on the pre-change schema with existing records');
+console.log('PROVE · migration 0017 (managed checkout pilot) on the pre-change schema with existing records');
 const t = '2026-11-16T19:00:00.000Z';
 await seedPublished(db, { id: 'aleah', slug: 'leah-test', email: 'leah@example.test', name: 'Leah Test', works: 3, number: 1 });
 await db.prepare('INSERT INTO gallery_positions (position, artist_id, reserved, note, updated_at) VALUES (1, ?, 0, NULL, ?)').bind('aleah', t).run();
@@ -43,5 +43,5 @@ await run(rollbackOf(MIG));
 check('M8 the documented rollback removes exactly the pilot tables', JSON.stringify((await objects()).filter(o => o.type === 'table').map(o => o.name).sort()) === JSON.stringify([...beforeTables].sort()));
 await mf.dispose();
 const passed = results.filter(Boolean).length;
-console.log(`\nMIGRATION 0016 · ${results.length} checks, ${passed} passed, ${results.length - passed} failed`);
+console.log(`\nMIGRATION 0017 · ${results.length} checks, ${passed} passed, ${results.length - passed} failed`);
 process.exit(passed === results.length ? 0 : 1);

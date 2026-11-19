@@ -1,0 +1,397 @@
+{
+ "artist": {
+  "bio": "Carmel Marrinan former Gallerist and Designer now a full time expressionist artist working in both in her studio in Dublin and West Cork where she spends much of her time .\nRecalling the pictorial tendencies of the Fauves and the Expressionists of the first half 20th century Carmel creates a new representation of perceived reality emphasising the expressive and symbolic function of colour .Carmel’s work is instantly recognisable with her bold brushstrokes and joyful depictions.Colour becoming the absolute protagonist of her work creating a joyous observation of this beautiful world we inhabit.\nInspiration comes from her travels particularly Italy and her time spent in West Cork .\nCarmel’s has her work is held in Private collections throughout Europe and the UK . She has completed notable corporate commissions such as the multi award winning Newmarket Yards in Dublin 8 through Reddy Architecture.\nShe has exhibited extensively in Ireland with her work currently available in The Oriel Gallery in Dublin and Gallery 1608 in Co Antrim.",
+  "county": null,
+  "display_name": "Carmel Marrinan",
+  "founding": true,
+  "instagram": "carmelmarrinan.art",
+  "medium": "painting",
+  "portrait": null,
+  "practice": "Abstract Expressionist artist .",
+  "slug": "carmel-marrinan",
+  "statement": null,
+  "website": "https://www.carmelmarrinan.com"
+ },
+ "provenance_sources": [
+  {
+   "dhash": "303034041b313333",
+   "source_sha256": "6f698d4f175f34e13b5206a02756978341d635f2472ef31e24d5d7424c6404d9",
+   "stem": "over-the-river-1"
+  },
+  {
+   "dhash": "c9cadc9d9e165636",
+   "source_sha256": "8240b5f6289c69d38b517a13bf0583a3b75f52717ce1e366c3f39573f86ee203",
+   "stem": "house-in-the-garden-1"
+  },
+  {
+   "dhash": "5377071028885b59",
+   "source_sha256": "79af4eddecdc9590f22ca16a18063a1c0a6efcbedd2381fc9e8b3727a8535210",
+   "stem": "dos-palmas-1"
+  },
+  {
+   "dhash": "bec8e0f0e2e2e0c8",
+   "source_sha256": "c5257693801aae10562f3818a0e7f65277e884bed06ff041190b8d68dbc738f5",
+   "stem": "two-blue-pools-1"
+  },
+  {
+   "dhash": "09656612b61c1016",
+   "source_sha256": "a3958c59b3aa59c8908364248e8e18bca48eaa615841248334a092aeed500a0a",
+   "stem": "night-garden-1"
+  },
+  {
+   "dhash": "915bacc325694968",
+   "source_sha256": "bd840aed199153c5ac997af9d74dca63f9e6d37ac7a1258bda3ed2f2a3023996",
+   "stem": "silly-bunch-1"
+  }
+ ],
+ "publication": {
+  "approved_at": "2026-11-18T18:13:20.651Z",
+  "approved_by": "founder",
+  "first_approved_at": "2026-11-18T18:13:20.651Z",
+  "licence_accepted_at": "2026-11-18T13:43:53.791Z",
+  "licence_version": "PA-GPIL-2026-11",
+  "permission_ref": "PA-PERM-aif2a4ierb9",
+  "state": "approved",
+  "test_note": null,
+  "version": "v1"
+ },
+ "schema": "plotnua.plotart.gallery-package.v1",
+ "works": [
+  {
+   "ai_founder_decision": null,
+   "ai_involvement": "none",
+   "ai_note": null,
+   "availability": "available",
+   "d_cm": 4,
+   "description": null,
+   "h_cm": 120,
+   "id": "wlmcbkhe75h",
+   "images": [
+    {
+     "alt": "Abstract lanscape",
+     "aspect": 0.98372,
+     "derivatives": [
+      {
+       "file": "over-the-river-1-600.webp",
+       "long_edge": 600,
+       "pixels": [
+        590,
+        600
+       ]
+      },
+      {
+       "file": "over-the-river-1-1200.webp",
+       "long_edge": 1200,
+       "pixels": [
+        1180,
+        1200
+       ]
+      },
+      {
+       "file": "over-the-river-1-2000.webp",
+       "long_edge": 2000,
+       "pixels": [
+        1967,
+        2000
+       ]
+      }
+     ],
+     "photo_credit": null,
+     "pixels": [
+      3022,
+      3072
+     ],
+     "role": "main"
+    }
+   ],
+   "materials": null,
+   "medium": "Acyrlic on canvas",
+   "price_eur": 3250,
+   "price_on_request": false,
+   "slug": "over-the-river",
+   "title": "Over the river",
+   "w_cm": 120,
+   "year": 2025
+  },
+  {
+   "ai_founder_decision": null,
+   "ai_involvement": "none",
+   "ai_note": null,
+   "availability": "available",
+   "d_cm": 4,
+   "description": null,
+   "h_cm": 100,
+   "id": "w85en0kmr42",
+   "images": [
+    {
+     "alt": "Abstract garden",
+     "aspect": 0.99326,
+     "derivatives": [
+      {
+       "file": "house-in-the-garden-1-600.webp",
+       "long_edge": 600,
+       "pixels": [
+        596,
+        600
+       ]
+      },
+      {
+       "file": "house-in-the-garden-1-1200.webp",
+       "long_edge": 1200,
+       "pixels": [
+        1192,
+        1200
+       ]
+      },
+      {
+       "file": "house-in-the-garden-1-2000.webp",
+       "long_edge": 2000,
+       "pixels": [
+        1987,
+        2000
+       ]
+      }
+     ],
+     "photo_credit": null,
+     "pixels": [
+      2654,
+      2672
+     ],
+     "role": "main"
+    }
+   ],
+   "materials": null,
+   "medium": "Acyrlic on canvas",
+   "price_eur": 1950,
+   "price_on_request": false,
+   "slug": "house-in-the-garden",
+   "title": "House in the Garden",
+   "w_cm": 100,
+   "year": 2025
+  },
+  {
+   "ai_founder_decision": null,
+   "ai_involvement": "none",
+   "ai_note": null,
+   "availability": "available",
+   "d_cm": 4,
+   "description": null,
+   "h_cm": 120,
+   "id": "wo86yvs7umo",
+   "images": [
+    {
+     "alt": "Mediterranean abstract",
+     "aspect": 0.97019,
+     "derivatives": [
+      {
+       "file": "dos-palmas-1-600.webp",
+       "long_edge": 600,
+       "pixels": [
+        582,
+        600
+       ]
+      },
+      {
+       "file": "dos-palmas-1-1200.webp",
+       "long_edge": 1200,
+       "pixels": [
+        1164,
+        1200
+       ]
+      },
+      {
+       "file": "dos-palmas-1-2000.webp",
+       "long_edge": 2000,
+       "pixels": [
+        1940,
+        2000
+       ]
+      }
+     ],
+     "photo_credit": null,
+     "pixels": [
+      2962,
+      3053
+     ],
+     "role": "main"
+    }
+   ],
+   "materials": null,
+   "medium": "Acyrlic on canvas",
+   "price_eur": 2950,
+   "price_on_request": false,
+   "slug": "dos-palmas",
+   "title": "Dos Palmas",
+   "w_cm": 120,
+   "year": 2024
+  },
+  {
+   "ai_founder_decision": null,
+   "ai_involvement": "none",
+   "ai_note": null,
+   "availability": "available",
+   "d_cm": null,
+   "description": null,
+   "h_cm": 120,
+   "id": "wpmvv8tm3n3",
+   "images": [
+    {
+     "alt": "Mediterranean abstract",
+     "aspect": 0.98586,
+     "derivatives": [
+      {
+       "file": "two-blue-pools-1-600.webp",
+       "long_edge": 600,
+       "pixels": [
+        592,
+        600
+       ]
+      },
+      {
+       "file": "two-blue-pools-1-1200.webp",
+       "long_edge": 1200,
+       "pixels": [
+        1183,
+        1200
+       ]
+      },
+      {
+       "file": "two-blue-pools-1-2000.webp",
+       "long_edge": 2000,
+       "pixels": [
+        1972,
+        2000
+       ]
+      }
+     ],
+     "photo_credit": null,
+     "pixels": [
+      2858,
+      2899
+     ],
+     "role": "main"
+    }
+   ],
+   "materials": null,
+   "medium": "Acyrlic and Ink",
+   "price_eur": 2950,
+   "price_on_request": false,
+   "slug": "two-blue-pools",
+   "title": "Two blue Pools",
+   "w_cm": 120,
+   "year": 2026
+  },
+  {
+   "ai_founder_decision": null,
+   "ai_involvement": "none",
+   "ai_note": null,
+   "availability": "available",
+   "d_cm": null,
+   "description": null,
+   "h_cm": 140,
+   "id": "wg1by72jg3b",
+   "images": [
+    {
+     "alt": "Abstract garden",
+     "aspect": 0.67265,
+     "derivatives": [
+      {
+       "file": "night-garden-1-600.webp",
+       "long_edge": 600,
+       "pixels": [
+        404,
+        600
+       ]
+      },
+      {
+       "file": "night-garden-1-1200.webp",
+       "long_edge": 1200,
+       "pixels": [
+        807,
+        1200
+       ]
+      },
+      {
+       "file": "night-garden-1-2000.webp",
+       "long_edge": 2000,
+       "pixels": [
+        1345,
+        2000
+       ]
+      }
+     ],
+     "photo_credit": null,
+     "pixels": [
+      2700,
+      4014
+     ],
+     "role": "main"
+    }
+   ],
+   "materials": null,
+   "medium": "Acrylic",
+   "price_eur": 2950,
+   "price_on_request": false,
+   "slug": "night-garden",
+   "title": "Night Garden",
+   "w_cm": 100,
+   "year": 2026
+  },
+  {
+   "ai_founder_decision": null,
+   "ai_involvement": "none",
+   "ai_note": null,
+   "availability": "available",
+   "d_cm": null,
+   "description": null,
+   "h_cm": 100,
+   "id": "w0agzq87i3j",
+   "images": [
+    {
+     "alt": "Abstract flowers",
+     "aspect": 0.69095,
+     "derivatives": [
+      {
+       "file": "silly-bunch-1-600.webp",
+       "long_edge": 600,
+       "pixels": [
+        415,
+        600
+       ]
+      },
+      {
+       "file": "silly-bunch-1-1200.webp",
+       "long_edge": 1200,
+       "pixels": [
+        829,
+        1200
+       ]
+      },
+      {
+       "file": "silly-bunch-1-2000.webp",
+       "long_edge": 2000,
+       "pixels": [
+        1382,
+        2000
+       ]
+      }
+     ],
+     "photo_credit": null,
+     "pixels": [
+      2656,
+      3844
+     ],
+     "role": "main"
+    }
+   ],
+   "materials": null,
+   "medium": "Acrylic on canvas",
+   "price_eur": 1750,
+   "price_on_request": false,
+   "slug": "silly-bunch",
+   "title": "Silly Bunch",
+   "w_cm": 70,
+   "year": 2026
+  }
+ ]
+}

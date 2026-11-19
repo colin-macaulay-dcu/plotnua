@@ -16,6 +16,26 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SW = os.path.join(ROOT, "atlas-tools", "release", "plotart-launch-switches.json")
 MAN = os.path.join(ROOT, "atlas-tools", "release", "plotart-launch-manifest.json")
 results = []
+sys.path.insert(0, os.path.join(ROOT, "atlas-tools"))
+import plotart_opportunities as OPP   # noqa: E402
+import plotart_featured as FEAT   # noqa: E402
+
+
+def pin(man, site, f):
+    """Pin one built file as a release would: its full hash and, for a page that carries an artist opportunity list,
+    its outside-the-lists hash too (the launch guard requires both to agree; 17 Nov 2026 fix: the closed-state builds
+    re-pinned living-gallery.html without it, so the guard refused them for a test-setup reason)."""
+    p = os.path.join(site, "plotart", f)
+    man["files"][f] = hashlib.sha256(open(p, "rb").read()).hexdigest()
+    if f in man.get("outside_opportunity_lists", {}) and f != "art-for-hire/index.html":
+        man["outside_opportunity_lists"][f] = hashlib.sha256(OPP.outside(open(p, encoding="utf-8").read()).encode()).hexdigest()
+    if f in man.get("outside_grid", {}):                 # the Artists' Gallery: outside its collection AND Featured Artists regions
+        raw = open(p, "rb").read()
+        a, b = raw.find(b"<!-- pa-vg-collection:begin -->"), raw.find(b"<!-- pa-vg-collection:end -->")
+        raw = raw[:a] + b"<!-- pa-vg-collection:begin --><!-- collection -->" + raw[b:]
+        man["outside_grid"][f] = hashlib.sha256(FEAT.outside(raw.decode()).encode()).hexdigest()
+
+
 def check(name, ok, detail=""):
     results.append(bool(ok)); print("  %s  %s%s" % ("PASS" if ok else "FAIL", name, "" if ok or not detail else "  [%s]" % str(detail)[-300:]))
 
@@ -33,10 +53,10 @@ def build(tmp, state):
         _p = open(os.path.join(ROOT, "privacy.html"), encoding="utf-8").read()
         open(os.path.join(site, "privacy.html"), "w", encoding="utf-8").write(_p if V15.MARKER in _p else V15.apply_v15(_p))
         for f in ("index.html", "founding-25.html", "join.html", "curatorial-policy.html", "assets/pa-apply.js", "assets/plotart-join.css", "gallery/index.html"):
-            man["files"][f] = hashlib.sha256(open(os.path.join(site, "plotart", f), "rb").read()).hexdigest()
+            pin(man, site, f)
     else:   # a closed state: pinned to that state's build (as a closing release would re-pin it); no recruitment file is pinned
         for f in ("index.html", "founding-25.html", "gallery/index.html", "living-gallery.html"):
-            man["files"][f] = hashlib.sha256(open(os.path.join(site, "plotart", f), "rb").read()).hexdigest()
+            pin(man, site, f)
         for f in ("join.html", "curatorial-policy.html", "assets/pa-apply.js", "assets/plotart-join.css"):
             man["files"].pop(f, None)
     mp = os.path.join(site, "manifest.json"); json.dump(man, open(mp, "w"))
@@ -46,7 +66,7 @@ def guard(site, swp, mp, repin=()):
     if repin:   # a deliberate edit: pin it, so the guard's content rules (not the manifest) must refuse it
         man = json.load(open(mp));
         for f in repin:
-            man["files"][f] = hashlib.sha256(open(os.path.join(site, "plotart", f), "rb").read()).hexdigest()
+            pin(man, site, f)
         json.dump(man, open(mp, "w"))
     r = subprocess.run([sys.executable, os.path.join(ROOT, "atlas-tools", "prove-plotart-launch.py"), site, "--switches", swp, "--manifest", mp], capture_output=True, text=True)
     return r.returncode == 0 and "PLOTART LAUNCH · OK" in r.stdout, r.stdout + r.stderr
@@ -170,12 +190,12 @@ try:
                      ("W6 no worked calculation, euro amount, large figure or 'deserves to be discovered' anywhere in the recruitment",
                       "€" not in jv and 'class="big"' not in j and "deserves" not in jv + bv and "€" not in bv),
                      ("W7 the homepage band is an invitation: no figures or commercial terms, links to Join PlotArt and the gallery",
-                      "An invitation to join PlotArt." in bv and not re.search(r"\d|%|commission|fee|exclusiv", bv, re.I) and 'href="join.html"' in band and 'href="gallery/"' in band),
+                      "An invitation to join PlotArt." in bv and not re.search(r"\d|%|commission|fee|exclusiv", bv, re.I) and 'href="join.html#apply"' in band and 'href="gallery/"' in band),
                      ("W9 the Artists' Gallery carries one 'Apply to join →' button in its introduction, above the collection, linking to Join PlotArt's gallery section",
                       gal_ok(open(os.path.join(site, "plotart", "gallery", "index.html"), encoding="utf-8").read())),
                      ("W10 the Living Gallery For artists section keeps its Artists' Gallery link and, only while open, the one Apply to join PlotArt link",
                       (lambda lgo: lgo.count("pa-artist-apply-living:begin") == 1 and 'href="gallery/" data-pa-track="living_artists_gallery"' in lgo
-                       and '<!-- pa-artist-apply-living:begin --><a href="join.html#your-gallery" data-pa-track="living_artists_join">Apply to join PlotArt →</a><!-- pa-artist-apply-living:end -->' in lgo)(open(os.path.join(site, "plotart", "living-gallery.html"), encoding="utf-8").read())
+                       and '<!-- pa-artist-apply-living:begin --><a class="pa-btn pa-btn--solid" href="join.html#apply" data-pa-track="living_artists_join">Apply to join PlotArt</a><!-- pa-artist-apply-living:end -->' in lgo)(open(os.path.join(site, "plotart", "living-gallery.html"), encoding="utf-8").read())
                       and all('join.html' not in open(os.path.join(S[st][0], "plotart", "living-gallery.html"), encoding="utf-8").read()
                               and 'href="gallery/" data-pa-track="living_artists_gallery"' in open(os.path.join(S[st][0], "plotart", "living-gallery.html"), encoding="utf-8").read()
                               for st in ("not_open", "paused", "closed"))),

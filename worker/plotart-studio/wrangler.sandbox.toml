@@ -1,0 +1,41 @@
+# PlotArt Studio SANDBOX (founder testing, proposed 18 Nov 2026; NOT deployed). The same Studio code as production, with
+# its own EMPTY database and image store, so the founder can sign in as a synthetic artist (e.g. a "+artist" address of his
+# own) and walk the whole artist journey. It has no access to production data, no publishing pipeline token, no GitHub
+# dispatch token and no email key; SANDBOX = "true" also makes the code refuse all three and show a banner on every
+# page. Free-tier Cloudflare resources only. Deploying it needs the founder's approval and a Cloudflare Access application
+# for its own address (founder email + the test artist address).
+name = "plotart-studio-sandbox"
+main = "src/studio-entry.js"
+compatibility_date = "2026-08-01"
+workers_dev = true
+preview_urls = false
+
+[vars]
+ENVIRONMENT = "sandbox"
+SANDBOX = "true"                 # banner on every page; no publishing dispatch, no pipeline, no email (src/index.js, src/mailer.js)
+ACCESS_TEAM_DOMAIN = ""          # the same Access team as production
+ACCESS_AUD = ""                  # the SANDBOX Access application's own AUD tag (never production's)
+FOUNDER_EMAILS = ""              # the founder's email only
+INSTANT_AUTOPUBLISH = "false"
+INSTANT_PUBLISH_DISPATCH = "false"
+HIRE_TERMS_ENABLED = "false"
+HIRE_RETENTION = "off"
+MAILER = "none"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "plotart-studio-sandbox"
+database_id = "NOT-CREATED"
+
+[[r2_buckets]]
+binding = "IMAGES"
+bucket_name = "plotart-studio-sandbox-images"
+jurisdiction = "eu"
+
+[[r2_buckets]]
+binding = "APPLICATIONS"
+bucket_name = "plotart-studio-sandbox-applications"
+jurisdiction = "eu"
+
+[observability]
+enabled = false
