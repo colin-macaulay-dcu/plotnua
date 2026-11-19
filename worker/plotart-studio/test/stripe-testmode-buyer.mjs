@@ -103,7 +103,7 @@ export async function checkBuyerCheckout(key, rec) {
     await fill('#payment-cvcInput,#cardCvc,input[autocomplete="cc-csc"]','123');
     await fill('#billingName,input[autocomplete="cc-name"]','Test Buyer',3000);
     stage='submit hosted payment';
-    const submit=await field('#payment-form-submit-button,[data-testid="hosted-payment-submit-button"],button.SubmitButton,button:text-is("Pay")');
+    const submit=await field('#payment-form-submit-button,[data-testid="payment-form-submit-button"],[data-testid="hosted-payment-submit-button"],button[type="submit"]:text-matches("^Pay(\\\\s|$)","i"),button.SubmitButton,button:text-is("Pay")');
     if(!submit)throw Error('Missing payment submit control');
     await submit.click({timeout:10000});
     stage='verify one combined confirmation';
@@ -116,8 +116,8 @@ export async function checkBuyerCheckout(key, rec) {
     if(page){
       const controls=[];
       for(const frame of page.frames()){
-        const labels=await frame.locator('input:visible,select:visible,button:visible').evaluateAll(nodes=>nodes.map(n=>n.id||n.getAttribute('autocomplete')||n.getAttribute('data-testid')).filter(Boolean)).catch(()=>[]);
-        controls.push(...labels.filter(s=>/^[a-zA-Z][a-zA-Z0-9 _-]{0,48}$/.test(s) && !/^(cs_|pi_|sk_|rk_)/.test(s)));
+        const labels=await frame.locator('input:visible,select:visible,button:visible').evaluateAll(nodes=>nodes.map(n=>n.id ? 'id:'+n.id : n.getAttribute('data-testid') ? 'testid:'+n.getAttribute('data-testid') : n.getAttribute('autocomplete')).filter(Boolean)).catch(()=>[]);
+        controls.push(...labels.filter(s=>/^[a-zA-Z][a-zA-Z0-9 :_-]{0,64}$/.test(s) && !/^(cs_|pi_|sk_|rk_)/.test(s)));
       }
       evidence.visibleControls=[...new Set(controls)].slice(0,40);
     }
