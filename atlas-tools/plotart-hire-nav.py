@@ -61,9 +61,12 @@ def patch(text, current):
 
 
 def css(text):
+    # 19 Nov 2026: once the block exists it is left exactly as it is. Later releases own its layout (the Services tab,
+    # atlas-tools/plotart-services-nav.py, widened it to seven pills); rewriting it here would silently revert them.
     if CSS_BEGIN in text:
-        a, b = text.index(CSS_BEGIN), text.index(CSS_END) + len(CSS_END) + 1
-        return text[:a] + CSS + text[b:]
+        if CSS_END not in text:
+            raise ValueError("plotart.css: pa-hire-nav block has no end marker")
+        return text
     return text.rstrip("\n") + "\n\n" + CSS
 
 

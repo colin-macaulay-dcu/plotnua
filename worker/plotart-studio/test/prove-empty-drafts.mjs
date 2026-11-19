@@ -18,9 +18,10 @@ const results = [];
 const check = (n, ok, d = '') => { results.push(!!ok); console.log(`  ${ok ? 'PASS' : 'FAIL'}  ${n}${!ok && d ? `  [${String(d).slice(0, 400)}]` : ''}`); };
 console.log('PROVE · PlotArt Studio · empty artwork drafts');
 
-// the library as released (main), loaded side by side, for the "before" reproduction and the snapshot comparison
+// the library as released BEFORE the correction (pinned to the parent of 38710a6, which made the correction; 19 Nov 2026:
+// origin/main now contains the correction, so reading main no longer reproduces the reported state), loaded side by side, for the "before" reproduction and the snapshot comparison
 const oldDir = mkdtempSync(tmpdir() + '/pa-oldlib-');
-writeFileSync(oldDir + '/lib.mjs', execFileSync('git', ['show', 'origin/main:worker/plotart-studio/src/lib.js'], { cwd: HERE }));
+writeFileSync(oldDir + '/lib.mjs', execFileSync('git', ['show', '38710a6^:worker/plotart-studio/src/lib.js'], { cwd: HERE }));
 const OLD = await import(oldDir + '/lib.mjs');
 
 const { mf, url, db } = await start({ port: 8811 });

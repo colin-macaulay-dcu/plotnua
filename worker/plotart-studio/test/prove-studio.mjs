@@ -136,7 +136,9 @@ check('X5 an artist cannot reorder another artist’s works into their own', r.s
 
 console.log('— building a Founding gallery, submitting, review');
 const works = [w1];
-for (let i = 2; i <= 10; i++) works.push((await call('POST', '/api/artworks', A)).j.id);
+// 19 Nov 2026: since the 17 Nov empty-drafts correction, "Add an artwork" reuses an EMPTY draft instead of making another
+// (prove-empty-drafts.mjs), so each new work is given its title before the next is added (otherwise all nine ids are one record)
+for (let i = 2; i <= 10; i++) { const id = (await call('POST', '/api/artworks', A)).j.id; await call('PUT', `/api/artworks/${id}`, A, { title: `Tide Study ${i}` }); works.push(id); }
 const fill = async (id, i) => {
   await call('PUT', `/api/artworks/${id}`, A, { title: `Tide Study ${i}`, year: 2025, medium: 'Oil on canvas', h_cm: 60, w_cm: 80, price_eur: 1000 + i * 50,
     description: `A synthetic test painting, number ${i}, for the Studio proof suite.`, ai_involvement: 'none' });
