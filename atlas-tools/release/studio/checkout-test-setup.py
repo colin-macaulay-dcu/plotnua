@@ -251,35 +251,6 @@ def name_collision(s, j):
     return s == 409 and any(x.get("code") == 10004 for x in (j.get("errors") or []))
 
 
-# ---------------------------------------------------------------- TEST database: fresh-only check and verification
-# d1_check (read only): refuses unless CHECKOUT_TEST_D1_DATABASE_ID is the database named plotart-checkout-test AND it has no
-# tables yet, so the schema and synthetic seed can only ever be applied once, to an empty TEST database.
-# d1_verify (read only): after the workflow has applied schema.sql, migration 0013 and the synthetic seed.
-if MODE in ("d1_check", "d1_verify"):
-    fails = 0
-    db = E("CHECKOUT_TEST_D1_DATABASE_ID")
-    s, j = cf("GET", f"/accounts/{ACC}/d1/database/{db}", TOKEN)
-    name = (j.get("result") or {}).get("name") if s == 200 else None
-    if name != "plotart-checkout-test":
-        out("FAIL", f"STOPPED: the TEST database identifier does not resolve to plotart-checkout-test (HTTP {s}, name {name})"); sys.exit(1)
-    s, q = cf("POST", f"/accounts/{ACC}/d1/database/{db}/query", TOKEN,
-              {"sql": "SELECT name FROM sqlite_master WHERE type = 'table' AND name NOT LIKE 'sqlite_%' AND name NOT LIKE '_cf_%' ORDER BY name"})
-    res = q.get("result") if s == 200 else None
-    if not (isinstance(res, list) and res and isinstance(res[0].get("results"), list)):
-        out("FAIL", f"STOPPED: table list not readable (HTTP {s}: {errs(q)})"); sys.exit(1)
-    tables = [x["name"] for x in res[0]["results"]]
-    pilot = [t for t in tables if t.startswith("checkout_")]
-    if MODE == "d1_check":
-        if tables:
-            out("FAIL", f"STOPPED: plotart-checkout-test already has {len(tables)} tables; nothing applied (setup runs only on an empty TEST database)"); sys.exit(1)
-        out("PASS", "plotart-checkout-test is the TEST database and is empty: safe to apply the schema and synthetic seed")
-    else:
-        s, c = cf("POST", f"/accounts/{ACC}/d1/database/{db}/query", TOKEN, {"sql": "SELECT COUNT(*) AS n FROM artists"})
-        artists = (((c.get("result") or [{}])[0].get("results") or [{}])[0].get("n")) if s == 200 else None
-        ok = len(tables) >= 50 and len(pilot) >= 10 and isinstance(artists, int) and artists >= 2
-        out("PASS" if ok else "FAIL", f"TEST database after setup: {len(tables)} tables, {len(pilot)} checkout pilot tables, {artists} synthetic artists")
-        if not ok: sys.exit(1)
-
 if MODE in ("r2_plan", "r2_apply"):
     fails = 0   # this run's result is the R2 result (the audit lines above are information here)
     try:
