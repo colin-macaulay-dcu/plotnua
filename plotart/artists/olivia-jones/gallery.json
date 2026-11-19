@@ -134,7 +134,7 @@
   }
  ],
  "publication": {
-  "approved_at": "2026-11-17T22:09:36.034Z",
+  "approved_at": "2026-11-19T16:04:34.687Z",
   "approved_by": "founder",
   "first_approved_at": "2026-11-17T22:09:36.034Z",
   "licence_accepted_at": "2026-11-17T19:20:21.556Z",
@@ -142,7 +142,7 @@
   "permission_ref": "PA-PERM-aaxjweseh6t",
   "state": "approved",
   "test_note": null,
-  "version": "v1"
+  "version": "v2"
  },
  "schema": "plotnua.plotart.gallery-package.v1",
  "works": [
@@ -619,7 +619,7 @@
    "price_on_request": false,
    "slug": "narnia",
    "title": "'Narnia",
-   "w_cm": 660,
+   "w_cm": 60,
    "year": 2026
   },
   {
