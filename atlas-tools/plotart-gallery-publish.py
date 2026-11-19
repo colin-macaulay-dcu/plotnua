@@ -15,7 +15,8 @@ For each queue item the founder has published (or, once authorised, an automatic
   5. runs the content-only boundary (with --instant for automatic updates), the PlotArt launch guard L1-L14, the
      image provenance guard and the image-rights scan;
   6. --push: pushes an audit branch content/plotart-<artist>-v<n>-<commit> (one per attempt) and fast-forwards main (never forced; refused if main
-     moved). --simulate (tests): stops before pushing. Any failure: the commit is dropped and the Studio is told why.
+     moved; if main moved FORWARD while the release waited for its gate, the update is rebuilt on the new main and
+     released again, at most REBUILDS attempts per run, 19 Nov 2026; any other refusal is final). --simulate (tests): stops before pushing. Any failure: the commit is dropped and the Studio is told why.
 """
 import glob, hashlib, http.client, json, os, re, shutil, subprocess, sys, tempfile, time, urllib.error, urllib.request
 from pathlib import Path
@@ -176,6 +177,11 @@ REBUILDS = 3
 MAIN_MOVED = re.compile(r"does not contain the current main")
 
 
+def guard_line(output):
+    """promote.sh's own refusal line, for the run log."""
+    return next((l.strip() for l in (output or "").splitlines() if MAIN_MOVED.search(l)), "main moved")
+
+
 def main_advanced(output, base):
     """True only if the release was refused by the ancestry guard AND origin/main has really moved forward from `base`
     (never on a rewritten or diverged main: that is refused and left for the founder)."""
@@ -327,6 +333,7 @@ def publish_item(q, final=True):
         subprocess.run(["git", "reset", "-q", "--hard", base], cwd=ROOT)
         subprocess.run(["git", "clean", "-qfd", "plotart/artists"], cwd=ROOT)
         if moved and not final:
+            print("PLOTART CONTENT · ancestry guard: %s" % guard_line(o2), flush=True)
             return 1, True
         call("POST", "/api/pipeline/result/" + q["id"], {"status": "failed", "detail": why[:1900]})
         print("PLOTART CONTENT · %s v%d · FAILED · %s" % (q["artist_id"], q["version"], why[:300]))
@@ -373,6 +380,7 @@ def order_sync(final=True):
     if why:
         subprocess.run(["git", "reset", "-q", "--hard", base], cwd=ROOT)
         if moved and not final:
+            print("PLOTART CONTENT · ancestry guard: %s" % guard_line(o2), flush=True)
             return 1, True
     try:
         call("POST", "/api/pipeline/gallery-order/result", {"status": "failed" if why else "published",
@@ -446,6 +454,7 @@ def featured_sync(final=True):
     if why:
         subprocess.run(["git", "reset", "-q", "--hard", base], cwd=ROOT)
         if moved and not final:
+            print("PLOTART CONTENT · ancestry guard: %s" % guard_line(o2), flush=True)
             return 1, True
     print("PLOTART CONTENT · featured artists · %s" % ("FAILED · " + why[:300] if why else ("published " if PUSH else "verified (simulated) ") + sha[:12]))
     return (1, moved) if why else (0, False)

@@ -29,7 +29,7 @@ def make(name, seed, w, h):
     for _ in range(24):
         x, y = r.randrange(w), r.randrange(h); d.rectangle((x, y, x + r.randrange(w // 6, w // 2), y + r.randrange(h // 6, h // 2)), outline=tuple(r.randrange(256) for _ in range(3)), width=18)
     im.save(f"{sys.argv[1]}/{name}.jpg", "JPEG", quality=86)
-for k in "abcdefgh":
+for k in "abcdefghijkm":
     make(k + "-portrait", ord(k) * 7, 1400, 1800); make(k + "-w1", ord(k) * 7 + 1, 2200, 3300)
 for i in range(1, 12):
     make("l-w%d" % i, 900 + i, 2400, 3600)
@@ -56,6 +56,12 @@ const GATE = join(TMP, 'gate.sh'), HEALTH = join(TMP, 'health.sh');
 writeFileSync(GATE, `#!/bin/sh
 echo "$1 $2" >> ${TMP}/gate.log
 mode=$(cat ${TMP}/gate.mode)
+# another release reaches main during EVERY gate (19 Nov 2026: concurrent website releases)
+if [ "$mode" = "move-main-always" ]; then cd ${OTHER} && git pull -q --ff-only origin main && echo "$2" >> concurrent-releases.txt && git add -A && git -c user.name=T -c user.email=t@t commit -q -m "a concurrent website release" && git push -q origin main; mode=success; fi
+# a concurrent website release that edits two unrelated PlotNua pages (the homepage and the Discovery Library)
+if [ "$mode" = "move-main-site" ]; then echo success > ${TMP}/gate.mode; cd ${OTHER} && git pull -q --ff-only origin main && sed -i 's#</body>#<!-- concurrent site change 19 Nov --></body>#' index.html discoveries.html && git add -A && git -c user.name=T -c user.email=t@t commit -q -m "a concurrent website release (pages)" && git push -q origin main; mode=success; fi
+# main REWRITTEN (not a fast-forward) while the gate ran: never rebuilt on, never forced over
+if [ "$mode" = "diverge" ]; then echo success > ${TMP}/gate.mode; cd ${OTHER} && git fetch -q origin && git checkout -q -B div origin/main~1 && echo diverged > diverged.txt && git add -A && git -c user.name=T -c user.email=t@t commit -q -m "a rewritten main (test)" && git push -q -f origin div:main && git checkout -q main; mode=success; fi
 if [ "$mode" = "move-main" ]; then echo success > ${TMP}/gate.mode; cd ${OTHER} && git pull -q --ff-only origin main && echo moved >> moved-during-gate.txt && git add -A && git -c user.name=T -c user.email=t@t commit -q -m "another release during the gate" && git push -q origin main; mode=success; fi
 printf 'completed\\t%s\\n' "$mode"
 `); chmodSync(GATE, 0o755);
@@ -102,9 +108,15 @@ const ready = async (k, name, email, works) => {
 const one = (k, name) => ready(k, name, `${k}@example.test`, [{ title: 'Tide', img: `${k}-w1`, price: 900, desc: 'A test painting of a tide line.' }]);
 const qrow = qid => db.prepare('SELECT status, detail FROM publish_queue WHERE id=?').bind(qid).first();
 const requeue = qid => db.prepare("UPDATE publish_queue SET status='ready' WHERE id=? AND status='failed'").bind(qid).run();   // what the founder's console command does
-const publish = () => spawnSync('python3', ['atlas-tools/plotart-gallery-publish.py', '--studio', url, '--token', PIPELINE_TOKEN, '--push'], {
-  cwd: SITE, encoding: 'utf8', env: { ...process.env, PATH: `${BIN}:${process.env.PATH}`, GITHUB_REPOSITORY: 'test/plotnua', RELEASE_TOOLS: TOOLS,
-    GATE_STATUS_CMD: GATE, GATE_POLL: '0', GATE_TRIES: '3', HEALTH_CMD: HEALTH, PAGES_CMD: 'true', DISPATCH_CMD: 'true' } });
+// asynchronous (19 Nov 2026): a spawnSync blocked Node's event loop for the whole pipeline run, so the local Studio's
+// connection went stale and the next call failed ("other side closed") before any check ran
+const publish = () => new Promise(res => {
+  const c = spawn('python3', ['atlas-tools/plotart-gallery-publish.py', '--studio', url, '--token', PIPELINE_TOKEN, '--push'], {
+    cwd: SITE, env: { ...process.env, PATH: `${BIN}:${process.env.PATH}`, GITHUB_REPOSITORY: 'test/plotnua', RELEASE_TOOLS: TOOLS,
+      GATE_STATUS_CMD: GATE, GATE_POLL: '0', GATE_TRIES: '3', HEALTH_CMD: HEALTH, PAGES_CMD: 'true', DISPATCH_CMD: 'true' } });
+  let stdout = '', stderr = ''; c.stdout.on('data', d => stdout += d); c.stderr.on('data', d => stderr += d);
+  c.on('close', status => res({ status, stdout, stderr }));
+});
 const out = r => (r.stdout + r.stderr);
 const galleryFolders = () => G(ORIGIN, 'ls-tree', '-d', '--name-only', 'main:plotart/artists').split('\n').filter(Boolean);
 // one open gallery on the Virtual Gallery wall per artist (Direction C2, 5 Nov 2026: the index of positions links it too, separately)
@@ -115,7 +127,7 @@ console.log('PROVE · PlotArt content publishing · the release path, retries an
 // A — first publication
 const A = await one('a', 'Aine Synthetic');
 const m0 = originMain();
-let r = publish();
+let r = await publish();
 check('A  first publication: saved copy pushed, gate passed on that exact commit, promoted to main, Studio says published, artist live',
   r.status === 0 && onMain(`plotart/artists/${A.slug}/index.html`) && (await qrow(A.q)).status === 'published' && (await call('GET', '/api/me', A.email)).j.status.state === 'live'
   && readFileSync(join(TMP, 'gate.log'), 'utf8').includes(originMain()) && readFileSync(join(TMP, 'health.log'), 'utf8').includes(originMain()), out(r));
@@ -124,21 +136,21 @@ check('A2 the saved copy is named after the version AND its commit (content/plot
 // B — a failed attempt, then a successful retry of the same version
 const B = await one('b', 'Brid Synthetic');
 setGate('failure'); const mB = originMain();
-r = publish();
+r = await publish();
 const bFail = (await qrow(B.q)).status, mainAfterFail = originMain();
 setGate('success'); await requeue(B.q);
-r = publish();
+r = await publish();
 check('B  a failed attempt (gate refused) releases nothing and marks the item failed; the retry of the same version publishes',
   bFail === 'failed' && mainAfterFail === mB && onMain(`plotart/artists/${B.slug}/index.html`) && (await qrow(B.q)).status === 'published', out(r));
 check('B2 both attempts keep their own saved copy (the first is never overwritten)', branches(`content/plotart-${B.id}-v1-*`).length === 2);
 
 // C — multiple retries of the same version (gate refused, then promotion refused by a failed live check, then success)
 const C = await one('c', 'Cara Synthetic');
-setGate('failure'); publish(); const c1 = (await qrow(C.q)).status; await requeue(C.q);
+setGate('failure'); await publish(); const c1 = (await qrow(C.q)).status; await requeue(C.q);
 setGate('success'); setHealth('fail-once'); const mC = originMain();
-r = publish(); const c2 = (await qrow(C.q)).status, cRolledBack = !onMain(`plotart/artists/${C.slug}/index.html`) && ancestor(mC, 'main');
+r = await publish(); const c2 = (await qrow(C.q)).status, cRolledBack = !onMain(`plotart/artists/${C.slug}/index.html`) && ancestor(mC, 'main');
 await requeue(C.q); setHealth('ok');
-r = publish();
+r = await publish();
 check('C  three attempts of one version: refused, released-then-rolled-back, then published; exactly one gallery and one card at the end',
   c1 === 'failed' && c2 === 'failed' && cRolledBack && (await qrow(C.q)).status === 'published' && galleryFolders().filter(f => f === C.slug).length === 1 && cards(C.slug) === 1, out(r));
 check('C2 each attempt kept its own saved copy (3 for this version)', branches(`content/plotart-${C.id}-v1-*`).length === 3, branches(`content/plotart-${C.id}-*`).join(' '));
@@ -147,24 +159,74 @@ check('C2 each attempt kept its own saved copy (3 for this version)', branches(`
 const D = await one('d', 'Dara Synthetic');
 G(SITE, 'push', '-q', 'origin', `${G(SITE, 'rev-parse', 'HEAD')}:refs/heads/content/plotart-${D.id}-v1`);       // a stale copy, different commit
 const staleSha = G(ORIGIN, 'rev-parse', `content/plotart-${D.id}-v1`);
-r = publish();
+r = await publish();
 check('D  an earlier attempt’s copy under the old name does not block publishing, and is left exactly as it was (no force)',
   r.status === 0 && onMain(`plotart/artists/${D.slug}/index.html`) && (await qrow(D.q)).status === 'published' && G(ORIGIN, 'rev-parse', `content/plotart-${D.id}-v1`) === staleSha, out(r));
 
 // E — main moves (1) before the run and (2) while the gate is running
 const E = await one('e', 'Eabha Synthetic');
 otherRelease('released-before-run.txt'); const before = originMain();
-r = publish();
+r = await publish();
 check('E1 main moved before the run: the gallery is built on the latest main and released (the other release kept)',
   r.status === 0 && onMain(`plotart/artists/${E.slug}/index.html`) && onMain('released-before-run.txt') && ancestor(before, 'main'), out(r));
+// E2–E6 (19 Nov 2026, Nick Munier's publication refused "2c56987 does not contain the current main 1757f90"): main advancing
+// during publication. promote.sh's ancestry guard is unchanged and still refuses; the publisher then rebuilds the update
+// on the new main (bounded), so the other release is kept and the gallery still goes live in the same run.
+const tree = path => { try { return G(ORIGIN, 'ls-tree', '-r', 'main', path); } catch { return ''; } };
 const E2 = await one('f', 'Fia Synthetic');
+const aTree = tree(`plotart/artists/${A.slug}`), eTree = tree(`plotart/artists/${E.slug}`);
 setGate('move-main'); const m5 = originMain();
-r = publish();
-const e2 = (await qrow(E2.q)).status, movedKept = onMain('moved-during-gate.txt') && !onMain(`plotart/artists/${E2.slug}/index.html`) && ancestor(m5, 'main');
-await requeue(E2.q);
-r = publish();
-check('E2 main moved while the gate ran: promotion is refused (never forced), nothing lost; the retry publishes on the new main',
-  e2 === 'failed' && movedKept && onMain(`plotart/artists/${E2.slug}/index.html`) && onMain('moved-during-gate.txt') && (await qrow(E2.q)).status === 'published', out(r));
+r = await publish();
+const e2copies = branches(`content/plotart-${E2.id}-v1-*`);
+const e2why = { rc: r.status, refused: /does not contain the current main/.test(out(r)), rebuilt: /rebuilding on the new main \(attempt 2 of 3\)/.test(out(r)), q: (await qrow(E2.q)).status,
+  live: onMain(`plotart/artists/${E2.slug}/index.html`), kept: onMain('moved-during-gate.txt'), copies: e2copies.length, onmain: e2copies.filter(b => ancestor(G(ORIGIN, 'rev-parse', b), 'main')).length, cards: cards(E2.slug) };
+check('E2 main advancing during publication: the ancestry guard refuses the first commit (never forced), the gallery is rebuilt on the new main and published in the same run',
+  r.status === 0 && /does not contain the current main/.test(out(r)) && /rebuilding on the new main \(attempt 2 of 3\)/.test(out(r))
+  && (await qrow(E2.q)).status === 'published' && onMain(`plotart/artists/${E2.slug}/index.html`) && onMain('moved-during-gate.txt') && ancestor(m5, 'main')
+  && e2copies.length === 2 && e2copies.filter(b => ancestor(G(ORIGIN, 'rev-parse', b), 'main')).length === 1 && cards(E2.slug) === 1, JSON.stringify(e2why) + ' ' + out(r));
+check('E2b the rebuild changed nothing else: earlier galleries are byte-for-byte unchanged',
+  tree(`plotart/artists/${A.slug}`) === aTree && tree(`plotart/artists/${E.slug}`) === eTree && cards(A.slug) === 1 && cards(E.slug) === 1);
+
+// E3 — concurrent website releases on every attempt: bounded (3 attempts), then failed and reported; every other
+// release kept; then a safe retry after the ancestry refusal publishes on the newest main
+const E3 = await one('i', 'Ide Synthetic');
+setGate('move-main-always'); const m6 = originMain();
+r = await publish();
+const e3status = (await qrow(E3.q)).status, e3detail = (await qrow(E3.q)).detail || '';
+const concurrent = onMain('concurrent-releases.txt') ? G(ORIGIN, 'show', 'main:concurrent-releases.txt').split('\n').filter(Boolean).length : 0;
+check('E3 concurrent website releases during every gate: at most 3 attempts, then the item is marked failed with the ancestry refusal; no gallery, nothing forced, all 3 other releases kept',
+  r.status === 1 && e3status === 'failed' && /does not contain the current main/.test(e3detail) && !onMain(`plotart/artists/${E3.slug}/index.html`)
+  && concurrent === 3 && ancestor(m6, 'main') && branches(`content/plotart-${E3.id}-v1-*`).length === 3 && cards(E3.slug) === 0, out(r));
+setGate('success'); await requeue(E3.q);
+r = await publish();
+check('E4 safe retry after an ancestry refusal: the same approved version publishes on the newest main; one gallery, one card; the concurrent releases stay',
+  r.status === 0 && (await qrow(E3.q)).status === 'published' && onMain(`plotart/artists/${E3.slug}/index.html`) && cards(E3.slug) === 1
+  && G(ORIGIN, 'show', 'main:concurrent-releases.txt').split('\n').filter(Boolean).length === 3, out(r));
+
+// E5 — preservation of unrelated site changes: a concurrent release edits the homepage and the Discovery Library while
+// the gate runs; the rebuilt gallery release keeps both edits exactly (PlotArt pages are pinned by the launch guard, so
+// a real release changing them carries its own manifest update: they are covered by E2/E3's concurrent releases)
+const E5 = await one('j', 'Jude Synthetic');
+const before5 = { a: tree(`plotart/artists/${A.slug}`), e2: tree(`plotart/artists/${E2.slug}`) };
+setGate('move-main-site');
+r = await publish();
+const home = G(ORIGIN, 'show', 'main:index.html'), vg = G(ORIGIN, 'show', 'main:discoveries.html');
+check('E5 unrelated site changes made during the release are preserved exactly (homepage and Discovery Library), and the new gallery is added',
+  r.status === 0 && (await qrow(E5.q)).status === 'published' && home.includes('<!-- concurrent site change 19 Nov -->') && vg.includes('<!-- concurrent site change 19 Nov -->')
+  && cards(E5.slug) === 1 && cards(E2.slug) === 1 && tree(`plotart/artists/${A.slug}`) === before5.a && tree(`plotart/artists/${E2.slug}`) === before5.e2, out(r));
+
+// E6 — the guard is not weakened: main REWRITTEN (not advanced) during the gate is never rebuilt on and never forced over
+const E6 = await one('k', 'Kit Synthetic');
+const m7 = originMain(); setGate('diverge');
+r = await publish();
+const diverged = originMain();
+check('E6 a rewritten (non-fast-forward) main is refused with no rebuild: the item fails, main is left exactly as found, nothing forced',
+  r.status === 1 && (await qrow(E6.q)).status === 'failed' && !/rebuilding on the new main/.test(out(r)) && onMain('diverged.txt') && !onMain(`plotart/artists/${E6.slug}/index.html`)
+  && !ancestor(m7, diverged), out(r));
+G(OTHER, 'push', '-q', '-f', 'origin', `${m7}:main`); setGate('success'); await requeue(E6.q);   // the test restores its own main
+r = await publish();
+check('E6b after main is restored, the retry publishes normally',
+  r.status === 0 && (await qrow(E6.q)).status === 'published' && cards(E6.slug) === 1, out(r));
 
 // F — a failed image-rights / provenance check
 const F = await one('g', 'Grainne Synthetic');
@@ -173,28 +235,28 @@ const recP = join(OTHER, 'image-provenance-records.json'), rec = JSON.parse(read
 rec.records.push({ asset: 'plotart/artists/nobody/img/x.webp', class: 'ARTIST_SUPPLIED_ARTWORK', artist_slug: 'nobody' });   // an undeclared, unreferenced record
 writeFileSync(recP, JSON.stringify(rec, null, 2) + '\n'); G(OTHER, 'add', '-A'); G(OTHER, 'commit', '-q', '-m', 'a broken record (test)'); G(OTHER, 'push', '-q', 'origin', 'main');
 const mF = originMain(), gatesBefore = readFileSync(join(TMP, 'gate.log'), 'utf8').split('\n').length;
-r = publish();
+r = await publish();
 const fRefused = (await qrow(F.q)).status === 'failed' && originMain() === mF && /(launch guard|image provenance|image rights) refused[\s\S]*provenance/.test(r.stdout) && readFileSync(join(TMP, 'gate.log'), 'utf8').split('\n').length === gatesBefore;
 check('F  a provenance problem (caught by the launch guard’s provenance rule L14 or the provenance validator) stops before anything is pushed: no copy, no gate, main unchanged, item failed',
   fRefused && branches(`content/plotart-${F.id}-*`).length === 0, out(r));
 G(OTHER, 'pull', '-q', '--ff-only', 'origin', 'main'); G(OTHER, 'revert', '--no-edit', 'HEAD'); G(OTHER, 'push', '-q', 'origin', 'main');   // repair main for the rest
-await requeue(F.q); r = publish();
+await requeue(F.q); r = await publish();
 check('F2 once the record problem is fixed on main, the retry publishes', (await qrow(F.q)).status === 'published' && onMain(`plotart/artists/${F.slug}/index.html`), out(r));
 
 // G — a failed release step (promotion refused because the gate never passes in time / gate failure after push)
 const Gq = await one('h', 'Gobnait Synthetic');
 setGate('failure'); const mG = originMain();
-r = publish();
+r = await publish();
 check('G  a failed release step leaves main untouched and the item failed (the saved copy stays as an audit record)',
   originMain() === mG && (await qrow(Gq.q)).status === 'failed' && branches(`content/plotart-${Gq.id}-*`).length === 1 && !onMain(`plotart/artists/${Gq.slug}/index.html`), out(r));
-setGate('success'); await requeue(Gq.q); publish();
+setGate('success'); await requeue(Gq.q); await publish();
 
 // H — an accidental duplicate publishing attempt after success
 const galleriesBefore = galleryFolders().length, mH = originMain(), cardsA = cards(A.slug);
-r = publish();
+r = await publish();
 check('H1 running publishing again with nothing ready changes nothing', originMain() === mH && /nothing|^$/.test(r.stdout.trim().split('\n').pop() || ''), out(r));
 await db.prepare("UPDATE publish_queue SET status='ready' WHERE id=?").bind(A.q).run();       // the same published version re-queued by mistake
-r = publish();
+r = await publish();
 const aRow = await qrow(A.q);
 const sameRecords = (a, b) => { const rs = c => JSON.stringify(JSON.parse(G(ORIGIN, 'show', `${c}:image-provenance-records.json`)).records.map(x => JSON.stringify(x)).sort()); return rs(a) === rs(b); };
 const changedH = G(ORIGIN, 'diff', '--name-only', mH, 'main').split('\n').filter(Boolean);
@@ -207,9 +269,9 @@ console.log(`        (H2 outcome: queue item marked "${aRow.status}"${aRow.detai
 const L = await ready('l', 'Lia Synthetic', 'lia@example.test', Array.from({ length: 11 }, (_, i) => ({
   title: `Harbour Light ${i + 1}`, img: `l-w${i + 1}`, price: 1200 + i * 150, por: i === 10, other: i === 3, desc: `Test painting ${i + 1}: harbour light at dusk, layered oil.` })));
 G(SITE, 'push', '-q', 'origin', `${G(SITE, 'rev-parse', 'HEAD')}:refs/heads/content/plotart-${L.id}-v1`);   // the old-name copy from a failed attempt
-setGate('failure'); publish(); const lFailed = (await qrow(L.q)).status;                                  // a previously failed attempt
+setGate('failure'); await publish(); const lFailed = (await qrow(L.q)).status;                                  // a previously failed attempt
 setGate('success'); await requeue(L.q);
-const mL = originMain(); r = publish();
+const mL = originMain(); r = await publish();
 const ok = r.status === 0 && (await qrow(L.q)).status === 'published';
 check('E2E-1 Leah-shaped gallery: failed attempt, re-queued, then queue → images → image rights → provenance → saved copy → gate → promotion: published',
   lFailed === 'failed' && ok && ancestor(mL, 'main'), out(r));
