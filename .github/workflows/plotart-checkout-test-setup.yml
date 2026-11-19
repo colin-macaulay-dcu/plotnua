@@ -10,10 +10,10 @@ on:
   workflow_dispatch:
     inputs:
       mode:
-        description: "audit / r2_plan (read only) · r2_apply (EU TEST buckets) · create_access · d1_setup (schema + synthetic seed, EMPTY TEST database only)"
+        description: "audit / r2_plan (read only) · r2_apply (EU TEST buckets) · create_access · d1_setup (schema + synthetic seed, EMPTY TEST database only) · d1_verify · d1_legacy_licence (synthetic artists' 0005 licence row, TEST only)"
         required: true
         type: choice
-        options: [audit, r2_plan, r2_apply, create_access, d1_setup, d1_verify]
+        options: [audit, r2_plan, r2_apply, create_access, d1_setup, d1_verify, d1_legacy_licence]
         default: audit
 permissions:
   contents: read
@@ -33,7 +33,7 @@ jobs:
           [ "${{ github.ref }}" = refs/heads/main ] || { echo "REFUSED: run from main"; exit 1; }
           echo "### PlotArt checkout TEST setup · ${{ inputs.mode }}" >> "$GITHUB_STEP_SUMMARY"
       - name: Audit (read only) and, if requested, the TEST Studio Access application
-        if: ${{ inputs.mode != 'd1_setup' && inputs.mode != 'd1_verify' }}
+        if: ${{ inputs.mode != 'd1_setup' && inputs.mode != 'd1_verify' && inputs.mode != 'd1_legacy_licence' }}
         env:
           CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
           CHECKOUT_TEST_D1_DATABASE_ID: ${{ vars.CHECKOUT_TEST_D1_DATABASE_ID }}
@@ -51,7 +51,7 @@ jobs:
       # One step, fail closed: the database gate runs immediately before anything is applied, Wrangler is given a
       # configuration that names ONLY the verified database ID, and the result is compared with the expected state.
       - uses: actions/setup-node@v4
-        if: ${{ inputs.mode == 'd1_setup' || inputs.mode == 'd1_verify' }}
+        if: ${{ inputs.mode == 'd1_setup' || inputs.mode == 'd1_verify' || inputs.mode == 'd1_legacy_licence' }}
         with:
           node-version: 22
       - name: TEST database · gate, apply schema + 0013 + synthetic seed, verify (plotart-checkout-test only)
@@ -105,3 +105,31 @@ jobs:
           node worker/plotart-studio/test/checkout-test-env-seed.mjs --target plotart-checkout-test --founding colin+f1@plotnua.ie --gallery colin+g1@plotnua.ie > "$T/seed.sql" \
             || { echo "  FAIL  STOPPED: the synthetic seed could not be generated"; exit 1; }
           D1_SEED_FILE="$T/seed.sql" python3 atlas-tools/release/studio/checkout-test-d1.py verify
+      # ---------------------------------------------------------------- d1_legacy_licence: TEST database only (19 Nov 2026)
+      # Migration 0005 step 6 for the two synthetic artists (test/checkout-test-legacy-licence.sql), so Studio TEST lets the
+      # Gallery Artist accept the Gallery Artist Agreement. Gate (exactly the synthetic artists, no migrated row yet), one
+      # statement through a Wrangler configuration naming ONLY the verified TEST database, then verification.
+      - name: TEST database · legacy licence row for the synthetic artists (gate, apply one statement, verify)
+        if: ${{ inputs.mode == 'd1_legacy_licence' }}
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
+          CHECKOUT_TEST_D1_DATABASE_ID: ${{ vars.CHECKOUT_TEST_D1_DATABASE_ID }}
+          CHECKOUT_TEST_CF_TOKEN: ${{ secrets.CHECKOUT_TEST_CF_TOKEN }}
+        run: |
+          set -uo pipefail
+          W="$GITHUB_WORKSPACE/worker/plotart-studio"; G="$GITHUB_WORKSPACE/atlas-tools/release/studio/checkout-test-d1.py"
+          T="$RUNNER_TEMP/d1legacy"; mkdir -p "$T"; F="$W/test/checkout-test-legacy-licence.sql"
+          stop() { echo "  FAIL  STOPPED: $1"; echo "- **FAIL** STOPPED: $1" >> "$GITHUB_STEP_SUMMARY"; exit 1; }
+          [[ "$CLOUDFLARE_ACCOUNT_ID" =~ ^[0-9a-f]{32}$ ]] || stop "CLOUDFLARE_ACCOUNT_ID missing or not 32 hex characters"
+          [[ "$CHECKOUT_TEST_D1_DATABASE_ID" =~ ^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$ ]] || stop "CHECKOUT_TEST_D1_DATABASE_ID missing or not a UUID"
+          [ "$(grep -ciE '^[[:space:]]*(INSERT|UPDATE|DELETE|DROP|ALTER|CREATE|REPLACE)' "$F")" = 1 ] && grep -q "^INSERT INTO agreement_acceptances" "$F" \
+            || stop "the statement file is not exactly one INSERT into agreement_acceptances"
+          printf 'name = "plotart-checkout-test-db-legacy"\ncompatibility_date = "2026-08-01"\n[[d1_databases]]\nbinding = "DB"\ndatabase_name = "plotart-checkout-test"\ndatabase_id = "%s"\n' "$CHECKOUT_TEST_D1_DATABASE_ID" > "$T/wrangler.toml"
+          python3 "$G" legacy_check || stop "the TEST database gate refused; nothing was applied"
+          export CLOUDFLARE_API_TOKEN="$CHECKOUT_TEST_CF_TOKEN"
+          if (cd "$T" && npx --yes wrangler@4.150.0 d1 execute plotart-checkout-test --remote --config "$T/wrangler.toml" --file "$F" -y > "$T/out.log" 2>&1); then
+            echo "  PASS  applied $(basename "$F") to plotart-checkout-test"
+          else
+            python3 "$GITHUB_WORKSPACE/atlas-tools/release/studio/wrangler-error.py" "$T/out.log"; stop "the statement was not applied"
+          fi
+          python3 "$G" legacy_verify || stop "the TEST database does not show exactly one migrated licence row per synthetic artist"

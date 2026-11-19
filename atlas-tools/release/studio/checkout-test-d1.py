@@ -7,6 +7,9 @@ It never writes: the workflow applies the files with Wrangler between `check` an
   check    Validates the account ID and database ID formats, that CHECKOUT_TEST_CF_TOKEN is active, that the database ID
            resolves to the database NAMED plotart-checkout-test, and that it has NO tables. Any other answer, status or
            malformed response stops the run (exit 1). Run immediately before the files are applied.
+  legacy_check / legacy_verify  (mode d1_legacy_licence) Before: the two synthetic artists are exactly the artists in the
+           database, both carry the legacy licence label, and neither has a migrated licence row. After: exactly one migrated
+           row each (PA-GPIL-2026-10-29), no other migrated row, and no agreement acceptance created.
   verify   Builds the expected end state OFFLINE (schema.sql, migration 0013 and the very seed file the workflow applied,
            loaded into an in-memory SQLite) and compares the remote TEST database with it exactly: the same set of tables,
            the same row count in every table, and exactly the two synthetic artists (IDs and test addresses).
@@ -135,12 +138,45 @@ def verify():
                 f"synthetic artists {', '.join(sorted(SYNTHETIC))} only")
 
 
+LEGACY = "PA-GPIL-2026-10-29"
+
+
+def legacy_state(acc, db, tok):
+    arts = query(acc, db, tok, "SELECT id, email, licence_version FROM artists ORDER BY id", stage="artist list")
+    must({a.get("id"): a.get("email") for a in arts} == SYNTHETIC and len(arts) == 2,
+         f"artists are not exactly the two synthetic test artists ({[a.get('id') for a in arts]}): nothing done")
+    must(all(a.get("licence_version") == LEGACY for a in arts), "a synthetic artist does not carry the legacy licence label: nothing done")
+    rows = query(acc, db, tok, "SELECT artist_id, doc_id, method FROM agreement_acceptances ORDER BY artist_id, doc_id", stage="licence records")
+    must(all(isinstance(r, dict) for r in rows), "malformed licence records")
+    return rows
+
+
+def legacy_check():
+    acc, db, tok = prerequisites()
+    rows = legacy_state(acc, db, tok)
+    mig = [r for r in rows if r.get("method") == "migrated_from_artists_table"]
+    must(not mig, f"{len(mig)} migrated licence row(s) already present: nothing to do")
+    out("PASS", f"{NAME} resolved from its ID, token active, the two synthetic artists only, no migrated licence row yet: safe to apply")
+
+
+def legacy_verify():
+    acc, db, tok = prerequisites()
+    rows = legacy_state(acc, db, tok)
+    mig = sorted((r.get("artist_id"), r.get("doc_id")) for r in rows if r.get("method") == "migrated_from_artists_table")
+    must(mig == [("atestfnd", LEGACY), ("atestgal", LEGACY)], f"migrated licence rows are not exactly one per synthetic artist ({mig})")
+    other = [r for r in rows if r.get("method") != "migrated_from_artists_table"]
+    must(all(r.get("doc_id") != LEGACY for r in other), "an unexpected Studio acceptance of the legacy label exists")
+    out("PASS", f"{NAME}: exactly one migrated licence row ({LEGACY}) for each synthetic artist; no agreement acceptance created")
+
+
 if __name__ == "__main__":
     mode = sys.argv[1] if len(sys.argv) > 1 else ""
     try:
         if mode == "check": check()
         elif mode == "verify": verify()
-        else: raise Stop("usage: checkout-test-d1.py check|verify")
+        elif mode == "legacy_check": legacy_check()
+        elif mode == "legacy_verify": legacy_verify()
+        else: raise Stop("usage: checkout-test-d1.py check|verify|legacy_check|legacy_verify")
     except Stop as e:
         out("FAIL", f"STOPPED (fail closed): {e}")
         sys.exit(1)
