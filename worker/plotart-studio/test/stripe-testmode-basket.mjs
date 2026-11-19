@@ -1,5 +1,5 @@
 // Provider integration proof for one sandbox payment and two artist allocations.
-export async function proveBasketSplit({ accounts, runnerKey, balanceKey, v1, v2, rec, runId }) {
+export async function proveBasketSplit({ accounts, runnerKey, balanceKey, configureRecipients = false, v1, v2, rec, runId }) {
   const source = 'stripe-test-api';
   const check = (id, name, pass, details) => rec(id, name, source, pass ? 'PASS' : 'FAIL', details);
   if (!/^(rk|sk)_test_[A-Za-z0-9]+$/.test(runnerKey) ||
@@ -11,11 +11,13 @@ export async function proveBasketSplit({ accounts, runnerKey, balanceKey, v1, v2
   }
 
   const group = 'plotart-basket-' + runId;
-  async function request(path, { key = runnerKey, version = v1, data, action } = {}) {
+  async function request(path, { key = runnerKey, version = v1, data, json, action } = {}) {
     const headers = { Authorization: 'Bearer ' + key, 'Stripe-Version': version };
     if (action) headers['Idempotency-Key'] = group + '-' + action;
+    if (json) headers['Content-Type'] = 'application/json';
     const response = await fetch('https://api.stripe.com' + path, {
-      method: data ? 'POST' : 'GET', headers, body: data && new URLSearchParams(data)
+      method: data || json ? 'POST' : 'GET', headers,
+      body: json ? JSON.stringify(json) : data && new URLSearchParams(data)
     });
     const obj = await response.json();
     if (!response.ok || obj.livemode === true) {
@@ -29,15 +31,30 @@ export async function proveBasketSplit({ accounts, runnerKey, balanceKey, v1, v2
   let ready = true;
   for (const [i, id] of accounts.entries()) {
     try {
-      const account = await request('/v2/core/accounts/' + id + '?include[0]=configuration.recipient', { version: v2 });
-      const cap = account.configuration?.recipient?.capabilities?.stripe_balance?.stripe_transfers;
+      const path = '/v2/core/accounts/' + id;
+      const read = () => request(path + '?include[0]=configuration.recipient', { version: v2 });
+      let account = await read();
+      const capability = a => a.configuration?.recipient?.capabilities?.stripe_balance?.stripe_transfers;
+      let cap = capability(account);
+      if (configureRecipients && account.id === id && account.livemode === false && !cap?.requested && cap?.status !== 'active') {
+        await request(path, { version: v2, action: 'enable-recipient-' + id, json: {
+          configuration: { recipient: { capabilities: { stripe_balance: { stripe_transfers: { requested: true } } } } }
+        } });
+        account = await read();
+        cap = capability(account);
+      }
+      for (let attempt = 0; configureRecipients && cap?.status === 'pending' && attempt < 3; attempt++) {
+        await new Promise(resolve => setTimeout(resolve, 2000));
+        account = await read();
+        cap = capability(account);
+      }
       const active = account.id === id && cap?.status === 'active';
       check('BASKET-R' + (i + 1), 'Sandbox recipient can receive transfers', active,
         { account: id, status: cap?.status || 'recipient capability absent', details: cap?.status_details });
       if (!active) ready = false;
     } catch (e) {
       ready = false;
-      check('BASKET-R' + (i + 1), 'Read sandbox recipient configuration', false, { account: id, error: e.message });
+      check('BASKET-R' + (i + 1), 'Prepare sandbox transfer recipient', false, { account: id, error: e.message });
     }
   }
   if (!ready) return;
