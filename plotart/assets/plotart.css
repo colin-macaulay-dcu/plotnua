@@ -46,11 +46,11 @@ body.pa p{ margin:0 0 1em; }
 
 /* ---- header ---------------------------------------------------------- */
 .pa-head{ position:sticky; top:0; z-index:40; background:rgba(27,28,30,.92); -webkit-backdrop-filter:blur(10px); backdrop-filter:blur(10px); border-bottom:1px solid var(--line); }
-.pa-head .pa-wrap{ display:flex; align-items:center; gap:28px; min-height:74px; }
+.pa-head .pa-wrap{ display:flex; align-items:center; gap:28px; min-height:80px; }
 .pa-brand{ display:flex; align-items:center; gap:14px; text-decoration:none; color:var(--ivory); flex:0 0 auto; }
 .pa-brand:hover{ color:var(--ivory); }
 .pa-word{ font-family:var(--serif); font-size:31px; letter-spacing:.01em; line-height:1; }
-.pa-logo{ height:36px; width:auto; flex:none; align-self:center; display:block; }   /* PlotArt Organic P logo: the P and the PlotArt wordmark in one image (19 Nov 2026) */
+.pa-logo{ height:62px; width:auto; flex:none; align-self:center; display:block; }   /* PlotArt Organic P logo, stacked: the P centred above the PlotArt wordmark (final composition, 19 Nov 2026) */
 .pa-part{ display:flex; align-items:center; gap:7px; font-size:12px; letter-spacing:.06em; color:var(--stone); white-space:nowrap; }
 .pa-part img{ width:18px; height:18px; border-radius:5px; }
 .pa-nav{ display:flex; align-items:center; gap:4px; margin-left:auto; }
@@ -73,13 +73,12 @@ body.pa p{ margin:0 0 1em; }
   .pa-f25-m{ display:inline-flex; margin-left:auto; font-size:13.5px; font-weight:600; color:var(--ivory); text-decoration:none; border:1px solid var(--terra); border-radius:999px; padding:7px 13px; }
   :where(body.pa) .pa-nav a.pa-home-m{ display:inline-block; color:var(--stone); }
   .pa-word{ font-size:25px; }
-  .pa-logo{ height:30px; }
+  .pa-logo{ height:50px; }
   .pa-part span{ display:none; }
   .pa-nav{ gap:0; }
   .pa-nav a{ font-size:14px; padding:9px 8px; }
   .pa-nav a.pa-nav-cta{ margin-left:4px; padding:7px 12px; }
 }
-@media (max-width:389px){ .pa-logo{ height:26px; } }   /* narrow phones: room for Artist Login and Menu (Organic P, 19 Nov 2026) */
 
 /* ---- buttons --------------------------------------------------------- */
 .pa-btn{ display:inline-flex; align-items:center; gap:10px; font-family:var(--sans); font-size:15.5px; font-weight:600; letter-spacing:.01em; padding:14px 24px; border-radius:999px; border:1px solid transparent; text-decoration:none; cursor:pointer; transition:background .25s, color .25s, border-color .25s; }
@@ -841,11 +840,12 @@ body.pa .pa-vgc-pos > a:focus-visible{ outline-offset:-3px; border-radius:0; }
 
 /* Phone Menu (founder approval 30 Oct 2026): one-row header, wordmark · Menu; the pills open
    from the shared Menu (assets/identity/pn-section-menu.css). Desktop and tablet unchanged. */
-.pa-head{ --pn-sm-accent:#EDEBE7; --pn-sm-top:61px; }
+.pa-head{ --pn-sm-accent:#EDEBE7; --pn-sm-top:67px; }
 @media (max-width:720px){
   .pa-head--pills .pa-wrap{ flex-wrap:nowrap; min-height:60px; gap:12px; padding-top:8px; padding-bottom:8px; }
   .pa-head--pills .pa-pills{ display:none; }
   .pa-head--pills .pa-word{ font-size:26px; }
+  .pa-head--pills .pa-logo{ height:50px; }   /* stacked logo on phones: a 67 px header (Menu panel top above) */
 }
 
 /* ==== Mobile Gallery (3 Nov 2026): five pills (Discover PlotArt · Virtual Gallery · Mobile Gallery · Living Gallery ·

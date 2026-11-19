@@ -44,8 +44,8 @@ import importlib.util,subprocess,sys
 sys.path.insert(0,'atlas-tools'); import plotart_shell as new
 src=subprocess.check_output(['git','show','origin/main:atlas-tools/plotart_shell.py'],text=True)
 old=importlib.util.module_from_spec(importlib.util.spec_from_loader('old',loader=None)); exec(src,old.__dict__)
-# 19 Nov 2026: the Organic P identity (founder approval 19 Nov 2026, 20:06) replaces exactly the header logo markup; nothing else may differ
-OLD_LOGO='<img class="pa-logo" src="/assets/brand/plotart-p-48.webp" srcset="/assets/brand/plotart-p-96.webp 2x" width="30" height="30" alt=""><span class="pa-word">PlotArt</span>'; NEW_LOGO='<img class="pa-logo" src="/assets/brand/plotart-logo-header.svg" width="138" height="36" alt="">'
+# 19 Nov 2026: the Organic P identity, stacked composition (founder briefs 19 Nov 2026, 20:06 and 21:00) replaces exactly the header logo markup; nothing else may differ
+OLD_LOGO='<img class="pa-logo" src="/assets/brand/plotart-logo-header.svg" width="138" height="36" alt="">'; NEW_LOGO='<img class="pa-logo" src="/assets/brand/plotart-logo-stacked.svg" width="63" height="62" alt="">'
 ok=all(old.artist_page(p,'T','D','<p>b</p>')==tuple(x.replace(NEW_LOGO,OLD_LOGO) for x in new.artist_page(p,'T','D','<p>b</p>')) for p in ['artists/a/index.html','artists/a/w.html','artists/a/b/c.html'])
 print('same' if ok and new.HIRE_NAV is False else 'DIFF')`], { cwd: REPO, encoding: 'utf8' }).trim();
 check('G2 artist gallery pages the pipeline writes are byte-identical (plotart_shell HIRE_NAV is off by default)', SHELL_DIFF === 'same', SHELL_DIFF);
@@ -85,9 +85,9 @@ const strip = s => s.replace(' pa-pills--hire', '').replace(/<a class="pa-pill" 
      the header logo markup changes (the exact old markup for the exact new one); plotart.css and plotart-services.css may
      differ only as that release, byte for byte (SHA-256 pinned; the launch manifest pins them too). Art for Hire's own blocks
      in plotart.css are still checked below. */
-  const LOGO_OLD = '<img class="pa-logo" src="/assets/brand/plotart-p-48.webp" srcset="/assets/brand/plotart-p-96.webp 2x" width="30" height="30" alt=""><span class="pa-word">PlotArt</span>', LOGO_NEW = '<img class="pa-logo" src="/assets/brand/plotart-logo-header.svg" width="138" height="36" alt="">';
+  const LOGO_OLD = '<img class="pa-logo" src="/assets/brand/plotart-logo-header.svg" width="138" height="36" alt="">', LOGO_NEW = '<img class="pa-logo" src="/assets/brand/plotart-logo-stacked.svg" width="63" height="62" alt="">';
   const brandOld = c => c.split(LOGO_NEW).join(LOGO_OLD);
-  LATER_PINS['plotart/assets/plotart.css'].push('6a706c8b21929de4cf3cf804a23f1ea49201e6da9edf1ae860c9869e2ef24a46');
+  LATER_PINS['plotart/assets/plotart.css'].push('481c82004d9f03894edcc6eeba06c6aa0b4f5a7b6f2de7f03ef43e1ba664bbe0');
   const BRAND_PINS = { 'plotart/assets/plotart-services.css': '58c8c84e0fd8d372ddbd6f267bb202aa9c2ff2e0d6eeb249293d0c2a5fd8eb8d' };
   const sha = t => createHash('sha256').update(t).digest('hex');
   const navBlock = c => (c.match(/\n*\/\* ==== pa-hire-nav:begin[\s\S]*?pa-hire-nav:end ==== \*\/\n?/) || [''])[0];

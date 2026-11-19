@@ -22075,11 +22075,11 @@
       "work_slug": "streaming-pink"
     },
     {
-      "asset": "assets/brand/plotart-logo-header.svg",
-      "sha256": "71717b832d3615604489a00903039367a0d403774172ebed3b7d16aa45d23aa5",
-      "bytes": 53380,
+      "asset": "assets/brand/plotart-logo-stacked.svg",
+      "sha256": "c48d4ab53e25872c2c69ba529457742dd48672eb6b63046d1b22612421744792",
+      "bytes": 53379,
       "class": "BRAND_MARK",
-      "what": "The PlotArt Organic P header logo: the Organic P beside the PlotArt wordmark, warm ivory #F4F0EB on transparent; used for: PlotArt page headers (36 px high, 30 px on phones) and the PlotArt Studio and Review Desk header",
+      "what": "The PlotArt Organic P header logo, stacked: the Organic P centred above the PlotArt wordmark, warm ivory #F4F0EB on transparent; used for: PlotArt page headers (62 px high, 50 px on phones) and the PlotArt Studio and Review Desk header",
       "brand": {
         "name": "PlotArt Organic P logo",
         "master_file": "6BA70520-15A0-488F-9D76-B49FA53824B0.png (founder's Mac, PlotNua/04 Brand/New PlotArt P; unchanged): the Organic P, off-white lines on black",
@@ -22101,14 +22101,14 @@
       "processing": [
         "Organic P traced from the master as vector paths (potrace via potracer, Claude build session, 19 Nov 2026; no generative model involved); the lower ends of the vertical lines fade out with a vector gradient mask as in the master",
         "Wordmark 'PlotArt' typeset in Montserrat Light ('Plot') and Bold ('Art') (SIL Open Font Licence) and converted to outlines; no font file is shipped",
-        "Composed as one pure-vector SVG (no embedded or linked image, no script, no font), 521.85 x 136.5 user units",
-        "Colour refinement (founder brief 'Warm Ivory, Anthracite and E-Ink Aesthetic', 19 Nov 2026): the lines and wordmark recoloured from off-white #EDEBE7 to warm ivory #F4F0EB; geometry unchanged"
+        "Composed as one pure-vector SVG (no embedded or linked image, no script, no font): the P (the lighter trace of the same outline) centred above the wordmark, its width 62% of the wordmark's; final composition per the founder's Brand Identity Overview (19 Nov 2026)",
+        "Warm ivory #F4F0EB (colour refinement, 19 Nov 2026); geometry unchanged"
       ],
       "visible_label": "none: a brand logo depicts no real place, product or person (class BRAND_MARK)",
       "human_review": {
         "reviewer": "Colin MacAulay (founder)",
         "date": "2026-11-19",
-        "attests": "Supplied the Organic P reference images and asked for them to be implemented as the PlotArt identity (Organic P Brand Identity Update, Phase 1, 19 Nov 2026). Preview only: production use awaits the founder's release approval."
+        "attests": "Approved the Organic P identity and warm ivory palette (19 Nov 2026, 20:06) and asked for the P to be stacked above the wordmark, as in the Brand Identity Overview (19 Nov 2026, 21:00). Preview only: production use awaits the founder's release approval."
       },
       "permitted_surfaces": [
         "brand"
@@ -32814,6 +32814,47 @@
         "brand"
       ],
       "superseded": "Replaced in place by the PlotArt Organic P identity (founder brief, 19 Nov 2026); the previous file is in git history."
+    },
+    {
+      "asset": "assets/brand/plotart-logo-header.svg",
+      "sha256": "71717b832d3615604489a00903039367a0d403774172ebed3b7d16aa45d23aa5",
+      "bytes": 53380,
+      "class": "BRAND_MARK",
+      "what": "The PlotArt Organic P header logo: the Organic P beside the PlotArt wordmark, warm ivory #F4F0EB on transparent; used for: PlotArt page headers (36 px high, 30 px on phones) and the PlotArt Studio and Review Desk header",
+      "brand": {
+        "name": "PlotArt Organic P logo",
+        "master_file": "6BA70520-15A0-488F-9D76-B49FA53824B0.png (founder's Mac, PlotNua/04 Brand/New PlotArt P; unchanged): the Organic P, off-white lines on black",
+        "master_sha256": "01ea16f70dfda1fa9875e63b11758fa73413dfd5d39b2ba85b2d64cf4614a9a5",
+        "master_pixels": [
+          1254,
+          1254
+        ],
+        "lockup_reference": "P - final White on Black.png (same folder; sha256 bd6c966f…): proportions of the P above the wordmark; the wordmark itself is typeset, not traced"
+      },
+      "origin": {
+        "method": "Supplied by the founder as the approved PlotArt Organic P reference artwork (19 Nov 2026); how the master was made is not recorded here",
+        "date": "2026-11-19",
+        "c2pa_evidence": {
+          "read_with": "PNG chunk inspection, 19 Nov 2026",
+          "result": "none present: the supplied masters carry no C2PA manifest (only an eXIf chunk)"
+        }
+      },
+      "processing": [
+        "Organic P traced from the master as vector paths (potrace via potracer, Claude build session, 19 Nov 2026; no generative model involved); the lower ends of the vertical lines fade out with a vector gradient mask as in the master",
+        "Wordmark 'PlotArt' typeset in Montserrat Light ('Plot') and Bold ('Art') (SIL Open Font Licence) and converted to outlines; no font file is shipped",
+        "Composed as one pure-vector SVG (no embedded or linked image, no script, no font), 521.85 x 136.5 user units",
+        "Colour refinement (founder brief 'Warm Ivory, Anthracite and E-Ink Aesthetic', 19 Nov 2026): the lines and wordmark recoloured from off-white #EDEBE7 to warm ivory #F4F0EB; geometry unchanged"
+      ],
+      "visible_label": "none: a brand logo depicts no real place, product or person (class BRAND_MARK)",
+      "human_review": {
+        "reviewer": "Colin MacAulay (founder)",
+        "date": "2026-11-19",
+        "attests": "Supplied the Organic P reference images and asked for them to be implemented as the PlotArt identity (Organic P Brand Identity Update, Phase 1, 19 Nov 2026). Preview only: production use awaits the founder's release approval."
+      },
+      "permitted_surfaces": [
+        "brand"
+      ],
+      "superseded": "Replaced by the stacked composition plotart-logo-stacked.svg (founder brief \"Final Logo Composition and Colour Refinement\", 19 Nov 2026): the side-by-side P and wordmark read as \"P PlotArt\"."
     }
   ]
 }

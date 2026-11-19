@@ -19,7 +19,7 @@ const out = { STUDIO_HTML, ADMIN_HTML, SIGNED_OUT_HTML, REFUSED_HTML, STUDIO_JS:
   PLOTART_CSS: readFileSync(root + 'plotart/assets/plotart.css', 'utf8'), MARK_SVG: readFileSync(root + 'assets/brand/plotnua-mark-master.svg', 'utf8'),
   LOGO_48_B64: b64('assets/brand/plotart-p-48.webp'), LOGO_96_B64: b64('assets/brand/plotart-p-96.webp'),
   FAVICON_32_B64: b64('assets/brand/plotart-favicon-32.png'), TOUCH_180_B64: b64('assets/brand/plotart-apple-touch-180.png'),
-  LOGO_HEADER_SVG: readFileSync(root + 'assets/brand/plotart-logo-header.svg', 'utf8') };
+  LOGO_HEADER_SVG: readFileSync(root + 'assets/brand/plotart-logo-stacked.svg', 'utf8') };
 // The agreement texts PlotArt Studio shows and serves (agreements/build.cjs). Each served file must match the fingerprint
 // recorded for it; a mismatch stops the build, so a text can never change silently under an identifier.
 const AG = JSON.parse(r('agreements/issued/fingerprints.json')).documents;
