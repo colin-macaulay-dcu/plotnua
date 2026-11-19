@@ -1,10 +1,10 @@
 {
   "_note": "Changing this file on the pilot branch requests a run of .github/workflows/plotart-checkout-stripe-test.yml (Stripe TEST mode only; waits for the founder's approval on the checkout-test environment). Nothing is deployed.",
-  "requested": "2026-11-19T09:45:06.339Z",
+  "requested": "2026-11-19T09:53:55.736Z",
   "phases": [
     "buyer_checkout"
   ],
-  "reason": "Repeat the mixed-fulfilment buyer checkout with visible field selection, flexible Dublin county matching and field-level diagnostics.",
+  "reason": "Use the exact hosted buyer, delivery, card and submit controls recorded in run 49, and retry field lookup while Stripe frames initialise.",
   "reuse_account": "acct_1UclJXHx1Olx8cdw",
   "unfunded_account": "acct_1Uct3vHx1OnYJa8H",
   "unfunded_link": false,
