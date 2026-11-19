@@ -34,6 +34,8 @@ def canonical(path):
 
 
 def indexable(path, launch):
+    if path == "services.html" and launch.get("services_page") is not True:   # paused 19 Nov 2026: never indexed while withdrawn
+        return False
     if path == "art-for-hire/index.html":
         return launch.get("art_for_hire_page") is True and launch.get("business_rental_information") is True
     if path in TOOL_PATHS:

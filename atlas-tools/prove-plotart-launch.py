@@ -128,8 +128,12 @@ ALLOWED |= {"assets/plotart-living.css"}
 ALLOWED |= {"for-artists.html", "assets/plotart-for-artists.css"}   # the For artists page (17 Nov 2026)
 # Art Services & Providers (founder brief 19 Nov 2026): the page and its stylesheet, reached by the "Services" tab
 SERVICES_PAGE = "services.html"
-ALLOWED |= {SERVICES_PAGE, "assets/plotart-services.css"}
-PAGES.append(SERVICES_PAGE)
+# paused 19 Nov 2026 (founder; both providers asked for changes): the page, its stylesheet and the tab exist ONLY while the
+# launch switch services_page is on. Off: no services file may exist and no page may link to it or carry the tab (L11).
+SERVICES_ON = launch.get("services_page") is True
+if SERVICES_ON:
+    ALLOWED |= {SERVICES_PAGE, "assets/plotart-services.css"}
+    PAGES.append(SERVICES_PAGE)
 # the only price the page may show: the provider's own pricing, exactly as supplied (build-plotart-services.py)
 SERVICES_PRICES = "€70 call-out, then €60 an hour for labour. Materials and parking are extra."
 ALLOWED |= {"assets/plotart-featured.css"}   # Featured Artists in the Artists' Gallery (17 Nov 2026; was plotart-home.css on the homepage)   # the Living Gallery page refinement (17 Nov 2026)
@@ -558,7 +562,8 @@ if os.path.exists(smp):
 NAV_WANT = ["Discover PlotArt", "Artists’ Gallery", "Mobile Gallery", "Living Gallery", "PlotNua ↗"]  # Mobile Gallery added 3 Nov 2026
 if HIRE_ON:
     NAV_WANT.insert(4, "Art for Hire")                                                    # the fourth gallery tab (3B-6)
-NAV_WANT.insert(len(NAV_WANT) - 1, "Services")                                            # Art Services & Providers (19 Nov 2026)
+if SERVICES_ON:
+    NAV_WANT.insert(len(NAV_WANT) - 1, "Services")                                        # Art Services & Providers (19 Nov 2026)
 NAV_CURRENT = {"index.html": "Discover PlotArt", "gallery/index.html": "Artists’ Gallery", "living-gallery.html": "Living Gallery", "founding-25.html": None, "invitation.html": None, "about.html": None,
                "mobile-gallery/index.html": "Mobile Gallery", "mobile-gallery/gallery.html": "Mobile Gallery"}
 NAV_CURRENT.update({p: None for p in SEO.GENERATED_PATHS + SEO.EDITORIAL_PATHS + SEO.TOOL_PATHS})
@@ -578,11 +583,19 @@ for name in PAGES + ([HIRE_PAGE] if HIRE_ON else []):
         need(cur == ([NAV_CURRENT[name]] if NAV_CURRENT[name] else []), "L11 %s current pill is %s, not %s" % (name, cur, NAV_CURRENT[name]))
         depth = "../" * name.count("/")
         mg_href = "index.html" if name.startswith("mobile-gallery/") else depth + "mobile-gallery/"
-        want_hrefs = [depth + "index.html", depth + "gallery/", mg_href, depth + "living-gallery.html"] + ([depth + "art-for-hire/"] if HIRE_ON else []) + [depth + "services.html", depth + "../index.html"]
+        want_hrefs = [depth + "index.html", depth + "gallery/", mg_href, depth + "living-gallery.html"] + ([depth + "art-for-hire/"] if HIRE_ON else []) + ([depth + "services.html"] if SERVICES_ON else []) + [depth + "../index.html"]
         need(len(links) == len(want_hrefs) and [x[0] for x in links] == want_hrefs,
              "L11 %s pills must link to the PlotArt homepage, the Virtual Gallery, the Mobile Gallery, the Living Gallery and the PlotNua homepage" % name)
         hv = visible_text(head.group(1)) if head else ""
         need("Founding 25" not in hv and "About" not in hv, "L11 %s header still offers Founding 25 or About" % name)
+
+if not SERVICES_ON:
+    for _d, _, _fs in os.walk(PA):
+        for _f in _fs:
+            if _f.endswith(".html"):
+                _t = open(os.path.join(_d, _f), encoding="utf-8").read()
+                need("services.html" not in _t and 'data-pa-track="nav_services' not in _t,
+                     "L11 %s links to the paused Services page or carries its tab" % os.path.relpath(os.path.join(_d, _f), PA))
 
 # L12 · the Founding 25 and the Living Gallery are separate programmes (founder decision 28 Oct 2026)
 SEP = "The Founding 25 is the PlotArt Artists’ Gallery. The Living Gallery is a separate, proposed programme. Taking part in it is optional, and it is never a condition of being a Founding Artist."

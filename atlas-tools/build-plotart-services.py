@@ -8,6 +8,11 @@ each provider (founder brief); the prices are the provider's own and are the onl
 
   python3 atlas-tools/build-plotart-services.py            build plotart/services.html
   python3 atlas-tools/build-plotart-services.py --check    write nothing; refuse if the page differs
+
+PAUSED 19 Nov 2026 (founder: both providers asked for changes to their listings). The page is built only while the launch
+switch services_page is on. Off: the page and its stylesheet must be absent from plotart/ (--check refuses otherwise),
+and the build writes nothing. The source stays here: this script and atlas-tools/plotart-services/ (the stylesheet, and
+the unpublished photograph-and-logo card design in preview/, whose images await the providers' permission).
 """
 import sys
 from pathlib import Path
@@ -15,9 +20,14 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "atlas-tools"))
 import json                 # noqa: E402
+import shutil               # noqa: E402
 import plotart_shell as S   # noqa: E402
 
-HIRE = json.load(open(ROOT / "atlas-tools" / "release" / "plotart-launch-switches.json", encoding="utf-8")).get("art_for_hire_page") is True
+_SW = json.load(open(ROOT / "atlas-tools" / "release" / "plotart-launch-switches.json", encoding="utf-8"))
+HIRE = _SW.get("art_for_hire_page") is True
+ON = _SW.get("services_page") is True        # paused 19 Nov 2026 (off)
+CSS_SRC = ROOT / "atlas-tools" / "plotart-services" / "plotart-services.css"
+CSS_OUT = ROOT / "plotart" / "assets" / "plotart-services.css"
 
 PATH = "services.html"
 TITLE = "Art Services & Providers | PlotArt"
@@ -78,18 +88,26 @@ FINE = ("Artworks in PlotArt galleries are offered by their artists: PlotArt int
 
 
 def render():
-    return S.artist_page(PATH, TITLE, DESC, BODY, current="services", hire_nav=HIRE, fine=FINE, styles=("assets/plotart-services.css",))[1]
+    return S.artist_page(PATH, TITLE, DESC, BODY, current="services", hire_nav=HIRE, fine=FINE, styles=("assets/plotart-services.css",), services_nav=True)[1]
 
 
 def main():
     page = ROOT / "plotart" / PATH
+    if not ON:
+        if page.exists() or CSS_OUT.exists():
+            raise SystemExit("SERVICES · paused (services_page off), but plotart/%s or its stylesheet is still in the public site" % PATH)
+        print("SERVICES · paused (services_page off): page and stylesheet absent from plotart/; nothing written")
+        return
     want = render()
     if "--check" in sys.argv:
+        if not CSS_OUT.exists() or CSS_OUT.read_bytes() != CSS_SRC.read_bytes():
+            raise SystemExit("SERVICES · plotart/assets/plotart-services.css differs from its source")
         if not page.exists() or page.read_text(encoding="utf-8") != want:
             raise SystemExit("SERVICES · plotart/%s differs from its reviewed source (rebuild and review)" % PATH)
         print("SERVICES · OK — plotart/%s matches its source; nothing written" % PATH)
         return
     page.write_text(want, encoding="utf-8")
+    shutil.copyfile(CSS_SRC, CSS_OUT)
     print("SERVICES · built plotart/%s" % PATH)
 
 

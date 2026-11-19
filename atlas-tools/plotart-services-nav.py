@@ -8,6 +8,9 @@ seven pills.
 
   python3 atlas-tools/plotart-services-nav.py ROOT            apply
   python3 atlas-tools/plotart-services-nav.py ROOT --check    report what would change; change nothing
+  python3 atlas-tools/plotart-services-nav.py ROOT --remove   withdraw the tab again (paused 19 Nov 2026); --remove --check reports
+
+Follows the launch switch services_page: adding refuses while it is off, removing refuses while it is on.
 
 Strict: a page whose PlotArt navigation does not have exactly one Art for Hire pill and one Menu link stops the run with
 nothing written. Idempotent: a page that already has the tab is left alone."""
@@ -47,6 +50,34 @@ def patch(text, current):
     return out, "patched"
 
 
+RM = [re.compile(r'<a class="pa-pill" href="[^"]*services\.html"[^>]*data-pa-track="nav_services">Services</a>'),
+      re.compile(r'<a class="pn-sm-link" href="[^"]*services\.html"[^>]*data-pa-track="nav_services_menu">Services</a>'),
+      re.compile(r'<li><a href="[^"]*services\.html">Services</a></li>')]
+
+
+def unpatch(text):
+    if 'data-pa-track="nav_services"' not in text:
+        return text, "absent"
+    out = text
+    for rx in RM:
+        if len(rx.findall(out)) > 1:
+            raise ValueError("more than one Services link of one kind")
+        out = rx.sub("", out, count=1)
+    if "services.html" in out:
+        raise ValueError("a link to services.html remains outside the tab")
+    return out, "removed"
+
+
+def uncss(text):
+    if CSS_OLD[0] in text:
+        return text
+    for a, b in list(zip(CSS_NEW, CSS_OLD)) + [(CSS_980_NEW, CSS_980)]:
+        if text.count(a) != 1:
+            raise ValueError("plotart.css: expected the seven-pill rule once: " + a[:60])
+        text = text.replace(a, b)
+    return text
+
+
 def css(text):
     if CSS_NEW[0] in text:
         return text
@@ -57,7 +88,12 @@ def css(text):
     return text
 
 
-def main(root, check=False):
+def main(root, check=False, remove=False):
+    import json
+    sw = json.load(open(os.path.join(root, "atlas-tools", "release", "plotart-launch-switches.json"), encoding="utf-8")).get("services_page") is True
+    if not check and sw == remove:
+        print("REFUSED (nothing written): services_page is %s" % ("on; the tab stays" if sw else "off; the tab may not be added"))
+        return 2
     base = os.path.join(root, "plotart")
     plan, errors = [], []
     for d, _, files in os.walk(base):
@@ -70,14 +106,14 @@ def main(root, check=False):
             if 'class="pa-pills' not in text:
                 continue
             try:
-                new, state = patch(text, rel == "services.html")
+                new, state = unpatch(text) if remove else patch(text, rel == "services.html")
                 plan.append((path, rel, text, new, state))
             except ValueError as e:
                 errors.append("%s: %s" % (rel, e))
     cpath = os.path.join(base, "assets", "plotart.css")
     ctext = open(cpath, encoding="utf-8").read()
     try:
-        cnew = css(ctext)
+        cnew = uncss(ctext) if remove else css(ctext)
     except ValueError as e:
         errors.append(str(e))
     if errors:
@@ -88,12 +124,12 @@ def main(root, check=False):
             open(path, "w", encoding="utf-8").write(new)
     if not check and cnew != ctext:
         open(cpath, "w", encoding="utf-8").write(cnew)
-    print("%d pages, %d patched, %d already; stylesheet %s" % (len(plan), sum(p[4] == "patched" for p in plan), sum(p[4] == "already" for p in plan),
-                                                             "unchanged" if cnew == ctext else ("would change" if check else "widened to seven pills")))
+    print("%d pages, %d changed; stylesheet %s" % (len(plan), sum(p[4] in ("patched", "removed") for p in plan),
+                                                 "unchanged" if cnew == ctext else ("would change" if check else ("back to six pills" if remove else "widened to seven pills"))))
     return 0
 
 
 if __name__ == "__main__":
     if len(sys.argv) < 2:
         sys.exit(__doc__)
-    sys.exit(main(sys.argv[1], "--check" in sys.argv))
+    sys.exit(main(sys.argv[1], "--check" in sys.argv, "--remove" in sys.argv))
