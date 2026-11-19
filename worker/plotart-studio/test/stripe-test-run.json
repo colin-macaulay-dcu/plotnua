@@ -1,15 +1,16 @@
 {
   "_note": "Changing this file on the pilot branch requests a run of .github/workflows/plotart-checkout-stripe-test.yml (Stripe TEST mode only; waits for the founder's approval on the checkout-test environment). Nothing is deployed.",
-  "requested": "2026-11-19T08:08:41.429Z",
+  "requested": "2026-11-19T08:20:53.036Z",
   "phases": [
     "basket_split"
   ],
-  "reason": "Verify both sandbox recipient configurations, then prove one EUR 10 platform payment, two allocations and a EUR 6 partial refund and reversal. Stop before money movement if either recipient is unavailable.",
+  "reason": "Request Stripe transfer capability on the two sandbox recipients and verify both are active before the combined payment proof.",
   "reuse_account": "acct_1UclJXHx1Olx8cdw",
   "unfunded_account": "acct_1Uct3vHx1OnYJa8H",
   "unfunded_link": false,
   "coverage_only": false,
   "reimbursement_evidence": false,
   "pause_evidence": false,
-  "balance_evidence": false
+  "balance_evidence": false,
+  "prepare_sandbox_recipients": true
 }
