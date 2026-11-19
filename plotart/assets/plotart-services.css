@@ -1,0 +1,21 @@
+/* PlotArt · Art Services & Providers (19 Nov 2026). Loaded only by services.html. Existing tokens and components only:
+   no logos or photographs; two plain provider entries on the gallery wall. */
+body.pa .pa-sv-hero{ padding:clamp(56px, 7vw, 104px) 0 clamp(40px, 5vw, 72px); }
+body.pa .pa-sv-hero h1{ font-size:clamp(46px, 6vw, 88px); line-height:.98; margin:10px 0 18px; }
+body.pa .pa-sv-note{ margin:24px 0 0; max-width:62ch; padding:16px 20px; border:1px solid var(--line-2); border-radius:var(--r-sm); color:var(--stone); font-size:15.5px; line-height:1.6; }
+body.pa .pa-sv-sec{ padding:clamp(40px, 5vw, 80px) 0; }
+body.pa .pa-sv-list{ display:grid; grid-template-columns:repeat(2, minmax(0, 1fr)); gap:clamp(20px, 3vw, 36px); align-items:start; }
+body.pa .pa-sv-card{ display:flex; flex-direction:column; background:var(--raised); border:1px solid var(--line); border-radius:var(--r); padding:clamp(24px, 3vw, 40px); box-shadow:var(--shadow-card); }
+body.pa .pa-sv-card h2{ font-family:var(--serif); font-weight:400; font-size:clamp(32px, 3.2vw, 44px); line-height:1.05; color:var(--ivory); margin:0; }
+body.pa .pa-sv-what{ margin:12px 0 22px; color:var(--lime); font-size:18px; line-height:1.5; }
+body.pa .pa-sv-facts{ margin:0 0 26px; border-top:1px solid var(--line); display:grid; grid-template-columns:minmax(0, 11em) minmax(0, 1fr); }
+body.pa .pa-sv-facts dt, body.pa .pa-sv-facts dd{ padding:13px 0; border-bottom:1px solid var(--line); margin:0; }
+body.pa .pa-sv-facts dt{ font-weight:600; color:var(--ivory); font-size:15px; padding-right:16px; }
+body.pa .pa-sv-facts dd{ color:var(--stone); font-size:15.5px; line-height:1.55; }
+body.pa .pa-sv-contact{ margin:auto 0 0; display:flex; flex-wrap:wrap; gap:10px; }
+body.pa .pa-sv-contact .pa-btn{ padding:12px 20px; font-size:15px; overflow-wrap:anywhere; }
+body.pa .pa-sv-foot{ border-top:1px solid var(--line); padding:clamp(28px, 3vw, 40px) 0; }
+body.pa .pa-sv-foot p{ margin:0; max-width:72ch; color:var(--stone); font-size:15.5px; }
+@media (max-width:900px){ body.pa .pa-sv-list{ grid-template-columns:1fr; } }
+@media (max-width:560px){ body.pa .pa-sv-facts{ grid-template-columns:1fr; } body.pa .pa-sv-facts dt{ padding-bottom:2px; border-bottom:0; } body.pa .pa-sv-facts dd{ padding-top:0; }
+  body.pa .pa-sv-contact .pa-btn{ width:100%; justify-content:center; text-align:center; } }

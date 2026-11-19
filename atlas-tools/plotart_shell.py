@@ -15,6 +15,9 @@ ARTIST_FINE = ("Artworks in this gallery are offered by the artist. PlotArt intr
 # page this module writes is byte-identical to before. atlas-tools/plotart-hire-nav.py adds the same tab to hand-built pages.
 HIRE_NAV = False
 HIRE_PILL = ("hire", "art-for-hire/", "Art for Hire", "nav_art_for_hire")
+# Services (founder brief 19 Nov 2026): the "Art Services & Providers" page, the last PlotArt tab before PlotNua ↗, on every
+# PlotArt page. atlas-tools/plotart-services-nav.py adds the same tab to hand-built and already-published pages.
+SERVICES_PILL = ("services", "services.html", "Services", "nav_services")
 
 
 # The existing PlotArt Studio (Cloudflare Access one-time code sign-in). Linked from the footer and the For artists page
@@ -40,7 +43,8 @@ def artist_page(path, title, desc, body, scripts=("plotart.js",), current="vg", 
         pill("vg", R + "gallery/", "Artists’ Gallery", "nav_virtual_gallery"),
         pill("mg", R + "mobile-gallery/", "Mobile Gallery", "nav_mobile_gallery"),
         pill("lg", R + "living-gallery.html", "Living Gallery", "nav_living_gallery"),
-        pill(HIRE_PILL[0], R + HIRE_PILL[1], HIRE_PILL[2], HIRE_PILL[3]) if hire_nav else "",
+        (pill(HIRE_PILL[0], R + HIRE_PILL[1], HIRE_PILL[2], HIRE_PILL[3]) if hire_nav else "")
+        + pill(SERVICES_PILL[0], R + SERVICES_PILL[1], SERVICES_PILL[2], SERVICES_PILL[3]),
         '<a class="pa-pill pa-pill--out" href="%sindex.html" aria-label="PlotNua homepage" data-pa-track="cross_plotnua_home">PlotNua <span aria-hidden="true">↗</span></a>' % T)
     # Phone Menu (founder approval 30 Oct 2026): the same links in the shared one-row Menu
     import re as _re
@@ -56,7 +60,7 @@ def artist_page(path, title, desc, body, scripts=("plotart.js",), current="vg", 
     header = header.replace('</nav>\n  </div>\n</header>', '</nav>\n    ' + LOGIN + '\n    ' + _menu + '\n  </div>\n</header>', 1)
     sc = "".join('<script src="%sassets/%s" defer></script>' % (R, s) for s in scripts)
     footlinks = ('<li><a href="{R}gallery/">Artists’ Gallery</a></li><li><a href="{R}mobile-gallery/">Mobile Gallery</a></li><li><a href="{R}living-gallery.html">Living Gallery</a></li>'
-                 + ('<li><a href="{R}art-for-hire/">Art for Hire</a></li>' if hire_nav else '') +
+                 + ('<li><a href="{R}art-for-hire/">Art for Hire</a></li>' if hire_nav else '') + '<li><a href="{R}services.html">Services</a></li>' +
                  '<li><a href="{R}about.html">About PlotArt</a></li><li><a href="{R}founding-25.html">The Founding 25</a></li>' + FOOT_ARTISTS).format(R=R)
     robots = SEO.head(path, title, desc)
     return path, """<!DOCTYPE html>
