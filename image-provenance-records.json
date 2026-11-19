@@ -22113,6 +22113,130 @@
       "permitted_surfaces": [
         "brand"
       ]
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "nick-munier",
+      "asset": "plotart/artists/nick-munier/img/portrait-600.webp",
+      "bytes": 31908,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (Display P3)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-a05ira7lpep",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        600,
+        569
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "fcaf556e18a083be35097e12c2b82af3f4759a10d596a7f336edda597cb04ef7",
+      "source_sha256": "0160bcf623846c94e4b7c04da174ecdc8b381eb60c1fadf1aeb93c302c172e6e",
+      "subject": "portrait",
+      "work_slug": null
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "nick-munier",
+      "asset": "plotart/artists/nick-munier/img/that-s-the-way-i-like-1-600.webp",
+      "bytes": 66606,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "sRGB (no embedded profile; treated as sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-a05ira7lpep",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        600,
+        574
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "7bb2717dde8753c641d107cdbc2b439a7fd7bf41223b09de0abc2830c58340e3",
+      "source_sha256": "6bee532a22e789ef7627ff5f64c80fca2e531edb36b5e784bea899c6c6ce4d4b",
+      "subject": "artwork",
+      "work_slug": "that-s-the-way-i-like"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "nick-munier",
+      "asset": "plotart/artists/nick-munier/img/that-s-the-way-i-like-1-1200.webp",
+      "bytes": 141938,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "sRGB (no embedded profile; treated as sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-a05ira7lpep",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        1200,
+        1148
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "a71171d2a84a77862c2871081a1a71c17fb7496f2756088d0de8f93dc75d65c3",
+      "source_sha256": "6bee532a22e789ef7627ff5f64c80fca2e531edb36b5e784bea899c6c6ce4d4b",
+      "subject": "artwork",
+      "work_slug": "that-s-the-way-i-like"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "nick-munier",
+      "asset": "plotart/artists/nick-munier/img/that-s-the-way-i-like-1-2000.webp",
+      "bytes": 255220,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "sRGB (no embedded profile; treated as sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-a05ira7lpep",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        2000,
+        1912
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "b8683f4febd849c9f39ea0f450a2af446338a9617784e6a3750b95cfe892bb86",
+      "source_sha256": "6bee532a22e789ef7627ff5f64c80fca2e531edb36b5e784bea899c6c6ce4d4b",
+      "subject": "artwork",
+      "work_slug": "that-s-the-way-i-like"
     }
   ],
   "legacy_undeclared": [
