@@ -1,10 +1,10 @@
 {
   "_note": "Changing this file on the pilot branch requests a run of .github/workflows/plotart-checkout-stripe-test.yml (Stripe TEST mode only; waits for the founder's approval on the checkout-test environment). Nothing is deployed.",
-  "requested": "2026-11-19T08:56:55.845Z",
+  "requested": "2026-11-19T09:24:17.231Z",
   "phases": [
-    "basket_split"
+    "buyer_checkout"
   ],
-  "reason": "Verify combined basket using Dashboard-managed payment methods and the sandbox Visa fixture.",
+  "reason": "Exercise the private shop in Chromium: two artists, mixed delivery and collection, one hosted Stripe sandbox payment and a server-verified receipt.",
   "reuse_account": "acct_1UclJXHx1Olx8cdw",
   "unfunded_account": "acct_1Uct3vHx1OnYJa8H",
   "unfunded_link": false,
