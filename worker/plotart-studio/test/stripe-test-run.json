@@ -1,15 +1,15 @@
 {
   "_note": "Changing this file on the pilot branch requests a run of .github/workflows/plotart-checkout-stripe-test.yml (Stripe TEST mode only; waits for the founder's approval on the checkout-test environment). Nothing is deployed.",
-  "requested": "2026-11-18T22:34:54.605Z",
+  "requested": "2026-11-19T08:08:41.429Z",
   "phases": [
-    "e2e"
+    "basket_split"
   ],
-  "reason": "Founder-approved sandbox low-balance reimbursement test, including a temporary transfer to the verified test artist, full reversal and final balance reads.",
+  "reason": "Verify both sandbox recipient configurations, then prove one EUR 10 platform payment, two allocations and a EUR 6 partial refund and reversal. Stop before money movement if either recipient is unavailable.",
   "reuse_account": "acct_1UclJXHx1Olx8cdw",
   "unfunded_account": "acct_1Uct3vHx1OnYJa8H",
   "unfunded_link": false,
   "coverage_only": false,
   "reimbursement_evidence": false,
   "pause_evidence": false,
-  "balance_evidence": true
+  "balance_evidence": false
 }
