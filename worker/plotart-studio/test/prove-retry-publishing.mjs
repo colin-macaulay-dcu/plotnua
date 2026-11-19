@@ -184,6 +184,59 @@ ghStatus = 204; fresh();
 check('R20 if the workflow cannot be started, the retry is kept (ready for the scheduled run) and the reply says so',
   x.s === 200 && x.j.publish === 'failed' && (await q1('SELECT status FROM publish_queue WHERE id=?', G.q)).status === 'ready', JSON.stringify(x.j));
 
+console.log('— an instant update made after an approved gallery failed (Nick Munier, 19 Nov 2026)');
+// v1 (approved, sent by the founder) fails; the artist then changes an availability, which makes an instant v2 from v1;
+// v2 can only ever be refused by the instant-only content boundary, because v1's approved photographs never went live.
+const instantAfterFail = async (n, name) => {
+  const a = await artistWithFailedV1(n, name);
+  await call('POST', `/api/artworks/${a.wid}/availability`, a.email, { availability: 'sold' });
+  const q2 = await q1("SELECT * FROM publish_queue WHERE artist_id=? AND kind='instant' ORDER BY version DESC LIMIT 1", a.id);
+  await call('POST', `/api/admin/queue/${q2.id}/publish`, FOUNDER, {});          // production: INSTANT_AUTOPUBLISH makes it ready itself
+  await pipe('POST', `/api/pipeline/export/${q2.id}`);
+  await pipe('POST', `/api/pipeline/result/${q2.id}`, { status: 'failed', detail: 'content-only boundary refused: a new or changed image is not an instant change (needs review)' });
+  fresh();
+  return { ...a, q2: q2.id, v2: q2.version };
+};
+const NK = await instantAfterFail(51, 'Nico Stuck');
+x = await call('POST', `/api/admin/queue/${NK.q}/retry`, FOUNDER, {});
+check('N1 (unchanged rule) the failed approved v1 cannot be retried while the newer instant v2 exists; nothing starts',
+  x.s === 409 && /newer version/.test(x.j.error) && fresh().length === 0, JSON.stringify(x.j));
+const nKeep = await preserved(NK);
+x = await call('POST', `/api/admin/queue/${NK.q2}/retry`, FOUNDER, {});
+hh = fresh(); row = await q1('SELECT * FROM publish_queue WHERE id=?', NK.q2);
+check('N2 the founder retries the instant v2: it goes back as a REVIEWED publication (full checks, not instant-only), same job and version, the workflow starts once',
+  x.s === 200 && onlyPublish(hh) && row.status === 'ready' && row.kind === 'reviewed' && row.version === NK.v2
+  && (await pipe('GET', '/api/pipeline/queue')).j.items.filter(i => i.id === NK.q2 && i.kind === 'reviewed').length === 1, JSON.stringify([x, row]));
+const na = await q1("SELECT * FROM audit WHERE action='publish_retry' AND artist_id=? ORDER BY id DESC LIMIT 1", NK.id);
+check('N3 the audit records the founder retry as reviewed, naming the approved version it carries, and the earlier boundary refusal',
+  na && na.actor === FOUNDER && /"retried_as_reviewed":true/.test(na.detail) && /"approved_version":1/.test(na.detail) && /content-only boundary refused/.test(na.detail), na && na.detail);
+check('N4 nothing about the artist changed: approval, agreement, artworks (incl. the sold availability), images and gallery position', (await preserved(NK)) === nKeep);
+const ex = await pipe('POST', `/api/pipeline/export/${NK.q2}`);
+check('N5 the export is the approved v1 gallery with the artist’s instant change applied (the work shows as sold)',
+  ex.s === 200 && ex.j.gallery.works.length === 1 && ex.j.gallery.works[0].availability === 'sold', JSON.stringify(ex.j).slice(0, 300));
+await pipe('POST', `/api/pipeline/result/${NK.q2}`, { status: 'published', detail: 'published' });
+check('N6 once published, the failed v1 is superseded and the gallery counts as published',
+  (await q1('SELECT status FROM publish_queue WHERE id=?', NK.q)).status === 'superseded' && (await q1('SELECT first_published_at FROM artists WHERE id=?', NK.id)).first_published_at);
+
+const IP = await instantAfterFail(52, 'Pia Published');               // the normal case: an instant update to a LIVE gallery stays instant
+await db.prepare("UPDATE publish_queue SET status='published' WHERE id=?").bind(IP.q).run();
+x = await call('POST', `/api/admin/queue/${IP.q2}/retry`, FOUNDER, {});
+fresh();
+check('N7 an instant update to a gallery that is already live is retried as instant (unchanged: the instant-only boundary still applies)',
+  x.s === 200 && (await q1('SELECT kind FROM publish_queue WHERE id=?', IP.q2)).kind === 'instant', JSON.stringify(x.j));
+
+const IW = await instantAfterFail(53, 'Wyn Waiting');                  // the approved v1 was never sent for publishing by the founder
+await db.prepare("UPDATE publish_queue SET status='awaiting_founder' WHERE id=?").bind(IW.q).run();
+x = await call('POST', `/api/admin/queue/${IW.q2}/retry`, FOUNDER, {});
+check('N8 if the founder never sent the approved version for publishing, the instant retry is refused (Publish it first); nothing starts',
+  x.s === 409 && /publish those first/.test(x.j.error) && fresh().length === 0 && (await q1('SELECT status FROM publish_queue WHERE id=?', IW.q2)).status === 'failed', JSON.stringify(x.j));
+
+const IZ = await instantAfterFail(54, 'Zoe Withdrawn');                // the approval behind it no longer stands
+await db.prepare("UPDATE submissions SET status='changes_requested' WHERE id=?").bind(IZ.sid).run();
+x = await call('POST', `/api/admin/queue/${IZ.q2}/retry`, FOUNDER, {});
+check('N9 if the approved submission behind it is no longer approved, the instant retry is refused; nothing starts',
+  x.s === 409 && /no longer approved/.test(x.j.error) && fresh().length === 0, JSON.stringify(x.j));
+
 console.log('— normal publishing and other artists');
 const P = await (async () => {
   const email = 'plain@example.test';
@@ -213,7 +266,7 @@ const li = pg.locator('li', { has: pg.locator(`[data-retry="${D.q}"]`) });
 const txt = await li.innerText().catch(() => '');
 check('R23 a failed job shows "publishing failed", the failing check (FAIL P9 …) and a Retry publishing button; ready/waiting jobs do not',
   /publishing failed/.test(txt) && /Last attempt: Image provenance refused: FAIL P9/.test(txt) && /Retry publishing/.test(txt)
-  && !(await pg.locator(`[data-retry="${P.q}"]`).count()) && (await pg.locator('[data-retry]').count()) === 4 && !(await pg.locator(`[data-retry="${N.q}"]`).count()), txt);
+  && !(await pg.locator(`[data-retry="${P.q}"]`).count()) && (await pg.locator('[data-retry]').count()) === 6 && (await pg.locator(`[data-retry="${IW.q2}"]`).count()) === 1 && (await pg.locator(`[data-retry="${IZ.q2}"]`).count()) === 1 && !(await pg.locator(`[data-retry="${N.q}"]`).count()), txt);
 const btn = li.locator('[data-retry]');
 await btn.click();
 check('R24 the first press only asks to confirm (nothing sent)', /Retry publishing to plotnua.ie\?/.test(await btn.innerText()) && fresh().length === 0);
