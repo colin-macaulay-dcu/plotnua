@@ -78,6 +78,7 @@ body.pa p{ margin:0 0 1em; }
   .pa-nav a{ font-size:14px; padding:9px 8px; }
   .pa-nav a.pa-nav-cta{ margin-left:4px; padding:7px 12px; }
 }
+@media (max-width:389px){ .pa-logo{ height:26px; } }   /* narrow phones: room for Artist Login and Menu (Organic P, 19 Nov 2026) */
 
 /* ---- buttons --------------------------------------------------------- */
 .pa-btn{ display:inline-flex; align-items:center; gap:10px; font-family:var(--sans); font-size:15.5px; font-weight:600; letter-spacing:.01em; padding:14px 24px; border-radius:999px; border:1px solid transparent; text-decoration:none; cursor:pointer; transition:background .25s, color .25s, border-color .25s; }
