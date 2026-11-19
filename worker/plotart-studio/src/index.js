@@ -1195,7 +1195,7 @@ async function route(req, env) {
   // static assets (public, no data)
   const asset = { '/assets/studio.css': [A.STUDIO_CSS, 'text/css'], '/assets/plotart.css': [A.PLOTART_CSS, 'text/css'],
     '/assets/studio.js': [A.STUDIO_JS, 'text/javascript'], '/assets/admin.js': [A.ADMIN_JS, 'text/javascript'],
-    '/assets/plotnua-mark.svg': [A.MARK_SVG, 'image/svg+xml'], '/assets/checkout-pilot.js': [A.CHECKOUT_JS, 'text/javascript'] }[p];
+    '/assets/plotnua-mark.svg': [A.MARK_SVG, 'image/svg+xml'], '/assets/plotnua-icon.svg': [A.PN_ICON_SVG, 'image/svg+xml'], '/assets/checkout-pilot.js': [A.CHECKOUT_JS, 'text/javascript'] }[p];
   if (asset && m === 'GET') return res(asset[0], asset[1] + '; charset=utf-8', 200, { 'Cache-Control': 'public, max-age=300' });
   if (LOGO[p] && m === 'GET') return res(LOGO[p][0], LOGO[p][1], 200, { 'Cache-Control': 'public, max-age=86400' });
 

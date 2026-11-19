@@ -17,6 +17,7 @@ const SIGNED_OUT_HTML = `<!DOCTYPE html><html lang="en-IE"><head><meta charset="
 const b64 = p => readFileSync(root + p).toString('base64');
 const out = { STUDIO_HTML, ADMIN_HTML, SIGNED_OUT_HTML, REFUSED_HTML, STUDIO_JS: r('ui/changes.js') + r('ui/studio.js'), ADMIN_JS: r('ui/changes.js') + r('ui/admin.js'), STUDIO_CSS: r('ui/studio.css'),
   PLOTART_CSS: readFileSync(root + 'plotart/assets/plotart.css', 'utf8'), MARK_SVG: readFileSync(root + 'assets/brand/plotnua-mark-master.svg', 'utf8'),
+  PN_ICON_SVG: readFileSync(root + 'assets/brand/plotnua-icon-transparent.svg', 'utf8'),   // the official PlotNua house P (PlotNua link in the preview header, 19 Nov 2026)
   LOGO_48_B64: b64('assets/brand/plotart-p-48.webp'), LOGO_96_B64: b64('assets/brand/plotart-p-96.webp'),
   FAVICON_32_B64: b64('assets/brand/plotart-favicon-32.png'), TOUCH_180_B64: b64('assets/brand/plotart-apple-touch-180.png'),
   LOGO_HEADER_SVG: readFileSync(root + 'assets/brand/plotart-logo-stacked.svg', 'utf8') };

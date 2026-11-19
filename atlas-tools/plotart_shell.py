@@ -41,7 +41,7 @@ def artist_page(path, title, desc, body, scripts=("plotart.js",), current="vg", 
     T = "../" * (depth + 1)
     pill = lambda key, href, lbl, track: '<a class="pa-pill" href="%s"%s data-pa-track="%s">%s</a>' % (href, ' aria-current="page"' if key == current else "", track, lbl)
     header = ('<header class="pa-head pa-head--pills">\n  <div class="pa-wrap">\n'
-              '    <a class="pa-brand" href="%sindex.html" aria-label="PlotArt home"><img class="pa-logo" src="/assets/brand/plotart-logo-stacked.svg" width="63" height="62" alt=""><span class="pa-part"><img src="/assets/brand/plotnua-mark-master.svg" alt="" width="18" height="18"><span>Part of PlotNua</span></span></a>\n'
+              '    <a class="pa-brand" href="%sindex.html" aria-label="PlotArt home"><img class="pa-logo" src="/assets/brand/plotart-logo-stacked.svg" width="63" height="62" alt=""></a>\n'
               '    <nav class="pa-pills%s" aria-label="PlotArt">%s%s%s%s%s%s</nav>\n  </div>\n</header>') % (
         R, " pa-pills--hire" if hire_nav else "", pill("home", R + "index.html", "Discover PlotArt", "nav_discover_plotart"),
         pill("vg", R + "gallery/", "Artists’ Gallery", "nav_virtual_gallery"),
@@ -49,7 +49,7 @@ def artist_page(path, title, desc, body, scripts=("plotart.js",), current="vg", 
         pill("lg", R + "living-gallery.html", "Living Gallery", "nav_living_gallery"),
         (pill(HIRE_PILL[0], R + HIRE_PILL[1], HIRE_PILL[2], HIRE_PILL[3]) if hire_nav else "")
         + (pill(SERVICES_PILL[0], R + SERVICES_PILL[1], SERVICES_PILL[2], SERVICES_PILL[3]) if services_nav else ""),
-        '<a class="pa-pill pa-pill--out" href="%sindex.html" aria-label="PlotNua homepage" data-pa-track="cross_plotnua_home">PlotNua <span aria-hidden="true">↗</span></a>' % T)
+        '<a class="pa-pill pa-pill--out" href="%sindex.html" aria-label="PlotNua homepage" data-pa-track="cross_plotnua_home"><span class="pa-pn"><img class="pa-pn-p" src="/assets/brand/plotnua-icon-transparent.svg" alt="" width="18" height="18"><span class="pa-sr">P</span>lotNua</span> <span aria-hidden="true">↗</span></a>' % T)
     # Phone Menu (founder approval 30 Oct 2026): the same links in the shared one-row Menu
     import re as _re
     _nav = _re.search(r'<nav class="pa-pills[^"]*"[^>]*>(.*?)</nav>', header, _re.S).group(1)

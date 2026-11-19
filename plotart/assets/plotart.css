@@ -554,14 +554,20 @@ body.pa .pa-free-lines{ margin:0; }
 @media (max-width:860px){ .pa-aah-grid{ grid-template-columns:1fr; } }
 @media (prefers-reduced-motion:reduce){ .pa-aah-fig img{ transition:none; } .pa-aah-fig a:hover img{ transform:none; } }
 @media (max-width:379px){ .pa-pills{ grid-template-columns:repeat(2, minmax(0, 1fr)); } .pa-pills .pa-pill, .pa-pills .pa-pill:nth-child(n+4){ grid-column:auto; } .pa-pills .pa-pill:nth-child(5){ grid-column:1 / -1; } }
-.pa-pill--out span{ margin-left:5px; }
+.pa-pill--out > span[aria-hidden]{ margin-left:5px; }
 
 /* ==== Consolidated brief (29 Oct 2026): four pills, Virtual Gallery collection, Living Gallery ==== */
 @media (max-width:1180px){ .pa-pills{ grid-template-columns:repeat(4, minmax(0, 1fr)); } }
 @media (max-width:640px){ .pa-pills{ grid-template-columns:repeat(2, minmax(0, 1fr)); } .pa-pills .pa-pill, .pa-pills .pa-pill:nth-child(n+4){ grid-column:auto; } }
 @media (max-width:379px){ .pa-pills .pa-pill:nth-child(5){ grid-column:auto; } }
-:where(body.pa) .pa-pills a.pa-pill--out{ border-color:rgba(237,235,231,.14); color:var(--stone); }
-:where(body.pa) .pa-pills a.pa-pill--out:hover{ border-color:rgba(237,235,231,.4); color:var(--ivory); }
+:where(body.pa) .pa-pills a.pa-pill--out{ background:#1F3B2E; border-color:rgba(143,175,138,.30); color:#F2EFE6; }
+:where(body.pa) .pa-pills a.pa-pill--out:hover{ background:#264738; border-color:rgba(143,175,138,.55); color:#F7F4EF; }
+/* The PlotNua link (founder brief 19 Nov 2026): a restrained PlotNua forest green; the official house P (plotnua-icon-transparent.svg,
+   unchanged) is the first letter of "PlotNua". The P inside the icon fills 57% x 65% of its square: the margins trim that space so
+   the P sits on the baseline at about cap height. The letter P stays in the text for screen readers and search (pa-sr). */
+.pa-pn{ white-space:nowrap; }
+body.pa .pa-pn-p{ display:inline-block; max-width:none; width:1.22em; height:1.22em; vertical-align:-0.215em; margin:0 -0.2em 0 -0.29em; }
+.pa-head .pn-sm-link.is-out{ background:#1F3B2E; border-color:rgba(143,175,138,.30); color:#F2EFE6; }
 
 /* Virtual Gallery: warm, artwork-led */
 .pa-vg2-hero{ background:linear-gradient(180deg, #29292B 0%, #272729 100%); }

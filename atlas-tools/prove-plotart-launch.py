@@ -285,7 +285,7 @@ for name in PAGES:
 
 home = open(os.path.join(PA, "index.html"), encoding="utf-8").read() if os.path.exists(os.path.join(PA, "index.html")) else ""
 need(all(('src="%s"' % x) in home for x in HERO_IMAGES) and "Original artwork by Colin MacAulay, founder of PlotArt." in visible_text(home)
-     and len(re.findall(r'<img [^>]*alt="Painting by Colin MacAulay', home)) == 1 and len(re.findall(r"<img\b", home)) == 4 + home.count("plotnua-mark-master.svg") + home.count('<img class="pa-logo" '),   # + the PlotArt logo in the header (31 Oct 2026)
+     and len(re.findall(r'<img [^>]*alt="Painting by Colin MacAulay', home)) == 1 and len(re.findall(r"<img\b", home)) == 4 + home.count("plotnua-mark-master.svg") + home.count('<img class="pa-logo" ') + home.count('<img class="pa-pn-p" '),   # + the PlotArt logo in the header (31 Oct 2026) and the PlotNua house P in the PlotNua link (19 Nov 2026)
      "L6 the homepage images must be exactly the founder's credited painting, the Living Gallery visualisation, the three-room calculator invitation and the A Home for Art image"
      " (no featured section: Featured Artists moved to the Artists' Gallery, 17 Nov 2026)")
 need("pa-home-featured" not in home and "pa-home-feat" not in home and "plotart-home.css" not in home and "data-pa-home-item" not in home,
