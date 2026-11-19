@@ -66,7 +66,7 @@ export async function proveBasketSplit({ accounts, runnerKey, balanceKey, config
   try {
     payment = await request('/v1/payment_intents', { action: 'pay', data: {
       amount: '1000', currency: 'eur', payment_method: 'pm_card_visa', confirm: 'true',
-      'payment_method_types[]': 'card', transfer_group: group
+      return_url: 'https://example.com/plotart-sandbox-return', transfer_group: group
     } });
     if (payment.status !== 'succeeded' || !payment.latest_charge || payment.amount_received !== 1000)
       throw new Error('Sandbox payment did not settle as expected');
