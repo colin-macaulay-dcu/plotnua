@@ -161,74 +161,138 @@ if re.fullmatch(r"(sk|rk)_test_[A-Za-z0-9]+", sk):
         out("INFO", f"Stripe webhook endpoints NOT readable with CHECKOUT_TEST_STRIPE_SECRET_KEY (HTTP {ws}): creating the endpoint needs Webhook Endpoints: Write")
 
 # ---------------------------------------------------------------- R2: TEST buckets in the wrong (default) jurisdiction
-def r2_state(name):
-    st = {"name": name}
-    s, j = cf("GET", f"/accounts/{ACC}/r2/buckets/{name}", TOKEN)
-    st["default_exists"] = s == 200
-    s, j = cf("GET", f"/accounts/{ACC}/r2/buckets/{name}", TOKEN, headers={"cf-r2-jurisdiction": "eu"})
-    st["eu_exists"] = s == 200
-    st["eu_jurisdiction"] = (j.get("result") or {}).get("jurisdiction") if s == 200 else None
-    if st["default_exists"]:
-        s, j = cf("GET", f"/accounts/{ACC}/r2/buckets/{name}/objects?per_page=1", TOKEN)
-        st["objects_readable"] = s == 200
-        st["objects"] = len(j.get("result") or []) if s == 200 else None
-        s, j = cf("GET", f"/accounts/{ACC}/r2/buckets/{name}/domains/custom", TOKEN)
-        st["custom_domains"] = len((j.get("result") or {}).get("domains") or []) if s == 200 else None
-        s, j = cf("GET", f"/accounts/{ACC}/r2/buckets/{name}/domains/managed", TOKEN)
-        st["public_r2dev"] = bool((j.get("result") or {}).get("enabled")) if s == 200 else None
-        s, j = cf("GET", f"/accounts/{ACC}/event_notifications/r2/{name}/configuration", TOKEN)
-        st["event_notifications"] = len((j.get("result") or {}).get("queues") or []) if s == 200 else (0 if s == 404 else None)
-        bound = []
-        s, j = cf("GET", f"/accounts/{ACC}/workers/scripts", TOKEN)
-        for w in (j.get("result") or []) if s == 200 else []:
-            s2, b = cf("GET", f"/accounts/{ACC}/workers/scripts/{w.get('id')}/settings", TOKEN)
-            if s2 != 200: bound.append(f"{w.get('id')} (bindings not readable)"); continue
-            for x in (b.get("result") or {}).get("bindings") or []:
-                if x.get("type") == "r2_bucket" and x.get("bucket_name") == name and (x.get("jurisdiction") or "default") != "eu":
-                    bound.append(w.get("id"))
-        st["bound_by"] = bound if s == 200 else None
-        st["safe_to_delete"] = (st["objects"] == 0 and st["custom_domains"] == 0 and st["public_r2dev"] is False
-                                and st["event_notifications"] == 0 and st["bound_by"] == [])
-    return st
+# Fail closed (founder review, PR #22): every Cloudflare answer is validated. A bucket "exists" only on HTTP 200 with the
+# right name and jurisdiction, and is "absent" only on HTTP 404. Any other status, a malformed body or an incomplete
+# enumeration raises Uncertain, which stops plan and apply immediately: uncertainty is never read as "empty" or "absent".
+class Uncertain(Exception): pass
+
+
+def must(cond, what):
+    if not cond: raise Uncertain(what)
+
+
+def bucket(name, jur):
+    """True (exists, jurisdiction verified), False (confirmed 404) or Uncertain."""
+    s, j = cf("GET", f"/accounts/{ACC}/r2/buckets/{name}", TOKEN, headers={"cf-r2-jurisdiction": "eu"} if jur == "eu" else None)
+    if s == 404: return False
+    must(s == 200 and isinstance(j.get("result"), dict), f"{name} ({jur}): unexpected answer to the bucket lookup (HTTP {s}: {errs(j)})")
+    r = j["result"]
+    must(r.get("name") == name, f"{name} ({jur}): the lookup returned a different bucket name")
+    got = r.get("jurisdiction") or "default"
+    must(got == jur, f"{name}: asked for the {jur} jurisdiction but Cloudflare reported {got}")
+    return True
+
+
+def worker_bindings_to(name):
+    """Workers binding the DEFAULT-jurisdiction bucket `name` (complete enumeration or Uncertain)."""
+    s, j = cf("GET", f"/accounts/{ACC}/workers/scripts", TOKEN)
+    must(s == 200 and isinstance(j.get("result"), list), f"Worker list not readable (HTTP {s}: {errs(j)})")
+    bound = []
+    for w in j["result"]:
+        wid = w.get("id")
+        must(isinstance(wid, str) and wid, "Worker list contains an entry without a name")
+        s2, b = cf("GET", f"/accounts/{ACC}/workers/scripts/{wid}/settings", TOKEN)
+        must(s2 == 200 and isinstance(b.get("result"), dict) and isinstance(b["result"].get("bindings"), list),
+             f"bindings of Worker {wid} not readable (HTTP {s2}: {errs(b)})")
+        for x in b["result"]["bindings"]:
+            if x.get("type") == "r2_bucket" and x.get("bucket_name") == name and (x.get("jurisdiction") or "default") != "eu":
+                bound.append(wid)
+    return bound
+
+
+def default_copy_unused(name):
+    """Fresh check of the default-jurisdiction copy. Returns a dict of findings with 'safe'; raises Uncertain on any doubt."""
+    s, j = cf("GET", f"/accounts/{ACC}/r2/buckets/{name}/objects?per_page=1", TOKEN)
+    must(s == 200 and isinstance(j.get("result"), list), f"{name}: object listing not readable (HTTP {s}: {errs(j)})")
+    objects = len(j["result"])
+    s, j = cf("GET", f"/accounts/{ACC}/r2/buckets/{name}/domains/custom", TOKEN)
+    must(s == 200 and isinstance((j.get("result") or {}).get("domains"), list), f"{name}: custom domains not readable (HTTP {s}: {errs(j)})")
+    custom = len(j["result"]["domains"])
+    s, j = cf("GET", f"/accounts/{ACC}/r2/buckets/{name}/domains/managed", TOKEN)
+    must(s == 200 and isinstance((j.get("result") or {}).get("enabled"), bool), f"{name}: public r2.dev setting not readable (HTTP {s}: {errs(j)})")
+    public = j["result"]["enabled"]
+    s, j = cf("GET", f"/accounts/{ACC}/event_notifications/r2/{name}/configuration", TOKEN)
+    if s == 404: notes = 0   # Cloudflare answers 404 when a bucket has no notification configuration
+    else:
+        must(s == 200 and isinstance((j.get("result") or {}).get("queues"), list), f"{name}: event notifications not readable (HTTP {s}: {errs(j)})")
+        notes = len(j["result"]["queues"])
+    bound = worker_bindings_to(name)
+    f = {"objects": objects, "custom_domains": custom, "public_r2dev": public, "event_notifications": notes, "bound_by": bound}
+    f["safe"] = objects == 0 and custom == 0 and public is False and notes == 0 and not bound
+    return f
+
+
+def describe(name, f):
+    return (f"{name} (default jurisdiction): objects {f['objects']}, custom domains {f['custom_domains']}, public r2.dev {f['public_r2dev']}, "
+            f"event notifications {f['event_notifications']}, bound by Workers {f['bound_by'] or 'none'}")
+
+
+def delete_default(name):
+    f = default_copy_unused(name)   # re-checked immediately before every DELETE
+    must(f["safe"], "REFUSED just before deletion: " + describe(name, f))
+    d, dj = cf("DELETE", f"/accounts/{ACC}/r2/buckets/{name}", TOKEN)
+    must(d == 200 and dj.get("success") is True, f"{name}: deletion of the default copy failed (HTTP {d}: {errs(dj)})")
+    must(bucket(name, "default") is False, f"{name}: the default copy is still there after deletion")
+    out("PASS", f"{name}: unused default-jurisdiction copy deleted and confirmed absent")
+
+
+def create_eu(name):
+    """(True, None) when created and verified; (False, (status, body)) when Cloudflare refused the creation."""
+    s, j = cf("POST", f"/accounts/{ACC}/r2/buckets", TOKEN, {"name": name}, headers={"cf-r2-jurisdiction": "eu"})
+    if s not in (200, 201): return False, (s, j)
+    must(isinstance(j.get("result"), dict) and j["result"].get("name") == name, f"{name}: creation answered HTTP {s} without the bucket")
+    must(bucket(name, "eu") is True, f"{name}: created but not found in the EU jurisdiction")
+    out("PASS", f"{name}: EU bucket created and verified (jurisdiction eu)")
+    return True, None
+
+
+def name_collision(s, j):
+    # the ONLY failure treated as "the name is held by the default copy": HTTP 409 with Cloudflare error 10004 (bucket exists)
+    return s == 409 and any(x.get("code") == 10004 for x in (j.get("errors") or []))
+
 
 if MODE in ("r2_plan", "r2_apply"):
-    fails = 0   # the run's result is the R2 result (the audit lines above are information here)
-    states = [r2_state(n) for n in R2_TEST]
-    for st in states:
-        if not st["default_exists"] and st["eu_exists"]:
-            out("PASS", f"{st['name']}: already EU only (jurisdiction {st['eu_jurisdiction']}); nothing to do"); continue
-        if not st["default_exists"]:
-            out("INFO", f"{st['name']}: no default-jurisdiction bucket; EU bucket {'exists' if st['eu_exists'] else 'to be created'}"); continue
-        out("PASS" if st["safe_to_delete"] else "FAIL",
-            f"{st['name']} (default jurisdiction): objects {st['objects']}, custom domains {st['custom_domains']}, public r2.dev {st['public_r2dev']}, "
-            f"event notifications {st['event_notifications']}, bound by Workers {st['bound_by']} · EU bucket exists: {st['eu_exists']} · "
-            + ("SAFE to replace" if st["safe_to_delete"] else "REFUSED: not provably empty and unused"))
-    out("INFO", "in-progress multipart uploads cannot be listed through the Cloudflare API; R2 itself refuses to delete a bucket that is not empty")
-    if MODE == "r2_apply":
-        if not all(st["safe_to_delete"] or not st["default_exists"] for st in states):
-            out("FAIL", "r2_apply REFUSED: at least one default bucket is not provably empty and unused; nothing changed"); sys.exit(1)
-        for st in states:
-            n = st["name"]
-            if not st["eu_exists"]:
-                s, j = cf("POST", f"/accounts/{ACC}/r2/buckets", TOKEN, {"name": n}, headers={"cf-r2-jurisdiction": "eu"})
-                if s not in (200, 201) and st["default_exists"]:
-                    # the name may be held by the default bucket: delete the (verified empty, unbound) default bucket, then create in EU
-                    d, dj = cf("DELETE", f"/accounts/{ACC}/r2/buckets/{n}", TOKEN)
-                    out("PASS" if d == 200 else "FAIL", f"{n}: default-jurisdiction bucket deleted first (HTTP {d}{'' if d == 200 else ': ' + errs(dj)})")
-                    if d != 200: sys.exit(1)
-                    st["default_exists"] = False
-                    s, j = cf("POST", f"/accounts/{ACC}/r2/buckets", TOKEN, {"name": n}, headers={"cf-r2-jurisdiction": "eu"})
-                out("PASS" if s in (200, 201) else "FAIL", f"{n}: EU bucket created (HTTP {s}{'' if s in (200, 201) else ': ' + errs(j)})")
-                if s not in (200, 201): sys.exit(1)
-            if st["default_exists"]:
-                d, dj = cf("DELETE", f"/accounts/{ACC}/r2/buckets/{n}", TOKEN)
-                out("PASS" if d == 200 else "FAIL", f"{n}: unused default-jurisdiction bucket deleted (HTTP {d}{'' if d == 200 else ': ' + errs(dj)})")
+    fails = 0   # this run's result is the R2 result (the audit lines above are information here)
+    try:
+        plan = {}
         for n in R2_TEST:
-            s, j = cf("GET", f"/accounts/{ACC}/r2/buckets/{n}", TOKEN, headers={"cf-r2-jurisdiction": "eu"})
-            jur = (j.get("result") or {}).get("jurisdiction")
-            out("PASS" if s == 200 and jur == "eu" else "FAIL", f"{n}: accessible in the EU jurisdiction (HTTP {s}, jurisdiction {jur})")
-            s, j = cf("GET", f"/accounts/{ACC}/r2/buckets/{n}", TOKEN)
-            out("PASS" if s != 200 else "FAIL", f"{n}: no default-jurisdiction copy remains (HTTP {s})")
+            d, e = bucket(n, "default"), bucket(n, "eu")
+            f = default_copy_unused(n) if d else None
+            plan[n] = (d, e, f)
+            if not d and e: out("PASS", f"{n}: EU only already; nothing to do")
+            elif not d and not e: out("INFO", f"{n}: absent in both jurisdictions; the EU bucket would be created")
+            else: out("PASS" if f["safe"] else "FAIL", describe(n, f) + f" · EU copy exists: {e} · " + ("SAFE to replace" if f["safe"] else "REFUSED: in use or not empty"))
+        out("INFO", "in-progress multipart uploads cannot be listed through the Cloudflare API; R2 itself refuses to delete a bucket that is not empty")
+        if any(d and not f["safe"] for d, e, f in plan.values()):
+            out("FAIL", ("r2_apply REFUSED" if MODE == "r2_apply" else "r2_apply would be REFUSED") + ": a default copy is in use or not empty; nothing changed")
+            sys.exit(1)
+        if MODE == "r2_apply":
+            for n in R2_TEST:   # one bucket at a time; any failure stops the run before the next bucket
+                d, e, _ = plan[n]
+                if not e:
+                    ok, err = create_eu(n)
+                    if not ok:
+                        s, j = err
+                        if d and name_collision(s, j):
+                            out("INFO", f"{n}: the name is held by the default copy (HTTP 409, code 10004); re-checking it, then deleting it first")
+                            delete_default(n); d = False
+                            ok, err = create_eu(n)
+                            if not ok:
+                                out("FAIL", f"STOPPED · {n}: the default copy was deleted but the EU bucket could NOT be created (HTTP {err[0]}: {errs(err[1])}). "
+                                            f"The name {n} now exists in neither jurisdiction. Nothing else was changed; re-run r2_apply.")
+                                sys.exit(1)
+                        else:
+                            out("FAIL", f"STOPPED · {n}: the EU bucket could not be created (HTTP {s}: {errs(j)}); the default copy was NOT deleted; nothing else changed")
+                            sys.exit(1)
+                if d: delete_default(n)
+            for n in R2_TEST:
+                must(bucket(n, "eu") is True, f"{n}: not found in the EU jurisdiction at the final check")
+                must(bucket(n, "default") is False, f"{n}: a default-jurisdiction copy remains at the final check")
+                out("PASS", f"{n}: final check · EU jurisdiction only")
+    except Uncertain as u:
+        out("FAIL", f"STOPPED (fail closed): {u}. Nothing further was changed.")
+        sys.exit(1)
+
 
 # ---------------------------------------------------------------- create the TEST Studio Access application
 if MODE == "create_access":
