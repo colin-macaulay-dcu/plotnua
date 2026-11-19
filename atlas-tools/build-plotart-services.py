@@ -32,7 +32,7 @@ BODY = """
   <p class="pa-eyebrow">PlotArt · Services</p>
   <h1 id="svH">Art Services &amp; Providers</h1>
   <p class="pa-lede">Independent specialists who can help once you’ve chosen a work: moving it safely, and hanging it well.</p>
-  <p class="pa-sv-note">These are independent businesses, listed with their agreement. They aren’t PlotArt partners, and PlotArt doesn’t arrange, supervise or guarantee their work. You arrange quotations, services and insurance directly with each provider.</p>
+  <p class="pa-sv-note">These independent providers have agreed to be listed on PlotArt. Please contact them directly to discuss services, quotations and insurance. PlotArt does not arrange or guarantee their work.</p>
 </div></section>
 
 <section class="pa-sec pa-sv-sec" aria-label="Providers"><div class="pa-wrap pa-sv-list">
