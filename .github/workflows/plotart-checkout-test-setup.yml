@@ -1,0 +1,44 @@
+# PlotArt · managed checkout pilot · TEST environment audit and TEST Studio Access application (prepared 19 Nov 2026).
+# Runs ONLY when worker/plotart-studio/test/checkout-test-setup-request.json changes on the branch plotart/checkout-test-setup,
+# and only after the founder approves the "checkout-test" environment. mode "audit" is read only; mode "create_access"
+# creates one Access application (and its one allow policy) for the TEST Studio hostname if none exists. Nothing is
+# deployed, no database is changed, no existing Access application or policy is modified. Values are never printed.
+name: PlotArt checkout TEST setup
+on:
+  push:
+    branches: [plotart/checkout-test-setup]
+    paths: [worker/plotart-studio/test/checkout-test-setup-request.json]
+permissions:
+  contents: read
+concurrency:
+  group: plotart-checkout-test
+  cancel-in-progress: false
+jobs:
+  setup:
+    runs-on: ubuntu-latest
+    environment: checkout-test
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Read the request
+        id: req
+        run: |
+          set -euo pipefail
+          m=$(python3 -c 'import json; print(json.load(open("worker/plotart-studio/test/checkout-test-setup-request.json"))["mode"])')
+          case "$m" in audit|create_access) ;; *) echo "REFUSED: mode must be audit or create_access"; exit 1;; esac
+          echo "mode=$m" >> "$GITHUB_OUTPUT"
+          echo "### PlotArt checkout TEST setup · $m" >> "$GITHUB_STEP_SUMMARY"
+      - name: Audit (read only) and, if requested, the TEST Studio Access application
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
+          CHECKOUT_TEST_D1_DATABASE_ID: ${{ vars.CHECKOUT_TEST_D1_DATABASE_ID }}
+          CHECKOUT_TEST_ACCESS_AUD: ${{ vars.CHECKOUT_TEST_ACCESS_AUD }}
+          CHECKOUT_TEST_ACCESS_TEAM: ${{ vars.CHECKOUT_TEST_ACCESS_TEAM }}
+          CHECKOUT_TEST_ORIGIN: ${{ vars.CHECKOUT_TEST_ORIGIN }}
+          CHECKOUT_TEST_CF_TOKEN: ${{ secrets.CHECKOUT_TEST_CF_TOKEN }}
+          CHECKOUT_TEST_ACCESS_TOKEN: ${{ secrets.CHECKOUT_TEST_ACCESS_TOKEN }}
+          CHECKOUT_TEST_STRIPE_SECRET_KEY: ${{ secrets.CHECKOUT_TEST_STRIPE_SECRET_KEY }}
+          CHECKOUT_TEST_STRIPE_WEBHOOK_SECRET: ${{ secrets.CHECKOUT_TEST_STRIPE_WEBHOOK_SECRET }}
+          CHECKOUT_TEST_FOUNDER_EMAILS: ${{ secrets.CHECKOUT_TEST_FOUNDER_EMAILS }}
+        run: python3 atlas-tools/release/studio/checkout-test-setup.py "${{ steps.req.outputs.mode }}"

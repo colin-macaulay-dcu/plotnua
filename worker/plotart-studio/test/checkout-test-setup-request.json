@@ -1,0 +1,5 @@
+{
+  "mode": "audit",
+  "requested": "2026-11-19T17:55:00Z",
+  "reason": "Read-only audit of the checkout-test environment and Cloudflare TEST resources before deployment."
+}
