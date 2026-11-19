@@ -6863,14 +6863,14 @@
     },
     {
       "asset": "assets/brand/plotart-favicon-32.png",
-      "sha256": "dc0f5d24424971692a80401420d9d43295fc61b240b84e2532285302bba6edab",
-      "bytes": 1597,
+      "sha256": "6e8b135f824f85da29fdeb2cf984fe56d502eda09ae33a92aec6a60cd7603ae1",
+      "bytes": 1598,
       "pixels": [
         32,
         32
       ],
       "class": "BRAND_MARK",
-      "what": "The PlotArt Organic P, simplified for small sizes: the same traced P with its lines thickened, off-white on an anthracite #27282A rounded square; used for: PlotArt pages' browser-tab icon",
+      "what": "The PlotArt Organic P, simplified for small sizes: the same traced P with its lines thickened, warm ivory #F4F0EB on an anthracite #27282A rounded square; used for: PlotArt pages' browser-tab icon",
       "brand": {
         "name": "PlotArt Organic P logo",
         "master_file": "6BA70520-15A0-488F-9D76-B49FA53824B0.png (founder's Mac, PlotNua/04 Brand/New PlotArt P; unchanged): the Organic P, off-white lines on black",
@@ -6892,7 +6892,8 @@
       "processing": [
         "Organic P traced from the master as vector paths (potrace via potracer, Claude build session, 19 Nov 2026; no generative model involved); the lower ends of the vertical lines fade out with a vector gradient mask as in the master",
         "Simplified favicon: the traced lines thickened (morphological stroke) so the P and its sweep stay legible at 16-32 px",
-        "Rendered to 32 x 32 PNG (Chromium), metadata-free"
+        "Rendered to 32 x 32 PNG (Chromium), metadata-free",
+        "Colour refinement (founder brief 'Warm Ivory, Anthracite and E-Ink Aesthetic', 19 Nov 2026): the lines and wordmark recoloured from off-white #EDEBE7 to warm ivory #F4F0EB; geometry unchanged"
       ],
       "visible_label": "none: a brand logo depicts no real place, product or person (class BRAND_MARK)",
       "human_review": {
@@ -6906,14 +6907,14 @@
     },
     {
       "asset": "assets/brand/plotart-apple-touch-180.png",
-      "sha256": "ad6fd9bd9f253e1721918c1dfeef010b798d80d4d08fb89cc9eb08095eb38d3a",
-      "bytes": 19209,
+      "sha256": "99ae49600acc9eadf8bc4a53d55468872d0735f529cc87e64b3b0a70e3b08ccd",
+      "bytes": 19222,
       "pixels": [
         180,
         180
       ],
       "class": "BRAND_MARK",
-      "what": "The PlotArt Organic P, full lines, off-white on an anthracite #27282A square; used for: PlotArt pages' home-screen icon and the PlotArt Studio sign-in screens",
+      "what": "The PlotArt Organic P, full lines, warm ivory #F4F0EB on an anthracite #27282A square; used for: PlotArt pages' home-screen icon and the PlotArt Studio sign-in screens",
       "brand": {
         "name": "PlotArt Organic P logo",
         "master_file": "6BA70520-15A0-488F-9D76-B49FA53824B0.png (founder's Mac, PlotNua/04 Brand/New PlotArt P; unchanged): the Organic P, off-white lines on black",
@@ -6935,7 +6936,8 @@
       "processing": [
         "Organic P traced from the master as vector paths (potrace via potracer, Claude build session, 19 Nov 2026; no generative model involved); the lower ends of the vertical lines fade out with a vector gradient mask as in the master",
         "Centred on a full-bleed anthracite square (the device rounds the corners)",
-        "Rendered to 180 x 180 PNG (Chromium), metadata-free"
+        "Rendered to 180 x 180 PNG (Chromium), metadata-free",
+        "Colour refinement (founder brief 'Warm Ivory, Anthracite and E-Ink Aesthetic', 19 Nov 2026): the lines and wordmark recoloured from off-white #EDEBE7 to warm ivory #F4F0EB; geometry unchanged"
       ],
       "visible_label": "none: a brand logo depicts no real place, product or person (class BRAND_MARK)",
       "human_review": {
@@ -6949,8 +6951,8 @@
     },
     {
       "asset": "assets/og/plotart-og-1200x630.jpg",
-      "sha256": "3046765e4b27c51ffc2a9be673f5b3424ee1998bb6d36d466fd55acb0635eb6a",
-      "bytes": 67420,
+      "sha256": "70312e23ebd5cdddd5649cdd4aab8ff525a7785e247d05e7e167600f3c860cc9",
+      "bytes": 68619,
       "pixels": [
         1200,
         630
@@ -6979,7 +6981,8 @@
         "Organic P traced from the master as vector paths (potrace via potracer, Claude build session, 19 Nov 2026; no generative model involved); the lower ends of the vertical lines fade out with a vector gradient mask as in the master",
         "Wordmark 'PlotArt' typeset in Montserrat Light ('Plot') and Bold ('Art') (SIL Open Font Licence) and converted to outlines; no font file is shipped",
         "Tagline and sub-line typeset in Montserrat Light and converted to outlines",
-        "Rendered to 1200 x 630 (Chromium); JPEG quality 88, metadata-free"
+        "Rendered to 1200 x 630 (Chromium); JPEG quality 88, metadata-free",
+        "Colour refinement (founder brief 'Warm Ivory, Anthracite and E-Ink Aesthetic', 19 Nov 2026): the lines and wordmark recoloured from off-white #EDEBE7 to warm ivory #F4F0EB; geometry unchanged"
       ],
       "visible_label": "none: a brand logo depicts no real place, product or person (class BRAND_MARK)",
       "human_review": {
@@ -22073,10 +22076,10 @@
     },
     {
       "asset": "assets/brand/plotart-logo-header.svg",
-      "sha256": "e379628907eed07bc24608a69abbeee5fd2256cc16709181b225b9db3b93c206",
+      "sha256": "71717b832d3615604489a00903039367a0d403774172ebed3b7d16aa45d23aa5",
       "bytes": 53380,
       "class": "BRAND_MARK",
-      "what": "The PlotArt Organic P header logo: the Organic P beside the PlotArt wordmark, off-white #EDEBE7 on transparent; used for: PlotArt page headers (36 px high, 30 px on phones) and the PlotArt Studio and Review Desk header",
+      "what": "The PlotArt Organic P header logo: the Organic P beside the PlotArt wordmark, warm ivory #F4F0EB on transparent; used for: PlotArt page headers (36 px high, 30 px on phones) and the PlotArt Studio and Review Desk header",
       "brand": {
         "name": "PlotArt Organic P logo",
         "master_file": "6BA70520-15A0-488F-9D76-B49FA53824B0.png (founder's Mac, PlotNua/04 Brand/New PlotArt P; unchanged): the Organic P, off-white lines on black",
@@ -22098,7 +22101,8 @@
       "processing": [
         "Organic P traced from the master as vector paths (potrace via potracer, Claude build session, 19 Nov 2026; no generative model involved); the lower ends of the vertical lines fade out with a vector gradient mask as in the master",
         "Wordmark 'PlotArt' typeset in Montserrat Light ('Plot') and Bold ('Art') (SIL Open Font Licence) and converted to outlines; no font file is shipped",
-        "Composed as one pure-vector SVG (no embedded or linked image, no script, no font), 521.85 x 136.5 user units"
+        "Composed as one pure-vector SVG (no embedded or linked image, no script, no font), 521.85 x 136.5 user units",
+        "Colour refinement (founder brief 'Warm Ivory, Anthracite and E-Ink Aesthetic', 19 Nov 2026): the lines and wordmark recoloured from off-white #EDEBE7 to warm ivory #F4F0EB; geometry unchanged"
       ],
       "visible_label": "none: a brand logo depicts no real place, product or person (class BRAND_MARK)",
       "human_review": {

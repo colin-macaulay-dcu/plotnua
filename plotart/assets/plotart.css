@@ -10,7 +10,8 @@
 body.pa{
   --anth:#1B1C1E; --wall:#27282A; --wall-2:#2C2E30; --raised:#2E3033; --well:#2D2E31;
   --ivory:#EDEBE7; --lime:#D9D7D3; --stone:#B8B6B2; --mute:#A09F9B;
-  --terra:#D9D7D3; --terra-text:#EDEBE7; --terra-hover:#FFFFFF;
+  --terra:#D9D7D3; --terra-text:#EDEBE7; --terra-hover:#F7F4EF;
+  --paper:#F4F0EB; --paper-2:#F7F4EF;   /* warm ivory (colour refinement, 19 Nov 2026): logo, buttons and other filled controls; never pure white */
   --bronze:#8E8C88; --bronze-text:#B8B6B2;
   --line:#3A3B3E; --line-2:#4A4B4F;
   --serif:'Instrument Serif', Georgia, 'Times New Roman', serif;
@@ -36,7 +37,7 @@ body.pa p{ margin:0 0 1em; }
 .pa-lede{ font-size:clamp(18px, 1.5vw, 21px); line-height:1.55; color:var(--lime); max-width:60ch; }
 .pa-muted{ color:var(--stone); }
 .pa-sr{ position:absolute !important; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; }
-.pa-skip{ position:absolute; left:-999px; top:8px; z-index:100; background:var(--ivory); color:var(--wall); padding:10px 16px; border-radius:8px; }
+.pa-skip{ position:absolute; left:-999px; top:8px; z-index:100; background:var(--paper); color:var(--wall); padding:10px 16px; border-radius:8px; }
 .pa-skip:focus{ left:12px; }
 
 /* ---- prototype ribbon ------------------------------------------------ */
@@ -57,7 +58,7 @@ body.pa p{ margin:0 0 1em; }
 .pa-nav a:hover{ color:var(--ivory); background:rgba(237,235,231,.06); }
 .pa-nav a[aria-current="page"]{ color:var(--ivory); box-shadow:inset 0 -2px 0 var(--terra); border-radius:0; }
 .pa-nav a.pa-nav-cta{ border:1px solid var(--terra); color:var(--ivory); margin-left:8px; padding:9px 18px; }
-.pa-nav a.pa-nav-cta:hover{ background:var(--ivory); color:var(--anth); }
+.pa-nav a.pa-nav-cta:hover{ background:var(--paper); color:var(--anth); }
 .pa-home{ font-size:13px; color:var(--stone); text-decoration:none; white-space:nowrap; padding-left:18px; border-left:1px solid var(--line); }
 .pa-home:hover{ color:var(--ivory); }
 @media (max-width:1060px){
@@ -82,8 +83,8 @@ body.pa p{ margin:0 0 1em; }
 
 /* ---- buttons --------------------------------------------------------- */
 .pa-btn{ display:inline-flex; align-items:center; gap:10px; font-family:var(--sans); font-size:15.5px; font-weight:600; letter-spacing:.01em; padding:14px 24px; border-radius:999px; border:1px solid transparent; text-decoration:none; cursor:pointer; transition:background .25s, color .25s, border-color .25s; }
-.pa-btn--solid{ background:var(--ivory); border-color:var(--ivory); color:var(--anth); }   /* primary: filled off-white, dark text */
-.pa-btn--solid:hover{ background:#FFFFFF; border-color:#FFFFFF; color:var(--anth); }
+.pa-btn--solid{ background:var(--paper); border-color:var(--paper); color:var(--anth); }   /* primary: filled off-white, dark text */
+.pa-btn--solid:hover{ background:var(--paper-2); border-color:var(--paper-2); color:var(--anth); }
 body.pa .pa-btn:focus-visible{ border-radius:999px; }   /* the focus ring follows the pill shape (14 Nov 2026) */
 .pa-btn--ghost{ border-color:var(--line-2); color:var(--ivory); background:transparent; }
 .pa-btn--ghost:hover{ border-color:var(--ivory); color:var(--ivory); }
@@ -190,7 +191,7 @@ body.pa .pa-btn:focus-visible{ border-radius:999px; }   /* the focus ring follow
 .pa-tabs{ display:flex; gap:6px; flex-wrap:wrap; }
 .pa-tab{ font-family:var(--sans); font-size:14.5px; font-weight:600; color:var(--lime); background:transparent; border:1px solid var(--line-2); padding:9px 16px; border-radius:999px; cursor:pointer; text-decoration:none; }
 .pa-tab small{ font-weight:500; color:var(--stone); margin-left:6px; }
-.pa-tab[aria-pressed="true"], .pa-tab[aria-current="page"]{ background:var(--ivory); color:var(--wall); border-color:var(--ivory); }
+.pa-tab[aria-pressed="true"], .pa-tab[aria-current="page"]{ background:var(--paper); color:var(--wall); border-color:var(--paper); }
 .pa-tab[aria-pressed="true"] small, .pa-tab[aria-current="page"] small{ color:#5a5650; }
 .pa-select{ position:relative; }
 .pa-select select{ appearance:none; -webkit-appearance:none; font-family:var(--sans); font-size:14.5px; color:var(--lime); background:var(--raised); border:1px solid var(--line-2); border-radius:999px; padding:9px 36px 9px 16px; cursor:pointer; }
@@ -360,7 +361,7 @@ body.pa .pa-acard-name{ font-size:clamp(44px, 4.6vw, 74px); line-height:.95; mar
 .pa-range small, .pa-acard-meta small{ font-size:12px; color:var(--mute); margin-left:4px; }
 .pa-acard-chip{ margin:0 0 28px; }
 .pa-acard-cta{ align-self:flex-start; display:inline-flex; align-items:center; gap:12px; font-size:13.5px; font-weight:700; letter-spacing:.14em; text-transform:uppercase; color:var(--ivory); padding:15px 24px; border-radius:999px; border:1px solid var(--terra); transition:background .25s, gap .25s; }
-.pa-acard:hover .pa-acard-cta{ background:var(--ivory); color:var(--anth); gap:16px; }
+.pa-acard:hover .pa-acard-cta{ background:var(--paper); color:var(--anth); gap:16px; }
 .pa-acards-more{ margin:clamp(32px, 4vw, 48px) 0 0; text-align:center; }
 @media (max-width:860px){
   .pa-acard, .pa-acard--flip{ grid-template-columns:1fr; }
@@ -809,7 +810,7 @@ body.pa .pa-vgc-pos > a:focus-visible{ outline-offset:-3px; border-radius:0; }
 .pa-ag-opps-h{ margin:0 0 10px; font-size:13px; letter-spacing:.14em; text-transform:uppercase; color:var(--mute); }
 .pa-ag-pills{ display:flex; flex-wrap:wrap; gap:8px; margin:0; padding:0; list-style:none; }
 .pa-ag-pill{ display:inline-flex; align-items:center; min-height:38px; padding:8px 16px; border:1px solid var(--line-2); border-radius:999px; font-size:14.5px; font-weight:500; color:var(--ivory); text-decoration:none; transition:background-color .2s, border-color .2s, color .2s; }
-.pa-ag-pill:hover{ background:var(--ivory); border-color:var(--ivory); color:var(--anth); }
+.pa-ag-pill:hover{ background:var(--paper); border-color:var(--paper); color:var(--anth); }
 .pa-ag-pill:focus-visible{ outline:2px solid var(--ivory); outline-offset:3px; }
 .pa-ag-com{ border-top:1px solid var(--line); background:#232426; }
 .pa-ag-com .pa-wrap{ padding-top:clamp(36px, 4.5vw, 64px); padding-bottom:clamp(36px, 4.5vw, 64px); }
@@ -893,16 +894,16 @@ html.pa-lb-on{ overflow:hidden; }
 .pa-lb-x{ position:absolute; top:max(14px, env(safe-area-inset-top)); right:max(14px, env(safe-area-inset-right)); width:48px; height:48px; padding:0;
   display:grid; place-items:center; border-radius:50%; border:1px solid rgba(237,235,231,.5); background:rgba(39,40,42,.9); color:var(--ivory);
   font:300 32px/1 var(--sans); cursor:pointer; }
-.pa-lb-x:hover{ background:var(--ivory); color:var(--anth); }
+.pa-lb-x:hover{ background:var(--paper); color:var(--anth); }
 .pa-lb-x:focus-visible{ outline:2px solid var(--ivory); outline-offset:3px; }
 
 /* ==== Artist Login (founder brief 17 Nov 2026): one off-white pill at the right-hand end of the header, set apart from the
    gallery pills; links to the existing PlotArt Studio. Tablets: beside the wordmark, the pills on their own row below.
    Phones: beside the Menu button, always visible (it is not repeated inside the Menu). ==== */
 :where(body.pa) .pa-head a.pa-login{ display:inline-flex; align-items:center; justify-content:center; flex:none; min-height:42px; padding:0 20px; margin-left:-8px;
-  border-radius:999px; border:1px solid var(--ivory); background:var(--ivory); color:#1B1C1E; font-family:var(--sans); font-size:14.5px; font-weight:600;
+  border-radius:999px; border:1px solid var(--paper); background:var(--paper); color:#1B1C1E; font-family:var(--sans); font-size:14.5px; font-weight:600;
   letter-spacing:.01em; line-height:1; text-decoration:none; white-space:nowrap; transition:background .2s, border-color .2s; }
-:where(body.pa) .pa-head a.pa-login:hover{ background:#FFFFFF; border-color:#FFFFFF; color:#1B1C1E; }
+:where(body.pa) .pa-head a.pa-login:hover{ background:var(--paper-2); border-color:var(--paper-2); color:#1B1C1E; }
 :where(body.pa) .pa-head a.pa-login:focus-visible{ outline:2px solid var(--ivory); outline-offset:3px; }
 @media (max-width:1180px){
   .pa-head--pills .pa-pills{ order:3; }
