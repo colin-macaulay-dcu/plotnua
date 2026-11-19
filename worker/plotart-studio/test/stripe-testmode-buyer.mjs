@@ -66,7 +66,7 @@ export async function checkBuyerCheckout(key, rec) {
       const deadline=Date.now()+timeout;
       do {
         for(const frame of page.frames()) {
-          for (const match of await frame.locator(css).all()) {
+          for (const match of await frame.locator(css).all().catch(() => [])) {
             if(await match.isVisible().catch(()=>false))return match;
           }
         }
@@ -75,30 +75,35 @@ export async function checkBuyerCheckout(key, rec) {
     }
     async function fill(css,value,timeout) {
       stage = 'fill ' + css.split(',')[0];
-      const f=await field(css,timeout);
-      if(f)await f.fill(value,{timeout:8000});
-      else if(css.startsWith('#card'))throw Error('Card field missing');
+      const deadline=Date.now()+(timeout||12000);
+      do {
+        const control=await field(css,1000);
+        if(control && await control.fill(value,{timeout:2000}).then(()=>true,()=>false))return;
+      } while(Date.now()<deadline);
+      if(!css.startsWith('#billingName'))throw Error('Required field unavailable');
     }
     stage='complete sandbox shipping and payment form';
-    await fill('input[type=email]','plotart-buyer@example.com');
-    await fill('[autocomplete~="shipping"][autocomplete~="name"],#shippingName','Test Buyer');
-    await fill('[autocomplete~="shipping"][autocomplete~="address-line1"],#shippingAddressLine1','1 Test Road');
-    await fill('[autocomplete~="shipping"][autocomplete~="address-level2"],#shippingLocality','Dublin');
-    await fill('[autocomplete~="shipping"][autocomplete~="postal-code"],#shippingPostalCode','D02 X285',2000);
-    const county=await field('#shippingAdministrativeArea,[autocomplete~="shipping"][autocomplete~="address-level1"]',2000);
+    const euro=await field('#currency-eur',1000);
+    if(euro)await euro.click();
+    await fill('#linkAuthentication-emailInput,input[type=email]','plotart-buyer@example.com');
+    await fill('#shippingAddress-nameInput,[autocomplete~="shipping"][autocomplete~="name"],#shippingName','Test Buyer');
+    await fill('#shippingAddress-addressLine1Input,[autocomplete~="shipping"][autocomplete~="address-line1"],#shippingAddressLine1','1 Test Road');
+    await fill('#shippingAddress-localityInput,[autocomplete~="shipping"][autocomplete~="address-level2"],#shippingLocality','Dublin');
+    await fill('#shippingAddress-postalCodeInput,[autocomplete~="shipping"][autocomplete~="postal-code"],#shippingPostalCode','D02 X285',2000);
+    const county=await field('#shippingAddress-administrativeAreaInput,#shippingAdministrativeArea,[autocomplete~="shipping"][autocomplete~="address-level1"]',2000);
     stage='select shipping county';
     if(county && await county.evaluate(el=>el.tagName==='SELECT')){
       const value=await county.locator('option').evaluateAll(options=>options.find(o=>/dublin/i.test(o.label))?.value);
       if(value!==undefined)await county.selectOption(value);
     } else if(county) await county.fill('Dublin');
-    const cardCSS='#cardNumber,input[autocomplete="cc-number"],input[name=cardnumber]';
+    const cardCSS='#payment-numberInput,#cardNumber,input[autocomplete="cc-number"],input[name=cardnumber]';
     if(!await field(cardCSS,3000))await (await field('[data-testid="card-accordion-item-button"],button:text-is("Card"),[role="radio"]:text-is("Card")'))?.click();
     await fill(cardCSS,'4242424242424242',25000);
-    await fill('#cardExpiry,input[autocomplete="cc-exp"]','12 / 34');
-    await fill('#cardCvc,input[autocomplete="cc-csc"]','123');
+    await fill('#payment-expiryInput,#cardExpiry,input[autocomplete="cc-exp"]','12 / 34');
+    await fill('#payment-cvcInput,#cardCvc,input[autocomplete="cc-csc"]','123');
     await fill('#billingName,input[autocomplete="cc-name"]','Test Buyer',3000);
     stage='submit hosted payment';
-    const submit=await field('[data-testid="hosted-payment-submit-button"],button.SubmitButton,button:text-is("Pay")');
+    const submit=await field('#payment-form-submit-button,[data-testid="hosted-payment-submit-button"],button.SubmitButton,button:text-is("Pay")');
     if(!submit)throw Error('Missing payment submit control');
     await submit.click({timeout:10000});
     stage='verify one combined confirmation';
