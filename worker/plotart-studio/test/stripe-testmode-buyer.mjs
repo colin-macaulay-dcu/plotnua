@@ -1,3 +1,5 @@
+import {spawn,execFileSync} from 'node:child_process';
+import {settleSandboxBasket} from './buyer-preview/settlement.mjs';
 import { createServer } from 'node:http';
 import { createRequire } from 'node:module';
 import { readFile } from 'node:fs/promises';
@@ -6,9 +8,15 @@ export async function checkBuyerCheckout(key, rec) {
   const { chromium } = createRequire(process.env.MINIFLARE_FROM)('playwright');
   let origin;
   const evidence = {};
+  const config = JSON.parse(await readFile(new URL('./stripe-test-run.json',import.meta.url),'utf8'));
+  const settlementEnv={checkoutKey:key,balanceKey:process.env.STRIPE_BALANCE_KEY,recipients:[config.reuse_account,config.unfunded_account]};
+  let listener, createdSession, signedDelivery, settled;
+  const cli='/tmp/stripe-cli/stripe';
+  const cliEnv={...process.env,STRIPE_API_KEY:key};
   async function observeStripe(url, options) {
     const result = await fetch(url, options);
     const body = await result.clone().json();
+    if(result.ok && options.method==='POST' && body.object==='checkout.session') createdSession=body.id;
     evidence.stripeStatus = result.status;
     evidence.requestId = result.headers.get('request-id');
     if (body.error) {
@@ -29,6 +37,15 @@ export async function checkBuyerCheckout(key, rec) {
         for await (const chunk of incoming) chunks.push(chunk);
         const request = new Request(url,{method:incoming.method,headers:incoming.headers,
           body:incoming.method==='POST' ? Buffer.concat(chunks) : undefined});
+        if(url.pathname==='/api/settlement'){
+          const raw=Buffer.concat(chunks).toString('utf8');
+          // A shared sandbox can emit sessions created by other pilot runs.
+          if(!createdSession || JSON.parse(raw).data?.object?.id!==createdSession){outgoing.writeHead(204).end();return}
+          const result=await settleSandboxBasket(request,settlementEnv,observeStripe);
+          if(result.status===200){settled=await result.json();signedDelivery={raw,signature:incoming.headers['stripe-signature']}}
+          outgoing.writeHead(result.status).end();
+          return;
+        }
         const result = await basketApi(request,{PLOTART_CHECKOUT_TEST_KEY:key},observeStripe);
         evidence.shopStatus = result.status;
         outgoing.writeHead(result.status,{'Content-Type':'application/json'});
@@ -43,6 +60,7 @@ export async function checkBuyerCheckout(key, rec) {
       }
     } catch {
       evidence.serverError = true;
+      if(!outgoing.headersSent)outgoing.writeHead(500);
       outgoing.end();
     }
   });
@@ -53,6 +71,15 @@ export async function checkBuyerCheckout(key, rec) {
       server.listen(0,'127.0.0.1',resolve);
     });
     origin = 'http://127.0.0.1:' + server.address().port;
+    stage='start sandbox webhook listener';
+    settlementEnv.STRIPE_WEBHOOK_SECRET=execFileSync(cli,['listen','--print-secret'],{env:cliEnv,encoding:'utf8',stdio:['ignore','pipe','ignore']}).trim();
+    listener=spawn(cli,['listen','--events','checkout.session.completed,checkout.session.async_payment_succeeded','--forward-to',origin+'/api/settlement'],{env:cliEnv,stdio:['ignore','pipe','pipe']});
+    await new Promise((resolve,reject)=>{
+      const timer=setTimeout(()=>reject(Error('Listener readiness timed out')),25000);
+      const ready=chunk=>{if(chunk.toString().includes('Ready!')){clearTimeout(timer);resolve()}};
+      listener.stdout.on('data',ready);listener.stderr.on('data',ready);
+      listener.once('exit',()=>{clearTimeout(timer);reject(Error('Listener exited'))});
+    });
     await page.goto(origin, {waitUntil:'domcontentloaded'});
     await page.locator('[data-add="0"]').click();
     await page.locator('#close').click();
@@ -111,6 +138,15 @@ export async function checkBuyerCheckout(key, rec) {
     const receipt=await page.locator('main').innerText();
     if(!['€3,585','Rowan Studio','Alder Studio','Irish delivery','Studio collection'].every(s=>receipt.includes(s)))throw Error('Incorrect combined receipt');
     rec('BUYER1','One hosted sandbox payment confirmed for works from both studios with mixed fulfilment','stripe-test-api','PASS');
+    stage='verify signed event allocations';
+    const deadline=Date.now()+60000;
+    while(!settled && Date.now()<deadline)await page.waitForTimeout(500);
+    if(!settled || settled.transfers.map(t=>t.cents).join(',')!=='148500,210000')throw Error('Missing artist transfers');
+    const first=JSON.stringify(settled);
+    stage='verify repeated delivery';
+    const retry=await fetch(origin+'/api/settlement',{method:'POST',headers:{'stripe-signature':signedDelivery.signature},body:signedDelivery.raw});
+    if(!retry.ok || JSON.stringify(settled)!==first)throw Error('Replay changed artist allocations');
+    rec('BUYER2','Paid browser order automatically settles once per studio, including on webhook replay','stripe-test-api','PASS',{amounts:settled.transfers.map(t=>t.cents)});
   } catch (error) {
     evidence.failure = error.name;
     if(page){
@@ -122,5 +158,5 @@ export async function checkBuyerCheckout(key, rec) {
       evidence.visibleControls=[...new Set(controls)].slice(0,40);
     }
     rec('BUYER1','Complete combined buyer checkout','stripe-test-api','FAIL',{stage,...evidence});
-  } finally {await browser.close(); server.close()}
+  } finally {listener?.kill();await browser.close(); server.close()}
 }
