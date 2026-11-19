@@ -133,9 +133,11 @@ SERVICES_PAGE = "services.html"
 SERVICES_ON = launch.get("services_page") is True
 if SERVICES_ON:
     ALLOWED |= {SERVICES_PAGE, "assets/plotart-services.css"}
+    # provider images, each hosted under a recorded written permission (image-rights-records.json; P4 binds every copy)
+    ALLOWED |= {"assets/services/" + f for f in ("hang-it-hung-wall-1600.jpg", "hang-it-hung-wall-1600.webp",
+                                                  "hang-it-hung-wall-800.webp", "hang-it-logo.png")}
     PAGES.append(SERVICES_PAGE)
-# the only price the page may show: the provider's own pricing, exactly as supplied (build-plotart-services.py)
-SERVICES_PRICES = "€70 call-out, then €60 an hour for labour. Materials and parking are extra."
+# No prices on the Services page (Hang-It asked for its pricing to be removed, 19 Nov 2026): the ordinary L3 rule applies.
 ALLOWED |= {"assets/plotart-featured.css"}   # Featured Artists in the Artists' Gallery (17 Nov 2026; was plotart-home.css on the homepage)   # the Living Gallery page refinement (17 Nov 2026)
 # Art for Hire (Stage 3B-6): the page, its two assets and the fourth gallery tab exist ONLY when the founder switches
 # art_for_hire_page on (release approval). Off (or absent): no hire file may exist and no page may link to it or carry the tab.
@@ -233,10 +235,7 @@ for name in PAGES:
     for n in demo_names:
         need(not re.search(r"\b%s\b" % re.escape(n), vt) and not re.search(r"\b%s\b" % re.escape(html.escape(n)), s),
              "L3 %s carries demonstration content (text or markup): %s" % (name, n))
-    if name == SERVICES_PAGE:
-        need(vt.count(SERVICES_PRICES) == 1 and "€" not in vt.replace(SERVICES_PRICES, " ") and "&euro;" not in s,
-             "L3 %s may show the provider's own supplied pricing only" % name)
-    elif name not in SEO.GENERATED_PATHS:
+    if name not in SEO.GENERATED_PATHS:
         need("€" not in vt and "&euro;" not in s, "L3 %s shows a euro price" % name)
     else:
         try:

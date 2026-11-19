@@ -4,7 +4,8 @@ body.pa .pa-sv-hero{ padding:clamp(56px, 7vw, 104px) 0 clamp(40px, 5vw, 72px); }
 body.pa .pa-sv-hero h1{ font-size:clamp(46px, 6vw, 88px); line-height:.98; margin:10px 0 18px; }
 body.pa .pa-sv-note{ margin:24px 0 0; max-width:62ch; padding:16px 20px; border:1px solid var(--line-2); border-radius:var(--r-sm); color:var(--stone); font-size:15.5px; line-height:1.6; }
 body.pa .pa-sv-sec{ padding:clamp(40px, 5vw, 80px) 0; }
-body.pa .pa-sv-list{ display:grid; grid-template-columns:repeat(2, minmax(0, 1fr)); gap:clamp(20px, 3vw, 36px); align-items:start; }
+body.pa .pa-sv-list{ display:grid; grid-template-columns:repeat(2, minmax(0, 1fr)); gap:clamp(20px, 3vw, 36px); align-items:stretch; }
+body.pa .pa-sv-list--one{ grid-template-columns:minmax(0, 720px); }
 body.pa .pa-sv-card{ display:flex; flex-direction:column; background:var(--raised); border:1px solid var(--line); border-radius:var(--r); padding:clamp(24px, 3vw, 40px); box-shadow:var(--shadow-card); }
 body.pa .pa-sv-card h2{ font-family:var(--serif); font-weight:400; font-size:clamp(32px, 3.2vw, 44px); line-height:1.05; color:var(--ivory); margin:0; }
 body.pa .pa-sv-what{ margin:12px 0 22px; color:var(--lime); font-size:18px; line-height:1.5; }
@@ -19,3 +20,21 @@ body.pa .pa-sv-foot p{ margin:0; max-width:72ch; color:var(--stone); font-size:1
 @media (max-width:900px){ body.pa .pa-sv-list{ grid-template-columns:1fr; } }
 @media (max-width:560px){ body.pa .pa-sv-facts{ grid-template-columns:1fr; } body.pa .pa-sv-facts dt{ padding-bottom:2px; border-bottom:0; } body.pa .pa-sv-facts dd{ padding-top:0; }
   body.pa .pa-sv-contact .pa-btn{ width:100%; justify-content:center; text-align:center; } }
+/* Provider photograph and brand mark (19 Nov 2026; images only with the provider's written permission, see
+   image-rights-records.json). PlotArt's palette stays dominant: one short rule in the provider's colour (--sv-accent). */
+body.pa .pa-sv-card--media{ padding:0; overflow:hidden; }
+body.pa .pa-sv-card--media .pa-sv-body{ position:relative; display:flex; flex-direction:column; flex:1; padding:0 clamp(24px, 3vw, 40px) clamp(24px, 3vw, 40px); }
+body.pa .pa-sv-card:not(.pa-sv-card--media) .pa-sv-body{ display:flex; flex-direction:column; flex:1; }
+body.pa .pa-sv-media{ position:relative; margin:0; aspect-ratio:16 / 9; background:var(--well); }
+body.pa .pa-sv-media picture, body.pa .pa-sv-media img{ position:absolute; inset:0; display:block; width:100%; height:100%; object-fit:cover; }
+body.pa .pa-sv-media::after{ content:""; position:absolute; inset:auto 0 0 0; height:38%; background:linear-gradient(to top, rgba(27,28,30,.55), transparent); pointer-events:none; }
+body.pa .pa-sv-media figcaption{ position:absolute; right:14px; bottom:10px; z-index:1; font-size:11.5px; letter-spacing:.02em; color:rgba(237,235,231,.86); }
+body.pa .pa-sv-logo{ align-self:flex-start; display:inline-flex; align-items:center; margin:-30px 0 22px; padding:10px 14px; border-radius:var(--r-sm); box-shadow:0 6px 18px rgba(0,0,0,.35); position:relative; z-index:2; }
+body.pa .pa-sv-logo img{ display:block; height:36px; width:auto; }
+body.pa .pa-sv-logo--light{ background:#EDEBE7; }
+body.pa .pa-sv-logo--dark{ background:#000; border:1px solid var(--line-2); padding:8px 10px; }
+body.pa .pa-sv-logo--dark img{ height:40px; }
+body.pa .pa-sv-what{ position:relative; padding-bottom:18px; }
+body.pa .pa-sv-what::after{ content:""; position:absolute; left:0; bottom:0; width:44px; height:3px; border-radius:2px; background:var(--sv-accent, var(--line-2)); }
+@media (max-width:560px){ body.pa .pa-sv-media{ aspect-ratio:3 / 2; } body.pa .pa-sv-logo--dark img{ height:34px; }
+  body.pa .pa-sv-media figcaption{ top:10px; bottom:auto; padding:2px 8px; border-radius:999px; background:rgba(27,28,30,.62); } }

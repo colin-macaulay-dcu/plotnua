@@ -23,3 +23,16 @@ resizing, credit wording; for Maurice Ward, consent of the identifiable staff). 
 Alternatives: Maurice Ward `…/2022/03/services-img-1.jpg` (fleet), illustrations `service_transport.jpg`,
 `service_installation.jpg`; Hang-It `…/79/5d/795dcc28-5faa-4432-a4bc-35f12b699c6d.jpeg` (laser levelling).
 Preview paths in `cards-preview.html` (`_preview-providers/…`) point to local copies made for review only.
+
+## Update 19 Nov 2026: Hang-It approved, pricing removed
+
+- Hang-It (John) approved its listing with the logo and photograph, asking for all pricing to be removed. Recorded in
+  Atlas (Organisations ORG-HANGIT rec6zbEPxUrcT2XVN; Image Permission Outreach IPO-HANGIT-20261119 rech5aeWWGcj0sZVM)
+  and image-rights-records.json (Granted with Conditions — Founder Confirmed; scope feature, imagery, hosting).
+- The builder now renders the cards from data: Hang-It with its photograph (credit "Photo: Hang-It") and logo, and
+  "Contact Hang-It directly for a quotation." in place of prices; Maurice Ward kept unchanged but `publish: False`
+  (amendments outstanding). Review copy: `python3 atlas-tools/build-plotart-services.py --preview DIR`.
+- Image copies and source hashes: `../images/hang-it/` (image-copies.json). Provenance declarations for the three
+  photograph copies are prepared in `../images/hang-it/provenance-pending.json`, to merge in the restoring release.
+- OPEN: the logo cannot yet be declared in the provenance register (supplier labels are Photograph or Visualisation
+  only). Publishing it needs a founder-approved register extension; otherwise restore with the photograph only.

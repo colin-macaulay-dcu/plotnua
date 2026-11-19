@@ -1,0 +1,54 @@
+{
+  "what": "PENDING provenance declarations for the Hang-It photograph copies. Merge into image-provenance-records.json 'records' ONLY when the Services page is restored (services_page on), in the same release that publishes the copies. Not merged now: the copies are not on the public site.",
+  "logo_not_declarable": "The Hang-It logo copy (hang-it-logo.png) has no fitting class in the provenance register: SUPPLIER_IMAGE labels are Photograph or Visualisation only. It needs a founder-approved extension of the register (for example a 'Logo' supplier_label) before it can be published; it must not be mislabelled as a photograph.",
+  "records": [
+    {
+      "asset": "plotart/assets/services/hang-it-hung-wall-1600.jpg",
+      "sha256": "114961862fd2ccdbdcf4ed540944fd7837710a4842d57a94cce806f741632c07",
+      "bytes": 95680,
+      "pixels": [
+        1600,
+        900
+      ],
+      "class": "SUPPLIER_IMAGE",
+      "rights_ref": {
+        "organisation_code": "ORG-HANGIT",
+        "atlas_permission_ref": "IPO-HANGIT-20261119"
+      },
+      "supplier_label": "Photograph",
+      "source": "Hang-It's photograph from hangit.ie (https://d2f0ora2gkri0g.cloudfront.net/8b/b5/8bb5dc58-076f-466a-9b87-df0aae4fc3ba.jpg, sha256 64679b09c9c7902c…, 4032 × 2268); PlotNua web copy: resize and recompress only, metadata stripped, no crop or other edit."
+    },
+    {
+      "asset": "plotart/assets/services/hang-it-hung-wall-1600.webp",
+      "sha256": "7ed670bcb981da3c0b3bdada2bac5c79b516c599e21247151bee9991cf6094ea",
+      "bytes": 41708,
+      "pixels": [
+        1600,
+        900
+      ],
+      "class": "SUPPLIER_IMAGE",
+      "rights_ref": {
+        "organisation_code": "ORG-HANGIT",
+        "atlas_permission_ref": "IPO-HANGIT-20261119"
+      },
+      "supplier_label": "Photograph",
+      "source": "Hang-It's photograph from hangit.ie (https://d2f0ora2gkri0g.cloudfront.net/8b/b5/8bb5dc58-076f-466a-9b87-df0aae4fc3ba.jpg, sha256 64679b09c9c7902c…, 4032 × 2268); PlotNua web copy: resize and recompress only, metadata stripped, no crop or other edit."
+    },
+    {
+      "asset": "plotart/assets/services/hang-it-hung-wall-800.webp",
+      "sha256": "740b94f3a6143c43ef65b63c3fe58d6499ad8ca94a0f35621a2595857928e74f",
+      "bytes": 15436,
+      "pixels": [
+        800,
+        450
+      ],
+      "class": "SUPPLIER_IMAGE",
+      "rights_ref": {
+        "organisation_code": "ORG-HANGIT",
+        "atlas_permission_ref": "IPO-HANGIT-20261119"
+      },
+      "supplier_label": "Photograph",
+      "source": "Hang-It's photograph from hangit.ie (https://d2f0ora2gkri0g.cloudfront.net/8b/b5/8bb5dc58-076f-466a-9b87-df0aae4fc3ba.jpg, sha256 64679b09c9c7902c…, 4032 × 2268); PlotNua web copy: resize and recompress only, metadata stripped, no crop or other edit."
+    }
+  ]
+}
