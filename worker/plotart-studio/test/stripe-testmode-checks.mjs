@@ -470,4 +470,8 @@ if (PHASES.includes('basket_split')) {
     runnerKey: KEY, balanceKey: process.env.STRIPE_BALANCE_KEY || '',
     v1: S.V1_API_VERSION, v2: S.V2_API_VERSION, rec, runId: process.env.GITHUB_RUN_ID || RUN });
 }
+if (PHASES.includes('buyer_checkout')) {
+  const { checkBuyerCheckout } = await import('./stripe-testmode-buyer.mjs');
+  await checkBuyerCheckout(KEY, rec);
+}
 finish();
