@@ -49,7 +49,7 @@ def artist_page(path, title, desc, body, scripts=("plotart.js",), current="vg", 
         pill("lg", R + "living-gallery.html", "Living Gallery", "nav_living_gallery"),
         (pill(HIRE_PILL[0], R + HIRE_PILL[1], HIRE_PILL[2], HIRE_PILL[3]) if hire_nav else "")
         + (pill(SERVICES_PILL[0], R + SERVICES_PILL[1], SERVICES_PILL[2], SERVICES_PILL[3]) if services_nav else ""),
-        '<a class="pa-pill pa-pill--out" href="%sindex.html" data-pa-track="cross_plotnua_home"><span class="pa-pn"><img class="pa-pn-p" src="/assets/brand/plotnua-icon-transparent.svg" alt="" width="18" height="18"><span class="pa-sr">P</span>lotNua</span> <span aria-hidden="true">↗</span></a>' % T)
+        '<a class="pa-pill pa-pill--out" href="%sindex.html" data-pa-track="cross_plotnua_home"><span class="pa-pn" style="display:inline-flex;align-items:baseline;white-space:nowrap"><img class="pa-pn-p" src="/assets/brand/plotnua-icon-transparent.svg" alt="" width="18" height="18" style="display:block;flex:none;max-width:none;width:1.22em;height:1.22em;margin:-0.27em -0.2em 0 -0.29em;position:relative;top:0.215em"><span class="pa-sr">P</span>lotNua</span> <span aria-hidden="true">↗</span></a>' % T)
     # Phone Menu (founder approval 30 Oct 2026): the same links in the shared one-row Menu
     import re as _re
     _nav = _re.search(r'<nav class="pa-pills[^"]*"[^>]*>(.*?)</nav>', header, _re.S).group(1)

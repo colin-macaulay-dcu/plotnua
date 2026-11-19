@@ -565,8 +565,11 @@ body.pa .pa-free-lines{ margin:0; }
 /* The PlotNua link (founder brief 19 Nov 2026): a restrained PlotNua forest green; the official house P (plotnua-icon-transparent.svg,
    unchanged) is the first letter of "PlotNua". The P inside the icon fills 57% x 65% of its square: the margins trim that space so
    the P sits on the baseline at about cap height. The letter P stays in the text for screen readers and search (pa-sr). */
-.pa-pn{ white-space:nowrap; }
-body.pa .pa-pn-p{ display:inline-block; max-width:none; width:1.22em; height:1.22em; vertical-align:-0.215em; margin:0 -0.2em 0 -0.29em; }
+/* One non-wrapping inline-flex word on a shared baseline: an image's baseline is its bottom edge, so a relative offset lowers
+   the icon by the empty space under its P and the P's foot sits on the text baseline. The same values are written inline in
+   the markup, so a page never shows the P above "lotNua" even while a browser still holds an older stylesheet (19 Nov 2026). */
+.pa-pn{ display:inline-flex; align-items:baseline; white-space:nowrap; }
+body.pa .pa-pn-p{ display:block; flex:none; max-width:none; width:1.22em; height:1.22em; margin:-0.27em -0.2em 0 -0.29em; position:relative; top:0.215em; }   /* the top margin keeps the word box to the text height, so the word is centred in the pill */
 .pa-head .pn-sm-link.is-out{ background:#1F3B2E; border-color:rgba(143,175,138,.30); color:#F2EFE6; }
 
 /* Virtual Gallery: warm, artwork-led */
