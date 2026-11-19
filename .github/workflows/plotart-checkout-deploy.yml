@@ -119,7 +119,7 @@ jobs:
         run: |
           set -o pipefail
           for c in wrangler.studio.test.toml wrangler.checkout.test.toml; do
-            npx --yes wrangler@4.150.0 deploy --config "$c" --dry-run --outdir "$RUNNER_TEMP/build-$c" > "$RUNNER_TEMP/wrangler.log" 2>&1 || { grep -iE "error" "$RUNNER_TEMP/wrangler.log" | head -5; exit 1; }
+            npx --yes wrangler@4.150.0 deploy --config "$c" --dry-run --outdir "$RUNNER_TEMP/build-$c" > "$RUNNER_TEMP/wrangler.log" 2>&1 || { python3 "$GITHUB_WORKSPACE/atlas-tools/release/studio/wrangler-error.py" "$RUNNER_TEMP/wrangler.log"; exit 1; }
           done
           echo "DRY RUN OK: both TEST Workers build; nothing was sent to Cloudflare"
       - name: TEST · deploy plotart-studio-test and plotart-checkout-test, then write their TEST secrets
@@ -136,7 +136,7 @@ jobs:
           set -o pipefail
           W="npx --yes wrangler@4.150.0"
           for c in wrangler.studio.test.toml wrangler.checkout.test.toml; do
-            $W deploy --config "$c" > "$RUNNER_TEMP/wrangler.log" 2>&1 || { echo "FAIL  $c did not deploy"; grep -iE "error" "$RUNNER_TEMP/wrangler.log" | grep -viE "token" | head -5; exit 1; }
+            $W deploy --config "$c" > "$RUNNER_TEMP/wrangler.log" 2>&1 || { echo "FAIL  $c did not deploy"; python3 "$GITHUB_WORKSPACE/atlas-tools/release/studio/wrangler-error.py" "$RUNNER_TEMP/wrangler.log"; exit 1; }
             grep -E "^Current Version ID" "$RUNNER_TEMP/wrangler.log" || true
           done
           printf '%s' "$STRIPE_SECRET_KEY" | $W secret put STRIPE_SECRET_KEY --config wrangler.studio.test.toml > /dev/null
