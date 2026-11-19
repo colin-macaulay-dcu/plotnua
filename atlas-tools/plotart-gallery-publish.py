@@ -70,6 +70,8 @@ def call(method, path, body=None, raw=False):
 
 def git(*a, check=True):
     r = subprocess.run(("git",) + a, cwd=ROOT, capture_output=True, text=True)
+    if not check and a[:2] == ("merge-base", "--is-ancestor"):
+        return "" if r.returncode == 0 else "no"
     if check and r.returncode:
         raise RuntimeError("git %s: %s" % (" ".join(a), r.stderr.strip()))
     return r.stdout.strip()
@@ -162,6 +164,28 @@ def release(topic):
     return ok2, o + "\n" + o2
 
 
+# MAIN ADVANCING DURING PUBLICATION (19 Nov 2026: Nick Munier's first publication was built on df2337a; while its gate ran,
+# PR #29 moved main to 1757f90, so promote.sh refused "2c56987 does not contain the current main 1757f90"). That refusal
+# is promote.sh's ancestry guard and it is NOT changed or bypassed here: main still only ever fast-forwards, and only to a
+# commit whose own push-started gate passed. What changes is what happens next. When, and only when, the refusal was
+# caused by main having moved FORWARD past the commit this update was built on, the update is rebuilt from the Studio's
+# approved export on top of the new main (so every change that reached main meanwhile is kept exactly as it is), every
+# guard runs again against that new base, and the new commit goes through its own saved copy, gate and promotion. At most
+# REBUILDS attempts in one run; any other refusal (gate, guards, live check, permission) stays final, exactly as before.
+REBUILDS = 3
+MAIN_MOVED = re.compile(r"does not contain the current main")
+
+
+def main_advanced(output, base):
+    """True only if the release was refused by the ancestry guard AND origin/main has really moved forward from `base`
+    (never on a rewritten or diverged main: that is refused and left for the founder)."""
+    if not MAIN_MOVED.search(output or ""):
+        return False
+    git("fetch", "-q", "origin", "main")
+    now = git("rev-parse", "origin/main")
+    return now != base and git("merge-base", "--is-ancestor", base, now, check=False) == ""
+
+
 def guards(base, instant):
     checks = [
         ("content-only boundary", "python3 atlas-tools/release/plotart-content-boundary.py %s HEAD%s" % (base, " --instant" if instant else ""), "CONTENT BOUNDARY · OK"),
@@ -242,57 +266,84 @@ def main():
     items = call("GET", "/api/pipeline/queue")["items"]
     failed = 0
     for q in items:
-        if PUSH:          # build each update on the latest main, so another release moving main can't make it unpromotable
-            git("fetch", "-q", "origin", "main")
-            git("reset", "-q", "--hard", "origin/main")
-        base = git("rev-parse", "HEAD")
-        try:
-            why = one(q)
-            if why is None:
-                sm = Path(ROOT) / "sitemap.xml"
-                sm.write_text(SEO.update_sitemap(sm.read_text(), published(), SEO.switches()))
-                C.refresh(ROOT, published())
-                OPP.refresh(ROOT, published())     # the opportunity lists: only published artists, only what they chose to show
-                FEAT.refresh(ROOT, published())    # Featured Artists: the founder's current choice, published work only
-        except Exception as e:                       # noqa: BLE001 - any failure refuses this item, never a half-publish
-            why = "refused: %s: %s" % (type(e).__name__, e)
-        if why is None:
-            git("add", "-A", "plotart/artists", "plotart/gallery/index.html", "image-provenance-records.json", "sitemap.xml", *["plotart/" + p for p in SEO.GENERATED_PATHS],
-                *["plotart/" + p for p in OPP.PAGES if os.path.exists(os.path.join(ROOT, "plotart", p))])
-            git("-c", "user.name=PlotArt content pipeline", "-c", "user.email=hello@plotnua.ie", "commit", "-q", "-m",
-                "PlotArt content: %s · version %d · %s (Studio queue %s)" % (q["artist_id"], q["version"], q["kind"], q["id"]))
-            why = guards(base, q["kind"] == "instant")
-        if why is None and PUSH:
-            # one saved copy per attempt (fix 5 Nov 2026): a retry of the same version is a new commit, so it gets its own
-            # branch instead of colliding with an earlier attempt's copy (which is kept, never overwritten or forced)
-            branch = "content/plotart-%s-v%d-%s" % (q["artist_id"], q["version"], git("rev-parse", "--short=12", "HEAD"))
-            ok1, o1 = run("git push origin HEAD:refs/heads/%s" % branch)
-            ok2, o2 = release("plotart-%s-v%d" % (q["artist_id"], q["version"])) if ok1 else (False, "")   # main only moves after the gate passes
-            if not (ok1 and ok2):
-                why = "not released (gate, main moved, live check or permission): " + (o1 + " " + o2)[-300:]
-        if why:
-            failed += 1
-            subprocess.run(["git", "reset", "-q", "--hard", base], cwd=ROOT)
-            subprocess.run(["git", "clean", "-qfd", "plotart/artists"], cwd=ROOT)
-            call("POST", "/api/pipeline/result/" + q["id"], {"status": "failed", "detail": why[:1900]})
-            print("PLOTART CONTENT · %s v%d · FAILED · %s" % (q["artist_id"], q["version"], why[:300]))
-        else:
-            sha = git("rev-parse", "HEAD")
-            call("POST", "/api/pipeline/result/" + q["id"], {"status": "published", "detail": "commit %s%s" % (sha[:12], " (simulated)" if SIMULATE else "")})
-            print("PLOTART CONTENT · %s v%d · %s · %s" % (q["artist_id"], q["version"], q["kind"], "published " + sha[:12] if PUSH else "verified (simulated) " + sha[:12]))
-    failed += order_sync()
-    failed += featured_sync()
+        for n in range(1, REBUILDS + 1):
+            bad, moved = publish_item(q, final=(n == REBUILDS))
+            if not (bad and moved) or n == REBUILDS:
+                failed += bad
+                break
+            print("PLOTART CONTENT · %s v%d · main moved during the release: rebuilding on the new main (attempt %d of %d)"
+                  % (q["artist_id"], q["version"], n + 1, REBUILDS), flush=True)
+    failed += with_rebuilds("gallery order", order_sync)
+    failed += with_rebuilds("featured artists", featured_sync)
     if not items:
         print("PLOTART CONTENT · nothing to publish")
     return 1 if failed else 0
 
 
-def order_sync():
+def with_rebuilds(label, once):
+    """The gallery order and Featured Artists updates, with the same bounded rebuild when main moved during the release."""
+    for n in range(1, REBUILDS + 1):
+        bad, moved = once(final=(n == REBUILDS))
+        if not (bad and moved) or n == REBUILDS:
+            return bad
+        print("PLOTART CONTENT · %s · main moved during the release: rebuilding on the new main (attempt %d of %d)" % (label, n + 1, REBUILDS), flush=True)
+    return 0
+
+
+def publish_item(q, final=True):
+    """One queue item, built on the latest main. Returns (1 if not published else 0, main_moved). When main moved and this
+    is not the final attempt, nothing is reported to the Studio yet: the item stays 'exporting' and is rebuilt."""
+    moved = False
+    if PUSH:              # build each update on the latest main, so another release moving main can't make it unpromotable
+        git("fetch", "-q", "origin", "main")
+        git("reset", "-q", "--hard", "origin/main")
+    base = git("rev-parse", "HEAD")
+    try:
+        why = one(q)
+        if why is None:
+            sm = Path(ROOT) / "sitemap.xml"
+            sm.write_text(SEO.update_sitemap(sm.read_text(), published(), SEO.switches()))
+            C.refresh(ROOT, published())
+            OPP.refresh(ROOT, published())     # the opportunity lists: only published artists, only what they chose to show
+            FEAT.refresh(ROOT, published())    # Featured Artists: the founder's current choice, published work only
+    except Exception as e:                       # noqa: BLE001 - any failure refuses this item, never a half-publish
+        why = "refused: %s: %s" % (type(e).__name__, e)
+    if why is None:
+        git("add", "-A", "plotart/artists", "plotart/gallery/index.html", "image-provenance-records.json", "sitemap.xml", *["plotart/" + p for p in SEO.GENERATED_PATHS],
+            *["plotart/" + p for p in OPP.PAGES if os.path.exists(os.path.join(ROOT, "plotart", p))])
+        git("-c", "user.name=PlotArt content pipeline", "-c", "user.email=hello@plotnua.ie", "commit", "-q", "-m",
+            "PlotArt content: %s · version %d · %s (Studio queue %s)" % (q["artist_id"], q["version"], q["kind"], q["id"]))
+        why = guards(base, q["kind"] == "instant")
+    if why is None and PUSH:
+        # one saved copy per attempt (fix 5 Nov 2026): a retry of the same version is a new commit, so it gets its own
+        # branch instead of colliding with an earlier attempt's copy (which is kept, never overwritten or forced)
+        branch = "content/plotart-%s-v%d-%s" % (q["artist_id"], q["version"], git("rev-parse", "--short=12", "HEAD"))
+        ok1, o1 = run("git push origin HEAD:refs/heads/%s" % branch)
+        ok2, o2 = release("plotart-%s-v%d" % (q["artist_id"], q["version"])) if ok1 else (False, "")   # main only moves after the gate passes
+        if not (ok1 and ok2):
+            why = "not released (gate, main moved, live check or permission): " + (o1 + " " + o2)[-300:]
+            moved = ok1 and main_advanced(o2, base)
+    if why:
+        subprocess.run(["git", "reset", "-q", "--hard", base], cwd=ROOT)
+        subprocess.run(["git", "clean", "-qfd", "plotart/artists"], cwd=ROOT)
+        if moved and not final:
+            return 1, True
+        call("POST", "/api/pipeline/result/" + q["id"], {"status": "failed", "detail": why[:1900]})
+        print("PLOTART CONTENT · %s v%d · FAILED · %s" % (q["artist_id"], q["version"], why[:300]))
+        return 1, moved
+    sha = git("rev-parse", "HEAD")
+    call("POST", "/api/pipeline/result/" + q["id"], {"status": "published", "detail": "commit %s%s" % (sha[:12], " (simulated)" if SIMULATE else "")})
+    print("PLOTART CONTENT · %s v%d · %s · %s" % (q["artist_id"], q["version"], q["kind"], "published " + sha[:12] if PUSH else "verified (simulated) " + sha[:12]))
+    return 0, False
+
+
+def order_sync(final=True):
     """Gallery order (31 Oct 2026): after the queue, rebuild the Virtual Gallery grid from the founder's order. If only
     the grid changed (a move, reservation or release), commit it as a content-only update, run every guard and push
     exactly as for a gallery. Nothing changes when the order is unchanged."""
+    moved = False
     if git("status", "--porcelain"):
-        return 0
+        return 0, False
     if PUSH:
         git("fetch", "-q", "origin", "main")
         git("reset", "-q", "--hard", "origin/main")
@@ -300,14 +351,14 @@ def order_sync():
     try:
         lay = layout()
         if lay is None:
-            return 0
+            return 0, False
         regrid(lay)
     except Exception as e:                           # noqa: BLE001
         subprocess.run(["git", "checkout", "-q", "--", "plotart/gallery/index.html"], cwd=ROOT)
         print("PLOTART CONTENT · gallery order · FAILED · %s" % e)
-        return 1
+        return 1, False
     if not git("status", "--porcelain"):
-        return 0
+        return 0, False
     git("add", "plotart/gallery/index.html")
     git("-c", "user.name=PlotArt content pipeline", "-c", "user.email=hello@plotnua.ie", "commit", "-q", "-m",
         "PlotArt content: Virtual Gallery order (founder's Gallery order in PlotArt Studio)")
@@ -317,16 +368,19 @@ def order_sync():
         ok2, o2 = release("plotart-gallery-order") if ok1 else (False, "")
         if not (ok1 and ok2):
             why = "not released (gate, main moved, live check or permission): " + (o1 + " " + o2)[-300:]
+            moved = ok1 and main_advanced(o2, base)
     sha = git("rev-parse", "HEAD")
     if why:
         subprocess.run(["git", "reset", "-q", "--hard", base], cwd=ROOT)
+        if moved and not final:
+            return 1, True
     try:
         call("POST", "/api/pipeline/gallery-order/result", {"status": "failed" if why else "published",
              "detail": (why or "commit %s%s" % (sha[:12], " (simulated)" if SIMULATE else ""))[:1900]})
     except Exception:                                # noqa: BLE001 - the record is best-effort; the commit stands or was dropped
         pass
     print("PLOTART CONTENT · gallery order · %s" % ("FAILED · " + why[:300] if why else ("published " if PUSH else "verified (simulated) ") + sha[:12]))
-    return 1 if why else 0
+    return (1, moved) if why else (0, False)
 
 
 def featured_selection():
@@ -344,14 +398,15 @@ def featured_selection():
     return FEAT.check_selection(r.get("items", []))
 
 
-def featured_sync():
+def featured_sync(final=True):
     """Featured Artists (17 Nov 2026; moved from the homepage): after the queue and the gallery order, re-render the
     Featured Artists region of the Artists' Gallery from the founder's selection and the published galleries. Only that
     region can change (content boundary, launch guard L20); the complete collection below is not touched. It is
     committed, guarded and released exactly like the gallery order. Nothing happens when nothing changed."""
     page = "plotart/" + FEAT.PAGE
+    moved = False
     if git("status", "--porcelain"):
-        return 0
+        return 0, False
     if PUSH:
         git("fetch", "-q", "origin", "main")
         git("reset", "-q", "--hard", "origin/main")
@@ -359,11 +414,11 @@ def featured_sync():
     try:
         sel = featured_selection()
         if sel is None:
-            return 0
+            return 0, False
         before = open(os.path.join(ROOT, page), encoding="utf-8").read()
         lay = layout()
         if lay is None:                    # no Gallery order from the Studio: the page cannot be rebuilt safely
-            return 0
+            return 0, False
         regrid(lay, sel)                   # Featured Artists, then Explore More Artists without them (17 Nov 2026)
         after = open(os.path.join(ROOT, page), encoding="utf-8").read()
         # only the two generated regions may change: nothing else on the page, and never the twenty-five positions
@@ -374,9 +429,9 @@ def featured_sync():
     except Exception as e:                           # noqa: BLE001
         subprocess.run(["git", "checkout", "-q", "--", page], cwd=ROOT)
         print("PLOTART CONTENT · featured artists · FAILED · %s" % e)
-        return 1
+        return 1, False
     if not git("status", "--porcelain"):
-        return 0
+        return 0, False
     git("add", page)
     git("-c", "user.name=PlotArt content pipeline", "-c", "user.email=hello@plotnua.ie", "commit", "-q", "-m",
         "PlotArt content: Featured Artists (founder's selection in PlotArt Studio)")
@@ -386,11 +441,14 @@ def featured_sync():
         ok2, o2 = release("plotart-featured") if ok1 else (False, "")
         if not (ok1 and ok2):
             why = "not released (gate, main moved, live check or permission): " + (o1 + " " + o2)[-300:]
+            moved = ok1 and main_advanced(o2, base)
     sha = git("rev-parse", "HEAD")
     if why:
         subprocess.run(["git", "reset", "-q", "--hard", base], cwd=ROOT)
+        if moved and not final:
+            return 1, True
     print("PLOTART CONTENT · featured artists · %s" % ("FAILED · " + why[:300] if why else ("published " if PUSH else "verified (simulated) ") + sha[:12]))
-    return 1 if why else 0
+    return (1, moved) if why else (0, False)
 
 
 if __name__ == "__main__":

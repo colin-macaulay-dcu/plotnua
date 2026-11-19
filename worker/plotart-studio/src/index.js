@@ -686,6 +686,18 @@ async function agreementGate(env, q, req) {
   return { warned: true };
 }
 
+/* The founder-approved version an instant version carries (19 Nov 2026). Instant versions are made from the latest
+   version, published or not, so when a founder-approved gallery fails to publish and the artist then makes an instant
+   change, the instant version carries approved content that never reached the website (Nick Munier, 19 Nov 2026: v1
+   refused because main moved during its release; the instant v2 then could only ever be refused by the instant-only
+   content boundary, and v1 could not be retried because v2 existed). Returns the nearest earlier version that is not an
+   instant one, with its submission, or null when that version is not a founder-approved submission. */
+async function approvedBase(env, artistId, version) {
+  const v = await one(env, "SELECT version, source FROM versions WHERE artist_id=? AND version<=? AND source<>'instant' ORDER BY version DESC LIMIT 1", artistId, version);
+  const s = v && await one(env, 'SELECT id, status FROM submissions WHERE id=? AND artist_id=?', v.source, artistId);
+  return s ? { version: v.version, submission: s } : null;
+}
+
 // Retry publishing (development 12 Nov 2026). A FAILED job goes back to 'ready' unchanged: same queue record, same
 // approved version (snapshot, AI decisions, approval), so the protected publishing workflow and every image-provenance
 // check run again exactly as for Publish. Refused unless: the job failed; the artist is active or invited; for reviewed
@@ -700,25 +712,38 @@ async function retryPublication(env, founder, id, req) {
   if (q.status !== 'failed') throw new Bad('Only a publication that failed can be retried', 409);
   const a = await one(env, 'SELECT id, display_name, account_status FROM artists WHERE id=?', q.artist_id);
   if (!a || !['invited', 'active'].includes(a.account_status)) throw new Bad('This artist’s account isn’t active, so their gallery can’t be published', 409);
+  // An instant update that carries founder-approved content which never reached the website goes back as a reviewed
+  // publication: the founder's Retry is the authority, the approved submission must still be approved, and the founder
+  // must already have pressed Publish for that version (it failed). The full, non-instant checks then run on it.
+  let asReviewed = null;
+  if (q.kind === 'instant') {
+    const b = await approvedBase(env, q.artist_id, q.version);
+    if (b && b.version > await liveVersion(env, q.artist_id)) {
+      const bq = await one(env, "SELECT status FROM publish_queue WHERE artist_id=? AND version=? AND kind='reviewed'", q.artist_id, b.version);
+      if (!bq || bq.status !== 'failed') throw new Bad('This update includes approved changes that haven’t been sent for publishing yet: publish those first', 409);
+      if (b.submission.status !== 'approved') throw new Bad('The submission behind this version is no longer approved, so it can’t be published', 409);
+      asReviewed = b.version;
+    }
+  }
   if (q.kind === 'reviewed') {
-    const v = await one(env, 'SELECT source FROM versions WHERE artist_id=? AND version=?', q.artist_id, q.version);
-    const s = v && await one(env, 'SELECT status FROM submissions WHERE id=?', v.source);
-    if (!s || s.status !== 'approved') throw new Bad('The submission behind this version is no longer approved, so it can’t be published', 409);
+    const b = await approvedBase(env, q.artist_id, q.version);
+    if (!b || b.submission.status !== 'approved') throw new Bad('The submission behind this version is no longer approved, so it can’t be published', 409);
   }
   if (await one(env, "SELECT id FROM publish_queue WHERE artist_id=? AND id<>? AND version>=? AND status<>'superseded' LIMIT 1", q.artist_id, q.id, q.version))
     throw new Bad('A newer version of this gallery exists, so this older version can’t be retried', 409);
   if (await one(env, "SELECT id FROM publish_queue WHERE artist_id=? AND id<>? AND status IN ('ready','exporting') LIMIT 1", q.artist_id, q.id))
     throw new Bad('Another publication for this artist is already in progress: try again once it has finished', 409);
-  const gate = await agreementGate(env, q, req);
+  const gate = await agreementGate(env, asReviewed ? { ...q, kind: 'reviewed' } : q, req);   // a retried-as-reviewed update meets the agreement gate too
   if (gate.response) return gate.response;
-  const r = await env.DB.prepare(`UPDATE publish_queue SET status='ready', updated_at=? WHERE id=? AND status='failed'
+  const r = await env.DB.prepare(`UPDATE publish_queue SET status='ready', kind=?, updated_at=? WHERE id=? AND status='failed'
     AND NOT EXISTS (SELECT 1 FROM publish_queue o WHERE o.artist_id=publish_queue.artist_id AND o.id<>publish_queue.id
-      AND (o.status IN ('ready','exporting') OR (o.version>=publish_queue.version AND o.status<>'superseded')))`).bind(now(), q.id).run();
+      AND (o.status IN ('ready','exporting') OR (o.version>=publish_queue.version AND o.status<>'superseded')))`).bind(asReviewed ? 'reviewed' : q.kind, now(), q.id).run();
   if (!r.meta || r.meta.changes !== 1) throw new Bad('This publication has already been retried', 409);
   const attempt = 1 + (await one(env, "SELECT COUNT(*) AS n FROM audit WHERE action='publish_retry' AND artist_id=? AND detail LIKE ?", q.artist_id, `%"queue":"${q.id}"%`)).n;
   const publish = await requestGalleryPublish(env);
   await audit(env, founder, 'founder', 'publish_retry', q.artist_id, { queue: q.id, version: q.version, attempt, publish,
-    previous_failure: String(q.detail || '').slice(0, 2000), ...(gate.warned ? { without_current_agreement: true } : {}) });
+    previous_failure: String(q.detail || '').slice(0, 2000), ...(gate.warned ? { without_current_agreement: true } : {}),
+    ...(asReviewed ? { retried_as_reviewed: true, approved_version: asReviewed } : {}) });
   return json({ ok: true, publish, attempt });
 }
 
