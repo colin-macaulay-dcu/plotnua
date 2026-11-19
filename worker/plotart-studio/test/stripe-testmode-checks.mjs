@@ -462,4 +462,11 @@ if (PHASES.includes('founder_email')) {
   const { founderEmail } = await import(HERE + 'test/stripe-testmode-founder-email.mjs');
   await founderEmail({ rec, KEY, RUN });
 }
+if (PHASES.includes('basket_split')) {
+  const config = JSON.parse(readFileSync(HERE + 'test/stripe-test-run.json', 'utf8'));
+  const { proveBasketSplit } = await import('./stripe-testmode-basket.mjs');
+  await proveBasketSplit({ accounts: [config.reuse_account, config.unfunded_account],
+    runnerKey: KEY, balanceKey: process.env.STRIPE_BALANCE_KEY || '',
+    v1: S.V1_API_VERSION, v2: S.V2_API_VERSION, rec, runId: process.env.GITHUB_RUN_ID || RUN });
+}
 finish();
