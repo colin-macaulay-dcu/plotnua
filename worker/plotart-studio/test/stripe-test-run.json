@@ -1,10 +1,13 @@
 {
   "_note": "Changing this file on the pilot branch requests a run of .github/workflows/plotart-checkout-stripe-test.yml (Stripe TEST mode only; waits for the founder's approval on the checkout-test environment). Nothing is deployed.",
-  "requested": "2026-11-19T10:15:07.611Z",
+  "requested": "2026-11-19T20:41:52.000Z",
   "phases": [
+    "provider",
+    "privacy",
+    "e2e",
     "buyer_checkout"
   ],
-  "reason": "Complete a hosted buyer payment, receive a signed platform checkout event, allocate both gross sandbox shares and verify replay reuses the transfers.",
+  "reason": "Full Stripe test-mode regression after the TEST Workers were deployed with the pilot on (19 Nov 2026): provider, privacy, end-to-end with signed webhooks, hosted buyer payment.",
   "reuse_account": "acct_1UclJXHx1Olx8cdw",
   "unfunded_account": "acct_1Uct3vHx1OnYJa8H",
   "unfunded_link": false,
