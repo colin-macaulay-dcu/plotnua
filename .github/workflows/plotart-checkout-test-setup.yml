@@ -10,10 +10,10 @@ on:
   workflow_dispatch:
     inputs:
       mode:
-        description: "audit / r2_plan (read only) · r2_apply (replace the two unused default-jurisdiction TEST buckets with EU ones) · create_access"
+        description: "audit / r2_plan (read only) · r2_apply (EU TEST buckets) · create_access · d1_setup (schema + synthetic seed, EMPTY TEST database only)"
         required: true
         type: choice
-        options: [audit, r2_plan, r2_apply, create_access]
+        options: [audit, r2_plan, r2_apply, create_access, d1_setup]
         default: audit
 permissions:
   contents: read
@@ -33,6 +33,7 @@ jobs:
           [ "${{ github.ref }}" = refs/heads/main ] || { echo "REFUSED: run from main"; exit 1; }
           echo "### PlotArt checkout TEST setup · ${{ inputs.mode }}" >> "$GITHUB_STEP_SUMMARY"
       - name: Audit (read only) and, if requested, the TEST Studio Access application
+        if: ${{ inputs.mode != 'd1_setup' }}
         env:
           CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
           CHECKOUT_TEST_D1_DATABASE_ID: ${{ vars.CHECKOUT_TEST_D1_DATABASE_ID }}
@@ -46,3 +47,48 @@ jobs:
           CHECKOUT_TEST_FOUNDER_EMAILS: ${{ secrets.CHECKOUT_TEST_FOUNDER_EMAILS }}
           CHECKOUT_TEST_FOUNDER_EMAIL: ${{ vars.CHECKOUT_TEST_FOUNDER_EMAIL }}
         run: python3 atlas-tools/release/studio/checkout-test-setup.py "${{ inputs.mode }}"
+      # ---------------------------------------------------------------- d1_setup: TEST database only, EMPTY database only
+      # One step, fail closed: the database gate runs immediately before anything is applied, Wrangler is given a
+      # configuration that names ONLY the verified database ID, and the result is compared with the expected state.
+      - uses: actions/setup-node@v4
+        if: ${{ inputs.mode == 'd1_setup' }}
+        with:
+          node-version: 22
+      - name: TEST database · gate, apply schema + 0013 + synthetic seed, verify (plotart-checkout-test only)
+        if: ${{ inputs.mode == 'd1_setup' }}
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
+          CHECKOUT_TEST_D1_DATABASE_ID: ${{ vars.CHECKOUT_TEST_D1_DATABASE_ID }}
+          CHECKOUT_TEST_CF_TOKEN: ${{ secrets.CHECKOUT_TEST_CF_TOKEN }}
+        run: |
+          set -uo pipefail
+          W="$GITHUB_WORKSPACE/worker/plotart-studio"; G="$GITHUB_WORKSPACE/atlas-tools/release/studio/checkout-test-d1.py"
+          T="$RUNNER_TEMP/d1"; mkdir -p "$T"
+          stop() { echo "  FAIL  STOPPED: $1"; echo "- **FAIL** STOPPED: $1" >> "$GITHUB_STEP_SUMMARY"; exit 1; }
+          [[ "$CLOUDFLARE_ACCOUNT_ID" =~ ^[0-9a-f]{32}$ ]] || stop "CLOUDFLARE_ACCOUNT_ID missing or not 32 hex characters"
+          [[ "$CHECKOUT_TEST_D1_DATABASE_ID" =~ ^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$ ]] || stop "CHECKOUT_TEST_D1_DATABASE_ID missing or not a UUID"
+          node "$W/test/checkout-test-env-seed.mjs" --target plotart-checkout-test --founding colin+f1@plotnua.ie --gallery colin+g1@plotnua.ie > "$T/seed.sql" || stop "the synthetic seed could not be generated"
+          printf 'name = "plotart-checkout-test-db-setup"\ncompatibility_date = "2026-08-01"\n[[d1_databases]]\nbinding = "DB"\ndatabase_name = "plotart-checkout-test"\ndatabase_id = "%s"\n' "$CHECKOUT_TEST_D1_DATABASE_ID" > "$T/wrangler.toml"
+          python3 - "$T/wrangler.toml" <<'PY' || stop "the generated Wrangler configuration does not name exactly the verified TEST database"
+          import os, sys, tomllib
+          c = tomllib.load(open(sys.argv[1], "rb")); d = c.get("d1_databases") or []
+          ok = len(d) == 1 and d[0].get("database_name") == "plotart-checkout-test" and d[0].get("database_id") == os.environ["CHECKOUT_TEST_D1_DATABASE_ID"]
+          ok = ok and not any(k in c for k in ("r2_buckets", "kv_namespaces", "services", "routes", "route"))
+          sys.exit(0 if ok else 1)
+          PY
+          # gate immediately before applying: correct name for this ID, token active, database EMPTY
+          python3 "$G" check || stop "the TEST database gate refused; nothing was applied"
+          export CLOUDFLARE_API_TOKEN="$CHECKOUT_TEST_CF_TOKEN"
+          n=0
+          for f in "$W/schema.sql" "$W/migrations/0013_gallery_artist_agreement_text.sql" "$T/seed.sql"; do
+            if (cd "$T" && npx --yes wrangler@4.150.0 d1 execute plotart-checkout-test --remote --config "$T/wrangler.toml" --file "$f" -y > "$T/out.log" 2>&1); then
+              n=$((n+1)); echo "  PASS  applied $(basename "$f") to plotart-checkout-test"
+            else
+              # sanitised: only Wrangler's own error lines, with anything token-like removed; reliable fallback
+              msg=$( { grep -E "^(✘|X|\[ERROR\])" "$T/out.log" || true; } | sed -E 's/[A-Za-z0-9_-]{32,}/[redacted]/g' | head -3 | tr '\n' ' ')
+              [ -n "$msg" ] || msg="(no error line from Wrangler)"
+              if [ "$n" -eq 0 ]; then stop "$(basename "$f") was not applied: $msg. Nothing was applied before it."
+              else stop "$(basename "$f") was not applied: $msg. PARTIAL SETUP: $n of 3 files applied; the TEST database is no longer empty, so d1_setup will refuse to run again until it is reset (TEST database only)."; fi
+            fi
+          done
+          D1_SEED_FILE="$T/seed.sql" python3 "$G" verify || stop "the TEST database does not match the expected state after setup"
