@@ -13,7 +13,7 @@ on:
         description: "audit / r2_plan (read only) · r2_apply (EU TEST buckets) · create_access · d1_setup (schema + synthetic seed, EMPTY TEST database only)"
         required: true
         type: choice
-        options: [audit, r2_plan, r2_apply, create_access, d1_setup]
+        options: [audit, r2_plan, r2_apply, create_access, d1_setup, d1_verify]
         default: audit
 permissions:
   contents: read
@@ -33,7 +33,7 @@ jobs:
           [ "${{ github.ref }}" = refs/heads/main ] || { echo "REFUSED: run from main"; exit 1; }
           echo "### PlotArt checkout TEST setup · ${{ inputs.mode }}" >> "$GITHUB_STEP_SUMMARY"
       - name: Audit (read only) and, if requested, the TEST Studio Access application
-        if: ${{ inputs.mode != 'd1_setup' }}
+        if: ${{ inputs.mode != 'd1_setup' && inputs.mode != 'd1_verify' }}
         env:
           CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
           CHECKOUT_TEST_D1_DATABASE_ID: ${{ vars.CHECKOUT_TEST_D1_DATABASE_ID }}
@@ -51,7 +51,7 @@ jobs:
       # One step, fail closed: the database gate runs immediately before anything is applied, Wrangler is given a
       # configuration that names ONLY the verified database ID, and the result is compared with the expected state.
       - uses: actions/setup-node@v4
-        if: ${{ inputs.mode == 'd1_setup' }}
+        if: ${{ inputs.mode == 'd1_setup' || inputs.mode == 'd1_verify' }}
         with:
           node-version: 22
       - name: TEST database · gate, apply schema + 0013 + synthetic seed, verify (plotart-checkout-test only)
@@ -92,3 +92,16 @@ jobs:
             fi
           done
           D1_SEED_FILE="$T/seed.sql" python3 "$G" verify || stop "the TEST database does not match the expected state after setup"
+      # ---------------------------------------------------------------- d1_verify: READ ONLY re-check of the TEST database
+      - name: TEST database · verify only (read only; nothing applied)
+        if: ${{ inputs.mode == 'd1_verify' }}
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
+          CHECKOUT_TEST_D1_DATABASE_ID: ${{ vars.CHECKOUT_TEST_D1_DATABASE_ID }}
+          CHECKOUT_TEST_CF_TOKEN: ${{ secrets.CHECKOUT_TEST_CF_TOKEN }}
+        run: |
+          set -uo pipefail
+          T="$RUNNER_TEMP/d1"; mkdir -p "$T"
+          node worker/plotart-studio/test/checkout-test-env-seed.mjs --target plotart-checkout-test --founding colin+f1@plotnua.ie --gallery colin+g1@plotnua.ie > "$T/seed.sql" \
+            || { echo "  FAIL  STOPPED: the synthetic seed could not be generated"; exit 1; }
+          D1_SEED_FILE="$T/seed.sql" python3 atlas-tools/release/studio/checkout-test-d1.py verify

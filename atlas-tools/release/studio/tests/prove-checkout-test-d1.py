@@ -38,6 +38,8 @@ class H(http.server.BaseHTTPRequestHandler):
         if S["query"] == "500": return self.send(500, {"success": False, "errors": [{"code": 7500}]})
         if S["query"] == "malformed": return self.send(200, b"<html>not json")
         if S["query"] == "noresults": return self.send(200, {"success": True, "result": [{"success": True}]})
+        if body["sql"].count("UNION ALL") > 10:   # D1 refused a 60-way UNION ALL in the first real run (HTTP 400, 7500)
+            return self.send(400, {"success": False, "errors": [{"code": 7500}]})
         c = sqlite3.connect(REMOTE); c.row_factory = sqlite3.Row
         rows = [dict(r) for r in c.execute(body["sql"])]
         c.close()
@@ -132,6 +134,11 @@ c.execute("UPDATE artists SET id = 'arealone' WHERE id = 'atestgal'"); c.commit(
 rc, line = gate("verify", D1_SEED_FILE=SEED); case("(e) two artists but not the synthetic two → verify refuses", rc == 1 and "artists are not exactly" in line, line)
 reset(*FILES); c = sqlite3.connect(REMOTE); c.execute("CREATE TABLE stray (x)"); c.commit(); c.close()
 rc, line = gate("verify", D1_SEED_FILE=SEED); case("unexpected extra table → verify refuses", rc == 1 and "unexpected ['stray']" in line, line)
+# d1_verify mode (read only) in the workflow
+VSTEP = [s for s in yaml.safe_load(open(os.path.join(REPO, ".github/workflows/plotart-checkout-test-setup.yml")))["jobs"]["setup"]["steps"]
+         if "verify only" in str(s.get("name"))][0]["run"]
+reset(*FILES); r = subprocess.run(["bash", "-c", VSTEP], cwd=REPO, env={**ENV, "RUNNER_TEMP": os.path.join(TMP, "rt2")}, capture_output=True, text=True)
+case("d1_verify mode (read only) passes on the exact expected state", r.returncode == 0 and "matches the expected state exactly" in r.stdout, r.stdout.strip()[-160:])
 # (f) success
 reset(); rc, line = gate("check"); case("(f) empty TEST database → check passes", rc == 0 and "EMPTY" in line, line)
 reset(*FILES); rc, line = gate("verify", D1_SEED_FILE=SEED); case("(f) exact expected state → verify passes", rc == 0 and "matches the expected state exactly" in line, line)
