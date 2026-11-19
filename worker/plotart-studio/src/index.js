@@ -14,6 +14,7 @@ import * as AG from './agreement.js';
 import * as GAR from './gallery-application-review.js';
 import { REVIEW_JS } from './application-review-ui.js';
 import * as H from './hire.js';
+import * as CO from './checkout.js';   // managed checkout pilot (development 16 Nov 2026): test mode only, off by default
 import * as O from './opportunities.js';   // Opportunities & delivery (development 13 Nov 2026): expressions of interest only
 import * as HP from './featured.js';   // Featured Artists in the Artists' Gallery (17 Nov 2026; was Homepage curation; migration 0016 unchanged): founder-only
 import { artistBody, artworkBody, previewPage, shown } from './render.js';
@@ -1049,9 +1050,11 @@ export default {
     try { await gardenReady(env); garden_expired = await sweepGarden(env); } catch { /* noticeboard not installed */ }
     let hire = null;
     try { hire = await H.sweep(env); } catch (e) { hire = { error: String(e.message || e).slice(0, 120) }; }   // Art for Hire retention (0007)
+    let checkout = null;
+    try { checkout = await CO.sweep(env); } catch (e) { checkout = { error: String(e.message || e).slice(0, 120) }; }   // payment pilot: lapsed reservations and quotes (0016)
     let participation_deletion = null;
     try { participation_deletion = await runDeletionSchedule(env); } catch (e) { participation_deletion = { error: String(e.message || e).slice(0, 120) }; }
-    await audit(env, 'scheduler', 'system', 'cleanup', null, { images_erased: gone.length, images_kept_while_shown: due.length - gone.length, ideas_deleted, garden_expired, participation_deletion, enquiries_logged, hire });
+    await audit(env, 'scheduler', 'system', 'cleanup', null, { images_erased: gone.length, images_kept_while_shown: due.length - gone.length, ideas_deleted, garden_expired, participation_deletion, enquiries_logged, hire, checkout });
   },
   async fetch(req, env) {
     try { return await route(req, env); }
@@ -1191,7 +1194,7 @@ async function route(req, env) {
   // static assets (public, no data)
   const asset = { '/assets/studio.css': [A.STUDIO_CSS, 'text/css'], '/assets/plotart.css': [A.PLOTART_CSS, 'text/css'],
     '/assets/studio.js': [A.STUDIO_JS, 'text/javascript'], '/assets/admin.js': [A.ADMIN_JS, 'text/javascript'],
-    '/assets/plotnua-mark.svg': [A.MARK_SVG, 'image/svg+xml'] }[p];
+    '/assets/plotnua-mark.svg': [A.MARK_SVG, 'image/svg+xml'], '/assets/checkout-pilot.js': [A.CHECKOUT_JS, 'text/javascript'] }[p];
   if (asset && m === 'GET') return res(asset[0], asset[1] + '; charset=utf-8', 200, { 'Cache-Control': 'public, max-age=300' });
   if (LOGO[p] && m === 'GET') return res(LOGO[p][0], LOGO[p][1], 200, { 'Cache-Control': 'public, max-age=86400' });
 
@@ -1312,6 +1315,41 @@ async function route(req, env) {
       const r = await O.founderConfirm(env, me.email, await req.json().catch(() => null));
       const artist = await one(env, 'SELECT * FROM artists WHERE id = ?', r.artist_id);
       return json({ ok: true, ...r, instant_version: await instant(env, artist, me.email, 'opportunities_shown_founder_confirmed') });
+    }
+    /* Managed checkout pilot (test mode; off by default). Separate from the gallery, its publishing and the agreements. */
+    if (p === '/admin/checkout') return html(A.CHECKOUT_HTML);
+    if (p.startsWith('/api/admin/checkout')) {
+      if (p === '/api/admin/checkout' && m === 'GET') return json({ ok: true, ...(await CO.adminView(env)) });
+      if (!(await CO.installed(env))) return json({ ok: false, error: 'The payment pilot is not installed' }, 409);
+      if (p === '/api/admin/checkout/orders' && m === 'POST') return json({ ok: true, ...(await CO.createOrder(env, me.email, await req.json())) });
+      if (p === '/api/admin/checkout/digest/send' && m === 'POST') return json({ ok: true, ...(await CO.sendFounderDigest(env, me.email)) });
+      if (p === '/api/admin/checkout/pause' && m === 'POST') return json({ ok: true, ...(await CO.setPause(env, me.email, await req.json().catch(() => ({})))) });
+      if ((mm = p.match(/^\/api\/admin\/checkout\/alerts\/(\d+)$/)) && m === 'POST') return json({ ok: true, founder_alerts: await CO.setFounderAlert(env, me.email, mm[1], await req.json().catch(() => ({}))) });
+      if ((mm = p.match(/^\/api\/admin\/checkout\/holds\/(h[0-9a-z]+)$/)) && m === 'POST') return json({ ok: true, ...(await CO.reviewHold(env, me.email, mm[1], await req.json())) });
+      if ((mm = p.match(/^\/api\/admin\/checkout\/accounts\/([0-9a-z]+)\/refresh$/)) && m === 'POST') return json({ ok: true, ...(await CO.refreshAccount(env, mm[1])) });
+      if ((mm = p.match(/^\/api\/admin\/checkout\/orders\/(o[0-9a-z]+)(?:\/([a-z]+))?$/))) {
+        const o = await CO.getOrder(env, mm[1]);
+        if (!o) return json({ ok: false, error: 'Not found' }, 404);
+        const b = m === 'GET' ? null : await req.json().catch(() => ({}));
+        if (!mm[2] && m === 'GET') return json({ ok: true, ...(await CO.orderDetail(env, o, 'founder')) });
+        if (!mm[2] && m === 'PUT') return json({ ok: true, ...(await CO.updateOrder(env, me.email, o.id, b)) });
+        if (m === 'POST') switch (mm[2]) {
+          case 'send': return json({ ok: true, ...(await CO.requestArtist(env, me.email, o.id)) });
+          case 'issue': return json({ ok: true, ...(await CO.issueQuote(env, me.email, o.id, b)) });
+          case 'cancel': await CO.cancelOrder(env, o, me.email, b.reason); return json({ ok: true, ...(await CO.orderDetail(env, await CO.getOrder(env, o.id), 'founder')) });
+          case 'refund': return json({ ok: true, ...(await CO.refund(env, me.email, o.id, b)) });
+          case 'reconcile': return json({ ok: true, ...(await CO.reconcile(env, me.email, o.id)) });
+          case 'fulfilment': return json({ ok: true, ...(await CO.fulfilment(env, me.email, 'founder', o, b)) });
+          case 'close': return json({ ok: true, ...(await CO.closeOrder(env, me.email, o.id)) });
+          case 'hold': return json({ ok: true, ...(await CO.placeHold(env, me.email, o.id, b)) });
+          case 'repaid': return json({ ok: true, ...(await CO.recordExternalRepayment(env, me.email, o.id, b)) });
+          case 'processing': await CO.reconcileProcessing(env, o, me.email); return json({ ok: true, ...(await CO.orderDetail(env, await CO.getOrder(env, o.id), 'founder')) });
+          case 'shortfallpaid': return json({ ok: true, ...(await CO.recordShortfallPaid(env, me.email, o.id, b)) });
+          case 'shortfallreturned': return json({ ok: true, ...(await CO.recordShortfallReturned(env, me.email, o.id, b)) });
+          case 'confirmation': return json({ ok: true, ...(await CO.resendConfirmation(env, me.email, o.id, b || {})) });
+        }
+      }
+      return json({ ok: false }, 404);
     }
     if (p.startsWith('/api/admin/hire') && !(await H.installed(env))) return json({ ok: false, error: 'Art for Hire is not installed' }, 409);
     if (p === '/api/admin/hire' && m === 'GET') return json({ ok: true, ...(await H.adminView(env)) });
@@ -1628,6 +1666,34 @@ async function route(req, env) {
     if (!d) return html('Not available', 404);
     return mm[2] === 'html' ? res(d.html, 'text/html; charset=utf-8', 200, { 'X-Document-SHA256': d.html_sha256 })
       : res(Uint8Array.from(atob(d.pdf_b64), c => c.charCodeAt(0)), 'application/pdf', 200, { 'Content-Disposition': `inline; filename="${mm[1]}.pdf"`, 'X-Document-SHA256': d.pdf_sha256 });
+  }
+  /* Managed checkout pilot: the artist's own opt-in, Stripe onboarding, their own orders only (test mode; off by default) */
+  if (p === '/checkout-pilot') return html(A.CHECKOUT_HTML);
+  if ((mm = p.match(/^\/payment-terms\/(PA-(?:PAY|BPT)-[0-9A-Z-]{4,20})\.html$/)) && m === 'GET') {
+    const t = (await CO.installed(env)) ? (await CO.currentTerms(env, 'artist_payment_addendum')) : null;
+    const b = t && t.doc_id === mm[1] ? t : (await CO.installed(env)) ? await CO.currentTerms(env, 'buyer_purchase_terms') : null;
+    if (!b || b.doc_id !== mm[1]) return html('Not available', 404);
+    return res(b.html, 'text/html; charset=utf-8', 200, { 'X-Document-SHA256': b.html_sha256 });
+  }
+  if (p.startsWith('/api/checkout')) {
+    if (p === '/api/checkout' && m === 'GET') return json({ ok: true, ...(await CO.artistView(env, artist)) });
+    if (!(await CO.installed(env))) return json({ ok: false, error: 'The payment pilot is not available' }, 404);
+    const b = m === 'GET' ? null : await req.json().catch(() => ({}));
+    if (p === '/api/checkout/opt-in' && m === 'POST') return json({ ok: true, ...(await CO.optIn(env, artist, b)) });
+    if (p === '/api/checkout/leave' && m === 'POST') return json({ ok: true, ...(await CO.leave(env, artist)) });
+    if (p === '/api/checkout/processing-consent' && m === 'POST') return json({ ok: true, ...(await CO.processingConsent(env, artist, b)) });
+    if (p === '/api/checkout/processing-consent/withdraw' && m === 'POST') return json({ ok: true, ...(await CO.withdrawProcessingConsent(env, artist)) });
+    if (p === '/api/checkout/seller-profile' && m === 'PUT') return json({ ok: true, ...(await CO.saveSellerProfile(env, artist, b)) });
+    if (p === '/api/checkout/onboarding' && m === 'POST') return json({ ok: true, ...(await CO.onboarding(env, artist, url.origin, b)) });
+    if (p === '/api/checkout/account/refresh' && m === 'POST') return json({ ok: true, ...(await CO.refreshAccount(env, artist.id)) });
+    if ((mm = p.match(/^\/api\/checkout\/orders\/(o[0-9a-z]+)(?:\/([a-z]+))?$/))) {
+      const o = await one(env, 'SELECT * FROM checkout_orders WHERE id = ? AND artist_id = ?', mm[1], artist.id);   // never another artist's order
+      if (!o) return json({ ok: false, error: 'Not found' }, 404);
+      if (!mm[2] && m === 'GET') return json({ ok: true, ...(await CO.orderDetail(env, o, 'artist')) });
+      if (mm[2] === 'approve' && m === 'POST') return json({ ok: true, ...(await CO.approveQuote(env, artist, o.id, b)) });
+      if (mm[2] === 'fulfilment' && m === 'POST') return json({ ok: true, ...(await CO.fulfilment(env, artist.email, 'artist', o, b)) });
+    }
+    return json({ ok: false }, 404);
   }
   /* Art for Hire (separate and optional; never touches the gallery, its versions or the Founding Artist agreement) */
   if (p.startsWith('/api/hire')) {

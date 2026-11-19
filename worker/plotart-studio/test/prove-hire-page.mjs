@@ -146,12 +146,13 @@ const S = await relay({ port: 8891 }), browser = await chromium.launch();
 
 console.log('— navigation: the fourth gallery tab');
 const navGeom = page => page.$$eval('nav.pa-pills a.pa-pill', a => a.map(x => { const r = x.getBoundingClientRect(); return { t: x.textContent.trim(), x: Math.round(r.left), y: Math.round(r.top), w: Math.round(r.width), h: Math.round(r.height), r: Math.round(r.right), cur: x.getAttribute('aria-current') }; }));
-const ORDER = 'Discover PlotArt,Artists’ Gallery,Mobile Gallery,Living Gallery,Art for Hire,PlotNua ↗';
+// 19 Nov 2026: the Services tab (atlas-tools/plotart-services-nav.py, founder approval 19 Nov 2026) follows Art for Hire: seven pills
+const ORDER = 'Discover PlotArt,Artists’ Gallery,Mobile Gallery,Living Gallery,Art for Hire,Services,PlotNua ↗';
 let o = await open(browser, P.fix, S, { viewport: { width: 1440, height: 900 } });
 let g = await navGeom(o.page), vw = 1440;
 const gaps = g.slice(1).map((p, i) => p.x - g[i].r);
-check('N1 desktop (1440): six pills in order, Art for Hire after Living Gallery, current on this page; one row, equal heights, equal spacing, inside the header',
-  g.map(p => p.t).join() === ORDER && g[4].cur === 'page' && new Set(g.map(p => p.y)).size === 1 && new Set(g.map(p => p.h)).size === 1 && Math.max(...gaps) - Math.min(...gaps) <= 1 && g[5].r <= vw, JSON.stringify(g));
+check('N1 desktop (1440): seven pills in order (Services after Art for Hire), Art for Hire after Living Gallery, current on this page; one row, equal heights, equal spacing, inside the header',
+  g.map(p => p.t).join() === ORDER && g[4].cur === 'page' && new Set(g.map(p => p.y)).size === 1 && new Set(g.map(p => p.h)).size === 1 && Math.max(...gaps) - Math.min(...gaps) <= 1 && g[g.length - 1].r <= vw, JSON.stringify(g));
 await o.page.evaluate(() => window.scrollTo(0, 0)); if (SHOTS) await o.page.screenshot({ path: path.join(SHOTS, 'nav-1440.png'), clip: { x: 0, y: 0, width: 1440, height: 90 } });
 await o.ctx.close();
 const geo = {};
@@ -164,9 +165,9 @@ for (const w of [1280, 1181, 1180, 1024, 860, 800, 721]) {
 const rows = g => [...new Set(g.map(p => p.y))].length, widthsEven = g => { const byRow = {}; g.forEach(p => (byRow[p.y] ||= []).push(p.w)); return Object.values(byRow).every(r => Math.max(...r) - Math.min(...r) <= 1); };
 const noOverflow = (g, w) => g.every(p => p.r <= w && p.x >= 0);
 check('N2 1181–1280: still one aligned row that fits (the small “Part of PlotNua” tag gives way)', [1280, 1181].every(w => rows(geo[w]) === 1 && noOverflow(geo[w], w) && new Set(geo[w].map(p => p.h)).size === 1), JSON.stringify(geo[1181]));
-check('N3 tablets 981–1180: one row of six equal pills', [1180, 1024].every(w => rows(geo[w]) === 1 && widthsEven(geo[w]) && noOverflow(geo[w], w)), JSON.stringify(geo[1024]));
-check('N4 tablets 721–980: two rows of three equal pills, galleries on the second row aligned under the first', [860, 800, 721].every(w => rows(geo[w]) === 2 && widthsEven(geo[w]) && noOverflow(geo[w], w)
-  && geo[w][0].x === geo[w][3].x && geo[w][2].r === geo[w][5].r), JSON.stringify(geo[800]));
+check('N3 tablets 981–1180: one row of seven equal pills', [1180, 1024].every(w => rows(geo[w]) === 1 && widthsEven(geo[w]) && noOverflow(geo[w], w)), JSON.stringify(geo[1024]));
+check('N4 tablets 721–980: two rows on a four-column grid (four, then three), equal pills, the second row aligned under the first', [860, 800, 721].every(w => rows(geo[w]) === 2 && widthsEven(geo[w]) && noOverflow(geo[w], w)
+  && geo[w][0].x === geo[w][4].x && geo[w][2].r === geo[w][6].r), JSON.stringify(geo[800]));
 o = await open(browser, P.fix, S, { device: 'iPhone 13' });
 const pillsShown = await o.page.$eval('nav.pa-pills', n => getComputedStyle(n).display);
 await o.page.click('.pn-sm-btn'); await o.page.waitForTimeout(300);
@@ -206,7 +207,10 @@ await o.page.waitForTimeout(500);
 const imgs = await o.page.$$eval('[data-hire-work] img', a => a.map(i => [i.complete && i.naturalWidth > 0, i.getAttribute('src')]));
 check('C2 images come from each artist’s existing published image folder and load; uncropped (contained, natural proportions)', imgs.every(([ok, s]) => ok && /^\.\.\/artists\/fixture-artist-[abc]\/img\//.test(s))
   && await o.page.$eval('.pa-hire-art img', i => getComputedStyle(i).objectFit === 'contain'));
-check('C3 the page carries no artist contact details, handling notes, price figures or Studio data', !/@artist|PRIVATE|handling|€|price_eur|mailto:(?!hello@plotnua\.ie)/i.test(html) && /Price on request/.test(html));
+// 16 Nov 2026 (228b3db, founder): the published business-rental terms block carries the agreed 4% worked examples and logistics wording;
+// it is generic PlotArt terms, not artist or artwork data, so it is excluded here and everything else is checked as before
+const htmlNoTerms = html.replace(/<!-- plotart-business-rentals:begin -->[\s\S]*?<!-- plotart-business-rentals:end -->/, '');
+check('C3 the page carries no artist contact details, handling notes, price figures or Studio data (outside the published business-rental terms block)', html !== htmlNoTerms && !/@artist|PRIVATE|handling|€|price_eur|mailto:(?!hello@plotnua\.ie)/i.test(htmlNoTerms) && /Price on request/.test(html));
 check('C4 every card is written HIDDEN in the HTML (shown only by a successful live check)', (html.match(/data-hire-work="[^"]+"[^>]*hidden>/g) || []).length === 6);
 check('C5 the empty-state panel and status line stay hidden while works are shown; no script errors', await o.page.$eval('[data-hire-empty]', e => e.hidden) && await o.page.$eval('[data-hire-status]', e => e.hidden) && o.errors.length === 0, o.errors.join());
 check('C6 while the live check is showing works, the hero action becomes “See works for hire” and leads to them (v3)', (await o.page.$eval('[data-hire-cta]', e => e.textContent + e.getAttribute('href'))) === 'See works for hire#afh3-works' && !!(await o.page.$('#afh3-works')));
@@ -243,7 +247,8 @@ check('I1 the approved headline “Original art, on hire.” is kept; the introd
 const v3 = await o.page.evaluate(() => {
   const scenes = [...document.querySelectorAll('.afh3-scene')];
   const credit = 'Painting by Colin Macaulay, PlotArt’s founder. Not offered for hire.';
-  const pics = [...document.querySelectorAll('main img')].map(i => i.getAttribute('src'));
+  // 16 Nov 2026: published artist-opportunity listings (.pa-opp, artists' own published works) are outside the illustrative set
+  const pics = [...document.querySelectorAll('main img')].filter(i => !i.closest('.pa-opp')).map(i => i.getAttribute('src'));
   return { scenes: scenes.length, tags: scenes.filter(f => f.querySelector('.afh3-tag')?.textContent === 'Illustration').length,
     credits: scenes.filter(f => f.querySelector('.afh3-credit')?.textContent === credit).length, heroCredit: document.querySelector('.afh3-hero-credit')?.textContent === credit,
     mCredit: document.querySelector('.afh3-hero + .afh3-hero-credit-m')?.textContent === credit, pics: [...new Set(pics)],
@@ -411,7 +416,8 @@ writeFileSync(sold, g0.replace('"availability": "available"', '"availability": "
 const r5 = tryBuild(() => {}); writeFileSync(sold, g0);
 check('P1 the build stops (nothing written) for a private field, a work not in the gallery, another artist’s gallery, a duplicate, or a sold work', [r1, r2, r3, r4, r5].every(r => r.status === 1 && /REFUSED/.test(r.stderr)), [r1, r2, r3, r4, r5].map(r => r.stderr.trim()).join(' | '));
 const seo = readFileSync(path.join(P.fix, 'plotart/art-for-hire/index.html'), 'utf8');
-check('P2 the page is noindex until the founder decides otherwise, and is not in the sitemap', /<meta name="robots" content="noindex, follow">/.test(seo) && !/art-for-hire/.test(readFileSync(path.join(REPO, 'sitemap.xml'), 'utf8')));
+// 16 Nov 2026 (228b3db, founder release of the business-rental terms): the page is indexed and listed in the sitemap
+check('P2 indexing as the founder released it on 16 Nov 2026: index, follow, and listed once in the sitemap', /<meta name="robots" content="index, follow">/.test(seo) && (readFileSync(path.join(REPO, 'sitemap.xml'), 'utf8').match(/plotart\/art-for-hire\//g) || []).length === 1);
 
 await browser.close(); await S.mf.dispose();
 } finally { rmSync(TMP, { recursive: true, force: true }); }

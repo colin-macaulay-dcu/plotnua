@@ -1,0 +1,27 @@
+# PlotArt · managed checkout pilot · public Worker (development 16 Nov 2026). NOT DEPLOYED.
+# Ships SWITCHED OFF (CHECKOUT_PILOT_ENABLED = "false") and TEST MODE ONLY: the code refuses any Stripe key that is not
+# sk_test_/rk_test_ and any live-mode event. Deploying, creating secrets, the Stripe webhook endpoint and the custom
+# domain each need the founder's explicit approval.
+#   npx wrangler secret put STRIPE_SECRET_KEY     -c wrangler.checkout.toml   (a Stripe TEST secret or restricted key)
+#   npx wrangler secret put STRIPE_WEBHOOK_SECRET -c wrangler.checkout.toml   (whsec_… of the TEST Connect endpoint)
+name = "plotart-checkout"
+main = "src/checkout-public.js"
+compatibility_date = "2026-08-01"
+workers_dev = true
+preview_urls = false
+
+[vars]
+ENVIRONMENT = "production"
+CHECKOUT_PILOT_ENABLED = "false"
+CHECKOUT_ORIGIN = "https://plotart-checkout.NOT-CONFIGURED.workers.dev"   # set to the deployed Worker's own origin
+
+[triggers]
+crons = ["*/15 * * * *"]   # releases lapsed reservations and expires lapsed quotes
+
+[[d1_databases]]
+binding = "DB"
+database_name = "plotart-studio"
+database_id = "NOT-CREATED"
+
+[observability]
+enabled = false

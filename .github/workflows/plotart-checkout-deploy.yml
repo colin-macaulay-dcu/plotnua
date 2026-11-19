@@ -1,0 +1,211 @@
+# PlotArt · managed checkout pilot · Worker deployment (prepared 16 Nov 2026). NOT RUN. NEVER A DATABASE CHANGE.
+#
+# Two separate targets that share nothing but code:
+#   test        GitHub environment "checkout-test": Workers plotart-studio-test and plotart-checkout-test, the TEST database
+#               plotart-checkout-test, TEST R2 buckets, a TEST Access application, Stripe TEST credentials only. The pilot is
+#               switched on only if enable_test_pilot is ticked. Placeholder texts marked TEST ONLY are bundled.
+#   production  GitHub environment "studio-production.": Worker plotart-checkout on the production database with the pilot
+#               ALWAYS OFF and NO Stripe secret written. (Live payments need a code change and the founder's approval.)
+# Migrations are never applied here: production migrations go through studio-d1-migration.yml; the test database is set up
+# by the documented commands in worker/plotart-studio/MANAGED-CHECKOUT-PILOT.md ("Test environment").
+# Every run waits for the founder's Approve on its environment. Logs show only names, switches and PASS/FAIL.
+name: PlotArt checkout pilot deploy
+run-name: "Checkout pilot deploy ${{ inputs.target }} ${{ inputs.commit }}${{ inputs.dry_run && ' (dry run)' || '' }}"
+
+on:
+  workflow_dispatch:
+    inputs:
+      commit:
+        description: "Full 40-character commit ID approved by the founder (must be on main)"
+        required: true
+        type: string
+      target:
+        description: "test (separate test Workers and database) or production (pilot always off)"
+        required: true
+        type: choice
+        options: [test, production]
+        default: test
+      dry_run:
+        description: "Dry run: guards, configuration and build only; nothing sent to Cloudflare"
+        required: true
+        type: boolean
+        default: true
+      enable_test_pilot:
+        description: "TEST target only: switch the pilot on in the test Workers (Stripe test mode)"
+        required: false
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ inputs.target == 'production' && 'plotart-studio-cloudflare' || 'plotart-checkout-test' }}
+  cancel-in-progress: false
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Guards · commit on main, pilot shipped off, live keys refused in code, production cannot be switched on
+        env:
+          COMMIT: ${{ inputs.commit }}
+          TARGET: ${{ inputs.target }}
+          ENABLE: ${{ inputs.enable_test_pilot && 'true' || 'false' }}
+        run: |
+          set -euo pipefail
+          [[ "$COMMIT" =~ ^[0-9a-f]{40}$ ]] || { echo "REFUSED: give the full 40-character commit ID"; exit 1; }
+          git merge-base --is-ancestor "$COMMIT" origin/main || { echo "REFUSED: $COMMIT is not on main"; exit 1; }
+          git show "$COMMIT:worker/plotart-studio/wrangler.checkout.toml" | grep -q '^CHECKOUT_PILOT_ENABLED = "false"' || { echo "REFUSED: wrangler.checkout.toml must ship the pilot off"; exit 1; }
+          git show "$COMMIT:worker/plotart-studio/wrangler.toml" | grep -q '^CHECKOUT_PILOT_ENABLED = "false"' || { echo "REFUSED: wrangler.toml must ship the pilot off"; exit 1; }
+          git show "$COMMIT:worker/plotart-studio/src/stripe.js" | grep -qF "(sk|rk)_test_" || { echo "REFUSED: the Stripe adapter no longer refuses live keys"; exit 1; }
+          git show "$COMMIT:worker/plotart-studio/production.json" | python3 -c 'import json,sys; v=json.load(sys.stdin)["vars"]; sys.exit(1 if v.get("CHECKOUT_PILOT_ENABLED","false")!="false" else 0)' || { echo "REFUSED: production.json switches the pilot on"; exit 1; }
+          if [ "$TARGET" = production ] && [ "$ENABLE" = true ]; then echo "REFUSED: the pilot cannot be switched on in production"; exit 1; fi
+          echo "GUARD OK · $TARGET · $COMMIT" | tee -a "$GITHUB_STEP_SUMMARY"
+
+  deploy:
+    needs: check
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.target == 'production' && 'studio-production.' || 'checkout-test' }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.commit }}
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Check again after approval
+        env:
+          COMMIT: ${{ inputs.commit }}
+        run: |
+          set -euo pipefail
+          git fetch -q origin main
+          git merge-base --is-ancestor "$COMMIT" origin/main || { echo "REFUSED: $COMMIT is not on main"; exit 1; }
+          test "$(git rev-parse HEAD)" = "$COMMIT" || { echo "REFUSED: the checked-out tree is not $COMMIT"; exit 1; }
+
+      # ---------------------------------------------------------------- TEST
+      - name: TEST · build with the TEST ONLY placeholder texts
+        if: ${{ inputs.target == 'test' }}
+        working-directory: worker/plotart-studio
+        env:
+          CHECKOUT_TARGET: test
+          PAYMENT_TERMS_DIR: agreements/payment-test
+        run: node build-assets.mjs
+      - name: TEST · configuration (identifiers from the checkout-test environment, never printed)
+        if: ${{ inputs.target == 'test' }}
+        env:
+          CHECKOUT_TEST_D1_DATABASE_ID: ${{ vars.CHECKOUT_TEST_D1_DATABASE_ID }}
+          CHECKOUT_TEST_ACCESS_AUD: ${{ vars.CHECKOUT_TEST_ACCESS_AUD }}
+          CHECKOUT_TEST_ACCESS_TEAM: ${{ vars.CHECKOUT_TEST_ACCESS_TEAM }}
+          CHECKOUT_TEST_ORIGIN: ${{ vars.CHECKOUT_TEST_ORIGIN }}
+          ENABLE_TEST_PILOT: ${{ inputs.enable_test_pilot && 'true' || 'false' }}
+        run: python3 atlas-tools/release/studio/render-checkout-config.py worker/plotart-studio test
+      - name: TEST · Stripe credentials are TEST credentials (values never printed)
+        if: ${{ inputs.target == 'test' }}
+        env:
+          STRIPE_SECRET_KEY: ${{ secrets.CHECKOUT_TEST_STRIPE_SECRET_KEY }}
+          STRIPE_WEBHOOK_SECRET: ${{ secrets.CHECKOUT_TEST_STRIPE_WEBHOOK_SECRET }}
+        run: bash atlas-tools/release/studio/check-stripe-test-secrets.sh
+      - name: TEST · build only (dry run)
+        if: ${{ inputs.target == 'test' && inputs.dry_run }}
+        working-directory: worker/plotart-studio
+        run: |
+          set -o pipefail
+          for c in wrangler.studio.test.toml wrangler.checkout.test.toml; do
+            npx --yes wrangler@4.150.0 deploy --config "$c" --dry-run --outdir "$RUNNER_TEMP/build-$c" > "$RUNNER_TEMP/wrangler.log" 2>&1 || { grep -iE "error" "$RUNNER_TEMP/wrangler.log" | head -5; exit 1; }
+          done
+          echo "DRY RUN OK: both TEST Workers build; nothing was sent to Cloudflare"
+      - name: TEST · deploy plotart-studio-test and plotart-checkout-test, then write their TEST secrets
+        id: test_deploy
+        if: ${{ inputs.target == 'test' && !inputs.dry_run }}
+        working-directory: worker/plotart-studio
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CHECKOUT_TEST_CF_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
+          STRIPE_SECRET_KEY: ${{ secrets.CHECKOUT_TEST_STRIPE_SECRET_KEY }}
+          STRIPE_WEBHOOK_SECRET: ${{ secrets.CHECKOUT_TEST_STRIPE_WEBHOOK_SECRET }}
+          FOUNDER_EMAILS: ${{ secrets.CHECKOUT_TEST_FOUNDER_EMAILS }}
+        run: |
+          set -o pipefail
+          W="npx --yes wrangler@4.150.0"
+          for c in wrangler.studio.test.toml wrangler.checkout.test.toml; do
+            $W deploy --config "$c" > "$RUNNER_TEMP/wrangler.log" 2>&1 || { echo "FAIL  $c did not deploy"; grep -iE "error" "$RUNNER_TEMP/wrangler.log" | grep -viE "token" | head -5; exit 1; }
+            grep -E "^Current Version ID" "$RUNNER_TEMP/wrangler.log" || true
+          done
+          printf '%s' "$STRIPE_SECRET_KEY" | $W secret put STRIPE_SECRET_KEY --config wrangler.studio.test.toml > /dev/null
+          printf '%s' "$FOUNDER_EMAILS"    | $W secret put FOUNDER_EMAILS    --config wrangler.studio.test.toml > /dev/null
+          printf '%s' "$STRIPE_SECRET_KEY" | $W secret put STRIPE_SECRET_KEY --config wrangler.checkout.test.toml > /dev/null
+          printf '%s' "$STRIPE_WEBHOOK_SECRET" | $W secret put STRIPE_WEBHOOK_SECRET --config wrangler.checkout.test.toml > /dev/null
+          echo "- TEST Workers deployed; TEST secrets written (values not shown)" >> "$GITHUB_STEP_SUMMARY"
+      - name: TEST · checked from outside (nothing is created)
+        id: test_live
+        if: ${{ inputs.target == 'test' && !inputs.dry_run }}
+        env:
+          ORIGIN: ${{ vars.CHECKOUT_TEST_ORIGIN }}
+          MODE: ${{ inputs.enable_test_pilot && 'on' || 'off' }}
+        run: sleep 10 && bash atlas-tools/release/studio/checkout-outside-check.sh "$ORIGIN" "$MODE"
+      - name: TEST · roll back both Workers after a failed check
+        if: ${{ failure() && inputs.target == 'test' && steps.test_deploy.outcome == 'success' && steps.test_live.outcome == 'failure' }}
+        working-directory: worker/plotart-studio
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CHECKOUT_TEST_CF_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          for c in wrangler.checkout.test.toml wrangler.studio.test.toml; do
+            npx --yes wrangler@4.150.0 rollback --config "$c" --message "automatic rollback (run ${{ github.run_id }})" -y > /dev/null 2>&1 && echo "rolled back $c" || echo "FAIL  rollback of $c"
+          done
+
+      # ---------------------------------------------------------------- PRODUCTION (pilot always off; no Stripe secret)
+      - name: PRODUCTION · build with the issued texts only (refuses TEST placeholders)
+        if: ${{ inputs.target == 'production' }}
+        working-directory: worker/plotart-studio
+        run: |
+          set -euo pipefail
+          node build-assets.mjs
+          ! grep -q "TEST ONLY" src/payment-terms.js || { echo "REFUSED: a TEST placeholder is in the production build"; exit 1; }
+      - name: PRODUCTION · configuration (pilot forced off)
+        if: ${{ inputs.target == 'production' }}
+        env:
+          STUDIO_D1_DATABASE_ID: ${{ vars.STUDIO_D1_DATABASE_ID }}
+          CHECKOUT_PRODUCTION_ORIGIN: ${{ vars.CHECKOUT_PRODUCTION_ORIGIN }}
+          ENABLE_TEST_PILOT: "false"
+        run: python3 atlas-tools/release/studio/render-checkout-config.py worker/plotart-studio production
+      - name: PRODUCTION · build only (dry run)
+        if: ${{ inputs.target == 'production' && inputs.dry_run }}
+        working-directory: worker/plotart-studio
+        run: |
+          set -o pipefail
+          npx --yes wrangler@4.150.0 deploy --config wrangler.checkout.production.toml --dry-run --outdir "$RUNNER_TEMP/build" > "$RUNNER_TEMP/wrangler.log" 2>&1 || { grep -iE "error" "$RUNNER_TEMP/wrangler.log" | head -5; exit 1; }
+          echo "DRY RUN OK: plotart-checkout builds with the pilot off; nothing was sent to Cloudflare"
+      - name: PRODUCTION · deploy plotart-checkout (pilot off)
+        id: prod_deploy
+        if: ${{ inputs.target == 'production' && !inputs.dry_run }}
+        working-directory: worker/plotart-studio
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.STUDIO_CF_DEPLOY_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          set -o pipefail
+          npx --yes wrangler@4.150.0 deploy --config wrangler.checkout.production.toml > "$RUNNER_TEMP/wrangler.log" 2>&1 \
+            || { echo "FAIL  the deployment did not complete"; grep -iE "error" "$RUNNER_TEMP/wrangler.log" | grep -viE "token" | head -5; exit 1; }
+          grep -E "^Current Version ID" "$RUNNER_TEMP/wrangler.log" || true
+      - name: PRODUCTION · checked from outside (pilot off; nothing is created)
+        id: prod_live
+        if: ${{ inputs.target == 'production' && !inputs.dry_run }}
+        env:
+          ORIGIN: ${{ vars.CHECKOUT_PRODUCTION_ORIGIN }}
+        run: sleep 10 && bash atlas-tools/release/studio/checkout-outside-check.sh "$ORIGIN" off
+      - name: PRODUCTION · roll back after a failed check
+        if: ${{ failure() && inputs.target == 'production' && steps.prod_deploy.outcome == 'success' && steps.prod_live.outcome == 'failure' }}
+        working-directory: worker/plotart-studio
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.STUDIO_CF_DEPLOY_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
+        run: npx --yes wrangler@4.150.0 rollback --config wrangler.checkout.production.toml --message "automatic rollback (run ${{ github.run_id }})" -y > /dev/null 2>&1 && echo "rolled back" || { echo "FAIL  rollback"; exit 1; }

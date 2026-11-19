@@ -25,3 +25,4 @@ node_modules/
 worker/plotart-studio/wrangler.production.toml
 worker/plotart-studio/wrangler.ideas.production.toml
 worker/plotart-studio/node_modules
+worker/plotart-studio/stripe-test-evidence/
