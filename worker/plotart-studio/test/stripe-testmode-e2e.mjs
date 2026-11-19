@@ -753,8 +753,9 @@ export async function e2e({ rec, KEY, ACCOUNT, RUN, port, whsec, stripe, sleep }
           rep.s === 200 && again.s === 409 && after === before && fee2.amount_refunded === 6000 && (await order(o5.id)).status === 'refunded' ? 'PASS' : 'FAIL',
           { repaid_http: rep.s, second_refund_http: again.s, stripe_refunds_before: before, stripe_refunds_after: after, fee_amount_refunded: fee2.amount_refunded });
         const P5b = JSON.parse((await order(o5.id)).processing || '{}'); P5b.shortfall_cents = (await db.prepare('SELECT COALESCE(SUM(cents - settled_cents), 0) AS c FROM checkout_owed WHERE order_id = ?').bind(o5.id).first()).c;
-        const sp = await call('POST', `/api/admin/checkout/orders/${o5.id}/shortfallpaid`, FOUNDER, { amount_cents: P5b.shortfall_cents, reference: 'E2E bank transfer BT-SF-E2E on 17 Nov' });
-        const sp2 = await call('POST', `/api/admin/checkout/orders/${o5.id}/shortfallpaid`, FOUNDER, { amount_cents: 1, reference: 'E2E second attempt BT-SF-E2E-2' });
+        const EX_IE = new Intl.DateTimeFormat('en-CA', { timeZone: 'Europe/Dublin' }).format(new Date());   // the bank's execution date (required since the 18 Nov payment-recording change)
+        const sp = await call('POST', `/api/admin/checkout/orders/${o5.id}/shortfallpaid`, FOUNDER, { amount_cents: P5b.shortfall_cents, reference: 'E2E bank transfer BT-SF-E2E', executed_on: EX_IE });
+        const sp2 = await call('POST', `/api/admin/checkout/orders/${o5.id}/shortfallpaid`, FOUNDER, { amount_cents: 1, reference: 'E2E second attempt BT-SF-E2E-2', executed_on: EX_IE });
         const fee3 = (await stripe('GET', `/v1/application_fees/${ch.application_fee}`)).j, st5 = (await call('GET', `/api/checkout/orders/${o5.id}`, GAL)).j.statement;
         rec('E12d', 'model B after the reversal: the shortfall is still owed once (not doubled); PlotArt records paying it directly; a second record is refused; nothing more moves on Stripe', SRC,
           P5b.shortfall_cents === P5.cost && sp.s === 200 && sp2.s === 409 && fee3.amount_refunded === 6000 && st5.shortfall_still_owed_by_plotart === 0 && st5.shortfall_paid_by_plotart === P5.cost ? 'PASS' : 'FAIL',
