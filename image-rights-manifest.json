@@ -1424,6 +1424,7 @@
         "scope": [
           "feature",
           "imagery",
+          "logo",
           "hosting"
         ],
         "conditions": [

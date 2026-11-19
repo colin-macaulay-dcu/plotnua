@@ -4,7 +4,7 @@
   "generated_by": "atlas-tools/build-image-provenance-register.py",
   "guarded_by": "atlas-tools/validate-image-provenance.js",
   "asset_classes": {
-    "SUPPLIER_IMAGE": "Actual supplier imagery, published under a documented permission or a valid licence. Carries rights_ref pointing at the authorising organisation row in image-rights-records.json.",
+    "SUPPLIER_IMAGE": "Actual supplier imagery, published under a documented permission or a valid licence. Carries rights_ref pointing at the authorising organisation row in image-rights-records.json. Its supplier_label is Photograph, Visualisation or (from 19 Nov 2026) Logo; a hosted Logo is accepted only under a grant whose permission.scope includes 'logo'.",
     "AI_ILLUSTRATION": "Independently generated generic imagery that reproduces no supplier photograph and no distinctive product design. Carries the tool, the date, the prompt, an explicit reference_inputs list and a named human review.",
     "FOUNDER_ORIGINAL_ARTWORK": "A photograph of an original artwork created and owned by PlotNua's founder. Not AI-generated, not supplier imagery. Carries the artwork's creator and owner, the photograph and its processing, the photographer (or NOT YET CONFIRMED), the visible credit and the founder's attestation."
   },
@@ -22029,6 +22029,70 @@
       "source_sha256": "dbbad35aa14f74c3d01dd3b8fdb50aa81f7b538c406ef2d48968524b36f0eb45",
       "subject": "artwork",
       "work_slug": "energetic-labyrinths-8"
+    },
+    {
+      "asset": "plotart/assets/services/hang-it-hung-wall-1600.jpg",
+      "sha256": "114961862fd2ccdbdcf4ed540944fd7837710a4842d57a94cce806f741632c07",
+      "bytes": 95680,
+      "pixels": [
+        1600,
+        900
+      ],
+      "class": "SUPPLIER_IMAGE",
+      "rights_ref": {
+        "organisation_code": "ORG-HANGIT",
+        "atlas_permission_ref": "IPO-HANGIT-20261119"
+      },
+      "supplier_label": "Photograph",
+      "source": "Hang-It's photograph from hangit.ie (https://d2f0ora2gkri0g.cloudfront.net/8b/b5/8bb5dc58-076f-466a-9b87-df0aae4fc3ba.jpg, sha256 64679b09c9c7902c…, 4032 × 2268); PlotNua web copy: resize and recompress only, metadata stripped, no crop or other edit."
+    },
+    {
+      "asset": "plotart/assets/services/hang-it-hung-wall-1600.webp",
+      "sha256": "7ed670bcb981da3c0b3bdada2bac5c79b516c599e21247151bee9991cf6094ea",
+      "bytes": 41708,
+      "pixels": [
+        1600,
+        900
+      ],
+      "class": "SUPPLIER_IMAGE",
+      "rights_ref": {
+        "organisation_code": "ORG-HANGIT",
+        "atlas_permission_ref": "IPO-HANGIT-20261119"
+      },
+      "supplier_label": "Photograph",
+      "source": "Hang-It's photograph from hangit.ie (https://d2f0ora2gkri0g.cloudfront.net/8b/b5/8bb5dc58-076f-466a-9b87-df0aae4fc3ba.jpg, sha256 64679b09c9c7902c…, 4032 × 2268); PlotNua web copy: resize and recompress only, metadata stripped, no crop or other edit."
+    },
+    {
+      "asset": "plotart/assets/services/hang-it-hung-wall-800.webp",
+      "sha256": "740b94f3a6143c43ef65b63c3fe58d6499ad8ca94a0f35621a2595857928e74f",
+      "bytes": 15436,
+      "pixels": [
+        800,
+        450
+      ],
+      "class": "SUPPLIER_IMAGE",
+      "rights_ref": {
+        "organisation_code": "ORG-HANGIT",
+        "atlas_permission_ref": "IPO-HANGIT-20261119"
+      },
+      "supplier_label": "Photograph",
+      "source": "Hang-It's photograph from hangit.ie (https://d2f0ora2gkri0g.cloudfront.net/8b/b5/8bb5dc58-076f-466a-9b87-df0aae4fc3ba.jpg, sha256 64679b09c9c7902c…, 4032 × 2268); PlotNua web copy: resize and recompress only, metadata stripped, no crop or other edit."
+    },
+    {
+      "asset": "plotart/assets/services/hang-it-logo.png",
+      "sha256": "9ae444a9e093585c2bf65bf542e95b32af2f9dddb936a4310bcb0e7442ce99b9",
+      "bytes": 27675,
+      "pixels": [
+        474,
+        130
+      ],
+      "class": "SUPPLIER_IMAGE",
+      "rights_ref": {
+        "organisation_code": "ORG-HANGIT",
+        "atlas_permission_ref": "IPO-HANGIT-20261119"
+      },
+      "supplier_label": "Logo",
+      "source": "Hang-It's logo from hangit.ie (https://d2f0ora2gkri0g.cloudfront.net/68/0d/680d0588-5d3b-4ac9-a772-7753f3767293.png, sha256 9ae444a9e093585c…, 474 × 130); PlotNua copy: unaltered (identical bytes)."
     }
   ],
   "legacy_undeclared": [

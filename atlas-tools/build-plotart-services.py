@@ -90,7 +90,7 @@ def card(p):
     logo = ""
     if "logo" in p:
         lg = p["logo"]
-        logo = ('\n    <span class="pa-sv-logo pa-sv-logo--%s"><img src="assets/services/%s" width="%d" height="%d" alt="%s logo"></span>'
+        logo = ('\n    <span class="pa-sv-logo pa-sv-logo--%s"><img src="assets/services/%s" width="%d" height="%d" alt="%s logo" data-kind="Logo"></span>'
                 % (lg["plaque"], lg["file"], lg["w"], lg["h"], lg["alt"]))
     facts = "\n".join('      <dt>%s</dt><dd>%s</dd>' % (e(k), e(v)) for k, v in p["facts"])
     links = []
