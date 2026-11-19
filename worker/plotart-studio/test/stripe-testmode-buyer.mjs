@@ -1,28 +1,57 @@
+import { createServer } from 'node:http';
 import { createRequire } from 'node:module';
 import { readFile } from 'node:fs/promises';
 import { basketApi } from './buyer-preview/basket.mjs';
 export async function checkBuyerCheckout(key, rec) {
   const { chromium } = createRequire(process.env.MINIFLARE_FROM)('playwright');
-  const origin = 'https://plotart-basket-test.invalid';
+  let origin;
+  const evidence = {};
+  async function observeStripe(url, options) {
+    const result = await fetch(url, options);
+    const body = await result.clone().json();
+    evidence.stripeStatus = result.status;
+    evidence.requestId = result.headers.get('request-id');
+    if (body.error) {
+      evidence.code = body.error.code;
+      evidence.param = body.error.param;
+      evidence.message = String(body.error.message || '').replace(/(?:[rs]k_(?:test|live)_|cs_test_|whsec_)\S+/g, '[redacted]').slice(0,320);
+    }
+    return result;
+  }
   const browser = await chromium.launch();
   let stage = 'open shop';
+  const server = createServer(async (incoming, outgoing) => {
+    try {
+      const url = new URL(incoming.url,origin);
+      if(url.pathname.startsWith('/api/')) {
+        const chunks = [];
+        for await (const chunk of incoming) chunks.push(chunk);
+        const request = new Request(url,{method:incoming.method,headers:incoming.headers,
+          body:incoming.method==='POST' ? Buffer.concat(chunks) : undefined});
+        const result = await basketApi(request,{PLOTART_CHECKOUT_TEST_KEY:key},observeStripe);
+        evidence.shopStatus = result.status;
+        outgoing.writeHead(result.status,{'Content-Type':'application/json'});
+        outgoing.end(await result.text());
+      } else if (url.pathname==='/' || url.pathname==='/shop.js') {
+        const script = url.pathname==='/shop.js';
+        const file = script ? 'shop.js' : 'index.html';
+        outgoing.writeHead(200,{'Content-Type':script?'text/javascript':'text/html'});
+        outgoing.end(await readFile(new URL('./buyer-preview/'+file,import.meta.url)));
+      } else {
+        outgoing.writeHead(204).end();
+      }
+    } catch {
+      evidence.serverError = true;
+      outgoing.end();
+    }
+  });
   try {
     const page = await browser.newPage({locale:'en-IE'});
-    await page.route(origin+'/**', async route => {
-      const request = route.request();
-      const path = new URL(request.url()).pathname;
-      if (path.startsWith('/api/')) {
-        const headers = await request.allHeaders();
-        const api = await basketApi(new Request(request.url(), {method:request.method(), headers,
-          body:request.method()==='POST' ? request.postData() : undefined}), {PLOTART_CHECKOUT_TEST_KEY:key});
-        return route.fulfill({status:api.status,contentType:'application/json',body:await api.text()});
-      }
-      if (path==='/' || path==='/shop.js') {
-        const file=path==='/'?'index.html':'shop.js';
-        return route.fulfill({contentType:path==='/'?'text/html':'text/javascript',body:await readFile(new URL('./buyer-preview/'+file, import.meta.url))});
-      }
-      await route.fulfill({status:204,body:''});
+    await new Promise((resolve,reject) => {
+      server.once('error',reject);
+      server.listen(0,'127.0.0.1',resolve);
     });
+    origin = 'http://127.0.0.1:' + server.address().port;
     await page.goto(origin, {waitUntil:'domcontentloaded'});
     await page.locator('[data-add="0"]').click();
     await page.locator('#close').click();
@@ -31,7 +60,7 @@ export async function checkBuyerCheckout(key, rec) {
     await page.locator('[data-checkout]').click();
     stage='open combined Stripe Checkout';
     await page.locator('[data-pay]').click();
-    await page.waitForURL('https://checkout.stripe.com/**');
+    await page.waitForURL('https://checkout.stripe.com/**',{waitUntil:'commit'});
     async function field(css, timeout=10000) {
       const deadline=Date.now()+timeout;
       do {
@@ -66,7 +95,8 @@ export async function checkBuyerCheckout(key, rec) {
     const receipt=await page.locator('main').innerText();
     if(!['€3,585','Rowan Studio','Alder Studio','Irish delivery','Studio collection'].every(s=>receipt.includes(s)))throw Error('Incorrect combined receipt');
     rec('BUYER1','One hosted sandbox payment confirmed for works from both studios with mixed fulfilment','stripe-test-api','PASS');
-  } catch {
-    rec('BUYER1','Complete combined buyer checkout','stripe-test-api','FAIL',{stage});
-  } finally {await browser.close()}
+  } catch (error) {
+    evidence.failure = error.name;
+    rec('BUYER1','Complete combined buyer checkout','stripe-test-api','FAIL',{stage,...evidence});
+  } finally {await browser.close(); server.close()}
 }
