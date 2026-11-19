@@ -1,0 +1,126 @@
+{
+ "artist": {
+  "bio": "NICK MUNIER\nNick Munier | Contemporary Artist\nNick Munier is a contemporary artist whose creative journey has taken him from the high-pressure world of professional kitchens and television to the freedom and experimentation of abstract art.\nBest known for his appearances on MasterChef Ireland and Hell’s Kitchen, Nick enjoyed a successful career in hospitality, working alongside some of the most influential figures in the culinary world, including legendary chef Marco Pierre White.\nIn November 2026, Nick featured in the BBC Two documentary The Rise of the Rockstar Chef, exploring the extraordinary career and influence of Marco Pierre White.\nToday, Nick channels his creativity into painting, producing bold, expressive works that are full of colour, energy and individuality. Working primarily with acrylics, oil sticks, collage and décollage, he combines different materials and techniques to create richly layered compositions that often blur the boundaries between abstraction and contemporary pop art.\nDrawing inspiration from music, fashion, people and everyday life, Nick approaches each painting with a sense of spontaneity and experimentation. His work is instinctive and unapologetically expressive, often incorporating unexpected shapes, textures and contrasts.\nThere is a distinctive confidence and playfulness to Nick’s paintings, reflecting a creative personality that has never been particularly interested in following convention.\nHis transition from the culinary world to contemporary art is a natural evolution of a career driven by imagination, individuality and a willingness to push creative boundaries.",
+  "county": null,
+  "display_name": "Nick Munier",
+  "founding": true,
+  "instagram": "Nmunier",
+  "medium": "painting",
+  "open_for_commissions": true,
+  "open_to": [
+   "exhibitions",
+   "living_gallery",
+   "art_for_hire",
+   "mobile_gallery",
+   "venues",
+   "commissions",
+   "talks"
+  ],
+  "portrait": {
+   "alt": "Artist at home",
+   "aspect": 1.05505,
+   "derivatives": [
+    {
+     "file": "portrait-600.webp",
+     "long_edge": 600,
+     "pixels": [
+      600,
+      569
+     ]
+    }
+   ],
+   "photo_credit": null,
+   "pixels": [
+    1284,
+    1217
+   ],
+   "role": "portrait"
+  },
+  "practice": "Painter",
+  "slug": "nick-munier",
+  "statement": "I paint to heal and express the inner feelings that are often hard to articulate.",
+  "website": null
+ },
+ "provenance_sources": [
+  {
+   "dhash": "29191992b1b11888",
+   "source_sha256": "0160bcf623846c94e4b7c04da174ecdc8b381eb60c1fadf1aeb93c302c172e6e",
+   "stem": "portrait"
+  },
+  {
+   "dhash": "3d33372725251531",
+   "source_sha256": "6bee532a22e789ef7627ff5f64c80fca2e531edb36b5e784bea899c6c6ce4d4b",
+   "stem": "that-s-the-way-i-like-1"
+  }
+ ],
+ "publication": {
+  "approved_at": "2026-11-19T22:44:34.520Z",
+  "approved_by": "founder",
+  "first_approved_at": "2026-11-19T22:35:37.377Z",
+  "licence_accepted_at": "2026-11-12T09:21:45.672Z",
+  "licence_version": "PA-GPIL-2026-11",
+  "permission_ref": "PA-PERM-a05ira7lpep",
+  "state": "approved",
+  "test_note": null,
+  "version": "v2"
+ },
+ "schema": "plotnua.plotart.gallery-package.v1",
+ "works": [
+  {
+   "ai_founder_decision": null,
+   "ai_involvement": "none",
+   "ai_note": null,
+   "availability": "available",
+   "d_cm": 2,
+   "description": "It’s the way I want things to look and look in my life , colorful and chaotic",
+   "h_cm": 60,
+   "id": "whhb30cj9ye",
+   "images": [
+    {
+     "alt": "Blue back ground with colour",
+     "aspect": 1.04575,
+     "derivatives": [
+      {
+       "file": "that-s-the-way-i-like-1-600.webp",
+       "long_edge": 600,
+       "pixels": [
+        600,
+        574
+       ]
+      },
+      {
+       "file": "that-s-the-way-i-like-1-1200.webp",
+       "long_edge": 1200,
+       "pixels": [
+        1200,
+        1148
+       ]
+      },
+      {
+       "file": "that-s-the-way-i-like-1-2000.webp",
+       "long_edge": 2000,
+       "pixels": [
+        2000,
+        1912
+       ]
+      }
+     ],
+     "photo_credit": null,
+     "pixels": [
+      3200,
+      3060
+     ],
+     "role": "main"
+    }
+   ],
+   "materials": null,
+   "medium": "Acrylic",
+   "price_eur": 350,
+   "price_on_request": false,
+   "slug": "that-s-the-way-i-like",
+   "title": "That’s the way I like it",
+   "w_cm": 60,
+   "year": 2026
+  }
+ ]
+}
