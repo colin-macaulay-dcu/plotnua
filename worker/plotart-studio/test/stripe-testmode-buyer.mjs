@@ -20,6 +20,7 @@ export async function checkBuyerCheckout(key, rec) {
   }
   const browser = await chromium.launch();
   let stage = 'open shop';
+  let page;
   const server = createServer(async (incoming, outgoing) => {
     try {
       const url = new URL(incoming.url,origin);
@@ -46,7 +47,7 @@ export async function checkBuyerCheckout(key, rec) {
     }
   });
   try {
-    const page = await browser.newPage({locale:'en-IE'});
+    page = await browser.newPage({locale:'en-IE'});
     await new Promise((resolve,reject) => {
       server.once('error',reject);
       server.listen(0,'127.0.0.1',resolve);
@@ -65,31 +66,41 @@ export async function checkBuyerCheckout(key, rec) {
       const deadline=Date.now()+timeout;
       do {
         for(const frame of page.frames()) {
-          const match=frame.locator(css).first();
-          if(await match.isVisible().catch(()=>false))return match;
+          for (const match of await frame.locator(css).all()) {
+            if(await match.isVisible().catch(()=>false))return match;
+          }
         }
         await page.waitForTimeout(300);
       } while(Date.now()<deadline);
     }
     async function fill(css,value,timeout) {
+      stage = 'fill ' + css.split(',')[0];
       const f=await field(css,timeout);
-      if(f)await f.fill(value);
+      if(f)await f.fill(value,{timeout:8000});
+      else if(css.startsWith('#card'))throw Error('Card field missing');
     }
     stage='complete sandbox shipping and payment form';
     await fill('input[type=email]','plotart-buyer@example.com');
-    await fill('[autocomplete="shipping name"],#shippingName','Test Buyer');
-    await fill('[autocomplete="shipping address-line1"],#shippingAddressLine1','1 Test Road');
-    await fill('[autocomplete="shipping address-level2"],#shippingLocality','Dublin');
-    await fill('[autocomplete="shipping postal-code"],#shippingPostalCode','D02 X285',2000);
-    const county=await field('#shippingAdministrativeArea,[autocomplete="shipping address-level1"]',2000);
-    if(county){if(await county.evaluate(el=>el.tagName==='SELECT'))await county.selectOption({label:'Dublin'});else await county.fill('Dublin')}
+    await fill('[autocomplete~="shipping"][autocomplete~="name"],#shippingName','Test Buyer');
+    await fill('[autocomplete~="shipping"][autocomplete~="address-line1"],#shippingAddressLine1','1 Test Road');
+    await fill('[autocomplete~="shipping"][autocomplete~="address-level2"],#shippingLocality','Dublin');
+    await fill('[autocomplete~="shipping"][autocomplete~="postal-code"],#shippingPostalCode','D02 X285',2000);
+    const county=await field('#shippingAdministrativeArea,[autocomplete~="shipping"][autocomplete~="address-level1"]',2000);
+    stage='select shipping county';
+    if(county && await county.evaluate(el=>el.tagName==='SELECT')){
+      const value=await county.locator('option').evaluateAll(options=>options.find(o=>/dublin/i.test(o.label))?.value);
+      if(value!==undefined)await county.selectOption(value);
+    } else if(county) await county.fill('Dublin');
     const cardCSS='#cardNumber,input[autocomplete="cc-number"],input[name=cardnumber]';
-    if(!await field(cardCSS,3000))await (await field('[data-testid="card-accordion-item-button"]'))?.click();
+    if(!await field(cardCSS,3000))await (await field('[data-testid="card-accordion-item-button"],button:text-is("Card"),[role="radio"]:text-is("Card")'))?.click();
     await fill(cardCSS,'4242424242424242',25000);
     await fill('#cardExpiry,input[autocomplete="cc-exp"]','12 / 34');
     await fill('#cardCvc,input[autocomplete="cc-csc"]','123');
     await fill('#billingName,input[autocomplete="cc-name"]','Test Buyer',3000);
-    await page.locator('[data-testid="hosted-payment-submit-button"],button.SubmitButton').first().click();
+    stage='submit hosted payment';
+    const submit=await field('[data-testid="hosted-payment-submit-button"],button.SubmitButton,button:text-is("Pay")');
+    if(!submit)throw Error('Missing payment submit control');
+    await submit.click({timeout:10000});
     stage='verify one combined confirmation';
     await page.getByRole('heading',{name:'Purchase confirmed'}).waitFor({timeout:90000});
     const receipt=await page.locator('main').innerText();
@@ -97,6 +108,14 @@ export async function checkBuyerCheckout(key, rec) {
     rec('BUYER1','One hosted sandbox payment confirmed for works from both studios with mixed fulfilment','stripe-test-api','PASS');
   } catch (error) {
     evidence.failure = error.name;
+    if(page){
+      const controls=[];
+      for(const frame of page.frames()){
+        const labels=await frame.locator('input:visible,select:visible,button:visible').evaluateAll(nodes=>nodes.map(n=>n.id||n.getAttribute('autocomplete')||n.getAttribute('data-testid')).filter(Boolean)).catch(()=>[]);
+        controls.push(...labels.filter(s=>/^[a-zA-Z][a-zA-Z0-9 _-]{0,48}$/.test(s) && !/^(cs_|pi_|sk_|rk_)/.test(s)));
+      }
+      evidence.visibleControls=[...new Set(controls)].slice(0,40);
+    }
     rec('BUYER1','Complete combined buyer checkout','stripe-test-api','FAIL',{stage,...evidence});
   } finally {await browser.close(); server.close()}
 }
