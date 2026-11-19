@@ -76,12 +76,12 @@ def prerequisites():
     return acc, db, tok
 
 
-def query(acc, db, tok, sql):
+def query(acc, db, tok, sql, stage="query"):
     s, j = cf("POST", f"/accounts/{acc}/d1/database/{db}/query", tok, {"sql": sql})
     res = j.get("result")
     must(s == 200 and j.get("success") is True and isinstance(res, list) and len(res) == 1 and isinstance(res[0], dict)
          and res[0].get("success", True) is True and isinstance(res[0].get("results"), list),
-         f"TEST database query not readable (HTTP {s}, codes {code_of(j)})")
+         f"TEST database {stage} not readable (HTTP {s}, codes {code_of(j)})")
     return res[0]["results"]
 
 
@@ -89,7 +89,7 @@ TABLES_SQL = "SELECT name FROM sqlite_master WHERE type = 'table' AND name NOT L
 
 
 def remote_tables(acc, db, tok):
-    rows = query(acc, db, tok, TABLES_SQL)
+    rows = query(acc, db, tok, TABLES_SQL, stage="table list")
     must(all(isinstance(x, dict) and isinstance(x.get("name"), str) for x in rows), "malformed table list")
     return sorted(x["name"] for x in rows)
 
@@ -120,13 +120,15 @@ def verify():
     missing, extra = sorted(set(tables) - set(got)), sorted(set(got) - set(tables))
     must(not missing and not extra, f"table set differs from the expected state: missing {missing[:8]}{'…' if len(missing) > 8 else ''}, "
                                     f"unexpected {extra[:8]}{'…' if len(extra) > 8 else ''} (partial or wrong setup)")
-    sql = " UNION ALL ".join(f"SELECT '{t}' AS t, COUNT(*) AS n FROM \"{t}\"" for t in tables)
-    rows = query(acc, db, tok, sql)
-    got_counts = {r.get("t"): r.get("n") for r in rows if isinstance(r, dict)}
+    got_counts = {}
+    for t in tables:   # one table per query: D1 refused a 60-way UNION ALL (HTTP 400, code 7500) on 19 Nov 2026
+        rows = query(acc, db, tok, f'SELECT COUNT(*) AS n FROM "{t}"', stage=f"row count of {t}")
+        must(len(rows) == 1 and isinstance(rows[0].get("n"), int), f"row count of {t} malformed")
+        got_counts[t] = rows[0]["n"]
     must(set(got_counts) == set(tables), "row counts not readable for every table")
     diff = [f"{t} {got_counts[t]}≠{counts[t]}" for t in tables if got_counts[t] != counts[t]]
     must(not diff, f"row counts differ from the expected state: {diff[:8]} (partial or wrong setup)")
-    arts = query(acc, db, tok, "SELECT id, email FROM artists ORDER BY id")
+    arts = query(acc, db, tok, "SELECT id, email FROM artists ORDER BY id", stage="artist list")
     must({a.get("id"): a.get("email") for a in arts} == SYNTHETIC and len(arts) == 2,
          f"artists are not exactly the two synthetic test artists ({[a.get('id') for a in arts]})")
     out("PASS", f"{NAME} matches the expected state exactly: {len(tables)} tables, {sum(counts.values())} rows, "
