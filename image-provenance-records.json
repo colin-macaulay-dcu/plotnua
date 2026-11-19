@@ -6863,50 +6863,42 @@
     },
     {
       "asset": "assets/brand/plotart-favicon-32.png",
-      "sha256": "c15e12677ea67fa464f619654d80e56e028eec89ff67ef14c2b507bf6b525be9",
-      "bytes": 2638,
+      "sha256": "dc0f5d24424971692a80401420d9d43295fc61b240b84e2532285302bba6edab",
+      "bytes": 1597,
       "pixels": [
         32,
         32
       ],
       "class": "BRAND_MARK",
-      "what": "The PlotArt logo (an ivory serif P over painted brushstrokes on an anthracite rounded square); used for: PlotArt pages' browser-tab icon",
+      "what": "The PlotArt Organic P, simplified for small sizes: the same traced P with its lines thickened, off-white on an anthracite #27282A rounded square; used for: PlotArt pages' browser-tab icon",
       "brand": {
-        "name": "PlotArt logo",
-        "master_file": "PlotArt_Logo_Final.png (founder's Mac, PlotNua/04 Brand)",
-        "master_sha256": "7aae4c8cbf4e1aaf2c356729583fe3c2ae16c6da23de18d216ee3186a6545117",
+        "name": "PlotArt Organic P logo",
+        "master_file": "6BA70520-15A0-488F-9D76-B49FA53824B0.png (founder's Mac, PlotNua/04 Brand/New PlotArt P; unchanged): the Organic P, off-white lines on black",
+        "master_sha256": "01ea16f70dfda1fa9875e63b11758fa73413dfd5d39b2ba85b2d64cf4614a9a5",
         "master_pixels": [
           1254,
           1254
-        ]
+        ],
+        "lockup_reference": "P - final White on Black.png (same folder; sha256 bd6c966f…): proportions of the P above the wordmark; the wordmark itself is typeset, not traced"
       },
       "origin": {
-        "method": "AI-generated with ChatGPT (OpenAI, gpt-image), per the master's C2PA content credentials; chosen and approved by the founder as the PlotArt logo",
-        "date": "2026-10-31",
+        "method": "Supplied by the founder as the approved PlotArt Organic P reference artwork (19 Nov 2026); how the master was made is not recorded here",
+        "date": "2026-11-19",
         "c2pa_evidence": {
-          "read_with": "c2pa-python, 31 Oct 2026",
-          "claim_generator": "OpenAI Media Service API",
-          "signed_by": "OpenAI OpCo, LLC",
-          "signed_at": "2026-10-31T14:42:48.977436+00:00",
-          "actions": [
-            "c2pa.created (softwareAgent ChatGPT, version gpt-image; digitalSourceType trainedAlgorithmicMedia)",
-            "c2pa.converted",
-            "c2pa.watermarked.unbound"
-          ],
-          "ingredients_recorded": 0
-        },
-        "prompt_status": "UNAVAILABLE (not supplied; not reconstructed)"
+          "read_with": "PNG chunk inspection, 19 Nov 2026",
+          "result": "none present: the supplied masters carry no C2PA manifest (only an eXIf chunk)"
+        }
       },
       "processing": [
-        "Master PlotArt_Logo_Final.png (founder's Mac, PlotNua/04 Brand; unchanged), 1254 x 1254 RGB",
-        "Corners outside the logo's rounded square (pure black in the master) made transparent with an anti-aliased rounded-rectangle mask (radius 249 px, measured from the master); no other change to the artwork (PlotNua build session, Pillow, 31 Oct 2026)",
-        "Lanczos resize to 32 x 32; PNG"
+        "Organic P traced from the master as vector paths (potrace via potracer, Claude build session, 19 Nov 2026; no generative model involved); the lower ends of the vertical lines fade out with a vector gradient mask as in the master",
+        "Simplified favicon: the traced lines thickened (morphological stroke) so the P and its sweep stay legible at 16-32 px",
+        "Rendered to 32 x 32 PNG (Chromium), metadata-free"
       ],
-      "visible_label": "none: a brand logo depicts no real place, product or person (class BRAND_MARK); its AI origin is recorded here",
+      "visible_label": "none: a brand logo depicts no real place, product or person (class BRAND_MARK)",
       "human_review": {
         "reviewer": "Colin MacAulay (founder)",
-        "date": "2026-10-31",
-        "attests": "Approved the new PlotArt logo for implementation across PlotArt, the PlotNua header's PlotArt button, favicons and social sharing (31 Oct 2026)."
+        "date": "2026-11-19",
+        "attests": "Supplied the Organic P reference images and asked for them to be implemented as the PlotArt identity (Organic P Brand Identity Update, Phase 1, 19 Nov 2026). Preview only: production use awaits the founder's release approval."
       },
       "permitted_surfaces": [
         "brand"
@@ -6914,50 +6906,42 @@
     },
     {
       "asset": "assets/brand/plotart-apple-touch-180.png",
-      "sha256": "db4c202aba9dd143beb183f36f5a1d48e911edcf19f6e8f5389099e49da1d2d3",
-      "bytes": 47241,
+      "sha256": "ad6fd9bd9f253e1721918c1dfeef010b798d80d4d08fb89cc9eb08095eb38d3a",
+      "bytes": 19209,
       "pixels": [
         180,
         180
       ],
       "class": "BRAND_MARK",
-      "what": "The PlotArt logo (an ivory serif P over painted brushstrokes on an anthracite rounded square); used for: PlotArt pages' home-screen icon",
+      "what": "The PlotArt Organic P, full lines, off-white on an anthracite #27282A square; used for: PlotArt pages' home-screen icon and the PlotArt Studio sign-in screens",
       "brand": {
-        "name": "PlotArt logo",
-        "master_file": "PlotArt_Logo_Final.png (founder's Mac, PlotNua/04 Brand)",
-        "master_sha256": "7aae4c8cbf4e1aaf2c356729583fe3c2ae16c6da23de18d216ee3186a6545117",
+        "name": "PlotArt Organic P logo",
+        "master_file": "6BA70520-15A0-488F-9D76-B49FA53824B0.png (founder's Mac, PlotNua/04 Brand/New PlotArt P; unchanged): the Organic P, off-white lines on black",
+        "master_sha256": "01ea16f70dfda1fa9875e63b11758fa73413dfd5d39b2ba85b2d64cf4614a9a5",
         "master_pixels": [
           1254,
           1254
-        ]
+        ],
+        "lockup_reference": "P - final White on Black.png (same folder; sha256 bd6c966f…): proportions of the P above the wordmark; the wordmark itself is typeset, not traced"
       },
       "origin": {
-        "method": "AI-generated with ChatGPT (OpenAI, gpt-image), per the master's C2PA content credentials; chosen and approved by the founder as the PlotArt logo",
-        "date": "2026-10-31",
+        "method": "Supplied by the founder as the approved PlotArt Organic P reference artwork (19 Nov 2026); how the master was made is not recorded here",
+        "date": "2026-11-19",
         "c2pa_evidence": {
-          "read_with": "c2pa-python, 31 Oct 2026",
-          "claim_generator": "OpenAI Media Service API",
-          "signed_by": "OpenAI OpCo, LLC",
-          "signed_at": "2026-10-31T14:42:48.977436+00:00",
-          "actions": [
-            "c2pa.created (softwareAgent ChatGPT, version gpt-image; digitalSourceType trainedAlgorithmicMedia)",
-            "c2pa.converted",
-            "c2pa.watermarked.unbound"
-          ],
-          "ingredients_recorded": 0
-        },
-        "prompt_status": "UNAVAILABLE (not supplied; not reconstructed)"
+          "read_with": "PNG chunk inspection, 19 Nov 2026",
+          "result": "none present: the supplied masters carry no C2PA manifest (only an eXIf chunk)"
+        }
       },
       "processing": [
-        "Master PlotArt_Logo_Final.png (founder's Mac, PlotNua/04 Brand; unchanged), 1254 x 1254 RGB",
-        "Corners outside the logo's rounded square (pure black in the master) made transparent with an anti-aliased rounded-rectangle mask (radius 249 px, measured from the master); no other change to the artwork (PlotNua build session, Pillow, 31 Oct 2026)",
-        "Corners filled with the logo's own anthracite (#2B2C2C) instead of transparency, because iOS applies its own rounded mask; Lanczos resize to 180 x 180; PNG"
+        "Organic P traced from the master as vector paths (potrace via potracer, Claude build session, 19 Nov 2026; no generative model involved); the lower ends of the vertical lines fade out with a vector gradient mask as in the master",
+        "Centred on a full-bleed anthracite square (the device rounds the corners)",
+        "Rendered to 180 x 180 PNG (Chromium), metadata-free"
       ],
-      "visible_label": "none: a brand logo depicts no real place, product or person (class BRAND_MARK); its AI origin is recorded here",
+      "visible_label": "none: a brand logo depicts no real place, product or person (class BRAND_MARK)",
       "human_review": {
         "reviewer": "Colin MacAulay (founder)",
-        "date": "2026-10-31",
-        "attests": "Approved the new PlotArt logo for implementation across PlotArt, the PlotNua header's PlotArt button, favicons and social sharing (31 Oct 2026)."
+        "date": "2026-11-19",
+        "attests": "Supplied the Organic P reference images and asked for them to be implemented as the PlotArt identity (Organic P Brand Identity Update, Phase 1, 19 Nov 2026). Preview only: production use awaits the founder's release approval."
       },
       "permitted_surfaces": [
         "brand"
@@ -6965,50 +6949,43 @@
     },
     {
       "asset": "assets/og/plotart-og-1200x630.jpg",
-      "sha256": "08dd3b7c4be1a1e0d62289451ab23b57e04acfbf5eea2c144d425a36aadf1115",
-      "bytes": 52435,
+      "sha256": "3046765e4b27c51ffc2a9be673f5b3424ee1998bb6d36d466fd55acb0635eb6a",
+      "bytes": 67420,
       "pixels": [
         1200,
         630
       ],
       "class": "BRAND_MARK",
-      "what": "The PlotArt logo (an ivory serif P over painted brushstrokes on an anthracite rounded square) on the PlotArt brand card; used for: social link previews of the PlotArt home, Virtual Gallery, Living Gallery, Founding 25 and About pages",
+      "what": "The PlotArt Organic P beside the PlotArt wordmark, 'A new home for Irish art.' and 'Part of PlotNua · plotnua.ie' on anthracite #27282A; used for: social link previews of the PlotArt home, Virtual Gallery, Living Gallery, Founding 25 and About pages",
       "brand": {
-        "name": "PlotArt logo",
-        "master_file": "PlotArt_Logo_Final.png (founder's Mac, PlotNua/04 Brand)",
-        "master_sha256": "7aae4c8cbf4e1aaf2c356729583fe3c2ae16c6da23de18d216ee3186a6545117",
+        "name": "PlotArt Organic P logo",
+        "master_file": "6BA70520-15A0-488F-9D76-B49FA53824B0.png (founder's Mac, PlotNua/04 Brand/New PlotArt P; unchanged): the Organic P, off-white lines on black",
+        "master_sha256": "01ea16f70dfda1fa9875e63b11758fa73413dfd5d39b2ba85b2d64cf4614a9a5",
         "master_pixels": [
           1254,
           1254
-        ]
+        ],
+        "lockup_reference": "P - final White on Black.png (same folder; sha256 bd6c966f…): proportions of the P above the wordmark; the wordmark itself is typeset, not traced"
       },
       "origin": {
-        "method": "AI-generated with ChatGPT (OpenAI, gpt-image), per the master's C2PA content credentials; chosen and approved by the founder as the PlotArt logo",
-        "date": "2026-10-31",
+        "method": "Supplied by the founder as the approved PlotArt Organic P reference artwork (19 Nov 2026); how the master was made is not recorded here",
+        "date": "2026-11-19",
         "c2pa_evidence": {
-          "read_with": "c2pa-python, 31 Oct 2026",
-          "claim_generator": "OpenAI Media Service API",
-          "signed_by": "OpenAI OpCo, LLC",
-          "signed_at": "2026-10-31T14:42:48.977436+00:00",
-          "actions": [
-            "c2pa.created (softwareAgent ChatGPT, version gpt-image; digitalSourceType trainedAlgorithmicMedia)",
-            "c2pa.converted",
-            "c2pa.watermarked.unbound"
-          ],
-          "ingredients_recorded": 0
-        },
-        "prompt_status": "UNAVAILABLE (not supplied; not reconstructed)"
+          "read_with": "PNG chunk inspection, 19 Nov 2026",
+          "result": "none present: the supplied masters carry no C2PA manifest (only an eXIf chunk)"
+        }
       },
       "processing": [
-        "Master PlotArt_Logo_Final.png (founder's Mac, PlotNua/04 Brand; unchanged), 1254 x 1254 RGB",
-        "Corners outside the logo's rounded square (pure black in the master) made transparent with an anti-aliased rounded-rectangle mask (radius 249 px, measured from the master); no other change to the artwork (PlotNua build session, Pillow, 31 Oct 2026)",
-        "Brand card 1200 x 630: the masked logo at 330 px on the PlotArt anthracite background, beside typeset 'PlotArt', 'A new home for Irish art.' (the approved PlotArt headline) and 'Part of PlotNua · plotnua.ie' in Instrument Serif and Hanken Grotesk (SIL OFL); rendered with Playwright/Chromium; JPEG quality 88"
+        "Organic P traced from the master as vector paths (potrace via potracer, Claude build session, 19 Nov 2026; no generative model involved); the lower ends of the vertical lines fade out with a vector gradient mask as in the master",
+        "Wordmark 'PlotArt' typeset in Montserrat Light ('Plot') and Bold ('Art') (SIL Open Font Licence) and converted to outlines; no font file is shipped",
+        "Tagline and sub-line typeset in Montserrat Light and converted to outlines",
+        "Rendered to 1200 x 630 (Chromium); JPEG quality 88, metadata-free"
       ],
-      "visible_label": "none: a brand logo depicts no real place, product or person (class BRAND_MARK); its AI origin is recorded here",
+      "visible_label": "none: a brand logo depicts no real place, product or person (class BRAND_MARK)",
       "human_review": {
         "reviewer": "Colin MacAulay (founder)",
-        "date": "2026-10-31",
-        "attests": "Approved the new PlotArt logo for implementation across PlotArt, the PlotNua header's PlotArt button, favicons and social sharing (31 Oct 2026)."
+        "date": "2026-11-19",
+        "attests": "Supplied the Organic P reference images and asked for them to be implemented as the PlotArt identity (Organic P Brand Identity Update, Phase 1, 19 Nov 2026). Preview only: production use awaits the founder's release approval."
       },
       "permitted_surfaces": [
         "brand"
@@ -22093,6 +22070,45 @@
       "source_sha256": "5cd5099e302e88844780ae084cfd95f7760eda29b107b70be25d288b15270198",
       "subject": "artwork",
       "work_slug": "streaming-pink"
+    },
+    {
+      "asset": "assets/brand/plotart-logo-header.svg",
+      "sha256": "e379628907eed07bc24608a69abbeee5fd2256cc16709181b225b9db3b93c206",
+      "bytes": 53380,
+      "class": "BRAND_MARK",
+      "what": "The PlotArt Organic P header logo: the Organic P beside the PlotArt wordmark, off-white #EDEBE7 on transparent; used for: PlotArt page headers (36 px high, 30 px on phones) and the PlotArt Studio and Review Desk header",
+      "brand": {
+        "name": "PlotArt Organic P logo",
+        "master_file": "6BA70520-15A0-488F-9D76-B49FA53824B0.png (founder's Mac, PlotNua/04 Brand/New PlotArt P; unchanged): the Organic P, off-white lines on black",
+        "master_sha256": "01ea16f70dfda1fa9875e63b11758fa73413dfd5d39b2ba85b2d64cf4614a9a5",
+        "master_pixels": [
+          1254,
+          1254
+        ],
+        "lockup_reference": "P - final White on Black.png (same folder; sha256 bd6c966f…): proportions of the P above the wordmark; the wordmark itself is typeset, not traced"
+      },
+      "origin": {
+        "method": "Supplied by the founder as the approved PlotArt Organic P reference artwork (19 Nov 2026); how the master was made is not recorded here",
+        "date": "2026-11-19",
+        "c2pa_evidence": {
+          "read_with": "PNG chunk inspection, 19 Nov 2026",
+          "result": "none present: the supplied masters carry no C2PA manifest (only an eXIf chunk)"
+        }
+      },
+      "processing": [
+        "Organic P traced from the master as vector paths (potrace via potracer, Claude build session, 19 Nov 2026; no generative model involved); the lower ends of the vertical lines fade out with a vector gradient mask as in the master",
+        "Wordmark 'PlotArt' typeset in Montserrat Light ('Plot') and Bold ('Art') (SIL Open Font Licence) and converted to outlines; no font file is shipped",
+        "Composed as one pure-vector SVG (no embedded or linked image, no script, no font), 521.85 x 136.5 user units"
+      ],
+      "visible_label": "none: a brand logo depicts no real place, product or person (class BRAND_MARK)",
+      "human_review": {
+        "reviewer": "Colin MacAulay (founder)",
+        "date": "2026-11-19",
+        "attests": "Supplied the Organic P reference images and asked for them to be implemented as the PlotArt identity (Organic P Brand Identity Update, Phase 1, 19 Nov 2026). Preview only: production use awaits the founder's release approval."
+      },
+      "permitted_surfaces": [
+        "brand"
+      ]
     }
   ],
   "legacy_undeclared": [
@@ -32638,6 +32654,162 @@
         "subject": "DISC-038 The Hidden Shelter, Stage 4 hero integration (not deployed)"
       },
       "superseded": "Replaced by founder-approved daylight pair, 11 November 2026; not published."
+    },
+    {
+      "asset": "assets/brand/plotart-favicon-32.png",
+      "sha256": "c15e12677ea67fa464f619654d80e56e028eec89ff67ef14c2b507bf6b525be9",
+      "bytes": 2638,
+      "pixels": [
+        32,
+        32
+      ],
+      "class": "BRAND_MARK",
+      "what": "The PlotArt logo (an ivory serif P over painted brushstrokes on an anthracite rounded square); used for: PlotArt pages' browser-tab icon",
+      "brand": {
+        "name": "PlotArt logo",
+        "master_file": "PlotArt_Logo_Final.png (founder's Mac, PlotNua/04 Brand)",
+        "master_sha256": "7aae4c8cbf4e1aaf2c356729583fe3c2ae16c6da23de18d216ee3186a6545117",
+        "master_pixels": [
+          1254,
+          1254
+        ]
+      },
+      "origin": {
+        "method": "AI-generated with ChatGPT (OpenAI, gpt-image), per the master's C2PA content credentials; chosen and approved by the founder as the PlotArt logo",
+        "date": "2026-10-31",
+        "c2pa_evidence": {
+          "read_with": "c2pa-python, 31 Oct 2026",
+          "claim_generator": "OpenAI Media Service API",
+          "signed_by": "OpenAI OpCo, LLC",
+          "signed_at": "2026-10-31T14:42:48.977436+00:00",
+          "actions": [
+            "c2pa.created (softwareAgent ChatGPT, version gpt-image; digitalSourceType trainedAlgorithmicMedia)",
+            "c2pa.converted",
+            "c2pa.watermarked.unbound"
+          ],
+          "ingredients_recorded": 0
+        },
+        "prompt_status": "UNAVAILABLE (not supplied; not reconstructed)"
+      },
+      "processing": [
+        "Master PlotArt_Logo_Final.png (founder's Mac, PlotNua/04 Brand; unchanged), 1254 x 1254 RGB",
+        "Corners outside the logo's rounded square (pure black in the master) made transparent with an anti-aliased rounded-rectangle mask (radius 249 px, measured from the master); no other change to the artwork (PlotNua build session, Pillow, 31 Oct 2026)",
+        "Lanczos resize to 32 x 32; PNG"
+      ],
+      "visible_label": "none: a brand logo depicts no real place, product or person (class BRAND_MARK); its AI origin is recorded here",
+      "human_review": {
+        "reviewer": "Colin MacAulay (founder)",
+        "date": "2026-10-31",
+        "attests": "Approved the new PlotArt logo for implementation across PlotArt, the PlotNua header's PlotArt button, favicons and social sharing (31 Oct 2026)."
+      },
+      "permitted_surfaces": [
+        "brand"
+      ],
+      "superseded": "Replaced in place by the PlotArt Organic P identity (founder brief, 19 Nov 2026); the previous file is in git history."
+    },
+    {
+      "asset": "assets/brand/plotart-apple-touch-180.png",
+      "sha256": "db4c202aba9dd143beb183f36f5a1d48e911edcf19f6e8f5389099e49da1d2d3",
+      "bytes": 47241,
+      "pixels": [
+        180,
+        180
+      ],
+      "class": "BRAND_MARK",
+      "what": "The PlotArt logo (an ivory serif P over painted brushstrokes on an anthracite rounded square); used for: PlotArt pages' home-screen icon",
+      "brand": {
+        "name": "PlotArt logo",
+        "master_file": "PlotArt_Logo_Final.png (founder's Mac, PlotNua/04 Brand)",
+        "master_sha256": "7aae4c8cbf4e1aaf2c356729583fe3c2ae16c6da23de18d216ee3186a6545117",
+        "master_pixels": [
+          1254,
+          1254
+        ]
+      },
+      "origin": {
+        "method": "AI-generated with ChatGPT (OpenAI, gpt-image), per the master's C2PA content credentials; chosen and approved by the founder as the PlotArt logo",
+        "date": "2026-10-31",
+        "c2pa_evidence": {
+          "read_with": "c2pa-python, 31 Oct 2026",
+          "claim_generator": "OpenAI Media Service API",
+          "signed_by": "OpenAI OpCo, LLC",
+          "signed_at": "2026-10-31T14:42:48.977436+00:00",
+          "actions": [
+            "c2pa.created (softwareAgent ChatGPT, version gpt-image; digitalSourceType trainedAlgorithmicMedia)",
+            "c2pa.converted",
+            "c2pa.watermarked.unbound"
+          ],
+          "ingredients_recorded": 0
+        },
+        "prompt_status": "UNAVAILABLE (not supplied; not reconstructed)"
+      },
+      "processing": [
+        "Master PlotArt_Logo_Final.png (founder's Mac, PlotNua/04 Brand; unchanged), 1254 x 1254 RGB",
+        "Corners outside the logo's rounded square (pure black in the master) made transparent with an anti-aliased rounded-rectangle mask (radius 249 px, measured from the master); no other change to the artwork (PlotNua build session, Pillow, 31 Oct 2026)",
+        "Corners filled with the logo's own anthracite (#2B2C2C) instead of transparency, because iOS applies its own rounded mask; Lanczos resize to 180 x 180; PNG"
+      ],
+      "visible_label": "none: a brand logo depicts no real place, product or person (class BRAND_MARK); its AI origin is recorded here",
+      "human_review": {
+        "reviewer": "Colin MacAulay (founder)",
+        "date": "2026-10-31",
+        "attests": "Approved the new PlotArt logo for implementation across PlotArt, the PlotNua header's PlotArt button, favicons and social sharing (31 Oct 2026)."
+      },
+      "permitted_surfaces": [
+        "brand"
+      ],
+      "superseded": "Replaced in place by the PlotArt Organic P identity (founder brief, 19 Nov 2026); the previous file is in git history."
+    },
+    {
+      "asset": "assets/og/plotart-og-1200x630.jpg",
+      "sha256": "08dd3b7c4be1a1e0d62289451ab23b57e04acfbf5eea2c144d425a36aadf1115",
+      "bytes": 52435,
+      "pixels": [
+        1200,
+        630
+      ],
+      "class": "BRAND_MARK",
+      "what": "The PlotArt logo (an ivory serif P over painted brushstrokes on an anthracite rounded square) on the PlotArt brand card; used for: social link previews of the PlotArt home, Virtual Gallery, Living Gallery, Founding 25 and About pages",
+      "brand": {
+        "name": "PlotArt logo",
+        "master_file": "PlotArt_Logo_Final.png (founder's Mac, PlotNua/04 Brand)",
+        "master_sha256": "7aae4c8cbf4e1aaf2c356729583fe3c2ae16c6da23de18d216ee3186a6545117",
+        "master_pixels": [
+          1254,
+          1254
+        ]
+      },
+      "origin": {
+        "method": "AI-generated with ChatGPT (OpenAI, gpt-image), per the master's C2PA content credentials; chosen and approved by the founder as the PlotArt logo",
+        "date": "2026-10-31",
+        "c2pa_evidence": {
+          "read_with": "c2pa-python, 31 Oct 2026",
+          "claim_generator": "OpenAI Media Service API",
+          "signed_by": "OpenAI OpCo, LLC",
+          "signed_at": "2026-10-31T14:42:48.977436+00:00",
+          "actions": [
+            "c2pa.created (softwareAgent ChatGPT, version gpt-image; digitalSourceType trainedAlgorithmicMedia)",
+            "c2pa.converted",
+            "c2pa.watermarked.unbound"
+          ],
+          "ingredients_recorded": 0
+        },
+        "prompt_status": "UNAVAILABLE (not supplied; not reconstructed)"
+      },
+      "processing": [
+        "Master PlotArt_Logo_Final.png (founder's Mac, PlotNua/04 Brand; unchanged), 1254 x 1254 RGB",
+        "Corners outside the logo's rounded square (pure black in the master) made transparent with an anti-aliased rounded-rectangle mask (radius 249 px, measured from the master); no other change to the artwork (PlotNua build session, Pillow, 31 Oct 2026)",
+        "Brand card 1200 x 630: the masked logo at 330 px on the PlotArt anthracite background, beside typeset 'PlotArt', 'A new home for Irish art.' (the approved PlotArt headline) and 'Part of PlotNua · plotnua.ie' in Instrument Serif and Hanken Grotesk (SIL OFL); rendered with Playwright/Chromium; JPEG quality 88"
+      ],
+      "visible_label": "none: a brand logo depicts no real place, product or person (class BRAND_MARK); its AI origin is recorded here",
+      "human_review": {
+        "reviewer": "Colin MacAulay (founder)",
+        "date": "2026-10-31",
+        "attests": "Approved the new PlotArt logo for implementation across PlotArt, the PlotNua header's PlotArt button, favicons and social sharing (31 Oct 2026)."
+      },
+      "permitted_surfaces": [
+        "brand"
+      ],
+      "superseded": "Replaced in place by the PlotArt Organic P identity (founder brief, 19 Nov 2026); the previous file is in git history."
     }
   ]
 }
