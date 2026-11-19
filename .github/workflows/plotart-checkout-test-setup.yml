@@ -1,12 +1,12 @@
 # PlotArt · managed checkout pilot · TEST environment audit and TEST Studio Access application (prepared 19 Nov 2026).
-# Runs ONLY when worker/plotart-studio/test/checkout-test-setup-request.json changes on the branch plotart/checkout-test-setup,
+# Runs ONLY when worker/plotart-studio/test/checkout-test-setup-request.json changes on the branch plotart/managed-checkout-pilot,
 # and only after the founder approves the "checkout-test" environment. mode "audit" is read only; mode "create_access"
 # creates one Access application (and its one allow policy) for the TEST Studio hostname if none exists. Nothing is
 # deployed, no database is changed, no existing Access application or policy is modified. Values are never printed.
 name: PlotArt checkout TEST setup
 on:
   push:
-    branches: [plotart/checkout-test-setup]
+    branches: [plotart/managed-checkout-pilot]   # the checkout-test environment only admits this branch (and main)
     paths: [worker/plotart-studio/test/checkout-test-setup-request.json]
 permissions:
   contents: read
