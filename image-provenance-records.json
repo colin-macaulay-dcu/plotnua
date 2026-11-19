@@ -22237,6 +22237,130 @@
       "source_sha256": "6bee532a22e789ef7627ff5f64c80fca2e531edb36b5e784bea899c6c6ce4d4b",
       "subject": "artwork",
       "work_slug": "that-s-the-way-i-like"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "paul-kerr",
+      "asset": "plotart/artists/paul-kerr/img/portrait-600.webp",
+      "bytes": 44112,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "sRGB (no embedded profile; treated as sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-a4p7ruywdrw",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        426,
+        600
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "eba91cb1da5e5ac70118e842ac313b2ffa3958e117010a39a4e9fba4dee905a0",
+      "source_sha256": "012b46c0a310a21aedb13e03fa1ef43ae2a03ffaa32fc8815cbfbc6194d33638",
+      "subject": "portrait",
+      "work_slug": null
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "paul-kerr",
+      "asset": "plotart/artists/paul-kerr/img/things-that-go-unseen-1-600.webp",
+      "bytes": 32366,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-a4p7ruywdrw",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        414,
+        600
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "e7b6aeb1d795b03a5e5697d2241e25316a922ea4f27ac3066bc7dfb6c6e94117",
+      "source_sha256": "67de6b14c1ca6ac829e7d5d735bfedcb5276d83ff0367da8cdf049400a786151",
+      "subject": "artwork",
+      "work_slug": "things-that-go-unseen"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "paul-kerr",
+      "asset": "plotart/artists/paul-kerr/img/things-that-go-unseen-1-1200.webp",
+      "bytes": 80000,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-a4p7ruywdrw",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        828,
+        1200
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "50325424b4b60bc0b39952caa0542c800932dfad94699483dee68a3d3b689ccc",
+      "source_sha256": "67de6b14c1ca6ac829e7d5d735bfedcb5276d83ff0367da8cdf049400a786151",
+      "subject": "artwork",
+      "work_slug": "things-that-go-unseen"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "paul-kerr",
+      "asset": "plotart/artists/paul-kerr/img/things-that-go-unseen-1-2000.webp",
+      "bytes": 175442,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-a4p7ruywdrw",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        1379,
+        2000
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "492343aabe6b3973901c4c94ae661b69c9bb789a68f2523d843de62c96296fbc",
+      "source_sha256": "67de6b14c1ca6ac829e7d5d735bfedcb5276d83ff0367da8cdf049400a786151",
+      "subject": "artwork",
+      "work_slug": "things-that-go-unseen"
     }
   ],
   "legacy_undeclared": [

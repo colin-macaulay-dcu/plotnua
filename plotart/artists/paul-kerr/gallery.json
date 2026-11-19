@@ -1,0 +1,117 @@
+{
+ "artist": {
+  "bio": "I was born in 1965 in Dungannon, Co Tyrone. My passion for art began in my early teens and became an obsession by the time i was accepted for art college in 1983. Unfortunately i was unable to go as my life took a different direction . It would be another decade or more before i returned to art.\n\nI moved to Dublin in 1996 determined to pursue my artistic life and have been painting professionally since then. My first solo show was with the Gordon Galleries , Derry in 1996 and my most recent have been with Sol Art Gallery, Dublin in 2018, 2022 and 2024. In between I've had numerous solo and group shows including the RHA Annual 2019, exhibiting in London , New York, Florence, Milan and Beijing, plus residencies and awards. \n\nThe gap that occured in my art practice when i was young was driven by a religious calling. Although i am no longer on that path i still seek the mystery and the divine in my paintings and drawings. I try to find the connections in everything with the realisation that reality is always beyond me. Imagination brings me closest to that understanding. I rely only on that inner vision and the craft i've learned, never resorting to artificial means.\n\nPerhaps its best put by the art critic Michael J. Pearce Ph.D. MFA who interviewed me for Mutual Art Magazine:\n\n\" For Kerr paints at the threshold of the otherworld and opens himself to the inspiration he is gifted by the lush land.\"\n\"The Irish woodlands are the setting of many of Kerr's paintings,which drift from anchored realism into dreamy visions. One stroke leads to another, he says, and nature prompts him to make new marks. Under each finished picture there are five more which he has painted over in the process of finding the image- they are revelations of what lies hidden within the trees.\n\nKerr shows us how nature knows itself.\"",
+  "county": "Donegal",
+  "display_name": "Paul Kerr",
+  "founding": true,
+  "instagram": "paulpaulkerr",
+  "medium": "painting",
+  "open_for_commissions": true,
+  "portrait": {
+   "alt": "The artist against a painting of a wall.",
+   "aspect": 0.7098,
+   "derivatives": [
+    {
+     "file": "portrait-600.webp",
+     "long_edge": 600,
+     "pixels": [
+      426,
+      600
+     ]
+    }
+   ],
+   "photo_credit": null,
+   "pixels": [
+    1108,
+    1561
+   ],
+   "role": "portrait"
+  },
+  "practice": "Painter",
+  "slug": "paul-kerr",
+  "statement": "Everything seems filled with mystery, and that is the starting point for all my art.",
+  "website": "https://paulkerr.ie"
+ },
+ "provenance_sources": [
+  {
+   "dhash": "f1c88e9d8d39f1b2",
+   "source_sha256": "012b46c0a310a21aedb13e03fa1ef43ae2a03ffaa32fc8815cbfbc6194d33638",
+   "stem": "portrait"
+  },
+  {
+   "dhash": "0d25e67c7b23accd",
+   "source_sha256": "67de6b14c1ca6ac829e7d5d735bfedcb5276d83ff0367da8cdf049400a786151",
+   "stem": "things-that-go-unseen-1"
+  }
+ ],
+ "publication": {
+  "approved_at": "2026-11-19T22:41:57.876Z",
+  "approved_by": "founder",
+  "first_approved_at": "2026-11-19T22:41:57.876Z",
+  "licence_accepted_at": "2026-11-19T16:23:00.626Z",
+  "licence_version": "PA-GPIL-2026-11",
+  "permission_ref": "PA-PERM-a4p7ruywdrw",
+  "state": "approved",
+  "test_note": null,
+  "version": "v1"
+ },
+ "schema": "plotnua.plotart.gallery-package.v1",
+ "works": [
+  {
+   "ai_founder_decision": null,
+   "ai_involvement": "none",
+   "ai_note": null,
+   "availability": "available",
+   "d_cm": 3,
+   "description": null,
+   "h_cm": 100,
+   "id": "w7qm51rtg2y",
+   "images": [
+    {
+     "alt": "Visionary painting revealing the hidden elements of nature.",
+     "aspect": 0.68972,
+     "derivatives": [
+      {
+       "file": "things-that-go-unseen-1-600.webp",
+       "long_edge": 600,
+       "pixels": [
+        414,
+        600
+       ]
+      },
+      {
+       "file": "things-that-go-unseen-1-1200.webp",
+       "long_edge": 1200,
+       "pixels": [
+        828,
+        1200
+       ]
+      },
+      {
+       "file": "things-that-go-unseen-1-2000.webp",
+       "long_edge": 2000,
+       "pixels": [
+        1379,
+        2000
+       ]
+      }
+     ],
+     "photo_credit": null,
+     "pixels": [
+      4568,
+      6623
+     ],
+     "role": "main"
+    }
+   ],
+   "materials": null,
+   "medium": "Oil on canvas",
+   "price_eur": 9250,
+   "price_on_request": false,
+   "slug": "things-that-go-unseen",
+   "title": "Things That Go Unseen",
+   "w_cm": 70,
+   "year": 2026
+  }
+ ]
+}
