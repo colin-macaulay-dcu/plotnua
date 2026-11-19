@@ -10,10 +10,10 @@ on:
   workflow_dispatch:
     inputs:
       mode:
-        description: "audit / r2_plan (read only) · r2_apply (replace the two unused default-jurisdiction TEST buckets with EU ones) · create_access"
+        description: "audit / r2_plan (read only) · r2_apply (EU TEST buckets) · create_access · d1_setup (schema + synthetic seed, EMPTY TEST database only)"
         required: true
         type: choice
-        options: [audit, r2_plan, r2_apply, create_access]
+        options: [audit, r2_plan, r2_apply, create_access, d1_setup]
         default: audit
 permissions:
   contents: read
@@ -33,6 +33,7 @@ jobs:
           [ "${{ github.ref }}" = refs/heads/main ] || { echo "REFUSED: run from main"; exit 1; }
           echo "### PlotArt checkout TEST setup · ${{ inputs.mode }}" >> "$GITHUB_STEP_SUMMARY"
       - name: Audit (read only) and, if requested, the TEST Studio Access application
+        if: ${{ inputs.mode != 'd1_setup' }}
         env:
           CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
           CHECKOUT_TEST_D1_DATABASE_ID: ${{ vars.CHECKOUT_TEST_D1_DATABASE_ID }}
@@ -46,3 +47,38 @@ jobs:
           CHECKOUT_TEST_FOUNDER_EMAILS: ${{ secrets.CHECKOUT_TEST_FOUNDER_EMAILS }}
           CHECKOUT_TEST_FOUNDER_EMAIL: ${{ vars.CHECKOUT_TEST_FOUNDER_EMAIL }}
         run: python3 atlas-tools/release/studio/checkout-test-setup.py "${{ inputs.mode }}"
+      # ---------------------------------------------------------------- d1_setup: TEST database only, empty database only
+      - uses: actions/setup-node@v4
+        if: ${{ inputs.mode == 'd1_setup' }}
+        with:
+          node-version: 22
+      - name: TEST database · refuse unless plotart-checkout-test is empty (read only)
+        if: ${{ inputs.mode == 'd1_setup' }}
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
+          CHECKOUT_TEST_D1_DATABASE_ID: ${{ vars.CHECKOUT_TEST_D1_DATABASE_ID }}
+          CHECKOUT_TEST_CF_TOKEN: ${{ secrets.CHECKOUT_TEST_CF_TOKEN }}
+        run: python3 atlas-tools/release/studio/checkout-test-setup.py d1_check
+      - name: TEST database · apply schema.sql, migration 0013 and the synthetic seed (plotart-checkout-test only)
+        if: ${{ inputs.mode == 'd1_setup' }}
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CHECKOUT_TEST_CF_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
+          DBID: ${{ vars.CHECKOUT_TEST_D1_DATABASE_ID }}
+        run: |
+          set -euo pipefail
+          W=worker/plotart-studio; T="$RUNNER_TEMP/d1"; mkdir -p "$T"
+          node $W/test/checkout-test-env-seed.mjs --target plotart-checkout-test --founding colin+f1@plotnua.ie --gallery colin+g1@plotnua.ie > "$T/seed.sql"
+          printf 'name = "plotart-checkout-test-db-setup"\ncompatibility_date = "2026-08-01"\n[[d1_databases]]\nbinding = "DB"\ndatabase_name = "plotart-checkout-test"\ndatabase_id = "%s"\n' "$DBID" > "$T/wrangler.toml"
+          for f in "$GITHUB_WORKSPACE/$W/schema.sql" "$GITHUB_WORKSPACE/$W/migrations/0013_gallery_artist_agreement_text.sql" "$T/seed.sql"; do
+            (cd "$T" && npx --yes wrangler@4.150.0 d1 execute plotart-checkout-test --remote --config wrangler.toml --file "$f" -y > "$T/out.log" 2>&1) \
+              || { echo "FAIL  $(basename "$f") was not applied"; grep -iE "error" "$T/out.log" | grep -viE "token" | head -5; exit 1; }
+            echo "  PASS  applied $(basename "$f") to plotart-checkout-test"
+          done
+      - name: TEST database · verify (read only)
+        if: ${{ inputs.mode == 'd1_setup' }}
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
+          CHECKOUT_TEST_D1_DATABASE_ID: ${{ vars.CHECKOUT_TEST_D1_DATABASE_ID }}
+          CHECKOUT_TEST_CF_TOKEN: ${{ secrets.CHECKOUT_TEST_CF_TOKEN }}
+        run: python3 atlas-tools/release/studio/checkout-test-setup.py d1_verify
