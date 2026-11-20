@@ -17,15 +17,35 @@
        separately, by the exact amount the agreement requires (never Stripe's proportional default, which would include
        delivery).
    Secrets: STRIPE_SECRET_KEY and STRIPE_WEBHOOK_SECRET are Worker secrets (wrangler secret put), never in Git or in a
-   browser. A LIVE key is refused in code: changing that needs a code change and the founder's explicit approval. */
+   browser. A LIVE key is accepted only by stripeMode's live gate (explicit, production-only); otherwise refused. */
 export class StripeError extends Error { constructor(m, status = 502, code = null) { super(m); this.status = status; this.code = code; } }
 
-export function testKey(env) {
-  const k = String(env.STRIPE_SECRET_KEY || '');
+/* Which Stripe mode this Worker may use (live-mode gate, 20 Nov 2026). Exactly one of:
+     test  a TEST key (sk_test_/rk_test_), outside production. The TEST environment and every local test are here, as before.
+     live  ONLY when all hold: CHECKOUT_LIVE is exactly "true", ENVIRONMENT is "production", SANDBOX is not "true", no
+           STRIPE_API_BASE override, and the key is a LIVE key (sk_live_/rk_live_). CHECKOUT_LIVE is set only by the
+           founder-approved production configuration (render-checkout-config.py / render-config.py), never by default.
+   Everything else is refused: a live key without the explicit switch, a test key in production, the switch outside
+   production, an unrecognised key or switch value. A refusal stops every Stripe call before any request is made. */
+const TEST_KEY = /^(sk|rk)_test_[A-Za-z0-9]+$/, LIVE_KEY = /^(sk|rk)_live_[A-Za-z0-9]+$/;
+export function stripeMode(env) {
+  const k = String(env.STRIPE_SECRET_KEY || ''), sw = env.CHECKOUT_LIVE;
+  if (sw !== undefined && sw !== null && sw !== '' && sw !== 'true' && sw !== 'false') return { ok: false, reason: 'CHECKOUT_LIVE must be "true" or "false"' };
   if (!k) return { ok: false, reason: 'STRIPE_SECRET_KEY is not set' };
-  if (!/^(sk|rk)_test_[A-Za-z0-9]+$/.test(k)) return { ok: false, reason: 'Only a Stripe TEST key is accepted by the pilot' };
-  return { ok: true };
+  if (sw === 'true') {
+    if (env.ENVIRONMENT !== 'production') return { ok: false, reason: 'Live checkout can be enabled only in the production environment' };
+    if (env.SANDBOX === 'true') return { ok: false, reason: 'Live checkout cannot run in sandbox mode' };
+    if (env.STRIPE_API_BASE) return { ok: false, reason: 'Live checkout cannot use a Stripe API override' };
+    if (!LIVE_KEY.test(k)) return { ok: false, reason: 'Live checkout needs a Stripe LIVE key; a test or unrecognised key is refused' };
+    return { ok: true, live: true, mode: 'live' };
+  }
+  if (LIVE_KEY.test(k)) return { ok: false, reason: 'A Stripe LIVE key is refused unless live checkout is explicitly enabled in production' };
+  if (env.ENVIRONMENT === 'production') return { ok: false, reason: 'Production accepts only the live configuration: a Stripe TEST key is refused in production' };
+  if (!TEST_KEY.test(k)) return { ok: false, reason: 'Only a Stripe TEST key is accepted outside live production' };
+  return { ok: true, live: false, mode: 'test' };
 }
+/* Kept for existing callers: the same gate. */
+export const testKey = stripeMode;
 
 /* Stripe's form encoding, including nested objects and arrays (a[b][0][c]=v). */
 export function form(obj, prefix = '', out = []) {
@@ -48,7 +68,7 @@ export const V2_API_VERSION = '2026-10-28.endive';
 export const V1_API_VERSION = '2026-10-28.endive';
 
 async function call(env, method, path, { body = null, account = null, idem = null, query = '' } = {}) {
-  const k = testKey(env);
+  const k = stripeMode(env);
   if (!k.ok) throw new StripeError(k.reason, 503, 'not_configured');
   const base = env.STRIPE_API_BASE || 'https://api.stripe.com';
   if (env.STRIPE_API_BASE && env.ENVIRONMENT !== 'local') throw new StripeError('STRIPE_API_BASE is for local tests only', 500);
@@ -63,7 +83,8 @@ async function call(env, method, path, { body = null, account = null, idem = nul
   const t = await r.text();
   let j; try { j = JSON.parse(t); } catch { throw new StripeError('Payment provider returned an unreadable response'); }
   if (!r.ok) throw new StripeError((j.error && j.error.message) || 'Payment provider error', r.status >= 500 ? 502 : 409, j.error && j.error.code);
-  if (j.livemode === true) throw new StripeError('A live-mode object was returned to the test-mode pilot', 500, 'livemode');
+  // every object must be of this Worker's mode: a live object in test mode, or a test object in live mode, is refused
+  if (typeof j.livemode === 'boolean' && j.livemode !== k.live) throw new StripeError(`A ${j.livemode ? 'live' : 'test'}-mode object was returned to the ${k.mode}-mode pilot`, 500, 'livemode');
   return j;
 }
 

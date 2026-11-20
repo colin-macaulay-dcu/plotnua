@@ -1,7 +1,8 @@
 # PlotArt · managed checkout pilot · public Worker (development 16 Nov 2026). NOT DEPLOYED.
-# Ships SWITCHED OFF (CHECKOUT_PILOT_ENABLED = "false") and TEST MODE ONLY: the code refuses any Stripe key that is not
-# sk_test_/rk_test_ and any live-mode event. Deploying, creating secrets, the Stripe webhook endpoint and the custom
-# domain each need the founder's explicit approval.
+# Ships SWITCHED OFF (CHECKOUT_PILOT_ENABLED = "false"). The code accepts a Stripe TEST key outside production only, and a
+# LIVE key only when CHECKOUT_LIVE = "true" with ENVIRONMENT = "production" (stripe.js stripeMode), which only the
+# founder-approved live path of plotart-checkout-deploy.yml renders. Deploying, secrets, the Stripe webhook endpoint and the
+# custom domain each need the founder's explicit approval.
 #   npx wrangler secret put STRIPE_SECRET_KEY     -c wrangler.checkout.toml   (a Stripe TEST secret or restricted key)
 #   npx wrangler secret put STRIPE_WEBHOOK_SECRET -c wrangler.checkout.toml   (whsec_… of the TEST Connect endpoint)
 name = "plotart-checkout"

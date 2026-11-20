@@ -1300,7 +1300,7 @@ console.log('— reminders, dispute fees and late disputes');
   const mm4 = C1.mailMode({ STRIPE_SECRET_KEY: 'sk_live_x', CHECKOUT_MAIL: 'resend', RESEND_API_KEY: 're_x', CHECKOUT_MAIL_FROM: 'x', CHECKOUT_MAIL_APPROVED: 'true', CHECKOUT_MAIL_TEST_RECIPIENTS: 'a@b.c' });
   const mm5 = C1.mailMode({ STRIPE_SECRET_KEY: K, CHECKOUT_MAIL: 'resend', RESEND_API_KEY: 're_x', CHECKOUT_MAIL_FROM: 'x', CHECKOUT_MAIL_APPROVED: 'true' });
   check('MM1 external email stays off unless configured AND approved, only to listed test inboxes in test mode, and never with a live key', !mm1.external_sending && /no email provider/.test(mm1.summary)
-    && !mm2.external_sending && /not approved/.test(mm2.summary) && mm3.external_sending && !mm4.external_sending && /not part of this pilot/.test(mm4.summary) && !mm5.external_sending, [mm1, mm2, mm3, mm4, mm5].map(x => x.summary));
+    && !mm2.external_sending && /not approved/.test(mm2.summary) && mm3.external_sending && !mm4.external_sending && /LIVE key is refused/.test(mm4.summary) && !mm5.external_sending, [mm1, mm2, mm3, mm4, mm5].map(x => x.summary));
   const sw = C1.statement({ ...base, dispute_status: 'won', dispute_fees: JSON.stringify({ dp_w: { status: 'recorded' } }) },
     [{ kind: 'dispute', amount_cents: -10000 }, { kind: 'dispute_reinstated', amount_cents: 10000 }, { kind: 'dispute_fee', amount_cents: -2460 }, { kind: 'dispute_fee_returned', amount_cents: 2000 }], []);
   check('DF1 dispute fees and fees Stripe returns are separate statement lines and both count in net proceeds', sw.dispute_fees_charged_by_stripe === 2460 && sw.dispute_fees_returned_by_stripe === 2000 && sw.net_proceeds === 10000 - 1500 - 460, sw);

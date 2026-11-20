@@ -4,8 +4,11 @@
 #   test        GitHub environment "checkout-test": Workers plotart-studio-test and plotart-checkout-test, the TEST database
 #               plotart-checkout-test, TEST R2 buckets, a TEST Access application, Stripe TEST credentials only. The pilot is
 #               switched on only if enable_test_pilot is ticked. Placeholder texts marked TEST ONLY are bundled.
-#   production  GitHub environment "studio-production.": Worker plotart-checkout on the production database with the pilot
-#               ALWAYS OFF and NO Stripe secret written. (Live payments need a code change and the founder's approval.)
+#   production  GitHub environment "studio-production.": Worker plotart-checkout on the production database. The pilot is OFF
+#               and no Stripe secret is written, UNLESS enable_live_pilot is ticked AND live_confirmation is exactly
+#               "ENABLE LIVE PLOTART CHECKOUT" (20 Nov 2026). Then: LIVE configuration, LIVE credentials checked (test values
+#               refused) and written to plotart-checkout and plotart-studio, and an outside check of live mode. The same
+#               founder Approve on the environment is required as for every production run.
 # Migrations are never applied here: production migrations go through studio-d1-migration.yml; the test database is set up
 # by the documented commands in worker/plotart-studio/MANAGED-CHECKOUT-PILOT.md ("Test environment").
 # Every run waits for the founder's Approve on its environment. Logs show only names, switches and PASS/FAIL.
@@ -35,6 +38,16 @@ on:
         required: false
         type: boolean
         default: false
+      enable_live_pilot:
+        description: "PRODUCTION target only: enable LIVE checkout (real card payments). Needs live_confirmation too"
+        required: false
+        type: boolean
+        default: false
+      live_confirmation:
+        description: "Type exactly ENABLE LIVE PLOTART CHECKOUT to confirm live checkout (ignored unless enable_live_pilot)"
+        required: false
+        type: string
+        default: ""
 
 permissions:
   contents: read
@@ -52,20 +65,26 @@ jobs:
         with:
           fetch-depth: 0
           persist-credentials: false
-      - name: Guards · commit on main, pilot shipped off, live keys refused in code, production cannot be switched on
+      - name: Guards · commit on main, pilot shipped off, live gate in code, live only by the explicit production path
         env:
           COMMIT: ${{ inputs.commit }}
           TARGET: ${{ inputs.target }}
           ENABLE: ${{ inputs.enable_test_pilot && 'true' || 'false' }}
+          LIVE: ${{ inputs.enable_live_pilot && 'true' || 'false' }}
+          LIVE_CONFIRMATION: ${{ inputs.live_confirmation }}
         run: |
           set -euo pipefail
           [[ "$COMMIT" =~ ^[0-9a-f]{40}$ ]] || { echo "REFUSED: give the full 40-character commit ID"; exit 1; }
           git merge-base --is-ancestor "$COMMIT" origin/main || { echo "REFUSED: $COMMIT is not on main"; exit 1; }
           git show "$COMMIT:worker/plotart-studio/wrangler.checkout.toml" | grep -q '^CHECKOUT_PILOT_ENABLED = "false"' || { echo "REFUSED: wrangler.checkout.toml must ship the pilot off"; exit 1; }
           git show "$COMMIT:worker/plotart-studio/wrangler.toml" | grep -q '^CHECKOUT_PILOT_ENABLED = "false"' || { echo "REFUSED: wrangler.toml must ship the pilot off"; exit 1; }
-          git show "$COMMIT:worker/plotart-studio/src/stripe.js" | grep -qF "(sk|rk)_test_" || { echo "REFUSED: the Stripe adapter no longer refuses live keys"; exit 1; }
-          git show "$COMMIT:worker/plotart-studio/production.json" | python3 -c 'import json,sys; v=json.load(sys.stdin)["vars"]; sys.exit(1 if v.get("CHECKOUT_PILOT_ENABLED","false")!="false" else 0)' || { echo "REFUSED: production.json switches the pilot on"; exit 1; }
-          if [ "$TARGET" = production ] && [ "$ENABLE" = true ]; then echo "REFUSED: the pilot cannot be switched on in production"; exit 1; fi
+          git show "$COMMIT:worker/plotart-studio/src/stripe.js" | grep -qF "Live checkout can be enabled only in the production environment" || { echo "REFUSED: the Stripe adapter no longer has the production-only live gate"; exit 1; }
+          git show "$COMMIT:worker/plotart-studio/src/stripe.js" | grep -qF "a Stripe TEST key is refused in production" || { echo "REFUSED: the Stripe adapter no longer refuses TEST keys in production"; exit 1; }
+          git show "$COMMIT:worker/plotart-studio/production.json" | python3 -c 'import json,sys; v=json.load(sys.stdin)["vars"]; sys.exit(1 if any(k.startswith("CHECKOUT_") or k in ("SANDBOX","STRIPE_API_BASE") for k in v) else 0)' || { echo "REFUSED: production.json sets checkout switches outside its checkout_live block"; exit 1; }
+          if [ "$TARGET" = production ] && [ "$ENABLE" = true ]; then echo "REFUSED: the TEST pilot cannot be switched on in production"; exit 1; fi
+          if [ "$LIVE" = true ] && [ "$TARGET" != production ]; then echo "REFUSED: live checkout can be enabled only for the production target"; exit 1; fi
+          if [ "$LIVE" = true ] && [ "$LIVE_CONFIRMATION" != "ENABLE LIVE PLOTART CHECKOUT" ]; then echo "REFUSED: live checkout needs the exact confirmation phrase"; exit 1; fi
+          if [ "$LIVE" = true ]; then git show "$COMMIT:worker/plotart-studio/agreements/payment-issued/fingerprints.json" > /dev/null 2>&1 || { echo "REFUSED: live checkout needs the issued payment texts (agreements/payment-issued)"; exit 1; }; fi
           echo "GUARD OK · $TARGET · $COMMIT" | tee -a "$GITHUB_STEP_SUMMARY"
 
   deploy:
@@ -170,13 +189,25 @@ jobs:
           set -euo pipefail
           node build-assets.mjs
           ! grep -q "TEST ONLY" src/payment-terms.js || { echo "REFUSED: a TEST placeholder is in the production build"; exit 1; }
-      - name: PRODUCTION · configuration (pilot forced off)
+      - name: PRODUCTION · configuration (pilot off unless live checkout is explicitly enabled)
         if: ${{ inputs.target == 'production' }}
         env:
           STUDIO_D1_DATABASE_ID: ${{ vars.STUDIO_D1_DATABASE_ID }}
           CHECKOUT_PRODUCTION_ORIGIN: ${{ vars.CHECKOUT_PRODUCTION_ORIGIN }}
+          CHECKOUT_LIVE_MAIL_FROM: ${{ vars.CHECKOUT_LIVE_MAIL_FROM }}
+          CHECKOUT_LIVE_NOTIFY_EMAIL: ${{ vars.CHECKOUT_LIVE_NOTIFY_EMAIL }}
           ENABLE_TEST_PILOT: "false"
+          ENABLE_LIVE_PILOT: ${{ inputs.enable_live_pilot && 'true' || 'false' }}
+          LIVE_CONFIRMATION: ${{ inputs.live_confirmation }}
         run: python3 atlas-tools/release/studio/render-checkout-config.py worker/plotart-studio production
+      - name: PRODUCTION · LIVE credentials are LIVE credentials, never the TEST ones (values never printed)
+        if: ${{ inputs.target == 'production' && inputs.enable_live_pilot }}
+        env:
+          LIVE_STUDIO_KEY: ${{ secrets.CHECKOUT_LIVE_STRIPE_STUDIO_KEY }}
+          LIVE_RUNTIME_KEY: ${{ secrets.CHECKOUT_LIVE_STRIPE_RUNTIME_KEY }}
+          LIVE_WEBHOOK_SECRET: ${{ secrets.CHECKOUT_LIVE_STRIPE_WEBHOOK_SECRET }}
+          LIVE_RESEND_KEY: ${{ secrets.CHECKOUT_LIVE_RESEND_API_KEY }}
+        run: bash atlas-tools/release/studio/check-stripe-live-secrets.sh
       - name: PRODUCTION · build only (dry run)
         if: ${{ inputs.target == 'production' && inputs.dry_run }}
         working-directory: worker/plotart-studio
@@ -184,7 +215,7 @@ jobs:
           set -o pipefail
           npx --yes wrangler@4.150.0 deploy --config wrangler.checkout.production.toml --dry-run --outdir "$RUNNER_TEMP/build" > "$RUNNER_TEMP/wrangler.log" 2>&1 || { grep -iE "error" "$RUNNER_TEMP/wrangler.log" | head -5; exit 1; }
           echo "DRY RUN OK: plotart-checkout builds with the pilot off; nothing was sent to Cloudflare"
-      - name: PRODUCTION · deploy plotart-checkout (pilot off)
+      - name: PRODUCTION · deploy plotart-checkout (pilot off, or LIVE when explicitly enabled)
         id: prod_deploy
         if: ${{ inputs.target == 'production' && !inputs.dry_run }}
         working-directory: worker/plotart-studio
@@ -196,12 +227,33 @@ jobs:
           npx --yes wrangler@4.150.0 deploy --config wrangler.checkout.production.toml > "$RUNNER_TEMP/wrangler.log" 2>&1 \
             || { echo "FAIL  the deployment did not complete"; grep -iE "error" "$RUNNER_TEMP/wrangler.log" | grep -viE "token" | head -5; exit 1; }
           grep -E "^Current Version ID" "$RUNNER_TEMP/wrangler.log" || true
+      - name: PRODUCTION · write the LIVE secrets (live checkout only; values never printed)
+        id: prod_live_secrets
+        if: ${{ inputs.target == 'production' && !inputs.dry_run && inputs.enable_live_pilot }}
+        working-directory: worker/plotart-studio
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.STUDIO_CF_DEPLOY_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
+          LIVE_STUDIO_KEY: ${{ secrets.CHECKOUT_LIVE_STRIPE_STUDIO_KEY }}
+          LIVE_RUNTIME_KEY: ${{ secrets.CHECKOUT_LIVE_STRIPE_RUNTIME_KEY }}
+          LIVE_WEBHOOK_SECRET: ${{ secrets.CHECKOUT_LIVE_STRIPE_WEBHOOK_SECRET }}
+          LIVE_RESEND_KEY: ${{ secrets.CHECKOUT_LIVE_RESEND_API_KEY }}
+        run: |
+          set -o pipefail
+          W="npx --yes wrangler@4.150.0"
+          printf '%s' "$LIVE_RUNTIME_KEY"    | $W secret put STRIPE_SECRET_KEY     --config wrangler.checkout.production.toml > /dev/null
+          printf '%s' "$LIVE_WEBHOOK_SECRET" | $W secret put STRIPE_WEBHOOK_SECRET --config wrangler.checkout.production.toml > /dev/null
+          printf '%s' "$LIVE_RESEND_KEY"     | $W secret put RESEND_API_KEY        --config wrangler.checkout.production.toml > /dev/null
+          # the Studio's live key; its live configuration comes from production.json's checkout_live block (studio-deploy.yml)
+          printf '%s' "$LIVE_STUDIO_KEY"     | $W secret put STRIPE_SECRET_KEY --name plotart-studio > /dev/null
+          echo "- LIVE secrets written to plotart-checkout and plotart-studio (values not shown)" >> "$GITHUB_STEP_SUMMARY"
       - name: PRODUCTION · checked from outside (pilot off; nothing is created)
         id: prod_live
         if: ${{ inputs.target == 'production' && !inputs.dry_run }}
         env:
           ORIGIN: ${{ vars.CHECKOUT_PRODUCTION_ORIGIN }}
-        run: sleep 10 && bash atlas-tools/release/studio/checkout-outside-check.sh "$ORIGIN" off
+          MODE: ${{ inputs.enable_live_pilot && 'live' || 'off' }}
+        run: sleep 10 && bash atlas-tools/release/studio/checkout-outside-check.sh "$ORIGIN" "$MODE"
       - name: PRODUCTION · roll back after a failed check
         if: ${{ failure() && inputs.target == 'production' && steps.prod_deploy.outcome == 'success' && steps.prod_live.outcome == 'failure' }}
         working-directory: worker/plotart-studio

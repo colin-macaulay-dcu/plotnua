@@ -2,7 +2,10 @@
 -- New tables only. No existing table, row, agreement, acceptance, gallery position or publishing record is changed.
 -- Triggers are refusal-only BEFORE triggers on these NEW tables (migration-check policy, 6 Nov 2026): this migration
 -- needs the founder's explicit approval of this exact file, and both production backups, before it runs.
--- Test mode only: every provider-facing table carries livemode = 0 by CHECK.
+-- Every provider-facing table records livemode (0 test, 1 live). Changed 20 Nov 2026 from CHECK (livemode = 0), before this
+-- migration has run in production (the TEST database keeps the stricter original, which is all a test-mode pilot needs).
+-- The code decides the mode (stripe.js stripeMode: live only by the explicit, production-only gate) and never mixes them:
+-- an account, order or event of the other mode is refused.
 -- No foreign keys to artists/artworks: order and accounting records follow their own retention, and never block the
 -- existing participation-deletion schedule.
 
@@ -58,7 +61,7 @@ CREATE TABLE IF NOT EXISTS payment_accounts (
   provider          TEXT NOT NULL DEFAULT 'stripe' CHECK (provider = 'stripe'),
   account_id        TEXT NOT NULL UNIQUE CHECK (account_id GLOB 'acct_*'),
   country           TEXT NOT NULL CHECK (country IN ('IE', 'GB')),
-  livemode          INTEGER NOT NULL DEFAULT 0 CHECK (livemode = 0),
+  livemode          INTEGER NOT NULL DEFAULT 0 CHECK (livemode IN (0, 1)),
   charges_enabled   INTEGER NOT NULL DEFAULT 0 CHECK (charges_enabled IN (0, 1)),
   payouts_enabled   INTEGER NOT NULL DEFAULT 0 CHECK (payouts_enabled IN (0, 1)),
   details_submitted INTEGER NOT NULL DEFAULT 0 CHECK (details_submitted IN (0, 1)),
@@ -115,7 +118,7 @@ CREATE TABLE IF NOT EXISTS checkout_orders (
   paid_at            TEXT,
   linked_order_check TEXT,                                   -- JSON: linked-order safeguard result and founder's confirmation (operational only; not an AML assessment)
   retain_until       TEXT,                                   -- fixed when the order ends: 31 Dec of the 6th year after the last money movement, or +2 years if none
-  livemode           INTEGER NOT NULL DEFAULT 0 CHECK (livemode = 0),
+  livemode           INTEGER NOT NULL DEFAULT 0 CHECK (livemode IN (0, 1)),
   created_by         TEXT NOT NULL,
   created_at         TEXT NOT NULL,
   updated_at         TEXT NOT NULL,
@@ -177,7 +180,7 @@ CREATE TABLE IF NOT EXISTS payment_events (
   event_id     TEXT PRIMARY KEY CHECK (event_id GLOB 'evt_*'),
   type         TEXT NOT NULL,
   account      TEXT,
-  livemode     INTEGER NOT NULL CHECK (livemode = 0),
+  livemode     INTEGER NOT NULL CHECK (livemode IN (0, 1)),
   created      INTEGER NOT NULL,
   object_id    TEXT,
   order_id     TEXT,
