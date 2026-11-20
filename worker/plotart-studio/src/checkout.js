@@ -432,6 +432,11 @@ export async function adminView(env) {
     unprocessed_events: await all(env, "SELECT event_id, type, status, attempts, detail, received_at FROM payment_events WHERE status IN ('deferred','failed','received') ORDER BY received_at LIMIT 50"),
     pending_refunds: await pendingRefunds(env), holds: await holdsView(env), refund_funding_steps: REFUND_FUNDING_STEPS,
     owed: await owedRows(env, 'w.settled_cents < w.cents'), owed_settled_recently: await owedRows(env, "w.settled_cents = w.cents AND w.arisen_at >= ?", plusDays(now(), -90)),
+    // Fully settled items drop out of "owed", but a bank can still return a transfer after that. These are the settled items
+    // with a bank transfer executed in the last RETURN_WINDOW_DAYS that is not yet recorded as returned, so the founder can record it.
+    owed_returnable: await owedRows(env, `w.settled_cents = w.cents AND EXISTS (SELECT 1 FROM checkout_owed_payments p WHERE p.owed_id = w.id AND p.method = 'bank_transfer'
+      AND p.executed_on >= ? AND NOT EXISTS (SELECT 1 FROM checkout_owed_payment_returns r WHERE r.payment_id = p.id))`, addDate(dublinDate(Date.now()), -RETURN_WINDOW_DAYS)),
+    return_window_days: RETURN_WINDOW_DAYS,
     pause: await pauseState(env), absence: await absenceChecklist(env),
     founder_alerts: await founderAlerts(env),
     reimbursements: await reimbursementsView(env, "(processing IS NULL OR json_extract(processing, '$.status') IN ('awaiting_fee','outstanding'))"),
@@ -1835,6 +1840,8 @@ export async function recordShortfallPaid(env, founder, id, b) {
 }
 /* A bank transfer that was returned (for example, rejected by the receiving bank): the outstanding amount is restored and the
    payment stays in the history, marked returned. The due date does not change. */
+/* How long after execution a settled bank transfer stays listed for recording a return (the server accepts a return at any time). */
+export const RETURN_WINDOW_DAYS = 90;
 export async function recordShortfallReturned(env, founder, id, b) {
   await requireInstalled(env);
   const o = await getOrder(env, id);
@@ -1846,11 +1853,15 @@ export async function recordShortfallReturned(env, founder, id, b) {
   if (!/^\d{4}-\d{2}-\d{2}$/.test(on) || on > dublinDate(Date.now()) || on < p.executed_on) throw new Bad('Give the date the bank shows the transfer as returned (YYYY-MM-DD, not before it was executed)', 400);
   if (why.length < 5 || why.length > 300 || looksLikeBankDetails(why)) throw new Bad('Give the reason the bank gave (5–300 characters, no bank details)', 400);
   const rr = rid('or');
-  await env.DB.batch([
+  try { await env.DB.batch([
     st(env, 'INSERT INTO checkout_owed_payment_returns (id, payment_id, owed_id, order_id, cents, returned_on, reason, recorded_by, at) VALUES (?,?,?,?,?,?,?,?,?)', rr, p.id, p.owed_id, o.id, p.cents, on, why, founder, now()),
     st(env, 'UPDATE checkout_owed SET settled_cents = settled_cents - ?, last_return_id = ? WHERE id = ?', p.cents, rr, p.owed_id),
     ledgerSt(env, o.id, 'processing_shortfall_paid', -p.cents, rr, `bank transfer ${p.reference} returned ${on}: ${why}`.slice(0, 200)),
-    evSt(env, o.id, founder, 'shortfall_transfer_returned', o.status, o.status, { payment: p.id, amount: p.cents, returned_on: on, reason: why })]);
+    evSt(env, o.id, founder, 'shortfall_transfer_returned', o.status, o.status, { payment: p.id, amount: p.cents, returned_on: on, reason: why })]); }
+  catch (e) {   // two submissions at once: the UNIQUE payment_id refuses the second and the whole batch rolls back (no double reversal)
+    if (/UNIQUE/i.test(String(e && e.message))) throw new Bad('This transfer is already recorded as returned', 409);
+    throw e;
+  }
   await setOwedFlag(env, o.id);
   // one correction notice per returned transfer (the return can be recorded only once: UNIQUE payment_id), test sink unless sending is approved
   const w = await one(env, 'SELECT * FROM checkout_owed WHERE id = ?', p.owed_id);
