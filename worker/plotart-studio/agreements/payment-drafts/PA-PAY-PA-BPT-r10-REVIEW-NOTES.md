@@ -40,8 +40,7 @@ Internal. These are drafts for founder review: nothing is issued or published, a
   - Commissions and Art for Hire: new commissions and hire are excluded from the pilot;
   - Mobile Gallery host wording: addressed to galleries;
   - TRIQ.
-- **Launch-only (published with V18, not before):** add to terms.html after "…is not acting as agent for either party.":
-  > In the PlotArt payment pilot, PlotArt receives cancellation notices and complaints on the artist's behalf, and makes refunds on the artist's instruction, as the PlotArt buyer purchase terms explain.
+- **terms.html: no change needed (corrected 20 Nov 2026).** Its sentence "…is not acting as agent for either party" sits in the section on supplier enquiries and introductions (garden-room suppliers), not PlotArt, so it does not conflict with PA-PAY 2.6 / PA-BPT 1.3(c).
 
 ## Consistency check (PA-GAA, PA-FAA, PA-PAY r10, PA-BPT r9, Privacy V18, website)
 
@@ -57,7 +56,7 @@ Internal. These are drafts for founder review: nothing is issued or published, a
 | Notices and confirmations | Emailed (PA-PAY 7.5; PA-BPT 3.3, 8.4; V18 email service) ✔. **Requires the live-email code change.** |
 | Founding Artists | Commission-free enquiries untouched (PA-PAY 0.2, 0.4(b), 1.3) ✔ |
 | Retention | PA-PAY 8.1 = PA-BPT 9.1 = V18 change 5 ✔ |
-| Agency | PA-PAY 2.6 / PA-BPT 1.3(c) vs terms.html "not acting as agent": resolved by the launch-only sentence ✔ |
+| Agency | PA-PAY 2.6 / PA-BPT 1.3(c): terms.html's "not acting as agent" applies only to supplier introductions, so there is no conflict ✔ |
 
 ## Checked against official guidance (20 Nov 2026)
 
@@ -83,7 +82,7 @@ Internal. These are drafts for founder review: nothing is issued or published, a
 
 ## Remaining blockers before a live payment
 1. Founder approval of these texts, then issue: fingerprinted HTML, migration 0018 and artist acceptance.
-2. V18 and the terms.html sentence published with the launch.
+2. V18 published with the launch (`python3 atlas-tools/privacy_v18_layer.py --apply`).
 3. A code change to enable live mode and live email. Both are refused by design today.
 4. Production migration and deployment; live Stripe activation and the artist's live onboarding.
 5. Transit insurance confirmed for the first shipment; a funded Stripe platform float.
