@@ -12,6 +12,16 @@ const HERE = new URL('..', import.meta.url).pathname;
 const results = [];
 const check = (n, ok, d = '') => { results.push(!!ok); console.log(`  ${ok ? 'PASS' : 'FAIL'}  ${n}${!ok && d ? `  [${String(typeof d === 'string' ? d : JSON.stringify(d)).slice(0, 600)}]` : ''}`); };
 const sha = b => createHash('sha256').update(b).digest('hex');
+/* Browser for the real-browser checks. Configurable, no machine-specific paths required:
+     PLAYWRIGHT_FROM  a package.json whose node_modules holds playwright (default: MINIFLARE_FROM, then this project)
+     CHROME_PATH      a Chrome/Chromium executable (default: /usr/bin/google-chrome if present, else Playwright's own browser) */
+const browserTools = async () => {
+  const { createRequire } = await import('node:module');
+  const from = [process.env.PLAYWRIGHT_FROM, process.env.MINIFLARE_FROM, HERE + 'package.json'].filter(Boolean);
+  let pw = null; for (const f of from) { try { pw = createRequire(f)('playwright'); break; } catch { /* next */ } }
+  const exe = process.env.CHROME_PATH || (existsSync('/usr/bin/google-chrome') ? '/usr/bin/google-chrome' : undefined);
+  return { pw, launch: o => pw.chromium.launch({ ...(exe ? { executablePath: exe } : {}), ...o }), where: exe || 'Playwright’s bundled Chromium' };
+};
 const ago = days => new Date(Date.now() - days * 86400_000).toISOString();
 const TODAY_IE = new Date().toLocaleDateString('en-CA', { timeZone: 'Europe/Dublin' });
 
@@ -975,8 +985,8 @@ console.log('— seven-day reimbursement rule (PA-PAY §3.3(b), provisional) · 
       writeFileSync('/tmp/plotart-alerts-open.json', JSON.stringify(k4, null, 1));
       globalThis.SCREEN_ORDER = K.id;
       if (process.env.SCREENSHOT) { try {
-        const { createRequire } = await import('node:module'); const pw = createRequire('/tmp/claude-0/studio-tools/package.json')('playwright');
-        const br = await pw.chromium.launch({ executablePath: '/usr/bin/google-chrome' }), pg = await br.newPage({ viewport: { width: 1500, height: 1100 }, locale: 'en-IE', timezoneId: 'Europe/Dublin' });
+        const BT = await browserTools(); if (!BT.pw) throw new Error('playwright not found (set PLAYWRIGHT_FROM)');
+        const br = await BT.launch(), pg = await br.newPage({ viewport: { width: 1500, height: 1100 }, locale: 'en-IE', timezoneId: 'Europe/Dublin' });
         await pg.setExtraHTTPHeaders({ 'Cf-Access-Jwt-Assertion': token(FOUNDER) });
         await pg.goto(S.url + '/admin/checkout', { waitUntil: 'load' }); await pg.waitForSelector('#founder-alerts table', { timeout: 20000 }); await pg.addStyleTag({ content: '.st-top{position:static !important}' });
         await (await pg.$('#founder-alerts')).screenshot({ path: '/tmp/founder-alerts-panel.png' }); await br.close();
@@ -1040,8 +1050,8 @@ console.log('— seven-day reimbursement rule (PA-PAY §3.3(b), provisional) · 
         && a0.absence.assumed_return === true && /^Preview: no return date entered yet\. Assumed return date for this preview: \w+day \d+ \w+ \d{4} \(three days from today\)\./.test(a0.absence.horizon_note), { y0, note: a0.absence.horizon_note }); }
     const back = new Date(Date.now() + 5 * 86400_000).toLocaleDateString('en-CA', { timeZone: 'Europe/Dublin' });
     if (process.env.SCREENSHOT) { try {
-      const { createRequire } = await import('node:module'); const pw = createRequire('/tmp/claude-0/studio-tools/package.json')('playwright');
-      const b0 = await pw.chromium.launch({ executablePath: '/usr/bin/google-chrome' }), p0 = await b0.newPage({ viewport: { width: 1300, height: 1000 }, locale: 'en-IE', timezoneId: 'Europe/Dublin' });
+      const BT = await browserTools(); if (!BT.pw) throw new Error('playwright not found (set PLAYWRIGHT_FROM)');
+      const b0 = await BT.launch(), p0 = await b0.newPage({ viewport: { width: 1300, height: 1000 }, locale: 'en-IE', timezoneId: 'Europe/Dublin' });
       await p0.setExtraHTTPHeaders({ 'Cf-Access-Jwt-Assertion': token(FOUNDER) }); await p0.goto(S.url + '/admin/checkout', { waitUntil: 'load' }); await p0.waitForSelector('#pause-control', { timeout: 20000 });
       await p0.addStyleTag({ content: '.st-top{position:static !important}' }); await p0.evaluate(() => document.querySelector('#pause-control details').open = true);
       await (await p0.$('#pause-control')).screenshot({ path: '/tmp/pause-control-not-paused.png' }); await b0.close();
@@ -1074,8 +1084,8 @@ console.log('— seven-day reimbursement rule (PA-PAY §3.3(b), provisional) · 
       && (await order(Y)).quote_expires_at === expBefore.Y, { cNew: cNew.j, iD: iD.j, gY: gY.s, pY: pY.s });
     writeFileSync('/tmp/plotart-buyer-paused.html', gY.t);
     if (process.env.SCREENSHOT) { try {
-      const { createRequire } = await import('node:module'); const pw = createRequire('/tmp/claude-0/studio-tools/package.json')('playwright');
-      const br2 = await pw.chromium.launch({ executablePath: '/usr/bin/google-chrome' }), pg = await br2.newPage({ viewport: { width: 1300, height: 1000 }, locale: 'en-IE', timezoneId: 'Europe/Dublin' });
+      const BT = await browserTools(); if (!BT.pw) throw new Error('playwright not found (set PLAYWRIGHT_FROM)');
+      const br2 = await BT.launch(), pg = await br2.newPage({ viewport: { width: 1300, height: 1000 }, locale: 'en-IE', timezoneId: 'Europe/Dublin' });
       await pg.setExtraHTTPHeaders({ 'Cf-Access-Jwt-Assertion': token(FOUNDER) });
       await pg.goto(S.url + '/admin/checkout', { waitUntil: 'load' }); await pg.waitForSelector('#pause-control', { timeout: 20000 }); await pg.addStyleTag({ content: '.st-top{position:static !important}' });
       await (await pg.$('#pause-control')).screenshot({ path: '/tmp/pause-control-paused.png' });
@@ -1314,16 +1324,15 @@ check('RH3 once the dispute is resolved, the past-retention order is deleted at 
 
 // ---- founder forms in a real browser (20 Nov 2026): Issue buyer quote and Refund without browser dialogs
 console.log('— founder forms in a real browser (no dialogs)');
-{ const { createRequire } = await import('node:module');
-  let pw = null; try { pw = createRequire(process.env.PLAYWRIGHT_FROM || '/tmp/claude-0/studio-tools/package.json')('playwright'); } catch { /* reported below */ }
-  check('UI0 a real browser is available for the founder-form checks (Playwright + Chrome)', !!pw && existsSync('/usr/bin/google-chrome'));
-  if (pw && existsSync('/usr/bin/google-chrome')) {
+{ const BT = await browserTools(); let BR = null; try { if (BT.pw) BR = await BT.launch(); } catch { /* reported below */ }
+  check(`UI0 a real browser is available for the founder-form checks (Playwright from PLAYWRIGHT_FROM/MINIFLARE_FROM; browser: ${BT.where})`, !!BR);
+  if (BR) {
     const work = (await q("SELECT id FROM artworks WHERE artist_id = 'agal' AND availability = 'available' AND id NOT IN (SELECT artwork_id FROM artwork_sales) AND id NOT IN (SELECT artwork_id FROM artwork_reservations) AND id NOT IN (SELECT artwork_id FROM checkout_orders WHERE status NOT IN ('cancelled', 'expired')) ORDER BY id LIMIT 1"))[0];
     check('UI0b an available artwork with no live, paid or draft order exists for the browser checks', !!work);
     const ou = await makeOrder('agal', work.id, 'PA-E-261101-AAAAAA', 60000, 5000, 'ui@example.test');
     await call('POST', `/api/admin/checkout/orders/${ou.id}/send`, FOUNDER, {});
     await call('POST', `/api/checkout/orders/${ou.id}/approve`, GAL, { quote_version: (await order(ou.id)).quote_version, confirm: ALL });
-    const br = await pw.chromium.launch({ executablePath: '/usr/bin/google-chrome' }), pg = await br.newPage({ viewport: { width: 1300, height: 1000 }, locale: 'en-IE', timezoneId: 'Europe/Dublin' });
+    const br = BR, pg = await br.newPage({ viewport: { width: 1300, height: 1000 }, locale: 'en-IE', timezoneId: 'Europe/Dublin' });
     const dialogs = []; pg.on('dialog', d => { dialogs.push(d.type() + ': ' + d.message()); d.dismiss().catch(() => {}); });
     await pg.setExtraHTTPHeaders({ 'Cf-Access-Jwt-Assertion': token(FOUNDER) });
     const card = () => pg.locator(`#order-${ou.id}`);

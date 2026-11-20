@@ -4,10 +4,12 @@
 //   node test/local.mjs --serve 8787     (a local Studio for screenshots and manual testing)
 import { createRequire } from 'node:module';
 import { generateKeyPairSync, createSign, randomUUID } from 'node:crypto';
-import { readFileSync } from 'node:fs';
+import { readFileSync, existsSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { statements } from './sql.mjs';
-const require = createRequire(process.env.MINIFLARE_FROM || '/tmp/claude-0/studio-tools/package.json');
+// MINIFLARE_FROM: a package.json whose node_modules holds miniflare; else the shared tools folder if present, else this project.
+const TOOLS = '/tmp/claude-0/studio-tools/package.json';
+const require = createRequire(process.env.MINIFLARE_FROM || (existsSync(TOOLS) ? TOOLS : fileURLToPath(new URL('../package.json', import.meta.url))));
 const { Miniflare } = require('miniflare');
 
 const HERE = fileURLToPath(new URL('..', import.meta.url));
