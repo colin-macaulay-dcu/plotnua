@@ -1,0 +1,29 @@
+# READ-ONLY probe (Stage 1 setup check, founder approval required before it is pushed). Pushed ONLY on the branch
+# probe/website-production-config, never merged. It runs the real verify-founder-approval.sh with the same token
+# permissions as "Release to production" (actions: read, contents: read) against this probe's own run.
+# Expected result: checks 1 and 2 PASS (the environment and its branch rule are readable and configured as approved),
+# then a refusal at check 3, "no approval by colin-macaulay-dcu for website-production", because this probe is never
+# approved. Any other refusal names what is wrong. No environment, no secrets, no App key, no writes, no deployment.
+name: website-production probe (read-only)
+on:
+  push:
+    branches: [probe/website-production-config]
+permissions:
+  actions: read
+  contents: read
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Read website-production with the release job's permissions
+        run: |
+          set +e
+          out=$(bash atlas-tools/release/verify-founder-approval.sh "${{ github.run_id }}" 2>&1); echo "$out"
+          if echo "$out" | grep -q "REFUSED: run ${{ github.run_id }}: no approval by colin-macaulay-dcu for website-production"; then
+            echo "PROBE OK: website-production is readable and configured as approved (required reviewer, no bypass, main only)"; exit 0
+          fi
+          echo "PROBE FAILED: see the refusal above"; exit 1
