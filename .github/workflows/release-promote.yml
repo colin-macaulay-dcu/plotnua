@@ -15,6 +15,11 @@
 #      "ops-alert" issue is opened. A release that changed workflow files cannot be reverted by the App (no Workflows
 #      permission, by design): the run stops and asks for the founder's rollback.
 #   6. Every release is tagged prod/<UTC time>-<sha> and summarised in the run summary: the audit trail.
+# FOUNDER APPROVAL (Stage 1, founder decision 20 Nov 2026): between steps 2 and 3, job "preview" shows the commit and
+# every changed file in the run summary, and job "approval" waits on the website-production environment, whose required
+# reviewer is the founder. Nothing reaches main until he approves that run; rejecting it changes nothing. Job "promote"
+# then re-checks, fail closed, that the environment requires him and that this run carries his approval, and promote.sh
+# still refuses if main has moved on while the release waited (newer work is never overwritten).
 # Worker and database changes are NOT released here: they keep their own workflows. The PlotArt, Garden and Idea Board
 # publishers promote their own releases (and those releases' rollbacks) themselves, so this workflow leaves those
 # branches alone and never races them.
@@ -30,12 +35,12 @@ permissions:
   issues: write       # ops-alert issues
   actions: read       # promote-after-gate.sh reads the gate result of an automatic rollback (nothing is dispatched)
 
-concurrency:
-  group: production-site
-  cancel-in-progress: false
+# The production-site lock is taken by the promote job only (not the whole run), so a release waiting for the founder's
+# approval never holds up the Garden noticeboard and Idea Board publishers, which take the same lock (20 Nov 2026).
 
 jobs:
-  promote:
+  # Shows the founder exactly what would be released. Read-only: no environment, no App key, contents: read.
+  preview:
     if: >-
       github.event.workflow_run.conclusion == 'success' &&
       (github.event.workflow_run.event == 'push' || github.event.workflow_run.event == 'workflow_dispatch') &&
@@ -46,6 +51,59 @@ jobs:
       !startsWith(github.event.workflow_run.head_branch, 'release/auto/rollback-plotart-') &&
       !startsWith(github.event.workflow_run.head_branch, 'release/auto/rollback-garden-') &&
       !startsWith(github.event.workflow_run.head_branch, 'release/auto/rollback-ideas-')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    timeout-minutes: 10
+    outputs:
+      release: ${{ steps.preview.outputs.release }}
+    env:
+      SHA: ${{ github.event.workflow_run.head_sha }}
+      BRANCH: ${{ github.event.workflow_run.head_branch }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+      - name: Trusted copy of the release tooling (from main)
+        run: cp -r atlas-tools/release "$RUNNER_TEMP/release-tools"
+      - name: Show the release commit and changed files (nothing is changed)
+        id: preview
+        run: bash "$RUNNER_TEMP/release-tools/release-preview.sh" "$SHA" "$BRANCH"
+
+  # The founder's checkpoint. GitHub holds this job until a required reviewer of website-production approves or rejects
+  # it (Review deployments on the run page). It has no steps that touch the repository and no secrets.
+  approval:
+    needs: preview
+    if: needs.preview.outputs.release == 'true'
+    runs-on: ubuntu-latest
+    permissions: {}
+    timeout-minutes: 5
+    environment:
+      name: website-production
+      url: ${{ github.server_url }}/${{ github.repository }}/commit/${{ github.event.workflow_run.head_sha }}
+    steps:
+      - name: Founder approval received
+        env:
+          SHA: ${{ github.event.workflow_run.head_sha }}
+        run: echo "approved for release $SHA"
+
+  promote:
+    needs: [preview, approval]
+    if: >-
+      github.event.workflow_run.conclusion == 'success' &&
+      (github.event.workflow_run.event == 'push' || github.event.workflow_run.event == 'workflow_dispatch') &&
+      startsWith(github.event.workflow_run.head_branch, 'release/auto/') &&
+      !startsWith(github.event.workflow_run.head_branch, 'release/auto/plotart-') &&
+      !startsWith(github.event.workflow_run.head_branch, 'release/auto/garden-') &&
+      !startsWith(github.event.workflow_run.head_branch, 'release/auto/ideas-') &&
+      !startsWith(github.event.workflow_run.head_branch, 'release/auto/rollback-plotart-') &&
+      !startsWith(github.event.workflow_run.head_branch, 'release/auto/rollback-garden-') &&
+      !startsWith(github.event.workflow_run.head_branch, 'release/auto/rollback-ideas-') &&
+      needs.preview.outputs.release == 'true' && needs.approval.result == 'success'
+    concurrency:
+      group: production-site
+      cancel-in-progress: false
     runs-on: ubuntu-latest
     # The release App's key lives in this environment (deployment branches: main only). This workflow always runs on
     # main (workflow_run). deployment: false = the key is available but no deployment record is created.
@@ -66,6 +124,9 @@ jobs:
       # how it is itself checked, promoted or rolled back.
       - name: Trusted copy of the release tooling (from main)
         run: cp -r atlas-tools/release "$RUNNER_TEMP/release-tools"
+      # Fail closed: the website-production environment must require the founder, and this run must carry his approval.
+      - name: Founder approval recorded on this run (refuse otherwise)
+        run: bash "$RUNNER_TEMP/release-tools/verify-founder-approval.sh" "${{ github.run_id }}"
       # A 1-hour token of the "PlotNua Release" GitHub App (Contents only, this repository only). Used for ONE thing:
       # pushing an automatic rollback to its release/auto/rollback-* branch, so that its gate starts on a push.
       - name: Release push token (PlotNua Release App)
