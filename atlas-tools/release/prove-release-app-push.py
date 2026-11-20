@@ -135,7 +135,8 @@ def check(workflows, texts, tools):
     if (rp.get("concurrency") or {}).get("group") == "production-site" or (pr.get("concurrency") or {}).get("group") != "production-site":
         errs.append("A9 the production-site lock must be taken by the promote job only, never while a release waits for approval")
     for name, w in workflows.items():
-        if name != "release-promote.yml" and "website-production" in json.dumps(w, default=str):
+        envs = [((j or {}).get("environment") or {}) for j in ((w or {}).get("jobs") or {}).values()]
+        if name != "release-promote.yml" and any(str(e.get("name") if isinstance(e, dict) else e).strip().lower() == "website-production" for e in envs):
             errs.append("A9 %s must not use the website-production environment (founder approval is for website releases only)" % name)
     # A8 the key only in the releasing jobs
     allowed = set(RELEASING)
