@@ -4,6 +4,7 @@
 -- needs the founder's explicit approval of this exact file, and both production backups, before it runs.
 -- Every provider-facing table records livemode (0 test, 1 live). Changed 20 Nov 2026 from CHECK (livemode = 0), before this
 -- migration has run in production (the TEST database keeps the stricter original, which is all a test-mode pilot needs).
+-- checkout_sessions.id accepts cs_test_* and cs_live_* (20 Nov 2026, same reason); any other id is refused.
 -- The code decides the mode (stripe.js stripeMode: live only by the explicit, production-only gate) and never mixes them:
 -- an account, order or event of the other mode is refused.
 -- No foreign keys to artists/artworks: order and accounting records follow their own retention, and never block the
@@ -162,7 +163,7 @@ BEGIN SELECT RAISE(ABORT, 'artwork_sales rows are kept with their order (retenti
 
 -- 7 · Hosted checkout sessions. At most one open session per order; a revised quote supersedes it first.
 CREATE TABLE IF NOT EXISTS checkout_sessions (
-  id              TEXT PRIMARY KEY CHECK (id GLOB 'cs_test_*'),
+  id              TEXT PRIMARY KEY CHECK (id GLOB 'cs_test_*' OR id GLOB 'cs_live_*'),
   order_id        TEXT NOT NULL REFERENCES checkout_orders(id),
   quote_version   INTEGER NOT NULL,
   amount_total    INTEGER NOT NULL,
