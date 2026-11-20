@@ -77,7 +77,7 @@ def gal_ok(g):
     seg = g[g.index("<!-- pa-artist-apply-gallery:begin -->") + len("<!-- pa-artist-apply-gallery:begin -->"):g.index("<!-- pa-artist-apply-gallery:end -->")]
     txt = re.sub(r"\s+", " ", re.sub(r"<[^>]+>", " ", seg))
     hero = g[g.index('<section class="pa-vg2-hero">'):g.index("</section>", g.index('<section class="pa-vg2-hero">'))] if '<section class="pa-vg2-hero">' in g else ""
-    return ('href="../join.html#your-gallery"' in seg and "pa-artist-apply-gallery:begin" in hero and txt.strip() == "Apply to join →"
+    return ('href="../join.html#your-gallery"' in seg and "pa-artist-apply-gallery:begin" in hero and txt.strip() == "Artist submissions →"
             and not re.search(r"\d|%|commission|fee|exclusiv", txt, re.I) and "plotart-join.css" not in g)
 
 def edit(site, f, old, new, count=1):
@@ -123,7 +123,7 @@ def closed_matches(built, f, m):
         return built == m
     if f == "founding-25.html":
         return built == _cut(m, "<!-- pa-artist-apply-pointer:begin -->", "<!-- pa-artist-apply-pointer:end -->", before="\n  ")
-    if f == "living-gallery.html":   # the For artists "Apply to join PlotArt" link (16 Nov 2026); the gallery link stays
+    if f == "living-gallery.html":   # the For artists "Artist submissions" link (16 Nov 2026; reworded 20 Nov 2026); the gallery link stays
         return built == _cut(m, "<!-- pa-artist-apply-living:begin -->", "<!-- pa-artist-apply-living:end -->")
     if f == "gallery/index.html":
         return built == _cut(m, "<!-- pa-artist-apply-gallery:begin -->", "<!-- pa-artist-apply-gallery:end -->", before="\n")
@@ -161,7 +161,25 @@ try:
     js = open(os.path.join(site, "plotart", "assets", "pa-apply.js"), encoding="utf-8").read()
     f25js = subprocess.run(["git", "-C", ROOT, "show", "43655d8^:plotart/assets/f25-apply.js"], capture_output=True, text=True).stdout
     body = lambda t: t[t.index("(function () {"):]
-    check("O3 open: the script is the Founding 25 script with only its page hooks renamed", body(js) == body(f25js).replace("data-f25-", "data-ap-").replace("'f25-", "'ap-"))
+    # Artist Submissions (founder brief, 20 Nov 2026): the only differences beyond the renamed hooks are these
+    # user-facing messages, reworded from "application" to "submission"/"portfolio"; behaviour is unchanged.
+    _AS_WORDING = (("'Please write a short biography of at least 40 characters (up to 1,000).'", "'Please write a brief introduction of at least 40 characters (up to 1,000).'"),
+                   ("'Please confirm you have read the privacy notice for applications.'", "'Please confirm you have read the privacy notice for artist submissions.'"),
+                   ("on ? 'Sending your application' : 'Send my application';", "on ? 'Sending your portfolio' : 'Submit my portfolio';"),
+                   ("\"Applications aren't open at the moment, so your image wasn't sent.\"", "\"Submissions aren't open at the moment, so your image wasn't sent.\""),
+                   ("\"Applications aren't open at the moment, so nothing was sent.", "\"Submissions aren't open at the moment, so nothing was sent."),
+                   ("\"We're receiving a lot of applications right now.", "\"We're receiving a lot of submissions right now."),
+                   ("'Something went wrong on our side, and your application may not have been sent.", "'Something went wrong on our side, and your portfolio may not have been sent."),
+                   ("\"We couldn't reach PlotArt, so your application may not have been sent. Your details are still here: check your connection and press Send again.\"",
+                    "\"We couldn't reach PlotArt, so your portfolio may not have been sent. Your details are still here: check your connection and press Submit again.\""))
+    def _as_words(s):
+        for o, n in _AS_WORDING:
+            if s.count(o) != 1:
+                return None
+            s = s.replace(o, n)
+        return s
+    check("O3 open: the script is the Founding 25 script with only its page hooks renamed and its eight messages reworded for submissions",
+          body(js) == _as_words(body(f25js).replace("data-f25-", "data-ap-").replace("'f25-", "'ap-")))
     for st in ("not_open", "paused", "closed"):
         check("N %s: nothing published: homepage, Founding 25 page and Artists' Gallery as committed less only the recruitment (exactly as committed, and so as main, while closed), no recruitment page or script" % st,
               closed_same(S[st][0], "index.html") and closed_same(S[st][0], "founding-25.html") and closed_same(S[st][0], "gallery/index.html") and closed_same(S[st][0], "living-gallery.html") and absent(S[st][0]))
@@ -185,17 +203,17 @@ try:
                      ("W3 the 24-month principle in one plain sentence, with the particular-work rule", "An introduction counts for 24 months." in jv and "only the sale of a particular work you were already discussing in writing within those 24 months carries commission." in jv),
                      ("W3b introductions are defined as in PA-GAA r5 5.3 and 7.1: a PlotArt reference, or told before the sale is agreed; collectors already known are independent; original work or signed limited-edition print only",
                       "through an enquiry carrying a PlotArt reference, or tell you before the sale is agreed that they found you through PlotArt." in jv and "Collectors you already knew, or who found you another way, are independent." in jv and "an original work or signed limited-edition print" in jv),
-                     ("W4 applying doesn't guarantee a place", jv.count("applying doesn’t guarantee a place") + jv.count("Applying doesn’t guarantee a place") >= 2),
+                     ("W4 submitting doesn't guarantee an invitation, and invitations are at the gallery's discretion", jv.count("doesn’t guarantee an invitation") >= 2 and "invitations to join are extended at the gallery’s discretion" in jv),
                      ("W5 Founding Artists keep their own agreement; new artists join as Gallery Artists", "Founding Artists keep their own agreement; artists joining now become Gallery Artists." in jv),
                      ("W6 no worked calculation, euro amount, large figure or 'deserves to be discovered' anywhere in the recruitment",
                       "€" not in jv and 'class="big"' not in j and "deserves" not in jv + bv and "€" not in bv),
-                     ("W7 the homepage band is an invitation: no figures or commercial terms, links to Join PlotArt and the gallery",
-                      "An invitation to join PlotArt." in bv and not re.search(r"\d|%|commission|fee|exclusiv", bv, re.I) and 'href="join.html#apply"' in band and 'href="gallery/"' in band),
-                     ("W9 the Artists' Gallery carries one 'Apply to join →' button in its introduction, above the collection, linking to Join PlotArt's gallery section",
+                     ("W7 the homepage band is the Artist Submissions band: no figures or commercial terms, links to Join PlotArt and the gallery",
+                      "Artist Submissions" in bv and not re.search(r"\d|%|commission|fee|exclusiv", bv, re.I) and 'href="join.html"' in band and 'href="gallery/"' in band),
+                     ("W9 the Artists' Gallery carries one 'Artist submissions →' button in its introduction, above the collection, linking to Join PlotArt's gallery section",
                       gal_ok(open(os.path.join(site, "plotart", "gallery", "index.html"), encoding="utf-8").read())),
-                     ("W10 the Living Gallery For artists section keeps its Artists' Gallery link and, only while open, the one Apply to join PlotArt link",
+                     ("W10 the Living Gallery For artists section keeps its Artists' Gallery link and, only while open, the one Artist submissions link",
                       (lambda lgo: lgo.count("pa-artist-apply-living:begin") == 1 and 'href="gallery/" data-pa-track="living_artists_gallery"' in lgo
-                       and '<!-- pa-artist-apply-living:begin --><a class="pa-btn pa-btn--solid" href="join.html#apply" data-pa-track="living_artists_join">Apply to join PlotArt</a><!-- pa-artist-apply-living:end -->' in lgo)(open(os.path.join(site, "plotart", "living-gallery.html"), encoding="utf-8").read())
+                       and '<!-- pa-artist-apply-living:begin --><a class="pa-btn pa-btn--solid" href="join.html" data-pa-track="living_artists_join">Artist submissions</a><!-- pa-artist-apply-living:end -->' in lgo)(open(os.path.join(site, "plotart", "living-gallery.html"), encoding="utf-8").read())
                       and all('join.html' not in open(os.path.join(S[st][0], "plotart", "living-gallery.html"), encoding="utf-8").read()
                               and 'href="gallery/" data-pa-track="living_artists_gallery"' in open(os.path.join(S[st][0], "plotart", "living-gallery.html"), encoding="utf-8").read()
                               for st in ("not_open", "paused", "closed"))),
@@ -210,19 +228,19 @@ try:
         ("B4 a changed privacy confirmation", "open", "join.html", "privacy notice for PlotArt artist applications", "privacy notice"),
         ("B5 a discount line", "open", "join.html", "<dt>Fees</dt>", "<dt>Discounts</dt><dd>Collectors may receive a discount.</dd><dt>Fees</dt>"),
         ("B6 individual terms advertised", "open", "curatorial-policy.html", "<li><h3>Without cost</h3>", "<li><h3>Individual terms may be agreed</h3><p>x</p></li><li><h3>Without cost</h3>"),
-        ("B7 a large 15% figure brought back", "open", "join.html", "<h1>An invitation to join PlotArt.</h1>", "<h1>An invitation to join PlotArt.</h1><p class=\"big\">15%</p>"),
+        ("B7 a large 15% figure brought back", "open", "join.html", "<h1>Artist Submissions</h1>", "<h1>Artist Submissions</h1><p class=\"big\">15%</p>"),
         ("B8 a worked price example brought back", "open", "join.html", "<dt>Fees</dt>", "<dt>Example</dt><dd>Sold for €1,000, you receive €850.</dd><dt>Fees</dt>"),
         ("B9 commission on every sale through the gallery", "open", "join.html", "sold to a collector PlotArt introduced to you", "sold through your PlotArt gallery"),
         ("B10 the independent-sales sentence removed", "open", "join.html", " It doesn’t apply to your independent sales.", ""),
         ("B11 the 24-month explanation removed", "open", "join.html", "An introduction counts for 24 months.", "Introductions count."),
-        ("B12 a selection board mentioned", "open", "join.html", "We read every application and may ask to see a little more.", "Our selection board reads every application."),
-        ("B13 commercial terms on the homepage band", "open", "index.html", "Independent artists, distinctive work and new connections with collectors.", "15% commission. No fees. No exclusivity."),
+        ("B12 a selection board mentioned", "open", "join.html", "We review every submission individually and may ask to see a little more.", "Our selection board reads every submission."),
+        ("B13 commercial terms on the homepage band", "open", "index.html", "whose work may complement the gallery.", "whose work may complement the gallery. 15% commission. No fees. No exclusivity."),
         ("B14 a criterion dropped from the policy", "open", "curatorial-policy.html", "<h3>Contribution to the gallery</h3>", "<h3>Fit</h3>"),
         ("B15 'deserves to be discovered' brought back", "open", "join.html", "<h2>A gallery of your own.</h2>", "<h2>Your art deserves to be discovered.</h2>"),
         ("B16 the programme distinction removed", "open", "join.html", " Founding Artists keep their own agreement; artists joining now become Gallery Artists.", ""),
         ("B17 opening without the privacy section for artist applications (V15)", "open", "../privacy.html", "PLOTNUA-PLOTART-ARTIST-APPLICATIONS-PRIVACY-V15", "NO-V15"),
         ("B18 the 15% made bold", "open", "join.html", "PlotArt’s commission is 15% of", "PlotArt’s commission is <strong>15%</strong> of"),
-        ("B23 commercial terms on the Artists' Gallery button", "open", "gallery/index.html", "Apply to join →</a>", "Apply to join → 15% commission. No fees.</a>"),
+        ("B23 commercial terms on the Artists' Gallery button", "open", "gallery/index.html", "Artist submissions →</a>", "Artist submissions → 15% commission. No fees.</a>"),
         ("B24 the Artists' Gallery button published while applications are closed", "closed", "gallery/index.html", '<p class="pa-vg2-sub">Discover original Irish art and the artists behind it.</p></div>', '<p class="pa-vg2-sub">Discover original Irish art and the artists behind it.</p></div>\n<!-- pa-artist-apply-gallery:begin --><a href="../join.html#your-gallery">Apply to join →</a><!-- pa-artist-apply-gallery:end -->'),
         ("B19 a Direct Approach no longer needs to come before the sale is agreed", "open", "join.html", " before the sale is agreed that they found you", " that they found you"),
         ("B20 commission widened from original work to any work", "open", "join.html", "an original work or signed limited-edition print sold", "any work or product sold"),

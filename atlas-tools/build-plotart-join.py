@@ -38,8 +38,9 @@ if STATE not in STATES:
 if STATE == "open" and not (EP or "").endswith("/v1/art-space-register/gallery-application"):
     sys.exit("open needs gallery_application_endpoint to be the approved route")
 OPEN = STATE == "open"
-LINE = {"open": "Applications are open.", "paused": "Applications are paused at the moment.", "closed": "Applications have closed.", "not_open": "Applications are not yet open."}[STATE]
-BADGE = "Applications open" if OPEN else LINE
+# Invitation-led wording (founder brief "Artist Submissions", 20 Nov 2026): the public route is a portfolio submission.
+LINE = {"open": "Submissions are open.", "paused": "Submissions are paused at the moment.", "closed": "Submissions have closed.", "not_open": "Submissions are not yet open."}[STATE]
+BADGE = "Submissions open" if OPEN else LINE
 E = lambda s: html.escape(s, quote=True)
 
 # The three confirmations: exactly the Worker's (guard L18 compares them).
@@ -132,12 +133,12 @@ def form():
     <p class="pa-note" id="ap-required" style="margin:0">Fields marked {REQ} are required.</p>
     <fieldset class="pa-fs"><legend class="pa-fs-l">About you</legend>
     <div class="pa-field"><label for="ap-name">Artist's name {REQ}<span class="hint">The name you work under</span></label><input id="ap-name" name="artist_name" type="text" maxlength="80" autocomplete="name" required aria-describedby="ap-name-e"><p class="pa-err" id="ap-name-e" hidden></p></div>
-    <div class="pa-field"><label for="ap-email">Email address {REQ}<span class="hint">We'll only use it about your application</span></label><input id="ap-email" name="email" type="email" maxlength="120" autocomplete="email" inputmode="email" required aria-describedby="ap-email-e"><p class="pa-err" id="ap-email-e" hidden></p></div>
+    <div class="pa-field"><label for="ap-email">Email address {REQ}<span class="hint">We'll only use it about your submission</span></label><input id="ap-email" name="email" type="email" maxlength="120" autocomplete="email" inputmode="email" required aria-describedby="ap-email-e"><p class="pa-err" id="ap-email-e" hidden></p></div>
     <div class="pa-field"><label for="ap-region">County {REQ}<span class="hint">Where you live or work on the island of Ireland</span></label><select id="ap-region" name="region" required aria-describedby="ap-region-e"><option value="">Choose a county</option>{counties}</select><p class="pa-err" id="ap-region-e" hidden></p></div>
     </fieldset>
     <fieldset class="pa-fs"><legend class="pa-fs-l">Your work</legend>
     <div class="pa-field"><label for="ap-medium">Primary medium {REQ}</label><select id="ap-medium" name="medium" required aria-describedby="ap-medium-e"><option value="">Choose your main medium</option>{media}</select><p class="pa-err" id="ap-medium-e" hidden></p></div>
-    <div class="pa-field"><label for="ap-bio">Short artist biography {REQ}<span class="hint">A few sentences about you and your practice, in your own words. Please don't include health or other sensitive personal details</span></label><textarea id="ap-bio" name="bio" rows="6" minlength="40" maxlength="1000" required aria-describedby="ap-bio-c ap-bio-e"></textarea><p class="pa-count" id="ap-bio-c" aria-live="off">0 of 1,000 characters</p><p class="pa-err" id="ap-bio-e" hidden></p></div>
+    <div class="pa-field"><label for="ap-bio">Brief introduction {REQ}<span class="hint">A few sentences about you and your practice, in your own words. Please don't include health or other sensitive personal details</span></label><textarea id="ap-bio" name="bio" rows="6" minlength="40" maxlength="1000" required aria-describedby="ap-bio-c ap-bio-e"></textarea><p class="pa-count" id="ap-bio-c" aria-live="off">0 of 1,000 characters</p><p class="pa-err" id="ap-bio-e" hidden></p></div>
     <div class="pa-field pa-upload" data-ap-upload><p class="pa-up-h" id="ap-images-l">Show us your work</p><p class="hint" id="ap-images-h">Upload three to five images that give us a sense of your practice, ideally recent work from a single body of work.</p>
       <div class="pa-drop" data-ap-drop tabindex="0" role="button" aria-labelledby="ap-images-l" aria-describedby="ap-images-h ap-images-s ap-images-e"><p class="pa-drop-t"><span class="pa-drop-desk"><strong>Drag images here</strong> or <span class="pa-drop-btn">choose images</span></span><span class="pa-drop-touch"><strong>Choose images</strong> from your photos or files</span></p><p class="pa-drop-s" id="ap-images-s">JPG, PNG or WebP · up to five<span class="pa-drop-desk"> · you can also paste an image</span></p></div>
       <input id="ap-images" type="file" accept="image/jpeg,image/png,image/webp" multiple hidden data-ap-file>
@@ -150,23 +151,23 @@ def form():
     <div class="pa-field"><label for="ap-social">Instagram or professional profile<span class="hint">An @handle or a link</span></label><input id="ap-social" name="social_link" type="text" maxlength="120" autocapitalize="off" spellcheck="false" aria-describedby="ap-social-e"><p class="pa-err" id="ap-social-e" hidden></p></div>
     <div class="pa-field"><label for="ap-info">Anything else you'd like us to know<span class="hint">For example, if a gallery represents you</span></label><textarea id="ap-info" name="additional_info" rows="3" maxlength="800" aria-describedby="ap-info-e"></textarea><p class="pa-err" id="ap-info-e" hidden></p></div>
     </fieldset>
-    <fieldset class="pa-fs"><legend class="pa-fs-l">Before you apply {REQ}</legend>
+    <fieldset class="pa-fs"><legend class="pa-fs-l">Before you submit {REQ}</legend>
     <label class="pa-check"><input type="checkbox" name="eligibility" required aria-describedby="ap-eligibility-e"> <span data-ap-sentence="eligibility">{E(SENT['eligibility'])}</span></label><p class="pa-err" id="ap-eligibility-e" hidden></p>
     <label class="pa-check"><input type="checkbox" name="ownership" required aria-describedby="ap-ownership-e"> <span data-ap-sentence="ownership">{E(SENT['ownership'])}</span></label><p class="pa-err" id="ap-ownership-e" hidden></p>
     <label class="pa-check"><input type="checkbox" name="privacy" required aria-describedby="ap-privacy-e"> <span data-ap-sentence="privacy">{E(SENT['privacy'])}</span></label><p class="pa-err" id="ap-privacy-e" hidden></p>
-    <p class="pa-note" style="margin:6px 0 0">Read the <a href="../privacy.html#plotart-artist-applications">privacy notice for applications</a> and <a href="#terms">the terms</a>. Accepting the Gallery Artist Agreement, and agreeing what's published, come later and separately.</p>
+    <p class="pa-note" style="margin:6px 0 0">Read the <a href="../privacy.html#plotart-artist-applications">privacy notice for artist submissions</a> and <a href="#terms">the terms</a>. If you’re invited to join, accepting the Gallery Artist Agreement and agreeing what’s published come later and separately.</p>
     </fieldset>
     <div class="pa-hp" aria-hidden="true"><label>Leave this blank <input type="text" name="nickname" tabindex="-1" autocomplete="off"></label></div>
-    <div><button class="pa-btn pa-btn--solid" type="submit" data-pa-track="join_application_submit"><span data-ap-label>Send my application</span></button></div>
-    <p class="pa-select-note" style="margin-top:0">Submitting an application doesn't guarantee selection. Decisions reflect the gallery’s curatorial direction.</p>
+    <div><button class="pa-btn pa-btn--solid" type="submit" data-pa-track="join_application_submit"><span data-ap-label>Submit my portfolio</span></button></div>
+    <p class="pa-select-note" style="margin-top:0">Submitting a portfolio doesn’t guarantee an invitation. Decisions reflect the gallery’s curatorial direction.</p>
     <p class="pa-proto-note" role="status" aria-live="polite" data-ap-status hidden></p>
   </form>
   <div class="pa-f25-done" data-ap-done hidden tabindex="-1">
-    <p class="pa-eyebrow">Application received</p>
-    <h3>Thank you. Your application is in.</h3>
-    <p>We'll email you at <strong data-ap-done-email></strong> within two working days to confirm, with your application reference. If it hasn't arrived by then, please check your spam folder.</p>
-    <p>Every application is read individually, and we'll let you know the outcome by email. Applying doesn't guarantee a place, and nothing is published without your approval.</p>
-    <p class="pa-note">To update or withdraw your application, email <a href="mailto:hello@plotnua.ie">hello@plotnua.ie</a>.</p>
+    <p class="pa-eyebrow">Submission received</p>
+    <h3>Thank you. Your portfolio is with us.</h3>
+    <p>We'll email you at <strong data-ap-done-email></strong> within two working days to confirm, with your submission reference. If it hasn't arrived by then, please check your spam folder.</p>
+    <p>Every submission is reviewed individually, and we’ll let you know the outcome by email. Submitting doesn’t guarantee an invitation, and nothing is published without your approval.</p>
+    <p class="pa-note">To update or withdraw your submission, email <a href="mailto:hello@plotnua.ie">hello@plotnua.ie</a>.</p>
   </div>
   </div>"""
 
@@ -174,27 +175,27 @@ def form():
 def apply_section():
     # Built only in the "open" state (the page does not exist otherwise).
     return f"""<section class="pa-sec pa-sec--deep pa-jn-apply" id="apply"><div class="pa-wrap pa-cols-2" style="align-items:start">
-  <div class="pa-apply-intro"><h2 class="pa-apply-title">Apply.</h2>
-  <p>It takes about ten minutes. You’ll need a short biography and three to five images of your work, or a link to your portfolio.</p>
+  <div class="pa-apply-intro"><h2 class="pa-apply-title">Submit your portfolio.</h2>
+  <p>It takes a few minutes: a short introduction, and a link to your portfolio or three to five images of your work.</p>
   <p class="pa-jn-status" style="margin-top:22px">{LINE}</p>
-  <p class="pa-jn-note">Every application is read individually, and applying doesn’t guarantee a place.</p>
-  <p class="pa-jn-note">Already on PlotNua’s <a href="../artist-register.html">Artist Register</a>? That remains a private expression of interest; applying here is a separate step.</p></div>
+  <p class="pa-jn-note">Every submission is reviewed individually. Submitting doesn’t guarantee an invitation; invitations to join are extended at the gallery’s discretion.</p>
+  <p class="pa-jn-note">Already on PlotNua’s <a href="../artist-register.html">Artist Register</a>? That remains a private expression of interest; submitting here is a separate step.</p></div>
 {form()}
 </div></section>"""
 
 
 def join_page():
-    return head("join.html", "Join PlotArt | PlotArt",
-                "An invitation to join PlotArt, a curated online gallery of contemporary Irish art. Applications from artists based or working on the island of Ireland.",
+    return head("join.html", "Artist Submissions | PlotArt",
+                "Artist submissions to PlotArt, a curated online gallery presenting a selected collection of contemporary Irish artists.",
                 JOIN_STYLE) + HEADER + f"""<main id="main">
 
 <section class="pa-jn-hero pa-jn-hero--join"><div class="pa-wrap">
   <p class="pa-jn-k">For artists</p>
-  <h1>An invitation to join PlotArt.</h1>
+  <h1>Artist Submissions</h1>
   <div class="pa-jn-grid pa-jn-hero-foot">
     <p class="pa-jn-status">{LINE}</p>
-    <div><p class="pa-jn-lede">A curated space for contemporary Irish art. We welcome applications from artists based or working on the island of Ireland.</p>
-    <div class="pa-jn-acts"><a class="pa-jn-btn" href="#apply" data-pa-track="join_apply_click">Apply</a><a class="pa-jn-link" href="curatorial-policy.html">Curatorial policy</a></div></div>
+    <div><p class="pa-jn-lede">PlotArt is an independent, curated online gallery showcasing contemporary Irish art. We welcome portfolio submissions from artists whose work may complement the gallery. Every submission is considered individually, and invitations to join are extended at the gallery’s discretion.</p>
+    <div class="pa-jn-acts"><a class="pa-jn-btn" href="#apply" data-pa-track="join_apply_click">Submit Your Portfolio</a><a class="pa-jn-link" href="curatorial-policy.html">Curatorial policy</a></div></div>
   </div>
 </div></section>
 
@@ -211,20 +212,20 @@ def join_page():
 <section class="pa-jn-sec"><div class="pa-wrap pa-jn-grid">
   <p class="pa-jn-k">Selection</p>
   <div><h2>How we select.</h2>
-  <p>Every application is read individually. We have no house style and welcome every medium and subject. Applying doesn’t guarantee a place. <a href="curatorial-policy.html">Read the curatorial policy</a>.</p>
+  <p>Every submission is reviewed individually. We have no house style and welcome every medium and subject. Submitting a portfolio doesn’t guarantee an invitation. <a href="curatorial-policy.html">Read the curatorial policy</a>.</p>
   <ul class="pa-jn-list">
 {CRIT_SHORT}
   </ul></div>
 </div></section>
 
 <section class="pa-jn-sec" id="how"><div class="pa-wrap pa-jn-grid">
-  <p class="pa-jn-k">Applying</p>
-  <div><h2>From application to gallery.</h2>
+  <p class="pa-jn-k">Submissions</p>
+  <div><h2>From portfolio to gallery.</h2>
   <ol class="pa-jn-steps">
-    <li><h3>Apply</h3><p>A short biography and three to five images of your work, or a link to your portfolio.</p></li>
-    <li><h3>Review</h3><p>We read every application and may ask to see a little more.</p></li>
-    <li><h3>Decision</h3><p>We let you know by email, whatever the outcome.</p></li>
-    <li><h3>Your gallery</h3><p>If you’re selected, you’re invited to PlotArt Studio, where you read and accept the Gallery Artist Agreement before your gallery is first published. Nothing goes live without your approval.</p></li>
+    <li><h3>Submit your portfolio</h3><p>A short introduction, and a link to your portfolio or three to five images of your work.</p></li>
+    <li><h3>Review</h3><p>We review every submission individually and may ask to see a little more.</p></li>
+    <li><h3>Invitation</h3><p>If your work complements the gallery, we invite you to join. We let you know by email, whatever the outcome.</p></li>
+    <li><h3>Your gallery</h3><p>If you’re invited, you join PlotArt Studio, where you read and accept the Gallery Artist Agreement before your gallery is first published. Nothing goes live without your approval.</p></li>
   </ol></div>
 </div></section>
 
@@ -232,7 +233,7 @@ def join_page():
   <p class="pa-jn-k">Terms</p>
   <div><h2 class="pa-jn-h-sm">The practical details</h2>
   <dl class="pa-jn-terms">
-    <dt>Fees</dt><dd>There are no fees to apply, to join or to remain.</dd>
+    <dt>Fees</dt><dd>There are no fees to submit, to join or to remain.</dd>
     <dt>Commission</dt><dd>PlotArt’s commission is 15% of the price of an original work or signed limited-edition print sold to a collector PlotArt introduced to you, once the sale is complete. It doesn’t apply to your independent sales.</dd>
     <dt>Introductions</dt><dd>A collector is introduced by PlotArt when they reach you through an enquiry carrying a PlotArt reference, or tell you before the sale is agreed that they found you through PlotArt. Collectors you already knew, or who found you another way, are independent.</dd>
     <dt>Duration</dt><dd>An introduction counts for 24 months. After that, only the sale of a particular work you were already discussing in writing within those 24 months carries commission.</dd>
@@ -250,7 +251,7 @@ def join_page():
 
 def policy_page():
     return head("curatorial-policy.html", "Curatorial Policy | PlotArt",
-                "How PlotArt, a curated online gallery of contemporary Irish art, considers applications from artists.",
+                "How PlotArt, a curated online gallery of contemporary Irish art, considers artist submissions.",
                 POLICY_STYLE) + HEADER + f"""<main id="main">
 
 <section class="pa-jn-hero"><div class="pa-wrap">
@@ -263,13 +264,13 @@ def policy_page():
   <p class="pa-jn-k">Approach</p>
   <div><h2>No house style.</h2>
   <p>We welcome every medium, from painting, drawing and printmaking to photography, sculpture, ceramics, textiles, digital and interdisciplinary practice, and every subject. We look at the strength of each artist’s work and what it would bring to the gallery as a whole.</p>
-  <p>Our first artists joined through the Founding 25, our introductory programme. The gallery continues to grow through individual applications.</p></div>
+  <p>Our first artists joined through the Founding 25, our introductory programme. The gallery continues to grow carefully, through individual invitations.</p></div>
 </div></section>
 
 <section class="pa-jn-sec"><div class="pa-wrap pa-jn-grid">
   <p class="pa-jn-k">Criteria</p>
   <div><h2>Five considerations.</h2>
-  <p>No single criterion decides an application, and there is no scoring formula. Selection is a matter of curatorial judgement across all five.</p>
+  <p>No single criterion decides a submission, and there is no scoring formula. Selection is a matter of curatorial judgement across all five.</p>
   <ul class="pa-jn-list">
 {CRIT_FULL}
   </ul></div>
@@ -277,13 +278,13 @@ def policy_page():
 
 <section class="pa-jn-sec"><div class="pa-wrap pa-jn-grid">
   <p class="pa-jn-k">Process</p>
-  <div><h2>How applications are considered.</h2>
+  <div><h2>How submissions are considered.</h2>
   <ul class="pa-jn-list">
-    <li><h3>Individually</h3><p>Every application is read with its images, statement and any links you provide.</p></li>
+    <li><h3>Individually</h3><p>Every submission is reviewed with its images, introduction and any links you provide.</p></li>
     <li><h3>With care</h3><p>We may ask for further images or a little more about your practice before we decide.</p></li>
-    <li><h3>Without guarantee</h3><p>Submitting an application doesn’t guarantee selection. Decisions reflect the direction of the collection, not a judgement on the value of your practice.</p></li>
+    <li><h3>Without guarantee</h3><p>Submitting a portfolio doesn’t guarantee an invitation. Decisions reflect the direction of the collection, not a judgement on the value of your practice.</p></li>
     <li><h3>Always answered</h3><p>We’ll tell you the outcome, whatever it is.</p></li>
-    <li><h3>Without cost</h3><p>Applying costs nothing, and selection is never influenced by payment.</p></li>
+    <li><h3>Without cost</h3><p>Submitting costs nothing, and selection is never influenced by payment.</p></li>
   </ul></div>
 </div></section>
 
@@ -294,7 +295,7 @@ def policy_page():
     <li><h3>How the gallery is arranged</h3><p>We set the order of galleries in the Artists’ Gallery by hand, for curatorial reasons. It is never influenced by any fee, payment or commission arrangement.</p></li>
     <li><h3>Independence</h3><p>You keep your copyright, and there is no exclusivity: you remain free to show and sell your work elsewhere and to work with other galleries.</p></li>
   </ul>
-  <div class="pa-jn-acts"><a class="pa-jn-btn" href="join.html" data-pa-track="policy_join_click">Apply to join</a><a class="pa-jn-link" href="mailto:hello@plotnua.ie">hello@plotnua.ie</a></div></div>
+  <div class="pa-jn-acts"><a class="pa-jn-btn" href="join.html" data-pa-track="policy_join_click">Submit Your Portfolio</a><a class="pa-jn-link" href="mailto:hello@plotnua.ie">hello@plotnua.ie</a></div></div>
 </div></section>
 </main>
 """ + FOOTER
@@ -308,9 +309,9 @@ def home_band():
     return f"""{HB}
 <section class="pa-jn-band" aria-labelledby="joinInviteH"><div class="pa-wrap pa-jn-band-grid">
   <div class="pa-jn-band-head"><p class="pa-jn-k">For artists</p>
-  <h2 id="joinInviteH">An invitation to join PlotArt.</h2></div>
-  <div class="pa-jn-band-body"><p class="pa-jn-lede">A curated space for contemporary Irish art. Independent artists, distinctive work and new connections with collectors.</p>
-  <div class="pa-jn-acts"><a class="pa-jn-btn" href="join.html#apply" data-pa-track="home_join">Apply to join</a><a class="pa-jn-link" href="gallery/" data-pa-track="home_join_gallery">Explore the gallery</a></div>
+  <h2 id="joinInviteH">Artist Submissions</h2></div>
+  <div class="pa-jn-band-body"><p class="pa-jn-lede">PlotArt presents a selected collection of contemporary Irish artists. We welcome expressions of interest from artists whose work may complement the gallery.</p>
+  <div class="pa-jn-acts"><a class="pa-jn-btn" href="join.html" data-pa-track="home_join">Submit Your Portfolio</a><a class="pa-jn-link" href="gallery/" data-pa-track="home_join_gallery">Explore the gallery</a></div>
   <p class="pa-jn-status"><span class="pa-open-badge">{BADGE}</span></p></div>
 </div></section>
 {HE}"""
@@ -318,7 +319,7 @@ def home_band():
 
 F25_OLD_BAND = re.compile(r'<section class="pa-sec pa-invite-sec" aria-labelledby="f25InviteH">.*?</div></section>', re.S)
 FB, FE = "<!-- pa-artist-apply-pointer:begin -->", "<!-- pa-artist-apply-pointer:end -->"
-POINTER = '<p class="pa-muted">PlotArt now welcomes applications to the Artists’ Gallery. <a href="join.html">Join PlotArt</a>.</p>'
+POINTER = '<p class="pa-muted">PlotArt welcomes portfolio submissions for the Artists’ Gallery. <a href="join.html">Artist submissions</a>.</p>'
 
 
 # While applications are not open, NOTHING of the recruitment is published (founder decision 13 Nov 2026): the homepage
@@ -370,7 +371,7 @@ def gallery_band():
     # The Artists' Gallery application button (founder decisions 16 Nov 2026): one discreet button inside the compact
     # introduction, beside the heading, so the artwork stays above the fold. Built only in the "open" state.
     return (GB + '\n  <p class="pa-vg2-act"><a class="pa-btn pa-btn--ghost" href="../join.html#%s" data-pa-track="gallery_join">'
-            'Apply to join →</a></p>\n' + GE) % JOIN_ANCHOR
+            'Artist submissions →</a></p>\n' + GE) % JOIN_ANCHOR
 
 
 def gallery_page(s):
@@ -391,7 +392,7 @@ def gallery_page(s):
 LB, LE = "<!-- pa-artist-apply-living:begin -->", "<!-- pa-artist-apply-living:end -->"
 # 17 Nov 2026 (founder decision): the two links became the PlotArt buttons: outlined secondary, off-white primary.
 L_ANCHOR = '<a class="pa-btn pa-btn--ghost" href="gallery/" data-pa-track="living_artists_gallery">Explore the Artists’ Gallery</a>'
-L_LINK = '<a class="pa-btn pa-btn--solid" href="join.html#apply" data-pa-track="living_artists_join">Apply to join PlotArt</a>'   # straight to the form (17 Nov 2026)
+L_LINK = '<a class="pa-btn pa-btn--solid" href="join.html" data-pa-track="living_artists_join">Artist submissions</a>'   # straight to the form (17 Nov 2026)
 
 
 def living_page(s):

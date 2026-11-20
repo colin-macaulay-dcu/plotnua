@@ -52,7 +52,7 @@
     email: ['email', 'Please enter a valid email address, like name@example.com.'],
     region: ['region', 'Please choose the county where you live or work.'],
     medium: ['medium', 'Please choose your primary medium.'],
-    bio: ['bio', 'Please write a short biography of at least 40 characters (up to 1,000).'],
+    bio: ['bio', 'Please write a brief introduction of at least 40 characters (up to 1,000).'],
     portfolio: ['portfolio', 'Please add at least three images of your work, or a link to an online portfolio.'],
     images: ['portfolio', 'Something went wrong with one of your images. Please remove it and add it again.'],
     website: ['website', 'Please check your website address, for example yourwebsite.ie'],
@@ -60,7 +60,7 @@
     additional_info: ['additional_info', 'Please keep this to 800 characters or fewer.'],
     eligibility_text: ['eligibility', 'Please confirm you are 18 or over and based or working on the island of Ireland.'],
     ownership_text: ['ownership', 'Please confirm the work is your own, or that you are authorised to represent the artist.'],
-    privacy_text: ['privacy', 'Please confirm you have read the privacy notice for applications.']
+    privacy_text: ['privacy', 'Please confirm you have read the privacy notice for artist submissions.']
   };
   var ERR_ID = { artist_name: 'name', email: 'email', region: 'region', medium: 'medium', bio: 'bio', portfolio: 'portfolio', images: 'images',
                  website: 'website', social_link: 'social', additional_info: 'info',
@@ -125,7 +125,7 @@
     sending = on;
     button.disabled = on;
     button.setAttribute('aria-busy', on ? 'true' : 'false');
-    label.textContent = on ? 'Sending your application' : 'Send my application';
+    label.textContent = on ? 'Sending your portfolio' : 'Submit my portfolio';
   }
   function succeed() {
     done.querySelector('[data-ap-done-email]').textContent = v('email');
@@ -193,7 +193,7 @@
       .then(function (j) { clearTimeout(timer); if (j && j.state === 'stored' && j.id) { im.id = j.id; im.state = 'done'; } else { im.state = 'error'; im.note = j && j.state; } })
       .catch(function () { clearTimeout(timer); im.state = 'error'; im.note = 'network'; })
       .then(function () {
-        if (im.state === 'error') imageNote(im.note === 'not_open' ? "Applications aren't open at the moment, so your image wasn't sent." :
+        if (im.state === 'error') imageNote(im.note === 'not_open' ? "Submissions aren't open at the moment, so your image wasn't sent." :
           im.note === 'slow_down' ? 'Lots of images at once: please wait a moment, then remove the image and add it again.' :
           "One of your images couldn't be uploaded. Please remove it and add it again, or check your connection.");
         drawImages();
@@ -282,17 +282,17 @@
         } else if (j && j.state === 'refused') {
           show("Something in the form didn't go through. Please reload the page and try again, or email hello@plotnua.ie.", 'error');
         } else if (j && j.state === 'not_open') {
-          show("Applications aren't open at the moment, so nothing was sent. Please check back later.", 'error');
+          show("Submissions aren't open at the moment, so nothing was sent. Please check back later.", 'error');
         } else if (j && j.state === 'slow_down') {
-          show("We're receiving a lot of applications right now. Your details are still here: please try again a little later.", 'retry');
+          show("We're receiving a lot of submissions right now. Your details are still here: please try again a little later.", 'retry');
         } else {
-          show('Something went wrong on our side, and your application may not have been sent. Your details are still here: please try again in a moment.', 'retry');
+          show('Something went wrong on our side, and your portfolio may not have been sent. Your details are still here: please try again in a moment.', 'retry');
         }
       })
       .catch(function () {
         clearTimeout(timer);
         busy(false);
-        show("We couldn't reach PlotArt, so your application may not have been sent. Your details are still here: check your connection and press Send again.", 'retry');
+        show("We couldn't reach PlotArt, so your portfolio may not have been sent. Your details are still here: check your connection and press Submit again.", 'retry');
       });
   });
 })();

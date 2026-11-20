@@ -108,8 +108,9 @@ const strip = s => s.replace(' pa-pills--hire', '').replace(/<a class="pa-pill" 
     if (f.startsWith('plotart/art-for-hire/') || OTHER_RELEASES.has(f)) return false;
     const o = old(f); if (o === null) return true;
     if (!existsSync(path.join(REPO, f))) return true;   // a deleted file is a change to explain, never a crash
-    const n = brandOld(readFileSync(path.join(REPO, f), 'utf8'));
-    if (n === o) return false;   // differs from main only by the approved header logo
+    const raw = readFileSync(path.join(REPO, f), 'utf8');
+    const n = brandOld(raw);
+    if (n === o || raw === o) return false;   // differs from main only by the approved header logo
     if (f in BRAND_PINS) return sha(n) !== BRAND_PINS[f];
     if (f in COLOUR_RELEASE) return !colourReleaseOk(f, n, o);
     // 11 Nov 2026: the gallery marks add one block to plotart.css and one self-contained block to plotart.js (nothing else in either)
@@ -123,12 +124,13 @@ const strip = s => s.replace(' pa-pills--hire', '').replace(/<a class="pa-pill" 
       // 16 Nov 2026: the compact introduction (pa-vg2-hero) carries the application button; it is its own release
       const noInvite = c => c.replace('\n<link rel="stylesheet" href="../assets/plotart-join.css">', '').replace(/<!-- pa-artist-apply-gallery:begin -->[\s\S]*?<!-- pa-artist-apply-gallery:end -->\n\n/, '')
         .replace(/<section class="pa-vg2-hero">[\s\S]*?<\/section>\n\n/, '');
-      return strip(noInvite(n)) !== strip(noInvite(o));
+      // main already carries the approved header logo, so the page is compared both as written and with the logo swapped back
+      return strip(noInvite(n)) !== strip(noInvite(o)) && strip(noInvite(raw)) !== strip(noInvite(o));
     }
     // 16 Nov 2026: the Living Gallery application link is written by the Join PlotArt builder (prove-plotart-join.py W10)
     if (f === 'plotart/living-gallery.html') {
       const noApply = c => c.replace(/<!-- pa-artist-apply-living:begin -->[\s\S]*?<!-- pa-artist-apply-living:end -->/, '');
-      return strip(noApply(n)) !== strip(noApply(o));
+      return strip(noApply(n)) !== strip(noApply(o)) && strip(noApply(raw)) !== strip(noApply(o));
     }
     return !f.endsWith('.html') || strip(n) !== strip(o);
   });

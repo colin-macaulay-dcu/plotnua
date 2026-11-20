@@ -384,7 +384,7 @@ _badge = re.findall(r'<span class="pa-open-badge[^"]*">([^<]*)</span>', home)
 # gallery_application_state (L18); the Founding 25 state is then shown only on the Founding 25 page.
 _HOME_STATE = "open" if GA_OPEN else STATE        # closed recruitment: the homepage keeps the closed Founding 25 band
 _HOME_LINE = {"open": "Applications are open.", "paused": "Applications are paused at the moment.", "closed": "Applications have closed."}.get(_HOME_STATE, "Applications are not yet open.")
-need(len(_badge) == 1 and html.unescape(_badge[0]) == ("Applications open" if _HOME_STATE == "open" else _HOME_LINE), "L8 the homepage badge is not the %s wording" % _HOME_STATE)
+need(len(_badge) == 1 and html.unescape(_badge[0]) == ("Submissions open" if GA_OPEN else "Applications open" if _HOME_STATE == "open" else _HOME_LINE), "L8 the homepage badge is not the %s wording" % _HOME_STATE)
 for other in {"Applications are open.", "Applications are paused at the moment.", "Applications have closed.", "Applications are not yet open."} - {_HOME_LINE}:
     need(other not in visible_text(home), "L8 the homepage shows another state's line: %s" % other)
 if STATE == "open":
@@ -780,7 +780,8 @@ if HIRE_ON:
 GA_STATES = ("not_open", "open", "paused", "closed")
 need(GA_STATE in GA_STATES, "L18 gallery_application_state is missing or not one of %s" % ", ".join(GA_STATES))
 need(GA_EP == "https://plotnua-art-space-register.colin-a41.workers.dev/v1/art-space-register/gallery-application", "L18 gallery_application_endpoint is not the approved route")
-GA_LINE = {"open": "Applications are open.", "paused": "Applications are paused at the moment.", "closed": "Applications have closed."}.get(GA_STATE, "Applications are not yet open.")
+# Artist Submissions (founder brief, 20 Nov 2026): Join PlotArt states the state as a submissions line.
+GA_LINE = {"open": "Submissions are open.", "paused": "Submissions are paused at the moment.", "closed": "Submissions have closed."}.get(GA_STATE, "Submissions are not yet open.")
 _jp, _cp = os.path.join(PA, "join.html"), os.path.join(PA, "curatorial-policy.html")
 _join = open(_jp, encoding="utf-8").read() if os.path.exists(_jp) else ""
 _pol = open(_cp, encoding="utf-8").read() if os.path.exists(_cp) else ""
@@ -809,15 +810,15 @@ else:
     _priv = os.path.join(SITE, "privacy.html") if os.path.exists(os.path.join(SITE, "privacy.html")) else os.path.join(ROOT, "privacy.html")
     need("PLOTNUA-PLOTART-ARTIST-APPLICATIONS-PRIVACY-V15" in open(_priv, encoding="utf-8").read(), "L18 open: the privacy notice section for artist applications (V15) must be live")
     need(_jv.count(GA_LINE) == 2, "L18 join.html must state '%s' in its hero and its Apply section" % GA_LINE)
-    for _o in {"Applications are paused at the moment.", "Applications have closed.", "Applications are not yet open."}:
+    for _o in {"Submissions are paused at the moment.", "Submissions have closed.", "Submissions are not yet open.", "Applications are open.", "Applications are paused at the moment.", "Applications have closed.", "Applications are not yet open."} - {GA_LINE}:
         need(_o not in _jv, "L18 join.html shows another state's line: %s" % _o)
-    for _t in ("The practical details", "There are no fees to apply, to join or to remain.",
+    for _t in ("The practical details", "There are no fees to submit, to join or to remain.",
                "PlotArt’s commission is 15% of the price of an original work or signed limited-edition print sold to a collector PlotArt introduced to you, once the sale is complete. It doesn’t apply to your independent sales.",
                "A collector is introduced by PlotArt when they reach you through an enquiry carrying a PlotArt reference, or tell you before the sale is agreed that they found you through PlotArt. Collectors you already knew, or who found you another way, are independent.",
                "only the sale of a particular work you were already discussing in writing within those 24 months carries commission.",
                "on the price of the work including any frame, and excluding delivery, insurance, installation and any VAT you charge.",
                "An introduction counts for 24 months.", "Newly commissioned work is agreed between you and the collector and isn’t subject to the commission.",
-               "Collectors pay you directly", "There is no exclusivity", "applying doesn’t guarantee a place",
+               "Collectors pay you directly", "There is no exclusivity", "Submitting a portfolio doesn’t guarantee an invitation.", "invitations to join are extended at the gallery’s discretion",
                "Founding Artists keep their own agreement; artists joining now become Gallery Artists.",
                "The full terms are in the PlotArt Gallery Artist Agreement, which you read and accept in PlotArt Studio before your gallery is first published."):
         need(_t in _jv, "L18 join.html lacks the approved wording: %s" % _t)
@@ -840,7 +841,7 @@ else:
     need(_band is not None and home.count("<!-- pa-artist-apply:begin -->") == 1 and "f25InviteH" not in home, "L18 open: the homepage carries the artist band once, in place of the closed Founding 25 band")
     if _band:
         _bv = re.sub(r"\s+", " ", visible_text(_band.group(1)))
-        need('href="join.html#apply"' in _band.group(1) and 'href="gallery/"' in _band.group(1) and "An invitation to join PlotArt." in _bv,
+        need('href="join.html"' in _band.group(1) and 'href="gallery/"' in _band.group(1) and "Artist Submissions" in _bv,
              "L18 the homepage band must be the invitation, linking to Join PlotArt and the gallery")
         need(not re.search(r"\d|%|€|commission|fee|exclusiv|deserves", _bv, re.I), "L18 the homepage band carries figures, commercial terms or promotional wording")
     # the Artists' Gallery application button (founder decisions 16 Nov 2026): once, inside the compact introduction, above
@@ -851,7 +852,7 @@ else:
          and _gal.index("<!-- pa-artist-apply-gallery:end -->") < _gal.index("<!-- pa-vg-collection:begin -->"), "L18 open: the Artists' Gallery carries the application button once, in its introduction, before the collection")
     if _gband:
         _gv = re.sub(r"\s+", " ", visible_text(_gband.group(1)))
-        need('href="../join.html#your-gallery"' in _gband.group(1) and _gv.strip() == "Apply to join →", "L18 the Artists' Gallery button must read 'Apply to join →' and link to Join PlotArt's gallery section")
+        need('href="../join.html#your-gallery"' in _gband.group(1) and _gv.strip() == "Artist submissions →", "L18 the Artists' Gallery button must read 'Artist submissions →' and link to Join PlotArt's gallery section")
         need(not re.search(r"\d|%|€|commission|fee|exclusiv|deserves", _gv, re.I), "L18 the Artists' Gallery button carries figures, commercial terms or promotional wording")
     need(re.search(r'<section class="pa-jn-sec" id="your-gallery">\s*<div class="pa-wrap pa-jn-grid">\s*<p class="pa-jn-k">The gallery</p>\s*<div><h2>A gallery of your own\.</h2>', _join) is not None, "L18 Join PlotArt must carry the your-gallery anchor on 'A gallery of your own.'")
     need(_ptr is not None and bool(_ptr.group(1).strip()), "L18 open: the Founding 25 page points to Join PlotArt")

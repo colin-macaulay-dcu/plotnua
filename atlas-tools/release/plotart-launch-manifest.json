@@ -6,9 +6,9 @@
     "commissions/index.html": "4b562cf4410c120e59fc75dd8bc795cb4661ced950e0bfe72161c4cd388b31f9",
     "invitation.html": "9ca925b30f2aee36b166f0ffa8da6a7337c249e1ddb042c170e89a636cbe2fae",
     "about.html": "bef38ade40e106cf8467374772d2df8c6235ba18705f37b93d7cd229a1b268c3",
-    "founding-25.html": "3eae7a8358d4f0f7969ba7f7c9eeb70824983f298ca2cc08d654c18b95fbf27a",
-    "living-gallery.html": "154925e16d0d4fd55b83ba953a5b1cf5e7651cf6427b0cd8087f62ccdcc28e2c",
-    "index.html": "c5d379a926dfd8fb60d32c16d47800c077847e2e8981351084912e0dd973e4af",
+    "founding-25.html": "1cf3bd31fd2751b134f8725d52520b78af8f58ae2f316ae8574ae00812814f7f",
+    "living-gallery.html": "0e5fc8417b560ba7bc5b1ab6355b5aff09604fbf197f5ae4bbeef233cc3d1851",
+    "index.html": "7fbbc7c6f6853cb06de2ebd8b77aece33e4fdc208be11c0889ab0875afb708f7",
     "assets/plotart.css": "39735ef9ad9abfc7d9ace0b38288fd7e40aa8fc0832f99c0a9ef76b1d73e181b",
     "assets/plotart.js": "76aeaa88c68d14320510e62e7636a7fc3932002b6f3a61b8ab86ed79c6342d35",
     "assets/pa-enquiry.js": "ba34ff7937b515bb0f6b47aa6e150cfffe82590e770c488bfc56bf03af62a026",
@@ -21,7 +21,7 @@
     "mobile-gallery/mobile-gallery-data.js": "2752e0065d6d903d7b02f6abe653e684cecd7fe4b6f7e125587aed2cda511833",
     "mobile-gallery/img/mg-hero-colin-macaulay-600.webp": "8092b99a0b4953e570e8f3a54483beae50a58049cae4bc404149c019cf1f5cd2",
     "mobile-gallery/img/mg-hero-colin-macaulay-880.webp": "2a14fdba5c714429e48308aaaa8d550ae4b388e43a0edd08c2f3853e05801b38",
-    "gallery/index.html": "9f8ca67db20eb47e4c11ffccccf9be3831fa5795175ef627779c646663dfe939",
+    "gallery/index.html": "e284fca5dc64fa379d586bf0fa0556dfe4968c280e32e2c4ea4841c1e1fded2f",
     "assets/plotart-guides.css": "da9048a79d53b067cd6d480b074bfac90c9e1c3f192ffc4101030a37daed4cd1",
     "buy-original-art-ireland.html": "2bbcab493cfd358a9ca3fd4ddae3d888a082ffc845458501831d226b4722c62a",
     "abstract-contemporary-art-ireland.html": "d97c56fe4f626fa627eea70e7c73636b5d78f06c29b4734a079ee3b3f3d46a7f",
@@ -38,9 +38,9 @@
     "artworks/index.html": "55739a63ee2487801adc192cd413bfabb6aaf5016ef0ab216517d171bf764f41",
     "assets/plotart-artworks.css": "4aec032f9b736c0961cced18224c67809fe6da29e97db3b1c4a2665cb2113367",
     "large-artworks/index.html": "4d6106bd9a636765552996133836cd200bbe4d4cedc7518b15b14099130a655a",
-    "join.html": "c3e3b7881139b7245d7069d6f6cc3bfacfcf7b137ab5958e9f2e07930437f7e4",
-    "curatorial-policy.html": "5acd8fa76675c8e6690da0896bff0923d0e7071fe2ddfb75c7033d6962a8e619",
-    "assets/pa-apply.js": "1c12cce1252824836963e4906d251abc9e2438ad27db98b724de0bcac527c0ff",
+    "join.html": "26e161ea3f77789281913b83e539cb94646e87e80ca3f3c6c1f014634e72de00",
+    "curatorial-policy.html": "8a85331374a1ea3bbe8901ef78ca08538879076f8f9473c5e4fb3e4bb5e37014",
+    "assets/pa-apply.js": "95cf6400f705b270487fce644ca0529be8489d5957f92d0a1978991e8ee03097",
     "assets/plotart-join.css": "29466b4a1965b8322a609d302c195e30dc5fa701bcfa5992daa08e184fd9d6a8",
     "assets/plotart-living.css": "e047326deb9921231fb0b3413d72e7a83f8ad5e640d17cc6469923b3e8f15f5c",
     "downloads/plotart-business-rental-artist-guide-and-agreement.pdf": "7244266bce1375772fa079106be99ca1513d9dfe2ca8e9678a0b4e8ac226b526",
@@ -57,7 +57,7 @@
     "services.html": "9037a412a49b34d0034335384f17b0f2cfeed8dbe67df48e1d91ad87654a2a8e"
   },
   "outside_grid": {
-    "gallery/index.html": "915dfe8e981da557a301cba0a446a89d5526e68df1ddc928c21617d53343ac62"
+    "gallery/index.html": "252f734b33368336604fd75e4f79bb0c403edc7cc40e1a3cbaaf87f60a78cc83"
   },
   "outside_search_content": {
     "buy-original-art-ireland.html": "79a031525bd97018c7c926aa3bcd0033a22797251acafbe113eaebe88dc50b7e",
@@ -69,7 +69,7 @@
     "art-for-hire/index.html": "5b5d949bc6215884504db7876312cbf6859001224e02e4fe9aaf6697bbc4deb0"
   },
   "outside_opportunity_lists": {
-    "living-gallery.html": "bc86bdc3dfab5ef1b28c08035dd842c7973acd6422eb5e28a0fe12249286b553",
+    "living-gallery.html": "2b76e6e966d6e74404eed0c497c75553d3c2ae732873fca39762fdee59f491df",
     "art-for-hire/index.html": "9a9952dd798cad1d445850ab33398c58378021e3cbc22685c2ba8d7cd94afec5",
     "mobile-gallery/index.html": "ab6f3c4de1c802f7147c35264af00acdf7a5ca6030d61f38793fcdd0f8098f7d",
     "opportunities/index.html": "08f2374592a409c19c30dabdfa40c81b6c17774b368d58022509b3d9c8dc777d",
