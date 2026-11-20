@@ -96,7 +96,7 @@ The scripts push nothing when any of these is true:
    - An approval not given within 30 days expires, and nothing is released.
 3. **promote.** It starts only after approval.
    - It first runs `verify-founder-approval.sh`. It refuses unless **all** of these hold, read from GitHub:
-     - `website-production` names the founder's account as required reviewer;
+     - `website-production` has exactly two protection rules (required reviewers and the branch policy) and the founder's account is its ONLY required reviewer, with self-review allowed;
      - administrators cannot bypass it;
      - deployments are restricted to exactly the branch `main`;
      - this run carries his approval for `website-production`.
