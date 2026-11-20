@@ -1,0 +1,15 @@
+{
+ "note": "Ready for issue, NOT issued. Founder approval moves these files unchanged to payment-issued/ and migration 0018 installs them. Once anyone has accepted an identifier, its file must never change.",
+ "documents": {
+  "PA-PAY-2026-11": {
+   "title": "PlotArt Payment Pilot Addendum",
+   "kind": "artist_payment_addendum",
+   "html_sha256": "ff0a8c87f360a60159d9aa2491d957a207791b656c36ccfa517429f60d4464bd"
+  },
+  "PA-BPT-2026-11": {
+   "title": "PlotArt Buyer Purchase Terms",
+   "kind": "buyer_purchase_terms",
+   "html_sha256": "c570c06fe00577db3c5718c2b5b40fc6f834a2a2f2b97678b3a1978d74eb332a"
+  }
+ }
+}

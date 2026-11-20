@@ -1,14 +1,14 @@
 # PlotArt Buyer Purchase Terms — PA-BPT-2026-11 (DRAFT r9, 20 November 2026)
 
-**Status: unissued draft for founder review. Not shown to any buyer. Not legally reviewed.** It will be issued only as fingerprinted HTML and installed by an approved migration. Text in {braces} is filled in from each quote. Review notes are kept separately in `PA-PAY-PA-BPT-r10-REVIEW-NOTES.md`.
+**Status: unissued draft for founder review. Not shown to any buyer. Not legally reviewed.** It will be issued only as fingerprinted HTML and installed by an approved migration. Review notes are kept separately in `PA-PAY-PA-BPT-r10-REVIEW-NOTES.md`.
 
 ## 1. Who you are buying from
 
-1.1 You are buying an original artwork from the artist named on your quote, who is the seller. Your contract of sale is with the artist. Your quote shows:
-  (a) the seller's legal name {seller legal name} and any trading name {trading name};
-  (b) the geographical address at which they are established {seller address}, and any different address for returns and complaints {returns address};
-  (c) the seller's email {seller email} and telephone number {seller phone};
-  (d) the seller's VAT number, if they are registered {VAT number}.
+1.1 You are buying an original artwork from the artist named on your quote, who is the seller. Your contract of sale is with the artist. Your quote and your purchase confirmation show:
+  (a) the seller's legal name and any trading name;
+  (b) the geographical address at which they are established, and any different address for returns and complaints;
+  (c) the seller's email and telephone number;
+  (d) the seller's VAT number, if they are registered.
 
 1.2 **The seller's declaration.** The seller has declared to PlotArt that they sell as a trader, in the course of their business, craft or profession. PlotArt offers its managed checkout only to sellers who have made that declaration. If you are buying as a consumer, you have consumer rights under EU consumer protection law, including the right to cancel; section 6 explains how to cancel.
 
@@ -66,9 +66,9 @@ This section applies if you are a consumer buying from a seller who is a trader 
 6.2 **How to cancel.** Tell the seller, or PlotArt on the seller's behalf (hello@plotnua.ie), that you have decided to cancel. You can use the model cancellation form in section 11 or any other clear statement, for example by email. To meet the deadline, it is enough to send your notice before the 14 days end.
 
 6.3 **Returning the artwork.**
-  (a) Return the artwork to {returns address}, by the method shown on your quote {return method}, without undue delay and no later than 14 days after you tell us you are cancelling.
+  (a) Return the artwork to the returns address shown on your quote, by the return method shown on your quote, without undue delay and no later than 14 days after you tell us you are cancelling.
   (b) Unless your quote says the seller will collect it, you arrange the return.
-  (c) Because original artworks cannot normally be returned by post, you bear the cost of returning it when you cancel for a change of mind. Your quote states that cost: {return cost, or estimated maximum return cost, EUR}. Please pack the work as it was delivered. We recommend insuring it for its value while it is in transit.
+  (c) Because original artworks cannot normally be returned by post, you bear the cost of returning it when you cancel for a change of mind. Your quote states that cost, or a reasonable estimate of the maximum cost. Please pack the work as it was delivered. We recommend insuring it for its value while it is in transit.
 
 6.4 **Your refund.** The seller refunds everything you paid, including the delivery charge on your quote, without undue delay and no later than 14 days after being told that you are cancelling.
   (a) The seller may withhold the refund until it has received the artwork back, or until you have shown that you have sent it back, whichever is earlier.
@@ -119,9 +119,9 @@ This section applies if you are a consumer buying from a seller who is a trader 
 
 [Complete and return this form only if you wish to cancel the contract.]
 
-To {seller legal name}, {seller address}, {seller email} — or to PlotArt on the seller's behalf, hello@plotnua.ie:
+To [the seller's name, address and email, as shown on your quote] — or to PlotArt on the seller's behalf, hello@plotnua.ie:
 
-I/We [*] hereby give notice that I/We [*] cancel my/our [*] contract of sale of the following goods [*]: {artwork title}, order reference {reference},
+I/We [*] hereby give notice that I/We [*] cancel my/our [*] contract of sale of the following goods [*]: [artwork title], order reference [order reference],
 
 Ordered on [*] / received on [*],
 
