@@ -88,7 +88,8 @@ const strip = s => s.replace(' pa-pills--hire', '').replace(/<a class="pa-pill" 
   const BRAND_PAIRS = [["<span class=\"pa-pn\" style=\"display:inline-flex;align-items:baseline;white-space:nowrap\"><img class=\"pa-pn-p\" src=\"/assets/brand/plotnua-icon-transparent.svg\" alt=\"\" width=\"18\" height=\"18\" style=\"display:block;flex:none;max-width:none;width:1.22em;height:1.22em;margin:-0.27em -0.2em 0 -0.29em;position:relative;top:0.215em\"><span class=\"pa-sr\">P</span>lotNua</span>", "<span class=\"pa-pn\"><img class=\"pa-pn-p\" src=\"/assets/brand/plotnua-icon-transparent.svg\" alt=\"\" width=\"18\" height=\"18\"><span class=\"pa-sr\">P</span>lotNua</span>"]];   // [new markup, main's markup]: the header branding refinement (founder brief 19 Nov 2026, 21:29)
   const brandOld = c => BRAND_PAIRS.reduce((s, [n, o]) => s.split(n).join(o), c);
   LATER_PINS['plotart/assets/plotart.css'].push('39735ef9ad9abfc7d9ace0b38288fd7e40aa8fc0832f99c0a9ef76b1d73e181b');
-  const BRAND_PINS = { 'plotart/assets/plotart-featured.css': '2f525e84e7d34f9cdc1807bcc42cd7192fa0944235afb219f4b54c795ad076d6',   /* Artists' Gallery spacing refinement (founder brief 20 Nov 2026) */
+  const BRAND_PINS = { 'plotart/assets/plotart-living.css': 'e047326deb9921231fb0b3413d72e7a83f8ad5e640d17cc6469923b3e8f15f5c',   /* Living Gallery spacing refinement (preview, 20 Nov 2026) */
+    'plotart/assets/plotart-featured.css': '2f525e84e7d34f9cdc1807bcc42cd7192fa0944235afb219f4b54c795ad076d6',   /* Artists' Gallery spacing refinement (founder brief 20 Nov 2026) */
     'plotart/assets/plotart-services.css': 'fc6b301c02c4bde2f3227bb2bc4c07459a86ded8ab26d3ceb4473e652fccc10c' };
   const sha = t => createHash('sha256').update(t).digest('hex');
   const navBlock = c => (c.match(/\n*\/\* ==== pa-hire-nav:begin[\s\S]*?pa-hire-nav:end ==== \*\/\n?/) || [''])[0];
