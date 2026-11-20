@@ -87,7 +87,7 @@ const strip = s => s.replace(' pa-pills--hire', '').replace(/<a class="pa-pill" 
      in plotart.css are still checked below. */
   const BRAND_PAIRS = [["<span class=\"pa-pn\" style=\"display:inline-flex;align-items:baseline;white-space:nowrap\"><img class=\"pa-pn-p\" src=\"/assets/brand/plotnua-icon-transparent.svg\" alt=\"\" width=\"18\" height=\"18\" style=\"display:block;flex:none;max-width:none;width:1.22em;height:1.22em;margin:-0.27em -0.2em 0 -0.29em;position:relative;top:0.215em\"><span class=\"pa-sr\">P</span>lotNua</span>", "<span class=\"pa-pn\"><img class=\"pa-pn-p\" src=\"/assets/brand/plotnua-icon-transparent.svg\" alt=\"\" width=\"18\" height=\"18\"><span class=\"pa-sr\">P</span>lotNua</span>"]];   // [new markup, main's markup]: the header branding refinement (founder brief 19 Nov 2026, 21:29)
   const brandOld = c => BRAND_PAIRS.reduce((s, [n, o]) => s.split(n).join(o), c);
-  LATER_PINS['plotart/assets/plotart.css'].push('775921f2fb1f9fab6bd612014011e0102736a79108f305ea90f9b883697cb3ca');
+  LATER_PINS['plotart/assets/plotart.css'].push('39735ef9ad9abfc7d9ace0b38288fd7e40aa8fc0832f99c0a9ef76b1d73e181b');
   const BRAND_PINS = { 'plotart/assets/plotart-featured.css': '2f525e84e7d34f9cdc1807bcc42cd7192fa0944235afb219f4b54c795ad076d6',   /* Artists' Gallery spacing refinement (founder brief 20 Nov 2026) */
     'plotart/assets/plotart-services.css': '58c8c84e0fd8d372ddbd6f267bb202aa9c2ff2e0d6eeb249293d0c2a5fd8eb8d' };
   const sha = t => createHash('sha256').update(t).digest('hex');

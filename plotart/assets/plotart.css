@@ -698,9 +698,10 @@ body.pa .pa-vgc-pos > a:focus-visible{ outline-offset:-3px; border-radius:0; }
 
 /* ===== Artist galleries (Phase 1, 29 Oct 2026). The whole artwork is always shown: contain, never cover. ===== */
 .pa-crumb{ display:flex; flex-wrap:wrap; gap:8px; align-items:center; font-size:13.5px; color:var(--mute); margin:0 0 clamp(26px, 3.4vw, 44px); }
+.pa-ag-hero .pa-crumb{ margin-bottom:clamp(18px, 2.2vw, 30px); }   /* artist galleries: spacing refinement (founder brief 20 Nov 2026) */
 .pa-crumb a{ color:var(--stone); text-decoration:none; } .pa-crumb a:hover{ color:var(--ivory); }
 .pa-crumb [aria-current]{ color:var(--ivory); }
-.pa-ag-hero .pa-wrap{ padding-top:clamp(36px, 5vw, 72px); padding-bottom:clamp(34px, 4.5vw, 64px); }
+.pa-ag-hero .pa-wrap{ padding-top:clamp(28px, 3.4vw, 48px); padding-bottom:clamp(26px, 3vw, 44px); }   /* was 36-72 / 34-64 (20 Nov 2026: the work sooner) */
 .pa-ag-id{ display:flex; align-items:center; gap:clamp(20px, 3vw, 40px); }
 .pa-ag-portrait{ flex:0 0 auto; width:clamp(96px, 11vw, 148px); aspect-ratio:1; border-radius:50%; overflow:hidden; border:1px solid rgba(237,235,231,.16); background:#222224; }
 .pa-ag-portrait img{ width:100%; height:100%; object-fit:cover; display:block; }
@@ -708,8 +709,8 @@ body.pa .pa-vgc-pos > a:focus-visible{ outline-offset:-3px; border-radius:0; }
 .pa-ag-meta{ margin:0; font-size:15px; letter-spacing:.14em; text-transform:uppercase; color:var(--terra-text); }
 .pa-ag-statement{ margin:18px 0 0; max-width:40ch; font-family:var(--serif); font-size:clamp(22px, 2.4vw, 30px); line-height:1.25; color:var(--lime); }
 .pa-ag-works{ background:linear-gradient(180deg, #29292B 0%, #262628 100%); border-top:1px solid var(--line); }
-.pa-ag-works .pa-wrap{ padding-top:clamp(40px, 5vw, 72px); padding-bottom:clamp(56px, 7vw, 104px); }
-.pa-ag-head{ display:flex; align-items:baseline; justify-content:space-between; gap:16px; margin:0 0 clamp(22px, 2.6vw, 34px); }
+.pa-ag-works .pa-wrap{ padding-top:clamp(28px, 3vw, 44px); padding-bottom:clamp(56px, 7vw, 104px); }
+.pa-ag-head{ display:flex; align-items:baseline; justify-content:space-between; gap:16px; margin:0 0 clamp(16px, 1.6vw, 22px); }
 .pa-ag-head h2{ font-size:clamp(32px, 3.6vw, 46px); }
 .pa-ag-head p{ margin:0; color:var(--mute); font-size:14px; letter-spacing:.06em; }
 .pa-ag-grid{ list-style:none; margin:0; padding:0; display:grid; grid-template-columns:repeat(3, minmax(0, 1fr)); gap:clamp(18px, 2.2vw, 34px); align-items:stretch; }
@@ -822,7 +823,7 @@ body.pa .pa-vgc-pos > a:focus-visible{ outline-offset:-3px; border-radius:0; }
 .pa-ag-pill:hover{ background:var(--paper); border-color:var(--paper); color:var(--anth); }
 .pa-ag-pill:focus-visible{ outline:2px solid var(--ivory); outline-offset:3px; }
 .pa-ag-com{ border-top:1px solid var(--line); background:#232426; }
-.pa-ag-com .pa-wrap{ padding-top:clamp(36px, 4.5vw, 64px); padding-bottom:clamp(36px, 4.5vw, 64px); }
+.pa-ag-com .pa-wrap{ padding-top:clamp(28px, 3.2vw, 48px); padding-bottom:clamp(28px, 3.2vw, 48px); }
 .pa-ag-com-in{ display:grid; grid-template-columns:minmax(0, 56ch) auto; grid-template-areas:"h h" "p b" "l ."; justify-content:start; column-gap:clamp(32px, 4vw, 56px); align-items:start; }
 .pa-ag-com-t{ display:contents; }
 .pa-ag-com .pa-ag-com-t h2{ grid-area:h; margin:0 0 12px; }
