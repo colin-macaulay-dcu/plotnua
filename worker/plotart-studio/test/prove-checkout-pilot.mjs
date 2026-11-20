@@ -3,7 +3,7 @@
 // call is intercepted; nothing reaches Stripe), synthetic artists, and SYNTHETIC addendum/buyer-terms texts (the real
 // texts are not issued). Webhooks are signed here with a test secret exactly as Stripe signs them.
 //   node test/prove-checkout-pilot.mjs
-import { cpSync, readFileSync, writeFileSync, rmSync } from 'node:fs';
+import { cpSync, readFileSync, writeFileSync, rmSync, existsSync } from 'node:fs';
 import { createHash, createHmac } from 'node:crypto';
 import { start, token, FOUNDER } from './local.mjs';
 import { seedPublished } from './seed.mjs';
@@ -1311,6 +1311,75 @@ check('RH2 an order past its retention date is never deleted while a dispute on 
 await db.prepare("UPDATE checkout_orders SET dispute_status = 'lost' WHERE id = 'oold3'").run();
 await S.checkoutWorker.scheduled({ cron: '*/15 * * * *' });
 check('RH3 once the dispute is resolved, the past-retention order is deleted at the next sweep', !(await order('oold3')));
+
+// ---- founder forms in a real browser (20 Nov 2026): Issue buyer quote and Refund without browser dialogs
+console.log('— founder forms in a real browser (no dialogs)');
+{ const { createRequire } = await import('node:module');
+  let pw = null; try { pw = createRequire(process.env.PLAYWRIGHT_FROM || '/tmp/claude-0/studio-tools/package.json')('playwright'); } catch { /* reported below */ }
+  check('UI0 a real browser is available for the founder-form checks (Playwright + Chrome)', !!pw && existsSync('/usr/bin/google-chrome'));
+  if (pw && existsSync('/usr/bin/google-chrome')) {
+    const work = (await q("SELECT id FROM artworks WHERE artist_id = 'agal' AND availability = 'available' AND id NOT IN (SELECT artwork_id FROM artwork_sales) AND id NOT IN (SELECT artwork_id FROM artwork_reservations) AND id NOT IN (SELECT artwork_id FROM checkout_orders WHERE status NOT IN ('cancelled', 'expired')) ORDER BY id LIMIT 1"))[0];
+    check('UI0b an available artwork with no live, paid or draft order exists for the browser checks', !!work);
+    const ou = await makeOrder('agal', work.id, 'PA-E-261101-AAAAAA', 60000, 5000, 'ui@example.test');
+    await call('POST', `/api/admin/checkout/orders/${ou.id}/send`, FOUNDER, {});
+    await call('POST', `/api/checkout/orders/${ou.id}/approve`, GAL, { quote_version: (await order(ou.id)).quote_version, confirm: ALL });
+    const br = await pw.chromium.launch({ executablePath: '/usr/bin/google-chrome' }), pg = await br.newPage({ viewport: { width: 1300, height: 1000 }, locale: 'en-IE', timezoneId: 'Europe/Dublin' });
+    const dialogs = []; pg.on('dialog', d => { dialogs.push(d.type() + ': ' + d.message()); d.dismiss().catch(() => {}); });
+    await pg.setExtraHTTPHeaders({ 'Cf-Access-Jwt-Assertion': token(FOUNDER) });
+    const card = () => pg.locator(`#order-${ou.id}`);
+    await pg.goto(S.url + '/admin/checkout', { waitUntil: 'load' }); await card().waitFor({ timeout: 20000 });
+    const iq = card().locator('form[data-f="issue"]');
+    check('UI1 the founder sees an on-page "Issue buyer quote" form with labelled controls (days 1–7, a required linked-purchases answer) and no Issue button that opens dialogs',
+      await iq.isVisible() && await iq.getByLabel('Quote valid for (days, 1–7)').inputValue() === '3' && await iq.getByLabel('Not linked, as far as I know').count() === 1
+      && await card().locator('button[data-a="issue"]').count() === 0);
+    await iq.getByRole('button', { name: 'Issue buyer quote' }).click();
+    await iq.locator('[data-err]').waitFor({ state: 'visible' });
+    check('UI2 submitting without the linked-purchases answer shows the error on the page and issues nothing',
+      /linked-purchases/.test(await iq.locator('[data-err]').innerText()) && (await order(ou.id)).status === 'awaiting_artist');
+    await iq.getByLabel('Quote valid for (days, 1–7)').fill('9'); await iq.getByLabel('Not linked, as far as I know').check(); await iq.getByRole('button', { name: 'Issue buyer quote' }).click();
+    check('UI3 a validity outside 1–7 days is refused on the page', /1 to 7/.test(await iq.locator('[data-err]').innerText()) && (await order(ou.id)).status === 'awaiting_artist');
+    await iq.getByLabel('Quote valid for (days, 1–7)').fill('2'); await iq.getByLabel(/Linked, or I am not sure/).check(); await iq.getByRole('button', { name: 'Issue buyer quote' }).click();
+    await pg.waitForFunction(id => /linked/i.test(document.querySelector(`#order-${id} form[data-f="issue"] [data-err]`)?.textContent || ''), ou.id, { timeout: 15000 })
+      .catch(async () => console.log('  (debug UI4)', JSON.stringify(await pg.evaluate(id => ({ err: document.querySelector(`#order-${id} form[data-f="issue"] [data-err]`)?.outerHTML, page: document.getElementById('page-error')?.outerHTML, checked: [...document.querySelectorAll(`#order-${id} input[name=linked]`)].map(x => x.checked), days: document.querySelector(`#order-${id} input[name=days]`)?.value }), ou.id))));
+    check('UI4 "linked, or not sure" is sent as before and the server still refuses the quote; its reason is shown on the page',
+      /linked/i.test(await iq.locator('[data-err]').innerText()) && (await order(ou.id)).status === 'awaiting_artist' && !(await order(ou.id)).buyer_token_hash);
+    await iq.getByLabel('Not linked, as far as I know').check(); await iq.getByRole('button', { name: 'Issue buyer quote' }).click();
+    await card().locator('[data-issued] [data-link]').waitFor({ timeout: 10000 });
+    const link = await card().locator('[data-issued] [data-link]').inputValue(), OU = await order(ou.id);
+    check('UI5 with "not linked" the quote is issued for 2 days, and the one-time buyer link is shown on the page (selected, with a Copy button), matching the stored fingerprint only',
+      OU.status === 'quoted' && /^https:\/\/checkout\.local\/q\/[0-9a-z]{48}$/.test(link) && OU.buyer_token_hash === sha(link.split('/q/')[1])
+      && Math.abs(Date.parse(OU.quote_expires_at) - Date.now() - 2 * 86400_000) < 120_000 && await card().locator('[data-copy]').count() === 1, { link, status: OU.status });
+    const ev = await q("SELECT action, detail FROM order_events WHERE order_id = ? AND action = 'quote_issued'", ou.id);
+    check('UI6 the issue is recorded in the order audit trail as before (quote_issued, by the founder)', ev.length === 1 && /"total_cents":65000/.test(ev[0].detail));
+    // the buyer pays (mock Stripe, signed webhook)
+    await pub('POST', `/q/${link.split('/q/')[1]}/pay`, { form: { accept_terms: 'PA-BPT-TEST-01' } });
+    const su = (await q("SELECT id FROM checkout_sessions WHERE order_id = ? AND status = 'open'", ou.id))[0];
+    pay(su.id); await hook(evt('checkout.session.completed', M.sessions[su.id], ACCT));
+    await pg.goto(S.url + '/admin/checkout', { waitUntil: 'load' }); await card().waitFor({ timeout: 20000 });
+    const rf = card().locator('form[data-f="refund"]'); await card().locator('summary', { hasText: 'Refund…' }).click();
+    check('UI7 a paid order shows an on-page Refund form (euro amounts, reason, confirmation) and no Refund button that opens dialogs',
+      (await order(ou.id)).status === 'paid' && await rf.isVisible() && await rf.getByLabel('Artwork amount to refund (€)').count() === 1 && await card().locator('button[data-a="refund"]').count() === 0);
+    await rf.getByLabel('Reason (shown in the order record)').fill('UI test'); await rf.getByLabel(/I confirm this refund/).check();
+    await rf.getByRole('button', { name: 'Refund through Stripe' }).click();
+    check('UI8 a refund of nothing is refused on the page and nothing is sent to Stripe', /artwork or delivery amount/.test(await rf.locator('[data-err]').innerText()) && !(await q('SELECT * FROM order_refunds WHERE order_id = ?', ou.id)).length);
+    await rf.getByLabel('Artwork amount to refund (€)').fill('12,3x'); await rf.getByRole('button', { name: 'Refund through Stripe' }).click();
+    check('UI9 an amount that is not euro and cents is refused on the page', /in euro/.test(await rf.locator('[data-err]').innerText()) && !(await q('SELECT * FROM order_refunds WHERE order_id = ?', ou.id)).length);
+    await rf.getByLabel('Artwork amount to refund (€)').fill('700'); await rf.getByRole('button', { name: 'Refund through Stripe' }).click();
+    await pg.waitForFunction(id => /more than the artwork amount/.test(document.querySelector(`#order-${id} form[data-f="refund"] [data-err]`)?.textContent || ''), ou.id);
+    check('UI10 more than the artwork paid is refused by the server as before, and its reason is shown on the page', !(await q('SELECT * FROM order_refunds WHERE order_id = ?', ou.id)).length);
+    await rf.getByLabel('Artwork amount to refund (€)').fill('150.00'); await rf.getByLabel('Delivery amount to refund (€)').fill('0');
+    const sumTxt = await rf.locator('[data-sum]').innerText();
+    await rf.getByRole('button', { name: 'Refund through Stripe' }).click();
+    await pg.waitForFunction(id => !document.querySelector(`#order-${id} form[data-f="refund"] [data-err]`) || document.querySelector(`#order-${id} form[data-f="refund"] [data-err]`).hidden, ou.id);
+    await new Promise(r => setTimeout(r, 1500));
+    const rr = await q('SELECT * FROM order_refunds WHERE order_id = ?', ou.id), lg = await q("SELECT kind, amount_cents FROM order_ledger WHERE order_id = ? AND kind IN ('artwork_refund','delivery_refund','commission_refund')", ou.id);
+    check('UI11 a partial refund of EUR 150.00 artwork goes through the same request: Stripe refund, ledger, and 15% commission share (EUR 22.50) returned under the agreement',
+      /refunded €150\.00/.test(sumTxt) && rr.length === 1 && rr[0].artwork_cents === 15000 && rr[0].delivery_cents === 0 && rr[0].reason === 'UI test' && rr[0].commission_refund_cents === 2250 && rr[0].status === 'succeeded'
+      && lg.some(l => l.kind === 'artwork_refund' && l.amount_cents === -15000), { rr, lg });
+    check('UI12 no browser dialog (alert, confirm or prompt) opened at any point in the issue or refund steps', dialogs.length === 0, dialogs);
+    await br.close();
+  }
+}
 
 const S1 = await import(HERE + FIX + 'src/stripe.js');
 check('T15b a live secret key is refused before any request', !S1.testKey({ STRIPE_SECRET_KEY: 'sk_live_abc' }).ok && !S1.testKey({}).ok && S1.testKey({ STRIPE_SECRET_KEY: 'rk_test_abc' }).ok);
