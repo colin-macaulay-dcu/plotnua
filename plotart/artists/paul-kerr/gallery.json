@@ -42,10 +42,15 @@
    "dhash": "0d25e67c7b23accd",
    "source_sha256": "67de6b14c1ca6ac829e7d5d735bfedcb5276d83ff0367da8cdf049400a786151",
    "stem": "things-that-go-unseen-1"
+  },
+  {
+   "dhash": "624118e1e4646070",
+   "source_sha256": "a64bdcdcee121ed149d21be412215da2a9ba671e09a25fa9fc5b162e3a60b95c",
+   "stem": "life-goes-on-1"
   }
  ],
  "publication": {
-  "approved_at": "2026-11-19T22:41:57.876Z",
+  "approved_at": "2026-11-20T13:41:46.767Z",
   "approved_by": "founder",
   "first_approved_at": "2026-11-19T22:41:57.876Z",
   "licence_accepted_at": "2026-11-19T16:23:00.626Z",
@@ -53,7 +58,7 @@
   "permission_ref": "PA-PERM-a4p7ruywdrw",
   "state": "approved",
   "test_note": null,
-  "version": "v1"
+  "version": "v2"
  },
  "schema": "plotnua.plotart.gallery-package.v1",
  "works": [
@@ -112,6 +117,62 @@
    "title": "Things That Go Unseen",
    "w_cm": 70,
    "year": 2026
+  },
+  {
+   "ai_founder_decision": null,
+   "ai_involvement": "none",
+   "ai_note": null,
+   "availability": "available",
+   "d_cm": 3,
+   "description": null,
+   "h_cm": 120,
+   "id": "wgmndmanly4",
+   "images": [
+    {
+     "alt": "Swirling image painted in monochrome.",
+     "aspect": 0.68193,
+     "derivatives": [
+      {
+       "file": "life-goes-on-1-600.webp",
+       "long_edge": 600,
+       "pixels": [
+        409,
+        600
+       ]
+      },
+      {
+       "file": "life-goes-on-1-1200.webp",
+       "long_edge": 1200,
+       "pixels": [
+        818,
+        1200
+       ]
+      },
+      {
+       "file": "life-goes-on-1-2000.webp",
+       "long_edge": 2000,
+       "pixels": [
+        1364,
+        2000
+       ]
+      }
+     ],
+     "photo_credit": null,
+     "pixels": [
+      4273,
+      6266
+     ],
+     "role": "main"
+    }
+   ],
+   "materials": null,
+   "medium": "Oil on gessoed fabriano paper mounted on board",
+   "price_eur": 6950,
+   "price_on_request": false,
+   "slug": "life-goes-on",
+   "title": "Life Goes On",
+   "w_cm": 84,
+   "year": 2021
   }
  ]
 }

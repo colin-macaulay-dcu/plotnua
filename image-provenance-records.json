@@ -21155,130 +21155,6 @@
     },
     {
       "ai_involvement": "none",
-      "artist_slug": "paul-kerr",
-      "asset": "plotart/artists/paul-kerr/img/portrait-600.webp",
-      "bytes": 44112,
-      "class": "ARTIST_SUPPLIED_ARTWORK",
-      "colour": "sRGB (no embedded profile; treated as sRGB)",
-      "licence_version": "PA-GPIL-2026-11",
-      "permission_ref": "PA-PERM-a4p7ruywdrw",
-      "permitted_surfaces": [
-        "plotart-artist-gallery",
-        "plotart-virtual-gallery"
-      ],
-      "photo_credit": null,
-      "photographer": "self",
-      "pixels": [
-        426,
-        600
-      ],
-      "processing": [
-        "camera rotation (EXIF orientation) applied",
-        "colour converted to sRGB where a profile was embedded",
-        "all metadata removed (EXIF, GPS, XMP, ICC)",
-        "never cropped or upscaled",
-        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
-      ],
-      "sha256": "eba91cb1da5e5ac70118e842ac313b2ffa3958e117010a39a4e9fba4dee905a0",
-      "source_sha256": "012b46c0a310a21aedb13e03fa1ef43ae2a03ffaa32fc8815cbfbc6194d33638",
-      "subject": "portrait",
-      "work_slug": null
-    },
-    {
-      "ai_involvement": "none",
-      "artist_slug": "paul-kerr",
-      "asset": "plotart/artists/paul-kerr/img/things-that-go-unseen-1-600.webp",
-      "bytes": 32366,
-      "class": "ARTIST_SUPPLIED_ARTWORK",
-      "colour": "converted to sRGB from the embedded profile (sRGB)",
-      "licence_version": "PA-GPIL-2026-11",
-      "permission_ref": "PA-PERM-a4p7ruywdrw",
-      "permitted_surfaces": [
-        "plotart-artist-gallery",
-        "plotart-virtual-gallery"
-      ],
-      "photo_credit": null,
-      "photographer": "self",
-      "pixels": [
-        414,
-        600
-      ],
-      "processing": [
-        "camera rotation (EXIF orientation) applied",
-        "colour converted to sRGB where a profile was embedded",
-        "all metadata removed (EXIF, GPS, XMP, ICC)",
-        "never cropped or upscaled",
-        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
-      ],
-      "sha256": "e7b6aeb1d795b03a5e5697d2241e25316a922ea4f27ac3066bc7dfb6c6e94117",
-      "source_sha256": "67de6b14c1ca6ac829e7d5d735bfedcb5276d83ff0367da8cdf049400a786151",
-      "subject": "artwork",
-      "work_slug": "things-that-go-unseen"
-    },
-    {
-      "ai_involvement": "none",
-      "artist_slug": "paul-kerr",
-      "asset": "plotart/artists/paul-kerr/img/things-that-go-unseen-1-1200.webp",
-      "bytes": 80000,
-      "class": "ARTIST_SUPPLIED_ARTWORK",
-      "colour": "converted to sRGB from the embedded profile (sRGB)",
-      "licence_version": "PA-GPIL-2026-11",
-      "permission_ref": "PA-PERM-a4p7ruywdrw",
-      "permitted_surfaces": [
-        "plotart-artist-gallery",
-        "plotart-virtual-gallery"
-      ],
-      "photo_credit": null,
-      "photographer": "self",
-      "pixels": [
-        828,
-        1200
-      ],
-      "processing": [
-        "camera rotation (EXIF orientation) applied",
-        "colour converted to sRGB where a profile was embedded",
-        "all metadata removed (EXIF, GPS, XMP, ICC)",
-        "never cropped or upscaled",
-        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
-      ],
-      "sha256": "50325424b4b60bc0b39952caa0542c800932dfad94699483dee68a3d3b689ccc",
-      "source_sha256": "67de6b14c1ca6ac829e7d5d735bfedcb5276d83ff0367da8cdf049400a786151",
-      "subject": "artwork",
-      "work_slug": "things-that-go-unseen"
-    },
-    {
-      "ai_involvement": "none",
-      "artist_slug": "paul-kerr",
-      "asset": "plotart/artists/paul-kerr/img/things-that-go-unseen-1-2000.webp",
-      "bytes": 175442,
-      "class": "ARTIST_SUPPLIED_ARTWORK",
-      "colour": "converted to sRGB from the embedded profile (sRGB)",
-      "licence_version": "PA-GPIL-2026-11",
-      "permission_ref": "PA-PERM-a4p7ruywdrw",
-      "permitted_surfaces": [
-        "plotart-artist-gallery",
-        "plotart-virtual-gallery"
-      ],
-      "photo_credit": null,
-      "photographer": "self",
-      "pixels": [
-        1379,
-        2000
-      ],
-      "processing": [
-        "camera rotation (EXIF orientation) applied",
-        "colour converted to sRGB where a profile was embedded",
-        "all metadata removed (EXIF, GPS, XMP, ICC)",
-        "never cropped or upscaled",
-        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
-      ],
-      "sha256": "492343aabe6b3973901c4c94ae661b69c9bb789a68f2523d843de62c96296fbc",
-      "source_sha256": "67de6b14c1ca6ac829e7d5d735bfedcb5276d83ff0367da8cdf049400a786151",
-      "subject": "artwork",
-      "work_slug": "things-that-go-unseen"
-    },
-    {
-      "ai_involvement": "none",
       "artist_slug": "clare-o-connor",
       "asset": "plotart/artists/clare-o-connor/img/portrait-600.webp",
       "bytes": 67610,
@@ -22547,6 +22423,223 @@
       "source_sha256": "f0c1c4247ff80d9c2b6e939a6caabe9818d4f0eae93401e82baa161ed05e055d",
       "subject": "artwork",
       "work_slug": "multi-layered-intaglio-print-series-2"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "paul-kerr",
+      "asset": "plotart/artists/paul-kerr/img/portrait-600.webp",
+      "bytes": 44112,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "sRGB (no embedded profile; treated as sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-a4p7ruywdrw",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        426,
+        600
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "eba91cb1da5e5ac70118e842ac313b2ffa3958e117010a39a4e9fba4dee905a0",
+      "source_sha256": "012b46c0a310a21aedb13e03fa1ef43ae2a03ffaa32fc8815cbfbc6194d33638",
+      "subject": "portrait",
+      "work_slug": null
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "paul-kerr",
+      "asset": "plotart/artists/paul-kerr/img/things-that-go-unseen-1-600.webp",
+      "bytes": 32366,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-a4p7ruywdrw",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        414,
+        600
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "e7b6aeb1d795b03a5e5697d2241e25316a922ea4f27ac3066bc7dfb6c6e94117",
+      "source_sha256": "67de6b14c1ca6ac829e7d5d735bfedcb5276d83ff0367da8cdf049400a786151",
+      "subject": "artwork",
+      "work_slug": "things-that-go-unseen"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "paul-kerr",
+      "asset": "plotart/artists/paul-kerr/img/things-that-go-unseen-1-1200.webp",
+      "bytes": 80000,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-a4p7ruywdrw",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        828,
+        1200
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "50325424b4b60bc0b39952caa0542c800932dfad94699483dee68a3d3b689ccc",
+      "source_sha256": "67de6b14c1ca6ac829e7d5d735bfedcb5276d83ff0367da8cdf049400a786151",
+      "subject": "artwork",
+      "work_slug": "things-that-go-unseen"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "paul-kerr",
+      "asset": "plotart/artists/paul-kerr/img/things-that-go-unseen-1-2000.webp",
+      "bytes": 175442,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-a4p7ruywdrw",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        1379,
+        2000
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "492343aabe6b3973901c4c94ae661b69c9bb789a68f2523d843de62c96296fbc",
+      "source_sha256": "67de6b14c1ca6ac829e7d5d735bfedcb5276d83ff0367da8cdf049400a786151",
+      "subject": "artwork",
+      "work_slug": "things-that-go-unseen"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "paul-kerr",
+      "asset": "plotart/artists/paul-kerr/img/life-goes-on-1-600.webp",
+      "bytes": 43890,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-a4p7ruywdrw",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        409,
+        600
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "e02a81323b55a60413207067e8be6d261e0a35164fd73bf4092445988fe56eae",
+      "source_sha256": "a64bdcdcee121ed149d21be412215da2a9ba671e09a25fa9fc5b162e3a60b95c",
+      "subject": "artwork",
+      "work_slug": "life-goes-on"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "paul-kerr",
+      "asset": "plotart/artists/paul-kerr/img/life-goes-on-1-1200.webp",
+      "bytes": 149362,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-a4p7ruywdrw",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        818,
+        1200
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "067a50963acfe751186bf0c954e8615145c4a17ddae58b2529ab081c78d889d3",
+      "source_sha256": "a64bdcdcee121ed149d21be412215da2a9ba671e09a25fa9fc5b162e3a60b95c",
+      "subject": "artwork",
+      "work_slug": "life-goes-on"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "paul-kerr",
+      "asset": "plotart/artists/paul-kerr/img/life-goes-on-1-2000.webp",
+      "bytes": 351472,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-a4p7ruywdrw",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        1364,
+        2000
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "9602851729ad2b5e62c23cc05c3028f1d7e67ea4285ad4cc66c1ba9194a79871",
+      "source_sha256": "a64bdcdcee121ed149d21be412215da2a9ba671e09a25fa9fc5b162e3a60b95c",
+      "subject": "artwork",
+      "work_slug": "life-goes-on"
     }
   ],
   "legacy_undeclared": [
