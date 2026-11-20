@@ -1,8 +1,8 @@
 /* PlotArt Artists' Gallery · Featured Artists (founder curation; moved from the homepage, 17 Nov 2026).
    Loaded only by gallery/index.html. Existing PlotArt tokens only (anthracite / off-white). Artworks are never cropped:
    each sits whole inside its wall frame (object-fit: contain, natural aspect ratio). */
-body.pa .pa-fa{ padding:clamp(40px, 5vw, 80px) 0 clamp(48px, 6vw, 96px); background:linear-gradient(180deg, #272729 0%, #29292B 100%); border-top:1px solid rgba(237,235,231,.06); }
-body.pa .pa-fa-head{ display:grid; grid-template-columns:minmax(0, 1fr) minmax(0, 1fr); align-items:end; gap:10px 48px; margin-bottom:clamp(28px, 3.4vw, 48px); }
+body.pa .pa-fa{ padding:clamp(22px, 2vw, 28px) 0 clamp(48px, 6vw, 96px); background:linear-gradient(180deg, #272729 0%, #29292B 100%); border-top:1px solid rgba(237,235,231,.06); }
+body.pa .pa-fa-head{ display:grid; grid-template-columns:minmax(0, 1fr) minmax(0, 1fr); align-items:end; gap:10px 48px; margin-bottom:clamp(18px, 1.4vw, 20px); }
 body.pa .pa-fa-head .pa-eyebrow{ grid-column:1 / -1; margin:0; }
 body.pa .pa-fa-head h2{ margin:0; font-size:clamp(38px, 4.2vw, 62px); }
 body.pa .pa-fa-lede{ margin:0; justify-self:end; max-width:28em; color:var(--stone); font-size:17px; line-height:1.55; }
@@ -39,3 +39,12 @@ body.pa .pa-fa-cta:focus-visible{ outline:2px solid var(--ivory); outline-offset
   body.pa .pa-fa-art img{ max-width:100%; max-height:72vh; }
 }
 @media (prefers-reduced-motion:reduce){ body.pa .pa-fa-art img{ transition:none; } body.pa .pa-fa-art:hover img{ transform:none; } }
+
+/* Spacing refinement (founder brief 20 Nov 2026: "less empty space, more artwork"). The Artists' Gallery introduction is
+   this page's alone (.pa-vg2-hero appears nowhere else), so its padding is tightened here rather than in plotart.css.
+   Type sizes, artwork frames and the three-column grid are unchanged; the Featured Artists section above is tightened
+   at its top padding and heading margin only. */
+body.pa .pa-vg2-hero .pa-wrap{ padding-top:clamp(18px, 1.8vw, 26px); padding-bottom:clamp(12px, 1.2vw, 18px); }
+body.pa .pa-vg2-sub{ margin-bottom:0; }
+body.pa .pa-vg2-act{ margin-bottom:0; }
+@media (max-width:720px){ body.pa .pa-vg2-hero-row{ row-gap:16px; } }
