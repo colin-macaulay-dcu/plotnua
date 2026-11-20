@@ -184,7 +184,7 @@ def self_test():
     case("whole run holds the production-site lock again", lambda w,t,tl: w["release-promote.yml"].__setitem__("concurrency", {"group": "production-site", "cancel-in-progress": False}), "A9")
     case("promote made to run always()", lambda w,t,tl: w["release-promote.yml"]["jobs"]["promote"].__setitem__("if", "always() && " + w["release-promote.yml"]["jobs"]["promote"]["if"]), "A9")
     case("the waiting approval made to hold the production-site lock", lambda w,t,tl: w["release-promote.yml"]["jobs"]["approval"].__setitem__("concurrency", {"group": "production-site"}), "A9")
-        case("a publisher made to wait for website approval", lambda w,t,tl: w["plotnua-garden-publish.yml"]["jobs"]["promote"].__setitem__("environment", "website-production"), "A9")
+    case("a publisher made to wait for website approval", lambda w,t,tl: w["plotnua-garden-publish.yml"]["jobs"]["promote"].__setitem__("environment", "website-production"), "A9")
     case("key referenced by another workflow", lambda w,t,tl: t.__setitem__(os.path.join(WF,"site-health.yml"), t.get(os.path.join(WF,"site-health.yml"),"")+"\n# ${{ secrets.RELEASE_APP_KEY }}\n"), "A8")
     print("\nRELEASE APP PUSH SELF-TEST · %s · %d failed" % ("OK" if fails == 0 else "FAIL", fails))
     return 1 if fails else 0
