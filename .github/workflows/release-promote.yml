@@ -20,6 +20,9 @@
 # reviewer is the founder. Nothing reaches main until he approves that run; rejecting it changes nothing. Job "promote"
 # then re-checks, fail closed, that the environment requires him and that this run carries his approval, and promote.sh
 # still refuses if main has moved on while the release waited (newer work is never overwritten).
+# ROUTINE ATLAS REFRESH (founder policy, 20 Nov 2026): a release that verify-atlas-refresh.sh finds to be EXACTLY the daily
+# Atlas statistics refresh (pushed by the Release App, one commit on main, only the six homepage figures and
+# atlas-stats.json) goes to job "promote-atlas" instead, without approval; that job checks it again before release.
 # Worker and database changes are NOT released here: they keep their own workflows. The PlotArt, Garden and Idea Board
 # publishers promote their own releases (and those releases' rollbacks) themselves, so this workflow leaves those
 # branches alone and never races them.
@@ -57,9 +60,12 @@ jobs:
     timeout-minutes: 10
     outputs:
       release: ${{ steps.preview.outputs.release }}
+      atlas: ${{ steps.preview.outputs.atlas }}
     env:
       SHA: ${{ github.event.workflow_run.head_sha }}
       BRANCH: ${{ github.event.workflow_run.head_branch }}
+      ACTOR: ${{ github.event.workflow_run.actor.login }}   # who pushed the release branch (set by GitHub)
+      EVENT: ${{ github.event.workflow_run.event }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -127,6 +133,86 @@ jobs:
       # Fail closed: the website-production environment must require the founder, and this run must carry his approval.
       - name: Founder approval recorded on this run (refuse otherwise)
         run: bash "$RUNNER_TEMP/release-tools/verify-founder-approval.sh" "${{ github.run_id }}"
+      # A 1-hour token of the "PlotNua Release" GitHub App (Contents only, this repository only). Used for ONE thing:
+      # pushing an automatic rollback to its release/auto/rollback-* branch, so that its gate starts on a push.
+      - name: Release push token (PlotNua Release App)
+        id: app
+        uses: actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510   # v3.3.0
+        with:
+          app-id: ${{ vars.RELEASE_APP_ID }}
+          private-key: ${{ secrets.RELEASE_APP_KEY }}
+          permission-contents: write
+      - name: Promote, verify live, roll back automatically if the live check fails
+        id: promote
+        env:
+          RELEASE_PUSH_TOKEN: ${{ steps.app.outputs.token }}
+        run: |
+          git config user.name "PlotNua release automation"; git config user.email "hello@plotnua.ie"
+          bash "$RUNNER_TEMP/release-tools/promote.sh" "$SHA" "$BRANCH"
+      # Releases the automatic rollback within this run: waits for the push-started gate on the revert's exact commit
+      # and promotes it through the same promote.sh (a second run of this workflow, started by that gate, waits for
+      # this one on the production-site lock and then finds nothing left to release). Runs only when promote.sh
+      # actually pushed a rollback; a failing rollback release is never reverted again.
+      - name: Release the automatic rollback (its own gate must pass on its exact commit)
+        if: failure() && steps.promote.outputs.rollback_sha != ''
+        env:
+          RSHA: ${{ steps.promote.outputs.rollback_sha }}
+          RBRANCH: ${{ steps.promote.outputs.rollback_branch }}
+          RELEASE_PUSH_TOKEN: ${{ steps.app.outputs.token }}
+        run: |
+          git config user.name "PlotNua release automation"; git config user.email "hello@plotnua.ie"
+          bash "$RUNNER_TEMP/release-tools/promote-after-gate.sh" "$RSHA" "$RBRANCH"
+      - name: Alert on failure
+        if: failure()
+        run: |
+          bash "$RUNNER_TEMP/release-tools/ops-alert.sh" "Website release failed" "Release of ${SHA} from ${BRANCH} did not complete, see ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+
+  # Routine Atlas statistics refresh ONLY (founder policy, 20 Nov 2026): no approval, because the preview found it to be
+  # exactly that, and this job checks it again, fail closed, before anything reaches main. Otherwise identical to promote.
+  promote-atlas:
+    needs: preview
+    if: >-
+      github.event.workflow_run.conclusion == 'success' &&
+      (github.event.workflow_run.event == 'push' || github.event.workflow_run.event == 'workflow_dispatch') &&
+      startsWith(github.event.workflow_run.head_branch, 'release/auto/') &&
+      !startsWith(github.event.workflow_run.head_branch, 'release/auto/plotart-') &&
+      !startsWith(github.event.workflow_run.head_branch, 'release/auto/garden-') &&
+      !startsWith(github.event.workflow_run.head_branch, 'release/auto/ideas-') &&
+      !startsWith(github.event.workflow_run.head_branch, 'release/auto/rollback-plotart-') &&
+      !startsWith(github.event.workflow_run.head_branch, 'release/auto/rollback-garden-') &&
+      !startsWith(github.event.workflow_run.head_branch, 'release/auto/rollback-ideas-') &&
+      startsWith(github.event.workflow_run.head_branch, 'release/auto/atlas-stats-') &&
+      github.event.workflow_run.actor.login == 'plotnua-release[bot]' && github.event.workflow_run.event == 'push' &&
+      needs.preview.outputs.atlas == 'true' && needs.preview.outputs.release != 'true'
+    concurrency:
+      group: production-site
+      cancel-in-progress: false
+    runs-on: ubuntu-latest
+    # The release App's key lives in this environment (deployment branches: main only). This workflow always runs on
+    # main (workflow_run). deployment: false = the key is available but no deployment record is created.
+    environment:
+      name: release-automation
+      deployment: false
+    timeout-minutes: 60   # includes waiting for an automatic rollback's own gate
+    env:
+      SHA: ${{ github.event.workflow_run.head_sha }}
+      BRANCH: ${{ github.event.workflow_run.head_branch }}
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+      # The release tooling is copied from MAIN before anything else happens, so a release branch can never change
+      # how it is itself checked, promoted or rolled back.
+      - name: Trusted copy of the release tooling (from main)
+        run: cp -r atlas-tools/release "$RUNNER_TEMP/release-tools"
+      # Fail closed: released without approval ONLY if this is exactly a routine Atlas statistics refresh pushed by the App.
+      - name: Routine Atlas statistics refresh only (refuse otherwise)
+        env:
+          ACTOR: ${{ github.event.workflow_run.actor.login }}
+          EVENT: ${{ github.event.workflow_run.event }}
+        run: bash "$RUNNER_TEMP/release-tools/verify-atlas-refresh.sh" "$SHA" "$BRANCH" "$ACTOR" "$EVENT"
       # A 1-hour token of the "PlotNua Release" GitHub App (Contents only, this repository only). Used for ONE thing:
       # pushing an automatic rollback to its release/auto/rollback-* branch, so that its gate starts on a push.
       - name: Release push token (PlotNua Release App)

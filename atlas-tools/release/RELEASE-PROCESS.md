@@ -104,6 +104,19 @@ The scripts push nothing when any of these is true:
    - It then runs `promote.sh` as before: fast-forward only, refused if main moved while the release waited, live check, automatic rollback.
    - The `production-site` lock is taken by this job only, so a release waiting for approval never holds up the Garden and Idea Board publishers.
 
+**Routine Atlas statistics refresh (founder policy, 20 November 2026).** The daily refresh continues automatically.
+- The preview sends a release to the separate **promote-atlas** job, with no approval, only when `verify-atlas-refresh.sh` (from main) finds all of these:
+  - it was pushed by the PlotNua Release App, in a push;
+  - the branch is `release/auto/atlas-stats-<commit>`;
+  - it is one commit directly on the current main;
+  - it modifies only `index.html` and/or `atlas-stats.json`;
+  - `index.html` differs only in the six Atlas figures;
+  - `atlas-stats.json` differs only in its counts and time;
+  - the page and the record agree, and no figure falls more than 20%.
+- `promote-atlas` checks all of this again before release and refuses otherwise.
+- Anything else, including an Atlas branch pushed by a person or a session, is offered for the founder's approval like every other release.
+- Proofs: `prove-atlas-refresh.sh`, plus A10 and the job simulation.
+
 **Unchanged by this checkpoint:** the publishers that promote their own releases (PlotArt galleries, Garden noticeboard, Idea Board), Studio and Worker deploys (`studio-production.`), and the gate.
 
 **Proofs:**
