@@ -97,15 +97,14 @@ const ON = parsed && (parsed.on || parsed['true']);   // YAML 1.1 reads the key 
 check('W1 the workflow parses, is manual only and defaults to a TEST dry run', ON && Object.keys(ON).join() === 'workflow_dispatch' && ON.workflow_dispatch.inputs.dry_run.default === true
   && ON.workflow_dispatch.inputs.target.default === 'test' && ON.workflow_dispatch.inputs.enable_test_pilot.default === false, JSON.stringify(parsed).slice(0, 300));
 check('W2 it never applies a migration or runs d1 execute', !/d1 (migrations|execute)/.test(wf));
-// W3 (20 Nov 2026, live-mode gate): production writes Stripe secrets ONLY in the live step, which runs only when
-// enable_live_pilot is ticked, uses only the CHECKOUT_LIVE_* secrets and comes after the live credentials check.
+// W3 (20 Nov 2026, live-mode gate; fail-closed after review): production writes no secret inline. The only production
+// secret writes are in checkout-live-enable.sh (OFF deploy, secrets, verify, LIVE deploy, recovery), on the live path only,
+// after the live credentials check; test keeps its own token and secrets.
 const PROD = wf.split('# ---------------------------------------------------------------- PRODUCTION')[1] || '';
-const steps = PROD.split(/\n      - name: /).slice(1);
-const writers = steps.filter(x => /secret put/.test(x));
-check('W3 production writes Stripe secrets only in the live step (enable_live_pilot, live secrets only, after the live check); test uses its own token and secrets',
-  writers.length === 1 && /^PRODUCTION · write the LIVE secrets/.test(writers[0]) && /if: \$\{\{ inputs\.target == 'production' && !inputs\.dry_run && inputs\.enable_live_pilot \}\}/.test(writers[0])
-  && !/CHECKOUT_TEST_/.test(PROD) && PROD.indexOf('check-stripe-live-secrets.sh') > 0 && PROD.indexOf('check-stripe-live-secrets.sh') < PROD.indexOf('write the LIVE secrets')
-  && (wf.match(/CHECKOUT_TEST_STRIPE_SECRET_KEY/g) || []).length >= 2 && /CHECKOUT_TEST_CF_TOKEN/.test(wf), writers.map(x => x.slice(0, 80)));
+check('W3 production writes secrets only through the fail-closed live script (live path only, after the live credentials check); test uses its own token and secrets',
+  !/secret put/.test(PROD) && !/CHECKOUT_TEST_/.test(PROD) && /if: \$\{\{ inputs\.target == 'production' && !inputs\.dry_run && inputs\.enable_live_pilot \}\}\n[\s\S]{0,600}checkout-live-enable\.sh/.test(PROD)
+  && PROD.indexOf('check-stripe-live-secrets.sh') < PROD.indexOf('checkout-live-enable.sh')
+  && (wf.match(/CHECKOUT_TEST_STRIPE_SECRET_KEY/g) || []).length >= 2 && /CHECKOUT_TEST_CF_TOKEN/.test(wf));
 check('W3b live checkout is off by default and needs the typed confirmation', ON && ON.workflow_dispatch.inputs.enable_live_pilot.default === false
   && wf.includes('[ "$LIVE_CONFIRMATION" != "ENABLE LIVE PLOTART CHECKOUT" ]'));
 check('W4 each target waits for approval in its own GitHub environment', /environment: \$\{\{ inputs\.target == 'production' && 'studio-production\.' \|\| 'checkout-test' \}\}/.test(wf));
