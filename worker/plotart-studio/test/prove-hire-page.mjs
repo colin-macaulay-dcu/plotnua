@@ -89,7 +89,7 @@ const strip = s => s.replace(' pa-pills--hire', '').replace(/<a class="pa-pill" 
   const brandOld = c => BRAND_PAIRS.reduce((s, [n, o]) => s.split(n).join(o), c);
   LATER_PINS['plotart/assets/plotart.css'].push('39735ef9ad9abfc7d9ace0b38288fd7e40aa8fc0832f99c0a9ef76b1d73e181b');
   const BRAND_PINS = { 'plotart/assets/plotart-featured.css': '2f525e84e7d34f9cdc1807bcc42cd7192fa0944235afb219f4b54c795ad076d6',   /* Artists' Gallery spacing refinement (founder brief 20 Nov 2026) */
-    'plotart/assets/plotart-services.css': '58c8c84e0fd8d372ddbd6f267bb202aa9c2ff2e0d6eeb249293d0c2a5fd8eb8d' };
+    'plotart/assets/plotart-services.css': 'fc6b301c02c4bde2f3227bb2bc4c07459a86ded8ab26d3ceb4473e652fccc10c' };
   const sha = t => createHash('sha256').update(t).digest('hex');
   const navBlock = c => (c.match(/\n*\/\* ==== pa-hire-nav:begin[\s\S]*?pa-hire-nav:end ==== \*\/\n?/) || [''])[0];
   const footRule = c => (c.match(/^\.pa-foot p a\{ text-decoration:underline;[^\n]*\n/m) || [''])[0];

@@ -57,3 +57,9 @@ body.pa .pa-lg-artist-acts{ margin:30px 0 0; }
 @media (max-width:560px){
   body.pa #host .pa-actions .pa-btn, body.pa .pa-lg-artist-acts .pa-btn{ width:100%; justify-content:center; }
 }
+
+/* Spacing refinement (founder brief 20 Nov 2026): the room image comes into view sooner. Only the Living Gallery's
+   introduction is tightened (top padding 100 -> 60 px at desktop, 48 -> 32 px on phones; the gap above the room
+   image 60 -> 44 px). Type, the image and every later section are unchanged. */
+body.pa .pa-lg-hero .pa-wrap{ padding-top:clamp(32px, 4.2vw, 60px); }
+body.pa .pa-lg-hero .pa-lg-feature{ margin-top:clamp(26px, 3vw, 44px); }

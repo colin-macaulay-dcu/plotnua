@@ -1,6 +1,6 @@
 /* PlotArt · Art Services & Providers (19 Nov 2026). Loaded only by services.html. Existing tokens and components only:
    no logos or photographs; two plain provider entries on the gallery wall. */
-body.pa .pa-sv-hero{ padding:clamp(56px, 7vw, 104px) 0 clamp(40px, 5vw, 72px); }
+body.pa .pa-sv-hero{ padding:clamp(36px, 4.4vw, 64px) 0 clamp(30px, 3.4vw, 48px); }   /* was 56-104 / 40-72 (spacing refinement, 20 Nov 2026) */
 body.pa .pa-sv-hero h1{ font-size:clamp(46px, 6vw, 88px); line-height:.98; margin:10px 0 18px; }
 body.pa .pa-sv-note{ margin:24px 0 0; max-width:62ch; padding:16px 20px; border:1px solid var(--line-2); border-radius:var(--r-sm); color:var(--stone); font-size:15.5px; line-height:1.6; }
 body.pa .pa-sv-sec{ padding:clamp(40px, 5vw, 80px) 0; }
@@ -38,3 +38,4 @@ body.pa .pa-sv-what{ position:relative; padding-bottom:18px; }
 body.pa .pa-sv-what::after{ content:""; position:absolute; left:0; bottom:0; width:44px; height:3px; border-radius:2px; background:var(--sv-accent, var(--line-2)); }
 @media (max-width:560px){ body.pa .pa-sv-media{ aspect-ratio:3 / 2; } body.pa .pa-sv-logo--dark img{ height:34px; }
   body.pa .pa-sv-media figcaption{ top:10px; bottom:auto; padding:2px 8px; border-radius:999px; background:rgba(27,28,30,.62); } }
+body.pa .pa-sv-hero + .pa-sv-sec{ padding-top:clamp(32px, 3.8vw, 56px); }   /* the first provider sooner; later sections unchanged (20 Nov 2026) */
