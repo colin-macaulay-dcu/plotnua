@@ -36,15 +36,34 @@ for _f in sorted(glob.glob(os.path.join(_wdir, "migrations", "*.sql"))):
 # BEFORE trigger whose whole body is SELECT RAISE(ABORT, '...') can only STOP a write, never make one. It is allowed when
 # it guards a table this same migration creates and declares, and its WHEN condition (if any) only reads. Every other
 # trigger is still refused. Allowed triggers are listed for the reviewer and removed before the remaining checks.
-_TRIG = re.compile(r"\bCREATE\s+TRIGGER\s+(?:IF\s+NOT\s+EXISTS\s+)?([A-Za-z_][A-Za-z0-9_]*)\s+BEFORE\s+(INSERT|UPDATE|DELETE)\s+ON\s+([A-Za-z_][A-Za-z0-9_]*)\s+"
+# BEFORE UPDATE OF <columns> (20 Nov 2026): the same refusal-only guard, narrowed to updates of the named columns. Only
+# UPDATE may name columns, and each must be a column of the guarded table as this migration creates it (a misspelt column
+# would leave the guard silently inert).
+_TRIG = re.compile(r"\bCREATE\s+TRIGGER\s+(?:IF\s+NOT\s+EXISTS\s+)?([A-Za-z_][A-Za-z0-9_]*)\s+BEFORE\s+(INSERT|UPDATE|DELETE)"
+                   r"(?:\s+OF\s+([A-Za-z_][A-Za-z0-9_]*(?:\s*,\s*[A-Za-z_][A-Za-z0-9_]*)*))?\s+ON\s+([A-Za-z_][A-Za-z0-9_]*)\s+"
                    r"(?:WHEN\s+(.*?)\s+)?BEGIN\s+SELECT\s+RAISE\s*\(\s*ABORT\s*,\s*'(?:[^']|'')*'\s*\)\s*;\s*END\s*;", re.I | re.S)
+def _columns(tbl):
+    m = re.search(r"\bCREATE\s+TABLE\s+(?:IF\s+NOT\s+EXISTS\s+)?[`\"\[]?" + tbl + r"[`\"\]]?\s*\((.*?)\)\s*;", sql, re.I | re.S)
+    if not m: return set()
+    body, depth, parts, cur = m.group(1), 0, [], ""
+    for ch in body:
+        depth += ch == "("; depth -= ch == ")"
+        if ch == "," and depth == 0: parts.append(cur); cur = ""
+        else: cur += ch
+    parts.append(cur)
+    return {p.split()[0].strip('`"[]').lower() for p in parts if p.split() and p.split()[0].upper() not in ("CHECK", "PRIMARY", "UNIQUE", "FOREIGN", "CONSTRAINT")}
 _made = {m.lower() for m in re.findall(r"\bCREATE\s+TABLE\s+(?:IF\s+NOT\s+EXISTS\s+)?([A-Za-z_][A-Za-z0-9_]*)", sql, re.I)}
 guards = []
 for m in list(_TRIG.finditer(sql)):
-    name, ev, tbl, when = m.group(1), m.group(2).upper(), m.group(3).lower(), m.group(4) or ""
+    name, ev, cols, tbl, when = m.group(1), m.group(2).upper(), m.group(3), m.group(4).lower(), m.group(5) or ""
     if tbl in existing: refuse("trigger %s guards %s, a table that already exists: the refusal-only exception is for tables this migration creates" % (name, tbl))
     if tbl not in declared or tbl not in _made: refuse("trigger %s guards %s, which this migration does not create and declare" % (name, tbl))
     if re.search(r"\b(INSERT|UPDATE|DELETE|REPLACE|CREATE|DROP|ALTER|ATTACH|PRAGMA)\b", when, re.I): refuse("trigger %s: its WHEN condition may only read" % name)
+    if cols:
+        if ev != "UPDATE": refuse("trigger %s: only BEFORE UPDATE may name columns" % name)
+        unknown = sorted({c.strip().lower() for c in cols.split(",")} - _columns(tbl))
+        if unknown: refuse("trigger %s names columns that %s does not have: %s" % (name, tbl, ", ".join(unknown)))
+        ev = "UPDATE OF " + ", ".join(c.strip() for c in cols.split(","))
     guards.append("%s (refuses %s on %s)" % (name, ev, tbl))
 sql = _TRIG.sub(" ", sql)
 for bad, why in [(r"\bCREATE\s+(TEMP\w*\s+)?TRIGGER\b", "triggers (other than refusal-only guards)"), (r"\bATTACH\b", "ATTACH"), (r"\bPRAGMA\s+\w+\s*=", "PRAGMA writes")]:

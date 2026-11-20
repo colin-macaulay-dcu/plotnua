@@ -45,6 +45,22 @@ cases = [  # (name, sql, declared tables, expected: additive | destructive | ref
     ("guard on an undeclared new table", "CREATE TABLE widgets (id TEXT); CREATE TABLE gadgets (id TEXT); CREATE TRIGGER g BEFORE DELETE ON gadgets BEGIN SELECT RAISE(ABORT, 'x'); END;", "widgets", "refused"),
     ("INSTEAD OF trigger on a view", "CREATE VIEW v AS SELECT 1; CREATE TRIGGER w INSTEAD OF INSERT ON v BEGIN SELECT RAISE(ABORT, 'x'); END;", "none", "refused"),
     ("guard whose message contains an escaped apostrophe", "CREATE TABLE widgets (id TEXT); CREATE TRIGGER w BEFORE UPDATE ON widgets BEGIN SELECT RAISE(ABORT, 'it''s append-only'); END;", "widgets", "destructive"),
+    # BEFORE UPDATE OF <columns> (20 Nov 2026): the same refusal-only guard, narrowed to named columns of a new table
+    ("UPDATE OF guard on a new table with a read-only WHEN", "CREATE TABLE widgets (id TEXT, keep TEXT); CREATE TRIGGER w_keep BEFORE UPDATE OF keep ON widgets WHEN OLD.keep IS NOT NULL AND NEW.keep <> OLD.keep BEGIN SELECT RAISE(ABORT, 'fixed once set'); END;", "widgets", "destructive"),
+    ("UPDATE OF two columns", "CREATE TABLE widgets (id TEXT, a TEXT, b INTEGER CHECK (b > 0)); CREATE TRIGGER w_ab BEFORE UPDATE OF a, b ON widgets BEGIN SELECT RAISE(ABORT, 'no'); END;", "widgets", "destructive"),
+    ("UPDATE OF a column the table does not have", "CREATE TABLE widgets (id TEXT, keep TEXT); CREATE TRIGGER w BEFORE UPDATE OF kept ON widgets BEGIN SELECT RAISE(ABORT, 'no'); END;", "widgets", "refused"),
+    ("INSERT OF columns (not valid SQL)", "CREATE TABLE widgets (id TEXT); CREATE TRIGGER w BEFORE INSERT OF id ON widgets BEGIN SELECT RAISE(ABORT, 'no'); END;", "widgets", "refused"),
+    ("DELETE OF columns (not valid SQL)", "CREATE TABLE widgets (id TEXT); CREATE TRIGGER w BEFORE DELETE OF id ON widgets BEGIN SELECT RAISE(ABORT, 'no'); END;", "widgets", "refused"),
+    ("UPDATE OF guard on an EXISTING table", "CREATE TRIGGER a_email BEFORE UPDATE OF email ON artists BEGIN SELECT RAISE(ABORT, 'no'); END;", "artists", "refused"),
+    ("UPDATE OF guard on a table from an earlier migration", "CREATE TABLE IF NOT EXISTS gallery_positions (p INT, note TEXT); CREATE TRIGGER g BEFORE UPDATE OF note ON gallery_positions BEGIN SELECT RAISE(ABORT, 'no'); END;", "gallery_positions", "refused"),
+    ("UPDATE OF guard on an undeclared new table", "CREATE TABLE widgets (id TEXT); CREATE TABLE gadgets (id TEXT, k TEXT); CREATE TRIGGER g BEFORE UPDATE OF k ON gadgets BEGIN SELECT RAISE(ABORT, 'x'); END;", "widgets", "refused"),
+    ("UPDATE OF trigger whose body writes", "CREATE TABLE widgets (id TEXT, k TEXT); CREATE TRIGGER w BEFORE UPDATE OF k ON widgets BEGIN UPDATE artists SET email = ''; END;", "widgets,artists", "refused"),
+    ("UPDATE OF guard plus a second statement in its body", "CREATE TABLE widgets (id TEXT, k TEXT); CREATE TRIGGER w BEFORE UPDATE OF k ON widgets BEGIN SELECT RAISE(ABORT, 'x'); DELETE FROM audit; END;", "widgets,audit", "refused"),
+    ("UPDATE OF guard whose WHEN writes", "CREATE TABLE widgets (id TEXT, k TEXT); CREATE TRIGGER w BEFORE UPDATE OF k ON widgets WHEN (DELETE FROM artists) BEGIN SELECT RAISE(ABORT, 'no'); END;", "widgets,artists", "refused"),
+    ("UPDATE OF with RAISE(IGNORE)", "CREATE TABLE widgets (id TEXT, k TEXT); CREATE TRIGGER w BEFORE UPDATE OF k ON widgets BEGIN SELECT RAISE(IGNORE); END;", "widgets", "refused"),
+    ("AFTER UPDATE OF, even if it only raises", "CREATE TABLE widgets (id TEXT, k TEXT); CREATE TRIGGER w AFTER UPDATE OF k ON widgets BEGIN SELECT RAISE(ABORT, 'x'); END;", "widgets", "refused"),
+    ("UPDATE OF on a schema-qualified table", "CREATE TABLE widgets (id TEXT, k TEXT); CREATE TRIGGER w BEFORE UPDATE OF k ON main.artists BEGIN SELECT RAISE(ABORT, 'x'); END;", "widgets,artists", "refused"),
+    ("the real 0017 (managed checkout pilot): allowed, never automatic", "", "", "real0017"),
     ("ATTACH", "ATTACH DATABASE 'x' AS y;", "none", "refused"),
     ("PRAGMA write", "PRAGMA foreign_keys = OFF;", "none", "refused"),
     ("undeclared table", "CREATE TABLE widgets (id TEXT); DELETE FROM artists;", "widgets", "refused"),
@@ -63,6 +79,11 @@ with tempfile.TemporaryDirectory() as d:
         if want == "additive*":     # the real file keeps its own number so schema.sql's 0003 marker applies
             p = os.path.join(HERE, "..", "..", "..", "worker", "plotart-studio", "migrations", "0003_ideas.sql"); want = "additive"
             sha = hashlib.sha256(open(p, "rb").read()).hexdigest()
+        if want == "real0017":     # the real file keeps its own number; every table it creates is declared
+            p = os.path.join(HERE, "..", "..", "..", "worker", "plotart-studio", "migrations", "0017_managed_checkout_pilot.sql"); want = "destructive"
+            sha = hashlib.sha256(open(p, "rb").read()).hexdigest()
+            import re as _re
+            tables = ",".join(_re.findall(r"CREATE TABLE IF NOT EXISTS (\w+)", open(p).read()))
         if want == "additive4":
             p = os.path.join(HERE, "..", "..", "..", "worker", "plotart-studio", "migrations", "0004_garden_board.sql"); want = "additive"
             sha = hashlib.sha256(open(p, "rb").read()).hexdigest()
