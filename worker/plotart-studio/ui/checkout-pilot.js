@@ -13,7 +13,22 @@
     return j;
   };
   const say = m => { const s = document.getElementById('saved'); s.textContent = m; s.classList.add('on'); setTimeout(() => s.classList.remove('on'), 4000); };
-  const act = fn => async ev => { ev.preventDefault(); try { await fn(ev); } catch (e) { alert(e.message); } };
+  /* Errors are written into the page (role="alert"): next to the form that was submitted, else at the top. Browser dialogs
+     (alert, prompt, confirm) are not used for the founder's quote and refund steps: some browsers, including embedded ones,
+     suppress them, which silently sent empty answers (20 Nov 2026, deployed TEST purchase). */
+  const showError = (ev, msg) => {
+    const f = ev && ev.target && ev.target.closest && ev.target.closest('form'), box = (f && f.querySelector('[data-err]')) || document.getElementById('page-error');
+    if (box) { box.textContent = msg; box.hidden = false; box.focus && box.focus(); }
+  };
+  const act = fn => async ev => { ev.preventDefault(); const f = ev.target.closest && ev.target.closest('form'), box = f && f.querySelector('[data-err]');
+    if (box) { box.textContent = ''; box.hidden = true; }
+    const btn = f && f.querySelector('button[type=submit], button:not([type])'); if (btn) btn.disabled = true;
+    try { await fn(ev); } catch (e) { showError(ev, e.message); } finally { if (btn && btn.isConnected) btn.disabled = false; } };
+  /* "12.50" → 1250. Whole euro or euro and cents only; never via floating point. */
+  const toCents = (v, what) => { const t = String(v ?? '').trim().replace(',', '.');
+    if (!/^\d{1,7}(\.\d{1,2})?$/.test(t)) throw new Error(`Enter the ${what} in euro, for example 12.50`);
+    const [w, c = ''] = t.split('.'); return Number(w) * 100 + Number((c + '00').slice(0, 2)); };
+  let ISSUED = null;   // the one-time buyer link, kept on screen until the page is left or reloaded
   const TEMPLATE = { collection_county: '', destination: '', unpacked_cm: '', packed_cm: '', weight_kg: 0, medium: '', framing: '', glazing: '', condition: '', access_notes: null,
     organiser: 'artist', packer: 'artist', transport_booker: 'artist', transport_contracting_party: 'artist', transport_payer: 'artist', transporter_name: '',
     installation: 'not_applicable', import_costs: 'not_applicable', cover_type: 'transit_insurance', cover_provider: '', covered_value_cents: 0, valuation_basis: '',
@@ -41,6 +56,33 @@
       ${st.commission_refund_owed ? row('Commission to be returned after a lost dispute, not yet returned', st.commission_refund_owed, '', true) : ''}
       </table><small class="st-muted">Processing: ${esc(String(st.processing_status).replace(/_/g, ' '))}. Dispute fees: ${esc(st.dispute_fees_status)}. ${esc(st.not_included)}</small></details>`;
   }
+  /* Issue buyer quote (founder). Same request and server rules as before: 1–7 days; the linked-purchases answer is required
+     and only "not linked" lets the server issue the quote. */
+  function issueForm(o) {
+    const k = esc(o.id);
+    return `<details class="st-step" open><summary>Issue buyer quote…</summary><form data-f="issue" novalidate>
+      <p class="st-muted">Artwork ${eur(o.artwork_cents)} · delivery ${eur(o.delivery_cents)} · <strong>buyer pays ${eur(o.total_cents)}</strong> · PlotArt commission ${eur(o.commission_cents)} · quote version ${o.quote_version}, approved by the artist.</p>
+      <label for="iq-days-${k}">Quote valid for (days, 1–7)</label> <input id="iq-days-${k}" name="days" type="number" inputmode="numeric" min="1" max="7" step="1" value="3" required>
+      <fieldset><legend>Linked purchases: as far as you know, is this purchase linked to other purchases by this buyer or anyone acting with them (other email addresses, household, business, agents, staged payments)?</legend>
+        <label><input type="radio" name="linked" value="not_linked" required> Not linked, as far as I know</label>
+        <label><input type="radio" name="linked" value="linked_or_unsure"> Linked, or I am not sure (the quote will not be issued)</label></fieldset>
+      <p class="st-err" role="alert" tabindex="-1" data-err hidden></p>
+      <button type="submit">Issue buyer quote</button></form></details>`;
+  }
+  /* Refund (founder). Same request as before: artwork and delivery amounts in cents, and a reason. The server keeps every
+     rule (paid orders only, never more than is still unrefunded, PlotArt's commission share returned under the agreement). */
+  function refundForm(o) {
+    const k = esc(o.id), st = o.statement || {};
+    return `<details class="st-step"><summary>Refund…</summary><form data-f="refund" novalidate>
+      <p class="st-muted">Paid: artwork ${eur(o.artwork_cents)}, delivery ${eur(o.delivery_cents)}${st.refunded_to_buyer ? ` · already refunded ${eur(st.refunded_to_buyer)}` : ''}. Stripe refunds the buyer from the artist’s Stripe account; Studio then returns PlotArt’s commission share as the agreement provides.</p>
+      <label for="rf-art-${k}">Artwork amount to refund (€)</label> <input id="rf-art-${k}" name="artwork" inputmode="decimal" value="0.00" required>
+      <label for="rf-del-${k}">Delivery amount to refund (€)</label> <input id="rf-del-${k}" name="delivery" inputmode="decimal" value="0.00" required>
+      <label for="rf-why-${k}">Reason (shown in the order record)</label> <input id="rf-why-${k}" name="reason" maxlength="300" required>
+      <p data-sum aria-live="polite"></p>
+      <label><input type="checkbox" name="confirm" required> I confirm this refund through Stripe. A refund cannot be undone.</label>
+      <p class="st-err" role="alert" tabindex="-1" data-err hidden></p>
+      <button type="submit">Refund through Stripe</button></form></details>`;
+  }
   function orderCard(o) {
     const d = o.delivery;
     let h = `<section class="st-card" id="order-${esc(o.id)}" data-id="${esc(o.id)}"><h3>${esc(o.reference)} · ${esc(o.artwork && o.artwork.title)} <small class="st-muted">${esc(o.status.replace(/_/g, ' '))}</small></h3>
@@ -59,16 +101,20 @@
         <button>Save as new version</button></form></details>`;
       const b = [];
       if (o.status === 'draft') b.push(['send', 'Send to artist for approval']);
-      if (o.status === 'awaiting_artist' && o.artist_approved_version === o.quote_version) b.push(['issue', 'Issue buyer quote']);
+      if (o.status === 'awaiting_artist' && o.artist_approved_version === o.quote_version) h += issueForm(o);
       if (['draft', 'awaiting_artist', 'quoted', 'checkout_open', 'payment_failed', 'expired'].includes(o.status)) b.push(['cancel', 'Cancel']);
       if (o.payment_intent || o.status === 'checkout_open') b.push(['reconcile', 'Reconcile with Stripe']);
-      if (o.payment_intent) b.push(['refund', 'Refund…']);
+      if (o.payment_intent && ['paid', 'dispatched', 'delivered', 'refund_pending', 'disputed', 'refunded'].includes(o.status)) h += refundForm(o);
       if (['delivered', 'refunded'].includes(o.status)) b.push(['close', 'Close']);
       if (o.payment_intent) b.push(['hold', 'Legal hold…'], ['repaid', 'Record repayment outside Stripe…']);
       if (o.payment_intent && o.commission_cents > 0) b.push(['processing', 'Reconcile processing fee']);
       if (o.statement && o.statement.shortfall_still_owed_by_plotart) b.push(['shortfallpaid', 'Record shortfall paid…']);
       if (o.statement && o.statement.commission_refund_owed) b.push(['returncommission', 'Return commission (lost dispute)']);
       if (o.payment_intent) b.push(['confirmation', 'Re-deliver buyer confirmation']);
+      if (ISSUED && ISSUED.id === o.id) h += `<div class="st-card st-issued" role="status" data-issued><h4>Buyer quote issued (version ${ISSUED.version})</h4>
+        <p><strong>Buyer link, shown once.</strong> Copy it now and send it to the buyer yourself. Studio keeps only a fingerprint of it and cannot show it again.</p>
+        <label>Buyer link <input data-link readonly value="${esc(ISSUED.link)}" style="width:100%" aria-describedby="link-note-${esc(o.id)}"></label>
+        <p><button type="button" data-copy>Copy link</button> <span id="link-note-${esc(o.id)}" class="st-muted" data-copied aria-live="polite"></span></p></div>`;
       h += `<p>${b.map(([k, t]) => `<button data-a="${k}">${t}</button>`).join(' ')}</p>`;
     } else if (o.status === 'awaiting_artist' && o.artist_approved_version !== o.quote_version) {
       h += `<form data-f="approve"><p>Please check this quote carefully. Approving confirms each of the following for <em>this shipment</em>:</p>
@@ -86,7 +132,7 @@
   async function load() {
     const j = await api('GET', base);
     if (!j.installed) { app.innerHTML = '<h1>Payment pilot</h1><p>The payment pilot is not installed.</p>'; return; }
-    let h = `<h1>Payment pilot <small class="st-muted">(Stripe test mode)</small></h1>`;
+    let h = `<h1>Payment pilot <small class="st-muted">(Stripe test mode)</small></h1><p id="page-error" class="st-err" role="alert" tabindex="-1" hidden></p>`;
     const sw = j.switches;
     h += `<p class="st-muted">Pilot ${sw.enabled ? 'switched ON (test mode)' : 'switched OFF'}${founder && sw.key_problem ? ' · ' + esc(sw.key_problem) : ''}. No live payment can be taken.</p>`;
     if (founder) {
@@ -173,11 +219,7 @@
       await api('POST', `${base}/alerts/${id}`, { next_action: app.querySelector(`[data-next="${id}"]`).value, follow_up_on: app.querySelector(`[data-fu="${id}"]`).value }); say('Next action saved'); load(); });
     on('button[data-a]', 'click', async e => {
       const id = idOf(e.target), a = e.target.dataset.a;
-      if (a === 'issue') { const r = await api('POST', `${base}/orders/${id}/issue`, { days: Number(prompt('Quote valid for how many days (1–7)?', '3')),
-          linked_check_confirmed: confirm('Linked purchases: as far as you know, is this purchase NOT linked to other purchases by this buyer or anyone acting with them (other email addresses, household, business, agents, staged payments)? OK = not linked.') }); prompt('Buyer link (shown once). Copy it now and send it to the buyer yourself:', r.buyer_link); }
-      else if (a === 'refund') { const art = Number(prompt('Artwork amount to refund (cents)', '0')), del = Number(prompt('Delivery amount to refund (cents)', '0')), reason = prompt('Reason');
-        await api('POST', `${base}/orders/${id}/refund`, { artwork_cents: art, delivery_cents: del, reason }); }
-      else if (a === 'hold') await api('POST', `${base}/orders/${id}/hold`, { basis: prompt('Basis: dispute, claim, revenue_enquiry, investigation, litigation, data_subject_request or other'), reason: prompt('Specific reason'), review_by: prompt('Review by (YYYY-MM-DD, within 12 months)') });
+      if (a === 'hold') await api('POST', `${base}/orders/${id}/hold`, { basis: prompt('Basis: dispute, claim, revenue_enquiry, investigation, litigation, data_subject_request or other'), reason: prompt('Specific reason'), review_by: prompt('Review by (YYYY-MM-DD, within 12 months)') });
       else if (a === 'repaid') await api('POST', `${base}/orders/${id}/repaid`, { artwork_cents: Number(prompt('Artwork amount repaid (cents)', '0')), delivery_cents: Number(prompt('Delivery amount repaid (cents)', '0')), evidence: prompt('Evidence: transfer reference, date, buyer confirmation') });
       else if (a === 'shortfallpaid') await api('POST', `${base}/orders/${id}/shortfallpaid`, { amount_cents: Number(prompt('Amount the bank shows as EXECUTED (cents). Record it only once the bank shows the transfer executed.', '0')), executed_on: prompt('Date the bank shows the transfer executed (YYYY-MM-DD)'), reference: prompt('The bank’s transfer reference only — never bank details') });
       else if (a === 'shortfallreturned') await api('POST', `${base}/orders/${id}/shortfallreturned`, { payment_id: e.target.dataset.pay, returned_on: prompt('Date the bank shows the transfer returned (YYYY-MM-DD)'), reason: prompt('Reason the bank gave (no bank details)') });
@@ -186,6 +228,26 @@
       else if (a === 'decline') await api('POST', `${base}/orders/${id}/approve`, { decision: 'decline', quote_version: j.orders.find(o => o.id === id).quote_version, note: prompt('What should change?') || '' });
       else await api('POST', `${base}/orders/${id}/${a}`, {});
       say('Done'); load(); });
+    on('form[data-f="issue"]', 'submit', async e => { const f = new FormData(e.target), id = idOf(e.target);
+      const days = Number(f.get('days')), linked = f.get('linked');
+      if (!Number.isInteger(days) || days < 1 || days > 7) throw new Error('Enter how many days the quote is valid: a whole number from 1 to 7');
+      if (!linked) throw new Error('Answer the linked-purchases question');
+      const r = await api('POST', `${base}/orders/${id}/issue`, { days, linked_check_confirmed: linked === 'not_linked' });
+      ISSUED = { id, link: r.buyer_link, version: r.order && r.order.quote_version };
+      say('Buyer quote issued'); await load();
+      const box = app.querySelector('[data-issued] [data-link]'); if (box) { box.focus(); box.select(); } });
+    on('form[data-f="refund"]', 'submit', async e => { const f = new FormData(e.target), id = idOf(e.target);
+      const artwork_cents = toCents(f.get('artwork'), 'artwork amount'), delivery_cents = toCents(f.get('delivery'), 'delivery amount'), reason = String(f.get('reason') || '').trim();
+      if (artwork_cents + delivery_cents === 0) throw new Error('Enter an artwork or delivery amount to refund');
+      if (reason.length < 3) throw new Error('Give a reason for the refund');
+      if (f.get('confirm') !== 'on') throw new Error('Tick the box to confirm the refund');
+      await api('POST', `${base}/orders/${id}/refund`, { artwork_cents, delivery_cents, reason }); say('Refund sent to Stripe'); load(); });
+    app.querySelectorAll('form[data-f="refund"]').forEach(fm => { const sum = fm.querySelector('[data-sum]'), upd = () => {
+      try { const t = toCents(fm.artwork.value, 'artwork amount') + toCents(fm.delivery.value, 'delivery amount'); sum.textContent = t ? `The buyer will be refunded ${eur(t)}.` : ''; } catch { sum.textContent = ''; } };
+      fm.addEventListener('input', upd); upd(); });
+    app.querySelectorAll('[data-copy]').forEach(b => b.addEventListener('click', async () => { const box = b.closest('[data-issued]'), inp = box.querySelector('[data-link]'), note = box.querySelector('[data-copied]');
+      inp.focus(); inp.select();
+      try { await navigator.clipboard.writeText(inp.value); note.textContent = 'Copied.'; } catch { note.textContent = 'Selected: press Ctrl+C (or ⌘C) to copy.'; } }));
     on('form[data-f="approve"]', 'submit', async e => { const f = new FormData(e.target), id = idOf(e.target);
       const confirm = Object.fromEntries(['available', 'location', 'condition', 'framing', 'dimensions', 'packing_and_handover', 'returns', 'seller_information'].map(k => [k, f.get(k) === 'on']));
       await api('POST', `${base}/orders/${id}/approve`, { quote_version: j.orders.find(o => o.id === id).quote_version, confirm, note: f.get('note') }); say('Approved'); load(); });
