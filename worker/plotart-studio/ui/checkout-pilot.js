@@ -29,6 +29,18 @@
     if (!/^\d{1,7}(\.\d{1,2})?$/.test(t)) throw new Error(`Enter the ${what} in euro, for example 12.50`);
     const [w, c = ''] = t.split('.'); return Number(w) * 100 + Number((c + '00').slice(0, 2)); };
   let ISSUED = null;   // the one-time buyer link, kept on screen until the page is left or reloaded
+  const todayIE = () => new Intl.DateTimeFormat('en-CA', { timeZone: 'Europe/Dublin' }).format(new Date());
+  const plusDaysIE = n => new Intl.DateTimeFormat('en-CA', { timeZone: 'Europe/Dublin' }).format(new Date(Date.now() + n * 86400_000));
+  const isDate = v => /^\d{4}-\d{2}-\d{2}$/.test(String(v || ''));
+  /* One collapsible on-page form. Errors appear inside it (role="alert"); an irreversible financial step carries its own
+     confirmation tick, checked again before anything is sent. No browser dialogs anywhere on this page (20 Nov 2026). */
+  const step = (kind, summary, body, submit, { open = false, extra = '' } = {}) =>
+    `<details class="st-step"${open ? ' open' : ''}${extra}><summary>${summary}</summary><form data-f="${kind}" novalidate>${body}
+      <p class="st-err" role="alert" tabindex="-1" data-err hidden></p><button type="submit">${submit}</button></form></details>`;
+  const field = (id, label, input) => `<label for="${id}">${label}</label> ${input}`;
+  const tick = (label) => `<label><input type="checkbox" name="confirm" required> ${label}</label>`;
+  const need = (cond, msg) => { if (!cond) throw new Error(msg); };
+  const HOLD_BASES = [['dispute', 'Dispute'], ['claim', 'Claim'], ['revenue_enquiry', 'Revenue enquiry'], ['investigation', 'Investigation'], ['litigation', 'Litigation'], ['data_subject_request', 'Data subject request'], ['other', 'Other']];
   const TEMPLATE = { collection_county: '', destination: '', unpacked_cm: '', packed_cm: '', weight_kg: 0, medium: '', framing: '', glazing: '', condition: '', access_notes: null,
     organiser: 'artist', packer: 'artist', transport_booker: 'artist', transport_contracting_party: 'artist', transport_payer: 'artist', transporter_name: '',
     installation: 'not_applicable', import_costs: 'not_applicable', cover_type: 'transit_insurance', cover_provider: '', covered_value_cents: 0, valuation_basis: '',
@@ -83,6 +95,31 @@
       <p class="st-err" role="alert" tabindex="-1" data-err hidden></p>
       <button type="submit">Refund through Stripe</button></form></details>`;
   }
+  function holdForm(o) { const k = esc(o.id);
+    return step('hold', 'Legal hold…', `<p class="st-muted">Keeps this order’s records beyond the normal retention date while the hold is active. Review it at least every 12 months.</p>
+      ${field(`hd-basis-${k}`, 'Basis', `<select id="hd-basis-${k}" name="basis" required><option value="">Choose…</option>${HOLD_BASES.map(([v, t]) => `<option value="${v}">${t}</option>`).join('')}</select>`)}
+      ${field(`hd-why-${k}`, 'Specific reason (10–1,000 characters)', `<textarea id="hd-why-${k}" name="reason" rows="3" maxlength="1000" required></textarea>`)}
+      ${field(`hd-rv-${k}`, 'Review by (within 12 months)', `<input id="hd-rv-${k}" name="review_by" type="date" min="${plusDaysIE(1)}" max="${plusDaysIE(365)}" required>`)}`, 'Place legal hold'); }
+  function repaidForm(o) { const k = esc(o.id);
+    return step('repaid', 'Record repayment outside Stripe…', `<p class="st-muted">Only when the artist has repaid the buyer directly (not through Stripe). Studio books it as a refund and returns PlotArt’s commission share as the agreement provides.</p>
+      ${field(`rp-art-${k}`, 'Artwork amount repaid (€)', `<input id="rp-art-${k}" name="artwork" inputmode="decimal" value="0.00" required>`)}
+      ${field(`rp-del-${k}`, 'Delivery amount repaid (€)', `<input id="rp-del-${k}" name="delivery" inputmode="decimal" value="0.00" required>`)}
+      ${field(`rp-ev-${k}`, 'Evidence: transfer reference, date and the buyer’s confirmation (no bank details)', `<textarea id="rp-ev-${k}" name="evidence" rows="2" maxlength="500" required></textarea>`)}
+      ${tick('I confirm the buyer has been repaid as described. This is recorded as a refund and cannot be undone.')}`, 'Record repayment'); }
+  function shortfallForm(o) { const k = esc(o.id), out = o.statement.shortfall_still_owed_by_plotart;
+    return step('shortfallpaid', 'Record shortfall paid…', `<p class="st-muted">PlotArt still owes the artist <strong>${eur(out)}</strong> outside Stripe on this order. Record a payment only once PlotArt’s bank shows the transfer as <strong>executed</strong>. Never enter bank details here.</p>
+      ${field(`sp-amt-${k}`, `Amount the bank shows as executed (€, up to ${eur(out)})`, `<input id="sp-amt-${k}" name="amount" inputmode="decimal" required>`)}
+      ${field(`sp-on-${k}`, 'Date the bank shows it executed', `<input id="sp-on-${k}" name="executed_on" type="date" max="${todayIE()}" required>`)}
+      ${field(`sp-ref-${k}`, 'The bank’s transfer reference only (6–200 characters)', `<input id="sp-ref-${k}" name="reference" maxlength="200" required autocomplete="off">`)}
+      ${tick('PlotArt’s bank shows this transfer as executed. Recording it settles the amount owed and tells the artist.')}`, 'Record shortfall paid', { extra: ` data-step="shortfallpaid"` }); }
+  function returnCommissionForm(o) { const k = esc(o.id), due = o.statement.commission_refund_owed;
+    return step('returncommission', 'Return commission (lost dispute)…', `<p class="st-muted">The dispute was lost, so PlotArt returns its commission under PA-GAA 9.1: <strong>${eur(due)}</strong>, through Stripe where the application fee allows, otherwise owed by bank transfer.</p>
+      ${field(`rc-why-${k}`, 'Reason (recorded on the order)', `<input id="rc-why-${k}" name="reason" maxlength="300" value="Dispute lost: commission returned under PA-GAA 9.1" required>`)}
+      ${tick(`Return ${eur(due)} of PlotArt’s commission to the artist. This cannot be undone.`)}`, 'Return commission', { extra: ` data-step="returncommission"` }); }
+  function cancelForm(o) { const k = esc(o.id);
+    return step('cancel', 'Cancel order…', `<p class="st-muted">Cancels this unpaid order and any open quote; the buyer’s link then says it cannot be paid. A paid order is never cancelled: refund it instead.</p>
+      ${field(`cn-why-${k}`, 'Reason (optional, recorded on the order)', `<input id="cn-why-${k}" name="reason" maxlength="300">`)}
+      ${tick('Cancel this order.')}`, 'Cancel order'); }
   function orderCard(o) {
     const d = o.delivery;
     let h = `<section class="st-card" id="order-${esc(o.id)}" data-id="${esc(o.id)}"><h3>${esc(o.reference)} · ${esc(o.artwork && o.artwork.title)} <small class="st-muted">${esc(o.status.replace(/_/g, ' '))}</small></h3>
@@ -102,27 +139,30 @@
       const b = [];
       if (o.status === 'draft') b.push(['send', 'Send to artist for approval']);
       if (o.status === 'awaiting_artist' && o.artist_approved_version === o.quote_version) h += issueForm(o);
-      if (['draft', 'awaiting_artist', 'quoted', 'checkout_open', 'payment_failed', 'expired'].includes(o.status)) b.push(['cancel', 'Cancel']);
+      const more = [];
+      if (['draft', 'awaiting_artist', 'quoted', 'checkout_open', 'payment_failed', 'expired'].includes(o.status)) more.push(cancelForm(o));
       if (o.payment_intent || o.status === 'checkout_open') b.push(['reconcile', 'Reconcile with Stripe']);
       if (o.payment_intent && ['paid', 'dispatched', 'delivered', 'refund_pending', 'disputed', 'refunded'].includes(o.status)) h += refundForm(o);
       if (['delivered', 'refunded'].includes(o.status)) b.push(['close', 'Close']);
-      if (o.payment_intent) b.push(['hold', 'Legal hold…'], ['repaid', 'Record repayment outside Stripe…']);
+      if (o.payment_intent) more.push(holdForm(o), repaidForm(o));
       if (o.payment_intent && o.commission_cents > 0) b.push(['processing', 'Reconcile processing fee']);
-      if (o.statement && o.statement.shortfall_still_owed_by_plotart) b.push(['shortfallpaid', 'Record shortfall paid…']);
-      if (o.statement && o.statement.commission_refund_owed) b.push(['returncommission', 'Return commission (lost dispute)']);
+      if (o.statement && o.statement.shortfall_still_owed_by_plotart) more.push(shortfallForm(o));
+      if (o.statement && o.statement.commission_refund_owed) more.push(returnCommissionForm(o));
       if (o.payment_intent) b.push(['confirmation', 'Re-deliver buyer confirmation']);
       if (ISSUED && ISSUED.id === o.id) h += `<div class="st-card st-issued" role="status" data-issued><h4>Buyer quote issued (version ${ISSUED.version})</h4>
         <p><strong>Buyer link, shown once.</strong> Copy it now and send it to the buyer yourself. Studio keeps only a fingerprint of it and cannot show it again.</p>
         <label>Buyer link <input data-link readonly value="${esc(ISSUED.link)}" style="width:100%" aria-describedby="link-note-${esc(o.id)}"></label>
         <p><button type="button" data-copy>Copy link</button> <span id="link-note-${esc(o.id)}" class="st-muted" data-copied aria-live="polite"></span></p></div>`;
-      h += `<p>${b.map(([k, t]) => `<button data-a="${k}">${t}</button>`).join(' ')}</p>`;
+      h += `<p>${b.map(([k, t]) => `<button data-a="${k}">${t}</button>`).join(' ')}</p>` + more.join('');
     } else if (o.status === 'awaiting_artist' && o.artist_approved_version !== o.quote_version) {
       h += `<form data-f="approve"><p>Please check this quote carefully. Approving confirms each of the following for <em>this shipment</em>:</p>
         ${[['available', 'The work is available and not sold or promised elsewhere'], ['location', 'The collection location is correct'], ['condition', 'The condition description is accurate'],
           ['framing', 'Framing and glazing are as described'], ['dimensions', 'Unpacked and packed dimensions and weight are correct'], ['packing_and_handover', 'I agree the packing, transport and cover responsibilities shown'],
           ['returns', 'The return method, address, cost estimate and who arranges the return are correct'], ['seller_information', 'My seller information (shown to the buyer) is correct and up to date']]
           .map(([k, t]) => `<label><input type="checkbox" name="${k}"> ${t}</label>`).join('')}
-        <label>Note (optional) <input name="note" maxlength="500"></label><button>Approve this quote (version ${o.quote_version})</button> <button data-a="decline" type="button">Ask for changes</button></form>`;
+        <label>Note (optional) <input name="note" maxlength="500"></label><button>Approve this quote (version ${o.quote_version})</button></form>`
+        + step('decline', 'Ask for changes instead…', `<p class="st-muted">The quote goes back to PlotArt as a draft; nothing is sent to the buyer.</p>
+          ${field(`dc-note-${esc(o.id)}`, 'What should change? (optional, up to 500 characters)', `<textarea id="dc-note-${esc(o.id)}" name="note" rows="3" maxlength="500"></textarea>`)}`, 'Ask for changes');
     }
     if (['paid', 'dispatched', 'delivered', 'disputed'].includes(o.status)) h += `<form data-f="fulfil"><label>Record <select name="kind"><option>insurance</option><option>dispatched</option><option>tracking</option><option>condition_photos</option><option>delivered</option><option>signed_receipt</option><option>note</option></select></label>
       <label>Evidence <input name="evidence" maxlength="2000" required placeholder="tracking number, receipt or photo reference"></label><button>Record</button></form>`;
@@ -172,12 +212,18 @@
       h += `<h2>Amounts owed to artists</h2><p class="st-muted">${esc(j.deadlines.note)}</p>${j.owed.length ? `<table class="st-table"><tr><th>Order</th><th>Artist</th><th>What</th><th>Owed</th><th>Paid</th><th>Outstanding</th><th>Age</th><th>Due</th><th>Reminders</th><th></th></tr>
         ${j.owed.map(w => `<tr data-id="${esc(w.order_id)}" class="${w.status === 'overdue' ? 'st-warn' : ''}"><td>${esc(w.reference)}</td><td>${esc(w.artist_name)}</td><td>${esc(w.kind.replace(/_/g, ' '))}<br><small class="st-muted">${esc(w.reason)}</small></td>
           <td>${eur(w.cents)}</td><td>${eur(w.settled_cents)}</td><td><strong>${eur(w.outstanding_cents)}</strong></td><td>${w.age_days} d</td><td>${esc(w.due_label || w.due_date)}${w.due_provisional ? ' <em>(provisional)</em>' : ''}<br><small class="st-muted">${esc(w.due_rule)}</small>${w.due_review ? `<br><strong>For review:</strong> <small>${esc(w.due_review)}</small>` : ''}</td>
-          <td>${esc(w.reminders.join(', ') || '—')}</td><td>${w.kind === 'lost_dispute_commission' ? '<button data-a="returncommission">Return commission</button>' : '<button data-a="shortfallpaid">Record payment…</button>'}</td></tr>
-          ${w.payments.length ? `<tr data-id="${esc(w.order_id)}"><td></td><td colspan="9"><small>${w.payments.map(x => `${eur(x.cents)} · ${esc(x.method.replace(/_/g, ' '))}${x.executed_on ? ` · executed ${esc(x.executed_on)}` : ''} · ref ${esc(x.reference)} · recorded by ${esc(x.recorded_by)} at ${esc(x.at)}${x.returned_on ? ` · <strong>returned ${esc(x.returned_on)}</strong> (${esc(x.returned_reason)})` : x.method === 'bank_transfer' ? ` <button data-a="shortfallreturned" data-pay="${esc(x.id)}">Transfer returned…</button>` : ''}`).join('<br>')}</small></td></tr>` : ''}`).join('')}</table>` : '<p class="st-muted">Nothing owed.</p>'}
+          <td>${esc(w.reminders.join(', ') || '—')}</td><td><a href="#order-${esc(w.order_id)}" data-open="${w.kind === 'lost_dispute_commission' ? 'returncommission' : 'shortfallpaid'}">${w.kind === 'lost_dispute_commission' ? 'Return commission…' : 'Record payment…'}</a></td></tr>
+          ${w.payments.length ? `<tr data-id="${esc(w.order_id)}"><td></td><td colspan="9"><small>${w.payments.map(x => `${eur(x.cents)} · ${esc(x.method.replace(/_/g, ' '))}${x.executed_on ? ` · executed ${esc(x.executed_on)}` : ''} · ref ${esc(x.reference)} · recorded by ${esc(x.recorded_by)} at ${esc(x.at)}${x.returned_on ? ` · <strong>returned ${esc(x.returned_on)}</strong> (${esc(x.returned_reason)})` : x.method === 'bank_transfer' ? step('shortfallreturned', 'Transfer returned…', `<input type="hidden" name="payment_id" value="${esc(x.id)}">
+            ${field(`sr-on-${esc(x.id)}`, 'Date the bank shows it returned', `<input id="sr-on-${esc(x.id)}" name="returned_on" type="date" min="${esc(x.executed_on || '')}" max="${todayIE()}" required>`)}
+            ${field(`sr-why-${esc(x.id)}`, 'Reason the bank gave (5–300 characters, no bank details)', `<input id="sr-why-${esc(x.id)}" name="reason" maxlength="300" required>`)}
+            ${tick(`The bank shows this ${eur(x.cents)} transfer as returned. The amount becomes owed again.`)}`, 'Record returned transfer') : ''}`).join('<br>')}</small></td></tr>` : ''}`).join('')}</table>` : '<p class="st-muted">Nothing owed.</p>'}
         ${(j.reimbursements || []).length ? `<h3>Processing reimbursements (seven-day rule${j.deadlines && j.deadlines.reimburse_provisional ? ', provisional' : ', sandbox rule approved 18 Nov 2026'})</h3><table class="st-table"><tr><th>Order</th><th>Status</th><th>Amount</th><th>Paid (Irish date)</th><th>Due</th><th>Alerts and attempts</th></tr>${j.reimbursements.map(x => `<tr${x.overdue || x.failing ? ' class="st-warn"' : ''}><td>${esc(x.reference)}<br><small>day ${x.day}</small></td><td>${esc(x.status_label)}${x.overdue ? '<br><strong>OVERDUE</strong>' : ''}</td><td>${esc(x.amount_label)}</td><td>${esc(x.payment_confirmed)}</td><td>${esc(x.due_label)}</td><td><small>${[x.alerts.day5 ? 'Day-5 alert sent' : '', x.alerts.deadline || x.alerts.extended_deadline ? 'Deadline alert sent' : '', x.delay_notice_at ? 'Delay notice sent to the artist (test sink)' : '', x.attempts ? `${x.attempts} failed attempt(s); last: ${x.last_error || ''}. Due date unchanged.` : '', ...x.flags].filter(Boolean).map(esc).join('<br>')}</small>${x.action ? `<br><button data-a="processing" data-id="${esc(x.order_id)}">Reconcile processing fee</button>` : ''}</td></tr>`).join('')}</table>` : ''}
         <details><summary>How to pay a shortfall (bank details process)</summary><ol>${j.bank_details_process.map(x => `<li>${esc(x)}</li>`).join('')}</ol></details>`;
       if (j.holds.length) h += `<h2>Legal holds</h2><ul>${j.holds.map(x => `<li data-hold="${esc(x.id)}">${esc(x.reference)} · ${esc(x.basis)} · review by ${esc(x.review_by)}${x.review_overdue ? ' <strong>(review overdue)</strong>' : ''} — ${esc(x.reason)}
-        <button data-hold-act="renew">Renew…</button> <button data-hold-act="release">Release…</button></li>`).join('')}</ul>`;
+        ${step('renew', 'Renew…', `${field(`hr-rv-${esc(x.id)}`, 'New review date (within 12 months)', `<input id="hr-rv-${esc(x.id)}" name="review_by" type="date" min="${plusDaysIE(1)}" max="${plusDaysIE(365)}" required>`)}
+          ${field(`hr-why-${esc(x.id)}`, 'Why is the hold still needed? (10 characters or more)', `<textarea id="hr-why-${esc(x.id)}" name="note" rows="2" maxlength="1000" required></textarea>`)}`, 'Renew hold')}
+        ${step('release', 'Release…', `${field(`hl-why-${esc(x.id)}`, 'Why can it be released? (10 characters or more)', `<textarea id="hl-why-${esc(x.id)}" name="note" rows="2" maxlength="1000" required></textarea>`)}
+          ${tick('Release this hold. The order’s records then follow the normal retention rules.')}`, 'Release hold')}</li>`).join('')}</ul>`;
       if (j.unprocessed_events.length) h += `<h2>Provider events waiting</h2><ul>${j.unprocessed_events.map(e => `<li>${esc(e.type)} · ${esc(e.status)} · ${esc(e.detail || '')}</li>`).join('')}</ul>`;
     } else {
       const m = j.membership;
@@ -197,7 +243,9 @@
         h += m.processing_consent ? `<p>You have agreed that Stripe’s processing fees may be deducted on commission-free pilot orders (${esc(m.processing_consent_at)}). <button data-a2="withdraw-processing">Withdraw this consent</button></p>`
           : `<details><summary>Commission-free sales through the pilot (optional, separate consent)</summary><form data-f="processing"><label><input type="checkbox" name="accept" required> ${esc(j.processing_statement)}</label><button>Give this consent</button></form></details>`;
         h += `<p>You joined the pilot on ${esc(m.opted_in_at)} (${esc(m.addendum)}). Stripe: ${m.account ? (m.ready ? 'ready to take test payments' : 'onboarding incomplete' + (m.account.requirements_due.length ? ' — Stripe still needs: ' + esc(m.account.requirements_due.join(', ')) : '')) : 'not connected yet'}.</p>
-          <p><button data-a2="onboard">${m.account ? 'Continue Stripe onboarding' : 'Connect a Stripe account'}</button> ${m.account ? '<button data-a2="refresh">Refresh status</button>' : ''} <button data-a2="leave">Leave the pilot</button></p>`;
+          <p><button data-a2="onboard">${m.account ? 'Continue Stripe onboarding' : 'Connect a Stripe account'}</button> ${m.account ? '<button data-a2="refresh">Refresh status</button>' : ''}</p>`
+          + step('leave', 'Leave the payment pilot…', `<p class="st-muted">Unpaid quotes are cancelled; paid orders continue to completion. Your seller information is removed (each issued quote keeps its own copy). You keep selling directly, as now, and can join again later.</p>
+            ${tick('Leave the payment pilot.')}`, 'Leave the pilot');
       }
     }
     h += `<h2>Orders</h2>${j.orders.length ? j.orders.map(orderCard).join('') : '<p class="st-muted">None yet.</p>'}`;
@@ -219,14 +267,7 @@
       await api('POST', `${base}/alerts/${id}`, { next_action: app.querySelector(`[data-next="${id}"]`).value, follow_up_on: app.querySelector(`[data-fu="${id}"]`).value }); say('Next action saved'); load(); });
     on('button[data-a]', 'click', async e => {
       const id = idOf(e.target), a = e.target.dataset.a;
-      if (a === 'hold') await api('POST', `${base}/orders/${id}/hold`, { basis: prompt('Basis: dispute, claim, revenue_enquiry, investigation, litigation, data_subject_request or other'), reason: prompt('Specific reason'), review_by: prompt('Review by (YYYY-MM-DD, within 12 months)') });
-      else if (a === 'repaid') await api('POST', `${base}/orders/${id}/repaid`, { artwork_cents: Number(prompt('Artwork amount repaid (cents)', '0')), delivery_cents: Number(prompt('Delivery amount repaid (cents)', '0')), evidence: prompt('Evidence: transfer reference, date, buyer confirmation') });
-      else if (a === 'shortfallpaid') await api('POST', `${base}/orders/${id}/shortfallpaid`, { amount_cents: Number(prompt('Amount the bank shows as EXECUTED (cents). Record it only once the bank shows the transfer executed.', '0')), executed_on: prompt('Date the bank shows the transfer executed (YYYY-MM-DD)'), reference: prompt('The bank’s transfer reference only — never bank details') });
-      else if (a === 'shortfallreturned') await api('POST', `${base}/orders/${id}/shortfallreturned`, { payment_id: e.target.dataset.pay, returned_on: prompt('Date the bank shows the transfer returned (YYYY-MM-DD)'), reason: prompt('Reason the bank gave (no bank details)') });
-      else if (a === 'returncommission') await api('POST', `${base}/orders/${id}/refund`, { commission_only: true, reason: prompt('Reason', 'Dispute lost: commission returned under PA-GAA 9.1') || '' });
-      else if (a === 'cancel') await api('POST', `${base}/orders/${id}/cancel`, { reason: prompt('Reason') || '' });
-      else if (a === 'decline') await api('POST', `${base}/orders/${id}/approve`, { decision: 'decline', quote_version: j.orders.find(o => o.id === id).quote_version, note: prompt('What should change?') || '' });
-      else await api('POST', `${base}/orders/${id}/${a}`, {});
+      await api('POST', `${base}/orders/${id}/${a}`, {});
       say('Done'); load(); });
     on('form[data-f="issue"]', 'submit', async e => { const f = new FormData(e.target), id = idOf(e.target);
       const days = Number(f.get('days')), linked = f.get('linked');
@@ -255,13 +296,45 @@
     on('form[data-f="seller"]', 'submit', async e => { const f = new FormData(e.target); await api('PUT', base + '/seller-profile', { ...Object.fromEntries(f), confirm: f.get('confirm') === 'on' }); say('Seller information saved'); load(); });
     on('form[data-f="optin"]', 'submit', async () => { await api('POST', base + '/opt-in', { accept: true, doc_id: j.addendum.doc_id, html_sha256: j.addendum.html_sha256 }); say('You joined the pilot'); load(); });
     on('form[data-f="processing"]', 'submit', async () => { await api('POST', base + '/processing-consent', { accept: true, statement: j.processing_statement }); say('Consent recorded'); load(); });
-    on('button[data-hold-act]', 'click', async e => { const id = e.target.closest('[data-hold]').dataset.hold, a = e.target.dataset.holdAct;
-      await api('POST', `${base}/holds/${id}`, a === 'renew' ? { decision: 'renew', review_by: prompt('New review date (YYYY-MM-DD, within 12 months)'), note: prompt('Why is the hold still needed?') } : { decision: 'release', note: prompt('Why can it be released?') }); load(); });
+    const F = (kind, fn) => on(`form[data-f="${kind}"]`, 'submit', async e => fn(e, new FormData(e.target), e.target));
+    const noteOf = (f, min, what) => { const t = String(f.get('note') || '').trim(); need(t.length >= min, what); return t; };
+    F('hold', async (e, f) => { const basis = f.get('basis'), reason = String(f.get('reason') || '').trim(), review_by = f.get('review_by');
+      need(basis, 'Choose the basis for the hold'); need(reason.length >= 10, 'Give the specific reason for the hold (10–1,000 characters)'); need(isDate(review_by), 'Give a review date within the next 12 months');
+      await api('POST', `${base}/orders/${idOf(e.target)}/hold`, { basis, reason, review_by }); say('Legal hold placed'); load(); });
+    F('repaid', async (e, f) => { const artwork_cents = toCents(f.get('artwork'), 'artwork amount'), delivery_cents = toCents(f.get('delivery'), 'delivery amount'), evidence = String(f.get('evidence') || '').trim();
+      need(artwork_cents + delivery_cents > 0, 'Enter the artwork or delivery amount repaid'); need(evidence.length >= 10, 'Describe the evidence (bank transfer reference, date, and the buyer’s confirmation)');
+      need(f.get('confirm') === 'on', 'Tick the box to confirm the repayment');
+      await api('POST', `${base}/orders/${idOf(e.target)}/repaid`, { artwork_cents, delivery_cents, evidence }); say('Repayment recorded'); load(); });
+    F('shortfallpaid', async (e, f) => { const amount_cents = toCents(f.get('amount'), 'amount paid'), executed_on = f.get('executed_on'), reference = String(f.get('reference') || '').trim();
+      need(amount_cents > 0, 'Enter the amount the bank shows as executed'); need(isDate(executed_on), 'Give the date the bank shows the transfer as executed');
+      need(executed_on <= todayIE(), 'The execution date cannot be in the future: record the payment once the bank shows it executed');
+      need(reference.length >= 6, 'Give the bank’s transfer reference (6–200 characters)'); need(f.get('confirm') === 'on', 'Tick the box to confirm the bank shows the transfer as executed');
+      await api('POST', `${base}/orders/${idOf(e.target)}/shortfallpaid`, { amount_cents, executed_on, reference }); say('Shortfall payment recorded'); load(); });
+    F('shortfallreturned', async (e, f) => { const returned_on = f.get('returned_on'), reason = String(f.get('reason') || '').trim();
+      need(isDate(returned_on), 'Give the date the bank shows the transfer as returned'); need(reason.length >= 5, 'Give the reason the bank gave (5–300 characters, no bank details)');
+      need(f.get('confirm') === 'on', 'Tick the box to confirm the bank shows the transfer as returned');
+      await api('POST', `${base}/orders/${idOf(e.target)}/shortfallreturned`, { payment_id: f.get('payment_id'), returned_on, reason }); say('Returned transfer recorded'); load(); });
+    F('returncommission', async (e, f) => { const reason = String(f.get('reason') || '').trim();
+      need(reason.length >= 3, 'Give a reason'); need(f.get('confirm') === 'on', 'Tick the box to confirm the commission return');
+      await api('POST', `${base}/orders/${idOf(e.target)}/refund`, { commission_only: true, reason }); say('Commission returned'); load(); });
+    F('cancel', async (e, f) => { need(f.get('confirm') === 'on', 'Tick the box to confirm the cancellation');
+      await api('POST', `${base}/orders/${idOf(e.target)}/cancel`, { reason: String(f.get('reason') || '').trim() }); say('Order cancelled'); load(); });
+    F('decline', async (e, f) => { const id = idOf(e.target);
+      await api('POST', `${base}/orders/${id}/approve`, { decision: 'decline', quote_version: j.orders.find(o => o.id === id).quote_version, note: String(f.get('note') || '').trim() }); say('Sent back to PlotArt for changes'); load(); });
+    F('renew', async (e, f) => { const id = e.target.closest('[data-hold]').dataset.hold, review_by = f.get('review_by');
+      need(isDate(review_by), 'Give a new review date within the next 12 months'); const note = noteOf(f, 10, 'Record why the hold is still needed (10 characters or more)');
+      await api('POST', `${base}/holds/${id}`, { decision: 'renew', review_by, note }); say('Hold renewed'); load(); });
+    F('release', async (e, f) => { const id = e.target.closest('[data-hold]').dataset.hold, note = noteOf(f, 10, 'Record why the hold can be released (10 characters or more)');
+      need(f.get('confirm') === 'on', 'Tick the box to confirm the release');
+      await api('POST', `${base}/holds/${id}`, { decision: 'release', note }); say('Hold released'); load(); });
+    F('leave', async (e, f) => { need(f.get('confirm') === 'on', 'Tick the box to confirm you are leaving the pilot');
+      await api('POST', `${base}/leave`, {}); say('You left the payment pilot'); load(); });
+    app.querySelectorAll('a[data-open]').forEach(a => a.addEventListener('click', () => {
+      const d = app.querySelector(`#order-${CSS.escape(a.getAttribute('href').slice(7))} details[data-step="${a.dataset.open}"]`); if (d) { d.open = true; setTimeout(() => d.querySelector('input, textarea, select')?.focus(), 0); } }));
     on('button[data-a2]', 'click', async e => { const a = e.target.dataset.a2;
       if (a === 'withdraw-processing') { await api('POST', base + '/processing-consent/withdraw', {}); load(); return; }
       if (a === 'onboard') { const r = await api('POST', base + '/onboarding', {}); location.href = r.url; return; }
-      if (a === 'leave' && !confirm('Leave the payment pilot? Unpaid quotes are cancelled; paid orders continue.')) return;
-      await api('POST', `${base}/${a === 'refresh' ? 'account/refresh' : 'leave'}`, {}); load(); });
+      if (a === 'refresh') { await api('POST', `${base}/account/refresh`, {}); load(); } });
     on('button[data-refresh]', 'click', async e => { await api('POST', `${base}/accounts/${e.target.dataset.refresh}/refresh`, {}); load(); });
   }
   load().catch(e => { app.innerHTML = `<p>${esc(e.message)}</p>`; });
