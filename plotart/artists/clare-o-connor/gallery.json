@@ -102,10 +102,15 @@
    "dhash": "3696bab892e2c225",
    "source_sha256": "dbbad35aa14f74c3d01dd3b8fdb50aa81f7b538c406ef2d48968524b36f0eb45",
    "stem": "energetic-labyrinths-8-1"
+  },
+  {
+   "dhash": "0769717971716383",
+   "source_sha256": "b0c17bca8145388e024906efe319c2d7865b5ce5063399c01eb1d2c8c157d8fb",
+   "stem": "multi-layered-intaglio-print-series-venezia-1"
   }
  ],
  "publication": {
-  "approved_at": "2026-11-19T07:42:21.882Z",
+  "approved_at": "2026-11-20T12:27:55.471Z",
   "approved_by": "founder",
   "first_approved_at": "2026-11-19T07:42:21.882Z",
   "licence_accepted_at": "2026-11-18T20:15:34.624Z",
@@ -113,7 +118,7 @@
   "permission_ref": "PA-PERM-ane34unrj3c",
   "state": "approved",
   "test_note": null,
-  "version": "v1"
+  "version": "v2"
  },
  "schema": "plotnua.plotart.gallery-package.v1",
  "works": [
@@ -732,6 +737,62 @@
    "title": "Energetic Labyrinths 8",
    "w_cm": 50,
    "year": 2025
+  },
+  {
+   "ai_founder_decision": null,
+   "ai_involvement": "none",
+   "ai_note": null,
+   "availability": "available",
+   "d_cm": 5,
+   "description": null,
+   "h_cm": 42,
+   "id": "wzvc6ii3oee",
+   "images": [
+    {
+     "alt": "Framed Multi Layered yellow Etched Intaglio Print with Blue splash, stripes and Collage",
+     "aspect": 1.0,
+     "derivatives": [
+      {
+       "file": "multi-layered-intaglio-print-series-venezia-1-600.webp",
+       "long_edge": 600,
+       "pixels": [
+        600,
+        600
+       ]
+      },
+      {
+       "file": "multi-layered-intaglio-print-series-venezia-1-1200.webp",
+       "long_edge": 1200,
+       "pixels": [
+        1200,
+        1200
+       ]
+      },
+      {
+       "file": "multi-layered-intaglio-print-series-venezia-1-2000.webp",
+       "long_edge": 2000,
+       "pixels": [
+        2000,
+        2000
+       ]
+      }
+     ],
+     "photo_credit": null,
+     "pixels": [
+      2362,
+      2362
+     ],
+     "role": "main"
+    }
+   ],
+   "materials": "Framed Multi Layered Etched Intaglio Print with Acrylic and Collage",
+   "medium": "Multi Layered Etched Intaglio Print with Acrylic and Collage",
+   "price_eur": 450,
+   "price_on_request": false,
+   "slug": "multi-layered-intaglio-print-series-venezia",
+   "title": "Multi Layered Intaglio Print Series Venezia, Print No. 11",
+   "w_cm": 42,
+   "year": 2013
   }
  ]
 }
