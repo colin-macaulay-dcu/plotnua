@@ -9,8 +9,12 @@
 #               "ENABLE LIVE PLOTART CHECKOUT" (20 Nov 2026). Then, fail-closed (checkout-live-enable.sh): LIVE credentials
 #               checked (test values refused); plotart-checkout deployed OFF; every LIVE secret written and verified on
 #               both Workers; only then the LIVE deployment and an outside check of live mode. Any failure redeploys OFF,
-#               removes the Studio's live key and verifies OFF from outside. The same founder Approve on the environment
-#               is required as for every production run.
+#               removes the Studio's live key (confirmed from a readable secret list) and verifies OFF from outside.
+#               Every production run WITHOUT enable_live_pilot actively switches checkout OFF the same way
+#               (checkout-live-off.sh): that is the way to disable a live deployment. A run that stops before deploying
+#               (guards, configuration, the live credentials check) changes nothing: it refuses the new activation and
+#               leaves whatever is deployed as it was. The same founder Approve on the environment is required for every
+#               production run.
 # Migrations are never applied here: production migrations go through studio-d1-migration.yml; the test database is set up
 # by the documented commands in worker/plotart-studio/MANAGED-CHECKOUT-PILOT.md ("Test environment").
 # Every run waits for the founder's Approve on its environment. Logs show only names, switches and PASS/FAIL.
@@ -183,7 +187,7 @@ jobs:
             npx --yes wrangler@4.150.0 rollback --config "$c" --message "automatic rollback (run ${{ github.run_id }})" -y > /dev/null 2>&1 && echo "rolled back $c" || echo "FAIL  rollback of $c"
           done
 
-      # ---------------------------------------------------------------- PRODUCTION (pilot always off; no Stripe secret)
+      # ---------------------------------------------------------------- PRODUCTION (OFF by default; live only with enable_live_pilot and its confirmation)
       - name: PRODUCTION · build with the issued texts only (refuses TEST placeholders)
         if: ${{ inputs.target == 'production' }}
         working-directory: worker/plotart-studio
@@ -224,18 +228,14 @@ jobs:
           npx --yes wrangler@4.150.0 deploy --config wrangler.checkout.production.off.toml --dry-run --outdir "$RUNNER_TEMP/build-off" > "$RUNNER_TEMP/wrangler.log" 2>&1 || { grep -iE "error" "$RUNNER_TEMP/wrangler.log" | head -5; exit 1; }
           npx --yes wrangler@4.150.0 deploy --config wrangler.checkout.production.toml --dry-run --outdir "$RUNNER_TEMP/build" > "$RUNNER_TEMP/wrangler.log" 2>&1 || { grep -iE "error" "$RUNNER_TEMP/wrangler.log" | head -5; exit 1; }
           echo "DRY RUN OK: plotart-checkout builds with the pilot off; nothing was sent to Cloudflare"
-      - name: PRODUCTION · deploy plotart-checkout (pilot off)
-        id: prod_deploy
+      - name: PRODUCTION · switch plotart-checkout OFF and verify (deploy OFF, no Studio live key, OFF checked from outside)
+        id: prod_off
         if: ${{ inputs.target == 'production' && !inputs.dry_run && !inputs.enable_live_pilot }}
-        working-directory: worker/plotart-studio
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.STUDIO_CF_DEPLOY_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
-        run: |
-          set -o pipefail
-          npx --yes wrangler@4.150.0 deploy --config wrangler.checkout.production.toml > "$RUNNER_TEMP/wrangler.log" 2>&1 \
-            || { echo "FAIL  the deployment did not complete"; grep -iE "error" "$RUNNER_TEMP/wrangler.log" | grep -viE "token" | head -5; exit 1; }
-          grep -E "^Current Version ID" "$RUNNER_TEMP/wrangler.log" || true
+          ORIGIN: ${{ vars.CHECKOUT_PRODUCTION_ORIGIN }}
+        run: bash atlas-tools/release/studio/checkout-live-off.sh worker/plotart-studio wrangler.checkout.production.off.toml
       - name: PRODUCTION · enable LIVE checkout, fail-closed (OFF deploy, secrets, verify, then the LIVE deploy; any failure recovers to OFF)
         id: prod_live_enable
         if: ${{ inputs.target == 'production' && !inputs.dry_run && inputs.enable_live_pilot }}
@@ -248,16 +248,3 @@ jobs:
           LIVE_WEBHOOK_SECRET: ${{ secrets.CHECKOUT_LIVE_STRIPE_WEBHOOK_SECRET }}
           LIVE_RESEND_KEY: ${{ secrets.CHECKOUT_LIVE_RESEND_API_KEY }}
         run: bash atlas-tools/release/studio/checkout-live-enable.sh worker/plotart-studio
-      - name: PRODUCTION · checked from outside (pilot off; nothing is created)
-        id: prod_live
-        if: ${{ inputs.target == 'production' && !inputs.dry_run && !inputs.enable_live_pilot }}
-        env:
-          ORIGIN: ${{ vars.CHECKOUT_PRODUCTION_ORIGIN }}
-        run: sleep 10 && bash atlas-tools/release/studio/checkout-outside-check.sh "$ORIGIN" off
-      - name: PRODUCTION · roll back after a failed check
-        if: ${{ failure() && inputs.target == 'production' && steps.prod_deploy.outcome == 'success' && steps.prod_live.outcome == 'failure' }}
-        working-directory: worker/plotart-studio
-        env:
-          CLOUDFLARE_API_TOKEN: ${{ secrets.STUDIO_CF_DEPLOY_TOKEN }}
-          CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
-        run: npx --yes wrangler@4.150.0 rollback --config wrangler.checkout.production.toml --message "automatic rollback (run ${{ github.run_id }})" -y > /dev/null 2>&1 && echo "rolled back" || { echo "FAIL  rollback"; exit 1; }
