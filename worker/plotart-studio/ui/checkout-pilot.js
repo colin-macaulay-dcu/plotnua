@@ -178,9 +178,9 @@
   async function load() {
     const j = await api('GET', base);
     if (!j.installed) { app.innerHTML = '<h1>Payment pilot</h1><p>The payment pilot is not installed.</p>'; return; }
-    let h = `<h1>Payment pilot <small class="st-muted">(Stripe test mode)</small></h1><p id="page-error" class="st-err" role="alert" tabindex="-1" hidden></p>`;
+    let h = `<h1>Payment pilot <small class="st-muted">(${j.switches && j.switches.live ? 'LIVE: real payments' : 'Stripe test mode'})</small></h1><p id="page-error" class="st-err" role="alert" tabindex="-1" hidden></p>`;
     const sw = j.switches;
-    h += `<p class="st-muted">Pilot ${sw.enabled ? 'switched ON (test mode)' : 'switched OFF'}${founder && sw.key_problem ? ' · ' + esc(sw.key_problem) : ''}. No live payment can be taken.</p>`;
+    h += `<p class="st-muted">Pilot ${sw.enabled ? (sw.live ? 'switched ON (LIVE: real card payments)' : 'switched ON (test mode)') : 'switched OFF'}${founder && sw.key_problem ? ' · ' + esc(sw.key_problem) : ''}.${sw.live ? '' : ' No live payment can be taken.'}</p>`;
     if (founder) {
       const pz = j.pause || { paused: false }, ab = j.absence || { items: [], open_sessions: [], quotes_awaiting_payment: [] };
       h += `<section id="pause-control" class="st-card ${pz.paused ? 'st-paused' : ''}"><h2>${esc(pz.label || 'Pause new quotes and payments')} <span class="st-badge">${pz.paused ? 'PAUSED' : 'Not paused'}</span></h2>
@@ -248,7 +248,7 @@
         if (j.pending_refunds.length) h += `<h2>A refund is waiting for your Stripe balance</h2>${j.pending_refunds.map(r => `<p class="st-warn">${esc(r.reference)}: ${eur(r.amount_cents)}, waiting ${r.days_pending} days. Stripe cancels it on ${esc(r.stripe_fails_it_by)} if still unfunded.</p>`).join('')}<ol>${j.pending_refunds[0].what_to_do.map(x => `<li>${esc(x)}</li>`).join('')}</ol>`;
         h += m.processing_consent ? `<p>You have agreed that Stripe’s processing fees may be deducted on commission-free pilot orders (${esc(m.processing_consent_at)}). <button data-a2="withdraw-processing">Withdraw this consent</button></p>`
           : `<details><summary>Commission-free sales through the pilot (optional, separate consent)</summary><form data-f="processing"><label><input type="checkbox" name="accept" required> ${esc(j.processing_statement)}</label><button>Give this consent</button></form></details>`;
-        h += `<p>You joined the pilot on ${esc(m.opted_in_at)} (${esc(m.addendum)}). Stripe: ${m.account ? (m.ready ? 'ready to take test payments' : 'onboarding incomplete' + (m.account.requirements_due.length ? ' — Stripe still needs: ' + esc(m.account.requirements_due.join(', ')) : '')) : 'not connected yet'}.</p>
+        h += `<p>You joined the pilot on ${esc(m.opted_in_at)} (${esc(m.addendum)}). Stripe: ${m.account ? (m.ready ? (j.switches && j.switches.live ? 'ready to take payments' : 'ready to take test payments') : 'onboarding incomplete' + (m.account.requirements_due.length ? ' — Stripe still needs: ' + esc(m.account.requirements_due.join(', ')) : '')) : 'not connected yet'}.</p>
           <p><button data-a2="onboard">${m.account ? 'Continue Stripe onboarding' : 'Connect a Stripe account'}</button> ${m.account ? '<button data-a2="refresh">Refresh status</button>' : ''}</p>`
           + step('leave', 'Leave the payment pilot…', `<p class="st-muted">Unpaid quotes are cancelled; paid orders continue to completion. Your seller information is removed (each issued quote keeps its own copy). You keep selling directly, as now, and can join again later.</p>
             ${tick('Leave the payment pilot.')}`, 'Leave the pilot');

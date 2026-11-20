@@ -13,7 +13,9 @@ TEST (GitHub environment "checkout-test"):
   CHECKOUT_TEST_ACCESS_TEAM); MAILER none, deletion schedule off, instant publishing off; sandbox mode (simulated publication only); no publishing pipeline token and
   no application-register service binding. CHECKOUT_PILOT_ENABLED follows the workflow input ENABLE_TEST_PILOT (default off).
 PRODUCTION (GitHub environment "studio-production."):
-  Worker plotart-checkout on the production database; CHECKOUT_PILOT_ENABLED is ALWAYS "false" here, whatever is asked.
+  Worker plotart-checkout on the production database. The pilot is OFF unless live checkout is explicitly enabled
+  (ENABLE_LIVE_PILOT=true AND LIVE_CONFIRMATION exactly "ENABLE LIVE PLOTART CHECKOUT"), which sets CHECKOUT_PILOT_ENABLED,
+  CHECKOUT_LIVE and live email. The code accepts live mode only with ENVIRONMENT=production and a LIVE key (stripe.js).
   The production Studio is rendered by render-config.py / studio-deploy.yml, never by this script."""
 import json, os, re, sys, tomllib
 W, TARGET = sys.argv[1], sys.argv[2] if len(sys.argv) > 2 else ""
@@ -39,17 +41,43 @@ checkout_src = open(os.path.join(W, "wrangler.checkout.toml")).read()
 if not re.search(r'^CHECKOUT_PILOT_ENABLED = "false"', checkout_src, re.M):
     sys.exit("REFUSED: wrangler.checkout.toml must ship with CHECKOUT_PILOT_ENABLED = \"false\"")
 
+LIVE_CONFIRMATION = "ENABLE LIVE PLOTART CHECKOUT"
+def live_requested():
+    """Live checkout (20 Nov 2026) is enabled ONLY by both workflow inputs together: ENABLE_LIVE_PILOT=true and the exact
+    confirmation phrase. Anything else renders the pilot OFF, as before."""
+    en, conf = os.environ.get("ENABLE_LIVE_PILOT", "false"), os.environ.get("LIVE_CONFIRMATION", "")
+    if en not in ("true", "false"): sys.exit("REFUSED: ENABLE_LIVE_PILOT must be true or false")
+    if en == "true" and conf != LIVE_CONFIRMATION: sys.exit("REFUSED: live checkout needs the exact confirmation phrase")
+    return en == "true"
+
+def insert_var(text, after_key, key, value, where):
+    if re.search(r'^%s\s*=' % re.escape(key), text, flags=re.M): sys.exit(f"REFUSED: {where} already defines {key}")
+    out, n = re.subn(r'^(%s\s*=.*)$' % re.escape(after_key), lambda m: m.group(1) + "\n%s = %s" % (key, json.dumps(value)), text, count=1, flags=re.M)
+    if n != 1: sys.exit(f"REFUSED: could not place {key} in {where}")
+    return out
+
 if TARGET == "production":
     db = need("STUDIO_D1_DATABASE_ID", UUID)
     origin = need("CHECKOUT_PRODUCTION_ORIGIN", r"https://[a-z0-9.-]+")
-    if os.environ.get("ENABLE_TEST_PILOT", "false") != "false": sys.exit("REFUSED: the pilot cannot be switched on in production by this workflow")
+    if os.environ.get("ENABLE_TEST_PILOT", "false") != "false": sys.exit("REFUSED: the test pilot cannot be switched on in production")
+    live = live_requested()
     out = setkey(checkout_src, "database_id", db, "wrangler.checkout.toml")
     out = setkey(out, "CHECKOUT_ORIGIN", origin, "wrangler.checkout.toml")
+    if live:
+        out = setkey(out, "CHECKOUT_PILOT_ENABLED", "true", "wrangler.checkout.toml")
+        out = insert_var(out, "CHECKOUT_PILOT_ENABLED", "CHECKOUT_LIVE", "true", "wrangler.checkout.toml")
+        mail_from = need("CHECKOUT_LIVE_MAIL_FROM", r"[^<>]{1,60} <[a-z0-9._-]+@plotnua\.ie>")
+        notify = need("CHECKOUT_LIVE_NOTIFY_EMAIL", r"[a-z0-9._+-]+@plotnua\.ie")
+        for k, v in (("CHECKOUT_MAIL", "resend"), ("CHECKOUT_MAIL_APPROVED", "true"), ("CHECKOUT_MAIL_FROM", mail_from), ("CHECKOUT_NOTIFY_EMAIL", notify)):
+            out = insert_var(out, "CHECKOUT_LIVE", k, v, "wrangler.checkout.toml")
     cfg = tomllib.loads(out)
-    assert cfg["name"] == "plotart-checkout" and cfg["vars"]["CHECKOUT_PILOT_ENABLED"] == "false" and cfg["vars"]["ENVIRONMENT"] == "production"
-    assert cfg["d1_databases"][0]["database_name"] == "plotart-studio" and "STRIPE_API_BASE" not in cfg["vars"]
+    v = cfg["vars"]
+    assert cfg["name"] == "plotart-checkout" and v["ENVIRONMENT"] == "production" and "SANDBOX" not in v
+    assert cfg["d1_databases"][0]["database_name"] == "plotart-studio" and "STRIPE_API_BASE" not in v
+    assert v["CHECKOUT_PILOT_ENABLED"] == ("true" if live else "false") and v.get("CHECKOUT_LIVE", "false") == ("true" if live else "false")
+    assert "CHECKOUT_MAIL_TEST_RECIPIENTS" not in v and "CHECKOUT_MAIL_SANDBOX_TEST" not in v
     open(os.path.join(W, "wrangler.checkout.production.toml"), "w").write(out)
-    print("production checkout configuration rendered (plotart-checkout, CHECKOUT_PILOT_ENABLED=false)")
+    print("production checkout configuration rendered (plotart-checkout, %s)" % ("LIVE checkout ENABLED" if live else "CHECKOUT_PILOT_ENABLED=false"))
 
 elif TARGET == "test":
     db = need("CHECKOUT_TEST_D1_DATABASE_ID", UUID)
@@ -60,6 +88,7 @@ elif TARGET == "test":
     origin = need("CHECKOUT_TEST_ORIGIN", r"https://plotart-checkout-test\.[a-z0-9.-]+")
     enable = os.environ.get("ENABLE_TEST_PILOT", "false")
     if enable not in ("true", "false"): sys.exit("REFUSED: ENABLE_TEST_PILOT must be true or false")
+    if os.environ.get("ENABLE_LIVE_PILOT", "false") != "false": sys.exit("REFUSED: live checkout can never be enabled in the TEST environment")
     # checkout (public) test Worker
     c = setkey(checkout_src, "name", "plotart-checkout-test", "wrangler.checkout.toml")
     c = setkey(c, "ENVIRONMENT", "test", "wrangler.checkout.toml")
@@ -89,6 +118,7 @@ elif TARGET == "test":
     assert st["d1_databases"][0]["database_name"] == "plotart-checkout-test" and all("-test-" in b["bucket_name"] for b in st["r2_buckets"])
     assert "services" not in st and "PARTICIPATION_DELETION" not in st["vars"]
     assert st["vars"].get("SANDBOX") == "true" and "SANDBOX" not in cc["vars"]
+    assert "CHECKOUT_LIVE" not in st["vars"] and "CHECKOUT_LIVE" not in cc["vars"], "the TEST Workers never carry the live switch"
     open(os.path.join(W, "wrangler.checkout.test.toml"), "w").write(c)
     open(os.path.join(W, "wrangler.studio.test.toml"), "w").write(s)
     print(f"test configurations rendered (plotart-checkout-test, plotart-studio-test, CHECKOUT_PILOT_ENABLED={enable})")

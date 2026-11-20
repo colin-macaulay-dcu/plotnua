@@ -70,20 +70,33 @@ export function mailMode(env) {
   const mode = env.CHECKOUT_MAIL || 'sink';
   const configured = mode === 'resend' && !!env.RESEND_API_KEY && !!env.CHECKOUT_MAIL_FROM;
   const approved = configured && env.CHECKOUT_MAIL_APPROVED === 'true';
-  const testKey = /^(sk|rk)_test_/.test(env.STRIPE_SECRET_KEY || '');
+  const sm = S.stripeMode(env), testKey = sm.ok && !sm.live, live = sm.ok && sm.live;
   const allow = String(env.CHECKOUT_MAIL_TEST_RECIPIENTS || '').split(',').map(x => x.trim().toLowerCase()).filter(Boolean);
-  return { mode, configured, approved, test_key: testKey, test_recipients: allow.length, external_sending: approved && testKey && allow.length > 0,
+  // live mode (stripeMode's explicit production-only gate): real recipients, still only when Resend is configured AND approved
+  return { mode, configured, approved, test_key: testKey, live, test_recipients: allow.length, external_sending: approved && (live || (testKey && allow.length > 0)),
     summary: !configured ? (mode === 'none' ? 'Nothing is sent (CHECKOUT_MAIL = none).' : 'Test sink only: no email provider is configured for the pilot.')
       : !approved ? 'Resend is configured but sending is not approved (CHECKOUT_MAIL_APPROVED): test sink only.'
-      : !testKey ? 'Live key detected: live sending is not part of this pilot; test sink only.'
+      : live ? 'Live mode: messages are sent by email to their real recipients.'
+      : !testKey ? `Stripe configuration refused (${sm.reason}): test sink only.`
       : `Sending only to ${allow.length} approved test address(es); everything else goes to the test sink.`, _allow: allow };
+}
+/* Test-mode wording is removed ONLY in verified live mode (stripeMode: explicit, production-only). Every buyer, artist and
+   founder message passes through here (deliver, prepareMessage), so no live message can carry a test-mode label and no
+   test message can lose one. */
+export function modeText(env, { subject, body }) {
+  const sm = S.stripeMode(env);
+  if (!(sm.ok && sm.live)) return { subject, body };
+  const b = String(body || '').split('\n').filter(l => !/^TEST MODE: /.test(l)).join('\n').replace(/^\n+/, '')
+    .replace(/This message comes from the PlotArt payment pilot \(test mode\)\./g, 'This message comes from the PlotArt payment pilot.');
+  return { subject: String(subject || '').replace(/\s*\(test\)\s*$/i, ''), body: b };
 }
 export const SANDBOX_TEST_NOTE = 'SANDBOX TEST: simulated data. The amounts are simulated and no bank transfer is due. No action is needed.';
 export async function deliver(env, { orderId = null, kind, toRole, to, subject, body, idempotencyKey = null }) {
   const m = mailMode(env), addr = String(to || '').trim().toLowerCase();
   if (env.CHECKOUT_MAIL_SANDBOX_TEST === 'true') { subject = `SANDBOX TEST · ${subject}`; body = `${SANDBOX_TEST_NOTE}\n\n${body}`; }
   if (m.mode === 'none') return { channel: 'none', status: 'not_sent_no_provider', detail: 'no mail provider configured' };
-  if (m.external_sending && m._allow.includes(addr)) {
+  ({ subject, body } = modeText(env, { subject, body }));
+  if (m.external_sending && (m.live || m._allow.includes(addr))) {
     let r; try { r = await send({ ...env, MAILER: 'resend', MAIL_FROM: env.CHECKOUT_MAIL_FROM }, { to: addr, replyTo: 'hello@plotnua.ie', subject, text: body, idempotencyKey }); } catch (e) { r = { sent: false, detail: String(e.message || e) }; }
     const out = r.sent ? { channel: 'provider', status: 'accepted_by_provider', detail: 'accepted by Resend (not proof of inbox delivery)' } : { channel: 'provider', status: 'failed', detail: String(r.detail).slice(0, 200) };
     if (toRole === 'founder')   // the alerts panel keeps every founder alert, emailed or not, with how the email went
@@ -159,9 +172,10 @@ const looksLikeBankDetails = s => { const x = String(s || '').replace(/\s/g, '')
 /* ---------------------------------------------------------------- switches */
 export async function installed(env) { try { await env.DB.prepare('SELECT 1 FROM checkout_orders LIMIT 1').all(); return true; } catch { return false; } }
 export function switches(env) {
-  const key = S.testKey(env);
+  const key = S.stripeMode(env);
   return { enabled: env.CHECKOUT_PILOT_ENABLED === 'true' && key.ok, flag: env.CHECKOUT_PILOT_ENABLED === 'true', test_key: key.ok, key_problem: key.ok ? null : key.reason,
-    webhook_secret: String(env.STRIPE_WEBHOOK_SECRET || '').startsWith('whsec_'), checkout_origin: env.CHECKOUT_ORIGIN || null, mode: 'test' };
+    webhook_secret: String(env.STRIPE_WEBHOOK_SECRET || '').startsWith('whsec_'), checkout_origin: env.CHECKOUT_ORIGIN || null,
+    mode: key.ok ? key.mode : 'refused', live: !!(key.ok && key.live) };
 }
 function requireOn(env) {
   const s = switches(env);
@@ -264,7 +278,9 @@ export async function membership(env, artistId) {
   const pc = await one(env, "SELECT * FROM payment_pilot_events WHERE artist_id = ? AND kind IN ('processing_consent', 'processing_consent_withdrawn') ORDER BY at DESC, rowid DESC LIMIT 1", artistId);
   const acct = await one(env, 'SELECT * FROM payment_accounts WHERE artist_id = ?', artistId);
   const opted = !!ev && ev.kind === 'opted_in';
-  const ready = !!acct && acct.charges_enabled === 1 && acct.details_submitted === 1;
+  // an account created in the other Stripe mode is never ready (a TEST account can never take a live payment, and vice versa)
+  const sm = S.stripeMode(env), modeOk = !!acct && sm.ok && acct.livemode === (sm.live ? 1 : 0);
+  const ready = !!acct && modeOk && acct.charges_enabled === 1 && acct.details_submitted === 1;
   return { opted_in: opted, addendum: opted ? ev.doc_id : null, opted_in_at: opted ? ev.at : null,
     processing_consent: opted && !!pc && pc.kind === 'processing_consent', processing_consent_at: pc && pc.kind === 'processing_consent' ? pc.at : null, account: acct ? { id: acct.account_id, country: acct.country,
     charges_enabled: !!acct.charges_enabled, payouts_enabled: !!acct.payouts_enabled, details_submitted: !!acct.details_submitted,
@@ -274,7 +290,7 @@ export async function membership(env, artistId) {
 export async function artistView(env, artist) {
   if (!(await installed(env))) return { installed: false };
   const sw = switches(env), add = await currentTerms(env, 'artist_payment_addendum');
-  return { installed: true, switches: { enabled: sw.enabled, mode: 'test' }, membership: await membership(env, artist.id),
+  return { installed: true, switches: { enabled: sw.enabled, mode: sw.mode, live: sw.live }, membership: await membership(env, artist.id),
     addendum: add ? { doc_id: add.doc_id, title: add.title, html_sha256: add.html_sha256, statement: STATEMENT(add.doc_id) } : null,
     seller_profile: await sellerProfile(env, artist.id), seller_declaration: SELLER_DECLARATION, seller_problems: sellerProblems(env, await sellerProfile(env, artist.id)), trader_question: TRADER_QUESTION, trader_choices: TRADER_CHOICES,
     checkout_available: ((sp0) => !!sp0 && sp0.trader_status === 'trader')(await sellerProfile(env, artist.id)),
@@ -344,13 +360,14 @@ export async function onboarding(env, artist, origin, body = {}) {
   const m = await membership(env, artist.id);
   if (!m.opted_in) throw new Bad('Join the payment pilot first', 409);
   let acct = await one(env, 'SELECT * FROM payment_accounts WHERE artist_id = ?', artist.id);
+  if (acct && acct.livemode !== (S.stripeMode(env).live ? 1 : 0)) throw new Bad('This artist’s Stripe account was created in the other Stripe mode and cannot be used here', 409);
   if (!acct) {
     const country = (body.country || 'IE').toUpperCase();
     if (!['IE', 'GB'].includes(country)) throw new Bad('The pilot supports artists in Ireland and Northern Ireland', 400);
     const a = await S.createAccount(env, { email: artist.email, country, artistId: artist.id });
     const bad = S.accountConfigProblems(a);
     if (bad.length) throw new Bad('Stripe created the account with a configuration the pilot does not allow: ' + bad.join('; '), 502);
-    await run(env, 'INSERT INTO payment_accounts (artist_id, account_id, country, created_at, updated_at) VALUES (?,?,?,?,?)', artist.id, a.id, country, now(), now());
+    await run(env, 'INSERT INTO payment_accounts (artist_id, account_id, country, livemode, created_at, updated_at) VALUES (?,?,?,?,?,?)', artist.id, a.id, country, S.stripeMode(env).live ? 1 : 0, now(), now());
     acct = await one(env, 'SELECT * FROM payment_accounts WHERE artist_id = ?', artist.id);
   }
   const link = await S.accountLink(env, { account: acct.account_id, refreshUrl: `${origin}/checkout-pilot?onboarding=refresh`, returnUrl: `${origin}/checkout-pilot?onboarding=return` });
@@ -701,8 +718,8 @@ export async function createOrder(env, founder, b) {
   if (!/^[^\s@<>]+@[^\s@<>]+\.[^\s@<>]{2,}$/.test(email) || email.length > 254) throw new Bad('Give the buyer’s email address', 400);
   const id = rid('o'), t = now();
   const reference = `PA-O-${t.slice(2, 10).replace(/-/g, '')}-${rid('', 6).toUpperCase()}`;
-  await run(env, `INSERT INTO checkout_orders (id, reference, artist_id, artwork_id, enquiry_ref, status, buyer_email, artwork_snapshot, created_by, created_at, updated_at)
-    VALUES (?,?,?,?,?, 'draft', ?,?,?,?,?)`, id, reference, artist.id, w.id, ref, email,
+  await run(env, `INSERT INTO checkout_orders (id, reference, artist_id, artwork_id, enquiry_ref, status, buyer_email, livemode, artwork_snapshot, created_by, created_at, updated_at)
+    VALUES (?,?,?,?,?, 'draft', ?,?,?,?,?,?)`, id, reference, artist.id, w.id, ref, email, S.stripeMode(env).live ? 1 : 0,
     JSON.stringify({ title: w.title, year: w.year, medium: w.medium, materials: w.materials, h_cm: w.h_cm, w_cm: w.w_cm, d_cm: w.d_cm, listed_price_eur: w.price_eur }), founder, t, t);
   await event(env, id, founder, 'created', null, 'draft', { enquiry_ref: ref });
   return orderDetail(env, await getOrder(env, id), 'founder');
@@ -927,6 +944,7 @@ export async function startCheckout(env, token, b) {
   if (!b || b.accept_terms !== o.buyer_terms_doc_id) throw new Bad('Please read and accept the purchase terms', 400);
   const mem = await membership(env, o.artist_id);
   if (!mem.ready || mem.account.id !== o.provider_account) throw new Bad('The seller cannot take payments at the moment. Please contact hello@plotnua.ie.', 409);
+  if (o.livemode !== (S.stripeMode(env).live ? 1 : 0)) throw new Bad('This quote was prepared in the other Stripe mode and cannot be paid here. Please contact hello@plotnua.ie.', 409);
   const add = await currentTerms(env, 'artist_payment_addendum');
   if (!mem.opted_in || !add || add.doc_id !== o.addendum_doc_id) throw new Bad('The seller cannot take payments at the moment. Please contact hello@plotnua.ie.', 409);
   if (!(o.commission_bp > 0)) throw new Bad('The seller cannot take payments through PlotArt for this order. Please contact hello@plotnua.ie.', 409);
@@ -975,15 +993,17 @@ export async function webhook(env, raw, signature) {
   const v = await S.verifySignature(env, signature, raw);
   if (!v.ok) return { status: 400, body: { ok: false, error: 'invalid signature' } };
   let ev; try { ev = JSON.parse(raw); } catch { return { status: 400, body: { ok: false } }; }
-  if (ev.livemode !== false) return { status: 400, body: { ok: false, error: 'live-mode events are refused by the test-mode pilot' } };
+  const sm = S.stripeMode(env);
+  if (!sm.ok) return { status: 503, body: { ok: false, error: 'payment pilot not configured' } };
+  if (ev.livemode !== sm.live) return { status: 400, body: { ok: false, error: `${ev.livemode ? 'live' : 'test'}-mode events are refused by the ${sm.mode}-mode pilot` } };
   if (!/^evt_/.test(String(ev.id || ''))) return { status: 400, body: { ok: false } };
   const prior = await one(env, 'SELECT * FROM payment_events WHERE event_id = ?', ev.id);
   if (prior && ['processed', 'ignored'].includes(prior.status)) return { status: 200, body: { ok: true, duplicate: true } };
   const obj = (ev.data && ev.data.object) || {};
   if (prior) await run(env, 'UPDATE payment_events SET attempts = attempts + 1, status = ? WHERE event_id = ?', 'received', ev.id);
   else {
-    const ins = await run(env, `INSERT INTO payment_events (event_id, type, account, livemode, created, object_id, status, received_at) VALUES (?,?,?,0,?,?, 'received', ?) ON CONFLICT(event_id) DO NOTHING`,
-      ev.id, String(ev.type), ev.account || null, Number(ev.created) || 0, obj.id || null, now());
+    const ins = await run(env, `INSERT INTO payment_events (event_id, type, account, livemode, created, object_id, status, received_at) VALUES (?,?,?,?,?,?, 'received', ?) ON CONFLICT(event_id) DO NOTHING`,
+      ev.id, String(ev.type), ev.account || null, sm.live ? 1 : 0, Number(ev.created) || 0, obj.id || null, now());
     if (!ins.meta.changes) return { status: 503, body: { ok: false, error: 'being processed' } };   // a racing duplicate: let the provider retry
   }
   try {
@@ -2049,6 +2069,7 @@ export function confirmationText(q, o, terms, origin) {
 }
 /* One stored message per order, kind and item (e.g. per refund): the text is fixed when prepared and never re-rendered. */
 async function prepareMessage(env, o, { kind, key = '', subject, body }) {
+  ({ subject, body } = modeText(env, { subject, body }));
   const id = rid('m');
   const r = await run(env, `INSERT INTO order_messages (id, order_id, kind, item_key, recipient_role, subject, body, sha256, created_at) VALUES (?,?,?,?, 'buyer', ?,?,?,?)
     ON CONFLICT(order_id, kind, item_key) DO NOTHING`, id, o.id, kind, key, subject, body, await sha256(body), now());

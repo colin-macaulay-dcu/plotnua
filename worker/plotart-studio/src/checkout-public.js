@@ -11,6 +11,7 @@
    reachable from here. Nothing on plotnua.ie links to this Worker. */
 import * as C from './checkout.js';
 import { PAYMENT_TERMS } from './payment-terms.js';
+import * as S from './stripe.js';
 
 // Referrer-Policy is same-origin, not no-referrer (20 Nov 2026, first deployed TEST purchase): under no-referrer a browser
 // sends "Origin: null" on the quote page's own form, so the Origin check below refused every real buyer. same-origin still
@@ -26,13 +27,15 @@ const page = (title, body, status = 200) => new Response(`<!DOCTYPE html><html l
 .tot td{font-weight:600;border-bottom:0;padding-top:12px}.note{background:#1d1d1d;border:1px solid #2c2c2c;padding:14px 16px;border-radius:6px;font-size:14px;color:#cfcac3}.test{background:#3a2f12;border-color:#6b5317;color:#f2dc9b}
 button{background:#ece9e4;color:#141414;border:0;border-radius:4px;padding:13px 22px;font-size:16px;cursor:pointer}label{display:block;margin:18px 0}a{color:#ece9e4}dl{display:grid;grid-template-columns:minmax(150px,38%) 1fr;gap:6px 14px;font-size:14px}dt{color:#9c9893}dd{margin:0}</style></head>
 <body><main><p class="k">PlotArt</p>${body}</main></body></html>`, { status, headers: { 'Content-Type': 'text/html; charset=utf-8', ...SEC } });
-const TEST_BANNER = '<p class="note test"><strong>Test mode.</strong> This is a PlotArt payment pilot running in Stripe test mode. No real payment can be taken and no artwork is sold through this page.</p>';
+const TEST_BANNER_HTML = '<p class="note test"><strong>Test mode.</strong> This is a PlotArt payment pilot running in Stripe test mode. No real payment can be taken and no artwork is sold through this page.</p>';
+// the test-mode banner is removed ONLY in verified live mode (stripeMode: explicit, production-only)
+const banner = env => { const m = S.stripeMode(env); return m.ok && m.live ? '' : TEST_BANNER_HTML; };
 
-function quoteHtml(q, token, error = null) {
+function quoteHtml(env, q, token, error = null) {
   const d = q.delivery, a = q.artwork || {}, s = q.seller || {};
   const cover = `Transit insurance with ${esc(d.cover_provider)}, held by ${esc(PARTY[d.insured_party])}, up to ${eur(d.covered_value_cents)} (${esc(d.valuation_basis)})${d.excess_cents ? `, excess ${eur(d.excess_cents)}` : ''}. Period: ${esc(d.cover_period)}.${d.exclusions ? ` Exclusions: ${esc(d.exclusions)}.` : ''} Claims: ${esc(d.claims_contact)}. Confirmed for this shipment (ref. ${esc(d.cover_confirmation_ref)}).`;
   const payable = ['quoted', 'checkout_open', 'payment_failed'].includes(q.status) && !q.expired && !q.payments_paused;
-  return `${TEST_BANNER}<h1>${esc(a.title || 'Original artwork')}</h1>
+  return `${banner(env)}<h1>${esc(a.title || 'Original artwork')}</h1>
 <p>Sold by <strong>${esc(s.name)}</strong>, the artist. ${esc(s.platform)}</p>
 <p class="k">Quote ${esc(q.reference)} · valid until ${esc(new Date(q.quote_expires_at).toLocaleString('en-IE', { timeZone: 'Europe/Dublin', dateStyle: 'medium', timeStyle: 'short' }))} (Irish time)</p>
 <h2>The seller</h2><dl>
@@ -72,7 +75,7 @@ export default {
         return new Response(JSON.stringify(out.body), { status: out.status, headers: { 'Content-Type': 'application/json' } });
       }
       // switch state only (no counts, no identifiers): lets the deploy workflow verify from outside that the pilot is on or off
-      if (p === '/v1/status' && m === 'GET') return new Response(JSON.stringify({ installed: await C.installed(env), pilot_enabled: C.switches(env).enabled, mode: 'test' }),
+      if (p === '/v1/status' && m === 'GET') return new Response(JSON.stringify({ installed: await C.installed(env), pilot_enabled: C.switches(env).enabled, mode: C.switches(env).mode }),
         { headers: { 'Content-Type': 'application/json', ...SEC } });
       let mm;
       if ((mm = p.match(/^\/terms\/(PA-BPT-[0-9A-Z-]{4,20})\.html$/)) && m === 'GET') {
@@ -92,7 +95,7 @@ export default {
         if (!mm[2] && m === 'GET') {
           if (!C.switches(env).enabled) return page('Not available', '<h1>Payments are not open.</h1><p>Please contact hello@plotnua.ie.</p>', 503);
           const q = await C.buyerQuote(env, token);
-          return q ? page('Your quote', quoteHtml(q, token)) : page('Not found', '<h1>This quote is not available.</h1>', 404);
+          return q ? page('Your quote', quoteHtml(env, q, token)) : page('Not found', '<h1>This quote is not available.</h1>', 404);
         }
         if (mm[2] === '/pay' && m === 'POST') {
           if (req.headers.get('Origin') !== env.CHECKOUT_ORIGIN) return page('Refused', '<h1>Refused</h1>', 403);
@@ -103,7 +106,7 @@ export default {
           } catch (e) {
             const q = await C.buyerQuote(env, token);
             if (!q) return page('Not found', '<h1>This quote is not available.</h1>', 404);
-            return page('Your quote', quoteHtml(q, token, e.message), e.status || 400);
+            return page('Your quote', quoteHtml(env, q, token, e.message), e.status || 400);
           }
         }
         if (mm[2] === '/return' && m === 'GET') {
@@ -114,7 +117,7 @@ export default {
             : url.searchParams.get('result') === 'success' ? `<h1>We’re confirming your payment</h1><p>Stripe has returned you to PlotArt. Your payment is confirmed only once Stripe notifies us directly, usually within a minute. Refresh this page shortly; you will also receive Stripe’s receipt by email.</p>`
             : `<h1>Payment not completed</h1><p>No payment was taken. <a href="/q/${esc(token)}">Return to your quote</a>.</p>`;
           const upd = (q.notices || []).length ? `<h2>Updates about your order</h2>${q.notices.map(n => `<div class="note"><strong>${esc(n.subject)}</strong><p style="white-space:pre-wrap">${esc(n.body)}</p></div>`).join('')}` : '';
-          return page('Payment', TEST_BANNER + msg + upd);
+          return page('Payment', banner(env) + msg + upd);
         }
       }
       return page('Not found', '<h1>Not found</h1>', 404);
