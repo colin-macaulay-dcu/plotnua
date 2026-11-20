@@ -22454,6 +22454,99 @@
       "source_sha256": "b0c17bca8145388e024906efe319c2d7865b5ce5063399c01eb1d2c8c157d8fb",
       "subject": "artwork",
       "work_slug": "multi-layered-intaglio-print-series-venezia"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "clare-o-connor",
+      "asset": "plotart/artists/clare-o-connor/img/multi-layered-intaglio-print-series-2-1-600.webp",
+      "bytes": 23316,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "sRGB (no embedded profile; treated as sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-ane34unrj3c",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        600,
+        600
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "24f7234f94a84cfc31eb2a8c94a33c949b1c1b8f722e158cec27af45bbfe0565",
+      "source_sha256": "f0c1c4247ff80d9c2b6e939a6caabe9818d4f0eae93401e82baa161ed05e055d",
+      "subject": "artwork",
+      "work_slug": "multi-layered-intaglio-print-series-2"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "clare-o-connor",
+      "asset": "plotart/artists/clare-o-connor/img/multi-layered-intaglio-print-series-2-1-1200.webp",
+      "bytes": 68410,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "sRGB (no embedded profile; treated as sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-ane34unrj3c",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        1200,
+        1200
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "12e6577c9eb9f1fbc03ab7775bc481c7b6fffad9da522c7bdba66c6c1a3ee354",
+      "source_sha256": "f0c1c4247ff80d9c2b6e939a6caabe9818d4f0eae93401e82baa161ed05e055d",
+      "subject": "artwork",
+      "work_slug": "multi-layered-intaglio-print-series-2"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "clare-o-connor",
+      "asset": "plotart/artists/clare-o-connor/img/multi-layered-intaglio-print-series-2-1-2000.webp",
+      "bytes": 128610,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "sRGB (no embedded profile; treated as sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-ane34unrj3c",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        2000,
+        2000
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "962ebf22068a47863774a566cc1018c396a9446fcdb9e1be5c29480bd4da735f",
+      "source_sha256": "f0c1c4247ff80d9c2b6e939a6caabe9818d4f0eae93401e82baa161ed05e055d",
+      "subject": "artwork",
+      "work_slug": "multi-layered-intaglio-print-series-2"
     }
   ],
   "legacy_undeclared": [

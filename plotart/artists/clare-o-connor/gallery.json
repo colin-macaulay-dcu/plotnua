@@ -107,10 +107,15 @@
    "dhash": "0769717971716383",
    "source_sha256": "b0c17bca8145388e024906efe319c2d7865b5ce5063399c01eb1d2c8c157d8fb",
    "stem": "multi-layered-intaglio-print-series-venezia-1"
+  },
+  {
+   "dhash": "0763696971714589",
+   "source_sha256": "f0c1c4247ff80d9c2b6e939a6caabe9818d4f0eae93401e82baa161ed05e055d",
+   "stem": "multi-layered-intaglio-print-series-2-1"
   }
  ],
  "publication": {
-  "approved_at": "2026-11-20T12:27:55.471Z",
+  "approved_at": "2026-11-20T13:41:06.764Z",
   "approved_by": "founder",
   "first_approved_at": "2026-11-19T07:42:21.882Z",
   "licence_accepted_at": "2026-11-18T20:15:34.624Z",
@@ -118,7 +123,7 @@
   "permission_ref": "PA-PERM-ane34unrj3c",
   "state": "approved",
   "test_note": null,
-  "version": "v2"
+  "version": "v3"
  },
  "schema": "plotnua.plotart.gallery-package.v1",
  "works": [
@@ -792,7 +797,63 @@
    "slug": "multi-layered-intaglio-print-series-venezia",
    "title": "Multi Layered Intaglio Print Series Venezia, Print No. 11",
    "w_cm": 42,
-   "year": 2013
+   "year": 2014
+  },
+  {
+   "ai_founder_decision": null,
+   "ai_involvement": "none",
+   "ai_note": null,
+   "availability": "available",
+   "d_cm": 5,
+   "description": null,
+   "h_cm": 42,
+   "id": "wiu92ossxc9",
+   "images": [
+    {
+     "alt": "Grey Multi Layered Intaglio Print with splashes of acid green, purple lines and triangle, neon yellow band and collage",
+     "aspect": 1.0,
+     "derivatives": [
+      {
+       "file": "multi-layered-intaglio-print-series-2-1-600.webp",
+       "long_edge": 600,
+       "pixels": [
+        600,
+        600
+       ]
+      },
+      {
+       "file": "multi-layered-intaglio-print-series-2-1-1200.webp",
+       "long_edge": 1200,
+       "pixels": [
+        1200,
+        1200
+       ]
+      },
+      {
+       "file": "multi-layered-intaglio-print-series-2-1-2000.webp",
+       "long_edge": 2000,
+       "pixels": [
+        2000,
+        2000
+       ]
+      }
+     ],
+     "photo_credit": null,
+     "pixels": [
+      2362,
+      2362
+     ],
+     "role": "main"
+    }
+   ],
+   "materials": "Framed Multi Layered Etched Intaglio Print with Acrylic and Collage",
+   "medium": "Multi Layered Etched Intaglio Print with Acrylic and collage",
+   "price_eur": 450,
+   "price_on_request": false,
+   "slug": "multi-layered-intaglio-print-series-2",
+   "title": "Multi Layered Intaglio Print Series Venezia, Print No. 6",
+   "w_cm": 42,
+   "year": 2014
   }
  ]
 }
