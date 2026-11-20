@@ -44,9 +44,9 @@ import importlib.util,subprocess,sys
 sys.path.insert(0,'atlas-tools'); import plotart_shell as new
 src=subprocess.check_output(['git','show','origin/main:atlas-tools/plotart_shell.py'],text=True)
 old=importlib.util.module_from_spec(importlib.util.spec_from_loader('old',loader=None)); exec(src,old.__dict__)
-# 19 Nov 2026 (22:03): the PlotNua house P and 'lotNua' become one inline-flex word on a shared baseline; nothing else may differ
+# The shell must write exactly what main's does, or (while a release of it is pending) differ only by PAIRS; once released, main and this branch match directly (20 Nov 2026: G2 had kept comparing against the pre-release markup)
 PAIRS=[('<span class="pa-pn" style="display:inline-flex;align-items:baseline;white-space:nowrap"><img class="pa-pn-p" src="/assets/brand/plotnua-icon-transparent.svg" alt="" width="18" height="18" style="display:block;flex:none;max-width:none;width:1.22em;height:1.22em;margin:-0.27em -0.2em 0 -0.29em;position:relative;top:0.215em"><span class="pa-sr">P</span>lotNua</span>', '<span class="pa-pn"><img class="pa-pn-p" src="/assets/brand/plotnua-icon-transparent.svg" alt="" width="18" height="18"><span class="pa-sr">P</span>lotNua</span>')]
-ok=all(old.artist_page(p,'T','D','<p>b</p>')==tuple(__import__('functools').reduce(lambda s,q: s.replace(q[0],q[1]), PAIRS, x) for x in new.artist_page(p,'T','D','<p>b</p>')) for p in ['artists/a/index.html','artists/a/w.html','artists/a/b/c.html'])
+ok=all(old.artist_page(p,'T','D','<p>b</p>') in (new.artist_page(p,'T','D','<p>b</p>'), tuple(__import__('functools').reduce(lambda s,q: s.replace(q[0],q[1]), PAIRS, x) for x in new.artist_page(p,'T','D','<p>b</p>'))) for p in ['artists/a/index.html','artists/a/w.html','artists/a/b/c.html'])
 print('same' if ok and new.HIRE_NAV is False else 'DIFF')`], { cwd: REPO, encoding: 'utf8' }).trim();
 check('G2 artist gallery pages the pipeline writes are byte-identical (plotart_shell HIRE_NAV is off by default)', SHELL_DIFF === 'same', SHELL_DIFF);
 const strip = s => s.replace(' pa-pills--hire', '').replace(/<a class="pa-pill" href="[^"]*art-for-hire\/"[^>]*>Art for Hire<\/a>/, '')
