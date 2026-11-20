@@ -326,6 +326,13 @@ pg = await pub('POST', `/q/${T1}/pay`, { form: {} });
 check('B4 paying needs the purchase terms accepted', pg.s === 400 && /purchase terms/.test(pg.t));
 pg = await pub('POST', `/q/${T1}/pay`, { form: { accept_terms: 'PA-BPT-TEST-01' }, origin: 'https://evil.example' });
 check('B5 a cross-site form post is refused', pg.s === 403);
+{ // a real browser (20 Nov 2026): the quote page's referrer policy decides the Origin its own form sends. Under no-referrer a
+  // browser sends "Origin: null" and every buyer was refused; under same-origin it sends this origin, and no referrer leaves it.
+  const qp = await pub('GET', `/q/${T1}`), rp = qp.h.get('Referrer-Policy');
+  check('B5b the quote page lets its own form send its origin (Referrer-Policy same-origin, never no-referrer) and sends no referrer to other sites',
+    rp === 'same-origin' && /form-action 'self' https:\/\/checkout\.stripe\.com/.test(qp.h.get('Content-Security-Policy') || ''), rp);
+  const nul = await pub('POST', `/q/${T1}/pay`, { form: { accept_terms: 'PA-BPT-TEST-01' }, origin: 'null' });
+  check('B5c a post with Origin "null" (opaque origin) is still refused: the Origin check is unchanged', nul.s === 403); }
 pg = await pub('POST', `/q/${T1}/pay`, { form: { accept_terms: 'PA-BPT-TEST-01', artwork_cents: '1', commission: '0' } });
 const sess1 = Object.values(M.sessions).at(-1);
 check('B6 hosted checkout opens on the ARTIST’s account (direct charge) with server-side amounts only', pg.s === 303 && pg.loc === sess1.url && sess1._acct === ACCT

@@ -12,8 +12,11 @@
 import * as C from './checkout.js';
 import { PAYMENT_TERMS } from './payment-terms.js';
 
+// Referrer-Policy is same-origin, not no-referrer (20 Nov 2026, first deployed TEST purchase): under no-referrer a browser
+// sends "Origin: null" on the quote page's own form, so the Origin check below refused every real buyer. same-origin still
+// sends no referrer to Stripe or any other site (the quote token never leaves this origin); the Origin check is unchanged.
 const SEC = { 'Content-Security-Policy': "default-src 'none'; style-src 'unsafe-inline'; img-src 'self'; form-action 'self' https://checkout.stripe.com; frame-ancestors 'none'; base-uri 'none'",
-  'X-Frame-Options': 'DENY', 'X-Content-Type-Options': 'nosniff', 'Referrer-Policy': 'no-referrer', 'Cache-Control': 'no-store', 'X-Robots-Tag': 'noindex, nofollow' };
+  'X-Frame-Options': 'DENY', 'X-Content-Type-Options': 'nosniff', 'Referrer-Policy': 'same-origin', 'Cache-Control': 'no-store', 'X-Robots-Tag': 'noindex, nofollow' };
 const esc = s => String(s ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
 const eur = c => c == null ? '—' : '€' + (c / 100).toLocaleString('en-IE', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 const PARTY = { artist: 'the artist (seller)', buyer: 'you (the buyer)', transporter: 'the transporter', plotart: 'PlotArt', not_applicable: 'not applicable' };
