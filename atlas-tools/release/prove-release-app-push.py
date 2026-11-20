@@ -127,6 +127,11 @@ def check(workflows, texts, tools):
     ai = [i for i, s in enumerate(st) if s.get("id") == "app"]
     if len(vi) != 1 or not ai or vi[0] > ai[0]:
         errs.append("A9 the promote job must verify the founder's approval (verify-founder-approval.sh) before the App token is created")
+    for jn, jj in (("approval", ap), ("promote", pr)):
+        if re.search(r"\b(?:always|failure|cancelled)\s*\(", str(jj.get("if", ""))):
+            errs.append("A9 the %s job's condition must not use always(), failure() or cancelled(): it must never run after a failed, skipped or rejected step" % jn)
+    if ap.get("concurrency") or pv.get("concurrency"):
+        errs.append("A9 the preview and approval jobs must not take a concurrency lock (a waiting release must never block publishing)")
     if (rp.get("concurrency") or {}).get("group") == "production-site" or (pr.get("concurrency") or {}).get("group") != "production-site":
         errs.append("A9 the production-site lock must be taken by the promote job only, never while a release waits for approval")
     for name, w in workflows.items():
@@ -177,7 +182,9 @@ def self_test():
     case("approval check dropped from promote", lambda w,t,tl: w["release-promote.yml"]["jobs"]["promote"].__setitem__("steps", [s for s in w["release-promote.yml"]["jobs"]["promote"]["steps"] if "verify-founder-approval" not in str(s.get("run",""))]), "A9")
     case("approval job given a secret", lambda w,t,tl: w["release-promote.yml"]["jobs"]["approval"]["steps"][0].__setitem__("env", {"K": "${{ secrets.RELEASE_APP_KEY }}"}), "A9")
     case("whole run holds the production-site lock again", lambda w,t,tl: w["release-promote.yml"].__setitem__("concurrency", {"group": "production-site", "cancel-in-progress": False}), "A9")
-    case("a publisher made to wait for website approval", lambda w,t,tl: w["plotnua-garden-publish.yml"]["jobs"]["promote"].__setitem__("environment", "website-production"), "A9")
+    case("promote made to run always()", lambda w,t,tl: w["release-promote.yml"]["jobs"]["promote"].__setitem__("if", "always() && " + w["release-promote.yml"]["jobs"]["promote"]["if"]), "A9")
+    case("the waiting approval made to hold the production-site lock", lambda w,t,tl: w["release-promote.yml"]["jobs"]["approval"].__setitem__("concurrency", {"group": "production-site"}), "A9")
+        case("a publisher made to wait for website approval", lambda w,t,tl: w["plotnua-garden-publish.yml"]["jobs"]["promote"].__setitem__("environment", "website-production"), "A9")
     case("key referenced by another workflow", lambda w,t,tl: t.__setitem__(os.path.join(WF,"site-health.yml"), t.get(os.path.join(WF,"site-health.yml"),"")+"\n# ${{ secrets.RELEASE_APP_KEY }}\n"), "A8")
     print("\nRELEASE APP PUSH SELF-TEST · %s · %d failed" % ("OK" if fails == 0 else "FAIL", fails))
     return 1 if fails else 0
