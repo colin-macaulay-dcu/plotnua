@@ -3,7 +3,8 @@
 # Called by .github/workflows/release-promote.yml (job "promote") from a copy of the scripts taken from main, after the
 # "approval" job and BEFORE anything can reach main. It refuses unless ALL of these hold:
 #   1. the website-production environment exists and is configured as approved by the founder:
-#      - a required_reviewers rule naming the founder's user account;
+#      - protection rules exactly: required reviewers + the branch policy (no wait timer, no custom app rules);
+#      - exactly ONE required reviewer, the founder's user account (no other user, no team), self-review allowed;
 #      - administrators may NOT bypass its protection rules (can_admins_bypass: false);
 #      - deployments restricted to selected branches (custom policies, not "protected branches"), with a branch_policy rule;
 #   2. its deployment branch policies are exactly one rule: the branch "main";
@@ -46,12 +47,21 @@ except ValueError:
 if not isinstance(env, dict) or str(env.get("name", "")).lower() != envn.lower():
     print("environment answer is not the %s environment" % envn); sys.exit(1)
 rules = env.get("protection_rules")
-if not isinstance(rules, list):
-    print("environment answer has no protection rules"); sys.exit(1)
-reviewers = [r for rule in rules if isinstance(rule, dict) and rule.get("type") == "required_reviewers"
-             for r in (rule.get("reviewers") or []) if isinstance(r, dict)]
-if not any(r.get("type") == "User" and (r.get("reviewer") or {}).get("login") == founder for r in reviewers):
-    print("required reviewers do not include %s" % founder); sys.exit(1)
+if not isinstance(rules, list) or not all(isinstance(rule, dict) for rule in rules):
+    print("environment answer has no readable protection rules"); sys.exit(1)
+kinds = sorted(str(rule.get("type")) for rule in rules)
+if kinds != ["branch_policy", "required_reviewers"]:
+    print("protection rules must be exactly: required reviewers and the branch policy (found: %s)" % ", ".join(kinds)); sys.exit(1)
+rr = [rule for rule in rules if rule.get("type") == "required_reviewers"][0]
+reviewers = rr.get("reviewers")
+if not isinstance(reviewers, list) or len(reviewers) != 1:
+    print("the founder must be the one and only required reviewer (found %s)" % (len(reviewers) if isinstance(reviewers, list) else "none")); sys.exit(1)
+only = reviewers[0]
+if not (isinstance(only, dict) and only.get("type") == "User" and isinstance(only.get("reviewer"), dict)
+        and only["reviewer"].get("login") == founder):
+    print("the one required reviewer is not the user account %s" % founder); sys.exit(1)
+if rr.get("prevent_self_review") is not False:
+    print("prevent self-review must be off (it would stop the founder approving his own releases), or GitHub did not say"); sys.exit(1)
 if env.get("can_admins_bypass") is not False:
     print("administrators may bypass the protection rules (or GitHub did not say)"); sys.exit(1)
 dbp = env.get("deployment_branch_policy")

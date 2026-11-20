@@ -69,8 +69,9 @@ case "$1" in
 esac
 EOS
 U() { printf '{"type":"User","reviewer":{"login":"%s"}}' "$1"; }
+BP=',{"type":"branch_policy"}'
 envj() { # $1 reviewers json, $2 can_admins_bypass, $3 protected_branches, $4 custom, $5 extra rules
-  printf '{"name":"website-production","can_admins_bypass":%s,"protection_rules":[{"type":"required_reviewers","prevent_self_review":false,"reviewers":[%s]}%s],"deployment_branch_policy":{"protected_branches":%s,"custom_branch_policies":%s}}' "$2" "$1" "${5-,{\"type\":\"branch_policy\"}}" "$3" "$4"; }
+  printf '{"name":"website-production","can_admins_bypass":%s,"protection_rules":[{"type":"required_reviewers","prevent_self_review":false,"reviewers":[%s]}%s],"deployment_branch_policy":{"protected_branches":%s,"custom_branch_policies":%s}}' "$2" "$1" "${5-$BP}" "$3" "$4"; }
 ENV_OK=$(envj "$(U colin-macaulay-dcu)" false false true)
 BR_OK='{"total_count":1,"branch_policies":[{"id":1,"name":"main","type":"branch"}]}'
 APP_OK='[{"state":"approved","comment":"","user":{"login":"colin-macaulay-dcu"},"environments":[{"name":"website-production"}]}]'
@@ -87,6 +88,17 @@ LABEL="environment auto-created by GitHub with no protection rules"; no_ '{"name
 LABEL="answer for a different environment"; no_ "$(envj "$(U colin-macaulay-dcu)" false false true | sed 's/website-production/release-automation/')" "$BR_OK" "$APP_OK"
 LABEL="required reviewer is someone else"; no_ "$(envj "$(U someone-else)" false false true)" "$BR_OK" "$APP_OK"
 LABEL="required reviewer is a team, not the founder's account"; no_ "$(envj '{"type":"Team","reviewer":{"login":"colin-macaulay-dcu"}}' false false true)" "$BR_OK" "$APP_OK"
+LABEL="founder plus another user as reviewers"; no_ "$(envj "$(U colin-macaulay-dcu),$(U someone-else)" false false true)" "$BR_OK" "$APP_OK"
+LABEL="founder plus a team as reviewers"; no_ "$(envj "$(U colin-macaulay-dcu),{\"type\":\"Team\",\"reviewer\":{\"slug\":\"t\"}}" false false true)" "$BR_OK" "$APP_OK"
+LABEL="the founder listed twice"; no_ "$(envj "$(U colin-macaulay-dcu),$(U colin-macaulay-dcu)" false false true)" "$BR_OK" "$APP_OK"
+LABEL="no reviewers listed in the rule"; no_ "$(envj "" false false true)" "$BR_OK" "$APP_OK"
+LABEL="an unexpected reviewer entry (no type)"; no_ "$(envj '{"reviewer":{"login":"colin-macaulay-dcu"}}' false false true)" "$BR_OK" "$APP_OK"
+LABEL="two required-reviewer rules"; no_ "$(envj "$(U colin-macaulay-dcu)" false false true ",{\"type\":\"branch_policy\"},{\"type\":\"required_reviewers\",\"reviewers\":[$(U someone-else)]}")" "$BR_OK" "$APP_OK"
+LABEL="an extra wait-timer rule"; no_ "$(envj "$(U colin-macaulay-dcu)" false false true ',{"type":"branch_policy"},{"type":"wait_timer","wait_timer":5}')" "$BR_OK" "$APP_OK"
+LABEL="an extra custom protection rule (third-party app)"; no_ "$(envj "$(U colin-macaulay-dcu)" false false true ',{"type":"branch_policy"},{"type":"custom","app":{"slug":"x"}}')" "$BR_OK" "$APP_OK"
+LABEL="prevent self-review switched on (founder could not approve)"; no_ "$(envj "$(U colin-macaulay-dcu)" false false true | sed 's/"prevent_self_review":false/"prevent_self_review":true/')" "$BR_OK" "$APP_OK"
+LABEL="GitHub does not say whether self-review is prevented"; no_ "$(envj "$(U colin-macaulay-dcu)" false false true | sed 's/"prevent_self_review":false,//')" "$BR_OK" "$APP_OK"
+LABEL="a protection rule that is not an object"; no_ "$(envj "$(U colin-macaulay-dcu)" false false true ',{"type":"branch_policy"},"x"')" "$BR_OK" "$APP_OK"
 LABEL="administrators may bypass the rules"; no_ "$(envj "$(U colin-macaulay-dcu)" true false true)" "$BR_OK" "$APP_OK"
 LABEL="GitHub does not say whether administrators may bypass"; no_ "$(envj "$(U colin-macaulay-dcu)" null false true)" "$BR_OK" "$APP_OK"
 LABEL="deployments allowed from all branches (no branch policy)"; no_ "$(printf '{"name":"website-production","can_admins_bypass":false,"protection_rules":[{"type":"required_reviewers","reviewers":[%s]}],"deployment_branch_policy":null}' "$(U colin-macaulay-dcu)")" "$BR_OK" "$APP_OK"
