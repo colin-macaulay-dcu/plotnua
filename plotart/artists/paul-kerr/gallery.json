@@ -7,6 +7,12 @@
   "instagram": "paulpaulkerr",
   "medium": "painting",
   "open_for_commissions": true,
+  "open_to": [
+   "exhibitions",
+   "mobile_gallery",
+   "commissions",
+   "talks"
+  ],
   "portrait": {
    "alt": "The artist against a painting of a wall.",
    "aspect": 0.7098,
@@ -50,7 +56,7 @@
   }
  ],
  "publication": {
-  "approved_at": "2026-11-20T13:41:46.767Z",
+  "approved_at": "2026-11-20T13:58:11.774Z",
   "approved_by": "founder",
   "first_approved_at": "2026-11-19T22:41:57.876Z",
   "licence_accepted_at": "2026-11-19T16:23:00.626Z",
@@ -58,7 +64,7 @@
   "permission_ref": "PA-PERM-a4p7ruywdrw",
   "state": "approved",
   "test_note": null,
-  "version": "v2"
+  "version": "v3"
  },
  "schema": "plotnua.plotart.gallery-package.v1",
  "works": [
