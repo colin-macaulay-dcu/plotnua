@@ -1386,6 +1386,121 @@ console.log('— founder forms in a real browser (no dialogs)');
       /refunded €150\.00/.test(sumTxt) && rr.length === 1 && rr[0].artwork_cents === 15000 && rr[0].delivery_cents === 0 && rr[0].reason === 'UI test' && rr[0].commission_refund_cents === 2250 && rr[0].status === 'succeeded'
       && lg.some(l => l.kind === 'artwork_refund' && l.amount_cents === -15000), { rr, lg });
     check('UI12 no browser dialog (alert, confirm or prompt) opened at any point in the issue or refund steps', dialogs.length === 0, dialogs);
+
+    // ---- every other founder and artist action (20 Nov 2026): on-page forms, failures and refusals shown on the page
+    const D = n => new Date(Date.now() + n * 86400_000).toLocaleDateString('en-CA', { timeZone: 'Europe/Dublin' });
+    const desk = async () => { await pg.goto(S.url + '/admin/checkout', { waitUntil: 'load' }); await card().waitFor({ timeout: 20000 }); };
+    const open = async (c, summary) => { await c.locator('summary', { hasText: summary }).first().click(); };
+    const errOf = f => f.locator('[data-err]');
+    const waitErr = async (f, re) => { await f.locator('[data-err]').filter({ hasText: re }).waitFor({ timeout: 15000 }); return errOf(f).innerText(); };
+    const settle = () => new Promise(r => setTimeout(r, 1200));
+    // legal hold: place (missing basis, short reason, server refusal of a past date), renew, release
+    await desk(); await open(card(), 'Legal hold…');
+    let fh = card().locator('form[data-f="hold"]');
+    await fh.getByRole('button', { name: 'Place legal hold' }).click();
+    const hE1 = await waitErr(fh, /basis/);
+    await fh.getByLabel('Basis').selectOption('claim'); await fh.getByLabel(/Specific reason/).fill('too short'); await fh.getByRole('button', { name: 'Place legal hold' }).click();
+    const hE2 = await waitErr(fh, /specific reason/);
+    await fh.getByLabel(/Specific reason/).fill('SIMULATED buyer claim about transit damage'); await fh.getByLabel(/Review by/).fill(D(-2)); await fh.getByRole('button', { name: 'Place legal hold' }).click();
+    const hE3 = await waitErr(fh, /next 12 months/);
+    check('UI13 legal hold: a missing basis and a short reason are refused on the page; a past review date is refused by the server, its reason on the page; nothing is placed',
+      /basis/.test(hE1) && /10–1,000/.test(hE2) && /12 months/.test(hE3) && !(await q('SELECT * FROM checkout_holds WHERE order_id = ?', ou.id)).length, { hE1, hE2, hE3 });
+    await fh.getByLabel(/Review by/).fill(D(60)); await fh.getByRole('button', { name: 'Place legal hold' }).click(); await settle();
+    const hold = (await q('SELECT * FROM checkout_holds WHERE order_id = ?', ou.id))[0];
+    check('UI14 a valid legal hold is placed with its basis, reason and review date, and recorded in the hold history', !!hold && hold.basis === 'claim' && hold.review_by === D(60)
+      && (await q("SELECT * FROM checkout_hold_events WHERE hold_id = ? AND kind = 'placed'", hold.id)).length === 1, hold);
+    await desk(); const hl = pg.locator(`[data-hold="${hold.id}"]`); await open(hl, 'Renew…');
+    const fr = hl.locator('form[data-f="renew"]'); await fr.getByLabel(/New review date/).fill(D(120)); await fr.getByLabel(/still needed/).fill('short'); await fr.getByRole('button', { name: 'Renew hold' }).click();
+    const rE = await waitErr(fr, /10 characters/);
+    await fr.getByLabel(/still needed/).fill('SIMULATED claim still open with the courier'); await fr.getByRole('button', { name: 'Renew hold' }).click(); await settle();
+    check('UI15 renewing a hold needs a reason of 10+ characters (shown on the page); a valid renewal moves the review date and is recorded',
+      /10 characters/.test(rE) && (await q('SELECT review_by FROM checkout_holds WHERE id = ?', hold.id))[0].review_by === D(120) && (await q("SELECT * FROM checkout_hold_events WHERE hold_id = ? AND kind = 'renewed'", hold.id)).length === 1);
+    await desk(); const hl2 = pg.locator(`[data-hold="${hold.id}"]`); await open(hl2, 'Release…');
+    const frl = hl2.locator('form[data-f="release"]'); await frl.getByLabel(/released/).fill('SIMULATED claim withdrawn by the buyer'); await frl.getByRole('button', { name: 'Release hold' }).click();
+    const lE = await waitErr(frl, /Tick the box/);
+    await frl.getByLabel('Release this hold.', { exact: false }).check(); await frl.getByRole('button', { name: 'Release hold' }).click(); await settle();
+    check('UI16 releasing a hold needs the confirmation tick (refused on the page without it); with it the hold is released and recorded',
+      /Tick the box/.test(lE) && !!(await q('SELECT released_at FROM checkout_holds WHERE id = ?', hold.id))[0].released_at && (await q("SELECT * FROM checkout_hold_events WHERE hold_id = ? AND kind = 'released'", hold.id)).length === 1);
+    // repayment outside Stripe: short evidence, more than remains (server), then a valid record
+    await desk(); await open(card(), 'Record repayment outside Stripe…');
+    const fp = card().locator('form[data-f="repaid"]'); const r0 = (await q('SELECT COUNT(*) AS n FROM order_refunds WHERE order_id = ?', ou.id))[0].n;
+    await fp.getByLabel(/Artwork amount repaid/).fill('10'); await fp.getByLabel(/Evidence/).fill('short'); await fp.getByLabel(/I confirm the buyer/).check(); await fp.getByRole('button', { name: 'Record repayment' }).click();
+    const pE1 = await waitErr(fp, /evidence/);
+    await fp.getByLabel(/Artwork amount repaid/).fill('500'); await fp.getByLabel(/Evidence/).fill('SIM-TRF-0099 on 20 Nov, buyer confirmed by email'); await fp.getByRole('button', { name: 'Record repayment' }).click();
+    const pE2 = await waitErr(fp, /more than remains/);
+    check('UI17 recording a repayment: short evidence is refused on the page; more than remains unrefunded is refused by the server (shown on the page); nothing is booked',
+      /evidence/.test(pE1) && /more than remains/.test(pE2) && (await q('SELECT COUNT(*) AS n FROM order_refunds WHERE order_id = ?', ou.id))[0].n === r0, { pE1, pE2 });
+    await fp.getByLabel(/Artwork amount repaid/).fill('20.00'); await fp.getByRole('button', { name: 'Record repayment' }).click(); await settle();
+    const ext = await q("SELECT * FROM order_refunds WHERE order_id = ? AND provider_refund_id LIKE 'ext_%'", ou.id);
+    check('UI18 a valid repayment of EUR 20.00 is booked as before (refund outside Stripe, commission share EUR 3.00 returned under the agreement)',
+      ext.length === 1 && ext[0].artwork_cents === 2000 && ext[0].commission_refund_cents === 300 && /outside Stripe/.test(ext[0].reason), ext);
+    // a lost dispute on this order (signed webhooks): return commission, then the shortfall paid and a returned transfer
+    const piU = (await order(ou.id)).payment_intent, dpU = { id: 'dp_test_ui', object: 'dispute', payment_intent: piU, charge: M.pis[piU].charge, amount: 42000, reason: 'fraudulent', status: 'needs_response',
+      balance_transactions: [{ id: 'txn_test_dpui', object: 'balance_transaction', amount: -42000, fee: 2460, fee_details: [{ type: 'stripe_fee', amount: 2000, description: 'Dispute fee' }, { type: 'tax', amount: 460, description: 'VAT' }] }] };
+    await hook(evt('charge.dispute.created', dpU, ACCT)); await hook(evt('charge.dispute.closed', { ...dpU, status: 'lost' }, ACCT));
+    await desk();
+    const rcf = card().locator('form[data-f="returncommission"]');
+    check('UI19 after a lost dispute the order shows an on-page "Return commission" form with the amount, and the Amounts owed list links to it',
+      (await order(ou.id)).dispute_status === 'lost' && await rcf.count() === 1 && await pg.locator(`a[data-open="returncommission"][href="#order-${ou.id}"]`).count() === 1);
+    await pg.locator(`a[data-open="returncommission"][href="#order-${ou.id}"]`).click();
+    await rcf.getByRole('button', { name: 'Return commission' }).click();
+    const cE = await waitErr(rcf, /Tick the box/);
+    const fr0 = M.feeRefunds.length;
+    await rcf.getByLabel(/of PlotArt’s commission to the artist/).check(); await rcf.getByRole('button', { name: 'Return commission' }).click(); await settle();
+    const lwU = (await q("SELECT * FROM checkout_owed WHERE order_id = ? AND kind = 'lost_dispute_commission'", ou.id))[0], shU = (await q("SELECT * FROM checkout_owed WHERE order_id = ? AND kind = 'commission_shortfall' AND settled_cents < cents", ou.id))[0];
+    check('UI20 returning commission needs the confirmation tick; with it the same request returns what the application fee allows through Stripe and moves the rest to a bank-transfer item',
+      /Tick the box/.test(cE) && lwU && lwU.settled_cents === lwU.cents && M.feeRefunds.length === fr0 + 1 && !!shU, { lwU, shU });
+    await desk(); await pg.locator(`a[data-open="shortfallpaid"][href="#order-${ou.id}"]`).click();
+    const sf = card().locator('form[data-f="shortfallpaid"]'), owedU = shU.cents - shU.settled_cents;
+    await sf.getByLabel(/Amount the bank shows/).fill((owedU / 100).toFixed(2)); await sf.getByLabel(/Date the bank shows it executed/).fill(D(3)); await sf.getByLabel(/transfer reference only/).fill('SIM-TRF-UI-01');
+    await sf.getByLabel(/PlotArt’s bank shows this transfer/).check(); await sf.getByRole('button', { name: 'Record shortfall paid' }).click();
+    const sE1 = await waitErr(sf, /future/);
+    await sf.getByLabel(/Date the bank shows it executed/).fill(D(0)); await sf.getByLabel(/transfer reference only/).fill('IE29AIBK93115212345678'); await sf.getByRole('button', { name: 'Record shortfall paid' }).click();
+    const sE2 = await waitErr(sf, /bank details/);
+    check('UI21 recording a shortfall payment: a future execution date is refused on the page; bank details as the reference are refused by the server (shown on the page); nothing is settled',
+      /future/.test(sE1) && /bank details/.test(sE2) && (await q('SELECT settled_cents FROM checkout_owed WHERE id = ?', shU.id))[0].settled_cents === shU.settled_cents, { sE1, sE2 });
+    // a part payment (EUR 1.00 less than owed) keeps the item listed, so its "Transfer returned…" control stays reachable
+    await sf.getByLabel(/Amount the bank shows/).fill(((owedU - 100) / 100).toFixed(2)); await sf.getByLabel(/transfer reference only/).fill('SIM-TRF-UI-01'); await sf.getByRole('button', { name: 'Record shortfall paid' }).click(); await settle();
+    const payU = (await q("SELECT * FROM checkout_owed_payments WHERE order_id = ? AND method = 'bank_transfer'", ou.id))[0];
+    check('UI22 a valid shortfall payment is recorded with the reference and execution date, settling that amount as before (EUR 1.00 left owed)', !!payU && payU.reference === 'SIM-TRF-UI-01' && payU.executed_on === D(0)
+      && payU.cents === owedU - 100 && (await q('SELECT settled_cents FROM checkout_owed WHERE id = ?', shU.id))[0].settled_cents === shU.settled_cents + owedU - 100, payU);
+    await desk(); const trRow = pg.locator(`tr[data-id="${ou.id}"]`).filter({ hasText: 'SIM-TRF-UI-01' }); await open(trRow, 'Transfer returned…');
+    const sr = trRow.locator('form[data-f="shortfallreturned"]');
+    await sr.getByLabel(/Date the bank shows it returned/).fill(D(0)); await sr.getByLabel(/Reason the bank gave/).fill('no'); await sr.getByRole('button', { name: 'Record returned transfer' }).click();
+    const tE = await waitErr(sr, /5–300/);
+    await sr.getByLabel(/Reason the bank gave/).fill('Account closed (SIMULATED)'); await sr.getByLabel(/transfer as returned/).check(); await sr.getByRole('button', { name: 'Record returned transfer' }).click(); await settle();
+    check('UI23 a returned transfer needs the bank’s reason (refused on the page when too short); a valid record makes the amount owed again, as before',
+      /5–300/.test(tE) && (await q('SELECT * FROM checkout_owed_payment_returns WHERE payment_id = ?', payU.id)).length === 1 && (await q('SELECT settled_cents FROM checkout_owed WHERE id = ?', shU.id))[0].settled_cents === shU.settled_cents);
+    // cancel: an unpaid order (tick required); a paid order offers no cancel form
+    const workC = (await q("SELECT id FROM artworks WHERE artist_id = 'agal' AND availability = 'available' AND id NOT IN (SELECT artwork_id FROM artwork_sales) AND id NOT IN (SELECT artwork_id FROM artwork_reservations) AND id NOT IN (SELECT artwork_id FROM checkout_orders WHERE status NOT IN ('cancelled', 'expired')) ORDER BY id LIMIT 1"))[0];
+    const oc = await makeOrder('agal', workC.id, 'PA-E-261101-AAAAAA', 30000, 0, 'cancel@example.test');
+    await desk(); const cc = pg.locator(`#order-${oc.id}`); await open(cc, 'Cancel order…');
+    const fc = cc.locator('form[data-f="cancel"]'); await fc.getByLabel(/Reason/).fill('Buyer withdrew (SIMULATED)'); await fc.getByRole('button', { name: 'Cancel order' }).click();
+    const kE = await waitErr(fc, /Tick the box/);
+    await fc.getByLabel('Cancel this order.', { exact: false }).check(); await fc.getByRole('button', { name: 'Cancel order' }).click(); await settle();
+    check('UI24 cancelling needs the tick (refused on the page without it); with it the unpaid order is cancelled with its reason recorded; a paid order shows no cancel form',
+      /Tick the box/.test(kE) && (await order(oc.id)).status === 'cancelled' && (await q("SELECT detail FROM order_events WHERE order_id = ? AND action = 'cancelled'", oc.id))[0].detail.includes('Buyer withdrew')
+      && await card().locator('form[data-f="cancel"]').count() === 0);
+    // artist: ask for changes, then leave the pilot
+    const oa2 = await makeOrder('agal', workC.id, 'PA-E-261101-AAAAAA', 31000, 0, 'changes@example.test'); await call('POST', `/api/admin/checkout/orders/${oa2.id}/send`, FOUNDER, {});
+    const ap = await br.newPage({ viewport: { width: 1200, height: 1000 }, locale: 'en-IE', timezoneId: 'Europe/Dublin' }); ap.on('dialog', d => { dialogs.push(d.type() + ': ' + d.message()); d.dismiss().catch(() => {}); });
+    await ap.setExtraHTTPHeaders({ 'Cf-Access-Jwt-Assertion': token(GAL) }); await ap.goto(S.url + '/checkout-pilot', { waitUntil: 'load' });
+    const acard = ap.locator(`#order-${oa2.id}`); await acard.waitFor({ timeout: 20000 }); await acard.locator('summary', { hasText: 'Ask for changes instead…' }).click();
+    const fd = acard.locator('form[data-f="decline"]'); await fd.getByLabel(/What should change/).fill('Please correct the packed size (SIMULATED)'); await fd.getByRole('button', { name: 'Ask for changes' }).click(); await settle();
+    check('UI25 the artist asks for changes with an on-page form: the quote goes back to a draft with the note recorded, as before',
+      (await order(oa2.id)).status === 'draft' && (await q("SELECT detail FROM order_events WHERE order_id = ? AND action = 'artist_declined'", oa2.id))[0].detail.includes('packed size'));
+    await ap.locator('summary', { hasText: 'Leave the payment pilot…' }).click();
+    const fl = ap.locator('form[data-f="leave"]'); await fl.getByRole('button', { name: 'Leave the pilot' }).click();
+    const vE = await (async () => { await ap.waitForFunction(() => /Tick the box/.test(document.querySelector('form[data-f="leave"] [data-err]')?.textContent || ''), null, { timeout: 15000 }); return fl.locator('[data-err]').innerText(); })();
+    const stillIn = (await call('GET', '/api/checkout', GAL)).j.membership.opted_in;
+    await fl.getByLabel('Leave the payment pilot.', { exact: false }).check(); await fl.getByRole('button', { name: 'Leave the pilot' }).click(); await settle();
+    const after = (await call('GET', '/api/checkout', GAL)).j.membership;
+    check('UI26 leaving needs the tick (refused on the page without it, still in the pilot); with it the artist leaves, unpaid quotes are cancelled and paid orders continue, as before',
+      /Tick the box/.test(vE) && stillIn === true && after.opted_in === false && (await order(oa2.id)).status === 'cancelled' && (await order(ou.id)).payment_intent
+      && (await q("SELECT * FROM payment_pilot_events WHERE artist_id = 'agal' AND kind = 'left'")).length >= 1);
+    check('UI27 no browser dialog opened in any of these actions (founder or artist)', dialogs.length === 0, dialogs);
+    const served = readFileSync(HERE + FIX + 'src/assets.js', 'utf8'), js = JSON.parse(served.match(/export const CHECKOUT_JS = (".*");/)[1]);
+    check('UI28 the payment pilot page contains no alert, confirm or prompt call at all', !/\b(alert|confirm|prompt)\s*\(/.test(js.replace(/name="confirm"|f\.get\('confirm'\)/g, '')));
     await br.close();
   }
 }
