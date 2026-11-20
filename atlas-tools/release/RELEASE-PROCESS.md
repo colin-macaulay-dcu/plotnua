@@ -80,6 +80,31 @@ The scripts push nothing when any of these is true:
    - `prove-release-app-push.py` (A1–A8, with a planted-fault self-test);
    - `prove-release-promote.sh` (local throw-away repositories).
 
+## Founder approval before every website release (`website-production`)
+
+*Stage 1, founder decision 20 November 2026. Active only once merged by the founder, after the environment exists.*
+
+"Release to production" now has three jobs:
+
+1. **preview** (read-only). It shows, in the run summary:
+   - the exact commit and its title;
+   - the production commit it builds on;
+   - every changed file, with a link to the full comparison.
+   It offers nothing for approval if the commit can never be released: the branch moved, or main has moved past it.
+2. **approval.** It waits on the **`website-production`** environment, whose required reviewer is the founder. Open the run, choose *Review deployments*, then **Approve** or **Reject**.
+   - Rejecting changes nothing.
+   - An approval not given within 30 days expires, and nothing is released.
+3. **promote.** It starts only after approval.
+   - It first runs `verify-founder-approval.sh`, which refuses unless `website-production` requires the founder **and** this run carries his approval. An unprotected or missing environment can never wave a release through.
+   - It then runs `promote.sh` as before: fast-forward only, refused if main moved while the release waited, live check, automatic rollback.
+   - The `production-site` lock is taken by this job only, so a release waiting for approval never holds up the Garden and Idea Board publishers.
+
+**Unchanged by this checkpoint:** the publishers that promote their own releases (PlotArt galleries, Garden noticeboard, Idea Board), Studio and Worker deploys (`studio-production.`), and the gate.
+
+**Proofs:**
+- `prove-release-app-push.py` A9, with self-test;
+- `prove-founder-approval.sh`, run by `prove-release-promote.sh`.
+
 **Key rotation:** once a year, or on suspicion.
 1. Generate a new private key on the App page.
 2. Paste it into `RELEASE_APP_KEY`.
