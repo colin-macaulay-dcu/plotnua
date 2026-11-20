@@ -165,7 +165,8 @@ check('L8f the live credentials check passes live values and refuses test values
 console.log('— L9 committed defaults: the pilot ships OFF everywhere');
 check('L9a wrangler.toml and wrangler.checkout.toml ship CHECKOUT_PILOT_ENABLED = "false" and no CHECKOUT_LIVE', /^CHECKOUT_PILOT_ENABLED = "false"/m.test(readFileSync(HERE + 'wrangler.toml', 'utf8'))
   && /^CHECKOUT_PILOT_ENABLED = "false"/m.test(readFileSync(HERE + 'wrangler.checkout.toml', 'utf8')) && !/^CHECKOUT_LIVE\s*=/m.test(readFileSync(HERE + 'wrangler.toml', 'utf8') + readFileSync(HERE + 'wrangler.checkout.toml', 'utf8')));
-check('L9b no payment text is issued yet (agreements/payment-issued absent), so the live path is refused today', !existsSync(HERE + 'agreements/payment-issued'));
+check('L9b the issued payment texts are present for the live-path guard, but nothing ships live: the defaults above stay OFF and live still needs enable_live_pilot, its confirmation and the founder approval',
+  existsSync(HERE + 'agreements/payment-issued/fingerprints.json') && /enable_live_pilot:\n[\s\S]*?default: false/.test(wf) && wf.includes('ENABLE LIVE PLOTART CHECKOUT'));
 
 console.log(`LIVE GATE · ${pass + fail} checks, ${pass} passed, ${fail} failed`);
 process.exit(fail ? 1 : 0);

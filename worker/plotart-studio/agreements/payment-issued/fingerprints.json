@@ -1,5 +1,5 @@
 {
- "note": "Ready for issue, NOT issued. Founder approval moves these files unchanged to payment-issued/ and migration 0018 installs them. Once anyone has accepted an identifier, its file must never change.",
+ "note": "Issued 20 Nov 2026 (moved unchanged from payment-ready/). SHA-256 of the exact files PlotArt Studio serves; migration 0018 installs these fingerprints. Once anyone has accepted an identifier, its file must never change (a changed text needs a new identifier).",
  "documents": {
   "PA-PAY-2026-11": {
    "title": "PlotArt Payment Pilot Addendum",

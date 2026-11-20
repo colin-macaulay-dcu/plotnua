@@ -1,4 +1,4 @@
-// PlotArt payment pilot texts ready for issue (20 Nov 2026): PA-PAY-2026-11 and PA-BPT-2026-11.
+// PlotArt payment pilot texts, issued (20 Nov 2026): PA-PAY-2026-11 and PA-BPT-2026-11 in agreements/payment-issued.
 //   node test/prove-payment-terms-ready.mjs
 // Read-only apart from a rebuild into a temporary copy. Checks the issue form, its fingerprints, the rules build-assets.mjs
 // applies to issued texts, the founder-protection and consumer wording, and migration 0018 against migration 0017.
@@ -13,7 +13,8 @@ const HERE = join(dirname(fileURLToPath(import.meta.url)), '..') + '/';
 let pass = 0, fail = 0;
 const check = (name, ok, info) => { ok ? pass++ : fail++; console.log(`  ${ok ? 'PASS' : 'FAIL'}  ${name}${ok || info === undefined ? '' : '  ' + JSON.stringify(info).slice(0, 300)}`); };
 const sha = b => createHash('sha256').update(b).digest('hex');
-const READY = HERE + 'agreements/payment-ready/';
+const READY = HERE + 'agreements/payment-issued/';
+const APPROVED = { 'PA-PAY-2026-11': 'ff0a8c87f360a60159d9aa2491d957a207791b656c36ccfa517429f60d4464bd', 'PA-BPT-2026-11': 'c570c06fe00577db3c5718c2b5b40fc6f834a2a2f2b97678b3a1978d74eb332a' };
 const F = JSON.parse(readFileSync(READY + 'fingerprints.json', 'utf8')).documents;
 const text = id => readFileSync(READY + id + '.html', 'utf8');
 const plain = id => text(id).replace(/<style[\s\S]*?<\/style>/, '').replace(/<[^>]+>/g, ' ').replace(/&amp;/g, '&').replace(/&quot;/g, '"').replace(/&#39;|&#x27;/g, "'").replace(/\s+/g, ' ');
@@ -26,14 +27,19 @@ for (const id of Object.keys(F)) {
   check(`R1d ${id}: no draft wording, review brackets or unfilled placeholders`, !/DRAFT|professional review|\[for review|Founder decision|\{[^}]*\}/i.test(plain(id)), plain(id).match(/DRAFT|professional review|\[for review|Founder decision|\{[^}]*\}/i));
   check(`R1e ${id}: carries its identifier and issue date`, plain(id).includes(`Identifier ${id} · Text of 20 November 2026`));
 }
-check('R1f not bundled: payment-issued/ does not exist, so no Worker build carries these texts yet', !existsSync(HERE + 'agreements/payment-issued'));
+check('R1f the approved fingerprints are unchanged (PR #36 approval: ff0a8c87…, c570c06f…)', Object.keys(APPROVED).every(id => F[id] && F[id].html_sha256 === APPROVED[id] && sha(readFileSync(READY + id + '.html')) === APPROVED[id]));
+check('R1g issued, not duplicated: payment-ready/ no longer exists', !existsSync(HERE + 'agreements/payment-ready'));
+const BUNDLE = readFileSync(HERE + 'src/payment-terms.js', 'utf8');
+const B = JSON.parse(BUNDLE.slice(BUNDLE.indexOf('{'), BUNDLE.lastIndexOf('}') + 1));
+check('R1h the committed Worker bundle (src/payment-terms.js) carries exactly these two texts, byte for byte, and nothing marked TEST',
+  JSON.stringify(Object.keys(B).sort()) === JSON.stringify(Object.keys(APPROVED).sort()) && Object.keys(APPROVED).every(id => B[id].html === text(id) && sha(B[id].html) === APPROVED[id] && B[id].kind === F[id].kind) && !BUNDLE.includes('TEST ONLY'));
 
 console.log('— R2 the build is reproducible');
 const tmp = mkdtempSync(join(tmpdir(), 'pa-terms-'));
 cpSync(HERE + 'agreements', tmp + '/agreements', { recursive: true });
 execFileSync(process.execPath, [tmp + '/agreements/build-payment.cjs'], { stdio: 'ignore' });
 const F2 = JSON.parse(readFileSync(tmp + '/agreements/payment-ready/fingerprints.json', 'utf8')).documents;
-check('R2 rebuilding from the drafts gives byte-identical files', Object.keys(F).every(id => F2[id] && F2[id].html_sha256 === F[id].html_sha256));
+check('R2 rebuilding from the drafts gives byte-identical files to the issued ones', Object.keys(F).every(id => F2[id] && F2[id].html_sha256 === F[id].html_sha256));
 rmSync(tmp, { recursive: true, force: true });
 
 console.log('— R3 Founding Artist rights and the agreement link (PA-PAY)');
@@ -72,5 +78,5 @@ const out = JSON.parse(execFileSync('python3', ['-c', py, HERE + 'migrations/001
 check('R5a 0018 inserts the two texts with the fingerprints of the files', JSON.stringify(out.rows) === JSON.stringify([['PA-BPT-2026-11', 'buyer_purchase_terms', F['PA-BPT-2026-11'].html_sha256], ['PA-PAY-2026-11', 'artist_payment_addendum', F['PA-PAY-2026-11'].html_sha256]]), out.rows);
 check('R5b the installed rows can never change or be removed (0017 triggers)', out.errs.length === 0, out.errs);
 
-console.log(`PAYMENT TERMS READY · ${pass + fail} checks, ${pass} passed, ${fail} failed`);
+console.log(`PAYMENT TERMS ISSUED · ${pass + fail} checks, ${pass} passed, ${fail} failed`);
 process.exit(fail ? 1 : 0);

@@ -58,7 +58,9 @@ check('B1 placeholders build only for the test target', b({ PAYMENT_TERMS_DIR: '
 r = b({ PAYMENT_TERMS_DIR: 'agreements/payment-test', CHECKOUT_TARGET: 'test' });
 const testBuild = readFileSync(HERE + 'src/payment-terms.js', 'utf8');
 r = b({});
-check('B2 the test build carries the TEST ONLY texts; the normal build carries none', testBuild.includes('PA-PAY-TEST-01') && testBuild.includes('TEST ONLY') && readFileSync(HERE + 'src/payment-terms.js', 'utf8').includes('PAYMENT_TERMS = {}'));
+const normalBuild = readFileSync(HERE + 'src/payment-terms.js', 'utf8');
+check('B2 the test build carries the TEST ONLY texts; the normal build carries only the issued texts and no TEST text', testBuild.includes('PA-PAY-TEST-01') && testBuild.includes('TEST ONLY')
+  && normalBuild.includes('"PA-PAY-2026-11"') && normalBuild.includes('"PA-BPT-2026-11"') && !normalBuild.includes('TEST ONLY') && !normalBuild.includes('-TEST-'));
 
 console.log('— test database exactly as the setup instructions build it, seeded');
 const mf0 = new Miniflare({ modules: true, script: 'export default { fetch() { return new Response("") } }', d1Databases: { DB: 'checkout-test-db' } });
