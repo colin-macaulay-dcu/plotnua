@@ -111,7 +111,7 @@ export function artworkBody(p, w, prev, next) {
   const av = w.availability;
   const cta = ['available', 'reserved'].includes(av)
     ? `<a class="pa-btn pa-btn--solid" href="${E(enquiryHref(p, w))}" data-pa-track="artwork_enquiry">${av === 'available' ? 'Enquire about this work' : 'Ask to be told if it becomes available'}</a>` +
-      `<p class="pa-aw-cta-note">Your enquiry comes to PlotArt and is passed to ${E(a.display_name)}. PlotArt doesn't take payment: the artist arranges any sale with you directly.</p>`
+      `<p class="pa-aw-cta-note">Your enquiry comes to PlotArt and is passed to ${E(a.display_name)}. The artist is the seller and arranges any sale with you directly.</p>`
     : `<a class="pa-btn pa-btn--ghost" href="${E(enquiryHref(p))}" data-pa-track="artwork_enquiry_other">Ask about ${E(a.display_name)}'s other work</a>`;
   const ai = w.ai_involvement && w.ai_involvement !== 'none' ? `<p class="pa-aw-ai"><strong>AI disclosure.</strong> ${E(w.ai_note)}</p>` : '';
   const nav = `<nav class="pa-aw-pn" aria-label="More works by ${E(a.display_name)}">${prev ? `<a href="${E(prev.slug)}.html" rel="prev"><span aria-hidden="true">←</span> ${E(prev.title)}</a>` : '<span></span>'}<a href="index.html">All works</a>${next ? `<a href="${E(next.slug)}.html" rel="next">${E(next.title)} <span aria-hidden="true">→</span></a>` : '<span></span>'}</nav>`;
@@ -136,7 +136,7 @@ export function artworkBody(p, w, prev, next) {
 `;
 }
 
-const FINE = "Artworks in this gallery are offered by the artist. PlotArt introduces buyers to artists: it doesn't take payment or deliver work. Photographs of artworks are supplied by the artist and credited where taken by someone else.";
+const FINE = "Artworks in this gallery are offered by the artist. PlotArt introduces buyers to artists. The artist is the seller and arranges delivery. Photographs of artworks are supplied by the artist and credited where taken by someone else.";
 export function previewPage(title, body, bar) {
   return `<!DOCTYPE html>
 <html lang="en-IE">

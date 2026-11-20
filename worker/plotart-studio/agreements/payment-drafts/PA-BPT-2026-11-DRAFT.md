@@ -1,6 +1,6 @@
-# PlotArt Buyer Purchase Terms — PA-BPT-2026-11 (DRAFT r8, 17 November 2026)
+# PlotArt Buyer Purchase Terms — PA-BPT-2026-11 (DRAFT r9, 20 November 2026)
 
-**Status: unissued draft for founder and professional review. Not shown to any buyer.** It will be issued only as fingerprinted HTML and installed by an approved migration. Text in {braces} is filled in from each quote. Review notes are kept separately in `PA-PAY-PA-BPT-r8-REVIEW-NOTES.md`.
+**Status: unissued draft for founder review. Not shown to any buyer. Not legally reviewed.** It will be issued only as fingerprinted HTML and installed by an approved migration. Text in {braces} is filled in from each quote. Review notes are kept separately in `PA-PAY-PA-BPT-r10-REVIEW-NOTES.md`.
 
 ## 1. Who you are buying from
 
@@ -10,12 +10,14 @@
   (c) the seller's email {seller email} and telephone number {seller phone};
   (d) the seller's VAT number, if they are registered {VAT number}.
 
-1.2 **The seller's declaration.** The seller has declared to PlotArt that they sell as a trader, in the course of their business, craft or profession. PlotArt offers its managed checkout only to sellers who have made that declaration. If you are buying as a consumer, you have consumer rights under EU consumer protection law, including the right to cancel; section 6 explains how to cancel. [For professional review before live use: the s.107 Consumer Rights Act 2022 information and reliance on the seller's declaration.]
+1.2 **The seller's declaration.** The seller has declared to PlotArt that they sell as a trader, in the course of their business, craft or profession. PlotArt offers its managed checkout only to sellers who have made that declaration. If you are buying as a consumer, you have consumer rights under EU consumer protection law, including the right to cancel; section 6 explains how to cancel.
 
 1.3 **PlotArt's role.** PlotArt (PlotNua, operated by Colin Macaulay, CRO business name no. 794392, hello@plotnua.ie) introduced you to the seller. It prepares the quote and provides the checkout. PlotArt is not the seller.
   (a) The seller is responsible for the artwork, its delivery, cancellations, returns and refunds, and for the artwork matching its description.
   (b) PlotArt is responsible for the accuracy of the information it presents on the quote and for operating the checkout.
   (c) PlotArt can receive your cancellation notice, complaint or damage report on the seller's behalf at hello@plotnua.ie, and will pass it on to the seller.
+  (d) **PlotArt's commission.** The seller pays PlotArt a commission out of the artwork price, under the seller's agreement with PlotArt. It is not added to what you pay and does not change your rights.
+  (e) PlotArt selects and orders artists and artworks by hand, for curatorial reasons. No seller pays for placement.
 
 ## 2. What you pay
 
@@ -33,7 +35,7 @@ Nothing else is added at checkout.
 
 3.2 Your purchase is confirmed when Stripe confirms the payment. The page you return to shows whether payment has been confirmed.
 
-3.3 **Your purchase confirmation.** Once your payment is confirmed, PlotArt prepares your purchase confirmation. It sets out the artwork, the seller and their contact details, what you paid, the delivery and return arrangements, these terms in full and the model cancellation form. You can open it from your quote link, and PlotArt keeps an exact copy. [Before live payments: PlotArt also emails it to you; confirm the sending service and wording.]
+3.3 **Your purchase confirmation.** Once your payment is confirmed, PlotArt prepares your purchase confirmation. It sets out the artwork, the seller and their contact details, what you paid, the delivery and return arrangements, these terms in full and the model cancellation form. You can open it from your quote link, and PlotArt keeps an exact copy. PlotArt also emails it to you at the address you gave, as your confirmation of the contract.
 
 ## 4. One original; holding the artwork; purchase limits
 
@@ -78,7 +80,7 @@ This section applies if you are a consumer buying from a seller who is a trader 
 
 7.1 The seller must supply an artwork that matches its description and the quote. Your rights in this section are separate from, and in addition to, your right to cancel in section 6.
 
-7.2 If the artwork arrives damaged, or is not as described, tell the seller or PlotArt. If you do so within 30 days of receiving it, you are entitled to reject it and receive a full refund. Your other legal remedies continue after that.
+7.2 If the artwork arrives damaged, or is not as described, tell the seller or PlotArt. If you do so within 30 days of receiving it (or, if it was installed, of installation being completed), you may end the contract and receive a full refund, including the delivery charge, to the card you paid with. You may instead ask for a repair or a replacement where that is possible. Your other legal remedies continue after that.
 
 7.3 In these cases the seller bears the cost of returning the artwork, or reimburses you if you have paid it. The seller tells you how the return will be arranged.
 
@@ -92,7 +94,7 @@ This section applies if you are a consumer buying from a seller who is a trader 
 
 8.3 **If Stripe cannot complete a refund,** or reverses one it first confirmed (for example because your card was closed), you have not been repaid. The seller then repays you once, either by a new refund through Stripe or directly, for example by bank transfer, and PlotArt confirms it with you.
 
-8.4 PlotArt tells you when it becomes aware that a refund is pending, has failed or has been reversed. The notice appears on your quote page [and is emailed to you, once PlotArt's email sending is in place].
+8.4 PlotArt tells you when it becomes aware that a refund is pending, has failed or has been reversed. The notice is emailed to you and also appears on your quote page.
 
 ## 9. Your data
 
@@ -105,7 +107,7 @@ This section applies if you are a consumer buying from a seller who is a trader 
 
 9.3 **The seller.** PlotArt shares with the seller what the seller needs to deliver the artwork and handle any return.
 
-9.4 See the PlotNua privacy notice at plotnua.ie/privacy.html, which will be updated before the pilot takes live payments.
+9.4 See the section "The PlotArt payment pilot" in the PlotNua privacy notice at plotnua.ie/privacy.html.
 
 ## 10. Questions, complaints and law
 
@@ -134,4 +136,4 @@ Date
 [*] Delete as appropriate.
 
 ---
-DRAFT r8, not issued.
+DRAFT r9, not issued, not legally reviewed.

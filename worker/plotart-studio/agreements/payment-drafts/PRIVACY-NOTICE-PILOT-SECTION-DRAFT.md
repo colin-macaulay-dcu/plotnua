@@ -1,5 +1,7 @@
 # Draft privacy notice section: PlotArt payment pilot (DRAFT r1, 17 November 2026)
 
+**SUPERSEDED on 20 November 2026 by `PRIVACY-NOTICE-V18-DRAFT.md`.**
+
 **Status: unissued draft for plotnua.ie/privacy.html.** Not published. Bracketed text depends on founder decisions or on set-up still to be done. It matches PA-PAY r7 cl. 9 and PA-BPT r7 s.9 and the pilot's implementation as tested in Stripe test mode (run 20).
 
 ---
