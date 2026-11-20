@@ -124,4 +124,6 @@ git fetch -q origin; B=$(main); git checkout -q -B release/auto/wf origin/main; 
 O=$(mktemp); HEALTH_CMD="$T/hx" PROMOTE_OUT="$O" bash "$P" "$S" release/auto/wf > "$T/wfout" 2>&1; rc=$?
 ok "a workflow-changing release that fails its live check is NOT reverted automatically (App has no Workflows permission)" '[ $rc = 2 ] && ! git ls-remote origin | grep -q "rollback-wf"'
 ok "... and FOUNDER ROLLBACK REQUIRED is reported (output and step output)" 'grep -q "FOUNDER ROLLBACK REQUIRED" "$T/wfout" && grep -qx "founder_rollback_required=$S" "$O"'
+# founder approval checkpoint (Stage 1, 20 Nov 2026): the preview and the fail-closed approval check, proved separately
+echo; bash "$(dirname "$P")/prove-founder-approval.sh" 2>/dev/null; rc=$?; ok "founder approval checkpoint proof passes (prove-founder-approval.sh)" '[ $rc = 0 ]'
 echo; echo "RELEASE PROMOTE PROOF · $([ $fails = 0 ] && echo OK || echo FAIL) · $fails failed"; rm -rf "$T"; exit $fails

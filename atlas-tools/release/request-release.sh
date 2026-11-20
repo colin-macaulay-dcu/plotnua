@@ -5,7 +5,8 @@
 # so the Image rights gate starts on that PUSH (Stage 1, 10 Nov 2026: in GitHub Actions the push is made with the
 # "PlotNua Release" App token RELEASE_PUSH_TOKEN; elsewhere with the caller's own credentials). Nothing is dispatched:
 # a dispatched gate is never counted by main's required "gate" check and never starts "Release to production".
-# "Release to production" then fast-forwards main ONLY if the gate passed on that exact commit, and verifies the live
+# "Release to production" then waits for the founder's approval (website-production, 20 Nov 2026) and fast-forwards
+# main ONLY if the gate passed on that exact commit and he approved it, and verifies the live
 # site. Waits (default 25 minutes) until main contains the commit.
 # Exit 0 = released; 1 = not released (nothing changed on main).
 set -euo pipefail
@@ -15,10 +16,11 @@ SHA=$(git rev-parse HEAD); BR="release/auto/$TOPIC-${SHA:0:7}"
 git fetch -q origin main
 git merge-base --is-ancestor origin/main "$SHA" || { echo "REFUSED: HEAD does not contain the current main"; exit 1; }
 bash "$(cd "$(dirname "$0")" && pwd)/push-release-branch.sh" "$SHA" "$BR" || { echo "REFUSED: $BR was not pushed: nothing released"; exit 1; }
-echo "requested: ${SHA:0:7} on $BR (gate starts on the push; promotion follows only if it passes)"
+echo "requested: ${SHA:0:7} on $BR (gate starts on the push; if it passes, the release WAITS for the founder's approval)"
+echo "approve or reject: https://github.com/colin-macaulay-dcu/plotnua/actions/workflows/release-promote.yml (the waiting run: Review deployments, website-production)"
 [ "$WAIT" = 1 ] || exit 0
 for i in $(seq 1 150); do
   sleep 10; git fetch -q origin main
   if git merge-base --is-ancestor "$SHA" origin/main; then echo "RELEASED ${SHA:0:7}"; exit 0; fi
 done
-echo "NOT RELEASED within 25 minutes: see the Image rights gate and Release to production runs for $BR"; exit 1
+echo "NOT RELEASED within 25 minutes: it may still be waiting for the founder's approval; see the Image rights gate and Release to production runs for $BR"; exit 1

@@ -17,7 +17,7 @@ its release/auto/ branch with the "PlotNua Release" App token, and nothing may d
 
   python3 atlas-tools/release/prove-release-app-push.py [--self-test]
 """
-import glob, os, re, sys, copy
+import glob, os, re, sys, copy, json
 import yaml
 
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -109,6 +109,35 @@ def check(workflows, texts, tools):
         for pre in ("release/auto/%s-" % p, "release/auto/rollback-%s-" % p):
             if "!startsWith(github.event.workflow_run.head_branch, '%s')" % pre not in cond:
                 errs.append("A7 Release to production must leave %s* to its own publisher" % pre)
+    # A9 founder approval before every website release (Stage 1, founder decision 20 Nov 2026)
+    jobs = rp.get("jobs") or {}
+    ap, pv, pr = jobs.get("approval") or {}, jobs.get("preview") or {}, jobs.get("promote") or {}
+    aenv = ap.get("environment")
+    if (aenv.get("name") if isinstance(aenv, dict) else aenv) != "website-production":
+        errs.append("A9 Release to production must hold every release in an approval job on the website-production environment")
+    if "preview" not in (ap.get("needs") if isinstance(ap.get("needs"), list) else [ap.get("needs")]) or ap.get("permissions") != {} or "secrets." in json.dumps(ap):
+        errs.append("A9 the approval job must follow the preview, with no permissions and no secrets")
+    if pv.get("environment") or (pv.get("permissions") or {}) != {"contents": "read"} or "release-preview.sh" not in json.dumps(pv.get("steps") or []):
+        errs.append("A9 the preview job must be read-only (contents: read, no environment) and run release-preview.sh")
+    needs = pr.get("needs") if isinstance(pr.get("needs"), list) else [pr.get("needs")]
+    if "approval" not in needs or "needs.approval.result == 'success'" not in cond or "needs.preview.outputs.release == 'true'" not in cond:
+        errs.append("A9 the promote job must need the approval job and run only after it succeeded")
+    st = pr.get("steps") or []
+    vi = [i for i, s in enumerate(st) if "verify-founder-approval.sh" in str(s.get("run", ""))]
+    ai = [i for i, s in enumerate(st) if s.get("id") == "app"]
+    if len(vi) != 1 or not ai or vi[0] > ai[0]:
+        errs.append("A9 the promote job must verify the founder's approval (verify-founder-approval.sh) before the App token is created")
+    for jn, jj in (("approval", ap), ("promote", pr)):
+        if re.search(r"\b(?:always|failure|cancelled)\s*\(", str(jj.get("if", ""))):
+            errs.append("A9 the %s job's condition must not use always(), failure() or cancelled(): it must never run after a failed, skipped or rejected step" % jn)
+    if ap.get("concurrency") or pv.get("concurrency"):
+        errs.append("A9 the preview and approval jobs must not take a concurrency lock (a waiting release must never block publishing)")
+    if (rp.get("concurrency") or {}).get("group") == "production-site" or (pr.get("concurrency") or {}).get("group") != "production-site":
+        errs.append("A9 the production-site lock must be taken by the promote job only, never while a release waits for approval")
+    for name, w in workflows.items():
+        envs = [((j or {}).get("environment") or {}) for j in ((w or {}).get("jobs") or {}).values()]
+        if name != "release-promote.yml" and any(str(e.get("name") if isinstance(e, dict) else e).strip().lower() == "website-production" for e in envs):
+            errs.append("A9 %s must not use the website-production environment (founder approval is for website releases only)" % name)
     # A8 the key only in the releasing jobs
     allowed = set(RELEASING)
     for path, t in texts.items():
@@ -147,6 +176,16 @@ def self_test():
     case("push helper forces", lambda w,t,tl: tl.__setitem__(rel("push-release-branch.sh"), tl[rel("push-release-branch.sh")]+'\ngit push -f origin x\n'), "A6")
     case("promote.sh pushes rollbacks directly again", lambda w,t,tl: tl.__setitem__(rel("promote.sh"), tl[rel("promote.sh")].replace("push-release-branch.sh","")), "A6")
     case("Release to production races PlotArt", lambda w,t,tl: w["release-promote.yml"]["jobs"]["promote"].__setitem__("if", w["release-promote.yml"]["jobs"]["promote"]["if"].replace("!startsWith(github.event.workflow_run.head_branch, 'release/auto/plotart-') &&","")), "A7")
+    case("approval job removed", lambda w,t,tl: w["release-promote.yml"]["jobs"].pop("approval"), "A9")
+    case("approval environment renamed", lambda w,t,tl: w["release-promote.yml"]["jobs"]["approval"].__setitem__("environment", "release-automation"), "A9")
+    case("promote no longer waits for the approval", lambda w,t,tl: w["release-promote.yml"]["jobs"]["promote"].__setitem__("needs", ["preview"]), "A9")
+    case("promote runs even if the approval failed", lambda w,t,tl: w["release-promote.yml"]["jobs"]["promote"].__setitem__("if", w["release-promote.yml"]["jobs"]["promote"]["if"].replace("needs.approval.result == 'success'", "always()")), "A9")
+    case("approval check dropped from promote", lambda w,t,tl: w["release-promote.yml"]["jobs"]["promote"].__setitem__("steps", [s for s in w["release-promote.yml"]["jobs"]["promote"]["steps"] if "verify-founder-approval" not in str(s.get("run",""))]), "A9")
+    case("approval job given a secret", lambda w,t,tl: w["release-promote.yml"]["jobs"]["approval"]["steps"][0].__setitem__("env", {"K": "${{ secrets.RELEASE_APP_KEY }}"}), "A9")
+    case("whole run holds the production-site lock again", lambda w,t,tl: w["release-promote.yml"].__setitem__("concurrency", {"group": "production-site", "cancel-in-progress": False}), "A9")
+    case("promote made to run always()", lambda w,t,tl: w["release-promote.yml"]["jobs"]["promote"].__setitem__("if", "always() && " + w["release-promote.yml"]["jobs"]["promote"]["if"]), "A9")
+    case("the waiting approval made to hold the production-site lock", lambda w,t,tl: w["release-promote.yml"]["jobs"]["approval"].__setitem__("concurrency", {"group": "production-site"}), "A9")
+    case("a publisher made to wait for website approval", lambda w,t,tl: w["plotnua-garden-publish.yml"]["jobs"]["promote"].__setitem__("environment", "website-production"), "A9")
     case("key referenced by another workflow", lambda w,t,tl: t.__setitem__(os.path.join(WF,"site-health.yml"), t.get(os.path.join(WF,"site-health.yml"),"")+"\n# ${{ secrets.RELEASE_APP_KEY }}\n"), "A8")
     print("\nRELEASE APP PUSH SELF-TEST · %s · %d failed" % ("OK" if fails == 0 else "FAIL", fails))
     return 1 if fails else 0
@@ -158,5 +197,5 @@ if __name__ == "__main__":
     errs = check(*gather())
     for e in errs:
         print("  REFUSED  " + e)
-    print("RELEASE APP PUSH · %s" % ("OK (A1-A8: %d releasing workflows)" % len(RELEASING) if not errs else "REFUSED · %d problem(s)" % len(errs)))
+    print("RELEASE APP PUSH · %s" % ("OK (A1-A9: %d releasing workflows)" % len(RELEASING) if not errs else "REFUSED · %d problem(s)" % len(errs)))
     sys.exit(1 if errs else 0)
