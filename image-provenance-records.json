@@ -19624,1091 +19624,6 @@
       "work_slug": "silly-bunch"
     },
     {
-      "ai_involvement": "none",
-      "artist_slug": "clare-o-connor",
-      "asset": "plotart/artists/clare-o-connor/img/portrait-600.webp",
-      "bytes": 67610,
-      "class": "ARTIST_SUPPLIED_ARTWORK",
-      "colour": "converted to sRGB from the embedded profile (Display P3)",
-      "licence_version": "PA-GPIL-2026-11",
-      "permission_ref": "PA-PERM-ane34unrj3c",
-      "permitted_surfaces": [
-        "plotart-artist-gallery",
-        "plotart-virtual-gallery"
-      ],
-      "photo_credit": null,
-      "photographer": "self",
-      "pixels": [
-        600,
-        487
-      ],
-      "processing": [
-        "camera rotation (EXIF orientation) applied",
-        "colour converted to sRGB where a profile was embedded",
-        "all metadata removed (EXIF, GPS, XMP, ICC)",
-        "never cropped or upscaled",
-        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
-      ],
-      "sha256": "abf4c8620b46661df2dec37263766eb7e2c955274178c5187bfe6e3c5d204699",
-      "source_sha256": "f823b704472e1020aaa2b496ee4ec946c029d63159aa408b9e64499e1f3e8235",
-      "subject": "portrait",
-      "work_slug": null
-    },
-    {
-      "ai_involvement": "none",
-      "artist_slug": "clare-o-connor",
-      "asset": "plotart/artists/clare-o-connor/img/navigating-the-labyrinth-no-1-1-600.webp",
-      "bytes": 98244,
-      "class": "ARTIST_SUPPLIED_ARTWORK",
-      "colour": "converted to sRGB from the embedded profile (Display P3)",
-      "licence_version": "PA-GPIL-2026-11",
-      "permission_ref": "PA-PERM-ane34unrj3c",
-      "permitted_surfaces": [
-        "plotart-artist-gallery",
-        "plotart-virtual-gallery"
-      ],
-      "photo_credit": null,
-      "photographer": "self",
-      "pixels": [
-        404,
-        600
-      ],
-      "processing": [
-        "camera rotation (EXIF orientation) applied",
-        "colour converted to sRGB where a profile was embedded",
-        "all metadata removed (EXIF, GPS, XMP, ICC)",
-        "never cropped or upscaled",
-        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
-      ],
-      "sha256": "4686cefbda9157a4f07e2a27939626ced3c08dce7d96589a697f913a23150bff",
-      "source_sha256": "3939f135d8eb99bf6bd5ca0e6fd9dc413aadd748020fa4a10cf63ae620925345",
-      "subject": "artwork",
-      "work_slug": "navigating-the-labyrinth-no-1"
-    },
-    {
-      "ai_involvement": "none",
-      "artist_slug": "clare-o-connor",
-      "asset": "plotart/artists/clare-o-connor/img/navigating-the-labyrinth-no-1-1-1200.webp",
-      "bytes": 336198,
-      "class": "ARTIST_SUPPLIED_ARTWORK",
-      "colour": "converted to sRGB from the embedded profile (Display P3)",
-      "licence_version": "PA-GPIL-2026-11",
-      "permission_ref": "PA-PERM-ane34unrj3c",
-      "permitted_surfaces": [
-        "plotart-artist-gallery",
-        "plotart-virtual-gallery"
-      ],
-      "photo_credit": null,
-      "photographer": "self",
-      "pixels": [
-        808,
-        1200
-      ],
-      "processing": [
-        "camera rotation (EXIF orientation) applied",
-        "colour converted to sRGB where a profile was embedded",
-        "all metadata removed (EXIF, GPS, XMP, ICC)",
-        "never cropped or upscaled",
-        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
-      ],
-      "sha256": "32d3ea9545454ffa0f6ff0605bd69df1c47720d192c48821a90e91a9ea02c41b",
-      "source_sha256": "3939f135d8eb99bf6bd5ca0e6fd9dc413aadd748020fa4a10cf63ae620925345",
-      "subject": "artwork",
-      "work_slug": "navigating-the-labyrinth-no-1"
-    },
-    {
-      "ai_involvement": "none",
-      "artist_slug": "clare-o-connor",
-      "asset": "plotart/artists/clare-o-connor/img/navigating-the-labyrinth-no-1-1-2000.webp",
-      "bytes": 748704,
-      "class": "ARTIST_SUPPLIED_ARTWORK",
-      "colour": "converted to sRGB from the embedded profile (Display P3)",
-      "licence_version": "PA-GPIL-2026-11",
-      "permission_ref": "PA-PERM-ane34unrj3c",
-      "permitted_surfaces": [
-        "plotart-artist-gallery",
-        "plotart-virtual-gallery"
-      ],
-      "photo_credit": null,
-      "photographer": "self",
-      "pixels": [
-        1347,
-        2000
-      ],
-      "processing": [
-        "camera rotation (EXIF orientation) applied",
-        "colour converted to sRGB where a profile was embedded",
-        "all metadata removed (EXIF, GPS, XMP, ICC)",
-        "never cropped or upscaled",
-        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
-      ],
-      "sha256": "6fb8b3ab4e946b6d611f92a4597fdc9766f4fdb03eb3bfc60bb597994dd21766",
-      "source_sha256": "3939f135d8eb99bf6bd5ca0e6fd9dc413aadd748020fa4a10cf63ae620925345",
-      "subject": "artwork",
-      "work_slug": "navigating-the-labyrinth-no-1"
-    },
-    {
-      "ai_involvement": "none",
-      "artist_slug": "clare-o-connor",
-      "asset": "plotart/artists/clare-o-connor/img/navigating-the-labyrinth-series-1-600.webp",
-      "bytes": 76356,
-      "class": "ARTIST_SUPPLIED_ARTWORK",
-      "colour": "converted to sRGB from the embedded profile (Display P3)",
-      "licence_version": "PA-GPIL-2026-11",
-      "permission_ref": "PA-PERM-ane34unrj3c",
-      "permitted_surfaces": [
-        "plotart-artist-gallery",
-        "plotart-virtual-gallery"
-      ],
-      "photo_credit": null,
-      "photographer": "self",
-      "pixels": [
-        505,
-        600
-      ],
-      "processing": [
-        "camera rotation (EXIF orientation) applied",
-        "colour converted to sRGB where a profile was embedded",
-        "all metadata removed (EXIF, GPS, XMP, ICC)",
-        "never cropped or upscaled",
-        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
-      ],
-      "sha256": "77a07008d748ed091718c26cfa5fbe888c2cb6f9ddee5bfa9ec090361e1aa0a9",
-      "source_sha256": "043c78d0e654ccb7ee0ac4957e9a70ef55991a4ee3c22eef01d5c0734bcb718a",
-      "subject": "artwork",
-      "work_slug": "navigating-the-labyrinth-series"
-    },
-    {
-      "ai_involvement": "none",
-      "artist_slug": "clare-o-connor",
-      "asset": "plotart/artists/clare-o-connor/img/navigating-the-labyrinth-series-1-1200.webp",
-      "bytes": 221742,
-      "class": "ARTIST_SUPPLIED_ARTWORK",
-      "colour": "converted to sRGB from the embedded profile (Display P3)",
-      "licence_version": "PA-GPIL-2026-11",
-      "permission_ref": "PA-PERM-ane34unrj3c",
-      "permitted_surfaces": [
-        "plotart-artist-gallery",
-        "plotart-virtual-gallery"
-      ],
-      "photo_credit": null,
-      "photographer": "self",
-      "pixels": [
-        1010,
-        1200
-      ],
-      "processing": [
-        "camera rotation (EXIF orientation) applied",
-        "colour converted to sRGB where a profile was embedded",
-        "all metadata removed (EXIF, GPS, XMP, ICC)",
-        "never cropped or upscaled",
-        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
-      ],
-      "sha256": "585dd2af62a9165d4c918f51ab61cafcad702706c28243da9092027e620fbc18",
-      "source_sha256": "043c78d0e654ccb7ee0ac4957e9a70ef55991a4ee3c22eef01d5c0734bcb718a",
-      "subject": "artwork",
-      "work_slug": "navigating-the-labyrinth-series"
-    },
-    {
-      "ai_involvement": "none",
-      "artist_slug": "clare-o-connor",
-      "asset": "plotart/artists/clare-o-connor/img/navigating-the-labyrinth-series-1-2000.webp",
-      "bytes": 441754,
-      "class": "ARTIST_SUPPLIED_ARTWORK",
-      "colour": "converted to sRGB from the embedded profile (Display P3)",
-      "licence_version": "PA-GPIL-2026-11",
-      "permission_ref": "PA-PERM-ane34unrj3c",
-      "permitted_surfaces": [
-        "plotart-artist-gallery",
-        "plotart-virtual-gallery"
-      ],
-      "photo_credit": null,
-      "photographer": "self",
-      "pixels": [
-        1684,
-        2000
-      ],
-      "processing": [
-        "camera rotation (EXIF orientation) applied",
-        "colour converted to sRGB where a profile was embedded",
-        "all metadata removed (EXIF, GPS, XMP, ICC)",
-        "never cropped or upscaled",
-        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
-      ],
-      "sha256": "13ff960685f30824b5b988c180d593b543e9fa77d0274431fbde2cc2e2b36dc6",
-      "source_sha256": "043c78d0e654ccb7ee0ac4957e9a70ef55991a4ee3c22eef01d5c0734bcb718a",
-      "subject": "artwork",
-      "work_slug": "navigating-the-labyrinth-series"
-    },
-    {
-      "ai_involvement": "none",
-      "artist_slug": "clare-o-connor",
-      "asset": "plotart/artists/clare-o-connor/img/energetic-labyrinths-no-17-1-600.webp",
-      "bytes": 62120,
-      "class": "ARTIST_SUPPLIED_ARTWORK",
-      "colour": "converted to sRGB from the embedded profile (Display P3)",
-      "licence_version": "PA-GPIL-2026-11",
-      "permission_ref": "PA-PERM-ane34unrj3c",
-      "permitted_surfaces": [
-        "plotart-artist-gallery",
-        "plotart-virtual-gallery"
-      ],
-      "photo_credit": null,
-      "photographer": "self",
-      "pixels": [
-        595,
-        600
-      ],
-      "processing": [
-        "camera rotation (EXIF orientation) applied",
-        "colour converted to sRGB where a profile was embedded",
-        "all metadata removed (EXIF, GPS, XMP, ICC)",
-        "never cropped or upscaled",
-        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
-      ],
-      "sha256": "7cf6ef0eb8ee416e0e97b03d822942402f7782b6fe4404adee607fce188d15e9",
-      "source_sha256": "cb74a9a817347651df9ecb9a9776f3aa076ca7b7e1f39158cd54a42ffa7e7eae",
-      "subject": "artwork",
-      "work_slug": "energetic-labyrinths-no-17"
-    },
-    {
-      "ai_involvement": "none",
-      "artist_slug": "clare-o-connor",
-      "asset": "plotart/artists/clare-o-connor/img/energetic-labyrinths-no-17-1-1200.webp",
-      "bytes": 169438,
-      "class": "ARTIST_SUPPLIED_ARTWORK",
-      "colour": "converted to sRGB from the embedded profile (Display P3)",
-      "licence_version": "PA-GPIL-2026-11",
-      "permission_ref": "PA-PERM-ane34unrj3c",
-      "permitted_surfaces": [
-        "plotart-artist-gallery",
-        "plotart-virtual-gallery"
-      ],
-      "photo_credit": null,
-      "photographer": "self",
-      "pixels": [
-        1191,
-        1200
-      ],
-      "processing": [
-        "camera rotation (EXIF orientation) applied",
-        "colour converted to sRGB where a profile was embedded",
-        "all metadata removed (EXIF, GPS, XMP, ICC)",
-        "never cropped or upscaled",
-        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
-      ],
-      "sha256": "73126beb499ce283aa47bd7648fa472c06cb5ca63a5e32aa0d754e3a02c192e4",
-      "source_sha256": "cb74a9a817347651df9ecb9a9776f3aa076ca7b7e1f39158cd54a42ffa7e7eae",
-      "subject": "artwork",
-      "work_slug": "energetic-labyrinths-no-17"
-    },
-    {
-      "ai_involvement": "none",
-      "artist_slug": "clare-o-connor",
-      "asset": "plotart/artists/clare-o-connor/img/energetic-labyrinths-no-17-1-2000.webp",
-      "bytes": 374118,
-      "class": "ARTIST_SUPPLIED_ARTWORK",
-      "colour": "converted to sRGB from the embedded profile (Display P3)",
-      "licence_version": "PA-GPIL-2026-11",
-      "permission_ref": "PA-PERM-ane34unrj3c",
-      "permitted_surfaces": [
-        "plotart-artist-gallery",
-        "plotart-virtual-gallery"
-      ],
-      "photo_credit": null,
-      "photographer": "self",
-      "pixels": [
-        1985,
-        2000
-      ],
-      "processing": [
-        "camera rotation (EXIF orientation) applied",
-        "colour converted to sRGB where a profile was embedded",
-        "all metadata removed (EXIF, GPS, XMP, ICC)",
-        "never cropped or upscaled",
-        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
-      ],
-      "sha256": "555b422a4471660624c694a2a94a678b5f14089563310cbf105a215aaf04eb1a",
-      "source_sha256": "cb74a9a817347651df9ecb9a9776f3aa076ca7b7e1f39158cd54a42ffa7e7eae",
-      "subject": "artwork",
-      "work_slug": "energetic-labyrinths-no-17"
-    },
-    {
-      "ai_involvement": "none",
-      "artist_slug": "clare-o-connor",
-      "asset": "plotart/artists/clare-o-connor/img/energetic-labyrinths-no-18-1-600.webp",
-      "bytes": 47882,
-      "class": "ARTIST_SUPPLIED_ARTWORK",
-      "colour": "converted to sRGB from the embedded profile (Display P3)",
-      "licence_version": "PA-GPIL-2026-11",
-      "permission_ref": "PA-PERM-ane34unrj3c",
-      "permitted_surfaces": [
-        "plotart-artist-gallery",
-        "plotart-virtual-gallery"
-      ],
-      "photo_credit": null,
-      "photographer": "self",
-      "pixels": [
-        494,
-        600
-      ],
-      "processing": [
-        "camera rotation (EXIF orientation) applied",
-        "colour converted to sRGB where a profile was embedded",
-        "all metadata removed (EXIF, GPS, XMP, ICC)",
-        "never cropped or upscaled",
-        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
-      ],
-      "sha256": "be48d8ad7c25de1f0e20592699f794ffc4625951246b90cda9cd7f2be2cd60fa",
-      "source_sha256": "399fe79bb517efdd7351516c3e3237af96127e2ef623bcce4653fc9a1db75d0c",
-      "subject": "artwork",
-      "work_slug": "energetic-labyrinths-no-18"
-    },
-    {
-      "ai_involvement": "none",
-      "artist_slug": "clare-o-connor",
-      "asset": "plotart/artists/clare-o-connor/img/energetic-labyrinths-no-18-1-1200.webp",
-      "bytes": 131840,
-      "class": "ARTIST_SUPPLIED_ARTWORK",
-      "colour": "converted to sRGB from the embedded profile (Display P3)",
-      "licence_version": "PA-GPIL-2026-11",
-      "permission_ref": "PA-PERM-ane34unrj3c",
-      "permitted_surfaces": [
-        "plotart-artist-gallery",
-        "plotart-virtual-gallery"
-      ],
-      "photo_credit": null,
-      "photographer": "self",
-      "pixels": [
-        988,
-        1200
-      ],
-      "processing": [
-        "camera rotation (EXIF orientation) applied",
-        "colour converted to sRGB where a profile was embedded",
-        "all metadata removed (EXIF, GPS, XMP, ICC)",
-        "never cropped or upscaled",
-        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
-      ],
-      "sha256": "8a499ef8e0bb5df6f88e5cae6d6882ef5c3173af4c90f469095c0afcda213eaa",
-      "source_sha256": "399fe79bb517efdd7351516c3e3237af96127e2ef623bcce4653fc9a1db75d0c",
-      "subject": "artwork",
-      "work_slug": "energetic-labyrinths-no-18"
-    },
-    {
-      "ai_involvement": "none",
-      "artist_slug": "clare-o-connor",
-      "asset": "plotart/artists/clare-o-connor/img/energetic-labyrinths-no-18-1-2000.webp",
-      "bytes": 268614,
-      "class": "ARTIST_SUPPLIED_ARTWORK",
-      "colour": "converted to sRGB from the embedded profile (Display P3)",
-      "licence_version": "PA-GPIL-2026-11",
-      "permission_ref": "PA-PERM-ane34unrj3c",
-      "permitted_surfaces": [
-        "plotart-artist-gallery",
-        "plotart-virtual-gallery"
-      ],
-      "photo_credit": null,
-      "photographer": "self",
-      "pixels": [
-        1646,
-        2000
-      ],
-      "processing": [
-        "camera rotation (EXIF orientation) applied",
-        "colour converted to sRGB where a profile was embedded",
-        "all metadata removed (EXIF, GPS, XMP, ICC)",
-        "never cropped or upscaled",
-        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
-      ],
-      "sha256": "749280c51dfa8c2d0b07804ecd984b3bbda45bec68a9b01b2350467f3fd84228",
-      "source_sha256": "399fe79bb517efdd7351516c3e3237af96127e2ef623bcce4653fc9a1db75d0c",
-      "subject": "artwork",
-      "work_slug": "energetic-labyrinths-no-18"
-    },
-    {
-      "ai_involvement": "none",
-      "artist_slug": "clare-o-connor",
-      "asset": "plotart/artists/clare-o-connor/img/energetic-labyrinths-no-7-1-600.webp",
-      "bytes": 83302,
-      "class": "ARTIST_SUPPLIED_ARTWORK",
-      "colour": "converted to sRGB from the embedded profile (Display P3)",
-      "licence_version": "PA-GPIL-2026-11",
-      "permission_ref": "PA-PERM-ane34unrj3c",
-      "permitted_surfaces": [
-        "plotart-artist-gallery",
-        "plotart-virtual-gallery"
-      ],
-      "photo_credit": null,
-      "photographer": "self",
-      "pixels": [
-        449,
-        600
-      ],
-      "processing": [
-        "camera rotation (EXIF orientation) applied",
-        "colour converted to sRGB where a profile was embedded",
-        "all metadata removed (EXIF, GPS, XMP, ICC)",
-        "never cropped or upscaled",
-        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
-      ],
-      "sha256": "a470f40335dcfc55ccc83c7495db175a4ffb3cc023d88f1d9471a3af0b42c1c1",
-      "source_sha256": "0dcf2b369b9cb81965dc708771f299fe4881330d0f737a7b96ef0de3f866b102",
-      "subject": "artwork",
-      "work_slug": "energetic-labyrinths-no-7"
-    },
-    {
-      "ai_involvement": "none",
-      "artist_slug": "clare-o-connor",
-      "asset": "plotart/artists/clare-o-connor/img/energetic-labyrinths-no-7-1-1200.webp",
-      "bytes": 206380,
-      "class": "ARTIST_SUPPLIED_ARTWORK",
-      "colour": "converted to sRGB from the embedded profile (Display P3)",
-      "licence_version": "PA-GPIL-2026-11",
-      "permission_ref": "PA-PERM-ane34unrj3c",
-      "permitted_surfaces": [
-        "plotart-artist-gallery",
-        "plotart-virtual-gallery"
-      ],
-      "photo_credit": null,
-      "photographer": "self",
-      "pixels": [
-        899,
-        1200
-      ],
-      "processing": [
-        "camera rotation (EXIF orientation) applied",
-        "colour converted to sRGB where a profile was embedded",
-        "all metadata removed (EXIF, GPS, XMP, ICC)",
-        "never cropped or upscaled",
-        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
-      ],
-      "sha256": "d046e0fa0d2ed4cf69ba3bc76a4e5c0db42be3312faf92bb7e1a42bb8a995fc2",
-      "source_sha256": "0dcf2b369b9cb81965dc708771f299fe4881330d0f737a7b96ef0de3f866b102",
-      "subject": "artwork",
-      "work_slug": "energetic-labyrinths-no-7"
-    },
-    {
-      "ai_involvement": "none",
-      "artist_slug": "clare-o-connor",
-      "asset": "plotart/artists/clare-o-connor/img/energetic-labyrinths-no-7-1-2000.webp",
-      "bytes": 381126,
-      "class": "ARTIST_SUPPLIED_ARTWORK",
-      "colour": "converted to sRGB from the embedded profile (Display P3)",
-      "licence_version": "PA-GPIL-2026-11",
-      "permission_ref": "PA-PERM-ane34unrj3c",
-      "permitted_surfaces": [
-        "plotart-artist-gallery",
-        "plotart-virtual-gallery"
-      ],
-      "photo_credit": null,
-      "photographer": "self",
-      "pixels": [
-        1498,
-        2000
-      ],
-      "processing": [
-        "camera rotation (EXIF orientation) applied",
-        "colour converted to sRGB where a profile was embedded",
-        "all metadata removed (EXIF, GPS, XMP, ICC)",
-        "never cropped or upscaled",
-        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
-      ],
-      "sha256": "ead636549d733b66558b0f38df406c3cb18231417ed4ed1e47014190b4c55d5d",
-      "source_sha256": "0dcf2b369b9cb81965dc708771f299fe4881330d0f737a7b96ef0de3f866b102",
-      "subject": "artwork",
-      "work_slug": "energetic-labyrinths-no-7"
-    },
-    {
-      "ai_involvement": "none",
-      "artist_slug": "clare-o-connor",
-      "asset": "plotart/artists/clare-o-connor/img/energetic-labyrinths-no-7-2-600.webp",
-      "bytes": 77546,
-      "class": "ARTIST_SUPPLIED_ARTWORK",
-      "colour": "converted to sRGB from the embedded profile (Display P3)",
-      "licence_version": "PA-GPIL-2026-11",
-      "permission_ref": "PA-PERM-ane34unrj3c",
-      "permitted_surfaces": [
-        "plotart-artist-gallery",
-        "plotart-virtual-gallery"
-      ],
-      "photo_credit": null,
-      "photographer": "self",
-      "pixels": [
-        497,
-        600
-      ],
-      "processing": [
-        "camera rotation (EXIF orientation) applied",
-        "colour converted to sRGB where a profile was embedded",
-        "all metadata removed (EXIF, GPS, XMP, ICC)",
-        "never cropped or upscaled",
-        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
-      ],
-      "sha256": "a04145b91b1e32b450c0a9b5fa1527debb467472f01cbb3374f154407eac6d41",
-      "source_sha256": "c014594381e1403fd4493f95b9d7d4690d0c04bd55d0b08c7b41f3b895a5502b",
-      "subject": "artwork",
-      "work_slug": "energetic-labyrinths-no-7"
-    },
-    {
-      "ai_involvement": "none",
-      "artist_slug": "clare-o-connor",
-      "asset": "plotart/artists/clare-o-connor/img/energetic-labyrinths-no-7-2-2000.webp",
-      "bytes": 376366,
-      "class": "ARTIST_SUPPLIED_ARTWORK",
-      "colour": "converted to sRGB from the embedded profile (Display P3)",
-      "licence_version": "PA-GPIL-2026-11",
-      "permission_ref": "PA-PERM-ane34unrj3c",
-      "permitted_surfaces": [
-        "plotart-artist-gallery",
-        "plotart-virtual-gallery"
-      ],
-      "photo_credit": null,
-      "photographer": "self",
-      "pixels": [
-        1657,
-        2000
-      ],
-      "processing": [
-        "camera rotation (EXIF orientation) applied",
-        "colour converted to sRGB where a profile was embedded",
-        "all metadata removed (EXIF, GPS, XMP, ICC)",
-        "never cropped or upscaled",
-        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
-      ],
-      "sha256": "10c031cdd41a5eabc8c9edc55586315b43d6b4142b03e2ee430190394a4240db",
-      "source_sha256": "c014594381e1403fd4493f95b9d7d4690d0c04bd55d0b08c7b41f3b895a5502b",
-      "subject": "artwork",
-      "work_slug": "energetic-labyrinths-no-7"
-    },
-    {
-      "ai_involvement": "none",
-      "artist_slug": "clare-o-connor",
-      "asset": "plotart/artists/clare-o-connor/img/energetic-labyrinths-no-7-3-600.webp",
-      "bytes": 56110,
-      "class": "ARTIST_SUPPLIED_ARTWORK",
-      "colour": "converted to sRGB from the embedded profile (Display P3)",
-      "licence_version": "PA-GPIL-2026-11",
-      "permission_ref": "PA-PERM-ane34unrj3c",
-      "permitted_surfaces": [
-        "plotart-artist-gallery",
-        "plotart-virtual-gallery"
-      ],
-      "photo_credit": null,
-      "photographer": "self",
-      "pixels": [
-        417,
-        600
-      ],
-      "processing": [
-        "camera rotation (EXIF orientation) applied",
-        "colour converted to sRGB where a profile was embedded",
-        "all metadata removed (EXIF, GPS, XMP, ICC)",
-        "never cropped or upscaled",
-        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
-      ],
-      "sha256": "eb978e54731ffd9ca590155b0d969f35bb5a1e46f53b63663e13520d578aa2eb",
-      "source_sha256": "893d462c7b5d09cb18cdae9a42e4aeaee5646fa6aab03e178c2df37fceec5658",
-      "subject": "artwork",
-      "work_slug": "energetic-labyrinths-no-7"
-    },
-    {
-      "ai_involvement": "none",
-      "artist_slug": "clare-o-connor",
-      "asset": "plotart/artists/clare-o-connor/img/energetic-labyrinths-no-7-3-2000.webp",
-      "bytes": 333778,
-      "class": "ARTIST_SUPPLIED_ARTWORK",
-      "colour": "converted to sRGB from the embedded profile (Display P3)",
-      "licence_version": "PA-GPIL-2026-11",
-      "permission_ref": "PA-PERM-ane34unrj3c",
-      "permitted_surfaces": [
-        "plotart-artist-gallery",
-        "plotart-virtual-gallery"
-      ],
-      "photo_credit": null,
-      "photographer": "self",
-      "pixels": [
-        1390,
-        2000
-      ],
-      "processing": [
-        "camera rotation (EXIF orientation) applied",
-        "colour converted to sRGB where a profile was embedded",
-        "all metadata removed (EXIF, GPS, XMP, ICC)",
-        "never cropped or upscaled",
-        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
-      ],
-      "sha256": "702dd9efa121ca17f24d94b7b607e5e7076bc8188cc1f1262de05f1bfcee3eac",
-      "source_sha256": "893d462c7b5d09cb18cdae9a42e4aeaee5646fa6aab03e178c2df37fceec5658",
-      "subject": "artwork",
-      "work_slug": "energetic-labyrinths-no-7"
-    },
-    {
-      "ai_involvement": "none",
-      "artist_slug": "clare-o-connor",
-      "asset": "plotart/artists/clare-o-connor/img/energetic-labyrinths-no-8-1-600.webp",
-      "bytes": 76066,
-      "class": "ARTIST_SUPPLIED_ARTWORK",
-      "colour": "converted to sRGB from the embedded profile (Display P3)",
-      "licence_version": "PA-GPIL-2026-11",
-      "permission_ref": "PA-PERM-ane34unrj3c",
-      "permitted_surfaces": [
-        "plotart-artist-gallery",
-        "plotart-virtual-gallery"
-      ],
-      "photo_credit": null,
-      "photographer": "self",
-      "pixels": [
-        449,
-        600
-      ],
-      "processing": [
-        "camera rotation (EXIF orientation) applied",
-        "colour converted to sRGB where a profile was embedded",
-        "all metadata removed (EXIF, GPS, XMP, ICC)",
-        "never cropped or upscaled",
-        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
-      ],
-      "sha256": "2d1c4c483f9a8a8c14dbafb5601132cc48272c812bd7c3c73e106b77e8e14181",
-      "source_sha256": "981725462380c441c3f8b36ce163cfb598f4e69960bd257df81f4dc82a633ae3",
-      "subject": "artwork",
-      "work_slug": "energetic-labyrinths-no-8"
-    },
-    {
-      "ai_involvement": "none",
-      "artist_slug": "clare-o-connor",
-      "asset": "plotart/artists/clare-o-connor/img/energetic-labyrinths-no-8-1-1200.webp",
-      "bytes": 187592,
-      "class": "ARTIST_SUPPLIED_ARTWORK",
-      "colour": "converted to sRGB from the embedded profile (Display P3)",
-      "licence_version": "PA-GPIL-2026-11",
-      "permission_ref": "PA-PERM-ane34unrj3c",
-      "permitted_surfaces": [
-        "plotart-artist-gallery",
-        "plotart-virtual-gallery"
-      ],
-      "photo_credit": null,
-      "photographer": "self",
-      "pixels": [
-        898,
-        1200
-      ],
-      "processing": [
-        "camera rotation (EXIF orientation) applied",
-        "colour converted to sRGB where a profile was embedded",
-        "all metadata removed (EXIF, GPS, XMP, ICC)",
-        "never cropped or upscaled",
-        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
-      ],
-      "sha256": "bfe4ebf04bf1acdc1279cf3ba9602bcb8a1b00e62c3c8186e65eba478a0e81f2",
-      "source_sha256": "981725462380c441c3f8b36ce163cfb598f4e69960bd257df81f4dc82a633ae3",
-      "subject": "artwork",
-      "work_slug": "energetic-labyrinths-no-8"
-    },
-    {
-      "ai_involvement": "none",
-      "artist_slug": "clare-o-connor",
-      "asset": "plotart/artists/clare-o-connor/img/energetic-labyrinths-no-8-1-2000.webp",
-      "bytes": 353384,
-      "class": "ARTIST_SUPPLIED_ARTWORK",
-      "colour": "converted to sRGB from the embedded profile (Display P3)",
-      "licence_version": "PA-GPIL-2026-11",
-      "permission_ref": "PA-PERM-ane34unrj3c",
-      "permitted_surfaces": [
-        "plotart-artist-gallery",
-        "plotart-virtual-gallery"
-      ],
-      "photo_credit": null,
-      "photographer": "self",
-      "pixels": [
-        1496,
-        2000
-      ],
-      "processing": [
-        "camera rotation (EXIF orientation) applied",
-        "colour converted to sRGB where a profile was embedded",
-        "all metadata removed (EXIF, GPS, XMP, ICC)",
-        "never cropped or upscaled",
-        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
-      ],
-      "sha256": "6e4d829bada4be8073705ad7b3a38bbd4b8b774656721b640e9d3c4eeefce39a",
-      "source_sha256": "981725462380c441c3f8b36ce163cfb598f4e69960bd257df81f4dc82a633ae3",
-      "subject": "artwork",
-      "work_slug": "energetic-labyrinths-no-8"
-    },
-    {
-      "ai_involvement": "none",
-      "artist_slug": "clare-o-connor",
-      "asset": "plotart/artists/clare-o-connor/img/perception-no-4-1-600.webp",
-      "bytes": 53420,
-      "class": "ARTIST_SUPPLIED_ARTWORK",
-      "colour": "converted to sRGB from the embedded profile (Display P3)",
-      "licence_version": "PA-GPIL-2026-11",
-      "permission_ref": "PA-PERM-ane34unrj3c",
-      "permitted_surfaces": [
-        "plotart-artist-gallery",
-        "plotart-virtual-gallery"
-      ],
-      "photo_credit": null,
-      "photographer": "self",
-      "pixels": [
-        416,
-        600
-      ],
-      "processing": [
-        "camera rotation (EXIF orientation) applied",
-        "colour converted to sRGB where a profile was embedded",
-        "all metadata removed (EXIF, GPS, XMP, ICC)",
-        "never cropped or upscaled",
-        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
-      ],
-      "sha256": "98163521dd17b819beb761ba790cdda29b17c81ff9de13b73192418ef3c47c20",
-      "source_sha256": "f6f085ad37ac271d756776e41d0ec034725c99f73b0a60d5e05283eff3b72443",
-      "subject": "artwork",
-      "work_slug": "perception-no-4"
-    },
-    {
-      "ai_involvement": "none",
-      "artist_slug": "clare-o-connor",
-      "asset": "plotart/artists/clare-o-connor/img/perception-no-4-1-1200.webp",
-      "bytes": 142664,
-      "class": "ARTIST_SUPPLIED_ARTWORK",
-      "colour": "converted to sRGB from the embedded profile (Display P3)",
-      "licence_version": "PA-GPIL-2026-11",
-      "permission_ref": "PA-PERM-ane34unrj3c",
-      "permitted_surfaces": [
-        "plotart-artist-gallery",
-        "plotart-virtual-gallery"
-      ],
-      "photo_credit": null,
-      "photographer": "self",
-      "pixels": [
-        831,
-        1200
-      ],
-      "processing": [
-        "camera rotation (EXIF orientation) applied",
-        "colour converted to sRGB where a profile was embedded",
-        "all metadata removed (EXIF, GPS, XMP, ICC)",
-        "never cropped or upscaled",
-        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
-      ],
-      "sha256": "ab8e3f047b9dffc2751b38dfd8d41673342fe03589b48470f490450487168845",
-      "source_sha256": "f6f085ad37ac271d756776e41d0ec034725c99f73b0a60d5e05283eff3b72443",
-      "subject": "artwork",
-      "work_slug": "perception-no-4"
-    },
-    {
-      "ai_involvement": "none",
-      "artist_slug": "clare-o-connor",
-      "asset": "plotart/artists/clare-o-connor/img/perception-no-4-1-2000.webp",
-      "bytes": 301790,
-      "class": "ARTIST_SUPPLIED_ARTWORK",
-      "colour": "converted to sRGB from the embedded profile (Display P3)",
-      "licence_version": "PA-GPIL-2026-11",
-      "permission_ref": "PA-PERM-ane34unrj3c",
-      "permitted_surfaces": [
-        "plotart-artist-gallery",
-        "plotart-virtual-gallery"
-      ],
-      "photo_credit": null,
-      "photographer": "self",
-      "pixels": [
-        1385,
-        2000
-      ],
-      "processing": [
-        "camera rotation (EXIF orientation) applied",
-        "colour converted to sRGB where a profile was embedded",
-        "all metadata removed (EXIF, GPS, XMP, ICC)",
-        "never cropped or upscaled",
-        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
-      ],
-      "sha256": "d2f1221df6e7fa6eee24c4dd25dcca04aab34acdd19aa640df95ec145a933cec",
-      "source_sha256": "f6f085ad37ac271d756776e41d0ec034725c99f73b0a60d5e05283eff3b72443",
-      "subject": "artwork",
-      "work_slug": "perception-no-4"
-    },
-    {
-      "ai_involvement": "none",
-      "artist_slug": "clare-o-connor",
-      "asset": "plotart/artists/clare-o-connor/img/energetic-labyrinths-12-1-600.webp",
-      "bytes": 48948,
-      "class": "ARTIST_SUPPLIED_ARTWORK",
-      "colour": "converted to sRGB from the embedded profile (Display P3)",
-      "licence_version": "PA-GPIL-2026-11",
-      "permission_ref": "PA-PERM-ane34unrj3c",
-      "permitted_surfaces": [
-        "plotart-artist-gallery",
-        "plotart-virtual-gallery"
-      ],
-      "photo_credit": null,
-      "photographer": "self",
-      "pixels": [
-        477,
-        600
-      ],
-      "processing": [
-        "camera rotation (EXIF orientation) applied",
-        "colour converted to sRGB where a profile was embedded",
-        "all metadata removed (EXIF, GPS, XMP, ICC)",
-        "never cropped or upscaled",
-        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
-      ],
-      "sha256": "119655b137f110c364c4453d0df6d14f1a6af362883747ebf1f3d632d67f1e5f",
-      "source_sha256": "ae1069965f675ac73b94f9cf7328fd373be4a93ab126f44b1b2768a4761ca013",
-      "subject": "artwork",
-      "work_slug": "energetic-labyrinths-12"
-    },
-    {
-      "ai_involvement": "none",
-      "artist_slug": "clare-o-connor",
-      "asset": "plotart/artists/clare-o-connor/img/energetic-labyrinths-12-1-1200.webp",
-      "bytes": 133620,
-      "class": "ARTIST_SUPPLIED_ARTWORK",
-      "colour": "converted to sRGB from the embedded profile (Display P3)",
-      "licence_version": "PA-GPIL-2026-11",
-      "permission_ref": "PA-PERM-ane34unrj3c",
-      "permitted_surfaces": [
-        "plotart-artist-gallery",
-        "plotart-virtual-gallery"
-      ],
-      "photo_credit": null,
-      "photographer": "self",
-      "pixels": [
-        954,
-        1200
-      ],
-      "processing": [
-        "camera rotation (EXIF orientation) applied",
-        "colour converted to sRGB where a profile was embedded",
-        "all metadata removed (EXIF, GPS, XMP, ICC)",
-        "never cropped or upscaled",
-        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
-      ],
-      "sha256": "2cac756d650e971780c6ae6c7ade691d1c999962d343f38d1574d72ed11ee5b2",
-      "source_sha256": "ae1069965f675ac73b94f9cf7328fd373be4a93ab126f44b1b2768a4761ca013",
-      "subject": "artwork",
-      "work_slug": "energetic-labyrinths-12"
-    },
-    {
-      "ai_involvement": "none",
-      "artist_slug": "clare-o-connor",
-      "asset": "plotart/artists/clare-o-connor/img/energetic-labyrinths-12-1-2000.webp",
-      "bytes": 281314,
-      "class": "ARTIST_SUPPLIED_ARTWORK",
-      "colour": "converted to sRGB from the embedded profile (Display P3)",
-      "licence_version": "PA-GPIL-2026-11",
-      "permission_ref": "PA-PERM-ane34unrj3c",
-      "permitted_surfaces": [
-        "plotart-artist-gallery",
-        "plotart-virtual-gallery"
-      ],
-      "photo_credit": null,
-      "photographer": "self",
-      "pixels": [
-        1590,
-        2000
-      ],
-      "processing": [
-        "camera rotation (EXIF orientation) applied",
-        "colour converted to sRGB where a profile was embedded",
-        "all metadata removed (EXIF, GPS, XMP, ICC)",
-        "never cropped or upscaled",
-        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
-      ],
-      "sha256": "a7a1033a6c38bd02ca085c495508321c5378389bd99a3f3df21f4b33b2119674",
-      "source_sha256": "ae1069965f675ac73b94f9cf7328fd373be4a93ab126f44b1b2768a4761ca013",
-      "subject": "artwork",
-      "work_slug": "energetic-labyrinths-12"
-    },
-    {
-      "ai_involvement": "none",
-      "artist_slug": "clare-o-connor",
-      "asset": "plotart/artists/clare-o-connor/img/energetic-labyrinths-6-1-600.webp",
-      "bytes": 62350,
-      "class": "ARTIST_SUPPLIED_ARTWORK",
-      "colour": "converted to sRGB from the embedded profile (Display P3)",
-      "licence_version": "PA-GPIL-2026-11",
-      "permission_ref": "PA-PERM-ane34unrj3c",
-      "permitted_surfaces": [
-        "plotart-artist-gallery",
-        "plotart-virtual-gallery"
-      ],
-      "photo_credit": null,
-      "photographer": "self",
-      "pixels": [
-        479,
-        600
-      ],
-      "processing": [
-        "camera rotation (EXIF orientation) applied",
-        "colour converted to sRGB where a profile was embedded",
-        "all metadata removed (EXIF, GPS, XMP, ICC)",
-        "never cropped or upscaled",
-        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
-      ],
-      "sha256": "047113a976fcee44a6a6ef7becc91f1b31c5a7b55efcece0cae8870d2ca1b87d",
-      "source_sha256": "f625ff8a335b3f62e867f8acbea181f95b5c04f99a87d627f06d474b46b47656",
-      "subject": "artwork",
-      "work_slug": "energetic-labyrinths-6"
-    },
-    {
-      "ai_involvement": "none",
-      "artist_slug": "clare-o-connor",
-      "asset": "plotart/artists/clare-o-connor/img/energetic-labyrinths-6-1-1200.webp",
-      "bytes": 171612,
-      "class": "ARTIST_SUPPLIED_ARTWORK",
-      "colour": "converted to sRGB from the embedded profile (Display P3)",
-      "licence_version": "PA-GPIL-2026-11",
-      "permission_ref": "PA-PERM-ane34unrj3c",
-      "permitted_surfaces": [
-        "plotart-artist-gallery",
-        "plotart-virtual-gallery"
-      ],
-      "photo_credit": null,
-      "photographer": "self",
-      "pixels": [
-        958,
-        1200
-      ],
-      "processing": [
-        "camera rotation (EXIF orientation) applied",
-        "colour converted to sRGB where a profile was embedded",
-        "all metadata removed (EXIF, GPS, XMP, ICC)",
-        "never cropped or upscaled",
-        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
-      ],
-      "sha256": "16c29171020c7d16443fc644882ca20b7ebe1eacf404de99126b617d21e43f48",
-      "source_sha256": "f625ff8a335b3f62e867f8acbea181f95b5c04f99a87d627f06d474b46b47656",
-      "subject": "artwork",
-      "work_slug": "energetic-labyrinths-6"
-    },
-    {
-      "ai_involvement": "none",
-      "artist_slug": "clare-o-connor",
-      "asset": "plotart/artists/clare-o-connor/img/energetic-labyrinths-6-1-2000.webp",
-      "bytes": 363030,
-      "class": "ARTIST_SUPPLIED_ARTWORK",
-      "colour": "converted to sRGB from the embedded profile (Display P3)",
-      "licence_version": "PA-GPIL-2026-11",
-      "permission_ref": "PA-PERM-ane34unrj3c",
-      "permitted_surfaces": [
-        "plotart-artist-gallery",
-        "plotart-virtual-gallery"
-      ],
-      "photo_credit": null,
-      "photographer": "self",
-      "pixels": [
-        1597,
-        2000
-      ],
-      "processing": [
-        "camera rotation (EXIF orientation) applied",
-        "colour converted to sRGB where a profile was embedded",
-        "all metadata removed (EXIF, GPS, XMP, ICC)",
-        "never cropped or upscaled",
-        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
-      ],
-      "sha256": "70859cb2d7ca3b917b66cd641f1f233846e996ca32caa6f3f15be03807334ada",
-      "source_sha256": "f625ff8a335b3f62e867f8acbea181f95b5c04f99a87d627f06d474b46b47656",
-      "subject": "artwork",
-      "work_slug": "energetic-labyrinths-6"
-    },
-    {
-      "ai_involvement": "none",
-      "artist_slug": "clare-o-connor",
-      "asset": "plotart/artists/clare-o-connor/img/energetic-labyrinths-8-1-600.webp",
-      "bytes": 102306,
-      "class": "ARTIST_SUPPLIED_ARTWORK",
-      "colour": "converted to sRGB from the embedded profile (Display P3)",
-      "licence_version": "PA-GPIL-2026-11",
-      "permission_ref": "PA-PERM-ane34unrj3c",
-      "permitted_surfaces": [
-        "plotart-artist-gallery",
-        "plotart-virtual-gallery"
-      ],
-      "photo_credit": null,
-      "photographer": "self",
-      "pixels": [
-        597,
-        600
-      ],
-      "processing": [
-        "camera rotation (EXIF orientation) applied",
-        "colour converted to sRGB where a profile was embedded",
-        "all metadata removed (EXIF, GPS, XMP, ICC)",
-        "never cropped or upscaled",
-        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
-      ],
-      "sha256": "eb9b921e9129c4dd101f53fb701fa5e6b42cd5f91e2cebe8ec0d724e50ce0da0",
-      "source_sha256": "dbbad35aa14f74c3d01dd3b8fdb50aa81f7b538c406ef2d48968524b36f0eb45",
-      "subject": "artwork",
-      "work_slug": "energetic-labyrinths-8"
-    },
-    {
-      "ai_involvement": "none",
-      "artist_slug": "clare-o-connor",
-      "asset": "plotart/artists/clare-o-connor/img/energetic-labyrinths-8-1-1200.webp",
-      "bytes": 298622,
-      "class": "ARTIST_SUPPLIED_ARTWORK",
-      "colour": "converted to sRGB from the embedded profile (Display P3)",
-      "licence_version": "PA-GPIL-2026-11",
-      "permission_ref": "PA-PERM-ane34unrj3c",
-      "permitted_surfaces": [
-        "plotart-artist-gallery",
-        "plotart-virtual-gallery"
-      ],
-      "photo_credit": null,
-      "photographer": "self",
-      "pixels": [
-        1194,
-        1200
-      ],
-      "processing": [
-        "camera rotation (EXIF orientation) applied",
-        "colour converted to sRGB where a profile was embedded",
-        "all metadata removed (EXIF, GPS, XMP, ICC)",
-        "never cropped or upscaled",
-        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
-      ],
-      "sha256": "62b65011f635a91798b9f8a2155e354ec3b1a309a95781b7228e1064e6a2a3d8",
-      "source_sha256": "dbbad35aa14f74c3d01dd3b8fdb50aa81f7b538c406ef2d48968524b36f0eb45",
-      "subject": "artwork",
-      "work_slug": "energetic-labyrinths-8"
-    },
-    {
-      "ai_involvement": "none",
-      "artist_slug": "clare-o-connor",
-      "asset": "plotart/artists/clare-o-connor/img/energetic-labyrinths-8-1-2000.webp",
-      "bytes": 591834,
-      "class": "ARTIST_SUPPLIED_ARTWORK",
-      "colour": "converted to sRGB from the embedded profile (Display P3)",
-      "licence_version": "PA-GPIL-2026-11",
-      "permission_ref": "PA-PERM-ane34unrj3c",
-      "permitted_surfaces": [
-        "plotart-artist-gallery",
-        "plotart-virtual-gallery"
-      ],
-      "photo_credit": null,
-      "photographer": "self",
-      "pixels": [
-        1989,
-        2000
-      ],
-      "processing": [
-        "camera rotation (EXIF orientation) applied",
-        "colour converted to sRGB where a profile was embedded",
-        "all metadata removed (EXIF, GPS, XMP, ICC)",
-        "never cropped or upscaled",
-        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
-      ],
-      "sha256": "45c697fa09757528e8adea0f0cbcc3ee0ddcb14268d86efa14562fb7bb8f07db",
-      "source_sha256": "dbbad35aa14f74c3d01dd3b8fdb50aa81f7b538c406ef2d48968524b36f0eb45",
-      "subject": "artwork",
-      "work_slug": "energetic-labyrinths-8"
-    },
-    {
       "asset": "plotart/assets/services/hang-it-hung-wall-1600.jpg",
       "sha256": "114961862fd2ccdbdcf4ed540944fd7837710a4842d57a94cce806f741632c07",
       "bytes": 95680,
@@ -22361,6 +21276,1184 @@
       "source_sha256": "67de6b14c1ca6ac829e7d5d735bfedcb5276d83ff0367da8cdf049400a786151",
       "subject": "artwork",
       "work_slug": "things-that-go-unseen"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "clare-o-connor",
+      "asset": "plotart/artists/clare-o-connor/img/portrait-600.webp",
+      "bytes": 67610,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (Display P3)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-ane34unrj3c",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        600,
+        487
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "abf4c8620b46661df2dec37263766eb7e2c955274178c5187bfe6e3c5d204699",
+      "source_sha256": "f823b704472e1020aaa2b496ee4ec946c029d63159aa408b9e64499e1f3e8235",
+      "subject": "portrait",
+      "work_slug": null
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "clare-o-connor",
+      "asset": "plotart/artists/clare-o-connor/img/navigating-the-labyrinth-no-1-1-600.webp",
+      "bytes": 98244,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (Display P3)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-ane34unrj3c",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        404,
+        600
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "4686cefbda9157a4f07e2a27939626ced3c08dce7d96589a697f913a23150bff",
+      "source_sha256": "3939f135d8eb99bf6bd5ca0e6fd9dc413aadd748020fa4a10cf63ae620925345",
+      "subject": "artwork",
+      "work_slug": "navigating-the-labyrinth-no-1"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "clare-o-connor",
+      "asset": "plotart/artists/clare-o-connor/img/navigating-the-labyrinth-no-1-1-1200.webp",
+      "bytes": 336198,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (Display P3)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-ane34unrj3c",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        808,
+        1200
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "32d3ea9545454ffa0f6ff0605bd69df1c47720d192c48821a90e91a9ea02c41b",
+      "source_sha256": "3939f135d8eb99bf6bd5ca0e6fd9dc413aadd748020fa4a10cf63ae620925345",
+      "subject": "artwork",
+      "work_slug": "navigating-the-labyrinth-no-1"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "clare-o-connor",
+      "asset": "plotart/artists/clare-o-connor/img/navigating-the-labyrinth-no-1-1-2000.webp",
+      "bytes": 748704,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (Display P3)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-ane34unrj3c",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        1347,
+        2000
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "6fb8b3ab4e946b6d611f92a4597fdc9766f4fdb03eb3bfc60bb597994dd21766",
+      "source_sha256": "3939f135d8eb99bf6bd5ca0e6fd9dc413aadd748020fa4a10cf63ae620925345",
+      "subject": "artwork",
+      "work_slug": "navigating-the-labyrinth-no-1"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "clare-o-connor",
+      "asset": "plotart/artists/clare-o-connor/img/navigating-the-labyrinth-series-1-600.webp",
+      "bytes": 76356,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (Display P3)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-ane34unrj3c",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        505,
+        600
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "77a07008d748ed091718c26cfa5fbe888c2cb6f9ddee5bfa9ec090361e1aa0a9",
+      "source_sha256": "043c78d0e654ccb7ee0ac4957e9a70ef55991a4ee3c22eef01d5c0734bcb718a",
+      "subject": "artwork",
+      "work_slug": "navigating-the-labyrinth-series"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "clare-o-connor",
+      "asset": "plotart/artists/clare-o-connor/img/navigating-the-labyrinth-series-1-1200.webp",
+      "bytes": 221742,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (Display P3)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-ane34unrj3c",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        1010,
+        1200
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "585dd2af62a9165d4c918f51ab61cafcad702706c28243da9092027e620fbc18",
+      "source_sha256": "043c78d0e654ccb7ee0ac4957e9a70ef55991a4ee3c22eef01d5c0734bcb718a",
+      "subject": "artwork",
+      "work_slug": "navigating-the-labyrinth-series"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "clare-o-connor",
+      "asset": "plotart/artists/clare-o-connor/img/navigating-the-labyrinth-series-1-2000.webp",
+      "bytes": 441754,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (Display P3)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-ane34unrj3c",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        1684,
+        2000
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "13ff960685f30824b5b988c180d593b543e9fa77d0274431fbde2cc2e2b36dc6",
+      "source_sha256": "043c78d0e654ccb7ee0ac4957e9a70ef55991a4ee3c22eef01d5c0734bcb718a",
+      "subject": "artwork",
+      "work_slug": "navigating-the-labyrinth-series"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "clare-o-connor",
+      "asset": "plotart/artists/clare-o-connor/img/energetic-labyrinths-no-17-1-600.webp",
+      "bytes": 62120,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (Display P3)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-ane34unrj3c",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        595,
+        600
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "7cf6ef0eb8ee416e0e97b03d822942402f7782b6fe4404adee607fce188d15e9",
+      "source_sha256": "cb74a9a817347651df9ecb9a9776f3aa076ca7b7e1f39158cd54a42ffa7e7eae",
+      "subject": "artwork",
+      "work_slug": "energetic-labyrinths-no-17"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "clare-o-connor",
+      "asset": "plotart/artists/clare-o-connor/img/energetic-labyrinths-no-17-1-1200.webp",
+      "bytes": 169438,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (Display P3)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-ane34unrj3c",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        1191,
+        1200
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "73126beb499ce283aa47bd7648fa472c06cb5ca63a5e32aa0d754e3a02c192e4",
+      "source_sha256": "cb74a9a817347651df9ecb9a9776f3aa076ca7b7e1f39158cd54a42ffa7e7eae",
+      "subject": "artwork",
+      "work_slug": "energetic-labyrinths-no-17"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "clare-o-connor",
+      "asset": "plotart/artists/clare-o-connor/img/energetic-labyrinths-no-17-1-2000.webp",
+      "bytes": 374118,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (Display P3)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-ane34unrj3c",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        1985,
+        2000
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "555b422a4471660624c694a2a94a678b5f14089563310cbf105a215aaf04eb1a",
+      "source_sha256": "cb74a9a817347651df9ecb9a9776f3aa076ca7b7e1f39158cd54a42ffa7e7eae",
+      "subject": "artwork",
+      "work_slug": "energetic-labyrinths-no-17"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "clare-o-connor",
+      "asset": "plotart/artists/clare-o-connor/img/energetic-labyrinths-no-18-1-600.webp",
+      "bytes": 47882,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (Display P3)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-ane34unrj3c",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        494,
+        600
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "be48d8ad7c25de1f0e20592699f794ffc4625951246b90cda9cd7f2be2cd60fa",
+      "source_sha256": "399fe79bb517efdd7351516c3e3237af96127e2ef623bcce4653fc9a1db75d0c",
+      "subject": "artwork",
+      "work_slug": "energetic-labyrinths-no-18"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "clare-o-connor",
+      "asset": "plotart/artists/clare-o-connor/img/energetic-labyrinths-no-18-1-1200.webp",
+      "bytes": 131840,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (Display P3)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-ane34unrj3c",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        988,
+        1200
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "8a499ef8e0bb5df6f88e5cae6d6882ef5c3173af4c90f469095c0afcda213eaa",
+      "source_sha256": "399fe79bb517efdd7351516c3e3237af96127e2ef623bcce4653fc9a1db75d0c",
+      "subject": "artwork",
+      "work_slug": "energetic-labyrinths-no-18"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "clare-o-connor",
+      "asset": "plotart/artists/clare-o-connor/img/energetic-labyrinths-no-18-1-2000.webp",
+      "bytes": 268614,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (Display P3)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-ane34unrj3c",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        1646,
+        2000
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "749280c51dfa8c2d0b07804ecd984b3bbda45bec68a9b01b2350467f3fd84228",
+      "source_sha256": "399fe79bb517efdd7351516c3e3237af96127e2ef623bcce4653fc9a1db75d0c",
+      "subject": "artwork",
+      "work_slug": "energetic-labyrinths-no-18"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "clare-o-connor",
+      "asset": "plotart/artists/clare-o-connor/img/energetic-labyrinths-no-7-1-600.webp",
+      "bytes": 83302,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (Display P3)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-ane34unrj3c",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        449,
+        600
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "a470f40335dcfc55ccc83c7495db175a4ffb3cc023d88f1d9471a3af0b42c1c1",
+      "source_sha256": "0dcf2b369b9cb81965dc708771f299fe4881330d0f737a7b96ef0de3f866b102",
+      "subject": "artwork",
+      "work_slug": "energetic-labyrinths-no-7"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "clare-o-connor",
+      "asset": "plotart/artists/clare-o-connor/img/energetic-labyrinths-no-7-1-1200.webp",
+      "bytes": 206380,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (Display P3)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-ane34unrj3c",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        899,
+        1200
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "d046e0fa0d2ed4cf69ba3bc76a4e5c0db42be3312faf92bb7e1a42bb8a995fc2",
+      "source_sha256": "0dcf2b369b9cb81965dc708771f299fe4881330d0f737a7b96ef0de3f866b102",
+      "subject": "artwork",
+      "work_slug": "energetic-labyrinths-no-7"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "clare-o-connor",
+      "asset": "plotart/artists/clare-o-connor/img/energetic-labyrinths-no-7-1-2000.webp",
+      "bytes": 381126,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (Display P3)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-ane34unrj3c",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        1498,
+        2000
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "ead636549d733b66558b0f38df406c3cb18231417ed4ed1e47014190b4c55d5d",
+      "source_sha256": "0dcf2b369b9cb81965dc708771f299fe4881330d0f737a7b96ef0de3f866b102",
+      "subject": "artwork",
+      "work_slug": "energetic-labyrinths-no-7"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "clare-o-connor",
+      "asset": "plotart/artists/clare-o-connor/img/energetic-labyrinths-no-7-2-600.webp",
+      "bytes": 77546,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (Display P3)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-ane34unrj3c",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        497,
+        600
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "a04145b91b1e32b450c0a9b5fa1527debb467472f01cbb3374f154407eac6d41",
+      "source_sha256": "c014594381e1403fd4493f95b9d7d4690d0c04bd55d0b08c7b41f3b895a5502b",
+      "subject": "artwork",
+      "work_slug": "energetic-labyrinths-no-7"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "clare-o-connor",
+      "asset": "plotart/artists/clare-o-connor/img/energetic-labyrinths-no-7-2-2000.webp",
+      "bytes": 376366,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (Display P3)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-ane34unrj3c",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        1657,
+        2000
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "10c031cdd41a5eabc8c9edc55586315b43d6b4142b03e2ee430190394a4240db",
+      "source_sha256": "c014594381e1403fd4493f95b9d7d4690d0c04bd55d0b08c7b41f3b895a5502b",
+      "subject": "artwork",
+      "work_slug": "energetic-labyrinths-no-7"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "clare-o-connor",
+      "asset": "plotart/artists/clare-o-connor/img/energetic-labyrinths-no-7-3-600.webp",
+      "bytes": 56110,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (Display P3)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-ane34unrj3c",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        417,
+        600
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "eb978e54731ffd9ca590155b0d969f35bb5a1e46f53b63663e13520d578aa2eb",
+      "source_sha256": "893d462c7b5d09cb18cdae9a42e4aeaee5646fa6aab03e178c2df37fceec5658",
+      "subject": "artwork",
+      "work_slug": "energetic-labyrinths-no-7"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "clare-o-connor",
+      "asset": "plotart/artists/clare-o-connor/img/energetic-labyrinths-no-7-3-2000.webp",
+      "bytes": 333778,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (Display P3)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-ane34unrj3c",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        1390,
+        2000
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "702dd9efa121ca17f24d94b7b607e5e7076bc8188cc1f1262de05f1bfcee3eac",
+      "source_sha256": "893d462c7b5d09cb18cdae9a42e4aeaee5646fa6aab03e178c2df37fceec5658",
+      "subject": "artwork",
+      "work_slug": "energetic-labyrinths-no-7"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "clare-o-connor",
+      "asset": "plotart/artists/clare-o-connor/img/energetic-labyrinths-no-8-1-600.webp",
+      "bytes": 76066,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (Display P3)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-ane34unrj3c",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        449,
+        600
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "2d1c4c483f9a8a8c14dbafb5601132cc48272c812bd7c3c73e106b77e8e14181",
+      "source_sha256": "981725462380c441c3f8b36ce163cfb598f4e69960bd257df81f4dc82a633ae3",
+      "subject": "artwork",
+      "work_slug": "energetic-labyrinths-no-8"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "clare-o-connor",
+      "asset": "plotart/artists/clare-o-connor/img/energetic-labyrinths-no-8-1-1200.webp",
+      "bytes": 187592,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (Display P3)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-ane34unrj3c",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        898,
+        1200
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "bfe4ebf04bf1acdc1279cf3ba9602bcb8a1b00e62c3c8186e65eba478a0e81f2",
+      "source_sha256": "981725462380c441c3f8b36ce163cfb598f4e69960bd257df81f4dc82a633ae3",
+      "subject": "artwork",
+      "work_slug": "energetic-labyrinths-no-8"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "clare-o-connor",
+      "asset": "plotart/artists/clare-o-connor/img/energetic-labyrinths-no-8-1-2000.webp",
+      "bytes": 353384,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (Display P3)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-ane34unrj3c",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        1496,
+        2000
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "6e4d829bada4be8073705ad7b3a38bbd4b8b774656721b640e9d3c4eeefce39a",
+      "source_sha256": "981725462380c441c3f8b36ce163cfb598f4e69960bd257df81f4dc82a633ae3",
+      "subject": "artwork",
+      "work_slug": "energetic-labyrinths-no-8"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "clare-o-connor",
+      "asset": "plotart/artists/clare-o-connor/img/perception-no-4-1-600.webp",
+      "bytes": 53420,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (Display P3)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-ane34unrj3c",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        416,
+        600
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "98163521dd17b819beb761ba790cdda29b17c81ff9de13b73192418ef3c47c20",
+      "source_sha256": "f6f085ad37ac271d756776e41d0ec034725c99f73b0a60d5e05283eff3b72443",
+      "subject": "artwork",
+      "work_slug": "perception-no-4"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "clare-o-connor",
+      "asset": "plotart/artists/clare-o-connor/img/perception-no-4-1-1200.webp",
+      "bytes": 142664,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (Display P3)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-ane34unrj3c",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        831,
+        1200
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "ab8e3f047b9dffc2751b38dfd8d41673342fe03589b48470f490450487168845",
+      "source_sha256": "f6f085ad37ac271d756776e41d0ec034725c99f73b0a60d5e05283eff3b72443",
+      "subject": "artwork",
+      "work_slug": "perception-no-4"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "clare-o-connor",
+      "asset": "plotart/artists/clare-o-connor/img/perception-no-4-1-2000.webp",
+      "bytes": 301790,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (Display P3)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-ane34unrj3c",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        1385,
+        2000
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "d2f1221df6e7fa6eee24c4dd25dcca04aab34acdd19aa640df95ec145a933cec",
+      "source_sha256": "f6f085ad37ac271d756776e41d0ec034725c99f73b0a60d5e05283eff3b72443",
+      "subject": "artwork",
+      "work_slug": "perception-no-4"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "clare-o-connor",
+      "asset": "plotart/artists/clare-o-connor/img/energetic-labyrinths-12-1-600.webp",
+      "bytes": 48948,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (Display P3)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-ane34unrj3c",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        477,
+        600
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "119655b137f110c364c4453d0df6d14f1a6af362883747ebf1f3d632d67f1e5f",
+      "source_sha256": "ae1069965f675ac73b94f9cf7328fd373be4a93ab126f44b1b2768a4761ca013",
+      "subject": "artwork",
+      "work_slug": "energetic-labyrinths-12"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "clare-o-connor",
+      "asset": "plotart/artists/clare-o-connor/img/energetic-labyrinths-12-1-1200.webp",
+      "bytes": 133620,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (Display P3)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-ane34unrj3c",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        954,
+        1200
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "2cac756d650e971780c6ae6c7ade691d1c999962d343f38d1574d72ed11ee5b2",
+      "source_sha256": "ae1069965f675ac73b94f9cf7328fd373be4a93ab126f44b1b2768a4761ca013",
+      "subject": "artwork",
+      "work_slug": "energetic-labyrinths-12"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "clare-o-connor",
+      "asset": "plotart/artists/clare-o-connor/img/energetic-labyrinths-12-1-2000.webp",
+      "bytes": 281314,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (Display P3)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-ane34unrj3c",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        1590,
+        2000
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "a7a1033a6c38bd02ca085c495508321c5378389bd99a3f3df21f4b33b2119674",
+      "source_sha256": "ae1069965f675ac73b94f9cf7328fd373be4a93ab126f44b1b2768a4761ca013",
+      "subject": "artwork",
+      "work_slug": "energetic-labyrinths-12"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "clare-o-connor",
+      "asset": "plotart/artists/clare-o-connor/img/energetic-labyrinths-6-1-600.webp",
+      "bytes": 62350,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (Display P3)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-ane34unrj3c",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        479,
+        600
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "047113a976fcee44a6a6ef7becc91f1b31c5a7b55efcece0cae8870d2ca1b87d",
+      "source_sha256": "f625ff8a335b3f62e867f8acbea181f95b5c04f99a87d627f06d474b46b47656",
+      "subject": "artwork",
+      "work_slug": "energetic-labyrinths-6"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "clare-o-connor",
+      "asset": "plotart/artists/clare-o-connor/img/energetic-labyrinths-6-1-1200.webp",
+      "bytes": 171612,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (Display P3)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-ane34unrj3c",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        958,
+        1200
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "16c29171020c7d16443fc644882ca20b7ebe1eacf404de99126b617d21e43f48",
+      "source_sha256": "f625ff8a335b3f62e867f8acbea181f95b5c04f99a87d627f06d474b46b47656",
+      "subject": "artwork",
+      "work_slug": "energetic-labyrinths-6"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "clare-o-connor",
+      "asset": "plotart/artists/clare-o-connor/img/energetic-labyrinths-6-1-2000.webp",
+      "bytes": 363030,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (Display P3)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-ane34unrj3c",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        1597,
+        2000
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "70859cb2d7ca3b917b66cd641f1f233846e996ca32caa6f3f15be03807334ada",
+      "source_sha256": "f625ff8a335b3f62e867f8acbea181f95b5c04f99a87d627f06d474b46b47656",
+      "subject": "artwork",
+      "work_slug": "energetic-labyrinths-6"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "clare-o-connor",
+      "asset": "plotart/artists/clare-o-connor/img/energetic-labyrinths-8-1-600.webp",
+      "bytes": 102306,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (Display P3)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-ane34unrj3c",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        597,
+        600
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "eb9b921e9129c4dd101f53fb701fa5e6b42cd5f91e2cebe8ec0d724e50ce0da0",
+      "source_sha256": "dbbad35aa14f74c3d01dd3b8fdb50aa81f7b538c406ef2d48968524b36f0eb45",
+      "subject": "artwork",
+      "work_slug": "energetic-labyrinths-8"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "clare-o-connor",
+      "asset": "plotart/artists/clare-o-connor/img/energetic-labyrinths-8-1-1200.webp",
+      "bytes": 298622,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (Display P3)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-ane34unrj3c",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        1194,
+        1200
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "62b65011f635a91798b9f8a2155e354ec3b1a309a95781b7228e1064e6a2a3d8",
+      "source_sha256": "dbbad35aa14f74c3d01dd3b8fdb50aa81f7b538c406ef2d48968524b36f0eb45",
+      "subject": "artwork",
+      "work_slug": "energetic-labyrinths-8"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "clare-o-connor",
+      "asset": "plotart/artists/clare-o-connor/img/energetic-labyrinths-8-1-2000.webp",
+      "bytes": 591834,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (Display P3)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-ane34unrj3c",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        1989,
+        2000
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "45c697fa09757528e8adea0f0cbcc3ee0ddcb14268d86efa14562fb7bb8f07db",
+      "source_sha256": "dbbad35aa14f74c3d01dd3b8fdb50aa81f7b538c406ef2d48968524b36f0eb45",
+      "subject": "artwork",
+      "work_slug": "energetic-labyrinths-8"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "clare-o-connor",
+      "asset": "plotart/artists/clare-o-connor/img/multi-layered-intaglio-print-series-venezia-1-600.webp",
+      "bytes": 36578,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "sRGB (no embedded profile; treated as sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-ane34unrj3c",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        600,
+        600
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "50bcf6d1489c765b05fc36d798f48812ef985c13439f6cf1eaf98ad6746e5056",
+      "source_sha256": "b0c17bca8145388e024906efe319c2d7865b5ce5063399c01eb1d2c8c157d8fb",
+      "subject": "artwork",
+      "work_slug": "multi-layered-intaglio-print-series-venezia"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "clare-o-connor",
+      "asset": "plotart/artists/clare-o-connor/img/multi-layered-intaglio-print-series-venezia-1-1200.webp",
+      "bytes": 111014,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "sRGB (no embedded profile; treated as sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-ane34unrj3c",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        1200,
+        1200
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "521fa4fa0e3086d4629a8f1c46b83a02692a235f7965e47bff4023ce33760cd9",
+      "source_sha256": "b0c17bca8145388e024906efe319c2d7865b5ce5063399c01eb1d2c8c157d8fb",
+      "subject": "artwork",
+      "work_slug": "multi-layered-intaglio-print-series-venezia"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "clare-o-connor",
+      "asset": "plotart/artists/clare-o-connor/img/multi-layered-intaglio-print-series-venezia-1-2000.webp",
+      "bytes": 209602,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "sRGB (no embedded profile; treated as sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-ane34unrj3c",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        2000,
+        2000
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "25082ee5c6033fa2aa1094fa859252960097278708ea1c2cc48bdb3b53d963db",
+      "source_sha256": "b0c17bca8145388e024906efe319c2d7865b5ce5063399c01eb1d2c8c157d8fb",
+      "subject": "artwork",
+      "work_slug": "multi-layered-intaglio-print-series-venezia"
     }
   ],
   "legacy_undeclared": [
