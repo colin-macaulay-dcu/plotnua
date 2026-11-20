@@ -1471,6 +1471,44 @@ console.log('— founder forms in a real browser (no dialogs)');
     await sr.getByLabel(/Reason the bank gave/).fill('Account closed (SIMULATED)'); await sr.getByLabel(/transfer as returned/).check(); await sr.getByRole('button', { name: 'Record returned transfer' }).click(); await settle();
     check('UI23 a returned transfer needs the bank’s reason (refused on the page when too short); a valid record makes the amount owed again, as before',
       /5–300/.test(tE) && (await q('SELECT * FROM checkout_owed_payment_returns WHERE payment_id = ?', payU.id)).length === 1 && (await q('SELECT settled_cents FROM checkout_owed WHERE id = ?', shU.id))[0].settled_cents === shU.settled_cents);
+    // a FULL payment settles the item: it leaves Amounts owed but its transfer stays returnable in the settled-transfers table
+    const payFull = async ref => { await desk(); await pg.locator(`a[data-open="shortfallpaid"][href="#order-${ou.id}"]`).click(); const f = card().locator('form[data-f="shortfallpaid"]');
+      await f.getByLabel(/Amount the bank shows/).fill((owedU / 100).toFixed(2)); await f.getByLabel(/Date the bank shows it executed/).fill(D(0)); await f.getByLabel(/transfer reference only/).fill(ref);
+      await f.getByLabel(/PlotArt’s bank shows this transfer/).check(); await f.getByRole('button', { name: 'Record shortfall paid' }).click(); await settle();
+      return (await q('SELECT * FROM checkout_owed_payments WHERE order_id = ? AND reference = ?', ou.id, ref))[0]; };
+    const payF = await payFull('SIM-TRF-UI-02');
+    await desk();
+    const rtab = pg.locator('table[data-owed-returnable]'), fRow = rtab.locator(`tr[data-id="${ou.id}"]`).filter({ hasText: 'SIM-TRF-UI-02' });
+    check('UI23b after a full payment the item is settled and leaves Amounts owed, but its bank transfer is listed under "Settled by bank transfer" with a "Transfer returned…" form; the earlier returned transfer shows as returned with no second form',
+      !!payF && (await q('SELECT settled_cents, cents FROM checkout_owed WHERE id = ?', shU.id)).every(r => r.settled_cents === r.cents)
+      && await pg.locator(`a[data-open="shortfallpaid"][href="#order-${ou.id}"]`).count() === 0
+      && await fRow.locator('form[data-f="shortfallreturned"]').count() === 1
+      && await rtab.locator(`input[name="payment_id"][value="${payU.id}"]`).count() === 0 && await rtab.getByText(/returned \d{4}-\d{2}-\d{2}/).count() >= 1);
+    await open(fRow, 'Transfer returned…'); const frm = fRow.locator('form[data-f="shortfallreturned"]');
+    await frm.getByLabel(/Date the bank shows it returned/).fill(D(0)); await frm.getByLabel(/Reason the bank gave/).fill('Account closed (SIMULATED)'); await frm.getByRole('button', { name: 'Record returned transfer' }).click();
+    const fE = await waitErr(frm, /Tick the box/);
+    await frm.getByLabel(/transfer as returned/).check(); await frm.getByRole('button', { name: 'Record returned transfer' }).click(); await settle();
+    const evR = await q("SELECT COUNT(*) AS n FROM order_events WHERE order_id = ? AND action = 'shortfall_transfer_returned'", ou.id);
+    await desk();
+    check('UI23c recording the return of a fully settled transfer needs the tick; with it the amount is owed again, it is back in Amounts owed and the settled-transfers table no longer offers that transfer',
+      /Tick the box/.test(fE) && (await q('SELECT * FROM checkout_owed_payment_returns WHERE payment_id = ?', payF.id)).length === 1
+      && (await q('SELECT settled_cents FROM checkout_owed WHERE id = ?', shU.id))[0].settled_cents === shU.settled_cents
+      && await pg.locator(`a[data-open="shortfallpaid"][href="#order-${ou.id}"]`).count() === 1 && await pg.locator(`table[data-owed-returnable] input[name="payment_id"][value="${payF.id}"]`).count() === 0
+      && await pg.locator(`input[name="payment_id"][value="${payF.id}"]`).count() === 0, { fE, evR });
+    const again = await call('POST', `/api/admin/checkout/orders/${ou.id}/shortfallreturned`, FOUNDER, { payment_id: payF.id, returned_on: D(0), reason: 'Account closed (SIMULATED)' });
+    check('UI23d a second return of the same transfer is refused (409) and changes nothing: one return record, the owed amount is reduced once',
+      again.s === 409 && /already recorded as returned/.test(JSON.stringify(again.j)) && (await q('SELECT * FROM checkout_owed_payment_returns WHERE payment_id = ?', payF.id)).length === 1
+      && (await q('SELECT settled_cents FROM checkout_owed WHERE id = ?', shU.id))[0].settled_cents === shU.settled_cents);
+    // two return submissions for one settled transfer at the same moment: exactly one is recorded
+    const payC = await payFull('SIM-TRF-UI-03');
+    const body = { payment_id: payC.id, returned_on: D(0), reason: 'Account closed (SIMULATED)' };
+    const both = await Promise.all([1, 2].map(() => call('POST', `/api/admin/checkout/orders/${ou.id}/shortfallreturned`, FOUNDER, body)));
+    const retC = await q('SELECT * FROM checkout_owed_payment_returns WHERE payment_id = ?', payC.id), evC = await q("SELECT COUNT(*) AS n FROM order_events WHERE order_id = ? AND action = 'shortfall_transfer_returned'", ou.id);
+    const mailC = await q("SELECT COUNT(*) AS n FROM checkout_mail_sink WHERE order_id = ? AND kind = 'owed_transfer_returned'", ou.id);
+    check('UI23e two simultaneous return submissions for the same transfer: one succeeds, the other is refused (409); one return record, one ledger reversal, one event, and the amount is owed again exactly once',
+      both.map(r => r.s).sort().join() === '200,409' && retC.length === 1 && evC[0].n === evR[0].n + 1
+      && (await q('SELECT settled_cents FROM checkout_owed WHERE id = ?', shU.id))[0].settled_cents === shU.settled_cents
+      && (await q("SELECT COUNT(*) AS n FROM order_ledger WHERE order_id = ? AND kind = 'processing_shortfall_paid' AND amount_cents < 0 AND provider_ref = ?", ou.id, retC[0].id))[0].n === 1, { s: both.map(r => r.s), evC, mailC });
     // cancel: an unpaid order (tick required); a paid order offers no cancel form
     const workC = (await q("SELECT id FROM artworks WHERE artist_id = 'agal' AND availability = 'available' AND id NOT IN (SELECT artwork_id FROM artwork_sales) AND id NOT IN (SELECT artwork_id FROM artwork_reservations) AND id NOT IN (SELECT artwork_id FROM checkout_orders WHERE status NOT IN ('cancelled', 'expired')) ORDER BY id LIMIT 1"))[0];
     const oc = await makeOrder('agal', workC.id, 'PA-E-261101-AAAAAA', 30000, 0, 'cancel@example.test');
