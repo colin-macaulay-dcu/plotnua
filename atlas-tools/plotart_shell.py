@@ -9,8 +9,8 @@ import html
 import plotart_seo as SEO
 
 E = lambda s: html.escape(str(s), quote=True)
-ARTIST_FINE = ("Artworks in this gallery are offered by the artist. PlotArt introduces buyers to artists: it doesn't take "
-               "payment or deliver work. Photographs of artworks are supplied by the artist and credited where taken by someone else.")
+ARTIST_FINE = ("Artworks in this gallery are offered by the artist. PlotArt introduces buyers to artists. The artist is the "
+               "seller and arranges delivery. Photographs of artworks are supplied by the artist and credited where taken by someone else.")
 # Art for Hire (Stage 3B-4): the fourth gallery tab. OFF until the founder releases the Art for Hire page; with it off every
 # page this module writes is byte-identical to before. atlas-tools/plotart-hire-nav.py adds the same tab to hand-built pages.
 HIRE_NAV = False

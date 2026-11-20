@@ -127,7 +127,7 @@ BODY = """
 """ % (" pa-sv-list--one" if len(LISTED) == 1 else "", "\n\n".join(card(p) for p in LISTED))
 
 
-FINE = ("Artworks in PlotArt galleries are offered by their artists: PlotArt introduces buyers and doesn't take payment. "
+FINE = ("Artworks in PlotArt galleries are offered by their artists: PlotArt introduces buyers; the artist is the seller. "
         "Providers listed on this page are independent businesses, not PlotArt partners, and PlotArt doesn't guarantee their services.")
 
 

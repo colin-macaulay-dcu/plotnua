@@ -41,7 +41,7 @@ BUY = '''
 <p class="pa-eyebrow">Start with the artist</p><h2>Where can you buy original Irish art?</h2>
 <p>You can explore work through an artist’s own studio or website, a physical gallery, an exhibition or an online gallery. The useful starting point is a particular artist and a particular work: who made it, what it is, whether it is available and who will arrange the sale.</p>
 <p>PlotArt brings individual artists’ galleries together online. You can read their biographies, see each artwork in full and check its stated medium, dimensions, asking price and availability. When a piece interests you, send an enquiry through PlotArt to the artist.</p>
-<div class="pa-guide-callout"><h3>How buying through PlotArt works</h3><p>PlotArt introduces buyers to artists. It does not take payment or deliver artwork. The artist arranges any sale with you directly, including payment, collection or delivery. An enquiry is a way to ask questions; it is not a purchase or a reservation.</p></div>
+<div class="pa-guide-callout"><h3>How buying through PlotArt works</h3><p>PlotArt introduces buyers to artists. It is not the seller and does not deliver artwork. The artist arranges any sale with you directly, including collection or delivery. An enquiry is a way to ask questions; it is not a purchase or a reservation.</p></div>
 <p>For names you already know, use <a href="gallery/">the A–Z of artists in the Artists’ Gallery</a>. If you are beginning with a style, explore <a href="abstract-contemporary-art-ireland.html">abstract and contemporary Irish art</a>. To see every work currently on offer in one place, browse <a href="artworks/">all available artworks</a>.</p>
 </div></section>
 <section class="pa-guide-section" id="original-or-print"><div class="pa-wrap pa-guide-reading">
@@ -97,7 +97,7 @@ COLLECTION
 <h3>Look at the whole work, then its details</h3><p>Give the composition time before moving to the next image. Look for contrasts, repeated forms and shifts in colour or surface. Explore other works by the artist to see what connects them and what changes.</p>
 <h3>Check the physical object</h3><p>“Abstract” describes an approach, rather than a material or a guarantee of uniqueness. Check whether a piece is a painting, an original print, a mixed-media work or a reproduction. Read the dimensions and ask about framing and display.</p>
 <h3>Consider scale as well as colour</h3><p>A large work can change the balance of a space; a smaller work can invite a closer encounter. Measure the place you have in mind and consider the distance from which you will usually see it. Ask the artist for more information if you cannot judge the scale from the photographs.</p>
-<h3>Make the enquiry specific</h3><p>Ask about the exact piece you like: its availability, total price, materials, framing and collection or delivery. Where a viewing is possible, the artist can explain how to arrange it. PlotArt passes enquiries to the artist and does not take payment.</p>
+<h3>Make the enquiry specific</h3><p>Ask about the exact piece you like: its availability, total price, materials, framing and collection or delivery. Where a viewing is possible, the artist can explain how to arrange it. PlotArt passes enquiries to the artist, who is the seller.</p>
 <p>For price comparisons, originals and editions, and practical questions before buying, read <a href="buy-original-art-ireland.html">Buying original art in Ireland</a>.</p>
 </div></section>
 '''

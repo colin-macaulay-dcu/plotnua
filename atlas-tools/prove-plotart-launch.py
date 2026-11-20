@@ -309,7 +309,7 @@ need(not re.search(r'pa-vg-card|pa-vg-grid|pa-vg-count|galleries reserved|waitin
 # defined with L8 below, and this line raised a NameError in every state but "open" (found closing Founding 25, 13 Nov 2026).
 need('href="gallery/"' in home and ('href="founding-25.html#apply"' in home or launch.get("f25_application_state") != "open"), "L6 the homepage must link to the Virtual Gallery and, while applications are open, the Founding 25 application")
 OPEN = launch.get("galleries_open") is True     # the gallery opening switch (Phase 3, founder-controlled; L15)
-OPEN_FINE = "Artworks in PlotArt galleries are offered by their artists: PlotArt introduces buyers and doesn't take payment."
+OPEN_FINE = "Artworks in PlotArt galleries are offered by their artists: PlotArt introduces buyers; the artist is the seller."
 need(("No artwork is currently available through PlotArt." in visible_text(home)) if not OPEN else (OPEN_FINE in visible_text(home)),
      "L6 the homepage must state availability for the current state (galleries %s)" % ("open" if OPEN else "not open"))
 # Founder decision 29 Oct 2026: the introduction is the approved lede, and availability is stated by the
