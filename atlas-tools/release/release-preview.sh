@@ -39,6 +39,7 @@ N=$(git diff --name-only "$MAIN" "$SHA" | wc -l | tr -d ' ')
   echo "Full comparison: $REPO_URL/compare/${MAIN:0:12}...${SHA:0:12}"
   echo ""
   echo "### Files changed"
+  # shellcheck disable=SC2016  # literal backticks (Markdown code), nothing to expand
   git diff --stat=200 "$MAIN" "$SHA" | sed '$d' | sed 's/^ */- `/; s/ *|/` |/'
   echo ""
   echo "**Approve** on this run's *Review deployments* (environment \`website-production\`) to release exactly this commit."

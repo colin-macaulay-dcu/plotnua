@@ -95,7 +95,12 @@ The scripts push nothing when any of these is true:
    - Rejecting changes nothing.
    - An approval not given within 30 days expires, and nothing is released.
 3. **promote.** It starts only after approval.
-   - It first runs `verify-founder-approval.sh`, which refuses unless `website-production` requires the founder **and** this run carries his approval. An unprotected or missing environment can never wave a release through.
+   - It first runs `verify-founder-approval.sh`. It refuses unless **all** of these hold, read from GitHub:
+     - `website-production` names the founder's account as required reviewer;
+     - administrators cannot bypass it;
+     - deployments are restricted to exactly the branch `main`;
+     - this run carries his approval for `website-production`.
+     Anything unreadable, incomplete or unexpected is a refusal, so an unprotected, missing or loosened environment can never wave a release through.
    - It then runs `promote.sh` as before: fast-forward only, refused if main moved while the release waited, live check, automatic rollback.
    - The `production-site` lock is taken by this job only, so a release waiting for approval never holds up the Garden and Idea Board publishers.
 
@@ -103,7 +108,8 @@ The scripts push nothing when any of these is true:
 
 **Proofs:**
 - `prove-release-app-push.py` A9, with self-test;
-- `prove-founder-approval.sh`, run by `prove-release-promote.sh`.
+- `prove-founder-approval.sh`, run by `prove-release-promote.sh`;
+- `prove-approval-jobs.py`: the real job conditions under GitHub's rules, for every outcome, with planted faults.
 
 **Key rotation:** once a year, or on suspicion.
 1. Generate a new private key on the App page.
