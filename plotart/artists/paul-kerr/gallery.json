@@ -53,10 +53,15 @@
    "dhash": "624118e1e4646070",
    "source_sha256": "a64bdcdcee121ed149d21be412215da2a9ba671e09a25fa9fc5b162e3a60b95c",
    "stem": "life-goes-on-1"
+  },
+  {
+   "dhash": "1d47d8b060881a78",
+   "source_sha256": "dbb0a760ba1ec673e22ec40a41452f6dca63637e60b694005741258b6928966f",
+   "stem": "resurrection-of-the-roadkill-1"
   }
  ],
  "publication": {
-  "approved_at": "2026-11-20T13:58:11.774Z",
+  "approved_at": "2026-11-20T23:32:22.248Z",
   "approved_by": "founder",
   "first_approved_at": "2026-11-19T22:41:57.876Z",
   "licence_accepted_at": "2026-11-19T16:23:00.626Z",
@@ -64,7 +69,7 @@
   "permission_ref": "PA-PERM-a4p7ruywdrw",
   "state": "approved",
   "test_note": null,
-  "version": "v3"
+  "version": "v4"
  },
  "schema": "plotnua.plotart.gallery-package.v1",
  "works": [
@@ -179,6 +184,62 @@
    "title": "Life Goes On",
    "w_cm": 84,
    "year": 2021
+  },
+  {
+   "ai_founder_decision": null,
+   "ai_involvement": "none",
+   "ai_note": null,
+   "availability": "available",
+   "d_cm": 2,
+   "description": null,
+   "h_cm": 60,
+   "id": "ws988zl1oz7",
+   "images": [
+    {
+     "alt": "Black and white drawing of a vision",
+     "aspect": 0.69414,
+     "derivatives": [
+      {
+       "file": "resurrection-of-the-roadkill-1-600.webp",
+       "long_edge": 600,
+       "pixels": [
+        416,
+        600
+       ]
+      },
+      {
+       "file": "resurrection-of-the-roadkill-1-1200.webp",
+       "long_edge": 1200,
+       "pixels": [
+        833,
+        1200
+       ]
+      },
+      {
+       "file": "resurrection-of-the-roadkill-1-2000.webp",
+       "long_edge": 2000,
+       "pixels": [
+        1388,
+        2000
+       ]
+      }
+     ],
+     "photo_credit": null,
+     "pixels": [
+      1398,
+      2014
+     ],
+     "role": "main"
+    }
+   ],
+   "materials": null,
+   "medium": "Pen and ink on paper",
+   "price_eur": 2800,
+   "price_on_request": false,
+   "slug": "resurrection-of-the-roadkill",
+   "title": "Resurrection Of The Roadkill",
+   "w_cm": 42,
+   "year": 2024
   }
  ]
 }

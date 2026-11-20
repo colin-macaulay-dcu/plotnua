@@ -22640,6 +22640,99 @@
       "source_sha256": "a64bdcdcee121ed149d21be412215da2a9ba671e09a25fa9fc5b162e3a60b95c",
       "subject": "artwork",
       "work_slug": "life-goes-on"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "paul-kerr",
+      "asset": "plotart/artists/paul-kerr/img/resurrection-of-the-roadkill-1-600.webp",
+      "bytes": 112650,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-a4p7ruywdrw",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        416,
+        600
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "121c4b767aa44264872dff8d223f8f091eef0ef0c377d04c7d6ee18723378b08",
+      "source_sha256": "dbb0a760ba1ec673e22ec40a41452f6dca63637e60b694005741258b6928966f",
+      "subject": "artwork",
+      "work_slug": "resurrection-of-the-roadkill"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "paul-kerr",
+      "asset": "plotart/artists/paul-kerr/img/resurrection-of-the-roadkill-1-1200.webp",
+      "bytes": 482878,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-a4p7ruywdrw",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        833,
+        1200
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "ccf66f661a0e64607ede85daddc140b5a2162bafcd11b89b73491fa31018f6ed",
+      "source_sha256": "dbb0a760ba1ec673e22ec40a41452f6dca63637e60b694005741258b6928966f",
+      "subject": "artwork",
+      "work_slug": "resurrection-of-the-roadkill"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "paul-kerr",
+      "asset": "plotart/artists/paul-kerr/img/resurrection-of-the-roadkill-1-2000.webp",
+      "bytes": 1162098,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-a4p7ruywdrw",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        1388,
+        2000
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "4ac621e66368e2580f595c610c6c1e5785836f16b70a905f9b0ba9a4873fe65d",
+      "source_sha256": "dbb0a760ba1ec673e22ec40a41452f6dca63637e60b694005741258b6928966f",
+      "subject": "artwork",
+      "work_slug": "resurrection-of-the-roadkill"
     }
   ],
   "legacy_undeclared": [
