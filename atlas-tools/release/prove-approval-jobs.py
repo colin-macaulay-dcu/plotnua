@@ -141,25 +141,28 @@ def should_run(job, ctx, results):
 BRANCHES = ["release/auto/artist-submissions-abc1234", "release/auto/atlas-stats-abc1234", "release/auto/rollback-artist-submissions-abc1234",
             "release/auto/plotart-gallery-abc1234", "release/auto/garden-abc1234", "release/auto/ideas-abc1234",
             "release/auto/rollback-plotart-x", "release/auto/rollback-garden-x", "release/auto/rollback-ideas-x", "main", "feature/x", "release/manual-x"]
-PREVIEW = {"offered": ("success", "true"), "nothing": ("success", "false"), "failed": ("failure", ""), "cancelled": ("cancelled", "")}
+PREVIEW = {"offered": ("success", "true", ""), "nothing": ("success", "false", ""), "atlas": ("success", "false", "true"),
+           "failed": ("failure", "", ""), "cancelled": ("cancelled", "", "")}
+ACTORS = ["plotnua-release[bot]", "colin-macaulay-dcu", "github-actions[bot]"]
 APPROVAL = {"approved": "success", "rejected": "failure", "expired": "failure", "cancelled": "cancelled"}
 
 
 def simulate(wf):
     jobs = wf["jobs"]
     problems, n = [], 0
-    for concl, event, br, pv, ap in itertools.product(["success", "failure", "cancelled"], ["push", "workflow_dispatch", "pull_request"],
-                                                       BRANCHES, PREVIEW, APPROVAL):
+    for concl, event, br, pv, ap, actor in itertools.product(["success", "failure", "cancelled"], ["push", "workflow_dispatch", "pull_request"],
+                                                              BRANCHES, PREVIEW, APPROVAL, ACTORS):
         n += 1
-        ctx = {"github": {"event": {"workflow_run": {"conclusion": concl, "event": event, "head_branch": br, "head_sha": "a" * 40}}}}
+        ctx = {"github": {"event": {"workflow_run": {"conclusion": concl, "event": event, "head_branch": br, "head_sha": "a" * 40,
+                                                     "actor": {"login": actor}}}}}
         results, outputs = {}, {}
-        for name in ("preview", "approval", "promote"):
+        for name in ("preview", "approval", "promote", "promote-atlas"):
             j = jobs[name]
             c = copy.deepcopy(ctx); c["needs"] = {k: {"result": results[k], "outputs": outputs.get(k, {})} for k in results}
             if not should_run(j, c, results):
                 results[name] = "skipped"; continue
             if name == "preview":
-                results[name], rel = PREVIEW[pv]; outputs[name] = {"release": rel}
+                results[name], rel, atl = PREVIEW[pv]; outputs[name] = {"release": rel, "atlas": atl}
             elif name == "approval":
                 if (j.get("environment") or {}).get("name") != "website-production":
                     results[name] = "success"   # an unprotected job would simply run
@@ -171,6 +174,10 @@ def simulate(wf):
                     and not re.match(r"release/auto/(rollback-)?(plotart|garden|ideas)-", br))
         expect_promote = eligible and pv == "offered" and ap == "approved"
         expect_approval_asked = eligible and pv == "offered"
+        expect_atlas = (eligible and pv == "atlas" and br.startswith("release/auto/atlas-stats-") and actor == "plotnua-release[bot]"
+                        and event == "push")
+        if (results["promote-atlas"] == "ran") != expect_atlas:
+            problems.append("promote-atlas %s for %s/%s/%s/%s preview=%s" % ("RAN" if results["promote-atlas"] == "ran" else "did not run", concl, event, br, actor, pv))
         if (results["promote"] == "ran") != expect_promote:
             problems.append("promote %s for %s/%s/%s preview=%s approval=%s" % ("RAN" if results["promote"] == "ran" else "did not run", concl, event, br, pv, ap))
         if (results["approval"] != "skipped") != expect_approval_asked:
@@ -183,14 +190,14 @@ def main():
     n, problems = simulate(wf)
     for p in problems[:20]:
         print("  FAIL  " + p)
-    print("  %s  %d combinations: promote runs only after the founder approved an offered release, never otherwise" % ("PASS" if not problems else "FAIL", n))
+    print("  %s  %d combinations: promote runs only after the founder approved an offered release; promote-atlas only for an App-pushed atlas-stats refresh the preview classified as routine" % ("PASS" if not problems else "FAIL", n))
     fails = 1 if problems else 0
     # planted faults: each must let promote run without approval somewhere, and be caught
     def fault(label, mutate):
         nonlocal fails
         w = copy.deepcopy(wf); mutate(w["jobs"])
         _, pr = simulate(w)
-        caught = any(p.startswith("promote RAN") for p in pr)
+        caught = any(p.startswith("promote RAN") or p.startswith("promote-atlas RAN") for p in pr)
         print("  %s  planted fault caught: %s" % ("PASS" if caught else "FAIL", label))
         fails += 0 if caught else 1
     base_if = wf["jobs"]["promote"]["if"]
@@ -199,6 +206,10 @@ def main():
     fault("approval job's environment removed (it would run unprotected)", lambda j: j["approval"].pop("environment"))
     fault("promote runs whatever the approval result (always() + result check removed)", lambda j: j["promote"].__setitem__("if", "always() && needs.preview.outputs.release == 'true'"))
     fault("promote runs on failure() of the approval", lambda j: j["promote"].__setitem__("if", "failure() || " + base_if))
+    atl_if = wf["jobs"]["promote-atlas"]["if"]
+    fault("Atlas release job accepts any release branch", lambda j: j["promote-atlas"].__setitem__("if", atl_if.replace("startsWith(github.event.workflow_run.head_branch, 'release/auto/atlas-stats-') &&", "")))
+    fault("Atlas release job accepts any pusher", lambda j: j["promote-atlas"].__setitem__("if", atl_if.replace("github.event.workflow_run.actor.login == 'plotnua-release[bot]' &&", "")))
+    fault("Atlas release job runs for an ordinary offered release", lambda j: j["promote-atlas"].__setitem__("if", atl_if.replace("needs.preview.outputs.atlas == 'true' && needs.preview.outputs.release != 'true'", "needs.preview.outputs.release == 'true'")))
     print("APPROVAL JOBS PROOF · %s · %d failed" % ("OK" if fails == 0 else "FAIL", fails))
     return 1 if fails else 0
 

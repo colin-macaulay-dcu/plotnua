@@ -27,7 +27,9 @@ PIN = "actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510"
 # workflow -> {job: [steps that push release/auto/ branches]}
 RELEASING = {
     "release-promote.yml": {"promote": ["Promote, verify live, roll back automatically if the live check fails",
-                                        "Release the automatic rollback (its own gate must pass on its exact commit)"]},
+                                        "Release the automatic rollback (its own gate must pass on its exact commit)"],
+                            "promote-atlas": ["Promote, verify live, roll back automatically if the live check fails",
+                                              "Release the automatic rollback (its own gate must pass on its exact commit)"]},
     "plotnua-garden-publish.yml": {"publish": ["Publish approved noticeboard listings (content-only, guarded, gated)"],
                                    "promote": ["Wait for the gate on this exact commit, promote, verify live"]},
     "plotnua-ideas-publish.yml": {"publish": ["Publish approved ideas (content-only, guarded, fast-forward)"],
@@ -138,6 +140,26 @@ def check(workflows, texts, tools):
         envs = [((j or {}).get("environment") or {}) for j in ((w or {}).get("jobs") or {}).values()]
         if name != "release-promote.yml" and any(str(e.get("name") if isinstance(e, dict) else e).strip().lower() == "website-production" for e in envs):
             errs.append("A9 %s must not use the website-production environment (founder approval is for website releases only)" % name)
+    # A10 the routine Atlas refresh exception (founder policy, 20 Nov 2026) is restricted to exactly that operation
+    pa = jobs.get("promote-atlas") or {}
+    pacond = str(pa.get("if", ""))
+    pneeds = pa.get("needs") if isinstance(pa.get("needs"), list) else [pa.get("needs")]
+    for need_txt in ("startsWith(github.event.workflow_run.head_branch, 'release/auto/atlas-stats-')",
+                     "github.event.workflow_run.actor.login == 'plotnua-release[bot]'", "github.event.workflow_run.event == 'push'",
+                     "needs.preview.outputs.atlas == 'true'", "needs.preview.outputs.release != 'true'"):
+        if need_txt not in pacond:
+            errs.append("A10 promote-atlas must require %s" % need_txt)
+    if pneeds != ["preview"] or re.search(r"\b(?:always|failure|cancelled)\s*\(", pacond) or (pa.get("concurrency") or {}).get("group") != "production-site":
+        errs.append("A10 promote-atlas must need only the preview, use no status function and take the production-site lock")
+    pst = pa.get("steps") or []
+    vi = [i for i, s in enumerate(pst) if "verify-atlas-refresh.sh" in str(s.get("run", ""))]
+    ai = [i for i, s in enumerate(pst) if s.get("id") == "app"]
+    if len(vi) != 1 or not ai or vi[0] > ai[0]:
+        errs.append("A10 promote-atlas must re-check verify-atlas-refresh.sh before the App token is created")
+    if any("verify-atlas-refresh" in str(s.get("run", "")) for s in (pr.get("steps") or [])):
+        errs.append("A10 the ordinary promote job must never accept an Atlas check in place of the founder's approval")
+    if set(jobs) != {"preview", "approval", "promote", "promote-atlas"}:
+        errs.append("A10 Release to production must have exactly the jobs preview, approval, promote and promote-atlas")
     # A8 the key only in the releasing jobs
     allowed = set(RELEASING)
     for path, t in texts.items():
@@ -186,6 +208,11 @@ def self_test():
     case("promote made to run always()", lambda w,t,tl: w["release-promote.yml"]["jobs"]["promote"].__setitem__("if", "always() && " + w["release-promote.yml"]["jobs"]["promote"]["if"]), "A9")
     case("the waiting approval made to hold the production-site lock", lambda w,t,tl: w["release-promote.yml"]["jobs"]["approval"].__setitem__("concurrency", {"group": "production-site"}), "A9")
     case("a publisher made to wait for website approval", lambda w,t,tl: w["plotnua-garden-publish.yml"]["jobs"]["promote"].__setitem__("environment", "website-production"), "A9")
+    case("Atlas exception widened to any branch", lambda w,t,tl: w["release-promote.yml"]["jobs"]["promote-atlas"].__setitem__("if", w["release-promote.yml"]["jobs"]["promote-atlas"]["if"].replace("'release/auto/atlas-stats-'", "'release/auto/'")), "A10")
+    case("Atlas exception no longer requires the App", lambda w,t,tl: w["release-promote.yml"]["jobs"]["promote-atlas"].__setitem__("if", w["release-promote.yml"]["jobs"]["promote-atlas"]["if"].replace("github.event.workflow_run.actor.login == 'plotnua-release[bot]'", "true")), "A10")
+    case("Atlas re-check dropped", lambda w,t,tl: w["release-promote.yml"]["jobs"]["promote-atlas"].__setitem__("steps", [s for s in w["release-promote.yml"]["jobs"]["promote-atlas"]["steps"] if "verify-atlas" not in str(s.get("run",""))]), "A10")
+    case("Atlas job made to run always()", lambda w,t,tl: w["release-promote.yml"]["jobs"]["promote-atlas"].__setitem__("if", "always() && " + w["release-promote.yml"]["jobs"]["promote-atlas"]["if"]), "A10")
+    case("a third unapproved release job added", lambda w,t,tl: w["release-promote.yml"]["jobs"].__setitem__("promote-fast", {"runs-on": "ubuntu-latest", "steps": []}), "A10")
     case("key referenced by another workflow", lambda w,t,tl: t.__setitem__(os.path.join(WF,"site-health.yml"), t.get(os.path.join(WF,"site-health.yml"),"")+"\n# ${{ secrets.RELEASE_APP_KEY }}\n"), "A8")
     print("\nRELEASE APP PUSH SELF-TEST · %s · %d failed" % ("OK" if fails == 0 else "FAIL", fails))
     return 1 if fails else 0
@@ -197,5 +224,5 @@ if __name__ == "__main__":
     errs = check(*gather())
     for e in errs:
         print("  REFUSED  " + e)
-    print("RELEASE APP PUSH · %s" % ("OK (A1-A9: %d releasing workflows)" % len(RELEASING) if not errs else "REFUSED · %d problem(s)" % len(errs)))
+    print("RELEASE APP PUSH · %s" % ("OK (A1-A10: %d releasing workflows)" % len(RELEASING) if not errs else "REFUSED · %d problem(s)" % len(errs)))
     sys.exit(1 if errs else 0)

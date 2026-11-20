@@ -16,7 +16,7 @@ SHA=$(git rev-parse HEAD); BR="release/auto/$TOPIC-${SHA:0:7}"
 git fetch -q origin main
 git merge-base --is-ancestor origin/main "$SHA" || { echo "REFUSED: HEAD does not contain the current main"; exit 1; }
 bash "$(cd "$(dirname "$0")" && pwd)/push-release-branch.sh" "$SHA" "$BR" || { echo "REFUSED: $BR was not pushed: nothing released"; exit 1; }
-echo "requested: ${SHA:0:7} on $BR (gate starts on the push; if it passes, the release WAITS for the founder's approval)"
+echo "requested: ${SHA:0:7} on $BR (gate starts on the push; if it passes, the release WAITS for the founder's approval, except a routine Atlas statistics refresh pushed by the Release App)"
 echo "approve or reject: https://github.com/colin-macaulay-dcu/plotnua/actions/workflows/release-promote.yml (the waiting run: Review deployments, website-production)"
 [ "$WAIT" = 1 ] || exit 0
 for i in $(seq 1 150); do

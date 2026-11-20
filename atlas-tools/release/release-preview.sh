@@ -23,6 +23,18 @@ if git merge-base --is-ancestor "$SHA" "$MAIN"; then
   echo "release=false" >> "$OUT"; exit 0
 fi
 git merge-base --is-ancestor "$MAIN" "$SHA" || refuse "${SHA:0:7} does not contain the current main ${MAIN:0:7} (main has moved on): request the release again from the current main"
+# Routine Atlas statistics refresh (founder policy, 20 Nov 2026): released automatically by the separate promote-atlas
+# job, ONLY if verify-atlas-refresh.sh (from main) says it is exactly that. Anything else, including any doubt, is
+# offered to the founder for approval like every other release.
+if [ -n "${ACTOR:-}" ] && ATLAS_WHY=$(bash "$(cd "$(dirname "$0")" && pwd)/verify-atlas-refresh.sh" "$SHA" "$BRANCH" "$ACTOR" "${EVENT:-}" 2>&1); then
+  { echo "## Routine Atlas statistics refresh: released without approval (founder policy, 20 Nov 2026)"
+    echo "- Commit [\`${SHA:0:7}\`]($REPO_URL/commit/$SHA) on \`$BRANCH\`, pushed by \`$ACTOR\`, on top of production \`${MAIN:0:7}\`"
+    echo "- ${ATLAS_WHY}"
+    echo "- Only index.html's six Atlas figures and atlas-stats.json change; the promote-atlas job checks this again before release."; } >> "$SUM"
+  echo "release=false" >> "$OUT"; echo "atlas=true" >> "$OUT"
+  echo "routine Atlas refresh: ${SHA:0:7} goes to promote-atlas (no approval)"; exit 0
+fi
+[ -z "${ACTOR:-}" ] || echo "not a routine Atlas refresh: ${ATLAS_WHY:-}"
 N=$(git diff --name-only "$MAIN" "$SHA" | wc -l | tr -d ' ')
 {
   echo "## Website release waiting for founder approval"
