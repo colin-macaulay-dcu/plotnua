@@ -81,6 +81,6 @@
 > - an artist's seller information is deleted when they leave the pilot (each order keeps the copy shown on its quote);
 > - bank transfer records at our bank are kept for six years after the end of the year of payment.
 
-## Change 6: footer
+## Change 6: footer (not made)
 
-"Last updated: October 2026" becomes "Last updated: November 2026".
+The "Last updated" label is governed by the V4/V5 verifiers, as for V16 and V17, so V18 leaves it unchanged. Implemented as `atlas-tools/privacy_v18_layer.py` (changes 1–5), proved by `atlas-tools/prove-privacy-v18.py`.
