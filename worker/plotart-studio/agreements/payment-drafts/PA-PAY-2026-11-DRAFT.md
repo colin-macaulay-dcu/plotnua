@@ -88,7 +88,7 @@ Where Stripe charges such a fee on the same payment, the artist's statement show
   (b) for Stripe account holders elsewhere in Europe, Stripe states that it supplies its services from Ireland without charging VAT on its fees, and the account holder may need to account for VAT under the reverse charge. Stripe charges no VAT on the fee, so there is no VAT for PlotArt to reimburse;
   (c) whether any VAT on Stripe's fees is a final cost depends on the artist's own VAT position. PlotArt does not give tax advice.
 
-3.7 **Examples** (illustration only). A Gallery Artist on 15% commission sells a EUR 1,000 artwork, plus EUR 75 delivery and insurance; the buyer pays EUR 1,075. The fees use Stripe's published standard pricing for EEA businesses (standard EEA cards 1.5% + €0.25; premium EEA cards 1.9% + €0.25; UK cards 2.5% + €0.25; international cards 3.25% + €0.25), as published by Stripe on {issue date}. VAT on Stripe's fee is shown for a Stripe account based in Ireland (clause 3.6).
+3.7 **Examples** (illustration only). A Gallery Artist on 15% commission sells a EUR 1,000 artwork, plus EUR 75 delivery and insurance; the buyer pays EUR 1,075. The fees use Stripe's published standard pricing for EEA businesses (standard EEA cards 1.5% + €0.25; premium EEA cards 1.9% + €0.25; UK cards 2.5% + €0.25; international cards 3.15% + €0.25), as published by Stripe on {issue date}. They are examples: PlotArt reimburses the amounts Stripe actually charges. VAT on Stripe's fee is shown for a Stripe account based in Ireland (clause 3.6).
 
 Example 1: the sale completes, paid with a standard EEA card.
 
@@ -103,7 +103,7 @@ Example 1: the sale completes, paid with a standard EEA card.
 | **Artist's net proceeds** | **€925.00** |
 | Artist's combined deduction for commission and processing | €150.00, the commission |
 
-With other cards, the fee and VAT reimbursed would be (fee + VAT): premium EEA €20.68 + €4.76; UK €27.13 + €6.24; international €35.19 + €8.09. The artist's net proceeds stay €925.00. For a Stripe account outside Ireland, Stripe charges no VAT on the fee, so PlotArt reimburses €16.38 and the net proceeds are again €925.00.
+With other cards, the fee and VAT reimbursed would be (fee + VAT): premium EEA €20.68 + €4.76; UK €27.13 + €6.24; international €34.11 + €7.85. The artist's net proceeds stay €925.00. For a Stripe account outside Ireland, Stripe charges no VAT on the fee, so PlotArt reimburses €16.38 and the net proceeds are again €925.00.
 
 Example 2: as example 1, then the artist agrees with the buyer to refund €500 of the price. The buyer keeps the artwork (one original); this is a partial refund of its price, not a return of part of it.
 
@@ -127,7 +127,7 @@ Example 3: as example 1, then the buyer cancels and is refunded €1,075 in full
 
 Stripe does not return its processing fee when a payment is refunded; under this addendum PlotArt bears it. The return cost the buyer pays on cancellation (clause 7.2) is not shown.
 
-Example 4: a EUR 100 artwork with EUR 400 delivery, paid with an international card. Commission is €15.00. Stripe's fee on €500 is €16.50, with €3.80 VAT: €20.30 in all. PlotArt returns its €15.00 application fee in full and pays the remaining €5.30 directly (clause 3.5). The artist's net proceeds are €485.00.
+Example 4: a EUR 100 artwork with EUR 400 delivery, paid with an international card. Commission is €15.00. Stripe's fee on €500 is €16.00, with €3.68 VAT: €19.68 in all. PlotArt returns its €15.00 application fee in full and pays the remaining €4.68 directly (clause 3.5). The artist's net proceeds are €485.00.
 
 3.8 **The artist's statement.** For each pilot order, PlotArt Studio shows the artist the following as separate lines:
   (a) the gross payment, and the artwork and delivery amounts within it;
