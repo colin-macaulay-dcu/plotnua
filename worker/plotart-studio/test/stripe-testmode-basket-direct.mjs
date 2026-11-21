@@ -63,6 +63,7 @@ export async function proveBasketDirect({ KEY, accounts, rec, v1, runId, playwri
   const { chromium } = createRequire(playwrightFrom)('playwright');
   const browser = await chromium.launch();
   async function enterCardOnce(label, card) {
+    if (created.captchaBlocked) return { error: { stage: 'not attempted', message: 'browser automation stopped: hosted checkout required hCaptcha verification earlier in this run' } };
     const cus = await api('POST', '/v1/customers', { description: 'PlotArt basket POC test buyer (' + label + ')', 'metadata[poc]': tag });
     if (!cus.ok) return { error: cus.err };
     created.customers.push(cus.j.id);
@@ -97,6 +98,24 @@ export async function proveBasketDirect({ KEY, accounts, rec, v1, runId, playwri
       if (required) throw Error('required field unavailable: ' + css.split(',')[0]);
       return false;
     };
+    const frameHost = f => { try { return new URL(f.url()).host; } catch { return ''; } };
+    const isStripeHost = h => /(^|\.)stripe\.com$/.test(h) || h === '';
+    const isCaptchaHost = h => /(^|\.)hcaptcha\.com$/.test(h);
+    const fieldIn = async (css, keep, timeout = 1500) => {
+      const end = Date.now() + timeout;
+      do { for (const f of page.frames()) if (keep(f)) for (const m of await f.locator(css).all().catch(() => [])) if (await m.isVisible().catch(() => false)) return m;
+        await page.waitForTimeout(300); } while (Date.now() < end);
+      return null;
+    };
+    // a visible hCaptcha challenge frame (the checkbox/anchor frame alone is not a challenge); read-only check
+    const captchaChallengeVisible = async () => {
+      for (const f of page.frames()) {
+        if (!isCaptchaHost(frameHost(f)) || !/challenge/i.test(f.url())) continue;
+        const el = await f.frameElement().catch(() => null);
+        if (el && await el.isVisible().catch(() => false)) return true;
+      }
+      return false;
+    };
     try {
       await page.goto(cs.j.url, { waitUntil: 'domcontentloaded' });
       // field order and selectors as in the proven buyer test (test/stripe-testmode-buyer.mjs)
@@ -129,12 +148,20 @@ export async function proveBasketDirect({ KEY, accounts, rec, v1, runId, playwri
         for (const css of ['#payment-numberInput', '#payment-expiryInput', '#payment-cvcInput', '#payment-postalCodeInput', '#payment-linkMobilePhoneInput']) {
           const el = await field(css, 1); if (el && !(await el.inputValue().catch(() => ''))) empty.push(css.slice(1));
         }
-        const msgs = [];
-        for (const f of page.frames()) msgs.push(...await f.locator('.FieldError:visible,[role="alert"]:visible,p[class*="Error"]:visible')
-          .evaluateAll(ns => ns.map(n => (n.innerText || '').trim()).filter(Boolean)).catch(() => []));
-        return { empty, messages: [...new Set(msgs.map(scrubText))].slice(0, 6) };
+        // every visible message, with the host of the frame it came from: Stripe's own frames vs third parties (e.g. hCaptcha)
+        const stripe = [], thirdParty = [];
+        for (const f of page.frames()) {
+          const host = frameHost(f), ours = isStripeHost(host);
+          const texts = await f.locator('.FieldError:visible,[role="alert"]:visible,p[class*="Error"]:visible')
+            .evaluateAll(ns => ns.map(n => (n.innerText || '').trim()).filter(Boolean)).catch(() => []);
+          for (const text of texts) (ours ? stripe : thirdParty).push({ frame: host, text: scrubText(text) });
+        }
+        const dedupe = a => a.filter((m, i) => a.findIndex(x => x.frame === m.frame && x.text === m.text) === i).slice(0, 6);
+        return { empty, stripe_messages: dedupe(stripe), third_party_messages: dedupe(thirdParty), messages: dedupe(stripe).map(m => m.text) };
       };
       await page.waitForTimeout(800);   // let Stripe validate the fields just filled
+      const optInEl = await field('#payment-linkOptInInput', 500);
+      diag.link_opt_in_checked = optInEl ? await optInEl.isChecked().catch(() => null) : 'absent';
       let pre = await problems();
       // the phone is only needed because Link sign-up is ticked; if Stripe still rejects it, untick Link instead (no Link account)
       if (pre.messages.some(m => /phone/i.test(m))) {
@@ -142,7 +169,8 @@ export async function proveBasketDirect({ KEY, accounts, rec, v1, runId, playwri
         if (optIn && await optIn.isChecked().catch(() => false)) { await optIn.uncheck().catch(() => {}); diag.link_opt_in = 'unticked after phone rejected'; }
         await page.waitForTimeout(800); pre = await problems();
       }
-      if (pre.empty.length || pre.messages.length) { diag.pre_submit = pre; stage = 'pre-submit validation'; throw Error('form invalid before submit'); }
+      diag.pre_submit = pre;   // recorded in every case; third-party warnings (e.g. hCaptcha) never stop the attempt by themselves
+      if (pre.empty.length || pre.messages.length) { stage = 'pre-submit validation'; throw Error('form invalid before submit (Stripe field error or empty field)'); }
       stage = 'submit';
       const submit = await firstOf(['#payment-form-submit-button', '[data-testid="payment-form-submit-button"]', '[data-testid="hosted-payment-submit-button"]',
         'button[type="submit"]:text-matches("^(Pay|Save|Set up|Continue|Confirm)(\\s|$)","i")', 'button.SubmitButton'], 8000);
@@ -152,13 +180,18 @@ export async function proveBasketDirect({ KEY, accounts, rec, v1, runId, playwri
       stage = 'await completion or authentication';
       const end = Date.now() + 90000;
       while (Date.now() < end && !page.url().startsWith('https://example.com/')) {
-        const auth = await field('#test-source-authorize-3ds,button:has-text("Complete"),button:has-text("COMPLETE")', 1500);
+        // Stripe's TEST 3-D Secure page only (never anything inside an hCaptcha frame)
+        const auth = await fieldIn('#test-source-authorize-3ds,button:has-text("Complete"),button:has-text("COMPLETE")', f => !isCaptchaHost(frameHost(f)), 1500);
         if (auth) { challenged = true; await auth.click().catch(() => {}); }
+        // an hCaptcha challenge shown to the browser = additional verification required: record it and stop (no bypass)
+        if (await captchaChallengeVisible()) { diag.after_submit = await problems(); diag.verification = 'hcaptcha_challenge';
+          created.captchaBlocked = true; stage = 'additional verification required'; throw Error('Stripe requires additional verification (hCaptcha challenge)'); }
         const after = await problems();
         if (after.messages.length) { diag.after_submit = after; throw Error('Stripe rejected the form: ' + after.messages.join(' | ')); }
         await page.waitForTimeout(500);
       }
-      if (!page.url().startsWith('https://example.com/')) throw Error('hosted page did not complete');
+      if (!page.url().startsWith('https://example.com/')) { diag.after_submit = await problems(); diag.verification = 'not completed, no challenge seen'; throw Error('hosted page did not complete'); }
+      diag.completed = true;
       const done = await api('GET', '/v1/checkout/sessions/' + cs.j.id + '?expand[]=setup_intent');
       const si = done.j.setup_intent;
       return { customer: cus.j.id, session: cs.j.id, setup_intent: si?.id, si_status: si?.status, pm: si?.payment_method, usage: si?.usage, challenged };
@@ -316,6 +349,8 @@ export async function proveBasketDirect({ KEY, accounts, rec, v1, runId, playwri
     rec('BD-X', 'unexpected error (run stopped; clean-up follows)', S, 'FAIL', { message: String(err.message).slice(0, 200) });
   } finally {
     await browser.close().catch(() => {});
+    if (created.captchaBlocked) info('BD-HC', 'hosted checkout asked for hCaptcha verification: browser automation stopped (no bypass attempted)', {
+      recommendation: 'test the hosted setup page manually in a browser once; test the two artist charges separately with a server-side TEST payment method (no browser)' });
     // ---- clean-up: nothing kept beyond the test
     const out = { cancelled: 0, refunded: 0, customers_deleted: 0, errors: [] };
     for (const [acct, id] of created.uncaptured) {
