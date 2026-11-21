@@ -51,10 +51,20 @@
    "dhash": "3d33372725251531",
    "source_sha256": "6bee532a22e789ef7627ff5f64c80fca2e531edb36b5e784bea899c6c6ce4d4b",
    "stem": "that-s-the-way-i-like-1"
+  },
+  {
+   "dhash": "800af0e4f0e01e00",
+   "source_sha256": "6e442fc4c679af46d7d7b93936979696989e5bf78570ecba076e4ab8640ce82d",
+   "stem": "beautifully-unplanned-1"
+  },
+  {
+   "dhash": "626a72e8cce4c4da",
+   "source_sha256": "a632e012d45cb0e646ecf565f7693ce9dec5665e941e1d06ccb749080b0b4ee3",
+   "stem": "i-love-you-1"
   }
  ],
  "publication": {
-  "approved_at": "2026-11-19T22:44:34.520Z",
+  "approved_at": "2026-11-21T13:52:12.145Z",
   "approved_by": "founder",
   "first_approved_at": "2026-11-19T22:35:37.377Z",
   "licence_accepted_at": "2026-11-12T09:21:45.672Z",
@@ -62,7 +72,7 @@
   "permission_ref": "PA-PERM-a05ira7lpep",
   "state": "approved",
   "test_note": null,
-  "version": "v2"
+  "version": "v3"
  },
  "schema": "plotnua.plotart.gallery-package.v1",
  "works": [
@@ -120,6 +130,118 @@
    "slug": "that-s-the-way-i-like",
    "title": "That’s the way I like it",
    "w_cm": 60,
+   "year": 2026
+  },
+  {
+   "ai_founder_decision": null,
+   "ai_involvement": "none",
+   "ai_note": null,
+   "availability": "available",
+   "d_cm": 2,
+   "description": "When the colours make you stop and feel good",
+   "h_cm": 60,
+   "id": "wvs76xwso33",
+   "images": [
+    {
+     "alt": "Eyptian cotton back ground with colour",
+     "aspect": 0.4622,
+     "derivatives": [
+      {
+       "file": "beautifully-unplanned-1-600.webp",
+       "long_edge": 600,
+       "pixels": [
+        277,
+        600
+       ]
+      },
+      {
+       "file": "beautifully-unplanned-1-1200.webp",
+       "long_edge": 1200,
+       "pixels": [
+        555,
+        1200
+       ]
+      },
+      {
+       "file": "beautifully-unplanned-1-2000.webp",
+       "long_edge": 2000,
+       "pixels": [
+        924,
+        2000
+       ]
+      }
+     ],
+     "photo_credit": null,
+     "pixels": [
+      1284,
+      2778
+     ],
+     "role": "main"
+    }
+   ],
+   "materials": "Palate knife",
+   "medium": "Acrylic",
+   "price_eur": 350,
+   "price_on_request": false,
+   "slug": "beautifully-unplanned",
+   "title": "Beautifully unplanned",
+   "w_cm": 50,
+   "year": 2026
+  },
+  {
+   "ai_founder_decision": null,
+   "ai_involvement": "none",
+   "ai_note": null,
+   "availability": "available",
+   "d_cm": 2,
+   "description": null,
+   "h_cm": 70,
+   "id": "w5jk1rjkmgo",
+   "images": [
+    {
+     "alt": "Full of colour",
+     "aspect": 0.75,
+     "derivatives": [
+      {
+       "file": "i-love-you-1-600.webp",
+       "long_edge": 600,
+       "pixels": [
+        450,
+        600
+       ]
+      },
+      {
+       "file": "i-love-you-1-1200.webp",
+       "long_edge": 1200,
+       "pixels": [
+        900,
+        1200
+       ]
+      },
+      {
+       "file": "i-love-you-1-2000.webp",
+       "long_edge": 2000,
+       "pixels": [
+        1500,
+        2000
+       ]
+      }
+     ],
+     "photo_credit": null,
+     "pixels": [
+      3024,
+      4032
+     ],
+     "role": "main"
+    }
+   ],
+   "materials": null,
+   "medium": "Acrylic",
+   "price_eur": 350,
+   "price_on_request": false,
+   "slug": "i-love-you",
+   "title": "I love you",
+   "w_cm": 50,
    "year": 2026
   }
  ]

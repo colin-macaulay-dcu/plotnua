@@ -21031,130 +21031,6 @@
     },
     {
       "ai_involvement": "none",
-      "artist_slug": "nick-munier",
-      "asset": "plotart/artists/nick-munier/img/portrait-600.webp",
-      "bytes": 31908,
-      "class": "ARTIST_SUPPLIED_ARTWORK",
-      "colour": "converted to sRGB from the embedded profile (Display P3)",
-      "licence_version": "PA-GPIL-2026-11",
-      "permission_ref": "PA-PERM-a05ira7lpep",
-      "permitted_surfaces": [
-        "plotart-artist-gallery",
-        "plotart-virtual-gallery"
-      ],
-      "photo_credit": null,
-      "photographer": "self",
-      "pixels": [
-        600,
-        569
-      ],
-      "processing": [
-        "camera rotation (EXIF orientation) applied",
-        "colour converted to sRGB where a profile was embedded",
-        "all metadata removed (EXIF, GPS, XMP, ICC)",
-        "never cropped or upscaled",
-        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
-      ],
-      "sha256": "fcaf556e18a083be35097e12c2b82af3f4759a10d596a7f336edda597cb04ef7",
-      "source_sha256": "0160bcf623846c94e4b7c04da174ecdc8b381eb60c1fadf1aeb93c302c172e6e",
-      "subject": "portrait",
-      "work_slug": null
-    },
-    {
-      "ai_involvement": "none",
-      "artist_slug": "nick-munier",
-      "asset": "plotart/artists/nick-munier/img/that-s-the-way-i-like-1-600.webp",
-      "bytes": 66606,
-      "class": "ARTIST_SUPPLIED_ARTWORK",
-      "colour": "sRGB (no embedded profile; treated as sRGB)",
-      "licence_version": "PA-GPIL-2026-11",
-      "permission_ref": "PA-PERM-a05ira7lpep",
-      "permitted_surfaces": [
-        "plotart-artist-gallery",
-        "plotart-virtual-gallery"
-      ],
-      "photo_credit": null,
-      "photographer": "self",
-      "pixels": [
-        600,
-        574
-      ],
-      "processing": [
-        "camera rotation (EXIF orientation) applied",
-        "colour converted to sRGB where a profile was embedded",
-        "all metadata removed (EXIF, GPS, XMP, ICC)",
-        "never cropped or upscaled",
-        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
-      ],
-      "sha256": "7bb2717dde8753c641d107cdbc2b439a7fd7bf41223b09de0abc2830c58340e3",
-      "source_sha256": "6bee532a22e789ef7627ff5f64c80fca2e531edb36b5e784bea899c6c6ce4d4b",
-      "subject": "artwork",
-      "work_slug": "that-s-the-way-i-like"
-    },
-    {
-      "ai_involvement": "none",
-      "artist_slug": "nick-munier",
-      "asset": "plotart/artists/nick-munier/img/that-s-the-way-i-like-1-1200.webp",
-      "bytes": 141938,
-      "class": "ARTIST_SUPPLIED_ARTWORK",
-      "colour": "sRGB (no embedded profile; treated as sRGB)",
-      "licence_version": "PA-GPIL-2026-11",
-      "permission_ref": "PA-PERM-a05ira7lpep",
-      "permitted_surfaces": [
-        "plotart-artist-gallery",
-        "plotart-virtual-gallery"
-      ],
-      "photo_credit": null,
-      "photographer": "self",
-      "pixels": [
-        1200,
-        1148
-      ],
-      "processing": [
-        "camera rotation (EXIF orientation) applied",
-        "colour converted to sRGB where a profile was embedded",
-        "all metadata removed (EXIF, GPS, XMP, ICC)",
-        "never cropped or upscaled",
-        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
-      ],
-      "sha256": "a71171d2a84a77862c2871081a1a71c17fb7496f2756088d0de8f93dc75d65c3",
-      "source_sha256": "6bee532a22e789ef7627ff5f64c80fca2e531edb36b5e784bea899c6c6ce4d4b",
-      "subject": "artwork",
-      "work_slug": "that-s-the-way-i-like"
-    },
-    {
-      "ai_involvement": "none",
-      "artist_slug": "nick-munier",
-      "asset": "plotart/artists/nick-munier/img/that-s-the-way-i-like-1-2000.webp",
-      "bytes": 255220,
-      "class": "ARTIST_SUPPLIED_ARTWORK",
-      "colour": "sRGB (no embedded profile; treated as sRGB)",
-      "licence_version": "PA-GPIL-2026-11",
-      "permission_ref": "PA-PERM-a05ira7lpep",
-      "permitted_surfaces": [
-        "plotart-artist-gallery",
-        "plotart-virtual-gallery"
-      ],
-      "photo_credit": null,
-      "photographer": "self",
-      "pixels": [
-        2000,
-        1912
-      ],
-      "processing": [
-        "camera rotation (EXIF orientation) applied",
-        "colour converted to sRGB where a profile was embedded",
-        "all metadata removed (EXIF, GPS, XMP, ICC)",
-        "never cropped or upscaled",
-        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
-      ],
-      "sha256": "b8683f4febd849c9f39ea0f450a2af446338a9617784e6a3750b95cfe892bb86",
-      "source_sha256": "6bee532a22e789ef7627ff5f64c80fca2e531edb36b5e784bea899c6c6ce4d4b",
-      "subject": "artwork",
-      "work_slug": "that-s-the-way-i-like"
-    },
-    {
-      "ai_involvement": "none",
       "artist_slug": "clare-o-connor",
       "asset": "plotart/artists/clare-o-connor/img/portrait-600.webp",
       "bytes": 67610,
@@ -23818,6 +23694,316 @@
       "source_sha256": "207648828a07478dbcdeba699993807efaf70d4e0f53881a2466f517b07532c7",
       "subject": "artwork",
       "work_slug": "coastal-series-7"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "nick-munier",
+      "asset": "plotart/artists/nick-munier/img/portrait-600.webp",
+      "bytes": 31908,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (Display P3)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-a05ira7lpep",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        600,
+        569
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "fcaf556e18a083be35097e12c2b82af3f4759a10d596a7f336edda597cb04ef7",
+      "source_sha256": "0160bcf623846c94e4b7c04da174ecdc8b381eb60c1fadf1aeb93c302c172e6e",
+      "subject": "portrait",
+      "work_slug": null
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "nick-munier",
+      "asset": "plotart/artists/nick-munier/img/that-s-the-way-i-like-1-600.webp",
+      "bytes": 66606,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "sRGB (no embedded profile; treated as sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-a05ira7lpep",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        600,
+        574
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "7bb2717dde8753c641d107cdbc2b439a7fd7bf41223b09de0abc2830c58340e3",
+      "source_sha256": "6bee532a22e789ef7627ff5f64c80fca2e531edb36b5e784bea899c6c6ce4d4b",
+      "subject": "artwork",
+      "work_slug": "that-s-the-way-i-like"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "nick-munier",
+      "asset": "plotart/artists/nick-munier/img/that-s-the-way-i-like-1-1200.webp",
+      "bytes": 141938,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "sRGB (no embedded profile; treated as sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-a05ira7lpep",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        1200,
+        1148
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "a71171d2a84a77862c2871081a1a71c17fb7496f2756088d0de8f93dc75d65c3",
+      "source_sha256": "6bee532a22e789ef7627ff5f64c80fca2e531edb36b5e784bea899c6c6ce4d4b",
+      "subject": "artwork",
+      "work_slug": "that-s-the-way-i-like"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "nick-munier",
+      "asset": "plotart/artists/nick-munier/img/that-s-the-way-i-like-1-2000.webp",
+      "bytes": 255220,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "sRGB (no embedded profile; treated as sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-a05ira7lpep",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        2000,
+        1912
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "b8683f4febd849c9f39ea0f450a2af446338a9617784e6a3750b95cfe892bb86",
+      "source_sha256": "6bee532a22e789ef7627ff5f64c80fca2e531edb36b5e784bea899c6c6ce4d4b",
+      "subject": "artwork",
+      "work_slug": "that-s-the-way-i-like"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "nick-munier",
+      "asset": "plotart/artists/nick-munier/img/beautifully-unplanned-1-600.webp",
+      "bytes": 15886,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (Display P3)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-a05ira7lpep",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        277,
+        600
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "dcd2a1fadd903373ecce1de9f21d9ae01272df3b5aab2a49a6a6bafd5ba39f11",
+      "source_sha256": "6e442fc4c679af46d7d7b93936979696989e5bf78570ecba076e4ab8640ce82d",
+      "subject": "artwork",
+      "work_slug": "beautifully-unplanned"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "nick-munier",
+      "asset": "plotart/artists/nick-munier/img/beautifully-unplanned-1-1200.webp",
+      "bytes": 44656,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (Display P3)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-a05ira7lpep",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        555,
+        1200
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "cf0e3357675934251a6015a564bdda5074c17370bae6f7c97eeb2b9ddea22d8d",
+      "source_sha256": "6e442fc4c679af46d7d7b93936979696989e5bf78570ecba076e4ab8640ce82d",
+      "subject": "artwork",
+      "work_slug": "beautifully-unplanned"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "nick-munier",
+      "asset": "plotart/artists/nick-munier/img/beautifully-unplanned-1-2000.webp",
+      "bytes": 104144,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (Display P3)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-a05ira7lpep",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        924,
+        2000
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "310daa40bef3d032609e663916ce75efbfe8681c4b3b5ec720cb8270bab7f2ed",
+      "source_sha256": "6e442fc4c679af46d7d7b93936979696989e5bf78570ecba076e4ab8640ce82d",
+      "subject": "artwork",
+      "work_slug": "beautifully-unplanned"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "nick-munier",
+      "asset": "plotart/artists/nick-munier/img/i-love-you-1-600.webp",
+      "bytes": 51036,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (Display P3)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-a05ira7lpep",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        450,
+        600
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "f6904de61becd804935ce73617775479053e482c9063ce251d00ce404d901c9c",
+      "source_sha256": "a632e012d45cb0e646ecf565f7693ce9dec5665e941e1d06ccb749080b0b4ee3",
+      "subject": "artwork",
+      "work_slug": "i-love-you"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "nick-munier",
+      "asset": "plotart/artists/nick-munier/img/i-love-you-1-1200.webp",
+      "bytes": 183808,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (Display P3)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-a05ira7lpep",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        900,
+        1200
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "1aafe02e732865201d809ee2527bd1675544751a89ebb471f4a0787cf1b148f7",
+      "source_sha256": "a632e012d45cb0e646ecf565f7693ce9dec5665e941e1d06ccb749080b0b4ee3",
+      "subject": "artwork",
+      "work_slug": "i-love-you"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "nick-munier",
+      "asset": "plotart/artists/nick-munier/img/i-love-you-1-2000.webp",
+      "bytes": 439664,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (Display P3)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-a05ira7lpep",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        1500,
+        2000
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "0d94138599bba3cbfe9dbe156f5bdff9eb6ab6bd2462ce6f6271c392bb15b730",
+      "source_sha256": "a632e012d45cb0e646ecf565f7693ce9dec5665e941e1d06ccb749080b0b4ee3",
+      "subject": "artwork",
+      "work_slug": "i-love-you"
     }
   ],
   "legacy_undeclared": [
