@@ -21,7 +21,7 @@ const nonce = () => [...crypto.getRandomValues(new Uint8Array(16))].map(b => b.t
 const gallery = env => env.GALLERY_ORIGIN || 'https://plotnua.ie';
 /* STAGING ONLY: synthetic artwork pages served by this Worker so testers can browse, add to a basket and pay in Stripe TEST
    mode. Never in production or live mode: all three conditions must hold. */
-export const stagingGallery = env => env.STAGING_GALLERY === 'true' && ['staging', 'local'].includes(env.ENVIRONMENT) && (() => { const m = S.stripeMode(env); return m.ok && !m.live; })();
+export const stagingGallery = env => env.STAGING_GALLERY === 'true' && ['staging', 'test', 'local'].includes(env.ENVIRONMENT) && (() => { const m = S.stripeMode(env); return m.ok && !m.live; })();
 
 function headers(env, n, { stripe = false } = {}) {
   const csp = ["default-src 'none'", `script-src 'nonce-${n}'${stripe ? ' https://js.stripe.com' : ''}`, `connect-src 'self'${stripe ? ' https://api.stripe.com' : ''}`,

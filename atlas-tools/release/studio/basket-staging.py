@@ -92,6 +92,26 @@ def app_body(kind):
             "policies": [{"name": "Staging testers" if kind == "public" else "Founder", "decision": "allow", "include": [{"email": {"email": e}} for e in sorted(set(emails))], "precedence": 1}]}
 
 
+if MODE == "test_access":
+    # The EXISTING TEST checkout Worker (plotart-checkout-test): put it behind Access before the basket and the synthetic gallery
+    # are deployed there. The Stripe webhook path stays reachable (bypass; the Worker accepts only Stripe-signed events), so the
+    # existing TEST webhooks keep working. Creates at most two Access applications; changes nothing that exists.
+    H = re.sub(r"^https://|/$", "", E("CHECKOUT_TEST_ORIGIN"))
+    if not re.fullmatch(r"plotart-checkout-test\.[a-z0-9-]+\.workers\.dev", H): raise SystemExit("REFUSED: CHECKOUT_TEST_ORIGIN is not the TEST checkout Worker")
+    emails = sorted({x.strip() for x in (E("CHECKOUT_TEST_FOUNDER_EMAILS") + "," + E("BASKET_STAGING_TESTER_EMAILS")).split(",") if x.strip()})
+    if not emails: raise SystemExit("REFUSED: no founder email to allow")
+    s, j = cf("GET", f"/accounts/{ACC}/access/apps?per_page=100", ACCESS_TOKEN)
+    if s != 200: out("FAIL", f"Access applications not readable with CHECKOUT_TEST_ACCESS_TOKEN (HTTP {s})"); sys.exit(1)
+    have = {(a.get("domain") or "").rstrip("/"): a for a in j.get("result") or []}
+    want = [("webhook", H + "/v1/stripe/webhook", {"name": "PlotArt checkout TEST webhook", "type": "self_hosted", "domain": H + "/v1/stripe/webhook", "session_duration": "30m", "app_launcher_visible": False,
+              "policies": [{"name": "Stripe webhooks (signature checked by the Worker)", "decision": "bypass", "include": [{"everyone": {}}], "precedence": 1}]}),
+            ("site", H, {"name": "PlotArt checkout TEST", "type": "self_hosted", "domain": H, "session_duration": "24h", "app_launcher_visible": False,
+              "policies": [{"name": "Founder and testers", "decision": "allow", "include": [{"email": {"email": e}} for e in emails], "precedence": 1}]})]
+    for kind, dom, body in want:
+        if dom in have: out("INFO", f"Access already protects {dom} ({kind}): unchanged"); continue
+        s, j = cf("POST", f"/accounts/{ACC}/access/apps", ACCESS_TOKEN, body)
+        out("PASS" if s in (200, 201) else "FAIL", f"Access {kind} application for {dom} " + ("created" if s in (200, 201) else f"NOT created (HTTP {s})"))
+    sys.exit(1 if fails else 0)
 if MODE not in ("plan", "create", "db_gate", "db_verify"): raise SystemExit("unknown mode")
 if not forms(): sys.exit(1)
 s, j = cf("GET", "/user/tokens/verify", TOKEN)
