@@ -209,15 +209,15 @@ def _opening_item(pkg, w, im, base):
 
 
 def opening(selection, packages, base=BASE):
+    # Browse All Artworks moved beside the heading (founder visual refinements 21 Nov 2026), so the row stands alone
     items = opening_items(selection, packages)
-    more = browse(packages, base)
-    if not items and not more:
+    if not items:
         return ""
     # tabindex: on phones and tablets the row scrolls sideways; as a focusable region keyboard users can move it with the
     # arrow keys (and every title and artist is a link in the tab order)
-    row = ('\n  <ol class="pa-op-row n-%d" aria-label="Selected artworks" tabindex="0">%s\n  </ol>' % (
-        len(items), "".join(_opening_item(p, w, im, base) for p, w, im in items))) if items else ""
-    return '<section class="pa-op" aria-label="Selected artworks"><div class="pa-wrap">%s\n  %s\n</div></section>' % (row, more)
+    row = '\n  <ol class="pa-op-row n-%d" aria-label="Selected artworks" tabindex="0">%s\n  </ol>' % (
+        len(items), "".join(_opening_item(p, w, im, base) for p, w, im in items))
+    return '<section class="pa-op" aria-label="Selected artworks"><div class="pa-wrap">%s\n</div></section>' % row
 
 
 def content(selection, packages, base=BASE):
@@ -229,18 +229,6 @@ def content(selection, packages, base=BASE):
             '  <ol class="pa-fa-list n-%d">%s\n  </ol>\n'
             '</div></section>') % (len(items), "".join(_item(p, w, im, base) for p, w, im in items)) if items else ""
     return "\n".join(x for x in (first, feat) if x)
-
-
-def browse(packages, base=BASE):
-    """Browse All Artworks (founder brief 21 Nov 2026; under the opening artworks since the artwork-first redesign): one
-    button into the complete All Artworks collection and its Refine filters, shown while that page lists any work (the
-    same rows, plotart_search_content.collection_order with its own rule). No published work: no link."""
-    rows = C.collection_order(packages, C.COLLECTIONS["artworks/index.html"]["keep"])
-    if not rows:
-        return ""
-    # the count line beneath it was removed at the founder's final review (21 Nov 2026): the button alone
-    return ('<p class="pa-op-browse"><a class="pa-btn pa-btn--ghost" href="%sartworks/" data-pa-track="gallery_browse_artworks">'
-            'Browse All Artworks <span aria-hidden="true">&rarr;</span></a></p>') % base
 
 
 def region(doc):

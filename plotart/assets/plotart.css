@@ -929,3 +929,15 @@ html.pa-lb-on{ overflow:hidden; }
   .pa-head--pills .pa-wrap{ gap:8px; }
 }
 @media (max-width:359px){ .pa-head--pills .pa-part{ display:none; } :where(body.pa) .pa-head a.pa-login{ padding:0 10px; font-size:13px; } }   /* the narrowest phones only: room for Artist Login and Menu */
+
+/* ==== Logo prominence (founder refinement 21 Nov 2026): the stacked Organic P logo about 28% larger (78 -> 100 px; phones
+   64 -> 80 px), the P and the PlotArt wordmark together, as they are one drawing. The header's own padding is tightened so
+   it grows only a little (desktop 97 -> 109 px, tablets 157 -> 169 px, phones 81 -> 89 px); the pills, Artist Login and Menu are unchanged. ==== */
+.pa-logo{ height:100px; }
+.pa-head .pa-wrap{ min-height:108px; }
+@media (min-width:721px) and (max-width:1180px){ .pa-head--pills .pa-wrap{ padding-top:6px; padding-bottom:8px; } }   /* tablets: logo row, then the pills */
+@media (max-width:720px){
+  .pa-head--pills .pa-logo{ height:80px; }
+  .pa-head--pills .pa-wrap{ min-height:0; padding-top:4px; padding-bottom:4px; }
+  .pa-head{ --pn-sm-top:89px; }
+}

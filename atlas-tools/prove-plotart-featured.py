@@ -26,8 +26,8 @@ FA9  the launch guard (L11, L20, L6) passes the real page and refuses the same t
 FA10 in a browser at 1440, 820 and 390 px: images load whole (never cropped), no sideways scrolling, no script errors,
      every link resolves (--shots saves previews)
 FA11 the published galleries were only read
-FA12 Browse All Artworks (21 Nov 2026): one button under the opening artworks to All Artworks, no count line; no
-     available work -> no link
+FA12 Browse All Artworks (21 Nov 2026): one button beside the heading to All Artworks, none under the artwork row, no
+     count line; no available work -> no opening row
 FA13 the opening artworks (artwork first, 21 Nov 2026): the curated three from published galleries, never repeating a
      featured artwork; an ineligible curated work is replaced deterministically (founder refinement 21 Nov 2026)
 Real artist data is only READ (and changed only inside throwaway copies); nothing is written to the live tree.
@@ -201,12 +201,14 @@ check("FA7 introductions are verbatim published biography text: whole sentences 
 # FA12 Browse All Artworks (21 Nov 2026): beside the heading, one link to the All Artworks page, its counts exactly that
 # page's own (same rows, same published galleries), changing with publications; no published work -> no link
 import plotart_search_content as C       # noqa: E402
-BROWSE = ('<p class="pa-op-browse"><a class="pa-btn pa-btn--ghost" href="../artworks/" data-pa-track="gallery_browse_artworks">'
-          'Browse All Artworks <span aria-hidden="true">&rarr;</span></a></p>')
+BROWSE = ('<p class="pa-vg2-act pa-vg2-browse"><a class="pa-btn pa-btn--ghost" href="../artworks/" data-pa-track="gallery_browse_artworks">'
+          'Browse All Artworks <span aria-hidden="true">→</span></a></p>')
 reg = FEAT.content(SEL, PK)
-check("FA12 Browse All Artworks is one button directly under the opening artworks (artwork first, 21 Nov 2026), above Featured Artists, linking to the All Artworks page, with no count line beneath it",
-      reg.count(BROWSE) == 1 and reg.count('href="../artworks/"') == 1 and reg.index("pa-op-row") < reg.index("pa-op-browse") < reg.index('class="pa-sec pa-fa"')
-      and "original works" not in reg and "pa-op-browse-n" not in reg and 'class="pa-fa-head"' in reg and "pa-fa-browse" not in reg and "pa-rf" not in reg)
+_hero = re.search(r'<section class="pa-vg2-hero">.*?</section>', LIVE_DOC, re.S)
+check("FA12 Browse All Artworks is one button beside the heading (visual refinements 21 Nov 2026), above the opening artworks, linking to the All Artworks page; nothing under the artwork row, no count line",
+      _hero is not None and _hero.group(0).count(BROWSE) == 1 and LIVE_DOC.count('data-pa-track="gallery_browse_artworks"') == 1
+      and LIVE_DOC.index(BROWSE) < LIVE_DOC.index('<section class="pa-op"') and 'href="../artworks/"' not in reg and "pa-op-browse" not in reg
+      and "original works by" not in LIVE_DOC and 'class="pa-fa-head"' in reg and "pa-rf" not in reg)
 _empty = [dict(copy.deepcopy(p), works=[dict(w, availability="sold") for w in p["works"]]) for p in PK]
 check("FA12c with no available work there is no Browse link and no opening row (Featured Artists, which shows sold work too, stays)",
       "pa-op" not in FEAT.content(SEL, _empty) and 'class="pa-fa-head"' in FEAT.content(SEL, _empty))
