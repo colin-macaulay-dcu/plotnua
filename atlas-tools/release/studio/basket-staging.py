@@ -20,6 +20,7 @@ import json, os, re, sys, urllib.error, urllib.request
 
 MODE = sys.argv[1] if len(sys.argv) > 1 else "plan"
 API = "https://api.cloudflare.com/client/v4"
+if re.fullmatch(r"http://127\.0\.0\.1:\d+", os.environ.get("CF_API_TEST_BASE", "")): API = os.environ["CF_API_TEST_BASE"]   # local tests only
 DB_NAME = "plotart-basket-staging"
 WORKERS = ("plotart-basket-staging", "plotart-basket-staging-studio")
 APPS = {"public": "PlotArt basket staging", "webhook": "PlotArt basket staging webhook", "studio": "PlotArt basket staging Studio"}
@@ -39,7 +40,7 @@ def out(status, text):
 
 def cf(method, path, token, body=None):
     if method not in ("GET", "POST"): raise SystemExit("REFUSED: this script only reads and creates")
-    if method == "POST" and not (re.fullmatch(r"/accounts/[0-9a-f]{32}/d1/database", path) or re.fullmatch(r"/accounts/[0-9a-f]{32}/access/apps", path)
+    if method == "POST" and not (re.fullmatch(r"/accounts/[0-9a-f]{32}/d1/database", path) or re.fullmatch(r"/accounts/[0-9a-f]{32}/access/(apps|policies)", path)
                                  or re.fullmatch(r"/accounts/[0-9a-f]{32}/d1/database/[0-9a-f-]{36}/query", path)):
         raise SystemExit("REFUSED: POST allowed only to create the staging database / Access apps, or to query the staging database")
     req = urllib.request.Request(API + path, method=method, data=json.dumps(body).encode() if body is not None else None,
@@ -52,6 +53,9 @@ def cf(method, path, token, body=None):
 
 
 def host(name): return f"{name}.{SUB}.workers.dev"
+
+
+def errs(j): return "; ".join(f"{x.get('code')}: {str(x.get('message', ''))[:120]}" for x in (j.get("errors") or [])) or "no detail"
 
 
 def forms():
@@ -100,8 +104,8 @@ if MODE == "test_access":
     if not re.fullmatch(r"plotart-checkout-test\.[a-z0-9-]+\.workers\.dev", H): raise SystemExit("REFUSED: CHECKOUT_TEST_ORIGIN is not the TEST checkout Worker")
     emails = sorted({x.strip() for x in (E("CHECKOUT_TEST_FOUNDER_EMAILS") + "," + E("BASKET_STAGING_TESTER_EMAILS")).split(",") if x.strip()})
     if not emails: raise SystemExit("REFUSED: no founder email to allow")
-    s, j = cf("GET", f"/accounts/{ACC}/access/apps?per_page=100", ACCESS_TOKEN)
-    if s != 200: out("FAIL", f"Access applications not readable with CHECKOUT_TEST_ACCESS_TOKEN (HTTP {s})"); sys.exit(1)
+    s, j = cf("GET", f"/accounts/{ACC}/access/apps", ACCESS_TOKEN)   # as checkout-test-setup.py reads them (no paging parameters)
+    if s != 200: out("FAIL", f"Access applications not readable with CHECKOUT_TEST_ACCESS_TOKEN (HTTP {s}: {errs(j)})"); sys.exit(1)
     have = {(a.get("domain") or "").rstrip("/"): a for a in j.get("result") or []}
     want = [("webhook", H + "/v1/stripe/webhook", {"name": "PlotArt checkout TEST webhook", "type": "self_hosted", "domain": H + "/v1/stripe/webhook", "session_duration": "30m", "app_launcher_visible": False,
               "policies": [{"name": "Stripe webhooks (signature checked by the Worker)", "decision": "bypass", "include": [{"everyone": {}}], "precedence": 1}]}),
@@ -109,8 +113,13 @@ if MODE == "test_access":
               "policies": [{"name": "Founder and testers", "decision": "allow", "include": [{"email": {"email": e}} for e in emails], "precedence": 1}]})]
     for kind, dom, body in want:
         if dom in have: out("INFO", f"Access already protects {dom} ({kind}): unchanged"); continue
-        s, j = cf("POST", f"/accounts/{ACC}/access/apps", ACCESS_TOKEN, body)
-        out("PASS" if s in (200, 201) else "FAIL", f"Access {kind} application for {dom} " + ("created" if s in (200, 201) else f"NOT created (HTTP {s})"))
+        pol = body.pop("policies")[0]; pol.pop("precedence", None); pol["session_duration"] = body["session_duration"]
+        s, pj = cf("POST", f"/accounts/{ACC}/access/policies", ACCESS_TOKEN, pol)   # as checkout-test-setup.py: a reusable policy first
+        pid = (pj.get("result") or {}).get("id")
+        if not pid: out("FAIL", f"Access {kind} policy NOT created (HTTP {s}: {errs(pj)}); nothing else created"); sys.exit(1)
+        s, j = cf("POST", f"/accounts/{ACC}/access/apps", ACCESS_TOKEN, {**body, "policies": [{"id": pid, "precedence": 1}]})
+        out("PASS" if s in (200, 201) else "FAIL", f"Access {kind} application for {dom} " + ("created" if s in (200, 201) else f"NOT created (HTTP {s}: {errs(j)})"))
+        if s not in (200, 201): sys.exit(1)
     sys.exit(1 if fails else 0)
 if MODE not in ("plan", "create", "db_gate", "db_verify"): raise SystemExit("unknown mode")
 if not forms(): sys.exit(1)
