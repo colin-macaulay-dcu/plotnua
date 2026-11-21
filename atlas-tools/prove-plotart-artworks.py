@@ -45,7 +45,8 @@ def check(name, ok, detail=""):
 
 
 def cards(doc):
-    return re.findall(r'<li class="pa-coll-work">(.*?)</li>', doc, re.S)
+    # Refine (21 Nov 2026): on All Artworks a card may carry ONLY the five Refine data attributes, in this order
+    return re.findall(r'<li class="pa-coll-work"(?: data-price="[^"]*" data-long="[^"]*" data-artist="[^"]*" data-work="[^"]*"(?: data-county="[^"]*")?)?>(.*?)</li>', doc, re.S)
 
 
 def region(doc):
@@ -400,6 +401,45 @@ check("A12 the collection order register has no duplicates and starts with the a
 unrecorded = sorted({x["artist"]["slug"] for x in packages} - set(reg))
 if unrecorded:
     print("  NOTE  not yet in COLLECTION_ARTIST_ORDER (placed by licence acceptance; add at the end in a code release): " + ", ".join(unrecorded))
+
+
+# ---- R · Refine on All Artworks (founder approval 21 Nov 2026) -----------------------------------------------------------
+_aw = (ROOT / "plotart/artworks/index.html").read_text(encoding="utf-8")
+_reg = region(_aw)
+_rows = C.collection_order(packages)
+_attrs = re.findall(r'<li class="pa-coll-work"( data-[^>]*)>', _reg)
+_want = [C.refine_attrs(pk, w) for pk, w in _rows]
+check("R1 every All Artworks card carries the Refine values derived from its own approved export, in collection order",
+      _attrs == _want and len(_attrs) == len(_rows), (len(_attrs), len(_rows)))
+_pub_county = {pk["artist"]["slug"]: (pk["artist"].get("county") or "").strip() for pk in packages}
+_bad_c = [a for a in _attrs if 'data-county="' in a and re.search(r'data-county="([^"]*)"', a).group(1) != html.escape(_pub_county[re.search(r'data-artist="([^"]*)"', a).group(1)], quote=True)]
+_missing_c = [a for a in _attrs if 'data-county="' not in a and _pub_county[re.search(r'data-artist="([^"]*)"', a).group(1)]]
+check("R2 artist location only as the artist's public county (no county where none is shared; never an artwork location)",
+      not _bad_c and not _missing_c and "artwork-county" not in _reg and "data-location" not in _reg, (_bad_c[:2], _missing_c[:2]))
+check("R3 the Refine line, its sheet and 'Available to hire' all SHIP HIDDEN (shown only by the script; hire only by the live check)",
+      '<div class="pa-rf" data-rf hidden>' in _reg and '<div class="pa-rf-group pa-rf-hire" data-rf-hire hidden>' in _reg
+      and "data-hire" not in _reg and 'data-rf-none hidden' in _reg)
+_opts = lambda name: re.findall(r'<input type="checkbox" name="%s" value="([^"]*)">' % name, _reg)
+check("R4 the artist and location choices list exactly what the collection holds now; the label is 'Artist location'",
+      sorted(_opts("artist")) == sorted({pk["artist"]["slug"] for pk, _ in _rows})
+      and sorted(_opts("county")) == sorted({_pub_county[pk["artist"]["slug"]] for pk, _ in _rows} - {""})
+      and ">Artist location<" in _reg and "Artist based in" not in _aw, (_opts("artist"), _opts("county")))
+check("R5 price and size bands are the approved fixed bands",
+      _opts("price") == [v for v, _ in C.REFINE_PRICE] == ["0-1000", "1000-2500", "2500-5000", "5000-10000", "10000-"]
+      and _opts("size") == [v for v, _ in C.REFINE_SIZE] == ["0-50", "50-100", "100-150", "150-"])
+_lg = (ROOT / "plotart/large-artworks/index.html").read_text(encoding="utf-8")
+_galleries = [p.read_text(encoding="utf-8") for p in (ROOT / "plotart/artists").glob("*/*.html")]
+check("R6 Refine exists on All Artworks only: not on Large Artworks, not in any artist gallery or artwork page",
+      "pa-rf" not in _lg and "plotart-refine" not in _lg and not any("plotart-refine" in g or "data-rf" in g for g in _galleries)
+      and _aw.count('<script src="../assets/plotart-refine.js" defer></script>') == 1 and _aw.count('href="../assets/plotart-refine.css"') == 1)
+_js = (ROOT / "plotart/assets/plotart-refine.js").read_text(encoding="utf-8")
+check("R7 the script fails safe and keeps hire live and fail-closed (catalogue AND live check, validity window, open, ok)",
+      "function failSafe()" in _js and "root.hidden = false;" in _js and _js.index("root.hidden = false;") > _js.index("var q = new URLSearchParams")
+      and "'../art-for-hire/'" in _js and "/v1/hire-listed" in _js and "catalogue[i.id]" in _js and "j.open !== true" in _js
+      and "j.ok !== true" in _js and "until > Date.now()" in _js and ".catch(hireOff)" in _js and "localStorage" not in _js
+      and "sendBeacon" not in _js and "gtag" not in _js)
+check("R8 filtering never reorders: the script only marks cards (data-rf-out), it never moves or sorts them",
+      "data-rf-out" in _js and not re.search(r"\.(sort|appendChild|insertBefore|prepend|append)\(", _js.replace("document.body.style", "")))
 
 print("PLOTART ARTWORKS · %d checks, %d passed, %d failed" % (len(results), sum(results), len(results) - sum(results)))
 sys.exit(0 if all(results) else 1)
