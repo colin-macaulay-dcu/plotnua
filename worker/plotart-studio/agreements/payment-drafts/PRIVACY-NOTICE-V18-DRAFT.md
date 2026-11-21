@@ -1,6 +1,6 @@
 # PlotNua privacy notice: Version 18 (payment pilot): exact changes to V17 (DRAFT, 20 November 2026)
 
-**Status: unpublished draft for founder review. Not legally reviewed.** It replaces `PRIVACY-NOTICE-PILOT-SECTION-DRAFT.md` (r1). It matches PA-PAY r10, PA-BPT r9 and the pilot as built.
+**Status: unpublished draft for founder review. Not legally reviewed.** It replaces `PRIVACY-NOTICE-PILOT-SECTION-DRAFT.md` (r1). It matches PA-PAY r10, PA-BPT r9, PA-BBT r2, PA-BAA r2 and the pilot and basket as built (basket changes 2a, 2b and 5a added 21 November 2026).
 
 **Publication:** through the privacy version layer and its verifiers, as a new marker (`2026-11-PLOTART-PAYMENT-PILOT-V18`) on top of V17, released with the live pilot and not before. All changes are additions except change 1, which edits one sentence.
 
@@ -80,6 +80,22 @@
 > - an artist's opt-in record and Stripe account link are kept for six years after they leave the pilot, or for as long as any of their orders is kept;
 > - an artist's seller information is deleted when they leave the pilot (each order keeps the copy shown on its quote);
 > - bank transfer records at our bank are kept for six years after the end of the year of payment.
+
+## Change 2a: Section 8, "The PlotArt payment pilot", add after the "Buyers" list
+
+> **Buying several artworks together (the basket).**
+> - **What we keep:** your name, email address and delivery address; the artworks, sellers and amounts shown to you before you paid; your acceptance of the basket purchase terms; and, for each artwork, the order and payment records described above.
+> - **Your card:** you enter it once, on Stripe's page. Stripe saves it on PlotArt's Stripe account and copies it to each seller's own Stripe account so that each seller can be paid for their artwork. It is used only for the payments in that basket. We never see the full card number.
+> - **What we share with each seller:** your name and delivery address and, where needed, your email address, for their own artworks only. A seller is not told what you bought from other sellers.
+> - **Why:** as for the pilot above (contract; legal obligation; legitimate interests).
+
+## Change 2b: Section 8, "Artists in the pilot", add to "What we keep"
+
+> - if you take part in the basket: your acceptance of the basket addendum; your confirmation that your seller information may be shown to buyers before they pay; any consent to Stripe's processing fees on commission-free sales and any withdrawal; and your delivery offers. Your seller information is shown on the basket page, which anyone can open, only after you confirm it.
+
+## Change 5a: Section 12, retention (add to the payment pilot line)
+
+> Basket records follow the same periods as pilot orders. An artist's basket acceptance, confirmations and consents are kept for six years after the artist leaves the basket, or as long as any of their basket orders is kept, whichever is later.
 
 ## Change 6: footer (not made)
 

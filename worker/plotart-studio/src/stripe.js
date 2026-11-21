@@ -172,7 +172,7 @@ export const deleteCustomer = (env, { id }) => call(bk(env), 'DELETE', `/v1/cust
 export const createSetupSession = (env, { idem, customer, basket, expiresAt, successUrl, cancelUrl }) => call(bk(env), 'POST', '/v1/checkout/sessions', { idem, body: {
   mode: 'setup', currency: 'eur', customer, allowed_payment_method_types: ['card'],
   // the order button (consumer law: the buyer must know the final click places an order with an obligation to pay)
-  custom_text: { submit: { message: `By confirming, you order the artworks in your basket and agree to pay €${(basket.total_cents / 100).toLocaleString('en-IE', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} in total.` } },
+  custom_text: { submit: { message: `Selecting Save completes your purchase: you order the artworks in your basket and agree to pay €${(basket.total_cents / 100).toLocaleString('en-IE', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} in total. Your card is saved only to take these payments.` } },
   client_reference_id: basket.id, expires_at: Math.floor(Date.parse(expiresAt) / 1000), success_url: successUrl, cancel_url: cancelUrl,
   setup_intent_data: { description: `PlotArt basket ${basket.reference}: card saved once for ${basket.line_count} artist payment(s)`,
     metadata: { plotart_basket: basket.id, plotart_reference: basket.reference } },

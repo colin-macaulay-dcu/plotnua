@@ -14,7 +14,7 @@ Not part of either text. No solicitor-review stage (founder decision, 22 Nov 202
 |---|---|---|
 | PA-BBT 7.2 / PA-BAA 2.3(b): 14 days from the last artwork in the whole basket; PlotArt to tell artists the last delivery date | Not implemented; extended each artist's exposure because of other artists' deliveries | 14 days from receipt; for several works from the **same seller** delivered separately, from the last of them (CRA 2022 / CRD art. 9(2)(b)) |
 | PA-BBT 6.1: basket page states packer, carrier and insurer | The basket page shows charge, window, tracking, "insured" and return cost; the full detail is in the confirmation | Says exactly what is shown before payment and what the confirmation adds |
-| PA-BBT 3.1(d): "select Checkout" | Did not say which click places the order | Confirming on Stripe's page places the order with an obligation to pay; Stripe's page now shows "By confirming, you order the artworks in your basket and agree to pay €X in total." |
+| PA-BBT 3.1(d): "select Checkout" | Stripe's final button in setup mode reads "Save" (checked by the founder on TEST, 22 Nov) | Our button reads "Buy now · €X total"; a line under it says selecting Save on Stripe's page completes the purchase; Stripe's page says "Selecting Save completes your purchase: you order the artworks in your basket and agree to pay €X in total." Terms 3.1(d) and 3.2 say the same |
 | PA-BAA 2.2: seller details shown on the basket page | Basket page is open to anyone; a home address could be exposed without the artist's informed choice | Separate recorded confirmation, bound to the exact information; withdrawn automatically if it changes |
 | PA-BAA 4.5: short consent wording | Did not cover refunds, disputes, gallery/enquiries | Replaced with the exact statement the code records (also C2 test) |
 | PA-BAA 4.1: consent recording | Did not say what is recorded | Artist, account, addendum version and fingerprint, statement, time, given/withdrawn, mode |
@@ -25,7 +25,7 @@ Checked and consistent: amounts and limits (10 works, €9,999.99, €10,000 lin
 
 ## C. Genuinely open legal risks (only these)
 
-1. **Order button wording (CRA 2022 / CRD art. 8(2)).** The final click is on Stripe's hosted page in setup mode, whose button label Stripe sets. We add explicit order wording beside it (custom text). If Stripe's label is not an "order with obligation to pay" equivalent, a consumer could argue they were not bound. Check the live label on the first TEST run; if weak, the fallback is to label our own button "Buy now" and state the total there.
+1. **Order button wording (CRA 2022 / CRD art. 8(2)).** Resolved as far as the architecture allows: the order is placed by a "Buy now · €X total" button on our page, and Stripe's "Save" step is stated (on our page, beside Stripe's button and in the terms) to complete the purchase with an obligation to pay. Residual risk is low; changing Stripe's label would need a different payment architecture, which is out of scope.
 2. **Seller address of home-based artists.** The law requires the geographical address where the trader is established; a home-based artist may only have their home. Handled by the artist's explicit confirmation (they can decline and keep selling directly); not otherwise resolvable.
 3. **Privacy notice V18 not yet published.** PA-BPT 9.4 and PA-BBT 10.4 refer to it. Publish V18 with `PRIVACY-NOTICE-V18-BASKET-ADDITION.md` at launch.
 

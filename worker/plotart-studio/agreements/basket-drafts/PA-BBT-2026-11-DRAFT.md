@@ -42,9 +42,9 @@ These terms apply when you buy one or more original artworks together through th
   (a) check the artworks, sellers, amounts, delivery and return arrangements on the basket page;
   (b) give your name, email address and delivery address;
   (c) confirm that you have read these terms;
-  (d) select "Checkout", enter your card on Stripe's secure page and confirm there. Confirming on Stripe's page places your order, with an obligation to pay the total shown.
+  (d) select "Buy now", which shows the total you will pay, then enter your card on Stripe's secure page and select "Save" there. Selecting "Save" on Stripe's page completes your order, with an obligation to pay the total shown. Your card is saved only to take the payments for your basket.
 
-3.2 Until you enter your card on Stripe's page and it is accepted, you can correct your details or remove artworks, and nothing is bought. Your order is an offer to buy each artwork in your basket from its seller. Each contract of sale is made when your purchase is confirmed under section 4.4.
+3.2 Until you select "Save" on Stripe's page, you can go back, correct your details or remove artworks, and nothing is bought. Your order is an offer to buy each artwork in your basket from its seller. Each contract of sale is made when your purchase is confirmed under section 4.4.
 
 3.3 **Limits.** A basket can hold up to 10 artworks. PlotArt cannot arrange purchases of EUR 10,000 or more in total, including purchases that, together with other purchases by you or anyone PlotArt knows to be acting with you in the previous twelve months, reach that amount. An artwork priced at more than EUR 9,999.99 cannot be bought through the basket.
 

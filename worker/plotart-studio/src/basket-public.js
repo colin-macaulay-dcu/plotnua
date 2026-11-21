@@ -63,6 +63,7 @@ h1{font-size:clamp(38px,6vw,60px);margin:.15em 0 .35em}h2{font-size:clamp(26px,3
 .sum .tot td{border-top:1px solid var(--line-2);padding-top:14px;font-size:20px;color:var(--ivory)}.sum.only .tot td{border-top:0;padding-top:0}
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;width:100%;font:600 16px var(--sans);padding:15px 24px;border-radius:999px;border:1px solid var(--paper);background:var(--paper);color:var(--anth);cursor:pointer;text-decoration:none}
 .btn:hover{background:var(--paper-2)}.btn[disabled]{opacity:.5;cursor:not-allowed}.btn.ghost{background:transparent;color:var(--ivory);border-color:var(--line-2)}
+.nx{font-size:13.5px;color:var(--stone);text-align:center;margin:10px 0 0}.nx strong{color:var(--paper);font-weight:600}
 .note{background:var(--wall-2);border:1px solid var(--line);border-radius:var(--r-sm);padding:14px 16px;font-size:14.5px;color:var(--lime);margin:16px 0}
 .note.test{background:#33302a;border-color:#5a5242;color:#ece2c8}.note.err{border-color:#7a5a52;background:#352a27;color:#f3ddd6}
 fieldset{border:0;padding:0;margin:22px 0 0}legend{font-family:var(--serif);font-size:24px;color:var(--ivory);margin-bottom:8px}
@@ -114,7 +115,7 @@ function basketPage(env) {
 <div class="two"><label>Eircode<input type="text" name="eircode" autocomplete="postal-code" maxlength="8"></label>
 <label>Telephone (for delivery)<input type="tel" name="phone" autocomplete="tel" required maxlength="30"></label></div></fieldset>
 <label class="check"><input type="checkbox" name="accept" id="accept" required><span>I have read the <a id="terms" target="_blank" rel="noopener">purchase terms</a>. Each artwork is sold by its artist.</span></label>
-<p id="err" class="note err" role="alert" hidden></p><button class="btn" type="submit" id="pay">Checkout</button></form>
+<p id="err" class="note err" role="alert" hidden></p><button class="btn" type="submit" id="pay">Buy now</button><p class="nx">Next, enter your card on Stripe’s secure page and select <strong>Save</strong> there to complete your purchase.</p></form>
 <p id="closed" class="note" hidden>Online purchase is not open at the moment. You can enquire about any artwork from its page.</p></aside></div>`;
   const script = `(function(){'use strict';
 var KEY='pa-basket-v1',IMG=new RegExp(${JSON.stringify(IMG(env))}),MAX=10;
@@ -143,7 +144,7 @@ renderSellers(data.items.filter(function(i){return i.ok}));
 var ok=data.items.filter(function(i){return i.ok}),artists={};ok.forEach(function(i){artists[i.artist]=1});
 document.getElementById('t-art').textContent=eur(data.totals.artworks_cents);document.getElementById('t-del').textContent=eur(data.totals.delivery_cents);document.getElementById('t-tot').textContent=eur(data.totals.total_cents);
 var can=data.open&&ok.length>0&&ok.length===data.items.length;form.hidden=!data.open||!ok.length;document.getElementById('closed').hidden=data.open;
-document.getElementById('pay').disabled=!can;if(data.terms){var t=document.getElementById('terms');t.href='/terms/'+data.terms.doc_id+'.html';t.textContent='purchase terms ('+data.terms.doc_id+')'}
+document.getElementById('pay').disabled=!can;document.getElementById('pay').textContent=payLabel();if(data.terms){var t=document.getElementById('terms');t.href='/terms/'+data.terms.doc_id+'.html';t.textContent='purchase terms ('+data.terms.doc_id+')'}
 if(ok.length!==data.items.length&&ok.length)showErr('Remove the artworks that are no longer available to continue.');else hideErr()}
 function renderSellers(ok){var box=document.getElementById('sellers');box.textContent='';var by={},order=[];
 ok.forEach(function(i){var k=i.artist_id||i.artist;if(!by[k]){by[k]={name:i.artist,info:i.seller_info||{},works:[]};order.push(k)}by[k].works.push(i)});
@@ -153,6 +154,7 @@ row('Seller',s.legal_name+(s.trading_name?' (trading as '+s.trading_name+')':'')
 row('Email',s.email);row('Telephone',s.phone);row('VAT number',s.vat_number);
 var ret=g.works.map(function(i){var r=i.returns||{};return el('p',{text:(g.works.length>1?'“'+(i.title||'Artwork')+'”: ':'Returns: ')+[r.method,r.address?'to '+r.address:'',r.arranged_by?'arranged by '+r.arranged_by:''].filter(Boolean).join(', ')+'.'})});
 box.appendChild(el('details',{'class':'sri'},[el('summary',{text:'Seller and returns information · '+(g.name||'Artist')}),dl].concat(g.works.length>1?[el('p',{text:'Returns:'})]:[]).concat(ret)))})}
+function payLabel(){return data&&data.totals&&data.totals.total_cents?'Buy now · '+eur(data.totals.total_cents)+' total':'Buy now'}
 function showErr(m){var e=document.getElementById('err');e.textContent=m;e.hidden=false}function hideErr(){document.getElementById('err').hidden=true}
 function refresh(){if(!list.length){data=null;render();return}fetch('/api/basket/items?ids='+encodeURIComponent(list.map(function(x){return x.id}).join(',')),{credentials:'same-origin'}).then(function(r){return r.json()}).then(function(j){data=j;render()}).catch(function(){showErr('Your basket could not be loaded. Please try again.')})}
 form.addEventListener('submit',function(e){e.preventDefault();hideErr();var f=form.elements;
@@ -161,8 +163,8 @@ var b={artworks:data.items.filter(function(i){return i.ok}).map(function(i){retu
 name:f.name.value,email:f.email.value,address_line1:f.address_line1.value,address_line2:f.address_line2.value,town:f.town.value,county:f.county.value,eircode:f.eircode.value,phone:f.phone.value};
 var btn=document.getElementById('pay');btn.disabled=true;btn.textContent='Opening checkout…';
 fetch('/basket/checkout',{method:'POST',credentials:'same-origin',headers:{'Content-Type':'application/json'},body:JSON.stringify(b)}).then(function(r){return r.json().then(function(j){return{ok:r.ok,j:j}})})
-.then(function(r){if(r.ok&&r.j.url){location.href=r.j.url;return}btn.disabled=false;btn.textContent='Checkout';showErr(r.j.error||'Something went wrong. Please try again.');refresh()})
-.catch(function(){btn.disabled=false;btn.textContent='Checkout';showErr('Something went wrong. Please try again.')})});
+.then(function(r){if(r.ok&&r.j.url){location.href=r.j.url;return}btn.disabled=false;btn.textContent=payLabel();showErr(r.j.error||'Something went wrong. Please try again.');refresh()})
+.catch(function(){btn.disabled=false;btn.textContent=payLabel();showErr('Something went wrong. Please try again.')})});
 refresh();})();`;
   return page(env, 'Your basket', body, { script });
 }

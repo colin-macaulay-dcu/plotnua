@@ -204,7 +204,7 @@ check('A9 with the Founding Artist’s own processing consent (and the TEST poli
 
 console.log('— buyer: the basket page and live preview');
 r = await pub('GET', '/basket');
-check('B1 the basket page is served with a strict policy (nonce scripts only, no third-party scripts, no framing)', r.s === 200 && /<h1 class="bh">Your Basket<\/h1>/.test(r.t) && !/Original works|one secure checkout|Summary<\/h2>|secure payment page/.test(r.t) && (r.t.match(/<h1/g) || []).length === 1 && />Checkout<\/button>/.test(r.t) && /script-src 'nonce-[0-9a-f]{32}'(;| )/.test(r.h.get('Content-Security-Policy'))
+check('B1 the basket page is served with a strict policy (nonce scripts only, no third-party scripts, no framing)', r.s === 200 && /<h1 class="bh">Your Basket<\/h1>/.test(r.t) && !/Original works|one secure checkout|Summary<\/h2>|secure payment page/.test(r.t) && (r.t.match(/<h1/g) || []).length === 1 && />Buy now<\/button>/.test(r.t) && /select <strong>Save<\/strong> there to complete your purchase/.test(r.t) && /script-src 'nonce-[0-9a-f]{32}'(;| )/.test(r.h.get('Content-Security-Policy'))
   && !/js\.stripe\.com/.test(r.h.get('Content-Security-Policy')) && r.h.get('X-Frame-Options') === 'DENY' && /Test mode/.test(r.t), r.h.get('Content-Security-Policy'));
 const bp = r.t;
 const BP = await import(HERE + FIX + 'src/basket-public.js');
@@ -248,7 +248,7 @@ const L1 = await q('SELECT * FROM basket_lines WHERE basket_id = ? ORDER BY line
 const O1 = await q('SELECT o.* FROM checkout_orders o JOIN basket_lines l ON l.order_id = o.id WHERE l.basket_id = ? ORDER BY l.line_no', B1.id);
 check('B10 the buyer is sent to Stripe’s hosted card page (setup mode, on PlotArt’s own account, card only, no amount on it)', r.s === 200 && r.j.url === sess1.url && sess1._f.mode === 'setup'
   && !M.calls.slice(callsBefore).find(c => c.path === '/v1/checkout/sessions').acct && sess1._f['allowed_payment_method_types[0]'] === 'card' && !('amount' in sess1._f) && sess1._f.customer, r.j);
-check('B10a the card page’s confirm button carries the order wording with the basket total (obligation to pay)', /^By confirming, you order the artworks in your basket and agree to pay €[0-9,]+\.[0-9]{2} in total\.$/.test(sess1._f['custom_text[submit][message]'] || '')
+check('B10a the card page’s confirm button carries the order wording with the basket total (obligation to pay)', /^Selecting Save completes your purchase: you order the artworks in your basket and agree to pay €[0-9,]+\.[0-9]{2} in total\. Your card is saved only to take these payments\.$/.test(sess1._f['custom_text[submit][message]'] || '')
   && sess1._f['custom_text[submit][message]'].includes((B1.total_cents / 100).toLocaleString('en-IE', { minimumFractionDigits: 2 })), sess1._f['custom_text[submit][message]']);
 check('B11 one ordinary order per artwork, priced from the records: 15% on the Gallery Artist’s work, 0% (Founding 25) on the Founding Artist’s', O1.length === 2
   && O1[0].artwork_cents === 120000 && O1[0].delivery_cents === 4500 && O1[0].commission_bp === 1500 && O1[0].commission_cents === 18000 && O1[0].commission_basis === 'gallery_artist_agreement'
@@ -472,6 +472,8 @@ console.log('— in a real browser: the artist’s and founder’s basket contro
       await bp2.locator('details.sri summary').first().click();
       const body = await bp2.locator('details.sri').first().textContent(), wide = await bp2.evaluate(() => document.documentElement.scrollWidth > window.innerWidth);
       const vat = await bp2.locator('details.sri dt', { hasText: 'VAT number' }).count();
+      const btnTxt = (await bp2.locator('#pay').textContent()).trim(), tot = (await bp2.locator('#t-tot').textContent()).trim();
+      check(`U7 buyer basket (${name}): the button reads “Buy now · <total> total” and the next step (Stripe’s Save completes the purchase) is stated`, btnTxt === `Buy now · ${tot} total` && /select Save there to complete your purchase/.test(await bp2.locator('.nx').textContent()), { btnTxt, tot });
       check(`U6 buyer basket (${name}): one collapsed “Seller and returns information” per artist (${pick.length} works, 2 artists), with seller, address, email, telephone and returns; no VAT line when not registered; no sideways scroll`,
         pick.length === 3 && n === 2 && open0 === 0 && sum.every(t => /^Seller and returns information · /.test(t)) && /Seller/.test(body) && /Address/.test(body) && /Email/.test(body) && /Telephone/.test(body) && /Same courier, insured/.test(body) && vat === 0 && !wide,
         { n, open0, sum, body: body.slice(0, 400), wide, pick });

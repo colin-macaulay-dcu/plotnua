@@ -1,0 +1,15 @@
+{
+ "note": "Ready for issue, NOT issued. Founder approval moves these files unchanged to basket-issued/ and migration 0021 installs them. Once anyone has accepted an identifier, its file must never change.",
+ "documents": {
+  "PA-BAA-2026-11": {
+   "title": "PlotArt Artist Basket Addendum",
+   "kind": "artist_basket_addendum",
+   "html_sha256": "a0f03e0632c9e1bc6ade96d322d3ef9579c01878c1bbadb9ce7c30cfa1226e9c"
+  },
+  "PA-BBT-2026-11": {
+   "title": "PlotArt Basket Purchase Terms",
+   "kind": "buyer_basket_terms",
+   "html_sha256": "6b30e468265cd4f042eee62ea212a408548afca544f7357cf9e138e2f87b31ff"
+  }
+ }
+}

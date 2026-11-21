@@ -1,6 +1,6 @@
 # PlotNua privacy notice V18: basket addition (DRAFT, 22 November 2026)
 
-**Status: unpublished draft for founder approval.** Add to `payment-drafts/PRIVACY-NOTICE-V18-DRAFT.md` before V18 is published (V18 is not yet live on plotnua.ie/privacy.html, and both PA-BPT 9.4 and PA-BBT 10.4 point to it). Matches PA-BBT r2 s.10 and PA-BAA r2 cl. 2.2, 4 and 9 as built.
+**Status: merged into `payment-drafts/PRIVACY-NOTICE-V18-DRAFT.md` (changes 2a, 2b, 5a) on 21 November 2026; kept for reference.** Previously: add to V18 before it is published (V18 is not yet live on plotnua.ie/privacy.html, and both PA-BPT 9.4 and PA-BBT 10.4 point to it). Matches PA-BBT r2 s.10 and PA-BAA r2 cl. 2.2, 4 and 9 as built.
 
 ## Change 2a: Section 8, "The PlotArt payment pilot", add after the "Buyers" list
 

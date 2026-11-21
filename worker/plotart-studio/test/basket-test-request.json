@@ -1,5 +1,5 @@
 {
   "_note": "Changing this file on plotart/multi-artist-basket starts .github/workflows/plotart-basket-test.yml (existing TEST environment only; waits for the founder's Approve on checkout-test).",
-  "requested": "2026-11-21T21:28:40Z",
-  "reason": "Update the existing TEST environment: migration 0020 (basket consents, new table only), additive seed of the TEST artists' seller-information confirmations and Founding processing-fee consent, both TEST Workers redeployed with the seller and returns information and the consent screens."
+  "requested": "2026-11-21T22:05:19Z",
+  "reason": "Update both TEST Workers: the basket button reads 'Buy now \u00b7 \u20acX total', a line under it says Stripe's Save completes the purchase, and Stripe's page states it. No database change beyond the additive seed."
 }
