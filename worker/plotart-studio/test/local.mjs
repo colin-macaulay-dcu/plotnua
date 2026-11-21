@@ -46,6 +46,10 @@ export async function start({ port, env = {}, enquiry = null, ideas = null, gard
   const mf = new Miniflare({ workers, ...(port ? { port, host: '127.0.0.1' } : {}), ...(persist ? { d1Persist: persist } : {}) });
   const db = await mf.getD1Database('DB', 'studio');
   for (const stmt of statements(schemaSql === undefined ? readFileSync(HERE + 'schema.sql', 'utf8') : schemaSql || '')) await db.prepare(stmt).run();   // triggers kept whole (migration 0005)
+  // tests only, opt-in: LOCAL_EXTRA_MIGRATIONS=migrations/0019_basket_checkout.sql applies proposed migrations after schema.sql,
+  // so an existing proof can be re-run against them. Unset (the default), nothing changes.
+  if (schemaSql === undefined) for (const f of String(process.env.LOCAL_EXTRA_MIGRATIONS || '').split(',').filter(Boolean))
+    for (const stmt of statements(readFileSync(HERE + f, 'utf8'))) await db.prepare(stmt).run();
   if (schemaSql !== null) await db.prepare('CREATE TABLE IF NOT EXISTS mail_capture (id INTEGER PRIMARY KEY AUTOINCREMENT, at TEXT, to_addr TEXT, reply_to TEXT, subject TEXT, body TEXT)').run();   // tests only
   return { mf, db, url: (await mf.ready).toString().replace(/\/$/, ''), enquiryWorker: enquiry ? await mf.getWorker('enquiry') : null, ideasWorker: ideas ? await mf.getWorker('ideas') : null, gardenWorker: garden ? await mf.getWorker('garden') : null, checkoutWorker: checkout ? await mf.getWorker('checkout') : null };
 }
