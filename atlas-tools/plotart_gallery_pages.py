@@ -111,8 +111,7 @@ def commission_block(pkg, enquiry_endpoint):
     name = a["display_name"]
     return ('\n<section class="pa-ag-com" id="commission" aria-labelledby="agComH"><div class="pa-wrap pa-ag-com-in">'
             '\n  <div class="pa-ag-com-t"><h2 id="agComH">Open for commissions</h2>'
-            '<p>%s welcomes enquiries about new, commissioned work. Whether to take a commission on, and its size, subject, price and timing, '
-            'are for you and the artist to agree directly.</p>'
+            '<p>%s welcomes enquiries about new, commissioned work.</p>'
             '<p class="pa-ag-com-more"><a href="../../commissions/" data-pa-track="artist_commissions_page">How commissions work</a></p></div>'
             '\n  <div class="pa-ag-enq-c"><a class="pa-btn pa-btn--solid" href="%s" data-pa-track="artist_commission_enquiry"%s>'
             'Enquire about a commission</a>%s</div>'
