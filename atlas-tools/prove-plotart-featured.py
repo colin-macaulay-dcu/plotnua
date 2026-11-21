@@ -112,7 +112,7 @@ reg = FEAT.region(new)
 items = re.findall(r'<li class="pa-fa-item" data-pa-featured="([a-z0-9-]+):(w[0-9a-z]+)">(.*?)</li>', reg)
 first_nessa = next(w["id"] for w in P.shown(by["nessa-mccormack"]))
 ok2, why = (len(items) == 6 and [(s, w) for s, w, _ in items] == [(x["artist"], x["work"]) for x in SEL] and first_nessa != "w6stt966ksq"
-            and 'Selected by PlotArt</p><h2 id="featArtH">Featured Artists</h2><p class="pa-fa-lede">A changing selection of artists and their work.</p>' in reg), []
+            and 'Selected by PlotArt</p><h2 id="featArtH">Artists in Focus</h2><p class="pa-fa-lede">A changing selection of artists and their work.</p>' in reg), []
 for s, w, body in items:
     a, work = by[s]["artist"], next(x for x in by[s]["works"] if x["id"] == w)
     im = next(i for i in work["images"] if i["role"] == "main")

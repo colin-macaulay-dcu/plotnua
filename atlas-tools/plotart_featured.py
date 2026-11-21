@@ -224,7 +224,8 @@ def content(selection, packages, base=BASE):
     items = resolve(selection, packages)
     first = opening(selection, packages, base)
     feat = ('<section class="pa-sec pa-fa" aria-labelledby="featArtH"><div class="pa-wrap">\n'
-            '  <div class="pa-fa-head"><p class="pa-eyebrow">Selected by PlotArt</p><h2 id="featArtH">Featured Artists</h2>'
+            # the public heading reads "Artists in Focus" (founder refinement 21 Nov 2026); the Studio's tab keeps "Featured Artists"
+            '  <div class="pa-fa-head"><p class="pa-eyebrow">Selected by PlotArt</p><h2 id="featArtH">Artists in Focus</h2>'
             '<p class="pa-fa-lede">A changing selection of artists and their work.</p></div>\n'
             '  <ol class="pa-fa-list n-%d">%s\n  </ol>\n'
             '</div></section>') % (len(items), "".join(_item(p, w, im, base) for p, w, im in items)) if items else ""

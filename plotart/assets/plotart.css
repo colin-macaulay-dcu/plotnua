@@ -931,13 +931,16 @@ html.pa-lb-on{ overflow:hidden; }
 @media (max-width:359px){ .pa-head--pills .pa-part{ display:none; } :where(body.pa) .pa-head a.pa-login{ padding:0 10px; font-size:13px; } }   /* the narrowest phones only: room for Artist Login and Menu */
 
 /* ==== Logo prominence (founder refinement 21 Nov 2026): the stacked Organic P logo about 28% larger (78 -> 100 px; phones
-   64 -> 80 px), the P and the PlotArt wordmark together, as they are one drawing. The header's own padding is tightened so
-   it grows only a little (desktop 97 -> 109 px, tablets 157 -> 169 px, phones 81 -> 89 px); the pills, Artist Login and Menu are unchanged. ==== */
-.pa-logo{ height:100px; }
-.pa-head .pa-wrap{ min-height:108px; }
-@media (min-width:721px) and (max-width:1180px){ .pa-head--pills .pa-wrap{ padding-top:6px; padding-bottom:8px; } }   /* tablets: logo row, then the pills */
+   64 -> 80 px), the P and the PlotArt wordmark together, as they are one drawing.
+   Taller P (founder refinement 21 Nov 2026, later): in the SVG only the P is drawn 18% taller (the wordmark is unchanged), so
+   the drawing is 13.9% taller overall; the heights below keep the wordmark at the same size on desktop and tablet (114 px =
+   100 x 1.139) and give the logo more air above and below. Header: desktop 109 -> 138 px, tablets 169 -> 193 px, phones
+   89 -> 105 px (the wordmark 3% smaller there); the pills, Artist Login and Menu stay centred on the logo. ==== */
+.pa-logo{ height:114px; }
+.pa-head .pa-wrap{ min-height:136px; padding-top:11px; padding-bottom:11px; }
+@media (min-width:721px) and (max-width:1180px){ .pa-head--pills .pa-wrap{ padding-top:12px; padding-bottom:12px; } }   /* tablets: logo row, then the pills */
 @media (max-width:720px){
-  .pa-head--pills .pa-logo{ height:80px; }
-  .pa-head--pills .pa-wrap{ min-height:0; padding-top:4px; padding-bottom:4px; }
-  .pa-head{ --pn-sm-top:89px; }
+  .pa-head--pills .pa-logo{ height:88px; }
+  .pa-head--pills .pa-wrap{ min-height:0; padding-top:8px; padding-bottom:8px; }
+  .pa-head{ --pn-sm-top:105px; }
 }

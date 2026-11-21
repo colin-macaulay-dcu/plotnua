@@ -2,10 +2,11 @@
    Loaded only by gallery/index.html. Existing PlotArt tokens only (anthracite / off-white). Artworks are never cropped:
    each sits whole inside its wall frame (object-fit: contain, natural aspect ratio). */
 body.pa .pa-fa{ padding:clamp(22px, 2vw, 28px) 0 clamp(48px, 6vw, 96px); background:#30302F; }   /* a slightly warmer, lighter charcoal than the anthracite wall (founder refinement 21 Nov 2026; was a gradient with a hairline) */
-body.pa .pa-fa-head{ display:grid; grid-template-columns:minmax(0, 1fr) minmax(0, 1fr); align-items:end; gap:10px 48px; margin-bottom:clamp(18px, 1.4vw, 20px); }
+/* Artists in Focus (founder refinement 21 Nov 2026): eyebrow, heading, then the sentence directly beneath it, all left-aligned */
+body.pa .pa-fa-head{ display:grid; grid-template-columns:minmax(0, 1fr); align-items:start; gap:10px 0; margin-bottom:clamp(26px, 2.4vw, 36px); }
 body.pa .pa-fa-head .pa-eyebrow{ grid-column:1 / -1; margin:0; }
 body.pa .pa-fa-head h2{ margin:0; font-size:clamp(38px, 4.2vw, 62px); }
-body.pa .pa-fa-lede{ margin:0; justify-self:end; max-width:28em; color:var(--stone); font-size:17px; line-height:1.55; }
+body.pa .pa-fa-lede{ margin:2px 0 0; justify-self:start; max-width:36em; color:var(--stone); font-size:17px; line-height:1.55; }
 /* Artwork first (21 Nov 2026): three works hung on the wall straight after the introduction, no heading, on a shared
    baseline at their own proportions (never cropped, no frame panel, so they read differently from Featured Artists),
    with Browse All Artworks beneath. Phones: a horizontal row the visitor swipes, the first work in view at once. */

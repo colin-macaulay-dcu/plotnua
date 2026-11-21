@@ -20991,8 +20991,8 @@
     },
     {
       "asset": "assets/brand/plotart-logo-stacked.svg",
-      "sha256": "c48d4ab53e25872c2c69ba529457742dd48672eb6b63046d1b22612421744792",
-      "bytes": 53379,
+      "sha256": "4aae517073470fb8a8eed21aa073e8a2a07190c3c96004b71eb082a3acc2a97a",
+      "bytes": 53387,
       "class": "BRAND_MARK",
       "what": "The PlotArt Organic P header logo, stacked: the Organic P centred above the PlotArt wordmark, warm ivory #F4F0EB on transparent; used for: PlotArt page headers (62 px high, 50 px on phones) and the PlotArt Studio and Review Desk header",
       "brand": {
@@ -21017,7 +21017,8 @@
         "Organic P traced from the master as vector paths (potrace via potracer, Claude build session, 19 Nov 2026; no generative model involved); the lower ends of the vertical lines fade out with a vector gradient mask as in the master",
         "Wordmark 'PlotArt' typeset in Montserrat Light ('Plot') and Bold ('Art') (SIL Open Font Licence) and converted to outlines; no font file is shipped",
         "Composed as one pure-vector SVG (no embedded or linked image, no script, no font): the P (the lighter trace of the same outline) centred above the wordmark, its width 62% of the wordmark's; final composition per the founder's Brand Identity Overview (19 Nov 2026)",
-        "Warm ivory #F4F0EB (colour refinement, 19 Nov 2026); geometry unchanged"
+        "Warm ivory #F4F0EB (colour refinement, 19 Nov 2026); geometry unchanged",
+        "Taller P (founder refinement, 21 Nov 2026): only the P's vertical scale changed (0.31755 -> 0.37471, 18% taller; its width, plotted lines and fade unchanged), the wordmark moved down by the same 50.38 units without any change, viewBox 368.6 x 361.78 -> 368.6 x 412.16; no path data edited"
       ],
       "visible_label": "none: a brand logo depicts no real place, product or person (class BRAND_MARK)",
       "human_review": {
