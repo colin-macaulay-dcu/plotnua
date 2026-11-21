@@ -72,6 +72,9 @@ label{display:block;font-size:14px;color:var(--stone);margin:12px 0 0}input[type
 .state{display:inline-block;font-size:12.5px;letter-spacing:.06em;text-transform:uppercase;padding:4px 10px;border-radius:999px;border:1px solid var(--line-2);color:var(--stone)}
 .state.captured,.state.paid{color:#d6ecd8;border-color:#4d6b51}.state.declined,.state.failed{color:#f3ddd6;border-color:#7a5a52}.state.action_required{color:#f2e6c8;border-color:#7a6a45}
 .empty{padding:40px 0;color:var(--stone)}
+h1.bh{font-size:clamp(34px,4.6vw,48px);margin:.1em 0 .7em}.grid.bk{gap:clamp(20px,3.5vw,48px)}
+.bk .item{padding:18px 0}.bk .item .meta{margin:2px 0 0}.bk .by{margin:2px 0 6px}.bk .panel{padding:clamp(18px,2.6vw,28px)}
+.bk legend{font-family:var(--sans);font-size:12.5px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--stone);margin:0 0 2px}.bk fieldset{margin-top:18px}
 .item.st{grid-template-columns:minmax(0,1fr) auto}.btn.inl{width:auto;max-width:100%;white-space:normal;text-align:center;line-height:1.3}
 @media (max-width:560px){.item.st{grid-template-columns:1fr;gap:8px}.item.st .price{grid-column:1;text-align:left;display:flex;gap:12px;align-items:center;flex-wrap:wrap}.item.st .price .d{display:inline}.btn.inl{width:100%}
 .top .in{flex-wrap:wrap;row-gap:6px}.brand small{display:none}}footer{border-top:1px solid var(--line);margin-top:56px;padding-top:20px;font-size:13.5px;color:var(--mute)}
@@ -95,14 +98,12 @@ const reEsc = s => s.replace(/[.*+?^${}()|[\]\\/]/g, '\\$&');
 const IMG = env => `^${reEsc(gallery(env))}/(plotart/artists/[a-z0-9-]{1,80}/img/[A-Za-z0-9._-]{1,120}${stagingGallery(env) ? '|staging-img/[A-Za-z0-9_-]{1,64}\\.svg' : ''})$`;
 function basketPage(env) {
   const counties = B.COUNTIES.map(c => `<option>${esc(c)}</option>`).join('');
-  const body = `${banner(env)}<p class="eyebrow">Your basket</p><h1>Original works, one checkout</h1>
-<p class="lede">Original works from the gallery’s artists, in one secure checkout.</p>
-<div class="grid"><section aria-labelledby="items-h"><h2 id="items-h" class="pa-sr" style="position:absolute;left:-9999px">Artworks</h2><div id="items"><p class="empty">Loading your basket…</p></div>
+  const body = `${banner(env)}<h1 class="bh">Your Basket</h1>
+<div class="grid bk"><section aria-label="Artworks"><div id="items"><p class="empty">Loading your basket…</p></div>
 <noscript><p class="note">The basket needs JavaScript. You can still enquire about any artwork from its page in the gallery.</p></noscript></section>
-<aside class="panel" aria-labelledby="sum-h"><h2 id="sum-h">Summary</h2><table class="sum"><tbody>
+<aside class="panel" aria-label="Order summary"><table class="sum"><tbody>
 <tr><td>Artworks</td><td id="t-art">—</td></tr><tr><td>Delivery</td><td id="t-del">—</td></tr><tr class="tot"><td>Total</td><td id="t-tot">—</td></tr></tbody></table>
-<p class="small muted" id="t-pay"></p>
-<form id="buy" novalidate hidden><fieldset><legend>Delivery</legend><p class="small muted">We deliver to addresses in the Republic of Ireland.</p>
+<form id="buy" novalidate hidden><fieldset><legend>Delivery address</legend>
 <label>Full name<input type="text" name="name" autocomplete="name" required maxlength="120"></label>
 <label>Email<input type="email" name="email" autocomplete="email" required maxlength="254"></label>
 <label>Address<input type="text" name="address_line1" autocomplete="address-line1" required maxlength="120"></label>
@@ -112,8 +113,7 @@ function basketPage(env) {
 <div class="two"><label>Eircode<input type="text" name="eircode" autocomplete="postal-code" maxlength="8"></label>
 <label>Telephone (for delivery)<input type="tel" name="phone" autocomplete="tel" required maxlength="30"></label></div></fieldset>
 <label class="check"><input type="checkbox" name="accept" id="accept" required><span>I have read the <a id="terms" target="_blank" rel="noopener">purchase terms</a>. Each artwork is sold by its artist.</span></label>
-<p class="small muted">You’ll enter your card details on a secure payment page.</p>
-<p id="err" class="note err" role="alert" hidden></p><button class="btn" type="submit" id="pay">Continue to secure payment</button></form>
+<p id="err" class="note err" role="alert" hidden></p><button class="btn" type="submit" id="pay">Checkout</button></form>
 <p id="closed" class="note" hidden>Online purchase is not open at the moment. You can enquire about any artwork from its page.</p></aside></div>`;
   const script = `(function(){'use strict';
 var KEY='pa-basket-v1',IMG=new RegExp(${JSON.stringify(IMG(env))}),MAX=10;
@@ -125,7 +125,7 @@ var eur=function(c){return '€'+(c/100).toLocaleString('en-IE',{minimumFraction
 var el=function(t,a,c){var e=document.createElement(t);if(a)for(var k in a){if(k==='text')e.textContent=a[k];else e.setAttribute(k,a[k])}(c||[]).forEach(function(x){if(x)e.appendChild(x)});return e};
 var data=null,form=document.getElementById('buy');
 function render(){var box=document.getElementById('items');box.textContent='';
-if(!list.length){box.appendChild(el('p',{'class':'empty',text:'Your basket is empty. Find an artwork in the gallery and choose “Add to basket”.'}));form.hidden=true;document.getElementById('t-art').textContent=document.getElementById('t-del').textContent=document.getElementById('t-tot').textContent='—';document.getElementById('t-pay').textContent='';return}
+if(!list.length){box.appendChild(el('p',{'class':'empty',text:'Your basket is empty.'}));form.hidden=true;document.getElementById('t-art').textContent=document.getElementById('t-del').textContent=document.getElementById('t-tot').textContent='—';return}
 if(!data)return;
 data.items.forEach(function(it){var mine=list.filter(function(x){return x.id===it.id})[0]||{};
 var art=el('div',{'class':'art'},[mine.img?el('img',{src:mine.img,alt:it.title?('“'+it.title+'”'+(it.artist?' by '+it.artist:'')):'Artwork',loading:'lazy'}):null]);
@@ -133,13 +133,13 @@ var rm=el('button',{'class':'link',type:'button',text:'Remove'});rm.addEventList
 var info=el('div',null,[el('h3',null,[it.url?el('a',{href:it.url,text:it.title||'Artwork'}):el('span',{text:it.title||'Artwork'})]),
 el('p',{'class':'by',text:it.artist?('by '+it.artist):''}),
 it.ok?el('p',{'class':'meta',text:[it.medium,it.size,it.year].filter(Boolean).join(' · ')}):null,
-it.ok?el('p',{'class':'meta',text:'Delivery '+it.delivery.window+' with '+it.delivery.transporter+'; '+it.delivery.tracking+'. Insured: '+it.delivery.cover+'. '+it.delivery.returns+'.'}):null,
+it.ok?el('p',{'class':'meta',text:it.delivery.window+' · '+it.delivery.tracking+' · insured'}):null,
+it.ok?el('p',{'class':'meta',text:it.delivery.returns}):null,
 !it.ok?el('p',{'class':'why',text:it.reason}):null,rm]);
 var price=it.ok?el('div',{'class':'price'},[document.createTextNode(eur(it.price_cents)),el('span',{'class':'d',text:'+ '+eur(it.delivery_cents)+' delivery'})]):el('div',{'class':'price'});
 box.appendChild(el('article',{'class':'item'+(it.ok?'':' off')},[art,info,price]))});
 var ok=data.items.filter(function(i){return i.ok}),artists={};ok.forEach(function(i){artists[i.artist]=1});
 document.getElementById('t-art').textContent=eur(data.totals.artworks_cents);document.getElementById('t-del').textContent=eur(data.totals.delivery_cents);document.getElementById('t-tot').textContent=eur(data.totals.total_cents);
-document.getElementById('t-pay').textContent=ok.length?(ok.length+(ok.length===1?' artwork':' artworks')):'';
 var can=data.open&&ok.length>0&&ok.length===data.items.length;form.hidden=!data.open||!ok.length;document.getElementById('closed').hidden=data.open;
 document.getElementById('pay').disabled=!can;if(data.terms){var t=document.getElementById('terms');t.href='/terms/'+data.terms.doc_id+'.html';t.textContent='purchase terms ('+data.terms.doc_id+')'}
 if(ok.length!==data.items.length&&ok.length)showErr('Remove the artworks that are no longer available to continue.');else hideErr()}
@@ -149,10 +149,10 @@ form.addEventListener('submit',function(e){e.preventDefault();hideErr();var f=fo
 if(!document.getElementById('accept').checked){showErr('Please read and accept the purchase terms.');return}
 var b={artworks:data.items.filter(function(i){return i.ok}).map(function(i){return i.id}),expected_total_cents:data.totals.total_cents,accept_terms:data.terms&&data.terms.doc_id,
 name:f.name.value,email:f.email.value,address_line1:f.address_line1.value,address_line2:f.address_line2.value,town:f.town.value,county:f.county.value,eircode:f.eircode.value,phone:f.phone.value};
-var btn=document.getElementById('pay');btn.disabled=true;btn.textContent='Opening secure payment…';
+var btn=document.getElementById('pay');btn.disabled=true;btn.textContent='Opening checkout…';
 fetch('/basket/checkout',{method:'POST',credentials:'same-origin',headers:{'Content-Type':'application/json'},body:JSON.stringify(b)}).then(function(r){return r.json().then(function(j){return{ok:r.ok,j:j}})})
-.then(function(r){if(r.ok&&r.j.url){location.href=r.j.url;return}btn.disabled=false;btn.textContent='Continue to secure payment';showErr(r.j.error||'Something went wrong. Please try again.');refresh()})
-.catch(function(){btn.disabled=false;btn.textContent='Continue to secure payment';showErr('Something went wrong. Please try again.')})});
+.then(function(r){if(r.ok&&r.j.url){location.href=r.j.url;return}btn.disabled=false;btn.textContent='Checkout';showErr(r.j.error||'Something went wrong. Please try again.');refresh()})
+.catch(function(){btn.disabled=false;btn.textContent='Checkout';showErr('Something went wrong. Please try again.')})});
 refresh();})();`;
   return page(env, 'Your basket', body, { script });
 }

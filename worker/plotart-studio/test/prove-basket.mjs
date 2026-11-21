@@ -157,9 +157,13 @@ check('A9 with the Founding Artist’s own processing consent (and the TEST poli
 
 console.log('— buyer: the basket page and live preview');
 r = await pub('GET', '/basket');
-check('B1 the basket page is served with a strict policy (nonce scripts only, no third-party scripts, no framing)', r.s === 200 && /Original works, one checkout/.test(r.t) && /script-src 'nonce-[0-9a-f]{32}'(;| )/.test(r.h.get('Content-Security-Policy'))
+check('B1 the basket page is served with a strict policy (nonce scripts only, no third-party scripts, no framing)', r.s === 200 && /<h1 class="bh">Your Basket<\/h1>/.test(r.t) && !/Original works|one secure checkout|Summary<\/h2>|secure payment page/.test(r.t) && (r.t.match(/<h1/g) || []).length === 1 && />Checkout<\/button>/.test(r.t) && /script-src 'nonce-[0-9a-f]{32}'(;| )/.test(r.h.get('Content-Security-Policy'))
   && !/js\.stripe\.com/.test(r.h.get('Content-Security-Policy')) && r.h.get('X-Frame-Options') === 'DENY' && /Test mode/.test(r.t), r.h.get('Content-Security-Policy'));
 const bp = r.t;
+const BP = await import(HERE + FIX + 'src/basket-public.js');
+const live = await BP.page({ ENVIRONMENT: 'production', CHECKOUT_LIVE: 'true', STRIPE_SECRET_KEY: 'sk_live_notused', STAGING_GALLERY: 'true', CHECKOUT_ORIGIN: 'https://x' }, 'Your basket', '<h1>Your Basket</h1>').text();
+const stagingNote = await BP.page({ ENVIRONMENT: 'test', STRIPE_SECRET_KEY: 'sk_test_x', STAGING_GALLERY: 'true', CHECKOUT_ORIGIN: 'https://x' }, 'Your basket', '<h1>Your Basket</h1>').text();
+check('B1c the TEST/staging notice appears only in Stripe TEST mode, never in live production', !/Test mode|Private staging|staging/i.test(live) && /Private staging/.test(stagingNote));
 check('B1b the basket page carries no payment-arrangement detail (separate payments, paid directly, Stripe processing, number of transactions)', !/separate (card )?payments?|paid directly|directly to the artist|each artist(’|')s payment|Stripe emails|transactions?\\b/i.test(bp.replace(/<footer>[\s\S]*<\/footer>/, '').replace(/<p class="note test">[\s\S]*?<\/p>/, '')) && /Each artwork is sold by its artist/.test(bp));
 check('B1a the page carries PlotArt’s identity (Instrument Serif, Hanken Grotesk, anthracite) and is responsive', /Instrument\+Serif/.test(r.t) && /Hanken\+Grotesk/.test(r.t) && /#27282A/.test(r.t) && /@media \(max-width:560px\)/.test(r.t) && /name="viewport"/.test(r.t));
 r = await pub('GET', '/api/basket/items?ids=wagal1,wafnd1,wagal4,wanob1,nonexistent');
