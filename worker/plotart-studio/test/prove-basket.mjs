@@ -27,7 +27,7 @@ const { basketDoc, LIVE_BASKET_DOCS } = await import(HERE + 'src/basket-terms.js
 const BBT = await basketDoc('PA-BBT-TEST-01', false), BAA = await basketDoc('PA-BAA-TEST-01', false);
 
 /* ---------------------------------------------------------------- mock Stripe: platform (no Stripe-Account) and connected accounts */
-const WHSEC = 'whsec_test_' + 'x'.repeat(24);
+const WHSEC = 'whsec_test_' + 'x'.repeat(24), WHSEC_P = 'whsec_test_platform_' + 'y'.repeat(20);
 const M = { accounts: {}, v2accounts: {}, customers: {}, sessions: {}, pms: {}, pis: {}, charges: {}, feeAmounts: {}, feeRefunds: [], refunds: [], calls: [], idem: {}, n: 0,
   fail500: 0, cardBehaviour: {} };
 const nid = p => `${p}_test_${(++M.n).toString(36).padStart(6, '0')}`;
@@ -142,7 +142,7 @@ try {
 console.log('PROVE · multi-artist basket (direct charge per artwork, authorise all before capture)');
 const ORIGIN = 'https://checkout.local';
 const ENVV = { CHECKOUT_MESSAGE_RETRY_MINUTES: '0', CHECKOUT_PILOT_ENABLED: 'true', BASKET_ENABLED: 'true', BASKET_COMMISSION_FREE: 'with_processing_consent', STRIPE_SECRET_KEY: 'sk_test_mockkey123',
-  STRIPE_PUBLISHABLE_KEY: 'pk_test_mockpublishable', STRIPE_WEBHOOK_SECRET: WHSEC, STRIPE_API_BASE: 'https://stripe.mock', CHECKOUT_ORIGIN: ORIGIN, GALLERY_ORIGIN: 'https://plotnua.ie' };
+  STRIPE_PUBLISHABLE_KEY: 'pk_test_mockpublishable', STRIPE_WEBHOOK_SECRET: WHSEC, STRIPE_WEBHOOK_SECRET_PLATFORM: WHSEC_P, STRIPE_API_BASE: 'https://stripe.mock', CHECKOUT_ORIGIN: ORIGIN, GALLERY_ORIGIN: 'https://plotnua.ie' };
 S = await start({ port: 8873, env: ENVV, script: FIX + 'src/index.js', checkout: { script: FIX + 'src/checkout-public.js', env: ENVV }, outbound: stripe });
 const { db } = S, CW = S.checkoutWorker;
 const mig = readFileSync(HERE + 'migrations/0019_multi_artist_basket.sql', 'utf8');
@@ -158,7 +158,7 @@ const call = async (method, path, email, body) => { const r = await S.mf.dispatc
 const pub = async (method, path, { json = null, form = null, origin = ORIGIN, headers = {}, raw = null } = {}) => { const r = await CW.fetch(ORIGIN + path, { method, redirect: 'manual',
   headers: { ...(json || form ? { 'Content-Type': json ? 'application/json' : 'application/x-www-form-urlencoded', Origin: origin } : {}), ...headers }, body: json ? JSON.stringify(json) : form ? new URLSearchParams(form).toString() : raw ?? undefined });
   const t = await r.text(); let j = null; try { j = JSON.parse(t); } catch { /* html */ } return { s: r.status, t, j, loc: r.headers.get('Location'), h: r.headers }; };
-const hook = async e => { const body = JSON.stringify(e); const r = await pub('POST', '/v1/stripe/webhook', { raw: body, headers: { 'Stripe-Signature': sign(body), 'Content-Type': 'application/json' } }); return { s: r.s, j: r.j }; };
+const hook = async (e, secret = WHSEC) => { const body = JSON.stringify(e); const r = await pub('POST', '/v1/stripe/webhook', { raw: body, headers: { 'Stripe-Signature': sign(body, undefined, secret), 'Content-Type': 'application/json' } }); return { s: r.s, j: r.j }; };
 const q = async (sql, ...b) => (await db.prepare(sql).bind(...b).all()).results;
 const one = (sql, ...b) => db.prepare(sql).bind(...b).first();
 /* Optional staging preview: BASKET_SCREENSHOTS=<dir> renders the real pages (served by the checkout Worker above) in Chromium,
@@ -315,11 +315,13 @@ check('P1 before the card is entered the status page says so; a return from Stri
 await shot('3-waiting', `/b/${token1}`);
 enterCard(sess1.id, {});
 const cBefore = M.calls.length;
-r = await hook(evt('checkout.session.completed', { ...M.sessions[sess1.id], setup_intent: M.sessions[sess1.id].setup_intent }));
+r = await hook(evt('checkout.session.completed', M.sessions[sess1.id]), 'whsec_test_wrong_' + 'z'.repeat(20));
+check('P1a an event signed with an unknown secret is refused before anything is read', r.s === 400 && (await one('SELECT status FROM checkout_baskets WHERE id = ?', B1.id)).status === 'open');
+r = await hook(evt('checkout.session.completed', M.sessions[sess1.id]), WHSEC_P);
 const B1p = await one('SELECT * FROM checkout_baskets WHERE id = ?', B1.id);
 const newCalls = M.calls.slice(cBefore);
 const clones = newCalls.filter(c => c.path === '/v1/payment_methods'), auths = newCalls.filter(c => c.path === '/v1/payment_intents' && c.method === 'POST'), caps = newCalls.filter(c => /\/capture$/.test(c.path));
-check('P2 a signed platform event completes the card page; the coordinator runs', r.s === 200 && B1p.status === 'paid', { r, status: B1p.status, res: B1p.resolution });
+check('P2 an event signed by PlotArt’s own-account endpoint (its own secret) completes the card page; the coordinator runs', r.s === 200 && B1p.status === 'paid', { r, status: B1p.status, res: B1p.resolution });
 check('P3 the saved card is cloned to EACH artist’s own account (no second card entry)', clones.length === 2 && clones[0].acct === ACC.agal && clones[1].acct === ACC.afnd && clones.every(c => c.f.customer === B1p.platform_customer));
 check('P4 each artist’s payment is a DIRECT charge on their own account, authorised first (manual capture, off-session, card only)', auths.length === 2 && auths.every(c => c.f.capture_method === 'manual' && c.f.off_session === 'true' && c.f.confirm === 'true' && c.f['allowed_payment_method_types[0]'] === 'card')
   && auths[0].acct === ACC.agal && auths[1].acct === ACC.afnd);

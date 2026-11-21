@@ -187,9 +187,16 @@ export async function authoriseOutcome(env, args) {
 
 /* Webhook signature (Stripe-Signature: t=..., v1=...). HMAC-SHA256 over `${t}.${rawBody}` with the endpoint secret;
    constant-time comparison; 5-minute tolerance. Anything else is refused before the body is parsed. */
+/* Two endpoints may deliver here: the Connect endpoint (artist accounts; STRIPE_WEBHOOK_SECRET) and, for the multi-artist
+   basket, PlotArt's own-account endpoint (its setup-mode card page; STRIPE_WEBHOOK_SECRET_PLATFORM). Each has its own secret. */
 export async function verifySignature(env, header, raw, nowSec = Math.floor(Date.now() / 1000)) {
-  const secret = String(env.STRIPE_WEBHOOK_SECRET || '');
-  if (!secret.startsWith('whsec_')) return { ok: false, reason: 'webhook secret not configured' };
+  const secrets = [env.STRIPE_WEBHOOK_SECRET, env.STRIPE_WEBHOOK_SECRET_PLATFORM].map(s => String(s || '')).filter(s => s.startsWith('whsec_'));
+  if (!secrets.length || !String(env.STRIPE_WEBHOOK_SECRET || '').startsWith('whsec_')) return { ok: false, reason: 'webhook secret not configured' };
+  let last = null;
+  for (const secret of secrets) { last = await verifyWith(secret, header, raw, nowSec); if (last.ok) return last; }
+  return last;
+}
+async function verifyWith(secret, header, raw, nowSec) {
   const parts = Object.create(null);
   for (const kv of String(header || '').split(',')) { const i = kv.indexOf('='); if (i > 0) (parts[kv.slice(0, i).trim()] ||= []).push(kv.slice(i + 1).trim()); }
   const t = Number((parts.t || [])[0]);
