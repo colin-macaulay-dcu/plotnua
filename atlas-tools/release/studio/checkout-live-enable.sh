@@ -22,6 +22,11 @@
 # WRANGLER and OUTSIDE_CHECK can be overridden (tests only). Paths are resolved before changing directory.
 set -uo pipefail
 HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)" || exit 2
+# Values pasted into GitHub can carry a trailing newline or spaces: trim them (never printed) before checking and using.
+_trim() { local s="$1"; s="${s#"${s%%[![:space:]]*}"}"; s="${s%"${s##*[![:space:]]}"}"; printf '%s' "$s"; }
+for _v in LIVE_STUDIO_KEY LIVE_RUNTIME_KEY LIVE_WEBHOOK_SECRET LIVE_RESEND_KEY LIVE_BASKET_KEY LIVE_PLATFORM_WEBHOOK_SECRET; do
+  [ -n "${!_v:-}" ] && printf -v "$_v" '%s' "$(_trim "${!_v}")"
+done
 W="${WRANGLER:-npx --yes wrangler@4.150.0}"
 OUTSIDE="${OUTSIDE_CHECK:-bash $HERE/checkout-outside-check.sh}"
 WD="$(cd "$1" && pwd)" || { echo "FAIL  worker directory $1 not found"; exit 1; }
