@@ -27,6 +27,10 @@ TITLE = "Original Irish Art for Sale | Buy Art from Irish Artists | PlotArt"
 DESCRIPTION = ("Original art for sale by artists based or working in Ireland: paintings and works shown in full, "
                "with sizes and asking prices. Enquire directly with the artist.")
 CSS_PATH = "assets/plotart-artworks.css"
+# Refine (founder approval 21 Nov 2026): All Artworks ONLY. Two hand-written assets, loaded by that page alone, so Large
+# Artworks, the artists' galleries and the shared plotart.js are untouched.
+REFINE_CSS = "assets/plotart-refine.css"
+REFINE_JS = "assets/plotart-refine.js"
 
 CSS = '''/* PlotArt artwork collection (plotart/artworks/, 13 Nov 2026): a gallery wall, not a catalogue.
    Every work hangs uncropped on a shared line; the label sits beneath it. The art carries the colour. */
@@ -136,10 +140,15 @@ def render(packages, path=PATH):
     # the homepage's own structured data describes the homepage; this page's data lives in its collection region
     head = re.sub(r'\s*<script type="application/ld\+json">.*?</script>', "", head, flags=re.S)
     head = relink(head) + '<link rel="stylesheet" href="../' + CSS_PATH + '">\n'
+    refine = C.COLLECTIONS[path].get("refine") is True
+    if refine:
+        head += '<link rel="stylesheet" href="../' + REFINE_CSS + '">\n'
     body = body_copy.replace("COLLECTION", C.BEGIN + "\n" + C.content(path, packages) + "\n" + C.END)
     return ('<!DOCTYPE html>\n<html lang="en-IE" class="no-js">\n<head>' + head + '</head>\n<body class="pa">\n'
             '<a class="pa-skip" href="#main">Skip to content</a>\n' + relink(header) + '\n<main id="main" class="pa-coll">' + body + '</main>\n'
-            + relink(footer) + '\n<script src="../assets/plotart.js" defer></script>\n<script src="/assets/identity/pn-menu.js?v=1" defer></script>\n</body>\n</html>\n')
+            + relink(footer) + '\n<script src="../assets/plotart.js" defer></script>\n'
+            + ('<script src="../' + REFINE_JS + '" defer></script>\n' if refine else '')
+            + '<script src="/assets/identity/pn-menu.js?v=1" defer></script>\n</body>\n</html>\n')
 
 
 def main():

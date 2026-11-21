@@ -48,7 +48,8 @@ def is_large(w):
 COLLECTIONS = {
     "artworks/index.html": {"keep": lambda w: True, "name": "Original Irish art for sale",
                             "crumbs": [("Artworks", "artworks/index.html")], "label": "Available artworks",
-                            "count": "original %s", "empty": "No artworks are available just now."},
+                            "count": "original %s", "empty": "No artworks are available just now.",
+                            "refine": True},   # the Refine line (founder approval 21 Nov 2026): All Artworks only
     "large-artworks/index.html": {"keep": is_large, "name": "Large original artworks for sale in Ireland",
                                   "crumbs": [("Artworks", "artworks/index.html"), ("Large artworks", "large-artworks/index.html")],
                                   "label": "Available large artworks", "count": "original %s of 100 cm or more",
@@ -119,7 +120,26 @@ def collection_order(packages, keep=lambda w: True):
     return out
 
 
-def collection_card(pkg, w, n):
+def public_county(a):
+    """The artist's county ONLY as the artist chose to show it publicly (the Studio publishes it only with their choice;
+    blank means not shown). Never the artwork's location, which is private Studio data and is not published."""
+    return (a.get("county") or "").strip()
+
+
+def refine_attrs(pkg, w):
+    """Refine (founder approval 21 Nov 2026): the values the All Artworks filters read, taken only from the same
+    approved public gallery export the card itself is built from. Nothing new is collected or published: the price,
+    the longest side and the artist are already printed on the card, and the county already shows on the artist's
+    gallery. data-work is the artwork's id, matched against the live Art for Hire check only in the browser."""
+    a = pkg["artist"]
+    price = "request" if w.get("price_on_request") or w.get("price_eur") is None else "%d" % int(w["price_eur"])
+    longest = max(float(w.get("h_cm") or 0), float(w.get("w_cm") or 0))   # as is_large: the picture plane only
+    county = public_county(a)
+    return ' data-price="%s" data-long="%s" data-artist="%s" data-work="%s"%s' % (
+        price, E("%g" % longest), E(a["slug"]), E(w["id"]), ' data-county="%s"' % E(county) if county else "")
+
+
+def collection_card(pkg, w, n, refine=False):
     """One work in the collection: the artist-approved image, uncropped, linking to its canonical artwork page."""
     a = pkg["artist"]
     im = P.main_image(w)
@@ -128,7 +148,7 @@ def collection_card(pkg, w, n):
     url = "../" + work_url(pkg, w)
     eager = n <= 3
     credit = '<p class="pa-coll-credit">Photograph: %s</p>' % E(im["photo_credit"]) if im.get("photo_credit") else ""
-    return ('\n    <li class="pa-coll-work"><a class="pa-coll-art" href="%s">'
+    return ('\n    <li class="pa-coll-work"' + (refine_attrs(pkg, w) if refine else "") + '><a class="pa-coll-art" href="%s">'
             '<img src="%s" srcset="%s" sizes="(max-width:639px) 92vw, (max-width:1099px) 46vw, 31vw" width="%d" height="%d" alt="%s"%s decoding="async"></a>'
             '<div class="pa-coll-label"><h3 class="pa-coll-title"><a href="%s">%s</a></h3>'
             '<p class="pa-coll-artist"><a href="../artists/%s/">%s</a></p>'
@@ -166,10 +186,63 @@ def collection(packages, path="artworks/index.html"):
                 '<p class="pa-coll-empty">New work is published as artists add it. <a href="../gallery/">Meet the artists in the Artists’ Gallery</a>.</p>'
                 % spec["empty"] + collection_data(rows, path))
     artists = len({pkg["artist"]["slug"] for pkg, _ in rows})
-    return ('<p class="pa-coll-count">%d %s by %d %s</p>'
-            '\n  <ol class="pa-coll-grid" aria-label="%s">%s\n  </ol>\n  %s') % (
+    refine = spec.get("refine") is True
+    return ('<p class="pa-coll-count"%s>%d %s by %d %s</p>%s'
+            '\n  <ol class="pa-coll-grid" aria-label="%s">%s\n  </ol>%s\n  %s') % (
+        ' data-rf-count aria-live="polite"' if refine else "",
         len(rows), spec["count"] % ("work" if len(rows) == 1 else "works"), artists, "artist" if artists == 1 else "artists",
-        spec["label"], "".join(collection_card(pkg, w, n) for n, (pkg, w) in enumerate(rows, 1)), collection_data(rows, path))
+        refine_bar(rows) if refine else "",
+        spec["label"], "".join(collection_card(pkg, w, n, refine) for n, (pkg, w) in enumerate(rows, 1)),
+        '\n  <p class="pa-rf-none" data-rf-none hidden>No works match these choices. '
+        '<button type="button" class="pa-rf-clear" data-rf-clear>Clear the filters</button></p>' if refine else "",
+        collection_data(rows, path))
+
+
+# ---- Refine (founder approval 21 Nov 2026): the All Artworks filters --------------------------------------------------
+# Fixed price and size bands (half-open, so a work is in exactly one band; 100 cm starts "Large", as LARGE_CM). The
+# artist and location choices list only what the collection holds right now, so a choice never leads to nothing.
+REFINE_PRICE = [("0-1000", "Under €1,000"), ("1000-2500", "€1,000 – €2,499"), ("2500-5000", "€2,500 – €4,999"),
+                ("5000-10000", "€5,000 – €9,999"), ("10000-", "€10,000 and over")]
+REFINE_SIZE = [("0-50", "Up to 49 cm"), ("50-100", "50 – 99 cm"), ("100-150", "100 – 149 cm"), ("150-", "150 cm and over")]
+CHEVRON = '<svg viewBox="0 0 12 8" aria-hidden="true" focusable="false"><path d="M1 1.5l5 5 5-5" fill="none" stroke="currentColor" stroke-width="1.4"/></svg>'
+
+
+def _refine_group(key, name, options, note=""):
+    items = "".join('<label class="pa-rf-opt"><input type="checkbox" name="%s" value="%s"><span>%s</span></label>' % (key, E(v), E(t))
+                    for v, t in options)
+    return ('<div class="pa-rf-group" data-rf-group="%s"><button type="button" class="pa-rf-trig" aria-expanded="false" '
+            'aria-controls="rf-%s"><span class="pa-rf-name">%s</span><span class="pa-rf-val" data-rf-val></span>%s</button>'
+            '<fieldset class="pa-rf-pop" id="rf-%s" hidden><legend class="pa-sr">%s</legend>%s%s</fieldset></div>') % (
+        key, key, E(name), CHEVRON, key, E(name), items, '<p class="pa-rf-note">%s</p>' % E(note) if note else "")
+
+
+def refine_bar(rows):
+    """The Refine line. It ships HIDDEN: only plotart-refine.js shows it, so without the script (or if it fails) the
+    page is exactly the full collection. "Available to hire" ships hidden too and is shown only while the live,
+    fail-closed Art for Hire check names works on this page; it is never decided from this static page."""
+    artists = sorted({(p["artist"]["slug"], p["artist"]["display_name"]) for p, _ in rows},
+                     key=lambda x: (x[1].split()[-1].casefold(), x[1].casefold(), x[0]))
+    counties = sorted({public_county(p["artist"]) for p, _ in rows} - {""}, key=str.casefold)
+    groups = (_refine_group("price", "Price", REFINE_PRICE, "Works with the price on request are shown only when no price is chosen.")
+              + _refine_group("size", "Size", REFINE_SIZE, "Longest side, from the artist’s own measurements.")
+              + _refine_group("artist", "Artist", artists))
+    if counties:
+        groups += _refine_group("county", "Artist location", [(c, "Co. " + c) for c in counties],
+                                "Shown only for artists who have chosen to share their county.")
+    return ('\n<div class="pa-rf" data-rf hidden>'
+            '<div class="pa-rf-line"><span class="pa-rf-label" aria-hidden="true">Refine</span>'
+            '<button type="button" class="pa-rf-open" aria-expanded="false" aria-controls="rf-sheet">Refine<span class="pa-rf-badge" data-rf-badge></span></button>'
+            '<div class="pa-rf-sheet" id="rf-sheet" role="group" aria-label="Refine the collection">'
+            '<div class="pa-rf-sheet-h"><p class="pa-rf-sheet-t" tabindex="-1">Refine</p>'
+            '<button type="button" class="pa-rf-x" data-rf-close aria-label="Close"><span aria-hidden="true">×</span></button></div>'
+            + groups +
+            '<div class="pa-rf-group pa-rf-hire" data-rf-hire hidden><label class="pa-rf-opt"><input type="checkbox" name="hire" value="1">'
+            '<span>Available to hire</span></label></div>'
+            '<div class="pa-rf-sheet-f"><button type="button" class="pa-rf-clear" data-rf-clear>Clear</button>'
+            '<button type="button" class="pa-btn pa-btn--solid pa-rf-show" data-rf-close><span>Show <span data-rf-n>%d</span> <span data-rf-word>%s</span></span></button></div>'
+            '</div>'
+            '<button type="button" class="pa-rf-clear pa-rf-clear--line" data-rf-clear hidden>Clear</button>'
+            '</div></div>') % (len(rows), "work" if len(rows) == 1 else "works")
 
 
 def content(path, packages):
