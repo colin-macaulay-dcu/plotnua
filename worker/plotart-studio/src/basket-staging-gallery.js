@@ -41,11 +41,21 @@ async function works(env) {
     FROM artworks w JOIN artists a ON a.id = w.artist_id WHERE w.archived = 0 AND a.account_status = 'active' ORDER BY a.display_name, w.ord`);
 }
 
-export async function route(env, url, { page, esc, eur }) {
-  const p = url.pathname;
+/* `at` places the pages: on the checkout Worker (local and staging) they are /gallery…; in the TEST Studio (behind Cloudflare
+   Access, founder only) they are /admin/basket-gallery…, with images and the basket on the checkout Worker. */
+export function places(env, url, where = 'checkout') {
+  if (where === 'studio') {
+    const co = String(env.CHECKOUT_ORIGIN || '').replace(/\/$/, '');
+    return { list: '/admin/basket-gallery', item: id => `/admin/basket-gallery/${id}`, img: id => `${co}/staging-img/${id}.svg`, basket: `${co}/basket`, prefix: /^\/admin\/basket-gallery/ };
+  }
+  return { list: '/gallery', item: id => `/gallery/${id}`, img: id => `${url.origin}/staging-img/${id}.svg`, basket: '/basket', prefix: /^\/gallery/ };
+}
+export async function route(env, url, { page, esc, eur }, where = 'checkout') {
+  const P = places(env, url, where);
+  const p = url.pathname.replace(P.prefix, '/gallery');
   let mm;
-  if (p === '/') return new Response(null, { status: 302, headers: { Location: '/gallery' } });
-  if ((mm = p.match(/^\/staging-img\/([A-Za-z0-9_-]{1,64})\.svg$/))) {
+  if (where === 'checkout' && url.pathname === '/') return new Response(null, { status: 302, headers: { Location: '/gallery' } });
+  if (where === 'checkout' && (mm = url.pathname.match(/^\/staging-img\/([A-Za-z0-9_-]{1,64})\.svg$/))) {
     if (!(await one(env, 'SELECT 1 AS x FROM artworks WHERE id = ?', mm[1]))) return new Response('Not found', { status: 404 });
     return new Response(svg(mm[1]), { headers: { 'Content-Type': 'image/svg+xml', 'Cache-Control': 'public, max-age=3600', 'X-Content-Type-Options': 'nosniff', 'Content-Security-Policy': "default-src 'none'; style-src 'unsafe-inline'" } });
   }
@@ -53,7 +63,7 @@ export async function route(env, url, { page, esc, eur }) {
     const ws = await works(env), pv = await B.preview(env, ws.map(w => w.id).slice(0, B.MAX_LINES));
     const more = ws.length > B.MAX_LINES ? await B.preview(env, ws.map(w => w.id).slice(B.MAX_LINES, 2 * B.MAX_LINES)) : { items: [] };
     const ok = Object.fromEntries([...pv.items, ...more.items].map(i => [i.id, i]));
-    const cards = ws.map(w => `<a class="card" href="/gallery/${esc(w.id)}"><div class="im"><img src="/staging-img/${esc(w.id)}.svg" alt="Synthetic abstract image for “${esc(w.title)}”" loading="lazy"></div>
+    const cards = ws.map(w => `<a class="card" href="${esc(P.item(w.id))}"><div class="im"><img src="${esc(P.img(w.id))}" alt="Synthetic abstract image for “${esc(w.title)}”" loading="lazy"></div>
 <h3>${esc(w.title)}</h3><p>${esc(w.artist)}${w.founding ? ' · Founding Artist' : ''}</p><p>${ok[w.id] && ok[w.id].ok ? eur(ok[w.id].price_cents) + ' · can be bought online' : w.availability === 'sold' ? 'Sold' : 'Enquire'}</p></a>`).join('');
     return page(env, 'Staging gallery', `${STYLE}<p class="eyebrow">Private staging</p><h1>Artists’ Gallery</h1>
 <p class="lede">Synthetic works by two synthetic artists, set up exactly as real artists would be for online purchase. Add works by both artists to one basket and pay once.</p><div class="gal">${cards}</div>`);
@@ -63,11 +73,11 @@ export async function route(env, url, { page, esc, eur }) {
     if (!w) return page(env, 'Not found', '<h1>Not found</h1>', { status: 404 });
     const it = (await B.preview(env, [w.id])).items[0] || {};
     const size = w.h_cm ? `${w.h_cm} × ${w.w_cm}${w.d_cm ? ' × ' + w.d_cm : ''} cm` : '';
-    const img = `${url.origin}/staging-img/${w.id}.svg`;
+    const img = P.img(w.id);
     const cta = it.ok
-      ? `<p><a class="btn" href="/basket?add=${encodeURIComponent(w.id)}&img=${encodeURIComponent(img)}">Add to basket</a></p><p class="small muted">One secure card payment for works from several artists. ${esc(w.artist)} is the seller and is paid directly.</p>`
+      ? `<p><a class="btn" href="${esc(`${P.basket}?add=${encodeURIComponent(w.id)}&img=${encodeURIComponent(img)}`)}">Add to basket</a></p><p class="small muted">One secure card payment for works from several artists. ${esc(w.artist)} is the seller and is paid directly.</p>`
       : `<p class="note">${esc(it.reason || 'This artwork can’t be bought online.')}</p>`;
-    return page(env, w.title, `${STYLE}<p class="eyebrow"><a href="/gallery">Gallery</a> / ${esc(w.artist)}</p><div class="aw"><div class="im"><img src="/staging-img/${esc(w.id)}.svg" alt="Synthetic abstract image for “${esc(w.title)}”"></div>
+    return page(env, w.title, `${STYLE}<p class="eyebrow"><a href="${esc(P.list)}">Gallery</a> / ${esc(w.artist)}</p><div class="aw"><div class="im"><img src="${esc(P.img(w.id))}" alt="Synthetic abstract image for “${esc(w.title)}”"></div>
 <div><p>${esc(w.artist)}${w.founding ? '<span class="badge">Founding Artist</span>' : ''}</p><h1>${esc(w.title)}</h1><p class="price">${it.ok ? eur(it.price_cents) : w.availability === 'sold' ? 'Sold' : w.price_eur ? eur(w.price_eur * 100) : 'Price on request'}</p>
 <dl class="d"><dt>Medium</dt><dd>${esc(w.medium || '')}</dd>${size ? `<dt>Size</dt><dd>${esc(size)}</dd>` : ''}${w.year ? `<dt>Year</dt><dd>${esc(w.year)}</dd>` : ''}
 ${it.ok ? `<dt>Delivery</dt><dd>${eur(it.delivery_cents)} · ${esc(it.delivery.window)} with ${esc(it.delivery.transporter)}; ${esc(it.delivery.tracking)}. Insured: ${esc(it.delivery.cover)}.</dd><dt>Returns</dt><dd>${esc(it.delivery.returns)}</dd><dt>Seller</dt><dd>${esc(it.seller)} (the artist)</dd>` : ''}</dl>

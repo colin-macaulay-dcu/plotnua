@@ -3,7 +3,7 @@
 # checkout-test credentials. Started ONLY by a change to worker/plotart-studio/test/basket-test-request.json on
 # plotart/multi-artist-basket; waits for the founder's Approve on "checkout-test". One run does, in order, and stops at the
 # first failure:
-#   1 Access: the TEST checkout address is put behind Access if it is not already (the Stripe webhook path stays reachable)
+#   1 Access: the TEST Studio, where the synthetic gallery is shown to the founder, must already be behind Access (checked)
 #   2 Stripe: the existing TEST key is checked for the calls the basket needs (deliberately invalid requests; nothing created)
 #   3 TEST database: migration 0019 (new tables only) and the ADDITIVE basket seed (INSERT OR IGNORE; nothing existing changed)
 #   4 both TEST Workers redeployed from this branch with the pilot, the basket and the synthetic gallery ON; outside checks;
@@ -46,17 +46,12 @@ jobs:
           [[ "$CHECKOUT_TEST_ORIGIN" =~ ^https://plotart-checkout-test\.[a-z0-9-]+\.workers\.dev/?$ ]] || { echo "REFUSED: CHECKOUT_TEST_ORIGIN is not the TEST checkout Worker"; exit 1; }
           [[ "$CHECKOUT_TEST_D1_DATABASE_ID" =~ ^[0-9a-f-]{36}$ ]] || { echo "REFUSED: CHECKOUT_TEST_D1_DATABASE_ID"; exit 1; }
           echo "### Basket on TEST" >> "$GITHUB_STEP_SUMMARY"
-      - name: 1 · Access in front of the TEST checkout address (webhook path stays reachable)
-        env:
-          CHECKOUT_TEST_ACCESS_TOKEN: ${{ secrets.CHECKOUT_TEST_ACCESS_TOKEN }}
+      - name: 1 · The TEST Studio (where the synthetic gallery lives) is behind Access
         run: |
           set -euo pipefail
-          python3 atlas-tools/release/studio/basket-staging.py test_access
-          O="${CHECKOUT_TEST_ORIGIN%/}"
-          for i in 1 2 3 4 5 6; do code=$(curl -s -o /dev/null -w '%{http_code}' "$O/v1/status"); [[ "$code" =~ ^(302|403)$ ]] && break; sleep 10; done
-          [[ "$code" =~ ^(302|403)$ ]] && echo "  PASS  $O is behind Access ($code)" || { echo "  FAIL  $O answered $code without Access: STOPPED before anything else"; exit 1; }
-          code=$(curl -s -o /dev/null -w '%{http_code}' -X POST "$O/v1/stripe/webhook" -d '{}')
-          [[ "$code" =~ ^(400|503)$ ]] && echo "  PASS  the webhook path is reachable and refuses an unsigned post ($code)" || { echo "  FAIL  webhook path answered $code"; exit 1; }
+          SO="${CHECKOUT_TEST_ORIGIN%/}"; SO="${SO/plotart-checkout-test./plotart-studio-test.}"
+          code=$(curl -s -o /dev/null -w '%{http_code}' "$SO/admin/checkout")
+          [[ "$code" =~ ^(302|403)$ ]] && echo "  PASS  $SO is behind Access ($code)" || { echo "  FAIL  $SO answered $code without Access: STOPPED before anything changed"; exit 1; }
       - name: 2 · Stripe TEST key covers the basket (deliberately invalid requests; nothing is created)
         env:
           KEY: ${{ secrets.CHECKOUT_TEST_STRIPE_SECRET_KEY }}
@@ -109,8 +104,10 @@ jobs:
           python3 "$GITHUB_WORKSPACE/atlas-tools/release/studio/render-checkout-config.py" . test
           O="${CHECKOUT_TEST_ORIGIN%/}"
           add() { sed -i -E "0,/^CHECKOUT_PILOT_ENABLED = .*/s##&\n$2#" "$1"; }
-          add wrangler.checkout.test.toml 'BASKET_ENABLED = "true"\nBASKET_COMMISSION_FREE = "with_processing_consent"\nSTAGING_GALLERY = "true"\nGALLERY_ORIGIN = "'"$O"'"'
-          add wrangler.studio.test.toml 'BASKET_ENABLED = "true"\nBASKET_COMMISSION_FREE = "with_processing_consent"\nGALLERY_ORIGIN = "'"$O"'"'
+          SO="${O/plotart-checkout-test./plotart-studio-test.}"; GL="$SO/admin/basket-gallery"
+          # the synthetic gallery is a founder page in the TEST Studio (behind Access); the checkout Worker serves the basket and the images
+          add wrangler.checkout.test.toml 'BASKET_ENABLED = "true"\nBASKET_COMMISSION_FREE = "with_processing_consent"\nSTAGING_GALLERY = "true"\nGALLERY_ORIGIN = "'"$O"'"\nSTAGING_GALLERY_URL = "'"$GL"'"'
+          add wrangler.studio.test.toml 'BASKET_ENABLED = "true"\nBASKET_COMMISSION_FREE = "with_processing_consent"\nSTAGING_GALLERY = "true"\nGALLERY_ORIGIN = "'"$O"'"\nSTAGING_GALLERY_URL = "'"$GL"'"'
           [[ "$PK" =~ ^pk_test_[A-Za-z0-9]+$ ]] && add wrangler.checkout.test.toml 'STRIPE_PUBLISHABLE_KEY = "'"$PK"'"' || echo "  INFO  no pk_test_ publishable key stored: the bank-check confirmation page will say it is not configured (everything else works)"
           sed -i -E 's#^crons = .*#crons = ["*/5 * * * *"]#' wrangler.checkout.test.toml
           python3 - <<'PY'
@@ -131,10 +128,12 @@ jobs:
           printf '%s' "$STRIPE_WEBHOOK_SECRET" | $W secret put STRIPE_WEBHOOK_SECRET --config wrangler.checkout.test.toml > /dev/null
           echo "  PASS  secrets rewritten with the same TEST values (never printed)"
           sleep 5
-          code=$(curl -s -o /dev/null -w '%{http_code}' "$O/gallery"); [[ "$code" =~ ^(302|403)$ ]] || { echo "  FAIL  $O/gallery answered $code without Access"; exit 1; }
+          code=$(curl -s -o /dev/null -w '%{http_code}' "$GL"); [[ "$code" =~ ^(302|403)$ ]] || { echo "  FAIL  $GL answered $code without Access"; exit 1; }
+          code=$(curl -s -o /dev/null -w '%{http_code}' "$O/gallery"); [ "$code" = 404 ] || { echo "  FAIL  the checkout Worker serves /gallery ($code)"; exit 1; }
+          code=$(curl -s -o /dev/null -w '%{http_code}' "$O/basket"); [ "$code" = 200 ] || { echo "  FAIL  $O/basket answered $code"; exit 1; }
           code=$(curl -s -o /dev/null -w '%{http_code}' -X POST "$O/v1/stripe/webhook" -d '{}'); [ "$code" = 400 ] || { echo "  FAIL  webhook answered $code"; exit 1; }
-          echo "  PASS  gallery and basket behind Access; webhook reachable and refusing unsigned posts"
-          echo "**Open:** $O/gallery (sign in with your founder email)" >> "$GITHUB_STEP_SUMMARY"
+          echo "  PASS  the gallery is behind the Studio's Access; the checkout Worker serves the basket (not the gallery); webhooks still refuse unsigned posts"
+          echo "**Open:** $GL (sign in with your founder email)" >> "$GITHUB_STEP_SUMMARY"
       - name: Roll back both TEST Workers if the deployment or its checks failed
         if: ${{ failure() && steps.deploy.outcome == 'failure' }}
         working-directory: worker/plotart-studio

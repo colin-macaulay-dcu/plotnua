@@ -11,11 +11,11 @@ const HERE = new URL('..', import.meta.url).pathname, TMP = '/tmp/claude-0/baske
 const results = [];
 const check = (n, ok, d = '') => { results.push(!!ok); console.log(`  ${ok ? 'PASS' : 'FAIL'}  ${n}${!ok && d ? `  [${String(typeof d === 'string' ? d : JSON.stringify(d)).slice(0, 600)}]` : ''}`); };
 const ACC = ['acct_testSlotA', 'acct_testSlotB'];
-const ENV = { CHECKOUT_PILOT_ENABLED: 'true', BASKET_ENABLED: 'true', BASKET_COMMISSION_FREE: 'with_processing_consent', STRIPE_SECRET_KEY: 'rk_test_seedcheck', STRIPE_WEBHOOK_SECRET: 'whsec_x', CHECKOUT_ORIGIN: 'https://checkout.local' };
+const ENV = { ENVIRONMENT: 'test', STAGING_GALLERY: 'true', GALLERY_ORIGIN: 'https://checkout.local', STAGING_GALLERY_URL: 'https://studio.local/admin/basket-gallery', CHECKOUT_PILOT_ENABLED: 'true', BASKET_ENABLED: 'true', BASKET_COMMISSION_FREE: 'with_processing_consent', STRIPE_SECRET_KEY: 'rk_test_seedcheck', STRIPE_WEBHOOK_SECRET: 'whsec_x', CHECKOUT_ORIGIN: 'https://checkout.local' };
 let S;
 try {
   console.log('PROVE · basket seed on the existing TEST database (additive, repeatable)');
-  S = await start({ port: 8897, env: ENV });
+  S = await start({ port: 8897, env: { ...ENV, ENVIRONMENT: 'local' }, checkout: { env: ENV } });   // the Studio's local sign-in needs ENVIRONMENT=local; the checkout Worker runs as TEST
   const { db } = S, q = async (sql, ...b) => (await db.prepare(sql).bind(...b).all()).results;
   const run = async sql => { let err = null; for (const s of statements(sql)) { try { await db.prepare(s).run(); } catch (e) { err = err || `${e.message} :: ${s.slice(0, 100)}`; } } return err; };
   // the TEST database as it is today: 0013 + its own synthetic seed (+ the legacy licence rows), one artist on a TEST account
@@ -42,6 +42,18 @@ try {
   const el = Object.fromEntries((await r.json()).items.map(i => [i.id, i]));
   check('T5 basket works: the new synthetic Gallery Artist at 15%, the existing Founding Artist’s new works at 0%; their older works untouched (no delivery offer: enquiry)',
     el.wastgal1.ok && el.wastgal1.commission_basis === 'gallery_artist_agreement' && el.wbkatestfnd1.ok && el.wbkatestfnd1.commission_basis === 'founding_enquiry' && !el.watestfnd1.ok, el);
+  // the TEST arrangement: the synthetic gallery is a founder page in the TEST Studio (behind its Access); the checkout Worker
+  // serves the basket and the images, never the gallery pages
+  const st = async (path, email) => { const r = await S.mf.dispatchFetch(S.url + path, { headers: { 'Cf-Access-Jwt-Assertion': token(email), 'X-Studio': '1' } }); return { s: r.status, t: await r.text() }; };
+  const g = await st('/admin/basket-gallery', FOUNDER), gi = await st('/admin/basket-gallery/wastgal1', FOUNDER);
+  check('T6 TEST: the founder sees the synthetic gallery in the TEST Studio; images and “Add to basket” point to the checkout Worker',
+    g.s === 200 && /class="card" href="\/admin\/basket-gallery\/wastgal1"/.test(g.t) && /src="https:\/\/checkout\.local\/staging-img\/wastgal1\.svg"/.test(g.t)
+    && gi.s === 200 && /href="https:\/\/checkout\.local\/basket\?add=wastgal1&amp;img=https%3A%2F%2Fcheckout\.local%2Fstaging-img%2Fwastgal1\.svg"/.test(gi.t), { gs: g.s, gis: gi.s, sample: gi.t.slice(gi.t.indexOf('Add to basket') - 220, gi.t.indexOf('Add to basket')) });
+  const a = await st('/admin/basket-gallery', 'f1@example.invalid');
+  check('T7 TEST: an artist (not the founder) cannot open it', a.s === 403 || a.s === 401, a.s);
+  const CW = S.checkoutWorker, cw = async path => { const r = await CW.fetch('https://checkout.local' + path, { redirect: 'manual' }); return { s: r.status, t: await r.text() }; };
+  const cg = await cw('/gallery'), ci = await cw('/staging-img/wastgal1.svg'), cb = await cw('/basket');
+  check('T8 TEST: the checkout Worker does NOT serve the gallery pages; it serves the synthetic images and the basket (linking back to the Studio gallery)', cg.s === 404 && ci.s === 200 && cb.s === 200 && cb.t.includes('https://studio.local/admin/basket-gallery'), { cg: cg.s, ci: ci.s, cb: cb.s });
   console.log(`\nBASKET TEST SEED · ${results.length} checks, ${results.filter(Boolean).length} passed, ${results.filter(x => !x).length} failed`);
   process.exitCode = results.every(Boolean) ? 0 : 1;
 } finally { if (S) await S.mf.dispose(); }

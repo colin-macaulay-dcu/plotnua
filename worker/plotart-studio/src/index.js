@@ -14,7 +14,9 @@ import * as AG from './agreement.js';
 import * as GAR from './gallery-application-review.js';
 import { REVIEW_JS } from './application-review-ui.js';
 import * as H from './hire.js';
-import * as BK from './basket.js';     // multi-artist basket on the same checkout (development 21 Nov 2026): test mode only, off by default
+import * as BK from './basket.js';
+import * as BP from './basket-public.js';
+import * as BG from './basket-staging-gallery.js';     // multi-artist basket on the same checkout (development 21 Nov 2026): test mode only, off by default
 import * as CO from './checkout.js';   // managed checkout pilot (development 16 Nov 2026): test mode only, off by default
 import * as O from './opportunities.js';   // Opportunities & delivery (development 13 Nov 2026): expressions of interest only
 import * as HP from './featured.js';   // Featured Artists in the Artists' Gallery (17 Nov 2026; was Homepage curation; migration 0016 unchanged): founder-only
@@ -1345,6 +1347,10 @@ async function route(req, env) {
     }
     /* Managed checkout pilot (test mode; off by default). Separate from the gallery, its publishing and the agreements. */
     if (p === '/admin/checkout') return html(A.CHECKOUT_HTML);
+    // TEST only: the synthetic basket gallery for the founder's inspection (behind this Studio's Access; never in production)
+    if ((p === '/admin/basket-gallery' || /^\/admin\/basket-gallery\/[A-Za-z0-9_-]{1,64}$/.test(p)) && m === 'GET' && BP.stagingGallery(env) && ['test', 'local'].includes(env.ENVIRONMENT)) {
+      const r = await BG.route(env, url, { page: BP.page, esc: BP.esc, eur: BP.eur }, 'studio'); if (r) return r;
+    }
     if (p.startsWith('/api/admin/checkout')) {
       if (p === '/api/admin/checkout' && m === 'GET') return json({ ok: true, ...(await CO.adminView(env)) });
       if (!(await CO.installed(env))) return json({ ok: false, error: 'The payment pilot is not installed' }, 409);
