@@ -128,31 +128,107 @@ def _item(pkg, w, im, base):
         E(gallery), E(a["display_name"]))
 
 
-def content(selection, packages, base=BASE):
-    items = resolve(selection, packages)
+# Artwork first (founder brief 21 Nov 2026, "Artists' Gallery redesign, option 1"): directly under the introduction, a row of
+# three published artworks, then Browse All Artworks, then Featured Artists as a second section. The three are a fixed,
+# curated choice (artist gallery address, artwork id), chosen to sit well together: Night Garden (Carmel Marrinan),
+# Foxgloves and Gorse (Daniel Chester) and Energetic Labyrinths 12 (Clare O'Connor). Like Featured Artists, a
+# work appears only while it is shown and available in its published gallery with a main photograph, and never when the
+# same artwork is featured below. A place whose work becomes ineligible is filled deterministically (opening_items).
+OPENING = [("carmel-marrinan", "wg1by72jg3b"), ("daniel-chester", "wfhtcyurvgf"), ("clare-o-connor", "w226r60hfsh")]
+OPEN_ITEM = re.compile(r'data-pa-opening="([a-z0-9-]+):([a-z0-9]+)"')
+
+
+def _eligible(pkg, w):
+    """An opening work must be shown AND available in its approved, published gallery, with a main photograph."""
+    return (pkg.get("publication", {}).get("state") == "approved" and w in P.shown(pkg)
+            and w.get("availability") == "available" and _main(w) is not None)
+
+
+def _portrait(w):
+    try:
+        return float(w.get("h_cm") or 0) >= float(w.get("w_cm") or 0)
+    except (TypeError, ValueError):
+        return True
+
+
+def opening_items(selection, packages, choice=OPENING):
+    """The three opening works (founder approval 21 Nov 2026). The curated works always come first, each in its own place,
+    whenever eligible. A place whose curated work is sold, withdrawn, unpublished, without a main photograph or already
+    featured below is filled by a replacement chosen deterministically from the other eligible published works, so the
+    opening never changes between builds unless the published galleries do. A replacement is never a featured artwork or a
+    work already in the row, and is preferred, in this order: by an artist not already in the row; by an artist not in
+    Featured Artists; in the same orientation as the curated work it replaces (portrait or landscape); not the work its
+    artist already shows on the Explore More Artists wall; then by the All Artworks collection's own stable order."""
+    by = {p["artist"]["slug"]: p for p in packages}
+    sel = check_selection(selection)
+    featured_works = {(x["artist"], x["work"]) for x in sel}
+    featured_artists = {x["artist"] for x in sel}
+    slots = []
+    for slug, wid in choice:
+        pkg = by.get(slug)
+        w = next((x for x in pkg["works"] if x.get("id") == wid), None) if pkg else None
+        ok = w is not None and _eligible(pkg, w) and (slug, wid) not in featured_works
+        slots.append([(pkg, w) if ok else None, w])                 # [chosen, the curated work (for its orientation)]
+    if any(s[0] is None for s in slots):
+        pool = [(pkg, w) for pkg, w in C.collection_order([p for p in packages if p.get("publication", {}).get("state") == "approved"])
+                if _eligible(pkg, w) and (pkg["artist"]["slug"], w["id"]) not in featured_works]
+        rank = {(pkg["artist"]["slug"], w["id"]): n for n, (pkg, w) in enumerate(pool)}
+        wall = {}
+        for pkg in packages:
+            first = P.card_image(pkg)[0] if pkg.get("works") else None
+            if first:
+                wall[pkg["artist"]["slug"]] = first.get("id")
+        for s in slots:
+            if s[0] is not None:
+                continue
+            used = {x[0][0]["artist"]["slug"] for x in slots if x[0] is not None}
+            taken = {(x[0][0]["artist"]["slug"], x[0][1]["id"]) for x in slots if x[0] is not None}
+            want_portrait = _portrait(s[1]) if s[1] is not None else True
+            cands = [(pkg, w) for pkg, w in pool if (pkg["artist"]["slug"], w["id"]) not in taken]
+            if not cands:
+                continue
+            s[0] = min(cands, key=lambda c: (c[0]["artist"]["slug"] in used, c[0]["artist"]["slug"] in featured_artists,
+                                             _portrait(c[1]) != want_portrait, wall.get(c[0]["artist"]["slug"]) == c[1]["id"],
+                                             rank[(c[0]["artist"]["slug"], c[1]["id"])]))
+    return [(pkg, w, _main(w)) for pkg, w in (s[0] for s in slots if s[0] is not None)]
+
+
+def _opening_item(pkg, w, im, base):
+    a = pkg["artist"]
+    slug = a["slug"]
+    d = P.pick(im, 1200)
+    gallery = "%sartists/%s/" % (base, slug)
+    page = "%s%s.html" % (gallery, w["slug"])
+    return ('\n    <li class="pa-op-item" data-pa-opening="%s:%s"><figure class="pa-op-fig">'
+            '<a class="pa-op-art" href="%s" data-pa-track="gallery_opening_artwork" tabindex="-1" aria-hidden="true">'
+            '<img src="%simg/%s" srcset="%s" sizes="(max-width:639px) 78vw, 31vw" width="%d" height="%d" alt="%s" decoding="async"></a>'
+            '<figcaption class="pa-op-cap"><a class="pa-op-title" href="%s" data-pa-track="gallery_opening_work">%s</a>'
+            '<a class="pa-op-artist" href="%s" data-pa-track="gallery_opening_artist">%s</a></figcaption></figure></li>') % (
+        slug, w["id"], E(page), E(gallery), E(d["file"]), E(P.srcset(im, gallery + "img/")), d["pixels"][0], d["pixels"][1],
+        E(im["alt"]), E(page), E(w["title"]), E(gallery), E(a["display_name"]))
+
+
+def opening(selection, packages, base=BASE):
+    # Browse All Artworks moved beside the heading (founder visual refinements 21 Nov 2026), so the row stands alone
+    items = opening_items(selection, packages)
     if not items:
         return ""
-    more = browse(packages, base)
-    return ('<section class="pa-sec pa-fa" aria-labelledby="featArtH"><div class="pa-wrap">\n'
-            '  <div class="pa-fa-head%s"><p class="pa-eyebrow">Selected by PlotArt</p><h2 id="featArtH">Featured Artists</h2>'
-            '<p class="pa-fa-lede">A changing selection of artists and their work.</p>%s</div>\n'
+    # tabindex: on phones and tablets the row scrolls sideways; as a focusable region keyboard users can move it with the
+    # arrow keys (and every title and artist is a link in the tab order)
+    row = '\n  <ol class="pa-op-row n-%d" aria-label="Selected artworks" tabindex="0">%s\n  </ol>' % (
+        len(items), "".join(_opening_item(p, w, im, base) for p, w, im in items))
+    return '<section class="pa-op" aria-label="Selected artworks"><div class="pa-wrap">%s\n</div></section>' % row
+
+
+def content(selection, packages, base=BASE):
+    items = resolve(selection, packages)
+    first = opening(selection, packages, base)
+    feat = ('<section class="pa-sec pa-fa" aria-labelledby="featArtH"><div class="pa-wrap">\n'
+            '  <div class="pa-fa-head"><p class="pa-eyebrow">Selected by PlotArt</p><h2 id="featArtH">Featured Artists</h2>'
+            '<p class="pa-fa-lede">A changing selection of artists and their work.</p></div>\n'
             '  <ol class="pa-fa-list n-%d">%s\n  </ol>\n'
-            '</div></section>') % (" pa-fa-head--browse" if more else "", more, len(items), "".join(_item(p, w, im, base) for p, w, im in items))
-
-
-def browse(packages, base=BASE):
-    """Browse All Artworks (founder brief 21 Nov 2026): a clear way from the Featured Artists heading into the complete
-    All Artworks collection and its Refine filters. The counts are taken from exactly the rows that page lists
-    (plotart_search_content.collection_order with its own rule), from the same published galleries, so they always
-    agree with it and change with every publication that re-renders this region. No published work: no link."""
-    rows = C.collection_order(packages, C.COLLECTIONS["artworks/index.html"]["keep"])
-    if not rows:
-        return ""
-    works, artists = len(rows), len({pkg["artist"]["slug"] for pkg, _ in rows})
-    return ('<p class="pa-fa-browse"><a class="pa-btn pa-btn--ghost" href="%sartworks/" data-pa-track="gallery_browse_artworks">'
-            'Browse All Artworks <span aria-hidden="true">&rarr;</span></a>'
-            '<span class="pa-fa-browse-n">Explore %d original %s by %d %s.</span></p>') % (
-        base, works, "work" if works == 1 else "works", artists, "artist" if artists == 1 else "artists")
+            '</div></section>') % (len(items), "".join(_item(p, w, im, base) for p, w, im in items)) if items else ""
+    return "\n".join(x for x in (first, feat) if x)
 
 
 def region(doc):

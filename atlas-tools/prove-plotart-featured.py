@@ -26,8 +26,10 @@ FA9  the launch guard (L11, L20, L6) passes the real page and refuses the same t
 FA10 in a browser at 1440, 820 and 390 px: images load whole (never cropped), no sideways scrolling, no script errors,
      every link resolves (--shots saves previews)
 FA11 the published galleries were only read
-FA12 Browse All Artworks (21 Nov 2026): one link beside the heading to All Artworks, with that page's own counts, which follow
-     publications; no available work -> no link
+FA12 Browse All Artworks (21 Nov 2026): one button beside the heading to All Artworks, none under the artwork row, no
+     count line; no available work -> no opening row
+FA13 the opening artworks (artwork first, 21 Nov 2026): the curated three from published galleries, never repeating a
+     featured artwork; an ineligible curated work is replaced deterministically (founder refinement 21 Nov 2026)
 Real artist data is only READ (and changed only inside throwaway copies); nothing is written to the live tree.
 """
 import copy, functools, glob, http.server, json, os, re, shutil, subprocess, sys, tempfile, threading
@@ -68,15 +70,15 @@ LIVE_DOC = open(PAGE, encoding="utf-8").read()
 
 
 def layout_from(doc):
-    """The Gallery order as the page shows it (positions from the twenty-five index; galleries without a position in the
-    order the wall shows them): the order the Studio sent when the page was last built."""
+    """A Gallery order rebuilt from the page (test only). The public founding positions index was removed on 21 Nov 2026,
+    so the positions come from the wall's own numerals; the featured artists (whose numerals the page does not show)
+    and any gallery without a numeral follow without a position, in the order the page names them."""
     reg = doc[slice(*P.vg_region(doc))]
-    pos = []
-    for n, (st, body) in enumerate(re.findall(r'<li class="pa-vgc-pos is-(pub|res|prep|av)">(.*?)</li>', reg), 1):
-        m = re.search(r'artists/([a-z0-9-]+)/', body)
-        pos.append({"position": n, "slug": m.group(1) if st == "pub" else None, "reserved": st == "res", "assigned": st == "prep"})
-    numbered = {x["slug"] for x in pos if x["slug"]}
-    return {"positions": pos, "extra": [x for x in re.findall(r'href="\.\./artists/([a-z0-9-]+)/" data-pa-track="vg_artist"', reg) if x not in numbered]}
+    pos = [{"position": int(n), "slug": sl, "reserved": False} for n, sl in re.findall(
+        r'<span class="pa-vgc-n" aria-hidden="true">(\d\d)</span><div><h3 class="pa-vgc-name"><a href="\.\./artists/([a-z0-9-]+)/"', reg)]
+    numbered = {x["slug"] for x in pos}
+    extra = [x for x in re.findall(r'href="\.\./artists/([a-z0-9-]+)/" data-pa-track="vg_artist"', reg) if x not in numbered]
+    return {"positions": pos, "extra": extra + [x["artist"] for x in FEAT.selection_in(doc) if x["artist"] not in extra]}
 
 
 LAY = layout_from(LIVE_DOC)
@@ -90,7 +92,9 @@ def build(doc, sel, pk, lay=LAY):
 
 
 wall = lambda d: re.findall(r'href="\.\./artists/([a-z0-9-]+)/" data-pa-track="vg_artist"', d[slice(*P.vg_region(d))])
-index = lambda d: re.findall(r'<li class="pa-vgc-pos is-[a-z]+">.*?</li>', d[slice(*P.vg_region(d))])
+# the wall's position numerals (the public positions index was removed 21 Nov 2026): artist -> numeral
+index = lambda d: dict((sl, n) for n, sl in re.findall(r'<span class="pa-vgc-n" aria-hidden="true">(\d\d)</span><div><h3 class="pa-vgc-name"><a href="\.\./artists/([a-z0-9-]+)/"', d[slice(*P.vg_region(d))]))
+same_nums = lambda a, b: all(b.get(k, v) == v for k, v in a.items())
 both_out = lambda d: FEAT.outside(d[:P.vg_region(d)[0]] + P.VG_BEGIN + P.VG_END + d[P.vg_region(d)[1]:])
 DOC = build(LIVE_DOC, [], PK)                         # the page with no selection: every published artist on the wall
 LIVE = {f: open(f, "rb").read() for f in glob.glob(os.path.join(ROOT, "plotart", "artists", "*", "gallery.json"))}
@@ -98,8 +102,9 @@ by = {p["artist"]["slug"]: p for p in PK}
 coll = lambda d: d[slice(*P.vg_region(d))]
 
 print("PROVE · PlotArt Artists' Gallery · Featured Artists")
-check("FA1 no selection: the region is empty, every published artist is on the wall, and nothing else on the page differs",
-      FEAT.selection_in(DOC) == [] and FEAT.update(DOC, [], PK) == DOC and FEAT.outside(DOC) == DOC and FEAT.content([], PK) == ""
+check("FA1 no selection: no Featured Artists section (the region holds only the opening artworks, 21 Nov 2026), every published artist is on the wall, and nothing else on the page differs",
+      FEAT.selection_in(DOC) == [] and FEAT.update(DOC, [], PK) == DOC and "pa-fa" not in FEAT.content([], PK) and FEAT.content([], PK).startswith('<section class="pa-op"')
+      and FEAT.content([], []) == ""
       and sorted(wall(DOC)) == sorted(p["artist"]["slug"] for p in PK) and both_out(DOC) == both_out(LIVE_DOC) and index(DOC) == index(LIVE_DOC))
 
 new = build(DOC, SEL, PK)
@@ -173,7 +178,7 @@ for sel in ([], SEL, SEL[:1], SEL[::-1], SEL[2:4], [A("lena-fawaz", next(w["id"]
     d = build(DOC, sel, PK)
     f, w = [x["artist"] for x in FEAT.selection_in(d)], wall(d)
     good = (not set(f) & set(w) and sorted(f + w) == sorted(ALL) and w == [x for x in FULL if x not in f]
-            and index(d) == index(DOC) and both_out(d) == both_out(DOC))
+            and same_nums(index(d), index(DOC)) and both_out(d) == both_out(DOC))
     ok6 &= good
     if not good:
         why6.append((f, w))
@@ -196,31 +201,71 @@ check("FA7 introductions are verbatim published biography text: whole sentences 
 # FA12 Browse All Artworks (21 Nov 2026): beside the heading, one link to the All Artworks page, its counts exactly that
 # page's own (same rows, same published galleries), changing with publications; no published work -> no link
 import plotart_search_content as C       # noqa: E402
-def _counts(pk):
-    region = FEAT.content(SEL, pk)
-    m = re.search(r'<p class="pa-fa-browse"><a class="pa-btn pa-btn--ghost" href="\.\./artworks/" data-pa-track="gallery_browse_artworks">'
-                  r'Browse All Artworks <span aria-hidden="true">&rarr;</span></a><span class="pa-fa-browse-n">Explore (\d+) original works? by (\d+) artists?\.</span></p>', region)
-    coll = re.search(r'>(\d+) original works? by (\d+) artists?<', C.collection(pk))
-    return (m and (int(m.group(1)), int(m.group(2)))), (coll and (int(coll.group(1)), int(coll.group(2)))), region
-now, coll, reg = _counts(PK)
-fewer = copy.deepcopy(PK)
-gone = next(p for p in fewer if p["artist"]["slug"] not in [x["artist"] for x in SEL])   # an unfeatured artist's gallery is removed
-fewer.remove(gone)
-one = copy.deepcopy(PK)
-next(w for w in by["karen-ebbs"]["works"] if w["availability"] == "available")       # sanity: Karen has available work
-for p in one:
-    if p["artist"]["slug"] == "karen-ebbs":
-        next(w for w in p["works"] if w["availability"] == "available")["availability"] = "sold"
-n2, c2, _ = _counts(fewer)
-n3, c3, _ = _counts(one)
-check("FA12 Browse All Artworks sits in the Featured Artists heading, links to the All Artworks page, and its counts equal that page's own (%s)" % (now,),
-      now is not None and now == coll and reg.count('href="../artworks/"') == 1 and reg.index("pa-fa-browse") < reg.index("pa-fa-list")
-      and 'class="pa-fa-head pa-fa-head--browse"' in reg and "pa-rf" not in reg, (now, coll))
-check("FA12b the counts follow publications: a removed gallery and a work no longer available change them, always agreeing with All Artworks (%s -> %s, %s)" % (now, n2, n3),
-      n2 == c2 and n3 == c3 and n2[1] == now[1] - 1 and n2[0] < now[0] and n3 == (now[0] - 1, now[1]), (n2, c2, n3, c3))
+BROWSE = ('<p class="pa-vg2-act pa-vg2-browse"><a class="pa-btn pa-btn--ghost" href="../artworks/" data-pa-track="gallery_browse_artworks">'
+          'Browse All Artworks <span aria-hidden="true">→</span></a></p>')
+reg = FEAT.content(SEL, PK)
+_hero = re.search(r'<section class="pa-vg2-hero">.*?</section>', LIVE_DOC, re.S)
+check("FA12 Browse All Artworks is one button beside the heading (visual refinements 21 Nov 2026), above the opening artworks, linking to the All Artworks page; nothing under the artwork row, no count line",
+      _hero is not None and _hero.group(0).count(BROWSE) == 1 and LIVE_DOC.count('data-pa-track="gallery_browse_artworks"') == 1
+      and LIVE_DOC.index(BROWSE) < LIVE_DOC.index('<section class="pa-op"') and 'href="../artworks/"' not in reg and "pa-op-browse" not in reg
+      and "original works by" not in LIVE_DOC and 'class="pa-fa-head"' in reg and "pa-rf" not in reg)
 _empty = [dict(copy.deepcopy(p), works=[dict(w, availability="sold") for w in p["works"]]) for p in PK]
-check("FA12c with no available work there is no Browse link (and the heading keeps its usual layout)", "pa-fa-browse" not in FEAT.content(SEL, _empty)
-      and 'class="pa-fa-head"' in FEAT.content(SEL, _empty))
+check("FA12c with no available work there is no Browse link and no opening row (Featured Artists, which shows sold work too, stays)",
+      "pa-op" not in FEAT.content(SEL, _empty) and 'class="pa-fa-head"' in FEAT.content(SEL, _empty))
+
+# FA13 the opening artworks (artwork first, 21 Nov 2026): the three curated works, from their published galleries, uncropped,
+# with title and artist linking to the existing pages; never an artwork featured below; withdrawn/sold/unpublished drop out
+op = re.findall(r'<li class="pa-op-item" data-pa-opening="([a-z0-9-]+):(w[0-9a-z]+)">(.*?)</li>', reg)
+def _op_ok(slug, wid, body):
+    pkg = by[slug]; w = next(x for x in pkg["works"] if x["id"] == wid); im = FEAT._main(w)
+    return (w["availability"] == "available" and 'alt="%s"' % FEAT.E(im["alt"]) in body and 'src="../artists/%s/img/' % slug in body
+            and 'href="../artists/%s/%s.html"' % (slug, w["slug"]) in body and ">%s</a>" % FEAT.E(w["title"]) in body
+            and 'href="../artists/%s/"' % slug in body and ">%s</a>" % FEAT.E(pkg["artist"]["display_name"]) in body
+            and os.path.exists(os.path.join(ROOT, "plotart", "artists", slug, "%s.html" % w["slug"])))
+check("FA13 the opening row shows the three curated published works, in order, each from its own gallery with its approved alt text, title and artist, linking to the existing artwork and gallery pages",
+      [(a, b) for a, b, _ in op] == FEAT.OPENING and all(_op_ok(a, b, body) for a, b, body in op) and 'class="pa-op-row n-3"' in reg, op)
+# FA13b fallback (founder refinement 21 Nov 2026): a place whose curated work is sold, withdrawn, unpublished or featured
+# below is filled deterministically from other eligible published work; the curated works keep priority and their places
+def _ops(sel, pk):
+    return [(p["artist"]["slug"], w["id"]) for p, w, _ in FEAT.opening_items(sel, pk)]
+def _with(pk, slug, wid, **change):
+    q = copy.deepcopy(pk)
+    for p in q:
+        if p["artist"]["slug"] == slug:
+            for w in p["works"]:
+                if w["id"] == wid:
+                    w.update(change)
+    return q
+_fx_ok, _fx_why = True, []
+for i, (sl, wid) in enumerate(FEAT.OPENING):
+    for label, pk2, sel2 in (("sold", _with(PK, sl, wid, availability="sold"), SEL),
+                             ("withdrawn", _with(PK, sl, wid, availability="withdrawn"), SEL),
+                             ("unpublished", [p for p in PK if p["artist"]["slug"] != sl], SEL),
+                             ("featured below", PK, [A(sl, wid)] + [x for x in SEL if x["artist"] != sl][:5])):
+        got, again = _ops(sel2, pk2), _ops(sel2, pk2)
+        others = [x for j, x in enumerate(FEAT.OPENING) if j != i]
+        byq = {p["artist"]["slug"]: p for p in pk2}
+        rep = got[i] if len(got) == 3 else None
+        rw = next((w for w in byq[rep[0]]["works"] if w["id"] == rep[1]), None) if rep and rep[0] in byq else None
+        good = (len(got) == 3 and got == again and [g for j, g in enumerate(got) if j != i] == others and rep != (sl, wid)
+                and rw is not None and rw["availability"] == "available" and byq[rep[0]]["publication"]["state"] == "approved"
+                and rep not in {(x["artist"], x["work"]) for x in sel2} and rep[0] not in {o[0] for o in others}
+                and FEAT._portrait(rw) == FEAT._portrait(next(w for w in next(p for p in PK if p["artist"]["slug"] == sl)["works"] if w["id"] == wid))
+                and FEAT._main(rw) is not None)
+        _fx_ok &= good
+        if not good:
+            _fx_why.append((i, label, got))
+check("FA13b fallback: when a curated work is sold, withdrawn, unpublished or featured below, its place is filled deterministically by an available published work (never featured, never in the row, by a different artist, same orientation, approved image); the other curated works keep their places",
+      _fx_ok, _fx_why)
+_all_gone = PK
+for sl, wid in FEAT.OPENING:
+    _all_gone = _with(_all_gone, sl, wid, availability="sold")
+_g = _ops(SEL, _all_gone)
+check("FA13d all three curated works unavailable: three different-artist replacements, none featured, the same on every build",
+      len(_g) == 3 and len({a for a, _ in _g}) == 3 and _g == _ops(SEL, _all_gone) and not (set(_g) & {(x["artist"], x["work"]) for x in SEL}), _g)
+check("FA13c no opening work repeats a Featured Artists artwork on the live page, and the opening row sits directly after the introduction",
+      not ({(a, b) for a, b, _ in re.findall(r'data-pa-opening="([a-z0-9-]+):(w[0-9a-z]+)"()', LIVE_DOC)} & {(x["artist"], x["work"]) for x in FEAT.selection_in(LIVE_DOC)})
+      and re.search(r'</div></section>\n\n<!-- pa-featured-artists:begin -->\n<section class="pa-op"', LIVE_DOC) is not None)
 
 print("— FA8/FA9 the content boundary and the launch guard (throwaway worktree)")
 wt = tempfile.mkdtemp(prefix="pa-feat-wt-")

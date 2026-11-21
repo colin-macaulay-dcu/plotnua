@@ -322,8 +322,8 @@ def artwork_body(pkg, w, prev_w, next_w, preview=False, enquiry_endpoint=None, b
 
 
 # ---- The Virtual Gallery collection: Direction C2 "The Curated Collection" (founder approval 5 Nov 2026) ----
-# One uncropped representative work per published gallery, equal treatment for every artist, then the twenty-five
-# founding positions as an index. The builder writes everything between the two markers below in
+# One uncropped representative work per published gallery, equal treatment for every artist, then the Artists A-Z
+# list (the founding positions index was removed from public view on 21 Nov 2026). The builder writes everything between the two markers below in
 # plotart/gallery/index.html (the rest of the page is fixed and pinned by the launch manifest).
 VG_BEGIN, VG_END = "<!-- pa-vg-collection:begin -->", "<!-- pa-vg-collection:end -->"
 VG_STATES = (("pub", "Published"), ("res", "Reserved"), ("prep", "In preparation"), ("av", "Available"))
@@ -346,18 +346,6 @@ def _vg_work(pkg, n):
       <div class="pa-vgc-label"><span class="pa-vgc-n" aria-hidden="true">%s</span><div><h3 class="pa-vgc-name"><a href="../artists/%s/" data-pa-track="vg_artist">%s%s</a></h3>
         <p class="pa-vgc-practice">%s</p><span class="pa-vgc-enter" aria-hidden="true">Enter the gallery &rarr;</span></div></div></li>""" % (
         art, num, E(a["slug"]), ('<span class="pa-vgc-sr">Position %s: </span>' % num) if n else "", E(a["display_name"]), E(meta_line(a)))
-
-
-def _vg_pos(n, state, pkg=None):
-    """One of the twenty-five positions in the index. Only a published gallery is named or linked: a reserved
-    position, one whose artist is not yet published, and an open one carry their number and state, never a name."""
-    word = dict(VG_STATES)[state]
-    if state == "pub":
-        a = pkg["artist"]
-        return ('\n      <li class="pa-vgc-pos is-pub"><a href="../artists/%s/" data-pa-track="vg_index"><b><span class="pa-vgc-sr">Position </span>%02d</b>'
-                '<span class="pa-vgc-st"><span class="pa-vgc-sr">: </span>%s</span></a></li>') % (E(a["slug"]), n, E(a["display_name"]))
-    return ('\n      <li class="pa-vgc-pos is-%s"><b><span class="pa-vgc-sr">Position </span>%02d</b>'
-            '<span class="pa-vgc-st"><span class="pa-vgc-sr">: </span>%s</span></li>') % (state, n, word)
 
 
 def vg_positions(pkgs, spaces=25, layout=None):
@@ -405,35 +393,25 @@ def artist_index(pkgs):
 
 def vg_collection(pkgs, spaces=25, layout=None, featured=()):
     """Everything between VG_BEGIN and VG_END on the Virtual Gallery page: the wall of open
-    galleries (in position order, then any without a position) and the index of the twenty-five positions.
+    galleries (in position order, then any without a position) and the Artists A-Z list.
     Shared by the production content pipeline (plotart-gallery-publish.py)."""
     positions, extra = vg_positions(pkgs, spaces, layout)
     # Explore More Artists (founder decision 17 Nov 2026): the wall leaves out the artists featured above it (their gallery
     # addresses, read from the page's Featured Artists region), so nobody appears twice. Everyone else keeps their place
-    # and numeral; the twenty-five positions index and the A-Z list below still name every published artist.
+    # and numeral; the A-Z list below still names every published artist.
     hide = set(featured)
     works = [_vg_work(p, n) for n, st, p in positions if st == "pub" and p["artist"]["slug"] not in hide] + \
         [_vg_work(p, None) for p in extra if p["artist"]["slug"] not in hide]
-    count = {k: sum(1 for _, st, _ in positions if st == k) for k, _ in VG_STATES}
-    key = "".join('<li><span class="pa-vgc-k is-%s" aria-hidden="true"></span><b>%d</b> %s</li>' % (k, count[k], w.lower())
-                  for k, w in VG_STATES if count[k])
-    line = "".join('<li class="is-%s"></li>' % st for _, st, _ in positions)
     opened = len(works)
     hang = ('\n  <ol class="pa-vgc-hang n-%s" aria-label="Open galleries">%s\n  </ol>' % (min(opened, 3), "".join(works))) if works else ""
-    # The "N of 25 galleries open" counter was removed with the twenty-five-gallery framing (founder brief 17 Nov 2026,
-    # Featured Artists in the Artists' Gallery): every published artist is in the collection; the index below still
-    # records the twenty-five founding positions.
+    # The "N of 25 galleries open" counter was removed with the twenty-five-gallery framing (founder brief 17 Nov 2026).
+    # The public "Founding positions" index (heading, note, occupancy line, published/reserved/available summary and the
+    # numbered twenty-five-position table) was removed on 21 Nov 2026 (founder brief "Remove public Founding positions
+    # section"): a public presentation change only. The founding records, numbers, agreements, the Studio's Gallery order
+    # and Review Desk, and the Founding 25 page are unchanged; the positions still order the wall above.
     return """%s%s
   %s
-  <div class="pa-vgc-index" role="region" aria-labelledby="vgIdxH">
-    <h3 id="vgIdxH">Founding positions</h3>
-    <p class="pa-vgc-note">A record of PlotArt&rsquo;s founding programme: twenty-five numbered positions, one for each Founding Artist. It is not a limit on the gallery: every published artist appears in the Artists&rsquo; Gallery above.</p>
-    <ol class="pa-vgc-line" aria-hidden="true">%s</ol>
-    <ul class="pa-vgc-key" aria-label="Summary of the twenty-five positions">%s</ul>
-    <ol class="pa-vgc-plan" aria-label="The twenty-five positions">%s
-    </ol>
-  </div>
-  %s""" % (VG_BEGIN, hang, artist_index(pkgs), line, key, "".join(_vg_pos(n, st, p) for n, st, p in positions), VG_END)
+  %s""" % (VG_BEGIN, hang, artist_index(pkgs), VG_END)
 
 
 def vg_region(html_text):

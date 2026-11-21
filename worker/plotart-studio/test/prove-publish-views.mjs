@@ -52,8 +52,11 @@ const img = n => readFileSync(join(TMP, `${n}.jpg`));
 // mirror the real site's gallery order in the test Studio (as prove-journey does): the pipeline treats the Studio's order
 // as authoritative, so published artists are seeded at their positions and reserved positions stay reserved
 const vg = readFileSync(join(SITE, 'plotart/gallery/index.html'), 'utf8');
-const plan = [...((vg.match(/<ol class="pa-vgc-plan"[^>]*>([\s\S]*?)\n    <\/ol>/) || [, ''])[1]).matchAll(/<li class="pa-vgc-pos is-(pub|res|prep|av)">([\s\S]*?)<\/li>/g)]
-  .map(m => m[1] === 'pub' ? 'card:' + ((m[2].match(/artists\/([a-z0-9-]+)\//) || [])[1]) : m[1] === 'res' ? 'reserved' : m[1] === 'prep' ? 'prep' : 'space');
+const plan = (() => { // the public founding positions index was removed (21 Nov 2026): rebuild the 25 positions from the wall's numerals; the featured artists (numerals not shown) follow
+    const p = Array(25).fill('space');
+    for (const m of vg.matchAll(/<span class="pa-vgc-n" aria-hidden="true">(\d\d)<\/span><div><h3 class="pa-vgc-name"><a href="\.\.\/artists\/([a-z0-9-]+)\//g)) p[+m[1] - 1] = 'card:' + m[2];
+    return p.concat([...new Set([...vg.matchAll(/data-pa-featured="([a-z0-9-]+):/g)].map(m => m[1]))].map(s => 'card:' + s));
+  })();
 let k = 0;
 for (const [i, it] of plan.entries()) {
   if (it.startsWith('card:')) {

@@ -1,19 +1,31 @@
 /* PlotArt Artists' Gallery · Featured Artists (founder curation; moved from the homepage, 17 Nov 2026).
    Loaded only by gallery/index.html. Existing PlotArt tokens only (anthracite / off-white). Artworks are never cropped:
    each sits whole inside its wall frame (object-fit: contain, natural aspect ratio). */
-body.pa .pa-fa{ padding:clamp(22px, 2vw, 28px) 0 clamp(48px, 6vw, 96px); background:linear-gradient(180deg, #272729 0%, #29292B 100%); border-top:1px solid rgba(237,235,231,.06); }
+body.pa .pa-fa{ padding:clamp(22px, 2vw, 28px) 0 clamp(48px, 6vw, 96px); background:#30302F; }   /* a slightly warmer, lighter charcoal than the anthracite wall (founder refinement 21 Nov 2026; was a gradient with a hairline) */
 body.pa .pa-fa-head{ display:grid; grid-template-columns:minmax(0, 1fr) minmax(0, 1fr); align-items:end; gap:10px 48px; margin-bottom:clamp(18px, 1.4vw, 20px); }
 body.pa .pa-fa-head .pa-eyebrow{ grid-column:1 / -1; margin:0; }
 body.pa .pa-fa-head h2{ margin:0; font-size:clamp(38px, 4.2vw, 62px); }
 body.pa .pa-fa-lede{ margin:0; justify-self:end; max-width:28em; color:var(--stone); font-size:17px; line-height:1.55; }
-/* Browse All Artworks (21 Nov 2026): the heading's right-hand side leads into the full collection and its Refine
-   filters. With it, the short introduction moves under the heading on the left. */
-body.pa .pa-fa-head--browse{ grid-template-columns:minmax(0, 1fr) auto; row-gap:12px; }
-body.pa .pa-fa-head--browse h2{ grid-column:1; grid-row:2; }
-body.pa .pa-fa-head--browse .pa-fa-lede{ grid-column:1; grid-row:3; justify-self:start; }
-body.pa .pa-fa-browse{ grid-column:2; grid-row:2 / 4; align-self:end; justify-self:end; display:flex; flex-direction:column; align-items:flex-end; gap:12px; margin:0; }
-body.pa .pa-fa-browse .pa-btn{ white-space:nowrap; }
-body.pa .pa-fa-browse-n{ color:var(--stone); font-size:14.5px; line-height:1.45; text-align:right; }
+/* Artwork first (21 Nov 2026): three works hung on the wall straight after the introduction, no heading, on a shared
+   baseline at their own proportions (never cropped, no frame panel, so they read differently from Featured Artists),
+   with Browse All Artworks beneath. Phones: a horizontal row the visitor swipes, the first work in view at once. */
+body.pa .pa-op .pa-wrap{ padding-top:clamp(8px, 1.2vw, 18px); padding-bottom:clamp(34px, 3.6vw, 52px); }
+body.pa .pa-op-row{ display:grid; grid-template-columns:repeat(3, minmax(0, 1fr)); gap:clamp(24px, 3.4vw, 56px); margin:0; padding:0; list-style:none; }
+body.pa .pa-op-row.n-1{ grid-template-columns:minmax(0, 560px); justify-content:center; }
+body.pa .pa-op-row.n-2{ grid-template-columns:repeat(2, minmax(0, 1fr)); }
+body.pa .pa-op-item{ min-width:0; }
+body.pa .pa-op-fig{ margin:0; }
+body.pa .pa-op-art{ display:flex; align-items:flex-end; justify-content:center; height:clamp(300px, 30vw, 460px); text-decoration:none; }
+body.pa .pa-op-art img{ display:block; max-width:100%; max-height:100%; width:auto; height:auto; object-fit:contain; box-shadow:0 14px 36px rgba(0,0,0,.42); transition:transform .5s cubic-bezier(.2,.7,.2,1); }
+body.pa .pa-op-art:hover img{ transform:translateY(-3px); }
+body.pa .pa-op-cap{ display:flex; flex-direction:column; gap:3px; margin-top:18px; text-align:center; }
+body.pa .pa-op-title{ font-family:var(--serif); font-size:clamp(20px, 1.7vw, 24px); line-height:1.2; color:var(--ivory); text-decoration:none; }
+body.pa .pa-op-artist{ font-size:14.5px; color:var(--stone); text-decoration:none; }
+body.pa .pa-op-title:hover, body.pa .pa-op-artist:hover, body.pa .pa-op-title:focus-visible, body.pa .pa-op-artist:focus-visible{ text-decoration:underline; text-underline-offset:4px; }
+body.pa .pa-op-row:focus{ outline:none; }
+body.pa .pa-op-row:focus-visible{ outline:2px solid var(--ivory); outline-offset:6px; border-radius:2px; }
+/* Featured Artists becomes the second section: a little more air above it */
+body.pa .pa-op + .pa-fa{ padding-top:clamp(34px, 3.4vw, 52px); }
 body.pa .pa-fa-list{ display:grid; grid-template-columns:repeat(3, minmax(0, 1fr)); gap:clamp(44px, 4.4vw, 64px) clamp(22px, 2.6vw, 40px); margin:0; padding:0; list-style:none; }
 body.pa .pa-fa-list.n-1{ grid-template-columns:minmax(0, 560px); justify-content:center; }
 body.pa .pa-fa-list.n-2{ grid-template-columns:repeat(2, minmax(0, 1fr)); }
@@ -34,6 +46,21 @@ body.pa .pa-fa-act{ margin:auto 0 0; padding-top:18px; }
 body.pa .pa-fa-cta{ display:inline-flex; align-items:center; gap:8px; color:var(--ivory); font-weight:600; font-size:15px; letter-spacing:.01em; text-decoration:none; border-bottom:1px solid rgba(237,235,231,.35); padding-bottom:3px; }
 body.pa .pa-fa-cta:hover, body.pa .pa-fa-cta:focus-visible{ border-bottom-color:var(--ivory); }
 body.pa .pa-fa-cta:focus-visible{ outline:2px solid var(--ivory); outline-offset:4px; }
+/* phones and tablets (to 899 px): the three works become one swipe row; the next work stays partly in view, the row scrolls
+   on its own (never the page), snaps gently to each work, and follows keyboard focus (each title and artist is a link) */
+@media (max-width:899px){
+  body.pa .pa-op-row, body.pa .pa-op-row.n-1, body.pa .pa-op-row.n-2{ display:flex; gap:16px; overflow-x:auto; overflow-y:hidden; scroll-snap-type:x mandatory;
+    margin:0 calc(-1 * var(--gut)); padding:0 var(--gut) 6px; scroll-padding-inline:var(--gut); scrollbar-width:none; overscroll-behavior-x:contain;
+    -webkit-overflow-scrolling:touch; scroll-behavior:smooth; }
+  body.pa .pa-op-row::-webkit-scrollbar{ display:none; }
+  body.pa .pa-op-item{ flex:0 0 44%; scroll-snap-align:start; }
+  body.pa .pa-op-row.n-1 .pa-op-item{ flex-basis:100%; }
+  body.pa .pa-op-row{ align-items:flex-end; }   /* works share a baseline; no empty band above a width-limited work */
+  body.pa .pa-op-art{ height:auto; justify-content:flex-start; }
+  body.pa .pa-op-art img{ max-height:clamp(280px, 52vw, 420px); }
+  body.pa .pa-op-cap{ text-align:left; margin-top:14px; }
+  }
+@media (max-width:899px) and (prefers-reduced-motion:reduce){ body.pa .pa-op-row{ scroll-behavior:auto; } }
 @media (max-width:1099px){
   body.pa .pa-fa-list, body.pa .pa-fa-list.n-2{ grid-template-columns:repeat(2, minmax(0, 1fr)); }
   body.pa .pa-fa-list.n-1{ grid-template-columns:minmax(0, 520px); }
@@ -41,15 +68,15 @@ body.pa .pa-fa-cta:focus-visible{ outline:2px solid var(--ivory); outline-offset
 @media (max-width:639px){
   body.pa .pa-fa-head{ grid-template-columns:1fr; }
   body.pa .pa-fa-lede{ justify-self:start; }
-  body.pa .pa-fa-head--browse{ grid-template-columns:1fr; }
-  body.pa .pa-fa-browse{ grid-column:1; grid-row:auto; justify-self:start; align-items:flex-start; margin-top:14px; }
-  body.pa .pa-fa-browse-n{ text-align:left; }
+  body.pa .pa-op .pa-wrap{ padding-top:18px; padding-bottom:40px; }
+  body.pa .pa-op-item{ flex-basis:78%; }
+  body.pa .pa-op-art img{ max-height:min(92vw, 380px); }
   body.pa .pa-fa-list, body.pa .pa-fa-list.n-1, body.pa .pa-fa-list.n-2{ grid-template-columns:1fr; gap:48px; }
   /* phones: the artwork at its own proportions, full width, never cropped */
   body.pa .pa-fa-art{ aspect-ratio:auto; padding:22px; }
   body.pa .pa-fa-art img{ max-width:100%; max-height:72vh; }
 }
-@media (prefers-reduced-motion:reduce){ body.pa .pa-fa-art img{ transition:none; } body.pa .pa-fa-art:hover img{ transform:none; } }
+@media (prefers-reduced-motion:reduce){ body.pa .pa-fa-art img, body.pa .pa-op-art img{ transition:none; } body.pa .pa-fa-art:hover img, body.pa .pa-op-art:hover img{ transform:none; } }
 
 /* Spacing refinement (founder brief 20 Nov 2026: "less empty space, more artwork"). The Artists' Gallery introduction is
    this page's alone (.pa-vg2-hero appears nowhere else), so its padding is tightened here rather than in plotart.css.
@@ -59,3 +86,9 @@ body.pa .pa-vg2-hero .pa-wrap{ padding-top:clamp(18px, 1.8vw, 26px); padding-bot
 body.pa .pa-vg2-sub{ margin-bottom:0; }
 body.pa .pa-vg2-act{ margin-bottom:0; }
 @media (max-width:720px){ body.pa .pa-vg2-hero-row{ row-gap:16px; } }
+
+/* Browse All Artworks beside the heading (founder refinement 21 Nov 2026): desktop, on the heading's line at the right;
+   phones and narrow tablets, under the introductory sentence and above the artworks */
+body.pa .pa-vg2-hero-row{ align-items:flex-end; }
+body.pa .pa-vg2-browse{ align-self:flex-start; margin:clamp(0px, .45vw, 8px) 0 0; }   /* level with the heading */
+@media (max-width:720px){ body.pa .pa-vg2-browse{ margin:4px 0 0; } }

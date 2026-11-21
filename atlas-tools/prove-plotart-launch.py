@@ -484,36 +484,19 @@ if vg:
     need(_hang_m is not None or not GALLERY_SLUGS, "L11 the Virtual Gallery has published galleries but no wall of open galleries")
     need(not _hang_m or int(_hang_m.group(1)) == min(len(_works), 3), "L11 the wall's size class does not match the number of open galleries")
     need(not _bad_work, "L11 an open gallery on the wall is malformed, links elsewhere or shows another artist's image (%s)" % _bad_work)
-    _plan = re.search(r'<ol class="pa-vgc-plan" aria-label="The twenty-five positions">(.*?)\n    </ol>', _region, re.S)
-    _pos = re.findall(r'\n      <li class="pa-vgc-pos is-(pub|res|prep|av)">(.*?)</li>', _plan.group(1)) if _plan else []
-    need(len(_pos) == 25 and _plan and len(re.findall(r"<li\b", _plan.group(1))) == 25, "L11 the index must show exactly the twenty-five founding positions (found %d)" % len(_pos))
-    WORDS = {"res": "Reserved", "prep": "In preparation", "av": "Available"}
-    _bad_pos, _pub_pos = [], {}
-    for _i, (_st, _body) in enumerate(_pos, 1):
-        _num = '<b><span class="pa-vgc-sr">Position </span>%02d</b>' % _i
-        if _st == "pub":
-            _m = re.fullmatch(r'<a href="\.\./artists/([a-z0-9-]+)/" data-pa-track="vg_index">' + re.escape(_num) +
-                              r'<span class="pa-vgc-st"><span class="pa-vgc-sr">: </span>([^<]+)</span></a>', _body)
-            if not _m or _m.group(1) not in GALLERY_SLUGS:
-                _bad_pos.append(_i); continue
-            _pub_pos[_i] = _m.group(1)
-        elif _body != _num + '<span class="pa-vgc-st"><span class="pa-vgc-sr">: </span>%s</span>' % WORDS[_st]:
-            _bad_pos.append(_i)
-    need(not _bad_pos, "L11 a founding position is out of place, names or links an unpublished artist, or carries more than its number and state (positions %s)" % _bad_pos)
+    # The public "Founding positions" index was removed on 21 Nov 2026 (founder brief: a public presentation change only;
+    # the founding records, numbers, agreements and the Studio's Gallery order are unchanged). It must not return, and
+    # the wall's position numerals must still be a clean founding order: each 01-25, each used once, ascending, every
+    # numbered gallery before any gallery without a position.
+    need(not re.search(r'pa-vgc-(index|plan|pos|line|key)\b|vgIdxH', vg) and "Founding positions" not in vgv
+         and not re.search(r"\b(twenty-five|25) (numbered )?positions\b", vgv, re.I),
+         "L11 the Artists' Gallery shows the founding positions index again (removed from public view 21 Nov 2026)")
     _numbered = [(n, s) for n, s in zip(_wnums, _cards) if n is not None]
-    try:   # the featured artists are named in the index but not hung on the wall (Explore More Artists, 17 Nov 2026)
-        _feat_wall = {x["artist"] for x in FEAT.selection_in(vg)}
-    except ValueError:
-        _feat_wall = set()
-    need(_numbered == sorted((n, s) for n, s in _pub_pos.items() if s not in _feat_wall) and all(n is None for n in _wnums[len(_numbered):]),
-         "L11 the wall and the index disagree: each numbered open gallery must be the published artist at that position, in order, then any without a position")
-    _seg = re.search(r'<ol class="pa-vgc-line" aria-hidden="true">((?:<li class="is-(?:pub|res|prep|av)"></li>){25})</ol>', _region)
-    need(bool(_seg) and re.findall(r'is-(\w+)', _seg.group(1)) == [st for st, _ in _pos], "L11 the occupancy line does not match the twenty-five positions")
+    _ns = [n for n, _ in _numbered]
+    need(all(1 <= n <= 25 for n in _ns) and _ns == sorted(set(_ns)) and all(n is None for n in _wnums[len(_numbered):]),
+         "L11 the wall's position numerals are out of order, repeated, outside 01-25, or follow a gallery without a position")
     # the "N of 25 galleries open" counter and the twenty-five-gallery heading were removed (founder brief 17 Nov 2026)
     need("pa-vgc-count" not in vg and not re.search(r"\d+ of 25 galleries", vgv), "L11 the Artists' Gallery still shows the 25-gallery counter")
-    _keyc = {k: int(n) for n, k in re.findall(r'<b>(\d+)</b> (published|reserved|in preparation|available)</li>', _region)}
-    _want = {k: sum(1 for st, _ in _pos if st == c) for c, k in (("pub", "published"), ("res", "reserved"), ("prep", "in preparation"), ("av", "available"))}
-    need(_keyc == {k: v for k, v in _want.items() if v}, "L11 the index summary does not match the twenty-five positions")
     need(OPEN or not _cards, "L15 an artist gallery is published but the gallery opening switch is off")
     # Explore More Artists (17 Nov 2026): the wall is every published gallery EXCEPT the artists featured above it, so the
     # two sections together show each published artist exactly once
@@ -845,15 +828,18 @@ else:
         need('href="join.html"' in _band.group(1) and 'href="gallery/"' in _band.group(1) and "Artist Submissions" in _bv,
              "L18 the homepage band must be the invitation, linking to Join PlotArt and the gallery")
         need(not re.search(r"\d|%|€|commission|fee|exclusiv|deserves", _bv, re.I), "L18 the homepage band carries figures, commercial terms or promotional wording")
-    # the Artists' Gallery application button (founder decisions 16 Nov 2026): once, inside the compact introduction, above
-    # and outside the collection region, linking to Join PlotArt's "A gallery of your own." section; the same rules as the homepage band
+    # the Artists' Gallery application link (founder decisions 16 Nov 2026; moved 21 Nov 2026, artwork first): once, as a
+    # discreet link in the closing section, after the collection, linking to Join PlotArt's "A gallery of your own." section;
+    # never in the introduction, which is the heading and then the artwork
     _ghero = re.search(r'<section class="pa-vg2-hero">.*?</section>', _gal, re.S)
-    need(_gband is not None and _gal.count("<!-- pa-artist-apply-gallery:begin -->") == 1 and _ghero is not None
-         and "<!-- pa-artist-apply-gallery:begin -->" in _ghero.group(0)
-         and _gal.index("<!-- pa-artist-apply-gallery:end -->") < _gal.index("<!-- pa-vg-collection:begin -->"), "L18 open: the Artists' Gallery carries the application button once, in its introduction, before the collection")
+    _gclose = re.search(r'<section class="pa-vg2-close">.*?</section>', _gal, re.S)
+    need(_gband is not None and _gal.count("<!-- pa-artist-apply-gallery:begin -->") == 1 and _ghero is not None and _gclose is not None
+         and "pa-artist-apply" not in _ghero.group(0) and "<!-- pa-artist-apply-gallery:begin -->" in _gclose.group(0)
+         and _gal.index("<!-- pa-artist-apply-gallery:begin -->") > _gal.index("<!-- pa-vg-collection:end -->"),
+         "L18 open: the Artists' Gallery carries the application link once, in its closing section, after the collection (not in the introduction)")
     if _gband:
         _gv = re.sub(r"\s+", " ", visible_text(_gband.group(1)))
-        need('href="../join.html#your-gallery"' in _gband.group(1) and _gv.strip() == "Artist submissions →", "L18 the Artists' Gallery button must read 'Artist submissions →' and link to Join PlotArt's gallery section")
+        need('href="../join.html#your-gallery"' in _gband.group(1) and _gv.strip() == "Artist submissions →", "L18 the Artists' Gallery link must read 'Artist submissions →' and link to Join PlotArt's gallery section")
         need(not re.search(r"\d|%|€|commission|fee|exclusiv|deserves", _gv, re.I), "L18 the Artists' Gallery button carries figures, commercial terms or promotional wording")
     need(re.search(r'<section class="pa-jn-sec" id="your-gallery">\s*<div class="pa-wrap pa-jn-grid">\s*<p class="pa-jn-k">The gallery</p>\s*<div><h2>A gallery of your own\.</h2>', _join) is not None, "L18 Join PlotArt must carry the your-gallery anchor on 'A gallery of your own.'")
     need(_ptr is not None and bool(_ptr.group(1).strip()), "L18 open: the Founding 25 page points to Join PlotArt")
