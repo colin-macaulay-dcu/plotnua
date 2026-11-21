@@ -470,6 +470,12 @@ if (PHASES.includes('basket_split')) {
     runnerKey: KEY, balanceKey: process.env.STRIPE_BALANCE_KEY || '',
     v1: S.V1_API_VERSION, v2: S.V2_API_VERSION, rec, runId: process.env.GITHUB_RUN_ID || RUN });
 }
+if (PHASES.includes('basket_direct')) {   // POC (founder approval 21 Nov 2026): one card entry, a DIRECT charge on each of two artists
+  const config = JSON.parse(readFileSync(HERE + 'test/stripe-test-run.json', 'utf8'));
+  const { proveBasketDirect } = await import('./stripe-testmode-basket-direct.mjs');
+  await proveBasketDirect({ KEY, accounts: [config.reuse_account, config.unfunded_account], rec, v1: S.V1_API_VERSION,
+    runId: process.env.GITHUB_RUN_ID || RUN, playwrightFrom: process.env.MINIFLARE_FROM });
+}
 if (PHASES.includes('buyer_checkout')) {
   const { checkBuyerCheckout } = await import('./stripe-testmode-buyer.mjs');
   await checkBuyerCheckout(KEY, rec);

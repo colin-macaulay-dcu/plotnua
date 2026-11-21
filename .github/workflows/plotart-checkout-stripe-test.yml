@@ -11,7 +11,8 @@ run-name: "Stripe test-mode checks (${{ github.ref_name }})"
 
 on:
   push:
-    branches: [plotart/managed-checkout-pilot]
+    # plotart/basket-direct-poc: the isolated two-artist direct-charge proof of concept (founder approval 21 Nov 2026)
+    branches: [plotart/managed-checkout-pilot, plotart/basket-direct-poc]
     paths: [worker/plotart-studio/test/stripe-test-run.json]
   workflow_dispatch:
 
