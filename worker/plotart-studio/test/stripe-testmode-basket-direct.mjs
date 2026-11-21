@@ -3,8 +3,8 @@
 // card is then cloned to each of two artists' connected accounts and charged there as a DIRECT CHARGE, so each artist
 // stays the merchant of record (docs.stripe.com/connect/direct-charges-multiple-accounts).
 // Isolated: no production code, database, Worker or live key. Every object is created in TEST mode and cleaned up at
-// the end (uncaptured payments cancelled, captured ones refunded with the commission, the platform card detached and the
-// test customer deleted). Card numbers are Stripe's published test cards (docs.stripe.com/testing); no real card data.
+// the end (uncaptured payments cancelled, captured ones refunded, with the commission only where one was charged, the test
+// customers deleted), then every payment tagged with this run is re-read on both accounts to verify nothing is left. Card numbers are Stripe's published test cards (docs.stripe.com/testing); no real card data.
 //   Called from test/stripe-testmode-checks.mjs (phase "basket_direct"); records results with rec().
 import { createRequire } from 'node:module';
 import { mkdirSync } from 'node:fs';
@@ -23,6 +23,9 @@ export async function proveBasketDirect({ KEY, accounts, rec, v1, runId, playwri
   const info = (id, name, d = {}) => rec(id, name, S, 'INFO', d);
   const tag = 'plotart-poc-' + runId;
   const created = { customers: [], captured: [], uncaptured: [] };   // for clean-up
+  const startedAt = Math.floor(Date.now() / 1000) - 60;               // lower bound for the clean-up verification listing
+  const DECLINE_PM = 'pm_card_chargeDeclined';   // Stripe's TEST payment method that is always declined (docs.stripe.com/testing)
+  const track = (list, acct, id, fee = null) => { if (id && !list.some(x => x[1] === id)) list.push([acct, id, fee]); };
 
   if (!/^(sk|rk)_test_[A-Za-z0-9]+$/.test(KEY)) { rec('BD0', 'TEST key only', 'local', 'FAIL'); return; }
   if (accounts.length !== 2 || new Set(accounts).size !== 2 || !accounts.every(a => /^acct_[A-Za-z0-9]+$/.test(a))) {
@@ -62,6 +65,8 @@ export async function proveBasketDirect({ KEY, accounts, rec, v1, runId, playwri
   // ---- one card entry on Stripe's hosted page (Checkout, setup mode, PlotArt's platform account)
   const { chromium } = createRequire(playwrightFrom)('playwright');
   const browser = await chromium.launch();
+  // a NEW synthetic buyer address for every card entry: a reused address is recognised by Link as a returning user
+  const buyerEmail = label => `plotart-poc-buyer+${tag}-${label}`.toLowerCase().replace(/[^a-z0-9+.-]/g, '-') + '@example.com';
   async function enterCardOnce(label, card) {
     if (created.captchaBlocked) return { error: { stage: 'not attempted', message: 'browser automation stopped: hosted checkout required hCaptcha verification earlier in this run' } };
     const cus = await api('POST', '/v1/customers', { description: 'PlotArt basket POC test buyer (' + label + ')', 'metadata[poc]': tag });
@@ -120,7 +125,7 @@ export async function proveBasketDirect({ KEY, accounts, rec, v1, runId, playwri
       await page.goto(cs.j.url, { waitUntil: 'domcontentloaded' });
       // field order and selectors as in the proven buyer test (test/stripe-testmode-buyer.mjs)
       stage = 'complete hosted setup form';
-      await fill('#linkAuthentication-emailInput,input[type=email]', 'plotart-poc-buyer@example.com', 12000, false);
+      await fill('#linkAuthentication-emailInput,input[type=email]', buyerEmail(label), 12000, false);
       const cardCSS = '#payment-numberInput,#cardNumber,input[autocomplete="cc-number"],input[name=cardnumber]';
       if (!await field(cardCSS, 3000)) await (await field('[data-testid="card-accordion-item-button"],button:text-is("Card"),[role="radio"]:text-is("Card")'))?.click();
       await fill(cardCSS, card, 25000);
@@ -227,10 +232,11 @@ export async function proveBasketDirect({ KEY, accounts, rec, v1, runId, playwri
     if (manual) body.capture_method = 'manual';
     const r = await api('POST', '/v1/payment_intents', body, { account: acct, idem: key });
     const pi = r.ok ? r.j : null;
-    if (pi?.status === 'succeeded') created.captured.push([acct, pi.id]);
-    if (pi?.status === 'requires_capture') created.uncaptured.push([acct, pi.id]);
+    const fee = feeCents > 0 ? feeCents : null;
+    if (pi?.status === 'succeeded') track(created.captured, acct, pi.id, fee);
+    if (pi?.status === 'requires_capture') track(created.uncaptured, acct, pi.id, fee);
     // a failed confirmation can leave a PaymentIntent behind (e.g. requires_payment_method): cancel it at clean-up
-    if (!pi && r.err?.pi && !['succeeded', 'canceled'].includes(r.err.pi_status)) created.uncaptured.push([acct, r.err.pi]);
+    if (!pi && r.err?.pi && !['succeeded', 'canceled'].includes(r.err.pi_status)) track(created.uncaptured, acct, r.err.pi, fee);
     return { ok: r.ok, replayed: r.replayed, id: pi?.id || r.err?.pi, status: pi?.status || r.err?.pi_status, fee: pi?.application_fee_amount ?? null,
       amount: pi?.amount, error: r.err };
   }
@@ -264,14 +270,17 @@ export async function proveBasketDirect({ KEY, accounts, rec, v1, runId, playwri
     // ---- B · one artist payment succeeds, the other fails
     if (created.basePm) {
       const e2 = created.basePm;
-      const c1 = await cloneTo(A1, e2, tag + '-B-clone-1'), c2 = await cloneTo(A2, e2, tag + '-B-clone-2');
+      const c1 = await cloneTo(A1, e2, tag + '-B-clone-1');
       const p1 = await charge(A1, c1.pm, W1, fee15(W1), tag + '-B-pay-1', { basket: 'B', artist: 'artist-1' });
-      // Stripe has no test card that succeeds on one charge and declines on another, so the second charge is made to fail
-      // with a real Stripe refusal (an amount above the per-charge maximum). This records the state a partial basket leaves.
-      const p2 = await charge(A2, c2.pm, 100000000, 0, tag + '-B-pay-2', { basket: 'B', artist: 'artist-2' });
-      ok('BD-B1', 'partial basket: artist 1 charged, artist 2 refused, and NOTHING links or reverses them automatically', p1.status === 'succeeded' && !p2.ok,
-        { artist1: p1.status, artist2_error: p2.error, money_taken_from_buyer_cents: p1.status === 'succeeded' ? W1 : 0 });
-      info('BD-B2', 'exact state after a partial basket', { artist1_charge: 'succeeded on artist 1 account (buyer charged €120)', artist2_charge: 'no PaymentIntent created',
+      // Stripe has no test card that succeeds on one charge and declines on another, so artist 2's charge (the normal €80)
+      // uses Stripe's always-declined TEST payment method: a real card_declined from Stripe, as a failed artist charge would be.
+      const p2 = await charge(A2, DECLINE_PM, W2, 0, tag + '-B-pay-2', { basket: 'B', artist: 'artist-2' });
+      const taken = (p1.status === 'succeeded' ? W1 : 0) + (p2.status === 'succeeded' ? W2 : 0);
+      ok('BD-B1', 'partial basket: artist 1 charged, artist 2 declined by Stripe, and NOTHING links or reverses them automatically',
+        p1.status === 'succeeded' && !p2.ok && p2.error?.code === 'card_declined',
+        { artist1: p1.status, artist2_error: p2.error && { code: p2.error.code, decline_code: p2.error.decline_code, http: p2.error.status }, money_taken_from_buyer_cents: taken });
+      info('BD-B2', 'exact state after a partial basket (read from Stripe)', { artist1_charge: p1.status, artist1_amount_cents: p1.amount ?? null,
+        artist2_payment_intent: p2.id ? `created, status ${p2.status}` : 'none created', money_taken_from_buyer_cents: taken,
         platform: 'card still saved on PlotArt until cleaned up', automatic_rollback: 'none: Stripe treats them as independent payments' });
     }
     const eD = await enterCardOnce('B-decline', CARDS.declineAfterAttach);
@@ -311,21 +320,22 @@ export async function proveBasketDirect({ KEY, accounts, rec, v1, runId, playwri
       if (p1.status === 'requires_capture' && p2.status === 'requires_capture') {
         const k1 = await api('POST', `/v1/payment_intents/${p1.id}/capture`, {}, { account: A1, idem: tag + '-D-cap-1' });
         const k2 = await api('POST', `/v1/payment_intents/${p2.id}/capture`, {}, { account: A2, idem: tag + '-D-cap-2' });
-        if (k1.ok) { created.uncaptured = created.uncaptured.filter(x => x[1] !== p1.id); created.captured.push([A1, p1.id]); }
-        if (k2.ok) { created.uncaptured = created.uncaptured.filter(x => x[1] !== p2.id); created.captured.push([A2, p2.id]); }
+        if (k1.ok) { created.uncaptured = created.uncaptured.filter(x => x[1] !== p1.id); track(created.captured, A1, p1.id, fee15(W1)); }
+        if (k2.ok) { created.uncaptured = created.uncaptured.filter(x => x[1] !== p2.id); track(created.captured, A2, p2.id, null); }
         ok('BD-D2', 'once both are authorised, both are captured', k1.j.status === 'succeeded' && k2.j.status === 'succeeded', { c1: k1.j.status || k1.err, c2: k2.j.status || k2.err });
       }
       // one authorisation fails: release the other, so no money is taken
-      const c3 = await cloneTo(A1, e5, tag + '-D3-clone-1'), c4 = await cloneTo(A2, e5, tag + '-D3-clone-2');
+      const c3 = await cloneTo(A1, e5, tag + '-D3-clone-1');
       const q1 = await charge(A1, c3.pm, W1, fee15(W1), tag + '-D3-auth-1', { manual: true, basket: 'D3', artist: 'artist-1' });
-      const q2 = await charge(A2, c4.pm, 100000000, 0, tag + '-D3-auth-2', { manual: true, basket: 'D3', artist: 'artist-2' });
+      const q2 = await charge(A2, DECLINE_PM, W2, 0, tag + '-D3-auth-2', { manual: true, basket: 'D3', artist: 'artist-2' });   // Stripe declines it
       let cancelled = null;
       if (q1.status === 'requires_capture' && !q2.ok) {
         const x = await api('POST', `/v1/payment_intents/${q1.id}/cancel`, {}, { account: A1, idem: tag + '-D3-cancel-1' });
         cancelled = x.j.status; if (x.ok) created.uncaptured = created.uncaptured.filter(y => y[1] !== q1.id);
       }
-      ok('BD-D3', 'all-or-nothing by authorisation: when artist 2 fails, artist 1\'s authorisation is cancelled and nothing is captured', q1.status === 'requires_capture' && !q2.ok && cancelled === 'canceled',
-        { artist1_auth: q1.status, artist2_error: q2.error?.code, artist1_after: cancelled, note: 'the buyer may briefly see a pending authorisation for artist 1 until the bank releases it' });
+      ok('BD-D3', 'all-or-nothing by authorisation: when artist 2 fails, artist 1\'s authorisation is cancelled and nothing is captured',
+        q1.status === 'requires_capture' && !q2.ok && q2.error?.code === 'card_declined' && cancelled === 'canceled',
+        { artist1_auth: q1.status, artist2_error: q2.error && { code: q2.error.code, decline_code: q2.error.decline_code }, artist1_after: cancelled, note: 'the buyer may briefly see a pending authorisation for artist 1 until the bank releases it' });
     }
 
     // ---- E · retries must not create duplicate payments
@@ -340,7 +350,7 @@ export async function proveBasketDirect({ KEY, accounts, rec, v1, runId, playwri
       const r3 = await charge(A1, c1.pm, W1, fee15(W1), tag + '-E-pay-1-NEWKEY', { manual: true, basket: 'E', artist: 'artist-1' });
       info('BD-E3', 'a retry with a NEW key and the already-used clone', { status: r3.status, error: r3.error?.code, message: r3.error?.message,
         meaning: r3.ok ? 'a second payment WAS created: retries must reuse the key or reconcile first' : 'the consumed clone cannot be charged again' });
-      if (r3.ok && r3.id && r3.id !== r1.id && r3.status === 'requires_capture') created.uncaptured.push([A1, r3.id]);
+      if (r3.ok && r3.id && r3.id !== r1.id && r3.status === 'requires_capture') track(created.uncaptured, A1, r3.id, fee15(W1));
       await new Promise(r => setTimeout(r, 15000));   // Search is not instant
       const s = await api('GET', `/v1/payment_intents/search?query=${encodeURIComponent(`metadata['basket']:'E' AND metadata['poc']:'${tag}'`)}`, null, { account: A1 });
       info('BD-E4', 'reconciling before a retry: find this basket\'s payments on the artist account by metadata (Search API)', s.ok ? { found: s.j.data.map(p => p.status), ids: s.j.data.length } : { error: s.err });
@@ -351,20 +361,49 @@ export async function proveBasketDirect({ KEY, accounts, rec, v1, runId, playwri
     await browser.close().catch(() => {});
     if (created.captchaBlocked) info('BD-HC', 'hosted checkout asked for hCaptcha verification: browser automation stopped (no bypass attempted)', {
       recommendation: 'test the hosted setup page manually in a browser once; test the two artist charges separately with a server-side TEST payment method (no browser)' });
-    // ---- clean-up: nothing kept beyond the test
-    const out = { cancelled: 0, refunded: 0, customers_deleted: 0, errors: [] };
+    // ---- clean-up: nothing kept beyond the test; every Stripe error recorded in full
+    const out = { run_tag: tag, cancelled: 0, refunded: 0, customers_deleted: 0, errors: [] };
+    const fail = (action, acct, id, r) => out.errors.push({ action, account: acct, object: id, http: r.err?.status ?? null, type: r.err?.type ?? null,
+      code: r.err?.code ?? null, decline_code: r.err?.decline_code ?? null, message: r.err?.message ?? 'no error body' });
     for (const [acct, id] of created.uncaptured) {
       const r = await api('POST', `/v1/payment_intents/${id}/cancel`, {}, { account: acct });
-      if (r.ok || r.err?.code === 'payment_intent_unexpected_state') out.cancelled++; else out.errors.push(r.err?.code);
+      if (r.ok || r.err?.code === 'payment_intent_unexpected_state') out.cancelled++; else fail('cancel', acct, id, r);
     }
-    for (const [acct, id] of created.captured) {
-      const r = await api('POST', '/v1/refunds', { payment_intent: id, refund_application_fee: 'true', 'metadata[poc]': tag }, { account: acct, idem: tag + '-refund-' + id });
-      if (r.ok) out.refunded++; else out.errors.push(r.err?.code);
+    for (const [acct, id, fee] of created.captured) {
+      // the commission is returned only where one was charged: Stripe rejects refund_application_fee on a 0% (Founding 25) charge
+      const body = { payment_intent: id, 'metadata[poc]': tag };
+      if (fee > 0) body.refund_application_fee = 'true';
+      const r = await api('POST', '/v1/refunds', body, { account: acct, idem: tag + '-refund-' + id });
+      if (r.ok) out.refunded++; else fail(fee > 0 ? 'refund with commission' : 'refund (no commission)', acct, id, r);
     }
     for (const cus of created.customers) {
       const r = await api('DELETE', '/v1/customers/' + cus);
-      if (r.ok) out.customers_deleted++; else out.errors.push(r.err?.code);
+      if (r.ok) out.customers_deleted++; else fail('delete test customer', null, cus, r);
     }
-    ok('BD-Z', 'clean-up: authorisations cancelled, test charges refunded with commission, saved cards removed (test customers deleted)', out.errors.length === 0, out);
+    ok('BD-Z', 'clean-up: authorisations cancelled, test charges refunded (commission only where charged), test customers deleted', out.errors.length === 0, out);
+
+    // ---- verification: re-read EVERY PaymentIntent tagged with this run on both accounts (not just the ones tracked above)
+    const verify = { run_tag: tag, checked: 0, by_account: {}, left: [], unreadable: [] };
+    for (const acct of [A1, A2]) {
+      const mine = []; let after = null, readOk = true;
+      do {
+        const r = await api('GET', `/v1/payment_intents?limit=100&created[gte]=${startedAt}&expand[]=data.latest_charge` + (after ? `&starting_after=${after}` : ''), null, { account: acct });
+        if (!r.ok) { readOk = false; verify.unreadable.push({ account: acct, http: r.err?.status, code: r.err?.code, message: r.err?.message }); break; }
+        mine.push(...r.j.data.filter(p => p.metadata?.poc === tag));
+        after = r.j.has_more ? r.j.data.at(-1).id : null;
+      } while (after);
+      const counts = {};
+      for (const p of mine) {
+        const ch = p.latest_charge && typeof p.latest_charge === 'object' ? p.latest_charge : null;
+        const state = p.status === 'canceled' ? 'cancelled'
+          : p.status === 'succeeded' ? (ch && ch.amount_refunded >= ch.amount_captured ? 'refunded' : 'CAPTURED, NOT FULLY REFUNDED')
+          : 'OPEN: ' + p.status;
+        counts[state] = (counts[state] || 0) + 1;
+        if (state !== 'cancelled' && state !== 'refunded') verify.left.push({ account: acct, payment_intent: p.id, basket: p.metadata?.basket, amount: p.amount, status: p.status,
+          amount_refunded: ch?.amount_refunded ?? null });
+      }
+      verify.checked += mine.length; verify.by_account[acct] = readOk ? counts : 'not readable';
+    }
+    ok('BD-Z2', 'verification: every payment tagged with this run, on both artist accounts, is now refunded or cancelled', verify.left.length === 0 && verify.unreadable.length === 0 && verify.checked > 0, verify);
   }
 }
