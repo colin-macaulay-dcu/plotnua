@@ -22733,6 +22733,99 @@
       "source_sha256": "dbb0a760ba1ec673e22ec40a41452f6dca63637e60b694005741258b6928966f",
       "subject": "artwork",
       "work_slug": "resurrection-of-the-roadkill"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "paul-kerr",
+      "asset": "plotart/artists/paul-kerr/img/the-creation-of-adam-1-600.webp",
+      "bytes": 54672,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-a4p7ruywdrw",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        429,
+        600
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "64dc2168d02ffca9519cd17f859602c7cdf7dface63324eb99546a201e7ea824",
+      "source_sha256": "88f1ff26410c8bebb4fdcab7e82d5b061da9bb20ee418c19de7867b221c7ef97",
+      "subject": "artwork",
+      "work_slug": "the-creation-of-adam"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "paul-kerr",
+      "asset": "plotart/artists/paul-kerr/img/the-creation-of-adam-1-1200.webp",
+      "bytes": 172228,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-a4p7ruywdrw",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        857,
+        1200
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "54a20cba63b521bc4fb4d5afbf1970d93da4050cbaf3b90acc5f546001aa90e3",
+      "source_sha256": "88f1ff26410c8bebb4fdcab7e82d5b061da9bb20ee418c19de7867b221c7ef97",
+      "subject": "artwork",
+      "work_slug": "the-creation-of-adam"
+    },
+    {
+      "ai_involvement": "none",
+      "artist_slug": "paul-kerr",
+      "asset": "plotart/artists/paul-kerr/img/the-creation-of-adam-1-2000.webp",
+      "bytes": 490098,
+      "class": "ARTIST_SUPPLIED_ARTWORK",
+      "colour": "converted to sRGB from the embedded profile (sRGB)",
+      "licence_version": "PA-GPIL-2026-11",
+      "permission_ref": "PA-PERM-a4p7ruywdrw",
+      "permitted_surfaces": [
+        "plotart-artist-gallery",
+        "plotart-virtual-gallery"
+      ],
+      "photo_credit": null,
+      "photographer": "self",
+      "pixels": [
+        1429,
+        2000
+      ],
+      "processing": [
+        "camera rotation (EXIF orientation) applied",
+        "colour converted to sRGB where a profile was embedded",
+        "all metadata removed (EXIF, GPS, XMP, ICC)",
+        "never cropped or upscaled",
+        "WebP quality 84 at up to 600/1200/2000 px on the long edge"
+      ],
+      "sha256": "6752c092117cc5a8f416df0d102162361bc669eb728df65af6e0cd9dca642322",
+      "source_sha256": "88f1ff26410c8bebb4fdcab7e82d5b061da9bb20ee418c19de7867b221c7ef97",
+      "subject": "artwork",
+      "work_slug": "the-creation-of-adam"
     }
   ],
   "legacy_undeclared": [

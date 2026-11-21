@@ -58,10 +58,15 @@
    "dhash": "1d47d8b060881a78",
    "source_sha256": "dbb0a760ba1ec673e22ec40a41452f6dca63637e60b694005741258b6928966f",
    "stem": "resurrection-of-the-roadkill-1"
+  },
+  {
+   "dhash": "8f93a4f1bb3bcb9e",
+   "source_sha256": "88f1ff26410c8bebb4fdcab7e82d5b061da9bb20ee418c19de7867b221c7ef97",
+   "stem": "the-creation-of-adam-1"
   }
  ],
  "publication": {
-  "approved_at": "2026-11-20T23:32:22.248Z",
+  "approved_at": "2026-11-21T08:49:34.980Z",
   "approved_by": "founder",
   "first_approved_at": "2026-11-19T22:41:57.876Z",
   "licence_accepted_at": "2026-11-19T16:23:00.626Z",
@@ -69,7 +74,7 @@
   "permission_ref": "PA-PERM-a4p7ruywdrw",
   "state": "approved",
   "test_note": null,
-  "version": "v4"
+  "version": "v5"
  },
  "schema": "plotnua.plotart.gallery-package.v1",
  "works": [
@@ -240,6 +245,62 @@
    "title": "Resurrection Of The Roadkill",
    "w_cm": 42,
    "year": 2024
+  },
+  {
+   "ai_founder_decision": null,
+   "ai_involvement": "none",
+   "ai_note": null,
+   "availability": "available",
+   "d_cm": 3,
+   "description": null,
+   "h_cm": 70,
+   "id": "wccuh7z57jx",
+   "images": [
+    {
+     "alt": "Intricate flowing colourful forms",
+     "aspect": 0.71432,
+     "derivatives": [
+      {
+       "file": "the-creation-of-adam-1-600.webp",
+       "long_edge": 600,
+       "pixels": [
+        429,
+        600
+       ]
+      },
+      {
+       "file": "the-creation-of-adam-1-1200.webp",
+       "long_edge": 1200,
+       "pixels": [
+        857,
+        1200
+       ]
+      },
+      {
+       "file": "the-creation-of-adam-1-2000.webp",
+       "long_edge": 2000,
+       "pixels": [
+        1429,
+        2000
+       ]
+      }
+     ],
+     "photo_credit": null,
+     "pixels": [
+      2953,
+      4134
+     ],
+     "role": "main"
+    }
+   ],
+   "materials": null,
+   "medium": "Acrylic on canvas",
+   "price_eur": 4500,
+   "price_on_request": false,
+   "slug": "the-creation-of-adam",
+   "title": "The Creation Of Adam",
+   "w_cm": 50,
+   "year": 2026
   }
  ]
 }
