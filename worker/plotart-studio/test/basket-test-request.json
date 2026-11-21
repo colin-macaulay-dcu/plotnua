@@ -1,5 +1,5 @@
 {
   "_note": "Changing this file on plotart/multi-artist-basket starts .github/workflows/plotart-basket-test.yml (existing TEST environment only; waits for the founder's Approve on checkout-test).",
-  "requested": "2026-11-21T20:37:26Z",
-  "reason": "Basket on the existing TEST environment for the founder's inspection: Access check, Stripe TEST key check, additive TEST database update (0019 + basket seed), both TEST Workers redeployed with the basket and synthetic gallery on."
+  "requested": "2026-11-21T21:28:40Z",
+  "reason": "Update the existing TEST environment: migration 0020 (basket consents, new table only), additive seed of the TEST artists' seller-information confirmations and Founding processing-fee consent, both TEST Workers redeployed with the seller and returns information and the consent screens."
 }
