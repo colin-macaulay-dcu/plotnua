@@ -211,7 +211,8 @@ jobs:
           ENABLE_LIVE_PILOT: ${{ inputs.enable_live_pilot && 'true' || 'false' }}
           LIVE_CONFIRMATION: ${{ inputs.live_confirmation }}
           ENABLE_LIVE_BASKET: ${{ inputs.enable_live_basket && 'true' || 'false' }}
-          CHECKOUT_LIVE_PUBLISHABLE_KEY: ${{ vars.CHECKOUT_LIVE_PUBLISHABLE_KEY }}
+          # the publishable key is not a secret; accepted as an environment variable or, if saved that way, an environment secret
+          CHECKOUT_LIVE_PUBLISHABLE_KEY: ${{ vars.CHECKOUT_LIVE_PUBLISHABLE_KEY || secrets.CHECKOUT_LIVE_PUBLISHABLE_KEY }}
         run: |
           set -euo pipefail
           # always render the OFF configuration first and keep it: the live path deploys it before any secret is written,
