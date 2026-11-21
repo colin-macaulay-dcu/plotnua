@@ -1,6 +1,6 @@
 # PlotArt Basket Purchase Terms — PA-BBT-2026-11 (DRAFT r2, 22 November 2026)
 
-**Status: unissued draft for founder approval. Not shown to any buyer.** Derived from the issued Buyer Purchase Terms PA-BPT-2026-11, which are unchanged and continue to apply to single-artwork quotes. Review notes: `PA-BBT-PA-BAA-r2-REVIEW-NOTES.md`. Issued only as fingerprinted HTML (`agreements/build-basket.cjs`) and installed by migration 0021 with the founder's approval.
+**Status: approved by the founder and ISSUED on 21 November 2026 as `agreements/basket-issued/PA-BBT-2026-11.html` (fingerprint in `basket-issued/fingerprints.json`), installed by migration 0021.** This file is the source of record for that issue; any change needs a new identifier.
 
 These terms apply when you buy one or more original artworks together through the PlotArt basket. Each artwork in your basket is sold to you by its own artist.
 

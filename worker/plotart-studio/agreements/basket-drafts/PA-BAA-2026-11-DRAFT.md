@@ -1,6 +1,6 @@
 # PlotArt Artist Basket Addendum — PA-BAA-2026-11 (DRAFT r2, 22 November 2026)
 
-**Status: unissued draft for founder approval. Not shown to any artist.** Derived from the issued Payment Pilot Addendum PA-PAY-2026-11, which is unchanged; the artist agreements PA-FAA and PA-GAA are unchanged. Review notes: `PA-BBT-PA-BAA-r2-REVIEW-NOTES.md`. Issued only as fingerprinted HTML (`agreements/build-basket.cjs`) and installed by migration 0021 with the founder's approval.
+**Status: approved by the founder and ISSUED on 21 November 2026 as `agreements/basket-issued/PA-BAA-2026-11.html` (fingerprint in `basket-issued/fingerprints.json`), installed by migration 0021.** This file is the source of record for that issue; any change needs a new identifier.
 
 ## 0. How this addendum relates to the artist's agreement
 

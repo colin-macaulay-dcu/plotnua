@@ -399,7 +399,16 @@ r = await call('GET', `/api/admin/checkout/baskets/${B2.id}`, FOUNDER);
 check('G2 basket detail: lines, orders and the append-only history (no buyer token)', r.s === 200 && r.j.lines.length === 2 && r.j.events.length >= 3 && !('buyer_token_hash' in r.j.basket && r.j.basket.buyer_token_hash) && !!(await db.prepare('UPDATE basket_events SET action = 1').run().catch(e => e)).message);
 r = await call('GET', '/api/admin/checkout/baskets', GAL);
 check('G3 an artist cannot reach the founder’s basket desk', r.s === 403 || r.s === 401);
-check('G4 live mode: no basket text is approved, so no live basket can be opened', Object.keys(LIVE_BASKET_DOCS).length === 0 && (await basketDoc('PA-BBT-TEST-01', true)) === null);
+const FPI = JSON.parse(readFileSync(HERE + 'agreements/basket-issued/fingerprints.json', 'utf8')).documents;
+const LB = await basketDoc('PA-BBT-2026-11', true), LA = await basketDoc('PA-BAA-2026-11', true);
+check('G4 live mode: only the two ISSUED texts exist, fingerprints match the issued files, no TEST placeholder is live and no live text is offered in TEST mode',
+  Object.keys(LIVE_BASKET_DOCS).sort().join() === 'PA-BAA-2026-11,PA-BBT-2026-11' && LB.html_sha256 === FPI['PA-BBT-2026-11'].html_sha256 && LA.html_sha256 === FPI['PA-BAA-2026-11'].html_sha256
+  && (await basketDoc('PA-BBT-TEST-01', true)) === null && (await basketDoc('PA-BBT-2026-11', false)) === null && !/DRAFT|TEST ONLY/.test(LB.html + LA.html));
+const esc = t => t.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+const mig21 = readFileSync(HERE + 'migrations/0021_basket_terms_issue.sql', 'utf8');
+check('G4a the issued addendum carries, word for word, the processing-fee consent and seller-information statements the Studio records; migration 0021 installs exactly the issued fingerprints',
+  BT.PROCESSING_CONSENT_STATEMENT('PA-BAA-2026-11').split('\n').every(l => LA.html.includes(esc(l))) && LA.html.includes(esc(BT.SELLER_DISCLOSURE_STATEMENT))
+  && mig21.includes(FPI['PA-BBT-2026-11'].html_sha256) && mig21.includes(FPI['PA-BAA-2026-11'].html_sha256) && (mig21.match(/\('PA-B/g) || []).length === 2);
 check('G5 only TEST keys were presented to the provider', M.calls.every(c => ['Bearer sk_test_mockkey123', 'Bearer rk_test_basketkey456'].includes(c.auth)));
 const basketPaths = c => (c.path === '/v1/customers' || /^\/v1\/customers\/cus_/.test(c.path) && c.method === 'DELETE' || c.path === '/v1/checkout/sessions' || c.path === '/v1/payment_methods'
   || (c.path === '/v1/payment_intents' && c.method === 'POST') || /\/(capture|cancel)$/.test(c.path));

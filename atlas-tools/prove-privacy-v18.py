@@ -50,6 +50,11 @@ for need in ["until 31 December of the sixth year after the order is settled", "
     ok(need in txt, "V6 retention must state: " + need)
 pay = (ROOT / "worker/plotart-studio/agreements/payment-drafts/PA-PAY-2026-11-DRAFT.md").read_text(encoding="utf-8")
 ok("until 31 December of the sixth year after the order is settled" in pay and "privacy notice" in pay, "V7 the retention period matches PA-PAY clause 8.1")
+_v18 = open(__import__("pathlib").Path(__file__).resolve().parent / "privacy_v18_layer.py", encoding="utf-8").read()
+for need in ("Buying several artworks together (the basket).", "copies it to each seller's own Stripe account", "a seller is not told what you bought from other sellers",
+             "your confirmation that your seller information may be shown to buyers before they pay", "any consent to Stripe's processing fees on commission-free sales",
+             "Basket records follow the same periods as pilot orders"):
+    ok(need in _v18, "V8 the basket (PA-BBT 10, PA-BAA 2.2/4/9) must state: " + need)
 if bad:
     for x in bad: print("FAIL " + x)
     print("PRIVACY V18 · REFUSED — %d problem(s)" % len(bad)); sys.exit(2)

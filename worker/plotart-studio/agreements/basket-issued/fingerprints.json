@@ -1,5 +1,5 @@
 {
- "note": "Ready for issue, NOT issued. Founder approval moves these files unchanged to basket-issued/ and migration 0021 installs them. Once anyone has accepted an identifier, its file must never change.",
+ "note": "ISSUED 21 November 2026 with the founder's approval (PA-BBT-2026-11 r2, PA-BAA-2026-11 r2). Installed by migration 0021. Once anyone has accepted an identifier, its file must never change; a changed text gets a new identifier.",
  "documents": {
   "PA-BAA-2026-11": {
    "title": "PlotArt Artist Basket Addendum",

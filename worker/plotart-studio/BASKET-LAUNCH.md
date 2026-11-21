@@ -17,9 +17,10 @@ founder's action or approval; nothing merges, migrates production or takes a liv
 
 ## Route to launch (in order)
 
-1. **Founder: approve the texts** (PA-BBT r2, PA-BAA r2, privacy V18 + basket addition). Then (one commit):
-   `ISSUE_DATE="<date>" node agreements/build-basket.cjs`, move `basket-ready/*.html` and `fingerprints.json` to
-   `agreements/basket-issued/`, move `0021_basket_terms_issue.sql` to `migrations/`, `node build-assets.mjs`.
+1. **Texts — DONE (21 Nov 2026).** Approved and issued: `agreements/basket-issued/` (PA-BBT-2026-11, PA-BAA-2026-11,
+   fingerprints), bundled as LIVE_BASKET_DOCS; `migrations/0021_basket_terms_issue.sql` (SHA-256
+   b791c838045508f08badebc59104ce99d717457cdd778948971eea3d12a68900). Privacy V18 (pilot + basket) prepared in
+   `atlas-tools/privacy_v18_layer.py`; published at launch with `python3 atlas-tools/privacy_v18_layer.py --apply`.
 2. **Founder, Stripe dashboard (live mode):**
    - Restricted key "PlotArt basket": write **Customers, Payment Methods, Checkout Sessions, PaymentIntents** (incl. on
      connected accounts). Store as GitHub secret `CHECKOUT_LIVE_STRIPE_BASKET_KEY` (environment `studio-production.`).
@@ -32,7 +33,7 @@ founder's action or approval; nothing merges, migrates production or takes a liv
 3. **Founder: final deployment approval**, then:
    - merge the branch to `main`;
    - production D1 backup, then migrations 0019, 0020, 0021 (each through `migration-check.py` with its SHA-256);
-   - publish privacy notice V18 (with the basket addition);
+   - publish privacy notice V18 (`privacy_v18_layer.py --apply`, then the site release);
    - run `plotart-checkout-deploy.yml` → production, `enable_live_pilot` + `enable_live_basket`, approve `studio-production.`.
 4. **Artists (live, each themselves in Studio → Payment pilot page):** join the payment pilot (PA-PAY), complete Stripe live
    onboarding (charges **and payouts**), seller information, accept PA-BAA, confirm seller information may be shown,
