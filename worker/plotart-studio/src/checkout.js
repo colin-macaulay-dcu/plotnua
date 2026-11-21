@@ -827,6 +827,11 @@ export async function linkedCheck(env, o) {
   const rows = await all(env, `SELECT reference, artwork_cents + COALESCE(delivery_cents, 0) AS total FROM checkout_orders
     WHERE lower(buyer_email) = lower(?) AND id <> ? AND created_at >= ? AND artwork_cents IS NOT NULL
       AND (payment_status <> 'none' OR status IN ('quoted', 'checkout_open', 'payment_failed'))`, o.buyer_email, o.id, since);
+  // Multi-artist baskets (migration 0019, if applied) count towards the same limit. Without 0019 there is no basket table and
+  // nothing changes. Read-only.
+  if (await one(env, "SELECT 1 AS x FROM sqlite_master WHERE type = 'table' AND name = 'basket_orders'"))
+    rows.push(...await all(env, `SELECT reference, total_cents AS total FROM basket_orders WHERE lower(buyer_email) = lower(?) AND created_at >= ?
+      AND (payment_status <> 'none' OR status IN ('checkout_open', 'payment_failed'))`, o.buyer_email, since));
   const others = rows.reduce((a, r) => a + r.total, 0), total = others + o.artwork_cents + (o.delivery_cents || 0);
   return { ok: total < R.LINKED_THRESHOLD_CENTS, total_cents: total, linked: rows.map(r => r.reference), window_days: R.LINKED_WINDOW_DAYS,
     reason: total < R.LINKED_THRESHOLD_CENTS ? null : `This buyer's apparently linked purchases reach EUR ${(total / 100).toFixed(2)} (EUR 10,000 or more). That is outside the pilot until PlotArt's anti-money-laundering position is settled by professional advice.` };
