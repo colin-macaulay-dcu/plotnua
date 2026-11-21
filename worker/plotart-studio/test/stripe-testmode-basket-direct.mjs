@@ -7,6 +7,8 @@
 // test customer deleted). Card numbers are Stripe's published test cards (docs.stripe.com/testing); no real card data.
 //   Called from test/stripe-testmode-checks.mjs (phase "basket_direct"); records results with rec().
 import { createRequire } from 'node:module';
+import { mkdirSync } from 'node:fs';
+const EVIDENCE = new URL('../stripe-test-evidence/', import.meta.url).pathname;   // uploaded by the workflow (no secrets)
 
 const CARDS = {
   ok: '4242424242424242',                // succeeds
@@ -70,31 +72,50 @@ export async function proveBasketDirect({ KEY, accounts, rec, v1, runId, playwri
     if (!cs.ok) return { error: cs.err, customer: cus.j.id };
     const page = await browser.newPage({ locale: 'en-IE' });
     let stage = 'open hosted page', challenged = false;
+    // browser diagnostics, kept only for the failure report (no keys, no session ids)
+    const scrubText = s => String(s || '').replace(/(?:[rs]k|pk)_(?:test|live)_\S+|cs_(?:test|live)_\S+|seti_\S+|pm_\S+/g, '[redacted]').replace(/\s+/g, ' ').trim().slice(0, 200);
+    const diag = { console_errors: [], page_errors: [], failed_requests: [] };
+    page.on('console', m => { if (m.type() === 'error' && diag.console_errors.length < 10) diag.console_errors.push(scrubText(m.text())); });
+    page.on('pageerror', err => { if (diag.page_errors.length < 10) diag.page_errors.push(scrubText(err.message)); });
+    page.on('requestfailed', r => { if (diag.failed_requests.length < 10) { try { const u = new URL(r.url()); diag.failed_requests.push(u.host + u.pathname.slice(0, 60) + ' ' + (r.failure()?.errorText || '')); } catch {} } });
     const field = async (css, timeout = 10000) => {
       const end = Date.now() + timeout;
       do { for (const f of page.frames()) for (const m of await f.locator(css).all().catch(() => [])) if (await m.isVisible().catch(() => false)) return m;
         await page.waitForTimeout(300); } while (Date.now() < end);
       return null;
     };
-    const fill = async (css, value, timeout = 15000) => {
+    // try selectors strictly in priority order (a comma list would match in page order instead)
+    const firstOf = async (list, timeout = 10000) => {
+      const end = Date.now() + timeout;
+      do { for (const css of list) { const m = await field(css, 1); if (m) return m; } await page.waitForTimeout(300); } while (Date.now() < end);
+      return null;
+    };
+    const fill = async (css, value, timeout = 15000, required = true) => {
       stage = 'fill ' + css.split(',')[0];
       const end = Date.now() + timeout;
       do { const c = await field(css, 1000); if (c && await c.fill(value, { timeout: 2000 }).then(() => true, () => false)) return true; } while (Date.now() < end);
+      if (required) throw Error('required field unavailable: ' + css.split(',')[0]);
       return false;
     };
     try {
       await page.goto(cs.j.url, { waitUntil: 'domcontentloaded' });
-      const cardCSS = '#cardNumber,#payment-numberInput,input[autocomplete="cc-number"],input[name=cardnumber]';
-      if (!await field(cardCSS, 4000)) await (await field('[data-testid="card-accordion-item-button"],button:text-is("Card"),[role="radio"]:text-is("Card")', 4000))?.click();
-      if (!await fill(cardCSS, card, 25000)) throw Error('card field unavailable');
-      await fill('#cardExpiry,#payment-expiryInput,input[autocomplete="cc-exp"]', '12 / 34');
-      await fill('#cardCvc,#payment-cvcInput,input[autocomplete="cc-csc"]', '123');
-      await fill('#billingName,input[autocomplete="cc-name"]', 'Test Buyer', 3000);
-      await fill('#email,input[type=email]', 'plotart-poc-buyer@example.com', 2000);
-      const country = await field('#billingCountry', 1000); if (country) await country.selectOption('IE').catch(() => {});
+      // field order and selectors as in the proven buyer test (test/stripe-testmode-buyer.mjs)
+      stage = 'complete hosted setup form';
+      await fill('#linkAuthentication-emailInput,input[type=email]', 'plotart-poc-buyer@example.com', 12000, false);
+      const cardCSS = '#payment-numberInput,#cardNumber,input[autocomplete="cc-number"],input[name=cardnumber]';
+      if (!await field(cardCSS, 3000)) await (await field('[data-testid="card-accordion-item-button"],button:text-is("Card"),[role="radio"]:text-is("Card")'))?.click();
+      await fill(cardCSS, card, 25000);
+      await fill('#payment-expiryInput,#cardExpiry,input[autocomplete="cc-exp"]', '12 / 34');
+      await fill('#payment-cvcInput,#cardCvc,input[autocomplete="cc-csc"]', '123');
+      await fill('#billingName,input[autocomplete="cc-name"]', 'Test Buyer', 3000, false);
+      const country = await field('#billingCountry,select[autocomplete="country"]', 1000);
+      if (country) await country.selectOption('IE').catch(() => {});
+      await fill('#billingPostalCode,input[autocomplete="postal-code"]', 'D02 X285', 1500, false);
       stage = 'submit';
-      const submit = await field('[data-testid="hosted-payment-submit-button"],button[type="submit"],button.SubmitButton', 8000);
+      const submit = await firstOf(['#payment-form-submit-button', '[data-testid="payment-form-submit-button"]', '[data-testid="hosted-payment-submit-button"]',
+        'button[type="submit"]:text-matches("^(Pay|Save|Set up|Continue|Confirm)(\\s|$)","i")', 'button.SubmitButton'], 8000);
       if (!submit) throw Error('submit control missing');
+      diag.submit_label = scrubText(await submit.innerText().catch(() => ''));
       await submit.click({ timeout: 10000 });
       stage = 'await completion or authentication';
       const end = Date.now() + 90000;
@@ -108,7 +129,20 @@ export async function proveBasketDirect({ KEY, accounts, rec, v1, runId, playwri
       const si = done.j.setup_intent;
       return { customer: cus.j.id, session: cs.j.id, setup_intent: si?.id, si_status: si?.status, pm: si?.payment_method, usage: si?.usage, challenged };
     } catch (e) {
-      return { error: { stage, message: String(e.message).slice(0, 160) }, customer: cus.j.id, session: cs.j.id };
+      // failure report: screenshot, visible validation messages, visible controls, browser errors
+      const controls = [], errors = [];
+      for (const f of page.frames()) {
+        controls.push(...await f.locator('input:visible,select:visible,button:visible').evaluateAll(ns => ns.map(n => n.id ? 'id:' + n.id
+          : n.getAttribute('data-testid') ? 'testid:' + n.getAttribute('data-testid') : n.getAttribute('autocomplete')).filter(Boolean)).catch(() => []));
+        errors.push(...await f.locator('[role="alert"]:visible,.FieldError:visible,[class*="Error"]:visible,[aria-invalid="true"]:visible')
+          .evaluateAll(ns => ns.map(n => (n.innerText || n.getAttribute('aria-label') || n.id || '').trim()).filter(Boolean)).catch(() => []));
+      }
+      let screenshot = null;
+      try { mkdirSync(EVIDENCE, { recursive: true }); screenshot = 'basket-direct-' + label + '.png';
+        await page.screenshot({ path: EVIDENCE + screenshot, fullPage: true }); } catch { screenshot = 'not captured'; }
+      return { error: { stage, message: scrubText(e.message), page_host: (() => { try { return new URL(page.url()).host; } catch { return null; } })(),
+        page_title: scrubText(await page.title().catch(() => '')), validation_messages: [...new Set(errors.map(scrubText))].slice(0, 10),
+        visible_controls: [...new Set(controls)].filter(s => /^[a-zA-Z][\w :.-]{0,64}$/.test(s)).slice(0, 40), screenshot, ...diag }, customer: cus.j.id, session: cs.j.id };
     } finally { await page.close(); }
   }
 
