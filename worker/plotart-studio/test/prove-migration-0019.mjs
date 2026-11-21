@@ -718,6 +718,16 @@ console.log('— M3 interrupted operations: no stale claim survives a crash, an 
     && (await D.q("SELECT availability a FROM artworks WHERE id = 'wx4'").first()).a === 'available');
 }
 
+console.log('— LOW the remaining low-severity findings');
+{
+  const D = mk(await freshDb());
+  await basket(D, 'lw', [{ line: 'l', artist: 'a1', work: 'wl1', cents: 10000 }]);
+  const mism = await D.accepted(`UPDATE basket_orders SET status = 'paid', checkout_session_id = 'cs_test_lw', charge_id = 'ch_lw', paid_at = ? WHERE id = 'lw'`, t);
+  check('LOWa [Low] a basket\'s status and payment status must agree (status "paid" with no payment recorded is refused)', mism !== true && /CHECK/.test(mism), mism);
+  check('LOWb [Low] claimsOn() is read-only: a read path never writes the capability marker', (await CO.claimsOn({ DB: D.db })) === true && (await D.q('SELECT COUNT(*) n FROM checkout_capabilities').first()).n === 0);
+  check('LOWc [Low] only markClaimsAware() (hold, sale and sweep paths) writes it', (await CO.markClaimsAware({ DB: D.db })) === true && (await D.q('SELECT COUNT(*) n FROM checkout_capabilities').first()).n === 1);
+}
+
 console.log('— O rollback and mixed versions: the PRE-PR checkout.js (git 4e66e39) against basket holds and sales [H-1]');
 {
   const { mkdtempSync, writeFileSync, rmSync } = await import('node:fs'); const { tmpdir } = await import('node:os');
