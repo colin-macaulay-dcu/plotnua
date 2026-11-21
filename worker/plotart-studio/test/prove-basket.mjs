@@ -37,7 +37,7 @@ let S, BR = null;
 try {
 console.log('PROVE · multi-artist basket (direct charge per artwork, authorise all before capture)');
 const ORIGIN = 'https://checkout.local';
-const ENVV = { CHECKOUT_MESSAGE_RETRY_MINUTES: '0', CHECKOUT_PILOT_ENABLED: 'true', BASKET_ENABLED: 'true', BASKET_COMMISSION_FREE: 'with_processing_consent', STRIPE_SECRET_KEY: 'sk_test_mockkey123',
+const ENVV = { CHECKOUT_MESSAGE_RETRY_MINUTES: '0', CHECKOUT_PILOT_ENABLED: 'true', BASKET_ENABLED: 'true', BASKET_COMMISSION_FREE: 'with_processing_consent', STRIPE_SECRET_KEY: 'sk_test_mockkey123', STRIPE_BASKET_KEY: 'rk_test_basketkey456',
   STRIPE_PUBLISHABLE_KEY: 'pk_test_mockpublishable', STRIPE_WEBHOOK_SECRET: WHSEC, STRIPE_WEBHOOK_SECRET_PLATFORM: WHSEC_P, STRIPE_API_BASE: 'https://stripe.mock', CHECKOUT_ORIGIN: ORIGIN, GALLERY_ORIGIN: 'https://plotnua.ie' };
 S = await start({ port: 8873, env: ENVV, script: FIX + 'src/index.js', checkout: { script: FIX + 'src/checkout-public.js', env: ENVV }, outbound: stripe });
 const { db } = S, CW = S.checkoutWorker;
@@ -339,7 +339,15 @@ check('G2 basket detail: lines, orders and the append-only history (no buyer tok
 r = await call('GET', '/api/admin/checkout/baskets', GAL);
 check('G3 an artist cannot reach the founder’s basket desk', r.s === 403 || r.s === 401);
 check('G4 live mode: no basket text is approved, so no live basket can be opened', Object.keys(LIVE_BASKET_DOCS).length === 0 && (await basketDoc('PA-BBT-TEST-01', true)) === null);
-check('G5 only the TEST key was presented to the provider', M.calls.every(c => c.auth === 'Bearer sk_test_mockkey123'));
+check('G5 only TEST keys were presented to the provider', M.calls.every(c => ['Bearer sk_test_mockkey123', 'Bearer rk_test_basketkey456'].includes(c.auth)));
+const basketPaths = c => (c.path === '/v1/customers' || /^\/v1\/customers\/cus_/.test(c.path) && c.method === 'DELETE' || c.path === '/v1/checkout/sessions' || c.path === '/v1/payment_methods'
+  || (c.path === '/v1/payment_intents' && c.method === 'POST') || /\/(capture|cancel)$/.test(c.path));
+check('G7 the basket’s own calls use the separate basket key; refunds, reads and everything else keep the main key',
+  M.calls.filter(basketPaths).length > 10 && M.calls.filter(basketPaths).every(c => c.auth === 'Bearer rk_test_basketkey456')
+  && M.calls.filter(c => c.path === '/v1/refunds' && c.method === 'POST').every(c => c.auth === 'Bearer sk_test_mockkey123') && M.calls.some(c => c.path === '/v1/refunds'));
+const SS = await import(HERE + 'src/stripe.js');
+const mism = await (async () => SS.createCustomer({ STRIPE_SECRET_KEY: 'sk_test_x1', STRIPE_BASKET_KEY: 'rk_live_x2', STRIPE_API_BASE: 'https://stripe.mock', ENVIRONMENT: 'local' }, { idem: 'x', email: 'a@b.c', name: 'x', basket: { id: 'b', reference: 'PA-B-x' } }))().then(() => 'called', e => e.code);
+check('G8 a basket key of the other mode (live with test) is refused before any request', mism === 'not_configured', mism);
 r = await pub('GET', `/b/${'q'.repeat(48)}`);
 check('G6 an unknown basket link reveals nothing', r.s === 404 && !/PA-B-/.test(r.t));
 

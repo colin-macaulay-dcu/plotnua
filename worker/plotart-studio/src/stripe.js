@@ -157,25 +157,34 @@ export const refundFee = (env, { fee, amount, idem, metadata }) => call(env, 'PO
          off_session, with PlotArt's commission as application_fee_amount; each clone is consumed by one charge;
      4 · every line is authorised before ANY is captured; a failure cancels the authorisations already made.
    Every call carries an idempotency key derived from the basket and the order, so a retry never charges twice. */
-export const createCustomer = (env, { idem, email, name, basket }) => call(env, 'POST', '/v1/customers', { idem, body: {
+/* The basket's own calls (platform Customer and card page, card copies, authorise / capture / cancel) may use a separate
+   restricted key, STRIPE_BASKET_KEY, so the key that serves the rest of checkout needs no new permissions. It must be of the
+   SAME mode as STRIPE_SECRET_KEY (test with test, live with live) or every basket call is refused. Without it, the main key. */
+function bk(env) {
+  if (!env.STRIPE_BASKET_KEY) return env;
+  const main = stripeMode(env), alt = stripeMode({ ...env, STRIPE_SECRET_KEY: env.STRIPE_BASKET_KEY });
+  if (!main.ok || !alt.ok || main.live !== alt.live) throw new StripeError('The basket key is not configured for this mode', 503, 'not_configured');
+  return { ...env, STRIPE_SECRET_KEY: env.STRIPE_BASKET_KEY };
+}
+export const createCustomer = (env, { idem, email, name, basket }) => call(bk(env), 'POST', '/v1/customers', { idem, body: {
   email, name, description: `PlotArt basket ${basket.reference}`, metadata: { plotart_basket: basket.id, plotart_reference: basket.reference } } });
-export const deleteCustomer = (env, { id }) => call(env, 'DELETE', `/v1/customers/${encodeURIComponent(id)}`);
-export const createSetupSession = (env, { idem, customer, basket, expiresAt, successUrl, cancelUrl }) => call(env, 'POST', '/v1/checkout/sessions', { idem, body: {
+export const deleteCustomer = (env, { id }) => call(bk(env), 'DELETE', `/v1/customers/${encodeURIComponent(id)}`);
+export const createSetupSession = (env, { idem, customer, basket, expiresAt, successUrl, cancelUrl }) => call(bk(env), 'POST', '/v1/checkout/sessions', { idem, body: {
   mode: 'setup', currency: 'eur', customer, allowed_payment_method_types: ['card'],
   client_reference_id: basket.id, expires_at: Math.floor(Date.parse(expiresAt) / 1000), success_url: successUrl, cancel_url: cancelUrl,
   setup_intent_data: { description: `PlotArt basket ${basket.reference}: card saved once for ${basket.line_count} artist payment(s)`,
     metadata: { plotart_basket: basket.id, plotart_reference: basket.reference } },
   metadata: { plotart_basket: basket.id, plotart_reference: basket.reference } } });
-export const getPlatformSession = (env, { id }) => call(env, 'GET', `/v1/checkout/sessions/${encodeURIComponent(id)}`, { query: '?expand[]=setup_intent' });
-export const expirePlatformSession = (env, { id }) => call(env, 'POST', `/v1/checkout/sessions/${encodeURIComponent(id)}/expire`);
-export const detachPaymentMethod = (env, { id }) => call(env, 'POST', `/v1/payment_methods/${encodeURIComponent(id)}/detach`);
-export const clonePaymentMethod = (env, { account, idem, customer, paymentMethod }) => call(env, 'POST', '/v1/payment_methods', { account, idem, body: { customer, payment_method: paymentMethod } });
-export const authorise = (env, { account, idem, amountCents, feeCents, paymentMethod, order, basket, statement }) => call(env, 'POST', '/v1/payment_intents', { account, idem, body: {
+export const getPlatformSession = (env, { id }) => call(bk(env), 'GET', `/v1/checkout/sessions/${encodeURIComponent(id)}`, { query: '?expand[]=setup_intent' });
+export const expirePlatformSession = (env, { id }) => call(bk(env), 'POST', `/v1/checkout/sessions/${encodeURIComponent(id)}/expire`);
+export const detachPaymentMethod = (env, { id }) => call(bk(env), 'POST', `/v1/payment_methods/${encodeURIComponent(id)}/detach`);
+export const clonePaymentMethod = (env, { account, idem, customer, paymentMethod }) => call(bk(env), 'POST', '/v1/payment_methods', { account, idem, body: { customer, payment_method: paymentMethod } });
+export const authorise = (env, { account, idem, amountCents, feeCents, paymentMethod, order, basket, statement }) => call(bk(env), 'POST', '/v1/payment_intents', { account, idem, body: {
   amount: amountCents, currency: 'eur', payment_method: paymentMethod, confirm: true, off_session: true, capture_method: 'manual',
   allowed_payment_method_types: ['card'], application_fee_amount: feeCents > 0 ? feeCents : undefined, description: statement,
   metadata: { plotart_order: order.id, plotart_reference: order.reference, plotart_basket: basket.id, plotart_basket_reference: basket.reference } } });
-export const capture = (env, { account, idem, id }) => call(env, 'POST', `/v1/payment_intents/${encodeURIComponent(id)}/capture`, { account, idem, body: {} });
-export const cancelIntent = (env, { account, idem, id }) => call(env, 'POST', `/v1/payment_intents/${encodeURIComponent(id)}/cancel`, { account, idem, body: {} });
+export const capture = (env, { account, idem, id }) => call(bk(env), 'POST', `/v1/payment_intents/${encodeURIComponent(id)}/capture`, { account, idem, body: {} });
+export const cancelIntent = (env, { account, idem, id }) => call(bk(env), 'POST', `/v1/payment_intents/${encodeURIComponent(id)}/cancel`, { account, idem, body: {} });
 /* A card error from confirming a PaymentIntent: Stripe returns 402 with the PaymentIntent it left behind. */
 export async function authoriseOutcome(env, args) {
   try { const pi = await authorise(env, args); return { ok: true, pi }; }
