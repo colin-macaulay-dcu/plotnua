@@ -72,7 +72,7 @@ The scripts push nothing when any of these is true:
    - Atlas stats, Atlas Match and Claude-session releases are promoted by "Release to production".
    - **Moving `main` (Stage 2, 21 Nov 2026).** `promote.sh` pushes `main` and its `prod/` tag **as the PlotNua Release App**, in **one atomic push**: GitHub applies both or neither. Before this, `main` was moved with the workflow's built-in `GITHUB_TOKEN` (`github-actions[bot]`).
      - In GitHub Actions, `promote.sh` **refuses before doing anything** if the App token is missing.
-     - If the push reports an error, `promote.sh` re-reads `main`. If GitHub did apply it, the release still gets its live check and, if needed, its automatic rollback, so a release is never left unverified.
+     - If the push reports an error, `promote.sh` re-reads `main`. If GitHub did apply it, the release still gets its live check and, if needed, its automatic rollback, so a release is never left unverified. If `main` cannot be re-read at all, the run stops with **"FOUNDER ATTENTION"** (exit 2, so the failure alert fires) and never claims that nothing was released.
      - The token is never printed: git's output is redacted.
      - An App push, unlike a `GITHUB_TOKEN` push, starts the read-only `push: main` checks (the Image rights gate and the evidence checks). "Release to production" ignores `main`, as it already does for the founder's pull-request merges.
      - This is what lets main's planned **"Restrict updates"** ruleset admit the App alone (it is not active yet; it needs separate founder approval).

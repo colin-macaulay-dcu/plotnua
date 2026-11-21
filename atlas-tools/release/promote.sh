@@ -58,7 +58,12 @@ if release_push "$SHA:refs/heads/main" "refs/tags/$T"; then
 else
   # The push reported a failure. Re-read main before deciding: if GitHub did apply it (an error after the update, e.g. a
   # dropped connection), the release is live and MUST still get its live check and, if needed, its rollback below.
-  git fetch -q origin main 2>/dev/null || true
+  if ! git fetch -q origin main 2>/dev/null; then
+    # main cannot be re-read, so whether the release is live is unknown: never claim "nothing was released"
+    echo "FOUNDER ATTENTION: the push of ${SHA:0:7} reported an error and main could not be re-read; check main and the live site"
+    echo "- **the push reported an error and main could not be re-read: whether ${SHA:0:7} is live is unknown. FOUNDER ATTENTION: check main and the live site.**" >> "$SUM"
+    exit 2
+  fi
   if [ "$(git rev-parse origin/main 2>/dev/null)" != "$SHA" ]; then
     git tag -d "$T" > /dev/null 2>&1 || true
     refuse "the push of main and its production tag was rejected (main moved, a ruleset refused it, or the App token was not accepted): nothing was released"

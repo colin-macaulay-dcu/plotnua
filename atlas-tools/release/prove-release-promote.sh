@@ -155,6 +155,11 @@ mkdir -p "$T/fakebin"; printf '#!/bin/bash\nfor a in "$@"; do [ "$a" = push ] &&
 printf '#!/bin/bash\necho checked "$1" >> "%s/health-ran"\n' "$T" > "$T/hok"; chmod +x "$T/hok"; rm -f "$T/health-ran"
 o=$(PATH="$T/fakebin:$PATH" "${ACT[@]}" HEALTH_CMD="$T/hok" bash "$P" "$S" release/auto/s2b 2>&1); rc=$?
 ok "stage 2: a push that errors although main moved still gets its live check (never an unverified release)" '[ $rc = 0 ] && [ "$(main)" = "$S" ] && grep -qx "checked $S" "$T/health-ran"'
+# ... and if main cannot even be re-read after that error, the outcome is unknown: alert (exit 2), never "nothing released"
+git fetch -q origin; M=$(main); S=$(rel s2d v22); gate release/auto/s2d
+printf '#!/bin/bash\nfor a in "$@"; do [ "$a" = push ] && { %s "$@"; touch "%s/pushed"; exit 1; }; [ "$a" = fetch ] && [ -e "%s/pushed" ] && exit 1; done\nexec %s "$@"\n' "$(command -v git)" "$T" "$T" "$(command -v git)" > "$T/fakebin/git"; rm -f "$T/pushed" "$T/health-ran"
+o=$(PATH="$T/fakebin:$PATH" "${ACT[@]}" HEALTH_CMD="$T/hok" bash "$P" "$S" release/auto/s2d 2>&1); rc=$?; rm -f "$T/pushed"
+ok "stage 2: a push error with main unreadable afterwards is reported for the founder (exit 2), never as \"nothing released\"" '[ $rc = 2 ] && printf "%s" "$o" | grep -q "FOUNDER ATTENTION" && ! printf "%s" "$o" | grep -q "nothing was released"'
 # the automatic rollback in Actions mode: revert pushed and released as the App, with its own gate, main restored
 git fetch -q origin; B=$(main); S=$(rel s2c BROKEN20); gate release/auto/s2c
 printf '#!/bin/bash\n[ "$1" != "%s" ]\n' "$S" > "$T/h20"; chmod +x "$T/h20"
