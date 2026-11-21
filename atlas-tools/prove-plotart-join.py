@@ -72,13 +72,15 @@ def guard(site, swp, mp, repin=()):
     return r.returncode == 0 and "PLOTART LAUNCH · OK" in r.stdout, r.stdout + r.stderr
 
 def gal_ok(g):
-    if g.count("pa-artist-apply-gallery:begin") != 1 or g.index("pa-artist-apply-gallery:end") > g.index("pa-vg-collection:begin"):
+    # the application link (moved 21 Nov 2026, artwork first): once, in the closing section after the collection, never in
+    # the introduction
+    if g.count("pa-artist-apply-gallery:begin") != 1 or g.index("pa-artist-apply-gallery:begin") < g.index("pa-vg-collection:end"):
         return False
     seg = g[g.index("<!-- pa-artist-apply-gallery:begin -->") + len("<!-- pa-artist-apply-gallery:begin -->"):g.index("<!-- pa-artist-apply-gallery:end -->")]
     txt = re.sub(r"\s+", " ", re.sub(r"<[^>]+>", " ", seg))
-    hero = g[g.index('<section class="pa-vg2-hero">'):g.index("</section>", g.index('<section class="pa-vg2-hero">'))] if '<section class="pa-vg2-hero">' in g else ""
-    return ('href="../join.html#your-gallery"' in seg and "pa-artist-apply-gallery:begin" in hero and txt.strip() == "Artist submissions →"
-            and not re.search(r"\d|%|commission|fee|exclusiv", txt, re.I) and "plotart-join.css" not in g)
+    sec = lambda c: g[g.index('<section class="%s">' % c):g.index("</section>", g.index('<section class="%s">' % c))] if '<section class="%s">' % c in g else ""
+    return ('href="../join.html#your-gallery"' in seg and "pa-artist-apply-gallery:begin" in sec("pa-vg2-close") and "pa-artist-apply" not in sec("pa-vg2-hero")
+            and txt.strip() == "Artist submissions →" and not re.search(r"\d|%|commission|fee|exclusiv", txt, re.I) and "plotart-join.css" not in g)
 
 def edit(site, f, old, new, count=1):
     p = os.path.join(site, "plotart", f); s = open(p, encoding="utf-8").read()
@@ -126,7 +128,7 @@ def closed_matches(built, f, m):
     if f == "living-gallery.html":   # the For artists "Artist submissions" link (16 Nov 2026; reworded 20 Nov 2026); the gallery link stays
         return built == _cut(m, "<!-- pa-artist-apply-living:begin -->", "<!-- pa-artist-apply-living:end -->")
     if f == "gallery/index.html":
-        return built == _cut(m, "<!-- pa-artist-apply-gallery:begin -->", "<!-- pa-artist-apply-gallery:end -->", before="\n")
+        return built == _cut(m, "<!-- pa-artist-apply-gallery:begin -->", "<!-- pa-artist-apply-gallery:end -->")   # inline in the closing section (21 Nov 2026)
     if f == "index.html":
         m = _unlink(m, '\n<link rel="stylesheet" href="assets/plotart-join.css">')
         HB, HE = "<!-- pa-artist-apply:begin -->", "<!-- pa-artist-apply:end -->"
@@ -240,7 +242,7 @@ try:
         ("B16 the programme distinction removed", "open", "join.html", " Founding Artists keep their own agreement; artists joining now become Gallery Artists.", ""),
         ("B17 opening without the privacy section for artist applications (V15)", "open", "../privacy.html", "PLOTNUA-PLOTART-ARTIST-APPLICATIONS-PRIVACY-V15", "NO-V15"),
         ("B18 the 15% made bold", "open", "join.html", "PlotArt’s commission is 15% of", "PlotArt’s commission is <strong>15%</strong> of"),
-        ("B23 commercial terms on the Artists' Gallery button", "open", "gallery/index.html", "Artist submissions →</a>", "Artist submissions → 15% commission. No fees.</a>"),
+        ("B23 commercial terms on the Artists' Gallery link", "open", "gallery/index.html", 'Artist submissions <span aria-hidden="true">→</span></a>', 'Artist submissions <span aria-hidden="true">→</span> 15% commission. No fees.</a>'),
         ("B24 the Artists' Gallery button published while applications are closed", "closed", "gallery/index.html", '<p class="pa-vg2-sub">Discover original Irish art and the artists behind it.</p></div>', '<p class="pa-vg2-sub">Discover original Irish art and the artists behind it.</p></div>\n<!-- pa-artist-apply-gallery:begin --><a href="../join.html#your-gallery">Apply to join →</a><!-- pa-artist-apply-gallery:end -->'),
         ("B19 a Direct Approach no longer needs to come before the sale is agreed", "open", "join.html", " before the sale is agreed that they found you", " that they found you"),
         ("B20 commission widened from original work to any work", "open", "join.html", "an original work or signed limited-edition print sold", "any work or product sold"),

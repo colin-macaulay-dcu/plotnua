@@ -828,15 +828,18 @@ else:
         need('href="join.html"' in _band.group(1) and 'href="gallery/"' in _band.group(1) and "Artist Submissions" in _bv,
              "L18 the homepage band must be the invitation, linking to Join PlotArt and the gallery")
         need(not re.search(r"\d|%|€|commission|fee|exclusiv|deserves", _bv, re.I), "L18 the homepage band carries figures, commercial terms or promotional wording")
-    # the Artists' Gallery application button (founder decisions 16 Nov 2026): once, inside the compact introduction, above
-    # and outside the collection region, linking to Join PlotArt's "A gallery of your own." section; the same rules as the homepage band
+    # the Artists' Gallery application link (founder decisions 16 Nov 2026; moved 21 Nov 2026, artwork first): once, as a
+    # discreet link in the closing section, after the collection, linking to Join PlotArt's "A gallery of your own." section;
+    # never in the introduction, which is the heading and then the artwork
     _ghero = re.search(r'<section class="pa-vg2-hero">.*?</section>', _gal, re.S)
-    need(_gband is not None and _gal.count("<!-- pa-artist-apply-gallery:begin -->") == 1 and _ghero is not None
-         and "<!-- pa-artist-apply-gallery:begin -->" in _ghero.group(0)
-         and _gal.index("<!-- pa-artist-apply-gallery:end -->") < _gal.index("<!-- pa-vg-collection:begin -->"), "L18 open: the Artists' Gallery carries the application button once, in its introduction, before the collection")
+    _gclose = re.search(r'<section class="pa-vg2-close">.*?</section>', _gal, re.S)
+    need(_gband is not None and _gal.count("<!-- pa-artist-apply-gallery:begin -->") == 1 and _ghero is not None and _gclose is not None
+         and "pa-artist-apply" not in _ghero.group(0) and "<!-- pa-artist-apply-gallery:begin -->" in _gclose.group(0)
+         and _gal.index("<!-- pa-artist-apply-gallery:begin -->") > _gal.index("<!-- pa-vg-collection:end -->"),
+         "L18 open: the Artists' Gallery carries the application link once, in its closing section, after the collection (not in the introduction)")
     if _gband:
         _gv = re.sub(r"\s+", " ", visible_text(_gband.group(1)))
-        need('href="../join.html#your-gallery"' in _gband.group(1) and _gv.strip() == "Artist submissions →", "L18 the Artists' Gallery button must read 'Artist submissions →' and link to Join PlotArt's gallery section")
+        need('href="../join.html#your-gallery"' in _gband.group(1) and _gv.strip() == "Artist submissions →", "L18 the Artists' Gallery link must read 'Artist submissions →' and link to Join PlotArt's gallery section")
         need(not re.search(r"\d|%|€|commission|fee|exclusiv|deserves", _gv, re.I), "L18 the Artists' Gallery button carries figures, commercial terms or promotional wording")
     need(re.search(r'<section class="pa-jn-sec" id="your-gallery">\s*<div class="pa-wrap pa-jn-grid">\s*<p class="pa-jn-k">The gallery</p>\s*<div><h2>A gallery of your own\.</h2>', _join) is not None, "L18 Join PlotArt must carry the your-gallery anchor on 'A gallery of your own.'")
     need(_ptr is not None and bool(_ptr.group(1).strip()), "L18 open: the Founding 25 page points to Join PlotArt")
