@@ -14,6 +14,7 @@ its release/auto/ branch with the "PlotNua Release" App token, and nothing may d
   A6  push-release-branch.sh that could push without the token in Actions, push main, or force
   A7  "Release to production" not leaving the self-promoting publishers' branches (and their rollbacks) to them
   A8  the App key referenced anywhere outside those environment-scoped jobs
+  A11 promote.sh pushing main or a prod/ tag other than as the App, in one atomic push (Stage 2, 21 Nov 2026)
 
   python3 atlas-tools/release/prove-release-app-push.py [--self-test]
 """
@@ -104,6 +105,19 @@ def check(workflows, texts, tools):
     for tool in ("request-release.sh", "promote.sh"):
         if "push-release-branch.sh" not in tools.get(os.path.join(REL, tool), ""):
             errs.append("A6 %s must push release branches through push-release-branch.sh" % tool)
+    # A11 main and prod/ tags are pushed as the PlotNua Release App, in one atomic push (Stage 2, 21 Nov 2026)
+    pr_sh = tools.get(os.path.join(REL, "promote.sh"), "")
+    code = "\n".join(l for l in pr_sh.splitlines() if not l.lstrip().startswith("#"))
+    if not re.search(r'GITHUB_ACTIONS:-\}" = "true" \]\s*&&\s*\[ -z "\$\{RELEASE_PUSH_TOKEN:-\}" \]', code) or "no RELEASE_PUSH_TOKEN" not in code:
+        errs.append("A11 promote.sh must refuse in GitHub Actions without the App token (RELEASE_PUSH_TOKEN)")
+    if code.count("push -q --atomic") != 2 or 'release_push "$SHA:refs/heads/main" "refs/tags/$T"' not in code:
+        errs.append("A11 promote.sh must push main and its prod/ tag together in one --atomic push (release_push)")
+    if re.search(r"(^|[^_])push[^\n]*refs/(heads/main|tags)", code.replace('release_push "$SHA:refs/heads/main" "refs/tags/$T"', "")):
+        errs.append("A11 promote.sh must not push main or a tag any other way (e.g. with the built-in GITHUB_TOKEN)")
+    if 'extraheader= -c "http.https://github.com/.extraheader=AUTHORIZATION: basic $auth"' not in code:
+        errs.append("A11 promote.sh must clear the built-in token and authenticate as the App only")
+    if 'out="${out//"$RELEASE_PUSH_TOKEN"/***}"' not in code or re.search(r"push[^\n#]*(\s-f\b|--force)", code):
+        errs.append("A11 promote.sh must redact the token from git's output and never force")
     # A7 Release to production leaves self-promoting publishers alone
     rp = workflows.get("release-promote.yml") or {}
     cond = str(((rp.get("jobs") or {}).get("promote") or {}).get("if", ""))
@@ -197,6 +211,12 @@ def self_test():
     case("push helper loses its Actions refusal", lambda w,t,tl: tl.__setitem__(rel("push-release-branch.sh"), tl[rel("push-release-branch.sh")].replace("REFUSED: no RELEASE_PUSH_TOKEN","pushing anyway")), "A6")
     case("push helper forces", lambda w,t,tl: tl.__setitem__(rel("push-release-branch.sh"), tl[rel("push-release-branch.sh")]+'\ngit push -f origin x\n'), "A6")
     case("promote.sh pushes rollbacks directly again", lambda w,t,tl: tl.__setitem__(rel("promote.sh"), tl[rel("promote.sh")].replace("push-release-branch.sh","")), "A6")
+    sw = lambda a, b: (lambda w,t,tl: tl.__setitem__(rel("promote.sh"), tl[rel("promote.sh")].replace(a, b)))
+    case("promote.sh pushes main without the App token in Actions", sw('[ -z "${RELEASE_PUSH_TOKEN:-}" ]', '[ -z "${NOT_SET:-x}" ]'), "A11")
+    case("promote.sh pushes main and its tag separately again", sw("push -q --atomic", "push -q"), "A11")
+    case("promote.sh pushes main with the built-in token again", lambda w,t,tl: tl.__setitem__(rel("promote.sh"), tl[rel("promote.sh")].replace('T="prod/', 'git push origin "$SHA:refs/heads/main"\nT="prod/')), "A11")
+    case("promote.sh stops clearing the built-in token", sw('-c http.https://github.com/.extraheader= -c', '-c'), "A11")
+    case("promote.sh stops redacting the token", sw('out="${out//"$RELEASE_PUSH_TOKEN"/***}"; ', ''), "A11")
     case("Release to production races PlotArt", lambda w,t,tl: w["release-promote.yml"]["jobs"]["promote"].__setitem__("if", w["release-promote.yml"]["jobs"]["promote"]["if"].replace("!startsWith(github.event.workflow_run.head_branch, 'release/auto/plotart-') &&","")), "A7")
     case("approval job removed", lambda w,t,tl: w["release-promote.yml"]["jobs"].pop("approval"), "A9")
     case("approval environment renamed", lambda w,t,tl: w["release-promote.yml"]["jobs"]["approval"].__setitem__("environment", "release-automation"), "A9")
@@ -224,5 +244,5 @@ if __name__ == "__main__":
     errs = check(*gather())
     for e in errs:
         print("  REFUSED  " + e)
-    print("RELEASE APP PUSH · %s" % ("OK (A1-A10: %d releasing workflows)" % len(RELEASING) if not errs else "REFUSED · %d problem(s)" % len(errs)))
+    print("RELEASE APP PUSH · %s" % ("OK (A1-A11: %d releasing workflows)" % len(RELEASING) if not errs else "REFUSED · %d problem(s)" % len(errs)))
     sys.exit(1 if errs else 0)

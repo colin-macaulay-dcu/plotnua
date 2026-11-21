@@ -20,6 +20,15 @@ while read old new ref; do
 done
 EOS
 chmod +x origin.git/hooks/pre-receive
+# Stage 2: GitHub's rulesets judge each ref of a push on its own. The per-ref "update" hook plays that: it can refuse the
+# prod/ tag (tag ruleset) or main ("Restrict updates") alone, so only an --atomic push keeps main and its tag together.
+cat > origin.git/hooks/update <<EOS
+#!/bin/bash
+case "\$1" in refs/tags/prod/*) [ ! -e "$T/reject-tags" ] || { echo "ruleset: cannot create \$1"; exit 1; };; esac
+[ "\$1" != refs/heads/main ] || [ ! -e "$T/reject-main" ] || { echo "ruleset: cannot update this protected ref"; exit 1; }
+exit 0
+EOS
+chmod +x origin.git/hooks/update
 cat > origin.git/hooks/post-receive <<EOS
 #!/bin/bash
 while read old new ref; do
@@ -124,6 +133,41 @@ git fetch -q origin; B=$(main); git checkout -q -B release/auto/wf origin/main; 
 O=$(mktemp); HEALTH_CMD="$T/hx" PROMOTE_OUT="$O" bash "$P" "$S" release/auto/wf > "$T/wfout" 2>&1; rc=$?
 ok "a workflow-changing release that fails its live check is NOT reverted automatically (App has no Workflows permission)" '[ $rc = 2 ] && ! git ls-remote origin | grep -q "rollback-wf"'
 ok "... and FOUNDER ROLLBACK REQUIRED is reported (output and step output)" 'grep -q "FOUNDER ROLLBACK REQUIRED" "$T/wfout" && grep -qx "founder_rollback_required=$S" "$O"'
+# 6 Stage 2 (21 Nov 2026): main and its prod/ tag are pushed as the PlotNua Release App, in ONE atomic push
+tags() { git ls-remote --tags origin "prod/*-$1" | wc -l | tr -d ' '; }
+ACT=(env GITHUB_ACTIONS=true GITHUB_REPOSITORY=x/y RELEASE_PUSH_REMOTE="$T/origin.git" RELEASE_PUSH_TOKEN=ghs_SECRETTOKEN123)
+git fetch -q origin; git checkout -q -B tmp6 origin/main; M=$(main); S=$(rel s2a v20); gate release/auto/s2a
+o=$(GITHUB_ACTIONS=true RELEASE_PUSH_TOKEN= HEALTH_CMD=true bash "$P" "$S" release/auto/s2a 2>&1); rc=$?
+ok "stage 2: in GitHub Actions WITHOUT the App token promote.sh refuses and changes nothing (no main, no tag)" '[ $rc = 1 ] && [ "$(main)" = "$M" ] && [ "$(tags "${S:0:7}")" = 0 ] && printf "%s" "$o" | grep -q "no RELEASE_PUSH_TOKEN"'
+o=$("${ACT[@]}" HEALTH_CMD=true bash "$P" "$S" release/auto/s2a 2>&1); rc=$?
+ok "stage 2: with the App token the release reaches main AND its prod/ tag (one push)" '[ $rc = 0 ] && [ "$(main)" = "$S" ] && [ "$(tags "${S:0:7}")" = 1 ]'
+ok "stage 2: the App token never appears in promote.sh output (success)" '! printf "%s" "$o" | grep -q SECRETTOKEN'
+git fetch -q origin; M=$(main); S=$(rel s2b v21); gate release/auto/s2b; touch "$T/reject-tags"
+o=$("${ACT[@]}" HEALTH_CMD=true bash "$P" "$S" release/auto/s2b 2>&1); rc=$?; rm -f "$T/reject-tags"
+ok "stage 2: if the prod/ tag is refused, main does NOT move either (atomic): refused, nothing released" '[ $rc = 1 ] && [ "$(main)" = "$M" ] && [ "$(tags "${S:0:7}")" = 0 ] && printf "%s" "$o" | grep -q "nothing was released"'
+touch "$T/reject-main"; o=$("${ACT[@]}" HEALTH_CMD=true bash "$P" "$S" release/auto/s2b 2>&1); rc=$?; rm -f "$T/reject-main"
+ok "stage 2: if main is refused, no prod/ tag is created either (atomic)" '[ $rc = 1 ] && [ "$(main)" = "$M" ] && [ "$(tags "${S:0:7}")" = 0 ]'
+o=$(env GITHUB_ACTIONS=true GITHUB_REPOSITORY=x/y RELEASE_PUSH_REMOTE="$T/no-such-remote-ghs_SECRETTOKEN123" RELEASE_PUSH_TOKEN=ghs_SECRETTOKEN123 HEALTH_CMD=true bash "$P" "$S" release/auto/s2b 2>&1); rc=$?
+ok "stage 2: a rejected push (bad remote or token) is a refusal, main unchanged" '[ $rc = 1 ] && [ "$(main)" = "$M" ]'
+ok "stage 2: ... and the token is redacted even from git's own error output" '! printf "%s" "$o" | grep -q SECRETTOKEN && printf "%s" "$o" | grep -qF "***"'
+# an error reported AFTER GitHub applied the push (e.g. a dropped connection) must never skip the live check
+mkdir -p "$T/fakebin"; printf '#!/bin/bash\nfor a in "$@"; do [ "$a" = push ] && { %s "$@"; exit 1; }; done\nexec %s "$@"\n' "$(command -v git)" "$(command -v git)" > "$T/fakebin/git"; chmod +x "$T/fakebin/git"
+printf '#!/bin/bash\necho checked "$1" >> "%s/health-ran"\n' "$T" > "$T/hok"; chmod +x "$T/hok"; rm -f "$T/health-ran"
+o=$(PATH="$T/fakebin:$PATH" "${ACT[@]}" HEALTH_CMD="$T/hok" bash "$P" "$S" release/auto/s2b 2>&1); rc=$?
+ok "stage 2: a push that errors although main moved still gets its live check (never an unverified release)" '[ $rc = 0 ] && [ "$(main)" = "$S" ] && grep -qx "checked $S" "$T/health-ran"'
+# ... and if main cannot even be re-read after that error, the outcome is unknown: alert (exit 2), never "nothing released"
+git fetch -q origin; M=$(main); S=$(rel s2d v22); gate release/auto/s2d
+printf '#!/bin/bash\nfor a in "$@"; do [ "$a" = push ] && { %s "$@"; touch "%s/pushed"; exit 1; }; [ "$a" = fetch ] && [ -e "%s/pushed" ] && exit 1; done\nexec %s "$@"\n' "$(command -v git)" "$T" "$T" "$(command -v git)" > "$T/fakebin/git"; rm -f "$T/pushed" "$T/health-ran"
+o=$(PATH="$T/fakebin:$PATH" "${ACT[@]}" HEALTH_CMD="$T/hok" bash "$P" "$S" release/auto/s2d 2>&1); rc=$?; rm -f "$T/pushed"
+ok "stage 2: a push error with main unreadable afterwards is reported for the founder (exit 2), never as \"nothing released\"" '[ $rc = 2 ] && printf "%s" "$o" | grep -q "FOUNDER ATTENTION" && ! printf "%s" "$o" | grep -q "nothing was released"'
+# the automatic rollback in Actions mode: revert pushed and released as the App, with its own gate, main restored
+git fetch -q origin; B=$(main); S=$(rel s2c BROKEN20); gate release/auto/s2c
+printf '#!/bin/bash\n[ "$1" != "%s" ]\n' "$S" > "$T/h20"; chmod +x "$T/h20"
+O=$(mktemp); o=$("${ACT[@]}" HEALTH_CMD="$T/h20" GITHUB_OUTPUT="$O" bash "$PA" "$S" release/auto/s2c 2>&1); rc=$?
+git fetch -q origin; R=$(git rev-parse origin/release/auto/rollback-s2c 2>/dev/null || echo none)
+ok "stage 2: automatic rollback in Actions: revert released as the App, main back to the previous content, both tagged" '[ $rc = 2 ] && [ "$(main)" = "$R" ] && [ -z "$(git diff "$B" "$(main)")" ] && [ "$(tags "${S:0:7}")" = 1 ] && [ "$(tags "${R:0:7}")" = 1 ]'
+ok "stage 2: ... and the token never appears in that output either" '! printf "%s" "$o" | grep -q SECRETTOKEN'
+ok "stage 2: promote.sh pushes main only through the atomic App push (no other push of main)" '! grep -vE "^\s*#" "$P" | grep -qE "git[^#]*push[^#]*refs/heads/main" && [ "$(grep -c "push -q --atomic" "$P")" = 2 ] && [ "$(grep -vE "^\s*#" "$P" | grep -cE "(^|[^_])push[^#]*refs/(heads/main|tags)")" = 0 ]'
 # founder approval checkpoint (Stage 1, 20 Nov 2026): the preview and the fail-closed approval check, proved separately
 echo; bash "$(dirname "$P")/prove-atlas-refresh.sh" 2>/dev/null; rc=$?; ok "routine Atlas refresh exception proof passes (prove-atlas-refresh.sh)" '[ $rc = 0 ]'
 echo; bash "$(dirname "$P")/prove-founder-approval.sh" 2>/dev/null; rc=$?; ok "founder approval checkpoint proof passes (prove-founder-approval.sh)" '[ $rc = 0 ]'
