@@ -1,6 +1,6 @@
 {
   "_note": "Changing this file on the pilot branch requests a run of .github/workflows/plotart-checkout-stripe-test.yml (Stripe TEST mode only; waits for the founder's approval on the checkout-test environment). Nothing is deployed.",
-  "requested": "2026-11-21T15:17:22.000Z",
+  "requested": "2026-11-21T15:43:36.000Z",
   "phases": ["basket_direct"],
   "reason": "Isolated proof of concept (founder approval 21 Nov 2026): one buyer enters card details once on Stripe-hosted Checkout; separate DIRECT charges on the two existing TEST artist accounts (A both succeed, B one fails, C authentication, D authorise both before capture, E retries). TEST mode only; everything cleaned up.",
   "reuse_account": "acct_1UclJXHx1Olx8cdw",
